@@ -148,6 +148,13 @@
       "head": "02fbe50638eb9064f44fe20e183fec15203364c5",
       "number": 515,
       "title": "Integrate native Mesh authority and preserve delegated independent review"
+    },
+    {
+      "branch": "work/firefox-minimum-158-20261014",
+      "evidence": "EXPLICIT_SECOND_PARENT_OF_PREPARED_MERGE; INDEPENDENT_NATIVE_ANCESTRY_READBACK_REQUIRED_BEFORE_SOURCE_CLOSURE",
+      "head": "9e89652683b6ae0772481bdb0a46073396e0a7cf",
+      "number": 524,
+      "title": "Require Firefox 158 for the terminal WebExtension"
     }
   ],
   "initial_inventory": {
@@ -1143,6 +1150,14 @@
       "role": "Second parent of the history-preserving successor on the existing PR523 branch",
       "tree": "09d37e03bd567f11e3fe40bd87accd127c8f3689"
     },
+    "firefox_minimum": {
+      "carrier_parent": "47218617b9bdb01b4e8facff6d217108599ad01f",
+      "head": "9e89652683b6ae0772481bdb0a46073396e0a7cf",
+      "merge_base": "d060ae5db77d5e83a2bfc1fe009774e177d8b41e",
+      "pr": 524,
+      "role": "Second parent of the history-preserving successor on the existing PR523 branch",
+      "tree": "61b070c897da783a1874227fbd7ff8bd33d2b746"
+    },
     "main": "d060ae5db77d5e83a2bfc1fe009774e177d8b41e",
     "review_repair": "02fbe50638eb9064f44fe20e183fec15203364c5"
   },
@@ -1200,6 +1215,17 @@
       "local_total": 54,
       "local_unix_socket_test_boundary": "23 existing DurableOwnerTerminalTests blocked by host AF_UNIX EPERM; unchanged source tests retained for native CI",
       "pinned_runtime_equivalence": false,
+      "predecessor_native_evidence": {
+        "head": "47218617b9bdb01b4e8facff6d217108599ad01f",
+        "runs": [
+          38541076959,
+          38541084485,
+          38541084783,
+          38541084605
+        ],
+        "scope": "Verified historical predecessor only; no PASS transfer to this successor",
+        "tree": "71463efac5ee2d552d7c039577f1369c69bb383e"
+      },
       "resolved_conflicts": [
         "Preserve both durable terminal commands and opt-in personal provider flags",
         "Retain all 29 locked cache components and add personal Python consumer authorities",
@@ -1215,8 +1241,36 @@
         "runtime/toolchains/CACHE_REGISTRY.json"
       ]
     },
+    "firefox_minimum_successor": {
+      "live_firefox158_execution": "NOT_PERFORMED",
+      "local_verification": {
+        "command": [
+          "python3",
+          "-B",
+          "-m",
+          "unittest",
+          "-v",
+          "tests.test_qikvrt_personal_assistant",
+          "tests.test_qikvrt_gemini_adapter",
+          "tests.test_qikvrt_personal_firefox_capability_boundary",
+          "tests.test_qikvrt_browser_assistant_ab",
+          "tests.test_qikvrt_effect_ack_http_terminal.EffectAckHttpTerminalContractTests",
+          "tests.test_qikvrt_effect_ack_http_terminal.LoopbackTerminalE2ETests"
+        ],
+        "log_sha256": "8e0d3411e8abe2580ec9aebdd88747aab3d7103d3599d1b6bb07987a6bb3ace6",
+        "returncode": 0,
+        "scope": "PARTIAL_EXACT_BLOB_BOUND_LOCAL_FIXTURE; FULL_NATIVE_SUITE_AND_LIVE_FIREFOX158_NOT_ESTABLISHED",
+        "tests": 54
+      },
+      "native_ci": "PENDING_CURRENT_MINIMUM_158_SUCCESSOR",
+      "predecessor_test_status_transfer": false,
+      "source_head": "9e89652683b6ae0772481bdb0a46073396e0a7cf",
+      "source_payload_preserved_byte_exact": true,
+      "source_pr": 524,
+      "strict_min_version": "158.0"
+    },
     "focused_governance": "111 tests PASS on predecessor d0f9e6c257f5a5c2b73debb1a780038ae56e8646; governance sources unchanged in this successor",
-    "full_suite": "PENDING_CURRENT_FIREFOX_ARGON_CONSOLIDATED_SUCCESSOR",
+    "full_suite": "PENDING_CURRENT_MINIMUM_158_SUCCESSOR",
     "live_goldkelch_approval": false,
     "local_focused_log_sha256": "f4cc44bd4ec130795eeb143280996d046fb6b3190820f6623dff2452f06c7643",
     "local_full_attempt_log_sha256": "0b470999fdcc3098dec3457dc47945e16586bc66890661a0d53d59a320e08cff",
@@ -1229,7 +1283,7 @@
     },
     "main_merge": false,
     "main_protection_verified": false,
-    "native_ci": "PENDING_NEW_SUCCESSOR"
+    "native_ci": "PENDING_CURRENT_MINIMUM_158_SUCCESSOR"
   },
   "work_unit_id": "QIKVRT_MAIN_CONVERGENCE_20261014_V1"
 }

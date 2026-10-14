@@ -22,6 +22,8 @@ When installed, the content script is injected on the configured QIKVRT AI surfa
 
 ## Development loading
 
+Requires Firefox 158 or later.
+
 Firefox can load the unpacked reference client for development and verification:
 
 1. Open `about:debugging#/runtime/this-firefox`.
