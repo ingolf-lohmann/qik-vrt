@@ -156,7 +156,7 @@ jobs:
           statuses=gh_pages(f'repos/{repo}/commits/{head}/statuses?per_page=100')
           rules=gh_json(f'repos/{repo}/rules/branches/main')
           reviews=gh_pages(f'repos/{repo}/pulls/{pr_number}/reviews?per_page=100')
-          governance=project_governance(pr, rules, reviews, statuses, required_code_owner=resolve_required_code_owner(repo))
+          governance=project_governance(pr, rules, reviews, statuses, required_code_owner=resolve_required_code_owner(repo, pr_author=pr['user']['login']))
           review_status=next((s for s in statuses if s.get('context') == review_context), None)
           if review_status is None:
               synthetic={'name':review_context,'status':'in_progress','conclusion':None,'run_number':0}
@@ -239,7 +239,7 @@ jobs:
                   result.extend(page)
               return result
           pr=one(f'repos/{repo}/pulls/{number}'); head=pr['head']['sha']
-          projection=project_governance(pr, one(f'repos/{repo}/rules/branches/main'), pages(f'repos/{repo}/pulls/{number}/reviews?per_page=100'), pages(f'repos/{repo}/commits/{head}/statuses?per_page=100'), required_code_owner=resolve_required_code_owner(repo))
+          projection=project_governance(pr, one(f'repos/{repo}/rules/branches/main'), pages(f'repos/{repo}/pulls/{number}/reviews?per_page=100'), pages(f'repos/{repo}/commits/{head}/statuses?per_page=100'), required_code_owner=resolve_required_code_owner(repo, pr_author=pr['user']['login']))
           current=one(f'repos/{repo}/pulls/{number}')
           if head != os.environ['EXPECTED_HEAD'] or pr['base']['sha'] != os.environ['EXPECTED_BASE'] or current['head']['sha'] != head or current['base']['sha'] != pr['base']['sha'] or projection['gate_state'] != 'success':
               raise SystemExit(f"BLOCK: fresh native governance {projection.get('first_blocker') or 'SUBJECT_DRIFT'}")

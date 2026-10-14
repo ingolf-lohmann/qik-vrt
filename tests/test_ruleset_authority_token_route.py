@@ -266,9 +266,9 @@ class RequiredReviewContextContractTests(unittest.TestCase):
         self.assertEqual({item['context'] for item in published}, {self.context,self.legacy})
         return published
 
-    def run_promotion_snapshot(self, statuses, *, native_satisfied=False):
+    def run_promotion_snapshot(self, statuses, *, native_satisfied=False, author_login='integration-author', reviewer_login='ingolf-lohmann'):
         gates = required_gates(self.promotion)
-        pr = {'number': 641, 'state': 'open', 'base': {'ref': 'main', 'sha': self.base}, 'head': {'sha': self.head}, 'user': {'login':'integration-author'}, 'draft': False, 'mergeable': True}
+        pr = {'number': 641, 'state': 'open', 'base': {'ref': 'main', 'sha': self.base}, 'head': {'sha': self.head}, 'user': {'login':author_login}, 'draft': False, 'mergeable': True}
 
         def read(args, *, text):
             self.assertEqual(args[:2], ['gh', 'api'])
@@ -284,7 +284,7 @@ class RequiredReviewContextContractTests(unittest.TestCase):
             if path == f'repos/{self.repository}/rules/branches/main':
                 return json.dumps([{'type':'pull_request','parameters':{'require_code_owner_review':True,'required_approving_review_count':1,'dismiss_stale_reviews_on_push':True,'require_last_push_approval':True}}]) if native_satisfied else '[]'
             if path == f'repos/{self.repository}/pulls/641/reviews?per_page=100':
-                return json.dumps([[{'id':4,'user':{'login':'ingolf-lohmann','type':'User'},'state':'APPROVED','commit_id':self.head,'submitted_at':'2026-10-06T21:00:00Z'}]]) if native_satisfied else '[[]]'
+                return json.dumps([[{'id':4,'user':{'login':reviewer_login,'type':'User'},'state':'APPROVED','commit_id':self.head,'submitted_at':'2026-10-06T21:00:00Z'}]]) if native_satisfied else '[[]]'
             if path == f'repos/{self.repository}/pulls/641/files?per_page=100':
                 return '[[{"filename":"fixture.txt"}]]'
             if path == f'repos/{self.repository}/pulls?state=open&base=main&per_page=100':
@@ -448,6 +448,16 @@ class RequiredReviewContextContractTests(unittest.TestCase):
         from tools.qikvrt_expected_head_promotion import evaluate_promotion
         self.assertEqual(evaluate_promotion(snapshot)['state'], 'PROMOTABLE')
         self.assertEqual(snapshot['governance_projection']['native_review_gate']['review_id'], 4)
+
+    def test_owner_authored_promotion_consumes_actual_delegated_native_review(self):
+        statuses = [{'id':8,'context':self.context,'state':'success'}]
+        snapshot = self.run_promotion_snapshot(statuses, native_satisfied=True, author_login='ingolf-lohmann', reviewer_login='Goldkelch')
+        from tools.qikvrt_expected_head_promotion import evaluate_promotion
+        self.assertEqual(evaluate_promotion(snapshot)['state'], 'PROMOTABLE')
+        self.assertEqual(snapshot['governance_projection']['native_review_gate']['required_code_owner'], 'Goldkelch')
+        self.assertEqual(snapshot['governance_projection']['native_review_gate']['review_id'], 4)
+        self_review = self.run_promotion_snapshot(statuses, native_satisfied=True, author_login='ingolf-lohmann', reviewer_login='ingolf-lohmann')
+        self.assertEqual(evaluate_promotion(self_review)['state'], 'BLOCK')
 
     def test_digest_drift_blocks_before_any_api_request(self):
         calls = []

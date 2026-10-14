@@ -85,15 +85,81 @@ class RequiredCodeOwnerReviewGateTests(unittest.TestCase):
     def test_actual_policy_and_codeowners_resolve_current_mesh_human(self):
         self.assertEqual(MODULE.resolve_required_code_owner("ingolf-lohmann/qik-vrt"), "ingolf-lohmann")
 
+    def test_owner_authored_pr_uses_explicit_independent_review_delegate(self):
+        reviewer = MODULE.resolve_required_code_owner(
+            "ingolf-lohmann/qik-vrt", pr_author="ingolf-lohmann"
+        )
+        self.assertEqual(reviewer, "Goldkelch")
+        result = MODULE.evaluate_required_review(
+            self.pr(user={"login": "ingolf-lohmann"}),
+            self.enforced_rules(),
+            [self.approval(user={"login": reviewer, "type": "User"})],
+            required_code_owner=reviewer,
+        )
+        self.assertEqual(result["gate_state"], "success")
+
+    def test_delegate_authored_pr_requires_the_owner_instead(self):
+        reviewer = MODULE.resolve_required_code_owner(
+            "ingolf-lohmann/qik-vrt", pr_author="Goldkelch"
+        )
+        self.assertEqual(reviewer, "ingolf-lohmann")
+        result = MODULE.evaluate_required_review(
+            self.pr(user={"login": "Goldkelch"}),
+            self.enforced_rules(), [self.approval()],
+            required_code_owner=reviewer,
+        )
+        self.assertEqual(result["gate_state"], "success")
+
     def test_unknown_or_former_repository_does_not_inherit_current_authority(self):
         for repository in ("Goldkelch/qik-vrt", "foreign/qik-vrt", ""):
             with self.subTest(repository=repository), self.assertRaises(MODULE.ReviewGateInputError):
                 MODULE.resolve_required_code_owner(repository)
 
     def test_policy_codeowners_disagreement_never_falls_back_to_former_owner(self):
-        for codeowners in ("* @Goldkelch", "* @ingolf-lohmann\n/runtime/ @Goldkelch", "", "* @ingolf-lohmann @Goldkelch"):
+        for codeowners in ("* @Goldkelch", "* @ingolf-lohmann\n/runtime/ @Goldkelch", "", "* @ingolf-lohmann", "* @ingolf-lohmann @someone-else"):
             with self.subTest(codeowners=codeowners), self.assertRaises(MODULE.ReviewGateInputError):
                 MODULE.resolve_required_code_owner("ingolf-lohmann/qik-vrt", codeowners=codeowners)
+
+    def test_shared_codeowners_cannot_invent_a_review_delegation(self):
+        policy = json.loads((ROOT / "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json").read_text())
+        del policy["mesh_authority"]["code_owner_review_delegation"]
+        with self.assertRaises(MODULE.ReviewGateInputError):
+            MODULE.resolve_required_code_owner("ingolf-lohmann/qik-vrt", policy=policy, codeowners="* @ingolf-lohmann @Goldkelch", pr_author="ingolf-lohmann")
+
+    def test_delegate_requires_the_exact_active_owner_record(self):
+        policy = json.loads((ROOT / "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json").read_text())
+        for field, value in (("source_sha256", "0" * 64), ("state", "REVOKED"), ("delegate_login", "someone-else"), ("self_approval_allowed", True), ("native_approval_required", False), ("native_approval_required", 1), ("owner_final_authority_retained", False), ("automated_approval_can_substitute", True)):
+            candidate = copy.deepcopy(policy)
+            candidate["mesh_authority"]["code_owner_review_delegation"][field] = value
+            with self.subTest(field=field, value=value), self.assertRaises(MODULE.ReviewGateInputError):
+                MODULE.resolve_required_code_owner("ingolf-lohmann/qik-vrt", policy=candidate, pr_author="ingolf-lohmann")
+
+    def test_delegate_does_not_replace_enforcement_freshness_or_native_approval(self):
+        reviewer = MODULE.resolve_required_code_owner("ingolf-lohmann/qik-vrt", pr_author="ingolf-lohmann")
+        pr = self.pr(user={"login": "ingolf-lohmann"})
+        cases = [
+            ([], [self.approval(user={"login": reviewer, "type": "User"})], "CODE_OWNER_RULE_NOT_ENFORCED"),
+            (self.enforced_rules(), [self.approval()], "CODE_OWNER_REVIEW_MISSING"),
+            (self.enforced_rules(), [self.approval(user={"login": reviewer}, state="COMMENTED")], "CODE_OWNER_REVIEW_NOT_APPROVED"),
+            (self.enforced_rules(), [self.approval(user={"login": reviewer}, commit_id="a" * 40)], "CODE_OWNER_REVIEW_STALE"),
+            (self.enforced_rules(), [self.approval(user={"login": reviewer, "type": "Bot"})], "CODE_OWNER_REVIEW_AUTOMATED_APPROVAL"),
+            (self.enforced_rules(), [self.approval(user={"login": reviewer}, state="CHANGES_REQUESTED")], "CODE_OWNER_REVIEW_CHANGES_REQUESTED"),
+        ]
+        for rules, reviews, blocker in cases:
+            with self.subTest(blocker=blocker):
+                result = MODULE.evaluate_required_review(pr, rules, reviews, required_code_owner=reviewer)
+                self.assertEqual(result["first_blocker"], blocker)
+
+    def test_revoked_owner_record_blocks_even_with_an_updated_source_digest(self):
+        policy = json.loads((ROOT / "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json").read_text())
+        source = ROOT / policy["owner_delegation"]
+        record = json.loads(source.read_bytes())
+        record["state"] = "REVOKED"
+        revoked = (json.dumps(record, ensure_ascii=False, indent=2) + "\n").encode()
+        import hashlib
+        policy["mesh_authority"]["code_owner_review_delegation"]["source_sha256"] = hashlib.sha256(revoked).hexdigest()
+        with patch.object(pathlib.Path, "read_bytes", return_value=revoked), self.assertRaises(MODULE.ReviewGateInputError):
+            MODULE.resolve_required_code_owner("ingolf-lohmann/qik-vrt", policy=policy, pr_author="ingolf-lohmann")
 
     def test_missing_or_collapsed_authority_roles_fail_closed(self):
         policy = json.loads((ROOT / "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json").read_text())
@@ -301,6 +367,28 @@ class RequiredCodeOwnerReviewGateTests(unittest.TestCase):
             self.assertEqual(len(posts), 2)
             self.assertTrue(all("state=success" in post for post in posts))
             self.assertEqual(namespace['decision']['required_code_owner'], 'ingolf-lohmann')
+
+    def test_actual_publisher_accepts_delegate_for_owner_authored_pr(self):
+        source = self.embedded_python("qikvrt_required_review_gate.yml", "python3 -B - <<'PY'\n")
+        pr = self.pr(user={"login": "ingolf-lohmann"}, base={"sha": "a" * 40, "ref": "main"}, state="open")
+        review = self.approval(user={"login": "Goldkelch", "type": "User"})
+        posts = []
+        def read(command, **kwargs):
+            path = command[-1]
+            if path.endswith("/pulls/641"): return json.dumps(pr)
+            if path.endswith("/rules/branches/main"): return json.dumps(self.enforced_rules())
+            if "/reviews?" in path: return json.dumps([[review]])
+            self.fail(f"unexpected API read: {command}")
+        with tempfile.TemporaryDirectory() as directory:
+            env = {"REPOSITORY": "ingolf-lohmann/qik-vrt", "REQUESTED_PR": "641", "EVENT_NAME": "workflow_dispatch", "EVENT_PRS": "[]", "STATUS_CONTEXT": MODULE.GOVERNANCE_STATUS_CONTEXT, "LEGACY_STATUS_CONTEXT": MODULE.LEGACY_GOVERNANCE_STATUS_CONTEXT, "GITHUB_STEP_SUMMARY": str(pathlib.Path(directory) / "summary"), "GITHUB_SERVER_URL": "https://github.com", "GITHUB_RUN_ID": "123"}
+            with patch.dict(os.environ, env), patch("subprocess.check_output", side_effect=read), patch("subprocess.check_call", side_effect=lambda command: posts.append(command)):
+                namespace = {}
+                exec(compile(source, "publisher-delegated-owner-review", "exec"), namespace)
+            self.assertEqual(namespace["decision"]["gate_state"], "success")
+            self.assertEqual(namespace["decision"]["required_code_owner"], "Goldkelch")
+            self.assertEqual(len(posts), 2)
+            self.assertTrue(all("state=success" in post for post in posts))
+            self.assertTrue(all(not any("/reviews" in arg for arg in post) for post in posts))
 
 
 if __name__ == "__main__":

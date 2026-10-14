@@ -78,5 +78,32 @@
     "FINAL_PASS": false,
     "EFFECT_ACK_DONE": false,
     "FULL_AUTHORITY_MIRROR_SYNCHRONIZATION": false
+  },
+  "code_owner_review_delegation": {
+    "principal_login": "ingolf-lohmann",
+    "delegate_login": "Goldkelch",
+    "scope": "REPOSITORY_CODE_REVIEW_ONLY",
+    "state": "ACTIVE",
+    "native_approval_required": true,
+    "owner_final_authority_retained": true,
+    "self_approval_allowed": false,
+    "automated_approval_can_substitute": false
+  },
+  "review_delegation_source": {
+    "submitted_at": "2026-09-28T22:47:35Z",
+    "excerpt": "lediglich die Freigabe dafür, dass Goldkelch stellvertretend für mich reviewt.",
+    "source_kind": "PRIOR_DIRECT_HUMAN_INSTRUCTION_EXCERPT_RETRIEVED_FROM_PERSONAL_CONTEXT",
+    "full_original_utterance_reproduced": false,
+    "ownership_retained_excerpt": "Code-Ownership geteilt, nicht abgegeben.",
+    "ownership_instruction_at": "2026-09-16T14:34:25Z",
+    "not_an_identity_or_native_approval_attestation": true
+  },
+  "latest_owner_reaffirmation": {
+    "submitted_at": "2026-10-13T23:24:43Z",
+    "owner": "Ingolf Lohmann",
+    "source_kind": "DIRECT_HUMAN_INSTRUCTION_IN_CURRENT_SESSION",
+    "text": "Ja, sicher ist sicher, ist das Drachen-Motto und bleibt es auch. Deswegen erteile ich die Freigabe jetzt nochmal explizit selbst. Und ich bin sicher, für die restlichen Aspekte gibt es bereits gut bekannte und wohl definierte und gut getestete und an verschiedenen Ereignissen angewendete Lösungsmuster.",
+    "text_sha256": "84eabdde7b58485207886e770070111c4c1885959bb1df0654833f476c926796",
+    "scope": "Continue the existing repository-internal review/governance repair and preserve the prior representative review delegation; no native independent approval, route change or protection bypass is inferred."
   }
 }

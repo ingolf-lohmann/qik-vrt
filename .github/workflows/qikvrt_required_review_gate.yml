@@ -61,7 +61,7 @@ jobs:
           requested = os.environ.get('REQUESTED_PR', '').strip()
           event_name = os.environ['EVENT_NAME']
           event_prs = json.loads(os.environ.get('EVENT_PRS') or '[]')
-          owner = resolve_required_code_owner(repo)
+          resolve_required_code_owner(repo)
           contexts = (os.environ['STATUS_CONTEXT'], os.environ['LEGACY_STATUS_CONTEXT'])
           summary = Path(os.environ['GITHUB_STEP_SUMMARY'])
           with summary.open('a', encoding='utf-8') as stream:
@@ -90,6 +90,7 @@ jobs:
               head=pr['head']['sha']
               rules=gh_json(f'repos/{repo}/rules/branches/main')
               reviews=gh_pages(f'repos/{repo}/pulls/{number}/reviews?per_page=100')
+              owner=resolve_required_code_owner(repo, pr_author=pr['user']['login'])
               decision=evaluate_required_review(pr, rules, reviews, required_code_owner=owner)
               current=gh_json(f'repos/{repo}/pulls/{number}')
               if current['head']['sha'] != head or current['base']['sha'] != pr['base']['sha']:

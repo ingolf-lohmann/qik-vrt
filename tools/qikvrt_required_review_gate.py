@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import pathlib
 import sys
@@ -26,11 +27,13 @@ class ReviewGateInputError(ValueError):
     pass
 
 
-def resolve_required_code_owner(repository: str, *, policy: Mapping[str, Any] | None = None, codeowners: str | None = None) -> str:
+def resolve_required_code_owner(repository: str, *, policy: Mapping[str, Any] | None = None, codeowners: str | None = None, pr_author: str | None = None) -> str:
     """Bind the trusted repository's three roles without creating native approval.
 
     Unknown repositories or a policy/CODEOWNERS disagreement fail closed.
     Human authority, execution identity and durable storage are distinct roles.
+    A delegated reviewer is selected only for a principal-authored PR and only
+    from an active, exact-byte-bound Owner record. No native approval is inferred.
     """
     root = pathlib.Path(__file__).resolve().parents[1]
     if policy is None:
@@ -63,11 +66,54 @@ def resolve_required_code_owner(repository: str, *, policy: Mapping[str, Any] | 
         raise ReviewGateInputError("executor and repository cannot supply native human approval")
     if authority.get("independent_native_code_owner_review_required") is not True:
         raise ReviewGateInputError("independent native Code Owner review must remain required")
+    delegate = None
+    configured = authority.get("code_owner_review_delegation")
+    if configured is not None:
+        if not isinstance(configured, Mapping):
+            raise ReviewGateInputError("Code Owner review delegation must be an object")
+        source = "state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json"
+        if configured.get("source") != source or policy.get("owner_delegation") != source:
+            raise ReviewGateInputError("Code Owner review delegation has an unbound source")
+        try:
+            original = (root / source).read_bytes()
+            record = json.loads(original)
+        except (OSError, UnicodeError, ValueError) as exc:
+            raise ReviewGateInputError("Code Owner review delegation source is unavailable or invalid") from exc
+        if hashlib.sha256(original).hexdigest() != configured.get("source_sha256"):
+            raise ReviewGateInputError("Code Owner review delegation source bytes do not match")
+        if not isinstance(record, Mapping) or record.get("state") != "ACTIVE" or not isinstance(record.get("repositories"), list) or repository not in record["repositories"]:
+            raise ReviewGateInputError("Code Owner review delegation is not active for this repository")
+        record_owner = record.get("owner")
+        if not isinstance(record_owner, Mapping) or record_owner.get("name") != human.get("name") or record_owner.get("type") != "NATURAL_PERSON":
+            raise ReviewGateInputError("Code Owner review delegation does not retain the human principal")
+        recorded = record.get("code_owner_review_delegation")
+        if not isinstance(recorded, Mapping):
+            raise ReviewGateInputError("Code Owner review delegation is not recorded by the Owner")
+        obligations = {
+            "principal_login": owner,
+            "scope": "REPOSITORY_CODE_REVIEW_ONLY",
+            "state": "ACTIVE",
+            "native_approval_required": True,
+            "owner_final_authority_retained": True,
+            "self_approval_allowed": False,
+            "automated_approval_can_substitute": False,
+        }
+        for field, expected in obligations.items():
+            configured_matches = configured.get(field) is expected if isinstance(expected, bool) else configured.get(field) == expected
+            recorded_matches = recorded.get(field) is expected if isinstance(expected, bool) else recorded.get(field) == expected
+            if not configured_matches or not recorded_matches:
+                raise ReviewGateInputError(f"Code Owner review delegation violates {field}")
+        delegate = _login(configured.get("delegate_login"), "delegated Code Owner reviewer")
+        if recorded.get("delegate_login") != delegate or delegate.casefold() == owner.casefold() or delegate.casefold().endswith("[bot]"):
+            raise ReviewGateInputError("delegated Code Owner reviewer must be a distinct non-bot identity")
     if codeowners is None:
         codeowners = (root / ".github/CODEOWNERS").read_text(encoding="utf-8")
     entries = [line.split("#", 1)[0].split() for line in codeowners.splitlines() if line.split("#", 1)[0].strip()]
-    if not entries or entries[0] != ["*", "@" + owner] or any(entry[1:] != ["@" + owner] for entry in entries):
+    accounts = ["@" + owner] + (["@" + delegate] if delegate else [])
+    if not entries or entries[0] != ["*", *accounts] or any(entry[1:] != accounts for entry in entries):
         raise ReviewGateInputError("CODEOWNERS disagrees with current Mesh Authority human")
+    if pr_author is not None and _login(pr_author, "pull request author").casefold() == owner.casefold() and delegate:
+        return delegate
     return owner
 
 
