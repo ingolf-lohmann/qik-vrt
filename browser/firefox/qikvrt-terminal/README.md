@@ -81,9 +81,19 @@ state before and after a process restart. A copied archive or temporary install
 cannot satisfy activation. Missing, incompatible or disabled add-ons hold admission.
 
 Default signing policy and the existing isolated ESR reference exception are
-separate observations. Neither changes production policy. Current official ESR
-153.x is below this minimum; the actual existing image still requires native
-readback. The supported forward route is Mozilla's official Release package
+separate observations. Neither changes production policy. Native run 38586572118
+(source 04c705b96d7dfc77e3d6e1b5af892094f7a8b404) directly confirms
+installed package 153.4.0esr-1~deb12u1 and live browser version 153.4.0.
+The exact candidate XPI (SHA-256
+1f5f583181d6134584f98bf6b59848d4542176d624d97709fa915b9934e2c46c)
+is inactive both before and after restart. Default signing policy removes it;
+the explicit ESR reference retains the exact bytes but AddonManager reports
+isCompatible=false, appDisabled=true, isActive=false and userDisabled=true.
+WebExtensionPolicy is inactive and no extension background is registered.
+The existing image also lacks the XPI at the checked bootstrap-profile path.
+The native gate correctly holds at HOLD_FIREFOX_BELOW_OWNER_MINIMUM.
+The existing work unit retains the byte-verified original artifact and all four
+observations; unchanged image/XPI/probe failure inputs do not trigger a repeat. The supported forward route is Mozilla's official Release package
 158 or newer on the retained Debian base, with a Mozilla-signed self-distributed
 XPI and the same persistent activation/restart gate. This route is proposed,
 not an installed upgrade or a signing receipt. The ESR exception cannot substitute
@@ -94,6 +104,7 @@ https://packages.debian.org/bookworm/firefox-esr
 https://product-details.mozilla.org/1.0/firefox_versions.json
 https://support.mozilla.org/en-US/kb/install-firefox-linux
 https://www.firefox.com/en-US/firefox/158.0/releasenotes/
+https://www.firefox.com/en-US/firefox/158.0/system-requirements/
 https://extensionworkshop.com/documentation/publish/signing-and-distribution-overview/
 
 Installation acceptance, protected Main integration and productive delivery

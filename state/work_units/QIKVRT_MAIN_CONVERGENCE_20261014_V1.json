@@ -37,6 +37,7 @@
     "human": "Ingolf Lohmann: convergence goal, scope and authorization"
   },
   "firefox158_s1_installation_check": {
+    "activation_matrix_complete": true,
     "actual_package_version": "153.4.0esr-1~deb12u1",
     "artificial_cognitive_actor": {
       "identity_limit": "platform session attribution",
@@ -85,12 +86,189 @@
     "local_control_scope": "source projection; no actual local Docker or Firefox executable",
     "local_negative_control_tests": 7,
     "minimum": "158.0",
-    "native_state": "VERSION_CONFLICT_VERIFIED_ACTIVATION_MATRIX_PENDING_DIAGNOSTIC_SUCCESSOR",
+    "native_observation": {
+      "acceptance_gate": "native CI intentionally fails on real incompatible activation, not on probe execution",
+      "artifact_id": 11905542898,
+      "causal_input_sha256": "1e9b8b081b131643b7143562d4dd970f3e8b1b1d09c553a3f6375540547e192f",
+      "causal_inputs": {
+        "extension_blobs": {
+          "background.js": "f177c4471af23a9cf8c9e875c6931887cf92272c",
+          "content.js": "61658f2fd7ceb62b25a13ef8486ba3a7b8a5c563",
+          "manifest.json": "d311100e0cc14da7574f18a625d4e1feeedcbad7",
+          "options.html": "0b3e36fb7b0fbb3bb187e1def2b940669e98cc81",
+          "options.js": "60ef9dc9c8b85b8abe70a23d2f38faccdc7aa8a9",
+          "terminal.css": "817d1e58a80422367cb63d49dbb826428d452ee6"
+        },
+        "image_digest": "sha256:eda9516930cf7a51f0342e9b154b430c386ad04b80ce6401ce6b7d1a103ac74d",
+        "probe_blob": "81ca30bc97e1840f1b317d7fab77c47d57d30ca5"
+      },
+      "effect_ack_done": false,
+      "job_id": 115930034762,
+      "original_artifact_byte_verified": true,
+      "original_artifact_bytes": 16171,
+      "original_artifact_sha256": "a6d9f3d5b4f1a74a178b64528be3493fce284310d5063ca883a003e305306f4d",
+      "profile_matrix": "default and explicit ESR reference, each initial_start plus process_restart; all four rejected/unaccepted",
+      "public_production_verified": false,
+      "receipt": {
+        "binary_sha256": "617a7a905680b94f8d00e9bf92b8f03705389094e43edb9c7363756ca4b25327",
+        "debian_package_version": "153.4.0esr-1~deb12u1",
+        "default_signing_policy_activation_verified": false,
+        "effect_ack_done": false,
+        "existing_s1_bootstrap_xpi_present": false,
+        "explicit_esr_reference_activation_verified": false,
+        "extension_activation_verified": false,
+        "extension_id": "qikvrt-ai-terminal@goldkelch.local",
+        "extension_version": "1.0.0",
+        "firefox_version_output": "[8] Sandbox: CanCreateUserNamespace() clone() failure: EPERM\nMozilla Firefox 153.4.0esr",
+        "ordinary_release": false,
+        "predecessor_acceptance_transferred": false,
+        "profiles": {
+          "default_signing_policy": [
+            {
+              "accepted": false,
+              "addon": null,
+              "background_registered": false,
+              "browser_version": "153.4.0",
+              "minimum_satisfied": false,
+              "phase": "initial_start",
+              "policy_active": false,
+              "profile_xpi_present": false,
+              "profile_xpi_sha256": null,
+              "session_browser_version": "153.4.0",
+              "signatures_required": true,
+              "temporary_installation_used": false
+            },
+            {
+              "accepted": false,
+              "addon": null,
+              "background_registered": false,
+              "browser_version": "153.4.0",
+              "minimum_satisfied": false,
+              "phase": "process_restart",
+              "policy_active": false,
+              "profile_xpi_present": false,
+              "profile_xpi_sha256": null,
+              "session_browser_version": "153.4.0",
+              "signatures_required": true,
+              "temporary_installation_used": false
+            }
+          ],
+          "explicit_esr_reference": [
+            {
+              "accepted": false,
+              "addon": {
+                "appDisabled": true,
+                "id": "qikvrt-ai-terminal@goldkelch.local",
+                "isActive": false,
+                "isCompatible": false,
+                "signedState": 0,
+                "temporarilyInstalled": false,
+                "userDisabled": true,
+                "version": "1.0.0"
+              },
+              "background_registered": false,
+              "browser_version": "153.4.0",
+              "minimum_satisfied": false,
+              "phase": "initial_start",
+              "policy_active": false,
+              "profile_xpi_present": true,
+              "profile_xpi_sha256": "1f5f583181d6134584f98bf6b59848d4542176d624d97709fa915b9934e2c46c",
+              "session_browser_version": "153.4.0",
+              "signatures_required": false,
+              "temporary_installation_used": false
+            },
+            {
+              "accepted": false,
+              "addon": {
+                "appDisabled": true,
+                "id": "qikvrt-ai-terminal@goldkelch.local",
+                "isActive": false,
+                "isCompatible": false,
+                "signedState": 0,
+                "temporarilyInstalled": false,
+                "userDisabled": true,
+                "version": "1.0.0"
+              },
+              "background_registered": false,
+              "browser_version": "153.4.0",
+              "minimum_satisfied": false,
+              "phase": "process_restart",
+              "policy_active": false,
+              "profile_xpi_present": true,
+              "profile_xpi_sha256": "1f5f583181d6134584f98bf6b59848d4542176d624d97709fa915b9934e2c46c",
+              "session_browser_version": "153.4.0",
+              "signatures_required": false,
+              "temporary_installation_used": false
+            }
+          ]
+        },
+        "public_production_verified": false,
+        "reference_activation_verified": false,
+        "schema": "qikvrt-firefox-extension-installation/v1",
+        "scope": "EXACT_EXISTING_S1_IMAGE_AND_CANDIDATE_XPI_DISPOSABLE_PROFILES",
+        "state": "HOLD_FIREFOX_BELOW_OWNER_MINIMUM",
+        "strict_min_version": "158.0",
+        "xpi_bytes": 9954,
+        "xpi_sha256": "1f5f583181d6134584f98bf6b59848d4542176d624d97709fa915b9934e2c46c"
+      },
+      "receipt_sha256": "0621fe582af49cb6f1b09a5aa5bcfdb104d1d894414595a4708a04359acf89f2",
+      "run_id": 38586572118,
+      "source_head": "04c705b96d7dfc77e3d6e1b5af892094f7a8b404",
+      "source_tree": "0f419f2b5217adab379799352712a0b5ed24a355",
+      "xpi_source_binding": {
+        "candidate_head": "04c705b96d7dfc77e3d6e1b5af892094f7a8b404",
+        "candidate_tree": "0f419f2b5217adab379799352712a0b5ed24a355",
+        "effect_ack_done": false,
+        "signed_production_package": false,
+        "source_files": [
+          {
+            "git_blob": "d311100e0cc14da7574f18a625d4e1feeedcbad7",
+            "path": "browser/firefox/qikvrt-terminal/manifest.json",
+            "sha256": "abe2708d7e4875be8a2757c9adf40c8968fdabada836d90b9a1fec4dc5799308"
+          },
+          {
+            "git_blob": "f177c4471af23a9cf8c9e875c6931887cf92272c",
+            "path": "browser/firefox/qikvrt-terminal/background.js",
+            "sha256": "c7747216fd0cf618ef3592d310ff5d1b2adad6d6c5f8339a9f1c2fe14044856b"
+          },
+          {
+            "git_blob": "61658f2fd7ceb62b25a13ef8486ba3a7b8a5c563",
+            "path": "browser/firefox/qikvrt-terminal/content.js",
+            "sha256": "e7a9bb13052036c6445d4f0f3391b03cf54ff73cee6646ba9237eff2e8fb1e07"
+          },
+          {
+            "git_blob": "0b3e36fb7b0fbb3bb187e1def2b940669e98cc81",
+            "path": "browser/firefox/qikvrt-terminal/options.html",
+            "sha256": "c74e5eefda9bcf0f39518e05aa613981d3367b84de9f13304a798ef1abcfaf2d"
+          },
+          {
+            "git_blob": "60ef9dc9c8b85b8abe70a23d2f38faccdc7aa8a9",
+            "path": "browser/firefox/qikvrt-terminal/options.js",
+            "sha256": "fc1008b5208bd1605c4a5db8d5359322bbc4783277176177757e174f93cfa92d"
+          },
+          {
+            "git_blob": "817d1e58a80422367cb63d49dbb826428d452ee6",
+            "path": "browser/firefox/qikvrt-terminal/terminal.css",
+            "sha256": "53eae4781aeb15135da760c52c5c2a8320f5c3a03e3d85866d500b293de05c87"
+          }
+        ],
+        "xpi_sha256": "1f5f583181d6134584f98bf6b59848d4542176d624d97709fa915b9934e2c46c"
+      }
+    },
+    "native_state": "HOLD_FIREFOX_BELOW_OWNER_MINIMUM",
     "probe": "tools/qikvrt_self_host.py firefox-extension-check",
     "public_production_verified": false,
     "retry_gate": "Existing CI preserves a same-image/same-XPI/same-probe failed receipt and skips another browser/container attempt; reference/signing refusal remains a failed admission gate.",
     "reused_path": ".github/workflows/qikvrt_ci.yml#s1_firefox_extension",
     "schema": "qikvrt_firefox158_s1_installation_check_v1",
+    "smallest_forward_continuation": "Retain Debian base and S1 services; provision official Mozilla Firefox Release >=158 with exact executable/package binding, obtain the signed self-distributed XPI through its authorized signing route, bind a new image/XPI subject and rerun the same persistent installation/restart gate. No minimum lowering, temporary-install substitute or Release signing bypass.",
+    "source_integrity_and_boundary_successor": {
+      "head": "6db5da46f1b0c3a8add34e2bc08a6ed21eed7f9d",
+      "job_id": 115930762889,
+      "run_id": 38586777420,
+      "scope": "complete repository tests on that exact successor; not extension acceptance or product delivery",
+      "state": "FULL_TEST_SUCCESS_NATIVE_READBACK"
+    },
     "supported_forward_path": {
       "browser": "Official Mozilla Release Firefox 158 or newer on retained Bookworm base; signed APT metadata, explicit minimum and exact executable/package binding required",
       "execution_status": "PROPOSED_NOT_EXECUTED",
@@ -101,7 +279,8 @@
         "https://product-details.mozilla.org/1.0/firefox_versions.json",
         "https://support.mozilla.org/en-US/kb/install-firefox-linux",
         "https://www.firefox.com/en-US/firefox/158.0/releasenotes/",
-        "https://extensionworkshop.com/documentation/publish/signing-and-distribution-overview/"
+        "https://extensionworkshop.com/documentation/publish/signing-and-distribution-overview/",
+        "https://www.firefox.com/en-US/firefox/158.0/system-requirements/"
       ]
     },
     "transport_repair": {
@@ -1384,103 +1563,103 @@
       ]
     },
     "firefox_authority_binding_20261014": {
-      "classification": "AUTHORIZED_CAUSAL_ADAPTER_REPAIR_NOT_MAIN_OR_PRODUCT_ACCEPTANCE",
-      "request_authority": "Ingolf Lohmann direct instruction, 2026-10-14",
-      "contribution_origin": {
-        "human": "Ingolf Lohmann: task, Authority/Mirror contract and constraints",
-        "artificial_cognitive": "OpenAI Codex / GPT-6: implementation, bounded JavaScript regression fixtures and verification; platform-session attribution only"
-      },
-      "diagnosed_head": "7f90df61995a81e1364fce25994803c15eb8a969",
       "applied_parent_head": "168fdb6c05ac83624c8cd1992038f2410b567b5f",
       "applied_parent_tree": "8c5772a5b265ffb55950f2a963def0f8f6ff06ff",
-      "policy": {
-        "path": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
-        "git_blob_sha1": "c0107276f4118d5e8e4574407e3965e0a1d2732b",
-        "authority": "ingolf-lohmann/qik-vrt",
-        "mirror": "Goldkelch/qik-vrt"
-      },
-      "source_bindings": [
-        {
-          "path": "browser/firefox/qikvrt-terminal/background.js",
-          "predecessor_blob_sha1": "73bdefe28c6ee262cb22c0c69a748f7da4499202",
-          "bytes": 10581,
-          "sha256": "c7747216fd0cf618ef3592d310ff5d1b2adad6d6c5f8339a9f1c2fe14044856b"
-        },
-        {
-          "path": "browser/firefox/qikvrt-terminal/manifest.json",
-          "predecessor_blob_sha1": "20e3525f955ce4acf769d3c80ec570781c90ee36",
-          "bytes": 1216,
-          "sha256": "abe2708d7e4875be8a2757c9adf40c8968fdabada836d90b9a1fec4dc5799308"
-        },
-        {
-          "path": "browser/firefox/qikvrt-terminal/README.md",
-          "predecessor_blob_sha1": "3850a496bd08cf06f904ca403aaa06f394aab6a8",
-          "bytes": 5646,
-          "sha256": "64f7df9b43667ce2beec39912e0f3756f9f0454fd2df3a523a2ea603c62d166c"
-        },
-        {
-          "path": "tests/test_qikvrt_effect_ack_http_terminal.py",
-          "predecessor_blob_sha1": "c315dd7a54a46da9958273b87500759a5ff7140e",
-          "bytes": 40600,
-          "sha256": "79326d98bfd9cb20e91b766b33c2a16d87fb42e76a941a131e19ffc0ac2e0853"
-        }
-      ],
-      "local_tests": {
-        "command": "python3 -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal.EffectAckHttpTerminalContractTests tests.test_qikvrt_effect_ack_http_terminal.FirefoxAuthorityRegressionTests",
-        "result": "11 PASSED",
-        "javascript_runtime": "Node.js 24.19.0; actual background.js executed in a VM with browser/HTTP fixtures",
-        "new_regressions": 7,
-        "defective_predecessor": "4 expected FAIL, 3 safety tests PASS",
-        "javascript_syntax": "background.js, content.js, options.js PASSED",
-        "cache_contract": "29/29 declared tools, 100 percent",
-        "combined_followup": "18 adapter, contract and Personal boundary tests PASSED"
-      },
-      "local_e2e_limit": "Baseline and successor both have 23 socket-dependent errors: PermissionError [Errno 1] Operation not permitted. Native CI must execute all 38 HTTP-terminal tests; fixture success is not live Firefox acceptance.",
-      "host_permission_delta": "Only https://ingolf-lohmann.github.io added as a new origin. One Owner-named github.com host entry replaces the Mirror-named entry; no duplicate origin permission. Existing API and loopback scopes retained.",
-      "mirror_function": "Both existing Mirror injection entrypoints preserved; OBSERVE_AUTHORITY always selects current Owner Authority. No Mirror API fallback.",
-      "effect_boundaries": "Read-only GitHub GET, no credentials; HOLD on failed or malformed Authority binding; loopback backend allowlist; explicit confirmed commit; compact/full DONE/hash/token binding; prepare and transport success do not authorize release.",
-      "retained_concurrent_change": "Preserve both cce941da S1 Firefox-158 admission gate and 168fdb6c original-OCI loader repair, including inherited workflows, runtime, tests and README. Their native runtime acceptance remains separate.",
-      "integrity_method": "Unchanged exact-native manifest records and Git blob/mode identities retained; checkout CRLF transformations preserved; changed file bytes rehashed; source inventory and canonical content-tree digest verified using the existing generator. Bounded projection, not a full local checkout.",
-      "required_followup": "Native exact-successor CI and independent commit/tree/changed-blob readback; then existing protected review/Main-integration path.",
+      "classification": "AUTHORIZED_CAUSAL_ADAPTER_REPAIR_NOT_MAIN_OR_PRODUCT_ACCEPTANCE",
       "completion_claims": {
-        "remote_readback_pending_at_commit_creation": true,
-        "main_integrated": false,
+        "EFFECT_ACK_DONE": false,
         "independent_review_approved": false,
+        "main_integrated": false,
         "mirror_synchronized": false,
         "raumzeitterminal_de_accepted": false,
-        "EFFECT_ACK_DONE": false
+        "remote_readback_pending_at_commit_creation": true
+      },
+      "contribution_origin": {
+        "artificial_cognitive": "OpenAI Codex / GPT-6: implementation, bounded JavaScript regression fixtures and verification; platform-session attribution only",
+        "human": "Ingolf Lohmann: task, Authority/Mirror contract and constraints"
       },
       "dependent_standard_personal_boundary_repair": {
-        "native_failed_head": "d0d9e305667f4cb595074ae365398acdfda594b0",
-        "workflow_run": 38585802338,
-        "job": 115927369510,
-        "observed_error": "Standard-package guard requires Mirror host and forbids every Owner repository literal, misclassifying canonical authority as personal payload",
-        "repair": "Bind Standard Authority/Mirror to the existing role policy; distinguish edition payload path and capability/credential markers from public Owner repository identity. Preserve all existing DENY invariants and seven-file Standard packaging boundary.",
-        "local_followup": "18 adapter/contract/boundary tests passed; two new negative/positive personal-payload controls",
-        "predecessor_evidence_transfer": false,
         "applied_parent_head": "04c705b96d7dfc77e3d6e1b5af892094f7a8b404",
         "applied_parent_tree": "0f419f2b5217adab379799352712a0b5ed24a355",
+        "job": 115927369510,
+        "local_followup": "18 adapter/contract/boundary tests passed; two new negative/positive personal-payload controls",
+        "native_failed_head": "d0d9e305667f4cb595074ae365398acdfda594b0",
+        "observed_error": "Standard-package guard requires Mirror host and forbids every Owner repository literal, misclassifying canonical authority as personal payload",
+        "predecessor_evidence_transfer": false,
+        "repair": "Bind Standard Authority/Mirror to the existing role policy; distinguish edition payload path and capability/credential markers from public Owner repository identity. Preserve all existing DENY invariants and seven-file Standard packaging boundary.",
         "source_bindings": [
           {
+            "bytes": 2208,
             "path": "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json",
             "predecessor_blob_sha1": "bb6154f246f044d28916ca9e9618e114f0ba6706",
-            "bytes": 2208,
             "sha256": "865f3c0d40525db83a0d408cbd1e02948e0136dd3208c8de5131a1060829deaa"
           },
           {
+            "bytes": 4437,
             "path": "spec/firefox/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.md",
             "predecessor_blob_sha1": "197c6044687f71df330edb99d8030c1854bdea96",
-            "bytes": 4437,
             "sha256": "f2ee1db4b3b715ef7fe4ca156311583de923394f1801883c07721e26ce9dca1c"
           },
           {
+            "bytes": 6468,
             "path": "tests/test_qikvrt_personal_firefox_capability_boundary.py",
             "predecessor_blob_sha1": "946ea3a663e450881ade1ad1e2438883c570ae68",
-            "bytes": 6468,
             "sha256": "fd740f8ce598b6c6014e807c5dddd7d4363c9b32fe53c695480f573863c2c40d"
           }
-        ]
-      }
+        ],
+        "workflow_run": 38585802338
+      },
+      "diagnosed_head": "7f90df61995a81e1364fce25994803c15eb8a969",
+      "effect_boundaries": "Read-only GitHub GET, no credentials; HOLD on failed or malformed Authority binding; loopback backend allowlist; explicit confirmed commit; compact/full DONE/hash/token binding; prepare and transport success do not authorize release.",
+      "host_permission_delta": "Only https://ingolf-lohmann.github.io added as a new origin. One Owner-named github.com host entry replaces the Mirror-named entry; no duplicate origin permission. Existing API and loopback scopes retained.",
+      "integrity_method": "Unchanged exact-native manifest records and Git blob/mode identities retained; checkout CRLF transformations preserved; changed file bytes rehashed; source inventory and canonical content-tree digest verified using the existing generator. Bounded projection, not a full local checkout.",
+      "local_e2e_limit": "Baseline and successor both have 23 socket-dependent errors: PermissionError [Errno 1] Operation not permitted. Native CI must execute all 38 HTTP-terminal tests; fixture success is not live Firefox acceptance.",
+      "local_tests": {
+        "cache_contract": "29/29 declared tools, 100 percent",
+        "combined_followup": "18 adapter, contract and Personal boundary tests PASSED",
+        "command": "python3 -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal.EffectAckHttpTerminalContractTests tests.test_qikvrt_effect_ack_http_terminal.FirefoxAuthorityRegressionTests",
+        "defective_predecessor": "4 expected FAIL, 3 safety tests PASS",
+        "javascript_runtime": "Node.js 24.19.0; actual background.js executed in a VM with browser/HTTP fixtures",
+        "javascript_syntax": "background.js, content.js, options.js PASSED",
+        "new_regressions": 7,
+        "result": "11 PASSED"
+      },
+      "mirror_function": "Both existing Mirror injection entrypoints preserved; OBSERVE_AUTHORITY always selects current Owner Authority. No Mirror API fallback.",
+      "policy": {
+        "authority": "ingolf-lohmann/qik-vrt",
+        "git_blob_sha1": "c0107276f4118d5e8e4574407e3965e0a1d2732b",
+        "mirror": "Goldkelch/qik-vrt",
+        "path": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json"
+      },
+      "request_authority": "Ingolf Lohmann direct instruction, 2026-10-14",
+      "required_followup": "Native exact-successor CI and independent commit/tree/changed-blob readback; then existing protected review/Main-integration path.",
+      "retained_concurrent_change": "Preserve both cce941da S1 Firefox-158 admission gate and 168fdb6c original-OCI loader repair, including inherited workflows, runtime, tests and README. Their native runtime acceptance remains separate.",
+      "source_bindings": [
+        {
+          "bytes": 10581,
+          "path": "browser/firefox/qikvrt-terminal/background.js",
+          "predecessor_blob_sha1": "73bdefe28c6ee262cb22c0c69a748f7da4499202",
+          "sha256": "c7747216fd0cf618ef3592d310ff5d1b2adad6d6c5f8339a9f1c2fe14044856b"
+        },
+        {
+          "bytes": 1216,
+          "path": "browser/firefox/qikvrt-terminal/manifest.json",
+          "predecessor_blob_sha1": "20e3525f955ce4acf769d3c80ec570781c90ee36",
+          "sha256": "abe2708d7e4875be8a2757c9adf40c8968fdabada836d90b9a1fec4dc5799308"
+        },
+        {
+          "bytes": 5646,
+          "path": "browser/firefox/qikvrt-terminal/README.md",
+          "predecessor_blob_sha1": "3850a496bd08cf06f904ca403aaa06f394aab6a8",
+          "sha256": "64f7df9b43667ce2beec39912e0f3756f9f0454fd2df3a523a2ea603c62d166c"
+        },
+        {
+          "bytes": 40600,
+          "path": "tests/test_qikvrt_effect_ack_http_terminal.py",
+          "predecessor_blob_sha1": "c315dd7a54a46da9958273b87500759a5ff7140e",
+          "sha256": "79326d98bfd9cb20e91b766b33c2a16d87fb42e76a941a131e19ffc0ac2e0853"
+        }
+      ]
     },
     "firefox_minimum_successor": {
       "historical_native_evidence": {
