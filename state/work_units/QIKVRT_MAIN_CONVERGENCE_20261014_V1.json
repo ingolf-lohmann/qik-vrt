@@ -2207,6 +2207,7 @@
       "original_runtime_fingerprint": "9c847821438d9dc6b2292d1c4ef87c5649a0baac8921ed12d49b445f8c823d78",
       "s1_recipe_verified_against_retained_parent_object": true
     },
+    "ci_suite_preservation": "PR457 full-test and both fixpoint invocations retain make test repository-monitor-test self-host-test; S1 exact recipe read uses retained full history",
     "cold_start": {
       "after": "LOCAL_COLD_START_AND_RESTART_PASS",
       "before": "ORIGINAL_PR457_TEST_REJECTS_PR523_NO_DURABLE_SNAPSHOT_AT_HEALTH_READ",
@@ -2241,6 +2242,16 @@
       "source_tree": "05e1a0b0605bcf2c2c177ceda98f112552fe02a3"
     },
     "pr457_closure_condition": "ONLY_AFTER_NATIVE_PARENT_ANCESTRY_AND_ALL_RESOLVED_BLOB_READBACK",
+    "predecessor_native_ci": {
+      "head": "038a6b5e2f49dc7ba24737429068e446d9a0e383",
+      "new_container_jobs": "SKIPPED by unchanged signature failure",
+      "pass_transfer": false,
+      "push_run": 38623731771,
+      "s1_gate": "NOOP_UNCHANGED_FIREFOX_RELEASE_OR_SIGNING_FAILURE; no active signed XPI established",
+      "test": "PASS full-test MAKE_TEST_EXIT=0, 4266 classified / 4255 immutable",
+      "test_job": 116057485383,
+      "tree": "a42ee38e6daad28f696d95c03d736f1ee69ff6f2"
+    },
     "production_domain_verified": false,
     "publication_verified": false,
     "resolutions": [
@@ -2263,7 +2274,7 @@
       {
         "path": ".github/workflows/qikvrt_ci.yml",
         "resolution": "SOURCE_FUNCTIONS_COMBINED_WITH_LATER_TARGET",
-        "resolved_blob": "8138c4e45887066f7f1deda359ae9f033cdff1f3",
+        "resolved_blob": "c85466d8c97a5dd21bff5782034be0a4ba98d95b",
         "source_blob": "b393fc2e76aa28d553e4a8cd3bc19e3af784b870",
         "source_mode": "100644",
         "target_blob": "e1f18d0ddc1225567340fe6f77d50c32cdb19a1e"

@@ -48,7 +48,7 @@ jobs:
           set +e
           diagnostics=.qikvrt/runtime/ci-diagnostics
           mkdir -p "$diagnostics"
-          make test > "$diagnostics/MAKE_TEST_FULL.log" 2>&1
+          make test repository-monitor-test self-host-test > "$diagnostics/MAKE_TEST_FULL.log" 2>&1
           status=$?
           {
             printf 'MAKE_TEST_EXIT=%s\n' "$status"
@@ -119,7 +119,7 @@ jobs:
             # Test the exact active subject. Integrity staleness is the only
             # expected pre-materialization failure and is repaired below.
             set +e
-            make test > ".qikvrt-fixpoint-test-$iteration.log" 2>&1
+            make test repository-monitor-test self-host-test > ".qikvrt-fixpoint-test-$iteration.log" 2>&1
             test_status=$?
             set -e
 
@@ -129,7 +129,7 @@ jobs:
             # Re-run the complete gates against the regenerated state. Any
             # remaining failure is a real successor failure, not predecessor
             # evidence and must stop the writer fail-closed.
-            make test
+            make test repository-monitor-test self-host-test
             python3 tools/qikvrt_integrity.py verify
 
             git config user.name "github-actions[bot]"
@@ -452,7 +452,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
-          fetch-depth: 2
+          fetch-depth: 0
           persist-credentials: false
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
