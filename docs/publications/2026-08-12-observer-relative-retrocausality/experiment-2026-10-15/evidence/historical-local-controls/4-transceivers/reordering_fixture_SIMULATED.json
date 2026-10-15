@@ -1,0 +1,37 @@
+{
+  "origin": "SIMULATED_POSITIVE_DELAYS",
+  "messages": [
+    {
+      "source_mark": 0,
+      "send_label": 0,
+      "receive_label": 12,
+      "positive_delay": 12
+    },
+    {
+      "source_mark": 1,
+      "send_label": 1,
+      "receive_label": 11,
+      "positive_delay": 10
+    },
+    {
+      "source_mark": 2,
+      "send_label": 2,
+      "receive_label": 10,
+      "positive_delay": 8
+    },
+    {
+      "source_mark": 3,
+      "send_label": 3,
+      "receive_label": 9,
+      "positive_delay": 6
+    }
+  ],
+  "arrival_source_order": [
+    3,
+    2,
+    1,
+    0
+  ],
+  "receive_before_own_send": false,
+  "physical_measurement": false
+}

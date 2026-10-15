@@ -1,0 +1,83 @@
+{
+  "status": "PASS_BOUNDED_FORWARD_SOFTWARE_CONTROL",
+  "transceivers": 8,
+  "observer": "C",
+  "n": 2048,
+  "early_matches": 956,
+  "ordinary_reply_matches": 2048,
+  "one_sided_binomial_p_under_iid_fair_null": 0.998770364436085,
+  "A_receive_after_A_send": true,
+  "A_round_trip_ns": 25028563,
+  "edges": [
+    {
+      "sender": "A",
+      "receiver": "B",
+      "send_ns": 61247967327938,
+      "receive_ns": 61247967475405,
+      "message_sha256": "a5719b88c3497e86bbe9ad657527c5e7158a94a443a5af169c998492a4c88c43"
+    },
+    {
+      "sender": "B",
+      "receiver": "D",
+      "send_ns": 61247967583524,
+      "receive_ns": 61247990025023,
+      "message_sha256": "a9d22821a951adbd7fd04ce5911daa7278ddae861efcd5c5f7be0ee09284b42e"
+    },
+    {
+      "sender": "D",
+      "receiver": "E",
+      "send_ns": 61247990131641,
+      "receive_ns": 61247990380012,
+      "message_sha256": "7ced9b057ef3214c6957d24d2d425df084ce04f39282f07ed307453c41e167b2"
+    },
+    {
+      "sender": "E",
+      "receiver": "F",
+      "send_ns": 61247990492778,
+      "receive_ns": 61247990716704,
+      "message_sha256": "9994abe7c34853edd47f84db550bc2404d41158417894349c18570a79108b7c6"
+    },
+    {
+      "sender": "F",
+      "receiver": "G",
+      "send_ns": 61247990836350,
+      "receive_ns": 61247991072388,
+      "message_sha256": "fa50e709908d30363e4d118f30d5736534d1a90685fc66bc2d40cbfd94725cad"
+    },
+    {
+      "sender": "G",
+      "receiver": "H",
+      "send_ns": 61247991187698,
+      "receive_ns": 61247991523433,
+      "message_sha256": "a506e62a0ad5aac5cf452d3673ffe99b2519c14d6af8954215be4f98a2566358"
+    },
+    {
+      "sender": "H",
+      "receiver": "I",
+      "send_ns": 61247991639604,
+      "receive_ns": 61247991893438,
+      "message_sha256": "2fa176cf7412785ffd9ac1a76ee2dbab5b877ec6b03a8ad44b2448bfe78b8d4a"
+    },
+    {
+      "sender": "I",
+      "receiver": "A",
+      "send_ns": 61247992089457,
+      "receive_ns": 61247992356501,
+      "message_sha256": "a9d2a28d5545ad0d04d984afc245c6b3a7dbf90c47ff13185403a1b11475c5f8"
+    }
+  ],
+  "physical_backsignaling": "NOT_TESTED",
+  "clock": "ONE_HOST_MONOTONIC_NS",
+  "process_pids": {
+    "A": 17,
+    "B": 18,
+    "D": 19,
+    "E": 20,
+    "F": 21,
+    "G": 22,
+    "H": 23,
+    "I": 24,
+    "C": 16
+  },
+  "independence": "SHARED_HOST_AND_TRUSTED_SOFTWARE_LIMITATION"
+}

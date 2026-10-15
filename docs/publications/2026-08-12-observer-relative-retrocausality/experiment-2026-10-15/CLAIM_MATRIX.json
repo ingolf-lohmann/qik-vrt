@@ -1,0 +1,74 @@
+{
+  "schema": "qikvrt_retrocausality_experiment_claim_matrix_v1",
+  "claims": [
+    {
+      "id": "REX-001",
+      "classification": "EXECUTABLE_WITNESS",
+      "status": "VERIFIED_FOR_DECLARED_MODEL",
+      "statement": "Published witness regenerates identically; negative source-marker orientation coexists with strictly positive individual path delays.",
+      "evidence": [
+        "evidence/computational-checks.json"
+      ],
+      "boundary": "No calibrated metric clock, novel channel or receive-before-emission result."
+    },
+    {
+      "id": "REX-002",
+      "classification": "FORMAL_MODEL",
+      "status": "KERNEL_CHECKED_LOCAL_CANDIDATE",
+      "statement": "Source orientation, latency equivalence and interval separation hold under the exact integer hypotheses; existing forward-process and observer boundary modules are reused.",
+      "evidence": [
+        "AxiomAudit.lean",
+        "evidence/fresh-kernel/receipt.json"
+      ],
+      "boundary": "24 scoped theorem audits: 16 earlier local statements rechecked and 8 successor statements; no transfer to physical truth or independent native CI."
+    },
+    {
+      "id": "REX-003",
+      "classification": "LOCAL_HOST_MEASUREMENT",
+      "status": "EXECUTED",
+      "statement": "Fresh 2/4/8 transceiver controls produced 992/1044/956 early matches of 2048 each; ordinary replies matched all 2048 in each run.",
+      "evidence": [
+        "evidence/local-reanalysis.json",
+        "local-control/evidence/"
+      ],
+      "boundary": "Shared host, OS randomness and monotonic clock; in-memory C custody barrier; no independent physics experiment or new native Mesh instance."
+    },
+    {
+      "id": "REX-004",
+      "classification": "PROSPECTIVE_EXPERIMENT",
+      "status": "DRAFT_NOT_PREREGISTERED_NOT_EXECUTED",
+      "statement": "Fixed N=200000 two-sided bounded-randomness test with calibration, future entropy, custody and selection controls.",
+      "evidence": [
+        "PROTOKOLL_DE.md",
+        "analyze_experiment.py",
+        "evidence/computational-checks.json"
+      ],
+      "boundary": "The 1% match advantage is a proposed sensitivity target, not a QIK-VRT-predicted effect."
+    },
+    {
+      "id": "REX-005",
+      "classification": "SOFTWARE_TEST",
+      "status": "VERIFIED_LOCAL",
+      "statement": "The prospective checker rejects selected-slot, timing-overlap, early-entropy, count and class errors; coherent oracle data never receives physical confirmation.",
+      "evidence": [
+        "tests/test_retrocausality_experiment.py",
+        "evidence/evidence-contract-successor.log"
+      ],
+      "boundary": "JSON consistency cannot establish authentic external time, entropy or causal independence."
+    },
+    {
+      "id": "REX-006",
+      "classification": "PHYSICAL_HYPOTHESIS",
+      "status": "OPEN",
+      "statement": "A named physical backwards channel, discriminating QIK-VRT prediction, independently time-bound primary data and independent reproduction are not established here.",
+      "evidence": [
+        "PROTOKOLL_DE.md#f-reproduzierbarkeit-nutzen-und-freigabegrenze"
+      ],
+      "boundary": "No universal prohibition, empirical confirmation, practical backwards capacity or ontic interpretation selection is claimed."
+    }
+  ],
+  "publication_status": "DRAFT_NOT_ZENODO_PUBLISHED",
+  "historical_source_matrices_modified": false,
+  "physical_confirmation": false,
+  "independent_reproduction": false
+}

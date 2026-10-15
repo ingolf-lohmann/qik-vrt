@@ -1,0 +1,45 @@
+{
+  "status": "PASS_FOR_DECLARED_FORMAL_MODELS",
+  "theorem_checks": 16,
+  "negative_controls": 3,
+  "physical_backsignaling": "NOT_ESTABLISHED",
+  "runtime_shim": true,
+  "checks": [
+    {
+      "check": "version",
+      "exit_code": 0,
+      "expected": 0,
+      "log_sha256": "5362a246ce2545424db10a77de8fd4694f4cf8b0170dfd43fa727acf7f7f259b"
+    },
+    {
+      "check": "build",
+      "exit_code": 0,
+      "expected": 0,
+      "log_sha256": "83bbf47a0a2d2f01b1eb9d3fefe9738cf2650570ea169d45d7ebc95016bbbfab"
+    },
+    {
+      "check": "axioms",
+      "exit_code": 0,
+      "expected": 0,
+      "log_sha256": "427c2d28a801095d1973badaa82b358fe8b5b0425cb9d499c2ed1dd075e14cef"
+    },
+    {
+      "check": "FalseBacksignaling",
+      "exit_code": 1,
+      "expected": 1,
+      "log_sha256": "ecf4ed76f240019231c9c8c3fd2d0fae23370ba7841d4a76d78ece61e0853363"
+    },
+    {
+      "check": "FalseReceptionOrder",
+      "exit_code": 1,
+      "expected": 1,
+      "log_sha256": "6e6697c0844c6cd36d29b2f4ba2d1805b09bcefe44d7c1d1a08c6ed57b67e222"
+    },
+    {
+      "check": "FalseForwardReturn",
+      "exit_code": 1,
+      "expected": 1,
+      "log_sha256": "0241ca9a59c00c2f769f51c0d64f085ce09e8712fe894f0ea35726ffab1d300f"
+    }
+  ]
+}

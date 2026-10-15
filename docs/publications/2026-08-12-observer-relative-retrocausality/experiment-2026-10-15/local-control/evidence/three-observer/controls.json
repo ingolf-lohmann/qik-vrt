@@ -1,0 +1,33 @@
+[
+  {
+    "control": "replace_early_record_with_future_bits",
+    "rejected": true,
+    "reason": "FINAL_DIFFERS_FROM_C_EARLY_SNAPSHOT"
+  },
+  {
+    "control": "remove_one_sender_slot",
+    "rejected": true,
+    "reason": "COMPLETE_BINARY_SAMPLE_REQUIRED"
+  },
+  {
+    "control": "retain_only_matching_slots",
+    "rejected": true,
+    "reason": "POSTSELECTION_FORBIDDEN"
+  },
+  {
+    "control": "forge_A_reply_clock",
+    "rejected": true,
+    "reason": "FORWARD_CONTROL_CAUSAL_ORDER_FAILED"
+  },
+  {
+    "control": "substitute_other_batch",
+    "rejected": true,
+    "reason": "BATCH_ID_MISMATCH"
+  },
+  {
+    "control": "omniscient_future_oracle",
+    "early_matches": 2048,
+    "physical_proof_status_rejected": true,
+    "reason": "SYNTHETIC_SHARED_FUTURE_DATA_NOT_A_PHYSICAL_CHANNEL"
+  }
+]

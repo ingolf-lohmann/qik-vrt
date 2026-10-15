@@ -1,0 +1,10 @@
+/workspace/scratch/9d7237237e83/qik-vrt/docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/negative/FalseForwardReturn.lean:6:2: error: tactic 'decide' proved that the proposition
+  { querySentA := 1, queryReceivedB := 2, choiceB := 3, replySentB := 4, replyReceivedA := 0, chosenBitB := true,
+          receivedBitA := true }.querySentA <
+      { querySentA := 1, queryReceivedB := 2, choiceB := 3, replySentB := 4, replyReceivedA := 0, chosenBitB := true,
+          receivedBitA := true }.queryReceivedB ∧
+    { querySentA := 1, queryReceivedB := 2, choiceB := 3, replySentB := 4, replyReceivedA := 0, chosenBitB := true,
+          receivedBitA := true }.replySentB <
+      { querySentA := 1, queryReceivedB := 2, choiceB := 3, replySentB := 4, replyReceivedA := 0, chosenBitB := true,
+          receivedBitA := true }.replyReceivedA
+is false

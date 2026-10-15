@@ -1,0 +1,22 @@
+[
+  {
+    "control": "clock",
+    "rejected": true,
+    "reason": "FORWARD_EDGE_ORDER_FAILED"
+  },
+  {
+    "control": "omit_peer",
+    "rejected": true,
+    "reason": "COMPLETE_ACTOR_SET_REQUIRED"
+  },
+  {
+    "control": "change_payload",
+    "rejected": true,
+    "reason": "XOR_TRANSFORM_FAILED"
+  },
+  {
+    "control": "postselection",
+    "rejected": true,
+    "reason": "POSTSELECTION_FORBIDDEN"
+  }
+]

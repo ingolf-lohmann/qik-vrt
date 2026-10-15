@@ -1,0 +1,25 @@
+{
+  "official_release": "https://github.com/leanprover/lean4/releases/tag/v4.19.0",
+  "upstream_release_digest": "not provided by release metadata",
+  "local_download_digests": {
+    "lean-4.19.0-linux.tar.zst": {
+      "bytes": 343842845,
+      "sha256": "6fe3ce97a58f44e2b3567d455b994eacec5bfe9ae7774f2a573444480ba813fe"
+    },
+    "lean-4.19.0-linux/bin/lean": {
+      "bytes": 8880,
+      "sha256": "92c3d35b5bfaa5e0fea413a775d504cf46cd95e1345df61c2274f76779e7e023"
+    },
+    "lean-4.19.0-linux/bin/lake": {
+      "bytes": 11928,
+      "sha256": "5111aee5c9434ab05d4265606475ef22e8bda69aaf3a0657b61a7eec6e550bed"
+    },
+    "lean-4.19.0-linux/lib/lean/libleanshared.so": {
+      "bytes": 153918616,
+      "sha256": "2ab605c74c78f9ba4431a7b5305a4b28a9071d8a826f223eb14fe5530f78e14d"
+    }
+  },
+  "unmodified_distribution": true,
+  "readlink_shim_used": true,
+  "note": "Local hashes bind executed bytes; they are not an independently authenticated upstream digest."
+}

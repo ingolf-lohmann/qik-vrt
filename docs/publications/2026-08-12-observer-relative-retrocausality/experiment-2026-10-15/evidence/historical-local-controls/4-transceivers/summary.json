@@ -1,0 +1,53 @@
+{
+  "status": "PASS_BOUNDED_FORWARD_SOFTWARE_CONTROL",
+  "transceivers": 4,
+  "observer": "C",
+  "n": 2048,
+  "early_matches": 998,
+  "ordinary_reply_matches": 2048,
+  "one_sided_binomial_p_under_iid_fair_null": 0.8792334257674398,
+  "A_receive_after_A_send": true,
+  "A_round_trip_ns": 13474446,
+  "edges": [
+    {
+      "sender": "A",
+      "receiver": "B",
+      "send_ns": 56511464559098,
+      "receive_ns": 56511477074565,
+      "message_sha256": "6f8991180750e54ce3faa65970a7fa0219c6c9678fd03558a561d7530bad8264"
+    },
+    {
+      "sender": "B",
+      "receiver": "D",
+      "send_ns": 56511477177497,
+      "receive_ns": 56511477349650,
+      "message_sha256": "855a04b4383a6dfbcbfb1b817e1a46b50d8fd14603e7c0472faabfef035cd44f"
+    },
+    {
+      "sender": "D",
+      "receiver": "E",
+      "send_ns": 56511477487353,
+      "receive_ns": 56511477694339,
+      "message_sha256": "5d8efa64272d54bcaf75295239d203f8e14fb9cd58ceee10f153b1a1a09f08f9"
+    },
+    {
+      "sender": "E",
+      "receiver": "A",
+      "send_ns": 56511477798672,
+      "receive_ns": 56511478033544,
+      "message_sha256": "2a665d672704b756d72c592b2e0eb0c6d77a0f10b05b03c25a59c70a514f1e99"
+    }
+  ],
+  "physical_backsignaling": "NOT_TESTED",
+  "clock": "ONE_HOST_MONOTONIC_NS",
+  "process_pids": {
+    "A": 7,
+    "B": 8,
+    "D": 9,
+    "E": 10,
+    "C": 6
+  },
+  "independence": "SHARED_HOST_AND_TRUSTED_SOFTWARE_LIMITATION",
+  "controls_passed": 4,
+  "simulated_reordering_messages": 4
+}

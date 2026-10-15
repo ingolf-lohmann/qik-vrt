@@ -1,0 +1,20 @@
+{
+  "trace": {
+    "query_A": 1,
+    "receive_B": 2,
+    "choose_B": 3,
+    "send_B": 4,
+    "reply_A": 0,
+    "chosen_bit": 1,
+    "received_bit": 1
+  },
+  "C_inspection": {
+    "A_receives_before_its_query": true,
+    "B_local_order": true,
+    "query_forward": true,
+    "reply_forward": false,
+    "content_matches": true,
+    "origin": "EXPLICIT_ASSUMED_BACKCHANNEL_FIXTURE",
+    "physical_realization": "NOT_ESTABLISHED"
+  }
+}
