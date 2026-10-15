@@ -1,0 +1,18 @@
+{
+  "source_tree": "ba8db1016e792545bce6bde0da03eaf52b3d9f00",
+  "git_tree_entries": 2464,
+  "git_blob_bytes": 109916325,
+  "archive": {
+    "name": "qik-vrt-v2026.07.22-effect-ack-universality-1.0.0-source.tar.gz",
+    "size": 102094416,
+    "md5": "645eb72d099a303da91ce37ceb3e95bf",
+    "sha256": "e0683adb0d660d90c225e554ff07739af18d6e382a1c50e674fd5b7d41853f26"
+  },
+  "source_identity_verified": true,
+  "expected_sha256": "e0683adb0d660d90c225e554ff07739af18d6e382a1c50e674fd5b7d41853f26",
+  "byte_exact": true,
+  "reconstruction_git_tree_acquisition_commit": "5e67f63b2269152fb4efad07d4705dae40caeb26",
+  "published_provenance_source_commit": "c852ee04b1a5e10507f0b38d214c3ce13ad9947c",
+  "published_provenance_recovered_sha256": "47acf362a07c20b687213dcaa10b0ed617975419675535fb094ce0cd9768862d",
+  "note": "The current tag commit and historical publication source commit share the exact tree. The recovered original provenance retains its own historical commit, established by archived full-field bindings and confirmed by the fresh native checksum."
+}

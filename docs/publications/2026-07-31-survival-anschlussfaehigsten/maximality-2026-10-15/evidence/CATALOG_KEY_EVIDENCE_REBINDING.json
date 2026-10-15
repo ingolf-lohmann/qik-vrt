@@ -1,0 +1,847 @@
+{
+  "prior_exact_digests": 103,
+  "prior_exact_digest_matches": 103,
+  "freshly_verified_previously_unavailable_files": 2,
+  "files": [
+    {
+      "record_id": 21888130,
+      "name": "DAS_UNIVERSUM_ALS_ROUND_TRIP_DE.md",
+      "prior_expected_sha256": "dc58e50161b22826152dd251db836f06f85235a470e0253aeefa1b0a380787fe",
+      "current_sha256": "dc58e50161b22826152dd251db836f06f85235a470e0253aeefa1b0a380787fe",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21888130,
+      "name": "ROUND_TRIP_PROMOTED_FORMAL_RESULTS_V1.md",
+      "prior_expected_sha256": "e5fd9c53a0bf6c84471d9b26d0c3c06019977aa6b2367913006fa9560a3c948f",
+      "current_sha256": "e5fd9c53a0bf6c84471d9b26d0c3c06019977aa6b2367913006fa9560a3c948f",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21888130,
+      "name": "PROMOTED_FORMAL_KERNEL_RECEIPTS.json",
+      "prior_expected_sha256": "6df42d9025a041091f09aa8c868f51e63193192dea21fb4fe40c9730fec8db31",
+      "current_sha256": "6df42d9025a041091f09aa8c868f51e63193192dea21fb4fe40c9730fec8db31",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21888130,
+      "name": "CLAIM_MATRIX.json",
+      "prior_expected_sha256": "94fa533bc82b029a2d49269cef468f99211bff7f9be3d2e2809866b6d5acf684",
+      "current_sha256": "94fa533bc82b029a2d49269cef468f99211bff7f9be3d2e2809866b6d5acf684",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21888130,
+      "name": "RETROSPECTIVE_PROOF_CORPUS_INDEX.json",
+      "prior_expected_sha256": "9ce73608a7aaa17bc825f163475adb820ed208b188fd3017eafdacf2b2dd253c",
+      "current_sha256": "9ce73608a7aaa17bc825f163475adb820ed208b188fd3017eafdacf2b2dd253c",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22955727,
+      "name": "SCIENTIFIC_ARTICLE_DE.md",
+      "prior_expected_sha256": "311b6d76cc5a02fffa631eb94bd2e1049001b11f382c42c80df2db3364f699b3",
+      "current_sha256": "311b6d76cc5a02fffa631eb94bd2e1049001b11f382c42c80df2db3364f699b3",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22955727,
+      "name": "CLAIM_MATRIX_V2.json",
+      "prior_expected_sha256": "bfe2637a8bc324bef5dc1662e6baa1be84281ec4e616998802bf35d39364cd28",
+      "current_sha256": "bfe2637a8bc324bef5dc1662e6baa1be84281ec4e616998802bf35d39364cd28",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22955727,
+      "name": "KERNEL_RECEIPT.json",
+      "prior_expected_sha256": "52275c78a9e2d0f1d15db707368037a0c7e70b1de5017e86c56a962b6a1d9516",
+      "current_sha256": "52275c78a9e2d0f1d15db707368037a0c7e70b1de5017e86c56a962b6a1d9516",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22955727,
+      "name": "QIKVRTUniversalOntology_Core.lean",
+      "prior_expected_sha256": "9c8e6671c6e34b2edfabd4908a4d6ee14d6327584188f5559a595690e9a5e9f9",
+      "current_sha256": "9c8e6671c6e34b2edfabd4908a4d6ee14d6327584188f5559a595690e9a5e9f9",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22955727,
+      "name": "UNIVERSAL_ONTOLOGY_KERNEL_RECEIPT.json",
+      "prior_expected_sha256": "ddbce2af801457291f3f71e0ab37391f3c84afc20303ca6516e0936c0dba16e9",
+      "current_sha256": "ddbce2af801457291f3f71e0ab37391f3c84afc20303ca6516e0936c0dba16e9",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21804399,
+      "name": "PAPER.tex",
+      "prior_expected_sha256": "003b22480dd598669939bf65598ea12470510f5612ad456057d26664ce38990f",
+      "current_sha256": "003b22480dd598669939bf65598ea12470510f5612ad456057d26664ce38990f",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21804399,
+      "name": "REFERENCES.bib",
+      "prior_expected_sha256": null,
+      "current_sha256": "a3de70b9f5037902e0984628c8bc0f8877deb5e7ed14497b4b03e55da28a021f",
+      "prior_exact_digest_rebound": null,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21804399,
+      "name": "WHATSAPP_READALOUD.md",
+      "prior_expected_sha256": "c3cb0cfeef4c8ccda6c73897b447ca4d3d63a369acda83bf82cdc09265c7ad88",
+      "current_sha256": "c3cb0cfeef4c8ccda6c73897b447ca4d3d63a369acda83bf82cdc09265c7ad88",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21482023,
+      "name": "Mandelbrot_Komplement_Modelluniversum_Entscheidender_Unterschied_2026-07-21.tex",
+      "prior_expected_sha256": "c55446c62c890e581e9536c0dc8d5de70b7ecf7012a7e2e41744d971da9807cf",
+      "current_sha256": "c55446c62c890e581e9536c0dc8d5de70b7ecf7012a7e2e41744d971da9807cf",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21482023,
+      "name": "README.md",
+      "prior_expected_sha256": "e14d9d32ca585ee8ad0565908a69214a2f4b77e26675ae69605af07b72f54adb",
+      "current_sha256": "e14d9d32ca585ee8ad0565908a69214a2f4b77e26675ae69605af07b72f54adb",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21529081,
+      "name": "MANUSCRIPT_PROOF_MAP.md",
+      "prior_expected_sha256": "7046d4e3c68d58520b1040d8bef7046530b616467d52411640426a0b5f6e13a8",
+      "current_sha256": "7046d4e3c68d58520b1040d8bef7046530b616467d52411640426a0b5f6e13a8",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21529081,
+      "name": "VERIFICATION_REPORT.md",
+      "prior_expected_sha256": "cb419e02e7aa09cb9648d8931c630b997e9a263f020379d8da9f5d11160ceba6",
+      "current_sha256": "cb419e02e7aa09cb9648d8931c630b997e9a263f020379d8da9f5d11160ceba6",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21529081,
+      "name": "FORMALIZATION_SCOPE.md",
+      "prior_expected_sha256": "70548cf2cfaa750753c199b8378aafb783425617baacd9b10df6c95b3c794edf",
+      "current_sha256": "70548cf2cfaa750753c199b8378aafb783425617baacd9b10df6c95b3c794edf",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21529081,
+      "name": "CLAIM_GRAPH.json",
+      "prior_expected_sha256": "2a02b50ce245434da8c449a0d4729ba385579c0f59f0a548c41ab46e8febf96f",
+      "current_sha256": "2a02b50ce245434da8c449a0d4729ba385579c0f59f0a548c41ab46e8febf96f",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21529081,
+      "name": "QIKVRT_Formalization_v2.0-alpha.3.zip",
+      "prior_expected_sha256": "f62ef815cc578735c97f3cc94ca4d156a11a6c130231f94d40d0bfe2e2b7f6ab",
+      "current_sha256": "f62ef815cc578735c97f3cc94ca4d156a11a6c130231f94d40d0bfe2e2b7f6ab",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21582781,
+      "name": "ORIGINAL_ARTICLE.md",
+      "prior_expected_sha256": "0cc8077b032d805406f5cafe599dfa91f90e28a5bfa68292aaf4aaa232058589",
+      "current_sha256": "0cc8077b032d805406f5cafe599dfa91f90e28a5bfa68292aaf4aaa232058589",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21582781,
+      "name": "META_REVIEW.md",
+      "prior_expected_sha256": "855687ec791c5d054ea235ad0388217954fdc0dc2d3e053684820a46289ac629",
+      "current_sha256": "855687ec791c5d054ea235ad0388217954fdc0dc2d3e053684820a46289ac629",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21582781,
+      "name": "PUBLICATION.json",
+      "prior_expected_sha256": "a58c0f7fbe5ef0bf0e3fca1bcd379fedcf99e1a0b6bdf507d48682d50ac703dc",
+      "current_sha256": "a58c0f7fbe5ef0bf0e3fca1bcd379fedcf99e1a0b6bdf507d48682d50ac703dc",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22907018,
+      "name": "QIK_Publikationsfassung_revidiert.docx",
+      "prior_expected_sha256": "1c70cbe19edd5a34dc764ad6527cf14761b78b85bc4a157d8aed3f5853b8a020",
+      "current_sha256": "1c70cbe19edd5a34dc764ad6527cf14761b78b85bc4a157d8aed3f5853b8a020",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22907018,
+      "name": "QIK_Wissenschaftlicher_Revisionsbericht.docx",
+      "prior_expected_sha256": "e4be998ce2ef43f0575fa91b2974d72325f8bf820a72410cfbf697e38fc03bb1",
+      "current_sha256": "e4be998ce2ef43f0575fa91b2974d72325f8bf820a72410cfbf697e38fc03bb1",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22907018,
+      "name": "README.md",
+      "prior_expected_sha256": "7e68114928a9411675e8c027776534a0125d5d60acad617f99cc5aa54f230e0c",
+      "current_sha256": "7e68114928a9411675e8c027776534a0125d5d60acad617f99cc5aa54f230e0c",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22527889,
+      "name": "CLAIM_MATRIX_V2.json",
+      "prior_expected_sha256": "34219acc029654ccd7904c81de65796d8ab9a93da339318270a76f12ab9eab08",
+      "current_sha256": "34219acc029654ccd7904c81de65796d8ab9a93da339318270a76f12ab9eab08",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22527889,
+      "name": "KERNEL_RECEIPT.json",
+      "prior_expected_sha256": "42290b7fadb7a3b02f76f65b9d7ce735cb253f3adc37c9f83e75ae737f507ed8",
+      "current_sha256": "42290b7fadb7a3b02f76f65b9d7ce735cb253f3adc37c9f83e75ae737f507ed8",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22527889,
+      "name": "VRTCore_SMG_PlanckBridge.lean",
+      "prior_expected_sha256": "d5b3f2555e8118f06dfeedc026b31c6aaf097becbbc77c1ff38040f1c68d46a4",
+      "current_sha256": "d5b3f2555e8118f06dfeedc026b31c6aaf097becbbc77c1ff38040f1c68d46a4",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22283396,
+      "name": "planck_tick_gap_law_v1.json",
+      "prior_expected_sha256": "67651e6e92d930838c643039ce3aa1b3b197ba43f0f48b3fb870c2528b2d30e0",
+      "current_sha256": "67651e6e92d930838c643039ce3aa1b3b197ba43f0f48b3fb870c2528b2d30e0",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22283396,
+      "name": "QIKVRT_Planck_Tick_Gap_Law_2026-09-03.tex",
+      "prior_expected_sha256": "037b0afe30e6c8d28f80325d08024639960808c43f94b81bb91f9d3f393f1309",
+      "current_sha256": "037b0afe30e6c8d28f80325d08024639960808c43f94b81bb91f9d3f393f1309",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22283396,
+      "name": "README.md",
+      "prior_expected_sha256": "1e00619a0d19c0a2a0be2dda7f58f53ec6f25b63280e2bf000e708546a5f3a0d",
+      "current_sha256": "1e00619a0d19c0a2a0be2dda7f58f53ec6f25b63280e2bf000e708546a5f3a0d",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22216916,
+      "name": "QIK-VRT_Relationale_Zeit_und_wachsende_Evidenzkugel_DE.pdf",
+      "prior_expected_sha256": "38b0e62a46214a7cb9943dd3ef08283a70ae7e15ba22a59a9e53506f2945e311",
+      "current_sha256": "38b0e62a46214a7cb9943dd3ef08283a70ae7e15ba22a59a9e53506f2945e311",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22216916,
+      "name": "CLAIM_MATRIX_V2.json",
+      "prior_expected_sha256": "21e622ab38227d023bc629c937dc728516e647003485ae8af58d77d1538f4827",
+      "current_sha256": "21e622ab38227d023bc629c937dc728516e647003485ae8af58d77d1538f4827",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22216916,
+      "name": "SOURCE_EVIDENCE_BINDINGS.json",
+      "prior_expected_sha256": "8ae195102f2b64b81c9ad7f23dc4efca72050a5e18c3521d63725822bae5c2d3",
+      "current_sha256": "8ae195102f2b64b81c9ad7f23dc4efca72050a5e18c3521d63725822bae5c2d3",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21947141,
+      "name": "QIK-VRT_Beobachterrelative_Retrokausalitaet_DE.tex",
+      "prior_expected_sha256": "9f0b3c2d53e130a2891a9797715d3f3c696e54409e38dcd03e69606aea5fbfd2",
+      "current_sha256": "9f0b3c2d53e130a2891a9797715d3f3c696e54409e38dcd03e69606aea5fbfd2",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21947141,
+      "name": "CLAIM_MATRIX_V2.json",
+      "prior_expected_sha256": "01f5c79357b950cdef27487b49c5fdc1dec8a887ddf5361d7c6a02d9d812d9c6",
+      "current_sha256": "01f5c79357b950cdef27487b49c5fdc1dec8a887ddf5361d7c6a02d9d812d9c6",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21947141,
+      "name": "OBSERVER_RELATIVE_RETROCAUSALITY_CLAIM_MATRIX.json",
+      "prior_expected_sha256": "5ada460d9932486bd2de0c817d70deccfd5686e4170ba5bc47dde5daad192a12",
+      "current_sha256": "5ada460d9932486bd2de0c817d70deccfd5686e4170ba5bc47dde5daad192a12",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21947141,
+      "name": "QIKVRT_RETROCAUSALITY_WITNESS.json",
+      "prior_expected_sha256": "817b0bbd38ff2d5e811c7ba4c04dff7e6b9310fbb3016309c451317d1de5b471",
+      "current_sha256": "817b0bbd38ff2d5e811c7ba4c04dff7e6b9310fbb3016309c451317d1de5b471",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21748371,
+      "name": "SCIENTIFIC_FACT_GROWTH_PROTOCOL.md",
+      "prior_expected_sha256": "5a0e55d93a0522111a046554a97ce2da3bf5b65cd4c09792693729cac3064ea4",
+      "current_sha256": "5a0e55d93a0522111a046554a97ce2da3bf5b65cd4c09792693729cac3064ea4",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21748371,
+      "name": "FACHARTIKEL_DE.md",
+      "prior_expected_sha256": "0b82fdbeb64f9f906c3fc7adcc065eb7cb4de211e8d1d716556824f78de225bc",
+      "current_sha256": "0b82fdbeb64f9f906c3fc7adcc065eb7cb4de211e8d1d716556824f78de225bc",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21748371,
+      "name": "CLAIM_MATRIX.json",
+      "prior_expected_sha256": "45b8c5b0861c6bd40e39425d482d05cefe93bf8348e9c38df375467279013904",
+      "current_sha256": "45b8c5b0861c6bd40e39425d482d05cefe93bf8348e9c38df375467279013904",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21748371,
+      "name": "LEAN_KERNEL_RECEIPT.json",
+      "prior_expected_sha256": "105fbbfce07d938ee1261acfec5ed5339c3749983784cb6796cd8321b8ad7f6c",
+      "current_sha256": "105fbbfce07d938ee1261acfec5ed5339c3749983784cb6796cd8321b8ad7f6c",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21748371,
+      "name": "FORMAL_ScientificFactGrowth.lean",
+      "prior_expected_sha256": "e7538876d7c70b5c54885855a852e72f83ae0f9b49a2adb02d0ccb3f075b7307",
+      "current_sha256": "e7538876d7c70b5c54885855a852e72f83ae0f9b49a2adb02d0ccb3f075b7307",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21731492,
+      "name": "SCIENTIFIC_ADDENDUM_DE.md",
+      "prior_expected_sha256": "5173e4231822294b2ded88653f7e73bd2626ae3e3cade6f7f92eda20b28bdecc",
+      "current_sha256": "5173e4231822294b2ded88653f7e73bd2626ae3e3cade6f7f92eda20b28bdecc",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21731492,
+      "name": "CLAIM_MATRIX.json",
+      "prior_expected_sha256": "4b7ebc974fe4433a39bc7e81948b606f91bcad0cea15db5d9cb2858568cf943e",
+      "current_sha256": "4b7ebc974fe4433a39bc7e81948b606f91bcad0cea15db5d9cb2858568cf943e",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21731492,
+      "name": "INHERITED_V1_CLAIM_MATRIX.json",
+      "prior_expected_sha256": "b0ca1597d864d475adabb76dc8bf51d05e90841685d6ad52a017dc6f9b2448f1",
+      "current_sha256": "b0ca1597d864d475adabb76dc8bf51d05e90841685d6ad52a017dc6f9b2448f1",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21731492,
+      "name": "EVIDENCE_BOUNDARY.md",
+      "prior_expected_sha256": "659e5371f2ec8d78391c281d68e3201bbdf1375190dcd83bf99dee121ed664ca",
+      "current_sha256": "659e5371f2ec8d78391c281d68e3201bbdf1375190dcd83bf99dee121ed664ca",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21721918,
+      "name": "ARTICLE_DE.md",
+      "prior_expected_sha256": "2f7ed0b3623d2308118cda0ea01a8598bf86888b92aa1ee6cd4ca2725416eb44",
+      "current_sha256": "2f7ed0b3623d2308118cda0ea01a8598bf86888b92aa1ee6cd4ca2725416eb44",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21721918,
+      "name": "CLAIM_MATRIX.json",
+      "prior_expected_sha256": "6dd80355ae67bba8a8e03a77f54df8ea15973f6a398fe47e75e39d16ea361e49",
+      "current_sha256": "6dd80355ae67bba8a8e03a77f54df8ea15973f6a398fe47e75e39d16ea361e49",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21721918,
+      "name": "KERNEL_RECEIPT.json",
+      "prior_expected_sha256": "ec6bef7e8cf13d5604834efedf0e1b812921d8a224e528d14fea7fa0d92a4911",
+      "current_sha256": "ec6bef7e8cf13d5604834efedf0e1b812921d8a224e528d14fea7fa0d92a4911",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21721918,
+      "name": "FORMAL_OperationalContinuation.lean",
+      "prior_expected_sha256": "b9e7dfedad068773b5e46a8cf4d0a3823cea223bab0a6070ff906eb13c928d31",
+      "current_sha256": "b9e7dfedad068773b5e46a8cf4d0a3823cea223bab0a6070ff906eb13c928d31",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21721918,
+      "name": "FORMAL_WeightedConnectability.lean",
+      "prior_expected_sha256": "feadf23a9643e0e41f39cf5e37bca42f07bd0da29bfead8f751f3a2d7764f290",
+      "current_sha256": "feadf23a9643e0e41f39cf5e37bca42f07bd0da29bfead8f751f3a2d7764f290",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22847245,
+      "name": "Universales_Universalprinzip.md",
+      "prior_expected_sha256": "2cdd7a7e7fb9c2ae3ab1128d90fbe0cb89c4a618b403cf27d7a85fad21fb3e1d",
+      "current_sha256": "2cdd7a7e7fb9c2ae3ab1128d90fbe0cb89c4a618b403cf27d7a85fad21fb3e1d",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22847245,
+      "name": "ORIGINALWORTE_DE.txt",
+      "prior_expected_sha256": "c3de1b9ae244af71914d62e9a1bb50386ede800fbb7157334c29898fc8ff0ea7",
+      "current_sha256": "c3de1b9ae244af71914d62e9a1bb50386ede800fbb7157334c29898fc8ff0ea7",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22847245,
+      "name": "CLAIM_MATRIX.json",
+      "prior_expected_sha256": "b379d95bfb4cd6e2c6b0304a3e768af69451a09951d154d45b97f38fb1aca6ed",
+      "current_sha256": "b379d95bfb4cd6e2c6b0304a3e768af69451a09951d154d45b97f38fb1aca6ed",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22847245,
+      "name": "EVIDENCE_BOUNDARY.md",
+      "prior_expected_sha256": "76c1ec451d20c5bd725b44471aaa4acd96f57f1b9a50492f2fc4d7e1ac75e757",
+      "current_sha256": "76c1ec451d20c5bd725b44471aaa4acd96f57f1b9a50492f2fc4d7e1ac75e757",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21983644,
+      "name": "ARTICLE.md",
+      "prior_expected_sha256": "54f57fe3e20db46cbb0c8e6a872938c5972ef326eb3d2774c324b1b5ba90ab31",
+      "current_sha256": "54f57fe3e20db46cbb0c8e6a872938c5972ef326eb3d2774c324b1b5ba90ab31",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21983644,
+      "name": "PUBLICATION.json",
+      "prior_expected_sha256": "52318953f27f9a7a1d220080a10cfedf1835792799dff5d855c61072a973a776",
+      "current_sha256": "52318953f27f9a7a1d220080a10cfedf1835792799dff5d855c61072a973a776",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21640173,
+      "name": "QIKVRT_Vom_verantwortungsgebundenen_Erkenntnisprozess_zur_virtuellen_Wirkungsmaschine_DE.md",
+      "prior_expected_sha256": "1fade850374cba0dc714dc8ecc842f15d80a62e9cfb7f3cedfd9e736ab1352e1",
+      "current_sha256": "1fade850374cba0dc714dc8ecc842f15d80a62e9cfb7f3cedfd9e736ab1352e1",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21640173,
+      "name": "QIKVRT_CLAIM_MATRIX.json",
+      "prior_expected_sha256": "efdf603f0018620924cd55aab2470117ad7ded32bf5cd9a679246a122bde5527",
+      "current_sha256": "efdf603f0018620924cd55aab2470117ad7ded32bf5cd9a679246a122bde5527",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21640173,
+      "name": "QIKVRT_KERNEL_RECEIPT.json",
+      "prior_expected_sha256": "14245a79966e4667ddd931c59510370032ebffefe4b2421401404dd5c22a6c1a",
+      "current_sha256": "14245a79966e4667ddd931c59510370032ebffefe4b2421401404dd5c22a6c1a",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21640173,
+      "name": "QIKVRT_QuantumClassicalRuntime.lean",
+      "prior_expected_sha256": "9a02bb3ba762063646aa22af4c05467b52ac49ef05773bfc067f3a3c2be22465",
+      "current_sha256": "9a02bb3ba762063646aa22af4c05467b52ac49ef05773bfc067f3a3c2be22465",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21640160,
+      "name": "QIKVRT_CLAIM_MATRIX.json",
+      "prior_expected_sha256": "efdf603f0018620924cd55aab2470117ad7ded32bf5cd9a679246a122bde5527",
+      "current_sha256": "efdf603f0018620924cd55aab2470117ad7ded32bf5cd9a679246a122bde5527",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21640160,
+      "name": "QIKVRT_KERNEL_RECEIPT.json",
+      "prior_expected_sha256": "14245a79966e4667ddd931c59510370032ebffefe4b2421401404dd5c22a6c1a",
+      "current_sha256": "14245a79966e4667ddd931c59510370032ebffefe4b2421401404dd5c22a6c1a",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21640160,
+      "name": "QIKVRT_QuantumClassicalRuntime.lean",
+      "prior_expected_sha256": "9a02bb3ba762063646aa22af4c05467b52ac49ef05773bfc067f3a3c2be22465",
+      "current_sha256": "9a02bb3ba762063646aa22af4c05467b52ac49ef05773bfc067f3a3c2be22465",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21711193,
+      "name": "QIK-VRT_Kanonischer_Speicher_Retrokausalitaet_EFFECT_ACK_2026-07-30.tex",
+      "prior_expected_sha256": "6a3414302e6ba870fab0722a123af1f9c101b6f6c6f2269d1126b37ad47d5841",
+      "current_sha256": "6a3414302e6ba870fab0722a123af1f9c101b6f6c6f2269d1126b37ad47d5841",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21711193,
+      "name": "CLAIM_MATRIX.json",
+      "prior_expected_sha256": "6ca018de971cc351091c36e11a708ef852e6079991289b10a962603aef0fadcb",
+      "current_sha256": "6ca018de971cc351091c36e11a708ef852e6079991289b10a962603aef0fadcb",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21711193,
+      "name": "KERNEL_RECEIPT.json",
+      "prior_expected_sha256": "b7f0246798e2e3bb50a49580251e5b4909e915dd71da27770c19413cc40d9df6",
+      "current_sha256": "b7f0246798e2e3bb50a49580251e5b4909e915dd71da27770c19413cc40d9df6",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21711193,
+      "name": "EVIDENCE_BOUNDARY.md",
+      "prior_expected_sha256": "1019df148d7fbe7dc881b0ade837d6adde06dd034460630a23f920aa6d0b8eba",
+      "current_sha256": "1019df148d7fbe7dc881b0ade837d6adde06dd034460630a23f920aa6d0b8eba",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22941556,
+      "name": "PROOF_CLOSURE_DE.md",
+      "prior_expected_sha256": "a3d68f64f95b298ed749b8673898a36b2170b83f22520d7326e0f39f9e630ce2",
+      "current_sha256": "a3d68f64f95b298ed749b8673898a36b2170b83f22520d7326e0f39f9e630ce2",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22941556,
+      "name": "PROOF_CLOSURE_CONTRACT.json",
+      "prior_expected_sha256": "84bfe8072429e9169db6a2e2584a60ce91cbcdbfaaccc10ea684b9075ea1c9f9",
+      "current_sha256": "84bfe8072429e9169db6a2e2584a60ce91cbcdbfaaccc10ea684b9075ea1c9f9",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22941556,
+      "name": "CLAIM_MATRIX.json",
+      "prior_expected_sha256": "4e0ff0214b117837b287950362b1591eaada750d0582b7546dec843f23b85f6c",
+      "current_sha256": "4e0ff0214b117837b287950362b1591eaada750d0582b7546dec843f23b85f6c",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 23008330,
+      "name": "VORLESEFASSUNG.txt",
+      "prior_expected_sha256": "2f0b9a6caa5dda0eecfc81157c068c7a4b8380b4a2ab82b222cca6cc38eb0f7e",
+      "current_sha256": "2f0b9a6caa5dda0eecfc81157c068c7a4b8380b4a2ab82b222cca6cc38eb0f7e",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 23008330,
+      "name": "CLAIM_MATRIX.json",
+      "prior_expected_sha256": "1c877c8dc6ac0a9d27446f0462b4793dd5eaef141cef4e75a18aa830b47021a2",
+      "current_sha256": "1c877c8dc6ac0a9d27446f0462b4793dd5eaef141cef4e75a18aa830b47021a2",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 23008330,
+      "name": "ARCHIVE_NOTE.md",
+      "prior_expected_sha256": "9c3330b8e5a42ee0daa527259c4f62acb6cffb977b8678a1babc5c32b823acfe",
+      "current_sha256": "9c3330b8e5a42ee0daa527259c4f62acb6cffb977b8678a1babc5c32b823acfe",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 23008330,
+      "name": "QIKVRT_Lean_Lake_Pruefpaket_2026-09-15.zip",
+      "prior_expected_sha256": "14a248d87844e1dee50865f4e27cdcfb9a27808f0393eba3f62f0088c7c95e18",
+      "current_sha256": "14a248d87844e1dee50865f4e27cdcfb9a27808f0393eba3f62f0088c7c95e18",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 23008704,
+      "name": "ARTICLE_DE.md",
+      "prior_expected_sha256": "676f135707dfaec7acce3a03af70b6439d06b31193748d49310f907f20458531",
+      "current_sha256": "676f135707dfaec7acce3a03af70b6439d06b31193748d49310f907f20458531",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 23008704,
+      "name": "QUALITY_GATES.json",
+      "prior_expected_sha256": "d6eec9879e301d74bb35bb1033c5deac2cede874c6151db38547648e9525a3fc",
+      "current_sha256": "d6eec9879e301d74bb35bb1033c5deac2cede874c6151db38547648e9525a3fc",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 23008704,
+      "name": "MEASUREMENTS.json",
+      "prior_expected_sha256": "50a52ce9db0f2bc27d65b2d149eb70ab46a7c83f808351057f3be0cbaa6cb664",
+      "current_sha256": "50a52ce9db0f2bc27d65b2d149eb70ab46a7c83f808351057f3be0cbaa6cb664",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 23008704,
+      "name": "CLAIM_MATRIX.json",
+      "prior_expected_sha256": "c98c5501cf8a37efb917d2b4101c465eec6625903bf1c3d98ef2bbb744ad2ce7",
+      "current_sha256": "c98c5501cf8a37efb917d2b4101c465eec6625903bf1c3d98ef2bbb744ad2ce7",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 23008704,
+      "name": "focused-tests.log",
+      "prior_expected_sha256": null,
+      "current_sha256": "c81d367696d82d6531d0fc4620bf2bd9492dcc285a65e80b9fb29910d5356566",
+      "prior_exact_digest_rebound": null,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21498773,
+      "name": "ARTICLE_DE.md",
+      "prior_expected_sha256": "7d1b92ee6df450be1469cacae894d43adff30938997e7a502a383fc5e9a2adbe",
+      "current_sha256": "7d1b92ee6df450be1469cacae894d43adff30938997e7a502a383fc5e9a2adbe",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21498773,
+      "name": "proof-report.json",
+      "prior_expected_sha256": "f2e71e29512c73dd34bcc3db2dc852298e0713531441fcb922f14c6647b29392",
+      "current_sha256": "f2e71e29512c73dd34bcc3db2dc852298e0713531441fcb922f14c6647b29392",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21498773,
+      "name": "EVIDENCE_BOUNDARY.md",
+      "prior_expected_sha256": "fb78ae0f583e83322863bac0efd3ebe774b385beea3938c27e0b585dd4d92aa6",
+      "current_sha256": "fb78ae0f583e83322863bac0efd3ebe774b385beea3938c27e0b585dd4d92aa6",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21500322,
+      "name": "STATUSERKLAERUNG_DE.md",
+      "prior_expected_sha256": "0ce2f4ba34d43e0a3e6e046fe8a8414527cf10f959beed7d94b27c2c6c606161",
+      "current_sha256": "0ce2f4ba34d43e0a3e6e046fe8a8414527cf10f959beed7d94b27c2c6c606161",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21500322,
+      "name": "EVIDENCE_BOUNDARY.md",
+      "prior_expected_sha256": "0338f8e3d174ce4b3179b57a836733308b3bdb521dd7018258fb00ba20246ea6",
+      "current_sha256": "0338f8e3d174ce4b3179b57a836733308b3bdb521dd7018258fb00ba20246ea6",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21500322,
+      "name": "EVIDENCE_INDEX.json",
+      "prior_expected_sha256": "dc8c62cf03f64bb79fb78cfdea764640bb8c963bdd2f83b8fd6d6233cbcf3b9b",
+      "current_sha256": "dc8c62cf03f64bb79fb78cfdea764640bb8c963bdd2f83b8fd6d6233cbcf3b9b",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21500322,
+      "name": "PATENT_DISCLOSURE_BOUNDARY.md",
+      "prior_expected_sha256": "e665eb02d53dd6038a8754246dcf97ee27d91d1247e49dbe2a1e58cf96151f55",
+      "current_sha256": "e665eb02d53dd6038a8754246dcf97ee27d91d1247e49dbe2a1e58cf96151f55",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21515074,
+      "name": "CHARTA_MASCHINENPRUEFBARE_WISSENSCHAFT.md",
+      "prior_expected_sha256": "7fb4e5c369b079e93ce409e9ca4f6830476a1b6dbd42543273d85164e111a631",
+      "current_sha256": "7fb4e5c369b079e93ce409e9ca4f6830476a1b6dbd42543273d85164e111a631",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21636774,
+      "name": "QIKVRT_Vom_Unterschied_zur_Verantwortung_Statusartikel_DE.md",
+      "prior_expected_sha256": "810e03809cb6164d0c4efd3c6b7ca91c57d8ea92278be416cec92b087d70652c",
+      "current_sha256": "810e03809cb6164d0c4efd3c6b7ca91c57d8ea92278be416cec92b087d70652c",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21636774,
+      "name": "QIKVRT_GLOBAL_COMPLETION_RECEIPT.json",
+      "prior_expected_sha256": "bbae95a8b4f10ff9601a452411fbe8a43f3b717c127d5cadfa84b94232f427e8",
+      "current_sha256": "bbae95a8b4f10ff9601a452411fbe8a43f3b717c127d5cadfa84b94232f427e8",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21633411,
+      "name": "authority-mirror-equality-2026-07-27-pr106-pr56.json",
+      "prior_expected_sha256": "2372fae39499febbb005d771cb2ce62bde7967a79cdd5e3b159a3591fc80ac98",
+      "current_sha256": "2372fae39499febbb005d771cb2ce62bde7967a79cdd5e3b159a3591fc80ac98",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 21633411,
+      "name": "equality-receipts-index.json",
+      "prior_expected_sha256": "47c5d7107098c0527c80aa0d65deeeb6a15ce1496588fda3fda087d4d18d5ff4",
+      "current_sha256": "47c5d7107098c0527c80aa0d65deeeb6a15ce1496588fda3fda087d4d18d5ff4",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 20712301,
+      "name": "QIKVRT_V8_33_REPOSITORY_AND_ANTICIPATORY_ZENODO_415_CONTENTTYPE_FIX.zip",
+      "prior_expected_sha256": "a446a0c5b9fac78e47c3b51bc88ac81a6eaa7d15add089804d46c4f294fbd2f7",
+      "current_sha256": "a446a0c5b9fac78e47c3b51bc88ac81a6eaa7d15add089804d46c4f294fbd2f7",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22840633,
+      "name": "Die_Wahrheit_braucht_keine_Verschwoerungstheorie.txt",
+      "prior_expected_sha256": "fb865db33137a184e059f7caa0b532ffbe15680aae7098c62f05d3f0d4254cf8",
+      "current_sha256": "fb865db33137a184e059f7caa0b532ffbe15680aae7098c62f05d3f0d4254cf8",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22840633,
+      "name": "QUELLEN_UND_GELTUNGSBEREICH.md",
+      "prior_expected_sha256": "b927124c1e1c4df77ddf0242579abb642233c83167ee8490c84c289ce827c131",
+      "current_sha256": "b927124c1e1c4df77ddf0242579abb642233c83167ee8490c84c289ce827c131",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22840633,
+      "name": "CLAIM_MATRIX.json",
+      "prior_expected_sha256": "d1b3ee3d570b8f0e149fbae59187b26c016c1234ba245a8f564244091487b799",
+      "current_sha256": "d1b3ee3d570b8f0e149fbae59187b26c016c1234ba245a8f564244091487b799",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22845516,
+      "name": "WENN_ERWARTUNGEN_HANDELBAR_WERDEN_DE.md",
+      "prior_expected_sha256": "9feccd220c981fddb5c6100f24328fa6a5029fcdfeed1a02a858fad5fc06429c",
+      "current_sha256": "9feccd220c981fddb5c6100f24328fa6a5029fcdfeed1a02a858fad5fc06429c",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22845516,
+      "name": "WENN_AUS_EINER_WETTE_EINE_TAT_WIRD_DE.md",
+      "prior_expected_sha256": "13ebcc7f679b4b011d5daf4fef832122caef1709c33cf39bda26268824843e37",
+      "current_sha256": "13ebcc7f679b4b011d5daf4fef832122caef1709c33cf39bda26268824843e37",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22845516,
+      "name": "AUTORENERKLAERUNG_UND_EVIDENZGRENZE.md",
+      "prior_expected_sha256": "e2559479cff470f90090b532264c2238d357568620e4a90db28175120d04fbab",
+      "current_sha256": "e2559479cff470f90090b532264c2238d357568620e4a90db28175120d04fbab",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22845516,
+      "name": "CLAIM_MATRIX.json",
+      "prior_expected_sha256": "232b93d3eb71c3b6fd4816fe919b945afe0c91801ab11ca56b6105b218e9b563",
+      "current_sha256": "232b93d3eb71c3b6fd4816fe919b945afe0c91801ab11ca56b6105b218e9b563",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22813431,
+      "name": "OPEN_LETTER_DE.md",
+      "prior_expected_sha256": "ae065114b11ee485b47f6d104f49fbd9d12b7efdd9a98b6c58d8d0736465291e",
+      "current_sha256": "ae065114b11ee485b47f6d104f49fbd9d12b7efdd9a98b6c58d8d0736465291e",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22813431,
+      "name": "LEGAL_EVIDENCE_DOSSIER_DE.md",
+      "prior_expected_sha256": "dc607501c9acb69563977c728199e1d40aad4258814d37098249d1139746af80",
+      "current_sha256": "dc607501c9acb69563977c728199e1d40aad4258814d37098249d1139746af80",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    },
+    {
+      "record_id": 22813431,
+      "name": "README.md",
+      "prior_expected_sha256": "e6910bdf41fc24d69194deeb5c5c97ddcf9c34e8bb7867fc8fc04c792d0168a0",
+      "current_sha256": "e6910bdf41fc24d69194deeb5c5c97ddcf9c34e8bb7867fc8fc04c792d0168a0",
+      "prior_exact_digest_rebound": true,
+      "fresh_native_fixity_verified": true
+    }
+  ]
+}

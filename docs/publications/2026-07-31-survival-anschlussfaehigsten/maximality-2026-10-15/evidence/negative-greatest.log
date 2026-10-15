@@ -1,0 +1,6 @@
+/workspace/scratch/fe115755c38d/proof_gap_repository_20261015/docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/negative/LimitedIsGreatest.lean:5:2: error: type mismatch
+  MAX006_extended_greatest_in_any_bool_family counterexampleFamily
+has type
+  GreatestIn extended counterexampleFamily : Prop
+but is expected to have type
+  GreatestIn limited counterexampleFamily : Prop

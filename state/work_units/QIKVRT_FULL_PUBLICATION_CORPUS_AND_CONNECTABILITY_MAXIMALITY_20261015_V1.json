@@ -1,0 +1,120 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_FULL_PUBLICATION_CORPUS_AND_CONNECTABILITY_MAXIMALITY_20261015_V1",
+  "created_at": "2026-10-15T09:00:43.522970+00:00",
+  "human_origin": {
+    "owner": "Ingolf Lohmann",
+    "authorization": "du darfst!; close the proof gap and persist in all repository nodes and Zenodo; include all Zenodo and IETF publications",
+    "source": "Current conversation 2026-10-15",
+    "full_corpus_requirement_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/OWNER_FULL_CORPUS_REQUIREMENT_20261015.txt"
+  },
+  "artificial_contribution": {
+    "system": "OpenAI Codex",
+    "scope": "Complete source inventory, original-byte recovery, source-bound overall assessment, nine new Lean theorems and evidence preparation. Human review of new text remains pending."
+  },
+  "source_subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "branch": "integration/515-519-521-522-20261012-eceb9b63",
+    "head": "b2ff72d96d9d1b09836d46f38cbcdfe1e077d59b",
+    "tree": "bf84bd8b38628d29b967e75c94f97d8e3160c2ba",
+    "pull_request": 523
+  },
+  "reuse": [
+    "Existing PR523 review carrier and GitHub REST Git Data route",
+    "Existing ConnectabilitySimulation theorem FIT003",
+    "Existing Lean4.19 toolchain and manuscript-proof workflow",
+    "Existing deterministic historical source exporter and publication governance",
+    "Existing state/work_units and generated historical progress projection"
+  ],
+  "verified_delta": {
+    "zenodo_public_versions": 44,
+    "zenodo_native_families": 32,
+    "zenodo_original_files_verified": 479,
+    "ietf_drafts": 2,
+    "ietf_original_revisions": 5,
+    "new_axiom_free_lean_theorems": 9,
+    "negative_examples_rejected": 2,
+    "existing_full_lean_build": "PASS",
+    "existing_survival_publication_tests": "19 PASS",
+    "existing_axiom_audit": "58 registered existing theorems PASS; nine new theorems queried separately",
+    "tool_cache": "32/32; 100%",
+    "historical_progress_projection": "UNCHANGED_AND_EXISTING_GENERATOR_CHECK_PASS",
+    "report_scope": "Complete identified public corpus; not independent execution of all historical proofs or all archived software."
+  },
+  "evidence": {
+    "full_scope": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json",
+    "kernel": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/KERNEL_RECEIPT.json",
+    "archive": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/CORPUS_ARCHIVE_RECEIPT.json",
+    "prewrite_repository_and_delivery_readback": "evidence/native-runtime-acceptance/2026-10-15-full-corpus-prewrite.json"
+  },
+  "state": "LOCAL_CANDIDATE_VERIFIED_REMOTE_PERSISTENCE_PENDING",
+  "open_obligations": [
+    {
+      "id": "REVIEW_BRANCH_PERSISTENCE",
+      "state": "OPEN",
+      "next_action": "Create candidate tree and child commit, update existing PR523 branch with expected-head guard, verify remote head/tree and unchanged Main plus delivery."
+    },
+    {
+      "id": "NATIVE_WORKFLOW_AND_PRODUCTION_RECEIPT",
+      "state": "OPEN",
+      "next_action": "Observe existing manuscript workflow for the exact new head; retain actual result and adapt to the existing strict publication receipt format only with actual evidence."
+    },
+    {
+      "id": "EXACT_ZENODO_PUBLICATION",
+      "state": "OPEN",
+      "next_action": "Return complete candidate and change notice; no admitted machine-proof bundle or authenticated publisher is available yet. Exact post-return authorization and single-use ref required before effect."
+    },
+    {
+      "id": "ALL_NODE_PERSISTENCE",
+      "state": "OPEN",
+      "next_action": "Goldkelch concrete GETs return 404; require restored authenticated read/write access before candidate persistence and reciprocal equality."
+    },
+    {
+      "id": "CONCRETE_GREATESTNESS_INSTANTIATION",
+      "state": "OPEN",
+      "next_action": "Bind concrete QIK implementation, historical comparison family, common semantics and universal simulation/language inclusion. New conditional results do not instantiate these premises."
+    },
+    {
+      "id": "PROTECTED_MAIN_AND_INDEPENDENT_REVIEW",
+      "state": "OPEN",
+      "next_action": "Existing PR523 governance obligations persist; no Main merge or protection bypass."
+    },
+    {
+      "id": "ARCHIVE_OCI_AND_RUNTIME",
+      "state": "OPEN",
+      "next_action": "Previous original artifact backups are verified; OCI publication/activation still needs admitted existing workflow and current evidence. No replacement controller."
+    },
+    {
+      "id": "DOMAIN_DELIVERY",
+      "state": "OPEN",
+      "next_action": "Existing raumzeitterminal.de DNS/TLS/runtime/application acceptance obligations persist; latest observation HTTP530 with no product acceptance."
+    }
+  ],
+  "original_artifact_backups": [
+    {
+      "artifact_id": 11521962723,
+      "bytes": 382994793,
+      "sha256": "5a912ccde96253bdba5f5e82cd0a36a4ff89de58dabbe57977bc1acf298d9695",
+      "verified_backup_library_file_id": "libfile_d3bd702289c08191881924ab99d9c069"
+    },
+    {
+      "artifact_id": 11836951744,
+      "bytes": 390701802,
+      "sha256": "7dc08699e47964847eca4a9cb2d315a7ec73946e30f5e1799334e47e3891daf6",
+      "verified_backup_library_file_id": "libfile_3c91398f4bd48191b1ff10801fca216d"
+    }
+  ],
+  "preserved_prior_work_units": [
+    "state/work_units/QIKVRT_MAIN_CONVERGENCE_20261014_V1.json",
+    "state/work_units/QIKVRT_ARCHIVE_HOLD_OFFLINE_CONTINUATION_20261013_V1.json",
+    "state/work_units/QIKVRT_ANTICIPATED_TRANSITIONS_20261015_V1.json"
+  ],
+  "completion_claims": {
+    "qik_global_greatestness": false,
+    "all_nodes_persisted": false,
+    "zenodo_published": false,
+    "main_merged": false,
+    "runtime_delivered": false,
+    "effect_ack_done": false
+  }
+}

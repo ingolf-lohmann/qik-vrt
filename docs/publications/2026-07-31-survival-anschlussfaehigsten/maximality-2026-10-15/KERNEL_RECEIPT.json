@@ -1,0 +1,175 @@
+{
+  "schema": "qikvrt_connectability_maximality_kernel_receipt_v1",
+  "state": "KERNEL_VERIFIED_WITHIN_DECLARED_MODEL",
+  "generated_at": "2026-10-15T08:08:04.981877+00:00",
+  "source_subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "ref": "integration/515-519-521-522-20261012-eceb9b63",
+    "base_head": "b2ff72d96d9d1b09836d46f38cbcdfe1e077d59b",
+    "base_tree": "bf84bd8b38628d29b967e75c94f97d8e3160c2ba",
+    "candidate_bound_by_source_file_hashes": true
+  },
+  "toolchain": {
+    "version": "Lean (version 4.19.0, x86_64-unknown-linux-gnu, commit 6caaee842e94, Release)",
+    "upstream_release_url": "https://github.com/leanprover/lean4/releases/tag/v4.19.0",
+    "archive_bytes": 343842845,
+    "archive_sha256": "6fe3ce97a58f44e2b3567d455b994eacec5bfe9ae7774f2a573444480ba813fe",
+    "executable": {
+      "path": "/workspace/scratch/fe115755c38d/lean-4.19.0-linux/bin/lean",
+      "bytes": 8880,
+      "sha256": "92c3d35b5bfaa5e0fea413a775d504cf46cd95e1345df61c2274f76779e7e023",
+      "git_blob_sha1": "1d71eb1937c09bbb698499dfa83dc5cdd5900c7d"
+    },
+    "compatibility_source": {
+      "path": "docs/publications/2026-08-02-causality-is-relation-vrtcore/lean_selfexe_compat.c",
+      "bytes": 1076,
+      "sha256": "5b797bcf5673e81099b2f675f42211b0af92bef2c4553701e82d02035bc08f4d",
+      "git_blob_sha1": "4b000f83ffbf360dde435970719d4ab67ee734fe"
+    },
+    "compatibility_scope": "own numeric /proc/PID/exe -> /proc/self/exe only; Lean kernel bytes unchanged"
+  },
+  "sources": [
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ConnectabilityMaximality.lean",
+      "bytes": 8513,
+      "sha256": "a61d3a67e4a743de75c2204e58a09dfd30cbd5b098bcf5eb026f4c8605208be4",
+      "git_blob_sha1": "c2932d65bc8f2c010c0cbbc6fc3e02458992c18a"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ConnectabilitySimulation.lean",
+      "bytes": 15641,
+      "sha256": "ea24867dd46c9cd5cd745a4427fff83620813ca05a7e5ba48596a4f667b3cb0a",
+      "git_blob_sha1": "0827e5fd24fa5cb633c1980edb334157b2c230c5"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization.lean",
+      "bytes": 3677,
+      "sha256": "3714bad3a61626b891135f7b80f5d353cf159e3a5d2a5e5607686e5fcfd315c0",
+      "git_blob_sha1": "2252494ffaf65f44e06fcc74b44f7937f560eddc"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/lean-toolchain",
+      "bytes": 26,
+      "sha256": "ee6fd37555065223ddad24dff70b5447dfbac23c14f48fb8e3ddf266104bfa87",
+      "git_blob_sha1": "cf00978c98941128bcbab27eaa26ed28b9cbbf15"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/lakefile.toml",
+      "bytes": 265,
+      "sha256": "45d01cd75d0b966cceaed22a246d804811544f8b7c0403ba5d7a6d0e78a55f30",
+      "git_blob_sha1": "5cec9150deb3e6821dc3ae2b4bf12e36ca8f53da"
+    }
+  ],
+  "compiled_objects": [
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/ConnectabilityMaximality.olean",
+      "bytes": 108824,
+      "sha256": "3d56ed9a494e6b64402fdcbefbafd7f0c1222fa5ac5aa0486b1c50ee18245ea3",
+      "git_blob_sha1": "1ad0aa22a8c3bea096513dfc8dbcce5322756a37"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/ConnectabilitySimulation.olean",
+      "bytes": 237216,
+      "sha256": "59df037c96975e10651dc8c5744d229603ca1c0962ea8db0a82d879bcf074ab3",
+      "git_blob_sha1": "8a389b291195c1e72b630b00c768979bd5860a36"
+    }
+  ],
+  "commands": [
+    {
+      "name": "kernel",
+      "argv": [
+        "lake",
+        "env",
+        "lean",
+        "QIKVRTFormalization/Process/ConnectabilityMaximality.lean"
+      ],
+      "cwd": "formalization/QIKVRT_Formalization_v2.0",
+      "started_at": "2026-10-15T08:08:04.298694+00:00",
+      "completed_at": "2026-10-15T08:08:04.585585+00:00",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/kernel.log",
+        "bytes": 1000,
+        "sha256": "0686d8582a1c31afaa73ca7e0a37812dacdf39645f7e388b4510302cd9948647",
+        "git_blob_sha1": "fce831d5591c89a18347643a89a4925a890aaaaa"
+      }
+    },
+    {
+      "name": "negative-shared",
+      "argv": [
+        "lake",
+        "env",
+        "lean",
+        "/workspace/scratch/fe115755c38d/proof_gap_repository_20261015/docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/negative/SharedInterfaceImpliesDominance.lean"
+      ],
+      "cwd": "formalization/QIKVRT_Formalization_v2.0",
+      "started_at": "2026-10-15T08:08:04.585734+00:00",
+      "completed_at": "2026-10-15T08:08:04.786209+00:00",
+      "exit_code": 1,
+      "expected_exit_code": 1,
+      "log": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/negative-shared.log",
+        "bytes": 391,
+        "sha256": "3ef4b4fa84f93e279d52333ffe39bf4547628a1c09d3c3a8d9cac2e31e1378a5",
+        "git_blob_sha1": "1cfd91d2a88b512eed73ec373852d34799fce555"
+      }
+    },
+    {
+      "name": "negative-greatest",
+      "argv": [
+        "lake",
+        "env",
+        "lean",
+        "/workspace/scratch/fe115755c38d/proof_gap_repository_20261015/docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/negative/LimitedIsGreatest.lean"
+      ],
+      "cwd": "formalization/QIKVRT_Formalization_v2.0",
+      "started_at": "2026-10-15T08:08:04.786334+00:00",
+      "completed_at": "2026-10-15T08:08:04.980803+00:00",
+      "exit_code": 1,
+      "expected_exit_code": 1,
+      "log": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/negative-greatest.log",
+        "bytes": 404,
+        "sha256": "5782b57aae71e99ff42c2cd7e0c17cb678286960abf479635497c2ddcff42b3b",
+        "git_blob_sha1": "ed4e845de7f9bcdbea0cd496ea514ed96a3719a5"
+      }
+    }
+  ],
+  "axioms_by_theorem": {
+    "QIKVRT.V2.ConnectabilityMaximality.MAX001_simulation_family_implies_greatest": [],
+    "QIKVRT.V2.ConnectabilityMaximality.MAX002_greatest_iff_union_inclusion": [],
+    "QIKVRT.V2.ConnectabilityMaximality.MAX003_greatest_implies_every_finite_horizon": [],
+    "QIKVRT.V2.ConnectabilityMaximality.MAX004_missing_trace_refutes_greatest": [],
+    "QIKVRT.V2.ConnectabilityMaximality.MAX005_shared_interface_does_not_imply_greatest": [],
+    "QIKVRT.V2.ConnectabilityMaximality.MAX006_extended_greatest_in_any_bool_family": [],
+    "QIKVRT.V2.ConnectabilityMaximality.MAX007_limited_not_greatest_in_counterexample_family": [],
+    "QIKVRT.V2.ConnectabilityMaximality.MAX008_environment_bridge_implies_greatest": [],
+    "QIKVRT.V2.ConnectabilityMaximality.MAX009_environment_inclusion_alone_insufficient": []
+  },
+  "existing_full_build": {
+    "exit_code": 0,
+    "log": {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/full-build.log",
+      "bytes": 12304,
+      "sha256": "a05cc1e9d3eb83fd3ca0155ae1adfeb9dee80f26c91b32c7e59428d15e24d629",
+      "git_blob_sha1": "fe37adfd694f015d1c57d65b5752b13d3aae1a5b"
+    }
+  },
+  "existing_axiom_audit": {
+    "exit_code": 0,
+    "log": {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/existing-axiom-audit.log",
+      "bytes": 127,
+      "sha256": "bbe8f848816bf52b5692f8cbc1e1c94f087ac72a04e4bcf9cfec5370167ea798",
+      "git_blob_sha1": "6c773c3d1b2d3d673a10c0e5f743f94ec40e920b"
+    }
+  },
+  "completion_claims": {
+    "qikvrt_global_greatestness_proved": false,
+    "all_nodes_persisted": false,
+    "zenodo_published": false,
+    "runtime_delivered": false,
+    "independent_reexecution": false
+  }
+}
