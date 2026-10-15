@@ -238,3 +238,24 @@ dieser neuen Dateien abgeleitet.
 Die bestehenden IETF-Veröffentlichungen sind Protokollquellen. Ein Internet-Draft
 über Provenienz liefert für sich weder eine kalibrierte Uhr noch einen Rückkanal.
 Es wird keine neue IETF-Einreichung oder Zenodo-Veröffentlichung vorgenommen.
+
+## Integrationsprüfung des ersten nativen Nachfolgers
+
+Am ersten Forschungscommit `9c3c6b131698a6a233bfea75dc8f23f406969a97`
+bestand der native Manuskriptlauf 38738292026. Tatsächlich ausgecheckt wurde
+GitHubs PR-Testmerge `2e1a4283e99425573e6b78a6267a1047e49c6b2e` mit Main
+`5796de77fbbef367b7774bc07a340eb970455a4c`. Die relevanten Lean-/Testblobs
+wurden ausdrücklich mit dem Kandidaten verglichen und stimmen überein.
+Die Unterscheidung zwischen PR-Head und Testmerge bleibt im Receipt erhalten.
+
+Der separate CI-Testjob 116433118347 in Lauf 38738292097 prüfte dagegen den
+exakten PR-Head und fand einen Paketierungsfehler: Die drei später eingeführten
+Lean-Module gelangten in den Nachbau des eingefrorenen Alpha-2-Archivs.
+Die vorhandene `POST_ALPHA2_EXCLUSIONS`-Liste wurde um genau diese drei Pfade
+erweitert. Sie bleiben im aktuellen Lean-Build enthalten. Das veröffentlichte
+Archiv und sämtliche erwarteten Prüfsummen werden nicht geändert. Der strenge
+Archivverifier reproduziert weiterhin exakt SHA-256
+`500087f6aeee41787959cfc8902852503e2182019ae4f3e88f115e94a1f5e689`.
+`make release-automation` besteht nach dieser Reparatur. Erster Fehler,
+Quellbindungen und Nachprüfung bleiben unter `evidence/` erhalten; eine
+Abnahme der vollständigen nachfolgenden CI wird daraus nicht vorweggenommen.

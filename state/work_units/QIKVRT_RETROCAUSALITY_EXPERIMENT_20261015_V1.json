@@ -64,5 +64,18 @@
     "human": "Ingolf Lohmann: theory, originals, research question and direct instruction",
     "artificial": "OpenAI Codex: successor formalization, protocol, software, verification and integration",
     "acceptance": "No human acceptance of the new scientific text inferred."
+  },
+  "integration_repair": {
+    "first_candidate_head": "9c3c6b131698a6a233bfea75dc8f23f406969a97",
+    "native_ci_run": 38738292097,
+    "native_test_job": 116433118347,
+    "failure": "Three post-Alpha2 sources were inadvertently included in the immutable Alpha2 rebuild.",
+    "fix": "Extend existing POST_ALPHA2_EXCLUSIONS with exactly BacksignalingBoundary.lean, ThreeObserverProtocol.lean and ObserverRelative.lean; leave current formal root imports intact.",
+    "strict_archive_sha256": "500087f6aeee41787959cfc8902852503e2182019ae4f3e88f115e94a1f5e689",
+    "original_archive_unchanged": true,
+    "release_automation_successor_exit": 0,
+    "native_manuscript_test_merge": "2e1a4283e99425573e6b78a6267a1047e49c6b2e",
+    "native_manuscript_run": 38738292026,
+    "native_manuscript_scope": "Source-identical relevant blobs in PR test merge; not an exact candidate checkout."
   }
 }
