@@ -45,7 +45,8 @@
       "result": "failure",
       "actual_cause": "test_qikvrt_zenodo_metadata_edit expected the now-canonical Owner Authority to be the wrong context; 168/169 release-automation tests passed",
       "repair": "The negative fixture now uses the Mirror as wrong context; nine metadata-edit tests pass locally. No production boundary was relaxed."
-    }
+    },
+    "historical_control_context_repair": "Historical VRTCore decisions are audited against the repository recorded in each immutable manifest; current production Authority does not rewrite their historical context."
   },
   "preserved": {
     "scientific_pdf_bytes": true,

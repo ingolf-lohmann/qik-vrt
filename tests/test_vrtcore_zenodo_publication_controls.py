@@ -17,6 +17,9 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 class VRTCoreZenodoPublicationControlTests(unittest.TestCase):
     def load_authority_manifest(self, path: pathlib.Path) -> dict[str, object]:
+        # Audit the historical decision under its immutable recorded repository;
+        # the current production Authority must not rewrite that event.
+        recorded_repository = json.loads(path.read_text(encoding="utf-8"))["repository"]
         with mock.patch.dict(
             os.environ,
             {"GITHUB_REPOSITORY": "ingolf-lohmann/qik-vrt"},
@@ -28,7 +31,7 @@ class VRTCoreZenodoPublicationControlTests(unittest.TestCase):
                 publish.load_manifest(path, ROOT)
         with mock.patch.dict(
             os.environ,
-            {"GITHUB_REPOSITORY": publish.PRODUCTION_REPOSITORY},
+            {"GITHUB_REPOSITORY": recorded_repository},
         ):
             return publish.load_manifest(path, ROOT)
 

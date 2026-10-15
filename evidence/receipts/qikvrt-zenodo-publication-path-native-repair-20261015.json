@@ -17,5 +17,22 @@
   "focused_tests_passed": 115,
   "no_zenodo_effect": true,
   "scientific_payload_unchanged_by_this_fixture_repair": true,
-  "fresh_native_successor_required": true
+  "fresh_native_successor_required": true,
+  "second_native_run": {
+    "head": "faa94114ab48ab6e09bcc49439d3378ee7cde85f",
+    "run": 38740058504,
+    "job": 116439091715,
+    "result": "failure",
+    "target": "evidence-contract-test",
+    "passed": 171,
+    "total": 173,
+    "errors": [
+      "test_controls_pass_active_v2_manifest_gate",
+      "test_single_use_nonces_are_distinct_without_exposing_values"
+    ],
+    "cause": "Historical control helper substituted current production repository for immutable recorded repository.",
+    "repair": "Audit under manifest.repository; preserve wrong-context rejection and new-effect Authority pin.",
+    "native_log_sha256": "8bcf91ba28229f5c7dcb2f524d9a3d0cba5358c45f2082d597438cdc7eb58389",
+    "local_verification": "Two control tests and real historical manifest helper: PASS; production validator unchanged."
+  }
 }
