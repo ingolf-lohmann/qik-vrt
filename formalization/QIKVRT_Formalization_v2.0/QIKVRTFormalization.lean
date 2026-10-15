@@ -12,6 +12,7 @@ import QIKVRTFormalization.Retrocausality.ForwardProcess
 import QIKVRTFormalization.Retrocausality.Reclassification
 import QIKVRTFormalization.Retrocausality.ObserverRelative
 import QIKVRTFormalization.Physics.EmpiricalBridge
+import QIKVRTFormalization.Physics.MeasurementTransfer
 import QIKVRTFormalization.Definitions.Manuscript
 import QIKVRTFormalization.Completion.OpenClaims
 import QIKVRTFormalization.Claims.CheckedRegistry

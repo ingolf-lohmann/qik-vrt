@@ -1,0 +1,34 @@
+test_alpha2_authorization_is_self_reference_free_and_truth_bounded (tests.test_formalization_v2_release_workflow.FormalizationAlpha2ReleaseTests.test_alpha2_authorization_is_self_reference_free_and_truth_bounded) ... ok
+test_fileset_text_matches_manifest_and_two_phase_evidence (tests.test_formalization_v2_release_workflow.FormalizationAlpha2ReleaseTests.test_fileset_text_matches_manifest_and_two_phase_evidence) ... ok
+test_inactive_marker_and_schema_are_closed (tests.test_formalization_v2_release_workflow.FormalizationAlpha2ReleaseTests.test_inactive_marker_and_schema_are_closed) ... ok
+test_manifest_is_exact_truth_bounded_alpha2_fileset (tests.test_formalization_v2_release_workflow.FormalizationAlpha2ReleaseTests.test_manifest_is_exact_truth_bounded_alpha2_fileset) ... ok
+test_package_is_reproducible_and_has_exact_provenance (tests.test_formalization_v2_release_workflow.FormalizationAlpha2ReleaseTests.test_package_is_reproducible_and_has_exact_provenance) ... ok
+test_source_evidence_is_published_alpha1_and_stays_historical (tests.test_formalization_v2_release_workflow.FormalizationAlpha2ReleaseTests.test_source_evidence_is_published_alpha1_and_stays_historical) ... ok
+test_workflow_embedded_python_is_syntactically_valid (tests.test_formalization_v2_release_workflow.FormalizationAlpha2ReleaseTests.test_workflow_embedded_python_is_syntactically_valid) ... ok
+test_workflows_are_two_phase_inert_and_fail_closed (tests.test_formalization_v2_release_workflow.FormalizationAlpha2ReleaseTests.test_workflows_are_two_phase_inert_and_fail_closed) ... ok
+test_zenodo_checksum_file_binds_other_eighteen_uploads (tests.test_formalization_v2_release_workflow.FormalizationAlpha2ReleaseTests.test_zenodo_checksum_file_binds_other_eighteen_uploads) ... ok
+test_cli_has_no_token_argument_and_missing_secret_blocks (tests.test_formalization_v2_zenodo.FormalizationAlpha2ZenodoTests.test_cli_has_no_token_argument_and_missing_secret_blocks) ... usage: python3 -m unittest reserve [-h] --manifest MANIFEST --source-evidence
+                                   SOURCE_EVIDENCE --reservation RESERVATION
+                                   [--repository-root REPOSITORY_ROOT]
+                                   [--poll-attempts POLL_ATTEMPTS]
+                                   [--poll-interval POLL_INTERVAL]
+python3 -m unittest reserve: error: invalid arguments
+BLOCK manifest file is missing: missing.json
+ok
+test_finalize_replaces_inherited_files_gates_and_publishes (tests.test_formalization_v2_zenodo.FormalizationAlpha2ZenodoTests.test_finalize_replaces_inherited_files_gates_and_publishes) ... ok
+test_finalize_rerun_accepts_only_exact_reserved_public_record (tests.test_formalization_v2_zenodo.FormalizationAlpha2ZenodoTests.test_finalize_rerun_accepts_only_exact_reserved_public_record) ... ok
+test_local_hash_delta_blocks_before_any_transport (tests.test_formalization_v2_zenodo.FormalizationAlpha2ZenodoTests.test_local_hash_delta_blocks_before_any_transport) ... ok
+test_manifest_and_source_evidence_are_closed_to_alpha2 (tests.test_formalization_v2_zenodo.FormalizationAlpha2ZenodoTests.test_manifest_and_source_evidence_are_closed_to_alpha2) ... ok
+test_missing_latest_draft_uses_one_unique_inventory_delta (tests.test_formalization_v2_zenodo.FormalizationAlpha2ZenodoTests.test_missing_latest_draft_uses_one_unique_inventory_delta) ... ok
+test_multiple_inventory_deltas_fail_without_publish (tests.test_formalization_v2_zenodo.FormalizationAlpha2ZenodoTests.test_multiple_inventory_deltas_fail_without_publish) ... ok
+test_mutation_allowlist_blocks_source_edit_and_other_drafts (tests.test_formalization_v2_zenodo.FormalizationAlpha2ZenodoTests.test_mutation_allowlist_blocks_source_edit_and_other_drafts) ... ok
+test_newversion_conflict_never_adopts_an_unreserved_draft (tests.test_formalization_v2_zenodo.FormalizationAlpha2ZenodoTests.test_newversion_conflict_never_adopts_an_unreserved_draft) ... ok
+test_reservation_tamper_blocks_finalize_before_network (tests.test_formalization_v2_zenodo.FormalizationAlpha2ZenodoTests.test_reservation_tamper_blocks_finalize_before_network) ... ok
+test_reserve_creates_only_one_pristine_new_version (tests.test_formalization_v2_zenodo.FormalizationAlpha2ZenodoTests.test_reserve_creates_only_one_pristine_new_version) ... ok
+test_source_latest_drift_blocks_finalize_before_draft_mutation (tests.test_formalization_v2_zenodo.FormalizationAlpha2ZenodoTests.test_source_latest_drift_blocks_finalize_before_draft_mutation) ... ok
+test_unknown_existing_draft_blocks_before_newversion (tests.test_formalization_v2_zenodo.FormalizationAlpha2ZenodoTests.test_unknown_existing_draft_blocks_before_newversion) ... ok
+
+----------------------------------------------------------------------
+Ran 22 tests in 0.319s
+
+OK

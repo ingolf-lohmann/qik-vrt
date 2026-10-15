@@ -24,3 +24,13 @@ import QIKVRTFormalization
 #print axioms QIKVRT.V2.ObserverRelative.separated_time_intervals_establish_actual_order
 #print axioms QIKVRT.V2.ObserverRelative.complementary_numerators_have_constant_sum
 #print axioms QIKVRT.V2.ObserverRelative.published_mark_orientation
+#print axioms QIKVRT.V2.Physics.MeasurementTransfer.exact_readout_is_within
+#print axioms QIKVRT.V2.Physics.MeasurementTransfer.error_budgets_compose
+#print axioms QIKVRT.V2.Physics.MeasurementTransfer.separated_readback_enclosures_establish_order
+#print axioms QIKVRT.V2.Physics.MeasurementTransfer.admitted_run
+#print axioms QIKVRT.V2.Physics.MeasurementTransfer.bound_runs_correspond
+#print axioms QIKVRT.V2.Physics.MeasurementTransfer.bounded_prediction_transfers
+#print axioms QIKVRT.V2.Physics.MeasurementTransfer.order_alone_does_not_identify_clock_scale
+#print axioms QIKVRT.V2.Physics.MeasurementTransfer.exact_inertial_segment_example
+#print axioms QIKVRT.V2.Physics.MeasurementTransfer.same_coordinate_duration_allows_different_proper_durations
+#print axioms QIKVRT.V2.Physics.MeasurementTransfer.finite_calibration_does_not_force_next_prediction

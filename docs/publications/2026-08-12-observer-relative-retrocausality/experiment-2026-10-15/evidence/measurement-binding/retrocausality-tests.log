@@ -1,0 +1,21 @@
+test_asymmetric_binomial_against_enumeration (tests.test_retrocausality_experiment.RetrocausalityExperimentTests.test_asymmetric_binomial_against_enumeration) ... ok
+test_bias_is_included_in_null (tests.test_retrocausality_experiment.RetrocausalityExperimentTests.test_bias_is_included_in_null) ... ok
+test_binomial_against_exact_enumeration (tests.test_retrocausality_experiment.RetrocausalityExperimentTests.test_binomial_against_exact_enumeration) ... ok
+test_common_cause_oracle_can_pass_coherence_but_not_confirm_physics (tests.test_retrocausality_experiment.RetrocausalityExperimentTests.test_common_cause_oracle_can_pass_coherence_but_not_confirm_physics) ... ok
+test_early_entropy_with_later_output_rejected (tests.test_retrocausality_experiment.RetrocausalityExperimentTests.test_early_entropy_with_later_output_rejected) ... ok
+test_exact_original_report_regenerated (tests.test_retrocausality_experiment.RetrocausalityExperimentTests.test_exact_original_report_regenerated) ... ok
+test_fixed_effect_power_and_conservative_threshold (tests.test_retrocausality_experiment.RetrocausalityExperimentTests.test_fixed_effect_power_and_conservative_threshold) ... ok
+test_full_null_fixture_has_no_detection (tests.test_retrocausality_experiment.RetrocausalityExperimentTests.test_full_null_fixture_has_no_detection) ... ok
+test_invalid_bit_and_nan_or_boolean_time_rejected (tests.test_retrocausality_experiment.RetrocausalityExperimentTests.test_invalid_bit_and_nan_or_boolean_time_rejected) ... ok
+test_missing_bits_remain_in_denominator (tests.test_retrocausality_experiment.RetrocausalityExperimentTests.test_missing_bits_remain_in_denominator) ... ok
+test_missing_results_are_adversarially_bounded (tests.test_retrocausality_experiment.RetrocausalityExperimentTests.test_missing_results_are_adversarially_bounded) ... ok
+test_reordering_missing_or_duplicate_slots_rejected (tests.test_retrocausality_experiment.RetrocausalityExperimentTests.test_reordering_missing_or_duplicate_slots_rejected) ... ok
+test_self_declared_physical_candidate_never_self_certifies (tests.test_retrocausality_experiment.RetrocausalityExperimentTests.test_self_declared_physical_candidate_never_self_certifies) ... ok
+test_shared_host_clock_is_not_physical_clock_binding (tests.test_retrocausality_experiment.RetrocausalityExperimentTests.test_shared_host_clock_is_not_physical_clock_binding) ... ok
+test_time_uncertainty_overlap_rejected (tests.test_retrocausality_experiment.RetrocausalityExperimentTests.test_time_uncertainty_overlap_rejected) ... ok
+test_two_sided_test_detects_fixed_anticode (tests.test_retrocausality_experiment.RetrocausalityExperimentTests.test_two_sided_test_detects_fixed_anticode) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.047s
+
+OK

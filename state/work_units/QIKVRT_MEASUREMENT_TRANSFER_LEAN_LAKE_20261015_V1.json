@@ -1,0 +1,65 @@
+{
+  "schema": "qikvrt_measurement_transfer_work_unit_v1",
+  "id": "QIKVRT_MEASUREMENT_TRANSFER_LEAN_LAKE_20261015_V1",
+  "authority_repository": "ingolf-lohmann/qik-vrt",
+  "integration_pr": 523,
+  "branch": "integration/515-519-521-522-20261012-eceb9b63",
+  "source_base_head": "bde06655525df627db6c9944c4546dafc35db0e6",
+  "source_base_tree": "a0a88b47cf30d9d63684123e56b2c52a2b8fca15",
+  "owner_instruction": "Die benannte Lücke zu physikalischer Eigenzeit, Messbindung und zuverlässigen Naturvorhersagen beweisbar mit Lean und Lake schließen.",
+  "human_contribution": {
+    "author": "Ingolf Lohmann",
+    "items": [
+      "Forschungsfrage",
+      "QIK-VRT-Originalveröffentlichungen",
+      "Auftrag und deutsche Arbeitslegende"
+    ]
+  },
+  "artificial_cognitive_contribution": {
+    "author": "OpenAI Codex",
+    "items": [
+      "Mess- und Vorhersageübertragung",
+      "zehn ergänzende Lean-Sätze",
+      "Axiomparser-Reparatur und drei Regressionen",
+      "Prüfungen und Ergebnisdokumentation"
+    ]
+  },
+  "kernel_receipt": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/measurement-binding/receipt.json",
+  "kernel_receipt_sha256": "44bedd9ea3caaf4f3d93e74024fe781dcb12429bbf5624d19597164797bfcea1",
+  "formal_status": "KERNEL_CHECKED_LOCAL_CANDIDATE",
+  "new_theorems": 10,
+  "formal_project_tests": 40,
+  "negative_controls": 3,
+  "proof_placeholder_audit": "PASS",
+  "historical_alpha2_unchanged": true,
+  "open_work": [
+    {
+      "id": "PHYSICAL_MEASUREMENT_BINDING",
+      "status": "OPEN",
+      "next_action": "Bind a concrete apparatus, event/worldline identities, independently calibrated common units and uncertainties, admissible-domain dynamics evidence and independent primary observation/readback to the formal premises."
+    },
+    {
+      "id": "NATIVE_EXACT_HEAD_CI",
+      "status": "OPEN",
+      "next_action": "Read automatic native manuscript-proof execution after the expected-head REST update; do not transfer predecessor CI."
+    },
+    {
+      "id": "ZENODO_ARCHIVE",
+      "status": "OPEN",
+      "next_action": "Keep this successor as a draft until the exact candidate passes the existing publication/proof/return/authorization chain and public byte readback."
+    }
+  ],
+  "physical_confirmation": false,
+  "independent_reproduction": false,
+  "zenodo_publication": false,
+  "main_integration": false,
+  "mirror_equality": false,
+  "delivery_target": "https://raumzeitterminal.de",
+  "repository_evidence_contract_test_groups": [
+    16,
+    27,
+    175
+  ],
+  "release_scope_tests": 22,
+  "retrocausality_tests": 16
+}

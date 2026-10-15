@@ -259,3 +259,62 @@ Archivverifier reproduziert weiterhin exakt SHA-256
 `make release-automation` besteht nach dieser Reparatur. Erster Fehler,
 Quellbindungen und Nachprüfung bleiben unter `evidence/` erhalten; eine
 Abnahme der vollständigen nachfolgenden CI wird daraus nicht vorweggenommen.
+
+
+## 7. Messbindung und Vorhersage: geprüfter formaler Nachfolger
+
+Auftrag vom 15.10.2026: Ingolf Lohmann verlangt, die benannte Mess- und
+Vorhersagelücke mit Lean und Lake beweisbar zu schließen. Die ergänzende
+Formalisierung und Prüfung wurden von OpenAI Codex in seinem Auftrag erstellt.
+Dieser Abschnitt ist ein **Arbeitsentwurf ohne neue Zenodo-Veröffentlichung**.
+
+`Physics/MeasurementTransfer.lean` erweitert die vorhandene empirische Brücke
+und verwendet den bestehenden deterministischen Vorwärtsprozess. Zehn neue
+Sätze sind im vollständigen Lake-Build geprüft. Die formale Brücke lautet:
+
+1. Anfangszustand und Eingaben sind eindeutig gebunden.
+2. Zugelassene Zustände bleiben unter erlaubten Eingaben im deklarierten Bereich.
+3. Ein einzelner Modellschritt stimmt unter der Referenzabbildung mit dem
+   zugeordneten Referenzschritt überein.
+4. Daraus folgt per Induktion die Übereinstimmung für jede zugelassene Schrittlänge.
+5. Bei gültiger Messbindung und begrenztem Modellfehler bleibt der Fehler der
+   übertragenen Prognose innerhalb der Summe beider Fehlergrenzen.
+
+Der Schluss ist stärker als eine bloße Registermarkierung: Er leitet eine
+Aussage über beliebig viele zugelassene Schritte aus einer lokalen
+Übergangseigenschaft her. Die lokalen Korrespondenz- und Kalibrierungsvoraussetzungen
+bleiben dabei offen sichtbar. Ein Referenzzustand ist hier ein mathematisch
+beschriebener Zustand; seine Benennung zertifiziert kein physikalisches Gerät.
+
+Zusätzlich sind konstruktiv bewiesen: Strikt gleiche Ordnungsinformation bestimmt
+keinen eindeutigen metrischen Uhrenmaßstab; gleiche Koordinatendauer bestimmt
+keine eindeutige Eigenzeit; ein beliebig langer endlicher Kalibrierungspräfix
+bestimmt seinen nächsten Messwert nicht ohne weitere Annahme. Die exakten
+Eigenzeitbeispiele sind gerade, zeitartige Trägheitssegmente einer flachen
+Raumzeit mit einer räumlichen Dimension, `c=1` und ganzzahligen gemeinsamen
+Auflösungseinheiten. Beschleunigte oder gekrümmte Weltlinien werden dadurch
+nicht mitformalisiert.
+
+Nachweis: [Kernelbeleg](evidence/measurement-binding/receipt.json),
+[Quellen- und Axiomprüfung](AxiomAudit.lean), drei erwartete negative
+Compilerkontrollen unter `evidence/measurement-binding/negative-controls/`.
+Der aktuelle globale Axiom-Audit umfasst 68 Konstanten, darunter die zehn
+neuen; im auf diesen Versuch begrenzten Audit bleiben 24 wiederverwendete
+Sätze zusätzlich getrennt erkennbar. 40 Projektregressionen und die Prüfung
+auf Beweisplatzhalter bestehen. Die Ergänzung des bestehenden Audit-Parsers
+behandelt tatsächlich beobachtete mehrzeilige Axiomlisten vollständig.
+Das veröffentlichte Alpha-2-Originalarchiv bleibt byte-identisch.
+
+**Formal geschlossen:** die bedingte Übertragung und ihre Fehlergrenze sowie
+präzise Gegenbeispiele gegen das Weglassen von Kalibrierung und Bereichsbindung.
+**Empirische Restpflicht:** Für eine konkrete Naturvorhersage müssen Geräte,
+Ereignisse, Weltlinien, physikalische Uhrenkalibrierung und der behauptete
+Gültigkeitsbereich tatsächlich gebunden und die Beobachtungen unabhängig
+bestätigt sein. Diese Daten werden durch den Kernel nicht erzeugt.
+Die historische veröffentlichte Matrix ORRZ-009 wird nicht nachträglich geändert.
+
+Veröffentlichte Ausgangsquellen: Ingolf Lohmann,
+*QIK-VRT: Beobachterrelative Retrokausalität als negative Informationsrichtung*,
+https://doi.org/10.5281/zenodo.21947141 ;
+*Von Softwarearchitektur zur Weltformel – DAS UNIVERSUM ALS ROUND TRIP*,
+https://doi.org/10.5281/zenodo.21888130 .

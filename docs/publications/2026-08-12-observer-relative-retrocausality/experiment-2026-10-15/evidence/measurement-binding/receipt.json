@@ -1,0 +1,125 @@
+{
+  "schema": "qikvrt_measurement_transfer_kernel_receipt_v1",
+  "observed_at": "2026-10-15T16:47:04.677730+00:00",
+  "source_base_head": "bde06655525df627db6c9944c4546dafc35db0e6",
+  "source_base_tree": "a0a88b47cf30d9d63684123e56b2c52a2b8fca15",
+  "subject": "exact source digests below; local candidate, not a native GitHub execution receipt",
+  "status": "KERNEL_CHECKED_LOCAL_CANDIDATE",
+  "full_lake_build_exit": 0,
+  "new_theorem_count": 10,
+  "reused_scoped_theorems_reaudited": 24,
+  "full_axiom_audit_theorem_count": 68,
+  "proof_escape_audit_files": 54,
+  "formal_project_tests": 40,
+  "negative_controls": [
+    {
+      "name": "FalseMetricFromOrder",
+      "exit_code": 1,
+      "expected_rejection": true,
+      "source": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/measurement-binding/negative-controls/FalseMetricFromOrder.lean",
+      "log": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/measurement-binding/FalseMetricFromOrder.log"
+    },
+    {
+      "name": "FalseNextFromPrefix",
+      "exit_code": 1,
+      "expected_rejection": true,
+      "source": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/measurement-binding/negative-controls/FalseNextFromPrefix.lean",
+      "log": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/measurement-binding/FalseNextFromPrefix.log"
+    },
+    {
+      "name": "FalseZeroBudget",
+      "exit_code": 1,
+      "expected_rejection": true,
+      "source": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/measurement-binding/negative-controls/FalseZeroBudget.lean",
+      "log": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/measurement-binding/FalseZeroBudget.log"
+    }
+  ],
+  "axioms_by_new_theorem": {
+    "QIKVRT.V2.Physics.MeasurementTransfer.admitted_run": [],
+    "QIKVRT.V2.Physics.MeasurementTransfer.bound_runs_correspond": [],
+    "QIKVRT.V2.Physics.MeasurementTransfer.bounded_prediction_transfers": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.V2.Physics.MeasurementTransfer.error_budgets_compose": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.V2.Physics.MeasurementTransfer.exact_inertial_segment_example": [],
+    "QIKVRT.V2.Physics.MeasurementTransfer.exact_readout_is_within": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.V2.Physics.MeasurementTransfer.finite_calibration_does_not_force_next_prediction": [
+      "propext"
+    ],
+    "QIKVRT.V2.Physics.MeasurementTransfer.order_alone_does_not_identify_clock_scale": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.V2.Physics.MeasurementTransfer.same_coordinate_duration_allows_different_proper_durations": [],
+    "QIKVRT.V2.Physics.MeasurementTransfer.separated_readback_enclosures_establish_order": [
+      "Quot.sound",
+      "propext"
+    ]
+  },
+  "sources": {
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Physics/MeasurementTransfer.lean": "57749847cd5285c4d1295e35f31213d3c3b8920d7f980472006efa70f38696d3",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Physics/EmpiricalBridge.lean": "f0f98f33d49b6ffe8e438d8b8f8fd9668c83c273f37fd138f1930a53b89fcfec",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Retrocausality/ForwardProcess.lean": "bc618608089ca2430473bd892a8decc0d2a190d5ced28271292ca851381ca0e0",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Retrocausality/ObserverRelative.lean": "7e52cc78b019663c95bfc240b725c9d5318466384e6d4afe63798b4290c8f863",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization.lean": "ab68abcabd510f816565ea7ceeab1a73bb95c83620d6d8a87275552e51fa3527",
+    "formalization/QIKVRT_Formalization_v2.0/scripts/audit_lean_axioms.py": "47850724c2100c85bd7a5a41b441e4f2bdf09ba728f66cdd72530bcdc9ad9042",
+    "formalization/QIKVRT_Formalization_v2.0/scripts/package_release.py": "7330f662c7462f3250bd355422a648516c23aa76f755065697a373527abb99a2",
+    "formalization/QIKVRT_Formalization_v2.0/tests/test_measurement_transfer_audit.py": "15f1f4dd8a0774a2d49454f743ba58314672742f0f5ba98f79458f98ea8a7961",
+    "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/AxiomAudit.lean": "973d9c860f90c3df8c50f57004fec4a8f9fac85723968fe36a169610fe6d92ae",
+    "formalization/QIKVRT_Formalization_v2.0/lean-toolchain": "ee6fd37555065223ddad24dff70b5447dfbac23c14f48fb8e3ddf266104bfa87",
+    "formalization/QIKVRT_Formalization_v2.0/lakefile.toml": "45d01cd75d0b966cceaed22a246d804811544f8b7c0403ba5d7a6d0e78a55f30"
+  },
+  "compiled_measurement_module_sha256": "a1b75368de3b16851540a6a4130ec65f4074a89b57c45ce7a2757938af991e52",
+  "logs": {
+    "FalseMetricFromOrder.log": "340f3ac78717135f656cde42b906b4b697e6762288ba30c5d605fefe38acdb33",
+    "FalseNextFromPrefix.log": "773340a32638014cc3abb4dcc639f85fb9873559d344510cc34cff96d3c08170",
+    "FalseZeroBudget.log": "66c4348c466ecc71cecf9ed44af50f406c7fcf97dabcf12459001182bd3921f0",
+    "alpha2-verification.log": "60c664dcc72a26b610d1a80d59fdff9efd146cf3e1c4d63e72f9ae72b235bf24",
+    "axiom-audit.log": "f7b87314614433fe738081e62914e422879ec76622e87b8ffc19c9cab33a1748",
+    "evidence-contract.log": "12b233f44879c9b7adf7c779818edbda8222bf452af973701c8bfc663a951a56",
+    "formal-project-tests.log": "2b1b50c070387c1843b1e396b910965235a5ec9b687cc09e677f4d5665e4efa0",
+    "lake-build.log": "affc4520b6bdd9535fd79d85543866d77d662a1a318b131f9472ce1213423beb",
+    "proof-escape-audit.log": "0a295b74ff3c3efbd7dfdce1beb8933b677524ad27449eaa068eb635c0422958",
+    "release-scope-tests.log": "07f7bd2dd4ed89126d4b1de8587c1c27870cbded24f54148f3dcab0b93e2be74",
+    "retrocausality-tests.log": "b09f91d96e94f878724e10879f2d90aaf9f6863874c2b7c676394c8864f3762e",
+    "scoped-axioms.log": "b5c407fbb2806019b47ef0a6ad2712eed01334b3e6e3a8fec157a1058729f8e5"
+  },
+  "toolchain": {
+    "lean": "4.19.0",
+    "lake": "5.0.0-6caaee8 (Lean 4.19.0)",
+    "official_release_url": "https://github.com/leanprover/lean4/releases/download/v4.19.0/lean-4.19.0-linux.tar.zst",
+    "archive_sha256": "6fe3ce97a58f44e2b3567d455b994eacec5bfe9ae7774f2a573444480ba813fe",
+    "upstream_digest_independently_authenticated": false,
+    "lean_binary_sha256": "92c3d35b5bfaa5e0fea413a775d504cf46cd95e1345df61c2274f76779e7e023",
+    "libleanshared_sha256": "2ab605c74c78f9ba4431a7b5305a4b28a9071d8a826f223eb14fe5530f78e14d",
+    "runtime_compatibility_source": "docs/publications/2026-08-02-causality-is-relation-vrtcore/lean_selfexe_compat.c",
+    "runtime_compatibility_source_sha256": "5b797bcf5673e81099b2f675f42211b0af92bef2c4553701e82d02035bc08f4d",
+    "runtime_compatibility_binary_sha256": "5e6c3e1cc676d21064ac242e0df4c97d55bd352d9216799605474f798b4e3f64",
+    "recovery_note": "Official pinned archive reused. Extraction ownership was corrected with --no-same-owner; existing self-executable compatibility shim restores Lean location in this host."
+  },
+  "alpha2_archive_sha256": "500087f6aeee41787959cfc8902852503e2182019ae4f3e88f115e94a1f5e689",
+  "alpha2_archive_unchanged": true,
+  "formal_closure": "admitted one-step state/input correspondence lifts to all admitted steps; error budgets compose; ordinal/metric and finite-calibration boundaries have constructive counterexamples",
+  "physical_assumptions_discharged": false,
+  "physical_confirmation": false,
+  "independent_reproduction": false,
+  "zenodo_publication": "PENDING_NOT_PUBLISHED",
+  "repository_evidence_contract_test_groups": [
+    16,
+    27,
+    175
+  ],
+  "release_scope_tests": 22,
+  "retrocausality_tests": 16,
+  "historical_fixture_restored_without_test_change": true
+}

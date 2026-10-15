@@ -1,0 +1,4 @@
+/workspace/scratch/8e977a8b5796/measurement-bridge/repo/docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/measurement-binding/negative-controls/FalseMetricFromOrder.lean:7:2: error: tactic 'decide' proved that the proposition
+  { coordinateDuration := 5, spatialDisplacement := 0, properDuration := 5 }.properDuration =
+    { coordinateDuration := 5, spatialDisplacement := 3, properDuration := 4 }.properDuration
+is false
