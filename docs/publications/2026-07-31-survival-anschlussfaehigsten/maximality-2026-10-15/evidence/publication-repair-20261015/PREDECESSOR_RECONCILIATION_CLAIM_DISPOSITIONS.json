@@ -1,0 +1,132 @@
+{
+  "schema": "qikvrt_reconciliation_claim_dispositions_v1",
+  "coverage_scope": "High-level synthesis and six proposed bridge work units. Not a complete sentence-level production claim projection.",
+  "production_claim_coverage_complete": false,
+  "claims": [
+    {
+      "claim_id": "REC-INV-001",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "statement": "44 published Zenodo versions, 32 native families and five native IETF revisions in the observed public author scope",
+      "evidence": [
+        "PUBLIC_CORPUS_RECONCILIATION.json",
+        "CORPUS_COVERAGE.json"
+      ]
+    },
+    {
+      "claim_id": "REC-BYTES-001",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "statement": "All 479 reused originals match fresh public size/MD5 and previous SHA256; six selected Zenodo files and five IETF texts freshly redownloaded",
+      "evidence": [
+        "evidence/public-corpus-reconciliation-20261015/REUSED_ALL_FILE_VALIDATION.json",
+        "evidence/public-corpus-reconciliation-20261015/FRESH_SELECTED_ORIGINAL_READBACK.json"
+      ]
+    },
+    {
+      "claim_id": "REC-FORMAL-001",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "statement": "Published formal results are reused within their exact premises; no independent new run of all historical proofs",
+      "evidence": [
+        "GESAMTBETRACHTUNG_DE.txt",
+        "CLAIM_MATRIX.json",
+        "EXTERNAL_COMPARISON_SOURCES.json"
+      ]
+    },
+    {
+      "claim_id": "REC-EMPIRICAL-001",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "statement": "Historical Quality Gates document 103 passed and one skipped case, a scoped 394-byte core and a one-host loopback Mesh; physical correspondence is not inferred",
+      "evidence": [
+        "evidence/public-corpus-reconciliation-20261015/23008704--MEASUREMENTS.json"
+      ]
+    },
+    {
+      "claim_id": "REC-COMPARE-001",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "statement": "External primary publications provide domain-specific simulator/HITL/chronon precedents; they supply no common QIKVRT head-to-head ranking",
+      "evidence": [
+        "EXTERNAL_COMPARISON_SOURCES.json"
+      ]
+    },
+    {
+      "claim_id": "REC-OWNER-001",
+      "classification": "INTERPRETATIVE",
+      "status": "DECLARED",
+      "statement": "Owner asserts QIKVRT reality correspondence and greatest connectability; attribution is preserved and empirical confirmation remains separately evidence-bound",
+      "evidence": [
+        "OWNER_STATEMENT.txt",
+        "OWNER_CLARIFICATION_20261015.txt"
+      ]
+    },
+    {
+      "claim_id": "REC-PUB-001",
+      "classification": "NORMATIVE",
+      "status": "DECLARED",
+      "statement": "Publication requires complete claim disposition, exact artifact identities, appropriate proof/evidence, return receipt, exact owner authorization and admitted publisher",
+      "evidence": [
+        "PUBLICATION_ADMISSION.json"
+      ]
+    },
+    {
+      "claim_id": "REC-B1",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "statement": "Concrete implementation refinement and common semantics",
+      "proposed_only": true,
+      "executed": false,
+      "source": "ABGLEICH_UND_BEWEISBRUECKEN_20261015.txt#B1"
+    },
+    {
+      "claim_id": "REC-B2",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "statement": "Calibrated physical sensor/actuator round trip with independent observed effect",
+      "proposed_only": true,
+      "executed": false,
+      "source": "ABGLEICH_UND_BEWEISBRUECKEN_20261015.txt#B2"
+    },
+    {
+      "claim_id": "REC-B3",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "statement": "Bounded reproducible comparison plus justified universal class/simulation argument for global greatestness",
+      "proposed_only": true,
+      "executed": false,
+      "source": "ABGLEICH_UND_BEWEISBRUECKEN_20261015.txt#B3"
+    },
+    {
+      "claim_id": "REC-B4",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "statement": "Feasibility-qualified independent empirical test of PTG-P01/PTG-T01",
+      "proposed_only": true,
+      "executed": false,
+      "source": "ABGLEICH_UND_BEWEISBRUECKEN_20261015.txt#B4"
+    },
+    {
+      "claim_id": "REC-B5",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "statement": "Physical dynamics, known-limit recovery, stability/unitarity and cosmological correspondence",
+      "proposed_only": true,
+      "executed": false,
+      "source": "ABGLEICH_UND_BEWEISBRUECKEN_20261015.txt#B5"
+    },
+    {
+      "claim_id": "REC-B6",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "statement": "Independent reproduction of an exact formal/software subject",
+      "proposed_only": true,
+      "executed": false,
+      "source": "ABGLEICH_UND_BEWEISBRUECKEN_20261015.txt#B6"
+    }
+  ],
+  "new_mathematical_proofs_claimed": false,
+  "new_physical_experiments_claimed": false,
+  "new_zenodo_publication_claimed": false
+}

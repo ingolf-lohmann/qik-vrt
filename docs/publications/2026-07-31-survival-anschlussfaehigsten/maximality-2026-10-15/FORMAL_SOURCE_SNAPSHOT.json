@@ -1,0 +1,982 @@
+{
+  "schema": "qikvrt_formal_source_snapshot_v1",
+  "source_head": "b97e55a0c4adf1abf2dd608500c55784930a4362",
+  "source_tree": "59296a4a6a0a41f926adad601df0f2472e15ce8f",
+  "native_run": 38711511556,
+  "materialization_reason": "Concurrent PR523 integration changes the current aggregate import file. Preserve the originally checked project without overwriting that integration or transferring its PASS to another source subject.",
+  "source_files": [
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/.gitignore",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/.gitignore",
+        "bytes": 77,
+        "sha256": "70c3a25ab70136c1f0cff750101dfbb1a86d6e2e38c2c6788db73f4e291ce02f",
+        "git_blob_sha1": "be8101792ffd5b611018e2829a3d95ccb69b9419"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/BATCH_01B_PLAN.md",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/BATCH_01B_PLAN.md",
+        "bytes": 4025,
+        "sha256": "c06b0b8800e8b1bf7caf354a95cdac9d5c7e63cfe72316f68ff3a846ace43ebd",
+        "git_blob_sha1": "346a8c4fad200bae8065fc6ed492204bcb8dfc38"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/COMPLETION_PLAN.md",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/COMPLETION_PLAN.md",
+        "bytes": 2918,
+        "sha256": "f8741df335e7f51b32e1c1ac8a65bc691ab9c5f2728386bc575dbcf8a03ef9d7",
+        "git_blob_sha1": "94ec12cd59a5f3d9d8e1fd461ead969fd3dfe792"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/FORMALIZATION_SCOPE.md",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/FORMALIZATION_SCOPE.md",
+        "bytes": 2334,
+        "sha256": "70548cf2cfaa750753c199b8378aafb783425617baacd9b10df6c95b3c794edf",
+        "git_blob_sha1": "611b5215ac7542370de9be853da2a944e4f8db33"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/GLOBAL_COMPLETION_STATUS.json",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/GLOBAL_COMPLETION_STATUS.json",
+        "bytes": 1277,
+        "sha256": "b7125c39a48f44e677ab4f9b426f90fb1da47a366a96f16361626959841e039b",
+        "git_blob_sha1": "6457c3880eb4f2a0feaab66544f87f5737bf29e6"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/LICENSE-CODE",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/LICENSE-CODE",
+        "bytes": 1072,
+        "sha256": "66f0240c6bd4a31643fc195333fafe620a8cfddb8ee4519c2febd2aeacb56934",
+        "git_blob_sha1": "cb3c299c033ba0e688ec79822d93658632de2206"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/MANUSCRIPT_PROOF_MAP.md",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/MANUSCRIPT_PROOF_MAP.md",
+        "bytes": 13522,
+        "sha256": "7046d4e3c68d58520b1040d8bef7046530b616467d52411640426a0b5f6e13a8",
+        "git_blob_sha1": "b312746bd8294adb387d5e392ef0809167bdbfc3"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTEffectAck.lean",
+        "bytes": 1476,
+        "sha256": "a20cec05e050be9d63915c5253a585e04127544aae2ce5ff46227bda19d33320",
+        "git_blob_sha1": "c3a25ef89b4efeb160f62bc33de66ce50efc5726"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/AxiomAudit.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTEffectAck/AxiomAudit.lean",
+        "bytes": 2669,
+        "sha256": "a1321e3d5d4dd0e9f3b521c26c3a88776d72b30ce446253d827de85507bac3b0",
+        "git_blob_sha1": "1a7c0c4b4344ecbcd1372e7d980072d4ba41c0bc"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CanonicalTemporalMemory.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTEffectAck/CanonicalTemporalMemory.lean",
+        "bytes": 6991,
+        "sha256": "f125d126219a152fcf50dd07f0152a4d23fdbf64e657a4ceb8aff2ae9592fbc4",
+        "git_blob_sha1": "5fb78df6e90ae43903d48fd77dacfdc8a293372b"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/Claims.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTEffectAck/Claims.lean",
+        "bytes": 5469,
+        "sha256": "d36d0e53a825f031e0f87420e4b22f35312c2f0c4a51400a17350f3869ef04d3",
+        "git_blob_sha1": "08e0d6e6a7aeb15ac139ad6bd55c5ee5291d416c"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/InformationBoundary.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTEffectAck/InformationBoundary.lean",
+        "bytes": 3441,
+        "sha256": "bca003e52d764805a949f2e57110658771b9a60dc358973148af24d45931a1c8",
+        "git_blob_sha1": "5efb6978f38bd6f49defb526fc8abb3bc21d1822"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/Mediation.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTEffectAck/Mediation.lean",
+        "bytes": 3069,
+        "sha256": "1e8ce147908212a406fc2eedcdf6f64ac63174b53d612a372fedf12f10b2d9bc",
+        "git_blob_sha1": "0483422d9b4271f426cbd3e999a1dbc2e328792b"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/Model.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTEffectAck/Model.lean",
+        "bytes": 6854,
+        "sha256": "83ab0d7a50152545beefc0f88fe3dc479ae681d3d2e04615a4ab9f7c2f305499",
+        "git_blob_sha1": "02cf71f7ded77f0b9b0c18d8fd326fc0fec7f0cb"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/QuantumClassicalRuntime.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTEffectAck/QuantumClassicalRuntime.lean",
+        "bytes": 6248,
+        "sha256": "9a02bb3ba762063646aa22af4c05467b52ac49ef05773bfc067f3a3c2be22465",
+        "git_blob_sha1": "1d0f806a62e1729893b4688e2322f7403a1cb931"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/Safety.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTEffectAck/Safety.lean",
+        "bytes": 6695,
+        "sha256": "473d35b74ff40ddcf76ad5775687ac70d1829fa4309ed656e717478ae5039cf5",
+        "git_blob_sha1": "8dd693f1fd66290d74cdb1e5f7e605b95b6fc73c"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization.lean",
+        "bytes": 3677,
+        "sha256": "3714bad3a61626b891135f7b80f5d353cf159e3a5d2a5e5607686e5fcfd315c0",
+        "git_blob_sha1": "2252494ffaf65f44e06fcc74b44f7937f560eddc"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/AxiomAudit.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Claims/AxiomAudit.lean",
+        "bytes": 466,
+        "sha256": "2c506c8fc2e1bbaab620027ef86f7c8c135173389e0d98c98557a19d5519749f",
+        "git_blob_sha1": "76141ad6bdcda56fa36dcc580b2d6ec75c6ce8ab"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/AxiomAudit02.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Claims/AxiomAudit02.lean",
+        "bytes": 365,
+        "sha256": "667dfdc6dac0cbe8909c9bd783b644e3c0c11f6c30d8e6c55e3b0279322cd883",
+        "git_blob_sha1": "ea38f8ab85f59a321aa42964c3fe97e115c512f3"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/AxiomAuditAll.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Claims/AxiomAuditAll.lean",
+        "bytes": 1499,
+        "sha256": "adb215c3d39095ab8ebcae36081c7da1ea83f63e4a262829a943fad84eec86e0",
+        "git_blob_sha1": "afad9bfa18211ffe2002b8991712f8c1b20bce7e"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/AxiomAuditDimensions.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Claims/AxiomAuditDimensions.lean",
+        "bytes": 500,
+        "sha256": "e75294835c8b025a0d2846114cca0e5e3ed61ae3f340bf4b78d3ca61bf3f38d3",
+        "git_blob_sha1": "b8073264fdef97c266cb8fc2af5741d81ff203fe"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/AxiomAuditFactorization.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Claims/AxiomAuditFactorization.lean",
+        "bytes": 519,
+        "sha256": "4178eeaa8d20cfe5e484f7109bc2ca7ebe8e8029723dfeb4915494aff93d0a1f",
+        "git_blob_sha1": "b2d132db24abf937c9cd17dd38d0a60de2024021"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/Batch01.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Claims/Batch01.lean",
+        "bytes": 1766,
+        "sha256": "dbd617355153ab8576ffef33664cc38b8f5bb2ade5071fb41f06bd395593106a",
+        "git_blob_sha1": "69de72fee3b6e02740960c43ac8ae6f46ccf3622"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/Batch02.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Claims/Batch02.lean",
+        "bytes": 1209,
+        "sha256": "60b8799f96a20647d40e9e1c7d5c32dce725ea717302fd88b809ab222924ca24",
+        "git_blob_sha1": "dd572b150fcaa3979f455d32ffd7723fe9cec300"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/Batch02AxiomAudit.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Claims/Batch02AxiomAudit.lean",
+        "bytes": 386,
+        "sha256": "a12b6d41067cf1f55abcdd79ca595e5e6886e7a5d0b33b500a2d944c2c6cd8da",
+        "git_blob_sha1": "1874da016aafc63b0f8192ce7e01b5e3ad514893"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/Batch02Counterexamples.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Claims/Batch02Counterexamples.lean",
+        "bytes": 1186,
+        "sha256": "4e6c1777df747e06ff9c5461dcfad4a111dc456206250c9121607ed823a96f4a",
+        "git_blob_sha1": "bc81b03573d1a1b6bfc7cceeabbd82fb1750fe53"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/Batch02Dimensions.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Claims/Batch02Dimensions.lean",
+        "bytes": 843,
+        "sha256": "d27e574d248e442346cf5f02d964b460a452af910cc98f9d3d6e7527c495bb68",
+        "git_blob_sha1": "5ab9ce2beb4fc6dbba08beed2fe5738566f3ef4a"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/Batch02Factorization.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Claims/Batch02Factorization.lean",
+        "bytes": 895,
+        "sha256": "6758d73f27b961a768b4653f31956909af082f4262a205ab8b80d2928c121e6e",
+        "git_blob_sha1": "7429a7b0aff142ac8708dbcdc4a64af168454bd9"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/Batch04.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Claims/Batch04.lean",
+        "bytes": 937,
+        "sha256": "f9104084d456cce963ff112cdae9ef7efedaa7d60755fa0532476659dd1a4212",
+        "git_blob_sha1": "d995262b99549f064c1bde0c719e55072da202bd"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/Batch05.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Claims/Batch05.lean",
+        "bytes": 689,
+        "sha256": "3aa0e38702ff04757b334afda9b8436877e1f20b7a322ba6444fc2b243b64259",
+        "git_blob_sha1": "6f56ace209e882d1e7704d4204aef9c2bf6f27b4"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/CheckedRegistry.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Claims/CheckedRegistry.lean",
+        "bytes": 786,
+        "sha256": "404414548a7a61272f364a5b1612943045ba8b26437cd34c8463a9d6989e7384",
+        "git_blob_sha1": "11f4a5e49f6ff8e658cdadd5549c4fe28be1f2b4"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/Completion.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Claims/Completion.lean",
+        "bytes": 4667,
+        "sha256": "f48e8511825e50ee7c853be48af47d50a1958bddaf2fa05114eb4066e91a36bb",
+        "git_blob_sha1": "6f585bceda9dce0f9827bc868c6adeff62b2ee12"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Completion/OpenClaims.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Completion/OpenClaims.lean",
+        "bytes": 15440,
+        "sha256": "96a7bc98e3ed132e46e697739fad037f3547bc9c5320f2cebe879daab9d1405c",
+        "git_blob_sha1": "f5f27b0d1f7709359d20513eb0031f704c059856"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Decision/ObservationSufficiency.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Decision/ObservationSufficiency.lean",
+        "bytes": 6827,
+        "sha256": "17c16ef883bcde7293880ba383bcd1faf9782595e9dc603a61bfb8bc300d74ec",
+        "git_blob_sha1": "486386f206c6d4c18d2ef0e60c9459600dd612d2"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Definitions/Manuscript.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Definitions/Manuscript.lean",
+        "bytes": 15783,
+        "sha256": "c5b483e1657b26f35f532548c6429a43d3a5b6d5cda402806cb194f7e3b95e17",
+        "git_blob_sha1": "fa0ff5ececde00e4f244e87ef6e84ad3f71d648d"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Escape/FiniteStages.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Escape/FiniteStages.lean",
+        "bytes": 2828,
+        "sha256": "3057553473d7fc0ce87388f1d5cbe7fe5f998f91a423a5dd47a980f1313a59ad",
+        "git_blob_sha1": "977b4ad8d51eed5149743b51f6fbc42446b82eb8"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Foundation/ImageComplement.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Foundation/ImageComplement.lean",
+        "bytes": 3002,
+        "sha256": "022cbb59d85690ec1e37ec844b21118cdbf2f2366d90422b0c263e19cc0a6c85",
+        "git_blob_sha1": "c4bb8539c6f8bdf31977e48610f2c21fe8463432"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Foundation/Preimage.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Foundation/Preimage.lean",
+        "bytes": 1757,
+        "sha256": "423302b8a3881b7f8e87937352cfd916db98093130ec3e6a315e0e3d29b52cd9",
+        "git_blob_sha1": "af575d8c62d04d7d2dd4f321d707ff79bbc750fb"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Foundation/RelativeComplement.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Foundation/RelativeComplement.lean",
+        "bytes": 3387,
+        "sha256": "fa8cc089badd85f29dc62ef2deaa50b8f7e79f679bd1dca7a71eca15a17bd6c5",
+        "git_blob_sha1": "2a8c6feee7ea2798449640e7f7ef733274890811"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Hardware/AuthorityMirrorWitness.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Hardware/AuthorityMirrorWitness.lean",
+        "bytes": 9241,
+        "sha256": "f07daf36ccffeaa5e83b7e4cbb0ffd7167407622faf603b5a9287dbbfcc6b475",
+        "git_blob_sha1": "4b8fef25baf7ea4b115fca194a737b12164ec059"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Hardware/AxiomAudit.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Hardware/AxiomAudit.lean",
+        "bytes": 1907,
+        "sha256": "6e5d1aea19876e0f184f309d02588173985a1a4868a4500e67dac0a0ed595b3d",
+        "git_blob_sha1": "d0a88fece755d8ed4a9b3c81cb9dea093e426fbb"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Physics/Dimensions.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Physics/Dimensions.lean",
+        "bytes": 6463,
+        "sha256": "d6d404e97207b0e0a14e90553ca2d6a210ab05330af43823e916a962f04d03e4",
+        "git_blob_sha1": "3424ca48f8eba3c8b9fc0e470daf9d3b0b7737ff"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Physics/EmpiricalBridge.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Physics/EmpiricalBridge.lean",
+        "bytes": 2745,
+        "sha256": "f0f98f33d49b6ffe8e438d8b8f8fd9668c83c273f37fd138f1930a53b89fcfec",
+        "git_blob_sha1": "5e82c92369ab94ea87690c3a1b73fb5212e9a5eb"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Physics/Lorentz.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Physics/Lorentz.lean",
+        "bytes": 3841,
+        "sha256": "ff5cef9b7f852d1e6b43e0ab08ae0b6488fc5cd78a5a17e351f85f17a1367ced",
+        "git_blob_sha1": "dea9123a228f7878b647d314d3425430ecf40754"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ConnectabilityMaximality.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Process/ConnectabilityMaximality.lean",
+        "bytes": 8513,
+        "sha256": "a61d3a67e4a743de75c2204e58a09dfd30cbd5b098bcf5eb026f4c8605208be4",
+        "git_blob_sha1": "c2932d65bc8f2c010c0cbbc6fc3e02458992c18a"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ConnectabilitySimulation.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Process/ConnectabilitySimulation.lean",
+        "bytes": 15641,
+        "sha256": "ea24867dd46c9cd5cd745a4427fff83620813ca05a7e5ba48596a4f667b3cb0a",
+        "git_blob_sha1": "0827e5fd24fa5cb633c1980edb334157b2c230c5"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/Factorization.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Process/Factorization.lean",
+        "bytes": 4314,
+        "sha256": "951835383c10d246315f6febe9129f6db3904cfff589f89708205b82935deb0e",
+        "git_blob_sha1": "57f00504393a0fc0e397d3fab26a30271d2faef2"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/GateCompleteness.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Process/GateCompleteness.lean",
+        "bytes": 5589,
+        "sha256": "4c8dd203f98eaa86eefd8c5f77fa2fd3c401fdb472edd08a110a20964a6bdd1b",
+        "git_blob_sha1": "94875dafeebb07c19d4506f493feea5ae1108001"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/Gates.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Process/Gates.lean",
+        "bytes": 6391,
+        "sha256": "e5c27df2bcfeee4cc1893a6b32bc431b3af2803c8db364bce7ecb812d7d6f42d",
+        "git_blob_sha1": "479dc947ae3b1619b4a974f0231d711e2cd80161"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/OperationalContinuation.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Process/OperationalContinuation.lean",
+        "bytes": 7338,
+        "sha256": "b9e7dfedad068773b5e46a8cf4d0a3823cea223bab0a6070ff906eb13c928d31",
+        "git_blob_sha1": "acd8a45b13c0e0ac8cea6ecb635538940c6b3390"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ShiftInvariance.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Process/ShiftInvariance.lean",
+        "bytes": 3154,
+        "sha256": "f4229851bfb0b63b8594042a6c3bcdf01f49c9a385f1cd43be9b37ad222f8868",
+        "git_blob_sha1": "c06d4191dce880e04bb548ae816e5e226224b157"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/WeightedConnectability.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Process/WeightedConnectability.lean",
+        "bytes": 9234,
+        "sha256": "feadf23a9643e0e41f39cf5e37bca42f07bd0da29bfead8f751f3a2d7764f290",
+        "git_blob_sha1": "1ab2a7553d3b2d6f83b925eec80299a82423442b"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Quantization/NonDiscreteness.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Quantization/NonDiscreteness.lean",
+        "bytes": 7923,
+        "sha256": "8596b3ecac01ce1c107925faab99c1c9b0038c9065909eff20fa4edd4e616d85",
+        "git_blob_sha1": "d330900015a0e15ca74be9fccfdbe4aaf7df5709"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/QuantumFoundations/AxiomAudit.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/QuantumFoundations/AxiomAudit.lean",
+        "bytes": 1069,
+        "sha256": "93c3d1288b8413bacfe65e9281db3cdeac5820b570616a324def4cb24e40dedd",
+        "git_blob_sha1": "91e0312046230602983ae5b937fefe7942108e87"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/QuantumFoundations/MeasurementIndependence.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/QuantumFoundations/MeasurementIndependence.lean",
+        "bytes": 6096,
+        "sha256": "f62f4532f5650cfedeef97c9f09251e5945efcd34439273fe5807101056ab103",
+        "git_blob_sha1": "786a050c416ab25e1947c05ed449a0c55bda0d98"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Retrocausality/ForwardProcess.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Retrocausality/ForwardProcess.lean",
+        "bytes": 2459,
+        "sha256": "bc618608089ca2430473bd892a8decc0d2a190d5ced28271292ca851381ca0e0",
+        "git_blob_sha1": "a85aea3ece123612d39fbdef540b1d8d5be1b95d"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Retrocausality/Reclassification.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/Retrocausality/Reclassification.lean",
+        "bytes": 3005,
+        "sha256": "d674237eeb3e9ce0ade50a31b3ebe705695a5bcc28b88163b776f6e25c0adc24",
+        "git_blob_sha1": "fc32c5f11dc98dda7ef598dd8282e7070c4e4757"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/WorldFormula/AxiomAudit.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/WorldFormula/AxiomAudit.lean",
+        "bytes": 757,
+        "sha256": "225090c0bcd95ae90bab3db9140a1cef09fa8e02f8fade9adf6f5ade9343a5a3",
+        "git_blob_sha1": "6895b071e9d6b71ef2054f18d0a1d96ac1b1f105"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/WorldFormula/Relations.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTFormalization/WorldFormula/Relations.lean",
+        "bytes": 11291,
+        "sha256": "557c736d042a06103d45810d10293b797980544d9d5a63c7cdb81540c4e6ce36",
+        "git_blob_sha1": "2e08d9e723856a576e50948e2325ca0768a4fb4f"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTUniversalOntology.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTUniversalOntology.lean",
+        "bytes": 431,
+        "sha256": "3f689dbc1267af85ab66e6690e107847f470d359bc0e3e777ff5473861588e60",
+        "git_blob_sha1": "674c50a8396d1e6837d0d8cee34f80785ac0763d"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTUniversalOntology/AxiomAudit.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTUniversalOntology/AxiomAudit.lean",
+        "bytes": 2263,
+        "sha256": "2e6b967c30e4b1d724953bd8aceb9168f71bd162820b76fbe49349bab89f06d6",
+        "git_blob_sha1": "832063df5d2083654110cb539c2b211c413aff0d"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTUniversalOntology/Core.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTUniversalOntology/Core.lean",
+        "bytes": 8099,
+        "sha256": "c547c9f0a84ffb7d99d80748e47f75d8f412c2a6c5eb7c8e3652afd3cdc1f1d5",
+        "git_blob_sha1": "97e4ca8129c390f5317f304f385edada718c1f4b"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTUniversalOntology/ExtendedAxiomAudit.lean",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/QIKVRTUniversalOntology/ExtendedAxiomAudit.lean",
+        "bytes": 5562,
+        "sha256": "9d5415247ead0a2de44657039361d446865128b464c816038a234a1071a1f29a",
+        "git_blob_sha1": "362b4b766a43ff9ff3a5361a8e4248b144086eb9"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/README.md",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/README.md",
+        "bytes": 2739,
+        "sha256": "4267e24025bb4739ecca4428d867659731a314fb4550094208085b297c8960da",
+        "git_blob_sha1": "527776113ff7aeb13bf65dc11ea4bdd70009f6d0"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/RELEASE_NOTES_WHATSAPP_DE.md",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/RELEASE_NOTES_WHATSAPP_DE.md",
+        "bytes": 2647,
+        "sha256": "7dba1fcef46232019247b191da18c16d08e24a1eb5c9e89c2ed12c8cbf8f1a2d",
+        "git_blob_sha1": "0b13e9579a186067ad61dba396abc8be739d6205"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/VERIFICATION_REPORT.md",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/VERIFICATION_REPORT.md",
+        "bytes": 2793,
+        "sha256": "cb419e02e7aa09cb9648d8931c630b997e9a263f020379d8da9f5d11160ceba6",
+        "git_blob_sha1": "7fff6e2808305e6bc94e8e0c104b2cea9f89460a"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/claims/APPENDIX_MATRIX.json",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/claims/APPENDIX_MATRIX.json",
+        "bytes": 26664,
+        "sha256": "6370906fa106e77bb14c97118506b7d11d4d8e21fed620a16b8752d70d9bf0c3",
+        "git_blob_sha1": "d4090b65c2559f9d3b4fb869e220cacc5c27e843"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/claims/CLAIM_GRAPH.json",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/claims/CLAIM_GRAPH.json",
+        "bytes": 54876,
+        "sha256": "2a02b50ce245434da8c449a0d4729ba385579c0f59f0a548c41ab46e8febf96f",
+        "git_blob_sha1": "b9f3686c6bb786fd03189c9320033b802488f796"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/claims/TEX_ENVIRONMENTS.json",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/claims/TEX_ENVIRONMENTS.json",
+        "bytes": 38487,
+        "sha256": "3104ef4a62c5a92cef1a359e06adb61859c2840a9cc3b1f72d9339172a2b0d1f",
+        "git_blob_sha1": "0a91077d30450d888f8bd3b4157c8b0abfadadfe"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/effect_ack/DRAFT01_CLAIM_MATRIX.json",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/effect_ack/DRAFT01_CLAIM_MATRIX.json",
+        "bytes": 11647,
+        "sha256": "df13e45d0af2050ecd8fb9d6cd132882021cbd0e2550b678fb06c23b4f56892a",
+        "git_blob_sha1": "a5c99038db6b20a6acb16381ff333c81c922cc56"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/effect_ack/DRAFT01_SOURCE_PROVENANCE.json",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/effect_ack/DRAFT01_SOURCE_PROVENANCE.json",
+        "bytes": 1431,
+        "sha256": "bfd7488598f97d1d61060f922eacc6d590162d511f6797a7893dc2c9cbcd6338",
+        "git_blob_sha1": "c10612a8cbe1336a82ec349a5c9a6cb026c60b41"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/evidence/AUTHORITY_MIRROR_NVM_FINITE_MODEL_RECEIPT.json",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/evidence/AUTHORITY_MIRROR_NVM_FINITE_MODEL_RECEIPT.json",
+        "bytes": 1072,
+        "sha256": "8a1ea6cc20624580730be56f3d433f7cfc36f891403cc9c69c293320469ef6a9",
+        "git_blob_sha1": "8857233d4fc04063315372cb497c759b89903871"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/lake-manifest.json",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/lake-manifest.json",
+        "bytes": 127,
+        "sha256": "07d6545fe29e15a39f08519aac71f6ea5fc0530d0d5101d5b3e8df93cf9f7e5e",
+        "git_blob_sha1": "05f9c472ae34ac083fb3a8090089821e212bd243"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/lakefile.toml",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/lakefile.toml",
+        "bytes": 265,
+        "sha256": "45d01cd75d0b966cceaed22a246d804811544f8b7c0403ba5d7a6d0e78a55f30",
+        "git_blob_sha1": "5cec9150deb3e6821dc3ae2b4bf12e36ca8f53da"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/lean-toolchain",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/lean-toolchain",
+        "bytes": 26,
+        "sha256": "ee6fd37555065223ddad24dff70b5447dfbac23c14f48fb8e3ddf266104bfa87",
+        "git_blob_sha1": "cf00978c98941128bcbab27eaa26ed28b9cbbf15"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/proofs/PROOF_OBJECT_MANIFEST.json",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/proofs/PROOF_OBJECT_MANIFEST.json",
+        "bytes": 24058,
+        "sha256": "199c9be97ed34924cfbd4656465a2d010919c2ddd7809961deeb641e9201e4c7",
+        "git_blob_sha1": "acae48fcb5896df8e3771e58c2caa26343c84496"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/release_authorization/ALPHA2_EFFECT_ACK_DONE.json",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/release_authorization/ALPHA2_EFFECT_ACK_DONE.json",
+        "bytes": 2641,
+        "sha256": "372d72124f139625b52c618007d9bfcf05a3f310f71dcf34d446214874146cf5",
+        "git_blob_sha1": "b75f332c8d0b115c27bd3d3cafb2fbfc68afb030"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/release_authorization/ALPHA2_INPUT.json",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/release_authorization/ALPHA2_INPUT.json",
+        "bytes": 2687,
+        "sha256": "8052132fc71bec90bccdc0ab72b3120a9bf7cf3be50044d4bdaf95f30f6b8397",
+        "git_blob_sha1": "328929b898d95d16d652666991fe9289f06288f6"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/release_authorization/EFFECT_ACK_DONE.json",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/release_authorization/EFFECT_ACK_DONE.json",
+        "bytes": 2935,
+        "sha256": "18b78ee2c9cf9cfb3f03733255d93096174a60e82254f9662ee78cf35484cb80",
+        "git_blob_sha1": "8092330259c75286476ce74f52352eccae02d4b9"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/release_authorization/INPUT.json",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/release_authorization/INPUT.json",
+        "bytes": 1860,
+        "sha256": "623f39ccf7ebdcc44a6ac945f3fff2d716892d3298d26f6cf1b3b12ef183ee72",
+        "git_blob_sha1": "2ab5715747e84f9a7ac2bf950d552755b22bf11e"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/scripts/audit_completion_axioms.py",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/scripts/audit_completion_axioms.py",
+        "bytes": 2794,
+        "sha256": "2c0406105f4f5ac1ad91906d330e0e918517972a8f51a55daa022605af98a6c0",
+        "git_blob_sha1": "30fd0659e3c5bc9f3d77eb7b2a5f019153364602"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/scripts/audit_lean_axioms.py",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/scripts/audit_lean_axioms.py",
+        "bytes": 8998,
+        "sha256": "74cf9a95e40d08a135af34f05e4b7c6c3af896bfd85af48551e5a13b6c44ee1d",
+        "git_blob_sha1": "fd2933e44e95503cfdcac9941e932f7d0979b3f2"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/scripts/audit_proof_escapes.py",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/scripts/audit_proof_escapes.py",
+        "bytes": 3402,
+        "sha256": "be48c103c300e15051b05faec8fcfb4ad59f13379cf4d859825e7470fa500dd1",
+        "git_blob_sha1": "439c25a2d428f32f031390b7649f7676efdb4e6d"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/scripts/extract_tex_inventory.py",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/scripts/extract_tex_inventory.py",
+        "bytes": 31375,
+        "sha256": "9d1e48337caa99730c60f37790c5c1456d6d5b76092887d3e30785a21c7d10cf",
+        "git_blob_sha1": "2be12d80b43ed9f9862ebac5d6154cbcd382d6a9"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/scripts/make_universal_ontology_kernel_receipt.py",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/scripts/make_universal_ontology_kernel_receipt.py",
+        "bytes": 5629,
+        "sha256": "aebfdfe95cf0d83fd8bdfae7d2293c912acf5eeb827a5a0e71c60ef17faa57b4",
+        "git_blob_sha1": "e156042ed59ce758648b0a0b5f046386882f7fa6"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/scripts/materialize_completion.py",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/scripts/materialize_completion.py",
+        "bytes": 8272,
+        "sha256": "a34324f6cd430df0fa1e32802bd838686abfa6d32b8870821deda86a8ea80ed8",
+        "git_blob_sha1": "193a588fa5b766abc115a0c13afd0203c0e0da49"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/scripts/materialize_completion_proof_manifest.py",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/scripts/materialize_completion_proof_manifest.py",
+        "bytes": 3774,
+        "sha256": "fbdaefadc12435285e1fde418757375dba7234a4fd2356faac6fa09c9742ce1d",
+        "git_blob_sha1": "a349cf44ffbbebd98a977e9fcd67f40ca2f7eece"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/scripts/package_release.py",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/scripts/package_release.py",
+        "bytes": 13261,
+        "sha256": "5f0c6ef204f6ea93f2fe37f9ba7e7fc3f43cff42439188c00c35a61d85e6689c",
+        "git_blob_sha1": "578df408291ee1b2288e812b90212d2e4105f46b"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/scripts/render_completion_proof_map.py",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/scripts/render_completion_proof_map.py",
+        "bytes": 6886,
+        "sha256": "aea629e183793fe78dba26cdebc30be8b85cf66f32668bebed6c681d76f343b5",
+        "git_blob_sha1": "1eaf8f9e7a5fa34fd800f9562080568ab606d852"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/scripts/render_completion_verification_report.py",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/scripts/render_completion_verification_report.py",
+        "bytes": 5181,
+        "sha256": "3a70d0d8c129921072ef54a7737d2eb9847454bc0e068c62a90ab768348304b2",
+        "git_blob_sha1": "7e09e144c453ba99422dc6f0b016f424c2d30c8b"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/scripts/render_proof_map.py",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/scripts/render_proof_map.py",
+        "bytes": 7246,
+        "sha256": "87d77be464ec4816d29b16aff27f85a3e288518a8ff64c713ec0d795f1559796",
+        "git_blob_sha1": "b8562e891d7aab3f5c53d8278e319cc09cede420"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/scripts/validate_claim_graph.py",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/scripts/validate_claim_graph.py",
+        "bytes": 18979,
+        "sha256": "03346314ac629cd4925d867aefe17277467c8ea323b183ce2369c062934a5a19",
+        "git_blob_sha1": "8f8ed6fa0efeca6d48e4e35e326545e47f83bbbc"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/scripts/validate_completion_claim_graph.py",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/scripts/validate_completion_claim_graph.py",
+        "bytes": 10241,
+        "sha256": "52f94e3669860e1f43e7d2635846ea8f062fdece028b885f501f6314bb427603",
+        "git_blob_sha1": "62559eae05f8e6da86c0108832411cf6e848de47"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/scripts/validate_effect_ack_claims.py",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/scripts/validate_effect_ack_claims.py",
+        "bytes": 9229,
+        "sha256": "f5f34141308d2d7719ea83de9de2ae57f4146eb39aeb4d6f7a6c8062d9222e28",
+        "git_blob_sha1": "a8fc73501ed8d7e4ff12e14afe84837ea0da8dee"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/scripts/verify_authority_mirror_nvm_finite.py",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/scripts/verify_authority_mirror_nvm_finite.py",
+        "bytes": 3283,
+        "sha256": "fbe35376a71ed3a8c785b55a32d1bfc6bf0edf1046017696cb4774d420d79deb",
+        "git_blob_sha1": "591cae7d0e5ba46dea32cfa22b1dcd7ed1358ba2"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/scripts/verify_proof_object_manifest.py",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/scripts/verify_proof_object_manifest.py",
+        "bytes": 18317,
+        "sha256": "a99886dff0ee42262c713902f267160a0ca13cea9e2ea3f4944a78e27c020533",
+        "git_blob_sha1": "cfe2154750cbf9c1a0290d06bc180f18b9ec0590"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/scripts/verify_source_lock.py",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/scripts/verify_source_lock.py",
+        "bytes": 4484,
+        "sha256": "d2915825deceb3cf2754e65e392edf0b17c6dfd313f110e6db8fefc3d8285b4f",
+        "git_blob_sha1": "f76064e79fc4c14f62ea1fe9c67f2b421ab0256f"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/scripts/verify_universal_ontology.py",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/scripts/verify_universal_ontology.py",
+        "bytes": 13641,
+        "sha256": "32d1a0fe26edbd3aebed35a1028d9c8dd2495dde3856b01df92cd942cea68d36",
+        "git_blob_sha1": "74214389a478a0a038cdacd68d292a3971c7ef8c"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/source/SOURCE_PROVENANCE.json",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/source/SOURCE_PROVENANCE.json",
+        "bytes": 1155,
+        "sha256": "6656b25227d38949826624fbcaf91123baa38ca7d8b4f3bc0a90af6a0d02416d",
+        "git_blob_sha1": "ce40b7550dec4eed5c00d79376cb4ec871d17264"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/tests/test_claim_pipeline.py",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/tests/test_claim_pipeline.py",
+        "bytes": 11673,
+        "sha256": "69d96f1f4f27559643a50d9ba647fe5ad1ba0a0c4b16cddbfa984506729473a8",
+        "git_blob_sha1": "653e442d34347c7b942c8c6b35b189c512ffab2b"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/tests/test_effect_ack_claims.py",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/tests/test_effect_ack_claims.py",
+        "bytes": 2614,
+        "sha256": "5a131907c6b72e557ae79a542b34b8adbd25a2273a1574bb0178c55824c28494",
+        "git_blob_sha1": "2d95ce2e5af9b9e8f31b2400bbed6a65e862248a"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/tests/test_proof_object_manifest.py",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/tests/test_proof_object_manifest.py",
+        "bytes": 10156,
+        "sha256": "31978c290b32e6815f7072191ef88989e3c50eec8f8768cfba2af9fdd1368014",
+        "git_blob_sha1": "65d3b36a37c594799328094e0c47a2d5447d99c1"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/tests/test_quantum_classical_runtime_article.py",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/tests/test_quantum_classical_runtime_article.py",
+        "bytes": 2591,
+        "sha256": "64bc2cb592c655657620af997f755838df75f8ea8302fec95c3d1471d812fa44",
+        "git_blob_sha1": "70dfcafd4b0ff981ef1fb4d2fcec5f87cc02d382"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/tests/test_world_formula_relation_kernel.py",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/tests/test_world_formula_relation_kernel.py",
+        "bytes": 3737,
+        "sha256": "d057a3243dfc6354ce16a5ee8517ae393526409ce8a16f05f3fea4955f98d2c9",
+        "git_blob_sha1": "f466c3977ac745da0abe179190479769a5ed63e3"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/universal_ontology/CLAIM_MATRIX.json",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/universal_ontology/CLAIM_MATRIX.json",
+        "bytes": 10790,
+        "sha256": "ce93ae3740a8648848484b23ef47c88c6a0cbd8a70376b3f2806b2e5629d7a93",
+        "git_blob_sha1": "2a3033f653d68f626b32915aab882d5b69650887"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/universal_ontology/README.md",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/universal_ontology/README.md",
+        "bytes": 1578,
+        "sha256": "722b8be2786924cddbde9adea7635754674f0f92998e46dc3517b0cc7031cc63",
+        "git_blob_sha1": "0849e0e90daa1065218ecf730b968020f524146c"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/universal_ontology/SOURCE_SCOPE.json",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/universal_ontology/SOURCE_SCOPE.json",
+        "bytes": 2692,
+        "sha256": "31594d6d8cdc0b91f77c35388e5d135183cfd65cc53d8623f095c0dbef90d5f3",
+        "git_blob_sha1": "37eebb7851f0bdd02e95ea8ed0f9b17ae5ef6498"
+      }
+    },
+    {
+      "native_source_path": "formalization/QIKVRT_Formalization_v2.0/universal_ontology/WORLD_FORMULA_CLAIM_MATRIX.json",
+      "snapshot": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/formal-source/universal_ontology/WORLD_FORMULA_CLAIM_MATRIX.json",
+        "bytes": 2852,
+        "sha256": "1c5d4fe515c47e5c6039545d4806d54376ce5954435bc34707ace9913a8478f6",
+        "git_blob_sha1": "f480e55750a3baf0442223a6d8783c1d9ddf7052"
+      }
+    }
+  ],
+  "source_bytes_changed": false
+}

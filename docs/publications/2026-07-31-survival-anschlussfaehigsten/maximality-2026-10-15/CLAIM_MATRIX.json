@@ -1,7 +1,7 @@
 {
   "schema": "qikvrt_maximality_claim_matrix_v1",
   "publication_id": "qikvrt-connectability-maximality-20261015-v1",
-  "claim_count": 24,
+  "claim_count": 37,
   "claims": [
     {
       "claim_id": "MAX-001",
@@ -18,6 +18,11 @@
       ],
       "source_refs": [
         "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ConnectabilityMaximality.lean"
+      ],
+      "boundary": "Exactly the Lean proposition and its typed hypotheses; shared label meaning and concrete implementation correspondence are external. No QIK-VRT global superiority or empirical reality claim.",
+      "sources": [
+        "SRC-003",
+        "SRC-008"
       ]
     },
     {
@@ -35,6 +40,11 @@
       ],
       "source_refs": [
         "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ConnectabilityMaximality.lean"
+      ],
+      "boundary": "Exactly the Lean proposition and its typed hypotheses; shared label meaning and concrete implementation correspondence are external. No QIK-VRT global superiority or empirical reality claim.",
+      "sources": [
+        "SRC-003",
+        "SRC-008"
       ]
     },
     {
@@ -52,6 +62,11 @@
       ],
       "source_refs": [
         "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ConnectabilityMaximality.lean"
+      ],
+      "boundary": "Exactly the Lean proposition and its typed hypotheses; shared label meaning and concrete implementation correspondence are external. No QIK-VRT global superiority or empirical reality claim.",
+      "sources": [
+        "SRC-003",
+        "SRC-008"
       ]
     },
     {
@@ -69,6 +84,11 @@
       ],
       "source_refs": [
         "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ConnectabilityMaximality.lean"
+      ],
+      "boundary": "Exactly the Lean proposition and its typed hypotheses; shared label meaning and concrete implementation correspondence are external. No QIK-VRT global superiority or empirical reality claim.",
+      "sources": [
+        "SRC-003",
+        "SRC-008"
       ]
     },
     {
@@ -86,6 +106,11 @@
       ],
       "source_refs": [
         "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ConnectabilityMaximality.lean"
+      ],
+      "boundary": "Exactly the Lean proposition and its typed hypotheses; shared label meaning and concrete implementation correspondence are external. No QIK-VRT global superiority or empirical reality claim.",
+      "sources": [
+        "SRC-003",
+        "SRC-008"
       ]
     },
     {
@@ -103,6 +128,11 @@
       ],
       "source_refs": [
         "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ConnectabilityMaximality.lean"
+      ],
+      "boundary": "Exactly the Lean proposition and its typed hypotheses; shared label meaning and concrete implementation correspondence are external. No QIK-VRT global superiority or empirical reality claim.",
+      "sources": [
+        "SRC-003",
+        "SRC-008"
       ]
     },
     {
@@ -120,6 +150,11 @@
       ],
       "source_refs": [
         "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ConnectabilityMaximality.lean"
+      ],
+      "boundary": "Exactly the Lean proposition and its typed hypotheses; shared label meaning and concrete implementation correspondence are external. No QIK-VRT global superiority or empirical reality claim.",
+      "sources": [
+        "SRC-003",
+        "SRC-008"
       ]
     },
     {
@@ -137,6 +172,11 @@
       ],
       "source_refs": [
         "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ConnectabilityMaximality.lean"
+      ],
+      "boundary": "Exactly the Lean proposition and its typed hypotheses; shared label meaning and concrete implementation correspondence are external. No QIK-VRT global superiority or empirical reality claim.",
+      "sources": [
+        "SRC-003",
+        "SRC-008"
       ]
     },
     {
@@ -154,6 +194,11 @@
       ],
       "source_refs": [
         "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ConnectabilityMaximality.lean"
+      ],
+      "boundary": "Exactly the Lean proposition and its typed hypotheses; shared label meaning and concrete implementation correspondence are external. No QIK-VRT global superiority or empirical reality claim.",
+      "sources": [
+        "SRC-003",
+        "SRC-008"
       ]
     },
     {
@@ -165,7 +210,9 @@
       "scope": "This candidate and the stated requested effect.",
       "proof_refs": [],
       "evidence_refs": [],
-      "source_refs": []
+      "source_refs": [],
+      "boundary": "This candidate and the stated requested effect.",
+      "sources": []
     },
     {
       "claim_id": "OPEN-CLASS-001",
@@ -176,7 +223,9 @@
       "scope": "This candidate and the stated requested effect.",
       "proof_refs": [],
       "evidence_refs": [],
-      "source_refs": []
+      "source_refs": [],
+      "boundary": "This candidate and the stated requested effect.",
+      "sources": []
     },
     {
       "claim_id": "OPEN-SEM-001",
@@ -187,7 +236,9 @@
       "scope": "This candidate and the stated requested effect.",
       "proof_refs": [],
       "evidence_refs": [],
-      "source_refs": []
+      "source_refs": [],
+      "boundary": "This candidate and the stated requested effect.",
+      "sources": []
     },
     {
       "claim_id": "OPEN-SIM-001",
@@ -198,7 +249,9 @@
       "scope": "This candidate and the stated requested effect.",
       "proof_refs": [],
       "evidence_refs": [],
-      "source_refs": []
+      "source_refs": [],
+      "boundary": "This candidate and the stated requested effect.",
+      "sources": []
     },
     {
       "claim_id": "OPEN-RESOURCE-001",
@@ -209,7 +262,9 @@
       "scope": "This candidate and the stated requested effect.",
       "proof_refs": [],
       "evidence_refs": [],
-      "source_refs": []
+      "source_refs": [],
+      "boundary": "This candidate and the stated requested effect.",
+      "sources": []
     },
     {
       "claim_id": "OPEN-GLOBAL-001",
@@ -220,7 +275,9 @@
       "scope": "This candidate and the stated requested effect.",
       "proof_refs": [],
       "evidence_refs": [],
-      "source_refs": []
+      "source_refs": [],
+      "boundary": "This candidate and the stated requested effect.",
+      "sources": []
     },
     {
       "claim_id": "OPEN-ZENODO-001",
@@ -231,7 +288,9 @@
       "scope": "This candidate and the stated requested effect.",
       "proof_refs": [],
       "evidence_refs": [],
-      "source_refs": []
+      "source_refs": [],
+      "boundary": "This candidate and the stated requested effect.",
+      "sources": []
     },
     {
       "claim_id": "OPEN-MIRROR-001",
@@ -242,7 +301,9 @@
       "scope": "This candidate and the stated requested effect.",
       "proof_refs": [],
       "evidence_refs": [],
-      "source_refs": []
+      "source_refs": [],
+      "boundary": "This candidate and the stated requested effect.",
+      "sources": []
     },
     {
       "claim_id": "OPEN-DELIVERY-001",
@@ -253,7 +314,9 @@
       "scope": "This candidate and the stated requested effect.",
       "proof_refs": [],
       "evidence_refs": [],
-      "source_refs": []
+      "source_refs": [],
+      "boundary": "This candidate and the stated requested effect.",
+      "sources": []
     },
     {
       "claim_id": "OWNER-001",
@@ -266,6 +329,10 @@
       "evidence_refs": [],
       "source_refs": [
         "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/OWNER_STATEMENT.txt"
+      ],
+      "boundary": "Attributed source, recorded local verification or declared publication process only.",
+      "sources": [
+        "SRC-006"
       ]
     },
     {
@@ -282,6 +349,12 @@
       ],
       "source_refs": [
         "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+      ],
+      "boundary": "Attributed source, recorded local verification or declared publication process only.",
+      "sources": [
+        "SRC-007",
+        "SRC-002",
+        "SRC-001"
       ]
     },
     {
@@ -295,7 +368,11 @@
       "evidence_refs": [
         "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/KERNEL_RECEIPT.json"
       ],
-      "source_refs": []
+      "source_refs": [],
+      "boundary": "Attributed source, recorded local verification or declared publication process only.",
+      "sources": [
+        "SRC-003"
+      ]
     },
     {
       "claim_id": "PUB-RULE-001",
@@ -308,6 +385,10 @@
       "evidence_refs": [],
       "source_refs": [
         "policy/zenodo-machine-proof-policy-v2.json"
+      ],
+      "boundary": "Attributed source, recorded local verification or declared publication process only.",
+      "sources": [
+        "SRC-009"
       ]
     },
     {
@@ -321,6 +402,10 @@
       "evidence_refs": [],
       "source_refs": [
         "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/OWNER_CLARIFICATION_20261015.txt"
+      ],
+      "boundary": "Attributed clarification; MAX-008 gives the conditional bridge and MAX-009 its missing-coverage boundary. No global QIK-VRT implementation theorem is inferred.",
+      "sources": [
+        "SRC-004"
       ]
     },
     {
@@ -336,6 +421,232 @@
       ],
       "source_refs": [
         "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/OWNER_FULL_CORPUS_REQUIREMENT_20261015.txt"
+      ],
+      "boundary": "Full identified public author corpus as of 2026-10-15.",
+      "sources": [
+        "SRC-001",
+        "SRC-005"
+      ]
+    },
+    {
+      "claim_id": "REC-INV-001",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "statement": "44 published Zenodo versions, 32 native families and five native IETF revisions in the observed public author scope",
+      "scope": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-REC-INV-001"
+      ],
+      "boundary": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "sources": [
+        "SRC-REC-INV-001"
+      ]
+    },
+    {
+      "claim_id": "REC-BYTES-001",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "statement": "All 479 reused originals match fresh public size/MD5 and previous SHA256; six selected Zenodo files and five IETF texts freshly redownloaded",
+      "scope": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-REC-BYTES-001"
+      ],
+      "boundary": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "sources": [
+        "SRC-REC-BYTES-001"
+      ]
+    },
+    {
+      "claim_id": "REC-FORMAL-001",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "statement": "Published formal results are reused within their exact premises; no independent new run of all historical proofs",
+      "scope": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-REC-FORMAL-001"
+      ],
+      "boundary": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "sources": [
+        "SRC-REC-FORMAL-001"
+      ]
+    },
+    {
+      "claim_id": "REC-EMPIRICAL-001",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "statement": "Historical Quality Gates document 103 passed and one skipped case, a scoped 394-byte core and a one-host loopback Mesh; physical correspondence is not inferred",
+      "scope": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-REC-EMPIRICAL-001"
+      ],
+      "boundary": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "sources": [
+        "SRC-REC-EMPIRICAL-001"
+      ]
+    },
+    {
+      "claim_id": "REC-COMPARE-001",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "statement": "External primary publications provide domain-specific simulator/HITL/chronon precedents; they supply no common QIKVRT head-to-head ranking",
+      "scope": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-REC-COMPARE-001"
+      ],
+      "boundary": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "sources": [
+        "SRC-REC-COMPARE-001"
+      ]
+    },
+    {
+      "claim_id": "REC-OWNER-001",
+      "classification": "INTERPRETATIVE",
+      "status": "DECLARED",
+      "publication_wording": "INTERPRETATIVE_DECLARATION",
+      "statement": "Owner asserts QIKVRT reality correspondence and greatest connectability; attribution is preserved and empirical confirmation remains separately evidence-bound",
+      "scope": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-REC-OWNER-001"
+      ],
+      "boundary": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "sources": [
+        "SRC-REC-OWNER-001"
+      ]
+    },
+    {
+      "claim_id": "REC-PUB-001",
+      "classification": "NORMATIVE",
+      "status": "DECLARED",
+      "publication_wording": "NORMATIVE_DECLARATION",
+      "statement": "Publication requires complete claim disposition, exact artifact identities, appropriate proof/evidence, return receipt, exact owner authorization and admitted publisher",
+      "scope": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-REC-PUB-001"
+      ],
+      "boundary": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "sources": [
+        "SRC-REC-PUB-001"
+      ]
+    },
+    {
+      "claim_id": "REC-B1",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "statement": "Concrete implementation refinement and common semantics",
+      "scope": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-REC-B1"
+      ],
+      "boundary": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "sources": [
+        "SRC-REC-B1"
+      ]
+    },
+    {
+      "claim_id": "REC-B2",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "statement": "Calibrated physical sensor/actuator round trip with independent observed effect",
+      "scope": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-REC-B2"
+      ],
+      "boundary": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "sources": [
+        "SRC-REC-B2"
+      ]
+    },
+    {
+      "claim_id": "REC-B3",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "statement": "Bounded reproducible comparison plus justified universal class/simulation argument for global greatestness",
+      "scope": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-REC-B3"
+      ],
+      "boundary": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "sources": [
+        "SRC-REC-B3"
+      ]
+    },
+    {
+      "claim_id": "REC-B4",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "statement": "Feasibility-qualified independent empirical test of PTG-P01/PTG-T01",
+      "scope": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-REC-B4"
+      ],
+      "boundary": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "sources": [
+        "SRC-REC-B4"
+      ]
+    },
+    {
+      "claim_id": "REC-B5",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "statement": "Physical dynamics, known-limit recovery, stability/unitarity and cosmological correspondence",
+      "scope": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-REC-B5"
+      ],
+      "boundary": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "sources": [
+        "SRC-REC-B5"
+      ]
+    },
+    {
+      "claim_id": "REC-B6",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "statement": "Independent reproduction of an exact formal/software subject",
+      "scope": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-REC-B6"
+      ],
+      "boundary": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "sources": [
+        "SRC-REC-B6"
       ]
     }
   ],
@@ -347,5 +658,6 @@
   "completion_claims": {
     "global_greatestness_proved": false,
     "publication_complete": false
-  }
+  },
+  "scope_boundary": "Disposition of the identified claims; nine model-bound formal results, attributed historical evidence, normative/interpretative statements and explicit OPEN obligations. No blanket physical proof or owner approval."
 }

@@ -2,10 +2,20 @@
   "schema": "qikvrt_full_corpus_publication_admission_v1",
   "state": "BLOCK_NOT_PUBLISHED",
   "new_proofs_locally_kernel_checked": true,
-  "exact_head_native_workflow_receipt": "PENDING",
-  "full_candidate_return_to_owner": "PENDING_FINAL_DELIVERY",
+  "exact_head_native_workflow_receipt": {
+    "state": "VERIFIED_FOR_UNCHANGED_LEAN_INPUTS",
+    "run_id": 38711511556,
+    "native_head": "b97e55a0c4adf1abf2dd608500c55784930a4362",
+    "receipt": {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/KERNEL_RECEIPT.json",
+      "bytes": 10589,
+      "sha256": "f6e730c189ab9c0373e75ab5e5ee69122229ffe047ac67bbdacb2c74e218eac9",
+      "git_blob_sha1": "fc61d93f377f4838833dab01018a231b6b49bf29"
+    }
+  },
+  "full_candidate_return_to_owner": "DELIVERED_WITH_VISIBLE_CHANGE_NOTICE_NOT_APPROVAL",
   "candidate_specific_exact_upload_authorization": "NOT_RECORDED",
-  "authenticated_zenodo_publisher": "NOT_AVAILABLE_IN_THIS_CLIENT",
+  "authenticated_zenodo_publisher": "NO_ZENODO_OR_GITHUB_TOKEN_DELIVERED_TO_THIS_CLIENT",
   "mirror_read_write": "CONCRETE_GETS_404",
   "no_parallel_controller_created": true,
   "main_merge_performed": false,
@@ -20,12 +30,25 @@
       "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/MACHINE_PROOF_BUNDLE_DRAFT.json"
     ],
     "exit_code": 2,
-    "log": {
-      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/publication-admission-check.log",
-      "bytes": 146,
-      "sha256": "405eb65d63891d197dc805b0b7d4536cb133dd886766caf96a5eca3513e54245",
-      "git_blob_sha1": "d806c015568889bafa2abb7aa039a14d92101769"
-    },
+    "first_remaining_error": "proof bundle does not authorize the exact Zenodo upload",
     "gate_pass_claimed": false
-  }
+  },
+  "proof_binding_prefix": "VERIFIED_BY_UNMODIFIED_PRODUCTION_VALIDATOR_THROUGH_V2_RETURN_RECEIPT",
+  "candidate_freeze": {
+    "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CANDIDATE_FREEZE.json",
+    "bytes": 99368,
+    "sha256": "5f0f0b217cc64b7500a77be39a048d9f36efbaece4a9e678e5913101facbe132",
+    "git_blob_sha1": "69313d7291b777b308a3516d63448ab570206484"
+  },
+  "smallest_continuation": "Owner reviews exact returned payload/metadata/proof plan; only after a candidate-specific recorded decision materialize the final proof-bearing v2 manifest and canonical AUTHORIZE_EXACT_UPLOAD binding. Use the existing authenticated publisher with both required tokens and the Authority-wide consumption ref. Independently read the native public record, DOI and every uploaded file after an actual effect.",
+  "new_record_id": null,
+  "new_doi": null,
+  "upload_count": 0,
+  "candidate_return_receipt": {
+    "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/PREPUBLICATION_RETURN_RECEIPT.json",
+    "bytes": 98289,
+    "sha256": "68670aab8f98df7c48afb9fa110f1a3e3ccee105775ee22d88ead1982d5bbc92",
+    "git_blob_sha1": "107f69fc766967579f496641335417cadaec3024"
+  },
+  "proof_bundle_promotion_changes_require_new_exact_binding": true
 }
