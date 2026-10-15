@@ -1,6 +1,6 @@
 {
   "schema": "qikvrt_publication_candidate_freeze_v2",
-  "frozen_at": "2026-10-15T13:01:41.657416+00:00",
+  "frozen_at": "2026-10-15T13:21:35.173950+00:00",
   "source_scope": {
     "repository": "ingolf-lohmann/qik-vrt",
     "pull_request": 523,
@@ -36,9 +36,9 @@
     },
     {
       "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CHANGE_NOTICE.md",
-      "bytes": 2517,
-      "sha256": "89d0f6981c1edadcd5ee88346f6634c0580803751d73db9f13b0d359dce8a04e",
-      "git_blob_sha1": "171119f424fcf93664cece55b293b86923958c5e"
+      "bytes": 3202,
+      "sha256": "9d39f14a554c8b669bc82af9f091160a05b8ef797dafa70c30e058ec0dab79e7",
+      "git_blob_sha1": "5eca08fa60dde9375558ad72f52d0d30796c72e4"
     },
     {
       "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CLAIM_MATRIX.json",
@@ -96,9 +96,9 @@
     },
     {
       "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/MACHINE_PROOF_BUNDLE_DRAFT.json",
-      "bytes": 153948,
-      "sha256": "a3322f01ac431c61646fdfa71684296ecfaed378f517ff3b1568c2ecc7c5a59e",
-      "git_blob_sha1": "35454d3e2ac05e7256969a2c0aec302a1922166e"
+      "bytes": 40822,
+      "sha256": "be9784193b56433e5b756fef81e692f8bc25c7276d1f35f76c5cca9128c3e598",
+      "git_blob_sha1": "800e42ac67388049f4f390d1ec541f8889076def"
     },
     {
       "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/OWNER_CLARIFICATION_20261015.txt",
@@ -120,15 +120,15 @@
     },
     {
       "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/PREPUBLICATION_RETURN_RECEIPT.json",
-      "bytes": 98289,
-      "sha256": "68670aab8f98df7c48afb9fa110f1a3e3ccee105775ee22d88ead1982d5bbc92",
-      "git_blob_sha1": "107f69fc766967579f496641335417cadaec3024"
+      "bytes": 11317,
+      "sha256": "f37afe97fc45dd705eadd0887d18c5faacd1dc6b82ed37163f13014c2bdc66fd",
+      "git_blob_sha1": "bd156aab9643fea1a049f4841305dcd500eb1239"
     },
     {
       "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/PRODUCTION_METADATA.json",
-      "bytes": 1520,
-      "sha256": "f75c2b7e1b7b83d0c008c6b0d081aeaaa7d31625aecce5232565b28b29dee306",
-      "git_blob_sha1": "4ad1136b802d2322fd778fa1f1f6c48d89efc896"
+      "bytes": 1546,
+      "sha256": "b6c4b89f9f29e1029a912a41c463a1ed25460099d294475cb31f7b8f92d79e66",
+      "git_blob_sha1": "7d44fb62f2fd23fd6ad4f9001ec55c7c78fa73be"
     },
     {
       "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/PUBLICATION_SOURCES.json",
@@ -143,10 +143,16 @@
       "git_blob_sha1": "35191d07dbc9616a399fa6f090037612c9932caa"
     },
     {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/PUBLISH_REQUEST_DRAFT.json",
+      "bytes": 10877,
+      "sha256": "66e07d92426948233cc3ba814fe011e550c4660eb005bccb9e47cb821a5740da",
+      "git_blob_sha1": "4135d55c303407fbc1e0edbca4e4a5db096d836a"
+    },
+    {
       "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/README.md",
-      "bytes": 4078,
-      "sha256": "c9a6efcabb2d64a78746762001e00b9dd90a4b94a8ffda4afce5efeade550dd7",
-      "git_blob_sha1": "55a77614a8a1285a7f6b81d13bec679a6648d7dc"
+      "bytes": 4809,
+      "sha256": "890f6a2d4a86ebb061f090e83508e95027161cb1fa99b34f19ab7085a2e7113c",
+      "git_blob_sha1": "cc5affec76a397802f6f8f4f6c8dc7d6c5cb92b6"
     },
     {
       "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/RECONCILIATION_CLAIM_DISPOSITIONS.json",
@@ -161,16 +167,28 @@
       "git_blob_sha1": "26afbd57cde05fa3eed88d3120f22bb423497e04"
     },
     {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SCIENTIFIC_SOURCES.zip",
+      "bytes": 1096962,
+      "sha256": "5cc3a06c2c49341e39e6c017487ffe6435ec26690ff475c131fe7d972d03a768",
+      "git_blob_sha1": "6ba676e9c2bdbd2a4d65a58903cf22f247f41c0f"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SCIENTIFIC_SOURCE_ARCHIVE.json",
+      "bytes": 88615,
+      "sha256": "337281009c0bda4fb5ba179aafdc699df139e5ceb829b9458ad0de012a1b4988",
+      "git_blob_sha1": "4d4593eb46c8345ed521ac103aaaeeca0d6dacf9"
+    },
+    {
       "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json",
-      "bytes": 22907,
-      "sha256": "986e7ed458ca5e35bbb66c2ff1001230d12deceec0ecaf9e06a2294d08cf371f",
-      "git_blob_sha1": "9358ff51041c72339e5c96e688f272b469c38a41"
+      "bytes": 23294,
+      "sha256": "ca08d162102cb9c5eeda010af0d4a5db6aa54c111d18a02c3655b8057450b78e",
+      "git_blob_sha1": "b1fe83f42b69ece817210dab8852ed360bf1123b"
     },
     {
       "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/UPLOAD_FILESET.json",
-      "bytes": 165041,
-      "sha256": "1bec6ebca23ca5d7fd5a691956c823fc5f5491b14f1d503a6e1d8fed5401e2f9",
-      "git_blob_sha1": "b0f8d68992d623d8e8a422b3815b6bff070ce789"
+      "bytes": 26800,
+      "sha256": "8c17e364d6154d45d46e67eb54f5cb3437737426b471ff7eb3d72a9a3845a8f6",
+      "git_blob_sha1": "141a7906101b0bfd0bfd5ce41f92a777768d813b"
     },
     {
       "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/VISIBLE_SOURCES.json",
@@ -1020,9 +1038,9 @@
     },
     {
       "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/publication-repair-20261015/VALIDATOR_DIAGNOSIS.json",
-      "bytes": 1905,
-      "sha256": "cc57159d5ef405e178ba474600ecaf1b5247e68a0add84b383e789799866b3bc",
-      "git_blob_sha1": "2c35b06179407b01dc1e7cff3cc25b898ca0ee9b"
+      "bytes": 2262,
+      "sha256": "783b036329ee8a885e41386381025f481ff0142d43a3af15226a22f51db31a2f",
+      "git_blob_sha1": "0af216596f81719a1f314e1abe0a206d16aaeab7"
     },
     {
       "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/publication-repair-20261015/native-job-116343756925.log",

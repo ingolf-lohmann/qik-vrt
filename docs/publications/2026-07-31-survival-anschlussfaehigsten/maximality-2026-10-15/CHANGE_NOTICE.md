@@ -14,3 +14,7 @@ SOURCE-001: Vollständiger öffentlicher Zenodo- und IETF-Bestand statt der frü
 OWNER-003: Der Owner-Auftrag zur Gesamtbetrachtung wird mit sämtlichen ermittelten öffentlichen Veröffentlichungen verbunden.
 
 Die Produktionsfreigabe bleibt gesperrt. Rücklieferung ist keine inhaltliche Abnahme; eine allgemeine Publikationsabsicht ist keine exakt gebundene Upload-Freigabe. Weder neue DOI noch Upload, unabhängige empirische Bestätigung, Mirror-Gleichheit oder Produktivierung wird behauptet.
+
+## Korrektur des Uploadplans
+
+Der bisherige Plan mit 288 Einzeldateien überschritt die unveränderte Produktionsgrenze von 100. Die 255 Quellen- und Nachweisdateien werden bytegleich in `SCIENTIFIC_SOURCES.zip` zusammengefasst und im vollständigen Mitgliederverzeichnis gebunden. Die vorhandenen Einzeldateien im Repository und die wissenschaftlichen PDF-/Textbytes bleiben unverändert. Der aktualisierte Kandidat wird erneut vollständig zurückgeliefert; die vorangegangene Rücklieferung ist keine Freigabe für diese Verpackung. Die Produktionsmetadaten erhalten außerdem das vom bestehenden Publisher geforderte `prereserve_doi: true`; dies reserviert selbst noch keine DOI.

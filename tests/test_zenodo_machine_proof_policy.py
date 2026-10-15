@@ -15,6 +15,7 @@ import tempfile
 import threading
 import unittest
 import urllib.parse
+import zipfile
 from collections.abc import Callable, Mapping
 from typing import Any
 from unittest import mock
@@ -4304,6 +4305,48 @@ class MaximalityPublicationBindingTests(unittest.TestCase):
             proof.validate_bundle(
                 ROOT, self.publication / "MACHINE_PROOF_BUNDLE_DRAFT.json"
             )
+
+    def test_source_archive_preserves_every_bound_original_member(self) -> None:
+        index = json.loads((self.publication / "SCIENTIFIC_SOURCE_ARCHIVE.json").read_text())
+        archive_path = ROOT / index["archive"]["path"]
+        self.assertEqual(proof.identity(archive_path), {
+            key: value for key, value in index["archive"].items() if key != "path"
+        })
+        members = {item["path"]: item for item in index["members"]}
+        self.assertEqual(len(members), 255)
+        with zipfile.ZipFile(archive_path) as archive:
+            self.assertEqual(len(archive.namelist()), len(members))
+            self.assertEqual(set(archive.namelist()), set(members))
+            for name, item in members.items():
+                self.assertFalse(pathlib.PurePosixPath(name).is_absolute())
+                self.assertNotIn("..", pathlib.PurePosixPath(name).parts)
+                raw = archive.read(name)
+                self.assertEqual(raw, (ROOT / name).read_bytes())
+                self.assertEqual(len(raw), item["bytes"])
+                self.assertEqual(hashlib.sha256(raw).hexdigest(), item["sha256"])
+                self.assertEqual(blob(raw), item["git_blob_sha1"])
+
+    def test_existing_publisher_accepts_metadata_and_file_plan_but_blocks_unapproved_draft(self) -> None:
+        draft_path = self.publication / "PUBLISH_REQUEST_DRAFT.json"
+        draft = json.loads(draft_path.read_text())
+        self.assertEqual(publish._validate_metadata(draft["metadata"]), draft["metadata"])
+        self.assertEqual(draft["metadata"]["prereserve_doi"], True)
+        self.assertEqual(len(draft["files"]), 35)
+        self.assertLessEqual(len(draft["files"]), 100)
+        materialized = [publish._materialize_file(item, ROOT, f"draft.files[{i}]")
+                        for i, item in enumerate(draft["files"])]
+        self.assertEqual(len({item["name"] for item in materialized}), len(materialized))
+        self.assertEqual(len({item["path"] for item in materialized}), len(materialized))
+        bundle = json.loads((self.publication / "MACHINE_PROOF_BUNDLE_DRAFT.json").read_text())
+        required = ({item["path"] for item in bundle["candidate"]["files"]}
+                    | {item["path"] for item in bundle["artifacts"]}
+                    | {draft["machine_proof"]["path"]})
+        self.assertEqual({item["path"] for item in materialized}, required)
+        proof_file = next(item for item in materialized if item["path"] == draft["machine_proof"]["path"])
+        self.assertEqual(proof_file["name"], "MACHINE_PROOF_BUNDLE.json")
+        self.assertIsNone(draft["owner_authorization"])
+        with self.assertRaisesRegex(zenodo.ZenodoError, "^production publication is not explicitly authorized$"):
+            publish.load_manifest(draft_path, ROOT)
 
     def test_pdf_and_historical_scientific_boundaries_are_preserved(self) -> None:
         primary = self.publication / "GESAMTBETRACHTUNG_DE.pdf"

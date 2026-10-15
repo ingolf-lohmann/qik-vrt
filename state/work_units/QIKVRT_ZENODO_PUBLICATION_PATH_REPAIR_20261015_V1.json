@@ -15,24 +15,28 @@
     "Bidirectional 37-claim matrix projection including 13 existing supplement dispositions",
     "Native run 38711511556 bound to all 108 unchanged formal project blobs",
     "Existing publisher and global one-use consumption ref aligned with Owner Authority; old immutable manifests remain readable and non-executable for new effects",
-    "Actual delivery recorded in v2 return receipt; no Owner decision fabricated"
+    "Actual delivery recorded in v2 return receipt; no Owner decision fabricated",
+    "Existing 100-file limit preserved: 255 unchanged source/evidence files packed with a complete verified member index; 35 unique safe upload names",
+    "Production metadata prereserve_doi requirement satisfied; non-executable final manifest template prepared; no reservation requested",
+    "Historical positive controls use their immutable recorded repository; current production Authority remains pinned"
   ],
   "candidate": {
     "primary_pdf_bytes": 103905,
     "primary_pdf_sha256": "926cceff006063d91797feaa3616cca0a6ff2c2c30d2e7f53f501ba5f3da97f6",
-    "frozen_payload_files": 282,
-    "planned_proof_bearing_upload_files": 288,
-    "freeze_sha256": "5f0f0b217cc64b7500a77be39a048d9f36efbaece4a9e678e5913101facbe132"
+    "frozen_payload_files": 29,
+    "planned_proof_bearing_upload_files": 35,
+    "freeze_sha256": "30b52a08c69df7ccd5584c2105e6963901073800be8c8cca6b6ff9f49a57b22a",
+    "scientific_source_archive_members": 255
   },
   "validation": {
-    "targeted_tests_passed": 115,
+    "targeted_tests_passed": 117,
     "retained_zenodo_originals_rehashed": 479,
     "ietf_originals_rehashed": 5,
     "published_source_visibility_count": 52,
     "published_source_visibility": "PASS",
     "strict_production_proof": "BLOCK: proof bundle does not authorize the exact Zenodo upload",
     "complete_source_archive_gate": "FAIL: exact locator and archive pending for NEW-PROOF",
-    "fresh_native_successor_test": "TO_BE_READ_AFTER_EXPECTED_HEAD_UPDATE",
+    "fresh_native_successor_test": "REQUIRED_AFTER_PACKAGING_METADATA_CORRECTION",
     "first_native_manuscript_run": {
       "id": 38739544681,
       "head": "1ea5c01473515c21127c5a7946157b665c2d9d83",
@@ -46,7 +50,23 @@
       "actual_cause": "test_qikvrt_zenodo_metadata_edit expected the now-canonical Owner Authority to be the wrong context; 168/169 release-automation tests passed",
       "repair": "The negative fixture now uses the Mirror as wrong context; nine metadata-edit tests pass locally. No production boundary was relaxed."
     },
-    "historical_control_context_repair": "Historical VRTCore decisions are audited against the repository recorded in each immutable manifest; current production Authority does not rewrite their historical context."
+    "historical_control_context_repair": "Historical VRTCore decisions are audited against the repository recorded in each immutable manifest; current production Authority does not rewrite their historical context.",
+    "latest_native_full_ci": {
+      "id": 38740716962,
+      "job": 116441388008,
+      "head": "f4a5a01b02c08d6e8ec051dda6048cb017476773",
+      "tree": "7fa41b412e6af704089d9a629c309a094171a7ae",
+      "actual_full_test_outcome": "success",
+      "conclusion": "success",
+      "original_log_sha256": "b5831c3deadccaef4863199863d8a2dceaa971203400251851497725d2217209",
+      "scope": "Before final packaging correction; no PASS transfer to the successor upload metadata"
+    },
+    "latest_native_manuscript": {
+      "id": 38740724789,
+      "job": 116441414729,
+      "head": "f4a5a01b02c08d6e8ec051dda6048cb017476773",
+      "conclusion": "success"
+    }
   },
   "preserved": {
     "scientific_pdf_bytes": true,
@@ -69,7 +89,7 @@
   },
   "next_action": "Review delivered exact bytes and metadata; materialize only the admitted final v2 proof/return/Owner event with canonical AUTHORIZE_EXACT_UPLOAD digest binding; use the existing authenticated publisher and one-use Authority ref. After an actual upload independently read native published metadata, DOI and every original file and preserve evidence.",
   "state_is_not_publication_or_physical_proof": true,
-  "updated_at": "2026-10-15T12:55:33.615869+00:00",
+  "updated_at": "2026-10-15T13:23:14.690098+00:00",
   "integration_base_head": "b17459a655f5a2f795583d9848dcb5a351792208",
   "integration_base_tree": "a898c7385fb5a998767175eae805d4ffc6934114",
   "concurrent_integration_preserved": true,

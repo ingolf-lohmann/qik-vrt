@@ -8,9 +8,9 @@
     "native_head": "b97e55a0c4adf1abf2dd608500c55784930a4362",
     "receipt": {
       "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/KERNEL_RECEIPT.json",
-      "bytes": 10589,
-      "sha256": "f6e730c189ab9c0373e75ab5e5ee69122229ffe047ac67bbdacb2c74e218eac9",
-      "git_blob_sha1": "fc61d93f377f4838833dab01018a231b6b49bf29"
+      "bytes": 13415,
+      "sha256": "ac3b42b050cff507d841957c1498c68cf364d58bd6278ec41c43f920ae14fc5a",
+      "git_blob_sha1": "9136b1c36ff509b302231e17f2b8306217454d87"
     }
   },
   "full_candidate_return_to_owner": "DELIVERED_WITH_VISIBLE_CHANGE_NOTICE_NOT_APPROVAL",
@@ -36,9 +36,9 @@
   "proof_binding_prefix": "VERIFIED_BY_UNMODIFIED_PRODUCTION_VALIDATOR_THROUGH_V2_RETURN_RECEIPT",
   "candidate_freeze": {
     "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CANDIDATE_FREEZE.json",
-    "bytes": 99368,
-    "sha256": "5f0f0b217cc64b7500a77be39a048d9f36efbaece4a9e678e5913101facbe132",
-    "git_blob_sha1": "69313d7291b777b308a3516d63448ab570206484"
+    "bytes": 100295,
+    "sha256": "30b52a08c69df7ccd5584c2105e6963901073800be8c8cca6b6ff9f49a57b22a",
+    "git_blob_sha1": "b1c19805335ec434ea2c28b65619761963155de6"
   },
   "smallest_continuation": "Owner reviews exact returned payload/metadata/proof plan; only after a candidate-specific recorded decision materialize the final proof-bearing v2 manifest and canonical AUTHORIZE_EXACT_UPLOAD binding. Use the existing authenticated publisher with both required tokens and the Authority-wide consumption ref. Independently read the native public record, DOI and every uploaded file after an actual effect.",
   "new_record_id": null,
@@ -46,9 +46,19 @@
   "upload_count": 0,
   "candidate_return_receipt": {
     "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/PREPUBLICATION_RETURN_RECEIPT.json",
-    "bytes": 98289,
-    "sha256": "68670aab8f98df7c48afb9fa110f1a3e3ccee105775ee22d88ead1982d5bbc92",
-    "git_blob_sha1": "107f69fc766967579f496641335417cadaec3024"
+    "bytes": 11317,
+    "sha256": "f37afe97fc45dd705eadd0887d18c5faacd1dc6b82ed37163f13014c2bdc66fd",
+    "git_blob_sha1": "bd156aab9643fea1a049f4841305dcd500eb1239"
   },
-  "proof_bundle_promotion_changes_require_new_exact_binding": true
+  "proof_bundle_promotion_changes_require_new_exact_binding": true,
+  "planned_upload_file_count": 35,
+  "maximum_upload_files": 100,
+  "source_archive_members_byte_verified": 255,
+  "production_metadata_schema": "VERIFIED_BY_EXISTING_PUBLISHER",
+  "draft_publish_request": {
+    "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/PUBLISH_REQUEST_DRAFT.json",
+    "bytes": 10877,
+    "sha256": "66e07d92426948233cc3ba814fe011e550c4660eb005bccb9e47cb821a5740da",
+    "git_blob_sha1": "4135d55c303407fbc1e0edbca4e4a5db096d836a"
+  }
 }
