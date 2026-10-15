@@ -25,14 +25,27 @@
     "freeze_sha256": "5f0f0b217cc64b7500a77be39a048d9f36efbaece4a9e678e5913101facbe132"
   },
   "validation": {
-    "targeted_tests_passed": 106,
+    "targeted_tests_passed": 115,
     "retained_zenodo_originals_rehashed": 479,
     "ietf_originals_rehashed": 5,
     "published_source_visibility_count": 52,
     "published_source_visibility": "PASS",
     "strict_production_proof": "BLOCK: proof bundle does not authorize the exact Zenodo upload",
     "complete_source_archive_gate": "FAIL: exact locator and archive pending for NEW-PROOF",
-    "fresh_native_successor_test": "TO_BE_READ_AFTER_EXPECTED_HEAD_UPDATE"
+    "fresh_native_successor_test": "TO_BE_READ_AFTER_EXPECTED_HEAD_UPDATE",
+    "first_native_manuscript_run": {
+      "id": 38739544681,
+      "head": "1ea5c01473515c21127c5a7946157b665c2d9d83",
+      "conclusion": "success"
+    },
+    "first_native_full_ci": {
+      "id": 38739544691,
+      "job": 116437350667,
+      "head": "1ea5c01473515c21127c5a7946157b665c2d9d83",
+      "result": "failure",
+      "actual_cause": "test_qikvrt_zenodo_metadata_edit expected the now-canonical Owner Authority to be the wrong context; 168/169 release-automation tests passed",
+      "repair": "The negative fixture now uses the Mirror as wrong context; nine metadata-edit tests pass locally. No production boundary was relaxed."
+    }
   },
   "preserved": {
     "scientific_pdf_bytes": true,
