@@ -2,7 +2,6 @@
   "schema": "qikvrt_public_corpus_prewrite_readback_v1",
   "source_head": "b97e55a0c4adf1abf2dd608500c55784930a4362",
   "source_tree": "59296a4a6a0a41f926adad601df0f2472e15ce8f",
-  "main_head": "d060ae5db77d5e83a2bfc1fe009774e177d8b41e",
   "delivery_observation": {
     "schema": "qikvrt-live-dashboard/v2",
     "served_at": "2026-10-15T10:07:47.634Z",
@@ -522,5 +521,15 @@
       }
     ],
     "readback_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/readback?id=c1fa11d3-ffc9-458c-a111-1a8fe263a1bc"
-  }
+  },
+  "pull_request_base_sha": "d060ae5db77d5e83a2bfc1fe009774e177d8b41e",
+  "main_head_at_prewrite": "UNKNOWN_NOT_DIRECTLY_OBSERVED",
+  "closing_direct_main_readback": {
+    "main_head": "ad92fead9dad00544de8853af067d246b25c7fda",
+    "main_tree": "797df68b3959fa4c8d5bde128264bff1ee5c1d72",
+    "observed_at": "2026-10-15T10:20:42.919Z",
+    "source_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/commits/main",
+    "pr_base_is_not_current_main": true
+  },
+  "correction": "The PR base SHA identifies the PR base snapshot. It must not be reported as a fresh direct Main observation. The separate native closing read is retained with its own time."
 }
