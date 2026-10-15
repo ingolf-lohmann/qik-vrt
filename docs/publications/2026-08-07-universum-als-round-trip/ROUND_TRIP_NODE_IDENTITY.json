@@ -1,0 +1,93 @@
+{
+  "schema": "qikvrt_round_trip_node_identity_v1",
+  "project": "QIK-VRT",
+  "responsible_human": "Ingolf Lohmann",
+  "title": "Von Softwarearchitektur zur Weltformel – DAS UNIVERSUM ALS ROUND TRIP",
+  "author": "Ingolf Lohmann",
+  "language": "de",
+  "publication": {
+    "doi": "10.5281/zenodo.21888130",
+    "record_url": "https://zenodo.org/records/21888130",
+    "doi_url": "https://doi.org/10.5281/zenodo.21888130",
+    "record_id": 21888130,
+    "version": "1.0.0-candidate.1"
+  },
+  "original": {
+    "file": "DAS_UNIVERSUM_ALS_ROUND_TRIP_DE.md",
+    "bytes": 18120,
+    "sha256": "dc58e50161b22826152dd251db836f06f85235a470e0253aeefa1b0a380787fe",
+    "git_blob_sha1": "e1ed265239aa5e1436055279069c7e21525a13fe",
+    "native_content_url": "https://zenodo.org/api/records/21888130/files/DAS_UNIVERSUM_ALS_ROUND_TRIP_DE.md/content"
+  },
+  "format_transfer": {
+    "kind": "PDF_READING_COPY_OF_UNCHANGED_PUBLISHED_MARKDOWN",
+    "date": "2026-10-16",
+    "source_text_changed": false,
+    "pdf_native_to_zenodo_record": false
+  },
+  "license": "CC-BY-NC-ND-4.0",
+  "evidence_limits": {
+    "byte_integrity_is_not_universal_trust": true,
+    "hosting_address_does_not_establish_openai_sponsorship": true,
+    "source_scientific_boundaries_preserved": true
+  },
+  "identity_id": "QIKVRT-ZENODO-21888130-ORIGINAL-V1",
+  "required_for_each_authorized_repository_node": true,
+  "distribution_scope": {
+    "authority_repository": "ingolf-lohmann/qik-vrt",
+    "mirror_repository": "Goldkelch/qik-vrt",
+    "discovery": "registry/NODEMESH_INDEX.json + registry/KNOWN_NODE_REQUESTS.tsv + registry/node_request_queue/*.tsv",
+    "unknown_nodes_must_remain_open": true,
+    "repository_presence_is_not_runtime_activation": true
+  },
+  "files": [
+    {
+      "path": "DAS_UNIVERSUM_ALS_ROUND_TRIP_DE.md",
+      "bytes": 18120,
+      "sha256": "dc58e50161b22826152dd251db836f06f85235a470e0253aeefa1b0a380787fe",
+      "git_blob_sha1": "e1ed265239aa5e1436055279069c7e21525a13fe"
+    },
+    {
+      "path": "DAS_UNIVERSUM_ALS_ROUND_TRIP_DE.pdf",
+      "bytes": 85206,
+      "sha256": "c9a9dc2ec9f02ceaf04cfab507c149ca755168e633111d03b27974636fb4e43f",
+      "git_blob_sha1": "852ae75242de80a4e88a80b83fd7791d8a425316"
+    },
+    {
+      "path": "DAS_UNIVERSUM_ALS_ROUND_TRIP_DE.txt",
+      "bytes": 18118,
+      "sha256": "c2d0866c17d6be0ffbbf8350241101500185188dab2185052218c797793e27a8",
+      "git_blob_sha1": "b6a4e8e8ff59095e7f2406be2377ecceb64482f3"
+    },
+    {
+      "path": "SOURCE_IDENTITY.json",
+      "bytes": 1272,
+      "sha256": "aac7de13460357a67da65dede999e33a7b2ee9b4b5449f215a32a17d1ccb5840",
+      "git_blob_sha1": "fee6cc22d19be74beff1e44a3a6283c7105fc105"
+    },
+    {
+      "path": "CC-BY-NC-ND-4.0.txt",
+      "bytes": 19127,
+      "sha256": "38762e3777f4ec00a6f769062a7c3f704fb78ce08303ecff88558da4c49cf9ea",
+      "git_blob_sha1": "cfe676c541842bd2b766787b1f6983e063a1eee2"
+    }
+  ],
+  "source_verification": {
+    "catalog_version": "2026-10-11.1",
+    "catalog_sha256": "b5c2016a8c4d4d7ab69bbe81d30510a3fe011faab2eaf405974f0b1acd3f4382",
+    "original_bytes_match_catalog": true,
+    "original_blob_observed_on_commit": "21b691a0f328f9e1af638cf3f74e5f89aee34f09",
+    "live_zenodo_retrieval_this_session": "TIMEOUT",
+    "native_zenodo_pdf_in_verified_inventory": false
+  },
+  "owner_authorization": {
+    "name": "Ingolf Lohmann",
+    "granted_at_local": "2026-10-16T01:32:41+03:00",
+    "scope": "Unverändertes Original als PDF und Zenodo-URL menschen- und maschinenlesbar in jedem QIK-VRT Node ablegen.",
+    "authorization_is_not_cryptographic_identity_proof": true
+  },
+  "completion_claims": {
+    "all_nodes_verified": false,
+    "EFFECT_ACK_DONE": false
+  }
+}

@@ -53,6 +53,17 @@
       "state": "PREPARED_NOT_DEPLOYED",
       "public_delivery_effect_ack": false,
       "boundary": "Historical publication-overview source locators remain unchanged. These production URLs bind only the prepared routes of the existing Site; they do not prove public delivery."
+    },
+    "original_publication_identity": {
+      "identity_id": "QIKVRT-ZENODO-21888130-ORIGINAL-V1",
+      "author": "Ingolf Lohmann",
+      "doi": "10.5281/zenodo.21888130",
+      "record_url": "https://zenodo.org/records/21888130",
+      "human_path": "docs/publications/2026-08-07-universum-als-round-trip/README.md",
+      "machine_path": "docs/publications/2026-08-07-universum-als-round-trip/ROUND_TRIP_NODE_IDENTITY.json",
+      "pdf_path": "docs/publications/2026-08-07-universum-als-round-trip/DAS_UNIVERSUM_ALS_ROUND_TRIP_DE.pdf",
+      "source_sha256": "dc58e50161b22826152dd251db836f06f85235a470e0253aeefa1b0a380787fe",
+      "boundary": "Publication identity and byte integrity are separate from scientific claim validation, live runtime activation and verified every-node replication."
     }
   },
   "completion_claims": {

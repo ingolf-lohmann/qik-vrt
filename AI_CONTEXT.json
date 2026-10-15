@@ -110,6 +110,18 @@
       "source_of_truth": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
       "projections_must_agree": true,
       "activation": "FRESH_NATIVE_EXECUTION_AND_INDEPENDENT_MAIN_READBACK_REQUIRED"
+    },
+    "publication_identity": {
+      "identity_id": "QIKVRT-ZENODO-21888130-ORIGINAL-V1",
+      "responsible_human": "Ingolf Lohmann",
+      "record_url": "https://zenodo.org/records/21888130",
+      "doi": "10.5281/zenodo.21888130",
+      "human_binding": "docs/publications/2026-08-07-universum-als-round-trip/README.md",
+      "machine_binding": "docs/publications/2026-08-07-universum-als-round-trip/ROUND_TRIP_NODE_IDENTITY.json",
+      "pdf": "docs/publications/2026-08-07-universum-als-round-trip/DAS_UNIVERSUM_ALS_ROUND_TRIP_DE.pdf",
+      "required_in_every_authorized_node": true,
+      "original_source_bytes_immutable": true,
+      "adoption_and_runtime_acceptance_are_separate": true
     }
   },
   "required_read_order": [
@@ -145,7 +157,9 @@
     "docs/COLLECTIVE_ADAPTIVE_COGNITION.md",
     "policy/COLLECTIVE_ADAPTIVE_COGNITION.json",
     "state/authorization/delegations/OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_V1.json",
-    "policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json"
+    "policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json",
+    "docs/publications/2026-08-07-universum-als-round-trip/README.md",
+    "docs/publications/2026-08-07-universum-als-round-trip/ROUND_TRIP_NODE_IDENTITY.json"
   ],
   "session_protocol": {
     "startup": [

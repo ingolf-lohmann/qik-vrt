@@ -1,0 +1,34 @@
+{
+  "schema": "qikvrt_round_trip_source_identity_v1",
+  "project": "QIK-VRT",
+  "responsible_human": "Ingolf Lohmann",
+  "title": "Von Softwarearchitektur zur Weltformel – DAS UNIVERSUM ALS ROUND TRIP",
+  "author": "Ingolf Lohmann",
+  "language": "de",
+  "publication": {
+    "doi": "10.5281/zenodo.21888130",
+    "record_url": "https://zenodo.org/records/21888130",
+    "doi_url": "https://doi.org/10.5281/zenodo.21888130",
+    "record_id": 21888130,
+    "version": "1.0.0-candidate.1"
+  },
+  "original": {
+    "file": "DAS_UNIVERSUM_ALS_ROUND_TRIP_DE.md",
+    "bytes": 18120,
+    "sha256": "dc58e50161b22826152dd251db836f06f85235a470e0253aeefa1b0a380787fe",
+    "git_blob_sha1": "e1ed265239aa5e1436055279069c7e21525a13fe",
+    "native_content_url": "https://zenodo.org/api/records/21888130/files/DAS_UNIVERSUM_ALS_ROUND_TRIP_DE.md/content"
+  },
+  "format_transfer": {
+    "kind": "PDF_READING_COPY_OF_UNCHANGED_PUBLISHED_MARKDOWN",
+    "date": "2026-10-16",
+    "source_text_changed": false,
+    "pdf_native_to_zenodo_record": false
+  },
+  "license": "CC-BY-NC-ND-4.0",
+  "evidence_limits": {
+    "byte_integrity_is_not_universal_trust": true,
+    "hosting_address_does_not_establish_openai_sponsorship": true,
+    "source_scientific_boundaries_preserved": true
+  }
+}

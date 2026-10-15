@@ -1,0 +1,92 @@
+{
+  "schema": "qikvrt_work_unit_provenance_v1",
+  "work_unit_id": "ROUND_TRIP_NODE_IDENTITY_20261016_V1",
+  "created_at": "2026-10-15T22:32:41Z",
+  "human_attribution_identifier": "Ingolf Lohmann",
+  "personal_origin": {
+    "mode": "PUBLIC_ORIGIN",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "scope": "Existing Owner-authorized repository; no new account or remote."
+  },
+  "evidence_retention": "METADATA_ONLY",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_commit": "21b691a0f328f9e1af638cf3f74e5f89aee34f09",
+  "source_tree": "4a332d515ba295c092c82bd112539c97db0c4c50",
+  "contributions": [
+    {
+      "actor_class": "HUMAN",
+      "actor": "Ingolf Lohmann",
+      "scope": "Original article and express storage authorization.",
+      "original_source_sha256": "dc58e50161b22826152dd251db836f06f85235a470e0253aeefa1b0a380787fe"
+    },
+    {
+      "actor_class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+      "actor": "Codex",
+      "provider": "OpenAI",
+      "model_or_build": "UNAVAILABLE",
+      "scope": "Unchanged-text format transfer; JSON/README/discovery bindings and verification."
+    }
+  ],
+  "authorization": {
+    "granted": true,
+    "source": "Direct Owner instruction, 2026-10-16 01:32:41 Europe/Istanbul",
+    "scope": "Original document as PDF plus exact Zenodo URL in every authorized repository node",
+    "authentication_of_named_natural_person_claimed": false
+  },
+  "reuse": {
+    "existing_integration_pr": 523,
+    "original_directory": "docs/publications/2026-08-07-universum-als-round-trip",
+    "existing_entrypoint": "AI",
+    "existing_machine_discovery": ".well-known/qik-vrt-self-disclosure.json",
+    "new_dispatcher_or_permissions_created": false
+  },
+  "verification": {
+    "original_blob_matches_archive": true,
+    "pdf_text_matches_original": true,
+    "embedded_original_byte_exact": true,
+    "pdf_pages": 12,
+    "source_visibility": "PASS",
+    "visual_review": "ALL_12_PAGES_INSPECTED",
+    "runtime_boot": {
+      "state": "BLOCK_LOCAL_PARTIAL_OBSERVATION",
+      "reason": "Observation files are not a complete Git clone; no runtime readiness claimed."
+    },
+    "whole_repository_ci": "PENDING_EXACT_SUCCESSOR_HEAD"
+  },
+  "distribution": {
+    "authority": {
+      "state": "CANDIDATE_INTEGRATION_PENDING_MAIN_READBACK",
+      "pr": 523
+    },
+    "mirror": {
+      "repository": "Goldkelch/qik-vrt",
+      "state": "BLOCK",
+      "operation": "Authenticated GitHub repository GET",
+      "http_status": 404,
+      "code": "NOT_FOUND",
+      "retry_condition": "GitHub connection can independently resolve the authorized Goldkelch/qik-vrt repository."
+    },
+    "mesh_inventory": {
+      "complete": false,
+      "known_repository_nodes": [
+        "ingolf-lohmann/qik-vrt",
+        "Goldkelch/qik-vrt"
+      ],
+      "registry_commit": "51d84ee5f2fd71273b026b346819c1e89f65875f",
+      "registry_queue_empty": true
+    },
+    "all_nodes_verified": false
+  },
+  "required_next_actions": [
+    "Read back successor commit and exact PDF/manifest bytes.",
+    "Observe exact-head CI and protected review without transferring predecessor approvals.",
+    "Integrate via existing authorized protected path when its gates admit.",
+    "Restore authenticated Mirror access, copy identical files and verify independent readback.",
+    "Complete registry discovery and retain unavailable nodes in coverage."
+  ],
+  "completion_claims": {
+    "all_nodes_verified": false,
+    "main_integrated": false,
+    "EFFECT_ACK_DONE": false
+  }
+}
