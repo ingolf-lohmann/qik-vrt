@@ -39,7 +39,16 @@
     "existing_axiom_audit": "58 registered existing theorems PASS; nine new theorems queried separately",
     "tool_cache": "32/32; 100%",
     "historical_progress_projection": "UNCHANGED_AND_EXISTING_GENERATOR_CHECK_PASS",
-    "report_scope": "Complete identified public corpus; not independent execution of all historical proofs or all archived software."
+    "report_scope": "Complete identified public corpus; not independent execution of all historical proofs or all archived software.",
+    "native_manuscript_runs": [
+      38710240544,
+      38710246936
+    ],
+    "native_manuscript_conclusions": [
+      "success",
+      "success"
+    ],
+    "packaging_and_global_completion_regressions": "17 PASS"
   },
   "evidence": {
     "full_scope": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json",
@@ -47,17 +56,18 @@
     "archive": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/CORPUS_ARCHIVE_RECEIPT.json",
     "prewrite_repository_and_delivery_readback": "evidence/native-runtime-acceptance/2026-10-15-full-corpus-prewrite.json"
   },
-  "state": "LOCAL_CANDIDATE_VERIFIED_REMOTE_PERSISTENCE_PENDING",
+  "state": "AUTHORITY_REVIEW_CANDIDATE_PERSISTED_NATIVE_KERNEL_CONFIRMED_INTEGRATION_REPAIR",
   "open_obligations": [
     {
       "id": "REVIEW_BRANCH_PERSISTENCE",
-      "state": "OPEN",
-      "next_action": "Create candidate tree and child commit, update existing PR523 branch with expected-head guard, verify remote head/tree and unchanged Main plus delivery."
+      "state": "VERIFIED",
+      "next_action": "Create candidate tree and child commit, update existing PR523 branch with expected-head guard, verify remote head/tree and unchanged Main plus delivery.",
+      "closing_evidence": "Exact branch ref daa4fb63, tree 9789ad59 and all 58 changed Git blob identities verified. Follow-up integration repair remains a distinct successor action."
     },
     {
       "id": "NATIVE_WORKFLOW_AND_PRODUCTION_RECEIPT",
       "state": "OPEN",
-      "next_action": "Observe existing manuscript workflow for the exact new head; retain actual result and adapt to the existing strict publication receipt format only with actual evidence."
+      "next_action": "Two native manuscript workflows succeeded and logs confirm all nine axiom-free constants. Strict publication-proof adaptation and exact owner/publisher admission remain pending; follow-up integration repair needs fresh native checks."
     },
     {
       "id": "EXACT_ZENODO_PUBLICATION",
@@ -116,5 +126,19 @@
     "main_merged": false,
     "runtime_delivered": false,
     "effect_ack_done": false
+  },
+  "remote_candidate": {
+    "head": "daa4fb6359b5b18d432c66c34824bc14151cb9d3",
+    "tree": "9789ad59c752a7304df7ae0ffd7dc39c6c4181b7",
+    "all_58_changed_git_blobs_readback_verified": true,
+    "main_unchanged": true
+  },
+  "native_confirmation": "evidence/receipts/connectability-maximality-native-daa4fb63-20261015.json",
+  "integration_repair": {
+    "canonical_checkout_line_endings": "Apply existing .gitattributes via git checkout-index; rematerialize integrity without changing source Git blobs.",
+    "alpha2_packaging": "Reuse POST_ALPHA2_EXCLUSIONS to exclude new ConnectabilityMaximality module from immutable Alpha-2 archive; source remains compiled in current Lean root.",
+    "historical_archive_sha256": "500087f6aeee41787959cfc8902852503e2182019ae4f3e88f115e94a1f5e689",
+    "all_479_downloaded_originals_unchanged": true,
+    "native_successor_verification": "PENDING_AFTER_REPAIR_COMMIT"
   }
 }

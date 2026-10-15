@@ -35,6 +35,7 @@ POST_ALPHA2_EXCLUSIONS = {
     "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/QuantumClassicalRuntime.lean",
     "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CanonicalTemporalMemory.lean",
     "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ConnectabilitySimulation.lean",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ConnectabilityMaximality.lean",
     "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/OperationalContinuation.lean",
     "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/WeightedConnectability.lean",
     "formalization/QIKVRT_Formalization_v2.0/tests/test_quantum_classical_runtime_article.py",
