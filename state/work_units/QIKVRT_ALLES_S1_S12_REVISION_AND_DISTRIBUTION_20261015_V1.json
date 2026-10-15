@@ -212,7 +212,9 @@
     "layout": "docs/publications/2026-10-15-alles-s1-s12-r1/LAYOUT_VALIDATION.json",
     "new_source_visibility": "docs/publications/2026-10-15-alles-s1-s12-r1/SOURCE_VISIBILITY_CHECK.json",
     "strict_archival_gate": "docs/publications/2026-10-15-alles-s1-s12-r1/ARCHIVAL_GATE.json",
-    "full_repository_native_tests": "NOT_YET_OBSERVED_ON_SUCCESSOR_HEAD"
+    "full_repository_native_tests": "NOT_YET_OBSERVED_ON_SUCCESSOR_HEAD",
+    "publication_index_repair": "docs/publications/2026-10-15-alles-s1-s12-r1/PUBLICATION_INDEX_REPAIR.json",
+    "predecessor_ci_failure": "New bundle absent from index; fixed via existing generator, 8 unit tests and full Git-tree README coverage; successor native validation remains required."
   },
   "known_repository_nodes": [
     {
@@ -263,7 +265,7 @@
   ],
   "continuation": "docs/publications/2026-10-15-alles-s1-s12-r1/CONTINUATION.json",
   "external_effects": {
-    "repository_candidate_commit": "PENDING_THIS_ATOMIC_WRITE",
+    "repository_candidate_commit": "1a1faca0c1dbaa3cb68338652426e664036ad680",
     "zenodo": 0,
     "ietf": 0,
     "arxiv": 0,

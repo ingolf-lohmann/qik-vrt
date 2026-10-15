@@ -1,0 +1,15 @@
+{
+  "schema": "qikvrt_publication_index_repair_v1",
+  "failed_native_run": 38776489761,
+  "failed_evidence_job": 116565410924,
+  "failure": "new README absent from publication index",
+  "local_git_tree_readmes": 22,
+  "indexed_bundle_count": 24,
+  "unindexed_local_readmes": [],
+  "source_tree": "95c1fa3922485c792745df605c6a21fa82efa339",
+  "existing_generator": "tools/qikvrt_publication_overview.py",
+  "existing_unit_tests_passed": 8,
+  "new_row_links_to_existing_exact_candidate": true,
+  "repository_projection": "ingolf-lohmann/qik-vrt",
+  "global_completion_claim": false
+}

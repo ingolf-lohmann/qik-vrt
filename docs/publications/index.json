@@ -2,7 +2,7 @@
   "schema": "qikvrt_publication_overview_v1",
   "title": "QIK-VRT Publikationen und Referenzen",
   "canonical_url": "https://goldkelch.github.io/qik-vrt/publications/",
-  "repository": "Goldkelch/qik-vrt",
+  "repository": "ingolf-lohmann/qik-vrt",
   "human_index_path": "docs/publications/index.html",
   "machine_index_path": "docs/publications/index.json",
   "ai_entrypoint_path": "AI",
@@ -161,6 +161,16 @@
       "zenodo_metadata_path": "docs/publications/2026-09-23-qik-scientific-revision/ZENODO_METADATA.json",
       "zenodo_publish_request_path": "docs/publications/2026-09-23-qik-scientific-revision/ZENODO_PUBLISH_REQUEST.json",
       "exact_archive_sha256": "a83d7b10db2065735ac033d39092f13d8f38ab311d6e1a3080236e473b51f02a"
+    },
+    {
+      "id": "2026-10-15-alles-s1-s12-r1",
+      "title": "QIK-VRT ALLES - S1 und S12 - Revision R1",
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/README.md",
+      "state": "repository_candidate",
+      "repository_commit": "1a1faca0c1dbaa3cb68338652426e664036ad680",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/1a1faca0c1dbaa3cb68338652426e664036ad680/docs/publications/2026-10-15-alles-s1-s12-r1/README.md",
+      "artifact_sha256": "68b59b146904aae567bf302268b1e795d9ffd8506921aa282817aab4c0d41f1e",
+      "publication_boundary": "Editorial archive draft; not a new Zenodo record or IETF submission"
     }
   ],
   "featured_artifacts": [
