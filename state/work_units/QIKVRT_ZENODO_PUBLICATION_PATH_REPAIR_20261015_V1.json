@@ -25,8 +25,9 @@
     "primary_pdf_sha256": "926cceff006063d91797feaa3616cca0a6ff2c2c30d2e7f53f501ba5f3da97f6",
     "frozen_payload_files": 29,
     "planned_proof_bearing_upload_files": 35,
-    "freeze_sha256": "30b52a08c69df7ccd5584c2105e6963901073800be8c8cca6b6ff9f49a57b22a",
-    "scientific_source_archive_members": 255
+    "freeze_sha256": "9e095a1399b711fa12f6b80346334ddd5cf456d42f795567b116b6aad1a57435",
+    "scientific_source_archive_members": 255,
+    "frozen_source_head": "55ffa91bcac73d755dc0ff7394ba89d5aea4c1b9"
   },
   "validation": {
     "targeted_tests_passed": 117,
@@ -89,7 +90,7 @@
   },
   "next_action": "Review delivered exact bytes and metadata; materialize only the admitted final v2 proof/return/Owner event with canonical AUTHORIZE_EXACT_UPLOAD digest binding; use the existing authenticated publisher and one-use Authority ref. After an actual upload independently read native published metadata, DOI and every original file and preserve evidence.",
   "state_is_not_publication_or_physical_proof": true,
-  "updated_at": "2026-10-15T13:23:14.690098+00:00",
+  "updated_at": "2026-10-15T13:26:45.236584+00:00",
   "integration_base_head": "b17459a655f5a2f795583d9848dcb5a351792208",
   "integration_base_tree": "a898c7385fb5a998767175eae805d4ffc6934114",
   "concurrent_integration_preserved": true,
