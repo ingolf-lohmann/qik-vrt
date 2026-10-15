@@ -1,0 +1,197 @@
+{
+  "schema": "qikvrt_publication_routing_manifest_v1",
+  "bundle_id": "QIKVRT-ALLES-S1-S12-20261015-R1",
+  "title": "QIK-VRT ALLES: S1 und S12, Lesefassung R1",
+  "author": "Ingolf Lohmann",
+  "repository_scope": [
+    "ingolf-lohmann/qik-vrt",
+    "Goldkelch/qik-vrt"
+  ],
+  "artifacts": [
+    {
+      "path": "QIKVRT_ALLES_2026-10-15_S1_S12.pdf",
+      "bytes": 1289349,
+      "sha256": "68b59b146904aae567bf302268b1e795d9ffd8506921aa282817aab4c0d41f1e",
+      "git_blob_sha1": "100834979354759ed4d5846d84d28d1f11720d05"
+    },
+    {
+      "path": "QIKVRT_ALLES_2026-10-15_S1_S12.txt",
+      "bytes": 379958,
+      "sha256": "7b932eb2eba34a1d377b20ed383bc034eacd3fbf6d2946717c1a4580e5254944",
+      "git_blob_sha1": "143fa11f5417c7a9f71af00dee4c5fb80ea861f4"
+    },
+    {
+      "path": "index.html",
+      "bytes": 391151,
+      "sha256": "a8de00531bcdf2e250b0d712a27567ea9e9fb40c754c99177fefc4b31c03f52b",
+      "git_blob_sha1": "4ec391ef1229df683724e87e5f79c15d92e3ea1b"
+    },
+    {
+      "path": "CLAIM_MATRIX.json",
+      "bytes": 2091,
+      "sha256": "f68fc3833da47859ff956d8a1a379bdcaa7f2a094dfb2e63436c6858a72664fd",
+      "git_blob_sha1": "21bf6cf2914a0cf343bac4cb470180013508587b"
+    },
+    {
+      "path": "BUILD_RECEIPT.json",
+      "bytes": 1174,
+      "sha256": "cfeb752078eb65512f32c4c11c25943b722ed8590e10d190922b4b7415db717e",
+      "git_blob_sha1": "e1b2336fe9907b88b0a1691d282ed826877f02c6"
+    },
+    {
+      "path": "LAYOUT_VALIDATION.json",
+      "bytes": 819,
+      "sha256": "7d562b6bd6d19b8b98106a9999d502879fa72486b228716b5d391205a72231d0",
+      "git_blob_sha1": "b96576dcc73887c474c219b47d5ddacab80bb5f2"
+    },
+    {
+      "path": "SOURCE_VISIBILITY_CHECK.json",
+      "bytes": 867,
+      "sha256": "5ff5238e87a9d3b2c72e3ea708ada8ecdcc89016090e5cde07159173a65d0dc2",
+      "git_blob_sha1": "e7a41311d6ca68fc440e7c90adf5c49a510e1884"
+    },
+    {
+      "path": "ORIGINAL_NEGATIVE_SOURCE_CHECK.json",
+      "bytes": 1269,
+      "sha256": "4173a872bd470bc18842ccf7212d71810f367fa4e6f1cbecba6df4b37f7670a2",
+      "git_blob_sha1": "53af48abd212c8c030987102c4a7b3dff3653c6f"
+    },
+    {
+      "path": "ARCHIVAL_GATE.json",
+      "bytes": 413,
+      "sha256": "d7c62ed07e13ad41b32f3b71a24f5d59af216e78eb0a8a7a43f73090ea6b83eb",
+      "git_blob_sha1": "d2ed1a7dcbdf3a91784356d59f2d61df2001f71d"
+    },
+    {
+      "path": "CHANGE_NOTICE.md",
+      "bytes": 939,
+      "sha256": "d9f3188dfb9694b3f1388639d9d58d085fc1f8e1f204ebda2c0cf8029e7268e3",
+      "git_blob_sha1": "ae27f68383ffdef962f1c3c5d9ec8e7a8205a6be"
+    },
+    {
+      "path": "PREPUBLICATION_RETURN_RECEIPT.json",
+      "bytes": 4556,
+      "sha256": "d7a519b4370dfb2210f6e3de720361d31810f83d24be391f58d40bb628cd34e4",
+      "git_blob_sha1": "50ea438f4c07753842ff35c647b8d17df6fa6447"
+    },
+    {
+      "path": "PUBLICATION_READINESS.json",
+      "bytes": 6368,
+      "sha256": "5f776dd632f5c4b1fe61e563ea874ff952c4fdbe20666dcfa235bb2571f46971",
+      "git_blob_sha1": "9e8b175cb7c1edae351e03d824228d62e87e3ff0"
+    },
+    {
+      "path": "S12_ORIGINAL.md",
+      "bytes": 3175,
+      "sha256": "a32b717cccd11be0cc8ca81a960f44d73a87c240334b345d51b2cf14d30506c5",
+      "git_blob_sha1": "9815017ffaaa051e1a5932a3076f9a94e5ddb1d4"
+    },
+    {
+      "path": "VISIBLE_SOURCES.json",
+      "bytes": 744,
+      "sha256": "50bc6c50d10d60eb421b57b380a175dd5f572ee4d6b658fdb1cf446db56831b6",
+      "git_blob_sha1": "fee0d66a3458cb57302213d71209b7d79391195a"
+    },
+    {
+      "path": "PUBLICATION_SOURCES.json",
+      "bytes": 923,
+      "sha256": "15fbb1e8d86734eedb474db4a7cb05d702175bfc413bf563d5af06eca3af0440",
+      "git_blob_sha1": "d98851fa079f3bb9ca1f3be889da9cdc53d40eed"
+    },
+    {
+      "path": "zenodo-metadata.DRAFT.json",
+      "bytes": 1426,
+      "sha256": "5a8d579425610de1e4e71b74a7af8755a52a0e56304abe7d565b33c73d4f125d",
+      "git_blob_sha1": "8abf2f1b34acd3fe8482ed62d91bdc5cfe15569b"
+    },
+    {
+      "path": "IETF_SCOPE_NOTE.md",
+      "bytes": 1155,
+      "sha256": "0055c273fc2e91cf67025f663185f204b92e6d42feb3a51cee5f708fcc02c83a",
+      "git_blob_sha1": "aaa6cfb2ee51d550865e0c4a7242bf12da5520ec"
+    },
+    {
+      "path": "ARXIV_SCOPE_NOTE.md",
+      "bytes": 660,
+      "sha256": "5dfde1f84a605606da79353ef1b3f75757584be18b8e9aea439d513c91e96acc",
+      "git_blob_sha1": "0dd08921dfd1ba304bb10dcaf96188d2e0f02485"
+    },
+    {
+      "path": "WIKIPEDIA_SOURCE_REVIEW.md",
+      "bytes": 949,
+      "sha256": "a116788b7d5ac851863fbe8d148b93033b0ae2e61f69ff697e95a955d04f8c4e",
+      "git_blob_sha1": "880cb529bdcda6205c29f863fad0735efec1315c"
+    },
+    {
+      "path": "CONTINUATION.json",
+      "bytes": 620,
+      "sha256": "6a3b0fefb405a84b2f7a5065cd3614678b29555ff247f6e76ef39f877e3981c1",
+      "git_blob_sha1": "43dca4c40390cf8ba92c8134409835d64483aa53"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1383,
+      "sha256": "f16d6a0c2d47a1613875861d2c3049cd155ded973002dd106ca6f2cea4ddd323",
+      "git_blob_sha1": "822c9bf71aa3eab041008fc6c03e90f780b2ba4b"
+    },
+    {
+      "path": "DELIVERY_OBSERVATION.json",
+      "bytes": 553,
+      "sha256": "9825045b64d0c4ac80f1132b0c06e544ff9d0402e27f8aae628319fe2b93e91b",
+      "git_blob_sha1": "8e1408cdb5c7b982b63c9ec916542aad1e2c89a6"
+    },
+    {
+      "path": "originals/Original_121_Seiten.pdf",
+      "bytes": 454521,
+      "sha256": "91841d7ea66e800098f811bd1e17bccea6423ea1b23e0c5abf034048ed020b86",
+      "git_blob_sha1": "2ce3fd33456bad96ca86e34bf0804dbe1e5bb965"
+    },
+    {
+      "path": "originals/Original_116_Seiten_Meta.pdf",
+      "bytes": 436035,
+      "sha256": "cc092cebe4e9e512f1f37f231ae33d53522e9829cecd2a3a3e7a6f3ecba30832",
+      "git_blob_sha1": "c4f01ac69eeb64f16e5fa4f879da9d344fb47b65"
+    },
+    {
+      "path": "SITE_HOSTING_RECEIPT.json",
+      "bytes": 4300,
+      "sha256": "42df1c6bea60729158bddbf2405cb753853287294fdad34e2b5ed6a4ced96209",
+      "git_blob_sha1": "6eca2137ae915124bbb89610340a88df3b0bec02"
+    }
+  ],
+  "routes": {
+    "repository": {
+      "disposition": "CANDIDATE_REQUIRED",
+      "pull_request": 523,
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1"
+    },
+    "zenodo": {
+      "effect_gate": "EXPLICIT_HASH_BOUND_PUBLICATION_REQUEST_REQUIRED",
+      "status": "PROOF_ARCHIVAL_PUBLISHER_GATES_OPEN"
+    },
+    "ietf": {
+      "protocol_change_required": false,
+      "status": "SCOPE_NOTE_PENDING_FIT_FOR_RFCXML_REVISION"
+    },
+    "raumzeitterminal.de": {
+      "status": "EXISTING_SITE_VERSION_34_PUBLISHED_EXACT_HOST_DOMAIN_TLS_PENDING"
+    },
+    "arxiv": {
+      "status": "EXISTING_CANDIDATE_REUSE_REQUIRED"
+    },
+    "wikipedia": {
+      "status": "INDEPENDENT_COVERAGE_UNVERIFIED"
+    }
+  },
+  "automation": {
+    "reuse_existing": "6ac0da43212881919a673ab49a95dd00",
+    "new_schedule": false,
+    "is_publisher": false
+  },
+  "release_claims": {
+    "PUBLICATION_COMPLETE": false,
+    "MAIN_INTEGRATED": false,
+    "ALL_NODES_PERSISTED": false,
+    "EFFECT_ACK_DONE": false
+  }
+}

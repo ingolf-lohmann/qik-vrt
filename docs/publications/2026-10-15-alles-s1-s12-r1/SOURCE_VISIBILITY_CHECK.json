@@ -1,0 +1,25 @@
+{
+  "schema": "QIKVRT_VISIBLE_SOURCES_CHECK_V1",
+  "status": "PASS",
+  "source_count": 3,
+  "manifest_sha256": "50bc6c50d10d60eb421b57b380a175dd5f572ee4d6b658fdb1cf446db56831b6",
+  "network_reachability_checked": false,
+  "claim_support_checked_automatically": false,
+  "errors": [],
+  "artifacts": [
+    {
+      "path": "/workspace/scratch/a90a3bde341b/output/qikvrt-alles-s1-s12-20261015/QIKVRT_ALLES_2026-10-15_S1_S12.pdf",
+      "sha256": "68b59b146904aae567bf302268b1e795d9ffd8506921aa282817aab4c0d41f1e",
+      "pages": 128,
+      "status": "PASS",
+      "errors": []
+    },
+    {
+      "path": "/workspace/scratch/a90a3bde341b/output/qikvrt-alles-s1-s12-20261015/QIKVRT_ALLES_2026-10-15_S1_S12.txt",
+      "sha256": "7b932eb2eba34a1d377b20ed383bc034eacd3fbf6d2946717c1a4580e5254944",
+      "pages": null,
+      "status": "PASS",
+      "errors": []
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "qikvrt_publication_continuation_binding_v1",
+  "existing_automation_id": "6ac0da43212881919a673ab49a95dd00",
+  "task": "QIK-VRT Publication Watch",
+  "update_success": true,
+  "schedule_changed": false,
+  "new_automation_created": false,
+  "role": "READ_ONLY_PUBLICATION_READINESS_WATCH_NOT_PUBLISHER",
+  "candidate_pdf_sha256": "68b59b146904aae567bf302268b1e795d9ffd8506921aa282817aab4c0d41f1e",
+  "repository_work_unit": "state/work_units/QIKVRT_ALLES_S1_S12_REVISION_AND_DISTRIBUTION_20261015_V1.json",
+  "future_lanes": [
+    "arXiv",
+    "Wikipedia"
+  ],
+  "notify_only_material_transitions": true
+}

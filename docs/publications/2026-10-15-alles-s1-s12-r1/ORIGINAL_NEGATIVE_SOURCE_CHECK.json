@@ -1,0 +1,30 @@
+{
+  "schema": "QIKVRT_VISIBLE_SOURCES_CHECK_V1",
+  "status": "FAIL",
+  "source_count": 3,
+  "manifest_sha256": "50bc6c50d10d60eb421b57b380a175dd5f572ee4d6b658fdb1cf446db56831b6",
+  "network_reachability_checked": false,
+  "claim_support_checked_automatically": false,
+  "errors": [],
+  "artifacts": [
+    {
+      "path": "/workspace/scratch/a90a3bde341b/upload/QIKVRT_x5f_ALLES_x5f_2026-10-15_x5f_S1_x5f_S12.pdf",
+      "sha256": "91841d7ea66e800098f811bd1e17bccea6423ea1b23e0c5abf034048ed020b86",
+      "pages": 121,
+      "status": "FAIL",
+      "errors": [
+        "SOURCE_R1:TITLE_NOT_VISIBLE",
+        "SOURCE_R1:URL_NOT_VISIBLE:https://zenodo.org/records/21888130",
+        "SOURCE_R1:URL_LINK_MISMATCH:https://zenodo.org/records/21888130",
+        "SOURCE_R1:DOI_NOT_VISIBLE",
+        "SOURCE_R2:TITLE_NOT_VISIBLE",
+        "SOURCE_R2:URL_NOT_VISIBLE:https://zenodo.org/records/21947141",
+        "SOURCE_R2:URL_LINK_MISMATCH:https://zenodo.org/records/21947141",
+        "SOURCE_R2:DOI_NOT_VISIBLE",
+        "SOURCE_M:TITLE_NOT_VISIBLE",
+        "SOURCE_M:URL_NOT_VISIBLE:https://www.meta.ai/share/a/3f787811-6282-4f46-81d7-67ffa0659441",
+        "SOURCE_M:URL_LINK_MISMATCH:https://www.meta.ai/share/a/3f787811-6282-4f46-81d7-67ffa0659441"
+      ]
+    }
+  ]
+}

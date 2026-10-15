@@ -1,0 +1,56 @@
+{
+  "schema": "qikvrt_editorial_claim_matrix_v1",
+  "complete_for_new_editorial_claims": true,
+  "complete_for_all_historical_scientific_claims": false,
+  "claims": [
+    {
+      "id": "LAYOUT-001",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "scope": "PDF-Dokumentprüfung",
+      "statement": "Sechs Originalseiten enthalten Überläufe; alle sechs werden neu gesetzt.",
+      "evidence": "LAYOUT_VALIDATION.json"
+    },
+    {
+      "id": "SOURCE-001",
+      "classification": "SOURCE_BOUND",
+      "scope": "Originalseiten 2-116",
+      "statement": "115 historische Seiten bleiben textlich und visuell erhalten.",
+      "evidence": "LAYOUT_VALIDATION.json"
+    },
+    {
+      "id": "S12-001",
+      "classification": "NORMATIVE",
+      "scope": "Autorenempfehlung",
+      "statement": "Notfallprinzip für past-directed information; unverändert zugeschriebene Empfehlung.",
+      "source": "S12_ORIGINAL.md"
+    },
+    {
+      "id": "S12-002",
+      "classification": "OPEN",
+      "scope": "Ursprungszukunft und Zustandsmodell",
+      "statement": "Die allgemeine Unerreichbarkeit der Ursprungszukunft verlangt zusätzliche Modellprämissen beziehungsweise empirische Bindung.",
+      "source": "S12_ORIGINAL.md"
+    },
+    {
+      "id": "S12-003",
+      "classification": "OPEN",
+      "scope": "Vergleich möglicher Zukünfte",
+      "statement": "Die Beschränkung einer besseren Zukunft auf reguläre Verwendung ist hier nicht bewiesen.",
+      "source": "S12_ORIGINAL.md"
+    },
+    {
+      "id": "S12-004",
+      "classification": "SOURCE_BOUND",
+      "scope": "TEMDD-Darstellung",
+      "statement": "Die Bedingungen sind im Original angegeben; diese Revision führt keinen Kernelbeweis aus.",
+      "source": "S12_ORIGINAL.md"
+    },
+    {
+      "id": "ARCHIVE-001",
+      "classification": "OPEN",
+      "scope": "Historische Repositoryquellen und neue Gesamtausgabe",
+      "statement": "Noch kein behaupteter neuer Zenodo-DOI und keine vollständige neue Claim-Prüfung des gesamten historischen Korpus.",
+      "evidence": "PUBLICATION_SOURCES.json"
+    }
+  ]
+}

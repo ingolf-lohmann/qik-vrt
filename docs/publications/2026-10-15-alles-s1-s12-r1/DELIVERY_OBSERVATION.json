@@ -1,0 +1,14 @@
+{
+  "schema": "qikvrt_exact_host_delivery_observation_v1",
+  "hostname": "raumzeitterminal.de",
+  "url": "https://raumzeitterminal.de/",
+  "method": "GET",
+  "observed_at": "2026-10-15T16:52:54.484879+00:00",
+  "working_software": false,
+  "deployment_performed_by_this_task": false,
+  "state": "PENDING",
+  "observation_scope": "This client HTTP request; no independent domain-registry conclusion",
+  "http_status": 502,
+  "response_sha256": "81074a9c8dfb24290e8fc4af14d20f67f5304618d27ac713628b1126e41dbd8e",
+  "error": "HTTP Error 502: Bad Gateway"
+}
