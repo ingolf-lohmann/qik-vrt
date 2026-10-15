@@ -1,4 +1,4 @@
-# Autorenprüfung der aktuellen Neufassung
+# Autorenfreigabe der aktuellen Neufassung
 
 Zur Entscheidung steht ausschließlich
 [QIKVRT_Gesamtdarstellung_neu_2026-10-15.md](QIKVRT_Gesamtdarstellung_neu_2026-10-15.md).
@@ -27,7 +27,17 @@ Sie autorisieren keine Veröffentlichung der jüngeren Textfassung. Für diese
 sind die neue vollständige Claim-/Quellenbindung, der v2-Rückgabe- und
 Freigabeweg sowie ein ausführbarer authentifizierter Publisher erforderlich.
 
-Die erbetene Autorenentscheidung lautet: diese exakt bezeichnete Textfassung
-redaktionell freigeben oder konkrete Änderungen benennen. Eine Zustimmung wird
-nicht aus dem Integrationsauftrag abgeleitet. Repository-Integration, öffentliche
-Veröffentlichung und Produkt-/Domainabnahme erhalten jeweils eigene Nachweise.
+Ingolf Lohmann hat am 15. Oktober 2026 um 19:59:24 UTC ausdrücklich geantwortet:
+„Diese Textfassung freigeben“. Die redaktionelle Freigabe dieser exakt gebundenen
+Textbytes ist damit abgeschlossen. [Freigabenachweis](EDITORIAL_AUTHOR_APPROVAL.json).
+Der bereits zurückgelieferte Kandidat wurde unverändert bestätigt; diese
+Autorenentscheidung wird nicht erneut angefordert.
+
+Der vollständige Quellenstellenindex der 131 Textblöcke steht in
+`EDITORIAL_TEXT_SOURCE_INDEX.json`; `EDITORIAL_SOURCE_BINDINGS.json` bindet die
+49 Quellenidentitäten und die beigefügten Repositoryquellen. Das ist keine neue
+Kernelprüfung und noch keine vollständige semantische Produktions-Proof-Matrix.
+`EDITORIAL_PUBLICATION_CONTINUATION.json` hält die tatsächlich fehlenden
+Publisheroperationen, Archivierungen und Produktionsnachweise fest.
+Repository-Integration, öffentliche Veröffentlichung und Produkt-/Domainabnahme
+behalten jeweils eigene Nachweise.

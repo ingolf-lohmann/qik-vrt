@@ -1,6 +1,6 @@
 # Aktuelle Neufassung: Nutzenartikel und Gesamtdarstellung
 
-## Unveränderte Textfassung vom 15. Oktober 2026, 18:51 UTC · Autorenfreigabe offen
+## Unveränderte Textfassung vom 15. Oktober 2026, 18:51 UTC · redaktionell freigegeben
 
 Die aktuelle redaktionelle Hauptfassung ist [QIKVRT_Gesamtdarstellung_neu_2026-10-15.md](QIKVRT_Gesamtdarstellung_neu_2026-10-15.md).
 Sie wurde aus der gespeicherten Version 2 bytegenau übernommen: **61.037 Bytes**,
@@ -20,7 +20,7 @@ in `MILESTONES.json` verfügbar.
 Dieselbe Publikationssammlung und derselbe PR #523 werden fortgesetzt.
 Repositoryaufnahme, Main-Integration, Autorenfreigabe, Zenodo-Veröffentlichung,
 IETF-Einreichung, Mirror-Persistenz und Domainabnahme sind getrennte Zustände.
-Die neue Fassung ist ein Arbeitsentwurf zur Autorenprüfung. Vor öffentlicher
+Ingolf Lohmann hat diese exakten Textbytes am 15. Oktober 2026 um 19:59:24 UTC redaktionell freigegeben; der Nachweis steht in `EDITORIAL_AUTHOR_APPROVAL.json`. Vor öffentlicher
 Publikation sind außerdem ihre vollständige Claim-/Quellenbindung und die
 offenen Zenodo-Archivierungen von A1, A2 und P1 abzuschließen. Der vorhandene
 v2-Publisher bleibt der vorgesehene Weg. Ein freigegebener Text allein ist

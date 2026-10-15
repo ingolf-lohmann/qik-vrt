@@ -1,0 +1,55 @@
+{
+  "schema": "qikvrt-approved-editorial-publication-continuation-v1",
+  "primary": {
+    "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/QIKVRT_Gesamtdarstellung_neu_2026-10-15.md",
+    "bytes": 61037,
+    "sha256": "84e37878f497208bdf6b2db04c8a4f83ee642559ad6db794d408e159c4c94c2c",
+    "git_blob_sha1": "2cc98ab526e76c8d48737e596d6da2c61d941019"
+  },
+  "author_approval_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/EDITORIAL_AUTHOR_APPROVAL.json",
+  "editorial_author_decision": "COMPLETE",
+  "same_editorial_approval_will_not_be_requested_again": true,
+  "repository_integration": "EXISTING_PR_523_ONLY",
+  "publication_state": "NOT_PUBLISHED",
+  "prepared": [
+    "Byte-exact approved Markdown",
+    "Author decision and acknowledged return bound to the exact bytes",
+    "Complete 131-unit text/source occurrence index and 49 reference identities",
+    "Current repository-source file identities for A1, A2 and P1"
+  ],
+  "open_technical_gates": [
+    {
+      "id": "ZENODO_AUTHENTICATED_PUBLISHER",
+      "operation": "Authenticated Zenodo production upload/publication through the existing v2 publisher",
+      "evidence": "Enabled operation inventory exposes no Zenodo mutation or initial GitHub Actions dispatch. Existing Mesh connector exposes observation/readback only. Targeted Zenodo plugin search after author approval returned zero results.",
+      "retry_condition": "An admitted existing authenticated publisher route with the required POST/PUT operations becomes callable; no unchanged retry, proxy executor or credential harvesting."
+    },
+    {
+      "id": "REPOSITORY_SCIENTIFIC_SOURCE_ARCHIVAL",
+      "sources": [
+        "A1",
+        "A2",
+        "P1"
+      ],
+      "state": "OPEN",
+      "retry_condition": "Exact published archival records and byte readback for these source groups are available."
+    },
+    {
+      "id": "CURRENT_CANDIDATE_PRODUCTION_PROOF",
+      "state": "OPEN",
+      "reason": "The complete exact-text source index is prepared. A source/claim support matrix, standalone publication PDF, v2 proof/upload bundle and exact fileset protocol must be completed on the supported publisher route. The historical 176-unit proof draft is not transferred."
+    }
+  ],
+  "effects_executed": {
+    "zenodo_upload": false,
+    "zenodo_publication": false,
+    "ietf_submission": false,
+    "main_merge": false,
+    "mirror_write": false,
+    "domain_deployment": false
+  },
+  "unrelated_ietf_series_changed": false,
+  "historical_sources_changed": false,
+  "new_pr_or_executor_created": false,
+  "smallest_next_causal_step": "Use the existing authenticated v2 publisher when its operation becomes callable; complete source archival and current-candidate production proof, retain this exact editorial approval and independently read back every actual effect."
+}

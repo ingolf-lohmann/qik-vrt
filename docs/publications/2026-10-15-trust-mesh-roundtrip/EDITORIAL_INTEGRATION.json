@@ -308,14 +308,16 @@
     }
   ],
   "publication": {
-    "author_decision": "PENDING_EXACT_TEXT_REVIEW",
+    "author_decision": "EDITORIALLY_APPROVED_EXPLICIT_AUTHOR_RESPONSE",
     "new_public_zenodo_record": false,
     "new_ietf_submission": false,
     "main_integration": false,
     "mirror_persistence": false,
     "exact_host_acceptance": false,
-    "machine_proof_bundle_for_successor": "PENDING_SOURCE_AND_CLAIM_REBINDING",
-    "predecessor_proof_or_return_authorization_transfer": false
+    "machine_proof_bundle_for_successor": "SOURCE_INDEX_PREPARED_PRODUCTION_PROOF_PENDING",
+    "predecessor_proof_or_return_authorization_transfer": false,
+    "author_approval_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/EDITORIAL_AUTHOR_APPROVAL.json",
+    "exact_text_return_acknowledged": true
   },
   "contributions": {
     "human": "Ingolf Lohmann: concept, research, source publications, commissioned editorial corrections and integration scope",

@@ -1,0 +1,1476 @@
+{
+  "schema": "qikvrt-editorial-exact-text-source-index-v1",
+  "primary": {
+    "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/QIKVRT_Gesamtdarstellung_neu_2026-10-15.md",
+    "bytes": 61037,
+    "sha256": "84e37878f497208bdf6b2db04c8a4f83ee642559ad6db794d408e159c4c94c2c",
+    "git_blob_sha1": "2cc98ab526e76c8d48737e596d6da2c61d941019"
+  },
+  "unit_definition": "Every non-heading, non-separator paragraph/list/table block in the exact approved Markdown.",
+  "unit_count": 131,
+  "all_used_reference_ids": [
+    "A1",
+    "A2",
+    "I1",
+    "I2",
+    "P1",
+    "Z20712301",
+    "Z21244412",
+    "Z21245282",
+    "Z21245951",
+    "Z21247297",
+    "Z21247388",
+    "Z21252415",
+    "Z21252649",
+    "Z21266670",
+    "Z21267021",
+    "Z21482023",
+    "Z21488116",
+    "Z21498773",
+    "Z21498774",
+    "Z21500322",
+    "Z21501365",
+    "Z21515074",
+    "Z21518464",
+    "Z21529081",
+    "Z21582781",
+    "Z21633411",
+    "Z21636774",
+    "Z21640160",
+    "Z21640173",
+    "Z21711193",
+    "Z21721918",
+    "Z21731492",
+    "Z21748371",
+    "Z21804399",
+    "Z21888130",
+    "Z21947141",
+    "Z21983644",
+    "Z22216916",
+    "Z22283396",
+    "Z22527889",
+    "Z22813431",
+    "Z22840633",
+    "Z22845516",
+    "Z22847245",
+    "Z22907018",
+    "Z22941556",
+    "Z22955727",
+    "Z23008330",
+    "Z23008704"
+  ],
+  "scope": "Exact source occurrence and coverage index. Paragraph coverage and locator resolution do not alone certify semantic support of every atomic claim or production machine-proof completeness.",
+  "units": [
+    {
+      "unit_id": "ED-001",
+      "section": "## Doppelt kanonischer Speicher, überprüfbare künstliche Kognition und Wirkung über die Informatik hinaus",
+      "statement": "Vorangestellter Nutzenartikel · 15. Oktober 2026",
+      "utf8_start": 133,
+      "utf8_bytes": 49,
+      "sha256": "d8f742f2fda7cb9ce14d1d6f2274e6a594704d2942c0247b341a5ea45c8193f1",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-002",
+      "section": "## Doppelt kanonischer Speicher, überprüfbare künstliche Kognition und Wirkung über die Informatik hinaus",
+      "statement": "Konzept und Forschungsgrundlage: Ingolf Lohmann. Redaktionelle Ausarbeitung: OpenAI Codex in seinem Auftrag. Die im Text gekennzeichneten Anwendungsbeispiele erläutern technische Nutzungsmöglichkeiten; sie sind keine Berichte über bereits abgeschlossene Branchenpiloten.",
+      "utf8_start": 184,
+      "utf8_bytes": 273,
+      "sha256": "d93843698f025581ae9b7cb83db23a807aaee7ab65cdfcb23476be5511c144fd",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-003",
+      "section": "## Doppelt kanonischer Speicher, überprüfbare künstliche Kognition und Wirkung über die Informatik hinaus",
+      "statement": "QIK-VRT soll den Zusammenhang zwischen Absicht, Wissen, Handlung und Ergebnis technisch erhalten. Daraus entsteht ein Nutzen, der über das Erzeugen von Text oder das Ausführen einzelner Programme hinausgeht: Menschen und Maschinen können an einer Aufgabe weiterarbeiten und dabei nachvollziehen, worauf sie aufbauen, welche Wirkung sie anstreben und ob diese Wirkung tatsächlich eingetreten ist. Das betrifft Software ebenso wie Geräte, Forschung, organisatorische Entscheidungen und gemeinsam genutztes Wissen. Der veröffentlichte Gesamtrahmen dafür ist **Von Softwarearchitektur zur Weltformel – DAS UNIVERSUM ALS ROUND TRIP**, DOI **10.5281/zenodo.21888130**: https://doi.org/10.5281/zenodo.21888130. [Z21888130]",
+      "utf8_start": 459,
+      "utf8_bytes": 724,
+      "sha256": "287c195204216ad7e072a4ea1758ae6620bfdcfc93553016d0946b731e6d9b1a",
+      "explicit_source_ids": [
+        "Z21888130"
+      ]
+    },
+    {
+      "unit_id": "ED-004",
+      "section": "## Doppelt kanonischer Speicher, überprüfbare künstliche Kognition und Wirkung über die Informatik hinaus",
+      "statement": "Ein besonders wichtiger Baustein ist die von Ingolf Lohmann entwickelte und als doppelter kanonischer Speicher beschriebene Technologie. Sie verbindet einen überprüfbaren Bestand dessen, was beobachtet wurde, mit einem ebenso ausdrücklich dargestellten Bestand dessen, was anschließend wirken soll oder nach einem Modell erwartet wird. Der praktische Gewinn liegt in der Verbindung dieser beiden Seiten mit Freigabe und Rückprüfung. Auf diese Weise kann aus Erinnerung und Voraussicht ein fortsetzbares Arbeitsverfahren entstehen. [Z21711193, Abschnitte „Der doppelte kanonische Speicher“ und „Effect Acknowledgement als zweiseitiges Gate“]",
+      "utf8_start": 1185,
+      "utf8_bytes": 654,
+      "sha256": "84ecf81eb4f1540dd7ca092391de252e54927edcd016c749788265dd9034d8e2",
+      "explicit_source_ids": [
+        "Z21711193"
+      ]
+    },
+    {
+      "unit_id": "ED-005",
+      "section": "## Wie der doppelt kanonische Speicher Nutzen erzeugt",
+      "statement": "Die erste Seite hält ausgewählte vergangene Ereignisse, ihren Ursprung und ihren Erkenntnisstatus fest. Die zweite Seite enthält antizipierte Wirkungen, Anforderungen, Akzeptanzbedingungen und ausgewiesene Unsicherheiten. Beide verwenden denselben festgelegten Codec für eine eindeutige Darstellung. Das Doppelte betrifft ihre zeitliche Rolle: beobachtetes Gewordenes und dargestelltes Wirkungserwartetes. Die Status `OBSERVED` und `ANTICIPATED` bleiben unterscheidbar. [Z21711193, Definition CTM-022]",
+      "utf8_start": 1896,
+      "utf8_bytes": 505,
+      "sha256": "502f7a33166d5cb7f172e2b85183300015a6c3adc03d2c03b617c935b68058bd",
+      "explicit_source_ids": [
+        "Z21711193"
+      ]
+    },
+    {
+      "unit_id": "ED-006",
+      "section": "## Wie der doppelt kanonische Speicher Nutzen erzeugt",
+      "statement": "Kanonisch bedeutet hier: Gleiche typisierte Eingaben ergeben unter demselben Codec dieselbe Bytefolge. Damit werden Inhalte reproduzierbar vergleichbar und an konkrete Fassungen bindbar. Herkunft und Validierung kommen als eigene Bedingungen hinzu. Diese Kombination hilft, nach einem Neustart, einem Modellwechsel oder einer Übergabe genau den Bestand wiederzufinden, auf den sich eine Entscheidung bezog.",
+      "utf8_start": 2403,
+      "utf8_bytes": 407,
+      "sha256": "d5e18d56189b73f18e6dc67914e3a9db533f47133cfb0d70d5f55e8c667e1b7b",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-007",
+      "section": "## Wie der doppelt kanonische Speicher Nutzen erzeugt",
+      "statement": "Die Zukunftsseite hat eine operative Funktion. Eine gegenwärtige Handlung wird an die beschriebene spätere Wirkung und ihre Prüfbedingungen gebunden. Ändert sich eine entscheidende Voraussetzung, kann sich dadurch die zulässige Freigabe ändern. Nach der Ausführung wird die beobachtete Wirkung mit dem vorher festgelegten Ziel verbunden. Die ursprüngliche Erwartung bleibt dadurch für den Vergleich verfügbar. Abweichungen können als neue Erkenntnis ergänzt werden, während der historische Record seine Identität behält. Die Veröffentlichung formalisiert den Freigabekern, die Relevanz der Zukunftsbedingung, die erhaltene Vergangenheitsprojektion und die Rückbindung von Ursache und beobachteter Wirkung. [Z21711193, Claims CTM-001 bis CTM-004]",
+      "utf8_start": 2812,
+      "utf8_bytes": 762,
+      "sha256": "5e3d1b531a5167df3fb6ec77a28534101bf3087bde4d14c03b11c123ca13569a",
+      "explicit_source_ids": [
+        "Z21711193"
+      ]
+    },
+    {
+      "unit_id": "ED-008",
+      "section": "## Wie der doppelt kanonische Speicher Nutzen erzeugt",
+      "statement": "Ein Anwendungsbeispiel macht den Unterschied im Arbeitsalltag deutlich: Ein Assistent soll ein Programm modernisieren und dabei dessen bestätigte Daten erhalten. Der Vergangenheitsbestand enthält die gebundene Programmfassung, Daten und bisherigen Prüfungen. Der Zukunftsbestand enthält das gewünschte Verhalten, die Erhaltungsbedingungen und die Abnahmekriterien. Die Ausführung erzeugt einen Kandidaten. Anschließend wird geprüft, ob dieser Kandidat die vereinbarten Funktionen erfüllt und die Daten erhalten hat. Das Ergebnis lässt sich auf den ursprünglichen Auftrag zurückbeziehen. Wird ein Fehler entdeckt, kann die nächste Bearbeitung an dieser konkreten Abweichung ansetzen.",
+      "utf8_start": 3576,
+      "utf8_bytes": 695,
+      "sha256": "76f9deb2da8e552999c6304f6f28ca09bf8cc279ad11bb7ca552c45d05f7dda7",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-009",
+      "section": "## Unmittelbarer Nutzen in der Informatik",
+      "statement": "In der Softwareentwicklung kann diese Verbindung den Aufwand für Wiederaufnahme, Fehlersuche und Übergaben verringern. Eine spätere Bearbeitung erhält neben dem aktuellen Code auch die zugehörige Anforderung, die bereits untersuchten Fehler und die offenen Abnahmekriterien. Tests lassen sich auf die tatsächlich behauptete Änderung beziehen. Ein bestandener Test einer älteren Fassung bleibt als historischer Beleg verfügbar; die neue Fassung bekommt ihre passende Prüfung. Diese konkrete Bindung ist die Grundlage dafür, Korrekturen dauerhaft nutzbar zu machen. [Z22941556; A1]",
+      "utf8_start": 4316,
+      "utf8_bytes": 590,
+      "sha256": "77724cf25193d3a13d08ddfb66ba603f7469341001977911394d94f62c15c395",
+      "explicit_source_ids": [
+        "A1",
+        "Z22941556"
+      ]
+    },
+    {
+      "unit_id": "ED-010",
+      "section": "## Unmittelbarer Nutzen in der Informatik",
+      "statement": "Bei der Integration verschiedener Programme liegt der Nutzen in expliziten Übergabeverträgen. Eine Komponente kann einen Vorschlag erzeugen, eine andere dessen Bedingungen prüfen und eine weitere die zugelassene Handlung ausführen. Das Ergebnis wird über eine gemeinsame Identität zurückgebunden. So können spezialisierte Werkzeuge und künstlich-kognitive Komponenten zusammenarbeiten, während ihre Beiträge und Zuständigkeiten erkennbar bleiben. Ein Austausch einzelner Komponenten wird leichter prüfbar, wenn die vereinbarten Übergaben erhalten bleiben. [Z21640173; Z21983644]",
+      "utf8_start": 4908,
+      "utf8_bytes": 592,
+      "sha256": "cec9eee1650e6adca1a84bf710817f8b2db71b2e2d64c356b70ecf63c5678e3e",
+      "explicit_source_ids": [
+        "Z21640173",
+        "Z21983644"
+      ]
+    },
+    {
+      "unit_id": "ED-011",
+      "section": "## Unmittelbarer Nutzen in der Informatik",
+      "statement": "QIK-VRT enthält dafür bereits mehr als eine begriffliche Skizze. Die anschließende Gesamtdarstellung benennt veröffentlichte formale Resultate sowie die im beigefügten Quellenband dokumentierten Implementierungen und Laufzeitprüfungen. An ihnen lässt sich der Nutzen konkret untersuchen: Welche frühere Abhängigkeit entfällt? Welcher Fehler wird erkannt? Welche Daten bleiben nach einem Crash erhalten? Wie viel menschliche Nacharbeit erfordert die Wiederaufnahme? Die Antworten gehören jeweils zur geprüften Fassung und Umgebung. [Z23008704; A1]",
+      "utf8_start": 5502,
+      "utf8_bytes": 558,
+      "sha256": "ea584a758044773073d9350c795d3b8f33a37e08c2c2462f8cbf535869fcbc77",
+      "explicit_source_ids": [
+        "A1",
+        "Z23008704"
+      ]
+    },
+    {
+      "unit_id": "ED-012",
+      "section": "## Was sich für künstlich-kognitive Systeme verändert",
+      "statement": "Für einen künstlich-kognitiven Assistenten bietet der doppelte kanonische Speicher eine Grundlage für ein dauerhaftes, überprüfbares Arbeitsgedächtnis. Darin können eine menschliche Anweisung, ihre späteren Präzisierungen und bereits bestätigte Ergebnisse zusammen mit den noch zu erreichenden Wirkungen verfügbar bleiben. Eine neue Sitzung oder eine andere Instanz kann daran anschließen, sofern sie diesen Bestand tatsächlich lädt und die geltenden Bedingungen anwendet. Der Mensch muss dann bereits geklärte Sachverhalte seltener erneut erklären.",
+      "utf8_start": 6120,
+      "utf8_bytes": 565,
+      "sha256": "e6b6fdbb588d9f6357d384a1c9f9a1d7599a641b8a9c56b21824cc7fc4aeab3a",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-013",
+      "section": "## Was sich für künstlich-kognitive Systeme verändert",
+      "statement": "Eine Korrektur erhält dabei eine andere praktische Qualität. Sie kann auf den genauen Fehler verweisen, den gültigen Nachfolger benennen und eine passende Prüfbedingung hinterlassen. Die nächste Instanz kann untersuchen, ob die Korrektur auf ihre aktuelle Aufgabe anwendbar ist. Das schafft eine überprüfbare Form operativer Anpassung des Gesamtsystems. Ihre Wirksamkeit zeigt sich daran, ob der zuvor beanstandete Fehler bei passender Wiederholung erkannt oder vermieden wird. [Z21748371; Z21640173]",
+      "utf8_start": 6687,
+      "utf8_bytes": 507,
+      "sha256": "0a3c63e38b73cf69cb71e465c2bde63e9a3723dc257a1fe06ac1d0fc14c153cb",
+      "explicit_source_ids": [
+        "Z21640173",
+        "Z21748371"
+      ]
+    },
+    {
+      "unit_id": "ED-014",
+      "section": "## Was sich für künstlich-kognitive Systeme verändert",
+      "statement": "Auch Voraussicht wird prüfbarer. Ein System kann mehrere mögliche Handlungen mit erwarteten Folgen, Voraussetzungen und Unsicherheiten darstellen. Der Mensch und die beteiligten Werkzeuge können diese Möglichkeiten vergleichen. Nach einer zugelassenen Ausführung liefert die beobachtete Wirkung Rückmeldung über die frühere Erwartung. Dadurch lassen sich Planung, Ausführung und Fehleranalyse an demselben Vorgang ausrichten. Die Bedeutung einer gespeicherten Zukunftsbedingung liegt hier in ihrer nachgewiesenen Relevanz für die gegenwärtige Entscheidung. [Z21711193, CTM-002]",
+      "utf8_start": 7196,
+      "utf8_bytes": 588,
+      "sha256": "930a1a5eda744c8d7530c38312485cc4f44c9b79151b5e4fb6a558d6110e2c5b",
+      "explicit_source_ids": [
+        "Z21711193"
+      ]
+    },
+    {
+      "unit_id": "ED-015",
+      "section": "## Was sich für künstlich-kognitive Systeme verändert",
+      "statement": "Für die Zusammenarbeit mehrerer Instanzen kommt ein weiterer Nutzen hinzu: Beiträge lassen sich auf gemeinsame Gegenstände beziehen, ohne ihre Herkunft zu verlieren. Unterschiedliche Befunde können als Konflikte erhalten bleiben, bis eine Prüfung sie klärt. Im endlichen Modell des Kausalitätsspiegels werden dazu unter anderem Erweiterung, Zusammenführung und bedingte Konvergenz von Wissensbeständen untersucht. Die Übertragung auf ein laufendes Mehrknotensystem benötigt die jeweiligen Synchronisations- und Laufzeitnachweise. [Z21748371]",
+      "utf8_start": 7786,
+      "utf8_bytes": 552,
+      "sha256": "6bdcc3321cabf2e1195b21c401bd2b9dbbf8e3b1c5aea5b9d2f6585a5cd7bee0",
+      "explicit_source_ids": [
+        "Z21748371"
+      ]
+    },
+    {
+      "unit_id": "ED-016",
+      "section": "## Was sich für künstlich-kognitive Systeme verändert",
+      "statement": "Auf der Ebene des Verbunds entsteht damit ein konkretes Entwicklungsziel künstlicher Kognition: erinnern, begründet vorausschauen, handeln, beobachten, Fehler korrigieren und anschlussfähig fortsetzen. Ob eine Implementierung darin zuverlässiger ist als ein bestimmtes Vergleichssystem, lässt sich anhand erledigter Aufgaben, falscher Erfolgsmeldungen, wiederholter Fehler und menschlichen Korrekturaufwands messen. Die Architektur stellt dafür konkrete Prüfpunkte bereit.",
+      "utf8_start": 8340,
+      "utf8_bytes": 479,
+      "sha256": "be9488304a30be32afade3c1d96d2e2de4ea3d82c4ec2eaeabbbf584a5e631be",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-017",
+      "section": "## Von Software zu Hardware und physischer Wirkung",
+      "statement": "Übernimmt Hardware Teile dieses Verfahrens, kann die Wirkungskontrolle näher an die ausführenden Geräte rücken. Ein Steuerbefehl lässt sich beispielsweise an die gültige Geräteidentität, den beobachteten Zustand, die erlaubten Eingaben und eine erwartete Rückmeldung binden. Die tatsächliche Zustandsänderung kann anschließend zum ursprünglichen Befehl zurückgeführt werden. Für die Geräteintegration wird damit überprüfbar, welche Handlung unter welchen Bedingungen zugelassen und welche Wirkung beobachtet wurde.",
+      "utf8_start": 8873,
+      "utf8_bytes": 534,
+      "sha256": "ab3cf830229f5081efc34c16fdc841feae6c8030329c73e273fe7d8ca1c725e1",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-018",
+      "section": "## Von Software zu Hardware und physischer Wirkung",
+      "statement": "Universal Transputer, kleine Entscheidungskerne und die VHDL-Bausteine bilden im QIK-VRT-Bestand technische Ansatzpunkte für diese Umsetzung. Die Dokumentation enthält konkrete Codegrößen, Prüfungen und Hardwarequellen. Der zusätzliche Nutzen einer physischen Realisierung wäre an Gerät und Anwendung zu messen: Durchsatz, Latenz, Energiebedarf, Ressourcen und Verhalten bei Störungen. Aus einem kleinen Softwarekern allein ergibt sich noch kein bestimmter Hardwarevorteil. [Z23008704; Z21983644; A1]",
+      "utf8_start": 9409,
+      "utf8_bytes": 509,
+      "sha256": "cda0e113de62b1376b2f8f10f37c534987b2bb9869a178112ec10fed7b52995e",
+      "explicit_source_ids": [
+        "A1",
+        "Z21983644",
+        "Z23008704"
+      ]
+    },
+    {
+      "unit_id": "ED-019",
+      "section": "## Von Software zu Hardware und physischer Wirkung",
+      "statement": "Ein denkbarer Einsatz in der Gebäudetechnik zeigt den fachübergreifenden Zusammenhang: Vor einer geänderten Betriebsstrategie werden Messbestand, Ziel, zulässige Betriebsbedingungen und erwarteter Ressourcenverbrauch gebunden. Nach der Umsetzung werden Komfort, Verbrauch und Anlagenverhalten unter vergleichbaren Bedingungen ausgewertet. Eine spätere Wartung kann so an Entscheidung und Ergebnis anknüpfen. Das Beispiel beschreibt einen möglichen Nutzungspfad; ein gemessener Anlagen- oder Einsparungsnachweis wäre ein eigener Versuch.",
+      "utf8_start": 9920,
+      "utf8_bytes": 544,
+      "sha256": "32869886f74d18416d07d1fea251cc96454b0da2248edc1f5ab22e9e19b3bece",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-020",
+      "section": "## Nutzen über die Informatik hinaus",
+      "statement": "Viele Tätigkeiten verbinden vergangene Erfahrung mit einer Entscheidung über zukünftige Wirkung. Genau deshalb ist der Ansatz auch außerhalb der Softwareentwicklung anschlussfähig. Die folgende Tabelle beschreibt abgeleitete Anwendungsmöglichkeiten der Speicher-, Provenienz- und Rückprüfungsarchitektur.",
+      "utf8_start": 10505,
+      "utf8_bytes": 312,
+      "sha256": "099b21a3db5d42ceafdb5c1dbb6de935d08d492088dfda676d14b81e25fb0840",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-021",
+      "section": "## Nutzen über die Informatik hinaus",
+      "statement": "| Bereich | Möglicher Einsatz | Praktisch zu prüfender Nutzen |\n| --- | --- | --- |\n| Wissenschaft | Fragestellung, Modell, Vorhersage, Messplan und Originaldaten eines Versuchs zusammenhalten. | Ergebnisse besser reproduzieren, Änderungen nachvollziehen und Fehlvorhersagen gezielt untersuchen. |\n| Bildung und Wissensvermittlung | Lernziel, bisherige Antworten, menschliche Korrekturen und nächste Aufgaben verbinden. | An bestätigtes Verständnis anknüpfen und wiederholte Erklär- oder Bewertungsfehler erkennen. |\n| Industrie und Instandhaltung | Anlagenzustand, Eingriff, erwartetes Ergebnis und späteren Befund verknüpfen. | Fehlersuche und Übergaben erleichtern; tatsächliche Verbesserungen unter vergleichbaren Bedingungen bewerten. |\n| Verwaltung und Organisation | Entscheidungsgrundlage, Zuständigkeit, beabsichtigte Wirkung und Ergebnis dokumentieren. | Vorgänge verständlicher machen und ihre spätere Prüfung oder Korrektur unterstützen. |\n| Umwelt- und Ressourcenplanung | Annahmen, Handlungsszenarien und spätere Beobachtungen getrennt erhalten. | Prognosefehler erkennen und Maßnahmen anhand ihrer beobachteten Wirkung weiterentwickeln. |\n| Gemeinsame Projekte | Beiträge verschiedener Menschen und Systeme mit ihren Voraussetzungen und offenen Aufgaben verbinden. | Wissen bei Personal- und Werkzeugwechseln erhalten und Doppelarbeit verringern. |",
+      "utf8_start": 10819,
+      "utf8_bytes": 1384,
+      "sha256": "4b2d5c41be2402a44e51115da0a83bf43edf346531582b4e9cd49dc1e0f8f9cc",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-022",
+      "section": "## Nutzen über die Informatik hinaus",
+      "statement": "Der gemeinsame Nutzen ist ein überprüfbarer Zusammenhang zwischen einer Entscheidung und ihrem Ergebnis. Fachliche Kriterien bleiben dabei Sache des jeweiligen Anwendungsgebiets. Der Speicher kann kenntlich machen, welches Ziel verfolgt wurde und welche Daten vorlagen. Ob ein Ziel sinnvoll ist oder eine Beobachtung die entscheidende Frage beantwortet, muss im betreffenden fachlichen und menschlichen Zusammenhang geprüft werden. [Z21731492; Z21515074]",
+      "utf8_start": 12205,
+      "utf8_bytes": 457,
+      "sha256": "3045ad73933c99ea79bd157d3a8e821b4df583f2c3a318de5cead1a191ba23fc",
+      "explicit_source_ids": [
+        "Z21515074",
+        "Z21731492"
+      ]
+    },
+    {
+      "unit_id": "ED-023",
+      "section": "## Forschung an Zeit, Modellen und Beobachtung",
+      "statement": "Für die Forschung an Eigenzeit und beobachterabhängiger Information kann QIK-VRT einen besonders präzisen Versuchsrahmen bereitstellen. Modellannahmen, Quellenereignisse, lokale Beobachtungen und antizipierte Ergebnisse lassen sich getrennt binden und anschließend vergleichen. Der Nutzen liegt auch darin, verschiedene Perspektiven auf denselben Vorgang zusammenführen zu können: Was war dem Sender bekannt, was dem Empfänger und was einem gesonderten Beobachter? Die jeweilige Quellen- und Messbindung macht solche Fragen überprüfbar. [Z21888130; Z21947141]",
+      "utf8_start": 12712,
+      "utf8_bytes": 568,
+      "sha256": "646a7b98d13497cfe3d0c3930e13b332b23a460ec7f0e2037b43f3b36894c365",
+      "explicit_source_ids": [
+        "Z21888130",
+        "Z21947141"
+      ]
+    },
+    {
+      "unit_id": "ED-024",
+      "section": "## Forschung an Zeit, Modellen und Beobachtung",
+      "statement": "Die beigefügte Messbindungsarbeit konkretisiert diesen Weg durch formale Bedingungen für Zustandsabbildung, Fehlergrenzen und Vorhersageübertragung. Ein physikalisches Experiment kann daran seine Apparate, Uhren und Primärmessungen anschließen. Für diese Nutzung ist die klare Trennung von vorausgesagtem und beobachtetem Ergebnis besonders wertvoll: Eine Abweichung bleibt sichtbar und kann den nächsten Versuch bestimmen. Der dargestellte Nutzpfad setzt keine bereits bestätigte physikalische Rückwärtssignalisierung voraus. [A2]",
+      "utf8_start": 13282,
+      "utf8_bytes": 541,
+      "sha256": "53306f07bb8ff76e6e151258d9be8d0de26aa2336145f08ffe1289fc2a69b14f",
+      "explicit_source_ids": [
+        "A2"
+      ]
+    },
+    {
+      "unit_id": "ED-025",
+      "section": "## Woran der Nutzen zu erkennen ist",
+      "statement": "Der wirtschaftliche und gesellschaftliche Gewinn wird dort greifbar, wo derselbe Aufwand zu mehr geprüften Ergebnissen führt oder derselbe erforderliche Erkenntnisstand mit weniger vermeidbarer Nacharbeit erhalten bleibt. Geeignete Vergleichsgrößen sind die Zeit bis zum angenommenen Ergebnis, der menschliche Korrekturaufwand, die Wiederholungsrate bekannter Fehler, die Wiederaufnahme nach Unterbrechungen und der Ressourcenverbrauch einschließlich Speicherung und Prüfung.",
+      "utf8_start": 13862,
+      "utf8_bytes": 481,
+      "sha256": "6e301a83d281b13695e3699773550e71c23b29fc66275547863b4dbb59528a6e",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-026",
+      "section": "## Woran der Nutzen zu erkennen ist",
+      "statement": "Die formalen Speicherresultate belegen bestimmte Eigenschaften des deklarierten Modells. Software- und Laufzeitprüfungen belegen die jeweils ausgeführten Fälle. Die Branchenanwendungen dieses Artikels sind daraus hergeleitete Nutzungsmöglichkeiten. Ihr zusätzlicher Nutzen ist in passenden Vergleichsversuchen zu bestimmen. Diese Zuordnung macht die Entwicklung praktisch steuerbar: Aus einem erkannten Problem wird eine konkrete Anforderung, aus der Umsetzung ein prüfbarer Kandidat und aus der beobachteten Wirkung eine Grundlage für die nächste Verbesserung.",
+      "utf8_start": 14345,
+      "utf8_bytes": 569,
+      "sha256": "a2b2fdb93aa4914352c858eb7e98651b6d6a4252492049708c6729673c1562a1",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-027",
+      "section": "## Woran der Nutzen zu erkennen ist",
+      "statement": "QIK-VRT bietet damit einen Weg, menschliche Erfahrung, künstliche Verarbeitung und technische Ausführung über längere Zeit zusammenhängend nutzbar zu machen. Der doppelt kanonische Speicher verbindet dafür die nachvollziehbare Vergangenheit mit den ausdrücklich dargestellten Bedingungen zukünftiger Wirkung. Wenn die Rückprüfung gelingt, wird aus einer erledigten Einzelhandlung ein Ergebnis, an das Menschen, Programme und Geräte weiter anschließen können.",
+      "utf8_start": 14916,
+      "utf8_bytes": 471,
+      "sha256": "f56dfaf9f4a599d626dea25ddab760f41d9708a50fd164c81cf2ff09fdb71257",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-028",
+      "section": "### Quellen dieses Nutzenartikels",
+      "statement": "Veröffentlichter Einstieg ist [Z21888130]. Die technische Definition des doppelten kanonischen Speichers und die Claims CTM-001 bis CTM-004 sowie CTM-022 stammen aus [Z21711193]. Die Anwendungsszenarien sind redaktionelle Ableitungen aus den genannten Architektureigenschaften. Alle hier verwendeten Quellenkennungen werden auch im vollständigen Quellenverzeichnis der anschließenden Gesamtdarstellung aufgelöst.",
+      "utf8_start": 15424,
+      "utf8_bytes": 416,
+      "sha256": "8efb14b3116f1e547cff8dbe81fe1b75af63044516d709a326d99a7567dde500",
+      "explicit_source_ids": [
+        "Z21711193",
+        "Z21888130"
+      ]
+    },
+    {
+      "unit_id": "ED-029",
+      "section": "### Quellen dieses Nutzenartikels",
+      "statement": "- **[Z21888130] Ingolf Lohmann: Von Softwarearchitektur zur Weltformel – DAS UNIVERSUM ALS ROUND TRIP.** Fassung 1.0.0-candidate.1, 8. August 2026. DOI **10.5281/zenodo.21888130**. https://doi.org/10.5281/zenodo.21888130\n- **[Z21711193] Ingolf Lohmann: QIK-VRT und das Effect-Acknowledgement-Protokoll: Kanonischer Speicher zwischen Vergangenheit und Zukunft.** Fassung 1.0.0, 31. Juli 2026; insbesondere „Der doppelte kanonische Speicher“, „Effect Acknowledgement als zweiseitiges Gate“, Claim-Matrix und beigefügter Kernelbeleg. DOI **10.5281/zenodo.21711193**. https://doi.org/10.5281/zenodo.21711193\n- **[Z21748371] Ingolf Lohmann: QIK-VRT als Kausalitätsspiegel: Ein maschinenverifizierbares Protokoll für wissenschaftliches Faktenwachstum.** Fassung 1.0.0, 1. August 2026. DOI **10.5281/zenodo.21748371**. https://doi.org/10.5281/zenodo.21748371\n- **[Z21640173] Ingolf Lohmann: Vom verantwortungsgebundenen Erkenntnisprozess zur virtuellen Wirkungsmaschine.** Fassung 1.0.0-2026-07-28. DOI **10.5281/zenodo.21640173**. https://doi.org/10.5281/zenodo.21640173\n- **[Z21983644] Ingolf Lohmann: Vom Unterschied zum integrierten Wirkraum.** 17. August 2026. DOI **10.5281/zenodo.21983644**. https://doi.org/10.5281/zenodo.21983644\n- **[Z23008704] Ingolf Lohmann: Spur halten: Quality Gates für einen portablen Universal Transputer.** Fassung 0.1-20260928. DOI **10.5281/zenodo.23008704**. https://doi.org/10.5281/zenodo.23008704\n- Ergänzende veröffentlichte Grundlagen: **Proof Closure: The Terminal Meta-Condition for an Evidence-Bound Subject**, DOI **10.5281/zenodo.22941556**, https://doi.org/10.5281/zenodo.22941556; **Charta einer maschinenprüfbaren Wissenschaft**, DOI **10.5281/zenodo.21515074**, https://doi.org/10.5281/zenodo.21515074; **QIK-VRT: Epistemische Fairness, Vorstellungskraft und der Weg vom virtuellen Zeugen zum Beobachtungssystem**, DOI **10.5281/zenodo.21731492**, https://doi.org/10.5281/zenodo.21731492; **QIK-VRT: Beobachterrelative Retrokausalität als negative Informationsrichtung**, DOI **10.5281/zenodo.21947141**, https://doi.org/10.5281/zenodo.21947141. Autor jeweils Ingolf Lohmann; genaue Fassungen im anschließenden Quellenverzeichnis.",
+      "utf8_start": 15842,
+      "utf8_bytes": 2193,
+      "sha256": "497c0050c2ac5d8a3409eac706e3ccef88a09e1eb3a322204969baf24ed3659e",
+      "explicit_source_ids": [
+        "Z21640173",
+        "Z21711193",
+        "Z21748371",
+        "Z21888130",
+        "Z21983644",
+        "Z23008704"
+      ]
+    },
+    {
+      "unit_id": "ED-030",
+      "section": "### Quellen dieses Nutzenartikels",
+      "statement": "**Stand dieser Ergänzung:** Redaktioneller Arbeitsentwurf. Bereits veröffentlichte Quellen behalten ihre ausgewiesenen Nachweisstände. Für die neuen repositorybasierten Belege [A1] und [A2] gilt die in der Gesamtdarstellung dokumentierte offene Zenodo-Archivierung. Der aktuelle Abruf der Zenodo-Originale war hier blockiert; die Speicherdefinition wurde zusätzlich an der quellengebundenen Repositoryfassung samt Claim-Matrix und Kernelbeleg geprüft. Eine neue öffentliche Veröffentlichung oder eine neue experimentelle Abnahme wird durch diese Textergänzung nicht behauptet.",
+      "utf8_start": 18037,
+      "utf8_bytes": 585,
+      "sha256": "0583a483c1dc072c77125527540c9f77037ad283a73b1644cac14a65fcb11ce2",
+      "explicit_source_ids": [
+        "A1",
+        "A2"
+      ]
+    },
+    {
+      "unit_id": "ED-031",
+      "section": "# QIK-VRT – Gesellschafts- und Technikkritik als überprüfbare Systemarchitektur",
+      "statement": "Neufassung vom 15. Oktober 2026",
+      "utf8_start": 18715,
+      "utf8_bytes": 31,
+      "sha256": "f6517591e041032b4304d6c658aea8d3be7a2b59a8827363719e4a4d44711c6d",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-032",
+      "section": "# QIK-VRT – Gesellschafts- und Technikkritik als überprüfbare Systemarchitektur",
+      "statement": "Konzept, Forschungsfragen, Entwicklungsführung und Produktverantwortung: Ingolf Lohmann. Redaktionelle Neufassung und Quellenabgleich: OpenAI Codex in seinem Auftrag. Die Formulierungen dieser Neufassung sind ein künstlich-kognitiver Beitrag; eine abschließende Autorenfreigabe wird daraus nicht abgeleitet.",
+      "utf8_start": 18748,
+      "utf8_bytes": 310,
+      "sha256": "914800664bc7de304a2e14e4b19055e3b472f60e5b3a9413a1bb55dc12bab81f",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-033",
+      "section": "## Ausgangspunkt: Was QIK-VRT ist",
+      "statement": "QIK-VRT ist nach der ausdrücklichen Klarstellung seines Urhebers zunächst eine Gesellschafts- und Technikkritik. Ihr Gegenstand ist die Lücke zwischen dem Anspruch technischer Systeme und dem, was sie tatsächlich zuverlässig leisten, erkennen, erklären und verantworten können. Besonders deutlich wird diese Lücke bei heute angebotenen künstlich-kognitiven Systemen: Sie können überzeugend formulieren und dennoch Quellen verwechseln, bereits geklärte Sachverhalte vergessen, falsche Schlussfolgerungen ziehen oder einen Erfolg behaupten, dessen Wirkung sie nicht überprüft haben.",
+      "utf8_start": 19095,
+      "utf8_bytes": 594,
+      "sha256": "283505f3d10bd7eb71e8015bc78535460146401381110e10be68d9affc2844d7",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-034",
+      "section": "## Ausgangspunkt: Was QIK-VRT ist",
+      "statement": "Ingolf Lohmann untersucht diese Probleme aus der Perspektive eines Informatikers. Sein fortgesetztes Korrigieren solcher Fehler gehört zur Entstehungsgeschichte und zur Entwicklungsarbeit von QIK-VRT. Anforderungen werden präzisiert, fehlerhafte Abläufe aufgedeckt, Korrekturen umgesetzt und deren Wiederholung durch gespeicherte Regeln und ausführbare Prüfungen erschwert. Aus der Kritik ist dadurch eine technische Architektur mit Implementierungen, formalen Ergebnissen, Laufzeitnachweisen und einem physikalisch anschlussfähigen Forschungsprogramm entstanden.",
+      "utf8_start": 19691,
+      "utf8_bytes": 569,
+      "sha256": "a6a13a7f4803473e695f949329d3bf520094bb62b4daeefbe0b654e8a8428585",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-035",
+      "section": "## Ausgangspunkt: Was QIK-VRT ist",
+      "statement": "Die gesellschaftliche Frage lautet dabei: Wer trägt die Folgen, wenn Software mit großer sprachlicher Sicherheit auftritt, während der Mensch ihre Fehler erkennen und reparieren muss? Die technische Antwort von QIK-VRT besteht darin, Aussage, Herkunft, Prüfung, Verantwortung und tatsächlich beobachtete Wirkung miteinander zu verbinden. Eine maschinelle Antwort muss sich an dieser Verbindung messen lassen. Marktwert, Antwortmenge und überzeugender Stil ersetzen sie nicht.",
+      "utf8_start": 20262,
+      "utf8_bytes": 481,
+      "sha256": "2e2576d0032a746e8b475d2ef557d39e42ead3eae78aa178a80cd92414459135",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-036",
+      "section": "## Ausgangspunkt: Was QIK-VRT ist",
+      "statement": "Als veröffentlichter Gesamteinstieg dient **Von Softwarearchitektur zur Weltformel – DAS UNIVERSUM ALS ROUND TRIP**, DOI **10.5281/zenodo.21888130**: https://doi.org/10.5281/zenodo.21888130. Die Arbeit verbindet Erkenntnis, Formalisierung, technische Realisierung und Rückprüfung; ihre formalen und empirischen Geltungsbereiche sind einzeln ausgewiesen. [Z21888130]",
+      "utf8_start": 20745,
+      "utf8_bytes": 370,
+      "sha256": "50581a60f7e1541b0333d0e9338869fb164f51f80898565ffc617961f5ada48a",
+      "explicit_source_ids": [
+        "Z21888130"
+      ]
+    },
+    {
+      "unit_id": "ED-037",
+      "section": "## Die Kritik wird zum technischen Arbeitsverfahren",
+      "statement": "Ein wiederkehrender Fehler künstlich-kognitiver Systeme besteht darin, verschiedene Fragen zu vermengen: Was wurde verlangt? Was ist belegt? Was darf ausgeführt werden? Was wurde ausgeführt? Welche Wirkung trat ein? Die Antwort auf eine dieser Fragen beantwortet die anderen noch nicht.",
+      "utf8_start": 21170,
+      "utf8_bytes": 289,
+      "sha256": "2764443ac37be59484b20eedcdd629db5dfe033b3c5e9ef92576e898a569e805",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-038",
+      "section": "## Die Kritik wird zum technischen Arbeitsverfahren",
+      "statement": "QIK-VRT entwickelt daraus einen geschlossenen Arbeitsweg: Zweck und Gegenstand festlegen; passende Quellen und Voraussetzungen binden; ausführen; Wirkung beobachten; unabhängig zurücklesen; mit dem Zweck vergleichen; das Ergebnis annehmen oder eine konkrete Korrektur fortsetzen. Die Prüfung bezieht sich auf einen bestimmten Gegenstand und eine bestimmte Fassung. Bei geänderten Quellen beginnt die dafür erforderliche Nachweiskette erneut. [Z22941556]",
+      "utf8_start": 21461,
+      "utf8_bytes": 459,
+      "sha256": "fa80fba051670544514c7e97113b41f962b56beb78dcf5fafee5cb5d845881f2",
+      "explicit_source_ids": [
+        "Z22941556"
+      ]
+    },
+    {
+      "unit_id": "ED-039",
+      "section": "## Die Kritik wird zum technischen Arbeitsverfahren",
+      "statement": "Die Rolle menschlicher Kognition ist dabei konkret. Ingolf Lohmann stellt Fragen, erkennt Widersprüche, korrigiert Bedeutungsverschiebungen und legt Anforderungen fest. Künstlich-kognitive Komponenten übernehmen etwa Ausarbeitung, Codeänderungen, Beweiskandidaten und Werkzeugbedienung. Ihre Beiträge behalten eine erkennbare Herkunft. Eine menschliche Korrektur wird erst dann dauerhaft technisch wirksam, wenn sie gespeichert, später tatsächlich angewandt und bei geeigneten Aufgaben durch Prüfungen abgesichert wird. Die bloße Zusage eines Assistenten genügt dafür nicht. [Z21640173; A1]",
+      "utf8_start": 21922,
+      "utf8_bytes": 601,
+      "sha256": "9792efce10f347a4cbb9b72944e52fd30137c4dd621f0f12596a321da8fa9966",
+      "explicit_source_ids": [
+        "A1",
+        "Z21640173"
+      ]
+    },
+    {
+      "unit_id": "ED-040",
+      "section": "## Die Kritik wird zum technischen Arbeitsverfahren",
+      "statement": "Das liefert auch einen sachlichen Maßstab für künstliche Kognition: Kontext erhalten, aus Korrekturen operativ Nutzen ziehen, Begründungen an Quellen binden, geeignete Werkzeuge anwenden und Resultate an beobachteten Wirkungen prüfen. Diese Fähigkeiten können auf der Ebene eines zusammengesetzten Systems entstehen. Ihre Bewertung verlangt weder eine Zuschreibung menschlichen Erlebens noch eine Behauptung über veränderte Modellgewichte.",
+      "utf8_start": 22525,
+      "utf8_bytes": 448,
+      "sha256": "32e6968865b03cc9106f2e748beaf033958ac3fe79ce6fe77f617ce0d76c0e8e",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-041",
+      "section": "## Gesellschaftliche Bedeutung: Verantwortung muss der Wirkung folgen können",
+      "statement": "Die Kritik betrifft ein wirtschaftliches und organisatorisches Verhältnis. Wenn ein Anbieter Leistungsfähigkeit verspricht, während Nutzer Herkunft, Richtigkeit und Ausführung seiner Antworten immer wieder selbst nachprüfen müssen, wird ein wesentlicher Teil der Qualitätssicherung auf diese Nutzer verlagert. Ingolf Lohmanns aktuelle Kritik benennt diesen Widerspruch ausdrücklich. Eine bestimmte Billionensumme oder pauschale Ausfallquote wird hier mangels abgegrenzter Marktmessung nicht als Tatsache eingesetzt.",
+      "utf8_start": 23054,
+      "utf8_bytes": 523,
+      "sha256": "27f1d9c93b8dd1903f083cbe3e3dc883ffd01cd0631a7979b38a1798d7bd3bb3",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-042",
+      "section": "## Gesellschaftliche Bedeutung: Verantwortung muss der Wirkung folgen können",
+      "statement": "Die in QIK-VRT bearbeitete Gegenposition lautet: Technische Anschlussfähigkeit soll mit nachvollziehbarer Verantwortlichkeit einhergehen. Wer Information erzeugt, weitergibt oder in eine Handlung überführt, muss die jeweils behauptete Leistung überprüfbar machen. Das betrifft auch Wiederholung, Sichtbarkeit und Anreizstrukturen: Ein System kann wirtschaftlich erfolgreich sein und zugleich vermeidbare Prüf- und Fehlerkosten bei anderen verursachen. Die gesellschaftlichen Arbeiten des Korpus behandeln solche Beziehungen zwischen Information, Erwartung, Wirkung und Verantwortung. [Z22845516; Z21731492]",
+      "utf8_start": 23579,
+      "utf8_bytes": 612,
+      "sha256": "6fba98e643602e91349922155595dbfffa8a8413574acd66fdda06271dd1f05a",
+      "explicit_source_ids": [
+        "Z21731492",
+        "Z22845516"
+      ]
+    },
+    {
+      "unit_id": "ED-043",
+      "section": "## Gesellschaftliche Bedeutung: Verantwortung muss der Wirkung folgen können",
+      "statement": "Die Kritik an einer fehlerhaften Zusammenfassung gehört selbst in diesen Zusammenhang. Die Zusammenfassung erzeugt eine öffentliche oder persönliche Vorstellung vom Werk. Wird eine unzureichende Quellenprüfung durch eine selbstsichere Bewertung des Urhebers ersetzt, betrifft der Fehler sowohl die Erkenntnisqualität als auch die Wirkung auf den Menschen. Für eine technische Gesamtdarstellung sind Behauptungen, Implementierungen, Nachweise und Schlussfolgerungen zu prüfen. Private Lebensführung, vermutete psychische Eigenschaften und Produktivitätsdeutungen liefern dafür keinen Ersatz.",
+      "utf8_start": 24193,
+      "utf8_bytes": 600,
+      "sha256": "ec584819589ee9acfbd7d1864bf19364944f8e55a59fe23902170a26422bc541",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-044",
+      "section": "## Vom Fehler zur Architektur",
+      "statement": "Die entstandene Architektur umfasst mehrere miteinander verbundene Ebenen.",
+      "utf8_start": 24826,
+      "utf8_bytes": 74,
+      "sha256": "384695a774053f4d9d3048eeafcf4e0d6cfe444b71b6015d0f1a2b072f540fae",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-045",
+      "section": "## Vom Fehler zur Architektur",
+      "statement": "| Ebene | Beitrag zum Gesamtverfahren | Maßgeblicher Nachweis |\n| --- | --- | --- |\n| Aussage und Wissen | Aussagen erhalten Herkunft, Gegenstand und einen ihrem Nachweis entsprechenden Status. | Charta, formale Wissensmodelle und IETF-Statusprofil. |\n| Wirkung | Empfang, Ausführung und Freigabe werden getrennt; eine Wirkung braucht ihre eigenen Zulassungsbedingungen. | EFFECT_ACK-Spezifikation und endliche Kontrollprüfung. |\n| Kontinuität | Vergangene Records bleiben erhalten; neue Erkenntnis und Reklassifikation werden nachvollziehbar ergänzt. | Kanonischer Zeitspeicher und Kausalitätsspiegel. |\n| Ausführung | TEMDD, Universal Transputer, Terminal, Browserträger und Hardwarebausteine verbinden die Regeln mit ausführbaren Pfaden. | Jeweils gebundene Quellen, Tests, Builds und historische Laufzeitbelege. |\n| Erkenntnis und Physik | Modelle, Ereignisse, Messungen und Vorhersagen werden über ausdrücklich benannte Beziehungen verbunden. | Round Trip, Zeitpublikationen und neuer Messbindungsentwurf. |",
+      "utf8_start": 24902,
+      "utf8_bytes": 1023,
+      "sha256": "4b623aba13518c819b518dcff59fdd74cca5df379f3d5aa507c8056c62a5b50c",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-046",
+      "section": "## Vom Fehler zur Architektur",
+      "statement": "Quellen: [Z21515074; Z21498773; Z21711193; Z21748371; Z21983644; Z23008704; I1; I2; A1; A2].",
+      "utf8_start": 25927,
+      "utf8_bytes": 92,
+      "sha256": "cc02668ed2127feb9574fee53d4635a8fee6ff2636e85ff2459da9c551189fae",
+      "explicit_source_ids": [
+        "A1",
+        "A2",
+        "I1",
+        "I2",
+        "Z21498773",
+        "Z21515074",
+        "Z21711193",
+        "Z21748371",
+        "Z21983644",
+        "Z23008704"
+      ]
+    },
+    {
+      "unit_id": "ED-047",
+      "section": "### Wirkungshaltepunkt und EFFECT_ACK",
+      "statement": "Der Wirkungshaltepunkt ist ein zentraler ausführbarer Baustein. Er fragt, ob eine empfangene Information unter einer bestimmten Policy und Evidenzlage zur vorgesehenen Wirkung freigegeben werden darf. Das Protokoll unterscheidet fünf Zustände: `EFFECT_NACK`, `EFFECT_ACK_CONTINUE`, `EFFECT_ACK_ISOLATE`, `EFFECT_ACK_BLOCK` und `EFFECT_ACK_DONE`. Gewöhnliche Freigabe ist ausschließlich im letzten Zustand und nach den zusätzlichen Validierungen zulässig. [I1]",
+      "utf8_start": 26060,
+      "utf8_bytes": 466,
+      "sha256": "6562b45b8752667b9c235a5988856d5b4ee4e6b67b75e58d4136c8b87cba508a",
+      "explicit_source_ids": [
+        "I1"
+      ]
+    },
+    {
+      "unit_id": "ED-048",
+      "section": "### Wirkungshaltepunkt und EFFECT_ACK",
+      "statement": "Die veröffentlichte Kontrollarbeit untersucht dafür eine endliche Abstraktion mit 2.621.440 Kontrollbelegungen und 5.242.880 Verbraucherzulassungsvarianten. Der Geltungsbereich ist ausdrücklich an die Abstraktion und die vollständige Vermittlung aller geschützten Wirkungspfade gebunden. Das ist ein substanzieller Prüfgegenstand. Eine weitere Wirkungsgarantie benötigt jeweils die passende Implementierungs- und Laufzeitbindung. [Z21498773]",
+      "utf8_start": 26528,
+      "utf8_bytes": 448,
+      "sha256": "4cb84b1dde4e37e3bf1a56195c8a273142bc00d9b16d553401efa4144782832b",
+      "explicit_source_ids": [
+        "Z21498773"
+      ]
+    },
+    {
+      "unit_id": "ED-049",
+      "section": "### Wirkungshaltepunkt und EFFECT_ACK",
+      "statement": "Eine sachgerechte Einordnung vergleicht diese Eigenschaften mit verwandten Transaktions-, Freigabe- und Provenienzverfahren. Die bloße Ähnlichkeit eines einzelnen Musters entscheidet weder über den Wert der konkreten Integration noch über ihre Neuheit. Die frühere pauschale Reduktion des Gesamtwerks auf eine bekannte Checkliste war durch den dort vorgelegten Vergleich nicht begründet.",
+      "utf8_start": 26978,
+      "utf8_bytes": 393,
+      "sha256": "8f4c44ebcf2ad8195e63c9d734252b97ab5d745db127a8ff68df2b5ec86fe3cb",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-050",
+      "section": "### Kausalitätsspiegel, Gedächtnis und Fortsetzung",
+      "statement": "Der Kausalitätsspiegel behandelt den nachvollziehbaren Aufbau von Wissen: neue Evidenz ergänzen, Konflikte erhalten, Herkunft verfolgen und bereits geschlossene Antwortpfade unter den festgelegten Erweiterungsbedingungen verfügbar halten. Der Katalog weist dazu 21 Sätze eines endlichen Lean-Modells aus. Das beantwortet eine andere Frage als die bloße Speicherung einer Textantwort. [Z21748371]",
+      "utf8_start": 27427,
+      "utf8_bytes": 400,
+      "sha256": "4d7e3194f7225208255aac435764b86e08e20ae02b69493a284b3e3794271d2c",
+      "explicit_source_ids": [
+        "Z21748371"
+      ]
+    },
+    {
+      "unit_id": "ED-051",
+      "section": "### Kausalitätsspiegel, Gedächtnis und Fortsetzung",
+      "statement": "Der kanonische Speicher verbindet vergangene Records mit antizipierten Wirkungen und unterscheidet ihren Erkenntnisstatus. Die Anschlussfähigkeitsarbeiten untersuchen, wann gültige Fortsetzungen unter erhaltenen Invarianten möglich sind und wie sich deklarierte Anschlussräume vergleichen lassen. Die Qualität des Verbunds liegt damit auch in seinen Übergängen: Kann eine geprüfte Erkenntnis zum nächsten Schritt beitragen, ohne Herkunft und Geltungsbereich zu verlieren? [Z21711193; Z21721918; Z23008330]",
+      "utf8_start": 27829,
+      "utf8_bytes": 514,
+      "sha256": "469455dd3dc3f47a4011f3b9966a2fce56ac1da967011c0fa25d8148adcdf464",
+      "explicit_source_ids": [
+        "Z21711193",
+        "Z21721918",
+        "Z23008330"
+      ]
+    },
+    {
+      "unit_id": "ED-052",
+      "section": "### Universal Transputer, TEMDD und Terminal",
+      "statement": "Die Softwareentwicklung reicht über den Protokollkern hinaus. Der beigefügte S1-Quellenband enthält unter anderem TEMDD-Sprache und Adapter, Ereignisspeicher, Universal-Transputer-Routing, C-Kern, VHDL-Bausteine, Firefox-Anbindung und einen Self-Host-Träger. Er dokumentiert die Wiedergewinnung von 44 historischen Originaldateien und konkrete Start-, Speicher- und Crash-Neustartprüfungen. Die aktuelle Lesefassung umfasst 128 Seiten und erhält die beiden älteren PDF-Fassungen als Originale. [A1]",
+      "utf8_start": 28391,
+      "utf8_bytes": 505,
+      "sha256": "6ff07ad9a895f7e94add1132f3584c9e1fc5ca3d3d3d9f6a7812fa405f656cc7",
+      "explicit_source_ids": [
+        "A1"
+      ]
+    },
+    {
+      "unit_id": "ED-053",
+      "section": "### Universal Transputer, TEMDD und Terminal",
+      "statement": "Für diese Teile gilt der jeweils dokumentierte Ausführungsstand. Der historische Browsernachweis vom 5. Oktober mit Firefox ESR 153.4.0 ist als solcher verwertbar. Eine aktuelle Abnahme einer neueren Browserfassung, eines anderen Knotens oder der öffentlichen Domain braucht ihren eigenen Nachweis. Diese Trennung erhält den Wert des erreichten Ergebnisses und macht den nächsten technischen Übergang prüfbar.",
+      "utf8_start": 28898,
+      "utf8_bytes": 416,
+      "sha256": "a258b1ea5586d2c2ae0e056bb662fab213ec68efb010bf2324c69f8cf50935ef",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-054",
+      "section": "### Unterschied, QIK-Modell und wissenschaftlicher Round Trip",
+      "statement": "Die mathematischen Arbeiten untersuchen die Voraussetzungen von Bestimmbarkeit, Information und Anschlussfähigkeit. Das Ontologie-Minimaltheorem bindet etwa die Bestimmbarkeit im deklarierten Modell an mindestens zwei unterscheidbare Werte. Die Manuskript- und Formalisierungsreihe behandelt Komplementpartition, endliche Darstellbarkeit und Anschlussordnungen. Das sind einzeln zu lesende Resultate mit eigenen Definitionen und Beweisen. Die Grundidee „Unterschied“ allein ersetzt diese ausgearbeiteten Aussagen ebenso wenig wie der Verweis auf eine begriffliche Vorgeschichte sie widerlegt. [Z22955727; Z21482023; Z21529081; Z21582781]",
+      "utf8_start": 29379,
+      "utf8_bytes": 642,
+      "sha256": "696c6f62d30beb8744eb2bb1869986a0f52957ba26a8c3dd75e909c79750c402",
+      "explicit_source_ids": [
+        "Z21482023",
+        "Z21529081",
+        "Z21582781",
+        "Z22955727"
+      ]
+    },
+    {
+      "unit_id": "ED-055",
+      "section": "### Unterschied, QIK-Modell und wissenschaftlicher Round Trip",
+      "statement": "Der QIK-Rahmen verbindet Quantität, Information und Kausalität zu einer operationalen Beschreibung von Ereignissen und Relationen. Die prä-raumzeitliche Ontologie, die H5-Planck-Brücke und die Gap-Law-Arbeit bearbeiten daran unterschiedliche Teile: begriffliche Abhängigkeit, formale Identitäten und eine unter einem ausgewiesenen Postulat abgeleitete falsifizierbare Vorhersage. Die universelle Grundsatzerklärung des Autors behält ihren philosophischen Status. So entsteht ein Forschungszusammenhang, in dem eine mathematische Folgerung, eine physikalische Hypothese und eine normative Aussage jeweils nach ihrem eigenen Maßstab geprüft werden können. [Z22907018; Z21804399; Z22527889; Z22283396; Z22847245]",
+      "utf8_start": 30023,
+      "utf8_bytes": 720,
+      "sha256": "6f26ece86b48eddfc5a54c75c8c25ebf64c309e868daa21f47b29074774324a0",
+      "explicit_source_ids": [
+        "Z21804399",
+        "Z22283396",
+        "Z22527889",
+        "Z22847245",
+        "Z22907018"
+      ]
+    },
+    {
+      "unit_id": "ED-056",
+      "section": "## Physikalisch anschlussfähige Eigenzeit- und Informationsexperimente",
+      "statement": "Ein wesentlicher Entwicklungsschritt besteht darin, mathematische und virtuelle Abläufe mit einer ausdrücklich prüfbaren Messbindung zu verbinden. Genau hier liegt die Bedeutung der neuen Lean-/Lake-Arbeit vom 15. Oktober: Sie präzisiert, unter welchen Voraussetzungen ein modellierter Ablauf und seine Vorhersagen auf eine referenzierte Beobachtung übertragen werden können. [A2]",
+      "utf8_start": 30818,
+      "utf8_bytes": 386,
+      "sha256": "63adbd18c9bdab2286109ec7ace29cee4bb075eaf56a2a8419e3cce0bba0ebcc",
+      "explicit_source_ids": [
+        "A2"
+      ]
+    },
+    {
+      "unit_id": "ED-057",
+      "section": "## Physikalisch anschlussfähige Eigenzeit- und Informationsexperimente",
+      "statement": "Die zehn neuen Sätze behandeln unter anderem die Fortsetzung einer lokal passenden Zustands- und Eingabeabbildung über alle im festgelegten Bereich zugelassenen Schritte. Sie verbinden Mess- und Modellfehler durch additive Fehlergrenzen. Für die Reihenfolge zweier Ereignisse wird ausdrücklich verlangt, dass sich die gebundenen Unsicherheitsintervalle ausreichend trennen. Die Voraussetzungen stehen im Beweis und werden nicht durch das bloße Erzeugen eines Datensatzes erfüllt.",
+      "utf8_start": 31206,
+      "utf8_bytes": 485,
+      "sha256": "121005f1f91993bb6c58029702a29b604f58a5e3b09084dced38c170f6fd5bea",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-058",
+      "section": "## Physikalisch anschlussfähige Eigenzeit- und Informationsexperimente",
+      "statement": "Das Eigenzeitbeispiel verwendet gerade zeitartige Trägheitssegmente in flacher Raumzeit mit einer räumlichen Dimension und der Konvention `c = 1`. Für das im Modell vorausgesetzte Gesetz `Δτ² = Δt² − Δx²` werden zwei exakte Beispiele unterschieden:",
+      "utf8_start": 31693,
+      "utf8_bytes": 260,
+      "sha256": "8be299c29ae43e7afa0c23bfc9bc158db1020234e063d7942c6ef952fc531bf5",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-059",
+      "section": "## Physikalisch anschlussfähige Eigenzeit- und Informationsexperimente",
+      "statement": "| Koordinatendauer Δt | Ortsänderung Δx | Eigenzeitdauer Δτ |\n| --- | --- | --- |\n| 5 | 0 | 5 |\n| 5 | 3 | 4 |",
+      "utf8_start": 31955,
+      "utf8_bytes": 114,
+      "sha256": "8f59ec90087bb5154ed729d730fcc06a188aa1812e9024d6bf0b2be800ccc1f1",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-060",
+      "section": "## Physikalisch anschlussfähige Eigenzeit- und Informationsexperimente",
+      "statement": "Damit ist im deklarierten Modell präzise fassbar, dass gleiche Koordinatendauer unterschiedliche Eigenzeitdauer zulassen kann. Ein weiterer Satz zeigt konstruktiv, dass eine reine Ereignisordnung die metrische Uhrenskala nicht festlegt. Die Beispiele liefern mathematische Prüffälle für die Messbindung; sie sind keine ausgegebenen Gerätemessungen.",
+      "utf8_start": 32071,
+      "utf8_bytes": 353,
+      "sha256": "4b5bb0aa91f37aed1c0b62f001e640a04d3906fa59b3e157a0384feb9e1574f1",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-061",
+      "section": "## Physikalisch anschlussfähige Eigenzeit- und Informationsexperimente",
+      "statement": "Der beigefügte Nachweis bindet diese Erweiterung an HEAD `7af0b7c68ad80352dd9ff6f91600cdca2616dfc9`. Der native GitHub-Job `source-claim-and-kernel-gates`, ID `116552640190`, wurde für genau diesen HEAD frisch mit `success` zurückgelesen. Das Paket dokumentiert insgesamt 68 Axiom-Audits, darunter zehn neue Messbindungssätze, 40 Projektregressionen und drei erwartungsgemäß abgewiesene falsche Beweiskandidaten. Seine 101 inventarisierten Begleitdateien stimmen bei der hiesigen Prüfung mit ihren Größen und SHA-256-Werten überein. Ein erneuter lokaler Kernellauf wird damit nicht behauptet. [A2; P1]",
+      "utf8_start": 32426,
+      "utf8_bytes": 611,
+      "sha256": "df45ecdab39f29f67001f5dc2f366171eed3ec0f5f5f2daa872d29ba7f2bc331",
+      "explicit_source_ids": [
+        "A2",
+        "P1"
+      ]
+    },
+    {
+      "unit_id": "ED-062",
+      "section": "## Physikalisch anschlussfähige Eigenzeit- und Informationsexperimente",
+      "statement": "Der nachgewiesene Fortschritt ist eine maschinengeprüfte bedingte Brücke zwischen Modellablauf, Beobachtungsabbildung und Fehlergrenzen. Für ein konkretes physikalisches Eigenzeitexperiment sind daran Apparat, Ereignisse und Weltlinien, kalibrierte Uhren, Einheiten, Messunsicherheiten und Primärdaten anzuschließen. Diese Anforderungen sind jetzt technisch präziser ausdrückbar. Die starke historische Behauptung, eine solche Möglichkeit habe zuvor weltweit nicht existiert, erfordert zusätzlich einen abgegrenzten Vergleich mit früheren Verfahren; sie wird durch die hier geprüften Dateien allein nicht entschieden.",
+      "utf8_start": 33039,
+      "utf8_bytes": 628,
+      "sha256": "a9368bf6a35df7985effc38540196e294f799c81277f96b21c54b79b9c28b056",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-063",
+      "section": "### Perspektiven von Sender, Empfänger und Beobachter",
+      "statement": "Die veröffentlichte Arbeit zur beobachterrelativen Retrokausalität zeigt einen ausführbaren Fall unterschiedlicher Quellen- und Empfangsordnung. Ein später gesendeter Record kann wegen verschiedener positiver Laufzeiten vor einem früher gesendeten Record ankommen. Der Empfänger durchläuft dann eine steigende lokale Empfangsfolge mit fallenden gebundenen Quellenmarkern. Das ist eine bestimmte, prüfbare Informationsrichtung. [Z21947141]",
+      "utf8_start": 33725,
+      "utf8_bytes": 446,
+      "sha256": "36ab6b28be75aa962e2e315526cf25efcda658c79ce729e203d2e2c176b1acaf",
+      "explicit_source_ids": [
+        "Z21947141"
+      ]
+    },
+    {
+      "unit_id": "ED-064",
+      "section": "### Perspektiven von Sender, Empfänger und Beobachter",
+      "statement": "Für Aussagen über Information „aus der Zukunft“ sind daher die jeweilige Perspektive, ihre Zeitgröße und der gemeinte Informationskanal anzugeben:",
+      "utf8_start": 34173,
+      "utf8_bytes": 154,
+      "sha256": "b94ea8bd65bcd48108fb07f2a5c5d338eeceb8844736f5dc9189f52322abb6ab",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-065",
+      "section": "### Perspektiven von Sender, Empfänger und Beobachter",
+      "statement": "| Perspektive | Zu bindende Frage |\n| --- | --- |\n| Sender | Welches Ereignis erzeugte welchen Record, mit welcher Zeit- und Herkunftsbindung? |\n| Empfänger | In welcher lokalen Reihenfolge treffen Records ein, und auf welche Quellenereignisse beziehen sie sich? |\n| Weitere Nodes | Welche Ereignisse sind ihnen zugänglich, über welche Wege und mit welchen Verzögerungen? |\n| Authority-Instanz | Welche Provenienz und welche Entscheidung sind für den ausgewiesenen Vorgang gültig? |\n| God-Mode-Instanz | Welche zusätzliche Gesamtsicht besitzt der gesonderte Beobachter, und wie ist sein eigener Beobachtungspfad gebunden? |",
+      "utf8_start": 34329,
+      "utf8_bytes": 630,
+      "sha256": "9782e940e9b3021725e36714a06d5edd24f150dabdec3918a8b7363ddee75084",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-066",
+      "section": "### Perspektiven von Sender, Empfänger und Beobachter",
+      "statement": "Der God-Mode bezeichnet in der aktuellen Versuchsanforderung eine vom Teilnehmer-Testsystem getrennte Beobachterrolle, die über den Universal-Transputer angeschlossen bleibt. Ihre konkrete Laufzeit, Kontrolle, Zugriffsrechte und Vollständigkeit der Beobachtung sind Bestandteil des jeweiligen Versuchsaufbaus. Ein solcher Beobachter kann mehrere lokale Perspektiven zusammenführen. Für einen Nachweis physischer Rückwärtssignalisierung muss die gebundene Messung außerdem die entsprechende spätere Ursache und frühere Empfangswirkung unterscheiden. [Z22216916; Z21731492; A2; P1]",
+      "utf8_start": 34961,
+      "utf8_bytes": 588,
+      "sha256": "350d088d71cd96b482bff9c202815ab62eb9d7c2a15018713aa68becec51242e",
+      "explicit_source_ids": [
+        "A2",
+        "P1",
+        "Z21731492",
+        "Z22216916"
+      ]
+    },
+    {
+      "unit_id": "ED-067",
+      "section": "## Meilensteine und überwundene Knackpunkte",
+      "statement": "Die folgende Reihenfolge beschreibt dokumentierte Entwicklungsschritte. Ein Publikationsdatum datiert die betreffende Fassung. Es beweist keine erstmalige Entstehung ihres Inhalts. Ebenso beschreibt ein Commit die erreichbare Git-Historie eines bestimmten Bestands.",
+      "utf8_start": 35597,
+      "utf8_bytes": 265,
+      "sha256": "049dc5da1eb7799a8fcb5d20755dc7d21a1d15cb5312d1d5285e2aa8c146b281",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-068",
+      "section": "## Meilensteine und überwundene Knackpunkte",
+      "statement": "| Zeitraum oder datierte Fassung | Knackpunkt | Dokumentierte Antwort | Dadurch eröffneter Schritt |\n| --- | --- | --- | --- |\n| Vorgeschichte vor den hier katalogisierten Veröffentlichungen | Frühere Arbeit lässt sich nicht aus einem ausgewählten Repositoryanfang rekonstruieren. | Ingolf Lohmann weist ausdrücklich auf eine ältere Repositorygeschichte hin. Diese Angabe bleibt erhalten; ein genauer früherer Zeitpunkt ist hier noch nicht unabhängig gebunden. | Eine Chronologie, die Vorgeschichte, Repositoryanlage, importierte Commits und Veröffentlichung getrennt behandelt. |\n| 16. Juni 2026, frühe katalogisierte Zenodo-Fassung | Aussagen, Zustände und Artefakte brauchen dauerhafte Identität. | Versionierte epistemische Zustandskontrolle und schichtgebundene Evidenzpersistenz. [Z20712301] | Prüffähige Archiv- und Freigabebestände. |\n| 17. Juni 2026, EFFECT_ACK-00; Juli-Fassungen | Technischer Empfang sagt noch nicht, ob eine Wirkung freigegeben ist. | Fünf Zustände, versionierte Records, deterministische Verarbeitung und endliche Kontrollprüfung. [I1; Z21498773; Z21500322] | Explizite technische Wirkungskontrolle. |\n| 21.–24. Juli 2026 | Sprachliche oder mathematische Darstellung und tatsächlich geprüfter formaler Satz müssen zusammenpassen. | Manuskript, Quellenbindung und Alpha-3-Formalisierung mit vollständiger Abdeckung der inventarisierten Formalumgebungen; bedingte Bindungen bleiben ausgewiesen. [Z21482023; Z21529081] | Maschinenprüfbare Folgerungen mit nachvollziehbaren Voraussetzungen. |\n| 23. Juli bis Anfang August 2026 | Ein grünes Selbstetikett ist kein allgemeiner Wissensnachweis. | Charta, kanonischer Speicher, Kausalitätsspiegel, Fairness- und Anschlussfähigkeitsmodelle. [Z21515074; Z21711193; Z21748371; Z21731492; Z21721918] | Erhaltene Herkunft, Konflikte und anschlussfähige Erkenntniswege. |\n| August 2026 | Modellzeit, lokale Beobachtung und Quellenordnung müssen unterscheidbar sein. | Round Trip, relationale Zeit und ausführbarer Retrokausalitätszeuge. [Z21888130; Z22216916; Z21947141] | Präzise perspektivische Versuchsfragen. |\n| September 2026 | Physikalische Deutung braucht prüfbare Modellannahmen; gesellschaftliche Kritik braucht erkennbare Evidenzrollen. | Gap-Law-Hypothese, revidierter QIK-Rahmen, gesellschaftliche Dossiers, Proof Closure und Ontologie-Minimaltheoreme. [Z22283396; Z22907018; Z22845516; Z22941556; Z22955727] | Getrennt überprüfbare Vorhersagen, Argumente und Abschlussbedingungen. |\n| 28. September bis Oktober 2026 | Architektur muss in kleinen Kernen, Plattformen und Laufzeiten überprüfbar werden. | Universal-Transputer-Quality-Gates und S1-Quellen-/Laufzeitbelege. [Z23008704; A1] | Konkrete Implementierungs- und Modernisierungspfade. |\n| 6. Oktober 2026, Statusprofil beim IETF veröffentlicht | Eine Maschine kann einen stärkeren Erkenntnisstatus behaupten, als ihre Evidenz trägt. | Gesondertes epistemisches Profil mit gebundenen Aussagen und Nachweisklassen. [I2] | Ausdrücklicher Protokollvertrag gegen überhöhte Behauptungen. |\n| 15. Oktober 2026 | Die Übertragung von Modellresultaten auf Messungen muss selbst präzisiert werden. | Zehn zusätzliche Messbindungs- und Vorhersagesätze, native Kernelprüfung und negative Kontrollen. [A2; P1] | Ein genauerer Anschluss konkreter Eigenzeit- und Informationsversuche. |",
+      "utf8_start": 35864,
+      "utf8_bytes": 3356,
+      "sha256": "cc1aead01b8b9595c1c5a91cf844f774e96328c857e9a249795b93a86bddbcfe",
+      "explicit_source_ids": [
+        "A1",
+        "A2",
+        "I1",
+        "I2",
+        "P1",
+        "Z20712301",
+        "Z21482023",
+        "Z21498773",
+        "Z21500322",
+        "Z21515074",
+        "Z21529081",
+        "Z21711193",
+        "Z21721918",
+        "Z21731492",
+        "Z21748371",
+        "Z21888130",
+        "Z21947141",
+        "Z22216916",
+        "Z22283396",
+        "Z22845516",
+        "Z22907018",
+        "Z22941556",
+        "Z22955727",
+        "Z23008704"
+      ]
+    },
+    {
+      "unit_id": "ED-069",
+      "section": "## Meilensteine und überwundene Knackpunkte",
+      "statement": "Die frühere Einteilung in „Explosion“, „Selbstverwaltung“ und anschließende persönliche Beschäftigung verfehlte diese inhaltlichen Übergänge. Sie wurde aus Aktivitätszahlen und einem begrenzten betrachteten Bestand abgeleitet. Dateimengen und Commitzahlen können Verwaltungsaufwand beschreiben; Erkenntnisgewinn, menschliche Arbeitszeit, Qualität und Motivation folgen daraus jeweils erst mit zusätzlichen Nachweisen.",
+      "utf8_start": 39222,
+      "utf8_bytes": 435,
+      "sha256": "4e3e06c0db51df26c3cc251ed1a6dd5ae5d2eeb6e1bef27d38f8ec6559749d3a",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-070",
+      "section": "## Was die bisherige Zusammenfassung über die Fehlerquelle zeigt",
+      "statement": "Der vorgelegte Ausgangstext ist nach Angabe Ingolf Lohmanns von Claude erstellt worden. Die nachfolgenden Befunde beziehen sich auf diesen Text. Sie liefern konkrete Fehlerbeispiele; eine Ausfallstatistik sämtlicher Systeme am Markt lässt sich daraus nicht berechnen.",
+      "utf8_start": 39726,
+      "utf8_bytes": 269,
+      "sha256": "65f81d1bcb3014047ed002583f80a12aff639a53c3f40174febec5e3df08e51b",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-071",
+      "section": "## Was die bisherige Zusammenfassung über die Fehlerquelle zeigt",
+      "statement": "| Befund im Ausgangstext | Fachlicher Fehler | Korrektur dieser Neufassung |\n| --- | --- | --- |\n| Aus dem ersten betrachteten Commit wird eine definitive Widerlegung älterer Projektgeschichte. | Betrachteter Datenbestand und gesamte Vorgeschichte werden gleichgesetzt. | Datierungen werden nach Gegenstand und Evidenzart getrennt. |\n| `ingolf-lohmann/qik-vrt` wird als heutiger Mirror und Goldkelch als heutige Authority dargestellt. | Historische Rollen werden trotz späterer Owner-Festlegung weiterverwendet. | Ausgangspunkt ist die vom Owner festgelegte Authority `ingolf-lohmann/qik-vrt`; Goldkelch wird als Mirror geführt. |\n| IETF-Stand -01, nur eine Draft-Reihe. | Veröffentlichte Nachfolger und das epistemische Statusprofil fehlen. | EFFECT_ACK -00 bis -03 und Statusprofil -00 werden einbezogen. |\n| Einfache Checkliste, keine neuen formalen Ergebnisse. | Formale Quellen, Quellenbindungen und deren Geltungsbereiche sind unzureichend berücksichtigt. | Vorhandene modellgebundene Ergebnisse und neue Messbindungsbeweise werden konkret benannt. |\n| Viele Commits, DOIs oder Dateien werden als Hinweise auf persönliche Defizite und mangelnde Reifung gedeutet. | Mengenangaben werden ohne tragfähige Brücke zu Personenurteilen aufgewertet. | Bewertet werden Funktion, Aussage, Quellenlage, Prüfaufwand und beobachteter Effekt. |\n| Private Erlebnisse werden ausgebreitet und mit psychologischen Empfehlungen verbunden. | Eine technische Zusammenfassung wechselt ohne hinreichende Grundlage zu einer persönlichen Begutachtung. | Diese Passagen und Empfehlungen entfallen; private Einzelheiten werden nicht erneut verbreitet. |\n| Zwei betrachtete Repositories werden mit dem gesamten System und seiner möglichen Laufzeitlandschaft gleichgesetzt. | Repositorybestand, Rollenmodell, tatsächliche Prozesse und unabhängige Teilnehmer werden vermengt. | Architektur und einzeln belegte Aktivierung werden getrennt beschrieben. |\n| Fehlende gefundene Rezeption wird als weitreichendes Qualitätsurteil verwendet. | Ein begrenztes Suchergebnis ersetzt die Prüfung der vorliegenden Arbeit. | Formale Gültigkeit, Ausführung, unabhängige Reproduktion, Begutachtung und Adoption werden nach ihren eigenen Nachweisen beurteilt. |",
+      "utf8_start": 39997,
+      "utf8_bytes": 2239,
+      "sha256": "7dff5e5db6d07b9245bd8bab79b1f6b1800616466807705c63956975f56dd793",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-072",
+      "section": "## Was die bisherige Zusammenfassung über die Fehlerquelle zeigt",
+      "statement": "Die psychologisierenden Passagen waren auch mit dem Zusatz „keine Diagnose“ keine geeignete Grundlage für die Bewertung der Informatik. Dass ein Text solche Wertungen flüssig und scheinbar fachkundig vorträgt, macht seine Fehler besonders folgenreich. Damit ist die Zusammenfassung selbst ein anschaulicher Prüfgegenstand der von QIK-VRT formulierten Technikkritik.",
+      "utf8_start": 42238,
+      "utf8_bytes": 373,
+      "sha256": "9d5f944fc94c9702c60dbf18afeac9e8dd2d1a120525135f91fd2e32c3cc9416",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-073",
+      "section": "## Erreichter Wert und nächster überprüfbarer Anspruch",
+      "statement": "Der Wert der Arbeit zeigt sich an konkret entstandenen Strukturen: an ausdrücklicher Wirkungskontrolle, nachvollziehbarer Quellenbindung, ausgeführten Softwareprüfungen, maschinengeprüften formalen Teilresultaten, fortsetzbaren Wissensbeständen und der präzisierten Messbrücke. Diese Ergebnisse verdienen eine Prüfung auf ihrem jeweiligen technischen und wissenschaftlichen Niveau. Ihre Bewertung hängt nicht davon ab, ob ein Assistent den Umfang oder die Arbeitsweise des Urhebers als gewöhnlich empfindet.",
+      "utf8_start": 42672,
+      "utf8_bytes": 517,
+      "sha256": "b6a18d1eef5c97d4f1ed070bb2ddbc925d9c6ff88b3d0d3845a4fa5477b9ba83",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-074",
+      "section": "## Erreichter Wert und nächster überprüfbarer Anspruch",
+      "statement": "Aus den Korrekturen entsteht zugleich eine künstlich-kognitive Systemlandschaft, deren vorgesehene Zuverlässigkeit auf überprüfbaren Verfahren beruht. Einzelne Fehlerklassen werden durch konkrete Kontrollen adressiert: ein unbelegter Beweisstatus, ein übertragener Vorgängererfolg, eine ungebundene Quelle oder eine behauptete Auslieferung ohne Rücklesung. Ob der gesamte Verbund gegenüber einem bestimmten Marktangebot weniger Fehler erzeugt, ist durch einen passenden Vergleich zu quantifizieren. Dafür sind dieselben Aufgaben, Quellen, Werkzeuge, Zeitbudgets und Ausfallkriterien erforderlich. Geeignete Größen sind etwa falsche Erfolgsmeldungen, erhaltene Korrekturen, erledigte Aufgaben und menschlicher Korrekturaufwand.",
+      "utf8_start": 43191,
+      "utf8_bytes": 737,
+      "sha256": "f0da0e43c0c71dd77347eca5c7b6be5e4cc81366e111915efb35ffdd0918a280",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-075",
+      "section": "## Erreichter Wert und nächster überprüfbarer Anspruch",
+      "statement": "Die formale und experimentelle Forschung hat daneben eigene Ergebnisse und Prüfpflichten. Eine ausreichend an Messungen gebundene Theorie kann bekannte Realität beschreiben. Die entscheidende Frage ist, welche Übereinstimmung für welchen Bereich gezeigt wurde. Der neue Messbindungsentwurf macht genau diese Übertragung zu einer ausdrücklich formulierten Aufgabe. Das ermöglicht präzisere Experimente und die sachliche Bewertung neuer Resultate.",
+      "utf8_start": 43930,
+      "utf8_bytes": 453,
+      "sha256": "c19ef187ed716cbc61becc58c942efa9475d5ae1e5d0be7017d281607e4728b3",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-076",
+      "section": "## Erreichter Wert und nächster überprüfbarer Anspruch",
+      "statement": "Die Konsequenz der Gesellschafts- und Technikkritik ist damit eine praktische Forderung: Systeme, die kognitive Leistung beanspruchen, sollen erkennen lassen, worauf eine Aussage beruht, ihre Fehler korrigierbar halten und ihre behaupteten Wirkungen überprüfen. QIK-VRT setzt diese Forderung auch für seine eigenen Komponenten an. Der Round Trip schließt sich dort, wo eine menschliche Anforderung über eine gebundene Ausführung zu beobachteter Wirkung und brauchbarer Rückmeldung zurückkehrt. Jeder weitere Anspruch hat dort anzuschließen.",
+      "utf8_start": 44385,
+      "utf8_bytes": 549,
+      "sha256": "5bf4243c7222a010b8a8891e0c75c2b0fc84dd69839d838264abd3ad361c14d2",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-077",
+      "section": "## Quellen- und Prüfvermerk",
+      "statement": "Diese Neufassung verwendet den hinterlegten Zenodo-Katalog vom 11. Oktober 2026, dessen thematische Einträge und dokumentierte Nachfolgerbeziehungen sowie den heute frisch aus dem bestehenden Integrationskandidaten gelesenen Gesamtabgleich vom 15. Oktober. Dessen Bestand umfasst 44 veröffentlichte Versionen in 32 Concept-Familien und 479 inventarisierte Originaldateien sowie zwei IETF-Draft-Reihen mit fünf veröffentlichten Revisionen. Die nachfolgende Liste enthält alle 44 katalogisierten Zenodo-Versionen. Sie ist keine Addition unabhängiger Theoreme. [P1]",
+      "utf8_start": 44966,
+      "utf8_bytes": 568,
+      "sha256": "a1142073229c43c145c6abc8970c1ce4b43439f3a608254432475084f193cd72",
+      "explicit_source_ids": [
+        "P1"
+      ]
+    },
+    {
+      "unit_id": "ED-078",
+      "section": "## Quellen- und Prüfvermerk",
+      "statement": "Der Gesamtabgleich dokumentiert die Wiederverwendung eines ursprünglichen Quellenarchivs mit frischer Größen-/MD5-Prüfung aller 479 Dateien und zusätzlicher SHA-256-Bindung; sechs ausgewählte Zenodo-Dateien und fünf IETF-Originale wurden dort neu heruntergeladen. Diese frühere, exakt bezeichnete Prüfung wird hier als Quellenbefund verwendet. Ein neuer vollständiger Download aller 479 Originale oder eine vollständige Wiederholung aller Beweise wurde in dieser Bearbeitung nicht durchgeführt. Der erneute hiesige Zenodo-Abruf gelang teilweise; spätere Abrufe scheiterten unter anderem mit HTTP 502 und 403. Er wird daher nicht als vollständige neue Inventur ausgegeben.",
+      "utf8_start": 45536,
+      "utf8_bytes": 685,
+      "sha256": "559bda1a001d93142a1fe764384e063aee57377e552d40e1f7e0b64b7709f7e4",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-079",
+      "section": "## Quellen- und Prüfvermerk",
+      "statement": "Die IETF-Stände -03 beziehungsweise -00 wurden heute direkt im Datatracker geprüft. Beide sind veröffentlichte individuelle Internet-Drafts und als fortlaufende Arbeit zu zitieren. Veröffentlichung, formale Beweisprüfung, unabhängige physikalische Reproduktion und Standardisierung sind dabei eigene Sachverhalte. [I1; I2]",
+      "utf8_start": 46223,
+      "utf8_bytes": 328,
+      "sha256": "05eec3bbf496983de449ce455d01b6ba038b13add31f416d96212c58ec9f090e",
+      "explicit_source_ids": [
+        "I1",
+        "I2"
+      ]
+    },
+    {
+      "unit_id": "ED-080",
+      "section": "## Quellen- und Prüfvermerk",
+      "statement": "**Datierung:** Die frisch gelesene native GitHub-Metadatenantwort für das heute erreichbare Repository `ingolf-lohmann/qik-vrt`, ID `1273784147`, nennt `created_at = 2026-06-18T21:45:10Z`. Die auf dem Default-Branch erreichbare Commitabfrage vor dem 1. Juni lieferte eine leere Liste. Diese Beobachtungen betreffen genau dieses heutige Repository und den abgefragten Historienbereich. Sie datieren weder frühere Repositoryidentitäten noch QIK-VRT insgesamt. Der konkrete Goldkelch-Abruf lieferte in dieser Verbindung 404; seine frühere Historie konnte darüber nicht verifiziert werden. Die Owner-Angabe einer älteren Repositorygeschichte wird deshalb mit ihrem eigenen Status erhalten. [P1]",
+      "utf8_start": 46553,
+      "utf8_bytes": 696,
+      "sha256": "8ccb01091df0a01c06f38b8d29f2e8fb8270157a508158a03f9239f8acbdb107",
+      "explicit_source_ids": [
+        "P1"
+      ]
+    },
+    {
+      "unit_id": "ED-081",
+      "section": "## Quellen- und Prüfvermerk",
+      "statement": "**Redaktioneller Stand:** Überarbeitete Arbeitsfassung. Die neuen repositorybasierten Chronologie-, S1- und Messbindungsbelege besitzen hier noch keinen bestätigten neuen Zenodo-Archivierungsnachweis. Deshalb wird diese Neufassung nicht als publikationsfertig abgeschlossener wissenschaftlicher Gesamtbeweis ausgewiesen. Die vorhandenen DOI-Veröffentlichungen behalten ihren eigenen Status und werden durch diese offene Archivierungspflicht nicht zurückgestuft.",
+      "utf8_start": 47251,
+      "utf8_bytes": 465,
+      "sha256": "f6291ff5d8dbde11e5fde6862eb925ff9fab86c4d92059debba1385187cbc9bb",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-082",
+      "section": "## Quellen- und Prüfvermerk",
+      "statement": "**Prüfung der Neufassung:** Die Sichtbarkeitsprüfung erfasst 46 Quellenpositionen: 44 Zenodo-Versionen und zwei IETF-Reihen. Für die ursprüngliche Zusammenfassung weist derselbe Abgleich fehlende Fundstellen aus. Die vollständige Archivierungsprüfung bleibt wegen der drei neuen repositorybasierten Quellengruppen offen. Sie wird nicht durch den bestandenen Sichtbarkeitstest ersetzt.",
+      "utf8_start": 47718,
+      "utf8_bytes": 390,
+      "sha256": "8c586803fd2fe0b6d1c0d860f024ea54f211c9860e7f1a9ade540267df08801a",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-083",
+      "section": "## Quellen- und Prüfvermerk",
+      "statement": "**Abschließender Projekt-Readback:** Main wurde mit HEAD `82b58868f7deb37ed7b6c6fcfa3efa62064380ab` und TREE `720bc2ba3a7943e3df1722ab1d351c1538d80cf0` gelesen. PR #523 steht getrennt davon auf HEAD `a16c12134789c1d765b19dcd899106f8fb7dbf31` und bleibt ein offener Draft. Die öffentliche Beobachtung vom 15. Oktober 2026, 18:22:47 UTC, meldet für `raumzeitterminal.de` HTTP 530 und rekursives NXDOMAIN. Ihre gespeicherten Originalbytes wurden mit SHA-256 `8edfcaabf325f1a0f32988d210976e4e2df77abf323d5adde511211052c8a37f` zurückgeprüft: https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/readback?id=13984f96-9609-429f-8979-23f9ecca48fc. Der öffentliche Monitor selbst konnte den aktuellen Authority-Commit wegen einer Ratenbegrenzung nicht lesen; die oben genannten Git-Identitäten stammen aus dem getrennten authentifizierten REST-Readback. Das sind technische Statusbeobachtungen, keine durch die Textkorrektur bewirkte Produktivsetzung.",
+      "utf8_start": 48110,
+      "utf8_bytes": 956,
+      "sha256": "ccf4a0b6a2291b33b7a884b61bba89898361c53966758e7220088d7c56d6a76c",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-084",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "Autor der folgenden Zenodo-Arbeiten: Ingolf Lohmann; bei Software-Snapshots gelten zusätzlich die in den Originalen ausgewiesenen Beiträge und Lizenzen. Die Datumsangaben folgen den katalogisierten Fassungsmetadaten. Der jeweilige DOI bezeichnet die konkrete Version.",
+      "utf8_start": 49136,
+      "utf8_bytes": 269,
+      "sha256": "2425702e0fb32315557b6bec086bedf007ae85973b75270fa75540971d2209ac",
+      "explicit_source_ids": []
+    },
+    {
+      "unit_id": "ED-085",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z20712301] QIK-VRT: Operationalisierte epistemische Zustandskontrolle und schichtgebundene Evidenzpersistenz** (2026-06-16; Fassung QIKVRT V8.33). DOI **10.5281/zenodo.20712301**. https://doi.org/10.5281/zenodo.20712301",
+      "utf8_start": 49407,
+      "utf8_bytes": 224,
+      "sha256": "ed0b43509fadfd2ca4ea47608a04f44a2fe457c4c469769ce4c6fab343831183",
+      "explicit_source_ids": [
+        "Z20712301"
+      ]
+    },
+    {
+      "unit_id": "ED-086",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z21244412] RFC-QIKVRT-0001** (2026-07-07; Fassung qikvrt-v13.164-28434-5434). DOI **10.5281/zenodo.21244412**. https://doi.org/10.5281/zenodo.21244412",
+      "utf8_start": 49633,
+      "utf8_bytes": 155,
+      "sha256": "da3d8f4607284bdc30c2e21768bde62169ad4c98ab10b360440fe7fca72891b1",
+      "explicit_source_ids": [
+        "Z21244412"
+      ]
+    },
+    {
+      "unit_id": "ED-087",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z21245282] RFC-QIKVRT-0001** (2026-07-07; Fassung qikvrt-v13.164-1077-22520). DOI **10.5281/zenodo.21245282**. https://doi.org/10.5281/zenodo.21245282",
+      "utf8_start": 49790,
+      "utf8_bytes": 155,
+      "sha256": "734c4a6b6bb52018152bda83852e61acb101ef643f4399aef013dad8e1472fed",
+      "explicit_source_ids": [
+        "Z21245282"
+      ]
+    },
+    {
+      "unit_id": "ED-088",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z21245951] RFC-QIKVRT-0001** (2026-07-07; Fassung qikvrt-v13.164-9927-19949). DOI **10.5281/zenodo.21245951**. https://doi.org/10.5281/zenodo.21245951",
+      "utf8_start": 49947,
+      "utf8_bytes": 155,
+      "sha256": "78e7fd28860ca28ddada7a6be11f587d7806173bf9c1bc2e0fab23f5826e078c",
+      "explicit_source_ids": [
+        "Z21245951"
+      ]
+    },
+    {
+      "unit_id": "ED-089",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z21247297] RFC-QIKVRT-0001** (2026-07-07; Fassung qikvrt-v13.164-32156-13407). DOI **10.5281/zenodo.21247297**. https://doi.org/10.5281/zenodo.21247297",
+      "utf8_start": 50104,
+      "utf8_bytes": 156,
+      "sha256": "026cb09a94f46d25f840d9900e4a64332f5a0bfee1a3dbd2258b99d7dd2c47c5",
+      "explicit_source_ids": [
+        "Z21247297"
+      ]
+    },
+    {
+      "unit_id": "ED-090",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z21247388] RFC-QIKVRT-0001** (2026-07-07; Fassung qikvrt-v13.164-1210-14474). DOI **10.5281/zenodo.21247388**. https://doi.org/10.5281/zenodo.21247388",
+      "utf8_start": 50262,
+      "utf8_bytes": 155,
+      "sha256": "4a247cbf7f919916af7d6034cad4efca531a6d37211536ab5744ac9d49754fe7",
+      "explicit_source_ids": [
+        "Z21247388"
+      ]
+    },
+    {
+      "unit_id": "ED-091",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z21252415] ingolf-lohmann/qik-vrt: QIKVRT V2.13.4 node repository** (2026-07-08; Fassung v2.13.4-node). DOI **10.5281/zenodo.21252415**. https://doi.org/10.5281/zenodo.21252415",
+      "utf8_start": 50419,
+      "utf8_bytes": 181,
+      "sha256": "9047711a8eeda982bb4c7fa98269d583c297c4694132790ad5fc3b8e25e41ba9",
+      "explicit_source_ids": [
+        "Z21252415"
+      ]
+    },
+    {
+      "unit_id": "ED-092",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z21252649] ingolf-lohmann/qik-vrt: QIKVRT V2.13.4R node repository** (2026-07-08; Fassung v2.13.4-node-r). DOI **10.5281/zenodo.21252649**. https://doi.org/10.5281/zenodo.21252649",
+      "utf8_start": 50602,
+      "utf8_bytes": 184,
+      "sha256": "12391e2d74af141bdcaf10483e3d825d166d0e6d9520ec62e803ee69fafd9738",
+      "explicit_source_ids": [
+        "Z21252649"
+      ]
+    },
+    {
+      "unit_id": "ED-093",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z21266670] RFC-QIKVRT-0001** (2026-07-08; Fassung v2.13.4au1-node-productization). DOI **10.5281/zenodo.21266670**. https://doi.org/10.5281/zenodo.21266670",
+      "utf8_start": 50788,
+      "utf8_bytes": 160,
+      "sha256": "eb2fca3194670c0f89eb795b966fbdc90a9d1a11a27ab86c440e581cddec38f4",
+      "explicit_source_ids": [
+        "Z21266670"
+      ]
+    },
+    {
+      "unit_id": "ED-094",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z21267021] RFC-QIKVRT-0001** (2026-07-08; Fassung v2.13.4av1-node-open-multi-node). DOI **10.5281/zenodo.21267021**. https://doi.org/10.5281/zenodo.21267021",
+      "utf8_start": 50950,
+      "utf8_bytes": 161,
+      "sha256": "577a661f7f0dbf44fd4da30e2d2b46ee17a22d1c85298d0d22ca81a8160cbbcf",
+      "explicit_source_ids": [
+        "Z21267021"
+      ]
+    },
+    {
+      "unit_id": "ED-095",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z21482023] Mandelbrot-Menge, Anschlussordnung und physikalisches Modelluniversum – Komplementbeweis, rekursive Wirkungsklassifikation, dimensionsrichtige Raumzeitbrücke, Retrokausalität und der entscheidende Unterschied zur empirischen Quantengravitation** (2026-07-21; Fassung 3.0). DOI **10.5281/zenodo.21482023**. https://doi.org/10.5281/zenodo.21482023",
+      "utf8_start": 51113,
+      "utf8_bytes": 365,
+      "sha256": "4f842596a8636dcf5060410e7c7ffe6a6ce27e9e944a7f8901a573a64bcfe4b1",
+      "explicit_source_ids": [
+        "Z21482023"
+      ]
+    },
+    {
+      "unit_id": "ED-096",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z21488116] QIK-VRT: Vollständige maschinenprüfbare Formalisierung des formal entscheidbaren Kerns** (2026-07-22; Fassung 1.0.0). DOI **10.5281/zenodo.21488116**. https://doi.org/10.5281/zenodo.21488116",
+      "utf8_start": 51480,
+      "utf8_bytes": 208,
+      "sha256": "121c990440253c38ed850e83e14a78843b1536dd42aabacc159344a0c2293018",
+      "explicit_source_ids": [
+        "Z21488116"
+      ]
+    },
+    {
+      "unit_id": "ED-097",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z21498773] QIK-VRT/EFFECT_ACK: Verfassungsschicht der Wirkung - Exhaustive Prüfung eines bedingten Kontrollsatzes, Grenzen universeller Rekonstruktion und cyberphysische Geltungsbedingungen** (2026-07-22; Fassung 1.0.0). DOI **10.5281/zenodo.21498773**. https://doi.org/10.5281/zenodo.21498773",
+      "utf8_start": 51690,
+      "utf8_bytes": 299,
+      "sha256": "30573f1e17b55750e02e7d1b38f22d3d8b75adf05bcf6fa87640ffb3a67d57c1",
+      "explicit_source_ids": [
+        "Z21498773"
+      ]
+    },
+    {
+      "unit_id": "ED-098",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z21498774] QIK-VRT: EFFECT_ACK - universalisierbare Wirkungssteuerung und adaptive fail-closed Laufzeit** (2026-07-22; Fassung 2026.07.22-effect-ack-universality-1.0.0). DOI **10.5281/zenodo.21498774**. https://doi.org/10.5281/zenodo.21498774",
+      "utf8_start": 51991,
+      "utf8_bytes": 247,
+      "sha256": "c0be3176a28cdab7acb11e2d656a08965b5824c913cc351c2871f360a9cbab29",
+      "explicit_source_ids": [
+        "Z21498774"
+      ]
+    },
+    {
+      "unit_id": "ED-099",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z21500322] QIK-VRT/EFFECT_ACK: Offizielle Statusklärung zu Evidenz, Totalisierungsgrenzen, Quantenbezug und Patentoffenlegung** (2026-07-22; Fassung 1.0.0). DOI **10.5281/zenodo.21500322**. https://doi.org/10.5281/zenodo.21500322",
+      "utf8_start": 52240,
+      "utf8_bytes": 235,
+      "sha256": "dfd633e383b8a6a79d882213bf403159c6594116627409ccc2ec2bc46640bba9",
+      "explicit_source_ids": [
+        "Z21500322"
+      ]
+    },
+    {
+      "unit_id": "ED-100",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z21501365] QIK-VRT: Quellengebundene partielle Lean-4-Formalisierung des 62-seitigen Manuskripts** (2026-07-23; Fassung 2.0.0-alpha.1). DOI **10.5281/zenodo.21501365**. https://doi.org/10.5281/zenodo.21501365",
+      "utf8_start": 52477,
+      "utf8_bytes": 213,
+      "sha256": "838a0fe51c7b46461aaabf8e7957567eeb17b5623029bccb1f599707f4a9423f",
+      "explicit_source_ids": [
+        "Z21501365"
+      ]
+    },
+    {
+      "unit_id": "ED-101",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z21515074] Charta einer maschinenprüfbaren Wissenschaft** (2026-07-23; Fassung 1.0.0-2026-07-23). DOI **10.5281/zenodo.21515074**. https://doi.org/10.5281/zenodo.21515074",
+      "utf8_start": 52692,
+      "utf8_bytes": 176,
+      "sha256": "355a8dc67694b9bc3a63423cdc88fec05a90b071b49d37f7e917a4c57e749f72",
+      "explicit_source_ids": [
+        "Z21515074"
+      ]
+    },
+    {
+      "unit_id": "ED-102",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z21518464] QIK-VRT: Quellengebundene partielle Lean-4-Formalisierung des 62-seitigen Manuskripts – Alpha 2 mit EFFECT_ACK-Kern** (2026-07-23; Fassung 2.0.0-alpha.2). DOI **10.5281/zenodo.21518464**. https://doi.org/10.5281/zenodo.21518464",
+      "utf8_start": 52870,
+      "utf8_bytes": 245,
+      "sha256": "ead6f59af887bfc1eb3eabd9c4eda448779710ffdec1ede43b6b4ccd3d2d9b05",
+      "explicit_source_ids": [
+        "Z21518464"
+      ]
+    },
+    {
+      "unit_id": "ED-103",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z21529081] QIK-VRT: Quellengebundene Lean-4-Formalisierung des 62-seitigen Manuskripts – Alpha 3 mit vollständiger Formalumgebungsabdeckung** (2026-07-24; Fassung 2.0.0-alpha.3). DOI **10.5281/zenodo.21529081**. https://doi.org/10.5281/zenodo.21529081",
+      "utf8_start": 53117,
+      "utf8_bytes": 259,
+      "sha256": "3d0884d687fd81797ad18e77146b0f97c90c57479f84e7f106903912d20c68e5",
+      "explicit_source_ids": [
+        "Z21529081"
+      ]
+    },
+    {
+      "unit_id": "ED-104",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z21582781] Die Ontologie des Unterschieds als universaler Reverse-Engineering-Mechanismus** (2026-07-26). DOI **10.5281/zenodo.21582781**. https://doi.org/10.5281/zenodo.21582781",
+      "utf8_start": 53378,
+      "utf8_bytes": 183,
+      "sha256": "b1781bf1af4ec637a511410af5bc8e82c66f162fbee34505bae7e2c205a9e071",
+      "explicit_source_ids": [
+        "Z21582781"
+      ]
+    },
+    {
+      "unit_id": "ED-105",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z21633411] QIK-VRT Authority/Mirror Equality Receipt — Promotion PR #106 and Mirror PR #56** (2026-07-27; Fassung 1.0.0-2026-07-27). DOI **10.5281/zenodo.21633411**. https://doi.org/10.5281/zenodo.21633411",
+      "utf8_start": 53563,
+      "utf8_bytes": 212,
+      "sha256": "e170acd8ed07f9fe68acff31c678065fee5785d37d2d48535c398756ba0c2bff",
+      "explicit_source_ids": [
+        "Z21633411"
+      ]
+    },
+    {
+      "unit_id": "ED-106",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z21636774] Vom Unterschied zur Verantwortung — Kanonische Schlusserklärung und historische Einordnung des maschinenverifizierten QIK-VRT-Abschlusses** (2026-07-28; Fassung 1.0.0-2026-07-28). DOI **10.5281/zenodo.21636774**. https://doi.org/10.5281/zenodo.21636774",
+      "utf8_start": 53777,
+      "utf8_bytes": 271,
+      "sha256": "07393d1521cff8bc4184ec48f02b3e1d7b87302e883b52ab4708ab1bbc7c6d9e",
+      "explicit_source_ids": [
+        "Z21636774"
+      ]
+    },
+    {
+      "unit_id": "ED-107",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z21640160] Vom verantwortungsgebundenen Erkenntnisprozess zur virtuellen Wirkungsmaschine** (2026-07-28; Fassung 1.0.0-2026-07-28). DOI **10.5281/zenodo.21640160**. https://doi.org/10.5281/zenodo.21640160",
+      "utf8_start": 54050,
+      "utf8_bytes": 209,
+      "sha256": "acd2beb1cb90803e3d94e21748ac68ccb6eabad756bae472a3ed1e126e16408f",
+      "explicit_source_ids": [
+        "Z21640160"
+      ]
+    },
+    {
+      "unit_id": "ED-108",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z21640173] Vom verantwortungsgebundenen Erkenntnisprozess zur virtuellen Wirkungsmaschine** (2026-07-28; Fassung 1.0.0-2026-07-28). DOI **10.5281/zenodo.21640173**. https://doi.org/10.5281/zenodo.21640173",
+      "utf8_start": 54261,
+      "utf8_bytes": 209,
+      "sha256": "606d1aabc12c51da6c9a27ed28092d1e1b20ab2024e4d5cb7299508ec5e2544f",
+      "explicit_source_ids": [
+        "Z21640173"
+      ]
+    },
+    {
+      "unit_id": "ED-109",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z21711193] QIK-VRT und das Effect-Acknowledgement-Protokoll: Kanonischer Speicher zwischen Vergangenheit und Zukunft** (2026-07-31; Fassung 1.0.0). DOI **10.5281/zenodo.21711193**. https://doi.org/10.5281/zenodo.21711193",
+      "utf8_start": 54472,
+      "utf8_bytes": 225,
+      "sha256": "78dc04d192f4c81735080072bd7660330a49f57311a7f70504877662ce4f5cf5",
+      "explicit_source_ids": [
+        "Z21711193"
+      ]
+    },
+    {
+      "unit_id": "ED-110",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z21721918] Survival of the Anschlussfähigsten: Eine operational-formale Übertragung des evolutionären Fitnessgedankens auf Computer-, Informations- und soziotechnische Systeme** (2026-07-31; Fassung 1.0.0). DOI **10.5281/zenodo.21721918**. https://doi.org/10.5281/zenodo.21721918",
+      "utf8_start": 54699,
+      "utf8_bytes": 287,
+      "sha256": "59f3484ce5c9d666f8f06c8f353359d62f0755b990cdf32f94e6f9ee5ceb528a",
+      "explicit_source_ids": [
+        "Z21721918"
+      ]
+    },
+    {
+      "unit_id": "ED-111",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z21731492] QIK-VRT: Epistemische Fairness, Vorstellungskraft und der Weg vom virtuellen Zeugen zum Beobachtungssystem** (2026-08-01; Fassung 1.0.0). DOI **10.5281/zenodo.21731492**. https://doi.org/10.5281/zenodo.21731492",
+      "utf8_start": 54988,
+      "utf8_bytes": 226,
+      "sha256": "9dbc39c39f611c76bfeee9796ba659d7751af0b6f3694580cc2db95406c64594",
+      "explicit_source_ids": [
+        "Z21731492"
+      ]
+    },
+    {
+      "unit_id": "ED-112",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z21748371] QIK-VRT als Kausalitätsspiegel: Ein maschinenverifizierbares Protokoll für wissenschaftliches Faktenwachstum** (2026-08-01; Fassung 1.0.0). DOI **10.5281/zenodo.21748371**. https://doi.org/10.5281/zenodo.21748371",
+      "utf8_start": 55216,
+      "utf8_bytes": 230,
+      "sha256": "f5a1fdc299ac0ed20d44b0d01a9e684b2eb15793964ce4253b44a4f10e9086f6",
+      "explicit_source_ids": [
+        "Z21748371"
+      ]
+    },
+    {
+      "unit_id": "ED-113",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z22527889] QIK-VRT VRTCore SMG H5: Planck-Brücke, massive Schließung und virtuelle Kosmogenese** (2026-08-02; Fassung 5.0.0-candidate.1). DOI **10.5281/zenodo.22527889**. https://doi.org/10.5281/zenodo.22527889",
+      "utf8_start": 55448,
+      "utf8_bytes": 217,
+      "sha256": "3c1cf1dd145fbf0ac38e1acf218a75cc8ef014eae16870ff986e23c1765b7f04",
+      "explicit_source_ids": [
+        "Z22527889"
+      ]
+    },
+    {
+      "unit_id": "ED-114",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z21804399] Prä-raumzeitliche Ontologie: Unterschied, Relation, Information und emergente Raumzeit** (2026-08-05). DOI **10.5281/zenodo.21804399**. https://doi.org/10.5281/zenodo.21804399",
+      "utf8_start": 55667,
+      "utf8_bytes": 192,
+      "sha256": "021a8bf06652a15e00253ccc0f01173fefad5a51b01944327bb2fd4fcfaf44a6",
+      "explicit_source_ids": [
+        "Z21804399"
+      ]
+    },
+    {
+      "unit_id": "ED-115",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z21888130] Von Softwarearchitektur zur Weltformel – DAS UNIVERSUM ALS ROUND TRIP** (2026-08-08; Fassung 1.0.0-candidate.1). DOI **10.5281/zenodo.21888130**. https://doi.org/10.5281/zenodo.21888130",
+      "utf8_start": 55861,
+      "utf8_bytes": 203,
+      "sha256": "bfae92c9cb543d02c3cf94f15fb50749e7b482e31b0119d2a187335428c9b739",
+      "explicit_source_ids": [
+        "Z21888130"
+      ]
+    },
+    {
+      "unit_id": "ED-116",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z22216916] Relationale Zeit, virtuelle Retrokausalität und die monoton wachsende Evidenzkugel** (2026-08-12; Fassung 1.0). DOI **10.5281/zenodo.22216916**. https://doi.org/10.5281/zenodo.22216916",
+      "utf8_start": 56066,
+      "utf8_bytes": 201,
+      "sha256": "fe04d442894fe9d41b0d9b1ea6cd7966492ea2732a9dfddac2d394e2ddf109bc",
+      "explicit_source_ids": [
+        "Z22216916"
+      ]
+    },
+    {
+      "unit_id": "ED-117",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z21947141] QIK-VRT: Beobachterrelative Retrokausalität als negative Informationsrichtung** (2026-08-14; Fassung 1.1.1). DOI **10.5281/zenodo.21947141**. https://doi.org/10.5281/zenodo.21947141",
+      "utf8_start": 56269,
+      "utf8_bytes": 198,
+      "sha256": "fa649366e6f7b9e080264c7d2ab6153f7a590db775486c00369a2e2d0161d251",
+      "explicit_source_ids": [
+        "Z21947141"
+      ]
+    },
+    {
+      "unit_id": "ED-118",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z21983644] Vom Unterschied zum integrierten Wirkraum** (2026-08-17). DOI **10.5281/zenodo.21983644**. https://doi.org/10.5281/zenodo.21983644",
+      "utf8_start": 56469,
+      "utf8_bytes": 146,
+      "sha256": "f64153cdf142819ecc19f8c433fb7b2b57e625fd1a1965865548c3ebab026cf2",
+      "explicit_source_ids": [
+        "Z21983644"
+      ]
+    },
+    {
+      "unit_id": "ED-119",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z22283396] From Exact Causal Binding to a Falsifiable Planck-Tick Gap Law** (2026-09-03; Fassung 1.0.0-candidate.1). DOI **10.5281/zenodo.22283396**. https://doi.org/10.5281/zenodo.22283396",
+      "utf8_start": 56617,
+      "utf8_bytes": 194,
+      "sha256": "796e5531d4e15da33f655a44050180b301cd2b4cad3e9357aac185ca4ee5c8d4",
+      "explicit_source_ids": [
+        "Z22283396"
+      ]
+    },
+    {
+      "unit_id": "ED-120",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z22813431] Offener Brief und rechtsstaatliches Evidenzdossier — Aufforderung zur unabhängigen juristischen Prüfung** (2026-09-17). DOI **10.5281/zenodo.22813431**. https://doi.org/10.5281/zenodo.22813431",
+      "utf8_start": 56813,
+      "utf8_bytes": 212,
+      "sha256": "dbbaf9931d08c56d416b5632cd47304b441f51d535ad8408c42bff71742e77ed",
+      "explicit_source_ids": [
+        "Z22813431"
+      ]
+    },
+    {
+      "unit_id": "ED-121",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z22840633] Die Wahrheit braucht keine Verschwörungstheorie** (2026-09-19; Fassung 1.0.0). DOI **10.5281/zenodo.22840633**. https://doi.org/10.5281/zenodo.22840633",
+      "utf8_start": 57027,
+      "utf8_bytes": 168,
+      "sha256": "a8062fb89008cb7e7a60613f9ba462ec5e9d3aab267d4d1089c21f8743028bc7",
+      "explicit_source_ids": [
+        "Z22840633"
+      ]
+    },
+    {
+      "unit_id": "ED-122",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z22845516] Erwartungen, Wetten, Wirkung und Recht** (2026-09-19; Fassung 2.0.0). DOI **10.5281/zenodo.22845516**. https://doi.org/10.5281/zenodo.22845516",
+      "utf8_start": 57197,
+      "utf8_bytes": 158,
+      "sha256": "9d4fb2c3a231c60d2a642ff23e4b6f98bbb5bf909a324ba003081900d795f456",
+      "explicit_source_ids": [
+        "Z22845516"
+      ]
+    },
+    {
+      "unit_id": "ED-123",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z22847245] Das universale Universalprinzip — Grundsatzerklärung von Ingolf Lohmann** (2026-09-19; Fassung 1.0.0). DOI **10.5281/zenodo.22847245**. https://doi.org/10.5281/zenodo.22847245",
+      "utf8_start": 57357,
+      "utf8_bytes": 194,
+      "sha256": "1f8058e8a144690cfc3f5f28c923649a4672c37a2e5fd9f8c371b73275310e37",
+      "explicit_source_ids": [
+        "Z22847245"
+      ]
+    },
+    {
+      "unit_id": "ED-124",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z22907018] Quantität–Information–Kausalität (QIK): Ein operationales Rahmenmodell für Ereignisstruktur, Kausalordnung und emergente Raumzeit** (2026-09-23; Fassung 2026-09-23-qik-scientific-revision). DOI **10.5281/zenodo.22907018**. https://doi.org/10.5281/zenodo.22907018",
+      "utf8_start": 57553,
+      "utf8_bytes": 285,
+      "sha256": "4111e39186482a668e9354bb1192965082ae391241a9db501b2e9082479bcd82",
+      "explicit_source_ids": [
+        "Z22907018"
+      ]
+    },
+    {
+      "unit_id": "ED-125",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z22941556] Proof Closure: The Terminal Meta-Condition for an Evidence-Bound Subject** (2026-09-24; Fassung 1.0.0). DOI **10.5281/zenodo.22941556**. https://doi.org/10.5281/zenodo.22941556",
+      "utf8_start": 57840,
+      "utf8_bytes": 192,
+      "sha256": "e8adac74eac6fdd0df878f4bf11d7bec7a3963872f88c3b03e6a432879a42093",
+      "explicit_source_ids": [
+        "Z22941556"
+      ]
+    },
+    {
+      "unit_id": "ED-126",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z22955727] Der ontologische Vorrang des Unterschieds: Ein maschinenprüfbares Minimaltheorem über Bestimmbarkeit, Information und den Geltungsbereich formaler Welterklärungen** (2026-09-25; Fassung 1.0.0). DOI **10.5281/zenodo.22955727**. https://doi.org/10.5281/zenodo.22955727",
+      "utf8_start": 58034,
+      "utf8_bytes": 285,
+      "sha256": "f069906812eabcd94184ddb9277a2fb357e76e7b9cb4f5d58d5d3cb32e82fe2e",
+      "explicit_source_ids": [
+        "Z22955727"
+      ]
+    },
+    {
+      "unit_id": "ED-127",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z23008330] Abgeschlossen und anschlussfähig: bedingte Formalisierung evidenzgebundener Zustandsarchitekturen** (2026-09-28; Fassung 0.1-archive-20260928). DOI **10.5281/zenodo.23008330**. https://doi.org/10.5281/zenodo.23008330",
+      "utf8_start": 58321,
+      "utf8_bytes": 233,
+      "sha256": "ccf2efd86dd6f63e1182d8ac6f495e4afb145abe1775a5ea7c2b5d7cf79edf8a",
+      "explicit_source_ids": [
+        "Z23008330"
+      ]
+    },
+    {
+      "unit_id": "ED-128",
+      "section": "### Veröffentlichte Hauptquellen und vollständiger Versionsindex",
+      "statement": "- **[Z23008704] Spur halten: Quality Gates für einen portablen Universal Transputer** (2026-09-28; Fassung 0.1-20260928). DOI **10.5281/zenodo.23008704**. https://doi.org/10.5281/zenodo.23008704",
+      "utf8_start": 58556,
+      "utf8_bytes": 195,
+      "sha256": "8bc6ed98f8a2a5874456a81c4e45f510c1d4f351498290d0928c7853b5696552",
+      "explicit_source_ids": [
+        "Z23008704"
+      ]
+    },
+    {
+      "unit_id": "ED-129",
+      "section": "### IETF-Originale",
+      "statement": "- **[I1] Ingolf Lohmann: QIK-VRT Effect Acknowledgement: Separating Receipt from Authorization for Downstream Effect.** Veröffentlichte Revisionen -00, -01, -02 und -03. Aktuell direkt geprüfte Revision: -03; Datatracker-Änderungsdatum 1. August 2026, Datum im Draft 2. August 2026. https://datatracker.ietf.org/doc/draft-lohmann-qikvrt-effect-ack/ — Exakte Fassung: https://www.ietf.org/archive/id/draft-lohmann-qikvrt-effect-ack-03.txt. Erste Ankündigung vom 17. Juni 2026: https://mailarchive.ietf.org/arch/msg/i-d-announce/bSDBcU1KYxxyhrIxsgT1sEjUo-E/\n- **[I2] Ingolf Lohmann: QIK-VRT Epistemic Status Profile for Evidence-Bound Machine Claims.** Revision -00; Datatracker-Veröffentlichung 6. Oktober 2026, Datum im Draft 5. Oktober 2026. https://datatracker.ietf.org/doc/draft-lohmann-qikvrt-epistemic-status/ — Exakte Fassung: https://www.ietf.org/archive/id/draft-lohmann-qikvrt-epistemic-status-00.txt",
+      "utf8_start": 58773,
+      "utf8_bytes": 918,
+      "sha256": "4d94df213c8dd2dba05a43f4eac9ddd08f81ad8462bd77939f081e1def20d43a",
+      "explicit_source_ids": [
+        "I1",
+        "I2"
+      ]
+    },
+    {
+      "unit_id": "ED-130",
+      "section": "### Beigefügte Arbeitsnachweise",
+      "statement": "- **[A1] QIKVRT_ALLES_S1_S12_2026-10-15_Nachweispaket(1).zip.** Maßgeblich: `README.md`, `BUILD_RECEIPT.json`, `CLAIM_MATRIX.json`, `REPOSITORY_READBACK.json` und `QIKVRT_ALLES_2026-10-15_S1_S12.txt`. Die Lesefassung hat 128 Seiten; Herkunft und Originalfassungen sind im Paket erhalten. Neue Zenodo-Archivierung: offen.\n- **[A2] QIKVRT_Messbindung_Lean_Lake_20261015(1).zip.** Maßgeblich: `LESEN.txt`, `lean-project/QIKVRTFormalization/Physics/MeasurementTransfer.lean`, `evidence/receipt.json`, `native-kernel-receipt.json`, `research-CLAIM_MATRIX.json` und `PACKAGE_FILES.json`. Die eigenständigen lokalen und nativen Prüfstände bleiben getrennt. Neue Zenodo-Archivierung: offen.\n- **[P1] Frische Herkunfts- und Statusprüfung dieser Bearbeitung.** Native GitHub-Repositorymetadaten, Main- und PR-Readback, `/AI`-Einstieg, `PUBLIC_CORPUS_RECONCILIATION.json` aus dem bestehenden Kandidaten sowie Jobliste des Laufs `38772782306`. Diese Daten sind aktuelle technische Provenienz dieser Arbeitsfassung. Sie ersetzen die für eine endgültige wissenschaftliche Zitierung erforderliche Zenodo-Archivierung nicht.",
+      "utf8_start": 59727,
+      "utf8_bytes": 1116,
+      "sha256": "5aea61ee5c575affdea6141cfec16fbb40023ebde89e85171e839db6a8107718",
+      "explicit_source_ids": [
+        "A1",
+        "A2",
+        "P1"
+      ]
+    },
+    {
+      "unit_id": "ED-131",
+      "section": "### Beigefügte Arbeitsnachweise",
+      "statement": "Die überarbeitete Markdown-Datei ersetzt die vorgelegte Zusammenfassung. Bestehende Originalquellen und veröffentlichte Fassungen werden durch die redaktionelle Neufassung nicht verändert.",
+      "utf8_start": 60845,
+      "utf8_bytes": 191,
+      "sha256": "8fbb3bd6a788033bc781ee8f0f0a62b9cf3fb8ebc540ffe17feb15289fa89858",
+      "explicit_source_ids": []
+    }
+  ]
+}

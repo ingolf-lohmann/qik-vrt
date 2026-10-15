@@ -18,15 +18,15 @@
     },
     {
       "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/AUTHOR_REVIEW.md",
-      "bytes": 1948,
-      "sha256": "63e64c22dd3392542d7d297c2b4801f77060d8ee9d5665ee664179e47a0d6a8d",
-      "git_blob_sha1": "6abaa9d12b4c84c5534fe59f012bd42d956e2ef3"
+      "bytes": 2582,
+      "sha256": "00babd43770acace4e458d04c0cca431bb0906685e59a1f44eb09ddf1901b355",
+      "git_blob_sha1": "e2cd593539ddc1626b3b46acb00cee64e28b7ca9"
     },
     {
       "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/EDITORIAL_INTEGRATION.json",
-      "bytes": 18284,
-      "sha256": "05a33f05669764696a5f245f3ab8b6c2d26461cd17c1d2b33370393e313e9bc1",
-      "git_blob_sha1": "42202848c5f50c54b1fe78869cfa517637001a14"
+      "bytes": 18472,
+      "sha256": "c8c0ba64b08cdc8c2734090585c954c19b55be56add6480445644ecc6ae8b95b",
+      "git_blob_sha1": "61be82c51d33918f017a01208188e7dd52b3185f"
     },
     {
       "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/EDITORIAL_VISIBLE_SOURCES.json",
@@ -54,14 +54,40 @@
     },
     {
       "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/EDITORIAL_VALIDATION.json",
-      "bytes": 2447,
-      "sha256": "9c8b93a143282989a821eeaabae1573a1f2ed6e214a93302551804d6fb3a4ab5",
-      "git_blob_sha1": "9dfa0163a01317be4d4a10ba6a20d35ef31290ed"
+      "bytes": 3353,
+      "sha256": "3175c37809b1156bb9b9ac6f48a148bef42defb5bd25ce7c7164dff7643bf7ae",
+      "git_blob_sha1": "04319e69b9be326a5c30613460bb9273b903cc44"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/EDITORIAL_AUTHOR_APPROVAL.json",
+      "bytes": 1888,
+      "sha256": "b5a38ac50c96c14181ddecc5d4748d4e2056ebd467fda049c470d56f177040f5",
+      "git_blob_sha1": "8d73635a5aaa93db6ba39e0b92386508b2e880b0"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/EDITORIAL_TEXT_SOURCE_INDEX.json",
+      "bytes": 104691,
+      "sha256": "df73a27ceb77c175f299ac14b3601b10e901ef9b6873065c848047cef0c94a59",
+      "git_blob_sha1": "13b7996280dc888b49a5f3d8fab96dc162c11696"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/EDITORIAL_SOURCE_BINDINGS.json",
+      "bytes": 15528,
+      "sha256": "f1229a27252bc406fcb6cd630483fc795709e53cb119076939ed1e7f7b36f9c3",
+      "git_blob_sha1": "63b66fb2800ca9ae7f127bf1659ca30049d18a80"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/EDITORIAL_PUBLICATION_CONTINUATION.json",
+      "bytes": 2825,
+      "sha256": "476e367c8b72a2e30695380cc923e17a715298c17ba40bf56438d9203209728f",
+      "git_blob_sha1": "a33225e39d7078ea5d72e860c2e549ad7a9697c0"
     }
   ],
-  "owner_decision": "PENDING",
-  "actual_candidate_return_receipt": "NOT_YET_ISSUED",
+  "owner_decision": "EDITORIALLY_APPROVED",
+  "actual_candidate_return_receipt": "EXACT_PRIMARY_RETURN_ACKNOWLEDGED_BY_EXPLICIT_AUTHOR_RESPONSE",
   "zenodo_upload_authorized": false,
   "predecessor_authorization_transfer": false,
-  "publication_complete": false
+  "publication_complete": false,
+  "author_approval_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/EDITORIAL_AUTHOR_APPROVAL.json",
+  "production_fileset_authorization_complete": false
 }

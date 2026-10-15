@@ -47,5 +47,28 @@
     "repair": "Regenerate existing integrity trio from the clean exact-source snapshot plus authorized documentation delta; no policy weakening"
   },
   "publication_complete": false,
-  "native_successor_checks": "REQUIRED_AFTER_PR_BRANCH_UPDATE"
+  "native_successor_checks": "REQUIRED_AFTER_PR_BRANCH_UPDATE",
+  "approval_continuation_validation": {
+    "author_approval": "EXPLICIT_EXACT_TEXT_APPROVAL",
+    "source_index_units": 131,
+    "resolved_used_reference_ids": 49,
+    "preserved_historical_artifacts": 21,
+    "primary_unchanged": true,
+    "focused_tests": {
+      "count": 174,
+      "status": "PASS",
+      "log_sha256": "2c42b6f73f779d227eea45d1c8c8740c8d10bb719d8b8a9d560e083219e3ba46"
+    },
+    "native_prior_exact_subject": {
+      "head": "c451de6d25dd064e47f3b3a3c2ea9b029c5b9393",
+      "tree": "757a9679c1e7863ed668674d8a9482ec9c61fe42",
+      "job_id": 116630352119,
+      "job_conclusion": "success",
+      "terminal_disposition": "PASS mode=tested-fixpoint",
+      "outer_workflow": "failure",
+      "not_transferred_as_native_current_successor_pass": true
+    },
+    "production_source_archival_gate": "PENDING_A1_A2_P1_UNCHANGED",
+    "no_failed_publication_operation_retried": true
+  }
 }

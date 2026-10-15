@@ -1,0 +1,41 @@
+{
+  "schema": "qikvrt-exact-editorial-author-approval-v1",
+  "principal": {
+    "name": "Ingolf Lohmann",
+    "type": "natural_person"
+  },
+  "decision": "EDITORIALLY_APPROVED",
+  "literal_response": "Diese Textfassung freigeben",
+  "question_answered": "Gibst du die oben exakt bezeichnete Textfassung redaktionell frei?",
+  "authorization_source": "Explicit author response in the current conversation; not inferred from an earlier integration instruction.",
+  "response_at": "2026-10-15T19:59:24Z",
+  "approved_primary": {
+    "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/QIKVRT_Gesamtdarstellung_neu_2026-10-15.md",
+    "bytes": 61037,
+    "sha256": "84e37878f497208bdf6b2db04c8a4f83ee642559ad6db794d408e159c4c94c2c",
+    "git_blob_sha1": "2cc98ab526e76c8d48737e596d6da2c61d941019"
+  },
+  "repository_subject_at_approval_readback": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pull_request": 523,
+    "head": "c451de6d25dd064e47f3b3a3c2ea9b029c5b9393",
+    "tree": "757a9679c1e7863ed668674d8a9482ec9c61fe42"
+  },
+  "acknowledged_return": {
+    "review_package": "QIKVRT_Autorenpruefung_PR523_c451de6d_2026-10-15.zip",
+    "bytes": 2507038,
+    "sha256": "9b52f8ad910736d936e984dc1a42140b3b89523e3792dbe51ff27b899470fc39",
+    "library_file_id": "libfile_3d0565662f208191aedbaa06234de2c5",
+    "returned_primary_bytes_equal_approved_primary": true,
+    "return_acknowledged_by_author_response": true,
+    "acknowledgement_at": "2026-10-15T19:59:24Z",
+    "not_a_fabricated_original_delivery_timestamp": true
+  },
+  "text_changed_after_approval": false,
+  "requested_supported_publication_continuation_authorized": true,
+  "editorial_approval_complete": true,
+  "production_upload_fileset_approval_fabricated": false,
+  "canonical_authorize_exact_upload_event": false,
+  "publication_complete": false,
+  "main_merge_or_independent_technical_review_claimed": false
+}
