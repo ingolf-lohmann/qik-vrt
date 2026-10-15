@@ -120,7 +120,85 @@ def validate_client_action(action: dict[str, Any], subject: dict[str, Any]) -> b
         or action.get("observed_repository") != subject["repository"]
     ):
         fail("CLIENT_CALLABLE_OPERATION_BINDING_MISMATCH")
-    return all(action[key] for key in predicates)
+    retry_changed = True
+    if "retry" in action:
+        retry = require(action, "retry", dict)
+        retry_changed = (client_causal_key(require(retry, "current", dict))
+                         != client_causal_key(require(retry, "previous", dict)))
+    return all(action[key] for key in predicates) and retry_changed
+
+
+def client_transition_plan(receipt: dict[str, Any]) -> dict[str, Any] | None:
+    """Expose admitted preparation before a future effect becomes executable.
+
+    This is a read-only plan, not an executor or an effect receipt. Historical
+    receipts remain readable. A supplied plan must match the current subject
+    and input identity; human corrections require re-evaluation before reuse.
+    """
+    if "transition_plan" not in receipt:
+        return None
+    plan = receipt["transition_plan"]
+    if not isinstance(plan, dict):
+        fail("CLIENT_TRANSITION_PLAN_INVALID")
+    subject = require(receipt, "subject", dict)
+    if plan.get("subject") != subject:
+        fail("CLIENT_TRANSITION_SUBJECT_DRIFT")
+    input_digest = receipt.get("input_sha256")
+    if (not isinstance(input_digest, str)
+        or not re.fullmatch(r"[0-9a-f]{64}", input_digest)
+        or plan.get("input_sha256") != input_digest):
+        fail("CLIENT_TRANSITION_INPUT_DRIFT")
+    transitions = plan.get("transitions")
+    if not isinstance(transitions, list):
+        fail("CLIENT_TRANSITION_LIST_INVALID")
+    ready: list[dict[str, Any]] = []
+    waiting: list[dict[str, Any]] = []
+    identifiers: set[str] = set()
+    for transition in transitions:
+        if not isinstance(transition, dict):
+            fail("CLIENT_TRANSITION_INVALID")
+        identifier = transition.get("id")
+        if (not isinstance(identifier, str) or not identifier.strip()
+            or identifier in identifiers):
+            fail("CLIENT_TRANSITION_ID_INVALID")
+        identifiers.add(identifier)
+        evidence = transition.get("evidence")
+        if not isinstance(evidence, str) or not evidence.strip():
+            fail("CLIENT_TRANSITION_EVIDENCE_MISSING")
+        activation = transition.get("activation")
+        if not isinstance(activation, list) or not activation:
+            fail("CLIENT_TRANSITION_ACTIVATION_INVALID")
+        conditions: set[str] = set()
+        missing: list[str] = []
+        for condition in activation:
+            if not isinstance(condition, dict):
+                fail("CLIENT_TRANSITION_ACTIVATION_INVALID")
+            condition_id = condition.get("id")
+            if (not isinstance(condition_id, str) or not condition_id.strip()
+                or condition_id in conditions
+                or type(condition.get("satisfied")) is not bool
+                or not isinstance(condition.get("evidence"), str)
+                or not condition["evidence"].strip()):
+                fail("CLIENT_TRANSITION_ACTIVATION_INVALID")
+            conditions.add(condition_id)
+            if not condition["satisfied"]:
+                missing.append(condition_id)
+        preparation = transition.get("preparation")
+        if not isinstance(preparation, list):
+            fail("CLIENT_TRANSITION_PREPARATION_INVALID")
+        for index, action in enumerate(preparation):
+            if validate_client_action(action, subject):
+                ready.append({"transition_id": identifier, "stage": "PREPARE",
+                              "index": index, "action": action})
+        action = require(transition, "action", dict)
+        admitted = validate_client_action(action, subject)
+        if not missing and admitted:
+            ready.append({"transition_id": identifier, "stage": "EXECUTE", "action": action})
+        else:
+            waiting.append({"transition_id": identifier, "activation": missing,
+                            "action_admitted": admitted, "evidence": evidence})
+    return {"input_sha256": input_digest, "ready": ready, "waiting": waiting,
+            "scope": "PLANNING_ONLY_NOT_EXECUTION_OR_EFFECT_PROOF"}
 
 
 def client_end_of_action_domain() -> str:
@@ -317,6 +395,9 @@ def validate_client_receipt(receipt: dict[str, Any]) -> str:
     executable = False
     for action in actions:
         executable |= validate_client_action(action, subject)
+    transition_plan = client_transition_plan(receipt)
+    if transition_plan is not None:
+        executable |= bool(transition_plan["ready"])
     readback = receipt.get("readback")
     validate_client_readback(readback, subject, receipt.get("action_window"))
     repository = readback["repository"]
@@ -342,6 +423,8 @@ def validate_client_receipt(receipt: dict[str, Any]) -> str:
         if len(choices) < 2 or any(not isinstance(c, str) or not c.strip() for c in choices) or len(set(choices)) != len(choices):
             fail("CLIENT_OWNER_CHOICE_INVALID")
     if state == "DONE":
+        if transition_plan is not None and transition_plan["waiting"]:
+            fail("CLIENT_DONE_WITH_PENDING_TRANSITION")
         if (repository.get("ref") != "main"
             or any(repository.get(key) != subject[key] for key in ("head", "tree"))
             or delivery.get("state") != "VERIFIED"
@@ -650,9 +733,13 @@ def main() -> int:
                         help="Validate a non-secret client continuation receipt; no live-effect proof")
     args = parser.parse_args()
     if args.client_receipt is not None:
-        state = validate_client_receipt(load_json(args.client_receipt))
+        receipt = load_json(args.client_receipt)
+        state = validate_client_receipt(receipt)
         print("CLIENT_HANDOFF_CONSISTENCY=VALID")
         print("CLIENT_STATE=" + state)
+        plan = client_transition_plan(receipt)
+        if plan is not None:
+            print("CLIENT_TRANSITION_PLAN=" + json.dumps(plan, sort_keys=True, separators=(",", ":")))
         print("LIVE_EFFECT_VERIFICATION=NOT_PERFORMED")
         return 0
     context = load_json(CONTEXT_PATH)

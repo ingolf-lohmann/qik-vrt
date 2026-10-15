@@ -168,6 +168,18 @@
       "default_disposition": "EXECUTE_IMMEDIATELY_IN_CURRENT_WORK_RING",
       "reuses_existing_successor_admission_and_return_gate": true,
       "defer_executable_work_to_another_turn": false
+    },
+    "anticipated_transitions": {
+      "owner_instruction": "Ingolf Lohmann, 2026-10-15",
+      "policy": "policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json#/self_application_working_rule/anticipated_transitions",
+      "receipt_field": "transition_plan",
+      "current_input_binding": "input_sha256",
+      "validator_output": "CLIENT_TRANSITION_PLAN",
+      "available_preparation_requires_continue": true,
+      "changed_inputs_require_plan_reassessment": true,
+      "unchanged_causal_failure_remains_noop": true,
+      "historical_receipts_without_plan_remain_readable": true,
+      "plan_is_execution_or_speedup_proof": false
     }
   },
   "continuation_semantics": {

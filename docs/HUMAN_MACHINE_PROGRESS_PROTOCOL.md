@@ -65,6 +65,46 @@ Its normative source is the existing recursive policy's
 
 ## Binding client continuation procedure
 
+### Anticipated transitions — Owner instruction of 2026-10-15
+
+Clients observing an emerging transition MUST use the existing client receipt
+to retain its indication, activation conditions, available preparation and
+independent alternatives. Execute admitted preparation in the current work
+ring even while the later effect is blocked. Reassess on relevant new evidence
+or human corrections; keep original task identity and open obligations.
+
+Add `input_sha256` to the receipt, recomputed from the actual task inputs and
+human corrections. Its `transition_plan` contains the same `input_sha256`, the
+exact current `subject`, and `transitions`. Each transition has a unique `id`,
+nonempty indication `evidence`, an `activation` list of unique condition `id`,
+strict boolean `satisfied` and nonempty `evidence`, a target `action`, and a
+`preparation` list. Target and preparation actions use the existing
+`next_actions` admission fields and exact operation binding. Conditions needed
+for preparation completion belong in the target's activation list. A transition
+condition never supplies authorization, credentials, callable capability or
+governance admission.
+
+For a previously failed planned action, supply its `retry.current` and
+`retry.previous` using the existing subject/error/cause/capability digests.
+Unchanged causal evidence suppresses that action; observation clocks or a new
+input digest do not admit a retry. Actual effects still require the ordinary
+`attempts` gate and fresh per-action readback.
+
+`tools/ai_handoff.py --client-receipt` emits `CLIENT_TRANSITION_PLAN` JSON with
+admitted `ready` actions (stage `PREPARE` or `EXECUTE`) and `waiting` transitions
+with their missing condition IDs. The client consumes the ready actions through
+the existing authorized executor. Available preparation prevents terminal
+handoff; unresolved transitions prevent DONE. Recompute the plan after each
+relevant input, subject or capability change, retaining independent alternatives.
+No parallel worker, trigger or credential store is introduced.
+
+Historical v1 receipts without a plan remain readable. Validation checks the
+declared bindings and predicates, not their live authenticity or completeness.
+The plan neither executes actions nor proves a latency improvement, unattended
+runtime, Main integration, other-client adoption or domain delivery. Measure
+latency, correction recovery and verified useful progress separately before
+claiming such gains.
+
 Owner instruction: Ingolf Lohmann, 2026-10-11. This procedure is mandatory for
 all repository clients. Preserve the existing authorized repair, integration
 and exact-host delivery goal after handoffs, compaction or status questions.

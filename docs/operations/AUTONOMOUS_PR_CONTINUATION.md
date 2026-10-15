@@ -104,6 +104,16 @@ existing recursive policy, with no parallel controller or trigger.
 
 ## Recursive self-application — Owner rule of 2026-10-13
 
+The Owner's 2026-10-15 transition instruction also applies to the client's
+preparation before a later effect becomes available. Use `transition_plan` in
+the existing `tools/ai_handoff.py --client-receipt` contract documented in
+`docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md`: bind current task inputs, retain
+activation conditions and alternatives, and execute admitted preparation now.
+Consume the emitted ready actions through the existing executor, reassess after
+human corrections, and retain causal NOOP and every existing effect boundary.
+This source-level capability is not proof of a deployed autonomous consumer or
+a measured speedup.
+
 Apply the working method to its own results, errors, omissions and open
 obligations across every applicable layer. Consume the exact preceding run's
 results as successor inputs. Keep task identity, source, affected subject,

@@ -285,6 +285,144 @@ class ClientContinuationRegressionTests(unittest.TestCase):
     def test_existing_grant_and_callable_successor_continue(self) -> None:
         self.assertEqual(self.check(), "CONTINUE")
 
+    def anticipated_transition(self) -> dict:
+        action = copy.deepcopy(self.receipt["next_actions"][0])
+        preparation = copy.deepcopy(action)
+        preparation.update(operation="read-signing-source", observed_operation="read-signing-source",
+                           method="GET", observed_method="GET")
+        action["authenticated"] = False
+        transition = {
+            "id": "signed-xpi", "evidence": "fixture:signing-credential-not-delivered",
+            "activation": [{"id": "credential-delivery", "satisfied": False,
+                            "evidence": "fixture:credential-presence-readback"}],
+            "action": action, "preparation": [preparation],
+        }
+        self.receipt["input_sha256"] = "7" * 64
+        self.receipt["transition_plan"] = {
+            "subject": copy.deepcopy(self.subject), "input_sha256": "7" * 64,
+            "transitions": [transition],
+        }
+        self.receipt["next_actions"] = []
+        return transition
+
+    def test_available_preparation_prevents_return_while_target_is_blocked(self) -> None:
+        self.anticipated_transition()
+        self.receipt["blocker"] = {
+            "operation": "sign-xpi", "reason": "credential delivery missing",
+            "evidence": "fixture:credential-presence-readback",
+            "retry_condition": "credential delivered", "next_action": "bind existing credential",
+        }
+        self.receipt["state"] = "BLOCK"
+        self.rejected("CLIENT_PREMATURE_RETURN_WITH_EXECUTABLE_SUCCESSOR")
+        self.receipt["state"] = "CONTINUE"
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_plan_exposes_preparation_and_exact_waiting_condition(self) -> None:
+        self.anticipated_transition()
+        plan = self.handoff.client_transition_plan(self.receipt)
+        self.assertEqual([(a["transition_id"], a["stage"]) for a in plan["ready"]],
+                         [("signed-xpi", "PREPARE")])
+        self.assertEqual(plan["waiting"][0]["activation"], ["credential-delivery"])
+        self.assertEqual(plan["scope"], "PLANNING_ONLY_NOT_EXECUTION_OR_EFFECT_PROOF")
+
+    def test_transition_activation_does_not_supply_credentials_or_admission(self) -> None:
+        transition = self.anticipated_transition()
+        transition["preparation"] = []
+        transition["activation"][0]["satisfied"] = True
+        self.assertEqual(self.handoff.client_transition_plan(self.receipt)["ready"], [])
+        transition["action"]["authenticated"] = True
+        transition["action"]["admitted"] = False
+        self.assertEqual(self.handoff.client_transition_plan(self.receipt)["ready"], [])
+        transition["action"]["admitted"] = True
+        plan = self.handoff.client_transition_plan(self.receipt)
+        self.assertEqual([a["stage"] for a in plan["ready"]], ["EXECUTE"])
+
+    def test_changed_human_input_invalidates_prepared_plan(self) -> None:
+        self.anticipated_transition()
+        self.receipt["pending_execution"] = "fixture:existing-native-execution"
+        self.receipt["input_sha256"] = "8" * 64
+        self.rejected("CLIENT_TRANSITION_INPUT_DRIFT")
+        self.receipt["transition_plan"]["input_sha256"] = "8" * 64
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_transition_plan_cannot_reuse_predecessor_subject(self) -> None:
+        self.anticipated_transition()
+        self.receipt["transition_plan"]["subject"]["head"] = "c" * 40
+        self.rejected("CLIENT_TRANSITION_SUBJECT_DRIFT")
+
+    def test_preparation_preserves_rest_route_and_exact_operation_binding(self) -> None:
+        transition = self.anticipated_transition()
+        transition["preparation"][0]["transport"] = "BROWSER"
+        self.rejected("CLIENT_GITHUB_ROUTE_FORBIDDEN")
+        transition["preparation"][0]["transport"] = "REST_API_ONLY"
+        transition["preparation"][0]["observed_method"] = "POST"
+        self.rejected("CLIENT_CALLABLE_OPERATION_BINDING_MISMATCH")
+
+    def test_independent_transition_remains_available_when_another_is_blocked(self) -> None:
+        first = self.anticipated_transition()
+        first["preparation"] = []
+        second = copy.deepcopy(first)
+        second["id"] = "original-archive"
+        second["activation"][0]["satisfied"] = True
+        second["action"]["authenticated"] = True
+        self.receipt["transition_plan"]["transitions"].append(second)
+        self.assertEqual(self.check(), "CONTINUE")
+        plan = self.handoff.client_transition_plan(self.receipt)
+        self.assertEqual([a["transition_id"] for a in plan["ready"]], ["original-archive"])
+        self.assertEqual([a["transition_id"] for a in plan["waiting"]], ["signed-xpi"])
+
+    def test_changed_input_or_observation_clock_does_not_admit_unchanged_retry(self) -> None:
+        retry = self.attempt(count=0)
+        transition = self.anticipated_transition()
+        transition["preparation"] = []
+        transition["activation"][0]["satisfied"] = True
+        action = transition["action"]
+        action["authenticated"] = True
+        action["retry"] = {"current": retry["current"], "previous": retry["previous"]}
+        action["retry"]["current"]["observed_at"] = "later"
+        self.assertEqual(self.handoff.client_transition_plan(self.receipt)["ready"], [])
+        action["retry"]["current"]["capability"] = "9" * 64
+        self.assertEqual(len(self.handoff.client_transition_plan(self.receipt)["ready"]), 1)
+
+    def test_pending_transition_cannot_be_reported_done(self) -> None:
+        transition = self.anticipated_transition()
+        transition["preparation"] = []
+        self.done()
+        self.rejected("CLIENT_DONE_WITH_PENDING_TRANSITION")
+
+    def test_invalid_transition_inputs_fail_closed(self) -> None:
+        self.anticipated_transition()
+        original = copy.deepcopy(self.receipt)
+        for key, value in (("input_sha256", True), ("transitions", {})):
+            with self.subTest(key=key):
+                self.receipt = copy.deepcopy(original)
+                self.receipt["transition_plan"][key] = value
+                self.rejected("CLIENT_TRANSITION_")
+        self.receipt = copy.deepcopy(original)
+        transition = self.receipt["transition_plan"]["transitions"][0]
+        transition["activation"][0]["satisfied"] = "yes"
+        self.rejected("CLIENT_TRANSITION_ACTIVATION_INVALID")
+
+    def test_duplicate_transition_ids_are_rejected(self) -> None:
+        transition = self.anticipated_transition()
+        self.receipt["transition_plan"]["transitions"].append(copy.deepcopy(transition))
+        self.rejected("CLIENT_TRANSITION_ID_INVALID")
+
+    def test_receipt_cli_emits_actionable_transition_plan_without_executing_it(self) -> None:
+        self.anticipated_transition()
+        with tempfile.TemporaryDirectory() as directory:
+            path = pathlib.Path(directory) / "client.json"
+            path.write_text(json.dumps(self.receipt))
+            result = subprocess.run(
+                [sys.executable, "-B", "tools/ai_handoff.py", "--client-receipt", str(path)],
+                cwd=ROOT, capture_output=True, text=True, timeout=10)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        line = next(line for line in result.stdout.splitlines()
+                    if line.startswith("CLIENT_TRANSITION_PLAN="))
+        plan = json.loads(line.split("=", 1)[1])
+        self.assertEqual(plan["ready"][0]["action"]["operation"], "read-signing-source")
+        self.assertIn("LIVE_EFFECT_VERIFICATION=NOT_PERFORMED", result.stdout)
+
     def test_renewed_generic_permission_request_is_rejected(self) -> None:
         self.receipt["requested_authorization_again"] = True
         self.rejected("CLIENT_REPEATED_AUTHORIZATION_REQUEST")
