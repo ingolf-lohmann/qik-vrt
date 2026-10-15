@@ -1,3 +1,33 @@
+# Aktuelle Neufassung: Nutzenartikel und Gesamtdarstellung
+
+## Unveränderte Textfassung vom 15. Oktober 2026, 18:51 UTC · Autorenfreigabe offen
+
+Die aktuelle redaktionelle Hauptfassung ist [QIKVRT_Gesamtdarstellung_neu_2026-10-15.md](QIKVRT_Gesamtdarstellung_neu_2026-10-15.md).
+Sie wurde aus der gespeicherten Version 2 bytegenau übernommen: **61.037 Bytes**,
+SHA-256 **84e37878f497208bdf6b2db04c8a4f83ee642559ad6db794d408e159c4c94c2c**.
+Der vollständige Nutzenartikel steht der wissenschaftlichen und technischen
+Gesamtdarstellung voran. Korrekturen, Chronologie und sämtliche Quellenverweise
+bleiben unverändert. [Abgleich und Bytebindungen](EDITORIAL_INTEGRATION.json).
+
+Die bisherige `GESAMTDARSTELLUNG_DE.md` samt PDF, Text, 20 strukturierten
+Meilensteinen und Quellenarchiv bleibt als separat identifizierter Vorgänger
+erhalten. Deren Freeze, Claim-Matrix, Proof-Bundle und Rückgabeentwurf gelten
+weiterhin ausschließlich für ihre dort gebundenen älteren Bytes. Sie gelten
+**nicht** für die neue Hauptfassung. Die neue Datei enthält zehn zusammenfassende
+Chronologiezeilen; alle 20 detaillierten früheren Meilensteine bleiben daneben
+in `MILESTONES.json` verfügbar.
+
+Dieselbe Publikationssammlung und derselbe PR #523 werden fortgesetzt.
+Repositoryaufnahme, Main-Integration, Autorenfreigabe, Zenodo-Veröffentlichung,
+IETF-Einreichung, Mirror-Persistenz und Domainabnahme sind getrennte Zustände.
+Die neue Fassung ist ein Arbeitsentwurf zur Autorenprüfung. Vor öffentlicher
+Publikation sind außerdem ihre vollständige Claim-/Quellenbindung und die
+offenen Zenodo-Archivierungen von A1, A2 und P1 abzuschließen. Der vorhandene
+v2-Publisher bleibt der vorgesehene Weg. Ein freigegebener Text allein ist
+keine Bestätigung einer tatsächlich erfolgten Veröffentlichung.
+
+## Erhaltener Vorgängerstand
+
 # Gesamtdarstellung und kritische Würdigung: zurücklieferbarer Kandidat
 
 20 Meilensteine mit Problem, dokumentiertem Schritt und eröffneter Fortsetzung;

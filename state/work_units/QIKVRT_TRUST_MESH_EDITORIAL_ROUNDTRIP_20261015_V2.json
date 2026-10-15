@@ -81,5 +81,21 @@
   "ordinary_release": false,
   "predecessor_evidence_transfer": false,
   "new_workflow_or_pr_created": false,
-  "credential_values_persisted": false
+  "credential_values_persisted": false,
+  "editorial_successor_20261015_1851": {
+    "state": "BYTE_EXACT_INTEGRATION_PREPARED_AUTHOR_REVIEW_PENDING",
+    "source_head": "a16c12134789c1d765b19dcd899106f8fb7dbf31",
+    "source_tree": "e7ed85186d6a07908ec98fda0ec2d86e9dbb8a90",
+    "current_primary": {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/QIKVRT_Gesamtdarstellung_neu_2026-10-15.md",
+      "bytes": 61037,
+      "sha256": "84e37878f497208bdf6b2db04c8a4f83ee642559ad6db794d408e159c4c94c2c",
+      "git_blob_sha1": "2cc98ab526e76c8d48737e596d6da2c61d941019"
+    },
+    "integration_receipt": "docs/publications/2026-10-15-trust-mesh-roundtrip/EDITORIAL_INTEGRATION.json",
+    "predecessor_checks_transferred": false,
+    "predecessor_freeze_remains_historical": true,
+    "publication_requires_fresh_candidate_bound_proof_and_return": true,
+    "all_preceding_open_work_preserved": true
+  }
 }

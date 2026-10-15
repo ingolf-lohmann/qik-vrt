@@ -1,0 +1,67 @@
+{
+  "schema": "qikvrt-editorial-candidate-freeze-v1",
+  "publication_bundle": "docs/publications/2026-10-15-trust-mesh-roundtrip",
+  "source_head": "a16c12134789c1d765b19dcd899106f8fb7dbf31",
+  "source_tree": "e7ed85186d6a07908ec98fda0ec2d86e9dbb8a90",
+  "current_primary": {
+    "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/QIKVRT_Gesamtdarstellung_neu_2026-10-15.md",
+    "bytes": 61037,
+    "sha256": "84e37878f497208bdf6b2db04c8a4f83ee642559ad6db794d408e159c4c94c2c",
+    "git_blob_sha1": "2cc98ab526e76c8d48737e596d6da2c61d941019"
+  },
+  "files": [
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/QIKVRT_Gesamtdarstellung_neu_2026-10-15.md",
+      "bytes": 61037,
+      "sha256": "84e37878f497208bdf6b2db04c8a4f83ee642559ad6db794d408e159c4c94c2c",
+      "git_blob_sha1": "2cc98ab526e76c8d48737e596d6da2c61d941019"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/AUTHOR_REVIEW.md",
+      "bytes": 1948,
+      "sha256": "63e64c22dd3392542d7d297c2b4801f77060d8ee9d5665ee664179e47a0d6a8d",
+      "git_blob_sha1": "6abaa9d12b4c84c5534fe59f012bd42d956e2ef3"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/EDITORIAL_INTEGRATION.json",
+      "bytes": 18284,
+      "sha256": "05a33f05669764696a5f245f3ab8b6c2d26461cd17c1d2b33370393e313e9bc1",
+      "git_blob_sha1": "42202848c5f50c54b1fe78869cfa517637001a14"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/EDITORIAL_VISIBLE_SOURCES.json",
+      "bytes": 11978,
+      "sha256": "8878bd274e40c4f9c80657f783be1e4136941b1af094dcb6aeed4f6861d97eed",
+      "git_blob_sha1": "31c2622d15ceda76216386a47d5b6f4de064dee2"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/EDITORIAL_ALL_SOURCES.json",
+      "bytes": 12367,
+      "sha256": "c70f76e81d1d1d7788b6daaa38a830fc08d097a82eee4c6e648381bb507d58ca",
+      "git_blob_sha1": "3bbfc37357b01a336c9f29c57f6d17eee1512a04"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/EDITORIAL_SOURCE_VISIBILITY.json",
+      "bytes": 619,
+      "sha256": "3ce454535d94ce0725def230de75ffc61cc6fc0d06443d5e6b4421d85787542d",
+      "git_blob_sha1": "d7ef0352fde7c938c6b113d140d3a0003f76055a"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/EDITORIAL_ARCHIVAL_GATE.json",
+      "bytes": 562,
+      "sha256": "62d82a3e63bfd8bbf31af7b03df18219d6c1cca3388545c56ace636cd13ecd4b",
+      "git_blob_sha1": "662a7fd308f96fcb8334d5ba2c358a4619635a1c"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/EDITORIAL_VALIDATION.json",
+      "bytes": 2447,
+      "sha256": "9c8b93a143282989a821eeaabae1573a1f2ed6e214a93302551804d6fb3a4ab5",
+      "git_blob_sha1": "9dfa0163a01317be4d4a10ba6a20d35ef31290ed"
+    }
+  ],
+  "owner_decision": "PENDING",
+  "actual_candidate_return_receipt": "NOT_YET_ISSUED",
+  "zenodo_upload_authorized": false,
+  "predecessor_authorization_transfer": false,
+  "publication_complete": false
+}
