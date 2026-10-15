@@ -80,6 +80,7 @@ open checks, controlled isolation, responsible blocking, and a fully bound
 - [Project site](https://goldkelch.github.io/qik-vrt/)
 - [Canonical publication and reference overview](https://goldkelch.github.io/qik-vrt/publications/)
 - [Machine-readable publication index](docs/publications/index.json)
+- [Gesamtdarstellung, 20 Meilensteine und Roundtrip](docs/publications/2026-10-15-trust-mesh-roundtrip/README.md) (15.10.2026; korrigierter Publikationskandidat mit Quellen- und Nachweisgrenzen, noch kein neuer Zenodo-Record)
 
 ### Current release and synchronized snapshot evidence
 

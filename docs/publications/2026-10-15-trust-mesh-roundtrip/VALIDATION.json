@@ -1,0 +1,81 @@
+{
+  "schema": "qikvrt-trust-mesh-validation-v1",
+  "observed_at": "2026-10-15T17:35:47.916018+00:00",
+  "source_head": "7af0b7c68ad80352dd9ff6f91600cdca2616dfc9",
+  "editorial_claim_units": 176,
+  "milestones": 20,
+  "published_source_count": 54,
+  "source_visibility": {
+    "schema": "QIKVRT_VISIBLE_SOURCES_CHECK_V1",
+    "status": "PASS",
+    "source_count": 54,
+    "manifest_sha256": "14897620dc13326f1074107c01c205b586300c53d5ccd66cbc49b5074b209bd6",
+    "network_reachability_checked": false,
+    "claim_support_checked_automatically": false,
+    "errors": [],
+    "artifacts": [
+      {
+        "path": "/workspace/scratch/b579e0b6be89/repo/docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.pdf",
+        "sha256": "d93882e5446443aded564e6895c6b7856d0ea7b51de7226b80690a6270961403",
+        "pages": 38,
+        "status": "PASS",
+        "errors": []
+      },
+      {
+        "path": "/workspace/scratch/b579e0b6be89/repo/docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md",
+        "sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+        "pages": null,
+        "status": "PASS",
+        "errors": []
+      },
+      {
+        "path": "/workspace/scratch/b579e0b6be89/repo/docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.txt",
+        "sha256": "da75582580bc86b7424dae0f056714cdd5bb8a1fb0a8b9118948b27a68924a1d",
+        "pages": null,
+        "status": "PASS",
+        "errors": []
+      }
+    ]
+  },
+  "pdf_qa": {
+    "schema": "qikvrt-editorial-pdf-qa-v1",
+    "pdf_sha256": "d93882e5446443aded564e6895c6b7856d0ea7b51de7226b80690a6270961403",
+    "pages": 38,
+    "links": 167,
+    "bounds_errors": [],
+    "visual_contact_sheets_inspected": true,
+    "cover_contents_chronology_diagram_and_reference_pages_inspected": true,
+    "all_reference_urls_linked_by_source_gate": true,
+    "scope": "Layout and visible locators; not semantic proof or scientific publication."
+  },
+  "source_archive_member_count": 130,
+  "source_archive_all_member_hashes_match": true,
+  "frozen_files_hashes_match": true,
+  "regressions": {
+    "count": 110,
+    "result": "PASS",
+    "log_sha256": "dacbd26403739f42601146b7c3f463433e0928381a9afc2cf6e181fbf7045fa8"
+  },
+  "production_precheck": {
+    "exit_code": 2,
+    "message": "BLOCK: candidate has not been returned to Ingolf Lohmann before upload",
+    "expected_stop": true,
+    "meaning": "Existing validator reached the separate actual-candidate-return boundary; no production authorization or publication is inferred."
+  },
+  "complete_repository_archive_publication_gate": "FAIL_PENDING_NEW_ZENODO_ARCHIVE",
+  "published_source_display_check": "PASS",
+  "original_defective_source_display_check": "FAIL_EXPECTED",
+  "new_scientific_theorem_claims": 0,
+  "overall_zenodo_authorized": false,
+  "public_zenodo_record_created": false,
+  "additional_repository_history_check": {
+    "test": "tests.test_round_trip_zenodo_bundle_freeze.RoundTripZenodoBundleFreezeTests.test_full_repository_checker",
+    "result": "BLOCK",
+    "reason": "Exact exported snapshot is shallow; ancestry to the historical Authority/Mirror checkpoint cannot be established locally. Six other tests in that module passed; this is not a publication or history PASS."
+  },
+  "integration_base": {
+    "head": "59ae97bb2c43d6209d7f1c2b7f0e9393b1a8708f",
+    "tree": "f19cd3fd080081185ba628a477dcf91e9f271d46",
+    "preserved_concurrent_delta_files": 34
+  }
+}

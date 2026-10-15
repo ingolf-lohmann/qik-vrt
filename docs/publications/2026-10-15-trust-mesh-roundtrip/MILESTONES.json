@@ -1,0 +1,238 @@
+{
+  "schema": "qikvrt-trust-mesh-milestones-v1",
+  "milestones": [
+    {
+      "id": "M01",
+      "title": "Juni 2026: vom flüchtigen Arbeitsstand zum zitierbaren Gegenstand",
+      "problem": "Ein Ergebnis aus einem Chat oder lokalen Paket ist für andere Instanzen nicht dauerhaft eindeutig rekonstruierbar. Unklar bleiben Version, Herkunft und Freigabestatus.",
+      "documented_resolution": "Der frühe V8.33-Record archiviert Repositoryzustand, Manifeste und Audit-/Gate-Daten. Sein angegebenes Publikationsdatum ist der 16.06.; der öffentliche Record wurde am 18.06. erstellt. Eine frühere persönliche Entstehungsgeschichte wird daraus nicht erfunden. [Z-20712301]",
+      "enabled_continuation": "Ein exakter Bestand kann referenziert, übernommen und geprüft werden. Archivierung schließt die Identitätslücke; sie ist noch keine inhaltliche Bestätigung.",
+      "source_ids": [
+        "Z-20712301"
+      ],
+      "causal_status": "DOCUMENTED_PREREQUISITE_OR_SOURCE_BOUND_SUCCESSOR_NOT_CAUSALITY_FROM_DATE_ALONE"
+    },
+    {
+      "id": "M02",
+      "title": "7.–8. Juli 2026: von einer Ablage zu versionierten Knotenständen",
+      "problem": "Unterschiedliche Arbeitskopien und Installationspakete können auseinanderlaufen. Gleich klingende Versionsnamen sichern keine Inhaltsgleichheit.",
+      "documented_resolution": "Die Softwarefamilie bewahrt neun veröffentlichte Stände. Damit werden konkrete Paketfassungen und die Entwicklung der Knotenreleases unterscheidbar. Die Vorlage nennt zusätzlich Registry-/Revalidierungsworkflows; deren damaliger Betrieb ist jeweils an die originale Ausführungsevidenz zu binden. [Z-21267021; QUELLENKORPUS]",
+      "enabled_continuation": "Reproduzierbare Übergaben und Versionsvergleiche. Ein Release mit „RFC“ im Titel ist dadurch noch keine IETF-Standardannahme.",
+      "source_ids": [
+        "QUELLENKORPUS",
+        "Z-21267021"
+      ],
+      "causal_status": "DOCUMENTED_PREREQUISITE_OR_SOURCE_BOUND_SUCCESSOR_NOT_CAUSALITY_FROM_DATE_ALONE"
+    },
+    {
+      "id": "M03",
+      "title": "21.–22. Juli 2026: von der Behauptung zur endlichen Kontrollpflicht",
+      "problem": "Eine frei formulierte Universalitätsbehauptung kann technische Freigabe, mathematische Rekonstruktion und physische Wirkung vermischen.",
+      "documented_resolution": "Manuskript, exhaustive Wirkungssteuerungsprüfung und Statusklärung trennen Kontrollsatz, semantische Faktorisierung, Injektivität und externe Realitätsbindung. Die Freigabelogik wird in einem vollständigen endlichen Kontrollraum untersucht. [Z-21482023; Z-21498773; Z-21500322]",
+      "enabled_continuation": "Ein bestimmter Kontrollsatz kann tatsächlich geprüft werden. Die exakt verlorene Information wird nicht durch einen Namen oder eine Quittung wiedergewonnen; passende Rekonstruktionsvoraussetzungen bleiben sichtbar.",
+      "source_ids": [
+        "Z-21482023",
+        "Z-21498773",
+        "Z-21500322"
+      ],
+      "causal_status": "DOCUMENTED_PREREQUISITE_OR_SOURCE_BOUND_SUCCESSOR_NOT_CAUSALITY_FROM_DATE_ALONE"
+    },
+    {
+      "id": "M04",
+      "title": "23. Juli 2026: eine gemeinsame Nachweissprache",
+      "problem": "Ein Beweis, eine Messung, eine Autorenposition und eine Policy können im selben Dokument stehen und denselben Erfolgswortschatz erhalten.",
+      "documented_resolution": "Die Charta fordert getrennte Nachweisformen, Provenienz, Reproduzierbarkeit, Revision und Nachvollziehbarkeit vor Autorität. [Z-21515074]",
+      "enabled_continuation": "Unterschiedliche Disziplinen können ihre Ergebnisse in einem gemeinsamen Bestand verknüpfen, ohne ihre Begründungsarten gleichzusetzen. Die Charta liefert den Maßstab; die tatsächliche Einhaltung muss für jede Anwendung geprüft werden.",
+      "source_ids": [
+        "Z-21515074"
+      ],
+      "causal_status": "DOCUMENTED_PREREQUISITE_OR_SOURCE_BOUND_SUCCESSOR_NOT_CAUSALITY_FROM_DATE_ALONE"
+    },
+    {
+      "id": "M05",
+      "title": "24. Juli 2026: die Formalisierungslücke des Manuskripts präzisieren",
+      "problem": "Eine Liste von Behauptungen oder einige Lean-Dateien belegt noch nicht, dass die mathematischen Umgebungen des gesamten Manuskripts abgedeckt sind.",
+      "documented_resolution": "Alpha 3 weist 20 gebundene Definitionen und 20 theoremartige Umgebungen aus; sechs Bindungen behalten ausdrücklich zusätzliche Voraussetzungen. Frühere partielle Fassungen werden dadurch für diesen Scope überholt. [Z-21529081]",
+      "enabled_continuation": "Leser können Manuskriptstelle, formale Aussage und Kernelbeleg zusammen verfolgen. Vollständige Formalumgebungsabdeckung ist ein konkreter Fortschritt; sie erklärt nicht jede physikalische Interpretation des Manuskripts zur bewiesenen Naturbeschreibung.",
+      "source_ids": [
+        "Z-21529081"
+      ],
+      "causal_status": "DOCUMENTED_PREREQUISITE_OR_SOURCE_BOUND_SUCCESSOR_NOT_CAUSALITY_FROM_DATE_ALONE"
+    },
+    {
+      "id": "M06",
+      "title": "27.–28. Juli 2026: Gleichheit und Abschluss bekommen einen Scope",
+      "problem": "Zwei Repositories oder ein „globaler Abschluss“ können leicht als pauschale Gleichheit aller Inhalte und aller künftigen Ergebnisse missverstanden werden.",
+      "documented_resolution": "Der historische Equality-Receipt bindet bestimmte Promotionen, Inhaltsdigests und gemeinsame Git-Blobs. Die Schlusserklärung bindet einen definierten endlichen Claim-Scope. [Z-21633411; Z-21636774]",
+      "enabled_continuation": "Gleichheit und Abschluss werden prüfbare Aussagen über benannte Gegenstände. Eine spätere Mutation eröffnet einen neuen Nachweisgegenstand; historische Rollen und erfolgreiche Prüfungen werden nicht automatisch übertragen.",
+      "source_ids": [
+        "Z-21633411",
+        "Z-21636774"
+      ],
+      "causal_status": "DOCUMENTED_PREREQUISITE_OR_SOURCE_BOUND_SUCCESSOR_NOT_CAUSALITY_FROM_DATE_ALONE"
+    },
+    {
+      "id": "M07",
+      "title": "28. Juli 2026: Erkenntnis und Ausführung werden verbunden",
+      "problem": "Ein geprüfter Satz wirkt noch nicht in einer realen Laufzeit. Für eine hybride Architektur müssen Zustände, Belege und Ausführung zusammenpassen.",
+      "documented_resolution": "Die virtuelle Wirkungsmaschine beschreibt einen abstrakten hybriden Laufzeit- und Assurance-Vertrag mit neun gebundenen Theoremen. Zwei Records archivieren den Beitrag separat. Die reale QPU-End-to-End-Integration bleibt offen. [Z-21640173; Z-21640160]",
+      "enabled_continuation": "Eine Implementierung kann gegen einen präziseren Vertrag entwickelt werden. Die doppelte Ablage liefert Redundanz und Referenzen, keine zweite unabhängige Bestätigung.",
+      "source_ids": [
+        "Z-21640160",
+        "Z-21640173"
+      ],
+      "causal_status": "DOCUMENTED_PREREQUISITE_OR_SOURCE_BOUND_SUCCESSOR_NOT_CAUSALITY_FROM_DATE_ALONE"
+    },
+    {
+      "id": "M08",
+      "title": "31. Juli 2026: Anschlussfähigkeit wird eine mathematische Vergleichsfrage",
+      "problem": "„Anschlussfähig“ ist ohne Eingaben, Invarianten und Verträge zu unbestimmt; mehr Schnittstellen können sogar mehr ungültige Wirkungen ermöglichen.",
+      "documented_resolution": "Survival of the Anschlussfähigsten definiert gültige Fortsetzung, Anschluss-Sprachen und simulationsgestützte Vergleiche. Fünf gebundene Sätze behandeln diese Struktur und gewichtete Vergleiche unter ausdrücklichen Voraussetzungen. [Z-21721918]",
+      "enabled_continuation": "Zwei Systeme können anhand gemeinsamer bedeutungsgleicher Anforderungen verglichen werden. Der Übergang von „anschlussfähig“ zu „das anschlussfähigste aller Systeme“ benötigt weiterhin eine begründete Vergleichsklasse und deren Überdeckung.",
+      "source_ids": [
+        "Z-21721918"
+      ],
+      "causal_status": "DOCUMENTED_PREREQUISITE_OR_SOURCE_BOUND_SUCCESSOR_NOT_CAUSALITY_FROM_DATE_ALONE"
+    },
+    {
+      "id": "M09",
+      "title": "31. Juli 2026: Zukunftsbezug ohne Umschreiben der Vergangenheit",
+      "problem": "Gespeicherte Zukunftserwartung, spätere Wirkung und aus der Zukunft empfangene Nachricht können sprachlich zusammenfallen.",
+      "documented_resolution": "Der kanonische temporale Speicher hält Vergangenheitsrecords und antizipierte Wirkungen in einem gemeinsamen Codec, aber mit getrenntem epistemischem Status. Neun Sätze betreffen unter anderem DONE-Freigabe, Relevanz einer Zukunftsbedingung und unveränderte Vergangenheitsprojektion. [Z-21711193]",
+      "enabled_continuation": "Planung und spätere Neubewertung lassen sich in denselben nachvollziehbaren Vorgang aufnehmen. Eine gegenwärtig gespeicherte Zukunftsbedingung wird dadurch noch nicht zu einem physischen Rückkanal.",
+      "source_ids": [
+        "Z-21711193"
+      ],
+      "causal_status": "DOCUMENTED_PREREQUISITE_OR_SOURCE_BOUND_SUCCESSOR_NOT_CAUSALITY_FROM_DATE_ALONE"
+    },
+    {
+      "id": "M10",
+      "title": "1. August 2026: von gespeicherten Aussagen zum wachsenden Erkenntnisgraphen",
+      "problem": "Eine größere Wissenssammlung kann Widersprüche verdecken, Herkunft verlieren oder den Unterschied zwischen Vorschlag und akzeptierter Aussage aufheben.",
+      "documented_resolution": "Der Kausalitätsspiegel formalisiert 21 endliche Sätze über Wachstum, Merge, Konflikterhalt, bedingte Konvergenz und Beobachtungs-/Wirkungsgates. Der Fairness-Nachtrag erläutert zusätzlich die Realisierungsleiter von Idee und virtuellem Zeugen zu Gerät und qualifizierter Beobachtung. [Z-21748371; Z-21731492]",
+      "enabled_continuation": "Neue Ergebnisse können vorhandene Begründungen ergänzen und anfechten, ohne die Historie zu löschen. Nicht jede denkbare Frage wird dadurch beantwortbar; diese negative Grenze gehört zum Protokoll selbst.",
+      "source_ids": [
+        "Z-21731492",
+        "Z-21748371"
+      ],
+      "causal_status": "DOCUMENTED_PREREQUISITE_OR_SOURCE_BOUND_SUCCESSOR_NOT_CAUSALITY_FROM_DATE_ALONE"
+    },
+    {
+      "id": "M11",
+      "title": "August 2026: vom formalen Modell zur ausdrücklich verlangten Messbindung",
+      "problem": "Dimensionsrichtige Formeln und eine konsistente virtuelle Welt allein identifizieren noch keine Messgröße an einem bestimmten Gerät.",
+      "documented_resolution": "H5 behandelt symbolische Planck-Beziehungen und virtuelle Kosmogenese im Modell. Der Round-Trip-Einstieg und seine später archivierten Ergebnisanlagen unterscheiden Kalibrierungsdimensionen, Serialisierung, Achsenwahl, numerische Repräsentation und Messbindungsvertrag. [Z-22527889; Z-21888130]",
+      "enabled_continuation": "Die Frage „Was fehlt zur Messung?“ kann konkret beantwortet werden: Originalquelle, Instrumentkalibrierung, Observablenabbildung, Einheit, Unsicherheit und unabhängige Reproduktion. Ein Zahlenwert wie 299792458 ist ohne diese Bindung eine Repräsentation, keine eigenständig hergeleitete Naturkonstante.",
+      "source_ids": [
+        "Z-21888130",
+        "Z-22527889"
+      ],
+      "causal_status": "DOCUMENTED_PREREQUISITE_OR_SOURCE_BOUND_SUCCESSOR_NOT_CAUSALITY_FROM_DATE_ALONE"
+    },
+    {
+      "id": "M12",
+      "title": "12.–14. August 2026: verschiedene Zeitordnungen werden unterscheidbar",
+      "problem": "Quellereihenfolge, Empfangsreihenfolge, virtuelle Zeit und physikalische Eigenzeit sind nicht automatisch dieselbe Ordnung.",
+      "documented_resolution": "Relationale Zeit und beobachterrelative Retrokausalität trennen diese Ebenen. Ein ausführbarer Zeuge lässt jüngere und ältere Quellenereignisse über verschiedene positive Laufzeiten in umgekehrter Reihenfolge ankommen. [Z-22216916; Z-21947141]",
+      "enabled_continuation": "Eine negative Informationsrichtung kann präzise beschrieben und geprüft werden. Sie ist nicht bereits eine Nachricht vor ihrer eigenen Emission. Perspektiven müssen mitsamt ihren Uhren, Markern und Zugriffsmöglichkeiten benannt werden.",
+      "source_ids": [
+        "Z-21947141",
+        "Z-22216916"
+      ],
+      "causal_status": "DOCUMENTED_PREREQUISITE_OR_SOURCE_BOUND_SUCCESSOR_NOT_CAUSALITY_FROM_DATE_ALONE"
+    },
+    {
+      "id": "M13",
+      "title": "17. August 2026: vom Bedeutungsmodell zum kleinen ausführbaren Entscheidungskern",
+      "problem": "Ein Kausalgraph oder eine Metagrammatik muss schließlich in eine ausführbare Entscheidung übersetzt werden, wenn er technische Wirkung steuern soll.",
+      "documented_resolution": "Der integrierte Wirkraum verbindet beobachtergebundene Information, explizite Kausalrelationen, EFFECT_ACK und konkrete M68000-Absenkung des kleinen Kerns. [Z-21983644]",
+      "enabled_continuation": "Architektur und elementare Maschineninstruktionen erhalten einen nachvollziehbaren Bezug. Daraus folgt keine bestimmte Gesamtbeschleunigung oder schon die vollständige FPGA-/SoC-Realisierung.",
+      "source_ids": [
+        "Z-21983644"
+      ],
+      "causal_status": "DOCUMENTED_PREREQUISITE_OR_SOURCE_BOUND_SUCCESSOR_NOT_CAUSALITY_FROM_DATE_ALONE"
+    },
+    {
+      "id": "M14",
+      "title": "3. September 2026: eine physikalische Hypothese bekommt einen Falsifikator",
+      "problem": "Eine große Naturdeutung bleibt experimentell unbestimmt, solange keine von Alternativen unterscheidbare Vorhersage angegeben ist.",
+      "documented_resolution": "Das Planck-Tick Gap Law formuliert unter seinem diskreten Entwicklungs-Postulat eine konkrete Frequenzregel und einen Falsifikator. Damit wird der Vorhersageteil einer H5-Pflicht präzisiert. [Z-22283396]",
+      "enabled_continuation": "Machbarkeit, Empfindlichkeit und Unsicherheitsbudget eines Experiments lassen sich diskutieren. Ein im Modell hergeleiteter Effekt ist noch kein gemessener Effekt. Die neue Hypothese wird weder als bloßes Schlagwort abgewertet noch als experimentell bestätigt ausgegeben.",
+      "source_ids": [
+        "Z-22283396"
+      ],
+      "causal_status": "DOCUMENTED_PREREQUISITE_OR_SOURCE_BOUND_SUCCESSOR_NOT_CAUSALITY_FROM_DATE_ALONE"
+    },
+    {
+      "id": "M15",
+      "title": "23.–25. September 2026: Modellkorrespondenz, Abschluss und ontologischer Kern werden geschärft",
+      "problem": "„Weltformel“, „abgeschlossen“ und „Unterschied“ können so umfassend verwendet werden, dass der konkrete Wahrheits- und Prüfbereich unklar wird.",
+      "documented_resolution": "Die revidierte QIK-Fassung trennt Grundlagen, Postulate und Rekonstruktionspflichten. Proof Closure definiert Abschluss für einen exakt gebundenen Gegenstand. Die ontologischen Minimaltheoreme werden mit eigener Claim-Matrix und Kernelbindung ausgewiesen. Die Proof-Closure-Matrix hat für ihre eigenen formalen Claims einen gesonderten Prüfstatus; der Vertrag allein macht sie nicht kernelgeprüft. [Z-22907018; Z-22941556; Z-22955727]",
+      "enabled_continuation": "Ein erreichter Abschluss kann erhalten bleiben, während ein neuer Gegenstand weitere Pflichten eröffnet. Eine Erklärung des Unterschieds kann als mathematisches Minimalresultat anerkannt werden, ohne daraus unbesehen die komplette empirische Kosmologie abzuleiten.",
+      "source_ids": [
+        "Z-22907018",
+        "Z-22941556",
+        "Z-22955727"
+      ],
+      "causal_status": "DOCUMENTED_PREREQUISITE_OR_SOURCE_BOUND_SUCCESSOR_NOT_CAUSALITY_FROM_DATE_ALONE"
+    },
+    {
+      "id": "M16",
+      "title": "28. September 2026: kleine Kerne und universelle Zielarchitektur werden technisch getrennt geprüft",
+      "problem": "Die Machbarkeit eines sehr kleinen Kerns sagt wenig darüber, ob das ganze Terminal einschließlich Recovery, Browser und Verteilung abgenommen ist.",
+      "documented_resolution": "Quality Gates bindet konkrete Messungen und Tests an einen historischen Stand. Die separate Closure-Veröffentlichung hält bedingte Erreichbarkeitsschließung und Fortsetzung fest und grenzt Maximalität davon ab. [Z-23008704; Z-23008330]",
+      "enabled_continuation": "Größen-, Laufzeit- und Erweiterungsbehauptungen lassen sich einzeln prüfen. Ein 394-Byte-Kern bleibt eine reale Messung im angegebenen Scope; ein universeller Gesamtbetriebsnachweis bleibt eine eigene Aufgabe.",
+      "source_ids": [
+        "Z-23008330",
+        "Z-23008704"
+      ],
+      "causal_status": "DOCUMENTED_PREREQUISITE_OR_SOURCE_BOUND_SUCCESSOR_NOT_CAUSALITY_FROM_DATE_ALONE"
+    },
+    {
+      "id": "M17",
+      "title": "Oktober 2026: aus historischen Rollen wird eine explizite Authority-Bindung",
+      "problem": "Clients und Publikationswerkzeuge können trotz Owner-Entscheidung noch auf das frühere Authority-Repository zeigen. Ein korrekter Test auf dem falschen Gegenstand löst die eigentliche Aufgabe nicht.",
+      "documented_resolution": "Der geprüfte Kandidat bindet Rollen an die normative Policy und trennt Owner-Entscheidung, Kandidatenimplementierung, Main-Aktivierung und unabhängige Code-Owner-Freigabe. Der Epistemic-Status-Draft ist als zweite IETF-Reihe öffentlich vorhanden. [OP-01; I-EPI-00]",
+      "enabled_continuation": "Ein Client kann das beabsichtigte Repository eindeutig auswählen und veraltete Projektionen erkennen. Die Policydatei ersetzt keine native Plattformaktivierung und keine fehlende Schreiboperation.",
+      "source_ids": [
+        "I-EPI-00",
+        "OP-01"
+      ],
+      "causal_status": "DOCUMENTED_PREREQUISITE_OR_SOURCE_BOUND_SUCCESSOR_NOT_CAUSALITY_FROM_DATE_ALONE"
+    },
+    {
+      "id": "M18",
+      "title": "14.–15. Oktober 2026: Integration, konkrete Reparaturen und erneute Prüfung",
+      "problem": "Divergierende PRs, getrennte Publikationswege und pauschal übertragene Erfolgsmarken erschweren die Zusammenführung zum tatsächlich nutzbaren Produkt.",
+      "documented_resolution": "Im bestehenden Integrationspfad PR #523 liegen konsolidierte Arbeiten zu Firefox, OCI-Publikation, Governance und wissenschaftlichem Korpus. Die aktuelle Retrokausalitäts-Ergänzung bindet ausgeführte formale Teilprüfungen und lokale Prozesskontrollen; die Maximalitäts-Ergänzung präzisiert bedingte Anschlussfähigkeitsbeweise. Das sind Repositorykandidaten mit eigenen Prüfständen, keine zusätzlichen bereits veröffentlichten Zenodo-Werke. [OP-03]",
+      "enabled_continuation": "Quellenprüfung und redaktionelle Synthese können auf einem gemeinsamen konkreten Gegenstand aufsetzen. Die offenen Schritte heißen weiterhin Main-Integration, tatsächliche Mirror-Persistenz, kandidatenspezifische Publikation und Produktabnahme. Ein lokaler Erfolg oder ein grüner Teiljob ersetzt keinen dieser Effekte.",
+      "source_ids": [
+        "OP-03"
+      ],
+      "causal_status": "DOCUMENTED_PREREQUISITE_OR_SOURCE_BOUND_SUCCESSOR_NOT_CAUSALITY_FROM_DATE_ALONE"
+    },
+    {
+      "id": "M19",
+      "title": "15. Oktober 2026: die bedingte Mess- und Vorhersageübertragung wird formal geschlossen",
+      "problem": "Eine korrekte lokale Modellabbildung soll nicht nur für einen Einzelschritt gelten. Außerdem müssen Mess- und Modellfehler bei der übertragenen Prognose nachvollziehbar begrenzt bleiben.",
+      "documented_resolution": "Der neue Repository-Nachfolger `MeasurementTransfer.lean` enthält laut exaktem lokalem Kernelreceipt zehn geprüfte Sätze. Unter expliziter Anfangs-, Eingabe-, Bereichs- und Einschritt-Korrespondenz gilt die Zuordnung für jede zugelassene Schrittlänge; begrenzte Mess- und Modellfehler addieren sich zu einer übertragenen Prognosegrenze. Die im selben Paket geprüften Gegenbeispiele zeigen, weshalb bloße Ordnung keinen metrischen Uhrenmaßstab festlegt und ein endlicher Kalibrierungspräfix allein keinen nächsten Messwert erzwingt. [OP-07]",
+      "enabled_continuation": "Eine konkrete korrekt gebundene Implementierung oder Messstrecke kann diesen allgemeinen Übertragungssatz wiederverwenden. Die formale Übertragung ist damit ein tatsächlich dokumentierter Fortschritt. Die lokalen Korrespondenzannahmen und die empirische Qualifikation eines bestimmten Geräts bleiben ihre Voraussetzungen; dieser redaktionelle Bericht behauptet keine neue unabhängige Ausführung oder Naturmessung. Der Nachfolger ist noch kein neuer Zenodo-Record.",
+      "source_ids": [
+        "OP-07"
+      ],
+      "causal_status": "DOCUMENTED_PREREQUISITE_OR_SOURCE_BOUND_SUCCESSOR_NOT_CAUSALITY_FROM_DATE_ALONE"
+    },
+    {
+      "id": "M20",
+      "title": "15. Oktober 2026: der Roundtrip wird auf die eigene Darstellung angewandt",
+      "problem": "Auch eine kritische Gesamtdarstellung kann falsche Rollen, ausgelassene Resultate, unbegründete Personendeutungen oder überzogene Abschlussbehauptungen enthalten.",
+      "documented_resolution": "Die vorliegende Neufassung bindet die Bewertung an den gesamten ermittelten Publikationskorpus, korrigiert die Vorlage sichtbar, unterscheidet abgeschlossene und offene Übergänge und führt die Owner-Klarstellung zur empirischen Modellentsprechung ausdrücklich mit. [N-01; N-02]",
+      "enabled_continuation": "Die Darstellung selbst wird prüfbar und revidierbar. Ihr Abschluss liegt zunächst in der zurückgelieferten, versionierten Fassung. Upload, Mirror-Übernahme und öffentliche Produktwirkung benötigen jeweils ihren eigenen tatsächlichen Rücklesebeleg.",
+      "source_ids": [
+        "N-01",
+        "N-02"
+      ],
+      "causal_status": "DOCUMENTED_PREREQUISITE_OR_SOURCE_BOUND_SUCCESSOR_NOT_CAUSALITY_FROM_DATE_ALONE"
+    }
+  ]
+}

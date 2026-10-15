@@ -1,0 +1,99 @@
+{
+  "schema": "qikvrt-prepared-upload-fileset-v1",
+  "state": "PREPARED_NOT_AUTHORIZED_NOT_EXECUTED",
+  "files": [
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.pdf",
+      "bytes": 245731,
+      "sha256": "d93882e5446443aded564e6895c6b7856d0ea7b51de7226b80690a6270961403",
+      "git_blob_sha1": "8b8cc3e2bcc95c31d628bcbafaac92452671afcb",
+      "name": "GESAMTDARSTELLUNG_DE.pdf",
+      "role": "PRIMARY"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md",
+      "bytes": 107788,
+      "sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "git_blob_sha1": "9b8a7a44008775483bd2128fd5317d143c6ac42e",
+      "name": "GESAMTDARSTELLUNG_DE.md",
+      "role": "SUPPLEMENT"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.txt",
+      "bytes": 106821,
+      "sha256": "da75582580bc86b7424dae0f056714cdd5bb8a1fb0a8b9118948b27a68924a1d",
+      "git_blob_sha1": "df5cb03b2ec3a582e344a4e6d0cb38569f560ebe",
+      "name": "GESAMTDARSTELLUNG_DE.txt",
+      "role": "SUPPLEMENT"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/CLAIM_MATRIX.json",
+      "sha256": "1b138906f2982da9dc529ff0aba4c2db5da7582e418ebf2d90864f14f7db4e4d",
+      "git_blob_sha1": "752c3af814a0fe38bdbf9de7600b5a8d904442f0",
+      "kind": "CLAIM_MATRIX"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/SOURCE_EVIDENCE_BINDINGS.json",
+      "sha256": "6e3b3a87ae75e561037ad53a036b2acc5bfa974f043e4080ec6d24d0f804edc1",
+      "git_blob_sha1": "58076072331010f4aff4ee13d5d0529ccffa31fc",
+      "kind": "SOURCE"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/SCIENTIFIC_SOURCES.zip",
+      "sha256": "a5b232c8c586d6056bb81227cd24f05b080f448399a260cf8869f838cd89d7c8",
+      "git_blob_sha1": "52b758f221750b8612d055117986e3488c60eb90",
+      "kind": "SOURCE"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/SCIENTIFIC_SOURCE_ARCHIVE.json",
+      "sha256": "77f2c898e1bad39cfc4a76c2457bb0c3cf1197f7b5df804e3ce8cf9b160a7c3c",
+      "git_blob_sha1": "476a6d1edc0dc66716fcc15af823132117812fcb",
+      "kind": "EVIDENCE"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/CORPUS_COVERAGE.json",
+      "sha256": "21cfbe0414cd861c6ad233b668a74b049a640b969b0b50173c8302725e4e5d05",
+      "git_blob_sha1": "cde2864f094659d85d6aa718b47a6556e4184ab5",
+      "kind": "SOURCE"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/MILESTONES.json",
+      "sha256": "129a83f2e64d95adfdce814283d3116fb73569951add9e1a898fcb9cd43d42a1",
+      "git_blob_sha1": "74ad9df227818e90b9bdd8be250dbf61857c2cc4",
+      "kind": "OTHER"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/CHANGE_NOTICE.md",
+      "sha256": "b599142232582c4c113af94f5990de255da0c4b88b79b9820f083671caa519cb",
+      "git_blob_sha1": "1041b60e4f9d41c33cab70c49be9e4fb9623094b",
+      "kind": "CHANGE_NOTICE"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/CHANGE_NOTICE.json",
+      "sha256": "b05b98534c685cdb6387ee12df618e5b916a177e8130efec9d5031d363afc6d0",
+      "git_blob_sha1": "1fed913aa73be20d8d56e26ff4c5b40dee429cf7",
+      "kind": "EVIDENCE"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/PREPUBLICATION_RETURN_RECEIPT_DRAFT.json",
+      "sha256": "44e45339c1bad3badb9bfe96f32d6dca4d2a8841abe7f4aa3b16a82c4e6385c8",
+      "git_blob_sha1": "13b7b3b768d4b810e64398448f9d1b6bb50dcc99",
+      "kind": "RETURN_RECEIPT"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/IETF_DISPOSITION.json",
+      "sha256": "165a7874ba018759bcede67a0f0f31c3778d5f5e83c1fd6d9a7338e715159ded",
+      "git_blob_sha1": "15fdccea14d23d497168d90d9e38750967515075",
+      "kind": "OTHER"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/MACHINE_PROOF_BUNDLE_DRAFT.json",
+      "bytes": 186798,
+      "sha256": "3a25d6ddb4d89145177890b1636ed86cc963888aafe9ab5df234731424916561",
+      "git_blob_sha1": "492ee5a3f60c878230bd4928c315d98d941a1e12"
+    }
+  ],
+  "production_manifest_generated": false,
+  "owner_authorization_event_present": false,
+  "actual_publication": false
+}

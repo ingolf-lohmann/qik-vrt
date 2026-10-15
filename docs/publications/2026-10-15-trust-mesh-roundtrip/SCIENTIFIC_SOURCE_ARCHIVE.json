@@ -1,0 +1,920 @@
+{
+  "schema": "qikvrt-source-archive-v1",
+  "members": [
+    {
+      "member": "evidence/CATALOG_PREDECESSOR.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/CATALOG_PREDECESSOR.json",
+      "bytes": 345822,
+      "sha256": "b5c2016a8c4d4d7ab69bbe81d30510a3fe011faab2eaf405974f0b1acd3f4382",
+      "git_blob_sha1": "b1576abaa95268a35917b03f9521dc708bfefb92"
+    },
+    {
+      "member": "evidence/FRESH_DOWNLOAD_ATTEMPTS.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/FRESH_DOWNLOAD_ATTEMPTS.json",
+      "bytes": 31975,
+      "sha256": "e3ed3ab53da9c7502078d380bcced6eea1b102e4e0ce8366e97c5d5dc227d739",
+      "git_blob_sha1": "cca0ae921e9adb5188f28586788a46c666636edf"
+    },
+    {
+      "member": "evidence/IETF_ORIGINAL_BINDINGS.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/IETF_ORIGINAL_BINDINGS.json",
+      "bytes": 2931,
+      "sha256": "6fa0cc3f8cfaf8cfe13acfc59db44ec269daa35accc6e1f325fe214bf84f014a",
+      "git_blob_sha1": "00c59d5fea6730b5e0e3258e1acf663cb6bbb1c9"
+    },
+    {
+      "member": "evidence/NATIVE_PUBLISHED_RECORDS.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/NATIVE_PUBLISHED_RECORDS.json",
+      "bytes": 426592,
+      "sha256": "b8687fc681c011e790582a23bd77216908eddbefd249eea3d4b0fc0a135e9e3c",
+      "git_blob_sha1": "f210c3d3617806af288c934c8401c04b12fabded"
+    },
+    {
+      "member": "evidence/NATIVE_RETRIEVAL_RECEIPT.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/NATIVE_RETRIEVAL_RECEIPT.json",
+      "bytes": 23610,
+      "sha256": "f22fac9ec44651146ca6b38e2a23cfb99cef044583d6ee5973f8ea25f203f40b",
+      "git_blob_sha1": "34dd47a423143c1d0ad5d86ee4d81f53a5ab6deb"
+    },
+    {
+      "member": "evidence/OWNER_CLARIFICATION_20261015.txt",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/OWNER_CLARIFICATION_20261015.txt",
+      "bytes": 382,
+      "sha256": "d3d0549e6673670e134bfdc2825cc6f901266df28ce9f344c73d62c6de3c55eb",
+      "git_blob_sha1": "da98484c35869ddbe0756f04fe987f2ed66e0a5a"
+    },
+    {
+      "member": "evidence/SELECTED_ORIGINAL_BINDINGS.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/SELECTED_ORIGINAL_BINDINGS.json",
+      "bytes": 288448,
+      "sha256": "fcd28918d52a008efc2f67bf7bb5f13447ad562ee2fd119058606e2f9873e96f",
+      "git_blob_sha1": "2e67a0e578c0188dfd01beeceff73d74e3dff86e"
+    },
+    {
+      "member": "evidence/bootloader-preauthoring.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/bootloader-preauthoring.json",
+      "bytes": 7425,
+      "sha256": "007dac2676a0e04bec7ca7adf7efdd78cbfbe7d859f4b798abfd8d622daa47c5",
+      "git_blob_sha1": "ee517b0cdbbb48596cd7d8f6bb34b43a0d25e8a3"
+    },
+    {
+      "member": "evidence/editorial-regressions.log",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/editorial-regressions.log",
+      "bytes": 99,
+      "sha256": "dacbd26403739f42601146b7c3f463433e0928381a9afc2cf6e181fbf7045fa8",
+      "git_blob_sha1": "80ae1ac8aa29b5eaf74247ddf0087fcc6f8e47c5"
+    },
+    {
+      "member": "evidence/export-eol-restoration.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/export-eol-restoration.json",
+      "bytes": 2365,
+      "sha256": "b5bfd5da03e113d6816b30363166ba928930bba0c28a26900d846f8573a5c8e1",
+      "git_blob_sha1": "e659d393137862f7e1fffa907d70f20c8bed93cd"
+    },
+    {
+      "member": "evidence/final-published-sources.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/final-published-sources.json",
+      "bytes": 1174,
+      "sha256": "65609e9ceacc56b0e967005cbfa1cf9af25d8f1d408badcbabe94a4f12338553",
+      "git_blob_sha1": "0eb8d944ea1df77954d39076bc94e42c484c82b9"
+    },
+    {
+      "member": "evidence/full-publication-sources.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/full-publication-sources.json",
+      "bytes": 944,
+      "sha256": "522c4c7d7e6aeb9c346a36d15da30d952a963d77976299a48a1dbafe1246a40f",
+      "git_blob_sha1": "19a254a74e78328eaa7afecf7adef55add68d838"
+    },
+    {
+      "member": "evidence/git_commit_start.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/git_commit_start.json",
+      "bytes": 1562,
+      "sha256": "5a85f26a0ef817703f31bf7191f43950c2d0d19a10a34a67ee3c65e4087267cd",
+      "git_blob_sha1": "d0d8f890c7f4664c30db1243466877ca6b0d23eb"
+    },
+    {
+      "member": "evidence/ietf-originals/draft-lohmann-qikvrt-effect-ack-00.txt",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/ietf-originals/draft-lohmann-qikvrt-effect-ack-00.txt",
+      "bytes": 10145,
+      "sha256": "40a9c239ff6400e957e5bdbde4f199e5856277b3370bcee87c890cd7ed18a55c",
+      "git_blob_sha1": "910c981b406a305f666d9c9b87e83d5fdd03d9ba"
+    },
+    {
+      "member": "evidence/ietf-originals/draft-lohmann-qikvrt-effect-ack-01.txt",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/ietf-originals/draft-lohmann-qikvrt-effect-ack-01.txt",
+      "bytes": 46264,
+      "sha256": "ad8af57390beeb9a1316e3940b9f75c2334834376288f6f1ab018e10b0b87b16",
+      "git_blob_sha1": "fc51723016e1afe97cddec2fde9f81762f1f4754"
+    },
+    {
+      "member": "evidence/ietf-originals/draft-lohmann-qikvrt-effect-ack-02.txt",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/ietf-originals/draft-lohmann-qikvrt-effect-ack-02.txt",
+      "bytes": 49539,
+      "sha256": "45b70202c780f07bac6e825b8484aa5ccea6510b020036846720f1216723a5cc",
+      "git_blob_sha1": "2e30218c964c45b2e2c91d4b0023b439cfaf2d2c"
+    },
+    {
+      "member": "evidence/ietf-originals/draft-lohmann-qikvrt-effect-ack-03.txt",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/ietf-originals/draft-lohmann-qikvrt-effect-ack-03.txt",
+      "bytes": 55792,
+      "sha256": "999ab5f255804de1f41fb7074f29032ab4a2203df2156ae609fb6cefd16f41b0",
+      "git_blob_sha1": "031d5dbfc94037dffee8a1fae9a64a230e8589bc"
+    },
+    {
+      "member": "evidence/ietf-originals/draft-lohmann-qikvrt-epistemic-status-00.txt",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/ietf-originals/draft-lohmann-qikvrt-epistemic-status-00.txt",
+      "bytes": 15309,
+      "sha256": "ba9c16369f61f4282017bd253c4514262d1990ce8e0f89e62c58ae8ac0b9edb0",
+      "git_blob_sha1": "21131cafd954f9d9f494ec42e7d4aec99740ff0e"
+    },
+    {
+      "member": "evidence/live_start.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/live_start.json",
+      "bytes": 20305,
+      "sha256": "afe14d8f1b52ab032ef2650351024bfe392a6d873819848bbf064d6d1543dd5e",
+      "git_blob_sha1": "a4ae9247eab858f8dfc390f41292aa8663390cda"
+    },
+    {
+      "member": "evidence/local-snapshot-identity.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/local-snapshot-identity.json",
+      "bytes": 291,
+      "sha256": "0bbcd69b98480de69336c5be6ac499627923f62bb34678014bea0886d75ec57b",
+      "git_blob_sha1": "220cc3e1d426d0c9ba67053d0121f0487a0c5f24"
+    },
+    {
+      "member": "evidence/mirror-access.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/mirror-access.json",
+      "bytes": 554,
+      "sha256": "709ba9b4a3608ba7550f77ce9e54eb4f8c127523d9ecbb3045460d6c01fe4333",
+      "git_blob_sha1": "46eadb2388d99756cba67edfd8aa0a6398ad0703"
+    },
+    {
+      "member": "evidence/original-source-regression.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/original-source-regression.json",
+      "bytes": 13772,
+      "sha256": "b46cda74df0900f568ad90214ff3554133f421afb5971ef5c78f138220235a11",
+      "git_blob_sha1": "63b4605501043b8c74f287de7dbedab56547d074"
+    },
+    {
+      "member": "evidence/pr_start.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/pr_start.json",
+      "bytes": 73170,
+      "sha256": "b6cddfceaf0137ac5879164b36fef47fc3dcbd274078c02e9de720a80c935c26",
+      "git_blob_sha1": "c42a758ba5b8b257b98c2b0dbf23f7f7d48bed98"
+    },
+    {
+      "member": "evidence/published-originals/20712301/QIKVRT_V8_33_REPOSITORY_AND_ANTICIPATORY_ZENODO_415_CONTENTTYPE_FIX.zip",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/20712301/QIKVRT_V8_33_REPOSITORY_AND_ANTICIPATORY_ZENODO_415_CONTENTTYPE_FIX.zip",
+      "bytes": 148269,
+      "sha256": "a446a0c5b9fac78e47c3b51bc88ac81a6eaa7d15add089804d46c4f294fbd2f7",
+      "git_blob_sha1": "46de3818069bcf77ca338000a31dc676de52099c"
+    },
+    {
+      "member": "evidence/published-originals/21482023/Mandelbrot_Komplement_Modelluniversum_Entscheidender_Unterschied_2026-07-21.tex",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21482023/Mandelbrot_Komplement_Modelluniversum_Entscheidender_Unterschied_2026-07-21.tex",
+      "bytes": 154356,
+      "sha256": "c55446c62c890e581e9536c0dc8d5de70b7ecf7012a7e2e41744d971da9807cf",
+      "git_blob_sha1": "2c06ebb28537c7ec6cc0b866160af322d8ad4087"
+    },
+    {
+      "member": "evidence/published-originals/21482023/README.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21482023/README.md",
+      "bytes": 3695,
+      "sha256": "e14d9d32ca585ee8ad0565908a69214a2f4b77e26675ae69605af07b72f54adb",
+      "git_blob_sha1": "e0ea46310236777f2a895ac36e69a88d4288b639"
+    },
+    {
+      "member": "evidence/published-originals/21498773/ARTICLE_DE.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21498773/ARTICLE_DE.md",
+      "bytes": 31305,
+      "sha256": "7d1b92ee6df450be1469cacae894d43adff30938997e7a502a383fc5e9a2adbe",
+      "git_blob_sha1": "328a3fae4c19dfe9d82049432a1d3cd61f346b06"
+    },
+    {
+      "member": "evidence/published-originals/21498773/EVIDENCE_BOUNDARY.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21498773/EVIDENCE_BOUNDARY.md",
+      "bytes": 2938,
+      "sha256": "fb78ae0f583e83322863bac0efd3ebe774b385beea3938c27e0b585dd4d92aa6",
+      "git_blob_sha1": "20a7880342631b761a1f6510ff7c2abe6cf01861"
+    },
+    {
+      "member": "evidence/published-originals/21498773/proof-report.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21498773/proof-report.json",
+      "bytes": 10865,
+      "sha256": "f2e71e29512c73dd34bcc3db2dc852298e0713531441fcb922f14c6647b29392",
+      "git_blob_sha1": "97e181265e9f2ebd689036f69aed6a61a406780d"
+    },
+    {
+      "member": "evidence/published-originals/21500322/EVIDENCE_BOUNDARY.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21500322/EVIDENCE_BOUNDARY.md",
+      "bytes": 6998,
+      "sha256": "0338f8e3d174ce4b3179b57a836733308b3bdb521dd7018258fb00ba20246ea6",
+      "git_blob_sha1": "7f98afd875f9e8b86eacf13b7b54c68013dc6b82"
+    },
+    {
+      "member": "evidence/published-originals/21500322/EVIDENCE_INDEX.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21500322/EVIDENCE_INDEX.json",
+      "bytes": 3561,
+      "sha256": "dc8c62cf03f64bb79fb78cfdea764640bb8c963bdd2f83b8fd6d6233cbcf3b9b",
+      "git_blob_sha1": "e4ebaf0e13d8c1864c5f2d926d83f2a20dd1deaa"
+    },
+    {
+      "member": "evidence/published-originals/21500322/PATENT_DISCLOSURE_BOUNDARY.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21500322/PATENT_DISCLOSURE_BOUNDARY.md",
+      "bytes": 6404,
+      "sha256": "e665eb02d53dd6038a8754246dcf97ee27d91d1247e49dbe2a1e58cf96151f55",
+      "git_blob_sha1": "ae302b26a5b0e2ad092c9d6fddc4a462fff29dff"
+    },
+    {
+      "member": "evidence/published-originals/21500322/STATUSERKLAERUNG_DE.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21500322/STATUSERKLAERUNG_DE.md",
+      "bytes": 12282,
+      "sha256": "0ce2f4ba34d43e0a3e6e046fe8a8414527cf10f959beed7d94b27c2c6c606161",
+      "git_blob_sha1": "1e26c35025366f58039841e68645caa006097d42"
+    },
+    {
+      "member": "evidence/published-originals/21515074/CHARTA_MASCHINENPRUEFBARE_WISSENSCHAFT.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21515074/CHARTA_MASCHINENPRUEFBARE_WISSENSCHAFT.md",
+      "bytes": 10127,
+      "sha256": "7fb4e5c369b079e93ce409e9ca4f6830476a1b6dbd42543273d85164e111a631",
+      "git_blob_sha1": "d6533d9be451f8ac922ef7c11cbf04900fa3066f"
+    },
+    {
+      "member": "evidence/published-originals/21529081/CLAIM_GRAPH.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21529081/CLAIM_GRAPH.json",
+      "bytes": 54876,
+      "sha256": "2a02b50ce245434da8c449a0d4729ba385579c0f59f0a548c41ab46e8febf96f",
+      "git_blob_sha1": "b9f3686c6bb786fd03189c9320033b802488f796"
+    },
+    {
+      "member": "evidence/published-originals/21529081/FORMALIZATION_SCOPE.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21529081/FORMALIZATION_SCOPE.md",
+      "bytes": 2334,
+      "sha256": "70548cf2cfaa750753c199b8378aafb783425617baacd9b10df6c95b3c794edf",
+      "git_blob_sha1": "611b5215ac7542370de9be853da2a944e4f8db33"
+    },
+    {
+      "member": "evidence/published-originals/21529081/MANUSCRIPT_PROOF_MAP.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21529081/MANUSCRIPT_PROOF_MAP.md",
+      "bytes": 13522,
+      "sha256": "7046d4e3c68d58520b1040d8bef7046530b616467d52411640426a0b5f6e13a8",
+      "git_blob_sha1": "b312746bd8294adb387d5e392ef0809167bdbfc3"
+    },
+    {
+      "member": "evidence/published-originals/21529081/QIKVRT_Formalization_v2.0-alpha.3.zip",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21529081/QIKVRT_Formalization_v2.0-alpha.3.zip",
+      "bytes": 867503,
+      "sha256": "f62ef815cc578735c97f3cc94ca4d156a11a6c130231f94d40d0bfe2e2b7f6ab",
+      "git_blob_sha1": "3b06ab7e291ca25a9b9b67e7d23534fdd6033719"
+    },
+    {
+      "member": "evidence/published-originals/21529081/VERIFICATION_REPORT.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21529081/VERIFICATION_REPORT.md",
+      "bytes": 2793,
+      "sha256": "cb419e02e7aa09cb9648d8931c630b997e9a263f020379d8da9f5d11160ceba6",
+      "git_blob_sha1": "7fff6e2808305e6bc94e8e0c104b2cea9f89460a"
+    },
+    {
+      "member": "evidence/published-originals/21582781/META_REVIEW.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21582781/META_REVIEW.md",
+      "bytes": 3084,
+      "sha256": "855687ec791c5d054ea235ad0388217954fdc0dc2d3e053684820a46289ac629",
+      "git_blob_sha1": "5a9488f3cb1ae1344e9710b9c3fa76b0e3fa38c8"
+    },
+    {
+      "member": "evidence/published-originals/21582781/ORIGINAL_ARTICLE.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21582781/ORIGINAL_ARTICLE.md",
+      "bytes": 17229,
+      "sha256": "0cc8077b032d805406f5cafe599dfa91f90e28a5bfa68292aaf4aaa232058589",
+      "git_blob_sha1": "d96b5bb19dede294a94d67f7181937584ac2470d"
+    },
+    {
+      "member": "evidence/published-originals/21582781/PUBLICATION.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21582781/PUBLICATION.json",
+      "bytes": 1061,
+      "sha256": "a58c0f7fbe5ef0bf0e3fca1bcd379fedcf99e1a0b6bdf507d48682d50ac703dc",
+      "git_blob_sha1": "809cfcddfaaf04b74e5542f2147752f378ad9183"
+    },
+    {
+      "member": "evidence/published-originals/21633411/authority-mirror-equality-2026-07-27-pr106-pr56.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21633411/authority-mirror-equality-2026-07-27-pr106-pr56.json",
+      "bytes": 5189,
+      "sha256": "2372fae39499febbb005d771cb2ce62bde7967a79cdd5e3b159a3591fc80ac98",
+      "git_blob_sha1": "83c80c53d330eb929defb3739ecc9184e6754639"
+    },
+    {
+      "member": "evidence/published-originals/21633411/equality-receipts-index.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21633411/equality-receipts-index.json",
+      "bytes": 1487,
+      "sha256": "47c5d7107098c0527c80aa0d65deeeb6a15ce1496588fda3fda087d4d18d5ff4",
+      "git_blob_sha1": "24ed0bf0736b444d51e6773c66b57301cb6b9727"
+    },
+    {
+      "member": "evidence/published-originals/21636774/QIKVRT_GLOBAL_COMPLETION_RECEIPT.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21636774/QIKVRT_GLOBAL_COMPLETION_RECEIPT.json",
+      "bytes": 5069,
+      "sha256": "bbae95a8b4f10ff9601a452411fbe8a43f3b717c127d5cadfa84b94232f427e8",
+      "git_blob_sha1": "97466066860a57af412e79220a4dff43a82e300e"
+    },
+    {
+      "member": "evidence/published-originals/21636774/QIKVRT_Vom_Unterschied_zur_Verantwortung_Statusartikel_DE.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21636774/QIKVRT_Vom_Unterschied_zur_Verantwortung_Statusartikel_DE.md",
+      "bytes": 40540,
+      "sha256": "810e03809cb6164d0c4efd3c6b7ca91c57d8ea92278be416cec92b087d70652c",
+      "git_blob_sha1": "3c2cb383687f353031d59b0f914dc91cd04a7ce3"
+    },
+    {
+      "member": "evidence/published-originals/21640160/QIKVRT_CLAIM_MATRIX.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21640160/QIKVRT_CLAIM_MATRIX.json",
+      "bytes": 15548,
+      "sha256": "efdf603f0018620924cd55aab2470117ad7ded32bf5cd9a679246a122bde5527",
+      "git_blob_sha1": "31e1aad06661680b46a89821c272649533491a07"
+    },
+    {
+      "member": "evidence/published-originals/21640160/QIKVRT_KERNEL_RECEIPT.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21640160/QIKVRT_KERNEL_RECEIPT.json",
+      "bytes": 3032,
+      "sha256": "14245a79966e4667ddd931c59510370032ebffefe4b2421401404dd5c22a6c1a",
+      "git_blob_sha1": "adfda684598313af8070077aa6bbe04ca7a11977"
+    },
+    {
+      "member": "evidence/published-originals/21640160/QIKVRT_QuantumClassicalRuntime.lean",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21640160/QIKVRT_QuantumClassicalRuntime.lean",
+      "bytes": 6248,
+      "sha256": "9a02bb3ba762063646aa22af4c05467b52ac49ef05773bfc067f3a3c2be22465",
+      "git_blob_sha1": "1d0f806a62e1729893b4688e2322f7403a1cb931"
+    },
+    {
+      "member": "evidence/published-originals/21640173/QIKVRT_CLAIM_MATRIX.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21640173/QIKVRT_CLAIM_MATRIX.json",
+      "bytes": 15548,
+      "sha256": "efdf603f0018620924cd55aab2470117ad7ded32bf5cd9a679246a122bde5527",
+      "git_blob_sha1": "31e1aad06661680b46a89821c272649533491a07"
+    },
+    {
+      "member": "evidence/published-originals/21640173/QIKVRT_KERNEL_RECEIPT.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21640173/QIKVRT_KERNEL_RECEIPT.json",
+      "bytes": 3032,
+      "sha256": "14245a79966e4667ddd931c59510370032ebffefe4b2421401404dd5c22a6c1a",
+      "git_blob_sha1": "adfda684598313af8070077aa6bbe04ca7a11977"
+    },
+    {
+      "member": "evidence/published-originals/21640173/QIKVRT_QuantumClassicalRuntime.lean",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21640173/QIKVRT_QuantumClassicalRuntime.lean",
+      "bytes": 6248,
+      "sha256": "9a02bb3ba762063646aa22af4c05467b52ac49ef05773bfc067f3a3c2be22465",
+      "git_blob_sha1": "1d0f806a62e1729893b4688e2322f7403a1cb931"
+    },
+    {
+      "member": "evidence/published-originals/21640173/QIKVRT_Vom_verantwortungsgebundenen_Erkenntnisprozess_zur_virtuellen_Wirkungsmaschine_DE.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21640173/QIKVRT_Vom_verantwortungsgebundenen_Erkenntnisprozess_zur_virtuellen_Wirkungsmaschine_DE.md",
+      "bytes": 35442,
+      "sha256": "1fade850374cba0dc714dc8ecc842f15d80a62e9cfb7f3cedfd9e736ab1352e1",
+      "git_blob_sha1": "783d8eb88103ecd4fbf60d293dd64bf96d49cad5"
+    },
+    {
+      "member": "evidence/published-originals/21711193/CLAIM_MATRIX.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21711193/CLAIM_MATRIX.json",
+      "bytes": 13922,
+      "sha256": "6ca018de971cc351091c36e11a708ef852e6079991289b10a962603aef0fadcb",
+      "git_blob_sha1": "3e478aea36cc03a3ae2b71dd70ef2512cee0bc78"
+    },
+    {
+      "member": "evidence/published-originals/21711193/EVIDENCE_BOUNDARY.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21711193/EVIDENCE_BOUNDARY.md",
+      "bytes": 8662,
+      "sha256": "1019df148d7fbe7dc881b0ade837d6adde06dd034460630a23f920aa6d0b8eba",
+      "git_blob_sha1": "1ea4d65c4635353b9ef2f383560ed6f6289c6c93"
+    },
+    {
+      "member": "evidence/published-originals/21711193/KERNEL_RECEIPT.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21711193/KERNEL_RECEIPT.json",
+      "bytes": 9645,
+      "sha256": "b7f0246798e2e3bb50a49580251e5b4909e915dd71da27770c19413cc40d9df6",
+      "git_blob_sha1": "554f05dd7a996a8d3e90201ad856f6caf2f18ca1"
+    },
+    {
+      "member": "evidence/published-originals/21711193/QIK-VRT_Kanonischer_Speicher_Retrokausalitaet_EFFECT_ACK_2026-07-30.tex",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21711193/QIK-VRT_Kanonischer_Speicher_Retrokausalitaet_EFFECT_ACK_2026-07-30.tex",
+      "bytes": 47857,
+      "sha256": "6a3414302e6ba870fab0722a123af1f9c101b6f6c6f2269d1126b37ad47d5841",
+      "git_blob_sha1": "0d16a54d97f9151a0228d1b36587e1b2f994d22d"
+    },
+    {
+      "member": "evidence/published-originals/21721918/ARTICLE_DE.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21721918/ARTICLE_DE.md",
+      "bytes": 41333,
+      "sha256": "2f7ed0b3623d2308118cda0ea01a8598bf86888b92aa1ee6cd4ca2725416eb44",
+      "git_blob_sha1": "76c2cd1c261d03a44994544242d4d6373277b08a"
+    },
+    {
+      "member": "evidence/published-originals/21721918/CLAIM_MATRIX.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21721918/CLAIM_MATRIX.json",
+      "bytes": 8412,
+      "sha256": "6dd80355ae67bba8a8e03a77f54df8ea15973f6a398fe47e75e39d16ea361e49",
+      "git_blob_sha1": "dbabdd4bc83ac013ba8ed92dcf133c6f861b65e6"
+    },
+    {
+      "member": "evidence/published-originals/21721918/FORMAL_OperationalContinuation.lean",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21721918/FORMAL_OperationalContinuation.lean",
+      "bytes": 7338,
+      "sha256": "b9e7dfedad068773b5e46a8cf4d0a3823cea223bab0a6070ff906eb13c928d31",
+      "git_blob_sha1": "acd8a45b13c0e0ac8cea6ecb635538940c6b3390"
+    },
+    {
+      "member": "evidence/published-originals/21721918/FORMAL_WeightedConnectability.lean",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21721918/FORMAL_WeightedConnectability.lean",
+      "bytes": 9234,
+      "sha256": "feadf23a9643e0e41f39cf5e37bca42f07bd0da29bfead8f751f3a2d7764f290",
+      "git_blob_sha1": "1ab2a7553d3b2d6f83b925eec80299a82423442b"
+    },
+    {
+      "member": "evidence/published-originals/21721918/KERNEL_RECEIPT.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21721918/KERNEL_RECEIPT.json",
+      "bytes": 6854,
+      "sha256": "ec6bef7e8cf13d5604834efedf0e1b812921d8a224e528d14fea7fa0d92a4911",
+      "git_blob_sha1": "fb3caacec9fb8b15a7d727a8ab6fa76cf75097f4"
+    },
+    {
+      "member": "evidence/published-originals/21731492/CLAIM_MATRIX.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21731492/CLAIM_MATRIX.json",
+      "bytes": 4921,
+      "sha256": "4b7ebc974fe4433a39bc7e81948b606f91bcad0cea15db5d9cb2858568cf943e",
+      "git_blob_sha1": "706ec9c2ce41634d8b6f6aa6986a03e8ac7fbd96"
+    },
+    {
+      "member": "evidence/published-originals/21731492/EVIDENCE_BOUNDARY.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21731492/EVIDENCE_BOUNDARY.md",
+      "bytes": 4108,
+      "sha256": "659e5371f2ec8d78391c281d68e3201bbdf1375190dcd83bf99dee121ed664ca",
+      "git_blob_sha1": "fbf70b493002f6f0c3f8cbfa559e32a0e6cec320"
+    },
+    {
+      "member": "evidence/published-originals/21731492/INHERITED_V1_CLAIM_MATRIX.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21731492/INHERITED_V1_CLAIM_MATRIX.json",
+      "bytes": 6903,
+      "sha256": "b0ca1597d864d475adabb76dc8bf51d05e90841685d6ad52a017dc6f9b2448f1",
+      "git_blob_sha1": "3aad9eac7b08ccfb694fc50b8afb1f5a50aa8cee"
+    },
+    {
+      "member": "evidence/published-originals/21731492/SCIENTIFIC_ADDENDUM_DE.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21731492/SCIENTIFIC_ADDENDUM_DE.md",
+      "bytes": 11010,
+      "sha256": "5173e4231822294b2ded88653f7e73bd2626ae3e3cade6f7f92eda20b28bdecc",
+      "git_blob_sha1": "ea2f53601ec64300900c18fc4320e45d055c883b"
+    },
+    {
+      "member": "evidence/published-originals/21748371/CLAIM_MATRIX.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21748371/CLAIM_MATRIX.json",
+      "bytes": 14452,
+      "sha256": "45b8c5b0861c6bd40e39425d482d05cefe93bf8348e9c38df375467279013904",
+      "git_blob_sha1": "3f4ce2071aa8fcbf44be8dc19938fda080fc6500"
+    },
+    {
+      "member": "evidence/published-originals/21748371/FACHARTIKEL_DE.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21748371/FACHARTIKEL_DE.md",
+      "bytes": 13002,
+      "sha256": "0b82fdbeb64f9f906c3fc7adcc065eb7cb4de211e8d1d716556824f78de225bc",
+      "git_blob_sha1": "d1f5e274475e46dc93def0217d516a053dd735c7"
+    },
+    {
+      "member": "evidence/published-originals/21748371/FORMAL_ScientificFactGrowth.lean",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21748371/FORMAL_ScientificFactGrowth.lean",
+      "bytes": 11547,
+      "sha256": "e7538876d7c70b5c54885855a852e72f83ae0f9b49a2adb02d0ccb3f075b7307",
+      "git_blob_sha1": "52efd9be88878577b14c9601aa504d6ad29a2432"
+    },
+    {
+      "member": "evidence/published-originals/21748371/LEAN_KERNEL_RECEIPT.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21748371/LEAN_KERNEL_RECEIPT.json",
+      "bytes": 8315,
+      "sha256": "105fbbfce07d938ee1261acfec5ed5339c3749983784cb6796cd8321b8ad7f6c",
+      "git_blob_sha1": "31c2820ae5efad7e94dcfe2b050b9e2ebd4d6aab"
+    },
+    {
+      "member": "evidence/published-originals/21748371/SCIENTIFIC_FACT_GROWTH_PROTOCOL.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21748371/SCIENTIFIC_FACT_GROWTH_PROTOCOL.md",
+      "bytes": 18113,
+      "sha256": "5a0e55d93a0522111a046554a97ce2da3bf5b65cd4c09792693729cac3064ea4",
+      "git_blob_sha1": "055f386c44a88ffd9b41e50fcd50db6f02aca2ef"
+    },
+    {
+      "member": "evidence/published-originals/21804399/PAPER.tex",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21804399/PAPER.tex",
+      "bytes": 9029,
+      "sha256": "003b22480dd598669939bf65598ea12470510f5612ad456057d26664ce38990f",
+      "git_blob_sha1": "6801dd5644af5ff6b18b457e77e1049d5fb5e4e1"
+    },
+    {
+      "member": "evidence/published-originals/21804399/WHATSAPP_READALOUD.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21804399/WHATSAPP_READALOUD.md",
+      "bytes": 11486,
+      "sha256": "c3cb0cfeef4c8ccda6c73897b447ca4d3d63a369acda83bf82cdc09265c7ad88",
+      "git_blob_sha1": "55f96977d598d5d9789d76366521c77aba0e3f5b"
+    },
+    {
+      "member": "evidence/published-originals/21888130/CLAIM_MATRIX.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21888130/CLAIM_MATRIX.json",
+      "bytes": 26930,
+      "sha256": "94fa533bc82b029a2d49269cef468f99211bff7f9be3d2e2809866b6d5acf684",
+      "git_blob_sha1": "f65bb01d1969522052da606a404365bc00ea7095"
+    },
+    {
+      "member": "evidence/published-originals/21888130/DAS_UNIVERSUM_ALS_ROUND_TRIP_DE.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21888130/DAS_UNIVERSUM_ALS_ROUND_TRIP_DE.md",
+      "bytes": 18120,
+      "sha256": "dc58e50161b22826152dd251db836f06f85235a470e0253aeefa1b0a380787fe",
+      "git_blob_sha1": "e1ed265239aa5e1436055279069c7e21525a13fe"
+    },
+    {
+      "member": "evidence/published-originals/21888130/PROMOTED_FORMAL_KERNEL_RECEIPTS.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21888130/PROMOTED_FORMAL_KERNEL_RECEIPTS.json",
+      "bytes": 30213,
+      "sha256": "6df42d9025a041091f09aa8c868f51e63193192dea21fb4fe40c9730fec8db31",
+      "git_blob_sha1": "788b5d258b244c9790095b6457dcbbd307e61f29"
+    },
+    {
+      "member": "evidence/published-originals/21888130/RETROSPECTIVE_PROOF_CORPUS_INDEX.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21888130/RETROSPECTIVE_PROOF_CORPUS_INDEX.json",
+      "bytes": 21393,
+      "sha256": "9ce73608a7aaa17bc825f163475adb820ed208b188fd3017eafdacf2b2dd253c",
+      "git_blob_sha1": "6dbb24a93da71e6debc314a59472b6c97cf1cff7"
+    },
+    {
+      "member": "evidence/published-originals/21888130/ROUND_TRIP_PROMOTED_FORMAL_RESULTS_V1.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21888130/ROUND_TRIP_PROMOTED_FORMAL_RESULTS_V1.md",
+      "bytes": 5150,
+      "sha256": "e5fd9c53a0bf6c84471d9b26d0c3c06019977aa6b2367913006fa9560a3c948f",
+      "git_blob_sha1": "cc13b5530051ea7b7fe0eceae5558cd93f44611d"
+    },
+    {
+      "member": "evidence/published-originals/21947141/CLAIM_MATRIX_V2.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21947141/CLAIM_MATRIX_V2.json",
+      "bytes": 6373,
+      "sha256": "01f5c79357b950cdef27487b49c5fdc1dec8a887ddf5361d7c6a02d9d812d9c6",
+      "git_blob_sha1": "9be1f2009988f3135b2498b365194b5e8065ebd6"
+    },
+    {
+      "member": "evidence/published-originals/21947141/OBSERVER_RELATIVE_RETROCAUSALITY_CLAIM_MATRIX.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21947141/OBSERVER_RELATIVE_RETROCAUSALITY_CLAIM_MATRIX.json",
+      "bytes": 8399,
+      "sha256": "5ada460d9932486bd2de0c817d70deccfd5686e4170ba5bc47dde5daad192a12",
+      "git_blob_sha1": "6b598fe1612074d1e3d633ab2dd0e4142f4880ab"
+    },
+    {
+      "member": "evidence/published-originals/21947141/QIK-VRT_Beobachterrelative_Retrokausalitaet_DE.tex",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21947141/QIK-VRT_Beobachterrelative_Retrokausalitaet_DE.tex",
+      "bytes": 46794,
+      "sha256": "9f0b3c2d53e130a2891a9797715d3f3c696e54409e38dcd03e69606aea5fbfd2",
+      "git_blob_sha1": "b5211a335ec61816ec3dc88f3a4555fddec2f1ba"
+    },
+    {
+      "member": "evidence/published-originals/21947141/QIKVRT_RETROCAUSALITY_WITNESS.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21947141/QIKVRT_RETROCAUSALITY_WITNESS.json",
+      "bytes": 4185,
+      "sha256": "817b0bbd38ff2d5e811c7ba4c04dff7e6b9310fbb3016309c451317d1de5b471",
+      "git_blob_sha1": "040b1915f2b6a4ba12a54654956aa8158ffde057"
+    },
+    {
+      "member": "evidence/published-originals/21983644/ARTICLE.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21983644/ARTICLE.md",
+      "bytes": 17953,
+      "sha256": "54f57fe3e20db46cbb0c8e6a872938c5972ef326eb3d2774c324b1b5ba90ab31",
+      "git_blob_sha1": "9b677688e30d08d63a503a89ecd559e9db444e34"
+    },
+    {
+      "member": "evidence/published-originals/21983644/PUBLICATION.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/21983644/PUBLICATION.json",
+      "bytes": 2246,
+      "sha256": "52318953f27f9a7a1d220080a10cfedf1835792799dff5d855c61072a973a776",
+      "git_blob_sha1": "4bd2100a0615d17f3f123ec29500ac08d3f1fe3e"
+    },
+    {
+      "member": "evidence/published-originals/22216916/CLAIM_MATRIX_V2.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/22216916/CLAIM_MATRIX_V2.json",
+      "bytes": 3911,
+      "sha256": "21e622ab38227d023bc629c937dc728516e647003485ae8af58d77d1538f4827",
+      "git_blob_sha1": "a5c82fea957e4acbfd93aaa49f3fd570b58f4cf1"
+    },
+    {
+      "member": "evidence/published-originals/22216916/QIK-VRT_Relationale_Zeit_und_wachsende_Evidenzkugel_DE.pdf",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/22216916/QIK-VRT_Relationale_Zeit_und_wachsende_Evidenzkugel_DE.pdf",
+      "bytes": 379427,
+      "sha256": "38b0e62a46214a7cb9943dd3ef08283a70ae7e15ba22a59a9e53506f2945e311",
+      "git_blob_sha1": "44aeb01177d0f830fdf18ca82278d055b09b2c56"
+    },
+    {
+      "member": "evidence/published-originals/22216916/SOURCE_EVIDENCE_BINDINGS.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/22216916/SOURCE_EVIDENCE_BINDINGS.json",
+      "bytes": 2146,
+      "sha256": "8ae195102f2b64b81c9ad7f23dc4efca72050a5e18c3521d63725822bae5c2d3",
+      "git_blob_sha1": "9605165c6dba3346a72698c24f24791571a390d1"
+    },
+    {
+      "member": "evidence/published-originals/22283396/QIKVRT_Planck_Tick_Gap_Law_2026-09-03.tex",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/22283396/QIKVRT_Planck_Tick_Gap_Law_2026-09-03.tex",
+      "bytes": 10287,
+      "sha256": "037b0afe30e6c8d28f80325d08024639960808c43f94b81bb91f9d3f393f1309",
+      "git_blob_sha1": "bd255205bbe53cfa70d1c13d4eb75e47bec5d777"
+    },
+    {
+      "member": "evidence/published-originals/22283396/README.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/22283396/README.md",
+      "bytes": 5748,
+      "sha256": "1e00619a0d19c0a2a0be2dda7f58f53ec6f25b63280e2bf000e708546a5f3a0d",
+      "git_blob_sha1": "04b89b49f0a6014349c434719e4ae67bdf6b2ca2"
+    },
+    {
+      "member": "evidence/published-originals/22283396/planck_tick_gap_law_v1.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/22283396/planck_tick_gap_law_v1.json",
+      "bytes": 3736,
+      "sha256": "67651e6e92d930838c643039ce3aa1b3b197ba43f0f48b3fb870c2528b2d30e0",
+      "git_blob_sha1": "c92ec4efe37885a46ab89f51c9b2a300c5f024d6"
+    },
+    {
+      "member": "evidence/published-originals/22527889/CLAIM_MATRIX_V2.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/22527889/CLAIM_MATRIX_V2.json",
+      "bytes": 22984,
+      "sha256": "34219acc029654ccd7904c81de65796d8ab9a93da339318270a76f12ab9eab08",
+      "git_blob_sha1": "babd75f3cf739708a6160944151b9b8a86bcbd53"
+    },
+    {
+      "member": "evidence/published-originals/22527889/KERNEL_RECEIPT.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/22527889/KERNEL_RECEIPT.json",
+      "bytes": 10138,
+      "sha256": "42290b7fadb7a3b02f76f65b9d7ce735cb253f3adc37c9f83e75ae737f507ed8",
+      "git_blob_sha1": "20c9d6bb75fa9881844b4c8542ad3c0128ac17e6"
+    },
+    {
+      "member": "evidence/published-originals/22527889/VRTCore_SMG_PlanckBridge.lean",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/22527889/VRTCore_SMG_PlanckBridge.lean",
+      "bytes": 18510,
+      "sha256": "d5b3f2555e8118f06dfeedc026b31c6aaf097becbbc77c1ff38040f1c68d46a4",
+      "git_blob_sha1": "01b3ed1adc56eac2aec9a4fc5fabbee466b86f4d"
+    },
+    {
+      "member": "evidence/published-originals/22847245/CLAIM_MATRIX.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/22847245/CLAIM_MATRIX.json",
+      "bytes": 5705,
+      "sha256": "b379d95bfb4cd6e2c6b0304a3e768af69451a09951d154d45b97f38fb1aca6ed",
+      "git_blob_sha1": "a948534dc23b098eac9ec03db70b3f381a3bfa45"
+    },
+    {
+      "member": "evidence/published-originals/22847245/EVIDENCE_BOUNDARY.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/22847245/EVIDENCE_BOUNDARY.md",
+      "bytes": 1393,
+      "sha256": "76c1ec451d20c5bd725b44471aaa4acd96f57f1b9a50492f2fc4d7e1ac75e757",
+      "git_blob_sha1": "bcb8342b1e8b52106203a7e04f2afd0e476ed6cb"
+    },
+    {
+      "member": "evidence/published-originals/22847245/ORIGINALWORTE_DE.txt",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/22847245/ORIGINALWORTE_DE.txt",
+      "bytes": 473,
+      "sha256": "c3de1b9ae244af71914d62e9a1bb50386ede800fbb7157334c29898fc8ff0ea7",
+      "git_blob_sha1": "104184e34eac7539ff41281c50a64d35e973f883"
+    },
+    {
+      "member": "evidence/published-originals/22847245/Universales_Universalprinzip.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/22847245/Universales_Universalprinzip.md",
+      "bytes": 2023,
+      "sha256": "2cdd7a7e7fb9c2ae3ab1128d90fbe0cb89c4a618b403cf27d7a85fad21fb3e1d",
+      "git_blob_sha1": "b305c27a54e4831481763b8075ce35101f670a4f"
+    },
+    {
+      "member": "evidence/published-originals/22907018/QIK_Publikationsfassung_revidiert.docx",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/22907018/QIK_Publikationsfassung_revidiert.docx",
+      "bytes": 49624,
+      "sha256": "1c70cbe19edd5a34dc764ad6527cf14761b78b85bc4a157d8aed3f5853b8a020",
+      "git_blob_sha1": "d519d9f266574abca634e1a49c3a46d6a579d483"
+    },
+    {
+      "member": "evidence/published-originals/22907018/QIK_Wissenschaftlicher_Revisionsbericht.docx",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/22907018/QIK_Wissenschaftlicher_Revisionsbericht.docx",
+      "bytes": 48246,
+      "sha256": "e4be998ce2ef43f0575fa91b2974d72325f8bf820a72410cfbf697e38fc03bb1",
+      "git_blob_sha1": "630f78fd5f3d7259b4c245e1c27c32ccf381676a"
+    },
+    {
+      "member": "evidence/published-originals/22907018/README.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/22907018/README.md",
+      "bytes": 3061,
+      "sha256": "7e68114928a9411675e8c027776534a0125d5d60acad617f99cc5aa54f230e0c",
+      "git_blob_sha1": "981711fc163a55b5af7b6433fe23534dd5cd4bbc"
+    },
+    {
+      "member": "evidence/published-originals/22941556/CLAIM_MATRIX.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/22941556/CLAIM_MATRIX.json",
+      "bytes": 1800,
+      "sha256": "4e0ff0214b117837b287950362b1591eaada750d0582b7546dec843f23b85f6c",
+      "git_blob_sha1": "cba47ea3855b14424cfd30c0dc971917b36dd4b5"
+    },
+    {
+      "member": "evidence/published-originals/22941556/PROOF_CLOSURE_CONTRACT.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/22941556/PROOF_CLOSURE_CONTRACT.json",
+      "bytes": 1399,
+      "sha256": "84bfe8072429e9169db6a2e2584a60ce91cbcdbfaaccc10ea684b9075ea1c9f9",
+      "git_blob_sha1": "48ce71016823b0dd35772307fd470724a306b408"
+    },
+    {
+      "member": "evidence/published-originals/22941556/PROOF_CLOSURE_DE.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/22941556/PROOF_CLOSURE_DE.md",
+      "bytes": 4329,
+      "sha256": "a3d68f64f95b298ed749b8673898a36b2170b83f22520d7326e0f39f9e630ce2",
+      "git_blob_sha1": "df3607e4fcbd1f14f5dab5843f501cafd9393af4"
+    },
+    {
+      "member": "evidence/published-originals/22955727/CLAIM_MATRIX_V2.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/22955727/CLAIM_MATRIX_V2.json",
+      "bytes": 4482,
+      "sha256": "bfe2637a8bc324bef5dc1662e6baa1be84281ec4e616998802bf35d39364cd28",
+      "git_blob_sha1": "65d5171441d79a6740a8724e4f7b90eb23371e03"
+    },
+    {
+      "member": "evidence/published-originals/22955727/KERNEL_RECEIPT.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/22955727/KERNEL_RECEIPT.json",
+      "bytes": 6519,
+      "sha256": "52275c78a9e2d0f1d15db707368037a0c7e70b1de5017e86c56a962b6a1d9516",
+      "git_blob_sha1": "ad7ce59ae2946e01b22ff68322150d8c58afd1d6"
+    },
+    {
+      "member": "evidence/published-originals/22955727/QIKVRTUniversalOntology_Core.lean",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/22955727/QIKVRTUniversalOntology_Core.lean",
+      "bytes": 10191,
+      "sha256": "9c8e6671c6e34b2edfabd4908a4d6ee14d6327584188f5559a595690e9a5e9f9",
+      "git_blob_sha1": "be10d960a2f29a1dc64a40450fa2f87c53720410"
+    },
+    {
+      "member": "evidence/published-originals/22955727/SCIENTIFIC_ARTICLE_DE.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/22955727/SCIENTIFIC_ARTICLE_DE.md",
+      "bytes": 24633,
+      "sha256": "311b6d76cc5a02fffa631eb94bd2e1049001b11f382c42c80df2db3364f699b3",
+      "git_blob_sha1": "137fa4df481dd60f45f6952cc3abbfe9060ba125"
+    },
+    {
+      "member": "evidence/published-originals/22955727/UNIVERSAL_ONTOLOGY_KERNEL_RECEIPT.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/22955727/UNIVERSAL_ONTOLOGY_KERNEL_RECEIPT.json",
+      "bytes": 5334,
+      "sha256": "ddbce2af801457291f3f71e0ab37391f3c84afc20303ca6516e0936c0dba16e9",
+      "git_blob_sha1": "b46eccd7efb4ac991709b5483c7cecc163b3ad2d"
+    },
+    {
+      "member": "evidence/published-originals/23008330/ARCHIVE_NOTE.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/23008330/ARCHIVE_NOTE.md",
+      "bytes": 1208,
+      "sha256": "9c3330b8e5a42ee0daa527259c4f62acb6cffb977b8678a1babc5c32b823acfe",
+      "git_blob_sha1": "e59ee5ebb4ecb1573410850da3a2de35a5cc7fc5"
+    },
+    {
+      "member": "evidence/published-originals/23008330/CLAIM_MATRIX.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/23008330/CLAIM_MATRIX.json",
+      "bytes": 5908,
+      "sha256": "1c877c8dc6ac0a9d27446f0462b4793dd5eaef141cef4e75a18aa830b47021a2",
+      "git_blob_sha1": "335caaf0746498bbb597d207c3e8bb42f148362d"
+    },
+    {
+      "member": "evidence/published-originals/23008330/QIKVRT_Lean_Lake_Pruefpaket_2026-09-15.zip",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/23008330/QIKVRT_Lean_Lake_Pruefpaket_2026-09-15.zip",
+      "bytes": 178084,
+      "sha256": "14a248d87844e1dee50865f4e27cdcfb9a27808f0393eba3f62f0088c7c95e18",
+      "git_blob_sha1": "b0105f50afee791f9dab7d59fbcc9ed0ada8c4d1"
+    },
+    {
+      "member": "evidence/published-originals/23008330/VORLESEFASSUNG.txt",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/23008330/VORLESEFASSUNG.txt",
+      "bytes": 27862,
+      "sha256": "2f0b9a6caa5dda0eecfc81157c068c7a4b8380b4a2ab82b222cca6cc38eb0f7e",
+      "git_blob_sha1": "f13fdfc614f8e28a74c1c1bc8e74def2729a1dc6"
+    },
+    {
+      "member": "evidence/published-originals/23008704/ARTICLE_DE.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/23008704/ARTICLE_DE.md",
+      "bytes": 22048,
+      "sha256": "676f135707dfaec7acce3a03af70b6439d06b31193748d49310f907f20458531",
+      "git_blob_sha1": "ea0cb283617964b07c31b185c9c22904ddc04b8f"
+    },
+    {
+      "member": "evidence/published-originals/23008704/CLAIM_MATRIX.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/23008704/CLAIM_MATRIX.json",
+      "bytes": 9093,
+      "sha256": "c98c5501cf8a37efb917d2b4101c465eec6625903bf1c3d98ef2bbb744ad2ce7",
+      "git_blob_sha1": "64777bc944b83debf58dd5fc052a07ef457416ea"
+    },
+    {
+      "member": "evidence/published-originals/23008704/MEASUREMENTS.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/23008704/MEASUREMENTS.json",
+      "bytes": 10301,
+      "sha256": "50a52ce9db0f2bc27d65b2d149eb70ab46a7c83f808351057f3be0cbaa6cb664",
+      "git_blob_sha1": "eb2d7456eb21469a1d68dd291f9f09250c4fb9f1"
+    },
+    {
+      "member": "evidence/published-originals/23008704/QUALITY_GATES.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/published-originals/23008704/QUALITY_GATES.json",
+      "bytes": 6261,
+      "sha256": "d6eec9879e301d74bb35bb1033c5deac2cede874c6151db38547648e9525a3fc",
+      "git_blob_sha1": "0d6e6a905d974668c007ce035a62a1b19dbd4247"
+    },
+    {
+      "member": "evidence/repository-source/AI_CONTEXT.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/repository-source/AI_CONTEXT.json",
+      "bytes": 13644,
+      "sha256": "9e3f42a37de3c67aa831aa1d08261cf4ffba2fb52765c2544b9613d2ec248a6e",
+      "git_blob_sha1": "de305b31a964696447bf5fdc8e6761198971758c"
+    },
+    {
+      "member": "evidence/repository-source/HISTORICAL_ARTIFACT_BOUNDARIES.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/repository-source/HISTORICAL_ARTIFACT_BOUNDARIES.md",
+      "bytes": 4326,
+      "sha256": "b9649269a62fdb0cfd9cc7252054df4ae94e929e9666391c4672921fc2770ddd",
+      "git_blob_sha1": "8f209bd4cac3de530a48336889ea53b3e6e1c7f0"
+    },
+    {
+      "member": "evidence/repository-source/LICENSE",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/repository-source/LICENSE",
+      "bytes": 3279,
+      "sha256": "b72bb73f40c5b63f77e4efa80a408d52b64c98ae4f0cb4cc99b86072285258f6",
+      "git_blob_sha1": "f8f1b350467a1a670adf4b6375d2d49cb5da4001"
+    },
+    {
+      "member": "evidence/repository-source/docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/README.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/repository-source/docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/README.md",
+      "bytes": 4809,
+      "sha256": "890f6a2d4a86ebb061f090e83508e95027161cb1fa99b34f19ab7085a2e7113c",
+      "git_blob_sha1": "cc5affec76a397802f6f8f4f6c8dc7d6c5cb92b6"
+    },
+    {
+      "member": "evidence/repository-source/docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/README.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/repository-source/docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/README.md",
+      "bytes": 19070,
+      "sha256": "fc1ad1612032934e6eb7a79798a90d69d2767ac1196209305ee5385ffb10a0e0",
+      "git_blob_sha1": "031e4dd7aaf01237b314fe4356c18cc81cf630e5"
+    },
+    {
+      "member": "evidence/repository-source/docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/measurement-binding/lake-build.log",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/repository-source/docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/measurement-binding/lake-build.log",
+      "bytes": 12373,
+      "sha256": "affc4520b6bdd9535fd79d85543866d77d662a1a318b131f9472ce1213423beb",
+      "git_blob_sha1": "2b320fad0035cb33383b5ec385f8876e4a21f5c1"
+    },
+    {
+      "member": "evidence/repository-source/docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/measurement-binding/receipt.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/repository-source/docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/measurement-binding/receipt.json",
+      "bytes": 7846,
+      "sha256": "44bedd9ea3caaf4f3d93e74024fe781dcb12429bbf5624d19597164797bfcea1",
+      "git_blob_sha1": "4b30fb6cb63d63b85db457f7d7c5d7b5a306a280"
+    },
+    {
+      "member": "evidence/repository-source/formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Physics/MeasurementTransfer.lean",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/repository-source/formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Physics/MeasurementTransfer.lean",
+      "bytes": 7420,
+      "sha256": "57749847cd5285c4d1295e35f31213d3c3b8920d7f980472006efa70f38696d3",
+      "git_blob_sha1": "73e4459fa77be82356d3d6771d3ff9577b9da864"
+    },
+    {
+      "member": "evidence/repository-source/policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/repository-source/policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+      "bytes": 2844,
+      "sha256": "9e2d46c3b97fe91fd17bf68355abb7641975a7d0c7cafaef5f1d5f459713db81",
+      "git_blob_sha1": "c0107276f4118d5e8e4574407e3965e0a1d2732b"
+    },
+    {
+      "member": "evidence/repository-source/policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/repository-source/policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+      "bytes": 9203,
+      "sha256": "84ed0abb1494e4e5fee98824c077781de34c12e7644f73aea310bf2cf47952c6",
+      "git_blob_sha1": "d8a529bedab31b1cbda41303953781e8e8bb182c"
+    },
+    {
+      "member": "evidence/repository-source/policy/ZENODO_MACHINE_PROOF_BEFORE_PUBLICATION.md",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/repository-source/policy/ZENODO_MACHINE_PROOF_BEFORE_PUBLICATION.md",
+      "bytes": 9124,
+      "sha256": "369eb73d96c347d8bee9d73abf80b8a70a0bec2fed2dcaaf62cdaf15a3568542",
+      "git_blob_sha1": "477a02fbb21954da7099831b72b71b51169952ec"
+    },
+    {
+      "member": "evidence/repository-source/policy/zenodo-machine-proof-policy-v2.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/repository-source/policy/zenodo-machine-proof-policy-v2.json",
+      "bytes": 4992,
+      "sha256": "933d6322a1e294848c6385d1384ab0ec3862c8675ebe35ec2fc4cad3e0baec47",
+      "git_blob_sha1": "e9578d30d22f845e7df684128dcd9332641c00be"
+    },
+    {
+      "member": "evidence/repository-source/registry/NODEMESH_INDEX.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/repository-source/registry/NODEMESH_INDEX.json",
+      "bytes": 1575,
+      "sha256": "2b82f68672663441711881687983655394b9b15019682adf222e310c03862215",
+      "git_blob_sha1": "615512ad2951b8c9f3ebd076f3b074d2cf25cbfa"
+    },
+    {
+      "member": "evidence/successor-source-binding.json",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/evidence/successor-source-binding.json",
+      "bytes": 255,
+      "sha256": "e5cab639b00e583a9207c800d85299d82cf408fb076a78779322060e6bad8796",
+      "git_blob_sha1": "3690745de49853f9810d6f2bc50050ffa49b5a5d"
+    }
+  ],
+  "selected_originals_in_archive": 93,
+  "all_selected_original_identities_checked": 377,
+  "private_original_included": false,
+  "full_personal_narrative_originals_republished": false,
+  "all_archive_members_read_back_byte_exact": true
+}

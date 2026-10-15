@@ -1,0 +1,3507 @@
+{
+  "schema": "qikvrt-trust-mesh-corpus-coverage-v1",
+  "catalog_version": "2026-10-15.2",
+  "versions": [
+    {
+      "record_id": 20712301,
+      "concept_record_id": "20712300",
+      "title": "QIK-VRT: Operationalisierte epistemische Zustandskontrolle und schichtgebundene Evidenzpersistenz",
+      "version": "QIKVRT V8.33",
+      "publication_date": "2026-06-16",
+      "record_created_utc": "2026-06-18T06:36:11.452897+00:00",
+      "record_updated_utc": "2026-06-18T06:36:11.741519+00:00",
+      "doi": "10.5281/zenodo.20712301",
+      "record_url": "https://zenodo.org/records/20712301",
+      "what_this_version_shows": "Archiviert einen frühen versionierten Bestand für Verifikation, Persistenz, Audit und Release-Gating informationskausaler Artefakte. Das Paket enthält Repositoryzustand, Manifeste, SHA-256-Bindungen, Auditmetadaten, Validierungslogik und Gate-Statusrecords.",
+      "files": [
+        {
+          "name": "QIKVRT_V8_33_REPOSITORY_AND_ANTICIPATORY_ZENODO_415_CONTENTTYPE_FIX.zip",
+          "bytes": 148269,
+          "native_checksum": "md5:48b1f4cb1ddaf017b874e55cdefd5dbb",
+          "content_url": "https://zenodo.org/api/records/20712301/files/QIKVRT_V8_33_REPOSITORY_AND_ANTICIPATORY_ZENODO_415_CONTENTTYPE_FIX.zip/content"
+        },
+        {
+          "name": "QIKVRT_V8_33_REPOSITORY_AND_ANTICIPATORY_ZENODO_415_CONTENTTYPE_FIX.zip.sha256",
+          "bytes": 138,
+          "native_checksum": "md5:e380ad2aa0b0b7034df9c91146e1c04a",
+          "content_url": "https://zenodo.org/api/records/20712301/files/QIKVRT_V8_33_REPOSITORY_AND_ANTICIPATORY_ZENODO_415_CONTENTTYPE_FIX.zip.sha256/content"
+        }
+      ]
+    },
+    {
+      "record_id": 21244412,
+      "concept_record_id": "21244411",
+      "title": "RFC-QIKVRT-0001",
+      "version": "qikvrt-v13.164-28434-5434",
+      "publication_date": "2026-07-07",
+      "record_created_utc": "2026-07-07T14:48:51.954720+00:00",
+      "record_updated_utc": "2026-07-07T14:48:52.222242+00:00",
+      "doi": "10.5281/zenodo.21244412",
+      "record_url": "https://zenodo.org/records/21244412",
+      "what_this_version_shows": "Versionierter QIKVRT-Repository-Snapshot. Die öffentliche Metadatenbeschreibung weist einen Software-Release aus; dessen Ausführung und behauptete wissenschaftliche Folgerungen wurden für dieses Fassungsverzeichnis nicht neu geprüft.",
+      "files": [
+        {
+          "name": "ingolf-lohmann/qik-vrt-qikvrt-v13.164-28434-5434.zip",
+          "bytes": 150800,
+          "native_checksum": "md5:57c0e108f240f54f4478c048f9ba958b",
+          "content_url": "https://zenodo.org/api/records/21244412/files/ingolf-lohmann/qik-vrt-qikvrt-v13.164-28434-5434.zip/content"
+        }
+      ]
+    },
+    {
+      "record_id": 21245282,
+      "concept_record_id": "21244411",
+      "title": "RFC-QIKVRT-0001",
+      "version": "qikvrt-v13.164-1077-22520",
+      "publication_date": "2026-07-07",
+      "record_created_utc": "2026-07-07T15:16:28.136551+00:00",
+      "record_updated_utc": "2026-07-07T15:16:28.340310+00:00",
+      "doi": "10.5281/zenodo.21245282",
+      "record_url": "https://zenodo.org/records/21245282",
+      "what_this_version_shows": "Versionierter QIKVRT-Repository-Snapshot. Die öffentliche Metadatenbeschreibung weist einen Software-Release aus; dessen Ausführung und behauptete wissenschaftliche Folgerungen wurden für dieses Fassungsverzeichnis nicht neu geprüft.",
+      "files": [
+        {
+          "name": "ingolf-lohmann/qik-vrt-qikvrt-v13.164-1077-22520.zip",
+          "bytes": 150800,
+          "native_checksum": "md5:57c0e108f240f54f4478c048f9ba958b",
+          "content_url": "https://zenodo.org/api/records/21245282/files/ingolf-lohmann/qik-vrt-qikvrt-v13.164-1077-22520.zip/content"
+        }
+      ]
+    },
+    {
+      "record_id": 21245951,
+      "concept_record_id": "21244411",
+      "title": "RFC-QIKVRT-0001",
+      "version": "qikvrt-v13.164-9927-19949",
+      "publication_date": "2026-07-07",
+      "record_created_utc": "2026-07-07T16:01:42.007782+00:00",
+      "record_updated_utc": "2026-07-07T16:01:42.197548+00:00",
+      "doi": "10.5281/zenodo.21245951",
+      "record_url": "https://zenodo.org/records/21245951",
+      "what_this_version_shows": "Versionierter QIKVRT-Repository-Snapshot. Die öffentliche Metadatenbeschreibung weist einen Software-Release aus; dessen Ausführung und behauptete wissenschaftliche Folgerungen wurden für dieses Fassungsverzeichnis nicht neu geprüft.",
+      "files": [
+        {
+          "name": "ingolf-lohmann/qik-vrt-qikvrt-v13.164-9927-19949.zip",
+          "bytes": 150800,
+          "native_checksum": "md5:57c0e108f240f54f4478c048f9ba958b",
+          "content_url": "https://zenodo.org/api/records/21245951/files/ingolf-lohmann/qik-vrt-qikvrt-v13.164-9927-19949.zip/content"
+        }
+      ]
+    },
+    {
+      "record_id": 21247297,
+      "concept_record_id": "21244411",
+      "title": "RFC-QIKVRT-0001",
+      "version": "qikvrt-v13.164-32156-13407",
+      "publication_date": "2026-07-07",
+      "record_created_utc": "2026-07-07T17:55:08.566904+00:00",
+      "record_updated_utc": "2026-07-07T17:55:08.767646+00:00",
+      "doi": "10.5281/zenodo.21247297",
+      "record_url": "https://zenodo.org/records/21247297",
+      "what_this_version_shows": "Versionierter QIKVRT-Repository-Snapshot. Die öffentliche Metadatenbeschreibung weist einen Software-Release aus; dessen Ausführung und behauptete wissenschaftliche Folgerungen wurden für dieses Fassungsverzeichnis nicht neu geprüft.",
+      "files": [
+        {
+          "name": "ingolf-lohmann/qik-vrt-qikvrt-v13.164-32156-13407.zip",
+          "bytes": 150800,
+          "native_checksum": "md5:57c0e108f240f54f4478c048f9ba958b",
+          "content_url": "https://zenodo.org/api/records/21247297/files/ingolf-lohmann/qik-vrt-qikvrt-v13.164-32156-13407.zip/content"
+        }
+      ]
+    },
+    {
+      "record_id": 21247388,
+      "concept_record_id": "21244411",
+      "title": "RFC-QIKVRT-0001",
+      "version": "qikvrt-v13.164-1210-14474",
+      "publication_date": "2026-07-07",
+      "record_created_utc": "2026-07-07T18:04:17.098662+00:00",
+      "record_updated_utc": "2026-07-07T18:04:17.328967+00:00",
+      "doi": "10.5281/zenodo.21247388",
+      "record_url": "https://zenodo.org/records/21247388",
+      "what_this_version_shows": "Versionierter QIKVRT-Repository-Snapshot. Die öffentliche Metadatenbeschreibung weist einen Software-Release aus; dessen Ausführung und behauptete wissenschaftliche Folgerungen wurden für dieses Fassungsverzeichnis nicht neu geprüft.",
+      "files": [
+        {
+          "name": "ingolf-lohmann/qik-vrt-qikvrt-v13.164-1210-14474.zip",
+          "bytes": 150800,
+          "native_checksum": "md5:57c0e108f240f54f4478c048f9ba958b",
+          "content_url": "https://zenodo.org/api/records/21247388/files/ingolf-lohmann/qik-vrt-qikvrt-v13.164-1210-14474.zip/content"
+        }
+      ]
+    },
+    {
+      "record_id": 21252415,
+      "concept_record_id": "21244411",
+      "title": "ingolf-lohmann/qik-vrt: QIKVRT V2.13.4 node repository",
+      "version": "v2.13.4-node",
+      "publication_date": "2026-07-08",
+      "record_created_utc": "2026-07-08T01:45:41.622048+00:00",
+      "record_updated_utc": "2026-07-08T01:45:41.915787+00:00",
+      "doi": "10.5281/zenodo.21252415",
+      "record_url": "https://zenodo.org/records/21252415",
+      "what_this_version_shows": "Versionierter QIKVRT-Repository-Snapshot. Die öffentliche Metadatenbeschreibung weist einen Software-Release aus; dessen Ausführung und behauptete wissenschaftliche Folgerungen wurden für dieses Fassungsverzeichnis nicht neu geprüft.",
+      "files": [
+        {
+          "name": "ingolf-lohmann/qik-vrt-v2.13.4-node.zip",
+          "bytes": 300638,
+          "native_checksum": "md5:8393efa42dbf53022f861bf993ca07e9",
+          "content_url": "https://zenodo.org/api/records/21252415/files/ingolf-lohmann/qik-vrt-v2.13.4-node.zip/content"
+        }
+      ]
+    },
+    {
+      "record_id": 21252649,
+      "concept_record_id": "21244411",
+      "title": "ingolf-lohmann/qik-vrt: QIKVRT V2.13.4R node repository",
+      "version": "v2.13.4-node-r",
+      "publication_date": "2026-07-08",
+      "record_created_utc": "2026-07-08T02:15:51.966324+00:00",
+      "record_updated_utc": "2026-07-08T02:15:52.149236+00:00",
+      "doi": "10.5281/zenodo.21252649",
+      "record_url": "https://zenodo.org/records/21252649",
+      "what_this_version_shows": "Versionierter QIKVRT-Repository-Snapshot. Die öffentliche Metadatenbeschreibung weist einen Software-Release aus; dessen Ausführung und behauptete wissenschaftliche Folgerungen wurden für dieses Fassungsverzeichnis nicht neu geprüft.",
+      "files": [
+        {
+          "name": "ingolf-lohmann/qik-vrt-v2.13.4-node-r.zip",
+          "bytes": 305905,
+          "native_checksum": "md5:6c3ad9e502cc56e7dea60a06bd01d3f7",
+          "content_url": "https://zenodo.org/api/records/21252649/files/ingolf-lohmann/qik-vrt-v2.13.4-node-r.zip/content"
+        }
+      ]
+    },
+    {
+      "record_id": 21266670,
+      "concept_record_id": "21244411",
+      "title": "RFC-QIKVRT-0001",
+      "version": "v2.13.4au1-node-productization",
+      "publication_date": "2026-07-08",
+      "record_created_utc": "2026-07-08T17:25:59.539365+00:00",
+      "record_updated_utc": "2026-07-08T17:25:59.790033+00:00",
+      "doi": "10.5281/zenodo.21266670",
+      "record_url": "https://zenodo.org/records/21266670",
+      "what_this_version_shows": "Versionierter QIKVRT-Repository-Snapshot. Die öffentliche Metadatenbeschreibung weist einen Software-Release aus; dessen Ausführung und behauptete wissenschaftliche Folgerungen wurden für dieses Fassungsverzeichnis nicht neu geprüft.",
+      "files": [
+        {
+          "name": "ingolf-lohmann/qik-vrt-v2.13.4au1-node-productization.zip",
+          "bytes": 75863605,
+          "native_checksum": "md5:1bc5307de317cd33409b59a7c424e1fc",
+          "content_url": "https://zenodo.org/api/records/21266670/files/ingolf-lohmann/qik-vrt-v2.13.4au1-node-productization.zip/content"
+        }
+      ]
+    },
+    {
+      "record_id": 21267021,
+      "concept_record_id": "21244411",
+      "title": "RFC-QIKVRT-0001",
+      "version": "v2.13.4av1-node-open-multi-node",
+      "publication_date": "2026-07-08",
+      "record_created_utc": "2026-07-08T18:01:08.004488+00:00",
+      "record_updated_utc": "2026-07-08T18:01:08.317581+00:00",
+      "doi": "10.5281/zenodo.21267021",
+      "record_url": "https://zenodo.org/records/21267021",
+      "what_this_version_shows": "Archiviert versionierte Repository-Snapshots der QIKVRT-Knotenentwicklung. Neun veröffentlichte Fassungen derselben Zenodo-Familie sind erfasst, darunter zwei automatische Releases unter dem Creator-Namen ingolf-lohmann. Die native Metadatenbeschreibung nennt im Repository materialisierte DOI-Statusinformationen.",
+      "files": [
+        {
+          "name": "ingolf-lohmann/qik-vrt-v2.13.4av1-node-open-multi-node.zip",
+          "bytes": 75962793,
+          "native_checksum": "md5:ed4a71499081950a2e04afc089b6a1fe",
+          "content_url": "https://zenodo.org/api/records/21267021/files/ingolf-lohmann/qik-vrt-v2.13.4av1-node-open-multi-node.zip/content"
+        }
+      ]
+    },
+    {
+      "record_id": 21482023,
+      "concept_record_id": "21482022",
+      "title": "Mandelbrot-Menge, Anschlussordnung und physikalisches Modelluniversum – Komplementbeweis, rekursive Wirkungsklassifikation, dimensionsrichtige Raumzeitbrücke, Retrokausalität und der entscheidende Unterschied zur empirischen Quantengravitation",
+      "version": "3.0",
+      "publication_date": "2026-07-21",
+      "record_created_utc": "2026-07-22T00:40:53.325637+00:00",
+      "record_updated_utc": "2026-07-22T00:40:53.753829+00:00",
+      "doi": "10.5281/zenodo.21482023",
+      "record_url": "https://zenodo.org/records/21482023",
+      "what_this_version_shows": "Das 62-seitige Manuskript beweist die vollständige disjunkte Komplementpartition eines festgelegten Grundbereichs und behandelt endliche Quantisierbarkeit bei positiver Genauigkeit. Es entwickelt rekursive Anschlussordnungen, Reklassifikation ohne Überschreiben, eine dimensionsrichtige Raumzeitbrücke und voneinander getrennte Retrokausalitätsbegriffe.",
+      "files": [
+        {
+          "name": "Mandelbrot_Komplement_Modelluniversum_Entscheidender_Unterschied_2026-07-21.bib",
+          "bytes": 21269,
+          "native_checksum": "md5:f11c2ec157f9ec7a214fbbedd3df09c3",
+          "content_url": "https://zenodo.org/api/records/21482023/files/Mandelbrot_Komplement_Modelluniversum_Entscheidender_Unterschied_2026-07-21.bib/content"
+        },
+        {
+          "name": "Mandelbrot_Komplement_Modelluniversum_Entscheidender_Unterschied_2026-07-21.tex",
+          "bytes": 154356,
+          "native_checksum": "md5:78087fe316184dc534c02ad9e8966d17",
+          "content_url": "https://zenodo.org/api/records/21482023/files/Mandelbrot_Komplement_Modelluniversum_Entscheidender_Unterschied_2026-07-21.tex/content"
+        },
+        {
+          "name": "Mandelbrot_Anschlussordnung_Physik_Retrokausalitaet_V3_2026-07-21.pdf",
+          "bytes": 601860,
+          "native_checksum": "md5:bd093de923059833fc880d8de4e61cb7",
+          "content_url": "https://zenodo.org/api/records/21482023/files/Mandelbrot_Anschlussordnung_Physik_Retrokausalitaet_V3_2026-07-21.pdf/content"
+        },
+        {
+          "name": "README.md",
+          "bytes": 3695,
+          "native_checksum": "md5:5922e7fde06a8a38045d1ba2585b8a0c",
+          "content_url": "https://zenodo.org/api/records/21482023/files/README.md/content"
+        },
+        {
+          "name": "SHA256SUMS",
+          "bytes": 428,
+          "native_checksum": "md5:e706efe31966e69ba2e80ed1322b0c51",
+          "content_url": "https://zenodo.org/api/records/21482023/files/SHA256SUMS/content"
+        }
+      ]
+    },
+    {
+      "record_id": 21488116,
+      "concept_record_id": "21488115",
+      "title": "QIK-VRT: Vollständige maschinenprüfbare Formalisierung des formal entscheidbaren Kerns",
+      "version": "1.0.0",
+      "publication_date": "2026-07-22",
+      "record_created_utc": "2026-07-22T09:15:10.156322+00:00",
+      "record_updated_utc": "2026-07-22T09:15:10.699849+00:00",
+      "doi": "10.5281/zenodo.21488116",
+      "record_url": "https://zenodo.org/records/21488116",
+      "what_this_version_shows": "Frühe Formalisierung des formal entscheidbaren Kerns mit 37 klassifizierten Aussagen, Lean-Belegen und 18 Gate-Kontrollen. Ihr engerer Scope ist von der späteren theoremweisen Manuskriptbindung zu unterscheiden.",
+      "files": [
+        {
+          "name": "SHA256SUMS",
+          "bytes": 3778,
+          "native_checksum": "md5:b7bb71fd66747d502fa77fcae32fa62b",
+          "content_url": "https://zenodo.org/api/records/21488116/files/SHA256SUMS/content"
+        },
+        {
+          "name": "README.md",
+          "bytes": 4258,
+          "native_checksum": "md5:f5b74e3f085814358e803a896f86b30d",
+          "content_url": "https://zenodo.org/api/records/21488116/files/README.md/content"
+        },
+        {
+          "name": "FORMALIZATION_BOUNDARY.md",
+          "bytes": 4100,
+          "native_checksum": "md5:561af9cce42b7f4b8d92270c3b2cf2e6",
+          "content_url": "https://zenodo.org/api/records/21488116/files/FORMALIZATION_BOUNDARY.md/content"
+        },
+        {
+          "name": "CITATION.cff",
+          "bytes": 824,
+          "native_checksum": "md5:d7d840ab394deeca8367d009b930a431",
+          "content_url": "https://zenodo.org/api/records/21488116/files/CITATION.cff/content"
+        },
+        {
+          "name": "lean-verification.json",
+          "bytes": 457,
+          "native_checksum": "md5:04972a586159bc28063c1ac4f7a2bb8b",
+          "content_url": "https://zenodo.org/api/records/21488116/files/lean-verification.json/content"
+        },
+        {
+          "name": "gate20-python-report.json",
+          "bytes": 2472,
+          "native_checksum": "md5:60d7e74eef09192c310e0d593711878b",
+          "content_url": "https://zenodo.org/api/records/21488116/files/gate20-python-report.json/content"
+        },
+        {
+          "name": "QIKVRT_Formalization_v1.0_2026-07-22.zip",
+          "bytes": 697667,
+          "native_checksum": "md5:f457de92d4c77b3aa348d4cb7fe67f33",
+          "content_url": "https://zenodo.org/api/records/21488116/files/QIKVRT_Formalization_v1.0_2026-07-22.zip/content"
+        },
+        {
+          "name": "gate20-report.json",
+          "bytes": 3197,
+          "native_checksum": "md5:cb24567ea0aeded4341db70f37870a25",
+          "content_url": "https://zenodo.org/api/records/21488116/files/gate20-report.json/content"
+        }
+      ]
+    },
+    {
+      "record_id": 21498773,
+      "concept_record_id": "21498772",
+      "title": "QIK-VRT/EFFECT_ACK: Verfassungsschicht der Wirkung - Exhaustive Prüfung eines bedingten Kontrollsatzes, Grenzen universeller Rekonstruktion und cyberphysische Geltungsbedingungen",
+      "version": "1.0.0",
+      "publication_date": "2026-07-22",
+      "record_created_utc": "2026-07-22T20:12:19.868044+00:00",
+      "record_updated_utc": "2026-07-22T20:12:20.558367+00:00",
+      "doi": "10.5281/zenodo.21498773",
+      "record_url": "https://zenodo.org/records/21498773",
+      "what_this_version_shows": "Prüft exhaustiv 2.621.440 Belegungen einer endlichen Kontrollabstraktion und 5.242.880 Verbraucherzulassungsvarianten. Behandelt fünf Zustände, DONE-only-Freigabe unter vollständiger Mediation, Prioritäts- und CoreDone-Pflichten sowie die Bedingungen semantischer Faktorisierung und historischer Inversion.",
+      "files": [
+        {
+          "name": "README.md",
+          "bytes": 5764,
+          "native_checksum": "md5:a6adef3e3dfc96636a87778801d1e6a4",
+          "content_url": "https://zenodo.org/api/records/21498773/files/README.md/content"
+        },
+        {
+          "name": "ARTICLE_DE.md",
+          "bytes": 31305,
+          "native_checksum": "md5:dc90091daa15103f011a9957895a6168",
+          "content_url": "https://zenodo.org/api/records/21498773/files/ARTICLE_DE.md/content"
+        },
+        {
+          "name": "QIK-VRT_EFFECT_ACK_Universalisierbare_Wirkungssteuerung_2026-07-22.tex",
+          "bytes": 20457,
+          "native_checksum": "md5:7c8b6b16aad5b707ff3ff3c23268ddc5",
+          "content_url": "https://zenodo.org/api/records/21498773/files/QIK-VRT_EFFECT_ACK_Universalisierbare_Wirkungssteuerung_2026-07-22.tex/content"
+        },
+        {
+          "name": "QIK-VRT_EFFECT_ACK_Universalisierbare_Wirkungssteuerung_2026-07-22.pdf",
+          "bytes": 78480,
+          "native_checksum": "md5:a3c4a3c05c4b29b492d07c586625b999",
+          "content_url": "https://zenodo.org/api/records/21498773/files/QIK-VRT_EFFECT_ACK_Universalisierbare_Wirkungssteuerung_2026-07-22.pdf/content"
+        },
+        {
+          "name": "IETF_RENDER_VALIDATION.json",
+          "bytes": 3271,
+          "native_checksum": "md5:ab2fa1741e4f4e550e238fda05aa692c",
+          "content_url": "https://zenodo.org/api/records/21498773/files/IETF_RENDER_VALIDATION.json/content"
+        },
+        {
+          "name": "CITATION.cff",
+          "bytes": 1660,
+          "native_checksum": "md5:f7b82211b52de70bf976f456e985c2ea",
+          "content_url": "https://zenodo.org/api/records/21498773/files/CITATION.cff/content"
+        },
+        {
+          "name": "ZENODO_SHA256SUMS",
+          "bytes": 1024,
+          "native_checksum": "md5:29ce0037f08f7ff652c3242d65d33d58",
+          "content_url": "https://zenodo.org/api/records/21498773/files/ZENODO_SHA256SUMS/content"
+        },
+        {
+          "name": "LICENSE_NOTICE.md",
+          "bytes": 1119,
+          "native_checksum": "md5:761173092435db380cdb35419e8e9595",
+          "content_url": "https://zenodo.org/api/records/21498773/files/LICENSE_NOTICE.md/content"
+        },
+        {
+          "name": "DRAFT_IMPACT.md",
+          "bytes": 1478,
+          "native_checksum": "md5:77efdbcfe975fd5e1898ee8c0543d4bc",
+          "content_url": "https://zenodo.org/api/records/21498773/files/DRAFT_IMPACT.md/content"
+        },
+        {
+          "name": "proof-report.json",
+          "bytes": 10865,
+          "native_checksum": "md5:86c82a48e356d983d32d86810808f97a",
+          "content_url": "https://zenodo.org/api/records/21498773/files/proof-report.json/content"
+        },
+        {
+          "name": "EVIDENCE_BOUNDARY.md",
+          "bytes": 2938,
+          "native_checksum": "md5:5890b472387bf3f7a1306f2d51e963a4",
+          "content_url": "https://zenodo.org/api/records/21498773/files/EVIDENCE_BOUNDARY.md/content"
+        },
+        {
+          "name": "ZENODO_FILESET.md",
+          "bytes": 1326,
+          "native_checksum": "md5:bae01e2c2f77e5bb3993747bb9e3f1b3",
+          "content_url": "https://zenodo.org/api/records/21498773/files/ZENODO_FILESET.md/content"
+        }
+      ]
+    },
+    {
+      "record_id": 21498774,
+      "concept_record_id": "21488115",
+      "title": "QIK-VRT: EFFECT_ACK - universalisierbare Wirkungssteuerung und adaptive fail-closed Laufzeit",
+      "version": "2026.07.22-effect-ack-universality-1.0.0",
+      "publication_date": "2026-07-22",
+      "record_created_utc": "2026-07-22T20:12:26.467864+00:00",
+      "record_updated_utc": "2026-07-22T20:12:26.767053+00:00",
+      "doi": "10.5281/zenodo.21498774",
+      "record_url": "https://zenodo.org/records/21498774",
+      "what_this_version_shows": "Softwarefassung mit C90-EFFECT_ACK-Kern, exhaustiver endlicher Prüfung, Draft-01-Validierung und begrenztem adaptivem Vorschlagsprozess. Kein universeller Decoder und keine voraussetzungslose physikalische Sicherheit.",
+      "files": [
+        {
+          "name": "qik-vrt-v2026.07.22-effect-ack-universality-1.0.0-source.tar.gz.sha256",
+          "bytes": 130,
+          "native_checksum": "md5:e786e1e10f859d1960519930438532e9",
+          "content_url": "https://zenodo.org/api/records/21498774/files/qik-vrt-v2026.07.22-effect-ack-universality-1.0.0-source.tar.gz.sha256/content"
+        },
+        {
+          "name": "qik-vrt-effect-ack-source-export-provenance.json",
+          "bytes": 1082,
+          "native_checksum": "md5:898967a157d5b54c4959037d4a4bb876",
+          "content_url": "https://zenodo.org/api/records/21498774/files/qik-vrt-effect-ack-source-export-provenance.json/content"
+        },
+        {
+          "name": "qik-vrt-v2026.07.22-effect-ack-universality-1.0.0-source.tar.gz",
+          "bytes": 102094416,
+          "native_checksum": "md5:645eb72d099a303da91ce37ceb3e95bf",
+          "content_url": "https://zenodo.org/api/records/21498774/files/qik-vrt-v2026.07.22-effect-ack-universality-1.0.0-source.tar.gz/content"
+        }
+      ]
+    },
+    {
+      "record_id": 21500322,
+      "concept_record_id": "21500321",
+      "title": "QIK-VRT/EFFECT_ACK: Offizielle Statusklärung zu Evidenz, Totalisierungsgrenzen, Quantenbezug und Patentoffenlegung",
+      "version": "1.0.0",
+      "publication_date": "2026-07-22",
+      "record_created_utc": "2026-07-22T22:11:57.175944+00:00",
+      "record_updated_utc": "2026-07-22T22:11:58.071457+00:00",
+      "doi": "10.5281/zenodo.21500322",
+      "record_url": "https://zenodo.org/records/21500322",
+      "what_this_version_shows": "Ordnet die veröffentlichten Wirkungssteuerungs- und Formalisierungsartefakte mit PASS_WITH_EXPLICIT_BOUNDARIES ein. Hält endliche Kontrollprüfung, semantische Faktorisierung, Injektivität, Quantisierbarkeit, Dimensionshomogenität und einen modellgebundenen No-Backward-Channel-Satz fest; trennt Quantenbezug, Patentoffenlegung und Dateilizenzen.",
+      "files": [
+        {
+          "name": "README.md",
+          "bytes": 4635,
+          "native_checksum": "md5:f16a9ab1e7c5d949d6a7c552b3cae923",
+          "content_url": "https://zenodo.org/api/records/21500322/files/README.md/content"
+        },
+        {
+          "name": "LICENSE_NOTICE.md",
+          "bytes": 3930,
+          "native_checksum": "md5:cb1f1f0b0f47ae2f6fe06ffcda55b93a",
+          "content_url": "https://zenodo.org/api/records/21500322/files/LICENSE_NOTICE.md/content"
+        },
+        {
+          "name": "PATENT_DISCLOSURE_BOUNDARY.md",
+          "bytes": 6404,
+          "native_checksum": "md5:8d4f4bf8a558b2160a39d0599bd5b888",
+          "content_url": "https://zenodo.org/api/records/21500322/files/PATENT_DISCLOSURE_BOUNDARY.md/content"
+        },
+        {
+          "name": "CITATION.cff",
+          "bytes": 1615,
+          "native_checksum": "md5:d104ba0c4110fce1181ba2cf0082411c",
+          "content_url": "https://zenodo.org/api/records/21500322/files/CITATION.cff/content"
+        },
+        {
+          "name": "ZENODO_FILESET.md",
+          "bytes": 1292,
+          "native_checksum": "md5:733516af87db4fa5548a42ee11488890",
+          "content_url": "https://zenodo.org/api/records/21500322/files/ZENODO_FILESET.md/content"
+        },
+        {
+          "name": "EVIDENCE_INDEX.json",
+          "bytes": 3561,
+          "native_checksum": "md5:61ed28f9816cd6d9911f0f459e5f080a",
+          "content_url": "https://zenodo.org/api/records/21500322/files/EVIDENCE_INDEX.json/content"
+        },
+        {
+          "name": "QIK-VRT_EFFECT_ACK_Statusklaerung_2026-07-22.pdf",
+          "bytes": 74102,
+          "native_checksum": "md5:8def5d5ffae8a6e6c579991d88bf1528",
+          "content_url": "https://zenodo.org/api/records/21500322/files/QIK-VRT_EFFECT_ACK_Statusklaerung_2026-07-22.pdf/content"
+        },
+        {
+          "name": "EVIDENCE_BOUNDARY.md",
+          "bytes": 6998,
+          "native_checksum": "md5:45782c9f11a1dd342a17f224408139f2",
+          "content_url": "https://zenodo.org/api/records/21500322/files/EVIDENCE_BOUNDARY.md/content"
+        },
+        {
+          "name": "STATUSERKLAERUNG_DE.md",
+          "bytes": 12282,
+          "native_checksum": "md5:ce27d48dd6b57cd64f4257e20d0975db",
+          "content_url": "https://zenodo.org/api/records/21500322/files/STATUSERKLAERUNG_DE.md/content"
+        },
+        {
+          "name": "ZENODO_PUBLIC_INVENTORY.md",
+          "bytes": 4248,
+          "native_checksum": "md5:812ff3375fb8c02a66463b0e3ddb8ed5",
+          "content_url": "https://zenodo.org/api/records/21500322/files/ZENODO_PUBLIC_INVENTORY.md/content"
+        },
+        {
+          "name": "WHATSAPP_RELEASE_KOMMENTAR_DE.md",
+          "bytes": 2739,
+          "native_checksum": "md5:27743462c2438c91ef9e98b8942c9e4a",
+          "content_url": "https://zenodo.org/api/records/21500322/files/WHATSAPP_RELEASE_KOMMENTAR_DE.md/content"
+        },
+        {
+          "name": "RELEASE_NOTES_WHATSAPP_DE.md",
+          "bytes": 4486,
+          "native_checksum": "md5:e8d7ef85182059b63a0ce4833e936b67",
+          "content_url": "https://zenodo.org/api/records/21500322/files/RELEASE_NOTES_WHATSAPP_DE.md/content"
+        },
+        {
+          "name": "BUILD_PROVENANCE.json",
+          "bytes": 1760,
+          "native_checksum": "md5:cc9cc30838c0592802e6a5192ba655d8",
+          "content_url": "https://zenodo.org/api/records/21500322/files/BUILD_PROVENANCE.json/content"
+        }
+      ]
+    },
+    {
+      "record_id": 21501365,
+      "concept_record_id": "21488115",
+      "title": "QIK-VRT: Quellengebundene partielle Lean-4-Formalisierung des 62-seitigen Manuskripts",
+      "version": "2.0.0-alpha.1",
+      "publication_date": "2026-07-23",
+      "record_created_utc": "2026-07-23T01:23:42.977626+00:00",
+      "record_updated_utc": "2026-07-23T01:23:43.636793+00:00",
+      "doi": "10.5281/zenodo.21501365",
+      "record_url": "https://zenodo.org/records/21501365",
+      "what_this_version_shows": "Alpha 1 inventarisiert sämtliche 40 Formalumgebungen. Zwölf atomare Lean-Bindungen decken zehn der zwanzig theoremartigen Umgebungen vollständig ab; drei Bindungen sind nur Teilansprüche. Die damals offenen Aggregate und Definitionstypen werden später durch Alpha 3 weiterbearbeitet.",
+      "files": [
+        {
+          "name": "LICENSE-CODE",
+          "bytes": 1072,
+          "native_checksum": "md5:f4696fa39b6563307b9ea51d3e2a0fb9",
+          "content_url": "https://zenodo.org/api/records/21501365/files/LICENSE-CODE/content"
+        },
+        {
+          "name": "FORMALIZATION_SCOPE.md",
+          "bytes": 2334,
+          "native_checksum": "md5:b788a27bc6d9a7d80d24324eab1591bf",
+          "content_url": "https://zenodo.org/api/records/21501365/files/FORMALIZATION_SCOPE.md/content"
+        },
+        {
+          "name": "SOURCE_PROVENANCE.json",
+          "bytes": 1155,
+          "native_checksum": "md5:17df634e1bb6b8fa0af10feb6c8cd781",
+          "content_url": "https://zenodo.org/api/records/21501365/files/SOURCE_PROVENANCE.json/content"
+        },
+        {
+          "name": "CLAIM_GRAPH.json",
+          "bytes": 29162,
+          "native_checksum": "md5:61af8067bae8bcc0004b4d2e1b5ca1f9",
+          "content_url": "https://zenodo.org/api/records/21501365/files/CLAIM_GRAPH.json/content"
+        },
+        {
+          "name": "README.md",
+          "bytes": 3761,
+          "native_checksum": "md5:8a39affb41fddefafb5a515209e616e4",
+          "content_url": "https://zenodo.org/api/records/21501365/files/README.md/content"
+        },
+        {
+          "name": "QIKVRT_Formalization_v2.0-alpha.1.zip.sha256",
+          "bytes": 104,
+          "native_checksum": "md5:b48026a7437b6fd82910a986927eb520",
+          "content_url": "https://zenodo.org/api/records/21501365/files/QIKVRT_Formalization_v2.0-alpha.1.zip.sha256/content"
+        },
+        {
+          "name": "CC-BY-NC-ND-4.0.txt",
+          "bytes": 19127,
+          "native_checksum": "md5:c70f85fe39eb601f25b595299c688bfd",
+          "content_url": "https://zenodo.org/api/records/21501365/files/CC-BY-NC-ND-4.0.txt/content"
+        },
+        {
+          "name": "QIKVRT_Formalization_v2.0-alpha.1.zip",
+          "bytes": 732776,
+          "native_checksum": "md5:8e8ee5054a3f2e5e46eb3b0c872e320b",
+          "content_url": "https://zenodo.org/api/records/21501365/files/QIKVRT_Formalization_v2.0-alpha.1.zip/content"
+        },
+        {
+          "name": "release-authorization-INPUT.json",
+          "bytes": 1860,
+          "native_checksum": "md5:b6afaaef5eb470f522c00cf3fd247af1",
+          "content_url": "https://zenodo.org/api/records/21501365/files/release-authorization-INPUT.json/content"
+        },
+        {
+          "name": "VERIFICATION_REPORT.md",
+          "bytes": 1783,
+          "native_checksum": "md5:a7eff403ae18f1ee48313d32e5f951ab",
+          "content_url": "https://zenodo.org/api/records/21501365/files/VERIFICATION_REPORT.md/content"
+        },
+        {
+          "name": "MANUSCRIPT_PROOF_MAP.md",
+          "bytes": 8765,
+          "native_checksum": "md5:c144e31d765a39eab45cd94cce676347",
+          "content_url": "https://zenodo.org/api/records/21501365/files/MANUSCRIPT_PROOF_MAP.md/content"
+        },
+        {
+          "name": "release-authorization-EFFECT_ACK_DONE.json",
+          "bytes": 2935,
+          "native_checksum": "md5:53e93985619430496e5f0f37e20a9804",
+          "content_url": "https://zenodo.org/api/records/21501365/files/release-authorization-EFFECT_ACK_DONE.json/content"
+        },
+        {
+          "name": "LICENSE_NOTICE.md",
+          "bytes": 1218,
+          "native_checksum": "md5:38b420f3142a41a09df03b94ec106d2b",
+          "content_url": "https://zenodo.org/api/records/21501365/files/LICENSE_NOTICE.md/content"
+        },
+        {
+          "name": "RELEASE_NOTES_WHATSAPP_DE.md",
+          "bytes": 2647,
+          "native_checksum": "md5:e809a1512baad2764f2dea8ac649b5b8",
+          "content_url": "https://zenodo.org/api/records/21501365/files/RELEASE_NOTES_WHATSAPP_DE.md/content"
+        }
+      ]
+    },
+    {
+      "record_id": 21515074,
+      "concept_record_id": "21515073",
+      "title": "Charta einer maschinenprüfbaren Wissenschaft",
+      "version": "1.0.0-2026-07-23",
+      "publication_date": "2026-07-23",
+      "record_created_utc": "2026-07-23T17:36:40.632773+00:00",
+      "record_updated_utc": "2026-07-23T17:36:40.846436+00:00",
+      "doi": "10.5281/zenodo.21515074",
+      "record_url": "https://zenodo.org/records/21515074",
+      "what_this_version_shows": "Formuliert Architekturgrundprinzipien für transparente, maschinenlesbare, reproduzierbare und revisionsfähige wissenschaftliche Wissensbestände. Beschreibt eine hashgebundene Referenzarchitektur für nachvollziehbare Persistenz.",
+      "files": [
+        {
+          "name": "CHARTA_MASCHINENPRUEFBARE_WISSENSCHAFT.md",
+          "bytes": 10127,
+          "native_checksum": "md5:ecb1652d9e2c269ed03b28634392b183",
+          "content_url": "https://zenodo.org/api/records/21515074/files/CHARTA_MASCHINENPRUEFBARE_WISSENSCHAFT.md/content"
+        }
+      ]
+    },
+    {
+      "record_id": 21518464,
+      "concept_record_id": "21488115",
+      "title": "QIK-VRT: Quellengebundene partielle Lean-4-Formalisierung des 62-seitigen Manuskripts – Alpha 2 mit EFFECT_ACK-Kern",
+      "version": "2.0.0-alpha.2",
+      "publication_date": "2026-07-23",
+      "record_created_utc": "2026-07-23T22:41:03.864799+00:00",
+      "record_updated_utc": "2026-07-23T22:41:05.295874+00:00",
+      "doi": "10.5281/zenodo.21518464",
+      "record_url": "https://zenodo.org/records/21518464",
+      "what_this_version_shows": "Alpha 2 ergänzt gegenüber Alpha 1 den formalen EFFECT_ACK-Kern, Selektor-Fallzerlegungen, Axiom-Audits und Offline-Prüfpfade. Die vollständige Formalumgebungsabdeckung wird erst in Alpha 3 ausgewiesen.",
+      "files": [
+        {
+          "name": "DRAFT01_SOURCE_PROVENANCE.json",
+          "bytes": 1431,
+          "native_checksum": "md5:7080b90c373fe8db48f264677ebce32a",
+          "content_url": "https://zenodo.org/api/records/21518464/files/DRAFT01_SOURCE_PROVENANCE.json/content"
+        },
+        {
+          "name": "QIKVRT_Formalization_v2.0-alpha.2.zip.sha256",
+          "bytes": 104,
+          "native_checksum": "md5:eeaa98afd7b46f253444569ddfbdc521",
+          "content_url": "https://zenodo.org/api/records/21518464/files/QIKVRT_Formalization_v2.0-alpha.2.zip.sha256/content"
+        },
+        {
+          "name": "README.md",
+          "bytes": 6679,
+          "native_checksum": "md5:5e4dfaa2daaa24ffbed6c964eb14e5aa",
+          "content_url": "https://zenodo.org/api/records/21518464/files/README.md/content"
+        },
+        {
+          "name": "MANUSCRIPT_PROOF_MAP.md",
+          "bytes": 8765,
+          "native_checksum": "md5:c144e31d765a39eab45cd94cce676347",
+          "content_url": "https://zenodo.org/api/records/21518464/files/MANUSCRIPT_PROOF_MAP.md/content"
+        },
+        {
+          "name": "DRAFT01_CLAIM_MATRIX.json",
+          "bytes": 11647,
+          "native_checksum": "md5:f792752a55e6577b280daa1211760a55",
+          "content_url": "https://zenodo.org/api/records/21518464/files/DRAFT01_CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "ALPHA2_EFFECT_ACK_DONE.json",
+          "bytes": 2641,
+          "native_checksum": "md5:492df4bb6986d3c6f75235ac57bc20ba",
+          "content_url": "https://zenodo.org/api/records/21518464/files/ALPHA2_EFFECT_ACK_DONE.json/content"
+        },
+        {
+          "name": "STATUSERKLAERUNG_WHATSAPP_DE.md",
+          "bytes": 3929,
+          "native_checksum": "md5:12e3ca0e981afaa80ab247f2f5b55df5",
+          "content_url": "https://zenodo.org/api/records/21518464/files/STATUSERKLAERUNG_WHATSAPP_DE.md/content"
+        },
+        {
+          "name": "VERIFICATION_REPORT.md",
+          "bytes": 1783,
+          "native_checksum": "md5:a7eff403ae18f1ee48313d32e5f951ab",
+          "content_url": "https://zenodo.org/api/records/21518464/files/VERIFICATION_REPORT.md/content"
+        },
+        {
+          "name": "CITATION.cff",
+          "bytes": 2279,
+          "native_checksum": "md5:e45f4a8c1b96a6e078315dfd5207c338",
+          "content_url": "https://zenodo.org/api/records/21518464/files/CITATION.cff/content"
+        },
+        {
+          "name": "ZENODO_FILESET.md",
+          "bytes": 5685,
+          "native_checksum": "md5:06801a4968c80e6d089924b5f290b0d1",
+          "content_url": "https://zenodo.org/api/records/21518464/files/ZENODO_FILESET.md/content"
+        },
+        {
+          "name": "ZENODO_SHA256SUMS",
+          "bytes": 1606,
+          "native_checksum": "md5:70226a1ff6dd1173458f6d3946a6c5fc",
+          "content_url": "https://zenodo.org/api/records/21518464/files/ZENODO_SHA256SUMS/content"
+        },
+        {
+          "name": "LICENSE_NOTICE.md",
+          "bytes": 1061,
+          "native_checksum": "md5:e1cfb700fa5653694a11f439e8334c0a",
+          "content_url": "https://zenodo.org/api/records/21518464/files/LICENSE_NOTICE.md/content"
+        },
+        {
+          "name": "LICENSE-CODE",
+          "bytes": 1072,
+          "native_checksum": "md5:f4696fa39b6563307b9ea51d3e2a0fb9",
+          "content_url": "https://zenodo.org/api/records/21518464/files/LICENSE-CODE/content"
+        },
+        {
+          "name": "EVIDENCE_BOUNDARY.md",
+          "bytes": 7107,
+          "native_checksum": "md5:8bb85daafe74884e2816b5ad9baee279",
+          "content_url": "https://zenodo.org/api/records/21518464/files/EVIDENCE_BOUNDARY.md/content"
+        },
+        {
+          "name": "ALPHA2_INPUT.json",
+          "bytes": 2687,
+          "native_checksum": "md5:01495bb71c38cf0bc35860381a6fcb75",
+          "content_url": "https://zenodo.org/api/records/21518464/files/ALPHA2_INPUT.json/content"
+        },
+        {
+          "name": "FORMALIZATION_SCOPE.md",
+          "bytes": 2334,
+          "native_checksum": "md5:b788a27bc6d9a7d80d24324eab1591bf",
+          "content_url": "https://zenodo.org/api/records/21518464/files/FORMALIZATION_SCOPE.md/content"
+        },
+        {
+          "name": "QIKVRT_Formalization_v2.0-alpha.2.zip",
+          "bytes": 823942,
+          "native_checksum": "md5:db63407c450316cf35d8e50e2333cdb4",
+          "content_url": "https://zenodo.org/api/records/21518464/files/QIKVRT_Formalization_v2.0-alpha.2.zip/content"
+        },
+        {
+          "name": "CC-BY-NC-ND-4.0.txt",
+          "bytes": 19127,
+          "native_checksum": "md5:c70f85fe39eb601f25b595299c688bfd",
+          "content_url": "https://zenodo.org/api/records/21518464/files/CC-BY-NC-ND-4.0.txt/content"
+        },
+        {
+          "name": "CLAIM_GRAPH.json",
+          "bytes": 29162,
+          "native_checksum": "md5:61af8067bae8bcc0004b4d2e1b5ca1f9",
+          "content_url": "https://zenodo.org/api/records/21518464/files/CLAIM_GRAPH.json/content"
+        }
+      ]
+    },
+    {
+      "record_id": 21529081,
+      "concept_record_id": "21488115",
+      "title": "QIK-VRT: Quellengebundene Lean-4-Formalisierung des 62-seitigen Manuskripts – Alpha 3 mit vollständiger Formalumgebungsabdeckung",
+      "version": "2.0.0-alpha.3",
+      "publication_date": "2026-07-24",
+      "record_created_utc": "2026-07-24T08:41:27.322824+00:00",
+      "record_updated_utc": "2026-07-24T08:41:27.972903+00:00",
+      "doi": "10.5281/zenodo.21529081",
+      "record_url": "https://zenodo.org/records/21529081",
+      "what_this_version_shows": "Bindet das unveränderte 62-seitige Manuskript theoremweise an Lean 4.19.0: 20 von 20 Definitionsumgebungen und 20 von 20 theoremartigen Umgebungen haben einen geschlossenen formalen Status. Dokumentiert 42 starke Quellenbindungen, sechs explizit bedingte Bindungen, Axiom-Audit, Claim-Graph und positive sowie negative Prüfpunkte.",
+      "files": [
+        {
+          "name": "CC-BY-NC-ND-4.0.txt",
+          "bytes": 19127,
+          "native_checksum": "md5:c70f85fe39eb601f25b595299c688bfd",
+          "content_url": "https://zenodo.org/api/records/21529081/files/CC-BY-NC-ND-4.0.txt/content"
+        },
+        {
+          "name": "ALPHA2_INPUT.json",
+          "bytes": 2687,
+          "native_checksum": "md5:01495bb71c38cf0bc35860381a6fcb75",
+          "content_url": "https://zenodo.org/api/records/21529081/files/ALPHA2_INPUT.json/content"
+        },
+        {
+          "name": "QIKVRT_Formalization_v2.0-alpha.3.zip",
+          "bytes": 867503,
+          "native_checksum": "md5:7aaf2b8426e35459d8c1ece038c5bcd7",
+          "content_url": "https://zenodo.org/api/records/21529081/files/QIKVRT_Formalization_v2.0-alpha.3.zip/content"
+        },
+        {
+          "name": "ALPHA2_EFFECT_ACK_DONE.json",
+          "bytes": 2641,
+          "native_checksum": "md5:492df4bb6986d3c6f75235ac57bc20ba",
+          "content_url": "https://zenodo.org/api/records/21529081/files/ALPHA2_EFFECT_ACK_DONE.json/content"
+        },
+        {
+          "name": "EVIDENCE_BOUNDARY.md",
+          "bytes": 7107,
+          "native_checksum": "md5:8bb85daafe74884e2816b5ad9baee279",
+          "content_url": "https://zenodo.org/api/records/21529081/files/EVIDENCE_BOUNDARY.md/content"
+        },
+        {
+          "name": "CITATION.cff",
+          "bytes": 1835,
+          "native_checksum": "md5:527eaaad625c645fb44dd954ded28851",
+          "content_url": "https://zenodo.org/api/records/21529081/files/CITATION.cff/content"
+        },
+        {
+          "name": "VERIFICATION_REPORT.md",
+          "bytes": 2793,
+          "native_checksum": "md5:17af5bc78fe10eca619ccfc2ce574b03",
+          "content_url": "https://zenodo.org/api/records/21529081/files/VERIFICATION_REPORT.md/content"
+        },
+        {
+          "name": "MANUSCRIPT_PROOF_MAP.md",
+          "bytes": 13522,
+          "native_checksum": "md5:f1e7cba705f6a3ea67075ee135b0c782",
+          "content_url": "https://zenodo.org/api/records/21529081/files/MANUSCRIPT_PROOF_MAP.md/content"
+        },
+        {
+          "name": "CLAIM_GRAPH.json",
+          "bytes": 54876,
+          "native_checksum": "md5:bce6538df80d18ef9978684e06292987",
+          "content_url": "https://zenodo.org/api/records/21529081/files/CLAIM_GRAPH.json/content"
+        },
+        {
+          "name": "QIKVRT_Formalization_v2.0-alpha.3.zip.sha256",
+          "bytes": 104,
+          "native_checksum": "md5:937cbc8f3abc543fd921ae44a155dbf7",
+          "content_url": "https://zenodo.org/api/records/21529081/files/QIKVRT_Formalization_v2.0-alpha.3.zip.sha256/content"
+        },
+        {
+          "name": "ZENODO_FILESET.md",
+          "bytes": 2173,
+          "native_checksum": "md5:d15e073104df330f9853113cfa5a7b0c",
+          "content_url": "https://zenodo.org/api/records/21529081/files/ZENODO_FILESET.md/content"
+        },
+        {
+          "name": "LICENSE_NOTICE.md",
+          "bytes": 1061,
+          "native_checksum": "md5:e1cfb700fa5653694a11f439e8334c0a",
+          "content_url": "https://zenodo.org/api/records/21529081/files/LICENSE_NOTICE.md/content"
+        },
+        {
+          "name": "LICENSE-CODE",
+          "bytes": 1072,
+          "native_checksum": "md5:f4696fa39b6563307b9ea51d3e2a0fb9",
+          "content_url": "https://zenodo.org/api/records/21529081/files/LICENSE-CODE/content"
+        },
+        {
+          "name": "DRAFT01_CLAIM_MATRIX.json",
+          "bytes": 11647,
+          "native_checksum": "md5:f792752a55e6577b280daa1211760a55",
+          "content_url": "https://zenodo.org/api/records/21529081/files/DRAFT01_CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "DRAFT01_SOURCE_PROVENANCE.json",
+          "bytes": 1431,
+          "native_checksum": "md5:7080b90c373fe8db48f264677ebce32a",
+          "content_url": "https://zenodo.org/api/records/21529081/files/DRAFT01_SOURCE_PROVENANCE.json/content"
+        },
+        {
+          "name": "ALPHA3_RELEASE_NOTES.md",
+          "bytes": 1937,
+          "native_checksum": "md5:4d595398fc08862ea77b3f4ab0d82324",
+          "content_url": "https://zenodo.org/api/records/21529081/files/ALPHA3_RELEASE_NOTES.md/content"
+        },
+        {
+          "name": "FORMALIZATION_SCOPE.md",
+          "bytes": 2334,
+          "native_checksum": "md5:b788a27bc6d9a7d80d24324eab1591bf",
+          "content_url": "https://zenodo.org/api/records/21529081/files/FORMALIZATION_SCOPE.md/content"
+        },
+        {
+          "name": "ALPHA2_PUBLIC_SOURCE_EVIDENCE.json",
+          "bytes": 4460,
+          "native_checksum": "md5:e268c9707d4a14a3138b813860afa789",
+          "content_url": "https://zenodo.org/api/records/21529081/files/ALPHA2_PUBLIC_SOURCE_EVIDENCE.json/content"
+        },
+        {
+          "name": "ZENODO_SHA256SUMS",
+          "bytes": 1623,
+          "native_checksum": "md5:057206dbb47922b45e325066cbf8b2a0",
+          "content_url": "https://zenodo.org/api/records/21529081/files/ZENODO_SHA256SUMS/content"
+        }
+      ]
+    },
+    {
+      "record_id": 21582781,
+      "concept_record_id": "21582780",
+      "title": "Die Ontologie des Unterschieds als universaler Reverse-Engineering-Mechanismus",
+      "version": null,
+      "publication_date": "2026-07-26",
+      "record_created_utc": "2026-07-26T02:45:15.369943+00:00",
+      "record_updated_utc": "2026-07-26T02:45:15.664618+00:00",
+      "doi": "10.5281/zenodo.21582781",
+      "record_url": "https://zenodo.org/records/21582781",
+      "what_this_version_shows": "Formuliert Unterschied als Ausgangspunkt eines universalen Reverse-Engineering-Mechanismus. Bewahrt den Originalartikel und stellt eine getrennte wissenschaftliche Meta-Betrachtung mit statusgenauer Prüfung daneben.",
+      "files": [
+        {
+          "name": "ORIGINAL_ARTICLE.md",
+          "bytes": 17229,
+          "native_checksum": "md5:2f1744effd570698eba167f8ea36e46b",
+          "content_url": "https://zenodo.org/api/records/21582781/files/ORIGINAL_ARTICLE.md/content"
+        },
+        {
+          "name": "PUBLICATION.json",
+          "bytes": 1061,
+          "native_checksum": "md5:bfaef136c2e50a51b68fbe7bcf5ae807",
+          "content_url": "https://zenodo.org/api/records/21582781/files/PUBLICATION.json/content"
+        },
+        {
+          "name": "META_REVIEW.md",
+          "bytes": 3084,
+          "native_checksum": "md5:b3713e9c25bb7c5682de10e951264eb4",
+          "content_url": "https://zenodo.org/api/records/21582781/files/META_REVIEW.md/content"
+        },
+        {
+          "name": "README.md",
+          "bytes": 756,
+          "native_checksum": "md5:81c0040627652853347b2eea4635e37b",
+          "content_url": "https://zenodo.org/api/records/21582781/files/README.md/content"
+        }
+      ]
+    },
+    {
+      "record_id": 21633411,
+      "concept_record_id": "21633410",
+      "title": "QIK-VRT Authority/Mirror Equality Receipt — Promotion PR #106 and Mirror PR #56",
+      "version": "1.0.0-2026-07-27",
+      "publication_date": "2026-07-27",
+      "record_created_utc": "2026-07-27T23:46:56.602377+00:00",
+      "record_updated_utc": "2026-07-27T23:46:56.804381+00:00",
+      "doi": "10.5281/zenodo.21633411",
+      "record_url": "https://zenodo.org/records/21633411",
+      "what_this_version_shows": "Bindet die historische Promotion von Authority-PR 106 und Mirror-PR 56 an exakte Heads, Workflowläufe, reziproke Kommentare und vier gemeinsame Git-Blobs. Dokumentiert gleiche Inhaltsdigests im deklarierten Synchronisationsscope.",
+      "files": [
+        {
+          "name": "equality-receipts-index.json",
+          "bytes": 1487,
+          "native_checksum": "md5:aa033aeacb744efd8cb89ac8fcd66733",
+          "content_url": "https://zenodo.org/api/records/21633411/files/equality-receipts-index.json/content"
+        },
+        {
+          "name": "authority-mirror-equality-2026-07-27-pr106-pr56.json",
+          "bytes": 5189,
+          "native_checksum": "md5:8792385e000502fae63fa1b4e48e4723",
+          "content_url": "https://zenodo.org/api/records/21633411/files/authority-mirror-equality-2026-07-27-pr106-pr56.json/content"
+        }
+      ]
+    },
+    {
+      "record_id": 21636774,
+      "concept_record_id": "21636773",
+      "title": "Vom Unterschied zur Verantwortung — Kanonische Schlusserklärung und historische Einordnung des maschinenverifizierten QIK-VRT-Abschlusses",
+      "version": "1.0.0-2026-07-28",
+      "publication_date": "2026-07-28",
+      "record_created_utc": "2026-07-28T04:56:14.652099+00:00",
+      "record_updated_utc": "2026-07-28T04:56:14.860753+00:00",
+      "doi": "10.5281/zenodo.21636774",
+      "record_url": "https://zenodo.org/records/21636774",
+      "what_this_version_shows": "Dokumentiert die kanonische Schlusserklärung zum endlichen historischen Scope qikvrt-global-claim-scope-v1 und bindet dessen maschinenlesbaren Abschlussreceipt. Verbindet die technischen und wissenschaftlichen Grenzen mit einer ausdrücklich dem Autor zugeschriebenen historischen Einordnung.",
+      "files": [
+        {
+          "name": "QIKVRT_Vom_Unterschied_zur_Verantwortung_Statusartikel_DE.md",
+          "bytes": 40540,
+          "native_checksum": "md5:ae88f6af322af811d20a850b92e1d78f",
+          "content_url": "https://zenodo.org/api/records/21636774/files/QIKVRT_Vom_Unterschied_zur_Verantwortung_Statusartikel_DE.md/content"
+        },
+        {
+          "name": "QIKVRT_STATUS_ARTICLE_MANIFEST.json",
+          "bytes": 3520,
+          "native_checksum": "md5:7249c3e297456caaee1fef73cddfb41e",
+          "content_url": "https://zenodo.org/api/records/21636774/files/QIKVRT_STATUS_ARTICLE_MANIFEST.json/content"
+        },
+        {
+          "name": "QIKVRT_GLOBAL_COMPLETION_RECEIPT.json",
+          "bytes": 5069,
+          "native_checksum": "md5:35f5b01f2d890429266d5e7f1bb4ebbc",
+          "content_url": "https://zenodo.org/api/records/21636774/files/QIKVRT_GLOBAL_COMPLETION_RECEIPT.json/content"
+        }
+      ]
+    },
+    {
+      "record_id": 21640160,
+      "concept_record_id": "21640159",
+      "title": "Vom verantwortungsgebundenen Erkenntnisprozess zur virtuellen Wirkungsmaschine",
+      "version": "1.0.0-2026-07-28",
+      "publication_date": "2026-07-28",
+      "record_created_utc": "2026-07-28T08:28:54.990712+00:00",
+      "record_updated_utc": "2026-07-28T08:28:55.548644+00:00",
+      "doi": "10.5281/zenodo.21640160",
+      "record_url": "https://zenodo.org/records/21640160",
+      "what_this_version_shows": "Zweiter, separat zitierbarer Datensatz derselben betitelten Wirkungsmaschinen-Veröffentlichung. Inhalt und Beweisumfang entsprechen dem parallel veröffentlichten Record 21640173; der Katalog führt beide Identitäten und vergleicht ihre gemeinsamen Dateien.",
+      "files": [
+        {
+          "name": "QIKVRT_CLAIM_MATRIX.json",
+          "bytes": 15548,
+          "native_checksum": "md5:92ef20b6a1c8c77e9ef465062466d63b",
+          "content_url": "https://zenodo.org/api/records/21640160/files/QIKVRT_CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "QIKVRT_QuantumClassicalRuntime.lean",
+          "bytes": 6248,
+          "native_checksum": "md5:6cf6b4b637c9c0a80c3b17fc8d110017",
+          "content_url": "https://zenodo.org/api/records/21640160/files/QIKVRT_QuantumClassicalRuntime.lean/content"
+        },
+        {
+          "name": "QIKVRT_Vom_verantwortungsgebundenen_Erkenntnisprozess_zur_virtuellen_Wirkungsmaschine_DE.md",
+          "bytes": 35442,
+          "native_checksum": "md5:53909ac0829be2dd83f3f5a266b938d4",
+          "content_url": "https://zenodo.org/api/records/21640160/files/QIKVRT_Vom_verantwortungsgebundenen_Erkenntnisprozess_zur_virtuellen_Wirkungsmaschine_DE.md/content"
+        },
+        {
+          "name": "QIKVRT_ARTICLE_MANIFEST.json",
+          "bytes": 5345,
+          "native_checksum": "md5:6f9c0c09067d28577213e5ba82dd0e84",
+          "content_url": "https://zenodo.org/api/records/21640160/files/QIKVRT_ARTICLE_MANIFEST.json/content"
+        },
+        {
+          "name": "QIKVRT_KERNEL_PROOF_PLAN.json",
+          "bytes": 2393,
+          "native_checksum": "md5:7a19f663223910d66fd177461527a68e",
+          "content_url": "https://zenodo.org/api/records/21640160/files/QIKVRT_KERNEL_PROOF_PLAN.json/content"
+        },
+        {
+          "name": "QIKVRT_KERNEL_RECEIPT.json",
+          "bytes": 3032,
+          "native_checksum": "md5:24faef23155426958fbca64df1da566f",
+          "content_url": "https://zenodo.org/api/records/21640160/files/QIKVRT_KERNEL_RECEIPT.json/content"
+        },
+        {
+          "name": "QIKVRT_OWNER_EFFECT_AUTHORIZATION.json",
+          "bytes": 1457,
+          "native_checksum": "md5:4f5b54addd0cea51bf4860b95883e5f4",
+          "content_url": "https://zenodo.org/api/records/21640160/files/QIKVRT_OWNER_EFFECT_AUTHORIZATION.json/content"
+        }
+      ]
+    },
+    {
+      "record_id": 21640173,
+      "concept_record_id": "21640172",
+      "title": "Vom verantwortungsgebundenen Erkenntnisprozess zur virtuellen Wirkungsmaschine",
+      "version": "1.0.0-2026-07-28",
+      "publication_date": "2026-07-28",
+      "record_created_utc": "2026-07-28T08:29:23.219403+00:00",
+      "record_updated_utc": "2026-07-28T08:29:23.814541+00:00",
+      "doi": "10.5281/zenodo.21640173",
+      "record_url": "https://zenodo.org/records/21640173",
+      "what_this_version_shows": "Beschreibt ein verantwortungsgebundenes Mensch-KI-Arbeitsprofil und eine hybride quantenklassische Laufzeit- und Assurance-Architektur. Ein 26-Claim-Inventar bindet neun archiviert kernelgeprüfte Theoreme des abstrakten Laufzeitmodells an Quellen und Traceability.",
+      "files": [
+        {
+          "name": "QIKVRT_CLAIM_MATRIX.json",
+          "bytes": 15548,
+          "native_checksum": "md5:92ef20b6a1c8c77e9ef465062466d63b",
+          "content_url": "https://zenodo.org/api/records/21640173/files/QIKVRT_CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "QIKVRT_KERNEL_RECEIPT.json",
+          "bytes": 3032,
+          "native_checksum": "md5:24faef23155426958fbca64df1da566f",
+          "content_url": "https://zenodo.org/api/records/21640173/files/QIKVRT_KERNEL_RECEIPT.json/content"
+        },
+        {
+          "name": "QIKVRT_KERNEL_PROOF_PLAN.json",
+          "bytes": 2393,
+          "native_checksum": "md5:7a19f663223910d66fd177461527a68e",
+          "content_url": "https://zenodo.org/api/records/21640173/files/QIKVRT_KERNEL_PROOF_PLAN.json/content"
+        },
+        {
+          "name": "QIKVRT_Vom_verantwortungsgebundenen_Erkenntnisprozess_zur_virtuellen_Wirkungsmaschine_DE.md",
+          "bytes": 35442,
+          "native_checksum": "md5:53909ac0829be2dd83f3f5a266b938d4",
+          "content_url": "https://zenodo.org/api/records/21640173/files/QIKVRT_Vom_verantwortungsgebundenen_Erkenntnisprozess_zur_virtuellen_Wirkungsmaschine_DE.md/content"
+        },
+        {
+          "name": "QIKVRT_ARTICLE_MANIFEST.json",
+          "bytes": 5345,
+          "native_checksum": "md5:6f9c0c09067d28577213e5ba82dd0e84",
+          "content_url": "https://zenodo.org/api/records/21640173/files/QIKVRT_ARTICLE_MANIFEST.json/content"
+        },
+        {
+          "name": "QIKVRT_QuantumClassicalRuntime.lean",
+          "bytes": 6248,
+          "native_checksum": "md5:6cf6b4b637c9c0a80c3b17fc8d110017",
+          "content_url": "https://zenodo.org/api/records/21640173/files/QIKVRT_QuantumClassicalRuntime.lean/content"
+        },
+        {
+          "name": "QIKVRT_OWNER_EFFECT_AUTHORIZATION.json",
+          "bytes": 1457,
+          "native_checksum": "md5:4f5b54addd0cea51bf4860b95883e5f4",
+          "content_url": "https://zenodo.org/api/records/21640173/files/QIKVRT_OWNER_EFFECT_AUTHORIZATION.json/content"
+        }
+      ]
+    },
+    {
+      "record_id": 21711193,
+      "concept_record_id": "21711192",
+      "title": "QIK-VRT und das Effect-Acknowledgement-Protokoll: Kanonischer Speicher zwischen Vergangenheit und Zukunft",
+      "version": "1.0.0",
+      "publication_date": "2026-07-31",
+      "record_created_utc": "2026-07-30T23:00:51.863173+00:00",
+      "record_updated_utc": "2026-07-30T23:00:53.148760+00:00",
+      "doi": "10.5281/zenodo.21711193",
+      "record_url": "https://zenodo.org/records/21711193",
+      "what_this_version_shows": "Formalisiert Vergangenheitsrecords und antizipierte Wirkungen mit einem gemeinsamen Codec, aber getrenntem epistemischem Status. Neun Lean-Theoreme binden vier Claims: DONE-only-Freigabe, kontrafaktische Relevanz einer Zukunftsbedingung, unveränderte Vergangenheitsprojektion und reziproke Ursachen-Wirkungs-Schließung im endlichen Protokollmodell.",
+      "files": [
+        {
+          "name": "CHANGE_NOTICE.md",
+          "bytes": 5137,
+          "native_checksum": "md5:41757a99d46988f5185293cf00a1ff44",
+          "content_url": "https://zenodo.org/api/records/21711193/files/CHANGE_NOTICE.md/content"
+        },
+        {
+          "name": "CLAIM_MATRIX.json",
+          "bytes": 13922,
+          "native_checksum": "md5:98db3575bc5a24b504bb2c8cd1b9907d",
+          "content_url": "https://zenodo.org/api/records/21711193/files/CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "CLAIM_MATRIX_H0_PENDING.json",
+          "bytes": 14133,
+          "native_checksum": "md5:58f858959f3f2968d3117c43bd3f2526",
+          "content_url": "https://zenodo.org/api/records/21711193/files/CLAIM_MATRIX_H0_PENDING.json/content"
+        },
+        {
+          "name": "PREPUBLICATION_RETURN_RECEIPT.json",
+          "bytes": 14032,
+          "native_checksum": "md5:82c2a7c290fcddd868ceb5edcb4ec4b5",
+          "content_url": "https://zenodo.org/api/records/21711193/files/PREPUBLICATION_RETURN_RECEIPT.json/content"
+        },
+        {
+          "name": "README.md",
+          "bytes": 6274,
+          "native_checksum": "md5:850cee6bacd74a12bc4f30aadda44ef5",
+          "content_url": "https://zenodo.org/api/records/21711193/files/README.md/content"
+        },
+        {
+          "name": "QIK-VRT_Kanonischer_Speicher_Retrokausalitaet_EFFECT_ACK_2026-07-30.tex",
+          "bytes": 47857,
+          "native_checksum": "md5:3065143678e9ee3c47bfbfa63cee592a",
+          "content_url": "https://zenodo.org/api/records/21711193/files/QIK-VRT_Kanonischer_Speicher_Retrokausalitaet_EFFECT_ACK_2026-07-30.tex/content"
+        },
+        {
+          "name": "KERNEL_EVIDENCE_H1_TARGET.json",
+          "bytes": 5712,
+          "native_checksum": "md5:6ed57a5d898cb922c644ae8ab770e503",
+          "content_url": "https://zenodo.org/api/records/21711193/files/KERNEL_EVIDENCE_H1_TARGET.json/content"
+        },
+        {
+          "name": "BOUNDARY_TEST_REPORT.json",
+          "bytes": 6952,
+          "native_checksum": "md5:182de5417eeb8239b764d7c7526a25d4",
+          "content_url": "https://zenodo.org/api/records/21711193/files/BOUNDARY_TEST_REPORT.json/content"
+        },
+        {
+          "name": "CITATION.cff",
+          "bytes": 1418,
+          "native_checksum": "md5:5411f199206b5fa7dbd5760c73ba40c1",
+          "content_url": "https://zenodo.org/api/records/21711193/files/CITATION.cff/content"
+        },
+        {
+          "name": "KERNEL_EVIDENCE_H0_PENDING.json",
+          "bytes": 5712,
+          "native_checksum": "md5:6a71cb117d70f88e2a6b0157cdf5a8da",
+          "content_url": "https://zenodo.org/api/records/21711193/files/KERNEL_EVIDENCE_H0_PENDING.json/content"
+        },
+        {
+          "name": "QIK-VRT_Kanonischer_Speicher_Retrokausalitaet_EFFECT_ACK_2026-07-30.pdf",
+          "bytes": 133421,
+          "native_checksum": "md5:10581cd0605eb8ce1b3a483c23cb39c9",
+          "content_url": "https://zenodo.org/api/records/21711193/files/QIK-VRT_Kanonischer_Speicher_Retrokausalitaet_EFFECT_ACK_2026-07-30.pdf/content"
+        },
+        {
+          "name": "KERNEL_PROOF_PLAN.json",
+          "bytes": 2761,
+          "native_checksum": "md5:532f9bccf8e2d6fc5e16c2a946705510",
+          "content_url": "https://zenodo.org/api/records/21711193/files/KERNEL_PROOF_PLAN.json/content"
+        },
+        {
+          "name": "KERNEL_RECEIPT.json",
+          "bytes": 9645,
+          "native_checksum": "md5:8134352630ebc6547c923de8f723a9f7",
+          "content_url": "https://zenodo.org/api/records/21711193/files/KERNEL_RECEIPT.json/content"
+        },
+        {
+          "name": "PDF_RENDER_VALIDATION.json",
+          "bytes": 2409,
+          "native_checksum": "md5:6772dff0218c97e3418bb803614a9cb8",
+          "content_url": "https://zenodo.org/api/records/21711193/files/PDF_RENDER_VALIDATION.json/content"
+        },
+        {
+          "name": "EVIDENCE_BOUNDARY.md",
+          "bytes": 8662,
+          "native_checksum": "md5:2752b75c7880a266a02000aa278d2e71",
+          "content_url": "https://zenodo.org/api/records/21711193/files/EVIDENCE_BOUNDARY.md/content"
+        },
+        {
+          "name": "LICENSE_NOTICE.md",
+          "bytes": 1074,
+          "native_checksum": "md5:a84a9365d26ca25169fe32b83535a1bc",
+          "content_url": "https://zenodo.org/api/records/21711193/files/LICENSE_NOTICE.md/content"
+        },
+        {
+          "name": "MACHINE_PROOF_BUNDLE.json",
+          "bytes": 27961,
+          "native_checksum": "md5:c16523a4e3c79db22b613b28acb89bf7",
+          "content_url": "https://zenodo.org/api/records/21711193/files/MACHINE_PROOF_BUNDLE.json/content"
+        },
+        {
+          "name": "ORIGINAL_THESIS_TRANSCRIPT.md",
+          "bytes": 3169,
+          "native_checksum": "md5:6c8d0f90b1cec7b6ac7a2fd1bfd10553",
+          "content_url": "https://zenodo.org/api/records/21711193/files/ORIGINAL_THESIS_TRANSCRIPT.md/content"
+        },
+        {
+          "name": "ZENODO_FILESET.md",
+          "bytes": 1990,
+          "native_checksum": "md5:64ec6422e3e3924e8c4fc8bc8eb417c7",
+          "content_url": "https://zenodo.org/api/records/21711193/files/ZENODO_FILESET.md/content"
+        },
+        {
+          "name": "SOURCE_EVIDENCE_BINDINGS.json",
+          "bytes": 39988,
+          "native_checksum": "md5:b48514ad1378686f8ff5b0256d19600a",
+          "content_url": "https://zenodo.org/api/records/21711193/files/SOURCE_EVIDENCE_BINDINGS.json/content"
+        },
+        {
+          "name": "ZENODO_SHA256SUMS",
+          "bytes": 1695,
+          "native_checksum": "md5:43cc57b9e66a2bd8544da450ebf56068",
+          "content_url": "https://zenodo.org/api/records/21711193/files/ZENODO_SHA256SUMS/content"
+        }
+      ]
+    },
+    {
+      "record_id": 21721918,
+      "concept_record_id": "21721917",
+      "title": "Survival of the Anschlussfähigsten: Eine operational-formale Übertragung des evolutionären Fitnessgedankens auf Computer-, Informations- und soziotechnische Systeme",
+      "version": "1.0.0",
+      "publication_date": "2026-07-31",
+      "record_created_utc": "2026-07-31T13:02:56.056454+00:00",
+      "record_updated_utc": "2026-07-31T13:02:57.414942+00:00",
+      "doi": "10.5281/zenodo.21721918",
+      "record_url": "https://zenodo.org/records/21721918",
+      "what_this_version_shows": "Operationalisiert Anschlussfähigkeit als gültige Fortsetzung bei erhaltenen Invarianten. Fünf kernelgebundene Sätze behandeln endliche Fortsetzbarkeit, globale und startpunktgebundene Simulation sowie monotone und strikt größere gewichtete Anschluss-Sprachen unter einem gemeinsamen positiven Normalisierer.",
+      "files": [
+        {
+          "name": "CLAIM_MATRIX.json",
+          "bytes": 8412,
+          "native_checksum": "md5:1ea17267fbeeb8243c1410f9c4459bcc",
+          "content_url": "https://zenodo.org/api/records/21721918/files/CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "README.md",
+          "bytes": 6619,
+          "native_checksum": "md5:d0bbcf5b4cecb5349dbed10c08181699",
+          "content_url": "https://zenodo.org/api/records/21721918/files/README.md/content"
+        },
+        {
+          "name": "EVIDENCE_BOUNDARY.md",
+          "bytes": 4828,
+          "native_checksum": "md5:c00c62067279da79d356ca98005cc5c3",
+          "content_url": "https://zenodo.org/api/records/21721918/files/EVIDENCE_BOUNDARY.md/content"
+        },
+        {
+          "name": "KERNEL_EVIDENCE_H2_FULL_PENDING.json",
+          "bytes": 10374,
+          "native_checksum": "md5:ce059dccba6135945bf54c0c880a6320",
+          "content_url": "https://zenodo.org/api/records/21721918/files/KERNEL_EVIDENCE_H2_FULL_PENDING.json/content"
+        },
+        {
+          "name": "KERNEL_EVIDENCE_H1_TARGET.json",
+          "bytes": 8400,
+          "native_checksum": "md5:b10e597377caf04c2ab38ab86d5f1486",
+          "content_url": "https://zenodo.org/api/records/21721918/files/KERNEL_EVIDENCE_H1_TARGET.json/content"
+        },
+        {
+          "name": "ZENODO_FILESET.md",
+          "bytes": 1838,
+          "native_checksum": "md5:8be14ba6b61894cb130cd9e3ffa281c3",
+          "content_url": "https://zenodo.org/api/records/21721918/files/ZENODO_FILESET.md/content"
+        },
+        {
+          "name": "KERNEL_RECEIPT.json",
+          "bytes": 6854,
+          "native_checksum": "md5:ecb511ccde3a9346897fa247e804d715",
+          "content_url": "https://zenodo.org/api/records/21721918/files/KERNEL_RECEIPT.json/content"
+        },
+        {
+          "name": "Survival_der_Anschlussfaehigsten_2026-07-31.tex",
+          "bytes": 55712,
+          "native_checksum": "md5:9fd712f43199305d1257dc3e265d83f1",
+          "content_url": "https://zenodo.org/api/records/21721918/files/Survival_der_Anschlussfaehigsten_2026-07-31.tex/content"
+        },
+        {
+          "name": "CITATION.cff",
+          "bytes": 1635,
+          "native_checksum": "md5:d56b2d9d3fd8d82335842a52c8d6c25b",
+          "content_url": "https://zenodo.org/api/records/21721918/files/CITATION.cff/content"
+        },
+        {
+          "name": "CLAIM_MATRIX_H2_FULL_PENDING.json",
+          "bytes": 8671,
+          "native_checksum": "md5:d36829527f8def248f97fa1ab0eb266a",
+          "content_url": "https://zenodo.org/api/records/21721918/files/CLAIM_MATRIX_H2_FULL_PENDING.json/content"
+        },
+        {
+          "name": "MACHINE_PROOF_BUNDLE.json",
+          "bytes": 21446,
+          "native_checksum": "md5:8d3dff403efaea22340b7bf22a600e7d",
+          "content_url": "https://zenodo.org/api/records/21721918/files/MACHINE_PROOF_BUNDLE.json/content"
+        },
+        {
+          "name": "Survival_der_Anschlussfaehigsten_2026-07-31.pdf",
+          "bytes": 138836,
+          "native_checksum": "md5:f884845e76cc7632e902bca9760f76cd",
+          "content_url": "https://zenodo.org/api/records/21721918/files/Survival_der_Anschlussfaehigsten_2026-07-31.pdf/content"
+        },
+        {
+          "name": "SOURCE_EVIDENCE_BINDINGS.json",
+          "bytes": 11662,
+          "native_checksum": "md5:8bea1405dfe1037508f9c382ca67be0b",
+          "content_url": "https://zenodo.org/api/records/21721918/files/SOURCE_EVIDENCE_BINDINGS.json/content"
+        },
+        {
+          "name": "FORMAL_WeightedConnectability.lean",
+          "bytes": 9234,
+          "native_checksum": "md5:177f5525e0a62c65a3bbf84469c383a1",
+          "content_url": "https://zenodo.org/api/records/21721918/files/FORMAL_WeightedConnectability.lean/content"
+        },
+        {
+          "name": "ORIGINAL_THESIS_TRANSCRIPT.md",
+          "bytes": 1131,
+          "native_checksum": "md5:b2407749adcdf2532c16d87ba3bd7431",
+          "content_url": "https://zenodo.org/api/records/21721918/files/ORIGINAL_THESIS_TRANSCRIPT.md/content"
+        },
+        {
+          "name": "ZENODO_SHA256SUMS",
+          "bytes": 2621,
+          "native_checksum": "md5:328580cd1e594b3090c94083f45e8afe",
+          "content_url": "https://zenodo.org/api/records/21721918/files/ZENODO_SHA256SUMS/content"
+        },
+        {
+          "name": "KERNEL_EVIDENCE_H3_FULL_TARGET.json",
+          "bytes": 10374,
+          "native_checksum": "md5:623e361756035aa9ff32a8d503ee56f8",
+          "content_url": "https://zenodo.org/api/records/21721918/files/KERNEL_EVIDENCE_H3_FULL_TARGET.json/content"
+        },
+        {
+          "name": "KERNEL_EVIDENCE_H0_PENDING.json",
+          "bytes": 8400,
+          "native_checksum": "md5:a58d48ca2c6e1d6988c32e0a94db8407",
+          "content_url": "https://zenodo.org/api/records/21721918/files/KERNEL_EVIDENCE_H0_PENDING.json/content"
+        },
+        {
+          "name": "CLAIM_MATRIX_H1_FIT_VERIFIED.json",
+          "bytes": 7591,
+          "native_checksum": "md5:fd6bebe62ecad0a1667717aefce4c965",
+          "content_url": "https://zenodo.org/api/records/21721918/files/CLAIM_MATRIX_H1_FIT_VERIFIED.json/content"
+        },
+        {
+          "name": "CLAIM_MATRIX_H0_PENDING.json",
+          "bytes": 7754,
+          "native_checksum": "md5:ae2b8ee9328be7c38fa346362d6079f1",
+          "content_url": "https://zenodo.org/api/records/21721918/files/CLAIM_MATRIX_H0_PENDING.json/content"
+        },
+        {
+          "name": "CANONICAL_STATEMENT.md",
+          "bytes": 3085,
+          "native_checksum": "md5:400f2b1bf8216d356de911bfc2cb6f93",
+          "content_url": "https://zenodo.org/api/records/21721918/files/CANONICAL_STATEMENT.md/content"
+        },
+        {
+          "name": "FORMAL_ConnectabilitySimulation.lean",
+          "bytes": 15641,
+          "native_checksum": "md5:c1f3d000398a8f5396fb8f31cc9dfa30",
+          "content_url": "https://zenodo.org/api/records/21721918/files/FORMAL_ConnectabilitySimulation.lean/content"
+        },
+        {
+          "name": "ARTICLE_DE.md",
+          "bytes": 41333,
+          "native_checksum": "md5:46420d04d78d638ac925a4c7218974ec",
+          "content_url": "https://zenodo.org/api/records/21721918/files/ARTICLE_DE.md/content"
+        },
+        {
+          "name": "CHANGE_NOTICE.md",
+          "bytes": 4887,
+          "native_checksum": "md5:dcdd5329acb53dbcd94527a63ef46a80",
+          "content_url": "https://zenodo.org/api/records/21721918/files/CHANGE_NOTICE.md/content"
+        },
+        {
+          "name": "KERNEL_PROOF_PLAN.json",
+          "bytes": 2752,
+          "native_checksum": "md5:88b0282ca097a1327160546b3dade83d",
+          "content_url": "https://zenodo.org/api/records/21721918/files/KERNEL_PROOF_PLAN.json/content"
+        },
+        {
+          "name": "FORMAL_OperationalContinuation.lean",
+          "bytes": 7338,
+          "native_checksum": "md5:3b7989be8beb2a214c75ce19176ba1eb",
+          "content_url": "https://zenodo.org/api/records/21721918/files/FORMAL_OperationalContinuation.lean/content"
+        },
+        {
+          "name": "FORMAL_SOURCE_SNAPSHOT.json",
+          "bytes": 1868,
+          "native_checksum": "md5:fe7ba686a4f95e35a4fd7bc3d25defb3",
+          "content_url": "https://zenodo.org/api/records/21721918/files/FORMAL_SOURCE_SNAPSHOT.json/content"
+        },
+        {
+          "name": "BOUNDARY_TEST_REPORT.json",
+          "bytes": 2903,
+          "native_checksum": "md5:b32043048e1a22585d37b9ab0fb3ac4a",
+          "content_url": "https://zenodo.org/api/records/21721918/files/BOUNDARY_TEST_REPORT.json/content"
+        },
+        {
+          "name": "PREPUBLICATION_RETURN_RECEIPT.json",
+          "bytes": 7735,
+          "native_checksum": "md5:826aad0f12dfa2dfc9146e45f45bf363",
+          "content_url": "https://zenodo.org/api/records/21721918/files/PREPUBLICATION_RETURN_RECEIPT.json/content"
+        },
+        {
+          "name": "PDF_RENDER_VALIDATION.json",
+          "bytes": 2777,
+          "native_checksum": "md5:049440f287c9b002aab28c100145d2a0",
+          "content_url": "https://zenodo.org/api/records/21721918/files/PDF_RENDER_VALIDATION.json/content"
+        },
+        {
+          "name": "LICENSE_NOTICE.md",
+          "bytes": 1106,
+          "native_checksum": "md5:56f878d1da79f4c8b9d0a74fb0dc9c65",
+          "content_url": "https://zenodo.org/api/records/21721918/files/LICENSE_NOTICE.md/content"
+        }
+      ]
+    },
+    {
+      "record_id": 21731492,
+      "concept_record_id": "21731491",
+      "title": "QIK-VRT: Epistemische Fairness, Vorstellungskraft und der Weg vom virtuellen Zeugen zum Beobachtungssystem",
+      "version": "1.0.0",
+      "publication_date": "2026-08-01",
+      "record_created_utc": "2026-08-01T02:49:28.279994+00:00",
+      "record_updated_utc": "2026-08-01T02:49:30.428974+00:00",
+      "doi": "10.5281/zenodo.21731492",
+      "record_url": "https://zenodo.org/records/21731492",
+      "what_this_version_shows": "Ergänzt den virtuellen Zeitkanal um eine Realisierungsleiter von Idee und Software zu Gerät, qualifizierter Beobachtung und autorisierter Wirkung. Behandelt Vorstellungskraft als Erzeuger prüfbarer Kandidaten und epistemische Fairness als Anspruch auf Provenienz, Anfechtbarkeit und getrennten Wahrheits- und Wirkungsstatus.",
+      "files": [
+        {
+          "name": "ARTICLE_WHATSAPP_ADDENDUM_DE.md",
+          "bytes": 21018,
+          "native_checksum": "md5:75cf6dafbe8433f6f33dd26aaaf1ce6e",
+          "content_url": "https://zenodo.org/api/records/21731492/files/ARTICLE_WHATSAPP_ADDENDUM_DE.md/content"
+        },
+        {
+          "name": "QIK-VRT_Epistemische_Fairness_und_Vorstellungskraft_Addendum_2026-08-01.pdf",
+          "bytes": 94630,
+          "native_checksum": "md5:34b3cb716f33ea8224ea6ef45f64282d",
+          "content_url": "https://zenodo.org/api/records/21731492/files/QIK-VRT_Epistemische_Fairness_und_Vorstellungskraft_Addendum_2026-08-01.pdf/content"
+        },
+        {
+          "name": "draft-lohmann-qikvrt-epistemic-fairness-observation-profile-00.txt",
+          "bytes": 27362,
+          "native_checksum": "md5:e44d470e98ccbd31a4507956ec381162",
+          "content_url": "https://zenodo.org/api/records/21731492/files/draft-lohmann-qikvrt-epistemic-fairness-observation-profile-00.txt/content"
+        },
+        {
+          "name": "CLAIM_MATRIX.json",
+          "bytes": 4921,
+          "native_checksum": "md5:d51fc5c61b6543bfb753d544d2a7fffa",
+          "content_url": "https://zenodo.org/api/records/21731492/files/CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "PDF_RENDER_VALIDATION.json",
+          "bytes": 2196,
+          "native_checksum": "md5:ede2fbc7a71bd6398c283dc083600f7e",
+          "content_url": "https://zenodo.org/api/records/21731492/files/PDF_RENDER_VALIDATION.json/content"
+        },
+        {
+          "name": "README.md",
+          "bytes": 4649,
+          "native_checksum": "md5:eba6846aeda5ed1c747f6bba87765d2e",
+          "content_url": "https://zenodo.org/api/records/21731492/files/README.md/content"
+        },
+        {
+          "name": "EVIDENCE_BOUNDARY.md",
+          "bytes": 4108,
+          "native_checksum": "md5:9e984262e373d527aef6c699194bb35d",
+          "content_url": "https://zenodo.org/api/records/21731492/files/EVIDENCE_BOUNDARY.md/content"
+        },
+        {
+          "name": "INHERITED_PROOF_BINDING.json",
+          "bytes": 5470,
+          "native_checksum": "md5:972b402ece38cd7196ac9c4e64733fcf",
+          "content_url": "https://zenodo.org/api/records/21731492/files/INHERITED_PROOF_BINDING.json/content"
+        },
+        {
+          "name": "IETF_APPLICABILITY_PROFILE.md",
+          "bytes": 11163,
+          "native_checksum": "md5:48ed945ec0129b18bcd02f709eaa546c",
+          "content_url": "https://zenodo.org/api/records/21731492/files/IETF_APPLICABILITY_PROFILE.md/content"
+        },
+        {
+          "name": "test_bidirectional_virtual_time_channel_audio_addendum.py",
+          "bytes": 15199,
+          "native_checksum": "md5:9289fd59ca6ac1a262134569a156a430",
+          "content_url": "https://zenodo.org/api/records/21731492/files/test_bidirectional_virtual_time_channel_audio_addendum.py/content"
+        },
+        {
+          "name": "INHERITED_V1_CLAIM_MATRIX.json",
+          "bytes": 6903,
+          "native_checksum": "md5:3ca4759f75790a317add0f07dd39c8dc",
+          "content_url": "https://zenodo.org/api/records/21731492/files/INHERITED_V1_CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "MACHINE_PROOF_BUNDLE.json",
+          "bytes": 16543,
+          "native_checksum": "md5:3a8ba8661dc2476234c29a5f168627ed",
+          "content_url": "https://zenodo.org/api/records/21731492/files/MACHINE_PROOF_BUNDLE.json/content"
+        },
+        {
+          "name": "SCIENTIFIC_ADDENDUM_DE.md",
+          "bytes": 11010,
+          "native_checksum": "md5:d92136cc108c65096ae542c285aa09c5",
+          "content_url": "https://zenodo.org/api/records/21731492/files/SCIENTIFIC_ADDENDUM_DE.md/content"
+        },
+        {
+          "name": "draft-lohmann-qikvrt-epistemic-fairness-observation-profile-00.xml",
+          "bytes": 26525,
+          "native_checksum": "md5:d3eabc22fd8e23976a19e76ae60770fa",
+          "content_url": "https://zenodo.org/api/records/21731492/files/draft-lohmann-qikvrt-epistemic-fairness-observation-profile-00.xml/content"
+        },
+        {
+          "name": "QIK-VRT_Epistemische_Fairness_und_Vorstellungskraft_Addendum_2026-08-01.tex",
+          "bytes": 35884,
+          "native_checksum": "md5:81e422bfa9053cfaceb82f196ef6a50a",
+          "content_url": "https://zenodo.org/api/records/21731492/files/QIK-VRT_Epistemische_Fairness_und_Vorstellungskraft_Addendum_2026-08-01.tex/content"
+        },
+        {
+          "name": "CITATION.cff",
+          "bytes": 1011,
+          "native_checksum": "md5:371b127310bf12a87cbd5933117ab804",
+          "content_url": "https://zenodo.org/api/records/21731492/files/CITATION.cff/content"
+        },
+        {
+          "name": "CLAIM_DELTA.json",
+          "bytes": 7871,
+          "native_checksum": "md5:4d066c0228b06d8abe2be6d09701091f",
+          "content_url": "https://zenodo.org/api/records/21731492/files/CLAIM_DELTA.json/content"
+        },
+        {
+          "name": "ZENODO_FILESET.md",
+          "bytes": 2769,
+          "native_checksum": "md5:4ba5c9de8e8c675bd1cc5ec253ea9c3e",
+          "content_url": "https://zenodo.org/api/records/21731492/files/ZENODO_FILESET.md/content"
+        },
+        {
+          "name": "CHANGE_NOTICE.md",
+          "bytes": 2999,
+          "native_checksum": "md5:fd1319c192e22eee75d219a0e50cb726",
+          "content_url": "https://zenodo.org/api/records/21731492/files/CHANGE_NOTICE.md/content"
+        },
+        {
+          "name": "IETF_RENDER_VALIDATION.json",
+          "bytes": 10603,
+          "native_checksum": "md5:4fde6b0d0cd8b177e3f1b2a1139eb431",
+          "content_url": "https://zenodo.org/api/records/21731492/files/IETF_RENDER_VALIDATION.json/content"
+        },
+        {
+          "name": "LICENSE_NOTICE.md",
+          "bytes": 1048,
+          "native_checksum": "md5:8ae4199b6f6a1d90ff229ad2c0df860c",
+          "content_url": "https://zenodo.org/api/records/21731492/files/LICENSE_NOTICE.md/content"
+        },
+        {
+          "name": "PREPUBLICATION_RETURN_RECEIPT.json",
+          "bytes": 1915,
+          "native_checksum": "md5:590dddbe3de932070a4ea87a4f10bbe1",
+          "content_url": "https://zenodo.org/api/records/21731492/files/PREPUBLICATION_RETURN_RECEIPT.json/content"
+        },
+        {
+          "name": "SOURCE_MEDIA_RECEIPT.json",
+          "bytes": 5194,
+          "native_checksum": "md5:9c0d06cf7d3d3fa99b0ce206c5ebbbf7",
+          "content_url": "https://zenodo.org/api/records/21731492/files/SOURCE_MEDIA_RECEIPT.json/content"
+        },
+        {
+          "name": "TRANSCRIPTS_AND_SOURCE_PROVENANCE.md",
+          "bytes": 11378,
+          "native_checksum": "md5:da9bd94f8e28d4fda67822c35f25aefe",
+          "content_url": "https://zenodo.org/api/records/21731492/files/TRANSCRIPTS_AND_SOURCE_PROVENANCE.md/content"
+        },
+        {
+          "name": "ZENODO_SHA256SUMS",
+          "bytes": 4185,
+          "native_checksum": "md5:720b2a7088fc9a7559477f56dfe6285d",
+          "content_url": "https://zenodo.org/api/records/21731492/files/ZENODO_SHA256SUMS/content"
+        },
+        {
+          "name": "draft-lohmann-qikvrt-epistemic-fairness-observation-profile-00.html",
+          "bytes": 74521,
+          "native_checksum": "md5:f74f87ae854f14b320db3b277bb6f0c9",
+          "content_url": "https://zenodo.org/api/records/21731492/files/draft-lohmann-qikvrt-epistemic-fairness-observation-profile-00.html/content"
+        },
+        {
+          "name": "INHERITED_V1_MACHINE_PROOF_BUNDLE.json",
+          "bytes": 17375,
+          "native_checksum": "md5:0e6ca384ba73948b772ae3beb3532553",
+          "content_url": "https://zenodo.org/api/records/21731492/files/INHERITED_V1_MACHINE_PROOF_BUNDLE.json/content"
+        }
+      ]
+    },
+    {
+      "record_id": 21748371,
+      "concept_record_id": "21748370",
+      "title": "QIK-VRT als Kausalitätsspiegel: Ein maschinenverifizierbares Protokoll für wissenschaftliches Faktenwachstum",
+      "version": "1.0.0",
+      "publication_date": "2026-08-01",
+      "record_created_utc": "2026-08-01T21:19:53.882862+00:00",
+      "record_updated_utc": "2026-08-01T21:19:56.023950+00:00",
+      "doi": "10.5281/zenodo.21748371",
+      "record_url": "https://zenodo.org/records/21748371",
+      "what_this_version_shows": "Beweist 21 Sätze im endlichen Lean-Modell über epistemische Typisierung, append-only Wachstum, Merge-Algebra, bedingte Replikakonvergenz, Konflikterhalt, corpus-relative Neuheit, Beobachtungs- und Digital-Twin-Gates, endliche Rekonstruktion und Nichtwirkung bloßer Vorschläge. Ein bereits evidenzgeschlossener Antwortpfad bleibt unter append-only Erweiterung verfügbar.",
+      "files": [
+        {
+          "name": "QIK-VRT_Kausalitaetsspiegel_Fachartikel_2026-08-01.pdf",
+          "bytes": 58936,
+          "native_checksum": "md5:55cf20b4721147bfbb1fef30446e38c4",
+          "content_url": "https://zenodo.org/api/records/21748371/files/QIK-VRT_Kausalitaetsspiegel_Fachartikel_2026-08-01.pdf/content"
+        },
+        {
+          "name": "ARTICLE_WHATSAPP_FR.md",
+          "bytes": 8754,
+          "native_checksum": "md5:bbd56fdb8869fd9b98fdf002e8569a62",
+          "content_url": "https://zenodo.org/api/records/21748371/files/ARTICLE_WHATSAPP_FR.md/content"
+        },
+        {
+          "name": "CITATION.cff",
+          "bytes": 1018,
+          "native_checksum": "md5:fafa9c57b3552afbc976c79e7f185688",
+          "content_url": "https://zenodo.org/api/records/21748371/files/CITATION.cff/content"
+        },
+        {
+          "name": "QIK-VRT_Kausalitaetsspiegel_Fachartikel_2026-08-01.tex",
+          "bytes": 9513,
+          "native_checksum": "md5:ac1c68060e46a9d965cbfbf459bb7c14",
+          "content_url": "https://zenodo.org/api/records/21748371/files/QIK-VRT_Kausalitaetsspiegel_Fachartikel_2026-08-01.tex/content"
+        },
+        {
+          "name": "SCIENTIFIC_FACT_GROWTH_PROTOCOL.md",
+          "bytes": 18113,
+          "native_checksum": "md5:24145a9d9b5a9b65abb61e58e8d3c524",
+          "content_url": "https://zenodo.org/api/records/21748371/files/SCIENTIFIC_FACT_GROWTH_PROTOCOL.md/content"
+        },
+        {
+          "name": "PROTOCOL_IMPACT.md",
+          "bytes": 2838,
+          "native_checksum": "md5:1d47c8c66827ea10cd5897b9e3e45ab8",
+          "content_url": "https://zenodo.org/api/records/21748371/files/PROTOCOL_IMPACT.md/content"
+        },
+        {
+          "name": "ZENODO_SHA256SUMS",
+          "bytes": 3555,
+          "native_checksum": "md5:9da71a74b5c1125ebe47286bd42c83aa",
+          "content_url": "https://zenodo.org/api/records/21748371/files/ZENODO_SHA256SUMS/content"
+        },
+        {
+          "name": "QIK-VRT_Wissenschaftlicher_Faktenbau_2026-08-01.tex",
+          "bytes": 30347,
+          "native_checksum": "md5:583b56937ac6462b2def2d74f9f03d9a",
+          "content_url": "https://zenodo.org/api/records/21748371/files/QIK-VRT_Wissenschaftlicher_Faktenbau_2026-08-01.tex/content"
+        },
+        {
+          "name": "SOURCE_MEDIA_RECEIPT.json",
+          "bytes": 2052,
+          "native_checksum": "md5:b54f529ed1dedad562c9cb2bbbd0c0db",
+          "content_url": "https://zenodo.org/api/records/21748371/files/SOURCE_MEDIA_RECEIPT.json/content"
+        },
+        {
+          "name": "EU_AI_ACT_AUDIT_READINESS.md",
+          "bytes": 3595,
+          "native_checksum": "md5:6b57b96f33179d390d3f4dd30e6ce001",
+          "content_url": "https://zenodo.org/api/records/21748371/files/EU_AI_ACT_AUDIT_READINESS.md/content"
+        },
+        {
+          "name": "LEAN_KERNEL_RECEIPT.json",
+          "bytes": 8315,
+          "native_checksum": "md5:e5f67c2a7f9ce5e268d1a103ade6186e",
+          "content_url": "https://zenodo.org/api/records/21748371/files/LEAN_KERNEL_RECEIPT.json/content"
+        },
+        {
+          "name": "PDF_RENDER_VALIDATION.json",
+          "bytes": 1511,
+          "native_checksum": "md5:f8eb2efbf4f5d6fee257db130c1fbb22",
+          "content_url": "https://zenodo.org/api/records/21748371/files/PDF_RENDER_VALIDATION.json/content"
+        },
+        {
+          "name": "ARTICLE_WHATSAPP_PT.md",
+          "bytes": 8272,
+          "native_checksum": "md5:643ed41968f5678a502865538762dcd7",
+          "content_url": "https://zenodo.org/api/records/21748371/files/ARTICLE_WHATSAPP_PT.md/content"
+        },
+        {
+          "name": "draft-lohmann-qikvrt-scientific-claim-assurance-00.html",
+          "bytes": 82066,
+          "native_checksum": "md5:d4f740dfdcf294fb6bf3635927d6afd7",
+          "content_url": "https://zenodo.org/api/records/21748371/files/draft-lohmann-qikvrt-scientific-claim-assurance-00.html/content"
+        },
+        {
+          "name": "draft-lohmann-qikvrt-scientific-claim-assurance-00.xml",
+          "bytes": 30416,
+          "native_checksum": "md5:774b04924ba2f1a2ea515d25852415ac",
+          "content_url": "https://zenodo.org/api/records/21748371/files/draft-lohmann-qikvrt-scientific-claim-assurance-00.xml/content"
+        },
+        {
+          "name": "ARTICLE_WHATSAPP_EL.md",
+          "bytes": 14944,
+          "native_checksum": "md5:d7961f777212c02bfefb2001e84b819e",
+          "content_url": "https://zenodo.org/api/records/21748371/files/ARTICLE_WHATSAPP_EL.md/content"
+        },
+        {
+          "name": "EVIDENCE_BOUNDARY.md",
+          "bytes": 3093,
+          "native_checksum": "md5:5150dbd7080c742ae2cd4fb4a740e3fd",
+          "content_url": "https://zenodo.org/api/records/21748371/files/EVIDENCE_BOUNDARY.md/content"
+        },
+        {
+          "name": "IETF_RENDER_VALIDATION.json",
+          "bytes": 4663,
+          "native_checksum": "md5:880dbbd0c95497591d9ba26bcec98f62",
+          "content_url": "https://zenodo.org/api/records/21748371/files/IETF_RENDER_VALIDATION.json/content"
+        },
+        {
+          "name": "PREPUBLICATION_RETURN_RECEIPT.json",
+          "bytes": 6292,
+          "native_checksum": "md5:0a09a51a424cd0c5eb1be3f2d36a7dc4",
+          "content_url": "https://zenodo.org/api/records/21748371/files/PREPUBLICATION_RETURN_RECEIPT.json/content"
+        },
+        {
+          "name": "ARTICLE_WHATSAPP_DE.md",
+          "bytes": 9183,
+          "native_checksum": "md5:79aa67d295294ed7b470eb5628b7747e",
+          "content_url": "https://zenodo.org/api/records/21748371/files/ARTICLE_WHATSAPP_DE.md/content"
+        },
+        {
+          "name": "draft-lohmann-qikvrt-scientific-claim-assurance-00.txt",
+          "bytes": 31276,
+          "native_checksum": "md5:21a5c5a7729e441063f2c2cbc1ef70dd",
+          "content_url": "https://zenodo.org/api/records/21748371/files/draft-lohmann-qikvrt-scientific-claim-assurance-00.txt/content"
+        },
+        {
+          "name": "ARTICLE_WHATSAPP_PL.md",
+          "bytes": 8138,
+          "native_checksum": "md5:e0d6bd5b43ed483baa126beb9591da29",
+          "content_url": "https://zenodo.org/api/records/21748371/files/ARTICLE_WHATSAPP_PL.md/content"
+        },
+        {
+          "name": "ARTICLE_WHATSAPP_NB.md",
+          "bytes": 7562,
+          "native_checksum": "md5:c78ba56413f9a13d6e7d812141ad6587",
+          "content_url": "https://zenodo.org/api/records/21748371/files/ARTICLE_WHATSAPP_NB.md/content"
+        },
+        {
+          "name": "ARTICLE_WHATSAPP_ES.md",
+          "bytes": 8365,
+          "native_checksum": "md5:5cd639f9497466bd004a4ce04161e4bb",
+          "content_url": "https://zenodo.org/api/records/21748371/files/ARTICLE_WHATSAPP_ES.md/content"
+        },
+        {
+          "name": "README.md",
+          "bytes": 4787,
+          "native_checksum": "md5:a4b02fbf7b6388744fa32d27979b762d",
+          "content_url": "https://zenodo.org/api/records/21748371/files/README.md/content"
+        },
+        {
+          "name": "FACHARTIKEL_DE.md",
+          "bytes": 13002,
+          "native_checksum": "md5:d826359bc8196e62d3b042ede85052e2",
+          "content_url": "https://zenodo.org/api/records/21748371/files/FACHARTIKEL_DE.md/content"
+        },
+        {
+          "name": "ARTICLE_WHATSAPP_IT.md",
+          "bytes": 8165,
+          "native_checksum": "md5:1fb76cab7c61f5d30765deb42aadda16",
+          "content_url": "https://zenodo.org/api/records/21748371/files/ARTICLE_WHATSAPP_IT.md/content"
+        },
+        {
+          "name": "QIK-VRT_Wissenschaftlicher_Faktenbau_2026-08-01.pdf",
+          "bytes": 127239,
+          "native_checksum": "md5:9d313954d14f2035451e25e9efe068cd",
+          "content_url": "https://zenodo.org/api/records/21748371/files/QIK-VRT_Wissenschaftlicher_Faktenbau_2026-08-01.pdf/content"
+        },
+        {
+          "name": "ARTICLE_WHATSAPP_EN.md",
+          "bytes": 8179,
+          "native_checksum": "md5:252aa48c751d525e229e0526654e0353",
+          "content_url": "https://zenodo.org/api/records/21748371/files/ARTICLE_WHATSAPP_EN.md/content"
+        },
+        {
+          "name": "ARTICLE_WHATSAPP_DA.md",
+          "bytes": 7607,
+          "native_checksum": "md5:ac5ad8496792428481a54ce07019c13e",
+          "content_url": "https://zenodo.org/api/records/21748371/files/ARTICLE_WHATSAPP_DA.md/content"
+        },
+        {
+          "name": "ARTICLE_WHATSAPP_SV.md",
+          "bytes": 7647,
+          "native_checksum": "md5:ee6d456b30ae7b43976af70ccd74edcb",
+          "content_url": "https://zenodo.org/api/records/21748371/files/ARTICLE_WHATSAPP_SV.md/content"
+        },
+        {
+          "name": "LICENSE_NOTICE.md",
+          "bytes": 1131,
+          "native_checksum": "md5:12d40cebe96f7dee9bf6bb92949e3b9c",
+          "content_url": "https://zenodo.org/api/records/21748371/files/LICENSE_NOTICE.md/content"
+        },
+        {
+          "name": "REFERENCES.bib",
+          "bytes": 2632,
+          "native_checksum": "md5:33d17dd0bba744dc1c447a7a65da7bd2",
+          "content_url": "https://zenodo.org/api/records/21748371/files/REFERENCES.bib/content"
+        },
+        {
+          "name": "CLAIM_MATRIX.json",
+          "bytes": 14452,
+          "native_checksum": "md5:cea893dd1918b1df1d4be18b0b53bc6b",
+          "content_url": "https://zenodo.org/api/records/21748371/files/CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "FORMAL_ScientificFactGrowth.lean",
+          "bytes": 11547,
+          "native_checksum": "md5:c3386c5fa8fa4e9214ee27aa31caa325",
+          "content_url": "https://zenodo.org/api/records/21748371/files/FORMAL_ScientificFactGrowth.lean/content"
+        },
+        {
+          "name": "TRANSCRIPT_REVIEWED_DE.md",
+          "bytes": 4471,
+          "native_checksum": "md5:764d0b6a6cbdda99da55da608450cd3a",
+          "content_url": "https://zenodo.org/api/records/21748371/files/TRANSCRIPT_REVIEWED_DE.md/content"
+        },
+        {
+          "name": "draft-lohmann-qikvrt-scientific-claim-assurance-00.CANDIDATE.json",
+          "bytes": 3761,
+          "native_checksum": "md5:1ef007f7ae862e2395c9a974ae11d58b",
+          "content_url": "https://zenodo.org/api/records/21748371/files/draft-lohmann-qikvrt-scientific-claim-assurance-00.CANDIDATE.json/content"
+        },
+        {
+          "name": "ZENODO_FILESET.md",
+          "bytes": 2121,
+          "native_checksum": "md5:b38ac75cc2b271dd0f20121b2bbf07ca",
+          "content_url": "https://zenodo.org/api/records/21748371/files/ZENODO_FILESET.md/content"
+        },
+        {
+          "name": "MACHINE_PROOF_BUNDLE.json",
+          "bytes": 30796,
+          "native_checksum": "md5:457adf46957489157cfa7651e4288c2b",
+          "content_url": "https://zenodo.org/api/records/21748371/files/MACHINE_PROOF_BUNDLE.json/content"
+        }
+      ]
+    },
+    {
+      "record_id": 22527889,
+      "concept_record_id": "22527888",
+      "title": "QIK-VRT VRTCore SMG H5: Planck-Brücke, massive Schließung und virtuelle Kosmogenese",
+      "version": "5.0.0-candidate.1",
+      "publication_date": "2026-08-02",
+      "record_created_utc": "2026-09-06T10:49:03.685318+00:00",
+      "record_updated_utc": "2026-09-06T10:49:04.798773+00:00",
+      "doi": "10.5281/zenodo.22527889",
+      "record_url": "https://zenodo.org/records/22527889",
+      "what_this_version_shows": "Der archivierte Kernelbeleg umfasst 32 Theoreme über symbolische Planck-Identitäten, gemeinsame Ereignisidentität von Wellen- und Recordprojektion, Evidenz- und Schließungsbedingungen sowie monotone virtuelle Erreichbarkeit. Persistentes striktes Populationswachstum impliziert unter der ausgewiesenen Wachstumsprämisse unbeschränkte virtuelle Population.",
+      "files": [
+        {
+          "name": "README.md",
+          "bytes": 5879,
+          "native_checksum": "md5:90fa509e1175d2bc924240ec776dd0dd",
+          "content_url": "https://zenodo.org/api/records/22527889/files/README.md/content"
+        },
+        {
+          "name": "verify_h5_package.py",
+          "bytes": 9052,
+          "native_checksum": "md5:bf8bc60913f873e9045005b5142ae02c",
+          "content_url": "https://zenodo.org/api/records/22527889/files/verify_h5_package.py/content"
+        },
+        {
+          "name": "ZENODO_METADATA.json",
+          "bytes": 1335,
+          "native_checksum": "md5:7177469090852633e985179cecdff6b9",
+          "content_url": "https://zenodo.org/api/records/22527889/files/ZENODO_METADATA.json/content"
+        },
+        {
+          "name": "qikvrt-zenodo-machine-proof-bundle-v2.schema.json",
+          "bytes": 6311,
+          "native_checksum": "md5:494c86955db514572e8049ec26a1553f",
+          "content_url": "https://zenodo.org/api/records/22527889/files/qikvrt-zenodo-machine-proof-bundle-v2.schema.json/content"
+        },
+        {
+          "name": "qikvrt-prepublication-return-receipt-v2.schema.json",
+          "bytes": 3806,
+          "native_checksum": "md5:526d2265ff239f37d1ae9c4749accdba",
+          "content_url": "https://zenodo.org/api/records/22527889/files/qikvrt-prepublication-return-receipt-v2.schema.json/content"
+        },
+        {
+          "name": "validate_h5_instance.py",
+          "bytes": 11379,
+          "native_checksum": "md5:2ba97c572e2492ba3d1a6141c2de5298",
+          "content_url": "https://zenodo.org/api/records/22527889/files/validate_h5_instance.py/content"
+        },
+        {
+          "name": "CHANGE_NOTICE.md",
+          "bytes": 2094,
+          "native_checksum": "md5:9ac721e7ac34af89faf90f289ed4eeaf",
+          "content_url": "https://zenodo.org/api/records/22527889/files/CHANGE_NOTICE.md/content"
+        },
+        {
+          "name": "CC-BY-NC-ND-4.0.txt",
+          "bytes": 19127,
+          "native_checksum": "md5:c70f85fe39eb601f25b595299c688bfd",
+          "content_url": "https://zenodo.org/api/records/22527889/files/CC-BY-NC-ND-4.0.txt/content"
+        },
+        {
+          "name": "CLAIM_MATRIX.json",
+          "bytes": 6038,
+          "native_checksum": "md5:fe02099d014b199db18f18784a3bfe73",
+          "content_url": "https://zenodo.org/api/records/22527889/files/CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "ZENODO_SHA256SUMS",
+          "bytes": 3075,
+          "native_checksum": "md5:b2f434f0a225a3915d6fc68c4defa1a1",
+          "content_url": "https://zenodo.org/api/records/22527889/files/ZENODO_SHA256SUMS/content"
+        },
+        {
+          "name": "LICENSE_MAP.md",
+          "bytes": 884,
+          "native_checksum": "md5:8097642e22e6527893046f43174afbc7",
+          "content_url": "https://zenodo.org/api/records/22527889/files/LICENSE_MAP.md/content"
+        },
+        {
+          "name": "H5_REFERENCE_INSTANCE.vrt",
+          "bytes": 3435,
+          "native_checksum": "md5:0aad37014ffd0b162749e4764b29795d",
+          "content_url": "https://zenodo.org/api/records/22527889/files/H5_REFERENCE_INSTANCE.vrt/content"
+        },
+        {
+          "name": "ZENODO_LICENSE_NOTICE.md",
+          "bytes": 1027,
+          "native_checksum": "md5:e70848b17c6a9003d5227ae485e32a8a",
+          "content_url": "https://zenodo.org/api/records/22527889/files/ZENODO_LICENSE_NOTICE.md/content"
+        },
+        {
+          "name": "QIK-VRT_SMG_Fachartikel_DE_2026-08-02.pdf",
+          "bytes": 114078,
+          "native_checksum": "md5:210610f0c79f44f84339eb749913695e",
+          "content_url": "https://zenodo.org/api/records/22527889/files/QIK-VRT_SMG_Fachartikel_DE_2026-08-02.pdf/content"
+        },
+        {
+          "name": "QIK-VRT_SMG_Fachartikel_DE_2026-08-02.tex",
+          "bytes": 25656,
+          "native_checksum": "md5:86c9b94ab4ba7b99dc90b5be043331a9",
+          "content_url": "https://zenodo.org/api/records/22527889/files/QIK-VRT_SMG_Fachartikel_DE_2026-08-02.tex/content"
+        },
+        {
+          "name": "QIK-VRT_SMG_Fachartikel_DE_2026-08-02.md",
+          "bytes": 26219,
+          "native_checksum": "md5:5d3d35df1f274d8b2038af91604d32cd",
+          "content_url": "https://zenodo.org/api/records/22527889/files/QIK-VRT_SMG_Fachartikel_DE_2026-08-02.md/content"
+        },
+        {
+          "name": "QIK-VRT_SMG_Allgemein_WhatsApp_DE_2026-08-02.md",
+          "bytes": 21113,
+          "native_checksum": "md5:c7a90f1e56af48679a080c39eede2f01",
+          "content_url": "https://zenodo.org/api/records/22527889/files/QIK-VRT_SMG_Allgemein_WhatsApp_DE_2026-08-02.md/content"
+        },
+        {
+          "name": "CITATION.cff",
+          "bytes": 1492,
+          "native_checksum": "md5:e85acb48b087e1df8c0536a0aebb5aa3",
+          "content_url": "https://zenodo.org/api/records/22527889/files/CITATION.cff/content"
+        },
+        {
+          "name": "MANIFEST.json",
+          "bytes": 3053,
+          "native_checksum": "md5:f9fe3179193fcaa77f459d79f65857ed",
+          "content_url": "https://zenodo.org/api/records/22527889/files/MANIFEST.json/content"
+        },
+        {
+          "name": "H5_LOCAL_KERNEL_RECEIPT.json",
+          "bytes": 11981,
+          "native_checksum": "md5:00e512e87f0d9bfa877cbfde2c16fe82",
+          "content_url": "https://zenodo.org/api/records/22527889/files/H5_LOCAL_KERNEL_RECEIPT.json/content"
+        },
+        {
+          "name": "SHA256SUMS",
+          "bytes": 1766,
+          "native_checksum": "md5:f5dce0b243547970b3714b699ac137df",
+          "content_url": "https://zenodo.org/api/records/22527889/files/SHA256SUMS/content"
+        },
+        {
+          "name": "SOURCE_EVIDENCE_BINDINGS.json",
+          "bytes": 8022,
+          "native_checksum": "md5:695b5dcad68a684438a57d095399a1be",
+          "content_url": "https://zenodo.org/api/records/22527889/files/SOURCE_EVIDENCE_BINDINGS.json/content"
+        },
+        {
+          "name": "VRTCore_SMG_AxiomAudit.lean",
+          "bytes": 2605,
+          "native_checksum": "md5:a031527d2671f0ad9c32eb7895e59ad6",
+          "content_url": "https://zenodo.org/api/records/22527889/files/VRTCore_SMG_AxiomAudit.lean/content"
+        },
+        {
+          "name": "VRTCore_SMG_EBNF_Map_DE.svg",
+          "bytes": 9073,
+          "native_checksum": "md5:dcfe2f571659c64e387b9a2ab89e89b8",
+          "content_url": "https://zenodo.org/api/records/22527889/files/VRTCore_SMG_EBNF_Map_DE.svg/content"
+        },
+        {
+          "name": "ZENODO_FILESET.md",
+          "bytes": 2808,
+          "native_checksum": "md5:9935e38b7d1376ff3199503e39cd60de",
+          "content_url": "https://zenodo.org/api/records/22527889/files/ZENODO_FILESET.md/content"
+        },
+        {
+          "name": "VRTCore_SMG_PlanckBridge.lean",
+          "bytes": 18510,
+          "native_checksum": "md5:321e63504d7cbdae0294ec34382e736d",
+          "content_url": "https://zenodo.org/api/records/22527889/files/VRTCore_SMG_PlanckBridge.lean/content"
+        },
+        {
+          "name": "VRTCore_SMG_Syntax.ebnf",
+          "bytes": 10230,
+          "native_checksum": "md5:7191b129fc6d440e1e471399965724a3",
+          "content_url": "https://zenodo.org/api/records/22527889/files/VRTCore_SMG_Syntax.ebnf/content"
+        },
+        {
+          "name": "test_validate_h5_instance.py",
+          "bytes": 3165,
+          "native_checksum": "md5:e4fb262014e50f6837da3ae8ee85b9db",
+          "content_url": "https://zenodo.org/api/records/22527889/files/test_validate_h5_instance.py/content"
+        },
+        {
+          "name": "CLAIM_MATRIX_V2.json",
+          "bytes": 22984,
+          "native_checksum": "md5:ab1c7ef4ccb1c2eacaa353505f1f999f",
+          "content_url": "https://zenodo.org/api/records/22527889/files/CLAIM_MATRIX_V2.json/content"
+        },
+        {
+          "name": "PREPUBLICATION_RETURN_RECEIPT.json",
+          "bytes": 2545,
+          "native_checksum": "md5:d28dc25d71eb88bbf4dc265ba09a41a0",
+          "content_url": "https://zenodo.org/api/records/22527889/files/PREPUBLICATION_RETURN_RECEIPT.json/content"
+        },
+        {
+          "name": "KERNEL_RECEIPT.json",
+          "bytes": 10138,
+          "native_checksum": "md5:42afe9ccd7a4b37c84eb11b32b13461f",
+          "content_url": "https://zenodo.org/api/records/22527889/files/KERNEL_RECEIPT.json/content"
+        },
+        {
+          "name": "BOUNDARY_TEST_REPORT.json",
+          "bytes": 2740,
+          "native_checksum": "md5:c575f3bfd11363518f5c56b4206ae035",
+          "content_url": "https://zenodo.org/api/records/22527889/files/BOUNDARY_TEST_REPORT.json/content"
+        },
+        {
+          "name": "zenodo-machine-proof-policy-v2.json",
+          "bytes": 4992,
+          "native_checksum": "md5:c2c017d8af55f2976eeabef1365cefd6",
+          "content_url": "https://zenodo.org/api/records/22527889/files/zenodo-machine-proof-policy-v2.json/content"
+        },
+        {
+          "name": "PolyForm-Noncommercial-1.0.0.txt",
+          "bytes": 4563,
+          "native_checksum": "md5:fa4f6eb8206bcfb6954542687e669418",
+          "content_url": "https://zenodo.org/api/records/22527889/files/PolyForm-Noncommercial-1.0.0.txt/content"
+        },
+        {
+          "name": "MACHINE_PROOF_BUNDLE.json",
+          "bytes": 25153,
+          "native_checksum": "md5:bd86f98d82e40cf706e23117d02f9bda",
+          "content_url": "https://zenodo.org/api/records/22527889/files/MACHINE_PROOF_BUNDLE.json/content"
+        }
+      ]
+    },
+    {
+      "record_id": 21804399,
+      "concept_record_id": "21804398",
+      "title": "Prä-raumzeitliche Ontologie: Unterschied, Relation, Information und emergente Raumzeit",
+      "version": null,
+      "publication_date": "2026-08-05",
+      "record_created_utc": "2026-08-05T08:48:33.367247+00:00",
+      "record_updated_utc": "2026-08-05T08:48:33.928893+00:00",
+      "doi": "10.5281/zenodo.21804399",
+      "record_url": "https://zenodo.org/records/21804399",
+      "what_this_version_shows": "Entwickelt Unterscheidbarkeit als minimale relationale Voraussetzung und eine typisierte Erklärungsfolge über Information, Quantität, Invarianz und gerichtete Wirksamkeit zur Raumzeitbeschreibung. Bezieht Materie, Leben, Kognition und Verantwortung ein und formuliert für jeden Übergang eigene Modell- und Prüfpflichten.",
+      "files": [
+        {
+          "name": "README.md",
+          "bytes": 1399,
+          "native_checksum": "md5:0dc178419844e8a72c1768cfff4f5e44",
+          "content_url": "https://zenodo.org/api/records/21804399/files/README.md/content"
+        },
+        {
+          "name": "PAPER.tex",
+          "bytes": 9029,
+          "native_checksum": "md5:b333304af214e699847448c69393077f",
+          "content_url": "https://zenodo.org/api/records/21804399/files/PAPER.tex/content"
+        },
+        {
+          "name": "REFERENCES.bib",
+          "bytes": 5565,
+          "native_checksum": "md5:29189a9b40f1399b574ec52bc7dfcef7",
+          "content_url": "https://zenodo.org/api/records/21804399/files/REFERENCES.bib/content"
+        },
+        {
+          "name": "WHATSAPP_READALOUD.md",
+          "bytes": 11486,
+          "native_checksum": "md5:3e6814f7866a343bb35e20b887db2c88",
+          "content_url": "https://zenodo.org/api/records/21804399/files/WHATSAPP_READALOUD.md/content"
+        }
+      ]
+    },
+    {
+      "record_id": 21888130,
+      "concept_record_id": "21888129",
+      "title": "Von Softwarearchitektur zur Weltformel – DAS UNIVERSUM ALS ROUND TRIP",
+      "version": "1.0.0-candidate.1",
+      "publication_date": "2026-08-08",
+      "record_created_utc": "2026-08-11T11:15:41.504508+00:00",
+      "record_updated_utc": "2026-08-11T11:15:43.524250+00:00",
+      "doi": "10.5281/zenodo.21888130",
+      "record_url": "https://zenodo.org/records/21888130",
+      "what_this_version_shows": "Verbindet Wirklichkeit, Unterschied, Information, Relation, Kausalordnung, Modell, Formalisierung, Beweis, Vorhersage und Messung zu einem rückgekoppelten Erkenntnisweg. Die promovierten Anlagen enthalten sechs formale Ergebnisgruppen mit insgesamt 99 archiviert kernelgeprüften Theoremen: Dimensionssignaturen aus Kalibrierung, QCE-Serialisierung, bedingte Achsenwahl, eindeutige Evidenzzertifikate, numerische c-Repräsentation und Messbindungsvertrag.",
+      "files": [
+        {
+          "name": "SUBJECT-77146b895ce38de4_CLAIM_MATRIX.json",
+          "bytes": 244677,
+          "native_checksum": "md5:9e0f19ab41f38eb2052d6318fdd22ad2",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-77146b895ce38de4_CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "CORPUS_CORRECTION_TEMPORAL_PRECEDENCE_CURRENT.json",
+          "bytes": 1792,
+          "native_checksum": "md5:cc92a742c2fc8e988d4a88519a194f49",
+          "content_url": "https://zenodo.org/api/records/21888130/files/CORPUS_CORRECTION_TEMPORAL_PRECEDENCE_CURRENT.json/content"
+        },
+        {
+          "name": "SUBJECT-2581811b342e505d_SUBJECT_DISPOSITION_RECEIPT.json",
+          "bytes": 2231,
+          "native_checksum": "md5:27729827b7e056364c65fe68a350e11e",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-2581811b342e505d_SUBJECT_DISPOSITION_RECEIPT.json/content"
+        },
+        {
+          "name": "CORPUS_CLOSURE_EFFECTIVE_CURRENT.json",
+          "bytes": 2349,
+          "native_checksum": "md5:591cdaea73674e368c2fb577b6cf7477",
+          "content_url": "https://zenodo.org/api/records/21888130/files/CORPUS_CLOSURE_EFFECTIVE_CURRENT.json/content"
+        },
+        {
+          "name": "ROUND_TRIP_PROMOTED_FORMAL_RESULTS_V1.md",
+          "bytes": 5150,
+          "native_checksum": "md5:a7c07d3206da86d09778453791b92933",
+          "content_url": "https://zenodo.org/api/records/21888130/files/ROUND_TRIP_PROMOTED_FORMAL_RESULTS_V1.md/content"
+        },
+        {
+          "name": "SUBJECT-7fdb36aa7c07c07d_SUBJECT_DISPOSITION_RECEIPT.json",
+          "bytes": 2816,
+          "native_checksum": "md5:d03acc25093c72b2a1252be5139fae16",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-7fdb36aa7c07c07d_SUBJECT_DISPOSITION_RECEIPT.json/content"
+        },
+        {
+          "name": "ZENODO_SHA256SUMS",
+          "bytes": 5843,
+          "native_checksum": "md5:591fe75f8856fde581babd764f1ca377",
+          "content_url": "https://zenodo.org/api/records/21888130/files/ZENODO_SHA256SUMS/content"
+        },
+        {
+          "name": "SUBJECT-51a0cfc51bcbd722_CLAIM_MATRIX.json",
+          "bytes": 30478,
+          "native_checksum": "md5:42115e4c30df9d8bcf67333a360e86fc",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-51a0cfc51bcbd722_CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "SUBJECT-59493a8ae380798d_CLAIM_MATRIX.json",
+          "bytes": 191184,
+          "native_checksum": "md5:6e894db2ca2f52686a451aa6c88762ad",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-59493a8ae380798d_CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "CC-BY-NC-ND-4.0.txt",
+          "bytes": 19127,
+          "native_checksum": "md5:c70f85fe39eb601f25b595299c688bfd",
+          "content_url": "https://zenodo.org/api/records/21888130/files/CC-BY-NC-ND-4.0.txt/content"
+        },
+        {
+          "name": "MACHINE_PROOF_BUNDLE.json",
+          "bytes": 49738,
+          "native_checksum": "md5:2240210177d7a7510f813f1f131226c6",
+          "content_url": "https://zenodo.org/api/records/21888130/files/MACHINE_PROOF_BUNDLE.json/content"
+        },
+        {
+          "name": "BOUNDARY_TEST_REPORT.json",
+          "bytes": 3853,
+          "native_checksum": "md5:2e6f41216ff9b8024e18cd515c7325cd",
+          "content_url": "https://zenodo.org/api/records/21888130/files/BOUNDARY_TEST_REPORT.json/content"
+        },
+        {
+          "name": "SUBJECT-7fdb36aa7c07c07d_CONTENT_CHANGE_DECISION.json",
+          "bytes": 6130,
+          "native_checksum": "md5:ce43ea5daadc6562876c6673e63a1442",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-7fdb36aa7c07c07d_CONTENT_CHANGE_DECISION.json/content"
+        },
+        {
+          "name": "CLAIM_MATRIX.json",
+          "bytes": 26930,
+          "native_checksum": "md5:b6767f820418b1abc21a401e354a63d0",
+          "content_url": "https://zenodo.org/api/records/21888130/files/CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "DAS_UNIVERSUM_ALS_ROUND_TRIP_DE.md",
+          "bytes": 18120,
+          "native_checksum": "md5:496dabec707848d56f066a47ead9745f",
+          "content_url": "https://zenodo.org/api/records/21888130/files/DAS_UNIVERSUM_ALS_ROUND_TRIP_DE.md/content"
+        },
+        {
+          "name": "PROMOTED_FORMAL_KERNEL_RECEIPTS.json",
+          "bytes": 30213,
+          "native_checksum": "md5:02938ced0c0eadf03995863dbc1dd8ca",
+          "content_url": "https://zenodo.org/api/records/21888130/files/PROMOTED_FORMAL_KERNEL_RECEIPTS.json/content"
+        },
+        {
+          "name": "SUBJECT-3e026c784df87b95_CLAIM_MATRIX.json",
+          "bytes": 72095,
+          "native_checksum": "md5:dde7f306d8ebe08570daaa79e569f4c7",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-3e026c784df87b95_CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "PROMOTED_FORMAL_SOURCE_BINDINGS.json",
+          "bytes": 19186,
+          "native_checksum": "md5:e13d09088ea33b7bc75eed745facd85f",
+          "content_url": "https://zenodo.org/api/records/21888130/files/PROMOTED_FORMAL_SOURCE_BINDINGS.json/content"
+        },
+        {
+          "name": "QIKVRT_PREPUBLICATION_RETURN_RECEIPT_V2_SCHEMA.json",
+          "bytes": 3806,
+          "native_checksum": "md5:526d2265ff239f37d1ae9c4749accdba",
+          "content_url": "https://zenodo.org/api/records/21888130/files/QIKVRT_PREPUBLICATION_RETURN_RECEIPT_V2_SCHEMA.json/content"
+        },
+        {
+          "name": "QIKVRT_ZENODO_MACHINE_PROOF_BUNDLE_V2_SCHEMA.json",
+          "bytes": 6311,
+          "native_checksum": "md5:494c86955db514572e8049ec26a1553f",
+          "content_url": "https://zenodo.org/api/records/21888130/files/QIKVRT_ZENODO_MACHINE_PROOF_BUNDLE_V2_SCHEMA.json/content"
+        },
+        {
+          "name": "RETROSPECTIVE_PROOF_CORPUS_INDEX.json",
+          "bytes": 21393,
+          "native_checksum": "md5:649b4273c812a5646379dea895f4b0f3",
+          "content_url": "https://zenodo.org/api/records/21888130/files/RETROSPECTIVE_PROOF_CORPUS_INDEX.json/content"
+        },
+        {
+          "name": "SUBJECT-45b9d1b677568ae7_CLAIM_MATRIX.json",
+          "bytes": 19861,
+          "native_checksum": "md5:c612247dc38b7439476dd03eb217c270",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-45b9d1b677568ae7_CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "RETROSPECTIVE_PROOF_CORPUS_RECEIPT.json",
+          "bytes": 1530,
+          "native_checksum": "md5:ca4c5859f029c45ce2a6dd61fae685ae",
+          "content_url": "https://zenodo.org/api/records/21888130/files/RETROSPECTIVE_PROOF_CORPUS_RECEIPT.json/content"
+        },
+        {
+          "name": "RETROSPECTIVE_SOURCE_CONSTITUENTS.json",
+          "bytes": 20964,
+          "native_checksum": "md5:9e7a51492e5baca6b4ffaa427ed4c42f",
+          "content_url": "https://zenodo.org/api/records/21888130/files/RETROSPECTIVE_SOURCE_CONSTITUENTS.json/content"
+        },
+        {
+          "name": "ROUND_TRIP_PREPUBLICATION_RETURN_RECEIPT.json",
+          "bytes": 1233,
+          "native_checksum": "md5:16f1a92cd7564f82b2f645550478eda8",
+          "content_url": "https://zenodo.org/api/records/21888130/files/ROUND_TRIP_PREPUBLICATION_RETURN_RECEIPT.json/content"
+        },
+        {
+          "name": "SUBJECT-172dd9bc2738fa43_CLAIM_MATRIX.json",
+          "bytes": 5959473,
+          "native_checksum": "md5:f6ebf1cb3b311041c5f1faebc88fcbff",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-172dd9bc2738fa43_CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "SUBJECT-7956d8acdc473825_SUBJECT_DISPOSITION_RECEIPT.json",
+          "bytes": 2851,
+          "native_checksum": "md5:ec20ab5b7131139767f64fd8dea11bcd",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-7956d8acdc473825_SUBJECT_DISPOSITION_RECEIPT.json/content"
+        },
+        {
+          "name": "SUBJECT-172dd9bc2738fa43_CONTENT_CHANGE_DECISION.json",
+          "bytes": 4795,
+          "native_checksum": "md5:19d48a25933919680876633c50bd3461",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-172dd9bc2738fa43_CONTENT_CHANGE_DECISION.json/content"
+        },
+        {
+          "name": "SUBJECT-172dd9bc2738fa43_SUBJECT_DISPOSITION_RECEIPT.json",
+          "bytes": 2857,
+          "native_checksum": "md5:054ffc3a9610f5d34cca36aa734d9e1e",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-172dd9bc2738fa43_SUBJECT_DISPOSITION_RECEIPT.json/content"
+        },
+        {
+          "name": "SUBJECT-187cfda66d1eda16_CLAIM_MATRIX.json",
+          "bytes": 137656,
+          "native_checksum": "md5:ca9bcb2abd5ebdd138722b8326704bf0",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-187cfda66d1eda16_CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "SUBJECT-2581811b342e505d_CLAIM_MATRIX.json",
+          "bytes": 39095,
+          "native_checksum": "md5:5baef21a7ab9235236884c8b2d4b0df2",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-2581811b342e505d_CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "SUBJECT-2beab714d1dc6019_CLAIM_MATRIX.json",
+          "bytes": 30478,
+          "native_checksum": "md5:f10624f6e6d472b0bd513c35d229a66a",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-2beab714d1dc6019_CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "SUBJECT-43c59da1cfd26267_CLAIM_MATRIX.json",
+          "bytes": 189117,
+          "native_checksum": "md5:a64239700589a273ba03ebc20ecb26d7",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-43c59da1cfd26267_CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "SUBJECT-5d4c516db0fdaaf5_CLAIM_MATRIX.json",
+          "bytes": 236034,
+          "native_checksum": "md5:9fb7e76ef26a4403ca38be1da26fa03b",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-5d4c516db0fdaaf5_CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "SUBJECT-685123cd60e2fd7b_CLAIM_MATRIX.json",
+          "bytes": 28132,
+          "native_checksum": "md5:7770c5262b2f4e6a447217acc850c597",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-685123cd60e2fd7b_CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "SUBJECT-780b9bf86425cee3_CLAIM_MATRIX.json",
+          "bytes": 15202611,
+          "native_checksum": "md5:efcbeed14f992c0f2b03e3046853ae0e",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-780b9bf86425cee3_CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "SUBJECT-780b9bf86425cee3_CONTENT_CHANGE_DECISION.json",
+          "bytes": 5305,
+          "native_checksum": "md5:3a45f0133ef5f155634f87cabf40ae97",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-780b9bf86425cee3_CONTENT_CHANGE_DECISION.json/content"
+        },
+        {
+          "name": "SUBJECT-780b9bf86425cee3_SUBJECT_DISPOSITION_RECEIPT.json",
+          "bytes": 2850,
+          "native_checksum": "md5:6bcc937ca85303c0b886c2b8365a4490",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-780b9bf86425cee3_SUBJECT_DISPOSITION_RECEIPT.json/content"
+        },
+        {
+          "name": "SUBJECT-7956d8acdc473825_CLAIM_MATRIX.json",
+          "bytes": 8933021,
+          "native_checksum": "md5:4d6b89561ed942c33974381e9c7949c0",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-7956d8acdc473825_CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "SUBJECT-7956d8acdc473825_CONTENT_CHANGE_DECISION.json",
+          "bytes": 7804,
+          "native_checksum": "md5:6ea1278a4f1f003ee4676d293587bc9d",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-7956d8acdc473825_CONTENT_CHANGE_DECISION.json/content"
+        },
+        {
+          "name": "ZENODO_FILESET.md",
+          "bytes": 10612,
+          "native_checksum": "md5:accc2997fdd15825572a72bfef119885",
+          "content_url": "https://zenodo.org/api/records/21888130/files/ZENODO_FILESET.md/content"
+        },
+        {
+          "name": "SUBJECT-7fdb36aa7c07c07d_CLAIM_MATRIX.json",
+          "bytes": 17960329,
+          "native_checksum": "md5:20186fc8c75e4b3074f1ce43c359029b",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-7fdb36aa7c07c07d_CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "SUBJECT-b4849e1a2d6b2270_CLAIM_MATRIX.json",
+          "bytes": 7155439,
+          "native_checksum": "md5:1cef1e68a6db0b6ec42b943ef00ca272",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-b4849e1a2d6b2270_CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "SUBJECT-b4849e1a2d6b2270_CONTENT_CHANGE_DECISION.json",
+          "bytes": 3405,
+          "native_checksum": "md5:1c8e4ee0fcd836a8d0f135f4dbbbb893",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-b4849e1a2d6b2270_CONTENT_CHANGE_DECISION.json/content"
+        },
+        {
+          "name": "SUBJECT-b4849e1a2d6b2270_SUBJECT_DISPOSITION_RECEIPT.json",
+          "bytes": 2905,
+          "native_checksum": "md5:bb0c41a142085af187bddb8cc36d0f8e",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-b4849e1a2d6b2270_SUBJECT_DISPOSITION_RECEIPT.json/content"
+        },
+        {
+          "name": "SUBJECT-c9d87f4435178b09_CLAIM_MATRIX.json",
+          "bytes": 314863,
+          "native_checksum": "md5:d624707a508baf8e0a76a9f13df51d87",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-c9d87f4435178b09_CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "SUBJECT-ce2390f18618ad0c_CLAIM_MATRIX.json",
+          "bytes": 9073784,
+          "native_checksum": "md5:61f753099400d3972ff1047bc40f27b6",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-ce2390f18618ad0c_CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "SUBJECT-ce2390f18618ad0c_CONTENT_CHANGE_DECISION.json",
+          "bytes": 7804,
+          "native_checksum": "md5:5e97676ba6850ec1ab2c5714c74aefd7",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-ce2390f18618ad0c_CONTENT_CHANGE_DECISION.json/content"
+        },
+        {
+          "name": "SUBJECT-ce2390f18618ad0c_SUBJECT_DISPOSITION_RECEIPT.json",
+          "bytes": 2851,
+          "native_checksum": "md5:68e3c34b666b859cccb4d26ee7cabfb0",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-ce2390f18618ad0c_SUBJECT_DISPOSITION_RECEIPT.json/content"
+        },
+        {
+          "name": "SUBJECT-d2dad396615a4c7c_CLAIM_MATRIX.json",
+          "bytes": 16983,
+          "native_checksum": "md5:aa1a0dd8a7ebb44a46e9ef9c32fe1124",
+          "content_url": "https://zenodo.org/api/records/21888130/files/SUBJECT-d2dad396615a4c7c_CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "ZENODO_LICENSE_NOTICE.md",
+          "bytes": 913,
+          "native_checksum": "md5:1395e63de664cb19fde8ce2622029752",
+          "content_url": "https://zenodo.org/api/records/21888130/files/ZENODO_LICENSE_NOTICE.md/content"
+        },
+        {
+          "name": "ZENODO_MACHINE_PROOF_POLICY_V2.json",
+          "bytes": 4992,
+          "native_checksum": "md5:c2c017d8af55f2976eeabef1365cefd6",
+          "content_url": "https://zenodo.org/api/records/21888130/files/ZENODO_MACHINE_PROOF_POLICY_V2.json/content"
+        },
+        {
+          "name": "ZENODO_METADATA.json",
+          "bytes": 2370,
+          "native_checksum": "md5:0b1fa78e758abe2d2e8c7d7acbdb3318",
+          "content_url": "https://zenodo.org/api/records/21888130/files/ZENODO_METADATA.json/content"
+        },
+        {
+          "name": "ZENODO_TARGET_RECORD.json",
+          "bytes": 936,
+          "native_checksum": "md5:58641b02c65cda467563c33282fcaca5",
+          "content_url": "https://zenodo.org/api/records/21888130/files/ZENODO_TARGET_RECORD.json/content"
+        }
+      ]
+    },
+    {
+      "record_id": 22216916,
+      "concept_record_id": "22216915",
+      "title": "Relationale Zeit, virtuelle Retrokausalität und die monoton wachsende Evidenzkugel",
+      "version": "1.0",
+      "publication_date": "2026-08-12",
+      "record_created_utc": "2026-09-01T00:00:08.671100+00:00",
+      "record_updated_utc": "2026-09-01T00:02:16.842079+00:00",
+      "doi": "10.5281/zenodo.22216916",
+      "record_url": "https://zenodo.org/records/22216916",
+      "what_this_version_shows": "Unterscheidet Host-Kausalordnung, virtuelle Zeitordnung und knotenlokale Ereigniszeit. Erläutert rückwärts rekonstruierbare Spuren, Beweisringe und monotones Wachstum einer evidenzgebundenen Erkenntnismenge. Der historische Primärtext wird unverändert erhalten.",
+      "files": [
+        {
+          "name": "CC-BY-NC-ND-4.0.txt",
+          "bytes": 19127,
+          "native_checksum": "md5:c70f85fe39eb601f25b595299c688bfd",
+          "content_url": "https://zenodo.org/api/records/22216916/files/CC-BY-NC-ND-4.0.txt/content"
+        },
+        {
+          "name": "MACHINE_PROOF_BUNDLE.json",
+          "bytes": 8632,
+          "native_checksum": "md5:907b44066ca5bfb0a8796b8a432455be",
+          "content_url": "https://zenodo.org/api/records/22216916/files/MACHINE_PROOF_BUNDLE.json/content"
+        },
+        {
+          "name": "CLAIM_MATRIX_V2.json",
+          "bytes": 3911,
+          "native_checksum": "md5:5e508b8b1da15acc5fcb6ab889f60d5d",
+          "content_url": "https://zenodo.org/api/records/22216916/files/CLAIM_MATRIX_V2.json/content"
+        },
+        {
+          "name": "PREPUBLICATION_RETURN_RECEIPT.json",
+          "bytes": 2256,
+          "native_checksum": "md5:0c8be448f11779f83102fa60c46ec28b",
+          "content_url": "https://zenodo.org/api/records/22216916/files/PREPUBLICATION_RETURN_RECEIPT.json/content"
+        },
+        {
+          "name": "ZENODO_LICENSE_NOTICE.md",
+          "bytes": 688,
+          "native_checksum": "md5:0b725596abf017cd1916373aa4a4430b",
+          "content_url": "https://zenodo.org/api/records/22216916/files/ZENODO_LICENSE_NOTICE.md/content"
+        },
+        {
+          "name": "QIK-VRT_Relationale_Zeit_und_wachsende_Evidenzkugel_DE.pdf",
+          "bytes": 379427,
+          "native_checksum": "md5:e4f55e01f8a01bc69375474b35d494be",
+          "content_url": "https://zenodo.org/api/records/22216916/files/QIK-VRT_Relationale_Zeit_und_wachsende_Evidenzkugel_DE.pdf/content"
+        },
+        {
+          "name": "SOURCE_EVIDENCE_BINDINGS.json",
+          "bytes": 2146,
+          "native_checksum": "md5:78dca09cca22bf3324180c2f7c1d5c6d",
+          "content_url": "https://zenodo.org/api/records/22216916/files/SOURCE_EVIDENCE_BINDINGS.json/content"
+        },
+        {
+          "name": "ZENODO_METADATA_DRAFT.json",
+          "bytes": 2296,
+          "native_checksum": "md5:2a129d4ad861e463ef8ad353e69c21de",
+          "content_url": "https://zenodo.org/api/records/22216916/files/ZENODO_METADATA_DRAFT.json/content"
+        },
+        {
+          "name": "CITATION.cff",
+          "bytes": 598,
+          "native_checksum": "md5:32eb41c6770bb79ddb34ef21ee7f9e51",
+          "content_url": "https://zenodo.org/api/records/22216916/files/CITATION.cff/content"
+        }
+      ]
+    },
+    {
+      "record_id": 21947141,
+      "concept_record_id": "21947140",
+      "title": "QIK-VRT: Beobachterrelative Retrokausalität als negative Informationsrichtung",
+      "version": "1.1.1",
+      "publication_date": "2026-08-14",
+      "record_created_utc": "2026-08-15T12:32:15.271151+00:00",
+      "record_updated_utc": "2026-08-15T12:32:16.265504+00:00",
+      "doi": "10.5281/zenodo.21947141",
+      "record_url": "https://zenodo.org/records/21947141",
+      "what_this_version_shows": "Definiert negative Informationsrichtung: Die lokale Empfangsordnung wächst, während authentisch gebundene Quellenmarker aufeinanderfolgender Records absteigen. Gibt ein bedingtes endliches Existenzargument und einen ausführbaren Zeugen mit positiven, vorwärtsgerichteten Signalwegen an; zwei verschiedene Verzögerungen erlauben ein Überholen der Quellenordnung.",
+      "files": [
+        {
+          "name": "HISTORICAL_ARTIFACTS.json",
+          "bytes": 1110,
+          "native_checksum": "md5:fb4f3c41c7d34fb09055193b88c12e92",
+          "content_url": "https://zenodo.org/api/records/21947141/files/HISTORICAL_ARTIFACTS.json/content"
+        },
+        {
+          "name": "PREPUBLICATION_RETURN_RECEIPT.json",
+          "bytes": 14074,
+          "native_checksum": "md5:3c2ccffce10512070faa32cc7ac17ed0",
+          "content_url": "https://zenodo.org/api/records/21947141/files/PREPUBLICATION_RETURN_RECEIPT.json/content"
+        },
+        {
+          "name": "OBSERVER_RELATIVE_RETROCAUSALITY_CLAIM_MATRIX.json",
+          "bytes": 8399,
+          "native_checksum": "md5:400ac7bb07925157b46dd1c4c2bb380b",
+          "content_url": "https://zenodo.org/api/records/21947141/files/OBSERVER_RELATIVE_RETROCAUSALITY_CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "CC-BY-NC-ND-4.0.txt",
+          "bytes": 19127,
+          "native_checksum": "md5:c70f85fe39eb601f25b595299c688bfd",
+          "content_url": "https://zenodo.org/api/records/21947141/files/CC-BY-NC-ND-4.0.txt/content"
+        },
+        {
+          "name": "CHANGE_NOTICE_CURRENT_SYNTHESIS_V2.md",
+          "bytes": 3691,
+          "native_checksum": "md5:219c5b37ce7399c73e9bd58a3c61dd37",
+          "content_url": "https://zenodo.org/api/records/21947141/files/CHANGE_NOTICE_CURRENT_SYNTHESIS_V2.md/content"
+        },
+        {
+          "name": "QIK-VRT_Beobachterrelative_Retrokausalitaet_DE.tex",
+          "bytes": 46794,
+          "native_checksum": "md5:b4d20acded7cc493a7c012bd77837066",
+          "content_url": "https://zenodo.org/api/records/21947141/files/QIK-VRT_Beobachterrelative_Retrokausalitaet_DE.tex/content"
+        },
+        {
+          "name": "CITATION.cff",
+          "bytes": 547,
+          "native_checksum": "md5:2dfe916f7bd9c977c265e8ed4a0e1090",
+          "content_url": "https://zenodo.org/api/records/21947141/files/CITATION.cff/content"
+        },
+        {
+          "name": "MACHINE_PROOF_BUNDLE.json",
+          "bytes": 16649,
+          "native_checksum": "md5:089568b0b65b2413ae649a84fcbbe658",
+          "content_url": "https://zenodo.org/api/records/21947141/files/MACHINE_PROOF_BUNDLE.json/content"
+        },
+        {
+          "name": "QIKVRT_RETROCAUSALITY_WITNESS.json",
+          "bytes": 4185,
+          "native_checksum": "md5:fce32584b9cbc23b4530edba20ef6c7c",
+          "content_url": "https://zenodo.org/api/records/21947141/files/QIKVRT_RETROCAUSALITY_WITNESS.json/content"
+        },
+        {
+          "name": "SOURCE_EVIDENCE_BINDINGS.json",
+          "bytes": 5783,
+          "native_checksum": "md5:4f3219bf4a0c742856afa00a9b710500",
+          "content_url": "https://zenodo.org/api/records/21947141/files/SOURCE_EVIDENCE_BINDINGS.json/content"
+        },
+        {
+          "name": "BOUNDARY_TEST_REPORT.json",
+          "bytes": 6953,
+          "native_checksum": "md5:bf8c7065feb3faa92dccd092b2f402b6",
+          "content_url": "https://zenodo.org/api/records/21947141/files/BOUNDARY_TEST_REPORT.json/content"
+        },
+        {
+          "name": "verify_observer_relative_retrocausality.py",
+          "bytes": 8409,
+          "native_checksum": "md5:88679f51676766e41087aaad64d5c7a0",
+          "content_url": "https://zenodo.org/api/records/21947141/files/verify_observer_relative_retrocausality.py/content"
+        },
+        {
+          "name": "WHATSAPP_ARTIKEL_BEOBACHTERRELATIVE_RETROKAUSALITAET_DE.md",
+          "bytes": 18587,
+          "native_checksum": "md5:85f07c0815ef6b009b41da6812bd1ee6",
+          "content_url": "https://zenodo.org/api/records/21947141/files/WHATSAPP_ARTIKEL_BEOBACHTERRELATIVE_RETROKAUSALITAET_DE.md/content"
+        },
+        {
+          "name": "README.md",
+          "bytes": 8100,
+          "native_checksum": "md5:4eda3ec8346ce29989607ea2d1318a1f",
+          "content_url": "https://zenodo.org/api/records/21947141/files/README.md/content"
+        },
+        {
+          "name": "PolyForm-Noncommercial-1.0.0.txt",
+          "bytes": 4563,
+          "native_checksum": "md5:fa4f6eb8206bcfb6954542687e669418",
+          "content_url": "https://zenodo.org/api/records/21947141/files/PolyForm-Noncommercial-1.0.0.txt/content"
+        },
+        {
+          "name": "QIK-VRT_Beobachterrelative_Retrokausalitaet_DE.pdf",
+          "bytes": 130002,
+          "native_checksum": "md5:2eca283e170fb63a3aea677dc482ac30",
+          "content_url": "https://zenodo.org/api/records/21947141/files/QIK-VRT_Beobachterrelative_Retrokausalitaet_DE.pdf/content"
+        },
+        {
+          "name": "AN_VON_UND_FUER_ALLE_MENSCHEN_CLAIM_MATRIX.json",
+          "bytes": 5554,
+          "native_checksum": "md5:b31a696ad666428e5e35aaf2e2ad6598",
+          "content_url": "https://zenodo.org/api/records/21947141/files/AN_VON_UND_FUER_ALLE_MENSCHEN_CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "AN_VON_UND_FUER_ALLE_MENSCHEN_DE.md",
+          "bytes": 16454,
+          "native_checksum": "md5:5c7356b55efae658e0d6c9a172228c73",
+          "content_url": "https://zenodo.org/api/records/21947141/files/AN_VON_UND_FUER_ALLE_MENSCHEN_DE.md/content"
+        },
+        {
+          "name": "ZENODO_LICENSE_NOTICE.md",
+          "bytes": 785,
+          "native_checksum": "md5:4b740559022cc6c014de442ff094cf82",
+          "content_url": "https://zenodo.org/api/records/21947141/files/ZENODO_LICENSE_NOTICE.md/content"
+        },
+        {
+          "name": "CLAIM_MATRIX_V2.json",
+          "bytes": 6373,
+          "native_checksum": "md5:79106f0fdf4426f2402e6dff347d812c",
+          "content_url": "https://zenodo.org/api/records/21947141/files/CLAIM_MATRIX_V2.json/content"
+        },
+        {
+          "name": "CHANGE_NOTICE.md",
+          "bytes": 4619,
+          "native_checksum": "md5:a30bb6d8ed08ed424940226e5d854fa6",
+          "content_url": "https://zenodo.org/api/records/21947141/files/CHANGE_NOTICE.md/content"
+        }
+      ]
+    },
+    {
+      "record_id": 21983644,
+      "concept_record_id": "21983643",
+      "title": "Vom Unterschied zum integrierten Wirkraum",
+      "version": null,
+      "publication_date": "2026-08-17",
+      "record_created_utc": "2026-08-17T17:53:01.008042+00:00",
+      "record_updated_utc": "2026-08-17T17:53:01.289199+00:00",
+      "doi": "10.5281/zenodo.21983644",
+      "record_url": "https://zenodo.org/records/21983644",
+      "what_this_version_shows": "Verbindet beobachtergebundene Information, explizite Kausalgraphen, Metagrammatik, Effect Acknowledgement und deterministische M68000-Absenkung. Zeigt am kleinen Entscheidungskern konkrete MOVEQ/RTS-Kodierungen und beschreibt die Auswahl zulässiger Serialisierungen sowie das konservative Zurückhalten ungebundener Wirkungen.",
+      "files": [
+        {
+          "name": "ARTICLE.md",
+          "bytes": 17953,
+          "native_checksum": "md5:4581cdc5c8fcdf81528d75a0378a376d",
+          "content_url": "https://zenodo.org/api/records/21983644/files/ARTICLE.md/content"
+        },
+        {
+          "name": "PUBLICATION.json",
+          "bytes": 2246,
+          "native_checksum": "md5:6d3c348f191ed67143cb42161607808a",
+          "content_url": "https://zenodo.org/api/records/21983644/files/PUBLICATION.json/content"
+        },
+        {
+          "name": "draft-lohmann-qikvrt-effect-ack-http-01.xml",
+          "bytes": 10307,
+          "native_checksum": "md5:5080bf4af4a07af8e07298801f1b6dc2",
+          "content_url": "https://zenodo.org/api/records/21983644/files/draft-lohmann-qikvrt-effect-ack-http-01.xml/content"
+        }
+      ]
+    },
+    {
+      "record_id": 22283396,
+      "concept_record_id": "22283395",
+      "title": "From Exact Causal Binding to a Falsifiable Planck-Tick Gap Law",
+      "version": "1.0.0-candidate.1",
+      "publication_date": "2026-09-03",
+      "record_created_utc": "2026-09-03T15:10:41.959821+00:00",
+      "record_updated_utc": "2026-09-03T15:10:42.416784+00:00",
+      "doi": "10.5281/zenodo.22283396",
+      "record_url": "https://zenodo.org/records/22283396",
+      "what_this_version_shows": "Postuliert eine grundenergiebezogene symmetrische Quantenentwicklung im Planck-Zeittakt. Daraus wird im deklarierten Modell die Frequenzregel omega_Q = asin(DeltaE/EP)/tP mit positiver kubischer Niederenergiekorrektur hergeleitet. Friert Zahlenziele, Annahmen und einen ausdrücklichen Falsifikator ein.",
+      "files": [
+        {
+          "name": "SHA256SUMS.txt",
+          "bytes": 473,
+          "native_checksum": "md5:f6981278111770859ec190d0d9009a5a",
+          "content_url": "https://zenodo.org/api/records/22283396/files/SHA256SUMS.txt/content"
+        },
+        {
+          "name": "planck_tick_gap_law_v1.json",
+          "bytes": 3736,
+          "native_checksum": "md5:220e75a05b8d4887f7b1c8ca7eb7f782",
+          "content_url": "https://zenodo.org/api/records/22283396/files/planck_tick_gap_law_v1.json/content"
+        },
+        {
+          "name": "QIKVRT_Planck_Tick_Gap_Law_2026-09-03.pdf",
+          "bytes": 259294,
+          "native_checksum": "md5:5b8629164f6dff70e4f8ff912a6402b8",
+          "content_url": "https://zenodo.org/api/records/22283396/files/QIKVRT_Planck_Tick_Gap_Law_2026-09-03.pdf/content"
+        },
+        {
+          "name": "ZENODO_METADATA.json",
+          "bytes": 1539,
+          "native_checksum": "md5:e6f5da9136c635ad56dc0e540af3eacf",
+          "content_url": "https://zenodo.org/api/records/22283396/files/ZENODO_METADATA.json/content"
+        },
+        {
+          "name": "QIKVRT_Planck_Tick_Gap_Law_2026-09-03.tex",
+          "bytes": 10287,
+          "native_checksum": "md5:bf4337a7251c6382ae9920c412a360ef",
+          "content_url": "https://zenodo.org/api/records/22283396/files/QIKVRT_Planck_Tick_Gap_Law_2026-09-03.tex/content"
+        },
+        {
+          "name": "README.md",
+          "bytes": 5748,
+          "native_checksum": "md5:f8d43c0a3854e4a4b3b424371ee88904",
+          "content_url": "https://zenodo.org/api/records/22283396/files/README.md/content"
+        }
+      ]
+    },
+    {
+      "record_id": 22813431,
+      "concept_record_id": "22813430",
+      "title": "Offener Brief und rechtsstaatliches Evidenzdossier — Aufforderung zur unabhängigen juristischen Prüfung",
+      "version": null,
+      "publication_date": "2026-09-17",
+      "record_created_utc": "2026-09-17T13:19:14.570211+00:00",
+      "record_updated_utc": "2026-09-17T13:19:14.930548+00:00",
+      "doi": "10.5281/zenodo.22813431",
+      "record_url": "https://zenodo.org/records/22813431",
+      "what_this_version_shows": "Enthält einen persönlichen offenen Brief und ein davon getrenntes Dossier mit der Aufforderung zur unabhängigen juristischen Prüfung. Ordnet Vorbringen und den geforderten rechtsstaatlichen Prüfweg als eigenständige Veröffentlichung ein.",
+      "files": [
+        {
+          "name": "OPEN_LETTER_DE.md",
+          "bytes": 9859,
+          "native_checksum": "md5:46bccc57026daa9f7967586f1fa3a0f9",
+          "content_url": "https://zenodo.org/api/records/22813431/files/OPEN_LETTER_DE.md/content"
+        },
+        {
+          "name": "LEGAL_EVIDENCE_DOSSIER_DE.md",
+          "bytes": 7263,
+          "native_checksum": "md5:97b1d449c54ef99d9fe8205b37e5763c",
+          "content_url": "https://zenodo.org/api/records/22813431/files/LEGAL_EVIDENCE_DOSSIER_DE.md/content"
+        },
+        {
+          "name": "README.md",
+          "bytes": 3462,
+          "native_checksum": "md5:5e48187bae795695f27d8d58114fd598",
+          "content_url": "https://zenodo.org/api/records/22813431/files/README.md/content"
+        },
+        {
+          "name": "ZENODO_METADATA.json",
+          "bytes": 1750,
+          "native_checksum": "md5:e374cdc324e51c80c9f452e98856a36f",
+          "content_url": "https://zenodo.org/api/records/22813431/files/ZENODO_METADATA.json/content"
+        }
+      ]
+    },
+    {
+      "record_id": 22840633,
+      "concept_record_id": "22840632",
+      "title": "Die Wahrheit braucht keine Verschwörungstheorie",
+      "version": "1.0.0",
+      "publication_date": "2026-09-19",
+      "record_created_utc": "2026-09-19T04:27:56.451899+00:00",
+      "record_updated_utc": "2026-09-19T04:27:57.357858+00:00",
+      "doi": "10.5281/zenodo.22840633",
+      "record_url": "https://zenodo.org/records/22840633",
+      "what_this_version_shows": "Bewahrt einen persönlichen Essay über Evidenz, Prognosemärkte, QIKVRT und Schadensminimierung. Ein getrennt gekennzeichneter Nachtrag ordnet öffentliche Quellen, Selbstauskünfte und persönliche Interpretation ein.",
+      "files": [
+        {
+          "name": "QUELLEN_UND_GELTUNGSBEREICH.md",
+          "bytes": 3989,
+          "native_checksum": "md5:64d7de385112e45fba39744f37ec3f67",
+          "content_url": "https://zenodo.org/api/records/22840633/files/QUELLEN_UND_GELTUNGSBEREICH.md/content"
+        },
+        {
+          "name": "verify_publication_scope.py",
+          "bytes": 4079,
+          "native_checksum": "md5:8d08527e3fafafbdd26a743c26ee4199",
+          "content_url": "https://zenodo.org/api/records/22840633/files/verify_publication_scope.py/content"
+        },
+        {
+          "name": "PREPUBLICATION_RETURN_RECEIPT.json",
+          "bytes": 1210,
+          "native_checksum": "md5:2f015d872f7a1dbdee6133d72903dae1",
+          "content_url": "https://zenodo.org/api/records/22840633/files/PREPUBLICATION_RETURN_RECEIPT.json/content"
+        },
+        {
+          "name": "README.md",
+          "bytes": 1459,
+          "native_checksum": "md5:83aafdb61c8c447ef54d18b480d0fff4",
+          "content_url": "https://zenodo.org/api/records/22840633/files/README.md/content"
+        },
+        {
+          "name": "Die_Wahrheit_braucht_keine_Verschwoerungstheorie.txt",
+          "bytes": 10202,
+          "native_checksum": "md5:e175baec9bf426623f87452e9714db86",
+          "content_url": "https://zenodo.org/api/records/22840633/files/Die_Wahrheit_braucht_keine_Verschwoerungstheorie.txt/content"
+        },
+        {
+          "name": "BOUNDARY_TEST_REPORT.json",
+          "bytes": 1152,
+          "native_checksum": "md5:f03d8579f6c38066b778f8121ad13d5a",
+          "content_url": "https://zenodo.org/api/records/22840633/files/BOUNDARY_TEST_REPORT.json/content"
+        },
+        {
+          "name": "MACHINE_PROOF_BUNDLE.json",
+          "bytes": 79476,
+          "native_checksum": "md5:7bbb1a91f1d8a15ed99dd7af59326aaa",
+          "content_url": "https://zenodo.org/api/records/22840633/files/MACHINE_PROOF_BUNDLE.json/content"
+        },
+        {
+          "name": "SOURCE_BINDINGS.json",
+          "bytes": 4824,
+          "native_checksum": "md5:21eb7d7424a021db82a7d830c3b860c5",
+          "content_url": "https://zenodo.org/api/records/22840633/files/SOURCE_BINDINGS.json/content"
+        },
+        {
+          "name": "CLAIM_MATRIX.json",
+          "bytes": 79562,
+          "native_checksum": "md5:6eb7ec2485c627cebdc5d49b17e10a7e",
+          "content_url": "https://zenodo.org/api/records/22840633/files/CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "ZENODO_METADATA.json",
+          "bytes": 1078,
+          "native_checksum": "md5:a8193b3cafb8f9c90880ed6152429a38",
+          "content_url": "https://zenodo.org/api/records/22840633/files/ZENODO_METADATA.json/content"
+        }
+      ]
+    },
+    {
+      "record_id": 22845516,
+      "concept_record_id": "22845515",
+      "title": "Erwartungen, Wetten, Wirkung und Recht",
+      "version": "2.0.0",
+      "publication_date": "2026-09-19",
+      "record_created_utc": "2026-09-19T13:21:31.176078+00:00",
+      "record_updated_utc": "2026-09-19T13:21:33.813756+00:00",
+      "doi": "10.5281/zenodo.22845516",
+      "record_url": "https://zenodo.org/records/22845516",
+      "what_this_version_shows": "Vereint den Wahrheits-Essay mit zwei Folgeartikeln zu handelbaren Erwartungen und den bedingten rechtlichen Folgen tatsächlicher Einflussnahme. Dokumentiert ausdrücklich die vergleichende persönliche Hypothesenbewertung des Autors und bindet Aussagen, Quellen und negative Grenztests.",
+      "files": [
+        {
+          "name": "MACHINE_PROOF_BUNDLE.json",
+          "bytes": 357203,
+          "native_checksum": "md5:94091233428fce3242736b6c22e407b9",
+          "content_url": "https://zenodo.org/api/records/22845516/files/MACHINE_PROOF_BUNDLE.json/content"
+        },
+        {
+          "name": "SOURCE_BINDINGS.json",
+          "bytes": 11495,
+          "native_checksum": "md5:1ba94eb8abba5b63521caebc6a77fbba",
+          "content_url": "https://zenodo.org/api/records/22845516/files/SOURCE_BINDINGS.json/content"
+        },
+        {
+          "name": "CLAIM_MATRIX.json",
+          "bytes": 452072,
+          "native_checksum": "md5:5916a2377112a92c5066b79c84a4e101",
+          "content_url": "https://zenodo.org/api/records/22845516/files/CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "README.md",
+          "bytes": 2800,
+          "native_checksum": "md5:a3108631b3ba0cd95ce9d1c18742f1bb",
+          "content_url": "https://zenodo.org/api/records/22845516/files/README.md/content"
+        },
+        {
+          "name": "BOUNDARY_TEST_REPORT.json",
+          "bytes": 2011,
+          "native_checksum": "md5:a9d1ad7a1d491be88ccea854d2326409",
+          "content_url": "https://zenodo.org/api/records/22845516/files/BOUNDARY_TEST_REPORT.json/content"
+        },
+        {
+          "name": "ZENODO_METADATA.json",
+          "bytes": 1561,
+          "native_checksum": "md5:f229a7976c8ffd82799b1d55701c2f37",
+          "content_url": "https://zenodo.org/api/records/22845516/files/ZENODO_METADATA.json/content"
+        },
+        {
+          "name": "WENN_ERWARTUNGEN_HANDELBAR_WERDEN_DE.md",
+          "bytes": 12716,
+          "native_checksum": "md5:351db6dd9bd27e18dc23259dc779b338",
+          "content_url": "https://zenodo.org/api/records/22845516/files/WENN_ERWARTUNGEN_HANDELBAR_WERDEN_DE.md/content"
+        },
+        {
+          "name": "Die_Wahrheit_braucht_keine_Verschwoerungstheorie.txt",
+          "bytes": 13618,
+          "native_checksum": "md5:60aebe18303ec87341182180b0f8499a",
+          "content_url": "https://zenodo.org/api/records/22845516/files/Die_Wahrheit_braucht_keine_Verschwoerungstheorie.txt/content"
+        },
+        {
+          "name": "WENN_AUS_EINER_WETTE_EINE_TAT_WIRD_DE.md",
+          "bytes": 18307,
+          "native_checksum": "md5:de54af8e856cbeb53a8729f4203178c3",
+          "content_url": "https://zenodo.org/api/records/22845516/files/WENN_AUS_EINER_WETTE_EINE_TAT_WIRD_DE.md/content"
+        },
+        {
+          "name": "AUTORENERKLAERUNG_UND_EVIDENZGRENZE.md",
+          "bytes": 2848,
+          "native_checksum": "md5:66be2c205fe33bab62168c67f689a150",
+          "content_url": "https://zenodo.org/api/records/22845516/files/AUTORENERKLAERUNG_UND_EVIDENZGRENZE.md/content"
+        },
+        {
+          "name": "QUELLEN_UND_GELTUNGSBEREICH.md",
+          "bytes": 4787,
+          "native_checksum": "md5:8de63e16aea40bbd6af9a646c2953fbc",
+          "content_url": "https://zenodo.org/api/records/22845516/files/QUELLEN_UND_GELTUNGSBEREICH.md/content"
+        },
+        {
+          "name": "verify_publication_scope.py",
+          "bytes": 8158,
+          "native_checksum": "md5:2c12bf77834f91642c62693af8e8f52f",
+          "content_url": "https://zenodo.org/api/records/22845516/files/verify_publication_scope.py/content"
+        },
+        {
+          "name": "PREPUBLICATION_RETURN_RECEIPT.json",
+          "bytes": 4257,
+          "native_checksum": "md5:6118111f1120118976c2f403e8f4083a",
+          "content_url": "https://zenodo.org/api/records/22845516/files/PREPUBLICATION_RETURN_RECEIPT.json/content"
+        },
+        {
+          "name": "CHANGE_NOTICE.md",
+          "bytes": 1349,
+          "native_checksum": "md5:95f28fa0a12c99233b960712eb9dbe4c",
+          "content_url": "https://zenodo.org/api/records/22845516/files/CHANGE_NOTICE.md/content"
+        }
+      ]
+    },
+    {
+      "record_id": 22847245,
+      "concept_record_id": "22847244",
+      "title": "Das universale Universalprinzip — Grundsatzerklärung von Ingolf Lohmann",
+      "version": "1.0.0",
+      "publication_date": "2026-09-19",
+      "record_created_utc": "2026-09-19T17:06:07.627411+00:00",
+      "record_updated_utc": "2026-09-19T17:06:11.388637+00:00",
+      "doi": "10.5281/zenodo.22847245",
+      "record_url": "https://zenodo.org/records/22847245",
+      "what_this_version_shows": "Dokumentiert Ingolf Lohmanns philosophische Grundsatzerklärung über Teilen und die mögliche Ersetzung des Begriffs Wahrheit durch andere Gegenstände. Erhält Originalwortlaut, modale Einsetzungsregel und universellen Anspruch als Autorenaussage.",
+      "files": [
+        {
+          "name": "Wahrheit_muss_geteilt_werden.jpeg",
+          "bytes": 613150,
+          "native_checksum": "md5:2374039189b5d7a1e9f4e1341539683a",
+          "content_url": "https://zenodo.org/api/records/22847245/files/Wahrheit_muss_geteilt_werden.jpeg/content"
+        },
+        {
+          "name": "EVIDENCE_BOUNDARY.md",
+          "bytes": 1393,
+          "native_checksum": "md5:e940a1d4da655d3e500c4efd7b8ca503",
+          "content_url": "https://zenodo.org/api/records/22847245/files/EVIDENCE_BOUNDARY.md/content"
+        },
+        {
+          "name": "MACHINE_PROOF_BUNDLE.json",
+          "bytes": 9420,
+          "native_checksum": "md5:40b3bcc50e55cea13b8992236d90a6fb",
+          "content_url": "https://zenodo.org/api/records/22847245/files/MACHINE_PROOF_BUNDLE.json/content"
+        },
+        {
+          "name": "Universales_Universalprinzip_Teilen.txt",
+          "bytes": 629,
+          "native_checksum": "md5:186e6557c66488af5dc31ff79909adae",
+          "content_url": "https://zenodo.org/api/records/22847245/files/Universales_Universalprinzip_Teilen.txt/content"
+        },
+        {
+          "name": "Universales_Universalprinzip.md",
+          "bytes": 2023,
+          "native_checksum": "md5:3bb5bb43728e80d31bdfd11bd5327d80",
+          "content_url": "https://zenodo.org/api/records/22847245/files/Universales_Universalprinzip.md/content"
+        },
+        {
+          "name": "BOUNDARY_CHECKS.json",
+          "bytes": 1411,
+          "native_checksum": "md5:2eda741808ccea7491c1e42e296da31b",
+          "content_url": "https://zenodo.org/api/records/22847245/files/BOUNDARY_CHECKS.json/content"
+        },
+        {
+          "name": "ORIGINALWORTE_DE.txt",
+          "bytes": 473,
+          "native_checksum": "md5:7d6bd650ebf610e815378e4fe7cb91f6",
+          "content_url": "https://zenodo.org/api/records/22847245/files/ORIGINALWORTE_DE.txt/content"
+        },
+        {
+          "name": "SOURCE_BINDINGS.json",
+          "bytes": 2147,
+          "native_checksum": "md5:8f69f1161b3a80e6cfbf2674043adf5c",
+          "content_url": "https://zenodo.org/api/records/22847245/files/SOURCE_BINDINGS.json/content"
+        },
+        {
+          "name": "CLAIM_MATRIX.json",
+          "bytes": 5705,
+          "native_checksum": "md5:24ac60662b38cd554135e1d93f184d83",
+          "content_url": "https://zenodo.org/api/records/22847245/files/CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "CHANGE_NOTICE.md",
+          "bytes": 1143,
+          "native_checksum": "md5:1d884889ae0f228401a4493eb9e7fcc2",
+          "content_url": "https://zenodo.org/api/records/22847245/files/CHANGE_NOTICE.md/content"
+        },
+        {
+          "name": "PREPUBLICATION_RETURN_RECEIPT.json",
+          "bytes": 3601,
+          "native_checksum": "md5:c15ad95e760a1f1284ef388e22504747",
+          "content_url": "https://zenodo.org/api/records/22847245/files/PREPUBLICATION_RETURN_RECEIPT.json/content"
+        },
+        {
+          "name": "README.md",
+          "bytes": 1045,
+          "native_checksum": "md5:f9c0dfe0b1f3db3a84d0840645beb04f",
+          "content_url": "https://zenodo.org/api/records/22847245/files/README.md/content"
+        }
+      ]
+    },
+    {
+      "record_id": 22907018,
+      "concept_record_id": "22907017",
+      "title": "Quantität–Information–Kausalität (QIK): Ein operationales Rahmenmodell für Ereignisstruktur, Kausalordnung und emergente Raumzeit",
+      "version": "2026-09-23-qik-scientific-revision",
+      "publication_date": "2026-09-23",
+      "record_created_utc": "2026-09-23T00:22:23.302804+00:00",
+      "record_updated_utc": "2026-09-23T00:22:23.882922+00:00",
+      "doi": "10.5281/zenodo.22907018",
+      "record_url": "https://zenodo.org/records/22907018",
+      "what_this_version_shows": "Systematisiert Ereignisse, Kausalordnung, Maß- beziehungsweise Zählstruktur und lokale Wahrscheinlichkeiten als operationalen QIK-Rahmen. Die revidierte Fachfassung und der Revisionsbericht trennen etablierte relativistische und quantenmechanische Grundlagen von Postulaten, Interpretation und Pflichten einer Raumzeitrekonstruktion.",
+      "files": [
+        {
+          "name": "QIK_Publikationsfassung_revidiert.docx",
+          "bytes": 49624,
+          "native_checksum": "md5:16debf82dddd3b86a20417414c83b2ae",
+          "content_url": "https://zenodo.org/api/records/22907018/files/QIK_Publikationsfassung_revidiert.docx/content"
+        },
+        {
+          "name": "ZENODO_METADATA.json",
+          "bytes": 1817,
+          "native_checksum": "md5:bc46cd3fbd2f880091398504b6130d89",
+          "content_url": "https://zenodo.org/api/records/22907018/files/ZENODO_METADATA.json/content"
+        },
+        {
+          "name": "ZENODO_EFFECT_METADATA.json",
+          "bytes": 1622,
+          "native_checksum": "md5:e9c8bdd56a469f70d9f028fd36e50e66",
+          "content_url": "https://zenodo.org/api/records/22907018/files/ZENODO_EFFECT_METADATA.json/content"
+        },
+        {
+          "name": "README.md",
+          "bytes": 3061,
+          "native_checksum": "md5:4632f2095d970f948502a4cd0fea65b6",
+          "content_url": "https://zenodo.org/api/records/22907018/files/README.md/content"
+        },
+        {
+          "name": "QIK_Wissenschaftlicher_Revisionsbericht.docx",
+          "bytes": 48246,
+          "native_checksum": "md5:ee3b9d864f6ee6b45bc27644903234f6",
+          "content_url": "https://zenodo.org/api/records/22907018/files/QIK_Wissenschaftlicher_Revisionsbericht.docx/content"
+        },
+        {
+          "name": "ZENODO_PUBLISH_REQUEST.json",
+          "bytes": 1722,
+          "native_checksum": "md5:00254b9e3d0bfab1e9362bc581686f3e",
+          "content_url": "https://zenodo.org/api/records/22907018/files/ZENODO_PUBLISH_REQUEST.json/content"
+        },
+        {
+          "name": "PROVENANCE.json",
+          "bytes": 2108,
+          "native_checksum": "md5:075ce37999a9983a5fc9ed9f83597ae9",
+          "content_url": "https://zenodo.org/api/records/22907018/files/PROVENANCE.json/content"
+        },
+        {
+          "name": "SHA256SUMS",
+          "bytes": 216,
+          "native_checksum": "md5:b95f6ed4ccb4b71453ecb0bdc487ddfb",
+          "content_url": "https://zenodo.org/api/records/22907018/files/SHA256SUMS/content"
+        }
+      ]
+    },
+    {
+      "record_id": 22941556,
+      "concept_record_id": "22941555",
+      "title": "Proof Closure: The Terminal Meta-Condition for an Evidence-Bound Subject",
+      "version": "1.0.0",
+      "publication_date": "2026-09-24",
+      "record_created_utc": "2026-09-24T14:50:12.028339+00:00",
+      "record_updated_utc": "2026-09-24T14:50:12.381551+00:00",
+      "doi": "10.5281/zenodo.22941556",
+      "record_url": "https://zenodo.org/records/22941556",
+      "what_this_version_shows": "Definiert den terminalen Abschluss eines exakt gebundenen, unveränderten Gegenstands: gültige Pflichtbeweise, gebundene Provenienz, geprüfte Verifier, unabhängiger Readback, explizite Grenzen und keine offenen Pflichten. Eine Mutation eröffnet eine neue Nachweiskette; Wiederholung desselben abgeschlossenen Beweises erzeugt keinen Fortschritt.",
+      "files": [
+        {
+          "name": "PROOF_CLOSURE_EN.md",
+          "bytes": 2340,
+          "native_checksum": "md5:f8cbcb758785faf9a0c512b35a9bc5b1",
+          "content_url": "https://zenodo.org/api/records/22941556/files/PROOF_CLOSURE_EN.md/content"
+        },
+        {
+          "name": "README.md",
+          "bytes": 1031,
+          "native_checksum": "md5:f58c3d657cd70ef141c4cdc105bdc4cc",
+          "content_url": "https://zenodo.org/api/records/22941556/files/README.md/content"
+        },
+        {
+          "name": "PROOF_CLOSURE_DE.md",
+          "bytes": 4329,
+          "native_checksum": "md5:32f16952e7b2a2f3e4e69f8b11ee36b2",
+          "content_url": "https://zenodo.org/api/records/22941556/files/PROOF_CLOSURE_DE.md/content"
+        },
+        {
+          "name": "PROOF_CLOSURE_CONTRACT.json",
+          "bytes": 1399,
+          "native_checksum": "md5:cf9e3ecc7c2092184be1365e80fddba1",
+          "content_url": "https://zenodo.org/api/records/22941556/files/PROOF_CLOSURE_CONTRACT.json/content"
+        },
+        {
+          "name": "CLAIM_MATRIX.json",
+          "bytes": 1800,
+          "native_checksum": "md5:1331d824bdef8dc0821ba6c56fd82789",
+          "content_url": "https://zenodo.org/api/records/22941556/files/CLAIM_MATRIX.json/content"
+        }
+      ]
+    },
+    {
+      "record_id": 22955727,
+      "concept_record_id": "22955726",
+      "title": "Der ontologische Vorrang des Unterschieds: Ein maschinenprüfbares Minimaltheorem über Bestimmbarkeit, Information und den Geltungsbereich formaler Welterklärungen",
+      "version": "1.0.0",
+      "publication_date": "2026-09-25",
+      "record_created_utc": "2026-09-25T09:29:48.588657+00:00",
+      "record_updated_utc": "2026-09-25T09:29:49.815601+00:00",
+      "doi": "10.5281/zenodo.22955727",
+      "record_url": "https://zenodo.org/records/22955727",
+      "what_this_version_shows": "Beweist im deklarierten Lean-Modell: Bestimmbare Realität benötigt mindestens zwei ungleiche Werte; vollständige Unterschiedslosigkeit schließt diese Bestimmbarkeit und einen unterscheidungsgebundenen InformationWitness aus. Der gebundene Kernelbeleg umfasst 35 Theoreme zu endlicher Ontologie, Erkenntnis-Round-Trip und relationalen Weltformelbegriffen. Drei Minimaltheoreme sind in CLAIM_MATRIX_V2.json ausdrücklich PROVED.",
+      "files": [
+        {
+          "name": "SCIENTIFIC_ARTICLE_LEIBNIZ_QIKVRT_DE.md",
+          "bytes": 23823,
+          "native_checksum": "md5:eb64a6bda88a40af8b345165ea7b82a6",
+          "content_url": "https://zenodo.org/api/records/22955727/files/SCIENTIFIC_ARTICLE_LEIBNIZ_QIKVRT_DE.md/content"
+        },
+        {
+          "name": "QIKVRT_UNIVERSAL_PROOF_AND_THOUGHT_SCHEMA_DE.md",
+          "bytes": 22638,
+          "native_checksum": "md5:32ce774262bb5ac1723a358279d7bd4f",
+          "content_url": "https://zenodo.org/api/records/22955727/files/QIKVRT_UNIVERSAL_PROOF_AND_THOUGHT_SCHEMA_DE.md/content"
+        },
+        {
+          "name": "ZENODO_LICENSE_NOTICE.md",
+          "bytes": 539,
+          "native_checksum": "md5:e717aaf91fcd6244ad90457712d00585",
+          "content_url": "https://zenodo.org/api/records/22955727/files/ZENODO_LICENSE_NOTICE.md/content"
+        },
+        {
+          "name": "QIKVRTUniversalOntology_Core.lean",
+          "bytes": 10191,
+          "native_checksum": "md5:74d1c8ec05eda20572e747a02c8c916a",
+          "content_url": "https://zenodo.org/api/records/22955727/files/QIKVRTUniversalOntology_Core.lean/content"
+        },
+        {
+          "name": "CHANGE_NOTICE.md",
+          "bytes": 749,
+          "native_checksum": "md5:481e8f44dcac1a036d8e7084bae75a7a",
+          "content_url": "https://zenodo.org/api/records/22955727/files/CHANGE_NOTICE.md/content"
+        },
+        {
+          "name": "PROSA_VOM_UNTERSCHIED_ZU_QIKVRT_DE.md",
+          "bytes": 21754,
+          "native_checksum": "md5:62908a567f7f728b22e5d00c0f08dc91",
+          "content_url": "https://zenodo.org/api/records/22955727/files/PROSA_VOM_UNTERSCHIED_ZU_QIKVRT_DE.md/content"
+        },
+        {
+          "name": "SCIENTIFIC_CLAIM_MATRIX.json",
+          "bytes": 5072,
+          "native_checksum": "md5:b78c72df5c38ba3d3ee7469cc4d2e2c3",
+          "content_url": "https://zenodo.org/api/records/22955727/files/SCIENTIFIC_CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "ONTOLOGICAL_ORIGIN_OF_DIFFERENCE_DE.md",
+          "bytes": 5217,
+          "native_checksum": "md5:13c9c9b8e1760df47f7b7b12587cad6b",
+          "content_url": "https://zenodo.org/api/records/22955727/files/ONTOLOGICAL_ORIGIN_OF_DIFFERENCE_DE.md/content"
+        },
+        {
+          "name": "MACHINE_PROOF_BUNDLE.json",
+          "bytes": 15114,
+          "native_checksum": "md5:a6aa88451703230feef312cb25c38ec6",
+          "content_url": "https://zenodo.org/api/records/22955727/files/MACHINE_PROOF_BUNDLE.json/content"
+        },
+        {
+          "name": "README.md",
+          "bytes": 1748,
+          "native_checksum": "md5:d0b80ba8a893b40f184e460320a282cb",
+          "content_url": "https://zenodo.org/api/records/22955727/files/README.md/content"
+        },
+        {
+          "name": "CITATION.cff",
+          "bytes": 564,
+          "native_checksum": "md5:cdd0ee698b57badffc110d4f1a0cd59b",
+          "content_url": "https://zenodo.org/api/records/22955727/files/CITATION.cff/content"
+        },
+        {
+          "name": "SOURCE_EVIDENCE_BINDINGS_V2.json",
+          "bytes": 1187,
+          "native_checksum": "md5:12edf9217b2f651558c6a3ad9e90998c",
+          "content_url": "https://zenodo.org/api/records/22955727/files/SOURCE_EVIDENCE_BINDINGS_V2.json/content"
+        },
+        {
+          "name": "SCIENTIFIC_ARTICLE_DE.md",
+          "bytes": 24633,
+          "native_checksum": "md5:9ec5f8a5fd40697ca66dd5f1c4c70a98",
+          "content_url": "https://zenodo.org/api/records/22955727/files/SCIENTIFIC_ARTICLE_DE.md/content"
+        },
+        {
+          "name": "KERNEL_RECEIPT.json",
+          "bytes": 6519,
+          "native_checksum": "md5:ed63ec99e99a551d57a2d17be05a418a",
+          "content_url": "https://zenodo.org/api/records/22955727/files/KERNEL_RECEIPT.json/content"
+        },
+        {
+          "name": "QIKVRTUniversalOntology_AxiomAudit.lean",
+          "bytes": 2494,
+          "native_checksum": "md5:7ffce5cad1a4676637b02d11c03b21c5",
+          "content_url": "https://zenodo.org/api/records/22955727/files/QIKVRTUniversalOntology_AxiomAudit.lean/content"
+        },
+        {
+          "name": "UNIVERSAL_ONTOLOGY_CLAIM_MATRIX.json",
+          "bytes": 12622,
+          "native_checksum": "md5:c8c71a9612eca4e2d234b7d18cef147f",
+          "content_url": "https://zenodo.org/api/records/22955727/files/UNIVERSAL_ONTOLOGY_CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "UNIVERSAL_ONTOLOGY_KERNEL_RECEIPT.json",
+          "bytes": 5334,
+          "native_checksum": "md5:0743f1f02340ce7d8b2ed2a7776c70b0",
+          "content_url": "https://zenodo.org/api/records/22955727/files/UNIVERSAL_ONTOLOGY_KERNEL_RECEIPT.json/content"
+        },
+        {
+          "name": "SOURCE_EVIDENCE_BINDINGS.json",
+          "bytes": 4813,
+          "native_checksum": "md5:4c49387a6ce1a1cf3969a197c9b19076",
+          "content_url": "https://zenodo.org/api/records/22955727/files/SOURCE_EVIDENCE_BINDINGS.json/content"
+        },
+        {
+          "name": "QIKVRT_REQUIRED_KNOWLEDGE_ARTIFACTS_20260925_V1.json",
+          "bytes": 2082,
+          "native_checksum": "md5:39c2a7c42733049aad1f218c44d50989",
+          "content_url": "https://zenodo.org/api/records/22955727/files/QIKVRT_REQUIRED_KNOWLEDGE_ARTIFACTS_20260925_V1.json/content"
+        },
+        {
+          "name": "CC-BY-NC-ND-4.0.txt",
+          "bytes": 19127,
+          "native_checksum": "md5:c70f85fe39eb601f25b595299c688bfd",
+          "content_url": "https://zenodo.org/api/records/22955727/files/CC-BY-NC-ND-4.0.txt/content"
+        },
+        {
+          "name": "Leibniz_QIK-VRT_Monaden_und_evidenzgebundener_Unterschied.pdf",
+          "bytes": 43644,
+          "native_checksum": "md5:9ee5b9abdd5d9b73b5a9513462f71daa",
+          "content_url": "https://zenodo.org/api/records/22955727/files/Leibniz_QIK-VRT_Monaden_und_evidenzgebundener_Unterschied.pdf/content"
+        },
+        {
+          "name": "PREPUBLICATION_GATE_RECEIPT.json",
+          "bytes": 1107,
+          "native_checksum": "md5:289e1e9228c17f20296210834e6b4af7",
+          "content_url": "https://zenodo.org/api/records/22955727/files/PREPUBLICATION_GATE_RECEIPT.json/content"
+        },
+        {
+          "name": "PREPUBLICATION_RETURN_RECEIPT_V2.json",
+          "bytes": 5546,
+          "native_checksum": "md5:7933baa0c6f8ca3cef01044c65facbe9",
+          "content_url": "https://zenodo.org/api/records/22955727/files/PREPUBLICATION_RETURN_RECEIPT_V2.json/content"
+        },
+        {
+          "name": "CLAIM_MATRIX_V2.json",
+          "bytes": 4482,
+          "native_checksum": "md5:b2005e19776dd9a26d5b55c2db6ec71a",
+          "content_url": "https://zenodo.org/api/records/22955727/files/CLAIM_MATRIX_V2.json/content"
+        }
+      ]
+    },
+    {
+      "record_id": 23008330,
+      "concept_record_id": "23008329",
+      "title": "Abgeschlossen und anschlussfähig: bedingte Formalisierung evidenzgebundener Zustandsarchitekturen",
+      "version": "0.1-archive-20260928",
+      "publication_date": "2026-09-28",
+      "record_created_utc": "2026-09-28T06:41:18.118291+00:00",
+      "record_updated_utc": "2026-09-28T06:41:18.839860+00:00",
+      "doi": "10.5281/zenodo.23008330",
+      "record_url": "https://zenodo.org/records/23008330",
+      "what_this_version_shows": "Bewahrt eine historische Arbeitsfassung mit bedingten Argumenten für Extensivität, Monotonie und Idempotenz einer Erreichbarkeitsschließung. Trennt Abgeschlossenheit von Maximalität und behandelt Erweiterung durch einen neuen zulässigen Ausgangspunkt sowie endliche Fortsetzbarkeit unter Nachfolgerexistenz. Das originale Lean/Lake-Prüfpaket liegt bei.",
+      "files": [
+        {
+          "name": "PROVENANCE.json",
+          "bytes": 1654,
+          "native_checksum": "md5:09e0b145557114c8f149763dc7d8218d",
+          "content_url": "https://zenodo.org/api/records/23008330/files/PROVENANCE.json/content"
+        },
+        {
+          "name": "VORLESEFASSUNG.txt",
+          "bytes": 27862,
+          "native_checksum": "md5:a559cbb0e3813c5ee86bcb7db76fd11a",
+          "content_url": "https://zenodo.org/api/records/23008330/files/VORLESEFASSUNG.txt/content"
+        },
+        {
+          "name": "CLAIM_MATRIX.json",
+          "bytes": 5908,
+          "native_checksum": "md5:ed18387019d10fca785bd9a64a0560fd",
+          "content_url": "https://zenodo.org/api/records/23008330/files/CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "QIKVRT_Abgeschlossen_und_anschlussfaehig_2026-09-15.pdf",
+          "bytes": 160673,
+          "native_checksum": "md5:e590c022c0b0dfa22d547d0892c2924e",
+          "content_url": "https://zenodo.org/api/records/23008330/files/QIKVRT_Abgeschlossen_und_anschlussfaehig_2026-09-15.pdf/content"
+        },
+        {
+          "name": "ARCHIVE_NOTE.md",
+          "bytes": 1208,
+          "native_checksum": "md5:73e9c6c5ff80fb26a0eaee19dd2592fe",
+          "content_url": "https://zenodo.org/api/records/23008330/files/ARCHIVE_NOTE.md/content"
+        },
+        {
+          "name": "SOURCE_EVIDENCE_BINDINGS.json",
+          "bytes": 9642,
+          "native_checksum": "md5:c9bebbee446c163da15becfa1d388b33",
+          "content_url": "https://zenodo.org/api/records/23008330/files/SOURCE_EVIDENCE_BINDINGS.json/content"
+        },
+        {
+          "name": "PREPUBLICATION_RETURN_RECEIPT.json",
+          "bytes": 1527,
+          "native_checksum": "md5:a80f262a5f05113e4e911f441c3f8fb3",
+          "content_url": "https://zenodo.org/api/records/23008330/files/PREPUBLICATION_RETURN_RECEIPT.json/content"
+        },
+        {
+          "name": "QIKVRT_Lean_Lake_Pruefpaket_2026-09-15.zip",
+          "bytes": 178084,
+          "native_checksum": "md5:c222d7a4b21ccd59ced2fe112b62eced",
+          "content_url": "https://zenodo.org/api/records/23008330/files/QIKVRT_Lean_Lake_Pruefpaket_2026-09-15.zip/content"
+        },
+        {
+          "name": "MACHINE_PROOF_BUNDLE.json",
+          "bytes": 10939,
+          "native_checksum": "md5:b0a52cdfe9efd5333b6fa151105de6e8",
+          "content_url": "https://zenodo.org/api/records/23008330/files/MACHINE_PROOF_BUNDLE.json/content"
+        }
+      ]
+    },
+    {
+      "record_id": 23008704,
+      "concept_record_id": "23008703",
+      "title": "Spur halten: Quality Gates für einen portablen Universal Transputer",
+      "version": "0.1-20260928",
+      "publication_date": "2026-09-28",
+      "record_created_utc": "2026-09-28T07:06:02.571611+00:00",
+      "record_updated_utc": "2026-09-28T07:06:03.509543+00:00",
+      "doi": "10.5281/zenodo.23008704",
+      "record_url": "https://zenodo.org/records/23008704",
+      "what_this_version_shows": "Berichtet zehn konservative Quality Gates am exakt gebundenen historischen Main. Dokumentiert 103 bestandene und einen übersprungenen Fall einer 104er-Auswahl, C90-/Assembly-Prüfungen, lokale Terminal- und Loopback-Mesh-Tests sowie gemessene Codegrößen, darunter 394 Byte Kern-Code/RO-Daten.",
+      "files": [
+        {
+          "name": "c90.log",
+          "bytes": 3218,
+          "native_checksum": "md5:daa3662cce7e90e81aec06766ccc598b",
+          "content_url": "https://zenodo.org/api/records/23008704/files/c90.log/content"
+        },
+        {
+          "name": "PROVENANCE.json",
+          "bytes": 1654,
+          "native_checksum": "md5:09e0b145557114c8f149763dc7d8218d",
+          "content_url": "https://zenodo.org/api/records/23008704/files/PROVENANCE.json/content"
+        },
+        {
+          "name": "PREPUBLICATION_RETURN_RECEIPT.json",
+          "bytes": 1553,
+          "native_checksum": "md5:d686dfbb3931f739e691cd0d26ccf690",
+          "content_url": "https://zenodo.org/api/records/23008704/files/PREPUBLICATION_RETURN_RECEIPT.json/content"
+        },
+        {
+          "name": "ARTICLE_DE.md",
+          "bytes": 22048,
+          "native_checksum": "md5:77646b659268967f35ab01d5be5bd5fa",
+          "content_url": "https://zenodo.org/api/records/23008704/files/ARTICLE_DE.md/content"
+        },
+        {
+          "name": "SOURCE_EVIDENCE_BINDINGS.json",
+          "bytes": 13950,
+          "native_checksum": "md5:8e714fdab3b8837245fddc7289a15684",
+          "content_url": "https://zenodo.org/api/records/23008704/files/SOURCE_EVIDENCE_BINDINGS.json/content"
+        },
+        {
+          "name": "mesh-receipt.json",
+          "bytes": 14498,
+          "native_checksum": "md5:1ca8185b39c9bacb23fdf8b33e3f0003",
+          "content_url": "https://zenodo.org/api/records/23008704/files/mesh-receipt.json/content"
+        },
+        {
+          "name": "focused-tests.log",
+          "bytes": 18586,
+          "native_checksum": "md5:6a70a73f00e6035077866b8a25962d9c",
+          "content_url": "https://zenodo.org/api/records/23008704/files/focused-tests.log/content"
+        },
+        {
+          "name": "QIKVRT_Quality_Gates_Vorlesefassung_2026-09-28.txt",
+          "bytes": 23416,
+          "native_checksum": "md5:4a270218ef7deb87f9315f55e2a27cf1",
+          "content_url": "https://zenodo.org/api/records/23008704/files/QIKVRT_Quality_Gates_Vorlesefassung_2026-09-28.txt/content"
+        },
+        {
+          "name": "QIKVRT_Quality_Gates_Universal_Transputer_2026-09-28.pdf",
+          "bytes": 89993,
+          "native_checksum": "md5:b79b65965556f207a18f599ab0b509ac",
+          "content_url": "https://zenodo.org/api/records/23008704/files/QIKVRT_Quality_Gates_Universal_Transputer_2026-09-28.pdf/content"
+        },
+        {
+          "name": "CLAIM_MATRIX.json",
+          "bytes": 9093,
+          "native_checksum": "md5:9a55c5193b421abd69874a48e917bccb",
+          "content_url": "https://zenodo.org/api/records/23008704/files/CLAIM_MATRIX.json/content"
+        },
+        {
+          "name": "MEASUREMENTS.json",
+          "bytes": 10301,
+          "native_checksum": "md5:afe7e744ef228c0fa4ded42c1b84f577",
+          "content_url": "https://zenodo.org/api/records/23008704/files/MEASUREMENTS.json/content"
+        },
+        {
+          "name": "QUALITY_GATES.json",
+          "bytes": 6261,
+          "native_checksum": "md5:68624e3384d33ce8278f26a6bb8e2df5",
+          "content_url": "https://zenodo.org/api/records/23008704/files/QUALITY_GATES.json/content"
+        },
+        {
+          "name": "ci-diagnostics.log",
+          "bytes": 69841,
+          "native_checksum": "md5:9ee6dc3d39fdfeffe859c976b2909e6f",
+          "content_url": "https://zenodo.org/api/records/23008704/files/ci-diagnostics.log/content"
+        },
+        {
+          "name": "size.log",
+          "bytes": 2871,
+          "native_checksum": "md5:992d94b218c82d76df21898295f5d58a",
+          "content_url": "https://zenodo.org/api/records/23008704/files/size.log/content"
+        },
+        {
+          "name": "MACHINE_PROOF_BUNDLE.json",
+          "bytes": 16356,
+          "native_checksum": "md5:ef5dde1c40ad932849921a42a67e7913",
+          "content_url": "https://zenodo.org/api/records/23008704/files/MACHINE_PROOF_BUNDLE.json/content"
+        }
+      ]
+    }
+  ],
+  "coverage": {
+    "versions": 44,
+    "families": 32,
+    "native_files": 479,
+    "selected_originals_verified": 377
+  },
+  "boundaries": [
+    "Public indexed creator-name and creator-handle inventory; no claim about private or differently attributed records.",
+    "Every version is included; byte identity and semantic/experimental verification are separate.",
+    "Historical proof results are source-attributed; no new execution of all historical Lean proofs."
+  ]
+}
