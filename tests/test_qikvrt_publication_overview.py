@@ -148,6 +148,71 @@ class PublicationOverviewTests(unittest.TestCase):
             self.assertEqual(process.returncode, 2)
             self.assertIn(MODULE.DRIFT_SIGNATURE, process.stderr)
 
+    def public_corpus_fixture(self, directory: str) -> pathlib.Path:
+        root = self.fixture(directory)
+        path = root / "docs/publications/index.json"
+        index = json.loads(path.read_text())
+        index["verified_public_corpus"] = {
+            "coverage_path": "coverage.json", "metadata_path": "metadata.json",
+            "readback_path": "readback.json",
+        }
+        path.write_text(json.dumps(index) + "\n")
+        html = root / "docs/publications/index.html"
+        html.write_text(html.read_text().replace("</html>", '  <section class="section" id="grenzen"></section></html>'))
+        records = [{"record_id": rid, "concept_record_id": "90", "doi": f"10.5281/zenodo.{rid}"}
+                   for rid in (91, 92)]
+        (root / "coverage.json").write_text(json.dumps({
+            "zenodo": records, "zenodo_concept_family_count": 1,
+            "ietf": [{"name": "draft-lohmann-example-00", "url": "https://www.ietf.org/archive/id/draft-lohmann-example-00.txt", "http_status": 200}],
+        }))
+        native = {str(rid): {"id": rid, "doi": f"10.5281/zenodo.{rid}",
+                            "conceptrecid": "90", "conceptdoi": "10.5281/zenodo.90",
+                            "submitted": True, "status": "published",
+                            "metadata": {"title": f"Version {rid}", "publication_date": "2026-10-15"}}
+                  for rid in (91, 92)}
+        (root / "metadata.json").write_text(json.dumps({"records": native}))
+        (root / "readback.json").write_text(json.dumps({
+            "observed_at": "2026-10-15T10:00:00Z", "zenodo_record_ids": [91, 92],
+            "all_public_queries_complete": True, "all_native_family_versions_complete": True,
+            "all_original_files_match_fresh_metadata": True,
+            "ietf_revision_names": ["draft-lohmann-example-00"],
+        }))
+        return root
+
+    def test_public_corpus_projects_versions_and_native_ietf_without_counting_concepts(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = self.public_corpus_fixture(directory)
+            MODULE.execute(root, materialize=True)
+            index = json.loads((root / "docs/publications/index.json").read_text())
+            self.assertEqual(len(index["zenodo_records"]), 2)
+            self.assertEqual({item["concept_doi"] for item in index["zenodo_records"]}, {"10.5281/zenodo.90"})
+            self.assertEqual(index["ietf_documents"][0]["state"], "published_internet_draft")
+            html = (root / "docs/publications/index.html").read_text()
+            self.assertIn("10.5281/zenodo.91", html)
+            self.assertIn("10.5281/zenodo.92", html)
+            self.assertIn("draft-lohmann-example-00", html)
+            self.assertEqual(MODULE.execute(root, materialize=False)["state"], "CURRENT")
+
+    def test_public_corpus_rejects_omitted_version(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = self.public_corpus_fixture(directory)
+            path = root / "coverage.json"
+            value = json.loads(path.read_text())
+            value["zenodo"].pop()
+            path.write_text(json.dumps(value))
+            with self.assertRaises(MODULE.PublicationOverviewBlock):
+                MODULE.execute(root, materialize=True)
+
+    def test_public_corpus_rejects_unpublished_native_candidate(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = self.public_corpus_fixture(directory)
+            path = root / "metadata.json"
+            value = json.loads(path.read_text())
+            value["records"]["91"]["submitted"] = False
+            path.write_text(json.dumps(value))
+            with self.assertRaises(MODULE.PublicationOverviewBlock):
+                MODULE.execute(root, materialize=True)
+
 
 if __name__ == "__main__":
     unittest.main()

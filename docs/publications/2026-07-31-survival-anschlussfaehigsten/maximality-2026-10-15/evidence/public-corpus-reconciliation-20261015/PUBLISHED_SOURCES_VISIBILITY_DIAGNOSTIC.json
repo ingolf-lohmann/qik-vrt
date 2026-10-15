@@ -1,0 +1,18 @@
+{
+  "schema": "QIKVRT_VISIBLE_SOURCES_CHECK_V1",
+  "status": "PASS",
+  "source_count": 52,
+  "manifest_sha256": "86257c11e6a9d51a84eb4e9a01541d68c5b9ced5f43e9f5197ffd1f58dbaa892",
+  "network_reachability_checked": false,
+  "claim_support_checked_automatically": false,
+  "errors": [],
+  "artifacts": [
+    {
+      "path": "/workspace/scratch/65ec1b71ab5e/qik-vrt/docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/ABGLEICH_UND_BEWEISBRUECKEN_20261015.txt",
+      "sha256": "7ed6684675e0f4b0fc06ecfc1995b19dd2ec888c57904c3346de434f46f6b3ae",
+      "pages": null,
+      "status": "PASS",
+      "errors": []
+    }
+  ]
+}

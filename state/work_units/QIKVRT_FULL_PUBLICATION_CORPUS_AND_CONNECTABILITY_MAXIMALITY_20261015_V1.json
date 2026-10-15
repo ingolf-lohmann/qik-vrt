@@ -140,5 +140,23 @@
     "historical_archive_sha256": "500087f6aeee41787959cfc8902852503e2182019ae4f3e88f115e94a1f5e689",
     "all_479_downloaded_originals_unchanged": true,
     "native_successor_verification": "PENDING_AFTER_REPAIR_COMMIT"
+  },
+  "public_corpus_reconciliation_successor": {
+    "source_head": "b97e55a0c4adf1abf2dd608500c55784930a4362",
+    "source_tree": "59296a4a6a0a41f926adad601df0f2472e15ce8f",
+    "receipt": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/PUBLIC_CORPUS_RECONCILIATION.json",
+    "report": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/ABGLEICH_UND_BEWEISBRUECKEN_20261015.txt",
+    "central_index_before": 14,
+    "central_index_after": 44,
+    "ietf_posted_revisions": 5,
+    "local_candidate_revisions": 7,
+    "source_archive_reused_and_rehashed": true,
+    "native_family_version_endpoints_checked": 32,
+    "historical_sources_unchanged": true,
+    "existing_frozen_candidate_unchanged": true,
+    "new_experiments_or_theorems_claimed": false,
+    "publication_state": "REVIEW_DRAFT_NOT_PRODUCTION_ADMITTED",
+    "prior_open_obligations_preserved": true,
+    "independent_compare_scope": "CARLA 2017, AirSim v2 2017 and Chronon v3 2007 primary publications; no universal or head-to-head ranking"
   }
 }

@@ -165,6 +165,134 @@ def _row(repository: str, item: dict[str, str]) -> str:
     )
 
 
+def _project_public_corpus(root: pathlib.Path, index: dict[str, Any], text: str) -> str:
+    """Project the existing exact corpus; never infer publication from a candidate."""
+    config = index.get("verified_public_corpus")
+    if config is None:
+        return text
+    if not isinstance(config, dict):
+        raise PublicationOverviewBlock("verified_public_corpus must be an object")
+
+    def load(key: str) -> dict[str, Any]:
+        relative = config.get(key)
+        if not isinstance(relative, str):
+            raise PublicationOverviewBlock(f"public corpus lacks {key}")
+        path = (root / relative).resolve()
+        if not path.is_relative_to(root.resolve()):
+            raise PublicationOverviewBlock("public corpus path escaped the repository")
+        try:
+            value = json.loads(_read_text(path))
+        except ValueError as exc:
+            raise PublicationOverviewBlock(f"invalid public corpus {key}") from exc
+        if not isinstance(value, dict):
+            raise PublicationOverviewBlock(f"public corpus {key} must be an object")
+        return value
+
+    coverage = load("coverage_path")
+    metadata = load("metadata_path")
+    readback = load("readback_path")
+    records = coverage.get("zenodo", [])
+    ids = [item["record_id"] for item in records]
+    if (not ids or len(ids) != len(set(ids))
+            or sorted(ids) != sorted(readback.get("zenodo_record_ids", []))
+            or readback.get("all_public_queries_complete") is not True
+            or readback.get("all_native_family_versions_complete") is not True
+            or readback.get("all_original_files_match_fresh_metadata") is not True):
+        raise PublicationOverviewBlock("public corpus coverage/readback is incomplete")
+    native = metadata.get("records", {})
+    indexed = {entry["doi"]: entry for entry in index["zenodo_records"]}
+    rendered = []
+    for item in sorted(records, key=lambda value: value["record_id"]):
+        rid = item["record_id"]
+        record = native.get(str(rid), {})
+        if (record.get("id") != rid or record.get("submitted") is not True
+                or record.get("status") != "published"
+                or record.get("doi") != item.get("doi")
+                or str(record.get("conceptrecid")) != str(item.get("concept_record_id"))):
+            raise PublicationOverviewBlock(f"public corpus identity/state mismatch: {rid}")
+        doi = record["doi"]
+        concept = record["conceptdoi"]
+        entry = indexed.get(doi)
+        if entry is None:
+            entry = {"id": f"zenodo-record-{rid}", "title": record["metadata"]["title"],
+                     "doi": doi, "doi_url": f"https://doi.org/{doi}",
+                     "state": "published_record"}
+            index["zenodo_records"].append(entry)
+            indexed[doi] = entry
+        if entry.get("concept_doi", concept) != concept:
+            raise PublicationOverviewBlock(f"conflicting concept DOI: {rid}")
+        entry.update({"record_id": rid, "concept_doi": concept,
+                      "version": record["metadata"].get("version"),
+                      "publication_date": record["metadata"]["publication_date"],
+                      "native_title": record["metadata"]["title"],
+                      "record_url": f"https://zenodo.org/records/{rid}",
+                      "corpus_coverage_path": config["coverage_path"]})
+        esc = html.escape
+        rendered.append(
+            f'<tr><td>{rid}</td><td>{esc(entry["native_title"])}</td>'
+            f'<td>{esc(str(entry["version"] or "nicht angegeben"))}</td>'
+            f'<td><a href="https://doi.org/{doi}">{doi}</a></td>'
+            f'<td><a href="https://doi.org/{concept}">{concept}</a></td></tr>'
+        )
+    revisions = coverage.get("ietf", [])
+    if sorted(row["name"] for row in revisions) != sorted(readback.get("ietf_revision_names", [])):
+        raise PublicationOverviewBlock("public IETF revision/readback mismatch")
+    ietf_index = {entry["id"]: entry for entry in index["ietf_documents"]}
+    for revision in revisions:
+        if revision.get("http_status") != 200:
+            raise PublicationOverviewBlock("unpublished IETF revision in public coverage")
+        name = revision["name"]
+        if name not in ietf_index:
+            entry = {"id": name, "title": name,
+                     "state": "published_internet_draft", "official_url": revision["url"],
+                     "corpus_readback_path": config["readback_path"],
+                     "boundary": "Individual Internet-Draft; work in progress; not an RFC or IETF consensus."}
+            index["ietf_documents"].append(entry)
+            ietf_index[name] = entry
+    revision_rows = "".join(
+        f'<li><a href="{html.escape(row["url"], quote=True)}">{html.escape(row["name"])}</a></li>'
+        for row in revisions
+    )
+    draft_count = len({row["name"].rsplit("-", 1)[0] for row in revisions})
+    candidates = [row for row in index["ietf_documents"]
+                  if row["id"] not in {item["name"] for item in revisions}]
+    candidate_rows = "".join(
+        f'<li>{html.escape(row["id"])} — {html.escape(row["state"])}</li>'
+        for row in candidates
+    )
+    begin = "<!-- QIKVRT_PUBLIC_CORPUS_BEGIN -->"
+    end = "<!-- QIKVRT_PUBLIC_CORPUS_END -->"
+    section = (f'{begin}\n<section class="section" id="gesamtbestand"><div class="wrap">'
+               '<h2>Vollständiger ermittelter öffentlicher Bestand</h2>'
+               f'<p>Registerabgleich: {html.escape(readback["observed_at"])}. '
+               f'{len(records)} Zenodo-Versionen in {coverage["zenodo_concept_family_count"]} '
+               'Concept-Linien. Concept-DOIs bündeln Fassungen und sind keine zusätzlichen Publikationen. '
+               'Vollständig für die dokumentierten öffentlichen Autorenabfragen und Versionslisten; '
+               'private, nicht indexierte oder anders zugeordnete Einträge bleiben eine Erfassungsgrenze. '
+               'DOI und Archivierung belegen keine unabhängige Replikation oder physikalische Bestätigung.</p>'
+               '<div style="overflow-x:auto"><table><thead><tr><th>Record</th><th>Titel</th>'
+               '<th>Version</th><th>Versions-DOI</th><th>Concept-DOI</th></tr></thead><tbody>'
+               + "\n".join(rendered) + '</tbody></table></div>'
+               '<h3>Tatsächlich veröffentlichte IETF-Revisionen</h3>'
+               f'<p>{draft_count} individuelle Dokumentreihen, {len(revisions)} Revisionen; keine RFCs.</p>'
+               f'<ul>{revision_rows}</ul>'
+               '<h3>Lokale Vorbereitungen mit getrenntem Status</h3>'
+               f'<ul>{candidate_rows}</ul>'
+               '<p>Lokale Profile und nicht eingereichte Vorbereitungen behalten ihren eigenen Status. '
+               'Vollständige Einordnung und Originaldateibindungen: '
+               f'<a href="{html.escape(config["coverage_path"].removeprefix("docs/publications/"), quote=True)}">'
+               'CORPUS_COVERAGE.json</a>.</p></div></section>\n' + end)
+    if begin in text or end in text:
+        if text.count(begin) != 1 or text.count(end) != 1:
+            raise PublicationOverviewBlock("ambiguous public corpus projection block")
+        return re.sub(re.escape(begin) + r".*?" + re.escape(end), lambda _: section,
+                      text, flags=re.DOTALL)
+    anchor = '  <section class="section" id="grenzen">'
+    if anchor not in text:
+        raise PublicationOverviewBlock("human index lacks public corpus insertion anchor")
+    return text.replace(anchor, section + "\n\n" + anchor, 1)
+
+
 def build_outputs(root: pathlib.Path) -> tuple[bytes, str, dict[str, Any]]:
     machine_path = root / MACHINE_INDEX
     human_path = root / HUMAN_INDEX
@@ -221,6 +349,7 @@ def build_outputs(root: pathlib.Path) -> tuple[bytes, str, dict[str, Any]]:
             f"coverage remains incomplete: json={uncovered_json}, html={uncovered_html}"
         )
 
+    html_text = _project_public_corpus(root, index, html_text)
     machine_bytes = (
         json.dumps(index, ensure_ascii=False, indent=2, sort_keys=False) + "\n"
     ).encode("utf-8")

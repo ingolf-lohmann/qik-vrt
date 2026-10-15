@@ -1,0 +1,22 @@
+[
+  {
+    "url": "https://zenodo.org/api/records?q=creators.name%3A%28Ingolf+AND+Lohmann%29&size=25&sort=mostrecent&allversions=True",
+    "utc": "2026-10-15T09:49:06.528165+00:00",
+    "status": 200,
+    "path": "public-refresh/name-all-1.json",
+    "sha256": "fc48b2ed71aaa8a83202b4b6e2afb047324a34a08f825af52f403f4d4395c7b9",
+    "total": 42,
+    "count": 25,
+    "next": "https://zenodo.org/api/records?allversions=True&page=2&q=creators.name:(Ingolf+AND+Lohmann)&size=25&sort=mostrecent"
+  },
+  {
+    "url": "https://zenodo.org/api/records?allversions=True&page=2&q=creators.name:(Ingolf+AND+Lohmann)&size=25&sort=mostrecent",
+    "utc": "2026-10-15T09:49:14.372501+00:00",
+    "status": 200,
+    "path": "public-refresh/name-all-2.json",
+    "sha256": "9eaebe8da24a393bbac908ec904babc9e8befc1e511fb000a1b5a8e007769d83",
+    "total": 42,
+    "count": 17,
+    "next": null
+  }
+]
