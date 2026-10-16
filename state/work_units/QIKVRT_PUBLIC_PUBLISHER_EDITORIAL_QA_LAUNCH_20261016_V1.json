@@ -72,12 +72,13 @@
     "Public HTTP readback and exact bytes of deployed assets",
     "Editorial governance, terms, privacy policy and clear separation of scientific evidence and opinion"
   ],
-  "disposition": "SOURCE_AND_LOCAL_TESTS_READY_PROVIDER_AND_DOMAIN_BLOCKED",
+  "disposition": "SOURCE_READY_TEST_EXECUTION_AND_PROVIDER_DOMAIN_BLOCKED",
   "predecessor_evidence_transfer": false,
   "local_fixture_tests": {
     "count": 8,
-    "passed": 8,
-    "scope": "Local isolated HTTP integration fixtures including provider failure, origin, rate limits and bounded request server; native exact-head CI not yet verified"
+    "passed": null,
+    "executed": false,
+    "scope": "Eight defined isolated HTTP contract tests; execution not independently evidenced, native exact-head CI pending"
   },
   "external_deployment_attempt": {
     "provider": "Railway",
