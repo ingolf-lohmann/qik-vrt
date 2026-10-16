@@ -170,6 +170,13 @@ test: autonomous-pr-continuation-test
 issue-agent-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest discover -s tests/issue_agent -p 'test_*.py' -v
 
+.PHONY: public-qa-test
+public-qa-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_public_qa_server tests.test_public_question_entrypoint
+	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m py_compile runtime/public_qa/server.py
+
+test: public-qa-test
+
 .PHONY: editorial-navigation-test
 editorial-navigation-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tests/test_editorial_navigation.py
