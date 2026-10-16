@@ -28,8 +28,10 @@ Dockerfile: `runtime/public_qa/Dockerfile` with **repository root** as build con
 - `QIKVRT_ALLOWED_ORIGINS`: exact comma-separated origins, no wildcards.
   Set the actual verified HTTPS origin(s) on the deployment.
 - `QIKVRT_SOURCE_COMMIT`: 40-character immutable SHA for the source files
-  packaged in the deployed image. An absent/invalid value yields
-  `MUTABLE_MAIN` source labels and **disables model inference**.
+  packaged in the deployed image. This is a **declared**, not independently
+  attested, source revision; each source response carries its actual SHA-256.
+  An absent/invalid value yields `MUTABLE_MAIN` source labels and
+  **disables model inference**.
 - `QIKVRT_QA_ENABLED=true`: required explicit opt-in to model inference.
   Default false.
 - `QIKVRT_QA_PROVIDER`: `anthropic` or `openai`.
