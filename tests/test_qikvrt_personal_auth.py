@@ -263,6 +263,21 @@ class MicrosoftCompatibilityTests(unittest.TestCase):
                         self.assertNotIn(b"SIMULATED_CODE", html)
                         self.assertNotIn(b"SIMULATED_HINT", html)
                         self.assertEqual(response.headers["Cache-Control"], "no-store")
+                    # The ordinary guard must not refresh once, then let the
+                    # explicit renew route refresh a second time for one click.
+                    local = self.vault.read()["auth"]["local_token"]
+                    self.now[0] += 121
+                    renew_headers = {"Content-Type":"application/json", "Origin":origin, "Authorization":"Bearer " + local}
+                    with self.assertRaises(HTTPError):
+                        urlopen(Request(origin + "/personal/auth/renew", data=a.encoded({"confirmed":False}), headers=renew_headers), timeout=3)
+                    self.assertFalse(any(fields and fields.get("grant_type")=="refresh_token" for _,fields in self.idp.calls))
+                    with urlopen(Request(origin + "/personal/auth/renew", data=a.encoded({"confirmed":True}), headers=renew_headers), timeout=3) as response:
+                        self.assertEqual(json.load(response)["state"], "AUTHENTICATED")
+                    refreshes = [fields for _,fields in self.idp.calls if fields and fields.get("grant_type")=="refresh_token"]
+                    self.assertEqual(len(refreshes), 1, "one explicit renewal must issue only one token exchange")
+                    with self.assertRaises(HTTPError):
+                        urlopen(Request(origin + "/personal/auth/renew", data=a.encoded({"confirmed":True}), headers=dict(renew_headers, Authorization="Bearer SIMULATED_WRONG")), timeout=3)
+                    self.assertEqual(len([fields for _,fields in self.idp.calls if fields and fields.get("grant_type")=="refresh_token"]), 1)
                     self.assertEqual(logged.getvalue(), "")
                 for file in runtime.root.iterdir():
                     self.assertNotIn(b"SIMULATED_REFRESH", file.read_bytes())

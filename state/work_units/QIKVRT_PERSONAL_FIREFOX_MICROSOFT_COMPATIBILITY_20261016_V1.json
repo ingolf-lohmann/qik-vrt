@@ -11,8 +11,8 @@
     "repository": "ingolf-lohmann/qik-vrt",
     "pr": 523,
     "ref": "integration/515-519-521-522-20261012-eceb9b63",
-    "head": "c14cdf45d22c4599cc2ee86fde64e0fca3beba58",
-    "tree": "fcc7c0ca892d48c446d4dd25ec1aaf94b7efa641"
+    "head": "e2aa118a9d25913fdb15d351d00bac14af0fded3",
+    "tree": "b1b2aca5440765e101f703e10567a758c4efbb3b"
   },
   "human_contribution": "Ingolf Lohmann: existing Microsoft-OIDC client selection and explicit authorization to assimilate, improve, adapt and preserve compatibility with downstream systems. Existing secure Personal/Standard boundary remains binding.",
   "artificial_cognitive_contribution": "OpenAI Codex: provider-contract diagnosis, additive implementation, compatibility/security regression tests and existing CI adaptation; no independent review or human sign-in inferred.",
@@ -31,9 +31,9 @@
   "authorization": "Current Owner grant; existing PR523 API-native integration; no new account/app creation, permission scope expansion, Graph revocation or credential disclosure",
   "test_receipt": {
     "path": "evidence/native-runtime-acceptance/personal-firefox-microsoft-20261016.json",
-    "bytes": 23802,
-    "sha256": "315966fd3c31048eb09fe440716f4e5c4b7d480d51d11e73520eb59facdaf2cc",
-    "git_blob": "9286e9f8f963d01c94b94213a26a35f26c0ad623",
+    "bytes": 25136,
+    "sha256": "ef61ffdae3f757c65bd96618d81e80c85316750e833cac09d6404f500df04a27",
+    "git_blob": "dc94762418eca77526dc96c20c609ddf24600e15",
     "python_cases": 92,
     "javascript_scenarios": 2,
     "real_rsa_cases": 4
@@ -62,5 +62,18 @@
   ],
   "no_secrets_written_to_git_public_artifacts_browser_logs_or_database": true,
   "PREDECESSOR_EVIDENCE_TRANSFER": false,
-  "EFFECT_ACK_DONE": false
+  "EFFECT_ACK_DONE": false,
+  "initial_source_parent": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pr": 523,
+    "ref": "integration/515-519-521-522-20261012-eceb9b63",
+    "head": "c14cdf45d22c4599cc2ee86fde64e0fca3beba58",
+    "tree": "fcc7c0ca892d48c446d4dd25ec1aaf94b7efa641"
+  },
+  "http_renewal_correction": {
+    "predecessor_observation": "An expired access token caused two refresh requests for one explicit /personal/auth/renew POST: ordinary guard auto-renewal followed by explicit route renewal. A new real-loopback HTTP regression failed with 2 != 1.",
+    "repair": "Defer the explicit renew route authentication until the confirmed body has been validated and the existing runtime lock acquired; the route performs the single authenticated renewal. Origin/Host and local admission checks remain enforced.",
+    "after": "The actual local HTTP regression observes zero token requests for an unconfirmed body, exactly one for confirmed renewal, and no extra request for a wrong Bearer. IdP/vault remain simulated.",
+    "current_successor_native_evidence": "PENDING; predecessor native PASS is not transferred"
+  }
 }

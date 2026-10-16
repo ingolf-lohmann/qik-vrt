@@ -503,7 +503,11 @@ def personal_handler(base_handler, runtime: PersonalRuntime):
                         raise CapabilityBlock("OIDC_EXPLICIT_SIGN_IN_REQUIRED")
                     with runtime.lock:
                         return self._personal_response(200, auth.begin())
-                self._personal_guard()
+                # Explicit renewal authenticates exactly once below, after
+                # validating the confirmation body and taking the runtime lock.
+                # The normal guard could otherwise refresh an expired token
+                # before the renew route immediately exchanges it again.
+                self._personal_guard(public=bool(auth and self.path == "/personal/auth/renew"))
                 body = self._read_body()
                 if body.get("confirmed") is not True:
                     raise CapabilityBlock("EXPLICIT_MODEL_REQUEST_CONFIRMATION_REQUIRED")
