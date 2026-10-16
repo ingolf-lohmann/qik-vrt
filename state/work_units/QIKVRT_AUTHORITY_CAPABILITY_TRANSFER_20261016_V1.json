@@ -1,7 +1,7 @@
 {
   "schema": "qikvrt_work_unit_v1",
   "id": "QIKVRT_AUTHORITY_CAPABILITY_TRANSFER_20261016_V1",
-  "status": "IONOS_DOMAIN_ORDER_AND_CONTACT_EMAIL_CONFIRMED_MAIL_SORTED_SSO_AND_AUTOMATION_OPEN",
+  "status": "DOMAIN_VERIFICATION_ACTIVE_VPS_QUOTE_READY_RUNTIME_BYTES_VERIFIED_FINAL_ROUTING_AND_LEGAL_CONFIRMATION_PENDING",
   "repository": "ingolf-lohmann/qik-vrt",
   "pull_request": 523,
   "branch": "integration/515-519-521-522-20261012-eceb9b63",
@@ -367,8 +367,8 @@
   "artificial_contribution": "OpenAI Codex: REST inspection, preserved-source capability comparison, existing publication-router integration and regression checks.",
   "PREDECESSOR_EVIDENCE_TRANSFER": false,
   "EFFECT_ACK_DONE": false,
-  "next_action": "Preserve the confirmed order and contact verification without reordering. Establish the supported private credential-store/registry consumer for durable reuse; continue Microsoft rule authentication only after a later Owner request following the declined selection. Keep current sorting complete and the actual future-mail runner/rules unactivated until verified. Resume IONOS domain hosting configuration through an actually authenticated supported account route.",
-  "updated_at_utc": "2026-10-16T12:33:09.233Z",
+  "next_action": "Obtain the two concrete final decisions for replacing this domain's IONOS Webhosting DNS template and accepting/ordering the prepared EUR69 initial / EUR59 monthly VPS contract. Preserve all standing task authorization, SSO/mail gaps and native review gates; execute admitted successors after those decisions.",
+  "updated_at_utc": "2026-10-16T13:23:10.484Z",
   "publication_scope_request": {
     "received_at": "2026-10-16T09:48:07Z",
     "human": "Ingolf Lohmann",
@@ -581,8 +581,8 @@
     },
     {
       "operation": "EXACT_RAUMZEITTERMINAL_DELIVERY",
-      "evidence": "IONOS domain order confirmed after one submission; provisioning not yet accepted. Existing Site binding refreshed 2026-10-16T12:07:10.200183Z and remains pending/TLS pending_validation. Customer-management reauthentication returned declined.",
-      "smallest_next_step": "Reuse the existing confirmed IONOS order without reordering. When the Owner requests supported authentication continuation, read the provisioned domain, contract and hosting assignment in the existing customer account; then apply only the necessary supported configuration and independently verify DNS, TLS and the exact application. Keep the private credential-registry persistence gap explicit."
+      "evidence": "Actual IONOS customer session and domain/hosting assignment verified; two TXT records saved and provider status active. Apex remains old Webhosting A/AAAA. Automatic approval review rejected the service-template replacement; cancelled without applying.",
+      "smallest_next_step": "Approve the concrete replacement of the Webhosting DNS template for this exact domain. Preserve mail records and reinstate original www A/AAAA after template deactivation unless a separately verified www deployment replaces them."
     }
   ],
   "knowledge": [
@@ -760,6 +760,78 @@
       ],
       "supersedes": [],
       "record_sha256": "e12432660ff9f4db3666f6a61bbb01458db8e17678d51ea21476c6d8054cbe37"
+    },
+    {
+      "id": "owner:domain-purposes-and-ionos-cost-grant-20261016",
+      "epistemic_class": "OWNER_AUTHORIZATION",
+      "subject": {
+        "hostname": "raumzeitterminal.de",
+        "repository": "ingolf-lohmann/qik-vrt"
+      },
+      "scope": "Current publication, Linux/Firefox/whole-repository offline and owned DevOps purposes; retained EUR150/month limit; no arXiv publication.",
+      "statement": "The Owner directs the Raumzeitterminal publishing operation, Linux distribution CI/CD with complete Effect Acknowledgement in OS and Firefox and full offline repository, and reduced external platform dependencies. Necessary paid IONOS services are authorized. Exact browser legal acceptance and the rejected DNS-template action remain concrete final decision boundaries.",
+      "evidence": [
+        "Direct Owner instruction in this session, 2026-10-16",
+        "owner_domain_operating_purposes",
+        "ionos_server_quote"
+      ],
+      "supersedes": [],
+      "record_sha256": "8a43c84f5e205e7636f6118fee5a3d80d358974a1ed7364eda500a138e401715"
+    },
+    {
+      "id": "ionos:two-txt-saved-and-vps-final-quote-20261016",
+      "epistemic_class": "SOURCE_BOUND_OBSERVATION",
+      "subject": {
+        "hostname": "raumzeitterminal.de",
+        "site_project": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea"
+      },
+      "scope": "Visible customer account and native Sites domain status; no DNS-routing or server-order acceptance.",
+      "statement": "Registered domain is assigned to existing Webhosting Pro. Both required TXT verifications are saved; provider status active with TLS pending_validation. Old apex/www Webhosting records remain. Automatic approval rejected replacing that service template. The final VPS Linux XXL+ quote is EUR59/month plus EUR10 setup, one-month minimum term, EU, Ubuntu26.04+Docker, not ordered.",
+      "evidence": [
+        "ionos_operational_configuration",
+        "ionos_server_quote",
+        "DNS screenshot SHA256 258db4c6ec8031b644ceb643bf3e7dce09e46cab73567edb82999f2567445101",
+        "Quote screenshot SHA256 f1f25196a671f2b66ce6bbb2e7c89c570eedb70c135d63693db6e55871cf5190"
+      ],
+      "supersedes": [],
+      "record_sha256": "9ca871a4c445f9f810bf0607dddd1b5417948c6f9ea0a63e98895aea76437ceb"
+    },
+    {
+      "id": "source:existing-portable-full-tree-correction-20261016",
+      "epistemic_class": "CORRECTION",
+      "subject": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "ref": "integration/515-519-521-522-20261012-eceb9b63",
+        "head": "95dd082666d7c087067c1e70e12b0308ac8ce2e2",
+        "tree": "1ddd0e46d85b85e87ceeb06b5813ec236bd36a4b"
+      },
+      "scope": "Exact existing portable source and MESH_FILE contract; source capability distinct from the selected-file work cache and from deployed offline acceptance.",
+      "statement": "Earlier commentary inspected the selected-file work cache and understated existing full-tree support. The existing portable operation stores every committed Git-tree blob and mode in repository.sqlite3, verifies blob hashes and the reconstructed complete tree, and needs no Git at runtime. It does not carry Git history or accept submodules. Current full-tree export and delivered OS/Firefox offline acceptance remain open.",
+      "evidence": [
+        "tools/qikvrt_self_host.py blob2d73f623ec07dc36a04f6508a7ac2a58af4b44d1 portable and verify_repository_files",
+        "runtime/self-host/MESH_FILE.md blob0d7a572f425ae4824a3dc717b9167102ec6a8776"
+      ],
+      "supersedes": [],
+      "record_sha256": "7a88f1d3e1cbecc0b95b0e3ef2714f62a33f2f095ed67eb0953dd57f7afb18ea"
+    },
+    {
+      "id": "runtime:frozen-carrier-byte-download-20261016",
+      "epistemic_class": "SOURCE_BOUND_OBSERVATION",
+      "subject": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "run_id": 37710500668,
+        "artifact_id": 11521962723,
+        "source_head": "4bdda5c7534a2c4fbac224015179492a4b624b3a"
+      },
+      "scope": "Original dependency-runtime download only; no successor application, host or publication acceptance.",
+      "statement": "Native artifact listing reports non-expired original carrier. Downloaded ZIP is382994793 bytes with SHA2565a912ccde96253bdba5f5e82cd0a36a4ff89de58dabbe57977bc1acf298d9695, independently read back locally. Reuse these frozen bytes rather than rebuild finished runtime dependencies. Durable registry publication remains open.",
+      "evidence": [
+        "Native fetch_workflow_run_artifacts for run37710500668",
+        "Native download_workflow_artifact11521962723",
+        "Local streamed SHA256 and original-byte-count verification"
+      ],
+      "supersedes": [],
+      "record_sha256": "af98a1b6a5086c9d7f66e6bab264355aebe47658bb7cd52d3f305e603a7f8022"
     }
   ],
   "work": [
@@ -812,7 +884,7 @@
     {
       "id": "raumzeitterminal-exact-host-delivery",
       "state": "OPEN",
-      "next_action": "Reuse the existing confirmed IONOS order without reordering. When the Owner requests supported authentication continuation, read the provisioned domain, contract and hosting assignment in the existing customer account; then apply only the necessary supported configuration and independently verify DNS, TLS and the exact application. Keep the private credential-registry persistence gap explicit."
+      "next_action": "Approve the concrete replacement of the Webhosting DNS template for this exact domain. Preserve mail records and reinstate original www A/AAAA after template deactivation unless a separately verified www deployment replaces them. Then verify both apex targets, TLS and actual application; no duplicate domain order."
     },
     {
       "id": "archive-preflight-native-gate",
@@ -854,6 +926,51 @@
       "id": "site36-specific-client-access-diagnosis",
       "state": "VERIFIED",
       "evidence": "Native public Site/version36 and domain binding read; exact local root HTTP403/error1010 identified; provider security configuration and PDF byte-readback remain OPEN. See SITE36_PUBLIC_BYTES_READBACK.json#successor_diagnostics."
+    },
+    {
+      "id": "ionos-contact-email-verification",
+      "state": "VERIFIED",
+      "evidence": "IONOS Registrar displayed Vielen Dank für die Bestätigung der E-Mail-Adresse; screenshot sha256 cdc238f8c54a6251618a13dfb84927b2e9de7ba5fa63e51086fed07da4b2d6c4. This is not login or TLS acceptance."
+    },
+    {
+      "id": "outlook-three-folder-organization",
+      "state": "VERIFIED",
+      "evidence": "249 native moves: 95 general IONOS, 3 exact-domain, 151 ChatGPT; folder counts95/3/2280 and0 matching inbox messages freshly read; no deletion."
+    },
+    {
+      "id": "durable-credential-registry-and-sso",
+      "state": "OPEN",
+      "next_action": "Connect the existing protected credential registry through its supported non-exporting store-and-reuse contract, independently verify persistence across a new session, then finish the exact IONOS hosting configuration. Reuse existing folders and complete the prepared Outlook rules through an authenticated supported writer."
+    },
+    {
+      "id": "outlook-incoming-context-processing",
+      "state": "OPEN",
+      "next_action": "Reuse the Owner grant and existing folders; complete actual native rules or an authorized Outlook event binding after supported authentication. Do not treat the stored directive as an active runner."
+    },
+    {
+      "id": "raumzeitterminal-publisher-automatic-operations",
+      "state": "OPEN",
+      "next_action": "After the concrete routing-change decision, bind both supplied apex A targets, preserve mail and original www records, refresh TLS and independently verify exact-host application/PDF bytes."
+    },
+    {
+      "id": "owned-linux-ci-runtime",
+      "state": "OPEN",
+      "next_action": "After action-time server terms confirmation, submit exactly one prepared order; read back resource and establish the existing authenticated HTTPS Docker/mTLS, state-volume and route binding before deployment."
+    },
+    {
+      "id": "full-repository-offline-runtime",
+      "state": "OPEN",
+      "next_action": "Retain governed current-subject gates; import the verified carrier, build from exact HEAD/TREE, produce and verify the complete-tree SQLite image, then prove native Firefox and repository use with network egress absent and durable restart/replay."
+    },
+    {
+      "id": "effect-ack-os-and-firefox-completion",
+      "state": "OPEN",
+      "next_action": "Complete the bootable Linux distribution and enumerate the real OS/browser effects covered; verify each required workload, crashes/lost ACK/replay and original effect readback. An OCI image or Firefox extension alone is not full OS/Firefox acceptance."
+    },
+    {
+      "id": "provider-independent-owned-execution",
+      "state": "OPEN",
+      "next_action": "Operate portable publication/build execution and independently recoverable backups under Owner control; demonstrate restore/migration without platform-only runtime services. IONOS remains a hosting dependency."
     }
   ],
   "owner_gate_correction": {
@@ -1447,10 +1564,173 @@
       "exact_host_publication_claimed": false
     },
     "current_order_blocker": {
-      "code": "IONOS_CUSTOMER_SESSION_REAUTHENTICATION_DECLINED",
-      "evidence": "After the confirmed order, /domains redirected to the customer login. The single protected reauthentication request returned declined.",
-      "retry_condition": "A later Owner request to resume protected customer authentication, followed by a verified customer-domain session.",
-      "no_duplicate_order": true
+      "code": "SUPERSEDED_CUSTOMER_SESSION_RESTORED_ROUTING_DECISION_PENDING",
+      "previous": "IONOS_CUSTOMER_SESSION_REAUTHENTICATION_DECLINED",
+      "evidence": "Latest Owner asked to resume IONOS hosting; fresh customer-domain page shows registered domain under existing Webhosting Pro.",
+      "current_blocker": "AUTOMATIC_APPROVAL_REVIEW_REJECTED_WEBHOSTING_DNS_TEMPLATE_REPLACEMENT",
+      "duplicate_order_forbidden": true
+    },
+    "current_operational_successor": {
+      "observed_at": "2026-10-16T13:23:10.484Z",
+      "source": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "ref": "integration/515-519-521-522-20261012-eceb9b63",
+        "head": "95dd082666d7c087067c1e70e12b0308ac8ce2e2",
+        "tree": "1ddd0e46d85b85e87ceeb06b5813ec236bd36a4b"
+      },
+      "ionos_configuration": {
+        "state": "TXT_SAVED_ROUTING_CHANGE_REJECTED_BY_AUTOMATIC_APPROVAL_REVIEW",
+        "hostname": "raumzeitterminal.de",
+        "customer_session_verified": true,
+        "domain_registration_visible": true,
+        "existing_product": "IONOS Webhosting Pro",
+        "existing_webspace_gb": 250,
+        "existing_webspace_used_gb": 0,
+        "existing_webspace_files": 8,
+        "zone_records_read": true,
+        "saved_txt_records": [
+          {
+            "name": "_openai-site-verification.raumzeitterminal.de",
+            "type": "TXT",
+            "value": "openai-site-verification=5Zw42-7lgYTNm3pmkhZcwGJu1_0UvnHSVYJcGBDONbI",
+            "ttl_seconds": 3600
+          },
+          {
+            "name": "_cf-custom-hostname.raumzeitterminal.de",
+            "type": "TXT",
+            "value": "c6e99848-baed-4087-a9fd-0d6c5b5008c8",
+            "ttl_seconds": 3600
+          }
+        ],
+        "saved_txt_count": 2,
+        "provider_status_after_txt": "active",
+        "ssl_status_after_txt": "pending_validation",
+        "overall_site_domain_status": "pending",
+        "site_refresh_observed_at": "2026-10-16T13:12:46.446536+00:00",
+        "current_apex_a": "217.160.0.52",
+        "current_apex_aaaa": "2001:8d8:100f:f000:0:0:0:205",
+        "current_www_a": "217.160.0.52",
+        "current_www_aaaa": "2001:8d8:100f:f000:0:0:0:205",
+        "proposed_apex_a": [
+          "162.159.143.30",
+          "172.66.3.26"
+        ],
+        "proposed_apex_ttl_seconds": 300,
+        "routing_applied": false,
+        "old_dns_template_retained": true,
+        "approval_rejection": {
+          "action": "Save apex A replacement in IONOS DNS UI",
+          "reason": "Saving would deactivate the active Webhosting DNS service and remove its apex/www A/AAAA and mutex records; service disruption side effect and incomplete single-target setup not explicitly admitted.",
+          "blocked_action_retried": false,
+          "workaround_used": false,
+          "form_cancelled": true,
+          "required_owner_decision": "Approve the concrete replacement of the Webhosting DNS template for this exact domain. Preserve mail records and reinstate original www A/AAAA after template deactivation unless a separately verified www deployment replaces them.",
+          "risk": "IONOS UI changes are not atomic across all records; a temporary apex/www DNS interruption is possible."
+        },
+        "mail_service_records_preserved": true,
+        "proof_screenshot_sha256": "258db4c6ec8031b644ceb643bf3e7dce09e46cab73567edb82999f2567445101",
+        "private_account_contact_payment_or_authentication_data_persisted": false
+      },
+      "server_quote": {
+        "state": "FINAL_CHECKOUT_PREPARED_NOT_ORDERED",
+        "merchant": "IONOS SE",
+        "product": "IONOS VPS Linux XXL+",
+        "quantity": 1,
+        "cpu_vcores": 12,
+        "ram_gb": 24,
+        "nvme_gb": 720,
+        "datacenter": "EU",
+        "image": "Ubuntu 26.04 + Docker",
+        "currency": "EUR",
+        "monthly_gross": 59,
+        "setup_gross": 10,
+        "initial_total_gross": 69,
+        "vat_percent": 19,
+        "minimum_term_months": 1,
+        "billing": "1 month in advance",
+        "automatic_renewal": true,
+        "selected_paid_addons": [],
+        "mandatory_terms_accepted": false,
+        "optional_marketing_checked": false,
+        "purchase_submissions": 0,
+        "existing_payment_method_reused_only_after_action_time_confirmation": true,
+        "proof_screenshot_sha256": "f1f25196a671f2b66ce6bbb2e7c89c570eedb70c135d63693db6e55871cf5190",
+        "scope": "Observed final checkout; no server resource, server ID or production acceptance inferred."
+      },
+      "source_runtime_reuse": {
+        "source": {
+          "repository": "ingolf-lohmann/qik-vrt",
+          "ref": "integration/515-519-521-522-20261012-eceb9b63",
+          "head": "95dd082666d7c087067c1e70e12b0308ac8ce2e2",
+          "tree": "1ddd0e46d85b85e87ceeb06b5813ec236bd36a4b"
+        },
+        "source_components": [
+          {
+            "path": "runtime/self-host/README.md",
+            "blob": "e44b07bea6bc9a01ff28bc3572ff773534e497c8"
+          },
+          {
+            "path": "runtime/self-host/Dockerfile",
+            "blob": "e4fae384b1a4a5e0cd061cf73d5c3d7f0f29a547"
+          },
+          {
+            "path": "tools/qikvrt_self_host.py",
+            "blob": "2d73f623ec07dc36a04f6508a7ac2a58af4b44d1"
+          },
+          {
+            "path": "runtime/self-host/MESH_FILE.md",
+            "blob": "0d7a572f425ae4824a3dc717b9167102ec6a8776"
+          },
+          {
+            "path": "runtime/self-host/LINUX_HOST_BINDING.example.json",
+            "blob": "6a2c345c3cd0734812c1a5c896dd4f566f5add99"
+          }
+        ],
+        "frozen_carrier": {
+          "artifact_id": 11521962723,
+          "run_id": 37710500668,
+          "bytes": 382994793,
+          "sha256": "5a912ccde96253bdba5f5e82cd0a36a4ff89de58dabbe57977bc1acf298d9695",
+          "native_expired": false,
+          "expires_at": "2026-11-07T01:08:00Z",
+          "downloaded": true,
+          "local_byte_verified": true,
+          "scope": "Existing dependency image only; no predecessor application or current-host acceptance transferred.",
+          "durable_registry_publication_verified": false
+        },
+        "offline_full_tree": {
+          "implemented_source_path": "tools/qikvrt_self_host.py",
+          "operation": "portable",
+          "canonical_file": "repository.sqlite3",
+          "format": "SQLITE3_WITH_CARRIER_META_AND_EVENTS",
+          "full_git_tree_blobs_modes_and_tree_digest_verified_by_source": true,
+          "git_history_carried": false,
+          "submodules_refused": true,
+          "selected_work_cache_is_different": true,
+          "current_exact_head_export_created": false,
+          "offline_production_readback_verified": false,
+          "correction": "Earlier commentary identified only the selected-file work cache; source inspection confirms the existing complete-tree portable exporter. Reuse it instead of creating another export pipeline."
+        },
+        "local_cache_contract": {
+          "result": "PASS",
+          "declared_tools": 32,
+          "covered_tools": 32,
+          "coverage_percent": 100,
+          "scope": "Cache strategy metadata verified in the exact-source projection; not provisioning, build, CI or production acceptance."
+        },
+        "native_current_subject": {
+          "head": "95dd082666d7c087067c1e70e12b0308ac8ce2e2",
+          "ci_run": 38902115045,
+          "conclusion": "action_required",
+          "independent_current_head_approval_found": false,
+          "pr": 523,
+          "draft": true,
+          "merged": false
+        },
+        "new_workflow_created": false,
+        "new_executor_created": false,
+        "no_downgrade": true
+      }
     }
   },
   "owner_domain_order_clarification": {
@@ -1613,5 +1893,216 @@
     "polling_substituted_for_requested_incoming_event": false,
     "native_inbox_rules_created": false,
     "gap": "Existing connector can read and move Outlook mail but exposes no rule writer. Native rule UI requires a Microsoft session; the protected sign-in-method request was declined. Automation event-source inventory has no Outlook source."
+  },
+  "owner_domain_operating_purposes": {
+    "source": "Direct Owner instruction in the current session on 2026-10-16",
+    "domain": "raumzeitterminal.de",
+    "publisher_name": "Raumzeitterminal",
+    "purposes": [
+      "Fully automatic publishing and business operations of the Raumzeitterminal online publishing house.",
+      "CI/CD and DevOps producing the Linux distribution with full Effect Acknowledgement Protocol implementation in the operating system and its Firefox browser, and the full QIK-VRT repository available offline within its runtime.",
+      "Own portable execution and distribution infrastructure reducing external platform dependencies."
+    ],
+    "purchase_authorized": true,
+    "merchant": "IONOS",
+    "cost_scope": "Necessary hosting, server and operations services for these purposes",
+    "retained_monthly_budget_eur": 150,
+    "unlimited_spending_inferred": false,
+    "arxiv_current_publication_excluded": true,
+    "priority_rule": "Maximize the earliest useful performance gain by reusing implemented frozen runtime and full-tree portable export; measure actual throughput before claiming optimal performance.",
+    "attribution": {
+      "human": "Ingolf Lohmann: product goals, priority rule, explicit IONOS purchase authorization.",
+      "artificial": "OpenAI Codex: source inspection, supported customer-account operations, exact-byte runtime verification and evidence-bound execution preparation."
+    }
+  },
+  "priority_execution": [
+    {
+      "order": 1,
+      "id": "PUBLIC_PUBLISHER_DELIVERY",
+      "reuse": "Existing Site36 and existing domain registration; two TXT verifications now saved.",
+      "next": "After the concrete routing-change decision, bind both supplied apex A targets, preserve mail and original www records, refresh TLS and independently verify exact-host application/PDF bytes.",
+      "done": false
+    },
+    {
+      "order": 2,
+      "id": "OWNED_LINUX_EXECUTION",
+      "reuse": "Prepared IONOS VPS quote; existing frozen carrier, Linux host binding and container deploy/readback commands.",
+      "next": "After action-time server terms confirmation, submit exactly one prepared order; read back resource and establish the existing authenticated HTTPS Docker/mTLS, state-volume and route binding before deployment.",
+      "done": false
+    },
+    {
+      "order": 3,
+      "id": "OWNED_CI_AND_OFFLINE_PRODUCT",
+      "reuse": ".github/workflows/qikvrt_ci.yml and existing tools/qikvrt_self_host.py portable exporter.",
+      "next": "Retain governed current-subject gates; import the verified carrier, build from exact HEAD/TREE, produce and verify the complete-tree SQLite image, then prove native Firefox and repository use with network egress absent and durable restart/replay.",
+      "done": false
+    },
+    {
+      "order": 4,
+      "id": "DISTRIBUTION_AND_EFFECT_ACK_ACCEPTANCE",
+      "reuse": "Existing native TEMDD/Effect-Ack ledger, HTTP/Firefox terminal, systemd and container acceptance paths.",
+      "next": "Complete the bootable Linux distribution and enumerate the real OS/browser effects covered; verify each required workload, crashes/lost ACK/replay and original effect readback. An OCI image or Firefox extension alone is not full OS/Firefox acceptance.",
+      "done": false
+    },
+    {
+      "order": 5,
+      "id": "PORTABLE_OWNED_OPERATIONS",
+      "reuse": "Canonical SQLite state, exact frozen artifacts and current repository-native work units.",
+      "next": "Operate portable publication/build execution and independently recoverable backups under Owner control; demonstrate restore/migration without platform-only runtime services. IONOS remains a hosting dependency.",
+      "done": false
+    }
+  ],
+  "ionos_operational_configuration": {
+    "state": "TXT_SAVED_ROUTING_CHANGE_REJECTED_BY_AUTOMATIC_APPROVAL_REVIEW",
+    "hostname": "raumzeitterminal.de",
+    "customer_session_verified": true,
+    "domain_registration_visible": true,
+    "existing_product": "IONOS Webhosting Pro",
+    "existing_webspace_gb": 250,
+    "existing_webspace_used_gb": 0,
+    "existing_webspace_files": 8,
+    "zone_records_read": true,
+    "saved_txt_records": [
+      {
+        "name": "_openai-site-verification.raumzeitterminal.de",
+        "type": "TXT",
+        "value": "openai-site-verification=5Zw42-7lgYTNm3pmkhZcwGJu1_0UvnHSVYJcGBDONbI",
+        "ttl_seconds": 3600
+      },
+      {
+        "name": "_cf-custom-hostname.raumzeitterminal.de",
+        "type": "TXT",
+        "value": "c6e99848-baed-4087-a9fd-0d6c5b5008c8",
+        "ttl_seconds": 3600
+      }
+    ],
+    "saved_txt_count": 2,
+    "provider_status_after_txt": "active",
+    "ssl_status_after_txt": "pending_validation",
+    "overall_site_domain_status": "pending",
+    "site_refresh_observed_at": "2026-10-16T13:12:46.446536+00:00",
+    "current_apex_a": "217.160.0.52",
+    "current_apex_aaaa": "2001:8d8:100f:f000:0:0:0:205",
+    "current_www_a": "217.160.0.52",
+    "current_www_aaaa": "2001:8d8:100f:f000:0:0:0:205",
+    "proposed_apex_a": [
+      "162.159.143.30",
+      "172.66.3.26"
+    ],
+    "proposed_apex_ttl_seconds": 300,
+    "routing_applied": false,
+    "old_dns_template_retained": true,
+    "approval_rejection": {
+      "action": "Save apex A replacement in IONOS DNS UI",
+      "reason": "Saving would deactivate the active Webhosting DNS service and remove its apex/www A/AAAA and mutex records; service disruption side effect and incomplete single-target setup not explicitly admitted.",
+      "blocked_action_retried": false,
+      "workaround_used": false,
+      "form_cancelled": true,
+      "required_owner_decision": "Approve the concrete replacement of the Webhosting DNS template for this exact domain. Preserve mail records and reinstate original www A/AAAA after template deactivation unless a separately verified www deployment replaces them.",
+      "risk": "IONOS UI changes are not atomic across all records; a temporary apex/www DNS interruption is possible."
+    },
+    "mail_service_records_preserved": true,
+    "proof_screenshot_sha256": "258db4c6ec8031b644ceb643bf3e7dce09e46cab73567edb82999f2567445101",
+    "private_account_contact_payment_or_authentication_data_persisted": false
+  },
+  "ionos_server_quote": {
+    "state": "FINAL_CHECKOUT_PREPARED_NOT_ORDERED",
+    "merchant": "IONOS SE",
+    "product": "IONOS VPS Linux XXL+",
+    "quantity": 1,
+    "cpu_vcores": 12,
+    "ram_gb": 24,
+    "nvme_gb": 720,
+    "datacenter": "EU",
+    "image": "Ubuntu 26.04 + Docker",
+    "currency": "EUR",
+    "monthly_gross": 59,
+    "setup_gross": 10,
+    "initial_total_gross": 69,
+    "vat_percent": 19,
+    "minimum_term_months": 1,
+    "billing": "1 month in advance",
+    "automatic_renewal": true,
+    "selected_paid_addons": [],
+    "mandatory_terms_accepted": false,
+    "optional_marketing_checked": false,
+    "purchase_submissions": 0,
+    "existing_payment_method_reused_only_after_action_time_confirmation": true,
+    "proof_screenshot_sha256": "f1f25196a671f2b66ce6bbb2e7c89c570eedb70c135d63693db6e55871cf5190",
+    "scope": "Observed final checkout; no server resource, server ID or production acceptance inferred."
+  },
+  "source_runtime_reuse": {
+    "source": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "ref": "integration/515-519-521-522-20261012-eceb9b63",
+      "head": "95dd082666d7c087067c1e70e12b0308ac8ce2e2",
+      "tree": "1ddd0e46d85b85e87ceeb06b5813ec236bd36a4b"
+    },
+    "source_components": [
+      {
+        "path": "runtime/self-host/README.md",
+        "blob": "e44b07bea6bc9a01ff28bc3572ff773534e497c8"
+      },
+      {
+        "path": "runtime/self-host/Dockerfile",
+        "blob": "e4fae384b1a4a5e0cd061cf73d5c3d7f0f29a547"
+      },
+      {
+        "path": "tools/qikvrt_self_host.py",
+        "blob": "2d73f623ec07dc36a04f6508a7ac2a58af4b44d1"
+      },
+      {
+        "path": "runtime/self-host/MESH_FILE.md",
+        "blob": "0d7a572f425ae4824a3dc717b9167102ec6a8776"
+      },
+      {
+        "path": "runtime/self-host/LINUX_HOST_BINDING.example.json",
+        "blob": "6a2c345c3cd0734812c1a5c896dd4f566f5add99"
+      }
+    ],
+    "frozen_carrier": {
+      "artifact_id": 11521962723,
+      "run_id": 37710500668,
+      "bytes": 382994793,
+      "sha256": "5a912ccde96253bdba5f5e82cd0a36a4ff89de58dabbe57977bc1acf298d9695",
+      "native_expired": false,
+      "expires_at": "2026-11-07T01:08:00Z",
+      "downloaded": true,
+      "local_byte_verified": true,
+      "scope": "Existing dependency image only; no predecessor application or current-host acceptance transferred.",
+      "durable_registry_publication_verified": false
+    },
+    "offline_full_tree": {
+      "implemented_source_path": "tools/qikvrt_self_host.py",
+      "operation": "portable",
+      "canonical_file": "repository.sqlite3",
+      "format": "SQLITE3_WITH_CARRIER_META_AND_EVENTS",
+      "full_git_tree_blobs_modes_and_tree_digest_verified_by_source": true,
+      "git_history_carried": false,
+      "submodules_refused": true,
+      "selected_work_cache_is_different": true,
+      "current_exact_head_export_created": false,
+      "offline_production_readback_verified": false,
+      "correction": "Earlier commentary identified only the selected-file work cache; source inspection confirms the existing complete-tree portable exporter. Reuse it instead of creating another export pipeline."
+    },
+    "local_cache_contract": {
+      "result": "PASS",
+      "declared_tools": 32,
+      "covered_tools": 32,
+      "coverage_percent": 100,
+      "scope": "Cache strategy metadata verified in the exact-source projection; not provisioning, build, CI or production acceptance."
+    },
+    "native_current_subject": {
+      "head": "95dd082666d7c087067c1e70e12b0308ac8ce2e2",
+      "ci_run": 38902115045,
+      "conclusion": "action_required",
+      "independent_current_head_approval_found": false,
+      "pr": 523,
+      "draft": true,
+      "merged": false
+    },
+    "new_workflow_created": false,
+    "new_executor_created": false,
+    "no_downgrade": true
   }
 }
