@@ -58,6 +58,7 @@ class PublicQAContractTests(unittest.TestCase):
             data = json.load(res)
         self.assertEqual(data["status"], "up")
         self.assertFalse(data["publication_effect"])
+        self.assertFalse(data["source_revision_verified"])
 
     def test_retrieval_has_hash_and_citation(self):
         with patch.dict(os.environ, {"QIKVRT_QA_PROVIDER": "none"}, clear=False):
@@ -66,6 +67,7 @@ class PublicQAContractTests(unittest.TestCase):
         self.assertEqual(data["status"], "EVIDENCE_ONLY")
         self.assertTrue(data["sources"])
         self.assertEqual(len(data["sources"][0]["sha256"]), 64)
+        self.assertIn(data["sources"][0]["revision_kind"], ("MUTABLE_MAIN", "DECLARED_COMMIT_NOT_ATTESTED"))
         self.assertFalse(data["effect_ack_done"])
         self.assertEqual(headers["Cache-Control"], "no-store")
 
