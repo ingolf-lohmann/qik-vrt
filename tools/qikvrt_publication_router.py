@@ -359,6 +359,23 @@ def persist_editorial(root: Path, completion_relative: str, *, api=None):
                  prefix + "EDITORIAL_COMPLETION.json": _json_bytes(value)}
     for asset in value["website_assets"]:
         generated["docs/" + asset["path"]] = (root / value["website_stage"] / asset["path"]).read_bytes()
+    # The existing host exports an explicit sealed fileset, not the whole docs
+    # tree. Bind every public asset into that same reviewed delivery package.
+    package_path = "runtime/self-host/PACKAGE.json"
+    definition = json.loads(executor._git(root, "show", base + ":" + package_path))
+    package_files = definition.get("files")
+    if (definition.get("schema") != "qikvrt-self-host-definition/v1"
+            or not isinstance(package_files, list)
+            or not all(isinstance(p, str) for p in package_files)
+            or len(set(package_files)) != len(package_files)):
+        raise ValueError("existing website delivery package definition differs")
+    definition["files"] = sorted(set(package_files) | {"docs/" + a["path"] for a in value["website_assets"]})
+    package_raw = _json_bytes(definition)
+    current_package = publication.zenodo.read_regular_file(root / package_path, publication.zenodo.MAX_JSON_BYTES)
+    if (publication._git_blob_sha(current_package) != executor._git(root, "rev-parse", "--verify", base + ":" + package_path)
+            and current_package != package_raw):
+        raise ValueError("unrelated website package definition changes block persistence")
+    generated[package_path] = package_raw
     readme = "docs" + intake["website"]["path"] + "README.md"
     if not (root / readme).exists():
         generated[readme] = ("# " + manifest["metadata"]["title"] + "\n\nPublication ID: `" + intake["publication_id"]
@@ -366,7 +383,7 @@ def persist_editorial(root: Path, completion_relative: str, *, api=None):
             + "\n\n" + public["record_url"] + "\n\nZenodo-Dateien unabhängig bytegenau geprüft; Website-Auslieferung benötigt eigenen HTTPS-Readback.\n").encode()
     for relative, raw in generated.items():
         path = publication._safe_relative(root, relative, "publication persistence output", must_exist=False)
-        if path.exists() and path.read_bytes() != raw:
+        if path.exists() and path.read_bytes() != raw and relative != package_path:
             raise ValueError("publication persistence would overwrite differing repository bytes")
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(raw)

@@ -1080,6 +1080,59 @@ class StandaloneTests(unittest.TestCase):
         self.assertFalse(value["effect_ack_done"])
         return value["cause"]
 
+    def test_reviewed_publication_assets_survive_sealing_and_actual_http_without_control_exposure(self):
+        source = self.work / "publication-source"
+        shutil.copytree(self.source, source)
+        publication = "fixture-editorial"
+        prefix = "docs/publications/" + publication + "/"
+        pdf = b"%PDF-1.4\nsynthetic original publication bytes\x00\xff"
+        name = hashlib.sha256(pdf).hexdigest() + ".pdf"
+        public = {"index.html": b"<!doctype html><title>Reviewed publication</title>",
+                  "publication.json": b'{"doi":"10.5281/zenodo.123"}\n', name: pdf}
+        controls = {"OWNER_AUTHORIZATION.json": b"SYNTHETIC-CONTROL-MUST-NOT-BE-PUBLIC",
+                    "README.md": b"SYNTHETIC-CONTROL-MUST-NOT-BE-PUBLIC",
+                    "a" * 64 + ".js": b"SYNTHETIC-CONTROL-MUST-NOT-BE-PUBLIC"}
+        for relative, raw in (public | controls).items():
+            target = source / prefix / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(raw)
+        package = source / host.DEFINITION
+        definition = json.loads(package.read_bytes())
+        # Even deliberately packaged control-shaped files must have no public route.
+        definition["files"] = sorted(set(definition["files"]) |
+                                     {prefix + p for p in public | controls})
+        package.write_bytes(host.raw_json(definition))
+        for args in (("add", "."), ("-c", "user.name=QIKVRT fixture", "-c", "user.email=fixture@example.invalid",
+                                        "commit", "-qm", "Bind reviewed publication assets")):
+            subprocess.run(["git", "-C", str(source), *args], check=True, capture_output=True)
+        self.head = host.git(source, "rev-parse", "HEAD").decode()
+        self.tree = host.git(source, "rev-parse", "HEAD^{tree}").decode()
+        self.export = self.work / "publication-export"
+        receipt = host.freeze(source, self.export, self.head, self.tree)
+        self.pin = receipt["manifest_sha256"]
+        self.config.update(source_head=self.head, source_tree=self.tree)
+        self.save_config()
+        runtime = self.start()
+        self.assertEqual(runtime["source_head"], self.head)
+        self.assertEqual(runtime["artifact_files_sha256"][prefix + name], hashlib.sha256(pdf).hexdigest())
+        for relative, expected in public.items():
+            with urllib.request.urlopen(self.url + "/publications/" + publication + "/" + relative, timeout=4) as response:
+                self.assertEqual(response.status, 200)
+                self.assertEqual(response.read(), expected)
+                self.assertEqual(response.headers["x-content-type-options"], "nosniff")
+                if relative == name:
+                    self.assertEqual(response.headers["content-type"], "application/pdf")
+        self.assertEqual(self.get("/publications/" + publication + "/")[1], public["index.html"].decode())
+        self.assertEqual(self.get("/publications/" + publication + "/index.html", method="HEAD"), (200, ""))
+        self.assertEqual(self.get("/publications/" + publication + "/index.html", method="POST")[0], 405)
+        for relative in controls:
+            status, value = self.get("/publications/" + publication + "/" + relative)
+            self.assertEqual(status, 404)
+            self.assertNotIn("SYNTHETIC-CONTROL-MUST-NOT-BE-PUBLIC", str(value))
+        self.stop()
+        (self.export / prefix / name).write_bytes(pdf + b"tampered")
+        self.denied()
+
     def seed_acknowledged_event(self):
         (self.volume/"monitor").mkdir(mode=0o700)
         script="""

@@ -84,6 +84,14 @@ DOI, file identities or an absent saved readback block materialization. The
 historical public-corpus snapshot is retained with its own observation scope;
 rendering saved evidence is never presented as a fresh online verification.
 
+The same review carrier adds exactly the generated public assets to the
+existing `runtime/self-host/PACKAGE.json` fileset. The existing self-host server
+serves only sealed publication index/metadata and content-addressed downloads;
+author controls, arbitrary docs and executable upload names have no public
+route. Package verification rejects changed bytes before runtime startup.
+The publication workflow exercises this through a real sealed package and
+local HTTP process, independently of any claim about public host delivery.
+
 Website deployment remains the existing
 `qikvrt_effect_ack_http_terminal.yml` route. After its actual Main deployment
 and product-HTTP jobs succeed, this router independently checks every published

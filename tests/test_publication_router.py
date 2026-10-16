@@ -211,6 +211,10 @@ class EditorialContinuationTests(unittest.TestCase):
         self.executor, self.publisher, _ = router._publication_dependencies()
         self.request_path = self.root / router.EDITORIAL_QUEUE / "fixture.json"
         self.request_path.parent.mkdir(parents=True)
+        package = self.root / "runtime/self-host/PACKAGE.json"
+        package.parent.mkdir(parents=True, exist_ok=True)
+        package.write_bytes(router._json_bytes({"schema": "qikvrt-self-host-definition/v1",
+                                               "files": ["runtime/self-host/PACKAGE.json"]}))
         self.request = {"schema": router.EDITORIAL_SCHEMA, "publication_id": fixtures.FIXTURE_PUBLICATION_ID,
                         "manifest_path": self.manifest.relative_to(self.root).as_posix(),
                         "manifest_sha256": hashlib.sha256(self.manifest.read_bytes()).hexdigest(),
@@ -577,6 +581,18 @@ class EditorialContinuationTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "EXACT_MAIN_MERGE_REVIEW_NOT_VERIFIED"):
                 self.router._main_governance(self.root, self.head)
 
+    def test_unrelated_package_definition_change_cannot_enter_publication_carrier(self):
+        _, completion = self._publish_through_existing_editorial_lane()
+        path = self.root / "runtime/self-host/PACKAGE.json"
+        definition = json.loads(path.read_bytes())
+        definition["files"].append("unrelated-private-control.json")
+        path.write_bytes(self.router._json_bytes(definition))
+        api = mock.Mock(side_effect=AssertionError("no GitHub mutation"))
+        with mock.patch.dict(os.environ, {"GITHUB_EVENT_NAME": "workflow_dispatch"}):
+            with self.assertRaisesRegex(ValueError, "unrelated website package definition changes"):
+                self.router.persist_editorial(self.root, ".qikvrt/evidence/publication-request/completion.json", api=api)
+        api.assert_not_called()
+
     def test_receipt_and_website_persistence_use_one_create_only_draft_carrier(self):
         import base64
         from tools import qikvrt_integrity as integrity
@@ -633,6 +649,10 @@ class EditorialContinuationTests(unittest.TestCase):
         self.assertIn("10.5281/zenodo.123", (self.root / overview.HUMAN_INDEX).read_text())
         self.assertEqual(overview.execute(self.root, materialize=False)["state"], "CURRENT")
         self.assertTrue(integrity.verify(self.root).ok)
+        package_files = json.loads((self.root / "runtime/self-host/PACKAGE.json").read_bytes())["files"]
+        self.assertEqual(set(package_files), {"runtime/self-host/PACKAGE.json"} |
+                         {"docs/" + a["path"] for a in completion["website_assets"]})
+        self.assertNotIn(self.manifest.relative_to(self.root).as_posix(), package_files)
         # The same staged originals must also pass the final anonymous website check.
         by_url = {self.router.PUBLIC_ORIGIN + "/" + a["path"]:
                   (self.root / "docs" / a["path"]).read_bytes() for a in completion["website_assets"]}

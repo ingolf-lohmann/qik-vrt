@@ -39,7 +39,8 @@
     "integrity": "tools/qikvrt_integrity.py",
     "website_deployment": "Existing .github/workflows/qikvrt_effect_ack_http_terminal.yml",
     "new_workflows_created": 0,
-    "self_heal_authority_or_allowlist_widened": false
+    "self_heal_authority_or_allowlist_widened": false,
+    "website_runtime": "Existing sealed runtime/self-host/PACKAGE.json and docs/monitor/self-host.mjs; no second server"
   },
   "stages": [
     {
@@ -76,13 +77,15 @@
     }
   ],
   "source_paths": [
-    "tools/qikvrt_publication_router.py",
-    "tools/qikvrt_verify_zenodo_public_manifest.py",
     ".github/workflows/qikvrt_publication_router.yml",
-    "tests/test_publication_router.py",
+    "docs/monitor/self-host.mjs",
     "runtime/capabilities/ZENODO_PUBLICATION_CAPABILITY.json",
     "state/publication_requests/README.md",
-    "tools/qikvrt_publication_overview.py"
+    "tests/test_publication_router.py",
+    "tests/test_self_host.py",
+    "tools/qikvrt_publication_overview.py",
+    "tools/qikvrt_publication_router.py",
+    "tools/qikvrt_verify_zenodo_public_manifest.py"
   ],
   "local_verification": {
     "tests": 129,
@@ -257,5 +260,64 @@
       "human": "Ingolf Lohmann: task and authorization",
       "artificial": "OpenAI Codex: independent source inspection, causal regressions, implementation and isolated verification"
     }
+  },
+  "delivery_carrier_successor_20261016": {
+    "source_head": "04792d27f30a6ae49cde4b381331604249ee18d2",
+    "source_tree": "591ff7acef9b6b7d08acc4ebe8ee06619d921fc0",
+    "finding": "The generated website projection was absent from the explicit existing self-host fileset and HTTP route map. A staged page alone was not a deliverable publication page.",
+    "repair": [
+      "The existing create-only draft review carrier adds exactly its generated public assets to the committed self-host PACKAGE.json fileset, preserving all original dependencies and rejecting unrelated local package changes.",
+      "The existing sealed server exposes only publication index HTML, public metadata JSON and opaque content-addressed approved download names. Author controls, arbitrary docs, scripts and files outside the sealed manifest have no publication route.",
+      "The existing publication workflow provisions its existing Node24 runtime and tests a real sealed package, process startup and byte-exact local HTTP. No new workflow, host or publisher is introduced."
+    ],
+    "local_verification": {
+      "tests": 141,
+      "router": 47,
+      "catalog": 8,
+      "unchanged_machine_proof_authorization": 68,
+      "unchanged_zenodo_transport": 17,
+      "actual_sealed_runtime_http": 1,
+      "result": "PASS; no failures, errors or skips",
+      "tool_cache": "34/34 available; 100 percent; verified separately"
+    },
+    "actual_runtime_controls": [
+      "Seal and freeze original package plus synthetic publication assets",
+      "Start existing exported runtime and confirm its exact source subject and every original PDF hash",
+      "GET original HTML, DOI JSON and non-UTF8 PDF bytes; exact MIME and nosniff",
+      "Directory index alias and HEAD; writes rejected with405",
+      "Even deliberately packaged control names, README and script names return404",
+      "Change sealed PDF bytes; actual subsequent startup refuses the package"
+    ],
+    "predecessor_native_evidence": {
+      "head": "04792d27f30a6ae49cde4b381331604249ee18d2",
+      "tree": "591ff7acef9b6b7d08acc4ebe8ee06619d921fc0",
+      "publication_job": 117121203155,
+      "publication_tests": 54,
+      "publication_result": "success",
+      "full_push_test_job": 117120406038,
+      "full_push_test_result": "success; MAKE_TEST_EXIT=0; terminal PASS mode=full-test",
+      "scope": "Predecessor only; these results do not verify this successor source"
+    },
+    "latest_prerequisite_observations": {
+      "main_head": "697962404686511500ddab53024f5e3ae783ee8e",
+      "main_protected": false,
+      "repository_rulesets": [],
+      "native_reviews": "Six COMMENTED reviews; no current APPROVED",
+      "http_contract_job": 117121203542,
+      "http_contract_result": "success",
+      "host_deploy_job": 117125783276,
+      "host_deploy_result": "skipped",
+      "independent_host_readback_job": 117125783910,
+      "independent_host_readback_result": "skipped",
+      "firefox_job": 117121314957,
+      "firefox_result": "failure; actual unsigned extension activation denied; AMO pair unavailable"
+    },
+    "current_successor_native_verification": "REQUIRED_AFTER_NONFORCE_API_INTEGRATION; no predecessor PASS transfer",
+    "productive_boundary": "The existing host deployment remains behind its explicit workflow_dispatch and protected host admission. This source repair does not infer that those productive prerequisites exist or replace required review. Public exact-host readback remains required after actual deployment.",
+    "new_author_grants": 0,
+    "new_production_requests": 0,
+    "new_zenodo_publication": false,
+    "website_deployment": false,
+    "EFFECT_ACK_DONE": false
   }
 }

@@ -45,10 +45,21 @@ const files = new Map([
   ['/assets/js/qikvrt-local-engine.js', ['docs/assets/js/qikvrt-local-engine.js', 'text/javascript']],
   ['/publications/index.json', ['docs/publications/index.json', 'application/json']],
 ]);
+// Only the existing sealed package may expose generated publication assets.
+// No directory scan, author controls, arbitrary docs or executable upload names.
+for (const path of Object.keys(manifest.files)) {
+  const match = /^docs\/publications\/([a-z0-9][a-z0-9.-]{0,95})\/(index\.html|publication\.json|[a-f0-9]{64}\.(pdf|txt|md|json|tex|zip|bin))$/.exec(path);
+  if (!match) continue;
+  const type = match[2] === 'index.html' ? 'text/html' : match[2] === 'publication.json' ? 'application/json' :
+    match[3] === 'pdf' ? 'application/pdf' : ['txt','md','tex'].includes(match[3]) ? 'text/plain' :
+    match[3] === 'json' ? 'application/json' : 'application/octet-stream';
+  files.set('/'+path.slice('docs/'.length), [path, type]);
+  if (match[2] === 'index.html') files.set('/publications/'+match[1]+'/', [path, type]);
+}
 const documents = new Set(['AI','STATUS.md','README.md','docs/ARCHITECTURE.md','docs/BOUNDARIES.md',
   'docs/PRIVACY_PRESERVING_INTERACTION_ARCHIVE.md','.well-known/qik-vrt-self-disclosure.json','docs/publications/index.json']);
 function reply(response, code, body, type = 'application/json', method = 'GET') {
-  response.writeHead(code, {'content-type': type + '; charset=utf-8', 'cache-control': 'no-store',
+  response.writeHead(code, {'content-type': type + (/^text\/|^application\/json$/.test(type) ? '; charset=utf-8' : ''), 'cache-control': 'no-store',
     'x-content-type-options': 'nosniff', 'content-security-policy': "default-src 'self'; style-src 'self'; script-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'"});
   response.end(method === 'HEAD' ? undefined : type === 'application/json' && !Buffer.isBuffer(body) ? JSON.stringify(body) : body);
 }
