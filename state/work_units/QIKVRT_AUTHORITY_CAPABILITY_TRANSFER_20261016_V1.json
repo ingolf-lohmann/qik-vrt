@@ -1,7 +1,7 @@
 {
   "schema": "qikvrt_work_unit_v1",
   "id": "QIKVRT_AUTHORITY_CAPABILITY_TRANSFER_20261016_V1",
-  "status": "SOURCE_CAPABILITIES_NATIVE_VERIFIED_SITE36_PUBLISHED_MAIN_AND_EXTERNAL_EFFECTS_OPEN",
+  "status": "IONOS_DOMAIN_ORDER_CONFIRMED_PROVISIONING_AND_EXACT_HOST_OPEN",
   "repository": "ingolf-lohmann/qik-vrt",
   "pull_request": 523,
   "branch": "integration/515-519-521-522-20261012-eceb9b63",
@@ -367,8 +367,8 @@
   "artificial_contribution": "OpenAI Codex: REST inspection, preserved-source capability comparison, existing publication-router integration and regression checks.",
   "PREDECESSOR_EVIDENCE_TRANSFER": false,
   "EFFECT_ACK_DONE": false,
-  "next_action": "Use that existing secure route to GET the actual owned zone and records; compare to the four supplied A/TXT targets and update only necessary records, then independently verify DNS/TLS/application.",
-  "updated_at_utc": "2026-10-16T11:10:47.317Z",
+  "next_action": "Reuse the existing confirmed IONOS order without reordering. When the Owner requests supported authentication continuation, read the provisioned domain, contract and hosting assignment in the existing customer account; then apply only the necessary supported configuration and independently verify DNS, TLS and the exact application. Keep the private credential-registry persistence gap explicit.",
+  "updated_at_utc": "2026-10-16T12:08:47.719Z",
   "publication_scope_request": {
     "received_at": "2026-10-16T09:48:07Z",
     "human": "Ingolf Lohmann",
@@ -446,7 +446,7 @@
     },
     "ietf_new_submission": "OPEN; no admitted native submission operation established in this client; existing drafts are not new submissions",
     "nodes": "New research distribution prepared for existing Authority candidate; Main, Mirror and full runtime/node adoption remain separate open effects",
-    "raumzeitterminal_de": "HTTP530 and recursive NXDOMAIN in fresh persisted snapshot3422d337-fd9a-415c-8614-77a9c9e79e63; native custom-domain mapping exists; no registrar ownership conclusion is inferred",
+    "raumzeitterminal_de": "IONOS EUR 0.00 inclusive-domain order submitted once and visibly confirmed. Registrar provisioning and public exact-host application acceptance remain unverified; subsequent customer-management access requires a renewed authenticated session.",
     "arxiv_new_submission": "NOT_REQUESTED_BY_OWNER; excluded from the current publication/hosting acceptance scope. Preserve the existing candidate without submission.",
     "zenodo_existing_publication": {
       "record_id": 21888130,
@@ -475,18 +475,41 @@
     },
     "raumzeitterminal_existing_provider_refresh": {
       "operation": "REFRESH_EXISTING_CUSTOM_DOMAIN_VALIDATION",
+      "id": "appgdom_6ac4b489bd548191a69f7d87618db3aa",
       "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
-      "custom_domain_id": "appgdom_6ac4b489bd548191a69f7d87618db3aa",
       "hostname": "raumzeitterminal.de",
-      "updated_at": "2026-10-16T10:33:28.709307+00:00",
+      "worker_name": "site---6ac4018a3e0c8191a06187c296d6c7ea",
       "status": "pending",
       "provider_status": "pending",
       "ssl_status": "pending_validation",
+      "cname_target": "custom-domains.chatgpt.site.",
+      "apex_proxy_ipv4_targets": [
+        "162.159.143.30",
+        "172.66.3.26"
+      ],
+      "validation_records": [
+        {
+          "record_type": "TXT",
+          "name": "_openai-site-verification.raumzeitterminal.de",
+          "value": "openai-site-verification=5Zw42-7lgYTNm3pmkhZcwGJu1_0UvnHSVYJcGBDONbI"
+        },
+        {
+          "record_type": null,
+          "name": null,
+          "value": null
+        },
+        {
+          "record_type": "TXT",
+          "name": "_cf-custom-hostname.raumzeitterminal.de",
+          "value": "c6e99848-baed-4087-a9fd-0d6c5b5008c8"
+        }
+      ],
       "last_error": null,
-      "existing_target_records_match_prior_20261009_evidence": true,
+      "created_at": "2026-10-06T08:42:49.739821+00:00",
+      "updated_at": "2026-10-16T12:07:10.200183+00:00",
       "new_site_or_domain_created": false,
       "dns_write_performed": false,
-      "scope": "Existing provider binding was actually refreshed; this does not establish a DNS write or exact-host delivery."
+      "scope": "Existing Site binding read/refreshed after the IONOS order; provider pending and TLS pending_validation do not establish delivery."
     },
     "raumzeitterminal_current_readback": {
       "snapshot_id": "7226546d-8a0d-44e7-871b-686e25400620",
@@ -558,8 +581,8 @@
     },
     {
       "operation": "EXACT_RAUMZEITTERMINAL_DELIVERY",
-      "evidence": "Domain mapping pending, ssl_status=pending_validation; fresh HTTP530/NXDOMAIN; IONOS_TOKEN reference is not evidence of its operation-specific DNS delivery",
-      "smallest_next_step": "Use the existing protected target-bound IONOS/DNS consumer with a callable admitted REST ingress; verify authoritative DNS, TLS and the exact application."
+      "evidence": "IONOS domain order confirmed after one submission; provisioning not yet accepted. Existing Site binding refreshed 2026-10-16T12:07:10.200183Z and remains pending/TLS pending_validation. Customer-management reauthentication returned declined.",
+      "smallest_next_step": "Reuse the existing confirmed IONOS order without reordering. When the Owner requests supported authentication continuation, read the provisioned domain, contract and hosting assignment in the existing customer account; then apply only the necessary supported configuration and independently verify DNS, TLS and the exact application. Keep the private credential-registry persistence gap explicit."
     }
   ],
   "knowledge": [
@@ -789,7 +812,7 @@
     {
       "id": "raumzeitterminal-exact-host-delivery",
       "state": "OPEN",
-      "next_action": "Reuse the existing provider binding and its supplied records. Resolve the existing securely provided IONOS Hosting/DNS REST reference, read the owned exact zone through that admitted path, preserve unrelated records and apply only the necessary existing targets. Cloud-v6 GET inventory is a different operation; do not infer absent Owner rights."
+      "next_action": "Reuse the existing confirmed IONOS order without reordering. When the Owner requests supported authentication continuation, read the provisioned domain, contract and hosting assignment in the existing customer account; then apply only the necessary supported configuration and independently verify DNS, TLS and the exact application. Keep the private credential-registry persistence gap explicit."
     },
     {
       "id": "archive-preflight-native-gate",
@@ -1334,7 +1357,10 @@
         "operation": "Authenticated owned-zone/record read, then selective updates for the existing Site domain binding",
         "evidence": "Observed existing workflow is Cloud-v6 GET-only; current connector/CLI/Mesh expose no admitted target-bound DNS request. Existing remote binding availability and permissions remain UNKNOWN.",
         "retry_condition": "Existing protected DNS/Hosting or Cloud-DNS binding is delivered to an admitted operation for the exact owned zone.",
-        "smallest_next_action": "Use that existing secure route to GET the actual owned zone and records; compare to the four supplied A/TXT targets and update only necessary records, then independently verify DNS/TLS/application."
+        "smallest_next_action": "Use that existing secure route to GET the actual owned zone and records; compare to the four supplied A/TXT targets and update only necessary records, then independently verify DNS/TLS/application.",
+        "active_for_current_customer_domain_order": false,
+        "superseded_for_order_route_by": "owner_domain_order_clarification and ionos_domain_order",
+        "scope": "Historical target DNS REST capability diagnosis; not a prerequisite for the regular customer-account domain application."
       },
       {
         "code": "SITE36_LOCAL_PUBLIC_GET_CLOUDFLARE_1010",
@@ -1359,6 +1385,132 @@
     "public_pdf_byte_exact_readback": false,
     "productive_exact_host_acceptance": false,
     "EFFECT_ACK_DONE": false,
-    "scope": "Existing routes inspected and exact known bindings retained; preparation/diagnosis only. No authenticated DNS GET or write executed and no owner-rights absence inferred."
+    "scope": "Existing routes inspected and exact known bindings retained; preparation/diagnosis only. No authenticated DNS GET or write executed and no owner-rights absence inferred.",
+    "owner_route_correction": {
+      "source": "Owner direct instructions 2026-10-16",
+      "requested_route": "Regular application and operation of raumzeitterminal.de in the existing IONOS customer account/contract; no custom DNS writer requested",
+      "ui_exception_granted": true,
+      "github_rest_only_preserved": true
+    },
+    "latest_customer_order": {
+      "schema": "QIKVRT_IONOS_CUSTOMER_DOMAIN_ORDER_OBSERVATION_V1",
+      "hostname": "raumzeitterminal.de",
+      "owner_route_authorization": {
+        "source": "Owner direct Ja on 2026-10-16; explicit IONOS customer UI exception",
+        "github_route": "REST_API_ONLY"
+      },
+      "action_time_legal_confirmation": {
+        "source": "Owner direct Ja on 2026-10-16T12:02:18Z",
+        "scope": "Existing contract data and mandatory terms/privacy acceptance; submit the reviewed EUR 0.00 domain order"
+      },
+      "prior_item": {
+        "hostname": "raumzeitterminal.de",
+        "label": "Inklusive",
+        "displayed_total_eur": "0.00",
+        "item_count": 1
+      },
+      "mandatory_terms_checked": true,
+      "optional_marketing_checked": false,
+      "order_submission_count": 1,
+      "confirmation": {
+        "observed": true,
+        "heading": "Vielen Dank für Ihre Bestellung",
+        "url": "https://mein.ionos.de/checkout/thankYou?linkid=nav.cart.checkout-btn&continue=",
+        "evidence_saved_at_utc": "2026-10-16T12:04:11.349Z",
+        "screenshot_sha256": "35c719c5bf8c328f42f9ea98f1ba303d7f97afa7f4fd58ab7f9b3f8a4aa69140",
+        "scope": "Visible IONOS confirmation following the single order submission; no separate order ID displayed"
+      },
+      "provisioning": {
+        "state": "PENDING_NOT_ACCEPTED",
+        "observed_text": "Ihr persönlicher Kundenbereich wird nun für Sie eingerichtet und steht Ihnen in Kürze zur Verfügung.",
+        "start_button_disabled": true
+      },
+      "subsequent_customer_management": {
+        "canonical_target": "https://mein.ionos.de/domains",
+        "redirected_to_customer_login": true,
+        "secure_reauthentication_result": "declined",
+        "declined_request_repeated": false,
+        "manual_handoff_offered": false,
+        "current_customer_session_verified": false
+      },
+      "credential_registry": {
+        "credential_values_read_or_persisted": false,
+        "opaque_credential_reference": null,
+        "secure_store_write_receipt": null,
+        "state": "PERSISTENCE_UNVERIFIED",
+        "reason": "browserAuth protected credential submission did not expose a durable private-vault write or reusable credential reference. No global absence of a protected store is inferred.",
+        "sso_claimed": false
+      },
+      "duplicate_order_guard": "Do not reorder; reuse and read back this existing confirmed order before any further registrar action.",
+      "private_customer_contact_or_payment_data_in_this_record": false,
+      "domain_registration_or_hosting_acceptance_claimed": false,
+      "exact_host_publication_claimed": false
+    },
+    "current_order_blocker": {
+      "code": "IONOS_CUSTOMER_SESSION_REAUTHENTICATION_DECLINED",
+      "evidence": "After the confirmed order, /domains redirected to the customer login. The single protected reauthentication request returned declined.",
+      "retry_condition": "A later Owner request to resume protected customer authentication, followed by a verified customer-domain session.",
+      "no_duplicate_order": true
+    }
+  },
+  "owner_domain_order_clarification": {
+    "source": "Owner direct instructions 2026-10-16",
+    "requested_route": "Regular application and operation of raumzeitterminal.de in the existing IONOS customer account/contract; no custom DNS writer requested",
+    "ui_exception_granted": true,
+    "github_rest_only_preserved": true
+  },
+  "ionos_domain_order": {
+    "schema": "QIKVRT_IONOS_CUSTOMER_DOMAIN_ORDER_OBSERVATION_V1",
+    "hostname": "raumzeitterminal.de",
+    "owner_route_authorization": {
+      "source": "Owner direct Ja on 2026-10-16; explicit IONOS customer UI exception",
+      "github_route": "REST_API_ONLY"
+    },
+    "action_time_legal_confirmation": {
+      "source": "Owner direct Ja on 2026-10-16T12:02:18Z",
+      "scope": "Existing contract data and mandatory terms/privacy acceptance; submit the reviewed EUR 0.00 domain order"
+    },
+    "prior_item": {
+      "hostname": "raumzeitterminal.de",
+      "label": "Inklusive",
+      "displayed_total_eur": "0.00",
+      "item_count": 1
+    },
+    "mandatory_terms_checked": true,
+    "optional_marketing_checked": false,
+    "order_submission_count": 1,
+    "confirmation": {
+      "observed": true,
+      "heading": "Vielen Dank für Ihre Bestellung",
+      "url": "https://mein.ionos.de/checkout/thankYou?linkid=nav.cart.checkout-btn&continue=",
+      "evidence_saved_at_utc": "2026-10-16T12:04:11.349Z",
+      "screenshot_sha256": "35c719c5bf8c328f42f9ea98f1ba303d7f97afa7f4fd58ab7f9b3f8a4aa69140",
+      "scope": "Visible IONOS confirmation following the single order submission; no separate order ID displayed"
+    },
+    "provisioning": {
+      "state": "PENDING_NOT_ACCEPTED",
+      "observed_text": "Ihr persönlicher Kundenbereich wird nun für Sie eingerichtet und steht Ihnen in Kürze zur Verfügung.",
+      "start_button_disabled": true
+    },
+    "subsequent_customer_management": {
+      "canonical_target": "https://mein.ionos.de/domains",
+      "redirected_to_customer_login": true,
+      "secure_reauthentication_result": "declined",
+      "declined_request_repeated": false,
+      "manual_handoff_offered": false,
+      "current_customer_session_verified": false
+    },
+    "credential_registry": {
+      "credential_values_read_or_persisted": false,
+      "opaque_credential_reference": null,
+      "secure_store_write_receipt": null,
+      "state": "PERSISTENCE_UNVERIFIED",
+      "reason": "browserAuth protected credential submission did not expose a durable private-vault write or reusable credential reference. No global absence of a protected store is inferred.",
+      "sso_claimed": false
+    },
+    "duplicate_order_guard": "Do not reorder; reuse and read back this existing confirmed order before any further registrar action.",
+    "private_customer_contact_or_payment_data_in_this_record": false,
+    "domain_registration_or_hosting_acceptance_claimed": false,
+    "exact_host_publication_claimed": false
   }
 }
