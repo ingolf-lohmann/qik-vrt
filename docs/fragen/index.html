@@ -19,19 +19,19 @@
     <section class="hero"><div class="wrap"><span class="eyebrow">Öffentlicher Fragezugang · Forschungsmodus</span>
       <h1>Stelle deine <span class="grad">Frage</span>.</h1>
       <p class="lead">Jeder Mensch verdient eine sorgfältige, überprüfbare Antwort. QIK-VRT trennt Beobachtung, Quelle, Schlussfolgerung, Hypothese und Ungewissheit.</p>
-      <p class="notice"><strong>Aktueller Funktionsumfang:</strong> Die lokale QIK-VRT-Regelkonsole strukturiert Fragen und macht Prüfschritte sichtbar. Sie liefert noch <strong>keine</strong> freie KI-Antwort auf beliebige Fragen, keine unabhängige Quellenrecherche und keine bestätigte Transputer-Ausführung. Die vollständige Antwortpipeline wird separat aktiviert und nachgewiesen.</p>
+      <p class="notice"><strong>Aktueller Funktionsumfang:</strong> Der abgesicherte Antwortdienst prüft, soweit erreichbar, ausschließlich einen festgelegten Bestand lokaler Repository-Quellen. Ohne freigegebene Modellkonfiguration liefert er Quellenorientierung statt freier KI-Antwort; ohne erreichbaren Dienst bleibt die lokale Regelanalyse verfügbar. Unabhängige Webrecherche, verifizierte allgemeine Antworten und produktive Transputer-Ausführung sind weiterhin offene Gates.</p>
     </div></section>
     <section class="section"><div class="wrap console">
       <form class="card" id="question-form"><h2>Deine Frage</h2>
         <label for="question">Was möchtest du wissen?</label>
         <textarea id="question" name="question" maxlength="2000" required rows="7" placeholder="Beispiel: Welche Quellen belegen eine konkrete technische Aussage?"></textarea>
-        <p class="mini">Bis 2.000 Zeichen. Die Frage wird in diesem Modus nur in deinem Browser verarbeitet und nicht an einen Server gesendet. Bitte keine Zugangsdaten eingeben.</p>
-        <button class="btn primary" type="submit">Frage lokal strukturieren</button>
+        <p class="mini">Bis 2.000 Zeichen. Bei erreichbarem QIK-VRT-Antwortdienst wird die Frage zur Verarbeitung an den Server übertragen; ohne Dienst wird sie nur lokal strukturiert. Der Dienst speichert Fragen nicht dauerhaft. Bei aktiviertem Modellanbieter kann die Frage dorthin übermittelt werden. Keine Zugangsdaten oder sensiblen Informationen eingeben.</p>
+        <button class="btn primary" type="submit">Quellengebundene Antwort prüfen</button>
         <button class="btn" type="reset">Eingabe löschen</button>
       </form>
       <section class="card" aria-labelledby="answer-heading"><h2 id="answer-heading">Prüfstruktur</h2>
         <p class="mini" id="answer-status" role="status" aria-live="polite">LOCAL_ONLY · Noch keine Frage bearbeitet.</p>
-        <pre id="answer-output" class="output" tabindex="0" aria-live="polite">Die lokale QIK-VRT-Analyse startet nach deiner Eingabe.</pre>
+        <pre id="answer-output" class="output" tabindex="0" aria-live="polite">Die Quellenprüfung startet nach deiner Eingabe. Bei fehlendem Dienst wird lokal strukturiert.</pre>
       </section>
     </div></section>
     <section class="section"><div class="wrap"><h2>Quellen und Verantwortung</h2>
