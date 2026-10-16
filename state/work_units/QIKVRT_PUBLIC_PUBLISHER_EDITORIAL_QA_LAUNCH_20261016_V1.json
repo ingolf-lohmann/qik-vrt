@@ -29,7 +29,10 @@
       "runtime/public_qa/server.py",
       "runtime/public_qa/Dockerfile",
       "runtime/public_qa/README.md",
-      "tests/test_public_qa_server.py"
+      "tests/test_public_qa_server.py",
+      "runtime/public_qa/index.html",
+      "runtime/public_qa/Dockerfile.dockerignore",
+      "Makefile"
     ],
     "mode": "LOCAL_RULE_FALLBACK_PLUS_BOUNDED_SOURCE_API_PREVIEW",
     "source_portal_ready": true,
@@ -44,7 +47,10 @@
     "inference_requires_explicit_enablement": true,
     "inference_requires_pinned_source_commit": true,
     "provider_secrets_available": "NOT_VERIFIED",
-    "native_exact_head_tests_verified": false
+    "native_exact_head_tests_verified": false,
+    "publisher_newsroom_source_routes": true,
+    "static_source_publication_catalog": true,
+    "general_purpose_qa_verified": false
   },
   "editorial_contract": {
     "user_access": "PUBLIC_NO_LOGIN_FOR_BASIC_QUESTIONS",
@@ -72,13 +78,13 @@
     "Public HTTP readback and exact bytes of deployed assets",
     "Editorial governance, terms, privacy policy and clear separation of scientific evidence and opinion"
   ],
-  "disposition": "SOURCE_READY_TEST_EXECUTION_AND_PROVIDER_DOMAIN_BLOCKED",
+  "disposition": "SOURCE_READY_NATIVE_TESTS_AND_PROVIDER_DOMAIN_BLOCKED",
   "predecessor_evidence_transfer": false,
   "local_fixture_tests": {
-    "count": 8,
+    "count": 9,
     "passed": null,
     "executed": false,
-    "scope": "Eight defined isolated HTTP contract tests; execution not independently evidenced, native exact-head CI pending"
+    "scope": "Nine defined HTTP contract tests plus three static UI contract tests; included in Makefile test target, native execution not yet verified"
   },
   "external_deployment_attempt": {
     "provider": "Railway",
