@@ -32,7 +32,10 @@
       "tests/test_public_qa_server.py",
       "runtime/public_qa/index.html",
       "runtime/public_qa/Dockerfile.dockerignore",
-      "Makefile"
+      "Makefile",
+      "policy/QIKVRT_DIGITAL_TWIN_SSO_AUTHORITY_V1.json",
+      "src/qikvrt_digital_twin_rest.py",
+      "tests/test_digital_twin_sso_gate.py"
     ],
     "mode": "LOCAL_RULE_FALLBACK_PLUS_BOUNDED_SOURCE_API_PREVIEW",
     "source_portal_ready": true,
@@ -76,7 +79,9 @@
     "Domain DNS, TLS and routing to an accepted public runtime",
     "Independent live questions/answers acceptance including no-answer cases and source provenance",
     "Public HTTP readback and exact bytes of deployed assets",
-    "Editorial governance, terms, privacy policy and clear separation of scientific evidence and opinion"
+    "Editorial governance, terms, privacy policy and clear separation of scientific evidence and opinion",
+    "SSO session and owner subject must be verified through native OIDC/PKCE; no manual account-by-account login",
+    "IONOS DNS/TLS operations require independently authorized IONOS API/federated SSO; QIK-VRT identity alone is not provider authorization"
   ],
   "disposition": "SOURCE_READY_NATIVE_TESTS_AND_PROVIDER_DOMAIN_BLOCKED",
   "predecessor_evidence_transfer": false,
@@ -104,5 +109,18 @@
     "tls_acceptance": false,
     "application_acceptance": false,
     "public_byte_exact_readback": false
+  },
+  "digital_twin_sso": {
+    "owner_authorization": "GRANTED",
+    "policy": "policy/QIKVRT_DIGITAL_TWIN_SSO_AUTHORITY_V1.json",
+    "grant": "REQUIRE_VALIDATED_SSO",
+    "retain": "REQUIRE_VALIDATED_OR_REFRESHED_SSO",
+    "expand": "REQUIRE_VALIDATED_SSO_AND_EXPLICIT_SCOPE_AUTHORIZATION",
+    "public_questions": "ANONYMOUS_NO_TWIN_PRIVILEGES",
+    "manual_signin_requested": false,
+    "identity_provider_session_verified": false,
+    "ionos_federation_verified": false,
+    "remote_digital_twin_rest": "DENY_UNTIL_VALIDATED_SSO_GATEWAY",
+    "effect_ack_done": false
   }
 }
