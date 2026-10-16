@@ -153,6 +153,13 @@ def answer_question(question):
 
 
 STATIC_FILES = {
+    "/": ("runtime/public_qa/index.html", "text/html; charset=utf-8"),
+    "/news/": ("docs/news/index.html", "text/html; charset=utf-8"),
+    "/news/universaler-transputer/": ("docs/news/universaler-transputer/index.html", "text/html; charset=utf-8"),
+    "/publications/": ("docs/publications/index.html", "text/html; charset=utf-8"),
+    "/publications/index.json": ("docs/publications/index.json", "application/json; charset=utf-8"),
+    "/assets/css/qikvrt-publications.css": ("docs/assets/css/qikvrt-publications.css", "text/css; charset=utf-8"),
+    "/assets/js/qikvrt-publications.js": ("docs/assets/js/qikvrt-publications.js", "application/javascript; charset=utf-8"),
     "/fragen/": ("docs/fragen/index.html", "text/html; charset=utf-8"),
     "/assets/css/qikvrt.css": ("docs/assets/css/qikvrt.css", "text/css; charset=utf-8"),
     "/assets/js/qikvrt-questions.js": ("docs/assets/js/qikvrt-questions.js", "application/javascript; charset=utf-8"),
@@ -189,18 +196,14 @@ class QAHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         path = self.path.split("?", 1)[0]
-        if path in ("/", "/fragen"):
+        if path == "/fragen":
             self.send_response(302)
             self.send_header("Location", "/fragen/")
             self.send_header("Cache-Control", "no-store")
             self.end_headers()
             return
-        if path in ("/publications/", "/news/", "/terminal/"):
-            target = {
-                "/publications/": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/index.html",
-                "/news/": "https://github.com/ingolf-lohmann/qik-vrt/tree/main/docs/news",
-                "/terminal/": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/terminal/index.html",
-            }[path]
+        if path == "/terminal/":
+            target = "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/terminal/index.html"
             self.send_response(302)
             self.send_header("Location", target)
             self.send_header("Cache-Control", "no-store")
