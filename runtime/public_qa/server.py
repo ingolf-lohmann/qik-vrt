@@ -55,7 +55,7 @@ def choose_sources(question, root=None):
             "title": title, "path": path, "evidence_class": evidence_class,
             "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/" + SOURCE_COMMIT + "/" + path,
             "sha256": sha256(raw).hexdigest(), "excerpt": content[start:start+1700].strip(),
-            "revision_kind": "EXACT_COMMIT" if SOURCE_COMMIT != "main" else "MUTABLE_MAIN",
+            "revision_kind": "DECLARED_COMMIT_NOT_ATTESTED" if SOURCE_COMMIT != "main" else "MUTABLE_MAIN",
         }))
     matches.sort(key=lambda v: (-v[0], v[1]))
     result = [m[2] for m in matches[:3]]
@@ -209,6 +209,7 @@ class QAHandler(BaseHTTPRequestHandler):
         if path == "/api/health":
             self.send_json(200, {"status": "up", "schema": "qikvrt-public-qa/1",
                                  "source_revision": SOURCE_COMMIT,
+                                 "source_revision_verified": False,
                                  "inference_ready": inference_ready(), "publication_effect": False})
             return
         if path == "/api/capabilities":
