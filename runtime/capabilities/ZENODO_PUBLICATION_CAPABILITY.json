@@ -8,7 +8,23 @@
   "manifest_schema": "qikvrt_zenodo_publication_manifest_v2",
   "legacy_manifest_schema": "qikvrt_zenodo_publication_manifest_v1",
   "invocation": "python -B tools/qikvrt_zenodo_publish.py --manifest <repository-relative-manifest.json>",
-  "workflow_binding": "none; existing authorized workflows invoke the generic capability",
+  "workflow_binding": {
+    "workflow": ".github/workflows/qikvrt_publication_router.yml",
+    "event": "workflow_dispatch",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "ref": "refs/heads/main",
+    "operation": "publish",
+    "default": "PREFLIGHT_ONLY; execute=false",
+    "required_inputs": [
+      "manifest_path",
+      "manifest_sha256",
+      "expected_main_head",
+      "expected_main_tree"
+    ],
+    "credential_source": "Existing target-repository secrets.ZENODO_ACCESS_TOKEN and scoped github.token; source code does not transfer or prove credentials.",
+    "admission": "Canonical candidate-specific authorization, existing v2 proof/return/one-use gates, complete ordinary tests, exact fresh Authority Main readback.",
+    "completion": "Independent public byte readback and Authority evidence persistence remain required; an Actions artifact or publisher return alone is not EFFECT_ACK_DONE."
+  },
   "trigger_contract": "A repository-controlled v2 manifest explicitly authorizes production publication, binds every artifact by Git blob SHA-1, includes the exact machine-proof bundle in the upload fileset and proves candidate-specific prepublication return to Ingolf Lohmann.",
   "genericity": {
     "document_specific_constants": false,

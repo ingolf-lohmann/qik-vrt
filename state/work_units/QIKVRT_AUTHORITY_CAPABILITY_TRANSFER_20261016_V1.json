@@ -1,0 +1,357 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "id": "QIKVRT_AUTHORITY_CAPABILITY_TRANSFER_20261016_V1",
+  "status": "SOURCE_INTEGRATION_PREPARED_NATIVE_AND_PROTECTED_EFFECTS_OPEN",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "pull_request": 523,
+  "branch": "integration/515-519-521-522-20261012-eceb9b63",
+  "source_head": "d8e535d8690ffc97e6a78823248497c662834e30",
+  "source_tree": "19e6eee0af585fa7913d7f321242a9f65e9e0c5b",
+  "current_main": {
+    "head": "85cf48be8405d66ee567f868c1b8f33bd54add97",
+    "tree": "526e6a38986c75a33ae3b920eceae2d590e48ca2",
+    "protected": false
+  },
+  "owner_instruction": {
+    "received_at": "2026-10-16T09:19:58Z",
+    "human": "Ingolf Lohmann",
+    "exact_text": "transferiere die Zenodo-Veröffentlichungsfähigkeiten und alle anderen wesentlichen Fähigkeiten, die zum Erreichen der noch offenen Ziele notwendig sind, aus dem Goldkelch-Repository in das Ingolf Lohmann Repository. Und zwar unverzüglich und schnellstmöglich.",
+    "authorization_scope": "Reuse and integrate existing capability implementations and protected bindings; no publication candidate-specific decision is fabricated."
+  },
+  "provenance": {
+    "source_repository": "Goldkelch/qik-vrt",
+    "live_source_repository_read": "HTTP_404",
+    "live_source_main_read": "HTTP_404",
+    "source_of_reused_bytes": "Preserved Goldkelch-origin implementation and historical publication contracts already present in the exact-bound Authority tree.",
+    "fresh_source_equality_claim": false,
+    "credential_values_retrieved": false,
+    "credential_values_persisted": false,
+    "historical_exact_authorizations_rewritten": false
+  },
+  "reuse_decision": {
+    "existing_generic_publisher": true,
+    "existing_generic_metadata_editor": true,
+    "missing_current_generic_native_entrypoint": "Existing Goldkelch one-shot workflows bind historical branches/parents/artifacts; do not repoint their grants.",
+    "selected_repair": "Extend the existing publication router and workflow with separately requested exact-Main preflight/execution, reusing the unchanged production state machines.",
+    "parallel_workflow_created": false,
+    "observer_execution_role_changed": false
+  },
+  "capability_groups": [
+    {
+      "id": "zenodo-new-publication",
+      "open": [
+        "CURRENT_MAIN_ADOPTION",
+        "CANONICAL_CANDIDATE_SPECIFIC_AUTHORIZATION",
+        "PROTECTED_ZENODO_TOKEN_DELIVERY",
+        "ADMITTED_INITIAL_DISPATCH",
+        "PUBLIC_BYTE_EXACT_READBACK_AND_AUTHORITY_PERSISTENCE"
+      ],
+      "source_bindings": [
+        {
+          "path": "runtime/capabilities/ZENODO_PUBLICATION_CAPABILITY.json",
+          "preserved_authority_blob": "25789699aed7c53e08b3c4e66d4ca8c0f61bdda9",
+          "current_main_blob": "25789699aed7c53e08b3c4e66d4ca8c0f61bdda9",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "tools/qikvrt_zenodo_publish.py",
+          "preserved_authority_blob": "21e44c5ba1b1f3983d68fab05c980e842294749e",
+          "current_main_blob": "886f614106fe05f3c8f10cd485dd11455845cc54",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "tools/qikvrt_zenodo_machine_proof.py",
+          "preserved_authority_blob": "15c13591eb5e881a9b63a3b4596357194e27341b",
+          "current_main_blob": "15c13591eb5e881a9b63a3b4596357194e27341b",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "tools/qikvrt_zenodo_actions.py",
+          "preserved_authority_blob": "fbbfed55004b580e9788b8ffa7a51d59e581d09b",
+          "current_main_blob": "fbbfed55004b580e9788b8ffa7a51d59e581d09b",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "policy/zenodo-machine-proof-policy-v2.json",
+          "preserved_authority_blob": "e9578d30d22f845e7df684128dcd9332641c00be",
+          "current_main_blob": "e9578d30d22f845e7df684128dcd9332641c00be",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "policy/qikvrt-zenodo-machine-proof-bundle-v2.schema.json",
+          "preserved_authority_blob": "22cc6f4008b4823e8a7cf5e3057d058df6c0961a",
+          "current_main_blob": "22cc6f4008b4823e8a7cf5e3057d058df6c0961a",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "policy/qikvrt-prepublication-return-receipt-v2.schema.json",
+          "preserved_authority_blob": "ddf7e306940d256b51971ea153c33b6e493ffde4",
+          "current_main_blob": "ddf7e306940d256b51971ea153c33b6e493ffde4",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        }
+      ]
+    },
+    {
+      "id": "zenodo-metadata-edit",
+      "open": [
+        "EXACT_BEFORE_AFTER_METADATA_AND_UNCHANGED_FILES",
+        "SEPARATE_CANONICAL_AUTHORIZATION",
+        "CURRENT_NATIVE_EXECUTION_AND_PUBLIC_READBACK"
+      ],
+      "source_bindings": [
+        {
+          "path": "runtime/capabilities/ZENODO_METADATA_EDIT_CAPABILITY.json",
+          "preserved_authority_blob": "3edb3e7dbaf2916756834afa3ce898b660920339",
+          "current_main_blob": "3edb3e7dbaf2916756834afa3ce898b660920339",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "tools/qikvrt_zenodo_metadata_edit.py",
+          "preserved_authority_blob": "17d86deeb7644b8165430286d1239903a02c60d1",
+          "current_main_blob": "17d86deeb7644b8165430286d1239903a02c60d1",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "policy/qikvrt-zenodo-published-metadata-edit-manifest-v1.schema.json",
+          "preserved_authority_blob": "d00d57f61870d0678581538e927cf5b85ee73c5f",
+          "current_main_blob": "d00d57f61870d0678581538e927cf5b85ee73c5f",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        }
+      ]
+    },
+    {
+      "id": "own-host-and-runtime",
+      "open": [
+        "XPI_ADMISSION",
+        "DURABLE_ORIGINAL_RUNTIME_SOURCE",
+        "ADMITTED_PRODUCTIVE_HOST",
+        "REAL_MODEL_SESSION_CAPABILITIES_ACCEPTANCE"
+      ],
+      "source_bindings": [
+        {
+          "path": "tools/qikvrt_self_host.py",
+          "preserved_authority_blob": "2d73f623ec07dc36a04f6508a7ac2a58af4b44d1",
+          "current_main_blob": null,
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "tools/qikvrt_self_host_container.py",
+          "preserved_authority_blob": "55d6c6075470cd9eacc6a99a99426d0e445dcb66",
+          "current_main_blob": null,
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "tools/qikvrt_self_host_provider.py",
+          "preserved_authority_blob": "1595d95c26a854963758df1ed34e2a5fb7835cb2",
+          "current_main_blob": null,
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "tools/qikvrt_self_host_migration.py",
+          "preserved_authority_blob": "b80664902586ee7e8199eeaf084180f25847e9a2",
+          "current_main_blob": null,
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "runtime/self-host/MESH_ACTIVATION.json",
+          "preserved_authority_blob": "b1fe88dd9410de164fc7c8c28cae3347e885fd21",
+          "current_main_blob": null,
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": ".github/workflows/qikvrt_ci.yml",
+          "preserved_authority_blob": "604715b5b400d7e67a5d9b4ce88d5cd3db934003",
+          "current_main_blob": "61d990bf550bb659cc8165e72ac14e2090db89a0",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+          "preserved_authority_blob": "f40f093e33d4af0d0086f5fc581d40d287dad298",
+          "current_main_blob": "815e32524401aac59fa79aa4f2fb1e37b2f49fdc",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "src/qikvrt_effect_ack_http_terminal.py",
+          "preserved_authority_blob": "93b4ad1457a929ba6c750528d4494fd5c9db2255",
+          "current_main_blob": "a4e41a9cc0e60976eb279bf59de7d0a6310db476",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        }
+      ]
+    },
+    {
+      "id": "ionos-and-exact-host",
+      "open": [
+        "PROTECTED_EXISTING_BINDING_DELIVERY_AND_TARGET_PERMISSION_READBACK",
+        "REGISTRAR_DNS_OPERATION_SPECIFIC_CAPABILITY",
+        "AUTHORITATIVE_DNS",
+        "TLS",
+        "EXACT_RAUMZEITTERMINAL_APPLICATION_READBACK"
+      ],
+      "source_bindings": [
+        {
+          "path": "state/work_units/QIKVRT_IONOS_TOKEN_EXECUTOR_BIND_20261013_V1.json",
+          "preserved_authority_blob": "e6af37fd4eda4bda849f013b698e7774f5608e5c",
+          "current_main_blob": null,
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": ".github/workflows/qikvrt_workflow_executor.yml",
+          "preserved_authority_blob": "2f50da197710f1a0769bee57dd0d73a03a45e651",
+          "current_main_blob": "d21481ff56208868b3849ac6bc171e0cb1d76a99",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "runtime/self-host/PROVIDER_ADMISSION.md",
+          "preserved_authority_blob": "465aa50d2d1d087a55e50bfe3948f807ab29962a",
+          "current_main_blob": null,
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "tools/qikvrt_self_host_provider.py",
+          "preserved_authority_blob": "1595d95c26a854963758df1ed34e2a5fb7835cb2",
+          "current_main_blob": null,
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        }
+      ]
+    },
+    {
+      "id": "github-governance-and-native-rest",
+      "open": [
+        "PROTECTED_APP_CONFIGURATION",
+        "CALLABLE_INITIAL_DISPATCH_AND_ADMIN_OPERATION",
+        "INDEPENDENT_NATIVE_REVIEW",
+        "EFFECTIVE_MAIN_GOVERNANCE"
+      ],
+      "source_bindings": [
+        {
+          "path": ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml",
+          "preserved_authority_blob": "05066f6fb83a7f3ba8799677db35647e06942fd2",
+          "current_main_blob": "1202d24c2f23eb8fa52ab7c562a583e79f9e8444",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": ".github/workflows/qikvrt_requested_review_executor.yml",
+          "preserved_authority_blob": "e32a2947c2d266de3763c0efb410d9b78e75fe5a",
+          "current_main_blob": "484fe5c98f333f3fd921789a456571d281e06353",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "tools/qikvrt_requested_review_executor.py",
+          "preserved_authority_blob": "b3eccb774851dc434bd75c531216e6ed1e3096ef",
+          "current_main_blob": "839e0943897b418314a7fbdb29e8b8cbe9d3837a",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "tools/qikvrt_required_review_gate.py",
+          "preserved_authority_blob": "51cb5092a74f13acd047cb184250cd359cb9ed92",
+          "current_main_blob": "12886d9d0a66683efd60781ca46bbb867e8d9175",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": ".github/workflows/qikvrt_mesh_api.yml",
+          "preserved_authority_blob": "7b38260082e98046b0f8da5009104b25ce255e31",
+          "current_main_blob": "7b38260082e98046b0f8da5009104b25ce255e31",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "src/qikvrt_github_api_shim.py",
+          "preserved_authority_blob": "0f84193a67342a39b9ca8d9d2f1a7df5cd8c449a",
+          "current_main_blob": "0d60c5119b123b46e9264af975e8d81333034c96",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+          "preserved_authority_blob": "a07851a64ef28172933544e565e9740e9c611fe5",
+          "current_main_blob": "5cc8c5b433f84a028ec5c1dca1fe7824a8e03f69",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
+          "preserved_authority_blob": "1d383fcec746a22aeb03464c75297281defed897",
+          "current_main_blob": "5111fcbeb2c1100087b6b61d096a4427e88ca981",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        }
+      ]
+    },
+    {
+      "id": "knowledge-proof-and-ietf-preparation",
+      "open": [
+        "MAIN_AND_OTHER_CLIENT_ADOPTION",
+        "EXACT_SCOPE_KERNEL_OR_EMPIRICAL_RECEIPTS",
+        "APPLICABLE_SUBMISSION_ACCEPTANCE"
+      ],
+      "source_bindings": [
+        {
+          "path": "AI",
+          "preserved_authority_blob": "f54629abd2e21cb6fdb1a5d4e30d531dc96a8fd5",
+          "current_main_blob": "702a1e006a1aeed035b504d3a19416d6740844c2",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "AI_CONTEXT.json",
+          "preserved_authority_blob": "733b3ca4cf2873f65d3e3293fbef610f7770122d",
+          "current_main_blob": "c69587b566beeb13a4302ee9950962a3cc227583",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "tools/ai_handoff.py",
+          "preserved_authority_blob": "a99dbd53ffe8762c008e2d27850592c259c4bd18",
+          "current_main_blob": "e48df146c23eae1497a2d8cb308e67e25100a7a8",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "state/work_units/QIKVRT_CLIENT_KNOWLEDGE_CONTINUITY_REPAIR_20261016_V1.json",
+          "preserved_authority_blob": "d4d1c1655982fe9e308211d992dd9a4278697fb3",
+          "current_main_blob": null,
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "tools/qikvrt_zenodo_corpus_proof_v2.py",
+          "preserved_authority_blob": "1106ebde33b45e0285f9ee312571681985c7434a",
+          "current_main_blob": "1106ebde33b45e0285f9ee312571681985c7434a",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "tests/test_ietf_offline_render.py",
+          "preserved_authority_blob": "3a7ee892e0ac8cb72deec23735e5ff3ec9b6df55",
+          "current_main_blob": "3a7ee892e0ac8cb72deec23735e5ff3ec9b6df55",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        }
+      ]
+    }
+  ],
+  "protected_binding": {
+    "zenodo": "Existing secrets.ZENODO_ACCESS_TOKEN; target configuration and actual delivery UNKNOWN in this client.",
+    "github": "Authenticated ingolf-lohmann/id294949349 and Authority admin read; actual repository source writes available. Initial dispatch, secret-administration and secure App configuration operations not exposed in active client registry.",
+    "ionos": "Existing secrets.IONOS_TOKEN source binding retained; actual Cloud DNS permissions, protected private binding and admitted target execution UNKNOWN.",
+    "secret_transfer_effect": "NOT_EXECUTED_OR_CLAIMED; no credential value read/export and no callable protected secret handover operation.",
+    "local_environment_absence_proves_remote_absence": false
+  },
+  "verification": {
+    "local_publication_router_tests": 13,
+    "ordinary_pr_tests_include_router": true,
+    "tool_cache": "32/32 declared tools, 100%; no new tool dependency",
+    "native_successor_tests": "REQUIRED_ON_NEW_COMMIT",
+    "prior_knowledge_repair": {
+      "head": "d8e535d8690ffc97e6a78823248497c662834e30",
+      "push_run": 38879504952,
+      "test_job": 116902549317,
+      "result": "success",
+      "pr_run": 38879514084,
+      "pr_full_test": "success",
+      "pr_tested_fixpoint": "success; job116902580210 completed; no PASS transfer to successor",
+      "pass_transferred_to_successor": false
+    }
+  },
+  "scientific_and_delivery_limits": {
+    "new_zenodo_publication": false,
+    "new_doi": null,
+    "raumzeitterminal_delivered": false,
+    "scope_is_not_physical_or_cosmological_proof": true
+  },
+  "human_contribution": "Ingolf Lohmann: goal, source/target decision, standing authorization and original research.",
+  "artificial_contribution": "OpenAI Codex: REST inspection, preserved-source capability comparison, existing publication-router integration and regression checks.",
+  "PREDECESSOR_EVIDENCE_TRANSFER": false,
+  "EFFECT_ACK_DONE": false,
+  "next_action": "Read back this source commit and exact native gates; integrate through existing protected current-subject review. Use the existing protected token delivery and callable admitted initial REST ingress for the exact canonical publication candidate; independently accept public bytes and exact-host delivery. Do not retry unchanged Goldkelch 404, initial-dispatch or domain failures."
+}
