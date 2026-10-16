@@ -539,7 +539,7 @@ class OwnerSigningContinuationTests(unittest.TestCase):
             "main_tree": self.tree, "state": "AUTHORITY_MAIN_ROLE_POLICY_REOBSERVED"}
         self.branch = {"name": "main", "protected": True}
         self.rules = [{"type": "pull_request", "parameters": {"required_approving_review_count": 1,
-            "require_code_owner_review": True, "require_last_push_approval": True}},
+            "require_code_owner_review": True, "dismiss_stale_reviews_on_push": True, "require_last_push_approval": True}},
             {"type": "non_fast_forward"}, {"type": "required_status_checks", "parameters": {
                 "strict_required_status_checks_policy": True, "required_status_checks": [
                     {"context": "test"}, {"context": "QIKVRT required code-owner review"}]}}]
@@ -597,6 +597,10 @@ class OwnerSigningContinuationTests(unittest.TestCase):
         with self.assertRaisesRegex(MODULE.ExecutorBlock, "PROTECTION"):
             self.plan()
         self.branch["protected"] = True
+        self.rules[0]["parameters"]["dismiss_stale_reviews_on_push"] = False
+        with self.assertRaisesRegex(MODULE.ExecutorBlock, "PROTECTION"):
+            self.plan()
+        self.rules[0]["parameters"]["dismiss_stale_reviews_on_push"] = True
         for key in ("issuer_present", "secret_present"):
             self.assertFalse(self.plan(**{key: False})["dispatch"])
         with self.assertRaisesRegex(MODULE.ExecutorBlock, "HISTORY"):

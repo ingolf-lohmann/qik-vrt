@@ -803,6 +803,7 @@ def amo_native_protection(branch: Mapping[str, Any], rules: Sequence[Mapping[str
             or not any(type(p.get("required_approving_review_count")) is int
                        and p["required_approving_review_count"] >= 1
                        and p.get("require_code_owner_review") is True
+                       and p.get("dismiss_stale_reviews_on_push") is True
                        and p.get("require_last_push_approval") is True for p in pull)
             or not any(r.get("type") == "non_fast_forward" for r in rules)
             or not any(p.get("strict_required_status_checks_policy") is True

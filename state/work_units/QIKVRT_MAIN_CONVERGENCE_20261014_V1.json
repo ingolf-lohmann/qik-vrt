@@ -2956,12 +2956,40 @@
     "human": "Ingolf Lohmann",
     "local_validation": {
       "cache_coverage": "34/34 (100%)",
-      "complete_native_suite": "REQUIRED_ON_PERSISTED_CANDIDATE",
+      "complete_native_suite": "REQUIRED_ON_REPAIRED_CANDIDATE",
       "fixture_http_is_not_live_mozilla_evidence": true,
-      "fixture_tests_passed": 48,
+      "fixture_tests_passed": 58,
       "yaml_workflows_parsed": 2
     },
-    "observed_at": "2026-10-16T23:15:42.745126+00:00",
+    "native_main_guard_stale_review_dismissal_required": true,
+    "native_predecessor": {
+      "amo_preflight": {
+        "issuer_present": false,
+        "job_id": 117240731878,
+        "secret_present": false,
+        "signing_requested": false
+      },
+      "executor_watchdog": {
+        "conclusion": "success",
+        "job_id": 117240731514,
+        "run_id": 38980728548,
+        "tests": 100
+      },
+      "full_ci": {
+        "cause": "Closed task-mode literal still listed only the two pre-existing modes",
+        "conclusion": "failure",
+        "first_failure": "tests.test_self_host_provider.RepositoryIONOSReadonlyTests.test_workflow_binds_existing_secret_only_after_trusted_main_preflight",
+        "job_id": 117240731685,
+        "repair": "Extend that closed literal to the separately authorized signing mode; keep all IONOS credential scope and exact-Main assertions",
+        "run_id": 38980728689
+      },
+      "head": "14c3db108ae28469345458c0e2cbf90714fdb01a",
+      "s1_admission": {
+        "job_id": 117241038649,
+        "state": "NOOP_UNCHANGED_FIREFOX_RELEASE_OR_SIGNING_FAILURE"
+      }
+    },
+    "observed_at": "2026-10-16T23:23:37.231891+00:00",
     "owner_request": {
       "continuous_execution": "Ja, wenn sie das bisher noch nicht tut, dann sorgen wir jetzt dafür, dass sie es von nun an fortwährend tut.",
       "github_feedback": "Deswegen wäre es auch besser, wenn man von GitHub in synchroner Art und Weise erfährt, wenn ein Lauf abgebrochen ist. Am besten inklusive der Gründe dafür. Denn mit Fristen und Timern wollen wir ja nix zu tun haben.",
@@ -2979,6 +3007,7 @@
       "fresh HTTP apex/www plus HTTPS public readback"
     ],
     "source_parent": "8bfb740b1a5013c3a833754d39348d6c46b6d38a",
+    "source_successor_parent": "14c3db108ae28469345458c0e2cbf90714fdb01a",
     "state": "IMPLEMENTED_CANDIDATE_NOT_ACTIVATED"
   },
   "oci_publication_merge_20261014": {

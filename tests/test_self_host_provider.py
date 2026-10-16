@@ -452,7 +452,7 @@ class RepositoryIONOSReadonlyTests(unittest.TestCase):
 
     def test_workflow_binds_existing_secret_only_after_trusted_main_preflight(self):
         workflow, job = self.workflow_job()
-        self.assertIn('options: [executor, ionos-inventory-classify]', workflow)
+        self.assertIn('options: [executor, ionos-inventory-classify, firefox-signing-continuation]', workflow)
         self.assertIn("github.repository == 'ingolf-lohmann/qik-vrt' && github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch' && inputs.task_mode == 'ionos-inventory-classify'", job)
         self.assertIn('permissions:\n      contents: read', job)
         self.assertIn('ref: ${{ github.sha }}', job)
