@@ -367,7 +367,7 @@ theorem step_preserves_invariant {b : Ballots} {s t : State}
   cases h with
   | expire => intro n hn; cases hn
   | revoke => intro n hn; cases hn
-  | promote s n epoch deadline now caughtUp q vacant member eligible newer lease journal cert =>
+  | promote n epoch deadline now caughtUp q vacant member eligible newer lease journal cert =>
     intro other ho
     have eq : n = other := Option.some.inj ho
     subst other
@@ -442,6 +442,6 @@ def twoVotes : Quorum := ⟨true, true, false⟩
 theorem independent_carriers_split_brain :
     WriteAdmitted leftCarrier 0 1 0 twoVotes ∧
     WriteAdmitted rightCarrier 1 1 0 twoVotes ∧ (0 : Nat) ≠ 1 := by
-  decide
+  simp [WriteAdmitted, leftCarrier, rightCarrier, twoVotes, Majority]
 
 end QIKVRT.V2.AuthoritySuccession

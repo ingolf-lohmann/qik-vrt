@@ -28,9 +28,9 @@
     },
     {
       "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Hardware/AuthorityMirrorWitness.lean",
-      "bytes": 17829,
-      "sha256": "adb8172a07f9d4abbd097935dd826c7b01fd790e269c96852ff8da7423f9a21d",
-      "git_blob_sha1": "421537fc8c3b4db71fe2a03f625d05ed9cdf38ee"
+      "bytes": 17888,
+      "sha256": "e8e236154b2a3c94242ee5220da9c01b2403c72e1224fa9a7e20b1cce9c143b0",
+      "git_blob_sha1": "25ba2bb65033aede7e1251950be9afaa68e897e7"
     },
     {
       "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Hardware/AxiomAudit.lean",
@@ -484,11 +484,23 @@
     }
   ],
   "formal": {
-    "status": "PREPARED_PENDING_NATIVE_KERNEL",
+    "status": "REPAIRED_PENDING_EXACT_SUCCESSOR_KERNEL",
     "proposed_theorems": 18,
     "source": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Hardware/AuthorityMirrorWitness.lean",
     "local_blocker": "LEAN_APPLICATION_PATH_UNAVAILABLE: cached Lean 4.19 executable fails before --version; /proc/self/exe is readable, /proc/<reported-pid>/exe is absent. No kernel or application-path hook is installed.",
-    "next_action": "Existing push-triggered manuscript proof workflow on the exact successor; inspect original job logs and axiom reports."
+    "next_action": "Existing push-triggered manuscript proof workflow on the exact successor; inspect original job logs and axiom reports.",
+    "failed_native_predecessor": {
+      "head": "b4aa5033baee6d26c1f102c032cb6edcc5d08139",
+      "tree": "02fc84195af2ad0fd9e35c531b9d67dd6a610043",
+      "run": 38872822889,
+      "job": 116880717783,
+      "log": "evidence/native-runtime-acceptance/authority-succession-20261016/native-first-kernel-failure.log",
+      "causes": [
+        "case alternative binds an indexed state parameter as a local variable",
+        "Decidable synthesis does not unfold WriteAdmitted"
+      ],
+      "repair": "Remove the extra case binder; prove the concrete counterexample by definitional simplification"
+    }
   },
   "logs": [
     {
