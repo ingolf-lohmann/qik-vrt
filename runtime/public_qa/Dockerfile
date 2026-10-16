@@ -4,6 +4,11 @@ ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PORT=8080 QIKVRT_QA_ENABLED=fal
 WORKDIR /app
 RUN addgroup -S qikvrt && adduser -S -G qikvrt -u 10001 qikvrt
 COPY runtime/public_qa/ /app/runtime/public_qa/
+COPY docs/news/index.html /app/docs/news/index.html
+COPY docs/news/universaler-transputer/index.html /app/docs/news/universaler-transputer/index.html
+COPY docs/publications/index.html /app/docs/publications/index.html
+COPY docs/assets/css/qikvrt-publications.css /app/docs/assets/css/qikvrt-publications.css
+COPY docs/assets/js/qikvrt-publications.js /app/docs/assets/js/qikvrt-publications.js
 COPY docs/fragen/index.html /app/docs/fragen/index.html
 COPY docs/assets/js/qikvrt-questions.js docs/assets/js/qikvrt-local-engine.js /app/docs/assets/js/
 COPY docs/assets/css/qikvrt.css /app/docs/assets/css/qikvrt.css
