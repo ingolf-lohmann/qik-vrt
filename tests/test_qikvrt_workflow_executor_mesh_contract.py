@@ -733,6 +733,40 @@ class OwnerSigningContinuationTests(unittest.TestCase):
         self.assertEqual(receipt["last_attempt"]["state"], "AMBIGUOUS")
         self.assertEqual(receipt["last_attempt"]["executor_run_id"], 499)
 
+    def test_first_activation_uses_verified_source_boundary_without_scanning_old_jobs(self):
+        self.check_pre_activation_boundary()
+
+    def test_changed_pre_activation_contract_cannot_reset_history(self):
+        with self.assertRaisesRegex(MODULE.ExecutorBlock, "PRE_ACTIVATION_SOURCE_UNVERIFIED"):
+            self.check_pre_activation_boundary(tampered=True)
+
+    def check_pre_activation_boundary(self, tampered=False):
+        request = copy.deepcopy(self.request)
+        old = MODULE.canonical_json_bytes({"owner_authorized_operations": {}})
+        blob = hashlib.sha1(f"blob {len(old)}\0".encode() + old).hexdigest()
+        request["pre_activation_main"]["contract_blob"] = blob
+        head = request["pre_activation_main"]["head"]
+        current = self.provider_run(3000, MODULE.AMO_NATIVE_WORKFLOW, created_at="2026-10-17T00:00:01Z")
+        # More historical runs than the normal journal-discovery budget. The
+        # actual old source has no such producer, including its reruns.
+        old_runs = [self.provider_run(i, MODULE.AMO_NATIVE_WORKFLOW, "in_progress", None,
+                    head_sha=head, run_attempt=7) for i in range(2999, 0, -1)]
+        source = {"path": MODULE.CONTRACT_RELATIVE_PATH, "type": "file", "encoding": "base64",
+                  "size": len(old), "sha": "0" * 40 if tampered else blob,
+                  "content": base64.b64encode(old).decode()}
+        def get(root, endpoint, **kwargs):
+            if endpoint.endswith("/3000"): return current
+            if "/workflows/" in endpoint: return {"workflow_runs": old_runs[:100]}
+            if endpoint.endswith("/2999"): return old_runs[0]
+            if "/contents/" in endpoint: return source
+            self.fail("unexpected historical scan or wait: " + endpoint)
+        with mock.patch.object(MODULE, "amo_request", return_value=request), \
+                mock.patch.object(MODULE, "_amo_get", side_effect=get) as read:
+            result, verified = MODULE.amo_previous(ROOT, 3000)
+        self.assertIsNone(result)
+        self.assertTrue(verified)
+        self.assertEqual(read.call_count, 4)
+
     def test_completed_event_is_checked_against_original_github_run(self):
         with tempfile.TemporaryDirectory() as directory:
             path = pathlib.Path(directory) / "event.json"

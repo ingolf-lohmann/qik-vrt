@@ -780,6 +780,8 @@ def amo_request(root: Path = ROOT) -> dict[str, Any]:
              "ambiguous_dispatch": "READBACK_ONLY", "unchanged_failed_effect": "NOOP",
              "feedback_event": "GITHUB_WORKFLOW_RUN_COMPLETED", "elapsed_time_is_abort_evidence": False,
              "callback_waits_for_caller": False, "cancelled_upload_resume": "GET_ONLY",
+             "pre_activation_main": {"head": "d8ff32dad42a50be719a683c37b9104392281384",
+                                     "contract_blob": "5111fcbeb2c1100087b6b61d096a4427e88ca981"},
              "external_effect_scope": "OFFICIAL_UNLISTED_SIGNING_OF_EXACT_STANDARD_COMPONENTS_ONLY",
              "public_production_verified": False}
     if (not isinstance(request, dict) or set(request) != set(fixed) | {
@@ -1002,6 +1004,7 @@ def amo_run(root: Path, run_id: int, workflow: str) -> dict[str, Any]:
 
 def amo_previous(root: Path, current_run_id: int) -> tuple[dict[str, Any] | None, bool]:
     """Carry the last attempt through original native artifacts, never a chat cache."""
+    baseline = amo_request(root)["pre_activation_main"]
     current = amo_run(root, current_run_id, AMO_NATIVE_WORKFLOW)
     current_order = (current.get("created_at", ""), current_run_id)
     for page in range(1, 17):
@@ -1017,6 +1020,24 @@ def amo_previous(root: Path, current_run_id: int) -> tuple[dict[str, Any] | None
                 raise ExecutorBlock("AMO_NATIVE_HISTORY_ID_INVALID")
             if (run.get("created_at", ""), prior_id) >= current_order:
                 continue
+            if run.get("head_sha") == baseline["head"]:
+                # Exact protected-Main lineage, not elapsed time, bounds the
+                # first activation. This old source did not have this producer.
+                # No earlier admitted invocation can precede its introduction.
+                original = _amo_get(root, f"repos/{AMO_REPOSITORY}/actions/runs/{prior_id}")
+                if (original.get("id") != prior_id or original.get("path") != AMO_NATIVE_WORKFLOW
+                        or original.get("repository", {}).get("full_name") != AMO_REPOSITORY
+                        or original.get("head_branch") != "main" or original.get("head_sha") != baseline["head"]):
+                    raise ExecutorBlock("AMO_PRE_ACTIVATION_RUN_MISMATCH")
+                source = _amo_get(root, f"repos/{AMO_REPOSITORY}/contents/{CONTRACT_RELATIVE_PATH}?ref={baseline['head']}")
+                raw = base64.b64decode("".join(source.get("content", "").split()), validate=True)
+                blob = hashlib.sha1(f"blob {len(raw)}\0".encode() + raw).hexdigest()
+                if (blob != baseline["contract_blob"] or source.get("sha") != blob
+                        or source.get("path") != CONTRACT_RELATIVE_PATH or source.get("type") != "file"
+                        or source.get("encoding") != "base64" or source.get("size") != len(raw)
+                        or AMO_SCOPE in _amo_object(raw).get("owner_authorized_operations", {})):
+                    raise ExecutorBlock("AMO_PRE_ACTIVATION_SOURCE_UNVERIFIED")
+                return None, True
             original = amo_run(root, prior_id, AMO_NATIVE_WORKFLOW)
             jobs = _amo_get(root, f"repos/{AMO_REPOSITORY}/actions/runs/{prior_id}/jobs?per_page=100")
             if jobs.get("total_count") != len(jobs.get("jobs", [])) or len(jobs.get("jobs", [])) >= 100:

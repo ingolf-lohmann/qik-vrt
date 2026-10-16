@@ -2953,6 +2953,13 @@
         "known GitHub execution-limit or concurrency reason codes"
       ],
       "missing_job_log": "ORIGINAL_LOG_UNAVAILABLE",
+      "pre_activation_main": {
+        "absence_of_this_producer_independently_verified": true,
+        "contract_blob": "5111fcbeb2c1100087b6b61d096a4427e88ca981",
+        "head": "d8ff32dad42a50be719a683c37b9104392281384",
+        "historical_reruns_before_producer_introduction_do_not_wait": true,
+        "history_boundary_is_source_not_elapsed_time": true
+      },
       "provider_event": "workflow_run.completed",
       "raw_job_logs_forwarded": false,
       "readback_lane_waits_for_writer": false,
@@ -2974,7 +2981,12 @@
       "cache_coverage": "34/34 (100%)",
       "complete_native_suite": "REQUIRED_ON_REPAIRED_CANDIDATE",
       "fixture_http_is_not_live_mozilla_evidence": true,
-      "fixture_tests_passed": 61,
+      "fixture_tests_passed": 63,
+      "verified_source_boundary_control": {
+        "github_get_count": 4,
+        "older_run_fixture_count": 2999,
+        "tampered_baseline_rejected": true
+      },
       "yaml_workflows_parsed": 2
     },
     "native_main_guard_stale_review_dismissal_required": true,
@@ -3005,7 +3017,29 @@
         "state": "NOOP_UNCHANGED_FIREFOX_RELEASE_OR_SIGNING_FAILURE"
       }
     },
-    "observed_at": "2026-10-16T23:34:18.318940+00:00",
+    "native_predecessor_current_source": {
+      "claims_transfer_to_successor": false,
+      "executor": {
+        "conclusion": "success",
+        "job_id": 117245294702,
+        "run_id": 38982169211,
+        "tests": 103
+      },
+      "full_push_test": {
+        "conclusion": "success",
+        "integrity_delta": [],
+        "job_id": 117245278600,
+        "make_test_exit": 0,
+        "run_id": 38982164443
+      },
+      "head": "563fa5fc3a7d28094f2c3879ab8aa98df0526746",
+      "pr_fixpoint": {
+        "job_id": 117245294839,
+        "run_id": 38982169241,
+        "state": "IN_PROGRESS_AT_SOURCE_SUCCESSOR_PREPARATION"
+      }
+    },
+    "observed_at": "2026-10-16T23:48:33.225279+00:00",
     "owner_request": {
       "continuous_execution": "Ja, wenn sie das bisher noch nicht tut, dann sorgen wir jetzt dafür, dass sie es von nun an fortwährend tut.",
       "github_feedback": "Deswegen wäre es auch besser, wenn man von GitHub in synchroner Art und Weise erfährt, wenn ein Lauf abgebrochen ist. Am besten inklusive der Gründe dafür. Denn mit Fristen und Timern wollen wir ja nix zu tun haben.",
@@ -3023,7 +3057,7 @@
       "fresh HTTP apex/www plus HTTPS public readback"
     ],
     "source_parent": "8bfb740b1a5013c3a833754d39348d6c46b6d38a",
-    "source_successor_parent": "f88ad3a8585d49a0b582f988c6d8d4cca9f2be08",
+    "source_successor_parent": "563fa5fc3a7d28094f2c3879ab8aa98df0526746",
     "state": "IMPLEMENTED_CANDIDATE_NOT_ACTIVATED"
   },
   "oci_publication_merge_20261014": {

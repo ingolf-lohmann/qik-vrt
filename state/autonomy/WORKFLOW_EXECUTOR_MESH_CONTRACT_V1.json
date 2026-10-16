@@ -123,6 +123,10 @@
       "external_effect_scope": "OFFICIAL_UNLISTED_SIGNING_OF_EXACT_STANDARD_COMPONENTS_ONLY",
       "feedback_event": "GITHUB_WORKFLOW_RUN_COMPLETED",
       "owner": "Ingolf Lohmann",
+      "pre_activation_main": {
+        "contract_blob": "5111fcbeb2c1100087b6b61d096a4427e88ca981",
+        "head": "d8ff32dad42a50be719a683c37b9104392281384"
+      },
       "public_production_verified": false,
       "ref": "main",
       "repository": "ingolf-lohmann/qik-vrt",

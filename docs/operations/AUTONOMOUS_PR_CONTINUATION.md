@@ -86,6 +86,14 @@ Delegated `github-actions[bot]` invocation additionally verifies the original
 Main-run intent artifact, its digest and the actual started dispatch step.
 It never waits for its caller's later receipt or overall return.
 
+The first activation has an exact source boundary: the independently observed
+pre-activation Main commit and original contract blob are pinned in the Owner
+request. Its original bytes must prove that this signing producer did not yet
+exist. Reaching that source bounds historical discovery without scanning years
+of older jobs or spending the repository token's request budget on them. Later
+old-source runs with any other head cannot erase an admitted producer's journal.
+This is a source-lineage boundary, with no deadline or age-based abort rule.
+
 Before dispatch an immutable intent is uploaded and admission is read again.
 The native workflow token invokes the existing CI with
 `return_run_details: true`; the immediate returned run ID is journaled. There
