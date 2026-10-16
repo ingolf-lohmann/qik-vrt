@@ -179,5 +179,12 @@ class RequestedAuthorityPublicationTests(unittest.TestCase):
         self.assertNotIn("git push", requested)
         self.assertNotIn("--force", requested)
 
+    def test_optional_workflow_route_preserves_generic_capability_contract(self):
+        for name in ("ZENODO_PUBLICATION_CAPABILITY.json", "ZENODO_METADATA_EDIT_CAPABILITY.json"):
+            capability = json.loads((ROUTER.parent.parent / "runtime/capabilities" / name).read_bytes())
+            self.assertTrue(capability["workflow_binding"].startswith("none"))
+            self.assertEqual(capability["invocation_routes"][0]["repository"], self.repository)
+            self.assertEqual(capability["invocation_routes"][0]["default"], "PREFLIGHT_ONLY; execute=false")
+
 if __name__ == "__main__":
     unittest.main()

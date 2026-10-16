@@ -328,7 +328,7 @@
     "local_environment_absence_proves_remote_absence": false
   },
   "verification": {
-    "local_publication_router_tests": 13,
+    "local_publication_router_tests": 14,
     "ordinary_pr_tests_include_router": true,
     "tool_cache": "32/32 declared tools, 100%; no new tool dependency",
     "native_successor_tests": "REQUIRED_ON_NEW_COMMIT",
@@ -341,6 +341,19 @@
       "pr_full_test": "success",
       "pr_tested_fixpoint": "success; job116902580210 completed; no PASS transfer to successor",
       "pass_transferred_to_successor": false
+    },
+    "first_native_entrypoint_run": {
+      "run_id": 38881846369,
+      "job_id": 116910202412,
+      "head": "522d006e1c1083c0fceb7bff9cf688710f751379",
+      "result": "success; 13 routing tests; requested effect job correctly skipped"
+    },
+    "first_native_full_suite_failure": {
+      "run_id": 38881836276,
+      "job_id": 116910168474,
+      "head": "522d006e1c1083c0fceb7bff9cf688710f751379",
+      "cause": "Changed workflow_binding from the established workflow-independent string contract to an object; tests/test_charter_zenodo.py rejected the type change.",
+      "repair": "Restore the original generic workflow_binding text and add the optional wrapper under invocation_routes. Existing genericity gate remains intact."
     }
   },
   "scientific_and_delivery_limits": {
