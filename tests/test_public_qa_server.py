@@ -30,7 +30,7 @@ class PublicQAContractTests(unittest.TestCase):
         self.root_patch.start()
         self.rate_patch = patch.dict(server.REQUEST_TIMES, {}, clear=True)
         self.rate_patch.start()
-        self.httpd = ThreadingHTTPServer(("127.0.0.1", 0), server.QAHandler)
+        self.httpd = server.LimitedHTTPServer(("127.0.0.1", 0), server.QAHandler)
         self.thread = threading.Thread(target=self.httpd.serve_forever, daemon=True)
         self.thread.start()
         self.url = "http://127.0.0.1:" + str(self.httpd.server_address[1])
