@@ -25,9 +25,13 @@
       "docs/fragen/index.html",
       "docs/assets/js/qikvrt-questions.js",
       "docs/index.html",
-      "tests/test_public_question_entrypoint.py"
+      "tests/test_public_question_entrypoint.py",
+      "runtime/public_qa/server.py",
+      "runtime/public_qa/Dockerfile",
+      "runtime/public_qa/README.md",
+      "tests/test_public_qa_server.py"
     ],
-    "mode": "LOCAL_RULE_ANALYSIS_ONLY",
+    "mode": "LOCAL_RULE_FALLBACK_PLUS_BOUNDED_SOURCE_API_PREVIEW",
     "source_portal_ready": true,
     "server_side_general_qa": false,
     "independent_web_retrieval": false,
@@ -35,7 +39,12 @@
     "production_deployed": false,
     "exact_host_http_tls_verified": false,
     "public_byte_exact_readback": false,
-    "effect_ack_done": false
+    "effect_ack_done": false,
+    "server_side_bounded_qa_source_implemented": true,
+    "inference_requires_explicit_enablement": true,
+    "inference_requires_pinned_source_commit": true,
+    "provider_secrets_available": false,
+    "native_exact_head_tests_verified": false
   },
   "editorial_contract": {
     "user_access": "PUBLIC_NO_LOGIN_FOR_BASIC_QUESTIONS",
@@ -63,6 +72,11 @@
     "Public HTTP readback and exact bytes of deployed assets",
     "Editorial governance, terms, privacy policy and clear separation of scientific evidence and opinion"
   ],
-  "disposition": "PREPARED_IN_AUTHORITY_PR_NOT_LIVE",
-  "predecessor_evidence_transfer": false
+  "disposition": "SOURCE_IMPLEMENTED_PREVIEW_DEPLOYMENT_PENDING",
+  "predecessor_evidence_transfer": false,
+  "local_fixture_tests": {
+    "count": 7,
+    "passed": 7,
+    "scope": "Isolated Python stdlib server fixtures; not exact-head native CI or production acceptance"
+  }
 }
