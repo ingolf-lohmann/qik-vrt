@@ -23,6 +23,7 @@ from pathlib import Path
 from typing import Any
 from urllib.error import HTTPError, URLError
 from urllib.request import HTTPRedirectHandler, Request, build_opener
+from urllib.parse import parse_qs, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json"
@@ -55,6 +56,7 @@ def subject() -> dict[str, Any]:
         except (OSError, subprocess.SubprocessError):
             return None
     paths = ["src/qikvrt_personal_assistant.py", "src/qikvrt_effect_ack_http_terminal.py",
+             "src/qikvrt_personal_auth.py",
              *[str(p.relative_to(ROOT)) for p in sorted(UI.iterdir()) if p.is_file()]]
     return {"repository": "ingolf-lohmann/qik-vrt", "head": git("rev-parse", "HEAD"),
             "tree": git("rev-parse", "HEAD^{tree}"), "worktree_dirty": bool(git("status", "--porcelain")),
@@ -222,6 +224,31 @@ class PersonalRuntime:
                 p.chmod(0o600)
         self.subject = subject()
         self.auth_receipt = None  # Runtime proof is never inherited from a prior process.
+        self.personal_auth = None
+
+    @classmethod
+    def from_secret_store(cls, state_dir, model, provider, config_path, origin):
+        try:
+            from .qikvrt_personal_auth import OSSecretStore, PersonalAuth, load_config
+        except ImportError:
+            from qikvrt_personal_auth import OSSecretStore, PersonalAuth, load_config
+        config = load_config(config_path, origin)
+        store = OSSecretStore(state_dir, provider)
+        bundle = store.read()
+        credential = bundle.get("provider_keys", {}).get(provider)
+        if not isinstance(credential, str) or not credential:
+            raise CapabilityBlock("PROTECTED_MODEL_CREDENTIAL_REQUIRED")
+        # A bootstrap secret is never returned to the browser. Secure mode only
+        # accepts the session bearer issued after a validated OIDC callback.
+        runtime = cls(state_dir, model, credential, secrets.token_urlsafe(48), provider=provider)
+        try:
+            if store.read().get("provider_keys", {}).get(provider) != credential:
+                raise CapabilityBlock("MODEL_CREDENTIAL_CHANGED_DURING_STARTUP")
+            runtime.personal_auth = PersonalAuth(store, config)
+        except Exception:
+            runtime.close()
+            raise
+        return runtime
 
     @classmethod
     def from_environment(cls, state_dir: str, model: str | None, provider="openai"):
@@ -235,7 +262,8 @@ class PersonalRuntime:
 
     def _nonsecret(self, value: Any):
         raw = canonical(value)
-        if len(raw) > MAX_BYTES or any(secret and secret.encode() in raw for secret in (self.credential, self.local_token)):
+        protected = self.personal_auth.sensitive_values() if self.personal_auth else []
+        if len(raw) > MAX_BYTES or any(secret and (secret.encode() in raw or canonical(secret)[1:-1] in raw) for secret in (self.credential, self.local_token, *protected)):
             raise CapabilityBlock("PERSISTENCE_PAYLOAD_TOO_LARGE_OR_CONTAINS_RUNTIME_SECRET")
 
     def save(self, session: dict[str, Any]):
@@ -374,6 +402,7 @@ class PersonalRuntime:
             auth = self.auth_receipt
             fresh = bool(auth and time.monotonic() - auth["observed_monotonic"] < 300 and auth["subject"] == subject())
             return {"manifest": manifest, "subject": self.subject, "binding": self.binding,
+                    "personal_identity_session": self.personal_auth.status() if self.personal_auth else {"state": "LEGACY_MEMORY_PAIRING_ONLY"},
                     "local_client_authentication_required": True, "authenticated_runtime_readback": fresh,
                     "runtime_evidence": auth if fresh else None,
                     "normal_retention": self.binding["normal_retention"],
@@ -386,25 +415,33 @@ class PersonalRuntime:
 
 def personal_handler(base_handler, runtime: PersonalRuntime):
     class PersonalHandler(base_handler):
-        def _personal_response(self, code: int, body: Any, media: str = "application/json; charset=utf-8"):
+        def _personal_response(self, code: int, body: Any, media: str = "application/json; charset=utf-8", nonce=None):
             raw = canonical(body) if media.startswith("application/json") else body
             self.send_response(code)
             self.send_header("Content-Type", media)
             self.send_header("Content-Length", str(len(raw)))
             self.send_header("Cache-Control", "no-store")
             self.send_header("X-Content-Type-Options", "nosniff")
-            self.send_header("Content-Security-Policy", "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; frame-ancestors 'none'")
+            self.send_header("Referrer-Policy", "no-referrer")
+            scripts = "'nonce-" + nonce + "'" if nonce else "'self'"
+            self.send_header("Content-Security-Policy", "default-src 'none'; script-src " + scripts + "; style-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'")
             self.end_headers()
             self.wfile.write(raw)
 
-        def _personal_guard(self, *, public=False):
+        def _personal_guard(self, *, public=False, callback=False):
             hosts = {f"127.0.0.1:{self.server.server_port}", f"localhost:{self.server.server_port}"}
             host = self.headers.get("Host")
             origin = self.headers.get("Origin")
-            if host not in hosts or (origin and origin != "http://" + host) or self.headers.get("Sec-Fetch-Site") == "cross-site":
+            if host not in hosts or (not callback and ((origin and origin != "http://" + host) or self.headers.get("Sec-Fetch-Site") == "cross-site")):
                 raise CapabilityBlock("LOCAL_ORIGIN_REQUIRED")
-            if not public and not hmac.compare_digest(self.headers.get("Authorization", "").encode("utf-8"), ("Bearer " + runtime.local_token).encode("ascii")):
-                raise CapabilityBlock("LOCAL_CLIENT_AUTHENTICATION_REQUIRED")
+            if runtime.personal_auth and "http://" + host != runtime.personal_auth.config["redirect_uri"].split("/personal/")[0]:
+                raise CapabilityBlock("OIDC_EXACT_LOOPBACK_ORIGIN_REQUIRED")
+            if not public:
+                bearer = self.headers.get("Authorization", "")
+                if runtime.personal_auth:
+                    runtime.personal_auth.authenticate(bearer.removeprefix("Bearer ") if bearer.startswith("Bearer ") else "", logging_out=self.path == "/personal/auth/logout")
+                elif not hmac.compare_digest(bearer.encode("utf-8"), ("Bearer " + runtime.local_token).encode("ascii")):
+                    raise CapabilityBlock("LOCAL_CLIENT_AUTHENTICATION_REQUIRED")
 
         def do_GET(self):
             if not self.path.startswith("/personal/"):
@@ -413,7 +450,11 @@ def personal_handler(base_handler, runtime: PersonalRuntime):
                       "/personal/ui.js": ("ui.js", "text/javascript; charset=utf-8"),
                       "/personal/ui.css": ("ui.css", "text/css; charset=utf-8")}
             try:
-                self._personal_guard(public=self.path in assets)
+                self._personal_guard(public=self.path in assets or self.path == "/personal/auth/info")
+                if self.path == "/personal/auth/info":
+                    return self._personal_response(200, {"oidc_enabled": runtime.personal_auth is not None,
+                        "issuer": runtime.personal_auth.config["issuer"] if runtime.personal_auth else None,
+                        "passkey": "PROVIDER_DEVICE_CAPABILITY_NOT_ATTESTED"})
                 if self.path in assets:
                     path, media = assets[self.path]
                     return self._personal_response(200, (UI / path).read_bytes(), media)
@@ -433,11 +474,50 @@ def personal_handler(base_handler, runtime: PersonalRuntime):
             if not self.path.startswith("/personal/"):
                 return super().do_POST()
             try:
+                auth = runtime.personal_auth
+                if auth and self.path == "/personal/auth/callback":
+                    self._personal_guard(public=True, callback=True)
+                    if self.headers.get("Content-Type", "").split(";")[0] != "application/x-www-form-urlencoded":
+                        raise CapabilityBlock("OIDC_FORM_POST_REQUIRED")
+                    length = int(self.headers.get("Content-Length", "0"))
+                    if not 0 < length <= 16384 or self.headers.get("Transfer-Encoding"):
+                        raise CapabilityBlock("OIDC_CALLBACK_SIZE_INVALID")
+                    fields = parse_qs(self.rfile.read(length).decode("utf-8"), keep_blank_values=True, max_num_fields=8)
+                    if any(len(values) != 1 for values in fields.values()):
+                        raise CapabilityBlock("OIDC_DUPLICATE_CALLBACK_FIELD")
+                    fields = {key: values[0] for key, values in fields.items()}
+                    with runtime.lock:
+                        local = auth.complete(fields)
+                    nonce = secrets.token_urlsafe(24)
+                    origin = auth.config["redirect_uri"].split("/personal/")[0]
+                    message = json.dumps({"type": "qikvrt-oidc-result", "state": fields["state"], "token": local}).replace("<", "\\u003c")
+                    html = ('<!doctype html><meta charset="utf-8"><title>Anmeldung</title>'
+                            '<p>Anmeldung abgeschlossen. Dieses Fenster kann geschlossen werden.</p>'
+                            '<script nonce="' + nonce + '">if(window.opener){window.opener.postMessage(' + message + ',' + json.dumps(origin) + ');window.close();}</script>')
+                    return self._personal_response(200, html.encode(), "text/html; charset=utf-8", nonce=nonce)
+                if auth and self.path == "/personal/auth/start":
+                    self._personal_guard(public=True)
+                    if self.headers.get("Origin") != "http://" + self.headers.get("Host", ""):
+                        raise CapabilityBlock("OIDC_BROWSER_ORIGIN_REQUIRED")
+                    if self._read_body() != {"confirmed": True}:
+                        raise CapabilityBlock("OIDC_EXPLICIT_SIGN_IN_REQUIRED")
+                    with runtime.lock:
+                        return self._personal_response(200, auth.begin())
                 self._personal_guard()
                 body = self._read_body()
                 if body.get("confirmed") is not True:
                     raise CapabilityBlock("EXPLICIT_MODEL_REQUEST_CONFIRMATION_REQUIRED")
-                if self.path == "/personal/create":
+                if auth and self.path in {"/personal/auth/renew", "/personal/auth/logout"}:
+                    if set(body) != {"confirmed"}:
+                        raise CapabilityBlock("OIDC_AUTH_OPERATION_FIELDS_INVALID")
+                    with runtime.lock:
+                        if self.path.endswith("logout"):
+                            result = auth.logout()
+                            runtime.auth_receipt = None
+                        else:
+                            auth.authenticate(self.headers.get("Authorization", "").removeprefix("Bearer "), renew=True)
+                            result = auth.status()
+                elif self.path == "/personal/create":
                     if set(body) != {"mode", "task", "sources", "confirmed"}:
                         raise CapabilityBlock("CREATE_FIELDS_INVALID")
                     result = runtime.create(body["mode"], body["task"], body["sources"])
@@ -452,6 +532,11 @@ def personal_handler(base_handler, runtime: PersonalRuntime):
                 self._personal_response(409, {"state": "BLOCK", "reason": str(exc), "ordinary_release": False})
             except (ValueError, TypeError, KeyError, OSError):
                 self._personal_response(400, {"state": "BLOCK", "reason": "INVALID_REQUEST_OR_RUNTIME_FAILURE", "ordinary_release": False})
+
+        def log_message(self, *args):
+            # Neither callback bodies, authorization headers nor arbitrary URL
+            # queries may enter the base server's access log.
+            return
 
         def do_OPTIONS(self):
             if self.path.startswith("/personal/"):

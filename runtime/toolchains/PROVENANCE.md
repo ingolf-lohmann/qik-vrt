@@ -307,3 +307,30 @@ https://github.com/containers/skopeo , https://quay.io/repository/skopeo/stable 
 https://docs.docker.com/build/ci/github-actions/reproducible-builds/ .
 
 Frozen production carrier: existing PR494, run 37710500668, artifact11521962723; exact source, ZIP, delivery, sealed package and OCI/config pins are in runtime/self-host/CONTAINER_CARRIER.json. Original seven ordered layer bytes are reused through Buildx named OCI context, independently checked before use. Original 223 sealed package files were locally byte-verified. Production application acceptance is always new-source evidence. The build-only Git/Make provisioning layer is excluded from the runtime image. The original artifact expires 2026-11-07; an unavailable original holds, never silently rebuilds. Primary source: https://github.com/ingolf-lohmann/qik-vrt/pull/494 ; named contexts: https://docs.docker.com/reference/cli/docker/buildx/build/ .
+
+## Optional Personal OIDC profile (2026-10-16)
+
+`personal-firefox-oidc` uses cryptography 50.0.2, cffi 2.1.1 and pycparser 3.0
+in a separately provisioned private environment. The lock specifies versions,
+not a fetched wheel/archive witness. No packages are installed implicitly.
+Provision a new environment when needed; never downgrade an installed runtime.
+A successor dependency version requires a reviewed lock update and fresh RSA
+controls. Standard has no dependency on this optional profile.
+
+Linux storage uses the fixed system libsecret `secret-tool` executable and the
+user's protected Secret Service login collection. Package availability is not
+evidence of an encrypted/unlocked collection or of persistent credentials.
+Native desktop acceptance must check that protection and real restart. A locked
+or missing service holds execution; there is no file/SQLite fallback. Store
+contents and mutable authentication state are excluded from every cache.
+
+Primary component and protocol authorities:
+- https://cryptography.io/en/50.0.2/installation/
+- https://cryptography.io/en/50.0.2/hazmat/primitives/asymmetric/rsa/
+- https://gnome.pages.gitlab.gnome.org/libsecret/
+- https://github.com/GNOME/libsecret/blob/main/tool/secret-tool.c
+- https://openid.net/specs/openid-connect-core-1_0.html
+- https://www.rfc-editor.org/rfc/rfc7636
+- https://www.rfc-editor.org/rfc/rfc8252
+- https://www.rfc-editor.org/rfc/rfc9700
+- https://www.rfc-editor.org/rfc/rfc7009

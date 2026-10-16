@@ -233,7 +233,7 @@ time.sleep(30)
         env.pop("OPENAI_API_KEY", None); env.pop("QIKVRT_PERSONAL_LOCAL_TOKEN", None)
         result = subprocess.run([sys.executable, "-B", "src/qikvrt_effect_ack_http_terminal.py", "--personal-state-dir", str(Path(self.tmp.name) / "missing"), "--personal-model", "explicit-test-model"], cwd=personal.ROOT, env=env, capture_output=True, text=True, timeout=5)
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("LOCAL_PAIRING_SECRET_REQUIRED", result.stderr)
+        self.assertIn("PROTECTED_PERSONAL_AUTH_CONFIGURATION_REQUIRED", result.stderr)
         self.assertFalse((Path(self.tmp.name) / "missing").exists())
 
 

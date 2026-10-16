@@ -3,6 +3,152 @@
 
 # Universales Raumzeit-Terminal
 
+## Geschützter Personal-Anmeldepfad, 16.10.2026
+
+Der vorhandene Personal-Adapter hat jetzt einen ausführbaren, ausdrücklich
+getrennten OIDC-Pfad. Die normale Personal-CLI verlangt
+`--personal-auth-config`; der bisherige Prozessspeicher-/Kopplungspfad benötigt
+nun ausdrücklich `--personal-legacy-memory-pairing`. Der Standardserver startet
+weiterhin ohne Personal-Payload, OIDC-Konfiguration oder neue Abhängigkeiten.
+
+Der neue Pfad verwendet Authorization Code, PKCE S256 und eine einmalige,
+fünf Minuten gültige State-/Nonce-Bindung. `response_mode=form_post` hält den
+Code aus URL, Verlauf und Referer heraus. Der Callback akzeptiert keine
+doppelten Felder. Signatur (RS256), konfigurierter Issuer, ausschließlich
+registrierte Client-Audience, gebundener Owner-Subject, Nonce und Gültigkeit
+werden geprüft. Die öffentliche Discovery muss die explizit konfigurierten
+Endpunkte und die benötigten Protokollfähigkeiten bestätigen. Es gibt keine
+Wildcard-Issuer, automatische Anbieterwahl oder Übertragung einer ChatGPT-Sitzung.
+
+Identitätsanmeldung und OpenAI-/Gemini-API-Berechtigung sind getrennte Träger.
+Ein Microsoft-, Apple- oder anderer SSO-Login liefert keinen OpenAI-API-Key.
+Microsoft OIDC mit Code/PKCE wurde anhand der Primärdokumentation als möglicher
+Weg geprüft; eine registrierte Client-/Issuer-/Subject-Bindung für diesen
+Personal-Client ist in diesem Work Unit nicht nachgewiesen. Niemand erhält
+Zugriff allein wegen einer passenden E-Mail-Adresse. Ein real gewählter Anbieter
+muss die vom Client verlangten Funktionen tatsächlich unterstützen; seine
+Passkey-/WebAuthn-Oberfläche übernimmt auf Wunsch die Geräteverifikation.
+Der Adapter sammelt keine Biometrie und behauptet weder eine bestimmte
+biometrische Modalität noch ein bestimmtes Assurance Level.
+
+### Geschützter Speicher und Sitzungslebensdauer
+
+Unter Linux nutzt der Adapter `/usr/bin/secret-tool` aus dem signierten
+libsecret-Systempaket und die geschützte Login-Collection des angemeldeten
+Desktop-Benutzers. Nicht als root oder in einem fremden Desktop-/D-Bus-Kontext
+betreiben. Der Betreiber muss die tatsächlich verschlüsselte Collection und
+deren Sperr-/Entsperrverhalten nativ abnehmen; Secret Service allein ist keine
+Verschlüsselungsattestierung. Fehlt der Dienst oder bleibt er gesperrt, bricht
+der Pfad ab. Ein ungeschützter File-, SQLite- oder Browser-Storage-Fallback
+existiert nicht. Windows-/macOS-Backends sind noch nicht implementiert.
+
+Modell-Key, OIDC-Tokenpaar, lokale Sitzungskennung und Refresh-Journal liegen
+ausschließlich in einem profilgebundenen Secret-Service-Eintrag. Jeder Write
+wird geschützt zurückgelesen. Der Browser erhält nur einen kurzlebig nutzbaren
+lokalen Bearer im Seitenspeicher über eine origin-/popup-/state-geprüfte
+`postMessage`-Antwort. Keine Anwendungs-Cookies, LocalStorage oder SessionStorage;
+keine Tokens oder Codes in URL, Zugriffsausgabe, Git oder Gesprächs-SQLite.
+Das Schließen/Neuladen der Seite verwirft den Browser-Bearer. Erneute lokale
+Verbindung erfolgt über den vorhandenen Anbieter-SSO-Pfad; sie ist kein
+Versprechen eines promptfreien Browser-Neustarts. Die geschützten Serverdaten
+bleiben beim Prozessneustart erhalten; ihre Verwendung erfordert zunächst
+eine aktuelle Token-Erneuerung. Eine lokale Anmeldung endet spätestens nach
+zwölf Stunden und kann durch erneute OIDC-Anmeldung ersetzt werden.
+
+Vor jedem Refresh wird `REFRESH_PENDING` geschützt geschrieben. Nach erfolgreicher
+Antwort muss ein neues Refresh-Token vorliegen; es wird mit Readback gespeichert.
+Ein Timeout/Absturz nach möglicher Rotation bleibt pending und wird nicht
+automatisch mit dem alten Token wiederholt. Ein eindeutiger Authentifizierungs-
+fehler verlangt Wiederanmeldung. Die anbieterseitige Rotation/Replay-Erkennung
+muss zur registrierten Public-Client-Konfiguration gehören; eine geänderte
+Tokenzeichenfolge attestiert diese Servereigenschaft nicht unabhängig.
+
+Abmelden entwertet zuerst den lokalen Bearer. Ist ein RFC7009-Endpunkt ausdrücklich
+konfiguriert und per Discovery gebunden, werden Refresh- und Access-Token einzeln
+widerrufen. Ein Endpoint-ACK ist keine unabhängige Token-Reuse-Prüfung und beendet
+nicht automatisch die globale Anbieter-Sitzung. Ohne unterstützten Endpunkt
+meldet der Client den externen Widerruf als `UNSUPPORTED`. Bei unbekanntem
+Ergebnis bleiben die Geheimnisse ausschließlich im geschützten Pending-Journal;
+keine Wiederholung. Reconciliation muss über die autorisierte Anbieter-
+Sitzungsverwaltung erfolgen, bevor dieses Profil weiterverwendet wird.
+
+### Native Einrichtung
+
+Die optionalen Abhängigkeiten stehen in
+`runtime/toolchains/requirements-personal-auth-50.0.2.txt`; der neue Cache-Vertrag
+beinhaltet Version, Herkunft, Ausfallgrenze und Tests. Die Datei ist kein
+heruntergeladener Wheel-Nachweis. Eine isolierte Personal-Umgebung wird separat
+bereitgestellt; installierte Versionen werden niemals zurückgestuft.
+
+Eine private Datei außerhalb jedes Git-Projekts, Modus 0600, bindet den bereits
+autorisierten registrierten Public Client. Diese Vorlage enthält Platzhalter
+und wird unverändert absichtlich abgelehnt:
+
+```json
+{
+  "issuer": "https://<registered-issuer>",
+  "client_id": "<registered-public-client-id>",
+  "subject": "<verified-owner-subject>",
+  "authorization_endpoint": "https://<registered-issuer>/authorize",
+  "token_endpoint": "https://<registered-issuer>/token",
+  "jwks_uri": "https://<registered-issuer>/keys",
+  "revocation_endpoint": "https://<registered-issuer>/revoke",
+  "redirect_uri": "http://127.0.0.1:8771/personal/auth/callback",
+  "refresh_protection": "rotation"
+}
+```
+
+Ein Anbieter ohne RFC7009 darf `revocation_endpoint` auslassen; der Client darf
+dann keinen erfolgreichen Anbieter-Widerruf behaupten. Ein optionaler
+`end_session_endpoint` wird ebenfalls genau gebunden. Keine Client-Secrets in
+dieser Konfigurationsdatei; dieser Pfad ist ausschließlich ein Public Client.
+Keine OAuth-Client-ID eines anderen Produkts wiederverwenden.
+
+Den separat autorisierten Modell-Key einmal im eigenen Terminal verdeckt in
+den OS-Speicher eingeben; er steht weder in Argumenten noch in Ausgabe/Umgebung:
+
+```bash
+python3 -B src/qikvrt_effect_ack_http_terminal.py \
+  --personal-state-dir /private/runtime/qikvrt-personal \
+  --personal-auth-config /private/runtime/registered-oidc.json \
+  --personal-store-model-credential
+
+python3 -B src/qikvrt_effect_ack_http_terminal.py \
+  --personal-state-dir /private/runtime/qikvrt-personal \
+  --personal-auth-config /private/runtime/registered-oidc.json \
+  --personal-model <explicit-model-id>
+```
+
+Danach in Firefox `http://127.0.0.1:8771/personal/` öffnen und beim gebundenen
+Identitätsanbieter anmelden. Der Token-POST erfolgt serverseitig; es gibt keine
+Eingabe persönlicher Anbieterpasswörter in die lokale Oberfläche.
+
+### Getrennte Nachweise
+
+`make personal-firefox-boundary-test` führt die bestehenden Tests und den neuen
+Lifecycle-Vertrag aus. Der neue Vertrag simuliert IdP und OS-Speicher, einschließlich
+echtem Prozessabbruch/-neustart mit ausschließlich erfundenen temporären
+Fixturewerten. Separate Tests führen echte RSA-Signatur-/Negativkontrollen mit
+dem optionalen cryptography-Runtime durch. Ist dieser Runtime nicht vorhanden,
+werden diese gesondert markiert übersprungen; das ist keine Signaturabnahme.
+Es sind keine Nutzeranmeldungen, keine native Secret-Service-Persistenzabnahme
+und keine realen Firefox-Produkttests. `authenticated_runtime_readback` bleibt
+separat an eine tatsächliche Modellantwort gebunden. Das Capability-Manifest
+bewahrt die offenen Produktgrenzen.
+
+Primärquellen:
+
+- https://openid.net/specs/openid-connect-core-1_0.html
+- https://openid.net/specs/oauth-v2-form-post-response-mode-1_0.html
+- https://www.rfc-editor.org/rfc/rfc7636
+- https://www.rfc-editor.org/rfc/rfc8252
+- https://www.rfc-editor.org/rfc/rfc9700
+- https://www.rfc-editor.org/rfc/rfc7009
+- https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-auth-code-flow
+- https://learn.microsoft.com/en-us/entra/identity-platform/v2-protocols-oidc
+- https://gnome.pages.gitlab.gnome.org/libsecret/
+- https://cryptography.io/en/50.0.2/installation/
+
 ## Optionaler Argon-Prüfkandidat vom 14.10.2026
 
 Der vorhandene Server unterstützt nun zusätzlich die explizite Auswahl
@@ -24,7 +170,8 @@ Technische Prüfung: `python3 -B -m unittest discover -s tests -p 'test_qikvrt_g
 Transport-Doubles sind keine authentifizierten Argon-Antworten. Live-Nutzung
 setzt einen für den Zweck zulässigen Paid-Service-Zugang, sicher bereitgestellte
 Credentials und den in `ARGON_REVIEW.md` beschriebenen Rechtecheck voraus.
-Der Kandidat implementiert kein Browser-Autonomietool und keine SSO-/Passkey-Anmeldung.
+Dieser ältere Argon-Kandidat implementiert kein Browser-Autonomietool;
+der neue getrennte OIDC-Pfad ist oben beschrieben.
 
 Der technische Produktname lautet **Universales Raumzeit-Terminal**. Product
 Owner Ingolf Lohmann hat diesen Namen am 2026-10-05 freigegeben. QIK-VRT bleibt
@@ -41,7 +188,7 @@ Dokumentationsdialoge aus. Er ist kein zweiter Webserver, keine Kopie des
 Firefox-Pakets und kein Mess-Harness. Der Standarddownload erhält keine
 persönlichen Inhalte. Manifest: `CAPABILITIES.json`.
 
-## Start und echte Authentifizierung
+## Bisheriger Memory-Pfad für ausdrückliche Entwicklungstests
 
 Python-Standardbibliothek einschließlich SQLite, vorhandene Toolchain; kein
 zusätzliches SDK und kein stiller Modellwechsel. Im Backend-Prozess müssen
@@ -54,6 +201,7 @@ Die Auswahl des konkreten verfügbaren Modells erfolgt explizit:
 ```bash
 python3 -B tools/qikvrt_tool_cache.py verify
 python3 -B src/qikvrt_effect_ack_http_terminal.py \
+  --personal-legacy-memory-pairing \
   --personal-state-dir /private/runtime/qikvrt-personal \
   --personal-model <explicit-model-id>
 ```

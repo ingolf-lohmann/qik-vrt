@@ -1,6 +1,6 @@
 {
   "schema": "qikvrt_personal_assistant_capabilities_v1",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "product_name": "Universales Raumzeit-Terminal",
   "product_descriptor": "Persönlicher Browserassistent für quellgebundene Recherche, Dokumentation und Fortsetzung",
   "license": "PolyForm-Noncommercial-1.0.0",
@@ -14,17 +14,21 @@
     "create_source_bound_task",
     "research_documentation_turn",
     "ordinary_history_readback",
-    "resume_observed_checkpoint"
+    "resume_observed_checkpoint",
+    "identity_sign_in",
+    "rotate_refresh_token",
+    "local_sign_out",
+    "provider_token_revocation_when_supported"
   ],
   "provider": {
     "authority": "https://api.openai.com/v1",
-    "authentication": "SERVER_MEMORY_BEARER_FROM_OPENAI_API_KEY",
+    "authentication": "OS_SECRET_SERVICE_MODEL_KEY; EXPLICIT_LEGACY_MEMORY_OPTION",
     "model": "EXPLICIT_RUNTIME_ARGUMENT_REQUIRED",
     "api": "RESPONSES_WITH_CONVERSATIONS",
     "chatgpt_signed_in_session_bridge": "NOT_IMPLEMENTED_OR_ATTESTED",
     "proprietary_runtime_redistributed": false
   },
-  "client_authentication": "EPHEMERAL_LOCAL_BEARER_FROM_QIKVRT_PERSONAL_LOCAL_TOKEN",
+  "client_authentication": "OIDC_AUTHORIZATION_CODE_PKCE_S256_WITH_MEMORY_ONLY_BROWSER_BEARER",
   "credentials_in_repository_or_runtime_database": false,
   "normal_baseline": {
     "identity": "SAME_SOURCE_BOUND_ASSISTANT_ORDINARY_CONVERSATION_MODE",
@@ -69,5 +73,25 @@
       "live_runtime_verified": false,
       "use_and_entitlement_review": "OPEN_FOR_LIVE_USE"
     }
+  },
+  "identity_authentication": {
+    "implementation": "src/qikvrt_personal_auth.py",
+    "registered_provider": "UNBOUND_PENDING_PRIVATE_CONFIGURATION",
+    "public_client": true,
+    "pkce": "S256",
+    "response_mode": "form_post",
+    "id_token_validation": "RS256_SIGNATURE_ISSUER_OWNER_SUBJECT_AUDIENCE_NONCE_EXPIRY",
+    "credential_store": "LINUX_SECRET_SERVICE_VIA_SYSTEM_LIBSECRET_SECRET_TOOL",
+    "plaintext_fallback": false,
+    "refresh": "PROTECTED_PENDING_JOURNAL_AND_ROTATION; NO_UNCHANGED_AMBIGUOUS_RETRY",
+    "local_session_max_age_seconds": 43200,
+    "browser_storage": "MEMORY_ONLY_NO_APPLICATION_COOKIE_LOCALSTORAGE_OR_SESSIONSTORAGE",
+    "passkeys": "DELEGATED_TO_REGISTERED_IDP_AND_DEVICE; NOT_ATTESTED",
+    "remote_revocation": "RFC7009_IF_ADVERTISED_AND_PINNED; ENDPOINT_ACK_IS_NOT_INDEPENDENT_REUSE_TEST",
+    "native_secret_store_witness": false,
+    "authenticated_identity_runtime_readback": false,
+    "firefox_identity_flow_observed": false,
+    "windows_macos_secure_backend": "NOT_IMPLEMENTED",
+    "test_evidence": "SIMULATED_OIDC_AND_STORE; SEPARATE_REAL_RSA_CONTROLS; NO_PRODUCT_AUTHENTICATION"
   }
 }

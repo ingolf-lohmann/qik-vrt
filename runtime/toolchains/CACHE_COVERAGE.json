@@ -80,6 +80,12 @@
     },
     {
       "cache_class": "ecosystem-cache",
+      "component": "personal-auth-crypto",
+      "provider": "Official PyPI distributions from pyca and their cffi/pycparser maintainers; optional private runtime environment only",
+      "version": "cryptography50.0.2+cffi2.1.1+pycparser3.0"
+    },
+    {
+      "cache_class": "ecosystem-cache",
       "component": "playwright-offline-tests",
       "provider": "npm integrity-bound package and browser artifacts",
       "version": "1.62.1"
@@ -125,6 +131,12 @@
       "component": "react-browser",
       "provider": "Pinned React 19.2.6, React DOM 19.2.6 and Scheduler 0.27.0 production CommonJS source bytes; MIT",
       "version": "19.2.6+0.27.0"
+    },
+    {
+      "cache_class": "runner-image-layer",
+      "component": "secret-tool",
+      "provider": "GNOME libsecret via signed operating-system distribution package; actual user desktop Secret Service required",
+      "version": "system-libsecret-executable-contract"
     },
     {
       "cache_class": "ecosystem-cache",
@@ -195,10 +207,10 @@
   ],
   "coverage_basis": "unique components in runtime/toolchains/TOOLCHAIN.lock.tsv",
   "coverage_percent": 100,
-  "covered_components": 32,
-  "declared_components": 32,
-  "lock_sha256": "b74996292e83d3657ae3032176225fd6ff3d969ef7afd00a0fbf0d6b3df652ce",
-  "registry_sha256": "0e8991b9b734558775d9e53275c3076d90139cfff9d8196166b6e62f87dd776e",
+  "covered_components": 34,
+  "declared_components": 34,
+  "lock_sha256": "9eafe8dfac94cc6aebd2b2d43e5e62b9791e61521ed8d933dff51d6360e3500f",
+  "registry_sha256": "3ead8e595b77d396df5d2f931e4f140bfdf28d9b0913e2e5605160e53117f7c4",
   "rules": {
     "all_declared_tools_have_cache_strategy": true,
     "cache_never_replaces_required_checks": true,

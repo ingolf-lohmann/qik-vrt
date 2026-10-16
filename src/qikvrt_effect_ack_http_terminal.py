@@ -27,6 +27,7 @@ import sqlite3
 import stat
 import struct
 import subprocess
+import sys
 import threading
 import time
 from dataclasses import dataclass
@@ -589,7 +590,34 @@ def main() -> int:
     parser.add_argument("--personal-state-dir", help="Opt-in Personal adapter: private runtime data directory")
     parser.add_argument("--personal-model", help="Explicit model identifier; no implicit model substitution")
     parser.add_argument("--personal-provider", choices=("openai", "gemini"), default="openai")
+    parser.add_argument("--personal-auth-config", type=Path, help="Private registered OIDC public-client configuration; enables OS Secret Service mode")
+    parser.add_argument("--personal-legacy-memory-pairing", action="store_true", help="Explicit legacy test/development mode; no durable SSO or release acceptance")
+    parser.add_argument("--personal-store-model-credential", action="store_true", help="Provision the selected model key to OS Secret Service from a terminal prompt, then exit")
     args = parser.parse_args()
+    if args.personal_store_model_credential:
+        if not args.personal_state_dir or not args.personal_auth_config or args.operation != "serve":
+            raise SystemExit("BLOCK: explicit Personal state and OIDC configuration required")
+        from qikvrt_personal_auth import OSSecretStore, load_config
+        import getpass
+        import warnings
+        try:
+            load_config(args.personal_auth_config, f"http://127.0.0.1:{args.port}")
+            store = OSSecretStore(args.personal_state_dir, args.personal_provider)
+            with store.provision_lock(args.personal_state_dir):
+                bundle = store.read()
+                if not sys.stdin.isatty():
+                    raise ValueError("SECURE_INTERACTIVE_TERMINAL_REQUIRED")
+                with warnings.catch_warnings():
+                    warnings.simplefilter("error", getpass.GetPassWarning)
+                    key = getpass.getpass("Model API credential (OS protected store): ")
+                if not key or any(c.isspace() for c in key) or len(key) > 16384:
+                    raise ValueError("MODEL_CREDENTIAL_INVALID")
+                bundle.setdefault("provider_keys", {})[args.personal_provider] = key
+                store.write(bundle)
+            print(json.dumps({"state": "PROTECTED_STORE_READBACK_VERIFIED", "credential_reference": store.profile}))
+            return 0
+        except (ValueError, OSError, getpass.GetPassWarning):
+            raise SystemExit("BLOCK: protected credential provisioning unavailable") from None
     if args.operation != "serve":
         try:
             if not all((args.repository, args.pr, args.expected_head, args.expected_tree, args.input)):
@@ -625,12 +653,20 @@ def main() -> int:
     if args.personal_state_dir:
         from qikvrt_personal_assistant import PersonalRuntime, personal_handler
         try:
-            runtime = PersonalRuntime.from_environment(args.personal_state_dir, args.personal_model, args.personal_provider)
+            if args.personal_auth_config:
+                if args.personal_legacy_memory_pairing:
+                    raise ValueError("PERSONAL_AUTH_MODES_ARE_MUTUALLY_EXCLUSIVE")
+                runtime = PersonalRuntime.from_secret_store(args.personal_state_dir, args.personal_model, args.personal_provider,
+                    args.personal_auth_config, f"http://127.0.0.1:{args.port}")
+            elif args.personal_legacy_memory_pairing:
+                runtime = PersonalRuntime.from_environment(args.personal_state_dir, args.personal_model, args.personal_provider)
+            else:
+                raise ValueError("PROTECTED_PERSONAL_AUTH_CONFIGURATION_REQUIRED")
             handler = personal_handler(Handler, runtime)
         except (ValueError, OSError) as exc:
             raise SystemExit("BLOCK: " + str(exc)) from None
-    elif args.personal_model:
-        raise SystemExit("BLOCK: --personal-model requires --personal-state-dir")
+    elif args.personal_model or args.personal_auth_config or args.personal_legacy_memory_pairing:
+        raise SystemExit("BLOCK: Personal arguments require --personal-state-dir")
     server = ThreadingHTTPServer((args.host, args.port), handler)
     print(json.dumps({"state": "READY", "host": args.host, "port": args.port,
                       "personal_adapter_enabled": runtime is not None,

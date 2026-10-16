@@ -327,6 +327,31 @@
       ],
       "version": "reported-version-and-exact-package-digest"
     },
+    "personal-auth-crypto": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/toolchains/PROVENANCE.md",
+        "src/qikvrt_personal_auth.py",
+        "tests/test_qikvrt_personal_auth.py",
+        "personal/ingolf-lohmann/firefox-assistant/README.md",
+        "runtime/toolchains/requirements-personal-auth-50.0.2.txt"
+      ],
+      "cache_class": "ecosystem-cache",
+      "cache_locations": [
+        "operator-provisioned-personal-venv:versioned-package-installation"
+      ],
+      "profiles": [
+        "personal-firefox-oidc"
+      ],
+      "provider": "Official PyPI distributions from pyca and their cffi/pycparser maintainers; optional private runtime environment only",
+      "trusted_save": false,
+      "verification": [
+        "Exact imported cryptography 50.0.2 runtime guard; locked cffi2.1.1/pycparser3.0 provisioning contract",
+        "Real generated RSA signature validation and negative controls in tests/test_qikvrt_personal_auth.py",
+        "If unavailable or a different version is installed: HOLD; never downgrade or modify the Standard runtime"
+      ],
+      "version": "cryptography50.0.2+cffi2.1.1+pycparser3.0"
+    },
     "playwright-offline-tests": {
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
@@ -557,6 +582,30 @@
         "Existing hash-checked client replica handles event snapshots; no CDN, npm install or server renderer at startup; missing or changed static bytes fail closed"
       ],
       "version": "19.2.6+0.27.0"
+    },
+    "secret-tool": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/toolchains/PROVENANCE.md",
+        "src/qikvrt_personal_auth.py",
+        "tests/test_qikvrt_personal_auth.py",
+        "personal/ingolf-lohmann/firefox-assistant/README.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "operator-provisioned-linux-desktop:signed-distribution-package"
+      ],
+      "profiles": [
+        "personal-firefox-oidc"
+      ],
+      "provider": "GNOME libsecret via signed operating-system distribution package; actual user desktop Secret Service required",
+      "trusted_save": false,
+      "verification": [
+        "Fixed /usr/bin/secret-tool regular root-owned executable without group/world write",
+        "Stdin-only secret transfer and exact protected-store readback; no fallback",
+        "Native acceptance requires protected login collection and real lock/unlock/restart/deletion witness; current CI fixture is not that witness"
+      ],
+      "version": "system-libsecret-executable-contract"
     },
     "sherpa-onnx-node": {
       "authority_files": [

@@ -70,9 +70,33 @@ full local transcripts, saved outputs and session restore. Only the observed,
 source-bound checkpoint included on resume differs. Model output is never
 independent acceptance. No harness oracle is loaded by the adapter.
 
-The implemented authentication is server-side OpenAI API bearer authentication
-plus an ephemeral local client bearer. A signed-in ChatGPT/SSO bridge is not
-implemented or established. Runtime credentials and browser authentication
-state are never committed or placed in the SQLite store. Source availability,
-test doubles, a local paired client and a restored transcript do not establish
-external authentication, provider retention readback or a Firefox product run.
+The original adapter's authentication used a server-side OpenAI API bearer and
+an ephemeral local client bearer. That development mode now requires the explicit
+`--personal-legacy-memory-pairing` option. The default Personal CLI requires an
+explicit private registered OIDC configuration and the opt-in OS-secret-store
+path in `src/qikvrt_personal_auth.py`; Standard has no such dependency.
+
+The new path implements public-client Authorization Code with PKCE S256,
+form_post callback, one-time state/nonce, pinned discovery and RS256 validation
+of issuer, Owner subject, client audience and token lifetime. Linux Secret
+Service holds the model credential, renewable token pair and protected pending
+journal. No file/database fallback is permitted. After process restart, a current
+refresh is required before an existing local bearer is admitted. Local browser
+bearers stay in page memory; no application cookies or browser storage are used.
+Reopening the page requires the provider's existing SSO authorization flow.
+
+Logout invalidates local admission before optional RFC7009 revocation. Missing
+provider support and ambiguous external effects remain explicit and never
+authorize unchanged retries. A revocation endpoint ACK does not attest global
+provider logout or independent rejection of a reused token. Passkeys/WebAuthn
+and biometric verification are delegated to the actually registered IdP/device;
+no biometric templates or modality assertions are collected. Identity SSO does
+not grant a model API entitlement or transfer a signed-in ChatGPT session.
+
+No real IdP registration/binding, native protected-login-collection witness,
+productive personal authentication or actual Firefox SSO run is attested by
+these source components and simulations. Windows/macOS secret backends remain
+unimplemented. Runtime credentials and browser authentication state are never
+committed or placed in the transcript SQLite store. Source availability, test
+doubles, RSA controls and restored transcripts do not establish external
+authentication, provider retention readback or a Firefox product run.
