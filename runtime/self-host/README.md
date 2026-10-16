@@ -270,6 +270,38 @@ profile still requires that bootstrap and refuses `--adapter none`.
 The PowerShell checker carries the same adapter selection; the actual service
 launcher is Linux-only. The profile checker is readiness, not deployment proof.
 
+## Bounded transfer of an existing dependency image
+
+The existing Firefox-158 dependency ZIP can exceed the connector's 512-MiB
+artifact limit even though native Actions can read it. The existing CI exporter
+therefore also preserves up to four separate 256-MiB payloads and a small
+`DELIVERY.json`/`PARTS.json` artifact. Each part has its own native artifact ID,
+ZIP digest and original-byte digest. The workflow independently downloads the
+parts and restores the original pinned archive before publishing the delivery
+receipt. Existing single-artifact consumers remain compatible.
+
+The existing S1 entrypoint exposes the same bounded file operations:
+
+```sh
+python3 -B tools/qikvrt_self_host.py container-artifact-split \
+  --carrier-archive /private/image.docker.tar.gz \
+  --transport-sha256 <original-archive-pin> --output /private/parts \
+  --receipt /private/split.json
+python3 -B tools/qikvrt_self_host.py container-artifact-join \
+  --root /private/delivered-parts --output /private/restored-image.docker.tar.gz \
+  --manifest-sha256 <PARTS.json-pin> --transport-sha256 <original-archive-pin> \
+  --receipt /private/restore.json
+```
+
+Download and verify each ZIP against `DELIVERY.json`, place only its declared
+part beside the pinned `PARTS.json`, then reassemble. The join refuses missing,
+corrupt, reordered, symlinked or path-changing parts and never overwrites an
+existing destination. The restored file is independently read back. Neither
+operation imports or runs an image, signs or activates an extension, authorizes
+a deployment, migrates a private profile, or transfers predecessor acceptance.
+The original image source and the transport-exporter source remain separate.
+The existing signing, governance, private host and exact-domain gates remain.
+
 ## Authenticated Owner REST input
 
 The native `temdd` and `firefox` profiles now provide direct HTTP input through
@@ -1064,3 +1096,4 @@ Production remains unverified until those host and independent HTTP operations
 actually succeed. Native Main governance and review remain separate gates.
 No provider purchase, DNS write, second website, new controller or automatic
 Main promotion is included.
+

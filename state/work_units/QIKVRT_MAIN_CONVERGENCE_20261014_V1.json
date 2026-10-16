@@ -504,6 +504,23 @@
       "source_tree_before_change": "2fc829e5718ca7119ae772927767c9a80e0d45a1"
     },
     "artificial_cognitive_contribution": "OpenAI Codex / GPT-6; platform-session attribution only",
+    "bounded_transport_repair_20261017": {
+      "authorization": "Continue cleanup through the actual native Transputer/Firefox/domain result; prior authorization retained.",
+      "cause": "Verified frozen Firefox158 dependency ZIP is 569395196 bytes; existing artifact connector accepts at most 536870912 bytes.",
+      "effect_ack_done": false,
+      "extension_activation_verified": false,
+      "image_imported": false,
+      "owner": "Ingolf Lohmann",
+      "public_production_verified": false,
+      "required_witness": "Separate native ZIPs each below connector maximum; original part pins and archive pin; independent download-back, create-only reassembly and original-byte readback.",
+      "reuse": "Existing S1 container module, CLI and qikvrt_ci workflow; no new workflow, executor, credential store or production bypass.",
+      "source_head": "aba4eee6d2ea8463920bf13812dcd466ec7705e3",
+      "source_tree": "b006136a5d6aa25210715767178860404acd6aa2",
+      "source_validation": "Targeted local transport regression tests; native full candidate CI remains required.",
+      "transport_max_parts": 4,
+      "transport_native_verified": false,
+      "transport_part_payload_bytes": 268435456
+    },
     "candidate_validation": {
       "classified_entries_verified": 4241,
       "configured_full_make_test": {
@@ -554,10 +571,10 @@
     "minimum": "158.0",
     "minimum_lowered": false,
     "native_observation": {
-      "artifact_bytes": 34503,
-      "artifact_id": 12026400905,
-      "artifact_sha256": "b57cfae649387177256b783dd3e9ce135374d34cc51aa1fa11571c2353b9799e",
-      "causal_input_sha256": "2f84d9f1b0eed9c8c34ea20d0808bb1a13e223134147a070f1cff92aa48c49d5",
+      "artifact_bytes": 34492,
+      "artifact_id": 12069227748,
+      "artifact_sha256": "32d8031fd963e8f266ddc95dca6c23c8e3f1addf4e47d27ebe325214e8e42155",
+      "causal_input_sha256": "3db359db3d8988e7d706ed2058e7736efc601014d6d09eec5d35aa6b9140387a",
       "causal_inputs": {
         "extension_blobs": {
           "background.js": "f177c4471af23a9cf8c9e875c6931887cf92272c",
@@ -568,12 +585,12 @@
           "terminal.css": "817d1e58a80422367cb63d49dbb826428d452ee6"
         },
         "image_digest": "sha256:eda9516930cf7a51f0342e9b154b430c386ad04b80ce6401ce6b7d1a103ac74d",
-        "probe_blob": "1c882c3016660b61ec55f3272e0572c54e5881ea",
+        "probe_blob": "f4784754fbe51b61523ea6b366ee0b89941cc3aa",
         "signed_xpi_artifact": null,
         "terminal_entrypoint_blob": "031dbdbee810e55df133ec9176b49e036eb3d75c",
         "upgrade_dockerfile_blob": "e4fae384b1a4a5e0cd061cf73d5c3d7f0f29a547"
       },
-      "job_id": 116819994679,
+      "job_id": 117145726795,
       "original_zip_download_and_hash_verified": true,
       "receipt": {
         "binary_path": "/usr/lib/firefox/firefox",
@@ -642,8 +659,8 @@
         "xpi_bytes": 9954,
         "xpi_sha256": "1f5f583181d6134584f98bf6b59848d4542176d624d97709fa915b9934e2c46c"
       },
-      "run_id": 38853563687,
-      "runtime_causal_input_sha256": "2f84d9f1b0eed9c8c34ea20d0808bb1a13e223134147a070f1cff92aa48c49d5",
+      "run_id": 38952009446,
+      "runtime_causal_input_sha256": "3db359db3d8988e7d706ed2058e7736efc601014d6d09eec5d35aa6b9140387a",
       "runtime_causal_inputs": {
         "extension_blobs": {
           "background.js": "f177c4471af23a9cf8c9e875c6931887cf92272c",
@@ -654,17 +671,17 @@
           "terminal.css": "817d1e58a80422367cb63d49dbb826428d452ee6"
         },
         "image_digest": "sha256:eda9516930cf7a51f0342e9b154b430c386ad04b80ce6401ce6b7d1a103ac74d",
-        "probe_runtime_sha256": "4fcbe75e05305403daa4152af446489302a7a8945ec04e4f1b19c933c6e7d018",
+        "probe_runtime_sha256": "b48a15b66d47ef99d441f2291d0564990f4b16fc476a6c3b43fe45ad3e2407b3",
         "signed_xpi_artifact": null,
         "terminal_entrypoint_blob": "031dbdbee810e55df133ec9176b49e036eb3d75c",
         "upgrade_dockerfile_blob": "e4fae384b1a4a5e0cd061cf73d5c3d7f0f29a547"
       },
-      "source_head": "533c8acad6f0f85291a8fd88f0268d7a9bb1e19a",
-      "source_tree": "b9d622f652ac8f41e8b2de3b9752c8edd3285486",
-      "subject_scope": "Actual upgraded Firefox158 CI container and exact unchanged six-file Standard XPI; not a productive host. Rejected initial persistent install and inactive post-restart profile remain HOLD.",
+      "source_head": "aba4eee6d2ea8463920bf13812dcd466ec7705e3",
+      "source_tree": "b006136a5d6aa25210715767178860404acd6aa2",
+      "subject_scope": "Actual exact-aba4eee6 Firefox158 CI container; original unsigned Standard XPI installation was rejected. No productive profile or host acceptance.",
       "xpi_source_binding": {
-        "candidate_head": "533c8acad6f0f85291a8fd88f0268d7a9bb1e19a",
-        "candidate_tree": "b9d622f652ac8f41e8b2de3b9752c8edd3285486",
+        "candidate_head": "aba4eee6d2ea8463920bf13812dcd466ec7705e3",
+        "candidate_tree": "b006136a5d6aa25210715767178860404acd6aa2",
         "effect_ack_done": false,
         "signed_candidate_available": false,
         "signed_production_package": false,
@@ -817,6 +834,157 @@
         "xpi_source_binding": {
           "candidate_head": "3136e142c01f05348e32dccaa3d234c596e02533",
           "candidate_tree": "2fc829e5718ca7119ae772927767c9a80e0d45a1",
+          "effect_ack_done": false,
+          "signed_candidate_available": false,
+          "signed_production_package": false,
+          "signing_blocker": "MOZILLA_SIGNING_BINDING_AND_SIGNED_XPI_UNAVAILABLE",
+          "source_files": [
+            {
+              "git_blob": "d311100e0cc14da7574f18a625d4e1feeedcbad7",
+              "path": "browser/firefox/qikvrt-terminal/manifest.json",
+              "sha256": "abe2708d7e4875be8a2757c9adf40c8968fdabada836d90b9a1fec4dc5799308"
+            },
+            {
+              "git_blob": "f177c4471af23a9cf8c9e875c6931887cf92272c",
+              "path": "browser/firefox/qikvrt-terminal/background.js",
+              "sha256": "c7747216fd0cf618ef3592d310ff5d1b2adad6d6c5f8339a9f1c2fe14044856b"
+            },
+            {
+              "git_blob": "61658f2fd7ceb62b25a13ef8486ba3a7b8a5c563",
+              "path": "browser/firefox/qikvrt-terminal/content.js",
+              "sha256": "e7a9bb13052036c6445d4f0f3391b03cf54ff73cee6646ba9237eff2e8fb1e07"
+            },
+            {
+              "git_blob": "0b3e36fb7b0fbb3bb187e1def2b940669e98cc81",
+              "path": "browser/firefox/qikvrt-terminal/options.html",
+              "sha256": "c74e5eefda9bcf0f39518e05aa613981d3367b84de9f13304a798ef1abcfaf2d"
+            },
+            {
+              "git_blob": "60ef9dc9c8b85b8abe70a23d2f38faccdc7aa8a9",
+              "path": "browser/firefox/qikvrt-terminal/options.js",
+              "sha256": "fc1008b5208bd1605c4a5db8d5359322bbc4783277176177757e174f93cfa92d"
+            },
+            {
+              "git_blob": "817d1e58a80422367cb63d49dbb826428d452ee6",
+              "path": "browser/firefox/qikvrt-terminal/terminal.css",
+              "sha256": "53eae4781aeb15135da760c52c5c2a8320f5c3a03e3d85866d500b293de05c87"
+            }
+          ],
+          "xpi_sha256": "1f5f583181d6134584f98bf6b59848d4542176d624d97709fa915b9934e2c46c"
+        }
+      },
+      {
+        "artifact_bytes": 34503,
+        "artifact_id": 12026400905,
+        "artifact_sha256": "b57cfae649387177256b783dd3e9ce135374d34cc51aa1fa11571c2353b9799e",
+        "causal_input_sha256": "2f84d9f1b0eed9c8c34ea20d0808bb1a13e223134147a070f1cff92aa48c49d5",
+        "causal_inputs": {
+          "extension_blobs": {
+            "background.js": "f177c4471af23a9cf8c9e875c6931887cf92272c",
+            "content.js": "61658f2fd7ceb62b25a13ef8486ba3a7b8a5c563",
+            "manifest.json": "d311100e0cc14da7574f18a625d4e1feeedcbad7",
+            "options.html": "0b3e36fb7b0fbb3bb187e1def2b940669e98cc81",
+            "options.js": "60ef9dc9c8b85b8abe70a23d2f38faccdc7aa8a9",
+            "terminal.css": "817d1e58a80422367cb63d49dbb826428d452ee6"
+          },
+          "image_digest": "sha256:eda9516930cf7a51f0342e9b154b430c386ad04b80ce6401ce6b7d1a103ac74d",
+          "probe_blob": "1c882c3016660b61ec55f3272e0572c54e5881ea",
+          "signed_xpi_artifact": null,
+          "terminal_entrypoint_blob": "031dbdbee810e55df133ec9176b49e036eb3d75c",
+          "upgrade_dockerfile_blob": "e4fae384b1a4a5e0cd061cf73d5c3d7f0f29a547"
+        },
+        "job_id": 116819994679,
+        "original_zip_download_and_hash_verified": true,
+        "receipt": {
+          "binary_path": "/usr/lib/firefox/firefox",
+          "binary_sha256": "a19472941a7cd7252ab5e61b02eb616a50389a784323c21dc6873a23fd700789",
+          "debian_package_version": "158.0~build2",
+          "default_signing_policy_activation_verified": false,
+          "effect_ack_done": false,
+          "existing_s1_bootstrap_xpi_present": false,
+          "extension_activation_verified": false,
+          "extension_id": "qikvrt-ai-terminal@goldkelch.local",
+          "extension_version": "1.0.0",
+          "firefox_package": "firefox",
+          "firefox_version_output": "[8] Sandbox: CanCreateUserNamespace() clone() failure: EPERM\nMozilla Firefox 158.0",
+          "installation_method": "AddonManager.getInstallForFile persistent",
+          "ordinary_release": false,
+          "predecessor_acceptance_transferred": false,
+          "profiles": {
+            "default_signing_policy": [
+              {
+                "accepted": false,
+                "addon": null,
+                "background_registered": false,
+                "browser_version": "158.0",
+                "minimum_satisfied": true,
+                "mozilla_signed": false,
+                "persistent_installation": {
+                  "error": -5,
+                  "event": "rejected_before_install",
+                  "explicit_enable_used": false,
+                  "state": 4,
+                  "temporary_installation_used": false
+                },
+                "phase": "initial_start",
+                "policy_active": false,
+                "profile_xpi_present": false,
+                "profile_xpi_sha256": null,
+                "session_browser_version": "158.0",
+                "signatures_required": true,
+                "temporary_installation_used": false
+              },
+              {
+                "accepted": false,
+                "addon": null,
+                "background_registered": false,
+                "browser_version": "158.0",
+                "minimum_satisfied": true,
+                "mozilla_signed": false,
+                "persistent_installation": null,
+                "phase": "process_restart",
+                "policy_active": false,
+                "profile_xpi_present": false,
+                "profile_xpi_sha256": null,
+                "session_browser_version": "158.0",
+                "signatures_required": true,
+                "temporary_installation_used": false
+              }
+            ]
+          },
+          "public_production_verified": false,
+          "reference_activation_verified": false,
+          "schema": "qikvrt-firefox-extension-installation/v1",
+          "scope": "EXACT_EXISTING_S1_IMAGE_AND_CANDIDATE_XPI_DISPOSABLE_PROFILES",
+          "signed_production_package_verified": false,
+          "state": "HOLD_EXTENSION_INSTALLATION_OR_ACTIVATION",
+          "strict_min_version": "158.0",
+          "xpi_bytes": 9954,
+          "xpi_sha256": "1f5f583181d6134584f98bf6b59848d4542176d624d97709fa915b9934e2c46c"
+        },
+        "run_id": 38853563687,
+        "runtime_causal_input_sha256": "2f84d9f1b0eed9c8c34ea20d0808bb1a13e223134147a070f1cff92aa48c49d5",
+        "runtime_causal_inputs": {
+          "extension_blobs": {
+            "background.js": "f177c4471af23a9cf8c9e875c6931887cf92272c",
+            "content.js": "61658f2fd7ceb62b25a13ef8486ba3a7b8a5c563",
+            "manifest.json": "d311100e0cc14da7574f18a625d4e1feeedcbad7",
+            "options.html": "0b3e36fb7b0fbb3bb187e1def2b940669e98cc81",
+            "options.js": "60ef9dc9c8b85b8abe70a23d2f38faccdc7aa8a9",
+            "terminal.css": "817d1e58a80422367cb63d49dbb826428d452ee6"
+          },
+          "image_digest": "sha256:eda9516930cf7a51f0342e9b154b430c386ad04b80ce6401ce6b7d1a103ac74d",
+          "probe_runtime_sha256": "4fcbe75e05305403daa4152af446489302a7a8945ec04e4f1b19c933c6e7d018",
+          "signed_xpi_artifact": null,
+          "terminal_entrypoint_blob": "031dbdbee810e55df133ec9176b49e036eb3d75c",
+          "upgrade_dockerfile_blob": "e4fae384b1a4a5e0cd061cf73d5c3d7f0f29a547"
+        },
+        "source_head": "533c8acad6f0f85291a8fd88f0268d7a9bb1e19a",
+        "source_tree": "b9d622f652ac8f41e8b2de3b9752c8edd3285486",
+        "subject_scope": "Actual upgraded Firefox158 CI container and exact unchanged six-file Standard XPI; not a productive host. Rejected initial persistent install and inactive post-restart profile remain HOLD.",
+        "xpi_source_binding": {
+          "candidate_head": "533c8acad6f0f85291a8fd88f0268d7a9bb1e19a",
+          "candidate_tree": "b9d622f652ac8f41e8b2de3b9752c8edd3285486",
           "effect_ack_done": false,
           "signed_candidate_available": false,
           "signed_production_package": false,
@@ -1064,19 +1232,19 @@
     "retry_gate": "Unchanged image/source/probe/signed-XPI inputs plus an already retained failed observation admit NOOP; no repeat AMO submission or browser attempt.",
     "runtime_artifact": {
       "all_original_parent_layers_retained": true,
-      "archive_bytes": 572797487,
-      "archive_sha256": "879bc4f8dc4e196f85516683127c87de58ce0737a765b96b3865282d738d5f2a",
-      "artifact_expires_at": "2027-01-14T05:00:56Z",
-      "artifact_id": 12026014648,
-      "artifact_name": "qikvrt-s1-firefox158-runtime-533c8acad6f0f85291a8fd88f0268d7a9bb1e19a",
-      "artifact_zip_bytes": 569387016,
-      "artifact_zip_sha256": "1c83bee7626635c50e7d2c71524587cf1a7e5876073fece099038572566dd756",
+      "archive_bytes": 572793479,
+      "archive_sha256": "e509bfa0a5d5d63883a312c7c3c23d6ab2bd85cedb56f1843ec4ed0a12be4bea",
+      "artifact_expires_at": "2027-01-14T19:03:04Z",
+      "artifact_id": 12068123982,
+      "artifact_name": "qikvrt-s1-firefox158-runtime-aba4eee6d2ea8463920bf13812dcd466ec7705e3",
+      "artifact_zip_bytes": 569395196,
+      "artifact_zip_sha256": "9bd7ebb582619da1376e8d842f92ec454511ec98546e2299b1217eb7dfd51467",
       "component_blobs": {
         "deploy/universal-terminal/entrypoint.sh": "031dbdbee810e55df133ec9176b49e036eb3d75c",
         "runtime/self-host/Dockerfile": "e4fae384b1a4a5e0cd061cf73d5c3d7f0f29a547",
-        "tools/qikvrt_self_host.py": "1c882c3016660b61ec55f3272e0572c54e5881ea"
+        "tools/qikvrt_self_host.py": "f4784754fbe51b61523ea6b366ee0b89941cc3aa"
       },
-      "consumer_verification": "Existing s1_firefox_extension download consumer must verify archive bytes/SHA256, exact image/config/layers, live installed package and ELF before any newly signed XPI activation.",
+      "consumer_verification": "Current native consumer must recheck archive SHA256/bytes, image config/layers, installed package and actual ELF before any newly signed-XPI activation.",
       "dependency_scope_only": true,
       "diff_ids": [
         "sha256:34467cc93912af891dfee8a3902adf9b4f355a9bca4eaa46f658d1181a21de0d",
@@ -1088,28 +1256,18 @@
         "sha256:7e6ff46024450c208f8666e0171bf45d3adb09cc3c90ec43bc09f1b0644e7d2a",
         "sha256:8745b1f3637b0bcef90aba1cd4a50bdbc0b5cda283873b37e584cce1354e7d42",
         "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
-        "sha256:2d644cd5a05521e48c38b7e8415130963d81fd25e7e0ff184bdf21a5cc4321fb",
-        "sha256:3c942f7cc7a458de8ab36d388e46ef1c96490fe8ad55b7404d7ec2f2b24b4363",
-        "sha256:b03c2088315e077329861d373bf27412f5f9590f1d45f332d86ada82fd7f8494",
+        "sha256:21e294d27f171e3cdfb3b8ffb50a5ea9687d68c96ddff1732bbc2a86a1d68df6",
+        "sha256:29c5a6ac7a125a83c79110f005736d05c68b10b3b59477b8fbcf49e2bd5bae45",
+        "sha256:be8942bdbe452cfa3ba8b5ebe0e6957a6f4f027542fd493a8a135b4961e5d0ac",
         "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
       ],
       "effect_ack_done": false,
       "extension_activation_verified": false,
-      "image_id": "sha256:85d21537ea8e7935d1fedeeee77057fd23a440b22ad304db276b2e9a7f0b5f0c",
+      "image_id": "sha256:a09a88ed85044fe31347fa3491c57e098a1247411eb3019751de22ee6ac551f6",
       "independent_large_archive_redownload": false,
       "independent_reimport": false,
-      "large_archive_readback_limit": "Existing artifact connector maximum 536870912 bytes; original artifact is 569387016 bytes. Original ZIP download refused before bytes were returned. No unchanged retry.",
+      "large_archive_readback_limit": "Original ZIP exceeds the existing 536870912-byte connector limit. No unchanged original-ZIP retry. The bounded part transport must prove original archive bytes and independent download-back.",
       "native_components_rebuilt": false,
-      "native_runtime_controls": {
-        "extension_activation_verified": false,
-        "independent_original_receipt_zip_readback": true,
-        "job_id": 116819994679,
-        "native_process_and_state_restart_observed": true,
-        "result": "success",
-        "run_id": 38853563687,
-        "scope": "EXACT_533C8ACA_CI_CONTAINER_ONLY",
-        "tests": 13
-      },
       "parent_diff_ids": [
         "sha256:34467cc93912af891dfee8a3902adf9b4f355a9bca4eaa46f658d1181a21de0d",
         "sha256:d476c6746ca1e1594f36c28af7f3ebee76d63c6a6adaabcc2824c388930bf846",
@@ -1122,7 +1280,7 @@
         "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
       ],
       "parent_image_id": "sha256:2f35af27a2cfd36e383ae0ced8f85eca4ff328d888a7169d7cdafa62810dfe2e",
-      "probe_runtime_sha256": "4fcbe75e05305403daa4152af446489302a7a8945ec04e4f1b19c933c6e7d018",
+      "probe_runtime_sha256": "b48a15b66d47ef99d441f2291d0564990f4b16fc476a6c3b43fe45ad3e2407b3",
       "provision": {
         "apt_key_sha256": "3ecc63922b7795eb23fdc449ff9396f9114cb3cf186d6f5b53ad4cc3ebfbb11f",
         "apt_policy_sha256": "7f42ddbf41fd21986e6660435a80f10a4aeea41b5130d658faeb3cecbe8317ab",
@@ -1214,10 +1372,10 @@
         "state": "FIREFOX_RELEASE_PROVISIONED_PENDING_SIGNED_XPI"
       },
       "repository": "ingolf-lohmann/qik-vrt",
-      "run_id": 38853563687,
+      "run_id": 38952009446,
       "signing_material_excluded": true,
-      "source_head": "533c8acad6f0f85291a8fd88f0268d7a9bb1e19a",
-      "source_tree": "b9d622f652ac8f41e8b2de3b9752c8edd3285486"
+      "source_head": "aba4eee6d2ea8463920bf13812dcd466ec7705e3",
+      "source_tree": "b006136a5d6aa25210715767178860404acd6aa2"
     },
     "runtime_artifact_history": [
       {
@@ -1406,6 +1564,163 @@
         "signing_material_excluded": true,
         "source_head": "3136e142c01f05348e32dccaa3d234c596e02533",
         "source_tree": "2fc829e5718ca7119ae772927767c9a80e0d45a1"
+      },
+      {
+        "all_original_parent_layers_retained": true,
+        "archive_bytes": 572797487,
+        "archive_sha256": "879bc4f8dc4e196f85516683127c87de58ce0737a765b96b3865282d738d5f2a",
+        "artifact_expires_at": "2027-01-14T05:00:56Z",
+        "artifact_id": 12026014648,
+        "artifact_name": "qikvrt-s1-firefox158-runtime-533c8acad6f0f85291a8fd88f0268d7a9bb1e19a",
+        "artifact_zip_bytes": 569387016,
+        "artifact_zip_sha256": "1c83bee7626635c50e7d2c71524587cf1a7e5876073fece099038572566dd756",
+        "component_blobs": {
+          "deploy/universal-terminal/entrypoint.sh": "031dbdbee810e55df133ec9176b49e036eb3d75c",
+          "runtime/self-host/Dockerfile": "e4fae384b1a4a5e0cd061cf73d5c3d7f0f29a547",
+          "tools/qikvrt_self_host.py": "1c882c3016660b61ec55f3272e0572c54e5881ea"
+        },
+        "consumer_verification": "Existing s1_firefox_extension download consumer must verify archive bytes/SHA256, exact image/config/layers, live installed package and ELF before any newly signed XPI activation.",
+        "dependency_scope_only": true,
+        "diff_ids": [
+          "sha256:34467cc93912af891dfee8a3902adf9b4f355a9bca4eaa46f658d1181a21de0d",
+          "sha256:d476c6746ca1e1594f36c28af7f3ebee76d63c6a6adaabcc2824c388930bf846",
+          "sha256:bb21db850823bcb6669b652ce8bff42787673cc8136550cc2d783af0415dc486",
+          "sha256:f4572018cf8016fadccf2df095d62525be857901cf1d837892078204a8f6cf43",
+          "sha256:a330acce559c4382d8f3aa869bff0cb33f7928ddd72e4e411e496fcfca89b4a9",
+          "sha256:24e1ce093f7727d9e25192bf0cac7dc2171d712cc82b4ee1abbb9d53ae1cbfe6",
+          "sha256:7e6ff46024450c208f8666e0171bf45d3adb09cc3c90ec43bc09f1b0644e7d2a",
+          "sha256:8745b1f3637b0bcef90aba1cd4a50bdbc0b5cda283873b37e584cce1354e7d42",
+          "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+          "sha256:2d644cd5a05521e48c38b7e8415130963d81fd25e7e0ff184bdf21a5cc4321fb",
+          "sha256:3c942f7cc7a458de8ab36d388e46ef1c96490fe8ad55b7404d7ec2f2b24b4363",
+          "sha256:b03c2088315e077329861d373bf27412f5f9590f1d45f332d86ada82fd7f8494",
+          "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+        ],
+        "effect_ack_done": false,
+        "extension_activation_verified": false,
+        "image_id": "sha256:85d21537ea8e7935d1fedeeee77057fd23a440b22ad304db276b2e9a7f0b5f0c",
+        "independent_large_archive_redownload": false,
+        "independent_reimport": false,
+        "large_archive_readback_limit": "Existing artifact connector maximum 536870912 bytes; original artifact is 569387016 bytes. Original ZIP download refused before bytes were returned. No unchanged retry.",
+        "native_components_rebuilt": false,
+        "native_runtime_controls": {
+          "extension_activation_verified": false,
+          "independent_original_receipt_zip_readback": true,
+          "job_id": 116819994679,
+          "native_process_and_state_restart_observed": true,
+          "result": "success",
+          "run_id": 38853563687,
+          "scope": "EXACT_533C8ACA_CI_CONTAINER_ONLY",
+          "tests": 13
+        },
+        "parent_diff_ids": [
+          "sha256:34467cc93912af891dfee8a3902adf9b4f355a9bca4eaa46f658d1181a21de0d",
+          "sha256:d476c6746ca1e1594f36c28af7f3ebee76d63c6a6adaabcc2824c388930bf846",
+          "sha256:bb21db850823bcb6669b652ce8bff42787673cc8136550cc2d783af0415dc486",
+          "sha256:f4572018cf8016fadccf2df095d62525be857901cf1d837892078204a8f6cf43",
+          "sha256:a330acce559c4382d8f3aa869bff0cb33f7928ddd72e4e411e496fcfca89b4a9",
+          "sha256:24e1ce093f7727d9e25192bf0cac7dc2171d712cc82b4ee1abbb9d53ae1cbfe6",
+          "sha256:7e6ff46024450c208f8666e0171bf45d3adb09cc3c90ec43bc09f1b0644e7d2a",
+          "sha256:8745b1f3637b0bcef90aba1cd4a50bdbc0b5cda283873b37e584cce1354e7d42",
+          "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+        ],
+        "parent_image_id": "sha256:2f35af27a2cfd36e383ae0ced8f85eca4ff328d888a7169d7cdafa62810dfe2e",
+        "probe_runtime_sha256": "4fcbe75e05305403daa4152af446489302a7a8945ec04e4f1b19c933c6e7d018",
+        "provision": {
+          "apt_key_sha256": "3ecc63922b7795eb23fdc449ff9396f9114cb3cf186d6f5b53ad4cc3ebfbb11f",
+          "apt_policy_sha256": "7f42ddbf41fd21986e6660435a80f10a4aeea41b5130d658faeb3cecbe8317ab",
+          "binary_path": "/usr/lib/firefox/firefox",
+          "binary_sha256": "a19472941a7cd7252ab5e61b02eb616a50389a784323c21dc6873a23fd700789",
+          "channel": "release",
+          "deb_bytes": 92896850,
+          "deb_metadata": "Package: firefox\nVersion: 158.0~build2\nArchitecture: amd64\n",
+          "deb_sha256": "06a608dd092b0ba2c7cb436df259025ffd006b16126bf1c0ab8121e869fdbebc",
+          "debian_package_version": "158.0~build2",
+          "effect_ack_done": false,
+          "extension_activation_verified": false,
+          "firefox_version_output": "[524] Sandbox: CanCreateUserNamespace() clone() failure: EPERM\nMozilla Firefox 158.0",
+          "gpg_version": "gpg (GnuPG) 2.2.40",
+          "key_fingerprint": "35BAA0B33E9EB396F59CA838C0BA5CE6DC6315A3",
+          "minimum": "158.0",
+          "minimum_satisfied": true,
+          "ordinary_release": false,
+          "origin": "https://packages.mozilla.org/apt",
+          "package": "firefox",
+          "package_changes": {
+            "dirmngr": {
+              "after": "2.2.40-1.1+deb12u2",
+              "before": null
+            },
+            "firefox": {
+              "after": "158.0~build2",
+              "before": null
+            },
+            "gnupg": {
+              "after": "2.2.40-1.1+deb12u2",
+              "before": null
+            },
+            "gnupg-l10n": {
+              "after": "2.2.40-1.1+deb12u2",
+              "before": null
+            },
+            "gnupg-utils": {
+              "after": "2.2.40-1.1+deb12u2",
+              "before": null
+            },
+            "gpg": {
+              "after": "2.2.40-1.1+deb12u2",
+              "before": null
+            },
+            "gpg-agent": {
+              "after": "2.2.40-1.1+deb12u2",
+              "before": null
+            },
+            "gpg-wks-client": {
+              "after": "2.2.40-1.1+deb12u2",
+              "before": null
+            },
+            "gpg-wks-server": {
+              "after": "2.2.40-1.1+deb12u2",
+              "before": null
+            },
+            "gpgconf": {
+              "after": "2.2.40-1.1+deb12u2",
+              "before": null
+            },
+            "gpgsm": {
+              "after": "2.2.40-1.1+deb12u2",
+              "before": null
+            },
+            "libassuan0:amd64": {
+              "after": "2.5.5-5",
+              "before": null
+            },
+            "libksba8:amd64": {
+              "after": "1.6.3-2",
+              "before": null
+            },
+            "libldap-2.5-0:amd64": {
+              "after": "2.5.13+dfsg-5",
+              "before": null
+            },
+            "libnpth0:amd64": {
+              "after": "1.6-3",
+              "before": null
+            },
+            "pinentry-curses": {
+              "after": "1.2.1-1",
+              "before": null
+            }
+          },
+          "public_production_verified": false,
+          "schema": "qikvrt-firefox-release-provision/v1",
+          "state": "FIREFOX_RELEASE_PROVISIONED_PENDING_SIGNED_XPI"
+        },
+        "repository": "ingolf-lohmann/qik-vrt",
+        "run_id": 38853563687,
+        "signing_material_excluded": true,
+        "source_head": "533c8acad6f0f85291a8fd88f0268d7a9bb1e19a",
+        "source_tree": "b9d622f652ac8f41e8b2de3b9752c8edd3285486"
       }
     ],
     "s1_parent_oci_digest": "sha256:eda9516930cf7a51f0342e9b154b430c386ad04b80ce6401ce6b7d1a103ac74d",

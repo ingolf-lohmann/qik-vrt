@@ -18,6 +18,7 @@ from pathlib import Path
 import re
 import shutil
 import ssl
+import stat
 import subprocess
 import tarfile
 import tempfile
@@ -33,6 +34,167 @@ REPOSITORY = "ingolf-lohmann/qik-vrt"
 IMAGE = "ghcr.io/ingolf-lohmann/qik-vrt-s1"
 ORIGIN = "https://raumzeitterminal.de"
 ENVIRONMENT = "qikvrt-production"
+ARTIFACT_PART_BYTES = 256 * 1024 * 1024
+ARTIFACT_MAX_BYTES = 4 * ARTIFACT_PART_BYTES
+
+
+def _artifact_pin(value):
+    require(isinstance(value, str) and re.fullmatch(r"[a-f0-9]{64}", value),
+            "EXACT_ARTIFACT_SHA256_REQUIRED")
+    return value
+
+
+def _artifact_open(path):
+    descriptor = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+    try:
+        info = os.fstat(descriptor)
+        require(stat.S_ISREG(info.st_mode) and info.st_uid == os.geteuid(),
+                "OWNER_REGULAR_ARTIFACT_REQUIRED")
+        return os.fdopen(descriptor, "rb"), info
+    except BaseException:
+        os.close(descriptor)
+        raise
+
+
+def _artifact_sync(directory):
+    descriptor = os.open(directory, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+    try:
+        os.fsync(descriptor)
+    finally:
+        os.close(descriptor)
+
+
+def artifact_split(archive, output, expected_sha256, *, part_bytes=ARTIFACT_PART_BYTES):
+    """Transport the original pinned bytes below the connector's ZIP limit.
+
+    This never imports, executes, signs or admits the image. PARTS.json is the
+    completion marker; a failed export removes only its new output directory.
+    """
+    expected_sha256 = _artifact_pin(expected_sha256)
+    require(type(part_bytes) is int and 1 <= part_bytes <= ARTIFACT_PART_BYTES,
+            "BOUNDED_ARTIFACT_PART_SIZE_REQUIRED")
+    output = Path(output).absolute()
+    require(not output.exists() and not output.is_symlink(), "CREATE_ONLY_ARTIFACT_PARTS_REQUIRED")
+    source, before = _artifact_open(archive)
+    created = False
+    try:
+        with source:
+            require(0 < before.st_size <= ARTIFACT_MAX_BYTES, "BOUNDED_ARTIFACT_ARCHIVE_REQUIRED")
+            require((before.st_size + part_bytes - 1) // part_bytes <= 4,
+                    "AT_MOST_FOUR_ARTIFACT_PARTS_REQUIRED")
+            output.mkdir(mode=0o700)
+            created = True
+            total = hashlib.sha256()
+            parts = []
+            remaining = before.st_size
+            while remaining:
+                size = min(part_bytes, remaining)
+                name = "artifact.part-%03d" % len(parts)
+                part_hash = hashlib.sha256()
+                with (output / name).open("xb") as destination:
+                    outstanding = size
+                    while outstanding:
+                        raw = source.read(min(1024 * 1024, outstanding))
+                        require(bool(raw), "ARTIFACT_CHANGED_DURING_SPLIT")
+                        total.update(raw); part_hash.update(raw)
+                        destination.write(raw); outstanding -= len(raw)
+                    destination.flush(); os.fsync(destination.fileno())
+                (output / name).chmod(0o600)
+                parts.append({"index": len(parts), "name": name, "bytes": size,
+                              "sha256": part_hash.hexdigest()})
+                remaining -= size
+            after = os.fstat(source.fileno())
+            require(not source.read(1) and (before.st_size, before.st_mtime_ns, before.st_ctime_ns) ==
+                    (after.st_size, after.st_mtime_ns, after.st_ctime_ns), "ARTIFACT_CHANGED_DURING_SPLIT")
+            require(total.hexdigest() == expected_sha256, "ORIGINAL_ARTIFACT_SHA256_MISMATCH")
+        manifest = {"schema": "qikvrt-container-artifact-parts/v1", "archive_bytes": before.st_size,
+                    "archive_sha256": expected_sha256, "part_bytes": part_bytes, "parts": parts}
+        raw = (json.dumps(manifest, sort_keys=True, indent=2) + "\n").encode()
+        with (output / "PARTS.json").open("xb") as destination:
+            destination.write(raw); destination.flush(); os.fsync(destination.fileno())
+        (output / "PARTS.json").chmod(0o600)
+        _artifact_sync(output)
+        _artifact_sync(output.parent)
+        return {"state": "ORIGINAL_ARTIFACT_SPLIT_VERIFIED", "archive_bytes": before.st_size,
+                "archive_sha256": expected_sha256, "parts_manifest_sha256": sha(raw),
+                "part_count": len(parts), "part_bytes": part_bytes,
+                "image_imported": False, "extension_activation_verified": False,
+                "public_production_verified": False}
+    except BaseException:
+        if created:
+            shutil.rmtree(output)
+        raise
+
+
+def artifact_join(parts_directory, output, manifest_sha256, archive_sha256):
+    """Independently re-read every part; publish one create-only exact archive."""
+    manifest_sha256, archive_sha256 = _artifact_pin(manifest_sha256), _artifact_pin(archive_sha256)
+    directory = Path(parts_directory).absolute()
+    require(not directory.is_symlink() and directory.is_dir(), "REGULAR_ARTIFACT_PART_DIRECTORY_REQUIRED")
+    source, _ = _artifact_open(directory / "PARTS.json")
+    with source:
+        raw = source.read(32769)
+    require(len(raw) <= 32768 and sha(raw) == manifest_sha256, "ARTIFACT_PART_MANIFEST_MISMATCH")
+    def unique(pairs):
+        result = {}
+        for key, value in pairs:
+            require(key not in result, "DUPLICATE_ARTIFACT_MANIFEST_MEMBER")
+            result[key] = value
+        return result
+    manifest = json.loads(raw, object_pairs_hook=unique)
+    require(isinstance(manifest, dict) and set(manifest) ==
+            {"schema", "archive_bytes", "archive_sha256", "part_bytes", "parts"} and
+            manifest["schema"] == "qikvrt-container-artifact-parts/v1", "EXACT_ARTIFACT_PART_MANIFEST_REQUIRED")
+    size, part_bytes, parts = manifest["archive_bytes"], manifest["part_bytes"], manifest["parts"]
+    require(type(size) is int and 0 < size <= ARTIFACT_MAX_BYTES and type(part_bytes) is int and
+            1 <= part_bytes <= ARTIFACT_PART_BYTES and isinstance(parts, list) and
+            1 <= len(parts) <= 4 and len(parts) == (size + part_bytes - 1) // part_bytes and
+            manifest["archive_sha256"] == archive_sha256, "BOUNDED_EXACT_ARTIFACT_PARTS_REQUIRED")
+    for index, part in enumerate(parts):
+        require(isinstance(part, dict) and set(part) == {"index", "name", "bytes", "sha256"} and
+                type(part["index"]) is int and part["index"] == index and
+                part["name"] == "artifact.part-%03d" % index and type(part["bytes"]) is int and
+                part["bytes"] == min(part_bytes, size - index * part_bytes), "EXACT_ORDERED_ARTIFACT_PART_REQUIRED")
+        _artifact_pin(part["sha256"])
+    output = Path(output).absolute()
+    require(not output.exists() and not output.is_symlink() and directory not in output.parents,
+            "SEPARATE_CREATE_ONLY_ARTIFACT_REQUIRED")
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(prefix=".qikvrt-artifact-", dir=output.parent, delete=False) as destination:
+            temporary = Path(destination.name)
+            total = hashlib.sha256()
+            for part in parts:
+                source, before = _artifact_open(directory / part["name"])
+                with source:
+                    require(before.st_size == part["bytes"], "ARTIFACT_PART_SIZE_MISMATCH")
+                    part_hash = hashlib.sha256()
+                    remaining = part["bytes"]
+                    while remaining:
+                        raw = source.read(min(1024 * 1024, remaining))
+                        require(bool(raw), "ARTIFACT_PART_CHANGED_DURING_READ")
+                        part_hash.update(raw); total.update(raw); destination.write(raw)
+                        remaining -= len(raw)
+                    after = os.fstat(source.fileno())
+                    require(not source.read(1) and (before.st_size, before.st_mtime_ns, before.st_ctime_ns) ==
+                            (after.st_size, after.st_mtime_ns, after.st_ctime_ns), "ARTIFACT_PART_CHANGED_DURING_READ")
+                    require(part_hash.hexdigest() == part["sha256"], "ARTIFACT_PART_SHA256_MISMATCH")
+            require(total.hexdigest() == archive_sha256, "ORIGINAL_ARTIFACT_SHA256_MISMATCH")
+            destination.flush(); os.fsync(destination.fileno())
+        # link is atomic and refuses an existing destination, including a race.
+        os.link(temporary, output, follow_symlinks=False)
+        _artifact_sync(output.parent)
+        check, observed = _artifact_open(output)
+        with check:
+            require(observed.st_size == size and hashlib.file_digest(check, "sha256").hexdigest() == archive_sha256,
+                    "RESTORED_ARTIFACT_READBACK_MISMATCH")
+        return {"state": "ORIGINAL_ARTIFACT_REASSEMBLED_VERIFIED", "archive_bytes": size,
+                "archive_sha256": archive_sha256, "parts_manifest_sha256": manifest_sha256,
+                "part_count": len(parts), "image_imported": False,
+                "extension_activation_verified": False, "public_production_verified": False}
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
 
 
 def sha(raw):
@@ -813,7 +975,11 @@ def smoke(image, output):
 
 def execute(args):
     operation = args.operation.removeprefix("container-")
-    if operation == "context":
+    if operation == "artifact-split":
+        result = artifact_split(args.carrier_archive, args.output, args.transport_sha256)
+    elif operation == "artifact-join":
+        result = artifact_join(args.root, args.output, args.manifest_sha256, args.transport_sha256)
+    elif operation == "context":
         result = context(args.root, args.output)
     elif operation == "carrier":
         expected = json.loads((args.root / "runtime/self-host/CONTAINER_CARRIER.json").read_bytes())
@@ -855,3 +1021,4 @@ def execute(args):
     else:
         raise ValueError("UNKNOWN_CONTAINER_OPERATION")
     return write_receipt(args.receipt, result)
+

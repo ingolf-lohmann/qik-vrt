@@ -7,6 +7,7 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import sys
 import tarfile
 import tempfile
 import unittest
@@ -443,6 +444,147 @@ console.log(JSON.stringify({guarded,
         self.assertIn('carrier-registry-readback.json',publication)
 
 
+class ArtifactTransportControls(unittest.TestCase):
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+        self.archive = self.root / "image.docker.tar.gz"
+        self.archive.write_bytes(b"exact-original-image-bytes")
+        self.pin = c.sha(self.archive.read_bytes())
+        self.parts = self.root / "parts"
+
+    def split(self):
+        return c.artifact_split(self.archive, self.parts, self.pin, part_bytes=8)
+
+    def manifest(self, value=None):
+        path = self.parts / "PARTS.json"
+        if value is not None:
+            path.write_text(json.dumps(value, sort_keys=True, indent=2) + "\n")
+        return json.loads(path.read_bytes()), c.sha(path.read_bytes())
+
+    def test_original_image_survives_separate_part_delivery_with_both_pins(self):
+        first = self.split()
+        delivered = self.root / "delivered"; delivered.mkdir()
+        for path in self.parts.iterdir():
+            (delivered / path.name).write_bytes(path.read_bytes())
+        output = self.root / "restored.tar.gz"
+        result = c.artifact_join(delivered, output, first["parts_manifest_sha256"], self.pin)
+        self.assertEqual(output.read_bytes(), self.archive.read_bytes())
+        self.assertEqual(result["archive_sha256"], self.pin)
+        self.assertEqual(result["state"], "ORIGINAL_ARTIFACT_REASSEMBLED_VERIFIED")
+        self.assertFalse(result["image_imported"])
+        self.assertFalse(result["extension_activation_verified"])
+        self.assertFalse(result["public_production_verified"])
+        self.assertLess(c.ARTIFACT_PART_BYTES + 1024 * 1024, 536870912)
+
+    def test_existing_cli_dispatch_restores_exact_bytes_and_preserves_admission_boundaries(self):
+        launcher = Path(__file__).resolve().parents[1] / 'tools/qikvrt_self_host.py'
+        first = json.loads(subprocess.check_output([sys.executable, '-B', str(launcher),
+            'container-artifact-split', '--carrier-archive', str(self.archive),
+            '--transport-sha256', self.pin, '--output', str(self.parts),
+            '--receipt', str(self.root / 'split.json')]))
+        output = self.root / 'restored.tar.gz'
+        second = json.loads(subprocess.check_output([sys.executable, '-B', str(launcher),
+            'container-artifact-join', '--root', str(self.parts), '--output', str(output),
+            '--transport-sha256', self.pin, '--manifest-sha256', first['parts_manifest_sha256'],
+            '--receipt', str(self.root / 'restore.json')]))
+        self.assertEqual(output.read_bytes(), self.archive.read_bytes())
+        self.assertFalse(second['effect_ack_done'])
+        self.assertFalse(second['ordinary_release'])
+        workflow = (launcher.parents[1] / '.github/workflows/qikvrt_ci.yml').read_text()
+        reuse = workflow.split('      - name: Reuse the already verified Firefox-158 dependency bytes\n', 1)[1]
+        self.assertTrue(reuse.startswith("        if: steps.effect-admission.outputs.runtime_reuse == 'true'\n"))
+        self.assertIn("assert r.get('current_probe_executed',True) is True", workflow)
+        self.assertIn("assert r['signed_production_package_verified'] is True", workflow)
+
+    def test_failed_source_pin_does_not_leave_an_export_or_touch_an_existing_one(self):
+        with self.assertRaisesRegex(ValueError, "ORIGINAL_ARTIFACT_SHA256_MISMATCH"):
+            c.artifact_split(self.archive, self.parts, "0" * 64, part_bytes=8)
+        self.assertFalse(self.parts.exists())
+        self.split()
+        before = {p.name: p.read_bytes() for p in self.parts.iterdir()}
+        with self.assertRaisesRegex(ValueError, "CREATE_ONLY_ARTIFACT_PARTS"):
+            self.split()
+        self.assertEqual(before, {p.name: p.read_bytes() for p in self.parts.iterdir()})
+
+    def test_missing_truncated_corrupted_and_symlinked_part_never_publish(self):
+        first = self.split()
+        path = self.parts / "artifact.part-001"; original = path.read_bytes()
+        output = self.root / "restored.tar.gz"
+        for variant in ("missing", "truncated", "corrupt", "symlink"):
+            with self.subTest(variant=variant):
+                path.unlink(missing_ok=True)
+                if variant == "truncated": path.write_bytes(original[:-1])
+                elif variant == "corrupt": path.write_bytes(bytes([original[0] ^ 1]) + original[1:])
+                elif variant == "symlink": path.symlink_to(self.archive)
+                with self.assertRaises((ValueError, OSError)):
+                    c.artifact_join(self.parts, output, first["parts_manifest_sha256"], self.pin)
+                self.assertFalse(output.exists())
+                self.assertFalse(list(self.root.glob(".qikvrt-artifact-*")))
+
+    def test_manifest_path_order_duplicate_and_size_claims_are_rejected_even_when_rehashed(self):
+        self.split(); original, _ = self.manifest()
+        output = self.root / "restored.tar.gz"
+        for variant in ("path", "order", "index", "size", "oversize", "archive-pin", "bool-size"):
+            with self.subTest(variant=variant):
+                value = json.loads(json.dumps(original))
+                if variant == "path": value["parts"][0]["name"] = "../image.docker.tar.gz"
+                elif variant == "order": value["parts"].reverse()
+                elif variant == "index": value["parts"][1]["index"] = 0
+                elif variant == "size": value["parts"][0]["bytes"] += 1
+                elif variant == "oversize": value["archive_bytes"] = c.ARTIFACT_MAX_BYTES + 1
+                elif variant == "archive-pin": value["archive_sha256"] = "0" * 64
+                elif variant == "bool-size": value["part_bytes"] = True
+                _, pin = self.manifest(value)
+                with self.assertRaises(ValueError):
+                    c.artifact_join(self.parts, output, pin, self.pin)
+                self.assertFalse(output.exists())
+
+    def test_unknown_manifest_pin_and_duplicate_json_members_are_not_trusted(self):
+        first = self.split(); output = self.root / "restored.tar.gz"
+        with self.assertRaisesRegex(ValueError, "ARTIFACT_PART_MANIFEST_MISMATCH"):
+            c.artifact_join(self.parts, output, "0" * 64, self.pin)
+        path = self.parts / "PARTS.json"
+        path.write_bytes(path.read_bytes().replace(b'{', b'{"schema":"forged",', 1))
+        with self.assertRaisesRegex(ValueError, "DUPLICATE_ARTIFACT_MANIFEST_MEMBER"):
+            c.artifact_join(self.parts, output, c.sha(path.read_bytes()), self.pin)
+        self.assertFalse(output.exists())
+
+    def test_existing_restored_image_and_racing_creation_are_never_overwritten(self):
+        first = self.split(); output = self.root / "restored.tar.gz"
+        output.write_bytes(b"existing")
+        with self.assertRaisesRegex(ValueError, "CREATE_ONLY_ARTIFACT"):
+            c.artifact_join(self.parts, output, first["parts_manifest_sha256"], self.pin)
+        self.assertEqual(output.read_bytes(), b"existing")
+        output.unlink(); real_link = os.link
+        def raced(source, destination, **keywords):
+            output.write_bytes(b"racing-writer")
+            return real_link(source, destination, **keywords)
+        with patch.object(c.os, "link", side_effect=raced):
+            with self.assertRaises(FileExistsError):
+                c.artifact_join(self.parts, output, first["parts_manifest_sha256"], self.pin)
+        self.assertEqual(output.read_bytes(), b"racing-writer")
+        self.assertFalse(list(self.root.glob(".qikvrt-artifact-*")))
+
+    def test_empty_oversized_and_nonregular_inputs_are_bounded_without_export(self):
+        self.archive.write_bytes(b"")
+        with self.assertRaisesRegex(ValueError, "BOUNDED_ARTIFACT_ARCHIVE"):
+            self.split()
+        with self.archive.open("wb") as output:
+            output.truncate(c.ARTIFACT_MAX_BYTES + 1)
+        with self.assertRaisesRegex(ValueError, "BOUNDED_ARTIFACT_ARCHIVE"):
+            self.split()
+        link = self.root / "link"; link.symlink_to(self.archive)
+        with self.assertRaises(OSError):
+            c.artifact_split(link, self.parts, self.pin)
+        fifo = self.root / "fifo"; os.mkfifo(fifo)
+        with self.assertRaisesRegex(ValueError, "OWNER_REGULAR_ARTIFACT"):
+            c.artifact_split(fifo, self.parts, self.pin)
+        self.assertFalse(self.parts.exists())
+
+
 if __name__ == "__main__":
     unittest.main()
+
 

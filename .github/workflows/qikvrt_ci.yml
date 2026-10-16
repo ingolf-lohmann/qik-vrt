@@ -566,7 +566,7 @@ jobs:
           PY
 
       - name: Reuse the already verified Firefox-158 dependency bytes
-        if: steps.effect-admission.outputs.probe_required == 'true' && steps.effect-admission.outputs.runtime_reuse == 'true'
+        if: steps.effect-admission.outputs.runtime_reuse == 'true'
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:
           github-token: ${{ github.token }}
@@ -778,6 +778,140 @@ jobs:
         with:
           name: qikvrt-s1-firefox158-runtime-${{ github.event.pull_request.head.sha || github.sha }}
           path: ${{ runner.temp }}/s1-firefox158-runtime
+          retention-days: 90
+          if-no-files-found: error
+      - name: Export original dependency bytes below the connector artifact limit
+        id: runtime-parts
+        if: steps.effect-admission.outputs.runtime_reuse == 'true' || steps.effect-admission.outputs.probe_required == 'true'
+        env:
+          RUNTIME_REUSE: ${{ steps.effect-admission.outputs.runtime_reuse }}
+        run: |
+          python3 -B - <<'PYPARTS'
+          import json,os,re,shutil,subprocess
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP'])
+          metadata=root/'s1-firefox158-transport';metadata.mkdir()
+          if os.environ['RUNTIME_REUSE']=='true':
+              work=json.loads(Path('state/work_units/QIKVRT_MAIN_CONVERGENCE_20261014_V1.json').read_bytes())
+              bound=work['firefox158_s1_upgrade']['runtime_artifact']
+              archive=root/'s1-firefox158-cached/image.docker.tar.gz'
+          else:
+              bound=json.loads((root/'s1-firefox158-runtime/release-image-readback.json').read_bytes())
+              archive=root/'s1-firefox158-runtime/image.docker.tar.gz'
+          assert bound['signing_material_excluded'] is True
+          assert all(re.fullmatch(r'[a-f0-9]{40}',bound[key]) for key in ('source_head','source_tree'))
+          assert re.fullmatch(r'sha256:[a-f0-9]{64}',bound['image_id'])
+          assert archive.stat().st_size==bound['archive_bytes']
+          subprocess.run(['python3','-B','tools/qikvrt_self_host.py','container-artifact-split',
+              '--carrier-archive',str(archive),'--transport-sha256',bound['archive_sha256'],
+              '--output',str(root/'s1-firefox158-parts'),'--receipt',str(metadata/'split.json')],check=True)
+          result=json.loads((metadata/'split.json').read_bytes())
+          shutil.copyfile(root/'s1-firefox158-parts/PARTS.json',metadata/'PARTS.json')
+          original={key:bound[key] for key in ('source_head','source_tree','image_id','archive_sha256','archive_bytes')}
+          (metadata/'ORIGINAL.json').write_text(json.dumps(original,sort_keys=True,indent=2)+'\n')
+          with open(os.environ['GITHUB_OUTPUT'],'a') as out:
+              out.write('part_count='+str(result['part_count'])+'\n')
+              out.write('manifest_sha256='+result['parts_manifest_sha256']+'\n')
+              out.write('archive_sha256='+bound['archive_sha256']+'\n')
+          PYPARTS
+      - name: Preserve bounded dependency part 000
+        id: runtime-part-0
+        if: steps.runtime-parts.outputs.part_count > 0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-s1-firefox158-runtime-${{ github.event.pull_request.head.sha || github.sha }}-part-000
+          path: ${{ runner.temp }}/s1-firefox158-parts/artifact.part-000
+          compression-level: 0
+          retention-days: 90
+          if-no-files-found: error
+      - name: Preserve bounded dependency part 001
+        id: runtime-part-1
+        if: steps.runtime-parts.outputs.part_count > 1
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-s1-firefox158-runtime-${{ github.event.pull_request.head.sha || github.sha }}-part-001
+          path: ${{ runner.temp }}/s1-firefox158-parts/artifact.part-001
+          compression-level: 0
+          retention-days: 90
+          if-no-files-found: error
+      - name: Preserve bounded dependency part 002
+        id: runtime-part-2
+        if: steps.runtime-parts.outputs.part_count > 2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-s1-firefox158-runtime-${{ github.event.pull_request.head.sha || github.sha }}-part-002
+          path: ${{ runner.temp }}/s1-firefox158-parts/artifact.part-002
+          compression-level: 0
+          retention-days: 90
+          if-no-files-found: error
+      - name: Preserve bounded dependency part 003
+        id: runtime-part-3
+        if: steps.runtime-parts.outputs.part_count > 3
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-s1-firefox158-runtime-${{ github.event.pull_request.head.sha || github.sha }}-part-003
+          path: ${{ runner.temp }}/s1-firefox158-parts/artifact.part-003
+          compression-level: 0
+          retention-days: 90
+          if-no-files-found: error
+      - name: Independently download the bounded dependency parts
+        if: steps.runtime-parts.outcome == 'success'
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          pattern: qikvrt-s1-firefox158-runtime-${{ github.event.pull_request.head.sha || github.sha }}-part-*
+          path: ${{ runner.temp }}/s1-firefox158-delivered
+          merge-multiple: true
+      - name: Reassemble independently delivered original bytes and bind part artifacts
+        if: steps.runtime-parts.outcome == 'success'
+        env:
+          PART_COUNT: ${{ steps.runtime-parts.outputs.part_count }}
+          MANIFEST_SHA256: ${{ steps.runtime-parts.outputs.manifest_sha256 }}
+          ARCHIVE_SHA256: ${{ steps.runtime-parts.outputs.archive_sha256 }}
+          PART0_ID: ${{ steps.runtime-part-0.outputs.artifact-id }}
+          PART0_DIGEST: ${{ steps.runtime-part-0.outputs.artifact-digest }}
+          PART1_ID: ${{ steps.runtime-part-1.outputs.artifact-id }}
+          PART1_DIGEST: ${{ steps.runtime-part-1.outputs.artifact-digest }}
+          PART2_ID: ${{ steps.runtime-part-2.outputs.artifact-id }}
+          PART2_DIGEST: ${{ steps.runtime-part-2.outputs.artifact-digest }}
+          PART3_ID: ${{ steps.runtime-part-3.outputs.artifact-id }}
+          PART3_DIGEST: ${{ steps.runtime-part-3.outputs.artifact-digest }}
+        run: |
+          python3 -B - <<'PYDELIVERED'
+          import json,os,re,shutil,subprocess
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP']);metadata=root/'s1-firefox158-transport'
+          delivered=root/'s1-firefox158-delivered'
+          shutil.copyfile(metadata/'PARTS.json',delivered/'PARTS.json')
+          subprocess.run(['python3','-B','tools/qikvrt_self_host.py','container-artifact-join',
+              '--root',str(delivered),'--output',str(root/'s1-firefox158-original-restored.tar.gz'),
+              '--manifest-sha256',os.environ['MANIFEST_SHA256'],
+              '--transport-sha256',os.environ['ARCHIVE_SHA256'],
+              '--receipt',str(metadata/'restore-readback.json')],check=True)
+          original=json.loads((metadata/'ORIGINAL.json').read_bytes())
+          head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          tree=subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip()
+          parts=[]
+          for index in range(int(os.environ['PART_COUNT'])):
+              identity=os.environ['PART%d_ID'%index]
+              digest=os.environ['PART%d_DIGEST'%index].removeprefix('sha256:')
+              assert re.fullmatch(r'[1-9][0-9]*',identity) and re.fullmatch(r'[a-f0-9]{64}',digest)
+              parts.append({'index':index,'artifact_id':int(identity),'zip_sha256':digest,
+                  'artifact_name':'qikvrt-s1-firefox158-runtime-'+head+'-part-%03d'%index})
+          binding={'schema':'qikvrt-container-artifact-delivery/v1','repository':os.environ['GITHUB_REPOSITORY'],
+              'run_id':int(os.environ['GITHUB_RUN_ID']),'exporter_head':head,'exporter_tree':tree,
+              'original_image':original,'parts_manifest_sha256':os.environ['MANIFEST_SHA256'],
+              'parts':parts,'connector_max_artifact_bytes':536870912,
+              'part_payload_max_bytes':268435456,'independent_download_back_verified':True,
+              'original_archive_restored_verified':True,'image_imported':False,
+              'extension_activation_verified':False,'public_production_verified':False,'effect_ack_done':False}
+          (metadata/'DELIVERY.json').write_text(json.dumps(binding,sort_keys=True,indent=2)+'\n')
+          PYDELIVERED
+      - name: Preserve bounded original-byte transport and readback
+        if: steps.runtime-parts.outcome == 'success'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-s1-firefox158-transport-${{ github.event.pull_request.head.sha || github.sha }}
+          path: ${{ runner.temp }}/s1-firefox158-transport/*.json
           retention-days: 90
           if-no-files-found: error
       - name: Reuse native Firefox, noVNC and persistent restart controls on the upgraded carrier
@@ -1311,4 +1445,5 @@ jobs:
           path: ${{ runner.temp }}/public-delivery.json
           if-no-files-found: error
           retention-days: 30
+
 
