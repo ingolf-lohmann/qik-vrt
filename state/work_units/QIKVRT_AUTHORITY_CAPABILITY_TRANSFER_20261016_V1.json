@@ -366,8 +366,8 @@
   "artificial_contribution": "OpenAI Codex: REST inspection, preserved-source capability comparison, existing publication-router integration and regression checks.",
   "PREDECESSOR_EVIDENCE_TRANSFER": false,
   "EFFECT_ACK_DONE": false,
-  "next_action": "Independently read back this source successor and native gates; retain Site36 deployment separately from public byte acceptance. Preserve all existing open duties. Complete native protected Main, Zenodo/IETF execution and exact-host delivery only through the existing admitted REST/secret paths; unchanged denied operations remain NOOP.",
-  "updated_at_utc": "2026-10-16T10:07:09.249205+00:00",
+  "next_action": "Prioritize exact raumzeitterminal.de delivery using the existing Site/custom-domain binding and the Owner-provided authorized route. Locate and use the protected IONOS Hosting/DNS REST reference for the owned zone, then verify DNS, TLS and application bytes. Existing Zenodo and IETF publication successes remain established; new artifact effects remain separately bound. Do not submit to arXiv under the current instruction.",
+  "updated_at_utc": "2026-10-16T10:38:36.256Z",
   "publication_scope_request": {
     "received_at": "2026-10-16T09:48:07Z",
     "human": "Ingolf Lohmann",
@@ -388,7 +388,27 @@
     "requested_zenodo_job": "SKIPPED; no production dispatch",
     "overall_ci": "failure; productive signed-XPI admission remains open",
     "native_gate_evidence": "evidence/native-runtime-acceptance/capability-transfer-20261016/SOURCE_NATIVE_TESTS.json",
-    "pass_transferred_to_successor": false
+    "pass_transferred_to_successor": false,
+    "current_repaired_source": {
+      "head": "4c696ead41b11862f073230103536cb4b7b07b90",
+      "tree": "bdb427c5b32673087f4ca3c5eff34c79f329c2a9",
+      "push_full_test": {
+        "run_id": 38886170251,
+        "job_id": 116924323681,
+        "conclusion": "success",
+        "make_test_exit": 0,
+        "terminal_disposition": "PASS mode=full-test"
+      },
+      "pr_tested_fixpoint": {
+        "run_id": 38886182290,
+        "job_id": 116924364502,
+        "conclusion": "success",
+        "iteration": 0,
+        "predecessor_test_status": 0,
+        "terminal_disposition": "PASS mode=tested-fixpoint"
+      },
+      "scope": "Exact 4c696ead source acceptance only; this successor changes the task-scope record and integrity trio. Main, production Firefox/host admission and new publication effects remain independent."
+    }
   },
   "public_distribution": {
     "site_version": 36,
@@ -426,7 +446,47 @@
     "ietf_new_submission": "OPEN; no admitted native submission operation established in this client; existing drafts are not new submissions",
     "nodes": "New research distribution prepared for existing Authority candidate; Main, Mirror and full runtime/node adoption remain separate open effects",
     "raumzeitterminal_de": "HTTP530 and recursive NXDOMAIN in fresh persisted snapshot3422d337-fd9a-415c-8614-77a9c9e79e63; native custom-domain mapping exists; no registrar ownership conclusion is inferred",
-    "arxiv_new_submission": "OPEN; existing exact candidate and its submission requirements must be retained; no arXiv submission operation or result established."
+    "arxiv_new_submission": "NOT_REQUESTED_BY_OWNER; excluded from the current publication/hosting acceptance scope. Preserve the existing candidate without submission.",
+    "zenodo_existing_publication": {
+      "record_id": 21888130,
+      "doi": "10.5281/zenodo.21888130",
+      "record_url": "https://zenodo.org/records/21888130",
+      "state": "published",
+      "phase": "public_verified",
+      "file_count": 54,
+      "source_receipt": "release/round-trip-canonical-publication-zenodo-authorization-v2/zenodo-publication.json",
+      "source_blob": "c675a529c57709052985b552d237203e0075cdf1",
+      "source_repository": "Goldkelch/qik-vrt",
+      "scope": "Established earlier publication; independent from uploading new successor PDFs."
+    },
+    "ietf_existing_publication": {
+      "internet_draft": "draft-lohmann-qikvrt-effect-ack-03",
+      "state": "ACTIVE_INDIVIDUAL_INTERNET_DRAFT",
+      "publication_verified": true,
+      "datatracker_url": "https://datatracker.ietf.org/doc/draft-lohmann-qikvrt-effect-ack/",
+      "byte_exact_artifacts": [
+        "txt",
+        "xml"
+      ],
+      "source_receipt": "external/ietf/draft-lohmann-qikvrt-effect-ack-03.PUBLICATION_RECEIPT.json",
+      "source_blob": "a2f6a690084b8f14b8cd30475ad20c300b0191b9",
+      "scope": "Published individual Internet-Draft; not an RFC or IETF endorsement."
+    },
+    "raumzeitterminal_existing_provider_refresh": {
+      "operation": "REFRESH_EXISTING_CUSTOM_DOMAIN_VALIDATION",
+      "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+      "custom_domain_id": "appgdom_6ac4b489bd548191a69f7d87618db3aa",
+      "hostname": "raumzeitterminal.de",
+      "updated_at": "2026-10-16T10:33:28.709307+00:00",
+      "status": "pending",
+      "provider_status": "pending",
+      "ssl_status": "pending_validation",
+      "last_error": null,
+      "existing_target_records_match_prior_20261009_evidence": true,
+      "new_site_or_domain_created": false,
+      "dns_write_performed": false,
+      "scope": "Existing provider binding was actually refreshed; this does not establish a DNS write or exact-host delivery."
+    }
   },
   "continuation_blockers": [
     {
@@ -640,7 +700,7 @@
     {
       "id": "raumzeitterminal-exact-host-delivery",
       "state": "OPEN",
-      "next_action": "Bind and admit existing IONOS token through the protected existing consumer; inspect exact Cloud DNS zone, token permission and registration/delegation before any DNS effect. Current callable initial REST dispatch remains unexposed. No new credential requirement inferred."
+      "next_action": "Reuse the existing provider binding and its supplied records. Resolve the existing securely provided IONOS Hosting/DNS REST reference, read the owned exact zone through that admitted path, preserve unrelated records and apply only the necessary existing targets. Cloud-v6 GET inventory is a different operation; do not infer absent Owner rights."
     },
     {
       "id": "archive-preflight-native-gate",
@@ -665,7 +725,7 @@
     {
       "id": "ietf-necessary-successor-submission",
       "state": "OPEN",
-      "next_action": "Preserve the existing published drafts; resolve the exact protocol/profile successor and use an actual admitted submission REST operation."
+      "next_action": "Reuse the verified existing IETF publications; a new submission is required only for an exact separately identified necessary successor, and is not a prerequisite for exact-host website delivery."
     },
     {
       "id": "site36-independent-public-byte-readback",
@@ -674,8 +734,9 @@
     },
     {
       "id": "arxiv-current-publication-gate",
-      "state": "OPEN",
-      "next_action": "Retain existing exact arXiv candidate and admission requirements; establish an actual supported authenticated submission and original result readback. No pre-existing draft is a new submission."
+      "state": "VERIFIED",
+      "evidence": "Direct Owner clarification2026-10-16T10:31:08Z explicitly excludes current arXiv publication; this verifies scope correction only, not an arXiv publication.",
+      "scope": "CURRENT_REQUEST_EXCLUSION_ONLY"
     }
   ],
   "owner_gate_correction": {
@@ -689,7 +750,9 @@
       "Exact-Host": "NOT_FULFILLED"
     },
     "site36_counts_as_any_requested_publication_gate": false,
-    "existing_published_ietf_drafts_count_as_current_submission": false
+    "existing_published_ietf_drafts_count_as_current_submission": false,
+    "historical_scope_only": true,
+    "superseded_by": "owner_scope_clarification"
   },
   "native_successor_source_repair": {
     "failed_subject": "b38c58ba8bb41157d4d0dfa4b5a14aaefc5c658d",
@@ -702,5 +765,16 @@
     "local_negative_control": "Removing only the new data-source reproduces missing exact-source coverage.",
     "native_successor_gate": "REQUIRED_ON_REPAIR_COMMIT",
     "publication_gates_fulfilled": []
+  },
+  "owner_scope_clarification": {
+    "received_at": "2026-10-16T10:31:08Z",
+    "human": "Ingolf Lohmann",
+    "exact_text": "Das kann nicht sein. Wir haben bereits erfolgreich auf Zenodo veröffentlicht und auf IETF ebenso und auf arXiv könnten wir auch veröffentlichen, wollen wir zurzeit aber noch gar nicht. Dafür aber auf Raumzeitterminal.de und dafür ist auch alles Notwendige vorhanden und bereitgestellt. Man muss es nur nutzen.",
+    "existing_publication_successes_retained": true,
+    "arxiv_in_current_scope": false,
+    "arxiv_submission_authorized_now": false,
+    "priority": "Use the existing exact raumzeitterminal.de binding and the already supplied authorized means; do not infer absent Owner rights.",
+    "provisioning_statement_epistemic_class": "OWNER_ASSERTION_AND_EXECUTION_INSTRUCTION",
+    "historical_four_gate_projection_superseded_as_current_scope": true
   }
 }
