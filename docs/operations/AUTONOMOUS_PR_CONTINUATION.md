@@ -47,6 +47,61 @@ bind the changed bytes.
 
 ## Trigger semantics
 
+### Owner-requested signing and GitHub completion feedback — 2026-10-17
+
+The existing `QIKVRT workflow executor` now has a separately bounded signing
+continuation for the Owner's explicit persistent-execution request. Its ordinary
+watchdog allowlist remains effect-free. The additional capability is fixed to
+the official AMO unlisted endpoint and the exact deterministic six-component
+Standard XPI digest in `WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json`.
+
+The existing executor receives GitHub `workflow_run: completed` events for
+`QIKVRT CI` and its existing watchdog. A read-only receiver independently GETs
+the original run, jobs and steps and stores `GITHUB_RUN_FEEDBACK.json`. This
+includes actual `cancelled`, `timed_out` or `failure` conclusions. GitHub may
+omit the underlying cancellation reason; that remains
+`NOT_EXPOSED_BY_GITHUB`. Original signing preflight and receipt boundary codes
+are retained when available. An elapsed interval is never abortion evidence.
+
+This is asynchronous provider push feedback, not a blocking synchronous call.
+The receiver checks out its own Main event SHA, never triggering-run source or
+executable artifacts. It has no dependency on the caller and no workflow-global
+concurrency lock. Original signing-job artifacts can be reconciled even when
+another job keeps the full CI workflow in progress. A run still active without
+a provider completion event remains pending; no application timer declares it
+dead. Existing unrelated reminder schedules do not drive this signing path.
+
+For an initial upload the existing executor requires current native Main
+protection, independent code-owner review enforcement and required checks;
+the request and six-component package must match exactly. Only the existing
+AMO secret names' presence booleans and a non-secret opaque binding revision
+are visible to the coordinator. Values reach only the existing signing step.
+Direct Owner invocation of that step retains its exact PR523 admission.
+Delegated `github-actions[bot]` invocation additionally verifies the original
+Main-run intent artifact, its digest and the actual started dispatch step.
+It never waits for its caller's later receipt or overall return.
+
+Before dispatch an immutable intent is uploaded and admission is read again.
+The native workflow token invokes the existing CI with
+`return_run_details: true`; the immediate returned run ID is journaled. There
+is no run-ID polling loop. A missing HTTP acknowledgement is ambiguous and
+must be recovered from an original CI preflight backlink; it cannot authorize
+a replacement upload. Provider-confirmed cancellation or pending AMO signing
+permits one independent GET-only readback, using a separate concurrency group
+so it cannot queue behind a stuck writer. A GET 404 in that mode cannot PUT,
+even when the original journal is missing. Pending or aborted recovery does
+not dispatch another unchanged recovery loop. A new provider observation or
+explicitly changed authorized binding is required for a subsequent decision.
+
+Native Actions artifacts carry the non-secret continuation journal and the
+existing live progress schema. Unrelated commits or observation timestamps do
+not reset a failed attempt. This source change becomes a live event consumer
+only after its ordinary protected Main integration and native admission; a
+candidate commit or passing fixture test does not activate it. Firefox 158
+default-policy acceptance, protected production image/profile admission,
+runtime health, exact-domain forwarding removal and fresh public readback
+remain independent open obligations.
+
 A push performed with the workflow-provided `GITHUB_TOKEN` does not recursively
 start ordinary push or pull-request workflows. The worker therefore emits the
 explicit repository-dispatch event

@@ -18,12 +18,14 @@ from __future__ import annotations
 import argparse
 import base64
 import hashlib
+import io
 import json
 import os
 import re
 import subprocess
 import sys
 import urllib.parse
+import zipfile
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
@@ -34,6 +36,13 @@ SHA_RE = re.compile(r"[0-9a-f]{40}\Z")
 ACTIVE_RUN_STATUSES = frozenset({"queued", "in_progress", "waiting", "requested", "pending"})
 ROLE_POLICY_PATH = "policy/CANONICAL_UPSTREAM_REMOTE_V1.json"
 GOVERNANCE_POLICY_PATH = "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json"
+AMO_REPOSITORY = "ingolf-lohmann/qik-vrt"
+AMO_NATIVE_WORKFLOW = ".github/workflows/qikvrt_workflow_executor.yml"
+AMO_CI_WORKFLOW = ".github/workflows/qikvrt_ci.yml"
+AMO_JOB = "Owner-authorized Firefox signing continuation"
+AMO_DISPATCH_STEP = "Dispatch the admitted exact-source signing request once"
+AMO_SCOPE = "firefox-amo-unlisted"
+AMO_SCHEMA = "qikvrt-owner-amo-continuation/v1"
 
 
 class ExecutorBlock(RuntimeError):
@@ -740,9 +749,694 @@ def _emit(value: Mapping[str, Any], as_json: bool) -> None:
     )
 
 
+def _amo_object(raw: bytes) -> dict[str, Any]:
+    def unique(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise ExecutorBlock("AMO_DUPLICATE_JSON_MEMBER")
+            result[key] = value
+        return result
+    if len(raw) > 1_048_576:
+        raise ExecutorBlock("AMO_METADATA_CAPACITY_LIMIT")
+    try:
+        value = json.loads(raw, object_pairs_hook=unique,
+                           parse_constant=lambda _: (_ for _ in ()).throw(ValueError()))
+    except (ValueError, UnicodeError) as exc:
+        raise ExecutorBlock("AMO_METADATA_INVALID") from exc
+    if not isinstance(value, dict):
+        raise ExecutorBlock("AMO_METADATA_OBJECT_REQUIRED")
+    return value
+
+
+def amo_request(root: Path = ROOT) -> dict[str, Any]:
+    request = load_contract(root).get("owner_authorized_operations", {}).get(AMO_SCOPE)
+    fixed = {"schema": "qikvrt-owner-amo-request/v1", "enabled": True,
+             "owner": "Ingolf Lohmann", "authorization_source": "DIRECT_OWNER_INSTRUCTION",
+             "repository": AMO_REPOSITORY, "ref": "main", "workflow": "qikvrt_ci.yml",
+             "credential_secret_names": ["AMO_JWT_ISSUER", "AMO_JWT_SECRET"],
+             "binding_revision_variable": "QIKVRT_AMO_BINDING_REVISION",
+             "requires_native_main_protection": True, "delegated_actor": "github-actions[bot]",
+             "ambiguous_dispatch": "READBACK_ONLY", "unchanged_failed_effect": "NOOP",
+             "feedback_event": "GITHUB_WORKFLOW_RUN_COMPLETED", "elapsed_time_is_abort_evidence": False,
+             "callback_waits_for_caller": False, "cancelled_upload_resume": "GET_ONLY",
+             "external_effect_scope": "OFFICIAL_UNLISTED_SIGNING_OF_EXACT_STANDARD_COMPONENTS_ONLY",
+             "public_production_verified": False}
+    if (not isinstance(request, dict) or set(request) != set(fixed) | {
+            "authorized_at", "statement", "unsigned_xpi_sha256"}
+            or any(type(request.get(k)) is not type(v) or request[k] != v for k, v in fixed.items())
+            or not re.fullmatch(r"[a-f0-9]{64}", str(request.get("unsigned_xpi_sha256", "")))
+            or not isinstance(request.get("statement"), str) or not request["statement"].strip()
+            or not re.fullmatch(r"\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d[+]03:00", str(request.get("authorized_at", "")))):
+        raise ExecutorBlock("AMO_EXACT_OWNER_REQUEST_REQUIRED")
+    return request
+
+
+def amo_native_protection(branch: Mapping[str, Any], rules: Sequence[Mapping[str, Any]]) -> None:
+    """Check actual effective rules; a candidate policy is not enforcement."""
+    if (not isinstance(branch, Mapping) or not isinstance(rules, list)
+            or any(not isinstance(r, Mapping) or not isinstance(r.get("parameters", {}), Mapping) for r in rules)):
+        raise ExecutorBlock("AMO_NATIVE_MAIN_PROTECTION_REQUIRED")
+    pull = [r.get("parameters", {}) for r in rules if r.get("type") == "pull_request"]
+    statuses = [r.get("parameters", {}) for r in rules if r.get("type") == "required_status_checks"]
+    if (branch.get("name") != "main" or branch.get("protected") is not True
+            or not any(type(p.get("required_approving_review_count")) is int
+                       and p["required_approving_review_count"] >= 1
+                       and p.get("require_code_owner_review") is True
+                       and p.get("require_last_push_approval") is True for p in pull)
+            or not any(r.get("type") == "non_fast_forward" for r in rules)
+            or not any(p.get("strict_required_status_checks_policy") is True
+                       and {"test", "QIKVRT required code-owner review"} <= {
+                           s.get("context") for s in p.get("required_status_checks", [])
+                           if isinstance(s, dict)} for p in statuses)):
+        raise ExecutorBlock("AMO_NATIVE_MAIN_PROTECTION_REQUIRED")
+
+
+def amo_intent(root: Path, context: Mapping[str, Any], authority: Mapping[str, Any],
+               branch: Mapping[str, Any], rules: Sequence[Mapping[str, Any]],
+               subject: Mapping[str, Any], previous: Mapping[str, Any] | None,
+               history_verified: bool) -> dict[str, Any]:
+    """Pure admission. Secret values are neither accepted nor fingerprinted."""
+    request = amo_request(root)
+    head, tree = _sha(context.get("head"), "AMO Main head"), _sha(context.get("tree"), "AMO Main tree")
+    run_id = context.get("run_id")
+    if (context.get("repository") != AMO_REPOSITORY or context.get("ref") != "refs/heads/main"
+            or context.get("event") not in {"workflow_run", "workflow_dispatch", "push"}
+            or context.get("workflow_ref") != f"{AMO_REPOSITORY}/{AMO_NATIVE_WORKFLOW}@refs/heads/main"
+            or type(run_id) is not int or not 0 < run_id < 10 ** 20
+            or context.get("run_attempt") != 1
+            or authority.get("repository") != AMO_REPOSITORY
+            or authority.get("main_head") != head or authority.get("main_tree") != tree
+            or authority.get("state") != "AUTHORITY_MAIN_ROLE_POLICY_REOBSERVED"):
+        raise ExecutorBlock("AMO_TRUSTED_NATIVE_MAIN_REQUIRED")
+    amo_native_protection(branch, rules)
+    if (subject.get("repository") != AMO_REPOSITORY or subject.get("source_head") != head
+            or subject.get("source_tree") != tree
+            or subject.get("unsigned_xpi_sha256") != request["unsigned_xpi_sha256"]):
+        raise ExecutorBlock("AMO_OWNER_PACKAGE_CHANGED")
+    revision = context.get("binding_revision", "initial") or "initial"
+    if not isinstance(revision, str) or not re.fullmatch(r"[A-Za-z0-9_.-]{1,64}", revision):
+        raise ExecutorBlock("AMO_BINDING_REVISION_INVALID")
+    if any(type(context.get(k)) is not bool for k in ("issuer_present", "secret_present")):
+        raise ExecutorBlock("AMO_PRESENCE_BOOLEAN_REQUIRED")
+    if not history_verified:
+        raise ExecutorBlock("AMO_PREDECESSOR_HISTORY_UNVERIFIED")
+    fingerprint = sha256_bytes(canonical_json_bytes({"scope": AMO_SCOPE,
+        "package": request["unsigned_xpi_sha256"], "binding_revision": revision,
+        "repository": AMO_REPOSITORY, "ref": "main"}))
+    result = {"schema": AMO_SCHEMA, "scope": AMO_SCOPE, "repository": AMO_REPOSITORY,
+        "head": head, "tree": tree, "ref": "main", "executor_run_id": run_id,
+        "request_sha256": sha256_bytes(canonical_json_bytes(request)),
+        "unsigned_xpi_sha256": request["unsigned_xpi_sha256"], "binding_revision": revision,
+        "fingerprint": fingerprint, "last_attempt": None, "dispatch": False, "history_verified": True,
+        "readback_only": False,
+        "effect_ack_done": False, "public_production_verified": False,
+        "state": "HOLD_AMO_AUTHORIZED_CREDENTIAL_PAIR_UNAVAILABLE"}
+    if previous is not None:
+        if (previous.get("schema") != AMO_SCHEMA or previous.get("scope") != AMO_SCOPE
+                or previous.get("repository") != AMO_REPOSITORY
+                or previous.get("effect_ack_done") is not False
+                or "last_attempt" not in previous):
+            raise ExecutorBlock("AMO_PREDECESSOR_JOURNAL_INVALID")
+        prior = previous["last_attempt"]
+        if prior is not None:
+            required = {"fingerprint", "head", "tree", "executor_run_id", "target_run_id", "state",
+                        "readback_only", "unsigned_xpi_sha256"}
+            if (not isinstance(prior, dict) or set(prior) != required
+                    or not re.fullmatch(r"[a-f0-9]{64}", str(prior.get("fingerprint", "")))
+                    or not SHA_RE.fullmatch(str(prior.get("head", "")))
+                    or not SHA_RE.fullmatch(str(prior.get("tree", "")))
+                    or type(prior.get("executor_run_id")) is not int
+                    or type(prior.get("target_run_id")) is not int
+                    or prior["executor_run_id"] <= 0 or prior["target_run_id"] < 0
+                    or type(prior.get("readback_only")) is not bool
+                    or not re.fullmatch(r"[a-f0-9]{64}", str(prior.get("unsigned_xpi_sha256", "")))
+                    or prior.get("state") not in {"AMBIGUOUS", "ACCEPTED", "FAILED",
+                        "CI_PENDING", "READBACK_PENDING", "SIGNED", "SOURCE_DRIFT", "RECOVERED_PRE_EFFECT", "ABORTED"}):
+                raise ExecutorBlock("AMO_PREDECESSOR_ATTEMPT_INVALID")
+            result["last_attempt"] = dict(prior)
+            if "github_feedback" in previous:
+                result["github_feedback"] = previous["github_feedback"]
+            state = prior["state"]
+            if prior["unsigned_xpi_sha256"] != request["unsigned_xpi_sha256"]:
+                raise ExecutorBlock("AMO_PREDECESSOR_PACKAGE_CHANGED")
+            if state == "SIGNED":
+                result["state"] = "SIGNING_SOURCE_BOUND"
+                return result
+            if state in {"AMBIGUOUS", "ACCEPTED", "CI_PENDING"}:
+                result["state"] = "HOLD_EXISTING_DISPATCH_READBACK"
+                return result
+            if state in {"ABORTED", "READBACK_PENDING"} and not prior["readback_only"]:
+                # GitHub's terminal event, never elapsed time, permits a separate
+                # GET-only recovery. It never permits a replacement upload.
+                result["readback_only"] = True
+            if state in {"ABORTED", "READBACK_PENDING"} and prior["readback_only"]:
+                result["state"] = "NOOP_AWAIT_NEW_PROVIDER_EVIDENCE"
+                return result
+            if (prior["fingerprint"] == fingerprint and state not in {"ABORTED", "READBACK_PENDING", "RECOVERED_PRE_EFFECT"}
+                    and not (state == "SOURCE_DRIFT" and prior["head"] != head)):
+                result["state"] = "NOOP_UNCHANGED_SIGNING_FAILURE"
+                return result
+    if context["issuer_present"] and context["secret_present"]:
+        result.update(state="DISPATCH_CANDIDATE_READY", dispatch=True)
+    return result
+
+
+def amo_dispatch_body(intent: Mapping[str, Any], intent_sha256: str) -> dict[str, Any]:
+    if (intent.get("schema") != AMO_SCHEMA or intent.get("dispatch") is not True
+            or intent.get("state") != "DISPATCH_CANDIDATE_READY"
+            or intent.get("repository") != AMO_REPOSITORY or intent.get("ref") != "main"
+            or not re.fullmatch(r"[a-f0-9]{64}", intent_sha256)):
+        raise ExecutorBlock("AMO_ADMITTED_INTENT_REQUIRED")
+    return {"ref": "main", "return_run_details": True, "inputs": {
+        "amo_sign_unlisted": True, "amo_expected_head": _sha(intent.get("head"), "AMO head"),
+        "amo_expected_tree": _sha(intent.get("tree"), "AMO tree"), "amo_previous_run_id": "0",
+        "amo_executor_run_id": str(intent["executor_run_id"]), "amo_intent_sha256": intent_sha256,
+        "amo_readback_only": intent["readback_only"]}}
+
+
+def amo_dispatch_record(intent: Mapping[str, Any], response: Mapping[str, Any] | None) -> dict[str, Any]:
+    """An absent/invalid response stays ambiguous, including a lost HTTP ACK."""
+    if intent.get("dispatch") is not True or intent.get("state") != "DISPATCH_CANDIDATE_READY":
+        raise ExecutorBlock("AMO_ADMITTED_INTENT_REQUIRED")
+    value = dict(intent)
+    target = response.get("workflow_run_id") if isinstance(response, Mapping) else None
+    accepted = (type(target) is int and 0 < target < 10 ** 20
+        and response.get("run_url") == f"https://api.github.com/repos/{AMO_REPOSITORY}/actions/runs/{target}"
+        and response.get("html_url") == f"https://github.com/{AMO_REPOSITORY}/actions/runs/{target}")
+    denied = isinstance(response, Mapping) and response.get("denied_http_status") in (400, 401, 403, 404, 422)
+    value["last_attempt"] = {"fingerprint": intent["fingerprint"], "head": intent["head"],
+        "tree": intent["tree"], "executor_run_id": intent["executor_run_id"],
+        "target_run_id": target if accepted else 0,
+        "readback_only": intent["readback_only"],
+        "unsigned_xpi_sha256": intent["unsigned_xpi_sha256"],
+        "state": "ACCEPTED" if accepted else ("FAILED" if denied else "AMBIGUOUS")}
+    value.update(dispatch=False, state="DISPATCH_ACCEPTED_PENDING_READBACK" if accepted else "HOLD_DISPATCH_OUTCOME_UNVERIFIED")
+    if not accepted:
+        value["first_boundary"] = "AMO_DISPATCH_DENIED_" + str(response["denied_http_status"]) if denied else "AMO_DISPATCH_ACK_UNVERIFIED"
+    return value
+
+
+def _amo_get(root: Path, endpoint: str, binary: bool = False) -> Any:
+    if not os.environ.get("GH_TOKEN") or not endpoint.startswith(f"repos/{AMO_REPOSITORY}/"):
+        raise ExecutorBlock("AMO_NATIVE_REPOSITORY_TOKEN_REQUIRED")
+    try:
+        response = subprocess.run(["gh", "api", "--hostname", "github.com", "--method", "GET", endpoint],
+            cwd=root, capture_output=True, timeout=30, check=False)
+    except (OSError, subprocess.TimeoutExpired):
+        raise ExecutorBlock("AMO_GITHUB_GET_UNVERIFIED") from None
+    if response.returncode:
+        status = re.search(rb"HTTP (\d{3})", response.stderr)
+        raise ExecutorBlock("AMO_GITHUB_GET_DENIED_" + (status.group(1).decode() if status else "UNKNOWN"))
+    if len(response.stdout) > 2 * 1_048_576:
+        raise ExecutorBlock("AMO_GITHUB_READ_CAPACITY_LIMIT")
+    if binary:
+        return response.stdout
+    return _amo_object(b'{"data":' + response.stdout + b'}')["data"]
+
+
+def amo_artifact(root: Path, run_id: int, name: str, allowed: set[str]) -> dict[str, bytes] | None:
+    value = _amo_get(root, f"repos/{AMO_REPOSITORY}/actions/runs/{run_id}/artifacts?per_page=100")
+    artifacts = value.get("artifacts")
+    if not isinstance(artifacts, list) or value.get("total_count") != len(artifacts) or len(artifacts) >= 100:
+        raise ExecutorBlock("AMO_ARTIFACT_INVENTORY_INCOMPLETE")
+    matches = [a for a in artifacts if a.get("name") == name]
+    if not matches:
+        return None
+    if len(matches) != 1:
+        raise ExecutorBlock("AMO_ORIGINAL_ARTIFACT_AMBIGUOUS")
+    item = matches[0]
+    if (item.get("expired") is not False or type(item.get("id")) is not int
+            or item.get("workflow_run", {}).get("id") != run_id
+            or not re.fullmatch(r"sha256:[a-f0-9]{64}", str(item.get("digest", "")))
+            or type(item.get("size_in_bytes")) is not int or not 0 < item["size_in_bytes"] <= 2 * 1_048_576):
+        raise ExecutorBlock("AMO_ORIGINAL_ARTIFACT_UNAVAILABLE")
+    raw = _amo_get(root, f"repos/{AMO_REPOSITORY}/actions/artifacts/{item['id']}/zip", binary=True)
+    if sha256_bytes(raw) != item["digest"][7:] or len(raw) != item["size_in_bytes"]:
+        raise ExecutorBlock("AMO_ORIGINAL_ARTIFACT_DIGEST_MISMATCH")
+    result = {}
+    try:
+        with zipfile.ZipFile(io.BytesIO(raw)) as archive:
+            for entry in archive.infolist():
+                if (entry.filename not in allowed or entry.filename in result or entry.is_dir()
+                        or not 0 < entry.file_size <= 1_048_576
+                        or entry.external_attr >> 16 & 0o170000 not in (0, 0o100000)):
+                    raise ExecutorBlock("AMO_CLOSED_ARTIFACT_INVENTORY_REQUIRED")
+                result[entry.filename] = archive.read(entry)
+    except (ValueError, OSError, zipfile.BadZipFile, RuntimeError):
+        raise ExecutorBlock("AMO_ORIGINAL_ARTIFACT_BYTES_INVALID") from None
+    return result
+
+
+def amo_run(root: Path, run_id: int, workflow: str) -> dict[str, Any]:
+    value = _amo_get(root, f"repos/{AMO_REPOSITORY}/actions/runs/{run_id}")
+    if (value.get("id") != run_id or value.get("path") != workflow
+            or value.get("repository", {}).get("full_name") != AMO_REPOSITORY
+            or value.get("head_branch") != "main" or value.get("run_attempt") != 1
+            or value.get("event") not in {"schedule", "workflow_dispatch", "push", "workflow_run"}
+            or not SHA_RE.fullmatch(str(value.get("head_sha", "")))):
+        raise ExecutorBlock("AMO_ORIGINAL_RUN_IDENTITY_INVALID")
+    return value
+
+
+def amo_previous(root: Path, current_run_id: int) -> tuple[dict[str, Any] | None, bool]:
+    """Carry the last attempt through original native artifacts, never a chat cache."""
+    current = amo_run(root, current_run_id, AMO_NATIVE_WORKFLOW)
+    current_order = (current.get("created_at", ""), current_run_id)
+    for page in range(1, 17):
+        value = _amo_get(root, f"repos/{AMO_REPOSITORY}/actions/workflows/qikvrt_workflow_executor.yml/runs?branch=main&per_page=100&page={page}")
+        runs = value.get("workflow_runs")
+        if not isinstance(runs, list):
+            raise ExecutorBlock("AMO_NATIVE_HISTORY_INVALID")
+        for run in runs:
+            if run.get("id") == current_run_id:
+                continue
+            prior_id = run.get("id")
+            if type(prior_id) is not int or prior_id <= 0:
+                raise ExecutorBlock("AMO_NATIVE_HISTORY_ID_INVALID")
+            if (run.get("created_at", ""), prior_id) >= current_order:
+                continue
+            original = amo_run(root, prior_id, AMO_NATIVE_WORKFLOW)
+            jobs = _amo_get(root, f"repos/{AMO_REPOSITORY}/actions/runs/{prior_id}/jobs?per_page=100")
+            if jobs.get("total_count") != len(jobs.get("jobs", [])) or len(jobs.get("jobs", [])) >= 100:
+                raise ExecutorBlock("AMO_NATIVE_JOB_INVENTORY_INCOMPLETE")
+            matching = [j for j in jobs["jobs"] if j.get("name") == AMO_JOB]
+            if len(matching) > 1:
+                raise ExecutorBlock("AMO_PREDECESSOR_JOB_AMBIGUOUS")
+            if not matching:
+                # An older workflow without this separately authorized producer
+                # cannot have issued its dispatch. Verify that source, not timing.
+                source = _amo_get(root, f"repos/{AMO_REPOSITORY}/contents/{CONTRACT_RELATIVE_PATH}?ref={original['head_sha']}")
+                raw = base64.b64decode("".join(source.get("content", "").split()), validate=True)
+                blob = hashlib.sha1(f"blob {len(raw)}\0".encode() + raw).hexdigest()
+                if source.get("sha") != blob:
+                    raise ExecutorBlock("AMO_PREDECESSOR_SOURCE_UNVERIFIED")
+                contract = _amo_object(raw)
+                if AMO_SCOPE not in contract.get("owner_authorized_operations", {}):
+                    # A later old-source run cannot erase an earlier producer.
+                    continue
+                # A still queued producer has no proof that POST cannot start.
+                raise ExecutorBlock("AMO_PREDECESSOR_PRODUCER_JOB_UNOBSERVED")
+            if matching[0].get("conclusion") == "skipped":
+                continue
+            journal = amo_artifact(root, prior_id, f"qikvrt-amo-continuation-{prior_id}",
+                                   {"intent.json", "receipt.json", "AI_PROGRESS.json", "AI_STATUS.md"})
+            if journal and "receipt.json" in journal:
+                receipt = _amo_object(journal["receipt.json"])
+                if receipt.get("executor_run_id") != prior_id:
+                    raise ExecutorBlock("AMO_PREDECESSOR_ARTIFACT_RUN_MISMATCH")
+                if receipt.get("history_verified") is not True:
+                    # A failed pre-effect inventory cannot erase older duties.
+                    if any(s.get("name") == AMO_DISPATCH_STEP and s.get("started_at")
+                           and s.get("conclusion") != "skipped" for s in matching[0].get("steps", [])):
+                        raise ExecutorBlock("AMO_UNVERIFIED_HISTORY_AFTER_DISPATCH")
+                    continue
+                return amo_reconcile(root, receipt), True
+            intent = amo_artifact(root, prior_id, f"qikvrt-amo-intent-{prior_id}", {"intent.json"})
+            if intent and "intent.json" in intent:
+                receipt = _amo_object(intent["intent.json"])
+                if receipt.get("executor_run_id") != prior_id:
+                    raise ExecutorBlock("AMO_PREDECESSOR_ARTIFACT_RUN_MISMATCH")
+                dispatched = any(s.get("name") == AMO_DISPATCH_STEP and s.get("started_at")
+                    and s.get("conclusion") != "skipped" for s in matching[0].get("steps", []))
+                if not dispatched and matching[0].get("status") != "completed":
+                    raise ExecutorBlock("AMO_PREDECESSOR_DISPATCH_STILL_POSSIBLE")
+                return amo_reconcile(root, amo_dispatch_record(receipt, None) if dispatched else receipt), True
+            if any(s.get("name") == AMO_DISPATCH_STEP and s.get("started_at")
+                   and s.get("conclusion") != "skipped" for s in matching[0].get("steps", [])):
+                raise ExecutorBlock("AMO_PREDECESSOR_ORIGINAL_ARTIFACT_MISSING")
+            if matching[0].get("status") != "completed":
+                raise ExecutorBlock("AMO_PREDECESSOR_INTENT_NOT_YET_PUBLISHED")
+            # Platform job metadata proves this failed setup never entered POST.
+            # Continue to the older original journal rather than resetting it.
+        if len(runs) < 100:
+            return None, True
+    raise ExecutorBlock("AMO_NATIVE_HISTORY_INCOMPLETE")
+
+
+def amo_reconcile(root: Path, receipt: Mapping[str, Any]) -> dict[str, Any]:
+    value = dict(receipt)
+    prior = value.get("last_attempt")
+    if not isinstance(prior, dict) or prior.get("state") not in {"AMBIGUOUS", "ACCEPTED", "CI_PENDING", "ABORTED"}:
+        return value
+    prior = dict(prior)
+    target = prior.get("target_run_id")
+    if type(target) is not int or target <= 0:
+        caller = amo_run(root, prior["executor_run_id"], AMO_NATIVE_WORKFLOW)
+        found = []
+        for page in range(1, 17):
+            runs = _amo_get(root, f"repos/{AMO_REPOSITORY}/actions/workflows/qikvrt_ci.yml/runs?event=workflow_dispatch&per_page=100&page={page}").get("workflow_runs")
+            if not isinstance(runs, list):
+                raise ExecutorBlock("AMO_ACK_READBACK_HISTORY_INVALID")
+            stop = False
+            for candidate in runs:
+                if candidate.get("created_at", "") < caller.get("created_at", ""):
+                    stop = True
+                    break
+                if candidate.get("head_sha") != prior["head"] or candidate.get("actor", {}).get("login") != "github-actions[bot]":
+                    continue
+                candidate_id = candidate.get("id")
+                if type(candidate_id) is not int or candidate_id <= 0:
+                    raise ExecutorBlock("AMO_ACK_READBACK_RUN_ID_INVALID")
+                original = amo_artifact(root, candidate_id, f"qikvrt-amo-unlisted-{prior['head']}",
+                    {"ACCESS_PREFLIGHT.json", "AMO_ATTEMPT.json", "AMO_SIGNING_RECEIPT.json", "standard-signed.xpi"})
+                if original and "ACCESS_PREFLIGHT.json" in original:
+                    access = _amo_object(original["ACCESS_PREFLIGHT.json"])
+                    if str(access.get("executor_run_id")) == str(prior["executor_run_id"]):
+                        found.append(candidate_id)
+            if stop or len(runs) < 100:
+                break
+        else:
+            raise ExecutorBlock("AMO_ACK_READBACK_HISTORY_INCOMPLETE")
+        if len(found) != 1:
+            if len(found) > 1:
+                raise ExecutorBlock("AMO_ACK_READBACK_AMBIGUOUS")
+            return value
+        target = prior["target_run_id"] = found[0]
+    run = amo_run(root, target, AMO_CI_WORKFLOW)
+    if run.get("head_sha") != prior.get("head") or run.get("event") != "workflow_dispatch":
+        raise ExecutorBlock("AMO_DISPATCH_TARGET_SOURCE_MISMATCH")
+    jobs = _amo_get(root, f"repos/{AMO_REPOSITORY}/actions/runs/{target}/jobs?per_page=100")
+    if jobs.get("total_count") != len(jobs.get("jobs", [])):
+        raise ExecutorBlock("AMO_TARGET_JOB_INVENTORY_INCOMPLETE")
+    value["github_feedback"] = amo_feedback(run, jobs["jobs"])
+    signing_jobs = [j for j in jobs.get("jobs", []) if j.get("name") == "Mozilla AMO unlisted access and exact-source signing"]
+    if len(signing_jobs) > 1:
+        raise ExecutorBlock("AMO_TARGET_SIGNING_JOB_AMBIGUOUS")
+    # A hung compile/deploy job must not hide a finished signing effect.
+    if not signing_jobs or signing_jobs[0].get("status") != "completed":
+        if run.get("status") != "completed":
+            prior["state"] = "CI_PENDING"
+        else:
+            prior["state"] = "ABORTED" if run.get("conclusion") in {"cancelled", "timed_out"} else "FAILED"
+    else:
+        original = amo_artifact(root, target, f"qikvrt-amo-unlisted-{prior['head']}",
+            {"ACCESS_PREFLIGHT.json", "AMO_ATTEMPT.json", "AMO_SIGNING_RECEIPT.json", "standard-signed.xpi"})
+        if (not original or "ACCESS_PREFLIGHT.json" not in original) and signing_jobs[0].get("conclusion") in {"cancelled", "timed_out"}:
+            prior["state"] = "ABORTED"
+            value["last_attempt"] = prior
+            return value
+        if not original or "ACCESS_PREFLIGHT.json" not in original:
+            raise ExecutorBlock("AMO_TARGET_ORIGINAL_PREFLIGHT_MISSING")
+        access = _amo_object(original["ACCESS_PREFLIGHT.json"])
+        if str(access.get("executor_run_id")) != str(prior.get("executor_run_id")):
+            raise ExecutorBlock("AMO_TARGET_CALLER_READBACK_MISMATCH")
+        boundary = access.get("first_boundary")
+        if isinstance(boundary, str) and re.fullmatch(r"AMO_[A-Z0-9_]{1,100}", boundary):
+            value["github_feedback"]["source_boundary"] = boundary
+        signed = _amo_object(original["AMO_SIGNING_RECEIPT.json"]) if "AMO_SIGNING_RECEIPT.json" in original else {}
+        if signed and (signed.get("source_head") != prior["head"]
+                or signed.get("source_tree") != prior["tree"]
+                or signed.get("unsigned_xpi_sha256") != prior["unsigned_xpi_sha256"]):
+            raise ExecutorBlock("AMO_TARGET_COMPONENT_READBACK_MISMATCH")
+        if isinstance(signed.get("state"), str) and re.fullmatch(r"[A-Z][A-Z0-9_]{1,150}", signed["state"]):
+            value["github_feedback"]["signing_state"] = signed["state"]
+        if signed.get("signed_original_returned") is True:
+            signed_bytes = original.get("standard-signed.xpi")
+            if (not signed_bytes or signed.get("xpi_sha256") != sha256_bytes(signed_bytes)
+                    or signed.get("xpi_bytes") != len(signed_bytes)):
+                raise ExecutorBlock("AMO_TARGET_SIGNED_ORIGINAL_BYTES_UNVERIFIED")
+            prior["state"] = "SIGNED"
+        elif signed.get("state") in {"PENDING_AMO_REVIEW_OR_SIGNING_READBACK_ONLY",
+                                     "HOLD_AMO_EXISTING_VERSION_NOT_OBSERVED_READBACK_ONLY"}:
+            prior["state"] = "READBACK_PENDING"
+        elif access.get("first_boundary") == "AMO_DELEGATION_MAIN_HEAD_DRIFT":
+            official = [s for s in signing_jobs[0].get("steps", [])
+                        if s.get("name") == "Official source-bound unlisted signing and original-byte readback"]
+            if len(official) != 1 or official[0].get("conclusion") != "skipped":
+                raise ExecutorBlock("AMO_SOURCE_DRIFT_PRE_EFFECT_PROOF_REQUIRED")
+            prior["state"] = "SOURCE_DRIFT"
+        elif signing_jobs[0].get("conclusion") in {"cancelled", "timed_out"}:
+            prior["state"] = "ABORTED"
+        else:
+            prior["state"] = "FAILED"
+    value["last_attempt"] = prior
+    return value
+
+
+def amo_feedback(run: Mapping[str, Any], jobs: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    """Only provider statuses and bounded diagnostics; cancellation cause may be absent."""
+    statuses = {"queued", "in_progress", "completed", "waiting", "pending", "requested"}
+    conclusions = {None, "success", "failure", "neutral", "cancelled", "skipped", "timed_out",
+                   "action_required", "stale", "startup_failure"}
+    def status(item):
+        if item.get("status") not in statuses or item.get("conclusion") not in conclusions:
+            raise ExecutorBlock("AMO_GITHUB_STATUS_UNRECOGNIZED")
+        return {"status": item["status"], "conclusion": item.get("conclusion")}
+    result = {"schema": "qikvrt-github-run-feedback/v1", "run_id": run["id"],
+              "run_url": f"https://github.com/{AMO_REPOSITORY}/actions/runs/{run['id']}",
+              **status(run), "reason": "NOT_EXPOSED_BY_GITHUB", "jobs": []}
+    for job in jobs:
+        if type(job.get("id")) is not int or not isinstance(job.get("name"), str) or len(job["name"]) > 200:
+            raise ExecutorBlock("AMO_GITHUB_JOB_DIAGNOSTIC_INVALID")
+        observed = {"id": job["id"], "name": job["name"], **status(job), "steps": []}
+        for step in job.get("steps", []):
+            if type(step.get("number")) is not int or not isinstance(step.get("name"), str) or len(step["name"]) > 200:
+                raise ExecutorBlock("AMO_GITHUB_STEP_DIAGNOSTIC_INVALID")
+            observed["steps"].append({"number": step["number"], "name": step["name"], **status(step)})
+        result["jobs"].append(observed)
+    return result
+
+
+def amo_event(root: Path, context: Mapping[str, Any]) -> dict[str, Any] | None:
+    """Authenticate GitHub's push notification by an independent original-run GET."""
+    if context.get("event") != "workflow_run":
+        return None
+    try:
+        raw = Path(os.environ["GITHUB_EVENT_PATH"]).read_bytes()
+        event = _amo_object(raw)
+        source = event["workflow_run"]
+        run_id = source["id"]
+        if (event.get("action") != "completed" or event.get("repository", {}).get("full_name") != AMO_REPOSITORY
+                or source.get("name") != "QIKVRT CI" or source.get("head_branch") != "main"
+                or source.get("head_repository", {}).get("full_name") != AMO_REPOSITORY
+                or source.get("event") != "workflow_dispatch" or source.get("status") != "completed"
+                or type(run_id) is not int or run_id <= 0):
+            raise ExecutorBlock("AMO_UNRELATED_GITHUB_COMPLETION_EVENT")
+        original = amo_run(root, run_id, AMO_CI_WORKFLOW)
+        if any(source.get(k) != original.get(k) for k in ("id", "head_sha", "status", "conclusion", "run_attempt", "event")):
+            raise ExecutorBlock("AMO_GITHUB_COMPLETION_EVENT_MISMATCH")
+        return original
+    except (OSError, KeyError, TypeError):
+        raise ExecutorBlock("AMO_GITHUB_COMPLETION_EVENT_UNVERIFIED") from None
+
+
+def github_completion_feedback(root: Path = ROOT) -> dict[str, Any]:
+    """Read CI completion diagnostics without executing code from the triggering run."""
+    context = amo_context()
+    if (context["event"] != "workflow_run" or context["repository"] != AMO_REPOSITORY
+            or context["ref"] != "refs/heads/main"
+            or context["workflow_ref"] != f"{AMO_REPOSITORY}/{AMO_NATIVE_WORKFLOW}@refs/heads/main"):
+        raise ExecutorBlock("AMO_TRUSTED_NATIVE_MAIN_REQUIRED")
+    try:
+        event = _amo_object(Path(os.environ["GITHUB_EVENT_PATH"]).read_bytes())
+        source = event["workflow_run"]
+        run_id = source["id"]
+        if (event.get("action") != "completed" or event.get("repository", {}).get("full_name") != AMO_REPOSITORY
+                or type(run_id) is not int or run_id <= 0
+                or source.get("head_repository", {}).get("full_name") != AMO_REPOSITORY):
+            raise ExecutorBlock("AMO_UNRELATED_GITHUB_COMPLETION_EVENT")
+        run = _amo_get(root, f"repos/{AMO_REPOSITORY}/actions/runs/{run_id}")
+        if (run.get("repository", {}).get("full_name") != AMO_REPOSITORY
+                or run.get("head_repository", {}).get("full_name") != AMO_REPOSITORY
+                or run.get("path") not in {AMO_CI_WORKFLOW, ".github/workflows/qikvrt_workflow_executor_watchdog.yml"}
+                or run.get("status") != "completed"
+                or any(run.get(k) != source.get(k) for k in ("id", "head_sha", "conclusion", "run_attempt", "event"))):
+            raise ExecutorBlock("AMO_GITHUB_COMPLETION_EVENT_MISMATCH")
+        jobs = _amo_get(root, f"repos/{AMO_REPOSITORY}/actions/runs/{run_id}/jobs?per_page=100")
+        if jobs.get("total_count") != len(jobs.get("jobs", [])):
+            raise ExecutorBlock("AMO_TARGET_JOB_INVENTORY_INCOMPLETE")
+        return amo_feedback(run, jobs["jobs"])
+    except (OSError, KeyError, TypeError):
+        raise ExecutorBlock("AMO_GITHUB_COMPLETION_EVENT_UNVERIFIED") from None
+
+
+def amo_context(environment: Mapping[str, str] = os.environ) -> dict[str, Any]:
+    try:
+        return {"repository": environment.get("GITHUB_REPOSITORY"), "ref": environment.get("GITHUB_REF"),
+            "workflow_ref": environment.get("GITHUB_WORKFLOW_REF"), "event": environment.get("GITHUB_EVENT_NAME"),
+            "head": environment.get("GITHUB_SHA"), "run_id": int(environment.get("GITHUB_RUN_ID", "0")),
+            "run_attempt": int(environment.get("GITHUB_RUN_ATTEMPT", "0")),
+            "issuer_present": environment.get("AMO_ISSUER_PRESENT") == "true",
+            "secret_present": environment.get("AMO_SECRET_PRESENT") == "true",
+            "binding_revision": environment.get("AMO_BINDING_REVISION", "initial") or "initial"}
+    except ValueError:
+        raise ExecutorBlock("AMO_NATIVE_CONTEXT_INVALID") from None
+
+
+def amo_live_plan(root: Path = ROOT) -> dict[str, Any]:
+    context = amo_context()
+    previous, verified = None, False
+    try:
+        if (context["repository"] != AMO_REPOSITORY or context["ref"] != "refs/heads/main"
+                or context["workflow_ref"] != f"{AMO_REPOSITORY}/{AMO_NATIVE_WORKFLOW}@refs/heads/main"
+                or context["event"] not in {"workflow_run", "push", "workflow_dispatch"}
+                or context["run_attempt"] != 1 or context["run_id"] <= 0):
+            raise ExecutorBlock("AMO_TRUSTED_NATIVE_MAIN_REQUIRED")
+        context["tree"] = _git(root, "rev-parse", "HEAD^{tree}")
+        if _git(root, "rev-parse", "HEAD") != context["head"]:
+            raise ExecutorBlock("AMO_LOCAL_MAIN_HEAD_DRIFT")
+        event = amo_event(root, context)
+        previous, verified = amo_previous(root, context["run_id"])
+        if event is not None and (previous is None or not isinstance(previous.get("last_attempt"), dict)
+                or previous["last_attempt"].get("target_run_id") != event["id"]):
+            # Duplicate or out-of-order notifications cannot replace a newer attempt.
+            raise ExecutorBlock("AMO_UNRELATED_OR_SUPERSEDED_COMPLETION_EVENT")
+        authority = read_authority_main(root)
+        branch = _amo_get(root, f"repos/{AMO_REPOSITORY}/branches/main")
+        rules = _amo_get(root, f"repos/{AMO_REPOSITORY}/rules/branches/main")
+        if not isinstance(rules, list):
+            raise ExecutorBlock("AMO_NATIVE_RULES_INVALID")
+        try:
+            from tools import qikvrt_self_host as host
+        except ModuleNotFoundError:
+            import qikvrt_self_host as host
+        _, subject = host.firefox_amo_input(root, context["head"], context["tree"])
+        result = amo_intent(root, context, authority, branch, rules, subject, previous, verified)
+        if (event is not None and result.get("dispatch") is True and result.get("readback_only") is not True
+                and not (previous["last_attempt"].get("state") == "SOURCE_DRIFT"
+                         and previous["last_attempt"].get("head") != context["head"])):
+            result.update(state="NOOP_COMPLETION_EVENT_CANNOT_START_UPLOAD", dispatch=False)
+        runs = _amo_get(root, f"repos/{AMO_REPOSITORY}/actions/runs?branch=main&per_page=100")
+        writers = load_contract(root)["dispatch_policy"]["writer_workflow_names"]
+        if not result.get("readback_only") and any(r.get("name") in writers and r.get("status") in ACTIVE_RUN_STATUSES
+               for r in runs.get("workflow_runs", [])):
+            result.update(state="HOLD_COMPETING_AUTHORITY_WRITER", dispatch=False)
+        return result
+    except (ExecutorBlock, ValueError, OSError, KeyError, TypeError, subprocess.SubprocessError) as exc:
+        code = str(exc)
+        if not re.fullmatch(r"[A-Z][A-Z0-9_ ]{1,100}", code):
+            code = "AMO_NATIVE_ADMISSION_UNVERIFIED"
+        return {"schema": AMO_SCHEMA, "scope": AMO_SCOPE, "repository": AMO_REPOSITORY,
+            "executor_run_id": context.get("run_id", 0), "head": context.get("head"),
+            "history_verified": verified, "last_attempt": previous.get("last_attempt") if previous else None,
+            "dispatch": False, "state": "HOLD", "first_boundary": code,
+            "effect_ack_done": False, "public_production_verified": False}
+
+
+def amo_validate_delegation(root: Path = ROOT) -> None:
+    """Authenticate a bot invocation by the pre-published original Main intent."""
+    env = os.environ
+    try:
+        caller_id, target_id = int(env.get("AMO_EXECUTOR_RUN_ID", "0")), int(env.get("GITHUB_RUN_ID", "0"))
+    except ValueError:
+        raise ExecutorBlock("AMO_DELEGATION_RUN_ID_INVALID") from None
+    head, tree = env.get("EXPECTED_HEAD"), env.get("EXPECTED_TREE")
+    if (caller_id <= 0 or target_id <= 0 or env.get("GITHUB_ACTOR") != "github-actions[bot]"
+            or env.get("GITHUB_REPOSITORY") != AMO_REPOSITORY
+            or env.get("GITHUB_EVENT_NAME") != "workflow_dispatch"
+            or env.get("GITHUB_REF") != "refs/heads/main"
+            or env.get("GITHUB_WORKFLOW_REF") != f"{AMO_REPOSITORY}/{AMO_CI_WORKFLOW}@refs/heads/main"
+            or env.get("GITHUB_RUN_ATTEMPT") != "1" or env.get("GITHUB_SHA") != head
+            or not SHA_RE.fullmatch(str(head)) or not SHA_RE.fullmatch(str(tree))
+            or _git(root, "rev-parse", "HEAD") != head or _git(root, "rev-parse", "HEAD^{tree}") != tree):
+        raise ExecutorBlock("AMO_DELEGATION_NATIVE_MAIN_REQUIRED")
+    live = _amo_get(root, f"repos/{AMO_REPOSITORY}/git/ref/heads/main")
+    if live.get("object", {}).get("sha") != head:
+        raise ExecutorBlock("AMO_DELEGATION_MAIN_HEAD_DRIFT")
+    authority = read_authority_main(root)
+    if authority.get("main_head") != head or authority.get("main_tree") != tree:
+        raise ExecutorBlock("AMO_DELEGATION_MAIN_HEAD_DRIFT")
+    amo_native_protection(_amo_get(root, f"repos/{AMO_REPOSITORY}/branches/main"),
+                          _amo_get(root, f"repos/{AMO_REPOSITORY}/rules/branches/main"))
+    caller = amo_run(root, caller_id, AMO_NATIVE_WORKFLOW)
+    if caller.get("head_sha") != head:
+        raise ExecutorBlock("AMO_DELEGATION_CALLER_SOURCE_DRIFT")
+    original = amo_artifact(root, caller_id, f"qikvrt-amo-intent-{caller_id}", {"intent.json"})
+    if not original or "intent.json" not in original:
+        raise ExecutorBlock("AMO_DELEGATION_ORIGINAL_INTENT_REQUIRED")
+    raw = original["intent.json"]
+    if sha256_bytes(raw) != env.get("AMO_INTENT_SHA256"):
+        raise ExecutorBlock("AMO_DELEGATION_INTENT_DIGEST_MISMATCH")
+    intent = _amo_object(raw)
+    request = amo_request(root)
+    if (intent.get("schema") != AMO_SCHEMA or intent.get("scope") != AMO_SCOPE
+            or intent.get("repository") != AMO_REPOSITORY or intent.get("ref") != "main"
+            or intent.get("head") != head or intent.get("tree") != tree
+            or intent.get("executor_run_id") != caller_id or intent.get("dispatch") is not True
+            or intent.get("state") != "DISPATCH_CANDIDATE_READY"
+            or intent.get("history_verified") is not True
+            or intent.get("request_sha256") != sha256_bytes(canonical_json_bytes(request))
+            or intent.get("unsigned_xpi_sha256") != request["unsigned_xpi_sha256"]):
+        raise ExecutorBlock("AMO_DELEGATION_EXACT_INTENT_REQUIRED")
+    try:
+        from tools import qikvrt_self_host as host
+    except ModuleNotFoundError:
+        import qikvrt_self_host as host
+    _, subject = host.firefox_amo_input(root, head, tree)
+    if subject["unsigned_xpi_sha256"] != intent["unsigned_xpi_sha256"]:
+        raise ExecutorBlock("AMO_DELEGATION_OWNER_PACKAGE_CHANGED")
+    jobs = _amo_get(root, f"repos/{AMO_REPOSITORY}/actions/runs/{caller_id}/jobs?per_page=100")
+    if jobs.get("total_count") != len(jobs.get("jobs", [])):
+        raise ExecutorBlock("AMO_DELEGATION_CALLER_JOB_INVENTORY_INCOMPLETE")
+    steps = [s for j in jobs.get("jobs", []) if j.get("name") == AMO_JOB
+             for s in j.get("steps", []) if s.get("name") == AMO_DISPATCH_STEP]
+    if len(steps) != 1 or not steps[0].get("started_at") or steps[0].get("conclusion") == "skipped":
+        raise ExecutorBlock("AMO_DELEGATION_CALLER_DISPATCH_NOT_STARTED")
+    if (env.get("AMO_READBACK_ONLY") == "true") is not intent.get("readback_only"):
+        raise ExecutorBlock("AMO_DELEGATION_READBACK_MODE_MISMATCH")
+    # The exact owner request and pre-published original intent grant this
+    # capability. Do not wait for the caller to return or upload its later ACK.
+    # Writer serialization and the existing pre-PUT journal remain mandatory.
+    return
+
+
+def amo_write(directory: Path, filename: str, raw: bytes) -> None:
+    directory.mkdir(mode=0o700, parents=True, exist_ok=True)
+    if directory.is_symlink() or not directory.is_dir() or directory.stat().st_uid != os.getuid():
+        raise ExecutorBlock("AMO_OWNED_OUTPUT_DIRECTORY_REQUIRED")
+    temporary = directory / (".amo-" + os.urandom(16).hex())
+    descriptor = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
+    try:
+        with os.fdopen(descriptor, "wb") as stream:
+            stream.write(raw)
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temporary, directory / filename)
+        descriptor = os.open(directory, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+        try:
+            os.fsync(descriptor)
+        finally:
+            os.close(descriptor)
+    finally:
+        temporary.unlink(missing_ok=True)
+
+
+def amo_progress(directory: Path, receipt: Mapping[str, Any]) -> None:
+    amo_write(directory, "receipt.json", canonical_json_bytes(receipt))
+    signed = receipt.get("state") == "SIGNING_SOURCE_BOUND"
+    attempt = receipt.get("last_attempt")
+    accepted = isinstance(attempt, dict) and type(attempt.get("target_run_id")) is int and attempt["target_run_id"] > 0
+    boundary = receipt.get("first_boundary") or receipt["state"]
+    progress = {"schema": "qikvrt_human_machine_progress_v1", "repository": AMO_REPOSITORY,
+        "operation": "Protected Firefox signing continuation; activation and public delivery remain unverified",
+        "status": "BLOCK", "progressPercent": 67 if signed else (33 if accepted else 0),
+        "gates": [
+            {"name": "Protected exact-source signing dispatch", "state": "PASS" if accepted else "BLOCK",
+             "evidence": str(receipt.get("executor_run_id", "unverified"))},
+            {"name": "Original source-bound signed XPI", "state": "PASS" if signed else "BLOCK",
+             "evidence": boundary},
+            {"name": "Firefox activation and exact public domain delivery", "state": "BLOCK",
+             "evidence": "Not established by signing, dispatch or completion feedback"}]}
+    amo_write(directory, "AI_PROGRESS.json", canonical_json_bytes(progress))
+    human = ("# Protected signing continuation\n\nState: " + receipt["state"]
+        + "\n\nBoundary: " + boundary
+        + "\n\nSigning admission and dispatch are separate from Firefox activation and public delivery.\n")
+    amo_write(directory, "AI_STATUS.md", human.encode())
+    if os.environ.get("GITHUB_STEP_SUMMARY"):
+        with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as stream:
+            stream.write(human + "\n")
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     subcommands = parser.add_subparsers(dest="command", required=True)
+    for name in ("amo-plan", "amo-pre-dispatch", "amo-record"):
+        amo = subcommands.add_parser(name)
+        amo.add_argument("--output-dir", type=Path, required=True)
+    subcommands.add_parser("amo-delegation-check")
+    feedback = subcommands.add_parser("github-completion-feedback")
+    feedback.add_argument("--output-dir", type=Path, required=True)
     authority = subcommands.add_parser("authority-readback")
     authority.add_argument("--previous-readback", type=Path)
     authority.add_argument("--json", action="store_true")
@@ -776,7 +1470,44 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: Sequence[str] | None = None) -> int:
     arguments = build_parser().parse_args(argv)
     try:
-        if arguments.command == "roles":
+        if arguments.command == "github-completion-feedback":
+            value = github_completion_feedback()
+            amo_write(arguments.output_dir, "GITHUB_RUN_FEEDBACK.json", canonical_json_bytes(value))
+            print("GITHUB_ORIGINAL_CONCLUSION=" + str(value["conclusion"]))
+            print("GITHUB_ABORT_REASON=" + value["reason"])
+            return 0
+        elif arguments.command == "amo-plan":
+            value = amo_live_plan()
+            amo_write(arguments.output_dir, "intent.json", canonical_json_bytes(value))
+            amo_progress(arguments.output_dir, value)
+            print("AMO_CONTINUATION_STATE=" + value["state"])
+            return 0
+        elif arguments.command == "amo-pre-dispatch":
+            raw = (arguments.output_dir / "intent.json").read_bytes()
+            intent = _amo_object(raw)
+            fresh = amo_live_plan()
+            if fresh.get("dispatch") is not True or canonical_json_bytes(fresh) != raw:
+                amo_progress(arguments.output_dir, fresh)
+                raise ExecutorBlock("AMO_DISPATCH_PREREQUISITES_CHANGED")
+            body = amo_dispatch_body(intent, sha256_bytes(raw))
+            amo_write(arguments.output_dir, "dispatch-input.json", canonical_json_bytes(body))
+            print("AMO_EXACT_DISPATCH_ADMISSION=VERIFIED")
+            return 0
+        elif arguments.command == "amo-record":
+            intent = _amo_object((arguments.output_dir / "intent.json").read_bytes())
+            try:
+                response = _amo_object((arguments.output_dir / "dispatch-response.json").read_bytes())
+            except (OSError, ExecutorBlock):
+                response = None
+            value = amo_dispatch_record(intent, response)
+            amo_progress(arguments.output_dir, value)
+            print("AMO_CONTINUATION_STATE=" + value["state"])
+            return 0
+        elif arguments.command == "amo-delegation-check":
+            amo_validate_delegation()
+            print("AMO_NATIVE_DELEGATION=VERIFIED")
+            return 0
+        elif arguments.command == "roles":
             roles = validate_role_projections()
             if arguments.projection_file:
                 validate_request_roles(_mapping(_read_json_file(arguments.projection_file, "request role projection"), "request role projection"))

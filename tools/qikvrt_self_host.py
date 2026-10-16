@@ -3047,9 +3047,9 @@ def firefox_amo_transport(url, method, payload, issuer, secret, download=False):
     raise ValueError("AMO_DOWNLOAD_UNVERIFIED")
 
 
-def firefox_amo_unlisted(root, output, head, tree, state_dir, submit=False, previous_state=None):
+def firefox_amo_unlisted(root, output, head, tree, state_dir, submit=False, previous_state=None, readback_only=False):
     try:
-        return firefox_amo_unlisted_apply(root, output, head, tree, state_dir, submit, previous_state)
+        return firefox_amo_unlisted_apply(root, output, head, tree, state_dir, submit, previous_state, readback_only)
     except Exception as exc:
         cause = str(exc)
         code = cause.split(":", 1)[0]
@@ -3060,12 +3060,13 @@ def firefox_amo_unlisted(root, output, head, tree, state_dir, submit=False, prev
         raise ValueError(cause) from None
 
 
-def firefox_amo_unlisted_apply(root, output, head, tree, state_dir, submit=False, previous_state=None):
+def firefox_amo_unlisted_apply(root, output, head, tree, state_dir, submit=False, previous_state=None, readback_only=False):
     """One source-bound official signing submission, then independent readback.
 
     No credentials in arguments, journal, output, archive or logs. A pending or
     ambiguous upload is read back on resume, never submitted again unchanged.
     """
+    if type(readback_only) is not bool: raise ValueError("AMO_READBACK_BOOLEAN_REQUIRED")
     raw, subject = firefox_amo_input(root, head, tree)
     for path in (output, state_dir):
         if path is None: raise ValueError("AMO_PRIVATE_OUTPUT_AND_JOURNAL_REQUIRED")
@@ -3077,7 +3078,7 @@ def firefox_amo_unlisted_apply(root, output, head, tree, state_dir, submit=False
     endpoint = "https://addons.mozilla.org/api/v4/addons/" + urllib.parse.quote(
         subject["extension_id"], safe="") + "/versions/" + urllib.parse.quote(subject["extension_version"], safe="") + "/"
     result = {"schema": "qikvrt-firefox-amo-unlisted/v1", **subject, "channel": "unlisted",
-        "amo_endpoint": endpoint, "submission_attempted": False, "mozilla_signature_verified": False,
+        "amo_endpoint": endpoint, "submission_attempted": False, "readback_only": readback_only, "mozilla_signature_verified": False,
         "extension_activation_verified": False, "main_integration_verified": False,
         "public_production_verified": False, "effect_ack_done": False}
     def finish(state):
@@ -3116,6 +3117,8 @@ def firefox_amo_unlisted_apply(root, output, head, tree, state_dir, submit=False
             raise ValueError("AMO_JOURNAL_SUBJECT_MISMATCH")
         status, data = firefox_amo_transport(endpoint, "GET", None, issuer, secret)
         if status == 404:
+            if readback_only:
+                return finish("HOLD_AMO_EXISTING_VERSION_NOT_OBSERVED_READBACK_ONLY")
             if prior and prior.get("submission_attempted"):
                 return finish("HOLD_AMO_PRIOR_UPLOAD_OUTCOME_UNRESOLVED_NO_RESUBMISSION")
             result["submission_attempted"] = True

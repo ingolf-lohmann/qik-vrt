@@ -2912,6 +2912,75 @@
     "regression_correction": "Delegated review may satisfy native governance while missing qualified target-ref CAS must still HOLD; self-review must remain BLOCK.",
     "same_path_three_way": true
   },
+  "native_signing_continuation_20261017": {
+    "activation_boundary": "Requires ordinary independently reviewed Main integration and actual native Main protection. Current observed Main is unprotected and the previously observed AMO job received neither existing secret. No source candidate or dispatch is runtime activation.",
+    "artificial_cognitive_actor": "OpenAI Codex GPT-6; implementation and fixture verification",
+    "claims": {
+      "EFFECT_ACK_DONE": false,
+      "firefox_connected": false,
+      "forwarding_removed": false,
+      "live_completion_consumer_verified": false,
+      "public_production_verified": false,
+      "service_started": false,
+      "stored_profile_contents_known": false
+    },
+    "effect_bounds": {
+      "cancelled_or_pending_resume": "ONE_INDEPENDENT_GET_ONLY_READBACK",
+      "direct_main_write": false,
+      "lost_ack_replacement_upload": false,
+      "native_main_protection_required": true,
+      "new_credentials": false,
+      "official_unlisted_signing_only": true,
+      "original_intent_published_before_dispatch": true,
+      "same_failed_subject_retry": "NOOP_UNTIL_CAUSAL_BINDING_CHANGE",
+      "secret_values_read_by_coordinator": false,
+      "unchanged_readback_event_loop": false,
+      "unsigned_xpi_sha256": "1f5f583181d6134584f98bf6b59848d4542176d624d97709fa915b9934e2c46c"
+    },
+    "existing_executor": "tools/qikvrt_workflow_executor.py",
+    "existing_workflows": [
+      ".github/workflows/qikvrt_workflow_executor.yml",
+      ".github/workflows/qikvrt_ci.yml"
+    ],
+    "feedback": {
+      "application_timer_abort_decision": false,
+      "caller_return_required": false,
+      "cancellation_cause_if_absent": "NOT_EXPOSED_BY_GITHUB",
+      "provider_event": "workflow_run.completed",
+      "readback_lane_waits_for_writer": false,
+      "run_job_step_readback": true,
+      "watchdog_run_id_polling_removed": true,
+      "whole_ci_return_required_for_signing_artifact_readback": false,
+      "workflow_global_concurrency_removed": true
+    },
+    "human": "Ingolf Lohmann",
+    "local_validation": {
+      "cache_coverage": "34/34 (100%)",
+      "complete_native_suite": "REQUIRED_ON_PERSISTED_CANDIDATE",
+      "fixture_http_is_not_live_mozilla_evidence": true,
+      "fixture_tests_passed": 48,
+      "yaml_workflows_parsed": 2
+    },
+    "observed_at": "2026-10-16T23:15:42.745126+00:00",
+    "owner_request": {
+      "continuous_execution": "Ja, wenn sie das bisher noch nicht tut, dann sorgen wir jetzt dafür, dass sie es von nun an fortwährend tut.",
+      "github_feedback": "Deswegen wäre es auch besser, wenn man von GitHub in synchroner Art und Weise erfährt, wenn ein Lauf abgebrochen ist. Am besten inklusive der Gründe dafür. Denn mit Fristen und Timern wollen wir ja nix zu tun haben.",
+      "liveness_correction": "Na ja, damit bringst du dich ja selber in Deadlock, wenn der Lauf nicht zurückkehrt. Wieso erkennst du sowas denn nicht?",
+      "source": "DIRECT_OWNER_INSTRUCTIONS"
+    },
+    "remaining": [
+      "native current-head full CI and independent required code-owner review",
+      "ordinary protected Main integration",
+      "existing protected AMO pair delivery and official signed original",
+      "Firefox 158 default-policy activation/restart",
+      "protected production image and actual profile admission",
+      "existing Transputer runtime health and persistent service acceptance",
+      "exact-domain private forwarding setting/file inspection and scoped reversible removal",
+      "fresh HTTP apex/www plus HTTPS public readback"
+    ],
+    "source_parent": "8bfb740b1a5013c3a833754d39348d6c46b6d38a",
+    "state": "IMPLEMENTED_CANDIDATE_NOT_ACTIVATED"
+  },
   "oci_publication_merge_20261014": {
     "cache_coverage": "32/32",
     "candidate_native_ci": "REQUIRED_ON_NEW_HEAD; NOT_TRANSFERRED",

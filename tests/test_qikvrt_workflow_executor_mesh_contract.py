@@ -7,12 +7,15 @@ import base64
 import hashlib
 import importlib.util
 import json
+import io
+import os
 import pathlib
 import subprocess
 import sys
 import shutil
 import tempfile
 import unittest
+import zipfile
 from unittest import mock
 
 
@@ -516,6 +519,273 @@ class AuthorityReadbackTests(unittest.TestCase):
             with self.subTest(fault=fault), mock.patch.object(MODULE.subprocess, "run", side_effect=damaged):
                 with self.assertRaises(MODULE.ExecutorBlock):
                     MODULE.read_authority_main(ROOT)
+
+
+class OwnerSigningContinuationTests(unittest.TestCase):
+    """Provider fixtures verify routing and failure semantics, never live signing."""
+
+    def setUp(self):
+        self.head, self.tree = "a" * 40, "b" * 40
+        self.contract = json.loads(CONTRACT.read_bytes())
+        self.request = self.contract["owner_authorized_operations"][MODULE.AMO_SCOPE]
+        self.package = self.request["unsigned_xpi_sha256"]
+        patch = mock.patch.object(MODULE, "load_contract", return_value=self.contract)
+        patch.start(); self.addCleanup(patch.stop)
+        self.context = {"repository": MODULE.AMO_REPOSITORY, "ref": "refs/heads/main",
+            "event": "push", "workflow_ref": f"{MODULE.AMO_REPOSITORY}/{MODULE.AMO_NATIVE_WORKFLOW}@refs/heads/main",
+            "head": self.head, "tree": self.tree, "run_id": 500, "run_attempt": 1,
+            "issuer_present": True, "secret_present": True, "binding_revision": "initial"}
+        self.authority = {"repository": MODULE.AMO_REPOSITORY, "main_head": self.head,
+            "main_tree": self.tree, "state": "AUTHORITY_MAIN_ROLE_POLICY_REOBSERVED"}
+        self.branch = {"name": "main", "protected": True}
+        self.rules = [{"type": "pull_request", "parameters": {"required_approving_review_count": 1,
+            "require_code_owner_review": True, "require_last_push_approval": True}},
+            {"type": "non_fast_forward"}, {"type": "required_status_checks", "parameters": {
+                "strict_required_status_checks_policy": True, "required_status_checks": [
+                    {"context": "test"}, {"context": "QIKVRT required code-owner review"}]}}]
+        self.subject = {"repository": MODULE.AMO_REPOSITORY, "source_head": self.head,
+            "source_tree": self.tree, "unsigned_xpi_sha256": self.package}
+
+    def plan(self, previous=None, **overrides):
+        context = {**self.context, **overrides}
+        authority = {**self.authority, "main_head": context["head"]}
+        subject = {**self.subject, "source_head": context["head"]}
+        return MODULE.amo_intent(ROOT, context, authority, self.branch, self.rules, subject, previous, True)
+
+    def response(self, target=600):
+        return {"workflow_run_id": target,
+            "run_url": f"https://api.github.com/repos/{MODULE.AMO_REPOSITORY}/actions/runs/{target}",
+            "html_url": f"https://github.com/{MODULE.AMO_REPOSITORY}/actions/runs/{target}"}
+
+    def attempt(self, state="ACCEPTED", readback=False):
+        intent = self.plan(readback_only=readback)
+        intent["readback_only"] = readback
+        receipt = MODULE.amo_dispatch_record(intent, self.response())
+        receipt["last_attempt"]["state"] = state
+        return receipt
+
+    def provider_run(self, run_id, workflow=None, status="completed", conclusion="success", **changes):
+        return {"id": run_id, "path": workflow or MODULE.AMO_CI_WORKFLOW,
+            "name": "QIKVRT CI", "repository": {"full_name": MODULE.AMO_REPOSITORY},
+            "head_repository": {"full_name": MODULE.AMO_REPOSITORY}, "head_branch": "main",
+            "head_sha": self.head, "run_attempt": 1, "event": "workflow_dispatch",
+            "created_at": "2026-10-17T00:00:00Z", "status": status, "conclusion": conclusion, **changes}
+
+    def job(self, status="completed", conclusion="success", name="Mozilla AMO unlisted access and exact-source signing"):
+        return {"id": 700, "name": name, "status": status, "conclusion": conclusion,
+                "steps": [{"number": 1, "name": "Official source-bound unlisted signing and original-byte readback",
+                           "status": status, "conclusion": conclusion, "started_at": "2026-10-17T00:00:01Z"}]}
+
+    def original(self, executor=500, signed=True):
+        value = {"ACCESS_PREFLIGHT.json": MODULE.canonical_json_bytes({"executor_run_id": executor})}
+        if signed:
+            raw = b"synthetic original XPI; no real signature claim"
+            value.update({"standard-signed.xpi": raw,
+                "AMO_SIGNING_RECEIPT.json": MODULE.canonical_json_bytes({
+                    "source_head": self.head, "source_tree": self.tree, "unsigned_xpi_sha256": self.package,
+                    "signed_original_returned": True, "xpi_sha256": hashlib.sha256(raw).hexdigest(),
+                    "xpi_bytes": len(raw)})})
+        return value
+
+    def test_exact_protected_main_and_presence_are_required(self):
+        self.assertTrue(self.plan()["dispatch"])
+        for changes in ({"ref": "refs/heads/feature"}, {"event": "schedule"}, {"run_attempt": 2},
+                        {"repository": "Goldkelch/qik-vrt"}, {"workflow_ref": "other"}):
+            with self.subTest(changes=changes), self.assertRaises(MODULE.ExecutorBlock):
+                self.plan(**changes)
+        self.branch["protected"] = False
+        with self.assertRaisesRegex(MODULE.ExecutorBlock, "PROTECTION"):
+            self.plan()
+        self.branch["protected"] = True
+        for key in ("issuer_present", "secret_present"):
+            self.assertFalse(self.plan(**{key: False})["dispatch"])
+        with self.assertRaisesRegex(MODULE.ExecutorBlock, "HISTORY"):
+            MODULE.amo_intent(ROOT, self.context, self.authority, self.branch, self.rules, self.subject, None, False)
+        self.subject["unsigned_xpi_sha256"] = "0" * 64
+        with self.assertRaisesRegex(MODULE.ExecutorBlock, "PACKAGE_CHANGED"):
+            self.plan()
+
+    def test_unrelated_commits_do_not_retry_failure_or_fabricate_done(self):
+        previous = self.attempt("FAILED")
+        for head in (self.head, "c" * 40):
+            value = self.plan(previous, head=head)
+            self.assertEqual(value["state"], "NOOP_UNCHANGED_SIGNING_FAILURE")
+            self.assertFalse(value["dispatch"])
+            self.assertFalse(value["effect_ack_done"])
+        self.assertTrue(self.plan(previous, binding_revision="new-authorized-binding")["dispatch"])
+
+    def test_ambiguous_ack_and_existing_run_never_start_replacement_upload(self):
+        intent = self.plan()
+        for response in (None, {}, {"workflow_run_id": 600}, {**self.response(), "run_url": "https://foreign.invalid/"}):
+            previous = MODULE.amo_dispatch_record(intent, response)
+            self.assertEqual(previous["last_attempt"]["state"], "AMBIGUOUS")
+            self.assertFalse(self.plan(previous)["dispatch"])
+        body = MODULE.amo_dispatch_body(intent, "f" * 64)
+        self.assertTrue(body["return_run_details"])
+        self.assertEqual(body["ref"], "main")
+        self.assertEqual(body["inputs"]["amo_executor_run_id"], "500")
+
+    def test_provider_abort_admits_only_one_independent_readback(self):
+        for state in ("ABORTED", "READBACK_PENDING"):
+            value = self.plan(self.attempt(state))
+            self.assertTrue(value["dispatch"])
+            self.assertTrue(value["readback_only"])
+            body = MODULE.amo_dispatch_body(value, "f" * 64)
+            self.assertTrue(body["inputs"]["amo_readback_only"])
+            repeated = self.plan(self.attempt(state, readback=True))
+            self.assertFalse(repeated["dispatch"])
+            self.assertEqual(repeated["state"], "NOOP_AWAIT_NEW_PROVIDER_EVIDENCE")
+
+    def test_provider_feedback_preserves_abort_status_without_inventing_cause(self):
+        for conclusion in ("cancelled", "timed_out", "failure"):
+            value = MODULE.amo_feedback(self.provider_run(600, conclusion=conclusion), [self.job(conclusion=conclusion)])
+            self.assertEqual(value["conclusion"], conclusion)
+            self.assertEqual(value["jobs"][0]["steps"][0]["conclusion"], conclusion)
+            self.assertEqual(value["reason"], "NOT_EXPOSED_BY_GITHUB")
+
+    def test_finished_signing_is_read_even_if_entire_workflow_never_returns(self):
+        run = self.provider_run(600, status="in_progress", conclusion=None)
+        jobs = {"total_count": 2, "jobs": [self.job(), self.job("in_progress", None, "Full test still running")]}
+        def get(root, endpoint, **kwargs):
+            if endpoint.endswith("/600"): return run
+            if endpoint.endswith("/600/jobs?per_page=100"): return jobs
+            self.fail("unexpected wait or GET: " + endpoint)
+        with mock.patch.object(MODULE, "_amo_get", side_effect=get), mock.patch.object(MODULE, "amo_artifact", return_value=self.original()):
+            value = MODULE.amo_reconcile(ROOT, self.attempt())
+        self.assertEqual(value["last_attempt"]["state"], "SIGNED")
+        self.assertEqual(value["github_feedback"]["status"], "in_progress")
+        self.assertEqual(self.plan(value)["state"], "SIGNING_SOURCE_BOUND")
+        self.assertFalse(value["public_production_verified"])
+
+    def test_missing_original_on_cancel_is_readback_only_never_age_based_retry(self):
+        for conclusion in ("cancelled", "timed_out"):
+            def get(root, endpoint, **kwargs):
+                if endpoint.endswith("/600"): return self.provider_run(600, conclusion=conclusion)
+                return {"total_count": 1, "jobs": [self.job(conclusion=conclusion)]}
+            with mock.patch.object(MODULE, "_amo_get", side_effect=get), mock.patch.object(MODULE, "amo_artifact", return_value=None):
+                value = MODULE.amo_reconcile(ROOT, self.attempt())
+            self.assertEqual(value["last_attempt"]["state"], "ABORTED")
+            self.assertTrue(self.plan(value)["readback_only"])
+
+    def test_altered_signed_bytes_or_foreign_caller_fail_closed(self):
+        jobs = {"total_count": 1, "jobs": [self.job()]}
+        for original in (self.original(executor=999), {**self.original(), "standard-signed.xpi": b"tampered"}):
+            with mock.patch.object(MODULE, "amo_run", return_value=self.provider_run(600)), \
+                    mock.patch.object(MODULE, "_amo_get", return_value=jobs), \
+                    mock.patch.object(MODULE, "amo_artifact", return_value=original):
+                with self.assertRaises(MODULE.ExecutorBlock):
+                    MODULE.amo_reconcile(ROOT, self.attempt())
+
+    def test_still_running_caller_does_not_block_original_intent_recovery(self):
+        intent = self.plan(run_id=499)
+        caller = self.provider_run(499, MODULE.AMO_NATIVE_WORKFLOW, "in_progress", None)
+        current = self.provider_run(500, MODULE.AMO_NATIVE_WORKFLOW, created_at="2026-10-17T00:00:02Z")
+        job = self.job("in_progress", None, MODULE.AMO_JOB)
+        job["steps"][0]["name"] = MODULE.AMO_DISPATCH_STEP
+        def get(root, endpoint, **kwargs):
+            if endpoint.endswith("/500"): return current
+            if endpoint.endswith("/499"): return caller
+            if "/workflows/" in endpoint: return {"workflow_runs": [current, caller]}
+            if endpoint.endswith("/499/jobs?per_page=100"): return {"total_count": 1, "jobs": [job]}
+            self.fail(endpoint)
+        def artifact(root, run_id, name, allowed):
+            return {"intent.json": MODULE.canonical_json_bytes(intent)} if name == "qikvrt-amo-intent-499" else None
+        with mock.patch.object(MODULE, "_amo_get", side_effect=get), \
+                mock.patch.object(MODULE, "amo_artifact", side_effect=artifact), \
+                mock.patch.object(MODULE, "amo_reconcile", side_effect=lambda root, value: value):
+            receipt, verified = MODULE.amo_previous(ROOT, 500)
+        self.assertTrue(verified)
+        self.assertEqual(receipt["last_attempt"]["state"], "AMBIGUOUS")
+        self.assertEqual(receipt["last_attempt"]["executor_run_id"], 499)
+
+    def test_completed_event_is_checked_against_original_github_run(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = pathlib.Path(directory) / "event.json"
+            original = self.provider_run(600, conclusion="cancelled")
+            event = {"action": "completed", "repository": {"full_name": MODULE.AMO_REPOSITORY}, "workflow_run": original}
+            path.write_text(json.dumps(event))
+            with mock.patch.dict(os.environ, {"GITHUB_EVENT_PATH": str(path)}), mock.patch.object(MODULE, "amo_run", return_value=original):
+                self.assertEqual(MODULE.amo_event(ROOT, {**self.context, "event": "workflow_run"})["conclusion"], "cancelled")
+                path.write_text(json.dumps({**event, "workflow_run": {**original, "conclusion": "success"}}))
+                with self.assertRaisesRegex(MODULE.ExecutorBlock, "EVENT_MISMATCH"):
+                    MODULE.amo_event(ROOT, {**self.context, "event": "workflow_run"})
+
+    def test_bot_delegation_returns_without_caller_completion_or_later_ack(self):
+        intent = self.plan()
+        raw = MODULE.canonical_json_bytes(intent)
+        env = {"AMO_EXECUTOR_RUN_ID": "500", "GITHUB_RUN_ID": "600", "GITHUB_ACTOR": "github-actions[bot]",
+            "GITHUB_REPOSITORY": MODULE.AMO_REPOSITORY, "GITHUB_EVENT_NAME": "workflow_dispatch", "GITHUB_REF": "refs/heads/main",
+            "GITHUB_WORKFLOW_REF": f"{MODULE.AMO_REPOSITORY}/{MODULE.AMO_CI_WORKFLOW}@refs/heads/main",
+            "GITHUB_RUN_ATTEMPT": "1", "GITHUB_SHA": self.head, "EXPECTED_HEAD": self.head, "EXPECTED_TREE": self.tree,
+            "AMO_INTENT_SHA256": hashlib.sha256(raw).hexdigest(), "AMO_READBACK_ONLY": "false"}
+        job = self.job("in_progress", None, MODULE.AMO_JOB); job["steps"][0]["name"] = MODULE.AMO_DISPATCH_STEP
+        def get(root, endpoint, **kwargs):
+            if endpoint.endswith("/heads/main"): return {"object": {"sha": self.head}}
+            if endpoint.endswith("/rules/branches/main"): return self.rules
+            if endpoint.endswith("/branches/main"): return self.branch
+            if endpoint.endswith("/500/jobs?per_page=100"): return {"total_count": 1, "jobs": [job]}
+            self.fail("unexpected ACK wait: " + endpoint)
+        from tools import qikvrt_self_host as host
+        with mock.patch.dict(os.environ, env, clear=True), mock.patch.object(MODULE, "_amo_get", side_effect=get), \
+                mock.patch.object(MODULE, "_git", side_effect=lambda root, *args: self.tree if "HEAD^{tree}" in args else self.head), \
+                mock.patch.object(MODULE, "read_authority_main", return_value=self.authority), \
+                mock.patch.object(MODULE, "amo_run", return_value=self.provider_run(500, MODULE.AMO_NATIVE_WORKFLOW, "in_progress", None)), \
+                mock.patch.object(MODULE, "amo_artifact", return_value={"intent.json": raw}) as artifact, \
+                mock.patch.object(host, "firefox_amo_input", return_value=(b"", self.subject)):
+            MODULE.amo_validate_delegation(ROOT)
+            self.assertEqual(artifact.call_count, 1)
+
+    def test_original_artifact_digest_and_closed_inventory_are_enforced(self):
+        stream = io.BytesIO()
+        with zipfile.ZipFile(stream, "w") as archive: archive.writestr("intent.json", b"{}")
+        raw = stream.getvalue()
+        metadata = {"total_count": 1, "artifacts": [{"id": 800, "name": "expected", "expired": False,
+            "workflow_run": {"id": 500}, "size_in_bytes": len(raw), "digest": "sha256:" + hashlib.sha256(raw).hexdigest()}]}
+        with mock.patch.object(MODULE, "_amo_get", side_effect=[metadata, raw]):
+            self.assertEqual(MODULE.amo_artifact(ROOT, 500, "expected", {"intent.json"}), {"intent.json": b"{}"})
+        for allowed, data in ((set(), raw), ({"intent.json"}, raw + b"altered")):
+            with mock.patch.object(MODULE, "_amo_get", side_effect=[metadata, data]), self.assertRaises(MODULE.ExecutorBlock):
+                MODULE.amo_artifact(ROOT, 500, "expected", allowed)
+
+    def test_lost_dispatch_ack_is_recovered_from_original_ci_backlink(self):
+        previous = MODULE.amo_dispatch_record(self.plan(), None)
+        def get(root, endpoint, **kwargs):
+            if "/workflows/qikvrt_ci.yml/runs?" in endpoint:
+                return {"workflow_runs": [self.provider_run(600, actor={"login": "github-actions[bot]"})]}
+            if "/600/jobs?" in endpoint: return {"total_count": 1, "jobs": [self.job()]}
+            self.fail(endpoint)
+        def run(root, run_id, workflow): return self.provider_run(run_id, workflow)
+        with mock.patch.object(MODULE, "_amo_get", side_effect=get), \
+                mock.patch.object(MODULE, "amo_run", side_effect=run), \
+                mock.patch.object(MODULE, "amo_artifact", return_value=self.original()):
+            result = MODULE.amo_reconcile(ROOT, previous)
+        self.assertEqual(result["last_attempt"]["target_run_id"], 600)
+        self.assertEqual(result["last_attempt"]["state"], "SIGNED")
+
+    def test_out_of_order_event_keeps_newer_obligation_without_dispatch(self):
+        context = {**self.context, "event": "workflow_run"}
+        previous = self.attempt()
+        previous["last_attempt"]["target_run_id"] = 601
+        with mock.patch.object(MODULE, "amo_context", return_value=context), \
+                mock.patch.object(MODULE, "_git", side_effect=lambda root, *args: self.tree if "HEAD^{tree}" in args else self.head), \
+                mock.patch.object(MODULE, "amo_event", return_value=self.provider_run(600)), \
+                mock.patch.object(MODULE, "amo_previous", return_value=(previous, True)):
+            result = MODULE.amo_live_plan(ROOT)
+        self.assertFalse(result["dispatch"])
+        self.assertEqual(result["last_attempt"]["target_run_id"], 601)
+        self.assertEqual(result["first_boundary"], "AMO_UNRELATED_OR_SUPERSEDED_COMPLETION_EVENT")
+
+    def test_receiver_cannot_wait_behind_caller_or_poll_for_workflow_return(self):
+        workflow = EXECUTOR_WORKFLOW.read_text()
+        self.assertNotIn("\nconcurrency:", workflow)
+        receiver = workflow.split("  github-run-feedback:\n")[1].split("  owner-firefox-signing:\n")[0]
+        self.assertNotIn("    needs:", receiver)
+        self.assertNotIn("    concurrency:", receiver)
+        self.assertIn('types: [completed]', workflow)
+        self.assertIn("format('feedback-{0}', github.event.workflow_run.id)", workflow)
+        self.assertNotIn("sleep ", workflow)
+        self.assertNotIn("seq 1 12", workflow)
+        self.assertIn('return_run_details:true', workflow)
 
 
 if __name__ == "__main__":

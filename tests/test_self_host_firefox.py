@@ -101,6 +101,16 @@ class FirefoxAMOUnlistedTests(unittest.TestCase):
                 r=self.invoke();self.assertIn('CREDENTIAL_PAIR_UNAVAILABLE',r['state'])
                 self.assertFalse(r['submission_attempted'])
 
+    def test_readback_only_404_never_puts_even_without_a_surviving_journal(self):
+        with self.mock.patch.object(host,'firefox_amo_transport',return_value=(404,b'{}')) as call:
+            receipt=host.firefox_amo_unlisted(self.root,self.output,self.head,self.tree,self.state,
+                submit=True,readback_only=True)
+        self.assertEqual([item.args[1] for item in call.call_args_list],['GET'])
+        self.assertFalse(receipt['submission_attempted'])
+        self.assertTrue(receipt['readback_only'])
+        self.assertEqual(receipt['state'],'HOLD_AMO_EXISTING_VERSION_NOT_OBSERVED_READBACK_ONLY')
+        self.assertFalse((self.state/'AMO_ATTEMPT.json').exists())
+
     def test_jwt_hs256_short_expiry_fresh_nonce_and_header(self):
         import hashlib,hmac
         def decode(s):return base64.urlsafe_b64decode(s+'='*(-len(s)%4))
@@ -526,3 +536,4 @@ class FirefoxCarrierTests(NativeStandaloneTests):
 
 
 if __name__=='__main__':unittest.main()
+

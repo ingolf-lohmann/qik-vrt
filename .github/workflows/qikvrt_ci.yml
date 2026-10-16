@@ -27,6 +27,18 @@ on:
         description: 'Previous native signing run for journal recovery; zero only for the initial invocation'
         type: string
         default: '0'
+      amo_executor_run_id:
+        description: 'Original protected Main executor run; zero retains the direct Owner path'
+        type: string
+        default: '0'
+      amo_intent_sha256:
+        description: 'Digest of the original pre-published protected Main intent'
+        type: string
+        default: ''
+      amo_readback_only:
+        description: 'Only read the existing official version; never submit an upload'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -280,7 +292,7 @@ jobs:
       contents: read
       actions: read
     concurrency:
-      group: qikvrt-amo-unlisted-standard-1.0.0
+      group: qikvrt-amo-unlisted-${{ inputs.amo_readback_only && format('readback-{0}', github.run_id) || 'standard-1.0.0' }}
       cancel-in-progress: false
     outputs:
       signed_binding: ${{ steps.sign.outputs.signed_binding }}
@@ -306,6 +318,10 @@ jobs:
           EXPECTED_HEAD: ${{ inputs.amo_expected_head }}
           EXPECTED_TREE: ${{ inputs.amo_expected_tree }}
           PREVIOUS_RUN_ID: ${{ inputs.amo_previous_run_id || '0' }}
+          GH_TOKEN: ${{ github.token }}
+          AMO_EXECUTOR_RUN_ID: ${{ inputs.amo_executor_run_id || '0' }}
+          AMO_INTENT_SHA256: ${{ inputs.amo_intent_sha256 }}
+          AMO_READBACK_ONLY: ${{ inputs.amo_readback_only || false }}
         run: |
           python3 -B - <<'PYAMO'
           import json,os,re,subprocess
@@ -318,13 +334,25 @@ jobs:
           r={'schema':'qikvrt-amo-secure-access-preflight/v1','repository':os.environ['GITHUB_REPOSITORY'],
               'source_head':head,'source_tree':tree,'issuer_present':issuer,'secret_present':secret,
               'secret_names':['AMO_JWT_ISSUER','AMO_JWT_SECRET'],'credential_values_read':False,
-              'amo_authentication_verified':False,'signing_requested':requested,'effect_ack_done':False}
-          (p/'ACCESS_PREFLIGHT.json').write_text(json.dumps(r,sort_keys=True,indent=2)+'\n')
-          if requested:
-              assert os.environ['GITHUB_REPOSITORY']=='ingolf-lohmann/qik-vrt'
-              assert os.environ['GITHUB_ACTOR']=='ingolf-lohmann','AMO_DIRECT_OWNER_EXECUTION_REQUIRED'
-              assert head==os.environ['EXPECTED_HEAD'] and tree==os.environ['EXPECTED_TREE'],'AMO_EXACT_REVIEWED_SOURCE_REQUIRED'
-              assert re.fullmatch(r'0|[1-9][0-9]{0,19}',os.environ['PREVIOUS_RUN_ID'])
+              'amo_authentication_verified':False,'signing_requested':requested,'effect_ack_done':False,
+              'executor_run_id':os.environ['AMO_EXECUTOR_RUN_ID'],
+              'readback_only':os.environ['AMO_READBACK_ONLY']=='true','first_boundary':None}
+          try:
+              if requested:
+                  assert os.environ['GITHUB_REPOSITORY']=='ingolf-lohmann/qik-vrt','AMO_WRONG_REPOSITORY'
+                  assert head==os.environ['EXPECTED_HEAD'] and tree==os.environ['EXPECTED_TREE'],'AMO_EXACT_REVIEWED_SOURCE_REQUIRED'
+                  assert re.fullmatch(r'0|[1-9][0-9]{0,19}',os.environ['PREVIOUS_RUN_ID']),'AMO_PREVIOUS_RUN_INVALID'
+                  if os.environ['AMO_EXECUTOR_RUN_ID']!='0':
+                      from tools import qikvrt_workflow_executor as executor
+                      executor.amo_validate_delegation(Path.cwd())
+                  else:
+                      assert os.environ['GITHUB_ACTOR']=='ingolf-lohmann','AMO_DIRECT_OWNER_EXECUTION_REQUIRED'
+          except Exception as exc:
+              code=str(exc)
+              r['first_boundary']=code if re.fullmatch(r'AMO_[A-Z0-9_]{1,100}',code) else 'AMO_SOURCE_ADMISSION_UNVERIFIED'
+              raise SystemExit(r['first_boundary']) from None
+          finally:
+              (p/'ACCESS_PREFLIGHT.json').write_text(json.dumps(r,sort_keys=True,indent=2)+'\n')
           with open(os.environ['GITHUB_OUTPUT'],'a') as out:
               out.write('submit='+str(requested and issuer and secret).lower()+'\n')
               out.write('previous_run_id='+os.environ['PREVIOUS_RUN_ID']+'\n')
@@ -332,7 +360,7 @@ jobs:
           PYAMO
       - name: Resolve the preceding actual signing invocation through existing GitHub REST reads
         id: journal
-        if: steps.admission.outputs.submit == 'true'
+        if: steps.admission.outputs.submit == 'true' && !inputs.amo_readback_only
         env:
           GH_READ_TOKEN: ${{ github.token }}
           REQUESTED_PREVIOUS_RUN_ID: ${{ steps.admission.outputs.previous_run_id }}
@@ -374,7 +402,7 @@ jobs:
           with open(os.environ['GITHUB_OUTPUT'],'a') as out:out.write('previous_run_id='+str(previous)+'\n')
           PYJOURNAL
       - name: Retrieve original preceding non-secret signing journal
-        if: steps.admission.outputs.submit == 'true' && steps.journal.outputs.previous_run_id != '0'
+        if: steps.admission.outputs.submit == 'true' && !inputs.amo_readback_only && steps.journal.outputs.previous_run_id != '0'
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:
           github-token: ${{ github.token }}
@@ -389,22 +417,31 @@ jobs:
           WEB_EXT_API_KEY: ${{ secrets.AMO_JWT_ISSUER }}
           WEB_EXT_API_SECRET: ${{ secrets.AMO_JWT_SECRET }}
           GH_READ_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ github.token }}
           EXPECTED_HEAD: ${{ inputs.amo_expected_head }}
           EXPECTED_TREE: ${{ inputs.amo_expected_tree }}
-          PREVIOUS_RUN_ID: ${{ steps.journal.outputs.previous_run_id }}
+          PREVIOUS_RUN_ID: ${{ steps.journal.outputs.previous_run_id || '0' }}
+          AMO_EXECUTOR_RUN_ID: ${{ inputs.amo_executor_run_id || '0' }}
+          AMO_INTENT_SHA256: ${{ inputs.amo_intent_sha256 }}
+          AMO_READBACK_ONLY: ${{ inputs.amo_readback_only || false }}
         run: |
           python3 -B - <<'PYAMO'
           import json,os,urllib.request
           from pathlib import Path
           from tools import qikvrt_self_host as host
-          request=urllib.request.Request('https://api.github.com/repos/ingolf-lohmann/qik-vrt/pulls/523',
-              headers={'Authorization':'Bearer '+os.environ['GH_READ_TOKEN'],'Accept':'application/vnd.github+json'})
-          class NoRedirect(urllib.request.HTTPRedirectHandler):
-              def redirect_request(self,*args,**kwargs):return None
-          with urllib.request.build_opener(NoRedirect).open(request,timeout=30) as response:
-              raw=response.read(1024*1024+1);assert len(raw)<=1024*1024;pr=json.loads(raw)
-          assert pr['state']=='open' and pr['head']['repo']['full_name']=='ingolf-lohmann/qik-vrt'
-          assert pr['head']['sha']==os.environ['EXPECTED_HEAD']==os.environ['GITHUB_SHA'],'AMO_PR523_HEAD_DRIFT'
+          if os.environ['AMO_EXECUTOR_RUN_ID']!='0':
+              from tools import qikvrt_workflow_executor as executor
+              executor.amo_validate_delegation(Path.cwd())
+          else:
+              assert os.environ['GITHUB_ACTOR']=='ingolf-lohmann','AMO_DIRECT_OWNER_EXECUTION_REQUIRED'
+              request=urllib.request.Request('https://api.github.com/repos/ingolf-lohmann/qik-vrt/pulls/523',
+                  headers={'Authorization':'Bearer '+os.environ['GH_READ_TOKEN'],'Accept':'application/vnd.github+json'})
+              class NoRedirect(urllib.request.HTTPRedirectHandler):
+                  def redirect_request(self,*args,**kwargs):return None
+              with urllib.request.build_opener(NoRedirect).open(request,timeout=30) as response:
+                  raw=response.read(1024*1024+1);assert len(raw)<=1024*1024;pr=json.loads(raw)
+              assert pr['state']=='open' and pr['head']['repo']['full_name']=='ingolf-lohmann/qik-vrt'
+              assert pr['head']['sha']==os.environ['EXPECTED_HEAD']==os.environ['GITHUB_SHA'],'AMO_PR523_HEAD_DRIFT'
           root=Path(os.environ['RUNNER_TEMP']);previous=root/'amo-previous/AMO_ATTEMPT.json'
           if os.environ['PREVIOUS_RUN_ID']!='0':
               if not previous.is_file():previous=root/'amo-previous/AMO_SIGNING_RECEIPT.json'
@@ -412,7 +449,8 @@ jobs:
               previous.chmod(0o600)
           else:previous=None
           receipt=host.firefox_amo_unlisted(Path.cwd(),root/'amo-original',os.environ['EXPECTED_HEAD'],
-              os.environ['EXPECTED_TREE'],root/'amo-state',submit=True,previous_state=previous)
+              os.environ['EXPECTED_TREE'],root/'amo-state',submit=True,previous_state=previous,
+              readback_only=os.environ['AMO_READBACK_ONLY']=='true')
           if receipt.get('signed_original_returned') is True:
               binding={'repository':'ingolf-lohmann/qik-vrt','run_id':int(os.environ['GITHUB_RUN_ID']),
                   'artifact_name':'qikvrt-amo-unlisted-'+os.environ['GITHUB_SHA'],
