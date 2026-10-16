@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import copy
 import contextlib
 import io
@@ -221,6 +222,131 @@ class ClientContinuationRegressionTests(unittest.TestCase):
     def test_failures_omissions_and_gaps_are_accepted_as_successor_work(self) -> None:
         self.inherited_work()
         self.assertEqual(self.check(), "CONTINUE")
+
+    @staticmethod
+    def seal_knowledge(record):
+        payload = {k: v for k, v in record.items() if k != "record_sha256"}
+        wire = json.dumps(payload, sort_keys=True, ensure_ascii=False,
+                          separators=(",", ":"), allow_nan=False).encode("utf-8")
+        return dict(payload, record_sha256=hashlib.sha256(wire).hexdigest())
+
+    def inherited_knowledge(self):
+        self.inherited_work()
+        record = self.seal_knowledge({
+            "id": "fixture:ionos-reference", "epistemic_class": "SOURCE_OBSERVATION",
+            "subject": {"repository": self.subject["repository"], "blob": "c" * 40},
+            "scope": "Secret reference in source; live token delivery and rights UNKNOWN",
+            "statement": "The existing source references secrets.IONOS_TOKEN.",
+            "evidence": ["fixture:exact-source-read"], "supersedes": [],
+        })
+        self.receipt["knowledge"] = [record]
+        self.receipt["previous_run"]["knowledge"] = copy.deepcopy([record])
+        return record
+
+    def test_handoff_retains_prior_knowledge_and_its_limits(self):
+        self.inherited_knowledge()
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_knowledge_contract_reuses_the_existing_epistemic_continuity_policy(self):
+        policy = json.loads((ROOT / "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json").read_text())
+        rule = policy["client_continuation"]["knowledge_continuity"]
+        raw = (ROOT / rule["existing_policy"]).read_bytes()
+        self.assertEqual(hashlib.sha256(raw).hexdigest(), rule["existing_policy_sha256"])
+        self.assertIn("failure_and_correction_history", json.loads(raw)["required_preservation"])
+        self.assertFalse(rule["local_environment_absence_proves_remote_binding_absent"])
+
+    def test_handoff_rejects_discarding_known_records(self):
+        self.inherited_knowledge()
+        self.receipt["knowledge"] = []
+        self.rejected("CLIENT_PREDECESSOR_KNOWLEDGE_DROPPED")
+
+    def test_handoff_rejects_rewriting_knowledge_or_promoting_its_scope(self):
+        for changes in ({"statement": "The protected remote binding is absent."},
+                        {"epistemic_class": "LIVE_EFFECT_VERIFIED"},
+                        {"scope": "All providers and all runtimes"}):
+            with self.subTest(changes=changes):
+                original = self.inherited_knowledge()
+                self.receipt["knowledge"] = [self.seal_knowledge(dict(original, **changes))]
+                self.rejected("CLIENT_KNOWLEDGE_HISTORY_REWRITTEN")
+
+    def test_handoff_retains_correction_as_a_bound_successor(self):
+        original = self.inherited_knowledge()
+        correction = self.seal_knowledge(dict(original, id="fixture:correction",
+            epistemic_class="CORRECTION", statement="Source presence does not prove live delivery.",
+            evidence=["fixture:owner-correction"], supersedes=[original["id"]]))
+        self.receipt["knowledge"].append(correction)
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_handoff_rejects_changed_knowledge_bytes_and_orphan_corrections(self):
+        original = self.inherited_knowledge()
+        self.receipt["knowledge"][0]["statement"] = "Changed without a new record"
+        self.rejected("CLIENT_KNOWLEDGE_DIGEST_DRIFT")
+        original = self.inherited_knowledge()
+        self.receipt["knowledge"].append(self.seal_knowledge(dict(original,
+            id="fixture:correction", supersedes=["fixture:lost-history"])))
+        self.rejected("CLIENT_KNOWLEDGE_CORRECTION_TARGET_MISSING")
+
+    def test_pinned_predecessor_prevents_hiding_known_records(self):
+        original = self.inherited_knowledge()
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            path = pathlib.Path(directory) / "prior.json"
+            prior = {"execution_id": "fixture:previous-run", "knowledge": [original],
+                     "work": copy.deepcopy(self.receipt["work"])}
+            raw = json.dumps(prior).encode()
+            path.write_bytes(raw)
+            self.receipt["previous_run"].update(receipt_path=str(path.relative_to(ROOT)),
+                receipt_sha256=hashlib.sha256(raw).hexdigest(), knowledge=[])
+            self.receipt["knowledge"] = []
+            self.rejected("CLIENT_PREDECESSOR_KNOWLEDGE_DROPPED")
+            self.receipt["knowledge"] = [original]
+            self.assertEqual(self.check(), "CONTINUE")
+            self.receipt["previous_run"]["receipt_sha256"] = "0" * 64
+            self.rejected("CLIENT_PREVIOUS_RECEIPT_DIGEST_DRIFT")
+
+    def test_pinned_predecessor_prevents_hiding_open_work(self):
+        original = self.inherited_knowledge()
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            path = pathlib.Path(directory) / "prior.json"
+            prior = {"execution_id": "fixture:previous-run", "knowledge": [original],
+                     "work": copy.deepcopy(self.receipt["work"])}
+            raw = json.dumps(prior).encode()
+            path.write_bytes(raw)
+            self.receipt["previous_run"].update(receipt_path=str(path.relative_to(ROOT)),
+                receipt_sha256=hashlib.sha256(raw).hexdigest(), open_work=[])
+            self.receipt["work"] = []
+            self.rejected("CLIENT_PREDECESSOR_OPEN_WORK_DROPPED")
+
+    def test_handoff_rejects_cyclic_correction_history(self):
+        original = self.inherited_knowledge()
+        self.receipt["knowledge"].extend([
+            self.seal_knowledge(dict(original, id="fixture:a", supersedes=["fixture:b"])),
+            self.seal_knowledge(dict(original, id="fixture:b", supersedes=["fixture:a"])),
+        ])
+        self.rejected("CLIENT_KNOWLEDGE_CORRECTION_CYCLE")
+
+    def test_long_unordered_knowledge_history_is_preserved_without_recursion(self):
+        original = self.inherited_knowledge()
+        self.receipt["knowledge"].extend(reversed([
+            self.seal_knowledge(dict(original, id=f"fixture:revision:{i}",
+                supersedes=[f"fixture:revision:{i-1}"] if i else []))
+            for i in range(1100)
+        ]))
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_pinned_predecessor_rejects_changed_identity_and_outside_path(self):
+        original = self.inherited_knowledge()
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            path = pathlib.Path(directory) / "prior.json"
+            raw = json.dumps({"execution_id": "fixture:unrelated-run", "knowledge": [original],
+                              "work": copy.deepcopy(self.receipt["work"])}).encode()
+            path.write_bytes(raw)
+            self.receipt["previous_run"].update(receipt_path=str(path.relative_to(ROOT)),
+                receipt_sha256=hashlib.sha256(raw).hexdigest())
+            self.rejected("CLIENT_PREVIOUS_RECEIPT_IDENTITY_DRIFT")
+            self.receipt["previous_run"]["receipt_path"] = str(path)
+            self.rejected("CLIENT_PREVIOUS_RECEIPT_BINDING_INVALID")
+            self.receipt["previous_run"]["receipt_path"] = "invalid\x00name"
+            self.rejected("CLIENT_PREVIOUS_RECEIPT_BINDING_INVALID")
 
     def test_each_predecessor_open_obligation_must_be_carried(self) -> None:
         for identifier in ("failure", "omission", "gap"):

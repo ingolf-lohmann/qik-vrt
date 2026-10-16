@@ -180,6 +180,36 @@
       "unchanged_causal_failure_remains_noop": true,
       "historical_receipts_without_plan_remain_readable": true,
       "plan_is_execution_or_speedup_proof": false
+    },
+    "knowledge_continuity": {
+      "owner_instruction": "Ingolf Lohmann, 2026-10-16: Knowledge loss itself is the defect regardless of when it occurs.",
+      "existing_policy": "policy/QIKVRT_EPISTEMIC_CONNECTABILITY_CONTINUITY_V1.json",
+      "existing_policy_sha256": "1e4e9d30a730559e801c7cd840b8f02795b39fbfe1988fe2a85bbeecbf40d909",
+      "existing_policy_git_blob_sha1": "bac643895963db5ccf6bfd87588aa5b38aa580e7",
+      "receipt_field": "knowledge",
+      "predecessor_binding_fields": [
+        "receipt_path",
+        "receipt_sha256"
+      ],
+      "record_required_fields": [
+        "id",
+        "epistemic_class",
+        "subject",
+        "scope",
+        "statement",
+        "evidence",
+        "record_sha256"
+      ],
+      "record_digest_encoding": "UTF-8 JSON, sorted keys, compact separators, ensure_ascii=false, allow_nan=false; omit record_sha256",
+      "preserve_declared_predecessor_records": true,
+      "correction_is_append_only_supersedes": true,
+      "derive_knowledge_and_open_work_from_pinned_predecessor": true,
+      "local_environment_absence_proves_remote_binding_absent": false,
+      "historical_receipts_without_snapshot_remain_readable": true,
+      "consistency_proves_truth_or_complete_initial_knowledge": false,
+      "preserved_observation_proves_current_successor_acceptance": false,
+      "existing_validator": "tools/ai_handoff.py --client-receipt",
+      "current_baseline": "state/work_units/QIKVRT_CLIENT_KNOWLEDGE_CONTINUITY_REPAIR_20261016_V1.json"
     }
   },
   "continuation_semantics": {

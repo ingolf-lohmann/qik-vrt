@@ -65,6 +65,51 @@ Its normative source is the existing recursive policy's
 
 ## Binding client continuation procedure
 
+### Knowledge and correction continuity — Owner correction of 2026-10-16
+
+Knowledge loss itself is the defect, regardless of when a handoff happens.
+Apply `policy/QIKVRT_EPISTEMIC_CONNECTABILITY_CONTINUITY_V1.json` through the
+existing client receipt and validator. Carry established results and their
+source identities, granted authorization, unknowns, scope limits, failures and
+corrections as well as open tasks. Reuse unchanged exact-source evidence;
+reobserve mutable state when the task requires it.
+
+`knowledge` is a list of records with unique `id`, nonempty `epistemic_class`,
+`scope` and `statement`, a nonempty `subject` object and `evidence` locator list,
+optional `supersedes` record IDs, and `record_sha256`. The digest is SHA-256 of
+the entire record without `record_sha256`, encoded as UTF-8 JSON with sorted
+keys, compact separators, `ensure_ascii=false` and finite JSON values. Every
+declared predecessor record must remain byte-equivalent under this encoding.
+Do not silently edit, drop or promote its epistemic class, scope or statement.
+Corrections append a new record referencing the retained original; orphan and
+cyclic correction references are rejected. Record hashes bind declared bytes;
+they do not authenticate evidence or establish that a statement is true.
+
+When a durable predecessor is available, pin its exact repository-relative
+`receipt_path` and `receipt_sha256` under `previous_run`. Its `execution_id`
+must match. The existing provenance Work Unit may carry `execution_id`,
+`knowledge` and `work` directly; no separate memory service is required. The
+validator reads only that explicit file (at most 2 MiB), rejects changed bytes and
+paths outside the repository, and derives inherited knowledge and open work
+from it. Omitting those from the caller's `previous_run` summary cannot erase
+them. Keep this pin across handoffs and resolve a missing predecessor before
+claiming that reconstruction succeeded. Historical receipts without knowledge
+remain readable; their absence of a snapshot is not evidence of full retention.
+
+Keep observations local to their measured scope. For example, absent process
+environment variables establish only absence in that process, not absence of
+an existing GitHub Actions secret or a provider credential. The current IONOS
+Cloud-v6 inventory consumer's GET-only scope does not determine the token's
+other rights. IONOS Cloud DNS documents `IONOS_TOKEN` bearer authentication:
+https://docs.ionos.com/sdk-go-bundle/sdks/dns . Actual token rights and admitted
+execution remain separately unverified until observed. A generic failure must
+not overwrite this distinction as a global access-absence claim.
+
+These are continuity checks on supplied records. They do not prove that an
+initial snapshot contains all human/model knowledge, that another client used
+the gate, that historical PASS applies to a changed subject, or that the product
+was delivered. Retain the exact-host and live-effect gates below.
+
 ### Anticipated transitions — Owner instruction of 2026-10-15
 
 Clients observing an emerging transition MUST use the existing client receipt

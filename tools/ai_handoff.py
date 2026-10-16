@@ -295,7 +295,109 @@ def validate_client_readback(readback: Any, subject: dict[str, Any], window: Any
             fail("CLIENT_PUBLIC_DELIVERY_PROOF_INCOMPLETE")
 
 
-def validate_client_work(receipt: dict[str, Any]) -> None:
+def client_previous_receipt(receipt: dict[str, Any]) -> dict[str, Any] | None:
+    """Read an explicitly pinned predecessor, without discovering other files."""
+    previous = receipt.get("previous_run")
+    if not isinstance(previous, dict):
+        return None
+    if not {"receipt_path", "receipt_sha256"} & previous.keys():
+        return None
+    relative, digest = previous.get("receipt_path"), previous.get("receipt_sha256")
+    if (not isinstance(relative, str) or not relative.strip() or "\x00" in relative
+        or Path(relative).is_absolute() or ".." in Path(relative).parts
+        or not isinstance(digest, str) or not re.fullmatch(r"[0-9a-f]{64}", digest)):
+        fail("CLIENT_PREVIOUS_RECEIPT_BINDING_INVALID")
+    path = ROOT / relative
+    try:
+        if path.resolve(strict=True) != path.absolute() or not path.is_file():
+            fail("CLIENT_PREVIOUS_RECEIPT_BINDING_INVALID")
+        with path.open("rb") as stream:
+            raw = stream.read(2 * 1024 * 1024 + 1)
+    except (OSError, ValueError, RuntimeError):
+        fail("CLIENT_PREVIOUS_RECEIPT_UNAVAILABLE")
+    if len(raw) > 2 * 1024 * 1024:
+        fail("CLIENT_PREVIOUS_RECEIPT_TOO_LARGE")
+    if hashlib.sha256(raw).hexdigest() != digest:
+        fail("CLIENT_PREVIOUS_RECEIPT_DIGEST_DRIFT")
+    try:
+        value = json.loads(raw)
+    except (ValueError, UnicodeError):
+        fail("CLIENT_PREVIOUS_RECEIPT_INVALID")
+    if (not isinstance(value, dict) or not previous.get("execution_id")
+        or value.get("execution_id") != previous["execution_id"]):
+        fail("CLIENT_PREVIOUS_RECEIPT_IDENTITY_DRIFT")
+    return value
+
+
+def client_knowledge_records(value: Any) -> dict[str, dict[str, Any]]:
+    """Verify declared record identity and scope; hashes do not prove truth."""
+    if not isinstance(value, list):
+        fail("CLIENT_KNOWLEDGE_INVALID")
+    records: dict[str, dict[str, Any]] = {}
+    for record in value:
+        if not isinstance(record, dict):
+            fail("CLIENT_KNOWLEDGE_INVALID")
+        for key in ("id", "epistemic_class", "scope", "statement"):
+            if not isinstance(record.get(key), str) or not record[key].strip():
+                fail("CLIENT_KNOWLEDGE_INVALID")
+        identifier = record["id"]
+        if identifier in records or not isinstance(record.get("subject"), dict) or not record["subject"]:
+            fail("CLIENT_KNOWLEDGE_ID_OR_SUBJECT_INVALID")
+        evidence, supersedes = record.get("evidence"), record.get("supersedes", [])
+        if (not isinstance(evidence, list) or not evidence
+            or any(not isinstance(x, str) or not x.strip() for x in evidence)
+            or not isinstance(supersedes, list)
+            or any(not isinstance(x, str) or not x.strip() for x in supersedes)
+            or len(set(supersedes)) != len(supersedes)):
+            fail("CLIENT_KNOWLEDGE_EVIDENCE_OR_CORRECTION_INVALID")
+        payload = {key: item for key, item in record.items() if key != "record_sha256"}
+        try:
+            wire = json.dumps(payload, sort_keys=True, ensure_ascii=False,
+                              separators=(",", ":"), allow_nan=False).encode("utf-8")
+        except (ValueError, TypeError, UnicodeError):
+            fail("CLIENT_KNOWLEDGE_INVALID")
+        if hashlib.sha256(wire).hexdigest() != record.get("record_sha256"):
+            fail("CLIENT_KNOWLEDGE_DIGEST_DRIFT")
+        records[identifier] = record
+    visited: set[str] = set()
+    visiting: set[str] = set()
+
+    for identifier in records:
+        stack = [(identifier, False)]
+        while stack:
+            current, leaving = stack.pop()
+            if leaving:
+                visiting.remove(current)
+                visited.add(current)
+                continue
+            if current not in records:
+                fail("CLIENT_KNOWLEDGE_CORRECTION_TARGET_MISSING")
+            if current in visiting:
+                fail("CLIENT_KNOWLEDGE_CORRECTION_CYCLE")
+            if current in visited:
+                continue
+            visiting.add(current)
+            stack.append((current, True))
+            stack.extend((parent, False) for parent in records[current].get("supersedes", []))
+    return records
+
+
+def validate_client_knowledge(receipt: dict[str, Any], predecessor: dict[str, Any] | None) -> None:
+    """Preserve facts, unknowns and corrections without predecessor PASS transfer."""
+    current = client_knowledge_records(receipt.get("knowledge", []))
+    previous = receipt.get("previous_run")
+    sources = [previous] if isinstance(previous, dict) else []
+    if predecessor is not None:
+        sources.append(predecessor)
+    for source in sources:
+        for identifier, record in client_knowledge_records(source.get("knowledge", [])).items():
+            if identifier not in current:
+                fail("CLIENT_PREDECESSOR_KNOWLEDGE_DROPPED")
+            if current[identifier]["record_sha256"] != record["record_sha256"]:
+                fail("CLIENT_KNOWLEDGE_HISTORY_REWRITTEN")
+
+
+def validate_client_work(receipt: dict[str, Any], predecessor: dict[str, Any] | None = None) -> None:
     """An observed predecessor's open duties are work for its successor.
 
     Historical receipts without a predecessor remain readable. An explicitly
@@ -331,6 +433,13 @@ def validate_client_work(receipt: dict[str, Any]) -> None:
             fail("CLIENT_PREVIOUS_RUN_INVALID")
         if not set(inherited) <= set(tasks):
             fail("CLIENT_PREDECESSOR_OPEN_WORK_DROPPED")
+    if predecessor is not None:
+        prior_work = require(predecessor, "work", list)
+        for task in prior_work:
+            if not isinstance(task, dict) or task.get("state") not in ("OPEN", "VERIFIED"):
+                fail("CLIENT_PREVIOUS_WORK_INVALID")
+            if task["state"] == "OPEN" and task.get("id") not in tasks:
+                fail("CLIENT_PREDECESSOR_OPEN_WORK_DROPPED")
     if receipt.get("state") == "DONE" and any(task["state"] == "OPEN" for task in work):
         fail("CLIENT_DONE_WITH_OPEN_WORK")
 
@@ -405,7 +514,9 @@ def validate_client_receipt(receipt: dict[str, Any]) -> str:
     state = receipt.get("state")
     if state not in ("CONTINUE", "BLOCK", "DONE", "OWNER_CHOICE"):
         fail("CLIENT_RETURN_STATE_INVALID")
-    validate_client_work(receipt)
+    predecessor = client_previous_receipt(receipt)
+    validate_client_work(receipt, predecessor)
+    validate_client_knowledge(receipt, predecessor)
     if executable and state != "CONTINUE":
         fail("CLIENT_PREMATURE_RETURN_WITH_EXECUTABLE_SUCCESSOR")
     pending = receipt.get("pending_execution")

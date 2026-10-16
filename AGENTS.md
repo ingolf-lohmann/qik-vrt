@@ -68,6 +68,20 @@ status message, elapsed time or an unrelated commit does not close a task or
 admit an unchanged retry. Use the existing continuation worker and shared
 receipt gate; this rule does not itself start or prove an unattended runner.
 
+The Owner's correction of 2026-10-16 applies to knowledge itself, regardless
+of when a handoff occurs. Preserve already established results, authorization,
+source bindings, limitations, uncertainty and correction history in the existing
+client receipt's `knowledge` records. Bind an available durable predecessor by
+`previous_run.receipt_path` and its `receipt_sha256`; do not replace it with an
+empty self-reported inventory. Corrections append a new evidence-bound record
+with `supersedes`, retaining the original. Historical observations retain their
+own subjects and scope; they are not fresh acceptance of a successor. A missing
+local environment variable does not prove a protected remote binding absent.
+Use the existing epistemic-continuity policy and client gate, not another
+memory store, executor or retry loop. The gate checks declared continuity;
+truth, completeness of the initial snapshot and client adoption need their own
+evidence.
+
 ## Immediate execution — Owner principle of 2026-10-13
 
 > Was du heute kannst besorgen, das verschiebe nicht auf morgen, sondern erledige es unmittelbar, denn alles andere war, ist und wird inakzeptabel sein.
