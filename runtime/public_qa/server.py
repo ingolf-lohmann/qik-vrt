@@ -191,6 +191,17 @@ class QAHandler(BaseHTTPRequestHandler):
             self.send_header("Cache-Control", "no-store")
             self.end_headers()
             return
+        if path in ("/publications/", "/news/", "/terminal/"):
+            target = {
+                "/publications/": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/index.html",
+                "/news/": "https://github.com/ingolf-lohmann/qik-vrt/tree/main/docs/news",
+                "/terminal/": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/terminal/index.html",
+            }[path]
+            self.send_response(302)
+            self.send_header("Location", target)
+            self.send_header("Cache-Control", "no-store")
+            self.end_headers()
+            return
         if path == "/api/health":
             self.send_json(200, {"status": "up", "schema": "qikvrt-public-qa/1",
                                  "source_revision": SOURCE_COMMIT,
