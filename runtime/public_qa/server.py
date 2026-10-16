@@ -164,6 +164,10 @@ class QAHandler(BaseHTTPRequestHandler):
     server_version = "QIKVRT-PublicQA/1"
     sys_version = ""
 
+    def setup(self):
+        super().setup()
+        self.connection.settimeout(12)
+
     def log_message(self, _fmt, *_args):
         # No query text, credentials, IP addresses, or request bodies in logs.
         return
@@ -274,11 +278,36 @@ class QAHandler(BaseHTTPRequestHandler):
         self.send_json(200, result)
 
 
+class LimitedHTTPServer(ThreadingHTTPServer):
+    daemon_threads = True
+    request_queue_size = 32
+
+    def __init__(self, *args, **kwargs):
+        self._slots = threading.BoundedSemaphore(16)
+        super().__init__(*args, **kwargs)
+
+    def process_request(self, request, client_address):
+        if not self._slots.acquire(blocking=False):
+            request.close()
+            return
+        try:
+            super().process_request(request, client_address)
+        except Exception:
+            self._slots.release()
+            raise
+
+    def process_request_thread(self, request, client_address):
+        try:
+            super().process_request_thread(request, client_address)
+        finally:
+            self._slots.release()
+
+
 def main():
     port = int(os.getenv("PORT", "8080"))
     if not 1 <= port <= 65535:
         raise SystemExit("Invalid port")
-    server = ThreadingHTTPServer(("0.0.0.0", port), QAHandler)
+    server = LimitedHTTPServer(("0.0.0.0", port), QAHandler)
     server.serve_forever(poll_interval=0.2)
 
 
