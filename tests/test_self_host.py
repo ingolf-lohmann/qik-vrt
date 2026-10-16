@@ -857,8 +857,15 @@ class StandaloneTests(unittest.TestCase):
             host.portable_history(source, bundle, self.head, self.tree)
         self.assertFalse(bundle.exists())
         (source / '.git/shallow').unlink()
-        blob = host.git(source, 'rev-parse', 'HEAD:AI').decode()
-        (source / '.git/objects' / blob[:2] / blob[2:]).unlink()
+        # The runner may repack a clone. Construct a deliberately incomplete
+        # object store without assuming any original object is loose.
+        originals = [(kind, subprocess.check_output(['git', '-C', str(self.source), 'cat-file', kind, ref]))
+                     for kind, ref in [('commit', self.head), ('tree', self.tree)]]
+        shutil.rmtree(source / '.git/objects')
+        (source / '.git/objects').mkdir()
+        for kind, body in originals:
+            subprocess.run(['git', '-C', str(source), 'hash-object', '-w', '-t', kind, '--stdin'],
+                           input=body, check=True, capture_output=True)
         with self.assertRaisesRegex(ValueError, 'COMPLETE_GIT_HISTORY_REQUIRED_MISSING_OBJECTS'):
             host.portable_history(source, bundle, self.head, self.tree)
         self.assertFalse(bundle.exists())

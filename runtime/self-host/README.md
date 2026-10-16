@@ -984,6 +984,10 @@ complete original tree identity are read back. This does not execute the
 restored application or restore Git history. A separately pinned complete
 bundle can be cloned into an empty directory with Git protocols restricted
 to the local file; verify its HEAD, TREE, commit count and `git fsck --strict`.
+The raw-blob restore preserves committed bytes. A normal Git checkout then
+applies the original `.gitattributes`, including CMD/PowerShell CRLF endings.
+The repository inventory checks that checkout representation; retain both
+the byte-exact blob witness and the subsequent attribute-aware checkout check.
 Private runtime state, credentials and bootable Linux distribution acceptance
 remain separate obligations.
 

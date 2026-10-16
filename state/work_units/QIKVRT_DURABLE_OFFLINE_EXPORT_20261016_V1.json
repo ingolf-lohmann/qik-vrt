@@ -58,7 +58,18 @@
       "tests": 41,
       "result": "PASS; pure state-machine scope only"
     },
-    "native_successor_ci": "REQUIRED_ON_SUCCESSOR; local results are not native CI or production acceptance"
+    "native_successor_ci": "REQUIRED_ON_REPAIRED_SUCCESSOR; predecessor CI failure retained",
+    "first_native_failure": {
+      "head": "75e29aa90a7b5537d1d661fc5b7dafc43a0b848c",
+      "job": 117102458810,
+      "run": 38939257445,
+      "cause": "New missing-object fixture assumed a loose blob; Git2.55 runner packed it. FileNotFoundError occurred before the intended assertion.",
+      "repair": "Build an incomplete fixture object store from only the original commit/root-tree bytes. Do not assume loose/packed representation."
+    },
+    "checkout_representation": {
+      "raw_git_blobs": "Byte-exact restoration verified before optional checkout",
+      "canonical_inventory": "Honor original .gitattributes (CMD/PowerShell CRLF) after constructing an explicit depth-one Git snapshot; do not rewrite the frozen original inventory."
+    }
   },
   "git_history": {
     "current_source_history_complete": false,
