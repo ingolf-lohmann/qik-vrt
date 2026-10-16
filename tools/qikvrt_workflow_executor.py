@@ -1202,7 +1202,7 @@ def amo_feedback(run: Mapping[str, Any], jobs: Sequence[Mapping[str, Any]]) -> d
 def github_failure_codes(raw: bytes) -> dict[str, Any]:
     """Return only closed diagnostic shapes, never arbitrary error or log text."""
     text = raw.decode("utf-8", errors="replace")
-    failures = sorted({f"{suite}.{test}" for test, suite in re.findall(
+    failures = sorted({suite if suite.endswith("." + test) else f"{suite}.{test}" for test, suite in re.findall(
         r"\b(?:FAIL|ERROR): (test_[A-Za-z0-9_]{1,150}) \((tests\.[A-Za-z0-9_.]{1,200})\)", text)})
     exits = sorted({int(code) for code in re.findall(r"\bMAKE_TEST_EXIT=([0-9]{1,3})\b", text)
                     if 0 < int(code) < 256})

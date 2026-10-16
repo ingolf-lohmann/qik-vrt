@@ -2963,10 +2963,18 @@
     },
     "human": "Ingolf Lohmann",
     "local_validation": {
+      "actual_original_github_log_replay": {
+        "exact_python312_identifier_normalization_verified": true,
+        "failed_test": "tests.test_self_host_provider.RepositoryIONOSReadonlyTests.test_workflow_binds_existing_secret_only_after_trusted_main_preflight",
+        "job_id": 117240731685,
+        "live_event_consumer_proven": false,
+        "make_test_exit": 2,
+        "run_id": 38980728689
+      },
       "cache_coverage": "34/34 (100%)",
       "complete_native_suite": "REQUIRED_ON_REPAIRED_CANDIDATE",
       "fixture_http_is_not_live_mozilla_evidence": true,
-      "fixture_tests_passed": 60,
+      "fixture_tests_passed": 61,
       "yaml_workflows_parsed": 2
     },
     "native_main_guard_stale_review_dismissal_required": true,
@@ -2997,7 +3005,7 @@
         "state": "NOOP_UNCHANGED_FIREFOX_RELEASE_OR_SIGNING_FAILURE"
       }
     },
-    "observed_at": "2026-10-16T23:27:38.635334+00:00",
+    "observed_at": "2026-10-16T23:34:18.318940+00:00",
     "owner_request": {
       "continuous_execution": "Ja, wenn sie das bisher noch nicht tut, dann sorgen wir jetzt dafür, dass sie es von nun an fortwährend tut.",
       "github_feedback": "Deswegen wäre es auch besser, wenn man von GitHub in synchroner Art und Weise erfährt, wenn ein Lauf abgebrochen ist. Am besten inklusive der Gründe dafür. Denn mit Fristen und Timern wollen wir ja nix zu tun haben.",
@@ -3015,7 +3023,7 @@
       "fresh HTTP apex/www plus HTTPS public readback"
     ],
     "source_parent": "8bfb740b1a5013c3a833754d39348d6c46b6d38a",
-    "source_successor_parent": "e34138caf3fd7b629edf57054a4cd8404a3af209",
+    "source_successor_parent": "f88ad3a8585d49a0b582f988c6d8d4cca9f2be08",
     "state": "IMPLEMENTED_CANDIDATE_NOT_ACTIVATED"
   },
   "oci_publication_merge_20261014": {

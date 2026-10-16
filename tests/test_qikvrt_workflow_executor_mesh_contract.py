@@ -671,6 +671,13 @@ class OwnerSigningContinuationTests(unittest.TestCase):
         self.assertEqual(value["jobs"][0]["diagnostics"]["state"], "ORIGINAL_LOG_UNAVAILABLE")
         self.assertEqual(feedback["jobs"][0].get("diagnostics"), None)
 
+    def test_original_python312_github_line_keeps_exact_test_identity(self):
+        raw = (b'2026-10-16T23:20:03Z FAIL: test_mode (tests.test_provider.NativeTests.test_mode)\n'
+               b'2026-10-16T23:20:04Z MAKE_TEST_EXIT=2\n')
+        value = MODULE.github_failure_codes(raw)
+        self.assertEqual(value["failed_tests"], ["tests.test_provider.NativeTests.test_mode"])
+        self.assertEqual(value["make_test_exit_codes"], [2])
+
     def test_finished_signing_is_read_even_if_entire_workflow_never_returns(self):
         run = self.provider_run(600, status="in_progress", conclusion=None)
         jobs = {"total_count": 2, "jobs": [self.job(), self.job("in_progress", None, "Full test still running")]}
