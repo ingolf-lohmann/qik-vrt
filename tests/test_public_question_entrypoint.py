@@ -8,12 +8,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class PublicQuestionsEntrypointTest(unittest.TestCase):
-    def test_page_is_local_only_and_explains_limits(self):
+    def test_page_discloses_server_and_local_fallback(self):
         page = (ROOT / "docs/fragen/index.html").read_text(encoding="utf-8")
         self.assertIn('id="question-form"', page)
         self.assertIn('id="answer-output"', page)
         self.assertIn('maxlength="2000"', page)
-        self.assertIn("keine</strong> freie KI-Antwort", page)
+        self.assertIn("festgelegten Bestand lokaler Repository-Quellen", page)
+        self.assertIn("Modellanbieter", page)
         self.assertIn("phänomenalen Bewusstseins", page)
         self.assertIn("form-action 'none'", page)
         self.assertNotIn("site123", page.lower())
@@ -26,7 +27,10 @@ class PublicQuestionsEntrypointTest(unittest.TestCase):
         self.assertIn("keine allgemeine KI-Antwort", script)
         self.assertIn("output.textContent", script)
         self.assertNotIn("innerHTML", script)
-        self.assertNotIn("fetch(", script)
+        self.assertIn('fetch("/api/ask"', script)
+        self.assertIn('credentials: "same-origin"', script)
+        self.assertIn("GENERATED_UNVERIFIED", script)
+        self.assertNotIn("api.openai.com", script)
         self.assertNotIn("XMLHttpRequest", script)
 
     def test_homepage_links_to_question_entrypoint(self):
