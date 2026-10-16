@@ -65,6 +65,89 @@ checks. They neither execute a live election nor establish native fencing,
 cross-node effect replication, measured availability or a universal survival
 theorem; the existing live-acceptance gaps remain open.
 
+### Reproducible succession assurance (2026-10-16)
+
+The existing `tools/qikvrt_self_host.py` now also contains
+`AuthoritySuccessionModel`. It is an explicitly local reference model, using
+SQLite FULL-synchronous transactions for modeled votes, an epoch/owner fence,
+irreversible retirement and an original-byte effect journal. No product
+command invokes it. It installs no election service or production writer.
+The existing `make workflow-executor-mesh-contract` runs its dedicated tests;
+the ordinary S1 test target also discovers them.
+
+```
+python3 -B -m unittest -v tests.test_self_host.AuthoritySuccessionModelTests
+```
+
+Seven separately named tests cover the seven normative acceptance cases:
+
+| Policy case | Test suffix | Checked model transition |
+| --- | --- | --- |
+| CONTACT_LOSS_REVOCATION | contact_loss_revocation | A's quorum-bound lease expires; A is permanently retired before any later write |
+| FENCED_MIRROR_TAKEOVER | fenced_mirror_takeover_preserves_originals_and_lost_ack | caught-up B, quorum and expected-epoch CAS install epoch 2; A's token is rejected; original bytes and one effect survive replay |
+| FORMER_AUTHORITY_REJOIN_WITHOUT_FAILBACK | former_authority_rejoin_without_failback | authenticated exact-head catch-up admits A as Mirror; B remains Authority |
+| CONCURRENT_TAKEOVER | concurrent_takeover_persistent_votes_intersect | persistent per-voter single choice rejects two certificates for one epoch |
+| NO_QUORUM_HOLD | no_quorum_hold_preserves_confirmed_reads | all singleton partitions reject writes; confirmed local prefix remains readable |
+| RETIRED_AUTHORITY_REPROMOTION_REJECTION | retired_authority_repromotion_rejected_at_every_new_epoch | retired A stays ineligible even with a higher epoch |
+| SUCCESSOR_CONTACT_LOSS | successor_contact_loss_applies_same_rule | B also retires on expiry; qualified C takes epoch 3; A and B stay fenced |
+
+Additional controls exercise two concurrent local processes sharing the same
+atomic carrier, process exit during an uncommitted SQLite transaction, restart,
+stale journals, higher ballot promises, duplicate/unknown voters, unverified
+revocation, lease renewal and clock regression. These are simulated faults and
+local process/storage tests, never independent network-node acceptance.
+
+The live v2 `Hardware/AuthorityMirrorWitness.lean` extends the existing witness
+with a separate `AuthoritySuccession` namespace; its top-level import already
+builds this module. The existing hardware axiom audit and ordinary manuscript
+audit include the extension. Frozen published sources and historical theorem
+statements are unchanged. The formal model proves majority intersection and
+same-epoch certificate uniqueness for a fixed three-voter electorate,
+monotone fencing epochs, invariant preservation over finite transition runs,
+persistent retirement, and conditional one-step successor progress. Python
+uses an arbitrary fixed finite electorate; no formal Python/SQLite refinement
+or dynamic-membership proof is claimed.
+
+The safety statement is **at most one effective writer per shared serialized
+effect carrier**, not at most one process believing itself leader. Every effect
+must atomically check exact owner, current epoch, an unexpired mandate and a
+safe distinct-member quorum in the same serialization domain as its commit.
+Fencing must cover every irreversible sink; a check before an unfenced later
+effect has a race. Authenticated voters must retain one choice per epoch across
+restarts, the complete retirement set and a non-rollback epoch high-water mark.
+A successor must bind the original confirmed journal before admission.
+
+Both Lean and Python contain a constructive split-brain counterexample for two
+independent, unsynchronized effect carriers. Increasing a token at only one
+carrier, GitHub ref CAS, local SQLite exclusivity or observing a missing peer
+cannot close this global coverage obligation. The model's supplied voters,
+authenticated-certificate booleans and logical time are assumptions, not real
+signatures or calibrated independent clocks. SQLite tests cover process crash;
+they do not qualify power loss, disk rollback or adversarial snapshot restore.
+
+Safety deliberately permits no progress. Progress additionally needs an
+available non-equivocating majority, an eligible caught-up successor, reachable
+enforced carriers, valid authenticated identity and eventually adequate message
+delivery/scheduling. A two-voter electorate cannot write safely after losing
+one voter. Irreversible retirement can exhaust a finite set of eligible nodes;
+ongoing survival then requires separately authorized safe membership expansion.
+No guaranteed RTO, asynchronous failure-detector completeness, Byzantine
+tolerance, consensus termination or indefinite availability is proved.
+
+The seven **live** cases remain OPEN until original independent execution
+receipts bind the real node identities, fixed/joint membership, quorum rules,
+lease clock/error bounds, persistent ballots/epochs/retirement, every effect
+carrier, workload and original replicated journal. No current HTTP observer
+establishes these facts. Native deployment, production takeover, public-domain
+delivery and EFFECT_ACK_DONE remain separate unfulfilled acceptances.
+
+Primary algorithmic context (not evidence of QIK-VRT deployment):
+Diego Ongaro and John Ousterhout, *In Search of an Understandable Consensus
+Algorithm*, https://raft.github.io/raft.pdf . The existing research entry point
+remains Ingolf Lohmann, *Das Universum als Round Trip*,
+https://zenodo.org/records/21888130 (DOI 10.5281/zenodo.21888130).
+This operational candidate is not a new archived scientific publication.
+
 ## Local repository copy, cache and stable-idle work batch
 
 Every node has the same local cache obligations in

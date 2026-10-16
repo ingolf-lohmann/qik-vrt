@@ -1,0 +1,537 @@
+{
+  "schema": "qikvrt-authority-succession-assurance/v1",
+  "artifact_class": "OPERATIONAL_CANDIDATE_NOT_SCIENTIFIC_PUBLICATION",
+  "observed_at": "2026-10-16T08:15:34.586007+00:00",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "pr": 523,
+  "predecessor_head": "e8fbaae5cbd7ef04b718561d576cee521c51b9cd",
+  "predecessor_tree": "55c17ee5580c755e54a515219e90f0f3e7cd8f64",
+  "exact_test_binding": "SOURCE_FILE_DIGESTS_NOT_A_FULL_CHECKOUT_OR_NATIVE_CI_CLAIM",
+  "sources": [
+    {
+      "path": "tools/qikvrt_self_host.py",
+      "bytes": 217862,
+      "sha256": "c9f420cff61a986b83f7e97f492960a5e92a1380c1682db4808aeb20b5f200ef",
+      "git_blob_sha1": "2d73f623ec07dc36a04f6508a7ac2a58af4b44d1"
+    },
+    {
+      "path": "tests/test_self_host.py",
+      "bytes": 116531,
+      "sha256": "f0544918ba04ac9d326363c636df653246c97790741e51064488d0d633c0c39f",
+      "git_blob_sha1": "26851a22ab77dcb76bc05a6cc42eaab45c161cc7"
+    },
+    {
+      "path": "Makefile",
+      "bytes": 16175,
+      "sha256": "ae7f388ff50f3124ece00ec6786e13344c5a7f8fe2644ca96194c39669b6c474",
+      "git_blob_sha1": "efca81a7e5c84eaf026ecf126c52448e1e025f85"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Hardware/AuthorityMirrorWitness.lean",
+      "bytes": 17829,
+      "sha256": "adb8172a07f9d4abbd097935dd826c7b01fd790e269c96852ff8da7423f9a21d",
+      "git_blob_sha1": "421537fc8c3b4db71fe2a03f625d05ed9cdf38ee"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Hardware/AxiomAudit.lean",
+      "bytes": 3133,
+      "sha256": "30d074057c4f5a101362ec5c9b2348bb1fae26bf6d99cb7965b60019fe6763cf",
+      "git_blob_sha1": "c71dddb7b4fd6421f28941e0693bd49fae06d846"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/scripts/audit_lean_axioms.py",
+      "bytes": 11232,
+      "sha256": "84a09457be6ccf16e45825e2a28f91cba055e863dfcd8c0cf09a9fdfb886851d",
+      "git_blob_sha1": "260bc489b1cdae04b810e91c3c8c4446de00990f"
+    },
+    {
+      "path": "runtime/self-host/README.md",
+      "bytes": 63999,
+      "sha256": "482745fe13e62cb59848904b4ac9272d7eaa8252333db15f4fbc659b5d92aaaa",
+      "git_blob_sha1": "e44b07bea6bc9a01ff28bc3572ff773534e497c8"
+    }
+  ],
+  "environment": {
+    "python": "3.12.14",
+    "sqlite": "3.53.1",
+    "system": "Linux"
+  },
+  "cases": [
+    {
+      "case": "CONTACT_LOSS_REVOCATION",
+      "test": "tests.test_self_host.AuthoritySuccessionModelTests.test_contact_loss_revocation",
+      "status": "PASS_LOCAL_MODEL",
+      "final_state": {
+        "authority": null,
+        "caught_up": {
+          "A": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "B": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "C": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ]
+        },
+        "digest": "0000000000000000000000000000000000000000000000000000000000000000",
+        "epoch": 1,
+        "index": 0,
+        "initial_authority": "A",
+        "initial_lease": 10,
+        "lease_until": 10,
+        "members": [
+          "A",
+          "B",
+          "C"
+        ],
+        "now": 10,
+        "replicas": {
+          "A": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "B": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "C": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ]
+        },
+        "retired": [
+          "A"
+        ],
+        "schema": "qikvrt-authority-succession-local-model/v1"
+      },
+      "confirmed_effects": [],
+      "live_acceptance": "OPEN"
+    },
+    {
+      "case": "FENCED_MIRROR_TAKEOVER",
+      "test": "tests.test_self_host.AuthoritySuccessionModelTests.test_fenced_mirror_takeover_preserves_originals_and_lost_ack",
+      "status": "PASS_LOCAL_MODEL",
+      "final_state": {
+        "authority": "B",
+        "caught_up": {
+          "A": [
+            1,
+            "d09998ad82c8e130a6227fcd22141f35399553c936f8b1bbc533f579fa2cdbae"
+          ],
+          "B": [
+            1,
+            "d09998ad82c8e130a6227fcd22141f35399553c936f8b1bbc533f579fa2cdbae"
+          ],
+          "C": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ]
+        },
+        "digest": "d09998ad82c8e130a6227fcd22141f35399553c936f8b1bbc533f579fa2cdbae",
+        "epoch": 2,
+        "index": 1,
+        "initial_authority": "A",
+        "initial_lease": 10,
+        "lease_until": 20,
+        "members": [
+          "A",
+          "B",
+          "C"
+        ],
+        "now": 10,
+        "replicas": {
+          "A": [
+            1,
+            "d09998ad82c8e130a6227fcd22141f35399553c936f8b1bbc533f579fa2cdbae"
+          ],
+          "B": [
+            1,
+            "d09998ad82c8e130a6227fcd22141f35399553c936f8b1bbc533f579fa2cdbae"
+          ],
+          "C": [
+            1,
+            "d09998ad82c8e130a6227fcd22141f35399553c936f8b1bbc533f579fa2cdbae"
+          ]
+        },
+        "retired": [
+          "A"
+        ],
+        "schema": "qikvrt-authority-succession-local-model/v1"
+      },
+      "confirmed_effects": [
+        {
+          "record": {
+            "authority": "A",
+            "digest": "d09998ad82c8e130a6227fcd22141f35399553c936f8b1bbc533f579fa2cdbae",
+            "epoch": 1,
+            "event": "effect",
+            "payload_sha256": "0aa95cdd57d619c6d435097da934ae3a9273917c5da57b13224aa60af17a5180",
+            "previous": "0000000000000000000000000000000000000000000000000000000000000000",
+            "seq": 1,
+            "unit": "same-work-unit"
+          },
+          "payload_bytes": 14,
+          "payload_sha256": "0aa95cdd57d619c6d435097da934ae3a9273917c5da57b13224aa60af17a5180"
+        }
+      ],
+      "live_acceptance": "OPEN"
+    },
+    {
+      "case": "FORMER_AUTHORITY_REJOIN_WITHOUT_FAILBACK",
+      "test": "tests.test_self_host.AuthoritySuccessionModelTests.test_former_authority_rejoin_without_failback",
+      "status": "PASS_LOCAL_MODEL",
+      "final_state": {
+        "authority": "B",
+        "caught_up": {
+          "A": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "B": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "C": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ]
+        },
+        "digest": "0000000000000000000000000000000000000000000000000000000000000000",
+        "epoch": 2,
+        "index": 0,
+        "initial_authority": "A",
+        "initial_lease": 10,
+        "lease_until": 20,
+        "members": [
+          "A",
+          "B",
+          "C"
+        ],
+        "now": 11,
+        "replicas": {
+          "A": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "B": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "C": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ]
+        },
+        "retired": [
+          "A"
+        ],
+        "schema": "qikvrt-authority-succession-local-model/v1"
+      },
+      "confirmed_effects": [],
+      "live_acceptance": "OPEN"
+    },
+    {
+      "case": "CONCURRENT_TAKEOVER",
+      "test": "tests.test_self_host.AuthoritySuccessionModelTests.test_concurrent_takeover_persistent_votes_intersect",
+      "status": "PASS_LOCAL_MODEL",
+      "final_state": {
+        "authority": "B",
+        "caught_up": {
+          "A": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "B": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "C": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ]
+        },
+        "digest": "0000000000000000000000000000000000000000000000000000000000000000",
+        "epoch": 2,
+        "index": 0,
+        "initial_authority": "A",
+        "initial_lease": 10,
+        "lease_until": 20,
+        "members": [
+          "A",
+          "B",
+          "C"
+        ],
+        "now": 10,
+        "replicas": {
+          "A": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "B": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "C": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ]
+        },
+        "retired": [
+          "A"
+        ],
+        "schema": "qikvrt-authority-succession-local-model/v1"
+      },
+      "confirmed_effects": [],
+      "live_acceptance": "OPEN"
+    },
+    {
+      "case": "NO_QUORUM_HOLD",
+      "test": "tests.test_self_host.AuthoritySuccessionModelTests.test_no_quorum_hold_preserves_confirmed_reads",
+      "status": "PASS_LOCAL_MODEL",
+      "final_state": {
+        "authority": null,
+        "caught_up": {
+          "A": [
+            1,
+            "45c8c99fbe1a808a494282f060c64059d04dead2cf0d9f8809a4f0c89d42cf67"
+          ],
+          "B": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "C": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ]
+        },
+        "digest": "45c8c99fbe1a808a494282f060c64059d04dead2cf0d9f8809a4f0c89d42cf67",
+        "epoch": 1,
+        "index": 1,
+        "initial_authority": "A",
+        "initial_lease": 10,
+        "lease_until": 10,
+        "members": [
+          "A",
+          "B",
+          "C"
+        ],
+        "now": 10,
+        "replicas": {
+          "A": [
+            1,
+            "45c8c99fbe1a808a494282f060c64059d04dead2cf0d9f8809a4f0c89d42cf67"
+          ],
+          "B": [
+            1,
+            "45c8c99fbe1a808a494282f060c64059d04dead2cf0d9f8809a4f0c89d42cf67"
+          ],
+          "C": [
+            1,
+            "45c8c99fbe1a808a494282f060c64059d04dead2cf0d9f8809a4f0c89d42cf67"
+          ]
+        },
+        "retired": [
+          "A"
+        ],
+        "schema": "qikvrt-authority-succession-local-model/v1"
+      },
+      "confirmed_effects": [
+        {
+          "record": {
+            "authority": "A",
+            "digest": "45c8c99fbe1a808a494282f060c64059d04dead2cf0d9f8809a4f0c89d42cf67",
+            "epoch": 1,
+            "event": "confirmed",
+            "payload_sha256": "ba56c96ec6369cdd13ed2c5e050d2da529daf79431ce1d4ff5e91ad2cedfdf29",
+            "previous": "0000000000000000000000000000000000000000000000000000000000000000",
+            "seq": 1,
+            "unit": "unit"
+          },
+          "payload_bytes": 15,
+          "payload_sha256": "ba56c96ec6369cdd13ed2c5e050d2da529daf79431ce1d4ff5e91ad2cedfdf29"
+        }
+      ],
+      "live_acceptance": "OPEN"
+    },
+    {
+      "case": "RETIRED_AUTHORITY_REPROMOTION_REJECTION",
+      "test": "tests.test_self_host.AuthoritySuccessionModelTests.test_retired_authority_repromotion_rejected_at_every_new_epoch",
+      "status": "PASS_LOCAL_MODEL",
+      "final_state": {
+        "authority": null,
+        "caught_up": {
+          "A": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "B": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "C": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ]
+        },
+        "digest": "0000000000000000000000000000000000000000000000000000000000000000",
+        "epoch": 2,
+        "index": 0,
+        "initial_authority": "A",
+        "initial_lease": 10,
+        "lease_until": 20,
+        "members": [
+          "A",
+          "B",
+          "C"
+        ],
+        "now": 20,
+        "replicas": {
+          "A": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "B": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "C": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ]
+        },
+        "retired": [
+          "A",
+          "B"
+        ],
+        "schema": "qikvrt-authority-succession-local-model/v1"
+      },
+      "confirmed_effects": [],
+      "live_acceptance": "OPEN"
+    },
+    {
+      "case": "SUCCESSOR_CONTACT_LOSS",
+      "test": "tests.test_self_host.AuthoritySuccessionModelTests.test_successor_contact_loss_applies_same_rule",
+      "status": "PASS_LOCAL_MODEL",
+      "final_state": {
+        "authority": "C",
+        "caught_up": {
+          "A": [
+            1,
+            "aebe00f880089814f5b868d20a00f3cebbdb5e855a41cad0d7c18e595d5d7a12"
+          ],
+          "B": [
+            1,
+            "aebe00f880089814f5b868d20a00f3cebbdb5e855a41cad0d7c18e595d5d7a12"
+          ],
+          "C": [
+            1,
+            "aebe00f880089814f5b868d20a00f3cebbdb5e855a41cad0d7c18e595d5d7a12"
+          ]
+        },
+        "digest": "aebe00f880089814f5b868d20a00f3cebbdb5e855a41cad0d7c18e595d5d7a12",
+        "epoch": 3,
+        "index": 1,
+        "initial_authority": "A",
+        "initial_lease": 10,
+        "lease_until": 30,
+        "members": [
+          "A",
+          "B",
+          "C"
+        ],
+        "now": 20,
+        "replicas": {
+          "A": [
+            1,
+            "aebe00f880089814f5b868d20a00f3cebbdb5e855a41cad0d7c18e595d5d7a12"
+          ],
+          "B": [
+            1,
+            "aebe00f880089814f5b868d20a00f3cebbdb5e855a41cad0d7c18e595d5d7a12"
+          ],
+          "C": [
+            1,
+            "aebe00f880089814f5b868d20a00f3cebbdb5e855a41cad0d7c18e595d5d7a12"
+          ]
+        },
+        "retired": [
+          "A",
+          "B"
+        ],
+        "schema": "qikvrt-authority-succession-local-model/v1"
+      },
+      "confirmed_effects": [
+        {
+          "record": {
+            "authority": "B",
+            "digest": "aebe00f880089814f5b868d20a00f3cebbdb5e855a41cad0d7c18e595d5d7a12",
+            "epoch": 2,
+            "event": "second",
+            "payload_sha256": "144f799a1c798223ad6ed6e6ab2a66d3a6a1b3e0749875425edcc64bef870df9",
+            "previous": "0000000000000000000000000000000000000000000000000000000000000000",
+            "seq": 1,
+            "unit": "same-unit"
+          },
+          "payload_bytes": 16,
+          "payload_sha256": "144f799a1c798223ad6ed6e6ab2a66d3a6a1b3e0749875425edcc64bef870df9"
+        }
+      ],
+      "live_acceptance": "OPEN"
+    }
+  ],
+  "formal": {
+    "status": "PREPARED_PENDING_NATIVE_KERNEL",
+    "proposed_theorems": 18,
+    "source": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Hardware/AuthorityMirrorWitness.lean",
+    "local_blocker": "LEAN_APPLICATION_PATH_UNAVAILABLE: cached Lean 4.19 executable fails before --version; /proc/self/exe is readable, /proc/<reported-pid>/exe is absent. No kernel or application-path hook is installed.",
+    "next_action": "Existing push-triggered manuscript proof workflow on the exact successor; inspect original job logs and axiom reports."
+  },
+  "logs": [
+    {
+      "path": "evidence/native-runtime-acceptance/authority-succession-20261016/local-assurance.log",
+      "bytes": 8215,
+      "sha256": "8e6f00c5ac8468a5d3b509a97a537f1074b0a084ff75b98dc7da882c518bdf4e",
+      "git_blob_sha1": "2134f3178945db2c7f60ba434983dc09db9c8ebd"
+    },
+    {
+      "path": "evidence/native-runtime-acceptance/authority-succession-20261016/self-host-suite.log",
+      "bytes": 1087,
+      "sha256": "d2597cbd1b9e69c52753beb8e9b7263f85e0bd31b606854b19e50f9cc9610c00",
+      "git_blob_sha1": "911447350036bc02b78573b8369d644af7d1a9a7"
+    },
+    {
+      "path": "evidence/native-runtime-acceptance/authority-succession-20261016/formal-python-tests.log",
+      "bytes": 98,
+      "sha256": "5adee26b20a47146c05a9a8bbbf532621f841040ed470b7fa41305ab0e01d95b",
+      "git_blob_sha1": "5226ed687aaa29bde7cbd9a343b7141d5600dae4"
+    },
+    {
+      "path": "evidence/native-runtime-acceptance/authority-succession-20261016/mesh-gate.log",
+      "bytes": 76474,
+      "sha256": "dbb2bd12ecba267bb617eb72808d6cc4bd07bddd5578b118f3444177a4f47a16",
+      "git_blob_sha1": "866d077001a41fa4fde429d343a8291f0d07f1b2"
+    },
+    {
+      "path": "evidence/native-runtime-acceptance/authority-succession-20261016/lean-succession.log",
+      "bytes": 36,
+      "sha256": "c82df870ca9b5c1f3b845ad4db1390a1c2eb49cdd84e15c5945db5e5dc20089d",
+      "git_blob_sha1": "1150e371fe86eef7927aac09f6bd6cbb67c71cce"
+    }
+  ],
+  "model_assumptions": [
+    "Fixed authorized membership; distinct non-equivocating persisted voters",
+    "One serialized SQLite witness and sink; complete coverage is assumed, not established for Mesh",
+    "Supplied authenticated-catch-up/revocation booleans model verified external certificates, not actual cryptography",
+    "One supplied nondecreasing logical clock; no real independent-clock or lease-error qualification",
+    "No storage rollback, malicious file alteration or membership change; process-crash persistence only"
+  ],
+  "safety": "At most one admitted (owner,epoch) at the same serialized effect carrier; permanent retirement; no failback",
+  "progress": "Conditional on an available majority, eligible caught-up candidate, enforced carriers, authentication and eventually adequate communication. No guaranteed availability; two voters lose write progress after one loss; finite candidate exhaustion remains possible.",
+  "independent_live_multinode_acceptance": "OPEN",
+  "production_authority_takeover_verified": false,
+  "EFFECT_ACK_DONE": false
+}

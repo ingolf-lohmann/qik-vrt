@@ -29,6 +29,205 @@ host = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(host)
 
 
+class AuthoritySuccessionModelTests(unittest.TestCase):
+    """Serialized local fault model; not independent deployed Mesh acceptance."""
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.path = Path(self.temp.name) / "succession.sqlite3"
+        self.members = ["A", "B", "C"]
+        self.model = host.AuthoritySuccessionModel(self.path, self.members, "A")
+
+    def reopen(self):
+        return host.AuthoritySuccessionModel(self.path, self.members, "A")
+
+    def catch_up(self, node, now=10):
+        state = self.model.view()
+        return self.model.catch_up(node, now, state["index"], state["digest"], authenticated=True)
+
+    def takeover(self, node="B", now=10, epoch=2, voters=None):
+        voters = voters or ["B", "C"]
+        self.model.tick(now)
+        self.catch_up(node, now)
+        old = self.model.view()["epoch"]
+        for voter in voters:
+            self.model.vote(voter, node, epoch, now)
+        return self.model.promote(node, epoch, voters, now, expected_epoch=old, lease_until=now + 10)
+
+    def test_contact_loss_revocation(self):
+        self.assertEqual(self.model.tick(9)["authority"], "A")
+        with self.assertRaisesRegex(ValueError, "UNEXPIRED_AUTHORITY_LEASE"):
+            self.model.vote("B", "B", 2, 9)
+        self.assertEqual(self.model.tick(10)["retired"], ["A"])
+        with self.assertRaisesRegex(ValueError, "STALE_OR_RETIRED"):
+            self.model.write("A", 1, ["A", "B"], 10, "unit", "old", b"late")
+        self.assertIsNone(self.reopen().view()["authority"])
+
+    def test_fenced_mirror_takeover_preserves_originals_and_lost_ack(self):
+        original = self.model.write("A", 1, self.members, 1, "same-work-unit", "effect", b"original\x00bytes")
+        token = self.takeover()
+        self.assertEqual(token, {"node": "B", "epoch": 2})
+        with self.assertRaisesRegex(ValueError, "STALE_OR_RETIRED"):
+            self.reopen().write("A", 1, self.members, 10, "same-work-unit", "late", b"stale")
+        replay = self.model.write("B", 2, ["B", "C"], 10, "same-work-unit", "effect", b"original\x00bytes")
+        self.assertTrue(replay["duplicate"])
+        self.assertEqual(replay["digest"], original["digest"])
+        self.assertEqual(self.model.read()[0][1], b"original\x00bytes")
+        self.assertEqual(len(self.model.read()), 1)
+        with self.assertRaisesRegex(ValueError, "EFFECT_ID_CONFLICT"):
+            self.model.write("B", 2, ["B", "C"], 10, "same-work-unit", "effect", b"changed")
+
+    def test_former_authority_rejoin_without_failback(self):
+        self.takeover()
+        state = self.model.view()
+        with self.assertRaisesRegex(ValueError, "AUTHENTICATED_ORIGINAL_JOURNAL"):
+            self.model.catch_up("A", 11, state["index"], state["digest"], authenticated=False)
+        self.assertEqual(self.catch_up("A", 11), {"role": "MIRROR", "retired": True, "epoch": 2})
+        self.assertEqual(self.reopen().view()["authority"], "B")
+        with self.assertRaisesRegex(ValueError, "STALE_OR_RETIRED"):
+            self.model.write("A", 2, self.members, 11, "unit", "forged-new-token", b"x")
+
+    def test_concurrent_takeover_persistent_votes_intersect(self):
+        self.model.tick(10)
+        self.model.vote("A", "B", 2, 10)
+        with self.assertRaisesRegex(ValueError, "PERSISTENT_VOTE_CONFLICT"):
+            self.reopen().vote("A", "C", 2, 10)
+        self.model.vote("B", "B", 2, 10)
+        self.model.vote("C", "C", 2, 10)
+        with self.assertRaisesRegex(ValueError, "CURRENT_QUORUM_CERTIFICATE"):
+            self.model.promote("C", 2, ["A", "C"], 10, expected_epoch=1, lease_until=20)
+        self.model.promote("B", 2, ["A", "B"], 10, expected_epoch=1, lease_until=20)
+        with self.assertRaisesRegex(ValueError, "FENCE_COMPARE_AND_SWAP"):
+            self.reopen().promote("C", 3, ["A", "C"], 10, expected_epoch=1, lease_until=20)
+
+    def test_no_quorum_hold_preserves_confirmed_reads(self):
+        self.model.write("A", 1, self.members, 1, "unit", "confirmed", b"readable prefix")
+        for node, voters in (("A", ["A"]), ("B", ["B"]), ("C", ["C"])):
+            with self.subTest(partition=node), self.assertRaisesRegex(ValueError, "NO_QUORUM_HOLD"):
+                self.model.write(node, 1, voters, 2, "unit", node, b"partition")
+        self.model.tick(10)
+        with self.assertRaisesRegex(ValueError, "NO_QUORUM_HOLD"):
+            self.model.promote("B", 2, ["B"], 10, expected_epoch=1, lease_until=20)
+        self.assertEqual([p for _, p in self.model.read()], [b"readable prefix"])
+
+    def test_retired_authority_repromotion_rejected_at_every_new_epoch(self):
+        self.takeover()
+        self.catch_up("A", 11)
+        self.model.tick(20)
+        for epoch in (3, 100, 1000000):
+            with self.subTest(epoch=epoch), self.assertRaisesRegex(ValueError, "RETIRED_OR_UNAUTHORIZED"):
+                self.model.vote("C", "A", epoch, 20)
+            with self.assertRaisesRegex(ValueError, "RETIRED_OR_UNAUTHORIZED"):
+                self.model.promote("A", epoch, self.members, 20, expected_epoch=2, lease_until=30)
+
+    def test_successor_contact_loss_applies_same_rule(self):
+        self.takeover()
+        self.model.write("B", 2, ["B", "C"], 11, "same-unit", "second", b"successor effect")
+        self.catch_up("A", 19)
+        token = self.takeover("C", now=20, epoch=3, voters=["A", "C"])
+        self.assertEqual(token, {"node": "C", "epoch": 3})
+        self.assertEqual(self.reopen().view()["retired"], ["A", "B"])
+        for node, epoch in (("A", 1), ("B", 2)):
+            with self.assertRaisesRegex(ValueError, "STALE_OR_RETIRED"):
+                self.model.write(node, epoch, self.members, 20, "unit", node, b"stale")
+        self.assertEqual(len(self.model.read()), 1)
+
+    def test_unverified_revocation_duplicate_votes_and_unknown_nodes_are_rejected(self):
+        with self.assertRaisesRegex(ValueError, "VERIFIED_REVOCATION"):
+            self.model.revoke("A", 1, ["A", "B"], 1, certificate_verified=False)
+        for voters in (["A", "A"], ["A", "unknown"], iter(self.members)):
+            with self.assertRaisesRegex(ValueError, "DISTINCT_MEMBER_VOTES"):
+                self.model.revoke("A", 1, voters, 1, certificate_verified=True)
+        self.assertEqual(self.model.view()["retired"], [])
+        self.model.revoke("A", 1, ["B", "C"], 1, certificate_verified=True)
+        self.assertEqual(self.model.view()["retired"], ["A"])
+
+    def test_lease_renewal_requires_majority_before_expiry(self):
+        self.model.renew("A", 1, ["A", "B"], 9, 20)
+        self.assertEqual(self.model.tick(19)["authority"], "A")
+        with self.assertRaisesRegex(ValueError, "STALE_OR_RETIRED"):
+            self.reopen().renew("A", 1, self.members, 20, 30)
+        self.assertEqual(self.reopen().view()["retired"], ["A"])
+        with self.assertRaisesRegex(ValueError, "CLOCK_REGRESSION"):
+            self.reopen().tick(19)
+
+    def test_stale_journal_cannot_vote_or_activate(self):
+        self.model.write("A", 1, self.members, 1, "unit", "event", b"original")
+        self.model.tick(10)
+        with self.assertRaisesRegex(ValueError, "CANDIDATE_JOURNAL_STALE"):
+            self.model.vote("C", "B", 2, 10)
+        with self.assertRaisesRegex(ValueError, "AUTHENTICATED_ORIGINAL_JOURNAL"):
+            self.model.catch_up("B", 10, 0, "0" * 64, authenticated=True)
+        self.catch_up("B")
+        self.model.vote("B", "B", 2, 10)
+        self.model.vote("C", "B", 2, 10)
+        self.catch_up("C")
+        self.model.vote("C", "C", 3, 10)
+        with self.assertRaisesRegex(ValueError, "CURRENT_QUORUM_CERTIFICATE"):
+            self.model.promote("B", 2, ["B", "C"], 10, expected_epoch=1, lease_until=20)
+
+    def test_restart_preserves_fence_and_uncommitted_sql_is_rolled_back(self):
+        self.takeover()
+        before = self.model.view()
+        script = "import sqlite3,sys,os; c=sqlite3.connect(sys.argv[1]); c.execute('BEGIN IMMEDIATE'); c.execute('DELETE FROM succession_model'); os._exit(23)"
+        result = subprocess.run([sys.executable, "-c", script, str(self.path)], capture_output=True)
+        self.assertEqual(result.returncode, 23)
+        self.assertEqual(self.reopen().view(), before)
+        self.assertEqual(self.model.write("B", 2, ["A", "B"], 11, "unit", "after-crash", b"ok")["epoch"], 2)
+
+    def test_two_real_processes_share_one_atomic_fencing_point(self):
+        self.model.tick(10)
+        script = '''import sys,importlib.util,json,time
+from pathlib import Path
+spec=importlib.util.spec_from_file_location("host",sys.argv[1]);h=importlib.util.module_from_spec(spec);spec.loader.exec_module(h)
+m=h.AuthoritySuccessionModel(Path(sys.argv[2]),["A","B","C"],"A")
+ready=Path(sys.argv[3]);ready.write_text("ready")
+while not Path(sys.argv[4]).exists(): time.sleep(.001)
+node=sys.argv[5];votes=[]
+for voter in ["A","B","C"]:
+ try: m.vote(voter,node,2,10);votes.append(voter)
+ except ValueError: pass
+try: result=m.promote(node,2,votes,10,expected_epoch=1,lease_until=20);print(json.dumps(result))
+except ValueError as e: print(json.dumps({"hold":str(e)}))
+'''
+        start = self.path.parent / "start"
+        processes = []
+        for node in ("B", "C"):
+            ready = self.path.parent / ("ready-" + node)
+            p = subprocess.Popen([sys.executable, "-c", script, str(ROOT / "tools/qikvrt_self_host.py"), str(self.path), str(ready), str(start), node], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            processes.append(p)
+            self.addCleanup(lambda p=p: p.kill() if p.poll() is None else None)
+        deadline = time.monotonic() + 10
+        while not all((self.path.parent / ("ready-" + n)).exists() for n in ("B", "C")):
+            if time.monotonic() > deadline: self.fail("local process readiness timeout")
+            time.sleep(.005)
+        start.write_text("go")
+        results = []
+        for p in processes:
+            stdout, stderr = p.communicate(timeout=15)
+            self.assertEqual(p.returncode, 0, stderr)
+            results.append(json.loads(stdout))
+        self.assertEqual(sum("node" in r for r in results), 1, results)
+        self.assertIn(self.reopen().view()["authority"], ("B", "C"))
+
+    def test_two_nodes_cannot_continue_writes_after_one_voter_is_lost(self):
+        path = self.path.parent / "two.sqlite3"
+        model = host.AuthoritySuccessionModel(path, ["A", "B"], "A")
+        model.tick(10)
+        model.vote("B", "B", 2, 10)
+        with self.assertRaisesRegex(ValueError, "NO_QUORUM_HOLD"):
+            model.promote("B", 2, ["B"], 10, expected_epoch=1, lease_until=20)
+
+    def test_independent_uncoordinated_sinks_are_a_split_brain_counterexample(self):
+        # Deliberately violate the common serialized-carrier premise. A local
+        # uniqueness theorem alone cannot establish global Mesh exclusivity.
+        other = host.AuthoritySuccessionModel(self.path.parent / "independent.sqlite3", self.members, "B")
+        a = self.model.write("A", 1, ["A", "B"], 1, "unit", "same", b"left")
+        b = other.write("B", 1, ["B", "C"], 1, "unit", "same", b"right")
+        self.assertNotEqual(a["authority"], b["authority"])
+        self.assertEqual(a["epoch"], b["epoch"])
+
+
 class DeploymentRoleTests(unittest.TestCase):
     def test_roles_come_from_current_policy_and_owner_projection(self):
         roles = host.deployment_roles(ROOT, {})

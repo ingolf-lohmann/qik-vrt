@@ -1,0 +1,41 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_IRREVERSIBLE_AUTHORITY_SUCCESSION_ASSURANCE_20261016_V1",
+  "state": "CONTINUE_NATIVE_KERNEL_AND_LIVE_ACCEPTANCE",
+  "owner_requirement": "OWNER_IRREVERSIBLE_AUTHORITY_SUCCESSION_20261016",
+  "authorization": "Direct Owner Action of 2026-10-16: inspect, extend missing technical/formal assurance, integrate through existing PR523, test and REST-read back",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "pr": 523,
+  "predecessor_head": "e8fbaae5cbd7ef04b718561d576cee521c51b9cd",
+  "evidence": "evidence/native-runtime-acceptance/authority-succession-20261016.json",
+  "evidence_sha256": "30ef007af919967bf7a3a090a22f5a9c162d065014be3376c43aee84c1115e35",
+  "contributions": {
+    "human": "Ingolf Lohmann: irreversible succession requirement, scope and authorization",
+    "artificial_cognitive": "OpenAI Codex: source comparison, local reference-model implementation, tests, conditional Lean extension and integration evidence",
+    "origin": "separable; approval does not change attribution"
+  },
+  "open_work": [
+    {
+      "id": "NATIVE_KERNEL",
+      "state": "OPEN",
+      "next_action": "Existing push-triggered manuscript proof workflow on the exact successor; inspect original job logs and axiom reports."
+    },
+    {
+      "id": "GLOBAL_FENCING_AND_REAL_MULTINODE_ACCEPTANCE",
+      "state": "OPEN",
+      "next_action": "Bind authenticated independent voter/runtime endpoints and every actual effect carrier to an enforced shared fencing/replication protocol; execute all seven real workload cases with original receipts."
+    },
+    {
+      "id": "MAIN_INTEGRATION",
+      "state": "OPEN",
+      "next_action": "Protected exact-head review and required gates for existing PR523; no bypass or merge inferred."
+    },
+    {
+      "id": "EXACT_HOST",
+      "state": "OPEN",
+      "next_action": "Read back exact https://raumzeitterminal.de/ delivery separately; unchanged deployment failures remain NOOP."
+    }
+  ],
+  "native_authority_transfer_inferred": false,
+  "EFFECT_ACK_DONE": false
+}

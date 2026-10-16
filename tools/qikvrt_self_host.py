@@ -794,6 +794,213 @@ def authority_succession(policy):
     return set(identities)
 
 
+class AuthoritySuccessionModel:
+    """Crash-durable *local reference model*, never a distributed election service.
+
+    SQLite serializes the modeled voters, fencing register and effect sink.
+    Reachability, authenticated catch-up/certificates and time are supplied
+    simulation inputs. No network, signature verification, production writer or
+    native replication is installed. See MESH_ACTIVATION's explicit live gap.
+    """
+    def __init__(self, path, members, authority, lease_until=10):
+        self.path = Path(path)
+        members = list(members)
+        if (len(members) < 2 or len(members) != len(set(members))
+                or any(not isinstance(m, str) or not m for m in members)
+                or authority not in members or type(lease_until) is not int or lease_until <= 0):
+            raise ValueError("MODEL_FIXED_MEMBERSHIP_REQUIRED")
+        private_path(self.path.parent, directory=True)
+        if not self.path.exists():
+            try:
+                fd = os.open(self.path, os.O_CREAT | os.O_EXCL | os.O_WRONLY | os.O_NOFOLLOW, 0o600)
+                os.close(fd)
+            except FileExistsError:
+                pass
+        private_path(self.path)
+        with self.connect() as db:
+            db.execute("BEGIN IMMEDIATE")
+            db.execute("CREATE TABLE IF NOT EXISTS succession_model (id INTEGER PRIMARY KEY CHECK(id=1), state TEXT NOT NULL)")
+            db.execute("CREATE TABLE IF NOT EXISTS succession_votes (epoch INTEGER NOT NULL, voter TEXT NOT NULL, candidate TEXT NOT NULL, PRIMARY KEY(epoch,voter))")
+            db.execute("CREATE TABLE IF NOT EXISTS succession_effects (seq INTEGER PRIMARY KEY, unit TEXT NOT NULL, event TEXT NOT NULL, payload BLOB NOT NULL, record TEXT NOT NULL, UNIQUE(unit,event))")
+            row = db.execute("SELECT state FROM succession_model WHERE id=1").fetchone()
+            if row is None:
+                state = {"schema": "qikvrt-authority-succession-local-model/v1", "members": members,
+                    "initial_authority": authority, "initial_lease": lease_until,
+                    "authority": authority, "epoch": 1, "retired": [], "now": 0,
+                    "lease_until": lease_until, "index": 0, "digest": "0" * 64,
+                    "caught_up": {m: [0, "0" * 64] for m in members},
+                    "replicas": {m: [0, "0" * 64] for m in members}}
+                self.save(db, state)
+                db.executemany("INSERT INTO succession_votes VALUES (1,?,?)", [(m, authority) for m in members])
+            else:
+                state = json.loads(row[0])
+                if (state["members"] != members or state["initial_authority"] != authority
+                        or state["initial_lease"] != lease_until):
+                    raise ValueError("MODEL_MEMBERSHIP_OR_GENESIS_MISMATCH")
+
+    @contextlib.contextmanager
+    def connect(self):
+        db = sqlite3.connect(self.path, timeout=10)
+        db.execute("PRAGMA synchronous=FULL")
+        try:
+            with db:
+                yield db
+        finally:
+            db.close()
+
+    @staticmethod
+    def save(db, state):
+        db.execute("INSERT OR REPLACE INTO succession_model VALUES (1,?)", (mesh_wire(state).decode(),))
+
+    @staticmethod
+    def quorum(state, voters):
+        if not isinstance(voters, (list, tuple)):
+            raise ValueError("MODEL_DISTINCT_MEMBER_VOTES_REQUIRED")
+        voters = list(voters)
+        if len(voters) != len(set(voters)) or not set(voters) <= set(state["members"]):
+            raise ValueError("MODEL_DISTINCT_MEMBER_VOTES_REQUIRED")
+        if len(voters) <= len(state["members"]) // 2:
+            raise ValueError("NO_QUORUM_HOLD")
+        return voters
+
+    @staticmethod
+    def eligible(state, node):
+        if node not in state["members"] or node in state["retired"]:
+            raise ValueError("RETIRED_OR_UNAUTHORIZED_CANDIDATE")
+
+    def execute(self, now, operation):
+        # Time/expiration survives a rejected command. A savepoint rolls back
+        # that command's partial SQL writes, never the qualified retirement.
+        with self.connect() as db:
+            db.execute("BEGIN IMMEDIATE")
+            state = json.loads(db.execute("SELECT state FROM succession_model WHERE id=1").fetchone()[0])
+            if type(now) is not int or now < state["now"]:
+                raise ValueError("MODEL_CLOCK_REGRESSION")
+            state["now"] = now
+            if state["authority"] is not None and now >= state["lease_until"]:
+                state["retired"].append(state["authority"])
+                state["authority"] = None
+            self.save(db, state)
+            db.execute("SAVEPOINT command")
+            try:
+                result = operation(db, state)
+            except ValueError:
+                db.execute("ROLLBACK TO command")
+                db.execute("RELEASE command")
+                db.commit()
+                raise
+            self.save(db, state)
+            db.execute("RELEASE command")
+            db.commit()
+            return result
+
+    def tick(self, now):
+        return self.execute(now, lambda db, state: dict(state))
+
+    def catch_up(self, node, now, index, journal_digest, *, authenticated):
+        def apply(db, state):
+            if (authenticated is not True or node not in state["members"]
+                    or [index, journal_digest] != [state["index"], state["digest"]]):
+                raise ValueError("MODEL_AUTHENTICATED_ORIGINAL_JOURNAL_REQUIRED")
+            state["caught_up"][node] = [index, journal_digest]
+            state["replicas"][node] = [index, journal_digest]
+            return {"role": "AUTHORITY" if state["authority"] == node else "MIRROR",
+                    "retired": node in state["retired"], "epoch": state["epoch"]}
+        return self.execute(now, apply)
+
+    def vote(self, voter, candidate, epoch, now):
+        def apply(db, state):
+            self.eligible(state, candidate)
+            if voter not in state["members"] or type(epoch) is not int or epoch <= state["epoch"]:
+                raise ValueError("MODEL_NEW_EPOCH_MEMBER_VOTE_REQUIRED")
+            if state["authority"] is not None:
+                raise ValueError("MODEL_UNEXPIRED_AUTHORITY_LEASE")
+            if state["caught_up"][candidate] != [state["index"], state["digest"]]:
+                raise ValueError("MODEL_CANDIDATE_JOURNAL_STALE")
+            highest = db.execute("SELECT MAX(epoch) FROM succession_votes WHERE voter=?", (voter,)).fetchone()[0]
+            previous = db.execute("SELECT candidate FROM succession_votes WHERE epoch=? AND voter=?", (epoch, voter)).fetchone()
+            if (highest is not None and epoch < highest) or (previous and previous[0] != candidate):
+                raise ValueError("MODEL_PERSISTENT_VOTE_CONFLICT")
+            db.execute("INSERT OR IGNORE INTO succession_votes VALUES (?,?,?)", (epoch, voter, candidate))
+            return {"voter": voter, "candidate": candidate, "epoch": epoch}
+        return self.execute(now, apply)
+
+    def promote(self, candidate, epoch, voters, now, *, expected_epoch, lease_until):
+        def apply(db, state):
+            self.eligible(state, candidate)
+            voters_checked = self.quorum(state, voters)
+            if (state["authority"] is not None or type(epoch) is not int
+                    or epoch <= state["epoch"] or type(expected_epoch) is not int or expected_epoch != state["epoch"]):
+                raise ValueError("MODEL_FENCE_COMPARE_AND_SWAP_REJECTED")
+            if (type(lease_until) is not int or lease_until <= now
+                    or state["caught_up"][candidate] != [state["index"], state["digest"]]):
+                raise ValueError("MODEL_CURRENT_JOURNAL_AND_FUTURE_LEASE_REQUIRED")
+            for voter in voters_checked:
+                vote = db.execute("SELECT epoch,candidate FROM succession_votes WHERE voter=? ORDER BY epoch DESC LIMIT 1", (voter,)).fetchone()
+                if vote != (epoch, candidate):
+                    raise ValueError("MODEL_CURRENT_QUORUM_CERTIFICATE_REQUIRED")
+            state.update(authority=candidate, epoch=epoch, lease_until=lease_until)
+            return {"node": candidate, "epoch": epoch}
+        return self.execute(now, apply)
+
+    def current_writer(self, state, node, epoch, voters):
+        self.quorum(state, voters)
+        if (type(epoch) is not int or node != state["authority"] or epoch != state["epoch"] or node in state["retired"]
+                or state["now"] >= state["lease_until"]):
+            raise ValueError("MODEL_STALE_OR_RETIRED_WRITER_FENCED")
+
+    def renew(self, node, epoch, voters, now, lease_until):
+        def apply(db, state):
+            self.current_writer(state, node, epoch, voters)
+            if type(lease_until) is not int or lease_until <= state["lease_until"]:
+                raise ValueError("MODEL_STRICT_LEASE_EXTENSION_REQUIRED")
+            state["lease_until"] = lease_until
+        return self.execute(now, apply)
+
+    def revoke(self, node, epoch, voters, now, *, certificate_verified):
+        def apply(db, state):
+            self.current_writer(state, node, epoch, voters)
+            if certificate_verified is not True:
+                raise ValueError("MODEL_VERIFIED_REVOCATION_REQUIRED")
+            state["retired"].append(node)
+            state["authority"] = None
+        return self.execute(now, apply)
+
+    def write(self, node, epoch, voters, now, unit, event, payload):
+        def apply(db, state):
+            self.current_writer(state, node, epoch, voters)
+            if not isinstance(payload, bytes) or not isinstance(unit, str) or not unit or not isinstance(event, str) or not event:
+                raise ValueError("MODEL_ORIGINAL_EFFECT_ID_AND_BYTES_REQUIRED")
+            old = db.execute("SELECT payload,record FROM succession_effects WHERE unit=? AND event=?", (unit, event)).fetchone()
+            if old:
+                if old[0] != payload:
+                    raise ValueError("MODEL_EFFECT_ID_CONFLICT")
+                return dict(json.loads(old[1]), duplicate=True)
+            record = {"seq": state["index"] + 1, "unit": unit, "event": event,
+                      "payload_sha256": digest(payload), "previous": state["digest"],
+                      "authority": node, "epoch": epoch}
+            record["digest"] = digest(mesh_wire(record))
+            db.execute("INSERT INTO succession_effects VALUES (?,?,?,?,?)", (record["seq"], unit, event, payload, mesh_wire(record).decode()))
+            state.update(index=record["seq"], digest=record["digest"])
+            # Modeled replication and ACK are one local transaction. This is
+            # deliberately NOT evidence of distributed native-effect durability.
+            for voter in voters:
+                state["replicas"][voter] = [state["index"], state["digest"]]
+            state["caught_up"][node] = [state["index"], state["digest"]]
+            return dict(record, duplicate=False)
+        return self.execute(now, apply)
+
+    def read(self):
+        """Confirmed local prefix stays readable without write quorum."""
+        with self.connect() as db:
+            return [(json.loads(record), payload) for record, payload in
+                    db.execute("SELECT record,payload FROM succession_effects ORDER BY seq")]
+
+    def view(self):
+        with self.connect() as db:
+            return json.loads(db.execute("SELECT state FROM succession_model WHERE id=1").fetchone()[0])
+
+
 def deployment_roles(root, environment=None):
     """Resolve the current contract; old defaults/overrides cannot select Authority."""
     root = Path(root)

@@ -70,6 +70,19 @@ EFFECT_ACK_SUPPLEMENTAL = {
     "QIKVRT.EffectAck.V1.Claims.claimIds_pairwise": set(),
 }
 
+SUCCESSION_AUDIT_SOURCE = ROOT / "QIKVRTFormalization/Hardware/AxiomAudit.lean"
+SUCCESSION_EXPECTED = {
+    "QIKVRT.V2.AuthoritySuccession." + name for name in (
+        "majority_overlap", "majority_intersection", "same_epoch_election_unique",
+        "one_effective_writer", "stale_epoch_rejected", "expired_lease_rejected",
+        "no_quorum_holds_writes", "step_preserves_invariant", "step_retirement_persists",
+        "step_epoch_monotone", "run_preserves_invariant", "run_retirement_persists",
+        "run_epoch_monotone", "retirement_irreversible", "retired_never_authority",
+        "retired_repromotion_impossible", "qualified_successor_can_write",
+        "independent_carriers_split_brain",
+    )
+}
+
 
 def require_object(value: Any, label: str) -> dict[str, Any]:
     if not isinstance(value, dict):
@@ -198,11 +211,13 @@ def main() -> int:
     measurement_policy = {
         name: set(FOUNDATIONAL_AXIOMS) for name in MEASUREMENT_EXPECTED
     }
+    succession_policy = {name: set(FOUNDATIONAL_AXIOMS) for name in SUCCESSION_EXPECTED}
     audits = (
         (MANUSCRIPT_AUDIT_SOURCE, manuscript_policy, False),
         (EFFECT_ACK_AUDIT_SOURCE, effect_policy, True),
         (WORLD_FORMULA_AUDIT_SOURCE, world_formula_policy, True),
         (MEASUREMENT_AUDIT_SOURCE, measurement_policy, False),
+        (SUCCESSION_AUDIT_SOURCE, succession_policy, False),
     )
     seen: set[str] = set()
     violations: list[str] = []
@@ -246,7 +261,8 @@ def main() -> int:
         f"PASS axiom audit: {len(expected)} checked theorems; "
         f"{len(effect_policy)} EFFECT_ACK constants use per-claim policies; "
         f"{len(world_formula_policy)} world-formula theorems are axiom-free; "
-        f"{len(measurement_policy)} scoped measurement-transfer theorems checked"
+        f"{len(measurement_policy)} scoped measurement-transfer theorems checked; "
+        f"{len(succession_policy)} conditional authority-succession theorems checked"
     )
     return 0
 

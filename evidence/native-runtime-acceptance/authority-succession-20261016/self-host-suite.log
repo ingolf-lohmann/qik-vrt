@@ -1,0 +1,8 @@
+{"admission_sha256": "7bfcbba0c01d60cc3f113774f8106404bb9c55d1e38edfa3eaa95b2ecbf3da8c", "admission_tool_sha256": "c9f420cff61a986b83f7e97f492960a5e92a1380c1682db4808aeb20b5f200ef", "config_sha256": "9fb623fd20c82cabb9fdc5d9c45244e1dbd6d05d311309df5f4049acb0eb576c", "effect_ack_done": false, "existing_supervisor_pid_binding_match": true, "manifest_sha256": "dec04681dd0ade469ef1a369a987df07a55418c823d54766f20c832579772ed4", "public_readback_verified": false, "source_head": "b6763c0e41262514d44a41e3502c3d033c574ef7", "source_tree": "356f277cab4ddaeef76ad11b5a1d59731af279b5", "state": "HOST_GUARD_VERIFIED_STARTING_EXISTING_LAUNCHER", "systemd_invocation_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:369: ResourceWarning: unclosed <socket.socket [closed] fd=4, family=2, type=1, proto=6>
+  path = os.fspath(arg)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+----------------------------------------------------------------------
+Ran 119 tests in 34.315s
+
+OK (skipped=1)
