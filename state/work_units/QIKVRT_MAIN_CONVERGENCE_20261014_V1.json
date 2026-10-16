@@ -507,6 +507,62 @@
     "bounded_transport_repair_20261017": {
       "authorization": "Continue cleanup through the actual native Transputer/Firefox/domain result; prior authorization retained.",
       "cause": "Verified frozen Firefox158 dependency ZIP is 569395196 bytes; existing artifact connector accepts at most 536870912 bytes.",
+      "delivery_cache": {
+        "delivery": {
+          "connector_max_artifact_bytes": 536870912,
+          "effect_ack_done": false,
+          "exporter_head": "bca1dcc31c0f58da9e6cb70285f6e2a6e7977089",
+          "exporter_tree": "e7238b7ca070408a9c5c86f6d5198b3dd9d254ca",
+          "extension_activation_verified": false,
+          "image_imported": false,
+          "independent_download_back_verified": true,
+          "original_archive_restored_verified": true,
+          "original_image": {
+            "archive_bytes": 572793479,
+            "archive_sha256": "e509bfa0a5d5d63883a312c7c3c23d6ab2bd85cedb56f1843ec4ed0a12be4bea",
+            "image_id": "sha256:a09a88ed85044fe31347fa3491c57e098a1247411eb3019751de22ee6ac551f6",
+            "source_head": "aba4eee6d2ea8463920bf13812dcd466ec7705e3",
+            "source_tree": "b006136a5d6aa25210715767178860404acd6aa2"
+          },
+          "part_payload_max_bytes": 268435456,
+          "parts": [
+            {
+              "artifact_id": 12076860463,
+              "artifact_name": "qikvrt-s1-firefox158-runtime-bca1dcc31c0f58da9e6cb70285f6e2a6e7977089-part-000",
+              "index": 0,
+              "zip_sha256": "954d0fccd9899d1ee79727015ba99f8a0265ea4cb8a3f2e70642f255ea49eac4"
+            },
+            {
+              "artifact_id": 12076700967,
+              "artifact_name": "qikvrt-s1-firefox158-runtime-bca1dcc31c0f58da9e6cb70285f6e2a6e7977089-part-001",
+              "index": 1,
+              "zip_sha256": "1c046afdd073d453082f99186c7ddaf959522dd1c859c43de1ccfdec773a7ed1"
+            },
+            {
+              "artifact_id": 12076556479,
+              "artifact_name": "qikvrt-s1-firefox158-runtime-bca1dcc31c0f58da9e6cb70285f6e2a6e7977089-part-002",
+              "index": 2,
+              "zip_sha256": "78a6cb8b51a339f09d46c173521a56869610806ad14287f6c627fbe158cd2bd2"
+            }
+          ],
+          "parts_manifest_sha256": "347da2c4fa3d7e53624b44bc44afe50166ff13942cf9a3e2bfd8a7929b5bd872",
+          "public_production_verified": false,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "run_id": 38970053562,
+          "schema": "qikvrt-container-artifact-delivery/v1"
+        },
+        "delivery_json_sha256": "839c88fd71614b2f893e5abb25231e17ed8d01bca1420b7e0429a58ed20ec7ee",
+        "external_archive_restore_sha256": "e509bfa0a5d5d63883a312c7c3c23d6ab2bd85cedb56f1843ec4ed0a12be4bea",
+        "external_connector_part_download_verified": true,
+        "metadata_artifact": {
+          "bytes": 2623,
+          "id": 12076436765,
+          "name": "qikvrt-s1-firefox158-transport-bca1dcc31c0f58da9e6cb70285f6e2a6e7977089",
+          "sha256": "69ad8cda3ae647fe111ea5b43f41c9f03e92dd0233cad56ae3158cbb8158b930"
+        },
+        "schema": "qikvrt-runtime-transport-cache/v1",
+        "transport_module_blob": "bc8f110120dc98755cdf01c4dd9d313c14080e5f"
+      },
       "effect_ack_done": false,
       "extension_activation_verified": false,
       "image_imported": false,
@@ -518,8 +574,11 @@
       "source_tree": "b006136a5d6aa25210715767178860404acd6aa2",
       "source_validation": "Targeted local transport regression tests; native full candidate CI remains required.",
       "transport_max_parts": 4,
-      "transport_native_verified": false,
-      "transport_part_payload_bytes": 268435456
+      "transport_native_verified": true,
+      "transport_part_payload_bytes": 268435456,
+      "verification_scope": "ORIGINAL_BYTE_TRANSPORT_ONLY; NOT_PRODUCT_OR_CURRENT_HEAD_ACCEPTANCE",
+      "verified_exporter_head": "bca1dcc31c0f58da9e6cb70285f6e2a6e7977089",
+      "verified_exporter_tree": "e7238b7ca070408a9c5c86f6d5198b3dd9d254ca"
     },
     "candidate_validation": {
       "classified_entries_verified": 4241,

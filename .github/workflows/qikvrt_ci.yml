@@ -565,8 +565,104 @@ jobs:
                   output.write('signed_artifact_name='+signed['artifact_name']+'\n')
           PY
 
+      - name: Admit reuse of the already delivered dependency parts
+        id: transport-admission
+        env:
+          RUNTIME_REUSE: ${{ steps.effect-admission.outputs.runtime_reuse }}
+        run: |
+          python3 -B - <<'PYTRANSFER'
+          import json,os,re,subprocess
+          from pathlib import Path
+          upgrade=json.loads(Path('state/work_units/QIKVRT_MAIN_CONVERGENCE_20261014_V1.json').read_bytes())['firefox158_s1_upgrade']
+          cached=upgrade.get('runtime_artifact')
+          transport=upgrade.get('bounded_transport_repair_20261017',{}).get('delivery_cache')
+          reuse=False
+          if transport is not None:
+              assert transport['schema']=='qikvrt-runtime-transport-cache/v1'
+              delivery=transport['delivery'];metadata=transport['metadata_artifact']
+              assert delivery['repository']=='ingolf-lohmann/qik-vrt'
+              assert delivery['schema']=='qikvrt-container-artifact-delivery/v1'
+              assert type(delivery['run_id']) is int and delivery['run_id']>0
+              assert delivery['independent_download_back_verified'] is True
+              assert delivery['original_archive_restored_verified'] is True
+              assert delivery['image_imported'] is False and delivery['extension_activation_verified'] is False
+              assert delivery['public_production_verified'] is False and delivery['effect_ack_done'] is False
+              assert all(re.fullmatch(r'[a-f0-9]{40}',delivery[key]) for key in ('exporter_head','exporter_tree'))
+              assert type(metadata['id']) is int and metadata['id']>0 and 0<metadata['bytes']<536870912
+              assert re.fullmatch(r'[A-Za-z0-9_.-]{1,160}',metadata['name'])
+              for pin in (metadata['sha256'],transport['delivery_json_sha256'],delivery['parts_manifest_sha256']):
+                  assert re.fullmatch(r'[a-f0-9]{64}',pin)
+              assert 1<=len(delivery['parts'])<=4
+              for index,part in enumerate(delivery['parts']):
+                  assert type(part['index']) is int and part['index']==index
+                  assert type(part['artifact_id']) is int and part['artifact_id']>0
+                  assert re.fullmatch(r'[A-Za-z0-9_.-]{1,160}',part['artifact_name'])
+                  assert re.fullmatch(r'[a-f0-9]{64}',part['zip_sha256'])
+              helper=subprocess.check_output(['git','rev-parse','HEAD:tools/qikvrt_self_host_container.py'],text=True).strip()
+              reuse=(os.environ['RUNTIME_REUSE']=='true' and cached is not None and
+                  transport['transport_module_blob']==helper and all(
+                  delivery['original_image'][key]==cached[key] for key in
+                  ('source_head','source_tree','image_id','archive_bytes','archive_sha256')))
+          with open(os.environ['GITHUB_OUTPUT'],'a') as out:
+              out.write('reuse='+str(reuse).lower()+'\n')
+              if reuse:
+                  out.write('run_id='+str(delivery['run_id'])+'\n')
+                  out.write('artifact_name='+metadata['name']+'\n')
+          PYTRANSFER
+      - name: Read the small pinned dependency delivery metadata
+        if: steps.transport-admission.outputs.reuse == 'true'
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ steps.transport-admission.outputs.run_id }}
+          name: ${{ steps.transport-admission.outputs.artifact_name }}
+          path: ${{ runner.temp }}/s1-firefox158-existing-transport
+      - name: Verify existing part availability and original delivery pins without retransferring image bytes
+        if: steps.transport-admission.outputs.reuse == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 -B - <<'PYEXISTING'
+          import hashlib,json,os,urllib.request,urllib.error
+          from pathlib import Path
+          upgrade=json.loads(Path('state/work_units/QIKVRT_MAIN_CONVERGENCE_20261014_V1.json').read_bytes())['firefox158_s1_upgrade']
+          bound=upgrade['bounded_transport_repair_20261017']['delivery_cache']
+          original=bound['delivery'];metadata=bound['metadata_artifact']
+          root=Path(os.environ['RUNNER_TEMP']);folder=root/'s1-firefox158-existing-transport'
+          assert hashlib.sha256((folder/'DELIVERY.json').read_bytes()).hexdigest()==bound['delivery_json_sha256']
+          assert json.loads((folder/'DELIVERY.json').read_bytes())==original
+          assert hashlib.sha256((folder/'PARTS.json').read_bytes()).hexdigest()==original['parts_manifest_sha256']
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self,*args,**kwargs): return None
+          opener=urllib.request.build_opener(NoRedirect())
+          records=[{'id':metadata['id'],'name':metadata['name'],'digest':metadata['sha256'],'bytes':metadata['bytes']}]
+          records.extend({'id':p['artifact_id'],'name':p['artifact_name'],'digest':p['zip_sha256']} for p in original['parts'])
+          for record in records:
+              request=urllib.request.Request('https://api.github.com/repos/ingolf-lohmann/qik-vrt/actions/artifacts/'+str(record['id']),
+                  headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'})
+              try:
+                  with opener.open(request,timeout=20) as response:
+                      assert response.status==200;raw=response.read(65537)
+              except urllib.error.HTTPError as error:
+                  raise ValueError('HOLD_PINNED_RUNTIME_TRANSPORT_HTTP_'+str(error.code)) from None
+              assert len(raw)<=65536
+              observed=json.loads(raw)
+              assert observed['id']==record['id'] and observed['name']==record['name']
+              assert observed['digest']=='sha256:'+record['digest'] and observed['expired'] is False
+              assert 0<observed['size_in_bytes']<536870912
+              assert observed['workflow_run']['id']==original['run_id']
+              assert observed['workflow_run']['head_sha']==original['exporter_head']
+              if 'bytes' in record:assert observed['size_in_bytes']==record['bytes']
+          result={'schema':'qikvrt-runtime-transport-cache-readback/v1','state':'PINNED_ORIGINAL_DELIVERY_REUSED',
+              'exporter_head':original['exporter_head'],'exporter_tree':original['exporter_tree'],
+              'archive_sha256':original['original_image']['archive_sha256'],'parts_checked':len(original['parts']),
+              'large_archive_downloaded':False,'parts_republished':False,'image_imported':False,
+              'extension_activation_verified':False,'public_production_verified':False,'effect_ack_done':False}
+          (root/'s1-extension-evidence/transport-cache-readback.json').write_text(json.dumps(result,sort_keys=True,indent=2)+'\n')
+          print('PINNED_ORIGINAL_DELIVERY_REUSED_WITHOUT_LARGE_TRANSFER')
+          PYEXISTING
       - name: Reuse the already verified Firefox-158 dependency bytes
-        if: steps.effect-admission.outputs.runtime_reuse == 'true'
+        if: steps.effect-admission.outputs.runtime_reuse == 'true' && (steps.effect-admission.outputs.probe_required == 'true' || steps.transport-admission.outputs.reuse != 'true')
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:
           github-token: ${{ github.token }}
@@ -782,7 +878,7 @@ jobs:
           if-no-files-found: error
       - name: Export original dependency bytes below the connector artifact limit
         id: runtime-parts
-        if: steps.effect-admission.outputs.runtime_reuse == 'true' || steps.effect-admission.outputs.probe_required == 'true'
+        if: steps.transport-admission.outputs.reuse != 'true' && (steps.effect-admission.outputs.runtime_reuse == 'true' || steps.effect-admission.outputs.probe_required == 'true')
         env:
           RUNTIME_REUSE: ${{ steps.effect-admission.outputs.runtime_reuse }}
         run: |

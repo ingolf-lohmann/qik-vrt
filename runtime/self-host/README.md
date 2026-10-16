@@ -280,6 +280,11 @@ ZIP digest and original-byte digest. The workflow independently downloads the
 parts and restores the original pinned archive before publishing the delivery
 receipt. Existing single-artifact consumers remain compatible.
 
+Once that exact delivery is pinned in the work unit, unchanged dependency and
+transport code reuse the small metadata plus fresh GET-only artifact-availability
+checks. They download no large archive and publish no duplicate parts. Expired,
+changed or denied metadata holds reuse; it never grants another signing attempt.
+
 The existing S1 entrypoint exposes the same bounded file operations:
 
 ```sh

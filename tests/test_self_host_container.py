@@ -10,6 +10,7 @@ import subprocess
 import sys
 import tarfile
 import tempfile
+import textwrap
 import unittest
 from unittest.mock import patch
 from types import SimpleNamespace
@@ -494,9 +495,107 @@ class ArtifactTransportControls(unittest.TestCase):
         self.assertFalse(second['ordinary_release'])
         workflow = (launcher.parents[1] / '.github/workflows/qikvrt_ci.yml').read_text()
         reuse = workflow.split('      - name: Reuse the already verified Firefox-158 dependency bytes\n', 1)[1]
-        self.assertTrue(reuse.startswith("        if: steps.effect-admission.outputs.runtime_reuse == 'true'\n"))
+        self.assertIn("steps.effect-admission.outputs.probe_required == 'true' || steps.transport-admission.outputs.reuse != 'true'", reuse.splitlines()[0])
         self.assertIn("assert r.get('current_probe_executed',True) is True", workflow)
         self.assertIn("assert r['signed_production_package_verified'] is True", workflow)
+
+    def delivery_cache(self):
+        original = {'source_head': 'a' * 40, 'source_tree': 'b' * 40, 'image_id': 'sha256:' + 'c' * 64,
+                    'archive_bytes': 572793479, 'archive_sha256': 'd' * 64}
+        delivery = {'schema': 'qikvrt-container-artifact-delivery/v1', 'repository': c.REPOSITORY,
+            'run_id': 11, 'exporter_head': 'a' * 40, 'exporter_tree': 'b' * 40,
+            'original_image': original, 'parts_manifest_sha256': c.sha(b'part-manifest-fixture'),
+            'independent_download_back_verified': True, 'original_archive_restored_verified': True,
+            'image_imported': False, 'extension_activation_verified': False,
+            'public_production_verified': False, 'effect_ack_done': False,
+            'parts': [{'index': 0, 'artifact_id': 12, 'artifact_name': 'fixture-part-000', 'zip_sha256': 'f' * 64}]}
+        raw = (json.dumps(delivery, sort_keys=True, indent=2) + '\n').encode()
+        return {'schema': 'qikvrt-runtime-transport-cache/v1', 'delivery': delivery,
+            'metadata_artifact': {'id': 13, 'name': 'fixture-transport', 'bytes': 1000, 'sha256': 'f' * 64},
+            'delivery_json_sha256': c.sha(raw), 'transport_module_blob': 'e' * 40}
+
+    def workflow_code(self, marker):
+        workflow = (Path(__file__).resolve().parents[1] / '.github/workflows/qikvrt_ci.yml').read_text()
+        return textwrap.dedent(workflow.split("<<'" + marker + "'\n", 1)[1].split('\n          ' + marker, 1)[0])
+
+    def test_workflow_cache_reuses_exact_delivery_and_invalidates_only_changed_inputs(self):
+        for variant in ('same', 'no-cache', 'new-image', 'new-helper', 'no-runtime-reuse', 'unverified', 'bad-id'):
+            with self.subTest(variant=variant), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary); cache = self.delivery_cache()
+                artifact = dict(cache['delivery']['original_image'])
+                if variant == 'new-image': artifact['archive_sha256'] = '0' * 64
+                if variant == 'unverified': cache['delivery']['independent_download_back_verified'] = False
+                if variant == 'bad-id': cache['metadata_artifact']['id'] = True
+                upgrade = {'runtime_artifact': artifact, 'bounded_transport_repair_20261017':
+                           {'delivery_cache': None if variant == 'no-cache' else cache}}
+                work = root / 'state/work_units/QIKVRT_MAIN_CONVERGENCE_20261014_V1.json'
+                work.parent.mkdir(parents=True); work.write_text(json.dumps({'firefox158_s1_upgrade': upgrade}))
+                code = self.workflow_code('PYTRANSFER'); output = root / 'output'
+                before = Path.cwd()
+                try:
+                    os.chdir(root)
+                    with patch.dict(os.environ, {'GITHUB_OUTPUT': str(output),
+                            'RUNTIME_REUSE': 'false' if variant == 'no-runtime-reuse' else 'true'}), \
+                            patch.object(subprocess, 'check_output', return_value=('0' if variant == 'new-helper' else 'e') * 40):
+                        if variant in ('unverified', 'bad-id'):
+                            with self.assertRaises(AssertionError): exec(code, {})
+                            self.assertFalse(output.exists())
+                        else:
+                            exec(code, {})
+                            self.assertEqual(output.read_text().splitlines()[0], 'reuse=' + str(variant == 'same').lower())
+                finally:
+                    os.chdir(before)
+
+    def test_workflow_cached_metadata_is_read_only_and_rejects_expiry_drift_and_provider_denial(self):
+        import urllib.request
+        import urllib.error
+        for variant in ('same', 'expired', 'digest', 'source', 'oversize', 'denied'):
+            with self.subTest(variant=variant), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary); cache = self.delivery_cache(); delivery = cache['delivery']
+                work = root / 'state/work_units/QIKVRT_MAIN_CONVERGENCE_20261014_V1.json'
+                work.parent.mkdir(parents=True); work.write_text(json.dumps({'firefox158_s1_upgrade':
+                    {'bounded_transport_repair_20261017': {'delivery_cache': cache}}}))
+                folder = root / 's1-firefox158-existing-transport'; folder.mkdir()
+                (folder / 'DELIVERY.json').write_text(json.dumps(delivery, sort_keys=True, indent=2) + '\n')
+                (folder / 'PARTS.json').write_bytes(b'part-manifest-fixture')
+                (root / 's1-extension-evidence').mkdir()
+                requests = []
+                class Response:
+                    status = 200
+                    def __init__(self, value): self.raw = json.dumps(value).encode()
+                    def __enter__(self): return self
+                    def __exit__(self, *args): pass
+                    def read(self, limit): return self.raw[:limit]
+                def opened(request, timeout):
+                    requests.append(request)
+                    identity = int(request.full_url.rsplit('/', 1)[1])
+                    if variant == 'denied':
+                        raise urllib.error.HTTPError(request.full_url, 403, 'private-provider-body', {}, None)
+                    value = {'id': identity, 'name': 'fixture-transport' if identity == 13 else 'fixture-part-000',
+                        'digest': 'sha256:' + ('0' if variant == 'digest' else 'f') * 64,
+                        'expired': variant == 'expired', 'size_in_bytes': 536870912 if variant == 'oversize' else 1000,
+                        'workflow_run': {'id': 11, 'head_sha': ('0' if variant == 'source' else 'a') * 40}}
+                    return Response(value)
+                opener = SimpleNamespace(open=opened); code = self.workflow_code('PYEXISTING')
+                before = Path.cwd()
+                try:
+                    os.chdir(root)
+                    with patch.dict(os.environ, {'RUNNER_TEMP': str(root), 'GH_TOKEN': 'synthetic-token'}), \
+                            patch.object(urllib.request, 'build_opener', return_value=opener):
+                        if variant == 'same':
+                            exec(code, {})
+                            receipt = json.loads((root / 's1-extension-evidence/transport-cache-readback.json').read_bytes())
+                            self.assertFalse(receipt['large_archive_downloaded'])
+                            self.assertFalse(receipt['parts_republished'])
+                            self.assertFalse(receipt['effect_ack_done'])
+                        elif variant == 'denied':
+                            with self.assertRaisesRegex(ValueError, '^HOLD_PINNED_RUNTIME_TRANSPORT_HTTP_403$'): exec(code, {})
+                        else:
+                            with self.assertRaises(AssertionError): exec(code, {})
+                finally:
+                    os.chdir(before)
+                self.assertTrue(requests)
+                self.assertTrue(all(q.get_method() == 'GET' and '/actions/artifacts/' in q.full_url for q in requests))
 
     def test_failed_source_pin_does_not_leave_an_export_or_touch_an_existing_one(self):
         with self.assertRaisesRegex(ValueError, "ORIGINAL_ARTIFACT_SHA256_MISMATCH"):
