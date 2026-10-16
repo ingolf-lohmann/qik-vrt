@@ -690,5 +690,17 @@
     },
     "site36_counts_as_any_requested_publication_gate": false,
     "existing_published_ietf_drafts_count_as_current_submission": false
+  },
+  "native_successor_source_repair": {
+    "failed_subject": "b38c58ba8bb41157d4d0dfa4b5a14aaefc5c658d",
+    "run": 38885713480,
+    "job": 116922830694,
+    "observed": "MAKE_TEST_EXIT=2; tests.test_qikvrt_self_disclosure.SelfDisclosureTests.test_publication_overview_discovery_and_bundle_coverage failed",
+    "causal_error": "New JSON bundle path docs/publications/2026-10-16-wirkungsnachweis/index.html was absent as a complete path in HTML; only its browser-relative href was present.",
+    "repair": "Add the existing data-source convention to the same local link; preserve destination, original research bytes and existing test.",
+    "local_positive_control": "Every current publication_bundles path is present in corrected HTML.",
+    "local_negative_control": "Removing only the new data-source reproduces missing exact-source coverage.",
+    "native_successor_gate": "REQUIRED_ON_REPAIR_COMMIT",
+    "publication_gates_fulfilled": []
   }
 }
