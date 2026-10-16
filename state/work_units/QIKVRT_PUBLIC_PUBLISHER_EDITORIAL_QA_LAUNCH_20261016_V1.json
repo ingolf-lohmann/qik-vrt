@@ -1,0 +1,68 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "id": "QIKVRT_PUBLIC_PUBLISHER_EDITORIAL_QA_LAUNCH_20261016_V1",
+  "owner": "Ingolf Lohmann",
+  "owner_statement_date": "2026-10-16",
+  "owner_instruction": "Operate an online publisher and online editorial service at raumzeitterminal.de using the universal terminal and universal transputer, with an open question interface and evidence-bound answers for every user. Authorization explicitly granted.",
+  "authorization": {
+    "source": "OWNER_CONVERSATION_STATEMENT",
+    "status": "OWNER_AUTHORIZED_PRODUCT_SCOPE",
+    "native_review": false,
+    "exact_zenodo_upload_authorization": false,
+    "production_effect": false
+  },
+  "authority": "ingolf-lohmann/qik-vrt",
+  "mirror": "Goldkelch/qik-vrt",
+  "canonical_public_origin": "https://raumzeitterminal.de/",
+  "out_of_scope": [
+    "Private SITE123 gallery, photographs, personal or family content",
+    "Independent native Code Owner review impersonation",
+    "Automatic publishing to Zenodo, IETF or arXiv",
+    "Claims of phenomenal consciousness"
+  ],
+  "implemented_in_pr523": {
+    "source_paths": [
+      "docs/fragen/index.html",
+      "docs/assets/js/qikvrt-questions.js",
+      "docs/index.html",
+      "tests/test_public_question_entrypoint.py"
+    ],
+    "mode": "LOCAL_RULE_ANALYSIS_ONLY",
+    "source_portal_ready": true,
+    "server_side_general_qa": false,
+    "independent_web_retrieval": false,
+    "transputer_execution_verified": false,
+    "production_deployed": false,
+    "exact_host_http_tls_verified": false,
+    "public_byte_exact_readback": false,
+    "effect_ack_done": false
+  },
+  "editorial_contract": {
+    "user_access": "PUBLIC_NO_LOGIN_FOR_BASIC_QUESTIONS",
+    "question_data": "NO_SILENT_RETENTION_OR_PUBLICATION",
+    "answer_sections": [
+      "Direct answer where supported",
+      "Source URLs with retrieval dates and provenance",
+      "Evidence class: formal proof, measurement, test, theory, speculation or editorial opinion",
+      "Counterevidence and known limitations",
+      "Uncertainty and abstention if unsupported",
+      "Reproducible verification path and effect receipt"
+    ],
+    "no_guarantee_of_infallibility": true,
+    "functional_vs_phenomenal_consciousness": "KEEP_DISTINCT",
+    "safety": "Rate limits, abuse prevention, personal data minimization, prompt injection isolation, no secret exposure, human editorial controls, audit privacy",
+    "publication": "Separate publication decision from interactive answer; no automatic promotion of user questions into published articles."
+  },
+  "remaining_gates": [
+    "Exact-head native CI and security/privacy tests for the question portal",
+    "Production-capable authenticated backend with bounded retrieval over qualified sources and a permitted AI inference route",
+    "Transputer runtime admission and observed EFFECT_ACK for each claimed external effect",
+    "Operator access and API-native deployment path without bypassing PR review, rulesets or protected Main",
+    "Domain DNS, TLS and routing to an accepted public runtime",
+    "Independent live questions/answers acceptance including no-answer cases and source provenance",
+    "Public HTTP readback and exact bytes of deployed assets",
+    "Editorial governance, terms, privacy policy and clear separation of scientific evidence and opinion"
+  ],
+  "disposition": "PREPARED_IN_AUTHORITY_PR_NOT_LIVE",
+  "predecessor_evidence_transfer": false
+}
