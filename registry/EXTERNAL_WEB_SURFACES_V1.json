@@ -1,0 +1,58 @@
+{
+  "schema": "qikvrt-external-web-surfaces/1.0",
+  "record_id": "QIKVRT_SITE123_PUBLIC_ORIGIN_20261016",
+  "observed_on": "2026-10-16",
+  "source": {
+    "url": "https://64564f6604660.site123.me/",
+    "label": "Homepage Ingolf Lohmann und Familie",
+    "platform": "SITE123",
+    "discovery": "OWNER_SUPPLIED_URL",
+    "public_readback": "HTML_CONTENT_OBSERVED",
+    "page_sections_observed": [
+      "Startseite",
+      "Fotoalben",
+      "Kontakt"
+    ],
+    "owner_account_control_verified": false
+  },
+  "assimilation": {
+    "disposition": "EXTERNAL_PUBLIC_WEB_ORIGIN_REGISTERED",
+    "mode": "REFERENCE_ONLY",
+    "qikvrt_authority": "ingolf-lohmann/qik-vrt",
+    "qikvrt_mirror": "Goldkelch/qik-vrt",
+    "is_mesh_node": false,
+    "is_runtime_instance": false,
+    "qikvrt_protocol_handshake_verified": false,
+    "domain_dns_or_tls_changed": false,
+    "external_site_edited": false,
+    "deployed_entrypoint": false,
+    "effect_ack_done": false,
+    "instruction": "Treat as an external public site reference. Do not assert a live QIK-VRT node, service integration, domain alias, or software deployment from a readable homepage."
+  },
+  "privacy": {
+    "personal_or_family_media_republication": "NOT_AUTHORIZED",
+    "contact_details_replication": "NOT_AUTHORIZED",
+    "scraping_or_mass_ingestion": "NOT_AUTHORIZED",
+    "external_links_may_require_separate_rights": true,
+    "rule": "Only the public URL, platform and general page sections are registered. Do not copy family photographs, personal contact details or linked third-party album content."
+  },
+  "publication_boundaries": {
+    "zenodo_receipt": false,
+    "ietf_submission_receipt": false,
+    "arxiv_submission_receipt": false,
+    "independent_wikipedia_notability_evidence": false,
+    "functional_consciousness_evidence": false,
+    "phenomenal_consciousness_evidence": false
+  },
+  "follow_up": {
+    "potential_use": "Owner-approved additional public entrypoint or reciprocal link after confirming control of SITE123 site and appropriate publication scope.",
+    "blocked_actions": [
+      "SITE123_EDITOR_UPDATE",
+      "DNS_CHANGE",
+      "DOMAIN_REDIRECT",
+      "MIRROR_MEDIA",
+      "PUBLICATION_GATE_CONSUMPTION"
+    ],
+    "status": "REFERENCE_REGISTERED_SITE_UNMODIFIED"
+  }
+}
