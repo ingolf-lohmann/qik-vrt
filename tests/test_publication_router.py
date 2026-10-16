@@ -311,7 +311,11 @@ class EditorialContinuationTests(unittest.TestCase):
 
     def test_pdf_text_and_encryption_with_the_actual_locked_runtime(self):
         import importlib.metadata
-        if importlib.metadata.version("pypdf") != "6.15.0":
+        try:
+            version = importlib.metadata.version("pypdf")
+        except importlib.metadata.PackageNotFoundError:
+            version = None
+        if version != "6.15.0":
             with self.assertRaisesRegex(ValueError, "locked PDF"):
                 self.router._manuscript_format(Path("a.pdf"), b"pdf")
             return  # Local hold verified; native pinned job exercises the real parser below.
@@ -334,6 +338,12 @@ class EditorialContinuationTests(unittest.TestCase):
         writer.write(encrypted)
         with self.assertRaises(ValueError):
             self.router._manuscript_format(Path("a.pdf"), encrypted.getvalue())
+
+    def test_absent_pdf_package_is_an_explicit_hold_instead_of_a_test_environment_error(self):
+        import importlib.metadata
+        with mock.patch("importlib.metadata.version", side_effect=importlib.metadata.PackageNotFoundError("pypdf")):
+            with self.assertRaisesRegex(ValueError, "locked PDF inspection runtime unavailable"):
+                self.router._manuscript_format(Path("a.pdf"), b"%PDF-1.7\nnot accepted")
 
     def test_durable_dispatch_reservation_suppresses_unchanged_rerun(self):
         ref = "refs/tags/qikvrt-editorial-dispatch/" + self.intake()["authorization_consumption_key"]

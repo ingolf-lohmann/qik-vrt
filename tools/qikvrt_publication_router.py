@@ -36,7 +36,11 @@ def _manuscript_format(path, raw):
     if suffix == ".pdf":
         # pypdf is already hash/version locked by the publication runtime.
         import importlib.metadata
-        if importlib.metadata.version("pypdf") != "6.15.0":
+        try:
+            version = importlib.metadata.version("pypdf")
+        except importlib.metadata.PackageNotFoundError:
+            version = None
+        if version != "6.15.0":
             raise ValueError("locked PDF inspection runtime unavailable")
         from pypdf import PdfReader
         reader = PdfReader(io.BytesIO(raw), strict=True)

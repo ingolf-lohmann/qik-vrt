@@ -4,9 +4,9 @@
   "repository": "ingolf-lohmann/qik-vrt",
   "pull_request": 523,
   "branch": "integration/515-519-521-522-20261012-eceb9b63",
-  "status": "IMPLEMENTED_LOCAL_CHECKED_NATIVE_SUCCESSOR_AND_PRODUCTION_ADMISSION_REQUIRED",
-  "source_head": "aef2ac8bc435199ca9e22314ee4dfccf459ced0c",
-  "source_tree": "0f324d551c59149b9680c908f499e416ddeb7884",
+  "status": "FIRST_NATIVE_ROUTER_PASS_PDF_ABSENCE_REPAIRED_SUCCESSOR_FULL_CHECKS_REQUIRED",
+  "source_head": "17df5c06ad6e7d7ae611ec1a4be3b686fe39434b",
+  "source_tree": "8cf0b34ee0cb53410c160232e37fc50b08e6d143",
   "owner_instruction": {
     "human": "Ingolf Lohmann",
     "date": "2026-10-16",
@@ -84,8 +84,8 @@
     "state/publication_requests/README.md"
   ],
   "local_verification": {
-    "tests": 128,
-    "router_tests": 43,
+    "tests": 129,
+    "router_tests": 44,
     "unchanged_generic_machine_proof_authorization_tests": 68,
     "zenodo_transport_tests": 17,
     "failures": 0,
@@ -106,8 +106,8 @@
     },
     {
       "id": "ACTIONS_ADMISSION",
-      "state": "OPEN",
-      "evidence": "Observed source cd3c0689 PR runs all action_required; the active client exposes no initial approval/dispatch POST. New successor native results must be read independently."
+      "state": "SOURCE_LANES_ADMITTED_PRODUCTION_DISPATCH_SEPARATE",
+      "evidence": "Native17df5c06 push and PR jobs were actually admitted. Predecessor cd3c0689 action_required is historical. The client still exposes no initial manual workflow dispatch/approval POST; productive workflow gates remain separate."
     },
     {
       "id": "EXACT_CANDIDATE_AUTHOR_GRANT",
@@ -170,5 +170,19 @@
     ],
     "scope": "Independent self-host offline export and its missing-history fixture repair; all seven incoming paths retained. Publisher/router sources unchanged by those commits.",
     "predecessor_tests_transferred": false
+  },
+  "native_predecessor": {
+    "head": "17df5c06ad6e7d7ae611ec1a4be3b686fe39434b",
+    "tree": "8cf0b34ee0cb53410c160232e37fc50b08e6d143",
+    "all_10_blobs_independently_byte_exact": true,
+    "router_run": 38940994702,
+    "router_job": 117108284529,
+    "router_result": "success;43 controls including actual pinned pypdf6.15.0 text/encryption",
+    "full_push_run": 38940994782,
+    "full_push_test_job": 117108282987,
+    "full_push_result": "failure: test_pdf_text_and_encryption_with_the_actual_locked_runtime called metadata.version before accounting for a completely absent pypdf distribution in the general CI environment. Original traceback: importlib.metadata.PackageNotFoundError: No package metadata was found for pypdf.",
+    "causal_repair": "Keep the exact6.15.0 production requirement; turn absent package metadata into the same explicit runtime HOLD; add an absence regression and retain actual parser execution in the separately provisioned native publication lane. No package downgrade or fake parser PASS.",
+    "publication_effect_jobs": "requested-zenodo/editorial-queue/editorial-public-readback correctly skipped on the source push/PR; no production record created.",
+    "pass_transferred_to_successor": false
   }
 }
