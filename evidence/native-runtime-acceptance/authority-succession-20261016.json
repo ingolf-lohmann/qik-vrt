@@ -606,7 +606,7 @@
   "independent_live_multinode_acceptance": "OPEN",
   "production_authority_takeover_verified": false,
   "EFFECT_ACK_DONE": false,
-  "native_full_repository_ci": "Separately executing; no whole-head PASS transferred from this kernel job",
+  "native_full_repository_ci": "Previous exact c5 full-test job116883772869 succeeded; its whole push CI is failure at productive Firefox job116883857967 (default-signing persistent installation rejected with error -5); AMO preflight reports HOLD_AMO_AUTHORIZED_CREDENTIAL_PAIR_UNAVAILABLE. Neither predecessor result nor this local repair establishes successor whole-CI or product acceptance.",
   "live_execution_gap": {
     "first_blocker": "AUTHENTICATED_DISTRIBUTED_VOTER_AND_ALL_EFFECT_CARRIER_BINDING_NOT_ESTABLISHED",
     "evidence": [
@@ -633,5 +633,55 @@
     "log_sha256": "7567be936f990353f753bd2c12f7af968c71c62975874ee0a27c52d502cc9837",
     "log_git_blob_sha1": "e32fd64eecdad5e19857ef2c2dd19117d8546535",
     "source_binding_limit": "Python model, tests and Makefile remain byte-identical on c64ddaf1. This predecessor did NOT pass the Lean build; its full-test success is not a whole-HEAD or productive Firefox acceptance."
+  },
+  "reproduction_consumer_repair": {
+    "state": "LOCAL_REGRESSION_CHECKS_VERIFIED_NATIVE_REPRODUCTION_PENDING",
+    "predecessor_head": "c5f961f14cf52e525d0b26d970048c5747d68926",
+    "predecessor_tree": "530cf362d6479ce6251233b35540e5eed7f7a9ed",
+    "observed_failure": {
+      "run_id": 38873766524,
+      "job_id": 116883796610,
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38873766524/job/116883796610",
+      "actual_checked_out_head": "c5f961f14cf52e525d0b26d970048c5747d68926",
+      "error": "BLOCK hardware.txt report count 40 != 22",
+      "cause": "The existing 42-loop consumer retained its historical 22-report count after 18 conditional succession reports were appended to the shared hardware audit. This is a regression introduced by the assurance extension.",
+      "original_log": {
+        "path": "evidence/native-runtime-acceptance/authority-succession-20261016/native-reproduction-consumer-failure.log",
+        "bytes": 176924,
+        "sha256": "0e047dffaf876069f41c5b56d0a9e2a2bed5b4246821d23089aae48ced45c2f3",
+        "git_blob_sha1": "2fd21df166e172ef303031619d7a992281b66133"
+      }
+    },
+    "repair": "Reuse the existing workflow and auditor whitelist. Verify exact source-bound historical HardwareWitness identities (22) plus the separate AuthoritySuccession whitelist (18), reject duplicate/missing/substituted reports and forbidden axioms, and retain all 42 clean builds and matching fingerprints. No trigger, permission, timeout, axiom policy or theorem change.",
+    "changed_sources": [
+      {
+        "path": ".github/workflows/qikvrt_mandelbrot_42_proof_reproduction.yml",
+        "bytes": 8843,
+        "sha256": "6815458cc06b374e91428a0a7600006c1f555a7fcd86194aec921f813a54f4c1",
+        "git_blob_sha1": "ce57c58639257aa107dda1b1cc207b535b676582"
+      },
+      {
+        "path": "formalization/QIKVRT_Formalization_v2.0/tests/test_measurement_transfer_audit.py",
+        "bytes": 5182,
+        "sha256": "a726b61c78d894e73d982d333beb158721b919930d439421828e8d7ec37b0d4d",
+        "git_blob_sha1": "73634f6ba65b8a790936763cc2edc505df0d64db"
+      }
+    ],
+    "local_verification": {
+      "command": "python3 -B -m unittest discover -s formalization/QIKVRT_Formalization_v2.0/tests -p 'test_*.py' -v",
+      "test_count": 43,
+      "result": "OK",
+      "new_consumer_regressions": 3,
+      "negative_cases": [
+        "missing theorem in either group",
+        "same-size substitution in either group",
+        "duplicate report",
+        "forbidden sorryAx",
+        "unexpected output"
+      ],
+      "fixture_scope": "Synthetic report parser fixtures execute the actual embedded workflow consumer; they do not establish a Lean kernel proof. Embedded Python syntax also checked."
+    },
+    "native_next_action": "Observe the existing pull_request-triggered 42-loop reproduction on the successor HEAD/TREE, read original logs and all 42-loop fingerprint receipts; no unchanged rerun/dispatch.",
+    "native_success_inferred": false
   }
 }
