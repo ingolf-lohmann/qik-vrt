@@ -27,7 +27,8 @@ INFERENCE_SEMAPHORE = threading.BoundedSemaphore(3)
 
 def tokens(text):
     """Preserve technical compounds such as QIK-VRT and Raumzeit-Terminal."""
-    words = re.findall(r"[^\W_]+(?:[-–][^\W_]+)*", text.lower())
+    text = re.sub(r"\bqik[\s-]+vrt\b", "qikvrt", text.lower())
+    words = re.findall(r"[^\W_]+(?:[-–][^\W_]+)*", text)
     normalized = (w.replace("-", "").replace("–", "") for w in words)
     return {w for w in normalized if len(w) >= 4 and w not in STOPWORDS}
 
