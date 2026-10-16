@@ -1,0 +1,54 @@
+{
+  "schema": "qikvrt-scoped-research-evidence-bundle/v1",
+  "prepared_at_utc": "2026-10-16T05:11:22.097008+00:00",
+  "human_origin": "Ingolf Lohmann: research proposition, QIK-VRT corpus and commission.",
+  "artificial_cognitive_contribution": "OpenAI Codex: interpretation, formalization, local experiment and manuscripts.",
+  "formal_kernel_status": "KERNEL_CHECKED",
+  "formal_theorem_constants": [
+    "QIKVRTComparison.factorization_iff_fiber_constant",
+    "QIKVRTComparison.indistinguishable_outcomes_no_perfect_classifier",
+    "QIKVRTComparison.mediated_acceptance_implies_goal"
+  ],
+  "local_experiment": {
+    "scenarios": 13,
+    "repair_accept_count": 12,
+    "policy_summary": {
+      "ack_only": {
+        "done": 12,
+        "true_done": 4,
+        "false_done": 8,
+        "holds_despite_goal": 1,
+        "holds_when_goal_absent": 0
+      },
+      "payload_only": {
+        "done": 10,
+        "true_done": 4,
+        "false_done": 6,
+        "holds_despite_goal": 1,
+        "holds_when_goal_absent": 2
+      },
+      "qik_principle": {
+        "done": 1,
+        "true_done": 1,
+        "false_done": 0,
+        "holds_despite_goal": 4,
+        "holds_when_goal_absent": 8
+      },
+      "conventional_e2e": {
+        "done": 1,
+        "true_done": 1,
+        "false_done": 0,
+        "holds_despite_goal": 4,
+        "holds_when_goal_absent": 8
+      }
+    }
+  },
+  "claim_matrix": "CLAIM_MATRIX.json",
+  "source_display_gate": "evidence/SOURCE_CHECK.json",
+  "source_display_gate_status": "PASS",
+  "native_mesh_execution": false,
+  "effect_ack_done": false,
+  "zenodo_published": false,
+  "production_v2_upload_bundle_status": "NOT_CREATED_NO_CANDIDATE_SPECIFIC_UPLOAD_AUTHORIZATION",
+  "notice": "This is a research review package, not the production qikvrt_zenodo_machine_proof_bundle_v2. Its authorization=true gates are not asserted."
+}

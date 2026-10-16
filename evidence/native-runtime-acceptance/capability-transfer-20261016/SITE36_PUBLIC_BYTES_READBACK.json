@@ -1,0 +1,122 @@
+{
+  "schema": "qikvrt-site-publication-public-byte-readback/v1",
+  "site_version": 36,
+  "source_commit": "bd9f265dbbac2b183e77888329ffa867556b8bf7",
+  "public_origin": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/",
+  "exact_host_delivery_proved": false,
+  "all_byte_exact": false,
+  "files": [
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/index.html",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:12.352911+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    },
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-16-wirkungsnachweis/PUBLICATION_STATUS.json",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:12.353724+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    },
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-16-wirkungsnachweis/CANDIDATE_BINDING.json",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:12.354243+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    },
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-16-wirkungsnachweis/CC-BY-NC-ND-4.0.txt",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:12.354656+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    },
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-16-wirkungsnachweis/CLAIM_MATRIX.json",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:19.696308+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    },
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-16-wirkungsnachweis/LICENSE_NOTICE.md",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:19.699100+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    },
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-16-wirkungsnachweis/QIKVRT_Der_entscheidende_Unterschied_Prosa_20261016.md",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:19.823421+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    },
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-16-wirkungsnachweis/QIKVRT_Der_entscheidende_Unterschied_Prosa_20261016.pdf",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:19.826205+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    },
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-16-wirkungsnachweis/QIKVRT_Der_entscheidende_Unterschied_Prosa_20261016.txt",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:25.139183+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    },
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-16-wirkungsnachweis/QIKVRT_Wirkungsnachweis_Nachpruefung_20261016.json",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:25.142556+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    },
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-16-wirkungsnachweis/QIKVRT_Wirkungsnachweis_Nachweispaket_20261016.zip",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:25.188318+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    },
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-16-wirkungsnachweis/QIKVRT_Wirkungsnachweis_Wissenschaft_20261016.md",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:25.283380+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    },
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-16-wirkungsnachweis/QIKVRT_Wirkungsnachweis_Wissenschaft_20261016.pdf",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:32.613751+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    },
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-16-wirkungsnachweis/QIKVRT_Wirkungsnachweis_Wissenschaft_20261016.txt",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:32.647352+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    },
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-16-wirkungsnachweis/RESEARCH_PROOF_BUNDLE.json",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:32.708386+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    },
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-16-wirkungsnachweis/index.html",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:32.785076+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    }
+  ]
+}

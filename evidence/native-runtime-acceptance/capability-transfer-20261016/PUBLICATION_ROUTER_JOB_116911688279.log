@@ -1,0 +1,229 @@
+﻿2026-10-16T09:43:45.3782375Z Current runner version: '2.337.0'
+2026-10-16T09:43:45.3805951Z ##[group]Runner Image Provisioner
+2026-10-16T09:43:45.3806731Z Hosted Compute Agent
+2026-10-16T09:43:45.3807219Z Version: 20261012.601
+2026-10-16T09:43:45.3807747Z Commit: f3dc54e1fb89da6852db922499a0233137369e1d
+2026-10-16T09:43:45.3808767Z Build Date: 2026-10-12T17:48:21Z
+2026-10-16T09:43:45.3809369Z Worker ID: {37b6b07e-ab8b-4859-b7aa-27e9a1d691ba}
+2026-10-16T09:43:45.3809993Z Region: northcentralus
+2026-10-16T09:43:45.3810478Z Cloud: Azure
+2026-10-16T09:43:45.3810926Z ##[endgroup]
+2026-10-16T09:43:45.3812281Z ##[group]Operating System
+2026-10-16T09:43:45.3812799Z Ubuntu
+2026-10-16T09:43:45.3813236Z 24.04.5
+2026-10-16T09:43:45.3813659Z LTS
+2026-10-16T09:43:45.3814081Z ##[endgroup]
+2026-10-16T09:43:45.3814532Z ##[group]Runner Image
+2026-10-16T09:43:45.3815048Z Image: ubuntu-24.04
+2026-10-16T09:43:45.3815521Z Version: 20261012.334.1
+2026-10-16T09:43:45.3816608Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-16T09:43:45.3818319Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-16T09:43:45.3819229Z ##[endgroup]
+2026-10-16T09:43:45.3820177Z ##[group]GITHUB_TOKEN Permissions
+2026-10-16T09:43:45.3822307Z Contents: read
+2026-10-16T09:43:45.3822811Z Metadata: read
+2026-10-16T09:43:45.3823279Z ##[endgroup]
+2026-10-16T09:43:45.3825186Z Secret source: Actions
+2026-10-16T09:43:45.3826040Z Cache mode: write
+2026-10-16T09:43:45.3826879Z Prepare workflow directory
+2026-10-16T09:43:45.4156046Z Prepare all required actions
+2026-10-16T09:43:45.4205933Z Getting action download info
+2026-10-16T09:43:45.6686282Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-10-16T09:43:45.7766114Z Download action repository 'actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-10-16T09:43:45.9485163Z Complete job name: route
+2026-10-16T09:43:46.0352674Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-10-16T09:43:46.0354327Z with:
+2026-10-16T09:43:46.0355025Z   repository: ingolf-lohmann/qik-vrt
+2026-10-16T09:43:46.0361805Z   token: ***
+2026-10-16T09:43:46.0362308Z   ssh-strict: true
+2026-10-16T09:43:46.0362767Z   ssh-user: git
+2026-10-16T09:43:46.0363222Z   persist-credentials: true
+2026-10-16T09:43:46.0363713Z   clean: true
+2026-10-16T09:43:46.0364178Z   sparse-checkout-cone-mode: true
+2026-10-16T09:43:46.0364756Z   fetch-depth: 1
+2026-10-16T09:43:46.0365191Z   fetch-tags: false
+2026-10-16T09:43:46.0365648Z   show-progress: true
+2026-10-16T09:43:46.0366107Z   lfs: false
+2026-10-16T09:43:46.0366525Z   submodules: false
+2026-10-16T09:43:46.0366981Z   set-safe-directory: true
+2026-10-16T09:43:46.0367487Z   allow-unsafe-pr-checkout: false
+2026-10-16T09:43:46.0368990Z ##[endgroup]
+2026-10-16T09:43:46.1387552Z Syncing repository: ingolf-lohmann/qik-vrt
+2026-10-16T09:43:46.1390404Z ##[group]Getting Git version info
+2026-10-16T09:43:46.1391489Z Working directory is '/home/runner/work/qik-vrt/qik-vrt'
+2026-10-16T09:43:46.1393056Z [command]/usr/bin/git version
+2026-10-16T09:43:46.1413967Z git version 2.55.0
+2026-10-16T09:43:46.1434503Z ##[endgroup]
+2026-10-16T09:43:46.1445271Z Temporarily overriding HOME='/home/runner/work/_temp/9efd70a2-4324-4cda-8965-3d1270f1ef27' before making global git config changes
+2026-10-16T09:43:46.1447598Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-16T09:43:46.1459349Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/qik-vrt/qik-vrt
+2026-10-16T09:43:46.1493437Z Deleting the contents of '/home/runner/work/qik-vrt/qik-vrt'
+2026-10-16T09:43:46.1497176Z ##[group]Determining repository object format
+2026-10-16T09:43:46.1498906Z ##[endgroup]
+2026-10-16T09:43:46.1500290Z ##[group]Initializing the repository
+2026-10-16T09:43:46.1503089Z [command]/usr/bin/git init /home/runner/work/qik-vrt/qik-vrt
+2026-10-16T09:43:46.1587342Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-16T09:43:46.1589175Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-16T09:43:46.1590645Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-16T09:43:46.1591659Z hint: call:
+2026-10-16T09:43:46.1592067Z hint:
+2026-10-16T09:43:46.1592593Z hint: 	git config --global init.defaultBranch <name>
+2026-10-16T09:43:46.1593216Z hint:
+2026-10-16T09:43:46.1593806Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-16T09:43:46.1594943Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-16T09:43:46.1595847Z hint:
+2026-10-16T09:43:46.1596276Z hint: 	git branch -m <name>
+2026-10-16T09:43:46.1596816Z hint:
+2026-10-16T09:43:46.1597801Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-16T09:43:46.1599025Z Initialized empty Git repository in /home/runner/work/qik-vrt/qik-vrt/.git/
+2026-10-16T09:43:46.1600754Z [command]/usr/bin/git remote add origin https://github.com/ingolf-lohmann/qik-vrt
+2026-10-16T09:43:46.1646656Z ##[endgroup]
+2026-10-16T09:43:46.1647472Z ##[group]Disabling automatic garbage collection
+2026-10-16T09:43:46.1650565Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-16T09:43:46.1684607Z ##[endgroup]
+2026-10-16T09:43:46.1685717Z ##[group]Setting up auth
+2026-10-16T09:43:46.1686537Z Removing SSH command configuration
+2026-10-16T09:43:46.1691407Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-16T09:43:46.1724553Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-16T09:43:46.2052579Z Removing HTTP extra header
+2026-10-16T09:43:46.2059971Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-16T09:43:46.2100907Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-16T09:43:46.2357031Z Removing includeIf entries pointing to credentials config files
+2026-10-16T09:43:46.2361472Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-16T09:43:46.2399698Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-16T09:43:46.2639641Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-ae6870e1-bc41-46f4-b07c-553728447fe4.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-16T09:43:46.2680389Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git.path /home/runner/work/_temp/git-credentials-ae6870e1-bc41-46f4-b07c-553728447fe4.config
+2026-10-16T09:43:46.2716243Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-ae6870e1-bc41-46f4-b07c-553728447fe4.config
+2026-10-16T09:43:46.2755353Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-ae6870e1-bc41-46f4-b07c-553728447fe4.config
+2026-10-16T09:43:46.2793473Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-ae6870e1-bc41-46f4-b07c-553728447fe4.config
+2026-10-16T09:43:46.2827790Z ##[endgroup]
+2026-10-16T09:43:46.2829248Z ##[group]Fetching the repository
+2026-10-16T09:43:46.2835803Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +8557d90192e9cf2685dd8dd1b36b07d975d30e65:refs/remotes/pull/523/merge
+2026-10-16T09:43:50.8810857Z From https://github.com/ingolf-lohmann/qik-vrt
+2026-10-16T09:43:50.8813527Z  * [new ref]         8557d90192e9cf2685dd8dd1b36b07d975d30e65 -> pull/523/merge
+2026-10-16T09:43:50.8818698Z ##[endgroup]
+2026-10-16T09:43:50.8820394Z ##[group]Determining the checkout info
+2026-10-16T09:43:50.8822169Z ##[endgroup]
+2026-10-16T09:43:50.8822905Z [command]/usr/bin/git sparse-checkout disable
+2026-10-16T09:43:50.8870785Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-16T09:43:50.8908466Z ##[group]Checking out the ref
+2026-10-16T09:43:50.8912061Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/523/merge
+2026-10-16T09:43:52.0477892Z Updating files:  89% (4374/4912)
+2026-10-16T09:43:52.0517016Z Updating files:  90% (4421/4912)
+2026-10-16T09:43:52.0573230Z Updating files:  91% (4470/4912)
+2026-10-16T09:43:52.0605622Z Updating files:  92% (4520/4912)
+2026-10-16T09:43:52.0658292Z Updating files:  93% (4569/4912)
+2026-10-16T09:43:52.0701004Z Updating files:  94% (4618/4912)
+2026-10-16T09:43:52.0740348Z Updating files:  95% (4667/4912)
+2026-10-16T09:43:52.0798196Z Updating files:  96% (4716/4912)
+2026-10-16T09:43:52.0841041Z Updating files:  97% (4765/4912)
+2026-10-16T09:43:52.0894944Z Updating files:  98% (4814/4912)
+2026-10-16T09:43:52.0957304Z Updating files:  99% (4863/4912)
+2026-10-16T09:43:52.0958059Z Updating files: 100% (4912/4912)
+2026-10-16T09:43:52.0958554Z Updating files: 100% (4912/4912), done.
+2026-10-16T09:43:52.1014416Z Note: switching to 'refs/remotes/pull/523/merge'.
+2026-10-16T09:43:52.1014838Z 
+2026-10-16T09:43:52.1015218Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-16T09:43:52.1015834Z changes and commit them, and you can discard any commits you make in this
+2026-10-16T09:43:52.1016410Z state without impacting any branches by switching back to a branch.
+2026-10-16T09:43:52.1016726Z 
+2026-10-16T09:43:52.1016956Z If you want to create a new branch to retain commits you create, you may
+2026-10-16T09:43:52.1017498Z do so (now or later) by using -c with the switch command. Example:
+2026-10-16T09:43:52.1018293Z 
+2026-10-16T09:43:52.1018446Z   git switch -c <new-branch-name>
+2026-10-16T09:43:52.1018659Z 
+2026-10-16T09:43:52.1018829Z Or undo this operation with:
+2026-10-16T09:43:52.1019066Z 
+2026-10-16T09:43:52.1019187Z   git switch -
+2026-10-16T09:43:52.1019348Z 
+2026-10-16T09:43:52.1019603Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-16T09:43:52.1019930Z 
+2026-10-16T09:43:52.1020312Z HEAD is now at 8557d90 Merge 527744762b646673ccd173218fbe5d577c5b7fd0 into 85cf48be8405d66ee567f868c1b8f33bd54add97
+2026-10-16T09:43:52.1072401Z ##[endgroup]
+2026-10-16T09:43:52.1125944Z [command]/usr/bin/git log -1 --format=%H
+2026-10-16T09:43:52.1158679Z 8557d90192e9cf2685dd8dd1b36b07d975d30e65
+2026-10-16T09:43:52.1456912Z ##[group]Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+2026-10-16T09:43:52.1457429Z with:
+2026-10-16T09:43:52.1457694Z   python-version: 3.12
+2026-10-16T09:43:52.1458325Z   check-latest: false
+2026-10-16T09:43:52.1461083Z   token: ***
+2026-10-16T09:43:52.1461386Z   update-environment: true
+2026-10-16T09:43:52.1461692Z   allow-prereleases: false
+2026-10-16T09:43:52.1461983Z   freethreaded: false
+2026-10-16T09:43:52.1462257Z ##[endgroup]
+2026-10-16T09:43:52.2770389Z ##[group]Installed versions
+2026-10-16T09:43:52.2871783Z (node:2397) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-16T09:43:52.2874169Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-16T09:43:52.2874935Z Successfully set up CPython (3.12.15)
+2026-10-16T09:43:52.2876029Z ##[endgroup]
+2026-10-16T09:43:52.2995196Z ##[group]Run set -euo pipefail
+2026-10-16T09:43:52.2995680Z [36;1mset -euo pipefail[0m
+2026-10-16T09:43:52.2996065Z [36;1mpython3 -B tools/qikvrt_publication_router.py \[0m
+2026-10-16T09:43:52.2996591Z [36;1m  docs/publications/2026-08-04-pre-spacetime-ontology --json[0m
+2026-10-16T09:43:52.2997113Z [36;1mpython3 -B -m unittest -v tests.test_publication_router[0m
+2026-10-16T09:43:52.3253612Z shell: /usr/bin/bash -e {0}
+2026-10-16T09:43:52.3254017Z env:
+2026-10-16T09:43:52.3254389Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-16T09:43:52.3254955Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-16T09:43:52.3255471Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-16T09:43:52.3255953Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-16T09:43:52.3256395Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-16T09:43:52.3256924Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-16T09:43:52.3257310Z ##[endgroup]
+2026-10-16T09:43:52.3974823Z {"bundle_id": "qikvrt-pre-spacetime-ontology-20260804-v1", "external_effect_performed": false, "ietf": "NO_SUBMISSION_SCOPE_NOTE_ONLY", "repository": "CANDIDATE", "schema": "qikvrt_publication_routing_result_v1", "zenodo": "STAGED_REQUIRES_EXPLICIT_REQUEST"}
+2026-10-16T09:43:52.8739993Z test_ietf_disposition_is_non_mutating (tests.test_publication_router.PublicationRouterTests.test_ietf_disposition_is_non_mutating) ... ok
+2026-10-16T09:43:52.9144528Z test_router_is_fail_closed_and_effect_free (tests.test_publication_router.PublicationRouterTests.test_router_is_fail_closed_and_effect_free) ... ok
+2026-10-16T09:43:52.9406357Z test_changed_worktree_bytes_with_matching_request_are_not_committed_bytes (tests.test_publication_router.RequestedAuthorityPublicationTests.test_changed_worktree_bytes_with_matching_request_are_not_committed_bytes) ... ok
+2026-10-16T09:43:52.9648972Z test_existing_machine_proof_or_owner_gate_failure_remains_blocking (tests.test_publication_router.RequestedAuthorityPublicationTests.test_existing_machine_proof_or_owner_gate_failure_remains_blocking) ... ok
+2026-10-16T09:43:52.9882971Z test_explicit_effect_reuses_exact_existing_publisher_once (tests.test_publication_router.RequestedAuthorityPublicationTests.test_explicit_effect_reuses_exact_existing_publisher_once) ... ok
+2026-10-16T09:43:53.0158851Z test_legacy_or_wrong_manifest_repository_cannot_execute (tests.test_publication_router.RequestedAuthorityPublicationTests.test_legacy_or_wrong_manifest_repository_cannot_execute) ... ok
+2026-10-16T09:43:53.0437369Z test_live_main_head_or_tree_drift_blocks_after_local_gates (tests.test_publication_router.RequestedAuthorityPublicationTests.test_live_main_head_or_tree_drift_blocks_after_local_gates) ... ok
+2026-10-16T09:43:53.0612792Z test_manual_job_keeps_pr_validation_secret_free_and_never_pushes_main (tests.test_publication_router.RequestedAuthorityPublicationTests.test_manual_job_keeps_pr_validation_secret_free_and_never_pushes_main) ... ok
+2026-10-16T09:43:53.0839722Z test_metadata_mode_never_calls_the_new_record_publisher (tests.test_publication_router.RequestedAuthorityPublicationTests.test_metadata_mode_never_calls_the_new_record_publisher) ... ok
+2026-10-16T09:43:53.1012767Z test_missing_exact_identities_cannot_execute (tests.test_publication_router.RequestedAuthorityPublicationTests.test_missing_exact_identities_cannot_execute) ... ok
+2026-10-16T09:43:53.1189322Z test_optional_workflow_route_preserves_generic_capability_contract (tests.test_publication_router.RequestedAuthorityPublicationTests.test_optional_workflow_route_preserves_generic_capability_contract) ... ok
+2026-10-16T09:43:53.1431181Z test_preflight_is_read_only_even_with_a_valid_candidate (tests.test_publication_router.RequestedAuthorityPublicationTests.test_preflight_is_read_only_even_with_a_valid_candidate) ... ok
+2026-10-16T09:43:53.1635742Z test_push_pr_wrong_repository_and_wrong_ref_cannot_execute (tests.test_publication_router.RequestedAuthorityPublicationTests.test_push_pr_wrong_repository_and_wrong_ref_cannot_execute) ... ok
+2026-10-16T09:43:53.1841952Z test_wrong_digest_cannot_reach_the_publisher (tests.test_publication_router.RequestedAuthorityPublicationTests.test_wrong_digest_cannot_reach_the_publisher) ... ok
+2026-10-16T09:43:53.1842958Z 
+2026-10-16T09:43:53.1843239Z ----------------------------------------------------------------------
+2026-10-16T09:43:53.1844162Z Ran 14 tests in 0.311s
+2026-10-16T09:43:53.1844412Z 
+2026-10-16T09:43:53.1844537Z OK
+2026-10-16T09:43:53.2173078Z Post job cleanup.
+2026-10-16T09:43:53.3374395Z (node:2526) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-16T09:43:53.3375176Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-16T09:43:53.3622117Z Post job cleanup.
+2026-10-16T09:43:53.4483224Z [command]/usr/bin/git version
+2026-10-16T09:43:53.4539580Z git version 2.55.0
+2026-10-16T09:43:53.4574035Z Temporarily overriding HOME='/home/runner/work/_temp/604c4578-6965-44f1-bb89-4cd518913cb3' before making global git config changes
+2026-10-16T09:43:53.4575380Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-16T09:43:53.4579843Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/qik-vrt/qik-vrt
+2026-10-16T09:43:53.4613635Z Removing SSH command configuration
+2026-10-16T09:43:53.4620683Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-16T09:43:53.4660144Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-16T09:43:53.5012353Z Removing HTTP extra header
+2026-10-16T09:43:53.5013634Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-16T09:43:53.5074321Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-16T09:43:53.5425359Z Removing includeIf entries pointing to credentials config files
+2026-10-16T09:43:53.5426311Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-16T09:43:53.5473917Z includeif.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git.path
+2026-10-16T09:43:53.5474624Z includeif.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git/worktrees/*.path
+2026-10-16T09:43:53.5475080Z includeif.gitdir:/github/workspace/.git.path
+2026-10-16T09:43:53.5475460Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-16T09:43:53.5478429Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git.path
+2026-10-16T09:43:53.5509307Z /home/runner/work/_temp/git-credentials-ae6870e1-bc41-46f4-b07c-553728447fe4.config
+2026-10-16T09:43:53.5519635Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-ae6870e1\-bc41\-46f4\-b07c\-553728447fe4\.config
+2026-10-16T09:43:53.5562815Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git/worktrees/*.path
+2026-10-16T09:43:53.5591711Z /home/runner/work/_temp/git-credentials-ae6870e1-bc41-46f4-b07c-553728447fe4.config
+2026-10-16T09:43:53.5600328Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-ae6870e1\-bc41\-46f4\-b07c\-553728447fe4\.config
+2026-10-16T09:43:53.5647508Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-16T09:43:53.5675732Z /github/runner_temp/git-credentials-ae6870e1-bc41-46f4-b07c-553728447fe4.config
+2026-10-16T09:43:53.5683104Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-ae6870e1\-bc41\-46f4\-b07c\-553728447fe4\.config
+2026-10-16T09:43:53.5721607Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-16T09:43:53.5750541Z /github/runner_temp/git-credentials-ae6870e1-bc41-46f4-b07c-553728447fe4.config
+2026-10-16T09:43:53.5766192Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-ae6870e1\-bc41\-46f4\-b07c\-553728447fe4\.config
+2026-10-16T09:43:53.5798777Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-16T09:43:53.6046606Z Removing credentials config '/home/runner/work/_temp/git-credentials-ae6870e1-bc41-46f4-b07c-553728447fe4.config'
+2026-10-16T09:43:53.6191781Z Cleaning up orphan processes
+2026-10-16T09:43:53.6485036Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
