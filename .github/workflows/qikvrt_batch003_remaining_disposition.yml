@@ -63,8 +63,29 @@ jobs:
           python3 --version
           git rev-parse --verify HEAD
           git rev-parse --verify HEAD^{tree}
+      - name: Classify archive admission before materialization
+        id: archive_preflight
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B -m tools.qikvrt_content_disposition_batch_003_remaining_archives \
+            --preflight --json | tee "$RUNNER_TEMP/qikvrt-archive-preflight.json"
+          python3 - "$RUNNER_TEMP/qikvrt-archive-preflight.json" >> "$GITHUB_OUTPUT" <<'PY'
+          import json, sys
+          with open(sys.argv[1], encoding='utf-8') as stream:
+              result = json.load(stream)
+          admitted = result.get('materialization_admitted')
+          if (result.get('schema') != 'qikvrt_remaining_archive_admission_v1'
+                  or type(admitted) is not bool
+                  or result.get('state') != ('READY' if admitted else 'NOOP')
+                  or result.get('external_get_count') != 0
+                  or result.get('materialization_started') is not False):
+              raise SystemExit('ARCHIVE_PREFLIGHT_OUTPUT_INVALID')
+          print('admitted=' + str(admitted).lower())
+          PY
       - name: Materialize all remaining subject dispositions read-only
         id: archive_materialization
+        if: steps.archive_preflight.outputs.admitted == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -115,7 +136,7 @@ jobs:
           make test repository-monitor-test self-host-test
           python3 tools/qikvrt_integrity.py verify
       - name: Persist exact evidence head
-        if: ${{ success() }}
+        if: ${{ success() && steps.archive_preflight.outputs.admitted == 'true' }}
         shell: bash
         run: |
           set -euo pipefail

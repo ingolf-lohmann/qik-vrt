@@ -1,0 +1,94 @@
+{
+  "_license": {
+    "classification": "repository_repair_work_unit",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "base_head": "b852743a1ea30dabe819ff20808ac7327e9c3ad9",
+  "base_tree": "a3c6b892eabec0f9e477d7b9fc52a08e6e7cf64c",
+  "branch": "integration/515-519-521-522-20261012-eceb9b63",
+  "completion": {
+    "effect_ack_done": false,
+    "exact_host_delivery": "PENDING_SEPARATE_FRESH_READBACK",
+    "final_pass": false,
+    "main_integration": false,
+    "native_exact_successor_workflows": "PENDING_SEPARATE_READBACK",
+    "new_zenodo_get_count": 0,
+    "new_zenodo_publication": false,
+    "pass": false,
+    "repair_prepared": true
+  },
+  "diagnosis": {
+    "avoidable_failure": "Both PR opened/synchronize/reopened carriers select materialization without a preceding causal admission. The general workflow also reacts to every completed pull-request CI, without requiring success. Presence of the final script/receipt selects the archive path, regardless of its retained failure.",
+    "correct_protection": "ArchiveJournal.admit rejects the previously recorded unchanged HTTP 504 before external GET. The original 2026-10-12 logs and seed remain unchanged.",
+    "new_error": "Malformed retry evidence, journal corruption, unknown admission errors and any new post-admission failure remain BLOCK/nonzero; only enumerated existing causal NOOP reasons skip materialization.",
+    "observed_refusal": "NOOP_UNCHANGED_ZENODO_FAILURE_OR_UNRESOLVED_GET",
+    "successor_already_reused": "Base 533c8aca retains offline/integrity/complete gates after archive failure; this repair preserves those conditions."
+  },
+  "id": "QIKVRT_ARCHIVE_PREFLIGHT_NOOP_20261016_V1",
+  "integration_rebase": "Fresh successor changes only Firefox prerequisite/convergence evidence and integrity; all five tested repair-source blobs remain unchanged. Its exact-tree state is retained.",
+  "observed_at": "2026-10-16T05:23:33.962073+00:00",
+  "original_failed_head": "f6a541fb7f16f45974603e162db986c47206aba0",
+  "original_runs": [
+    {
+      "job_id": 116731764940,
+      "log": {
+        "bytes": 530564,
+        "git_blob_sha1": "f87024b3d586ee462a78df703595cc4e75401c20",
+        "path": "evidence/zenodo_access/20261016/JOB_116731764940_ORIGINAL.log",
+        "sha256": "268a52187a46c446836ee528bc12079209dddaa5ebe1266bae660374c3008c57"
+      },
+      "run_id": 38825459996,
+      "workflow": ".github/workflows/qikvrt_batch04_integrity.yml"
+    },
+    {
+      "job_id": 116731764661,
+      "log": {
+        "bytes": 516084,
+        "git_blob_sha1": "48d20233e785a90a1d933fb1e5c3dd906c5d2bc0",
+        "path": "evidence/zenodo_access/20261016/JOB_116731764661_ORIGINAL.log",
+        "sha256": "afc75afa988f4a5a4b2d43d3b2c09cae58d091ca26f6c889a3e52fd73969d008"
+      },
+      "run_id": 38825459925,
+      "workflow": ".github/workflows/qikvrt_batch003_remaining_disposition.yml"
+    }
+  ],
+  "provenance": {
+    "artificial_cognitive": "OpenAI Codex: source/log examination, implementation and regression work",
+    "human": "Ingolf Lohmann: requirements, diagnosis inputs and repair authorization",
+    "human_acceptance_of_new_generated_prose": false
+  },
+  "pull_request": 523,
+  "repair": {
+    "coverage": "Planned metadata only until first refusal; runtime file URLs and races remain independently fenced by execute.",
+    "diagnostics": "OBSERVATION.json retains original failure and immutable intent/result history in the existing artifact path. Preflight creates no remote tag/ref or external GET.",
+    "early_gate": "ArchiveJournal.preflight reuses admit; metadata requests inspected before archive work; a first refusal skips the entire archive materialization.",
+    "existing_components_only": true,
+    "late_fence_unchanged": true,
+    "original_history_unchanged": true,
+    "workflow_trigger_policy": "Retain existing carriers for mandatory checks; skip archive work and persistence when preflight admitted=false. No rerun, dispatch, path-filter bypass or blanket continue-on-error."
+  },
+  "repository": "ingolf-lohmann/qik-vrt",
+  "schema": "qikvrt_archive_preflight_repair_work_unit_v1",
+  "source_test_predecessor": "533c8acad6f0f85291a8fd88f0268d7a9bb1e19a",
+  "validation": {
+    "actual_workflow_preflight_shells_executed": 2,
+    "bootstrap": "Sparse authenticated REST export; no full Git checkout/closure or successful full boot is asserted.",
+    "checkout_line_endings": "Unchanged .cmd/.ps1 baseline digests refer to repository-declared CRLF checkout bytes; original Git blob sizes are separately bound.",
+    "fixtures_only_no_live_zenodo": true,
+    "integrity_scope": "Original generator baseline must reproduce byte-exactly; changed bytes rehashed, remaining exact-tree baseline digests inherited. Full native generate/verify remains required.",
+    "local_errors": 0,
+    "local_failures": 0,
+    "local_full_corpus_check": "NOT_EXECUTED: 17,960,329-byte Git blob read returned Transport closed; full offline corpus regression remains in native make test.",
+    "local_tests": 34,
+    "log": {
+      "bytes": 6933,
+      "git_blob_sha1": "8ce2d49281a80e0797e11644d5e54753d577ce4a",
+      "path": "evidence/zenodo_access/20261016/ARCHIVE_PREFLIGHT_REGRESSIONS.log",
+      "sha256": "f8de91a10986395e814f14dc80185162f58ca148795068c5cdd714217bae5416"
+    },
+    "syntax": "Both YAMLs, all their embedded Bash, and three changed Python ASTs valid",
+    "tool_cache": "PASS 32/32"
+  }
+}

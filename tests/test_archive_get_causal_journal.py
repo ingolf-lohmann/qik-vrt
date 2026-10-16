@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import copy
+import contextlib
 import hashlib
 import io
 import json
@@ -196,6 +197,71 @@ class ArchiveCausalJournalTests(unittest.TestCase):
         with patch.object(probe.urllib.request,'urlopen') as opener:
             with self.assertRaisesRegex(probe.E,'JOURNAL_MISSING'):self.fetch(opener)
             opener.assert_not_called()
+    def test_preflight_retains_shared_failure_without_get_or_remote_write(self):
+        api=GitDataFixture()
+        self.journal=probe.ArchiveJournal(self.root/'one',repository='ingolf-lohmann/qik-vrt',token='fixture',head=HEAD,api=api,seed=self.seed)
+        self.fail_once()
+        tags=copy.deepcopy(api.tags);refs=copy.deepcopy(api.refs);api.calls.clear()
+        successor=probe.ArchiveJournal(self.root/'two',repository='ingolf-lohmann/qik-vrt',token='fixture',head='b'*40,api=api,seed=self.seed)
+        with patch.object(probe.urllib.request,'urlopen') as opener:
+            result=successor.preflight([(URL,'application/json',1024,INPUT)])
+            opener.assert_not_called()
+        self.assertEqual(result['state'],'NOOP')
+        self.assertFalse(result['materialization_admitted'])
+        self.assertEqual(result['external_get_count'],0)
+        self.assertEqual(result['requests'][0]['attempts'][0]['result']['http_status'],504)
+        self.assertEqual(api.tags,tags);self.assertEqual(api.refs,refs)
+        self.assertTrue(all(call[0]=='GET' for call in api.calls))
+        self.assertEqual(json.loads((successor.root/'OBSERVATION.json').read_bytes()),result)
+    def test_preflight_ready_does_not_replace_late_shared_fence(self):
+        request=(URL,'application/json',1024,INPUT)
+        ready=self.journal.preflight([request])
+        self.assertEqual(ready['state'],'READY')
+        self.assertTrue(ready['materialization_admitted'])
+        self.assertFalse(ready['new_archive_readback'])
+        self.fail_once()
+        with patch.object(probe.urllib.request,'urlopen') as opener:
+            with self.assertRaisesRegex(probe.E,'NOOP'):self.fetch(opener)
+            opener.assert_not_called()
+    def test_preflight_does_not_hide_invalid_retry_or_journal_drift(self):
+        self.fail_once();request=(URL,'application/json',1024,INPUT)
+        with self.assertRaisesRegex(probe.E,'NOT_BOUND'):
+            self.journal.preflight([request],{'schema':'invalid'})
+        with patch.object(self.journal,'history',side_effect=probe.E('ARCHIVE_JOURNAL_CHAIN_DRIFT')):
+            with self.assertRaisesRegex(probe.E,'CHAIN_DRIFT'):self.journal.preflight([request])
+    def test_preflight_qualified_recovery_and_unchanged_status_reuse_admit(self):
+        self.fail_once();request=(URL,'application/json',1024,INPUT)
+        self.retry(http_status=504)
+        unchanged=self.journal.preflight([request],probe.retry_evidence())
+        self.assertEqual(unchanged['reason'],'NOOP_UNCHANGED_EXTERNAL_HTTP_STATUS')
+        self.retry()
+        ready=self.journal.preflight([request],probe.retry_evidence())
+        self.assertEqual(ready['state'],'READY')
+        self.assertEqual(len(self.history()),1)
+    def test_materialize_cli_noop_never_enters_archive_work_or_changes_sources(self):
+        from tools import qikvrt_content_disposition_batch_003_remaining_archives as disposition
+        journal=probe.ArchiveJournal(self.root/'state',repository='',head=HEAD)
+        original=probe.JOURNAL_SEED.read_bytes()
+        with patch.object(probe,'journal',return_value=journal),patch.object(probe.urllib.request,'urlopen') as opener,patch.object(disposition,'materialize') as work,patch.object(disposition,'verify_materialized') as verify,patch.object(sys,'argv',['disposition','--materialize','--json']),contextlib.redirect_stdout(io.StringIO()) as output:
+            self.assertEqual(disposition.main(),0)
+        result=json.loads(output.getvalue())
+        self.assertEqual(result['state'],'NOOP')
+        for key in ('pass','final_pass','effect_ack_done','zenodo_mutation_authorized','proof_corpus_published_on_zenodo','materialization_started','new_archive_readback'):
+            self.assertIs(result[key],False)
+        work.assert_not_called();verify.assert_not_called();opener.assert_not_called()
+        self.assertEqual(probe.JOURNAL_SEED.read_bytes(),original)
+    def test_materialize_cli_reports_new_probe_error_as_failure(self):
+        from tools import qikvrt_content_disposition_batch_003_remaining_archives as disposition
+        with patch.object(probe,'materialization_preflight',side_effect=probe.E('ARCHIVE_JOURNAL_CHAIN_DRIFT')),patch.object(sys,'argv',['disposition','--materialize']),contextlib.redirect_stdout(io.StringIO()) as output:
+            self.assertEqual(disposition.main(),2)
+        result=json.loads(output.getvalue())
+        self.assertEqual(result['state'],'BLOCK')
+        self.assertEqual(result['reason'],'ARCHIVE_JOURNAL_CHAIN_DRIFT')
+    def test_materialize_cli_new_failure_after_admission_remains_failure(self):
+        from tools import qikvrt_content_disposition_batch_003_remaining_archives as disposition
+        with patch.object(probe,'materialization_preflight',return_value={'materialization_admitted':True}),patch.object(disposition,'materialize',side_effect=probe.E('GET failed: HTTP 502')),patch.object(sys,'argv',['disposition','--materialize']),contextlib.redirect_stdout(io.StringIO()) as output:
+            self.assertEqual(disposition.main(),2)
+        self.assertEqual(json.loads(output.getvalue())['state'],'BLOCK')
     def test_symlink_journal_is_rejected_before_get(self):
         (self.root/'linked').symlink_to(self.root, target_is_directory=True)
         self.journal=probe.ArchiveJournal(self.root/'linked/state',repository='',head=HEAD,seed=self.seed)
@@ -345,7 +411,7 @@ class ArchiveWorkflowContinuationTests(unittest.TestCase):
         return 'success()'
 
     @classmethod
-    def admitted(cls, block, outcomes, *, cancelled=False):
+    def admitted(cls, block, outcomes, *, cancelled=False, archive_admitted=True):
         expression = cls.condition(block)
         success = not cancelled and not any(x == 'failure' for x in outcomes.values())
         if not re.search(r'\b(?:success|failure|always|cancelled)\(\)', expression) and not success:
@@ -358,6 +424,8 @@ class ArchiveWorkflowContinuationTests(unittest.TestCase):
                 values.append(True)
             elif clause == 'success()':
                 values.append(success)
+            elif clause == "steps.archive_preflight.outputs.admitted == 'true'":
+                values.append(archive_admitted is True)
             else:
                 match = re.fullmatch(r"steps\.([a-z_]+)\.outcome == 'success'", clause)
                 if match is None:
@@ -394,6 +462,9 @@ class ArchiveWorkflowContinuationTests(unittest.TestCase):
                 if args[0] == '-m':
                     sys.argv = args[1:]
                     runpy.run_module(args[1], run_name='__main__')
+                elif args[0] == '-':
+                    sys.argv = args
+                    exec(sys.stdin.read(), {'__name__': '__main__'})
                 else:
                     sys.argv = args
                     runpy.run_path(args[0], run_name='__main__')
@@ -420,6 +491,7 @@ esac
                    GITHUB_ACTIONS='false', QIKVRT_ARCHIVE_JOURNAL_REPOSITORY='',
                    QIKVRT_GITHUB_TOKEN='', QIKVRT_ARCHIVE_SOURCE_HEAD=HEAD,
                    QIKVRT_ARCHIVE_JOURNAL_DIR=str(root / 'journal'),
+                   GITHUB_OUTPUT=str(root / 'github-output'),
                    QIKVRT_ARCHIVE_RETRY_EVIDENCE_FILE='')
         env.update({key: str(value) for key, value in exits.items()})
         return subprocess.run(['bash', '-c', self.shell(block)], cwd=probe.ROOT,
@@ -445,6 +517,11 @@ esac
                 self.assertFalse(self.admitted('      - name: predecessor\n', outcomes))
                 outcomes['archive_materialization'] = 'success'
                 self.assertTrue(self.admitted(persistence, outcomes))
+                outcomes['archive_materialization'] = 'skipped'
+                self.assertFalse(self.admitted(archive,outcomes,archive_admitted=False))
+                self.assertFalse(self.admitted(persistence,outcomes,archive_admitted=False))
+                for identity in self.LOCAL_IDS:
+                    self.assertTrue(self.admitted(steps[identity],outcomes,archive_admitted=False))
 
     def test_missing_prerequisite_or_cancellation_blocks_local_execution(self):
         for path in self.WORKFLOWS:
@@ -466,7 +543,7 @@ esac
             outcomes['repository_integrity'] = 'failure'
             self.assertTrue(self.admitted(steps['repository_gates'], outcomes))
 
-    def test_real_materialization_noop_and_offline_checks_preserve_original_evidence(self):
+    def test_real_preflight_noop_preserves_original_evidence_and_skips_work(self):
         original_paths = [probe.JOURNAL_SEED]
         seed = json.loads(probe.JOURNAL_SEED.read_bytes())
         original_paths.extend(probe.ROOT / row['path'] for failure in seed['original_failures']
@@ -476,12 +553,23 @@ esac
             steps = self.steps(path)
             with tempfile.TemporaryDirectory() as tmp:
                 root = pathlib.Path(tmp)
-                result = self.run_shell(steps['archive_materialization'], root, real_python=True)
-                self.assertNotEqual(result.returncode, 0)
+                result = self.run_shell(steps['archive_preflight'], root, real_python=True)
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
                 self.assertIn('NOOP_UNCHANGED_ZENODO_FAILURE_OR_UNRESOLVED_GET', result.stdout + result.stderr)
+                self.assertEqual((root/'github-output').read_text(),'admitted=false\n')
+                self.assertFalse(self.admitted(steps['archive_materialization'],self.outcomes(steps),archive_admitted=False))
                 observed = json.loads((root / 'journal/OBSERVATION.json').read_bytes())
                 self.assertEqual(observed['external_get_count'], 0)
                 self.assertIs(observed['effect_ack_done'], False)
+        self.assertEqual(original, {path: path.read_bytes() for path in original})
+
+    def test_real_offline_checks_preserve_archive_journal(self):
+        for path in self.WORKFLOWS:
+            steps = self.steps(path)
+            with tempfile.TemporaryDirectory() as tmp:
+                root = pathlib.Path(tmp)
+                admitted = self.run_shell(steps['archive_preflight'], root, real_python=True)
+                self.assertEqual(admitted.returncode,0,admitted.stdout+admitted.stderr)
                 journal_before = {p: p.read_bytes() for p in (root / 'journal').rglob('*') if p.is_file()}
                 checked = self.run_shell(steps['offline_disposition'], root, real_python=True)
                 self.assertEqual(checked.returncode, 0, checked.stdout + checked.stderr)
@@ -489,7 +577,6 @@ esac
                             'zenodo_mutation_authorized', 'proof_corpus_published_on_zenodo'):
                     self.assertIn('"' + key + '": false', checked.stdout)
                 self.assertEqual(journal_before, {p: p.read_bytes() for p in (root / 'journal').rglob('*') if p.is_file()})
-        self.assertEqual(original, {path: path.read_bytes() for path in original})
 
     def test_local_shell_failures_propagate_without_status_rewrite(self):
         cases = (('offline_disposition', 'OFFLINE_EXIT', 17),

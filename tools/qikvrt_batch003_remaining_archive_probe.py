@@ -29,6 +29,8 @@ JOURNAL_PREFIX='refs/tags/qikvrt-archive-get/'
 JOURNAL_SEED=ROOT/'release/zenodo-corpus-proof-2026-07-28/ZENODO_EXTERNAL_GET_FAILURE_JOURNAL.json'
 MAX_JOURNAL_BYTES=128*1024
 MAX_ATTEMPTS=64
+NOOP_REASONS=frozenset({'NOOP_UNCHANGED_ZENODO_FAILURE_OR_UNRESOLVED_GET',
+ 'NOOP_UNCHANGED_EXTERNAL_HTTP_STATUS','NOOP_CAUSAL_INFORMATION_ALREADY_CONSUMED'})
 def canonical(v):return json.dumps(v,sort_keys=True,separators=(',',':')).encode('utf-8')
 def digest(v):return hashlib.sha256(canonical(v)).hexdigest()
 def error_key(status):return digest({'class':'HTTP_ERROR' if status is not None else 'TRANSPORT_ERROR','http_status':status})
@@ -163,6 +165,43 @@ class ArchiveJournal:
    fail('NOOP_CAUSAL_INFORMATION_ALREADY_CONSUMED')
   if attempts and attempts[-1]['result'] is None:fail('ARCHIVE_JOURNAL_UNRESOLVED_PREDECESSOR')
   return current,key
+ def preflight(self,requests,retry=None):
+  """Inspect the existing admission rule without reserving or executing a GET.
+
+  This is an early refusal, not a fence or public readback. execute() retains
+  its independent, create-only admission immediately before the actual GET.
+  Only the enumerated causal NOOP reasons are non-error outcomes.
+  """
+  for p in (self.root,*self.root.parents):
+   if p.is_symlink():fail('ARCHIVE_JOURNAL_SYMLINK_REJECTED')
+  self.root.mkdir(parents=True,exist_ok=True,mode=0o700)
+  with _exclusive_integrity_lock(self.root):
+   observations=[];reason=None
+   for request in requests:
+    url,accept,limit,input_key=request
+    resource=digest({'url':url,'accept':accept,'limit':limit})
+    attempts=self.history(resource)
+    if len(attempts)>=MAX_ATTEMPTS:fail('ARCHIVE_JOURNAL_ATTEMPT_BOUND_NO_EVIDENCE_DISCARDED')
+    observation={'url':url,'input_key':input_key,'resource':resource,
+                 'original_failures':self.load_seed(url,input_key),'attempts':attempts}
+    try:self.admit(url,input_key,resource,attempts,retry)
+    except E as ex:
+     if str(ex) not in NOOP_REASONS:raise
+     reason=str(ex)
+    observations.append(observation)
+    if reason:break
+   result={'schema':'qikvrt_remaining_archive_admission_v1',
+           'state':'NOOP' if reason else 'READY','reason':reason,
+           'materialization_admitted':reason is None,'requests':observations,
+           'coverage':'PLANNED_RECORD_METADATA_UNTIL_FIRST_REFUSAL; FILE_URLS_RECHECKED_BY_EXECUTE',
+           'source_head':self.head,'run_id':self.run,'workflow':self.workflow,
+           'external_get_count':0,'materialization_started':False,'new_archive_readback':False,
+           'pass':False,'final_pass':False,'effect_ack_done':False,
+           'zenodo_mutation_authorized':False,'proof_corpus_published_on_zenodo':False}
+   raw=canonical(result)
+   if len(raw)>MAX_JOURNAL_BYTES:fail('ARCHIVE_OBSERVATION_BOUND_EXCEEDED')
+   atomic_write_bytes(self.root/'OBSERVATION.json',raw)
+   return result
  def execute(self,url,accept,limit,input_key,fetch,retry=None):
   resource=digest({'url':url,'accept':accept,'limit':limit})
   for p in (self.root,*self.root.parents):
@@ -254,9 +293,14 @@ def get(url:str,accept:str,limit:int,*,input_key=None)->bytes:
      out.extend(chunk)
      if len(out)>limit:fail(f'download bound exceeded: {url}')
     return bytes(out),r.status
+ return journal().execute(url,accept,limit,input_key or digest({'url':url,'accept':accept,'limit':limit}),fetch,retry_evidence())
+def retry_evidence():
  retry_path=os.environ.get('QIKVRT_ARCHIVE_RETRY_EVIDENCE_FILE','')
- retry=json.loads(read_regular_file(pathlib.Path(retry_path),max_bytes=16*1024)) if retry_path else None
- return journal().execute(url,accept,limit,input_key or digest({'url':url,'accept':accept,'limit':limit}),fetch,retry)
+ return json.loads(read_regular_file(pathlib.Path(retry_path),max_bytes=16*1024)) if retry_path else None
+def materialization_preflight():
+ requests=[(f'https://zenodo.org/api/records/{rec["id"]}','application/json',8*1024*1024,
+            request_input(subject,rec)) for subject in SUBJECTS for rec in subject['records']]
+ return journal().preflight(requests,retry_evidence())
 def files(v:Mapping[str,Any])->list[dict[str,Any]]:
  raw=v.get('files')
  if isinstance(raw,list):return [dict(x) for x in raw if isinstance(x,Mapping)]
