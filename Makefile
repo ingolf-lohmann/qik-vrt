@@ -170,6 +170,12 @@ test: autonomous-pr-continuation-test
 issue-agent-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest discover -s tests/issue_agent -p 'test_*.py' -v
 
+.PHONY: digital-twin-sso-test
+digital-twin-sso-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_digital_twin_sso_gate
+
+test: digital-twin-sso-test
+
 .PHONY: public-qa-test
 public-qa-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_public_qa_server tests.test_public_question_entrypoint
