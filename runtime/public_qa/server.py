@@ -65,6 +65,8 @@ def choose_sources(question, root=None):
 
 
 def inference_ready():
+    if os.getenv("QIKVRT_QA_ENABLED", "false").lower() != "true" or SOURCE_COMMIT == "main":
+        return False
     provider = os.getenv("QIKVRT_QA_PROVIDER", "none").lower()
     model = os.getenv("QIKVRT_QA_MODEL", "")
     if not re.fullmatch(r"[A-Za-z0-9._:-]{1,100}", model):
