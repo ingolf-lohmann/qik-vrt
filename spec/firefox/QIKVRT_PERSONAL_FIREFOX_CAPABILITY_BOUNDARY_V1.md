@@ -93,6 +93,20 @@ and biometric verification are delegated to the actually registered IdP/device;
 no biometric templates or modality assertions are collected. Identity SSO does
 not grant a model API entitlement or transfer a signed-in ChatGPT session.
 
+The additive `microsoft_public_v2` profile requires a concrete tenant-GUID v2
+issuer and its exact global-cloud endpoints, registered application GUID,
+Owner pairwise subject, signed tenant/version checks and an explicit
+`microsoft_replacement` refresh contract. Only this named profile handles the
+documented omission of S256 and public-client `none` from Microsoft's discovery;
+it still sends S256 and no client secret. Generic configurations keep their
+exact protected binding and rotation/discovery requirements. Microsoft token
+replacement MUST NOT be described as old-token invalidation or replay detection.
+Only the latest token pair is retained in the protected entry. No Graph scopes
+are added. Local token removal, optional browser provider sign-out and external
+account/tenant token revocation remain distinct operations and evidence states.
+Neither the selected provider nor its public consumer tenant identifies the
+Owner's actual registered client or establishes an authenticated session.
+
 No real IdP registration/binding, native protected-login-collection witness,
 productive personal authentication or actual Firefox SSO run is attested by
 these source components and simulations. Windows/macOS secret backends remain

@@ -74,6 +74,202 @@ class IdPDouble:
         return result
 
 
+# Public Microsoft consumer-tenant discovery shape read on 2026-10-16. These
+# invented app/owner values are fixtures, not an existing client registration.
+MS_TENANT = "9188040d-6c67-4c5b-b112-36a304b66dad"
+MS_BASE = "https://login.microsoftonline.com/" + MS_TENANT
+MS_CONFIG = {"provider_profile": "microsoft_public_v2", "issuer": MS_BASE + "/v2.0",
+             "client_id": "11111111-2222-4333-8444-555555555555", "subject": "SIMULATED_OWNER_PAIRWISE_SUBJECT",
+             "authorization_endpoint": MS_BASE + "/oauth2/v2.0/authorize", "token_endpoint": MS_BASE + "/oauth2/v2.0/token",
+             "jwks_uri": MS_BASE + "/discovery/v2.0/keys", "end_session_endpoint": MS_BASE + "/oauth2/v2.0/logout",
+             "redirect_uri": CONFIG["redirect_uri"], "refresh_protection": "microsoft_replacement"}
+MS_METADATA = {key: MS_CONFIG[key] for key in ("issuer", "authorization_endpoint", "token_endpoint", "jwks_uri", "end_session_endpoint")}
+MS_METADATA.update(response_modes_supported=["query", "fragment", "form_post"],
+                   response_types_supported=["code", "id_token", "code id_token", "id_token token"],
+                   id_token_signing_alg_values_supported=["RS256"],
+                   token_endpoint_auth_methods_supported=["client_secret_post", "private_key_jwt", "client_secret_basic", "self_signed_tls_client_auth"])
+
+
+class MicrosoftIdPDouble(IdPDouble):
+    def __init__(self):
+        super().__init__()
+        self.metadata = copy.deepcopy(MS_METADATA)
+        self.provider_valid_refresh_tokens = set()
+
+    def request(self, url, fields=None):
+        if url.endswith("openid-configuration"):
+            self.calls.append((url, copy.deepcopy(fields)))
+            return self.metadata
+        result = super().request(url, fields)
+        if "refresh_token" in result:
+            # Model Microsoft's documented retention of superseded tokens.
+            self.provider_valid_refresh_tokens.add(result["refresh_token"])
+        return result
+
+
+class MicrosoftCompatibilityTests(unittest.TestCase):
+    def setUp(self):
+        self.vault, self.idp, self.now = VaultDouble(), MicrosoftIdPDouble(), [1000]
+        self.auth = a.PersonalAuth(self.vault, MS_CONFIG, transport=self.idp, clock=lambda: self.now[0])
+        self.addCleanup(patch.stopall)
+        patch.object(a, "require_crypto_runtime", return_value=None).start()
+        patch.object(a, "verify_id_token", return_value={"sub": MS_CONFIG["subject"]}).start()
+
+    def login(self, **fields):
+        begin = self.auth.begin()
+        return self.auth.complete({"state": begin["state"], "code": "SIMULATED_ONETIME_CODE", **fields})
+
+    def test_observed_discovery_shape_accepts_only_explicit_microsoft_profile(self):
+        begin = self.auth.begin()
+        fields = parse_qs(urlsplit(begin["authorization_url"]).query)
+        self.assertEqual(fields["code_challenge_method"], ["S256"])
+        self.assertEqual(fields["response_mode"], ["form_post"])
+        self.assertEqual(fields["scope"], ["openid offline_access"])
+        self.assertNotIn("client_secret", fields)
+        self.assertNotIn("code_verifier", fields)
+        self.assertEqual(self.idp.calls, [(MS_CONFIG["issuer"] + "/.well-known/openid-configuration", None)])
+        generic = dict(MS_CONFIG, refresh_protection="rotation");generic.pop("provider_profile")
+        with self.assertRaisesRegex(a.AuthBlock, "PROTOCOL_UNSUPPORTED"):
+            a.PersonalAuth(VaultDouble(), generic, transport=self.idp).begin()
+
+    def test_legacy_config_bytes_and_protected_binding_are_unchanged(self):
+        self.assertEqual(a.validate_config(CONFIG, "http://127.0.0.1:8771"), CONFIG)
+        generic = a.PersonalAuth(VaultDouble(), CONFIG, transport=IdPDouble())
+        self.assertEqual(generic.binding, a.hashlib.sha256(a.encoded(CONFIG)).hexdigest())
+        generic.begin()
+        for field, value in (("code_challenge_methods_supported", ["plain"]), ("token_endpoint_auth_methods_supported", ["client_secret_post"])):
+            metadata = IdPDouble().request(CONFIG["issuer"] + "/.well-known/openid-configuration")
+            metadata[field] = value
+            with patch.object(generic.transport, "request", return_value=metadata):
+                with self.assertRaisesRegex(a.AuthBlock, "PROTOCOL_UNSUPPORTED"):
+                    a.PersonalAuth(VaultDouble(), CONFIG, transport=generic.transport).begin()
+
+    def test_no_alias_cross_tenant_host_secret_or_semantic_downgrade(self):
+        for update in ({"issuer": "https://login.microsoftonline.com/common/v2.0"},
+                       {"issuer": "https://login.microsoftonline.com/consumers/v2.0"},
+                       {"issuer": "https://login.microsoftonline.com/organizations/v2.0"},
+                       {"issuer": "https://login.microsoftonline.com.evil.test/" + MS_TENANT + "/v2.0"},
+                       {"token_endpoint": "https://login.microsoftonline.com/common/oauth2/v2.0/token"},
+                       {"jwks_uri": "https://evil.test/keys"}, {"client_id": "unregistered"},
+                       {"provider_profile": "unknown"}, {"provider_profile": []}, {"refresh_protection": "rotation"},
+                       {"client_secret": "SIMULATED_DISALLOWED_SECRET"}, {"revocation_endpoint": MS_CONFIG["end_session_endpoint"]}):
+            with self.subTest(update=update), self.assertRaises(a.AuthBlock):
+                a.PersonalAuth(VaultDouble(), dict(MS_CONFIG, **update), transport=self.idp)
+
+    def test_microsoft_profile_still_requires_exact_discovery_and_protocol(self):
+        for update in ({"issuer": "https://wrong.test"}, {"jwks_uri": "https://evil.test/keys"},
+                       {"response_modes_supported": ["query"]}, {"id_token_signing_alg_values_supported": ["none"]},
+                       {"response_types_supported": ["id_token"]}, {"code_challenge_methods_supported": ["plain"]}):
+            self.idp.metadata = dict(MS_METADATA, **update)
+            with self.subTest(update=update), self.assertRaises(a.AuthBlock): self.auth.begin()
+            self.assertIsNone(self.auth.pending)
+
+    def test_explicit_config_change_can_rebind_only_empty_signed_out_slot(self):
+        self.vault.value["provider_keys"] = {"openai":"SIMULATED_SEPARATE_MODEL_KEY"}
+        old = a.PersonalAuth(self.vault, CONFIG, transport=IdPDouble(), clock=lambda:self.now[0])
+        begin = old.begin();old.complete({"state":begin["state"], "code":"SIMULATED_CODE"})
+        with self.assertRaises(a.AuthBlock): a.PersonalAuth(self.vault, MS_CONFIG, transport=self.idp)
+        old.logout()
+        new = a.PersonalAuth(self.vault, MS_CONFIG, transport=self.idp)
+        self.assertEqual(self.vault.read()["auth"], {"binding":new.binding, "state":"SIGNED_OUT"})
+        self.assertEqual(self.vault.read()["provider_keys"]["openai"], "SIMULATED_SEPARATE_MODEL_KEY")
+        self.vault.value["auth"] = {"binding":old.binding, "state":"SIGNED_OUT", "refresh_token":"SIMULATED_UNRESOLVED_TOKEN"}
+        with self.assertRaises(a.AuthBlock): a.PersonalAuth(self.vault, MS_CONFIG, transport=self.idp)
+
+    def test_session_state_is_ignored_not_owner_proof_and_callback_is_one_use(self):
+        begin = self.auth.begin()
+        local = self.auth.complete({"state": begin["state"], "code": "SIMULATED_CODE", "session_state": "SIMULATED_HINT"})
+        self.assertTrue(local)
+        self.assertNotIn("SIMULATED_HINT", json.dumps(self.vault.read()))
+        count = len(self.idp.calls)
+        with self.assertRaises(a.AuthBlock): self.auth.complete({"state": begin["state"], "code": "REPLAY"})
+        self.assertEqual(count, len(self.idp.calls))
+
+    def test_restart_refresh_replaces_only_local_token_without_claiming_replay_detection(self):
+        local = self.login();old = self.vault.read()["auth"]["refresh_token"]
+        restarted = a.PersonalAuth(self.vault, MS_CONFIG, transport=self.idp, clock=lambda:self.now[0])
+        restarted.authenticate(local)
+        latest = self.vault.read()["auth"]["refresh_token"]
+        self.assertNotEqual(old, latest)
+        self.assertNotIn(old, json.dumps(self.vault.read()))
+        self.assertIn(old, self.idp.provider_valid_refresh_tokens)
+        self.assertEqual(restarted.status()["refresh_semantics"], "microsoft_replacement")
+        self.assertEqual(restarted.status()["provider_refresh_replay_detection"], "NOT_ATTESTED")
+        self.assertFalse(restarted.status()["live_authentication_observed_this_process"])
+        self.assertEqual(self.idp.calls[-1][1]["scope"], "openid offline_access")
+
+    def test_expiry_authentication_failure_and_new_login(self):
+        local = self.login();self.now[0] += 121
+        self.idp.fail = ("token", "OIDC_AUTHENTICATION_REJECTED")
+        with self.assertRaises(a.AuthBlock): self.auth.authenticate(local)
+        self.assertEqual(self.auth.status()["state"], "REAUTH_REQUIRED")
+        self.assertNotIn("SIMULATED_REFRESH", json.dumps(self.vault.read()))
+        self.idp.fail = None
+        self.assertNotEqual(local, self.login())
+
+    def test_ambiguous_refresh_stays_protected_and_is_never_retried(self):
+        local = self.login();self.idp.fail = ("token", "OIDC_RESULT_UNRESOLVED_NO_RETRY")
+        with self.assertRaises(a.AuthBlock): self.auth.authenticate(local, renew=True)
+        self.assertEqual(self.auth.status()["state"], "REFRESH_PENDING")
+        count = len(self.idp.calls)
+        restarted = a.PersonalAuth(self.vault, MS_CONFIG, transport=self.idp, clock=lambda:self.now[0])
+        for operation in (lambda: restarted.authenticate(local), restarted.begin, restarted.logout):
+            with self.assertRaises(a.AuthBlock): operation()
+        self.assertEqual(len(self.idp.calls), count)
+
+    def test_unchanged_refresh_and_scope_escalation_still_fail_closed(self):
+        local = self.login();self.idp.same_refresh = True
+        with self.assertRaises(a.AuthBlock): self.auth.authenticate(local, renew=True)
+        self.assertEqual(self.auth.status()["state"], "REFRESH_PENDING")
+        with self.assertRaisesRegex(a.AuthBlock, "SCOPE_ESCALATION"):
+            self.auth._tokens({"token_type":"Bearer", "access_token":"SIMULATED_ACCESS", "refresh_token":"SIMULATED_REFRESH", "expires_in":120, "scope":"openid offline_access Mail.Read"}, "nonce")
+
+    def test_reauthentication_retires_old_local_bearer_and_does_not_call_graph(self):
+        old = self.login();new = self.login()
+        self.assertNotEqual(old, new)
+        with self.assertRaises(a.AuthBlock): self.auth.authenticate(old)
+        self.auth.authenticate(new)
+        self.assertFalse(any("graph.microsoft.com" in url or "revoke" in url for url,_ in self.idp.calls))
+
+    def test_logout_removes_local_tokens_but_never_claims_global_revocation(self):
+        local = self.login();count = len(self.idp.calls)
+        result = self.auth.logout()
+        self.assertEqual(result["remote_revocation"], "PROVIDER_SESSION_MANAGEMENT_REQUIRED")
+        self.assertEqual(self.auth.status()["state"], "SIGNED_OUT")
+        self.assertEqual(len(self.idp.calls), count)
+        self.assertNotIn("SIMULATED_ACCESS", json.dumps(self.vault.read()))
+        self.assertNotIn("SIMULATED_REFRESH", json.dumps(self.vault.read()))
+        self.assertEqual(urlsplit(result["provider_logout_url"]).path, "/" + MS_TENANT + "/oauth2/v2.0/logout")
+        self.assertEqual(parse_qs(urlsplit(result["provider_logout_url"]).query), {"client_id":[MS_CONFIG["client_id"]]})
+        with self.assertRaises(a.AuthBlock): self.auth.authenticate(local)
+
+    def test_actual_loopback_http_accepts_session_hint_but_rejects_duplicate_state(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            runtime = p.PersonalRuntime(Path(tmp) / "private", "explicit-test", "SIMULATED_MODEL_KEY", "x" * 48, transport=object())
+            server = ThreadingHTTPServer(("127.0.0.1", 0), p.personal_handler(terminal.Handler, runtime))
+            origin = f"http://127.0.0.1:{server.server_port}"
+            runtime.personal_auth = a.PersonalAuth(self.vault, dict(MS_CONFIG, redirect_uri=origin + "/personal/auth/callback"), transport=self.idp, clock=lambda:self.now[0])
+            worker = threading.Thread(target=server.serve_forever, daemon=True);worker.start()
+            try:
+                with patch("sys.stderr", new_callable=io.StringIO) as logged:
+                    begin = runtime.personal_auth.begin()
+                    data = urlencode({"state":begin["state"], "code":"SIMULATED_CODE", "session_state":"SIMULATED_HINT"})
+                    headers = {"Content-Type":"application/x-www-form-urlencoded", "Origin":"https://login.microsoftonline.com"}
+                    with self.assertRaises(HTTPError):
+                        urlopen(Request(origin + "/personal/auth/callback", data=(data + "&state=duplicate").encode(), headers=headers), timeout=3)
+                    with urlopen(Request(origin + "/personal/auth/callback", data=data.encode(), headers=headers), timeout=3) as response:
+                        html = response.read()
+                        self.assertIn(b"postMessage", html)
+                        self.assertNotIn(b"SIMULATED_CODE", html)
+                        self.assertNotIn(b"SIMULATED_HINT", html)
+                        self.assertEqual(response.headers["Cache-Control"], "no-store")
+                    self.assertEqual(logged.getvalue(), "")
+                for file in runtime.root.iterdir():
+                    self.assertNotIn(b"SIMULATED_REFRESH", file.read_bytes())
+            finally:
+                server.shutdown();server.server_close();worker.join();runtime.close()
+
+
 class LifecycleTests(unittest.TestCase):
     def setUp(self):
         self.vault, self.idp, self.now = VaultDouble(), IdPDouble(), [1000]
@@ -325,16 +521,17 @@ class ProtectedStoreAndConfigTests(unittest.TestCase):
 import json,sys,time
 from pathlib import Path
 from unittest.mock import patch
-from tests.test_qikvrt_personal_auth import VaultDouble,IdPDouble,CONFIG
+from tests.test_qikvrt_personal_auth import VaultDouble,IdPDouble,CONFIG,MicrosoftIdPDouble,MS_CONFIG
 from src import qikvrt_personal_auth as a
 class FileFixture(VaultDouble):
  def read(self):
   return json.loads(Path(sys.argv[1]).read_text()) if Path(sys.argv[1]).exists() else super().read()
  def write(self,value):
   Path(sys.argv[1]).write_text(json.dumps(value))
-v=FileFixture(); transport=IdPDouble()
-auth=a.PersonalAuth(v,CONFIG,transport=transport,clock=lambda:1000)
-with patch.object(a,'verify_id_token',return_value={'sub':CONFIG['subject']}),patch.object(a,'require_crypto_runtime',return_value=None):
+v=FileFixture(); transport=MicrosoftIdPDouble() if sys.argv[3]=='microsoft' else IdPDouble()
+config=MS_CONFIG if sys.argv[3]=='microsoft' else CONFIG
+auth=a.PersonalAuth(v,config,transport=transport,clock=lambda:1000)
+with patch.object(a,'verify_id_token',return_value={'sub':config['subject']}),patch.object(a,'require_crypto_runtime',return_value=None):
  if sys.argv[2]=='first':
   begin=auth.begin();local=auth.complete({'state':begin['state'],'code':'fixture-code'})
   print(json.dumps({'local':local}),flush=True)
@@ -344,17 +541,18 @@ with patch.object(a,'verify_id_token',return_value={'sub':CONFIG['subject']}),pa
   auth.authenticate(local)
   print(json.dumps({'state':auth.status()['state'],'fresh_refresh':v.read()['auth']['refresh_token']=='SIMULATED_REFRESH_11','native':auth.status()['live_authentication_observed_this_process']}),flush=True)
 '''
-        with tempfile.TemporaryDirectory() as tmp:
-            path = str(Path(tmp) / "SIMULATED_ONLY.json")
-            child = subprocess.Popen([sys.executable, "-B", "-c", script, path, "first"], cwd=a.ROOT, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-            try:
-                self.assertTrue(json.loads(child.stdout.readline())["local"])
-                child.kill(); child.wait(timeout=5)
-                result = subprocess.run([sys.executable, "-B", "-c", script, path, "second"], cwd=a.ROOT, capture_output=True, text=True, timeout=5, check=True)
-                self.assertEqual(json.loads(result.stdout), {"state": "AUTHENTICATED", "fresh_refresh": True, "native": False})
-            finally:
-                if child.poll() is None: child.kill(); child.wait(timeout=5)
-                child.stdout.close(); child.stderr.close()
+        for provider in ("generic", "microsoft"):
+            with self.subTest(provider=provider), tempfile.TemporaryDirectory() as tmp:
+                path = str(Path(tmp) / "SIMULATED_ONLY.json")
+                child = subprocess.Popen([sys.executable, "-B", "-c", script, path, "first", provider], cwd=a.ROOT, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                try:
+                    self.assertTrue(json.loads(child.stdout.readline())["local"])
+                    child.kill(); child.wait(timeout=5)
+                    result = subprocess.run([sys.executable, "-B", "-c", script, path, "second", provider], cwd=a.ROOT, capture_output=True, text=True, timeout=5, check=True)
+                    self.assertEqual(json.loads(result.stdout), {"state": "AUTHENTICATED", "fresh_refresh": True, "native": False})
+                finally:
+                    if child.poll() is None: child.kill(); child.wait(timeout=5)
+                    child.stdout.close(); child.stderr.close()
 
     def test_missing_native_secret_store_never_creates_file_fallback(self):
         with patch.object(Path, "stat", side_effect=FileNotFoundError):
@@ -441,6 +639,17 @@ class RealRSAVerificationTests(unittest.TestCase):
         token = data.decode() + "." + a.b64(self.key.sign(data, padding.PKCS1v15(), hashes.SHA256()))
         a.verify_id_token(token, CONFIG, self.jwks, "bound-nonce", "access", 1000, nonce_optional=True)
         with self.assertRaises(a.AuthBlock): a.verify_id_token(self.token({"nonce":"wrong"}), CONFIG, self.jwks, "bound-nonce", "access", 1000, nonce_optional=True)
+
+    def test_microsoft_signed_tenant_version_and_key_issuer_are_bound(self):
+        claims = {"iss": MS_CONFIG["issuer"], "sub": MS_CONFIG["subject"], "aud": MS_CONFIG["client_id"], "tid": MS_TENANT, "ver":"2.0"}
+        jwks = copy.deepcopy(self.jwks)
+        jwks["keys"][0]["issuer"] = "https://login.microsoftonline.com/{tenantid}/v2.0"
+        a.verify_id_token(self.token(claims), MS_CONFIG, jwks, "bound-nonce", "access", 1000)
+        for update in ({"tid":"other-tenant"}, {"ver":"1.0"}, {"tid":None}, {"sub":"other-owner"}, {"aud":"other-app"}):
+            with self.subTest(update=update), self.assertRaises(a.AuthBlock):
+                a.verify_id_token(self.token(dict(claims, **update)), MS_CONFIG, jwks, "bound-nonce", "access", 1000)
+        jwks["keys"][0]["issuer"] = "https://wrong.test/"
+        with self.assertRaises(a.AuthBlock): a.verify_id_token(self.token(claims), MS_CONFIG, jwks, "bound-nonce", "access", 1000)
 
 
 if __name__ == "__main__":

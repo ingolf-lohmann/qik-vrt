@@ -1,6 +1,6 @@
 {
   "schema": "qikvrt_personal_assistant_capabilities_v1",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "product_name": "Universales Raumzeit-Terminal",
   "product_descriptor": "Persönlicher Browserassistent für quellgebundene Recherche, Dokumentation und Fortsetzung",
   "license": "PolyForm-Noncommercial-1.0.0",
@@ -83,7 +83,7 @@
     "id_token_validation": "RS256_SIGNATURE_ISSUER_OWNER_SUBJECT_AUDIENCE_NONCE_EXPIRY",
     "credential_store": "LINUX_SECRET_SERVICE_VIA_SYSTEM_LIBSECRET_SECRET_TOOL",
     "plaintext_fallback": false,
-    "refresh": "PROTECTED_PENDING_JOURNAL_AND_ROTATION; NO_UNCHANGED_AMBIGUOUS_RETRY",
+    "refresh": "PROTECTED_PENDING_JOURNAL; GENERIC_ROTATION_OR_EXPLICIT_MICROSOFT_REPLACEMENT; NO_AMBIGUOUS_RETRY",
     "local_session_max_age_seconds": 43200,
     "browser_storage": "MEMORY_ONLY_NO_APPLICATION_COOKIE_LOCALSTORAGE_OR_SESSIONSTORAGE",
     "passkeys": "DELEGATED_TO_REGISTERED_IDP_AND_DEVICE; NOT_ATTESTED",
@@ -92,6 +92,14 @@
     "authenticated_identity_runtime_readback": false,
     "firefox_identity_flow_observed": false,
     "windows_macos_secure_backend": "NOT_IMPLEMENTED",
-    "test_evidence": "SIMULATED_OIDC_AND_STORE; SEPARATE_REAL_RSA_CONTROLS; NO_PRODUCT_AUTHENTICATION"
+    "test_evidence": "SIMULATED_OIDC_AND_STORE; SEPARATE_REAL_RSA_CONTROLS; NO_PRODUCT_AUTHENTICATION",
+    "selected_provider": "MICROSOFT_OWNER_SELECTION_20261016",
+    "provider_profiles": [
+      "oidc_public_v1",
+      "microsoft_public_v2"
+    ],
+    "provider_refresh_replay_detection": "NOT_ATTESTED; MICROSOFT_REPLACEMENT_DOES_NOT_REVOKE_OLD_TOKEN",
+    "microsoft_revocation": "LOCAL_TOKEN_REMOVAL; OPTIONAL_PROVIDER_SIGNOUT; ACCOUNT_OR_TENANT_REVOCATION_REQUIRED; NO_GRAPH_PERMISSION_EXPANSION",
+    "legacy_config_compatibility": "EXACT_EXISTING_CONFIG_AND_PROTECTED_BINDING_PRESERVED"
   }
 }

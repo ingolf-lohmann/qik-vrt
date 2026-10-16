@@ -1,0 +1,66 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "bounded_operational_source_test_evidence_not_scientific_publication"
+  },
+  "schema": "qikvrt_personal_microsoft_compatibility_work_unit_v1",
+  "id": "QIKVRT_PERSONAL_FIREFOX_MICROSOFT_COMPATIBILITY_20261016_V1",
+  "status": "SOURCE_IMPLEMENTED_LOCAL_TESTS_VERIFIED_NATIVE_AND_PRODUCT_ACCEPTANCE_OPEN",
+  "source_parent": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pr": 523,
+    "ref": "integration/515-519-521-522-20261012-eceb9b63",
+    "head": "c14cdf45d22c4599cc2ee86fde64e0fca3beba58",
+    "tree": "fcc7c0ca892d48c446d4dd25ec1aaf94b7efa641"
+  },
+  "human_contribution": "Ingolf Lohmann: existing Microsoft-OIDC client selection and explicit authorization to assimilate, improve, adapt and preserve compatibility with downstream systems. Existing secure Personal/Standard boundary remains binding.",
+  "artificial_cognitive_contribution": "OpenAI Codex: provider-contract diagnosis, additive implementation, compatibility/security regression tests and existing CI adaptation; no independent review or human sign-in inferred.",
+  "reuse": [
+    "Existing PersonalAuth/OSSecretStore, HTTP listener, writer lock and protected journals",
+    "Existing generic OIDC config and protected binding unchanged",
+    "Existing Personal UI, Make target and GitHub Personal boundary workflow",
+    "Existing cryptography50.0.2 dependency contract and repository integrity generator"
+  ],
+  "compatibility": {
+    "legacy_profile": "No inserted default config fields; same binding hash; generic S256/none metadata requirements preserved",
+    "microsoft_profile": "Explicit microsoft_public_v2 and microsoft_replacement; no silent provider switch or weaker generic fallback",
+    "standard": "No Standard extension source changes; no Personal credentials required by Standard",
+    "dependencies": "No new library or software downgrade; native test runtime provisioned in new isolated venv"
+  },
+  "authorization": "Current Owner grant; existing PR523 API-native integration; no new account/app creation, permission scope expansion, Graph revocation or credential disclosure",
+  "test_receipt": {
+    "path": "evidence/native-runtime-acceptance/personal-firefox-microsoft-20261016.json",
+    "bytes": 23802,
+    "sha256": "315966fd3c31048eb09fe440716f4e5c4b7d480d51d11e73520eb59facdaf2cc",
+    "git_blob": "9286e9f8f963d01c94b94213a26a35f26c0ad623",
+    "python_cases": 92,
+    "javascript_scenarios": 2,
+    "real_rsa_cases": 4
+  },
+  "predecessor_followup": {
+    "provider_selection": "Resolved by Owner: existing Microsoft client",
+    "source_discovery_rejection": "Reproduced on predecessor and corrected only for explicit Microsoft tenant-bound profile",
+    "old_native_RSA_skips": "Existing boundary workflow now explicitly provisions isolated optional crypto runtime; fresh actual run still required"
+  },
+  "open_work": [
+    {
+      "id": "microsoft-registration-binding",
+      "state": "OPEN",
+      "next_action": "Resolve exact existing authorized Application ID, concrete tenant/issuer, native registered loopback redirect and verified pairwise Owner subject through an available private registration/configuration route. Do not reuse Outlook connector client IDs, infer subject from email or invent registration."
+    },
+    {
+      "id": "native-protected-personal-session",
+      "state": "OPEN",
+      "next_action": "On actual admitted Linux desktop-user runtime verify protected login collection and run Firefox login, process/browser restart, expiry, failure, reauth, local logout, supported provider signout and actual account/tenant revocation. Current root client has neither fixed secret-tool nor actual Firefox executable; observer is not native executor."
+    },
+    {
+      "id": "exact-successor-native-CI-and-review",
+      "state": "OPEN",
+      "next_action": "Integrate through leased fast-forward in existing PR523, re-fetch exact tree/blobs, inspect native boundary RSA tests and full CI to terminal results. Independent review, Main integration, signing and exact-domain acceptance remain separate."
+    }
+  ],
+  "no_secrets_written_to_git_public_artifacts_browser_logs_or_database": true,
+  "PREDECESSOR_EVIDENCE_TRANSFER": false,
+  "EFFECT_ACK_DONE": false
+}

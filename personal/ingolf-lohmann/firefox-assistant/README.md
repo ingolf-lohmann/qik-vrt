@@ -22,9 +22,10 @@ Wildcard-Issuer, automatische Anbieterwahl oder Übertragung einer ChatGPT-Sitzu
 
 Identitätsanmeldung und OpenAI-/Gemini-API-Berechtigung sind getrennte Träger.
 Ein Microsoft-, Apple- oder anderer SSO-Login liefert keinen OpenAI-API-Key.
-Microsoft OIDC mit Code/PKCE wurde anhand der Primärdokumentation als möglicher
-Weg geprüft; eine registrierte Client-/Issuer-/Subject-Bindung für diesen
-Personal-Client ist in diesem Work Unit nicht nachgewiesen. Niemand erhält
+Microsoft wurde vom Owner als vorhandener Anbieter gewählt. Das additive Profil
+`microsoft_public_v2` adaptiert den bestehenden Controller an den dokumentierten
+Microsoft-v2-Public-Client-Vertrag. Eine konkrete registrierte
+Client-/Issuer-/Subject-Bindung ist weiterhin nicht nachgewiesen. Niemand erhält
 Zugriff allein wegen einer passenden E-Mail-Adresse. Ein real gewählter Anbieter
 muss die vom Client verlangten Funktionen tatsächlich unterstützen; seine
 Passkey-/WebAuthn-Oberfläche übernimmt auf Wunsch die Geräteverifikation.
@@ -56,12 +57,24 @@ eine aktuelle Token-Erneuerung. Eine lokale Anmeldung endet spätestens nach
 zwölf Stunden und kann durch erneute OIDC-Anmeldung ersetzt werden.
 
 Vor jedem Refresh wird `REFRESH_PENDING` geschützt geschrieben. Nach erfolgreicher
-Antwort muss ein neues Refresh-Token vorliegen; es wird mit Readback gespeichert.
+Antwort muss ein neues Refresh-Token vorliegen; es ersetzt den alten Wert im
+geschützten Eintrag und wird mit Readback gespeichert.
 Ein Timeout/Absturz nach möglicher Rotation bleibt pending und wird nicht
 automatisch mit dem alten Token wiederholt. Ein eindeutiger Authentifizierungs-
-fehler verlangt Wiederanmeldung. Die anbieterseitige Rotation/Replay-Erkennung
-muss zur registrierten Public-Client-Konfiguration gehören; eine geänderte
-Tokenzeichenfolge attestiert diese Servereigenschaft nicht unabhängig.
+fehler verlangt Wiederanmeldung. Das bisherige generische Profil verlangt
+weiterhin `refresh_protection=rotation`; die zugehörige anbieterseitige
+Replay-Erkennung muss separat nachgewiesen werden. Eine geänderte Zeichenfolge
+attestiert diese Servereigenschaft nicht unabhängig.
+
+Das explizite Microsoft-Profil verwendet `refresh_protection=microsoft_replacement`:
+Microsoft ersetzt Refresh-Tokens, entwertet das alte Token dabei aber nicht
+automatisch. Deshalb speichert der Client ausschließlich das aktuelle Token,
+fordert beim Refresh wieder nur `openid offline_access` an und behauptet keine
+serverseitige Replay-Erkennung. Das ist ein eigener, offen ausgewiesener
+Providervertrag; die Anforderungen des generischen Profils werden nicht
+umgedeutet. Schutz des nativen Secret Service ist hierfür eine notwendige
+Betriebsbedingung. Ein Diebstahl eines noch gültigen Tokens lässt sich nicht
+durch bloße Tokenersetzung heilen; dann ist Anbieter-Widerruf erforderlich.
 
 Abmelden entwertet zuerst den lokalen Bearer. Ist ein RFC7009-Endpunkt ausdrücklich
 konfiguriert und per Discovery gebunden, werden Refresh- und Access-Token einzeln
@@ -71,6 +84,19 @@ meldet der Client den externen Widerruf als `UNSUPPORTED`. Bei unbekanntem
 Ergebnis bleiben die Geheimnisse ausschließlich im geschützten Pending-Journal;
 keine Wiederholung. Reconciliation muss über die autorisierte Anbieter-
 Sitzungsverwaltung erfolgen, bevor dieses Profil weiterverwendet wird.
+
+Microsofts Discovery weist keinen RFC7009-Endpunkt aus. Die lokale Abmeldung
+entfernt die lokal verfügbaren Identitätstokens und meldet
+`PROVIDER_SESSION_MANAGEMENT_REQUIRED`. Ein gesonderter Link öffnet nur nach
+weiterem Klick den genau gebundenen Microsoft-End-Session-Endpunkt; dieser
+Schritt ist kein Token-Widerruf. Die Oberfläche verwirft ihren lokalen Bearer
+auch bei fehlendem Logout-ACK und löst keine automatische Wiederholung aus.
+Microsoft Graph `revokeSignInSessions` betrifft mehrere Anwendungen, verlangt
+gesonderte Berechtigungen und unterstützt delegierte private Microsoft-Konten
+nicht. Der Client fordert diese Berechtigung nicht an und ruft Graph nicht auf.
+Der tatsächliche externe Widerruf bleibt über die autorisierte Konto- oder
+Tenant-Verwaltung nachzuweisen. Der Modell-API-Key bleibt für Wiederanmeldung
+im OS-Speicher; IdP-Abmeldung widerruft keine gesonderte Modellberechtigung.
 
 ### Native Einrichtung
 
@@ -104,6 +130,47 @@ dann keinen erfolgreichen Anbieter-Widerruf behaupten. Ein optionaler
 dieser Konfigurationsdatei; dieser Pfad ist ausschließlich ein Public Client.
 Keine OAuth-Client-ID eines anderen Produkts wiederverwenden.
 
+Für den bereits registrierten Microsoft-Public-Client wird stattdessen diese
+ebenfalls absichtlich unvollständige Vorlage privat ausgefüllt. Die konkrete
+Tenant-GUID und der für genau diese Application-ID verifizierte paarweise
+Owner-Subject sind verbindlich; `common`, `organizations`, `consumers`,
+Tenant-Wildcards und passende E-Mail-Adressen sind kein Ersatz:
+
+```json
+{
+  "provider_profile": "microsoft_public_v2",
+  "issuer": "https://login.microsoftonline.com/<tenant-guid>/v2.0",
+  "client_id": "<existing-authorized-application-guid>",
+  "subject": "<verified-owner-subject-for-this-application>",
+  "authorization_endpoint": "https://login.microsoftonline.com/<tenant-guid>/oauth2/v2.0/authorize",
+  "token_endpoint": "https://login.microsoftonline.com/<tenant-guid>/oauth2/v2.0/token",
+  "jwks_uri": "https://login.microsoftonline.com/<tenant-guid>/discovery/v2.0/keys",
+  "end_session_endpoint": "https://login.microsoftonline.com/<tenant-guid>/oauth2/v2.0/logout",
+  "redirect_uri": "http://127.0.0.1:8771/personal/auth/callback",
+  "refresh_protection": "microsoft_replacement"
+}
+```
+
+Die feste Consumer-Tenant-GUID lautet nach Microsofts Dokumentation
+`9188040d-6c67-4c5b-b112-36a304b66dad`; das ist keine Zuordnung dieses Owners
+oder seiner Registrierung. Workforce-Konten benötigen ihren konkreten Tenant.
+Die Registrierung muss den tatsächlich verwendeten Loopback-Callback für einen
+nativen **öffentlichen Desktop-Client** erlauben. Ein vertraulicher Web-Client
+oder ein SPA-Redirect wird nicht durch Weglassen eines Client-Secrets kompatibel.
+HTTP-127.0.0.1-Redirects werden bei Microsoft über das App-Manifest registriert.
+Der Client ändert keine Registrierung und übernimmt keine fremde Connector-App.
+
+Microsofts öffentliche v2-Discovery listet S256 und die Public-Client-Methode
+`none` derzeit nicht. Nur das ausdrücklich gewählte Microsoft-Profil darf diese
+beiden fehlenden Angaben anhand des dokumentierten Providervertrags behandeln.
+Es sendet immer S256 und kein Client-Secret; bei ausdrücklich widersprechender
+PKCE-Metadatenangabe blockiert es. Issuer, Auth-/Token-/JWKS-/Logout-Endpunkte,
+form_post, Code-Response und RS256 bleiben genau geprüft. Die signierten Claims
+`tid` und `ver=2.0` werden zusätzlich geprüft. Der bisherige generische Pfad
+und seine unveränderten Konfigurations-/Speicherbindungen bleiben kompatibel.
+Ein Profilwechsel benötigt zuvor die Abmeldung/Reconciliation des alten
+Profils; bestehende geschützte Daten werden nicht stillschweigend migriert.
+
 Den separat autorisierten Modell-Key einmal im eigenen Terminal verdeckt in
 den OS-Speicher eingeben; er steht weder in Argumenten noch in Ausgabe/Umgebung:
 
@@ -136,6 +203,16 @@ und keine realen Firefox-Produkttests. `authenticated_runtime_readback` bleibt
 separat an eine tatsächliche Modellantwort gebunden. Das Capability-Manifest
 bewahrt die offenen Produktgrenzen.
 
+Der bestehende Personal-Boundary-Workflow berücksichtigt jetzt auch Änderungen
+am Auth-Modul, seinen Tests und dem optionalen Requirements-Vertrag. Er baut
+eine frische isolierte Personal-Testumgebung mit den bereits gebundenen
+Crypto-Versionen und führt `make personal-firefox-boundary-test` darin aus.
+Damit sollen die echten RSA-Kontrollen dieses Jobs nicht wegen einer fehlenden
+optionalen Abhängigkeit übersprungen werden. Zwei zusätzliche Node-Tests prüfen
+lokales Tokenverwerfen bei erfolgreichem und verlorenem Logout-ACK sowie die
+gesonderte Anbieter-Aktion; DOM und HTTP-Antworten sind dabei simuliert.
+Ein erfolgreicher nativer CI-Lauf ist weiterhin keine Anmeldung eines Menschen.
+
 Primärquellen:
 
 - https://openid.net/specs/openid-connect-core-1_0.html
@@ -146,6 +223,11 @@ Primärquellen:
 - https://www.rfc-editor.org/rfc/rfc7009
 - https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-auth-code-flow
 - https://learn.microsoft.com/en-us/entra/identity-platform/v2-protocols-oidc
+- https://learn.microsoft.com/en-us/entra/identity-platform/refresh-tokens
+- https://learn.microsoft.com/en-us/entra/identity-platform/id-token-claims-reference
+- https://learn.microsoft.com/en-us/entra/identity-platform/reply-url
+- https://learn.microsoft.com/en-us/graph/api/user-revokesigninsessions?view=graph-rest-1.0
+- https://login.microsoftonline.com/9188040d-6c67-4c5b-b112-36a304b66dad/v2.0/.well-known/openid-configuration
 - https://gnome.pages.gitlab.gnome.org/libsecret/
 - https://cryptography.io/en/50.0.2/installation/
 

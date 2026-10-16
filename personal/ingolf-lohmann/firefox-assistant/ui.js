@@ -59,6 +59,7 @@ fetch("/personal/auth/info", {credentials: "omit", cache: "no-store"}).then(resp
 }).catch(() => { el("identity").textContent = "Anmeldekonfiguration nicht erreichbar."; });
 el("sign-in").addEventListener("click", () => {
   if (busy || !oidcEnabled) return;
+  el("provider-sign-out").replaceChildren();
   loginPopup = window.open("about:blank", "qikvrt-personal-sign-in", "popup,width=560,height=720");
   if (!loginPopup) { el("status").textContent = "Bitte das Anmeldefenster für diese lokale Seite erlauben."; return; }
   action(async () => {
@@ -85,13 +86,27 @@ el("renew").addEventListener("click", () => action(async () => {
   el("status").textContent = "Sitzung erneuert und geschützter Speicher zurückgelesen.";
 }));
 el("sign-out").addEventListener("click", () => action(async () => {
-  const result = await request("auth/logout", {});
-  token = ""; sessionId = null;
-  el("history").replaceChildren(); el("sessions").replaceChildren();
-  el("session").textContent = "Abgemeldet.";
+  let result;
+  try { result = await request("auth/logout", {}); } finally {
+    // The backend may already have invalidated admission before a lost ACK.
+    // Always discard this page's bearer; never retry logout automatically.
+    token = ""; sessionId = null;
+    el("history").replaceChildren(); el("sessions").replaceChildren();
+    el("provider-sign-out").replaceChildren();
+    el("session").textContent = "Lokal getrennt. Anbieterstatus separat prüfen.";
+  }
   el("status").textContent = result.remote_revocation === "ENDPOINT_ACKNOWLEDGED_NOT_INDEPENDENTLY_ATTESTED" ?
     "Lokal abgemeldet. Der Anbieter hat den Token-Widerruf bestätigt; die globale Anbieter-Sitzung bleibt separat." :
+    result.remote_revocation === "PROVIDER_SESSION_MANAGEMENT_REQUIRED" ?
+    "Lokal abgemeldet. Microsoft-Tokens müssen bei Bedarf zusätzlich über die Konto- oder Tenant-Sitzungsverwaltung widerrufen werden." :
     `Lokal abgemeldet. Anbieter-Widerruf: ${result.remote_revocation}.`;
+  if (result.provider_logout_url) {
+    const link = document.createElement("a");
+    link.href = result.provider_logout_url;
+    link.target = "_blank"; link.rel = "noopener noreferrer";
+    link.textContent = "Zusätzlich beim Identitätsanbieter abmelden (kein Token-Widerruf)";
+    el("provider-sign-out").append(link);
+  }
 }));
 el("connect").addEventListener("click", () => action(async () => {
   token = el("token").value;

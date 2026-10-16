@@ -28,6 +28,18 @@ from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 LIMIT = 128 * 1024
 ROOT = Path(__file__).resolve().parents[1]
+MICROSOFT_PROFILE = "microsoft_public_v2"
+MICROSOFT_HOST = "https://login.microsoftonline.com/"
+GUID = r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+
+
+def microsoft_profile(config):
+    return config.get("provider_profile") == MICROSOFT_PROFILE
+
+
+def microsoft_tenant(config):
+    # Called only after validate_config has pinned a concrete v2 issuer.
+    return config["issuer"][len(MICROSOFT_HOST):].split("/")[0]
 
 
 class AuthBlock(ValueError):
@@ -172,9 +184,12 @@ def load_config(path, origin):
 def validate_config(config, origin):
     required = {"issuer", "client_id", "subject", "authorization_endpoint", "token_endpoint", "jwks_uri",
                 "redirect_uri", "refresh_protection"}
-    if set(config) - required - {"revocation_endpoint", "end_session_endpoint"} or not required <= set(config):
+    if set(config) - required - {"revocation_endpoint", "end_session_endpoint", "provider_profile"} or not required <= set(config):
         raise AuthBlock("OIDC_CONFIG_FIELDS_INVALID")
-    if config["refresh_protection"] != "rotation":
+    profile = config.get("provider_profile", "oidc_public_v1")
+    if not isinstance(profile, str) or profile not in {"oidc_public_v1", MICROSOFT_PROFILE}:
+        raise AuthBlock("OIDC_PROVIDER_PROFILE_UNSUPPORTED")
+    if not microsoft_profile(config) and config["refresh_protection"] != "rotation":
         raise AuthBlock("OIDC_PUBLIC_CLIENT_REFRESH_ROTATION_REQUIRED")
     for field in required - {"refresh_protection"}:
         if not isinstance(config[field], str) or not config[field] or len(config[field]) > 2048 or "<" in config[field]:
@@ -196,6 +211,28 @@ def validate_config(config, origin):
         raise AuthBlock("OIDC_EXACT_LOOPBACK_REDIRECT_REQUIRED") from None
     if len(config["subject"]) > 255 or not config["subject"].isascii():
         raise AuthBlock("OIDC_OWNER_SUBJECT_INVALID")
+    if microsoft_profile(config):
+        # Microsoft's public v2 metadata omits S256 and 'none', despite the
+        # documented public-client Code/PKCE protocol. This exception applies
+        # only to these exact global-cloud, concrete-tenant endpoints. It never
+        # permits common/organizations, aliases, v1, arbitrary hosts or secrets.
+        if not re.fullmatch(re.escape(MICROSOFT_HOST) + GUID + r"/v2\.0", config["issuer"]):
+            raise AuthBlock("MICROSOFT_CONCRETE_TENANT_ISSUER_REQUIRED")
+        if not re.fullmatch(GUID, config["client_id"]):
+            raise AuthBlock("MICROSOFT_REGISTERED_APPLICATION_ID_REQUIRED")
+        if config["refresh_protection"] != "microsoft_replacement":
+            raise AuthBlock("MICROSOFT_REFRESH_SEMANTICS_MUST_BE_EXPLICIT")
+        base = MICROSOFT_HOST + microsoft_tenant(config)
+        endpoints = {"authorization_endpoint": base + "/oauth2/v2.0/authorize",
+                     "token_endpoint": base + "/oauth2/v2.0/token",
+                     "jwks_uri": base + "/discovery/v2.0/keys"}
+        if any(config[key] != value for key, value in endpoints.items()):
+            raise AuthBlock("MICROSOFT_TENANT_ENDPOINT_BINDING_REQUIRED")
+        if "revocation_endpoint" in config or ("end_session_endpoint" in config and
+                config["end_session_endpoint"] != base + "/oauth2/v2.0/logout"):
+            raise AuthBlock("MICROSOFT_LOGOUT_IS_NOT_TOKEN_REVOCATION")
+    # Do not insert defaults: old configuration bytes retain their protected
+    # binding hash and do not require migration of an existing generic profile.
     return dict(config)
 
 
@@ -261,12 +298,18 @@ def verify_id_token(token, config, jwks, nonce, access_token, now, *, nonce_opti
         if len(keys) != 1:
             raise AuthBlock("OIDC_SIGNING_KEY_NOT_UNIQUE")
         key = keys[0]
+        if microsoft_profile(config):
+            key_issuer = key.get("issuer", config["issuer"])
+            if not isinstance(key_issuer, str) or key_issuer.replace("{tenantid}", microsoft_tenant(config)) != config["issuer"]:
+                raise AuthBlock("MICROSOFT_SIGNING_KEY_ISSUER_MISMATCH")
         n, e = int.from_bytes(unb64(key["n"]), "big"), int.from_bytes(unb64(key["e"]), "big")
         if not 2048 <= n.bit_length() <= 8192 or e < 3 or e % 2 == 0:
             raise AuthBlock("OIDC_RSA_KEY_REJECTED")
         rsa.RSAPublicNumbers(e, n).public_key().verify(unb64(signature), (head + "." + body).encode(), padding.PKCS1v15(), hashes.SHA256())
         if claims.get("iss") != config["issuer"] or claims.get("sub") != config["subject"]:
             raise AuthBlock("OIDC_ISSUER_OR_OWNER_MISMATCH")
+        if microsoft_profile(config) and (claims.get("tid") != microsoft_tenant(config) or claims.get("ver") != "2.0"):
+            raise AuthBlock("MICROSOFT_TENANT_OR_TOKEN_VERSION_MISMATCH")
         audience = claims.get("aud")
         if audience != config["client_id"] and audience != [config["client_id"]]:
             raise AuthBlock("OIDC_AUDIENCE_MISMATCH")
@@ -298,7 +341,13 @@ class PersonalAuth:
         bundle = store.read()
         auth = bundle.get("auth", {})
         if auth and auth.get("binding") != self.binding:
-            raise AuthBlock("PROTECTED_IDENTITY_BINDING_CHANGED_REVOKE_OLD_PROFILE_FIRST")
+            if auth.get("state") == "SIGNED_OUT" and set(auth) == {"binding", "state"}:
+                # A deliberately replaced private config may adopt a fully
+                # signed-out slot. Never migrate active, pending or secret-
+                # bearing state, and never change the model credential.
+                self._save({"binding": self.binding, "state": "SIGNED_OUT"})
+            else:
+                raise AuthBlock("PROTECTED_IDENTITY_BINDING_CHANGED_REVOKE_OLD_PROFILE_FIRST")
 
     def _save(self, auth):
         bundle = self.store.read()
@@ -322,10 +371,14 @@ class PersonalAuth:
             for key in ("issuer", "authorization_endpoint", "token_endpoint", "jwks_uri", "revocation_endpoint", "end_session_endpoint"):
                 if key in self.config and metadata.get(key) != self.config[key]:
                     raise AuthBlock("OIDC_DISCOVERY_PIN_MISMATCH")
-            if ("S256" not in metadata.get("code_challenge_methods_supported", []) or
-                "form_post" not in metadata.get("response_modes_supported", []) or
+            if ("form_post" not in metadata.get("response_modes_supported", []) or
                 "RS256" not in metadata.get("id_token_signing_alg_values_supported", []) or
-                "none" not in metadata.get("token_endpoint_auth_methods_supported", [])):
+                (not microsoft_profile(self.config) and
+                 ("S256" not in metadata.get("code_challenge_methods_supported", []) or
+                  "none" not in metadata.get("token_endpoint_auth_methods_supported", []))) or
+                (microsoft_profile(self.config) and
+                 ("code" not in metadata.get("response_types_supported", []) or
+                  "S256" not in metadata.get("code_challenge_methods_supported", ["S256"])))):
                 raise AuthBlock("OIDC_REGISTERED_PUBLIC_CLIENT_PROTOCOL_UNSUPPORTED")
             verifier, state, nonce = secrets.token_urlsafe(48), secrets.token_urlsafe(32), secrets.token_urlsafe(32)
             self.pending = {"verifier": verifier, "state": state, "nonce": nonce, "until": self.clock() + 300}
@@ -351,6 +404,10 @@ class PersonalAuth:
                             nonce, result["access_token"], self.clock(), nonce_optional=bool(previous))
         if previous and result["refresh_token"] == previous["refresh_token"]:
             raise AuthBlock("OIDC_REFRESH_ROTATION_NOT_OBSERVED")
+        # Replacement alone never attests server-side invalidation/replay
+        # detection. Microsoft explicitly keeps the superseded token valid.
+        # Only the latest token is retained; the generic rotation contract is
+        # unchanged. No refresh token is retried after an ambiguous effect.
         return {"binding": self.binding, "state": "AUTHENTICATED", "access_token": result["access_token"],
                 "refresh_token": result["refresh_token"], "expires_at": self.clock() + expires,
                 "nonce": nonce, "local_token": previous["local_token"] if previous else secrets.token_urlsafe(48),
@@ -364,8 +421,12 @@ class PersonalAuth:
                 not hmac.compare_digest(str(fields.get("state", "")), pending["state"])):
                 raise AuthBlock("OIDC_STATE_EXPIRED_OR_MISMATCH")
             self.pending = None  # Consume before token exchange; never redeem a code twice.
-            if (set(fields) - {"code", "state", "iss", "error", "error_description", "error_uri"} or
+            allowed = {"code", "state", "iss", "error", "error_description", "error_uri"}
+            if microsoft_profile(self.config):
+                allowed.add("session_state")  # OIDC session-management hint; never identity proof.
+            if (set(fields) - allowed or
                 "error" in fields or fields.get("iss", self.config["issuer"]) != self.config["issuer"] or
+                ("session_state" in fields and (not isinstance(fields["session_state"], str) or len(fields["session_state"]) > 4096)) or
                 not isinstance(fields.get("code"), str) or not 1 <= len(fields["code"]) <= 4096):
                 raise AuthBlock("OIDC_AUTHORIZATION_REJECTED")
             previous = self._state()
@@ -408,7 +469,8 @@ class PersonalAuth:
                 self.observed = False
                 try:
                     result = self.transport.request(self.config["token_endpoint"], {
-                        "grant_type": "refresh_token", "client_id": self.config["client_id"], "refresh_token": auth["refresh_token"]})
+                        "grant_type": "refresh_token", "client_id": self.config["client_id"],
+                        "refresh_token": auth["refresh_token"], "scope": "openid offline_access"})
                     auth = self._tokens(result, auth["nonce"], auth)
                     self._save(auth)
                     self.observed = True
@@ -424,7 +486,7 @@ class PersonalAuth:
         if replacement:
             auth["replacement"] = replacement
         self._save(auth)
-        remote = "UNSUPPORTED"
+        remote = "PROVIDER_SESSION_MANAGEMENT_REQUIRED" if microsoft_profile(self.config) else "UNSUPPORTED"
         if "revocation_endpoint" in self.config:
             for kind in ("refresh_token", "access_token"):
                 if not auth.get(kind):
@@ -471,6 +533,9 @@ class PersonalAuth:
         with self.lock:
             auth = self._state()
             return {"state": auth.get("state", "SIGNED_OUT"), "credential_store": self.store.evidence_class,
+                    "provider_profile": self.config.get("provider_profile", "oidc_public_v1"),
+                    "refresh_semantics": self.config["refresh_protection"],
+                    "provider_refresh_replay_detection": "NOT_ATTESTED",
                     "credential_reference": self.store.profile, "issuer": self.config["issuer"],
                     "live_authentication_observed_this_process": bool(self.observed and type(self.store) is OSSecretStore and type(self.transport) is OIDCTransport),
                     "evidence_class": self.transport.evidence_class, "biometric_verification": "DELEGATED_TO_IDP_NOT_ATTESTED",
