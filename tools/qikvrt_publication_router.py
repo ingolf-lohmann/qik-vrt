@@ -295,19 +295,21 @@ def complete_editorial(root: Path, request_relative: str, stage_relative: str):
 
 def _validated_editorial_completion(root: Path, completion_relative: str, *, persisted=False):
     _, publication, _ = _publication_dependencies()
+    from tools import qikvrt_verify_zenodo_public_manifest as verifier
     path = publication._safe_relative(root, completion_relative, "editorial completion", must_exist=True)
     value, _ = publication.zenodo._load_json_file(path)
     if value.get("schema") != "qikvrt_editorial_completion_v1":
         raise ValueError("invalid editorial completion")
     intake = editorial_intake(root, value["request"]["request_path"])
-    if intake != value["request"] or value["public_zenodo_verification"].get("manifest_sha256") != intake["manifest_sha256"]:
+    if (intake != value["request"] or value.get("doi") != value["public_zenodo_verification"].get("doi")
+            or value["public_zenodo_verification"].get("manifest_sha256") != intake["manifest_sha256"]):
         raise ValueError("editorial delivery subject differs")
     if persisted:
         canonical = "evidence/publications/" + intake["publication_id"] + "/" + intake["manifest_sha256"] + "/EDITORIAL_COMPLETION.json"
         if path.relative_to(root).as_posix() != canonical:
             raise ValueError("persisted editorial receipt is outside its canonical path")
         value["website_stage"] = "docs"
-    manifest = publication.load_manifest(root / intake["manifest_path"], root)
+    manifest = verifier.validate_generic_receipt(value["public_zenodo_verification"], root / intake["manifest_path"], root)
     prefix = intake["website"]["path"].lstrip("/")
     outputs = [{"name": f["name"], "path": _web_name(f), "size": f["size"], "sha256": f["sha256"]}
                for f in manifest["files"]]
@@ -597,8 +599,8 @@ def requested_zenodo(root: Path, operation: str, manifest_relative: str,
         "credential_configuration": "NOT_INFERRED_FROM_SOURCE_OR_PREFLIGHT",
     }
     if execute:
-        if editorial_relative:
-            _main_governance(root, expected_head)
+        _main_governance(root, expected_head)
+        result["native_governance_verification"] = "EXACT_MAIN_MERGE_AND_NATIVE_CODE_OWNER_RULE_VERIFIED"
         effect = publication.publish if operation == "publish" else metadata_edit.edit_published_metadata
         evidence = effect(path, root)
         result["state"] = "PUBLISHER_RETURNED_REQUIRES_INDEPENDENT_READBACK_AND_PERSISTENCE"

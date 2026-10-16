@@ -53,6 +53,8 @@ repository-wide create-only dispatch reservation and supplies the exact inputs
 to **the same** `workflow_dispatch` publisher lane with `execute=true`. The
 manual lane retains `execute=false` as its default. No new publisher, proxy
 executor, approval impersonation, force update or Main push is introduced.
+The same native governance gate also protects direct manual publication and
+metadata-edit execution; omitting an editorial request cannot bypass it.
 
 An existing reservation means NOOP and remote reconciliation, even after a
 lost dispatch response. Its existence is not publication. Do not delete or
@@ -73,6 +75,14 @@ create-only **draft review carrier** using the existing Git-Data REST transport.
 The self-heal repair allowlist is not widened. Review, exact-head tests and
 protected Main merge remain required. A lost ref/PR acknowledgement is read back
 before continuing; no unchanged ambiguous POST is repeated.
+
+The existing catalog generator also binds each canonical editorial completion
+to its original publisher evidence, every exact file and its separate anonymous
+readback. It adds the version DOI to both the Zenodo list and the human-readable
+index, even when an older repository bundle already exists. Tampered status,
+DOI, file identities or an absent saved readback block materialization. The
+historical public-corpus snapshot is retained with its own observation scope;
+rendering saved evidence is never presented as a fresh online verification.
 
 Website deployment remains the existing
 `qikvrt_effect_ack_http_terminal.yml` route. After its actual Main deployment

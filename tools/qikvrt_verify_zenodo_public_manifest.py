@@ -240,12 +240,8 @@ def verify(
     }
 
 
-def verify_generic(manifest_path: pathlib.Path, root: pathlib.Path) -> dict[str, Any]:
-    """Independent anonymous verification for the existing generic v2 publisher.
-
-    Reuse its exact local evidence validator and metadata normalization. Neither
-    its authenticated transport nor its returned PASS is used as public proof.
-    """
+def _generic_subject(manifest_path: pathlib.Path, root: pathlib.Path):
+    """Validate the original local subject without asserting current public access."""
     from tools import qikvrt_zenodo_publish as publisher
     root = root.resolve(strict=True)
     manifest = publisher.load_manifest(manifest_path, root)
@@ -256,6 +252,33 @@ def verify_generic(manifest_path: pathlib.Path, root: pathlib.Path) -> dict[str,
     publisher._validate_recovery_evidence(evidence, manifest_path, root, manifest, execution_head)
     if evidence.get("phase") != "public_verified" or evidence.get("state") != "published":
         raise ValueError("publisher has not reached its public verification boundary")
+    return manifest, evidence
+
+
+def _generic_receipt(manifest, evidence, receipts):
+    rid = evidence["record_id"]
+    return {"schema": "qikvrt_public_zenodo_generic_verification_v1", "status": "PASS",
+            "record_id": rid, "doi": evidence["doi"], "record_url": f"https://zenodo.org/records/{rid}",
+            "manifest_sha256": manifest["manifest_sha256"], "publication_id": manifest["machine_proof"]["publication_id"],
+            "file_count": len(receipts), "files": receipts, "public_record_verified": True,
+            "authenticated_transport_used": False, "effect_ack_done": False}
+
+
+def validate_generic_receipt(receipt, manifest_path: pathlib.Path, root: pathlib.Path):
+    """Bind a saved readback to every original file; this performs no network read."""
+    manifest, evidence = _generic_subject(manifest_path, root)
+    files = [{"name": f["name"], "size": f["size"], "md5": f["md5"], "sha256": f["sha256"],
+              "byte_exact_public_redownload": True} for f in sorted(manifest["files"], key=lambda f: f["name"])]
+    expected = _generic_receipt(manifest, evidence, files)
+    if json.dumps(receipt, sort_keys=True) != json.dumps(expected, sort_keys=True):
+        raise ValueError("saved anonymous public receipt differs from its exact publication")
+    return manifest
+
+
+def verify_generic(manifest_path: pathlib.Path, root: pathlib.Path) -> dict[str, Any]:
+    """Independently retrieve anonymous metadata and every public original file."""
+    from tools import qikvrt_zenodo_publish as publisher
+    manifest, evidence = _generic_subject(manifest_path, root)
     rid, doi = evidence["record_id"], evidence["doi"]
     record = _get_json(f"https://zenodo.org/api/records/{rid}")
     publisher._public_record_identity(record, rid, doi)
@@ -283,11 +306,7 @@ def verify_generic(manifest_path: pathlib.Path, root: pathlib.Path) -> dict[str,
             raise ValueError("independent public file bytes differ")
         receipts.append({"name": name, "size": size, "md5": md5, "sha256": sha256,
                          "byte_exact_public_redownload": True})
-    return {"schema": "qikvrt_public_zenodo_generic_verification_v1", "status": "PASS",
-            "record_id": rid, "doi": doi, "record_url": f"https://zenodo.org/records/{rid}",
-            "manifest_sha256": manifest["manifest_sha256"], "publication_id": manifest["machine_proof"]["publication_id"],
-            "file_count": len(receipts), "files": receipts, "public_record_verified": True,
-            "authenticated_transport_used": False, "effect_ack_done": False}
+    return _generic_receipt(manifest, evidence, receipts)
 
 
 def build_parser() -> argparse.ArgumentParser:

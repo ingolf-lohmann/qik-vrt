@@ -293,6 +293,81 @@ def _project_public_corpus(root: pathlib.Path, index: dict[str, Any], text: str)
     return text.replace(anchor, section + "\n\n" + anchor, 1)
 
 
+def _project_editorial_publications(root: pathlib.Path, index: dict[str, Any], text: str) -> str:
+    """Extend the catalog from exact saved readbacks, without refreshing old corpus claims."""
+    paths = sorted((root / "evidence/publications").glob("*/*/EDITORIAL_COMPLETION.json"))
+    registered = {r["editorial_readback_path"] for r in index.get("zenodo_records", [])
+                  if isinstance(r, dict) and "editorial_readback_path" in r}
+    available = {p.with_name("PUBLIC_ZENODO_READBACK.json").relative_to(root).as_posix() for p in paths}
+    if not registered.issubset(available):
+        raise PublicationOverviewBlock("cataloged editorial readback is unavailable")
+    if not paths:
+        return text
+    from tools import qikvrt_publication_router as router
+    _, publication, _ = router._publication_dependencies()
+    entries = index.get("zenodo_records")
+    if not isinstance(entries, list) or not all(isinstance(r, dict) for r in entries):
+        raise PublicationOverviewBlock("Zenodo catalog must be a list of objects")
+    by_doi = {r.get("doi"): r for r in entries}
+    if len(by_doi) != len(entries):
+        raise PublicationOverviewBlock("ambiguous Zenodo catalog identity")
+    rows, seen = [], set()
+    for path in paths:
+        relative = path.relative_to(root).as_posix()
+        try:
+            completion, intake, manifest, _ = router._validated_editorial_completion(root, relative, persisted=True)
+            public = completion["public_zenodo_verification"]
+            readback = path.with_name("PUBLIC_ZENODO_READBACK.json")
+            safe = publication._safe_relative(
+                root, readback.relative_to(root).as_posix(), "editorial public readback", must_exist=True)
+            saved, _ = publication.zenodo._load_json_file(safe)
+            if saved != public:
+                raise ValueError("editorial readback and completion differ")
+        except (OSError, ValueError, RuntimeError) as exc:
+            raise PublicationOverviewBlock("invalid exact editorial catalog evidence: " + relative) from exc
+        doi, rid = public["doi"], public["record_id"]
+        if doi in seen:
+            raise PublicationOverviewBlock("multiple editorial receipts claim the same DOI")
+        seen.add(doi)
+        entry = by_doi.get(doi)
+        if entry is None:
+            entry = {"id": "zenodo-record-" + str(rid), "title": manifest["metadata"]["title"],
+                     "doi": doi, "doi_url": "https://doi.org/" + doi, "state": "published_record"}
+            entries.append(entry)
+            by_doi[doi] = entry
+        if entry.get("record_id", rid) != rid or entry.get("record_url", public["record_url"]) != public["record_url"]:
+            raise PublicationOverviewBlock("editorial DOI conflicts with catalog identity")
+        entry.update({"record_id": rid, "record_url": public["record_url"],
+                      "editorial_readback_path": readback.relative_to(root).as_posix(),
+                      "editorial_completion_path": relative, "manifest_sha256": intake["manifest_sha256"],
+                      "public_byte_verification": "SAVED_EXACT_ANONYMOUS_READBACK_NOT_LIVE_REOBSERVATION",
+                      "website_delivery_verified": False})
+        for bundle in index["publication_bundles"]:
+            if bundle["path"] == "docs" + intake["website"]["path"] + "README.md":
+                if bundle["id"] != intake["publication_id"]:
+                    raise PublicationOverviewBlock("editorial publication and bundle identifiers differ")
+                bundle.update(doi=doi, record_url=public["record_url"], editorial_readback_path=entry["editorial_readback_path"],
+                              state="zenodo_public_byte_verified_website_delivery_pending")
+        esc = html.escape
+        rows.append('<li><strong>' + esc(manifest["metadata"]["title"]) + '</strong> — '
+                    '<a href="' + esc(entry["doi_url"], quote=True) + '">' + esc(doi) + '</a> — '
+                    '<a href="' + esc(public["record_url"], quote=True) + '">' + esc(public["record_url"]) + '</a></li>')
+    begin, end = "<!-- QIKVRT_EDITORIAL_VERIFIED_BEGIN -->", "<!-- QIKVRT_EDITORIAL_VERIFIED_END -->"
+    section = (begin + '\n<section class="section" id="verlagspublikationen"><div class="wrap">'
+               '<h2>Nachweisgebundene Verlagspublikationen</h2>'
+               '<p>Originaldateien gemäß gespeichertem anonymem Zenodo-Readback bytegenau geprüft. '
+               'Dies ist keine neue Online-Prüfung. Die Website-Auslieferung benötigt eine eigene Abnahme.</p><ul>'
+               + "".join(rows) + '</ul></div></section>\n' + end)
+    if begin in text or end in text:
+        if text.count(begin) != 1 or text.count(end) != 1:
+            raise PublicationOverviewBlock("ambiguous editorial catalog projection")
+        return re.sub(re.escape(begin) + r".*?" + re.escape(end), lambda _: section, text, flags=re.DOTALL)
+    for anchor in ('  <section class="section" id="grenzen">', '</main>', '</body>', '</html>'):
+        if anchor in text:
+            return text.replace(anchor, section + "\n" + anchor, 1)
+    raise PublicationOverviewBlock("human index lacks an editorial insertion anchor")
+
+
 def build_outputs(root: pathlib.Path) -> tuple[bytes, str, dict[str, Any]]:
     machine_path = root / MACHINE_INDEX
     human_path = root / HUMAN_INDEX
@@ -350,6 +425,7 @@ def build_outputs(root: pathlib.Path) -> tuple[bytes, str, dict[str, Any]]:
         )
 
     html_text = _project_public_corpus(root, index, html_text)
+    html_text = _project_editorial_publications(root, index, html_text)
     machine_bytes = (
         json.dumps(index, ensure_ascii=False, indent=2, sort_keys=False) + "\n"
     ).encode("utf-8")

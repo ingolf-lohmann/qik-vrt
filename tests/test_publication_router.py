@@ -78,6 +78,7 @@ class RequestedAuthorityPublicationTests(unittest.TestCase):
         self.addCleanup(mock.patch.stopall)
         mock.patch.object(self.router, "_publication_dependencies", return_value=(
             self.executor, self.publisher, self.editor)).start()
+        self.governance = mock.patch.object(self.router, "_main_governance", return_value={"gate_state": "success"}).start()
         mock.patch.dict(os.environ, self.env).start()
 
     def git(self, *args) -> str:
@@ -105,6 +106,7 @@ class RequestedAuthorityPublicationTests(unittest.TestCase):
 
     def test_explicit_effect_reuses_exact_existing_publisher_once(self):
         result = self.request(execute=True)
+        self.governance.assert_called_once_with(self.root, self.head)
         self.publisher.publish.assert_called_once_with(self.manifest, self.root)
         self.editor.edit_published_metadata.assert_not_called()
         self.assertTrue(result["publisher_invoked"])
@@ -115,6 +117,13 @@ class RequestedAuthorityPublicationTests(unittest.TestCase):
         self.request("metadata-edit", execute=True)
         self.editor.edit_published_metadata.assert_called_once_with(self.manifest, self.root)
         self.publisher.publish.assert_not_called()
+
+    def test_direct_publish_and_metadata_effects_cannot_bypass_native_governance(self):
+        self.governance.side_effect = ValueError("CODE_OWNER_RULE_NOT_ENFORCED")
+        for operation in ("publish", "metadata-edit"):
+            with self.subTest(operation=operation), self.assertRaisesRegex(ValueError, "CODE_OWNER_RULE_NOT_ENFORCED"):
+                self.request(operation, execute=True)
+        self.assert_no_effect()
 
     def test_push_pr_wrong_repository_and_wrong_ref_cannot_execute(self):
         for key, wrong in (("GITHUB_EVENT_NAME", "push"), ("GITHUB_EVENT_NAME", "pull_request"),
@@ -482,7 +491,20 @@ class EditorialContinuationTests(unittest.TestCase):
             held = self.router.verify_editorial_delivery(self.root, ".qikvrt/evidence/publication-request/completion.json")
         self.assertTrue(held["state"].startswith("HOLD"))
 
-    def test_full_exact_dispatch_uses_real_existing_publisher_then_anonymous_completion(self):
+    def _publish_through_existing_editorial_lane(self):
+        """One isolated chain; GitHub, Zenodo and public HTTP are invented transports."""
+        calls = []
+        def queue_api(method, endpoint, data=None):
+            calls.append((method, endpoint, data))
+            if method == "GET":
+                return {"ref": calls[0][2]["ref"], "object": {"sha": self.head}}
+        with mock.patch.object(self.publisher, "_github_api_request", return_value=(404, {})), \
+             mock.patch.object(self.router, "_main_governance"), \
+             mock.patch.object(self.router, "_rest", side_effect=queue_api):
+            admitted = self.router.dispatch_editorial_queue(self.root)
+        self.assertEqual(admitted["requests"][0]["state"], "DISPATCH_ACK_REQUIRES_NATIVE_RUN_READBACK")
+        self.assertEqual(sum(c[1].endswith("/dispatches") for c in calls), 1)
+        inputs = calls[-1][2]["inputs"]
         manifest, public, _ = self.published_fixture()
         manifest["evidence_path"].unlink()
         github = self.f.FakeGitHubGitData()
@@ -497,15 +519,23 @@ class EditorialContinuationTests(unittest.TestCase):
             client.create_paper.return_value = draft
             client.prepare_draft.return_value = "draft"
             client.publish_and_poll.return_value = public
-            result = self.router.requested_zenodo(self.root, "publish", self.request["manifest_path"],
-                     self.request["manifest_sha256"], self.head, self.tree, execute=True,
-                     editorial_relative=self.request_path.relative_to(self.root).as_posix())
+            arguments = (self.root, inputs["operation"], inputs["manifest_path"], inputs["manifest_sha256"],
+                         inputs["expected_main_head"], inputs["expected_main_tree"])
+            preflight = self.router.requested_zenodo(*arguments, editorial_relative=inputs["editorial_request_path"])
+            self.assertFalse(preflight["external_effect_performed"])
+            client.create_paper.assert_not_called()
+            result = self.router.requested_zenodo(*arguments, execute=True, editorial_relative=inputs["editorial_request_path"])
         self.assertTrue(result["publisher_invoked"])
         client.create_paper.assert_called_once()
         client.publish_and_poll.assert_called_once()
         final = self.router.complete_editorial(self.root, self.request_path.relative_to(self.root).as_posix(),
                                                ".qikvrt/evidence/publication-request/site")
-        self.assertEqual(final["doi"], public["doi"])
+        return result, final
+
+    def test_full_exact_dispatch_uses_real_existing_publisher_then_anonymous_completion(self):
+        result, final = self._publish_through_existing_editorial_lane()
+        self.assertTrue(result["publisher_invoked"])
+        self.assertEqual(final["doi"], "10.5281/zenodo.123")
         self.assertTrue(final["public_zenodo_verification"]["public_record_verified"])
         self.assertFalse(final["effect_ack_done"])
 
@@ -552,9 +582,14 @@ class EditorialContinuationTests(unittest.TestCase):
         from tools import qikvrt_integrity as integrity
         from tools import qikvrt_publication_overview as overview
         from tools import qikvrt_self_heal_pr_materializer as materializer
-        self.published_fixture()
-        self.router.complete_editorial(self.root, self.request_path.relative_to(self.root).as_posix(),
-                                       ".qikvrt/evidence/publication-request/site")
+        from tests.test_qikvrt_publication_overview import PublicationOverviewTests
+        PublicationOverviewTests().fixture(str(self.root))
+        # Run the real index and integrity generators, not successful substitutes.
+        for relative in ("tools/qikvrt_integrity.py", "LEGACY_INTEGRITY_INVENTORIES.md"):
+            target = self.root / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes((ROUTER.parent.parent / relative).read_bytes())
+        _, completion = self._publish_through_existing_editorial_lane()
         calls, refs, commits, prs = [], {}, {}, []
         def api(method, endpoint, data=None):
             calls.append((method, endpoint, data))
@@ -581,13 +616,7 @@ class EditorialContinuationTests(unittest.TestCase):
                 prs.append({"number": 42, "state": "open", "head": {"sha": "e" * 40}, "base": {"ref": "main"}})
                 return prs[0]
             raise AssertionError(endpoint)
-        def generate(root):
-            for p in integrity.INTEGRITY_PATHS:
-                (root / p).write_bytes(b"fixture integrity generation only\n")
-            return integrity.Verification(True, "fixture")
-        with mock.patch.dict(os.environ, {"GITHUB_EVENT_NAME": "workflow_dispatch"}), \
-             mock.patch.object(overview, "execute", return_value={"changed_paths": []}), \
-             mock.patch.object(integrity, "generate", side_effect=generate):
+        with mock.patch.dict(os.environ, {"GITHUB_EVENT_NAME": "workflow_dispatch"}):
             result = self.router.persist_editorial(self.root, ".qikvrt/evidence/publication-request/completion.json", api=api)
         self.assertEqual(result["pull_request"], 42)
         self.assertFalse(result["main_merge_verified"])
@@ -597,6 +626,62 @@ class EditorialContinuationTests(unittest.TestCase):
         self.assertEqual(sum(c[1].endswith("/pulls") for c in posts), 1)
         self.assertTrue(next(c[2] for c in posts if c[1].endswith("/pulls"))["draft"])
         self.assertFalse(any(c[2].get("ref") == "refs/heads/main" for c in posts))
+        index = json.loads((self.root / overview.MACHINE_INDEX).read_bytes())
+        record = next((r for r in index["zenodo_records"] if r["doi"] == "10.5281/zenodo.123"), None)
+        self.assertIsNotNone(record, "A verified publication must enter the DOI catalog")
+        self.assertFalse(record["website_delivery_verified"])
+        self.assertIn("10.5281/zenodo.123", (self.root / overview.HUMAN_INDEX).read_text())
+        self.assertEqual(overview.execute(self.root, materialize=False)["state"], "CURRENT")
+        self.assertTrue(integrity.verify(self.root).ok)
+        # The same staged originals must also pass the final anonymous website check.
+        by_url = {self.router.PUBLIC_ORIGIN + "/" + a["path"]:
+                  (self.root / "docs" / a["path"]).read_bytes() for a in completion["website_assets"]}
+        def response(request, **kw):
+            self.assertFalse(request.has_header("Authorization"))
+            raw = by_url[request.full_url]
+            value = mock.MagicMock()
+            value.__enter__.return_value = SimpleNamespace(status=200, geturl=lambda: request.full_url,
+                                                          read=lambda count: raw[:count])
+            return value
+        with mock.patch("urllib.request.build_opener") as opener:
+            opener.return_value.open.side_effect = response
+            delivered = self.router.verify_editorial_delivery(self.root, record["editorial_completion_path"], persisted=True)
+        self.assertEqual(len(delivered["files"]), len(by_url))
+        self.assertTrue(all(f["byte_exact_public_readback"] for f in delivered["files"]))
+        self.assertFalse(delivered["effect_ack_done"])
+        before = (self.root / overview.MACHINE_INDEX).read_bytes()
+        path = self.root / record["editorial_readback_path"]
+        saved = json.loads(path.read_bytes())
+        saved["status"] = "FAIL"
+        path.write_bytes(self.router._json_bytes(saved))
+        with self.assertRaises(overview.PublicationOverviewBlock):
+            overview.execute(self.root, materialize=True)
+        self.assertEqual((self.root / overview.MACHINE_INDEX).read_bytes(), before)
+
+    def test_completion_cannot_promote_a_tampered_public_receipt(self):
+        import copy
+        self.published_fixture()
+        self.router.complete_editorial(self.root, self.request_path.relative_to(self.root).as_posix(),
+                                       ".qikvrt/evidence/publication-request/site")
+        path = self.root / ".qikvrt/evidence/publication-request/completion.json"
+        original = json.loads(path.read_bytes())
+        bad_values = []
+        for key, value in (("status", "FAIL"), ("authenticated_transport_used", True),
+                           ("public_record_verified", 1), ("file_count", 0)):
+            changed = copy.deepcopy(original)
+            changed["public_zenodo_verification"][key] = value
+            bad_values.append(changed)
+        changed = copy.deepcopy(original)
+        changed["public_zenodo_verification"]["files"][0]["sha256"] = "0" * 64
+        bad_values.append(changed)
+        changed = copy.deepcopy(original)
+        changed["doi"] = "10.5281/zenodo.999"
+        bad_values.append(changed)
+        for value in bad_values:
+            with self.subTest(value=value["doi"]):
+                path.write_bytes(self.router._json_bytes(value))
+                with self.assertRaises(ValueError):
+                    self.router._validated_editorial_completion(self.root, path.relative_to(self.root).as_posix())
 
     def test_successful_workflow_with_skipped_deployment_never_probes_public_assets(self):
         run = {"head_sha": self.head, "head_branch": "main", "repository": {"full_name": self.router.AUTHORITY},

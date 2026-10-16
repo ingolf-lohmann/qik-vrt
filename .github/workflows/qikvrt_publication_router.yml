@@ -39,8 +39,10 @@ on:
     paths:
       - state/publication_requests/**
       - tools/qikvrt_publication_router.py
+      - tools/qikvrt_publication_overview.py
       - tools/qikvrt_verify_zenodo_public_manifest.py
       - tests/test_publication_router.py
+      - tests/test_qikvrt_publication_overview.py
       - .github/workflows/qikvrt_publication_router.yml
   workflow_run:
     workflows: [QIKVRT EFFECT_ACK HTTP Firefox terminal]
@@ -53,9 +55,11 @@ on:
       - docs/publications/**/ZENODO_CANDIDATE.json
       - docs/publications/**/IETF_DISPOSITION.json
       - tools/qikvrt_publication_router.py
+      - tools/qikvrt_publication_overview.py
       - tools/qikvrt_verify_zenodo_public_manifest.py
       - state/publication_requests/**
       - tests/test_publication_router.py
+      - tests/test_qikvrt_publication_overview.py
       - .github/workflows/qikvrt_publication_router.yml
 
 permissions:
@@ -115,9 +119,10 @@ jobs:
       - name: Validate publication routing
         run: |
           set -euo pipefail
+          python3 -B tools/qikvrt_tool_cache.py verify
           python3 -B tools/qikvrt_publication_router.py \
             docs/publications/2026-08-04-pre-spacetime-ontology --json
-          python3 -B -m unittest -v tests.test_publication_router
+          python3 -B -m unittest -v tests.test_publication_router tests.test_qikvrt_publication_overview
 
   editorial-queue:
     if: github.event_name == 'push' && github.repository == 'ingolf-lohmann/qik-vrt' && github.ref == 'refs/heads/main'

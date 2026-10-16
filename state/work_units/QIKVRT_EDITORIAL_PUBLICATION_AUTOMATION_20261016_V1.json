@@ -4,7 +4,7 @@
   "repository": "ingolf-lohmann/qik-vrt",
   "pull_request": 523,
   "branch": "integration/515-519-521-522-20261012-eceb9b63",
-  "status": "FIRST_NATIVE_ROUTER_PASS_PDF_ABSENCE_REPAIRED_SUCCESSOR_FULL_CHECKS_REQUIRED",
+  "status": "SOURCE_EXTENDED_LOCAL_CHAIN_VERIFIED_CURRENT_NATIVE_GATES_REQUIRED",
   "source_head": "17df5c06ad6e7d7ae611ec1a4be3b686fe39434b",
   "source_tree": "8cf0b34ee0cb53410c160232e37fc50b08e6d143",
   "owner_instruction": {
@@ -81,7 +81,8 @@
     ".github/workflows/qikvrt_publication_router.yml",
     "tests/test_publication_router.py",
     "runtime/capabilities/ZENODO_PUBLICATION_CAPABILITY.json",
-    "state/publication_requests/README.md"
+    "state/publication_requests/README.md",
+    "tools/qikvrt_publication_overview.py"
   ],
   "local_verification": {
     "tests": 129,
@@ -184,5 +185,77 @@
     "causal_repair": "Keep the exact6.15.0 production requirement; turn absent package metadata into the same explicit runtime HOLD; add an absence regression and retain actual parser execution in the separately provisioned native publication lane. No package downgrade or fake parser PASS.",
     "publication_effect_jobs": "requested-zenodo/editorial-queue/editorial-public-readback correctly skipped on the source push/PR; no production record created.",
     "pass_transferred_to_successor": false
+  },
+  "independent_successor_20261016": {
+    "source_head": "4e2490e1af9d42d39bfe080509c98c2db4f53028",
+    "source_tree": "d9904a89cae99cd362e2400cb7740a95c0858c95",
+    "predecessor_preserved": true,
+    "generic_publisher_changed": false,
+    "new_workflows": 0,
+    "new_author_grants": 0,
+    "findings_and_repairs": [
+      {
+        "id": "EDITORIAL_DOI_CATALOG_LINK",
+        "before": "The real persistence path called the index generator, but it added only a repository bundle; the new DOI was absent from zenodo_records and the human DOI list. The original persistence test replaced the generator.",
+        "after": "The existing index generator validates canonical editorial completion, original v2 publisher evidence, every saved public file identity and staged website bytes. It adds the DOI to the machine and human catalogs without changing the historical public-corpus observation scope. Real index/integrity generators now run in the isolated chain test."
+      },
+      {
+        "id": "EXACT_PUBLIC_RECEIPT_BINDING",
+        "before": "Completion validation accepted modified status, authentication flags, file count, per-file SHA256 and an inconsistent completion DOI.",
+        "after": "Reuse one local validation of the unchanged publisher evidence and the complete typed anonymous receipt; malformed, omitted, changed or credentialed verification claims hold. Local receipt validation explicitly does not assert new public access."
+      },
+      {
+        "id": "DIRECT_EXECUTION_NATIVE_GOVERNANCE",
+        "before": "Direct publish and metadata-edit execute=true requests without an editorial binding did not call the current native governance gate.",
+        "after": "Every effectful router invocation requires the same exact Main merge and current independent Code Owner rule/review gate. Read-only preflight remains nonproductive."
+      }
+    ],
+    "regression_evidence": {
+      "original_catalog_and_receipt_controls": "Two added controls reproduced six failures before the repairs.",
+      "original_manual_governance_control": "The new control reproduced both missing governance denials and the attempted mocked publisher invocation before the repair.",
+      "fixed_controls": "139 tests, zero failures/errors/skips; includes46 router controls,8 catalog controls,68 unchanged machine-proof/authorization controls and17 unchanged Zenodo transport controls.",
+      "tool_cache": "34/34,100 percent",
+      "workflow_validation": "YAML parsed; all13 shell steps pass bash -n"
+    },
+    "isolated_chain": [
+      "Reviewed committed intake",
+      "One reserved automatic dispatch with exact generated inputs",
+      "Read-only preflight",
+      "Real existing generic publisher and single-use lock state machine",
+      "Anonymous public metadata and all-file verification",
+      "Website staging",
+      "Real publication index and repository integrity generation",
+      "Create-only draft receipt/docs carrier",
+      "Anonymous exact website-file readback"
+    ],
+    "evidence_boundary": "Temporary Git history and real local validators/generators. GitHub governance/control-plane, Zenodo and public HTTP are invented external transports. No production authorization, native approval, new public record, Main merge, website deployment or live delivery is inferred.",
+    "productive_queue_requests_observed": 0,
+    "native_checks_required_for_resulting_commit": true,
+    "operational_gaps": [
+      "Protected Main and exact independent review/merge",
+      "Native automated evidence-PR execution admission",
+      "Exact per-candidate Authority v2 author authorization",
+      "Protected Zenodo credential delivery in an admitted execution",
+      "Real public Zenodo metadata and byte-exact original downloads",
+      "Evidence draft PR review and Main integration",
+      "Existing deployment and exact-host TLS/application acceptance",
+      "Mirror persistence before pair equality"
+    ],
+    "existing_automation_admission_boundary": {
+      "source": "https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow",
+      "observation": "workflow_dispatch is an exception to GITHUB_TOKEN recursion suppression; automated pull_request opened/synchronize/reopened runs may require native approval. No token scope expansion or substitute approval is introduced."
+    },
+    "domain_readback": {
+      "observed_at": "2026-10-16T17:51:08.084Z",
+      "url": "https://raumzeitterminal.de/",
+      "http_status": 525,
+      "public_A": "217.160.0.52",
+      "source": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/readback?id=29bf48b4-7ff8-4465-8877-dba77ae086c0",
+      "application_delivery_verified": false
+    },
+    "provenance": {
+      "human": "Ingolf Lohmann: task and authorization",
+      "artificial": "OpenAI Codex: independent source inspection, causal regressions, implementation and isolated verification"
+    }
   }
 }
