@@ -296,6 +296,297 @@
     "source_parent_head": "fa313c61b957f18ab01b3f0048c5a080dac7ece7",
     "source_parent_tree": "4863b6afc7fe92014fc5bec3e3fc7f1457c62d5b"
   },
+  "integrity_checkout_bytes_repair_20261016": {
+    "all_34_native_checkout_digests_reproduced": true,
+    "cause": "The base integrity manifest hashes normalized Git blob LF bytes for 34 .cmd/.ps1 paths; existing .gitattributes correctly materializes CRLF checkout bytes. Native full-tree regeneration reports exactly these 34 differences, no added or removed paths. The same mismatch is independently reproduced by actual local Git checkout for all 34 exact original blobs. The new S1 evidence work unit digest is not in the mismatch set.",
+    "changed_source_files": 0,
+    "complete_local_repository_verification": false,
+    "diagnostic_job": 117048848360,
+    "diagnostic_run": 38923432603,
+    "effect_ack_done": false,
+    "failed_job": 117048870096,
+    "failed_run": 38923438694,
+    "gitattributes_changed": false,
+    "observed_at": "2026-10-16T15:25:52.454001+00:00",
+    "repair": "Regenerate existing canonical integrity metadata for the declared checkout bytes; preserve every source byte, .gitattributes, all guards and original failure.",
+    "source_head": "26eb263aa6ed112deb59ef922b2d2d80688d6088",
+    "source_tree": "6d76c26c02dca9a287b5d6f369f36dc9c798c36d",
+    "successor_native_verification": "PENDING",
+    "verified_sources": [
+      {
+        "checkout_bytes": 132,
+        "checkout_sha256": "41e3dc348e447d6ba8f8809827e5cf04994ee2592127c1201adb35194a0cfde2",
+        "git_blob": "03aed0afecfdcacf0bf27f232c0d9263881d3e7a",
+        "git_blob_bytes": 122,
+        "native_expected_equal": true,
+        "path": "DRY_RUN_VERIFY_ONLY.cmd"
+      },
+      {
+        "checkout_bytes": 197,
+        "checkout_sha256": "7f3505a3d39f124b2e9a9734ff31aac9bbce33c822d06c69688531dfdf0a431e",
+        "git_blob": "8baf028e7695af946154ac493fde40b281bb3f05",
+        "git_blob_bytes": 192,
+        "native_expected_equal": true,
+        "path": "GITHUB_AUTH_PREFLIGHT_ONLY.cmd"
+      },
+      {
+        "checkout_bytes": 187,
+        "checkout_sha256": "a6a699f249367bbe9428a72aa265aaf5b1cc8ca36de4505057fc770f7f46edec",
+        "git_blob": "3709447007d96261f4f60cf32f48170387ca4243",
+        "git_blob_bytes": 182,
+        "native_expected_equal": true,
+        "path": "GITHUB_DRY_RUN_VERIFY_ONLY.cmd"
+      },
+      {
+        "checkout_bytes": 178,
+        "checkout_sha256": "8b6018376311f1dcf4c1df5d7fe5193a5062254244f8277b1ed11fd80c36265d",
+        "git_blob": "efe783d6681123fff8d7f2f0e7b9f63cfc1bd32b",
+        "git_blob_bytes": 173,
+        "native_expected_equal": true,
+        "path": "GITHUB_ZENODO_UPLOAD_AND_PUBLISH.cmd"
+      },
+      {
+        "checkout_bytes": 169,
+        "checkout_sha256": "0ec2d1fb1d747879e846855df72d3454828c0932a3783b7e77fb27d3efe4db45",
+        "git_blob": "e18467c74c0ee89e8fac4724ef8c0ee6e2dcee12",
+        "git_blob_bytes": 164,
+        "native_expected_equal": true,
+        "path": "GIT_INVOCATION_SELFTEST.cmd"
+      },
+      {
+        "checkout_bytes": 168,
+        "checkout_sha256": "bf1df74b7e93461df7fde22290c9529c37c040b9aa238a3ca673da1491185500",
+        "git_blob": "7a91f2ef719c705afc5c5afc308a2aec399aebcc",
+        "git_blob_bytes": 163,
+        "native_expected_equal": true,
+        "path": "POWERSHELL_PARSE_CHECK_ONLY.cmd"
+      },
+      {
+        "checkout_bytes": 469,
+        "checkout_sha256": "319060d1386199427983421c9c20f784e35cb2870cdab27d57c80d2e5679dc2b",
+        "git_blob": "969993d0f5fcd0607c9364eefa92d47df41a3fba",
+        "git_blob_bytes": 458,
+        "native_expected_equal": true,
+        "path": "QIKVRT_V45_11_BUILD_ZIP_AND_HASH.cmd"
+      },
+      {
+        "checkout_bytes": 3075,
+        "checkout_sha256": "3ff2e4a7d21f5d82a9df1da9acf8da66a61fed9ea90acd169225d546c762fdc3",
+        "git_blob": "157da098eb5a4684f6ccbd84969b71b615573260",
+        "git_blob_bytes": 3003,
+        "native_expected_equal": true,
+        "path": "QIKVRT_V45_11_REAL_GITHUB_RELEASE.cmd"
+      },
+      {
+        "checkout_bytes": 447,
+        "checkout_sha256": "0db2ea9f83066e3d3cd433fee89892d94117817ae071c594e0d88215fa560b1f",
+        "git_blob": "58ebbc8a092af3024fe8790ac5016ccfda8fbf3e",
+        "git_blob_bytes": 436,
+        "native_expected_equal": true,
+        "path": "QIKVRT_V45_11_RUN_LOCAL_VERIFY.cmd"
+      },
+      {
+        "checkout_bytes": 478,
+        "checkout_sha256": "cf51fd42c97e462e44f9431e2b7ade68a31a52d40630a28762d139dee4580e05",
+        "git_blob": "086478ffec30376e6fc4090b2069d36d026b0a85",
+        "git_blob_bytes": 467,
+        "native_expected_equal": true,
+        "path": "QIKVRT_V45_11_RUN_PYTHON_VERIFY_OPTIONAL.cmd"
+      },
+      {
+        "checkout_bytes": 475,
+        "checkout_sha256": "5084f7598054cfa31d4ec1e56dc7af25bc1b0e61b6239ab03bf0db0a033d0d6e",
+        "git_blob": "d630e9f0574113dddfdf03ac558e32089088e737",
+        "git_blob_bytes": 464,
+        "native_expected_equal": true,
+        "path": "QIKVRT_V45_12_BUILD_ZIP_AND_HASH.cmd"
+      },
+      {
+        "checkout_bytes": 3191,
+        "checkout_sha256": "c670dc03b1602205e753ba121cef5472f8c1df1c849a5ed0fe05f3fec02e8d93",
+        "git_blob": "6614bdc1f69ca9ea748fced742943b829f8b290b",
+        "git_blob_bytes": 3124,
+        "native_expected_equal": true,
+        "path": "QIKVRT_V45_12_REAL_GITHUB_RELEASE.cmd"
+      },
+      {
+        "checkout_bytes": 434,
+        "checkout_sha256": "be7712a359f40f87fe8886553a7fc8c25646a0c162f6c6b363cbee64108f1357",
+        "git_blob": "80743d103a7ababd69bf8e2ec4d1f768ff5f1cfc",
+        "git_blob_bytes": 423,
+        "native_expected_equal": true,
+        "path": "QIKVRT_V45_12_RUN_LOCAL_VERIFY.cmd"
+      },
+      {
+        "checkout_bytes": 404,
+        "checkout_sha256": "c7dfdf9610f25f96643b7626993b96b5e2daf678997907c198f97c917c46637e",
+        "git_blob": "93c9b7ff5091f4a3d69ccbdeeff1b46f4ccf8765",
+        "git_blob_bytes": 393,
+        "native_expected_equal": true,
+        "path": "QIKVRT_V45_12_RUN_PYTHON_VERIFY_OPTIONAL.cmd"
+      },
+      {
+        "checkout_bytes": 718,
+        "checkout_sha256": "2b880a339197f4ffdd951c296191a492fa894b16577a76e5779157039f8f675a",
+        "git_blob": "3c8b5be8f3c7a288f2568fca92c579ce1e9417cd",
+        "git_blob_bytes": 703,
+        "native_expected_equal": true,
+        "path": "QIKVRT_V45_16_REAL_GITHUB_RELEASE.cmd"
+      },
+      {
+        "checkout_bytes": 642,
+        "checkout_sha256": "17b37bdcbc9d85c5cf1e0c8d7b8fc8bfa02a62e326571c59437eceba2d6de867",
+        "git_blob": "8eab014fb3c8e3e47b60be63fcf28d933680c6d1",
+        "git_blob_bytes": 627,
+        "native_expected_equal": true,
+        "path": "QIKVRT_V45_16_RUN_LOCAL_VERIFY.cmd"
+      },
+      {
+        "checkout_bytes": 710,
+        "checkout_sha256": "a410c5a9273960a83f241d094b6047f278e421e83352b10a57cc73c94ef81572",
+        "git_blob": "3158d5b0b1eda333a136ad6384f02f902528c77e",
+        "git_blob_bytes": 696,
+        "native_expected_equal": true,
+        "path": "QIKVRT_V45_19_REAL_GITHUB_RELEASE.cmd"
+      },
+      {
+        "checkout_bytes": 535,
+        "checkout_sha256": "e209f6811cec4ac907d6fea737e3b2d5398370aac3db129eb639bd2d28da8320",
+        "git_blob": "5e4c64413b4a8c8a14c6d2c1c4a1bafc8b1aceef",
+        "git_blob_bytes": 522,
+        "native_expected_equal": true,
+        "path": "QIKVRT_V45_19_RUN_LOCAL_VERIFY.cmd"
+      },
+      {
+        "checkout_bytes": 710,
+        "checkout_sha256": "5ec697d07d7f539c6be4a893559ac8d6380ee0e62292d45e8f857f8478898c33",
+        "git_blob": "5f775651b513c9eea8c94aefaafd77491f35ad97",
+        "git_blob_bytes": 696,
+        "native_expected_equal": true,
+        "path": "QIKVRT_V45_20_REAL_GITHUB_RELEASE.cmd"
+      },
+      {
+        "checkout_bytes": 535,
+        "checkout_sha256": "39a29710d4113cfbad3e58a2c08979c27c0b78a995dc6d4addab351d23129c18",
+        "git_blob": "fbf8004c1b86e41a41043bf2f8c82e8077ba2910",
+        "git_blob_bytes": 522,
+        "native_expected_equal": true,
+        "path": "QIKVRT_V45_20_RUN_LOCAL_VERIFY.cmd"
+      },
+      {
+        "checkout_bytes": 871,
+        "checkout_sha256": "e379c0d78d8b80f898235ba777acbc812a4d285e97e0c4dea797f2ecf8686d7d",
+        "git_blob": "c934763dbf740305f21ccf2aec7c4c1c3cfb8596",
+        "git_blob_bytes": 840,
+        "native_expected_equal": true,
+        "path": "incoming/qikvrt_payloads/20260708T152348Z/payload/QIKVRT_V2_13_4AO_GENERIC_PAYLOAD_UPLOAD_KIT_WSH_NO_PS_NO_GIT/START_HIER_QIKVRT_UPLOAD.cmd"
+      },
+      {
+        "checkout_bytes": 820,
+        "checkout_sha256": "5a9cb9580d4d6a4ab6b117c58a9de31f64aeae23413936d90036df300d85279b",
+        "git_blob": "5a16a3b50a245777d896551df55ad248acae94da",
+        "git_blob_bytes": 796,
+        "native_expected_equal": true,
+        "path": "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/START_HIER_AUTONOMOUS_MESH_INSTALL.cmd"
+      },
+      {
+        "checkout_bytes": 811,
+        "checkout_sha256": "140f01442242606ac2bbcbfeb57fce1d6ecb024d1c5c1ce19681e4d3719825a5",
+        "git_blob": "09329c099c5c3ded967d3756d309d9cf6c6163dd",
+        "git_blob_bytes": 787,
+        "native_expected_equal": true,
+        "path": "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/START_HIER_PRODUCTIZATION_HARDENING_INSTALL.cmd"
+      },
+      {
+        "checkout_bytes": 859,
+        "checkout_sha256": "3830afdb4aca0f5e151ad44e6ae10455b00b94d5de6937dabc63b7ed99ba66ac",
+        "git_blob": "50bc9d97973961dbbe0446df28dd8e38b49e940c",
+        "git_blob_bytes": 835,
+        "native_expected_equal": true,
+        "path": "incoming/qikvrt_payloads/20260708T172711Z/payload/QIKVRT_V2_13_4AU2_PRODUCTIZATION_RELEASE_FREEZE_ONE_COMMAND_INSTALLER/START_HIER_RELEASE_FREEZE_INSTALL.cmd"
+      },
+      {
+        "checkout_bytes": 890,
+        "checkout_sha256": "eac7f5d6bd154f8787b16facbf76dee6a2e24029cfcc7f7263ed0815cae103c6",
+        "git_blob": "0fecf7d09af128c49f304a1cf7fd9b5786f54816",
+        "git_blob_bytes": 865,
+        "native_expected_equal": true,
+        "path": "incoming/qikvrt_payloads/20260708T174539Z/payload/QIKVRT_V2_13_4AV1_OPEN_MULTI_NODE_REGISTRY_REVALIDATION_ONE_COMMAND_INSTALLER/START_HIER_OPEN_MULTI_NODE_REVALIDATION_INSTALL.cmd"
+      },
+      {
+        "checkout_bytes": 841,
+        "checkout_sha256": "93a5ffa9f24aef01eb20db40323d2dbbce7a8e338364e939fbdc28044cef7d77",
+        "git_blob": "099c9bd3ca41b44c60f55a43f3676ef89dd699e1",
+        "git_blob_bytes": 817,
+        "native_expected_equal": true,
+        "path": "incoming/qikvrt_payloads/20260708T180204Z/payload/QIKVRT_V2_13_4AV2A_OPEN_MULTI_NODE_RELEASE_FREEZE_HTA_TOKEN_FIX_ONE_COMMAND_INSTALLER/qv2134av2a_work/START_HIER_RELEASE_FREEZE_INSTALL.cmd"
+      },
+      {
+        "checkout_bytes": 810,
+        "checkout_sha256": "337ce72ddd369a98e4b6620f7dc200b52a3e8ddf211c55145840670e0389a051",
+        "git_blob": "a41cdc541f7eca49ff0be64760652b6b0d0ddec5",
+        "git_blob_bytes": 786,
+        "native_expected_equal": true,
+        "path": "incoming/qikvrt_payloads/20260708T182401Z/payload/QIKVRT_V2_13_4AW_COMMERCIAL_READINESS_PACK_ONE_COMMAND_INSTALLER/qv2134aw_work/START_HIER_COMMERCIAL_READINESS_UPLOAD.cmd"
+      },
+      {
+        "checkout_bytes": 3641,
+        "checkout_sha256": "89c49f49273c5ef296675e9a4a452e8571a8e89f04015b803839565d46e65873",
+        "git_blob": "f171ba9975ca31553a876177d1b16246770911b9",
+        "git_blob_bytes": 3586,
+        "native_expected_equal": true,
+        "path": "qikvrt.ps1"
+      },
+      {
+        "checkout_bytes": 2169,
+        "checkout_sha256": "d328dc11de94d87808959a55e427d43d22a9fbbc4e1fd4914705acd8499454ab",
+        "git_blob": "e886f6302192db5cd891f6aa1518cdc7b6690715",
+        "git_blob_bytes": 2129,
+        "native_expected_equal": true,
+        "path": "runtime/download_python_runtime.ps1"
+      },
+      {
+        "checkout_bytes": 11664,
+        "checkout_sha256": "acdf3154bb89c62e0da46eb9165090e3f907963c812188f06d031d63b8a9d7ba",
+        "git_blob": "e900a2e40e6ac0b1454653a0708a88f6e883dd7b",
+        "git_blob_bytes": 11400,
+        "native_expected_equal": true,
+        "path": "tools/bootstrap-gh.ps1"
+      },
+      {
+        "checkout_bytes": 24266,
+        "checkout_sha256": "a304946b15f0a421de4247a36698091298e5fa68965e87f9c5d35031c13f7328",
+        "git_blob": "b6d8600b7894920971890ce06d7d2ec9da510668",
+        "git_blob_bytes": 23788,
+        "native_expected_equal": true,
+        "path": "tools/bootstrap-runtime.ps1"
+      },
+      {
+        "checkout_bytes": 269,
+        "checkout_sha256": "6de5365e5017ea7cf22a30436d87ba57cdeffccc22d522705731d931d079df65",
+        "git_blob": "a3f846e97ce500c7688e0eeca622d96816df2854",
+        "git_blob_bytes": 262,
+        "native_expected_equal": true,
+        "path": "tools/git_invocation_selftest.ps1"
+      },
+      {
+        "checkout_bytes": 23354,
+        "checkout_sha256": "f5e359d31a3a6825ac1df6284b9dede953a542c06afb87fbfbe5375aa7721e59",
+        "git_blob": "0eed17af0c6e37c47d2e2501401809ce4fae2411",
+        "git_blob_bytes": 22924,
+        "native_expected_equal": true,
+        "path": "tools/github_zenodo_release_publish.ps1"
+      },
+      {
+        "checkout_bytes": 1558,
+        "checkout_sha256": "712cae5fefde539f8438e6daefb6bfac983db62db989c5e603305f540f3fe5a7",
+        "git_blob": "f9ffcd409d9cdca37b6b63ce6a7c58de14f995bf",
+        "git_blob_bytes": 1526,
+        "native_expected_equal": true,
+        "path": "tools/powershell_parse_check.ps1"
+      }
+    ]
+  },
   "isolated_fixture_bridge_readback_repair": {
     "actual_error": "'8080/tcp'",
     "job_id": 115432977331,
