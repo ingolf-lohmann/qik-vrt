@@ -1,7 +1,7 @@
 {
   "schema": "qikvrt_work_unit_v1",
   "id": "QIKVRT_AUTHORITY_CAPABILITY_TRANSFER_20261016_V1",
-  "status": "DOMAIN_VERIFICATION_ACTIVE_VPS_QUOTE_READY_RUNTIME_BYTES_VERIFIED_FINAL_ROUTING_AND_LEGAL_CONFIRMATION_PENDING",
+  "status": "PUBLIC_COMMISSIONING_OPEN_CUSTOMER_AUTHENTICATED_MANAGEMENT_GATEWAY_502",
   "repository": "ingolf-lohmann/qik-vrt",
   "pull_request": 523,
   "branch": "integration/515-519-521-522-20261012-eceb9b63",
@@ -367,8 +367,8 @@
   "artificial_contribution": "OpenAI Codex: REST inspection, preserved-source capability comparison, existing publication-router integration and regression checks.",
   "PREDECESSOR_EVIDENCE_TRANSFER": false,
   "EFFECT_ACK_DONE": false,
-  "next_action": "Obtain the two concrete final decisions for replacing this domain's IONOS Webhosting DNS template and accepting/ordering the prepared EUR69 initial / EUR59 monthly VPS contract. Preserve all standing task authorization, SSO/mail gaps and native review gates; execute admitted successors after those decisions.",
-  "updated_at_utc": "2026-10-16T13:23:10.484Z",
+  "next_action": "After verified gateway recovery, reuse the existing regular IONOS Webspace folder/upload path, bind only raumzeitterminal.de to its own publication directory, provision its exact TLS route, and independently read back the actual publisher/terminal and exact public bytes. Preserve mail, other domains, the earlier concrete DNS service-replacement decision and action-time server-contract terms. Do not replace exact-host delivery by a redirect or green CI claim.",
+  "updated_at_utc": "2026-10-16T19:01:30.409873+00:00",
   "publication_scope_request": {
     "received_at": "2026-10-16T09:48:07Z",
     "human": "Ingolf Lohmann",
@@ -832,6 +832,81 @@
       ],
       "supersedes": [],
       "record_sha256": "af98a1b6a5086c9d7f66e6bab264355aebe47658bb7cd52d3f305e603a7f8022"
+    },
+    {
+      "id": "native:temdd-s1-original-run38855798987",
+      "epistemic_class": "SOURCE_BOUND_OBSERVATION",
+      "subject": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "head": "e8fbaae5cbd7ef04b718561d576cee521c51b9cd",
+        "tree": "55c17ee5580c755e54a515219e90f0f3e7cd8f64",
+        "run_id": 38855798987,
+        "job_id": 116826855767
+      },
+      "scope": "Original exact-source native TEMDD/S1 controls; original artifact byte-verified; NO_DEPLOYMENT.",
+      "statement": "The Owner-supplied original job succeeded with264 passed and one skipped. Original10403-byte ZIP SHA2562a7129aa9a93c7681a6aba0e75699c9ef47b52d59240b49def2faa8380f1d033 and source/receipt binding were independently verified and are preserved in the existing S1 work unit.",
+      "evidence": [
+        "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38855798987/job/116826855767",
+        "state/work_units/QIKVRT_S1_LINUX_CONTAINER_CI_20261013_V1.json#native_temdd_s1_original_job_readback_20261016"
+      ],
+      "supersedes": [],
+      "record_sha256": "6adc7d6bc28fcf23bcc7deb866571cf0adc03875137e70a36be25f42fdfbdb39"
+    },
+    {
+      "id": "integrity:cmd-powershell-declared-crlf-checkout-20261016",
+      "epistemic_class": "SOURCE_BOUND_OBSERVATION",
+      "subject": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "head": "26eb263aa6ed112deb59ef922b2d2d80688d6088",
+        "tree": "6d76c26c02dca9a287b5d6f369f36dc9c798c36d"
+      },
+      "scope": "Original34-path integrity failure and original-Git-checkout reproduction; preserve original diagnostic scope.",
+      "statement": "The base integrity manifest hashes normalized Git blob LF bytes for 34 .cmd/.ps1 paths; existing .gitattributes correctly materializes CRLF checkout bytes. Native full-tree regeneration reports exactly these 34 differences, no added or removed paths. The same mismatch is independently reproduced by actual local Git checkout for all 34 exact original blobs. The new S1 evidence work unit digest is not in the mismatch set.",
+      "evidence": [
+        "state/work_units/QIKVRT_S1_LINUX_CONTAINER_CI_20261013_V1.json#integrity_checkout_bytes_repair_20261016"
+      ],
+      "supersedes": [],
+      "record_sha256": "e2a94372733bae1693e9e7ff39daa9c623879b8e11a09a668fe9a33a17efec96"
+    },
+    {
+      "id": "native:temdd-s1-verified-successor-e2aa118a-20261016",
+      "epistemic_class": "SOURCE_BOUND_OBSERVATION",
+      "subject": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "head": "e2aa118a9d25913fdb15d351d00bac14af0fded3",
+        "tree": "b1b2aca5440765e101f703e10567a758c4efbb3b",
+        "run_id": 38924202918,
+        "job_id": 117051467808
+      },
+      "scope": "Historical original successor native S1 execution and full integrity; no current db7 acceptance transfer or deployment.",
+      "statement": "Native job117051467808 succeeded with278 passed and one skipped and verified4813 entries/4802 immutable digests. The prior work ring byte-verified artifact12055588733:10795 bytes,SHA256d78b3f1d19390bb7cc0d432b68298490c1b50a6a1d78a36bcf1bece6275ed1ed, exact e2 HEAD/TREE and native-source digest94908e6a50ce107a79965055f3ecabae10e7589d96f7a26496d2a4956b068b13. Current authenticated REST reobservation again reports this original job successful. Scope NO_DEPLOYMENT.",
+      "evidence": [
+        "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38924202918/job/117051467808",
+        "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38924202918/artifacts/12055588733"
+      ],
+      "supersedes": [
+        "integrity:cmd-powershell-declared-crlf-checkout-20261016"
+      ],
+      "record_sha256": "917bbf67bac3b9e03e9ddb637bb1d890fe5caae96e2b9f600f3ce079dcd5b6f5"
+    },
+    {
+      "id": "delivery:public-commissioning-authenticated-ionos-gateway-20261016",
+      "epistemic_class": "SOURCE_BOUND_OBSERVATION",
+      "subject": {
+        "hostname": "raumzeitterminal.de",
+        "source_repository": "ingolf-lohmann/qik-vrt",
+        "source_head": "db7c03aa482f031f518475946d8e32ee7556c8eb",
+        "source_tree": "5a2483fa55c7c617262d7965935e16639180ddbf"
+      },
+      "scope": "Actual authenticated IONOS customer/domain read and exact observed management consumers; no credential-store, TLS activation or public application acceptance.",
+      "statement": "Public commissioning remains the Owner target. A fresh secure IONOS login actually reached the signed-in account and registered domain, assigned to existing Webhosting; SSL is inactive. The standard Hosting, domain-details and Webspace-folder consumers fail at auth.ionos.de with HTTP502/Connection refused. The official status is operational, so no general IONOS outage is inferred. No secret values or authentication query strings are persisted. Durable credential-store write remains unverified. No domain reorder, DNS write, file upload, TLS or server order occurred.",
+      "evidence": [
+        "evidence/native-runtime-acceptance/ionos-public-commissioning-20261016.jpg",
+        "public_commissioning_continuation#existing_route_results",
+        "https://www.ionos-status.de/"
+      ],
+      "supersedes": [],
+      "record_sha256": "6a14e6ce5192d02f575e21aa65ac0ac1c643a64dff7384366b05bfa6d195af3e"
     }
   ],
   "work": [
@@ -884,7 +959,7 @@
     {
       "id": "raumzeitterminal-exact-host-delivery",
       "state": "OPEN",
-      "next_action": "Approve the concrete replacement of the Webhosting DNS template for this exact domain. Preserve mail records and reinstate original www A/AAAA after template deactivation unless a separately verified www deployment replaces them. Then verify both apex targets, TLS and actual application; no duplicate domain order."
+      "next_action": "After verified gateway recovery, reuse the existing regular IONOS Webspace folder/upload path, bind only raumzeitterminal.de to its own publication directory, provision its exact TLS route, and independently read back the actual publisher/terminal and exact public bytes. Preserve mail, other domains, the earlier concrete DNS service-replacement decision and action-time server-contract terms. Do not replace exact-host delivery by a redirect or green CI claim."
     },
     {
       "id": "archive-preflight-native-gate",
@@ -950,7 +1025,7 @@
     {
       "id": "raumzeitterminal-publisher-automatic-operations",
       "state": "OPEN",
-      "next_action": "After the concrete routing-change decision, bind both supplied apex A targets, preserve mail and original www records, refresh TLS and independently verify exact-host application/PDF bytes."
+      "next_action": "After verified gateway recovery, reuse the existing regular IONOS Webspace folder/upload path, bind only raumzeitterminal.de to its own publication directory, provision its exact TLS route, and independently read back the actual publisher/terminal and exact public bytes. Preserve mail, other domains, the earlier concrete DNS service-replacement decision and action-time server-contract terms. Do not replace exact-host delivery by a redirect or green CI claim."
     },
     {
       "id": "owned-linux-ci-runtime",
@@ -971,6 +1046,27 @@
       "id": "provider-independent-owned-execution",
       "state": "OPEN",
       "next_action": "Operate portable publication/build execution and independently recoverable backups under Owner control; demonstrate restore/migration without platform-only runtime services. IONOS remains a hosting dependency."
+    },
+    {
+      "id": "native-temdd-s1-original-job38855798987",
+      "state": "VERIFIED",
+      "evidence": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38855798987/job/116826855767;264 passed/one skipped; scope NO_DEPLOYMENT."
+    },
+    {
+      "id": "current-source-checkout-integrity-and-s1-gate",
+      "state": "VERIFIED",
+      "scope": "HISTORICAL_E2_SUBJECT_ONLY_NOT_DB7_ACCEPTANCE",
+      "evidence": "Native run38924202918/job117051467808;278 passed/one skipped; original exact-source artifact byte-verified in prior work ring; current native REST status success."
+    },
+    {
+      "id": "ionos-current-customer-authentication",
+      "state": "VERIFIED",
+      "evidence": "Protected regular IONOS sign-in followed by positive signed-in product overview and actual filtered domain inventory; evidence/native-runtime-acceptance/ionos-public-commissioning-20261016.jpg"
+    },
+    {
+      "id": "ionos-management-gateway-recovery",
+      "state": "OPEN",
+      "next_action": "Require materially restored access to the existing auth.ionos.de Hosting/domain-management consumers or an existing protected operation for this same account; then resume the standard Webspace path. Suppress unchanged502 and credential re-entry loops."
     }
   ],
   "owner_gate_correction": {
@@ -2104,5 +2200,114 @@
     "new_workflow_created": false,
     "new_executor_created": false,
     "no_downgrade": true
+  },
+  "public_commissioning_continuation": {
+    "schema": "qikvrt-exact-host-public-commissioning-continuation/v1",
+    "observed_at": "2026-10-16T19:01:30.409873+00:00",
+    "source": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "ref": "integration/515-519-521-522-20261012-eceb9b63",
+      "head": "db7c03aa482f031f518475946d8e32ee7556c8eb",
+      "tree": "5a2483fa55c7c617262d7965935e16639180ddbf"
+    },
+    "owner_goal": {
+      "owner": "Ingolf Lohmann",
+      "exact_instruction": "die öffentliche Inbetriebnahme bleibt das noch zu erfüllende Ziel.",
+      "goal": "Working public Raumzeitterminal publishing/terminal service at https://raumzeitterminal.de/ with fresh independent delivery readback.",
+      "existing_authorization_retained": true,
+      "goal_completed": false
+    },
+    "customer_authentication": {
+      "state": "VERIFIED_SIGNED_IN_CUSTOMER_SESSION",
+      "method": "Existing IONOS regular login via protected browserAuth",
+      "canonical_verified_origin": "https://mein.ionos.de",
+      "positive_evidence": [
+        "Signed-in product overview addressed Ingolf Lohmann",
+        "Actual domain inventory with account/sign-out control",
+        "Existing raumzeitterminal.de row under IONOS-managed Webhosting"
+      ],
+      "initial_old_form_result": "Submitted but customer session not established; one fresh-target recovery and fresh identifier/password steps then yielded the signed-in customer area.",
+      "secret_values_read_exported_or_persisted_by_agent": false,
+      "credential_store_write_receipt": null,
+      "opaque_reusable_credential_reference": null,
+      "durable_sso_acceptance": false,
+      "registry_update_gap": "The exposed protected browserAuth operation returns submission status, not a private-vault write or reusable credential handle. Source-level Personal OIDC/libsecret support is not acceptance of this actual browser/IONOS binding."
+    },
+    "domain_inventory": {
+      "hostname": "raumzeitterminal.de",
+      "registration_visible": true,
+      "classification": "Inklusiv-Domain",
+      "assignment": "Durch IONOS verwaltet; Webhosting",
+      "displayed_expiry": "2027-10-16",
+      "ssl_status": "INACTIVE_IN_IONOS_DOMAIN_UI",
+      "existing_ssl_slots": "1 of 1 used",
+      "other_domains_or_certificates_changed": false,
+      "evidence_path": "evidence/native-runtime-acceptance/ionos-public-commissioning-20261016.jpg",
+      "evidence_bytes": 107378,
+      "evidence_sha256": "5b82c5f67c2031f7ddb9123b3a874a5ec60d8c618e1e4c49b7f1036d6aa47be9",
+      "evidence_git_blob": "35526be5d9c1c3ea01444d6b2627dbe77f8b5b41",
+      "image_scope": "Filtered target-domain UI only; no password, OTP, authentication URL, contact address or payment detail. Third-party interface and branding are attributed to IONOS; no new rights over them are inferred."
+    },
+    "existing_route_results": [
+      {
+        "operation": "Open existing Hosting product",
+        "result": "HTTP502_CONNECTION_REFUSED_AT_AUTH_GATEWAY",
+        "origin": "https://auth.ionos.de",
+        "path": "/1.0/oauth/auth/otk",
+        "client": "controlpanel.ionos.com"
+      },
+      {
+        "operation": "One canonical fresh-target recovery for existing Webhosting",
+        "result": "HTTP502_CONNECTION_REFUSED_AT_AUTH_GATEWAY",
+        "origin": "https://auth.ionos.de",
+        "path": "/1.0/oauth/auth/init",
+        "client": "controlpanel.ionos.com"
+      },
+      {
+        "operation": "Read exact domain details from ordinary IONOS domain list",
+        "result": "HTTP502_CONNECTION_REFUSED_AT_AUTH_GATEWAY",
+        "origin": "https://auth.ionos.de",
+        "path": "/1.0/oauth/auth/init",
+        "client": "cp-domain.ionos.com"
+      },
+      {
+        "operation": "Read SSL certificate administration through the domain SSL control",
+        "result": "SSL_CATALOG_ACCESSIBLE_NO_CERTIFICATE_ORDER_OR_ACTIVATION",
+        "origin": "https://ssl.ionos.de"
+      },
+      {
+        "operation": "Use regular Webspace verbinden flow and select raumzeitterminal.de",
+        "result": "Domain selection succeeded; folder selection then reached the same HTTP502 Connection refused Hosting authentication gateway",
+        "client": "controlpanel.ionos.com"
+      }
+    ],
+    "gateway_diagnosis": {
+      "observed": "The authenticated main customer area, domain inventory and SSL catalog are reachable. Actual Hosting, domain-detail and Webspace-folder consumers fail when transitioning through auth.ionos.de.",
+      "cause": "UPSTREAM_CONNECTION_FAILURE_ON_OBSERVED_BROWSER_PATH; root cause beyond the rendered Connection refused response is UNKNOWN",
+      "provider_outage_claimed": false,
+      "credential_rejection_claimed": false,
+      "official_status_read": "https://www.ionos-status.de/",
+      "official_status_result": "All Systems Operational; no incident reported on2026-10-16. This does not verify the failing account/browser transition.",
+      "authentication_query_strings_tokens_cookies_persisted": false,
+      "unchanged_failed_transitions_to_repeat": false,
+      "retry_condition": "Materially restored access to the existing Hosting/domain-management authentication gateway, or an actually callable and authorized existing protected Hosting operation for this exact account."
+    },
+    "service_effects": {
+      "domain_reordered": false,
+      "dns_record_writes": 0,
+      "webspace_file_writes": 0,
+      "ssl_orders": 0,
+      "ssl_activations": 0,
+      "server_orders": 0,
+      "new_site_created": false,
+      "new_custom_domain_created": false,
+      "deployment_claimed": false,
+      "previous_rejected_dns_change_retried": false,
+      "security_protection_weakened": false
+    },
+    "next_action": "After verified gateway recovery, reuse the existing regular IONOS Webspace folder/upload path, bind only raumzeitterminal.de to its own publication directory, provision its exact TLS route, and independently read back the actual publisher/terminal and exact public bytes. Preserve mail, other domains, the earlier concrete DNS service-replacement decision and action-time server-contract terms. Do not replace exact-host delivery by a redirect or green CI claim.",
+    "human_contribution": "Ingolf Lohmann: public-commissioning goal, retained authorization and protected sign-in input.",
+    "artificial_contribution": "OpenAI Codex: exact-source reconstruction, supported secure authentication, actual consumer-route diagnosis and scope-preserving continuation.",
+    "EFFECT_ACK_DONE": false
   }
 }
