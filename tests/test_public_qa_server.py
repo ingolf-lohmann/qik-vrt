@@ -81,6 +81,14 @@ class PublicQAContractTests(unittest.TestCase):
         self.assertFalse(data["effect_ack_done"])
         self.assertEqual(headers["Cache-Control"], "no-store")
 
+    def test_short_qikvrt_question_finds_sources(self):
+        self.assertIn("qikvrt", server.tokens("Was ist QIK-VRT?"))
+        code, data, _ = self.post({"question": "Was ist QIK-VRT?"})
+        self.assertEqual(code, 200)
+        self.assertEqual(data["status"], "EVIDENCE_ONLY")
+        self.assertTrue(data["sources"])
+        self.assertFalse(data["independently_verified"])
+
     def test_unrelated_question_abstains(self):
         code, data, _ = self.post({"question": "Was ist der Durchmesser von Jupiter?"})
         self.assertEqual(code, 200)
