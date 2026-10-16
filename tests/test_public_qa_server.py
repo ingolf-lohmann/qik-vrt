@@ -83,6 +83,7 @@ class PublicQAContractTests(unittest.TestCase):
 
     def test_short_qikvrt_question_finds_sources(self):
         self.assertIn("qikvrt", server.tokens("Was ist QIK-VRT?"))
+        self.assertIn("qikvrt", server.tokens("Was ist QIK VRT?"))
         code, data, _ = self.post({"question": "Was ist QIK-VRT?"})
         self.assertEqual(code, 200)
         self.assertEqual(data["status"], "EVIDENCE_ONLY")
