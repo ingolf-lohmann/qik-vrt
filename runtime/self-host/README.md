@@ -37,6 +37,34 @@ multi-node effect replication, write fencing and transparent recovery are open
 implementation/host-acceptance work. The neuronal description is an architecture
 analogy governed by the existing evidence/adaptation policy.
 
+## Irreversible Authority succession
+
+Ingolf Lohmann's requirement of 2026-10-16 is normative in
+`policy/CANONICAL_UPSTREAM_REMOTE_V1.json#/authority_succession`.
+An Authority whose contact-dependent mandate has expired or has been
+authoritatively revoked loses it irreversibly. A qualified successor Mirror
+becomes Authority and retains that role when the predecessor returns. The
+predecessor cannot regain Authority through reconnection, an old configured
+role, or another role projection; it may rejoin only as a fenced, authenticated,
+caught-up Mirror. The same loss rule applies if the successor later fails.
+Goldkelch/qik-vrt is retained as the retired Authority identity; the current
+Owner-bound Authority remains ingolf-lohmann/qik-vrt.
+
+A single failed HTTP GET or an observer's loss of visibility is insufficient
+revocation evidence. Live takeover must bind the qualified contact-loss/lease
+event, a safe quorum, original journal catch-up and a strictly newer fencing
+epoch. The effect carrier must reject the old writer before successor effects;
+absence of a safe quorum holds writes and preserves confirmed reads. Test
+simultaneous takeover and predecessor rejoin without failback on the real
+workload. Do not turn an observer's uncertainty into two competing writers.
+
+`deployment-roles`, `mesh-contract`, `pack` and `verify` now reject a policy
+that restores automatic failback, omits the retired identity, permits unsafe
+promotion, or promotes a retired Authority. These are source/package admission
+checks. They neither execute a live election nor establish native fencing,
+cross-node effect replication, measured availability or a universal survival
+theorem; the existing live-acceptance gaps remain open.
+
 ## Local repository copy, cache and stable-idle work batch
 
 Every node has the same local cache obligations in

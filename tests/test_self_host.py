@@ -64,6 +64,46 @@ class DeploymentRoleTests(unittest.TestCase):
                 host.deployment_roles(root,{})
 
 
+    def test_predecessor_contract_without_irreversible_succession_is_refused(self):
+        policy = json.loads((ROOT / host.MESH_ROLE_POLICIES[0]).read_bytes())
+        del policy["authority_succession"]
+        with self.assertRaisesRegex(ValueError, "IRREVERSIBLE_AUTHORITY_SUCCESSION_REQUIRED"):
+            host.authority_succession(policy)
+
+    def test_contact_loss_and_rejoin_cannot_restore_or_refence_the_old_authority(self):
+        baseline = json.loads((ROOT / host.MESH_ROLE_POLICIES[0]).read_bytes())
+        changes = {"authority_loss_irreversible": False, "automatic_failback_allowed": True,
+            "retired_authority_repromotion_allowed": True, "successor_persists_after_predecessor_rejoin": False,
+            "promotion_requires_safe_quorum": False, "promotion_requires_original_journal_catch_up": False,
+            "promotion_requires_strictly_newer_fencing_epoch": False,
+            "previous_writer_fenced_before_successor_effects": False, "public_read_failure_is_revocation_proof": True,
+            "contact_loss_evidence": "ONE_FAILED_HTTP_GET", "rejoin_role": "AUTHORITY",
+            "quorum_loss_behavior": "WRITE_ANYWHERE", "native_transition_or_failover_inferred": True}
+        for key, bad in changes.items():
+            with self.subTest(key=key):
+                policy = json.loads(host.raw_json(baseline))
+                policy["authority_succession"][key] = bad
+                with self.assertRaisesRegex(ValueError, "IRREVERSIBLE_AUTHORITY_SUCCESSION_REQUIRED"):
+                    host.authority_succession(policy)
+
+    def test_both_role_projections_cannot_reinstate_the_retired_authority(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            for name in host.MESH_ROLE_POLICIES:
+                target = root / name; target.parent.mkdir(exist_ok=True, parents=True)
+                shutil.copyfile(ROOT / name, target)
+            path = root / host.MESH_ROLE_POLICIES[0]; policy = json.loads(path.read_bytes())
+            policy["canonical_upstream"], policy["mirror"] = policy["mirror"], policy["canonical_upstream"]
+            policy["canonical_upstream"]["role"] = "AUTHORITY"; policy["mirror"]["role"] = "MIRROR"
+            path.write_bytes(host.raw_json(policy))
+            path = root / host.MESH_ROLE_POLICIES[1]; owner = json.loads(path.read_bytes())
+            owner["mesh_authority"]["authority_repository"] = policy["canonical_upstream"]["repository"]
+            path.write_bytes(host.raw_json(owner))
+            with mock.patch.object(host.subprocess, "run", side_effect=AssertionError("no effect")), self.assertRaisesRegex(ValueError, "REVOKED_AUTHORITY_REPROMOTION_FORBIDDEN"):
+                host.deployment_roles(root, {})
+
+
+
 class RuntimeDeliveryTests(unittest.TestCase):
     """Small sealed byte fixtures; these never stand for real Docker execution."""
     def setUp(self):
@@ -356,6 +396,7 @@ class MeshContractTests(unittest.TestCase):
                     "docs/monitor/self-host.mjs", "runtime/self-host/MESH_FILE.md", *host.MESH_PORTABLE_FILES}
         required.update(path for paths in host.MESH_COMPONENT_FILES.values() for path in paths)
         required.update(host.MESH_CACHE_SOURCE_FILES)
+        required.update(host.MESH_ROLE_POLICIES)
         for name in required:
             dest = self.root / name
             dest.parent.mkdir(parents=True, exist_ok=True)
@@ -378,6 +419,18 @@ class MeshContractTests(unittest.TestCase):
         for field in ("native_runtime_executed", "all_node_runtime_verified", "write_failover_verified",
                       "application_transparency_verified", "effect_ack_done"):
             self.assertIs(result[field], False)
+
+    def test_missing_authority_succession_binding_refuses_package_admission(self):
+        del self.activation["required_node_runtime"]["authority_succession_policy"]
+        self.refuse("MESH_IRREVERSIBLE_AUTHORITY_SUCCESSION_REQUIRED")
+
+    def test_package_admission_checks_the_same_retired_authority_policy(self):
+        path = self.root / host.MESH_ROLE_POLICIES[0]
+        policy = json.loads(path.read_bytes())
+        policy["authority_succession"]["automatic_failback_allowed"] = True
+        path.write_bytes(host.raw_json(policy))
+        with self.assertRaisesRegex(ValueError, "MESH_IRREVERSIBLE_AUTHORITY_SUCCESSION_REQUIRED"):
+            host.mesh_contract(self.root)
 
     def test_missing_node_runtime_contract_refused(self):
         del self.activation["required_node_runtime"]

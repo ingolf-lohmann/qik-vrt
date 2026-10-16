@@ -192,7 +192,8 @@
       "Replicate the native effect journal and confirmation before positive Effect-Ack; monitor observation replication alone does not establish native-effect replication.",
       "Use independent failure domains, authenticated peer discovery and quorum/fencing for every write takeover. Repository role does not create a permanent single execution dependency or grant promotion authority.",
       "A returned node remains fenced until authenticated original-byte catch-up and current epoch/admission verification. An unknown effect is readback-only until resolved.",
-      "The bus may learn from attributed verified observations under existing adaptation policy; the neuronal description is an architectural analogy, not biological or autonomous authority evidence."
+      "The bus may learn from attributed verified observations under existing adaptation policy; the neuronal description is an architectural analogy, not biological or autonomous authority evidence.",
+      "Apply the irreversible Authority succession policy: retain the revoked Authority identity, never restore it on reconnection, keep the qualified successor authoritative and admit a recovered predecessor only as an authenticated caught-up Mirror. A safe quorum, strictly newer fencing epoch and effect-carrier-enforced stale-writer rejection precede takeover effects; one failed HTTP observation is not revocation evidence."
     ],
     "invariants": {
       "same_work_unit_after_failover": true,
@@ -298,7 +299,8 @@
       "live_acceptance_rule": "Require a complete admitted work/executor inventory and independent exact-byte node idle/readback evidence before expanding the finite cache-writer scope. Measure actual workload latency/throughput, total transferred bytes, queue age and recovery; do not infer global speedup or optimal scheduling from fewer payload transfers.",
       "native_safety": "Confirmed native effects retain immediate replication/fencing/Effect-Ack obligations. Deferred work proposals never become durable cross-node effect confirmation or execution authority.",
       "implementation_scope": "Existing S1 launcher private snapshot/fsync/OS-lock primitives and existing MonitorStore/listener; no parallel scheduler, executor or native effect ledger."
-    }
+    },
+    "authority_succession_policy": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json#/authority_succession"
   },
   "deployment_contract": {
     "all_manufacturers_verified": false,

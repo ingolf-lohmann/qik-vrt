@@ -44,6 +44,8 @@ STATE_FILES = frozenset(("binding.json", "monitor/node.json", "temdd/events.sqli
                         "temdd/events.sqlite3-wal", "temdd/events.sqlite3-shm", "repository.qmesh"))
 STATE_MAX_BYTES = 2 * 1024 * 1024 * 1024
 MESH_CONTRACT = "runtime/self-host/MESH_ACTIVATION.json"
+MESH_ROLE_POLICIES = ["policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+                      "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json"]
 MONOLITH_APPLICATION_ID = 0x51495654
 MONOLITH_MAX_FILES = 4096
 MONOLITH_MAX_FILE_BYTES = 16 * 1024 * 1024
@@ -459,6 +461,7 @@ def mesh_contract(root, definition=None):
         raise ValueError("ONE_CANONICAL_SQLITE_STORAGE_CONTRACT_REQUIRED")
     required = {MESH_CONTRACT, "tools/qikvrt_self_host.py", "docs/monitor/self-host.mjs", "runtime/self-host/MESH_FILE.md", *MESH_PORTABLE_FILES}
     required.update(MESH_CACHE_SOURCE_FILES)
+    required.update(MESH_ROLE_POLICIES)
     required.update(path for paths in MESH_COMPONENT_FILES.values() for path in paths)
     files = definition.get("files")
     if (not isinstance(files, list) or not all(isinstance(path, str) for path in files)
@@ -512,7 +515,11 @@ def mesh_contract(root, definition=None):
         if path.is_symlink() or any(p.is_symlink() for p in path.parents) or not path.is_file():
             raise ValueError("MESH_REGULAR_SOURCE_COMPONENT_REQUIRED")
         component_hashes[name] = digest(path.read_bytes())
+    if contract.get("authority_succession_policy") != MESH_ROLE_POLICIES[0] + "#/authority_succession":
+        raise ValueError("MESH_IRREVERSIBLE_AUTHORITY_SUCCESSION_REQUIRED")
+    roles = deployment_roles(root, {})
     return {"schema": "qikvrt-node-bus-contract-check/v1", "state": "SOURCE_OBLIGATIONS_BOUND",
+            "authority_repository": roles["authority_repository"], "automatic_authority_failback_allowed": False,
             "contract_sha256": digest(raw), "source_component_sha256": component_hashes,
             "required_fault_cases": list(MESH_FAULT_CASES), "native_runtime_executed": False,
             "all_node_runtime_verified": False, "write_failover_verified": False,
@@ -751,6 +758,42 @@ def verify(package, expected, *, check_runtime=True):
     return value
 
 
+
+def authority_succession(policy):
+    """Validate irreversible role policy; this never performs a native election."""
+    value = policy.get("authority_succession", {})
+    expected = {"authority_loss_irreversible": True, "automatic_failback_allowed": False,
+        "retired_authority_repromotion_allowed": False, "successor_persists_after_predecessor_rejoin": True,
+        "successor_subject_to_same_loss_rule": True, "promotion_requires_safe_quorum": True,
+        "promotion_requires_original_journal_catch_up": True,
+        "promotion_requires_strictly_newer_fencing_epoch": True,
+        "previous_writer_fenced_before_successor_effects": True,
+        "public_read_failure_is_revocation_proof": False, "native_transition_or_failover_inferred": False}
+    if (not isinstance(value, dict)
+            or value.get("schema") != "qikvrt-irreversible-authority-succession/v1"
+            or any(value.get(key) is not expected_value for key, expected_value in expected.items())
+            or value.get("contact_loss_evidence") != "EXPIRED_QUORUM_BOUND_LEASE_OR_CERTIFIED_REVOCATION"
+            or value.get("rejoin_role") != "MIRROR_AFTER_AUTHENTICATED_CATCH_UP"
+            or value.get("quorum_loss_behavior") != "HOLD_WRITES_PRESERVE_CONFIRMED_READS"):
+        raise ValueError("MESH_IRREVERSIBLE_AUTHORITY_SUCCESSION_REQUIRED")
+    retired = value.get("retired_authorities")
+    if not isinstance(retired, list) or not retired:
+        raise ValueError("MESH_RETIRED_AUTHORITY_IDENTITY_REQUIRED")
+    identities = []
+    for item in retired:
+        if (not isinstance(item, dict)
+                or not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", item.get("repository", ""))
+                or item.get("authority_eligibility") != "REVOKED_IRREVERSIBLY"
+                or item.get("rejoin_role") != "MIRROR_AFTER_AUTHENTICATED_CATCH_UP"):
+            raise ValueError("MESH_RETIRED_AUTHORITY_IDENTITY_REQUIRED")
+        identities.append(item["repository"])
+    if len(identities) != len(set(identities)):
+        raise ValueError("MESH_RETIRED_AUTHORITY_IDENTITY_REQUIRED")
+    if policy["canonical_upstream"]["repository"] in identities:
+        raise ValueError("REVOKED_AUTHORITY_REPROMOTION_FORBIDDEN")
+    return set(identities)
+
+
 def deployment_roles(root, environment=None):
     """Resolve the current contract; old defaults/overrides cannot select Authority."""
     root = Path(root)
@@ -764,6 +807,9 @@ def deployment_roles(root, environment=None):
             or owner["authority_repository"] != authority["repository"]
             or owner.get("role_policy_path") != policy_path):
         raise ValueError("DEPLOYMENT_ROLE_CONTRACT_MISMATCH")
+    retired = authority_succession(policy)
+    if owner.get("former_authority_repository") not in retired:
+        raise ValueError("MESH_RETIRED_AUTHORITY_IDENTITY_REQUIRED")
     for item in (authority, mirror):
         if (not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", item["repository"])
                 or item["canonical_https_url"] != "https://github.com/" + item["repository"] + ".git"):
