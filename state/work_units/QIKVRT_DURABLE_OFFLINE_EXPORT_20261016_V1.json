@@ -1,0 +1,85 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "id": "QIKVRT_DURABLE_OFFLINE_EXPORT_20261016_V1",
+  "status": "SOURCE_RESTORE_VERIFIED_DURABLE_EXPORT_IN_PROGRESS",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "pull_request": 523,
+  "source_head": "cd3c0689bd0cbfd68c71dac2114717ce71516711",
+  "source_tree": "2999e95b12a5f6bdda324b7e8a0e9926be5dc884",
+  "authorization": {
+    "human": "Ingolf Lohmann",
+    "scope": "Preserve existing runtime artifacts, complete current portable offline export, test isolated restoration, integrate source changes through PR523."
+  },
+  "reuse": {
+    "exporter": "tools/qikvrt_self_host.py portable",
+    "runtime_artifact_id": 11521962723,
+    "runtime_run_id": 37710500668,
+    "original_library_file_id": "libfile_a1671d04e304819199e5e1d7ada99ae1",
+    "original_new_copy_created": false,
+    "independent_saved_original_readback": {
+      "bytes": 382994793,
+      "sha256": "5a912ccde96253bdba5f5e82cd0a36a4ff89de58dabbe57977bc1acf298d9695",
+      "matches": true
+    },
+    "new_workflow_created": false,
+    "new_executor_created": false
+  },
+  "implementation": {
+    "optional_complete_history_bundle": "--include-git-history; no network, no lazy fetch; refuse shallow/incomplete sources; strict fsck; exact HEAD ancestry only",
+    "source_restore": "portable-restore; independently pinned SQLite/carrier; empty target; read back all original file bytes/modes/TREE; no Git or Node required",
+    "credentials_exported": false
+  },
+  "baseline_restore": {
+    "state": "SOURCE_TREE_RESTORED_BYTE_EXACT",
+    "source_head": "cd3c0689bd0cbfd68c71dac2114717ce71516711",
+    "source_tree": "2999e95b12a5f6bdda324b7e8a0e9926be5dc884",
+    "source_files": 4939,
+    "canonical_sha256": "9bd8c2816e55972fb606ab432773463bd5e9c901e01c2020957943bdf0bb3bec",
+    "manifest_sha256": "6ceb8acb66085a420077904cc0731b90f4dd72d3a10a08dfb7c2f85ccc32112f",
+    "git_history_included": false,
+    "native_runtime_executed": false,
+    "linux_distribution_verified": false,
+    "effect_ack_done": false,
+    "network": "KERNEL_SECCOMP_DENIED",
+    "git_in_path": false,
+    "node_in_path": false,
+    "scope": "FRESH_EMPTY_DIRECTORY_AND_PROCESS_NETWORK_ISOLATION; NOT_VM_OR_BOOT"
+  },
+  "verification": {
+    "new_regression_cases": "3 passed; complete bundle restore, missing/shallow rejection, source restore with independent pins and no external runtime",
+    "extended_suite": {
+      "run": 218,
+      "passed": 203,
+      "failures": 14,
+      "skipped": 1,
+      "failure": "Existing native standalone and monolithic ingress returned [Errno 1] Operation not permitted; AF_UNIX socket creation independently denied in this executor. Preserve failing tests; no acceptance downgrade."
+    },
+    "effect_ack_conformance": {
+      "tests": 41,
+      "result": "PASS; pure state-machine scope only"
+    },
+    "native_successor_ci": "REQUIRED_ON_SUCCESSOR; local results are not native CI or production acceptance"
+  },
+  "git_history": {
+    "current_source_history_complete": false,
+    "local_source": "REST-verified full target tree and exact original commit; shallow boundary retained",
+    "older_bundle": "f77bc1183b25cd7a1fdb605bc39ee5ea27953d95; 2422 commits; not target Authority ancestry proof",
+    "missing": "All ancestor commit/tree/blob objects not contained in the exact-head snapshot; other refs/tags and their exclusive history. Existing older provider bundle is not substituted.",
+    "next_action": "Run the optional history export from an authorized complete native object closure and independently restore/read back its bundle. No new repository trigger or missing dispatch operation is fabricated."
+  },
+  "runtime_limits": {
+    "dependency_oci_bytes_verified": true,
+    "privileged_chroot": "Observed EPERM in this executor; no Docker or Podman executable exposed",
+    "offline_basic_functions": "Source restore passed in fresh directory with kernel-enforced network denial; 41 effect-ack conformance tests passed separately",
+    "bootable_linux_distribution_verified": false,
+    "productive_current_application_restart_verified": false,
+    "predecessor_application_acceptance_transferred": false
+  },
+  "outputs": {
+    "durable_export": "Pending final exact-head archive and independent saved-byte readback; external receipt must bind the final successor without self-hashing this work unit."
+  },
+  "human_contribution": "Ingolf Lohmann: objective, requirements, authority and research.",
+  "artificial_contribution": "OpenAI Codex: REST/source-cache verification, exporter extension, tests, restoration and evidence.",
+  "PREDECESSOR_EVIDENCE_TRANSFER": false,
+  "EFFECT_ACK_DONE": false
+}

@@ -810,6 +810,59 @@ class MeshContractTests(unittest.TestCase):
 
 
 class StandaloneTests(unittest.TestCase):
+    def test_portable_restore_needs_only_python_and_checks_independent_pins_and_absent_target(self):
+        exported = self.work / 'portable-restore-input'
+        receipt = host.portable(self.source, exported, self.head, self.tree)
+        self.assertFalse(receipt['git_history']['included'])
+        store = exported / 'repository.sqlite3'
+        target = self.work / 'restored-source'
+        with self.assertRaisesRegex(ValueError, 'SQLITE_IMAGE_PIN_MISMATCH'):
+            host.portable_restore(store, receipt['manifest_sha256'], '0' * 64, target, self.head, self.tree)
+        self.assertFalse(target.exists())
+        with mock.patch.object(host.subprocess, 'check_output', side_effect=AssertionError('No external runtime')):
+            result = host.portable_restore(store, receipt['manifest_sha256'], receipt['canonical_sha256'],
+                                           target, self.head, self.tree)
+        self.assertEqual(result['state'], 'SOURCE_TREE_RESTORED_BYTE_EXACT')
+        self.assertFalse(result['linux_distribution_verified'])
+        self.assertFalse(result['effect_ack_done'])
+        self.assertEqual((target / 'AI').read_bytes(), (self.source / 'AI').read_bytes())
+        with self.assertRaisesRegex(ValueError, 'STATE_OUTPUT_ALREADY_EXISTS'):
+            host.portable_restore(store, receipt['manifest_sha256'], receipt['canonical_sha256'],
+                                  target, self.head, self.tree)
+
+    def test_portable_complete_history_bundle_restores_into_empty_repository_without_network(self):
+        output = self.work / 'portable-history'
+        receipt = host.portable(self.source, output, self.head, self.tree, include_git_history=True)
+        history = receipt['git_history']
+        bundle = output / history['file']
+        self.assertTrue(history['included'])
+        self.assertEqual(host.digest(bundle.read_bytes()), history['sha256'])
+        restored = self.work / 'history-restore'
+        environment = dict(os.environ, GIT_ALLOW_PROTOCOL='file', GIT_TERMINAL_PROMPT='0')
+        subprocess.run(['git', '-c', 'protocol.allow=never', '-c', 'protocol.file.allow=always',
+                        'clone', '--quiet', '--no-checkout', str(bundle), str(restored)],
+                       env=environment, check=True, capture_output=True)
+        self.assertEqual(host.git(restored, 'rev-parse', 'HEAD').decode(), self.head)
+        self.assertEqual(host.git(restored, 'rev-parse', 'HEAD^{tree}').decode(), self.tree)
+        self.assertEqual(int(host.git(restored, 'rev-list', '--count', 'HEAD')), history['commits'])
+        subprocess.run(['git', '-C', str(restored), 'fsck', '--strict'], env=environment,
+                       check=True, capture_output=True)
+
+    def test_portable_history_refuses_shallow_or_missing_objects_without_fetching(self):
+        source = self.work / 'shallow-source'
+        subprocess.run(['git', 'clone', '--quiet', str(self.source), str(source)], check=True, capture_output=True)
+        (source / '.git/shallow').write_text(self.head + '\n')
+        bundle = self.work / 'refused.bundle'
+        with self.assertRaisesRegex(ValueError, 'COMPLETE_GIT_HISTORY_REQUIRED_SHALLOW_SOURCE'):
+            host.portable_history(source, bundle, self.head, self.tree)
+        self.assertFalse(bundle.exists())
+        (source / '.git/shallow').unlink()
+        blob = host.git(source, 'rev-parse', 'HEAD:AI').decode()
+        (source / '.git/objects' / blob[:2] / blob[2:]).unlink()
+        with self.assertRaisesRegex(ValueError, 'COMPLETE_GIT_HISTORY_REQUIRED_MISSING_OBJECTS'):
+            host.portable_history(source, bundle, self.head, self.tree)
+        self.assertFalse(bundle.exists())
+
     def test_portable_export_contains_one_canonical_sqlite_full_tree_and_derived_transport(self):
         output = self.work / "portable"
         receipt = host.portable(self.source, output, self.head, self.tree)
@@ -884,6 +937,11 @@ class StandaloneTests(unittest.TestCase):
         self.assertEqual(values['local.sh'][0], '100755')
         self.assertEqual(values['virtual-link'][0], '120000')
         self.assertEqual(values['virtual-link'][2], 'CON:Grüße.txt'.encode())
+        restored = self.work / 'full-tree-restored'
+        host.portable_restore(store, receipt['manifest_sha256'], receipt['canonical_sha256'], restored, head, tree)
+        self.assertEqual((restored/'example.cmd').read_bytes(), committed)
+        self.assertEqual((restored/'local.sh').stat().st_mode & 0o777, 0o755)
+        self.assertEqual(os.readlink(restored/'virtual-link'), 'CON:Grüße.txt')
         for label,sql in [('mode',"UPDATE repository_files SET mode='100644' WHERE path='local.sh'"),
                           ('case',"UPDATE repository_files SET path='Example.cmd' WHERE path='example.cmd'"),
                           ('missing',"DELETE FROM repository_files WHERE path='example.cmd'"),

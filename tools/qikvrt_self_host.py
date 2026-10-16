@@ -552,7 +552,38 @@ def verify_react_assets(root):
     return {"state": "STATIC_REACT_BYTES_VERIFIED", "bundle_sha256": digest(bundle), "effect_ack_done": False}
 
 
-def portable(root, output, head, tree):
+def portable_history(root, output, head, tree):
+    """Export exactly HEAD's complete ancestry; never fetch missing objects."""
+    private_output(output, (root,))
+    environment = dict(os.environ, GIT_NO_LAZY_FETCH="1", GIT_NO_REPLACE_OBJECTS="1",
+                       GIT_TERMINAL_PROMPT="0", GIT_ALLOW_PROTOCOL="")
+    def local(*args):
+        return subprocess.check_output(["git", "-c", "protocol.allow=never", "-C", str(root), *args],
+                                       env=environment, stderr=subprocess.PIPE, timeout=300)
+    if (local("rev-parse", "HEAD").decode().strip() != head
+            or local("rev-parse", "HEAD^{tree}").decode().strip() != tree):
+        raise ValueError("EXACT_SOURCE_BINDING_MISMATCH")
+    if local("rev-parse", "--is-shallow-repository").strip() != b"false":
+        raise ValueError("COMPLETE_GIT_HISTORY_REQUIRED_SHALLOW_SOURCE")
+    closure = local("rev-list", "--objects", "--missing=print", "HEAD")
+    if any(line.startswith(b"?") for line in closure.splitlines()):
+        raise ValueError("COMPLETE_GIT_HISTORY_REQUIRED_MISSING_OBJECTS")
+    # Preserve historical format defects as failures, never rewrite old objects.
+    local("fsck", "--strict", "--no-reflogs", "HEAD")
+    local("bundle", "create", str(output), "HEAD")
+    output.chmod(0o600)
+    local("bundle", "verify", str(output))
+    with output.open("rb") as source:
+        pin = hashlib.file_digest(source, "sha256").hexdigest()
+        os.fsync(source.fileno())
+    return {"included": True, "scope": "EXACT_HEAD_REACHABLE_ANCESTRY_AND_OBJECTS",
+            "file": output.name, "sha256": pin, "bytes": output.stat().st_size,
+            "commits": int(local("rev-list", "--count", "HEAD")),
+            "other_refs_included": False, "remote_configuration_included": False,
+            "lfs_payloads_or_submodule_repositories_included": False}
+
+
+def portable(root, output, head, tree, *, include_git_history=False):
     """One canonical SQLite image with the complete original source tree.
 
     QIKMESH1 is only its derived byte-exact transport; it is not another ledger.
@@ -604,7 +635,13 @@ def portable(root, output, head, tree):
                                           input=raw_json(data), timeout=300)
             result = json.loads(raw)
             result.update(canonical_file="repository.sqlite3", canonical_sha256=info["file_sha256"],
-                          manifest_sha256=pin, source_files=len(files), full_tree_verified=True)
+                          manifest_sha256=pin, source_files=len(files), full_tree_verified=True,
+                          git_history={"included": False, "scope": "CURRENT_TREE_ONLY",
+                              "missing": ["ANCESTOR_COMMITS_AND_HISTORICAL_OBJECTS", "OTHER_REFS"],
+                              "lfs_payloads_or_submodule_repositories_included": False})
+            if include_git_history:
+                result["git_history"] = portable_history(root, output / "repository.bundle", head, tree)
+                sync_directory(output)
             return result
     except BaseException:
         shutil.rmtree(output)
@@ -1244,7 +1281,7 @@ def pack_monolith(package, pin, output):
 
 
 @contextlib.contextmanager
-def materialized_monolith(store, pin):
+def materialized_monolith(store, pin, *, check_runtime=True):
     """Verify all embedded bytes before reconstructing a disposable code cache.
 
     Only the existing ledger may mutate meta/events; the independently pinned
@@ -1298,7 +1335,7 @@ def materialized_monolith(store, pin):
                 dest.parent.mkdir(parents=True, exist_ok=True)
                 with dest.open("xb") as target: target.write(body)
                 dest.chmod(0o755 if mode == "100755" else 0o644)
-            verify(package, pin)
+            verify(package, pin, check_runtime=check_runtime)
             # Release the read transaction before a native writer starts.
             db.close()
             yield package
@@ -1349,7 +1386,69 @@ def verify_repository_files(db, expected_tree):
     return len(items)
 
 
-def inspect_stable_monolith(store, pin):
+def portable_restore(store, pin, image_pin, output, head, tree):
+    """Restore the pinned full source tree with Python alone; execute no input."""
+    private_path(store)
+    if not re.fullmatch(r"[a-f0-9]{64}", image_pin or ""):
+        raise ValueError("INDEPENDENT_SQLITE_IMAGE_PIN_REQUIRED")
+    with store.open("rb") as source:
+        if hashlib.file_digest(source, "sha256").hexdigest() != image_pin:
+            raise ValueError("SQLITE_IMAGE_PIN_MISMATCH")
+    info = inspect_stable_monolith(store, pin, check_runtime=False)
+    if (info["source_head"] != head or info["source_tree"] != tree or not info["full_tree_present"]):
+        raise ValueError("EXACT_FULL_SOURCE_BINDING_REQUIRED")
+    private_output(output, (store,))
+    with contextlib.closing(sqlite3.connect(store.as_uri() + "?mode=ro", uri=True)) as db:
+        db.execute("PRAGMA trusted_schema=OFF")
+        count = verify_repository_files(db, tree)
+        # Validate every destination before creating anything. Links are written
+        # last, so no parent link is followed while materializing regular bytes.
+        links = []
+        for path, mode, body in db.execute("SELECT path,mode,body FROM repository_files"):
+            if any(part.casefold() == ".git" for part in path.split("/")):
+                raise ValueError("RESTORE_GIT_ADMIN_PATH_REFUSED")
+            if mode == "120000":
+                target = os.fsdecode(body)
+                resolved = os.path.normpath(os.path.join(os.path.dirname(path), target))
+                if (os.path.isabs(target) or resolved == ".." or resolved.startswith("../") or "\0" in target):
+                    raise ValueError("RESTORE_ESCAPING_SYMLINK_REFUSED")
+                links.append((path, target))
+        output.mkdir(mode=0o700)
+        try:
+            for path, mode, body in db.execute("SELECT path,mode,body FROM repository_files ORDER BY path"):
+                dest = output / path
+                dest.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
+                if mode == "120000": continue
+                with dest.open("xb") as target:
+                    target.write(body); target.flush(); os.fsync(target.fileno())
+                dest.chmod(0o755 if mode == "100755" else 0o644)
+            for path, target in links: (output / path).symlink_to(target)
+            observed = []
+            for path, mode, sha in db.execute("SELECT path,mode,git_blob_sha1 FROM repository_files ORDER BY path"):
+                dest = output / path
+                body = os.fsencode(os.readlink(dest)) if mode == "120000" else dest.read_bytes()
+                if git_blob_digest(body) != sha or (mode != "120000" and
+                        stat.S_IMODE(dest.stat().st_mode) != (0o755 if mode == "100755" else 0o644)):
+                    raise ValueError("RESTORED_SOURCE_READBACK_MISMATCH")
+                observed.append((path, mode, sha))
+            if source_tree_digest(observed) != tree:
+                raise ValueError("RESTORED_SOURCE_TREE_MISMATCH")
+            with store.open("rb") as source:
+                if hashlib.file_digest(source, "sha256").hexdigest() != image_pin:
+                    raise ValueError("SQLITE_CHANGED_DURING_RESTORE")
+            for directory in sorted((p for p in output.rglob("*") if p.is_dir() and not p.is_symlink()),
+                                    key=lambda p: len(p.parts), reverse=True): sync_directory(directory)
+            sync_directory(output); sync_directory(output.parent)
+        except BaseException:
+            shutil.rmtree(output)
+            raise
+    return {"state": "SOURCE_TREE_RESTORED_BYTE_EXACT", "source_head": head, "source_tree": tree,
+            "source_files": count, "canonical_sha256": image_pin, "manifest_sha256": pin,
+            "git_history_included": False, "native_runtime_executed": False,
+            "linux_distribution_verified": False, "effect_ack_done": False}
+
+
+def inspect_stable_monolith(store, pin, *, check_runtime=True):
     """Read-only, offline validation of a frozen SQLite image and every event.
 
     The complete original database bytes are transported, including meta-backed
@@ -1363,7 +1462,7 @@ def inspect_stable_monolith(store, pin):
     raw = store.read_bytes()
     if raw[:16] != b"SQLite format 3\0" or raw[18:20] != b"\1\1":
         raise ValueError("STOPPED_CHECKPOINTED_MAIN_FILE_REQUIRED")
-    with materialized_monolith(store, pin) as package:
+    with materialized_monolith(store, pin, check_runtime=check_runtime) as package:
         manifest = json.loads((package / "MANIFEST.json").read_bytes())
         load_source(package, "qikvrt_effect_ack_http_terminal")
         native = load_source(package, "qikvrt_temdd_event_ledger")
@@ -3290,7 +3389,7 @@ def firefox_extension_probe(xpi, output, package="firefox-esr"):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("operation", choices=("firefox-amo-unlisted", "firefox-release-provision", "firefox-extension-check", "deployment-roles", "runtime-delivery-verify", "runtime-delivery-load", "docker-admit", "pack", "portable", "verify", "monolith-pack", "monolith-verify", "monolith-run", "monolith-checkpoint", "monolith-origin-export", "monolith-transport-export", "monolith-transport-import", "mesh-contract", "mesh-cache-stage", "mesh-cache-idle", "mesh-cache-send", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state",
+    parser.add_argument("operation", choices=("firefox-amo-unlisted", "firefox-release-provision", "firefox-extension-check", "deployment-roles", "runtime-delivery-verify", "runtime-delivery-load", "docker-admit", "pack", "portable", "portable-restore", "verify", "monolith-pack", "monolith-verify", "monolith-run", "monolith-checkpoint", "monolith-origin-export", "monolith-transport-export", "monolith-transport-import", "mesh-contract", "mesh-cache-stage", "mesh-cache-idle", "mesh-cache-send", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state",
         "container-context", "container-carrier", "container-carrier-archive-check", "container-oci-check", "container-smoke", "container-production-gate", "container-deploy", "container-readback",
         "migration-inventory", "migration-verify-source", "migration-export", "migration-verify-export", "migration-import",
         "migration-verify-import", "migration-rollback", "migration-capture-supervisor", "migration-capture-arm", "migration-capture",
@@ -3301,6 +3400,7 @@ def main():
     parser.add_argument("--output", type=Path)
     parser.add_argument("--expected-head")
     parser.add_argument("--expected-tree")
+    parser.add_argument("--include-git-history", action="store_true", help="add a complete offline HEAD-ancestry bundle; refuse shallow/missing history")
     parser.add_argument("--amo-submit", action="store_true", help="explicitly authorized unlisted upload; secrets only from protected environment")
     parser.add_argument("--amo-state", type=Path, help="existing outside-repository owner-only non-secret attempt journal")
     parser.add_argument("--amo-previous-state", type=Path, help="original private attempt journal from the preceding native signing run")
@@ -3407,7 +3507,13 @@ def main():
         elif args.operation == "portable":
             if not args.output or not args.expected_head or not args.expected_tree:
                 raise ValueError("EXACT_EXPORT_INPUTS_REQUIRED")
-            result = portable(args.root.resolve(), args.output.absolute(), args.expected_head, args.expected_tree)
+            result = portable(args.root.resolve(), args.output.absolute(), args.expected_head, args.expected_tree,
+                              include_git_history=args.include_git_history)
+        elif args.operation == "portable-restore":
+            if not args.output or not args.expected_head or not args.expected_tree:
+                raise ValueError("EXACT_EXPORT_INPUTS_REQUIRED")
+            result = portable_restore(args.root.resolve(), args.manifest_sha256, args.image_sha256,
+                                      args.output.absolute(), args.expected_head, args.expected_tree)
         elif args.operation == "pack":
             if not args.output or not args.expected_head or not args.expected_tree: raise ValueError("EXACT_EXPORT_INPUTS_REQUIRED")
             result = freeze(args.root, args.output, args.expected_head, args.expected_tree,

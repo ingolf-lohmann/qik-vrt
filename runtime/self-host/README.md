@@ -964,6 +964,29 @@ viewer can select and copy files through normal browser file access. The
 secure-Origin adapter, native Owner REST and passive native Terminal retain
 their existing independent permission and acceptance boundaries.
 
+The default portable image contains the complete **current Git tree**, not
+ancestor commits, other branches/tags, Git configuration, LFS payloads or
+submodule repositories. Its receipt reports this boundary as `git_history`.
+Add `--include-git-history` to preserve every commit and Git object reachable
+from the exact HEAD in `repository.bundle`. This option refuses shallow or
+incomplete object stores, performs strict Git checks, disables network/lazy
+fetch, and records bundle size, SHA-256 and commit count. Historical format
+defects remain failures; no original object is rewritten. Other refs and their
+unreachable history are outside this explicitly bounded bundle.
+
+`portable-restore --root <absolute-repository.sqlite3>
+--manifest-sha256 <independent-carrier-pin> --image-sha256 <independent-image-pin>
+--expected-head <HEAD> --expected-tree <TREE> --output <absent-private-directory>`
+validates and restores every source blob and executable mode using Python
+alone. The destination must be absent. Unsafe Git administrative paths and
+escaping symlinks are refused before writing. Every restored file and the
+complete original tree identity are read back. This does not execute the
+restored application or restore Git history. A separately pinned complete
+bundle can be cloned into an empty directory with Git protocols restricted
+to the local file; verify its HEAD, TREE, commit count and `git fsck --strict`.
+Private runtime state, credentials and bootable Linux distribution acceptance
+remain separate obligations.
+
 For an activated native object use `monolith-transport-export` with the same
 `--root`, `--manifest-sha256`, `--config` and a create-only `--output`. Import
 with `monolith-transport-import --root <transport> --manifest-sha256 <pin>
