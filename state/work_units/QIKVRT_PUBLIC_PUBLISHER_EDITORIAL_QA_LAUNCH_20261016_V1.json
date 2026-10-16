@@ -43,7 +43,7 @@
     "server_side_bounded_qa_source_implemented": true,
     "inference_requires_explicit_enablement": true,
     "inference_requires_pinned_source_commit": true,
-    "provider_secrets_available": false,
+    "provider_secrets_available": "NOT_VERIFIED",
     "native_exact_head_tests_verified": false
   },
   "editorial_contract": {
@@ -72,11 +72,30 @@
     "Public HTTP readback and exact bytes of deployed assets",
     "Editorial governance, terms, privacy policy and clear separation of scientific evidence and opinion"
   ],
-  "disposition": "SOURCE_IMPLEMENTED_PREVIEW_DEPLOYMENT_PENDING",
+  "disposition": "SOURCE_AND_LOCAL_TESTS_READY_PROVIDER_AND_DOMAIN_BLOCKED",
   "predecessor_evidence_transfer": false,
   "local_fixture_tests": {
-    "count": 7,
-    "passed": 7,
-    "scope": "Isolated Python stdlib server fixtures; not exact-head native CI or production acceptance"
+    "count": 8,
+    "passed": 8,
+    "scope": "Local isolated HTTP integration fixtures including provider failure, origin, rate limits and bounded request server; native exact-head CI not yet verified"
+  },
+  "external_deployment_attempt": {
+    "provider": "Railway",
+    "action": "create isolated nonproduction preview project",
+    "result": "BLOCKED_TRIAL_EXPIRED",
+    "effect": "NO_PROJECT_CREATED_NO_DEPLOYMENT",
+    "next_action": "Owner/provider account plan activation required before retry; unchanged error must not be retriggered",
+    "existing_production_patch": "NOT_TOUCHED"
+  },
+  "exact_host_last_observation": {
+    "observed_at": "2026-10-16T15:53:03.345Z",
+    "https_status": 525,
+    "recursive_dns_A": [
+      "217.160.0.52"
+    ],
+    "nameserver_provider": "IONOS",
+    "tls_acceptance": false,
+    "application_acceptance": false,
+    "public_byte_exact_readback": false
   }
 }
