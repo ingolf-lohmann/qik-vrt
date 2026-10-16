@@ -26,7 +26,10 @@ INFERENCE_SEMAPHORE = threading.BoundedSemaphore(3)
 
 
 def tokens(text):
-    return {w for w in re.findall(r"[^\W_]+", text.lower()) if len(w) >= 4 and w not in STOPWORDS}
+    """Preserve technical compounds such as QIK-VRT and Raumzeit-Terminal."""
+    words = re.findall(r"[^\W_]+(?:[-–][^\W_]+)*", text.lower())
+    normalized = (w.replace("-", "").replace("–", "") for w in words)
+    return {w for w in normalized if len(w) >= 4 and w not in STOPWORDS}
 
 
 def choose_sources(question, root=None):
