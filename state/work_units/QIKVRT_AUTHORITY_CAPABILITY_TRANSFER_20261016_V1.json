@@ -1,7 +1,7 @@
 {
   "schema": "qikvrt_work_unit_v1",
   "id": "QIKVRT_AUTHORITY_CAPABILITY_TRANSFER_20261016_V1",
-  "status": "IONOS_DOMAIN_ORDER_CONFIRMED_PROVISIONING_AND_EXACT_HOST_OPEN",
+  "status": "IONOS_DOMAIN_ORDER_AND_CONTACT_EMAIL_CONFIRMED_MAIL_SORTED_SSO_AND_AUTOMATION_OPEN",
   "repository": "ingolf-lohmann/qik-vrt",
   "pull_request": 523,
   "branch": "integration/515-519-521-522-20261012-eceb9b63",
@@ -367,8 +367,8 @@
   "artificial_contribution": "OpenAI Codex: REST inspection, preserved-source capability comparison, existing publication-router integration and regression checks.",
   "PREDECESSOR_EVIDENCE_TRANSFER": false,
   "EFFECT_ACK_DONE": false,
-  "next_action": "Reuse the existing confirmed IONOS order without reordering. When the Owner requests supported authentication continuation, read the provisioned domain, contract and hosting assignment in the existing customer account; then apply only the necessary supported configuration and independently verify DNS, TLS and the exact application. Keep the private credential-registry persistence gap explicit.",
-  "updated_at_utc": "2026-10-16T12:08:47.719Z",
+  "next_action": "Preserve the confirmed order and contact verification without reordering. Establish the supported private credential-store/registry consumer for durable reuse; continue Microsoft rule authentication only after a later Owner request following the declined selection. Keep current sorting complete and the actual future-mail runner/rules unactivated until verified. Resume IONOS domain hosting configuration through an actually authenticated supported account route.",
+  "updated_at_utc": "2026-10-16T12:33:09.233Z",
   "publication_scope_request": {
     "received_at": "2026-10-16T09:48:07Z",
     "human": "Ingolf Lohmann",
@@ -446,7 +446,7 @@
     },
     "ietf_new_submission": "OPEN; no admitted native submission operation established in this client; existing drafts are not new submissions",
     "nodes": "New research distribution prepared for existing Authority candidate; Main, Mirror and full runtime/node adoption remain separate open effects",
-    "raumzeitterminal_de": "IONOS EUR 0.00 inclusive-domain order submitted once and visibly confirmed. Registrar provisioning and public exact-host application acceptance remain unverified; subsequent customer-management access requires a renewed authenticated session.",
+    "raumzeitterminal_de": "IONOS domain order confirmed; provider mail confirms successful registration; contact-email verification completed through the IONOS Registrar UI. Exact-host hosting/TLS/application acceptance remains open.",
     "arxiv_new_submission": "NOT_REQUESTED_BY_OWNER; excluded from the current publication/hosting acceptance scope. Preserve the existing candidate without submission.",
     "zenodo_existing_publication": {
       "record_id": 21888130,
@@ -1512,5 +1512,106 @@
     "private_customer_contact_or_payment_data_in_this_record": false,
     "domain_registration_or_hosting_acceptance_claimed": false,
     "exact_host_publication_claimed": false
+  },
+  "ionos_email_verification": {
+    "hostname": "raumzeitterminal.de",
+    "source_message_received_at_utc": "2026-10-16T12:06:46Z",
+    "source_sender_domain": "ionos.de",
+    "source_subject": "Bitte bestätigen Sie Ihre E-Mail-Adresse",
+    "provider_registration_notice_received_at_utc": "2026-10-16T12:04:43Z",
+    "provider_registration_notice_subject": "Ihre Domain raumzeitterminal.de wurde erfolgreich registriert",
+    "confirmation_method": "Existing IONOS Registrar email-verification link and explicit confirmation button",
+    "verification_origin": "https://verification.ionos.de",
+    "verification_path": "/domains_raa/email_verification",
+    "verification_token_or_url_query_persisted": false,
+    "confirmation_observed": true,
+    "observed_result": "Vielen Dank für die Bestätigung der E-Mail-Adresse.",
+    "evidence_saved_at_utc": "2026-10-16T12:21:33.150Z",
+    "screenshot_sha256": "cdc238f8c54a6251618a13dfb84927b2e9de7ba5fa63e51086fed07da4b2d6c4",
+    "successful_login_or_tls_inferred": false
+  },
+  "mailbox_organization": {
+    "source": "Existing connected Owner Outlook mailbox; actual connector mutations and fresh folder/inbox readback",
+    "new_folders": [
+      "Posteingang/IONOS",
+      "Posteingang/IONOS/Raumzeitterminal.de"
+    ],
+    "reused_folder": "Posteingang/ChatGPT",
+    "moved_messages": {
+      "ionos_general": 95,
+      "raumzeitterminal_de": 3,
+      "chatgpt": 151,
+      "total": 249
+    },
+    "readback": {
+      "ionos_general_folder_total": 95,
+      "raumzeitterminal_de_folder_total": 3,
+      "chatgpt_folder_total": 2280,
+      "remaining_relevant_inbox_messages": 0,
+      "complete_filtered_inbox_page": true
+    },
+    "matched_senders": [
+      "support@ionos.de",
+      "noreply@ionos.de",
+      "info@ionos.de",
+      "noreply@tm.openai.com",
+      "noreply@email.openai.com"
+    ],
+    "domain_subfolder_rule": "IONOS sender and exact raumzeitterminal.de reference in message subject/body; otherwise IONOS general.",
+    "verification_message_marked_read": true,
+    "permanent_deletions": 0,
+    "raw_mail_content_or_message_ids_persisted": false,
+    "scope": "Current inbox matching the five observed exact senders; no claim about every historical folder or unobserved sender."
+  },
+  "owner_mail_and_auth_instruction": {
+    "received_at_utc": "2026-10-16T12:13:37Z",
+    "source": "Direct Owner instruction and Freigabe erteilt",
+    "durable_credential_and_general_sso_requirement": true,
+    "preserve_provider_independent_device_verified_sso": true,
+    "context_bound_incoming_service_mail_handling_authorized": true,
+    "immediate_service_email_duty": "During authorized account, domain and publication work, inspect incoming service mail and complete the context-bound verification/required routine response through the supported route without repeating the task authorization.",
+    "sorting_duty": "Reuse the three established logical folders; exact-domain IONOS messages take precedence over the general IONOS group; official ChatGPT sender mail belongs in ChatGPT.",
+    "incoming_mail_is_authority": false,
+    "private_credentials_or_biometrics_in_git": false,
+    "autonomous_runner_or_mail_rule_activation_inferred": false
+  },
+  "credential_and_sso_audit": {
+    "observed_source": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "head": "2f097be38378429b3a9125c480b86c6cbab77623",
+      "tree": "c7d9855eab91f85f0ebf119379bde1809a8e4a99",
+      "implementation": "src/qikvrt_personal_assistant.py",
+      "implementation_blob": "468eaf1a22184eede2efb0c252b8c4c2d968fb6c",
+      "contract": "spec/firefox/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.md",
+      "contract_blob": "ec06bc0a3ac3a54fac3bc9dec1a4f591491bcff2"
+    },
+    "source_result": "Personal adapter explicitly states that signed-in ChatGPT/SSO bridging is not implemented or established; provider bearer credentials remain in backend memory rather than its SQLite store.",
+    "current_browser_auth_contract": "Protected submission only; no exposed durable private-vault write, opaque reusable credential reference or credential export operation.",
+    "private_store_write_verified": false,
+    "credential_values_observed_or_exported": false,
+    "password_or_cookie_harvesting_attempted": false,
+    "sso_repair_completed": false,
+    "existing_remote_protected_store_absence_inferred": false,
+    "existing_ionos_token_reference_retained": true,
+    "relevant_private_vault_plugin_returned": false,
+    "local_store_clients_available": false,
+    "local_probe_scope": "Current task runtime only; not a global secret-store absence claim.",
+    "next_required_capability": "An actual authorized private-vault/registry write-and-readback binding and a supported non-exporting reusable credential consumer; browserAuth does not expose such handover in its current contract."
+  },
+  "future_mail_processing": {
+    "state": "NOT_ACTIVATED",
+    "outlook_rule_write_exposed_by_connector": false,
+    "native_rule_ui_reached_authentication": true,
+    "microsoft_visible_options": [
+      "device passkey",
+      "organization"
+    ],
+    "protected_method_selection_result": "declined",
+    "authentication_request_repeated": false,
+    "manual_handoff_offered": false,
+    "outlook_mail_event_source_advertised": false,
+    "polling_substituted_for_requested_incoming_event": false,
+    "native_inbox_rules_created": false,
+    "gap": "Existing connector can read and move Outlook mail but exposes no rule writer. Native rule UI requires a Microsoft session; the protected sign-in-method request was declined. Automation event-source inventory has no Outlook source."
   }
 }
