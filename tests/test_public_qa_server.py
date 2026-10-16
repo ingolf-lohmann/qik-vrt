@@ -26,6 +26,10 @@ class PublicQAContractTests(unittest.TestCase):
                 encoding="utf-8")
         (self.root / "docs/fragen").mkdir(parents=True, exist_ok=True)
         (self.root / "docs/fragen/index.html").write_text("TEST_PAGE", encoding="utf-8")
+        for static in ("runtime/public_qa/index.html", "docs/news/index.html", "docs/publications/index.html"):
+            p = self.root / static
+            p.parent.mkdir(parents=True, exist_ok=True)
+            p.write_text("STATIC_PAGE_" + static, encoding="utf-8")
         self.root_patch = patch.object(server, "ROOT", self.root)
         self.root_patch.start()
         self.rate_patch = patch.dict(server.REQUEST_TIMES, {}, clear=True)
@@ -59,6 +63,12 @@ class PublicQAContractTests(unittest.TestCase):
         self.assertEqual(data["status"], "up")
         self.assertFalse(data["publication_effect"])
         self.assertFalse(data["source_revision_verified"])
+
+    def test_publisher_and_newsroom_routes_are_read_only(self):
+        for route in ("/", "/news/", "/publications/", "/fragen/"):
+            with urlopen(self.url + route) as res:
+                self.assertEqual(res.status, 200)
+                self.assertEqual(res.headers["Cache-Control"], "no-store")
 
     def test_retrieval_has_hash_and_citation(self):
         with patch.dict(os.environ, {"QIKVRT_QA_PROVIDER": "none"}, clear=False):
