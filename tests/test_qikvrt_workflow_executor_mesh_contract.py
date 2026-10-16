@@ -647,6 +647,30 @@ class OwnerSigningContinuationTests(unittest.TestCase):
             self.assertEqual(value["jobs"][0]["steps"][0]["conclusion"], conclusion)
             self.assertEqual(value["reason"], "NOT_EXPOSED_BY_GITHUB")
 
+    def test_failure_diagnostics_return_codes_and_test_ids_without_private_log_text(self):
+        raw = (b'MAKE_TEST_EXIT=2\nFAIL: test_closed_mode (tests.test_provider.NativeTests)\n'
+               b'AssertionError: PRIVATE_VALUE_MUST_NOT_BE_RETURNED\n'
+               b'Authorization: PRIVATE_AUTH_HEADER_MUST_NOT_BE_RETURNED\n'
+               b'ERROR: test_second (tests.test_provider.NativeTests)\n')
+        codes = MODULE.github_failure_codes(raw)
+        self.assertEqual(codes["make_test_exit_codes"], [2])
+        self.assertEqual(codes["failed_tests"], ["tests.test_provider.NativeTests.test_closed_mode",
+                                                "tests.test_provider.NativeTests.test_second"])
+        self.assertNotIn("PRIVATE_", json.dumps(codes))
+        for message, expected in [(b'has exceeded the maximum execution time of 15 minutes', 'GITHUB_JOB_EXECUTION_LIMIT'),
+                                  (b'Canceling since a higher priority waiting request exists', 'GITHUB_CONCURRENCY_SUPERSEDED')]:
+            self.assertEqual(MODULE.github_failure_codes(message)["provider_reason_code"], expected)
+        self.assertNotIn("provider_reason_code", MODULE.github_failure_codes(b'The operation was canceled.'))
+
+    def test_missing_failure_log_keeps_provider_conclusion_without_retry(self):
+        feedback = MODULE.amo_feedback(self.provider_run(600, conclusion="cancelled"), [self.job(conclusion="cancelled")])
+        with mock.patch.object(MODULE, "_amo_get", side_effect=MODULE.ExecutorBlock("AMO_GITHUB_GET_DENIED_403")) as call:
+            value = MODULE.github_failure_feedback(ROOT, feedback)
+        self.assertEqual(call.call_count, 1)
+        self.assertEqual(value["conclusion"], "cancelled")
+        self.assertEqual(value["jobs"][0]["diagnostics"]["state"], "ORIGINAL_LOG_UNAVAILABLE")
+        self.assertEqual(feedback["jobs"][0].get("diagnostics"), None)
+
     def test_finished_signing_is_read_even_if_entire_workflow_never_returns(self):
         run = self.provider_run(600, status="in_progress", conclusion=None)
         jobs = {"total_count": 2, "jobs": [self.job(), self.job("in_progress", None, "Full test still running")]}

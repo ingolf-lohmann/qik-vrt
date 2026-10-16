@@ -61,7 +61,12 @@ the original run, jobs and steps and stores `GITHUB_RUN_FEEDBACK.json`. This
 includes actual `cancelled`, `timed_out` or `failure` conclusions. GitHub may
 omit the underlying cancellation reason; that remains
 `NOT_EXPOSED_BY_GITHUB`. Original signing preflight and receipt boundary codes
-are retained when available. An elapsed interval is never abortion evidence.
+are retained when available. A single bounded original-log read per failed job
+may add failed repository test identifiers, `MAKE_TEST_EXIT` codes or the known
+GitHub execution-limit/concurrency reason codes. Arbitrary exception text,
+raw logs and credential values are not forwarded. A log unavailable under the
+existing Actions read permission remains explicitly unavailable. An elapsed
+interval is never abortion evidence.
 
 This is asynchronous provider push feedback, not a blocking synchronous call.
 The receiver checks out its own Main event SHA, never triggering-run source or

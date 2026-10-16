@@ -2944,9 +2944,17 @@
     ],
     "feedback": {
       "application_timer_abort_decision": false,
+      "bounded_failed_job_original_log_read": true,
       "caller_return_required": false,
       "cancellation_cause_if_absent": "NOT_EXPOSED_BY_GITHUB",
+      "forwarded_log_fields": [
+        "failed repository test identifiers",
+        "MAKE_TEST_EXIT numeric codes",
+        "known GitHub execution-limit or concurrency reason codes"
+      ],
+      "missing_job_log": "ORIGINAL_LOG_UNAVAILABLE",
       "provider_event": "workflow_run.completed",
+      "raw_job_logs_forwarded": false,
       "readback_lane_waits_for_writer": false,
       "run_job_step_readback": true,
       "watchdog_run_id_polling_removed": true,
@@ -2958,7 +2966,7 @@
       "cache_coverage": "34/34 (100%)",
       "complete_native_suite": "REQUIRED_ON_REPAIRED_CANDIDATE",
       "fixture_http_is_not_live_mozilla_evidence": true,
-      "fixture_tests_passed": 58,
+      "fixture_tests_passed": 60,
       "yaml_workflows_parsed": 2
     },
     "native_main_guard_stale_review_dismissal_required": true,
@@ -2989,7 +2997,7 @@
         "state": "NOOP_UNCHANGED_FIREFOX_RELEASE_OR_SIGNING_FAILURE"
       }
     },
-    "observed_at": "2026-10-16T23:23:37.231891+00:00",
+    "observed_at": "2026-10-16T23:27:38.635334+00:00",
     "owner_request": {
       "continuous_execution": "Ja, wenn sie das bisher noch nicht tut, dann sorgen wir jetzt dafür, dass sie es von nun an fortwährend tut.",
       "github_feedback": "Deswegen wäre es auch besser, wenn man von GitHub in synchroner Art und Weise erfährt, wenn ein Lauf abgebrochen ist. Am besten inklusive der Gründe dafür. Denn mit Fristen und Timern wollen wir ja nix zu tun haben.",
@@ -3007,7 +3015,7 @@
       "fresh HTTP apex/www plus HTTPS public readback"
     ],
     "source_parent": "8bfb740b1a5013c3a833754d39348d6c46b6d38a",
-    "source_successor_parent": "14c3db108ae28469345458c0e2cbf90714fdb01a",
+    "source_successor_parent": "e34138caf3fd7b629edf57054a4cd8404a3af209",
     "state": "IMPLEMENTED_CANDIDATE_NOT_ACTIVATED"
   },
   "oci_publication_merge_20261014": {

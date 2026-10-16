@@ -1199,6 +1199,38 @@ def amo_feedback(run: Mapping[str, Any], jobs: Sequence[Mapping[str, Any]]) -> d
     return result
 
 
+def github_failure_codes(raw: bytes) -> dict[str, Any]:
+    """Return only closed diagnostic shapes, never arbitrary error or log text."""
+    text = raw.decode("utf-8", errors="replace")
+    failures = sorted({f"{suite}.{test}" for test, suite in re.findall(
+        r"\b(?:FAIL|ERROR): (test_[A-Za-z0-9_]{1,150}) \((tests\.[A-Za-z0-9_.]{1,200})\)", text)})
+    exits = sorted({int(code) for code in re.findall(r"\bMAKE_TEST_EXIT=([0-9]{1,3})\b", text)
+                    if 0 < int(code) < 256})
+    result = {"failed_tests": failures[:100], "make_test_exit_codes": exits}
+    if re.search(r"has exceeded the maximum execution time of [0-9]+ minutes", text):
+        result["provider_reason_code"] = "GITHUB_JOB_EXECUTION_LIMIT"
+    elif "Canceling since a higher priority waiting request" in text:
+        result["provider_reason_code"] = "GITHUB_CONCURRENCY_SUPERSEDED"
+    return result
+
+
+def github_failure_feedback(root: Path, feedback: Mapping[str, Any]) -> dict[str, Any]:
+    """One bounded original-log GET per failed job; no polling or raw-log output."""
+    value = dict(feedback)
+    value["jobs"] = [dict(job) for job in feedback["jobs"]]
+    for job in value["jobs"]:
+        if job["conclusion"] not in {"failure", "cancelled", "timed_out", "startup_failure"}:
+            continue
+        try:
+            raw = _amo_get(root, f"repos/{AMO_REPOSITORY}/actions/jobs/{job['id']}/logs", binary=True)
+            job["diagnostics"] = github_failure_codes(raw)
+            job["diagnostics"]["source"] = "ORIGINAL_GITHUB_JOB_LOG"
+            job["diagnostics"]["raw_log_returned"] = False
+        except ExecutorBlock:
+            job["diagnostics"] = {"state": "ORIGINAL_LOG_UNAVAILABLE", "raw_log_returned": False}
+    return value
+
+
 def amo_event(root: Path, context: Mapping[str, Any]) -> dict[str, Any] | None:
     """Authenticate GitHub's push notification by an independent original-run GET."""
     if context.get("event") != "workflow_run":
@@ -1247,7 +1279,7 @@ def github_completion_feedback(root: Path = ROOT) -> dict[str, Any]:
         jobs = _amo_get(root, f"repos/{AMO_REPOSITORY}/actions/runs/{run_id}/jobs?per_page=100")
         if jobs.get("total_count") != len(jobs.get("jobs", [])):
             raise ExecutorBlock("AMO_TARGET_JOB_INVENTORY_INCOMPLETE")
-        return amo_feedback(run, jobs["jobs"])
+        return github_failure_feedback(root, amo_feedback(run, jobs["jobs"]))
     except (OSError, KeyError, TypeError):
         raise ExecutorBlock("AMO_GITHUB_COMPLETION_EVENT_UNVERIFIED") from None
 
