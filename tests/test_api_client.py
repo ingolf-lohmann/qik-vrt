@@ -244,6 +244,206 @@ class ApiClientTests(unittest.TestCase):
                 client.read_regular_file(target, max_bytes=4)
 
 
+class FirefoxAmoClientTests(unittest.TestCase):
+    """Provider-shaped transport fixtures; no live signing or secret-store proof."""
+
+    def setUp(self):
+        state = tempfile.TemporaryDirectory()
+        self.addCleanup(state.cleanup)
+        self.state_dir = state.name
+        self.head, self.tree = "a" * 40, "b" * 40
+        self.token = "amo-client-fixture-token-never-real"
+        self.prefix = "https://api.github.com/repos/ingolf-lohmann/qik-vrt/"
+        self.workflow = b"on:\n  workflow_dispatch:\n"
+        self.blob = hashlib.sha1(b"blob " + str(len(self.workflow)).encode() + b"\0" + self.workflow).hexdigest()
+        self.subject = {"source_head": self.head, "source_tree": self.tree,
+                        "unsigned_xpi_sha256": "d" * 64,
+                        "extension_id": "qikvrt-ai-terminal@goldkelch.local", "extension_version": "1.0.0"}
+
+    def invoke(self, operation="firefox_amo_dispatch", *, arguments=(), overrides=None,
+               status=200, post_error=None, request_id="amo-one"):
+        repo = {"full_name": "ingolf-lohmann/qik-vrt"}
+        pr = {"state": "open", "head": {"sha": self.head, "ref": "integration/test", "repo": repo},
+              "base": {"ref": "main", "repo": repo}}
+        metadata = {"created_at": "2026-10-17T00:00:00Z", "updated_at": "2026-10-17T01:00:00Z"}
+        documents = {"pulls/523": pr, "git/commits/" + self.head: {"sha": self.head, "tree": {"sha": self.tree}},
+            "contents/" + client.AMO_WORKFLOW_PATH + "?ref=" + self.head: {
+                "type": "file", "path": client.AMO_WORKFLOW_PATH, "sha": self.blob,
+                "encoding": "base64", "size": len(self.workflow),
+                "content": base64.b64encode(self.workflow).decode()},
+            "commits/integration%2Ftest": {"sha": self.head, "commit": {"tree": {"sha": self.tree}}},
+            **{"actions/secrets/" + name: {"name": name, **metadata} for name in client.AMO_SECRET_NAMES},
+            **(overrides or {})}
+        def respond(request, **_):
+            response = mock.MagicMock()
+            response.__enter__.return_value = response
+            response.geturl.return_value = request.full_url
+            if request.get_method() == "POST":
+                self.assertEqual(request.full_url, self.prefix + "actions/workflows/qikvrt_ci.yml/dispatches")
+                # Observe the on-disk original intent before the transport can
+                # return or time out; a later response is not crash safety.
+                journals = list(Path(self.state_dir).glob("*.json"))
+                self.assertEqual(len(journals), 1)
+                intent = json.loads(journals[0].read_bytes())
+                self.assertEqual(intent["status"], "in_flight")
+                self.assertEqual(intent["operation_binding"]["request_body"], json.loads(request.data))
+                self.assertEqual(intent["operation_binding"]["source_head"], self.head)
+                self.assertEqual(intent["operation_binding"]["source_tree"], self.tree)
+                self.assertEqual(intent["operation_binding"]["request_sha256"], hashlib.sha256(request.data).hexdigest())
+                if post_error:
+                    raise post_error
+                response.status = status
+                response.read.return_value = (b"" if status == 204 else json.dumps({"workflow_run_id": 123,
+                    "run_url": self.prefix + "actions/runs/123",
+                    "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/123"}).encode())
+            elif request.full_url.startswith(self.prefix):
+                self.assertEqual(request.get_header("Authorization"), "Bearer " + self.token)
+                value = documents[request.full_url[len(self.prefix):]]
+                if callable(value):
+                    value = value()
+                if isinstance(value, Exception):
+                    raise value
+                response.status = 200
+                response.read.return_value = json.dumps(value).encode()
+            else:
+                self.assertEqual(request.full_url, "https://raumzeitterminal.de/")
+                self.assertIsNone(request.get_header("Authorization"))
+                response.status = 200
+                response.read.return_value = b"public closing fixture"
+            return response
+        opener = mock.Mock()
+        opener.open.side_effect = respond
+        argv = ["qikvrt_api_client.py", "--owner", "ingolf-lohmann", "--repo", "qik-vrt",
+                "--base-url", "https://api.github.com", "--ref", "integration/test",
+                "--state-dir", self.state_dir, "--request-id", request_id, "--operation", operation]
+        if operation == "firefox_amo_dispatch":
+            argv += ["--dry-run", "false", "--accept-effect", "--amo-expected-head", self.head,
+                     "--amo-expected-tree", self.tree, "--amo-workflow-blob", self.blob]
+        argv += list(arguments)
+        out, err = io.StringIO(), io.StringIO()
+        with mock.patch.dict(os.environ, {"QIKVRT_API_TOKEN": self.token}), mock.patch.object(sys, "argv", argv), \
+                mock.patch.object(client.urllib.request, "build_opener", return_value=opener), \
+                mock.patch("tools.qikvrt_self_host.firefox_amo_input", return_value=(b"xpi", self.subject)), \
+                mock.patch("tools.qikvrt_workflow_executor.amo_request", return_value={"unsigned_xpi_sha256": "d" * 64}), \
+                contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+            code = client.main()
+        self.assertNotIn(self.token, out.getvalue() + err.getvalue())
+        for path in Path(self.state_dir).glob("*"):
+            if path.is_file():
+                self.assertNotIn(self.token.encode(), path.read_bytes())
+        return code, json.loads(out.getvalue()), err.getvalue(), opener
+
+    def posts(self, opener):
+        return [call.args[0] for call in opener.open.call_args_list if call.args[0].get_method() == "POST"]
+
+    def test_exact_owner_dispatch_reuses_real_workflow_and_is_transport_only(self):
+        code, output, error, opener = self.invoke()
+        request, = self.posts(opener)
+        body = json.loads(request.data)
+        self.assertEqual(code, 20)
+        self.assertEqual(error, "")
+        self.assertEqual(body["ref"], "integration/test")
+        self.assertEqual(body["inputs"], {"amo_sign_unlisted": True, "amo_expected_head": self.head,
+            "amo_expected_tree": self.tree, "amo_previous_run_id": "0", "amo_executor_run_id": "0",
+            "amo_readback_only": False})
+        self.assertEqual(output["dispatch"]["workflow_run_id"], 123)
+        for key in ("execution_verified", "signing_verified", "native_independent_review", "main_merge_verified"):
+            self.assertFalse(output["dispatch"][key])
+        self.assertFalse(output["effect_ack_done"])
+        self.assertTrue(output["closing_verification"]["valid"])
+
+    def test_legacy_204_remains_pending_without_invented_run(self):
+        code, output, _, opener = self.invoke(status=204)
+        self.assertEqual(code, 20)
+        self.assertEqual(len(self.posts(opener)), 1)
+        self.assertIsNone(output["dispatch"]["workflow_run_id"])
+        self.assertFalse(output["effect_ack_done"])
+
+    def test_metadata_only_is_not_job_delivery_or_authentication(self):
+        code, output, _, opener = self.invoke("firefox_amo_access")
+        self.assertEqual(code, 0)
+        self.assertEqual(self.posts(opener), [])
+        r = output["dispatch"]
+        self.assertEqual([s["name"] for s in r["secrets"]], list(client.AMO_SECRET_NAMES))
+        self.assertEqual(r["configuration_status"], "REPOSITORY_METADATA_OBSERVED")
+        self.assertEqual(r["job_credential_delivery"], "NOT_OBSERVED")
+        self.assertFalse(r["amo_authentication_verified"])
+        self.assertFalse(r["credential_values_read"])
+
+    def test_metadata_denial_is_not_secret_absence_and_never_leaks_provider_errors(self):
+        for status in (401, 403, 404):
+            with self.subTest(status=status):
+                error = urllib.error.HTTPError(self.prefix, status, self.token, {}, None)
+                code, output, _, opener = self.invoke("firefox_amo_access",
+                    overrides={"actions/secrets/AMO_JWT_ISSUER": error})
+                self.assertEqual(code, 1)
+                self.assertEqual(output["dispatch"]["configuration_status"], "NOT_INSPECTED")
+                self.assertEqual(self.posts(opener), [])
+
+    def test_wrong_metadata_identity_is_refused(self):
+        code, output, _, opener = self.invoke("firefox_amo_access", overrides={
+            "actions/secrets/AMO_JWT_ISSUER": {"name": "OTHER", "created_at": "bad", "updated_at": "bad"}})
+        self.assertEqual(code, 1)
+        self.assertEqual(self.posts(opener), [])
+        self.assertEqual(output["dispatch"]["configuration_status"], "NOT_INSPECTED")
+
+    def test_foreign_closed_or_changed_head_pr_never_posts(self):
+        for pr in ({"state": "closed"}, {"state": "open", "head": {"sha": "e" * 40}},
+                   {"state": "open", "head": {"sha": self.head, "ref": "integration/test",
+                       "repo": {"full_name": "foreign/qik-vrt"}}}):
+            with self.subTest(pr=pr):
+                code, _, _, opener = self.invoke(overrides={"pulls/523": pr})
+                self.assertEqual(code, 1)
+                self.assertEqual(self.posts(opener), [])
+
+    def test_wrong_tree_and_forged_workflow_bytes_never_post(self):
+        for override in ({"git/commits/" + self.head: {"sha": self.head, "tree": {"sha": "e" * 40}}},
+            {"contents/" + client.AMO_WORKFLOW_PATH + "?ref=" + self.head: {
+                "type": "file", "path": client.AMO_WORKFLOW_PATH, "sha": self.blob,
+                "encoding": "base64", "size": len(self.workflow),
+                "content": base64.b64encode(b"x" * len(self.workflow)).decode()}}):
+            with self.subTest(override=override):
+                code, _, _, opener = self.invoke(overrides=override)
+                self.assertEqual(code, 1)
+                self.assertEqual(self.posts(opener), [])
+
+    def test_head_drift_during_journal_admission_never_posts(self):
+        repo = {"full_name": "ingolf-lohmann/qik-vrt"}
+        observations = iter([{"state": "open", "head": {"sha": self.head, "ref": "integration/test", "repo": repo},
+            "base": {"ref": "main", "repo": repo}}, {"state": "closed"}])
+        code, _, _, opener = self.invoke(overrides={"pulls/523": lambda: next(observations)})
+        self.assertEqual(code, 1)
+        self.assertEqual(self.posts(opener), [])
+
+    def test_ambiguous_post_survives_restart_and_changed_request_or_head_without_replay(self):
+        code, _, _, opener = self.invoke(post_error=TimeoutError(self.token))
+        self.assertEqual(code, 1)
+        self.assertEqual(len(self.posts(opener)), 1)
+        self.head, self.tree = "e" * 40, "f" * 40
+        code, output, _, opener = self.invoke(request_id="different-request")
+        self.assertEqual(code, 1)
+        self.assertEqual(self.posts(opener), [])
+        self.assertEqual(output["dispatch"]["reason"], "UNCHANGED_FAILURE_OR_UNRESOLVED_DISPATCH")
+
+    def test_acknowledged_async_run_is_not_replayed_after_restart(self):
+        self.invoke()
+        code, output, _, opener = self.invoke(request_id="changed")
+        self.assertEqual(code, 1)
+        self.assertEqual(self.posts(opener), [])
+        self.assertEqual(output["dispatch"]["previous_transport_receipt"]["workflow_run_id"], 123)
+
+    def test_invalid_scope_acceptance_and_binding_arguments_fail_before_network(self):
+        for arguments in (("--base-url", "https://other.invalid"), ("--owner", "foreign"),
+                          ("--dry-run", "true"), ("--amo-expected-tree", "wrong"),
+                          ("--amo-previous-run-id", "-1"), ("--payload-file", "unrelated")):
+            with self.subTest(arguments=arguments), self.assertRaises(SystemExit):
+                self.invoke(arguments=arguments)
+
+    def test_metadata_mode_cannot_carry_effect_acceptance(self):
+        with self.assertRaises(SystemExit):
+            self.invoke("firefox_amo_access", arguments=("--dry-run", "false", "--accept-effect"))
+
+
 class RulesetClientFixture(unittest.TestCase):
     """Real request construction and independent provider-shaped readbacks."""
     sha = "a" * 40

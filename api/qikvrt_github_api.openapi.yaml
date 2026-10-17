@@ -206,6 +206,78 @@ paths:
         '422': { description: Dispatch rejected; reobserve the trusted Main writer and authorization. }
         '429': { description: Rate limited; no automatic repeat. }
         '500': { description: Outcome may be ambiguous; authoritative readback required before another dispatch. }
+  /repos/{owner}/{repo}/actions/secrets/{secret_name}:
+    servers:
+      - url: https://api.github.com
+    get:
+      operationId: firefoxAmoSecretMetadata
+      summary: Read only the two existing AMO repository-secret metadata records.
+      description: >
+        The existing client's firefox_amo_access operation copies only name,
+        created_at and updated_at. A denial remains NOT_INSPECTED; metadata
+        does not establish secret delivery to a job or AMO authentication.
+        No secret value, secret write, environment change or local proxy is exposed.
+      parameters:
+        - { name: owner, in: path, required: true, schema: { type: string, enum: [ingolf-lohmann] } }
+        - { name: repo, in: path, required: true, schema: { type: string, enum: [qik-vrt] } }
+        - name: secret_name
+          in: path
+          required: true
+          schema: { type: string, enum: [AMO_JWT_ISSUER, AMO_JWT_SECRET] }
+      responses:
+        '200': { description: Repository-scoped metadata only; no job delivery or authentication proof. }
+        '401': { description: Authentication unavailable; configuration remains uninspected. }
+        '403': { description: Metadata permission unavailable; no absence inference. }
+        '404': { description: Metadata not established by this request; no global secret-absence inference. }
+  /repos/{owner}/{repo}/actions/workflows/qikvrt_ci.yml/dispatches:
+    servers:
+      - url: https://api.github.com
+    post:
+      operationId: firefoxAmoOwnerDispatch
+      summary: Dispatch the existing exact-source PR523 signing consumer through its direct Owner path.
+      description: >
+        The existing client's firefox_amo_dispatch operation requires explicit
+        effect acceptance, independently supplied current HEAD/TREE/workflow-blob
+        pins, the existing authorized six-component package digest and fresh PR
+        admission under its existing durable journal lock. It never changes
+        Main, native reviews, branch protection or Firefox signing policy.
+        An unresolved intent cannot be replayed using a changed request ID,
+        ref or unrelated source commit. The native consumer separately enforces
+        the direct Owner actor, current source and original signing journal.
+        This GitHub-only contract does not activate a ChatGPT connector operation
+        or establish a delivered credential, admitted native run or signed XPI.
+      parameters:
+        - { name: owner, in: path, required: true, schema: { type: string, enum: [ingolf-lohmann] } }
+        - { name: repo, in: path, required: true, schema: { type: string, enum: [qik-vrt] } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [ref, return_run_details, inputs]
+              properties:
+                ref: { type: string, minLength: 1, maxLength: 255 }
+                return_run_details: { type: boolean, enum: [true] }
+                inputs:
+                  type: object
+                  additionalProperties: false
+                  required: [amo_sign_unlisted, amo_expected_head, amo_expected_tree, amo_previous_run_id, amo_executor_run_id, amo_readback_only]
+                  properties:
+                    amo_sign_unlisted: { type: boolean, enum: [true] }
+                    amo_expected_head: { type: string, pattern: '^[0-9a-f]{40}$' }
+                    amo_expected_tree: { type: string, pattern: '^[0-9a-f]{40}$' }
+                    amo_previous_run_id: { type: string, pattern: '^(0|[1-9][0-9]{0,19})$' }
+                    amo_executor_run_id: { type: string, enum: ['0'] }
+                    amo_readback_only: { type: boolean, enum: [false] }
+      responses:
+        '200': { description: Bound native run ID and URLs; transport acceptance only. }
+        '204': { description: Legacy empty transport acceptance; read original native state before continuation. }
+        '401': { description: Authentication denied; no credential echo or unchanged retry. }
+        '403': { description: Actions-write/admission denied; preserve the original attempt. }
+        '422': { description: Invalid source or workflow admission; repair and reobserve. }
+        '500': { description: Outcome may be ambiguous; read original native state, never blindly replay. }
   /repos/{owner}/{repo}/dispatches:
     post:
       operationId: repositoryDispatch

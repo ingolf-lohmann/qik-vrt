@@ -256,3 +256,54 @@ propagation rather than claiming adoption on Main, the Mirror or other clients.
 
 The existing draft integration candidate #523 is reused for this request.
 No parallel controller, new trigger or review bypass is created.
+
+## Direct Owner Firefox signing REST client — 2026-10-17
+
+Ingolf Lohmann explicitly renewed `APPROVED` / Product Owner authorization
+for Firefox admission repair and PR523 integration on 2026-10-17 at
+11:19:29 Europe/Istanbul. The exact instruction and its scope are retained at
+https://github.com/ingolf-lohmann/qik-vrt/pull/523#issuecomment-6231678308.
+This is an Owner instruction, not an independent native GitHub review.
+
+Reuse `scripts/qikvrt_api_client.py` with an already authorized GitHub token
+securely supplied as `QIKVRT_API_TOKEN`. A local adapter token is not a GitHub
+credential. No token value belongs in arguments, source, logs or receipts.
+
+`--operation firefox_amo_access` performs GETs for the two fixed repository
+secret names `AMO_JWT_ISSUER` and `AMO_JWT_SECRET`. It reports only the name and
+creation/update times. It neither retrieves values nor changes their binding.
+Denials retain `NOT_INSPECTED`; configured metadata does not establish job
+delivery or Mozilla authentication. Environment/organization/vault scopes
+remain uninspected. This read is not a prerequisite for an otherwise admitted
+signing dispatch: Actions-write and Secrets-read are separate permissions.
+
+The existing direct Owner signing branch does not depend on a Main merge.
+Use `--operation firefox_amo_dispatch --dry-run false --accept-effect`, the
+current PR523 `--ref`, independently reviewed `--amo-expected-head`,
+`--amo-expected-tree` and `--amo-workflow-blob`, and a stable `--request-id`.
+An optional `--amo-previous-run-id` binds the prior native producer; the
+existing workflow resolves and recovers its original signing journal.
+The client verifies the six-component package against the existing Owner
+request, reads current PR523 HEAD/TREE and immutable workflow bytes, then
+reobserves source admission under the existing durable client journal lock.
+It dispatches only `qikvrt_ci.yml`, with `amo_executor_run_id=0`; the actual
+consumer must enforce `GITHUB_ACTOR=ingolf-lohmann` before any signing effect.
+No generic workflow dispatch, new server, proxy, trigger or permission grant
+is added. The existing Ruleset writer route remains unchanged.
+
+The existing private journal is keyed by official add-on/version rather than
+request ID, ref or unrelated HEAD/TREE changes. A pending or ambiguous dispatch
+survives restart and remains readback-only. HTTP200/204 means transport
+acceptance only. Retrieve the original native run, job logs, signing journal,
+receipt and signed XPI through the existing GitHub readback operations. Verify
+the exact source binding, Mozilla signature, default-policy Firefox activation
+and persistent restart. Never infer these effects from metadata or a dispatch
+response, and never edit/delete a journal to force a new submission.
+
+Each operation reuses the existing repository/exact-host closing readback.
+The OpenAPI source describes the bounded GitHub operations; changing it does
+not register them with ChatGPT. A securely credentialed, callable runtime and
+the active connector's actual operation exposure remain independent activation
+conditions. A repository commit or fixture PASS cannot close that live gap.
+Independent native approval and effective Main protection remain separate
+merge gates after successful Firefox admission.

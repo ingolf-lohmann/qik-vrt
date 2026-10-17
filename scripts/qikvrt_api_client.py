@@ -38,6 +38,9 @@ MAX_RESPONSE_BYTES = 2 * 1024 * 1024
 API_CONTRACT_VERSION = "2.3.0"
 SHA1_HEX = re.compile(r"^[0-9a-f]{40}$")
 RULESET_OPERATIONS = {"ruleset_authority_dispatch", "ruleset_authority_readback"}
+AMO_OPERATIONS = {"firefox_amo_access", "firefox_amo_dispatch"}
+AMO_WORKFLOW_PATH = ".github/workflows/qikvrt_ci.yml"
+AMO_SECRET_NAMES = ("AMO_JWT_ISSUER", "AMO_JWT_SECRET")
 RULESET_REPOSITORY = "ingolf-lohmann/qik-vrt"
 RULESET_WORKFLOW = "qikvrt_goldkelch_ruleset_authority_effect.yml"
 RULESET_WORKFLOW_PATH = f".github/workflows/{RULESET_WORKFLOW}"
@@ -387,7 +390,8 @@ def persist_successor_work(root: Path, args, *, subject_key: str, record: dict,
 
 
 def dispatch_with_journal(opener, request, args, *, subject_key: str, receipt: dict,
-                          closure: dict, action_id: str, token: str, domain: str):
+                          closure: dict, action_id: str, token: str, domain: str,
+                          before_dispatch=None, intent_metadata=None):
     """Persist intent before POST; unchanged failures survive client restarts."""
     root = Path(args.state_dir).absolute()
     # Reuse the handler's no-symlink target checks and durable private writer,
@@ -465,6 +469,10 @@ def dispatch_with_journal(opener, request, args, *, subject_key: str, receipt: d
                   "completed_requests": completed,
                   "request_metadata": {"repository": f"{args.owner}/{args.repo}", "ref": args.ref,
                                        "operation": args.operation, "artifact_id": args.artifact_id}}
+        if intent_metadata is not None:
+            # Only the fixed operation supplies non-secret exact-source inputs.
+            # Generic ingest payloads and credentials are never copied here.
+            record["operation_binding"] = intent_metadata
 
         def save():
             raw = json.dumps(record, sort_keys=True).encode("utf-8")
@@ -472,6 +480,8 @@ def dispatch_with_journal(opener, request, args, *, subject_key: str, receipt: d
                 raise ValueError("journal exceeds its bounded state limit; no witness discarded")
             atomic_write_bytes(path, raw)
 
+        if before_dispatch is not None:
+            before_dispatch()  # Fresh source admission under the existing journal lock.
         save()  # Crash or timeout after this point must never silently redispatch.
         receipt["dispatch_count"] = 1
         result = 1
@@ -833,6 +843,124 @@ def ruleset_authority_operation(args, token):
         return 1
 
 
+def amo_candidate_readback(get, args):
+    """The direct Owner path signs the current PR, without a prior Main merge."""
+    pr = get("pulls/523")
+    if (not isinstance(pr, dict) or pr.get("state") != "open"
+            or pr.get("head", {}).get("sha") != args.amo_expected_head
+            or pr.get("head", {}).get("ref") != args.ref
+            or pr.get("head", {}).get("repo", {}).get("full_name") != RULESET_REPOSITORY
+            or pr.get("base", {}).get("ref") != "main"
+            or pr.get("base", {}).get("repo", {}).get("full_name") != RULESET_REPOSITORY):
+        raise ValueError("AMO_CURRENT_OWNER_PR_REQUIRED")
+    commit = get("git/commits/" + args.amo_expected_head)
+    if (not isinstance(commit, dict) or commit.get("sha") != args.amo_expected_head
+            or commit.get("tree", {}).get("sha") != args.amo_expected_tree):
+        raise ValueError("AMO_CURRENT_HEAD_TREE_REQUIRED")
+
+
+def amo_workflow_readback(get, args):
+    writer = get("contents/" + AMO_WORKFLOW_PATH + "?ref=" + args.amo_expected_head)
+    if (not isinstance(writer, dict) or writer.get("type") != "file"
+            or writer.get("path") != AMO_WORKFLOW_PATH
+            or writer.get("sha") != args.amo_workflow_blob
+            or writer.get("encoding") != "base64"
+            or type(writer.get("size")) is not int or not 0 < writer["size"] <= 128 * 1024
+            or not isinstance(writer.get("content"), str) or len(writer["content"]) > 256 * 1024):
+        raise ValueError("AMO_REVIEWED_WORKFLOW_REQUIRED")
+    raw = base64.b64decode("".join(writer["content"].splitlines()), validate=True)
+    blob = hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw,
+                        usedforsecurity=False).hexdigest()
+    if len(raw) != writer["size"] or blob != args.amo_workflow_blob:
+        raise ValueError("AMO_REVIEWED_WORKFLOW_BYTES_REQUIRED")
+
+
+def firefox_amo_operation(args, token):
+    """Reuse the REST transport/journal; never export secrets or grant a review.
+
+    This is a client operation, not a new server or an activation of ChatGPT's
+    connector registry. Its caller must already have a securely bound token.
+    """
+    opener = urllib.request.build_opener(NoRedirectHandler())
+    get = lambda path: ruleset_json_get(opener, token, path)
+    domain = client_end_of_action_domain()
+    action_id = "client:" + args.request_id + ":" + utc_now()
+    receipt = {"schema": "qikvrt-firefox-amo-client/1", "operation": args.operation,
+               "repository": RULESET_REPOSITORY, "dispatch_count": 0,
+               "credential_values_read": False, "configuration_status": "NOT_INSPECTED",
+               "job_credential_delivery": "NOT_OBSERVED", "amo_authentication_verified": False,
+               "execution_verified": False, "signing_verified": False,
+               "native_independent_review": False, "main_merge_verified": False}
+    closure = {}
+    result = 1
+    try:
+        if args.operation == "firefox_amo_access":
+            metadata = []
+            for name in AMO_SECRET_NAMES:
+                observed = get("actions/secrets/" + name)
+                if (not isinstance(observed, dict) or observed.get("name") != name
+                        or any(not isinstance(observed.get(field), str)
+                               or not re.fullmatch(r"\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ", observed[field])
+                               for field in ("created_at", "updated_at"))):
+                    raise ValueError("AMO_SECRET_METADATA_UNVERIFIED")
+                # Copy only known metadata, never an unexpected provider field.
+                metadata.append({field: observed[field] for field in ("name", "created_at", "updated_at")})
+            receipt.update(configuration_status="REPOSITORY_METADATA_OBSERVED",
+                           configuration_scope="REPOSITORY_SECRET_METADATA_ONLY", secrets=metadata)
+            result = 0
+        else:
+            from tools.qikvrt_self_host import firefox_amo_input
+            from tools.qikvrt_workflow_executor import amo_request
+            _xpi, subject = firefox_amo_input(ROOT, args.amo_expected_head, args.amo_expected_tree)
+            if subject["unsigned_xpi_sha256"] != amo_request(ROOT)["unsigned_xpi_sha256"]:
+                raise ValueError("AMO_OWNER_PACKAGE_CHANGED")
+            amo_candidate_readback(get, args)
+            amo_workflow_readback(get, args)
+            body = {"ref": args.ref, "return_run_details": True, "inputs": {
+                "amo_sign_unlisted": True, "amo_expected_head": args.amo_expected_head,
+                "amo_expected_tree": args.amo_expected_tree,
+                "amo_previous_run_id": args.amo_previous_run_id or "0",
+                "amo_executor_run_id": "0", "amo_readback_only": False}}
+            url = f"https://api.github.com/repos/{RULESET_REPOSITORY}/actions/workflows/qikvrt_ci.yml/dispatches"
+            request = urllib.request.Request(url, data=json.dumps(body).encode(), method="POST",
+                headers={"Authorization": "Bearer " + token, "Accept": "application/vnd.github+json",
+                         "Content-Type": "application/json", "X-GitHub-Api-Version": "2022-11-28"})
+            receipt.update(source_head=args.amo_expected_head, source_tree=args.amo_expected_tree,
+                           unsigned_xpi_sha256=subject["unsigned_xpi_sha256"],
+                           workflow_blob_sha=args.amo_workflow_blob, actor_admission="NATIVE_DIRECT_OWNER_CHECK_REQUIRED")
+            # Unrelated HEAD/TREE/ref/request-id changes must not replay a
+            # pending/failed signing attempt for this official add-on/version.
+            subject_key = digest({"operation": "firefox_amo_dispatch", "repository": RULESET_REPOSITORY,
+                                  "extension_id": subject["extension_id"],
+                                  "extension_version": subject["extension_version"]})
+            result = dispatch_with_journal(opener, request, args, subject_key=subject_key,
+                receipt=receipt, closure=closure, action_id=action_id, token=token, domain=domain,
+                before_dispatch=lambda: amo_candidate_readback(get, args),
+                intent_metadata={"source_head": args.amo_expected_head, "source_tree": args.amo_expected_tree,
+                    "workflow_blob_sha": args.amo_workflow_blob,
+                    "unsigned_xpi_sha256": subject["unsigned_xpi_sha256"], "dispatch_url": url,
+                    "request_sha256": hashlib.sha256(request.data).hexdigest(), "request_body": body})
+            receipt["execution_verified"] = False
+            receipt["next_checks"] = ["VERIFY_NATIVE_RUN_EVENT_REF_HEAD_TREE_AND_OWNER_ACTOR",
+                "READ_ORIGINAL_AMO_JOURNAL_RECEIPT_AND_SIGNED_XPI_BYTES",
+                "VERIFY_DEFAULT_POLICY_FIREFOX_ACTIVATION_AND_PERSISTENT_RESTART"]
+    except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, OSError,
+            RuntimeError, ValueError, KeyError, TypeError, AttributeError, IntegrityIsolationError) as exc:
+        receipt["failure_class"] = type(exc).__name__
+        if isinstance(exc, urllib.error.HTTPError):
+            receipt["http_status"] = exc.code
+        # Provider exception messages/bodies can contain credentials.
+        print("BLOCK AMO client operation; inspect the non-secret receipt", file=sys.stderr)
+    finally:
+        if not closure:
+            closure.update(closing_readback(opener, args, action_id=action_id,
+                                           completed_at=utc_now(), token=token, domain=domain))
+    print(json.dumps({"schema": "qikvrt-firefox-amo-client-readback/1", "dispatch": receipt,
+                      "closing_verification": closure, "effect_ack_done": False,
+                      "ordinary_release": False}, sort_keys=True))
+    return result if closure["valid"] else 1
+
+
 def github_json_get(repository: str, path: str, *, token: str = "", opener=None) -> dict:
     """Bounded GET-only readback; reuse this client's no-redirect transport.
 
@@ -876,7 +1004,7 @@ def main() -> int:
     ap.add_argument("--owner", required=True)
     ap.add_argument("--repo", required=True)
     ap.add_argument("--ref", default="main")
-    ap.add_argument("--operation", choices=["ingest", "verify", "stage", "release_status", *sorted(RULESET_OPERATIONS)], default="ingest")
+    ap.add_argument("--operation", choices=["ingest", "verify", "stage", "release_status", *sorted(RULESET_OPERATIONS), *sorted(AMO_OPERATIONS)], default="ingest")
     ap.add_argument("--artifact-id", default="qikvrt_artifact")
     ap.add_argument("--payload-file")
     ap.add_argument("--expected-sha256")
@@ -890,6 +1018,10 @@ def main() -> int:
     ap.add_argument("--ruleset-run-id", help="Independently identified writer run; GET-only Ruleset readback")
     ap.add_argument("--ruleset-writer-version", choices=sorted(RULESET_WRITER_VERSIONS),
                     help="Exact reviewed writer contract; omitted preserves the 2.2 legacy-v1 pin")
+    ap.add_argument("--amo-expected-head", help="Exact current PR523 commit for direct Owner signing")
+    ap.add_argument("--amo-expected-tree", help="Exact current PR523 tree for direct Owner signing")
+    ap.add_argument("--amo-workflow-blob", help="Independently reviewed qikvrt_ci.yml Git blob SHA-1")
+    ap.add_argument("--amo-previous-run-id", help="Prior actual signing run; existing producer resolves its original journal")
     ap.add_argument("--state-dir", default=os.environ.get("QIKVRT_API_CLIENT_STATE_DIR", str(Path.home() / ".local/state/qikvrt/api-client")), help="Private persistent non-secret attempt metadata")
     ap.add_argument("--retry-evidence-file", help="New failure-bound subject/error/cause/capability digests; observation clocks do not admit retry")
     args = ap.parse_args()
@@ -935,6 +1067,31 @@ def main() -> int:
         if not args.accept_effect:
             ap.error("--accept-effect is required when --dry-run=false")
 
+    amo_bindings = (args.amo_expected_head, args.amo_expected_tree,
+                    args.amo_workflow_blob, args.amo_previous_run_id)
+    if args.operation in AMO_OPERATIONS:
+        if (args.base_url != "https://api.github.com"
+                or f"{args.owner}/{args.repo}" != RULESET_REPOSITORY):
+            ap.error("AMO operations require the fixed Authority at https://api.github.com")
+        if len(token) > 4096 or any(ord(char) < 33 or ord(char) > 126 for char in token):
+            ap.error("AMO credential must be bounded printable ASCII without whitespace")
+        if (args.payload_file or args.remote_evidence_file or args.expected_sha256
+                or args.state_run_id is not None or args.return_run_details
+                or args.artifact_id != "qikvrt_artifact" or args.expected_main_sha is not None
+                or args.ruleset_run_id is not None or args.ruleset_writer_version is not None):
+            ap.error("Mesh/Ruleset inputs are forbidden for AMO operations")
+        if args.operation == "firefox_amo_dispatch":
+            if args.dry_run != "false" or not args.accept_effect:
+                ap.error("AMO dispatch requires --dry-run false --accept-effect")
+            if any(not isinstance(v, str) or not SHA1_HEX.fullmatch(v) for v in amo_bindings[:3]):
+                ap.error("AMO dispatch requires exact lowercase HEAD/TREE/workflow blob SHA-1 pins")
+            if args.amo_previous_run_id is not None and not re.fullmatch(r"0|[1-9][0-9]{0,19}", args.amo_previous_run_id):
+                ap.error("AMO previous run ID is invalid")
+        elif any(v is not None for v in amo_bindings) or args.dry_run != "true" or args.accept_effect:
+            ap.error("AMO metadata access uses read-only defaults without dispatch bindings")
+        return firefox_amo_operation(args, token)
+    if any(v is not None for v in amo_bindings):
+        ap.error("AMO binding arguments require an AMO operation")
     if args.operation in RULESET_OPERATIONS:
         if len(token) > 4096 or any(ord(char) < 33 or ord(char) > 126 for char in token):
             ap.error("Ruleset credential must be bounded printable ASCII without whitespace")
