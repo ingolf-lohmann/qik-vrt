@@ -382,15 +382,109 @@ def client_knowledge_records(value: Any) -> dict[str, dict[str, Any]]:
     return records
 
 
+def client_historical_knowledge_encodings(
+    receipt: dict[str, Any], predecessor: dict[str, Any] | None,
+) -> dict[str, tuple[dict[str, Any], str]]:
+    """Admit only declared historical bytes from the already pinned predecessor.
+
+    New records still require the canonical compact digest. This is an explicit
+    versioned reader contract, never a try-both-encodings fallback or a rewrite
+    of the stored predecessor. Its return value is a validation projection only.
+    """
+    migration = receipt.get("knowledge_encoding_migration")
+    if migration is None:
+        return {}
+    policy = load_json(ROOT / "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json")
+    contract = policy.get("client_continuation", {}).get(
+        "knowledge_continuity", {}).get("historical_encoding_migration", {})
+    schema = "qikvrt-knowledge-historical-encoding-migration/v1"
+    codec = "json-sorted-spaced-utf8/v1"
+    if (not isinstance(contract, dict)
+        or contract.get("schema") != schema or contract.get("codec") != codec
+        or contract.get("scope") != "EXACT_PINNED_PREDECESSOR_RECORDS_ONLY"
+        or contract.get("requires_pinned_predecessor") is not True
+        or contract.get("new_records_remain_canonical") is not True):
+        fail("CLIENT_KNOWLEDGE_MIGRATION_POLICY_UNAVAILABLE")
+    if predecessor is None:
+        fail("CLIENT_KNOWLEDGE_MIGRATION_PREDECESSOR_REQUIRED")
+    previous = require(receipt, "previous_run", dict)
+    if (not isinstance(migration, dict)
+        or set(migration) != {"schema", "predecessor_sha256", "records"}
+        or migration.get("schema") != schema
+        or migration.get("predecessor_sha256") != previous.get("receipt_sha256")):
+        fail("CLIENT_KNOWLEDGE_MIGRATION_BINDING_INVALID")
+    entries = migration["records"]
+    if not isinstance(entries, list) or not 1 <= len(entries) <= 128:
+        fail("CLIENT_KNOWLEDGE_MIGRATION_RECORDS_INVALID")
+    inherited = require(predecessor, "knowledge", list)
+    current = require(receipt, "knowledge", list)
+    accepted: dict[str, tuple[dict[str, Any], str]] = {}
+    for entry in entries:
+        if (not isinstance(entry, dict)
+            or set(entry) != {"id", "codec", "record_sha256", "canonical_sha256"}
+            or not isinstance(entry.get("id"), str) or not entry["id"].strip()
+            or entry["id"] in accepted or entry.get("codec") != codec):
+            fail("CLIENT_KNOWLEDGE_MIGRATION_RECORDS_INVALID")
+        identifier = entry["id"]
+        originals = [record for record in inherited
+                     if isinstance(record, dict) and record.get("id") == identifier]
+        successors = [record for record in current
+                      if isinstance(record, dict) and record.get("id") == identifier]
+        if len(originals) != 1 or len(successors) != 1:
+            fail("CLIENT_KNOWLEDGE_MIGRATION_RECORD_NOT_IN_PREDECESSOR")
+        original = originals[0]
+        if successors[0] != original:
+            fail("CLIENT_KNOWLEDGE_HISTORY_REWRITTEN")
+        payload = {key: value for key, value in original.items() if key != "record_sha256"}
+        try:
+            historical = json.dumps(payload, sort_keys=True, ensure_ascii=False,
+                                    separators=(", ", ": "), allow_nan=False).encode("utf-8")
+            canonical = json.dumps(payload, sort_keys=True, ensure_ascii=False,
+                                   separators=(",", ":"), allow_nan=False).encode("utf-8")
+        except (ValueError, TypeError, UnicodeError):
+            fail("CLIENT_KNOWLEDGE_INVALID")
+        old_digest = hashlib.sha256(historical).hexdigest()
+        canonical_digest = hashlib.sha256(canonical).hexdigest()
+        if (old_digest == canonical_digest or original.get("record_sha256") != old_digest
+            or entry["record_sha256"] != old_digest
+            or entry["canonical_sha256"] != canonical_digest):
+            fail("CLIENT_KNOWLEDGE_MIGRATION_ENCODING_MISMATCH")
+        accepted[identifier] = (original, canonical_digest)
+    return accepted
+
+
+def client_knowledge_validation_projection(
+    records: Any, historical: dict[str, tuple[dict[str, Any], str]],
+) -> Any:
+    """Preserve source records; normalize only the explicitly verified reader view."""
+    if not isinstance(records, list):
+        return records  # The existing strict validator reports the schema error.
+    projected = []
+    for record in records:
+        identifier = record.get("id") if isinstance(record, dict) else None
+        binding = historical.get(identifier) if isinstance(identifier, str) else None
+        if binding is None:
+            projected.append(record)
+            continue
+        original, canonical_digest = binding
+        if record != original:
+            fail("CLIENT_KNOWLEDGE_HISTORY_REWRITTEN")
+        projected.append(dict(record, record_sha256=canonical_digest))
+    return projected
+
+
 def validate_client_knowledge(receipt: dict[str, Any], predecessor: dict[str, Any] | None) -> None:
     """Preserve facts, unknowns and corrections without predecessor PASS transfer."""
-    current = client_knowledge_records(receipt.get("knowledge", []))
+    historical = client_historical_knowledge_encodings(receipt, predecessor)
+    current = client_knowledge_records(client_knowledge_validation_projection(
+        receipt.get("knowledge", []), historical))
     previous = receipt.get("previous_run")
     sources = [previous] if isinstance(previous, dict) else []
     if predecessor is not None:
         sources.append(predecessor)
     for source in sources:
-        for identifier, record in client_knowledge_records(source.get("knowledge", [])).items():
+        for identifier, record in client_knowledge_records(client_knowledge_validation_projection(
+                source.get("knowledge", []), historical)).items():
             if identifier not in current:
                 fail("CLIENT_PREDECESSOR_KNOWLEDGE_DROPPED")
             if current[identifier]["record_sha256"] != record["record_sha256"]:

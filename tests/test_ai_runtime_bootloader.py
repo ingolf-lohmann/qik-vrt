@@ -15,6 +15,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 
@@ -246,6 +247,157 @@ class ClientContinuationRegressionTests(unittest.TestCase):
     def test_handoff_retains_prior_knowledge_and_its_limits(self):
         self.inherited_knowledge()
         self.assertEqual(self.check(), "CONTINUE")
+
+    def historical_knowledge(self):
+        canonical = self.inherited_knowledge()
+        payload = {k: v for k, v in canonical.items() if k != "record_sha256"}
+        historical = dict(payload, record_sha256=hashlib.sha256(json.dumps(
+            payload, sort_keys=True, ensure_ascii=False,
+            separators=(", ", ": "), allow_nan=False).encode()).hexdigest())
+        self.receipt["knowledge"] = [historical]
+        self.receipt["previous_run"]["knowledge"] = copy.deepcopy([historical])
+        directory = tempfile.TemporaryDirectory(dir=ROOT)
+        self.addCleanup(directory.cleanup)
+        path = pathlib.Path(directory.name) / "prior.json"
+        raw = json.dumps({"execution_id": "fixture:previous-run",
+                          "knowledge": [historical],
+                          "work": copy.deepcopy(self.receipt["work"])}).encode()
+        path.write_bytes(raw)
+        digest = hashlib.sha256(raw).hexdigest()
+        self.receipt["previous_run"].update(
+            receipt_path=str(path.relative_to(ROOT)), receipt_sha256=digest)
+        self.receipt["knowledge_encoding_migration"] = {
+            "schema": "qikvrt-knowledge-historical-encoding-migration/v1",
+            "predecessor_sha256": digest,
+            "records": [{"id": historical["id"],
+                         "codec": "json-sorted-spaced-utf8/v1",
+                         "record_sha256": historical["record_sha256"],
+                         "canonical_sha256": canonical["record_sha256"]}],
+        }
+        return path, raw, copy.deepcopy(historical)
+
+    def test_historical_encoding_requires_explicit_migration_and_preserves_bytes(self):
+        path, raw, historical = self.historical_knowledge()
+        migration = self.receipt.pop("knowledge_encoding_migration")
+        self.rejected("CLIENT_KNOWLEDGE_DIGEST_DRIFT")
+        self.receipt["knowledge_encoding_migration"] = migration
+        self.assertEqual(self.check(), "CONTINUE")
+        self.assertEqual(path.read_bytes(), raw)
+        self.assertEqual(self.receipt["knowledge"], [historical])
+        self.assertEqual(self.receipt["previous_run"]["knowledge"], [historical])
+
+    def test_historical_encoding_requires_actual_pinned_predecessor(self):
+        self.historical_knowledge()
+        del self.receipt["previous_run"]["receipt_path"]
+        del self.receipt["previous_run"]["receipt_sha256"]
+        self.rejected("CLIENT_KNOWLEDGE_MIGRATION_PREDECESSOR_REQUIRED")
+
+    def test_historical_encoding_rejects_changed_predecessor_bytes(self):
+        path, raw, _ = self.historical_knowledge()
+        path.write_bytes(raw + b" ")
+        self.rejected("CLIENT_PREVIOUS_RECEIPT_DIGEST_DRIFT")
+
+    def test_historical_encoding_rejects_other_source_schema_and_unknown_fields(self):
+        self.historical_knowledge()
+        valid = copy.deepcopy(self.receipt)
+        for change in ({"predecessor_sha256": "0" * 64},
+                       {"schema": "unversioned-guess"}, {"accept_all": True}):
+            with self.subTest(change=change):
+                self.receipt = copy.deepcopy(valid)
+                self.receipt["knowledge_encoding_migration"].update(change)
+                self.rejected("CLIENT_KNOWLEDGE_MIGRATION_BINDING_INVALID")
+
+    def test_historical_encoding_rejects_unknown_codec_duplicates_and_empty_mapping(self):
+        self.historical_knowledge()
+        valid = copy.deepcopy(self.receipt)
+        entry = valid["knowledge_encoding_migration"]["records"][0]
+        for records in ([], [entry, entry], [dict(entry, codec="try-both")],
+                        [dict(entry, unverified=True)], [entry] * 129):
+            with self.subTest(records=records):
+                self.receipt = copy.deepcopy(valid)
+                self.receipt["knowledge_encoding_migration"]["records"] = records
+                self.rejected("CLIENT_KNOWLEDGE_MIGRATION_RECORDS_INVALID")
+
+    def test_historical_encoding_rejects_wrong_original_or_canonical_digest(self):
+        self.historical_knowledge()
+        valid = copy.deepcopy(self.receipt)
+        for key in ("record_sha256", "canonical_sha256"):
+            with self.subTest(key=key):
+                self.receipt = copy.deepcopy(valid)
+                self.receipt["knowledge_encoding_migration"]["records"][0][key] = "0" * 64
+                self.rejected("CLIENT_KNOWLEDGE_MIGRATION_ENCODING_MISMATCH")
+
+    def test_historical_encoding_rejects_payload_and_epistemic_promotion(self):
+        self.historical_knowledge()
+        valid = copy.deepcopy(self.receipt)
+        for change in ({"statement": "Protected remote credentials are absent."},
+                       {"scope": "All hosts and all times"},
+                       {"epistemic_class": "LIVE_EFFECT_VERIFIED"},
+                       {"evidence": ["fixture:unrelated"]}):
+            with self.subTest(change=change):
+                self.receipt = copy.deepcopy(valid)
+                self.receipt["knowledge"][0].update(change)
+                self.rejected("CLIENT_KNOWLEDGE_HISTORY_REWRITTEN")
+
+    def test_historical_encoding_rejects_missing_record_and_duplicate_source_id(self):
+        self.historical_knowledge()
+        valid = copy.deepcopy(self.receipt)
+        self.receipt["knowledge"] = []
+        self.rejected("CLIENT_KNOWLEDGE_MIGRATION_RECORD_NOT_IN_PREDECESSOR")
+        self.receipt = copy.deepcopy(valid)
+        self.receipt["knowledge"].append(copy.deepcopy(self.receipt["knowledge"][0]))
+        self.rejected("CLIENT_KNOWLEDGE_MIGRATION_RECORD_NOT_IN_PREDECESSOR")
+
+    def test_new_records_cannot_use_historical_codec(self):
+        self.historical_knowledge()
+        record = copy.deepcopy(self.receipt["knowledge"][0])
+        record["id"] = "fixture:new-spaced-record"
+        payload = {k: v for k, v in record.items() if k != "record_sha256"}
+        record["record_sha256"] = hashlib.sha256(json.dumps(
+            payload, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+        self.receipt["knowledge"].append(record)
+        self.rejected("CLIENT_KNOWLEDGE_DIGEST_DRIFT")
+        self.receipt["knowledge_encoding_migration"]["records"].append({
+            "id": record["id"], "codec": "json-sorted-spaced-utf8/v1",
+            "record_sha256": record["record_sha256"],
+            "canonical_sha256": self.seal_knowledge(record)["record_sha256"],
+        })
+        self.rejected("CLIENT_KNOWLEDGE_MIGRATION_RECORD_NOT_IN_PREDECESSOR")
+
+    def test_historical_encoding_keeps_correction_graph_and_open_work_gates(self):
+        self.historical_knowledge()
+        valid = copy.deepcopy(self.receipt)
+        original = self.receipt["knowledge"][0]
+        self.receipt["knowledge"].append(self.seal_knowledge(dict(original,
+            id="fixture:orphan", supersedes=["fixture:missing"])))
+        self.rejected("CLIENT_KNOWLEDGE_CORRECTION_TARGET_MISSING")
+        self.receipt = copy.deepcopy(valid)
+        self.receipt["work"] = []
+        self.rejected("CLIENT_PREDECESSOR_OPEN_WORK_DROPPED")
+
+    def test_historical_encoding_does_not_turn_undelivered_receipt_into_done(self):
+        self.historical_knowledge()
+        self.receipt["state"] = "DONE"
+        self.receipt["next_actions"] = []
+        self.rejected("CLIENT_DONE_WITH_OPEN_WORK")
+
+    def test_direct_knowledge_reader_remains_strict(self):
+        self.historical_knowledge()
+        with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            self.handoff.client_knowledge_records(self.receipt["knowledge"])
+
+    def test_historical_encoding_requires_versioned_policy_admission(self):
+        self.historical_knowledge()
+        predecessor = self.handoff.client_previous_receipt(self.receipt)
+        for contract in ({}, None, {"schema": "unversioned"}):
+            with self.subTest(contract=contract):
+                policy = {"client_continuation": {"knowledge_continuity": {
+                    "historical_encoding_migration": contract}}}
+                stream = io.StringIO()
+                with patch.object(self.handoff, "load_json", return_value=policy), \
+                        contextlib.redirect_stderr(stream), self.assertRaises(SystemExit):
+                    self.handoff.client_historical_knowledge_encodings(self.receipt, predecessor)
+                self.assertIn("CLIENT_KNOWLEDGE_MIGRATION_POLICY_UNAVAILABLE", stream.getvalue())
 
     def test_knowledge_contract_reuses_the_existing_epistemic_continuity_policy(self):
         policy = json.loads((ROOT / "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json").read_text())

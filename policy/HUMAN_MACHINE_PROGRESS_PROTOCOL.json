@@ -1,5 +1,5 @@
 {
-  "schema": "qikvrt-human-machine-progress-protocol/1.4",
+  "schema": "qikvrt-human-machine-progress-protocol/1.5",
   "authority": "docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md",
   "required_files": {
     "machine_state": "AI_PROGRESS.json",
@@ -209,7 +209,20 @@
       "consistency_proves_truth_or_complete_initial_knowledge": false,
       "preserved_observation_proves_current_successor_acceptance": false,
       "existing_validator": "tools/ai_handoff.py --client-receipt",
-      "current_baseline": "state/work_units/QIKVRT_CLIENT_KNOWLEDGE_CONTINUITY_REPAIR_20261016_V1.json"
+      "current_baseline": "state/work_units/QIKVRT_CLIENT_KNOWLEDGE_CONTINUITY_REPAIR_20261016_V1.json",
+      "historical_encoding_migration": {
+        "schema": "qikvrt-knowledge-historical-encoding-migration/v1",
+        "codec": "json-sorted-spaced-utf8/v1",
+        "scope": "EXACT_PINNED_PREDECESSOR_RECORDS_ONLY",
+        "requires_pinned_predecessor": true,
+        "new_records_remain_canonical": true,
+        "receipt_field": "knowledge_encoding_migration",
+        "maximum_records": 128,
+        "original_bytes_and_record_fields_immutable": true,
+        "automatic_encoding_fallback": false,
+        "semantic_or_epistemic_promotion": false,
+        "predecessor_pass_transfer": false
+      }
     }
   },
   "continuation_semantics": {

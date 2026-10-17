@@ -85,6 +85,27 @@ Corrections append a new record referencing the retained original; orphan and
 cyclic correction references are rejected. Record hashes bind declared bytes;
 they do not authenticate evidence or establish that a statement is true.
 
+Historical writer-encoding repair uses the explicit versioned contract
+qikvrt-knowledge-historical-encoding-migration/v1 in the existing policy's
+knowledge_continuity.historical_encoding_migration. It is opt-in through the
+receipt's knowledge_encoding_migration, bound to the exact SHA-256-verified
+immediate predecessor. Each of at most 128 listed records declares the codec
+json-sorted-spaced-utf8/v1, its original digest and its canonical compact digest.
+That historical codec is finite UTF-8 JSON with sorted keys, ensure_ascii=false
+and separators comma-space and colon-space. No other historical codec is tried.
+
+Every listed record must occur exactly once in the pinned predecessor and the
+successor with identical fields and stored digest. Both declared digests are
+independently recomputed. Only the in-memory reader view uses the recomputed
+compact digest for the existing schema, correction-graph and continuity checks;
+the original receipt and all stored records remain unchanged. New records must
+use the ordinary compact encoding and cannot enter the historical mapping.
+An unpinned migration, an undeclared or malformed codec, a different payload,
+duplicate mapping, missing record or unlisted invalid digest remains BLOCK.
+An old receipt without this declaration remains rejected under the strict gate.
+Successful compatibility checking does not change any recorded epistemic class,
+grant a permission, transfer predecessor PASS or prove runtime/delivery success.
+
 When a durable predecessor is available, pin its exact repository-relative
 `receipt_path` and `receipt_sha256` under `previous_run`. Its `execution_id`
 must match. The existing provenance Work Unit may carry `execution_id`,
