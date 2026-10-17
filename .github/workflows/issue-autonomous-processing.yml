@@ -9,6 +9,15 @@ on:
         description: Existing issue number to process
         required: true
         type: string
+      external_inference:
+        description: Explicitly enable an optional external model adapter
+        required: false
+        default: false
+        type: boolean
+      model:
+        description: Authorized provider/model ID; no default provider
+        required: false
+        type: string
 
 permissions:
   contents: write
@@ -56,19 +65,21 @@ jobs:
             --repository "$REPOSITORY" \
             --output-dir "evidence/issues/$ISSUE_NUMBER"
 
-      - name: Generate repository-grounded answer
+      - name: Generate optional repository-grounded model answer
         id: inference
+        if: github.event_name == 'workflow_dispatch' && inputs.external_inference == true && inputs.model != ''
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
           ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
+          MODEL_ID: ${{ inputs.model }}
         run: |
           set -euo pipefail
           python3 scripts/issue_agent/infer.py \
             --issue issue.json \
             --context "evidence/issues/$ISSUE_NUMBER/CONTEXT.md" \
             --output "evidence/issues/$ISSUE_NUMBER/ANSWER.md" \
-            --model "openai/gpt-4.1"
+            --model "$MODEL_ID"
 
       - name: Enforce truthful status
         env:

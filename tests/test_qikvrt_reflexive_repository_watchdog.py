@@ -471,64 +471,91 @@ class ReflexiveObservationFailureTests(unittest.TestCase):
             "${{ github.event.pull_request.base.ref }}", "main"
         )
 
-    def test_authority_404_preserves_a_failure_receipt_without_hiding_the_failure(self) -> None:
+    def exercise_observation(self, status=404, *, drift=False, tamper=False, mutation=False):
         with tempfile.TemporaryDirectory() as temporary:
             root = pathlib.Path(temporary)
             binary = root / "bin"
             binary.mkdir()
             (root / "tools").mkdir()
-            shutil.copyfile(
-                ROOT / "tools/qikvrt_reflexive_repository_watchdog.py",
-                root / "tools/qikvrt_reflexive_repository_watchdog.py",
-            )
+            shutil.copyfile(ROOT / "tools/qikvrt_reflexive_repository_watchdog.py",
+                            root / "tools/qikvrt_reflexive_repository_watchdog.py")
+            contract_path = root / "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json"
+            contract_path.parent.mkdir(parents=True)
+            contract = json.loads(CONTRACT.read_text())
+            if tamper:
+                contract["authority"]["repository"] = "attacker/qik-vrt"
+            contract_path.write_text(json.dumps(contract))
+            observed_run = run(123, "QIKVRT CI", "completed", "2026-10-01T19:00:00Z",
+                               "2026-10-01T19:01:00Z", "success")
+            observed_run["run_attempt"] = 2
+            observed_jobs = {"jobs": [{"id": 456, "name": "test", "status": "completed",
+                                      "conclusion": "success", "steps": [{"name": "verify", "conclusion": "success"}]}]}
+            gh_source = f"""#!/usr/bin/env python3
+import sys,json
+args=sys.argv[1:]
+path=next(a for a in args if a.startswith('repos/'))
+if '--include' in args:
+ print('HTTP/2 {status} Test\\n\\n'+json.dumps({{'ref':'refs/heads/main','object':{{'type':'commit','sha':'{HEAD}'}}}}))
+ sys.exit(0 if {status} == 200 else 1)
+if '/pulls/' in path or path.endswith('/git/ref/heads/main'):
+ print('{"c" * 40 if drift else HEAD}'); sys.exit(0)
+if '/jobs?' in path:
+ print({json.dumps(json.dumps([observed_jobs]))}); sys.exit(0)
+if '/actions/runs?' in path:
+ print({json.dumps(json.dumps([{'workflow_runs':[observed_run]}]))}); sys.exit(0)
+if '/workflows/' in path:
+ print('{{"workflow_runs":[]}}'); sys.exit(0)
+raise SystemExit(9)
+"""
             stubs = {
-                "git": f'#!/bin/bash\nif [[ "$*" == *"HEAD^{{tree}}"* ]]; then echo {TREE}; else echo {HEAD}; fi\n',
-                "jq": "#!/bin/bash\necho Goldkelch/qik-vrt\n",
-                "gh": f'#!/bin/bash\nif [[ "$2" == "repos/example/qik-vrt/git/ref/heads/main" ]]; then echo {HEAD}; else echo "gh: Not Found (HTTP 404)" >&2; exit 1; fi\n',
+                "git": f'#!/bin/bash\nif [[ "$*" == *"status"* ]]; then {"echo M tracked" if mutation else "exit 0"}; elif [[ "$*" == *"HEAD^{{tree}}"* ]]; then echo {TREE}; else echo {HEAD}; fi\n',
+                "gh": gh_source,
             }
             for name, source in stubs.items():
                 path = binary / name
-                path.write_text(source, encoding="utf-8")
+                path.write_text(source)
                 path.chmod(0o700)
-            environment = {
-                **os.environ,
-                "PATH": str(binary) + os.pathsep + os.environ["PATH"],
-                "REPOSITORY": "example/qik-vrt",
-                "EVENT_NAME": "workflow_run",
-                "EVENT_PR": "",
-                "EXPECTED_HEAD": HEAD,
-                "CURRENT_RUN_ID": "12345",
-                "CURRENT_RUN_ATTEMPT": "2",
-            }
-            observed = subprocess.run(
-                ["bash", "-c", self.step_body("Reobserve exact head, tree, runs, jobs, and previous reflexive receipt")],
-                cwd=root, env=environment, capture_output=True, text=True, timeout=10,
-            )
-            self.assertNotEqual(observed.returncode, 0)
-            self.assertIn("HTTP 404", observed.stderr)
-            fallback = subprocess.run(
-                ["bash", "-c", self.step_body("Preserve failed observation as machine-readable HOLD")],
-                cwd=root, env=environment, capture_output=True, text=True, timeout=10,
-            )
-            self.assertEqual(fallback.returncode, 0, fallback.stderr)
-            receipt_path = root / ".qikvrt/reflexive-repository-watchdog/reflexive-watchdog-receipt.json"
-            receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
-            failure_contract = json.loads(CONTRACT.read_text(encoding="utf-8"))["reflexive_deadlock_prevention"]["observation_failure"]
-            self.assertEqual(receipt["schema"], failure_contract["receipt_schema"])
-            self.assertEqual(receipt["state"], "OBSERVATION_FAILED")
-            self.assertEqual(receipt["disposition"], "HOLD")
-            self.assertEqual(receipt["failure"]["stage"], "AUTHORITY_READBACK")
+            environment = {**os.environ, "PATH": str(binary)+os.pathsep+os.environ["PATH"],
+                           "REPOSITORY":"example/qik-vrt", "EVENT_NAME":"pull_request",
+                           "EVENT_PR":"437", "EXPECTED_HEAD":HEAD, "CURRENT_RUN_ID":"12345"}
+            observed = subprocess.run(["bash", "-c", self.step_body(
+                "Reobserve exact head, tree, runs, jobs, and previous reflexive receipt")],
+                cwd=root, env=environment, capture_output=True, text=True, timeout=10)
+            if drift or tamper or status not in (200, 404, 403, 429, 503):
+                self.assertNotEqual(observed.returncode, 0, observed.stdout)
+                return
+            self.assertEqual(observed.returncode, 0, observed.stderr)
+            analyzed = subprocess.run(["bash", "-c", self.step_body(
+                "Analyze the pre-deadlock state without mutation")], cwd=root, env=environment,
+                capture_output=True, text=True, timeout=10)
+            if mutation:
+                self.assertNotEqual(analyzed.returncode, 0)
+                return
+            self.assertEqual(analyzed.returncode, 0, analyzed.stderr)
+            receipt = json.loads((root / ".qikvrt/reflexive-repository-watchdog/reflexive-watchdog-receipt.json").read_text())
             self.assertEqual(receipt["head_sha"], HEAD)
             self.assertEqual(receipt["tree_sha"], TREE)
-            self.assertEqual(receipt["run_id"], 12345)
-            self.assertEqual(receipt["run_attempt"], 2)
-            self.assertFalse(receipt["live_subject_reobserved"])
-            self.assertFalse(receipt["productive_edge"])
+            self.assertEqual(receipt["observations"]["runs"][0]["id"], "123")
+            self.assertEqual(receipt["observations"]["run_job_evidence"][0]["jobs"][0]["id"], 456)
+            self.assertFalse(receipt["effect_ack_done"])
             self.assertFalse(any(receipt["completion_claims"].values()))
-            self.assertEqual(
-                receipt_path.read_bytes(),
-                (receipt_path.parent / "gatewatch-receipt.json").read_bytes(),
-            )
+            if status != 200:
+                self.assertEqual(receipt["state"], "AUTHORITY_UNAVAILABLE")
+                self.assertEqual(receipt["disposition"], "HOLD")
+                self.assertEqual(receipt["authority_observation"]["http_status"], status)
+                self.assertFalse(receipt["authority_observation"]["takeover_allowed"])
+                self.assertFalse(receipt["authority_observation"]["writer_admission_allowed"])
+
+    def test_authority_unavailable_continues_actual_shell_to_complete_receipt(self):
+        for status in (404, 403, 429, 503, 200):
+            with self.subTest(status=status):
+                self.exercise_observation(status)
+
+    def test_head_drift_tampered_authority_mutation_and_unknown_failure_stay_hard(self):
+        self.exercise_observation(drift=True)
+        self.exercise_observation(tamper=True)
+        self.exercise_observation(mutation=True)
+        self.exercise_observation(status=422)
 
     def test_failure_receipt_rejects_invalid_identity_and_zero_exit(self) -> None:
         arguments = dict(

@@ -473,6 +473,18 @@ def validate_registration_request(document: Mapping[str, Any], node: NodeRecord)
     _require_exact(document, "no_further_human_machine_interaction_after_setup", True, label)
     _require_exact(document, "authorized_manifest_graph_only", True, label)
     _validate_boundaries(document, label)
+    if "full_node" in document:
+        if type(document["full_node"]) is not bool:
+            raise SeedError(f"{label}: full_node must be boolean")
+        if document["full_node"]:
+            # Seed registration does not verify the complete offline closure,
+            # live runtime or fenced authority recovery. Remote self-reports
+            # and offline receipts cannot establish those effects.
+            raise SeedError(
+                f"{label}: FULL_NODE_ADMISSION_BLOCKED: independent closure, "
+                "runtime and fenced recovery evidence required by "
+                "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json"
+            )
     if node.source_path.startswith("registry/node_request_queue/"):
         return workflow_executor.validate_node_continuity_declaration(
             document,

@@ -1,0 +1,208 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "work_unit_provenance"
+  },
+  "schema": "qikvrt_standpoint_codex_work_unit_v1",
+  "work_unit_id": "QIKVRT_STANDPOINT_CODEX_V1",
+  "created_at_utc": "2026-10-01T10:39:06.199213+00:00",
+  "source_subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "ref": "main",
+    "head": "c621b863945adab208d4ed72f6197c7220b1dbb4",
+    "tree": "39fb41dd5d46c6affffa9bd812398880a347c533",
+    "request_predecessor_head": "df1ad4cff32fe62ce54e123c6769f039604b2707",
+    "predecessor_evidence_transfer": false
+  },
+  "branch": "work/qikvrt-standpoint-codex-v1-20261001",
+  "contributions": [
+    {
+      "class": "HUMAN",
+      "actor": "Ingolf Lohmann",
+      "scope": [
+        "identical exact 400-byte QIKVRT standpoint per element",
+        "separate collision-resistant element identity",
+        "canonical lossless serialization/deserialization",
+        "fail-closed regression controls",
+        "remove required ChatGPT runtime dependency while preserving historical provenance",
+        "reviewable exact-head successor"
+      ]
+    },
+    {
+      "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+      "actor": "OpenAI Codex",
+      "model_family": "GPT-6",
+      "scope": [
+        "repository diagnosis and reuse inventory",
+        "first canonical byte materialization of declared invariants",
+        "binary field layout and SHA-256 domain separation",
+        "serializer/deserializer and bounded resource validation",
+        "regression implementation and local execution",
+        "optional external adapter boundary and provenance preservation",
+        "minimal integrity regeneration and review-candidate preparation"
+      ],
+      "identity_boundary": "Platform and commit labels are attribution, not natural-person or cryptographic model authentication"
+    }
+  ],
+  "human_acceptance_of_generated_bytes": "PENDING_REVIEW",
+  "reuse_evidence": {
+    "reused": [
+      "src.qikvrt_effect_ack.canonical_json",
+      "Python standard-library SHA-256 and struct",
+      "existing Makefile and QIKVRT CI make test gate",
+      "existing issue-agent materialize/finalize/validate path",
+      "tools/qikvrt_integrity.py canonical trio"
+    ],
+    "insufficient_existing_path": "Current main has no shared 400-byte standpoint, binary set framing, complete lossless serializer/deserializer or duplicate-element admission checks. Existing effect-ack canonical JSON is preserved and reused for the fixed descriptor, but cannot alone represent the requested binary element envelope."
+  },
+  "signature_binding": {
+    "path": "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin",
+    "bytes": 400,
+    "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
+    "state": "FIRST_CANONICAL_V1_IMPLEMENTATION_BINDING",
+    "recovered_historical_byte_image_claimed": false
+  },
+  "validated_candidate_content": [
+    {
+      "path": ".github/workflows/issue-autonomous-processing.yml",
+      "bytes": 5216,
+      "sha256": "358c9b357e0cbf9ded7fdb20674f84cf6b905e624345c75157a45f6e1cc628ad",
+      "git_blob_sha1": "3849798975369b33d6afce1fcd4fcc956244bb36"
+    },
+    {
+      "path": "AI_CONTEXT.json",
+      "bytes": 12302,
+      "sha256": "10a6e5f78abdda8c22309269b4768b4da4a820c385fd76376cebbe9016f2130b",
+      "git_blob_sha1": "6195c6c654782ee18f917f90056e1fb36a6c7b35"
+    },
+    {
+      "path": "Makefile",
+      "bytes": 11372,
+      "sha256": "cc43b33a928e17f01a582c8bbe2176fc5c613225a1a3b9d16c699387b2bd0782",
+      "git_blob_sha1": "f6f17ff4a1aed04749d45396840758703bc6478b"
+    },
+    {
+      "path": "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin",
+      "bytes": 400,
+      "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
+      "git_blob_sha1": "9b06a2b407fb99d99d2bda5a3decc80ab68a092b"
+    },
+    {
+      "path": "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json",
+      "bytes": 1982,
+      "sha256": "7cf1eeccb42d0a1d91bc8c4160cb021c4fb6622b762b8e247fc91c1a7cf32e76",
+      "git_blob_sha1": "2669baf1e7eea8162f10d4b8c1a499b6ca0b5f90"
+    },
+    {
+      "path": "policy/QIKVRT_STANDPOINT_CODEX_V1.json",
+      "bytes": 8490,
+      "sha256": "f1d5ad65ccebbe131919ab349fb2a8493e0ac0b7c0881e6132ef4850aa12368a",
+      "git_blob_sha1": "f9eac354b9c3b4f3a6deca738437dd21a0b709dc"
+    },
+    {
+      "path": "scripts/issue_agent/finalize.py",
+      "bytes": 4544,
+      "sha256": "51c681f21c1e37e35aba5176a80d41dc652a5a2c82c41031df0780794ac5324c",
+      "git_blob_sha1": "2436cab06c7c24de93bb9c6175eea7a82c4399ac"
+    },
+    {
+      "path": "spec/QIKVRT_STANDPOINT_CODEX_V1.md",
+      "bytes": 8378,
+      "sha256": "d49c5d1d4549b0c3b51fa400b2eafef170d322369321cf0024ebdfada440102d",
+      "git_blob_sha1": "d7a61dde62017f401d852e757ea3a52a1f1823ad"
+    },
+    {
+      "path": "spec/firefox/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.md",
+      "bytes": 3554,
+      "sha256": "d8e5e58268689fcf6d9337a255795e752a2569066a374d52148a07a0509a7aa2",
+      "git_blob_sha1": "8783ed410334bc64e17d3951685bfe30120ad8d1"
+    },
+    {
+      "path": "src/qikvrt_standpoint_codex.py",
+      "bytes": 10549,
+      "sha256": "aedf27f794c3c3092d1bdeddbf4b9e18e6f9d359574af9c3b68a7364cde7a2a2",
+      "git_blob_sha1": "e5ee25be0e1485b6b359f61060276778a1a83644"
+    },
+    {
+      "path": "tests/issue_agent/test_validate.py",
+      "bytes": 11724,
+      "sha256": "616c1981db57b3f655d0766d3fe34fca3f367d5651183cf7ac08ff10b8d5133e",
+      "git_blob_sha1": "ad7e298da00f015fd26b0c849357a44a49044ec5"
+    },
+    {
+      "path": "tests/test_qikvrt_personal_firefox_capability_boundary.py",
+      "bytes": 5539,
+      "sha256": "6491e44cc29dd657d4c9b9af08dba513442f429b1984b84b4823ed63174f1a47",
+      "git_blob_sha1": "68f887f42ea9574bfdfc0cf1c393694673ad8f83"
+    },
+    {
+      "path": "tests/test_qikvrt_standpoint_codex.py",
+      "bytes": 16811,
+      "sha256": "3a1031e97f0507dc80baf5d5d26c030dfc0501fb7f8e78e5a206be7ebc604b61",
+      "git_blob_sha1": "20f465f254ba8632bd714e4456a0d0257bf462c2"
+    }
+  ],
+  "local_regression_observation": {
+    "commands": [
+      "make standpoint-codex-test",
+      "python3 -B -m unittest -v tests.test_qikvrt_personal_firefox_capability_boundary tests.issue_agent.test_validate"
+    ],
+    "results": [
+      "29 codec tests PASS in normal mode and 29 PASS in optimized mode",
+      "17 Firefox/issue-agent tests PASS"
+    ],
+    "controls": {
+      "single_signature_bit_mutations": 3200,
+      "truncated_dump_prefixes": 1381,
+      "permutations": 24,
+      "simulated_digest_collision_rejected": true,
+      "network_and_external_execution_denied_roundtrip": true,
+      "fresh_file_readback": true
+    },
+    "logs": [
+      {
+        "name": "STANDPOINT_CODEX_TESTS_FINAL.log",
+        "bytes": 10191,
+        "sha256": "01df74da76b26b0df96933b60f4ed2154e4487773d0d4722330edf8a9464b3e6"
+      },
+      {
+        "name": "CODEX_ADAPTER_TESTS_FINAL.log",
+        "bytes": 3289,
+        "sha256": "312b56891f813dade078dd6a9e299eaf4cefd03f48a388fab61d132814ec14a7"
+      }
+    ],
+    "subject_binding": "validated_candidate_content exact byte digests; final commit/tree and make-test readback are separately bound after persistence"
+  },
+  "baseline_integrity_drift": {
+    "observed_on_head": "c621b863945adab208d4ed72f6197c7220b1dbb4",
+    "paths": [
+      ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml",
+      "evidence/node_health/36821646859-1.json",
+      "evidence/node_health/LATEST.json",
+      "evidence/node_registration_renewal/36821646859-1.json",
+      "evidence/node_registration_renewal/LATEST.json",
+      "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+      "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+      "tests/test_ruleset_authority_token_route.py"
+    ],
+    "repair": "Regenerate only the existing three canonical integrity projections; do not edit the underlying unrelated files."
+  },
+  "provenance_preservation": {
+    "canonical_charter_bytes": 10127,
+    "canonical_charter_sha256": "7fb4e5c369b079e93ce409e9ca4f6830476a1b6dbd42543273d85164e111a631",
+    "historical_publication_or_receipt_content_changed": false,
+    "active_optional_adapters_are_not_historical_sources": true
+  },
+  "completion_boundary": {
+    "scope": "reviewable V1 codec implementation",
+    "final_head_tree": "record in exact-head PR/readback after commit; self-referential commit fields are not synthesized",
+    "repository_main_adoption": false,
+    "codeowner_approval": false,
+    "release": false,
+    "scientific_universality": false,
+    "mc68000_execution": false,
+    "effect_ack_done": false
+  }
+}

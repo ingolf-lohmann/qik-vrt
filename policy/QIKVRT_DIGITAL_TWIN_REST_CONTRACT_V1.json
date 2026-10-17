@@ -1,21 +1,71 @@
 {
-  "schema": "qikvrt_digital_twin_rest_contract_v1",
   "base_path": "/api/digital-twin/v1",
+  "hard_cut_semantics": "MUTATION_CREATES_SUCCESSOR_AND_RESETS_DEPENDENT_EVIDENCE",
+  "implementation": "src/qikvrt_digital_twin_rest.py",
   "media_type": "application/json",
+  "negative_controls": [
+    "STALE_HEAD_TREE_PR_REPOSITORY",
+    "STALE_STATE_OR_PREDECESSOR",
+    "EFFECT_ID_REPLAY_OR_CHANGED_BINDING",
+    "CONCURRENT_WRITER",
+    "NATIVE_CAS_REJECTION",
+    "PROVIDER_TRANSPORT_ABORT_AFTER_EFFECT",
+    "HTTP_TRANSPORT_ABORT_AFTER_EFFECT",
+    "REPOSITORY_BYTE_OR_COMMIT_OR_TREE_READBACK_MISMATCH",
+    "UNCERTAIN_OBJECT_UPLOAD_WITHOUT_REF",
+    "STALE_PERMIT",
+    "PENDING_INTENT_FENCES_NEW_EFFECT_AND_TAKEOVER"
+  ],
+  "recursive_versioned_continuation": "policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json",
+  "reference_model": "src/qikvrt_siemens_reference_integration.py",
+  "repository_effect": {
+    "authorization": "Existing authenticated private control-plane capability, permit, ACTIVE Authority role and target binding; no new issuer",
+    "bootstrap": "Initial TwinState is operator provisioned; later transitions require the durable cursor and fresh predecessor Git bytes",
+    "file": "QIKVRT_API_EFFECT.json",
+    "main_mutation": false,
+    "operation": "persist_twin_transition",
+    "parents": [
+      "bound_source_head",
+      "previous_verified_receipt_commit_when_present"
+    ],
+    "pr_head_mutation": false,
+    "product_or_physical_effect_acceptance": false,
+    "ref": "refs/heads/work/qikvrt-twin-effects/{sha256(repository + NUL + twin_id)}/{successor_version}",
+    "scope": "BROKER_CREATE_ONLY_REFLEXIVE_TWIN_RECEIPT"
+  },
   "resources": {
     "contract": {
       "method": "GET",
       "path": "/api/digital-twin/v1"
     },
-    "state": {
-      "method": "GET",
-      "path": "/api/digital-twin/v1/state"
-    },
     "receipt": {
       "method": "GET",
       "path": "/api/digital-twin/v1/receipt"
     },
+    "recover": {
+      "method": "GET",
+      "path": "/api/digital-twin/v1/receipts/{effect_id}",
+      "semantics": "Fresh provider and byte readback only; never re-dispatch"
+    },
+    "state": {
+      "method": "GET",
+      "path": "/api/digital-twin/v1/state"
+    },
     "transition": {
+      "binding": [
+        "repository",
+        "pr",
+        "head",
+        "tree",
+        "effect_id",
+        "expected_predecessor_effect_id",
+        "expected_state_sha256"
+      ],
+      "broker_request": [
+        "expected_version",
+        "target_velocity_mps",
+        "binding"
+      ],
       "method": "POST",
       "path": "/api/digital-twin/v1/transitions",
       "request": [
@@ -24,20 +74,29 @@
       ]
     }
   },
-  "semantics": {
-    "exact_twin_version_required": true,
-    "closed_request_schema": true,
-    "post_effect_readback_required": true,
-    "authority_and_mirror_are_distinct_evidence_identities": true,
-    "pole_equality_requires_fresh_dual_readback": true,
-    "physical_effect": false,
-    "predecessor_evidence_transfer": false,
-    "transport_ack_not_effect_ack": true
-  },
-  "implementation": "src/qikvrt_digital_twin_rest.py",
-  "reference_model": "src/qikvrt_siemens_reference_integration.py",
-  "tests": "tests/test_qikvrt_digital_twin_rest.py",
+  "schema": "qikvrt_digital_twin_rest_contract_v1",
   "scope": "REFERENCE_DIGITAL_TWIN_API_NOT_VENDOR_TENANT_OR_PHYSICAL_ACTUATION",
-  "recursive_versioned_continuation": "policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json",
-  "hard_cut_semantics": "MUTATION_CREATES_SUCCESSOR_AND_RESETS_DEPENDENT_EVIDENCE"
+  "semantics": {
+    "HTTP_200_implies_EFFECT_ACK_DONE": false,
+    "actual_byte_readback_required": true,
+    "ambiguous_dispatch_recovery": "GET_ONLY_NO_BLIND_RETRY",
+    "authority_and_mirror_are_distinct_evidence_identities": true,
+    "closed_request_schema": true,
+    "durable_intent_before_any_provider_post": true,
+    "exact_twin_version_required": true,
+    "existing_single_sink_broker": "src/qikvrt_github_api_shim.py:GitHubAuthorityProvider",
+    "native_create_only_ref_cas_required": true,
+    "physical_effect": false,
+    "pole_equality_requires_fresh_dual_readback": true,
+    "post_effect_readback_required": true,
+    "predecessor_evidence_transfer": false,
+    "product_effect_ack_done": false,
+    "reflexive_repository_mode": "FENCED_REPOSITORY_BROKER",
+    "same_canonical_result_returned_and_persisted": true,
+    "separate_durable_ledger_readback_required": true,
+    "shared_twin_predecessor_cas_required": true,
+    "transport_ack_not_effect_ack": true,
+    "unconfigured_mode": "LOCAL_REFERENCE_ONLY"
+  },
+  "tests": "tests/test_qikvrt_digital_twin_rest.py"
 }

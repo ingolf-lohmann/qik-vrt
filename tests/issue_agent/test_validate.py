@@ -2,17 +2,49 @@ import hashlib
 import json
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 import sys
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 from scripts.issue_agent.infer import SYSTEM_PROMPT
+from scripts.issue_agent import finalize
 from scripts.issue_agent.promote import promote
 from scripts.issue_agent.validate import validate
 
 
 class ValidateIssueAgentBundleTest(unittest.TestCase):
+    def test_disabled_optional_model_persists_deterministic_work_unit_without_false_answer(self):
+        with tempfile.TemporaryDirectory() as temp:
+            directory = Path(temp)
+            self.make_bundle(directory)
+            with patch.object(sys, "argv", ["finalize", "--directory", str(directory), "--inference-outcome", "skipped"]):
+                finalize.main()
+            status = json.loads((directory / "STATUS.json").read_text())
+            answer = (directory / "ANSWER.md").read_text()
+            self.assertFalse(status["model_inference_completed"])
+            self.assertFalse(status["automatic_merge"])
+            self.assertFalse(status["automatic_issue_close"])
+            self.assertEqual(status["status"], "BLOCK")
+            self.assertEqual(status["disposition_reason"], "OPTIONAL_MODEL_ADAPTER_DISABLED")
+            self.assertIn("deterministic repository-native work unit", status["next_action"])
+            self.assertIn("NOT_EVALUATED", answer)
+            self.assertNotIn("MODEL_INFERENCE_UNAVAILABLE", answer)
+            validate(directory)
+
+    def test_failed_enabled_model_retains_honest_failure(self):
+        with tempfile.TemporaryDirectory() as temp:
+            directory = Path(temp)
+            self.make_bundle(directory)
+            with patch.object(sys, "argv", ["finalize", "--directory", str(directory), "--inference-outcome", "failure"]):
+                finalize.main()
+            status = json.loads((directory / "STATUS.json").read_text())
+            self.assertFalse(status["model_inference_completed"])
+            self.assertEqual(status["disposition_reason"], "MODEL_INFERENCE_UNAVAILABLE")
+            self.assertEqual(status["status"], "BLOCK")
+            validate(directory)
+
     def make_bundle(self, directory: Path) -> None:
         request = json.dumps({"issue_number": 76}, sort_keys=True) + "\n"
         (directory / "REQUEST.json").write_text(request, encoding="utf-8")

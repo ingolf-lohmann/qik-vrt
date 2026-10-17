@@ -174,12 +174,196 @@ class AutonomousSelfHealTests(unittest.TestCase):
                 ("probe",), 2, "publication overview drift: missing", ""
             ),
             MODULE.CommandResult(("repair",), 0, "MATERIALIZED", ""),
+            MODULE.CommandResult(("probe",), 0, "VERIFIED", ""),
         ]
         with mock.patch.object(MODULE, "run", side_effect=results) as mocked:
             value = MODULE.repair_handler(handler)
-        self.assertEqual(value["state"], "REPAIRED")
-        self.assertEqual(mocked.call_count, 2)
+        self.assertEqual(value["state"], "SYMPTOM_VERIFIED_CAUSE_OPEN")
+        self.assertTrue(value["original_operation_verified"])
+        self.assertFalse(value["cause_closed"])
+        self.assertFalse(value["repair_complete"])
+        self.assertEqual(mocked.call_count, 3)
 
+    def test_successful_repair_process_cannot_hide_actual_failing_operation(self):
+        handler = {
+            "failure_class": "PUBLICATION_OVERVIEW_DRIFT",
+            "failure_signature": "publication overview drift:",
+            "probe": [sys.executable, "-c", "print('publication overview drift: missing'); raise SystemExit(2)"],
+            "repair": [sys.executable, "-c", "raise SystemExit(0)"],
+        }
+        # Real subprocesses: a zero-exit repair leaves the actual probe broken.
+        with self.assertRaisesRegex(MODULE.SelfHealBlock, "original operation still fails"):
+            MODULE.repair_handler(handler)
+
+    def test_actual_symptom_repair_retains_the_highest_priority_cause_obligation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            fixed = pathlib.Path(directory) / "fixed"
+            probe = [sys.executable, "-c",
+                     "import pathlib,sys; p=pathlib.Path(sys.argv[1]); "
+                     "print('publication overview drift: missing' if not p.exists() else 'verified'); "
+                     "raise SystemExit(0 if p.exists() else 2)", str(fixed)]
+            handler = {"failure_class": "PUBLICATION_OVERVIEW_DRIFT",
+                       "failure_signature": "publication overview drift:", "probe": probe,
+                       "repair": [sys.executable, "-c",
+                                  "import pathlib,sys; pathlib.Path(sys.argv[1]).write_text('fixed')", str(fixed)]}
+            result = MODULE.repair_handler(handler)
+            self.assertEqual(result["state"], "SYMPTOM_VERIFIED_CAUSE_OPEN")
+            self.assertEqual(result["priority"], "OWNER_HIGHEST")
+            self.assertEqual(result["probe_before"]["returncode"], 2)
+            self.assertEqual(result["probe_after"]["returncode"], 0)
+            self.assertEqual(result["probe_before"]["command"], result["probe_after"]["command"])
+            self.assertEqual(result["cause"], "UNESTABLISHED")
+            self.assertFalse(result["repair_complete"])
+            self.assertFalse(result["cause_closed"])
+            self.assertFalse(result["effect_ack_done"])
+            # A later NOOP cannot erase the prior cause record.
+            self.assertEqual(MODULE.repair_handler(handler)["state"], "NOOP")
+            self.assertFalse(result["cause_closed"])
+
+    def test_missing_weakened_or_mistyped_gap_and_cause_rule_blocks_contract_loading(self):
+        import copy, json
+        contract = json.loads(MODULE.CONTRACT.read_text())
+        rule = MODULE.validate_gap_cause_priority(contract)
+        self.assertEqual(rule["gap_priority"], rule["cause_priority"])
+        changes = [(field, lambda value, key=field: value["gap_and_cause_priority"].pop(key))
+                   for field in rule]
+        changes += [
+            ("false closure", lambda v: v["gap_and_cause_priority"].update(symptom_resolution_is_cause_closure=True)),
+            ("lower cause priority", lambda v: v["gap_and_cause_priority"].update(cause_priority="LOW")),
+            ("boolean as integer", lambda v: v["gap_and_cause_priority"].update(repair_authorized=1)),
+            ("issuer", lambda v: v["gap_and_cause_priority"]["owner_command"].update(issuer="unknown")),
+        ]
+        for label, change in changes:
+            with self.subTest(label=label):
+                candidate = copy.deepcopy(contract)
+                change(candidate)
+                with mock.patch.object(MODULE, "_load_json", return_value=candidate):
+                    with self.assertRaises(MODULE.SelfHealBlock):
+                        MODULE.load_contract()
+
+
+class RepairInputTests(unittest.TestCase):
+    def test_missing_or_weakened_delivery_contract_cannot_be_admitted(self):
+        import json, copy
+        value=json.loads(MODULE.CONTRACT.read_text())
+        MODULE.validate_repair_handoff_contract(value)
+        for field in value['error_analysis_handoff']:
+            if field not in {'manual_owner_relay_required','new_executor','maximum_hops','consumer','activation'}:
+                continue
+            with self.subTest(field=field):
+                changed=copy.deepcopy(value);del changed['error_analysis_handoff'][field]
+                with self.assertRaises(MODULE.SelfHealBlock):
+                    MODULE.validate_repair_handoff_contract(changed)
+    def fixture(self):
+        import json
+        spec = importlib.util.spec_from_file_location("repair_watchdog", ROOT / "tools/qikvrt_reflexive_repository_watchdog.py")
+        watchdog = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(watchdog)
+        analysis = {"schema": "qikvrt_reflexive_repository_watchdog_receipt_v1",
+                    "repository": "ingolf-lohmann/qik-vrt", "head_sha": "a"*40,
+                    "tree_sha": "b"*40, "disposition": "HOLD",
+                    "first_blocker": "REQUIRED_GATE_EXECUTION_FAILED"}
+        raw = json.dumps(analysis, indent=2).encode()
+        envelope = watchdog.repair_handoff(raw, run_id=7, run_attempt=2, producer_event="pull_request")
+        source = {"repository": {"full_name": analysis['repository']}, "head_sha": "a"*40,
+                  "path": envelope['origin']['workflow_path'], "id": 7, "run_attempt": 2,
+                  "event": "pull_request", "status": "completed", "conclusion": "success"}
+        jobs = {"total_count": 1, "jobs": [{"id": 8, "run_id": 7, "run_attempt": 2,
+                "head_sha": "a"*40, "status": "completed", "steps": [{
+                "name": "Bind error analysis for the existing repair consumer",
+                "status": "completed", "conclusion": "success"}]}]}
+        return watchdog, raw, envelope, source, jobs
+
+    def consume(self, env, source, jobs, inbox):
+        return MODULE.consume_repair_input(env, source, jobs, repository="ingolf-lohmann/qik-vrt",
+                   head="a"*40, tree="b"*40, inbox=pathlib.Path(inbox))
+
+    def test_actual_producer_to_existing_consumer_preserves_analysis_and_readback(self):
+        import json
+        _, raw, env, source, jobs = self.fixture()
+        with tempfile.TemporaryDirectory() as inbox:
+            with mock.patch.object(MODULE, "execute", side_effect=AssertionError("no unadmitted repair")):
+                receipt = self.consume(env, source, jobs, inbox)
+                self.assertEqual(receipt['state'], 'ADMITTED_ANALYSIS_HOLD')
+                saved = json.loads(next(pathlib.Path(inbox).glob('*.json')).read_text())
+                self.assertEqual(saved['analysis_utf8'].encode(), raw)
+                self.assertTrue(receipt['inbox_readback_verified'])
+                self.assertFalse(receipt['writer_admitted'])
+                self.assertFalse(receipt['effect_ack_done'])
+                self.assertEqual(receipt['gap_priority'], 'OWNER_HIGHEST')
+                self.assertEqual(receipt['cause_priority'], 'OWNER_HIGHEST')
+                self.assertFalse(receipt['gap_closed'])
+                self.assertFalse(receipt['cause_closed'])
+                self.assertFalse(receipt['repair_complete'])
+                second = self.consume(env, source, jobs, inbox)
+                self.assertEqual(second['state'], 'DUPLICATE_READBACK')
+                self.assertEqual(len(list(pathlib.Path(inbox).glob('*.json'))), 1)
+
+    def test_each_foreign_stale_replay_tampered_input_is_blocked_before_inbox(self):
+        import copy
+        _, _, env, source, jobs = self.fixture()
+        changes = [
+            ('subject', lambda e,s,j: e['subject'].update(head='c'*40)),
+            ('tree', lambda e,s,j: e['subject'].update(tree='c'*40)),
+            ('repository', lambda e,s,j: s['repository'].update(full_name='foreign/repo')),
+            ('attempt', lambda e,s,j: s.update(run_attempt=3)),
+            ('run', lambda e,s,j: s.update(id=9)),
+            ('workflow', lambda e,s,j: s.update(path='evil.yml')),
+            ('zero jobs', lambda e,s,j: j.update(total_count=0,jobs=[])),
+            ('step skipped', lambda e,s,j: j['jobs'][0]['steps'][0].update(conclusion='skipped')),
+            ('foreign job', lambda e,s,j: j['jobs'][0].update(head_sha='c'*40)),
+            ('job attempt', lambda e,s,j: j['jobs'][0].update(run_attempt=1)),
+            ('analysis bytes', lambda e,s,j: e.update(analysis_utf8=e['analysis_utf8']+' ')),
+            ('permission', lambda e,s,j: e.update(effect_permission=True)),
+            ('recursive', lambda e,s,j: e.update(hop_count=2)),
+            ('work unit', lambda e,s,j: e.update(work_unit_id='0'*64)),
+        ]
+        for label, change in changes:
+            with self.subTest(label=label), tempfile.TemporaryDirectory() as inbox:
+                e,s,j = copy.deepcopy((env,source,jobs)); change(e,s,j)
+                with self.assertRaises(MODULE.SelfHealBlock): self.consume(e,s,j,inbox)
+                self.assertEqual(list(pathlib.Path(inbox).iterdir()), [])
+
+    def test_consumer_feedback_is_a_bounded_noop(self):
+        watchdog, raw, _, _, _ = self.fixture()
+        env = watchdog.repair_handoff(raw, run_id=7, run_attempt=2,
+              producer_event='workflow_run', parent_workflow='QIK-VRT autonomous draft-PR continuation')
+        self.assertEqual(env['state'], 'NOOP')
+
+    def test_inbox_conflict_does_not_overwrite_predecessor(self):
+        _, _, env, source, jobs = self.fixture()
+        with tempfile.TemporaryDirectory() as inbox:
+            path = pathlib.Path(inbox) / (env['work_unit_id']+'.json'); path.write_bytes(b'conflicting state')
+            with self.assertRaises(MODULE.SelfHealBlock): self.consume(env,source,jobs,inbox)
+            self.assertEqual(path.read_bytes(),b'conflicting state')
+
+    def test_real_cli_roundtrip_and_replay_keep_the_same_analysis_bytes(self):
+        import json, subprocess
+        _, raw, _, source, jobs = self.fixture()
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            (root/'analysis.json').write_bytes(raw)
+            for name, value in [('run',source),('jobs',jobs)]:
+                (root/(name+'.json')).write_text(json.dumps(value))
+            producer = subprocess.run([sys.executable, '-B', str(ROOT/'tools/qikvrt_reflexive_repository_watchdog.py'),
+                'repair-handoff', '--analysis-file', str(root/'analysis.json'), '--run-id','7',
+                '--run-attempt','2','--event','pull_request','--json'], capture_output=True, check=True)
+            (root/'envelope.json').write_bytes(producer.stdout)
+            command = [sys.executable,'-B',str(ROOT/'tools/qikvrt_autonomous_self_heal.py'),
+                'repair-consume','--envelope',str(root/'envelope.json'),'--source-run',str(root/'run.json'),
+                '--source-jobs',str(root/'jobs.json'),'--repository-name','ingolf-lohmann/qik-vrt',
+                '--expected-head','a'*40,'--expected-tree','b'*40,'--inbox',str(root/'inbox')]
+            for expected in ['ADMITTED_ANALYSIS_HOLD','DUPLICATE_READBACK']:
+                result = subprocess.run(command,capture_output=True,text=True,check=True)
+                receipt = json.loads(result.stdout)
+                self.assertEqual(receipt['state'],expected)
+                self.assertFalse(receipt['repair_executed'])
+                saved=json.loads(next((root/'inbox').glob('*.json')).read_text())
+                self.assertEqual(saved['analysis_utf8'].encode(),raw)
+            command[command.index('--expected-head')+1]='c'*40
+            bad=subprocess.run(command,capture_output=True,text=True)
+            self.assertEqual(bad.returncode,2)
+            self.assertEqual(json.loads(bad.stdout)['state'],'BLOCK')
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,0 +1,119 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_AUTOMATIC_ERROR_ANALYSIS_CONSUMER_20261002_V1",
+  "priority": "OWNER_HIGHEST",
+  "authorization": {
+    "issuer": "Ingolf Lohmann",
+    "source": "direct instruction 2026-10-02T01:30:10+02:00",
+    "statement": "Diese Lücke ist höchstprior zu schließen und die Ursache für das Entstehen dieser Lücke ebenso Freigabe erteilt."
+  },
+  "subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pr": 437,
+    "input_head": "e5c1a94c39d99974f99a5ad95148ac59fddbe982",
+    "input_tree": "b97e51577b1523bcce1ec3cfc9790943e99c733c",
+    "main": "6e085ab1e2b68e0cdf8e014c8400824f0502f11c"
+  },
+  "reused_paths": [
+    "tools/qikvrt_autonomous_self_heal.py",
+    "tools/qikvrt_reflexive_repository_watchdog.py",
+    "tests/test_qikvrt_autonomous_self_heal.py",
+    "tests/test_qikvrt_autonomous_pr_continuation.py",
+    ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
+    ".github/workflows/qikvrt_autonomous_pr_continuation.yml",
+    "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json",
+    "docs/REFLEXIVE_REPOSITORY_WATCHDOG.md"
+  ],
+  "cause": {
+    "evidence_class": "SOURCE_BOUND_DIAGNOSIS_AND_CONTROLLED_REGRESSION",
+    "observed_gap": "Watchdog artifact output had no error-analysis consumer edge in existing continuation. Existing contract did not require admission/readback of that analysis.",
+    "established_for": "inspected source path; not all historical client behavior",
+    "historical_development_reason": "UNESTABLISHED",
+    "negative_control": {
+      "source_head": "5ff9375933a2318cecac694e1dea0ac475943f24",
+      "operation": "actual baseline producer CLI repair-handoff --help",
+      "exit": 2,
+      "reason": "invalid command choice",
+      "log_sha256": "0d0e661ffe0fa3e54b8c4dafe9c0a9a190b88671802fe60019731ac3cde9debe"
+    }
+  },
+  "repair": {
+    "producer": "existing watchdog repair-handoff",
+    "consumer": "existing self-heal repair-consume via existing native continuation workflow_run",
+    "same_analysis_bytes": true,
+    "authenticated_source_metadata_checks": true,
+    "subject_run_attempt_job_step_bound": true,
+    "archive_digest_and_member_checks": true,
+    "inbox_readback": true,
+    "local_identical_replay_readback_only": true,
+    "cross_runner_writer_effect_admitted": false,
+    "unknown_cause": "ADMITTED_ANALYSIS_HOLD",
+    "consumer_feedback": "NOOP; no immediate continuation-completion producer trigger",
+    "new_executor": false,
+    "no_external_chat_trigger_required": true
+  },
+  "verification": {
+    "local_relevant_tests": 49,
+    "actual_cli_roundtrip": true,
+    "actual_artifact_receiver_shell_executed_with_api_fixtures": true,
+    "negative_archive_digest": true,
+    "negative_subject_and_attempt_controls": true,
+    "native_current_head_validation": "REQUIRED_AFTER_CANDIDATE",
+    "productive_authenticated_delivery": "NOT_YET_OBSERVED",
+    "repair_of_reported_error": false,
+    "effect_ack_done": false,
+    "predecessor_evidence_transfer": false
+  },
+  "source_outputs": [
+    {
+      "path": "tools/qikvrt_autonomous_self_heal.py",
+      "bytes": 36873,
+      "sha256": "2f5ffb0dd635d78d87d277e679689b8ad8b59043db64d13f463e105c8a948056"
+    },
+    {
+      "path": "tools/qikvrt_reflexive_repository_watchdog.py",
+      "bytes": 54366,
+      "sha256": "efb9c32fd0d2b7ca7a10272adca18082f5dc290735e41850b3ca2c1628ae02c8"
+    },
+    {
+      "path": "tests/test_qikvrt_autonomous_self_heal.py",
+      "bytes": 14779,
+      "sha256": "6fcbbdb21cee13c4bf2290aad56787fa5ab801571d865a74dcc4ee124d2ea5d5"
+    },
+    {
+      "path": "tests/test_qikvrt_autonomous_pr_continuation.py",
+      "bytes": 21916,
+      "sha256": "e2a6cc3b3b5e204aa1c611f83d69e4fe236c278e0b365894319b971c89630fdd"
+    },
+    {
+      "path": ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
+      "bytes": 12653,
+      "sha256": "bcfbe072252e493550d71f3feab541ac67ee0d8560cde29e63b6547f06fc3bc6"
+    },
+    {
+      "path": ".github/workflows/qikvrt_autonomous_pr_continuation.yml",
+      "bytes": 18571,
+      "sha256": "ca5a3db5e387a86ad774bcb6eb97fb24219c023a9dd8139bb044de23272a89ba"
+    },
+    {
+      "path": "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json",
+      "bytes": 11534,
+      "sha256": "4ab76a44e12f866c9a9753763fe6ef5bf522bab3dce8d93e3b3ba3464a269789"
+    },
+    {
+      "path": "docs/REFLEXIVE_REPOSITORY_WATCHDOG.md",
+      "bytes": 10530,
+      "sha256": "1a13dd73f3bd4f6c3c39201eca43e9b42c67ed94cb4c7a62efdcc3ee698b0dc0"
+    }
+  ],
+  "open_boundary": {
+    "activation": "INDEPENDENT_NATIVE_MAIN_ADMISSION",
+    "unknown_repair_class": "ESTABLISHED_CAUSE_AND_EXISTING_ALLOWLIST_REQUIRED",
+    "generic_cross_run_exactly_once_repair": "EXISTING_EFFECT_LEDGER_REQUIRED",
+    "durability": "GitHub artifacts 30-day producer / 90-day consumer; not perpetual Mesh checkpoint proof"
+  },
+  "provenance": {
+    "human": "Ingolf Lohmann supplied priority, requirement and authorization",
+    "artificial_cognitive_system": "OpenAI Codex implemented and tested the bounded existing-path extension"
+  }
+}

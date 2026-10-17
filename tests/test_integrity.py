@@ -9,9 +9,11 @@ import hashlib
 import json
 import os
 import pathlib
+import re
 import subprocess
 import sys
 import tempfile
+import textwrap
 import unittest
 from unittest import mock
 
@@ -63,6 +65,77 @@ class IntegrityGenerationTests(unittest.TestCase):
             ["git", "-C", str(root), "-c", "user.name=Test", "-c", "user.email=test@example.invalid", "commit", "-qm", "fixture"],
             check=True,
         )
+
+    def test_lifecycle_writer_preserves_remote_integrity_and_fails_before_push(self) -> None:
+        workflow = (REPOSITORY_ROOT / ".github/workflows/qikvrt_mirror_node_lifecycle.yml").read_text()
+        match = re.search(
+            r"      - name: Persist lifecycle successor on mirror main\n"
+            r"        shell: bash\n        run: \|\n((?:          .*\n)+)", workflow)
+        self.assertIsNotNone(match)
+        assert match is not None
+        shell = textwrap.dedent(match.group(1))
+        generation = ("python3 -B tools/qikvrt_integrity.py generate\n"
+                      "python3 -B tools/qikvrt_integrity.py verify\n")
+        projections = ("        REPOSITORY_FILE_MANIFEST.json \\\n"
+                       "        REPOSITORY_FILE_MANIFEST.json.sha256 \\\n"
+                       "        SHA256SUMS.txt\n")
+        self.assertIn(generation, shell)
+        self.assertIn(projections, shell)
+        controls = {
+            "actual": shell,
+            "missing_generation": shell.replace(generation, ""),
+            "missing_projection_staging": shell.replace(
+                "        evidence/node_registration_renewal \\\n" + projections,
+                "        evidence/node_registration_renewal\n"),
+            "generator_failure": shell,
+        }
+        for label, writer in controls.items():
+            with self.subTest(label=label), tempfile.TemporaryDirectory() as directory:
+                base = pathlib.Path(directory)
+                root = base / "source"
+                self._repository(root)
+                for name in ("qikvrt_integrity.py", "qikvrt_subprocess.py", "qikvrt_mirror_node_lifecycle.sh"):
+                    (root / "tools" / name).write_bytes((REPOSITORY_ROOT / "tools" / name).read_bytes())
+                config = root / "qikvrt/runtime/onboarding/NODE_HANDSHAKE_CONFIG.tsv"
+                config.parent.mkdir(parents=True)
+                config.write_text("fixture-node\tingolf-lohmann/qik-vrt\tGoldkelch/qik-vrt\tfixture\tfixture\tmain\t1500\n")
+                self.assertTrue(integrity.generate(root).ok)
+                def git(*arguments: str) -> str:
+                    return subprocess.check_output(["git", "-C", str(root), *arguments], text=True).strip()
+                git("add", "--all")
+                git("-c", "user.name=Test", "-c", "user.email=test@example.invalid", "commit", "-qm", "baseline")
+                git("branch", "-M", "main")
+                remote = base / "remote.git"
+                subprocess.run(["git", "init", "--bare", "-q", str(remote)], check=True)
+                git("remote", "add", "origin", str(remote))
+                git("push", "-q", "origin", "HEAD:main")
+                before = git("rev-parse", "HEAD")
+                subprocess.run(["sh", "tools/qikvrt_mirror_node_lifecycle.sh"], cwd=root,
+                               env={**os.environ, "QIKVRT_RUN_ID": "cqf-lifecycle-witness-1"},
+                               check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                if label == "generator_failure":
+                    (root / "tools/qikvrt_integrity.py").write_text("raise SystemExit(23)\n")
+                executed = subprocess.run(["bash", "-c", writer], cwd=root,
+                                          stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                remote_head = subprocess.check_output(
+                    ["git", "--git-dir", str(remote), "rev-parse", "refs/heads/main"], text=True).strip()
+                if label == "generator_failure":
+                    self.assertNotEqual(executed.returncode, 0)
+                    self.assertEqual(remote_head, before)
+                    self.assertEqual(git("rev-parse", "HEAD"), before)
+                    continue
+                self.assertEqual(executed.returncode, 0, executed.stderr)
+                self.assertEqual(remote_head, git("rev-parse", "HEAD"))
+                self.assertNotEqual(remote_head, before)
+                readback = base / "readback"
+                subprocess.run(["git", "clone", "-q", "--branch", "main", str(remote), str(readback)], check=True)
+                observed = integrity.verify(readback)
+                self.assertEqual(observed.ok, label == "actual", observed.message)
+                if label == "actual":
+                    manifest = json.loads((readback / integrity.MANIFEST_NAME).read_text())
+                    entries = {entry["path"]: entry for entry in manifest["files"]}
+                    path = "evidence/node_health/cqf-lifecycle-witness-1.json"
+                    self.assertEqual(entries[path]["sha256"], hashlib.sha256((readback / path).read_bytes()).hexdigest())
 
     def test_generation_is_reproducible_and_detects_changes(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
