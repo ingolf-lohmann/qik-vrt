@@ -38,6 +38,7 @@ class ProducerTests(unittest.TestCase):
         self.runtime = m.Runtime(self.root, self.state, 'Goldkelch/qik-vrt', 1103)
         self.http = self.ingress = None
         self.threads = []
+        self.started_servers = []
         m.terminal.STATE = m.terminal.State()
 
     def tearDown(self):
@@ -57,24 +58,35 @@ class ProducerTests(unittest.TestCase):
         return event
 
     def start_servers(self):
-        self.http = m.terminal.ThreadingHTTPServer(('127.0.0.1', 0), m.make_handler(self.runtime))
-        self.ingress = m.make_ingress(self.runtime)
-        for server in (self.http, self.ingress):
-            t = threading.Thread(target=server.serve_forever, daemon=True)
-            t.start()
-            self.threads.append(t)
+        try:
+            self.http = m.terminal.ThreadingHTTPServer(('127.0.0.1', 0), m.make_handler(self.runtime))
+            self.ingress = m.make_ingress(self.runtime)
+            for server in (self.http, self.ingress):
+                t = threading.Thread(target=server.serve_forever, daemon=True)
+                t.start()
+                self.started_servers.append(server)
+                self.threads.append(t)
+        except BaseException:
+            self.stop_servers()
+            raise
 
     def stop_servers(self):
         if self.http:
             self.runtime.ledger.stop()
-            for server in (self.http, self.ingress):
+            # shutdown() waits for serve_forever(), so calling it on a server
+            # whose peer failed construction before any thread started hangs.
+            for server in self.started_servers:
                 server.shutdown()
+            for server in (self.http, self.ingress):
+                if server is None:
+                    continue
                 server.server_close()
             for t in self.threads:
                 t.join(timeout=3)
                 self.assertFalse(t.is_alive())
             self.http = self.ingress = None
             self.threads = []
+            self.started_servers = []
 
     def request(self, method, path, body=None, headers=None):
         c = http.client.HTTPConnection(*self.http.server_address, timeout=3)
@@ -418,6 +430,31 @@ setImmediate(()=>{try{
         result = subprocess.run(['node', '-e', js, str(ROOT/'docs/terminal/temdd/index.html')],
                                 capture_output=True, text=True, timeout=15)
         self.assertEqual(result.returncode, 0, result.stdout+result.stderr)
+
+
+class ServerFixtureLifecycleTests(unittest.TestCase):
+    def test_ingress_construction_failure_closes_unstarted_http_without_shutdown(self):
+        fixture = ProducerTests('test_ai_surface_and_subject_are_served')
+        fixture.runtime = mock.Mock()
+        fixture.http = fixture.ingress = None
+        fixture.threads = []
+        fixture.started_servers = []
+        http = mock.Mock()
+        # An erroneous shutdown fails immediately rather than hanging this
+        # regression on the old helper's unstarted socketserver event wait.
+        http.shutdown.side_effect = AssertionError('unstarted server shutdown')
+        denied = PermissionError(1, 'synthetic Unix ingress denial')
+        with mock.patch.object(m.terminal, 'ThreadingHTTPServer', return_value=http), \
+                mock.patch.object(m, 'make_ingress', side_effect=denied):
+            with self.assertRaises(PermissionError) as error:
+                fixture.start_servers()
+        self.assertIs(error.exception, denied)
+        http.server_close.assert_called_once_with()
+        http.shutdown.assert_not_called()
+        self.assertIsNone(fixture.http)
+        self.assertIsNone(fixture.ingress)
+        fixture.stop_servers()  # ordinary tearDown is now an idempotent no-op
+        http.server_close.assert_called_once_with()
 
 
 if __name__ == '__main__':
