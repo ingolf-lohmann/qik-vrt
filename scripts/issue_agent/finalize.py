@@ -50,16 +50,31 @@ def main() -> None:
         and answer.stat().st_size > 0
     )
     if not inference_succeeded:
+        optional_adapter_disabled = args.inference_outcome == "skipped"
+        explanation = (
+            "The optional external model adapter is disabled. The deterministic request and "
+            "repository context were materialized for a repository-native work unit. "
+            "No scientific or technical answer is asserted.\n\n"
+            if optional_adapter_disabled
+            else "The autonomous model step was not available or failed. No scientific or technical "
+            "answer is asserted. The request and repository context were materialized for review.\n\n"
+        )
+        reason = "OPTIONAL_MODEL_ADAPTER_DISABLED" if optional_adapter_disabled else "MODEL_INFERENCE_UNAVAILABLE"
+        next_action = (
+            "Execute the supported deterministic repository-native work unit with its exact-subject gates; "
+            "an external model adapter is optional and requires explicit authorization."
+            if optional_adapter_disabled
+            else "Resume the bounded issue transaction when a trusted inference or deterministic work-unit path is available."
+        )
         answer.write_text(
             "# Repository answer\n\n"
-            "The autonomous model step was not available or failed. No scientific or technical "
-            "answer is asserted. The request and repository context were materialized for review.\n\n"
+            + explanation +
             "## Evidence used\n\nRepository request and materialized context only.\n\n"
             "## Formal status\n\nNOT_EVALUATED\n\n"
             "## Empirical status\n\nNOT_EVALUATED\n\n"
             "## Issue disposition\n\nBLOCKED_WITH_NEXT_ACTION\n\n"
-            "## Disposition reason\n\nMODEL_INFERENCE_UNAVAILABLE\n\n"
-            "## Required next action\n\nResume the bounded issue transaction when a trusted inference or deterministic work-unit path is available.\n\n"
+            f"## Disposition reason\n\n{reason}\n\n"
+            f"## Required next action\n\n{next_action}\n\n"
             "## Gate result\n\nBLOCK\n",
             encoding="utf-8",
         )

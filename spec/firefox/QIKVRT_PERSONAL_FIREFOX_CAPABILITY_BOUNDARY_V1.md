@@ -19,7 +19,11 @@ The Goldkelch Firefox distribution MUST be buildable and testable without any In
 
 The Personal Edition MAY expose the complete capability surface authorized by `ingolf-lohmann/qik-vrt`, layered over the standard product.
 
-Its ChatGPT/OpenAI capability is an authenticated runtime integration. The browser MAY connect to authorized OpenAI/ChatGPT services and locally installed/authorized connectors through explicit user authentication and consent. It MUST NOT claim or attempt to redistribute OpenAI's proprietary server-side ChatGPT runtime, model weights, hidden system configuration, credentials, or other non-redistributable service internals.
+The normative QIKVRT process uses the locally executable standpoint codex in `policy/QIKVRT_STANDPOINT_CODEX_V1.json`. Its serialization, deserialization, identity validation and byte readback require no ChatGPT/OpenAI service or external model.
+
+An explicitly enabled ChatGPT/OpenAI adapter is an optional authenticated runtime integration. The browser MAY connect to authorized OpenAI/ChatGPT services and locally installed/authorized connectors through explicit user authentication and consent. Adapter availability is not a QIKVRT core-process or release prerequisite. It MUST NOT claim or attempt to redistribute OpenAI's proprietary server-side ChatGPT runtime, model weights, hidden system configuration, credentials, or other non-redistributable service internals.
+
+Published sources and historical ChatGPT contribution or interaction disclosures remain historical provenance; they are not rewritten or interpreted as runtime dependencies.
 
 No credential or access token is committed to this repository. Runtime secrets MUST come from an OS/browser secret store or an explicit authenticated session.
 
@@ -32,12 +36,14 @@ PERSONAL_CAPABILITY_LEAK_TO_STANDARD         = DENY
 PERSONAL_STATE_LEAK_TO_STANDARD              = DENY
 PERSONAL_CREDENTIAL_LEAK_TO_REPOSITORY       = DENY
 PERSONAL_EVIDENCE_TRANSFER_TO_STANDARD       = DENY
-CHATGPT_RUNTIME_INTEGRATION                  = AUTHENTICATED_EXTERNAL_SERVICE
+QIKVRT_CODEX_RUNTIME                         = LOCAL_DETERMINISTIC
+CHATGPT_RUNTIME_INTEGRATION                  = OPTIONAL_AUTHENTICATED_ADAPTER
+EXTERNAL_SERVICE_REQUIRED_FOR_CODEX          = FALSE
 CHATGPT_PROPRIETARY_RUNTIME_REDISTRIBUTION   = DENY
 PREDECESSOR_EVIDENCE_TRANSFER                = FALSE
 ```
 
-A standard release is not accepted until a fresh build/readback demonstrates absence of personal payload. A Personal Edition release is not accepted until its exact subject proves the expected personal capability manifest and authenticated runtime boundary.
+A standard release is not accepted until a fresh build/readback demonstrates absence of personal payload. A Personal Edition release is not accepted until its exact subject proves the expected personal capability manifest and local codex roundtrip/readback. If an optional adapter is enabled, its authenticated runtime boundary must additionally be verified; the disabled adapter requires no external account or service readback.
 
 ## TEMDD
 

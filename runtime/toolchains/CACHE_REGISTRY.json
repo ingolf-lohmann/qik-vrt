@@ -101,6 +101,33 @@
       ],
       "version": "2.96.0"
     },
+    "git": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "tools/qikvrt_mesh_recovery.py",
+        "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "github-hosted-runner-image:ubuntu-24.04"
+      ],
+      "failure_recovery": "BLOCK on missing binary, unsupported behavior, missing objects or failed restore; preserve source and use a new output directory",
+      "profiles": [
+        "core",
+        "all"
+      ],
+      "progress_telemetry": "create, verify, restore and plan CLI return machine-readable scope-bound receipts or BLOCK",
+      "provenance_license": "Git upstream https://git-scm.com; GPL-2.0-only; no Git binary vendored",
+      "provider": "existing Git executable; behavior and reported version verified locally",
+      "trusted_save": false,
+      "verification": [
+        "git --version",
+        "standalone full-history bundle restored without source",
+        "git fsck --full --strict",
+        "tests/test_qikvrt_mesh_recovery.py"
+      ],
+      "version": "standalone-bundle-v1"
+    },
     "lean": {
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",

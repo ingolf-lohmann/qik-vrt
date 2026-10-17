@@ -1,0 +1,154 @@
+{
+  "acceptance": {
+    "git_push_runtime_added": false,
+    "human_code_acceptance": "PENDING",
+    "main_mutated": false,
+    "physical_effect_ack": false,
+    "pr_self_head_runtime_write": false,
+    "product_effect_ack_done": false,
+    "provider_authority_fencing_verified": false,
+    "second_executor_created": false,
+    "source_branch_updates": "Review-only connector fast-forward; outside the productive broker acceptance scope"
+  },
+  "contributions": [
+    {
+      "actor": "Ingolf Lohmann",
+      "class": "HUMAN",
+      "contribution": "Requested the exact missing reflexive repository effect, existing canonical fenced single sink, durable Intent/CAS, request/result/source/predecessor bindings, byte readback and named negative controls; authorized continuation of PR #436"
+    },
+    {
+      "actor": "OpenAI Codex",
+      "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+      "contribution": "Diagnosis, scoped broker dependency port, same-broker immutable Git result persistence, REST integration/recovery, tests and evidence",
+      "model_build": "UNAVAILABLE",
+      "session_id": "4915f0945a13"
+    }
+  ],
+  "created_utc": "2026-10-01",
+  "effect_path": [
+    "REQUEST_BOUND",
+    "RESULT_RECONSTRUCTED",
+    "CAPABILITY_PERMIT_HEAD_TREE_PR_REOBSERVED",
+    "DURABLE_PREPARED_INTENT",
+    "DURABLE_PENDING_DISPATCH",
+    "CONTENT_ADDRESSED_GIT_OBJECTS",
+    "NATIVE_CREATE_ONLY_REF_CAS",
+    "FRESH_REF_COMMIT_TREE_BLOB_BYTES",
+    "SAME_TRANSACTION_TWIN_PREDECESSOR_CAS",
+    "SEPARATE_DURABLE_LEDGER_READBACK",
+    "IDENTICAL_CANONICAL_RESULT_TO_INITIATOR"
+  ],
+  "initial_state_boundary": "Initial TwinState is explicitly operator provisioned; no physical/vendor provenance is inferred",
+  "native_review": {
+    "candidate_status": "REQUIRES_FRESH_READBACK",
+    "observed_predecessor_status": "failure: CODE_OWNER_RULE_NOT_ENFORCED",
+    "rule_changed": false
+  },
+  "recovery": "PENDING/VERIFIED -> GET-only reconciliation, never another POST; PREPARED and definite REJECTED cannot launder another writer as our effect",
+  "reuse": {
+    "head": "2e90c2a4ded011cce37acfc8d6947bf4dba3a10f",
+    "inputs": [
+      {
+        "bytes": 31855,
+        "git_blob": "7ec8c24e8821024e028fbe2f6ea7d0a239080e52",
+        "path": "src/qikvrt_github_api_shim.py",
+        "port_mode": "BOUNDED_EXTENSION_OR_SCOPED_TEST_PORT",
+        "sha256": "7e7ae03a54f6410c451fd8a39ab55e171e4c39a7b7f599d48194818c44600e6c"
+      },
+      {
+        "bytes": 45836,
+        "git_blob": "1163b37546a82fdada64949ff4e82bc1cf43a54e",
+        "path": "tools/qikvrt_authority_transition.py",
+        "port_mode": "BYTE_IDENTICAL",
+        "sha256": "a1a973565a7a4416f8da1974f394479ab3f8e8896da784dd2da6b91b7493b074"
+      },
+      {
+        "bytes": 34602,
+        "git_blob": "794235a8b15322fdefeba6980e70eb9a294836ed",
+        "path": "tools/qikvrt_mesh_recovery.py",
+        "port_mode": "BYTE_IDENTICAL",
+        "sha256": "65ce6d27036b849393e43436e55320380ed260f7cccff4b2ea8158498bfd52e9"
+      },
+      {
+        "bytes": 16732,
+        "git_blob": "08ccb897c22e5dd70ca20edecc12cdfee760cf33",
+        "path": "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json",
+        "port_mode": "BYTE_IDENTICAL",
+        "sha256": "46a007fdbbc17263ca8716b76e3a76475d73be8a6ba544dd04affea0e9f86e70"
+      },
+      {
+        "bytes": 27108,
+        "git_blob": "4ca054d7d695be723923496fea37d45f8f3257a3",
+        "path": "tests/test_qikvrt_mesh_recovery.py",
+        "port_mode": "BYTE_IDENTICAL",
+        "sha256": "07f6c2af3753a403f04742db4547d71d6d0b9c79acd1593ba3d9fd778f22e43b"
+      },
+      {
+        "bytes": 19059,
+        "git_blob": "57842f127b80179ba837cf5cc7333def41b2d19a",
+        "path": "tests/test_qikvrt_authority_transition.py",
+        "port_mode": "BYTE_IDENTICAL",
+        "sha256": "bd15fd2ce1717ad66df0e181671ccf3fdc014a95cde5d1245900e5a1bcd75e48"
+      },
+      {
+        "bytes": 34852,
+        "git_blob": "248785154e5149893c81816aad4b1b50bda2f640",
+        "path": "tests/test_qikvrt_github_authority_provider.py",
+        "port_mode": "BOUNDED_EXTENSION_OR_SCOPED_TEST_PORT",
+        "sha256": "d0a5f6b592d69604b801cae9a3f64f63d7f57cd80e145d118a4080759db6b72c"
+      },
+      {
+        "bytes": 51979,
+        "git_blob": "2b71c680e36532e5482fb9820ecee71865995fb0",
+        "path": "tools/qikvrt_seed_common.py",
+        "port_mode": "BYTE_IDENTICAL",
+        "sha256": "2b5646d297096f9696518b8039f2499a38272b8f114e57ba991fdf67e248dfbf"
+      },
+      {
+        "bytes": 29168,
+        "git_blob": "d876b3bd6af206962b9d0b349bcda642ee65c9d1",
+        "path": "docs/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION.md",
+        "port_mode": "BOUNDED_EXTENSION_OR_SCOPED_TEST_PORT",
+        "sha256": "32cfa3bdcf8b85c7027f85d9e66577bd6f8b70194707968be6b9a3b21a97a537"
+      },
+      {
+        "bytes": 400,
+        "git_blob": "9b06a2b407fb99d99d2bda5a3decc80ab68a092b",
+        "path": "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin",
+        "port_mode": "BYTE_IDENTICAL",
+        "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+      }
+    ],
+    "not_ported": "PR #428 whole-repository No-Bypass inventory, native-workflow deactivation and separate global No-Bypass tests; those test assertions require the unported global source changes, not this scoped API port",
+    "pr": 428,
+    "predecessor_evidence_transfer": false,
+    "repository": "ingolf-lohmann/qik-vrt",
+    "scope": "Existing broker/control-plane/recovery dependencies only; this is a provenance-bound port, not a lossless merge of all PR #428 tree changes",
+    "tree": "ea4ef7e0ca82369284639fdc770ba7e5f98eb06f"
+  },
+  "schema": "qikvrt_work_unit_v1",
+  "scope": "Bounded software implementation and real independent persistent Git fixture; production requires separately provisioned active private control plane and broker capability",
+  "source": {
+    "head": "6a7ee719e054d40d3825366997524130b592c0b6",
+    "pr": 436,
+    "ref": "work/api-acceptance-rest-repair-20261001",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "tree": "ec13a820197cd400dcf8fdbc1905fb233a63a746"
+  },
+  "unchanged_controls": [
+    "tools/qikvrt_expected_head_promotion.py",
+    "tools/qikvrt_pr_closure_engine.py",
+    ".github/workflows/qikvrt_requested_review_executor.yml",
+    ".github/workflows/qikvrt_required_review_gate.yml"
+  ],
+  "unchanged_workflow_tree": "85da67ffa776dac7c3a3493ddefd6d6af9b5994e",
+  "validation": {
+    "focused_api_log_sha256": "95ed1eb214a1df05acf7d06e92449a5999ffa160ef39d1d276ce41cb5046c6cf",
+    "focused_tests": "20 API tests passed; 64 broker/control-plane/recovery dependency tests passed in the preceding run; no predecessor-head evidence transfers",
+    "full_make_test": "PASS: 706 Python test executions and 7864387 C90 checks on current source/test/dependency bytes",
+    "full_make_test_log_sha256": "e43171a4ce7c0e5b8960f2ef9c02e0dd1fd05c2149b622a341b3a31c7fa451d0",
+    "integrity": "PASS: regenerated and verified 3939 classified entries / 3930 immutable digests; reverified after this validation-only update",
+    "local_environment_repair": "Initial unchanged historical Zenodo worktree test was blocked by missing parent/tree Git objects in a shared object cache; restored exact immutable local objects, isolated test and full make test passed without changing that test or its release finalizer"
+  },
+  "work_unit_id": "QIKVRT_PR436_REFLEXIVE_API_REPOSITORY_V1"
+}

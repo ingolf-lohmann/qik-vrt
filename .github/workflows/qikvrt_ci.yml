@@ -67,17 +67,6 @@ jobs:
             audit/ci-diagnostics/MAKE_TEST_DIAGNOSTICS.log
           cat "$diagnostics/MAKE_TEST_DIAGNOSTICS.log"
           exit "$status"
-      - name: Upload audit
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: qikvrt-ci-audit
-          retention-days: 30
-          path: |
-            audit/**
-            .qikvrt/**
-          if-no-files-found: warn
-          include-hidden-files: true
       - name: Same-writer successor re-entry to tested fixpoint
         id: fixpoint
         if: always() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
@@ -152,6 +141,7 @@ jobs:
           exit 2
 
       - name: Enforce terminal tested-fixpoint disposition
+        id: terminal
         if: always()
         env:
           FIXPOINT_REQUIRED: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository }}
@@ -180,3 +170,31 @@ jobs:
               ;;
           esac
           echo "QIKVRT_TERMINAL_DISPOSITION PASS mode=$mode"
+
+      - name: Consume repository-native Never stop CI command
+        if: always()
+        env:
+          CI_TERMINAL_OUTCOME: ${{ steps.terminal.outcome }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          diagnostics=.qikvrt/runtime/ci-diagnostics
+          mkdir -p "$diagnostics"
+          subject="$(git rev-parse --verify HEAD^{commit})"
+          python3 -B tools/qikvrt_autonomous_self_heal.py ci-continuation \
+            --reference "$subject" --test-outcome "$CI_TERMINAL_OUTCOME" \
+            --repository-name "$GITHUB_REPOSITORY" --event "$GITHUB_EVENT_NAME" \
+            --run-id "$GITHUB_RUN_ID" --run-attempt "$GITHUB_RUN_ATTEMPT" \
+            > "$diagnostics/CI_CONTINUATION.json"
+          cat "$diagnostics/CI_CONTINUATION.json"
+      - name: Upload audit
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qikvrt-ci-audit
+          retention-days: 30
+          path: |
+            audit/**
+            .qikvrt/**
+          if-no-files-found: warn
+          include-hidden-files: true

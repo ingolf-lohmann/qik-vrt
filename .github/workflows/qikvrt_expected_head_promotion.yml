@@ -43,9 +43,8 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       REPOSITORY: ${{ github.repository }}
       PROMOTION_MARKER: "<!-- qikvrt-expected-head-promotion:enabled external_effect=NONE -->"
-      REVIEW_STATUS_CONTEXT: "QIKVRT requested review execution"
       REQUIRED_GATES_JSON: >-
-        ["QIKVRT CI","QIKVRT repository evidence materialization","QIKVRT Collective Proposal Review","QIK-VRT global claim completion","QIKVRT requested review execution"]
+        ["QIKVRT CI","QIKVRT repository evidence materialization","QIKVRT Collective Proposal Review","QIK-VRT global claim completion"]
     steps:
       - name: Check out current main promotion code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -120,12 +119,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python3 -B - <<'PY' > /tmp/qikvrt-promotion-snapshot.json
+          cat > /tmp/qikvrt-promotion-observe.py <<'PY'
           import json, os, subprocess
           repo=os.environ['REPOSITORY']
           pr_number=int(os.environ['PR_NUMBER'])
           required=json.loads(os.environ['REQUIRED_GATES_JSON'])
-          review_context=os.environ['REVIEW_STATUS_CONTEXT']
 
           def gh_json(path):
               return json.loads(subprocess.check_output(['gh','api',path], text=True))
@@ -142,31 +140,44 @@ jobs:
                   if isinstance(page,dict): out.extend(page.get('workflow_runs',[]))
               return out
 
+          def gh_jobs(path):
+              pages=json.loads(subprocess.check_output(['gh','api','--paginate','--slurp',path], text=True))
+              return [job for page in pages for job in page.get('jobs', [])]
+
           pr=gh_json(f'repos/{repo}/pulls/{pr_number}')
           current_main=gh_json(f'repos/{repo}/commits/main')['sha']
           head=pr['head']['sha']
+          tree=gh_json(f'repos/{repo}/git/commits/{head}')['tree']['sha']
           runs=gh_runs(f'repos/{repo}/actions/runs?head_sha={head}&event=pull_request&per_page=100')
-          workflow_runs=[
-              {'name':r.get('name'),'status':r.get('status'),'conclusion':r.get('conclusion'),'run_number':r.get('run_number')}
-              for r in runs if r.get('name') != 'QIKVRT requested review executor'
-          ]
-
-          statuses=gh_pages(f'repos/{repo}/commits/{head}/statuses?per_page=100')
-          review_status=next((s for s in statuses if s.get('context') == review_context), None)
-          if review_status is None:
-              synthetic={'name':review_context,'status':'in_progress','conclusion':None,'run_number':0}
-          elif review_status.get('state') == 'success':
-              synthetic={'name':review_context,'status':'completed','conclusion':'success','run_number':int(review_status.get('id') or 0)}
-          elif review_status.get('state') == 'pending':
-              synthetic={'name':review_context,'status':'in_progress','conclusion':None,'run_number':int(review_status.get('id') or 0)}
-          else:
-              synthetic={'name':review_context,'status':'completed','conclusion':'failure','run_number':int(review_status.get('id') or 0)}
-          workflow_runs.append(synthetic)
+          # Preserve raw API subject/attempt metadata and fetch jobs only for the
+          # latest attempt per name. A status label never replaces native review.
+          latest={}
+          for run in runs:
+              if run.get('name') == 'QIKVRT requested review executor':
+                  continue
+              key=(run.get('run_number',0),run.get('run_attempt',0),run.get('id',0))
+              previous=latest.get(run.get('name'))
+              if previous is None or key > (previous.get('run_number',0),previous.get('run_attempt',0),previous.get('id',0)):
+                  latest[run.get('name')]=run
+          workflow_runs=[]
+          for run in latest.values():
+              run=dict(run)
+              run['jobs']=gh_jobs(f"repos/{repo}/actions/runs/{run['id']}/attempts/{run['run_attempt']}/jobs?per_page=100")
+              workflow_runs.append(run)
+          review_observation={
+              'pr':pr,
+              'rules':gh_pages(f'repos/{repo}/rules/branches/main'),
+              'reviews':gh_pages(f'repos/{repo}/pulls/{pr_number}/reviews?per_page=100'),
+          }
 
           candidate_files={item['filename'] for item in gh_pages(f'repos/{repo}/pulls/{pr_number}/files?per_page=100')}
           overlaps=[]
           for other in gh_pages(f'repos/{repo}/pulls?state=open&base=main&per_page=100'):
-              if other['number']==pr_number or other.get('base',{}).get('sha') != current_main or other.get('head',{}).get('sha') == head:
+              if other['number']==pr_number:
+                  continue
+              if other.get('base', {}).get('sha') != current_main:
+                  continue
+              if other.get('head', {}).get('sha') == head:
                   continue
               other_files={item['filename'] for item in gh_pages(f"repos/{repo}/pulls/{other['number']}/files?per_page=100")}
               common=sorted(candidate_files & other_files)
@@ -174,10 +185,14 @@ jobs:
 
           print(json.dumps({
               'pr_number':pr_number,
+              'repository':repo,
               'current_main_sha':current_main,
               'base_sha':pr['base']['sha'],
               'expected_head_sha':head,
               'current_head_sha':head,
+              'expected_tree_sha':tree,
+              'current_tree_sha':tree,
+              'review_observation':review_observation,
               'draft':bool(pr.get('draft')),
               'mergeable':pr.get('mergeable') is True,
               'external_effect':'NONE',
@@ -186,6 +201,8 @@ jobs:
               'competing_writer_overlaps':overlaps,
           }, sort_keys=True))
           PY
+
+          python3 -B /tmp/qikvrt-promotion-observe.py > /tmp/qikvrt-promotion-snapshot.json
 
           set +e
           python3 -B tools/qikvrt_expected_head_promotion.py evaluate --input /tmp/qikvrt-promotion-snapshot.json > /tmp/qikvrt-promotion-decision.json
@@ -197,6 +214,7 @@ jobs:
           v=json.load(open('/tmp/qikvrt-promotion-decision.json'))
           print(f"state={v['state']}")
           print(f"head={v.get('expected_head_sha') or ''}")
+          print(f"tree={v.get('expected_tree_sha') or ''}")
           print(f"blocker={v.get('first_blocker') or ''}")
           PY
           exit 0
@@ -207,9 +225,26 @@ jobs:
           PR_NUMBER: ${{ steps.candidate.outputs.pr }}
           EXPECTED_HEAD: ${{ steps.decision.outputs.head }}
           EXPECTED_BASE: ${{ steps.candidate.outputs.main_sha }}
+          EXPECTED_TREE: ${{ steps.decision.outputs.tree }}
         shell: bash
         run: |
           set -euo pipefail
+          revalidate() {
+            # D0=2: repeat the complete technical AND semantic observation.
+            # The second decision cannot borrow reviews, jobs or writer state.
+            python3 -B /tmp/qikvrt-promotion-observe.py > /tmp/qikvrt-promotion-fresh-snapshot.json
+            python3 -B tools/qikvrt_expected_head_promotion.py evaluate \
+              --input /tmp/qikvrt-promotion-fresh-snapshot.json > /tmp/qikvrt-promotion-fresh-decision.json
+            python3 -B - <<'PY'
+          import json, os
+          value=json.load(open('/tmp/qikvrt-promotion-fresh-decision.json'))
+          assert value['state']=='PROMOTABLE'
+          assert value['expected_head_sha']==os.environ['EXPECTED_HEAD']
+          assert value['current_main_sha']==os.environ['EXPECTED_BASE']
+          assert value['expected_tree_sha']==os.environ['EXPECTED_TREE']
+          PY
+          }
+          revalidate
           current_main="$(gh api "repos/${REPOSITORY}/commits/main" --jq .sha)"
           current_head="$(gh api "repos/${REPOSITORY}/pulls/${PR_NUMBER}" --jq .head.sha)"
           current_base="$(gh api "repos/${REPOSITORY}/pulls/${PR_NUMBER}" --jq .base.sha)"
@@ -226,6 +261,7 @@ jobs:
             exit 0
           fi
 
+          revalidate
           current_main="$(gh api "repos/${REPOSITORY}/commits/main" --jq .sha)"
           current_head="$(gh api "repos/${REPOSITORY}/pulls/${PR_NUMBER}" --jq .head.sha)"
           current_base="$(gh api "repos/${REPOSITORY}/pulls/${PR_NUMBER}" --jq .base.sha)"
@@ -238,8 +274,25 @@ jobs:
           cat /tmp/qikvrt-promotion-merge.json
           test "$(python3 -c 'import json; print(str(json.load(open("/tmp/qikvrt-promotion-merge.json"))["merged"]).lower())')" = true
           promoted_main="$(gh api "repos/${REPOSITORY}/commits/main" --jq .sha)"
-          test "$promoted_main" != "$EXPECTED_BASE"
-          gh pr comment "$PR_NUMBER" --repo "$REPOSITORY" --body "Expected-head promotion completed by repository-native executor. Source head: \`$EXPECTED_HEAD\`; previous main: \`$EXPECTED_BASE\`; promoted main: \`$promoted_main\`. Requested-review execution was exact-head bound. No Zenodo/IETF/release/PASS/FINAL_PASS/EFFECT_ACK_DONE effect is implied."
+          gh api "repos/${REPOSITORY}/git/commits/${promoted_main}" > /tmp/qikvrt-promotion-main-readback.json
+          gh api "repos/${REPOSITORY}/pulls/${PR_NUMBER}" > /tmp/qikvrt-promotion-pr-readback.json
+          python3 -B - <<'PY' > /tmp/qikvrt-promotion-readback-input.json
+          import json, os
+          print(json.dumps({
+              'expected_head_sha':os.environ['EXPECTED_HEAD'],
+              'repository':os.environ['REPOSITORY'],
+              'pr_number':int(os.environ['PR_NUMBER']),
+              'expected_base_sha':os.environ['EXPECTED_BASE'],
+              'expected_tree_sha':os.environ['EXPECTED_TREE'],
+              'merge_response':json.load(open('/tmp/qikvrt-promotion-merge.json')),
+              'pull_request':json.load(open('/tmp/qikvrt-promotion-pr-readback.json')),
+              'main_commit':json.load(open('/tmp/qikvrt-promotion-main-readback.json')),
+          }, sort_keys=True))
+          PY
+          python3 -B tools/qikvrt_expected_head_promotion.py verify-readback \
+            --input /tmp/qikvrt-promotion-readback-input.json > /tmp/qikvrt-promotion-readback.json
+          cat /tmp/qikvrt-promotion-readback.json
+          gh pr comment "$PR_NUMBER" --repo "$REPOSITORY" --body "Expected-head promotion effect read back for source \`$EXPECTED_HEAD\`, predecessor \`$EXPECTED_BASE\`, successor \`$promoted_main\`. Fresh validation of the promoted Main remains required. No Zenodo/IETF/release/PASS/FINAL_PASS/EFFECT_ACK_DONE effect is implied."
 
       - name: Persist bounded decision summary
         if: always()
@@ -256,5 +309,14 @@ jobs:
               echo "No promotion snapshot was materialized."
             fi
             echo
-            echo "Requested-review execution and external effects remain fail-closed."
+            echo "Native independent review, exact execution binding and external effects remain fail-closed."
           } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Preserve exact observations and effect readback
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-expected-head-promotion-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 30
+          path: /tmp/qikvrt-promotion-*.json
+          if-no-files-found: warn

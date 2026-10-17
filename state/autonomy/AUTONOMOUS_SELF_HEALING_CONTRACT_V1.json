@@ -76,7 +76,54 @@
       "IDENTIFIED_HUMAN_PHYSICS_REVIEW_WHEN_REQUIRED",
       "SEPARATE_EXPLICIT_ZENODO_AUTHORIZATION"
     ],
-    "automatic_promotion": "TWO_PHASE_EXPECTED_HEAD_BOUND_ONLY"
+    "automatic_promotion": "TWO_PHASE_EXPECTED_HEAD_BOUND_ONLY",
+    "unchanged_candidate": "DEDICATED_EXACT_HEAD_VERIFICATION_STILL_REQUIRED",
+    "existing_verifier_status": "READBACK_ONLY_NO_BLIND_REDISPATCH_NO_ACCEPTANCE_INFERENCE",
+    "pipeline_invariant": {
+      "schema": "qikvrt_pipeline_binding_v1",
+      "trusted_origin": "CURRENT_MAIN_FULL_COMMIT_SHA_REOBSERVED_BY_EXISTING_WORKFLOW",
+      "observer": "TRUSTED_MAIN_CONTROLLER_COPIED_BEFORE_CANDIDATE_CHECKOUT",
+      "protected_prefixes": [
+        ".github/workflows/",
+        "tools/",
+        "tests/",
+        "runtime/toolchains/",
+        "policy/",
+        "state/autonomy/",
+        "state/authorization/",
+        "src/"
+      ],
+      "protected_files": [
+        ".gitattributes",
+        "AGENTS.md",
+        "AI",
+        "AI_ADAPTERS.json",
+        "AI_CONTEXT.json",
+        "Makefile"
+      ],
+      "binding": "SORTED_PATH_MODE_EXACT_CHECKOUT_BYTE_RECORDS_AND_SHA256",
+      "new_protected_paths": "INCLUDED_AND_REJECTED_ON_DIFFERENCE",
+      "candidate_upgrade": "SEPARATE_INDEPENDENT_NATIVE_REVIEW_AND_MAIN_ACTIVATION",
+      "checks": [
+        "BEFORE_CANDIDATE_COMMANDS",
+        "AFTER_REPAIR",
+        "BEFORE_REMOTE_SUCCESSOR"
+      ],
+      "claim_boundary": "LOCAL_SOURCE_INVARIANCE_NOT_COMPLETE_MEDIATION_OR_PHYSICAL_PROOF",
+      "reference_checkout": "TRUSTED_MAIN_GIT_ATTRIBUTES_AND_SEPARATELY_TRUSTED_RUNNER_GIT_CONFIGURATION"
+    },
+    "candidate_contract_validation": {
+      "workflow": ".github/workflows/qikvrt_autonomous_exact_head_verify.yml",
+      "event": "pull_request",
+      "job": "verify-pr-contract",
+      "permissions": {
+        "contents": "read"
+      },
+      "main_activation_verified": false,
+      "repository_dispatch_effect_implied": false,
+      "product_effect_ack_done": false
+    },
+    "status_inventory": "AUTHENTICATED_EXACT_COMMIT_COMBINED_STATUS_WITH_TOTAL_COUNT_COMPLETE_OR_BLOCK"
   },
   "workflow_executor_mesh_continuity": {
     "contract_path": "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
@@ -217,5 +264,91 @@
     "EFFECT_ACK_DONE": false,
     "FULL_SYNC": false,
     "SYMMETRIC_CANONICALITY": false
+  },
+  "continuous_integration": {
+    "owner_command": {
+      "issuer": "Ingolf Lohmann",
+      "literal": "Never stop CI",
+      "received_at_utc": "2026-10-01T21:44:01Z",
+      "destination": "REPOSITORY"
+    },
+    "scope": "REPOSITORY_NATIVE_CI",
+    "active": true,
+    "first_success_terminal": false,
+    "first_failure_terminal": false,
+    "release_done_stops_ci": false,
+    "blocked_lane_stops_global_ci": false,
+    "bounded_jobs_and_fail_closed_writers": true,
+    "consumer": "tools/qikvrt_autonomous_self_heal.py ci-continuation",
+    "ci_workflow": ".github/workflows/qikvrt_ci.yml",
+    "followup_workflow": ".github/workflows/qikvrt_autonomous_pr_continuation.yml",
+    "completed_workflow_opportunities": [
+      "QIKVRT CI",
+      "QIKVRT repository evidence materialization"
+    ],
+    "completed_event_binding": "CURRENT_OPTED_IN_SAME_REPOSITORY_DRAFT_HEAD_ONLY",
+    "automatic_acceptance": false,
+    "main_activation": "REQUIRES_INDEPENDENT_NATIVE_REVIEW_AND_MAIN_ADMISSION"
+  },
+  "execution_routing": {
+    "rule_id": "QIKVRT_REPOSITORY_OWNS_EXECUTION_V1",
+    "repository_tasks_executor": "REPOSITORY_NATIVE_CI_CD_AND_ADMITTED_MESH_EXECUTORS",
+    "external_trigger_owns_repository_execution": false,
+    "external_schedule_required_for_repository_liveness": false,
+    "external_client_roles": [
+      "AUTHORIZED_REQUEST_TRANSPORT",
+      "INTERACTIVE_REVIEWABLE_PREPARATION",
+      "FRESH_EFFECT_READBACK",
+      "PERSONAL_READ_ONLY_REPORTING"
+    ],
+    "dependency_mirroring_policy": "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json",
+    "dependency_mirroring_rule_id": "QIKVRT_CQF_POST_BINDING_REPOSITORY_MIRRORING_V1",
+    "all_other_external_dependencies_in_scope": true,
+    "external_dependency_after_successful_binding": "REPLACE_WITH_VERIFIED_REPOSITORY_MIRROR",
+    "first_success_or_failure_is_terminal": false,
+    "effect_ack_done": false
+  },
+  "error_analysis_handoff": {
+    "producer": "tools/qikvrt_reflexive_repository_watchdog.py:repair-handoff",
+    "consumer": "tools/qikvrt_autonomous_self_heal.py:repair-consume",
+    "carrier": ".github/workflows/qikvrt_autonomous_pr_continuation.yml",
+    "manual_owner_relay_required": false,
+    "unknown_cause": "ADMITTED_ANALYSIS_HOLD",
+    "analysis_is_writer_authority": false,
+    "new_executor": false,
+    "maximum_hops": 1,
+    "fresh_source_and_subject_readback": true,
+    "activation": "INDEPENDENT_NATIVE_MAIN_ADMISSION",
+    "durable_delivery": "PRODUCER_ARTIFACT_AND_CONSUMER_INBOX_WITH_BYTE_READBACK",
+    "replay_scope": "IDENTICAL_WORK_UNIT_INBOX_BYTES_NO_WRITER_EFFECT",
+    "repair_permission": "ONLY_EXISTING_ALLOWLIST_AFTER_ESTABLISHED_CAUSE_AND_SEPARATE_ADMISSION",
+    "routing_failure": "OPEN_DEFECT_WITH_PRESERVED_SOURCE_AND_CONSUMER_FAILURE_RECEIPT"
+  },
+  "gap_and_cause_priority": {
+    "rule_id": "QIKVRT_CI_GAP_AND_CAUSE_HIGHEST_PRIORITY_V1",
+    "normative_status": "REQUIRED",
+    "owner_command": {
+      "issuer": "Ingolf Lohmann",
+      "literal": "Lücken sind höchstprior zu schließen und die Ursache für das Entstehen jeglicher Lücke ebenso!",
+      "authorization": "Freigabe erteilt.",
+      "received_at_utc": "2026-10-02T00:07:15Z",
+      "destination": "REPOSITORY"
+    },
+    "scope": "EVERY_IDENTIFIED_GAP_IN_EVERY_QIKVRT_LAYER",
+    "gap_priority": "OWNER_HIGHEST",
+    "cause_priority": "OWNER_HIGHEST",
+    "repair_authorized": true,
+    "unknown_cause": "OPEN_HIGHEST_PRIORITY_CAUSAL_DIAGNOSIS",
+    "repair_command_success_is_gap_closure": false,
+    "symptom_resolution_is_cause_closure": false,
+    "noop_discharges_open_causes": false,
+    "closure_requires": [
+      "ORIGINAL_FAILING_OPERATION_FRESHLY_VERIFIED",
+      "SOURCE_BOUND_CAUSE_ESTABLISHED",
+      "CAUSE_REPAIR_REGRESSION_VERIFIED",
+      "FRESH_EXACT_SUBJECT_EFFECT_READBACK"
+    ],
+    "regression_policy": "canonical/SHIFT_LEFT_ROOT_CAUSE_REGRESSION_POLICY_V25.json",
+    "writer_admission": "EXISTING_ALLOWLIST_AND_INDEPENDENT_NATIVE_EFFECT_BOUNDARIES"
   }
 }

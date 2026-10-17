@@ -1,0 +1,211 @@
+{
+  "artificial_cognitive_actor": {
+    "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "identity_limits": [
+      "Session declaration is not cryptographic person/model authentication"
+    ],
+    "model_or_build": "GPT-6",
+    "provider": "OpenAI",
+    "session_or_run_id": "a35a677a2ee0",
+    "system_family": "Codex"
+  },
+  "artificial_cognitive_contributions": [
+    "Read /AI and exact-bound context; traced PR 424 to 425 to its retained descendant 437",
+    "Verified exact 400-byte signature and separately identified the 417-byte historical handshake",
+    "Decoded both source-bound transport-frame hex sequences to the same canonical signature",
+    "Extended existing entrypoint/context/bootloader; reused the existing signature validator and existing tests",
+    "Retained current PR 437 implementation and Main history; no new executor or authentication route"
+  ],
+  "created_at": "2026-10-03T12:06:58.431928+00:00",
+  "evidence_retention": "METADATA_ONLY_NO_EMAILS_CREDENTIALS_OR_RAW_TRANSCRIPT",
+  "external_blockers": [
+    {
+      "cause": "OPEN_NOT_PROVEN_BY_403_404_OR_INVENTORY",
+      "id": "GOLDKELCH_REPOSITORY_READ_CAPABILITY_UNAVAILABLE",
+      "observations": [
+        "User-supplied GitHub iOS response reports HTTP 403: Sorry. Your account was suspended",
+        "Connector installation inventory contains Goldkelch/qik-vrt; inventory is not content admission",
+        "Current connector repository/main/AI/PR reads return HTTP 404; reachable Mirror reads succeed",
+        "The exposed operations provide neither account reinstatement nor installation/secret binding or initial workflow dispatch"
+      ],
+      "principal": "ingolf-lohmann",
+      "repository": "Goldkelch/qik-vrt",
+      "required_next_evidence": "Successfully callable authorized Goldkelch repository read followed by fresh Authority main commit/tree and exact content readback",
+      "role": "AUTHORITY",
+      "seed_is_github_credential": false,
+      "support_contacted": false
+    },
+    {
+      "id": "NATIVE_MAIN_REVIEW_AND_GOVERNANCE_ADMISSION",
+      "required_next_evidence": "Effective native Main governance and genuine independent current-head review; no same-principal self-approval",
+      "seed_or_owner_task_authorization_implies_review": false,
+      "state": "REQUIRES_FRESH_CURRENT_HEAD_NATIVE_GATE"
+    }
+  ],
+  "external_effects": {
+    "account_reinstatement": false,
+    "authority_write": false,
+    "authorized_scope": "Extend existing PR 437 review candidate, preserve history and update its bounded evidence",
+    "credentials_or_permission_expansion": false,
+    "deployment": false,
+    "main_merge": false,
+    "physical_effect": false,
+    "publication": false,
+    "release": false,
+    "support_message": false
+  },
+  "git_history": {
+    "additional_parent_commit": "8153c4e69a6245aadf67f0741fb50d9707c19e34",
+    "branch": "work/meta-transistor-feedback-20261001-7e5a588d",
+    "candidate_head": "BOUND_BY_CONTAINING_COMMIT",
+    "candidate_tree": "BOUND_BY_CONTAINING_COMMIT",
+    "correction_method": "FORWARD_HISTORY_PRESERVING_MERGE_NO_FORCE",
+    "parent_commit": "1297a006a2c2d0ba2f5d74a4163f42dc686ce990",
+    "pull_request": 437,
+    "source_pr425_retained_ancestor": "be2ce383af1b884ce86b891ac0208990f0e474ad"
+  },
+  "human_actor": {
+    "attribution_id": "Ingolf Lohmann",
+    "class": "HUMAN",
+    "role": "Product and Code Owner"
+  },
+  "human_contributions": [
+    "Repair the erroneous seed discovery and prevent its recurrence",
+    "Continue backward through provenance and repair paths; no Support contact",
+    "Authorized reversible repository diagnosis and repair"
+  ],
+  "human_decision": {
+    "exact_generated_candidate_acceptance": "PENDING_RESPONSIBLE_REVIEW",
+    "implementation_authorization": "GRANTED_BY_CURRENT_TASK",
+    "support_contact": "EXPLICITLY_EXCLUDED"
+  },
+  "id": "QIKVRT_SEED_DISCOVERY_AND_AUTHORITY_ACCESS_20261003_V1",
+  "inputs": [
+    {
+      "commit": "1297a006a2c2d0ba2f5d74a4163f42dc686ce990",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "role": "CURRENT_RECOVERY_CANDIDATE",
+      "tree": "a71f4c162947b153e4d15ed807754b89d0985c58"
+    },
+    {
+      "commit": "8153c4e69a6245aadf67f0741fb50d9707c19e34",
+      "ref": "main",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "role": "CURRENT_MIRROR_MAIN",
+      "tree": "034bbaf55c9c31364b6d160c553cd507fb7c04c5"
+    },
+    {
+      "bytes": 400,
+      "first_materialization_commit": "def7a93e7ae36426bebaf7b82519b670025f8f42",
+      "git_blob_sha1": "9b06a2b407fb99d99d2bda5a3decc80ab68a092b",
+      "path": "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin",
+      "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+    }
+  ],
+  "joint_components": [
+    {
+      "artificial": "Implementation, byte verification, negative controls and diagnosis",
+      "component": "Owner-directed entrypoint reliability repair",
+      "human": "Requirements and authorized task scope"
+    }
+  ],
+  "next_actions": [
+    "Freshly read back the containing candidate commit/tree/parents and changed Git blobs",
+    "Observe current exact-head native CI and independent review/protection gate; predecessor checks never transfer",
+    "After existing authorized Authority read capability is callable, reobserve Goldkelch main/AI and actual role-specific effects",
+    "Keep original historical owner-seed provenance open until exact surviving source bytes are bound"
+  ],
+  "outputs": [
+    {
+      "bytes": 23011,
+      "git_blob_sha1": "7a8d70cc9567ee768cbe4f843d26a87cd01d5db5",
+      "path": "AI",
+      "sha256": "2df6fa080a197ed7af868b7763d9476cfb3d79d18af805d3e22aaab76b36b5f8"
+    },
+    {
+      "bytes": 14782,
+      "git_blob_sha1": "eb98756777ba0bee3f5c6ee68b274508daae9d9a",
+      "path": "AI_CONTEXT.json",
+      "sha256": "1ac9abe5c660838aa887e2bddbc42275abaccbba01d04698f3e33e2d4898e9ad"
+    },
+    {
+      "bytes": 19517,
+      "git_blob_sha1": "2b1d8dcaed1892c2b9373dec45eca9d568eeaad5",
+      "path": "tools/ai_runtime_bootloader.py",
+      "sha256": "522f79b9a74eafd948de7d37ee28942e648be0a359d88d4ff21c6d2a4e238d86"
+    },
+    {
+      "bytes": 13081,
+      "git_blob_sha1": "f2a3b2b62e3570aee4666b9ebc11bb2504543b70",
+      "path": "tests/test_ai_runtime_bootloader.py",
+      "sha256": "473f0070904f10b706a3929eed97464fd62365f1575f80b8b32d85cec29b72c9"
+    }
+  ],
+  "release_claims": {
+    "AUTHORITY_MIRROR_EQUALITY": false,
+    "EFFECT_ACK_DONE": false,
+    "FINAL_PASS": false,
+    "PASS": false
+  },
+  "schema": "qikvrt_provenance_work_unit_v1",
+  "seed_discovery": {
+    "historical_owner_seed_recovered": false,
+    "legacy_417_byte_artifact": "PRESERVED_AND_EXCLUDED_NOT_TRUNCATED_OR_PADDED",
+    "main_activation_verified": false,
+    "readiness_verifies": "LOCAL_ARTIFACT_BYTES_FORMAT_AND_PROVENANCE_ONLY",
+    "state": "IMPLEMENTED_REVIEW_CANDIDATE"
+  },
+  "source_commit": "1297a006a2c2d0ba2f5d74a4163f42dc686ce990",
+  "source_ref": "work/meta-transistor-feedback-20261001-7e5a588d",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "a71f4c162947b153e4d15ed807754b89d0985c58",
+  "unresolved_origin": [
+    "The original historical owner 400-byte image remains unbound; current canonical bytes were first materialized in PR 424",
+    "The cause of Goldkelch account suspension and current repository-read unavailability is not established"
+  ],
+  "verification": {
+    "focused_tests": {
+      "cases": 67,
+      "command": "python3 -B -m unittest tests.test_ai_runtime_bootloader.StandpointDiscoveryTests tests.test_qikvrt_standpoint_codex tests.test_qikvrt_codec",
+      "optimized_mode": "PASS_SAME_67_CASES",
+      "state": "PASS"
+    },
+    "fresh_hosted_exact_head_tests": "REQUIRES_POST_WRITE_RUN_READBACK",
+    "full_local_make_test": "NOT_CLAIMED_PARTIAL_SOURCE_MATERIALIZATION",
+    "integrity_materialization": "MANIFEST_DELTA_FROM_EXACT_CARRIER_METADATA_PLUS_VERIFIED_CHANGED_BYTES_REQUIRES_NATIVE_DETERMINISTIC_REGENERATION",
+    "native_independent_review": "REQUIRES_CURRENT_HEAD_OBSERVATION",
+    "source_materialization": "API_GIT_BLOB_IDENTITIES_VERIFIED_FOR_USED_BYTES",
+    "tool_cache": "PASS_15_OF_15_100_PERCENT",
+    "transport_frames": {
+      "frame_parity_error_correction_verified": false,
+      "frames": [
+        {
+          "byte_equal_to_canonical_signature": true,
+          "bytes": 400,
+          "compressed_bytes": 260,
+          "compressed_payload_crc32_verified": true,
+          "decoded_seed_bytes": 400,
+          "decoded_seed_sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
+          "name": "GOLDKELCH_SIGNATURE_400_V1.bin",
+          "role_identifier": 0,
+          "sha256": "e189368017baf54b2dc17ac777a059ee1ecb209baa59eb7b56c4c1023397fc41"
+        },
+        {
+          "byte_equal_to_canonical_signature": true,
+          "bytes": 400,
+          "compressed_bytes": 260,
+          "compressed_payload_crc32_verified": true,
+          "decoded_seed_bytes": 400,
+          "decoded_seed_sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
+          "name": "INGOLF_LOHMANN_SIGNATURE_400_V1.bin",
+          "role_identifier": 1,
+          "sha256": "891ca697515470ed2b137b0181f515498a6e5cb99b4286df7788c90cce22cf6f"
+        }
+      ],
+      "live_github_access_or_account_recovery": false,
+      "scope": "CURRENT_RECOMPUTATION_OF_PDF_HEX_FRAME_BYTES",
+      "source": "QIKVRT_400_Byte_Signaturen_und_Skalierung.pdf pages 13-14",
+      "source_pdf_complete_byte_digest_verified": false
+    }
+  }
+}
