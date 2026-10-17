@@ -37,6 +37,45 @@ multi-node effect replication, write fencing and transparent recovery are open
 implementation/host-acceptance work. The neuronal description is an architecture
 analogy governed by the existing evidence/adaptation policy.
 
+## Existing S1 host and stopped-container recovery
+
+The existing `container-deploy` consumer in `qikvrt_ci.yml` supports initial
+create-only delivery and recovery of the exact same stopped S1 container. It
+continues to require protected exact Main, independent merged-PR review, the
+protected `qikvrt-production` environment and the admitted signed Firefox
+image. A source test or a Railway service inventory establishes none of those
+production predicates.
+
+The private connection is `vars.QIKVRT_LINUX_HOST_BINDING_JSON`, independently
+pinned by `vars.QIKVRT_LINUX_HOST_BINDING_SHA256`, and the existing protected
+`QIKVRT_LINUX_HOST_CA`, `QIKVRT_LINUX_HOST_CERT`, `QIKVRT_LINUX_HOST_KEY` secrets.
+`vars.QIKVRT_CONTAINER_DEPLOY_ENABLED` admits this existing consumer. The binding
+must supply the real mTLS Docker API origin, daemon ID, container name, existing
+state volume, private configuration directory and digest, node ID, manifest
+digest, loopback routing port, exact source HEAD/TREE and image digest. The
+checked-in `LINUX_HOST_BINDING.example.json` remains a template; do not fill its
+unknown fields with invented host values or export credentials into Git.
+
+Recovery first checks the authenticated daemon and owner volume, the same
+container/image/binding labels, runtime user/command, security and loopback
+settings, `unless-stopped` policy, and exactly the existing writable state
+volume plus read-only configuration mount. It verifies the pinned image,
+configuration and package-manifest bytes, then reobserves the container before
+one `POST /v1.45/containers/{id}/start`. A concurrent successful start is NOOP.
+An ambiguous response is resolved by GET, with no second start. There is no
+container replacement, mount update, profile export, profile initialization or
+credential operation in this recovery consumer. Drift remains HOLD and requires
+the existing separately admitted migration path. In particular, Railway's
+older `/var/lib/qikvrt` profile layout is not silently reinterpreted as the S1
+`/var/lib/qikvrt/node` layout.
+
+`EXACT_EXISTING_CONTAINER_RESUMED_PENDING_PUBLIC_ACCEPTANCE` establishes only
+the observed container start and health in that invocation. Independent public
+Effect-Acknowledgement and Firefox readback, actual private session acceptance,
+profile persistence and automatic restart remain distinct host obligations.
+A running Firefox window is not an authenticated provider session. Local Engine
+fixtures verify these branches without claiming any real host or login effect.
+
 ## Irreversible Authority succession
 
 Ingolf Lohmann's requirement of 2026-10-16 is normative in

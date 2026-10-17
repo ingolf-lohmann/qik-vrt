@@ -52,6 +52,167 @@ def archive(path, *, head=HEAD, tree=TREE, tamper=False, user="10001:10001", lay
             output.addfile(entry, io.BytesIO(raw))
 
 
+class ExistingContainerRecovery(unittest.TestCase):
+    """Engine fixtures establish recovery logic, never a live host/session."""
+
+    class Host:
+        def __init__(self, *, running=False, lost_ack=False, start_effect=True):
+            self.value = declaration()
+            self.config = {key: self.value[key] for key in ('source_head', 'source_tree', 'node_id')}
+            self.config.update(source_repository=c.REPOSITORY, host='0.0.0.0', port=8080,
+                               state_dir='/var/lib/qikvrt/node', adapter='none', terminal_profile='firefox')
+            self.config_raw = json.dumps(self.config).encode()
+            self.manifest = b'{"fixture":"exact-admitted-package"}'
+            self.value.update(config_sha256=c.sha(self.config_raw), manifest_sha256=c.sha(self.manifest))
+            self.image = c.IMAGE + '@' + self.value['image_digest']
+            self.identifier = 'f' * 64
+            self.live = {'Id': self.identifier,
+                'Config': {'Image': self.image, 'User': '10001:10001',
+                    'Cmd': ['--config', '/run/qikvrt/config.json', '--manifest-sha256', self.value['manifest_sha256']],
+                    'Labels': {'de.qikvrt.repository': c.REPOSITORY,
+                               'de.qikvrt.binding-sha256': c.sha(json.dumps(self.value, sort_keys=True).encode())}},
+                'State': {'Running': running, 'Status': 'running' if running else 'exited',
+                          'Health': {'Status': 'healthy'}},
+                'HostConfig': {'ReadonlyRootfs': True, 'CapDrop': ['ALL'],
+                    'SecurityOpt': ['no-new-privileges:true'], 'Init': True,
+                    'RestartPolicy': {'Name': 'unless-stopped', 'MaximumRetryCount': 0},
+                    'ShmSize': 256 * 1024**2, 'Tmpfs': {'/tmp': 'rw,noexec,nosuid,size=768m,mode=1777'},
+                    'PortBindings': {'8080/tcp': [{'HostIp': '127.0.0.1', 'HostPort': '8080'}]}},
+                'Mounts': [{'Type': 'volume', 'Name': self.value['state_volume'],
+                            'Destination': '/var/lib/qikvrt/node', 'RW': True},
+                           {'Type': 'bind', 'Source': self.value['config_directory'],
+                            'Destination': '/run/qikvrt', 'RW': False}]}
+            self.image_metadata = {'RepoDigests': [self.image], 'Config': {'Labels': {
+                'org.opencontainers.image.revision': HEAD, 'de.qikvrt.source-tree': TREE}}}
+            self.calls, self.inspect_count = [], 0
+            self.lost_ack, self.start_effect, self.drift = lost_ack, start_effect, False
+            self.existing, self.concurrent_start = True, False
+            self.profile = b'private-profile-fixture-preserved'
+
+        def archive(self, name, raw, mode):
+            output = io.BytesIO()
+            with tarfile.open(fileobj=output, mode='w') as tar:
+                entry = tarfile.TarInfo(name); entry.uid = entry.gid = 10001
+                entry.mode, entry.size = mode, len(raw)
+                tar.addfile(entry, io.BytesIO(raw))
+            return output.getvalue()
+
+        def call(self, method, path, value=None, *, binary=False):
+            self.calls.append((method, path))
+            if path.endswith('/info'): return {'OSType': 'linux', 'ID': self.value['daemon_id']}
+            if '/volumes/' in path:
+                return {'Driver': 'local', 'Scope': 'local', 'Labels': {'de.qikvrt.repository': c.REPOSITORY}}
+            if '/containers/json?' in path: return [{'Id': self.identifier}] if self.existing else []
+            if path.startswith('/v1.45/images/create?') and method == 'POST': return b''
+            if path.startswith('/v1.45/containers/create?') and method == 'POST':
+                self.created_request = value
+                self.existing = True
+                return {'Id': self.identifier}
+            if '/images/' in path and method == 'GET': return self.image_metadata
+            if path.endswith('/archive?path=/run/qikvrt/config.json'):
+                return self.archive('config.json', self.config_raw, 0o600)
+            if path.endswith('/archive?path=/opt/qikvrt/MANIFEST.json'):
+                return self.archive('MANIFEST.json', self.manifest, 0o444)
+            if path == '/v1.45/containers/' + self.identifier + '/json':
+                self.inspect_count += 1
+                if self.drift and self.inspect_count > 1:
+                    self.live['Mounts'][0]['Name'] = 'different-state'
+                if self.concurrent_start and self.inspect_count > 1:
+                    self.live['State'].update(Running=True, Status='running')
+                return self.live
+            if path == '/v1.45/containers/' + self.identifier + '/start' and method == 'POST':
+                if self.start_effect: self.live['State'].update(Running=True, Status='running')
+                if self.lost_ack: raise OSError('ambiguous transport fixture')
+                return None
+            raise AssertionError('Unexpected Engine operation: ' + method + ' ' + path)
+
+    def test_stopped_exact_container_is_started_once_without_recreation_or_profile_access(self):
+        host = self.Host()
+        result = c.deploy(host.value, host.image, host)
+        self.assertEqual(result['state'], 'EXACT_EXISTING_CONTAINER_RESUMED_PENDING_PUBLIC_ACCEPTANCE')
+        self.assertEqual(result['container_id'], host.identifier)
+        self.assertEqual([x for x in host.calls if x[0] != 'GET'],
+                         [('POST', '/v1.45/containers/' + host.identifier + '/start')])
+        self.assertEqual(host.profile, b'private-profile-fixture-preserved')
+        self.assertFalse(any('profile' in path or 'exec' in path for _, path in host.calls))
+
+    def test_existing_running_exact_container_is_noop(self):
+        host = self.Host(running=True)
+        self.assertEqual(c.deploy(host.value, host.image, host)['state'], 'EXACT_EXISTING_CONTAINER_NOOP')
+        self.assertTrue(all(method == 'GET' for method, _ in host.calls))
+
+    def test_concurrent_start_becomes_noop_before_second_effect(self):
+        host = self.Host(); host.concurrent_start = True
+        self.assertEqual(c.deploy(host.value, host.image, host)['state'], 'EXACT_EXISTING_CONTAINER_NOOP')
+        self.assertTrue(all(method == 'GET' for method, _ in host.calls))
+
+    def test_initial_creation_still_uses_the_original_admitted_specification(self):
+        host = self.Host(); host.existing = False
+        self.assertEqual(c.deploy(host.value, host.image, host)['state'], 'CONTAINER_STARTED_PENDING_PUBLIC_ACCEPTANCE')
+        effects = [path for method, path in host.calls if method == 'POST']
+        self.assertEqual(len(effects), 3)
+        self.assertTrue(effects[0].startswith('/v1.45/images/create?'))
+        self.assertTrue(effects[1].startswith('/v1.45/containers/create?'))
+        self.assertTrue(effects[2].endswith('/start'))
+        self.assertEqual(host.created_request['User'], '10001:10001')
+        self.assertEqual(host.created_request['Cmd'], ['--config', '/run/qikvrt/config.json',
+                                                      '--manifest-sha256', host.value['manifest_sha256']])
+        config = host.created_request['HostConfig']
+        self.assertEqual(config['RestartPolicy'], {'Name': 'unless-stopped'})
+        self.assertEqual(config['Mounts'], [
+            {'Type': 'volume', 'Source': 'qikvrt-state', 'Target': '/var/lib/qikvrt/node'},
+            {'Type': 'bind', 'Source': '/etc/qikvrt/s1', 'Target': '/run/qikvrt', 'ReadOnly': True}])
+        self.assertTrue(config['ReadonlyRootfs'])
+        self.assertEqual(config['PortBindings'], {'8080/tcp': [{'HostIp': '127.0.0.1', 'HostPort': '8080'}]})
+
+    def test_resume_lost_ack_uses_running_readback_without_second_start(self):
+        host = self.Host(lost_ack=True)
+        self.assertIn('RESUMED', c.deploy(host.value, host.image, host)['state'])
+        self.assertEqual(sum(method == 'POST' for method, _ in host.calls), 1)
+
+    def test_resume_without_running_effect_never_retries(self):
+        host = self.Host(lost_ack=True, start_effect=False)
+        with self.assertRaisesRegex(ValueError, 'CONTAINER_START_NOT_OBSERVED'):
+            c.deploy(host.value, host.image, host)
+        self.assertEqual(sum(method == 'POST' for method, _ in host.calls), 1)
+
+    def test_resume_rejects_storage_routing_or_restart_drift_before_any_write(self):
+        for variant in ('volume', 'config-mount', 'writable-config', 'extra-mount', 'public-port',
+                        'restart', 'user', 'cmd', 'privileged', 'writable-root', 'paused', 'dead', 'restarting'):
+            with self.subTest(variant=variant):
+                host = self.Host()
+                if variant == 'volume': host.live['Mounts'][0]['Name'] = 'unrelated-state'
+                if variant == 'config-mount': host.live['Mounts'][1]['Source'] = '/etc/qikvrt/other'
+                if variant == 'writable-config': host.live['Mounts'][1]['RW'] = True
+                if variant == 'extra-mount': host.live['Mounts'].append({'Destination': '/extra'})
+                if variant == 'public-port': host.live['HostConfig']['PortBindings']['8080/tcp'][0]['HostIp'] = '0.0.0.0'
+                if variant == 'restart': host.live['HostConfig']['RestartPolicy']['Name'] = 'no'
+                if variant == 'user': host.live['Config']['User'] = '0'
+                if variant == 'cmd': host.live['Config']['Cmd'] = ['other-program']
+                if variant == 'privileged': host.live['HostConfig']['Privileged'] = True
+                if variant == 'writable-root': host.live['HostConfig']['ReadonlyRootfs'] = False
+                if variant in ('paused', 'dead', 'restarting'): host.live['State'][variant.capitalize()] = True
+                with self.assertRaises(ValueError): c.deploy(host.value, host.image, host)
+                self.assertTrue(all(method == 'GET' for method, _ in host.calls))
+
+    def test_resume_rejects_changed_pinned_bytes_and_image_before_any_write(self):
+        for variant in ('config', 'manifest', 'digest', 'source'):
+            with self.subTest(variant=variant):
+                host = self.Host()
+                if variant == 'config': host.config_raw += b' '
+                if variant == 'manifest': host.manifest += b' '
+                if variant == 'digest': host.image_metadata['RepoDigests'] = []
+                if variant == 'source': host.image_metadata['Config']['Labels']['de.qikvrt.source-tree'] = '0' * 40
+                with self.assertRaises(ValueError): c.deploy(host.value, host.image, host)
+                self.assertTrue(all(method == 'GET' for method, _ in host.calls))
+
+    def test_resume_reobserves_mounts_before_start(self):
+        host = self.Host(); host.drift = True
+        with self.assertRaises(ValueError): c.deploy(host.value, host.image, host)
+        self.assertGreater(host.inspect_count, 1)
+        self.assertTrue(all(method == 'GET' for method, _ in host.calls))
+
+
 class ContainerControls(unittest.TestCase):
     def test_original_archive_oci_is_deterministic_and_recovers_exact_pinned_bytes(self):
         with tempfile.TemporaryDirectory() as tmp:

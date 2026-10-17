@@ -717,30 +717,9 @@ class Engine:
             connection.close()
 
 
-def deploy(value, image, engine):
-    """Create-only initial delivery, or exact unchanged readback. Never cut over."""
-    info = engine.call("GET", "/v1.45/info")
-    require(info.get("OSType") == "linux" and info.get("ID") == value["daemon_id"], "AUTHENTICATED_LINUX_HOST_MISMATCH")
-    volume = engine.call("GET", "/v1.45/volumes/" + value["state_volume"])
-    require(volume.get("Driver") == "local" and volume.get("Scope") == "local" and
-            volume.get("Labels", {}).get("de.qikvrt.repository") == REPOSITORY and
-            not volume.get("Options"), "EXISTING_PERSISTENT_OWNER_VOLUME_REQUIRED")
-    existing = engine.call("GET", "/v1.45/containers/json?all=true&filters=" +
-                           urllib.parse.quote(json.dumps({"name": ["^/" + value["container_name"] + "$"]})))
-    require(len(existing) <= 1, "SINGLE_EXISTING_NODE_REQUIRED")
-    if existing:
-        live = engine.call("GET", "/v1.45/containers/" + existing[0]["Id"] + "/json")
-        require(live.get("Config", {}).get("Image") == image and live.get("State", {}).get("Running") is True and
-                live["Config"].get("Labels", {}).get("de.qikvrt.binding-sha256") == sha(json.dumps(value, sort_keys=True).encode()),
-                "EXISTING_NODE_REPLACEMENT_REQUIRES_S1_MIGRATION")
-        return {"state": "EXACT_EXISTING_CONTAINER_NOOP", "container_id": live["Id"], **value}
-    engine.call("POST", "/v1.45/images/create?fromImage=" + urllib.parse.quote(image, safe=""))
-    observed = engine.call("GET", "/v1.45/images/" + urllib.parse.quote(image, safe="") + "/json")
-    require(image in observed.get("RepoDigests", []), "REMOTE_IMAGE_DIGEST_MISMATCH")
-    labels = observed.get("Config", {}).get("Labels", {})
-    require(labels.get("org.opencontainers.image.revision") == value["source_head"] and
-            labels.get("de.qikvrt.source-tree") == value["source_tree"], "REMOTE_SOURCE_BINDING_MISMATCH")
-    request = {"Image": image, "User": "10001:10001",
+def container_request(value, image):
+    """One admitted specification for initial creation and unchanged recovery."""
+    return {"Image": image, "User": "10001:10001",
         "Cmd": ["--config", "/run/qikvrt/config.json", "--manifest-sha256", value["manifest_sha256"]],
         "Labels": {"de.qikvrt.repository": REPOSITORY,
                    "de.qikvrt.binding-sha256": sha(json.dumps(value, sort_keys=True).encode())},
@@ -752,18 +731,74 @@ def deploy(value, image, engine):
             "PortBindings": {"8080/tcp": [{"HostIp": "127.0.0.1", "HostPort": str(value["loopback_port"])}]},
             "Mounts": [{"Type": "volume", "Source": value["state_volume"], "Target": "/var/lib/qikvrt/node"},
                        {"Type": "bind", "Source": value["config_directory"], "Target": "/run/qikvrt", "ReadOnly": True}]}}
-    try:
-        created = engine.call("POST", "/v1.45/containers/create?name=" + value["container_name"], request)
-        identifier = created["Id"]
-    except Exception:
-        # An ambiguous create is read back once. It is never issued again.
-        found = engine.call("GET", "/v1.45/containers/json?all=true&filters=" +
-                            urllib.parse.quote(json.dumps({"name": ["^/" + value["container_name"] + "$"]})))
-        require(len(found) == 1, "AMBIGUOUS_CREATE_REQUIRES_READBACK")
-        identifier = found[0]["Id"]
-        check = engine.call("GET", "/v1.45/containers/" + identifier + "/json")
-        require(check.get("Config", {}).get("Labels") == request["Labels"] and
-                check.get("Config", {}).get("Image") == image, "AMBIGUOUS_CREATE_SUBJECT_MISMATCH")
+
+
+def existing_container(live, identifier, value, request):
+    """Read-only admission of the same container; never inspect profile bytes."""
+    config, host = live.get("Config", {}), live.get("HostConfig", {})
+    require(live.get("Id") == identifier and
+            all(config.get(key) == request[key] for key in ("Image", "User", "Cmd")) and
+            all(config.get("Labels", {}).get(key) == pin for key, pin in request["Labels"].items()),
+            "EXISTING_NODE_REPLACEMENT_REQUIRES_S1_MIGRATION")
+    require(all(host.get(key) == expected for key, expected in request["HostConfig"].items()
+                if key not in ("Mounts", "RestartPolicy")) and
+            host.get("RestartPolicy", {}).get("Name") == "unless-stopped" and
+            not host.get("Privileged") and host.get("NetworkMode", "default") in ("default", "bridge"),
+            "EXISTING_CONTAINER_SECURITY_ROUTING_OR_RESTART_DRIFT")
+    mounts = live.get("Mounts", [])
+    require(len(mounts) == 2 and
+            sum(m.get("Type") == "volume" and m.get("Name") == value["state_volume"] and
+                m.get("Destination") == "/var/lib/qikvrt/node" and m.get("RW") is True for m in mounts) == 1 and
+            sum(m.get("Type") == "bind" and m.get("Source") == value["config_directory"] and
+                m.get("Destination") == "/run/qikvrt" and m.get("RW") is False for m in mounts) == 1,
+            "EXISTING_PRIVATE_VOLUME_OR_CONFIGURATION_MOUNT_DRIFT")
+    state = live.get("State", {})
+    require(not any(state.get(key) for key in ("Paused", "Dead", "Restarting")) and
+            ((state.get("Running") is True and state.get("Status") == "running") or
+             (state.get("Running") is False and state.get("Status") in ("created", "exited"))),
+            "EXISTING_CONTAINER_NOT_RESUMABLE")
+
+
+def deploy(value, image, engine):
+    """Create-only initial delivery, or resume the exact existing container."""
+    info = engine.call("GET", "/v1.45/info")
+    require(info.get("OSType") == "linux" and info.get("ID") == value["daemon_id"], "AUTHENTICATED_LINUX_HOST_MISMATCH")
+    volume = engine.call("GET", "/v1.45/volumes/" + value["state_volume"])
+    require(volume.get("Driver") == "local" and volume.get("Scope") == "local" and
+            volume.get("Labels", {}).get("de.qikvrt.repository") == REPOSITORY and
+            not volume.get("Options"), "EXISTING_PERSISTENT_OWNER_VOLUME_REQUIRED")
+    existing = engine.call("GET", "/v1.45/containers/json?all=true&filters=" +
+                           urllib.parse.quote(json.dumps({"name": ["^/" + value["container_name"] + "$"]})))
+    require(len(existing) <= 1, "SINGLE_EXISTING_NODE_REQUIRED")
+    request = container_request(value, image)
+    if existing:
+        identifier = existing[0]["Id"]
+        require(re.fullmatch(r"[a-f0-9]{64}", identifier), "ENGINE_CONTAINER_ID_REQUIRED")
+        live = engine.call("GET", "/v1.45/containers/" + identifier + "/json")
+        require(live.get("Config", {}).get("Image") == image and
+                live["Config"].get("Labels", {}).get("de.qikvrt.binding-sha256") == sha(json.dumps(value, sort_keys=True).encode()),
+                "EXISTING_NODE_REPLACEMENT_REQUIRES_S1_MIGRATION")
+        existing_container(live, identifier, value, request)
+    else:
+        engine.call("POST", "/v1.45/images/create?fromImage=" + urllib.parse.quote(image, safe=""))
+    observed = engine.call("GET", "/v1.45/images/" + urllib.parse.quote(image, safe="") + "/json")
+    require(image in observed.get("RepoDigests", []), "REMOTE_IMAGE_DIGEST_MISMATCH")
+    labels = observed.get("Config", {}).get("Labels", {})
+    require(labels.get("org.opencontainers.image.revision") == value["source_head"] and
+            labels.get("de.qikvrt.source-tree") == value["source_tree"], "REMOTE_SOURCE_BINDING_MISMATCH")
+    if not existing:
+        try:
+            created = engine.call("POST", "/v1.45/containers/create?name=" + value["container_name"], request)
+            identifier = created["Id"]
+        except Exception:
+            # An ambiguous create is read back once. It is never issued again.
+            found = engine.call("GET", "/v1.45/containers/json?all=true&filters=" +
+                                urllib.parse.quote(json.dumps({"name": ["^/" + value["container_name"] + "$"]})))
+            require(len(found) == 1, "AMBIGUOUS_CREATE_REQUIRES_READBACK")
+            identifier = found[0]["Id"]
+            check = engine.call("GET", "/v1.45/containers/" + identifier + "/json")
+            require(check.get("Config", {}).get("Labels") == request["Labels"] and
+                    check.get("Config", {}).get("Image") == image, "AMBIGUOUS_CREATE_SUBJECT_MISMATCH")
     require(re.fullmatch(r"[a-f0-9]{64}", identifier), "ENGINE_CONTAINER_ID_REQUIRED")
     config_archive = engine.call("GET", "/v1.45/containers/" + identifier +
                                  "/archive?path=/run/qikvrt/config.json", binary=True)
@@ -786,14 +821,26 @@ def deploy(value, image, engine):
         files = [m for m in exported.getmembers() if m.isfile()]
         require(len(files) == 1 and sha(exported.extractfile(files[0]).read()) == value["manifest_sha256"],
                 "HOST_IMAGE_MANIFEST_PIN_MISMATCH")
+    if existing:
+        # Reobserve immediately before the sole effect. A concurrent start is
+        # NOOP; changed storage/security is HOLD, never an update or recreation.
+        live = engine.call("GET", "/v1.45/containers/" + identifier + "/json")
+        existing_container(live, identifier, value, request)
+        if live["State"]["Running"] is True:
+            return {"state": "EXACT_EXISTING_CONTAINER_NOOP", "container_id": identifier, **value}
     try:
         engine.call("POST", "/v1.45/containers/" + identifier + "/start")
     except Exception:
         pass  # Only the authoritative GET below can establish start success.
     live = engine.call("GET", "/v1.45/containers/" + identifier + "/json")
     require(live.get("State", {}).get("Running") is True, "CONTAINER_START_NOT_OBSERVED")
+    if existing:
+        existing_container(live, identifier, value, request)
     for attempt in range(60):
-        state = engine.call("GET", "/v1.45/containers/" + identifier + "/json").get("State", {})
+        live = engine.call("GET", "/v1.45/containers/" + identifier + "/json")
+        if existing:
+            existing_container(live, identifier, value, request)
+        state = live.get("State", {})
         require(state.get("Running") is True, "DEPLOYED_CONTAINER_EXITED")
         if state.get("Health", {}).get("Status") == "healthy":
             break
@@ -801,7 +848,8 @@ def deploy(value, image, engine):
         time.sleep(1)
     else:
         raise ValueError("DEPLOYED_CONTAINER_HEALTH_NOT_OBSERVED")
-    return {"state": "CONTAINER_STARTED_PENDING_PUBLIC_ACCEPTANCE", "container_id": identifier, **value}
+    result = "EXACT_EXISTING_CONTAINER_RESUMED_PENDING_PUBLIC_ACCEPTANCE" if existing else "CONTAINER_STARTED_PENDING_PUBLIC_ACCEPTANCE"
+    return {"state": result, "container_id": identifier, **value}
 
 
 def public_readback(value, package):

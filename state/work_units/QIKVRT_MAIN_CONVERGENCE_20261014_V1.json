@@ -4871,5 +4871,237 @@
       ]
     }
   },
-  "work_unit_id": "QIKVRT_MAIN_CONVERGENCE_20261014_V1"
+  "work_unit_id": "QIKVRT_MAIN_CONVERGENCE_20261014_V1",
+  "s1_existing_container_recovery_20261017": {
+    "owner": "Ingolf Lohmann",
+    "human_contribution": "Requested durable universal Transputer operation with the existing QIK-VRT Firefox, existing profile/credentials, REST-only routing and preserved signing/Main governance.",
+    "artificial_cognitive_contribution": "OpenAI Codex: live service/source/consumer diagnosis; unchanged-container recovery extension; regression controls; exact-byte metadata and delivery readback.",
+    "observed_at_utc": "2026-10-17T02:03:16.279Z",
+    "subject": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "base_head": "72f458be275ac7d81f679290d9d9389fdd3aa73e",
+      "base_tree": "652fc00976bcc4a75efd8ec78202ea0111018c95",
+      "pr": 523
+    },
+    "state": "SOURCE_RECOVERY_DELTA_PREPARED_PRODUCTION_BLOCKED",
+    "predecessor_main": {
+      "head": "d8ff32dad42a50be719a683c37b9104392281384",
+      "tree": "bdab69bf70a58b1e9a6f96b6c163b2bd148a1052",
+      "protected": false,
+      "independent_current_approved_review_observed": false
+    },
+    "existing_infrastructure": {
+      "project_id": "a2440de5-6250-4d02-8845-c166aeaa3d0d",
+      "environment_id": "1286f33e-9f11-43d9-b86c-be5df57718a0",
+      "service_id": "feb518e8-bfb2-450d-a36a-c992b052427c",
+      "service_name": "universal-terminal",
+      "state": "offline",
+      "active_deployments": [],
+      "source": {
+        "repo": "ingolf-lohmann/qik-vrt",
+        "branch": "work/provider-admission-main-successor-20261006",
+        "commitSha": "b486e21e7bd364b7ef5165c3ee6fb8e67ecc90e4"
+      },
+      "volumes": [
+        {
+          "id": "0e2d37e2-ac58-4bdc-8238-ed81bf2aa187",
+          "name": "qikvrt-state",
+          "mountPath": "/var/lib/qikvrt",
+          "sizeMB": 500,
+          "region": "iad",
+          "state": "live"
+        }
+      ],
+      "existing_live_restart_policy": "ALWAYS",
+      "pending_patch": {
+        "id": "9d4860c4-5003-48ef-a07f-d383f303b539",
+        "change_count": 22,
+        "applied": false
+      },
+      "public_health_url": "https://universal-terminal-production.up.railway.app/qik-vrt/mesh/v1/healthz"
+    },
+    "source_diagnosis": {
+      "component": "tools/qikvrt_self_host_container.py:deploy",
+      "previous_source_blob": "bc8f110120dc98755cdf01c4dd9d313c14080e5f",
+      "observation": "The existing exact-image/binding branch also required State.Running=true and rejected a matching stopped container with EXISTING_NODE_REPLACEMENT_REQUIRES_S1_MIGRATION.",
+      "regression": "The new stopped-exact-container test fails against the observed predecessor with that original guard; it passes after the delta.",
+      "scope": "Code/Engine-fixture recovery defect. Not a proved cause of the historical Railway build failure or the unavailable private S1 control path."
+    },
+    "repair": {
+      "reused_consumer": "tools/qikvrt_self_host.py container-deploy -> tools/qikvrt_self_host_container.py",
+      "workflow": ".github/workflows/qikvrt_ci.yml:container_deploy",
+      "new_workflow_or_executor": false,
+      "initial_create_preserved": true,
+      "same_container_resume": true,
+      "preflight": [
+        "authenticated Linux daemon and existing owner volume",
+        "exact container ID, image, source labels and binding labels",
+        "runtime user/command, security, loopback routing and unless-stopped policy",
+        "exact existing writable state volume and read-only private configuration mount",
+        "image digest/source and byte-pinned config/package manifest",
+        "fresh container admission immediately before one start"
+      ],
+      "sole_resume_effect": "POST /v1.45/containers/{same-container-id}/start",
+      "ambiguous_ack": "GET actual running/health state; no replacement, second start, volume update or profile read",
+      "running_or_concurrently_started": "GET-only NOOP after admission",
+      "drift": "HOLD; existing separately admitted migration required"
+    },
+    "binding_gap": {
+      "code": "PRIVATE_S1_MTLS_HOST_BINDING_NOT_AVAILABLE_TO_THIS_EXECUTION",
+      "operation": "Existing qikvrt-production container-deploy consumer -> authenticated Docker Engine REST GET/POST",
+      "consumer_present": true,
+      "callable_host_binding_verified": false,
+      "host_api_origin": "UNKNOWN_NOT_DELIVERED",
+      "daemon_identity": "UNKNOWN_NOT_DELIVERED",
+      "existing_s1_volume_layout": "UNKNOWN_NOT_DELIVERED",
+      "configuration_variables": [
+        "QIKVRT_CONTAINER_DEPLOY_ENABLED",
+        "QIKVRT_LINUX_HOST_BINDING_JSON",
+        "QIKVRT_LINUX_HOST_BINDING_SHA256"
+      ],
+      "protected_credential_references": [
+        "QIKVRT_LINUX_HOST_CA",
+        "QIKVRT_LINUX_HOST_CERT",
+        "QIKVRT_LINUX_HOST_KEY"
+      ],
+      "missing_binding_fields": [
+        "docker_api",
+        "daemon_id",
+        "container_name",
+        "state_volume",
+        "config_directory",
+        "config_sha256",
+        "node_id",
+        "manifest_sha256",
+        "loopback_port",
+        "source_head",
+        "source_tree",
+        "image_digest"
+      ],
+      "repository_template": "runtime/self-host/LINUX_HOST_BINDING.example.json",
+      "private_values_invented_or_exported": false,
+      "remote_secret_absence_inferred_from_local_environment": false,
+      "protected_variable_and_secret_read_or_write_operation_exposed": false,
+      "railway_volume_is_not_an_attested_docker_volume_or_migrated_profile": true
+    },
+    "tests": {
+      "local_container_tests": 42,
+      "local_failures": 0,
+      "tool_cache": "34/34 (100%)",
+      "evidence_path": "evidence/native-runtime-acceptance/s1-existing-container-recovery-20261017.log",
+      "runtime_scope": "Engine control-plane fixtures only; no live host, Firefox, session or restart acceptance.",
+      "local_full_boot": "BLOCK: REST-fetched source subset has no complete Git origin; no whole-repository boot/integrity PASS claimed.",
+      "predecessor_native": {
+        "head": "72f458be275ac7d81f679290d9d9389fdd3aa73e",
+        "push_run": 38983374869,
+        "pr_run": 38983379676,
+        "push_test_job": 117249132307,
+        "pr_test_job": 117249148034,
+        "both_test_jobs": "success",
+        "signing_job": 117249132848,
+        "signing_disposition": "HOLD_AMO_AUTHORIZED_CREDENTIAL_PAIR_UNAVAILABLE; SIGN_REQUESTED=false",
+        "firefox_admission_job": 117249226565,
+        "firefox_admission": "NOOP_UNCHANGED_FIREFOX_RELEASE_OR_SIGNING_FAILURE; no new installation acceptance",
+        "host_deployment_jobs": "skipped"
+      }
+    },
+    "reusable_runtime_transport": {
+      "scope": "Fresh original native artifact metadata only; preserve independently verified predecessor bytes/pins without transferring runtime acceptance.",
+      "source_run_id": 38970053562,
+      "original_archive_sha256": "e509bfa0a5d5d63883a312c7c3c23d6ab2bd85cedb56f1843ec4ed0a12be4bea",
+      "original_archive_bytes": 572793479,
+      "metadata": [
+        {
+          "id": 12076436765,
+          "digest": "sha256:69ad8cda3ae647fe111ea5b43f41c9f03e92dd0233cad56ae3158cbb8158b930",
+          "bytes": 2623,
+          "expired": false,
+          "expires_at": "2027-01-14T21:32:21Z",
+          "run_id": 38970053562
+        },
+        {
+          "id": 12076860463,
+          "digest": "sha256:954d0fccd9899d1ee79727015ba99f8a0265ea4cb8a3f2e70642f255ea49eac4",
+          "bytes": 268435604,
+          "expired": false,
+          "expires_at": "2027-01-14T21:32:21Z",
+          "run_id": 38970053562
+        },
+        {
+          "id": 12076700967,
+          "digest": "sha256:1c046afdd073d453082f99186c7ddaf959522dd1c859c43de1ccfdec773a7ed1",
+          "bytes": 268435604,
+          "expired": false,
+          "expires_at": "2027-01-14T21:32:21Z",
+          "run_id": 38970053562
+        },
+        {
+          "id": 12076556479,
+          "digest": "sha256:78a6cb8b51a339f09d46c173521a56869610806ad14287f6c627fbe158cd2bd2",
+          "bytes": 35922715,
+          "expired": false,
+          "expires_at": "2027-01-14T21:32:21Z",
+          "run_id": 38970053562
+        }
+      ],
+      "all_four_current_digests_match": true,
+      "large_bytes_retransferred": false,
+      "new_runtime_or_infrastructure_built": false
+    },
+    "delivery": {
+      "url": "https://raumzeitterminal.de/",
+      "observed_at": "2026-10-17T01:51:55.903Z",
+      "http_status": 525,
+      "readback_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/readback?id=5a1b202d-9bc0-45fd-be2a-b4ed0ac83337",
+      "snapshot_id": "5a1b202d-9bc0-45fd-be2a-b4ed0ac83337",
+      "snapshot_sha256": "c5c08a2a0ff123c329f179783ba9774bd022dffdb00f0b2f3d0128a785252cc0",
+      "original_snapshot_utf8_bytes": 12941,
+      "independent_sha256_verification": true,
+      "working_software_and_exact_host_delivery_verified": false
+    },
+    "open_work": [
+      {
+        "id": "protected-main",
+        "state": "OPEN",
+        "next_action": "Establish actual required Main protection and current independent exact-head approval through the existing governance path; preserve PR523 until admitted."
+      },
+      {
+        "id": "signed-firefox",
+        "state": "OPEN",
+        "next_action": "Deliver the existing authorized AMO credential pair through its protected consumer and original exact-package intent; admit only the returned original signed XPI with actual activation/restart."
+      },
+      {
+        "id": "private-s1-host-binding",
+        "state": "OPEN",
+        "next_action": "Make the existing private operator/host binding and pinned configuration available to the protected existing S1 mTLS consumer; reobserve exact daemon, volume and container without exporting credentials."
+      },
+      {
+        "id": "profile-layout",
+        "state": "OPEN",
+        "next_action": "Confirm the existing private Firefox profile and state-volume layout on the actual host; use only the existing private capture/restore migration if a real layout change is necessary."
+      },
+      {
+        "id": "runtime-and-authentication",
+        "state": "OPEN",
+        "next_action": "After admitted start, independently observe process, Effect-Acknowledgement endpoint, Firefox-to-ledger connection, actual private authenticated session, profile persistence and automatic supervisor recovery."
+      },
+      {
+        "id": "exact-domain-delivery",
+        "state": "OPEN",
+        "next_action": "Verify DNS/TLS and exact application/terminal behaviour on raumzeitterminal.de after the authorized host/domain prerequisites materially change."
+      }
+    ],
+    "runtime_effects": {
+      "service_start_executed": false,
+      "firefox_connection_verified": false,
+      "private_profile_state": "UNKNOWN",
+      "authenticated_session_verified": false,
+      "profile_modified_or_exported": false,
+      "automatic_restart_verified": false,
+      "signing_attempted": false,
+      "main_modified_or_merged": false,
+      "unchanged_failed_effect_retried": false,
+      "effect_ack_done": false
+    }
+  }
 }

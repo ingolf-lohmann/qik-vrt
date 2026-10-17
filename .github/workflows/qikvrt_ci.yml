@@ -1503,7 +1503,7 @@ jobs:
           ref: ${{ needs.container.outputs.head }}
           fetch-depth: 1
           persist-credentials: false
-      - name: Execute exact create-only host deployment with no DNS operation
+      - name: Execute exact host deployment or unchanged container recovery
         env:
           GITHUB_TOKEN: ${{ github.token }}
           QIKVRT_HOST_BINDING: ${{ vars.QIKVRT_LINUX_HOST_BINDING_JSON }}
