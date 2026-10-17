@@ -815,6 +815,20 @@ def amo_native_protection(branch: Mapping[str, Any], rules: Sequence[Mapping[str
         raise ExecutorBlock("AMO_NATIVE_MAIN_PROTECTION_REQUIRED")
 
 
+def amo_credential_delivery(context: Mapping[str, Any]) -> dict[str, Any]:
+    """Report only secret delivery to this job, never inventory or authentication."""
+    if any(type(context.get(k)) is not bool for k in ("issuer_present", "secret_present")):
+        raise ExecutorBlock("AMO_PRESENCE_BOOLEAN_REQUIRED")
+    issuer, secret = context["issuer_present"], context["secret_present"]
+    return {"scope": "CURRENT_JOB_SECRET_CONTEXT_ONLY",
+        "secret_names": ["AMO_JWT_ISSUER", "AMO_JWT_SECRET"],
+        "issuer_present": issuer, "secret_present": secret,
+        "state": "PAIR_DELIVERED" if issuer and secret else (
+            "PARTIAL_PAIR_DELIVERED" if issuer or secret else "PAIR_NOT_DELIVERED"),
+        "configuration_status": "NOT_INSPECTED", "credential_values_read": False,
+        "amo_authentication_verified": False}
+
+
 def amo_intent(root: Path, context: Mapping[str, Any], authority: Mapping[str, Any],
                branch: Mapping[str, Any], rules: Sequence[Mapping[str, Any]],
                subject: Mapping[str, Any], previous: Mapping[str, Any] | None,
@@ -853,6 +867,7 @@ def amo_intent(root: Path, context: Mapping[str, Any], authority: Mapping[str, A
         "unsigned_xpi_sha256": request["unsigned_xpi_sha256"], "binding_revision": revision,
         "fingerprint": fingerprint, "last_attempt": None, "dispatch": False, "history_verified": True,
         "readback_only": False,
+        "credential_delivery": amo_credential_delivery(context),
         "effect_ack_done": False, "public_production_verified": False,
         "state": "HOLD_AMO_AUTHORIZED_CREDENTIAL_PAIR_UNAVAILABLE"}
     if previous is not None:
@@ -1365,6 +1380,7 @@ def amo_live_plan(root: Path = ROOT) -> dict[str, Any]:
             "executor_run_id": context.get("run_id", 0), "head": context.get("head"),
             "history_verified": verified, "last_attempt": previous.get("last_attempt") if previous else None,
             "dispatch": False, "state": "HOLD", "first_boundary": code,
+            "credential_delivery": amo_credential_delivery(context),
             "effect_ack_done": False, "public_production_verified": False}
 
 

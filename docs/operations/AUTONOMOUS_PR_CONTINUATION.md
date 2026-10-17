@@ -86,6 +86,24 @@ Delegated `github-actions[bot]` invocation additionally verifies the original
 Main-run intent artifact, its digest and the actual started dispatch step.
 It never waits for its caller's later receipt or overall return.
 
+Credential diagnostics are scoped to the current job's secret context. Both
+the CI `ACCESS_PREFLIGHT.json` and the coordinator's intent/HOLD receipt retain
+`credential_delivery`, including when native protection blocks admission.
+`PAIR_NOT_DELIVERED` and `PARTIAL_PAIR_DELIVERED` do not establish that a key is
+absent from repository, organization, environment or private credential storage.
+`configuration_status=NOT_INSPECTED` and unverified AMO authentication stay
+explicit. A non-requested CI invocation reports `AMO_SIGNING_NOT_REQUESTED`,
+independently of credential delivery. None of these observations admit signing.
+
+The existing two AMO jobs reference repository/organization secret contexts;
+neither names a GitHub environment. Environment-scoped secrets require their
+actual, separately admitted job/environment binding and any native approvals.
+An unreadable secret inventory cannot supply that binding. Do not guess an
+environment name, copy secrets, expand permissions or relocate credentials to
+make a preflight pass. Reobserve the existing protected binding through an
+authorized secret-metadata operation first. The unchanged package, required
+Main protection, independent review and original intent remain mandatory.
+
 The first activation has an exact source boundary: the independently observed
 pre-activation Main commit and original contract blob are pinned in the Owner
 request. Its original bytes must prove that this signing producer did not yet

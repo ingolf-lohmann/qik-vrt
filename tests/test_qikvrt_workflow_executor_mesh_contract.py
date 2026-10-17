@@ -609,6 +609,55 @@ class OwnerSigningContinuationTests(unittest.TestCase):
         with self.assertRaisesRegex(MODULE.ExecutorBlock, "PACKAGE_CHANGED"):
             self.plan()
 
+    def test_credential_delivery_is_job_scoped_and_never_global_absence(self):
+        for issuer, secret, state in [(True, True, "PAIR_DELIVERED"),
+                (True, False, "PARTIAL_PAIR_DELIVERED"),
+                (False, True, "PARTIAL_PAIR_DELIVERED"),
+                (False, False, "PAIR_NOT_DELIVERED")]:
+            value = MODULE.amo_credential_delivery({"issuer_present": issuer, "secret_present": secret})
+            self.assertEqual(value["state"], state)
+            self.assertEqual(value["scope"], "CURRENT_JOB_SECRET_CONTEXT_ONLY")
+            self.assertEqual(value["configuration_status"], "NOT_INSPECTED")
+            self.assertFalse(value["credential_values_read"])
+            self.assertFalse(value["amo_authentication_verified"])
+            self.assertNotIn("credentials_exist", value)
+        with self.assertRaisesRegex(MODULE.ExecutorBlock, "PRESENCE_BOOLEAN"):
+            MODULE.amo_credential_delivery({"issuer_present": "false", "secret_present": False})
+
+    def test_early_native_hold_retains_observed_credential_delivery(self):
+        with mock.patch.object(MODULE, "amo_context", return_value=self.context), \
+                mock.patch.object(MODULE, "_git", side_effect=[self.tree, self.head]), \
+                mock.patch.object(MODULE, "amo_previous", return_value=(None, True)), \
+                mock.patch.object(MODULE, "read_authority_main", return_value=self.authority), \
+                mock.patch("tools.qikvrt_self_host.firefox_amo_input", return_value=(b"", self.subject)), \
+                mock.patch.object(MODULE, "_amo_get", side_effect=[{"name": "main", "protected": False}, []]):
+            value = MODULE.amo_live_plan(ROOT)
+        self.assertFalse(value["dispatch"])
+        self.assertEqual(value["first_boundary"], "AMO_NATIVE_MAIN_PROTECTION_REQUIRED")
+        self.assertEqual(value["credential_delivery"]["state"], "PAIR_DELIVERED")
+        self.assertEqual(value["credential_delivery"]["configuration_status"], "NOT_INSPECTED")
+
+    def test_actual_ci_preflight_distinguishes_request_and_delivery_without_network(self):
+        workflow = (ROOT / MODULE.AMO_CI_WORKFLOW).read_text()
+        script = workflow.split("          python3 -B - <<'PYAMO'\n", 1)[1].split("          PYAMO", 1)[0]
+        script = "\n".join(line[10:] for line in script.splitlines())
+        for issuer, secret in [(False, False), (True, False), (True, True)]:
+            with tempfile.TemporaryDirectory() as directory:
+                env = {**os.environ, "RUNNER_TEMP": directory, "GITHUB_OUTPUT": directory + "/outputs",
+                    "GITHUB_REPOSITORY": MODULE.AMO_REPOSITORY, "SIGN_REQUESTED": "false",
+                    "AMO_ISSUER_PRESENT": str(issuer).lower(), "AMO_SECRET_PRESENT": str(secret).lower(),
+                    "AMO_EXECUTOR_RUN_ID": "0", "AMO_READBACK_ONLY": "false", "PREVIOUS_RUN_ID": "0"}
+                result = subprocess.run([sys.executable, "-B", "-c", script], cwd=ROOT,
+                    env=env, capture_output=True, text=True, timeout=20)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                value = json.loads((pathlib.Path(directory) / "amo-original/ACCESS_PREFLIGHT.json").read_bytes())
+                self.assertFalse(value["signing_requested"])
+                self.assertEqual(value["first_boundary"], "AMO_SIGNING_NOT_REQUESTED")
+                self.assertEqual(value["credential_delivery"]["issuer_present"], issuer)
+                self.assertEqual(value["credential_delivery"]["secret_present"], secret)
+                self.assertIn("submit=false", (pathlib.Path(directory) / "outputs").read_text())
+                self.assertIn("AMO_SUBMISSION_NOT_REQUESTED", result.stdout)
+
     def test_unrelated_commits_do_not_retry_failure_or_fabricate_done(self):
         previous = self.attempt("FAILED")
         for head in (self.head, "c" * 40):

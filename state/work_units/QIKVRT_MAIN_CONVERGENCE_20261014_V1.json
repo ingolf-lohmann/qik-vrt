@@ -5103,5 +5103,155 @@
       "unchanged_failed_effect_retried": false,
       "effect_ack_done": false
     }
+  },
+  "amo_credential_delivery_diagnosis_20261017": {
+    "owner": "Ingolf Lohmann",
+    "human_contribution": "Exact-source authorized Mozilla AMO signing and durable Firefox 158 activation/restart, preserving credentials, profiles, independent approval and native branch protection.",
+    "artificial_cognitive_contribution": "OpenAI Codex: fresh native admission/source comparison; secret-delivery reporting regression reproduction and repair through the existing PR523 path; bounded fixture tests and independent readback. No credential value handled.",
+    "observed_at_utc": "2026-10-17T06:59:10.918036+00:00",
+    "subject": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "pr": 523,
+      "base_head": "0a78ea4648f931f58bc4403bf54bcf4fd93de35c",
+      "base_tree": "bc51da3b9ba04901159037e1e8d2a45693c0eced"
+    },
+    "state": "DIAGNOSTIC_REPAIR_TESTED_SIGNING_BLOCKED",
+    "existing_mechanism": {
+      "workflow": ".github/workflows/qikvrt_ci.yml:amo_unlisted",
+      "coordinator": ".github/workflows/qikvrt_workflow_executor.yml:owner-firefox-signing",
+      "implementation": "tools/qikvrt_self_host.py:firefox_amo_unlisted",
+      "secret_names": [
+        "AMO_JWT_ISSUER",
+        "AMO_JWT_SECRET"
+      ],
+      "binding_revision_variable": "QIKVRT_AMO_BINDING_REVISION",
+      "unsigned_xpi_sha256": "1f5f583181d6134584f98bf6b59848d4542176d624d97709fa915b9934e2c46c",
+      "unchanged_standard_source_components": 6,
+      "new_executor_or_workflow": false
+    },
+    "native_predecessor_evidence": {
+      "run_id": 38993461950,
+      "amo_job": 117280670209,
+      "amo_job_conclusion": "success",
+      "sign_requested": false,
+      "issuer_delivered": false,
+      "secret_delivered": false,
+      "signing_executed": false,
+      "firefox_job": 117280819552,
+      "firefox_job_conclusion": "failure",
+      "firefox_first_boundary": "NOOP: unchanged failed installation remains unaccepted",
+      "full_test_job": 117280670234,
+      "full_test_conclusion": "success",
+      "scope": "Original native predecessor only; no PASS transferred to a changed source.",
+      "logs": {
+        "amoLog": {
+          "job_id": 117280670209,
+          "decoded_original_log_sha256": "04d4d306ce02c34e668e2632bad82d52ed8455b580faba846b7d7530f66cdbc7"
+        },
+        "firefoxLog": {
+          "job_id": 117280819552,
+          "decoded_original_log_sha256": "a8f078f80626aa283708a45f0e403261b9de80a3411080943266801aeb5e6588"
+        }
+      }
+    },
+    "credential_binding_inventory": {
+      "connector_sensitive_get": "Secret and environment endpoint families not exposed; HTTP400 is a connector operation boundary.",
+      "public_rest_environment_inventory": {
+        "http_status": 200,
+        "names": [
+          "copilot",
+          "zenodo-production"
+        ],
+        "total_count": 2,
+        "amo_jobs_name_environment": false
+      },
+      "public_rest_secret_metadata": {
+        "http_status": 401,
+        "scope": "Anonymous REST route has no authenticated secret-metadata capability; not a secret-absence finding."
+      },
+      "repository_or_organization_pair_configured": "UNKNOWN",
+      "remote_environment_or_private_vault_pair_configured": "UNKNOWN",
+      "amo_authentication_verified": false,
+      "secret_values_read_or_written": false,
+      "scope_changed": false,
+      "environment_name_guessed": false
+    },
+    "trusted_main_admission": {
+      "head": "458d11b14b27e989cceca27ea4c1b1defd6cf8d1",
+      "tree": "3b7242a2fc01265d86fdc30c3eb5127d1b05a798",
+      "protected": false,
+      "effective_branch_rules": [],
+      "current_independent_approved_review_observed": false,
+      "main_contains_owner_signing_consumer": false,
+      "existing_protected_signing_consumer_callable": false,
+      "initial_workflow_dispatch_operation_exposed": false,
+      "local_gh_cli_present": false,
+      "local_repository_token_present": false
+    },
+    "repair": {
+      "reused_component": "tools/qikvrt_workflow_executor.py and the existing CI preflight",
+      "reproduced_defects": [
+        "Early native HOLD discards the job credential-delivery observation even when the complete pair is delivered.",
+        "Non-requested CI preflight lacks an explicit signing-not-requested boundary and prints a credential-unavailable marker."
+      ],
+      "changed_behavior": [
+        "Both coordinator intent/HOLD and CI preflight retain strict-boolean current-job-only delivery metadata.",
+        "Configured credential existence and actual AMO authentication remain separately uninspected/unverified.",
+        "AMO_SIGNING_NOT_REQUESTED is distinct from AMO_CREDENTIAL_PAIR_NOT_DELIVERED_TO_THIS_JOB."
+      ],
+      "signing_admission_changed": false,
+      "credential_binding_changed": false,
+      "package_or_firefox_security_policy_changed": false
+    },
+    "tests": {
+      "targeted_controls": 77,
+      "failures": 0,
+      "transport_scope": "Mocked provider/native control-plane fixtures and the actual credential-free CI preflight script; no Mozilla signature or browser activation proof.",
+      "regression_evidence": "evidence/native-runtime-acceptance/firefox-transport-20261017/amo-credential-delivery-regression.log",
+      "tool_cache": "34/34 (100%)",
+      "native_successor": "NOT_YET_EXECUTED"
+    },
+    "production_effects": {
+      "signing_dispatches": 0,
+      "amo_uploads": 0,
+      "installation_retries": 0,
+      "mozilla_signature_verified": false,
+      "extension_activation_verified": false,
+      "restart_acceptance_verified": false,
+      "main_merge_performed": false,
+      "effect_ack_done": false
+    },
+    "delivery": {
+      "url": "https://raumzeitterminal.de/",
+      "observed_at": "2026-10-17T06:55:45.410Z",
+      "http_status": 525,
+      "snapshot_id": "6daad056-70a8-426f-a68d-a55e5b96b39c",
+      "snapshot_sha256": "1416e64535ea1f70202c6b1393630be8036a9a4b30c9f8c8bca82802347ef794",
+      "independent_original_utf8_sha256_verified": true,
+      "readback_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/readback?id=6daad056-70a8-426f-a68d-a55e5b96b39c",
+      "working_software_delivery_verified": false
+    },
+    "open_work": [
+      {
+        "id": "amo-secret-binding",
+        "state": "OPEN",
+        "next_action": "Use an already authorized authenticated secret-metadata reader to establish the actual scope/name/access binding of the existing pair, then verify its delivery to the admitted existing consumer. Do not copy credentials or guess an environment."
+      },
+      {
+        "id": "protected-main",
+        "state": "OPEN",
+        "next_action": "Apply the existing complete native protection rules and obtain independent exact-head approval before integrating PR523 through its existing governance path; no unprotected merge."
+      },
+      {
+        "id": "official-signature",
+        "state": "OPEN",
+        "next_action": "After protected Main activation and credential delivery, execute the existing exact-package intent/signing path once, and preserve original AMO response, XPI hash and component binding."
+      },
+      {
+        "id": "firefox158-persistent-activation",
+        "state": "OPEN",
+        "next_action": "Only the newly returned source-bound signed XPI admits the original Firefox158 persistent-install, signedState, active background and process-restart checks; preserve existing profile/credentials."
+      }
+    ]
   }
 }

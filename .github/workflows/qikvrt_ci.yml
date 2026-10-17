@@ -326,6 +326,7 @@ jobs:
           python3 -B - <<'PYAMO'
           import json,os,re,subprocess
           from pathlib import Path
+          from tools import qikvrt_workflow_executor as executor
           p=Path(os.environ['RUNNER_TEMP'])/'amo-original';p.mkdir(mode=0o700)
           requested=os.environ['SIGN_REQUESTED']=='true'
           head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
@@ -337,16 +338,21 @@ jobs:
               'amo_authentication_verified':False,'signing_requested':requested,'effect_ack_done':False,
               'executor_run_id':os.environ['AMO_EXECUTOR_RUN_ID'],
               'readback_only':os.environ['AMO_READBACK_ONLY']=='true','first_boundary':None}
+          r['credential_delivery']=executor.amo_credential_delivery(
+              {'issuer_present':issuer,'secret_present':secret})
           try:
               if requested:
                   assert os.environ['GITHUB_REPOSITORY']=='ingolf-lohmann/qik-vrt','AMO_WRONG_REPOSITORY'
                   assert head==os.environ['EXPECTED_HEAD'] and tree==os.environ['EXPECTED_TREE'],'AMO_EXACT_REVIEWED_SOURCE_REQUIRED'
                   assert re.fullmatch(r'0|[1-9][0-9]{0,19}',os.environ['PREVIOUS_RUN_ID']),'AMO_PREVIOUS_RUN_INVALID'
                   if os.environ['AMO_EXECUTOR_RUN_ID']!='0':
-                      from tools import qikvrt_workflow_executor as executor
                       executor.amo_validate_delegation(Path.cwd())
                   else:
                       assert os.environ['GITHUB_ACTOR']=='ingolf-lohmann','AMO_DIRECT_OWNER_EXECUTION_REQUIRED'
+                  if not (issuer and secret):
+                      r['first_boundary']='AMO_CREDENTIAL_PAIR_NOT_DELIVERED_TO_THIS_JOB'
+              else:
+                  r['first_boundary']='AMO_SIGNING_NOT_REQUESTED'
           except Exception as exc:
               code=str(exc)
               r['first_boundary']=code if re.fullmatch(r'AMO_[A-Z0-9_]{1,100}',code) else 'AMO_SOURCE_ADMISSION_UNVERIFIED'
@@ -356,7 +362,8 @@ jobs:
           with open(os.environ['GITHUB_OUTPUT'],'a') as out:
               out.write('submit='+str(requested and issuer and secret).lower()+'\n')
               out.write('previous_run_id='+os.environ['PREVIOUS_RUN_ID']+'\n')
-          print('AMO_ACCESS_PRESENT_UNVERIFIED' if issuer and secret else 'HOLD_AMO_AUTHORIZED_CREDENTIAL_PAIR_UNAVAILABLE')
+          print('AMO_SUBMISSION_NOT_REQUESTED' if not requested else (
+              'AMO_ACCESS_PRESENT_UNVERIFIED' if issuer and secret else 'HOLD_AMO_AUTHORIZED_CREDENTIAL_PAIR_UNAVAILABLE'))
           PYAMO
       - name: Resolve the preceding actual signing invocation through existing GitHub REST reads
         id: journal
