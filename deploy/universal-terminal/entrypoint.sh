@@ -19,6 +19,7 @@ START_URL="${QIKVRT_START_URL:-about:blank}"
 set --
 if [ -n "${QIKVRT_EXACT_HEAD:-}${QIKVRT_EXACT_TREE:-}" ]; then
   : "${QIKVRT_TEMDD_PR:?BLOCK: QIKVRT_TEMDD_PR is required for an exact deployment}"
+  : "${QIKVRT_TEMDD_REPOSITORY:?BLOCK: QIKVRT_TEMDD_REPOSITORY is required for an exact deployment}"
 fi
 if [ "${QIKVRT_TEMDD_PR+x}" = x ]; then
   case "$QIKVRT_TEMDD_PR" in
@@ -28,6 +29,25 @@ if [ "${QIKVRT_TEMDD_PR+x}" = x ]; then
       ;;
   esac
   set -- --pr "$QIKVRT_TEMDD_PR"
+fi
+if [ "${QIKVRT_TEMDD_REPOSITORY+x}" = x ]; then
+  # Match the ledger's owner/repository syntax before any runtime side effect.
+  # Quoted argv preserves the explicit node identity; an Authority deployment
+  # must not inherit the reference carrier's historical Mirror default.
+  case "$QIKVRT_TEMDD_REPOSITORY" in
+    ''|*[!a-zA-Z0-9_./-]*|/*|*/|*/*/*)
+      echo "BLOCK: QIKVRT_TEMDD_REPOSITORY must be owner/repository" >&2
+      exit 64
+      ;;
+  esac
+  case "$QIKVRT_TEMDD_REPOSITORY" in
+    */*) ;;
+    *)
+      echo "BLOCK: QIKVRT_TEMDD_REPOSITORY must be owner/repository" >&2
+      exit 64
+      ;;
+  esac
+  set -- "$@" --repository "$QIKVRT_TEMDD_REPOSITORY"
 fi
 # END TEMDD deployment subject binding
 
