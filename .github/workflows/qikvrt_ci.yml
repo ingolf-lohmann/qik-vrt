@@ -45,6 +45,9 @@ permissions:
 
 jobs:
   test:
+    outputs:
+      tested_head: ${{ steps.tested_subject.outputs.head }}
+      tested_tree: ${{ steps.tested_subject.outputs.tree }}
     runs-on: ubuntu-latest
     # The admitted PR writer runs one initial suite, then two complete suites
     # per iteration (0..MAX_SUCCESSORS=4): at most 11 suites. Native PR38625640158
@@ -223,7 +226,35 @@ jobs:
           esac
           echo "QIKVRT_TERMINAL_DISPOSITION PASS mode=$mode"
 
+      - name: Bind the committed subject actually accepted by the complete test gate
+        id: tested_subject
+        env:
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+          FIXPOINT_REQUIRED: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository }}
+          TARGET_REF: ${{ github.head_ref }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          subject="$(git rev-parse --verify HEAD^{commit})"
+          tree="$(git rev-parse --verify HEAD^{tree})"
+          git diff --quiet HEAD --
+          if test "$FIXPOINT_REQUIRED" = true; then
+            git merge-base --is-ancestor "$EXPECTED_HEAD" "$subject"
+            # Only the existing integrity writer may advance the tested subject.
+            changed="$(git diff --name-only "$EXPECTED_HEAD" "$subject" -- . \
+              ':!REPOSITORY_FILE_MANIFEST.json' ':!REPOSITORY_FILE_MANIFEST.json.sha256' ':!SHA256SUMS.txt')"
+            test -z "$changed"
+            remote="$(git ls-remote --heads origin "refs/heads/$TARGET_REF" | awk 'NR == 1 { print $1 }')"
+            test "$remote" = "$subject"
+          else
+            test "$FIXPOINT_REQUIRED" = false
+            test "$subject" = "$EXPECTED_HEAD"
+          fi
+          printf 'head=%s\ntree=%s\n' "$subject" "$tree" >> "$GITHUB_OUTPUT"
+          echo "QIKVRT_TESTED_SUBJECT head=$subject tree=$tree"
+
   offline_browser:
+    needs: test
     # Reuse the frozen native offline suite for the derived Site32 client.
     # This gate has no dependence on Zenodo, a deployment or a native executor.
     runs-on: ubuntu-24.04
@@ -241,7 +272,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          ref: ${{ needs.test.outputs.tested_head }}
           fetch-depth: 1
           persist-credentials: false
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
@@ -252,8 +283,12 @@ jobs:
       - name: Verify exact source, tool cache and package-bound browser lock
         env:
           QIKVRT_OFFLINE_EVIDENCE_DIR: ${{ runner.temp }}/offline-${{ matrix.engine }}
+          EXPECTED_HEAD: ${{ needs.test.outputs.tested_head }}
+          EXPECTED_TREE: ${{ needs.test.outputs.tested_tree }}
         run: |
           set -euo pipefail
+          test "$(git rev-parse --verify HEAD^{commit})" = "$EXPECTED_HEAD"
+          test "$(git rev-parse --verify HEAD^{tree})" = "$EXPECTED_TREE"
           mkdir -p "$QIKVRT_OFFLINE_EVIDENCE_DIR"
           git rev-parse HEAD HEAD^{tree} > "$QIKVRT_OFFLINE_EVIDENCE_DIR/SUBJECT.txt"
           python3 -B tools/qikvrt_tool_cache.py verify
@@ -1125,7 +1160,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          ref: ${{ needs.test.outputs.tested_head }}
           fetch-depth: 1
           persist-credentials: false
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
@@ -1135,8 +1170,13 @@ jobs:
         with:
           node-version: '24'
       - name: Verify exact source and existing tool/integrity/admission controls
+        env:
+          EXPECTED_HEAD: ${{ needs.test.outputs.tested_head }}
+          EXPECTED_TREE: ${{ needs.test.outputs.tested_tree }}
         run: |
           set -euo pipefail
+          test "$(git rev-parse --verify HEAD^{commit})" = "$EXPECTED_HEAD"
+          test "$(git rev-parse --verify HEAD^{tree})" = "$EXPECTED_TREE"
           python3 -B tools/qikvrt_tool_cache.py verify
           python3 -B tools/qikvrt_integrity.py verify
           make self-host-container-test

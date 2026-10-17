@@ -47,6 +47,26 @@ bind the changed bytes.
 
 ## Trigger semantics
 
+### Exact tested subject after integrity re-entry — 2026-10-17
+
+The existing CI test job publishes its accepted committed HEAD and TREE only
+after the terminal full-test/fixpoint gate succeeds. Offline-browser and S1
+container source checks consume that subject through `needs.test`, then verify
+both identities independently after checkout. They must not silently check out
+the original event HEAD after the admitted integrity writer advances the PR.
+The handoff rejects uncommitted changes, a changed remote ref, unrelated ancestry
+and successor changes outside the three existing integrity files. Other source
+changes require fresh admission and their own exact-subject tests.
+
+This fixes the downstream materialization handoff; it does not approve a
+workflow or publish a synthetic commit status. GitHub-token PR synchronization
+still creates approval-required workflow runs under the provider contract:
+https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow
+The existing REST admission, independent review, signing and publication
+boundaries remain separate. No new trigger, credential, permission or executor
+is introduced. A successful upstream test job does not accept another job's
+execution, the whole workflow, a publication or exact-host delivery.
+
 ### Owner-requested signing and GitHub completion feedback — 2026-10-17
 
 The existing `QIKVRT workflow executor` now has a separately bounded signing
