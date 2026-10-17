@@ -1,0 +1,200 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "work_unit_json"
+  },
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "S1_RAILWAY_OWN_HOST_MIGRATION_20261005",
+  "created_at": "2026-10-05T09:17:19.168906+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "candidate/provider-independent-roadmap-20261004-eeef48fd",
+  "source_commit": "198ebe73d63b0411ded905ee34a8407dcfaec919",
+  "source_tree": "834dad33aff3cc42b35f7c750b5dd311c714459d",
+  "request_source_head": "4718e0ac162548f5285fb4a92e0f805f8c959965",
+  "fresh_base_head": "86d7062f25f174039da0a5df8a856127553036f1",
+  "human_actor": {
+    "name": "Ingolf Lohmann",
+    "instruction_source": "CURRENT_EXPLICIT_USER_TASK",
+    "identity_proof": "METADATA_ONLY; NOT_INFERRED"
+  },
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_family": "GPT-6",
+    "build": "UNAVAILABLE",
+    "session_id": "b322140be7e9",
+    "retention": "METADATA_ONLY"
+  },
+  "human_contributions": [
+    "Implement lossless Railway-to-Own-Host contract on PR457",
+    "Preserve all acknowledged files, SQLite/journals and explicit binding migration",
+    "No invented host and no current Railway mutation; require dry-run/corruption/rollback controls"
+  ],
+  "artificial_cognitive_contributions": [
+    "Reobserve exact PR457 and absorb concurrent same-binding snapshot/restore commits without history rewrite",
+    "Extend original tool with complete offline inventory, exact export/import manifests and separate-process verification",
+    "Reuse original streaming file digest/copy, fsync, stopped-state locks, native Ledger validator and MonitorStore",
+    "Preserve every original file privately and normalize SQLite only in disposable copies/new target",
+    "Bind planned migration in config; require verified completion receipts; refuse partial state or quarantined rollback",
+    "Add executable portable and native owner-Unix/import/restart controls to existing mandatory lanes"
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "inputs": [
+    {
+      "path": "evidence/self_host/RAILWAY_EXIT_PREPARATION_20261005.json",
+      "bytes": 9688,
+      "sha256": "7960d08a255be6999a3dd32fe0cf046f0da08a4de6bfdad8723fe70418b0b86f",
+      "git_blob_sha1": "1c98bbda3bae0773ac622ac54d09fe851aa6834e"
+    },
+    {
+      "path": "runtime/capabilities/S1_OWN_HOST_ADMISSION_20261005.json",
+      "bytes": 13047,
+      "sha256": "ba7ea836cdf97ef210557b9cc9e764bc2bc06bdedcbdb499b300b5304a722854",
+      "git_blob_sha1": "70999fa82b021d0545cb6555459b1a59402c7456"
+    }
+  ],
+  "outputs": [
+    {
+      "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+      "bytes": 9682,
+      "sha256": "7e1c16b7ec508967528c8f2c64007acc6a4800165d706e86db4deb110c5e58eb",
+      "git_blob_sha1": "810d5a69430ceb62b2d24fbed3bf3b3c1288afee"
+    },
+    {
+      "path": "Makefile",
+      "bytes": 11941,
+      "sha256": "b6a2a8b81cca2aa7e64f25f2d9e994a1ed34cf90e8542c4d13ae0cfbb7b7ff55",
+      "git_blob_sha1": "65f1596b818ba45b430b32aa4c1c955f2b407747"
+    },
+    {
+      "path": "runtime/self-host/MIGRATION.md",
+      "bytes": 16202,
+      "sha256": "3c3c4bfc3e1a3e1e4637fb72559f9f07b400ff4450d7b6ae5d7c4f1b16c4a0c6",
+      "git_blob_sha1": "6b849cfe80e8bb6075f07f539177a85cbc7de065"
+    },
+    {
+      "path": "runtime/self-host/MIGRATION_SOURCE.example.json",
+      "bytes": 887,
+      "sha256": "331387cc616a48df37890e0cfffc272d402d972afa543307dd90c44c6d4cebc4",
+      "git_blob_sha1": "ad86dc1ab04b84a73fc7da38d92ad80a93d95db9"
+    },
+    {
+      "path": "runtime/self-host/PACKAGE.json",
+      "bytes": 4099,
+      "sha256": "712e2345928b70b70b0815bfac07ec11598ab6d9cb571b9f33ce9fca0574ad33",
+      "git_blob_sha1": "1a6ae0e65c47b033eaaa0ddf5c509355980e0a19"
+    },
+    {
+      "path": "runtime/self-host/README.md",
+      "bytes": 24184,
+      "sha256": "0f0bab60d144424a97e87a1e51ff57b5233eb6782dcde31e2c9f446ce6b6abf4",
+      "git_blob_sha1": "3cf99ff5602ade8085b449426e613dbe4e0d1326"
+    },
+    {
+      "path": "runtime/toolchains/CACHE_COVERAGE.json",
+      "bytes": 5657,
+      "sha256": "120f574db10e12270b6221506680d98b0ff899b7a38be4c9ae0f7978ba3ebba4",
+      "git_blob_sha1": "012f65e12666f6b29bf9bef70532f28bf837b5e4"
+    },
+    {
+      "path": "runtime/toolchains/CACHE_REGISTRY.json",
+      "bytes": 20924,
+      "sha256": "638d78e6c5c9ce03b99d99869a680faa6e9411b239bba6dd41437a4ae76eff56",
+      "git_blob_sha1": "d96a23cff11bac875912f31cd43bd3344c0e925c"
+    },
+    {
+      "path": "runtime/toolchains/PROVENANCE.md",
+      "bytes": 11998,
+      "sha256": "f7ef057b70a594a3b979ef414ad2b85418b03c3103b85b0fee6a8e5655cbd548",
+      "git_blob_sha1": "de0511fd0c61fca3c67f5c27fae777942225b6d4"
+    },
+    {
+      "path": "tests/test_self_host_migration.py",
+      "bytes": 21869,
+      "sha256": "2d67e833c15f500b2bb6e387078d88572476b159eb872c566c2575371ddf03a1",
+      "git_blob_sha1": "de80ec41c004a31d162abeddc8b836ce90684f07"
+    },
+    {
+      "path": "tests/test_self_host_temdd.py",
+      "bytes": 34408,
+      "sha256": "454ff182a92e7df50e7b8da1a483500411c53f017633656f12381a5c06424536",
+      "git_blob_sha1": "430058cc70d6be0c3a031b669e4b868b22f6ed44"
+    },
+    {
+      "path": "tools/qikvrt_self_host.py",
+      "bytes": 59369,
+      "sha256": "c2b930a9e3ba429520c626df0095e0fa1795d50c7524cbd9cda45ff44726ce9d",
+      "git_blob_sha1": "6a83f750d1bf0158c3c3f87ad11b28fd323c0320"
+    },
+    {
+      "path": "tools/qikvrt_self_host_migration.py",
+      "bytes": 39952,
+      "sha256": "13b6f0ab00d6de80538d71abea67b2bdf7421ba1cc1e4223b84917885a529d45",
+      "git_blob_sha1": "ec84befe56c61c12ef1b2172ec4158330edd797b"
+    }
+  ],
+  "git_history": {
+    "parent": "198ebe73d63b0411ded905ee34a8407dcfaec919",
+    "history_rewritten": false,
+    "original_recovered_source_files_modified": false,
+    "successor_binding": "CONTAINING_COMMIT_AND_NATIVE_IMMUTABLE_EVENT_HEAD"
+  },
+  "verification": {
+    "combined_local_storage_and_standalone": {
+      "status": "PASS",
+      "command": "python3 -B -m unittest -v tests.test_self_host_migration tests.test_self_host tests.test_self_host_temdd.SourceRecoveryTests tests.test_self_host_temdd.StateSnapshotBackendTests",
+      "exit_code": 0,
+      "tests": 54,
+      "migration_tests": 22,
+      "log_sha256": "bb074c65f5586a5bfa923e089edb1307ce5dc7f15a12207eac6e41c6d0c524c2",
+      "scope": "INTEGRATED_WORKING_TREE; NEW_EXACT_HEAD_CI_REQUIRED"
+    },
+    "portable_repository_and_monitor": {
+      "status": "PASS",
+      "command": "make test repository-monitor-test",
+      "exit_code": 0,
+      "python_test_executions": 526,
+      "node_monitor_tests": 24,
+      "log_sha256": "cd12a1bf300abafe7edd9cbdc1ead7578d58c02a2a0382898e8ffb188c9279b7",
+      "historical_fixture_object_fetched": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2"
+    },
+    "native_owner_unix_import_restart": "REQUIRED_NEW_EXACT_HEAD_CI; LOCAL_UNIX_BINDING_NOT_PERMITTED",
+    "native_synthetic_receipt": "MIGRATION_NATIVE_OWNER_READBACK.json; EXISTING_STATE_RECOVERY_CI_ARTIFACT; NO_PRIVATE_VOLUME",
+    "tool_cache": "PASS 25/25; no new executable dependency",
+    "integrity": "REGENERATED_AND_VERIFIED_ON_CONTAINING_TREE"
+  },
+  "human_decision": {
+    "implementation": "EXPLICIT_CURRENT_TASK_AUTHORIZATION",
+    "candidate_review": "PENDING",
+    "main_merge": "NOT_PERFORMED"
+  },
+  "external_effects": {
+    "candidate_git_write": "AUTHORIZED_REVIEWABLE_FAST_FORWARD",
+    "live_source_capture_or_export": false,
+    "live_state_or_routing_mutation": false,
+    "host_deployment": false,
+    "secrets_or_private_state_committed": false
+  },
+  "milestone": "S1",
+  "milestone_state": "OPEN",
+  "migration_state": "OFFLINE_CONTRACT_LOCALLY_VERIFIED_PENDING_EXACT_HEAD_CI",
+  "remaining": [
+    "Actual independently validated offline source capture/transfer on later authorized carrier",
+    "Existing exact Own-Host identity/mount/control-plane/HTTPS admission",
+    "Independent external native/monitor readback and actual deployed restart/cutover witness",
+    "Separate native code-owner governance"
+  ],
+  "release_claims": {
+    "public_url": null,
+    "host_admission_verified": false,
+    "deployment_performed": false,
+    "public_readback_verified": false,
+    "S1_DONE": false,
+    "EFFECT_ACK_DONE": false,
+    "ordinary_release": false,
+    "predecessor_evidence_transfer": false
+  }
+}

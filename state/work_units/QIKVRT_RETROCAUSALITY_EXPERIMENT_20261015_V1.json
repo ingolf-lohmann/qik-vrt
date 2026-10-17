@@ -1,0 +1,81 @@
+{
+  "schema": "qikvrt_retrocausality_experiment_work_unit_v1",
+  "work_unit": "QIKVRT_RETROCAUSALITY_EXPERIMENT_20261015_V1",
+  "observed_at": "2026-10-15T12:50:36.300748+00:00",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "pull_request": 523,
+  "ref": "integration/515-519-521-522-20261012-eceb9b63",
+  "source_head": "cdbdce01ba13f0c41ade9982a2d9a26a8ea4b92f",
+  "source_tree": "d79ea74ef83d0ac6eb8d938deb3d1265bfb6c720",
+  "authorization": "Direct owner request to continue investigation and document in existing PR523; no new publication, merge or hardware-experiment approval inferred.",
+  "state": "LOCAL_RESEARCH_CHECKS_VERIFIED_PHYSICAL_BRIDGE_OPEN",
+  "deliverable_root": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15",
+  "reuse": "SOURCE_BINDINGS.json",
+  "new_delta": [
+    "8 successor integer model theorems integrated into existing formal v2",
+    "prospective falsifiable protocol and offline analyzer",
+    "fresh source readback and local controls; historical originals retained",
+    "existing evidence-contract-test target extended; no new workflow or PR"
+  ],
+  "verification": {
+    "original_v1_lake_build": 0,
+    "v2_lake_build": 0,
+    "v1_retrocausality_theorem_audits": 8,
+    "successor_scoped_theorem_audits": 24,
+    "additional_theorems": 8,
+    "expected_lean_negative_controls": 3,
+    "new_statistical_regressions": 16,
+    "formal_v2_unittests": 37,
+    "evidence_contract_target": "PASS; initial missing-history fixture failure preserved, repaired using existing local archive; no gate changed",
+    "global_CI": "NOT_CLAIMED"
+  },
+  "open_work": [
+    {
+      "id": "REX-PHYSICS",
+      "state": "OPEN",
+      "reason": "PHYSICAL_CHANNEL_PREDICTION_AND_CALIBRATED_PRIMARY_DATA_NOT_AVAILABLE",
+      "next_action": "Bind a named candidate channel, its discriminating prediction, independent detector/RNG/time/custody calibration; run blind leakage/calibration controls before primary series.",
+      "retry_condition": "Actual apparatus and supported operation available with exact source, calibration and custody identities."
+    },
+    {
+      "id": "REX-REPLICATION",
+      "state": "OPEN",
+      "reason": "NO_INDEPENDENT_PHYSICAL_REPRODUCTION",
+      "next_action": "A separately responsible laboratory obtains and executes the frozen protocol with separate device, clock, entropy and administrative paths."
+    },
+    {
+      "id": "REX-PUBLICATION",
+      "state": "OPEN_IF_REQUESTED",
+      "reason": "SUCCESSOR_IS_REPOSITORY_DRAFT_WITHOUT_EXACT_ZENODO_AUTHORIZATION",
+      "next_action": "If publication is requested, prepare proof-bearing exact candidate and return it for candidate-bound authorization; preserve original source DOIs."
+    }
+  ],
+  "not_claimed": [
+    "physical_backwards_signal",
+    "ontic_retrocausality_selected",
+    "independent_reproduction",
+    "new_Zenodo_or_IETF_publication",
+    "Main_merge",
+    "Mirror_equality",
+    "native_Mesh_execution",
+    "EFFECT_ACK_DONE"
+  ],
+  "provenance": {
+    "human": "Ingolf Lohmann: theory, originals, research question and direct instruction",
+    "artificial": "OpenAI Codex: successor formalization, protocol, software, verification and integration",
+    "acceptance": "No human acceptance of the new scientific text inferred."
+  },
+  "integration_repair": {
+    "first_candidate_head": "9c3c6b131698a6a233bfea75dc8f23f406969a97",
+    "native_ci_run": 38738292097,
+    "native_test_job": 116433118347,
+    "failure": "Three post-Alpha2 sources were inadvertently included in the immutable Alpha2 rebuild.",
+    "fix": "Extend existing POST_ALPHA2_EXCLUSIONS with exactly BacksignalingBoundary.lean, ThreeObserverProtocol.lean and ObserverRelative.lean; leave current formal root imports intact.",
+    "strict_archive_sha256": "500087f6aeee41787959cfc8902852503e2182019ae4f3e88f115e94a1f5e689",
+    "original_archive_unchanged": true,
+    "release_automation_successor_exit": 0,
+    "native_manuscript_test_merge": "2e1a4283e99425573e6b78a6267a1047e49c6b2e",
+    "native_manuscript_run": 38738292026,
+    "native_manuscript_scope": "Source-identical relevant blobs in PR test merge; not an exact candidate checkout."
+  }
+}

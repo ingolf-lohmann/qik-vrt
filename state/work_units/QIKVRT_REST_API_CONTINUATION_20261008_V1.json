@@ -1,0 +1,146 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "classification": "work_unit_json"
+  },
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_REST_API_CONTINUATION_20261008_V1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "state": "COMPATIBLE_API_REPAIR_CANDIDATE_REQUIRES_FRESH_NATIVE_GATES",
+  "human_contribution": {
+    "actor": "Ingolf Lohmann",
+    "role": "Product Owner",
+    "source": "Direct human instruction in the current session, 2026-10-08 UTC",
+    "authorization": "Und jegliches Hindernis, was dir auf dem Weg zum Erreichen dieses Ziels begegnet, ist durch die Nutzung und versionierte, rückwärtskompatible Adaptierung der REST-API des QIKVT Repositories selbstständig zu bewerkstelligen, zu manifestieren, zu interpretieren, daraus zu lernen und erneut anzuwenden, bis alle Blockaden und Hindernisse aus dem Weg geräumt sind. Freigabe erteilt: Product Owner Ingolf Lohmann."
+  },
+  "artificial_cognitive_contribution": {
+    "actor": "OpenAI Codex",
+    "contribution": "REST capability inspection, exact-version HTTP-204 reproduction, compatible API/client patch, continuation receipts, existing input exposure, regression tests and repository-backed handoff."
+  },
+  "source_binding": {
+    "current_main_sha": "dba1f518b6c074527b20c2d9fdfb45ec1bfdeddf",
+    "current_main_tree_sha": "4910c76d1d4b08266bdbbc724c3b2c575baa5026",
+    "predecessor_pr": 501,
+    "predecessor_head_sha": "d87a68c322a81e2e2ea0fde8365a353ad1c2fe99",
+    "predecessor_tree_sha": "9234faecf8bb1c468874f21990f52f54e722e515",
+    "delivery": "Necessary follow-on commit on existing PR #501, preserving the integration commit and both original source parents."
+  },
+  "diagnosis": {
+    "client_reproduction": {
+      "source_head": "d87a68c322a81e2e2ea0fde8365a353ad1c2fe99",
+      "fixture": "HTTP 204 empty dispatch response",
+      "baseline_exit": 1,
+      "baseline_error": "BLOCK API request failed: Expecting value: line 1 column 1 (char 0)",
+      "post_attempts": 1,
+      "candidate_exit_under_same_contract": 20,
+      "candidate_regression": "tests.test_api_client.ApiClientTests.test_github_204_is_continuation_with_exact_request_receipt_and_one_post"
+    },
+    "cause_scope": "The 2.0 client calls json.loads on an empty HTTP-204 dispatch response. This deterministically reports failure after transport acceptance under the stated fixture; it does not prove a production dispatch happened.",
+    "second_observed_gap": "state_run_id exists in the API/workflow and is required for verify/stage state restoration, but the 2.0 CLI cannot supply it.",
+    "governance_observation": {
+      "subject_pr": 501,
+      "subject_head_sha": "d87a68c322a81e2e2ea0fde8365a353ad1c2fe99",
+      "gate": "QIKVRT requested review execution",
+      "first_blocker": "CODE_OWNER_RULE_NOT_ENFORCED",
+      "evidence_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37842167861",
+      "scope": "Predecessor-head observation only; reobserve all live governance on the new subject."
+    }
+  },
+  "compatible_adaptation": {
+    "contract_before": "2.0.0",
+    "contract_after": "2.1.0",
+    "reuse_before_create": true,
+    "reused_components": [
+      "scripts/qikvrt_api_client.py",
+      "src/qikvrt_github_api_shim.py",
+      "api/qikvrt_github_api.openapi.yaml",
+      "tests/test_api_client.py",
+      "tests/test_tcpip_e2e.py",
+      "docs/GITHUB_DEPLOYMENT.md"
+    ],
+    "new_controller_scheduler_or_trigger": false,
+    "unchanged_operations": [
+      "ingest",
+      "verify",
+      "stage",
+      "release_status"
+    ],
+    "request_compatibility": "Existing request fields and required inputs remain valid; return_run_details is optional and default CLI requests omit it. state_run_id uses the existing workflow input.",
+    "response_compatibility": "Local handler object/exit semantics preserved. GitHub asynchronous 204 and repository/run-bound 200 receipts return exit 20 and EFFECT_ACK_CONTINUE.",
+    "receipt_boundary": "Version, exact submitted JSON SHA-256, request ID, repository/ref, endpoint, attempted POST count and validated run URLs only. Execution, HEAD binding, artifact and effect remain unverified until independent readback. Credentials and payload contents are absent.",
+    "ambiguity_recovery": "No automatic retry; authoritative run/artifact reobservation before any further dispatch. Request identifiers are not assumed to deduplicate native workflow dispatches."
+  },
+  "work_ring": {
+    "steps": [
+      "OBSERVE_EXACT_SUBJECT_AND_CALLABLE_REST_OPERATIONS",
+      "MANIFEST_OBSTACLE_WITH_PROVENANCE",
+      "INTERPRET_CAUSE_AND_PERMISSION_BOUNDARY",
+      "APPLY_SMALLEST_VERSIONED_COMPATIBLE_REPAIR",
+      "VERIFY_ORIGINALLY_FAILING_OPERATION_AND_NON_REGRESSION",
+      "READ_BACK_NATIVE_EXECUTION_AND_EFFECT",
+      "CONTINUE_OR_RECORD_CONCRETE_EXTERNAL_BOUNDARY"
+    ],
+    "learning": "The async transport boundary is now captured in permanent behavior regressions and versioned receipts; a later client can resume without this chat.",
+    "optimization_gate": "No optimization before outstanding authorized PRs are actually merged into Main and no open issues remain."
+  },
+  "verification": {
+    "focused_command": "PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_api_client tests.test_handler_unit tests.test_handler_security tests.test_tcpip_e2e",
+    "focused_source_tests": 37,
+    "new_behavior_tests": 9,
+    "source_result": "PASS_LOCAL; exact candidate native evidence must be read back separately",
+    "tool_cache": "PASS_LOCAL 14/14, 100 percent",
+    "full_native_requirement": "Fresh complete make test and canonical integrity verification on the new HEAD/TREE, including all existing 118 integration regressions. Predecessor run results do not transfer.",
+    "local_snapshot_limit": "Incomplete historical binary/text transport; unchanged missing objects/digests remain bound to the exact parent tree. No fabricated payload, local full integrity PASS, or local full make test claim.",
+    "integrity_assembly": "Rehash changed source bytes, add the work unit using the existing classification, and retain parent manifest entries only for unchanged Git identities; require full native deterministic regeneration.",
+    "receipt_destination": "Updated PR #501 body and native exact-head run/job logs; own commit SHA is recorded outside tracked candidate bytes to avoid a hash cycle."
+  },
+  "execution_route": {
+    "github_route": "REST_API_ONLY",
+    "available": "Authenticated Git-Data writes, leased fast-forward ref update, PR metadata writes, GET-only workflow/run/ruleset readbacks.",
+    "missing_callable_effects": [
+      "POST existing ruleset-writer workflow_dispatch",
+      "Repository Administration-write ruleset create/update",
+      "REST initial workflow approval operation when applicable",
+      "REST draft-to-ready operation"
+    ],
+    "credential_state": "No credential variables delivered to this local runtime; connected GitHub App excludes Administration. Secret references in an existing workflow are not evidence of usable client credentials.",
+    "plugin_discovery": "Existing connected GitHub plugin returned; no additional relevant dispatch/admin execution capability established.",
+    "existing_ruleset_writer": ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml",
+    "smallest_external_continuation": {
+      "method": "POST",
+      "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/actions/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml/dispatches",
+      "body": {
+        "ref": "main"
+      },
+      "preconditions": [
+        "Fresh Main identity and canonical ruleset target",
+        "Actually callable existing authenticated Actions-write operation",
+        "Already configured ruleset authority credential route",
+        "Native admission; no substitute trigger"
+      ],
+      "verification": [
+        "Native run/job/conditional-effect receipt",
+        "Independent ruleset readback against canonical digest",
+        "Fresh current-head Code Owner gate",
+        "Independent current-head native review and governed Main merge"
+      ]
+    }
+  },
+  "effect_boundary": {
+    "new_runtime_permission": false,
+    "ruleset_mutation_executed": false,
+    "codeowners_changed": false,
+    "repair_allowlist_expanded": false,
+    "native_admission_bypassed": false,
+    "self_approval": false,
+    "main_merge": false,
+    "deployment": false,
+    "publication": false,
+    "all_blockers_removed": false,
+    "EFFECT_ACK_DONE": false,
+    "state": "EFFECT_ACK_CONTINUE until fresh native evidence; actual external governance boundary remains distinct."
+  }
+}

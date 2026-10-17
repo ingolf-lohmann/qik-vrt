@@ -1,0 +1,6 @@
+/workspace/scratch/fe115755c38d/proof_gap_repository_20261015/docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/negative/SharedInterfaceImpliesDominance.lean:5:2: error: type mismatch
+  MAX005_shared_interface_does_not_imply_greatest.right.right.left
+has type
+  Dominates extended limited : Prop
+but is expected to have type
+  Dominates limited extended : Prop

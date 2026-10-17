@@ -114,6 +114,104 @@
       "evidence"
     ]
   },
+  "client_continuation": {
+    "owner_instruction": "Ingolf Lohmann, 2026-10-11",
+    "binding_for_all_clients": true,
+    "receipt_schema": "qikvrt-client-continuation/1",
+    "validator": "tools/ai_handoff.py --client-receipt",
+    "regression_gate": "make ai-runtime-contract",
+    "preserve_existing_authorization": true,
+    "preserve_original_goal_across_handoffs": true,
+    "inspect_existing_routes": [
+      "repository",
+      "connector",
+      "cli",
+      "mesh"
+    ],
+    "github_route": "REST_API_ONLY",
+    "ionos_route": "REST_API_ONLY",
+    "ionos_route_owner_instruction": {
+      "owner": "Ingolf Lohmann",
+      "date": "2026-10-13",
+      "exact_text": "REST-only beibehalten",
+      "scope": "IONOS authentication and domain/DNS operations for raumzeitterminal.de",
+      "browser_login_fallback": false
+    },
+    "execute_safe_deterministic_authorized_successors": true,
+    "unchanged_causal_failure": "NOOP",
+    "ambiguous_effect_requires_readback_before_retry": true,
+    "closing_readback": [
+      "current_repository_HEAD_TREE",
+      "raumzeitterminal.de"
+    ],
+    "receipt_consistency_proves_live_effect": false,
+    "persisted_rule_proves_other_client_adoption": false,
+    "end_of_action_rule": {
+      "path": "state/authorization/delegations/OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_V1.json",
+      "sha256": "598d99efe1605ef7fa5deab70a04fbb5cdc756bd4b368e3394d7c833be58a9d8",
+      "source_head": "42008f98a94c28e9bfc1ae902fb190296c6ac5a6",
+      "source_pr": 507,
+      "git_blob_sha1": "0cda572c33f46216bab7d569a2e61569a61f6722"
+    },
+    "closing_readback_after_each_effectful_action": true,
+    "closing_readback_requires_action_id_and_observation_times": true,
+    "self_application_rule": {
+      "rule_id": "QIKVRT_RECURSIVE_SELF_APPLICATION_20261013",
+      "policy": "policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json#/self_application_working_rule",
+      "owner_instruction": "Ingolf Lohmann, 2026-10-13",
+      "reuses_existing_client_work_and_causal_gate": true,
+      "persists_observer_tasks_without_inventing_an_executor": true
+    },
+    "immediate_execution_rule": {
+      "rule_id": "QIKVRT_IMMEDIATE_EXECUTION_20261013",
+      "policy": "policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json#/self_application_working_rule/immediate_execution_principle",
+      "default_disposition": "EXECUTE_IMMEDIATELY_IN_CURRENT_WORK_RING",
+      "reuses_existing_successor_admission_and_return_gate": true,
+      "defer_executable_work_to_another_turn": false
+    },
+    "anticipated_transitions": {
+      "owner_instruction": "Ingolf Lohmann, 2026-10-15",
+      "policy": "policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json#/self_application_working_rule/anticipated_transitions",
+      "receipt_field": "transition_plan",
+      "current_input_binding": "input_sha256",
+      "validator_output": "CLIENT_TRANSITION_PLAN",
+      "available_preparation_requires_continue": true,
+      "changed_inputs_require_plan_reassessment": true,
+      "unchanged_causal_failure_remains_noop": true,
+      "historical_receipts_without_plan_remain_readable": true,
+      "plan_is_execution_or_speedup_proof": false
+    },
+    "knowledge_continuity": {
+      "owner_instruction": "Ingolf Lohmann, 2026-10-16: Knowledge loss itself is the defect regardless of when it occurs.",
+      "existing_policy": "policy/QIKVRT_EPISTEMIC_CONNECTABILITY_CONTINUITY_V1.json",
+      "existing_policy_sha256": "1e4e9d30a730559e801c7cd840b8f02795b39fbfe1988fe2a85bbeecbf40d909",
+      "existing_policy_git_blob_sha1": "bac643895963db5ccf6bfd87588aa5b38aa580e7",
+      "receipt_field": "knowledge",
+      "predecessor_binding_fields": [
+        "receipt_path",
+        "receipt_sha256"
+      ],
+      "record_required_fields": [
+        "id",
+        "epistemic_class",
+        "subject",
+        "scope",
+        "statement",
+        "evidence",
+        "record_sha256"
+      ],
+      "record_digest_encoding": "UTF-8 JSON, sorted keys, compact separators, ensure_ascii=false, allow_nan=false; omit record_sha256",
+      "preserve_declared_predecessor_records": true,
+      "correction_is_append_only_supersedes": true,
+      "derive_knowledge_and_open_work_from_pinned_predecessor": true,
+      "local_environment_absence_proves_remote_binding_absent": false,
+      "historical_receipts_without_snapshot_remain_readable": true,
+      "consistency_proves_truth_or_complete_initial_knowledge": false,
+      "preserved_observation_proves_current_successor_acceptance": false,
+      "existing_validator": "tools/ai_handoff.py --client-receipt",
+      "current_baseline": "state/work_units/QIKVRT_CLIENT_KNOWLEDGE_CONTINUITY_REPAIR_20261016_V1.json"
+    }
+  },
   "continuation_semantics": {
     "roundtrip": [
       "OBSERVE",
@@ -130,6 +228,14 @@
       "EXTERNAL_AUTHORITY_OR_INPUT_REQUIRED",
       "BOUNDED_OBSERVATION_WINDOW_ENDED"
     ],
-    "causal_failure_becomes_next_work_unit": true
+    "causal_failure_becomes_next_work_unit": true,
+    "owner_clarification_date": "2026-10-12",
+    "predecessor_failures_omissions_and_gaps_become_successor_tasks": true,
+    "automatic_adjoining_run_preserves_existing_authorization": true,
+    "predecessor_execution_binding": "previous_run.execution_id",
+    "inherited_open_obligations": "previous_run.open_work",
+    "successor_disposition": "work: OPEN with next_action or VERIFIED with evidence",
+    "silently_dropping_predecessor_open_work": false,
+    "rule_persistence_proves_unattended_execution": false
   }
 }

@@ -15,6 +15,7 @@ import tempfile
 import threading
 import unittest
 import urllib.parse
+import zipfile
 from collections.abc import Callable, Mapping
 from typing import Any
 from unittest import mock
@@ -485,7 +486,7 @@ def enable_canonical_kernel_receipt_v2(
             "formal_claim_count": len(formal_claim_ids),
             "theorem_count": len(axioms),
             "workflow": {
-                "repository": "Goldkelch/qik-vrt",
+                "repository": "ingolf-lohmann/qik-vrt",
                 "sha": head,
                 "ref": "refs/heads/" + branch,
                 "event": "push",
@@ -523,7 +524,7 @@ def enable_canonical_kernel_receipt_v2(
         return {
             "branch": branch,
             "head": head,
-            "repository": "Goldkelch/qik-vrt",
+            "repository": "ingolf-lohmann/qik-vrt",
             "tree": tree,
         }
 
@@ -926,7 +927,7 @@ def materialize_git_history(
         "set-url",
         "--push",
         "origin",
-        "https://github.com/Goldkelch/qik-vrt.git",
+        "https://github.com/ingolf-lohmann/qik-vrt.git",
     )
     return source_head, execution_head
 
@@ -1264,7 +1265,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
                 "type": "NATURAL_PERSON",
             },
             "publication_id": FIXTURE_PUBLICATION_ID,
-            "repository": "Goldkelch/qik-vrt",
+            "repository": "ingolf-lohmann/qik-vrt",
             "source_head": SOURCE_HEAD,
             "candidate_return_receipt": return_identity,
             "canonical_metadata_sha256": metadata_sha256,
@@ -1309,7 +1310,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
             "schema": publish.SCHEMA_V2,
             "state": "publish",
             "confirm": "PUBLISH_TO_PRODUCTION_ZENODO",
-            "repository": "Goldkelch/qik-vrt",
+            "repository": "ingolf-lohmann/qik-vrt",
             "source_head": SOURCE_HEAD,
             "metadata": metadata,
             "files": files,
@@ -1345,7 +1346,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
         with mock.patch.dict(
             os.environ,
             {
-                "GITHUB_REPOSITORY": "Goldkelch/qik-vrt",
+                "GITHUB_REPOSITORY": "ingolf-lohmann/qik-vrt",
                 "GITHUB_SHA": github_sha or execution_head,
                 publish.GITHUB_TOKEN_ENVIRONMENT_VARIABLE: TEST_GITHUB_TOKEN,
                 zenodo.TOKEN_ENVIRONMENT_VARIABLE: "z" * 32,
@@ -1396,7 +1397,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
             )
             self.assertTrue(receipt["machine_proof_complete"])
             self.assertEqual(receipt["claim_count"], 6)
-            with mock.patch.dict(os.environ, {"GITHUB_REPOSITORY": "Goldkelch/qik-vrt"}):
+            with mock.patch.dict(os.environ, {"GITHUB_REPOSITORY": "ingolf-lohmann/qik-vrt"}):
                 manifest = publish.load_manifest(manifest_path, root)
             self.assertEqual(manifest["schema"], publish.SCHEMA_V2)
             self.assertTrue(manifest["machine_proof"]["machine_proof_complete"])
@@ -1483,10 +1484,10 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
 
     def test_origin_is_exactly_pinned_against_host_and_path_spoofing(self) -> None:
         accepted = (
-            "https://github.com/Goldkelch/qik-vrt",
-            "https://github.com/Goldkelch/qik-vrt.git",
-            "git@github.com:Goldkelch/qik-vrt.git",
-            "ssh://git@github.com/Goldkelch/qik-vrt.git",
+            "https://github.com/ingolf-lohmann/qik-vrt",
+            "https://github.com/ingolf-lohmann/qik-vrt.git",
+            "git@github.com:ingolf-lohmann/qik-vrt.git",
+            "ssh://git@github.com/ingolf-lohmann/qik-vrt.git",
         )
         for origin in accepted:
             with self.subTest(origin=origin):
@@ -1495,14 +1496,15 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
                     publish.PRODUCTION_REPOSITORY,
                 )
         rejected = (
-            "https://github.com.evil/Goldkelch/qik-vrt.git",
+            "https://github.com/Goldkelch/qik-vrt.git",
+            "https://github.com.evil/ingolf-lohmann/qik-vrt.git",
             "https://github.com/other/qik-vrt.git",
-            "https://github.com/extra/Goldkelch/qik-vrt.git",
-            "https://token@github.com/Goldkelch/qik-vrt.git",
-            "https://github.com:444/Goldkelch/qik-vrt.git",
-            "ssh://git@github.com.evil/Goldkelch/qik-vrt.git",
-            "git@github.com:Goldkelch/qik-vrt.git/extra",
-            "file:///tmp/Goldkelch/qik-vrt.git",
+            "https://github.com/extra/ingolf-lohmann/qik-vrt.git",
+            "https://token@github.com/ingolf-lohmann/qik-vrt.git",
+            "https://github.com:444/ingolf-lohmann/qik-vrt.git",
+            "ssh://git@github.com.evil/ingolf-lohmann/qik-vrt.git",
+            "git@github.com:ingolf-lohmann/qik-vrt.git/extra",
+            "file:///tmp/ingolf-lohmann/qik-vrt.git",
         )
         for origin in rejected:
             with self.subTest(origin=origin):
@@ -1895,7 +1897,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
                 "schema": publish.SCHEMA,
                 "state": "publish",
                 "confirm": "PUBLISH_TO_PRODUCTION_ZENODO",
-                "repository": "Goldkelch/qik-vrt",
+                "repository": "ingolf-lohmann/qik-vrt",
                 "metadata": {
                     "title": "Legacy fixture",
                     "upload_type": "publication",
@@ -1918,7 +1920,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
                 "release/legacy/publish-request.json",
                 (json.dumps(manifest) + "\n").encode(),
             )
-            with mock.patch.dict(os.environ, {"GITHUB_REPOSITORY": "Goldkelch/qik-vrt"}):
+            with mock.patch.dict(os.environ, {"GITHUB_REPOSITORY": "ingolf-lohmann/qik-vrt"}):
                 loaded = publish.load_manifest(manifest_path, root)
                 self.assertEqual(loaded["schema"], publish.SCHEMA)
                 self.assertNotIn("owner_authorization", loaded)
@@ -1990,7 +1992,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
                     )
                     with mock.patch.dict(
                         os.environ,
-                        {"GITHUB_REPOSITORY": "Goldkelch/qik-vrt"},
+                        {"GITHUB_REPOSITORY": "ingolf-lohmann/qik-vrt"},
                     ):
                         with self.assertRaisesRegex(
                             zenodo.ZenodoError,
@@ -2007,7 +2009,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
             manifest_path.write_text(json.dumps(value) + "\n", encoding="utf-8")
             with mock.patch.dict(
                 os.environ,
-                {"GITHUB_REPOSITORY": "Goldkelch/qik-vrt"},
+                {"GITHUB_REPOSITORY": "ingolf-lohmann/qik-vrt"},
             ):
                 with self.assertRaisesRegex(
                     zenodo.ZenodoError,
@@ -2022,7 +2024,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
             with mock.patch.dict(
                 os.environ,
                 {
-                    "GITHUB_REPOSITORY": "Goldkelch/qik-vrt",
+                    "GITHUB_REPOSITORY": "ingolf-lohmann/qik-vrt",
                     publish.GITHUB_TOKEN_ENVIRONMENT_VARIABLE: TEST_GITHUB_TOKEN,
                     zenodo.TOKEN_ENVIRONMENT_VARIABLE: "z" * 32,
                 },
@@ -2166,7 +2168,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
                     mutate_authorization(root, manifest_path, mutation)
                     with mock.patch.dict(
                         os.environ,
-                        {"GITHUB_REPOSITORY": "Goldkelch/qik-vrt"},
+                        {"GITHUB_REPOSITORY": "ingolf-lohmann/qik-vrt"},
                     ):
                         with self.assertRaisesRegex(zenodo.ZenodoError, error):
                             publish.load_manifest(manifest_path, root)
@@ -2185,7 +2187,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
             )
             with mock.patch.dict(
                 os.environ,
-                {"GITHUB_REPOSITORY": "Goldkelch/qik-vrt"},
+                {"GITHUB_REPOSITORY": "ingolf-lohmann/qik-vrt"},
             ):
                 with self.assertRaisesRegex(
                     zenodo.ZenodoError,
@@ -2208,7 +2210,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
             mutate_authorization(root, manifest_path, deny)
             with mock.patch.dict(
                 os.environ,
-                {"GITHUB_REPOSITORY": "Goldkelch/qik-vrt"},
+                {"GITHUB_REPOSITORY": "ingolf-lohmann/qik-vrt"},
             ):
                 with self.assertRaisesRegex(
                     zenodo.ZenodoError,
@@ -2226,7 +2228,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
             policy_path.write_text(json.dumps(policy) + "\n", encoding="utf-8")
             with mock.patch.dict(
                 os.environ,
-                {"GITHUB_REPOSITORY": "Goldkelch/qik-vrt"},
+                {"GITHUB_REPOSITORY": "ingolf-lohmann/qik-vrt"},
             ):
                 with self.assertRaisesRegex(
                     zenodo.ZenodoError,
@@ -2250,7 +2252,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
             manifest_path.write_text(json.dumps(value) + "\n", encoding="utf-8")
             with mock.patch.dict(
                 os.environ,
-                {"GITHUB_REPOSITORY": "Goldkelch/qik-vrt"},
+                {"GITHUB_REPOSITORY": "ingolf-lohmann/qik-vrt"},
             ):
                 with self.assertRaisesRegex(
                     zenodo.ZenodoError,
@@ -2526,7 +2528,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
             _, manifest_path = self.fixture(root)
             with mock.patch.dict(
                 os.environ,
-                {"GITHUB_REPOSITORY": "Goldkelch/qik-vrt"},
+                {"GITHUB_REPOSITORY": "ingolf-lohmann/qik-vrt"},
             ):
                 loaded = publish.load_manifest(manifest_path, root)
             authorization = loaded["owner_authorization"]
@@ -2553,7 +2555,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
             with mock.patch.dict(
                 os.environ,
                 {
-                    "GITHUB_REPOSITORY": "Goldkelch/qik-vrt",
+                    "GITHUB_REPOSITORY": "ingolf-lohmann/qik-vrt",
                     publish.GITHUB_TOKEN_ENVIRONMENT_VARIABLE: TEST_GITHUB_TOKEN,
                     zenodo.TOKEN_ENVIRONMENT_VARIABLE: "z" * 32,
                 },
@@ -2601,7 +2603,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
                 raise zenodo.ZenodoError("simulated create failure")
 
             environment = {
-                "GITHUB_REPOSITORY": "Goldkelch/qik-vrt",
+                "GITHUB_REPOSITORY": "ingolf-lohmann/qik-vrt",
                 "GITHUB_SHA": execution_head,
                 publish.GITHUB_TOKEN_ENVIRONMENT_VARIABLE: TEST_GITHUB_TOKEN,
                 zenodo.TOKEN_ENVIRONMENT_VARIABLE: token,
@@ -2707,7 +2709,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
             with mock.patch.dict(
                 os.environ,
                 {
-                    "GITHUB_REPOSITORY": "Goldkelch/qik-vrt",
+                    "GITHUB_REPOSITORY": "ingolf-lohmann/qik-vrt",
                     "GITHUB_SHA": execution_head,
                     publish.GITHUB_TOKEN_ENVIRONMENT_VARIABLE: TEST_GITHUB_TOKEN,
                     zenodo.TOKEN_ENVIRONMENT_VARIABLE: token,
@@ -3143,7 +3145,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
             with mock.patch.dict(
                 os.environ,
                 {
-                    "GITHUB_REPOSITORY": "Goldkelch/qik-vrt",
+                    "GITHUB_REPOSITORY": "ingolf-lohmann/qik-vrt",
                     "GITHUB_SHA": execution_head,
                     publish.GITHUB_TOKEN_ENVIRONMENT_VARIABLE: TEST_GITHUB_TOKEN,
                     zenodo.TOKEN_ENVIRONMENT_VARIABLE: token,
@@ -3196,7 +3198,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
             with mock.patch.dict(
                 os.environ,
                 {
-                    "GITHUB_REPOSITORY": "Goldkelch/qik-vrt",
+                    "GITHUB_REPOSITORY": "ingolf-lohmann/qik-vrt",
                     "GITHUB_SHA": execution_head,
                     publish.GITHUB_TOKEN_ENVIRONMENT_VARIABLE: TEST_GITHUB_TOKEN,
                     zenodo.TOKEN_ENVIRONMENT_VARIABLE: token,
@@ -3257,7 +3259,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
             with mock.patch.dict(
                 os.environ,
                 {
-                    "GITHUB_REPOSITORY": "Goldkelch/qik-vrt",
+                    "GITHUB_REPOSITORY": "ingolf-lohmann/qik-vrt",
                     "GITHUB_SHA": execution_head,
                     publish.GITHUB_TOKEN_ENVIRONMENT_VARIABLE: TEST_GITHUB_TOKEN,
                     zenodo.TOKEN_ENVIRONMENT_VARIABLE: token,
@@ -3297,7 +3299,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
             with mock.patch.dict(
                 os.environ,
                 {
-                    "GITHUB_REPOSITORY": "Goldkelch/qik-vrt",
+                    "GITHUB_REPOSITORY": "ingolf-lohmann/qik-vrt",
                     "GITHUB_SHA": execution_head,
                     "ZENODO_API_BASE": "https://example.invalid/api",
                     publish.GITHUB_TOKEN_ENVIRONMENT_VARIABLE: TEST_GITHUB_TOKEN,
@@ -4285,6 +4287,119 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
                 "exact byte identity/semantics differ",
             ):
                 proof.validate_bundle(root, bundle_path)
+
+
+class MaximalityPublicationBindingTests(unittest.TestCase):
+    """Exercise the real scientific candidate through the production gate."""
+
+    publication = (
+        ROOT / "docs/publications/2026-07-31-survival-anschlussfaehigsten/"
+        "maximality-2026-10-15"
+    )
+
+    def test_real_draft_reaches_the_exact_upload_authority_boundary(self) -> None:
+        with self.assertRaisesRegex(
+            proof.ProofGateError,
+            "^proof bundle does not authorize the exact Zenodo upload$",
+        ):
+            proof.validate_bundle(
+                ROOT, self.publication / "MACHINE_PROOF_BUNDLE_DRAFT.json"
+            )
+
+    def test_source_archive_preserves_every_bound_original_member(self) -> None:
+        index = json.loads((self.publication / "SCIENTIFIC_SOURCE_ARCHIVE.json").read_text())
+        archive_path = ROOT / index["archive"]["path"]
+        self.assertEqual(proof.identity(archive_path), {
+            key: value for key, value in index["archive"].items() if key != "path"
+        })
+        members = {item["path"]: item for item in index["members"]}
+        self.assertEqual(len(members), 255)
+        with zipfile.ZipFile(archive_path) as archive:
+            self.assertEqual(len(archive.namelist()), len(members))
+            self.assertEqual(set(archive.namelist()), set(members))
+            for name, item in members.items():
+                self.assertFalse(pathlib.PurePosixPath(name).is_absolute())
+                self.assertNotIn("..", pathlib.PurePosixPath(name).parts)
+                raw = archive.read(name)
+                self.assertEqual(raw, (ROOT / name).read_bytes())
+                self.assertEqual(len(raw), item["bytes"])
+                self.assertEqual(hashlib.sha256(raw).hexdigest(), item["sha256"])
+                self.assertEqual(blob(raw), item["git_blob_sha1"])
+
+    def test_existing_publisher_accepts_metadata_and_file_plan_but_blocks_unapproved_draft(self) -> None:
+        draft_path = self.publication / "PUBLISH_REQUEST_DRAFT.json"
+        draft = json.loads(draft_path.read_text())
+        self.assertEqual(publish._validate_metadata(draft["metadata"]), draft["metadata"])
+        self.assertEqual(draft["metadata"]["prereserve_doi"], True)
+        self.assertEqual(len(draft["files"]), 35)
+        self.assertLessEqual(len(draft["files"]), 100)
+        materialized = [publish._materialize_file(item, ROOT, f"draft.files[{i}]")
+                        for i, item in enumerate(draft["files"])]
+        self.assertEqual(len({item["name"] for item in materialized}), len(materialized))
+        self.assertEqual(len({item["path"] for item in materialized}), len(materialized))
+        bundle = json.loads((self.publication / "MACHINE_PROOF_BUNDLE_DRAFT.json").read_text())
+        required = ({item["path"] for item in bundle["candidate"]["files"]}
+                    | {item["path"] for item in bundle["artifacts"]}
+                    | {draft["machine_proof"]["path"]})
+        self.assertEqual({item["path"] for item in materialized}, required)
+        proof_file = next(item for item in materialized if item["path"] == draft["machine_proof"]["path"])
+        self.assertEqual(proof_file["name"], "MACHINE_PROOF_BUNDLE.json")
+        self.assertIsNone(draft["owner_authorization"])
+        with self.assertRaisesRegex(zenodo.ZenodoError, "^production publication is not explicitly authorized$"):
+            publish.load_manifest(draft_path, ROOT)
+
+    def test_pdf_and_historical_scientific_boundaries_are_preserved(self) -> None:
+        primary = self.publication / "GESAMTBETRACHTUNG_DE.pdf"
+        self.assertEqual(primary.stat().st_size, 103905)
+        self.assertEqual(
+            hashlib.sha256(primary.read_bytes()).hexdigest(),
+            "926cceff006063d91797feaa3616cca0a6ff2c2c30d2e7f53f501ba5f3da97f6",
+        )
+        bundle = json.loads(
+            (self.publication / "MACHINE_PROOF_BUNDLE_DRAFT.json").read_text()
+        )
+        claims = {claim["claim_id"]: claim for claim in bundle["claims"]}
+        self.assertEqual(len(claims), 37)
+        for claim_id in ("REC-B1", "REC-B2", "REC-B3", "REC-B4", "REC-B5", "REC-B6", "OPEN-GLOBAL-001"):
+            self.assertEqual(claims[claim_id]["classification"], "OPEN")
+            self.assertEqual(claims[claim_id]["status"], "OPEN")
+        self.assertEqual(
+            bundle["completion_claims"],
+            {"machine_proof_complete": False, "zenodo_upload_authorized": False},
+        )
+
+    def test_native_receipt_binds_exact_original_sources_and_theorems(self) -> None:
+        receipt = json.loads((self.publication / "KERNEL_RECEIPT.json").read_text())
+        self.assertEqual(receipt["workflow"]["id"], 38711511556)
+        self.assertEqual(receipt["workflow"]["head"], "b97e55a0c4adf1abf2dd608500c55784930a4362")
+        self.assertEqual(receipt["workflow"]["conclusion"], "success")
+        self.assertEqual(len(receipt["theorems"]), 9)
+        snapshots = {item["native_source_path"]: item["snapshot"] for item in receipt["source_materialization"]["sources"]}
+        for source in receipt["sources"]:
+            snapshot = snapshots[source["path"]]
+            self.assertEqual(proof.identity(ROOT / snapshot["path"]), {key: value for key, value in source.items() if key != "path"})
+        for theorem in receipt["theorems"]:
+            self.assertEqual(receipt["axioms_by_theorem"][theorem], [])
+
+    def test_current_authority_also_owns_the_consumption_ref_path(self) -> None:
+        policy = json.loads((ROOT / "policy/CANONICAL_UPSTREAM_REMOTE_V1.json").read_text())
+        self.assertEqual(publish.PRODUCTION_REPOSITORY, policy["canonical_upstream"]["repository"])
+        self.assertTrue(
+            publish._github_ref_path("refs/tags/qikvrt-zenodo-auth/" + "a" * 64)
+            .startswith("/repos/ingolf-lohmann/qik-vrt/git/ref/")
+        )
+        with self.assertRaises(zenodo.ZenodoError):
+            publish._origin_repository_identity("https://github.com/Goldkelch/qik-vrt.git")
+
+    def test_historical_manifest_is_readable_but_cannot_start_a_new_mirror_effect(self) -> None:
+        historical = ROOT / "release/survival-anschlussfaehigsten-2026-07-31/publish-request.json"
+        with mock.patch.dict(os.environ, {"GITHUB_REPOSITORY": "Goldkelch/qik-vrt"}):
+            manifest = publish.load_manifest(historical, ROOT)
+            self.assertEqual(manifest["repository"], "Goldkelch/qik-vrt")
+            with mock.patch.object(publish, "_validated_network_secrets") as secrets:
+                with self.assertRaisesRegex(zenodo.ZenodoError, "repository identity is missing or mismatched"):
+                    publish.publish(historical, ROOT)
+                secrets.assert_not_called()
 
 
 if __name__ == "__main__":

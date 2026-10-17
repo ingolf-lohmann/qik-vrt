@@ -6,7 +6,8 @@
   "permissions": ["storage", "alarms"],
   "host_permissions": [
     "https://api.github.com/*",
-    "https://github.com/Goldkelch/qik-vrt/*",
+    "https://github.com/ingolf-lohmann/qik-vrt/*",
+    "https://ingolf-lohmann.github.io/qik-vrt/*",
     "https://goldkelch.github.io/qik-vrt/*",
     "http://127.0.0.1:8771/*",
     "http://localhost:8771/*"
@@ -18,6 +19,8 @@
   "content_scripts": [
     {
       "matches": [
+        "https://github.com/ingolf-lohmann/qik-vrt/blob/main/AI*",
+        "https://ingolf-lohmann.github.io/qik-vrt/*",
         "https://github.com/Goldkelch/qik-vrt/blob/main/AI*",
         "https://goldkelch.github.io/qik-vrt/*"
       ],
@@ -33,7 +36,7 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "qikvrt-ai-terminal@goldkelch.local",
-      "strict_min_version": "121.0"
+      "strict_min_version": "158.0"
     }
   }
 }

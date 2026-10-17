@@ -1,0 +1,67 @@
+{
+  "binary_path": "/usr/lib/firefox/firefox",
+  "binary_sha256": "a19472941a7cd7252ab5e61b02eb616a50389a784323c21dc6873a23fd700789",
+  "debian_package_version": "158.0~build2",
+  "default_signing_policy_activation_verified": false,
+  "effect_ack_done": false,
+  "existing_s1_bootstrap_xpi_present": false,
+  "extension_activation_verified": false,
+  "extension_id": "qikvrt-ai-terminal@goldkelch.local",
+  "extension_version": "1.0.0",
+  "firefox_package": "firefox",
+  "firefox_version_output": "[8] Sandbox: CanCreateUserNamespace() clone() failure: EPERM\nMozilla Firefox 158.0",
+  "installation_method": "AddonManager.getInstallForFile persistent",
+  "ordinary_release": false,
+  "predecessor_acceptance_transferred": false,
+  "profiles": {
+    "default_signing_policy": [
+      {
+        "accepted": false,
+        "addon": null,
+        "background_registered": false,
+        "browser_version": "158.0",
+        "minimum_satisfied": true,
+        "mozilla_signed": false,
+        "persistent_installation": {
+          "error": -5,
+          "event": "rejected_before_install",
+          "explicit_enable_used": false,
+          "state": 4,
+          "temporary_installation_used": false
+        },
+        "phase": "initial_start",
+        "policy_active": false,
+        "profile_xpi_present": false,
+        "profile_xpi_sha256": null,
+        "session_browser_version": "158.0",
+        "signatures_required": true,
+        "temporary_installation_used": false
+      },
+      {
+        "accepted": false,
+        "addon": null,
+        "background_registered": false,
+        "browser_version": "158.0",
+        "minimum_satisfied": true,
+        "mozilla_signed": false,
+        "persistent_installation": null,
+        "phase": "process_restart",
+        "policy_active": false,
+        "profile_xpi_present": false,
+        "profile_xpi_sha256": null,
+        "session_browser_version": "158.0",
+        "signatures_required": true,
+        "temporary_installation_used": false
+      }
+    ]
+  },
+  "public_production_verified": false,
+  "reference_activation_verified": false,
+  "schema": "qikvrt-firefox-extension-installation/v1",
+  "scope": "EXACT_EXISTING_S1_IMAGE_AND_CANDIDATE_XPI_DISPOSABLE_PROFILES",
+  "signed_production_package_verified": false,
+  "state": "HOLD_EXTENSION_INSTALLATION_OR_ACTIVATION",
+  "strict_min_version": "158.0",
+  "xpi_bytes": 9954,
+  "xpi_sha256": "1f5f583181d6134584f98bf6b59848d4542176d624d97709fa915b9934e2c46c"
+}
