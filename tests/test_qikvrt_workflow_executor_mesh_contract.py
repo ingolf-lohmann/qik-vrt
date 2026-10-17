@@ -658,6 +658,161 @@ class OwnerSigningContinuationTests(unittest.TestCase):
                 self.assertIn("submit=false", (pathlib.Path(directory) / "outputs").read_text())
                 self.assertIn("AMO_SUBMISSION_NOT_REQUESTED", result.stdout)
 
+    def owner_ci_fixture(self):
+        context = {"repository": MODULE.AMO_REPOSITORY, "event": "push", "actor": "ingolf-lohmann",
+            "triggering_actor": "ingolf-lohmann", "ref": "refs/heads/" + MODULE.AMO_OWNER_CI_REF,
+            "workflow_ref": f"{MODULE.AMO_REPOSITORY}/{MODULE.AMO_CI_WORKFLOW}@refs/heads/{MODULE.AMO_OWNER_CI_REF}",
+            "workflow_sha": self.head, "event_head": self.head, "head": self.head, "tree": self.tree,
+            "run_attempt": 1, "test_result": "success", "tested_head": self.head, "tested_tree": self.tree}
+        pr = {"number": 523, "state": "open", "merged": False,
+            "base": {"ref": "main", "repo": {"full_name": MODULE.AMO_REPOSITORY}},
+            "head": {"ref": MODULE.AMO_OWNER_CI_REF, "sha": self.head,
+                     "repo": {"full_name": MODULE.AMO_REPOSITORY}}}
+        return context, copy.deepcopy(self.subject), pr
+
+    def test_direct_owner_ci_handoff_requires_current_tested_subject_and_keeps_main_gates(self):
+        context, subject, pr = self.owner_ci_fixture()
+        value = MODULE.amo_owner_ci_admission(ROOT, context, subject, pr)
+        self.assertEqual(value["mode"], "DIRECT_OWNER_TESTED_PUSH")
+        self.assertEqual(value["source_head"], self.head)
+        self.assertFalse(value["independent_approval"])
+        self.assertFalse(value["changes_main_admission"])
+        self.assertFalse(value["effect_ack_done"])
+        self.assertTrue(MODULE.amo_request(ROOT)["requires_native_main_protection"])
+        workflow = (ROOT / MODULE.AMO_CI_WORKFLOW).read_text()
+        job = workflow.split("\n  amo_unlisted:\n", 1)[1].split("\n  s1_firefox_extension:\n", 1)[0]
+        self.assertIn("needs: test", job)
+        self.assertIn("AMO_TEST_RESULT: ${{ needs.test.result }}", job)
+        self.assertEqual(job.count("executor.amo_validate_owner_ci(Path.cwd())"), 2)
+        self.assertIn("previous=executor.amo_signing_predecessor", job)
+        for changes in ({"repository": "Goldkelch/qik-vrt"}, {"event": "pull_request"},
+                {"event": "workflow_dispatch"}, {"actor": "github-actions[bot]"},
+                {"triggering_actor": "different-reviewer"}, {"ref": "refs/heads/main"},
+                {"workflow_ref": "other"}, {"workflow_sha": "c" * 40}, {"event_head": "c" * 40},
+                {"run_attempt": 2}, {"run_attempt": True}, {"head": "bad"},
+                {"test_result": "failure"}, {"test_result": "skipped"},
+                {"tested_head": "c" * 40}, {"tested_tree": "c" * 40}):
+            with self.subTest(changes=changes), self.assertRaises(MODULE.ExecutorBlock):
+                MODULE.amo_owner_ci_admission(ROOT, {**context, **changes}, subject, pr)
+
+    def test_owner_ci_rejects_changed_package_and_foreign_closed_or_stale_pr(self):
+        context, subject, pr = self.owner_ci_fixture()
+        for changes in ({"repository": "Goldkelch/qik-vrt"}, {"source_head": "c" * 40},
+                        {"source_tree": "c" * 40}, {"unsigned_xpi_sha256": "0" * 64}):
+            with self.subTest(changes=changes), self.assertRaisesRegex(MODULE.ExecutorBlock, "PACKAGE_CHANGED"):
+                MODULE.amo_owner_ci_admission(ROOT, context, {**subject, **changes}, pr)
+        for path, value in [("number", 524), ("state", "closed"), ("merged", True),
+                ("base.ref", "other"), ("base.repo.full_name", "Goldkelch/qik-vrt"),
+                ("head.repo.full_name", "foreign/qik-vrt"), ("head.ref", "main"), ("head.sha", "c" * 40)]:
+            broken = copy.deepcopy(pr); target = broken
+            parts = path.split(".")
+            for part in parts[:-1]:
+                target = target[part]
+            target[parts[-1]] = value
+            with self.subTest(path=path), self.assertRaisesRegex(MODULE.ExecutorBlock, "PR523_HEAD_DRIFT"):
+                MODULE.amo_owner_ci_admission(ROOT, context, subject, broken)
+        self.contract["owner_ci_handoff"]["enabled"] = False
+        with self.assertRaisesRegex(MODULE.ExecutorBlock, "EXACT_OWNER_CI_HANDOFF"):
+            MODULE.amo_owner_ci_admission(ROOT, context, subject, pr)
+
+    def test_owner_ci_wrapper_reobserves_native_pr_and_actual_package(self):
+        context, subject, pr = self.owner_ci_fixture()
+        env = {"GITHUB_REPOSITORY": context["repository"], "GITHUB_EVENT_NAME": context["event"],
+            "GITHUB_ACTOR": context["actor"], "GITHUB_TRIGGERING_ACTOR": context["triggering_actor"],
+            "GITHUB_REF": context["ref"], "GITHUB_WORKFLOW_REF": context["workflow_ref"],
+            "GITHUB_WORKFLOW_SHA": self.head, "GITHUB_SHA": self.head, "GITHUB_RUN_ATTEMPT": "1",
+            "AMO_TEST_RESULT": "success", "AMO_TESTED_HEAD": self.head, "AMO_TESTED_TREE": self.tree}
+        with mock.patch.object(MODULE, "_git", side_effect=[self.head, self.tree]), \
+                mock.patch("tools.qikvrt_self_host.firefox_amo_input", return_value=(b"fixture", subject)) as package, \
+                mock.patch.object(MODULE, "_amo_get", return_value=pr) as read:
+            value = MODULE.amo_validate_owner_ci(ROOT, env)
+        package.assert_called_once_with(ROOT, self.head, self.tree)
+        read.assert_called_once_with(ROOT, "repos/ingolf-lohmann/qik-vrt/pulls/523")
+        self.assertEqual(value["source_tree"], self.tree)
+
+    def test_actual_ci_owner_handoff_records_exact_request_before_missing_pair_hold(self):
+        workflow = (ROOT / MODULE.AMO_CI_WORKFLOW).read_text()
+        script = workflow.split("          python3 -B - <<'PYAMO'\n", 1)[1].split("          PYAMO", 1)[0]
+        script = "\n".join(line[10:] for line in script.splitlines())
+        head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+        tree = subprocess.check_output(["git", "rev-parse", "HEAD^{tree}"], cwd=ROOT, text=True).strip()
+        context, subject, pr = self.owner_ci_fixture()
+        context.update(head=head, tree=tree, event_head=head, workflow_sha=head, tested_head=head, tested_tree=tree)
+        subject.update(source_head=head, source_tree=tree); pr["head"]["sha"] = head
+        for issuer, secret, test_result in [(False, False, "success"), (True, False, "success"),
+                (True, True, "success"), (True, True, "failure")]:
+            fixture_context = {**context, "test_result": test_result}
+            prelude = ("import json\nfrom tools import qikvrt_workflow_executor as executor\n"
+                "executor.amo_validate_owner_ci=lambda root: executor.amo_owner_ci_admission(root, *json.loads(" +
+                repr(json.dumps([fixture_context, subject, pr])) + "))\n")
+            with self.subTest(issuer=issuer, secret=secret, test_result=test_result), tempfile.TemporaryDirectory() as directory:
+                env = {**os.environ, "RUNNER_TEMP": directory, "GITHUB_OUTPUT": directory + "/outputs",
+                    "GITHUB_REPOSITORY": MODULE.AMO_REPOSITORY, "GITHUB_ACTOR": "ingolf-lohmann",
+                    "SIGN_REQUESTED": "true", "OWNER_CI_HANDOFF": "true", "EXPECTED_HEAD": head, "EXPECTED_TREE": tree,
+                    "AMO_ISSUER_PRESENT": str(issuer).lower(), "AMO_SECRET_PRESENT": str(secret).lower(),
+                    "AMO_EXECUTOR_RUN_ID": "0", "AMO_READBACK_ONLY": "false", "PREVIOUS_RUN_ID": "0"}
+                result = subprocess.run([sys.executable, "-B", "-c", prelude + script], cwd=ROOT,
+                    env=env, capture_output=True, text=True, timeout=20)
+                value = json.loads((pathlib.Path(directory) / "amo-original/ACCESS_PREFLIGHT.json").read_bytes())
+                self.assertTrue(value["signing_requested"])
+                self.assertEqual(value["request_mode"], "DIRECT_OWNER_TESTED_PUSH")
+                if test_result != "success":
+                    self.assertNotEqual(result.returncode, 0)
+                    self.assertEqual(value["first_boundary"], "AMO_SUCCESSFUL_EXACT_SUBJECT_TEST_REQUIRED")
+                    self.assertFalse((pathlib.Path(directory) / "outputs").exists())
+                else:
+                    self.assertEqual(result.returncode, 0, result.stderr)
+                    self.assertEqual(value["owner_ci_handoff"]["source_head"], head)
+                    self.assertEqual(value["first_boundary"], None if issuer and secret else
+                                     "AMO_CREDENTIAL_PAIR_NOT_DELIVERED_TO_THIS_JOB")
+                    self.assertIn("submit=" + str(issuer and secret).lower(),
+                                  (pathlib.Path(directory) / "outputs").read_text())
+
+    def signing_history(self, dispatch=(), pushes=(), jobs=None):
+        def read(path):
+            if "/jobs?" in path:
+                return {"jobs": (jobs or {}).get(int(path.split("/")[3]), [])}
+            return {"workflow_runs": list(pushes if "event=push" in path else dispatch)}
+        return read
+
+    def test_signing_journal_includes_owner_push_and_chooses_latest_actual_producer(self):
+        dispatch = self.provider_run(600, created_at="2026-10-17T09:35:00Z")
+        push = self.provider_run(700, event="push", head_branch=MODULE.AMO_OWNER_CI_REF,
+                                 created_at="2026-10-17T09:36:00Z")
+        read = self.signing_history([dispatch], [push], {600: [self.job()], 700: [self.job()]})
+        self.assertEqual(MODULE.amo_signing_predecessor(ROOT, 800, 1, 0, read), 700)
+        self.assertEqual(MODULE.amo_signing_predecessor(ROOT, 800, 1, 700, read), 700)
+        with self.assertRaisesRegex(MODULE.ExecutorBlock, "BINDING_MISMATCH"):
+            MODULE.amo_signing_predecessor(ROOT, 800, 1, 600, read)
+        with self.assertRaisesRegex(MODULE.ExecutorBlock, "NOT_RERUN"):
+            MODULE.amo_signing_predecessor(ROOT, 800, 2, 0, read)
+
+    def test_signing_history_ignores_preflight_only_skipped_current_and_pregrant_push(self):
+        current = self.provider_run(800, event="push", head_branch=MODULE.AMO_OWNER_CI_REF,
+                                    created_at="2026-10-17T09:40:00Z")
+        skipped = self.provider_run(700, event="push", head_branch=MODULE.AMO_OWNER_CI_REF,
+                                    created_at="2026-10-17T09:36:00Z")
+        old = self.provider_run(500, event="push", head_branch=MODULE.AMO_OWNER_CI_REF,
+                                created_at="2026-10-17T09:30:00Z")
+        job = self.job(); job["steps"][0]["conclusion"] = "skipped"
+        read = self.signing_history([], [current, skipped, old], {700: [job], 500: [self.job()]})
+        self.assertEqual(MODULE.amo_signing_predecessor(ROOT, 800, 1, 0, read), 0)
+        # An actually started ambiguous/failed invocation is still a predecessor.
+        job["steps"][0]["conclusion"] = "failure"
+        self.assertEqual(MODULE.amo_signing_predecessor(ROOT, 800, 1, 0, read), 700)
+
+    def test_signing_history_fails_closed_on_foreign_and_truncated_inventories(self):
+        for changes in ({"repository": {"full_name": "foreign/qik-vrt"}}, {"path": "other.yml"},
+                        {"event": "push"}, {"created_at": "bad"}):
+            run = self.provider_run(600, **{"created_at": "2026-10-17T09:35:00Z", **changes})
+            with self.subTest(changes=changes), self.assertRaises(MODULE.ExecutorBlock):
+                MODULE.amo_signing_predecessor(ROOT, 800, 1, 0, self.signing_history([run]))
+        run = self.provider_run(600, created_at="2026-10-17T09:35:00Z")
+        with self.assertRaisesRegex(MODULE.ExecutorBlock, "JOB_INVENTORY_INCOMPLETE"):
+            MODULE.amo_signing_predecessor(ROOT, 800, 1, 0, self.signing_history([run], jobs={600: [self.job()] * 100}))
+        with self.assertRaisesRegex(MODULE.ExecutorBlock, "RUN_INVENTORY_INCOMPLETE"):
+            MODULE.amo_signing_predecessor(ROOT, 800, 1, 0, self.signing_history([run] * 100))
+
     def test_unrelated_commits_do_not_retry_failure_or_fabricate_done(self):
         previous = self.attempt("FAILED")
         for head in (self.head, "c" * 40):

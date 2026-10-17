@@ -321,6 +321,7 @@ jobs:
 
   amo_unlisted:
     name: Mozilla AMO unlisted access and exact-source signing
+    needs: test
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
@@ -334,12 +335,22 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          ref: ${{ needs.test.outputs.tested_head }}
           fetch-depth: 1
           persist-credentials: false
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
+      - name: Verify the successful committed test subject before signing admission
+        env:
+          TEST_RESULT: ${{ needs.test.result }}
+          EXPECTED_HEAD: ${{ needs.test.outputs.tested_head }}
+          EXPECTED_TREE: ${{ needs.test.outputs.tested_tree }}
+        run: |
+          set -euo pipefail
+          test "$TEST_RESULT" = success
+          test "$(git rev-parse --verify HEAD^{commit})" = "$EXPECTED_HEAD"
+          test "$(git rev-parse --verify HEAD^{tree})" = "$EXPECTED_TREE"
       - name: Verify existing tool contract and AMO adversarial controls without credentials
         run: |
           python3 -B tools/qikvrt_tool_cache.py verify
@@ -349,9 +360,13 @@ jobs:
         env:
           AMO_ISSUER_PRESENT: ${{ secrets.AMO_JWT_ISSUER != '' }}
           AMO_SECRET_PRESENT: ${{ secrets.AMO_JWT_SECRET != '' }}
-          SIGN_REQUESTED: ${{ github.event_name == 'workflow_dispatch' && inputs.amo_sign_unlisted }}
-          EXPECTED_HEAD: ${{ inputs.amo_expected_head }}
-          EXPECTED_TREE: ${{ inputs.amo_expected_tree }}
+          SIGN_REQUESTED: ${{ (github.event_name == 'workflow_dispatch' && inputs.amo_sign_unlisted) || (github.event_name == 'push' && github.repository == 'ingolf-lohmann/qik-vrt' && github.actor == 'ingolf-lohmann' && github.triggering_actor == 'ingolf-lohmann' && github.ref == 'refs/heads/integration/515-519-521-522-20261012-eceb9b63') }}
+          OWNER_CI_HANDOFF: ${{ github.event_name == 'push' && github.repository == 'ingolf-lohmann/qik-vrt' && github.actor == 'ingolf-lohmann' && github.triggering_actor == 'ingolf-lohmann' && github.ref == 'refs/heads/integration/515-519-521-522-20261012-eceb9b63' }}
+          AMO_TEST_RESULT: ${{ needs.test.result }}
+          AMO_TESTED_HEAD: ${{ needs.test.outputs.tested_head }}
+          AMO_TESTED_TREE: ${{ needs.test.outputs.tested_tree }}
+          EXPECTED_HEAD: ${{ inputs.amo_expected_head || needs.test.outputs.tested_head }}
+          EXPECTED_TREE: ${{ inputs.amo_expected_tree || needs.test.outputs.tested_tree }}
           PREVIOUS_RUN_ID: ${{ inputs.amo_previous_run_id || '0' }}
           GH_TOKEN: ${{ github.token }}
           AMO_EXECUTOR_RUN_ID: ${{ inputs.amo_executor_run_id || '0' }}
@@ -371,6 +386,7 @@ jobs:
               'source_head':head,'source_tree':tree,'issuer_present':issuer,'secret_present':secret,
               'secret_names':['AMO_JWT_ISSUER','AMO_JWT_SECRET'],'credential_values_read':False,
               'amo_authentication_verified':False,'signing_requested':requested,'effect_ack_done':False,
+              'request_mode':('DIRECT_OWNER_TESTED_PUSH' if os.environ.get('OWNER_CI_HANDOFF')=='true' else 'WORKFLOW_DISPATCH') if requested else 'NONE',
               'executor_run_id':os.environ['AMO_EXECUTOR_RUN_ID'],
               'readback_only':os.environ['AMO_READBACK_ONLY']=='true','first_boundary':None}
           r['credential_delivery']=executor.amo_credential_delivery(
@@ -380,7 +396,10 @@ jobs:
                   assert os.environ['GITHUB_REPOSITORY']=='ingolf-lohmann/qik-vrt','AMO_WRONG_REPOSITORY'
                   assert head==os.environ['EXPECTED_HEAD'] and tree==os.environ['EXPECTED_TREE'],'AMO_EXACT_REVIEWED_SOURCE_REQUIRED'
                   assert re.fullmatch(r'0|[1-9][0-9]{0,19}',os.environ['PREVIOUS_RUN_ID']),'AMO_PREVIOUS_RUN_INVALID'
-                  if os.environ['AMO_EXECUTOR_RUN_ID']!='0':
+                  if os.environ.get('OWNER_CI_HANDOFF')=='true':
+                      assert os.environ['AMO_EXECUTOR_RUN_ID']=='0','AMO_DIRECT_OWNER_CI_CONTEXT_REQUIRED'
+                      r['owner_ci_handoff']=executor.amo_validate_owner_ci(Path.cwd())
+                  elif os.environ['AMO_EXECUTOR_RUN_ID']!='0':
                       executor.amo_validate_delegation(Path.cwd())
                   else:
                       assert os.environ['GITHUB_ACTOR']=='ingolf-lohmann','AMO_DIRECT_OWNER_EXECUTION_REQUIRED'
@@ -404,43 +423,15 @@ jobs:
         id: journal
         if: steps.admission.outputs.submit == 'true' && !inputs.amo_readback_only
         env:
-          GH_READ_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ github.token }}
           REQUESTED_PREVIOUS_RUN_ID: ${{ steps.admission.outputs.previous_run_id }}
         run: |
           python3 -B - <<'PYJOURNAL'
-          import json,os,urllib.request
-          api='https://api.github.com/repos/ingolf-lohmann/qik-vrt'
-          class NoRedirect(urllib.request.HTTPRedirectHandler):
-              def redirect_request(self,*args,**kwargs):return None
-          opener=urllib.request.build_opener(NoRedirect)
-          def read(path):
-              req=urllib.request.Request(api+path,headers={'Authorization':'Bearer '+os.environ['GH_READ_TOKEN'],
-                  'Accept':'application/vnd.github+json'})
-              with opener.open(req,timeout=30) as response:
-                  raw=response.read(2*1024*1024+1);assert len(raw)<=2*1024*1024;return json.loads(raw)
-          previous=0
-          # No AMO producer existed before this direct Owner instruction.
-          # Later native dispatches serialize by add-on/version, including reruns.
-          for page in range(1,17):
-              runs=read('/actions/workflows/qikvrt_ci.yml/runs?event=workflow_dispatch&per_page=100&page='+str(page))['workflow_runs']
-              stop=False
-              for run in runs:
-                  if run['created_at']<'2026-10-14T17:06:35Z':stop=True;break
-                  if run['id']==int(os.environ['GITHUB_RUN_ID']):
-                      assert int(os.environ['GITHUB_RUN_ATTEMPT'])==1,'AMO_USE_FRESH_READBACK_DISPATCH_NOT_RERUN'
-                      continue
-                  jobs=read('/actions/runs/'+str(run['id'])+'/jobs?filter=all&per_page=100')['jobs']
-                  assert len(jobs)<100,'AMO_PREDECESSOR_JOB_INVENTORY_INCOMPLETE'
-                  for job in jobs:
-                      if job['name']!='Mozilla AMO unlisted access and exact-source signing':continue
-                      active=[s for s in job.get('steps',[]) if s['name']=='Official source-bound unlisted signing and original-byte readback'
-                          and s.get('started_at') and s.get('conclusion')!='skipped']
-                      if active:previous=run['id'];stop=True;break
-                  if stop:break
-              if stop or len(runs)<100:break
-          else:raise ValueError('AMO_PREDECESSOR_RUN_INVENTORY_INCOMPLETE')
-          requested=int(os.environ['REQUESTED_PREVIOUS_RUN_ID'])
-          assert requested in (0,previous),'AMO_PREDECESSOR_BINDING_MISMATCH'
+          import os
+          from pathlib import Path
+          from tools import qikvrt_workflow_executor as executor
+          previous=executor.amo_signing_predecessor(Path.cwd(),int(os.environ['GITHUB_RUN_ID']),
+              int(os.environ['GITHUB_RUN_ATTEMPT']),int(os.environ['REQUESTED_PREVIOUS_RUN_ID']))
           with open(os.environ['GITHUB_OUTPUT'],'a') as out:out.write('previous_run_id='+str(previous)+'\n')
           PYJOURNAL
       - name: Retrieve original preceding non-secret signing journal
@@ -460,8 +451,12 @@ jobs:
           WEB_EXT_API_SECRET: ${{ secrets.AMO_JWT_SECRET }}
           GH_READ_TOKEN: ${{ github.token }}
           GH_TOKEN: ${{ github.token }}
-          EXPECTED_HEAD: ${{ inputs.amo_expected_head }}
-          EXPECTED_TREE: ${{ inputs.amo_expected_tree }}
+          EXPECTED_HEAD: ${{ inputs.amo_expected_head || needs.test.outputs.tested_head }}
+          EXPECTED_TREE: ${{ inputs.amo_expected_tree || needs.test.outputs.tested_tree }}
+          OWNER_CI_HANDOFF: ${{ github.event_name == 'push' && github.repository == 'ingolf-lohmann/qik-vrt' && github.actor == 'ingolf-lohmann' && github.triggering_actor == 'ingolf-lohmann' && github.ref == 'refs/heads/integration/515-519-521-522-20261012-eceb9b63' }}
+          AMO_TEST_RESULT: ${{ needs.test.result }}
+          AMO_TESTED_HEAD: ${{ needs.test.outputs.tested_head }}
+          AMO_TESTED_TREE: ${{ needs.test.outputs.tested_tree }}
           PREVIOUS_RUN_ID: ${{ steps.journal.outputs.previous_run_id || '0' }}
           AMO_EXECUTOR_RUN_ID: ${{ inputs.amo_executor_run_id || '0' }}
           AMO_INTENT_SHA256: ${{ inputs.amo_intent_sha256 }}
@@ -471,8 +466,10 @@ jobs:
           import json,os,urllib.request
           from pathlib import Path
           from tools import qikvrt_self_host as host
-          if os.environ['AMO_EXECUTOR_RUN_ID']!='0':
-              from tools import qikvrt_workflow_executor as executor
+          from tools import qikvrt_workflow_executor as executor
+          if os.environ.get('OWNER_CI_HANDOFF')=='true':
+              executor.amo_validate_owner_ci(Path.cwd())
+          elif os.environ['AMO_EXECUTOR_RUN_ID']!='0':
               executor.amo_validate_delegation(Path.cwd())
           else:
               assert os.environ['GITHUB_ACTOR']=='ingolf-lohmann','AMO_DIRECT_OWNER_EXECUTION_REQUIRED'

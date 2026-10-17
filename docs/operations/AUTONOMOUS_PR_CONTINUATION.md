@@ -307,3 +307,41 @@ the active connector's actual operation exposure remain independent activation
 conditions. A repository commit or fixture PASS cannot close that live gap.
 Independent native approval and effective Main protection remain separate
 merge gates after successful Firefox admission.
+
+## Direct Owner handoff to the existing Linux CI job — 2026-10-17
+
+Ingolf Lohmann explicitly authorized the Linux CI/CD pipeline to take over
+this operation at 12:33:35 Europe/Istanbul. The exact instruction is retained
+in `WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json#/owner_ci_handoff`. This extends
+the existing direct Owner signing path; the protected Main delegation and
+its native protection requirements retain their separate admission rules.
+
+The existing `amo_unlisted` job now depends on the successful `test` job and
+checks out its exact committed HEAD/TREE output. An Owner push to the existing
+PR523 integration branch can request signing without a separate dispatch.
+The preflight and the signing consumer independently validate the fixed
+repository, workflow source SHA, branch, original and triggering Owner actor,
+first run attempt, successful tested subject, freshly read current open PR523,
+and the already authorized deterministic six-component XPI digest. Bot pushes,
+PR events, forks, other refs, stale subjects and changed packages cannot use
+this handoff. It does not create an independent review or authorize Main
+promotion. Workflow triggers, token permissions and Firefox signature policy
+are unchanged.
+
+The existing add-on/version concurrency group remains the upload writer fence.
+Before an effect, the existing journal resolver inspects both actual manual
+dispatch producers and Owner-push producers since this grant. Only a started
+official signing step counts; a successful presence-only preflight does not.
+The newest actual producer's original journal must be recovered before the
+existing signing consumer runs. An incomplete inventory, lost original
+journal or source drift holds the effect; reruns cannot replace fresh admitted
+readback. The existing consumer persists upload intent before PUT and never
+resubmits an unresolved upload, even if the repository HEAD changes.
+
+`ACCESS_PREFLIGHT.json` records `DIRECT_OWNER_TESTED_PUSH`, its exact source
+and authorization binding, and the job-scoped credential delivery state.
+Missing credential delivery keeps `submit=false` and reports
+`AMO_CREDENTIAL_PAIR_NOT_DELIVERED_TO_THIS_JOB`. This proves neither remote
+secret-store absence nor Mozilla authentication. Original native receipts and
+the signed XPI, followed by actual default-policy Firefox activation and
+persistent restart, remain required before effect completion.

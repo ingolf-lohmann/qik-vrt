@@ -651,6 +651,7 @@ class GeneralCITestedSubjectTests(unittest.TestCase):
         self.assertIn("tested_head: ${{ steps.tested_subject.outputs.head }}", workflow)
         self.assertIn("tested_tree: ${{ steps.tested_subject.outputs.tree }}", workflow)
         for job, following in (("offline_browser", "amo_unlisted"),
+                               ("amo_unlisted", "s1_firefox_extension"),
                                ("container", "container_publish")):
             with self.subTest(job=job):
                 block = workflow.split("\n  " + job + ":\n", 1)[1]

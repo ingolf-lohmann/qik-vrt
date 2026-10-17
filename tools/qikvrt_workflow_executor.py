@@ -43,6 +43,8 @@ AMO_JOB = "Owner-authorized Firefox signing continuation"
 AMO_DISPATCH_STEP = "Dispatch the admitted exact-source signing request once"
 AMO_SCOPE = "firefox-amo-unlisted"
 AMO_SCHEMA = "qikvrt-owner-amo-continuation/v1"
+AMO_OWNER_CI_REF = "integration/515-519-521-522-20261012-eceb9b63"
+AMO_OWNER_CI_AUTHORIZED_AT = "2026-10-17T09:33:35Z"
 
 
 class ExecutorBlock(RuntimeError):
@@ -827,6 +829,120 @@ def amo_credential_delivery(context: Mapping[str, Any]) -> dict[str, Any]:
             "PARTIAL_PAIR_DELIVERED" if issuer or secret else "PAIR_NOT_DELIVERED"),
         "configuration_status": "NOT_INSPECTED", "credential_values_read": False,
         "amo_authentication_verified": False}
+
+
+def amo_owner_ci_admission(root: Path, context: Mapping[str, Any],
+                           subject: Mapping[str, Any], pr: Mapping[str, Any]) -> dict[str, Any]:
+    """Admit the direct Owner's tested PR push, separately from Main delegation."""
+    request = load_contract(root).get("owner_ci_handoff")
+    fixed = {"schema": "qikvrt-owner-tested-ci-handoff/v1", "enabled": True,
+        "authorization_source": "DIRECT_OWNER_INSTRUCTION", "owner": "Ingolf Lohmann",
+        "authorized_at": AMO_OWNER_CI_AUTHORIZED_AT,
+        "statement": "Ja, genau dafür ist die Continuous Integration Continuous Development Pipeline in der Linux-Distribution ja gedacht, diesen Teil zu übernehmen. Freigabe erteilt.",
+        "repository": AMO_REPOSITORY, "actor": "ingolf-lohmann", "event": "push",
+        "ref": AMO_OWNER_CI_REF, "pull_request": 523, "workflow": AMO_CI_WORKFLOW,
+        "unsigned_xpi_sha256": "1f5f583181d6134584f98bf6b59848d4542176d624d97709fa915b9934e2c46c",
+        "external_effect_scope": "OFFICIAL_UNLISTED_SIGNING_OF_EXACT_STANDARD_COMPONENTS_ONLY",
+        "requires_successful_exact_subject_test": True, "independent_approval": False,
+        "changes_main_admission": False, "unchanged_failed_effect": "NOOP"}
+    if (not isinstance(request, dict) or set(request) != set(fixed)
+            or any(type(request.get(k)) is not type(v) or request[k] != v for k, v in fixed.items())):
+        raise ExecutorBlock("AMO_EXACT_OWNER_CI_HANDOFF_REQUIRED")
+    head, tree = context.get("head"), context.get("tree")
+    if (not isinstance(head, str) or not SHA_RE.fullmatch(head)
+            or not isinstance(tree, str) or not SHA_RE.fullmatch(tree)
+            or context.get("repository") != AMO_REPOSITORY
+            or context.get("event") != "push" or context.get("actor") != "ingolf-lohmann"
+            or context.get("triggering_actor") != "ingolf-lohmann"
+            or context.get("ref") != "refs/heads/" + AMO_OWNER_CI_REF
+            or context.get("workflow_ref") != f"{AMO_REPOSITORY}/{AMO_CI_WORKFLOW}@refs/heads/{AMO_OWNER_CI_REF}"
+            or context.get("workflow_sha") != head or context.get("event_head") != head
+            or type(context.get("run_attempt")) is not int or context["run_attempt"] != 1):
+        raise ExecutorBlock("AMO_DIRECT_OWNER_CI_CONTEXT_REQUIRED")
+    if (context.get("test_result") != "success" or context.get("tested_head") != head
+            or context.get("tested_tree") != tree):
+        raise ExecutorBlock("AMO_SUCCESSFUL_EXACT_SUBJECT_TEST_REQUIRED")
+    if (pr.get("number") != 523 or pr.get("state") != "open" or pr.get("merged") is not False
+            or pr.get("base", {}).get("ref") != "main"
+            or pr.get("base", {}).get("repo", {}).get("full_name") != AMO_REPOSITORY
+            or pr.get("head", {}).get("repo", {}).get("full_name") != AMO_REPOSITORY
+            or pr.get("head", {}).get("ref") != AMO_OWNER_CI_REF or pr.get("head", {}).get("sha") != head):
+        raise ExecutorBlock("AMO_PR523_HEAD_DRIFT")
+    if (subject.get("repository") != AMO_REPOSITORY or subject.get("source_head") != head
+            or subject.get("source_tree") != tree
+            or subject.get("unsigned_xpi_sha256") != request["unsigned_xpi_sha256"]):
+        raise ExecutorBlock("AMO_OWNER_CI_PACKAGE_CHANGED")
+    return {"schema": request["schema"], "mode": "DIRECT_OWNER_TESTED_PUSH",
+        "authorization_source": request["authorization_source"], "authorized_at": request["authorized_at"],
+        "repository": AMO_REPOSITORY, "pull_request": 523, "source_head": head, "source_tree": tree,
+        "unsigned_xpi_sha256": request["unsigned_xpi_sha256"], "test_result": "success",
+        "independent_approval": False, "changes_main_admission": False, "effect_ack_done": False}
+
+
+def amo_validate_owner_ci(root: Path, environment: Mapping[str, str] | None = None) -> dict[str, Any]:
+    """Reobserve the current PR and rebuild the existing exact six-component input."""
+    env = os.environ if environment is None else environment
+    from tools.qikvrt_self_host import firefox_amo_input
+    head, tree = _git(root, "rev-parse", "HEAD"), _git(root, "rev-parse", "HEAD^{tree}")
+    _raw, subject = firefox_amo_input(root, head, tree)
+    context = {key: env.get(name, "") for key, name in {
+        "repository": "GITHUB_REPOSITORY", "event": "GITHUB_EVENT_NAME", "actor": "GITHUB_ACTOR",
+        "triggering_actor": "GITHUB_TRIGGERING_ACTOR", "ref": "GITHUB_REF",
+        "workflow_ref": "GITHUB_WORKFLOW_REF", "workflow_sha": "GITHUB_WORKFLOW_SHA",
+        "event_head": "GITHUB_SHA", "test_result": "AMO_TEST_RESULT",
+        "tested_head": "AMO_TESTED_HEAD", "tested_tree": "AMO_TESTED_TREE"}.items()}
+    context.update(head=head, tree=tree, run_attempt=int(env.get("GITHUB_RUN_ATTEMPT", "0")))
+    pr = _amo_get(root, f"repos/{AMO_REPOSITORY}/pulls/523")
+    return amo_owner_ci_admission(root, context, subject, pr)
+
+
+def amo_signing_predecessor(root: Path, run_id: int, run_attempt: int,
+                            requested: int, read=None) -> int:
+    """Read both admitted producer histories before resuming the existing journal."""
+    if (type(run_id) is not int or run_id <= 0 or type(run_attempt) is not int or run_attempt != 1
+            or type(requested) is not int or requested < 0):
+        raise ExecutorBlock("AMO_USE_FRESH_READBACK_DISPATCH_NOT_RERUN")
+    read = read or (lambda path: _amo_get(root, f"repos/{AMO_REPOSITORY}" + path))
+    histories = [("event=workflow_dispatch", "2026-10-14T17:06:35Z"),
+        ("event=push&branch=" + urllib.parse.quote(AMO_OWNER_CI_REF, safe=""), AMO_OWNER_CI_AUTHORIZED_AT)]
+    candidates = []
+    for query, cutoff in histories:
+        for page in range(1, 17):
+            runs = read("/actions/workflows/qikvrt_ci.yml/runs?" + query + "&per_page=100&page=" + str(page)).get("workflow_runs")
+            if not isinstance(runs, list) or len(runs) > 100:
+                raise ExecutorBlock("AMO_PREDECESSOR_RUN_INVENTORY_INCOMPLETE")
+            stop = False
+            for run in runs:
+                created = run.get("created_at", "")
+                if not isinstance(created, str) or not re.fullmatch(r"\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ", created):
+                    raise ExecutorBlock("AMO_PREDECESSOR_RUN_BINDING_INVALID")
+                if created < cutoff:
+                    stop = True; break
+                if (type(run.get("id")) is not int or run["id"] <= 0 or run.get("path") != AMO_CI_WORKFLOW
+                        or run.get("repository", {}).get("full_name") != AMO_REPOSITORY
+                        or run.get("head_repository", {}).get("full_name") != AMO_REPOSITORY
+                        or run.get("event") != ("push" if query.startswith("event=push") else "workflow_dispatch")
+                        or (run["event"] == "push" and run.get("head_branch") != AMO_OWNER_CI_REF)):
+                    raise ExecutorBlock("AMO_PREDECESSOR_RUN_BINDING_INVALID")
+                if run["id"] == run_id:
+                    continue
+                jobs = read("/actions/runs/" + str(run["id"]) + "/jobs?filter=all&per_page=100").get("jobs")
+                if not isinstance(jobs, list) or len(jobs) >= 100:
+                    raise ExecutorBlock("AMO_PREDECESSOR_JOB_INVENTORY_INCOMPLETE")
+                active = any(job.get("name") == "Mozilla AMO unlisted access and exact-source signing"
+                    and any(step.get("name") == "Official source-bound unlisted signing and original-byte readback"
+                        and step.get("started_at") and step.get("conclusion") != "skipped"
+                        for step in job.get("steps", [])) for job in jobs)
+                if active:
+                    candidates.append((created, run["id"])); stop = True; break
+            if stop or len(runs) < 100:
+                break
+        else:
+            raise ExecutorBlock("AMO_PREDECESSOR_RUN_INVENTORY_INCOMPLETE")
+    previous = max(candidates, default=("", 0))[1]
+    if requested not in (0, previous):
+        raise ExecutorBlock("AMO_PREDECESSOR_BINDING_MISMATCH")
+    return previous
 
 
 def amo_intent(root: Path, context: Mapping[str, Any], authority: Mapping[str, Any],

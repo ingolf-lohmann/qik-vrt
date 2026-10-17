@@ -132,11 +132,31 @@
       "repository": "ingolf-lohmann/qik-vrt",
       "requires_native_main_protection": true,
       "schema": "qikvrt-owner-amo-request/v1",
-      "statement": "Ja, wenn sie das bisher noch nicht tut, dann sorgen wir jetzt dafür, dass sie es von nun an fortwährend tut.",
+      "statement": "Ja, wenn sie das bisher noch nicht tut, dann sorgen wir jetzt daf\u00fcr, dass sie es von nun an fortw\u00e4hrend tut.",
       "unchanged_failed_effect": "NOOP",
       "unsigned_xpi_sha256": "1f5f583181d6134584f98bf6b59848d4542176d624d97709fa915b9934e2c46c",
       "workflow": "qikvrt_ci.yml"
     }
+  },
+  "owner_ci_handoff": {
+    "actor": "ingolf-lohmann",
+    "authorization_source": "DIRECT_OWNER_INSTRUCTION",
+    "authorized_at": "2026-10-17T09:33:35Z",
+    "changes_main_admission": false,
+    "enabled": true,
+    "event": "push",
+    "external_effect_scope": "OFFICIAL_UNLISTED_SIGNING_OF_EXACT_STANDARD_COMPONENTS_ONLY",
+    "independent_approval": false,
+    "owner": "Ingolf Lohmann",
+    "pull_request": 523,
+    "ref": "integration/515-519-521-522-20261012-eceb9b63",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "requires_successful_exact_subject_test": true,
+    "schema": "qikvrt-owner-tested-ci-handoff/v1",
+    "statement": "Ja, genau daf\u00fcr ist die Continuous Integration Continuous Development Pipeline in der Linux-Distribution ja gedacht, diesen Teil zu \u00fcbernehmen. Freigabe erteilt.",
+    "unchanged_failed_effect": "NOOP",
+    "unsigned_xpi_sha256": "1f5f583181d6134584f98bf6b59848d4542176d624d97709fa915b9934e2c46c",
+    "workflow": ".github/workflows/qikvrt_ci.yml"
   },
   "reflexive_deadlock_prevention": {
     "acceptance_test_path": "tests/test_qikvrt_reflexive_repository_watchdog.py",
