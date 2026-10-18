@@ -151,7 +151,13 @@ async function controller() {
     return element;
   }
   let activeId = 1;
+  let lockTail = Promise.resolve(), lockCalls = 0;
+  const locks = {request: (name, options, action) => {
+    assert.equal(name, "qikvrt-fill-sources-v1"); assert.equal(options.mode, "exclusive"); lockCalls++;
+    const result = lockTail.then(action); lockTail = result.catch(() => undefined); return result;
+  }};
   const ctx = vm.createContext({URL, TextEncoder, crypto:webcrypto,
+    navigator:{locks},
     document:{getElementById:node,createElement:() => node(),querySelectorAll:() => [
       ...["fill-capture","fill-add","fill-clear","fill-inspect","fill-apply","fill-text","fill-label"].map(node),
       ...node("fill-sources").children.map(label => label.children[0]),
@@ -191,6 +197,15 @@ async function controller() {
   assert.equal(localWrites.length, 0);
   assert(calls.every(call => call.target.frameIds.length === 1 && call.target.frameIds[0] === 0));
   assert(calls.every(call => call.world === "ISOLATED"));
+  assert(lockCalls >= 5, "add, clear and apply must share the same exclusive lock");
+  const order = [];
+  await Promise.all([
+    ctx.withSourceLock(async () => {order.push("add:start"); await new Promise(resolve => setImmediate(resolve)); order.push("add:end");}),
+    ctx.withSourceLock(async () => {order.push("clear");})
+  ]);
+  assert.deepEqual(order, ["add:start","add:end","clear"], "clear must not race an unfinished source addition");
+  vm.runInContext("navigator.locks = null", ctx);
+  await assert.rejects(ctx.withSourceLock(async () => {throw new Error("must never execute");}), /Sitzungssperre/u);
   count++; process.stdout.write("PASS simulated popup uses session-only sources and rejects changed tab or revoked sources\n");
 }
 controller().then(() => process.stdout.write(`PASS: ${count} offline Fill from Sources control groups; simulated DOM/APIs, NOT native Firefox acceptance.\n`))

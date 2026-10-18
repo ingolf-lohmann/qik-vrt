@@ -69,9 +69,9 @@
     },
     {
       "path": "browser/firefox/qikvrt-terminal/README.md",
-      "bytes": 19721,
-      "sha256": "8818feeaf3334c69d08178fa69404057d122249784046147646834e39db762a3",
-      "git_blob_sha1": "804b43d084becc990af98b09285723a15da9abf6"
+      "bytes": 20175,
+      "sha256": "d8c23e168fcb73ca9606ad83e611ec09f3b577841950a401af86019ee2708881",
+      "git_blob_sha1": "24a2c57a88a0e3898840935325b5090bab16dead"
     },
     {
       "path": "browser/firefox/qikvrt-terminal/manifest.json",
@@ -87,15 +87,15 @@
     },
     {
       "path": "browser/firefox/qikvrt-terminal/options.js",
-      "bytes": 18550,
-      "sha256": "6f580fc1bd0bde899b5a808738c1a2bbacac97d2fa6e0ee68904ba058a9e06d4",
-      "git_blob_sha1": "91f1cbbe38b3c5847fca0e1620f70466709c94c4"
+      "bytes": 18986,
+      "sha256": "a3ebf6dd549d91add4ad460f298179f28f5f5c65810feed71394bde1f2430243",
+      "git_blob_sha1": "df4bbf9df82e79cae8821303c161b78b60de801e"
     },
     {
       "path": "policy/QIKVRT_EFFECT_ACK_HTTP_TERMINAL_V1.json",
-      "bytes": 3860,
-      "sha256": "3edbe05a48f1e5bca142982c9d7784b6d43a0bced41e33a11f3b743e0771bd02",
-      "git_blob_sha1": "2290073e461216e1b78c5aa83e113f0f904f2660"
+      "bytes": 3967,
+      "sha256": "94714463842f176d00a8ffac8beb697c2bcd36b14e9b41df18b4f3ccaca71949",
+      "git_blob_sha1": "7925a7580d933939aef1247c47f13c48f7f99cd8"
     },
     {
       "path": "tests/test_qikvrt_effect_ack_http_terminal.py",
@@ -117,9 +117,9 @@
     },
     {
       "path": "tests/test_qikvrt_fill_from_sources.cjs",
-      "bytes": 13201,
-      "sha256": "26ab469d1be46ea469efe9a2cd16119a2ac622430971993621592f4007c8a218",
-      "git_blob_sha1": "f136f29b02949b321989ee5cd815f1061c6bddc1"
+      "bytes": 14151,
+      "sha256": "6cf9da0ff726f6332c9440895a85b9763d38ef1d08b82247ed5876cf03db7e45",
+      "git_blob_sha1": "c305dd9269d7e421b2a9f5f6b986bf5e2e4cfb0e"
     }
   ],
   "verification": {
@@ -145,7 +145,8 @@
     "full_repository_suite": "NOT_COMPLETED",
     "native_ci": "NOT_OBSERVED_AT_RECORD_CREATION",
     "native_firefox_execution": false,
-    "native_visibility_and_isolated_world": "PASS simulated ancestor visibility negative controls; executeScript explicitly selects ISOLATED. Real Firefox remains unverified."
+    "native_visibility_and_isolated_world": "PASS simulated ancestor visibility negative controls; executeScript explicitly selects ISOLATED. Real Firefox remains unverified.",
+    "cross_view_source_serialization": "PASS simulated exclusive-lock ordering, shared add/clear/apply lock name and missing-lock fail-closed controls; actual browser crash/context-destruction ordering remains unverified."
   },
   "integration": {
     "candidate_branch": "work/fill-from-sources-20261018",
@@ -182,5 +183,24 @@
     "merge": false,
     "deployment": false,
     "EFFECT_ACK_DONE": false
+  },
+  "successor": {
+    "predecessor_head": "1cce5c959f85474329bd61214ad7f441f06b7ed8",
+    "predecessor_tree": "fdf7921d149791e1f4a6ad1cc39d245af00d8346",
+    "reason": "Review found a cross-view read/check/write race in session sources; a concurrent clear could be followed by a stale add. Origin-scoped exclusive Web Locks now coordinate add, clear and apply; stale source-set checks run after lock admission. Missing lock support blocks, with no unguarded fallback.",
+    "fresh_controls": "105 focused Python tests and 11 Node control groups rerun on successor bytes, including serialization and missing-lock negative controls.",
+    "predecessor_tests": {
+      "run_id": 39107162693,
+      "test_job": 117615424331,
+      "make_test_exit": 0,
+      "tested_head": "1cce5c959f85474329bd61214ad7f441f06b7ed8",
+      "tested_tree": "fdf7921d149791e1f4a6ad1cc39d245af00d8346",
+      "offline_chromium": "success",
+      "offline_webkit": "success",
+      "amo_submission": "SKIPPED",
+      "firefox_s1_admission": "FAILURE_AT_ACTIVATION_GATE"
+    },
+    "evidence_transfer_to_successor": false,
+    "native_successor_ci": "PENDING"
   }
 }

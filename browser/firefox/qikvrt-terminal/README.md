@@ -75,7 +75,12 @@ denials remain protected. The declared minimum remains **158.0**.
    inspect the actual page and create a new preview.
 
 Sources use `browser.storage.session`, in browser memory, not `storage.local`,
-sync, a repository or a model endpoint. Clear them with **Quellen löschen**;
+sync, a repository or a model endpoint. One origin-scoped exclusive Web Lock coordinates add/clear/apply across extension
+views. Missing lock support fails closed. A queued add rechecks the exact
+source set after acquiring the lock, so a completed clear cannot be undone by
+an older view. The lock is not a cross-machine or server transaction; actual
+Firefox popup-destruction/crash ordering remains a separate acceptance test.
+Clear sources with **Quellen löschen**;
 Firefox also clears this area when the browser stops or the extension is
 disabled/uninstalled. Up to eight sources, 32 KiB per source, 64 facts per
 source, 4096 characters per value and 100 target fields are admitted. Do not
@@ -116,6 +121,7 @@ Primary API contracts (not native acceptance receipts):
 https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/scripting/executeScript
 https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions#activetab_permission
 https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage/session
+https://developer.mozilla.org/en-US/docs/Web/API/Web_Locks_API
 
 ## Development loading (temporary only)
 

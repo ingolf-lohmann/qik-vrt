@@ -6,6 +6,13 @@
 const FILL_SESSION_KEY = "qikvrtFillSourcesV1";
 const MAX_SOURCE_BYTES = 32768;
 
+async function withSourceLock(action) {
+  if (typeof navigator === "undefined" || !navigator.locks || typeof navigator.locks.request !== "function") {
+    throw new Error("Browser-Sitzungssperre nicht verfügbar; keine Quellenänderung oder Übernahme.");
+  }
+  return navigator.locks.request("qikvrt-fill-sources-v1", {mode: "exclusive"}, action);
+}
+
 function normalizeField(value) {
   return String(value).normalize("NFKC").toLowerCase().replace(/[\s_\-:]+/gu, " ").trim();
 }
@@ -170,7 +177,7 @@ function formOperation(request) {
   }
 }
 
-if (typeof module !== "undefined" && module.exports) module.exports = {normalizeField, parseSource, planFill, formOperation};
+if (typeof module !== "undefined" && module.exports) module.exports = {normalizeField, parseSource, planFill, formOperation, withSourceLock};
 
 if (typeof document !== "undefined" && typeof browser !== "undefined") {
   const preferenceFields = ["accent", "fontScale", "density", "position"];
@@ -293,12 +300,13 @@ if (typeof document !== "undefined" && typeof browser !== "undefined") {
       }
     });
   }
-  handle("fill-capture", capture); handle("fill-add", addSource); handle("fill-inspect", inspect); handle("fill-apply", apply);
-  handle("fill-clear", async () => {
+  handle("fill-capture", capture); handle("fill-add", () => withSourceLock(addSource));
+  handle("fill-inspect", inspect); handle("fill-apply", () => withSourceLock(apply));
+  handle("fill-clear", () => withSourceLock(async () => {
     invalidate(); await browser.storage.session.remove(FILL_SESSION_KEY);
     sources = []; showSources(); byId("fill-text").value = ""; capturedLocator = "user-provided";
     status("Quellen gelöscht.");
-  });
+  }));
   byId("fill-text").addEventListener("input", () => { capturedLocator = "user-provided/edited"; });
   byId("save").addEventListener("click", async () => {
     try {
