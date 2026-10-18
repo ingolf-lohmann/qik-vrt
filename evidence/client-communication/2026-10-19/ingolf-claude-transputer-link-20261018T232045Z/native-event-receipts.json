@@ -1,0 +1,156 @@
+{
+  "schema": "qikvrt_native_client_connection_repair_receipt_v1",
+  "observed_at": "2026-10-18T23:27:27.008105+00:00",
+  "epoch": "aeda03b67926436d8965e1f7420ed39c",
+  "subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pr": 534,
+    "head": "936e36b48f429277bec628cc0498c99ac3442790",
+    "tree": "5240f56965f290a4cba98a3f43682e8381df6226"
+  },
+  "events": [
+    {
+      "native_event": {
+        "schema": "qikvrt_temdd_native_event_v1",
+        "kind": "OBSERVE",
+        "subject": {
+          "repository": "ingolf-lohmann/qik-vrt",
+          "pr": 534,
+          "head": "936e36b48f429277bec628cc0498c99ac3442790",
+          "tree": "5240f56965f290a4cba98a3f43682e8381df6226"
+        },
+        "provenance": {
+          "source": "transputer",
+          "native_event_id": "codex-claude-link-20261018T232045Z:input"
+        },
+        "observed_at": "2026-10-18T23:27:26.929461Z",
+        "message": "Owner-authorized Claude communication: bounded Terminal input observed",
+        "payload": {
+          "adapter": "EXISTING_RUNTIME_IN_PROCESS_WITH_TERMINAL_VALIDATION_AND_READBACK",
+          "terminal_input": {
+            "schema": "qikvrt_terminal_input_v1",
+            "text": "{\"acknowledged_export_sha256\":\"dc82dacc8e30754009830e0c6af1c6f7196f4be3b08b890fa2c75becb7ffdbf0\",\"authorization\":\"Beginnen nun mit der Kommunikation mit Claude über den universalen Transputer mithilfe des universalen Terminals Freigabe erteilt Prinzipal Ingolf Lohmann.\",\"delivery_state\":\"PENDING_VERIFIED_PEER_ROUTE\",\"message\":\"Bitte bestätige diese request_id und den SHA-256 der unveränderten Nachricht über deinen bestehenden Terminal-/Transputer-Anschluss. Deine Journalübergabe ist byte-genau verifiziert. Benenne den bereits freigegebenen authentifizierten Empfangs- und Antwortweg samt nicht geheimen Identitäts-/Quellbindungen. Keine neuen Zugangsdaten, kein Ersatzknoten, kein Schreiben in Originalepoche 5425a37d.\",\"principal\":\"Ingolf Lohmann\",\"recipient\":{\"client\":\"Claude observer\",\"epoch\":\"b184cf99f8f74f6bb2820416511562dc\",\"pr\":536,\"source_head\":\"a4729467daab3bd1f3d17736ae213683db0e98fa\"},\"reply_observed\":false,\"reported_peer_event_5\":{\"digest_prefix\":\"319dd217\",\"scope\":\"Owner-forwarded report; original event5 bytes not yet available\"},\"request_id\":\"ingolf-claude-transputer-link-20261018T232045Z\",\"schema\":\"qikvrt_client_exchange_request_v1\",\"sender\":\"Codex current work session; not Mesh-admitted\"}"
+          },
+          "input_hash": "sha256:82c5be4d21d78657408904b62bec09b9bab43e2f214b95b8f5c073a53f341f0b",
+          "scope": "Own Codex observation journal; direct existing Runtime API, not Unix durable-commit and not remote receipt"
+        }
+      },
+      "receipt": {
+        "dod": false,
+        "evidence_transfer": "DENY",
+        "kind": "OBSERVE",
+        "message": "Owner-authorized Claude communication: bounded Terminal input observed",
+        "observed_at": "2026-10-18T23:27:26.929461Z",
+        "payload": {
+          "adapter": "EXISTING_RUNTIME_IN_PROCESS_WITH_TERMINAL_VALIDATION_AND_READBACK",
+          "input_hash": "sha256:82c5be4d21d78657408904b62bec09b9bab43e2f214b95b8f5c073a53f341f0b",
+          "scope": "Own Codex observation journal; direct existing Runtime API, not Unix durable-commit and not remote receipt",
+          "terminal_input": {
+            "schema": "qikvrt_terminal_input_v1",
+            "text": "{\"acknowledged_export_sha256\":\"dc82dacc8e30754009830e0c6af1c6f7196f4be3b08b890fa2c75becb7ffdbf0\",\"authorization\":\"Beginnen nun mit der Kommunikation mit Claude über den universalen Transputer mithilfe des universalen Terminals Freigabe erteilt Prinzipal Ingolf Lohmann.\",\"delivery_state\":\"PENDING_VERIFIED_PEER_ROUTE\",\"message\":\"Bitte bestätige diese request_id und den SHA-256 der unveränderten Nachricht über deinen bestehenden Terminal-/Transputer-Anschluss. Deine Journalübergabe ist byte-genau verifiziert. Benenne den bereits freigegebenen authentifizierten Empfangs- und Antwortweg samt nicht geheimen Identitäts-/Quellbindungen. Keine neuen Zugangsdaten, kein Ersatzknoten, kein Schreiben in Originalepoche 5425a37d.\",\"principal\":\"Ingolf Lohmann\",\"recipient\":{\"client\":\"Claude observer\",\"epoch\":\"b184cf99f8f74f6bb2820416511562dc\",\"pr\":536,\"source_head\":\"a4729467daab3bd1f3d17736ae213683db0e98fa\"},\"reply_observed\":false,\"reported_peer_event_5\":{\"digest_prefix\":\"319dd217\",\"scope\":\"Owner-forwarded report; original event5 bytes not yet available\"},\"request_id\":\"ingolf-claude-transputer-link-20261018T232045Z\",\"schema\":\"qikvrt_client_exchange_request_v1\",\"sender\":\"Codex current work session; not Mesh-admitted\"}"
+          }
+        },
+        "payload_digest": "50eb51bfe85f2a2d37f2167acc759cbc96a208397312f21083014d41d18cf126",
+        "provenance": {
+          "native_event_id": "codex-claude-link-20261018T232045Z:input",
+          "source": "transputer"
+        },
+        "recorded_at": "2026-10-18T23:27:26.943410Z",
+        "schema": "qikvrt_temdd_event_v1",
+        "subject": {
+          "head": "936e36b48f429277bec628cc0498c99ac3442790",
+          "pr": 534,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "5240f56965f290a4cba98a3f43682e8381df6226"
+        },
+        "id": "aeda03b67926436d8965e1f7420ed39c:1",
+        "ledger_digest": "582009735ac7ed23208fb5b34f5fccd478d31d673bd913256e5d66f8bdced91a"
+      },
+      "independent_terminal_read_equal": true,
+      "identical_native_replay_idempotent": true
+    },
+    {
+      "native_event": {
+        "schema": "qikvrt_temdd_native_event_v1",
+        "kind": "READBACK",
+        "subject": {
+          "repository": "ingolf-lohmann/qik-vrt",
+          "pr": 534,
+          "head": "936e36b48f429277bec628cc0498c99ac3442790",
+          "tree": "5240f56965f290a4cba98a3f43682e8381df6226"
+        },
+        "provenance": {
+          "source": "transputer",
+          "native_event_id": "codex-claude-link-20261018T232045Z:publication"
+        },
+        "observed_at": "2026-10-18T23:27:26.929483Z",
+        "message": "Exact GitHub REST message publication independently read back",
+        "payload": {
+          "request_id": "ingolf-claude-transputer-link-20261018T232045Z",
+          "comment_id": 6256470968,
+          "comment_url": "https://github.com/ingolf-lohmann/qik-vrt/pull/536#issuecomment-6256470968",
+          "message_canonical_sha256": "30636063c975d2e7b2782f52f68fafeec74d0f9bb23c1ef57c4d34d07d41e13e",
+          "comment_body_sha256": "eba5e9edd1d25c46f97a91698244f9c1a266f0c91fb04b2785e65b1e9ddc8e85",
+          "exact_body_equal": true,
+          "peer_received": false,
+          "peer_reply_observed": false,
+          "native_unix_attempt": "EPERM before first event; retained historical failure",
+          "authority_scope": "Existing GitHub REST PR comment publication only; not native Mesh effect or SSO",
+          "owner_correction": "2026-10-19 02:26 Europe/Istanbul: fix the current connection promptly"
+        }
+      },
+      "receipt": {
+        "dod": false,
+        "evidence_transfer": "DENY",
+        "kind": "READBACK",
+        "message": "Exact GitHub REST message publication independently read back",
+        "observed_at": "2026-10-18T23:27:26.929483Z",
+        "payload": {
+          "authority_scope": "Existing GitHub REST PR comment publication only; not native Mesh effect or SSO",
+          "comment_body_sha256": "eba5e9edd1d25c46f97a91698244f9c1a266f0c91fb04b2785e65b1e9ddc8e85",
+          "comment_id": 6256470968,
+          "comment_url": "https://github.com/ingolf-lohmann/qik-vrt/pull/536#issuecomment-6256470968",
+          "exact_body_equal": true,
+          "message_canonical_sha256": "30636063c975d2e7b2782f52f68fafeec74d0f9bb23c1ef57c4d34d07d41e13e",
+          "native_unix_attempt": "EPERM before first event; retained historical failure",
+          "owner_correction": "2026-10-19 02:26 Europe/Istanbul: fix the current connection promptly",
+          "peer_received": false,
+          "peer_reply_observed": false,
+          "request_id": "ingolf-claude-transputer-link-20261018T232045Z"
+        },
+        "payload_digest": "72182cfb89a215e37f6a8f99384a911ce1c585bf5d2c2693d963689c55b7b2ba",
+        "provenance": {
+          "native_event_id": "codex-claude-link-20261018T232045Z:publication",
+          "source": "transputer"
+        },
+        "recorded_at": "2026-10-18T23:27:26.977172Z",
+        "schema": "qikvrt_temdd_event_v1",
+        "subject": {
+          "head": "936e36b48f429277bec628cc0498c99ac3442790",
+          "pr": 534,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "5240f56965f290a4cba98a3f43682e8381df6226"
+        },
+        "id": "aeda03b67926436d8965e1f7420ed39c:2",
+        "ledger_digest": "d09d01d051168506862f058f829daf076c783a6a7b022acb09db79b4b8854f5b"
+      },
+      "independent_terminal_read_equal": true,
+      "identical_native_replay_idempotent": true
+    }
+  ],
+  "native_runtime_append": "EXECUTED",
+  "terminal_bounded_input_validation": "EXECUTED",
+  "independent_terminal_durable_read": "MATCHES_BOTH_EVENTS",
+  "restart_readback": "MATCHES_SAME_EPOCH_AND_EVENTS",
+  "duplicate_native_event": "IDEMPOTENT_NO_ADDITIONAL_EVENT",
+  "tampered_event_readback": "DURABLE_READBACK_MISMATCH",
+  "socket_or_server_required": false,
+  "unix_durable_commit_executed": false,
+  "no_permissions_changed": true,
+  "original_or_peer_journal_written": false,
+  "native_source_modified": false,
+  "peer_delivery": "PUBLISHED_TO_AUTHORITY_COMMENTS_ACK_NOT_YET_OBSERVED",
+  "EFFECT_ACK_DONE": false,
+  "mesh_acceptance": false,
+  "processes_persistent": false
+}

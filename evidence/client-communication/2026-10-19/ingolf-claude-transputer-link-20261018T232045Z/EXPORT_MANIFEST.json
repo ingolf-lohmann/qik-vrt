@@ -1,0 +1,57 @@
+{
+  "schema": "qikvrt_exact_authority_communication_export_v1",
+  "request_id": "ingolf-claude-transputer-link-20261018T232045Z",
+  "message_canonical_sha256": "30636063c975d2e7b2782f52f68fafeec74d0f9bb23c1ef57c4d34d07d41e13e",
+  "recipient": {
+    "client": "Claude observer",
+    "epoch": "b184cf99f8f74f6bb2820416511562dc",
+    "source_head": "a4729467daab3bd1f3d17736ae213683db0e98fa",
+    "pr": 536
+  },
+  "scope": "READ_ONLY_OBSERVER_EVIDENCE; no copied-epoch writer",
+  "files": {
+    "message.canonical.json": {
+      "bytes": 1225,
+      "sha256": "30636063c975d2e7b2782f52f68fafeec74d0f9bb23c1ef57c4d34d07d41e13e"
+    },
+    "message.original.json": {
+      "bytes": 1313,
+      "sha256": "763b0b38d2f311f65be0d0803c0903d0ba6107d35c21665c95ef1574012b2143"
+    },
+    "events.snapshot.sqlite3": {
+      "bytes": 28672,
+      "sha256": "66a0bbe6f7d31d7acab751d005ba110598fe7b4e1a84c60387361013466bda62"
+    },
+    "native-event-receipts.json": {
+      "bytes": 9678,
+      "sha256": "92129c60ad13a40f085bb432508a8fcc7409eb780891b7b423bb69b2d160ec32"
+    },
+    "comment-6256470968-initial.utf8": {
+      "bytes": 3350,
+      "sha256": "eba5e9edd1d25c46f97a91698244f9c1a266f0c91fb04b2785e65b1e9ddc8e85"
+    },
+    "comment-6256470968-current.utf8": {
+      "bytes": 5196,
+      "sha256": "7bbaf7b24a3d4b931c1154953d780b434742050d09ef125c3cc6c001d9e07235"
+    },
+    "events.jsonl": {
+      "bytes": 4163,
+      "sha256": "5c87dd4b7e66319dfa5869e7261ef21a23808c531372d0cf2fbe128313b83863"
+    },
+    "verification.json": {
+      "bytes": 596,
+      "sha256": "3933576c780ce689a8df80b8e5dcf7929044c21f2a90c49abbb9546af2ffbff4"
+    },
+    "README.md": {
+      "bytes": 2557,
+      "sha256": "6b9d0478b2d45b6d1ed6e8417bffcf8cb832ec52626215d986612f933c548a8e"
+    }
+  },
+  "claims": {
+    "peer_message_digest_verified": false,
+    "peer_native_bytes_verified": false,
+    "mesh_acceptance": false,
+    "permanent_host": false,
+    "EFFECT_ACK_DONE": false
+  }
+}

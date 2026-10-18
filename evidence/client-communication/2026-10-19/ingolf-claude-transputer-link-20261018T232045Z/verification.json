@@ -1,0 +1,12 @@
+{
+  "schema": "qikvrt_native_client_export_verification_v1",
+  "sqlite_integrity": "ok",
+  "epoch": "aeda03b67926436d8965e1f7420ed39c",
+  "events": 2,
+  "all_body_native_binding_digests_recomputed_equal": true,
+  "native_terminal_readback_restart_idempotence_tamper_tests": "See original native-event-receipts.json; fresh raw snapshot/event checks passed during publication preparation.",
+  "read_only_export": true,
+  "writer_transfer": false,
+  "full_software_suite_rerun": false,
+  "scope": "Exact communication and observer-journal bytes only; no source code or production effect changes."
+}
