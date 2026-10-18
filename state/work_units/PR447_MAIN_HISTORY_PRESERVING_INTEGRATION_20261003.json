@@ -149,6 +149,84 @@
         ],
         "state": "PENDING_FRESH_SUCCESSOR_NATIVE_GATES"
       }
+    },
+    {
+      "artificial_cognitive_actor": {
+        "model_or_build": "GPT-6; exact build unavailable",
+        "provider": "OpenAI",
+        "session_or_run_id": "403ff0e6ec54",
+        "system_family": "Codex",
+        "tools_and_adapters": [
+          "GitHub REST connector",
+          "native Python/Git snapshot runtime",
+          "existing repository proof, benchmark, terminal and integrity validators"
+        ]
+      },
+      "artificial_cognitive_contributions": [
+        "Reconstructed complete source with exact Git identities, integrated current Main without rewriting history, diagnosed four actual integration failures and repaired source-bound test semantics and benchmark role scope, retained 87 frozen publication blobs byte-exactly."
+      ],
+      "authority": {
+        "exact_statement": "Als Nächstes ist Pull Request 447 zu mergen und zu pushen und dann endlich die notwendige Implementierung des universalen Terminals abgeschlossen zu haben und es dann auch vollumfänglich nutzen zu können, insbesondere für Effizienz- und Performance-Steigerung Freigabe erteilt.",
+        "human_actor": "Ingolf Lohmann",
+        "new_zenodo_upload_authorization": false,
+        "principal_review_policy": "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json#/mesh_authority/principal_review",
+        "task": "Merge and push PR447, continue universal terminal implementation and actual usability"
+      },
+      "continuation_id": "PR447_CURRENT_MAIN_OWNER_APPROVED_INTEGRATION_20261018_V1",
+      "external_effects": {
+        "force_push": false,
+        "history_rewrite": false,
+        "main_promotion": "PENDING_AUTHORIZED_EXACT_HEAD_NATIVE_GATES",
+        "upload_authorization_consumed": false,
+        "v3_contract_activated": false,
+        "zenodo_mutation": false
+      },
+      "integrated_main": {
+        "head": "e0ad3755b050f367d85e3615fd07af8d5a466d01",
+        "tree": "e21c311da23f65982726dd4c8c07a1217f4bf0ff"
+      },
+      "local_verification": {
+        "causal_repairs": [
+          "Use current Authority for positive v3 execution and retired Authority as negative control",
+          "Preserve frozen candidate and exact historical AI fixture; validate archival source in isolated test, separately reject current AI drift",
+          "Benchmark fixed remote identities and read-only App scope follow current canonical Authority/Mirror policy",
+          "Retain both Main and PR447 Makefile targets"
+        ],
+        "initial_integration_failures": [
+          "Three v3 test repository identities stale after Authority succession",
+          "Frozen historical proof correctly rejects changed current AI source"
+        ],
+        "integration": "171 publication proof, router and byte-safe benchmark tests PASS",
+        "integration_log_sha256": "81b72f17eaeea103fba353b30d38dca91619d2702bf53f5b6e0d1bc10a444b03",
+        "native_successor_checks": "PENDING fresh exact-head GitHub Actions after non-force update",
+        "runtime": "68 benchmark/ledger/subject tests: 59 PASS, 9 Unix socket cases blocked by local EPERM at socket creation. No server fault inferred. Native GitHub runner execution is required.",
+        "runtime_error": "PermissionError: [Errno 1] Operation not permitted at socket.socket(AF_UNIX); no guest deployment attempted",
+        "source": "Complete Git-object-verified Main snapshot restored from existing portable SQLite export; exact Main delta independently verified before integration. Local history has an explicit shallow Main boundary.",
+        "tool_cache": "34/34 declared tools PASS"
+      },
+      "merge_base": "8658b113979ab2bcc6e01a36e7931c21de5ea730",
+      "observed_at": "2026-10-18T05:48:29.037937Z",
+      "preservation": {
+        "current_main_owner_review_and_terminal_security_preserved": true,
+        "frozen_proof_return_manifest_regenerated": false,
+        "historical_source_bindings_rewritten": false,
+        "publication_blob_count": 87,
+        "publication_changed_paths": []
+      },
+      "previous_candidate": {
+        "head": "6aaac98a545b3855c3b7af2fdb5debc80b4ded66",
+        "tree": "235ab0a6664bf65887e634363b17cf514a723d08"
+      },
+      "release_claims": {
+        "effect_ack_done": false,
+        "performance_speedup": false,
+        "product_done": false,
+        "public_terminal_available": false
+      },
+      "required_parent_order": [
+        "6aaac98a545b3855c3b7af2fdb5debc80b4ded66",
+        "e0ad3755b050f367d85e3615fd07af8d5a466d01"
+      ]
     }
   ],
   "created_at": "2026-10-03T17:47:59.364363Z",

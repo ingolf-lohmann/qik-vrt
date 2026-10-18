@@ -1,0 +1,26 @@
+# Dockerfile-specific build context allowlist; exclude unrelated repository and personal data.
+**
+!runtime/
+!runtime/public_qa/
+!runtime/public_qa/**
+!docs/
+!docs/fragen/
+!docs/fragen/index.html
+!docs/news/
+!docs/news/index.html
+!docs/news/universaler-transputer/
+!docs/news/universaler-transputer/index.html
+!docs/publications/
+!docs/publications/index.html
+!docs/publications/index.json
+!docs/assets/
+!docs/assets/css/
+!docs/assets/css/qikvrt.css
+!docs/assets/css/qikvrt-publications.css
+!docs/assets/js/
+!docs/assets/js/qikvrt-questions.js
+!docs/assets/js/qikvrt-local-engine.js
+!docs/assets/js/qikvrt-publications.js
+!docs/CURRENT_AUTHORITY.md
+!docs/BOUNDARIES.md
+!docs/ARCHITECTURE.md

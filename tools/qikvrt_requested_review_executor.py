@@ -67,11 +67,14 @@ def _result(snapshot: Mapping[str, Any], state: str, blocker: str | None, detail
         "head_sha": snapshot.get("head_sha"),
         "tree_sha": snapshot.get("tree_sha"),
         "reviewed_scope": snapshot.get("changed_paths", []),
+        "status_scope": "TECHNICAL_DISPOSITION_ONLY",
+        "native_approval_mutation": "FORBIDDEN_FOR_AUTOMATED_EXECUTOR",
         "completion_claims": {
             "PASS": False,
             "FINAL_PASS": False,
             "EFFECT_ACK_DONE": False,
             "INDEPENDENT_CODE_OWNER_APPROVAL": False,
+            "NATIVE_RULE_ENFORCEMENT": False,
         },
     }
 

@@ -3,8 +3,9 @@
 """Existing #446 credential resolver, extracted without priority changes.
 
 Source: 3e8530f2beb158cdfebd3fa74d25498e7ac2aa4a,
-tools/qikvrt_authority_url_probe.py. GITHUB_TOKEN is a Mirror fallback;
-Authority consumers must exclude it from the input mapping.
+tools/qikvrt_authority_url_probe.py. An unverified workspace GITHUB_TOKEN
+does not establish Authority scope; Authority consumers exclude that fallback
+from the input mapping. Repository roles follow the current canonical policy.
 """
 CREDENTIALS = (
     "QIKVRT_RULESET_ADMIN_TOKEN", "QIKVRT_GITHUB_ADMIN_TOKEN",
@@ -17,4 +18,3 @@ def credential(environment):
         if present[name]:
             return environment[name], name, present
     return "", None, present
-

@@ -96,5 +96,40 @@
   "rollback": "No destructive rollback of a published DOI. Corrections require a new version with preserved history and a new prepublication return receipt.",
   "effect_boundary": "A workflow result is not publication evidence until the proof-bearing evidence JSON is committed and the public record has passed the client's independent public GET and byte-redownload gates.",
   "rights_holder": "Ingolf Lohmann",
-  "license": "Implementation files declare their own software license; non-software policy artifacts are CC-BY-NC-ND-4.0"
+  "license": "Implementation files declare their own software license; non-software policy artifacts are CC-BY-NC-ND-4.0",
+  "invocation_routes": [
+    {
+      "workflow": ".github/workflows/qikvrt_publication_router.yml",
+      "event": "workflow_dispatch",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "ref": "refs/heads/main",
+      "operation": "publish",
+      "default": "PREFLIGHT_ONLY; execute=false",
+      "required_inputs": [
+        "manifest_path",
+        "manifest_sha256",
+        "expected_main_head",
+        "expected_main_tree"
+      ],
+      "credential_source": "Existing target-repository secrets.ZENODO_ACCESS_TOKEN and scoped github.token; source code does not transfer or prove credentials.",
+      "admission": "Canonical candidate-specific authorization, existing v2 proof/return/one-use gates, complete ordinary tests, exact fresh Authority Main readback.",
+      "completion": "Independent public byte readback and Authority evidence persistence remain required; an Actions artifact or publisher return alone is not EFFECT_ACK_DONE."
+    }
+  ],
+  "editorial_continuation": {
+    "schema": "qikvrt_editorial_publication_request_v1",
+    "implementation": "tools/qikvrt_publication_router.py",
+    "request_directory": "state/publication_requests",
+    "documentation": "state/publication_requests/README.md",
+    "intake": "Read-only structural format, exact upload/returned-candidate and existing v2 proof/individual-author validation; no grant generation.",
+    "automatic_admission": "Reviewed protected Authority Main push -> existing workflow_dispatch with exact manifest SHA256/Main HEAD/TREE and execute=true.",
+    "one_shot_dispatch_reservation": "refs/tags/qikvrt-editorial-dispatch/<existing-author-authorization-consumption-key>",
+    "author_scope": "Active policy principal only; multi-author intake HOLD until each author's approval protocol is available. Historical Goldkelch grants are not transferred.",
+    "public_verification": "Anonymous independent records GET and every-file MD5/SHA256 redownload through tools/qikvrt_verify_zenodo_public_manifest.py.verify_generic.",
+    "durable_handoff": "Create-only draft receipt/docs/index/integrity PR, using existing REST materializer transport, publication overview and integrity generator. No Main update, approval or merge.",
+    "website_delivery": "Existing qikvrt_effect_ack_http_terminal.yml deployment; publication-specific anonymous exact-host byte readback only after both actual deployment and product-HTTP jobs succeed.",
+    "exact_public_origin": "https://raumzeitterminal.de",
+    "work_unit": "state/work_units/QIKVRT_EDITORIAL_PUBLICATION_AUTOMATION_20261016_V1.json",
+    "effect_ack_done_implied": false
+  }
 }

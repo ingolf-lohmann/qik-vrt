@@ -17,11 +17,97 @@ Repository evidence is authoritative over conversation memory. The declared
 repositories are symmetrically canonical only for a scope whose exact bytes and
 state have been verified equivalent.
 
+For Ingolf Lohmann's personal reminder requests, the standing Owner rule is
+repository-native persistence and execution, not a new local ChatGPT schedule.
+Read `personal/ingolf-lohmann/reminders/README.md` and its versioned registry.
+Keep sensitive details private; public repository entries use neutral labels
+and authenticated references. Existing independent tasks retain their scopes.
+
 The architecture/implementation licensing boundary in `AI_CONTEXT.json` is
 mandatory context: freely available architecture and interoperability
 specifications do not automatically grant an open-source license for the
 concrete implementation. No rights may be inferred beyond explicit license
 texts.
+
+## Binding client continuation procedure
+
+Ingolf Lohmann is Principal, Code Owner and Product Owner. His considered
+explicit approval is also his review, including on his own PR (18 October
+2026). Apply the exact Owner decision in the existing review policy and gate;
+do not impose another independent review as an unconditional prerequisite.
+Record the actual platform event and review basis. A connected-account
+COMMENTED Principal review is not independent GitHub APPROVED; an automated
+technical disposition cannot stand in for his instruction. Existing task
+authorization and review persist without repeated permission requests.
+Tests, signing, platform protections and exact-host acceptance remain separate.
+
+Ingolf Lohmann's instructions of 2026-10-11 are mandatory for every client.
+Preserve the authorized repair, integration and delivery goal across handoffs,
+status questions and context compaction. Preserve existing authorization; do
+not request the same task permission again. Inspect the current repository
+entrypoint and applicable existing connector, CLI and Mesh routes before
+declaring execution unavailable. Match method, operation, target/account,
+authentication, permission and governance admission separately. An empty
+repository-URL filter or an absent local CLI does not establish that the
+repository's existing authorized executor is unavailable.
+
+Execute each safe deterministic authorized successor and complete useful
+authorized preparation and persistence while other effects are blocked.
+Preserve `GITHUB_ROUTE=REST_API_ONLY`, credentials, Authority/Mirror roles and
+protected governance. Do not create proxy executors, synthetic triggers or
+new permission scopes to replace a missing operation. Preserve original
+evidence; unchanged causal failures admit NOOP, and ambiguous effects require
+readback before another effectful attempt.
+
+Before a terminal handoff, validate the non-secret client receipt with
+`python3 -B tools/ai_handoff.py --client-receipt <receipt.json>` according to
+`policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json.client_continuation` and
+`docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md`. Read back current HEAD/TREE and
+delivery evidence for the exact host `raumzeitterminal.de`. Return only for
+verified completion, a concrete blocker with no safe authorized successor,
+or a real owner choice. The gate checks receipt consistency; it neither
+authenticates a client nor proves live effects or adoption by another client.
+Regression tests run inside the existing `make ai-runtime-contract` gate.
+
+Failures, omissions and open gaps of a previous run MUST become the tasks of
+the automatically adjoining run under the existing authorization. Preserve
+their execution identity and each open obligation. A successor receipt that
+declares `previous_run` MUST retain every `open_work` item in `work`, either
+OPEN with its concrete next action or VERIFIED with closing evidence. A
+status message, elapsed time or an unrelated commit does not close a task or
+admit an unchanged retry. Use the existing continuation worker and shared
+receipt gate; this rule does not itself start or prove an unattended runner.
+
+The Owner's correction of 2026-10-16 applies to knowledge itself, regardless
+of when a handoff occurs. Preserve already established results, authorization,
+source bindings, limitations, uncertainty and correction history in the existing
+client receipt's `knowledge` records. Bind an available durable predecessor by
+`previous_run.receipt_path` and its `receipt_sha256`; do not replace it with an
+empty self-reported inventory. Corrections append a new evidence-bound record
+with `supersedes`, retaining the original. Historical observations retain their
+own subjects and scope; they are not fresh acceptance of a successor. A missing
+local environment variable does not prove a protected remote binding absent.
+Use the existing epistemic-continuity policy and client gate, not another
+memory store, executor or retry loop. The gate checks declared continuity;
+truth, completeness of the initial snapshot and client adoption need their own
+evidence.
+
+## Immediate execution — Owner principle of 2026-10-13
+
+> Was du heute kannst besorgen, das verschiebe nicht auf morgen, sondern erledige es unmittelbar, denn alles andere war, ist und wird inakzeptabel sein.
+>
+> q.e.d.
+> Ingolf Lohmann
+
+Every safe, deterministic, authorized and actually callable successor MUST
+be executed in the current work ring, through its applicable tests,
+persistence and fresh readback. An executable action MUST NOT be deferred
+to tomorrow, another chat or a later run merely to end the current turn.
+Keep the existing client-continuation gate, protected governance and causal
+NOOP rule. A real blocker preserves the task and its exact retry condition
+while other authorized executable work continues. The normative binding is
+`policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json`
+(`self_application_working_rule.immediate_execution_principle`).
 
 ## Mandatory human-machine progress behavior
 
@@ -37,7 +123,36 @@ blockers and next actions. Persistent workflows MUST maintain `AI_PROGRESS.json`
 and `AI_STATUS.md`. Repetitive unchanged status and long explanations in place
 of executable work are prohibited.
 
+## Verification at the end of every action
+
+`END_OF_ACTION_VERIFICATION` is mandatory. At the end of every action the
+client MUST reobserve the current repository state, at minimum the exact head
+and tree of the bound branch, and MUST reobserve and report the delivery
+evidence for `raumzeitterminal.de` under `evidence/native-runtime-acceptance/`.
+The explicit absence of a delivery proof is a result and MUST be reported as
+such; it MUST NOT be reported as delivery. A client-side resolution or fetch
+failure is not registry evidence.
+
+A new change MUST be followed through to a fresh readback. An unchanged error,
+meaning the same subject, blocker and action with no new information, MUST NOT
+trigger a renewed attempt. The binding contract is
+`state/authorization/delegations/OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_V1.json`,
+resolved through `AI_CONTEXT.json.required_read_order`.
+
 ## Reuse before creation
+
+The Owner's recursive self-application rule of 2026-10-13 also applies to
+this agent protocol and the client's own work. Read
+`policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json`
+(`self_application_working_rule`) and
+`docs/operations/AUTONOMOUS_PR_CONTINUATION.md`. Carry exact-bound preceding
+results, failures, omissions and open obligations into the successor. Apply
+the same authorization, causal repair, tests and fresh readback to each
+change. Preserve unreobserved gaps and suppress unchanged failed effects.
+Keep `raumzeitterminal.de` as the delivery target; a different hostname or an
+HTTP-only observation does not establish its product acceptance. Record
+novelty or improvement only for a concrete verified delta. Preserve
+`Quod erat demonstrandum ingenium` as an attributed Owner formulation.
 
 `REUSE_BEFORE_CREATE` is mandatory. Before creating a new workflow, script,
 policy, adapter, pipeline, tool, or repository artifact, the agent MUST first
@@ -131,6 +246,38 @@ remains an immutable historical contract.
 The explicit v3 route binds policy/zenodo-machine-proof-policy-v3.json without
 rewriting or weakening either historical contract; its REVIEW_REQUIRED proposal
 does not itself authorize a production mutation.
+
+## Every-node universal bus
+
+Every current or future repository node, including Authority and Mirror, MUST
+implement and run both a universal Transputer and a universal Terminal under
+`runtime/self-host/MESH_ACTIVATION.json#/required_node_runtime`. Repository role
+provides no exemption. Run the existing S1 `mesh-contract` source gate before
+package admission; `pack` and `verify` enforce the same gate. A copied source,
+central link or reference-only diagnostic profile is not live node acceptance.
+
+Fault tolerance requires native-effect replication, enforced writer fencing,
+same-Work-Unit/session continuation and fresh authenticated original-byte
+readback. Test every declared crash/loss/partition/lost-ACK/takeover/rejoin case
+on the actual workload, with zero lost acknowledged effects and zero duplicate
+irreversible effects. Declare numerical RTO and interruption SLO before claiming
+ordinarily unnoticed recovery. A missing safe quorum holds writes visibly and
+preserves confirmed reads. Retain unavailable nodes in coverage records. A
+monitor read-replica does not establish native-effect replication or write
+takeover, and multiple repositories on one provider do not establish provider
+failure independence. Source-gate success is never deployment or Mesh acceptance.
+
+Every node also uses the local repository-work cache and stable-idle batch
+contract in that same file. Reuse S1 `mesh-cache-stage`, `mesh-cache-idle` and
+`mesh-cache-send`; retain original instructions and Work Unit provenance, cache
+exact selected Git bytes by content digest, and validate the unchanged local
+commit before freezing one transfer. A warm cache never skips fresh checks.
+The receiver atomically accepts only authenticated, base-bound proposals and
+does not execute them. Resolve ambiguous transfers by authenticated readback
+before retry; retain the outbox under failure/capacity/conflict. The finite
+cache-writer idle scope is not proof of whole-node idle or optimal Mesh load
+distribution. Native effect replication and positive Effect-Ack obligations
+must never be deferred until this later proposal transfer.
 
 ## Bounded collective adaptation
 

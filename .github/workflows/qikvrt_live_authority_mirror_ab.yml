@@ -46,7 +46,7 @@ jobs:
         with:
           app-id: ${{ vars.QIKVRT_RULESET_APP_ID }}
           private-key: ${{ secrets.QIKVRT_RULESET_APP_PRIVATE_KEY }}
-          owner: Goldkelch
+          owner: ingolf-lohmann
           repositories: qik-vrt
           permission-contents: read
       - name: Measure local comparison and isolated end-to-end cycle separately

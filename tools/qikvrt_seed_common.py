@@ -39,7 +39,7 @@ except ModuleNotFoundError:  # Script execution keeps tools/ as sys.path[0].
 
 MAX_INPUT_BYTES = 1_048_576
 MAX_NODE_ROWS = 10_000
-DEFAULT_SEED_REPOSITORY = "Goldkelch/qik-vrt"
+DEFAULT_SEED_REPOSITORY = workflow_executor.load_repository_roles()["AUTHORITY"]
 REPOSITORY_RE = re.compile(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+\Z")
 BRANCH_RE = re.compile(r"[A-Za-z0-9._~/-]+\Z")
 RUN_ID_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,127}\Z")
@@ -234,7 +234,7 @@ def _read_text_limited(path: Path) -> str:
 
 
 def _validate_run_id(run_id: str) -> str:
-    if not RUN_ID_RE.fullmatch(run_id) or ".." in run_id:
+    if not isinstance(run_id, str) or not RUN_ID_RE.fullmatch(run_id) or ".." in run_id:
         raise SeedError("run id must be 1-128 safe filename characters")
     return run_id
 
@@ -344,6 +344,111 @@ def load_policies(root: Path) -> dict[str, PolicyRecord]:
     return policies
 
 
+def load_handshake(root: Path) -> NodeRecord:
+    """One typed node identity; URLs cannot silently name another Seed."""
+    path = root / "qikvrt/runtime/onboarding/NODE_HANDSHAKE_CONFIG.tsv"
+    rows = _parse_tsv(path, 7)
+    if len(rows) != 1:
+        raise SeedError("handshake must contain exactly one node")
+    line, fields = rows[0]
+    guid, source, seed, index_url, entry_url, branch, ttl_text = fields
+    _validate_guid(guid)
+    _validate_repository(source, "handshake source")
+    _validate_repository(seed, "handshake Seed")
+    try:
+        if seed != workflow_executor.load_repository_roles(root)["AUTHORITY"]:
+            raise SeedError("handshake Seed and canonical Authority repositories disagree")
+    except workflow_executor.ExecutorBlock as exc:
+        raise SeedError(str(exc)) from exc
+    _validate_branch(branch)
+    if not ttl_text.isdecimal() or not 1 <= int(ttl_text) <= 10080:
+        raise SeedError("handshake TTL must be between 1 and 10080 minutes")
+    prefix = f"https://raw.githubusercontent.com/{seed}/main/registry/"
+    if index_url != prefix + "NODEMESH_INDEX.json" or entry_url != prefix + f"nodes/{guid}.json":
+        raise SeedError("handshake URL is not bound to the configured Seed identity")
+    return NodeRecord(guid, source, seed, "", branch, int(ttl_text), "ACTIVE",
+                      path.relative_to(root).as_posix(), line)
+
+
+def validate_local_handshake(root: Path, repository: str | None = None) -> NodeRecord:
+    node = load_handshake(root)
+    if repository is not None and node.source_repository != repository:
+        raise SeedError("handshake source differs from executing repository")
+    request_path = root / "qikvrt/runtime/onboarding/SEED_REGISTRATION_REQUEST.json"
+    validate_registration_request(read_json(request_path), node)
+    # A repository performing both roles must carry one coherent allowlist.
+    if node.source_repository == node.seed_repository:
+        nodes, _ = load_nodes(root, node.seed_repository)
+        matches = [n for n in nodes if n.guid == node.guid]
+        if len(matches) != 1:
+            raise SeedError("local node is missing from Seed allowlist")
+        registered = matches[0]
+        for key in ("source_repository", "seed_repository", "node_branch", "heartbeat_ttl_minutes"):
+            if getattr(registered, key) != getattr(node, key):
+                raise SeedError(f"handshake/allowlist mismatch: {key}")
+    return node
+
+
+def run_acknowledgement(root: Path, run_id: str, fetch: Callable[[str], FetchedJson],
+                        *, now: dt.datetime | None = None) -> dict[str, Any]:
+    """Acknowledge only a fresh, same-commit Seed acceptance, never a copied label."""
+    now = now or _utc_now()
+    run_id, utc = _run_metadata(run_id, now)
+    node = validate_local_handshake(root)
+    ref_url = f"https://api.github.com/repos/{node.seed_repository}/git/ref/heads/main"
+    before = fetch(ref_url).value
+    if before.get("ref") != "refs/heads/main" or before.get("object", {}).get("type") != "commit":
+        raise SeedError("Seed ref is not a Main commit")
+    head = before["object"].get("sha")
+    if not isinstance(head, str) or not re.fullmatch(r"[0-9a-f]{40}", head):
+        raise SeedError("Seed commit identity is invalid")
+    prefix = f"https://raw.githubusercontent.com/{node.seed_repository}/{head}/registry/"
+    index = fetch(prefix + "NODEMESH_INDEX.json")
+    entry = fetch(prefix + f"nodes/{node.guid}.json")
+    _require_exact(index.value, "schema", "qikvrt_nodemesh_index_v2", "Seed index")
+    _require_exact(index.value, "seed_repository", node.seed_repository, "Seed index")
+    rows = index.value.get("nodes")
+    if not isinstance(rows, list) or index.value.get("node_count") != len(rows):
+        raise SeedError("Seed index count is inconsistent")
+    matches = [r for r in rows if isinstance(r, dict) and r.get("guid") == node.guid]
+    if len(matches) != 1:
+        raise SeedError("Seed index must contain exactly one matching node")
+    for value, label in ((entry.value, "Seed entry"), (matches[0], "Seed index node")):
+        _require_exact(value, "guid", node.guid, label)
+        _require_exact(value, "repository", node.source_repository, label)
+        _require_exact(value, "policy_status", "ACTIVE", label)
+    _require_exact(matches[0], "registry_status", "ACCEPTED", "Seed index node")
+    for key, expected in (("schema", "qikvrt_seed_registry_entry_v2"),
+                          ("seed_repository", node.seed_repository), ("node_branch", node.node_branch),
+                          ("status", "ACCEPTED"), ("acceptance_mode", "FAIL_CLOSED_SEED_REGISTRY_V2")):
+        _require_exact(entry.value, key, expected, "Seed entry")
+    _validate_boundaries(entry.value.get("boundaries", {}), "Seed entry")
+    accepted = _parse_utc(entry.value.get("accepted_utc"), "Seed acceptance time")
+    generated = _parse_utc(index.value.get("generated_utc"), "Seed index time")
+    for stamp in (accepted, generated):
+        if not now - dt.timedelta(minutes=node.heartbeat_ttl_minutes) <= stamp <= now + dt.timedelta(minutes=5):
+            raise SeedError("Seed acceptance/index is stale or future-dated")
+    request_raw = _read_bytes_limited(root / "qikvrt/runtime/onboarding/SEED_REGISTRATION_REQUEST.json")
+    _require_exact(entry.value, "node_request_sha256", hashlib.sha256(request_raw).hexdigest(), "Seed entry")
+    acceptance_run = _validate_run_id(entry.value.get("last_acceptance_run_id", ""))
+    if fetch(ref_url).value != before:
+        raise SeedError("Seed Main changed during acknowledgement")
+    result = {"schema": "qikvrt_node_seed_acknowledgement_v2",
+              "qikvrt_event": "NODE_ACK_OF_SEED_ACCEPTANCE", "guid": node.guid,
+              "repository": node.source_repository, "seed_repository": node.seed_repository,
+              "status": "ACCEPTED_BY_SEED", "checked_utc": utc, "run_id": run_id,
+              "observed_authority_commit": head, "seed_acceptance_run_id": acceptance_run,
+              "seed_entry_sha256": entry.sha256, "seed_index_sha256": index.sha256,
+              "seed_index_url": prefix + "NODEMESH_INDEX.json",
+              "seed_node_entry_url": prefix + f"nodes/{node.guid}.json",
+              "boundaries": {"node_writes_only_to_node_repository": True,
+                             **{k: True for k in BOUNDARY_KEYS}}}
+    # No acknowledgement bytes change before all reads and validations succeed.
+    write_json(root / "qikvrt/runtime/onboarding/SEED_ACCEPTANCE_STATUS.json", result)
+    _write_latest_and_run(root, "evidence/node_seed_acknowledgement", run_id, result)
+    return {"status": "PASS", "run_id": run_id, "acknowledgement": result}
+
+
 def _registry_tsv_paths(root: Path) -> list[Path]:
     known = root / "registry/KNOWN_NODE_REQUESTS.tsv"
     _require_regular_file(known)
@@ -358,6 +463,11 @@ def _registry_tsv_paths(root: Path) -> list[Path]:
 
 def load_nodes(root: Path, seed_repository: str) -> tuple[list[NodeRecord], dict[str, PolicyRecord]]:
     _validate_repository(seed_repository, "configured seed repository")
+    try:
+        if seed_repository != workflow_executor.load_repository_roles(root)["AUTHORITY"]:
+            raise SeedError("configured Seed and canonical Authority repositories disagree")
+    except workflow_executor.ExecutorBlock as exc:
+        raise SeedError(str(exc)) from exc
     policies = load_policies(root)
     nodes: list[NodeRecord] = []
     seen: set[str] = set()
@@ -722,6 +832,11 @@ def _validate_ack(document: Mapping[str, Any], node: NodeRecord) -> None:
     _require_exact(document, "repository", node.source_repository, label)
     _require_exact(document, "seed_repository", node.seed_repository, label)
     _require_exact(document, "status", "ACCEPTED_BY_SEED", label)
+    _require_exact(document, "schema", "qikvrt_node_seed_acknowledgement_v2", label)
+    for key in ("seed_entry_sha256", "seed_index_sha256"):
+        if not isinstance(document.get(key), str) or not re.fullmatch(r"[0-9a-f]{64}", document[key]):
+            raise SeedError(f"{label}: missing or invalid {key}")
+    _validate_run_id(document.get("seed_acceptance_run_id", ""))
 
 
 def _validate_renewal(document: Mapping[str, Any], node: NodeRecord) -> None:
@@ -765,10 +880,24 @@ def run_maintenance(
     *,
     now: dt.datetime | None = None,
     seed_repository: str = DEFAULT_SEED_REPOSITORY,
+    lifecycle_api_factory: Any = None,
 ) -> dict[str, Any]:
     now = now or _utc_now()
     run_id, utc = _run_metadata(run_id, now)
     nodes, policies = load_nodes(root, seed_repository)
+    transports = {}
+    transport_path = root / 'registry/NODE_LIFECYCLE_TRANSPORT_V1.json'
+    if transport_path.exists():
+        configuration = read_json(transport_path)
+        if configuration.get('schema') != 'qikvrt_node_lifecycle_transport_v1':
+            raise SeedError('invalid lifecycle transport schema')
+        transports = configuration.get('nodes')
+        identities = {n.guid: n.source_repository for n in nodes}
+        if not isinstance(transports, dict) or any(
+                guid not in identities or not isinstance(value, dict)
+                or value != {'repository': identities[guid], 'transport': 'PUBLIC_REST_SNAPSHOT_V1'}
+                for guid, value in transports.items()):
+            raise SeedError('lifecycle transport differs from accepted node identity')
     index_nodes: list[dict[str, Any]] = []
     status_nodes: list[dict[str, Any]] = []
     error_count = 0
@@ -792,23 +921,52 @@ def run_maintenance(
         health_url = _raw_node_url(node, "NODE_HEALTH.json")
         ack_url = _raw_node_url(node, "SEED_ACCEPTANCE_STATUS.json")
         renewal_url = _raw_node_url(node, "NODE_REGISTRATION_RENEWAL.json")
+        public_documents = None
+        public_error = None
+        if node.guid in transports and policy.status == 'ACTIVE' and registry_status == 'ACCEPTED':
+            try:
+                try:
+                    from tools import qikvrt_mirror_node_lifecycle as lifecycle
+                except ModuleNotFoundError:
+                    import qikvrt_mirror_node_lifecycle as lifecycle
+                factory = lifecycle_api_factory or lifecycle.Rest
+                public_documents, public_head = lifecycle.read_public(node, factory(node.source_repository), now)
+                evidence['lifecycle_snapshot_head'] = public_head
+                evidence['lifecycle_review_state'] = 'UNREVIEWED_TELEMETRY'
+                api_url = f'https://api.github.com/repos/{node.source_repository}/contents/'
+                health_url = f'{api_url}NODE_HEALTH.json?ref={public_head}'
+                renewal_url = f'{api_url}NODE_REGISTRATION_RENEWAL.json?ref={public_head}'
+                ack_url = f'{api_url}qikvrt/runtime/onboarding/SEED_ACCEPTANCE_STATUS.json?ref=main'
+            except (RuntimeError, KeyError, TypeError, ValueError) as exc:
+                public_error = SeedError(f'public lifecycle unavailable: {exc}')
+        def lifecycle_document(index: int, url: str) -> FetchedJson:
+            if public_error:
+                raise public_error
+            if public_documents is not None:
+                return public_documents[index]
+            return fetch(url)
         if policy.status == "ACTIVE" and registry_status == "ACCEPTED":
             try:
-                health = fetch(health_url)
+                health = lifecycle_document(0, health_url)
                 heartbeat_status, heartbeat_utc, expires_utc = _validate_health(health.value, node, now)
                 health_visible = True
                 evidence["health_sha256"] = health.sha256
             except SeedError as exc:
                 errors.append({"source": "health", "error": str(exc)})
             try:
-                acknowledgement = fetch(ack_url)
+                acknowledgement = lifecycle_document(2, ack_url)
                 _validate_ack(acknowledgement.value, node)
+                entry_path = root / "registry/nodes" / f"{node.guid}.json"
+                _require_exact(acknowledgement.value, "seed_entry_sha256",
+                               hashlib.sha256(_read_bytes_limited(entry_path)).hexdigest(), "seed acknowledgement")
+                _require_exact(acknowledgement.value, "seed_acceptance_run_id",
+                               read_json(entry_path)["last_acceptance_run_id"], "seed acknowledgement")
                 ack_visible = True
                 evidence["ack_sha256"] = acknowledgement.sha256
             except SeedError as exc:
                 errors.append({"source": "ack", "error": str(exc)})
             try:
-                renewal = fetch(renewal_url)
+                renewal = lifecycle_document(1, renewal_url)
                 _validate_renewal(renewal.value, node)
                 renewal_visible = True
                 evidence["renewal_sha256"] = renewal.sha256
@@ -1193,13 +1351,13 @@ def main(argv: Iterable[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "operation",
-        choices=("acceptance", "maintenance", "revalidate", "dashboard", "audit-export"),
+        choices=("acceptance", "maintenance", "revalidate", "dashboard", "audit-export", "config-check", "acknowledge"),
     )
     parser.add_argument("--root", type=Path, default=Path("."))
     parser.add_argument("--run-id", default=os.environ.get("QIKVRT_RUN_ID", ""))
     parser.add_argument(
         "--seed-repository",
-        default=os.environ.get("QIKVRT_SEED_REPOSITORY", DEFAULT_SEED_REPOSITORY),
+        default=os.environ.get("QIKVRT_SEED_REPOSITORY"),
     )
     parser.add_argument(
         "--timeout-seconds",
@@ -1211,6 +1369,19 @@ def main(argv: Iterable[str] | None = None) -> int:
     if not arguments.run_id:
         arguments.run_id = _utc_now().strftime("%Y%m%dT%H%M%SZ")
     try:
+        if arguments.operation == "config-check":
+            validate_local_handshake(root, os.environ.get("GITHUB_REPOSITORY"))
+            result = {"status": "PASS", "run_id": arguments.run_id}
+        elif arguments.operation == "acknowledge":
+            result = run_acknowledgement(root, arguments.run_id, HttpJsonFetcher(arguments.timeout_seconds))
+        else:
+            # Production workflows supply their actual repository, never an old hard-coded Seed.
+            if arguments.seed_repository is None:
+                arguments.seed_repository = load_handshake(root).seed_repository
+            executing = os.environ.get("GITHUB_REPOSITORY")
+            if executing is not None and executing != arguments.seed_repository:
+                raise SeedError("Seed operation is bound to another executing repository")
+            load_nodes(root, arguments.seed_repository)
         if arguments.operation == "acceptance":
             result = run_acceptance(
                 root,
@@ -1237,7 +1408,7 @@ def main(argv: Iterable[str] | None = None) -> int:
                 arguments.run_id,
                 seed_repository=arguments.seed_repository,
             )
-        else:
+        elif arguments.operation == "audit-export":
             result = run_audit_export(
                 root,
                 arguments.run_id,

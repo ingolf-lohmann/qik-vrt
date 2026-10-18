@@ -1,0 +1,614 @@
+{
+  "schema": "qikvrt-site-publication-public-byte-readback/v1",
+  "site_version": 36,
+  "source_commit": "bd9f265dbbac2b183e77888329ffa867556b8bf7",
+  "public_origin": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/",
+  "exact_host_delivery_proved": false,
+  "all_byte_exact": false,
+  "files": [
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/index.html",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:12.352911+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    },
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-16-wirkungsnachweis/PUBLICATION_STATUS.json",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:12.353724+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    },
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-16-wirkungsnachweis/CANDIDATE_BINDING.json",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:12.354243+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    },
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-16-wirkungsnachweis/CC-BY-NC-ND-4.0.txt",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:12.354656+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    },
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-16-wirkungsnachweis/CLAIM_MATRIX.json",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:19.696308+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    },
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-16-wirkungsnachweis/LICENSE_NOTICE.md",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:19.699100+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    },
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-16-wirkungsnachweis/QIKVRT_Der_entscheidende_Unterschied_Prosa_20261016.md",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:19.823421+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    },
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-16-wirkungsnachweis/QIKVRT_Der_entscheidende_Unterschied_Prosa_20261016.pdf",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:19.826205+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    },
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-16-wirkungsnachweis/QIKVRT_Der_entscheidende_Unterschied_Prosa_20261016.txt",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:25.139183+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    },
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-16-wirkungsnachweis/QIKVRT_Wirkungsnachweis_Nachpruefung_20261016.json",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:25.142556+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    },
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-16-wirkungsnachweis/QIKVRT_Wirkungsnachweis_Nachweispaket_20261016.zip",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:25.188318+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    },
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-16-wirkungsnachweis/QIKVRT_Wirkungsnachweis_Wissenschaft_20261016.md",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:25.283380+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    },
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-16-wirkungsnachweis/QIKVRT_Wirkungsnachweis_Wissenschaft_20261016.pdf",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:32.613751+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    },
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-16-wirkungsnachweis/QIKVRT_Wirkungsnachweis_Wissenschaft_20261016.txt",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:32.647352+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    },
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-16-wirkungsnachweis/RESEARCH_PROOF_BUNDLE.json",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:32.708386+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    },
+    {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-16-wirkungsnachweis/index.html",
+      "method": "GET",
+      "observed_at": "2026-10-16T10:04:32.785076+00:00",
+      "error": "HTTPError: HTTP Error 403: Forbidden",
+      "byte_exact": false
+    }
+  ],
+  "successor_diagnostics": [
+    {
+      "schema": "qikvrt-exact-host-existing-route-diagnosis/v1",
+      "observed_at": "2026-10-16T11:10:47.317Z",
+      "source": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "pull_request": 523,
+        "head": "420eb5b8d03eb62f0d2b47cd62b8564d703ef28e",
+        "tree": "b69cc1e7ad79b3723ef1df79a7a13f43342bfc76"
+      },
+      "current_main": {
+        "head": "85cf48be8405d66ee567f868c1b8f33bd54add97",
+        "tree": "526e6a38986c75a33ae3b920eceae2d590e48ca2"
+      },
+      "duplicate_work_guard": {
+        "integration_head_unchanged_since_source_read": true,
+        "in_progress_native_runs": 0,
+        "queued_runs": 13,
+        "queued_runs_latest_updated_at": "2026-10-07T16:55:15Z",
+        "current_domain_repair_execution_found": false,
+        "scope": "Complete bounded in-progress inventory and first queued page; 13 total queued entries all fit one page; no provider-side job inventory available."
+      },
+      "existing_site": {
+        "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+        "version": 36,
+        "source_commit": "bd9f265dbbac2b183e77888329ffa867556b8bf7",
+        "deployment": "appgdep_6ad1f63f3e0081919630e115a216e5f6",
+        "native_deployment_status": "succeeded",
+        "audience": "public",
+        "environment_revision": 8,
+        "environment_entry_count": 0,
+        "custom_domain": {
+          "id": "appgdom_6ac4b489bd548191a69f7d87618db3aa",
+          "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+          "hostname": "raumzeitterminal.de",
+          "worker_name": "site---6ac4018a3e0c8191a06187c296d6c7ea",
+          "status": "pending",
+          "provider_status": "pending",
+          "ssl_status": "pending_validation",
+          "cname_target": "custom-domains.chatgpt.site.",
+          "apex_proxy_ipv4_targets": [
+            "162.159.143.30",
+            "172.66.3.26"
+          ],
+          "validation_records": [
+            {
+              "record_type": "TXT",
+              "name": "_openai-site-verification.raumzeitterminal.de",
+              "value": "openai-site-verification=5Zw42-7lgYTNm3pmkhZcwGJu1_0UvnHSVYJcGBDONbI"
+            },
+            {
+              "record_type": null,
+              "name": null,
+              "value": null
+            },
+            {
+              "record_type": "TXT",
+              "name": "_cf-custom-hostname.raumzeitterminal.de",
+              "value": "c6e99848-baed-4087-a9fd-0d6c5b5008c8"
+            }
+          ],
+          "last_error": null,
+          "created_at": "2026-10-06T08:42:49.739821+00:00",
+          "updated_at": "2026-10-16T10:33:28.709307+00:00"
+        }
+      },
+      "planned_existing_dns_targets": [
+        {
+          "type": "A",
+          "name": "raumzeitterminal.de",
+          "value": "162.159.143.30"
+        },
+        {
+          "type": "A",
+          "name": "raumzeitterminal.de",
+          "value": "172.66.3.26"
+        },
+        {
+          "type": "TXT",
+          "name": "_openai-site-verification.raumzeitterminal.de",
+          "value": "openai-site-verification=5Zw42-7lgYTNm3pmkhZcwGJu1_0UvnHSVYJcGBDONbI"
+        },
+        {
+          "type": "TXT",
+          "name": "_cf-custom-hostname.raumzeitterminal.de",
+          "value": "c6e99848-baed-4087-a9fd-0d6c5b5008c8"
+        }
+      ],
+      "dns_plan_admission": {
+        "applied": false,
+        "owned_zone_read": false,
+        "preserve_unrelated_records": true,
+        "bulk_replace_forbidden": true,
+        "read_records_before_targeted_update": true,
+        "ttl": "preserve existing or provider policy after authenticated read; not fabricated",
+        "zone_id": null,
+        "registrar_write_or_delegation_verified": false
+      },
+      "route_inventory": {
+        "repository": {
+          "workflow": ".github/workflows/qikvrt_workflow_executor.yml",
+          "workflow_blob": "2f50da197710f1a0769bee57dd0d73a03a45e651",
+          "manual_mode": "ionos-inventory-classify",
+          "secret_reference": "secrets.IONOS_TOKEN",
+          "bound_product": "ionos-cloud-v6",
+          "bound_origin": "https://api.ionos.com/cloudapi/v6",
+          "allowed_methods": [
+            "GET"
+          ],
+          "supported_scope": "Cloud inventory/classification only",
+          "target_dns_write_consumer_found": false,
+          "initial_workflow_dispatch_exposed": false
+        },
+        "connector": {
+          "observed_github_route": "REST_API_ONLY",
+          "source_write_operations_available": true,
+          "ionos_dns_operation_exposed": false,
+          "cloudflare_security_configuration_operation_exposed": false,
+          "plugin_search": "IONOS DNS Cloudflare",
+          "relevant_plugin_returned": false,
+          "native_sites_operations": [
+            "get_site_version",
+            "list_custom_domains",
+            "refresh_custom_domain_status",
+            "get_environment_variables",
+            "get_site_worker_logs"
+          ],
+          "native_sites_dns_write_operation": false
+        },
+        "cli": {
+          "gh_present": false,
+          "curl_present": true,
+          "python_present": true,
+          "task_process_provider_credential_names_present": false,
+          "scope": "Current process presence check only; no statement about protected remote secrets or owner rights. No secret values searched, read, exported or persisted."
+        },
+        "mesh": {
+          "callable_tools": [
+            "qikvrt_mesh_status",
+            "qikvrt_observe",
+            "qikvrt_readback"
+          ],
+          "observed_scope": "HTTP/repository observation and D1 persistence/readback",
+          "dns_execution_operation": false,
+          "native_execution_endpoint_advertised": false
+        },
+        "site_runtime": {
+          "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+          "environment_revision": 8,
+          "environment_entries": 0,
+          "scope": "This target Site only; not a global credential-absence finding."
+        }
+      },
+      "direct_client_probes": [
+        {
+          "url": "https://raumzeitterminal.de/",
+          "http_status": 502,
+          "response_body": "<html>\n<head>\n    <title>502 Bad Gateway</title>\n</head>\n<body>\n    <h1>502 Bad Gateway</h1>\n    <p>[Errno 111] Connection refused</p>\n</body>\n</html>",
+          "response_body_sha256": "81074a9c8dfb24290e8fc4af14d20f67f5304618d27ac713628b1126e41dbd8e",
+          "response_headers": {
+            "Server": "mitmproxy 12.2.3",
+            "Content-Type": "text/html",
+            "content-length": "150"
+          },
+          "error": null,
+          "method": "GET"
+        },
+        {
+          "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/",
+          "http_status": 403,
+          "response_body": "error code: 1010\n",
+          "response_body_sha256": "2938e9f1284180959e33ab1718d0793a72ff6e4cdb8108c34dcd14e69446de5c",
+          "response_headers": {
+            "Date": "Fri, 16 Oct 2026 11:06:56 GMT",
+            "Content-Type": "text/plain; charset=UTF-8",
+            "Content-Length": "17",
+            "Server": "cloudflare",
+            "CF-RAY": "a4b698d9ff9f8e43-DFW"
+          },
+          "error": null,
+          "method": "GET"
+        }
+      ],
+      "site36_root_diagnosis": {
+        "observed_http_status": 403,
+        "observed_body": "error code: 1010\n",
+        "scope": "This exact root request from the local Python HTTP client only. Historical 16 publication/PDF HTTP403 bodies were not retained and are not retrospectively classified as 1010.",
+        "provider_documented_meaning": "Client browser signature blocked; this is separate from the native Sites public audience.",
+        "primary_source": "https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-1xxx-errors/error-1010/",
+        "setting_read_or_changed": false,
+        "bypass_attempted": false,
+        "unchanged_publication_file_gets_repeated": false
+      },
+      "worker_log_readback": {
+        "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+        "successful_recent_paths": [
+          {
+            "timestamp": 1792148802984,
+            "path": "/mcp",
+            "status": 200,
+            "outcome": "ok",
+            "request_id": "30a94a098cc59d12619a2c0d1699f366"
+          },
+          {
+            "timestamp": 1792148502766,
+            "path": "/api/readback",
+            "status": 200,
+            "outcome": "ok",
+            "request_id": "399c70d0599da36ce480873fd7294551"
+          },
+          {
+            "timestamp": 1792148497578,
+            "path": "/api/evidence",
+            "status": 200,
+            "outcome": "ok",
+            "request_id": "d944495dc45bc527cfcf97dd4011cc5c"
+          },
+          {
+            "timestamp": 1792148462926,
+            "path": "/api/readback",
+            "status": 200,
+            "outcome": "ok",
+            "request_id": "f68648c12c64e946bc0b93820cc1763c"
+          },
+          {
+            "timestamp": 1792148462855,
+            "path": "/api/mesh/terminal",
+            "status": 200,
+            "outcome": "ok",
+            "request_id": "e1c7d3c7fc27496133acafb5fda1c7eb"
+          },
+          {
+            "timestamp": 1792148462661,
+            "path": "/api/mesh/events",
+            "status": 200,
+            "outcome": "ok",
+            "request_id": "2b0585c2c6e25b6d9462bc151c89ee91"
+          },
+          {
+            "timestamp": 1792148457400,
+            "path": "/api/evidence",
+            "status": 200,
+            "outcome": "ok",
+            "request_id": "1d9e0ab7ed3590eae75e6547a0bd5113"
+          },
+          {
+            "timestamp": 1792148400192,
+            "path": "/api/mesh/events",
+            "status": 200,
+            "outcome": "ok",
+            "request_id": "fc031a08ac03c0fa94e748a407a773dc"
+          },
+          {
+            "timestamp": 1792148400028,
+            "path": "/api/readback",
+            "status": 200,
+            "outcome": "ok",
+            "request_id": "79b0450d896493d7e68386219cea88aa"
+          },
+          {
+            "timestamp": 1792148399997,
+            "path": "/api/mesh/terminal",
+            "status": 200,
+            "outcome": "ok",
+            "request_id": "03ddb28d75bf0c86eb952861f8b5e64f"
+          },
+          {
+            "timestamp": 1792148399866,
+            "path": "/api/evidence",
+            "status": 200,
+            "outcome": "ok",
+            "request_id": "2e040b142845ec38d8e5dd4b5567c1a4"
+          },
+          {
+            "timestamp": 1792148338600,
+            "path": "/api/readback",
+            "status": 200,
+            "outcome": "ok",
+            "request_id": "1d57d5b17ad3bd57436e71de5ac3127b"
+          },
+          {
+            "timestamp": 1792148338572,
+            "path": "/api/mesh/terminal",
+            "status": 200,
+            "outcome": "ok",
+            "request_id": "6d0a87ced041636e5fe28e2386e817b7"
+          },
+          {
+            "timestamp": 1792148338389,
+            "path": "/api/mesh/events",
+            "status": 200,
+            "outcome": "ok",
+            "request_id": "f6eaf3cdb7f5f0e48fd6c0e5be1feb19"
+          },
+          {
+            "timestamp": 1792148338379,
+            "path": "/api/evidence",
+            "status": 200,
+            "outcome": "ok",
+            "request_id": "685db9f86ffda5f7115016a8e52dd488"
+          },
+          {
+            "timestamp": 1792148337553,
+            "path": "/monitor",
+            "status": 200,
+            "outcome": "ok",
+            "request_id": "8e6db071cdd6d739853f4aa655189fb0"
+          },
+          {
+            "timestamp": 1792148337469,
+            "path": "/monitor/",
+            "status": 308,
+            "outcome": "ok",
+            "request_id": "3f632e723f7fe6dce7c74b560bc7bbc6"
+          },
+          {
+            "timestamp": 1792148337469,
+            "path": "/offline/git-hash.js",
+            "status": 200,
+            "outcome": "ok",
+            "request_id": "c7e76c36a63f513ce00b2bfe0d743e33"
+          },
+          {
+            "timestamp": 1792148337469,
+            "path": "/offline/vendor/react-runtime.js",
+            "status": 200,
+            "outcome": "ok",
+            "request_id": "74f022baf21d7e2a23f97ca11ea9edf0"
+          },
+          {
+            "timestamp": 1792148337468,
+            "path": "/offline/icon.svg",
+            "status": 200,
+            "outcome": "ok",
+            "request_id": "7dfa9209badc77e3e9262b303653f27b"
+          },
+          {
+            "timestamp": 1792148337468,
+            "path": "/offline/style.css",
+            "status": 200,
+            "outcome": "ok",
+            "request_id": "e4c3869908fd4a1235c0e28b9501bc18"
+          },
+          {
+            "timestamp": 1792148337468,
+            "path": "/offline/repository.js",
+            "status": 200,
+            "outcome": "ok",
+            "request_id": "69248bff52dd4a17a6df077391070087"
+          },
+          {
+            "timestamp": 1792148337468,
+            "path": "/offline/service-worker.js",
+            "status": 200,
+            "outcome": "ok",
+            "request_id": "0bdde9f82ef49ad4a3fc29103c215f1c"
+          },
+          {
+            "timestamp": 1792148337467,
+            "path": "/offline/client.js",
+            "status": 200,
+            "outcome": "ok",
+            "request_id": "6c3614c5300b004f44555a2697cac885"
+          },
+          {
+            "timestamp": 1792148336753,
+            "path": "/monitor",
+            "status": 200,
+            "outcome": "ok",
+            "request_id": "99c0541b1d0fbbf6a30c1a772c27ed24"
+          },
+          {
+            "timestamp": 1792148336372,
+            "path": "/monitor/",
+            "status": 308,
+            "outcome": "ok",
+            "request_id": "0459046a34ea57c00d65c0a1c5e84352"
+          },
+          {
+            "timestamp": 1792148335331,
+            "path": "/monitor/",
+            "status": 308,
+            "outcome": "ok",
+            "request_id": "922db238e3e9c7e72ff734e65d581d12"
+          }
+        ],
+        "scope": "Only whitelisted timestamp/path/status/outcome/request identifiers retained; logs show successful monitor/API paths in other request contexts, not PDF byte equality. Bounded logs cannot prove that an unlisted request never reached the Worker."
+      },
+      "independent_mesh_readback": {
+        "snapshot_id": "7226546d-8a0d-44e7-871b-686e25400620",
+        "completed_at": "2026-10-16T11:06:42.811Z",
+        "snapshot_sha256": "b030e2c5aec189ce830425f16baf617425232fa5bc5e186a5be7b3f4a48f09f9",
+        "readback_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/readback?id=7226546d-8a0d-44e7-871b-686e25400620",
+        "exact_host_pages": [
+          {
+            "url": "https://raumzeitterminal.de/",
+            "method": "GET (ohne Redirect)",
+            "status": 530,
+            "observed_at": "2026-10-16T11:06:42.698Z",
+            "latency_ms": 66
+          }
+        ],
+        "dns": {
+          "schema": "qikvrt_public_dns_readback_v1",
+          "exact_host": "raumzeitterminal.de",
+          "interpretation": "NXDOMAIN_RECURSIVE_READBACK",
+          "observations": [
+            {
+              "source_url": "https://dns.google/resolve?name=raumzeitterminal.de&type=NS",
+              "query_type": "NS",
+              "status": 200,
+              "observed_at": "2026-10-16T11:06:42.698Z",
+              "rcode": 3,
+              "question_bound": true,
+              "response_sha256": "52c30f989a30ff63a3e58d73ecdd47fee8da204562bf154b813e2e9dce818ec1",
+              "answers": [],
+              "error": null
+            },
+            {
+              "source_url": "https://cloudflare-dns.com/dns-query?name=raumzeitterminal.de&type=NS",
+              "query_type": "NS",
+              "status": 200,
+              "observed_at": "2026-10-16T11:06:42.719Z",
+              "rcode": 3,
+              "question_bound": true,
+              "response_sha256": "81555b619f50bcb0934ae962fcd7b96faaab01711ffeb838f2d510dc5da98a7e",
+              "answers": [],
+              "error": null
+            },
+            {
+              "source_url": "https://dns.google/resolve?name=raumzeitterminal.de&type=A",
+              "query_type": "A",
+              "status": 200,
+              "observed_at": "2026-10-16T11:06:42.753Z",
+              "rcode": 3,
+              "question_bound": true,
+              "response_sha256": "93aec16b4a4f542550d8ea7980a98dc44576f5336ff171b09b92b243e78b72e0",
+              "answers": [],
+              "error": null
+            }
+          ],
+          "scope": "PUBLIC_RECURSIVE_DNS_DIAGNOSIS_NOT_REGISTRAR_WRITE_OR_APPLICATION_ACCEPTANCE"
+        }
+      },
+      "primary_rest_contracts": [
+        {
+          "service": "IONOS Hosting DNS",
+          "initial_read": "GET https://api.hosting.ionos.com/dns/v1/zones",
+          "authentication": "X-API-Key via the existing authorized protected binding",
+          "source": "https://developer.hosting.ionos.com/docs/dns"
+        },
+        {
+          "service": "IONOS Cloud DNS",
+          "initial_read": "GET https://dns.de-fra.ionos.com/zones",
+          "authentication": "Bearer IONOS_TOKEN only if the existing protected binding and live permissions identify this service",
+          "source": "https://docs.ionos.com/cloud/network-services/cloud-dns/api-how-tos/create-primary-zone"
+        }
+      ],
+      "blockers": [
+        {
+          "code": "EXISTING_TARGET_DNS_REST_EXECUTION_NOT_CALLABLE",
+          "operation": "Authenticated owned-zone/record read, then selective updates for the existing Site domain binding",
+          "evidence": "Observed existing workflow is Cloud-v6 GET-only; current connector/CLI/Mesh expose no admitted target-bound DNS request. Existing remote binding availability and permissions remain UNKNOWN.",
+          "retry_condition": "Existing protected DNS/Hosting or Cloud-DNS binding is delivered to an admitted operation for the exact owned zone.",
+          "smallest_next_action": "Use that existing secure route to GET the actual owned zone and records; compare to the four supplied A/TXT targets and update only necessary records, then independently verify DNS/TLS/application."
+        },
+        {
+          "code": "SITE36_LOCAL_PUBLIC_GET_CLOUDFLARE_1010",
+          "operation": "Independent exact-byte public PDF and publication receipt GET",
+          "evidence": "Local root HTTP403 body is error code1010; native Site audience remains public. No zone security read/change operation exposed.",
+          "retry_condition": "Provider-controlled client-signature rule is corrected for the intended public machine requests through an existing admitted administration path, or an independently authorized existing reader becomes available.",
+          "smallest_next_action": "Use the existing hosting security administration path to inspect the 1010 request by its CF-Ray before changing a scoped rule; preserve global protections and repeat original exact-byte reads only after a relevant capability/configuration change."
+        }
+      ],
+      "effect_counts": {
+        "new_site": 0,
+        "new_custom_domain": 0,
+        "deployments": 0,
+        "domain_refresh": 0,
+        "dns_write": 0,
+        "tls_change": 0,
+        "cloudflare_security_change": 0,
+        "workflow_dispatch": 0,
+        "browser_login": 0,
+        "native_runtime_start": 0
+      },
+      "public_pdf_byte_exact_readback": false,
+      "productive_exact_host_acceptance": false,
+      "EFFECT_ACK_DONE": false,
+      "scope": "Existing routes inspected and exact known bindings retained; preparation/diagnosis only. No authenticated DNS GET or write executed and no owner-rights absence inferred."
+    }
+  ]
+}

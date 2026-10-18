@@ -1,0 +1,139 @@
+{
+  "_license": {
+    "classification": "operational_performance_evidence_json",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "all_sizes_and_sha256_equal": true,
+  "artifact_class": "OPERATIONAL_DIAGNOSTIC_NOT_SCIENTIFIC_PUBLICATION",
+  "baseline_git_blob": "15b5eb5089b0753ee52ee6bf3a27020b449ca2cd",
+  "baseline_sha256": "64af1537821f87b96bcef61b6e5f66b47524c8fe1e054700de02210d1ab9d7f5",
+  "cache_policy": "warm sequential file reads; no cache drops",
+  "candidate_source_sha256": "5ff3a5e0944d96a28189f378ae59c8793c11eb7e7c7766b8c1bb12301fb8f65a",
+  "domain_delivery": false,
+  "effect_ack_done": false,
+  "fixture_bytes": 67108864,
+  "limitations": [
+    "Selected source closure, not a full repository benchmark",
+    "Python allocations, not RSS or physical storage latency",
+    "Local host; no isolation or portable throughput claim",
+    "Separate from the fixed PR443 36-trial protocol; no PR443 budget consumed"
+  ],
+  "measure": "tracemalloc Python allocation peak; wall time includes tracing overhead",
+  "observed_at_utc": "2026-10-11T08:07:54.327362+00:00",
+  "order": "alternating matched pairs",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "python": "3.12.14",
+  "repetitions_per_arm": 6,
+  "schema": "qikvrt_integrity_reader_local_comparison_v1",
+  "summary": {
+    "baseline": {
+      "maximum_peak_python_allocation_bytes": 134226416,
+      "median_elapsed_ns": 275518113.0
+    },
+    "streaming": {
+      "maximum_peak_python_allocation_bytes": 2098118,
+      "median_elapsed_ns": 77397834.5
+    }
+  },
+  "trials": [
+    {
+      "arm": "baseline",
+      "bytes": 67108864,
+      "elapsed_ns": 511650720,
+      "peak_python_allocation_bytes": 134226416,
+      "repeat": 0,
+      "sha256": "281e519df3077b557c6b03f5da83c4e8d397219259615dd7c3308f89cae8f2a6"
+    },
+    {
+      "arm": "streaming",
+      "bytes": 67108864,
+      "elapsed_ns": 205044116,
+      "peak_python_allocation_bytes": 2098118,
+      "repeat": 0,
+      "sha256": "281e519df3077b557c6b03f5da83c4e8d397219259615dd7c3308f89cae8f2a6"
+    },
+    {
+      "arm": "streaming",
+      "bytes": 67108864,
+      "elapsed_ns": 81076192,
+      "peak_python_allocation_bytes": 2098118,
+      "repeat": 1,
+      "sha256": "281e519df3077b557c6b03f5da83c4e8d397219259615dd7c3308f89cae8f2a6"
+    },
+    {
+      "arm": "baseline",
+      "bytes": 67108864,
+      "elapsed_ns": 167416181,
+      "peak_python_allocation_bytes": 134226237,
+      "repeat": 1,
+      "sha256": "281e519df3077b557c6b03f5da83c4e8d397219259615dd7c3308f89cae8f2a6"
+    },
+    {
+      "arm": "baseline",
+      "bytes": 67108864,
+      "elapsed_ns": 266809399,
+      "peak_python_allocation_bytes": 134226237,
+      "repeat": 2,
+      "sha256": "281e519df3077b557c6b03f5da83c4e8d397219259615dd7c3308f89cae8f2a6"
+    },
+    {
+      "arm": "streaming",
+      "bytes": 67108864,
+      "elapsed_ns": 80772533,
+      "peak_python_allocation_bytes": 2098118,
+      "repeat": 2,
+      "sha256": "281e519df3077b557c6b03f5da83c4e8d397219259615dd7c3308f89cae8f2a6"
+    },
+    {
+      "arm": "streaming",
+      "bytes": 67108864,
+      "elapsed_ns": 74023136,
+      "peak_python_allocation_bytes": 2098118,
+      "repeat": 3,
+      "sha256": "281e519df3077b557c6b03f5da83c4e8d397219259615dd7c3308f89cae8f2a6"
+    },
+    {
+      "arm": "baseline",
+      "bytes": 67108864,
+      "elapsed_ns": 462025721,
+      "peak_python_allocation_bytes": 134226237,
+      "repeat": 3,
+      "sha256": "281e519df3077b557c6b03f5da83c4e8d397219259615dd7c3308f89cae8f2a6"
+    },
+    {
+      "arm": "baseline",
+      "bytes": 67108864,
+      "elapsed_ns": 284226827,
+      "peak_python_allocation_bytes": 134226237,
+      "repeat": 4,
+      "sha256": "281e519df3077b557c6b03f5da83c4e8d397219259615dd7c3308f89cae8f2a6"
+    },
+    {
+      "arm": "streaming",
+      "bytes": 67108864,
+      "elapsed_ns": 69215666,
+      "peak_python_allocation_bytes": 2098118,
+      "repeat": 4,
+      "sha256": "281e519df3077b557c6b03f5da83c4e8d397219259615dd7c3308f89cae8f2a6"
+    },
+    {
+      "arm": "streaming",
+      "bytes": 67108864,
+      "elapsed_ns": 67883930,
+      "peak_python_allocation_bytes": 2098118,
+      "repeat": 5,
+      "sha256": "281e519df3077b557c6b03f5da83c4e8d397219259615dd7c3308f89cae8f2a6"
+    },
+    {
+      "arm": "baseline",
+      "bytes": 67108864,
+      "elapsed_ns": 136434556,
+      "peak_python_allocation_bytes": 134226237,
+      "repeat": 5,
+      "sha256": "281e519df3077b557c6b03f5da83c4e8d397219259615dd7c3308f89cae8f2a6"
+    }
+  ]
+}

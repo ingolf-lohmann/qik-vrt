@@ -1,0 +1,701 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_CLIENT_END_OF_ACTION_REGRESSIONS_20261012_V1",
+  "created_at": "2026-10-11T21:25:57.268783+00:00",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "authority": "ingolf-lohmann/qik-vrt",
+  "mirror": "Goldkelch/qik-vrt",
+  "goal": "Extend the existing client receipt gate and regression framework against the exact Owner end-of-action rule without a second governance implementation or interference with active integrations.",
+  "authorization": {
+    "source": "Owner selected task, 2026-10-12 Europe/Istanbul; existing PR #507 rule",
+    "new_external_effect_grant": false
+  },
+  "source_subjects": {
+    "main": {
+      "head": "66974aa881c0829e03d48c4146ff2d335646d8c6",
+      "tree": "bd9a5387adc3f583ff6197cc7e18790a3e5238e6"
+    },
+    "client_gate_pr486": {
+      "head": "96f708cfd4598619e061b8a4fc937968ce14b912",
+      "tree": "bb75f95eed2df78e95035d30f09fdcf77a145f57"
+    },
+    "rule_pr507": {
+      "head": "42008f98a94c28e9bfc1ae902fb190296c6ac5a6",
+      "tree": "b1524386edf7dd9bf1ef22700ef715e4d1db0415",
+      "rule_blob": "0cda572c33f46216bab7d569a2e61569a61f6722",
+      "bytes": 3191,
+      "sha256": "598d99efe1605ef7fa5deab70a04fbb5cdc756bd4b368e3394d7c833be58a9d8"
+    },
+    "client_candidate_before_integrity_successor": {
+      "head": "ab72f304b9aee7beeeac9c70c8b07f2ffbe482f2",
+      "tree": "8ff009497081d74179a9861af308758e175b0d25"
+    },
+    "current_main_for_integration": {
+      "head": "f148dfbfc1abe5b9506d9d1c4c6f7616efe6fe6e",
+      "tree": "9ac44e192a34c4352005ca0761809a618086a85f"
+    }
+  },
+  "reuse": {
+    "validator": "tools/ai_handoff.py --client-receipt",
+    "tests": "tests.test_ai_runtime_bootloader.ClientContinuationRegressionTests",
+    "framework": "unittest",
+    "gate": "make ai-runtime-contract",
+    "governance_policy": "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json.client_continuation",
+    "owner_rule_copied_byte_exact": true,
+    "registered_adapter_count": 14,
+    "new_workflow_or_remote_executor": false
+  },
+  "behavioral_coverage": [
+    "current repository/ref/HEAD/TREE binding in every return state",
+    "timezone-aware observations strictly after each action and before closure",
+    "action identifiers prevent predecessor or cross-action readback reuse",
+    "each effectful attempt closes independently",
+    "exact-host HTTPS GET and VERIFIED HTTP 200/body SHA256/final origin",
+    "unobservable delivery remains UNKNOWN, never negative registry evidence or DONE",
+    "unchanged cause/errors and clocks/lifecycle-only changes admit NOOP",
+    "ambiguous effects and existing governance predicates retained",
+    "shared CLI exercised with connector, CLI and Mesh route fixtures"
+  ],
+  "changed_payloads": {
+    "AGENTS.md": {
+      "bytes": 11345,
+      "sha256": "bc8230917fc9c624c9af6188151d6d206e7668ecbd723a2cb082a672ef5a484d"
+    },
+    "AI_CONTEXT.json": {
+      "bytes": 12271,
+      "sha256": "027083638b5136cb3ac2ae059cc275d68cc5ae12a9e8c712d70b6615cb10a2fb"
+    },
+    "tools/ai_handoff.py": {
+      "bytes": 29663,
+      "sha256": "3f642a3c7db010dcce3f6ad7070ace2dfe2112075c25a2e42ac6a3e8c7293067"
+    },
+    "tests/test_ai_runtime_bootloader.py": {
+      "bytes": 29854,
+      "sha256": "f71ec628edf142a95a3c811a721f7351b3e383e4f664907cc655524406263497"
+    },
+    "docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md": {
+      "bytes": 14011,
+      "sha256": "eb1e71c1ab50d5d9b57cc315b865b444a0b8b66b1e704ee709b4200f72274e6a"
+    },
+    "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json": {
+      "bytes": 5768,
+      "sha256": "981fb4ee482946f8f10efb34496cb6719fe2e0e8d7423795a5adbba663c6ed44"
+    },
+    "state/authorization/delegations/OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_V1.json": {
+      "bytes": 3191,
+      "sha256": "598d99efe1605ef7fa5deab70a04fbb5cdc756bd4b368e3394d7c833be58a9d8"
+    }
+  },
+  "client_scope_limits": {
+    "registry_shims_do_not_execute_vendor_clients": true,
+    "vendor_session_witnesses": "NOT_ESTABLISHED",
+    "shared_receipt_gate_is_consistency_only": true,
+    "transport_client_and_read_only_web_terminal_do_not_emit_session_receipts": true,
+    "live_head_tree_and_application_effect_require_independent_readback": true,
+    "transport_client_direct_counterexamples": "4 executable OPEN/expected-failure cases; not passed behavioral conformance"
+  },
+  "integration": {
+    "isolated_successor_of_pr486": true,
+    "pr486_and_pr507_refs_untouched": true,
+    "force_push": false,
+    "workflow_cancellation": false,
+    "new_governance_implementation": false,
+    "main_integration": "NOT_ESTABLISHED",
+    "code_owner_ruleset": "NOT_ENFORCED",
+    "independent_reviews": "ABSENT",
+    "smallest_continuation": "Test this new candidate through the existing exact-head CI; preserve current Main/PR514/PR507 references; required independent Code Owner admission and verified target-bound administration remain separate protected prerequisites."
+  },
+  "public_effect": {
+    "hostname": "raumzeitterminal.de",
+    "state": "UNKNOWN",
+    "observation": "independent GET returned client-path HTTP 502 at 2026-10-11T21:23:10.707656Z; web fetch also unavailable; not a negative DNS/registry conclusion",
+    "delivery_proved": false
+  },
+  "candidate_identity": "Resolved by containing Git commit/tree and independent remote ref/readback; no self-referential embedded HEAD.",
+  "PREDECESSOR_EVIDENCE_TRANSFER": false,
+  "claims": {
+    "documented_rule": true,
+    "client_fixture_tests": true,
+    "main_integration": false,
+    "vendor_runtime_adoption": false,
+    "public_effect": false,
+    "EFFECT_ACK_DONE": false
+  },
+  "revision": "3-transport-client-repair",
+  "updated_at": "2026-10-12T08:55:06.122296+00:00",
+  "historical_test_evidence": {
+    "unmodified_gate_original_tests": {
+      "tests": 30,
+      "exit": 0,
+      "scope": "PR486 gate, separately observed"
+    },
+    "red_control": {
+      "command": "python3 -B -m unittest -v tests.test_ai_runtime_bootloader.ClientContinuationRegressionTests",
+      "old_runtime_blob": "aa787d82ce67f59d534c17174ec692da15ba7e5a",
+      "methods": 48,
+      "exit": 1,
+      "failure_subtests": 50,
+      "errors": 1,
+      "error_boundary": "missing existing policy binding before exact PR507 rule reuse",
+      "log_sha256": "56a7dc9c91c82c8d8ab69dc7fe49ae7c0a08319e86ebeb72e77e850fefdc92a3"
+    },
+    "candidate_gate": {
+      "client_methods": 50,
+      "new_client_methods": 20,
+      "runtime_contract_methods": 58,
+      "command": "make ai-runtime-contract",
+      "exit": 0,
+      "log_sha256": "39e3afd1a3d5f3b88c48d0ab593c935eff8bb7621292e82eaee80646f15eb21d"
+    },
+    "other_existing_client_tests": {
+      "command": "python3 -B -m unittest -v tests.test_api_client tests.test_qikvrt_repository_terminal tests.test_qikvrt_effect_ack_http_terminal tests.test_qikvrt_digital_twin_rest tests.test_qikvrt_personal_firefox_capability_boundary tests.issue_agent.test_processing tests.issue_agent.test_validate",
+      "passed": 69,
+      "import_errors": 1,
+      "unavailable_module": "src.qikvrt_siemens_reference_integration",
+      "scope": "transport, static web, loopback HTTP terminal, Firefox boundary, processor fixtures; no deployed client adoption",
+      "log_sha256": "f42573a7693cd83f59263f2623a154a9cdc16d7e89a57319c4f96a7df39d14d0"
+    },
+    "full_local_suite": {
+      "command": "make test",
+      "exit": 2,
+      "blocker": "historical commit 56127a6fd7dadea331fea98ed6cba19b4b96c6b2 missing from shallow local Git object closure; historical worktree/finalizer tests cannot complete",
+      "not_fixed_by_weakening_tests": true,
+      "native_successor": "unchanged existing QIKVRT CI uses fetch-depth: 0, must run on submitted candidate HEAD/TREE",
+      "log_sha256": "61b701bc3633676968f7f36a477b2358336bcfe7d9dc98ef6f397de609a20945"
+    }
+  },
+  "historical_test_evidence_scope": "Original client candidate ab72f304b9aee7beeeac9c70c8b07f2ffbe482f2 / 8ff009497081d74179a9861af308758e175b0d25 only. Source files of those client cases remain unchanged; no test transfer to a successor is implied.",
+  "test_evidence": {
+    "integrity_old_runtime_red_control": {
+      "old_runtime_blob": "bd69412866bc8bed020246ef60e3ece6a8222b07",
+      "command": "python3 -B -m unittest -v tests.test_integrity.IntegrityGenerationTests.test_node_lifecycle_renewal_does_not_invalidate_the_integrity_trio",
+      "exit": 1,
+      "log_sha256": "681da96d5b693f7a7259b19a8dbdd96d0c97f6c0a7fb6ef6434c66ec7c850d56",
+      "stderr_excerpt": "test_node_lifecycle_renewal_does_not_invalidate_the_integrity_trio (tests.test_integrity.IntegrityGenerationTests.test_node_lifecycle_renewal_does_not_invalidate_the_integrity_trio) ... FAIL\n\n======================================================================\nFAIL: test_node_lifecycle_renewal_does_not_invalidate_the_integrity_trio (tests.test_integrity.IntegrityGenerationTests.test_node_lifecycle_renewal_does_not_invalidate_the_integrity_trio)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/scratch/c72892dc2544/qikvrt-client-integrity-successor-4k6oigjb/tests/test_integrity.py\", line 269, in test_node_lifecycle_renewal_does_not_invalidate_the_integrity_trio\n    self.assertEqual(entry[\"classification\"], \"role_local_liveness_state\")\nAssertionError: 'repository_content' != 'role_local_liveness_state'\n- repository_content\n+ role_local_liveness_state\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.021s\n\nFAILED (failures=1)\n"
+    },
+    "containing_successor_required_tests": {
+      "command": "python3 -B -m unittest -v tests.test_ai_runtime_bootloader tests.test_integrity",
+      "expected_client_cases": 50,
+      "expected_runtime_client_cases": 58,
+      "expected_integrity_cases": 11,
+      "state": "REQUIRED_EXACT_CONTAINING_HEAD_EXECUTION"
+    },
+    "native_full_suite": "REQUIRED_EXISTING_QIKVRT_CI_ON_NEW_HEAD; do not repeat the unchanged shallow-history local failure."
+  },
+  "integration_successor": {
+    "goal": "Remove the known candidate merge-integrity blocker by reusing existing reviewed PR514 source, not creating a parallel integrity or governance implementation.",
+    "existing_source_pr": 514,
+    "source_head": "4edfc2b5bd6c502fc0ba682b5942cb2b41875070",
+    "source_tree": "26235bbba0594eeb355cbe3d30d5c093c6e7b70d",
+    "byte_exact_imports": [
+      {
+        "path": "tools/qikvrt_integrity.py",
+        "git_blob": "b65e8818f607b7f4c33ce90d97d9b4cb59ef90a9",
+        "sha256": "5ff3a5e0944d96a28189f378ae59c8793c11eb7e7c7766b8c1bb12301fb8f65a"
+      },
+      {
+        "path": "tests/test_integrity.py",
+        "git_blob": "58cc8240c89a8e8bf17c3c2c0a7cf410b74c4160",
+        "sha256": "0be2f496b9b992bb7e3de353a3116c44aa34d79b6d0ee016bed99e248ac45dcb"
+      }
+    ],
+    "unimported_pr514_scope": "Public article, routing, self-disclosure and publication payload changes remain in their existing independent PR path.",
+    "main_lifecycle_source_head": "f148dfbfc1abe5b9506d9d1c4c6f7616efe6fe6e",
+    "main_lifecycle_source_tree": "9ac44e192a34c4352005ca0761809a618086a85f",
+    "main_lifecycle_materialized_paths": [
+      "evidence/node_health/36255181444-1.json",
+      "evidence/node_health/36271908222-1.json",
+      "evidence/node_health/36296732922-1.json",
+      "evidence/node_health/36317511514-1.json",
+      "evidence/node_health/36335098554-1.json",
+      "evidence/node_health/36351304656-1.json",
+      "evidence/node_health/36381537034-1.json",
+      "evidence/node_health/36431575840-1.json",
+      "evidence/node_health/36496986601-1.json",
+      "evidence/node_health/36527386703-1.json",
+      "evidence/node_health/36570784302-1.json",
+      "evidence/node_health/36638284271-1.json",
+      "evidence/node_health/36673717198-1.json",
+      "evidence/node_health/36715333877-1.json",
+      "evidence/node_health/36784342979-1.json",
+      "evidence/node_health/36821646859-1.json",
+      "evidence/node_health/36866747092-1.json",
+      "evidence/node_health/36936407695-1.json",
+      "evidence/node_health/36969534310-1.json",
+      "evidence/node_health/37007190339-1.json",
+      "evidence/node_health/37071181171-1.json",
+      "evidence/node_health/37099282397-1.json",
+      "evidence/node_health/37120239456-1.json",
+      "evidence/node_health/37136228467-1.json",
+      "evidence/node_health/37154289864-1.json",
+      "evidence/node_health/37180998634-1.json",
+      "evidence/node_health/37201684625-1.json",
+      "evidence/node_health/37235824372-1.json",
+      "evidence/node_health/37268524250-1.json",
+      "evidence/node_health/37325712969-1.json",
+      "evidence/node_health/37391781257-1.json",
+      "evidence/node_health/37422938516-1.json",
+      "evidence/node_health/37510511694-1.json",
+      "evidence/node_health/37578851517-1.json",
+      "evidence/node_health/37627620170-1.json",
+      "evidence/node_health/37700043589-1.json",
+      "evidence/node_health/37735306285-1.json",
+      "evidence/node_health/37784306314-1.json",
+      "evidence/node_health/37858780720-1.json",
+      "evidence/node_health/37891779786-1.json",
+      "evidence/node_health/37935383486-1.json",
+      "evidence/node_health/38000153926-1.json",
+      "evidence/node_health/38028824881-1.json",
+      "evidence/node_health/38052128243-1.json",
+      "evidence/node_health/38088608075-1.json",
+      "evidence/node_health/38115721714-1.json",
+      "evidence/node_health/38140562184-1.json",
+      "evidence/node_health/38178388272-1.json",
+      "evidence/node_health/LATEST.json",
+      "evidence/node_registration_renewal/36255181444-1.json",
+      "evidence/node_registration_renewal/36271908222-1.json",
+      "evidence/node_registration_renewal/36296732922-1.json",
+      "evidence/node_registration_renewal/36317511514-1.json",
+      "evidence/node_registration_renewal/36335098554-1.json",
+      "evidence/node_registration_renewal/36351304656-1.json",
+      "evidence/node_registration_renewal/36381537034-1.json",
+      "evidence/node_registration_renewal/36431575840-1.json",
+      "evidence/node_registration_renewal/36496986601-1.json",
+      "evidence/node_registration_renewal/36527386703-1.json",
+      "evidence/node_registration_renewal/36570784302-1.json",
+      "evidence/node_registration_renewal/36638284271-1.json",
+      "evidence/node_registration_renewal/36673717198-1.json",
+      "evidence/node_registration_renewal/36715333877-1.json",
+      "evidence/node_registration_renewal/36784342979-1.json",
+      "evidence/node_registration_renewal/36821646859-1.json",
+      "evidence/node_registration_renewal/36866747092-1.json",
+      "evidence/node_registration_renewal/36936407695-1.json",
+      "evidence/node_registration_renewal/36969534310-1.json",
+      "evidence/node_registration_renewal/37007190339-1.json",
+      "evidence/node_registration_renewal/37071181171-1.json",
+      "evidence/node_registration_renewal/37099282397-1.json",
+      "evidence/node_registration_renewal/37120239456-1.json",
+      "evidence/node_registration_renewal/37136228467-1.json",
+      "evidence/node_registration_renewal/37154289864-1.json",
+      "evidence/node_registration_renewal/37180998634-1.json",
+      "evidence/node_registration_renewal/37201684625-1.json",
+      "evidence/node_registration_renewal/37235824372-1.json",
+      "evidence/node_registration_renewal/37268524250-1.json",
+      "evidence/node_registration_renewal/37325712969-1.json",
+      "evidence/node_registration_renewal/37391781257-1.json",
+      "evidence/node_registration_renewal/37422938516-1.json",
+      "evidence/node_registration_renewal/37510511694-1.json",
+      "evidence/node_registration_renewal/37578851517-1.json",
+      "evidence/node_registration_renewal/37627620170-1.json",
+      "evidence/node_registration_renewal/37700043589-1.json",
+      "evidence/node_registration_renewal/37735306285-1.json",
+      "evidence/node_registration_renewal/37784306314-1.json",
+      "evidence/node_registration_renewal/37858780720-1.json",
+      "evidence/node_registration_renewal/37891779786-1.json",
+      "evidence/node_registration_renewal/37935383486-1.json",
+      "evidence/node_registration_renewal/38000153926-1.json",
+      "evidence/node_registration_renewal/38028824881-1.json",
+      "evidence/node_registration_renewal/38052128243-1.json",
+      "evidence/node_registration_renewal/38088608075-1.json",
+      "evidence/node_registration_renewal/38115721714-1.json",
+      "evidence/node_registration_renewal/38140562184-1.json",
+      "evidence/node_registration_renewal/38178388272-1.json",
+      "evidence/node_registration_renewal/LATEST.json",
+      "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+      "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json"
+    ],
+    "parents": [
+      "ab72f304b9aee7beeeac9c70c8b07f2ffbe482f2",
+      "f148dfbfc1abe5b9506d9d1c4c6f7616efe6fe6e"
+    ],
+    "pr514_ref_mutated": false,
+    "new_workflow": false,
+    "new_governance": false,
+    "force_push": false,
+    "native_workflow_cancellation": false,
+    "test_weakening": false,
+    "independent_review_and_current_main_rules_still_required": true,
+    "Main_integration_claim": false,
+    "public_effect_claim": false
+  },
+  "direct_transport_client_conformance": {
+    "state": "LOCAL_TESTED_SUCCESSOR_NOT_MAIN_OR_PRODUCTIVE_EFFECT",
+    "parent_head": "e20209620009faf381119b209ab355d8ef91107c",
+    "parent_tree": "51ef405d4f83d6420e2d3c177b765e2a39aa1412",
+    "Owner_rule_sha256": "598d99efe1605ef7fa5deab70a04fbb5cdc756bd4b368e3394d7c833be58a9d8",
+    "Owner_rule_modified": false,
+    "shared_validator_modified": false,
+    "framework": "Existing unittest module tests/test_api_client.py and unchanged Makefile/workflows",
+    "original_counterexamples": {
+      "cases": 4,
+      "expected_failure_markers": 0,
+      "ordinary_assertions": "PASS"
+    },
+    "local_transport_tests": {
+      "command": "python3 -B -m unittest -v tests.test_api_client",
+      "exit": 0,
+      "tests": 19,
+      "expected_failures": 0,
+      "log_sha256": "b6bc6a9100217f06bc0538e74735e36ba31995d6fc756d7fea7d881b54a1c07b"
+    },
+    "changed_source_sha256": {
+      "scripts/qikvrt_api_client.py": "9ab61849a98d891dcabccd0895cc5f96763b121577b6d2964a9de0f657dbd3b3",
+      "tests/test_api_client.py": "eb7359b679f9361d087025bfeba5b34ec03967bbebc576b794cbe929bd5cf7eb",
+      "README.md": "8c37f903b5e4bac4a0fec8b446edcc1170655bb909a964d9498cc1141313699d"
+    },
+    "reuse": [
+      "tools.ai_handoff.client_end_of_action_domain",
+      "tools.ai_handoff.validate_client_readback",
+      "tools.ai_handoff.client_causal_key",
+      "tools.qikvrt_integrity._exclusive_integrity_lock",
+      "qikvrt_api_handler.atomic_write_bytes",
+      "qikvrt_api_handler._assert_safe_target"
+    ],
+    "behavior": [
+      "Fresh HEAD/TREE and exact public HTTPS GET after successful or failed dispatch and NOOP",
+      "Persistent intent before POST; single process lock held through closing readback",
+      "Failure suppression excludes clocks, lifecycle HEAD and request ID",
+      "Changed subject and explicit failure-bound changed cause/capability permit continuation within existing authorization",
+      "Ambiguous or pending dispatch cannot be retried from a changed digest alone",
+      "No redirect, credential forwarding, raw response body or payload persistence"
+    ],
+    "limits": [
+      "Mocked transport tests are not vendor sessions or native node execution",
+      "Causal digest consistency is not independent proof or new effect authorization",
+      "Public page GET does not establish working software at the candidate HEAD/TREE",
+      "Main integration and protected governance remain separate gates",
+      "Metadata persistence applies to the same state directory, not global cross-client exactly-once authority"
+    ],
+    "human_contribution": "Ingolf Lohmann: exact repair action, four counterexamples, existing Owner rule and authorized repository integration route",
+    "artificial_cognitive_contribution": "Codex: existing transport client repair, regression execution and REST candidate preparation",
+    "effect_state": "EFFECT_ACK_CONTINUE",
+    "ordinary_release": false
+  },
+  "historical_direct_transport_client_conformance": [
+    {
+      "framework": "Existing tests/test_api_client.py in the unchanged make test target",
+      "class": "ApiClientEndOfActionConformanceTests",
+      "source_candidate_head": "d5c168d5282c21368bbd121dd11df6190e6a7f42",
+      "source_candidate_tree": "a81a005e411110dc0c1f74dfbe3a4ea839c4358b",
+      "client_source_sha256": "bbd5e04067a08163213fc4b79b0e0421bb7717f14bafbc01d41cd956cb5b45bf",
+      "raw_counterexample_result": {
+        "command": "python3 -B -m unittest -v tests.test_api_client.ApiClientEndOfActionConformanceTests",
+        "exit": 1,
+        "result": "4 ordinary assertion failures; actual transport client closing conformance is OPEN",
+        "client_source_head": "d5c168d5282c21368bbd121dd11df6190e6a7f42",
+        "client_source_tree": "a81a005e411110dc0c1f74dfbe3a4ea839c4358b",
+        "client_source_sha256": "bbd5e04067a08163213fc4b79b0e0421bb7717f14bafbc01d41cd956cb5b45bf",
+        "unmarked_test_source_sha256": "0585ba41daa04804a108b88731cc6ab9965d1ec564d5a08af27f12a77b728fbf",
+        "log_sha256": "bfab10594a14d424de17c65848c054d31480269346ea43978989ec66f5c0edaf",
+        "completed_at": "2026-10-12T00:45:23.153908+00:00",
+        "scope": "Executed real client.main with deterministic mocked HTTP transport; no actual external effect or vendor session"
+      },
+      "cases": [
+        "Fresh repository HEAD/TREE GET after scoped handler DONE",
+        "Fresh repository/public GETs after HTTP403",
+        "Fresh exact-origin raumzeitterminal.de public GET after success",
+        "Identical failing invocation with no new causal evidence does not POST twice"
+      ],
+      "ordinary_assertion_failures": 4,
+      "expected_failure_markers": 4,
+      "disposition": "OPEN_CLIENT_CONFORMANCE_GAP",
+      "expected_failure_is_client_pass": false,
+      "successful_transport_ack_is_public_delivery": false,
+      "actual_client_main_executed": true,
+      "network_transport": "Deterministic mocked opener; no production DNS or provider write",
+      "vendor_session_execution": "NOT_ESTABLISHED",
+      "runtime_driver_modified": false,
+      "new_governance_implementation": false,
+      "integration_boundary": "Expected failures remain explicit in unittest output. Unexpected success fails the standard suite, requiring removal of the OPEN marker and deliberate review after actual client repair.",
+      "next_causal_repair": "Bind the transport client's action lifecycle to the existing shared Owner closing contract and causal receipt mechanism. Reuse the current validator; do not add a parallel governance policy.",
+      "test_evidence_transfer": "Raw counterexamples bind unchanged client source and the explicitly hashed unmarked test file. Successor suites must be executed afresh."
+    }
+  ],
+  "automatic_successor_task_inheritance": {
+    "owner_instruction_date": "2026-10-12",
+    "owner_instruction": "Die Fehler, Versäumnisse und Lücken des vorherigen Laufs sind stets zugleich die Aufgaben des automatisch daran anschließenden Laufs, denn alles andere bleibt inakzeptabel.",
+    "source_head": "e3ae7e713c22eecad996f484c05a339f4bce72a6",
+    "source_tree": "ce9170edf88e67f72dbffbde2ae9a97c111b1903",
+    "source_transport_repair": "Fresh concurrent e3ae successor was read and reused. Its repaired client, nineteen tests and README are retained. No alternative API client, executor, workflow or transport is substituted.",
+    "state": "LOCALLY_TESTED_CANDIDATE_NOT_MAIN_OR_PRODUCT_DELIVERY",
+    "changed_files": [
+      {
+        "path": "AI",
+        "bytes": 19672,
+        "sha256": "a2560330ca8649c2f04e93f471d7e4af202f88532d046493dd4bbb99477d4a7c",
+        "git_blob_sha1": "6bc7e9bc189f0ddbeecfa8cf09be29504276d1ba"
+      },
+      {
+        "path": "AGENTS.md",
+        "bytes": 11951,
+        "sha256": "e0b72036e0654b04d4286ff7db0972b04f0fff3dc23f531ff3d7fc9b436b97db",
+        "git_blob_sha1": "d47adb15b39ec1c4d9474717bd412fb456cf3726"
+      },
+      {
+        "path": "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json",
+        "bytes": 6285,
+        "sha256": "620aefd2020f497e3ff106b76c59d23ae9e67579e6816e781eea309b2b634463",
+        "git_blob_sha1": "9ff894e3f995ed24b59322461091b327dba242a7"
+      },
+      {
+        "path": "scripts/qikvrt_api_client.py",
+        "bytes": 24892,
+        "sha256": "a38c61fbf8db20133609b80c17d85e139e4dc06b6601b737522deea46a992313",
+        "git_blob_sha1": "67f2e60a60f9e11d89e5aacdbfa57427a78c8efc"
+      },
+      {
+        "path": "tools/ai_handoff.py",
+        "bytes": 31763,
+        "sha256": "2b7f22ae426ae3a9e18069675feda107e5bc2c819e9bea06c159de26396efdf3",
+        "git_blob_sha1": "1867b9d78e250d02a3e095268c35909a0dc5595d"
+      },
+      {
+        "path": "tests/test_api_client.py",
+        "bytes": 23850,
+        "sha256": "d69a49d320e24a56b80e04a054bbc66cd74c1768dafdde4318f7cf4697e6ff5a",
+        "git_blob_sha1": "17639301e0c5381dfa965b49a29f9a2c9a8e4be5"
+      },
+      {
+        "path": "tests/test_ai_runtime_bootloader.py",
+        "bytes": 31641,
+        "sha256": "1959a827f51ab28b883f76d4fcf06acebcb764633604e9af6c66f0ab2c74fee7",
+        "git_blob_sha1": "b62edb1bf349be4dd58b0c41c500cbb8b0db4a56"
+      }
+    ],
+    "shared_gate": "tools/ai_handoff.py validates previous_run.execution_id and open_work -> successor work; silent drops, unjustified closure, missing next action and DONE with open work are rejected.",
+    "actual_client": "The existing locked private state path reads CONTINUATION.data before dispatch, carries every open task across changed requests and NOOP, preserves per-run .data receipts, and closes duties only with recorded evidence. Delivery remains OPEN after a page GET.",
+    "reuse": [
+      "Existing Owner PR507 rule remains byte-identical",
+      "Existing e3ae transport repair and tests",
+      "Existing shared validator",
+      "Existing nonblocking process lock and private atomic writer",
+      "Existing Makefile and native CI unchanged"
+    ],
+    "local_tests": {
+      "count": 79,
+      "transport_tests": 24,
+      "shared_receipt_tests": 55,
+      "exit": 0,
+      "expected_failures": 0,
+      "log_filename": "local-verification.log",
+      "log_bytes": 14233,
+      "log_sha256": "1767a47fbedc6956b736833fc18cbcf1a09ec7ba4e4f857bfccc372e94fdbb5a",
+      "scope": "Actual CLI and shared validator under deterministic HTTP fixtures; restart witness inherited from existing transport tests. Not a productive vendor session or complete local Git clone."
+    },
+    "native_full_suite": "PENDING_ON_NEW_EXACT_HEAD",
+    "persistence_scope": "Same private state directory; rule presence and test receipts do not prove adoption by every other client or unattended runtime.",
+    "remaining_tasks": [
+      "Native protected Main integration and independent Code Owner review",
+      "Existing native administration operation for Ruleset enforcement",
+      "Existing secured IONOS domain operation and independent exact-host DNS/TLS/Working Software proof",
+      "Actual adoption in unobserved vendor sessions"
+    ],
+    "provenance": {
+      "human": "Ingolf Lohmann: goal, Owner clarification and existing authorization",
+      "artificial_cognitive": "Codex: successor reconciliation, task inheritance, shared gate and regression implementation, metadata and REST review candidate",
+      "limit": "Attribution is not biometric or specific-model-build proof"
+    },
+    "effect_state": "EFFECT_ACK_CONTINUE",
+    "ordinary_release": false
+  },
+  "terminal_decoder_failure_successor": {
+    "source_head": "0cf4c257220590be37ece749e297259cb7519fb6",
+    "source_tree": "2785b304644d9b62278a1e783343843a6f2ab0d9",
+    "reconciliation": "Reused the concurrent e3ae/0cf4 repair, its durable journal, task inheritance, Owner contract and shared validator. Earlier alternative preparation was not submitted or substituted.",
+    "repair": "Catch decoder RecursionError in the existing POST and closing repository read paths so a parser resource failure cannot skip the exact-host public GET or escape as an unhandled traceback.",
+    "red_control": {
+      "source_head": "0cf4c257220590be37ece749e297259cb7519fb6",
+      "ordinary_test_errors": 1,
+      "method": "Deterministic decoder resource-failure injection in the actual CLI; Python-build-dependent deep JSON was not claimed as a native production failure.",
+      "log_sha256": "4b6946970484b962a661fd3639f2fc5097c04db582b4edf42908bf92b9492552"
+    },
+    "fresh_tests": {
+      "command": "python3 -B -m unittest -v tests.test_api_client tests.test_ai_runtime_bootloader tests.test_integrity",
+      "count": 99,
+      "exit": 0,
+      "expected_failures": 0,
+      "log_sha256": "6b3d24232f516c98b271515da6d1b6e3fd352f034d8e546e739606a1db945fe1"
+    },
+    "original_four_regressions": "Ordinary assertions PASS; expectedFailure remains absent. OPEN assertion-message prefixes removed only after verified passing execution.",
+    "Owner_rule_sha256": "598d99efe1605ef7fa5deab70a04fbb5cdc756bd4b368e3394d7c833be58a9d8",
+    "shared_validator_modified": false,
+    "new_policy": false,
+    "new_executor": false,
+    "workflow_changes": false,
+    "native_full_suite": "PENDING_ON_NEW_EXACT_HEAD; 0cf4 CI not transferred",
+    "local_full_suite_boundary": "Previous full local make test was blocked by missing historical Git object 56127a6fd7dadea331fea98ed6cba19b4b96c6b2 in the REST archive object closure; no unrelated history or tests rewritten.",
+    "provenance": {
+      "human": "Ingolf Lohmann: task, acceptance conditions, standing rule and existing authorization",
+      "artificial_cognitive": "Codex: current-subject reconciliation, bounded decoder exception repair, additional negative control and regression execution"
+    },
+    "scope": "Current actual CLI under deterministic HTTP/decoder fixtures. Main integration, real vendor-session adoption and exact-host public working-software effect remain separate.",
+    "effect_state": "EFFECT_ACK_CONTINUE",
+    "ordinary_release": false
+  },
+  "interrupted_run_work_recovery": {
+    "owner_rule": "Predecessor failures, omissions and gaps become successor tasks",
+    "source_head": "13a1a3bce2e3dd6c2cde018d4a58a67a6fc926bf",
+    "source_tree": "f4dec871cd089a02910c9716df71f06128351d30",
+    "observed_gap": "A pre-POST intent or failed journal can exist without CONTINUATION.data after interruption or a work-history write failure. A changed next request previously omitted that open predecessor.",
+    "red_regression": {
+      "tests": 27,
+      "failures": 2,
+      "expected_failures": 0,
+      "filename": "resume-red-regressions.log",
+      "bytes": 6546,
+      "sha256": "854c324fad7b83dcd8d6dad2d6312f45f9da93b533585e46253736e32555d5f4"
+    },
+    "repair": "Recover the existing digest-named durable journals under the existing lock before dispatch; retain unresolved intent and missing repository duties, keep exact-host delivery OPEN, bind each recovered journal digest and preserve no-repeat/ambiguous-effect controls. Add non-secret request metadata to the existing reservation.",
+    "reuse": [
+      "Existing API client and journal schema",
+      "Existing no-follow file reads and private atomic writer",
+      "Existing process lock and shared work validator",
+      "Existing unittest/Makefile/native workflows"
+    ],
+    "new_executor": false,
+    "new_workflow": false,
+    "new_trigger": false,
+    "force_push": false,
+    "ordinary_release": false,
+    "local_tests": {
+      "tests": 82,
+      "transport_tests": 27,
+      "shared_receipt_tests": 55,
+      "failures": 0,
+      "expected_failures": 0,
+      "filename": "resume-scoped-tests.log",
+      "bytes": 14853,
+      "sha256": "772cd1d3843a9ffd0ee297f9cd5f4ea67bc32fe15bf9d7d1ba1b292e2b208ca2"
+    },
+    "native_exact_successor_suite": "PENDING",
+    "source_bindings": [
+      {
+        "path": "scripts/qikvrt_api_client.py",
+        "bytes": 29914,
+        "sha256": "75457af2017cd3dab7c6e8df744dbe7f2bbf190a31e86163f8a394b76721e051",
+        "git_blob_sha1": "1bff5b7feb4de77e11e27b7aa8fd05e4af8c059b"
+      },
+      {
+        "path": "tests/test_api_client.py",
+        "bytes": 27916,
+        "sha256": "cf88c278a4eb7483b02aae417a1e79fc5737c9e08a61fb6c0e17ce4ae9c17dc4",
+        "git_blob_sha1": "e779fae80d23322f52704c38bfa6fbeb7c3c41f0"
+      }
+    ],
+    "limits": [
+      "Deterministic actual-CLI fixtures, not productive vendor sessions",
+      "Private state directory scope; metadata reconstruction is not native effect proof",
+      "Protected Main and exact-host delivery remain OPEN"
+    ],
+    "provenance": {
+      "human": "Ingolf Lohmann: continuing Owner rule and existing authorization",
+      "artificial_cognitive": "Codex: two ordinary red counterexamples, bounded recovery in existing client, regression execution and exact REST successor"
+    }
+  },
+  "completed_request_replay_repair": {
+    "source_head": "7c8f125c408f3ab5e7351ab867934677d611a36f",
+    "source_tree": "9e1f2c849ce0c45b720c052a47d5e1efb97526e6",
+    "owner_instruction": "Die Fehler, Versäumnisse und Lücken des vorherigen Laufs sind stets zugleich die Aufgaben des automatisch daran anschließenden Laufs, denn alles andere bleibt inakzeptabel. Wiederhole den Vorgang, bis es keine Fehler, Versäumnisse und Lücken mehr gibt. Freigabe erteilt.",
+    "observed_defect": "The same stable completed request is POSTed again, including after loss of CONTINUATION.data and after another completed ID overwrites the latest request_id.",
+    "red": {
+      "total": 30,
+      "ordinary_failures": 3,
+      "expected_failures": 0,
+      "bytes": 7948,
+      "sha256": "997b3399167edcdae4df7f113eb18b6066a1eb9fc99dff8f85aa6d578bcc9b31"
+    },
+    "repair": "Retain bounded stable request-ID/response-digest completion witnesses in the existing locked semantic journal. Known completions close with fresh reads and zero POSTs. Historical completion cannot close a later unresolved attempt. Legacy journals remain readable. New accepted IDs still represent new work after completion.",
+    "reuse": {
+      "existing_client": true,
+      "existing_private_journal": true,
+      "existing_shared_validator": true,
+      "new_executor": false,
+      "new_workflow": false,
+      "new_trigger": false,
+      "credential_persistence": false
+    },
+    "bounds": {
+      "completed_ids_per_semantic_subject": 32,
+      "journal_bytes": 16384,
+      "on_full": "BLOCK_BEFORE_POST_WITHOUT_EVICTION"
+    },
+    "local_validation": {
+      "transport": 32,
+      "shared_client_receipt": 55,
+      "total": 87,
+      "status": "PASS",
+      "expected_failures": 0,
+      "bytes": 16329,
+      "sha256": "9fa8445faf50c37b83ae5ab02c0c2d5e490f2d5c5637c93debca2aaaa2e4c4b7",
+      "scope": "Actual CLI deterministic transport fixtures and existing shared receipt gate; not productive vendor sessions or delivery"
+    },
+    "native_validation": {
+      "head": "b8333a214d243373ff9948b7f477ce0c58290ae4",
+      "tree": "0256a429d73bcd21702be7ef669724183635cc47",
+      "push_run": 38223576546,
+      "pr_run": 38223583698,
+      "full_make_test": "PASS",
+      "MAKE_TEST_EXIT": 0,
+      "iteration_0_fixpoint": true,
+      "evidence_materialization_run": 38223583759,
+      "evidence_materialization": "success",
+      "predecessor_evidence_transfer": false
+    },
+    "required_open_work": [
+      "protected-main-promotion",
+      "exact-host-delivery",
+      "actual-vendor-session-adoption"
+    ],
+    "provenance": {
+      "human": "Ingolf Lohmann: continuing repair/integration/delivery grant and explicit repetition instruction",
+      "artificial_cognitive": "Codex: causal CLI counterexamples, existing-journal repair and validation",
+      "joint": "Owner requirements and machine-authored reviewable implementation remain separately attributable"
+    }
+  },
+  "original_attempt_evidence_retention": {
+    "source_head": "b8333a214d243373ff9948b7f477ce0c58290ae4",
+    "source_tree": "0256a429d73bcd21702be7ef669724183635cc47",
+    "observed_defect": "An admitted retry overwrote the original failure record while prior work receipts did not retain it; the same loss occurred for a legacy journal without a work cursor/history.",
+    "red": {
+      "total": 34,
+      "ordinary_failures": 2,
+      "expected_failures": 0,
+      "bytes": 8428,
+      "sha256": "6d6ff27274a72415d86e3509253bae77b215bad8729227471b5810231f6e0cec"
+    },
+    "repair": "Before a new intent overwrites a prior journal, atomically preserve the original parsed metadata and exact journal JSON/digest in the existing work-history namespace. Content-addressed checkpoints are repeat-safe and drift fails closed. Per-run work receipts also retain attempt metadata. Missing legacy history is reconstructed before POST.",
+    "limits": {
+      "source_journal_bytes": 16384,
+      "checkpoint_bytes": 131072,
+      "checkpoint_failure": "BLOCK_BEFORE_NEW_POST"
+    },
+    "new_executor": false,
+    "new_workflow": false,
+    "new_trigger": false,
+    "local_validation": {
+      "transport": 34,
+      "shared_client_receipt": 55,
+      "total": 89,
+      "status": "PASS",
+      "expected_failures": 0,
+      "bytes": 16705,
+      "sha256": "b266eb3ae900dc68fcdc0c74ca6fba875ab3ca389aa3e7ccdd6de3f549cb341b",
+      "scope": "Actual CLI deterministic transport fixtures and shared gate; not productive vendor sessions"
+    },
+    "native_validation": "PENDING_ON_NEW_SUBJECT_NOT_PREDECESSOR_PASS",
+    "required_open_work": [
+      "protected-main-promotion",
+      "exact-host-delivery",
+      "actual-vendor-session-adoption",
+      "native-fair-rest-continuation-integration"
+    ],
+    "reuse_existing_fair_continuation_candidates": [
+      500,
+      501
+    ],
+    "provenance": {
+      "human": "Ingolf Lohmann: continuing repair/integration/delivery grant and repetition instruction",
+      "artificial_cognitive": "Codex: causal original-evidence counterexamples, existing history checkpoint repair and verification"
+    }
+  }
+}

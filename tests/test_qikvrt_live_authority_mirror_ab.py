@@ -70,8 +70,12 @@ class CredentialBoundaryTests(unittest.TestCase):
             self.assertFalse(kwargs['text'])
 
     def test_workflow_preserves_fixed_scope(self):
-        workflow=(Path(__file__).resolve().parents[1]/'.github/workflows/qikvrt_live_authority_mirror_ab.yml').read_text()
-        for text in ('owner: Goldkelch','repositories: qik-vrt','permission-contents: read','persist-credentials: false'):
+        root = Path(__file__).resolve().parents[1]
+        policy = json.loads((root / 'policy/CANONICAL_UPSTREAM_REMOTE_V1.json').read_text())
+        self.assertEqual(bench.AUTHORITY_URL, policy['canonical_upstream']['canonical_https_url'])
+        self.assertEqual(bench.MIRROR_URL, policy['mirror']['canonical_https_url'])
+        workflow=(root/'.github/workflows/qikvrt_live_authority_mirror_ab.yml').read_text()
+        for text in ('owner: ingolf-lohmann','repositories: qik-vrt','permission-contents: read','persist-credentials: false'):
             self.assertIn(text,workflow)
         self.assertNotIn('contents: write',workflow)
         self.assertNotIn('pull_request_target:',workflow)

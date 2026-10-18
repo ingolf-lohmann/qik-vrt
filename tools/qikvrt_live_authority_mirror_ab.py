@@ -27,8 +27,8 @@ import time
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from tools.qikvrt_authority_credentials import credential, CREDENTIALS
 
-MIRROR_URL = "https://github.com/ingolf-lohmann/qik-vrt.git"
-AUTHORITY_URL = "https://github.com/Goldkelch/qik-vrt.git"
+MIRROR_URL = "https://github.com/Goldkelch/qik-vrt.git"
+AUTHORITY_URL = "https://github.com/ingolf-lohmann/qik-vrt.git"
 REPEATS = 12
 END_TO_END_REPEATS = 3
 LOCAL_SCOPE = "LOCAL_GIT_OBJECT_COMPARISON_ONLY"
@@ -387,7 +387,7 @@ def measure_end_to_end(transport, dest, subjects, repeats=END_TO_END_REPEATS):
 
 
 def main():
-    # Mirror GITHUB_TOKEN is never Authority evidence.
+    # An unverified workspace GITHUB_TOKEN is never Authority scope evidence.
     token, source, present = credential({k: os.environ.get(k, "")
                                         for k in CREDENTIALS if k != "GITHUB_TOKEN"})
     result = {
