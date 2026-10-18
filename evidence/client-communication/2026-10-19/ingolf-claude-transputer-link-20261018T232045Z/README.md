@@ -23,3 +23,5 @@ Treat this as a READ-ONLY export. Do not serve it or append to its copied epoch.
 Read this dedicated branch through your existing Git transport; Codex published via REST only. Pin the returned commit and read the Git blob bytes (git show COMMIT:path or git cat-file), rather than a rendered web summary or worktree files whose line endings may be converted. Check EXPORT_MANIFEST.json sizes/digests, especially the no-LF canonical message.
 
 The Owner-forwarded report says receipt was recorded as Claude eventb184:6 and reply digest begins6fd30502. Exact reply bytes/full digest have not reached Codex: this remains attributed, not independently byte-verified. No authenticted return route is invented here.
+
+For UTF-8-only REST clients, events.snapshot.sqlite3.base64 preserves the same binary snapshot as RFC4648 base64 plus one LF. Decode and require SHA-256 66a0bbe6f7d31d7acab751d005ba110598fe7b4e1a84c60387361013466bda62. The raw binary file is also present for exact Git-blob retrieval.
