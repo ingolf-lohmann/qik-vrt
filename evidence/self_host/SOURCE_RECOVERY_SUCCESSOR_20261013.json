@@ -9,8 +9,8 @@
       "historical_archive_path": "evidence/self_host/original-recovered/deploy/universal-terminal/compose.yaml",
       "historical_git_blob": "f807391adabc9046fa37ba847f572acbd1709e46",
       "historical_sha256": "4c2ca8207b24fcf0a88d55ddb46eac31117e636aaafb5a74cfbd91b078cfbaa1",
-      "successor_git_blob": "723e0b6b3f365dcafe3c54392d7396bc00295b66",
-      "successor_sha256": "c76b4f4da2bc3b0e93593a5db01f1c188f6e23ea556fc480048e633b310432f6"
+      "successor_git_blob": "f7141f1114ad0879395b72a99c19d21670894f4e",
+      "successor_sha256": "98d0138a1ca31de488bd36d7d04405fcc57009c5e6c132b4071a9fd091957cba"
     },
     {
       "restored_path": "deploy/universal-terminal/mirror-bootstrap.sh",
@@ -25,8 +25,8 @@
       "historical_archive_path": "evidence/self_host/original-recovered/tests/test_temdd_event_ledger.py",
       "historical_git_blob": "187230e0bab7512811c0e9d71c4f6498be5f06ef",
       "historical_sha256": "662d41da4b1e15237ee73ce73347d090c32e6fa7dcaaea208e95938cf20b3966",
-      "successor_git_blob": "b604eec0462a46f33524bb57e9ad220d6b08a914",
-      "successor_sha256": "452cab84d60f9b6ab8f0e234b38fc18575496ad19489155ebde12fef2ef8abf3"
+      "successor_git_blob": "51818934677696e911471b89a823264bf021a2f6",
+      "successor_sha256": "91ed5980b94856a38e146415c97f23f67631eb9461b3da162ec98425a04ebec4"
     },
     {
       "restored_path": "deploy/universal-terminal/Dockerfile",
@@ -41,8 +41,8 @@
       "historical_archive_path": "evidence/self_host/original-recovered/deploy/universal-terminal/entrypoint.sh",
       "historical_git_blob": "3db27a8487e67b2beac596e1f576afe1cf95b21e",
       "historical_sha256": "c0bae910a3220b79d283943294b0ace65b8787c8f95b275a75ffc73d65fb139b",
-      "successor_git_blob": "165cc802b0b95bf710ef7ed4bf4fcb261a910556",
-      "successor_sha256": "8737eae0e2b6fb52b26e20e4769bb95fe8574cc1e547019fe24f18bd7d38e269"
+      "successor_git_blob": "ba610deae48577bf899b7c59bd6abf74fc92e39b",
+      "successor_sha256": "4b217944d062fd7b888bd6ea94af7351915a612bb6f56a097ed64623a1b966e4"
     },
     {
       "restored_path": "deploy/universal-terminal/runtime-health.sh",
@@ -57,8 +57,16 @@
       "historical_archive_path": "evidence/self_host/original-recovered/tests/test_temdd_runtime_subject_binding.py",
       "historical_git_blob": "58f5af0d026dfa9319f99b3beb8dcd6e30aec18d",
       "historical_sha256": "e6c1c98665c50fdf2c5de1ac29f17f5ccf78aefdcdbd9abb4e700aeb5ac6bc4a",
-      "successor_git_blob": "af3ab7a1c130557da96ed8a15d9aa86187db9c24",
-      "successor_sha256": "265e29acade36985f600f395c8f763c6e0c8b0c60819eb836fc53ec19121e3c8"
+      "successor_git_blob": "529b3c50f3717a690d7d6726193ade9df235943e",
+      "successor_sha256": "14f8733ec1fd5255fe375246d77618434c68e9ddec9ed3b1e78e3738ff05e303"
+    },
+    {
+      "restored_path": "src/qikvrt_temdd_event_ledger.py",
+      "historical_archive_path": "evidence/self_host/original-recovered/src/qikvrt_temdd_event_ledger.py",
+      "historical_git_blob": "6322bd45edb9de7d2aa07dee6fbc12307148475c",
+      "historical_sha256": "94908e6a50ce107a79965055f3ecabae10e7589d96f7a26496d2a4956b068b13",
+      "successor_sha256": "f1ad2fb80bd063d081457d931fa8d8d9de8b7127d366197487d4b4ccf5512390",
+      "successor_git_blob": "ebc5e524f6f62ac25bc9cf64ee871a6b6d36321a"
     }
   ],
   "scope": "Preserved historical original bytes plus current role, existing-lane test and Owner Firefox-158 forward corrections; not historical PASS transfer",
@@ -129,5 +137,47 @@
     "validation_scope": "Existing failing recovery regression must accept this exact successor while still checking the historical original blobs. Host bootstrap, DNS/TLS effects and permanent native acceptance remain independent.",
     "predecessor_pass_transferred": false,
     "production_accepted": false
+  },
+  "temdd_explicit_subject_20261018": {
+    "work_unit": "state/work_units/QIKVRT_TEMDD_EXPLICIT_SUBJECT_20261018_V1.json",
+    "basis_head": "14750d8143d778431b348ef4593b10dbb8a69ed6",
+    "previous_receipt_path": "evidence/self_host/original-recovered/SOURCE_RECOVERY_SUCCESSOR_before_TEMDD_EXPLICIT_20261018.json",
+    "previous_receipt_sha256": "e4c099e81d1d668b61aa9d62970aadc74b6a965f32712ad4c992a156e916019b",
+    "preserved_previous_successor_bindings": [
+      {
+        "restored_path": "deploy/universal-terminal/compose.yaml",
+        "historical_archive_path": "evidence/self_host/original-recovered/deploy/universal-terminal/compose.yaml",
+        "historical_git_blob": "f807391adabc9046fa37ba847f572acbd1709e46",
+        "historical_sha256": "4c2ca8207b24fcf0a88d55ddb46eac31117e636aaafb5a74cfbd91b078cfbaa1",
+        "successor_git_blob": "723e0b6b3f365dcafe3c54392d7396bc00295b66",
+        "successor_sha256": "c76b4f4da2bc3b0e93593a5db01f1c188f6e23ea556fc480048e633b310432f6"
+      },
+      {
+        "restored_path": "deploy/universal-terminal/entrypoint.sh",
+        "historical_archive_path": "evidence/self_host/original-recovered/deploy/universal-terminal/entrypoint.sh",
+        "historical_git_blob": "3db27a8487e67b2beac596e1f576afe1cf95b21e",
+        "historical_sha256": "c0bae910a3220b79d283943294b0ace65b8787c8f95b275a75ffc73d65fb139b",
+        "successor_git_blob": "165cc802b0b95bf710ef7ed4bf4fcb261a910556",
+        "successor_sha256": "8737eae0e2b6fb52b26e20e4769bb95fe8574cc1e547019fe24f18bd7d38e269"
+      },
+      {
+        "restored_path": "tests/test_temdd_event_ledger.py",
+        "historical_archive_path": "evidence/self_host/original-recovered/tests/test_temdd_event_ledger.py",
+        "historical_git_blob": "187230e0bab7512811c0e9d71c4f6498be5f06ef",
+        "historical_sha256": "662d41da4b1e15237ee73ce73347d090c32e6fa7dcaaea208e95938cf20b3966",
+        "successor_git_blob": "b604eec0462a46f33524bb57e9ad220d6b08a914",
+        "successor_sha256": "452cab84d60f9b6ab8f0e234b38fc18575496ad19489155ebde12fef2ef8abf3"
+      },
+      {
+        "restored_path": "tests/test_temdd_runtime_subject_binding.py",
+        "historical_archive_path": "evidence/self_host/original-recovered/tests/test_temdd_runtime_subject_binding.py",
+        "historical_git_blob": "58f5af0d026dfa9319f99b3beb8dcd6e30aec18d",
+        "historical_sha256": "e6c1c98665c50fdf2c5de1ac29f17f5ccf78aefdcdbd9abb4e700aeb5ac6bc4a",
+        "successor_git_blob": "af3ab7a1c130557da96ed8a15d9aa86187db9c24",
+        "successor_sha256": "265e29acade36985f600f395c8f763c6e0c8b0c60819eb836fc53ec19121e3c8"
+      }
+    ],
+    "historical_original_daemon_preserved": true,
+    "predecessor_pass_transferred": false
   }
 }

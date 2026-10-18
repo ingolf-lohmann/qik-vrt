@@ -33,7 +33,25 @@
     "predecessor_regression": "Three missing-binding cases failed against the exact predecessor source",
     "focused_after": "17 tests passed: missing direct-CLI binding, original-row preservation, shell subject admission and existing health binding",
     "native_socket_capability": "Local execution refused socket operations with EPERM; native CLI execution remains a separate CI/runtime obligation",
-    "full_suite": "See exact candidate CI and PR validation evidence; no passing full-suite claim is made by this work unit"
+    "full_suite": "See exact candidate CI and PR validation evidence; no passing full-suite claim is made by this work unit",
+    "portable_predecessor_suite": {
+      "command": "make -k test",
+      "python_tests": 1663,
+      "exit_code": 0,
+      "tree": "2967bbe4f75d7e4a007bc0ae5dcf4faf75e29dde",
+      "native_s1_included": false,
+      "log_sha256": "12f2416d2b9974084102d89ccddf3f77080ef461f4446b1dd850754f976299ff"
+    },
+    "native_predecessor_controls": {
+      "head": "14750d8143d778431b348ef4593b10dbb8a69ed6",
+      "run_id": 39165324058,
+      "job_id": 117786939506,
+      "ledger_and_start_tests": 45,
+      "ledger_and_start_tests_result": "PASS",
+      "aggregate_result": "FAIL_SOURCE_RECOVERY_SUCCESSOR_BINDING",
+      "transfer_to_changed_subject": false
+    },
+    "source_recovery_repair": "Original daemon and prior successor receipt archived byte-exactly; existing successor bindings updated with retained predecessors; original recovery regression now passes locally; fresh final-head native CI remains required"
   },
   "open_obligations": [
     "Read original predecessor join-event, receipt and consistent ledger checkpoint before transferring that node state",

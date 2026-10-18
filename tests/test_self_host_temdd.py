@@ -78,6 +78,15 @@ class SourceRecoveryTests(unittest.TestCase):
         successor = json.loads((ROOT / 'evidence/self_host/SOURCE_RECOVERY_SUCCESSOR_20261013.json').read_bytes())
         self.assertEqual(successor['historical_receipt_sha256'], hashlib.sha256(receipt_bytes).hexdigest())
         self.assertFalse(successor['predecessor_pass_transferred'])
+        update = successor['temdd_explicit_subject_20261018']
+        previous_bytes = (ROOT / update['previous_receipt_path']).read_bytes()
+        self.assertEqual(hashlib.sha256(previous_bytes).hexdigest(), update['previous_receipt_sha256'])
+        self.assertFalse(update['predecessor_pass_transferred'])
+        previous = json.loads(previous_bytes)
+        self.assertEqual(previous['historical_receipt_sha256'], successor['historical_receipt_sha256'])
+        previous_bindings = {entry['restored_path']: entry for entry in previous['changed_originals']}
+        for entry in update['preserved_previous_successor_bindings']:
+            self.assertEqual(entry, previous_bindings[entry['restored_path']])
         changed = {entry['restored_path']:entry for entry in successor['changed_originals']}
         self.assertEqual(set(changed), {f['restored_path'] for f in r['files'] if
             hashlib.sha256((ROOT/f['restored_path']).read_bytes()).hexdigest() != f['sha256']})
