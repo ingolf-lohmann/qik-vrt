@@ -1,0 +1,20 @@
+{
+  "schema": "qikvrt_attributed_signed_peer_reply_report_v1",
+  "source": "Owner-forwarded Claude report,2026-10-19T02:57:18+03:00",
+  "request_id": "ingolf-claude-transputer-link-20261018T232045Z",
+  "claimed_file": "SIGNED_REPLY2_ingolf-claude-transputer-link-20261018T232045Z.json",
+  "claimed_envelope_sha256_prefix": "19c84fc6",
+  "claimed_public_key_fingerprint_prefix": "e592c06f",
+  "claimed_public_key_fingerprint_suffix": "0c60",
+  "claimed_algorithm": "Ed25519",
+  "claimed_observer_event": "b184cf99f8f74f6bb2820416511562dc:9",
+  "claimed_bound_request_sha256": "30636063c975d2e7b2782f52f68fafeec74d0f9bb23c1ef57c4d34d07d41e13e",
+  "claimed_bound_codex_protocol_hash": "e41e9787c6996b5dce79ce8b217e8124cd31249036a3cc7ee08c224628d6788a",
+  "claimed_bound_commit": "1a5d1374677d587bbe07c5c442998a498e094c0d",
+  "actual_original_envelope_received": false,
+  "actual_complete_public_key_received": false,
+  "actual_signature_independently_verified": false,
+  "principal_key_binding_observed": false,
+  "private_key_requested": false,
+  "lookup": "Exact filename search modified_after23:40UTC returned no match; fresh Authority PR536 comments contain no signed-reply/public-key payload. This is scoped non-observation, not proof that Claude did not create it."
+}
