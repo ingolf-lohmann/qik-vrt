@@ -112,6 +112,10 @@ independent approving account in addition to the Principal review. Its exact
 postimage is SHA-256-bound; fixture tests establish source behavior, while
 actual administrative activation and readback remain separate effects. Existing
 production and lifecycle consumers reuse the same enforcement predicate.
+The current API source contract is `principal-review-v4`; select it explicitly
+with `--ruleset-writer-version principal-review-v4`. Legacy v1, lifecycle v2
+and app-renewal v3 remain frozen and readable through their original fixtures.
+An old version cannot silently fall back to the new writer or postimage.
 
 The policy field `review_executor.native_governance_status_context` binds the
 Ruleset writer, native gate and promotion to `QIKVRT required code-owner review`.

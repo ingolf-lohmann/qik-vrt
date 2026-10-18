@@ -178,6 +178,9 @@ paths:
         app-renewal-v3:
           workflow_blob_sha: 05066f6fb83a7f3ba8799677db35647e06942fd2
           ruleset_post_sha256: 45da27f3608b38f04b8252d7fc709a6337bff49d40fa2cf9baa4425dd36ec0dd
+        principal-review-v4:
+          workflow_blob_sha: 3b9396f4b6415baff047526bd6ecb193f606863e
+          ruleset_post_sha256: 59b80123aee14fd0f82a0af8a7e3265a2a5782f786785cf09be35f251b9c6999
       parameters:
         - name: owner
           in: path

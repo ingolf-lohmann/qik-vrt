@@ -459,7 +459,8 @@ class RulesetClientFixture(unittest.TestCase):
         self.version = self.writer_version or "legacy-v1"
         path = {"legacy-v1": "tests/fixtures/ruleset_writer_legacy_v1.yml",
                 "lifecycle-v2": "tests/fixtures/ruleset_writer_lifecycle_v2.yml",
-                "app-renewal-v3": client.RULESET_WORKFLOW_PATH}[self.version]
+                "app-renewal-v3": "tests/fixtures/ruleset_writer_app_renewal_v3.yml",
+                "principal-review-v4": client.RULESET_WORKFLOW_PATH}[self.version]
         self.writer_bytes = (REPOSITORY_ROOT / path).read_bytes()
         self.writer_blob = hashlib.sha1(
             b"blob " + str(len(self.writer_bytes)).encode() + b"\0" + self.writer_bytes,
@@ -637,7 +638,7 @@ class RulesetClientTests(RulesetClientFixture):
         self.assertFalse(receipt["transport_acknowledged"])
         self.assertTrue(receipt["execution_verified"])
         self.assertTrue(receipt["ruleset_effect_verified"])
-        self.assertEqual(receipt["observed_ruleset_sha256"], client.RULESET_POST_SHA256)
+        self.assertEqual(receipt["observed_ruleset_sha256"], client.RULESET_WRITER_VERSIONS[self.version][1])
         self.assertEqual(receipt["readback_state"], "RULESET_POSTCONDITION_VERIFIED")
         self.assertFalse(receipt["mutation_attribution_verified"])
         self.assertFalse(receipt["native_review_verified"])
@@ -646,7 +647,7 @@ class RulesetClientTests(RulesetClientFixture):
 
     def test_green_run_without_canonical_ruleset_or_branch_protection_is_not_effect(self):
         changed = copy.deepcopy(self.documents["rulesets/17"])
-        changed["rules"][0]["parameters"]["require_code_owner_review"] = False
+        changed["rules"][0]["parameters"]["require_code_owner_review"] = not changed["rules"][0]["parameters"]["require_code_owner_review"]
         for overrides in ({self.rulesets_path: []}, {"rulesets/17": changed},
                           {"branches/main": {**self.documents["branches/main"], "protected": False}}):
             with self.subTest(overrides=list(overrides)):
@@ -758,18 +759,25 @@ class AppRenewalRulesetClientTests(RulesetClientTests):
     writer_version = "app-renewal-v3"
 
 
+class PrincipalReviewRulesetClientTests(RulesetClientTests):
+    """Verify exact source, transport and effect boundaries of the Owner rule."""
+    writer_version = "principal-review-v4"
+
+
 class RulesetWriterVersionTests(RulesetClientFixture):
     """Version transitions are explicit and fail closed, including real bytes."""
 
-    def test_versioned_source_pins_and_unchanged_protection_projection(self):
+    def test_versioned_source_pins_and_explicit_principal_review_projection(self):
         blobs = {"legacy-v1": "1202d24c2f23eb8fa52ab7c562a583e79f9e8444",
                  "lifecycle-v2": "ab47a8ec98c39b39bda420050cb7c970a9da6165",
-                 "app-renewal-v3": "05066f6fb83a7f3ba8799677db35647e06942fd2"}
+                 "app-renewal-v3": "05066f6fb83a7f3ba8799677db35647e06942fd2",
+                 "principal-review-v4": "3b9396f4b6415baff047526bd6ecb193f606863e"}
         projections = []
         for version, blob in blobs.items():
             path = {"legacy-v1": "tests/fixtures/ruleset_writer_legacy_v1.yml",
                     "lifecycle-v2": "tests/fixtures/ruleset_writer_lifecycle_v2.yml",
-                    "app-renewal-v3": client.RULESET_WORKFLOW_PATH}[version]
+                    "app-renewal-v3": "tests/fixtures/ruleset_writer_app_renewal_v3.yml",
+                    "principal-review-v4": client.RULESET_WORKFLOW_PATH}[version]
             data = (REPOSITORY_ROOT / path).read_bytes()
             self.assertEqual(hashlib.sha1(b"blob " + str(len(data)).encode() + b"\0" + data).hexdigest(), blob)
             source = data.decode()
@@ -784,13 +792,22 @@ class RulesetWriterVersionTests(RulesetClientFixture):
                 if rule["type"] == "required_status_checks":
                     rule["parameters"]["required_status_checks"].sort(key=lambda x: x["context"])
             canonical = (json.dumps(projected, ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode()
-            self.assertEqual(hashlib.sha256(canonical).hexdigest(), "45da27f3608b38f04b8252d7fc709a6337bff49d40fa2cf9baa4425dd36ec0dd")
+            expected_post = "59b80123aee14fd0f82a0af8a7e3265a2a5782f786785cf09be35f251b9c6999" if version == "principal-review-v4" else "45da27f3608b38f04b8252d7fc709a6337bff49d40fa2cf9baa4425dd36ec0dd"
+            self.assertEqual(hashlib.sha256(canonical).hexdigest(), expected_post)
             self.assertEqual(client.RULESET_WRITER_VERSIONS[version], (blob, hashlib.sha256(canonical).hexdigest()))
             contract = (REPOSITORY_ROOT / 'api/qikvrt_github_api.openapi.yaml').read_text()
             self.assertIn(f'        {version}:\n          workflow_blob_sha: {blob}', contract)
             projections.append(projected)
         self.assertEqual(projections[0], projections[1])
         self.assertEqual(projections[0], projections[2])
+        principal = copy.deepcopy(projections[3])
+        pull = next(r for r in principal["rules"] if r["type"] == "pull_request")["parameters"]
+        for field in ("require_code_owner_review", "require_last_push_approval", "require_extra_approval_for_unattributed_changes"):
+            self.assertFalse(pull[field])
+            pull[field] = True
+        self.assertEqual(pull["required_approving_review_count"], 0)
+        pull["required_approving_review_count"] = 1
+        self.assertEqual(principal, projections[0])
         desired = projections[0]
         self.assertEqual(desired["enforcement"], "active")
         self.assertEqual(desired["bypass_actors"], [])

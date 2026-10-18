@@ -80,9 +80,14 @@
       "sha256": "16b29dd224fadf976f217cebe8beb7ca8cc7cfaf9813c214356825a5548048fd"
     },
     {
+      "path": "api/qikvrt_github_api.openapi.yaml",
+      "bytes": 19796,
+      "sha256": "4d8c05c337a1db4b8ae906d1530eee23258bd5573c84e69887a667c7145f0127"
+    },
+    {
       "path": "docs/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE.md",
-      "bytes": 16423,
-      "sha256": "0fa31d47c119903743d2933a24eb5c09dbc82ec6500f30d652a244781b780877"
+      "bytes": 16731,
+      "sha256": "7fbfc92d9ec035e4f0b70d75619a514d8ff0b9fb5ecdb5372aff795166fad84d"
     },
     {
       "path": "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
@@ -90,9 +95,24 @@
       "sha256": "b60b45ad729fae85f1b18faf0e924125b644a0bc4b11049a309bc18f3957c1cc"
     },
     {
+      "path": "scripts/qikvrt_api_client.py",
+      "bytes": 68547,
+      "sha256": "20892491ff74043566612dfb1a7a83ff9bbc84e29827954edb3a11bd0330a58f"
+    },
+    {
       "path": "state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
       "bytes": 7946,
       "sha256": "798bfc42199b9b5c0459cfee3de2470d4074887c12c16b8049b6694a642256e1"
+    },
+    {
+      "path": "tests/fixtures/ruleset_writer_app_renewal_v3.yml",
+      "bytes": 12437,
+      "sha256": "a7c22e899291a5fe300a22bd269c14481da5180fc2090b4d2f2b3e3502216fc2"
+    },
+    {
+      "path": "tests/test_api_client.py",
+      "bytes": 87283,
+      "sha256": "1d687773637d1bba7b89ca7aa34be289d7919c0abb512727a4d24613f971d082"
     },
     {
       "path": "tests/test_publication_router.py",
@@ -157,7 +177,20 @@
     "log_sha256": "a6c10b3cd43a5ff7efe514d3e0463187c7787c6ea270ed3edc048c29b227f118",
     "scope": "Local actual-source tests; provider/production effects are fixtures, not live delivery.",
     "full_native_successor_tests": "PENDING_AFTER_PUSH",
-    "predecessor_pass_transfer": false
+    "predecessor_pass_transfer": false,
+    "additional_client_tests": {
+      "tests": 68,
+      "failures": 0,
+      "errors": 0,
+      "log_sha256": "f68e23b0c473547797dfd66de9f81c7e21aae0cfdbf2df41620e37cdd31db525"
+    },
+    "api_client_security_tests": {
+      "command": "make security",
+      "tests": 143,
+      "failures": 0,
+      "errors": 0,
+      "log_sha256": "4345090c45eff1b5d21012826ecf3e714d5ac1a4c048cf7d75526c25ee2996fa"
+    }
   },
   "review_acceptance": {
     "principal_approval_is_review": true,
@@ -197,5 +230,38 @@
     "review_enforcement": "Trusted GitHub Actions exact-head Principal/independent review status",
     "additional_independent_approval_count": 0,
     "live_activation": "NOT_ESTABLISHED_BY_LOCAL_TESTS"
+  },
+  "continuation_repair": {
+    "parent_commit": "d982210855defddfb1baa29757d4c504e994b0bc",
+    "parent_tree": "9464bce61f57a5147d1981e39d8050528d038850",
+    "actual_parent_readback": {
+      "changed_blobs_byte_exact": 24,
+      "native_principal_review_id": 5561432788,
+      "actual_github_review_state": "COMMENTED",
+      "principal_gate_state": "success",
+      "native_review_contract_run": 39097233653,
+      "native_review_contract_conclusion": "success"
+    },
+    "native_full_test_failure": {
+      "run": 39097230860,
+      "job": 117586089484,
+      "make_test_exit": 2,
+      "cause": "Existing API client version-pinned the original v3 writer and its old independent-review postimage. The changed current writer must have an explicit new version instead of silently changing historical v3."
+    },
+    "repair": "Preserved original v3 bytes as a fixture, added explicit principal-review-v4 source/postimage pins to the existing API client/OpenAPI contract and exercised its transport, drift, credential and independent effect-readback controls.",
+    "writer_blob_sha1": "3b9396f4b6415baff047526bd6ecb193f606863e",
+    "writer_postimage_sha256": "59b80123aee14fd0f82a0af8a7e3265a2a5782f786785cf09be35f251b9c6999",
+    "original_v3": {
+      "path": "tests/fixtures/ruleset_writer_app_renewal_v3.yml",
+      "bytes": 12437,
+      "git_blob_sha1": "05066f6fb83a7f3ba8799677db35647e06942fd2"
+    },
+    "predecessor_review_or_full_test_pass_transferred": false,
+    "final_successor_native_checks": "PENDING_AFTER_PUSH",
+    "concurrent_main": {
+      "head": "074462e6310b2a9c88b0572323357be43dc0af84",
+      "tree": "fbabb5538e45e0dfa110a706023da82a1f9eb1f5",
+      "delta": "Six lifecycle receipt/heartbeat paths; normal merge must preserve the incoming Main changes."
+    }
   }
 }

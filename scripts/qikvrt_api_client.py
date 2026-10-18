@@ -55,6 +55,7 @@ RULESET_WRITER_VERSIONS = MappingProxyType({
     "legacy-v1": (RULESET_WORKFLOW_BLOB, RULESET_POST_SHA256),
     "lifecycle-v2": ("ab47a8ec98c39b39bda420050cb7c970a9da6165", RULESET_POST_SHA256),
     "app-renewal-v3": ("05066f6fb83a7f3ba8799677db35647e06942fd2", RULESET_POST_SHA256),
+    "principal-review-v4": ("3b9396f4b6415baff047526bd6ecb193f606863e", "59b80123aee14fd0f82a0af8a7e3265a2a5782f786785cf09be35f251b9c6999"),
 })
 JOURNAL_SCHEMA = "qikvrt-api-client-attempt/1"
 WORK_SCHEMA = "qikvrt-api-client-work/1"
