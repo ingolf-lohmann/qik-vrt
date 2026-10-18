@@ -1,0 +1,871 @@
+diff --git a/app/page.tsx b/app/page.tsx
+index 21976e0..ad57afe 100644
+--- a/app/page.tsx
++++ b/app/page.tsx
+@@ -137,7 +137,7 @@ export default function Home() {
+         {view === "terminal" ? <>
+           <div className="terminal-context"><Network size={22} /><div><strong>qik-vrt · Gesamt-Mesh</strong><span>{nodes.length} bekannte Repository-Kandidaten · gemeinsamer REST-Zugang</span></div><span className="tag neutral">MESH</span></div>
+           <div className="mode-tabs" aria-label="Terminal-Betriebsart"><button aria-pressed={!nativeMode} onClick={() => setNativeMode(false)}>Mesh-Abfragen</button><button aria-pressed={nativeMode} onClick={() => setNativeMode(true)}>Eingabe an das Mesh</button></div>
+-          {!nativeMode ? <><div className="quick-commands">{["status", "nodes", "capabilities", "ping", "events", "help"].map(c => <button key={c} disabled={commandBusy} onClick={() => { setInput(c); void run(c); }}>{c}</button>)}</div><form className="command-form" onSubmit={e => { e.preventDefault(); void run(input); }}><label htmlFor="command">Befehl an das Mesh</label><div><span aria-hidden="true">mesh &gt;</span><input id="command" value={input} onChange={e => setInput(e.target.value)} maxLength={4096} autoComplete="off" spellCheck={false} /><button className="button primary" disabled={commandBusy || !input.trim()}>{commandBusy ? "Abfrage läuft …" : "Ausführen"}</button></div><p>Dokumente aus allen lesbaren Knoten: <code>read AI</code>, <code>read STATUS</code>, <code>read README</code>, <code>read ARCHITECTURE</code>, <code>read BOUNDARIES</code>.</p></form></> : <section className="panel"><div className="section-head"><h2>Passive Terminal-Schnittstelle</h2><span className={`tag ${canDeliver ? "ok" : "neutral"}`}>{canDeliver ? "Annahme-Schnittstelle antwortet" : "Annahme-Anschluss offen"}</span></div><div className="section-body">{!canDeliver ? <p className="notice">{capability?.synchronization?.reason || capability?.native.reason || "Runtime-Anschluss noch nicht bestätigt."} Ausführung und native Effect-Quittungen bleiben offen.</p> : null}<ol className="lifecycle" aria-label="TEMDD-Lifecycle-Vertrag">{TEMDD_STAGES.map(s => <li key={s}>{s}</li>)}</ol><p className="secondary">Die Stufen sind der Laufzeitvertrag. Ihr Abschluss benötigt gebundene Ereignisse und einen frischen Effekt-Readback.</p><form onSubmit={e => { e.preventDefault(); void submitNative(); }}><label className="native-label" htmlFor="native-input">Eingabe an das Gesamt-Mesh</label><textarea id="native-input" value={nativeInput} onChange={e => setNativeInput(e.target.value)} maxLength={65536} rows={6} placeholder="Eingabe an die Mesh-Laufzeit" /><div className="actions"><button className="button primary" disabled={commandBusy || !storageReady || !nativeInput.trim()}>{commandBusy ? "Eingabe wird gespeichert …" : (canDeliver ? "Speichern und Annahme anfragen" : "Eingabe lokal vormerken")}</button></div></form><p className="secondary">Das Terminal speichert die Eingabe im Browser und versucht bei einem erreichbaren Annahme-Anschluss die idempotente Übergabe. Lokal gespeichert, vom Mesh angenommen und nativ ausgeführt sind getrennte Zustände. Die Annahmequittung bestätigt noch keine Ausführung.</p><p className="secondary">{pending.length} Eingaben warten auf eine gebundene Annahmequittung.</p>{syncError ? <p className="notice" role="status">{syncError} Die gespeicherten Eingaben bleiben erhalten; die Verbindung wird automatisch erneut geprüft.</p> : null}{pending.length ? <details><summary>Ausstehende Eingaben</summary><ul>{pending.map(v => <li key={v.operation_id}><code>{v.operation_id}</code> · {date(v.created_at)}</li>)}</ul></details> : null}{nativeInterfaceReady && capability?.native.operator_configured ? <a className="button" href="/signin-with-chatgpt?return_to=%2F%23%2Fterminal" target="_top">Operator-Sitzung öffnen</a> : null}</div></section>}
++          {!nativeMode ? <><div className="quick-commands">{["status", "nodes", "capabilities", "ping", "events", "help"].map(c => <button key={c} disabled={commandBusy} onClick={() => { setInput(c); void run(c); }}>{c}</button>)}</div><form className="command-form" onSubmit={e => { e.preventDefault(); void run(input); }}><label htmlFor="command">Befehl an das Mesh</label><div><span aria-hidden="true">mesh &gt;</span><input id="command" value={input} onChange={e => setInput(e.target.value)} maxLength={4096} autoComplete="off" spellCheck={false} /><button className="button primary" disabled={commandBusy || !input.trim()}>{commandBusy ? "Abfrage läuft …" : "Ausführen"}</button></div><p>Dokumente aus allen lesbaren Knoten: <code>read AI</code>, <code>read STATUS</code>, <code>read README</code>, <code>read ARCHITECTURE</code>, <code>read BOUNDARIES</code>.</p></form></> : <section className="panel"><div className="section-head"><h2>Passive Terminal-Schnittstelle</h2><span className={`tag ${canDeliver ? "ok" : "neutral"}`}>{canDeliver ? "Annahme-Schnittstelle antwortet" : "Annahme-Anschluss offen"}</span></div><div className="section-body">{!canDeliver ? <p className="notice">{capability?.synchronization?.reason || capability?.native.reason || "Runtime-Anschluss noch nicht bestätigt."} Ausführung und native Effect-Quittungen bleiben offen.</p> : null}<ol className="lifecycle" aria-label="TEMDD-Lifecycle-Vertrag">{TEMDD_STAGES.map(s => <li key={s}>{s}</li>)}</ol><p className="secondary">Die Stufen sind der Laufzeitvertrag. Ihr Abschluss benötigt gebundene Ereignisse und einen frischen Effekt-Readback.</p><form onSubmit={e => { e.preventDefault(); void submitNative(); }}><label className="native-label" htmlFor="native-input">Eingabe an das Gesamt-Mesh</label><textarea id="native-input" value={nativeInput} onChange={e => setNativeInput(e.target.value)} maxLength={65536} rows={6} placeholder="Eingabe an die Mesh-Laufzeit" /><div className="actions"><button className="button primary" disabled={commandBusy || !storageReady || !nativeInput.trim()}>{commandBusy ? "Eingabe wird gespeichert …" : (canDeliver ? "Speichern und Annahme anfragen" : "Eingabe lokal vormerken")}</button></div></form><p className="secondary">Das Terminal speichert die Eingabe im Browser und versucht bei einem erreichbaren Annahme-Anschluss die idempotente Übergabe. Lokal gespeichert, vom Mesh angenommen und nativ ausgeführt sind getrennte Zustände. Die Annahmequittung bestätigt noch keine Ausführung.</p><p className="secondary">{pending.length} Eingaben warten auf eine gebundene Annahmequittung.</p>{syncError ? <p className="notice" role="status">{syncError} Die gespeicherten Eingaben bleiben erhalten; die Verbindung wird automatisch erneut geprüft.</p> : null}{pending.length ? <details><summary>Ausstehende Eingaben</summary><ul>{pending.map(v => <li key={v.operation_id}><code>{v.operation_id}</code> · {date(v.created_at)}</li>)}</ul></details> : null}{nativeInterfaceReady && capability?.native.operator_configured ? <a className="button" href="/signin-with-chatgpt?return_to=%2Fmonitor%2F%23%2Fterminal" target="_top">Operator-Sitzung öffnen</a> : null}</div></section>}
+           <section className="terminal-output" aria-label="Terminal-Ausgaben" aria-live="polite"><header><span><Terminal size={16} />Mesh-Konsole</span><button onClick={clear} disabled={!entries.length}>Ansicht leeren</button></header>{entries.length ? entries.map(e => <article className={e.error ? "entry error-entry" : "entry"} key={e.id}><div><strong>mesh &gt; {e.command}</strong><time>{date(e.at)}</time></div><pre>{typeof e.output === "string" ? e.output : JSON.stringify(e.output, null, 2)}</pre>{e.readback ? <a href={e.readback} target="_blank" rel="noreferrer">Gebundene Beobachtung zurücklesen</a> : null}</article>) : <div className="terminal-empty"><Radio size={27} /><p>Bereit für den gemeinsamen Mesh-Kontext.</p><span>Mit „status“ die Gesundheit aller beobachteten Knoten abfragen.</span></div>}</section>
+           <p className="secondary">Messkanal: <a href="/api/mesh" target="_blank" rel="noreferrer">REST-Zustand</a> · <a href="/api/mesh/events" target="_blank" rel="noreferrer">Ereignis-Replay</a> · <a href="/api/mesh/terminal" target="_blank" rel="noreferrer">Fähigkeiten</a></p>
+         </> : null}
+diff --git a/lib/offline-client-hosting.ts b/lib/offline-client-hosting.ts
+index 1988ffb..6742a9a 100644
+--- a/lib/offline-client-hosting.ts
++++ b/lib/offline-client-hosting.ts
+@@ -18,6 +18,7 @@ import license from "../public/offline/vendor/REACT_LICENSE.txt?raw";
+ import reactRuntime from "../public/offline/vendor/react-runtime.js?raw";
+ import webHome from "../public/index.html?raw";
+ import webTerminal from "../public/terminal/index.html?raw";
++import workingRule from "../public/AI?raw";
+ 
+ const js = "text/javascript; charset=utf-8";
+ const plain = "text/plain; charset=utf-8";
+@@ -42,7 +43,7 @@ export function offlineClientResponse(request: Request, unavailableUntil?: strin
+   const url = new URL(request.url);
+   const webPage = url.pathname === "/" || url.pathname === "/index.html"
+     ? webHome
+-    : ["/terminal/", "/terminal/index.html"].includes(url.pathname) ? webTerminal : undefined;
++    : ["/terminal/", "/terminal/index.html"].includes(url.pathname) ? webTerminal : url.pathname === "/AI" ? workingRule : undefined;
+   const offlinePath = url.pathname === "/offline" || url.pathname.startsWith("/offline/");
+   if (webPage === undefined && !offlinePath && url.pathname !== "/terminal") return;
+   if (!["GET", "HEAD"].includes(request.method)) {
+@@ -56,7 +57,7 @@ export function offlineClientResponse(request: Request, unavailableUntil?: strin
+     const bytes = new TextEncoder().encode(webPage);
+     return new Response(request.method === "HEAD" ? null : bytes, {
+       headers: {
+-        "Content-Type": "text/html; charset=utf-8",
++        "Content-Type": url.pathname === "/AI" ? plain : "text/html; charset=utf-8",
+         "Content-Length": String(bytes.byteLength),
+         "Cache-Control": "no-store",
+         "X-Content-Type-Options": "nosniff",
+diff --git a/public/AI b/public/AI
+index d3466c5..88b7838 100644
+--- a/public/AI
++++ b/public/AI
+@@ -23,7 +23,7 @@ The existing observation runtime applies this rule in /api/evidence.
+ snapshot.continuation contains the successor tasks and the preceding stored
+ snapshot's ID and SHA-256. /api/readback?id=<snapshot.id> returns original bytes.
+ The observer issues no native effects, DNS writes or permission changes.
+-Current gaps are available at /#/evidence; unavailable evidence is not success.
++Current gaps are available at /monitor/#/evidence; unavailable evidence is not success.
+ 
+ Canonical repository entrypoint:
+ https://github.com/ingolf-lohmann/qik-vrt/blob/main/AI
+diff --git a/public/mesh-sw.js b/public/mesh-sw.js
+index 3557780..36367b2 100644
+--- a/public/mesh-sw.js
++++ b/public/mesh-sw.js
+@@ -12,7 +12,7 @@ self.addEventListener("install", event => event.waitUntil((async () => {
+   if (!Array.isArray(manifest.assets) || !/^[a-f0-9]{64}$/.test(manifest.revision)) throw new Error("Invalid offline manifest");
+   selected = PREFIX + manifest.revision;
+   const cache = await caches.open(selected);
+-  await cache.addAll(["/", "/mesh-offline-assets.json", ...manifest.assets]);
++  await cache.addAll(["/", "/monitor/", "/mesh-offline-assets.json", ...manifest.assets]);
+   await self.skipWaiting();
+ })()));
+ self.addEventListener("activate", event => event.waitUntil((async () => {
+@@ -25,9 +25,10 @@ self.addEventListener("fetch", event => {
+   const request = event.request, url = new URL(request.url);
+   // Never cache credentials, POST bodies, private input or live API responses.
+   if (request.method !== "GET" || url.origin !== self.location.origin || url.pathname.startsWith("/api/") || url.pathname.includes("signin") || url.pathname.includes("signout")) return;
+-  if (request.mode === "navigate" && url.pathname === "/") event.respondWith((async () => {
++  const shell = url.pathname === "/" ? "/" : ["/monitor", "/monitor/"].includes(url.pathname) ? "/monitor/" : null;
++  if (request.mode === "navigate" && shell) event.respondWith((async () => {
+     try { const response = await fetch(request, { signal: AbortSignal.timeout(5000) }); if (response.ok) return response; } catch { /* Exact installed shell is the fallback. */ }
+-    const fallback = await offlineMatch("/"); if (fallback) return fallback;
++    const fallback = await offlineMatch(shell); if (fallback) return fallback;
+     return new Response("Offline-Oberfläche noch nicht gespeichert.", { status: 503 });
+   })());
+   else if (/\.(?:js|css|woff2?|svg|png|ico)$/.test(url.pathname)) event.respondWith((async () => {
+diff --git a/scripts/build-offline-shell.mjs b/scripts/build-offline-shell.mjs
+index ace5f3d..c53b2be 100644
+--- a/scripts/build-offline-shell.mjs
++++ b/scripts/build-offline-shell.mjs
+@@ -20,4 +20,8 @@ await writeFile(join(root, "mesh-sw.js"), (await readFile("public/mesh-sw.js", "
+ // them out of the static asset router, whose index.html redirect invalidates the
+ // frozen client's service-worker digest check (response.redirected === true).
+ await rm(join(root, "offline"), { recursive: true, force: true });
++// /AI is embedded by the same hosting adapter with an explicit text/plain
++// response. The static asset router otherwise serves the extensionless file
++// as application/octet-stream before the Worker can select its media type.
++await rm(join(root, "AI"), { force: true });
+ console.log(`Offline shell: ${assets.length} static assets bound to ${revision}`);
+diff --git a/scripts/verify-evidence.mjs b/scripts/verify-evidence.mjs
+index 6d74007..b347ff3 100644
+--- a/scripts/verify-evidence.mjs
++++ b/scripts/verify-evidence.mjs
+@@ -339,3 +339,29 @@ for (const handler of [atlasRedirect.GET, atlasRedirect.HEAD]) {
+   assert.equal(result.headers.get('location'), 'https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/index.html');
+ }
+ console.log('PASS: retained article atlas links resolve through bounded GET/HEAD redirects to the existing publication index.');
++
++// The public homepage is separate from the React app at /monitor/.
++const workingRule = readFileSync('public/AI', 'utf8');
++assert.match(workingRule, /Current gaps are available at \/monitor\/#\/evidence/);
++assert.doesNotMatch(workingRule, /available at \/#\//);
++assert.match(readFileSync('app/page.tsx', 'utf8'), /return_to=%2Fmonitor%2F%23%2Fterminal/);
++assert.equal(readFileSync('app/monitor/page.tsx', 'utf8').trim(), 'export { default } from "../page";');
++const hostingSource = readFileSync('lib/offline-client-hosting.ts', 'utf8').replace(
++  /import (\w+) from "([^"]+)\?raw";/g,
++  (_, name, path) => `const ${name} = ${JSON.stringify(readFileSync(resolve('lib', path), 'utf8'))};`
++);
++const hostingJs = ts.transpileModule(hostingSource, { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } }).outputText;
++writeFileSync('.sites-runtime/verification/offline-hosting.mjs', hostingJs);
++const { offlineClientResponse } = await import(pathToFileURL(resolve('.sites-runtime/verification/offline-hosting.mjs')));
++for (const method of ['GET', 'HEAD']) {
++  const response = offlineClientResponse(new Request('https://qikvrt.example/AI', { method }));
++  assert.equal(response.status, 200);
++  assert.equal(response.headers.get('Content-Type'), 'text/plain; charset=utf-8');
++  assert.equal(response.headers.get('X-Content-Type-Options'), 'nosniff');
++  assert.equal(await response.text(), method === 'GET' ? workingRule : '');
++}
++assert.equal(offlineClientResponse(new Request('https://qikvrt.example/AI', { method: 'POST' })).status, 405);
++assert.equal(await offlineClientResponse(new Request('https://qikvrt.example/')).text(), readFileSync('public/index.html', 'utf8'));
++assert.equal(offlineClientResponse(new Request('https://qikvrt.example/monitor/')), undefined);
++assert.equal(offlineClientResponse(new Request('https://qikvrt.example/onboarding')), undefined);
++console.log('PASS: public AI is inline plain text with the actual React evidence path; operator return targets the existing monitor; homepage and framework routing remain distinct.');
+diff --git a/scripts/verify-offline.mjs b/scripts/verify-offline.mjs
+index dda286e..1ac6535 100644
+--- a/scripts/verify-offline.mjs
++++ b/scripts/verify-offline.mjs
+@@ -7,7 +7,7 @@ const fetcher = async request => {
+   if (offline) throw new TypeError("Network disconnected");
+   const path = typeof request === "string" ? request : new URL(request.url).pathname;
+   if (path === "/mesh-offline-assets.json") return Response.json({ revision, assets: ["/assets/app.js"] });
+-  return new Response(path === "/" ? "PUBLIC_APPLICATION_SHELL" : "STATIC_JS");
++  return new Response(path === "/" ? "PUBLIC_APPLICATION_SHELL" : path === "/monitor/" ? "REACT_MESH_SHELL" : "STATIC_JS");
+ };
+ const caches = {
+   keys: async () => [...buckets.keys()], delete: async name => buckets.delete(name),
+@@ -30,10 +30,21 @@ offline = true;
+ let result;
+ handlers.get("fetch")({ request: { method: "GET", mode: "navigate", url: "https://mesh.example.com/" }, respondWith: promise => { result = promise; } });
+ assert.equal(await (await result).text(), "PUBLIC_APPLICATION_SHELL");
++for (const path of ["/monitor", "/monitor/", "/monitor/?view=evidence"]) {
++  result = undefined;
++  handlers.get("fetch")({ request: { method: "GET", mode: "navigate", url: "https://mesh.example.com" + path }, respondWith: promise => { result = promise; } });
++  assert.ok(result, "The installed React monitor must support offline navigation at its actual path: " + path);
++  assert.equal(await (await result).text(), "REACT_MESH_SHELL", "The monitor must never fall back to the public homepage");
++}
+ result = undefined;
+ handlers.get("fetch")({ request: { method: "GET", mode: "cors", url: "https://mesh.example.com/assets/app.js" }, respondWith: promise => { result = promise; } });
+ assert.equal(await (await result).text(), "STATIC_JS");
+ for (const request of [{ method: "GET", url: "https://mesh.example.com/api/evidence" }, { method: "POST", url: "https://mesh.example.com/api/mesh/terminal/sync" }, { method: "GET", url: "https://mesh.example.com/signin-with-chatgpt" }]) {
+   let intercepted = false; handlers.get("fetch")({ request, respondWith: () => { intercepted = true; } }); assert.equal(intercepted, false);
+ }
+-console.log("PASS: installed offline shell and static asset recovery after network loss; live APIs, private input POSTs and sign-in bypass the cache.");
++for (const path of ["/terminal/", "/onboarding", "/news/"]) {
++  let intercepted = false;
++  handlers.get("fetch")({ request: { method: "GET", mode: "navigate", url: "https://mesh.example.com" + path }, respondWith: () => { intercepted = true; } });
++  assert.equal(intercepted, false, "Uninstalled pages must not receive an unrelated cached shell");
++}
++console.log("PASS: homepage and React monitor recover their own installed shells after network loss; assets recover, live APIs and sign-in bypass the cache, and unrelated pages are not replaced.");
+diff --git a/state/UPDATE_CONTRACT.json b/state/UPDATE_CONTRACT.json
+index 11013e0..9afce13 100644
+--- a/state/UPDATE_CONTRACT.json
++++ b/state/UPDATE_CONTRACT.json
+@@ -81,7 +81,9 @@
+       "scope": "PUBLIC_RECURSIVE_READBACK_NOT_REGISTRAR_WRITE_OR_APPLICATION_ACCEPTANCE",
+       "accept": "application/dns-json",
+       "protocol_reference": "https://developers.cloudflare.com/1.1.1.1/encryption/dns-over-https/make-api-requests/dns-json/"
+-    }
++    },
++    "current_gaps_path": "/monitor/#/evidence",
++    "entrypoint_content_type": "text/plain; charset=utf-8"
+   },
+   "monitor_extension": {
+     "schema": "qikvrt-mesh-monitor-extension-v1",
+@@ -128,6 +130,11 @@
+       "mirror_repository": "Goldkelch/qik-vrt",
+       "source": "OWNER_ROLE_ASSIGNMENT",
+       "native_activation_verified": false
+-    }
++    },
++    "public_entrypoint": "/monitor/",
++    "offline_shell_paths": [
++      "/",
++      "/monitor/"
++    ]
+   }
+ }
+diff --git a/state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json b/state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json
+index 18e554b..23e59d9 100644
+--- a/state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json
++++ b/state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json
+@@ -56,5 +56,673 @@
+     "repair": "Send the documented application/dns-json Accept representation through the existing bounded JSON reader",
+     "regression": "Wrong representation rejected; corrected representation required; all existing JSON requests retain their default",
+     "predecessor_evidence_transfer": false
++  },
++  "use_path_successor_20261013": {
++    "classification": "OPERATIONAL_FUNCTIONAL_QA_NOT_SCIENTIFIC_PUBLICATION",
++    "recorded_at": "2026-10-13T05:36:39.346096+00:00",
++    "predecessor": {
++      "site_version": 30,
++      "source_head": "0e8124d6ff8494532d8f627bba89daef2f867489",
++      "source_tree": "7ea5ac09e969060625e1538b22e40377fe37280a",
++      "authority_pr": 523,
++      "authority_head": "eafd56d6994cc7e51ed107429457ba9468da5d99",
++      "authority_tree": "01fe5df3b40c5632f23bfd5bb0fcc2adb8b6a137"
++    },
++    "human_contribution": "Ingolf Lohmann authorized examination and causal repair of the existing published Site; DNS remediation excluded from this work unit.",
++    "artificial_cognitive_contribution": "Source diagnosis, deterministic reproduction, bounded repairs, regression execution and live HTTP/MCP readback by OpenAI Codex GPT-6.",
++    "reuse": {
++      "site_project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
++      "new_site": false,
++      "new_controller": false,
++      "new_pr": false,
++      "frozen_personal_client_modified": false
++    },
++    "browser_qa": "NOT_EXECUTED_CONTROL_BROWSER_UNAVAILABLE",
++    "browser_boundary": "Managed Sites browser QA requires control-browser; it is not exposed. No preview server, browser installation or substitute browser-control path was created.",
++    "http_routes": [
++      {
++        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/",
++        "status": 200,
++        "content_type": "text/html",
++        "x_qikvrt_sha256": null,
++        "bytes": 17377,
++        "sha256": "8b1346472271497c37919d153dd9d465741f887caf2e869131bf20a72673b80f",
++        "saved_file": "/workspace/scratch/d58601f79826/live-qa/root",
++        "excerpt": "<!doctype html>\n<html lang=\"de\" data-theme=\"dark\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"vie",
++        "observed_at": "2026-10-13T05:26:47.420642+00:00",
++        "latency_ms": 6231
++      },
++      {
++        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/terminal/",
++        "status": 200,
++        "content_type": "text/html",
++        "x_qikvrt_sha256": null,
++        "bytes": 16137,
++        "sha256": "6cb665d5feb3e5716a457beb85d507646daaa37d96ace49cdc8e14ea18a92fb8",
++        "saved_file": "/workspace/scratch/d58601f79826/live-qa/terminal",
++        "excerpt": "<!--\nSPDX-License-Identifier: CC-BY-NC-ND-4.0\nCopyright (c) 2026 Ingolf Lohmann.\n-->\n<!doctype html>",
++        "observed_at": "2026-10-13T05:26:47.288754+00:00",
++        "latency_ms": 6098
++      },
++      {
++        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/monitor/",
++        "status": 200,
++        "content_type": "text/html; charset=utf-8",
++        "x_qikvrt_sha256": null,
++        "bytes": 27580,
++        "sha256": "fe34903d24afe1a450ed69090bbef62b5368aba0d447c7e64537f1fa16d43c26",
++        "saved_file": "/workspace/scratch/d58601f79826/live-qa/monitor",
++        "excerpt": "<!DOCTYPE html><html lang=\"de\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=dev",
++        "observed_at": "2026-10-13T05:26:51.071675+00:00",
++        "latency_ms": 9880
++      },
++      {
++        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/AI",
++        "status": 200,
++        "content_type": "application/octet-stream",
++        "x_qikvrt_sha256": null,
++        "bytes": 1704,
++        "sha256": "9bffa44c68429fa093e29783f92037e5a341c3119a69c907fdb256d5c0773352",
++        "saved_file": "/workspace/scratch/d58601f79826/live-qa/AI",
++        "excerpt": "QIK-VRT — Universales Raumzeit-Terminal\nOwner: Ingolf Lohmann\nWorking rule: QIKVRT_RECURSIVE_SELF_",
++        "observed_at": "2026-10-13T05:26:47.052836+00:00",
++        "latency_ms": 5861
++      },
++      {
++        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/health",
++        "status": 200,
++        "content_type": "application/json",
++        "x_qikvrt_sha256": null,
++        "bytes": 160,
++        "sha256": "4c52711ea1b5056dba9647e8e4ed65ecbedd5f3c0b4c20fbfe9e00d3186ee56b",
++        "saved_file": "/workspace/scratch/d58601f79826/live-qa/api_health",
++        "excerpt": "{\"service\":\"qikvrt-scheibenhard-evidence\",\"observed_at\":\"2026-10-13T05:26:50.866Z\",\"nonce\":null,\"pla",
++        "observed_at": "2026-10-13T05:26:50.885846+00:00",
++        "latency_ms": 3833
++      },
++      {
++        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/evidence",
++        "status": 200,
++        "content_type": "application/json",
++        "x_qikvrt_sha256": null,
++        "bytes": 14529,
++        "sha256": "e85d9143b549950c5166403be645c22a7858f6115bed177d682e92e565fbab0b",
++        "saved_file": "/workspace/scratch/d58601f79826/live-qa/api_evidence",
++        "excerpt": "{\"schema\":\"qikvrt-live-dashboard/v2\",\"served_at\":\"2026-10-13T05:26:51.989Z\",\"snapshot\":{\"id\":\"fbe3ab",
++        "observed_at": "2026-10-13T05:26:52.025259+00:00",
++        "latency_ms": 4735
++      },
++      {
++        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/mesh/terminal",
++        "status": 200,
++        "content_type": "application/json",
++        "x_qikvrt_sha256": null,
++        "bytes": 847,
++        "sha256": "0b75927aa32b50bd09e257700620dfa6c7afecd41fd1f13f0b7de29b9334ddf5",
++        "saved_file": "/workspace/scratch/d58601f79826/live-qa/api_mesh_terminal",
++        "excerpt": "{\"schema\":\"qikvrt_mesh_terminal_capability_v1\",\"mesh_id\":\"qik-vrt\",\"scope\":\"MESH\",\"read_commands\":[\"",
++        "observed_at": "2026-10-13T05:26:50.933718+00:00",
++        "latency_ms": 3513
++      },
++      {
++        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/readback?id=5caece05-e7a6-43e9-9f85-eafa6fa28d4e",
++        "status": 200,
++        "content_type": "application/json; charset=utf-8",
++        "x_qikvrt_sha256": "3505152be9631c84c529b7de5d223c7581fdcbd0c0c5f5f9f8085fa9dbe32eaf",
++        "bytes": 12729,
++        "sha256": "3505152be9631c84c529b7de5d223c7581fdcbd0c0c5f5f9f8085fa9dbe32eaf",
++        "saved_file": "/workspace/scratch/d58601f79826/live-qa/api_readback_id_5caece05-e7a6-43e9-9f85-eafa6fa28d4e",
++        "excerpt": "{\"id\":\"5caece05-e7a6-43e9-9f85-eafa6fa28d4e\",\"started_at\":\"2026-10-13T05:23:05.245Z\",\"completed_at\":",
++        "observed_at": "2026-10-13T05:26:55.240446+00:00",
++        "latency_ms": 4354
++      },
++      {
++        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/readback",
++        "status": 400,
++        "content_type": "application/json",
++        "x_qikvrt_sha256": null,
++        "bytes": 50,
++        "sha256": "9eb4824539b3cc7b52d5f4425433edc0da276fb960479abe85ead946ffca1ecd",
++        "saved_file": "/workspace/scratch/d58601f79826/live-qa/api_readback",
++        "excerpt": "{\"error\":\"Gültige Beobachtungs-ID erforderlich.\"}",
++        "observed_at": "2026-10-13T05:26:55.157016+00:00",
++        "latency_ms": 4223
++      },
++      {
++        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/offline/",
++        "status": 200,
++        "content_type": "text/html; charset=utf-8",
++        "x_qikvrt_sha256": null,
++        "bytes": 1043,
++        "sha256": "2281a5a5cabacad9f2278b34fa4d978d8c2669b13fbb3bd4c2e05aafe43940b3",
++        "saved_file": "/workspace/scratch/d58601f79826/live-qa/offline",
++        "excerpt": "<!doctype html>\n<!-- Copyright 2026 Ingolf Lohmann. SPDX-License-Identifier: PolyForm-Noncommercial-",
++        "observed_at": "2026-10-13T05:26:55.125051+00:00",
++        "latency_ms": 4053
++      },
++      {
++        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/onboarding",
++        "status": 404,
++        "content_type": "text/html; charset=utf-8",
++        "x_qikvrt_sha256": null,
++        "bytes": 5791,
++        "sha256": "f7a187154036ae9c908669574e59c9d88259db08ca0c372c1f4bdd53bb8bd0e7",
++        "saved_file": "/workspace/scratch/d58601f79826/live-qa/onboarding",
++        "excerpt": "<!DOCTYPE html><html lang=\"de\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=dev",
++        "observed_at": "2026-10-13T05:26:55.095548+00:00",
++        "latency_ms": 3070
++      }
++    ],
++    "terminal_api": [
++      {
++        "name": "status",
++        "method": "POST",
++        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/mesh/terminal",
++        "request": {
++          "scope": "MESH",
++          "mesh_id": "qik-vrt",
++          "command": "status"
++        },
++        "status": 200,
++        "sha256": "8d5d44656328a5572975af273c44cd6d22be7c7cb1ab07659ebfe4f8a62eb9fc",
++        "bytes": 1648,
++        "response": {
++          "schema": "qikvrt_mesh_terminal_response_v1",
++          "mesh_id": "qik-vrt",
++          "scope": "MESH",
++          "command": "status",
++          "observed_at": "2026-10-13T05:30:30.764Z",
++          "subject": {
++            "snapshot_id": "b4d5d370-9eb8-43b7-959e-8a1b17b49a3a",
++            "snapshot_sha256": "f82bc0af135de43d92841feb24276adbd9003e066d60330b77214f803401a57d",
++            "nodes": [
++              {
++                "repository": "ingolf-lohmann/qik-vrt",
++                "head": null,
++                "tree": null
++              },
++              {
++                "repository": "Goldkelch/qik-vrt",
++                "head": null,
++                "tree": null
++              }
++            ]
++          },
++          "output": {
++            "health": "UNKNOWN",
++            "reasons": [
++              "Knotenverzeichnis derzeit nur teilweise lesbar.",
++              "2 von 2 Laufzeitzuständen unbekannt."
++            ],
++            "counts": {
++              "total": 2,
++              "healthy": 0,
++              "degraded": 0,
++              "unavailable": 0,
++              "unknown": 2,
++              "repository_readable": 0
++            },
++            "registry": {
++              "sources": [],
++              "complete": false,
++              "errors": [
++                "ingolf-lohmann/qik-vrt: Node-Verzeichnis nicht lesbar",
++                "Goldkelch/qik-vrt: Node-Verzeichnis nicht lesbar"
++              ],
++              "fixed_node_count": false
++            },
++            "nodes": [
++              {
++                "id": "ingolf-lohmann/qik-vrt",
++                "runtime": {
++                  "state": "UNKNOWN",
++                  "endpoint": null,
++                  "status": null,
++                  "latency_ms": null,
++                  "observed_at": null,
++                  "error": "Kein öffentlicher Runtime-Endpunkt im Node-Verzeichnis veröffentlicht.",
++                  "source": "NOT_ADVERTISED",
++                  "metrics": {
++                    "cpu_percent": null,
++                    "memory_percent": null
++                  }
++                },
++                "registration": "CORE"
++              },
++              {
++                "id": "Goldkelch/qik-vrt",
++                "runtime": {
++                  "state": "UNKNOWN",
++                  "endpoint": null,
++                  "status": null,
++                  "latency_ms": null,
++                  "observed_at": null,
++                  "error": "Kein öffentlicher Runtime-Endpunkt im Node-Verzeichnis veröffentlicht.",
++                  "source": "NOT_ADVERTISED",
++                  "metrics": {
++                    "cpu_percent": null,
++                    "memory_percent": null
++                  }
++                },
++                "registration": "CORE"
++              }
++            ]
++          },
++          "transport_ack": true,
++          "effect_state": "EFFECT_ACK_CONTINUE",
++          "effect_ack_done": false,
++          "ordinary_release": false,
++          "readback_url": "/api/readback?id=b4d5d370-9eb8-43b7-959e-8a1b17b49a3a"
++        },
++        "observed_at": "2026-10-13T05:30:30.795749+00:00"
++      },
++      {
++        "name": "help",
++        "method": "POST",
++        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/mesh/terminal",
++        "request": {
++          "scope": "MESH",
++          "mesh_id": "qik-vrt",
++          "command": "help"
++        },
++        "status": 200,
++        "sha256": "a695994275aee39ceba8b88785bf16e4ccb1e7664c1fcda74f9d94d09252be51",
++        "bytes": 886,
++        "response": {
++          "schema": "qikvrt_mesh_terminal_response_v1",
++          "mesh_id": "qik-vrt",
++          "scope": "MESH",
++          "command": "help",
++          "observed_at": "2026-10-13T05:30:30.860Z",
++          "subject": {
++            "snapshot_id": "b4d5d370-9eb8-43b7-959e-8a1b17b49a3a",
++            "snapshot_sha256": "f82bc0af135de43d92841feb24276adbd9003e066d60330b77214f803401a57d",
++            "nodes": [
++              {
++                "repository": "ingolf-lohmann/qik-vrt",
++                "head": null,
++                "tree": null
++              },
++              {
++                "repository": "Goldkelch/qik-vrt",
++                "head": null,
++                "tree": null
++              }
++            ]
++          },
++          "output": {
++            "commands": [
++              "help",
++              "status",
++              "nodes",
++              "capabilities",
++              "events",
++              "read",
++              "ping"
++            ],
++            "documents": [
++              "AI",
++              "STATUS",
++              "README",
++              "ARCHITECTURE",
++              "BOUNDARIES"
++            ],
++            "target": "Gesamt-Mesh",
++            "native_lifecycle": [
++              "COMPILE",
++              "BIND",
++              "RESOLVE",
++              "EXECUTE",
++              "TEST",
++              "OBSERVE",
++              "READBACK",
++              "ACCEPT",
++              "EFFECT_ACK_DONE"
++            ]
++          },
++          "transport_ack": true,
++          "effect_state": "EFFECT_ACK_CONTINUE",
++          "effect_ack_done": false,
++          "ordinary_release": false,
++          "readback_url": "/api/readback?id=b4d5d370-9eb8-43b7-959e-8a1b17b49a3a"
++        },
++        "observed_at": "2026-10-13T05:30:30.893752+00:00"
++      },
++      {
++        "name": "invalid_scope",
++        "method": "POST",
++        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/mesh/terminal",
++        "request": {
++          "scope": "NODE",
++          "mesh_id": "qik-vrt",
++          "command": "status"
++        },
++        "status": 422,
++        "sha256": "2c188673776a07f53bf176c96983089c72099176f39311c3a7ebab86b2fa8b21",
++        "bytes": 62,
++        "response": {
++          "error": "Der Auftrag muss an das Gesamt-Mesh gebunden sein."
++        },
++        "observed_at": "2026-10-13T05:30:30.083851+00:00"
++      },
++      {
++        "name": "invalid_command",
++        "method": "POST",
++        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/mesh/terminal",
++        "request": {
++          "scope": "MESH",
++          "mesh_id": "qik-vrt",
++          "command": "exec echo forbidden"
++        },
++        "status": 422,
++        "sha256": "d0076714a71099a45ce98a3ac86739caad037e10ac3293b22f5f2bc5ce5809ea",
++        "bytes": 95,
++        "response": {
++          "error": "Dieser Befehl benötigt den nativen Mesh-Runtime-Anschluss.",
++          "effect_ack_done": false
++        },
++        "observed_at": "2026-10-13T05:30:34.310181+00:00"
++      },
++      {
++        "name": "native_unauth",
++        "method": "POST",
++        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/mesh/terminal/native",
++        "request": {},
++        "status": 403,
++        "sha256": "72aa5a951605e273c592c4c62c3cd7e39d715ed579f0d0b6d0ffcc745311a944",
++        "bytes": 77,
++        "response": {
++          "error": "Keine autorisierte Mesh-Operator-Sitzung.",
++          "effect_ack_done": false
++        },
++        "observed_at": "2026-10-13T05:30:34.263086+00:00"
++      },
++      {
++        "name": "sync_unauth",
++        "method": "POST",
++        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/mesh/terminal/sync",
++        "request": {},
++        "status": 403,
++        "sha256": "e50cf4e0d7523f8c75ccea08931e8bfac888be004d8c39c35ba2dfe9444c8d11",
++        "bytes": 91,
++        "response": {
++          "error": "Keine autorisierte Mesh-Operator-Sitzung. Die lokale Eingabe bleibt ausstehend."
++        },
++        "observed_at": "2026-10-13T05:30:34.324169+00:00"
++      }
++    ],
++    "client_verifier_live": {
++      "proof": {
++        "state": "VERIFIED",
++        "snapshot_id": "fbe3ab27-8abf-4dab-8eb3-e582ebf9f1d7",
++        "sha256": "de50440efec6aed0675a8daf3adc46bf67f84117e81bba155b03dfb5b648b0cb",
++        "bytes": 12516,
++        "verified_at": "2026-10-13T05:32:16.289Z"
++      },
++      "runtime_view": {
++        "counts": {
++          "total": 2,
++          "healthy": 0,
++          "degraded": 0,
++          "unavailable": 0,
++          "unknown": 2,
++          "repository_readable": 0
++        },
++        "health": "UNKNOWN",
++        "coverage_percent": 0,
++        "median_latency_ms": null
++      },
++      "scope": "ACTUAL_CLIENT_VERIFIER_EXECUTED_IN_NODE_AGAINST_LIVE_HTTP_NOT_BROWSER_QA"
++    },
++    "personal_client_original_bytes": {
++      "scope": "PUBLIC_ONBOARDING_CLIENT_ORIGINAL_BYTE_ACCESS_NOT_BROWSER_INSTALLATION",
++      "source_head": "ad47e6386536abdca5d5ba025832b27718ee66dd",
++      "files": [
++        {
++          "file": "README.md",
++          "status": 200,
++          "redirected": false,
++          "bytes": 7824,
++          "sha256": "2153e2b7d035a9321af746328a5fe9c0617f8287036b45e3a94eb239eaa4e4b8",
++          "byte_exact": true,
++          "matches_SOURCE": true,
++          "observed_at": "2026-10-13T05:33:18.058222+00:00"
++        },
++        {
++          "file": "client.js",
++          "status": 200,
++          "redirected": false,
++          "bytes": 16603,
++          "sha256": "08e561d76da139cce8cb87adb43ef2a6960bd86ef80c73462d2ed9c2f228b211",
++          "byte_exact": true,
++          "matches_SOURCE": true,
++          "observed_at": "2026-10-13T05:33:18.393463+00:00"
++        },
++        {
++          "file": "git-hash.js",
++          "status": 200,
++          "redirected": false,
++          "bytes": 3134,
++          "sha256": "308dbe4365f71a37c900175ccc619b370863b6505236c4fb4f3e3001baabd8bb",
++          "byte_exact": true,
++          "matches_SOURCE": true,
++          "observed_at": "2026-10-13T05:33:18.119960+00:00"
++        },
++        {
++          "file": "icon.svg",
++          "status": 200,
++          "redirected": false,
++          "bytes": 332,
++          "sha256": "dc09b8a107eb3919dc203253cba602fe39bd1723adcf679b9cc9b68e8035da53",
++          "byte_exact": true,
++          "matches_SOURCE": true,
++          "observed_at": "2026-10-13T05:33:18.119645+00:00"
++        },
++        {
++          "file": "index.html",
++          "status": 200,
++          "redirected": false,
++          "bytes": 1043,
++          "sha256": "2281a5a5cabacad9f2278b34fa4d978d8c2669b13fbb3bd4c2e05aafe43940b3",
++          "byte_exact": true,
++          "matches_SOURCE": true,
++          "observed_at": "2026-10-13T05:33:21.955323+00:00"
++        },
++        {
++          "file": "manifest.webmanifest",
++          "status": 200,
++          "redirected": false,
++          "bytes": 262,
++          "sha256": "419262c911585c4dcc0edcf71497319fb3200b55c704c87029102b43900a99ad",
++          "byte_exact": true,
++          "matches_SOURCE": true,
++          "observed_at": "2026-10-13T05:33:21.954287+00:00"
++        },
++        {
++          "file": "package.json",
++          "status": 200,
++          "redirected": false,
++          "bytes": 145,
++          "sha256": "f7e988855ba0859e142c6a19bb9b84a2d7a2d62aa0d726e72e8f30fa11d361a8",
++          "byte_exact": true,
++          "matches_SOURCE": true,
++          "observed_at": "2026-10-13T05:33:22.025283+00:00"
++        },
++        {
++          "file": "repository.js",
++          "status": 200,
++          "redirected": false,
++          "bytes": 16647,
++          "sha256": "cd938eddc0f4a13ed35450a30690a19b7959230471b49fff64710532300adc7c",
++          "byte_exact": true,
++          "matches_SOURCE": true,
++          "observed_at": "2026-10-13T05:33:21.992231+00:00"
++        },
++        {
++          "file": "service-worker.js",
++          "status": 200,
++          "redirected": false,
++          "bytes": 2858,
++          "sha256": "959b6c051f67a921a0796d67eb5cf73ac858b229c80deb917501cf83367dd947",
++          "byte_exact": true,
++          "matches_SOURCE": true,
++          "observed_at": "2026-10-13T05:33:25.830403+00:00"
++        },
++        {
++          "file": "static-server.mjs",
++          "status": 200,
++          "redirected": false,
++          "bytes": 1565,
++          "sha256": "b6e14d3eca626d93f74f55fcdf96842777ed0720152c299bc7b3d238e6006aca",
++          "byte_exact": true,
++          "matches_SOURCE": true,
++          "observed_at": "2026-10-13T05:33:25.859905+00:00"
++        },
++        {
++          "file": "style.css",
++          "status": 200,
++          "redirected": false,
++          "bytes": 2455,
++          "sha256": "c2e106dbb8afcd8b4a684a73f067fbc43bfdbfaf89257685d749c766945f2aa6",
++          "byte_exact": true,
++          "matches_SOURCE": true,
++          "observed_at": "2026-10-13T05:33:25.856497+00:00"
++        },
++        {
++          "file": "vendor/REACT_LICENSE.txt",
++          "status": 200,
++          "redirected": false,
++          "bytes": 1088,
++          "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93",
++          "byte_exact": true,
++          "matches_SOURCE": true,
++          "observed_at": "2026-10-13T05:33:25.871534+00:00"
++        },
++        {
++          "file": "vendor/react-runtime.js",
++          "status": 200,
++          "redirected": false,
++          "bytes": 571915,
++          "sha256": "fb03ce4c32ffbcacd04d55efb547e85610805571ee8025636bd7992c80db9cca",
++          "byte_exact": true,
++          "matches_SOURCE": true,
++          "observed_at": "2026-10-13T05:33:31.049404+00:00"
++        }
++      ],
++      "all_pass": true
++    },
++    "mcp": {
++      "snapshot_id": "5caece05-e7a6-43e9-9f85-eafa6fa28d4e",
++      "sha256": "3505152be9631c84c529b7de5d223c7581fdcbd0c0c5f5f9f8085fa9dbe32eaf",
++      "raw_bytes": 12729,
++      "connected_tool_readback": true,
++      "independent_public_http_hash_matched": true,
++      "wrong_expected_digest_rejected": true
++    },
++    "repairs": [
++      {
++        "id": "AI_EVIDENCE_ENTRYPOINT",
++        "baseline_failure": "public/AI pointed to /#/evidence; root serves the static public homepage",
++        "repair": "Use /monitor/#/evidence",
++        "original_reproduction": "AssertionError before product mutation; live /AI bytes matched predecessor source"
++      },
++      {
++        "id": "REACT_MONITOR_OFFLINE_SHELL",
++        "baseline_failure": "The service worker did not intercept /monitor and cached only /",
++        "repair": "Cache /monitor/ and select its own installed shell for /monitor, /monitor/ and query variants",
++        "original_reproduction": "Expanded existing scripts/verify-offline.mjs failed on /monitor before product mutation"
++      },
++      {
++        "id": "AI_INLINE_CONTENT_TYPE",
++        "baseline_failure": "Live /AI GET returned application/octet-stream",
++        "repair": "Existing hosting adapter serves text/plain with nosniff; build removes the duplicate static AI asset",
++        "verification": "Actual unchanged working-rule bytes, GET/HEAD body semantics and POST 405 checked; post-deployment HTTP required"
++      },
++      {
++        "id": "OPERATOR_RETURN_PATH",
++        "baseline_failure": "Conditional operator sign-in returned to /#/terminal despite the React app being hosted at /monitor/",
++        "repair": "Keep the existing sign-in flow and correct return_to to /monitor/#/terminal",
++        "verification": "Source/route regression; authenticated operator flow remains unexecuted because no operator/runtime is configured"
++      }
++    ],
++    "checks": {
++      "typescript": "PASS",
++      "evidence_regressions": "PASS",
++      "mcp_regressions": "PASS",
++      "offline_monitor_shell_regressions": "PASS",
++      "editorial_tests": {
++        "passed": 10
++      },
++      "unchanged_repository_terminal_tests": {
++        "passed": 5,
++        "source_blob": "993e3c8005273c639328b5718b039f0d168f521a",
++        "scope": "Actual Site files; deterministic DOM/HTTP fixture; two repository-only sitemap/home tests excluded"
++      },
++      "production_build": "PASS",
++      "built_static_AI_asset_removed": true
++    },
++    "changed_application_files": [
++      {
++        "path": "app/page.tsx",
++        "bytes": 38063,
++        "sha256": "7a0ee4fe45989aceb1169f5f894cc6012e71462dbedf3dae6148fafd56bc7a62"
++      },
++      {
++        "path": "lib/offline-client-hosting.ts",
++        "bytes": 4667,
++        "sha256": "70a251c58525af4443b477eb4ddfa8a102f64c8cb2a52a49a8f4022adc848405"
++      },
++      {
++        "path": "public/AI",
++        "bytes": 1712,
++        "sha256": "515813d303cb744b5ff94489d55c4dd48b603a316e14e84bd352dad38a69f89f"
++      },
++      {
++        "path": "public/mesh-sw.js",
++        "bytes": 2463,
++        "sha256": "84127c825221336d12b9d1d3efc6ddc76067d9143259d42ba47104a3fba4b7c6"
++      },
++      {
++        "path": "scripts/build-offline-shell.mjs",
++        "bytes": 1732,
++        "sha256": "c80376e8c7ccdce53b0c7bf35d2579921c5656a1ffc98d20724aa71bd917eb57"
++      },
++      {
++        "path": "scripts/verify-evidence.mjs",
++        "bytes": 33844,
++        "sha256": "b92dcaf02a1741c013c6d35475283d9740042419455bfb1687db763e405715ba"
++      },
++      {
++        "path": "scripts/verify-offline.mjs",
++        "bytes": 3614,
++        "sha256": "a479a442e784be411d17a3bbe2c35510b7403b259a5be0874cf8106d37b43c5a"
++      },
++      {
++        "path": "state/UPDATE_CONTRACT.json",
++        "bytes": 5681,
++        "sha256": "95cc3abdf852d997aaf8d87a465e92463593872ecc0a5547ec07d6578a8c9bfe"
++      }
++    ],
++    "onboarding": {
++      "existing_entry": "/offline/",
++      "source_head": "ad47e6386536abdca5d5ba025832b27718ee66dd",
++      "public_bytes": "13/13 exact SOURCE digests",
++      "browser_setup_local_storage_and_restart": "NOT_EXECUTED",
++      "unadvertised_probe": {
++        "path": "/onboarding",
++        "status": 404,
++        "classification": "NO_DECLARED_ROUTE_NOT_A_CONFIRMED_REGRESSION"
++      }
++    },
++    "open_work": [
++      "BROWSER_USE_PATH_ACCEPTANCE",
++      "AUTHENTICATED_NATIVE_RUNTIME",
++      "DNS_TLS_EXACT_DOMAIN_DELIVERY",
++      "NATIVE_GOVERNANCE_AND_PR523_MAIN_INTEGRATION",
++      "PUBLICATION_AND_POST_DEPLOYMENT_READBACK"
++    ],
++    "effect_ack_done": false,
++    "ordinary_release": false,
++    "predecessor_pass_transfer": false
+   }
+ }

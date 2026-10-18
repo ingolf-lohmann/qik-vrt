@@ -1,0 +1,392 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "id": "QIKVRT_ALLES_S1_S12_REVISION_AND_DISTRIBUTION_20261015_V1",
+  "status": "DOCUMENT_REPAIRED_DISTRIBUTION_PARTIALLY_BLOCKED",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "integration/515-519-521-522-20261012-eceb9b63",
+  "source_commit": "7af0b7c68ad80352dd9ff6f91600cdca2616dfc9",
+  "source_tree": "43877842d34f93c6de55c240e8f24f88c9b1d41b",
+  "created_at": "2026-10-15T17:18:57.901988+00:00",
+  "human_actor": "Ingolf Lohmann",
+  "human_contributions": [
+    "Original S1/S12 statements and input PDF",
+    "Instruction of 2026-10-15 to improve and persist across repository nodes, Zenodo, IETF, raumzeitterminal.de and eventually Wikipedia/arXiv"
+  ],
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_identity": "GPT-6 family; exact serving build not independently verified"
+  },
+  "artificial_cognitive_contributions": [
+    "Public Meta PDF recovery and exact-source comparison",
+    "Infinite-rectangle extraction recovers clipped PDF text",
+    "ReportLab reflow of six defective pages with all original lines present",
+    "115 historical pages preserved; original PDFs embedded and separately retained",
+    "New editorial status distinctions, visible sources, hashes, HTML/plain text and publication route notes",
+    "Existing publication watch scope extended without new executor/schedule"
+  ],
+  "human_decision": {
+    "task_authorization": "GRANTED",
+    "new_content_acceptance": "NOT_INFERRED",
+    "exact_zenodo_upload_event_after_return": "NOT_RECORDED"
+  },
+  "inputs": [
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/originals/Original_116_Seiten_Meta.pdf",
+      "bytes": 436035,
+      "sha256": "cc092cebe4e9e512f1f37f231ae33d53522e9829cecd2a3a3e7a6f3ecba30832",
+      "git_blob_sha1": "c4f01ac69eeb64f16e5fa4f879da9d344fb47b65"
+    },
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/originals/Original_121_Seiten.pdf",
+      "bytes": 454521,
+      "sha256": "91841d7ea66e800098f811bd1e17bccea6423ea1b23e0c5abf034048ed020b86",
+      "git_blob_sha1": "2ce3fd33456bad96ca86e34bf0804dbe1e5bb965"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/QIKVRT_ALLES_2026-10-15_S1_S12.pdf",
+      "bytes": 1289349,
+      "sha256": "68b59b146904aae567bf302268b1e795d9ffd8506921aa282817aab4c0d41f1e",
+      "git_blob_sha1": "100834979354759ed4d5846d84d28d1f11720d05"
+    },
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/QIKVRT_ALLES_2026-10-15_S1_S12.txt",
+      "bytes": 379958,
+      "sha256": "7b932eb2eba34a1d377b20ed383bc034eacd3fbf6d2946717c1a4580e5254944",
+      "git_blob_sha1": "143fa11f5417c7a9f71af00dee4c5fb80ea861f4"
+    },
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/index.html",
+      "bytes": 391151,
+      "sha256": "a8de00531bcdf2e250b0d712a27567ea9e9fb40c754c99177fefc4b31c03f52b",
+      "git_blob_sha1": "4ec391ef1229df683724e87e5f79c15d92e3ea1b"
+    },
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/CLAIM_MATRIX.json",
+      "bytes": 2091,
+      "sha256": "f68fc3833da47859ff956d8a1a379bdcaa7f2a094dfb2e63436c6858a72664fd",
+      "git_blob_sha1": "21bf6cf2914a0cf343bac4cb470180013508587b"
+    },
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/BUILD_RECEIPT.json",
+      "bytes": 1174,
+      "sha256": "cfeb752078eb65512f32c4c11c25943b722ed8590e10d190922b4b7415db717e",
+      "git_blob_sha1": "e1b2336fe9907b88b0a1691d282ed826877f02c6"
+    },
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/LAYOUT_VALIDATION.json",
+      "bytes": 819,
+      "sha256": "7d562b6bd6d19b8b98106a9999d502879fa72486b228716b5d391205a72231d0",
+      "git_blob_sha1": "b96576dcc73887c474c219b47d5ddacab80bb5f2"
+    },
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/SOURCE_VISIBILITY_CHECK.json",
+      "bytes": 867,
+      "sha256": "5ff5238e87a9d3b2c72e3ea708ada8ecdcc89016090e5cde07159173a65d0dc2",
+      "git_blob_sha1": "e7a41311d6ca68fc440e7c90adf5c49a510e1884"
+    },
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/ORIGINAL_NEGATIVE_SOURCE_CHECK.json",
+      "bytes": 1269,
+      "sha256": "4173a872bd470bc18842ccf7212d71810f367fa4e6f1cbecba6df4b37f7670a2",
+      "git_blob_sha1": "53af48abd212c8c030987102c4a7b3dff3653c6f"
+    },
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/ARCHIVAL_GATE.json",
+      "bytes": 413,
+      "sha256": "d7c62ed07e13ad41b32f3b71a24f5d59af216e78eb0a8a7a43f73090ea6b83eb",
+      "git_blob_sha1": "d2ed1a7dcbdf3a91784356d59f2d61df2001f71d"
+    },
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/CHANGE_NOTICE.md",
+      "bytes": 939,
+      "sha256": "d9f3188dfb9694b3f1388639d9d58d085fc1f8e1f204ebda2c0cf8029e7268e3",
+      "git_blob_sha1": "ae27f68383ffdef962f1c3c5d9ec8e7a8205a6be"
+    },
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/PREPUBLICATION_RETURN_RECEIPT.json",
+      "bytes": 4556,
+      "sha256": "d7a519b4370dfb2210f6e3de720361d31810f83d24be391f58d40bb628cd34e4",
+      "git_blob_sha1": "50ea438f4c07753842ff35c647b8d17df6fa6447"
+    },
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/PUBLICATION_READINESS.json",
+      "bytes": 6368,
+      "sha256": "5f776dd632f5c4b1fe61e563ea874ff952c4fdbe20666dcfa235bb2571f46971",
+      "git_blob_sha1": "9e8b175cb7c1edae351e03d824228d62e87e3ff0"
+    },
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/S12_ORIGINAL.md",
+      "bytes": 3175,
+      "sha256": "a32b717cccd11be0cc8ca81a960f44d73a87c240334b345d51b2cf14d30506c5",
+      "git_blob_sha1": "9815017ffaaa051e1a5932a3076f9a94e5ddb1d4"
+    },
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/VISIBLE_SOURCES.json",
+      "bytes": 744,
+      "sha256": "50bc6c50d10d60eb421b57b380a175dd5f572ee4d6b658fdb1cf446db56831b6",
+      "git_blob_sha1": "fee0d66a3458cb57302213d71209b7d79391195a"
+    },
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/PUBLICATION_SOURCES.json",
+      "bytes": 923,
+      "sha256": "15fbb1e8d86734eedb474db4a7cb05d702175bfc413bf563d5af06eca3af0440",
+      "git_blob_sha1": "d98851fa079f3bb9ca1f3be889da9cdc53d40eed"
+    },
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/zenodo-metadata.DRAFT.json",
+      "bytes": 1426,
+      "sha256": "5a8d579425610de1e4e71b74a7af8755a52a0e56304abe7d565b33c73d4f125d",
+      "git_blob_sha1": "8abf2f1b34acd3fe8482ed62d91bdc5cfe15569b"
+    },
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/IETF_SCOPE_NOTE.md",
+      "bytes": 1155,
+      "sha256": "0055c273fc2e91cf67025f663185f204b92e6d42feb3a51cee5f708fcc02c83a",
+      "git_blob_sha1": "aaa6cfb2ee51d550865e0c4a7242bf12da5520ec"
+    },
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/ARXIV_SCOPE_NOTE.md",
+      "bytes": 660,
+      "sha256": "5dfde1f84a605606da79353ef1b3f75757584be18b8e9aea439d513c91e96acc",
+      "git_blob_sha1": "0dd08921dfd1ba304bb10dcaf96188d2e0f02485"
+    },
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/WIKIPEDIA_SOURCE_REVIEW.md",
+      "bytes": 949,
+      "sha256": "a116788b7d5ac851863fbe8d148b93033b0ae2e61f69ff697e95a955d04f8c4e",
+      "git_blob_sha1": "880cb529bdcda6205c29f863fad0735efec1315c"
+    },
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/CONTINUATION.json",
+      "bytes": 620,
+      "sha256": "6a3b0fefb405a84b2f7a5065cd3614678b29555ff247f6e76ef39f877e3981c1",
+      "git_blob_sha1": "43dca4c40390cf8ba92c8134409835d64483aa53"
+    },
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/README.md",
+      "bytes": 1383,
+      "sha256": "f16d6a0c2d47a1613875861d2c3049cd155ded973002dd106ca6f2cea4ddd323",
+      "git_blob_sha1": "822c9bf71aa3eab041008fc6c03e90f780b2ba4b"
+    },
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/DELIVERY_OBSERVATION.json",
+      "bytes": 553,
+      "sha256": "9825045b64d0c4ac80f1132b0c06e544ff9d0402e27f8aae628319fe2b93e91b",
+      "git_blob_sha1": "8e1408cdb5c7b982b63c9ec916542aad1e2c89a6"
+    },
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/originals/Original_121_Seiten.pdf",
+      "bytes": 454521,
+      "sha256": "91841d7ea66e800098f811bd1e17bccea6423ea1b23e0c5abf034048ed020b86",
+      "git_blob_sha1": "2ce3fd33456bad96ca86e34bf0804dbe1e5bb965"
+    },
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/originals/Original_116_Seiten_Meta.pdf",
+      "bytes": 436035,
+      "sha256": "cc092cebe4e9e512f1f37f231ae33d53522e9829cecd2a3a3e7a6f3ecba30832",
+      "git_blob_sha1": "c4f01ac69eeb64f16e5fa4f879da9d344fb47b65"
+    },
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/SITE_HOSTING_RECEIPT.json",
+      "bytes": 4300,
+      "sha256": "42df1c6bea60729158bddbf2405cb753853287294fdad34e2b5ed6a4ced96209",
+      "git_blob_sha1": "6eca2137ae915124bbb89610340a88df3b0bec02"
+    },
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/PUBLICATION_ROUTING.json",
+      "bytes": 6942,
+      "sha256": "86f23200157c0ca738414e8e1fc11b91302258dd53f2a38dc275baa65da8b262",
+      "git_blob_sha1": "7bb36b56bff08751fd3e6898ab7585b5edf8a512"
+    },
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/SHA256SUMS",
+      "bytes": 2353,
+      "sha256": "fd1c9fd77e13ea1b0b0bb08d31245ce463bcf989d1220ab78b296dc1793c5daf",
+      "git_blob_sha1": "8362c0101015394f1fe8d5aa2adf44c8e5f551c2"
+    }
+  ],
+  "verification": {
+    "layout": "docs/publications/2026-10-15-alles-s1-s12-r1/LAYOUT_VALIDATION.json",
+    "new_source_visibility": "docs/publications/2026-10-15-alles-s1-s12-r1/SOURCE_VISIBILITY_CHECK.json",
+    "strict_archival_gate": "docs/publications/2026-10-15-alles-s1-s12-r1/ARCHIVAL_GATE.json",
+    "full_repository_native_tests": "NOT_YET_OBSERVED_ON_SUCCESSOR_HEAD",
+    "publication_index_repair": "docs/publications/2026-10-15-alles-s1-s12-r1/PUBLICATION_INDEX_REPAIR.json",
+    "predecessor_ci_failure": "New bundle absent from index; fixed via existing generator, 8 unit tests and full Git-tree README coverage; successor native validation remains required."
+  },
+  "known_repository_nodes": [
+    {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "role": "AUTHORITY",
+      "candidate_path": "docs/publications/2026-10-15-alles-s1-s12-r1",
+      "main_effect": false
+    },
+    {
+      "repository": "Goldkelch/qik-vrt",
+      "role": "MIRROR",
+      "readback": "AUTHENTICATED_GITHUB_API_HTTP_404",
+      "write_attempts": 0
+    }
+  ],
+  "registry_coverage": "Authorized registry and canonical roles inspected; no unobserved nodes invented",
+  "open_work": [
+    {
+      "id": "MIRROR",
+      "reason": "Authenticated Mirror read returned 404",
+      "next_action": "Restore authorized Mirror access, then exact artifact copy and independent byte readback."
+    },
+    {
+      "id": "ZENODO",
+      "reason": "Source archive/proof fileset, candidate-specific decision after return and available authenticated publisher remain open",
+      "next_action": "Use PUBLICATION_READINESS.json and existing proof-bearing v2 publisher; retain policy gates."
+    },
+    {
+      "id": "IETF",
+      "reason": "Document revision has no new wire protocol; standalone PDF is not an admitted RFCXML submission",
+      "next_action": "Resolve informative archived reference and actual RFCXML revision/account/validation, then public posting readback."
+    },
+    {
+      "id": "DOMAIN",
+      "reason": "Native Site domain status pending and TLS pending_validation; underlying Site version 34 successfully published; public HTML read through TinyFish, exact PDF network byte readback remains unverified.",
+      "next_action": "Complete the existing domain/DNS validation through the authorized REST-only IONOS path, retain Site version 34 and the frozen PDF hash, then independently read the exact requested HTTPS host and document bytes. Do not redeploy unchanged hosting bytes."
+    },
+    {
+      "id": "ARXIV",
+      "reason": "Existing candidate, account/category/license and actual service acceptance need binding",
+      "next_action": "Reuse the existing staged arXiv manuscript and review the evidence companion."
+    },
+    {
+      "id": "WIKIPEDIA",
+      "reason": "Independent substantial coverage not established by the bounded search",
+      "next_action": "Collect independent secondary coverage; keep other lanes independent."
+    }
+  ],
+  "continuation": "docs/publications/2026-10-15-alles-s1-s12-r1/CONTINUATION.json",
+  "external_effects": {
+    "repository_candidate_commit": "1a1faca0c1dbaa3cb68338652426e664036ad680",
+    "zenodo": 0,
+    "ietf": 0,
+    "arxiv": 0,
+    "wikipedia": 0,
+    "domain_deployment": 0,
+    "workflow_dispatch": 0,
+    "existing_site_version_34_publication": 1
+  },
+  "release_claims": {
+    "MAIN_INTEGRATED": false,
+    "ALL_NODES_PERSISTED": false,
+    "PUBLISHED": false,
+    "EFFECT_ACK_DONE": false
+  },
+  "site_hosting": {
+    "schema": "qikvrt_document_hosting_effect_v1",
+    "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+    "source_commit": "e60a1aa8fe412369359a7fa05b1f5d55551ea492",
+    "version": {
+      "id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea~appgver_7f87c25be4748191b9a44f6cdfcf51a6",
+      "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+      "version_number": 34,
+      "source": {
+        "commit_sha": "e60a1aa8fe412369359a7fa05b1f5d55551ea492"
+      },
+      "archive_storage": {
+        "archive_format": "tar",
+        "sediment_file_id": "file_00000000de4c81f58f2e23dce5397e7e",
+        "content_hash": "sha256:07dfd5affff3156a1bb0ed670eb2bbbcf37e8e4d965ac2149d1bc03a469ae83d",
+        "size_bytes": 126238720,
+        "file_count": 190
+      },
+      "screenshot_url": null,
+      "deployment_id": null
+    },
+    "publication": {
+      "id": "appgdep_6ad10955200c8191a8b65a6dafe51c43",
+      "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+      "title": "QIK-VRT · Mesh Monitor · Scheibenhard",
+      "version_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea~appgver_7f87c25be4748191b9a44f6cdfcf51a6",
+      "type": "publish",
+      "status": "succeeded",
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site",
+      "has_mcp": true,
+      "screenshot_asset_pointer": null,
+      "provider_deployment_id": "site---6ac4018a3e0c8191a06187c296d6c7ea",
+      "failure_message": null,
+      "env_set_revision": 8,
+      "updated_at": "2026-10-15T17:12:04.341391+00:00"
+    },
+    "custom_domain": {
+      "id": "appgdom_6ac4b489bd548191a69f7d87618db3aa",
+      "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+      "hostname": "raumzeitterminal.de",
+      "worker_name": "site---6ac4018a3e0c8191a06187c296d6c7ea",
+      "status": "pending",
+      "provider_status": "pending",
+      "ssl_status": "pending_validation",
+      "cname_target": "custom-domains.chatgpt.site.",
+      "apex_proxy_ipv4_targets": [
+        "162.159.143.30",
+        "172.66.3.26"
+      ],
+      "validation_records": [
+        {
+          "record_type": "TXT",
+          "name": "_openai-site-verification.raumzeitterminal.de",
+          "value": "openai-site-verification=5Zw42-7lgYTNm3pmkhZcwGJu1_0UvnHSVYJcGBDONbI"
+        },
+        {
+          "record_type": null,
+          "name": null,
+          "value": null
+        },
+        {
+          "record_type": "TXT",
+          "name": "_cf-custom-hostname.raumzeitterminal.de",
+          "value": "c6e99848-baed-4087-a9fd-0d6c5b5008c8"
+        }
+      ],
+      "last_error": null,
+      "created_at": "2026-10-06T08:42:49.739821+00:00",
+      "updated_at": "2026-10-15T17:12:44.630660+00:00"
+    },
+    "requested_hostname_delivery_verified": false,
+    "public_readback": [
+      {
+        "name": "index.html",
+        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-15-alles-s1-s12-r1/index.html",
+        "method": "GET",
+        "observed_at": "2026-10-15T17:13:17.642295+00:00",
+        "error": "HTTP Error 403: Forbidden"
+      },
+      {
+        "name": "QIKVRT_ALLES_2026-10-15_S1_S12.pdf",
+        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-15-alles-s1-s12-r1/QIKVRT_ALLES_2026-10-15_S1_S12.pdf",
+        "method": "GET",
+        "observed_at": "2026-10-15T17:13:17.643487+00:00",
+        "error": "HTTP Error 403: Forbidden"
+      },
+      {
+        "name": "homepage",
+        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/",
+        "method": "GET",
+        "observed_at": "2026-10-15T17:13:17.644074+00:00",
+        "error": "HTTP Error 403: Forbidden"
+      }
+    ],
+    "byte_exact_public_document_verified": false,
+    "independent_public_html_readback": {
+      "source": "TinyFish public fetch",
+      "observed_at": "2026-10-15T17:16:40.526Z",
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-15-alles-s1-s12-r1/index.html",
+      "final_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-15-alles-s1-s12-r1/",
+      "language": "de",
+      "extracted_text_characters": 379943,
+      "original_page_1_present": true,
+      "original_page_121_present": true,
+      "errors": [],
+      "raw_pdf_byte_exact_readback": false
+    },
+    "public_access_observation": "Public HTML successfully read by TinyFish; direct runtime HTTP requests return 403 / error code 1010. Exact original PDF network byte equality remains unverified."
+  }
+}

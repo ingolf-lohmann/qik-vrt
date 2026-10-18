@@ -1,0 +1,36 @@
+import QIKVRTFormalization
+
+#print axioms QIKVRT.V2.BacksignalingBoundary.published_order_is_forward
+#print axioms QIKVRT.V2.BacksignalingBoundary.published_order_is_reversed
+#print axioms QIKVRT.V2.BacksignalingBoundary.published_order_has_no_receive_before_emit
+#print axioms QIKVRT.V2.BacksignalingBoundary.reception_reversal_does_not_imply_receive_before_emit
+#print axioms QIKVRT.V2.BacksignalingBoundary.forward_delivery_excludes_receive_before_emit
+#print axioms QIKVRT.V2.BacksignalingBoundary.positive_delay_is_after_emission
+#print axioms QIKVRT.V2.BacksignalingBoundary.virtual_past_address_with_forward_host_order
+#print axioms QIKVRT.V2.BacksignalingBoundary.later_inputs_preserve_captured_prefix
+#print axioms QIKVRT.V2.ThreeObserverProtocol.C_preserves_A_record
+#print axioms QIKVRT.V2.ThreeObserverProtocol.forward_round_trip_returns_after_query
+#print axioms QIKVRT.V2.ThreeObserverProtocol.forward_model_excludes_early_reply
+#print axioms QIKVRT.V2.ThreeObserverProtocol.abstract_past_directed_trace_is_representable
+#print axioms QIKVRT.V2.ThreeObserverProtocol.assumed_trace_violates_forward_transport
+#print axioms QIKVRT.V2.ThreeObserverProtocol.C_observation_preserves_early_reply_predicate
+#print axioms QIKVRT.V2.ThreeObserverProtocol.any_finite_forward_path_returns_later
+#print axioms QIKVRT.V2.ThreeObserverProtocol.adding_forward_relays_cannot_close_a_cycle
+#print axioms QIKVRT.V2.ObserverRelative.inverse_orientation_has_signed_differences
+#print axioms QIKVRT.V2.ObserverRelative.increasing_reparameterizations_preserve_orientation
+#print axioms QIKVRT.V2.ObserverRelative.overtaking_iff_delay_difference_exceeds_emission_gap
+#print axioms QIKVRT.V2.ObserverRelative.equal_delays_preserve_source_order
+#print axioms QIKVRT.V2.ObserverRelative.every_positive_emission_gap_allows_positive_delay_overtaking
+#print axioms QIKVRT.V2.ObserverRelative.separated_time_intervals_establish_actual_order
+#print axioms QIKVRT.V2.ObserverRelative.complementary_numerators_have_constant_sum
+#print axioms QIKVRT.V2.ObserverRelative.published_mark_orientation
+#print axioms QIKVRT.V2.Physics.MeasurementTransfer.exact_readout_is_within
+#print axioms QIKVRT.V2.Physics.MeasurementTransfer.error_budgets_compose
+#print axioms QIKVRT.V2.Physics.MeasurementTransfer.separated_readback_enclosures_establish_order
+#print axioms QIKVRT.V2.Physics.MeasurementTransfer.admitted_run
+#print axioms QIKVRT.V2.Physics.MeasurementTransfer.bound_runs_correspond
+#print axioms QIKVRT.V2.Physics.MeasurementTransfer.bounded_prediction_transfers
+#print axioms QIKVRT.V2.Physics.MeasurementTransfer.order_alone_does_not_identify_clock_scale
+#print axioms QIKVRT.V2.Physics.MeasurementTransfer.exact_inertial_segment_example
+#print axioms QIKVRT.V2.Physics.MeasurementTransfer.same_coordinate_duration_allows_different_proper_durations
+#print axioms QIKVRT.V2.Physics.MeasurementTransfer.finite_calibration_does_not_force_next_prediction

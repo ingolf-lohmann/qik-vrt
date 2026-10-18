@@ -1,0 +1,415 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_IONOS_REST_ONLY_CLIENT_REPAIR_20261013_V1",
+  "created_at": "2026-10-13T12:35:54.477928+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_pr": 523,
+  "source_ref": "integration/515-519-521-522-20261012-eceb9b63",
+  "source_commit": "cfd22e2c15258202413141354b42225d16e0c8b2",
+  "source_tree": "5261b557928427364e354afdbcfae0a1e8c7a397",
+  "human_actor": "Ingolf Lohmann",
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6",
+    "session_or_run_id": "UNAVAILABLE",
+    "tools_and_adapters": [
+      "GitHub REST connector",
+      "local Bash/Python/Git verification",
+      "Sites REST readback",
+      "QIK-VRT Mesh observation REST"
+    ],
+    "identity_and_observation_limits": "Platform principal and Git author do not establish a natural-person or model identity."
+  },
+  "human_contributions": [
+    {
+      "exact_text": "REST-only beibehalten",
+      "context": "Explicit response to proposed IONOS browser sign-in on 2026-10-13; existing domain-delivery authorization retained."
+    }
+  ],
+  "artificial_cognitive_contributions": [
+    "Diagnosed existing client action gate: REST-only applied to github only; IONOS browser transport was not rejected.",
+    "Persisted IONOS owner route in existing progress policy and documentation; same client gate loads and enforces canonical GitHub and IONOS routes for planned and effectful actions.",
+    "Added five behavioral regressions to the existing runtime contract suite; no controller, proxy executor, workflow, trigger, permission scope or credential store introduced.",
+    "Inspected actual Cloud-v6 source binding separately from documented IONOS Hosting Domains/DNS REST capabilities; preserved missing credential and operation evidence.",
+    "Preserved all exact predecessor domain, archive, governance, runtime and browser obligations; current browser evidence remains bound to its executed source.",
+    "Repaired the existing jq test stub to consume pipeline input as jq does; diagnostic fixture returned SIGPIPE 141 before the required authority error journal. Assertions and real workflow behavior are unchanged."
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "predecessors": [
+    {
+      "path": "state/work_units/QIKVRT_SITE32_OFFLINE_BROWSER_REGRESSIONS_20261013_V1.json",
+      "bytes": 23621,
+      "sha256": "a1345b68fee6d2903a248fd3ab6b7606870afed5abd03b8f4a8a4d0bf012e33a",
+      "git_blob_sha1": "5cbfc465bdb0d2c48726eeff3fef2c2b15d985b8"
+    },
+    {
+      "path": "state/work_units/QIKVRT_ARCHIVE_HOLD_OFFLINE_CONTINUATION_20261013_V1.json",
+      "bytes": 20901,
+      "sha256": "e20e488d5fa82d577024dcf7b2beddb583c174c503905edc16c298dd1c1674c9",
+      "git_blob_sha1": "a770929953001b4a09ba872ab705882abbd630b8"
+    }
+  ],
+  "inherited_open_obligations": [
+    {
+      "id": "delivery:raumzeitterminal.de",
+      "layer": "DELIVERY",
+      "target": "raumzeitterminal.de",
+      "label": "Produktdomain in Betrieb nehmen",
+      "reason": "EXACT_HOST_NXDOMAIN_HTTP_530",
+      "acceptance": "DNS und TLS für raumzeitterminal.de, gebundene Anwendung und frischer Nutzpfad-Readback bestätigen.",
+      "subject": {
+        "url": "https://raumzeitterminal.de/"
+      },
+      "semantic_sha256": "5afbeef30fbb021c40ac673f137ee417af2ded95b522e5ace2167e1f07af92cc",
+      "state": "OPEN",
+      "transition": "CHANGED_OBSERVATION",
+      "retry_condition": "Material geänderte Domain-/DNS-/TLS-Evidenz oder ein authentifizierter Schreibzugang für genau diese Domain; danach die ursprüngliche Auslieferung prüfen.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Material geänderte Domain-/DNS-/TLS-Evidenz oder ein authentifizierter Schreibzugang für genau diese Domain; danach die ursprüngliche Auslieferung prüfen.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "governance:qik-vrt",
+      "layer": "GOVERNANCE",
+      "target": "ingolf-lohmann/qik-vrt",
+      "label": "Native Authority-Bindung bestätigen",
+      "reason": "NATIVE_AUTHORITY_BINDING_NOT_VERIFIED",
+      "acceptance": "Aktuelle Authority-Bindung, Governance und zugelassene Operation am exakten Gegenstand unabhängig zurücklesen.",
+      "subject": {},
+      "semantic_sha256": "3ce3d30b4a258ec59bfb8e6d5569ac84138276bb0748486f49d93017496e4b8e",
+      "state": "OPEN",
+      "transition": "UNCHANGED",
+      "retry_condition": "Neue gebundene Authority-/Governance-Evidenz und die erforderliche zugelassene Operation.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Neue gebundene Authority-/Governance-Evidenz und die erforderliche zugelassene Operation.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "native:qik-vrt",
+      "layer": "RUNTIME",
+      "target": "qik-vrt",
+      "label": "Native Terminal-Ausführung abnehmen",
+      "reason": "AUTHENTICATED_NATIVE_EXECUTION_NOT_ACCEPTED",
+      "acceptance": "Identitätsgebundene Ausführung und unabhängigen Effect-Readback am freigegebenen Runtime-Host nachweisen.",
+      "subject": {},
+      "semantic_sha256": "acfd89257d2e10c21f95ccb4d111bc45b9e8f64f748fb60471aaf860085dcdea",
+      "state": "OPEN",
+      "transition": "UNCHANGED",
+      "retry_condition": "Ein authentifizierter, identitätsgebundener Ausführungsweg ist tatsächlich verfügbar und für den konkreten Auftrag zugelassen.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Ein authentifizierter, identitätsgebundener Ausführungsweg ist tatsächlich verfügbar und für den konkreten Auftrag zugelassen.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "registry:qik-vrt",
+      "layer": "REGISTRY",
+      "target": "qik-vrt",
+      "label": "Knotenverzeichnis vollständig zurücklesen",
+      "reason": "REGISTRY_DISCOVERY_INCOMPLETE",
+      "acceptance": "Vollständige Quellen mit aktuellen HEAD/TREE-Bindungen lesen.",
+      "subject": {},
+      "semantic_sha256": "f9892acb87572ca11e0986104ebf6a04a0438fbdcb89ad0843b6662d4e5607ca",
+      "state": "OPEN",
+      "transition": "UNCHANGED",
+      "retry_condition": "Geänderte Quellen-/Zugriffsevidenz für die betroffenen Verzeichnisquellen.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Geänderte Quellen-/Zugriffsevidenz für die betroffenen Verzeichnisquellen.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "repository:Goldkelch/qik-vrt",
+      "layer": "REPOSITORY",
+      "target": "Goldkelch/qik-vrt",
+      "label": "Aktuellen Repository-Gegenstand lesen",
+      "reason": "REPOSITORY_NOT_FOUND",
+      "acceptance": "Aktuellen HEAD und TREE über den erlaubten REST-Pfad zurücklesen.",
+      "subject": {
+        "repository": "Goldkelch/qik-vrt",
+        "head": null,
+        "tree": null
+      },
+      "semantic_sha256": "a7bb27dcba97eea2252cf151e48b26e74415019d93f90d22e15c5bacd75352b0",
+      "state": "OPEN",
+      "transition": "UNCHANGED",
+      "retry_condition": "Neue, unabhängig bestätigte Quellenbindung oder wiederhergestellter Zugriff erforderlich.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Neue, unabhängig bestätigte Quellenbindung oder wiederhergestellter Zugriff erforderlich.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "repository:ingolf-lohmann/qik-vrt",
+      "layer": "REPOSITORY",
+      "target": "ingolf-lohmann/qik-vrt",
+      "label": "Aktuellen Repository-Gegenstand lesen",
+      "reason": "REPOSITORY_RATE_LIMITED",
+      "acceptance": "Aktuellen HEAD und TREE über den erlaubten REST-Pfad zurücklesen.",
+      "subject": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "head": null,
+        "tree": null
+      },
+      "semantic_sha256": "452e066819947d286f891b27aa36018c470d5ac423615123741d50e7df73386f",
+      "state": "OPEN",
+      "transition": "UNCHANGED",
+      "retry_condition": "Material geänderte Zugriffs- oder Quellenbindung; unveränderte Zugriffssperren bleiben NOOP.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Material geänderte Zugriffs- oder Quellenbindung; unveränderte Zugriffssperren bleiben NOOP.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "runtime:Goldkelch/qik-vrt",
+      "layer": "RUNTIME",
+      "target": "Goldkelch/qik-vrt",
+      "label": "Knoten-Runtime anschließen",
+      "reason": "RUNTIME_ENDPOINT_NOT_ADVERTISED",
+      "acceptance": "Frischen, identitätsgebundenen Runtime-Befund am angekündigten Endpunkt lesen; dies ersetzt keine native Effektabnahme.",
+      "subject": {
+        "repository": "Goldkelch/qik-vrt",
+        "head": null,
+        "tree": null
+      },
+      "semantic_sha256": "470f253ac5e04fdacbf4262d1f03ccee465c8822e89312675cb46cc3f5549ed1",
+      "state": "OPEN",
+      "transition": "UNCHANGED",
+      "retry_condition": "Material geänderter Runtime-Endpunkt, Zugriff oder identitätsgebundener Runtime-Befund.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Material geänderter Runtime-Endpunkt, Zugriff oder identitätsgebundener Runtime-Befund.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "runtime:ingolf-lohmann/qik-vrt",
+      "layer": "RUNTIME",
+      "target": "ingolf-lohmann/qik-vrt",
+      "label": "Knoten-Runtime anschließen",
+      "reason": "RUNTIME_ENDPOINT_NOT_ADVERTISED",
+      "acceptance": "Frischen, identitätsgebundenen Runtime-Befund am angekündigten Endpunkt lesen; dies ersetzt keine native Effektabnahme.",
+      "subject": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "head": null,
+        "tree": null
+      },
+      "semantic_sha256": "a3af1fe781dd9e39f1eeefe027123bfaceb723b890f7af5ed82603b3737e7bdc",
+      "state": "OPEN",
+      "transition": "UNCHANGED",
+      "retry_condition": "Material geänderter Runtime-Endpunkt, Zugriff oder identitätsgebundener Runtime-Befund.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Material geänderter Runtime-Endpunkt, Zugriff oder identitätsgebundener Runtime-Befund.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "MAIN_GOVERNANCE_AND_INTEGRATION",
+      "state": "OPEN",
+      "source": "https://github.com/ingolf-lohmann/qik-vrt/pull/523",
+      "evidence": "Current rulesets=[], reviews=[]; requested review execution failure CODE_OWNER_RULE_NOT_ENFORCED.",
+      "next_action": "Use an admitted existing native ruleset writer and independent exact-head review before guarded Main integration.",
+      "source_predecessor": "state/work_units/QIKVRT_IMMEDIATE_EXECUTION_20261013_V1.json"
+    },
+    {
+      "id": "EXACT_DOMAIN_DELIVERY",
+      "state": "OPEN",
+      "source": "https://raumzeitterminal.de/",
+      "next_action": "Usable target-bound authenticated registrar/DNS write, then DNS/TLS and useful application readback; unchanged denied writes remain NOOP.",
+      "source_predecessor": "state/work_units/QIKVRT_IMMEDIATE_EXECUTION_20261013_V1.json"
+    },
+    {
+      "id": "AUTHENTICATED_NATIVE_RUNTIME",
+      "state": "OPEN",
+      "source": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json",
+      "next_action": "Establish an actual identity-bound native runtime start and independent effect readback.",
+      "source_predecessor": "state/work_units/QIKVRT_IMMEDIATE_EXECUTION_20261013_V1.json"
+    },
+    {
+      "id": "BROWSER_USE_PATH_ACCEPTANCE",
+      "state": "OPEN",
+      "next_action": "Use an already admitted browser/device path exposing real network interruption, an uncached negative control and profile-preserving process restart for the exact derived Site32 client; independently bind original bytes and recorded behaviour.",
+      "source_predecessor": "original_report#independent_successor_readback.client_continuation.work",
+      "partial_verified_scope": "Derived Site32 software tested in real Chromium/WebKit against a stopped controlled static origin; live production-origin, whole-device network, physical iPhone and authenticated native runtime acceptance are not inferred."
+    },
+    {
+      "id": "NATIVE_GOVERNANCE_AND_PR523_MAIN_INTEGRATION",
+      "state": "OPEN",
+      "next_action": "Use the existing admitted native ruleset writer and independent exact-head review, then guarded Main integration; rulesets=[], main.protected=false, reviews=[] remain observed."
+    },
+    {
+      "id": "DNS_TLS_EXACT_DOMAIN_DELIVERY",
+      "state": "OPEN",
+      "next_action": "Use target-bound authenticated domain/DNS writer when available; independently accept DNS, TLS and the actual application on https://raumzeitterminal.de/. HTTP 530 remains OPEN."
+    },
+    {
+      "id": "SITE32_CURRENT_DERIVED_CLIENT_NETWORK_LOSS_AND_PROCESS_RESTART",
+      "state": "OPEN",
+      "next_action": "Perform true network interruption, uncached negative control and persistent browser-process restart on exact changed client32 bytes when an admitted controller exposes these controls.",
+      "partial_verified_scope": "Derived Site32 software tested in real Chromium/WebKit against a stopped controlled static origin; live production-origin, whole-device network, physical iPhone and authenticated native runtime acceptance are not inferred."
+    },
+    {
+      "id": "SITE32_PHYSICAL_IPHONE_AND_DIAGNOSTIC_COVERAGE",
+      "state": "OPEN",
+      "next_action": "Actual iPhone/device, engine/viewport and console/network observations require their own supported acceptance path; do not infer them from configured lite mode or normal reload.",
+      "partial_verified_scope": "Derived Site32 software tested in real Chromium/WebKit against a stopped controlled static origin; live production-origin, whole-device network, physical iPhone and authenticated native runtime acceptance are not inferred."
+    }
+  ],
+  "outputs": [
+    {
+      "path": "tools/ai_handoff.py",
+      "bytes": 32130,
+      "sha256": "691a7b082ecf37a48c2786ffd21e794e36a98ffc8dec8b1fadc9bb805f315349",
+      "git_blob_sha1": "d5f3a4177f214954cd40bfc4b38bc44d4739341e"
+    },
+    {
+      "path": "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json",
+      "bytes": 7435,
+      "sha256": "53ce8bad1a2e085bcd30bbb12e2fc251a76cbded7e3c6828ac97f4cec3f778f9",
+      "git_blob_sha1": "2641f2a8d72bdcc1704a0fb7283344bd256fc4fd"
+    },
+    {
+      "path": "docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md",
+      "bytes": 15630,
+      "sha256": "ea400e4d3422da990da9b65b1fd55610dbaf1f84b38eeccdbd6e227a11a74d04",
+      "git_blob_sha1": "55607f7ba377384dce17ba1f9ee6e83ee6c41850"
+    },
+    {
+      "path": "tests/test_ai_runtime_bootloader.py",
+      "bytes": 34359,
+      "sha256": "33e773ebc13108d6e995cd3326658ddfee76c091d706eca1b433e27b62062a98",
+      "git_blob_sha1": "77030d7eafb07ff996e6f3b333a68335bda74351"
+    },
+    {
+      "path": "evidence/native-runtime-acceptance/ionos-rest-only-20261013/route-contract-readback.json",
+      "bytes": 5780,
+      "sha256": "da2d18afc8b54e4266f3f5fd9c495fc10972fb34aaac54c2c24120bcdbd53388",
+      "git_blob_sha1": "d277d3ce6280703e44006a49b068eb6916140349"
+    },
+    {
+      "path": "tests/test_qikvrt_reflexive_repository_watchdog.py",
+      "bytes": 26041,
+      "sha256": "e7f000a5e7d0dc01ad2f540734fa26960d52516763195a481730a0925be46459",
+      "git_blob_sha1": "57606c1f19af1c876577d3b15bb72d42fe816135"
+    },
+    {
+      "path": "evidence/native-runtime-acceptance/ionos-rest-only-20261013/local-make-test-first-failure.log",
+      "bytes": 128830,
+      "sha256": "0620738b84c50f6839c90472ff3f7c11b0703ba3bd510af13d76652991cd8279",
+      "git_blob_sha1": "e954d136fb852590d749dfa78a80fcf1215cd593"
+    },
+    {
+      "path": "evidence/native-runtime-acceptance/ionos-rest-only-20261013/local-workflow-fixture-first-failure.log",
+      "bytes": 35031,
+      "sha256": "66c301704733476deca452bc6237b227f8df3332be94078a32e2d47c87c3b4b2",
+      "git_blob_sha1": "3918d6d9c89467ecdf4f56bfe94468b28dad069b"
+    },
+    {
+      "path": "evidence/native-runtime-acceptance/ionos-rest-only-20261013/workflow-fixture-diagnostic.json",
+      "bytes": 149,
+      "sha256": "3e0b9101a604c6ddb98066ee6898d2feb95bf27fd69e055af54b069aebdc2a85",
+      "git_blob_sha1": "8b65398377bb3c0471658623e85ff10e98c806db"
+    },
+    {
+      "path": "evidence/native-runtime-acceptance/ionos-rest-only-20261013/predecessor-route-causal-replay.json",
+      "bytes": 741,
+      "sha256": "3df57a59a303012b19c5e157b0f697cac2461a5a562f4de1b69f22700a72463b",
+      "git_blob_sha1": "b5fa598ab896918196c9efec4f8416604ae498f3"
+    },
+    {
+      "path": "evidence/native-runtime-acceptance/ionos-rest-only-20261013/local-make-test-evidence-write-failure.log",
+      "bytes": 228833,
+      "sha256": "08dfc95c38c85d2f35c4e3221075c1d3be6ae94a857ec3ad52220e13ae7dd231",
+      "git_blob_sha1": "f696aa73f896cab1843b860a013e7182a9805aa5"
+    },
+    {
+      "path": "evidence/native-runtime-acceptance/ionos-rest-only-20261013/local-make-test-success.log",
+      "bytes": 228793,
+      "sha256": "f50fd731c57aa2ff4aff482887514e83446d9f215338e355352bda4c646bd2b1",
+      "git_blob_sha1": "92164a14ad163e20918704cb0ece28961facfe9b"
+    }
+  ],
+  "verification": {
+    "local_ai_runtime_contract": {
+      "state": "PASS",
+      "command": "make ai-runtime-contract (included in full make test)",
+      "tests": 68,
+      "log_path": "evidence/native-runtime-acceptance/ionos-rest-only-20261013/local-make-test-success.log"
+    },
+    "local_full_repository": {
+      "exit_code": 0,
+      "started_at": "2026-10-13T12:47:25.760604+00:00",
+      "completed_at": "2026-10-13T12:50:41.214050+00:00",
+      "path": "/workspace/scratch/822d57fa1281/domain-activation/local-ionos-rest-frozen-make-test.log",
+      "bytes": 228793,
+      "sha256": "f50fd731c57aa2ff4aff482887514e83446d9f215338e355352bda4c646bd2b1",
+      "unit_test_invocations": 25,
+      "reported_test_executions": 1204,
+      "log_path": "evidence/native-runtime-acceptance/ionos-rest-only-20261013/local-make-test-success.log",
+      "state": "PASS",
+      "implementation_binding_note": "All five implementation/documentation/test deltas are byte-identical to this successful run. Final evidence/work-unit and deterministic manifest materialization are separately verified; native exact successor gates remain pending."
+    },
+    "native_exact_successor": {
+      "state": "PENDING_EXISTING_AUTOMATIC_CI",
+      "path": "Existing push/pull_request QIKVRT CI; no dispatch or rerun"
+    },
+    "live_delivery": "NOT_ESTABLISHED",
+    "local_full_repository_first_attempt": {
+      "exit_code": 2,
+      "started_at": "2026-10-13T12:35:58.798941+00:00",
+      "completed_at": "2026-10-13T12:37:29.234647+00:00",
+      "path": "/workspace/scratch/822d57fa1281/domain-activation/local-ionos-rest-make-test.log",
+      "bytes": 128830,
+      "sha256": "0620738b84c50f6839c90472ff3f7c11b0703ba3bd510af13d76652991cd8279",
+      "unit_test_invocations": 8,
+      "reported_test_executions": 634,
+      "log_path": "evidence/native-runtime-acceptance/ionos-rest-only-20261013/local-make-test-first-failure.log",
+      "diagnosis": "Bounded diagnostic suite established fixture exit 141 with empty stdout/stderr: mock jq exited without draining the gh producer pipe under pipefail. Existing stub now consumes stdin; expected authority-404 failure, journal assertions and real workflow are unchanged."
+    },
+    "local_full_repository_second_attempt": {
+      "exit_code": 2,
+      "started_at": "2026-10-13T12:42:28.756300+00:00",
+      "completed_at": "2026-10-13T12:45:41.617268+00:00",
+      "path": "/workspace/scratch/822d57fa1281/domain-activation/local-ionos-rest-make-test-after-fixture-repair.log",
+      "bytes": 228833,
+      "sha256": "08dfc95c38c85d2f35c4e3221075c1d3be6ae94a857ec3ad52220e13ae7dd231",
+      "unit_test_invocations": 25,
+      "reported_test_executions": 1204,
+      "log_path": "evidence/native-runtime-acceptance/ionos-rest-only-20261013/local-make-test-evidence-write-failure.log",
+      "diagnosis": "All test invocations passed after the jq fixture repair; the client wrote the causal replay JSON during the test and invalidated final deterministic regeneration. Preserve failed aggregate status and original log; freeze files before final full run."
+    },
+    "archive_noop_regressions": {
+      "state": "PASS",
+      "tests": 27,
+      "module": "tests.test_archive_get_causal_journal",
+      "log_path": "evidence/native-runtime-acceptance/ionos-rest-only-20261013/local-make-test-success.log",
+      "external_gets_in_regression_fixtures": 0,
+      "scope": "Deterministic tests, not current archival acceptance"
+    }
+  },
+  "reuses": {
+    "policy": "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json#/client_continuation",
+    "gate": "tools/ai_handoff.py --client-receipt",
+    "regression_module": "tests.test_ai_runtime_bootloader",
+    "archive_noop_regressions": "tests.test_archive_get_causal_journal"
+  },
+  "operational_domain_blocker": {
+    "code": "IONOS_HOSTING_REST_CREDENTIAL_AND_EXECUTION_BINDING_NOT_EXPOSED",
+    "operation": "Read existing IONOS domain/provisioning and owned DNS zone, then apply pre-existing Sites records.",
+    "evidence": "Inspected current GitHub binding and bounded connector/CLI/Mesh capabilities; Hosting API exists but no supported authenticated target-bound call is available.",
+    "retry_condition": "A securely delivered, admitted existing IONOS Hosting REST binding for the exact owned domain/zone becomes available.",
+    "smallest_next_action": "Use that supported protected binding for GET /dns/v1/zones and the existing domain inventory; resolve any pending registration in the existing contract before selective DNS changes."
+  },
+  "human_decision": "IONOS_REST_ONLY_CONFIRMED; TASK_AUTHORIZED; MAIN_PROMOTION_PENDING",
+  "external_effects": {
+    "browser_login_sessions_started": 0,
+    "authenticated_hosting_requests": 0,
+    "domain_or_dns_mutations": 0,
+    "new_domain_purchase": 0,
+    "site_deployments": 0,
+    "archive_retry": 0
+  },
+  "release_claims": {
+    "exact_domain_delivery": false,
+    "native_runtime_acceptance": false,
+    "main_integration": false,
+    "effect_ack_done": false,
+    "ordinary_release": false
+  },
+  "exact_delivery_url": "https://raumzeitterminal.de/"
+}

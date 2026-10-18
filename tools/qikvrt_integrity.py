@@ -17,7 +17,7 @@ import re
 import stat
 import sys
 from dataclasses import dataclass
-from typing import Any, Mapping
+from typing import Any, Callable, Mapping
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 ROOT_STR = str(ROOT)
@@ -31,7 +31,7 @@ INDEX_NAME = "SHA256SUMS.txt"
 DETACHED_NAME = "REPOSITORY_FILE_MANIFEST.json.sha256"
 LOCK_NAME = ".qikvrt-integrity.lock"
 SCHEMA = "qikvrt_repository_integrity_manifest_v3"
-GENERATOR_VERSION = "3.1"
+GENERATOR_VERSION = "3.2"
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 GIT_SHA1_RE = re.compile(r"^[0-9a-f]{40}$")
 INTEGRITY_PATHS = {MANIFEST_NAME, INDEX_NAME, DETACHED_NAME}
@@ -84,6 +84,23 @@ TRANSIENT_PREFIXES = (
     ".qikvrt/cache/",
     ".qikvrt/release/",
 )
+# Role-local node liveness is rewritten on a schedule by the node's own
+# lifecycle writer (tools/qikvrt_mirror_node_lifecycle.sh).  It reports that a
+# node is alive; it is not release content.  Binding it into the manifest made
+# every renewal invalidate the committed integrity trio, and regenerating the
+# trio on every renewal would make every open pull request conflict with main.
+# The two current records stay listed without a digest; the append-only
+# per-run receipts are not part of the manifest inventory.  Git history remains
+# the record of both.  SEED_ACCEPTANCE_STATUS.json is deliberately not listed
+# here: it binds an observed Authority head and stays digest-bound.
+ROLE_LOCAL_LIVENESS_STATE = {
+    "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+    "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+}
+ROLE_LOCAL_LIVENESS_RECEIPT_PREFIXES = (
+    "evidence/node_health/",
+    "evidence/node_registration_renewal/",
+)
 MAX_IMMUTABLE_FILE_BYTES = 256 * 1024 * 1024
 MAX_INTEGRITY_METADATA_BYTES = 64 * 1024 * 1024
 
@@ -114,13 +131,14 @@ def _sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
-def _regular_file_bytes(
+def _read_regular_file(
     root: pathlib.Path,
     relative: str,
+    consume: Callable[[bytes], object],
     *,
     max_bytes: int = MAX_IMMUTABLE_FILE_BYTES,
-) -> bytes:
-    """Read one stable in-tree regular file without following symlinks."""
+) -> int:
+    """Consume bounded blocks through the single no-follow, stable-file reader."""
     safe_relative = _safe_path(relative)
     if root.is_symlink() or not root.is_dir():
         raise RuntimeError(f"repository root must be a real directory: {root}")
@@ -148,17 +166,17 @@ def _regular_file_bytes(
             raise RuntimeError(
                 f"repository path exceeds the {max_bytes}-byte integrity bound: {safe_relative}"
             )
-        chunks: list[bytes] = []
+        total_bytes = 0
         remaining = max_bytes + 1
         while remaining:
             chunk = os.read(descriptor, min(1024 * 1024, remaining))
             if not chunk:
                 break
-            chunks.append(chunk)
+            consume(chunk)
+            total_bytes += len(chunk)
             remaining -= len(chunk)
-        data = b"".join(chunks)
         after = os.fstat(descriptor)
-        if len(data) > max_bytes or len(data) != before.st_size:
+        if total_bytes > max_bytes or total_bytes != before.st_size:
             raise RuntimeError(f"repository path changed size while hashing: {safe_relative}")
         if (before.st_dev, before.st_ino, before.st_size, before.st_mtime_ns) != (
             after.st_dev,
@@ -167,9 +185,33 @@ def _regular_file_bytes(
             after.st_mtime_ns,
         ):
             raise RuntimeError(f"repository path changed while hashing: {safe_relative}")
-        return data
+        return total_bytes
     finally:
         os.close(descriptor)
+
+
+def _regular_file_bytes(
+    root: pathlib.Path,
+    relative: str,
+    *,
+    max_bytes: int = MAX_IMMUTABLE_FILE_BYTES,
+) -> bytes:
+    """Retain exact bytes for bounded metadata and portable source capsules."""
+    chunks: list[bytes] = []
+    _read_regular_file(root, relative, chunks.append, max_bytes=max_bytes)
+    return b"".join(chunks)
+
+
+def _regular_file_digest(
+    root: pathlib.Path,
+    relative: str,
+    *,
+    max_bytes: int = MAX_IMMUTABLE_FILE_BYTES,
+) -> tuple[int, str]:
+    """Hash every byte without retaining or joining the complete payload."""
+    digest = hashlib.sha256()
+    size = _read_regular_file(root, relative, digest.update, max_bytes=max_bytes)
+    return size, digest.hexdigest()
 
 
 def _safe_path(raw: str) -> str:
@@ -745,6 +787,10 @@ def is_transient(relative: str) -> bool:
     )
 
 
+def is_role_local_liveness_receipt(relative: str) -> bool:
+    return any(relative.startswith(prefix) for prefix in ROLE_LOCAL_LIVENESS_RECEIPT_PREFIXES)
+
+
 def collect_paths(root: pathlib.Path = ROOT) -> list[str]:
     """Collect tracked plus deliberate untracked sources via git, never caches."""
     output = _git(root, "ls-files", "-z", "--cached", "--others", "--exclude-standard", "--", ".")
@@ -752,7 +798,13 @@ def collect_paths(root: pathlib.Path = ROOT) -> list[str]:
     deleted = {os.fsdecode(item) for item in deleted_output.split(b"\0") if item}
     decoded = [os.fsdecode(item) for item in output.split(b"\0") if item]
     paths = sorted(
-        {_safe_path(item) for item in decoded if item not in deleted and not is_transient(item)}
+        {
+            _safe_path(item)
+            for item in decoded
+            if item not in deleted
+            and not is_transient(item)
+            and not is_role_local_liveness_receipt(item)
+        }
     )
     return paths
 
@@ -761,6 +813,12 @@ def classification(relative: str) -> tuple[str, bool, str]:
     """Return classification, immutable flag and exclusion reason."""
     if relative in INTEGRITY_PATHS:
         return "integrity_metadata", False, "cycle_prevention"
+    if relative in ROLE_LOCAL_LIVENESS_STATE:
+        return (
+            "role_local_liveness_state",
+            False,
+            "role_local_liveness_is_rewritten_by_the_scheduled_node_lifecycle",
+        )
     if relative in TRACKED_RUNTIME_STATE or any(
         relative.startswith(prefix)
         for prefix in (
@@ -873,10 +931,9 @@ def build_outputs(root: pathlib.Path = ROOT) -> tuple[bytes, bytes, bytes, dict[
                 )
             if not path.is_file():
                 raise RuntimeError(f"repository path is not a file: {relative}")
-            data = _regular_file_bytes(root, relative)
-            digest = _sha256_bytes(data)
+            size, digest = _regular_file_digest(root, relative)
             entry.update({
-                "bytes": len(data),
+                "bytes": size,
                 "sha256": digest,
                 "file_type": "regular",
             })
@@ -925,6 +982,10 @@ def build_outputs(root: pathlib.Path = ROOT) -> tuple[bytes, bytes, bytes, dict[
             LOCK_NAME,
             "*.qikvrt-integrity.tmp",
         ],
+        "role_local_liveness_exclusion_rules": {
+            "listed_without_digest": sorted(ROLE_LOCAL_LIVENESS_STATE),
+            "not_inventoried_prefixes": list(ROLE_LOCAL_LIVENESS_RECEIPT_PREFIXES),
+        },
         "files": entries,
     }
     # Keep the complete repository inventory in one deterministic Git blob

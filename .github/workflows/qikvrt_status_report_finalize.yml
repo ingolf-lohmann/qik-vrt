@@ -45,6 +45,9 @@ jobs:
           python-version: "3.12.13"
           architecture: x64
 
+      - name: Enforce the single current role policy before any effect
+        run: python3 -B tools/qikvrt_workflow_executor.py roles --projection-file release/status-clarification-request.json --json
+
       - name: Validate exact marker, source parents, manifest and reservation
         id: marker
         shell: bash
@@ -424,6 +427,9 @@ jobs:
           fetch-depth: 2
           persist-credentials: false
 
+      - name: Enforce the single current role policy before any effect
+        run: python3 -B tools/qikvrt_workflow_executor.py roles --projection-file release/status-clarification-request.json --json
+
       - name: Create or verify annotated source-parent tag
         shell: bash
         env:
@@ -504,6 +510,9 @@ jobs:
         with:
           python-version: "3.12.13"
           architecture: x64
+
+      - name: Enforce the single current role policy before any effect
+        run: python3 -B tools/qikvrt_workflow_executor.py roles --projection-file release/status-clarification-request.json --json
 
       - name: Fetch and revalidate exact reservation immediately before publication
         shell: bash

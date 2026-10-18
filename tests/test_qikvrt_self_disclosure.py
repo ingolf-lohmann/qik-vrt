@@ -7,6 +7,8 @@ import re
 import subprocess
 import sys
 import unittest
+import urllib.parse
+import xml.etree.ElementTree as ET
 
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -65,8 +67,32 @@ class SelfDisclosureTests(unittest.TestCase):
         self.assertEqual(self.overview['canonical_url'], CANONICAL_URL)
         self.assertIn(f'<link rel="canonical" href="{CANONICAL_URL}">', self.html)
         self.assertIn('application/ld+json', self.html)
-        self.assertIn(CANONICAL_URL, (ROOT / 'docs/sitemap.xml').read_text(encoding='utf-8'))
-        self.assertIn('https://goldkelch.github.io/qik-vrt/sitemap.xml', (ROOT / 'docs/robots.txt').read_text(encoding='utf-8'))
+        delivery = self.disclosure['bindings']['public_delivery']
+        source_binding = read_json(ROOT / delivery['source_binding_path'])
+        self.assertEqual(delivery['canonical_origin'], 'https://raumzeitterminal.de')
+        self.assertEqual(delivery['project_id'], source_binding['project_id'])
+        self.assertEqual(delivery['canonical_origin'], source_binding['production_origin'])
+        self.assertEqual(delivery['article_path'], source_binding['article_path'])
+        sitemap = ET.parse(ROOT / delivery['sitemap_path'])
+        urls = [node.text for node in sitemap.findall('.//{http://www.sitemaps.org/schemas/sitemap/0.9}loc')]
+        self.assertEqual(urls, delivery['sitemap_urls'])
+        article_url = delivery['canonical_origin'] + delivery['article_path']
+        self.assertIn(article_url, urls)
+        for url in urls:
+            parsed = urllib.parse.urlsplit(url)
+            self.assertEqual((parsed.scheme, parsed.netloc), ('https', 'raumzeitterminal.de'))
+            self.assertFalse(parsed.query or parsed.fragment)
+        self.assertIn('Sitemap: ' + delivery['canonical_origin'] + '/sitemap.xml',
+                      (ROOT / delivery['robots_path']).read_text(encoding='utf-8'))
+        article = read_json(ROOT / ('docs' + delivery['article_path'] + 'index.json'))
+        self.assertEqual(article['canonical_url'], article_url)
+        self.assertEqual(article['languages'], ['de', 'en', 'fr', 'ru', 'fa', 'zh'])
+        self.assertEqual(article['variants'], ['full', 'short'])
+        self.assertIn(f'<link rel="canonical" href="{article_url}">',
+                      (ROOT / ('docs' + delivery['article_path'] + 'index.html')).read_text(encoding='utf-8'))
+        self.assertEqual(delivery['state'], 'PREPARED_NOT_DEPLOYED')
+        self.assertFalse(delivery['public_delivery_effect_ack'])
+        self.assertFalse(source_binding['PUBLIC_DELIVERY_EFFECT_ACK'])
         self.assertIn('href="publications/"', (ROOT / 'docs/index.html').read_text(encoding='utf-8'))
 
         for path in ('AI', 'README.md'):

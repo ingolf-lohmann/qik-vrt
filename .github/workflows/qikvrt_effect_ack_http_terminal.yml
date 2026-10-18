@@ -10,17 +10,59 @@ on:
       - "docs/terminal/QIKVRT_TERMINAL_FRAME_V1.schema.json"
       - "docs/terminal/FIREFOX_EFFECT_ACK_TERMINAL_PROXY_V1.md"
       - "src/qikvrt_effect_ack_http_terminal.py"
+      - "src/qikvrt_temdd_event_ledger.py"
+      - "deploy/universal-terminal/**"
+      - "tests/test_self_host_temdd.py"
+      - "tests/test_self_host_firefox.py"
+      - "tests/test_self_host_systemd.py"
+      - "tests/test_self_host_migration.py"
+      - "tests/test_self_host_capture.py"
       - "tests/test_qikvrt_effect_ack_http_terminal.py"
+      - "tests/test_self_host.py"
+      - "runtime/self-host/**"
+      - "docs/monitor/**"
+      - "tools/qikvrt_self_host.py"
+      - "tools/qikvrt_self_host_migration.py"
+      - "tools/qikvrt_mesh_monitor_readback.mjs"
+      - ".github/workflows/qikvrt_effect_ack_http_terminal.yml"
+  push:
+    paths:
+      - "external/ietf/draft-lohmann-qikvrt-effect-ack-http-00.xml"
+      - "policy/QIKVRT_EFFECT_ACK_HTTP_TERMINAL_V1.json"
+      - "browser/firefox/qikvrt-terminal/**"
+      - "docs/terminal/QIKVRT_TERMINAL_FRAME_V1.schema.json"
+      - "docs/terminal/FIREFOX_EFFECT_ACK_TERMINAL_PROXY_V1.md"
+      - "src/qikvrt_effect_ack_http_terminal.py"
+      - "src/qikvrt_temdd_event_ledger.py"
+      - "deploy/universal-terminal/**"
+      - "tests/test_self_host_temdd.py"
+      - "tests/test_self_host_firefox.py"
+      - "tests/test_self_host_systemd.py"
+      - "tests/test_self_host_migration.py"
+      - "tests/test_self_host_capture.py"
+      - "tests/test_qikvrt_effect_ack_http_terminal.py"
+      - "tests/test_self_host.py"
+      - "runtime/self-host/**"
+      - "docs/monitor/**"
+      - "tools/qikvrt_self_host.py"
+      - "tools/qikvrt_self_host_migration.py"
+      - "tools/qikvrt_mesh_monitor_readback.mjs"
       - ".github/workflows/qikvrt_effect_ack_http_terminal.yml"
   workflow_dispatch:
+    inputs:
+      deploy_existing_host:
+        description: Use the existing admitted Linux host and existing systemd service
+        type: boolean
+        default: false
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
   contract-and-e2e:
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 40
     steps:
       - name: Check out exact candidate head
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -33,6 +75,211 @@ jobs:
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: "3.12"
+
+      - name: Set up standalone Node runtime
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+
+      - name: Run standalone package, negative and crash-restart controls
+        id: standalone-runtime
+        env:
+          QIKVRT_STATE_RECOVERY_TEST_EVIDENCE: ${{ runner.temp }}/qikvrt-state-recovery-readback
+          QIKVRT_MESH_WORK_TEST_EVIDENCE: ${{ runner.temp }}/qikvrt-state-recovery-readback
+        run: make self-host-test
+
+      - name: Verify static React source and browser-module syntax
+        run: |
+          node --check docs/monitor/react-runtime.js
+          node --check docs/monitor/mesh-react.js
+          node --check docs/monitor/self-host.mjs
+
+      - name: Preserve original native state restoration readback
+        if: ${{ always() && steps.standalone-runtime.outcome == 'success' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-native-state-recovery-${{ github.event.pull_request.head.sha || github.sha }}
+          path: ${{ runner.temp }}/qikvrt-state-recovery-readback
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Verify existing native systemd crash and admission restoration recovery
+        id: systemd-runtime
+        env:
+          QIKVRT_SYSTEMD_TEST_EVIDENCE: ${{ runner.temp }}/qikvrt-systemd-readback
+        run: |
+          sh tools/bootstrap-runtime.sh --check-only --profile self-host-systemd --adapter none
+          python3 -B -m unittest -v tests.test_self_host_systemd
+
+      - name: Preserve native systemd recovery readback
+        if: ${{ always() && steps.systemd-runtime.outcome == 'success' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-systemd-recovery-${{ github.event.pull_request.head.sha || github.sha }}
+          path: ${{ runner.temp }}/qikvrt-systemd-readback
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Retrieve and verify existing sealed dependency delivery
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B - <<'PY'
+          import hashlib,json,os,pathlib,urllib.request,zipfile
+          class ArtifactRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self,request,fp,code,msg,headers,newurl):
+                  redirected=super().redirect_request(request,fp,code,msg,headers,newurl)
+                  if redirected is not None: redirected.remove_header('Authorization')
+                  return redirected
+          baseline=json.load(open('runtime/self-host/PACKAGE.json'))['runtime_delivery_baseline']
+          url='https://api.github.com/repos/'+baseline['repository']+'/actions/artifacts/'+str(baseline['artifact_id'])+'/zip'
+          target=pathlib.Path(os.environ['RUNNER_TEMP'])/'qikvrt-baseline.zip'
+          request=urllib.request.Request(url,headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json'})
+          with urllib.request.build_opener(ArtifactRedirect()).open(request,timeout=60) as response,target.open('wb') as out:
+              while block:=response.read(4*1024*1024): out.write(block)
+          with target.open('rb') as source: sha=hashlib.file_digest(source,'sha256').hexdigest()
+          if target.stat().st_size!=baseline['artifact_bytes'] or sha!=baseline['artifact_sha256']:
+              raise SystemExit('BASELINE_ARTIFACT_DIGEST_MISMATCH')
+          destination=pathlib.Path(os.environ['RUNNER_TEMP'])/'qikvrt-baseline'
+          with zipfile.ZipFile(target) as archive:
+              names=archive.namelist()
+              if len(set(names))!=len(names) or any('/' in name or '\\' in name for name in names):
+                  raise SystemExit('UNSAFE_BASELINE_ARTIFACT')
+              archive.extractall(destination)
+          pin=baseline['delivery_sha256']
+          import subprocess
+          subprocess.run(['python3','-B','tools/qikvrt_self_host.py','runtime-delivery-load','--delivery',str(destination),'--delivery-sha256',pin],check=True)
+          with open(os.environ['GITHUB_ENV'],'a') as env:
+              env.write('QIKVRT_DEPENDENCY_IMAGE=qikvrt-self-host-firefox-runtime:'+baseline['source_head']+'\n')
+          PY
+
+      - name: Build isolated Firefox and noVNC dependency carrier
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker build --target test --build-arg "QIKVRT_DEPENDENCY_IMAGE=$QIKVRT_DEPENDENCY_IMAGE" --file runtime/self-host/Dockerfile --tag qikvrt-self-host-firefox-test .
+
+      - name: Verify productive exported Firefox and noVNC without provider network
+        id: firefox-runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/qikvrt-firefox-readback"
+          docker image inspect qikvrt-self-host-firefox-test \
+            --format '{{json .Id}}' > "$RUNNER_TEMP/qikvrt-firefox-readback/OCI_IMAGE_ID.json"
+          docker version --format '{{json .Server.Version}}' > "$RUNNER_TEMP/qikvrt-firefox-readback/DOCKER_ENGINE_VERSION.json"
+          docker run --rm --init --network none --shm-size 256m --tmpfs /tmp:size=768m,mode=1777 \
+            --mount "type=bind,source=$GITHUB_WORKSPACE,target=/source,readonly" \
+            --mount "type=bind,source=$RUNNER_TEMP/qikvrt-firefox-readback,target=/evidence" \
+            --env QIKVRT_BROWSER_TEST_EVIDENCE=/evidence \
+            qikvrt-self-host-firefox-test \
+            python3 -B -m unittest -v tests.test_self_host_firefox tests.test_self_host_capture
+
+      - name: Preserve isolated runtime readback and dependency versions
+        if: ${{ always() && steps.firefox-runtime.outcome != 'skipped' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-productive-terminal-readback-${{ github.event.pull_request.head.sha || github.sha }}
+          path: ${{ runner.temp }}/qikvrt-firefox-readback
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Freeze matching Firefox package and archive runtime image
+        shell: bash
+        run: |
+          set -euo pipefail
+          delivery="$RUNNER_TEMP/qikvrt-firefox-delivery"
+          mkdir -p "$delivery"
+          head="$(git rev-parse --verify HEAD^{commit})"
+          tree="$(git rev-parse --verify HEAD^{tree})"
+          # Reuse the tested build cache; export only the runtime target.
+          tag="qikvrt-self-host-firefox-runtime:$head"
+          docker build --target delivery-runtime --build-arg "QIKVRT_DEPENDENCY_IMAGE=$QIKVRT_DEPENDENCY_IMAGE" --file runtime/self-host/Dockerfile --tag "$tag" .
+          docker image inspect "$tag" > "$delivery/RUNTIME_IMAGE.json"
+          docker run --rm --network none \
+            --mount "type=bind,source=$GITHUB_WORKSPACE,target=/source,readonly" \
+            --mount "type=bind,source=$delivery,target=/delivery" \
+            qikvrt-self-host-firefox-test \
+            python3 -B tools/qikvrt_self_host.py pack --root /source \
+              --expected-head "$head" --expected-tree "$tree" \
+              --browser-assets-root /usr/share/novnc --output /delivery/package \
+            > "$delivery/PACKAGE_BUILD_RECEIPT.json"
+          pin="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["manifest_sha256"])' "$delivery/PACKAGE_BUILD_RECEIPT.json")"
+          # The exported package must verify in the actual Git-free runtime image.
+          docker run --rm --network none --read-only --tmpfs /tmp:size=64m,mode=1777 \
+            --mount "type=bind,source=$delivery/package,target=/package,readonly" \
+            --workdir /package "$tag" \
+            python3 -B tools/qikvrt_self_host.py verify --root /package --manifest-sha256 "$pin" \
+            > "$delivery/RUNTIME_PACKAGE_READBACK.json"
+          docker run --rm --network none --read-only "$tag" \
+            cat /usr/local/share/qikvrt-distribution-packages.tsv \
+            > "$delivery/DISTRIBUTION_PACKAGES.tsv"
+          docker save --output "$delivery/runtime-image.tar" "$tag"
+          python3 - "$delivery" <<'PY'
+          import gzip, pathlib, shutil, sys
+          root = pathlib.Path(sys.argv[1])
+          with (root / 'runtime-image.tar').open('rb') as source:
+              with (root / 'runtime-image.tar.gz').open('wb') as target:
+                  with gzip.GzipFile(filename='', fileobj=target, mode='wb', mtime=0) as transport:
+                      shutil.copyfileobj(source, transport)
+          (root / 'runtime-image.tar').unlink()
+          PY
+          # Load the actual compressed transport, not a different intermediate.
+          docker load --input "$delivery/runtime-image.tar.gz" > "$delivery/IMAGE_LOAD_READBACK.txt"
+          docker image inspect "$tag" > "$delivery/LOADED_IMAGE.json"
+          python3 - "$delivery" "$head" "$tree" <<'PY'
+          import hashlib, json, pathlib, sys, tarfile
+          root = pathlib.Path(sys.argv[1])
+          original = json.loads((root / 'RUNTIME_IMAGE.json').read_bytes())[0]
+          loaded = json.loads((root / 'LOADED_IMAGE.json').read_bytes())[0]
+          if original['Id'] != loaded['Id'] or original['RootFS'] != loaded['RootFS']:
+              raise SystemExit('RUNTIME_IMAGE_LOAD_BINDING_MISMATCH')
+          receipt = json.loads((root / 'PACKAGE_BUILD_RECEIPT.json').read_bytes())
+          # Preserve the container-owned 0700 directory; read public export bytes.
+          with tarfile.open(root / 'package.tar', 'r:') as archive:
+              manifest = json.load(archive.extractfile('MANIFEST.json'))
+          if (receipt['source_head'], receipt['source_tree']) != tuple(sys.argv[2:]):
+              raise SystemExit('DELIVERY_SOURCE_BINDING_MISMATCH')
+          if 'browser_runtime' not in manifest:
+              raise SystemExit('FIREFOX_PACKAGE_REQUIRED')
+          files = {}
+          for name in ('runtime-image.tar.gz', 'package.tar', 'PACKAGE_BUILD_RECEIPT.json',
+                       'RUNTIME_PACKAGE_READBACK.json', 'RUNTIME_IMAGE.json', 'LOADED_IMAGE.json',
+                       'IMAGE_LOAD_READBACK.txt', 'DISTRIBUTION_PACKAGES.tsv'):
+              path = root / name
+              with path.open('rb') as source:
+                  sha = hashlib.file_digest(source, 'sha256').hexdigest()
+              files[name] = {'bytes': path.stat().st_size, 'sha256': sha}
+          result = {'schema': 'qikvrt-firefox-runtime-delivery/v1',
+                    'source_head': sys.argv[2], 'source_tree': sys.argv[3],
+                    'runtime_image_id': original['Id'], 'os': original['Os'],
+                    'architecture': original['Architecture'], 'files': files,
+                    'manifest_sha256': receipt['manifest_sha256'],
+                    'image_load_scope': 'SAME_CI_ENGINE; NOT_EMPTY_HOST_RESTORE',
+                    'public_https_verified': False, 'effect_ack_done': False}
+          (root / 'DELIVERY.json').write_text(json.dumps(result, sort_keys=True, indent=2) + '\n')
+          PY
+
+      - name: Verify actual Docker start, durable bind volume and restart
+        env:
+          QIKVRT_DOCKER_DELIVERY: ${{ runner.temp }}/qikvrt-firefox-delivery
+        run: python3 -B -m unittest -v tests.test_self_host.DockerDeliveryCycleTests
+
+      - name: Preserve complete runtime image and matching Firefox package
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-firefox-runtime-delivery-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            ${{ runner.temp }}/qikvrt-firefox-delivery/*.json
+            ${{ runner.temp }}/qikvrt-firefox-delivery/*.txt
+            ${{ runner.temp }}/qikvrt-firefox-delivery/*.tsv
+            ${{ runner.temp }}/qikvrt-firefox-delivery/*.tar
+            ${{ runner.temp }}/qikvrt-firefox-delivery/*.tar.gz
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Parse machine-readable contracts and RFCXML
         shell: bash
@@ -82,6 +329,33 @@ jobs:
           PYTHONNOUSERSITE: "1"
         run: python3 -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal
 
+      - name: Freeze and verify exact-head standalone package
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .qikvrt/runtime/self-host
+          python3 -B tools/qikvrt_self_host.py pack --root . \
+            --expected-head "$(git rev-parse --verify HEAD^{commit})" \
+            --expected-tree "$(git rev-parse --verify HEAD^{tree})" \
+            --output "$RUNNER_TEMP/qikvrt-self-host" \
+            > .qikvrt/runtime/self-host/PACKAGE_BUILD_RECEIPT.json
+          cat .qikvrt/runtime/self-host/PACKAGE_BUILD_RECEIPT.json
+          pin="$(python3 -c 'import json; print(json.load(open(".qikvrt/runtime/self-host/PACKAGE_BUILD_RECEIPT.json"))["manifest_sha256"])')"
+          python3 -B tools/qikvrt_self_host.py verify \
+            --root "$RUNNER_TEMP/qikvrt-self-host" --manifest-sha256 "$pin"
+
+      - name: Upload exact-head standalone package
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-self-host-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            ${{ runner.temp }}/qikvrt-self-host.tar
+            ${{ runner.temp }}/qikvrt-self-host/MANIFEST.json
+            .qikvrt/runtime/self-host/PACKAGE_BUILD_RECEIPT.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+
       - name: Package verified Firefox reference client
         shell: bash
         run: |
@@ -104,3 +378,130 @@ jobs:
           path: /tmp/qikvrt-firefox-package
           if-no-files-found: error
           retention-days: 30
+
+  deploy-existing-linux-host:
+    needs: contract-and-e2e
+    if: >-
+      github.event_name == 'workflow_dispatch' && inputs.deploy_existing_host &&
+      github.repository == 'ingolf-lohmann/qik-vrt' && github.ref == 'refs/heads/main' &&
+      vars.QIKVRT_S1_EXISTING_HOST_RUNNER != '' && vars.QIKVRT_S1_EXISTING_ENVIRONMENT != ''
+    runs-on: ${{ fromJSON(vars.QIKVRT_S1_EXISTING_HOST_RUNNER) }}
+    environment: ${{ vars.QIKVRT_S1_EXISTING_ENVIRONMENT }}
+    timeout-minutes: 15
+    outputs:
+      manifest_pin: ${{ steps.host.outputs.manifest_pin }}
+      config_pin: ${{ steps.host.outputs.config_pin }}
+      node_id: ${{ steps.host.outputs.node_id }}
+      adapter: ${{ steps.host.outputs.adapter }}
+    steps:
+      - name: Check out admitted exact Main
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Retrieve the tested complete delivery from this run
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: qikvrt-firefox-runtime-delivery-${{ github.sha }}
+          path: ${{ runner.temp }}/qikvrt-production-delivery
+      - name: Verify existing host admission and restart the same installed supervisor
+        id: host
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          QIKVRT_HOST_CONFIG: ${{ vars.QIKVRT_S1_CONFIG_PATH }}
+          QIKVRT_HOST_ADMISSION: ${{ vars.QIKVRT_S1_ADMISSION_PATH }}
+          QIKVRT_HOST_ADMISSION_SHA256: ${{ vars.QIKVRT_S1_ADMISSION_SHA256 }}
+          QIKVRT_HOST_PACKAGE: ${{ vars.QIKVRT_S1_PACKAGE_PATH }}
+          QIKVRT_HOST_GUARD: ${{ vars.QIKVRT_S1_GUARD_PATH }}
+          QIKVRT_HOST_DELIVERY: ${{ vars.QIKVRT_S1_DELIVERY_PATH }}
+        run: |
+          set -euo pipefail
+          python3 -B - <<'PY'
+          import hashlib,importlib.util,json,os,pathlib,shutil,subprocess,urllib.request
+          for name in ('QIKVRT_HOST_CONFIG','QIKVRT_HOST_ADMISSION','QIKVRT_HOST_ADMISSION_SHA256','QIKVRT_HOST_PACKAGE','QIKVRT_HOST_GUARD','QIKVRT_HOST_DELIVERY'):
+              if not os.environ.get(name): raise SystemExit('EXISTING_HOST_BINDING_UNAVAILABLE:'+name)
+          request=urllib.request.Request('https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/ref/heads/main',
+              headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json'})
+          with urllib.request.urlopen(request,timeout=15) as response: current=json.load(response)['object']['sha']
+          if current!=os.environ['GITHUB_SHA']: raise SystemExit('AUTHORITY_MAIN_CHANGED_BEFORE_DEPLOYMENT')
+          delivery=pathlib.Path(os.environ['RUNNER_TEMP'])/'qikvrt-production-delivery'
+          descriptor=json.load(open(delivery/'DELIVERY.json'))
+          if descriptor['source_head']!=current: raise SystemExit('DEPLOYMENT_SOURCE_HEAD_MISMATCH')
+          guard=pathlib.Path(os.environ['QIKVRT_HOST_GUARD'])
+          expected=hashlib.sha256(pathlib.Path('tools/qikvrt_self_host.py').read_bytes()).hexdigest()
+          if hashlib.sha256(guard.read_bytes()).hexdigest()!=expected: raise SystemExit('EXISTING_INSTALLED_GUARD_MISMATCH')
+          spec=importlib.util.spec_from_file_location('existing_guard',guard)
+          host=importlib.util.module_from_spec(spec);spec.loader.exec_module(host)
+          delivery_pin=hashlib.sha256((delivery/'DELIVERY.json').read_bytes()).hexdigest()
+          host.delivery_verify(delivery,delivery_pin)
+          durable=pathlib.Path(os.environ['QIKVRT_HOST_DELIVERY'])
+          if not durable.is_absolute() or any(p.is_symlink() for p in (durable,*durable.parents)):
+              raise SystemExit('EXISTING_DURABLE_DELIVERY_PATH_REQUIRED')
+          if not durable.exists(): shutil.copytree(delivery,durable)
+          host.delivery_verify(durable,delivery_pin)
+          delivery=durable
+          host.delivery_load(delivery,delivery_pin)
+          config=pathlib.Path(os.environ['QIKVRT_HOST_CONFIG']);admission=pathlib.Path(os.environ['QIKVRT_HOST_ADMISSION'])
+          plan=host.supervisor_plan(pathlib.Path(os.environ['QIKVRT_HOST_PACKAGE']),descriptor['manifest_sha256'],
+              config,admission,os.environ['QIKVRT_HOST_ADMISSION_SHA256'],expected,delivery,delivery_pin)
+          config_bytes=config.read_bytes()
+          if hashlib.sha256(config_bytes).hexdigest()!=plan['config_sha256']: raise SystemExit('HOST_CONFIG_CHANGED_BEFORE_RESTART')
+          config_document=json.loads(config_bytes)
+          unit=plan['unit_name']
+          installed=subprocess.check_output(['systemctl','cat',unit],timeout=15).decode()
+          if plan['unit_text'].strip() not in installed: raise SystemExit('EXISTING_INSTALLED_SUPERVISOR_BINDING_MISMATCH')
+          # Existing bound service only. No new host, unit, controller or DNS mutation.
+          subprocess.run(['systemctl','restart',unit],check=True,timeout=45)
+          subprocess.run(['systemctl','is-active','--quiet',unit],check=True,timeout=10)
+          receipt={k:v for k,v in plan.items() if k not in ('unit_text','path_unit_text')}
+          receipt.update(state='EXISTING_SUPERVISOR_RESTARTED_PUBLIC_ACCEPTANCE_PENDING',public_readback_verified=False,effect_ack_done=False)
+          (delivery/'HOST_DEPLOYMENT_READBACK.json').write_bytes(host.raw_json(receipt))
+          with open(os.environ['GITHUB_OUTPUT'],'a') as out:
+              out.write('manifest_pin='+descriptor['manifest_sha256']+'\nconfig_pin='+plan['config_sha256']+'\nnode_id='+plan['node_id']+'\nadapter='+config_document['adapter']+'\n')
+          PY
+      - name: Preserve actual host execution receipt
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-existing-host-readback-${{ github.sha }}
+          path: ${{ runner.temp }}/qikvrt-production-delivery/HOST_DEPLOYMENT_READBACK.json
+          if-no-files-found: warn
+
+  independent-product-http-readback:
+    needs: deploy-existing-linux-host
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: qikvrt-firefox-runtime-delivery-${{ github.sha }}
+          path: ${{ runner.temp }}/qikvrt-independent-delivery
+      - name: Read exact product origin from an independent Linux runner
+        env:
+          MANIFEST_PIN: ${{ needs.deploy-existing-linux-host.outputs.manifest_pin }}
+          CONFIG_PIN: ${{ needs.deploy-existing-linux-host.outputs.config_pin }}
+          NODE_ID: ${{ needs.deploy-existing-linux-host.outputs.node_id }}
+          ADAPTER: ${{ needs.deploy-existing-linux-host.outputs.adapter }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          package="$RUNNER_TEMP/qikvrt-independent-package"
+          mkdir "$package"
+          tar -xf "$RUNNER_TEMP/qikvrt-independent-delivery/package.tar" -C "$package"
+          node tools/qikvrt_mesh_monitor_readback.mjs --self-host "$package" https://raumzeitterminal.de "$MANIFEST_PIN" "$CONFIG_PIN" "$NODE_ID" "$ADAPTER" > "$RUNNER_TEMP/QIKVRT_PRODUCT_HTTP_READBACK.json"
+      - name: Preserve independent exact-host HTTP result
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-product-http-readback-${{ github.sha }}
+          path: ${{ runner.temp }}/QIKVRT_PRODUCT_HTTP_READBACK.json
+          if-no-files-found: warn

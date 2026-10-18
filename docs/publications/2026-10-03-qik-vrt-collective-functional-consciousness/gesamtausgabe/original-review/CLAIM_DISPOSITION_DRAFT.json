@@ -1,0 +1,417 @@
+{
+  "claims": [
+    {
+      "class": "NORMATIVE",
+      "id": "C01",
+      "kernel_receipt": null,
+      "scope_and_boundary": "R1; hier verwendete Systemgrenze.",
+      "source_references": [
+        "R1"
+      ],
+      "statement": "QIK-VRT wird als Gesamtsystem, nicht als einzelnes Modell beschrieben."
+    },
+    {
+      "class": "SOURCE_BOUND",
+      "id": "C02",
+      "kernel_receipt": null,
+      "scope_and_boundary": "R1; Dokumentpräsenz ist kein Gesamtvollzugsbeweis.",
+      "source_references": [
+        "R1"
+      ],
+      "statement": "Zwecksetzung, Wiederverwendung und kontinuierliche Verbesserung sind im Entrypoint dokumentiert."
+    },
+    {
+      "class": "NORMATIVE",
+      "id": "C03",
+      "kernel_receipt": null,
+      "scope_and_boundary": "R1; konkrete Übergangsinvarianten nötig.",
+      "source_references": [
+        "R1"
+      ],
+      "statement": "Die Mittel können sich ändern, während ein Vertragskern erhalten werden soll."
+    },
+    {
+      "class": "INTERPRETATIVE",
+      "id": "C04",
+      "kernel_receipt": null,
+      "scope_and_boundary": "Theoretische Herleitung; Kernelprüfung offen.",
+      "source_references": [],
+      "statement": "Induktiver Invariantenerhalt gilt unter Basis- und Übergangsannahme."
+    },
+    {
+      "class": "OPEN",
+      "id": "C05",
+      "kernel_receipt": null,
+      "scope_and_boundary": "Vollständige Pfadkontrolle und semantische Validatoren fehlen als Gesamtnachweis.",
+      "source_references": [],
+      "statement": "Universelle fehlerfreie Wahrhaftigkeitsdurchsetzung ist nicht nachgewiesen."
+    },
+    {
+      "class": "SOURCE_BOUND",
+      "id": "C06",
+      "kernel_receipt": null,
+      "scope_and_boundary": "W1; Produktabschluss separat.",
+      "source_references": [
+        "W1"
+      ],
+      "statement": "EFFECT_ACK-DONE im I-D ist Freigabeeignung vor dem Effekt, nicht automatisch dessen Vollzug."
+    },
+    {
+      "class": "INTERPRETATIVE",
+      "id": "C07",
+      "kernel_receipt": null,
+      "scope_and_boundary": "Technische Einordnung; unter kryptographischen Annahmen.",
+      "source_references": [],
+      "statement": "Hashbindung ist weder Authentisierung noch Beweis der Quelle."
+    },
+    {
+      "class": "NORMATIVE",
+      "id": "C08",
+      "kernel_receipt": null,
+      "scope_and_boundary": "R1, R10.",
+      "source_references": [
+        "R1",
+        "R10"
+      ],
+      "statement": "Frühere Evidenz darf nicht stillschweigend Nachfolger akzeptieren."
+    },
+    {
+      "class": "INTERPRETATIVE",
+      "id": "C09",
+      "kernel_receipt": null,
+      "scope_and_boundary": "Konstruktion; maschinelle Verifikation offen.",
+      "source_references": [],
+      "statement": "Wrapper existiert unter gegebenen berechenbaren Adaptern und Prüfern."
+    },
+    {
+      "class": "INTERPRETATIVE",
+      "id": "C10",
+      "kernel_receipt": null,
+      "scope_and_boundary": "Gegenbeispielargumente im Modell.",
+      "source_references": [],
+      "statement": "Vollständige Beobachtbarkeit und beliebige Zielerreichbarkeit folgen nicht."
+    },
+    {
+      "class": "INTERPRETATIVE",
+      "id": "C11",
+      "kernel_receipt": null,
+      "scope_and_boundary": "Endliche Beobachtung bleibt begrenzt.",
+      "source_references": [],
+      "statement": "Black-Box-Integration garantiert keine vollständige Identifikation."
+    },
+    {
+      "class": "NORMATIVE",
+      "id": "C12",
+      "kernel_receipt": null,
+      "scope_and_boundary": "Definition, nicht empirische Erfüllung.",
+      "source_references": [],
+      "statement": "Funktionales Bewusstsein ist ein definiertes Zielprofil."
+    },
+    {
+      "class": "OPEN",
+      "id": "C13",
+      "kernel_receipt": null,
+      "scope_and_boundary": "Eigenständige Prüfung erforderlich.",
+      "source_references": [],
+      "statement": "Vollständige Erfüllung / phänomenales Erleben von QIK-VRT."
+    },
+    {
+      "class": "INTERPRETATIVE",
+      "id": "C14",
+      "kernel_receipt": null,
+      "scope_and_boundary": "Rollen- und Abhängigkeitsanalyse.",
+      "source_references": [],
+      "statement": "Zwei Nodes beweisen keine methodische Unabhängigkeit."
+    },
+    {
+      "class": "EMPIRICALLY_EVIDENCED",
+      "id": "C15",
+      "kernel_receipt": null,
+      "scope_and_boundary": "L3, C1; Daten-/Rechenprüfung, nicht Zeitversuchsreplikation.",
+      "source_references": [
+        "L3",
+        "C1"
+      ],
+      "statement": "Neun Mikrobenchmark-Mediane sind aus vorhandenen Rohzahlen reproduzierbar."
+    },
+    {
+      "class": "SOURCE_BOUND",
+      "id": "C16",
+      "kernel_receipt": null,
+      "scope_and_boundary": "L4 und C1; keine neue Laufzeitmessung.",
+      "source_references": [
+        "L4",
+        "C1"
+      ],
+      "statement": "Historischer Strukturquotient 3.928/20 = 196,4."
+    },
+    {
+      "class": "SOURCE_BOUND",
+      "id": "C17",
+      "kernel_receipt": null,
+      "scope_and_boundary": "R4; ursprüngliche Trial-Archive hier nicht erneut vollständig geprüft.",
+      "source_references": [
+        "R4"
+      ],
+      "statement": "Begrenzte 1/2/4-Prozess-Beschleunigung ist dokumentiert."
+    },
+    {
+      "class": "SOURCE_BOUND",
+      "id": "C18",
+      "kernel_receipt": null,
+      "scope_and_boundary": "R3; tatsächlicher Joblog auf a31ebb7e….",
+      "source_references": [
+        "R3"
+      ],
+      "statement": "Aktueller A/B-Diagnoselauf hat Credential-Delivery-HOLD."
+    },
+    {
+      "class": "SOURCE_BOUND",
+      "id": "C19",
+      "kernel_receipt": null,
+      "scope_and_boundary": "R11; statischer Methodenbefund.",
+      "source_references": [
+        "R11"
+      ],
+      "statement": "Aktueller Messcode setzt Timer erst nach Abruf."
+    },
+    {
+      "class": "EMPIRICALLY_EVIDENCED",
+      "id": "C20",
+      "kernel_receipt": null,
+      "scope_and_boundary": "C1; zwei isolierte lokale Kontrollen.",
+      "source_references": [
+        "C1"
+      ],
+      "statement": "Textdecodierung/Binärdaten und Modusvergleich sind nicht äquivalent."
+    },
+    {
+      "class": "OPEN",
+      "id": "C21",
+      "kernel_receipt": null,
+      "scope_and_boundary": "Kein zulässiger positiver Claim.",
+      "source_references": [],
+      "statement": "Voller verteilter Speedup ist gemessen."
+    },
+    {
+      "class": "SOURCE_BOUND",
+      "id": "C22",
+      "kernel_receipt": null,
+      "scope_and_boundary": "R7–R9; keine Main-Adoption.",
+      "source_references": [
+        "R7",
+        "R9"
+      ],
+      "statement": "PRs #437/#448/#449 haben neue Kandidaten mit dokumentierten Tests."
+    },
+    {
+      "class": "SOURCE_BOUND",
+      "id": "C23",
+      "kernel_receipt": null,
+      "scope_and_boundary": "R5, R6.",
+      "source_references": [
+        "R5",
+        "R6"
+      ],
+      "statement": "Windows-11-AMD64-Abnahme und reale Unterbrechung bleiben offen."
+    },
+    {
+      "class": "SOURCE_BOUND",
+      "id": "C24",
+      "kernel_receipt": null,
+      "scope_and_boundary": "R12; aktueller Dateiinhalt, kein vollständiger Release-Audit.",
+      "source_references": [
+        "R12"
+      ],
+      "statement": "Runtime-Manifest auf Main meldet nicht gebündelte Windows-Python-Runtime."
+    },
+    {
+      "class": "INTERPRETATIVE",
+      "id": "C25",
+      "kernel_receipt": null,
+      "scope_and_boundary": "Eigene bedingte Engineering-Schätzung; kein statistischer Forecast.",
+      "source_references": [],
+      "statement": "Zeitmodell und Kalenderkorridore."
+    },
+    {
+      "class": "INTERPRETATIVE",
+      "id": "C26",
+      "kernel_receipt": null,
+      "scope_and_boundary": "C1; explizite Anteilsrechnung.",
+      "source_references": [
+        "C1"
+      ],
+      "statement": "2,5× lokaler Faktor ist nicht 2,5× Gesamtdauer."
+    },
+    {
+      "class": "SOURCE_BOUND",
+      "id": "C27",
+      "kernel_receipt": null,
+      "scope_and_boundary": "R14; aktive Produktion bleibt v2.",
+      "source_references": [
+        "R14"
+      ],
+      "statement": "v3-Publikationsvertrag ist ein nicht aktivierter Vorschlag."
+    },
+    {
+      "class": "OPEN",
+      "id": "C28",
+      "kernel_receipt": null,
+      "scope_and_boundary": "Nicht behauptet; kein entsprechender Effekt ausgeführt.",
+      "source_references": [],
+      "statement": "Diese neue PDF ist bereits auf Zenodo / allen Nodes veröffentlicht."
+    },
+    {
+      "class": "INTERPRETATIVE",
+      "id": "C29",
+      "kernel_receipt": null,
+      "scope_and_boundary": "Urheberbewertung, nicht gemessene Tatsache.",
+      "source_references": [],
+      "statement": "Historische Größe der Entdeckung."
+    },
+    {
+      "class": "OPEN",
+      "id": "C30",
+      "kernel_receipt": null,
+      "scope_and_boundary": "Keine absolute Garantie; Replikation und Restore-Tests erforderlich.",
+      "source_references": [],
+      "statement": "„Nie mehr verlieren“ ist garantiert."
+    }
+  ],
+  "coverage": "Thirty major statement groups, not a proof of all natural-language sentences or an activated production v2/v3 bundle.",
+  "kernel_proved_claim_count": 0,
+  "major_claim_to_prose_section_map": {
+    "Die Fähigkeiten dürfen wachsen. Der Auftrag darf nicht verschwinden.": [
+      "C01",
+      "C02",
+      "C03",
+      "C04",
+      "C05",
+      "C08"
+    ],
+    "Ein Gedächtnis muss auch wissen, woher sein Wissen kommt.": [
+      "C07",
+      "C08",
+      "C22",
+      "C30"
+    ],
+    "Selbstkognition ist ein Prüfgegenstand, kein Zauberwort.": [
+      "C12",
+      "C13",
+      "C14",
+      "C29"
+    ],
+    "Verschiedene Maschinen müssen nicht gleich werden.": [
+      "C09",
+      "C10",
+      "C11"
+    ],
+    "Veröffentlichung und das Maß für Erfolg": [
+      "C06",
+      "C27",
+      "C28",
+      "C30"
+    ],
+    "Wann ist damit zu rechnen?": [
+      "C25",
+      "C26"
+    ],
+    "Was die Messungen tatsächlich zeigen": [
+      "C15",
+      "C16",
+      "C17",
+      "C18",
+      "C19",
+      "C20",
+      "C21"
+    ],
+    "Was wir konkret ausliefern wollen": [
+      "C22",
+      "C23",
+      "C24"
+    ]
+  },
+  "production_policy_validation_pass": false,
+  "prose_source_map": [
+    {
+      "source_refs": [],
+      "title": "QIK-VRT: Die wirksame Kontinuität"
+    },
+    {
+      "source_refs": [
+        "R1"
+      ],
+      "title": "Was die Technologie kann, welchen Auftrag sie hat und was jetzt ausgeliefert werden soll"
+    },
+    {
+      "source_refs": [
+        "R1",
+        "R8"
+      ],
+      "title": "Die Fähigkeiten dürfen wachsen. Der Auftrag darf nicht verschwinden."
+    },
+    {
+      "source_refs": [
+        "R1",
+        "R7"
+      ],
+      "title": "Ein Gedächtnis muss auch wissen, woher sein Wissen kommt."
+    },
+    {
+      "source_refs": [
+        "W2",
+        "W3"
+      ],
+      "title": "Verschiedene Maschinen müssen nicht gleich werden."
+    },
+    {
+      "source_refs": [
+        "W4",
+        "W5"
+      ],
+      "title": "Selbstkognition ist ein Prüfgegenstand, kein Zauberwort."
+    },
+    {
+      "source_refs": [
+        "C1",
+        "L3",
+        "L4",
+        "R11",
+        "R3",
+        "R4"
+      ],
+      "title": "Was die Messungen tatsächlich zeigen"
+    },
+    {
+      "source_refs": [
+        "L4",
+        "R1",
+        "R12",
+        "R13",
+        "R5",
+        "R6",
+        "R7",
+        "R8",
+        "R9"
+      ],
+      "title": "Was wir konkret ausliefern wollen"
+    },
+    {
+      "source_refs": [
+        "C1"
+      ],
+      "title": "Wann ist damit zu rechnen?"
+    },
+    {
+      "source_refs": [
+        "L4",
+        "R10",
+        "R14",
+        "W1",
+        "W6"
+      ],
+      "title": "Veröffentlichung und das Maß für Erfolg"
+    }
+  ],
+  "schema": "qikvrt_editorial_claim_disposition_draft_v1"
+}
