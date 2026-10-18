@@ -69,7 +69,8 @@ class FirefoxAMOUnlistedTests(unittest.TestCase):
 
     def response(self,signed=None,**changes):
         raw=signed if signed is not None else self.signed()
-        value={'guid':'qikvrt-ai-terminal@goldkelch.local','version':'1.0.0',
+        version=json.loads((self.root/'browser/firefox/qikvrt-terminal/manifest.json').read_text())['version']
+        value={'guid':'qikvrt-ai-terminal@goldkelch.local','version':version,
             'processed':True,'valid':True,'reviewed':True,'passed_review':True,
             'files':[{'signed':True,'hash':'sha256:'+host.digest(raw),
                 'download_url':'https://addons.mozilla.org/api/v4/downloads/file/123/standard.xpi'}]}

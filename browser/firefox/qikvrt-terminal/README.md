@@ -42,7 +42,82 @@ an account or authorize repository writes or protected effects.
 - The exact prepared text/audio/video payload is frozen and reused for Commit.
 - The reference backend has `external_effect = NONE`.
 
-## Development loading
+## Fill from Sources: local structured baseline (1.1.0 candidate)
+
+This original QIKVRT implementation is not Mozilla Smart Window's proprietary
+service. It neither unlocks that service in another region nor embeds Gemini.
+The toolbar action reuses `options.html`/`options.js` in the existing six-file
+package. It adds `activeTab` and `scripting`, not `<all_urls>` or background
+injection on arbitrary websites. Firefox's protected pages and permission
+denials remain protected. The declared minimum remains **158.0**.
+
+1. Select structured text on a source page and open the toolbar action, or
+   explicitly paste selected source data. Capture reads only the selection,
+   not the whole page. Review it before adding it to the source set.
+2. Use a flat JSON object (`{"Name":"Example","City":"Paris"}`) or one
+   `field: value` per line. Each source binds SHA-256 of the exact selected
+   UTF-8 bytes. Locators omit URL credentials, query and fragment; manual
+   imports/edits are explicitly labelled. A hash binds bytes, not truth,
+   authenticity, access rights or a Mesh identity.
+3. Open the action again in the target tab and select the desired sources.
+   Matching is exact after Unicode NFKC/case/spacing normalization. Non-Latin
+   keys are allowed; no geographic filter exists. This is **not** automatic
+   translation, arbitrary-prose extraction or equivalent quality in every
+   language. Conflicting source values are held, not silently ranked.
+4. Inspect the field-by-field editable preview and source revisions. Manual
+   edits are labelled as no longer supported by the original source value.
+   Explicitly confirm the checked proposals. No form submit, navigation,
+   purchase, account creation or backend commit is invoked by this code.
+5. The complete selected batch is checked before writing: same tab, original
+   document and elements, unchanged labels/type/form action/options, empty
+   original values, source set, nonce and ten-minute lifetime. The nonce is
+   consumed on success **or failure**. Do not blindly retry a partial result;
+   inspect the actual page and create a new preview.
+
+Sources use `browser.storage.session`, in browser memory, not `storage.local`,
+sync, a repository or a model endpoint. Clear them with **Quellen löschen**;
+Firefox also clears this area when the browser stops or the extension is
+disabled/uninstalled. Up to eight sources, 32 KiB per source, 64 facts per
+source, 4096 characters per value and 100 target fields are admitted. Do not
+put credentials in sources. In-memory storage is not a guarantee against OS
+swap, crash dumps, other privileged code or a compromised browser.
+
+Only potentially visible, empty text/email/tel/url/search inputs, textareas and single
+selects in the main document are considered. Password/payment/one-time-code
+autocomplete fields and common sensitive identifiers are excluded. Heuristic
+names are not a universal sensitive-field classifier: the user must inspect
+the target and every value. Files, hidden fields, checkboxes, numeric inputs,
+frames and shadow DOM are outside this baseline. Existing values are never
+overwritten. HTTPS targets and loopback HTTP fixtures are admitted; remote
+plaintext HTTP targets are denied.
+Native `checkVisibility` also checks ancestor opacity/content visibility;
+off-screen placement or occlusion still needs user inspection in the target.
+
+The page can react to ordinary input/change events, autosave or transmit data.
+Confirmation therefore authorizes entry into that page; **it does not certify
+absence of external side effects**. The receipt is `DOM_VALUES_OBSERVED` or
+`PARTIAL_OR_CHANGED`, never EFFECT_ACK_DONE. It proves neither successful
+server processing nor independent acceptance. This local path does not
+replace the existing protected backend prepare/commit protocol.
+
+Selected Mesh or AI output can be imported in the same explicit format; no
+model subscription or API cost is required by this path. Authenticated Mesh
+retrieval, OAuth/Passkey acceptance, optional semantic local/cloud model
+adapters, actual Firefox execution, Mozilla signing/restart acceptance and
+productive delivery remain separate, **unverified** scopes. No third-party
+service embedding/redistribution right or commercial license is inferred.
+The existing repository licenses remain unchanged.
+
+Offline regression: `node tests/test_qikvrt_fill_from_sources.cjs`, included in
+`make personal-firefox-boundary-test`. It uses simulated DOM/WebExtension APIs;
+it is not a native Firefox or customer-benefit witness.
+
+Primary API contracts (not native acceptance receipts):
+https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/scripting/executeScript
+https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions#activetab_permission
+https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage/session
+
+## Development loading (temporary only)
 
 Requires Firefox 158 or later.
 

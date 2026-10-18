@@ -133,6 +133,7 @@ personal-firefox-boundary-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_assistant
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_auth
 	node tests/test_qikvrt_personal_auth_ui.cjs
+	node tests/test_qikvrt_fill_from_sources.cjs
 
 test: personal-firefox-boundary-test
 

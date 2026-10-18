@@ -1,0 +1,186 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "fill-from-sources-global-local-core-20261018",
+  "created_at": "2026-10-18T07:13:00Z",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "main",
+  "source_commit": "bc93293d623501b7b411f6b3a90f28c2f1fe183e",
+  "source_tree": "277411f183a7d091bc3c1456e14127cc3ea7b249",
+  "human_actor": {
+    "attribution_id": "Ingolf Lohmann",
+    "identity_source": "Explicit goal and implementation authorization in current conversation",
+    "platform_account_is_identity_proof": false
+  },
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "Exact build UNAVAILABLE",
+    "session_or_run_id": "fill-from-sources-20261018",
+    "tools_and_adapters": [
+      "local source inspection and apply_patch",
+      "Python unittest",
+      "Node simulated DOM/WebExtension controls",
+      "connected GitHub REST",
+      "existing Mesh HTTP observation"
+    ],
+    "identity_and_observation_limits": "Connector commit authorship is not proof of natural-person identity; DOM controls are not native Firefox acceptance."
+  },
+  "human_contributions": [
+    {
+      "class": "HUMAN",
+      "kind": "goal_and_authorization",
+      "description": "Fill from Sources must not depend on Gemini or a US/Canada region; implement within the defined QIK-VRT Firefox product goal without repeated clarification."
+    }
+  ],
+  "artificial_cognitive_contributions": [
+    {
+      "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+      "description": "Original local structured-source importer, source selection/revision binding, Unicode exact-key suggestions, explicit preview/apply with stale-target/replay/conflict controls, test and contract extension."
+    }
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "implementation_scope": {
+    "existing_component": "browser/firefox/qikvrt-terminal/options.html + options.js; same six-file standard package",
+    "new_workflow": false,
+    "new_scheduler": false,
+    "model_requests": 0,
+    "region_filter": false,
+    "minimum_firefox": "158.0",
+    "source_formats": [
+      "flat JSON strings/numbers",
+      "field: value lines"
+    ],
+    "matching": "NFKC/case/spacing normalized exact Unicode keys; no translation or arbitrary prose extraction",
+    "source_retention": "browser.storage.session memory; explicit clear or browser termination",
+    "new_permissions": [
+      "activeTab",
+      "scripting"
+    ],
+    "broad_host_permission_added": false,
+    "protected_backend_protocol_unchanged": true
+  },
+  "outputs": [
+    {
+      "path": "Makefile",
+      "bytes": 17109,
+      "sha256": "6ed8f86803dfcf40c3f2edf588d07604ed6268eb17bb6a1080a7469fe4781da6",
+      "git_blob_sha1": "abc69671fc5df1dde0540a305cb495268c784473"
+    },
+    {
+      "path": "browser/firefox/qikvrt-terminal/README.md",
+      "bytes": 19721,
+      "sha256": "8818feeaf3334c69d08178fa69404057d122249784046147646834e39db762a3",
+      "git_blob_sha1": "804b43d084becc990af98b09285723a15da9abf6"
+    },
+    {
+      "path": "browser/firefox/qikvrt-terminal/manifest.json",
+      "bytes": 1350,
+      "sha256": "8ea6563600d79278cd45ed4104b54b8cfbc0b943c63c6bf691674eef26295f11",
+      "git_blob_sha1": "9d44f3593cb8ff9729facceb58399770da3a5608"
+    },
+    {
+      "path": "browser/firefox/qikvrt-terminal/options.html",
+      "bytes": 3714,
+      "sha256": "1c200a2574c43d37cddaad66f876124de03bd5d2a72fcd47d32dbb5c5548edf2",
+      "git_blob_sha1": "2fc4cf2c8f80a1b43b3a6013e7cbda6124f12f61"
+    },
+    {
+      "path": "browser/firefox/qikvrt-terminal/options.js",
+      "bytes": 18550,
+      "sha256": "6f580fc1bd0bde899b5a808738c1a2bbacac97d2fa6e0ee68904ba058a9e06d4",
+      "git_blob_sha1": "91f1cbbe38b3c5847fca0e1620f70466709c94c4"
+    },
+    {
+      "path": "policy/QIKVRT_EFFECT_ACK_HTTP_TERMINAL_V1.json",
+      "bytes": 3860,
+      "sha256": "3edbe05a48f1e5bca142982c9d7784b6d43a0bced41e33a11f3b743e0771bd02",
+      "git_blob_sha1": "2290073e461216e1b78c5aa83e113f0f904f2660"
+    },
+    {
+      "path": "tests/test_qikvrt_effect_ack_http_terminal.py",
+      "bytes": 40773,
+      "sha256": "d53572ff2b5bed1b5ef6a0c563dd3206be69febd70e961154d61f09ef4f28fac",
+      "git_blob_sha1": "19d5eea6c426b0e76a13fbd838ab384b34591953"
+    },
+    {
+      "path": "tests/test_qikvrt_personal_firefox_capability_boundary.py",
+      "bytes": 6623,
+      "sha256": "8d4d28c72ddf339b5752736ff1796435f023aeef58384213f2645d8402d688f3",
+      "git_blob_sha1": "0675538692f53d7feaa0f4ae6ec2bc497e2e97a7"
+    },
+    {
+      "path": "tests/test_self_host_firefox.py",
+      "bytes": 33727,
+      "sha256": "b3311795215341f9a374917c65766ad3f21e79f00c79db4cf4511afa9c31a926",
+      "git_blob_sha1": "9b959cca531845ca3d4eca66fc25f1d89784eca2"
+    },
+    {
+      "path": "tests/test_qikvrt_fill_from_sources.cjs",
+      "bytes": 13201,
+      "sha256": "26ab469d1be46ea469efe9a2cd16119a2ac622430971993621592f4007c8a218",
+      "git_blob_sha1": "f136f29b02949b321989ee5cd815f1061c6bddc1"
+    }
+  ],
+  "verification": {
+    "python_command": "python3 -B -m unittest tests.test_qikvrt_personal_firefox_capability_boundary tests.test_qikvrt_personal_assistant tests.test_qikvrt_personal_auth tests.test_self_host_firefox.FirefoxAMOUnlistedTests tests.test_self_host_firefox.FirefoxExtensionAdmissionTests tests.test_qikvrt_effect_ack_http_terminal.EffectAckHttpTerminalContractTests tests.test_qikvrt_effect_ack_http_terminal.FirefoxAuthorityRegressionTests tests.test_qikvrt_effect_ack_http_terminal.LoopbackTerminalE2ETests",
+    "python_tests": 105,
+    "python_result": "PASS",
+    "python_version": "3.12.14",
+    "node_version": "24.19.0",
+    "new_node_command": "node tests/test_qikvrt_fill_from_sources.cjs",
+    "new_node_control_groups": 11,
+    "new_node_result": "PASS_SIMULATED_DOM_AND_WEBEXTENSION_APIS",
+    "existing_logout_control_groups": 2,
+    "existing_logout_result": "PASS_SIMULATED_DOM_AND_FETCH",
+    "syntax": "PASS node --check background.js content.js options.js",
+    "diff_whitespace": "PASS git diff --check",
+    "tool_cache": "PASS 34/34 strategies",
+    "earlier_broad_test_attempt": "75 tests ran: 13 failures and 29 errors, including native Unix-socket permission denial, unavailable Firefox carrier and stale AMO mock version. This is not an all-suite PASS.",
+    "repaired_regression": "The AMO test response used obsolete hardcoded version 1.0.0. It now binds the fixture manifest version; all 16 AMO controls pass. No signing gate was relaxed.",
+    "remaining_environment_limits": [
+      "Unix-domain socket native terminal controls receive Errno 1 Operation not permitted; no permission bypass or unchanged retry",
+      "No native Firefox/Chromium executable in this local runtime; no native extension or browser acceptance"
+    ],
+    "full_repository_suite": "NOT_COMPLETED",
+    "native_ci": "NOT_OBSERVED_AT_RECORD_CREATION",
+    "native_firefox_execution": false,
+    "native_visibility_and_isolated_world": "PASS simulated ancestor visibility negative controls; executeScript explicitly selects ISOLATED. Real Firefox remains unverified."
+  },
+  "integration": {
+    "candidate_branch": "work/fill-from-sources-20261018",
+    "candidate_commit": "Bind via containing commit and independent branch readback; no self-reference",
+    "review_of_generated_bytes": "PENDING",
+    "no_additional_pull_request_created": true,
+    "reason": "Preserve existing Main-convergence/no additional continuation PR boundary. Unrelated old personal/browser PRs were inspected, not overwritten or silently repurposed.",
+    "main_merge": false
+  },
+  "open_obligations": [
+    "Native Firefox 158+ activeTab, isolated-world persistence, popup lifecycle and actual site controls",
+    "Exact-source Mozilla signing and persistent restart acceptance",
+    "Optional semantic local/cloud model adapter and authenticated Mesh data retrieval",
+    "OAuth/Passkey and real provider/Argon acceptance remain separate",
+    "Exact-head review and admitted Main-convergence integration",
+    "Independent working-software delivery at https://raumzeitterminal.de/"
+  ],
+  "external_readback": {
+    "source": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/readback?id=138ae401-d6d1-4d8b-8fe5-f2b7b0312e2a",
+    "observed_at": "2026-10-18T07:12:22.264Z",
+    "exact_host": "raumzeitterminal.de",
+    "http_status": 525,
+    "native_mesh_runtime": "UNKNOWN",
+    "public_delivery_accepted": false
+  },
+  "rights": {
+    "new_vendor_code_copied": false,
+    "current_source_license": "PolyForm-Noncommercial-1.0.0",
+    "commercial_license_granted_by_this_change": false,
+    "third_party_service_embedding_license_inferred": false
+  },
+  "release_claims": {
+    "ordinary_release": false,
+    "merge": false,
+    "deployment": false,
+    "EFFECT_ACK_DONE": false
+  }
+}

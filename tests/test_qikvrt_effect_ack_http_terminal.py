@@ -175,7 +175,9 @@ class FirefoxAuthorityRegressionTests(unittest.TestCase):
             "http://127.0.0.1:8771/*",
             "http://localhost:8771/*",
         ])
-        self.assertCountEqual(manifest["permissions"], ["storage", "alarms"])
+        self.assertCountEqual(manifest["permissions"], ["storage", "alarms", "activeTab", "scripting"])
+        self.assertEqual(manifest["action"]["default_popup"], "options.html")
+        self.assertNotIn("<all_urls>", manifest["host_permissions"])
         self.assertFalse(manifest.get("optional_host_permissions"))
         self.assertEqual(manifest["browser_specific_settings"]["gecko"]["strict_min_version"], "158.0")
 

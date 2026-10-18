@@ -1,8 +1,25 @@
 <!doctype html>
 <html lang="de">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>QIKVRT Terminal – Personalisierung</title><style>body{font:16px system-ui,sans-serif;max-width:620px;margin:24px auto;padding:0 18px;background:#071725;color:#eef3f6}fieldset{border:1px solid #6e8291;border-radius:10px;padding:16px}label{display:grid;grid-template-columns:180px 1fr;gap:12px;margin:12px 0;align-items:center}input,select,button{font:inherit;padding:7px}button{margin-top:12px}small{color:#b7c2c9}</style></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>QIKVRT Terminal – Fill from Sources</title><style>body{font:16px system-ui,sans-serif;min-width:460px;max-width:620px;margin:24px auto;padding:0 18px;background:#071725;color:#eef3f6}fieldset{border:1px solid #6e8291;border-radius:10px;padding:16px;margin-bottom:16px}label{display:grid;grid-template-columns:180px 1fr;gap:12px;margin:12px 0;align-items:center}input,textarea,select,button{font:inherit;padding:7px;min-width:0}textarea{width:100%;box-sizing:border-box}button{margin:8px 8px 0 0}small{color:#b7c2c9}#fill-preview label{grid-template-columns:24px 1fr}#fill-preview input[type=text]{width:100%;box-sizing:border-box}#fill-preview small{display:block;overflow-wrap:anywhere}#fill-status{white-space:pre-wrap;overflow-wrap:anywhere}#fill-sources label{grid-template-columns:24px 1fr}</style></head>
 <body>
   <h1>QIKVRT AI Terminal</h1>
+  <fieldset>
+    <legend>Fill from Sources · lokaler Kern</legend>
+    <p>Ohne Länderfilter, Modellkonto oder Cloud-Aufruf. Unterstützt flaches JSON mit Feldnamen und Werten sowie Zeilen im Format <code>Feld: Wert</code>. Freitext wird nicht semantisch interpretiert.</p>
+    <p><small>Nur ausdrücklich gewählte Daten verwenden. Quellen bleiben im Browser-Sitzungsspeicher, bis sie gelöscht werden oder der Browser endet. Keine Passwörter, Zahlungs- oder Sicherheitsdaten einfügen.</small></p>
+    <button id="fill-capture" type="button">Markierten Quelltext aus aktivem Tab lesen</button>
+    <label>Quellenbezeichnung <input id="fill-label" type="text" maxlength="160" placeholder="z. B. ausgewählter Mesh-Kontakt"></label>
+    <label for="fill-text">Ausgewählte Daten</label>
+    <textarea id="fill-text" rows="5" maxlength="32768" spellcheck="false" placeholder='{"Name":"Beispiel", "E-Mail":"beispiel@example.org"}'></textarea>
+    <button id="fill-add" type="button">Als Quelle übernehmen</button>
+    <button id="fill-clear" type="button">Quellen löschen</button>
+    <div id="fill-sources"></div>
+    <p><small>Im Zieltab das Symbol erneut öffnen. Es werden nur sichtbare, leere Standardfelder im Hauptdokument berücksichtigt. Keine Frames, Passwörter, Zahlungsfelder, Dateien, Checkboxen oder Formularübermittlung. Die Zielseite kann auf Eingaben reagieren.</small></p>
+    <button id="fill-inspect" type="button">Vorschau für aktiven Zieltab erstellen</button>
+    <div id="fill-preview"></div>
+    <button id="fill-apply" type="button" disabled>Ausgewählte Vorschläge bestätigen und eintragen</button>
+    <p id="fill-status" role="status" aria-live="polite"></p>
+  </fieldset>
   <p>Personalisierung bleibt standardmäßig lokal in <code>browser.storage.local</code>. Sie ist keine Protokollevidenz und keine EFFECT_ACK-Autorisierung.</p>
   <fieldset>
     <legend>Darstellung</legend>
