@@ -2478,7 +2478,10 @@ def browser_carrier(package, manifest, config, volume):
             time.sleep(.05)  # bounded startup probe, no runtime polling
         raise ValueError("BROWSER_STARTUP_READBACK_TIMEOUT:" + edge)
     try:
-        spawn("xvfb", [shutil.which("Xvfb"), config["display"], "-screen", "0", "1440x900x24", "-nolisten", "tcp"])
+        # xdpyinfo closes the first X connection. Keep the display initialized
+        # while Firefox and VNC attach; Xserver otherwise resets on last-client
+        # disconnect (Xserver(1), -noreset).
+        spawn("xvfb", [shutil.which("Xvfb"), config["display"], "-screen", "0", "1440x900x24", "-nolisten", "tcp", "-noreset"])
         ready(lambda: subprocess.run([shutil.which("xdpyinfo"), "-display", config["display"]],
             env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=2).returncode == 0, 'X11_DISPLAY')
         spawn("vnc", [shutil.which("x11vnc"), "-display", config["display"], "-forever", "-shared", "-localhost",
