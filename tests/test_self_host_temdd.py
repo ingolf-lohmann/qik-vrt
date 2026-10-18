@@ -102,6 +102,27 @@ class SourceRecoveryTests(unittest.TestCase):
         self.assertEqual(definition['providers_required'], [])
 
 
+def transfer_fixture_writer(test, source, target, subject):
+    """Use the real pinned CLI for an explicit stopped local relocation."""
+    host.load_source(test.export, 'qikvrt_effect_ack_http_terminal')
+    native = host.load_source(test.export, 'qikvrt_temdd_event_ledger')
+    reader = native.Ledger(source, subject, read_only=True)
+    try: frontier = reader.history_frontier()
+    finally: reader.close()
+    with test.assertRaisesRegex(native.Hold, 'COPIED_OR_UNADMITTED'):
+        native.Ledger(target, subject)
+    command = [sys.executable, '-B', str(test.export/'tools/qikvrt_self_host.py'),
+        'transfer-local-writer', '--root', str(test.export), '--manifest-sha256', test.pin,
+        '--config', str(test.config_path), '--source-state-dir', str(source), '--frontier-sha256', frontier]
+    result = subprocess.run(command, capture_output=True, text=True, timeout=15)
+    test.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+    receipt = json.loads(result.stdout)
+    test.assertFalse(receipt['distributed_fencing_verified'])
+    test.assertFalse(receipt['host_admission_verified'])
+    with test.assertRaisesRegex(native.Hold, 'COPIED_OR_UNADMITTED'):
+        native.Ledger(source, subject)
+
+
 class NativeStandaloneTests(unittest.TestCase):
     # Reuse the existing export/process helpers. Existing reference cases are
     # still executed unchanged; no duplicated test daemon implements this path.
@@ -271,6 +292,7 @@ class NativeStandaloneTests(unittest.TestCase):
             self.volume.rename(self.work/'preserved-original')
             code, result = self.state_cli('restore-state', snapshot, receipt['state_manifest_sha256'])
             self.assertEqual(code, 0, result)
+            transfer_fixture_writer(self,self.work/'preserved-original',self.volume,event['subject'])
         self.start(path=bindir)
         code, readback = self.cli('durable-readback', prepared, path=bindir)
         self.assertEqual(code, 0, readback); self.assertEqual(readback['durable_readback'], event)
@@ -425,11 +447,13 @@ class MonolithicStoreTests(unittest.TestCase):
         self.assertFalse(any(Path(str(self.store)+s).exists() for s in ('-wal','-shm','-journal')))
         # Only this file is copied. No old binding, node journal, code cache,
         # socket, token or process state is carried to the new private volume.
+        original_volume = self.volume
         self.volume = self.work/'successor-volume'; self.volume.mkdir(mode=0o700)
         (self.volume/'temdd').mkdir(mode=0o700)
         successor = self.volume/'temdd/events.sqlite3'
         shutil.copy2(self.store, successor); self.store = successor
         self.config['state_dir'] = str(self.volume); self.save_config()
+        transfer_fixture_writer(self,original_volume,self.volume,event['subject'])
         runtime = self.start()
         self.assertEqual(runtime['deployment_object'], 'NATIVE_SQLITE_CARRIER_AND_LEDGER')
         self.assertEqual(json.loads(self.sql('SELECT body FROM events WHERE seq=1')[0][0]),
@@ -675,8 +699,11 @@ class OwnerRESTMonolithTests(unittest.TestCase):
         successor=self.work/'rest-successor'; successor.mkdir(mode=0o700)
         (successor/'temdd').mkdir(mode=0o700)
         shutil.copy2(self.store,successor/'temdd/events.sqlite3')
+        original_volume=self.volume
         self.volume=successor; self.store=successor/'temdd/events.sqlite3'
-        self.config['state_dir']=str(successor); self.save_config(); self.start()
+        self.config['state_dir']=str(successor); self.save_config()
+        transfer_fixture_writer(self,original_volume,successor,event['subject'])
+        self.start()
         self.assertEqual(self.rest('readback')[1]['durable_readback'],event)
         self.assertEqual(self.rest('commit',prepared=prepared)[1]['durable_readback'],event)
         output=os.environ.get('QIKVRT_OWNER_REST_TEST_EVIDENCE')
@@ -837,10 +864,16 @@ class StorageTransportTests(unittest.TestCase):
         self.assertFalse(imported['predecessor_evidence_transfer'])
         self.assertFalse(imported['native_runtime_executed'])
         self.assertTrue(imported['same_node_client_bytes'])
+        original_volume = self.volume
         self.volume, self.store = successor, restored
-        self.config['state_dir'] = str(successor); self.save_config(); self.start()
+        self.config['state_dir'] = str(successor); self.save_config()
+        transfer_fixture_writer(self,original_volume,successor,first_receipt['durable_readback']['subject'])
+        self.start()
         self.assertEqual(self.sql('SELECT * FROM events ORDER BY seq'), before_events)
-        self.assertEqual(self.sql('SELECT * FROM meta ORDER BY key'), before_meta)
+        after_meta = self.sql('SELECT * FROM meta ORDER BY key')
+        self.assertEqual([row for row in after_meta if row[0] != 'writer_seal'],
+                         [row for row in before_meta if row[0] != 'writer_seal'])
+        self.assertNotEqual(dict(after_meta)['writer_seal'],dict(before_meta)['writer_seal'])
         self.assertEqual(self.sql('SELECT * FROM sqlite_sequence'), before_sequence)
         self.assertEqual(self.rest('prepare'), (200, pending))
         status, committed = self.rest('commit', prepared=pending)

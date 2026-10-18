@@ -3575,6 +3575,7 @@ def main():
                 raise ValueError("ORIGINAL_LOCAL_STORE_AND_FRONTIER_PIN_REQUIRED")
             config, _ = state_binding(args.root.resolve(), args.manifest_sha256, args.config)
             private_path(args.source_state_dir)
+            load_source(args.root.resolve(), "qikvrt_effect_ack_http_terminal")
             native = load_source(args.root.resolve(), "qikvrt_temdd_event_ledger")
             exact = packaged_subject(args.root.resolve(), args.manifest_sha256,
                 config["source_repository"], config["subject_pr"], config["source_head"], config["source_tree"])
