@@ -1,0 +1,560 @@
+{
+  "schema": "qikvrt_work_unit_record_v1",
+  "work_unit_id": "QIKVRT_LINUX_DOCKER_ROLE_DEPLOYMENT_20261013_V1",
+  "created_at_utc": "2026-10-13T15:56:23.243433+00:00",
+  "classification": "IMPLEMENTATION_AND_BOUND_LOCAL_TESTS; NATIVE_CI_PENDING; PRODUCTIVE_HOST_NOT_ESTABLISHED",
+  "authority_repository": "ingolf-lohmann/qik-vrt",
+  "mirror_repository": "Goldkelch/qik-vrt",
+  "source_pr": 523,
+  "source_ref": "integration/515-519-521-522-20261012-eceb9b63",
+  "predecessor_head": "5408f7cc05e85056c24c883d93b1653ffc170179",
+  "predecessor_tree": "a72d7f1e1e44be48f3e4010234f0d7ae4d0d2380",
+  "human_actor": "Ingolf Lohmann",
+  "human_decision": "AUTHORIZE_CORRECT_EXISTING_DOCKER_DEPLOYMENT_AND_USE_AUTHORIZED_HOST_ROUTE",
+  "human_contributions": [
+    "Task scope, Authority/Mirror decision, product origin and production authorization"
+  ],
+  "artificial_cognitive_contributions": [
+    "Original artifact byte verification and source comparison",
+    "Reuse of missing reviewed S1 runtime files from PR494",
+    "Contract-bound role repair, Docker admission and existing Linux workflow extension",
+    "Negative controls and actual Docker-cycle regression"
+  ],
+  "joint_components": [
+    "Owner-specified scope with separately identifiable generated implementation"
+  ],
+  "unresolved_origin": [],
+  "source_instruction": "Correct Authority/Mirror in the existing Docker deployment; reuse artifact 11521962723; connect existing Linux CI/CD and host admission; require actual Linux deployment and independent raumzeitterminal.de HTTP readback.",
+  "inherited_open_obligations": [
+    {
+      "id": "delivery:raumzeitterminal.de",
+      "layer": "DELIVERY",
+      "target": "raumzeitterminal.de",
+      "label": "Produktdomain in Betrieb nehmen",
+      "reason": "EXACT_HOST_NXDOMAIN_HTTP_530",
+      "acceptance": "DNS und TLS f\u00fcr raumzeitterminal.de, gebundene Anwendung und frischer Nutzpfad-Readback best\u00e4tigen.",
+      "subject": {
+        "url": "https://raumzeitterminal.de/"
+      },
+      "semantic_sha256": "5afbeef30fbb021c40ac673f137ee417af2ded95b522e5ace2167e1f07af92cc",
+      "state": "OPEN",
+      "transition": "CHANGED_OBSERVATION",
+      "retry_condition": "Material ge\u00e4nderte Domain-/DNS-/TLS-Evidenz oder ein authentifizierter Schreibzugang f\u00fcr genau diese Domain; danach die urspr\u00fcngliche Auslieferung pr\u00fcfen.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Material ge\u00e4nderte Domain-/DNS-/TLS-Evidenz oder ein authentifizierter Schreibzugang f\u00fcr genau diese Domain; danach die urspr\u00fcngliche Auslieferung pr\u00fcfen.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "governance:qik-vrt",
+      "layer": "GOVERNANCE",
+      "target": "ingolf-lohmann/qik-vrt",
+      "label": "Native Authority-Bindung best\u00e4tigen",
+      "reason": "NATIVE_AUTHORITY_BINDING_NOT_VERIFIED",
+      "acceptance": "Aktuelle Authority-Bindung, Governance und zugelassene Operation am exakten Gegenstand unabh\u00e4ngig zur\u00fccklesen.",
+      "subject": {},
+      "semantic_sha256": "3ce3d30b4a258ec59bfb8e6d5569ac84138276bb0748486f49d93017496e4b8e",
+      "state": "OPEN",
+      "transition": "UNCHANGED",
+      "retry_condition": "Neue gebundene Authority-/Governance-Evidenz und die erforderliche zugelassene Operation.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Neue gebundene Authority-/Governance-Evidenz und die erforderliche zugelassene Operation.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "native:qik-vrt",
+      "layer": "RUNTIME",
+      "target": "qik-vrt",
+      "label": "Native Terminal-Ausf\u00fchrung abnehmen",
+      "reason": "AUTHENTICATED_NATIVE_EXECUTION_NOT_ACCEPTED",
+      "acceptance": "Identit\u00e4tsgebundene Ausf\u00fchrung und unabh\u00e4ngigen Effect-Readback am freigegebenen Runtime-Host nachweisen.",
+      "subject": {},
+      "semantic_sha256": "acfd89257d2e10c21f95ccb4d111bc45b9e8f64f748fb60471aaf860085dcdea",
+      "state": "OPEN",
+      "transition": "UNCHANGED",
+      "retry_condition": "Ein authentifizierter, identit\u00e4tsgebundener Ausf\u00fchrungsweg ist tats\u00e4chlich verf\u00fcgbar und f\u00fcr den konkreten Auftrag zugelassen.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Ein authentifizierter, identit\u00e4tsgebundener Ausf\u00fchrungsweg ist tats\u00e4chlich verf\u00fcgbar und f\u00fcr den konkreten Auftrag zugelassen.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "registry:qik-vrt",
+      "layer": "REGISTRY",
+      "target": "qik-vrt",
+      "label": "Knotenverzeichnis vollst\u00e4ndig zur\u00fccklesen",
+      "reason": "REGISTRY_DISCOVERY_INCOMPLETE",
+      "acceptance": "Vollst\u00e4ndige Quellen mit aktuellen HEAD/TREE-Bindungen lesen.",
+      "subject": {},
+      "semantic_sha256": "f9892acb87572ca11e0986104ebf6a04a0438fbdcb89ad0843b6662d4e5607ca",
+      "state": "OPEN",
+      "transition": "UNCHANGED",
+      "retry_condition": "Ge\u00e4nderte Quellen-/Zugriffsevidenz f\u00fcr die betroffenen Verzeichnisquellen.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Ge\u00e4nderte Quellen-/Zugriffsevidenz f\u00fcr die betroffenen Verzeichnisquellen.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "repository:Goldkelch/qik-vrt",
+      "layer": "REPOSITORY",
+      "target": "Goldkelch/qik-vrt",
+      "label": "Aktuellen Repository-Gegenstand lesen",
+      "reason": "REPOSITORY_NOT_FOUND",
+      "acceptance": "Aktuellen HEAD und TREE \u00fcber den erlaubten REST-Pfad zur\u00fccklesen.",
+      "subject": {
+        "repository": "Goldkelch/qik-vrt",
+        "head": null,
+        "tree": null
+      },
+      "semantic_sha256": "a7bb27dcba97eea2252cf151e48b26e74415019d93f90d22e15c5bacd75352b0",
+      "state": "OPEN",
+      "transition": "UNCHANGED",
+      "retry_condition": "Neue, unabh\u00e4ngig best\u00e4tigte Quellenbindung oder wiederhergestellter Zugriff erforderlich.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Neue, unabh\u00e4ngig best\u00e4tigte Quellenbindung oder wiederhergestellter Zugriff erforderlich.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "repository:ingolf-lohmann/qik-vrt",
+      "layer": "REPOSITORY",
+      "target": "ingolf-lohmann/qik-vrt",
+      "label": "Aktuellen Repository-Gegenstand lesen",
+      "reason": "REPOSITORY_RATE_LIMITED",
+      "acceptance": "Aktuellen HEAD und TREE \u00fcber den erlaubten REST-Pfad zur\u00fccklesen.",
+      "subject": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "head": null,
+        "tree": null
+      },
+      "semantic_sha256": "452e066819947d286f891b27aa36018c470d5ac423615123741d50e7df73386f",
+      "state": "OPEN",
+      "transition": "UNCHANGED",
+      "retry_condition": "Material ge\u00e4nderte Zugriffs- oder Quellenbindung; unver\u00e4nderte Zugriffssperren bleiben NOOP.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Material ge\u00e4nderte Zugriffs- oder Quellenbindung; unver\u00e4nderte Zugriffssperren bleiben NOOP.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "runtime:Goldkelch/qik-vrt",
+      "layer": "RUNTIME",
+      "target": "Goldkelch/qik-vrt",
+      "label": "Knoten-Runtime anschlie\u00dfen",
+      "reason": "RUNTIME_ENDPOINT_NOT_ADVERTISED",
+      "acceptance": "Frischen, identit\u00e4tsgebundenen Runtime-Befund am angek\u00fcndigten Endpunkt lesen; dies ersetzt keine native Effektabnahme.",
+      "subject": {
+        "repository": "Goldkelch/qik-vrt",
+        "head": null,
+        "tree": null
+      },
+      "semantic_sha256": "470f253ac5e04fdacbf4262d1f03ccee465c8822e89312675cb46cc3f5549ed1",
+      "state": "OPEN",
+      "transition": "UNCHANGED",
+      "retry_condition": "Material ge\u00e4nderter Runtime-Endpunkt, Zugriff oder identit\u00e4tsgebundener Runtime-Befund.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Material ge\u00e4nderter Runtime-Endpunkt, Zugriff oder identit\u00e4tsgebundener Runtime-Befund.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "runtime:ingolf-lohmann/qik-vrt",
+      "layer": "RUNTIME",
+      "target": "ingolf-lohmann/qik-vrt",
+      "label": "Knoten-Runtime anschlie\u00dfen",
+      "reason": "RUNTIME_ENDPOINT_NOT_ADVERTISED",
+      "acceptance": "Frischen, identit\u00e4tsgebundenen Runtime-Befund am angek\u00fcndigten Endpunkt lesen; dies ersetzt keine native Effektabnahme.",
+      "subject": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "head": null,
+        "tree": null
+      },
+      "semantic_sha256": "a3af1fe781dd9e39f1eeefe027123bfaceb723b890f7af5ed82603b3737e7bdc",
+      "state": "OPEN",
+      "transition": "UNCHANGED",
+      "retry_condition": "Material ge\u00e4nderter Runtime-Endpunkt, Zugriff oder identit\u00e4tsgebundener Runtime-Befund.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Material ge\u00e4nderter Runtime-Endpunkt, Zugriff oder identit\u00e4tsgebundener Runtime-Befund.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "MAIN_GOVERNANCE_AND_INTEGRATION",
+      "state": "OPEN",
+      "source": "https://github.com/ingolf-lohmann/qik-vrt/pull/523",
+      "evidence": "Current rulesets=[], reviews=[]; requested review execution failure CODE_OWNER_RULE_NOT_ENFORCED.",
+      "next_action": "Use an admitted existing native ruleset writer and independent exact-head review before guarded Main integration.",
+      "source_predecessor": "state/work_units/QIKVRT_IMMEDIATE_EXECUTION_20261013_V1.json"
+    },
+    {
+      "id": "EXACT_DOMAIN_DELIVERY",
+      "state": "OPEN",
+      "source": "https://raumzeitterminal.de/",
+      "next_action": "Usable target-bound authenticated registrar/DNS write, then DNS/TLS and useful application readback; unchanged denied writes remain NOOP.",
+      "source_predecessor": "state/work_units/QIKVRT_IMMEDIATE_EXECUTION_20261013_V1.json"
+    },
+    {
+      "id": "AUTHENTICATED_NATIVE_RUNTIME",
+      "state": "OPEN",
+      "source": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json",
+      "next_action": "Establish an actual identity-bound native runtime start and independent effect readback.",
+      "source_predecessor": "state/work_units/QIKVRT_IMMEDIATE_EXECUTION_20261013_V1.json"
+    },
+    {
+      "id": "BROWSER_USE_PATH_ACCEPTANCE",
+      "state": "OPEN",
+      "next_action": "Use an already admitted browser/device path exposing real network interruption, an uncached negative control and profile-preserving process restart for the exact derived Site32 client; independently bind original bytes and recorded behaviour.",
+      "source_predecessor": "original_report#independent_successor_readback.client_continuation.work",
+      "partial_verified_scope": "Derived Site32 software tested in real Chromium/WebKit against a stopped controlled static origin; live production-origin, whole-device network, physical iPhone and authenticated native runtime acceptance are not inferred."
+    },
+    {
+      "id": "NATIVE_GOVERNANCE_AND_PR523_MAIN_INTEGRATION",
+      "state": "OPEN",
+      "next_action": "Use the existing admitted native ruleset writer and independent exact-head review, then guarded Main integration; rulesets=[], main.protected=false, reviews=[] remain observed."
+    },
+    {
+      "id": "DNS_TLS_EXACT_DOMAIN_DELIVERY",
+      "state": "OPEN",
+      "next_action": "Use target-bound authenticated domain/DNS writer when available; independently accept DNS, TLS and the actual application on https://raumzeitterminal.de/. HTTP 530 remains OPEN."
+    },
+    {
+      "id": "SITE32_CURRENT_DERIVED_CLIENT_NETWORK_LOSS_AND_PROCESS_RESTART",
+      "state": "OPEN",
+      "next_action": "Perform true network interruption, uncached negative control and persistent browser-process restart on exact changed client32 bytes when an admitted controller exposes these controls.",
+      "partial_verified_scope": "Derived Site32 software tested in real Chromium/WebKit against a stopped controlled static origin; live production-origin, whole-device network, physical iPhone and authenticated native runtime acceptance are not inferred."
+    },
+    {
+      "id": "SITE32_PHYSICAL_IPHONE_AND_DIAGNOSTIC_COVERAGE",
+      "state": "OPEN",
+      "next_action": "Actual iPhone/device, engine/viewport and console/network observations require their own supported acceptance path; do not infer them from configured lite mode or normal reload.",
+      "partial_verified_scope": "Derived Site32 software tested in real Chromium/WebKit against a stopped controlled static origin; live production-origin, whole-device network, physical iPhone and authenticated native runtime acceptance are not inferred."
+    }
+  ],
+  "reuse": {
+    "runtime_pr": 494,
+    "head": "4bdda5c7534a2c4fbac224015179492a4b624b3a",
+    "existing_launcher": "tools/qikvrt_self_host.py",
+    "existing_workflow": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+    "existing_host_admission": "runtime/self-host/HOST_ADMISSION.example.json",
+    "existing_supervisor": "SYSTEMD; no second restart controller",
+    "new_site_created": false,
+    "new_controller_created": false,
+    "new_workflow_created": false,
+    "force_push": false
+  },
+  "verified_local": {
+    "deployment_and_negative_controls": 18,
+    "source_contract_selection": 39,
+    "provider_contracts": 33,
+    "migration_controls": 22,
+    "monitor_tests": 25,
+    "client_continuation_controls": 68,
+    "integrity_structural_tests": 11,
+    "original_artifact_bytes": 382994793,
+    "original_artifact_sha256": "5a912ccde96253bdba5f5e82cd0a36a4ff89de58dabbe57977bc1acf298d9695",
+    "image_layers": 7,
+    "tool_cache_coverage": "29/29",
+    "current_repository_terminal_tests": 7
+  },
+  "environment_limits": {
+    "docker_executable": false,
+    "docker_daemon_connection": false,
+    "unix_domain_socket_creation": "PermissionError EPERM; unchanged not rerun",
+    "git_history": "exact REST archive tree/commit restored; local parent closure shallow, not a full historical clone"
+  },
+  "host_route_readback": {
+    "digitalocean_droplets": 0,
+    "railway_project": "a2440de5-6250-4d02-8845-c166aeaa3d0d",
+    "railway_service": "feb518e8-bfb2-450d-a36a-c992b052427c",
+    "railway_latest_deployment_status": "FAILED",
+    "railway_pending_changes": 22,
+    "selected_host_executor_verified": false,
+    "github_initial_dispatch_operation_exposed": false,
+    "github_host_runner_inventory": "connector rejects runner endpoint; no host token delivered",
+    "protected_session_continuity": {
+      "record": "libfile_55afcea27d488191af8a916cae2f940d",
+      "version": 17,
+      "latest_owner_selection": "Gesch\u00fctzter Sitzungs- oder Vault-Verweis",
+      "concrete_item_reference": null,
+      "supported_secure_reader_exposed": false,
+      "private_session_absence_globally_claimed": false,
+      "exact_missing_binding": "Existing protected host/registry item locator and its supported authenticated invocation operation",
+      "prior_cloud_declaration": "secrets.IONOS_TOKEN; cloud-v6 declaration is not host/Docker admission",
+      "existing_scope_retained": true,
+      "excluded_deployment_providers": [
+        "Railway",
+        "Vercel"
+      ],
+      "max_monthly_eur": 150
+    }
+  },
+  "first_external_execution_blocker": "No admitted existing Linux host execution connection with a local Docker engine and bound existing systemd service is available to this client.",
+  "retry_condition": "Provide the existing protected host/runner connection and its exact config/admission/guard/durable-delivery bindings; do not repeat a production dispatch before those prerequisites change.",
+  "delivery_target": "https://raumzeitterminal.de/",
+  "governance": {
+    "main_protected": false,
+    "rulesets": [],
+    "pr_reviews": [],
+    "integration_performed": false
+  },
+  "completion_claims": {
+    "native_successor_ci_verified": false,
+    "linux_productive_deployment_verified": false,
+    "independent_product_https_verified": false,
+    "native_governance_satisfied": false,
+    "effect_ack_done": false,
+    "ordinary_release": false
+  },
+  "evidence_root": "evidence/receipts/QIKVRT_LINUX_DOCKER_ROLE_DEPLOYMENT_20261013_V1",
+  "http_runtime_binding": {
+    "current_owner_and_network_fields": true,
+    "repository_roles": true,
+    "independent_readback_checks_same_sealed_policy_bytes": true,
+    "runtime_proof": false
+  },
+  "native_continuation": {
+    "tested_source_head": "7bdd700ba51e877cc96315221ae0365d6384a413",
+    "tested_source_tree": "52655db9ab66ce1ea46b5d28027f4f5dabb624b4",
+    "general_push_ci": {
+      "run_id": 38428979156,
+      "status": "success",
+      "scope": "Full repository test and Chromium/WebKit; distinct from terminal Docker lane"
+    },
+    "terminal_run": 38428979164,
+    "terminal_outcome": "failure",
+    "diagnosis": "Historical separate TEMDD workflow missing; bind structural admission test to existing terminal workflow and Makefile dependency. No second workflow restored.",
+    "successor_native_proof": "PENDING_NEW_CODE_EXECUTION",
+    "artifact_redirect": "Authorization removed on signed artifact-storage redirect",
+    "second_source_head": "57089d0eb1976d645c681a9989fba9e04b6b26bb",
+    "second_terminal_run": 38429717882,
+    "second_diagnosis": "Native ledger: 33 passed; S1 suite: two failures. Current terminal HTML has no old source attribute; derive node attribute and restore local GET routing in current client without reverting role/owner data. Fix undefined root/join in new owner-readback addition. Keep both original failure logs.",
+    "third_source_head": "33224ef2bb2374077780d9f50fccd4d2dc6d584f",
+    "third_terminal_run": 38430612644,
+    "third_diagnosis": "Current-source local readback and all S1 process/owner/state controls pass. One historical source recovery check rejects deliberately changed role and test bytes; preserve exact three original files in inactive evidence archive and independently pin their current successors without replacing the historical receipt.",
+    "fourth_source_head": "59716ff472769974133dc34f8bf9c0a6d4441275",
+    "fourth_terminal_run": 38431655116,
+    "fourth_diagnosis": "All S1, systemd, original-image load, isolated Firefox/noVNC and current-source delivery freeze passed. New Docker cycle held on a fixture-only wrong novnc_port field; fix field and retain the observed failure. Existing dependency runtime image remains exactly sha256:8c7bc142ae52acb0e3dd73b994734580697cdc21762a1d277f790c502d425fdb.",
+    "host_binding_review": "Current private Owner/peer/webhook files mounted readonly at their existing exact paths. Config digest reread before restart; public readback uses the same validated adapter. No new credentials.",
+    "fifth_source_head": "2895efa3a315185482c62b9f6a81b7718f8b44f7",
+    "fifth_terminal_run": 38433594621,
+    "fifth_diagnosis": "Eight-ASCII-byte VNC password guard rejects the new eleven-byte Docker-cycle fixture before runtime. Correct fixture only; guard unchanged. S1, systemd, isolated Firefox/noVNC and package/image freeze passed. Three original native artifacts independently downloaded and SHA-256 verified.",
+    "independently_verified_artifacts": [
+      {
+        "id": 11832835414,
+        "bytes": 20463,
+        "sha256": "9f45125c0fdf5eb54f73616a5dbbf36d914dc57c511408627a7d02ad0cd222f3",
+        "verified": true,
+        "files": [
+          "DISTRIBUTION_PACKAGES.tsv",
+          "DOCKER_ENGINE_VERSION.json",
+          "FIREFOX_NATIVE_READBACK.json",
+          "FIREFOX_NATIVE_RESTART_READBACK.json",
+          "MANIFEST.json",
+          "OCI_IMAGE_ID.json"
+        ],
+        "json_receipts": [
+          {
+            "path": "11832835414/OCI_IMAGE_ID.json",
+            "kind": "str"
+          },
+          {
+            "path": "11832835414/DOCKER_ENGINE_VERSION.json",
+            "kind": "str"
+          },
+          {
+            "path": "11832835414/FIREFOX_NATIVE_READBACK.json",
+            "kind": "dict",
+            "schema": "qikvrt-self-host-firefox-runtime-readback/v1",
+            "state": null,
+            "keys": [
+              "browser_executables",
+              "config_sha256",
+              "container_init",
+              "deployment_performed",
+              "effect_ack_done",
+              "firefox_navigator_window_observed",
+              "firefox_version",
+              "gh_in_runtime_path",
+              "git_in_runtime_path",
+              "independent_host_identity_verified",
+              "ledger_id",
+              "manifest_sha256",
+              "native_durable_event",
+              "native_subject"
+            ]
+          },
+          {
+            "path": "11832835414/FIREFOX_NATIVE_RESTART_READBACK.json",
+            "kind": "dict",
+            "schema": "qikvrt-self-host-firefox-restart-readback/v1",
+            "state": null,
+            "keys": [
+              "crashed_xvfb_pids",
+              "crashed_xvfb_reaped",
+              "effect_ack_done",
+              "manifest_sha256",
+              "native_durable_event",
+              "native_original_rows_preserved",
+              "observed_listeners_after_restart",
+              "profile_marker_preserved",
+              "public_https_readback_verified",
+              "schema",
+              "source_head",
+              "source_tree"
+            ]
+          },
+          {
+            "path": "11832835414/MANIFEST.json",
+            "kind": "dict",
+            "schema": "qikvrt-self-host-package/v1",
+            "state": null,
+            "keys": [
+              "browser_runtime",
+              "effect_ack_done",
+              "files",
+              "mesh_node_contract_sha256",
+              "native_terminal_daemon_included",
+              "package_version",
+              "runtime",
+              "schema",
+              "source_head",
+              "source_repository",
+              "source_tree",
+              "terminal_scope"
+            ]
+          }
+        ]
+      },
+      {
+        "id": 11832730055,
+        "bytes": 1190,
+        "sha256": "0687e4d47e014591ac90c433e67c651cf087941fcef6860b0c73eb34b2701214",
+        "verified": true,
+        "files": [
+          "RECOVERY.json",
+          "SYSTEMD_VERSION.txt"
+        ],
+        "json_receipts": [
+          {
+            "path": "11832730055/RECOVERY.json",
+            "kind": "dict",
+            "schema": "qikvrt-systemd-recovery-test/v1",
+            "state": null,
+            "keys": [
+              "deployed_restart_verified",
+              "effect_ack_done",
+              "exact_admission_restoration_automatically_restarted",
+              "fixture_head",
+              "fixture_tree",
+              "hold_exit_status",
+              "host_admission_verified",
+              "invocations",
+              "journal_readback_preserved",
+              "mainpid_only_sigkill_cgroup_cleanup",
+              "manifest_sha256",
+              "native_sqlite_original_bytes_preserved",
+              "path_unit_sha256",
+              "public_readback_verified"
+            ]
+          }
+        ]
+      },
+      {
+        "id": 11831159408,
+        "bytes": 3390,
+        "sha256": "831a495f922477666e8b10d6d707f3bdbf8d1bc375d64a0d85f1617f0323e2cf",
+        "verified": true,
+        "files": [
+          "MIGRATION_NATIVE_OWNER_READBACK.json",
+          "NATIVE_OWNER_STATE_RECOVERY.json",
+          "LOCAL_WORK_BATCH.json",
+          "ORIGINAL_SQLITE_BACKEND_STATE_RECOVERY.json"
+        ],
+        "json_receipts": [
+          {
+            "path": "11831159408/MIGRATION_NATIVE_OWNER_READBACK.json",
+            "kind": "dict",
+            "schema": "qikvrt-railway-migration-native-readback/v1",
+            "state": null,
+            "keys": [
+              "acknowledged_row_count",
+              "acknowledged_rows_sha256",
+              "actual_owner_unix_prepare_commit_and_daemon_restart",
+              "completion_sha256",
+              "deployed_restart_verified",
+              "effect_ack_done",
+              "export_sha256",
+              "fixture_head",
+              "fixture_tree",
+              "historical_monitor_events_sha256",
+              "historical_row_count",
+              "historical_rows_and_monitor_events_preserved",
+              "historical_rows_sha256",
+              "host_admission_verified"
+            ]
+          },
+          {
+            "path": "11831159408/ORIGINAL_SQLITE_BACKEND_STATE_RECOVERY.json",
+            "kind": "dict",
+            "schema": "qikvrt-self-host-state-recovery-readback/v1",
+            "state": null,
+            "keys": [
+              "actual_owner_unix_prepare_commit_and_daemon_restart",
+              "deployed_restart_verified",
+              "effect_ack_done",
+              "fixture_head",
+              "fixture_tree",
+              "fresh_original_ledger_readback_verified",
+              "host_admission_verified",
+              "monitor_event_count",
+              "monitor_events_sha256",
+              "native_event_count",
+              "native_events_sha256",
+              "original_state_bytes_preserved",
+              "package_manifest_sha256",
+              "private_state_snapshot_uploaded"
+            ]
+          },
+          {
+            "path": "11831159408/LOCAL_WORK_BATCH.json",
+            "kind": "dict",
+            "schema": "qikvrt-local-mesh-work-measurement/v1",
+            "state": null,
+            "keys": [
+              "baseline_payload_posts",
+              "baseline_payload_wire_bytes",
+              "effect_ack_done",
+              "fixture_head",
+              "fixture_tree",
+              "metadata_readbacks",
+              "network_scope",
+              "payload_posts",
+              "per_update_source_bytes",
+              "run_id",
+              "runtime_component_sha256",
+              "schema",
+              "single_batch_wire_bytes",
+              "source_binding_scope"
+            ]
+          },
+          {
+            "path": "11831159408/NATIVE_OWNER_STATE_RECOVERY.json",
+            "kind": "dict",
+            "schema": "qikvrt-self-host-state-recovery-readback/v1",
+            "state": null,
+            "keys": [
+              "actual_owner_unix_prepare_commit_and_daemon_restart",
+              "deployed_restart_verified",
+              "effect_ack_done",
+              "fixture_head",
+              "fixture_tree",
+              "fresh_original_ledger_readback_verified",
+              "host_admission_verified",
+              "monitor_event_count",
+              "monitor_events_sha256",
+              "native_event_count",
+              "native_events_sha256",
+              "original_state_bytes_preserved",
+              "package_manifest_sha256",
+              "private_state_snapshot_uploaded"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

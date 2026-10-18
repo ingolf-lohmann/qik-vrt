@@ -1,0 +1,39 @@
+{
+  "schema": "QIKVRT_VISIBLE_SOURCES_CHECK_V1",
+  "status": "PASS",
+  "source_count": 52,
+  "manifest_sha256": "14b07a4184300e9be1d9c8039ed09010fc0eb95ebaba76956b0cfc55c6d89a74",
+  "network_reachability_checked": false,
+  "claim_support_checked_automatically": false,
+  "errors": [],
+  "artifacts": [
+    {
+      "path": "/workspace/scratch/fe115755c38d/proof_gap_repository_20261015/docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/ARTICLE_DE.txt",
+      "sha256": "7d8ca4cf3748f6687af1ba33eca1d3b8bf85ade03c972e1e69feca558ee94b1d",
+      "pages": null,
+      "status": "PASS",
+      "errors": []
+    },
+    {
+      "path": "/workspace/scratch/fe115755c38d/proof_gap_repository_20261015/docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/Anschlussfaehigkeit_und_groesstes_Element_20261015.pdf",
+      "sha256": "9b807fd5ac4c75ac2951a2479b6a9605fa2fd30dd85aa2de468dd832fb0e30c6",
+      "pages": 9,
+      "status": "PASS",
+      "errors": []
+    },
+    {
+      "path": "/workspace/scratch/fe115755c38d/proof_gap_repository_20261015/docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/GESAMTBETRACHTUNG_DE.txt",
+      "sha256": "a1e10e4e1fff9711f2cb6268df5524b501368866911d6820cd32109becaff1cb",
+      "pages": null,
+      "status": "PASS",
+      "errors": []
+    },
+    {
+      "path": "/workspace/scratch/fe115755c38d/proof_gap_repository_20261015/docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/GESAMTBETRACHTUNG_DE.pdf",
+      "sha256": "926cceff006063d91797feaa3616cca0a6ff2c2c30d2e7f53f501ba5f3da97f6",
+      "pages": 16,
+      "status": "PASS",
+      "errors": []
+    }
+  ]
+}

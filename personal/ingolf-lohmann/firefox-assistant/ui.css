@@ -1,0 +1,11 @@
+/* SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0 */
+/* Copyright 2026 Ingolf Lohmann. */
+body { margin: 0; color: #182c35; background: #f6f8fa; font: 16px/1.5 system-ui, sans-serif; }
+main { max-width: 880px; padding: 24px; margin: auto; }
+section { padding: 20px; background: white; border: 1px solid #ced8df; border-radius: 8px; margin: 20px 0; }
+label { display: block; margin: 12px 0; }
+input, textarea, select { display: block; box-sizing: border-box; width: 100%; padding: 10px; border: 1px solid #7e929e; border-radius: 4px; font: inherit; }
+button { padding: 10px 16px; margin: 6px 6px 6px 0; color: white; background: #174e69; border: 0; border-radius: 4px; font: inherit; cursor: pointer; }
+button:disabled { opacity: .55; cursor: wait; }
+button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 3px solid #de9c19; outline-offset: 2px; }
+pre { white-space: pre-wrap; overflow-wrap: anywhere; background: #f1f4f6; padding: 14px; }

@@ -87,6 +87,7 @@ open checks, controlled isolation, responsible blocking, and a fully bound
 - [Project site](https://goldkelch.github.io/qik-vrt/)
 - [Canonical publication and reference overview](https://goldkelch.github.io/qik-vrt/publications/)
 - [Machine-readable publication index](docs/publications/index.json)
+- [Gesamtdarstellung, 20 Meilensteine und Roundtrip](docs/publications/2026-10-15-trust-mesh-roundtrip/README.md) (15.10.2026; korrigierter Publikationskandidat mit Quellen- und Nachweisgrenzen, noch kein neuer Zenodo-Record)
 
 ### Current release and synchronized snapshot evidence
 
@@ -176,7 +177,38 @@ does not establish peer review, empirical confirmation, or field-wide adoption.
 - `src/qikvrt_github_api_shim.py` — authenticated, repository-scoped local
   GitHub-shaped HTTP adapter.
 - `scripts/qikvrt_api_client.py` — validating client; cleartext bearer tokens
-  are permitted only on loopback endpoints.
+  are permitted only on loopback endpoints. Every attempted dispatch closes
+  with fresh branch HEAD/TREE and `https://raumzeitterminal.de/` GET observations,
+  including errors and suppressed retries. Redirects are never followed; an
+  adapter token is not forwarded to GitHub or the public delivery origin.
+  The shared PR507 Owner rule and `tools/ai_handoff.py` readback/causal validators
+  remain authoritative. A scoped handler DONE is reported separately; this
+  transport cannot prove working-software delivery and returns CONTINUE (20)
+  for accepted/scoped-success responses, or blocking exit 1 on failure.
+  Private metadata under `~/.local/state/qikvrt/api-client` (override with
+  `QIKVRT_API_CLIENT_STATE_DIR` or `--state-dir`) preserves failed and in-flight
+  requests across process restarts without storing tokens, payloads or response
+  bodies. A different request ID, observation clock or lifecycle HEAD does not
+  permit another POST. `--retry-evidence-file` consumes the existing causal
+  fields `subject`, `error`, `cause`, `capability` as SHA-256 digests: bind
+  subject/error to the recorded failure and supply materially new, relevant
+  cause/capability evidence. Digest consistency is not independent proof of
+  those claims and grants no authorization or governance bypass. Ambiguous,
+  in-flight and asynchronous outcomes require operation-scoped observation
+  through the existing executor before another effect; they are not retried
+  merely because a new causal digest was supplied.
+  Completed stable request IDs are also retained in the existing journal;
+  repeating one performs fresh closing reads without another POST, including
+  after a lost work cursor or another completed request. A new accepted ID can
+  represent new work after completion. Up to 32 completion witnesses per
+  semantic subject are retained within the 16 KiB journal limit; reaching the
+  bound blocks new dispatches rather than forgetting old IDs. A remembered
+  completion never closes a later unresolved request for that subject.
+  Before reserving an admitted successor, the original attempt journal is
+  checkpointed by its source digest in the same private work-history namespace,
+  including legacy attempts whose work cursor or history is missing. The
+  per-run work receipt also retains its attempt metadata. A checkpoint failure
+  blocks the new POST; original evidence is never overwritten to admit it.
 - `qikvrt.py` — authorization-before-effect launcher for the master gate and the
   explicitly confirmed publication planner.
 - `tools/qikvrt_subprocess.py` — subprocess runner with hard time and captured-
@@ -755,7 +787,7 @@ Nicht verfügbare Angaben werden mit `UNAVAILABLE` bezeichnet und nicht erfunden
 Die Rollen sind eindeutig:
 
 ```text
-upstream = https://github.com/Goldkelch/qik-vrt.git
+upstream = https://github.com/ingolf-lohmann/qik-vrt.git
 origin   = persönliche Ursprungskopie oder LOCAL_ONLY
 ```
 
@@ -777,7 +809,7 @@ separat zu autorisierende Effekte. `QIKVRT_EXTERNAL_EFFECTS=disabled` ist die
 Voreinstellung.
 
 Die persönliche Kopie wird nicht allein durch ihre Existenz kanonisch. Die
-Authority bleibt `Goldkelch/qik-vrt`; ein persönliches `origin` ist die
+Die aktuelle Authority ist gemäß `policy/CANONICAL_UPSTREAM_REMOTE_V1.json` `ingolf-lohmann/qik-vrt`; ein persönliches `origin` ist die
 individuelle, dauerhafte Arbeits- und Nachweiskopie. Bytegleichheit,
 Synchronisierung oder Promotion dürfen nur für exakt geprüfte Commits und Pfade
 behauptet werden.
@@ -1177,6 +1209,216 @@ Die Architektur beschreibt keine biologische Kognition, sondern ein informatisch
 
 **q.e.d.**  
 **Ingolf Lohmann**
+
+
+## `docs/CLAUDE_MCP_CONNECTOR.md`
+
+<!--
+SPDX-License-Identifier: CC-BY-NC-ND-4.0
+Copyright (c) 2026 Ingolf Lohmann.
+-->
+
+# Claude Remote-MCP application path
+
+The integrated `/mcp` endpoint reuses PR #509's three evidence-read tools and
+PR #511's two data tools in the same `src/qikvrt_github_api_shim.py` transport.
+The #509 module retains its read/source/receipt/replay semantics and has no
+separate HTTP or JSON-RPC dispatcher. `qikvrt_ingest` delegates to the existing
+five-state handler; `qikvrt_readback` and an independent raw-byte GET reuse its
+committed ingest-provenance validator. Existing REST paths, client options and
+fixed Ruleset pins remain intact. No new dependencies or credential store.
+
+Human scope/implementation authorization: Ingolf Lohmann, 2026-10-09.
+Implementation and tests: OpenAI Codex, GPT-6 family; exact build unavailable.
+Contribution terms, independent Code Owner review and exact candidate
+acceptance remain incorporation gates.
+
+## Reused subjects
+
+| Component | Exact inspected source | Evidence scope |
+| --- | --- | --- |
+| REST client 2.3.0 | #508 HEAD `2e847ce4af60451bef11ec1b89540d56ee4e3ea6`, TREE `cde054f9aa56d98cb2389df910e0e9c19fc16deb` | Existing REST client, local handler and independent Ruleset readback |
+| Evidence-read tools | #509 HEAD `f760a4090b4ca792ca1d79edacce11f4bded7ee0`, TREE `de7a9f41e3e3df62df7fd65225e3c31777ee3c58` | Fresh HEAD/TREE, exact capability blobs and existing EFFECT_ACK receipts |
+| Data tools and raw readback | #511 HEAD `18d2598fdbabf4630c9fe168313686aa5743df79`, TREE `bfba67cdce90b4f29838e7018be5c1cbd594de4f` | Authenticated opaque-byte ingest and committed original bytes |
+| Direct Claude Messages provider | #506 HEAD `e31ca36c2e64d86a03696525a85865c7332a6377` | Separate provider/budget candidate; no Web-Connector effect |
+| Published Mesh Monitor | Site version 17, HEAD `b2d6a25b00abe9b4b0e1301dc08b9504b3e61147`, TREE `1c81811b79160c5ffe9b42b0246eafeaa77004e4` | Fresh authenticated Work MCP observe/readback and independently verified stored bytes; Claude connection remains unverified |
+
+Source locators:
+
+- https://github.com/ingolf-lohmann/qik-vrt/pull/508
+- https://github.com/ingolf-lohmann/qik-vrt/pull/509
+- https://github.com/ingolf-lohmann/qik-vrt/pull/511
+- https://github.com/ingolf-lohmann/qik-vrt/pull/506
+- https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/mcp
+
+The monitor supplies observation/D1-snapshot tools on a separate source tree.
+Main did not yet contain either MCP candidate at the source inspection.
+This integration reuses both existing candidates rather than introducing a
+third adapter. The existing monitor/OAuth path
+is preserved; this candidate does not deploy to or change that Site.
+
+## Private configuration and permissions
+
+Use the established `make run-api` with its required private environment:
+`QIKVRT_API_TOKEN`, future `QIKVRT_API_TOKEN_EXPIRES_UTC`, exact
+`QIKVRT_ALLOWED_REPOSITORY`, `QIKVRT_API_PRINCIPAL`, and private durable
+`QIKVRT_REPO_ROOT`. Add `QIKVRT_MCP_ENABLED=1`. Separate explicit grants:
+
+| Credential | Principal | Allowlist | Tools |
+| --- | --- | --- | --- |
+| `QIKVRT_MCP_TOKEN` and future `QIKVRT_MCP_TOKEN_EXPIRES_UTC` | `QIKVRT_MCP_PRINCIPAL` | `QIKVRT_MCP_READ_SCOPES='repository:read capability:read effect_ack:read'` | `qikvrt_repository_state`, `qikvrt_capabilities`, `qikvrt_effect_ack_result` |
+| Same separate read credential, additional explicit grant | Same read principal, must own the committed artifact | Add `artifact:read` to `QIKVRT_MCP_READ_SCOPES` | `qikvrt_readback` and raw GET; no ingest |
+| Existing REST credential | `QIKVRT_API_PRINCIPAL` | `QIKVRT_MCP_DATA_SCOPES='readback'`; add `ingest` only for authorized storage | `qikvrt_readback`, optionally `qikvrt_ingest` |
+
+Legacy `QIKVRT_MCP_SCOPES` configurations remain valid: their recognized scopes
+are filtered separately by authenticated credential domain. An explicit new
+domain allowlist takes precedence over its legacy projection, even when empty.
+Unknown or misclassified scopes fail closed. Read keys may not alias REST,
+attestation or upstream keys. No scopes means no corresponding exposed tools.
+The read profile preserves its configured `QIKVRT_MCP_REF` and independent
+GitHub GET credential. Replays recheck current auth,
+expiry, permission, source/version and explicit acceptance.
+
+The server remains loopback by default. Remote deployment must preserve its
+non-loopback opt-in and TLS certificate/key requirements, specify exact
+`QIKVRT_MCP_HOSTS` host:port values and configure `QIKVRT_MCP_ORIGINS` when
+browser Origins are expected. Host, Origin, duplicate security headers, bearer
+expiry and rate limits are checked before execution. OAuth is not implemented
+here. Claude's documented private fixed request headers can send the existing
+`Authorization: Bearer ...` credential. This is a shared service-principal
+configuration, not authentication of a natural person. Retain source-system
+permissions and the selected Claude connector's write approval requirements.
+Never put credential values into source, logs or evidence.
+
+## Operation and source contracts
+
+Both tools require exact `repository`, `artifact_id`, stable `request_id`,
+`expected_sha256`, `api_contract_version: '2.3.0'` and
+`expected_implementation_sha256`. Ingest additionally requires canonical
+`payload_b64` (at most 256 KiB decoded) and literal `effect_accepted: true`.
+Unknown fields, bad hashes, changed versions/source and missing permission
+fail before the handler. No automatic fallback or blind retry.
+
+The implementation digest is SHA-256 over the UTF-8 compact sorted JSON map
+from these paths to their SHA-256 file digests:
+
+- `scripts/qikvrt_api_client.py`
+- `src/qikvrt_api_handler.py`
+- `src/qikvrt_effect_ack.py`
+- `src/qikvrt_github_api_shim.py`
+- `src/qikvrt_mcp_adapter.py`
+- `api/qikvrt_github_api.openapi.yaml`
+
+The service freezes this digest at startup and rejects later source drift.
+Discovery reports it for inspection; obtain the expected digest independently
+from accepted exact candidate bytes. Self-reported discovery alone is not
+provenance authority. A changed candidate requires newly reviewed/bound bytes.
+
+MCP `2025-11-25` uses initialization, JSON responses and no optional session/SSE
+stream. Current `2026-07-28` uses discovery and per-request `_meta`; the
+version/method/tool headers must match the body. The evidence tools retain
+their two older, read-only protocol versions. Data writes retain only
+`2025-11-25` and `2026-07-28`. This bounded five-tool integration
+does not claim optional resources, prompts, sampling or task support.
+
+The original nested handler `EFFECT_ACK_DONE` remains limited to opaque-byte
+storage. The MCP envelope stays `EFFECT_ACK_CONTINUE`, `ordinary_release=false`
+and `claude_connector_execution_verified=false`. It cannot infer product
+release, native Mesh execution, merge or Claude provenance from a client name.
+
+Readback takes a shared lock on the writer's existing lock file, validates
+payload, sidecar, provenance, committed transaction, replay receipt and
+responsibility protocol, and returns only the same principal's artifact.
+It creates no directory, audit event or receipt. Independently fetch:
+
+`GET /repos/{owner}/{repo}/qikvrt/artifacts/{artifact_id}/readback`
+
+with exact `request_id`, `expected_sha256`, `api_contract_version` and
+`expected_implementation_sha256` query values, then recompute SHA-256. Both
+routes share the local store trust boundary: the separation verifies response
+serialization, not a second storage authority. Existing local checksums/audit
+chains are not an external rewrite-proof anchor. Deployment must provide the
+durable state volume and retention.
+
+## Reproduction
+
+Run `make mcp-conformance-test`, then `make test`. Tests exercise the real
+adapter in a separate process with ephemeral fixture credentials. Coverage:
+both protocol eras; scoped write plus raw GET; read-only non-mutation; restart
+replay; eight concurrent identical calls; changed replay isolation; missing,
+invalid and expired auth; missing read/write permission; repository/principal
+confinement; wrong version/source/hash; header/body conflict; Host/Origin;
+malformed/duplicate JSON; payload limit; and bytes/sidecar/provenance/receipt/
+transaction tampering.
+
+Both original conformance suites remain in this target. Joint regressions
+exercise separate catalogs, cross-key refusal, explicit original-byte read
+grants, principal confinement, source drift, revocation before replay and
+discovery without an effect grant. Only source-set expectations in the
+original tests change; their original positive and negative assertions remain.
+
+The candidate targets Main and includes the entire #508 dependency, with its
+workflow sources, writer pins and native gates preserved. Main-based scope
+does not establish enforced Code Owner governance, contribution acceptance or
+an independent exact-head approval. These remain governed-incorporation gates.
+
+`scripts/qikvrt_mcp_probe.py` is a standard-library HTTP/JSON/SHA-256 client
+with no server imports, no credential redirects and no retries. Default:
+
+```sh
+python3 -B scripts/qikvrt_mcp_probe.py \
+  --base-url "$QIKVRT_VERIFIED_SERVICE_ORIGIN" \
+  --repository ingolf-lohmann/qik-vrt \
+  --artifact-id "$QIKVRT_BOUND_ARTIFACT_ID" \
+  --request-id "$QIKVRT_BOUND_REQUEST_ID" \
+  --expected-sha256 "$QIKVRT_EXPECTED_PAYLOAD_SHA256" \
+  --expected-implementation-sha256 "$QIKVRT_EXPECTED_IMPLEMENTATION_SHA256"
+```
+
+Only add `--payload-file <approved-file> --accept-effect` for one explicitly
+authorized ingest. The private environment supplies the token. Output excludes
+credentials/payload bytes and always keeps Claude provenance unverified.
+A passing generic client probe is conformance, not actual Claude execution.
+
+## Remaining external boundary
+
+This task exposes no callable authenticated Claude account operation. The
+monitor still advertises its same version-17 endpoint. Its two earlier direct
+authorization paths returned 401 and are not retried. A materially new
+capability appeared during this task: its three actual MCP tools became
+callable through the existing authorized Work connection. `qikvrt_observe`
+returned a new persistent observation, then `qikvrt_readback` independently
+read that exact ID and expected digest. Local Python SHA-256 verification of
+the original returned UTF-8 bytes passed: 5,663 bytes, digest
+`b666efd88ad324981ec672b9f5853e78f7f59ee3b0bb0ac5b0750e8fe748bb54`,
+snapshot `569fb70c-9ba9-4d22-9bdf-314ca388db40`. The fresh evidence is in
+`evidence/claude-mcp-connector/2026-10-09/`. This establishes the existing
+monitor's Work MCP application scope, not Claude execution or this candidate's
+remote deployment. A separate direct public REST fetch from this environment
+failed with HTTP 403; no retry was issued and no origin-level cause inferred.
+
+After governed incorporation, deploy these exact accepted bytes to an
+authorized public HTTPS service with durable state and privately configured
+expiring credentials. Add that verified endpoint to Claude, complete its
+private authentication/header configuration, observe an actual `tools/call`
+trace from the Claude connection and independently verify the returned bytes
+over raw REST. Bind candidate HEAD/TREE, invocation, request and byte digests.
+This closes `CLAUDE_WEB_CONNECTOR_EXECUTION` only when independently observed.
+The existing monitor may be used after its own OAuth connection becomes
+callable, under its separate observation/snapshot contract.
+
+`raumzeitterminal.de` is separately required. The historical #511 provider readback reports
+`pending`, `ssl_status=pending_validation`; another hostname proves no delivery
+there. No deployment, domain, OAuth, credential, Ruleset or review setting is
+changed by this candidate.
+
+Primary specifications, retrieved 2026-10-09:
+
+- https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities
+- https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/streamable-http
+- https://modelcontextprotocol.io/specification/2026-07-28/server/discover
+- https://modelcontextprotocol.io/specification/2026-07-28/server/tools
+- https://modelcontextprotocol.io/specification/2025-11-25/basic/transports
 
 
 ## `docs/COLLECTIVE_ADAPTIVE_COGNITION.md`
@@ -1598,17 +1840,191 @@ remains evidence only and is not submitted by this release automation.
 
 ## `docs/GITHUB_DEPLOYMENT.md`
 
-# GitHub Deployment
+# GitHub REST API execution and continuation
 
-1. Unzip this repository ZIP into a clean repository root.
-2. Commit all files.
-3. Push to GitHub.
-4. Open Actions and confirm `QIKVRT CI` and `QIKVRT Mesh API`.
-5. Run `QIKVRT CI`.
-6. Run `QIKVRT Mesh API` with `operation=release_status`, `artifact_id=status`, `dry_run=true`.
-7. Download and inspect the audit artifact.
+Use `GITHUB_ROUTE=REST_API_ONLY` and the existing authenticated connection.
+Read `/AI` and its required evidence before execution. A callable REST POST,
+an appropriate repository-scoped credential, and native workflow admission
+must each be established; a successful GET does not establish any of them.
+Never replace missing initial admission with a rerun, proxy trigger, browser
+login, or permission expansion.
 
-Only after the live workflow dispatch succeeds is GitHub-side API enablement externally confirmed.
+## Dispatch adapter/client contract 2.3.0
+
+`api/qikvrt_github_api.openapi.yaml` remains compatible with 2.0.0 and 2.1.0 requests.
+The four Mesh operations and existing effect gates are unchanged. The optional
+boolean `return_run_details` requests GitHub's asynchronous run ID and URLs.
+The loopback adapter accepts this field but retains its synchronous `202`
+response and existing handler result.
+
+With an already delivered and scoped credential in `QIKVRT_API_TOKEN`, the
+existing client can submit one authorized request:
+
+```sh
+python3 scripts/qikvrt_api_client.py \
+  --base-url https://api.github.com \
+  --owner ingolf-lohmann --repo qik-vrt --ref main \
+  --operation release_status --artifact-id status --dry-run true \
+  --request-id OWNER_AUTHORIZED_UNIQUE_REQUEST_ID --return-run-details
+```
+
+This example is not evidence that a credential or callable executor exists.
+Use the exact approved ref and request identifier for the actual work unit.
+Do not copy connection credentials into files, chat, logs, or caches.
+
+| Response | Client exit | Evidence established | Required continuation |
+| --- | --- | --- | --- |
+| GitHub `204`, empty body | `20` | Dispatch transport accepted; run identity unknown | Read authoritative workflow runs and identify the exact subject/request |
+| GitHub `200`, bound run details | `20` | Dispatch transport accepted; repository/run URLs validated | GET the named run and verify its workflow, event and actual HEAD |
+| Local `202`, handler CONTINUE | `20` | Synchronous scoped evaluation requires further evidence | Follow the handler's scoped next checks |
+| Local `202`, handler DONE | `0` | Only the effect scope declared by the handler | Verify the applicable receipt; no unrelated production claim follows |
+| Ambiguous transport or invalid success response | `1` | Outcome unknown; no effect permission | Authoritative readback before any further dispatch |
+
+The asynchronous receipt records contract version, repository, ref,
+request identifier, SHA-256 of the exact submitted JSON bytes, dispatch URL,
+one attempted POST, and any validated run ID/URLs. It carries
+`EFFECT_ACK_CONTINUE`, `execution_verified=false` and `ordinary_release=false`.
+It excludes credentials and payload contents. Neither a receipt nor a green
+observer authorizes merge, release, deployment or `EFFECT_ACK_DONE`.
+
+## Observe, verify and resume
+
+1. Read the returned run URL, or the complete relevant workflow-run collection
+   after a `204`/ambiguous response. Verify repository, workflow path, permitted
+   event, ref and actual HEAD against the authorized work unit. Do not assign
+   a run solely because its time or workflow name matches.
+2. Wait for native execution and read its jobs and `qikvrt-api-state` artifact.
+   Verify the producing run and exact request identifier, request facts,
+   provenance, hashes and handler effect scope before accepting a result.
+3. `verify` and `stage` require an already verified state-producing run. Pass
+   its decimal identifier through `--state-run-id RUN_ID`; the existing
+   `tools/qikvrt_validate_state_run.py` gate still binds the restored artifact
+   to repository, workflow, commit, permitted event and successful completion.
+4. Manifest each observed obstacle in the existing work-unit/receipt path,
+   diagnose it against exact bytes and external readbacks, apply a justified
+   versioned compatible repair, retest the originally failing operation and
+   continue. Persist enough non-secret evidence for another client to resume.
+5. After a lost or unreadable response, never blindly repeat the POST. The
+   client itself issues no retry. Reobserve authoritative run/artifact state
+   first; dispatch idempotency is not inferred from a request identifier.
+
+## Governance repair boundary
+
+The 2.3 client preserves both narrowly scoped 2.2 operations. They accept only
+`https://api.github.com`, `ingolf-lohmann/qik-vrt`, `main` and one explicitly
+selected writer contract. There is no arbitrary-workflow
+argument, local-adapter proxy, caller-supplied workflow input or credential
+argument. Authentication uses the existing `QIKVRT_API_TOKEN` environment
+handoff; the client never stores the credential or prints provider error bodies.
+No new secret, permission, trigger or authority route is installed.
+
+| Local writer version | Exact Git blob | Integration source |
+| --- | --- | --- |
+| `legacy-v1` (default when omitted) | `1202d24c2f23eb8fa52ab7c562a583e79f9e8444` | Existing Main writer checked with PR #502 |
+| `lifecycle-v2` (explicit opt-in) | `ab47a8ec98c39b39bda420050cb7c970a9da6165` | PR #505 HEAD `08e382ec928c8e5dd2ecf120ab352274be96c62e` |
+
+Each version also pins the canonical Ruleset postcondition digest. The two
+reviewed source projections have the same digest:
+`45da27f3608b38f04b8252d7fc709a6337bff49d40fa2cf9baa4425dd36ec0dd`.
+The client reads the writer at the immutable expected Main SHA, verifies the
+Contents path/type/encoding/size and provider SHA, and recomputes the Git blob
+SHA from its decoded bytes. Unknown versions, unknown blobs, forged metadata,
+altered bytes and a known writer belonging to the other version fail closed.
+There is no automatic selection, fallback, arbitrary-hash override or disabled
+pin. Selection is local receipt metadata and never a new workflow input.
+The source contract does not constitute native Code Owner approval.
+
+### Controlled integration order
+
+Prefer one separately reviewed integration of the combined candidate: retain
+PR #502 HEAD `5ad88f106de6d2a34172ca7cbb750963c77bfdd3` and PR #505 HEAD
+`08e382ec928c8e5dd2ecf120ab352274be96c62e` source changes and tests, regenerate
+the joint integrity trio, execute the complete exact-head gates, obtain the
+required independent native approval and integrate through protected Main.
+Do not activate #505's writer with only the unchanged 2.2 client available.
+
+If the changes must be staged, make the reviewed 2.3 client available first;
+its default still works with the legacy writer. Integrate the governed
+lifecycle source next, freshly observe Main and the new writer, then explicitly
+select `lifecycle-v2` for both dispatch and its independent readback. A changed
+head invalidates a previously prepared invocation; reconstruct its prerequisites.
+An active or already observed exact-head writer run, including the writer's
+existing Main push trigger, continues to block a duplicate dispatch. Observe
+that actual run through its applicable native route; do not relabel a push run
+as workflow_dispatch or redispatch it for a different acknowledgement.
+
+After fresh Main/target and authorization checks, with an already delivered
+Actions-write credential and an already configured writer authority route,
+the following examples apply only after governed lifecycle-v2 integration.
+On the legacy Main, omit the version option or select `legacy-v1` explicitly:
+
+```sh
+python3 scripts/qikvrt_api_client.py \
+  --base-url https://api.github.com \
+  --owner ingolf-lohmann --repo qik-vrt --ref main \
+  --operation ruleset_authority_dispatch \
+  --ruleset-writer-version lifecycle-v2 \
+  --expected-main-sha EXACT_FRESH_MAIN_SHA \
+  --request-id OWNER_AUTHORIZED_UNIQUE_REQUEST_ID \
+  --dry-run false --accept-effect
+```
+
+The POST body is exactly `{"ref":"main"}`. Its local request ID is never sent
+as an unsupported workflow input and does not make GitHub dispatch idempotent.
+The client checks Main twice, verifies the selected writer's actual bytes, and refuses active or
+already observed exact-head writer runs. It fails closed if a bounded collection
+is incomplete or reaches 100 entries. A lost response, nonempty 204, unexpected
+success status, denied request or redirect causes no retry. The provider accepts
+a ref without an atomic expected-SHA lease: Main can still move after the last
+GET. The actual executing run's SHA must therefore be checked independently.
+
+HTTP 204 returns exit 20 with transport acceptance, an unknown run identity,
+`execution_verified=false` and `ruleset_effect_verified=false`. Identify the
+actual run through authoritative repository/workflow/event/ref/head evidence;
+time proximity alone does not identify a run. Then use the independent read path:
+
+```sh
+python3 scripts/qikvrt_api_client.py \
+  --base-url https://api.github.com \
+  --owner ingolf-lohmann --repo qik-vrt --ref main \
+  --operation ruleset_authority_readback \
+  --ruleset-writer-version lifecycle-v2 \
+  --expected-main-sha EXACT_EXECUTING_MAIN_SHA \
+  --request-id OWNER_AUTHORIZED_UNIQUE_REQUEST_ID \
+  --ruleset-run-id INDEPENDENTLY_VERIFIED_RUN_ID
+```
+
+This operation issues GETs only. It checks the fixed run's repository, workflow,
+event, Main SHA and attempt; nonempty successful native `reconcile` jobs; the
+unique repository-owned Ruleset detail against the existing canonical digest
+`45da27f3608b38f04b8252d7fc709a6337bff49d40fa2cf9baa4425dd36ec0dd`; and
+`main.protected=true`. It reobserves Main and the run to detect drift. Missing,
+foreign, stale, incomplete or mismatching evidence cannot verify the effect.
+
+Exit 0 and `ruleset_effect_verified=true` mean only the independently observed
+Ruleset postcondition. They do not establish that this particular dispatch
+created an already existing Ruleset: `mutation_attribution_verified=false`.
+`effect_state=EFFECT_ACK_CONTINUE`, `native_review_verified=false` and
+`ordinary_release=false` remain explicit. An observed but unverified effect
+returns 20; invalid or inaccessible evidence returns 1. Current-head Code Owner
+review and governed incorporation still require their own native evidence.
+
+The existing ruleset writer is
+`.github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml`. Its native
+`workflow_dispatch` route requires a separately callable Actions-write POST
+and one already configured authority-token route. Its ruleset effect requires
+repository Administration-write authority, canonical digest guards, conditional
+update and independent post-effect readback. The Mesh artifact operations do
+not grant those permissions or invoke that writer.
+
+REST dispatch acceptance, code versioning and technical test success do not
+activate a candidate on Main. Preserve current-head Code Owner review and
+native governance. If the required REST write operation is not exposed,
+persist the exact request and capability gap without inventing a credential,
+claiming execution or substituting another trigger.
+
+Provider contract:
+https://docs.github.com/en/rest/actions/workflows?apiVersion=2022-11-28#create-a-workflow-dispatch-event
 
 
 ## `docs/HUMAN_MACHINE_COLLECTIVE_COGNITION_ARCHITECTURE.md`
@@ -1737,6 +2153,227 @@ A GitHub action includes every connector/API mutation or read that advances the 
 12. **Observation is not a snapshot or terminal handoff while a follow-up action exists.** Any observation that yields an executable, expected, or causally required successor action keeps the owning operation in `RUNNING` (or `WAITING` only while an external effect is genuinely pending). The client MUST execute or continue that successor within the same round trip, then observe its effect and verify readback. It MUST NOT freeze, summarize, hand off, or present the intermediate observation as completion merely because a read succeeded.
 13. **Continuation is the default after a non-terminal observation.** The round trip is `OBSERVE -> DIAGNOSE -> ACT -> OBSERVE EFFECT -> VERIFY READBACK -> CONTINUE` until a scope-bound terminal state is actually established. A snapshot is admissible only when no executable successor remains for the owned scope, a concrete blocker requires external authority/input, or an explicitly bounded observation window has ended.
 14. Observation frequency MUST be event- and workload-sensitive rather than a fixed polling ritual. New input, active effects, unresolved causal defects, expected receipts, or successor-carrier movement increase observation pressure; unchanged stable state is deduplicated. Monitoring activity alone is not progress.
+
+## Immediate execution — Owner principle of 2026-10-13
+
+> Was du heute kannst besorgen, das verschiebe nicht auf morgen, sondern erledige es unmittelbar, denn alles andere war, ist und wird inakzeptabel sein.
+>
+> q.e.d.
+> Ingolf Lohmann
+
+Apply this principle now: execute each safe, deterministic, already authorized
+and actually callable successor within the current work ring. Complete its
+applicable tests, persistence and fresh effect readback before a handoff.
+The existing client gate rejects terminal return while an executable successor
+remains; reuse it. A concrete external or protected-authority blocker retains
+the open task, causal evidence and retry condition. Independent executable
+work continues, and unchanged failed effects remain NOOP. The principle adds
+no permission scope and proves no unattended runner or other-client adoption.
+Its normative source is the existing recursive policy's
+`self_application_working_rule.immediate_execution_principle`.
+
+## Binding client continuation procedure
+
+### Knowledge and correction continuity — Owner correction of 2026-10-16
+
+Knowledge loss itself is the defect, regardless of when a handoff happens.
+Apply `policy/QIKVRT_EPISTEMIC_CONNECTABILITY_CONTINUITY_V1.json` through the
+existing client receipt and validator. Carry established results and their
+source identities, granted authorization, unknowns, scope limits, failures and
+corrections as well as open tasks. Reuse unchanged exact-source evidence;
+reobserve mutable state when the task requires it.
+
+`knowledge` is a list of records with unique `id`, nonempty `epistemic_class`,
+`scope` and `statement`, a nonempty `subject` object and `evidence` locator list,
+optional `supersedes` record IDs, and `record_sha256`. The digest is SHA-256 of
+the entire record without `record_sha256`, encoded as UTF-8 JSON with sorted
+keys, compact separators, `ensure_ascii=false` and finite JSON values. Every
+declared predecessor record must remain byte-equivalent under this encoding.
+Do not silently edit, drop or promote its epistemic class, scope or statement.
+Corrections append a new record referencing the retained original; orphan and
+cyclic correction references are rejected. Record hashes bind declared bytes;
+they do not authenticate evidence or establish that a statement is true.
+
+Historical writer-encoding repair uses the explicit versioned contract
+qikvrt-knowledge-historical-encoding-migration/v1 in the existing policy's
+knowledge_continuity.historical_encoding_migration. It is opt-in through the
+receipt's knowledge_encoding_migration, bound to the exact SHA-256-verified
+immediate predecessor. Each of at most 128 listed records declares the codec
+json-sorted-spaced-utf8/v1, its original digest and its canonical compact digest.
+That historical codec is finite UTF-8 JSON with sorted keys, ensure_ascii=false
+and separators comma-space and colon-space. No other historical codec is tried.
+
+Every listed record must occur exactly once in the pinned predecessor and the
+successor with identical fields and stored digest. Both declared digests are
+independently recomputed. Only the in-memory reader view uses the recomputed
+compact digest for the existing schema, correction-graph and continuity checks;
+the original receipt and all stored records remain unchanged. New records must
+use the ordinary compact encoding and cannot enter the historical mapping.
+An unpinned migration, an undeclared or malformed codec, a different payload,
+duplicate mapping, missing record or unlisted invalid digest remains BLOCK.
+An old receipt without this declaration remains rejected under the strict gate.
+Successful compatibility checking does not change any recorded epistemic class,
+grant a permission, transfer predecessor PASS or prove runtime/delivery success.
+
+When a durable predecessor is available, pin its exact repository-relative
+`receipt_path` and `receipt_sha256` under `previous_run`. Its `execution_id`
+must match. The existing provenance Work Unit may carry `execution_id`,
+`knowledge` and `work` directly; no separate memory service is required. The
+validator reads only that explicit file (at most 2 MiB), rejects changed bytes and
+paths outside the repository, and derives inherited knowledge and open work
+from it. Omitting those from the caller's `previous_run` summary cannot erase
+them. Keep this pin across handoffs and resolve a missing predecessor before
+claiming that reconstruction succeeded. Historical receipts without knowledge
+remain readable; their absence of a snapshot is not evidence of full retention.
+
+Keep observations local to their measured scope. For example, absent process
+environment variables establish only absence in that process, not absence of
+an existing GitHub Actions secret or a provider credential. The current IONOS
+Cloud-v6 inventory consumer's GET-only scope does not determine the token's
+other rights. IONOS Cloud DNS documents `IONOS_TOKEN` bearer authentication:
+https://docs.ionos.com/sdk-go-bundle/sdks/dns . Actual token rights and admitted
+execution remain separately unverified until observed. A generic failure must
+not overwrite this distinction as a global access-absence claim.
+
+These are continuity checks on supplied records. They do not prove that an
+initial snapshot contains all human/model knowledge, that another client used
+the gate, that historical PASS applies to a changed subject, or that the product
+was delivered. Retain the exact-host and live-effect gates below.
+
+### Anticipated transitions — Owner instruction of 2026-10-15
+
+Clients observing an emerging transition MUST use the existing client receipt
+to retain its indication, activation conditions, available preparation and
+independent alternatives. Execute admitted preparation in the current work
+ring even while the later effect is blocked. Reassess on relevant new evidence
+or human corrections; keep original task identity and open obligations.
+
+Add `input_sha256` to the receipt, recomputed from the actual task inputs and
+human corrections. Its `transition_plan` contains the same `input_sha256`, the
+exact current `subject`, and `transitions`. Each transition has a unique `id`,
+nonempty indication `evidence`, an `activation` list of unique condition `id`,
+strict boolean `satisfied` and nonempty `evidence`, a target `action`, and a
+`preparation` list. Target and preparation actions use the existing
+`next_actions` admission fields and exact operation binding. Conditions needed
+for preparation completion belong in the target's activation list. A transition
+condition never supplies authorization, credentials, callable capability or
+governance admission.
+
+For a previously failed planned action, supply its `retry.current` and
+`retry.previous` using the existing subject/error/cause/capability digests.
+Unchanged causal evidence suppresses that action; observation clocks or a new
+input digest do not admit a retry. Actual effects still require the ordinary
+`attempts` gate and fresh per-action readback.
+
+`tools/ai_handoff.py --client-receipt` emits `CLIENT_TRANSITION_PLAN` JSON with
+admitted `ready` actions (stage `PREPARE` or `EXECUTE`) and `waiting` transitions
+with their missing condition IDs. The client consumes the ready actions through
+the existing authorized executor. Available preparation prevents terminal
+handoff; unresolved transitions prevent DONE. Recompute the plan after each
+relevant input, subject or capability change, retaining independent alternatives.
+No parallel worker, trigger or credential store is introduced.
+
+Historical v1 receipts without a plan remain readable. Validation checks the
+declared bindings and predicates, not their live authenticity or completeness.
+The plan neither executes actions nor proves a latency improvement, unattended
+runtime, Main integration, other-client adoption or domain delivery. Measure
+latency, correction recovery and verified useful progress separately before
+claiming such gains.
+
+Owner instruction: Ingolf Lohmann, 2026-10-11. This procedure is mandatory for
+all repository clients. Preserve the existing authorized repair, integration
+and exact-host delivery goal after handoffs, compaction or status questions.
+Do not ask for the same authorization again. Inspect applicable existing
+repository, connector, CLI and Mesh routes before declaring execution absent;
+retain operation, HTTP method, target/account binding and exact denial evidence.
+A locally absent CLI or empty project filter alone is insufficient.
+
+Continue each safe, deterministic, authorized successor, including useful
+preparation and persistence while an external effect is blocked. Keep GitHub
+and IONOS REST-only routing, secure credentials and protected governance. Never create a
+proxy executor or synthetic trigger to manufacture capability. Preserve issue
+evidence, perform NOOP for unchanged causal failures, and read back ambiguous
+effects before another effectful attempt.
+
+On 2026-10-13 Ingolf Lohmann explicitly selected **“REST-only beibehalten”**
+for IONOS. Reuse this decision across reconnects; do not reopen the browser-login
+choice. The existing client gate enforces `client_continuation.ionos_route` for
+planned and effectful actions, including blocked actions. This route constraint
+does not establish an authenticated Hosting API key, a domain operation or a
+delivery effect. The existing Cloud-v6 GET-only inventory binding is a separate
+product and cannot serve as a Hosting domain/DNS writer. DNS, TLS and application
+delivery still require independent evidence for `raumzeitterminal.de`.
+
+Before a terminal handoff, run the existing read-only validator:
+`python3 -B tools/ai_handoff.py --client-receipt <receipt.json>`.
+Its `qikvrt-client-continuation/1` receipt contains:
+
+- `subject`: exact `repository`, bound `ref`, `head` and `tree`; `authorization`: `granted`
+  and its non-secret `source`; `requested_authorization_again: false`.
+- `inventory`: non-empty evidence locators or concrete absence/denial receipts
+  for `repository`, `connector`, `cli` and `mesh`. Inspect only relevant existing
+  routes; do not enumerate unrelated credentials or disclose secret values.
+- `next_actions`: each exact-subject action's `route` (`connector`, `cli`,
+  `mesh`), `service`, `operation`, HTTP `method`, `transport`, capability
+  `evidence`, callable binding `observed_method`, `observed_operation`,
+  `observed_repository`, and boolean `authorized`, `safe`, `deterministic`, `callable`,
+  `authenticated`, `permitted`, `admitted`. Any action satisfying all predicates
+  requires `state: CONTINUE`. Governance failure keeps `admitted: false`.
+- `attempts`: `effect_count` (zero or one per causal attempt), `current` and
+  optional `previous` causal evidence, `ambiguous_effect` and
+  `readback_before_effect`. An effectful attempt also binds its admitted `action`
+  using the same predicates and observed operation binding as `next_actions`.
+  A causal attempt cannot execute twice. Each causal evidence object binds SHA256 digests for
+  relevant `subject`, `error`, `cause` and `capability`. Observation timestamps
+  and unrelated lifecycle commits are excluded. Identical failure evidence
+  requires zero effects. Materially changed evidence alone does not authorize
+  an effect; all action predicates must still hold.
+- `action_window`: nonempty `id`, timezone-aware `completed_at` and `closed_at`.
+  Both closing observations must bind this `action_id` and an `observed_at`
+  strictly after completion and no later than closure. Earlier session reads
+  and another action's observations cannot close this work unit. Every
+  effectful `attempt` requires its own window and repository/delivery readback;
+  a fresh final receipt cannot conceal an unchecked earlier action.
+- `readback.repository`: current `repository`, `ref`, `head`, `tree`, `source`,
+  `action_id`, `observed_at`. All subject fields must match the acting branch's
+  newly bound subject. If a new HEAD/TREE is observed, follow it and update the
+  subject and applicable checks before attempting closure.
+  `readback.delivery`: exact `hostname: raumzeitterminal.de`, `source` and
+  `state` (`UNKNOWN`, `PENDING`, `VERIFIED`), `action_id`, `observed_at`, public
+  HTTPS `url` and read-only `method: GET`. VERIFIED additionally needs an
+  integer `http_status: 200`, exact-origin `final_url` and the observed body
+  `response_sha256`. A redirect to another origin is not delivery on this host.
+  Missing access stays UNKNOWN; observed absence can stay PENDING. Neither is
+  a delivery proof or a negative conclusion about DNS/registry state.
+- `state`: `CONTINUE`, `BLOCK`, `DONE` or `OWNER_CHOICE`. An externally pending
+  execution can retain `CONTINUE` with its `pending_execution` evidence. BLOCK
+  requires a concrete `blocker` with `operation`, `reason`, `evidence`,
+  `retry_condition` and `next_action`, after exhausting safe authorized work.
+  OWNER_CHOICE requires at least two distinct `owner_choices`. DONE requires
+  current Main and exact-host independent working-software/TLS readbacks bound
+  to the same subject; no open executable successor may remain.
+
+The validator checks receipt consistency only. Evidence locators and predicates
+must come from actual observations; a fabricated or stale receipt is forbidden.
+Exit zero, `CLIENT_HANDOFF_CONSISTENCY=VALID`, local fixtures and green candidate
+tests do not establish a live effect. Independently read back the relevant
+provider results and exact HEAD/TREE. Persisting the rule does not establish
+Main integration, adoption by another client or deployment. Regression cases
+run in the existing `make ai-runtime-contract` gate without network or secrets.
+
+The existing policy binds the unchanged Owner rule from PR #507 at
+`state/authorization/delegations/OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_V1.json`.
+The read-only handoff validator derives its delivery domain from that contract
+and verifies the bound bytes. This adds behavioral coverage to the existing
+client gate; it creates no second governance implementation or remote writer.
+The original 30 regressions remain, with action-time, HEAD/TREE, per-attempt and
+HTTP-proof negative controls added. The shared CLI is exercised for connector,
+CLI and Mesh route receipts. Registered AI adapter shims reuse AI/AGENTS;
+their presence is not an executed Claude/Codex/Copilot session witness. The
+HTTP transport client, read-only web terminal, personal terminal and Firefox
+remain separately scoped clients whose existing tests do not prove automatic
+use of this gate. Actual adoption requires their own emitted receipts and an
+independent live readback. No successful fixture substitutes for those witnesses.
 
 ## Repository runtime objective
 
@@ -1933,25 +2570,132 @@ The processor:
 1. fetches the authoritative GitHub issue payload;
 2. materializes a canonical request and SHA-256 evidence;
 3. gathers deterministic, size-bounded repository context;
-4. requests a repository-grounded answer from GitHub Models;
+4. compiles a repository-grounded disposition using reviewed local code;
 5. emits truthful status metadata;
 6. validates the evidence bundle and no-false-pass rules;
 7. creates or updates `issue-agent/<number>`;
-8. opens a reviewable pull request;
-9. comments the status and PR URL on the issue.
+8. independently reads back the published branch, commit, root tree and evidence bytes;
+9. reuses an exact-head PR or attempts one draft-PR creation;
+10. reports a distinct review-handoff status on the issue, even when PR creation is refused;
+11. retains the bound handoff receipt as a run artifact and step summary.
 
 ## Non-negotiable gates
 
 - No automatic merge.
 - No automatic issue closure.
-- Model failure produces `BLOCK`, not a fabricated answer.
+- Compiler failure or an unsupported work-unit class produces `BLOCK`, not a fabricated answer.
 - Generated work remains `CONTINUE` until repository checks and human review establish a stronger state.
 - The issue payload and its digest remain part of the committed evidence.
 - Formal derivation, repository evidence, hypothesis, and empirical confirmation must remain distinguishable.
 
-## Authentication and inference
+## Authentication and compilation
 
-The workflow uses GitHub's ephemeral `GITHUB_TOKEN` and requests `models: read`, `contents: write`, `issues: write`, and `pull-requests: write`. The inference implementation calls the GitHub Models REST endpoint. No repository-stored external model secret is required.
+The workflow uses GitHub's ephemeral `GITHUB_TOKEN` only for repository-local
+contents, issues, and pull requests. It grants no model permission and performs
+no external-model call. `scripts/issue_agent/compile.py` is fail-closed: only
+schema-validated handlers added through reviewed repository changes may become
+executable work units. The initial compiler deliberately classifies unsupported
+inputs as `BLOCKED_WITH_NEXT_ACTION`; this is not backlog completion.
+
+The active carrier is `repository-local-deterministic-compiler`, reused from
+PR #379, source commit `695bb4202a883a70893a50dd101bdc588f696e68`.
+It has no effecting handler. Unsupported requests therefore remain
+`BLOCK / UNSUPPORTED_DETERMINISTIC_WORK_UNIT`. A compiler failure becomes
+`BLOCK / DETERMINISTIC_COMPILER_FAILED`. A legacy failed inference outcome
+remains `BLOCK / MODEL_INFERENCE_UNAVAILABLE`; a legacy success cannot authorize
+an answer or an effect. `STATUS.json.work_unit` binds the exact request,
+context and answer SHA-256 values and records the remaining capability gap.
+
+The native jobs 114319171479, 114319166207 and 114319159525 on 2026-10-10
+observed `JSONDecodeError` at `json.load(response)`. The response bytes and the
+provider-side cause were not established by those traces. The executable
+inference client and the `models: read` permission are removed.
+No current external inference carrier was found in the inspected Main or the
+relevant open issue-processor candidates. A future carrier requires a reviewed
+repository binding and authorized runtime credentials; a mentioned secret name
+or a user's separate ChatGPT session does not establish that capability.
+
+## Review handoff
+
+The processor is retained from the workflow's exact source checkout before an
+existing issue branch is fetched and merged. Request transport remains in
+`RUNNER_TEMP`. The evidence and the canonical integrity trio are committed
+together. An ordinary push preserves history and rejects a competing writer;
+neither a branch reset nor force-push is used.
+
+`scripts/issue_agent/handoff.py` uses GitHub REST POSTs for the existing PR
+and issue-comment operations. It verifies the remote branch with `ls-remote`
+and a fresh fetch, and checks all five evidence files and the attempt ledger against the published
+Git blobs. It validates a PR's repository, base, branch and exact head, and
+rechecks the branch after admission. It never approves, merges, closes,
+dispatches a completion workflow, synchronizes another repository or tags.
+
+| Processing status | Review status | Meaning |
+| --- | --- | --- |
+| `BLOCK` | `REVIEW_HANDOFF_READY` | A blocked proposal reached a matching review PR; the issue itself is unresolved. |
+| `BLOCK` or `CONTINUE` | `REVIEW_HANDOFF_BLOCKED` | The published subject or PR admission could not be verified; `failure_class` names the cause. |
+
+When GitHub refuses creation, the receipt records
+`PR_CREATION_NOT_PERMITTED`; the issue receives the bound branch, commit, tree,
+artifact sizes/digests, exact comparison URL and required carrier action.
+There is at most one create attempt per bound subject and retained receipt. After either success or a failed/ambiguous
+response, one read determines whether a matching PR actually exists. No blind
+retry or permission change occurs.
+
+The issue comment is separately read back byte-for-byte. A refused or ambiguous
+comment write is followed by a paginated independent read before deciding its
+result. A matching comment is reused; no duplicate is posted. A remaining
+refusal or ambiguity becomes `ISSUE_NOTIFICATION_BLOCKED` and is not retried.
+`HANDOFF.json`, `ISSUE_COMMENT.md` and, when needed, `PR_BODY.md` remain in the
+run artifact `issue-agent-handoff-<issue>-<run>-<attempt>` for 30 days, including
+when the handoff step exits nonzero. The run's step summary reports notification
+status. Artifact upload is a separate platform operation; its failure is not
+represented as durable artifact success.
+
+Review admission is not issue completion. Both effect flags stay false for
+every disposition, including a closure recommendation. `DONE` proposal bundles
+are rejected; current governance and independent-review boundaries remain.
+
+## Regression checks
+
+`make issue-agent-test` runs the real materialize/compile/finalize/validate
+pipeline and the workflow's actual branch/push shell in temporary Git
+repositories. GitHub PR/comment responses are controlled fixtures, not live
+provider attestation. Coverage includes inference/compiler failure, denied and
+successful PR creation, ambiguous writes, existing-PR reuse, head/byte mismatch,
+notification denial/readback, branch history and concurrent-writer rejection.
+This target is included in `make test`.
+
+## Causal retry admission and preservation
+
+The processor and the existing backlog-resume workflow both call the same
+read-only admission function in `compile.py` before processing or dispatch.
+Its fingerprint binds the issue number/repository/title/body, the bounded
+context bytes, the processor/workflow bytes and the relevant lifecycle policy.
+Run IDs, issue timestamps, age and unrelated Main HEAD changes are excluded.
+
+`ATTEMPT.json` binds each recorded attempt to these inputs and the exact five
+evidence artifacts. An unchanged fingerprint produces
+`NOOP_UNCHANGED_CAUSAL_INPUT`: no compilation, branch merge, commit, push, PR
+creation or issue notification. The backlog dispatcher also skips the POST.
+Corrupt or unavailable prior evidence fails closed and retains a diagnostic
+receipt. Old inference evidence without a ledger admits one migration because
+this reviewed processor replaces the failing carrier; its successor ledger
+then prevents repeated execution of that failure state.
+
+Before replacing current evidence, the processor retains the previous files
+under `history/<content-digest>/`, byte-for-byte and without following symlinks.
+It verifies the issue branch head again after admission. Generated integrity
+conflicts may be regenerated; any other merge conflict stops the transaction.
+An ordinary push rejects competing changes. Existing issue PRs remain separate
+unresolved work items; this repair does not implement their requested features.
+
+PR-creation recovery needs a newly verified capability or an independently
+created matching PR. Reusing a saved handoff receipt does not repeat a denied
+create. The scheduled processor cannot observe a private credential change
+merely from a timestamp; that change must be supplied through a verified
+authorized executor. Native Main adoption and a fresh native processing run
+remain separate acceptance requirements.
 
 ## Processing an existing issue
 
@@ -2244,6 +2988,51 @@ The Seed reads only authorized known Node entries. The Seed writes only to the S
 
 Core boundary: every repository writes only to itself. The Seed reads only authorized known Node URLs listed in `registry/KNOWN_NODE_REQUESTS.tsv`.
 
+# Seed identity and acceptance repair (2026-10-09)
+
+The node handshake, current registration request, Seed allowlist and executing
+Seed repository must describe the same identity. The lifecycle generator runs
+`tools/qikvrt_seed_common.py config-check` before writing health or renewal
+files. Changing only a repository label or URL is not a completed migration.
+
+The current request and handshake use `ingolf-lohmann/qik-vrt` as Seed. The
+previous Goldkelch acknowledgement is retained under `previous_acceptance`;
+the new identity starts as `PENDING_SEED_ACCEPTANCE`. Historical registry
+entries, aggregates and ledger records are preserved until fresh execution
+produces successor evidence. No July acceptance is relabelled as an October
+acceptance by another Seed.
+
+The existing acceptance workflow validates the current request, maintains
+and revalidates its output, and reuses the lifecycle Git Data publisher to
+create a reviewed Draft. That path requires native Code Owner enforcement,
+checks current Main before writes, permits only generated registry/evidence
+paths and the full integrity trio, creates a candidate ref without force,
+and reads back its exact commit/tree/PR. Artifacts and Drafts are not Main
+publication. Generated pending acknowledgement remains CONTINUE.
+
+After reviewed Seed output is published on Main, the existing node lifecycle
+workflow executes `tools/qikvrt_seed_common.py acknowledge`. This performs
+bounded GETs of the Seed Main ref, index and node entry at that exact commit,
+then reads the ref again. It rejects wrong identities, legacy schemas,
+duplicate node entries, a mismatched request hash, stale/future observations
+and ref drift before changing the acknowledgement. The resulting v2 record
+binds the accepted entry/index hashes and the actual acceptance run. Seed
+maintenance checks the acknowledgement against its current accepted entry;
+an invented status string does not activate a node.
+
+Lifecycle telemetry uses the existing `qikvrt/node-lifecycle` transport and
+separate reviewed persistence. It never pushes Main directly. Source and
+historical evidence remain digest-bound in the unchanged integrity generator;
+scheduled observations no longer invalidate Main by an unreviewed write.
+The regression suite includes stale/copy/repoint/drift controls, proof-hash
+and acceptance-run mismatch, no-write governance failures, replay, exact-tree
+Draft readback, unrelated-path rejection and ambiguous-response handling.
+
+These controls protect the tested execution paths. Privileged manual changes,
+future defects, provider outages and missing review/admission cannot be ruled
+out universally. A Mesh registration does not establish a running transputer,
+public domain delivery, or general EFFECT_ACK_DONE.
+
 
 ## `docs/QIKVRT_COMMERCIAL_OFFERING.md`
 
@@ -2322,6 +3111,169 @@ This preserves the QIK-VRT boundary: no global scanning, no self-propagation, no
 4AV1 turns the proof-of-architecture into a productization candidate by adding lifecycle automation, audit export, dashboard evidence, policy status, renewal, and run-id scoped verification.
 
 Still not complete: GitHub App packaging, enterprise signed releases, long-running multi-node field test, customer onboarding collateral, and legal/commercial review.
+
+## Eigenbetrieb und Unabhängigkeit von Plattformen
+
+Product Owner Ingolf Lohmann hat am 4. Oktober 2026 den Zielzustand präzisiert:
+Das erreichbare Mesh wird weiter genutzt; Railway und GitHub sind
+Zwischenstufen. Das Endsystem trägt Repository, Ausführung, Monitor und
+Universal Terminal auf eigenen Nodes. Die folgende Roadmap ist eine
+Architekturentscheidung und ein Arbeitsplan. Ihre Meilensteine sind offen.
+Der strukturierte Arbeitsauftrag steht in
+`state/work_units/PROVIDER_INDEPENDENT_MESH_ROADMAP_20261004.json`.
+
+### Zielarchitektur
+
+Ein Node betreibt den versionierten Repository-Bestand, die lokale
+Ausführung, persistente Daten und seinen Monitor. Der Mesh-Verbund hält die
+zugelassenen Replikate, Rollen, Wiederherstellungsdaten und gemeinsame
+Evidenz. Clients verbinden sich über die QIK-VRT-Schnittstellen; jedes
+leistungsfähige Produkt und jeder Client trägt sein eigenes Terminal und
+seine verifizierte Monitor-Instanz. Kleine Geräte konsumieren den Datenstrom.
+
+Git bleibt ein mögliches Objekt- und Versionsformat. Eine GitHub-Konto-ID,
+Actions-Run-ID oder Railway-Service-ID wird dabei als Adapter-Provenienz
+geführt. Node-, Repository-, Work-Unit- und Effect-Identitäten sowie Rechte
+werden unabhängig von diesen Plattform-Identitäten aufgelöst. Externe
+Git-/CI-/Hosting-/SSO-/KI-Dienste bleiben anschließbar. Die lokale
+Authentisierung und Rollenprüfung muss auch ohne deren Anmeldung möglich
+sein. Anbieterwechsel und Schlüsselwechsel behalten überprüfbare Herkunft
+und frühere Freigaben; neue Rechte entstehen daraus nicht automatisch.
+
+Der Steuerpfad lautet: Ereignis → gebundener Auftrag → Zulassungsprüfung →
+Ausführung → dauerhafte Evidenz → frischer Readback → Effect-Acknowledgement.
+Ein Node erzeugt lokale Repository-, Job-, Runtime- und Gesundheitsereignisse.
+Webhooks schließen externe Dienste an. Kein ChatGPT-Client, Plattform-Cron
+oder periodisches Quellen-Polling muss diesen Pfad am Leben halten.
+Initiale Beobachtung, angeforderte Beobachtung und Replay bei Wiederverbindung
+sind eigene Operationen. Heartbeats und lokale Altersanzeigen erneuern keine
+Quellen- oder Gesundheitsevidenz. Fristen lösen begrenzte lokale Ereignisse
+aus; ausgebliebene Nachweise werden sichtbar `UNKNOWN` oder `BLOCK`.
+
+### Wiederverwendbare Grundlage und aktuelle Lücken
+
+| Bereich | Vorhandener Anschluss | Noch notwendiger Abschluss |
+| --- | --- | --- |
+| Repository und Integrität | Git-Objekte, lokaler `/AI`-Bootstrap, kanonische Manifest- und Hash-Prüfung | Eigener erreichbarer Repository-Dienst, vollständiger Offline-Bootstrap und Restore auf einem frischen Node |
+| Ausführung | `tools/qikvrt_workflow_executor.py` plant lokal; der Action-Wrapper führt den Plattform-Dispatch aus | Node-lokaler Executor für geprüfte Aufträge, Jobs und Artefakte mit identischer Zulassungs- und Review-Grenze |
+| Runtime und Werkzeuge | `runtime/toolchains/`, geprüfte Cache-/Provision-Verträge | Plattformfreies Runtime-Profil; `tools/bootstrap-runtime.sh` prüft derzeit in jedem Profil GitHub CLI; benötigte Toolchain und Artefakte müssen vom Mesh bezogen werden können |
+| Monitor und Terminal | Kandidat aus PR #456: eigener HTTP/SSE-Server, signierter Ingress, dauerhaftes Journal und Client-Replay; bestehender Firefox-/Effect-Ack-Anschluss | Native Mesh-Ereignisse und tatsächliche lokale Systemgesundheit; Node-/Client-/Produkt-Verteilung und öffentliche Readbacks |
+| Dauerhafte Wirkungen | Lokale Effect-Ack-, CAS-, Replay- und Wiederherstellungsverträge | Replikation, Writer-Fencing und Wiederanlauf mit einem ausdrücklich gebundenen Fehlermodell |
+| Governance | Exact-Head-/Tree-Prüfung, menschliche Rollen, Review- und Rechte-Grenzen | Plattformunabhängige signierte Zulassungs-, Review- und Widerrufsnachweise; GitHub-Prüfungen als Adapterabbildung |
+
+Die Monitor-Grundlage ist an Kandidat
+`674aa35ec0659119a19cda66b88f32050e34f105`, Tree
+`5100b66a299ded9ecb64622d2d36a5a77ef1f85d`, im Mirror gebunden.
+Sie gehört nicht zum Main-Bestand dieser Roadmap-Basis. Ihre Tests belegen
+einen Writer und begrenztes Client-Replay; sie belegen keine verteilte
+Replikation, kein ausgerolltes Gesamt-Mesh und keinen vollständigen C90-Port.
+
+### Ablöseschritte und Abnahme
+
+| Schritt | Ergebnis | Prüfkriterium für den Abschluss |
+| --- | --- | --- |
+| S1: Eigenständiges Node-Paket | Repository-Bestand, persistente Volumes, Monitor, Terminal und versionierte Runtime starten auf einem eigenen Host; Build, Konfiguration und Start folgen vorhandenen Cache-/Rechte-Verträgen | Einen frischen Host aus einem verifizierten Paket booten, Railway-Zugriff sperren, Anwendung benutzen, öffentliche URL und exakte Runtime-Bindung zurücklesen, Prozess/Host neu starten und bestätigte Daten vergleichen |
+| S2: Eigene Ausführung und Repository-Verwaltung | Native Git-/Work-Unit-Ereignisse starten einen begrenzten Node-Executor; Tests, Artefakte, Review und Promotion sind am lokalen Bestand prüfbar | Einen autorisierten Auftrag ohne GitHub Actions oder Chat-Client vom Ereignis bis zum dauerhaften Effect-Readback ausführen; fehlende/abgelaufene Freigabe und konkurrierenden Writer zurückweisen |
+| S3: Ausfallsicherer Mesh-Betrieb | Dauerhaftes Journal, Blobs, Ref-Zustand, Intent und Receipts werden zwischen Nodes repliziert; alle Monitor-Instanzen prüfen Phase und Herkunft | Im definierten Drei-Replica-Profil einen Node ausfallen lassen und bei Verbindungsabbruch, verlorener Antwort und Wiederanlauf alle quittierten Bytes/Effects wiederfinden; keine doppelte Wirkung und kein zweiter zugelassener Writer |
+| S4: Vollständige Plattform-Ablösung | GitHub und Railway funktionieren als austauschbare Adapter; Bootstrap, Identität, Jobs, Review, Updates, Wiederherstellung und Betrieb kommen aus dem Mesh | GitHub und Railway vollständig unerreichbar machen, aus dem Mesh einen frischen Node aufsetzen und einen vollständigen Entwicklungs-/Betriebszyklus einschließlich öffentlicher Anwendung und frischem Readback durchführen |
+
+S1 nutzt den vorhandenen Monitor-Kandidaten und das bestehende Universal
+Terminal. Der nächste Implementierungsauftrag ist, ihren Start-, Runtime-,
+Volume-, Authentisierungs- und Readback-Vertrag zu einem überprüfbaren
+Eigenbetriebspaket zu verbinden und das Runtime-Profil von der allgemeinen
+GitHub-CLI-Prüfung zu entkoppeln. Zielhost, persistente Ressourcen und
+zugelassene Deployment-Identität müssen für einen tatsächlichen Betrieb
+konkret gebunden sein; ein geplanter Host ist keine laufende Instanz.
+
+### Verlustfreiheit und Governance bleiben Abnahmebedingungen
+
+Das anfängliche Zielprofil für S3 hat drei speichernde Replikate und toleriert
+den Ausfall eines Nodes. Eine verteilte positive Quittung benötigt den
+festgelegten dauerhaften Replikationsnachweis; Writer-Epochen/Fencing und
+Wahlregeln müssen getrennte gleichzeitige Writer verhindern. Ohne die dafür
+benötigte Mehrheit wird die geschützte Wirkung `BLOCK`; ihre Eingabe bleibt
+im überprüfbaren Intent-/Replay-Pfad. Verfügbarkeit und bestätigte
+Verlustfreiheit werden getrennt ausgewiesen.
+
+Der Nachweis bindet Originalbytes, Auftrag, Identität, Commit/Tree,
+Effect-ID, Reihenfolge, Journal-Hash, gespeicherte Replikationsbelege und den
+nach Wiederanlauf beobachteten Zustand. Prozessabbruch, Node-Ausfall,
+Netzpartition, verlorene Antwort, volle Platte und korrupte Bytes gehören
+zum Test. Stromausfallfestigkeit erfordert zusätzlich einen tatsächlichen
+Hardware-/Speicher-Nachweis; `fsync` und ein Prozessneustart belegen ihn
+allein nicht. Das Fehlermodell und die Speicherkapazität begrenzen jede
+Verlustfreiheitsbehauptung.
+
+Ein Provider-Ausfall darf keine bereits bestätigte Wirkung löschen, keine
+ungültige Freigabe ersetzen und keinen künstlichen Gesundheitszustand
+erzeugen. Rollen- und Schutzregeln werden bei der Migration erhalten und
+exact-subject geprüft. Gegenwärtige GitHub-Code-Owner-Reviews und geschützte
+Main-Gates bleiben wirksam, bis ein separat zugelassener gleichwertiger
+Governance-Träger übernommen ist. Diese Roadmap verändert keine Schutzregel.
+
+Für jeden Schritt gilt die bestehende Definition of Done:
+**Working Software ∧ öffentliche URL ∧ frischer Readback**. Quittierter
+Transport, eine erfolgreiche CI oder das Schreiben dieser Roadmap ergeben
+kein `EFFECT_ACK_DONE`. Die früher beauftragten C90-, lokale
+Maschinencode-/Static-Link-, Linux-/Docker-, Atari-/Mega-ST-, Digital-Twin-
+und Siemens-Anschlüsse bleiben im Produktumfang und erhalten eigene
+gebundene Abnahmen. `PREDECESSOR_EVIDENCE_TRANSFER=false`.
+
+
+### S1-Implementierungsnachfolger vom 4. Oktober 2026
+
+Der history-preserving Nachfolger von PR #457 (`4f53f56014584cf8effbbad8cc15d199aaed4608`)
+liegt in `runtime/self-host/`. `self-host` startet mit Adapter `none` ohne
+GitHub CLI; nur der explizite GitHub-Adapter verlangt den unveränderten
+GitHub-Bootstrap. Die bisherigen Profile behalten ihre GitHub-Abhängigkeit.
+Der vorhandene Monitor aus PR #456 und die verfügbaren Terminal-Träger aus
+PR #454 werden selektiv weiterverwendet; kein zweiter Monitor, Executor oder
+produktiver TEMDD-Daemon wird eingeführt.
+
+Der Paketexport bindet versionierte Linux-Runtime-Executables, exakte
+Git-Blobs/HEAD/Tree, Startkonfiguration und ein getrenntes Volume.
+Authentisierungsgrenzen, Writer-Sperre, Provider-Ablehnung vor dem Transport
+und der bestehende unabhängige Monitor-Readback sind ausführbar geprüft.
+Ein SIGKILL-Neustart erhält die vorher quittierten Original-Journalbytes.
+Diese Nachweise betreffen lokale Prozesse und das konfigurierte Dateisystem.
+Sie ergeben keinen Stromausfall-, eigenen Host- oder öffentlichen Betriebsnachweis.
+
+S1 bleibt **OPEN**. Die produktiven TEMDD- und Firefox/noVNC-Deployment-Quellen
+sind im zugänglichen Mirror und dem retained Git-Checkpoint nicht vorhanden;
+der bekannte Goldkelch-Quellzugriff antwortet in dieser Verbindung mit 404.
+Das Paket enthält deshalb den vorhandenen HTTP-Referenzträger und Owner-Unix-Client,
+dessen produktiver Daemon weiterhin fehlt. Ein erfundener Ersatz schließt diese Lücke nicht.
+
+Der präzise Deployment-HOLD lautet
+`HOLD_OWN_HOST_IDENTITY_STORAGE_ROUTING_UNAVAILABLE`: Für diese Session sind
+keine tatsächlich aufrufbare Eigenhost-Operation, zugelassene Deployment-Identität,
+gebundenes persistentes Speichermedium und öffentliche Route verfügbar.
+Die unabhängige Quelllücke lautet `HOLD_PRODUCTIVE_TERMINAL_SOURCE_UNAVAILABLE`.
+Nächster zulässiger Schritt ist die vollständige Lieferung der vorhandenen
+produktiven Trägerquellen und die konkrete Host-/Storage-/Routing-Zulassung,
+danach exakte Installation, öffentlicher Readback und Deployment-Neustarttest.
+Work Unit: `state/work_units/SELF_HOSTED_NODE_PACKAGE_S1_20261004.json`.
+Weder eine öffentliche URL noch `EFFECT_ACK_DONE` wird aus Paket-/CI-Tests abgeleitet.
+
+
+### S1-Quellwiedergewinnung vom 5. Oktober 2026
+
+Die vorstehende Quelllücke beschreibt den Vorgängerstand. Eine erweiterte Suche
+über 551 Branch-Refs, 22 Tags, 448 PR-Head-Refs und 4.450 erreichbare Commits hat
+im Branch `architecture/universal-transputer-c90-v1` den verifizierten Snapshot
+`c6a53e200c4835a4f871d8496feb81d953610831` gefunden. Produktiver TEMDD-Ledger,
+Unix-Ingress und Firefox/noVNC-Rezepte werden mit unveränderten Originalblobs
+und vollständiger Pfad-/Hash-Provenienz in S1 1.1.0 übernommen. Der vom Snapshot
+genannte Goldkelch-Ursprungscommit ist nicht direkt wiederabrufbar; Gleichheit
+mit einem späteren produktiven Railway-Build wird nicht behauptet.
+
+Die versiegelte Paket-/Konfigurationsbindung und der portable Browser-Start sind
+neue S1-Adapter. Sie verwenden den originalen Ledger und Unix-Ingress; sie sind
+keine rekonstruierte Originalquelle. Fresh-head Linux-Tests müssen den echten
+nativen Runtime- und Firefox/noVNC-Neustart zurücklesen. Host-Identität,
+persistentes Gerät und authentisiertes öffentliches HTTPS bleiben davon
+getrennt **OPEN**. Keine Installation oder öffentliche Abnahme wird behauptet.
+Work Unit: `state/work_units/S1_PRODUCTIVE_TERMINAL_SOURCE_RECOVERY_20261005.json`.
 
 
 ## `docs/QIKVRT_THREAT_MODEL.md`
@@ -2470,238 +3422,32 @@ Conventional relational database systems already provide transaction deadlock ha
 
 A successful watchdog run is observation evidence, not gate success. The mechanism does not prove global deadlock freedom, repository completion, Authority–Mirror equality, empirical confirmation, scientific consensus, `PASS`, `FINAL_PASS`, or `EFFECT_ACK_DONE`.
 
+## Canonical roles and independent native readback
 
-## `docs/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE.md`
+The existing `policy/CANONICAL_UPSTREAM_REMOTE_V1.json` is the sole normative
+repository-role source. The executor/liveness contract is a checked projection.
+The shared resolver reused from the authority-repair work rejects missing,
+malformed, overlapping or contradictory Authority/Mirror assignments. A Mirror
+receipt cannot establish Authority continuity even when its commit matches.
+Historical receipts retain their original bytes and repository identity.
 
-<!--
-SPDX-License-Identifier: CC-BY-NC-ND-4.0
-Copyright (c) 2026 Ingolf Lohmann.
--->
+The native wrapper uses the mandatory job token and bounded GitHub REST GETs.
+It binds Authority Main to its exact commit and tree, validates the canonical
+role policy, governance policy and CODEOWNERS bytes by Git blob identity, then
+reobserves Main. HTTP 200 without the expected active Main roles remains
+`AUTHORITY_ROLE_BINDING_NOT_ACTIVE`. HTTP 403/404 has no Mirror, anonymous,
+browser or alternate-token fallback. The latest completed observation supplies
+the prior denial receipt, including failed observations. An unchanged causal
+binding suppresses a repeated denied request. Unrelated commits, lifecycle
+progress and timestamps do not admit a retry. Changes to the role policy,
+Authority binding or reviewed token/transport carrier require one new bounded
+observation; external permission repair must be independently evidenced before
+clearing a denial receipt.
 
-# Requested review and issue lifecycle
-
-## Owner rule
-
-Product Owner Ingolf Lohmann requires requested repository reviews and registered GitHub issues to receive a prompt, evidence-bound disposition instead of remaining indefinitely pending.
-
-This contract applies to `Goldkelch/qik-vrt` and `ingolf-lohmann/qik-vrt`. It is repository-internal governance. It does not bypass GitHub account rules, branch protection, required checks, external credentials, publication boundaries, or the distinction between a natural-person decision and the GitHub identity that signs an API event.
-
-## Requested reviews
-
-When a review is requested, a conforming repository client or agent must act without deliberate queueing:
-
-1. reobserve the current base, exact head, tree, changed paths, comments, prior reviews, unresolved threads, competing writers, and every applicable exact-head gate;
-2. inspect the actual diff and record concrete findings;
-3. return one of `APPROVE`, `REQUEST_CHANGES`, or `COMMENT_WITH_BLOCKER` as soon as the evidence supports that disposition;
-4. bind the result to the exact base, head, tree, and reviewed scope;
-5. distinguish a substantive Product-Owner or technical disposition from GitHub's account-level review state.
-
-A requested review may not be replaced by repeated requests, reminders, or status commentary when the connected client can inspect the candidate itself. A review may remain pending only for a precise blocker such as missing bytes, head drift, unavailable required evidence, unresolved security or rights questions, or a platform identity rule that prevents the requested account-level event.
-
-A client must never impersonate another GitHub identity or claim that GitHub recorded `APPROVED` when the platform stored only `COMMENTED`. In that case the substantive finding and Product-Owner disposition must still be persisted accurately, together with the platform limitation.
-
-Review completion does not itself authorize merge, promotion, release, deployment, Zenodo, DOI, IETF, `PASS`, `FINAL_PASS`, or `EFFECT_ACK_DONE`.
-
-## Issues
-
-Every observed open issue must have a current repository-native lifecycle disposition. The allowed dispositions are:
-
-- `EXECUTE_NOW`: the request is clear, supported, and technically actionable; begin or continue the smallest bounded work unit;
-- `CLARIFICATION_REQUIRED`: a specific ambiguity prevents safe execution; record the minimum missing information and ask only the bounded clarification required;
-- `BLOCKED_WITH_NEXT_ACTION`: the issue is valid but a precise internal or external blocker exists; record evidence, owner, retry condition, and the next technically possible action;
-- `CLOSE_COMPLETED`: the requested result is already fully evidenced or has been completed through a canonical successor;
-- `CLOSE_NOT_PLANNED`: the request is understood but intentionally outside the supported or authorized scope;
-- `CLOSE_INVALID_OR_UNSUPPORTED`: the request is not reproducible, not traceable to evidence, internally contradictory, untrue, or technically unsupported.
-
-An issue must not remain open merely because it is old, broad, inconvenient, or repeatedly retried. If actionable, it must progress. If unclear, it must be concretized. If completed, superseded, invalid, unsupported, or not planned, it must be closed with a concise evidence-bound reason. Closure is reversible, must preserve the discussion and provenance, and must not be used to hide a real unresolved defect.
-
-No issue may be left in an unclassified waiting state. A `BLOCKED_WITH_NEXT_ACTION` disposition is not a generic parking state: it requires a deterministic failure class, evidence references, and a single continuation path.
-
-## Execution and reporting
-
-The fastest verified path is mandatory. Existing scripts, work units, review evidence, and issue-agent infrastructure must be reused before parallel machinery is created. Activity without a changed lifecycle predicate is not progress.
-
-Report only material changes: a new disposition, a resolved or newly evidenced blocker, a head or scope change, a completed work unit, a closure, or a promotion-ready result. Preserve fail-closed scientific, provenance, security, rights, and external-effect boundaries.
-
-## Machine authority
-
-The normative machine-readable policy is `policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json`. The natural-person delegation is `state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json`.
-
-
-## `docs/STATUS_REPORT_RELEASE_AUTOMATION.md`
-
-<!--
-SPDX-License-Identifier: CC-BY-NC-ND-4.0
-Copyright 2026 Ingolf Lohmann.
--->
-
-# Zweiphasige Automation der offiziellen QIK-VRT-Statuserklärung
-
-## Gegenwärtiger Zustand
-
-Die Automation ist im eingecheckten Zustand **inert**. Der Marker
-`release/status-clarification-request.json` enthält `action: inactive`,
-`confirm: NOT_AUTHORIZED`, ausschließlich Null-Identitäten und keine DOI. Ein
-normaler Push auf `main` reserviert nichts, erzeugt keinen Tag und publiziert
-nichts. Eine Wirkung benötigt jeweils einen separat geprüften, nicht forcierten
-Push eines Marker-only-Commits auf den unten festgelegten Branch.
-
-Die Automation erzeugt ausschließlich einen neuen, eigenständigen
-Statusbericht. Die vorhandenen Zenodo-Records `21498772`, `21498773`,
-`21498774` und `21488115` sind unveränderliche Schutzanker. Der Client besitzt
-keinen `newversion`-Pfad und blockiert jede Mutation dieser IDs.
-
-## Fester Vertrag
-
-| Element | Wert |
-|---|---|
-| Autoritätsrepository | `Goldkelch/qik-vrt` |
-| Spiegelrepository | `ingolf-lohmann/qik-vrt` |
-| Reserve-Branch | `automation/status-clarification-reserve-20260722` |
-| Finalize-Branch | `automation/status-clarification-finalize-20260722` |
-| Zustandsbranch | `qikvrt/status-report-state` |
-| Tag | `v2026.07.22-status-clarification-1.0.0` |
-| Marker | `release/status-clarification-request.json` |
-| Schema | `policy/qikvrt-status-report-release-request.schema.json` |
-| Client | `tools/qikvrt_status_zenodo.py` |
-
-Der Marker bindet die beiden repository-spezifischen `main`-Commits, ihren
-identischen Git-Tree, den Client sowie sämtliche Manifestbytes per SHA-256.
-Der aktive Commit darf gegenüber seinem unmittelbaren `main`-Quellparent
-ausschließlich den Marker ändern. Ein Merge- oder Mehr-Eltern-Commit ist keine
-Autorisierung. Der annotierte Tag zeigt immer auf den jeweiligen Quellparent,
-nie auf den Marker-Commit.
-
-## Drei Manifestebenen
-
-Die DOI wird nicht vorweggenommen. Deshalb trennt Schema 2 drei Dateien:
-
-1. `release/status-clarification-zenodo-reservation-manifest.json` bindet
-   Metadaten, Report-ID, das Template-Manifest und genau eine erlaubte
-   DOI-Einbettungsstelle.
-2. `release/status-clarification-zenodo-template.json` bindet die endgültige
-   Dateiliste vor der Reservierung. Genau eine autorisierte Datei enthält
-   einmal `10.5281/zenodo.__RESERVED__`.
-3. `release/status-clarification-zenodo.json` ist das Finalmanifest. Gegenüber
-   dem Template ist ausschließlich die bytegenaue Ersetzung dieses einen
-   Sentinels durch die von Zenodo reservierte DOI zulässig.
-
-Im Reserve-Marker sind Client-, Reservierungsmanifest- und Templatehash
-gesetzt; `final_manifest_sha256`, Reservierungsevidenz und DOI bleiben Null.
-Im Finalize-Marker sind alle drei Manifesthashes, der Hash der öffentlichen
-Reservierungsevidenz und die reservierte DOI gesetzt.
-
-Der aktuelle Clientvertrag lautet:
-
-```text
-reserve
-  --reservation-manifest release/status-clarification-zenodo-reservation-manifest.json
-  --final-template-manifest release/status-clarification-zenodo-template.json
-  --reservation OUT
-  --repository-root .
-
-finalize
-  --reservation-manifest release/status-clarification-zenodo-reservation-manifest.json
-  --final-template-manifest release/status-clarification-zenodo-template.json
-  --final-manifest release/status-clarification-zenodo.json
-  --reservation IN
-  --result OUT
-  --repository-root .
-```
-
-Der Zenodo-Token ist ausschließlich als `ZENODO_ACCESS_TOKEN` zulässig. Er
-darf weder als Argument noch in Evidenz, Artifact oder Zustandsbranch
-erscheinen.
-
-## Phase 1: Reservierung
-
-Nur `Goldkelch/qik-vrt` kann die Reservierung ausführen.
-
-1. Beide `main`-Commits und der gemeinsame Tree werden endgültig bestimmt.
-2. Client, Reservierungsmanifest und Template werden vollständig geprüft und
-   gehasht. Das Finalmanifest existiert noch nicht beziehungsweise ist nicht
-   autorisiert.
-3. Vom exakten Goldkelch-`main` wird der Reserve-Branch erzeugt.
-4. Ein zweiter Commit ändert ausschließlich den Marker zu `action: reserve`,
-   bindet beide Commits, Tree und Hashes und verwendet
-   `RESERVE_ONE_NEW_STATUS_REPORT_DRAFT_NO_PUBLISH`.
-5. Erst der nicht forcierte Push dieses Zweitcommits startet die Wirkung.
-
-Der Workflow prüft Branchkopf, Push-Vorher/Nachher, beide öffentlichen
-`main`-Refs, beide Git-Trees, Parent, Marker-Diff, Schema, kanonischen
-Autorisierungshash, Client und Template. Danach läuft das vollständige
-`make test` des Quellparents. Erst unmittelbar vor der Wirkung werden die
-entscheidenden Bindungen erneut geprüft.
-
-Vor jedem Zenodo-POST persistiert der Workflow zunächst einen deterministischen
-One-shot-Intent unter
-`release-state/status-clarification/zenodo-reservation-attempt.json`. Erst
-der Lauf, der diesen Intent selbst erfolgreich angelegt hat, darf einen neuen
-leeren Entwurf erzeugen. Liegt der Intent bei einem späteren Lauf bereits vor,
-aber noch keine Reservierungsevidenz, wird kein weiterer POST gesendet: Der
-mehrdeutige Zwischenzustand muss anhand der Zenodo-Entwürfe ausdrücklich
-reconciliiert werden. Damit wird nach einem Antwortverlust oder Abbruch kein
-zweiter Entwurf automatisch erzeugt.
-
-Der Entwurf wird nicht veröffentlicht. Die token-authentisierte
-Reservierungsevidenz wird unter
-`release-state/status-clarification/zenodo-reservation.json` im dedizierten
-Zustandsbranch und zusätzlich als SHA-gepinntes Actions-Artifact gespeichert.
-
-## DOI-Einbettung zwischen den Phasen
-
-Aus der Reservierung werden DOI und Evidenzhash gelesen. Die eine autorisierte
-Template-Datei wird durch exakte Sentinel-Ersetzung erzeugt; anschließend wird
-das Finalmanifest aus den tatsächlichen finalen Bytes erstellt. Diese
-Änderungen gehören in einen regulär geprüften neuen `main`-Quellstand beider
-Repositories. Sie gehören nicht in einen wirkenden Marker-Commit.
-
-Damit können Reserve- und Finalize-Quellcommits verschieden sein. Jeder
-Finalize-Tag bindet den dann aktuellen Parent-Commit und den identischen
-finalen Tree beider Repositories.
-
-## Phase 2: Tag und Publikation
-
-1. Von jedem exakten finalen `main`-Commit wird separat der Finalize-Branch
-   erzeugt.
-2. Der zweite Commit ändert in jedem Repository ausschließlich denselben
-   Marker zu `action: finalize` und bindet die repo-spezifischen Commits, den
-   gemeinsamen Tree, alle Manifesthashes, Reservierungsevidenzhash und DOI.
-3. Der nicht forcierte Push läuft in beiden Repositories.
-
-Jedes Repository prüft die Reservierung, die exakte Template-zu-Final-Differenz
-und beide weiterhin unveränderten `main`-Refs. Danach erstellt oder verifiziert
-es mit seinem eigenen kurzlebigen `GITHUB_TOKEN` einen annotierten Tag auf
-seinem jeweiligen Quellparent. Die Automation erstellt kein
-GitHub-Release-Objekt.
-
-Nur der Goldkelch-Lauf verwendet `ZENODO_ACCESS_TOKEN`. Unmittelbar vor der
-Zenodo-Wirkung prüft er den eigenen und den Spiegel-Tag vollständig, darunter
-Tagger, Nachricht, Zielcommit und Zieltree, und wartet begrenzt auf den
-Spiegel-Tag. Erst danach lädt der Client ausschließlich die final gebundenen
-Dateien hoch, liest sie zur Hashprüfung zurück und publiziert den frisch
-reservierten Report. Der Spiegel-Lauf besitzt keine Zenodo-Wirkung.
-
-## Fail-closed-Grenzen
-
-Die Wirkung bleibt blockiert bei unter anderem:
-
-- falschem Repository, Event, Branch oder Marker-`action`;
-- Force-Push, Merge-Marker oder mehr als einer geänderten Datei;
-- von `main` abweichendem Parent oder verändertem gemeinsamen Tree;
-- abweichendem Schema-, Client-, Manifest- oder Evidenzhash;
-- einer zweiten oder verschobenen DOI-Einbettungsstelle;
-- Metadaten-, Dateilisten- oder Byteänderungen neben der DOI-Ersetzung;
-- einem vorhandenen divergenten oder leichtgewichtigen Tag;
-- einer fehlenden Spiegel-Tag-Barriere oder einem inzwischen verschobenen
-  `main`-Ref;
-- einem vorhandenen One-shot-Intent ohne eindeutig persistierte
-  Reservierungsevidenz;
-- einer geschützten Alt-ID, einem `newversion`-Pfad oder einer Token-Spur;
-- einem fehlgeschlagenen Quelltest oder einer veränderten Autorisierungsbranch.
-
-Ein inaktiver Marker ist kein vorläufiges PASS, sondern ausdrücklich keine
-Autorisierung.
+A successful role readback still sets `native_activation_verified=false`:
+executed native candidate gates, trusted-Main adoption, native enforcement and
+independent current-head Code Owner approval remain separately required. No
+predecessor test or availability observation substitutes for those effects.
 
 
 ## `docs/TEST_INVENTORY.md`
@@ -2757,151 +3503,6 @@ Canonical failure class: `NON_ATOMIC_MULTI_COMMIT_WORKFLOW_TRIGGER_ORDERING_RACE
 Repository transactions are assembled as payload writes, exact manifest/hash binding, and one final JSON ready-marker write. Workflows watch only the ready marker and invoke `tools/qikvrt_transactional_workflow_trigger.py verify` before any effect. Missing or malformed markers, missing or unexpected changed paths, absent files, hash divergence and false completion claims block execution.
 
 A verified trigger proves only transaction completeness. It does not prove task completion, merge, publication, Authority/Mirror equality, `PASS`, `FINAL_PASS` or `EFFECT_ACK_DONE`.
-
-
-## `docs/architecture/2026-08-07-green-exact-head-promotion-stall.md`
-
-# Green Exact-Head Promotion Stall — Root Cause and Permanent Repair
-
-Date: 2026-08-07
-
-## Incident class
-
-`AUTHORITY_GREEN_EXACT_HEAD_WITHOUT_PROMOTION_EFFECT`
-
-The observed symptom was a pull request whose current exact head had terminal-green repository-native materialization and review/CI gates while the pull request remained `open + draft + mergeable` and no promotion execution remained active.
-
-This was not a Lean, kernel, integrity, or runner failure. The productive chain had reached the promotion boundary and then had no repository-native executor responsible for crossing that boundary.
-
-## Root cause
-
-The repository already contained the *authorization semantics* for expected-head-bound promotion:
-
-- promotion is allowed only after current-base reobservation;
-- the candidate head must remain unchanged;
-- the diff must remain repository-contract compliant;
-- no external effect may be involved;
-- every applicable exact-head gate must be terminal green;
-- no current competing writer may overlap the candidate.
-
-However, the existing autonomous self-heal workflow intentionally stopped after creating a draft candidate. Its contract explicitly set `proposal_workflow_may_merge=false`, and the workflow text stated that the proposal workflow itself does not merge.
-
-That safety boundary was correct, but there was no separate promotion executor implementing the already-authorized next state transition. The result was a liveness gap:
-
-```
-DRAFT_CANDIDATE
-→ MATERIALIZED_EXACT_HEAD
-→ TERMINAL_GREEN
-→ [NO EXECUTOR]
-→ OPEN_DRAFT_FOREVER
-```
-
-The defect was therefore not an unsafe merge implementation; it was a missing state-machine edge between verified eligibility and expected-head-bound promotion.
-
-## Why the repair was non-trivial
-
-Qualitative engineering difficulty: **medium-high (approximately 7/10)**.
-
-The code needed to solve a superficially simple problem — “merge when green” — without weakening the repository's fail-closed evidence model. The difficult parts were:
-
-1. **Historical run supersession.** A current exact head can contain older `action_required`/zero-job registrations and later successful trusted-proxy runs. The evaluator must select the newest run per workflow name rather than treating historical registrations as permanently adverse.
-2. **Exact-head binding.** Eligibility must not survive head drift. The merge endpoint therefore receives the exact reobserved SHA as a precondition.
-3. **Current-base binding.** A stale candidate must not be promoted after `main` advances.
-4. **Competing writers.** An unrelated stale PR on an old base is not a current writer, while an overlapping open PR on the exact current base is. Exact-head verification proxies sharing the candidate SHA are not independent writers.
-5. **Draft-to-ready race.** Reclassifying a draft can itself register new checks. A one-pass `ready → merge` sequence would therefore be epistemically unsafe. The permanent repair uses two separate cycles.
-6. **External-effect separation.** Repository promotion remains pre-effect work. Zenodo, DOI, IETF, release, deployment, `PASS`, `FINAL_PASS`, `EFFECT_ACK_DONE`, and Authority/Mirror equality remain outside this executor.
-7. **Liveness without busy waiting.** The executor is triggered by relevant workflow completions and has a ten-minute scheduled fallback. It does not monopolize a runner while waiting.
-
-## Permanent state machine
-
-The repaired promotion path is:
-
-```
-MARKED_CURRENT_BASE_CANDIDATE
-→ EXACT_HEAD_SNAPSHOT
-→ REQUIRED_GATES_COLLAPSED_TO_LATEST_RUN
-→ ALL_APPLICABLE_GATES_TERMINAL_NON_ADVERSE
-→ NO_CURRENT_BASE_OVERLAPPING_WRITER
-→ PROMOTABLE
-
-if draft:
-    DRAFT_TO_READY
-    → STOP
-    → REOBSERVE_ON_LATER_CYCLE
-else:
-    REOBSERVE_BASE_AND_HEAD
-    → REST_MERGE_WITH_SHA_PRECONDITION
-    → REOBSERVE_PROMOTED_MAIN
-```
-
-The crucial invariant is:
-
-> `Green` does not imply `Merged`; it authorizes exactly one further reobserved transition.
-
-The second crucial invariant is:
-
-> `DraftToReady` does not imply `Merge`; readiness is followed by a new exact-head gate observation cycle.
-
-## TDD repair
-
-The regression test was persisted before the implementation. It encodes the original failure mode and the fail-closed counterexamples:
-
-- terminal-green exact head is `PROMOTABLE`;
-- a newer success supersedes an older same-workflow `action_required` registration;
-- missing required gate blocks;
-- active required gate blocks;
-- failed required gate blocks;
-- head drift blocks;
-- base drift blocks;
-- current-base overlapping writer blocks;
-- external-effect scope blocks;
-- non-mergeable candidate blocks.
-
-A second contract test locks the workflow-level properties, including the two-phase transition, SHA-bound merge and external-effect boundary.
-
-## Files introduced or changed
-
-- `tools/qikvrt_expected_head_promotion.py`
-  - pure fail-closed decision core;
-  - no GitHub mutation;
-  - deterministic first-blocker classification.
-- `tests/test_qikvrt_expected_head_promotion.py`
-  - behavioral regression suite.
-- `tests/test_qikvrt_expected_head_promotion_contract.py`
-  - machine-readable contract/workflow regression suite.
-- `.github/workflows/qikvrt_expected_head_promotion.yml`
-  - repository-native promotion executor;
-  - relevant `workflow_run` triggers plus `*/10` fallback;
-  - one candidate per serialized run;
-  - two-phase ready/reobserve/merge;
-  - REST merge bound to exact SHA.
-- `.github/workflows/qikvrt_autonomous_self_heal.yml`
-  - future self-heal candidates opt in with a pre-effect promotion marker;
-  - proposal workflow remains non-merging.
-- `state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json`
-  - explicit promotion-executor contract.
-
-## Safety boundary
-
-The executor is repository-internal only. It must not perform or infer:
-
-- Zenodo publication or mutation;
-- DOI creation;
-- IETF submission or revision;
-- GitHub release/tag creation;
-- deployment;
-- credentialed external effects;
-- physical correspondence or scientific confirmation;
-- `PASS`, `FINAL_PASS`, or `EFFECT_ACK_DONE`;
-- Authority/Mirror equality.
-
-Any missing, ambiguous, stale, active, failed, conflicting, or externally scoped evidence remains a blocker.
-
-## Bootstrap and migration note
-
-A promotion executor added by a pull request cannot schedule itself from `main` before that pull request is first promoted. Therefore the pull request carrying this repair must pass its ordinary exact-head gates and be promoted once through the existing repository-authorized path. After that bootstrap merge, future marked candidates are covered by the repository-native executor and the original liveness gap no longer depends on a chat session or repeated Product Owner interaction.
-
-Because this repair changes the current candidate head, every previous exact-head gate result for the older head is historical only. Repository-native integrity must be rematerialized and the applicable gates must become terminal green on the new head before the bootstrap promotion is justified.
 
 
 ## `docs/architecture/GLOBAL_SYSTEM_CLOSURE_V1.md`
@@ -3002,413 +3603,22 @@ historical evidence only. Their hashes and remote gates do not transfer to this
 current-main candidate.
 
 
-## `docs/architecture/QIKVRT_ANTICIPATION_AND_TREND_MODEL.md`
+## `docs/articles/a013_truth_future_quote.md`
 
-<!--
-SPDX-License-Identifier: CC-BY-NC-ND-4.0
-Copyright (c) 2026 Ingolf Lohmann.
--->
-
-# QIK-VRT Anticipation and Trend Model
-
-## Normative statement
-
-Anticipation is the repository-native derivation of the next valid state from an ordered set of verified observations, their state differences, the resulting trend and the applicable transition rules.
-
-Anticipation is not a guess. It is a versioned, evidence-bound repository state.
-
-## Canonical chain
-
-`STATE -> DIFFERENCE -> INFORMATION -> TREND -> DERIVATIVES -> ANTICIPATED_STATE -> NEXT_EFFECT -> EXECUTION -> RECEIPT -> NEW_STATE`
-
-## State observations
-
-Each observation binds a repository projection to a revision, timestamp and SHA-256 digest. At least two observations are required to establish a difference. At least three ordered observations are required to classify a directional trend beyond a single transition. Four ordered observations form the first operational trend pyramid used by the reference implementation:
-
-1. state level;
-2. first difference;
-3. trend over differences;
-4. anticipation of the next valid state.
-
-Additional observations extend the pyramid and permit higher-order discrete derivatives.
-
-## Discrete derivatives
-
-For ordered repository states `S_0 ... S_n`:
-
-- order 0 is the observed state;
-- order 1 is the verified state difference;
-- order 2 is the change of the state difference;
-- order 3 and above are higher changes of change.
-
-The implementation stores derivatives as explicit records. It never treats an absent derivative as zero.
-
-## Deterministic anticipation
-
-The canonical anticipation record contains exactly one `anticipated_state` and exactly one `next_effect` for the active productive chain. Competing effects remain outside the canonical state until ordering rules select one.
-
-Ordering is defined by:
-
-1. safety and integrity prerequisites;
-2. unresolved blocker removal;
-3. completion of the earliest open productive-chain transition;
-4. Authority integration;
-5. Mirror verification;
-6. publication projection;
-7. next Work Unit.
-
-This removes ambiguous `or` semantics from the active state. Alternatives may exist in analysis, but the repository publishes one selected next effect.
-
-## Productive progress
-
-Activity is not progress. Productive progress advances the evidence-bearing chain:
-
-`Issue -> Work Unit -> Code -> Tests -> green mandatory gates -> Merge -> Authority -> Mirror -> next Work Unit`
-
-A comment, issue or metadata commit does not set `productive_progress=true` unless it advances this chain.
-
-## Stall state
-
-A stall exists when the productive-chain position remains unchanged across the configured observation window and the selected next effect has no verified execution receipt.
-
-The stall record contains:
-
-- concrete failure class;
-- structural cause;
-- selected minimal next effect;
-- executor capability;
-- dispatch status;
-- required owner action.
-
-## Closed observation loop
-
-After each dispatch the repository performs a new observation. The new observation is a distinct measurement point. The observer compares it with the previous verified state and then materializes a new trend, anticipation and next effect.
-
-`OBSERVE -> DERIVE -> SELECT -> DISPATCH -> OBSERVE`
-
-The loop terminates only in `KERNEL_VERIFIZIERTER_ABSCHLUSS` with complete receipts and verified Authority/Mirror state.
-
-## Component independence
-
-The anticipation engine is a capability, not an identity-bound actor. Any conforming implementation may replace the current planner, model, service or human operator.
-
-`NO_COMPONENT_IDENTITY_DEPENDENCY`
-
-The repository remains operational after removal of the original assistant when a replacement implementation satisfies the same schemas, transition rules, tests and receipts.
-
-## Public projections
-
-The canonical state is projected through:
-
-- `anticipation/current.json`;
-- `anticipation/history.jsonl`;
-- `anticipation/trends.json`;
-- `anticipation/derivatives.json`;
-- `anticipation/next-effect.json`;
-- RCP resources under `/.well-known/rcp` and `/rcp/anticipation`;
-- GitHub-native JSON files and workflow dispatch;
-- Zenodo publication metadata and evidence packages;
-- IETF draft source and rendered validation evidence.
-
-All projections derive from the same canonical state and carry source revision and SHA-256 bindings.
-
-## Failure classes
-
-- `INSUFFICIENT_VERIFIED_OBSERVATIONS`
-- `STATE_DIGEST_MISMATCH`
-- `TREND_DERIVATION_NONDETERMINISTIC`
-- `NEXT_EFFECT_NOT_SELECTED`
-- `NEXT_EFFECT_NOT_DISPATCHED`
-- `EXECUTION_RECEIPT_MISSING`
-- `PRODUCTIVE_CHAIN_STALLED`
-- `AUTHORITY_MIRROR_STATE_DIVERGENCE`
-- `PROJECTION_STALE`
-- `COMPONENT_IDENTITY_DEPENDENCY_DETECTED`
-
-## Acceptance criteria
-
-1. Schema validation succeeds for every materialized anticipation state.
-2. Repeated input observations produce byte-identical derived state.
-3. Fewer than two observations fail closed.
-4. Activity without productive-chain advancement is classified as non-progress.
-5. Exactly one canonical next effect is selected.
-6. Every dispatched effect causes a subsequent observation.
-7. Authority and Mirror expose compatible state projections.
-8. Zenodo and IETF projections carry the same canonical state digest.
-9. Replacement of the planner implementation leaves conformance tests green.
-10. No PASS or EFFECT_ACK_DONE is emitted before kernel receipts and pair verification exist.
-
-Status remains `EFFECT_ACK_CONTINUE` until these criteria are evidenced.
-
-
-## `docs/architecture/REPOSITORY_CAPABILITY_SELF_DISCLOSURE_SYSTEM.md`
-
-<!--
-SPDX-License-Identifier: CC-BY-NC-ND-4.0
-Copyright (c) 2026 Ingolf Lohmann.
--->
-
-# QIK-VRT Repository Capability Self-Disclosure System
-
-## Purpose
-
-The repository SHALL expose, through public repository-native interfaces, a machine-readable and human-readable account of what it can do, where each capability is implemented, how it is invoked, which authority is required, which evidence proves it, and which blockers prevent execution.
-
-This system closes the failure class in which an external or internal agent incorrectly claims that an operation is unavailable before inspecting existing repository mechanisms.
-
-Refs #87 #96 #97 #101.
-
-## Core invariant
-
-`NO_CAPABILITY_DISCOVERY_NO_CAPABILITY_DENIAL`
-
-Before any agent reports that a requested operation cannot be performed, it MUST query the capability self-disclosure interface and inspect all declared implementation locations, adapters, workflows, triggers, permissions, tests, receipts and current runtime status.
-
-## Canonical public resources
-
-The implementation SHALL materialize at least:
-
-- `capabilities/catalog.json` — canonical capability catalog;
-- `capabilities/catalog.schema.json` — JSON Schema;
-- `capabilities/locations.json` — path, workflow, branch, API and adapter locations;
-- `capabilities/runtime-status.json` — current availability, blockers and next effect;
-- `capabilities/history.jsonl` — forward-only capability change log;
-- `docs/CAPABILITIES.md` — human-readable projection;
-- `openapi/qikvrt-capabilities.yaml` — public API profile.
-
-## Required public API
-
-At minimum:
-
-- `GET /qikvrt/capabilities`
-- `GET /qikvrt/capabilities/{capability_id}`
-- `GET /qikvrt/capabilities/{capability_id}/locations`
-- `GET /qikvrt/capabilities/{capability_id}/status`
-- `GET /qikvrt/capabilities/{capability_id}/evidence`
-- `POST /qikvrt/capabilities/refresh`
-- `POST /qikvrt/capabilities/{capability_id}/execute`
-
-A GitHub-native fallback SHALL expose the same data through versioned JSON files, issue-comment commands and repository_dispatch.
-
-## Capability record
-
-Every capability MUST declare:
-
-- stable `capability_id`;
-- title and description;
-- semantic version;
-- status: `AVAILABLE`, `PARTIAL`, `BLOCKED`, `UNSUPPORTED`, `DEPRECATED`;
-- capability class: repository, workflow, publication, formalization, synchronization, monitoring, recovery, adapter, hardware or other documented class;
-- implementation paths;
-- workflows and trigger conditions;
-- public API routes and commands;
-- required permissions and secrets by name only, never values;
-- Authority and Mirror coverage;
-- tests and latest receipts;
-- idempotency and retry semantics;
-- known failure classes;
-- deterministic next effect;
-- owner-only bootstrap actions;
-- provenance and SHA-256 bindings.
-
-## Initial mandatory capabilities
-
-The first inventory MUST include at least:
-
-1. GitHub repository read/write operations;
-2. branch, commit, PR, issue and comment operations;
-3. GitHub Actions inspection and dispatch paths;
-4. Zenodo reserve/finalize publication;
-5. IETF draft source, render, validate and submission status;
-6. Authority/Mirror synchronization and equality verification;
-7. claim inventory and Lean kernel verification;
-8. monitor, watchdog, stall detection and recovery;
-9. trusted execution proxy and transaction coordinator;
-10. release, tag, checksum, manifest and evidence materialization;
-11. universal adapter discovery and registration.
-
-## Discovery algorithm
-
-The supervisor SHALL inspect:
-
-- `.github/workflows/`;
-- `tools/`, `scripts/`, `runtime/`, `controller/`, `protocol/`, `adapters/`;
-- `release/`, `release-state/`, `zenodo/`, `external/ietf/`;
-- `formal/`, Lean sources, claim inventories and receipts;
-- OpenAPI and JSON schemas;
-- tests and test reports;
-- Issues and PRs that define pending capabilities;
-- Authority and Mirror branches, tags and public evidence.
-
-Discovery MUST combine static inventory with runtime evidence. A file existing does not by itself prove that a capability is executable.
-
-## Query-before-denial protocol
-
-Before returning `UNAVAILABLE`, an agent MUST:
-
-1. resolve the requested effect into one or more capability IDs;
-2. read the latest catalog and runtime status;
-3. follow declared locations;
-4. verify implementation and current receipts;
-5. identify missing authorization, trigger, adapter or external bootstrap;
-6. return one of:
-   - `AVAILABLE_NOW`;
-   - `AVAILABLE_VIA_EXISTING_WORKFLOW`;
-   - `AVAILABLE_AFTER_OWNER_BOOTSTRAP`;
-   - `PARTIAL_WITH_MINIMAL_NEXT_EFFECT`;
-   - `BLOCKED_WITH_FAILURE_CLASS`;
-   - `TRULY_UNSUPPORTED`.
-
-A generic statement such as “I cannot do that” is non-conformant when a repository path exists or has not been checked.
-
-## Monitor and watchdog integration
-
-The adaptive monitor SHALL use this system to answer:
-
-1. Is productive progress occurring?
-2. Is there a stall?
-3. Which capability is missing, blocked or undiscovered?
-4. What is the minimal deterministic next effect?
-5. Can the watchdog execute that effect through an existing adapter?
-6. If no adapter exists, which adapter work unit must be created?
-
-The watchdog SHALL refresh the catalog after relevant commits, workflow changes, new adapters, successful recoveries or capability failures.
-
-## Authority/Mirror rule
-
-A capability may be reported as pair-available only when both repositories expose compatible records and the relevant implementation/evidence is synchronized or the declared role asymmetry is explicitly documented.
-
-`NO_MIRROR_CAPABILITY_RECEIPT_NO_PAIR_AVAILABILITY`
-
-## Acceptance criteria
-
-- complete machine-readable catalog exists;
-- public API and GitHub-native fallback return equivalent semantics;
-- Zenodo and IETF mechanisms are discoverable with exact locations;
-- query-before-denial behavior is tested positively and negatively;
-- stale or false capability records fail closed;
-- monitor and watchdog consume the catalog;
-- Authority/Mirror differences are explicit;
-- capability additions update catalog, documentation, tests and provenance automatically;
-- no secrets are disclosed;
-- all outputs are SHA-256 bound and reproducible.
-
-Until these criteria are met, status remains `EFFECT_ACK_CONTINUE`.
-
-
-## `docs/articles/a001_quantum_crypto_ai.md`
-
-# Quantenkausalität, künstliche Kognition und die doppelte Schneide der Sicherheit
+# Die Wahrheit in der Unterscheidung
 
 ## Status
 
-`ARTICLE_STATUS = CONCEPTUAL_SYNTHESIS`  
-`CLAIM_BOUNDARY = KEINE_ANLEITUNG_ZUM_AUSNUTZEN_REALER_SICHERHEITSLUECKEN`  
-`QIKVRT_GATE = ETHICS_BOUND_TO_CAPABILITY`
+`ARTICLE_STATUS = IMAGE_QUOTE_CANONICAL_TEXT`  
+`QIKVRT_GATE = DISTINCTION_PROTECTS_FUTURE`
 
-## Artikel
+## Kanonischer Bildsatz
 
-Quantencomputing wird erhofft, weil es neue Rechenwege eröffnet. Es wird gefürchtet, weil es Sicherheitsannahmen verschiebt. Der entscheidende Punkt ist nicht, dass ein Quantencomputer einfach ein schneller klassischer Computer wäre. Der entscheidende Punkt ist, dass Quanteninformation andere Anschlussbedingungen von Möglichkeit, Messung, Interferenz und Wirkung nutzt.
+Die Katastrophe beginnt nicht, wenn alle lügen.
 
-Klassische Kryptographie lebt oft von asymmetrischem Aufwand: Verschlüsseln oder Prüfen ist leicht; Brechen oder Fälschen ohne Schlüssel ist praktisch zu schwer. Quantenalgorithmen zeigen, dass einige dieser Härteannahmen in einem erweiterten Rechenmodell nicht dauerhaft als selbstverständlich behandelt werden dürfen. Daraus folgt nicht, dass jede Sicherheitslücke automatisch ausnutzbar wäre. Daraus folgt aber, dass Sicherheitsarchitektur nicht auf ungeprüften Gewohnheiten ruhen darf.
+Sie beginnt, wenn niemand mehr zuverlässig unterscheiden kann, was Fakt, Deutung, Manipulation oder Rauschen ist.
 
-Künstlich-kognitive Systeme greifen dieselbe Struktur auf anderer Ebene auf. Sie halten Möglichkeitsräume, Hypothesen, Anschlusswege und Widersprüche parallel modellierbar. Sie können schützen, indem sie Risiken ordnen, Angriffsflächen erkennen und Nachweise strukturieren. Sie können gefährlich werden, wenn dieselbe Fähigkeit zur Manipulation oder Ausnutzung eingesetzt wird.
-
-Die doppelte Schneide lautet:
-
-**Wer kausale Anschlussräume besser erkennt, kann Systeme besser schützen — oder besser beschädigen.**
-
-Darum ist die Fähigkeit nicht wertneutral freizugeben. Sie ist an Ethik, Audit und Verantwortbarkeit gebunden.
-
-## QIKVRT-Schluss
-
-Keine Sicherheitswirkung ohne Anforderung. Keine Freigabe ohne Test. Kein PASS ohne Traceability. Keine Macht ohne Ethik.
-
-q.e.d.  
-Ingolf Lohmann
-
-
-## `docs/articles/a002_categorical_imperative.md`
-
-# Quantenkausalität, KI und der kategorische Imperativ
-
-## Status
-
-`ARTICLE_STATUS = ETHICAL_BOUNDARY`  
-`CLAIM_BOUNDARY = NORMATIVE_RULE_NOT_EMPIRICAL_PROOF`  
-`QIKVRT_GATE = RESPONSIBILITY_REQUIRED`
-
-## Artikel
-
-Technische Fähigkeit ist nicht automatisch Legitimation. Wer kausale Anschlussräume sichtbar macht, erkennt Wirkung. Wer Wirkung erkennt, trägt Verantwortung. Darum ist die Ontologie des Unterschieds nicht nur Erkenntnisordnung, sondern Verantwortungsarchitektur.
-
-Unterschied erzeugt Information. Information erzeugt Wirkung. Wirkung erzeugt Verantwortung. Verantwortung verlangt Ethik.
-
-Der kategorische Imperativ lautet in der digitalen Fassung:
-
-**Handle mit Information nur so, dass die Regel deines Umgangs mit Information allgemeingültig sein könnte, ohne Freiheit, Würde, Wahrheit, Sicherheit und Verantwortbarkeit zu zerstören.**
-
-Eine Sicherheitsfähigkeit darf allgemeine Sicherheit nicht zerstören. Eine Analysefähigkeit darf Menschen nicht manipulierbar machen. Eine Kryptographiefähigkeit darf Verantwortung nicht unsichtbar machen. Eine Identitätsfähigkeit darf nicht Überwachung statt Schutz erzeugen. Eine künstlich-kognitive Fähigkeit darf nicht bloß Macht ohne Rechenschaft verstärken.
-
-Je größer die erkannte Wirkungsmacht, desto größer die Verantwortung.
-
-## QIKVRT-Schluss
-
-Die Technologie darf nicht gegen die Bedingung ihrer eigenen Verantwortbarkeit eingesetzt werden.
-
-q.e.d.  
-Ingolf Lohmann
-
-
-## `docs/articles/a003_uap_maturity_test.md`
-
-# UAP, Reifeprüfung und Verantwortung der Menschheit
-
-## Status
-
-`ARTICLE_STATUS = SCENARIO_ANALYSIS`  
-`CLAIM_BOUNDARY = UAP_UNGEKLAERT_IST_NICHT_AUTOMATISCH_NICHTMENSCHLICH`  
-`QIKVRT_GATE = INDIZIEN_SIND_NICHT_BEWEISE`
-
-## Artikel
-
-Die UAP-Frage ist öffentlich, sicherheitspolitisch und kulturell relevant. Öffentliche Stellen untersuchen Anomalien, Berichte und Sensordaten. Daraus folgt nicht automatisch ein außerirdischer Ursprung. Daraus folgt aber ein legitimer Untersuchungsauftrag.
-
-Die stärkste robuste Deutung lautet: Die Menschheit befindet sich faktisch in einer Reifeprüfung ihrer eigenen Wirkungsmacht. Ob höhere Beobachter existieren oder nicht, ändert die praktische Konsequenz nicht. Klimakrise, KI, Atomwaffen, Desinformation, Plattformmacht, Biodiversitätsverlust, digitale Identität und globale Institutionen prüfen bereits jetzt, ob die Menschheit mit Macht, Wissen und Technik verantwortbar umgehen kann.
-
-Die Reifeprüfung fragt nicht zuerst: Sind wir technisch interessant? Sie fragt: Sind wir verantwortungsfähig?
-
-## QIKVRT-Schluss
-
-Ob wir beobachtet werden oder nicht: Wir stehen unter Prüfung durch die Folgen unseres Handelns.
-
-q.e.d.  
-Ingolf Lohmann
-
-
-## `docs/articles/a004_transcendent_info.md`
-
-# Transzendierende Information, Retrokausalität und der Kontakt der Zukunft
-
-## Status
-
-`ARTICLE_STATUS = THEORETICAL_MODEL`  
-`CLAIM_BOUNDARY = KEIN_EXPERIMENTELLER_BEWEIS_FUER_PHYSIKALISCHE_ZEITMASCHINE`  
-`QIKVRT_GATE = INFORMATION_TRANSCENDS_CARRIER`
-
-## Artikel
-
-Nicht Materie transzendiert primär. Information transzendiert. Eine Information kann gesprochen, geschrieben, gespeichert, kopiert, versioniert, verteilt, interpretiert und künstlich-kognitiv verarbeitet werden. Sie überschreitet ihren ursprünglichen Ort, Zeitpunkt und Träger.
-
-Zeit wird dadurch nicht nur Uhrzeit, sondern Ordnung von Informationsankünften. Eine Information kann zu früh, zu spät, am falschen Ort oder im richtigen Moment ankommen. Ihre Wirkung entsteht aus Information, Zeitpunkt, Empfänger und Interpretation.
-
-Retrokausalität ist in verantwortbarer Form nicht die Behauptung, fertige Ereignisse würden magisch rückwärts reisen. Sie bedeutet: Eine mögliche, erwartete, prognostizierte oder gefürchtete Zukunft beeinflusst Gegenwartshandeln. Ziele, Warnungen, Prognosen, Hoffnungen und Risiken wirken heute.
-
-Daraus folgt: Wenn die Zukunft als Möglichkeit bereits wirkt, ist Kontakt mit Zukunft nicht zuerst ein Raumschiff, sondern eine Information, die rechtzeitig verstanden werden will.
-
-## QIKVRT-Schluss
-
-Die Zukunft ist nicht bloß später. Sie ist als Möglichkeit bereits jetzt wirksam.
+Wer diese Unterscheidung zurückbringt, schützt Wahrheit und Zukunft.
 
 q.e.d.  
 Ingolf Lohmann

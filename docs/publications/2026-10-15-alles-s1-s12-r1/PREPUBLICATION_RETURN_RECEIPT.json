@@ -1,0 +1,95 @@
+{
+  "_license": {
+    "classification": "machine_readable_prepublication_return_receipt",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt"
+  },
+  "schema": "qikvrt_prepublication_return_receipt_v2",
+  "publication_id": "QIKVRT-ALLES-S1-S12-20261015-R1",
+  "content_changed": true,
+  "original_files": [
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/originals/Original_116_Seiten_Meta.pdf",
+      "bytes": 436035,
+      "sha256": "cc092cebe4e9e512f1f37f231ae33d53522e9829cecd2a3a3e7a6f3ecba30832",
+      "git_blob_sha1": "c4f01ac69eeb64f16e5fa4f879da9d344fb47b65"
+    },
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/originals/Original_121_Seiten.pdf",
+      "bytes": 454521,
+      "sha256": "91841d7ea66e800098f811bd1e17bccea6423ea1b23e0c5abf034048ed020b86",
+      "git_blob_sha1": "2ce3fd33456bad96ca86e34bf0804dbe1e5bb965"
+    }
+  ],
+  "candidate_files": [
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/QIKVRT_ALLES_2026-10-15_S1_S12.pdf",
+      "bytes": 1289349,
+      "sha256": "68b59b146904aae567bf302268b1e795d9ffd8506921aa282817aab4c0d41f1e",
+      "git_blob_sha1": "100834979354759ed4d5846d84d28d1f11720d05"
+    },
+    {
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/CHANGE_NOTICE.md",
+      "bytes": 939,
+      "sha256": "d9f3188dfb9694b3f1388639d9d58d085fc1f8e1f204ebda2c0cf8029e7268e3",
+      "git_blob_sha1": "ae27f68383ffdef962f1c3c5d9ec8e7a8205a6be"
+    }
+  ],
+  "changed_claim_ids": [
+    "LAYOUT-001",
+    "SOURCE-001",
+    "S12-001",
+    "S12-002",
+    "S12-003",
+    "S12-004",
+    "ARCHIVE-001"
+  ],
+  "change_reasons": [
+    {
+      "claim_id": "LAYOUT-001",
+      "reason": "Textüberlauf repariert, Original erhalten und neuer redaktioneller Geltungsbereich sichtbar ausgewiesen.",
+      "original_sha256": "91841d7ea66e800098f811bd1e17bccea6423ea1b23e0c5abf034048ed020b86",
+      "corrected_sha256": "68b59b146904aae567bf302268b1e795d9ffd8506921aa282817aab4c0d41f1e",
+      "exact_candidate_path": "docs/publications/2026-10-15-alles-s1-s12-r1/QIKVRT_ALLES_2026-10-15_S1_S12.pdf"
+    },
+    {
+      "claim_id": "S12-001",
+      "reason": "Textüberlauf repariert, Original erhalten und neuer redaktioneller Geltungsbereich sichtbar ausgewiesen.",
+      "original_sha256": "91841d7ea66e800098f811bd1e17bccea6423ea1b23e0c5abf034048ed020b86",
+      "corrected_sha256": "68b59b146904aae567bf302268b1e795d9ffd8506921aa282817aab4c0d41f1e",
+      "exact_candidate_path": "docs/publications/2026-10-15-alles-s1-s12-r1/QIKVRT_ALLES_2026-10-15_S1_S12.pdf"
+    },
+    {
+      "claim_id": "S12-002",
+      "reason": "Textüberlauf repariert, Original erhalten und neuer redaktioneller Geltungsbereich sichtbar ausgewiesen.",
+      "original_sha256": "91841d7ea66e800098f811bd1e17bccea6423ea1b23e0c5abf034048ed020b86",
+      "corrected_sha256": "68b59b146904aae567bf302268b1e795d9ffd8506921aa282817aab4c0d41f1e",
+      "exact_candidate_path": "docs/publications/2026-10-15-alles-s1-s12-r1/QIKVRT_ALLES_2026-10-15_S1_S12.pdf"
+    },
+    {
+      "claim_id": "S12-003",
+      "reason": "Textüberlauf repariert, Original erhalten und neuer redaktioneller Geltungsbereich sichtbar ausgewiesen.",
+      "original_sha256": "91841d7ea66e800098f811bd1e17bccea6423ea1b23e0c5abf034048ed020b86",
+      "corrected_sha256": "68b59b146904aae567bf302268b1e795d9ffd8506921aa282817aab4c0d41f1e",
+      "exact_candidate_path": "docs/publications/2026-10-15-alles-s1-s12-r1/QIKVRT_ALLES_2026-10-15_S1_S12.pdf"
+    },
+    {
+      "claim_id": "S12-004",
+      "reason": "Textüberlauf repariert, Original erhalten und neuer redaktioneller Geltungsbereich sichtbar ausgewiesen.",
+      "original_sha256": "91841d7ea66e800098f811bd1e17bccea6423ea1b23e0c5abf034048ed020b86",
+      "corrected_sha256": "68b59b146904aae567bf302268b1e795d9ffd8506921aa282817aab4c0d41f1e",
+      "exact_candidate_path": "docs/publications/2026-10-15-alles-s1-s12-r1/QIKVRT_ALLES_2026-10-15_S1_S12.pdf"
+    }
+  ],
+  "change_notice_path": "docs/publications/2026-10-15-alles-s1-s12-r1/CHANGE_NOTICE.md",
+  "return": {
+    "candidate_returned_to_owner": true,
+    "owner_name": "Ingolf Lohmann",
+    "owner_type": "NATURAL_PERSON",
+    "return_channel": "ChatGPT Work commentary: complete PDF and visible CHANGE_NOTICE links returned before this receipt; exact output bytes unchanged.",
+    "returned_at": "2026-10-15T17:03:47.526746+00:00",
+    "visible_change_notice_returned": true
+  }
+}

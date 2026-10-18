@@ -1,0 +1,8 @@
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tests/test_integrity.py
+...........
+----------------------------------------------------------------------
+Ran 11 tests in 0.327s
+
+OK
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tools/qikvrt_integrity.py verify
+PASS verified 3972 classified entries and 3961 immutable digests

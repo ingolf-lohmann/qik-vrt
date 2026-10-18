@@ -1,0 +1,23 @@
+# Vollständige Quellenbetrachtung und Anschlussfähigkeitsbeweis, 15.10.2026
+
+`GESAMTBETRACHTUNG_DE.txt` und das gleichnamige PDF berücksichtigen alle 44 ermittelten Zenodo-Veröffentlichungsstände und alle fünf Originalrevisionen der beiden nativen IETF-Drafts. Alle 479 Zenodo-Dateien sind gegen frische native Größe/MD5 und berechnetes SHA-256 gebunden. `CORPUS_COVERAGE.json` enthält jede Version. Eine unabhängige Neuausführung sämtlicher historischer Beweise wird nicht behauptet.
+
+`ARTICLE_DE.txt` und `Anschlussfaehigkeit_und_groesstes_Element_20261015.pdf` erklären die neun neuen Sätze und offenen Instanziierungspflichten. Exakter Lean-Quellstand: `formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ConnectabilityMaximality.lean`. Unter Lean 4.19.0 im bestehenden Projekt `lake build` ausführen; anschließend `lake env lean QIKVRTFormalization/Process/ConnectabilityMaximality.lean`. Die zwei Dateien unter `negative/` müssen vom Kernel abgelehnt werden. `KERNEL_RECEIPT.json` bindet Befehle, Quellen und Logs. Der bestehende Kompatibilitätsadapter für `/proc/self/exe` betrifft nur die hier eingeschränkte Umgebung und verändert keine Kernelbytes.
+
+Die Originalaussage, die Realitätspräzisierung und die Vollständigkeitsforderung des Auftraggebers bleiben separat wortgetreu erhalten. Der Kandidat ist eine neue Arbeitsfassung. Sein behaupteter konkreter historischer Superlativ, neue Zenodo-Publikation, Mirror-Ablage und produktive Lieferung bleiben ausdrücklich offen. Der bestehende PR-523-Weg und vorhandene native Workflows werden wiederverwendet; kein neuer Publikationscontroller wird geschaffen.
+
+## Produktionsprüfung nach technischer Bindungsreparatur
+
+Die unveränderte v2-Produktionsprüfung akzeptiert die überschneidungsfreien Dateibindungen, 37 Claim-Dispositions, neun Kernel-Theoremfragmente und die beidseitige Claim-Matrix-Projektion bis zur getrennten Upload-Freigabe. `KERNEL_RECEIPT.json` bindet den tatsächlichen nativen Lauf 38711511556 und die unveränderten Lean-Quellen; die ursprünglichen Receipts bleiben unter `evidence/publication-repair-20261015/PREDECESSOR_*` erhalten. Alle 479 erhaltenen Zenodo-Dateien und fünf IETF-Originaltexte wurden erneut gehasht. Das PDF und sämtliche veröffentlichten Originalquellen bleiben unverändert.
+
+`CANDIDATE_FREEZE.json` identifiziert den zurückzuliefernden Entwurf. `UPLOAD_FILESET.json` ist ein vorbereiteter Dateiplan, kein ausführbarer Produktionsmanifest. `PRODUCTION_METADATA.json` ist ein zu prüfender Metadatenvorschlag. `PREPUBLICATION_RETURN_RECEIPT.json` bleibt bis zur tatsächlichen Rücklieferung ausdrücklich unbestätigt; es enthält keine erfundene Owner-Entscheidung. Der strikte Validator und die Produktionsflags bleiben FAIL/false. Rücklieferung, exakt gebundene Owner-Freigabe, authentifizierter Publisher und öffentliche Originalrecord-/DOI-/Byteprüfung sind getrennte notwendige Übergänge.
+
+Der vorhandene Publisher `tools/qikvrt_zenodo_publish.py` richtet neue Effekte und die globale Freigabeverbrauchssperre auf die Authority `ingolf-lohmann/qik-vrt`. Historische Einträge und deren Freigaben werden nicht umgebunden. Ein erfolgreicher Modellbeweis oder eine Repository-Ablage autorisiert keinen Upload.
+
+## Unveränderlicher Lean-Quellensnapshot
+
+Ein gleichzeitig integrierter Arbeitslauf hat den aktuellen aggregierten Lean-Einstieg erweitert. `formal-source/` bewahrt daher alle 108 Dateien des ursprünglich geprüften Projekts bytegleich; `FORMAL_SOURCE_SNAPSHOT.json` ordnet ursprünglichen Git-Pfad, Snapshot-Pfad, SHA-256 und Git-Blob einander zu. Zur Reproduktion im Verzeichnis `formal-source/` mit Lean 4.19.0 `lake build` und danach `lake env lean QIKVRTFormalization/Process/ConnectabilityMaximality.lean` ausführen. Der Kernelreceipt behält die historischen nativen Quellpfade und bindet ihre verfügbare Snapshot-Materialisierung separat. Der neue Retrokausalitäts-Import auf dem gemeinsamen PR wird nicht zurückgesetzt. Keine zusätzliche physikalische Bestätigung wird daraus abgeleitet.
+
+## Zenodo-Dateigrenze und unveränderte Quellen
+
+Zenodo und der bestehende Produktionspublisher akzeptieren höchstens 100 Upload-Dateien. Die bisher einzeln geplanten 255 Dateien unter `evidence/` und `formal-source/` werden daher als `SCIENTIFIC_SOURCES.zip` hochgeladen. `SCIENTIFIC_SOURCE_ARCHIVE.json` bindet jedes Mitglied mit ursprünglichem Repository-Pfad, Bytezahl, SHA-256 und Git-Blob. Sämtliche Mitglieder wurden bytegleich aus dem Archiv zurückgelesen; ihre vorhandenen Repository-Dateien bleiben unverändert. Das Archiv am Repository-Wurzelverzeichnis entpacken, um die in den Quell- und Kernel-Nachweisen verzeichneten Pfade herzustellen. Die bibliographischen und formalen Aussagen ändern sich dadurch nicht.

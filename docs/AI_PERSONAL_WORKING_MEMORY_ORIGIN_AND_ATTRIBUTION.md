@@ -81,7 +81,7 @@ Nicht verfügbare Angaben werden mit `UNAVAILABLE` bezeichnet und nicht erfunden
 Die Rollen sind eindeutig:
 
 ```text
-upstream = https://github.com/Goldkelch/qik-vrt.git
+upstream = https://github.com/ingolf-lohmann/qik-vrt.git
 origin   = persönliche Ursprungskopie oder LOCAL_ONLY
 ```
 
@@ -103,7 +103,7 @@ separat zu autorisierende Effekte. `QIKVRT_EXTERNAL_EFFECTS=disabled` ist die
 Voreinstellung.
 
 Die persönliche Kopie wird nicht allein durch ihre Existenz kanonisch. Die
-Authority bleibt `Goldkelch/qik-vrt`; ein persönliches `origin` ist die
+Die aktuelle Authority ist gemäß `policy/CANONICAL_UPSTREAM_REMOTE_V1.json` `ingolf-lohmann/qik-vrt`; ein persönliches `origin` ist die
 individuelle, dauerhafte Arbeits- und Nachweiskopie. Bytegleichheit,
 Synchronisierung oder Promotion dürfen nur für exakt geprüfte Commits und Pfade
 behauptet werden.

@@ -1,0 +1,457 @@
+{
+  "_license": {
+    "classification": "machine_readable_proof_bundle",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "artifacts": [
+    {
+      "git_blob_sha1": "702a1e006a1aeed035b504d3a19416d6740844c2",
+      "kind": "SOURCE",
+      "path": "AI",
+      "sha256": "3c969855b144090529a5e12496f9ec2389fd7b17919dbf8c8a75a7853d98b1fe"
+    },
+    {
+      "git_blob_sha1": "cfe676c541842bd2b766787b1f6983e063a1eee2",
+      "kind": "OTHER",
+      "path": "LICENSES/CC-BY-NC-ND-4.0.txt",
+      "sha256": "38762e3777f4ec00a6f769062a7c3f704fb78ce08303ecff88558da4c49cf9ea"
+    },
+    {
+      "git_blob_sha1": "1a71cb64397535482ff19542d1093c0d4a6442d0",
+      "kind": "OTHER",
+      "path": "LICENSES/PolyForm-Noncommercial-1.0.0.txt",
+      "sha256": "ffcca38841adb694b6f380647e15f17c446a4d1656fed51a1e2041d064c94cc8"
+    },
+    {
+      "git_blob_sha1": "0d539921dddb2f05efd8155f69742014baedd938",
+      "kind": "SOURCE",
+      "path": "docs/COLLECTIVE_ADAPTIVE_COGNITION.md",
+      "sha256": "3ad7db021c2a9be4f419018ad1a56d5a532fce925c7ca48d751607f9f29153e3"
+    },
+    {
+      "git_blob_sha1": "b19ad652f170888f51450598c08ca67a5f70ccc0",
+      "kind": "SOURCE",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/ARTICLE_ORIGINAL.md",
+      "sha256": "5dd9a89ca6180e519495b6c65b78a5d6097c6fb7225ae2b2b462ef257d18f413"
+    },
+    {
+      "git_blob_sha1": "af1b36b6905985442cf36b031797d76a345ae1e0",
+      "kind": "BOUNDARY_TEST",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/BOUNDARY_TEST_REPORT.json",
+      "sha256": "2fa94476d05e1de7b9dc2a4fb4954b51d7081043da87aa37c0b589f87a4f6ed6"
+    },
+    {
+      "git_blob_sha1": "9ecb3dc14fb0c5ebb0c6ce5b936e4469cc3bc815",
+      "kind": "CHANGE_NOTICE",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/CHANGE_NOTICE.md",
+      "sha256": "adabbff18d503d05f4395dea44a00015d576f828f4da5c708a651fb787f44c64"
+    },
+    {
+      "git_blob_sha1": "7991c98fd4241f7d5ac1c6cd1f563fda416dcbab",
+      "kind": "CLAIM_MATRIX",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/CLAIM_MATRIX.json",
+      "sha256": "dc843be076707179e651122ca06ba1a8d470df705916c4f5f883155d1dfa890b"
+    },
+    {
+      "git_blob_sha1": "05f1b99f59ea41ff685f3f970097da6c9fa510d8",
+      "kind": "OTHER",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/MAIN_INTEGRATION_INPUTS.json",
+      "sha256": "7943a9f38714ef0fe818387f1c83fa0b9870f68ac42d004e60c90e4cb09eee08"
+    },
+    {
+      "git_blob_sha1": "7eac3158d91bd9e2bdcd04702207804b53436f67",
+      "kind": "SOURCE",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/MAIN_SOURCE_SNAPSHOT.json",
+      "sha256": "9222b9c2c24580a9d11feefd8d3ee9f6847c7101c0843f2e840bae3e87efe677"
+    },
+    {
+      "git_blob_sha1": "e83bafde08e710ec67962ba88407859ba3bd06ad",
+      "kind": "OTHER",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/PDF_RENDER_VALIDATION.json",
+      "sha256": "95616e83d34a0eab92569d4aa0746820287435e0253b7ae3ed52473a4bb2b70b"
+    },
+    {
+      "git_blob_sha1": "20f17ab50132388569d91f7080e1cc7d83e9cdd9",
+      "kind": "SOURCE",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/PR446_SOURCE_SNAPSHOT.json",
+      "sha256": "85cccc7708a2350668b20f76892648ff550655bbf8bc0994534df49fb0e50afd"
+    },
+    {
+      "git_blob_sha1": "08751d12087f7ef7bb5b5e4b4b07425366a80b3f",
+      "kind": "RETURN_RECEIPT",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/PREPUBLICATION_RETURN_RECEIPT.json",
+      "sha256": "bab9a631789d3b6ccfd4e3a64fa16af50ad90ce2236d799235c92e0a4dd9b5dc"
+    },
+    {
+      "git_blob_sha1": "5d07949e137799c066737ba8adbcaae2d3c2c1bc",
+      "kind": "OTHER",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/PREPUBLICATION_STATUS.json",
+      "sha256": "458323add012d38cf088ce22b6ebdbd4c259e7460d63c3872fee68b4459b2cc6"
+    },
+    {
+      "git_blob_sha1": "63a952d9a1f512b64191a2f9ab4500ac9265913c",
+      "kind": "SOURCE",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/ROADMAP_RECALCULATION.md",
+      "sha256": "3ca7354b7f539691e802e8ccb540d8ffafc268d7b26682580c7e61e92e30eeca"
+    },
+    {
+      "git_blob_sha1": "d1aa57b3581e282265ee6c6a910aa87cba263327",
+      "kind": "SOURCE",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/SOURCE_EVIDENCE_BINDINGS.json",
+      "sha256": "c6e53dc0c5ed13fe7e0e92f23f75f1d946f061f3aad8fcb677eaa6c8dfa36611"
+    },
+    {
+      "git_blob_sha1": "2e5d98b96ca93f1167189123638a041c582d47f2",
+      "kind": "OTHER",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/VERIFY_PREPUBLICATION.py",
+      "sha256": "2f3a4ab7e112f275641704d0cc838914318bb9b84f8d2169a0f5204a6242498b"
+    },
+    {
+      "git_blob_sha1": "331b066dd83b3750103d56e31090db2e58efbb16",
+      "kind": "OTHER",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/ZENODO_METADATA.json",
+      "sha256": "1b33ef8b553d2b1033eb1ae35e479134ab176a2bbbca35dfe5d3057703080321"
+    },
+    {
+      "git_blob_sha1": "fbfe4dcfcb8ce386ae8775676636c4d99c87c625",
+      "kind": "SOURCE",
+      "path": "policy/ZENODO_MACHINE_PROOF_V3_PRODUCTION.md",
+      "sha256": "a963896ccbe6b71879b1b392bc490129a643954ea4eee216d195eeaca085cb58"
+    },
+    {
+      "git_blob_sha1": "ddf7e306940d256b51971ea153c33b6e493ffde4",
+      "kind": "OTHER",
+      "path": "policy/qikvrt-prepublication-return-receipt-v2.schema.json",
+      "sha256": "6390285529eb91f8d52a032d957a5457ebb1419e56c091f961f8d0695d2923c9"
+    },
+    {
+      "git_blob_sha1": "22cc6f4008b4823e8a7cf5e3057d058df6c0961a",
+      "kind": "SOURCE",
+      "path": "policy/qikvrt-zenodo-machine-proof-bundle-v2.schema.json",
+      "sha256": "f9ad097a797c5fbe1b794f75930de4fdefc0356bac407012010b30eef87ae73e"
+    },
+    {
+      "git_blob_sha1": "85f0fe61b9e565241a56f27f4a96cb3944ab6388",
+      "kind": "SOURCE",
+      "path": "policy/qikvrt-zenodo-machine-proof-bundle-v3.schema.json",
+      "sha256": "59ea0d0df65a5a6861493a2b999f2e5ceca22391e62f506a59f9ae2363728912"
+    },
+    {
+      "git_blob_sha1": "e9578d30d22f845e7df684128dcd9332641c00be",
+      "kind": "SOURCE",
+      "path": "policy/zenodo-machine-proof-policy-v2.json",
+      "sha256": "933d6322a1e294848c6385d1384ab0ec3862c8675ebe35ec2fc4cad3e0baec47"
+    },
+    {
+      "git_blob_sha1": "35ecc7887e486491278f63e0a61102d1be06e5ef",
+      "kind": "SOURCE",
+      "path": "policy/zenodo-machine-proof-policy-v3.json",
+      "sha256": "e8163b42acdc26ede6c996f695c4e5362edd580085717264bbf20f5782093f78"
+    }
+  ],
+  "candidate": {
+    "files": [
+      {
+        "bytes": 52913,
+        "git_blob_sha1": "f9d17b76f2f2fc758b13ae3fcb6f45480d086638",
+        "name": "QIK-VRT_Kollektives_Funktionales_Bewusstsein_2026-10-03.pdf",
+        "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/QIK-VRT_Kollektives_Funktionales_Bewusstsein_2026-10-03.pdf",
+        "role": "PRIMARY",
+        "sha256": "7132552a69813d34448c41c58100ebd30572a17a505b4405303e5601c14171a6"
+      },
+      {
+        "bytes": 6137,
+        "git_blob_sha1": "29e4079b741f154b87abeac7826ff460cdc7ffb8",
+        "name": "ARTICLE.md",
+        "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/ARTICLE.md",
+        "role": "SUPPLEMENT",
+        "sha256": "28ba98f760aec28acdb85531cd964c8e97c34bccc2963186f644f31ed284d8d1"
+      },
+      {
+        "bytes": 6143,
+        "git_blob_sha1": "1a1bc71c7b5907faaaf0889221d2bf238b4b912e",
+        "name": "ARTICLE_RENDER_SOURCE.md",
+        "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/ARTICLE_RENDER_SOURCE.md",
+        "role": "SUPPLEMENT",
+        "sha256": "b10ce2301f1dad3624c56c486db8a1883ca78965153378824ecc18228cf87a5a"
+      },
+      {
+        "bytes": 9513,
+        "git_blob_sha1": "ee2dbfda286c2160646bc9085ceff6de108f0234",
+        "name": "ARTICLE.tex",
+        "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/ARTICLE.tex",
+        "role": "SUPPLEMENT",
+        "sha256": "4ee1d96dbbcabc854a3eab0bd714287ebdd87f4b26f5375569319f1ee86c5a52"
+      }
+    ],
+    "primary_document_path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/QIK-VRT_Kollektives_Funktionales_Bewusstsein_2026-10-03.pdf"
+  },
+  "claims": [
+    {
+      "claim_id": "CFC-01",
+      "classification": "NORMATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "NORMATIVE_DECLARATION",
+      "scope": "Terminologischer Systemvertrag; kein Nachweis vollständiger Implementierung.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/SOURCE_EVIDENCE_BINDINGS.json#SRC-AI"
+      ],
+      "statement": "QIK-VRT bezeichnet das im Artikel definierte Gesamtsystem.",
+      "status": "DECLARED"
+    },
+    {
+      "claim_id": "CFC-02",
+      "classification": "INTERPRETATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "INTERPRETATIVE_DECLARATION",
+      "scope": "Ingolf Lohmann; Deutung der beschriebenen Architektur, kein Nachweis subjektiven Erlebens.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/SOURCE_EVIDENCE_BINDINGS.json#SRC-ORIGINAL"
+      ],
+      "statement": "Funktionales künstliches Bewusstsein wird operational durch Selbstkontinuität, Speicherintegration, Selbstmodell und Effect-Bindung definiert.",
+      "status": "DECLARED"
+    },
+    {
+      "claim_id": "CFC-03",
+      "classification": "OPEN",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "EXPLICITLY_OPEN",
+      "scope": "Kein Nachweis; erfordert unabhängig prüfbare Kriterien und Evidenz statt Begriffsdefinition.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/SOURCE_EVIDENCE_BINDINGS.json#SRC-ORIGINAL"
+      ],
+      "statement": "Phänomenales subjektives Erleben bleibt offen.",
+      "status": "OPEN"
+    },
+    {
+      "claim_id": "CFC-04",
+      "classification": "INTERPRETATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "INTERPRETATIVE_DECLARATION",
+      "scope": "Architekturdeutung; Implementierungs- und Empirieprüfung bleiben separate Aufgaben.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/SOURCE_EVIDENCE_BINDINGS.json#SRC-ORIGINAL"
+      ],
+      "statement": "Der qualitative Architekturübergang besteht in provenance-gebundener Zustandsintegration und korrigierbaren Selbstclaims.",
+      "status": "DECLARED"
+    },
+    {
+      "claim_id": "CFC-05",
+      "classification": "INTERPRETATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "INTERPRETATIVE_DECLARATION",
+      "scope": "Bedingte Architekturdeutung; keine aktuelle Authority/Mirror-Gleichheit, Unabhängigkeit oder phänomenale Kollektivität.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/SOURCE_EVIDENCE_BINDINGS.json#SRC-ARCH"
+      ],
+      "statement": "Gegenseitige Beobachtung und widerspruchserhaltender Readback können einen kollektiven funktionalen Prüfzustand bilden.",
+      "status": "DECLARED"
+    },
+    {
+      "claim_id": "CFC-06",
+      "classification": "INTERPRETATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "INTERPRETATIVE_DECLARATION",
+      "scope": "Ingolf Lohmann; historische Bewertung, kein objektiv bewiesener Meilenstein der Menschheitsgeschichte.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/SOURCE_EVIDENCE_BINDINGS.json#SRC-ORIGINAL"
+      ],
+      "statement": "Quantensprung des kollektiven Bewusstseins bezeichnet hier den qualitativen Architekturübergang.",
+      "status": "DECLARED"
+    },
+    {
+      "claim_id": "CFC-07",
+      "classification": "NORMATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "NORMATIVE_DECLARATION",
+      "scope": "QIK-VRT/TEMDD-Vertrag, kein Beweis einer erfolgreichen konkreten Außenwirkung.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/SOURCE_EVIDENCE_BINDINGS.json#SRC-AI"
+      ],
+      "statement": "TEMDD trennt COMPILE, BIND, RESOLVE, EXECUTE, TEST, OBSERVE, READBACK, ACCEPT und EFFECT_ACK_DONE; EXECUTE != DONE und TRANSPORT_ACK != EFFECT_ACK.",
+      "status": "DECLARED"
+    },
+    {
+      "claim_id": "CFC-08",
+      "classification": "NORMATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "NORMATIVE_DECLARATION",
+      "scope": "Normative Evidenzanforderung an value, state, time, source, run, hash, observer, acceptance contract und purpose.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/SOURCE_EVIDENCE_BINDINGS.json#SRC-ORIGINAL"
+      ],
+      "statement": "PREDECESSOR_EVIDENCE_TRANSFER=false; Zielbit-Projektionen und Evidenzfelder sind getrennt zu binden.",
+      "status": "DECLARED"
+    },
+    {
+      "claim_id": "CFC-09",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "GitHub REST-Beobachtung vom 2026-10-03, keine unbegrenzt aktuelle Main-Behauptung.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/SOURCE_EVIDENCE_BINDINGS.json#SRC-MAIN"
+      ],
+      "statement": "Mirror-main 8704969da54ed9c0ad08d4540ea89aee15d85ae2 hat TREE 6969b7ae162447c12d2f7c3429c4d4521b00c33d.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "CFC-10",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Historische Dokumentaussage; Rohmessungen und vollständige Laufzeitbindungen fehlen im Kandidaten, keine frische Reproduktion.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/SOURCE_EVIDENCE_BINDINGS.json#SRC-ROADMAP"
+      ],
+      "statement": "ROADMAP_RECALCULATION.md berichtet nach Optimierung 20/20 lossless für Fan-Out 2/4/8/16 und ungefähr 71639/69435/66736/63547 msg/s.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "CFC-11",
+      "classification": "OPEN",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "EXPLICITLY_OPEN",
+      "scope": "Erfordert gebundenes A/B-Experiment mit gleichem Ursprung, Seed, Workload, Wiederholungen, Unsicherheiten und Negativkontrollen.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/SOURCE_EVIDENCE_BINDINGS.json#SRC-ROADMAP"
+      ],
+      "statement": "Ein zusätzlicher Performancegewinn oder kalendarischer Speedup durch Selbstkognition und Authority/Mirror-Beobachtung bleibt unbelegt.",
+      "status": "OPEN"
+    },
+    {
+      "claim_id": "CFC-12",
+      "classification": "INTERPRETATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "INTERPRETATIVE_DECLARATION",
+      "scope": "Planungsinterpretation, keine quantitativ verkürzte Roadmap und keine Lieferterminzusage.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/SOURCE_EVIDENCE_BINDINGS.json#SRC-ROADMAP"
+      ],
+      "statement": "Die Roadmap kann strukturell als gemeinsamer Consciousness/Continuity-Acceptance-Pfad betrachtet werden.",
+      "status": "DECLARED"
+    },
+    {
+      "claim_id": "CFC-13",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "PR-Metadaten auf Head 3e8530f2beb158cdfebd3fa74d25498e7ac2aa4a; keine neue Laufprüfung oder allgemeine Erklärung des 404.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/SOURCE_EVIDENCE_BINDINGS.json#SRC-PR446"
+      ],
+      "statement": "PR #446 dokumentiert AUTHORITY_CREDENTIAL_DELIVERY_NOT_ESTABLISHED.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "CFC-14",
+      "classification": "NORMATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "NORMATIVE_DECLARATION",
+      "scope": "Publikationspolicy v2; Vorbereitung erzeugt keine Freigabe oder Publikation.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/SOURCE_EVIDENCE_BINDINGS.json#SRC-POLICY"
+      ],
+      "statement": "Vor einem Zenodo-Effekt sind Claim-Disposition, gebundene Belege, Rücklieferung und kandidatenspezifische AUTHORIZE_EXACT_UPLOAD-Freigabe erforderlich.",
+      "status": "DECLARED"
+    },
+    {
+      "claim_id": "CFC-15",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Byteidentität des in diesem Paket eingefrorenen PDF; Eigenhash steht getrennt vom PDF, keine zirkuläre Bindung.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/SOURCE_EVIDENCE_BINDINGS.json#SRC-ORIGINAL"
+      ],
+      "statement": "Der deklarierte PDF-Hash wurde durch den SHA-256 der tatsächlich erzeugten PDF-Bytes ersetzt.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "CFC-16",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Versionierter Publikationsvertrag; Review, Vertragsaktivierung und spätere Exact-Upload-Freigabe bleiben offene, getrennte Prädikate. Technische Validierung ist keine Owner- oder Code-Owner-Freigabe und kein Zenodo-Effekt.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/SOURCE_EVIDENCE_BINDINGS.json#SRC-SCHEMA",
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/SOURCE_EVIDENCE_BINDINGS.json#SRC-SCHEMA-V3",
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/SOURCE_EVIDENCE_BINDINGS.json#SRC-POLICY-V3"
+      ],
+      "statement": "Der unveränderte v2-Vorgänger erzwingt zenodo_upload_authorized=true; der explizite v3-Nachfolger trennt unveränderliche Proof-Readiness und detached Autorisierung.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "CFC-17",
+      "classification": "NORMATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "NORMATIVE_DECLARATION",
+      "scope": "Ingolf Lohmann als Verantwortungsträger; Redaktion und Satz durch OpenAI Codex, Modellname nicht exponiert.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/SOURCE_EVIDENCE_BINDINGS.json#SRC-AI"
+      ],
+      "statement": "Provenienz, Geltungsgrenzen und Rücklesen werden ausdrücklich dokumentiert; keine neue menschliche Abnahme wird behauptet.",
+      "status": "DECLARED"
+    },
+    {
+      "claim_id": "CFC-18",
+      "classification": "NORMATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "NORMATIVE_DECLARATION",
+      "scope": "Terminologische Festlegung in diesem Kandidaten; kein allgemeiner Bewusstseins- oder Physikbeweis.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/SOURCE_EVIDENCE_BINDINGS.json#SRC-AI"
+      ],
+      "statement": "Readback, Provenienz, Effect-Acknowledgment und Exact Head werden gemäß Glossar verwendet.",
+      "status": "DECLARED"
+    }
+  ],
+  "completion_claims": {
+    "machine_proof_complete": true
+  },
+  "gates": {
+    "all_claims_dispositioned": true,
+    "all_references_resolve": true,
+    "candidate_frozen": true,
+    "formal_claims_have_kernel_receipts": true,
+    "open_claims_not_worded_as_facts": true,
+    "proof_bundle_in_upload_fileset": true,
+    "returned_bytes_equal_upload_bytes": true
+  },
+  "policy": {
+    "git_blob_sha1": "35ecc7887e486491278f63e0a61102d1be06e5ef",
+    "id": "qikvrt-zenodo-machine-proof-before-publication-v3",
+    "path": "policy/zenodo-machine-proof-policy-v3.json",
+    "sha256": "e8163b42acdc26ede6c996f695c4e5362edd580085717264bbf20f5782093f78",
+    "version": "3.0.0"
+  },
+  "prepublication_return": {
+    "candidate_returned_to_owner": true,
+    "change_notice_path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/CHANGE_NOTICE.md",
+    "content_changed": true,
+    "receipt_path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/PREPUBLICATION_RETURN_RECEIPT.json"
+  },
+  "publication_id": "qikvrt-collective-functional-consciousness-20261003-v1",
+  "schema": "qikvrt_zenodo_machine_proof_bundle_v3"
+}

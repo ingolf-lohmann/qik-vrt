@@ -62,6 +62,8 @@ def handler(store):
 
 def main():
  ap=argparse.ArgumentParser(); ap.add_argument("--state",required=True); ap.add_argument("--authority-subject",required=True); ap.add_argument("--mirror-subject",required=True); ap.add_argument("--bind",default="127.0.0.1"); ap.add_argument("--port",type=int,default=8782); ns=ap.parse_args()
+ if ns.bind not in ("127.0.0.1", "::1"):
+  raise SystemExit("HOLD_SSO_SESSION_NOT_ESTABLISHED: Digital Twin reference API is loopback-only; remote authorization requires validated SSO gateway")
  state=TwinState.from_dict(json.load(open(ns.state,encoding="utf-8")))
  ThreadingHTTPServer((ns.bind,ns.port),handler(Store(state,ns.authority_subject,ns.mirror_subject))).serve_forever()
 if __name__=="__main__": main()

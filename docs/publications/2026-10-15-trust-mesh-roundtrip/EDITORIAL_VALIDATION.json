@@ -1,0 +1,74 @@
+{
+  "schema": "qikvrt-editorial-integration-validation-v1",
+  "source_head": "a16c12134789c1d765b19dcd899106f8fb7dbf31",
+  "source_tree": "e7ed85186d6a07908ec98fda0ec2d86e9dbb8a90",
+  "primary_sha256": "84e37878f497208bdf6b2db04c8a4f83ee642559ad6db794d408e159c4c94c2c",
+  "source_snapshot_verification": {
+    "all_4844_remote_blobs_and_modes_verified": true,
+    "complete_tree_reconstructed": "e7ed85186d6a07908ec98fda0ec2d86e9dbb8a90",
+    "source_commit_reconstructed": "a16c12134789c1d765b19dcd899106f8fb7dbf31",
+    "historical_parent_closure": "SHALLOW_NOT_COMPLETE"
+  },
+  "document_integrity": "BYTE_EXACT",
+  "published_source_visibility": "PASS_46_SOURCES",
+  "used_reference_ids_resolved": 49,
+  "corpus_coverage": "EXACT_44_IDS_MATCH_EXISTING_BOUND_COMPLETE_CORPUS",
+  "fresh_public_zenodo_readback": "UNAVAILABLE_IN_THIS_RUN",
+  "fresh_ietf_datatracker_readback": {
+    "effect_ack_revision": "03",
+    "epistemic_status_revision": "00",
+    "scope": "CURRENT_DOCUMENT_PAGES_READ_NOT_A_NEW_SUBMISSION"
+  },
+  "archival_gate": "PENDING_A1_A2_P1",
+  "preserved_historical_artifacts": 21,
+  "focused_tests": {
+    "log_sha256": "1580c4c591b9f50667f628cff672a880976130b36c5bdebca9233a14cf8b3d5d",
+    "test_count": 94,
+    "status": "PASS"
+  },
+  "client_bootloader_tests": {
+    "log_sha256": "a4bf7491c709efccb8c65e599e9cd88db69cc08bafa271b14d5935ed4545b252",
+    "test_count": 0,
+    "status": "BLOCK"
+  },
+  "local_full_suite": {
+    "status": "BLOCK_HISTORICAL_GIT_OBJECT_MISSING",
+    "test_cases_executed": 497,
+    "successful_cases": 496,
+    "missing_commit": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+    "failing_case": "tests.test_observer_relative_retrocausality_zenodo_finalizer.ObserverRelativeRetrocausalityZenodoFinalizerTests.test_write_then_committed_descendant_check_is_local_only",
+    "log_sha256": "cb270ac97dbe5ed44fed387f930a0d2aeb3b2c1c84a310c96750007c80627d63",
+    "not_reported_as_full_pass": true
+  },
+  "baseline_native_integrity_failure": {
+    "job_id": 116575320461,
+    "observed_error": "BLOCK repository manifest differs from deterministic regeneration",
+    "observed_manifest_removed_path_class": "private-publication-input absent from checkout",
+    "repair": "Regenerate existing integrity trio from the clean exact-source snapshot plus authorized documentation delta; no policy weakening"
+  },
+  "publication_complete": false,
+  "native_successor_checks": "REQUIRED_AFTER_PR_BRANCH_UPDATE",
+  "approval_continuation_validation": {
+    "author_approval": "EXPLICIT_EXACT_TEXT_APPROVAL",
+    "source_index_units": 131,
+    "resolved_used_reference_ids": 49,
+    "preserved_historical_artifacts": 21,
+    "primary_unchanged": true,
+    "focused_tests": {
+      "count": 174,
+      "status": "PASS",
+      "log_sha256": "2c42b6f73f779d227eea45d1c8c8740c8d10bb719d8b8a9d560e083219e3ba46"
+    },
+    "native_prior_exact_subject": {
+      "head": "c451de6d25dd064e47f3b3a3c2ea9b029c5b9393",
+      "tree": "757a9679c1e7863ed668674d8a9482ec9c61fe42",
+      "job_id": 116630352119,
+      "job_conclusion": "success",
+      "terminal_disposition": "PASS mode=tested-fixpoint",
+      "outer_workflow": "failure",
+      "not_transferred_as_native_current_successor_pass": true
+    },
+    "production_source_archival_gate": "PENDING_A1_A2_P1_UNCHANGED",
+    "no_failed_publication_operation_retried": true
+  }
+}

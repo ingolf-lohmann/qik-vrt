@@ -1,0 +1,455 @@
+{
+  "schema": "qikvrt_native_source_alignment_v1",
+  "observed_at": "2026-10-15T12:51:54.495479+00:00",
+  "native_head": "b97e55a0c4adf1abf2dd608500c55784930a4362",
+  "native_tree": "59296a4a6a0a41f926adad601df0f2472e15ce8f",
+  "candidate_predecessor_head": "cdbdce01ba13f0c41ade9982a2d9a26a8ea4b92f",
+  "native_formal_source_blobs_unchanged": [
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/.gitignore",
+      "git_blob_sha1": "be8101792ffd5b611018e2829a3d95ccb69b9419"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/BATCH_01B_PLAN.md",
+      "git_blob_sha1": "346a8c4fad200bae8065fc6ed492204bcb8dfc38"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/COMPLETION_PLAN.md",
+      "git_blob_sha1": "94ec12cd59a5f3d9d8e1fd461ead969fd3dfe792"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/FORMALIZATION_SCOPE.md",
+      "git_blob_sha1": "611b5215ac7542370de9be853da2a944e4f8db33"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/GLOBAL_COMPLETION_STATUS.json",
+      "git_blob_sha1": "6457c3880eb4f2a0feaab66544f87f5737bf29e6"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/LICENSE-CODE",
+      "git_blob_sha1": "cb3c299c033ba0e688ec79822d93658632de2206"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/MANUSCRIPT_PROOF_MAP.md",
+      "git_blob_sha1": "b312746bd8294adb387d5e392ef0809167bdbfc3"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck.lean",
+      "git_blob_sha1": "c3a25ef89b4efeb160f62bc33de66ce50efc5726"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/AxiomAudit.lean",
+      "git_blob_sha1": "1a7c0c4b4344ecbcd1372e7d980072d4ba41c0bc"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CanonicalTemporalMemory.lean",
+      "git_blob_sha1": "5fb78df6e90ae43903d48fd77dacfdc8a293372b"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/Claims.lean",
+      "git_blob_sha1": "08e0d6e6a7aeb15ac139ad6bd55c5ee5291d416c"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/InformationBoundary.lean",
+      "git_blob_sha1": "5efb6978f38bd6f49defb526fc8abb3bc21d1822"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/Mediation.lean",
+      "git_blob_sha1": "0483422d9b4271f426cbd3e999a1dbc2e328792b"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/Model.lean",
+      "git_blob_sha1": "02cf71f7ded77f0b9b0c18d8fd326fc0fec7f0cb"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/QuantumClassicalRuntime.lean",
+      "git_blob_sha1": "1d0f806a62e1729893b4688e2322f7403a1cb931"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/Safety.lean",
+      "git_blob_sha1": "8dd693f1fd66290d74cdb1e5f7e605b95b6fc73c"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization.lean",
+      "git_blob_sha1": "2252494ffaf65f44e06fcc74b44f7937f560eddc"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/AxiomAudit.lean",
+      "git_blob_sha1": "76141ad6bdcda56fa36dcc580b2d6ec75c6ce8ab"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/AxiomAudit02.lean",
+      "git_blob_sha1": "ea38f8ab85f59a321aa42964c3fe97e115c512f3"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/AxiomAuditAll.lean",
+      "git_blob_sha1": "afad9bfa18211ffe2002b8991712f8c1b20bce7e"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/AxiomAuditDimensions.lean",
+      "git_blob_sha1": "b8073264fdef97c266cb8fc2af5741d81ff203fe"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/AxiomAuditFactorization.lean",
+      "git_blob_sha1": "b2d132db24abf937c9cd17dd38d0a60de2024021"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/Batch01.lean",
+      "git_blob_sha1": "69de72fee3b6e02740960c43ac8ae6f46ccf3622"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/Batch02.lean",
+      "git_blob_sha1": "dd572b150fcaa3979f455d32ffd7723fe9cec300"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/Batch02AxiomAudit.lean",
+      "git_blob_sha1": "1874da016aafc63b0f8192ce7e01b5e3ad514893"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/Batch02Counterexamples.lean",
+      "git_blob_sha1": "bc81b03573d1a1b6bfc7cceeabbd82fb1750fe53"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/Batch02Dimensions.lean",
+      "git_blob_sha1": "5ab9ce2beb4fc6dbba08beed2fe5738566f3ef4a"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/Batch02Factorization.lean",
+      "git_blob_sha1": "7429a7b0aff142ac8708dbcdc4a64af168454bd9"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/Batch04.lean",
+      "git_blob_sha1": "d995262b99549f064c1bde0c719e55072da202bd"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/Batch05.lean",
+      "git_blob_sha1": "6f56ace209e882d1e7704d4204aef9c2bf6f27b4"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/CheckedRegistry.lean",
+      "git_blob_sha1": "11f4a5e49f6ff8e658cdadd5549c4fe28be1f2b4"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/Completion.lean",
+      "git_blob_sha1": "6f585bceda9dce0f9827bc868c6adeff62b2ee12"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Completion/OpenClaims.lean",
+      "git_blob_sha1": "f5f27b0d1f7709359d20513eb0031f704c059856"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Decision/ObservationSufficiency.lean",
+      "git_blob_sha1": "486386f206c6d4c18d2ef0e60c9459600dd612d2"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Definitions/Manuscript.lean",
+      "git_blob_sha1": "fa0ff5ececde00e4f244e87ef6e84ad3f71d648d"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Escape/FiniteStages.lean",
+      "git_blob_sha1": "977b4ad8d51eed5149743b51f6fbc42446b82eb8"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Foundation/ImageComplement.lean",
+      "git_blob_sha1": "c4bb8539c6f8bdf31977e48610f2c21fe8463432"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Foundation/Preimage.lean",
+      "git_blob_sha1": "af575d8c62d04d7d2dd4f321d707ff79bbc750fb"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Foundation/RelativeComplement.lean",
+      "git_blob_sha1": "2a8c6feee7ea2798449640e7f7ef733274890811"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Hardware/AuthorityMirrorWitness.lean",
+      "git_blob_sha1": "4b8fef25baf7ea4b115fca194a737b12164ec059"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Hardware/AxiomAudit.lean",
+      "git_blob_sha1": "d0a88fece755d8ed4a9b3c81cb9dea093e426fbb"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Physics/Dimensions.lean",
+      "git_blob_sha1": "3424ca48f8eba3c8b9fc0e470daf9d3b0b7737ff"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Physics/EmpiricalBridge.lean",
+      "git_blob_sha1": "5e82c92369ab94ea87690c3a1b73fb5212e9a5eb"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Physics/Lorentz.lean",
+      "git_blob_sha1": "dea9123a228f7878b647d314d3425430ecf40754"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ConnectabilityMaximality.lean",
+      "git_blob_sha1": "c2932d65bc8f2c010c0cbbc6fc3e02458992c18a"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ConnectabilitySimulation.lean",
+      "git_blob_sha1": "0827e5fd24fa5cb633c1980edb334157b2c230c5"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/Factorization.lean",
+      "git_blob_sha1": "57f00504393a0fc0e397d3fab26a30271d2faef2"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/GateCompleteness.lean",
+      "git_blob_sha1": "94875dafeebb07c19d4506f493feea5ae1108001"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/Gates.lean",
+      "git_blob_sha1": "479dc947ae3b1619b4a974f0231d711e2cd80161"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/OperationalContinuation.lean",
+      "git_blob_sha1": "acd8a45b13c0e0ac8cea6ecb635538940c6b3390"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ShiftInvariance.lean",
+      "git_blob_sha1": "c06d4191dce880e04bb548ae816e5e226224b157"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/WeightedConnectability.lean",
+      "git_blob_sha1": "1ab2a7553d3b2d6f83b925eec80299a82423442b"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Quantization/NonDiscreteness.lean",
+      "git_blob_sha1": "d330900015a0e15ca74be9fccfdbe4aaf7df5709"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/QuantumFoundations/AxiomAudit.lean",
+      "git_blob_sha1": "91e0312046230602983ae5b937fefe7942108e87"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/QuantumFoundations/MeasurementIndependence.lean",
+      "git_blob_sha1": "786a050c416ab25e1947c05ed449a0c55bda0d98"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Retrocausality/ForwardProcess.lean",
+      "git_blob_sha1": "a85aea3ece123612d39fbdef540b1d8d5be1b95d"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Retrocausality/Reclassification.lean",
+      "git_blob_sha1": "fc32c5f11dc98dda7ef598dd8282e7070c4e4757"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/WorldFormula/AxiomAudit.lean",
+      "git_blob_sha1": "6895b071e9d6b71ef2054f18d0a1d96ac1b1f105"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/WorldFormula/Relations.lean",
+      "git_blob_sha1": "2e08d9e723856a576e50948e2325ca0768a4fb4f"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTUniversalOntology.lean",
+      "git_blob_sha1": "674c50a8396d1e6837d0d8cee34f80785ac0763d"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTUniversalOntology/AxiomAudit.lean",
+      "git_blob_sha1": "832063df5d2083654110cb539c2b211c413aff0d"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTUniversalOntology/Core.lean",
+      "git_blob_sha1": "97e4ca8129c390f5317f304f385edada718c1f4b"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTUniversalOntology/ExtendedAxiomAudit.lean",
+      "git_blob_sha1": "362b4b766a43ff9ff3a5361a8e4248b144086eb9"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/README.md",
+      "git_blob_sha1": "527776113ff7aeb13bf65dc11ea4bdd70009f6d0"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/RELEASE_NOTES_WHATSAPP_DE.md",
+      "git_blob_sha1": "0b13e9579a186067ad61dba396abc8be739d6205"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/VERIFICATION_REPORT.md",
+      "git_blob_sha1": "7fff6e2808305e6bc94e8e0c104b2cea9f89460a"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/claims/APPENDIX_MATRIX.json",
+      "git_blob_sha1": "d4090b65c2559f9d3b4fb869e220cacc5c27e843"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/claims/CLAIM_GRAPH.json",
+      "git_blob_sha1": "b9f3686c6bb786fd03189c9320033b802488f796"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/claims/TEX_ENVIRONMENTS.json",
+      "git_blob_sha1": "0a91077d30450d888f8bd3b4157c8b0abfadadfe"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/effect_ack/DRAFT01_CLAIM_MATRIX.json",
+      "git_blob_sha1": "a5c99038db6b20a6acb16381ff333c81c922cc56"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/effect_ack/DRAFT01_SOURCE_PROVENANCE.json",
+      "git_blob_sha1": "c10612a8cbe1336a82ec349a5c9a6cb026c60b41"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/evidence/AUTHORITY_MIRROR_NVM_FINITE_MODEL_RECEIPT.json",
+      "git_blob_sha1": "8857233d4fc04063315372cb497c759b89903871"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/lake-manifest.json",
+      "git_blob_sha1": "05f9c472ae34ac083fb3a8090089821e212bd243"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/lakefile.toml",
+      "git_blob_sha1": "5cec9150deb3e6821dc3ae2b4bf12e36ca8f53da"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/lean-toolchain",
+      "git_blob_sha1": "cf00978c98941128bcbab27eaa26ed28b9cbbf15"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/proofs/PROOF_OBJECT_MANIFEST.json",
+      "git_blob_sha1": "acae48fcb5896df8e3771e58c2caa26343c84496"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/release_authorization/ALPHA2_EFFECT_ACK_DONE.json",
+      "git_blob_sha1": "b75f332c8d0b115c27bd3d3cafb2fbfc68afb030"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/release_authorization/ALPHA2_INPUT.json",
+      "git_blob_sha1": "328929b898d95d16d652666991fe9289f06288f6"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/release_authorization/EFFECT_ACK_DONE.json",
+      "git_blob_sha1": "8092330259c75286476ce74f52352eccae02d4b9"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/release_authorization/INPUT.json",
+      "git_blob_sha1": "2ab5715747e84f9a7ac2bf950d552755b22bf11e"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/scripts/audit_completion_axioms.py",
+      "git_blob_sha1": "30fd0659e3c5bc9f3d77eb7b2a5f019153364602"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/scripts/audit_lean_axioms.py",
+      "git_blob_sha1": "fd2933e44e95503cfdcac9941e932f7d0979b3f2"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/scripts/audit_proof_escapes.py",
+      "git_blob_sha1": "439c25a2d428f32f031390b7649f7676efdb4e6d"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/scripts/extract_tex_inventory.py",
+      "git_blob_sha1": "2be12d80b43ed9f9862ebac5d6154cbcd382d6a9"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/scripts/make_universal_ontology_kernel_receipt.py",
+      "git_blob_sha1": "e156042ed59ce758648b0a0b5f046386882f7fa6"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/scripts/materialize_completion.py",
+      "git_blob_sha1": "193a588fa5b766abc115a0c13afd0203c0e0da49"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/scripts/materialize_completion_proof_manifest.py",
+      "git_blob_sha1": "a349cf44ffbbebd98a977e9fcd67f40ca2f7eece"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/scripts/package_release.py",
+      "git_blob_sha1": "578df408291ee1b2288e812b90212d2e4105f46b"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/scripts/render_completion_proof_map.py",
+      "git_blob_sha1": "1eaf8f9e7a5fa34fd800f9562080568ab606d852"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/scripts/render_completion_verification_report.py",
+      "git_blob_sha1": "7e09e144c453ba99422dc6f0b016f424c2d30c8b"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/scripts/render_proof_map.py",
+      "git_blob_sha1": "b8562e891d7aab3f5c53d8278e319cc09cede420"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/scripts/validate_claim_graph.py",
+      "git_blob_sha1": "8f8ed6fa0efeca6d48e4e35e326545e47f83bbbc"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/scripts/validate_completion_claim_graph.py",
+      "git_blob_sha1": "62559eae05f8e6da86c0108832411cf6e848de47"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/scripts/validate_effect_ack_claims.py",
+      "git_blob_sha1": "a8fc73501ed8d7e4ff12e14afe84837ea0da8dee"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/scripts/verify_authority_mirror_nvm_finite.py",
+      "git_blob_sha1": "591cae7d0e5ba46dea32cfa22b1dcd7ed1358ba2"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/scripts/verify_proof_object_manifest.py",
+      "git_blob_sha1": "cfe2154750cbf9c1a0290d06bc180f18b9ec0590"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/scripts/verify_source_lock.py",
+      "git_blob_sha1": "f76064e79fc4c14f62ea1fe9c67f2b421ab0256f"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/scripts/verify_universal_ontology.py",
+      "git_blob_sha1": "74214389a478a0a038cdacd68d292a3971c7ef8c"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/source/SOURCE_PROVENANCE.json",
+      "git_blob_sha1": "ce40b7550dec4eed5c00d79376cb4ec871d17264"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/tests/test_claim_pipeline.py",
+      "git_blob_sha1": "653e442d34347c7b942c8c6b35b189c512ffab2b"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/tests/test_effect_ack_claims.py",
+      "git_blob_sha1": "2d95ce2e5af9b9e8f31b2400bbed6a65e862248a"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/tests/test_proof_object_manifest.py",
+      "git_blob_sha1": "65d3b36a37c594799328094e0c47a2d5447d99c1"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/tests/test_quantum_classical_runtime_article.py",
+      "git_blob_sha1": "70dfcafd4b0ff981ef1fb4d2fcec5f87cc02d382"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/tests/test_world_formula_relation_kernel.py",
+      "git_blob_sha1": "f466c3977ac745da0abe179190479769a5ed63e3"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/universal_ontology/CLAIM_MATRIX.json",
+      "git_blob_sha1": "2a3033f653d68f626b32915aab882d5b69650887"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/universal_ontology/README.md",
+      "git_blob_sha1": "0849e0e90daa1065218ecf730b968020f524146c"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/universal_ontology/SOURCE_SCOPE.json",
+      "git_blob_sha1": "37eebb7851f0bdd02e95ea8ed0f9b17ae5ef6498"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/universal_ontology/WORLD_FORMULA_CLAIM_MATRIX.json",
+      "git_blob_sha1": "f480e55750a3baf0442223a6d8783c1d9ddf7052"
+    }
+  ],
+  "source_bound_receipt": {
+    "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/KERNEL_RECEIPT.json",
+    "bytes": 13415,
+    "sha256": "ac3b42b050cff507d841957c1498c68cf364d58bd6278ec41c43f920ae14fc5a",
+    "git_blob_sha1": "9136b1c36ff509b302231e17f2b8306217454d87"
+  },
+  "independent_scientific_confirmation": false,
+  "materialized_formal_source_snapshot": {
+    "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/FORMAL_SOURCE_SNAPSHOT.json",
+    "bytes": 52444,
+    "sha256": "883d865fb71ff1f89cec299f342c1566e37887b5efca6b6a1c9e71916046ec65",
+    "git_blob_sha1": "8d1c44d711822c97b7e4af24180a2352a88fef08"
+  },
+  "integration_successor_head": "9c3c6b131698a6a233bfea75dc8f23f406969a97"
+}
