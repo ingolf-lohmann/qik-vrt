@@ -1491,5 +1491,149 @@ print(json.dumps({"exit": result, "posts": sum(r.get_method() == "POST" for r in
         self.assertEqual(len(list(Path(self.state_dir).glob("work-*.data"))), 1)
 
 
+class GitHubShellWrapperTests(unittest.TestCase):
+    """Exercise the real wrapper and current parser with transport disabled."""
+
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.directory = Path(temporary.name)
+        self.bin = self.directory / "bin"
+        self.bin.mkdir()
+        self.capture = self.directory / "capture.json"
+        self.payload = self.directory / "payload with spaces.json"
+        self.payload.write_bytes(b'{"fixture":true}\n')
+        # This is an inert test marker, never a GitHub credential or auth test.
+        self.marker = "shell-wrapper-fixture-not-a-credential"
+        launcher = self.bin / "python3"
+        launcher.write_text("#!" + sys.executable + "\n" + textwrap.dedent(r'''
+            import atexit
+            import hashlib
+            import json
+            import os
+            import runpy
+            import sys
+            import urllib.request
+            from pathlib import Path
+
+            marker = os.environ.get("WRAPPER_TEST_MARKER", "")
+            report = {"credential_in_argv": bool(marker) and marker in sys.argv,
+                      "obsolete_token_option": "--token" in sys.argv,
+                      "environment_matches": os.environ.get("QIKVRT_API_TOKEN") == marker,
+                      "calls": []}
+
+            @atexit.register
+            def save_report():
+                Path(os.environ["WRAPPER_TEST_CAPTURE"]).write_text(json.dumps(report))
+
+            class Response:
+                def __init__(self, url, status, body):
+                    self.url, self.status, self.body = url, status, body
+                def __enter__(self):
+                    return self
+                def __exit__(self, *args):
+                    return False
+                def read(self, size=-1):
+                    return self.body if size < 0 else self.body[:size]
+                def geturl(self):
+                    return self.url
+
+            class OfflineTransport:
+                def open(self, request, **kwargs):
+                    method, url = request.get_method(), request.full_url
+                    call = {"method": method, "url": url,
+                            "authorization_matches": request.get_header("Authorization") == "Bearer " + marker}
+                    report["calls"].append(call)
+                    if method == "POST":
+                        assert url == "https://api.github.com/repos/owner/repo/actions/workflows/qikvrt_mesh_api.yml/dispatches"
+                        body = json.loads(request.data)
+                        call["inputs"] = body["inputs"]
+                        if os.environ.get("WRAPPER_TEST_FAIL_POST") == "true":
+                            raise OSError("isolated transport failure")
+                        return Response(url, 204, b"")
+                    assert method == "GET"
+                    if url == "https://api.github.com/repos/owner/repo/commits/main":
+                        return Response(url, 200, json.dumps({"sha": "a" * 40,
+                            "commit": {"tree": {"sha": "b" * 40}}}).encode())
+                    assert url == "https://raumzeitterminal.de/"
+                    return Response(url, 200, b"isolated delivery fixture")
+
+            urllib.request.build_opener = lambda *args: OfflineTransport()
+            script, *arguments = sys.argv[1:]
+            sys.argv = [script, *arguments]
+            runpy.run_path(script, run_name="__main__")
+        '''))
+        launcher.chmod(0o700)
+
+    def invoke(self, *, request_id="wrapper-one", token=True, extra=(), fail_post=False):
+        environment = os.environ.copy()
+        environment.pop("GITHUB_TOKEN", None)
+        environment.pop("QIKVRT_API_TOKEN", None)
+        if token:
+            environment["GITHUB_TOKEN"] = self.marker
+        environment.update({
+            "PATH": str(self.bin) + os.pathsep + environment.get("PATH", ""),
+            "PYTHONDONTWRITEBYTECODE": "1",
+            "WRAPPER_TEST_MARKER": self.marker,
+            "WRAPPER_TEST_CAPTURE": str(self.capture),
+            "WRAPPER_TEST_FAIL_POST": str(fail_post).lower(),
+            "QIKVRT_API_CLIENT_STATE_DIR": str(self.directory / "state"),
+        })
+        arguments = ["sh", "scripts/qikvrt_github_api_client.sh", "owner", "repo", str(self.payload)]
+        if request_id is not None:
+            arguments.append(request_id)
+        result = subprocess.run(arguments + list(extra), cwd=REPOSITORY_ROOT,
+                                env=environment, text=True, capture_output=True, timeout=10)
+        report = json.loads(self.capture.read_text()) if self.capture.exists() else None
+        self.assertNotIn(self.marker, result.stdout + result.stderr)
+        return result, report
+
+    def test_current_parser_receives_environment_and_exact_stable_request(self):
+        result, report = self.invoke()
+        self.assertEqual(result.returncode, 20, result.stderr)
+        self.assertTrue(report["environment_matches"])
+        self.assertFalse(report["credential_in_argv"])
+        self.assertFalse(report["obsolete_token_option"])
+        posts = [call for call in report["calls"] if call["method"] == "POST"]
+        self.assertEqual(len(posts), 1)
+        self.assertTrue(posts[0]["authorization_matches"])
+        inputs = posts[0]["inputs"]
+        self.assertEqual(inputs["request_id"], "wrapper-one")
+        self.assertEqual(inputs["dry_run"], "true")
+        self.assertFalse(inputs["effect_accepted"])
+        self.assertEqual(base64.b64decode(inputs["payload_b64"]), self.payload.read_bytes())
+        self.assertEqual(inputs["expected_sha256"], hashlib.sha256(self.payload.read_bytes()).hexdigest())
+        self.assertEqual([call["method"] for call in report["calls"]], ["POST", "GET", "GET"])
+        self.assertFalse(report["calls"][-1]["authorization_matches"])
+
+    def test_missing_credential_stops_before_python(self):
+        result, report = self.invoke(token=False)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIsNone(report)
+
+    def test_missing_stable_request_stops_before_python(self):
+        result, report = self.invoke(request_id=None)
+        self.assertEqual(result.returncode, 2)
+        self.assertIsNone(report)
+
+    def test_extra_effect_options_cannot_change_dry_run(self):
+        result, report = self.invoke(extra=("--dry-run", "false", "--accept-effect"))
+        self.assertEqual(result.returncode, 2)
+        self.assertIsNone(report)
+
+    def test_original_parser_rejects_invalid_request_without_transport(self):
+        result, report = self.invoke(request_id="invalid request id")
+        self.assertEqual(result.returncode, 2)
+        self.assertEqual(report["calls"], [])
+        self.assertFalse(report["credential_in_argv"])
+        self.assertIn("--request-id", result.stderr)
+
+    def test_original_client_transport_failure_exit_is_preserved(self):
+        result, report = self.invoke(fail_post=True)
+        self.assertEqual(result.returncode, 1, result.stderr)
+        self.assertFalse(report["credential_in_argv"])
+        self.assertEqual([call["method"] for call in report["calls"]], ["POST", "GET", "GET"])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
