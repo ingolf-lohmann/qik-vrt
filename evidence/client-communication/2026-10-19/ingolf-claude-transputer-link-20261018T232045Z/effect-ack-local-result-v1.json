@@ -1,0 +1,68 @@
+{
+  "schema": "qikvrt_claude_existing_effect_ack_application_v1",
+  "source": {
+    "head": "936e36b48f429277bec628cc0498c99ac3442790",
+    "tree": "5240f56965f290a4cba98a3f43682e8381df6226",
+    "module": "src/qikvrt_effect_ack.py",
+    "module_sha256": "046e8703d425f97bab5533b187cfd661df99567c61d395f5f61d5df8e2b7c038"
+  },
+  "reference_result": {
+    "state": "EFFECT_ACK_BLOCK",
+    "ordinary_release": false,
+    "responsibility_protocol": {
+      "schema": "qikvrt_responsibility_protocol_v1",
+      "protocol_root_id": "qikvrt:claude:ingolf-20261018T232045Z",
+      "protocol_version": 1,
+      "protocol_id": "qikvrt:claude:ingolf-20261018T232045Z:v1",
+      "previous_protocol_id": null,
+      "previous_protocol_hash": null,
+      "protocol_hash": "sha256:e41e9787c6996b5dce79ce8b217e8124cd31249036a3cc7ee08c224628d6788a",
+      "input_id": "ingolf-claude-transputer-link-20261018T232045Z",
+      "input_hash": "sha256:30636063c975d2e7b2782f52f68fafeec74d0f9bb23c1ef57c4d34d07d41e13e",
+      "state": "EFFECT_ACK_BLOCK",
+      "transport_ack": true,
+      "origin_checked": false,
+      "context_checked": true,
+      "semantics_reconstructed": true,
+      "effect_anticipated": true,
+      "risk_classified": true,
+      "risk_level": "MEDIUM",
+      "responsibility_assigned": true,
+      "responsibility_owner": "Ingolf Lohmann",
+      "connection_decided": true,
+      "connection_decision": "BLOCK",
+      "policy_allows_release": false,
+      "ordinary_release": false,
+      "reasons": [
+        "LOCAL_TRANSPORT_RECEPTION_ONLY",
+        "RESPONSIBLE_CONNECTION_DECISION_BLOCK",
+        "SYNCHRONOUS_PEER_AUTHENTICATED_RESPONSE_NOT_BOUND"
+      ],
+      "evidence_refs": [
+        "sha256:92129c60ad13a40f085bb432508a8fcc7409eb780891b7b423bb69b2d160ec32",
+        "sha256:d508c296e53f49c442b5ae78a5b26a82c9f4f42a25b2e81706ede561697cf059"
+      ],
+      "required_evidence_refs": [],
+      "open_questions": [
+        "Authenticated original Claude reply unavailable",
+        "Existing observer invocation and response route not bound"
+      ],
+      "next_required_checks": [
+        "Bind existing supported authenticated peer route",
+        "FOLLOW_DOCUMENTED_REPAIR_OR_REVIEW_PATH",
+        "Verify original peer response and its input/record bindings"
+      ],
+      "created_utc": "2026-10-18T23:48:12.569534Z"
+    }
+  },
+  "evaluated_operation": "Ordinary release of the dependent peer communication effect; not historical publication already performed.",
+  "transport_ack_scope": "Actual local input reception and exact Authority publication readback. Not an independently authenticated peer reply.",
+  "identical_reevaluation": "SAME_VERSION_AND_PROTOCOL_HASH",
+  "declared_local_budget_ms": 100,
+  "hard_network_deadline_claimed": false,
+  "ietf_source_checked": "https://datatracker.ietf.org/doc/html/draft-lohmann-qikvrt-effect-ack-03",
+  "implementation_scope": "Existing local reference schema qikvrt_responsibility_protocol_v1; not asserted complete latest-draft wire or live deployment conformance. HTTP companion local candidate not confirmed published by this read.",
+  "new_protocol_or_executor_created": false,
+  "peer_reply_received": false,
+  "EFFECT_ACK_DONE": false
+}
