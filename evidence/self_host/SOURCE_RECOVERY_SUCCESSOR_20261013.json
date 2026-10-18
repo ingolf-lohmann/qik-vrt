@@ -9,8 +9,8 @@
       "historical_archive_path": "evidence/self_host/original-recovered/deploy/universal-terminal/compose.yaml",
       "historical_git_blob": "f807391adabc9046fa37ba847f572acbd1709e46",
       "historical_sha256": "4c2ca8207b24fcf0a88d55ddb46eac31117e636aaafb5a74cfbd91b078cfbaa1",
-      "successor_git_blob": "9f5de1f78dd371bc6006c19e81575ad431df9599",
-      "successor_sha256": "6804eeb91d8f4bd5ef7e92531f9e4106d968db55dbb3bc43755e0e812bcaec2d"
+      "successor_git_blob": "723e0b6b3f365dcafe3c54392d7396bc00295b66",
+      "successor_sha256": "c76b4f4da2bc3b0e93593a5db01f1c188f6e23ea556fc480048e633b310432f6"
     },
     {
       "restored_path": "deploy/universal-terminal/mirror-bootstrap.sh",
@@ -103,5 +103,31 @@
     "native_full_tests": "PENDING_FRESH_SUCCESSOR",
     "production_accepted": false,
     "predecessor_pass_transferred": false
+  },
+  "public_tls_edge_20261018": {
+    "source_changes_commit": "e1185179da4d4da959092d8de3c11baaf02f4a33",
+    "source_changes_tree": "317195337bdfc8dac67b2b5ec0e363b6ad0144e3",
+    "supplied_bundle_head": "e066a0fdc804fe084c9dc92ba26974875501b9e7",
+    "preserved_previous_successor_bindings": [
+      {
+        "restored_path": "deploy/universal-terminal/compose.yaml",
+        "historical_archive_path": "evidence/self_host/original-recovered/deploy/universal-terminal/compose.yaml",
+        "historical_git_blob": "f807391adabc9046fa37ba847f572acbd1709e46",
+        "historical_sha256": "4c2ca8207b24fcf0a88d55ddb46eac31117e636aaafb5a74cfbd91b078cfbaa1",
+        "successor_git_blob": "9f5de1f78dd371bc6006c19e81575ad431df9599",
+        "successor_sha256": "6804eeb91d8f4bd5ef7e92531f9e4106d968db55dbb3bc43755e0e812bcaec2d"
+      }
+    ],
+    "changes": "Optional public-tls Compose edge and its persistent certificate volumes. Only the active compose successor binding advances; all recovered original bytes and the historical source receipt remain unchanged.",
+    "native_failure": {
+      "workflow_run": 39136977900,
+      "job": 117703364460,
+      "test": "tests.test_self_host_temdd.SourceRecoveryTests.test_every_recovered_source_keeps_its_original_blob_identity",
+      "observed_sha256": "c76b4f4da2bc3b0e93593a5db01f1c188f6e23ea556fc480048e633b310432f6",
+      "previous_expected_sha256": "6804eeb91d8f4bd5ef7e92531f9e4106d968db55dbb3bc43755e0e812bcaec2d"
+    },
+    "validation_scope": "Existing failing recovery regression must accept this exact successor while still checking the historical original blobs. Host bootstrap, DNS/TLS effects and permanent native acceptance remain independent.",
+    "predecessor_pass_transferred": false,
+    "production_accepted": false
   }
 }

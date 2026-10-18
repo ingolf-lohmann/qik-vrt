@@ -60,11 +60,17 @@ class FirefoxAMOUnlistedTests(unittest.TestCase):
         import io,zipfile
         stream=io.BytesIO()
         with zipfile.ZipFile(stream,'w') as archive:
+            def write(name,raw):
+                # Separate mocked AMO responses must bind the same fixture
+                # bytes even when their creation crosses a ZIP clock tick.
+                info=zipfile.ZipInfo(name,(2000,1,1,0,0,0))
+                info.external_attr=0o100644 << 16
+                archive.writestr(info,raw)
             for name in self.names:
                 raw=(self.root/'browser/firefox/qikvrt-terminal'/name).read_bytes()
-                archive.writestr(name,raw+b'wrong source' if changed and name=='content.js' else raw)
-            archive.writestr('META-INF/mozilla.rsa',b'fixture only; not a Mozilla signature')
-            if extra:archive.writestr(extra,b'foreign or duplicate bytes')
+                write(name,raw+b'wrong source' if changed and name=='content.js' else raw)
+            write('META-INF/mozilla.rsa',b'fixture only; not a Mozilla signature')
+            if extra:write(extra,b'foreign or duplicate bytes')
         return stream.getvalue()
 
     def response(self,signed=None,**changes):
@@ -139,7 +145,12 @@ class FirefoxAMOUnlistedTests(unittest.TestCase):
             self.assertNotIn(self.env['WEB_EXT_API_SECRET'],text)
 
     def test_existing_version_is_read_back_without_put_or_version_bump(self):
-        with self.mock.patch.object(host,'firefox_amo_transport',side_effect=[(200,self.response()),(200,self.signed())]) as call:
+        import zipfile
+        before=(2026,10,18,16,44,0,6,291,-1)
+        after=(2026,10,18,16,44,2,6,291,-1)
+        with self.mock.patch.object(zipfile.time,'localtime',side_effect=[before]*7+[after]*7):
+            response=self.response();signed=self.signed()
+        with self.mock.patch.object(host,'firefox_amo_transport',side_effect=[(200,response),(200,signed)]) as call:
             r=self.invoke()
         self.assertFalse(r['submission_attempted']);self.assertEqual([x.args[1] for x in call.call_args_list],['GET','GET'])
 
