@@ -162,6 +162,30 @@ repository contains explicit evidence that reuse is technically insufficient.
 Optimization and perfection of an existing path take precedence over duplicate
 implementation.
 
+## Deliverable before blocker report — Owner rule of 2026-10-18
+
+A client whose own capabilities stop short of an effect (for example: no
+write access, no provider credential, no running host) MUST NOT end its turn
+with a list of what it cannot do. It MUST first produce the largest verified
+contribution that is within its reach, in this order:
+
+1. Read the current evidence first: `/api/evidence`, `STATUS.md`, the latest
+   continuation records and the exact `main` head and tree.
+2. Name the concrete gap in the repository or host that keeps the open task
+   open, bound to that evidence, not to the client's own limitation.
+3. Close that gap as a reviewable change on a branch: reuse the existing
+   path, add tests for the failure cases, regenerate integrity, run the full
+   `make test` and the repository's own validators.
+4. Deliver it in a form another authorized client can integrate without
+   rework (branch, bundle or pull request) and state the one remaining
+   effect that needs a credential or host, with its exact retry condition.
+
+A blocker report without such a deliverable is incomplete work. This rule
+does not authorize self-granted credentials, scope expansion or bypassing
+any protected gate; it requires doing everything short of them first.
+Reference application: branch `fix/raumzeitterminal-dns-tls`
+(IONOS DNS readback/apply, `public-tls` edge, S1 host preparation).
+
 ## Cumulative repository runtime and complete tool caching
 
 The repository is the durable runtime authority; chat sessions are disposable
