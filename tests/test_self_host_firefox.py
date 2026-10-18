@@ -388,6 +388,7 @@ class FirefoxExtensionAdmissionTests(unittest.TestCase):
 class FirefoxCarrierTests(NativeStandaloneTests):
     # The inherited native controls also execute against this browser profile.
     START_TIMEOUT = 60
+    PORT_NAMES = ('port', 'terminal_port', 'novnc_port', 'vnc_port')
     @classmethod
     def setUpClass(cls):
         cls.scratch = tempfile.TemporaryDirectory(prefix='qikvrt-firefox-exact-')
@@ -403,12 +404,9 @@ class FirefoxCarrierTests(NativeStandaloneTests):
 
     def setUp(self):
         super().setUp()
-        def port():
-            with socket.socket() as s:
-                s.bind(('127.0.0.1',0)); return s.getsockname()[1]
         password = self.work/'vnc.password'; password.write_text('Test9Vnc'); password.chmod(0o600)
         self.config.update(terminal_profile='firefox',display=':'+str(100 + os.getpid()%5000),
-            novnc_port=port(),vnc_port=port(),browser_password_file=str(password))
+            browser_password_file=str(password))
         self.save_config()
 
     def start(self,path=None):
@@ -433,7 +431,8 @@ class FirefoxCarrierTests(NativeStandaloneTests):
                     for f in (self.volume/'browser/logs').glob('*.log')}
                 (p/('FAILURE_'+self._testMethodName+'.json')).write_bytes(host.raw_json({
                     'source_head':self.head,'source_tree':self.tree,'manifest_sha256':self.pin,
-                    'runtime_failure':str(exc),'fixture_component_logs':logs,'effect_ack_done':False}))
+                    'runtime_failure':str(exc),'fixture_component_logs':logs,
+                    'fixture_ports':{name:self.config[name] for name in self.PORT_NAMES},'effect_ack_done':False}))
             raise
 
     def websocket_rfb_auth(self):
