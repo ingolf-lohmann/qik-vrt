@@ -2,6 +2,7 @@
 # Copyright 2026 Ingolf Lohmann. Implementation contribution: OpenAI Codex.
 """Real exported-process tests; local filesystem/HTTP evidence, not deployment."""
 from __future__ import annotations
+import contextlib
 import hashlib
 import importlib.util
 import json
@@ -1067,17 +1068,18 @@ class StandaloneTests(unittest.TestCase):
         self.token_file = self.work / "terminal.token"
         self.token_file.write_text("test-only-32-byte-local-token-no-real-credential")
         self.token_file.chmod(0o600)
-        # Keep both sockets bound until the pair is selected. Closing the
+        # Keep all sockets bound until this profile's listeners are selected. Closing the
         # first bind(0) before the second permits the kernel to reuse its port,
         # producing an invalid fixture which the real startup guard rejects.
-        with socket.socket() as monitor, socket.socket() as terminal:
-            monitor.bind(("127.0.0.1", 0))
-            terminal.bind(("127.0.0.1", 0))
-            monitor_port = monitor.getsockname()[1]
-            terminal_port = terminal.getsockname()[1]
+        ports = {}
+        with contextlib.ExitStack() as held:
+            for name in getattr(self, 'PORT_NAMES', ('port', 'terminal_port')):
+                listener = held.enter_context(socket.socket())
+                listener.bind(("127.0.0.1", 0))
+                ports[name] = listener.getsockname()[1]
         self.config = {"schema":"qikvrt-self-host-config/v1","node_id":"fixture:standalone",
             "source_head":self.head,"source_tree":self.tree,"adapter":"none","state_dir":str(self.volume),
-            "host":"127.0.0.1","port":monitor_port,"terminal_port":terminal_port,"terminal_token_file":str(self.token_file)}
+            "host":"127.0.0.1",**ports,"terminal_token_file":str(self.token_file)}
         self.config_path = self.work / "config.json"
         self.save_config()
         self.url = "http://127.0.0.1:"+str(self.config["port"])
@@ -1451,15 +1453,24 @@ assert.equal(transports,0);console.log('PROVIDER_NEGATIVE_CONTROL_TRANSPORT_COUN
                 active.add(self.port)
             def getsockname(self): return ('127.0.0.1', self.port)
             def close(self): active.discard(self.port)
-        probe = StandaloneTests('test_surviving_monitor_retains_lock_after_launcher_only_sigkill')
-        try:
-            with mock.patch.object(socket, 'socket', ReusingSocket):
-                probe.setUp()
-            self.assertNotEqual(probe.config['port'], probe.config['terminal_port'])
-            self.assertEqual(len(sockets), 2)
-            self.assertFalse(active)
-        finally:
-            probe.doCleanups()
+        for names in (('port', 'terminal_port'),
+                ('port', 'terminal_port', 'novnc_port', 'vnc_port')):
+            with self.subTest(listeners=names):
+                sockets.clear()
+                if len(names) == 4:
+                    from tests.test_self_host_firefox import FirefoxCarrierTests
+                    probe = FirefoxCarrierTests('test_sigkill_restart_keeps_epoch_native_id_and_original_event_bytes')
+                    probe.head, probe.tree = self.head, self.tree
+                else:
+                    probe = StandaloneTests('test_surviving_monitor_retains_lock_after_launcher_only_sigkill')
+                try:
+                    with mock.patch.object(socket, 'socket', ReusingSocket):
+                        probe.setUp()
+                    self.assertEqual(len({probe.config[name] for name in names}), len(names))
+                    self.assertEqual(len(sockets), len(names))
+                    self.assertFalse(active)
+                finally:
+                    probe.doCleanups()
 
     def test_equal_monitor_and_terminal_ports_are_rejected_before_listener(self):
         self.config['terminal_port'] = self.config['port']
