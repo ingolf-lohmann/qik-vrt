@@ -2442,6 +2442,13 @@ def novnc_readback(package, port):
         return response.status == 200 and response.read() == (package / 'runtime/self-host/novnc/vnc.html').read_bytes()
 
 
+def _xvfb_command(display):
+    # The one-shot xdpyinfo readiness client disconnects before Firefox starts.
+    # Keep that display generation alive while its first persistent clients join.
+    return [shutil.which("Xvfb"), display, "-screen", "0", "1440x900x24",
+            "-noreset", "-nolisten", "tcp"]
+
+
 def browser_carrier(package, manifest, config, volume):
     """New portable start adapter of the recovered Firefox/Xvfb/VNC recipe.
 
@@ -2478,7 +2485,7 @@ def browser_carrier(package, manifest, config, volume):
             time.sleep(.05)  # bounded startup probe, no runtime polling
         raise ValueError("BROWSER_STARTUP_READBACK_TIMEOUT:" + edge)
     try:
-        spawn("xvfb", [shutil.which("Xvfb"), config["display"], "-screen", "0", "1440x900x24", "-nolisten", "tcp"])
+        spawn("xvfb", _xvfb_command(config["display"]))
         ready(lambda: subprocess.run([shutil.which("xdpyinfo"), "-display", config["display"]],
             env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=2).returncode == 0, 'X11_DISPLAY')
         spawn("vnc", [shutil.which("x11vnc"), "-display", config["display"], "-forever", "-shared", "-localhost",

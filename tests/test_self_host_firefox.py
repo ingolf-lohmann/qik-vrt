@@ -7,6 +7,7 @@ Run only in the declared Firefox dependency carrier. Missing tools are errors.
 """
 from __future__ import annotations
 import base64
+import ctypes
 from datetime import datetime, timezone
 import json
 import os
@@ -16,6 +17,7 @@ import socket
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 
 from tests.test_self_host_temdd import NativeStandaloneTests
@@ -512,6 +514,62 @@ class FirefoxCarrierTests(NativeStandaloneTests):
             (p/'FIREFOX_NATIVE_READBACK.json').write_bytes(host.raw_json(receipt))
             (p/'MANIFEST.json').write_bytes((self.export/'MANIFEST.json').read_bytes())
             (p/'DISTRIBUTION_PACKAGES.tsv').write_bytes(Path('/usr/local/share/qikvrt-distribution-packages.tsv').read_bytes())
+
+    def test_display_generation_survives_last_readiness_client_disconnect(self):
+        # A real X11 atom is deleted by a server reset. Exercise the launcher's
+        # command, with the previous reset behavior as a causal control; neither
+        # a static argv assertion nor a persistent observer can establish this.
+        x11 = ctypes.CDLL('libX11.so.6')
+        x11.XOpenDisplay.argtypes = [ctypes.c_char_p]
+        x11.XOpenDisplay.restype = ctypes.c_void_p
+        x11.XInternAtom.argtypes = [ctypes.c_void_p, ctypes.c_char_p, ctypes.c_int]
+        x11.XInternAtom.restype = ctypes.c_ulong
+        x11.XSync.argtypes = [ctypes.c_void_p, ctypes.c_int]
+        x11.XCloseDisplay.argtypes = [ctypes.c_void_p]
+        display = self.config['display'].encode()
+        name = ('QIKVRT_LAST_CLIENT_' + str(os.getpid())).encode()
+
+        def atom(only_if_exists, process):
+            until = time.monotonic() + 5
+            while time.monotonic() < until:
+                self.assertIsNone(process.poll(), 'Xvfb exited before X11 readback')
+                connection = x11.XOpenDisplay(display)
+                if connection:
+                    try:
+                        value = x11.XInternAtom(connection, name, only_if_exists)
+                        x11.XSync(connection, 0)
+                        return value
+                    finally:
+                        x11.XCloseDisplay(connection)
+                time.sleep(.025)
+            self.fail('X11 connection unavailable for display-generation readback')
+
+        command = host._xvfb_command(self.config['display'])
+        for preserve in (False, True):
+            with self.subTest(preserve=preserve):
+                argv = command if preserve else [x for x in command if x != '-noreset']
+                log = self.work / ('x11-generation-' + str(preserve) + '.log')
+                with log.open('wb') as output:
+                    process = subprocess.Popen(argv, stdout=output, stderr=output)
+                    try:
+                        original = atom(0, process)
+                        self.assertNotEqual(original, 0)
+                        observed = original
+                        until = time.monotonic() + 5
+                        probes = 0
+                        while time.monotonic() < until:
+                            # No X11 client is connected during this interval.
+                            time.sleep(.1)
+                            observed = atom(1, process)
+                            probes += 1
+                            if preserve:
+                                self.assertEqual(observed, original)
+                                if probes == 3: break
+                            elif observed == 0: break
+                        self.assertEqual(observed, original if preserve else 0)
+                    finally:
+                        process.terminate()
+                        process.wait(timeout=5)
 
     def test_crash_restart_preserves_firefox_profile_and_acknowledged_native_bytes(self):
         self.start(); prepared,event=self.commit_input()
