@@ -32,6 +32,23 @@ const realFetch = globalThis.fetch;
 // A denied request throws before transport; the regression counts attempts.
 globalThis.fetch = providerFetch(config.adapter, realFetch);
 const files = new Map([
+  ['/', ['docs/index.html', 'text/html']],
+  ['/index.html', ['docs/index.html', 'text/html']],
+  ['/projekt.html', ['docs/projekt.html', 'text/html']],
+  ['/sprachen.html', ['docs/sprachen.html', 'text/html']],
+  ['/favicon.svg', ['docs/favicon.svg', 'image/svg+xml']],
+  ['/assets/css/raumzeitterminal-start.css', ['docs/assets/css/raumzeitterminal-start.css', 'text/css']],
+  ['/assets/images/la-mere-bien-sur.png', ['docs/assets/images/la-mere-bien-sur.png', 'image/png']],
+  ['/texte/La_mere_bien_sur_57_Uebersetzungen.html', ['docs/texte/La_mere_bien_sur_57_Uebersetzungen.html', 'text/html']],
+  ['/texte/la-mere-deutsch.txt', ['docs/texte/la-mere-deutsch.txt', 'text/plain']],
+  ['/assets/js/qikvrt-homepage.js', ['docs/assets/js/qikvrt-homepage.js', 'text/javascript']],
+  ['/assets/js/qikvrt-questions.js', ['docs/assets/js/qikvrt-questions.js', 'text/javascript']],
+  ['/assets/data/qikvrt_timeline.json', ['docs/assets/data/qikvrt_timeline.json', 'application/json']],
+  ['/assets/data/qikvrt_knowledge_base.json', ['docs/assets/data/qikvrt_knowledge_base.json', 'application/json']],
+  ['/assets/css/qikvrt-publications.css', ['docs/assets/css/qikvrt-publications.css', 'text/css']],
+  ['/publications/', ['docs/publications/index.html', 'text/html']],
+  ['/publications/index.html', ['docs/publications/index.html', 'text/html']],
+  ['/AI', ['AI', 'text/plain']],
   ['/assets/css/qikvrt-mesh-react.css', ['docs/monitor/mesh-react.css', 'text/css']],
   ['/assets/js/qikvrt-mesh-react.js', ['docs/monitor/mesh-react.js', 'text/javascript']],
   ['/assets/js/qikvrt-mesh-file-codec.js', ['docs/monitor/mesh-file-codec.js', 'text/javascript']],
@@ -45,6 +62,17 @@ const files = new Map([
   ['/assets/js/qikvrt-local-engine.js', ['docs/assets/js/qikvrt-local-engine.js', 'text/javascript']],
   ['/publications/index.json', ['docs/publications/index.json', 'application/json']],
 ]);
+// Public source directories already enumerated in the sealed package. Never
+// map arbitrary docs, filesystem paths, author controls or executable uploads.
+for (const path of Object.keys(manifest.files)) {
+  if (!/^docs\/(?:news\/(?:[a-z0-9-]+\/)?[A-Za-z0-9_.-]+\.(?:html|json|txt)|fragen\/index\.html|monitor\/offline\/(?:vendor\/)?[A-Za-z0-9_.-]+\.(?:html|js|css|json|webmanifest|svg|txt))$/.test(path)) continue;
+  const suffix = path.split('.').pop();
+  const type = {html:'text/html',json:'application/json',txt:'text/plain',js:'text/javascript',css:'text/css',
+    webmanifest:'application/manifest+json',svg:'image/svg+xml'}[suffix];
+  const url = '/' + path.slice('docs/'.length);
+  files.set(url, [path, type]);
+  if (url.endsWith('/index.html')) files.set(url.slice(0,-10), [path, type]);
+}
 // Only the existing sealed package may expose generated publication assets.
 // No directory scan, author controls, arbitrary docs or executable upload names.
 for (const path of Object.keys(manifest.files)) {
@@ -59,8 +87,15 @@ for (const path of Object.keys(manifest.files)) {
 const documents = new Set(['AI','STATUS.md','README.md','docs/ARCHITECTURE.md','docs/BOUNDARIES.md',
   'docs/PRIVACY_PRESERVING_INTERACTION_ARCHIVE.md','.well-known/qik-vrt-self-disclosure.json','docs/publications/index.json']);
 function reply(response, code, body, type = 'application/json', method = 'GET') {
+  // Admit only exact sealed inline blocks/attributes used by the retained
+  // translation collection and editorial pages, without unsafe-inline.
+  const html = type === 'text/html' ? String(body) : '';
+  const hashes = values => [...new Set(values.map(value => "'sha256-" + createHash('sha256').update(value).digest('base64') + "'"))].join(' ');
+  const styles = hashes([...html.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/gi)].map(m=>m[1])
+    .concat([...html.matchAll(/\sstyle="([^"]*)"/gi)].map(m=>m[1])));
+  const scripts = hashes([...html.matchAll(/<script\b(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/gi)].map(m=>m[1]));
   response.writeHead(code, {'content-type': type + (/^text\/|^application\/json$/.test(type) ? '; charset=utf-8' : ''), 'cache-control': 'no-store',
-    'x-content-type-options': 'nosniff', 'content-security-policy': "default-src 'self'; style-src 'self'; script-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'"});
+    'x-content-type-options': 'nosniff', 'content-security-policy': "default-src 'self'; style-src 'self' " + (styles ? "'unsafe-hashes' " + styles : '') + "; script-src 'self' " + scripts + "; connect-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'"});
   response.end(method === 'HEAD' ? undefined : type === 'application/json' && !Buffer.isBuffer(body) ? JSON.stringify(body) : body);
 }
 const binding = () => ({schema: 'qikvrt-self-host-runtime/v1', package_version: manifest.package_version,
@@ -82,11 +117,11 @@ async function routes(request, response, url) {
   if (url.pathname === '/api/webhooks/github' && config.adapter === 'none') {
     reply(response, 409, {error:'GITHUB_ADAPTER_NOT_SELECTED', effect_ack_done:false}); return true;
   }
-  const owned = ['/api/runtime','/api/terminal','/api/repository','/AI/','/terminal/','/mesh','/node','/client'].includes(url.pathname) || files.has(url.pathname) ||
+  const owned = ['/api/runtime','/api/terminal','/api/repository','/AI/','/terminal/','/mesh','/node','/client','/monitor/','/monitor/index-react.html'].includes(url.pathname) || files.has(url.pathname) ||
     (config.adapter === 'none' && url.pathname === '/api/run');
   if (!owned) return false;
   if (!['GET','HEAD'].includes(request.method)) { reply(response,405,{error:'READ_ONLY_ROUTE'}); return true; }
-  if (['/mesh','/node','/client'].includes(url.pathname)) reply(response,200,readFileSync(join(root,'docs/monitor/index-react.html'),'utf8').replace('MONITOR_VERSION',VERSION),'text/html',request.method);
+  if (['/mesh','/node','/client','/monitor/','/monitor/index-react.html'].includes(url.pathname)) reply(response,200,readFileSync(join(root,'docs/monitor/index-react.html'),'utf8').replace('MONITOR_VERSION',VERSION),'text/html',request.method);
   else if (url.pathname === '/api/runtime') reply(response,200,binding(),'application/json',request.method);
   else if (url.pathname === '/api/terminal') {
     const token = readFileSync(config.terminal_token_file,'utf8').trim();

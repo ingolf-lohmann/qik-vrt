@@ -1080,6 +1080,60 @@ class StandaloneTests(unittest.TestCase):
         self.assertFalse(value["effect_ack_done"])
         return value["cause"]
 
+    def test_poetic_homepage_and_navigation_survive_sealed_export_and_real_http(self):
+        from html.parser import HTMLParser
+        from urllib.parse import urljoin, urlsplit
+        class Links(HTMLParser):
+            def __init__(self, html):
+                super().__init__(); self.links = []; self.feed(html)
+            def handle_starttag(self, tag, attrs):
+                attrs = dict(attrs)
+                if tag == 'a': self.links.append(attrs.get('href', ''))
+        self.start()
+        with urllib.request.urlopen(self.url + '/') as response:
+            raw = response.read()
+            self.assertEqual(raw, (self.export / 'docs/index.html').read_bytes())
+            self.assertIn("object-src 'none'", response.headers['Content-Security-Policy'])
+        self.assertIn('Die Mutter,', raw.decode())
+        for href in Links(raw.decode()).links:
+            target = urlsplit(urljoin(self.url + '/', href))
+            if target.netloc != urlsplit(self.url).netloc: continue
+            path = target.path
+            for method in ('GET', 'HEAD'):
+                with self.subTest(href=href, method=method):
+                    request = urllib.request.Request(self.url + path, method=method)
+                    with urllib.request.urlopen(request, timeout=4) as response:
+                        body = response.read()
+                        self.assertEqual(response.status, 200)
+                        if method == 'HEAD': self.assertEqual(body, b'')
+        for path, source, mime in [
+            ('/assets/images/la-mere-bien-sur.png','docs/assets/images/la-mere-bien-sur.png','image/png'),
+            ('/texte/La_mere_bien_sur_57_Uebersetzungen.html','docs/texte/La_mere_bien_sur_57_Uebersetzungen.html','text/html'),
+            ('/assets/css/raumzeitterminal-start.css','docs/assets/css/raumzeitterminal-start.css','text/css'),
+            ('/assets/data/qikvrt_knowledge_base.json','docs/assets/data/qikvrt_knowledge_base.json','application/json'),
+            ('/monitor/offline/service-worker.js','docs/monitor/offline/service-worker.js','text/javascript')]:
+            with self.subTest(path=path), urllib.request.urlopen(self.url + path) as response:
+                self.assertEqual(response.read(), (self.export / source).read_bytes())
+                self.assertEqual(response.headers.get_content_type(), mime)
+        import re
+        with urllib.request.urlopen(self.url + '/sprachen.html') as response:
+            collection = response.read().decode()
+            csp = response.headers['Content-Security-Policy']
+        styles = re.findall(r'<style\b[^>]*>(.*?)</style>', collection, re.S)
+        self.assertTrue(styles)
+        for style in styles:
+            pin = base64.b64encode(hashlib.sha256(style.encode()).digest()).decode()
+            self.assertIn("'sha256-" + pin + "'", csp)
+        self.assertNotIn("'unsafe-inline'", csp)
+        self.assertEqual(len(re.findall(r'<article id="', collection)), 58)
+        for path in ['/mesh','/node','/client','/api/runtime','/api/terminal','/api/activity']:
+            with self.subTest(preserved=path): self.assertEqual(self.get(path)[0],200)
+        self.assertFalse(self.get('/api/runtime')[1]['effect_ack_done'])
+        self.assertEqual(self.get('/sprachen.html', method='POST')[0], 405)
+        for path in ['/state/work_units/QIKVRT_POETIC_HOMEPAGE_SOURCE_20261018_V1.json',
+                     '/runtime/self-host/PACKAGE.json','/docs/index.html']:
+            with self.subTest(private=path): self.assertEqual(self.get(path)[0], 404)
+
     def test_reviewed_publication_assets_survive_sealing_and_actual_http_without_control_exposure(self):
         source = self.work / "publication-source"
         shutil.copytree(self.source, source)
