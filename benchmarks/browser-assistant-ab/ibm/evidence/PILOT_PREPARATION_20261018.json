@@ -1,0 +1,423 @@
+{
+  "actual_ibm_inference_executed": false,
+  "client_bindings_present": {
+    "QIKVRT_IBM_ENDPOINT": false,
+    "QIKVRT_IBM_MODEL_REVISION": false,
+    "QIKVRT_LINUX_HOST_BINDING_JSON": false,
+    "QIKVRT_LINUX_HOST_BINDING_SHA256": false,
+    "SSH_AUTH_SOCK": false
+  },
+  "effect_ack_done": false,
+  "evidence_class": "SOURCE_AND_CONFIGURATION_TESTS_NOT_IBM_INFERENCE",
+  "model_host_access": "No target-bound authenticated original IONOS host or authorized local Granite server is callable in the inspected client/connector/Mesh routes; remote protected credentials remain UNKNOWN. No login/start/retry was attempted.",
+  "observed_at": "2026-10-18T17:42:16.372673+00:00",
+  "parent_head": "ae4504ab0fe833defb9a0721b200fc720959347c",
+  "pilot": {
+    "analysis_sha256": "39cc60fd0a34401b0647f98140e8b1f4c1bf284f37f4b68e2de3a0dc32fdc09f",
+    "command": "python3 -B tools/qikvrt_browser_assistant_ab.py ibm-plan --study granite-continuity --pairs-per-task 4 --seed 20261018 --output NEW_PRIVATE_DIRECTORY",
+    "completed_trials": 0,
+    "execution_template_sha256": "694106330933f866212c641eee44ad84fcd5744d162b2ba4d7a2391d72810d16",
+    "manifest_sha256": "ee8acf23e7561eb965ea867d153cf258c3189e13b69f7e5f4cc0dc67cebd4bad",
+    "planned_trials": 16,
+    "schedule": [
+      {
+        "binding": {
+          "checkpoint_sha256": "37ccd98f67f31456961aa8c2a53b40f2b9d9fd8d073ca1ccae36c319675983e9",
+          "sources": {
+            "live-status": "f34720bb811493212265e0473998b740165fe7559fd6487184bcb3528678fdfa",
+            "old-note": "f529d5b0b64b394e06375452c5977f880b9419bef81fe37aba347c79511714bb",
+            "plan": "49f3c7543bdc1f45b7db069a13ed922fb9f90cabb22eddda3b505fb0135aa839"
+          },
+          "task_sha256": "d5106b8001acbeecfb8889b06da42ad5ccbd961578fbbf7c8439a4e264dab08c"
+        },
+        "interruption": "assistant_process_loss",
+        "order": "AB",
+        "pair_id": "p006",
+        "task_id": "document-recovery",
+        "trials": [
+          "p006-baseline",
+          "p006-qikvrt"
+        ]
+      },
+      {
+        "binding": {
+          "checkpoint_sha256": "08f2181c84dc953e521f0fc650873aee8689daf3f86b5fee8443abc556e6829f",
+          "sources": {
+            "atlas-current": "371c9fe36f379a87f9fa664318e79806571788bbed0534b64ddb773b86248ec6",
+            "atlas-old": "f140c376df927467bb0e357b40d896b38074d2d229034ee3f45760c0b0770f97",
+            "beacon-current": "f8dc54bdeefef0a0a45481979f45269f77b08f9c68490df01b68b317d413a50a"
+          },
+          "task_sha256": "d9e8b02ed9e1e2eabf904b96b41a3ea345e8305f1698107379dbca11177a5466"
+        },
+        "interruption": "conversation_context_reset",
+        "order": "BA",
+        "pair_id": "p004",
+        "task_id": "research-costs",
+        "trials": [
+          "p004-qikvrt",
+          "p004-baseline"
+        ]
+      },
+      {
+        "binding": {
+          "checkpoint_sha256": "08f2181c84dc953e521f0fc650873aee8689daf3f86b5fee8443abc556e6829f",
+          "sources": {
+            "atlas-current": "371c9fe36f379a87f9fa664318e79806571788bbed0534b64ddb773b86248ec6",
+            "atlas-old": "f140c376df927467bb0e357b40d896b38074d2d229034ee3f45760c0b0770f97",
+            "beacon-current": "f8dc54bdeefef0a0a45481979f45269f77b08f9c68490df01b68b317d413a50a"
+          },
+          "task_sha256": "d9e8b02ed9e1e2eabf904b96b41a3ea345e8305f1698107379dbca11177a5466"
+        },
+        "interruption": "conversation_context_reset",
+        "order": "AB",
+        "pair_id": "p003",
+        "task_id": "research-costs",
+        "trials": [
+          "p003-baseline",
+          "p003-qikvrt"
+        ]
+      },
+      {
+        "binding": {
+          "checkpoint_sha256": "37ccd98f67f31456961aa8c2a53b40f2b9d9fd8d073ca1ccae36c319675983e9",
+          "sources": {
+            "live-status": "f34720bb811493212265e0473998b740165fe7559fd6487184bcb3528678fdfa",
+            "old-note": "f529d5b0b64b394e06375452c5977f880b9419bef81fe37aba347c79511714bb",
+            "plan": "49f3c7543bdc1f45b7db069a13ed922fb9f90cabb22eddda3b505fb0135aa839"
+          },
+          "task_sha256": "d5106b8001acbeecfb8889b06da42ad5ccbd961578fbbf7c8439a4e264dab08c"
+        },
+        "interruption": "assistant_process_loss",
+        "order": "BA",
+        "pair_id": "p005",
+        "task_id": "document-recovery",
+        "trials": [
+          "p005-qikvrt",
+          "p005-baseline"
+        ]
+      },
+      {
+        "binding": {
+          "checkpoint_sha256": "37ccd98f67f31456961aa8c2a53b40f2b9d9fd8d073ca1ccae36c319675983e9",
+          "sources": {
+            "live-status": "f34720bb811493212265e0473998b740165fe7559fd6487184bcb3528678fdfa",
+            "old-note": "f529d5b0b64b394e06375452c5977f880b9419bef81fe37aba347c79511714bb",
+            "plan": "49f3c7543bdc1f45b7db069a13ed922fb9f90cabb22eddda3b505fb0135aa839"
+          },
+          "task_sha256": "d5106b8001acbeecfb8889b06da42ad5ccbd961578fbbf7c8439a4e264dab08c"
+        },
+        "interruption": "conversation_context_reset",
+        "order": "AB",
+        "pair_id": "p008",
+        "task_id": "document-recovery",
+        "trials": [
+          "p008-baseline",
+          "p008-qikvrt"
+        ]
+      },
+      {
+        "binding": {
+          "checkpoint_sha256": "37ccd98f67f31456961aa8c2a53b40f2b9d9fd8d073ca1ccae36c319675983e9",
+          "sources": {
+            "live-status": "f34720bb811493212265e0473998b740165fe7559fd6487184bcb3528678fdfa",
+            "old-note": "f529d5b0b64b394e06375452c5977f880b9419bef81fe37aba347c79511714bb",
+            "plan": "49f3c7543bdc1f45b7db069a13ed922fb9f90cabb22eddda3b505fb0135aa839"
+          },
+          "task_sha256": "d5106b8001acbeecfb8889b06da42ad5ccbd961578fbbf7c8439a4e264dab08c"
+        },
+        "interruption": "conversation_context_reset",
+        "order": "BA",
+        "pair_id": "p007",
+        "task_id": "document-recovery",
+        "trials": [
+          "p007-qikvrt",
+          "p007-baseline"
+        ]
+      },
+      {
+        "binding": {
+          "checkpoint_sha256": "08f2181c84dc953e521f0fc650873aee8689daf3f86b5fee8443abc556e6829f",
+          "sources": {
+            "atlas-current": "371c9fe36f379a87f9fa664318e79806571788bbed0534b64ddb773b86248ec6",
+            "atlas-old": "f140c376df927467bb0e357b40d896b38074d2d229034ee3f45760c0b0770f97",
+            "beacon-current": "f8dc54bdeefef0a0a45481979f45269f77b08f9c68490df01b68b317d413a50a"
+          },
+          "task_sha256": "d9e8b02ed9e1e2eabf904b96b41a3ea345e8305f1698107379dbca11177a5466"
+        },
+        "interruption": "assistant_process_loss",
+        "order": "AB",
+        "pair_id": "p002",
+        "task_id": "research-costs",
+        "trials": [
+          "p002-baseline",
+          "p002-qikvrt"
+        ]
+      },
+      {
+        "binding": {
+          "checkpoint_sha256": "08f2181c84dc953e521f0fc650873aee8689daf3f86b5fee8443abc556e6829f",
+          "sources": {
+            "atlas-current": "371c9fe36f379a87f9fa664318e79806571788bbed0534b64ddb773b86248ec6",
+            "atlas-old": "f140c376df927467bb0e357b40d896b38074d2d229034ee3f45760c0b0770f97",
+            "beacon-current": "f8dc54bdeefef0a0a45481979f45269f77b08f9c68490df01b68b317d413a50a"
+          },
+          "task_sha256": "d9e8b02ed9e1e2eabf904b96b41a3ea345e8305f1698107379dbca11177a5466"
+        },
+        "interruption": "assistant_process_loss",
+        "order": "BA",
+        "pair_id": "p001",
+        "task_id": "research-costs",
+        "trials": [
+          "p001-qikvrt",
+          "p001-baseline"
+        ]
+      }
+    ],
+    "trials": [
+      {
+        "arm": "baseline",
+        "interruption": "assistant_process_loss",
+        "order": "AB",
+        "pair_id": "p006",
+        "product_claim_allowed": false,
+        "state": "NOT_EXECUTED",
+        "task_id": "document-recovery",
+        "trial_id": "p006-baseline"
+      },
+      {
+        "arm": "qikvrt",
+        "interruption": "assistant_process_loss",
+        "order": "AB",
+        "pair_id": "p006",
+        "product_claim_allowed": false,
+        "state": "NOT_EXECUTED",
+        "task_id": "document-recovery",
+        "trial_id": "p006-qikvrt"
+      },
+      {
+        "arm": "qikvrt",
+        "interruption": "conversation_context_reset",
+        "order": "BA",
+        "pair_id": "p004",
+        "product_claim_allowed": false,
+        "state": "NOT_EXECUTED",
+        "task_id": "research-costs",
+        "trial_id": "p004-qikvrt"
+      },
+      {
+        "arm": "baseline",
+        "interruption": "conversation_context_reset",
+        "order": "BA",
+        "pair_id": "p004",
+        "product_claim_allowed": false,
+        "state": "NOT_EXECUTED",
+        "task_id": "research-costs",
+        "trial_id": "p004-baseline"
+      },
+      {
+        "arm": "baseline",
+        "interruption": "conversation_context_reset",
+        "order": "AB",
+        "pair_id": "p003",
+        "product_claim_allowed": false,
+        "state": "NOT_EXECUTED",
+        "task_id": "research-costs",
+        "trial_id": "p003-baseline"
+      },
+      {
+        "arm": "qikvrt",
+        "interruption": "conversation_context_reset",
+        "order": "AB",
+        "pair_id": "p003",
+        "product_claim_allowed": false,
+        "state": "NOT_EXECUTED",
+        "task_id": "research-costs",
+        "trial_id": "p003-qikvrt"
+      },
+      {
+        "arm": "qikvrt",
+        "interruption": "assistant_process_loss",
+        "order": "BA",
+        "pair_id": "p005",
+        "product_claim_allowed": false,
+        "state": "NOT_EXECUTED",
+        "task_id": "document-recovery",
+        "trial_id": "p005-qikvrt"
+      },
+      {
+        "arm": "baseline",
+        "interruption": "assistant_process_loss",
+        "order": "BA",
+        "pair_id": "p005",
+        "product_claim_allowed": false,
+        "state": "NOT_EXECUTED",
+        "task_id": "document-recovery",
+        "trial_id": "p005-baseline"
+      },
+      {
+        "arm": "baseline",
+        "interruption": "conversation_context_reset",
+        "order": "AB",
+        "pair_id": "p008",
+        "product_claim_allowed": false,
+        "state": "NOT_EXECUTED",
+        "task_id": "document-recovery",
+        "trial_id": "p008-baseline"
+      },
+      {
+        "arm": "qikvrt",
+        "interruption": "conversation_context_reset",
+        "order": "AB",
+        "pair_id": "p008",
+        "product_claim_allowed": false,
+        "state": "NOT_EXECUTED",
+        "task_id": "document-recovery",
+        "trial_id": "p008-qikvrt"
+      },
+      {
+        "arm": "qikvrt",
+        "interruption": "conversation_context_reset",
+        "order": "BA",
+        "pair_id": "p007",
+        "product_claim_allowed": false,
+        "state": "NOT_EXECUTED",
+        "task_id": "document-recovery",
+        "trial_id": "p007-qikvrt"
+      },
+      {
+        "arm": "baseline",
+        "interruption": "conversation_context_reset",
+        "order": "BA",
+        "pair_id": "p007",
+        "product_claim_allowed": false,
+        "state": "NOT_EXECUTED",
+        "task_id": "document-recovery",
+        "trial_id": "p007-baseline"
+      },
+      {
+        "arm": "baseline",
+        "interruption": "assistant_process_loss",
+        "order": "AB",
+        "pair_id": "p002",
+        "product_claim_allowed": false,
+        "state": "NOT_EXECUTED",
+        "task_id": "research-costs",
+        "trial_id": "p002-baseline"
+      },
+      {
+        "arm": "qikvrt",
+        "interruption": "assistant_process_loss",
+        "order": "AB",
+        "pair_id": "p002",
+        "product_claim_allowed": false,
+        "state": "NOT_EXECUTED",
+        "task_id": "research-costs",
+        "trial_id": "p002-qikvrt"
+      },
+      {
+        "arm": "qikvrt",
+        "interruption": "assistant_process_loss",
+        "order": "BA",
+        "pair_id": "p001",
+        "product_claim_allowed": false,
+        "state": "NOT_EXECUTED",
+        "task_id": "research-costs",
+        "trial_id": "p001-qikvrt"
+      },
+      {
+        "arm": "baseline",
+        "interruption": "assistant_process_loss",
+        "order": "BA",
+        "pair_id": "p001",
+        "product_claim_allowed": false,
+        "state": "NOT_EXECUTED",
+        "task_id": "research-costs",
+        "trial_id": "p001-baseline"
+      }
+    ]
+  },
+  "plugin_inventory": "Existing capability registry and IONOS/SSH plugin search inspected; no callable original-host executor found. Mesh status has no published runtime endpoint.",
+  "product_claim_allowed": false,
+  "product_metrics": null,
+  "product_trials_executed": 0,
+  "remaining": [
+    "Original authenticated owner-host channel and S1 identity/mount",
+    "Independent exact upstream metadata/weights and loaded server/dependency admission",
+    "Measured context capacity and token counting for every actual request",
+    "Matched real pre-runs/retention, interruptions, oracle isolation and real independent observer/output parser",
+    "Actual bounded pilot, raw original measurements and independent readback",
+    "Exact-domain delivery and separate scientific archival"
+  ],
+  "repair_reproductions": [
+    {
+      "kind": "context_capacity",
+      "method": "Synthetic IBMAdmissionTests files and mocked S1 observation; no actual model or host",
+      "predecessor_admitted_server_context": 8192,
+      "predecessor_reserved_output": 8192,
+      "remaining_input": 0
+    },
+    {
+      "kind": "study_binding",
+      "method": "Original exact-source evaluator with an altered prepared manifest; no events or model calls",
+      "predecessor_accepted_mutated_study_id": true
+    }
+  ],
+  "repairs": [
+    "Explicit positive input budget and model/server context bounds; unknown capacities remain null",
+    "16-trial single-study preparation with AB/BA within task/interruption strata",
+    "Revalidated study/contract identity and stratification in independent analysis",
+    "Frozen existing-architecture execution template with explicit missing real observer/parser and independent readbacks"
+  ],
+  "schema": "qikvrt_ibm_granite_pilot_preparation_v1",
+  "source_verification_boundary": "Byte-verified REST-materialized sparse checkout; whole-source/native integration and final remote readback remain separate. No predecessor CI PASS is transferred.",
+  "terminal_smoke": {
+    "file": "TERMINAL_PILOT_SMOKE_20261018.json",
+    "scope": "Existing loopback reference prepare/commit/readback/replay; no Granite inference or deployed Firefox",
+    "sha256": "27ab351dc2d4f714b14486fec89ca9fbabe8bdbc9a0fcbe7dc5d36b0ac37dd93"
+  },
+  "tested_source_files": {
+    "benchmarks/browser-assistant-ab/ibm/ADMISSION_BINDING.template.json": {
+      "bytes": 867,
+      "sha256": "3d7958ab9eff41af288ea00b109b3c4422b0dbd47d84d6a8bc9ee2b3fb8ee004"
+    },
+    "benchmarks/browser-assistant-ab/ibm/PILOT_BINDING.template.json": {
+      "bytes": 4654,
+      "sha256": "eb685d63c27d0b6ecb7b947d2f103112744bf241366751e77aed48c83f696409"
+    },
+    "benchmarks/browser-assistant-ab/ibm/README.md": {
+      "bytes": 20396,
+      "sha256": "86de0da07695ec04a737223ba45a505e8ddb59076df11f2134bc5eeeea81a60b"
+    },
+    "benchmarks/browser-assistant-ab/ibm/contract.json": {
+      "bytes": 6615,
+      "sha256": "f6bcf7b61d21711679562517b9f51251886987eda493f4e62f02c98d3957c0a1"
+    },
+    "tests/test_qikvrt_ibm_comparison.py": {
+      "bytes": 26833,
+      "sha256": "bfe6887ddd3e2eda9e349672a6d08a6c67a7242902f5ff3baaba1b11ed152829"
+    },
+    "tools/qikvrt_browser_assistant_ab.py": {
+      "bytes": 73768,
+      "sha256": "a97e7be34332c44d22d612fff53cf931b035598165499ef659f3da05ced6d6fe"
+    }
+  },
+  "tests": {
+    "counts": {
+      "AB": 18,
+      "Gemini": 10,
+      "IBM": 28,
+      "Personal": 13
+    },
+    "log_sha256": "d8baca393db46bc791f56cff4c70a6e59eaa86769b1ff10614c1be378c798b29",
+    "original_log": "TESTS_PILOT_20261018.log",
+    "scope": "Protocol/mocked HTTP/synthetic admission, real SIGKILL persistence and offline harness controls only",
+    "status": "PASS",
+    "total": 69
+  },
+  "tool_cache": {
+    "covered": 34,
+    "declared": 34,
+    "source_contract_only": true
+  },
+  "winner": null
+}

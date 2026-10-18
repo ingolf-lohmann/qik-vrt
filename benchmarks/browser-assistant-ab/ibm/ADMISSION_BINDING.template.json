@@ -17,7 +17,8 @@
     "offline": true,
     "model_mount_read_only": true,
     "trust_remote_code": false,
-    "max_model_len": 8192
+    "max_model_len": null,
+    "max_input_tokens": null
   },
   "settings": {
     "temperature": 1.0,

@@ -132,6 +132,57 @@ an incompatible old state is rejected rather than silently rebound. Ordinary
 baseline transcripts remain intact. Optional watsonx request semantics are
 unchanged. A host must verify that its locked server accepts these parameters.
 
+### First bounded Granite pilot configuration
+
+The existing `ibm-plan` can now freeze Granite alone. The following prepares
+**16 unstarted trials**, four pairs for each of the two existing tasks. Every
+task/interruption stratum contains one AB and one BA pair. This is a separate
+bounded pilot configuration; it neither executes nor replaces the four-study
+96-trial programme. The default all-study preparation remains available.
+
+```bash
+python3 -B tools/qikvrt_browser_assistant_ab.py ibm-plan \
+  --study granite-continuity --pairs-per-task 4 --seed 20261018 \
+  --output .qikvrt/runtime/ibm-comparison/granite-pilot-001
+```
+
+In addition to the existing manifest, fixtures and empty journal, this freezes
+`granite-continuity/EXECUTION_BINDING.template.json`. It binds the exact manifest,
+task/source/checkpoint hashes and schedule to the shared model contract. It
+specifies retained normal baseline history, the checkpoint-only difference,
+serial trials, at most three model requests per trial, no automatic retry,
+60 seconds of interruption and a 180-second resume observation horizon. These
+are requirements for the actual observer/controller, not a claim that this
+planning command implements or enforces productive execution.
+
+The private template lists the original host, upstream provenance, actual
+loaded weights/server/dependencies, context counting, equivalent pre-runs,
+normal restore, isolated oracle and real observer/parser receipts that are
+still missing. Those entries remain null; no runtime is admitted by filling
+the template alone. Preserve original requests/responses without authorization
+headers, usage, errors, pending intents, interruptions, monotonic timings and
+independent TEMDD/Terminal readback. Both model and tools must be denied access
+to the private plan/oracle directory. A second label or digest alone does not
+establish an independent observer. The existing evaluator continues to accept
+harness evidence only until a real observer and pinned output parser exist.
+
+A reproduced predecessor defect accepted `max_model_len=8192` alongside
+`max_tokens=8192`, leaving zero input capacity. `ibm-admit` now requires an
+explicit positive `server.max_input_tokens`, checks input plus output against
+`server.max_model_len`, and bounds that window by the byte-verified
+`config.json:max_position_embeddings`. The admission template leaves both
+capacity declarations null until measured on the real host. This arithmetic
+gate does not count tokens or measure capacity; the receipt explicitly retains
+`actual_request_token_counts_verified=false`. Count the full system prompt,
+history, sources and checkpoint before every real request; reject overflow
+without truncating either arm. KV cache and measured resource capacity remain
+separate obligations.
+
+Independent analysis now rejects a changed IBM study ID, comparison or contract
+digest and rejects loss of the declared task/interruption balance. Analyses
+retain their study binding. Frozen predecessor plans, failures and receipts
+remain historical evidence for their own source versions.
+
 After local admission, use the existing PersonalRuntime/terminal and frozen
 `granite-continuity` plan for matched pre-runs. Observe the locked server and
 actual loaded weights independently. Preserve normal baseline restore, isolate

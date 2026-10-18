@@ -1,6 +1,6 @@
 {
   "schema": "qikvrt_ibm_comparison_v1",
-  "version": "2026-10-18.1",
+  "version": "2026-10-18.2",
   "responsible_human": "Ingolf Lohmann",
   "execution": "PREPARATION_ONLY",
   "product_claim_allowed": false,
@@ -73,6 +73,17 @@
       },
       "executed_on_productive_host": false
     }
+  },
+  "first_granite_pilot": {
+    "study": "granite-continuity",
+    "pairs_per_task": 4,
+    "planned_trials": 16,
+    "seed": 20261018,
+    "balance": "AB and BA within every task/interruption stratum",
+    "execution_binding_template": "benchmarks/browser-assistant-ab/ibm/PILOT_BINDING.template.json",
+    "context_budget": "positive explicit input allowance plus 8192 output tokens must fit the locked server window and bound model position limit; independently count every actual request",
+    "execution": "NOT_EXECUTED",
+    "relation_to_full_programme": "separately frozen bounded pilot configuration; does not count as any completed trial in the 96-trial programme"
   },
   "required_equalities": [
     "exact model weights and quantization within each study",

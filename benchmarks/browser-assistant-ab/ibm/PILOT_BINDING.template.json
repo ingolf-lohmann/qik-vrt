@@ -1,0 +1,85 @@
+{
+  "schema": "qikvrt_ibm_granite_pilot_binding_v1",
+  "state": "BLOCKED_UNTIL_REAL_RUNTIME_AND_OBSERVER_BINDINGS_EXIST",
+  "evidence_class": "EXECUTION_CONFIGURATION_ONLY_NOT_MODEL_MEASUREMENT",
+  "study_binding": null,
+  "manifest_sha256": null,
+  "planned_trials": null,
+  "schedule": null,
+  "architecture": {
+    "host": "existing owner-controlled admitted S1 host",
+    "transputer": "existing TEMDD ledger, original Work Unit and writer fencing",
+    "terminal": "src/qikvrt_effect_ack_http_terminal.py",
+    "assistant": "src/qikvrt_personal_assistant.py:PersonalRuntime",
+    "harness": "tools/qikvrt_browser_assistant_ab.py",
+    "routes": ["/personal/create", "/personal/turn", "/personal/resume", "/personal/session/<id>"],
+    "new_executor_or_memory_store": false
+  },
+  "required_independent_evidence_sha256": {
+    "original_host_admission_and_authenticated_execution": null,
+    "upstream_metadata_origin": null,
+    "model_admission_receipt": null,
+    "running_server_image_dependencies_and_loaded_weights": null,
+    "per_request_token_counting_and_context_capacity": null,
+    "matched_pre_runs_and_full_baseline_retention": null,
+    "oracle_filesystem_and_tool_isolation": null,
+    "observer_implementation_and_output_parser": null
+  },
+  "matched_conditions": {
+    "provider": "granite_local",
+    "model_and_settings": "exact shared ibm/contract.json and independently observed MODEL_ADMISSION.json",
+    "baseline": "ordinary full transcript, saved draft, sources, persistence and normal restore retained",
+    "qikvrt": "same ordinary history plus actual PersonalRuntime checkpoint on explicit resume",
+    "only_studied_difference": "source-bound QIK-VRT checkpoint continuation",
+    "task_and_source_bytes": "same frozen fixture binding within each pair",
+    "pre_interruption_work": "actual independently scored equivalent work; never seed model history from scoring oracles",
+    "hardware_and_cache_policy_receipt_sha256": null,
+    "normal_tools_and_prompt_policy_receipt_sha256": null,
+    "fresh_private_session_and_profile_per_trial": true,
+    "cross_arm_memory_transfer": false
+  },
+  "limits": {
+    "concurrent_trials": 1,
+    "model_requests_per_trial": 3,
+    "automatic_provider_retries": 0,
+    "interruption_seconds": 60,
+    "resume_horizon_seconds": 180,
+    "context_overflow": "REJECT_NO_TRUNCATION",
+    "count_input_tokens": "before every request, including system, full history, sources and any checkpoint",
+    "unresolved_request": "preserve pending intent and original Work Unit; independent readback before any successor",
+    "failure_policy": "retain every planned row, errors, timeouts, limits and censored observations"
+  },
+  "observer": {
+    "implemented_and_admitted": false,
+    "identity_and_method_receipt_sha256": null,
+    "outside_interrupted_process": true,
+    "interruption_witness": "actual process exit/context loss, monotonic interval and restart on the same persistent state",
+    "transputer_readback": "same Work Unit/session, original event bytes and digests, no lost acknowledged or duplicate effects",
+    "oracle_access": "observer only; no scoring files or observer credentials in participant filesystem or tools",
+    "participant_input": "existing /api/task/<trial_id> view without oracle; never the private run directory",
+    "independence_scope": "a second identifier or local digest alone is not independent observation"
+  },
+  "raw_record_requirements": [
+    "original model request/response bodies without authorization headers, their exact byte hashes and provider usage",
+    "request/session/Work Unit IDs, source bindings, pre-run and restored baseline history readback",
+    "actual interruption/restart traces, observer epoch and monotonic request/resume/completion timings",
+    "all outputs, errors, unsupported completion claims, human inputs and interventions",
+    "independent replay of scoring from frozen oracle and original outputs using a pinned parser",
+    "exact source commit/tree/file hashes; independent original-byte readback after persistence"
+  ],
+  "analysis": {
+    "implementation_status": "existing evaluator accepts harness evidence only; real observer and output parser still required",
+    "direction": "qikvrt_minus_baseline",
+    "strata": ["task_id", "interruption", "order"],
+    "missing_latency": null,
+    "unmeasured_tokens_cost_memory_energy": null,
+    "publish_all_outcomes": true,
+    "superiority_claim_preregistered": false
+  },
+  "actual_ibm_inference_executed": false,
+  "product_trials_executed": 0,
+  "product_metrics": null,
+  "winner": null,
+  "product_claim_allowed": false,
+  "effect_ack_done": false
+}

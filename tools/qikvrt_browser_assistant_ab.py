@@ -64,6 +64,7 @@ SOURCE_PATHS = [
     "runtime/toolchains/CACHE_REGISTRY.json",
     "runtime/toolchains/CACHE_COVERAGE.json",
     "benchmarks/browser-assistant-ab/ibm/contract.json",
+    "benchmarks/browser-assistant-ab/ibm/PILOT_BINDING.template.json",
     "tools/qikvrt_self_host.py",
 ]
 # Reuse the frozen S1 implementation without copying it into the Personal tree.
@@ -169,7 +170,7 @@ def preflight() -> dict[str, Any]:
     }
 
 
-def make_plan(output: Path, repeats: int = 6, seed: int = 20261005, evidence_class: str = "HARNESS_PREPARATION", *, study_binding: dict[str, str] | None = None) -> dict[str, Any]:
+def make_plan(output: Path, repeats: int = 6, seed: int = 20261005, evidence_class: str = "HARNESS_PREPARATION", *, study_binding: dict[str, str] | None = None, stratify_interruptions: bool = False) -> dict[str, Any]:
     if repeats < 2 or repeats > 100 or repeats % 2:
         raise InvalidRun("Pairs per task must be even, 2..100, for balanced arm order")
     if evidence_class not in {"HARNESS_PREPARATION", "HARNESS_SELF_TEST"}:
@@ -186,6 +187,9 @@ def make_plan(output: Path, repeats: int = 6, seed: int = 20261005, evidence_cla
     if output.exists():
         raise InvalidRun("Run directory must be new; never overwrite an earlier run")
     contract = read_json(SUITE / "contract.json")
+    classes = contract["interruption_classes"]
+    if stratify_interruptions and repeats % (2 * len(classes)):
+        raise InvalidRun("Stratified pilot needs equal AB/BA pairs within each interruption class")
     tasks = {t: read_json(SUITE / "fixtures" / f"{t}.json") for t in contract["fixture_ids"]}
     for task in tasks.values():
         validate_fixture(task)
@@ -194,12 +198,17 @@ def make_plan(output: Path, repeats: int = 6, seed: int = 20261005, evidence_cla
     for task_id in contract["fixture_ids"]:
         orders = ["AB", "BA"] * (repeats // 2)
         rng.shuffle(orders)
-        for index, order in enumerate(orders):
+        schedule = [(classes[i % len(classes)], order) for i, order in enumerate(orders)]
+        if stratify_interruptions:
+            schedule = [(kind, order) for kind in classes
+                        for order in ["AB", "BA"] * (repeats // (2 * len(classes)))]
+            rng.shuffle(schedule)
+        for interruption, order in schedule:
             number += 1
             pid = f"p{number:03}"
             arms = ["baseline", "qikvrt"] if order == "AB" else ["qikvrt", "baseline"]
             pairs.append({"pair_id": pid, "task_id": task_id, "order": order,
-                          "interruption": contract["interruption_classes"][index % 2],
+                          "interruption": interruption,
                           "trials": [f"{pid}-{arm}" for arm in arms], "binding": fixture_binding(tasks[task_id])})
     rng.shuffle(pairs)
     output.mkdir(parents=True, mode=0o700)
@@ -218,6 +227,8 @@ def make_plan(output: Path, repeats: int = 6, seed: int = 20261005, evidence_cla
     }
     if study_binding is not None:
         manifest["study_binding"] = dict(study_binding)
+    if stratify_interruptions:
+        manifest["order_balance"] = "PER_TASK_AND_INTERRUPTION"
     write_json(output / "manifest.json", manifest)
     return manifest
 
@@ -233,6 +244,16 @@ def load_run(run: Path) -> tuple[dict[str, Any], dict[str, Any], dict[str, dict[
     contract = read_json(run / "contract.json")
     if contract.get("product_claim_allowed") is not False:
         raise InvalidRun("Contract promoted into product evidence")
+    if "study_binding" in manifest:
+        ibm_path = SUITE / "ibm/contract.json"
+        ibm = read_json(ibm_path)
+        binding = manifest["study_binding"]
+        study = next((s for s in ibm["studies"] if isinstance(binding, dict) and s["id"] == binding.get("id")), None)
+        if study is None or binding != {"id": study["id"], "comparison": study["comparison"],
+                                        "contract_sha256": digest(ibm_path.read_bytes())}:
+            raise InvalidRun("IBM study/contract binding mismatch")
+        if set(manifest["fixture_files"]) != set(ibm["fixture_ids"]):
+            raise InvalidRun("IBM study fixture set mismatch")
     tasks = {}
     for task_id, expected in manifest["fixture_files"].items():
         if task_id not in {"research-costs", "document-recovery"}:
@@ -259,10 +280,18 @@ def load_run(run: Path) -> tuple[dict[str, Any], dict[str, Any], dict[str, dict[
                 raise InvalidRun("Invalid/duplicate trial")
             ids.add(tid)
     expected_count = manifest["pairs_per_task"]
+    if manifest.get("order_balance") not in {None, "PER_TASK_AND_INTERRUPTION"}:
+        raise InvalidRun("Unknown order balance contract")
     for task_id in tasks:
         subset = [p for p in manifest["pairs"] if p["task_id"] == task_id]
         if len(subset) != expected_count or sum(p["order"] == "AB" for p in subset) * 2 != expected_count:
             raise InvalidRun("Missing or unbalanced planned pairs")
+        if manifest.get("order_balance") == "PER_TASK_AND_INTERRUPTION":
+            for kind in contract["interruption_classes"]:
+                stratum = [p for p in subset if p["interruption"] == kind]
+                if (len(stratum) * len(contract["interruption_classes"]) != expected_count or
+                    not stratum or sum(p["order"] == "AB" for p in stratum) * 2 != len(stratum)):
+                    raise InvalidRun("Unbalanced task/interruption stratum")
     return manifest, contract, tasks
 
 
@@ -485,7 +514,7 @@ def analyze(run: Path) -> dict[str, Any]:
         contrast["task_success_baseline"] = a.get("task_success")
         contrast["task_success_qikvrt"] = b.get("task_success")
         contrasts.append(contrast)
-    return {
+    result = {
         "schema": "qikvrt_browser_ab_analysis_v1", "evidence_class": manifest["evidence_class"],
         "status": "HARNESS_DATA_ONLY" if any(t["state"] == "RECORDED_HARNESS_EXERCISE" for t in trials) else "PRODUCT_EXECUTION_NOT_PERFORMED",
         "manifest_sha256": digest((run / "manifest.json").read_bytes()),
@@ -493,6 +522,9 @@ def analyze(run: Path) -> dict[str, Any]:
         "product_metrics": None, "trials": trials, "paired_deltas": contrasts,
         "limitations": ["Adapter source does not establish an actual authenticated Firefox product run; this evaluator accepts harness data only.", "No benefit estimate, speedup, significance or causal claim is produced from harness exercises.", "Null latency is not zero; censored failures and invalid/incomplete/missing trials are retained.", "Hash chaining detects accidental/tampered bytes against retained bindings; it is not independent identity attestation or proof that an operator reported honestly."],
     }
+    if "study_binding" in manifest:
+        result["study_binding"] = dict(manifest["study_binding"])
+    return result
 
 
 def export_analysis(run: Path, output: Path) -> dict[str, Any]:
@@ -1012,6 +1044,12 @@ def ibm_model_admission(model_root: Path, metadata_path: Path, host_path: Path,
         chat_template_kwargs=transport.public_binding["template_parameters"])
     if binding.get("settings") != expected_settings:
         raise InvalidRun("IBM_ADMISSION_SAMPLING_OR_TEMPLATE_MISMATCH")
+    max_input = server.get("max_input_tokens")
+    model_limit = config.get("max_position_embeddings")
+    if (type(max_input) is not int or max_input <= 0 or
+        max_input + expected_settings["max_tokens"] > server["max_model_len"] or
+        type(model_limit) is not int or model_limit <= 0 or server["max_model_len"] > model_limit):
+        raise InvalidRun("IBM_ADMISSION_INPUT_OUTPUT_CONTEXT_BUDGET_REQUIRED")
     observed_host = own_host_observation(root)
     if (host.get("schema") != "qikvrt-own-host-admission/v1" or
         host.get("public_origin") != "https://raumzeitterminal.de" or
@@ -1036,6 +1074,9 @@ def ibm_model_admission(model_root: Path, metadata_path: Path, host_path: Path,
         "served_model": binding["served_model"], "server_executable": executable,
         "server_name": server["name"], "server_version_declared": server["version"],
         "server_image_digest_declared": server["image_digest"],
+        "context_budget": {"max_input_tokens": max_input, "max_output_tokens": expected_settings["max_tokens"],
+            "server_context_tokens_declared": server["max_model_len"], "model_position_limit": model_limit,
+            "overflow_policy": "REJECT_NO_TRUNCATION", "actual_request_token_counts_verified": False},
         "host": {"machine_id_sha256": observed_host["machine_id_sha256"],
                  "architecture": platform.machine(), "logical_cpus": os.cpu_count(),
                  "memory_limit_bytes": memory, "accelerators": "NOT_PROBED"},
@@ -1062,7 +1103,7 @@ def ibm_model_admission(model_root: Path, metadata_path: Path, host_path: Path,
     return receipt
 
 
-def prepare_ibm_comparison(output: Path, repeats: int = 6, seed: int = 20261018) -> dict[str, Any]:
+def prepare_ibm_comparison(output: Path, repeats: int = 6, seed: int = 20261018, *, study: str | None = None) -> dict[str, Any]:
     """Freeze comparable plans using the existing scorer, clocks and journal.
 
     No inference, credential access, model installation or product promotion.
@@ -1079,22 +1120,37 @@ def prepare_ibm_comparison(output: Path, repeats: int = 6, seed: int = 20261018)
         raise InvalidRun("IBM plan requires a new private run directory")
     if repeats < 2 or repeats > 100 or repeats % 2:
         raise InvalidRun("Pairs per task must be even, 2..100")
-    output.mkdir(parents=True, mode=0o700)
     studies = []
     ids = [s.get("id") for s in contract["studies"]]
     if len(ids) != len(set(ids)) or not all(isinstance(i, str) and re.fullmatch(r"[a-z][a-z0-9-]{1,63}", i) for i in ids):
         raise InvalidRun("Invalid IBM study identity")
-    for study in contract["studies"]:
-        run = output / study["id"]
-        manifest = make_plan(run, repeats, seed, study_binding={"id": study["id"],
-            "comparison": study["comparison"], "contract_sha256": digest(contract_path.read_bytes())})
+    if study is not None and study not in ids:
+        raise InvalidRun("Unknown IBM study")
+    pilot = study == "granite-continuity"
+    if pilot and repeats % (2 * len(read_json(SUITE / "contract.json")["interruption_classes"])):
+        raise InvalidRun("Stratified Granite pilot requires pairs-per-task divisible by four")
+    output.mkdir(parents=True, mode=0o700)
+    for selected in contract["studies"]:
+        if study is not None and selected["id"] != study:
+            continue
+        run = output / selected["id"]
+        manifest = make_plan(run, repeats, seed, study_binding={"id": selected["id"],
+            "comparison": selected["comparison"], "contract_sha256": digest(contract_path.read_bytes())},
+            stratify_interruptions=pilot)
         analysis = analyze(run)
         write_json(run / "analysis.json", analysis)
-        studies.append({"id": study["id"], "comparison": study["comparison"],
+        studies.append({"id": selected["id"], "comparison": selected["comparison"],
             "manifest_sha256": digest((run / "manifest.json").read_bytes()),
             "analysis_sha256": digest((run / "analysis.json").read_bytes()),
             "planned_trials": sum(len(p["trials"]) for p in manifest["pairs"]),
             "execution": "NOT_EXECUTED", "metrics": None})
+        if pilot:
+            execution = read_json(SUITE / "ibm/PILOT_BINDING.template.json")
+            execution.update(study_binding=manifest["study_binding"],
+                manifest_sha256=digest((run / "manifest.json").read_bytes()),
+                planned_trials=studies[-1]["planned_trials"], schedule=manifest["pairs"])
+            write_json(run / "EXECUTION_BINDING.template.json", execution)
+            studies[-1]["execution_binding_template_sha256"] = digest((run / "EXECUTION_BINDING.template.json").read_bytes())
     result = {"schema": "qikvrt_ibm_preparation_receipt_v1", "evidence_class": "HARNESS_PREPARATION",
         "contract_sha256": digest(contract_path.read_bytes()), "studies": studies,
         "planned_trials": sum(s["planned_trials"] for s in studies),
@@ -1118,6 +1174,7 @@ def main() -> int:
     ibm.add_argument("--output", type=Path, required=True)
     ibm.add_argument("--pairs-per-task", type=int, default=6)
     ibm.add_argument("--seed", type=int, default=20261018)
+    ibm.add_argument("--study", help="Select one study; Granite pilot needs pairs-per-task divisible by four")
     admit = sub.add_parser("ibm-admit", help="Verify existing local model bytes and S1 host binding; no inference")
     admit.add_argument("--model-root", type=Path, required=True)
     admit.add_argument("--metadata", type=Path, required=True)
@@ -1146,7 +1203,7 @@ def main() -> int:
         elif args.command == "plan":
             result = make_plan(args.output, args.pairs_per_task, args.seed)
         elif args.command == "ibm-plan":
-            result = prepare_ibm_comparison(args.output, args.pairs_per_task, args.seed)
+            result = prepare_ibm_comparison(args.output, args.pairs_per_task, args.seed, study=args.study)
         elif args.command == "ibm-admit":
             result = ibm_model_admission(args.model_root, args.metadata, args.host_admission,
                                         args.binding, args.binding_sha256, args.output)

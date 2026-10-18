@@ -1,0 +1,626 @@
+{
+  "action_window": {
+    "closed_at": "2026-10-18T17:17:03.035Z",
+    "completed_at": "2026-10-18T17:15:02.832Z",
+    "completed_at_semantics": "Client-side upper bound immediately after the last successful PR metadata write; later independent repository/domain reads follow it.",
+    "id": "QIKVRT_IBM_GRANITE_ADMISSION_CLOSE_20261018"
+  },
+  "actual_ibm_inference_executed": false,
+  "actual_ibm_product_trials": 0,
+  "attempt_scope": "No failed effect was retried. Successful source preparation writes are listed in effect_journal; per-request timing attestations are not claimed.",
+  "attempts": [],
+  "authorization": {
+    "granted": true,
+    "source": "Owner Action of 18 October 2026: establish reproducible Granite comparison prerequisites; complete independent integration/admission work on PR532 if productive access is unavailable. Existing public preparation grant retained."
+  },
+  "blocker": {
+    "evidence": "Original host receipt v30 and current connector/Mesh/CLI inspection provide no executable target-bound host channel. Existing container_deploy requires protected qikvrt-production binding JSON/SHA256 and host CA/CERT/KEY; not delivered to this client. No real inference requested.",
+    "next_action": "Use the existing protected host connection to inventory that host, freeze independently acquired exact-revision metadata/weights, admit its exact server/dependencies, run ibm-admit there, then observe loaded weights and matched pre-runs before the balanced pilot.",
+    "operation": "Run Granite and the balanced continuity comparison on the original owner-controlled Linux host",
+    "reason": "ORIGINAL_AUTHENTICATED_OWNER_HOST_EXECUTION_AND_MODEL_SERVER_BINDING_NOT_CALLABLE",
+    "retry_condition": "Original management/SSH or admitted protected mTLS host connection is actually callable and provides original machine/storage identity, hardware inventory and model/server bindings."
+  },
+  "current_source_integration": {
+    "changed_source_byte_readback": true,
+    "draft": true,
+    "force": false,
+    "head": "ae4504ab0fe833defb9a0721b200fc720959347c",
+    "independent_branch_and_commit_readback": true,
+    "main_adapter_tests": 6,
+    "materialization": {
+      "conclusion": "success",
+      "job": 117733449367,
+      "run": 39147239185,
+      "scope": "Complete make test repository-monitor-test self-host-test, then existing materialization persistence; exact source ae4504ab retained. This is not Granite inference or host delivery.",
+      "source": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39147239185/job/117733449367"
+    },
+    "mergeable": true,
+    "merged": false,
+    "native_source": {
+      "conclusion": "success",
+      "head": "ae4504ab0fe833defb9a0721b200fc720959347c",
+      "job": 117733449679,
+      "markers": [
+        "2026-10-18T17:02:26.5306957Z QIKVRT_REENTRY_SUBJECT iteration=0 head=ae4504ab0fe833defb9a0721b200fc720959347c tree=4e0189d516e66ba458fe6db4b347089c91f73fad",
+        "2026-10-18T17:14:47.4196210Z QIKVRT_FIXPOINT_REACHED iteration=0 head=ae4504ab0fe833defb9a0721b200fc720959347c tree=4e0189d516e66ba458fe6db4b347089c91f73fad predecessor_test_status=0",
+        "2026-10-18T17:14:47.7793525Z QIKVRT_TESTED_SUBJECT head=ae4504ab0fe833defb9a0721b200fc720959347c tree=4e0189d516e66ba458fe6db4b347089c91f73fad"
+      ],
+      "run": 39147239163,
+      "scope": "Complete canonical source test and same-writer tested-fixpoint; not global CI/product acceptance or IBM inference.",
+      "source": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39147239163/job/117733449679",
+      "tree": "4e0189d516e66ba458fe6db4b347089c91f73fad"
+    },
+    "native_terminal": {
+      "conclusion": "success",
+      "job": 117733448977,
+      "run": 39147239182,
+      "scope": "Native contract/package/negative/crash/restart/Firefox/noVNC E2E controls; public host deployment/readback skipped on PR event. Not IBM inference.",
+      "source": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39147239182/job/117733448977"
+    },
+    "parents": [
+      "fa48a66aece80f5de9ddba0bc2e27801f2036af3",
+      "fcbe8ab0d94e5926eb2c44145e9ea065356632a4"
+    ],
+    "rest_ref_write_confirmed": true,
+    "scoped_tests": 63,
+    "tree": "4e0189d516e66ba458fe6db4b347089c91f73fad"
+  },
+  "delivery_observation": {
+    "byte_verified": true,
+    "id": "fb7d8710-6825-4813-ab0d-d85023c474e2",
+    "sha256": "7381c32281c2fe1b65a3f3003b0b08e126d031ec9e934188a35df1d45f6952e7",
+    "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/readback?id=fb7d8710-6825-4813-ab0d-d85023c474e2"
+  },
+  "effect_ack_done": false,
+  "effect_journal": [
+    {
+      "index_blob": "0d8c2db7f5041384628cf67f4a68a19f22e073dd",
+      "manifest_blob": "11155b39257f359729204a4d01326d3fbbb9c926",
+      "operation": "create_blob",
+      "scope": "integrity manifest/index"
+    },
+    {
+      "operation": "create_tree",
+      "tree": "4e0189d516e66ba458fe6db4b347089c91f73fad"
+    },
+    {
+      "head": "ae4504ab0fe833defb9a0721b200fc720959347c",
+      "operation": "create_commit",
+      "parents": [
+        "fa48a66aece80f5de9ddba0bc2e27801f2036af3",
+        "fcbe8ab0d94e5926eb2c44145e9ea065356632a4"
+      ]
+    },
+    {
+      "expected_head": "fa48a66aece80f5de9ddba0bc2e27801f2036af3",
+      "force": false,
+      "independent_readback": true,
+      "new_head": "ae4504ab0fe833defb9a0721b200fc720959347c",
+      "operation": "update_ref"
+    },
+    {
+      "independent_readback": true,
+      "operation": "update_pull_request",
+      "pr": 532,
+      "scope": "Describe final implementation, exact tests and extracted upstream weight targets; no merge or ready transition."
+    }
+  ],
+  "execution_id": "QIKVRT_IBM_GRANITE_ADMISSION_20261018",
+  "global_effect_ack_done": false,
+  "historical_predecessor": {
+    "effect_journal": [
+      {
+        "operation": "create_tree",
+        "sha": "1677334c5734c2d76e66d6684830e49481f954a4"
+      },
+      {
+        "operation": "create_commit",
+        "sha": "5cf4e38b4a8090b0d75912b653d5a28984e23d58"
+      },
+      {
+        "operation": "create_branch",
+        "ref": "ibm-comparison/20261018",
+        "sha": "5cf4e38b4a8090b0d75912b653d5a28984e23d58"
+      },
+      {
+        "draft": true,
+        "number": 532,
+        "operation": "create_pull_request",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/pull/532"
+      }
+    ],
+    "full_ci": {
+      "conclusion": null,
+      "head": "5cf4e38b4a8090b0d75912b653d5a28984e23d58",
+      "id": 39137628851,
+      "status": "in_progress",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39137628851"
+    },
+    "main_readback": {
+      "head": "f87c40bae44780e707bc300f31a2c99595ab892b",
+      "observed_at": "2026-10-18T14:53:06.581Z",
+      "tree": "854df81d5eac04e187d732849bc4ccedeb60b901"
+    },
+    "materialization": {
+      "conclusion": null,
+      "head": "5cf4e38b4a8090b0d75912b653d5a28984e23d58",
+      "id": 39137628941,
+      "status": "in_progress",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39137628941"
+    },
+    "technical_tests": {
+      "display_log": "UTF-8 lines with trailing whitespace removed; exact original retained separately.",
+      "ibm_specific_tests": 16,
+      "log": "evidence/TESTS.log",
+      "original_log": "evidence/TESTS_ORIGINAL.json",
+      "original_log_sha256": "368ec8adc8143a844f24b8fe41926af8672d3820f9206e2a4c807e52e7df0477",
+      "scope": "Adapter protocol, ordinary-history parity, pending-result handling, actual mock HTTP transport and real SIGKILL persistence. No actual IBM inference.",
+      "status": "PASS",
+      "tests_run": 57
+    }
+  },
+  "independent_ibm_replication": false,
+  "inventory": {
+    "cli": "63 scoped IBM/Personal/Gemini/A-B regressions plus six original Main wrapper cases pass. Terminal HTTP reference smoke passes; 34/34 tool-cache source coverage. Broader local terminal attempt hits AF_UNIX errno1 and sparse-file gaps; full local bootstrap not claimed. Current named host/model binding presence checked without secret disclosure; current absence is not remote credential absence.",
+    "connector": "Existing authorized GitHub REST create_blob/create_tree/create_commit/update_ref/update_pull_request used. Native branch and commit readback confirm ae4504ab/tree4e0189d, mergeable=true and Draft retained. No initial workflow-approval or host management/SSH writer is exposed.",
+    "mesh": "Existing monitor/readback is observation-only; no native model executor. Original IONOS host receipt and current available routes do not supply a callable authenticated host management/SSH or admitted protected mTLS connection. No new host, managed runtime or credentials created.",
+    "repository": "Read current /AI, AI_CONTEXT, AGENTS, exact PR/Main, PersonalRuntime, terminal, A/B and S1 admission. Main fcbe8ab integrated as second parent; exact changed source and evidence read back via Contents REST."
+  },
+  "knowledge": [
+    {
+      "epistemic_class": "USER_AUTHORIZATION",
+      "evidence": [
+        "https://github.com/ingolf-lohmann/qik-vrt/pull/532"
+      ],
+      "id": "IBM-PREP-OWNER-20261018",
+      "record_sha256": "73289bbc63febb819edeb8abda1d7631f14bdec39003245dc09e3e1322da68ad",
+      "scope": "Public comparison and interoperability preparation",
+      "statement": "Ingolf Lohmann requested preparation to compare QIK-VRT against and with IBM technologies and make outcomes accessible to IBM, himself and everyone else.",
+      "subject": {
+        "work_unit": "QIKVRT_IBM_COMPARISON_PREPARATION_20261018"
+      },
+      "supersedes": []
+    },
+    {
+      "epistemic_class": "SOFTWARE_TEST",
+      "evidence": [
+        "https://github.com/ingolf-lohmann/qik-vrt/blob/ibm-comparison/20261018/benchmarks/browser-assistant-ab/ibm/RESULTS.json",
+        "https://github.com/ingolf-lohmann/qik-vrt/blob/ibm-comparison/20261018/benchmarks/browser-assistant-ab/ibm/README.md"
+      ],
+      "id": "IBM-PREP-TECHNICAL-57",
+      "record_sha256": "ba04da02ba0d5b8f44b597ac59d1f93cb559b33d30f8fd0a355169083782b0c7",
+      "scope": "Exact candidate source files listed in public RESULTS.json",
+      "statement": "57 scoped technical tests passed, including mock HTTP and real SIGKILL persistence. This is not actual IBM inference or a comparative product outcome.",
+      "subject": {
+        "head": "5cf4e38b4a8090b0d75912b653d5a28984e23d58",
+        "ref": "ibm-comparison/20261018",
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "1677334c5734c2d76e66d6684830e49481f954a4"
+      },
+      "supersedes": []
+    },
+    {
+      "epistemic_class": "MEASUREMENT_STATUS",
+      "evidence": [
+        "https://github.com/ingolf-lohmann/qik-vrt/blob/ibm-comparison/20261018/benchmarks/browser-assistant-ab/ibm/RESULTS.json"
+      ],
+      "id": "IBM-PREP-UNSTARTED-96",
+      "record_sha256": "dc16084c94184d9b91a85b55e4e1e6b8dcc1d6b1e69c24a1710e58aa95ee77be",
+      "scope": "Four balanced pilot study plans",
+      "statement": "96 product trials are prepared; zero actual IBM product trials were executed. Product metrics and winner remain null. Missing client configuration does not prove remote-host credentials absent.",
+      "subject": {
+        "head": "5cf4e38b4a8090b0d75912b653d5a28984e23d58",
+        "ref": "ibm-comparison/20261018",
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "1677334c5734c2d76e66d6684830e49481f954a4"
+      },
+      "supersedes": []
+    },
+    {
+      "epistemic_class": "DOCUMENTARY_SOURCE",
+      "evidence": [
+        "https://doi.org/10.5281/zenodo.21888130"
+      ],
+      "id": "IBM-PREP-ROUND-TRIP-SCOPE",
+      "record_sha256": "4ccd3262a6f250831ab7dc4e101e88b61868aefc8532422e05ec77a876a316cb",
+      "scope": "Published architectural entry point and separation of evidence classes",
+      "statement": "The source-bound QIK-VRT entry point is Das Universum als Round Trip, version DOI 10.5281/zenodo.21888130. Archived model/formal results do not by themselves establish this new empirical IBM comparison.",
+      "subject": {
+        "doi": "10.5281/zenodo.21888130"
+      },
+      "supersedes": []
+    },
+    {
+      "epistemic_class": "HTTP_OBSERVATION",
+      "evidence": [
+        "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/readback?id=c4ec4d17-41c8-4f26-b8b8-a0445f815966"
+      ],
+      "id": "IBM-PREP-DOMAIN-OBSERVATION",
+      "record_sha256": "d6c7459b6c6a708e4cfaa1d342a767c5e62e56488f016a0d71571f88060fe996",
+      "scope": "Single external observer, 2026-10-18T14:48:50.508Z",
+      "statement": "The external observer returned HTTP 525 for the exact domain at this observation time. Useful application delivery and authenticated runtime were not established; other client observations are not inferred.",
+      "subject": {
+        "hostname": "raumzeitterminal.de",
+        "snapshot_id": "c4ec4d17-41c8-4f26-b8b8-a0445f815966"
+      },
+      "supersedes": []
+    },
+    {
+      "epistemic_class": "SOFTWARE_TEST",
+      "evidence": [
+        "https://github.com/ingolf-lohmann/qik-vrt/blob/ae4504ab0fe833defb9a0721b200fc720959347c/benchmarks/browser-assistant-ab/ibm/evidence/ADMISSION_PREPARATION_20261018.json"
+      ],
+      "id": "IBM-ADMISSION-SOURCE-69-20261018",
+      "record_sha256": "297e62e457de6e534dd263dcfa6b853efb1e2a40bfd583880d99f8c70cd86c8f",
+      "scope": "Current ae4504ab source and unchanged Main adapter tests",
+      "statement": "Offline model artifact/host admission and explicit identical Granite template parameters are implemented. 63 scoped regressions and six existing Main adapter cases pass. These are not IBM model inference.",
+      "subject": {
+        "head": "ae4504ab0fe833defb9a0721b200fc720959347c",
+        "ref": "ibm-comparison/20261018",
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "4e0189d516e66ba458fe6db4b347089c91f73fad"
+      },
+      "supersedes": []
+    },
+    {
+      "epistemic_class": "NATIVE_SOFTWARE_TEST",
+      "evidence": [
+        "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39147239163/job/117733449679",
+        "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39147239185/job/117733449367",
+        "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39147239182/job/117733448977"
+      ],
+      "id": "IBM-ADMISSION-NATIVE-CURRENT-20261018",
+      "record_sha256": "f6351b0b121aa7daa6f130262ede2c7d5489ff82eaad4fabaf12f62d70a33230",
+      "scope": "Actual tested source, canonical integrity and terminal controls on current head/tree",
+      "statement": "Source job117733449679 succeeded with exact QIKVRT_TESTED_SUBJECT and iteration0 fixpoint. Materialization verified 4989 entries/4978 immutable digests and completed full gates. Terminal contract/E2E job117733448977 succeeded; deployment and public product readback skipped. No model/host/product acceptance follows.",
+      "subject": {
+        "head": "ae4504ab0fe833defb9a0721b200fc720959347c",
+        "ref": "ibm-comparison/20261018",
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "4e0189d516e66ba458fe6db4b347089c91f73fad"
+      },
+      "supersedes": []
+    },
+    {
+      "epistemic_class": "EXTRACTED_UPSTREAM_METADATA",
+      "evidence": [
+        "https://huggingface.co/api/models/ibm-granite/granite-4.2-3b/revision/be9e7d995f2a6be22def5dd815f9f2bae98c8b6e?blobs=true",
+        "https://github.com/ingolf-lohmann/qik-vrt/pull/532"
+      ],
+      "id": "IBM-ADMISSION-UPSTREAM-TARGETS-20261018",
+      "record_sha256": "346b58f9302a21ea1a910a81fd4fd3de5689ed201175138a32c6f2759182cdd4",
+      "scope": "Published target file hashes and sizes for exact Granite revision; no local weights",
+      "statement": "Primary metadata reports two BF16 safetensor shards totaling 7319517120 bytes with SHA-256 targets db39eb2776b5404dbfd0696cf7fe5ec671f0dad0e0918c62c5aea9e2eb5825d7 and 8fba6ea17551d5d129eac519dbd70237139221c7fd0b89623ef54d9711062505. The extraction is not a byte-exact raw HTTP body, downloaded weights, native server/image admission or loaded-model proof.",
+      "subject": {
+        "model": "ibm-granite/granite-4.2-3b",
+        "revision": "be9e7d995f2a6be22def5dd815f9f2bae98c8b6e"
+      },
+      "supersedes": []
+    },
+    {
+      "epistemic_class": "CAPABILITY_OBSERVATION",
+      "evidence": [
+        "https://github.com/ingolf-lohmann/qik-vrt/pull/532",
+        "https://github.com/ingolf-lohmann/qik-vrt/blob/ae4504ab0fe833defb9a0721b200fc720959347c/.github/workflows/qikvrt_ci.yml"
+      ],
+      "id": "IBM-ADMISSION-HOST-BOUNDARY-20261018",
+      "record_sha256": "47e7109c1f403a7c872b89fce2b055026768b9182dc2ac0490466adb09049999",
+      "scope": "Current inspected client/routes, not the global private host or credential inventory",
+      "statement": "The original authenticated owner-host management/SSH or protected mTLS execution connection is not callable from inspected routes. Current named client bindings are absent; this does not establish remote credential absence. Actual remote CPU/RAM/GPU, model installation and capacity remain unknown. Product trials remain 0/96.",
+      "subject": {
+        "host": "EXISTING_OWNER_CONTROLLED_IONOS_HOST",
+        "work_unit": "QIKVRT_IBM_GRANITE_ADMISSION_20261018"
+      },
+      "supersedes": []
+    }
+  ],
+  "managed_runtime_prerequisite": false,
+  "next_actions": [],
+  "observer_dependency": {
+    "head": "6be946febbac4b9ac46fbd7c7789011c41609f5d",
+    "merged": false,
+    "pr": 496,
+    "scope": "Existing observer/carrier implementation retained as separate unmerged dependency. Its plan loader still admits preparation/self-test, with actual product-evidence admission requiring independent real runtime and interruption/readback evidence. No duplicate runner created.",
+    "source": "https://github.com/ingolf-lohmann/qik-vrt/pull/496",
+    "state": "open",
+    "tree": "69600e8fb76ec9c157cc68ea344ca166d6b76c49"
+  },
+  "pending_execution": "Product comparison remains blocked by the original host/model execution connection. Downstream offline-browser/signing/product jobs remain separate; no global CI or deployment success is claimed.",
+  "planned_trials": 96,
+  "previous_run": {
+    "execution_id": "QIKVRT_IBM_PUBLIC_PREPARATION_20261018",
+    "open_work": [
+      "IBM_NATIVE_MODEL",
+      "IBM_PRODUCT_RUN",
+      "IBM_ORCHESTRATE_IMPORT",
+      "NATIVE_FULL_CI",
+      "PUBLIC_DOMAIN",
+      "SCIENTIFIC_ARCHIVE"
+    ],
+    "receipt_path": "benchmarks/browser-assistant-ab/ibm/evidence/PREDECESSOR_CLIENT_RECEIPT_20261018.json",
+    "receipt_sha256": "595673036e5d657692eed4e28f8091f9c7ea16daca5143ae7922c2ca4fcaff91"
+  },
+  "product_metrics": null,
+  "product_trials_executed": 0,
+  "public": {
+    "anonymous_search_fetch": "Search service GitHub fetch disabled; public visibility and exact source readback established through provider REST. No anonymous fetch success is invented.",
+    "protocol": "https://github.com/ingolf-lohmann/qik-vrt/blob/ibm-comparison/20261018/benchmarks/browser-assistant-ab/ibm/README.md",
+    "pull_request": "https://github.com/ingolf-lohmann/qik-vrt/pull/532",
+    "repository_visibility": "public",
+    "results": "https://github.com/ingolf-lohmann/qik-vrt/blob/ibm-comparison/20261018/benchmarks/browser-assistant-ab/ibm/RESULTS.json"
+  },
+  "readback": {
+    "delivery": {
+      "action_id": "QIKVRT_IBM_GRANITE_ADMISSION_CLOSE_20261018",
+      "hostname": "raumzeitterminal.de",
+      "http_status": 525,
+      "method": "GET",
+      "observed_at": "2026-10-18T17:15:14.605Z",
+      "scope": "Single external monitor response; not a statement about every browser or owner's device, and not useful application delivery.",
+      "source": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/readback?id=fb7d8710-6825-4813-ab0d-d85023c474e2",
+      "state": "PENDING",
+      "url": "https://raumzeitterminal.de/"
+    },
+    "repository": {
+      "action_id": "QIKVRT_IBM_GRANITE_ADMISSION_CLOSE_20261018",
+      "head": "ae4504ab0fe833defb9a0721b200fc720959347c",
+      "observed_at": "2026-10-18T17:15:34.523Z",
+      "ref": "ibm-comparison/20261018",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "source": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/branches/ibm-comparison/20261018",
+      "tree": "4e0189d516e66ba458fe6db4b347089c91f73fad"
+    }
+  },
+  "requested_authorization_again": false,
+  "requested_preparation": "PUBLIC_REVIEW_CANDIDATE_AVAILABLE",
+  "schema": "qikvrt-client-continuation/1",
+  "scientific_result_published": false,
+  "smallest_model_continuation": "Bind the existing owner-controlled Granite HTTP server, actual weight hashes/server build and matched baseline. Reuse #496 for product-observer integration and the existing MCP facade for Orchestrate; do not create a managed-service dependency or repeat authorization.",
+  "sources": [
+    {
+      "doi": "10.5281/zenodo.21888130",
+      "id": "1",
+      "title": "Ingolf Lohmann: Von Softwarearchitektur zur Weltformel – DAS UNIVERSUM ALS ROUND TRIP.",
+      "urls": [
+        "https://doi.org/10.5281/zenodo.21888130"
+      ]
+    },
+    {
+      "id": "2",
+      "title": "IBM Granite Team: Granite-4.2-3B model card, 25 August 2026.",
+      "urls": [
+        "https://huggingface.co/ibm-granite/granite-4.2-3b",
+        "https://huggingface.co/ibm-granite/granite-4.2-3b/tree/be9e7d995f2a6be22def5dd815f9f2bae98c8b6e"
+      ]
+    },
+    {
+      "id": "3",
+      "title": "IBM: Adding generative chat function to your applications with the chat API.",
+      "urls": [
+        "https://www.ibm.com/docs/en/watsonx/saas?topic=code-chat"
+      ]
+    },
+    {
+      "id": "4",
+      "title": "IBM: Adding MCP server tools to a single agent.",
+      "urls": [
+        "https://www.ibm.com/docs/en/watsonx/watson-orchestrate/base?topic=server-adding-mcp-tools-single-agent"
+      ]
+    },
+    {
+      "id": "5",
+      "title": "IBM Research: SOFAI-LM: A Cognitive Architecture for Building Efficient and Reliable Reasoning Systems with LLMs, AAAI 2026, 20 January 2026.",
+      "urls": [
+        "https://research.ibm.com/publications/sofai-lm-a-cognitive-architecture-for-building-efficient-and-reliable-reasoning-systems-with-llms"
+      ]
+    },
+    {
+      "id": "6",
+      "title": "IBM Research: Neuro-Vector-Symbolic Architecture.",
+      "urls": [
+        "https://research.ibm.com/projects/neuro-vector-symbolic-architecture"
+      ]
+    },
+    {
+      "id": "7",
+      "title": "IBM Granite Team: Granite-4.2-3B, Metadaten der Revision be9e7d995f2a6be22def5dd815f9f2bae98c8b6e; Abruf 18. Oktober 2026.",
+      "urls": [
+        "https://huggingface.co/api/models/ibm-granite/granite-4.2-3b/revision/be9e7d995f2a6be22def5dd815f9f2bae98c8b6e?blobs=true"
+      ]
+    }
+  ],
+  "state": "BLOCK",
+  "subject": {
+    "head": "ae4504ab0fe833defb9a0721b200fc720959347c",
+    "ref": "ibm-comparison/20261018",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "tree": "4e0189d516e66ba458fe6db4b347089c91f73fad"
+  },
+  "technical_tests": {
+    "ibm_specific_tests": 22,
+    "main_adapter_tests": 6,
+    "native_materialization": {
+      "conclusion": "success",
+      "job": 117733449367,
+      "run": 39147239185,
+      "scope": "Complete make test repository-monitor-test self-host-test, then existing materialization persistence; exact source ae4504ab retained. This is not Granite inference or host delivery.",
+      "source": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39147239185/job/117733449367"
+    },
+    "native_source": {
+      "conclusion": "success",
+      "head": "ae4504ab0fe833defb9a0721b200fc720959347c",
+      "job": 117733449679,
+      "markers": [
+        "2026-10-18T17:02:26.5306957Z QIKVRT_REENTRY_SUBJECT iteration=0 head=ae4504ab0fe833defb9a0721b200fc720959347c tree=4e0189d516e66ba458fe6db4b347089c91f73fad",
+        "2026-10-18T17:14:47.4196210Z QIKVRT_FIXPOINT_REACHED iteration=0 head=ae4504ab0fe833defb9a0721b200fc720959347c tree=4e0189d516e66ba458fe6db4b347089c91f73fad predecessor_test_status=0",
+        "2026-10-18T17:14:47.7793525Z QIKVRT_TESTED_SUBJECT head=ae4504ab0fe833defb9a0721b200fc720959347c tree=4e0189d516e66ba458fe6db4b347089c91f73fad"
+      ],
+      "run": 39147239163,
+      "scope": "Complete canonical source test and same-writer tested-fixpoint; not global CI/product acceptance or IBM inference.",
+      "source": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39147239163/job/117733449679",
+      "tree": "4e0189d516e66ba458fe6db4b347089c91f73fad"
+    },
+    "native_terminal": {
+      "conclusion": "success",
+      "job": 117733448977,
+      "run": 39147239182,
+      "scope": "Native contract/package/negative/crash/restart/Firefox/noVNC E2E controls; public host deployment/readback skipped on PR event. Not IBM inference.",
+      "source": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39147239182/job/117733448977"
+    },
+    "scope": "Exact changed implementation bytes recorded in public ADMISSION_PREPARATION_20261018.json; mock/model-file/SIGKILL regressions only. Actual complete native source and terminal checks have separate current receipts.",
+    "status": "PASS",
+    "tests_run": 63
+  },
+  "title": "QIK-VRT / IBM: öffentlicher Vorbereitungs- und Ausführungsstand",
+  "upstream_model_metadata": {
+    "actual_inference": false,
+    "byte_exact_original_http_body": false,
+    "etag": "W/\"2f0a-tSM6XZ44+UeMtP5BnbQ+aMZUKmA\"",
+    "evidence_class": "PUBLIC_UPSTREAM_METADATA_EXTRACTED_NOT_DOWNLOADED_MODEL_BYTES",
+    "extraction_note": "Read-only extraction with Markdown display escapes removed for structured field parsing; not represented as raw upstream HTTP bytes.",
+    "license_reported": "apache-2.0",
+    "model_repository": "ibm-granite/granite-4.2-3b",
+    "observed_at": "2026-10-18T17:15:01.542Z",
+    "revision": "be9e7d995f2a6be22def5dd815f9f2bae98c8b6e",
+    "schema": "qikvrt_ibm_upstream_metadata_observation_v1",
+    "siblings": [
+      {
+        "blobId": "a6344aac8c09253b3b630fb776ae94478aa0275b",
+        "rfilename": ".gitattributes",
+        "size": 1519
+      },
+      {
+        "blobId": "154df8298fab5ecf322016157858e08cd1bccbe1",
+        "rfilename": "README.md",
+        "size": 28
+      },
+      {
+        "blobId": "e5c9466d5347257b44a8991b3d24219bf9c0ad1b",
+        "rfilename": "chat_template.jinja",
+        "size": 9013
+      },
+      {
+        "blobId": "844aa7b0bc9eaf29e75b25554499379c375188db",
+        "rfilename": "config.json",
+        "size": 904
+      },
+      {
+        "blobId": "1c96fbf48298c2c2592c3abae74f48130818e5cb",
+        "rfilename": "generation_config.json",
+        "size": 147
+      },
+      {
+        "blobId": "354558edcdbd64ca7abd407b8be3d5d09d39d781",
+        "rfilename": "merges.txt",
+        "size": 916646
+      },
+      {
+        "blobId": "099789d8509b001c15aa1a39ff61bc5b821b9d1a",
+        "lfs": {
+          "pointerSize": 135,
+          "sha256": "db39eb2776b5404dbfd0696cf7fe5ec671f0dad0e0918c62c5aea9e2eb5825d7",
+          "size": 5358533712
+        },
+        "rfilename": "model-00001-of-00002.safetensors",
+        "size": 5358533712
+      },
+      {
+        "blobId": "37df9b1330353c74e11701108daa061de587ba2d",
+        "lfs": {
+          "pointerSize": 135,
+          "sha256": "8fba6ea17551d5d129eac519dbd70237139221c7fd0b89623ef54d9711062505",
+          "size": 1960983408
+        },
+        "rfilename": "model-00002-of-00002.safetensors",
+        "size": 1960983408
+      },
+      {
+        "blobId": "5e127e12c87466fd80b0296d9c7017313af1cc7e",
+        "rfilename": "model.safetensors.index.json",
+        "size": 31356
+      },
+      {
+        "blobId": "3f6e6c21eb75f3584b3030a602fcaa6354515f88",
+        "rfilename": "model.sig",
+        "size": 10349
+      },
+      {
+        "blobId": "0451f37912edb7f8a4bf04d77eef13f6130f0515",
+        "rfilename": "special_tokens_map.json",
+        "size": 563
+      },
+      {
+        "blobId": "109016081083c2a3bba91a2111acb68656426fde",
+        "rfilename": "tokenizer.json",
+        "size": 7153414
+      },
+      {
+        "blobId": "57e792da3e95fb4b48532fd6f477d35ebd479947",
+        "rfilename": "tokenizer_config.json",
+        "size": 17677
+      },
+      {
+        "blobId": "84ef8a6659903667ca5f5787624f4ed8b05ef7c1",
+        "rfilename": "vocab.json",
+        "size": 1612694
+      }
+    ],
+    "source_url": "https://huggingface.co/api/models/ibm-granite/granite-4.2-3b/revision/be9e7d995f2a6be22def5dd815f9f2bae98c8b6e?blobs=true",
+    "weight_bytes_downloaded": false,
+    "weight_bytes_reported": 7319517120,
+    "weight_hashes_verified": false
+  },
+  "winner": null,
+  "work": [
+    {
+      "evidence": "https://github.com/ingolf-lohmann/qik-vrt/pull/532; source tree 1677334c5734c2d76e66d6684830e49481f954a4; protocol bytes and result independently read back.",
+      "id": "PUBLIC_PREPARATION",
+      "state": "VERIFIED"
+    },
+    {
+      "evidence": "https://github.com/ingolf-lohmann/qik-vrt/blob/ibm-comparison/20261018/benchmarks/browser-assistant-ab/ibm/RESULTS.json; 57 scoped tests and exact original log retained.",
+      "id": "TECHNICAL_REGRESSION",
+      "state": "VERIFIED"
+    },
+    {
+      "id": "IBM_NATIVE_MODEL",
+      "next_action": "Restore original authenticated host execution binding; independently acquire/verify the exact-revision metadata and actual weights against published targets, admit server/dependencies and execute existing ibm-admit on that host, then separately prove loaded weights and real context capacity.",
+      "state": "OPEN"
+    },
+    {
+      "id": "IBM_PRODUCT_RUN",
+      "next_action": "Observe equivalent pre-runs, real interruptions and baseline retention with isolated oracles; execute all planned trials and independently score outputs.",
+      "state": "OPEN"
+    },
+    {
+      "id": "IBM_ORCHESTRATE_IMPORT",
+      "next_action": "Reuse deployed authenticated QIK-VRT MCP server; bind actual import/agent/run receipts on an available Orchestrate installation.",
+      "state": "OPEN"
+    },
+    {
+      "evidence": "Native source job117733449679/run39147239163: success and QIKVRT_TESTED_SUBJECT head=ae4504ab0fe833defb9a0721b200fc720959347c tree=4e0189d516e66ba458fe6db4b347089c91f73fad; full materialization job117733449367 also success. Whole downstream product CI is separate.",
+      "id": "NATIVE_FULL_CI",
+      "state": "VERIFIED"
+    },
+    {
+      "id": "PUBLIC_DOMAIN",
+      "next_action": "Read back exact raumzeitterminal.de delivery separately; public repository access is not exact-domain runtime acceptance.",
+      "state": "OPEN"
+    },
+    {
+      "id": "SCIENTIFIC_ARCHIVE",
+      "next_action": "Freeze any later measured result, complete machine-proof/claim-bound review and candidate-specific return before a Zenodo production upload.",
+      "state": "OPEN"
+    },
+    {
+      "evidence": "Commit ae4504ab/tree4e0189d; 63 scoped tests and exact hashes in benchmarks/browser-assistant-ab/ibm/evidence/ADMISSION_PREPARATION_20261018.json. No IBM inference.",
+      "id": "LOCAL_MODEL_ADMISSION_SOURCE",
+      "state": "VERIFIED"
+    },
+    {
+      "evidence": "Main fcbe8ab is second parent; six Main adapter regressions pass; native PR readback mergeable=true and Draft retained.",
+      "id": "CURRENT_MAIN_SOURCE_INTEGRATION",
+      "state": "VERIFIED"
+    }
+  ]
+}

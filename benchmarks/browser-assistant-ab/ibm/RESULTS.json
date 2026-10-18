@@ -2,6 +2,19 @@
   "actual_ibm_inference_executed": false,
   "base_head": "f87c40bae44780e707bc300f31a2c99595ab892b",
   "base_tree": "854df81d5eac04e187d732849bc4ccedeb60b901",
+  "continuation_20261018_bounded_granite_pilot": {
+    "actual_ibm_inference_executed": false,
+    "evidence": "evidence/PILOT_PREPARATION_20261018.json",
+    "native_source_ci": "PENDING_THIS_CHANGED_SOURCE; predecessor ae4504ab/4e0189d was actually tested separately",
+    "planned_pilot_trials": 16,
+    "product_metrics": null,
+    "product_trials_executed": 0,
+    "public_preparation_only": true,
+    "scoped_tests_run": 69,
+    "sha256": "d5422f50a407eb87276bf8a4896ca3685189dfc6d156509649820c94ffa88ed2",
+    "status": "SOURCE_CONFIGURATION_VERIFIED_REAL_HOST_MODEL_AND_OBSERVER_REQUIRED",
+    "winner": null
+  },
   "continuation_20261018_model_admission": {
     "actual_ibm_inference_executed": false,
     "evidence": "evidence/ADMISSION_PREPARATION_20261018.json",

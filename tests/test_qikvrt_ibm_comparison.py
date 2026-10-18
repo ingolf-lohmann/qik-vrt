@@ -244,7 +244,7 @@ class IBMAdmissionTests(unittest.TestCase):
         self.host_path = self.root / "host.json"
         self.binding_path = self.root / "binding.json"
         self.output = self.root / "admission"
-        files = {"config.json": ab.canonical({"model_type": "granite", "torch_dtype": "bfloat16"}),
+        files = {"config.json": ab.canonical({"model_type": "granite", "torch_dtype": "bfloat16", "max_position_embeddings": 16384}),
             "generation_config.json": b"{}", "chat_template.jinja": b"synthetic template",
             "tokenizer.json": b"{}", "tokenizer_config.json": b"{}",
             "model.safetensors.index.json": ab.canonical({"weight_map": {
@@ -266,7 +266,7 @@ class IBMAdmissionTests(unittest.TestCase):
             "revision": REV, "quantization": "none", "dtype": "bfloat16", "served_model": MODEL,
             "endpoint": LOCAL["endpoint"], "server": {"name": "fixture", "version": "test-only",
                 "image_digest": "sha256:" + "2" * 64, "offline": True, "model_mount_read_only": True,
-                "trust_remote_code": False, "max_model_len": 8192, "executable": str(self.executable),
+                "trust_remote_code": False, "max_model_len": 16384, "max_input_tokens": 8192, "executable": str(self.executable),
                 "executable_sha256": ab.digest(self.executable.read_bytes())},
             "settings": dict(p.IBMChatTransport("", MODEL, "granite_local", LOCAL).public_binding["parameters"],
                 chat_template_kwargs={"enable_thinking": True, "low_effort": False, "truncate_history_thinking": True})}
@@ -308,6 +308,31 @@ class IBMAdmissionTests(unittest.TestCase):
         with self.assertRaisesRegex(ab.InvalidRun, "WEIGHT_HASH"):
             self.admit()
         self.assertFalse(self.output.exists())
+
+    def test_output_only_window_and_unknown_input_budget_are_rejected(self):
+        # The predecessor accepted 8192 context + 8192 output, leaving zero input.
+        for value in [None, False, 0, -1, 8193]:
+            with self.subTest(max_input_tokens=value):
+                self.binding["server"]["max_input_tokens"] = value
+                with self.assertRaisesRegex(ab.InvalidRun, "CONTEXT_BUDGET"):
+                    self.admit()
+                self.assertFalse(self.output.exists())
+        self.binding["server"].update(max_model_len=8192, max_input_tokens=1)
+        with self.assertRaisesRegex(ab.InvalidRun, "CONTEXT_BUDGET"):
+            self.admit()
+
+    def test_server_window_cannot_exceed_the_bound_model_limit(self):
+        self.binding["server"]["max_model_len"] = 32768
+        with self.assertRaisesRegex(ab.InvalidRun, "CONTEXT_BUDGET"):
+            self.admit()
+        self.assertFalse(self.output.exists())
+
+    def test_context_budget_receipt_does_not_attest_request_token_counting(self):
+        value = self.admit()["context_budget"]
+        self.assertEqual(value["max_input_tokens"], 8192)
+        self.assertEqual(value["max_output_tokens"], 8192)
+        self.assertEqual(value["server_context_tokens_declared"], 16384)
+        self.assertIs(value["actual_request_token_counts_verified"], False)
 
     def test_binding_metadata_and_host_pins_are_independently_checked(self):
         pin = self.freeze()
@@ -365,6 +390,58 @@ class IBMAdmissionTests(unittest.TestCase):
 
 
 class IBMPlanTests(unittest.TestCase):
+    def test_single_granite_pilot_is_stratified_and_remains_blocked(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "pilot"
+            result = ab.prepare_ibm_comparison(out, repeats=4, study="granite-continuity")
+            self.assertEqual(result["planned_trials"], 16)
+            self.assertEqual([s["id"] for s in result["studies"]], ["granite-continuity"])
+            run = out / "granite-continuity"
+            manifest, contract, tasks = ab.load_run(run)
+            for task in tasks:
+                for kind in contract["interruption_classes"]:
+                    pairs = [p for p in manifest["pairs"] if p["task_id"] == task and p["interruption"] == kind]
+                    self.assertEqual(sorted(p["order"] for p in pairs), ["AB", "BA"])
+            template = ab.read_json(run / "EXECUTION_BINDING.template.json")
+            self.assertEqual(template["manifest_sha256"], ab.digest((run / "manifest.json").read_bytes()))
+            self.assertEqual(template["schedule"], manifest["pairs"])
+            self.assertTrue(all(v is None for v in template["required_independent_evidence_sha256"].values()))
+            self.assertFalse(template["observer"]["implemented_and_admitted"])
+            self.assertFalse(template["actual_ibm_inference_executed"])
+            self.assertIsNone(template["product_metrics"])
+            analysis = ab.analyze(run)
+            self.assertEqual(analysis["study_binding"], manifest["study_binding"])
+            self.assertTrue(all(t["state"] == "NOT_EXECUTED" for t in analysis["trials"]))
+
+    def test_changed_study_comparison_or_contract_cannot_be_scored(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "pilot"
+            ab.prepare_ibm_comparison(out, repeats=4, study="granite-continuity")
+            run = out / "granite-continuity"; path = run / "manifest.json"
+            original = path.read_bytes()
+            for key, value in [("id", "unrelated-study"), ("comparison", "changed"), ("contract_sha256", "0" * 64)]:
+                with self.subTest(field=key):
+                    manifest = json.loads(original); manifest["study_binding"][key] = value
+                    path.write_bytes(ab.canonical(manifest))
+                    with self.assertRaisesRegex(ab.InvalidRun, "study/contract binding"):
+                        ab.analyze(run)
+            path.write_bytes(original)
+            manifest = json.loads(original)
+            for pair in manifest["pairs"]:
+                pair["interruption"] = "assistant_process_loss"
+            path.write_bytes(ab.canonical(manifest))
+            with self.assertRaisesRegex(ab.InvalidRun, "stratum"):
+                ab.analyze(run)
+
+    def test_unknown_study_or_unbalanced_granite_pilot_creates_no_run(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "pilot"
+            for study, repeats in [("unrelated-study", 4), ("granite-continuity", 2), ("granite-continuity", 6)]:
+                with self.subTest(study=study, repeats=repeats):
+                    with self.assertRaises(ab.InvalidRun):
+                        ab.prepare_ibm_comparison(out, repeats=repeats, study=study)
+                    self.assertFalse(out.exists())
+
     def test_balanced_identical_plans_have_no_fabricated_measurements(self):
         with tempfile.TemporaryDirectory() as tmp:
             result = ab.prepare_ibm_comparison(Path(tmp) / "study", repeats=2)
