@@ -1,0 +1,178 @@
+{
+  "actual_ibm_inference_executed": false,
+  "base_head": "f87c40bae44780e707bc300f31a2c99595ab892b",
+  "base_tree": "854df81d5eac04e187d732849bc4ccedeb60b901",
+  "effect_ack_done": false,
+  "evidence_files": {
+    "BOOTSTRAP_SPARSE_CHECKOUT.json": {
+      "bytes": 3567,
+      "sha256": "6c0022f161f3c2b67fb063ea03c3dc49f2a7d2f97d5710b3a023457a9a1ebfaf"
+    },
+    "LOCAL_CAPABILITY.json": {
+      "bytes": 624,
+      "sha256": "89265cf9e83583f7d5b2f4381e14e60a9ded0995da433815162d4eff57379147"
+    },
+    "PREPARATION.json": {
+      "bytes": 2373,
+      "sha256": "13253e4e71332e02c938109cd25a5261d1d835e073519b021bcae5e707f1c5a2"
+    },
+    "SOURCE_CHECK.json": {
+      "bytes": 570,
+      "sha256": "0015c18540fc43536229cb5c1fc21d8ed0c31af3f05895ac629014ea50e8f123"
+    },
+    "TESTS.log": {
+      "bytes": 9682,
+      "sha256": "83bc783fd4775251a7445ff201bec0b7c9ef630f4d14a85414f0e35f21733c36"
+    },
+    "TESTS_ORIGINAL.json": {
+      "bytes": 13193,
+      "sha256": "c92a1410699cba25f674c711516eabf29b04d306c7eb0865f34ec40bc63a2724"
+    },
+    "TOOL_CACHE.txt": {
+      "bytes": 56,
+      "sha256": "e56f2042ecab960e10413c7d4e65b47558355f59a185b2488b210e6d1aaa362e"
+    },
+    "TRIALS.csv": {
+      "bytes": 10693,
+      "sha256": "dae11e928674e0bee7b6cc6c146db972b2cbd33fba0dcd3830525eaa5f4f34e5"
+    },
+    "granite-continuity-analysis.json": {
+      "bytes": 13315,
+      "sha256": "47bb978312c7ed824e48eb2a270bbba45d8d600f11dd9ee5058e408415371d56"
+    },
+    "granite-continuity-manifest.json": {
+      "bytes": 20758,
+      "sha256": "55b69f6093a2cfdd2fd619f8f10ab62c40b027836d732851539d27c43aabccc1"
+    },
+    "orchestrate-hybrid-analysis.json": {
+      "bytes": 13315,
+      "sha256": "c90d88fc15bd53f91de0ee4be154e2e78ea2d06bf6c419f5a9638b305009e8d4"
+    },
+    "orchestrate-hybrid-manifest.json": {
+      "bytes": 20742,
+      "sha256": "4bbdc1a665d5dc051603668b7646f4c8d5aa261f850087cff92b574b71d7eea2"
+    },
+    "orchestration-head-to-head-analysis.json": {
+      "bytes": 13315,
+      "sha256": "5daae2313c576dbd27bdbb39558e2ef60187bb2d61d85370818e230cbc23caf7"
+    },
+    "orchestration-head-to-head-manifest.json": {
+      "bytes": 20768,
+      "sha256": "b79f2f0c5f31845fb8ace618802ac902dcb9c9683072bcf0b5bf2f3310667c43"
+    },
+    "watsonx-continuity-analysis.json": {
+      "bytes": 13315,
+      "sha256": "0a3a3a48ea5a1f1a317371ab8b22f19e38671a86759b236276baaadbd7a74901"
+    },
+    "watsonx-continuity-manifest.json": {
+      "bytes": 20764,
+      "sha256": "efae71509094c8ed48c3ea5479fac3021e99b4c4ef351a3422f965169c827fd9"
+    }
+  },
+  "full_repository_bootstrap": "BLOCK_SPARSE_REST_SOURCE_ONLY; SEE evidence/BOOTSTRAP_SPARSE_CHECKOUT.json",
+  "ibm_contacted": false,
+  "independent_ibm_replication": false,
+  "managed_runtime_prerequisite": false,
+  "model_identity_attested": false,
+  "native_full_repository_ci": "PENDING_CURRENT_CANDIDATE",
+  "observed_at": "2026-10-18T14:44:28.655899+00:00",
+  "open_work": [
+    {
+      "id": "IBM_NATIVE_MODEL",
+      "next_action": "Bind existing owner-hosted Granite server, exact weights, server build, quantization and thinking settings; no new managed-service prerequisite."
+    },
+    {
+      "id": "IBM_PRODUCT_RUN",
+      "next_action": "Observe equivalent pre-runs, real interruptions and baseline retention with isolated oracles; execute all planned trials and independently score outputs."
+    },
+    {
+      "id": "IBM_ORCHESTRATE_IMPORT",
+      "next_action": "Reuse deployed authenticated QIK-VRT MCP server; bind actual import/agent/run receipts on an available Orchestrate installation."
+    },
+    {
+      "id": "NATIVE_FULL_CI",
+      "next_action": "Read back existing native CI on this candidate and complete source/integrity gates before any integration claim."
+    },
+    {
+      "id": "PUBLIC_DOMAIN",
+      "next_action": "Read back exact raumzeitterminal.de delivery separately; public repository access is not exact-domain runtime acceptance."
+    },
+    {
+      "id": "SCIENTIFIC_ARCHIVE",
+      "next_action": "Freeze any later measured result, complete machine-proof/claim-bound review and candidate-specific return before a Zenodo production upload."
+    }
+  ],
+  "owner_host_runtime": "UNOBSERVED; LOCAL_CLIENT_STATE_DOES_NOT_PROVE_REMOTE_CREDENTIALS_ABSENT",
+  "planned_trials": 96,
+  "product_metrics": null,
+  "product_trials_executed": 0,
+  "schema": "qikvrt_ibm_public_preparation_result_v1",
+  "source_display_check": "PASS_WITH_SEPARATE_MANUAL_PRIMARY_SOURCE_REVIEW",
+  "state": "PREPARED_SOURCE_CANDIDATE",
+  "technical_tests": {
+    "display_log": "UTF-8 lines with trailing whitespace removed; exact original retained separately.",
+    "ibm_specific_tests": 16,
+    "log": "evidence/TESTS.log",
+    "original_log": "evidence/TESTS_ORIGINAL.json",
+    "original_log_sha256": "368ec8adc8143a844f24b8fe41926af8672d3820f9206e2a4c807e52e7df0477",
+    "scope": "Adapter protocol, ordinary-history parity, pending-result handling, actual mock HTTP transport and real SIGKILL persistence. No actual IBM inference.",
+    "status": "PASS",
+    "tests_run": 57
+  },
+  "tested_source_files": {
+    "Makefile": {
+      "bytes": 17246,
+      "sha256": "97ecc4ca57cc160d7a2a12e78f77d3b04afed382b9c539343f8f8530bc3aaed4"
+    },
+    "benchmarks/browser-assistant-ab/ibm/contract.json": {
+      "bytes": 5004,
+      "sha256": "a70cf2336e88bfb61ecedce79ff2361cbbd494e98d3631769bd72b7114d23f53"
+    },
+    "personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json": {
+      "bytes": 5792,
+      "sha256": "2314cf1d5671f3d13e656851c08fd8b0ee910a4f699c54be7ead80bb51dce4d8"
+    },
+    "runtime/toolchains/CACHE_COVERAGE.json": {
+      "bytes": 7796,
+      "sha256": "7e2f313a1e14a657df5a26f74706e79d315ad3c204dcacee78de7d6e897be1d8"
+    },
+    "runtime/toolchains/CACHE_REGISTRY.json": {
+      "bytes": 32415,
+      "sha256": "20c573e7bbec4c470ce3e99c84fece56f80c3d4e4eab3f5913ff4b41583a0825"
+    },
+    "src/qikvrt_effect_ack_http_terminal.py": {
+      "bytes": 34642,
+      "sha256": "a0aad1d78fa9de4ffb631e284d673c7f7bb45310757f22ed432aa834c487ecc5"
+    },
+    "src/qikvrt_personal_assistant.py": {
+      "bytes": 41509,
+      "sha256": "f1120e67681ad515016f9b53346ce9bb07bb2e52a2591aae1ab43240bfab569c"
+    },
+    "tests/test_qikvrt_browser_assistant_ab.py": {
+      "bytes": 15524,
+      "sha256": "b80bf5fe33d7830379b3d53ca9c35fbbead95ab6629d6d217ae764b386765ce8"
+    },
+    "tests/test_qikvrt_gemini_adapter.py": {
+      "bytes": 6265,
+      "sha256": "a84d972a34eea4ab26adaed09fa61afe385806f6ba9e9c9569170ef89e8fff9c"
+    },
+    "tests/test_qikvrt_ibm_comparison.py": {
+      "bytes": 14278,
+      "sha256": "034d63e8efaeeee47ab9d5fa9cb405913ccee9d29956b0110fb2cb76f64f3c92"
+    },
+    "tests/test_qikvrt_personal_assistant.py": {
+      "bytes": 13869,
+      "sha256": "da82f7a388c12842f364ef762accd9e3a155f26eca30de143676770c044b685b"
+    },
+    "tools/qikvrt_browser_assistant_ab.py": {
+      "bytes": 58184,
+      "sha256": "0a12e479b07d5eea2009f9cd8f2c1f58803cdd77d09c461a79fe116766a5a17f"
+    }
+  },
+  "tool_cache": {
+    "coverage_percent": 100,
+    "covered": 34,
+    "declared": 34
+  },
+  "winner": null
+}

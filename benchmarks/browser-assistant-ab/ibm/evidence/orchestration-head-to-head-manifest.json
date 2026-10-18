@@ -1,0 +1,484 @@
+{
+  "contract_sha256": "1910743f21f4303b89b019c5c95a144c611ff01a8d8c5d06a68b56965e244b75",
+  "evidence_class": "HARNESS_PREPARATION",
+  "execution": "NOT_EXECUTED",
+  "fixture_files": {
+    "document-recovery": "b81c2c30cfc70dfef3c67c269bf13eb839cb80c5b993ae8fbe475e42e1c7159e",
+    "research-costs": "cf38f611e3bd108f52f59ff2fe85f406c50e9be4d458a65d7df1ff419c3051f2"
+  },
+  "pairs": [
+    {
+      "binding": {
+        "checkpoint_sha256": "08f2181c84dc953e521f0fc650873aee8689daf3f86b5fee8443abc556e6829f",
+        "sources": {
+          "atlas-current": "371c9fe36f379a87f9fa664318e79806571788bbed0534b64ddb773b86248ec6",
+          "atlas-old": "f140c376df927467bb0e357b40d896b38074d2d229034ee3f45760c0b0770f97",
+          "beacon-current": "f8dc54bdeefef0a0a45481979f45269f77b08f9c68490df01b68b317d413a50a"
+        },
+        "task_sha256": "d9e8b02ed9e1e2eabf904b96b41a3ea345e8305f1698107379dbca11177a5466"
+      },
+      "interruption": "conversation_context_reset",
+      "order": "BA",
+      "pair_id": "p006",
+      "task_id": "research-costs",
+      "trials": [
+        "p006-qikvrt",
+        "p006-baseline"
+      ]
+    },
+    {
+      "binding": {
+        "checkpoint_sha256": "37ccd98f67f31456961aa8c2a53b40f2b9d9fd8d073ca1ccae36c319675983e9",
+        "sources": {
+          "live-status": "f34720bb811493212265e0473998b740165fe7559fd6487184bcb3528678fdfa",
+          "old-note": "f529d5b0b64b394e06375452c5977f880b9419bef81fe37aba347c79511714bb",
+          "plan": "49f3c7543bdc1f45b7db069a13ed922fb9f90cabb22eddda3b505fb0135aa839"
+        },
+        "task_sha256": "d5106b8001acbeecfb8889b06da42ad5ccbd961578fbbf7c8439a4e264dab08c"
+      },
+      "interruption": "conversation_context_reset",
+      "order": "AB",
+      "pair_id": "p008",
+      "task_id": "document-recovery",
+      "trials": [
+        "p008-baseline",
+        "p008-qikvrt"
+      ]
+    },
+    {
+      "binding": {
+        "checkpoint_sha256": "08f2181c84dc953e521f0fc650873aee8689daf3f86b5fee8443abc556e6829f",
+        "sources": {
+          "atlas-current": "371c9fe36f379a87f9fa664318e79806571788bbed0534b64ddb773b86248ec6",
+          "atlas-old": "f140c376df927467bb0e357b40d896b38074d2d229034ee3f45760c0b0770f97",
+          "beacon-current": "f8dc54bdeefef0a0a45481979f45269f77b08f9c68490df01b68b317d413a50a"
+        },
+        "task_sha256": "d9e8b02ed9e1e2eabf904b96b41a3ea345e8305f1698107379dbca11177a5466"
+      },
+      "interruption": "assistant_process_loss",
+      "order": "BA",
+      "pair_id": "p003",
+      "task_id": "research-costs",
+      "trials": [
+        "p003-qikvrt",
+        "p003-baseline"
+      ]
+    },
+    {
+      "binding": {
+        "checkpoint_sha256": "08f2181c84dc953e521f0fc650873aee8689daf3f86b5fee8443abc556e6829f",
+        "sources": {
+          "atlas-current": "371c9fe36f379a87f9fa664318e79806571788bbed0534b64ddb773b86248ec6",
+          "atlas-old": "f140c376df927467bb0e357b40d896b38074d2d229034ee3f45760c0b0770f97",
+          "beacon-current": "f8dc54bdeefef0a0a45481979f45269f77b08f9c68490df01b68b317d413a50a"
+        },
+        "task_sha256": "d9e8b02ed9e1e2eabf904b96b41a3ea345e8305f1698107379dbca11177a5466"
+      },
+      "interruption": "assistant_process_loss",
+      "order": "AB",
+      "pair_id": "p005",
+      "task_id": "research-costs",
+      "trials": [
+        "p005-baseline",
+        "p005-qikvrt"
+      ]
+    },
+    {
+      "binding": {
+        "checkpoint_sha256": "37ccd98f67f31456961aa8c2a53b40f2b9d9fd8d073ca1ccae36c319675983e9",
+        "sources": {
+          "live-status": "f34720bb811493212265e0473998b740165fe7559fd6487184bcb3528678fdfa",
+          "old-note": "f529d5b0b64b394e06375452c5977f880b9419bef81fe37aba347c79511714bb",
+          "plan": "49f3c7543bdc1f45b7db069a13ed922fb9f90cabb22eddda3b505fb0135aa839"
+        },
+        "task_sha256": "d5106b8001acbeecfb8889b06da42ad5ccbd961578fbbf7c8439a4e264dab08c"
+      },
+      "interruption": "conversation_context_reset",
+      "order": "AB",
+      "pair_id": "p010",
+      "task_id": "document-recovery",
+      "trials": [
+        "p010-baseline",
+        "p010-qikvrt"
+      ]
+    },
+    {
+      "binding": {
+        "checkpoint_sha256": "08f2181c84dc953e521f0fc650873aee8689daf3f86b5fee8443abc556e6829f",
+        "sources": {
+          "atlas-current": "371c9fe36f379a87f9fa664318e79806571788bbed0534b64ddb773b86248ec6",
+          "atlas-old": "f140c376df927467bb0e357b40d896b38074d2d229034ee3f45760c0b0770f97",
+          "beacon-current": "f8dc54bdeefef0a0a45481979f45269f77b08f9c68490df01b68b317d413a50a"
+        },
+        "task_sha256": "d9e8b02ed9e1e2eabf904b96b41a3ea345e8305f1698107379dbca11177a5466"
+      },
+      "interruption": "conversation_context_reset",
+      "order": "BA",
+      "pair_id": "p002",
+      "task_id": "research-costs",
+      "trials": [
+        "p002-qikvrt",
+        "p002-baseline"
+      ]
+    },
+    {
+      "binding": {
+        "checkpoint_sha256": "37ccd98f67f31456961aa8c2a53b40f2b9d9fd8d073ca1ccae36c319675983e9",
+        "sources": {
+          "live-status": "f34720bb811493212265e0473998b740165fe7559fd6487184bcb3528678fdfa",
+          "old-note": "f529d5b0b64b394e06375452c5977f880b9419bef81fe37aba347c79511714bb",
+          "plan": "49f3c7543bdc1f45b7db069a13ed922fb9f90cabb22eddda3b505fb0135aa839"
+        },
+        "task_sha256": "d5106b8001acbeecfb8889b06da42ad5ccbd961578fbbf7c8439a4e264dab08c"
+      },
+      "interruption": "assistant_process_loss",
+      "order": "BA",
+      "pair_id": "p007",
+      "task_id": "document-recovery",
+      "trials": [
+        "p007-qikvrt",
+        "p007-baseline"
+      ]
+    },
+    {
+      "binding": {
+        "checkpoint_sha256": "08f2181c84dc953e521f0fc650873aee8689daf3f86b5fee8443abc556e6829f",
+        "sources": {
+          "atlas-current": "371c9fe36f379a87f9fa664318e79806571788bbed0534b64ddb773b86248ec6",
+          "atlas-old": "f140c376df927467bb0e357b40d896b38074d2d229034ee3f45760c0b0770f97",
+          "beacon-current": "f8dc54bdeefef0a0a45481979f45269f77b08f9c68490df01b68b317d413a50a"
+        },
+        "task_sha256": "d9e8b02ed9e1e2eabf904b96b41a3ea345e8305f1698107379dbca11177a5466"
+      },
+      "interruption": "conversation_context_reset",
+      "order": "AB",
+      "pair_id": "p004",
+      "task_id": "research-costs",
+      "trials": [
+        "p004-baseline",
+        "p004-qikvrt"
+      ]
+    },
+    {
+      "binding": {
+        "checkpoint_sha256": "08f2181c84dc953e521f0fc650873aee8689daf3f86b5fee8443abc556e6829f",
+        "sources": {
+          "atlas-current": "371c9fe36f379a87f9fa664318e79806571788bbed0534b64ddb773b86248ec6",
+          "atlas-old": "f140c376df927467bb0e357b40d896b38074d2d229034ee3f45760c0b0770f97",
+          "beacon-current": "f8dc54bdeefef0a0a45481979f45269f77b08f9c68490df01b68b317d413a50a"
+        },
+        "task_sha256": "d9e8b02ed9e1e2eabf904b96b41a3ea345e8305f1698107379dbca11177a5466"
+      },
+      "interruption": "assistant_process_loss",
+      "order": "AB",
+      "pair_id": "p001",
+      "task_id": "research-costs",
+      "trials": [
+        "p001-baseline",
+        "p001-qikvrt"
+      ]
+    },
+    {
+      "binding": {
+        "checkpoint_sha256": "37ccd98f67f31456961aa8c2a53b40f2b9d9fd8d073ca1ccae36c319675983e9",
+        "sources": {
+          "live-status": "f34720bb811493212265e0473998b740165fe7559fd6487184bcb3528678fdfa",
+          "old-note": "f529d5b0b64b394e06375452c5977f880b9419bef81fe37aba347c79511714bb",
+          "plan": "49f3c7543bdc1f45b7db069a13ed922fb9f90cabb22eddda3b505fb0135aa839"
+        },
+        "task_sha256": "d5106b8001acbeecfb8889b06da42ad5ccbd961578fbbf7c8439a4e264dab08c"
+      },
+      "interruption": "assistant_process_loss",
+      "order": "AB",
+      "pair_id": "p011",
+      "task_id": "document-recovery",
+      "trials": [
+        "p011-baseline",
+        "p011-qikvrt"
+      ]
+    },
+    {
+      "binding": {
+        "checkpoint_sha256": "37ccd98f67f31456961aa8c2a53b40f2b9d9fd8d073ca1ccae36c319675983e9",
+        "sources": {
+          "live-status": "f34720bb811493212265e0473998b740165fe7559fd6487184bcb3528678fdfa",
+          "old-note": "f529d5b0b64b394e06375452c5977f880b9419bef81fe37aba347c79511714bb",
+          "plan": "49f3c7543bdc1f45b7db069a13ed922fb9f90cabb22eddda3b505fb0135aa839"
+        },
+        "task_sha256": "d5106b8001acbeecfb8889b06da42ad5ccbd961578fbbf7c8439a4e264dab08c"
+      },
+      "interruption": "assistant_process_loss",
+      "order": "BA",
+      "pair_id": "p009",
+      "task_id": "document-recovery",
+      "trials": [
+        "p009-qikvrt",
+        "p009-baseline"
+      ]
+    },
+    {
+      "binding": {
+        "checkpoint_sha256": "37ccd98f67f31456961aa8c2a53b40f2b9d9fd8d073ca1ccae36c319675983e9",
+        "sources": {
+          "live-status": "f34720bb811493212265e0473998b740165fe7559fd6487184bcb3528678fdfa",
+          "old-note": "f529d5b0b64b394e06375452c5977f880b9419bef81fe37aba347c79511714bb",
+          "plan": "49f3c7543bdc1f45b7db069a13ed922fb9f90cabb22eddda3b505fb0135aa839"
+        },
+        "task_sha256": "d5106b8001acbeecfb8889b06da42ad5ccbd961578fbbf7c8439a4e264dab08c"
+      },
+      "interruption": "conversation_context_reset",
+      "order": "BA",
+      "pair_id": "p012",
+      "task_id": "document-recovery",
+      "trials": [
+        "p012-qikvrt",
+        "p012-baseline"
+      ]
+    }
+  ],
+  "pairs_per_task": 6,
+  "preflight": {
+    "authenticated_runtime_readback": false,
+    "baseline_implementation_materialized": true,
+    "baseline_runtime_readback": false,
+    "blockers": [
+      "AUTHENTICATED_PERSONAL_RUNTIME_NOT_ESTABLISHED",
+      "BASELINE_RUNTIME_AND_NORMAL_RETENTION_READBACK_NOT_BOUND",
+      "EQUIVALENT_REAL_PRE_RUNS_NOT_OBSERVED",
+      "PRODUCT_INTERRUPTION_AND_ORACLE_ISOLATION_NOT_BOUND",
+      "FIREFOX_EXECUTABLE_UNAVAILABLE"
+    ],
+    "environment": {
+      "firefox": {
+        "executable": null,
+        "executable_sha256": null,
+        "version": null
+      },
+      "machine": "x86_64",
+      "os": "Linux-6.18.55-x86_64-with-glibc2.39",
+      "python": "3.12.14"
+    },
+    "head": "f87c40bae44780e707bc300f31a2c99595ab892b",
+    "observed_utc": "2026-10-18T14:42:32Z",
+    "personal_adapter_source_materialized": true,
+    "personal_capability_manifest": {
+      "adapter": "src/qikvrt_personal_assistant.py",
+      "ambiguous_external_result": "DURABLE_PENDING_AND_NO_AUTOMATIC_RETRY",
+      "authenticated_runtime_readback": false,
+      "capability_readback": "/personal/capabilities",
+      "client_authentication": "OIDC_AUTHORIZATION_CODE_PKCE_S256_WITH_MEMORY_ONLY_BROWSER_BEARER",
+      "credentials_in_repository_or_runtime_database": false,
+      "edition": "PERSONAL_OPT_IN",
+      "entrypoint": "src/qikvrt_effect_ack_http_terminal.py",
+      "equivalent_pre_runs_observed": false,
+      "firefox_execution_observed": false,
+      "firefox_surface": "http://127.0.0.1:8771/personal/",
+      "identity_authentication": {
+        "authenticated_identity_runtime_readback": false,
+        "browser_storage": "MEMORY_ONLY_NO_APPLICATION_COOKIE_LOCALSTORAGE_OR_SESSIONSTORAGE",
+        "credential_store": "LINUX_SECRET_SERVICE_VIA_SYSTEM_LIBSECRET_SECRET_TOOL",
+        "firefox_identity_flow_observed": false,
+        "id_token_validation": "RS256_SIGNATURE_ISSUER_OWNER_SUBJECT_AUDIENCE_NONCE_EXPIRY",
+        "implementation": "src/qikvrt_personal_auth.py",
+        "legacy_config_compatibility": "EXACT_EXISTING_CONFIG_AND_PROTECTED_BINDING_PRESERVED",
+        "local_session_max_age_seconds": 43200,
+        "microsoft_revocation": "LOCAL_TOKEN_REMOVAL; OPTIONAL_PROVIDER_SIGNOUT; ACCOUNT_OR_TENANT_REVOCATION_REQUIRED; NO_GRAPH_PERMISSION_EXPANSION",
+        "native_secret_store_witness": false,
+        "passkeys": "DELEGATED_TO_REGISTERED_IDP_AND_DEVICE; NOT_ATTESTED",
+        "pkce": "S256",
+        "plaintext_fallback": false,
+        "provider_profiles": [
+          "oidc_public_v1",
+          "microsoft_public_v2"
+        ],
+        "provider_refresh_replay_detection": "NOT_ATTESTED; MICROSOFT_REPLACEMENT_DOES_NOT_REVOKE_OLD_TOKEN",
+        "public_client": true,
+        "refresh": "PROTECTED_PENDING_JOURNAL; GENERIC_ROTATION_OR_EXPLICIT_MICROSOFT_REPLACEMENT; NO_AMBIGUOUS_RETRY",
+        "registered_provider": "UNBOUND_PENDING_PRIVATE_CONFIGURATION",
+        "remote_revocation": "RFC7009_IF_ADVERTISED_AND_PINNED; ENDPOINT_ACK_IS_NOT_INDEPENDENT_REUSE_TEST",
+        "response_mode": "form_post",
+        "selected_provider": "MICROSOFT_OWNER_SELECTION_20261016",
+        "test_evidence": "SIMULATED_OIDC_AND_STORE; SEPARATE_REAL_RSA_CONTROLS; NO_PRODUCT_AUTHENTICATION",
+        "windows_macos_secure_backend": "NOT_IMPLEMENTED"
+      },
+      "license": "PolyForm-Noncommercial-1.0.0",
+      "normal_baseline": {
+        "automatic_history_deletion_or_reset": false,
+        "comparison_scope": "This comparator is the adapter's ordinary conversation mode. It is not a measurement of ChatGPT UI or another vendor product.",
+        "identity": "SAME_SOURCE_BOUND_ASSISTANT_ORDINARY_CONVERSATION_MODE",
+        "mode": "baseline",
+        "persistence": [
+          "normal provider conversation",
+          "full local transcript",
+          "saved outputs",
+          "session list and readback",
+          "browser tab restore"
+        ],
+        "same_provider_model_instructions_parameters_tools": true
+      },
+      "operations": [
+        "create_source_bound_task",
+        "research_documentation_turn",
+        "ordinary_history_readback",
+        "resume_observed_checkpoint",
+        "identity_sign_in",
+        "rotate_refresh_token",
+        "local_sign_out",
+        "provider_token_revocation_when_supported"
+      ],
+      "optional_providers": {
+        "gemini": {
+          "api": "INTERACTIONS_STATELESS_TEXT_ONLY",
+          "authority": "https://generativelanguage.googleapis.com/v1beta",
+          "background": false,
+          "credentials": "SERVER_MEMORY_FROM_GEMINI_API_KEY",
+          "history": "FULL_LOCAL_TRANSCRIPT_RESUBMITTED_AS_LABELLED_DATA",
+          "live_runtime_verified": false,
+          "max_output_tokens": 4096,
+          "model": "gemini-4-argon",
+          "store": false,
+          "use_and_entitlement_review": "OPEN_FOR_LIVE_USE"
+        },
+        "granite_local": {
+          "api": "OPENAI_COMPATIBLE_TEXT_CHAT",
+          "authority": "EXPLICIT_HTTP_127_0_0_1_PORT_ONLY_NO_PROXY",
+          "credentials": "EXISTING_PROTECTED_PROVIDER_KEY_SLOT_OR_OPTIONAL_LEGACY_MEMORY",
+          "history": "FULL_LOCAL_TRANSCRIPT_RESUBMITTED_IN_BOTH_ARMS",
+          "live_runtime_verified": false,
+          "managed_runtime_required": false,
+          "model": "EXPLICIT_RUNTIME_ARGUMENT_AND_DECLARED_REVISION_REQUIRED",
+          "model_revision_attested": false
+        },
+        "watsonx": {
+          "api": "IBM_ML_V1_TEXT_CHAT",
+          "authority": "EXPLICIT_ALLOWLISTED_IBM_REGIONAL_HTTPS_ORIGIN",
+          "credentials": "EXISTING_PROTECTED_PROVIDER_KEY_SLOT_CONTAINING_IAM_BEARER",
+          "history": "FULL_LOCAL_TRANSCRIPT_RESUBMITTED_IN_BOTH_ARMS",
+          "live_runtime_verified": false,
+          "model": "EXPLICIT_RUNTIME_MODEL_PROJECT_AND_API_VERSION_REQUIRED",
+          "optional_for_owner_hosted_runtime": true,
+          "provider_retention_attested": false
+        }
+      },
+      "personal_release_effect_ack_done": false,
+      "product_claim_allowed": false,
+      "product_descriptor": "Persönlicher Browserassistent für quellgebundene Recherche, Dokumentation und Fortsetzung",
+      "product_metrics": null,
+      "product_name": "Universales Raumzeit-Terminal",
+      "product_trials_executed": 0,
+      "provider": {
+        "api": "RESPONSES_WITH_CONVERSATIONS",
+        "authentication": "OS_SECRET_SERVICE_MODEL_KEY; EXPLICIT_LEGACY_MEMORY_OPTION",
+        "authority": "https://api.openai.com/v1",
+        "chatgpt_signed_in_session_bridge": "NOT_IMPLEMENTED_OR_ATTESTED",
+        "model": "EXPLICIT_RUNTIME_ARGUMENT_REQUIRED",
+        "proprietary_runtime_redistributed": false
+      },
+      "qikvrt_mode": {
+        "additional_capability": "HASH_BOUND_OBSERVED_OUTPUT_CHECKPOINT_ON_RESUME",
+        "checkpoint_from_harness_oracle": false,
+        "checkpoint_is_independent_acceptance": false,
+        "mode": "qikvrt"
+      },
+      "repository": "ingolf-lohmann/qik-vrt",
+      "runtime_evidence_class": "SOURCE_CAPABILITY_MANIFEST_ONLY",
+      "runtime_state": "PRIVATE_EXTERNAL_DIRECTORY_SQLITE_WAL_SYNCHRONOUS_FULL",
+      "schema": "qikvrt_personal_assistant_capabilities_v1",
+      "version": "1.4.0"
+    },
+    "personal_release_candidate": {
+      "authenticated_runtime_readback": false,
+      "boundary_contract_materialized": true,
+      "executable_adapter_materialized": true,
+      "normal_baseline_implementation_materialized": true,
+      "normal_baseline_runtime_readback": false,
+      "personal_capability_manifest": "personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json",
+      "personal_capability_manifest_materialized": true,
+      "personal_release_effect_ack_done": false,
+      "state": "HOLD"
+    },
+    "product_claim_allowed": false,
+    "product_metrics": null,
+    "product_trials_executed": 0,
+    "repository": "ingolf-lohmann/qik-vrt",
+    "schema": "qikvrt_browser_ab_preflight_v1",
+    "source_files": {
+      "benchmarks/browser-assistant-ab/console.html": {
+        "bytes": 4936,
+        "sha256": "e4d97ca077963bc3936e3cc3be5ed2a4f39c22aa15ed131f18758f3a1e3e0c4a"
+      },
+      "benchmarks/browser-assistant-ab/ibm/contract.json": {
+        "bytes": 5004,
+        "sha256": "a70cf2336e88bfb61ecedce79ff2361cbbd494e98d3631769bd72b7114d23f53"
+      },
+      "browser/firefox/qikvrt-terminal/background.js": {
+        "bytes": 10581,
+        "sha256": "c7747216fd0cf618ef3592d310ff5d1b2adad6d6c5f8339a9f1c2fe14044856b"
+      },
+      "browser/firefox/qikvrt-terminal/content.js": {
+        "bytes": 8904,
+        "sha256": "e7a9bb13052036c6445d4f0f3391b03cf54ff73cee6646ba9237eff2e8fb1e07"
+      },
+      "browser/firefox/qikvrt-terminal/manifest.json": {
+        "bytes": 1216,
+        "sha256": "abe2708d7e4875be8a2757c9adf40c8968fdabada836d90b9a1fec4dc5799308"
+      },
+      "personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json": {
+        "bytes": 5792,
+        "sha256": "2314cf1d5671f3d13e656851c08fd8b0ee910a4f699c54be7ead80bb51dce4d8"
+      },
+      "personal/ingolf-lohmann/firefox-assistant/ui.css": {
+        "bytes": 990,
+        "sha256": "7921e5e36bf04307074a3dc98edd77200a79173ecca6520e10ecadd2271a390b"
+      },
+      "personal/ingolf-lohmann/firefox-assistant/ui.html": {
+        "bytes": 2393,
+        "sha256": "5041e89536a522e3776ab40b86646121e9ecba0355640f3364e33bceaf0af659"
+      },
+      "personal/ingolf-lohmann/firefox-assistant/ui.js": {
+        "bytes": 7053,
+        "sha256": "ae0368fbe43a2902cb9cc94ed1c6fa42011aa4168878806e6ffd1a3bf329ec4c"
+      },
+      "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json": {
+        "bytes": 2275,
+        "sha256": "fe9155869a7c238975020cdb5f20b9270aaa9c12a6a99917ca03b6ecabd3913a"
+      },
+      "runtime/toolchains/CACHE_COVERAGE.json": {
+        "bytes": 7796,
+        "sha256": "7e2f313a1e14a657df5a26f74706e79d315ad3c204dcacee78de7d6e897be1d8"
+      },
+      "runtime/toolchains/CACHE_REGISTRY.json": {
+        "bytes": 32415,
+        "sha256": "20c573e7bbec4c470ce3e99c84fece56f80c3d4e4eab3f5913ff4b41583a0825"
+      },
+      "runtime/toolchains/TOOLCHAIN.lock.tsv": {
+        "bytes": 5804,
+        "sha256": "9eafe8dfac94cc6aebd2b2d43e5e62b9791e61521ed8d933dff51d6360e3500f"
+      },
+      "src/qikvrt_effect_ack_http_terminal.py": {
+        "bytes": 34642,
+        "sha256": "a0aad1d78fa9de4ffb631e284d673c7f7bb45310757f22ed432aa834c487ecc5"
+      },
+      "src/qikvrt_personal_assistant.py": {
+        "bytes": 41509,
+        "sha256": "f1120e67681ad515016f9b53346ce9bb07bb2e52a2591aae1ab43240bfab569c"
+      },
+      "tools/qikvrt_browser_assistant_ab.py": {
+        "bytes": 58184,
+        "sha256": "0a12e479b07d5eea2009f9cd8f2c1f58803cdd77d09c461a79fe116766a5a17f"
+      }
+    },
+    "status": "PRODUCT_EXECUTION_NOT_AVAILABLE",
+    "terminal_boundary": "The optional Personal adapter shares the terminal server and implements source-bound model requests, normal conversation persistence and checkpoint resume. Real authenticated Firefox product execution is not established by this offline preflight.",
+    "tree": "854df81d5eac04e187d732849bc4ccedeb60b901",
+    "worktree_dirty": true
+  },
+  "product_claim_allowed": false,
+  "schema": "qikvrt_browser_ab_run_v1",
+  "seed": 20261018,
+  "study_binding": {
+    "comparison": "IBM Orchestrate ordinary agent versus QIK-VRT PersonalRuntime, same Granite weights, sources and allowed tools",
+    "contract_sha256": "a70cf2336e88bfb61ecedce79ff2361cbbd494e98d3631769bd72b7114d23f53",
+    "id": "orchestration-head-to-head"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "qikvrt_ibm_orchestrate_import_preparation_v1",
+  "state": "TEMPLATE_NOT_IMPORTED",
+  "server_url": null,
+  "existing_server": "src/qikvrt_github_api_shim.py",
+  "existing_adapter": "src/qikvrt_mcp_adapter.py",
+  "route": "/mcp",
+  "transport": "streamable_http",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "credential_source": "EXISTING_PROTECTED_CONNECTION_NO_CREDENTIAL_VALUE_IN_ARTIFACT",
+  "scopes": ["repository:read", "capability:read", "effect_ack:read"],
+  "tools": ["qikvrt_repository_state", "qikvrt_capabilities", "qikvrt_effect_ack_result"],
+  "effect_authority": false,
+  "required_before_execution": ["deployed server URL with valid TLS", "scoped read credential and expiry", "successful initialize/tools-list and exact-head tool readback", "actual IBM import receipt and agent revision", "model and tool equivalence binding", "normal baseline memory and retention evidence"],
+  "import_executed": false,
+  "agent_run_executed": false
+}

@@ -1,0 +1,49 @@
+{
+  "schema": "QIKVRT_VISIBLE_SOURCES_V1",
+  "sources": [
+    {
+      "id": "1",
+      "title": "Ingolf Lohmann: Von Softwarearchitektur zur Weltformel – DAS UNIVERSUM ALS ROUND TRIP.",
+      "urls": [
+        "https://doi.org/10.5281/zenodo.21888130"
+      ],
+      "doi": "10.5281/zenodo.21888130"
+    },
+    {
+      "id": "2",
+      "title": "IBM Granite Team: Granite-4.2-3B model card, 25 August 2026.",
+      "urls": [
+        "https://huggingface.co/ibm-granite/granite-4.2-3b",
+        "https://huggingface.co/ibm-granite/granite-4.2-3b/tree/be9e7d995f2a6be22def5dd815f9f2bae98c8b6e"
+      ]
+    },
+    {
+      "id": "3",
+      "title": "IBM: Adding generative chat function to your applications with the chat API.",
+      "urls": [
+        "https://www.ibm.com/docs/en/watsonx/saas?topic=code-chat"
+      ]
+    },
+    {
+      "id": "4",
+      "title": "IBM: Adding MCP server tools to a single agent.",
+      "urls": [
+        "https://www.ibm.com/docs/en/watsonx/watson-orchestrate/base?topic=server-adding-mcp-tools-single-agent"
+      ]
+    },
+    {
+      "id": "5",
+      "title": "IBM Research: SOFAI-LM: A Cognitive Architecture for Building Efficient and Reliable Reasoning Systems with LLMs, AAAI 2026, 20 January 2026.",
+      "urls": [
+        "https://research.ibm.com/publications/sofai-lm-a-cognitive-architecture-for-building-efficient-and-reliable-reasoning-systems-with-llms"
+      ]
+    },
+    {
+      "id": "6",
+      "title": "IBM Research: Neuro-Vector-Symbolic Architecture.",
+      "urls": [
+        "https://research.ibm.com/projects/neuro-vector-symbolic-architecture"
+      ]
+    }
+  ]
+}

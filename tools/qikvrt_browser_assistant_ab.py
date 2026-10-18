@@ -62,6 +62,7 @@ SOURCE_PATHS = [
     "runtime/toolchains/TOOLCHAIN.lock.tsv",
     "runtime/toolchains/CACHE_REGISTRY.json",
     "runtime/toolchains/CACHE_COVERAGE.json",
+    "benchmarks/browser-assistant-ab/ibm/contract.json",
 ]
 # Reuse the frozen S1 implementation without copying it into the Personal tree.
 # Source controls and task execution have separate identities and receipts.
@@ -166,11 +167,17 @@ def preflight() -> dict[str, Any]:
     }
 
 
-def make_plan(output: Path, repeats: int = 6, seed: int = 20261005, evidence_class: str = "HARNESS_PREPARATION") -> dict[str, Any]:
+def make_plan(output: Path, repeats: int = 6, seed: int = 20261005, evidence_class: str = "HARNESS_PREPARATION", *, study_binding: dict[str, str] | None = None) -> dict[str, Any]:
     if repeats < 2 or repeats > 100 or repeats % 2:
         raise InvalidRun("Pairs per task must be even, 2..100, for balanced arm order")
     if evidence_class not in {"HARNESS_PREPARATION", "HARNESS_SELF_TEST"}:
         raise InvalidRun("Product execution is unavailable; evidence class cannot be promoted")
+    if study_binding is not None and (not isinstance(study_binding, dict) or
+        set(study_binding) != {"id", "contract_sha256", "comparison"} or
+        not all(isinstance(v, str) for v in study_binding.values()) or
+        not re.fullmatch(r"[a-z][a-z0-9-]{1,63}", study_binding["id"]) or
+        not re.fullmatch(r"[0-9a-f]{64}", study_binding["contract_sha256"]) or not study_binding["comparison"]):
+        raise InvalidRun("Invalid study binding")
     output = output.resolve()
     if output == ROOT or (ROOT in output.parents and not (ROOT / ".qikvrt/runtime") in output.parents):
         raise InvalidRun("Raw run data must be outside the tracked tree or under .qikvrt/runtime")
@@ -207,6 +214,8 @@ def make_plan(output: Path, repeats: int = 6, seed: int = 20261005, evidence_cla
         "preflight": preflight(), "pairs": pairs,
         "execution": "NOT_EXECUTED" if evidence_class == "HARNESS_PREPARATION" else "SYNTHETIC_CLOCK_AND_SCRIPTED_OUTPUTS",
     }
+    if study_binding is not None:
+        manifest["study_binding"] = dict(study_binding)
     write_json(output / "manifest.json", manifest)
     return manifest
 
@@ -882,6 +891,50 @@ def temdd_carrier(source: Path, output: Path, expected_head: str, pr: int) -> di
     return receipt
 
 
+def prepare_ibm_comparison(output: Path, repeats: int = 6, seed: int = 20261018) -> dict[str, Any]:
+    """Freeze comparable plans using the existing scorer, clocks and journal.
+
+    No inference, credential access, model installation or product promotion.
+    Orchestrate/SOFAI execution remains explicitly unbound.
+    """
+    contract_path = SUITE / "ibm/contract.json"
+    contract = read_json(contract_path)
+    if (contract.get("schema") != "qikvrt_ibm_comparison_v1" or
+        contract.get("product_claim_allowed") is not False or
+        contract.get("execution") != "PREPARATION_ONLY"):
+        raise InvalidRun("IBM study cannot promote preparation into product evidence")
+    output = output.resolve()
+    if output.exists() or (ROOT == output or (ROOT in output.parents and not (ROOT / ".qikvrt/runtime") in output.parents)):
+        raise InvalidRun("IBM plan requires a new private run directory")
+    if repeats < 2 or repeats > 100 or repeats % 2:
+        raise InvalidRun("Pairs per task must be even, 2..100")
+    output.mkdir(parents=True, mode=0o700)
+    studies = []
+    ids = [s.get("id") for s in contract["studies"]]
+    if len(ids) != len(set(ids)) or not all(isinstance(i, str) and re.fullmatch(r"[a-z][a-z0-9-]{1,63}", i) for i in ids):
+        raise InvalidRun("Invalid IBM study identity")
+    for study in contract["studies"]:
+        run = output / study["id"]
+        manifest = make_plan(run, repeats, seed, study_binding={"id": study["id"],
+            "comparison": study["comparison"], "contract_sha256": digest(contract_path.read_bytes())})
+        analysis = analyze(run)
+        write_json(run / "analysis.json", analysis)
+        studies.append({"id": study["id"], "comparison": study["comparison"],
+            "manifest_sha256": digest((run / "manifest.json").read_bytes()),
+            "analysis_sha256": digest((run / "analysis.json").read_bytes()),
+            "planned_trials": sum(len(p["trials"]) for p in manifest["pairs"]),
+            "execution": "NOT_EXECUTED", "metrics": None})
+    result = {"schema": "qikvrt_ibm_preparation_receipt_v1", "evidence_class": "HARNESS_PREPARATION",
+        "contract_sha256": digest(contract_path.read_bytes()), "studies": studies,
+        "planned_trials": sum(s["planned_trials"] for s in studies),
+        "product_trials_executed": 0, "product_metrics": None,
+        "product_claim_allowed": False, "winner": None,
+        "acceptance": False, "effect_ack_done": False,
+        "next_action": "Bind the existing owner-hosted model/runtime and execute equivalent observed pre-runs with isolated oracles; do not score these unstarted plans as product results."}
+    write_json(output / "IBM_PREPARATION.json", result)
+    return result
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
@@ -890,6 +943,10 @@ def main() -> int:
     plan.add_argument("--output", type=Path, required=True)
     plan.add_argument("--pairs-per-task", type=int, default=6)
     plan.add_argument("--seed", type=int, default=20261005)
+    ibm = sub.add_parser("ibm-plan", help="Prepare IBM comparisons using existing A/B plans; no inference")
+    ibm.add_argument("--output", type=Path, required=True)
+    ibm.add_argument("--pairs-per-task", type=int, default=6)
+    ibm.add_argument("--seed", type=int, default=20261018)
     serve = sub.add_parser("serve")
     serve.add_argument("--run", type=Path, required=True)
     serve.add_argument("--port", type=int, default=8782)
@@ -910,6 +967,8 @@ def main() -> int:
             result = preflight()
         elif args.command == "plan":
             result = make_plan(args.output, args.pairs_per_task, args.seed)
+        elif args.command == "ibm-plan":
+            result = prepare_ibm_comparison(args.output, args.pairs_per_task, args.seed)
         elif args.command == "analyze":
             result = export_analysis(args.run, args.output) if args.output else analyze(args.run)
         elif args.command == "self-check":

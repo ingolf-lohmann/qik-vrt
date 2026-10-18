@@ -1,0 +1,97 @@
+{
+  "blocker": "AI handoff: exit 2: AI_HANDOFF_BLOCK: AI progress portable source capsule is invalid: immutable repository path must not be a symlink or unsafe component: release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-002/status-projection-source-capsule/SOURCE_CAPSULE.json",
+  "context_id": "qik-vrt-cross-ai-handoff-2026-07-23",
+  "gates": [
+    {
+      "command": [
+        "internal",
+        "policy/AI_BOOTSTRAP_KNOWLEDGE_CORPUS_V1.json"
+      ],
+      "exit_code": 0,
+      "name": "bootstrap knowledge corpus",
+      "state": "PASS",
+      "stderr": "",
+      "stdout": "artifacts=20 untranscribed_audio=6"
+    },
+    {
+      "command": [
+        "internal",
+        "policy/HUMAN_MACHINE_INTERFACE_ADAPTATION_V1.json"
+      ],
+      "exit_code": 0,
+      "name": "human machine interface adaptation",
+      "state": "PASS",
+      "stderr": "",
+      "stdout": "mode=MEASURE_CACHE_RANK_PROPOSE_REVIEW matrix_rows=0"
+    }
+  ],
+  "git_commit": "f87c40bae44780e707bc300f31a2c99595ab892b",
+  "git_ref": "ibm-comparison/20261018",
+  "interface_adaptation": {
+    "cache_layers": [
+      "L0_SESSION",
+      "L1_PERSONAL_WORKING_MEMORY",
+      "L2_RUNTIME_TOOLCHAIN",
+      "L3_DERIVED_KNOWLEDGE"
+    ],
+    "default_state": "OBSERVE_ONLY",
+    "matrix_rows": 0,
+    "matrix_state": "BASELINE_NOT_YET_MEASURED",
+    "minimum_observations_before_preference": 3,
+    "mode": "MEASURE_CACHE_RANK_PROPOSE_REVIEW",
+    "routing": "FASTEST_VERIFIED_PATH"
+  },
+  "knowledge_corpus": {
+    "artifact_count": 20,
+    "corpus_id": "AI-BOOTSTRAP-KNOWLEDGE-CORPUS-2026-08-07-V1",
+    "epistemic_partition": [
+      "WAHRHAFTIGKEIT",
+      "UNSICHERHEIT",
+      "REST_ODER_NOCH_NICHT_ANGEMESSEN_MODELLIERT"
+    ],
+    "round_trip": [
+      "WIRKLICHKEIT",
+      "UNTERSCHIED",
+      "INFORMATION",
+      "RELATION",
+      "KAUSALORDNUNG",
+      "MODELL",
+      "FORMALISIERUNG",
+      "BEWEIS",
+      "VORHERSAGE",
+      "MESSUNG",
+      "WIRKLICHKEITSABGLEICH",
+      "NEUER_UNTERSCHIED"
+    ],
+    "scientific_boundaries": {
+      "executable_world_formula_architecture_claim_equals_scientifically_established_nature_description": false,
+      "lean_derivability_equals_physical_truth": false,
+      "panpsychism_proved_by_process_model": false,
+      "religious_or_esoteric_doctrine_confirmed_by_process_model": false,
+      "retroactive_change_of_past_event": false,
+      "symbolic_similarity_equals_empirical_confirmation": false
+    },
+    "untranscribed_audio_count": 6,
+    "untranscribed_audio_semantic_claims_allowed": false
+  },
+  "lifecycle": [
+    "read AI and AI_CONTEXT.json",
+    "load personal-origin and contribution-attribution contract",
+    "load supplied bootstrap knowledge corpus with epistemic boundaries",
+    "load adaptive human-machine interface cache and evaluation contracts",
+    "verify repository identity and Git ref",
+    "verify handoff and required repository evidence",
+    "verify integrity authorities",
+    "verify declared tool/cache contracts",
+    "check runtime profile without hidden installation",
+    "hand control to the authorized task executor using fastest verified reusable path",
+    "measure reusable interaction and runtime evidence",
+    "persist reviewed improvements through repository changes"
+  ],
+  "next_action": "Repair the named repository gate and rerun the bootloader.",
+  "repository": "https://github.com/ingolf-lohmann/qik-vrt",
+  "repository_root": "/workspace/scratch/13afef2085b0/qik-vrt",
+  "schema": "qikvrt-ai-runtime-boot/1.2",
+  "state": "BLOCK",
+  "task": ""
+}

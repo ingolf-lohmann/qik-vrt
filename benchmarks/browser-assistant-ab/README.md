@@ -3,6 +3,11 @@
 
 # Persönlicher Browserassistent: Unterbrechungs-A/B-Vertrag
 
+Der öffentliche [IBM-Vergleichs- und Integrationskandidat](ibm/README.md)
+verwendet diesen Harness weiter: lokales Granite, optional watsonx sowie
+Orchestrate-Vergleich und MCP-Zusammenarbeit. Vorbereitung, technische Tests
+und tatsächlich ausgeführte Produktversuche werden dort getrennt ausgewiesen.
+
 Produkt unter Prüfung: **Universales Raumzeit-Terminal** (technischer Name,
 freigegeben durch Product Owner Ingolf Lohmann am 2026-10-05). Der persönliche
 Browserassistent bleibt der konkrete Anwendungsfall dieses A/B-Vertrags.

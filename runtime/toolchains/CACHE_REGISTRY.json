@@ -497,7 +497,9 @@
         "src/qikvrt_personal_assistant.py",
         "src/qikvrt_effect_ack_http_terminal.py",
         "tests/test_qikvrt_personal_assistant.py",
-        "personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json"
+        "personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json",
+        "tests/test_qikvrt_ibm_comparison.py",
+        "benchmarks/browser-assistant-ab/ibm/contract.json"
       ],
       "cache_class": "hosted-toolcache",
       "cache_locations": [

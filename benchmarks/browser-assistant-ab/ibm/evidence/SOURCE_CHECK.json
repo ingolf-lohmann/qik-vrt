@@ -1,0 +1,18 @@
+{
+  "schema": "QIKVRT_VISIBLE_SOURCES_CHECK_V1",
+  "status": "PASS",
+  "source_count": 6,
+  "manifest_sha256": "7cb087dce58d59548ba4a54a957e1af58c321c5981bf9722e80a05b8ad6bc6fe",
+  "network_reachability_checked": false,
+  "claim_support_checked_automatically": false,
+  "errors": [],
+  "artifacts": [
+    {
+      "path": "/workspace/scratch/13afef2085b0/qik-vrt/benchmarks/browser-assistant-ab/ibm/README.md",
+      "sha256": "03026f3bd7d2380164e42cd35c9d10c349483fab19ae2a41dd676a3dc91c575c",
+      "pages": null,
+      "status": "PASS",
+      "errors": []
+    }
+  ]
+}

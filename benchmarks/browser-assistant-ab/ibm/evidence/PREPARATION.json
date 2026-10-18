@@ -1,0 +1,51 @@
+{
+  "acceptance": false,
+  "contract_sha256": "a70cf2336e88bfb61ecedce79ff2361cbbd494e98d3631769bd72b7114d23f53",
+  "effect_ack_done": false,
+  "evidence_class": "HARNESS_PREPARATION",
+  "next_action": "Bind the existing owner-hosted model/runtime and execute equivalent observed pre-runs with isolated oracles; do not score these unstarted plans as product results.",
+  "planned_trials": 96,
+  "product_claim_allowed": false,
+  "product_metrics": null,
+  "product_trials_executed": 0,
+  "schema": "qikvrt_ibm_preparation_receipt_v1",
+  "studies": [
+    {
+      "analysis_sha256": "47bb978312c7ed824e48eb2a270bbba45d8d600f11dd9ee5058e408415371d56",
+      "comparison": "Same locally hosted Granite model: ordinary full-transcript assistant versus QIK-VRT checkpoint continuation",
+      "execution": "NOT_EXECUTED",
+      "id": "granite-continuity",
+      "manifest_sha256": "55b69f6093a2cfdd2fd619f8f10ab62c40b027836d732851539d27c43aabccc1",
+      "metrics": null,
+      "planned_trials": 24
+    },
+    {
+      "analysis_sha256": "5daae2313c576dbd27bdbb39558e2ef60187bb2d61d85370818e230cbc23caf7",
+      "comparison": "IBM Orchestrate ordinary agent versus QIK-VRT PersonalRuntime, same Granite weights, sources and allowed tools",
+      "execution": "NOT_EXECUTED",
+      "id": "orchestration-head-to-head",
+      "manifest_sha256": "b79f2f0c5f31845fb8ace618802ac902dcb9c9683072bcf0b5bf2f3310667c43",
+      "metrics": null,
+      "planned_trials": 24
+    },
+    {
+      "analysis_sha256": "c90d88fc15bd53f91de0ee4be154e2e78ea2d06bf6c419f5a9638b305009e8d4",
+      "comparison": "Same IBM Orchestrate agent without versus with existing QIK-VRT read-only MCP evidence tools",
+      "execution": "NOT_EXECUTED",
+      "id": "orchestrate-hybrid",
+      "manifest_sha256": "4bbdc1a665d5dc051603668b7646f4c8d5aa261f850087cff92b574b71d7eea2",
+      "metrics": null,
+      "planned_trials": 24
+    },
+    {
+      "analysis_sha256": "0a3a3a48ea5a1f1a317371ab8b22f19e38671a86759b236276baaadbd7a74901",
+      "comparison": "Same optional watsonx model and project: ordinary full-transcript assistant versus QIK-VRT checkpoint continuation",
+      "execution": "NOT_EXECUTED",
+      "id": "watsonx-continuity",
+      "manifest_sha256": "efae71509094c8ed48c3ea5479fac3021e99b4c4ef351a3422f965169c827fd9",
+      "metrics": null,
+      "planned_trials": 24
+    }
+  ],
+  "winner": null
+}

@@ -1,0 +1,53 @@
+{
+  "artificial_cognitive": {
+    "contribution": "Adapter implementation, technical tests, study mapping and candidate documentation by the coding assistant. Exact served model identity is not separately attested."
+  },
+  "authorization": "User instruction of 2026-10-18 in this work unit; prepare comparison and make results publicly accessible.",
+  "base_head": "f87c40bae44780e707bc300f31a2c99595ab892b",
+  "base_tree": "854df81d5eac04e187d732849bc4ccedeb60b901",
+  "human": {
+    "contribution": "Requested public IBM comparison and integration preparation; original QIK-VRT architecture, method and licensing direction.",
+    "name": "Ingolf Lohmann"
+  },
+  "id": "QIKVRT_IBM_COMPARISON_PREPARATION_20261018",
+  "joint": "Implementation applies human-specified requirements; acceptance does not rewrite origin.",
+  "open_work": [
+    {
+      "id": "IBM_NATIVE_MODEL",
+      "next_action": "Bind existing owner-hosted Granite server, exact weights, server build, quantization and thinking settings; no new managed-service prerequisite."
+    },
+    {
+      "id": "IBM_PRODUCT_RUN",
+      "next_action": "Observe equivalent pre-runs, real interruptions and baseline retention with isolated oracles; execute all planned trials and independently score outputs."
+    },
+    {
+      "id": "IBM_ORCHESTRATE_IMPORT",
+      "next_action": "Reuse deployed authenticated QIK-VRT MCP server; bind actual import/agent/run receipts on an available Orchestrate installation."
+    },
+    {
+      "id": "NATIVE_FULL_CI",
+      "next_action": "Read back existing native CI on this candidate and complete source/integrity gates before any integration claim."
+    },
+    {
+      "id": "PUBLIC_DOMAIN",
+      "next_action": "Read back exact raumzeitterminal.de delivery separately; public repository access is not exact-domain runtime acceptance."
+    },
+    {
+      "id": "SCIENTIFIC_ARCHIVE",
+      "next_action": "Freeze any later measured result, complete machine-proof/claim-bound review and candidate-specific return before a Zenodo production upload."
+    }
+  ],
+  "repository": "ingolf-lohmann/qik-vrt",
+  "result_path": "benchmarks/browser-assistant-ab/ibm/RESULTS.json",
+  "result_sha256": "55f4c1fc5c22698892cedd6a4870a63cab403f058865ebd2595bde0799f88774",
+  "reuse": [
+    "tools/qikvrt_browser_assistant_ab.py",
+    "src/qikvrt_personal_assistant.py",
+    "src/qikvrt_github_api_shim.py",
+    "src/qikvrt_mcp_adapter.py",
+    ".github/workflows/qikvrt_ci.yml"
+  ],
+  "runtime_constraint": false,
+  "schema": "qikvrt-work-unit-v1",
+  "scope": "Public source and protocol preparation; no claimed live IBM comparison, purchase, review approval, merge, production deployment or Zenodo upload."
+}

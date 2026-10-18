@@ -1,6 +1,6 @@
 {
   "schema": "qikvrt_personal_assistant_capabilities_v1",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "product_name": "Universales Raumzeit-Terminal",
   "product_descriptor": "Persönlicher Browserassistent für quellgebundene Recherche, Dokumentation und Fortsetzung",
   "license": "PolyForm-Noncommercial-1.0.0",
@@ -61,6 +61,26 @@
   "product_claim_allowed": false,
   "personal_release_effect_ack_done": false,
   "optional_providers": {
+    "granite_local": {
+      "api": "OPENAI_COMPATIBLE_TEXT_CHAT",
+      "authority": "EXPLICIT_HTTP_127_0_0_1_PORT_ONLY_NO_PROXY",
+      "model": "EXPLICIT_RUNTIME_ARGUMENT_AND_DECLARED_REVISION_REQUIRED",
+      "credentials": "EXISTING_PROTECTED_PROVIDER_KEY_SLOT_OR_OPTIONAL_LEGACY_MEMORY",
+      "history": "FULL_LOCAL_TRANSCRIPT_RESUBMITTED_IN_BOTH_ARMS",
+      "model_revision_attested": false,
+      "live_runtime_verified": false,
+      "managed_runtime_required": false
+    },
+    "watsonx": {
+      "api": "IBM_ML_V1_TEXT_CHAT",
+      "authority": "EXPLICIT_ALLOWLISTED_IBM_REGIONAL_HTTPS_ORIGIN",
+      "model": "EXPLICIT_RUNTIME_MODEL_PROJECT_AND_API_VERSION_REQUIRED",
+      "credentials": "EXISTING_PROTECTED_PROVIDER_KEY_SLOT_CONTAINING_IAM_BEARER",
+      "history": "FULL_LOCAL_TRANSCRIPT_RESUBMITTED_IN_BOTH_ARMS",
+      "provider_retention_attested": false,
+      "live_runtime_verified": false,
+      "optional_for_owner_hosted_runtime": true
+    },
     "gemini": {
       "model": "gemini-4-argon",
       "authority": "https://generativelanguage.googleapis.com/v1beta",

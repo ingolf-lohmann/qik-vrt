@@ -2,9 +2,9 @@
 # Copyright 2026 Ingolf Lohmann.
 """Opt-in adapter for the existing Firefox HTTP terminal, not a second server.
 
-OpenAI bearer credentials stay in backend memory. Both modes retain ordinary
-provider conversations and local transcripts. Tests inject a transport double;
-that transport cannot attest an authenticated external runtime.
+Model bearer credentials stay in backend memory. Both modes retain the
+provider's declared normal history and full local transcripts. Tests inject
+transport doubles; those cannot attest an authenticated model runtime.
 """
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ import uuid
 from pathlib import Path
 from typing import Any
 from urllib.error import HTTPError, URLError
-from urllib.request import HTTPRedirectHandler, Request, build_opener
+from urllib.request import HTTPRedirectHandler, ProxyHandler, Request, build_opener
 from urllib.parse import parse_qs, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -158,11 +158,110 @@ class GeminiTransport(OpenAITransport):
                 "usage": value.get("usage")}, receipt
 
 
+class IBMChatTransport(OpenAITransport):
+    """Text-only IBM chat adapter; reuses bounded, no-redirect/no-retry transport.
+
+    Granite is served on the owner's loopback interface. Optional watsonx uses
+    an existing IAM bearer, never an API-key-to-token exchange or new account.
+    A configured revision is a declaration, not remote weight attestation.
+    """
+    def __init__(self, credential, model, provider, config):
+        if provider not in {"granite_local", "watsonx"} or not isinstance(config, dict):
+            raise CapabilityBlock("IBM_PROVIDER_CONFIGURATION_REQUIRED")
+        allowed = {"endpoint", "model_revision", "project_id", "api_version"}
+        if (set(config) - allowed or not all(isinstance(v, str) for v in config.values()) or
+            not isinstance(model, str) or not re.fullmatch(r"[A-Za-z0-9_.:/-]{1,128}", model)):
+            raise CapabilityBlock("IBM_CONFIGURATION_OR_MODEL_INVALID")
+        endpoint = config.get("endpoint", "")
+        if not isinstance(endpoint, str):
+            raise CapabilityBlock("IBM_ENDPOINT_INVALID")
+        parsed = urlsplit(endpoint)
+        if parsed.username or parsed.password or parsed.query or parsed.fragment or parsed.path:
+            raise CapabilityBlock("IBM_EXACT_ORIGIN_REQUIRED")
+        if not isinstance(credential, str) or any(c.isspace() for c in credential) or len(credential) > 16384:
+            raise CapabilityBlock("IBM_CREDENTIAL_INVALID")
+        if provider == "granite_local":
+            if (parsed.scheme != "http" or parsed.hostname != "127.0.0.1" or
+                parsed.port is None or not 1024 <= parsed.port <= 65535 or
+                endpoint != f"http://127.0.0.1:{parsed.port}" or
+                not re.fullmatch(r"[0-9a-f]{40}", config.get("model_revision", "")) or
+                set(config) != {"endpoint", "model_revision"}):
+                raise CapabilityBlock("GRANITE_LOOPBACK_AND_EXACT_REVISION_REQUIRED")
+            self.opener = build_opener(ProxyHandler({}), NoRedirect())
+        else:
+            if (not re.fullmatch(r"https://(us-south|eu-de|eu-gb|jp-tok|au-syd|ca-tor)\.ml\.cloud\.ibm\.com", endpoint) or
+                not credential or set(config) != {"endpoint", "project_id", "api_version"} or
+                not re.fullmatch(r"[a-zA-Z0-9-]{1,128}", config.get("project_id", "")) or
+                not re.fullmatch(r"20[0-9]{2}-[0-9]{2}-[0-9]{2}", config.get("api_version", ""))):
+                raise CapabilityBlock("WATSONX_EXACT_PROJECT_VERSION_AND_BEARER_REQUIRED")
+            self.opener = build_opener(NoRedirect())
+        self.credential, self.model, self.provider = credential, model, provider
+        self.config = dict(config)
+        self.public_binding = {"provider": endpoint, "provider_kind": provider, "model": model,
+            "configuration": dict(config), "model_revision_attested": False,
+            "instructions_sha256": digest(INSTRUCTIONS.encode()), "tools": [],
+            "parameters": {"temperature": 1.0, "top_p": 0.95, "max_tokens": 8192},
+            "normal_retention": "FULL_LOCAL_TRANSCRIPT_SENT_IN_BOTH_ARMS_PROVIDER_RETENTION_UNATTESTED"}
+        if credential and credential.encode() in canonical(self.public_binding):
+            raise CapabilityBlock("IBM_CONFIGURATION_CONTAINS_RUNTIME_SECRET")
+
+    @staticmethod
+    def environment(provider):
+        common = {"endpoint": os.environ.get("QIKVRT_IBM_ENDPOINT", "")}
+        if provider == "granite_local":
+            return dict(common, model_revision=os.environ.get("QIKVRT_IBM_MODEL_REVISION", ""))
+        return dict(common, project_id=os.environ.get("QIKVRT_IBM_PROJECT_ID", ""),
+                    api_version=os.environ.get("QIKVRT_IBM_API_VERSION", ""))
+
+    def post(self, path, payload):
+        if (path != "/responses" or set(payload) != {"model", "messages", "temperature", "top_p", "max_tokens"} or
+            payload["model"] != self.model or payload["temperature"] != 1.0 or
+            payload["top_p"] != 0.95 or payload["max_tokens"] != 8192 or
+            not isinstance(payload["messages"], list) or not payload["messages"]):
+            raise CapabilityBlock("IBM_REQUEST_OUTSIDE_BOUND_CONTRACT")
+        for message in payload["messages"]:
+            if (not isinstance(message, dict) or set(message) != {"role", "content"} or
+                message["role"] not in {"system", "user", "assistant"} or not isinstance(message["content"], str)):
+                raise CapabilityBlock("IBM_TEXT_ONLY_MESSAGES_REQUIRED")
+        if payload["messages"][0] != {"role": "system", "content": INSTRUCTIONS}:
+            raise CapabilityBlock("IBM_BOUND_SYSTEM_INSTRUCTIONS_REQUIRED")
+        body = dict(payload)
+        route = "/v1/chat/completions"
+        if self.provider == "watsonx":
+            body.pop("model")
+            body.update(model_id=self.model, project_id=self.config["project_id"])
+            route = "/ml/v1/text/chat?version=" + self.config["api_version"]
+        raw = canonical(body)
+        if len(raw) > MAX_BYTES or (self.credential and self.credential.encode() in raw):
+            raise CapabilityBlock("IBM_REQUEST_TOO_LARGE_OR_CONTAINS_SECRET")
+        headers = {"Content-Type": "application/json", "Accept": "application/json"}
+        if self.credential:
+            headers["Authorization"] = "Bearer " + self.credential
+        value, receipt = self._send(Request(self.config["endpoint"] + route, data=raw, method="POST", headers=headers))
+        if self.provider == "granite_local" and receipt.get("evidence_class") == "EXTERNAL_HTTPS_RESPONSE":
+            receipt = dict(receipt, evidence_class="LOCAL_HTTP_MODEL_RESPONSE")
+        resolved = value.get("model_id") if self.provider == "watsonx" else value.get("model")
+        choices = value.get("choices")
+        if (resolved != self.model or not isinstance(value.get("id"), str) or
+            not ID.fullmatch(value["id"]) or not isinstance(choices, list) or len(choices) != 1 or
+            not isinstance(choices[0], dict) or choices[0].get("finish_reason") != "stop"):
+            raise CapabilityBlock("IBM_MODEL_ID_OR_COMPLETE_RESPONSE_NOT_BOUND")
+        message = choices[0].get("message")
+        if (not isinstance(message, dict) or message.get("role") != "assistant" or
+            not isinstance(message.get("content"), str) or not message["content"] or message.get("tool_calls")):
+            raise CapabilityBlock("IBM_COMPLETE_TEXT_ONLY_RESPONSE_REQUIRED")
+        return {"id": value["id"], "model": resolved, "status": "completed",
+            "output": [{"type": "message", "role": "assistant", "content": [
+                {"type": "output_text", "text": message["content"]}]}], "usage": value.get("usage")}, dict(
+                    receipt, model_revision_attested=False, provider_retention_attested=False)
+
+
 class PersonalRuntime:
-    def __init__(self, state_dir: str | Path, model: str, credential: str, local_token: str, *, transport=None, provider="openai"):
-        if provider not in {"openai", "gemini"}:
+    def __init__(self, state_dir: str | Path, model: str, credential: str, local_token: str, *, transport=None, provider="openai", provider_config=None):
+        if provider not in {"openai", "gemini", "granite_local", "watsonx"}:
             raise CapabilityBlock("PROVIDER_NOT_ALLOWLISTED")
-        if not isinstance(model, str) or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,128}", model):
+        model_pattern = r"[A-Za-z0-9_.:/-]{1,128}" if provider in {"granite_local", "watsonx"} else r"[A-Za-z0-9_.:-]{1,128}"
+        if not isinstance(model, str) or not re.fullmatch(model_pattern, model):
             raise CapabilityBlock("EXPLICIT_MODEL_BINDING_REQUIRED")
         if not isinstance(local_token, str) or not re.fullmatch(r"[A-Za-z0-9_-]{32,256}", local_token):
             raise CapabilityBlock("LOCAL_PAIRING_SECRET_REQUIRED_32_TO_256_CHARACTERS")
@@ -170,7 +269,8 @@ class PersonalRuntime:
         self.provider = provider
         if provider == "gemini" and model != "gemini-4-argon":
             raise CapabilityBlock("GEMINI_ARGON_EXPLICIT_MODEL_REQUIRED")
-        self.transport = transport if transport is not None else (GeminiTransport(credential) if provider == "gemini" else OpenAITransport(credential))
+        ibm = IBMChatTransport(credential, model, provider, provider_config if provider_config is not None else IBMChatTransport.environment(provider)) if provider in {"granite_local", "watsonx"} else None
+        self.transport = transport if transport is not None else (ibm or (GeminiTransport(credential) if provider == "gemini" else OpenAITransport(credential)))
         requested_root = Path(state_dir).expanduser().absolute()
         if any(p.is_symlink() for p in [requested_root, *requested_root.parents]):
             raise CapabilityBlock("PRIVATE_STATE_DIRECTORY_UNSAFE")
@@ -208,6 +308,8 @@ class PersonalRuntime:
                 self.binding.update(provider="https://generativelanguage.googleapis.com/v1beta",
                                     parameters={"store": False, "background": False, "max_output_tokens": 4096},
                                     normal_retention="FULL_LOCAL_TRANSCRIPT_NO_STORED_PROVIDER_INTERACTION")
+            if ibm is not None:
+                self.binding = ibm.public_binding
             row = self.db.execute("SELECT body FROM config WHERE key='binding'").fetchone()
             if row and json.loads(row[0]) != self.binding:
                 raise CapabilityBlock("EXISTING_STATE_MODEL_OR_SETTINGS_MISMATCH")
@@ -252,7 +354,8 @@ class PersonalRuntime:
 
     @classmethod
     def from_environment(cls, state_dir: str, model: str | None, provider="openai"):
-        key = "GEMINI_API_KEY" if provider == "gemini" else "OPENAI_API_KEY"
+        key = {"gemini": "GEMINI_API_KEY", "watsonx": "IBM_WATSONX_BEARER_TOKEN",
+               "granite_local": "QIKVRT_GRANITE_BEARER_TOKEN"}.get(provider, "OPENAI_API_KEY")
         return cls(state_dir, model, os.environ.get(key, ""),
                    os.environ.get("QIKVRT_PERSONAL_LOCAL_TOKEN", ""), provider=provider)
 
@@ -307,7 +410,7 @@ class PersonalRuntime:
                    "conversation_id": None, "history": [], "checkpoint": None,
                    "status": "CREATE_PENDING", "created_subject": self.subject}
         self.save(session)  # Durable intent before any external request.
-        if self.provider == "gemini":
+        if self.provider in {"gemini", "granite_local", "watsonx"}:
             session.update(status="READY", conversation_receipt={"evidence_class": "LOCAL_TRANSCRIPT_ONLY"})
             self.save(session)
             return session
@@ -356,6 +459,13 @@ class PersonalRuntime:
                            "input": canonical({"kind": "LOCAL_CONVERSATION_DATA",
                                "history": [{"input": h["intent"]["input"], "draft": h["text"]} for h in session["history"]],
                                "current_user_input": text}).decode()}
+            if self.provider in {"granite_local", "watsonx"}:
+                messages = [{"role": "system", "content": INSTRUCTIONS}]
+                for h in session["history"]:
+                    messages.extend(({"role": "user", "content": h["intent"]["input"]},
+                                     {"role": "assistant", "content": h["text"]}))
+                messages.append({"role": "user", "content": text})
+                payload = {"model": self.model, "messages": messages, **self.binding["parameters"]}
             intent = {"id": uuid.uuid4().hex, "input": text, "request_sha256": digest(canonical(payload)),
                       "created_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
             session.update(status="TURN_PENDING", pending=intent)
@@ -388,7 +498,7 @@ class PersonalRuntime:
                                          "draft": output, "history_sha256": digest(canonical(session["history"])),
                                          "evidence": "ACTUAL_PROVIDER_OUTPUT_UNVERIFIED", "independent_acceptance": False}
             self.save(session)
-            if type(self.transport) in {OpenAITransport, GeminiTransport} and receipt.get("evidence_class") == "EXTERNAL_HTTPS_RESPONSE":
+            if type(self.transport) in {OpenAITransport, GeminiTransport, IBMChatTransport} and receipt.get("evidence_class") == "EXTERNAL_HTTPS_RESPONSE":
                 self.auth_receipt = {"subject": self.subject, "binding": self.binding,
                                      "observed_monotonic": time.monotonic(), "response_id": response_id,
                                      "resolved_model": resolved, "receipt": receipt}

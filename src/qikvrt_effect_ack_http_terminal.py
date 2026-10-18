@@ -589,7 +589,7 @@ def main() -> int:
     parser.add_argument("--prepare-hash")
     parser.add_argument("--personal-state-dir", help="Opt-in Personal adapter: private runtime data directory")
     parser.add_argument("--personal-model", help="Explicit model identifier; no implicit model substitution")
-    parser.add_argument("--personal-provider", choices=("openai", "gemini"), default="openai")
+    parser.add_argument("--personal-provider", choices=("openai", "gemini", "granite_local", "watsonx"), default="openai")
     parser.add_argument("--personal-auth-config", type=Path, help="Private registered OIDC public-client configuration; enables OS Secret Service mode")
     parser.add_argument("--personal-legacy-memory-pairing", action="store_true", help="Explicit legacy test/development mode; no durable SSO or release acceptance")
     parser.add_argument("--personal-store-model-credential", action="store_true", help="Provision the selected model key to OS Secret Service from a terminal prompt, then exit")

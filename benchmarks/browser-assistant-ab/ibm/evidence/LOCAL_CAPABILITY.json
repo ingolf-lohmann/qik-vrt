@@ -1,0 +1,20 @@
+{
+  "scope": "THIS_CLIENT_ONLY_NOT_REMOTE_HOST",
+  "environment_binding_present": {
+    "QIKVRT_IBM_ENDPOINT": false,
+    "QIKVRT_IBM_MODEL_REVISION": false,
+    "QIKVRT_IBM_PROJECT_ID": false,
+    "QIKVRT_IBM_API_VERSION": false,
+    "IBM_WATSONX_BEARER_TOKEN": false,
+    "QIKVRT_GRANITE_BEARER_TOKEN": false
+  },
+  "model_server_executables_present": {
+    "vllm": false,
+    "ollama": false,
+    "llama-server": false
+  },
+  "actual_ibm_inference_executed": false,
+  "remote_host_credential_status": "UNKNOWN",
+  "mesh_native_execution": "NOT_ESTABLISHED_BY_AVAILABLE_MONITOR",
+  "managed_runtime_prerequisite": false
+}
