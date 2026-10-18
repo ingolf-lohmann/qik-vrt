@@ -93,7 +93,7 @@ conformance:
 	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m unittest -v tests.test_effect_ack_conformance
 
 security:
-	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -B -m unittest -v tests.test_handler_security tests.test_api_client
+	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -B -m unittest -v tests.test_handler_security tests.test_api_client tests.test_qikvrt_ionos_dns
 
 license:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_license_transition

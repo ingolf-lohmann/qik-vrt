@@ -144,6 +144,27 @@ services:
     volumes: [qikvrt_personal_posix:/var/lib/qikvrt/personal-posix]
     healthcheck: {disable: true}
 
+  # Public TLS edge; started only with `--profile public-tls` on a self-hosted
+  # node whose public A record already points at it. Local starts are unchanged.
+  qikvrt-edge:
+    profiles: [public-tls]
+    image: ${QIKVRT_EDGE_IMAGE:-caddy:2.10-alpine}
+    restart: unless-stopped
+    depends_on: [qikvrt-gateway]
+    environment:
+      QIKVRT_PUBLIC_HOST: ${QIKVRT_PUBLIC_HOST:-raumzeitterminal.de}
+    ports: ["80:80", "443:443", "443:443/udp"]
+    networks: {qikvrt_mesh: {ipv4_address: 10.73.0.11}}
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [NET_BIND_SERVICE]
+    security_opt: [no-new-privileges:true]
+    tmpfs: ["/tmp:size=16m,mode=1777"]
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - qikvrt_edge_data:/data
+      - qikvrt_edge_config:/config
+
 networks:
   qikvrt_mesh:
     ipam:
@@ -159,3 +180,5 @@ volumes:
   qikvrt_ssh:
   qikvrt_postgres:
   qikvrt_mirror:
+  qikvrt_edge_data:
+  qikvrt_edge_config:
