@@ -1,0 +1,170 @@
+{
+  "schema": "qikvrt-website-source-integration/v1",
+  "work_unit_id": "QIKVRT_POETIC_HOMEPAGE_SOURCE_20261018_V1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "base_head": "bc93293d623501b7b411f6b3a90f28c2f1fe183e",
+  "base_tree": "277411f183a7d091bc3c1456e14127cc3ea7b249",
+  "owner_request": "Übernimm die bereits erstellte mehrsprachige Startseite mit den vorhandenen Originaldateien in den versionierten Quellbestand von ingolf-lohmann/qik-vrt. Verwende den regulären Integrationsweg mit passenden Tests.",
+  "provenance": {
+    "human": {
+      "name": "Ingolf Lohmann",
+      "contributions": [
+        "Originalgedicht",
+        "Product-Owner-Auftrag und Inhaltsvorgaben"
+      ]
+    },
+    "artificial": {
+      "name": "OpenAI Codex",
+      "contributions": [
+        "Quellenvergleich",
+        "Repository- und Hosting-Integration",
+        "Tests"
+      ]
+    },
+    "inherited_ai_content": [
+      "Übersetzungen und Originalgrafik gemäß Ausgangsbeleg; Urheberangaben nicht verändert"
+    ]
+  },
+  "published_site": {
+    "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site",
+    "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+    "version_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea~appgver_76023f2aab988191b7f4b7149ce507c6",
+    "version_number": 37,
+    "source_commit": "706fa071dee5d300c5aeca8565d40f3936ef232d",
+    "mutated_by_this_work": false
+  },
+  "originals": [
+    {
+      "library_file_id": "libfile_6c20bfc984048191b054618397b1ec0e",
+      "original_filename": "La_mere_bien_sur_57_Uebersetzungen.html",
+      "path": "docs/texte/La_mere_bien_sur_57_Uebersetzungen.html",
+      "bytes": 44583,
+      "sha256": "a8c3c4d65a8cf6d550387d97c8670ddc68670aa68df46e687dc726d610b7092a"
+    },
+    {
+      "library_file_id": "libfile_9004960e07288191a60c6345c3647d52",
+      "original_filename": "Französische Poesie: Mutter und Avignon.png",
+      "path": "docs/assets/images/la-mere-bien-sur.png",
+      "bytes": 3670416,
+      "sha256": "3c2fc98d4f4f8425f1b64003b42e47a16d296e9cde7aa556c66f876f828a1812"
+    },
+    {
+      "library_file_id": "libfile_984615727a1481918c9571de6d65785c",
+      "original_filename": "Raumzeitterminal_Startseite_20261018.json",
+      "path": "state/work_units/sources/Raumzeitterminal_Startseite_20261018.json",
+      "bytes": 42825,
+      "sha256": "e4b3560b9b5b54b443b814d52a8f12ac3fd05696f76781f08840ff18637e1756"
+    }
+  ],
+  "site_comparison": [
+    {
+      "site_path": "public/index.html",
+      "repository_path": "docs/index.html",
+      "site_sha256": "585dd6551a336f8f8703ceae8a4e5a63f35bafff97724d43c0efe579d2bfa823",
+      "site_bytes": 8152,
+      "site_git_blob_sha1": "7deccd7a9bac7809b1c0f316177dd9e0e21c1e30",
+      "repository_sha256": "c5d1a9e47ebc6fc9056641aa5263743d6dd16cf38b56e07b53e6326422347c7e",
+      "repository_bytes": 8356,
+      "repository_git_blob_sha1": "e8f92eab7200997706991be40a30fccba27d9771",
+      "byte_exact_to_site": false
+    },
+    {
+      "site_path": "public/sprachen.html",
+      "repository_path": "docs/sprachen.html",
+      "site_sha256": "796be4aaae8b3e3a5dd306432724f52a2361a5563083749a0fbc871fe88c31bc",
+      "site_bytes": 44837,
+      "site_git_blob_sha1": "07f5fe43252f80a109cd07675678c4d2c488bcf9",
+      "repository_sha256": "7a8a7089143259da2e5ac263717431886e30cbfb240fae41bab71c8a06fb49a5",
+      "repository_bytes": 44838,
+      "repository_git_blob_sha1": "d59e6765b0adc6f546c371f496f3e54b890119d5",
+      "byte_exact_to_site": false
+    },
+    {
+      "site_path": "public/assets/css/raumzeitterminal-start.css",
+      "repository_path": "docs/assets/css/raumzeitterminal-start.css",
+      "site_sha256": "67778bf9c64b76bae93a99816b4b10c33e1835e637933796a5fe1cf247e3d7e9",
+      "site_bytes": 8879,
+      "site_git_blob_sha1": "117157d539e32638d2d14c0841db7db2dbc67088",
+      "repository_sha256": "67778bf9c64b76bae93a99816b4b10c33e1835e637933796a5fe1cf247e3d7e9",
+      "repository_bytes": 8879,
+      "repository_git_blob_sha1": "117157d539e32638d2d14c0841db7db2dbc67088",
+      "byte_exact_to_site": true
+    },
+    {
+      "site_path": "public/assets/images/la-mere-bien-sur.png",
+      "repository_path": "docs/assets/images/la-mere-bien-sur.png",
+      "site_sha256": "3c2fc98d4f4f8425f1b64003b42e47a16d296e9cde7aa556c66f876f828a1812",
+      "site_bytes": 3670416,
+      "site_git_blob_sha1": "e72f558612cf435bc9f178fced3d7cee86e18dbb",
+      "repository_sha256": "3c2fc98d4f4f8425f1b64003b42e47a16d296e9cde7aa556c66f876f828a1812",
+      "repository_bytes": 3670416,
+      "repository_git_blob_sha1": "e72f558612cf435bc9f178fced3d7cee86e18dbb",
+      "byte_exact_to_site": true
+    },
+    {
+      "site_path": "public/texte/La_mere_bien_sur_57_Uebersetzungen.html",
+      "repository_path": "docs/texte/La_mere_bien_sur_57_Uebersetzungen.html",
+      "site_sha256": "a8c3c4d65a8cf6d550387d97c8670ddc68670aa68df46e687dc726d610b7092a",
+      "site_bytes": 44583,
+      "site_git_blob_sha1": "f5ebac82eba5ddac63c7492c0fde22dfaa319046",
+      "repository_sha256": "a8c3c4d65a8cf6d550387d97c8670ddc68670aa68df46e687dc726d610b7092a",
+      "repository_bytes": 44583,
+      "repository_git_blob_sha1": "f5ebac82eba5ddac63c7492c0fde22dfaa319046",
+      "byte_exact_to_site": true
+    },
+    {
+      "site_path": "public/texte/la-mere-deutsch.txt",
+      "repository_path": "docs/texte/la-mere-deutsch.txt",
+      "site_sha256": "cdc365cb95451327c9206f9ea99b415b9d39f8a6d1da1d0f3bdc21166ad64e56",
+      "site_bytes": 378,
+      "site_git_blob_sha1": "af207d55b18f156bfb2376e7a143fde5f883c037",
+      "repository_sha256": "cdc365cb95451327c9206f9ea99b415b9d39f8a6d1da1d0f3bdc21166ad64e56",
+      "repository_bytes": 378,
+      "repository_git_blob_sha1": "af207d55b18f156bfb2376e7a143fde5f883c037",
+      "byte_exact_to_site": true
+    },
+    {
+      "site_path": "public/favicon.svg",
+      "repository_path": "docs/favicon.svg",
+      "site_sha256": "cb64e190e4924849424686cb54ae560a4651016392c8799365a58d9121e4d0a4",
+      "site_bytes": 251,
+      "site_git_blob_sha1": "2cb1746c7e9e6608d5371194b4a3a0a416011b32",
+      "repository_sha256": "cb64e190e4924849424686cb54ae560a4651016392c8799365a58d9121e4d0a4",
+      "repository_bytes": 251,
+      "repository_git_blob_sha1": "2cb1746c7e9e6608d5371194b4a3a0a416011b32",
+      "byte_exact_to_site": true
+    }
+  ],
+  "preserved_project": {
+    "path": "docs/projekt.html",
+    "predecessor_path": "docs/index.html",
+    "predecessor_sha256": "e302bd87d5d1a4f4e775e6ea89a54d52007a079d32077a46847ea8134fc430b1",
+    "predecessor_git_blob_sha1": "d93ded981254434360464147e667eaed0281e424",
+    "only_change": "One link back to the new homepage in the existing navigation"
+  },
+  "hosting_adaptations": [
+    "Homepage-local links are relative for static prefix hosting.",
+    "The offline entry reuses monitor/offline/; no duplicate offline client or cache.",
+    "Existing large software downloads retain the published Site release URL; its verification API is not ported or duplicated.",
+    "AI entry links to the Authority source for static hosting.",
+    "Existing S1 monitor serves the same sealed homepage and fixed public assets; original /mesh, /node and /client remain available.",
+    "Existing direct question and Authority-status entries remain visible in the new navigation."
+  ],
+  "boundaries": {
+    "scope": "VERSIONED_WEBSITE_SOURCES_AND_LOCAL_EXPORTED_HTTP_TESTS",
+    "chatgpt_site_republished": false,
+    "dns_or_tls_changed": false,
+    "public_domain_delivery_verified": false,
+    "native_product_acceptance_inferred": false,
+    "effect_ack_done": false
+  },
+  "exact_domain": {
+    "host": "raumzeitterminal.de",
+    "state": "OPEN_SEPARATE_DELIVERY_OBLIGATION",
+    "predecessor_observation": {
+      "at": "2026-10-18T06:52:11.491Z",
+      "http_status": 525
+    },
+    "retry": "Only after material DNS/TLS/authorized target hosting prerequisites change; no redeploy in this source task."
+  }
+}
