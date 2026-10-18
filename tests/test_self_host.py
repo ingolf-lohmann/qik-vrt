@@ -29,6 +29,63 @@ host = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(host)
 
 
+class BrowserStartupTests(unittest.TestCase):
+    """Model the Xserver last-client reset between readiness and GUI startup.
+
+    The isolated native Firefox/restart suite separately checks real binaries.
+    """
+    def launch(self, broken_firefox=False):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        volume = Path(temporary.name)
+        volume.chmod(0o700)
+        password = volume / 'vnc.password'
+        password.write_bytes(b'Test9Vnc'); password.chmod(0o600)
+        processes, display = [], {'noreset': False, 'resetting': False}
+        class Child:
+            def __init__(self, code=None): self.code = code
+            def poll(self): return self.code
+            def terminate(self): self.code = -15
+            def wait(self, timeout=None): return self.code
+        def spawn(argv, **kwargs):
+            if argv[0] == 'Xvfb': display['noreset'] = '-noreset' in argv
+            code = 1 if argv[0] == 'firefox' and (display['resetting'] or broken_firefox) else None
+            child = Child(code); processes.append(child); return child
+        def probe(argv, **kwargs):
+            # xdpyinfo succeeds and then closes the sole X connection. The
+            # following GUI clients race with reset unless the server retains it.
+            self.assertEqual(argv[0], 'xdpyinfo')
+            display['resetting'] = not display['noreset']
+            return subprocess.CompletedProcess(argv, 0)
+        config = {'browser_password_file': str(password), 'display': ':107',
+            'vnc_port': 5901, 'novnc_port': 6080, 'terminal_port': 8080}
+        manifest = {'browser_runtime': {'firefox_command': 'firefox'}}
+        with mock.patch.object(host.shutil, 'which', side_effect=lambda name: name), \
+                mock.patch.object(host, 'firefox_binary', return_value=Path('firefox')), \
+                mock.patch.object(host.subprocess, 'Popen', side_effect=spawn), \
+                mock.patch.object(host.subprocess, 'run', side_effect=probe), \
+                mock.patch.object(host.subprocess, 'check_output', return_value=b'"QIK-VRT TEMDD Live Universal Terminal" ("Navigator" "firefox")'), \
+                mock.patch.object(host, 'novnc_readback', return_value=True):
+            try:
+                result = host.browser_carrier(ROOT, manifest, config, volume)
+            except ValueError:
+                self.assertTrue(all(child.poll() is not None for child in processes))
+                raise
+        return result
+
+    def test_last_readiness_client_disconnect_does_not_reset_display(self):
+        processes, logs = self.launch()
+        try:
+            self.assertEqual(len(processes), 4)
+            self.assertTrue(all(child.poll() is None for child in processes))
+        finally:
+            host.stop_children(processes, logs)
+
+    def test_actual_browser_child_exit_still_holds_and_reaps_children(self):
+        with self.assertRaisesRegex(ValueError, 'BROWSER_CHILD_EXITED'):
+            self.launch(broken_firefox=True)
+
+
 class AuthoritySuccessionModelTests(unittest.TestCase):
     """Serialized local fault model; not independent deployed Mesh acceptance."""
     def setUp(self):
