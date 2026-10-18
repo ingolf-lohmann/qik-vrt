@@ -6,6 +6,7 @@ import copy
 import http.client
 import json
 from pathlib import Path
+import selectors
 import shutil
 import socket
 import sqlite3
@@ -367,6 +368,57 @@ class ProducerTests(unittest.TestCase):
         self.assertEqual(result.returncode, 2)
         self.assertEqual(json.loads(result.stderr)['state'], 'HOLD')
         self.assertEqual(len(self.runtime.ledger.replay(0)), 1)
+
+    def test_cli_serve_missing_subject_never_creates_state(self):
+        for index, (options, reason) in enumerate([
+                ([], 'REPOSITORY_REQUIRED'),
+                (['--pr', '534'], 'REPOSITORY_REQUIRED'),
+                (['--repository', 'ingolf-lohmann/qik-vrt'], 'PR_REQUIRED')]):
+            with self.subTest(options=options):
+                state = Path(self.temp.name) / f'unbound-{index}'
+                command = [sys.executable, '-B', str(ROOT/'src/qikvrt_temdd_event_ledger.py'),
+                           'serve', '--root', str(self.root), '--state-dir', str(state),
+                           '--port', '0', *options]
+                result = subprocess.run(command, capture_output=True, text=True, timeout=3)
+                self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+                self.assertEqual(json.loads(result.stderr)['reason'], reason)
+                self.assertEqual(result.stdout, '')
+                self.assertFalse(state.exists())
+
+    def test_cli_serve_reads_back_explicit_subject(self):
+        state = Path(self.temp.name) / 'explicit-node'
+        expected = m.subject(self.root, 'ingolf-lohmann/qik-vrt', 534)
+        command = [sys.executable, '-B', str(ROOT/'src/qikvrt_temdd_event_ledger.py'),
+                   'serve', '--root', str(self.root), '--state-dir', str(state), '--port', '0',
+                   '--repository', expected['repository'], '--pr', str(expected['pr'])]
+        child = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        try:
+            with selectors.DefaultSelector() as ready:
+                ready.register(child.stdout, selectors.EVENT_READ)
+                self.assertTrue(ready.select(5), 'CLI listener did not become ready')
+                listener = json.loads(child.stdout.readline())
+            self.assertEqual(listener, {'state': 'LISTENING', 'subject': expected, 'dod': False})
+            event = self.event('cli:explicit-subject', subject=expected)
+            receipt = m.submit(state, event)
+            self.assertEqual(receipt['event']['subject'], expected)
+            self.assertFalse(receipt['authority_effect'])
+            with sqlite3.connect((state/'temdd/events.sqlite3').as_uri() + '?mode=ro', uri=True) as db:
+                stored = json.loads(db.execute('SELECT body FROM events ORDER BY seq DESC LIMIT 1').fetchone()[0])
+            self.assertEqual(stored['subject'], expected)
+            self.assertEqual(stored['provenance'], event['provenance'])
+        finally:
+            child.terminate()
+            child.communicate(timeout=5)
+
+    def test_subject_correction_preserves_predecessor_bytes_without_relabeling(self):
+        first = self.runtime.append(self.event())
+        original = self.runtime.ledger.db.execute('SELECT body FROM events').fetchone()[0]
+        self.runtime.ledger.close()
+        self.runtime = m.Runtime(self.root, self.state, 'ingolf-lohmann/qik-vrt', 534)
+        self.assertEqual(self.runtime.ledger.replay(0), [])
+        self.assertEqual(self.runtime.ledger.db.execute('SELECT body FROM events').fetchone()[0], original)
+        self.assertEqual(json.loads(original)['subject'], first['subject'])
+        self.assertNotEqual(self.runtime.subject, first['subject'])
 
     def test_repository_entrypoint_and_test_admission(self):
         entrypoint = (ROOT/'deploy/universal-terminal/entrypoint.sh').read_text()
