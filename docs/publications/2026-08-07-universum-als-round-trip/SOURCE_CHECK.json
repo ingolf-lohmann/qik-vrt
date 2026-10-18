@@ -1,0 +1,25 @@
+{
+  "schema": "QIKVRT_VISIBLE_SOURCES_CHECK_V1",
+  "status": "PASS",
+  "source_count": 1,
+  "manifest_sha256": "aeb21e488af69a53ad3eeacaa462ce3d27dfc2b7da67580d94c9a13c3023c0dc",
+  "network_reachability_checked": false,
+  "claim_support_checked_automatically": false,
+  "errors": [],
+  "artifacts": [
+    {
+      "path": "/workspace/scratch/69d84c4e22d6/repo/docs/publications/2026-08-07-universum-als-round-trip/DAS_UNIVERSUM_ALS_ROUND_TRIP_DE.pdf",
+      "sha256": "492cfc5ed6de2d071dadfbad8faf43c08477c5faf9dffd2744edb19a0e09c43a",
+      "pages": 12,
+      "status": "PASS",
+      "errors": []
+    },
+    {
+      "path": "/workspace/scratch/69d84c4e22d6/repo/docs/publications/2026-08-07-universum-als-round-trip/DAS_UNIVERSUM_ALS_ROUND_TRIP_DE.txt",
+      "sha256": "794cd65dc499fdd949a78b13542d36ace379b08c2d521252b468d4634037dd4e",
+      "pages": null,
+      "status": "PASS",
+      "errors": []
+    }
+  ]
+}

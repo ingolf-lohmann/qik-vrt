@@ -1,0 +1,323 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "id": "QIKVRT_EDITORIAL_PUBLICATION_AUTOMATION_20261016_V1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "pull_request": 523,
+  "branch": "integration/515-519-521-522-20261012-eceb9b63",
+  "status": "SOURCE_EXTENDED_LOCAL_CHAIN_VERIFIED_CURRENT_NATIVE_GATES_REQUIRED",
+  "source_head": "17df5c06ad6e7d7ae611ec1a4be3b686fe39434b",
+  "source_tree": "8cf0b34ee0cb53410c160232e37fc50b08e6d143",
+  "owner_instruction": {
+    "human": "Ingolf Lohmann",
+    "date": "2026-10-16",
+    "scope": "Complete the existing publication automation in the Authority integration process; reuse generic publisher/router; preserve exact individual author authorization, review and publication gates; REST-only GitHub; no historical Goldkelch grant transfer."
+  },
+  "provenance": {
+    "human_contribution": "Ingolf Lohmann: product objective, publication workflow requirements and authorization to implement.",
+    "artificial_cognitive_contribution": "OpenAI Codex: source inspection, implementation, regression fixtures and verification.",
+    "publication_candidate_authorship": "Unchanged; this implementation creates no manuscript or author grant.",
+    "authorship_or_natural_person_authentication_inferred": false
+  },
+  "preceding_obligations": [
+    {
+      "source": "state/work_units/QIKVRT_AUTHORITY_CAPABILITY_TRANSFER_20261016_V1.json",
+      "scope": "Existing exact-Main generic publisher and metadata-editor route; separate Main, secret delivery, workflow admission, independent public bytes and Authority persistence."
+    },
+    {
+      "source": "state/work_units/QIKVRT_PUBLIC_PUBLISHER_EDITORIAL_QA_LAUNCH_20261016_V1.json",
+      "scope": "Existing public newsroom/questions source work preserved; a question does not automatically become an authorized publication."
+    }
+  ],
+  "reuse": {
+    "generic_publisher_changed": false,
+    "generic_publisher": "tools/qikvrt_zenodo_publish.py",
+    "existing_router_extended": "tools/qikvrt_publication_router.py",
+    "existing_workflow_extended": ".github/workflows/qikvrt_publication_router.yml",
+    "independent_public_verifier_extended": "tools/qikvrt_verify_zenodo_public_manifest.py",
+    "persistence_transport": "tools/qikvrt_self_heal_pr_materializer.py.GitHubAPI (existing create-only Git-Data/PR REST adapter)",
+    "publication_index": "tools/qikvrt_publication_overview.py",
+    "integrity": "tools/qikvrt_integrity.py",
+    "website_deployment": "Existing .github/workflows/qikvrt_effect_ack_http_terminal.yml",
+    "new_workflows_created": 0,
+    "self_heal_authority_or_allowlist_widened": false,
+    "website_runtime": "Existing sealed runtime/self-host/PACKAGE.json and docs/monitor/self-host.mjs; no second server"
+  },
+  "stages": [
+    {
+      "id": "INTAKE",
+      "implemented": "Reviewed repository queue, exact manifest bytes, upload/returned-manuscript identity, nonempty UTF-8 or locked pypdf structural/readability check; absent proof/author approval HOLD."
+    },
+    {
+      "id": "AUTHOR",
+      "implemented": "Existing generic v2 claim matrix, kernel/evidence/source, return and canonical individual principal authorization; multi-author HOLD; no synthesized approvals or transferred Goldkelch grants."
+    },
+    {
+      "id": "DISPATCH",
+      "implemented": "Protected reviewed Main push, actual merged carrier/current native approval/rules, current HEAD/TREE, durable create-only dispatch reservation, same workflow_dispatch exact inputs and execute=true. Default manual execute=false remains."
+    },
+    {
+      "id": "ZENODO",
+      "implemented": "Unchanged generic production publisher, full ordinary tests, protected secret step, existing one-use authorization and interrupted-publication recovery."
+    },
+    {
+      "id": "PUBLICATION_READBACK",
+      "implemented": "Separate anonymous public metadata and every-file MD5/SHA256 redownload; version DOI captured only after independent public verification."
+    },
+    {
+      "id": "PERSISTENCE",
+      "implemented": "Create-only draft receipt/docs/index/integrity PR using existing REST adapter and generators; ref/PR lost ACK readback, no force update/approval/Main merge or unchanged ambiguous repost."
+    },
+    {
+      "id": "WEBSITE",
+      "implemented": "Deterministic escaped metadata/DOI projection and opaque content-addressed assets, no uploaded authorization controls; existing reviewed deployment path remains."
+    },
+    {
+      "id": "DELIVERY_READBACK",
+      "implemented": "Native completion of actual existing Main deployment and product-HTTP jobs selects anonymous every-asset check on raumzeitterminal.de; skipped jobs NOOP, redirects/omissions/tamper HOLD."
+    }
+  ],
+  "source_paths": [
+    ".github/workflows/qikvrt_publication_router.yml",
+    "docs/monitor/self-host.mjs",
+    "runtime/capabilities/ZENODO_PUBLICATION_CAPABILITY.json",
+    "state/publication_requests/README.md",
+    "tests/test_publication_router.py",
+    "tests/test_self_host.py",
+    "tools/qikvrt_publication_overview.py",
+    "tools/qikvrt_publication_router.py",
+    "tools/qikvrt_verify_zenodo_public_manifest.py"
+  ],
+  "local_verification": {
+    "tests": 129,
+    "router_tests": 44,
+    "unchanged_generic_machine_proof_authorization_tests": 68,
+    "zenodo_transport_tests": 17,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "evidence_scope": "Local real v2 proof/authorization and actual temporary Git; remote GitHub/Zenodo/HTTP transports are invented test fixtures. This is not productive publication, deployment, human session or native current-head acceptance.",
+    "pdf_scope": "Local pypdf 6.10.0 is correctly held; the native workflow provisions the existing hash-locked pypdf 6.15.0 runtime for actual readable/encrypted PDF tests. No package downgrade.",
+    "tool_cache": "34/34, 100%, verified",
+    "workflow_yaml": "Parsed; all 13 run steps passed bash -n",
+    "integrity": "Canonical generator projection against the source tree; fresh native full checkout verification required.",
+    "full_local_repository_suite": "NOT_CLAIMED; local workspace is an API-verified source subset."
+  },
+  "productive_prerequisites": [
+    {
+      "id": "MAIN_REVIEW_INTEGRATION",
+      "state": "OPEN",
+      "next": "Current independent native review, effective rules and protected Main integration of existing PR523."
+    },
+    {
+      "id": "ACTIONS_ADMISSION",
+      "state": "SOURCE_LANES_ADMITTED_PRODUCTION_DISPATCH_SEPARATE",
+      "evidence": "Native17df5c06 push and PR jobs were actually admitted. Predecessor cd3c0689 action_required is historical. The client still exposes no initial manual workflow dispatch/approval POST; productive workflow gates remain separate."
+    },
+    {
+      "id": "EXACT_CANDIDATE_AUTHOR_GRANT",
+      "state": "REQUIRED_PER_MANUSCRIPT",
+      "next": "Only a new exact Authority v2 manuscript grant may enter the queue; no grant is created by this work unit."
+    },
+    {
+      "id": "PROTECTED_ZENODO_CREDENTIAL_DELIVERY",
+      "state": "UNKNOWN",
+      "next": "Observe the already bound repository secret in an admitted productive job; no secret value is read, copied or persisted."
+    },
+    {
+      "id": "EVIDENCE_DRAFT_PR_CAPABILITY",
+      "state": "NATIVE_OPERATION_REQUIRED",
+      "next": "Observe actual scoped Git-Data ref and draft PR writes with readback; repository workflow permissions remain controlling."
+    },
+    {
+      "id": "EXISTING_RUNTIME_DEPLOYMENT",
+      "state": "OPEN",
+      "next": "Actual signing/runtime/host admission and the existing main deployment jobs; no new proxy or provider is introduced."
+    },
+    {
+      "id": "PUBLIC_EXACT_HOST",
+      "state": "OPEN",
+      "evidence": "2026-10-16T17:19:31Z public monitor: HTTP525, positive DNS A217.160.0.52; no byte-exact application delivery."
+    },
+    {
+      "id": "MIRROR_PERSISTENCE_EQUALITY",
+      "state": "OPEN",
+      "next": "Restore an authorized independently observed Mirror persistence route before any pair-equality or whole-system completion claim."
+    }
+  ],
+  "knowledge": [
+    {
+      "id": "source-current-router",
+      "kind": "SOURCE_OBSERVATION",
+      "value": "Generic publisher and exact Main/manual dispatch already existed; new code extends their orchestration.",
+      "source_head": "cd3c0689bd0cbfd68c71dac2114717ce71516711"
+    },
+    {
+      "id": "source-ready-state",
+      "kind": "NATIVE_PR_OBSERVATION",
+      "value": "PR523 is open and non-draft at source cd3c0689; older Draft markers are superseded for this observation. Independent latest-head native approval remains separate."
+    }
+  ],
+  "production_effects": {
+    "new_zenodo_publication": false,
+    "new_doi": null,
+    "production_dispatch_by_this_client": 0,
+    "new_author_grant": false,
+    "website_deployment": false,
+    "protected_main_mutation": false,
+    "effect_ack_done": false
+  },
+  "native_successor_evidence": "Read actual resulting workflow runs/jobs/logs/artifacts after API integration. Precommit tests and this prepared receipt do not establish it.",
+  "concurrent_integration": {
+    "preserved_commits": [
+      "75e29aa90a7b5537d1d661fc5b7dafc43a0b848c",
+      "aef2ac8bc435199ca9e22314ee4dfccf459ced0c"
+    ],
+    "scope": "Independent self-host offline export and its missing-history fixture repair; all seven incoming paths retained. Publisher/router sources unchanged by those commits.",
+    "predecessor_tests_transferred": false
+  },
+  "native_predecessor": {
+    "head": "17df5c06ad6e7d7ae611ec1a4be3b686fe39434b",
+    "tree": "8cf0b34ee0cb53410c160232e37fc50b08e6d143",
+    "all_10_blobs_independently_byte_exact": true,
+    "router_run": 38940994702,
+    "router_job": 117108284529,
+    "router_result": "success;43 controls including actual pinned pypdf6.15.0 text/encryption",
+    "full_push_run": 38940994782,
+    "full_push_test_job": 117108282987,
+    "full_push_result": "failure: test_pdf_text_and_encryption_with_the_actual_locked_runtime called metadata.version before accounting for a completely absent pypdf distribution in the general CI environment. Original traceback: importlib.metadata.PackageNotFoundError: No package metadata was found for pypdf.",
+    "causal_repair": "Keep the exact6.15.0 production requirement; turn absent package metadata into the same explicit runtime HOLD; add an absence regression and retain actual parser execution in the separately provisioned native publication lane. No package downgrade or fake parser PASS.",
+    "publication_effect_jobs": "requested-zenodo/editorial-queue/editorial-public-readback correctly skipped on the source push/PR; no production record created.",
+    "pass_transferred_to_successor": false
+  },
+  "independent_successor_20261016": {
+    "source_head": "4e2490e1af9d42d39bfe080509c98c2db4f53028",
+    "source_tree": "d9904a89cae99cd362e2400cb7740a95c0858c95",
+    "predecessor_preserved": true,
+    "generic_publisher_changed": false,
+    "new_workflows": 0,
+    "new_author_grants": 0,
+    "findings_and_repairs": [
+      {
+        "id": "EDITORIAL_DOI_CATALOG_LINK",
+        "before": "The real persistence path called the index generator, but it added only a repository bundle; the new DOI was absent from zenodo_records and the human DOI list. The original persistence test replaced the generator.",
+        "after": "The existing index generator validates canonical editorial completion, original v2 publisher evidence, every saved public file identity and staged website bytes. It adds the DOI to the machine and human catalogs without changing the historical public-corpus observation scope. Real index/integrity generators now run in the isolated chain test."
+      },
+      {
+        "id": "EXACT_PUBLIC_RECEIPT_BINDING",
+        "before": "Completion validation accepted modified status, authentication flags, file count, per-file SHA256 and an inconsistent completion DOI.",
+        "after": "Reuse one local validation of the unchanged publisher evidence and the complete typed anonymous receipt; malformed, omitted, changed or credentialed verification claims hold. Local receipt validation explicitly does not assert new public access."
+      },
+      {
+        "id": "DIRECT_EXECUTION_NATIVE_GOVERNANCE",
+        "before": "Direct publish and metadata-edit execute=true requests without an editorial binding did not call the current native governance gate.",
+        "after": "Every effectful router invocation requires the same exact Main merge and current independent Code Owner rule/review gate. Read-only preflight remains nonproductive."
+      }
+    ],
+    "regression_evidence": {
+      "original_catalog_and_receipt_controls": "Two added controls reproduced six failures before the repairs.",
+      "original_manual_governance_control": "The new control reproduced both missing governance denials and the attempted mocked publisher invocation before the repair.",
+      "fixed_controls": "139 tests, zero failures/errors/skips; includes46 router controls,8 catalog controls,68 unchanged machine-proof/authorization controls and17 unchanged Zenodo transport controls.",
+      "tool_cache": "34/34,100 percent",
+      "workflow_validation": "YAML parsed; all13 shell steps pass bash -n"
+    },
+    "isolated_chain": [
+      "Reviewed committed intake",
+      "One reserved automatic dispatch with exact generated inputs",
+      "Read-only preflight",
+      "Real existing generic publisher and single-use lock state machine",
+      "Anonymous public metadata and all-file verification",
+      "Website staging",
+      "Real publication index and repository integrity generation",
+      "Create-only draft receipt/docs carrier",
+      "Anonymous exact website-file readback"
+    ],
+    "evidence_boundary": "Temporary Git history and real local validators/generators. GitHub governance/control-plane, Zenodo and public HTTP are invented external transports. No production authorization, native approval, new public record, Main merge, website deployment or live delivery is inferred.",
+    "productive_queue_requests_observed": 0,
+    "native_checks_required_for_resulting_commit": true,
+    "operational_gaps": [
+      "Protected Main and exact independent review/merge",
+      "Native automated evidence-PR execution admission",
+      "Exact per-candidate Authority v2 author authorization",
+      "Protected Zenodo credential delivery in an admitted execution",
+      "Real public Zenodo metadata and byte-exact original downloads",
+      "Evidence draft PR review and Main integration",
+      "Existing deployment and exact-host TLS/application acceptance",
+      "Mirror persistence before pair equality"
+    ],
+    "existing_automation_admission_boundary": {
+      "source": "https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow",
+      "observation": "workflow_dispatch is an exception to GITHUB_TOKEN recursion suppression; automated pull_request opened/synchronize/reopened runs may require native approval. No token scope expansion or substitute approval is introduced."
+    },
+    "domain_readback": {
+      "observed_at": "2026-10-16T17:51:08.084Z",
+      "url": "https://raumzeitterminal.de/",
+      "http_status": 525,
+      "public_A": "217.160.0.52",
+      "source": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/readback?id=29bf48b4-7ff8-4465-8877-dba77ae086c0",
+      "application_delivery_verified": false
+    },
+    "provenance": {
+      "human": "Ingolf Lohmann: task and authorization",
+      "artificial": "OpenAI Codex: independent source inspection, causal regressions, implementation and isolated verification"
+    }
+  },
+  "delivery_carrier_successor_20261016": {
+    "source_head": "04792d27f30a6ae49cde4b381331604249ee18d2",
+    "source_tree": "591ff7acef9b6b7d08acc4ebe8ee06619d921fc0",
+    "finding": "The generated website projection was absent from the explicit existing self-host fileset and HTTP route map. A staged page alone was not a deliverable publication page.",
+    "repair": [
+      "The existing create-only draft review carrier adds exactly its generated public assets to the committed self-host PACKAGE.json fileset, preserving all original dependencies and rejecting unrelated local package changes.",
+      "The existing sealed server exposes only publication index HTML, public metadata JSON and opaque content-addressed approved download names. Author controls, arbitrary docs, scripts and files outside the sealed manifest have no publication route.",
+      "The existing publication workflow provisions its existing Node24 runtime and tests a real sealed package, process startup and byte-exact local HTTP. No new workflow, host or publisher is introduced."
+    ],
+    "local_verification": {
+      "tests": 141,
+      "router": 47,
+      "catalog": 8,
+      "unchanged_machine_proof_authorization": 68,
+      "unchanged_zenodo_transport": 17,
+      "actual_sealed_runtime_http": 1,
+      "result": "PASS; no failures, errors or skips",
+      "tool_cache": "34/34 available; 100 percent; verified separately"
+    },
+    "actual_runtime_controls": [
+      "Seal and freeze original package plus synthetic publication assets",
+      "Start existing exported runtime and confirm its exact source subject and every original PDF hash",
+      "GET original HTML, DOI JSON and non-UTF8 PDF bytes; exact MIME and nosniff",
+      "Directory index alias and HEAD; writes rejected with405",
+      "Even deliberately packaged control names, README and script names return404",
+      "Change sealed PDF bytes; actual subsequent startup refuses the package"
+    ],
+    "predecessor_native_evidence": {
+      "head": "04792d27f30a6ae49cde4b381331604249ee18d2",
+      "tree": "591ff7acef9b6b7d08acc4ebe8ee06619d921fc0",
+      "publication_job": 117121203155,
+      "publication_tests": 54,
+      "publication_result": "success",
+      "full_push_test_job": 117120406038,
+      "full_push_test_result": "success; MAKE_TEST_EXIT=0; terminal PASS mode=full-test",
+      "scope": "Predecessor only; these results do not verify this successor source"
+    },
+    "latest_prerequisite_observations": {
+      "main_head": "697962404686511500ddab53024f5e3ae783ee8e",
+      "main_protected": false,
+      "repository_rulesets": [],
+      "native_reviews": "Six COMMENTED reviews; no current APPROVED",
+      "http_contract_job": 117121203542,
+      "http_contract_result": "success",
+      "host_deploy_job": 117125783276,
+      "host_deploy_result": "skipped",
+      "independent_host_readback_job": 117125783910,
+      "independent_host_readback_result": "skipped",
+      "firefox_job": 117121314957,
+      "firefox_result": "failure; actual unsigned extension activation denied; AMO pair unavailable"
+    },
+    "current_successor_native_verification": "REQUIRED_AFTER_NONFORCE_API_INTEGRATION; no predecessor PASS transfer",
+    "productive_boundary": "The existing host deployment remains behind its explicit workflow_dispatch and protected host admission. This source repair does not infer that those productive prerequisites exist or replace required review. Public exact-host readback remains required after actual deployment.",
+    "new_author_grants": 0,
+    "new_production_requests": 0,
+    "new_zenodo_publication": false,
+    "website_deployment": false,
+    "EFFECT_ACK_DONE": false
+  }
+}

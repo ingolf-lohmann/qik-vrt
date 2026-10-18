@@ -1,10 +1,10 @@
 # Repository answer
 
-The autonomous model step was not available or failed. No scientific or technical answer is asserted. The request and repository context were materialized for review.
+Issue #503 was materialized and classified by the repository-local deterministic compiler. No allowlisted executable handler matches this request on the current tree.
 
 ## Evidence used
 
-Repository request and materialized context only.
+Exact issue JSON and bounded repository context.
 
 ## Formal status
 
@@ -20,11 +20,11 @@ BLOCKED_WITH_NEXT_ACTION
 
 ## Disposition reason
 
-MODEL_INFERENCE_UNAVAILABLE
+UNSUPPORTED_DETERMINISTIC_WORK_UNIT
 
 ## Required next action
 
-Resume the bounded issue transaction when a trusted inference or deterministic work-unit path is available.
+Add and review one schema-validated, effect-bounded handler for this work-unit class, then replay the unchanged issue event.
 
 ## Gate result
 

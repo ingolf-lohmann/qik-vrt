@@ -1,9 +1,12 @@
 {
   "schema": "qikvrt_personal_firefox_capability_boundary_v1",
-  "version": "1.0",
+  "version": "1.1",
   "source_subject": {
-    "standard_repository": "Goldkelch/qik-vrt",
+    "repository_roles_source": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+    "standard_repository": "ingolf-lohmann/qik-vrt",
+    "mirror_repository": "Goldkelch/qik-vrt",
     "personal_repository": "ingolf-lohmann/qik-vrt",
+    "personal_payload_root": "personal/ingolf-lohmann/firefox-assistant",
     "predecessor_evidence_transfer": false
   },
   "transitions": {
@@ -30,11 +33,14 @@
       "README.md"
     ],
     "forbidden_personal_markers": [
-      "ingolf-lohmann/qik-vrt",
+      "personal/ingolf-lohmann/",
+      "qikvrt_personal_assistant",
       "QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1",
       "QIKVRT_PERSONAL_FIREFOX",
       "OPENAI_API_KEY",
-      "CHATGPT_ACCESS_TOKEN"
+      "CHATGPT_ACCESS_TOKEN",
+      "qikvrt_personal_auth",
+      "QIKVRT_PERSONAL_AUTH_CONFIG"
     ]
   },
   "personal_release_acceptance": {
@@ -47,7 +53,11 @@
     ],
     "current_candidate": {
       "boundary_contract_materialized": true,
-      "personal_capability_manifest_materialized": false,
+      "personal_capability_manifest_materialized": true,
+      "personal_capability_manifest": "personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json",
+      "executable_adapter_materialized": true,
+      "normal_baseline_implementation_materialized": true,
+      "normal_baseline_runtime_readback": false,
       "authenticated_runtime_readback": false,
       "personal_release_effect_ack_done": false,
       "state": "HOLD"

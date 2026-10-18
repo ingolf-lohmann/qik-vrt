@@ -1,0 +1,35 @@
+{
+  "title": "Gesamtbetrachtung aller ermittelten Zenodo- und IETF-Veröffentlichungen: QIK-VRT und bedingte Kriterien größter Anschlussfähigkeit",
+  "upload_type": "publication",
+  "publication_type": "article",
+  "description": "Wissenschaftliche Gesamtbetrachtung des ermittelten öffentlichen Korpus von 44 Zenodo-Versionen in 32 Concept-Familien und fünf Revisionen zweier IETF-Draft-Reihen. Neun Lean-4-Sätze beweisen bedingte Kriterien im deklarierten Modell. 479 erhaltene Zenodo-Originaldateien und fünf IETF-Originaltexte sind bytegebunden. Physikalische Korrespondenz, universelle Überlegenheit, unabhängige wissenschaftliche Reproduktion und produktive Runtime-Wirkung bleiben gesonderte offene Nachweispflichten. Neue Manuskript- und Formalbeiträge: OpenAI Codex im Auftrag von Ingolf Lohmann; inhaltliche Owner-Abnahme und kandidatenspezifische Upload-Freigabe sind nicht vorausgesetzt.",
+  "creators": [
+    {
+      "name": "Lohmann, Ingolf"
+    }
+  ],
+  "version": "2026-10-15-publication-candidate.1",
+  "access_right": "open",
+  "license": "cc-by-nc-nd-4.0",
+  "language": "deu",
+  "keywords": [
+    "QIK-VRT",
+    "Lean 4",
+    "Anschlussfähigkeit",
+    "Claim-Traceability",
+    "wissenschaftliche Gesamtbetrachtung"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "10.5281/zenodo.21888130",
+      "relation": "isSupplementTo",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "10.5281/zenodo.21721918",
+      "relation": "isSupplementTo",
+      "scheme": "doi"
+    }
+  ],
+  "prereserve_doi": true
+}

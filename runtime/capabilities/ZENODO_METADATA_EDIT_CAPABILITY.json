@@ -83,5 +83,24 @@
     "tests/test_qikvrt_zenodo_metadata_edit.py"
   ],
   "rights_holder": "Ingolf Lohmann",
-  "license": "Implementation files declare their software license; this capability description is CC-BY-NC-ND-4.0"
+  "license": "Implementation files declare their software license; this capability description is CC-BY-NC-ND-4.0",
+  "invocation_routes": [
+    {
+      "workflow": ".github/workflows/qikvrt_publication_router.yml",
+      "event": "workflow_dispatch",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "ref": "refs/heads/main",
+      "operation": "metadata-edit",
+      "default": "PREFLIGHT_ONLY; execute=false",
+      "required_inputs": [
+        "manifest_path",
+        "manifest_sha256",
+        "expected_main_head",
+        "expected_main_tree"
+      ],
+      "credential_source": "Existing target-repository secrets.ZENODO_ACCESS_TOKEN and scoped github.token; source code does not transfer or prove credentials.",
+      "admission": "Canonical candidate-specific authorization, existing v2 proof/return/one-use gates, complete ordinary tests, exact fresh Authority Main readback.",
+      "completion": "Independent public byte readback and Authority evidence persistence remain required; an Actions artifact or publisher return alone is not EFFECT_ACK_DONE."
+    }
+  ]
 }

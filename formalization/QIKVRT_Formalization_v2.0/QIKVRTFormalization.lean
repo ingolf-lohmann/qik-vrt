@@ -6,10 +6,13 @@ import QIKVRTFormalization.Process.ShiftInvariance
 import QIKVRTFormalization.Process.OperationalContinuation
 import QIKVRTFormalization.Process.ConnectabilitySimulation
 import QIKVRTFormalization.Process.WeightedConnectability
+import QIKVRTFormalization.Process.ConnectabilityMaximality
 import QIKVRTFormalization.Escape.FiniteStages
 import QIKVRTFormalization.Retrocausality.ForwardProcess
 import QIKVRTFormalization.Retrocausality.Reclassification
+import QIKVRTFormalization.Retrocausality.ObserverRelative
 import QIKVRTFormalization.Physics.EmpiricalBridge
+import QIKVRTFormalization.Physics.MeasurementTransfer
 import QIKVRTFormalization.Definitions.Manuscript
 import QIKVRTFormalization.Completion.OpenClaims
 import QIKVRTFormalization.Claims.CheckedRegistry
