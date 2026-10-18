@@ -600,7 +600,7 @@ def pages(path, token):
 
 def production_gate(head):
     """Fresh native governance; caller must already be on trusted main."""
-    from tools.qikvrt_required_review_gate import evaluate_required_review
+    from tools.qikvrt_required_review_gate import evaluate_required_review, resolve_required_code_owner
     token = os.environ.get("GITHUB_TOKEN")
     require(token and os.environ.get("GITHUB_REPOSITORY") == REPOSITORY and
             os.environ.get("GITHUB_REF") == "refs/heads/main", "TRUSTED_MAIN_PRODUCTION_REQUIRED")
@@ -648,13 +648,14 @@ def production_gate(head):
         if live.get("merge_commit_sha") != head and live.get("head", {}).get("sha") != head:
             continue
         reviews = pages("/pulls/" + str(pr["number"]) + "/reviews", token)
-        decision = evaluate_required_review(live, rules, reviews, required_code_owner="Goldkelch")
+        reviewer = resolve_required_code_owner(REPOSITORY, pr_author=live["user"]["login"])
+        decision = evaluate_required_review(live, rules, reviews, required_code_owner=reviewer)
         if decision["gate_state"] == "success":
             require(json.loads(get(base + "/branches/main", token))["commit"]["sha"] == head,
                     "MAIN_DRIFT_AFTER_ADMISSION")
             return {"state": "PRODUCTION_GOVERNANCE_ADMITTED", "source_head": head,
                     "review_id": decision["review_id"], "pr_number": pr["number"], "environment": ENVIRONMENT}
-    raise ValueError("EXACT_MERGED_PR_INDEPENDENT_REVIEW_REQUIRED")
+    raise ValueError("EXACT_MERGED_PR_OWNER_REVIEW_REQUIRED")
 
 
 def binding(raw, pin, image):

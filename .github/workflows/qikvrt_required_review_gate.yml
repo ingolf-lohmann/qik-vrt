@@ -96,7 +96,8 @@ jobs:
               if current['head']['sha'] != head or current['base']['sha'] != pr['base']['sha']:
                   raise SystemExit('BLOCK: native governance subject drifted before status publication')
               state=decision['gate_state']
-              description=f"{state}: {decision.get('first_blocker') or 'CODE_OWNER_REVIEW_CURRENT'}"[:140]
+              outcome=decision.get('first_blocker') or ('OWNER_PRINCIPAL_REVIEW_CURRENT' if decision.get('review_basis') == 'OWNER_PRINCIPAL_REVIEW' else 'CODE_OWNER_REVIEW_CURRENT')
+              description=f"{state}: {outcome}"[:140]
               for context in contexts:
                   subprocess.check_call([
                       'gh','api','--method','POST',f'repos/{repo}/statuses/{head}',
@@ -104,6 +105,6 @@ jobs:
                       '-f',f'target_url={os.environ["GITHUB_SERVER_URL"]}/{repo}/actions/runs/{os.environ["GITHUB_RUN_ID"]}'
                   ])
               with summary.open('a', encoding='utf-8') as stream:
-                  stream.write(f"- PR #{number}, head `{head}`: **{state} — {decision.get('first_blocker') or 'CODE_OWNER_REVIEW_CURRENT'}**\n")
+                  stream.write(f"- PR #{number}, head `{head}`: **{state} — {outcome}**; basis `{decision.get('review_basis')}`, platform state `{decision.get('platform_review_state')}`.\n")
               print(json.dumps(decision, sort_keys=True))
           PY

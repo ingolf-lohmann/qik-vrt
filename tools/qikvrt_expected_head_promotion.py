@@ -247,8 +247,8 @@ def evaluate_promotion(snapshot: Mapping[str, Any]) -> dict[str, Any]:
         or native.get("pr_number") != snapshot.get("pr_number")
     ):
         return _blocked(snapshot, "NATIVE_GOVERNANCE_EVIDENCE_MISMATCH", "native governance evidence is not bound to this PR, head, base and status context")
-    if governance.get("gate_state") != "success" or native.get("gate_state") != "success" or governance.get("acceptance") != "NATIVE_GOVERNANCE_SATISFIED":
-        return _blocked(snapshot, governance.get("first_blocker") or "NATIVE_GOVERNANCE_NOT_SATISFIED", "native enforcement and an independent current-head Code Owner approval are required")
+    if governance.get("gate_state") != "success" or native.get("gate_state") != "success" or governance.get("acceptance") not in {"NATIVE_GOVERNANCE_SATISFIED", "OWNER_PRINCIPAL_REVIEW_SATISFIED"}:
+        return _blocked(snapshot, governance.get("first_blocker") or "NATIVE_GOVERNANCE_NOT_SATISFIED", "a current-head Principal review or enforced independent native Code Owner approval is required")
 
     required = snapshot.get("required_gates")
     if not isinstance(required, list) or not required or not all(
@@ -504,10 +504,11 @@ def _live_graphql_admission(snapshot: Mapping[str, Any], qualification: Mapping[
         raise PromotionBlock("NATIVE_POLICY_DRIFT_OR_BYPASS")
     reviews = read_json(f"repos/{repo}/pulls/{number}/reviews?per_page=100")
     review = evaluate_required_review(pr, rules, reviews,
-                                      required_code_owner=resolve_required_code_owner(repo))
+                                      required_code_owner=resolve_required_code_owner(repo, pr_author=pr["user"]["login"]))
     if review["gate_state"] != "success":
         raise PromotionBlock(review["first_blocker"])
-    if review["required_code_owner"].casefold() == qualification["executor_login"].casefold():
+    if (review.get("review_basis") != "OWNER_PRINCIPAL_REVIEW"
+            and review["required_code_owner"].casefold() == qualification["executor_login"].casefold()):
         raise PromotionBlock("EXECUTOR_REVIEW_NOT_INDEPENDENT")
     if not _required_checks_green(head, rules, read_json, repo):
         raise PromotionBlock("NATIVE_REQUIRED_CHECKS_NOT_GREEN")

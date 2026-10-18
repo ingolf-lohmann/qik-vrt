@@ -12,6 +12,12 @@
     "machine_state": "AI_PROGRESS.json",
     "human_projection": "AI_STATUS.md"
   },
+  "owner_review_acceptance": {
+    "policy": "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+    "owner_record": "state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+    "gate": "tools/qikvrt_required_review_gate.py",
+    "rule": "The Principal Code Owner and Product Owner's considered explicit approval is also review, including on his own PR. Record the already authorized decision with the exact subject and actual platform state; do not demand another independent review or repeat the same permission request."
+  },
   "runtime_cache": {
     "policy": "runtime/CACHE_POLICY.md",
     "toolchain_lock": "runtime/toolchains/TOOLCHAIN.lock.tsv",

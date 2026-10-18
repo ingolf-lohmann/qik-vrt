@@ -81,6 +81,19 @@ class ExpectedHeadPromotionTests(unittest.TestCase):
         self.assertEqual(result["expected_head_sha"], "b" * 40)
         self.assertEqual(result["first_blocker"], None)
 
+    def test_principal_review_is_valid_without_replacing_checks_or_target_ref_cas(self):
+        from tests.test_qikvrt_required_review_gate import PrincipalReviewGateTests
+        fixture = PrincipalReviewGateTests()
+        status = [{"id": 8, "context": GOVERNANCE_STATUS_CONTEXT, "state": "success"}]
+        governance = project_governance(fixture.pr(), [], [fixture.review()], status, required_code_owner="Goldkelch")
+        snapshot = self.snapshot(pr_number=523, governance_projection=governance)
+        self.assertEqual(MODULE.evaluate_promotion(snapshot)["state"], "PROMOTABLE")
+        snapshot["workflow_runs"][0]["conclusion"] = "failure"
+        self.assertEqual(MODULE.evaluate_promotion(snapshot)["first_blocker"], "REQUIRED_EXACT_HEAD_GATE_NOT_GREEN")
+        snapshot["workflow_runs"][0]["conclusion"] = "success"
+        del snapshot["target_ref_cas"]
+        self.assertNotEqual(MODULE.evaluate_promotion(snapshot)["state"], "PROMOTABLE")
+
     def test_old_action_required_run_is_superseded_by_newer_success(self) -> None:
         snapshot = self.snapshot()
         snapshot["workflow_runs"].extend(

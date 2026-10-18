@@ -13,55 +13,47 @@ This contract applies to `Goldkelch/qik-vrt` and `ingolf-lohmann/qik-vrt`. It is
 
 ## Current Mesh Authority for the personal repository
 
-The network's exact name is **QIK VRT Mesh Netzwerk**. On 13 October 2026,
-Ingolf Lohmann reaffirmed that he is its Principal, Schöpfer, Code Owner,
-Product Owner and Lizenzgeber in one natural person and authorized production:
-“Freigabe erteilt zur Produktivierung.” The existing `mesh_authority` binding
-records this instruction and its production work unit. His “Quod erat
-demonstrandum” is an attributed Owner formulation. The grant is effective;
-the actual delivery, independent native review and runtime acceptance retain
-their separate evidence requirements. Existing license terms are preserved.
+The network's exact name is **QIK VRT Mesh Netzwerk**. Ingolf Lohmann is
+its human Principal, Schöpfer, Code Owner, Product Owner and Lizenzgeber.
+The executing instance performs authorized work; the repository is durable
+working memory. Authority/Mirror roles come solely from
+`policy/CANONICAL_UPSTREAM_REMOTE_V1.json`. `Goldkelch/qik-vrt` is a historical
+source and does not issue superior permission for the current Authority.
 
-For `ingolf-lohmann/qik-vrt`, the Owner's 6 October 2026 correction binds three
-roles: Ingolf Lohmann is the human Product Owner and Code Owner; the QIK-VRT
-executing instance carries out authorized tested work; the repository retains
-its durable working memory. The current authority is this Mesh constellation.
-`Goldkelch/qik-vrt` remains a historical source, not a superior permission issuer
-for this repository. The human/executor/storage binding is in the existing policy's `mesh_authority`.
-Repository Authority/Mirror names are resolved solely from
-`policy/CANONICAL_UPSTREAM_REMOTE_V1.json`; governance must agree with that
-source and cannot create another role definition.
+On 18 October 2026 the Principal expressly clarified:
 
-The existing gate resolves the human principal from that trusted policy and
-verifies all CODEOWNERS entries. The Owner retains his Code Ownership and final
-authority. His explicit 28 September representative-review delegation to
-Goldkelch is retained in the existing Owner record and bound to its exact
-SHA-256 by the policy. Every CODEOWNERS entry contains the principal and that
-explicit delegate; an unrecorded, revoked, drifted or bot delegation fails closed.
-For a principal-authored PR the native reviewer is the delegate; for a
-delegate-authored PR and other authors the reviewer is the principal. Calls
-without a PR author continue to resolve the human principal for role readback.
-Publisher, live projection and both promotion observations pass the actual PR
-author to this same resolver. Ruleset/authority checks retain the principal
-binding; no former repository is restored as a permission issuer.
-Native review still requires an independent human APPROVED event
-on the exact current HEAD. An Owner decision is valid authority, while a
-COMMENT, author self-approval or automated technical APPROVE cannot fabricate
-that separate GitHub state. Drafts created through the Owner's own principal
-remain subject to the native self-approval restriction. A workflow/repository
-identity is an executor or store, never a substitute human reviewer.
+> Also nach meiner Definition bin ich der Principal Code Owner und Product Owner. Und wenn ich sage Freigabe erteilt und ich das auch mir gut überlegt habe, gilt das zugleich als Review. Alles andere war, ist und bleibt inakzeptabel.
 
-The Owner's renewed explicit authorization on 14 October 2026 is preserved in
-that same versioned record. It authorizes the existing repair; it does not
-manufacture GitHub APPROVED, collaborator membership, platform administration,
-Main enforcement or a changed REST-only route. Distinct platform account names
-are not by themselves proof of distinct natural persons or causal independence.
-Bot dispositions remain COMMENT-only, and all current-head, native-enforcement,
-last-push and stale-review protections remain required.
+His considered explicit approval **is review**, including for his own PR.
+It supersedes the prior unconditional requirement for an additional independent
+native approval. Do not ask him to repeat an already granted authorization or
+review. The existing Owner record retains the original instructions and this
+new decision; policy binds the exact record bytes and instruction hash.
 
-The Ruleset writer retains its historical filename for continuity and every
-existing protection. Administrative credentials and live adoption remain
-separate observed effects; the authority allocation alone does not mint them.
+The existing gate accepts either of two accurately distinguished paths:
+
+- `OWNER_PRINCIPAL_REVIEW`: the already authorized human decision is recorded
+  through the bound Principal account as an actual `COMMENTED` review. Its
+  structured body binds repository, PR, exact head, observed PR base, Owner
+  record and instruction. The commit identifies its immutable Git tree. The
+  account login, numeric ID, User type, submitted event and effective time must
+  match. Missing, stale, revoked, dismissed, adverse or mismatched records block.
+- `INDEPENDENT_NATIVE_APPROVAL`: the prior exact-head independent human
+  `APPROVED` path remains available with its native Code Owner, stale-dismissal
+  and last-push rules. The active Goldkelch review delegation and every
+  CODEOWNERS entry remain checked against the exact Owner record.
+
+An authorized executor may record the Principal's actual instruction; its own
+technical disposition cannot substitute for that instruction. The account event
+is not biometric proof of the named person. `COMMENTED` remains `COMMENTED`;
+it is never reported as independent GitHub `APPROVED`. Human, executor and
+storage retain their separate roles. Bot dispositions remain COMMENT-only.
+
+Tests, signing, production admission, publication authorization, native platform
+protections and useful exact-host delivery retain their own evidence. This
+change does not disable or impersonate any GitHub platform protection or mint
+credentials. The production authorization of 13 October and historical review
+records remain preserved. License terms are unchanged.
 
 
 ## Requested reviews
@@ -74,7 +66,7 @@ When a review is requested, a conforming repository client or agent must act wit
 4. bind the result to the exact base, head, tree, and reviewed scope;
 5. distinguish a substantive Product-Owner or technical disposition from GitHub's account-level review state.
 
-A requested review may not be replaced by repeated requests, reminders, or status commentary when the connected client can inspect the candidate itself. A review may remain pending only for a precise blocker such as missing bytes, head drift, unavailable required evidence, unresolved security or rights questions, or a platform identity rule that prevents the requested account-level event.
+A requested review may not be replaced by repeated requests, reminders, or status commentary when the connected client can inspect the candidate itself. A review may remain pending only for a precise blocker such as missing bytes, head drift, unavailable required evidence, unresolved security or rights questions, or an unavailable operation needed to record the authorized decision. A GitHub self-approval restriction does not invalidate a Principal review recorded as COMMENTED.
 
 A client must never impersonate another GitHub identity or claim that GitHub recorded `APPROVED` when the platform stored only `COMMENTED`. In that case the substantive finding and Product-Owner disposition must still be persisted accurately, together with the platform limitation.
 
@@ -87,7 +79,7 @@ Review completion does not itself authorize merge, promotion, release, deploymen
 | Code-owner review observer | A valid review lifecycle event was observed | None; no native rules or approval are inferred |
 | Requested review executor | Selection or a technical disposition completed; `NOOP` is possible | None; automated `APPROVE` dispositions are recorded as `COMMENT` |
 | Native gate publisher | The native decision was published | The published decision, not the publisher's workflow conclusion |
-| `QIKVRT required code-owner review` status | Native enforcement and an independent current-head Code Owner approval satisfy the bounded gate | Dedicated native prerequisite, freshly reobserved before promotion |
+| `QIKVRT required code-owner review` status | An explicit current-head Principal review, or enforced independent native approval, satisfies the bounded review gate | Dedicated review prerequisite; the actual review basis is retained |
 | `QIKVRT requested review disposition` status | A technical disposition was recorded | Informational; never substitutes for native approval |
 
 The native publisher is the sole writer of the dedicated status and the legacy
@@ -97,9 +89,11 @@ alias alone cannot satisfy acceptance; disagreement keeps acceptance blocked.
 
 The live projection and promotion decision reuse
 `tools/qikvrt_required_review_gate.py`. They require fresh applicable native
-rules, actual submitted reviews bound to the current PR HEAD, and agreement with
-the dedicated native status. Missing, stale, self-approved, adverse, mismatched,
-or unavailable evidence stays blocked even when every observed workflow is green.
+rules and actual submitted reviews bound to the current PR HEAD, and agreement
+with the dedicated status. Principal review is valid for a Principal-authored PR;
+the independent path retains its self-approval restriction. Missing, stale,
+adverse, mismatched or unavailable evidence stays blocked even when workflows
+are green.
 The watcher labels observer/executor/publisher runs `EXECUTION_ONLY`, binds its
 reads to the current HEAD, and measures execution completion separately from
 native governance acceptance. A publisher or workflow failure may signal an
@@ -107,8 +101,17 @@ execution defect; successful execution never changes the native evidence.
 
 Candidate tests prove only the candidate implementation. The native publisher
 and promotion executor continue to execute trusted `main` code. A repair under
-review is not a deployed enforcement fix. No self-approval, merge, Ruleset
-mutation, `PASS`, `FINAL_PASS`, or `EFFECT_ACK_DONE` follows from this contract.
+review is not a deployed enforcement fix. No merge, Ruleset mutation, `PASS`, `FINAL_PASS`, or `EFFECT_ACK_DONE`
+follows from this contract alone. A separately explicit Owner merge mandate
+remains effective; the automatic promoter retains its checks and target-ref CAS.
+
+The prepared Ruleset writer now enforces `test` and the dedicated exact-head
+review status from GitHub Actions, strict freshness, resolved threads, no bypass
+actors, no forced history update and no deletion. It does not demand a second
+independent approving account in addition to the Principal review. Its exact
+postimage is SHA-256-bound; fixture tests establish source behavior, while
+actual administrative activation and readback remain separate effects. Existing
+production and lifecycle consumers reuse the same enforcement predicate.
 
 The policy field `review_executor.native_governance_status_context` binds the
 Ruleset writer, native gate and promotion to `QIKVRT required code-owner review`.
@@ -169,12 +172,11 @@ becomes STALE; there is no fallback that relabels an old Main heartbeat fresh.
 Other registered nodes retain their existing transport and TTL semantics.
 
 Publication of this telemetry does not require a review of each heartbeat.
-It does require prior adoption of the reviewed publisher and enforced native
-Main Code-Owner rules. It proves a bounded node self-report under repository
+It does require prior adoption of the reviewed publisher and enforced Main review policy (the trusted Principal-review status or the
+independent native path). It proves a bounded node self-report under repository
 and GitHub-run bindings, not independently measured node availability or natural
 person authentication. It is always `UNREVIEWED_TELEMETRY`, `main_persisted=false`
-and `effect_ack_done=false`. Source integration still requires the unchanged
-native Code-Owner, last-push, stale-review, check and promotion contracts.
+and `effect_ack_done=false`. Source integration still requires the applicable Owner-review, freshness, required-check and promotion contracts.
 
 At a six-hour cadence the configured Health TTL leaves 19 hours of scheduling
 slack and renewal leaves 18 hours. Scheduler delay, outage, denied public reads
@@ -226,5 +228,5 @@ workflow jobs validate the request's role projection through the shared
 resolver before an effect. A historical role assignment fails
 `HISTORICAL_ROLE_REQUEST_NOT_CURRENT`; it cannot grant a current publication,
 tag or Authority change. New effects still require their separately reviewed
-exact-artifact contracts and all existing native approvals.
+exact-artifact contracts and the applicable Principal or independent review.
 

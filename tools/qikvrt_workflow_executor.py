@@ -184,7 +184,6 @@ def validate_governance_policy(contract: Mapping[str, Any], policy: Mapping[str,
     mirrors = contract["authority"]["mirror_repositories"]
     if (role.get("former_authority_repository") not in mirrors
             or role.get("former_authority_permission_required") is not False
-            or role.get("independent_native_code_owner_review_required") is not True
             or role.get("github_platform_effects_are_separate") is not True
             or role["repository"].get("may_submit_native_approve") is not False
             or not isinstance(role.get("executor"), Mapping)
@@ -192,6 +191,14 @@ def validate_governance_policy(contract: Mapping[str, Any], policy: Mapping[str,
             or not isinstance(policy.get("mandatory_boundaries"), Mapping)
             or policy["mandatory_boundaries"].get("github_platform_protections_may_be_bypassed") is not False):
         raise ExecutorBlock("AUTHORITY_ROLE_POLICY_PROTECTION_BOUNDARY_INVALID")
+    try:
+        try:
+            from tools.qikvrt_required_review_gate import validate_review_acceptance_policy, ReviewGateInputError
+        except ModuleNotFoundError:
+            from qikvrt_required_review_gate import validate_review_acceptance_policy, ReviewGateInputError
+        validate_review_acceptance_policy(policy, root)
+    except ReviewGateInputError as exc:
+        raise ExecutorBlock("AUTHORITY_ROLE_POLICY_PROTECTION_BOUNDARY_INVALID") from exc
     return repository
 
 
@@ -801,14 +808,13 @@ def amo_native_protection(branch: Mapping[str, Any], rules: Sequence[Mapping[str
     if (not isinstance(branch, Mapping) or not isinstance(rules, list)
             or any(not isinstance(r, Mapping) or not isinstance(r.get("parameters", {}), Mapping) for r in rules)):
         raise ExecutorBlock("AMO_NATIVE_MAIN_PROTECTION_REQUIRED")
-    pull = [r.get("parameters", {}) for r in rules if r.get("type") == "pull_request"]
+    try:
+        from tools.qikvrt_required_review_gate import code_owner_review_policy_is_enforced
+    except ModuleNotFoundError:
+        from qikvrt_required_review_gate import code_owner_review_policy_is_enforced
     statuses = [r.get("parameters", {}) for r in rules if r.get("type") == "required_status_checks"]
     if (branch.get("name") != "main" or branch.get("protected") is not True
-            or not any(type(p.get("required_approving_review_count")) is int
-                       and p["required_approving_review_count"] >= 1
-                       and p.get("require_code_owner_review") is True
-                       and p.get("dismiss_stale_reviews_on_push") is True
-                       and p.get("require_last_push_approval") is True for p in pull)
+            or not code_owner_review_policy_is_enforced(rules)
             or not any(r.get("type") == "non_fast_forward" for r in rules)
             or not any(p.get("strict_required_status_checks_policy") is True
                        and {"test", "QIKVRT required code-owner review"} <= {

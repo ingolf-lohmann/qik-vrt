@@ -105,5 +105,32 @@
     "text": "Ja, sicher ist sicher, ist das Drachen-Motto und bleibt es auch. Deswegen erteile ich die Freigabe jetzt nochmal explizit selbst. Und ich bin sicher, für die restlichen Aspekte gibt es bereits gut bekannte und wohl definierte und gut getestete und an verschiedenen Ereignissen angewendete Lösungsmuster.",
     "text_sha256": "84eabdde7b58485207886e770070111c4c1885959bb1df0654833f476c926796",
     "scope": "Continue the existing repository-internal review/governance repair and preserve the prior representative review delegation; no native independent approval, route change or protection bypass is inferred."
+  },
+  "principal_review_decision": {
+    "schema": "qikvrt_principal_review_policy_v1",
+    "state": "ACTIVE",
+    "principal_login": "ingolf-lohmann",
+    "principal_github_id": 294949349,
+    "approval_is_review": true,
+    "exact_current_head_required": true,
+    "native_review_state": "COMMENTED",
+    "independent_native_approval_required": false,
+    "github_platform_protections_may_be_bypassed": false,
+    "automated_disposition_can_substitute": false,
+    "effective_at": "2026-10-18T04:02:58Z",
+    "instruction_sha256": "a454e3384e3b3740a1511d3613cf82a4aeed67036013649d2bee6cbce9ed3b76",
+    "instruction": {
+      "source_kind": "DIRECT_HUMAN_INSTRUCTION_IN_CURRENT_SESSION",
+      "text": "Also nach meiner Definition bin ich der Principal Code Owner und Product Owner. Und wenn ich sage Freigabe erteilt und ich das auch mir gut überlegt habe, gilt das zugleich als Review. Alles andere war, ist und bleibt inakzeptabel.",
+      "sha256": "a454e3384e3b3740a1511d3613cf82a4aeed67036013649d2bee6cbce9ed3b76"
+    },
+    "owner_roles": [
+      "Principal",
+      "Code Owner",
+      "Product Owner"
+    ],
+    "scope": "An explicit considered approval by the Principal is review, including on a Principal-authored PR. Record the existing authorization on the actual candidate without asking for the same permission again.",
+    "supersedes": "The unconditional independent-native-review prerequisite, not historical event bytes, other acceptance checks, platform restrictions or actual API identity.",
+    "account_event_boundary": "The authorized executing instance records the human decision through the connected Principal account. COMMENTED is not APPROVED, an independent account review, or biometric proof."
   }
 }

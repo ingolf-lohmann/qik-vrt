@@ -266,6 +266,7 @@ class RepositoryRoleResolutionTests(unittest.TestCase):
         self.addCleanup(self.temporary.cleanup)
         self.root = pathlib.Path(self.temporary.name)
         paths = [MODULE.ROLE_POLICY_PATH, MODULE.GOVERNANCE_POLICY_PATH,
+                 "state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
                  MODULE.CONTRACT_RELATIVE_PATH,
                  "policy/AI_PERSONAL_WORKING_MEMORY_ORIGIN_AND_ATTRIBUTION_V1.json",
                  "policy/AI_BOOTSTRAP_KNOWLEDGE_CORPUS_V1.json",
@@ -475,8 +476,9 @@ class AuthorityReadbackTests(unittest.TestCase):
                 MODULE.read_authority_main(ROOT)
         api.assert_not_called()
 
-    def test_native_review_requirement_and_code_owner_cannot_be_downgraded(self) -> None:
+    def test_review_cannot_be_removed_without_owner_decision_or_replace_code_owner(self) -> None:
         self.governance["mesh_authority"]["independent_native_code_owner_review_required"] = False
+        self.governance["mesh_authority"].pop("principal_review", None)
         with mock.patch.object(MODULE.subprocess, "run", side_effect=self.get):
             with self.assertRaisesRegex(MODULE.ExecutorBlock, "PROTECTION_BOUNDARY_INVALID"):
                 MODULE.read_authority_main(ROOT)
@@ -623,6 +625,15 @@ class OwnerSigningContinuationTests(unittest.TestCase):
             self.assertNotIn("credentials_exist", value)
         with self.assertRaisesRegex(MODULE.ExecutorBlock, "PRESENCE_BOOLEAN"):
             MODULE.amo_credential_delivery({"issuer_present": "false", "secret_present": False})
+
+    def test_amo_principal_review_check_does_not_require_an_additional_independent_approval(self):
+        rules = [copy.deepcopy(r) for r in self.rules if r["type"] != "pull_request"]
+        for check in rules[-1]["parameters"]["required_status_checks"]:
+            check["integration_id"] = 15368
+        MODULE.amo_native_protection(self.branch, rules)
+        rules[-1]["parameters"]["required_status_checks"] = [{"context": "test", "integration_id": 15368}]
+        with self.assertRaisesRegex(MODULE.ExecutorBlock, "PROTECTION"):
+            MODULE.amo_native_protection(self.branch, rules)
 
     def test_early_native_hold_retains_observed_credential_delivery(self):
         with mock.patch.object(MODULE, "amo_context", return_value=self.context), \

@@ -116,11 +116,11 @@ jobs:
           python3 -B - <<'PY'
           import json, os
           from pathlib import Path
-          from tools.qikvrt_required_review_gate import native_code_owner_rule_is_enforced
+          from tools.qikvrt_required_review_gate import code_owner_review_policy_is_enforced
           rules = json.loads(Path(os.environ['LIFECYCLE_RECEIPT_DIR'], 'main-rules.json').read_text())
           if not isinstance(rules, list) or not all(isinstance(rule, dict) for rule in rules):
               raise SystemExit('BLOCK: invalid native main rule observation')
-          if not native_code_owner_rule_is_enforced(rules):
+          if not code_owner_review_policy_is_enforced(rules):
               raise SystemExit('BLOCK: CODE_OWNER_RULE_NOT_ENFORCED')
           PY
           git config user.name "github-actions[bot]"

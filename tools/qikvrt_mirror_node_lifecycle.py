@@ -23,10 +23,10 @@ import urllib.request
 
 try:
     from tools import qikvrt_seed_common as seed
-    from tools.qikvrt_required_review_gate import native_code_owner_rule_is_enforced
+    from tools.qikvrt_required_review_gate import code_owner_review_policy_is_enforced
 except ModuleNotFoundError:  # Existing Seed shell entrypoint executes tools/ directly.
     import qikvrt_seed_common as seed
-    from qikvrt_required_review_gate import native_code_owner_rule_is_enforced
+    from qikvrt_required_review_gate import code_owner_review_policy_is_enforced
 
 LIVE_BRANCH = "qikvrt/node-lifecycle"
 WORKFLOW = ".github/workflows/qikvrt_mirror_node_lifecycle.yml"
@@ -195,7 +195,7 @@ def publish(root, repository, source, run_id, api, now=None):
         raise Block("LIFECYCLE_RUN_INVALID")
     if ref(api, "main") != source:
         raise Block("LIFECYCLE_BASE_DRIFT")
-    if not native_code_owner_rule_is_enforced(api("GET", "rules/branches/main")):
+    if not code_owner_review_policy_is_enforced(api("GET", "rules/branches/main")):
         raise Block("CODE_OWNER_RULE_NOT_ENFORCED")
     fields = next(l for l in (root / "qikvrt/runtime/onboarding/NODE_HANDSHAKE_CONFIG.tsv").read_text().splitlines()
                   if l and not l.startswith("#")).split("\t")
@@ -346,7 +346,7 @@ def propose_seed(root, repository, source, run_id, api):
     seed._validate_run_id(run_id)
     if ref(api, "main") != source:
         raise Block("SEED_BASE_DRIFT")
-    if not native_code_owner_rule_is_enforced(api("GET", "rules/branches/main")):
+    if not code_owner_review_policy_is_enforced(api("GET", "rules/branches/main")):
         raise Block("CODE_OWNER_RULE_NOT_ENFORCED")
     nodes, policies = seed.load_nodes(root, repository)
     summary = seed.read_json(root / "evidence/seed_acceptance/LATEST.json")

@@ -128,7 +128,7 @@ class AuthorityTokenRouteTests(unittest.TestCase):
             'RULESET_NAME': 'QIK-VRT main protection',
             'RULESET_ADMIN_TOKEN': 'fixture-only',
             'AUTHORITY_ROUTE': 'direct',
-            'EXPECTED_POST_SHA256': '45da27f3608b38f04b8252d7fc709a6337bff49d40fa2cf9baa4425dd36ec0dd',
+            'EXPECTED_POST_SHA256': '59b80123aee14fd0f82a0af8a7e3265a2a5782f786785cf09be35f251b9c6999',
         }
         environment.update(token_env or {})
         output = io.StringIO()
@@ -210,10 +210,10 @@ class AuthorityTokenRouteTests(unittest.TestCase):
         self.assertEqual(sent['bypass_actors'], [])
         rules = {rule['type']: rule for rule in sent['rules']}
         review = rules['pull_request']['parameters']
-        self.assertTrue(review['require_code_owner_review'])
-        self.assertTrue(review['require_last_push_approval'])
+        self.assertFalse(review['require_code_owner_review'])
+        self.assertFalse(review['require_last_push_approval'])
         self.assertTrue(review['dismiss_stale_reviews_on_push'])
-        self.assertEqual(review['required_approving_review_count'], 1)
+        self.assertEqual(review['required_approving_review_count'], 0)
         self.assertEqual({check['context'] for check in rules['required_status_checks']['parameters']['required_status_checks']},
                          {'test', 'QIKVRT required code-owner review'})
         self.assertIn('non_fast_forward', rules)
@@ -379,10 +379,10 @@ class RequiredReviewContextContractTests(unittest.TestCase):
         self.assertEqual(rules['pull_request'], {
             'allowed_merge_methods': ['merge', 'squash', 'rebase'],
             'dismiss_stale_reviews_on_push': True,
-            'require_code_owner_review': True,
-            'require_extra_approval_for_unattributed_changes': True,
-            'require_last_push_approval': True,
-            'required_approving_review_count': 1,
+            'require_code_owner_review': False,
+            'require_extra_approval_for_unattributed_changes': False,
+            'require_last_push_approval': False,
+            'required_approving_review_count': 0,
             'required_review_thread_resolution': True,
             'required_reviewers': [],
         })
@@ -468,7 +468,8 @@ class RequiredReviewContextContractTests(unittest.TestCase):
         self.assertIn(self.context, required_gates(self.promotion))
         self.assertNotIn(self.legacy, required_gates(self.promotion))
         self.assertNotIn(self.disposition, required_gates(self.promotion))
-        self.assertTrue(binding['native_code_owner_approval_still_required'])
+        self.assertFalse(binding['native_code_owner_approval_still_required'])
+        self.assertTrue(binding['owner_principal_review_is_valid_review'])
         self.assertEqual(binding['administrative_ruleset_activation'], 'SEPARATE_EFFECT')
         contract = (ROOT / policy['contract_gate']).read_text()
         for path in [WORKFLOW, self.gate, self.executor, self.promotion, Path(__file__)]:

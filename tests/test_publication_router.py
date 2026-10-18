@@ -719,8 +719,20 @@ class EditorialContinuationTests(unittest.TestCase):
         with mock.patch.object(self.router, "_rest", return_value={"head_sha": "f" * 40}):
             with self.assertRaises(ValueError): self.router.verify_after_existing_deployment(self.root, "123")
         with mock.patch.object(self.router, "_pages", return_value=[]):
-            with self.assertRaisesRegex(ValueError, "CODE_OWNER_RULE_NOT_ENFORCED"):
+            with self.assertRaisesRegex(ValueError, "EXACT_MAIN_MERGE_REVIEW_NOT_VERIFIED"):
                 self.router._main_governance(self.root, self.head)
+
+    def test_merged_principal_review_uses_shared_gate_without_an_independent_review(self):
+        from tests.test_qikvrt_required_review_gate import PrincipalReviewGateTests
+        fixture = PrincipalReviewGateTests()
+        pr = fixture.pr()
+        pr.update(merged_at="2026-10-18T04:30:00Z", merge_commit_sha=self.head, draft=False)
+        def pages(endpoint):
+            return [] if "/rules/" in endpoint else [pr] if "/commits/" in endpoint else [fixture.review()]
+        with mock.patch.object(self.router, "_pages", side_effect=pages):
+            gate = self.router._main_governance(self.root, self.head)
+        self.assertEqual(gate["review_basis"], "OWNER_PRINCIPAL_REVIEW")
+        self.assertFalse(gate["independent_native_approval"])
 
 
 if __name__ == "__main__":
