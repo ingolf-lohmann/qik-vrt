@@ -1,0 +1,130 @@
+{
+  "actual_ibm_inference_executed": false,
+  "effect_ack_done": false,
+  "existing_host": {
+    "callable_protected_host_connection": false,
+    "current_receipt": "libfile_6526329fa28c81918e84511b48d4672e version 30, modified 2026-10-18T15:11:36Z",
+    "environment": "qikvrt-production",
+    "existing_workflow": ".github/workflows/qikvrt_ci.yml#container_deploy",
+    "memory_cpu_accelerator_capacity": "UNKNOWN_NOT_OBSERVED_ON_ORIGINAL_HOST",
+    "no_managed_runtime_prerequisite": true,
+    "no_new_host_order": true,
+    "nonsecret_binding_names": [
+      "QIKVRT_LINUX_HOST_BINDING_JSON",
+      "QIKVRT_LINUX_HOST_BINDING_SHA256"
+    ],
+    "protected_binding_names": [
+      "QIKVRT_LINUX_HOST_CA",
+      "QIKVRT_LINUX_HOST_CERT",
+      "QIKVRT_LINUX_HOST_KEY"
+    ],
+    "remote_credential_absence_inferred": false,
+    "target": "EXISTING_ORDERED_IONOS_VPS_CONTRACT114100762"
+  },
+  "integrity_materialization": {
+    "base_head": "fa48a66aece80f5de9ddba0bc2e27801f2036af3",
+    "base_manifest_sha256": "751ae315c7c1de24189814b23e3b914cc8aaed8a0607c4a70ee70240f36c737f",
+    "base_native_test_job": 117705282028,
+    "base_tree": "dec2f88d0a5f07aa4fe033ccbc5b10f9c38ec57b",
+    "full_successor_native_gate": "PENDING_NOT_TRANSFERRED",
+    "method": "Existing deterministic v3 manifest format and classification; update changed/new file digests and retain predecessor records only for identical Git blob identities. No local full-repository byte-readback claim."
+  },
+  "main_integration": {
+    "adapter_regression_tests": 6,
+    "head": "fcbe8ab0d94e5926eb2c44145e9ea065356632a4",
+    "log": "TESTS_MAIN_ADAPTER_20261018.log",
+    "log_sha256": "b82726fe3c0b0956c1280fda97f7a93c81b1a0a5c054562497b33c48d8a2190e",
+    "paths": [
+      "scripts/qikvrt_github_api_client.sh",
+      "tests/test_api_client.py"
+    ],
+    "reason": "Resolve current dirty merge from integrity trio; preserve existing PR530 credential interface repair.",
+    "source_bytes": "EXACT_MAIN_BYTES_REUSED",
+    "tree": "2767ac26668f571a77ec4266e4537f2945ef814a"
+  },
+  "model_source_observation": {
+    "metadata_API_unavailable_to_search_fetch": true,
+    "public_revision_listing_observed": true,
+    "revision": "be9e7d995f2a6be22def5dd815f9f2bae98c8b6e",
+    "source": "https://huggingface.co/ibm-granite/granite-4.2-3b/tree/be9e7d995f2a6be22def5dd815f9f2bae98c8b6e",
+    "weight_bytes_downloaded": false,
+    "weight_hashes_verified": false
+  },
+  "native_predecessor": {
+    "chromium": "success",
+    "complete_source_gate": "success",
+    "exact_log_marker": "QIKVRT_TESTED_SUBJECT head=fa48a66aece80f5de9ddba0bc2e27801f2036af3 tree=dec2f88d0a5f07aa4fe033ccbc5b10f9c38ec57b",
+    "job_id": 117705282028,
+    "run_id": 39137628851,
+    "source": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39137628851/job/117705282028",
+    "successor_test_transfer": false,
+    "webkit": "success"
+  },
+  "observed_at_utc": "2026-10-18T16:50:05.552865+00:00",
+  "other_local_checks": {
+    "broader_terminal_suite": "101 tests attempted; 26 errors include AF_UNIX PermissionError errno1 and missing sparse policy/materialization. Not a passing native terminal-suite claim; unchanged denied Unix tests were not retried.",
+    "complete_bootstrap": "BLOCK on unmaterialized existing source dependencies in this sparse client; no full-bootstrap success claimed"
+  },
+  "planned_trials": 96,
+  "product_metrics": null,
+  "product_trials_executed": 0,
+  "remaining": [
+    "Original owner-host management/SSH or protected mTLS execution binding must be callable, with real host inventory",
+    "Acquire and independently verify exact-revision metadata and weights, exact server/dependency/image admission",
+    "Observe loaded weights and actual hardware/context capability",
+    "Complete the existing product observer (#496 scope) and execute balanced real comparisons; preserve failures, interruptions, timeouts and nulls",
+    "Actual Orchestrate executor/import and scientific publication remain separate"
+  ],
+  "schema": "qikvrt_ibm_admission_preparation_v1",
+  "source_files": {
+    "benchmarks/browser-assistant-ab/ibm/ADMISSION_BINDING.template.json": {
+      "bytes": 837,
+      "sha256": "d81f078a3f4afee810339687c131f9ff2cdd903a17b4319ea4f31a556c775126"
+    },
+    "benchmarks/browser-assistant-ab/ibm/contract.json": {
+      "bytes": 5937,
+      "sha256": "b101cec2930fa7423500ad11b1e87d18cb32f685e8c674610c2a5365df255da1"
+    },
+    "src/qikvrt_personal_assistant.py": {
+      "bytes": 41858,
+      "sha256": "7922ea50b0d11b9824699ef5bc8863fadf4e738fa4fb6528cb1cbf862b82cdd7"
+    },
+    "tests/test_qikvrt_ibm_comparison.py": {
+      "bytes": 22157,
+      "sha256": "e57c9712e9f5f0dc5f52e76c984c7f2542bee348ce32ab53b3898d2a0c43d62f"
+    },
+    "tools/qikvrt_browser_assistant_ab.py": {
+      "bytes": 69781,
+      "sha256": "33766d1fb2ef5a17b7c56efc97e378be9a41631b2e9d0eb00a0897edfbce4249"
+    },
+    "tools/qikvrt_self_host.py": {
+      "bytes": 225234,
+      "sha256": "e4fb9c46dfd22a7edc6b5a56ad96cbbd647c46778fea94a2698bc8f581fcd595"
+    }
+  },
+  "targeted_tests": {
+    "evidence_class": "SOFTWARE_TEST_WITH_SYNTHETIC_MODEL_FILES_MOCK_HTTP_AND_ACTUAL_SIGKILL_NOT_IBM_INFERENCE",
+    "exit_code": 0,
+    "ibm_specific_tests": 22,
+    "log": "TESTS_ADMISSION_20261018.log",
+    "sha256": "c7f9677e6d8de55802583d111ec0efa75825792a13ae9ae7e95aeb0aef8226d0",
+    "tests_run": 63
+  },
+  "terminal_smoke": {
+    "evidence_class": "HTTP_REFERENCE_PATH_TEST",
+    "file": "TERMINAL_ADMISSION_SMOKE_20261018.json",
+    "product_claim_allowed": false,
+    "sha256": "d0c4ba8003743167d86d3c6928b29239cbc84b6cab3b32d0d8d83ea921cd0a74",
+    "status": "PASS"
+  },
+  "tested_base_head": "fa48a66aece80f5de9ddba0bc2e27801f2036af3",
+  "tested_base_tree": "dec2f88d0a5f07aa4fe033ccbc5b10f9c38ec57b",
+  "tested_worktree_dirty": true,
+  "tool_cache": {
+    "actual_model_server_admitted": false,
+    "covered": 34,
+    "declared": 34,
+    "percent": 100
+  },
+  "winner": null
+}

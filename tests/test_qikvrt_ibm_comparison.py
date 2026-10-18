@@ -59,7 +59,9 @@ class IBMTransportTests(unittest.TestCase):
             value, receipt = t.post("/responses", request())
             self.assertEqual(receipt["evidence_class"], "LOCAL_HTTP_MODEL_RESPONSE")
             self.assertEqual(receipt["http_status"], 200)
-            self.assertEqual(seen, [("/v1/chat/completions", request())])
+            expected = dict(request(), chat_template_kwargs={"enable_thinking": True,
+                "low_effort": False, "truncate_history_thinking": True})
+            self.assertEqual(seen, [("/v1/chat/completions", expected)])
             self.assertFalse(receipt["model_revision_attested"])
         finally:
             server.shutdown(); server.server_close(); worker.join(timeout=3)
@@ -93,6 +95,7 @@ class IBMTransportTests(unittest.TestCase):
         self.assertEqual(body["model_id"], MODEL)
         self.assertEqual(body["project_id"], CLOUD["project_id"])
         self.assertNotIn("model", body)
+        self.assertNotIn("chat_template_kwargs", body)
         self.assertNotIn(KEY.encode(), req.data)
         self.assertEqual(req.get_header("Authorization"), "Bearer " + KEY)
 
@@ -228,6 +231,137 @@ time.sleep(30)
             if child.poll() is None:
                 child.kill(); child.wait(timeout=5)
             child.stdout.close(); child.stderr.close()
+
+
+@unittest.skipUnless(sys.platform.startswith("linux"), "Existing S1 Linux host admission")
+class IBMAdmissionTests(unittest.TestCase):
+    """Synthetic files exercise rejection gates; never real weights or inference."""
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self.tmp.name); self.model = self.root / "model"; self.model.mkdir()
+        self.executable = self.root / "server"; self.executable.write_bytes(b"technical server fixture")
+        self.metadata_path = self.root / "metadata.json"
+        self.host_path = self.root / "host.json"
+        self.binding_path = self.root / "binding.json"
+        self.output = self.root / "admission"
+        files = {"config.json": ab.canonical({"model_type": "granite", "torch_dtype": "bfloat16"}),
+            "generation_config.json": b"{}", "chat_template.jinja": b"synthetic template",
+            "tokenizer.json": b"{}", "tokenizer_config.json": b"{}",
+            "model.safetensors.index.json": ab.canonical({"weight_map": {
+                "first": "model-00001-of-00002.safetensors", "second": "model-00002-of-00002.safetensors"}}),
+            "model-00001-of-00002.safetensors": b"synthetic shard one",
+            "model-00002-of-00002.safetensors": b"synthetic shard two"}
+        siblings = []
+        for name, raw in files.items():
+            path = self.model / name; path.write_bytes(raw)
+            observed = ab.ibm_file_binding(path)
+            item = {"rfilename": name, "blobId": observed["git_blob_sha1"]}
+            if name.endswith(".safetensors"):
+                item["lfs"] = {"sha256": observed["sha256"], "size": observed["bytes"]}
+            siblings.append(item)
+        self.metadata = {"id": MODEL, "sha": REV, "cardData": {"license": "apache-2.0"}, "siblings": siblings}
+        self.observed_host = {"machine_id_sha256": "1" * 64, "mount": {"filesystem": "ext4", "mount_point": "/owner-volume"}}
+        self.host = dict(self.observed_host, schema="qikvrt-own-host-admission/v1", public_origin="https://raumzeitterminal.de")
+        self.binding = {"schema": "qikvrt_ibm_model_admission_binding_v1", "model_repository": MODEL,
+            "revision": REV, "quantization": "none", "dtype": "bfloat16", "served_model": MODEL,
+            "endpoint": LOCAL["endpoint"], "server": {"name": "fixture", "version": "test-only",
+                "image_digest": "sha256:" + "2" * 64, "offline": True, "model_mount_read_only": True,
+                "trust_remote_code": False, "max_model_len": 8192, "executable": str(self.executable),
+                "executable_sha256": ab.digest(self.executable.read_bytes())},
+            "settings": dict(p.IBMChatTransport("", MODEL, "granite_local", LOCAL).public_binding["parameters"],
+                chat_template_kwargs={"enable_thinking": True, "low_effort": False, "truncate_history_thinking": True})}
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def freeze(self):
+        self.metadata_path.write_bytes(ab.canonical(self.metadata))
+        self.host_path.write_bytes(ab.canonical(self.host))
+        self.binding.update(metadata_sha256=ab.digest(self.metadata_path.read_bytes()),
+                            host_admission_sha256=ab.digest(self.host_path.read_bytes()))
+        self.binding_path.write_bytes(ab.canonical(self.binding))
+        return ab.digest(self.binding_path.read_bytes())
+
+    def admit(self, pin=None):
+        pin = self.freeze() if pin is None else pin
+        with patch("tools.qikvrt_self_host.own_host_observation", return_value=self.observed_host), \
+             patch.object(ab.platform, "system", return_value="Linux"):
+            return ab.ibm_model_admission(self.model, self.metadata_path, self.host_path,
+                                          self.binding_path, pin, self.output)
+
+    def test_valid_files_produce_only_artifact_receipt_and_never_inference_acceptance(self):
+        with patch.object(p.IBMChatTransport, "post", side_effect=AssertionError("no inference")):
+            receipt = self.admit()
+        self.assertEqual(receipt, ab.read_json(self.output / "MODEL_ADMISSION.json"))
+        self.assertTrue(receipt["local_artifact_integrity_verified"])
+        for key in ["model_revision_attested", "upstream_metadata_authenticity_attested",
+                    "host_can_run_inference_verified", "actual_ibm_inference_executed", "product_claim_allowed"]:
+            self.assertIs(receipt[key], False)
+        self.assertEqual(receipt["product_trials_executed"], 0)
+        self.assertIsNone(receipt["product_metrics"])
+        self.assertIsNone(receipt["winner"])
+        with self.assertRaisesRegex(ab.InvalidRun, "NEW_PRIVATE_OUTPUT"):
+            self.admit()
+
+    def test_tampered_shard_is_rejected_before_output(self):
+        (self.model / "model-00001-of-00002.safetensors").write_bytes(b"substituted")
+        with self.assertRaisesRegex(ab.InvalidRun, "WEIGHT_HASH"):
+            self.admit()
+        self.assertFalse(self.output.exists())
+
+    def test_binding_metadata_and_host_pins_are_independently_checked(self):
+        pin = self.freeze()
+        self.metadata_path.write_bytes(b"{}")
+        with self.assertRaisesRegex(ab.InvalidRun, "INPUT_PIN"):
+            self.admit(pin)
+        self.freeze()
+        with self.assertRaisesRegex(ab.InvalidRun, "BINDING_PIN"):
+            self.admit("0" * 64)
+        self.metadata["cardData"] = None
+        with self.assertRaisesRegex(ab.InvalidRun, "METADATA_OBJECTS"):
+            self.admit()
+
+    def test_wrong_revision_license_host_sampling_and_server_are_rejected(self):
+        for target, field, value, error in [
+            (self.metadata, "sha", "a" * 40, "UPSTREAM_IDENTITY"),
+            (self.metadata["cardData"], "license", "unknown", "LICENSE"),
+            (self.host, "machine_id_sha256", "a" * 64, "ORIGINAL_HOST"),
+            (self.binding, "quantization", "q4", "UNQUANTIZED"),
+            (self.binding["settings"], "temperature", 0, "SAMPLING"),
+            (self.binding["server"], "image_digest", "latest", "IMMUTABLE"),
+            (self.binding["server"], "executable_sha256", "0" * 64, "EXECUTABLE")]:
+            old = target[field]; target[field] = value
+            try:
+                with self.subTest(field=field), self.assertRaisesRegex(ab.InvalidRun, error):
+                    self.admit()
+                self.assertFalse(self.output.exists())
+            finally:
+                target[field] = old
+
+    def test_missing_hash_or_index_shard_and_extra_code_are_rejected(self):
+        weight = self.metadata["siblings"][-1]; lfs = weight.pop("lfs")
+        with self.assertRaisesRegex(ab.InvalidRun, "UPSTREAM_WEIGHT_SHA256"):
+            self.admit()
+        weight["lfs"] = lfs
+        extra = self.model / "unreviewed.py"; extra.write_text("never execute")
+        with self.assertRaisesRegex(ab.InvalidRun, "UNBOUND_MODEL_FILES"):
+            self.admit()
+        extra.unlink()
+        (self.model / "model-00001-of-00002.safetensors").unlink()
+        with self.assertRaises(FileNotFoundError):
+            self.admit()
+
+    def test_symlinks_and_metadata_traversal_are_rejected(self):
+        path = self.model / "tokenizer.json"; path.unlink(); path.symlink_to(self.executable)
+        with self.assertRaisesRegex(ab.InvalidRun, "SYMLINK"):
+            self.admit()
+        path.unlink(); os.mkfifo(path)
+        with self.assertRaisesRegex(ab.InvalidRun, "REGULAR_FILE"):
+            self.admit()
+        path.unlink(); path.write_bytes(b"{}")
+        self.metadata["siblings"][0]["rfilename"] = "../server"
+        with self.assertRaisesRegex(ab.InvalidRun, "UNSAFE_OR_DUPLICATE"):
+            self.admit()
 
 
 class IBMPlanTests(unittest.TestCase):

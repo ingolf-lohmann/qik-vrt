@@ -25,6 +25,7 @@ import shutil
 import signal
 import socket
 import sqlite3
+import stat
 import subprocess
 import sys
 import threading
@@ -63,6 +64,7 @@ SOURCE_PATHS = [
     "runtime/toolchains/CACHE_REGISTRY.json",
     "runtime/toolchains/CACHE_COVERAGE.json",
     "benchmarks/browser-assistant-ab/ibm/contract.json",
+    "tools/qikvrt_self_host.py",
 ]
 # Reuse the frozen S1 implementation without copying it into the Personal tree.
 # Source controls and task execution have separate identities and receipts.
@@ -891,6 +893,175 @@ def temdd_carrier(source: Path, output: Path, expected_head: str, pr: int) -> di
     return receipt
 
 
+def ibm_file_binding(path: Path) -> dict[str, Any]:
+    """Stream existing bytes; reject symlinks, special files and changes during hashing."""
+    path = path.absolute()
+    if any(p.is_symlink() for p in (path, *path.parents)):
+        raise InvalidRun("IBM_ADMISSION_SYMLINK_REFUSED")
+    descriptor = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+    with os.fdopen(descriptor, "rb") as stream:
+        before = os.fstat(stream.fileno())
+        if not stat.S_ISREG(before.st_mode):
+            raise InvalidRun("IBM_ADMISSION_REGULAR_FILE_REQUIRED")
+        sha256 = hashlib.sha256()
+        sha1 = hashlib.sha1(b"blob " + str(before.st_size).encode() + b"\0")
+        size = 0
+        while chunk := stream.read(1024 * 1024):
+            size += len(chunk); sha256.update(chunk); sha1.update(chunk)
+        after = os.fstat(stream.fileno())
+    fields = ("st_dev", "st_ino", "st_size", "st_mtime_ns", "st_ctime_ns")
+    if (size != before.st_size or
+        any(getattr(before, k) != getattr(after, k) for k in fields) or
+        any(getattr(after, k) != getattr(path.stat(), k) for k in fields)):
+        raise InvalidRun("IBM_ADMISSION_FILE_CHANGED")
+    return {"bytes": size, "sha256": sha256.hexdigest(), "git_blob_sha1": sha1.hexdigest()}
+
+
+def ibm_model_admission(model_root: Path, metadata_path: Path, host_path: Path,
+                        binding_path: Path, binding_pin: str, output: Path) -> dict[str, Any]:
+    """Check a previously acquired snapshot on the existing admitted Linux host.
+
+    Reuses S1 host identity/mount checks. No download, installation, server start,
+    network request or inference. Source and image authenticity remain explicit.
+    """
+    if platform.system() != "Linux":
+        raise InvalidRun("IBM_ADMISSION_EXISTING_LINUX_HOST_REQUIRED")
+    from tools.qikvrt_self_host import own_host_observation
+    from src.qikvrt_personal_assistant import IBMChatTransport
+    if (not re.fullmatch(r"[0-9a-f]{64}", binding_pin or "") or
+        ibm_file_binding(binding_path)["sha256"] != binding_pin):
+        raise InvalidRun("IBM_ADMISSION_BINDING_PIN_MISMATCH")
+    binding = read_json(binding_path)
+    if not isinstance(binding, dict):
+        raise InvalidRun("IBM_ADMISSION_BINDING_OBJECT_REQUIRED")
+    contract = read_json(SUITE / "ibm/contract.json")
+    candidate = contract["granite_candidate"]
+    if (binding.get("schema") != "qikvrt_ibm_model_admission_binding_v1" or
+        binding.get("model_repository") != candidate["model_repository"] or
+        binding.get("revision") != candidate["revision"] or
+        binding.get("quantization") != "none" or binding.get("dtype") != "bfloat16"):
+        raise InvalidRun("IBM_ADMISSION_EXACT_UNQUANTIZED_MODEL_REQUIRED")
+    metadata_digest = ibm_file_binding(metadata_path)["sha256"]
+    host_digest = ibm_file_binding(host_path)["sha256"]
+    if (binding.get("metadata_sha256") != metadata_digest or
+        binding.get("host_admission_sha256") != host_digest):
+        raise InvalidRun("IBM_ADMISSION_INPUT_PIN_MISMATCH")
+    metadata, host = read_json(metadata_path), read_json(host_path)
+    if (not isinstance(metadata, dict) or not isinstance(host, dict) or
+        not isinstance(metadata.get("cardData"), dict) or
+        not isinstance(metadata.get("siblings"), list) or
+        not all(isinstance(item, dict) for item in metadata["siblings"])):
+        raise InvalidRun("IBM_ADMISSION_UPSTREAM_METADATA_OBJECTS_REQUIRED")
+    if (metadata.get("id") != candidate["model_repository"] or
+        metadata.get("sha") != candidate["revision"] or
+        metadata.get("cardData", {}).get("license") != "apache-2.0"):
+        raise InvalidRun("IBM_ADMISSION_UPSTREAM_IDENTITY_OR_LICENSE_MISMATCH")
+    root = model_root.absolute()
+    if root.is_symlink() or not root.is_dir():
+        raise InvalidRun("IBM_ADMISSION_MODEL_DIRECTORY_REQUIRED")
+    files = {}
+    for item in metadata.get("siblings", []):
+        name = item.get("rfilename", "")
+        if (not re.fullmatch(r"[A-Za-z0-9_.-]{1,160}", name) or
+            name in {".", ".."} or name in files or name.endswith((".py", ".bin", ".pkl"))):
+            raise InvalidRun("IBM_ADMISSION_UNSAFE_OR_DUPLICATE_FILE")
+        observed = ibm_file_binding(root / name)
+        lfs = item.get("lfs")
+        if lfs is not None:
+            if (not isinstance(lfs, dict) or observed["sha256"] != lfs.get("sha256") or
+                type(lfs.get("size")) is not int or observed["bytes"] != lfs["size"]):
+                raise InvalidRun("IBM_ADMISSION_WEIGHT_HASH_OR_SIZE_MISMATCH")
+        elif observed["git_blob_sha1"] != item.get("blobId"):
+            raise InvalidRun("IBM_ADMISSION_SOURCE_BLOB_MISMATCH")
+        files[name] = observed
+    required = {"config.json", "generation_config.json", "chat_template.jinja",
+                "tokenizer.json", "tokenizer_config.json", "model.safetensors.index.json"}
+    if not required <= files.keys():
+        raise InvalidRun("IBM_ADMISSION_MODEL_FILES_INCOMPLETE")
+    index = read_json(root / "model.safetensors.index.json")
+    weight_map = index.get("weight_map") if isinstance(index, dict) else None
+    if not isinstance(weight_map, dict) or not weight_map:
+        raise InvalidRun("IBM_ADMISSION_WEIGHT_INDEX_REQUIRED")
+    shards = set(weight_map.values())
+    if (shards != {n for n in files if n.endswith(".safetensors")} or
+        any(not re.fullmatch(r"model-[0-9]{5}-of-[0-9]{5}\.safetensors", n) for n in shards)):
+        raise InvalidRun("IBM_ADMISSION_WEIGHT_INDEX_MISMATCH")
+    upstream = {item["rfilename"]: item for item in metadata["siblings"]}
+    if any(not upstream[n].get("lfs") for n in shards):
+        raise InvalidRun("IBM_ADMISSION_UPSTREAM_WEIGHT_SHA256_REQUIRED")
+    if set(p.name for p in root.iterdir()) != set(files):
+        raise InvalidRun("IBM_ADMISSION_UNBOUND_MODEL_FILES")
+    config = read_json(root / "config.json")
+    if (not isinstance(config, dict) or config.get("model_type") != "granite" or
+        config.get("torch_dtype", config.get("dtype")) != "bfloat16"):
+        raise InvalidRun("IBM_ADMISSION_MODEL_ARCHITECTURE_MISMATCH")
+    server = binding.get("server", {})
+    if (not isinstance(server, dict) or not isinstance(server.get("name"), str) or not server["name"] or
+        not isinstance(server.get("version"), str) or not server["version"] or
+        not re.fullmatch(r"sha256:[0-9a-f]{64}", server.get("image_digest", "")) or
+        server.get("model_mount_read_only") is not True or server.get("offline") is not True or
+        server.get("trust_remote_code") is not False or
+        type(server.get("max_model_len")) is not int or server["max_model_len"] < 8192):
+        raise InvalidRun("IBM_ADMISSION_IMMUTABLE_OFFLINE_SERVER_REQUIRED")
+    executable = ibm_file_binding(Path(server.get("executable", "")))
+    if executable["sha256"] != server.get("executable_sha256"):
+        raise InvalidRun("IBM_ADMISSION_SERVER_EXECUTABLE_MISMATCH")
+    transport = IBMChatTransport("", binding.get("served_model"), "granite_local",
+        {"endpoint": binding.get("endpoint"), "model_revision": candidate["revision"]})
+    expected_settings = dict(transport.public_binding["parameters"],
+        chat_template_kwargs=transport.public_binding["template_parameters"])
+    if binding.get("settings") != expected_settings:
+        raise InvalidRun("IBM_ADMISSION_SAMPLING_OR_TEMPLATE_MISMATCH")
+    observed_host = own_host_observation(root)
+    if (host.get("schema") != "qikvrt-own-host-admission/v1" or
+        host.get("public_origin") != "https://raumzeitterminal.de" or
+        host.get("machine_id_sha256") != observed_host["machine_id_sha256"] or
+        host.get("mount") != observed_host["mount"]):
+        raise InvalidRun("IBM_ADMISSION_ORIGINAL_HOST_OR_MOUNT_MISMATCH")
+    memory = os.sysconf("SC_PAGE_SIZE") * os.sysconf("SC_PHYS_PAGES")
+    cgroup = Path("/sys/fs/cgroup/memory.max")
+    if cgroup.exists() and cgroup.read_text().strip().isdigit():
+        memory = min(memory, int(cgroup.read_text().strip()))
+    weight_bytes = sum(files[n]["bytes"] for n in shards)
+    if memory <= weight_bytes:
+        raise InvalidRun("IBM_ADMISSION_HOST_MEMORY_BELOW_WEIGHTS_ONLY_FLOOR")
+    receipt = {"schema": "qikvrt_ibm_model_admission_receipt_v1",
+        "state": "LOCAL_ARTIFACTS_VERIFIED_RUNTIME_ACCEPTANCE_PENDING",
+        "evidence_class": "LOCAL_ARTIFACT_INTEGRITY_NOT_MODEL_INFERENCE",
+        "binding_sha256": binding_pin, "metadata_sha256": metadata_digest,
+        "host_admission_sha256": host_digest,
+        "model_repository": candidate["model_repository"], "revision": candidate["revision"],
+        "quantization": "none", "dtype": "bfloat16", "model_files": files,
+        "settings": expected_settings, "endpoint": binding["endpoint"],
+        "served_model": binding["served_model"], "server_executable": executable,
+        "server_name": server["name"], "server_version_declared": server["version"],
+        "server_image_digest_declared": server["image_digest"],
+        "host": {"machine_id_sha256": observed_host["machine_id_sha256"],
+                 "architecture": platform.machine(), "logical_cpus": os.cpu_count(),
+                 "memory_limit_bytes": memory, "accelerators": "NOT_PROBED"},
+        "local_artifact_integrity_verified": True, "model_revision_attested": False,
+        "upstream_metadata_authenticity_attested": False, "server_image_digest_attested": False,
+        "host_can_run_inference_verified": False, "actual_ibm_inference_executed": False,
+        "product_trials_executed": 0, "product_metrics": None, "winner": None,
+        "product_claim_allowed": False, "effect_ack_done": False,
+        "remaining": ["independently verify upstream metadata provenance and server image",
+            "admit the selected exact model server and dependencies through the existing toolchain/cache registry",
+            "observe the existing protected host starting the locked server with these exact read-only weights",
+            "measure real context-length/memory/inference capability, hardware and cache policy",
+            "run matched pre-runs, independent interruption/readback and all balanced planned trials"]}
+    # Recheck bounded inputs after hashing; never silently bless a changed lock.
+    if any(ibm_file_binding(path)["sha256"] != expected for path, expected in
+           [(binding_path, binding_pin), (metadata_path, metadata_digest), (host_path, host_digest)]):
+        raise InvalidRun("IBM_ADMISSION_INPUT_CHANGED")
+    output = output.absolute()
+    if (output.exists() or output == ROOT or ROOT in output.parents or
+        any(p.is_symlink() for p in (output, *output.parents))):
+        raise InvalidRun("IBM_ADMISSION_NEW_PRIVATE_OUTPUT_REQUIRED")
+    output.mkdir(parents=True, mode=0o700)
+    write_json(output / "MODEL_ADMISSION.json", receipt)
+    return receipt
+
+
 def prepare_ibm_comparison(output: Path, repeats: int = 6, seed: int = 20261018) -> dict[str, Any]:
     """Freeze comparable plans using the existing scorer, clocks and journal.
 
@@ -947,6 +1118,13 @@ def main() -> int:
     ibm.add_argument("--output", type=Path, required=True)
     ibm.add_argument("--pairs-per-task", type=int, default=6)
     ibm.add_argument("--seed", type=int, default=20261018)
+    admit = sub.add_parser("ibm-admit", help="Verify existing local model bytes and S1 host binding; no inference")
+    admit.add_argument("--model-root", type=Path, required=True)
+    admit.add_argument("--metadata", type=Path, required=True)
+    admit.add_argument("--host-admission", type=Path, required=True)
+    admit.add_argument("--binding", type=Path, required=True)
+    admit.add_argument("--binding-sha256", required=True)
+    admit.add_argument("--output", type=Path, required=True)
     serve = sub.add_parser("serve")
     serve.add_argument("--run", type=Path, required=True)
     serve.add_argument("--port", type=int, default=8782)
@@ -969,6 +1147,9 @@ def main() -> int:
             result = make_plan(args.output, args.pairs_per_task, args.seed)
         elif args.command == "ibm-plan":
             result = prepare_ibm_comparison(args.output, args.pairs_per_task, args.seed)
+        elif args.command == "ibm-admit":
+            result = ibm_model_admission(args.model_root, args.metadata, args.host_admission,
+                                        args.binding, args.binding_sha256, args.output)
         elif args.command == "analyze":
             result = export_analysis(args.run, args.output) if args.output else analyze(args.run)
         elif args.command == "self-check":

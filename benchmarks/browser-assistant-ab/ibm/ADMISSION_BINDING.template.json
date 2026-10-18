@@ -1,0 +1,32 @@
+{
+  "schema": "qikvrt_ibm_model_admission_binding_v1",
+  "model_repository": "ibm-granite/granite-4.2-3b",
+  "revision": "be9e7d995f2a6be22def5dd815f9f2bae98c8b6e",
+  "quantization": "none",
+  "dtype": "bfloat16",
+  "metadata_sha256": null,
+  "host_admission_sha256": null,
+  "served_model": "ibm-granite/granite-4.2-3b",
+  "endpoint": "http://127.0.0.1:8000",
+  "server": {
+    "name": null,
+    "version": null,
+    "image_digest": null,
+    "executable": null,
+    "executable_sha256": null,
+    "offline": true,
+    "model_mount_read_only": true,
+    "trust_remote_code": false,
+    "max_model_len": 8192
+  },
+  "settings": {
+    "temperature": 1.0,
+    "top_p": 0.95,
+    "max_tokens": 8192,
+    "chat_template_kwargs": {
+      "enable_thinking": true,
+      "low_effort": false,
+      "truncate_history_thinking": true
+    }
+  }
+}

@@ -5,6 +5,14 @@
   "authorization": "User instruction of 2026-10-18 in this work unit; prepare comparison and make results publicly accessible.",
   "base_head": "f87c40bae44780e707bc300f31a2c99595ab892b",
   "base_tree": "854df81d5eac04e187d732849bc4ccedeb60b901",
+  "continuation_20261018_model_admission": {
+    "evidence_path": "benchmarks/browser-assistant-ab/ibm/evidence/ADMISSION_PREPARATION_20261018.json",
+    "evidence_sha256": "94b1fa9ae5ca9d0141d49284caa70e7cd155db8e3ea6351ccf073242ffe8d459",
+    "predecessor_client_receipt_path": "benchmarks/browser-assistant-ab/ibm/evidence/PREDECESSOR_CLIENT_RECEIPT_20261018.json",
+    "predecessor_client_receipt_sha256": "595673036e5d657692eed4e28f8091f9c7ea16daca5143ae7922c2ca4fcaff91",
+    "previous_open_work_retained": true,
+    "scope": "Offline model-artifact admission and explicit identical Granite template settings; no inference or productive host acceptance"
+  },
   "human": {
     "contribution": "Requested public IBM comparison and integration preparation; original QIK-VRT architecture, method and licensing direction.",
     "name": "Ingolf Lohmann"
@@ -39,7 +47,7 @@
   ],
   "repository": "ingolf-lohmann/qik-vrt",
   "result_path": "benchmarks/browser-assistant-ab/ibm/RESULTS.json",
-  "result_sha256": "55f4c1fc5c22698892cedd6a4870a63cab403f058865ebd2595bde0799f88774",
+  "result_sha256": "2647c9f2b89fbd81ff078ca46e246df78b5ebef3169b238e8d52a4dceff7e478",
   "reuse": [
     "tools/qikvrt_browser_assistant_ab.py",
     "src/qikvrt_personal_assistant.py",
@@ -47,7 +55,7 @@
     "src/qikvrt_mcp_adapter.py",
     ".github/workflows/qikvrt_ci.yml"
   ],
-  "runtime_constraint": false,
+  "runtime_constraint": "OWNER_CONTROLLED_SELF_HOST_FIRST_NO_MANAGED_RUNTIME_PREREQUISITE",
   "schema": "qikvrt-work-unit-v1",
   "scope": "Public source and protocol preparation; no claimed live IBM comparison, purchase, review approval, merge, production deployment or Zenodo upload."
 }

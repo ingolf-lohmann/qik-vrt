@@ -1,0 +1,11 @@
+test_current_parser_receives_environment_and_exact_stable_request (tests.test_api_client.GitHubShellWrapperTests.test_current_parser_receives_environment_and_exact_stable_request) ... ok
+test_extra_effect_options_cannot_change_dry_run (tests.test_api_client.GitHubShellWrapperTests.test_extra_effect_options_cannot_change_dry_run) ... ok
+test_missing_credential_stops_before_python (tests.test_api_client.GitHubShellWrapperTests.test_missing_credential_stops_before_python) ... ok
+test_missing_stable_request_stops_before_python (tests.test_api_client.GitHubShellWrapperTests.test_missing_stable_request_stops_before_python) ... ok
+test_original_client_transport_failure_exit_is_preserved (tests.test_api_client.GitHubShellWrapperTests.test_original_client_transport_failure_exit_is_preserved) ... ok
+test_original_parser_rejects_invalid_request_without_transport (tests.test_api_client.GitHubShellWrapperTests.test_original_parser_rejects_invalid_request_without_transport) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.364s
+
+OK

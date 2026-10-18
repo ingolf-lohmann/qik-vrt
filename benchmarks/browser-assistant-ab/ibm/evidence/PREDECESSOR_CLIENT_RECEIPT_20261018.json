@@ -1,0 +1,296 @@
+{
+  "action_window": {
+    "closed_at": "2026-10-18T14:55:30.063831+00:00",
+    "completed_at": "2026-10-18T14:48:50.431Z",
+    "completed_at_semantics": "Conservative upper bound for the completed publication action: start of independent closing observation after PR creation, not a per-request duration measurement.",
+    "id": "QIKVRT_IBM_PUBLIC_PREPARATION_CLOSE_20261018"
+  },
+  "actual_ibm_product_trials": 0,
+  "attempt_scope": "No failed effect was retried. Successful source preparation writes are listed in effect_journal; per-request timing attestations are not claimed.",
+  "attempts": [],
+  "authorization": {
+    "granted": true,
+    "source": "User instruction of 18 October 2026: prepare QIK-VRT comparison/integration with IBM technologies and make results publicly accessible."
+  },
+  "delivery_observation": {
+    "byte_verified": true,
+    "id": "c4ec4d17-41c8-4f26-b8b8-a0445f815966",
+    "sha256": "a97602484f8f695917fae8f6d737b842d46e4472d3ca11eea62fd012503dabfd",
+    "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/readback?id=c4ec4d17-41c8-4f26-b8b8-a0445f815966"
+  },
+  "effect_journal": [
+    {
+      "operation": "create_tree",
+      "sha": "1677334c5734c2d76e66d6684830e49481f954a4"
+    },
+    {
+      "operation": "create_commit",
+      "sha": "5cf4e38b4a8090b0d75912b653d5a28984e23d58"
+    },
+    {
+      "operation": "create_branch",
+      "ref": "ibm-comparison/20261018",
+      "sha": "5cf4e38b4a8090b0d75912b653d5a28984e23d58"
+    },
+    {
+      "draft": true,
+      "number": 532,
+      "operation": "create_pull_request",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/pull/532"
+    }
+  ],
+  "execution_id": "QIKVRT_IBM_PUBLIC_PREPARATION_20261018",
+  "full_ci": {
+    "conclusion": null,
+    "head": "5cf4e38b4a8090b0d75912b653d5a28984e23d58",
+    "id": 39137628851,
+    "status": "in_progress",
+    "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39137628851"
+  },
+  "global_effect_ack_done": false,
+  "independent_ibm_replication": false,
+  "inventory": {
+    "cli": "Exact-byte sparse REST source materialization; 34/34 tool-cache strategies; 57 scoped technical tests. Full bootstrap stops on unmaterialized source capsule, recorded separately. No unchanged local GitHub login was retried.",
+    "connector": "Existing owner GitHub REST connection read back; principal ingolf-lohmann; create_tree, create_commit, create_branch and draft PR operations executed successfully.",
+    "mesh": "Existing monitor/readback REST route inspected. It exposes observations, not native code execution; current owner-hosted model runtime and remote credential bindings remain unobserved.",
+    "repository": "Authority Main and relevant files, adapters, existing A/B harness and MCP facade read through REST; open-PR inventory first page inspected; no complete-backlog or optimization claim."
+  },
+  "knowledge": [
+    {
+      "epistemic_class": "USER_AUTHORIZATION",
+      "evidence": [
+        "https://github.com/ingolf-lohmann/qik-vrt/pull/532"
+      ],
+      "id": "IBM-PREP-OWNER-20261018",
+      "record_sha256": "73289bbc63febb819edeb8abda1d7631f14bdec39003245dc09e3e1322da68ad",
+      "scope": "Public comparison and interoperability preparation",
+      "statement": "Ingolf Lohmann requested preparation to compare QIK-VRT against and with IBM technologies and make outcomes accessible to IBM, himself and everyone else.",
+      "subject": {
+        "work_unit": "QIKVRT_IBM_COMPARISON_PREPARATION_20261018"
+      },
+      "supersedes": []
+    },
+    {
+      "epistemic_class": "SOFTWARE_TEST",
+      "evidence": [
+        "https://github.com/ingolf-lohmann/qik-vrt/blob/ibm-comparison/20261018/benchmarks/browser-assistant-ab/ibm/RESULTS.json",
+        "https://github.com/ingolf-lohmann/qik-vrt/blob/ibm-comparison/20261018/benchmarks/browser-assistant-ab/ibm/README.md"
+      ],
+      "id": "IBM-PREP-TECHNICAL-57",
+      "record_sha256": "ba04da02ba0d5b8f44b597ac59d1f93cb559b33d30f8fd0a355169083782b0c7",
+      "scope": "Exact candidate source files listed in public RESULTS.json",
+      "statement": "57 scoped technical tests passed, including mock HTTP and real SIGKILL persistence. This is not actual IBM inference or a comparative product outcome.",
+      "subject": {
+        "head": "5cf4e38b4a8090b0d75912b653d5a28984e23d58",
+        "ref": "ibm-comparison/20261018",
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "1677334c5734c2d76e66d6684830e49481f954a4"
+      },
+      "supersedes": []
+    },
+    {
+      "epistemic_class": "MEASUREMENT_STATUS",
+      "evidence": [
+        "https://github.com/ingolf-lohmann/qik-vrt/blob/ibm-comparison/20261018/benchmarks/browser-assistant-ab/ibm/RESULTS.json"
+      ],
+      "id": "IBM-PREP-UNSTARTED-96",
+      "record_sha256": "dc16084c94184d9b91a85b55e4e1e6b8dcc1d6b1e69c24a1710e58aa95ee77be",
+      "scope": "Four balanced pilot study plans",
+      "statement": "96 product trials are prepared; zero actual IBM product trials were executed. Product metrics and winner remain null. Missing client configuration does not prove remote-host credentials absent.",
+      "subject": {
+        "head": "5cf4e38b4a8090b0d75912b653d5a28984e23d58",
+        "ref": "ibm-comparison/20261018",
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "1677334c5734c2d76e66d6684830e49481f954a4"
+      },
+      "supersedes": []
+    },
+    {
+      "epistemic_class": "DOCUMENTARY_SOURCE",
+      "evidence": [
+        "https://doi.org/10.5281/zenodo.21888130"
+      ],
+      "id": "IBM-PREP-ROUND-TRIP-SCOPE",
+      "record_sha256": "4ccd3262a6f250831ab7dc4e101e88b61868aefc8532422e05ec77a876a316cb",
+      "scope": "Published architectural entry point and separation of evidence classes",
+      "statement": "The source-bound QIK-VRT entry point is Das Universum als Round Trip, version DOI 10.5281/zenodo.21888130. Archived model/formal results do not by themselves establish this new empirical IBM comparison.",
+      "subject": {
+        "doi": "10.5281/zenodo.21888130"
+      },
+      "supersedes": []
+    },
+    {
+      "epistemic_class": "HTTP_OBSERVATION",
+      "evidence": [
+        "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/readback?id=c4ec4d17-41c8-4f26-b8b8-a0445f815966"
+      ],
+      "id": "IBM-PREP-DOMAIN-OBSERVATION",
+      "record_sha256": "d6c7459b6c6a708e4cfaa1d342a767c5e62e56488f016a0d71571f88060fe996",
+      "scope": "Single external observer, 2026-10-18T14:48:50.508Z",
+      "statement": "The external observer returned HTTP 525 for the exact domain at this observation time. Useful application delivery and authenticated runtime were not established; other client observations are not inferred.",
+      "subject": {
+        "hostname": "raumzeitterminal.de",
+        "snapshot_id": "c4ec4d17-41c8-4f26-b8b8-a0445f815966"
+      },
+      "supersedes": []
+    }
+  ],
+  "main_readback": {
+    "head": "f87c40bae44780e707bc300f31a2c99595ab892b",
+    "observed_at": "2026-10-18T14:53:06.581Z",
+    "tree": "854df81d5eac04e187d732849bc4ccedeb60b901"
+  },
+  "managed_runtime_prerequisite": false,
+  "materialization": {
+    "conclusion": null,
+    "head": "5cf4e38b4a8090b0d75912b653d5a28984e23d58",
+    "id": 39137628941,
+    "status": "in_progress",
+    "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39137628941"
+  },
+  "next_actions": [],
+  "pending_execution": "Existing native CI https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39137628851 and evidence materialization https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39137628941 were in_progress at the closing observation. Preserve the active writer; read its terminal result before any source successor. Actual IBM inference additionally requires a bound owner-hosted model execution route.",
+  "planned_trials": 96,
+  "product_metrics": null,
+  "public": {
+    "anonymous_search_fetch": "Search service GitHub fetch disabled; public visibility and exact source readback established through provider REST. No anonymous fetch success is invented.",
+    "protocol": "https://github.com/ingolf-lohmann/qik-vrt/blob/ibm-comparison/20261018/benchmarks/browser-assistant-ab/ibm/README.md",
+    "pull_request": "https://github.com/ingolf-lohmann/qik-vrt/pull/532",
+    "repository_visibility": "public",
+    "results": "https://github.com/ingolf-lohmann/qik-vrt/blob/ibm-comparison/20261018/benchmarks/browser-assistant-ab/ibm/RESULTS.json"
+  },
+  "readback": {
+    "delivery": {
+      "action_id": "QIKVRT_IBM_PUBLIC_PREPARATION_CLOSE_20261018",
+      "hostname": "raumzeitterminal.de",
+      "http_status": 525,
+      "method": "GET",
+      "observed_at": "2026-10-18T14:48:50.508Z",
+      "scope": "Single external observer HTTP response; not a statement about every user device or authenticated runtime.",
+      "source": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/readback?id=c4ec4d17-41c8-4f26-b8b8-a0445f815966",
+      "state": "PENDING",
+      "url": "https://raumzeitterminal.de/"
+    },
+    "repository": {
+      "action_id": "QIKVRT_IBM_PUBLIC_PREPARATION_CLOSE_20261018",
+      "head": "5cf4e38b4a8090b0d75912b653d5a28984e23d58",
+      "observed_at": "2026-10-18T14:53:06.551Z",
+      "ref": "ibm-comparison/20261018",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "source": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/branches/ibm-comparison/20261018",
+      "tree": "1677334c5734c2d76e66d6684830e49481f954a4"
+    }
+  },
+  "requested_authorization_again": false,
+  "requested_preparation": "PUBLIC_REVIEW_CANDIDATE_AVAILABLE",
+  "schema": "qikvrt-client-continuation/1",
+  "scientific_result_published": false,
+  "smallest_model_continuation": "Bind the existing owner-controlled Granite HTTP server, actual weight hashes/server build and matched baseline. Reuse #496 for product-observer integration and the existing MCP facade for Orchestrate; do not create a managed-service dependency or repeat authorization.",
+  "sources": [
+    {
+      "doi": "10.5281/zenodo.21888130",
+      "id": "1",
+      "title": "Ingolf Lohmann: Von Softwarearchitektur zur Weltformel – DAS UNIVERSUM ALS ROUND TRIP.",
+      "urls": [
+        "https://doi.org/10.5281/zenodo.21888130"
+      ]
+    },
+    {
+      "id": "2",
+      "title": "IBM Granite Team: Granite-4.2-3B model card, 25 August 2026.",
+      "urls": [
+        "https://huggingface.co/ibm-granite/granite-4.2-3b",
+        "https://huggingface.co/ibm-granite/granite-4.2-3b/tree/be9e7d995f2a6be22def5dd815f9f2bae98c8b6e"
+      ]
+    },
+    {
+      "id": "3",
+      "title": "IBM: Adding generative chat function to your applications with the chat API.",
+      "urls": [
+        "https://www.ibm.com/docs/en/watsonx/saas?topic=code-chat"
+      ]
+    },
+    {
+      "id": "4",
+      "title": "IBM: Adding MCP server tools to a single agent.",
+      "urls": [
+        "https://www.ibm.com/docs/en/watsonx/watson-orchestrate/base?topic=server-adding-mcp-tools-single-agent"
+      ]
+    },
+    {
+      "id": "5",
+      "title": "IBM Research: SOFAI-LM: A Cognitive Architecture for Building Efficient and Reliable Reasoning Systems with LLMs, AAAI 2026, 20 January 2026.",
+      "urls": [
+        "https://research.ibm.com/publications/sofai-lm-a-cognitive-architecture-for-building-efficient-and-reliable-reasoning-systems-with-llms"
+      ]
+    },
+    {
+      "id": "6",
+      "title": "IBM Research: Neuro-Vector-Symbolic Architecture.",
+      "urls": [
+        "https://research.ibm.com/projects/neuro-vector-symbolic-architecture"
+      ]
+    }
+  ],
+  "state": "CONTINUE",
+  "subject": {
+    "head": "5cf4e38b4a8090b0d75912b653d5a28984e23d58",
+    "ref": "ibm-comparison/20261018",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "tree": "1677334c5734c2d76e66d6684830e49481f954a4"
+  },
+  "technical_tests": {
+    "display_log": "UTF-8 lines with trailing whitespace removed; exact original retained separately.",
+    "ibm_specific_tests": 16,
+    "log": "evidence/TESTS.log",
+    "original_log": "evidence/TESTS_ORIGINAL.json",
+    "original_log_sha256": "368ec8adc8143a844f24b8fe41926af8672d3820f9206e2a4c807e52e7df0477",
+    "scope": "Adapter protocol, ordinary-history parity, pending-result handling, actual mock HTTP transport and real SIGKILL persistence. No actual IBM inference.",
+    "status": "PASS",
+    "tests_run": 57
+  },
+  "title": "QIK-VRT / IBM: öffentlicher Vorbereitungs- und Ausführungsstand",
+  "winner": null,
+  "work": [
+    {
+      "evidence": "https://github.com/ingolf-lohmann/qik-vrt/pull/532; source tree 1677334c5734c2d76e66d6684830e49481f954a4; protocol bytes and result independently read back.",
+      "id": "PUBLIC_PREPARATION",
+      "state": "VERIFIED"
+    },
+    {
+      "evidence": "https://github.com/ingolf-lohmann/qik-vrt/blob/ibm-comparison/20261018/benchmarks/browser-assistant-ab/ibm/RESULTS.json; 57 scoped tests and exact original log retained.",
+      "id": "TECHNICAL_REGRESSION",
+      "state": "VERIFIED"
+    },
+    {
+      "id": "IBM_NATIVE_MODEL",
+      "next_action": "Bind existing owner-hosted Granite server, exact weights, server build, quantization and thinking settings; no new managed-service prerequisite.",
+      "state": "OPEN"
+    },
+    {
+      "id": "IBM_PRODUCT_RUN",
+      "next_action": "Observe equivalent pre-runs, real interruptions and baseline retention with isolated oracles; execute all planned trials and independently score outputs.",
+      "state": "OPEN"
+    },
+    {
+      "id": "IBM_ORCHESTRATE_IMPORT",
+      "next_action": "Reuse deployed authenticated QIK-VRT MCP server; bind actual import/agent/run receipts on an available Orchestrate installation.",
+      "state": "OPEN"
+    },
+    {
+      "id": "NATIVE_FULL_CI",
+      "next_action": "Read back existing native CI on this candidate and complete source/integrity gates before any integration claim.",
+      "state": "OPEN"
+    },
+    {
+      "id": "PUBLIC_DOMAIN",
+      "next_action": "Read back exact raumzeitterminal.de delivery separately; public repository access is not exact-domain runtime acceptance.",
+      "state": "OPEN"
+    },
+    {
+      "id": "SCIENTIFIC_ARCHIVE",
+      "next_action": "Freeze any later measured result, complete machine-proof/claim-bound review and candidate-specific return before a Zenodo production upload.",
+      "state": "OPEN"
+    }
+  ]
+}

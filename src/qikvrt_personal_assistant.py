@@ -202,6 +202,10 @@ class IBMChatTransport(OpenAITransport):
             "instructions_sha256": digest(INSTRUCTIONS.encode()), "tools": [],
             "parameters": {"temperature": 1.0, "top_p": 0.95, "max_tokens": 8192},
             "normal_retention": "FULL_LOCAL_TRANSCRIPT_SENT_IN_BOTH_ARMS_PROVIDER_RETENTION_UNATTESTED"}
+        if provider == "granite_local":
+            self.public_binding["template_parameters"] = {
+                "enable_thinking": True, "low_effort": False,
+                "truncate_history_thinking": True}
         if credential and credential.encode() in canonical(self.public_binding):
             raise CapabilityBlock("IBM_CONFIGURATION_CONTAINS_RUNTIME_SECRET")
 
@@ -227,6 +231,8 @@ class IBMChatTransport(OpenAITransport):
             raise CapabilityBlock("IBM_BOUND_SYSTEM_INSTRUCTIONS_REQUIRED")
         body = dict(payload)
         route = "/v1/chat/completions"
+        if self.provider == "granite_local":
+            body["chat_template_kwargs"] = dict(self.public_binding["template_parameters"])
         if self.provider == "watsonx":
             body.pop("model")
             body.update(model_id=self.model, project_id=self.config["project_id"])

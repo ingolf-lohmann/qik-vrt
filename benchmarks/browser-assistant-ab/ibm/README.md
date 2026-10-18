@@ -70,6 +70,88 @@ and image digest to independent host evidence. The pinned Granite candidate
 has not been downloaded or admitted by this preparation. Model-server tools
 must enter the existing locked toolchain/cache admission before use.
 
+## Exact local model admission (successor preparation, 18 October 2026)
+
+The existing harness now provides `ibm-admit`. It reads previously acquired
+files only. It does not install software, start a server, contact an API or run
+inference. It reuses S1's `own_host_observation` to compare the current machine
+and persistent model volume with the **existing** private
+`qikvrt-own-host-admission/v1` record for `https://raumzeitterminal.de`.
+Run this operation on that admitted owner host; a chat sandbox is no substitute.
+
+1. Obtain the exact-revision Hugging Face model metadata over the existing
+   authorized HTTPS acquisition path, with file/LFS details (`blobs=true`).
+   Freeze the original JSON (`id`, `sha`, `cardData.license`, and `siblings`
+   with `rfilename`, `blobId` and each weight's `lfs.sha256`/`lfs.size`).
+   Independently retain its origin, retrieval receipt and SHA-256 before
+   acquiring weights. A locally calculated hash alone cannot attest its origin.
+2. Acquire this exact snapshot onto the existing admitted persistent volume.
+   Preserve all listed files in an immutable, nonsymlink directory; do not use
+   mutable `main`, a model-name alias, unreviewed Python or automatic remote
+   code. This first gate admits the original BF16 weights with quantization
+   `none`. Any quantized derivative needs a separately reviewed source and
+   conversion binding; it must not silently replace the planned model.
+3. Fill `ADMISSION_BINDING.template.json` privately with actual metadata,
+   existing S1 admission, server executable SHA-256, server version and immutable
+   OCI image digest. Freeze its SHA-256 through the protected host connection.
+   Null entries are deliberately nonadmissible. Admit the chosen exact server
+   and dependencies in the existing toolchain/cache registry before using them.
+4. Execute the gate with absolute private paths and a new output directory:
+
+```bash
+python3 -B tools/qikvrt_browser_assistant_ab.py ibm-admit \
+  --model-root /owner-volume/granite-snapshot \
+  --metadata /private/granite-upstream-metadata.json \
+  --host-admission /private/existing-s1-host-admission.json \
+  --binding /private/granite-admission-binding.json \
+  --binding-sha256 ACTUAL_INDEPENDENTLY_RETAINED_BINDING_SHA256 \
+  --output /private/ibm-admission-001
+```
+
+The gate streams all files, verifies upstream Git blob IDs and weight SHA-256
+and sizes, checks the complete shard index, rejects additional unbound files,
+and verifies the server executable. It rejects wrong revision, licence, host,
+mount, sampling, thinking mode, mutable image references and altered inputs.
+It observes CPU/architecture and physical/cgroup memory, rejecting memory below
+the weights-only floor. This floor is **not** an inference capacity estimate:
+KV cache, server overhead, GPU/VRAM and real latency still require measurement.
+
+`MODEL_ADMISSION.json` reports `LOCAL_ARTIFACTS_VERIFIED_RUNTIME_ACCEPTANCE_PENDING`.
+It binds local bytes and declared server configuration; it does not attest
+upstream authenticity, an image actually running, loaded model identity or
+inference capability. Inference, product metrics, winner and Effect-Ack remain
+false/null. Keep the receipt private until host identifiers and paths have been
+reviewed for public release. All model downloads and admission remain unexecuted
+for this candidate until an actual protected owner-host connection is available.
+
+The Granite adapter now explicitly sends `chat_template_kwargs` in both arms:
+`enable_thinking=true`, `low_effort=false`,
+`truncate_history_thinking=true`, alongside temperature 1.0, top-p 0.95 and
+8192 output tokens. Those parameters are part of its persistent runtime binding;
+an incompatible old state is rejected rather than silently rebound. Ordinary
+baseline transcripts remain intact. Optional watsonx request semantics are
+unchanged. A host must verify that its locked server accepts these parameters.
+
+After local admission, use the existing PersonalRuntime/terminal and frozen
+`granite-continuity` plan for matched pre-runs. Observe the locked server and
+actual loaded weights independently. Preserve normal baseline restore, isolate
+oracles from both model/tool views, and bind actual interruptions and readback
+through the existing Transputer/TEMDD ledger. The base evaluator remains
+`HARNESS_ONLY_PRODUCT_EXECUTION_NOT_IMPLEMENTED`; `ibm-admit` does not promote it
+to a product observer. Retain real provider outputs, request/response digests,
+usage, errors, timeouts and monotonic latencies separately, and only then add
+reviewed real observations to this public results format. No scripted oracle
+output or successful gate counts as a model trial.
+
+Native-source correction: CI job `117705282028` independently printed
+`QIKVRT_TESTED_SUBJECT head=fa48a66aece80f5de9ddba0bc2e27801f2036af3
+tree=dec2f88d0a5f07aa4fe033ccbc5b10f9c38ec57b` on 18 October 2026.
+Its full source gate and the Chromium/WebKit jobs succeeded. Later
+`action_required` runs have no jobs and are separate from this actual
+same-writer fixpoint result. That result applies to the predecessor's exact
+source only; the present successor needs its own tests. It establishes neither
+Granite inference nor Firefox signing, host start or domain delivery.
+
 ## Reproduce preparation
 
 Use a complete checkout of this candidate, the repository's declared Python

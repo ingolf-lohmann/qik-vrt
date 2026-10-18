@@ -7,12 +7,43 @@
   "runtime_constraint": "OWNER_CONTROLLED_SELF_HOST_FIRST_NO_MANAGED_RUNTIME_PREREQUISITE",
   "harness": "tools/qikvrt_browser_assistant_ab.py",
   "base_contract": "benchmarks/browser-assistant-ab/contract.json",
-  "fixture_ids": ["research-costs", "document-recovery"],
+  "fixture_ids": [
+    "research-costs",
+    "document-recovery"
+  ],
   "studies": [
-    {"id": "granite-continuity", "comparison": "Same locally hosted Granite model: ordinary full-transcript assistant versus QIK-VRT checkpoint continuation", "baseline": "granite_local baseline", "qikvrt": "granite_local qikvrt", "implementation": "PersonalRuntime", "execution": "NOT_EXECUTED"},
-    {"id": "orchestration-head-to-head", "comparison": "IBM Orchestrate ordinary agent versus QIK-VRT PersonalRuntime, same Granite weights, sources and allowed tools", "baseline": "IBM Orchestrate native agent with normal memory and retention", "qikvrt": "QIK-VRT PersonalRuntime with same Granite", "implementation": "ORCHESTRATE_EXECUTOR_AND_EQUIVALENCE_BINDING_REQUIRED", "execution": "NOT_EXECUTED"},
-    {"id": "orchestrate-hybrid", "comparison": "Same IBM Orchestrate agent without versus with existing QIK-VRT read-only MCP evidence tools", "baseline": "IBM Orchestrate normal tools and memory", "qikvrt": "Same Orchestrate plus QIK-VRT evidence tools", "implementation": "EXISTING_MCP_IMPORT_AND_RUN_READBACK_REQUIRED", "execution": "NOT_EXECUTED"},
-    {"id": "watsonx-continuity", "comparison": "Same optional watsonx model and project: ordinary full-transcript assistant versus QIK-VRT checkpoint continuation", "baseline": "watsonx baseline", "qikvrt": "watsonx qikvrt", "implementation": "PersonalRuntime", "execution": "NOT_EXECUTED"}
+    {
+      "id": "granite-continuity",
+      "comparison": "Same locally hosted Granite model: ordinary full-transcript assistant versus QIK-VRT checkpoint continuation",
+      "baseline": "granite_local baseline",
+      "qikvrt": "granite_local qikvrt",
+      "implementation": "PersonalRuntime",
+      "execution": "NOT_EXECUTED"
+    },
+    {
+      "id": "orchestration-head-to-head",
+      "comparison": "IBM Orchestrate ordinary agent versus QIK-VRT PersonalRuntime, same Granite weights, sources and allowed tools",
+      "baseline": "IBM Orchestrate native agent with normal memory and retention",
+      "qikvrt": "QIK-VRT PersonalRuntime with same Granite",
+      "implementation": "ORCHESTRATE_EXECUTOR_AND_EQUIVALENCE_BINDING_REQUIRED",
+      "execution": "NOT_EXECUTED"
+    },
+    {
+      "id": "orchestrate-hybrid",
+      "comparison": "Same IBM Orchestrate agent without versus with existing QIK-VRT read-only MCP evidence tools",
+      "baseline": "IBM Orchestrate normal tools and memory",
+      "qikvrt": "Same Orchestrate plus QIK-VRT evidence tools",
+      "implementation": "EXISTING_MCP_IMPORT_AND_RUN_READBACK_REQUIRED",
+      "execution": "NOT_EXECUTED"
+    },
+    {
+      "id": "watsonx-continuity",
+      "comparison": "Same optional watsonx model and project: ordinary full-transcript assistant versus QIK-VRT checkpoint continuation",
+      "baseline": "watsonx baseline",
+      "qikvrt": "watsonx qikvrt",
+      "implementation": "PersonalRuntime",
+      "execution": "NOT_EXECUTED"
+    }
   ],
   "granite_candidate": {
     "model_repository": "ibm-granite/granite-4.2-3b",
@@ -26,16 +57,88 @@
     "temperature": 1.0,
     "top_p": 0.95,
     "max_tokens": 8192,
-    "thinking_mode": "MUST_BIND_IDENTICALLY_BEFORE_EXECUTION"
+    "thinking_mode": "MUST_BIND_IDENTICALLY_BEFORE_EXECUTION",
+    "declared_template_parameters": {
+      "enable_thinking": true,
+      "low_effort": false,
+      "truncate_history_thinking": true
+    },
+    "local_admission": {
+      "command": "ibm-admit",
+      "binding_template": "benchmarks/browser-assistant-ab/ibm/ADMISSION_BINDING.template.json",
+      "scope": "LOCAL_ARTIFACTS_ONLY_NOT_RUNTIME_ATTESTATION",
+      "accepted_profile": {
+        "quantization": "none",
+        "dtype": "bfloat16"
+      },
+      "executed_on_productive_host": false
+    }
   },
-  "required_equalities": ["exact model weights and quantization within each study", "normal baseline history, persistence and restore retained", "same task and source bytes", "same tool capabilities except the explicitly studied QIK-VRT addition", "same sampling and thinking settings", "same hardware and cache policy for local comparisons", "same interruption class and observation window", "same token and human-intervention budgets"],
-  "required_runtime_evidence": ["model revision plus independently checked weight hashes and server build", "actual equivalent pre-runs and durable checkpoints", "actual interruption and restart traces", "separate oracle filesystem and tool view", "model request, response and usage provenance", "normal baseline retention readback", "independent output scoring", "all planned trials including errors and timeouts"],
-  "primary_metrics": ["independently correct task completion", "unsupported completion claims", "resumption latency including restore and verification", "human context re-entry and interventions", "source-binding correctness"],
-  "additional_metrics": ["tokens and server-reported usage", "wall time and measured peak memory", "measured energy only if instrumented", "measured service cost only if evidenced", "duplicate or lost acknowledged sandbox effects"],
-  "statistics": {"purpose": "balanced pilot; no predeclared superiority claim", "default_pairs_per_task": 6, "seed": 20261018, "order": "balanced AB/BA per task", "report_failures_and_censoring": true, "missing_latency": null, "cross_study_aggregation": false, "confirmatory_sample_size": "preregister after separate pilot and power analysis; freeze before confirmatory execution"},
-  "research_extensions": [
-    {"technology": "SOFAI-LM", "scope": "graph-coloring and code-debugging protocols; independent licence, executable revision and validator binding required", "execution": "NOT_EXECUTED", "source": "https://research.ibm.com/publications/sofai-lm-a-cognitive-architecture-for-building-efficient-and-reliable-reasoning-systems-with-llms"},
-    {"technology": "NeuroVSA", "scope": "matched symbolic-binding and reasoning tasks; source/model/validator and licence review required", "execution": "NOT_EXECUTED", "source": "https://research.ibm.com/projects/neuro-vector-symbolic-architecture"}
+  "required_equalities": [
+    "exact model weights and quantization within each study",
+    "normal baseline history, persistence and restore retained",
+    "same task and source bytes",
+    "same tool capabilities except the explicitly studied QIK-VRT addition",
+    "same sampling and thinking settings",
+    "same hardware and cache policy for local comparisons",
+    "same interruption class and observation window",
+    "same token and human-intervention budgets"
   ],
-  "publication": {"audience": "PUBLIC_INCLUDING_IBM_AND_OWNER", "publish_all_outcomes": true, "scientific_result": "NOT_YET_MEASURED", "winner": null, "raw_data": "synthetic/public inputs only; review secrets and third-party rights before publication", "qikvrt_relicensing": false, "ibm_endorsement": false}
+  "required_runtime_evidence": [
+    "model revision plus independently checked weight hashes and server build",
+    "actual equivalent pre-runs and durable checkpoints",
+    "actual interruption and restart traces",
+    "separate oracle filesystem and tool view",
+    "model request, response and usage provenance",
+    "normal baseline retention readback",
+    "independent output scoring",
+    "all planned trials including errors and timeouts"
+  ],
+  "primary_metrics": [
+    "independently correct task completion",
+    "unsupported completion claims",
+    "resumption latency including restore and verification",
+    "human context re-entry and interventions",
+    "source-binding correctness"
+  ],
+  "additional_metrics": [
+    "tokens and server-reported usage",
+    "wall time and measured peak memory",
+    "measured energy only if instrumented",
+    "measured service cost only if evidenced",
+    "duplicate or lost acknowledged sandbox effects"
+  ],
+  "statistics": {
+    "purpose": "balanced pilot; no predeclared superiority claim",
+    "default_pairs_per_task": 6,
+    "seed": 20261018,
+    "order": "balanced AB/BA per task",
+    "report_failures_and_censoring": true,
+    "missing_latency": null,
+    "cross_study_aggregation": false,
+    "confirmatory_sample_size": "preregister after separate pilot and power analysis; freeze before confirmatory execution"
+  },
+  "research_extensions": [
+    {
+      "technology": "SOFAI-LM",
+      "scope": "graph-coloring and code-debugging protocols; independent licence, executable revision and validator binding required",
+      "execution": "NOT_EXECUTED",
+      "source": "https://research.ibm.com/publications/sofai-lm-a-cognitive-architecture-for-building-efficient-and-reliable-reasoning-systems-with-llms"
+    },
+    {
+      "technology": "NeuroVSA",
+      "scope": "matched symbolic-binding and reasoning tasks; source/model/validator and licence review required",
+      "execution": "NOT_EXECUTED",
+      "source": "https://research.ibm.com/projects/neuro-vector-symbolic-architecture"
+    }
+  ],
+  "publication": {
+    "audience": "PUBLIC_INCLUDING_IBM_AND_OWNER",
+    "publish_all_outcomes": true,
+    "scientific_result": "NOT_YET_MEASURED",
+    "winner": null,
+    "raw_data": "synthetic/public inputs only; review secrets and third-party rights before publication",
+    "qikvrt_relicensing": false,
+    "ibm_endorsement": false
+  }
 }

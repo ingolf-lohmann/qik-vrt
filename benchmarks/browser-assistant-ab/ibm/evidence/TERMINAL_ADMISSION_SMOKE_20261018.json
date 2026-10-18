@@ -1,0 +1,44 @@
+{
+  "effect_scope": "One isolated in-memory loopback terminal input, no live service or repository mutation",
+  "evidence_class": "HTTP_REFERENCE_PATH_TEST",
+  "firefox_executed": false,
+  "head": "fa48a66aece80f5de9ddba0bc2e27801f2036af3",
+  "product_claim_allowed": false,
+  "research_assistant_executed": false,
+  "schema": "qikvrt_browser_ab_terminal_smoke_v1",
+  "source_sha256": "a0aad1d78fa9de4ffb631e284d673c7f7bb45310757f22ed432aa834c487ecc5",
+  "status": "PASS",
+  "trace": [
+    {
+      "path": "/.well-known/effect-ack",
+      "response_sha256": "af478d612f094b973df9899a3f51c45de42179d19be984ba421e5398b77ae587",
+      "status": 200
+    },
+    {
+      "path": "/terminal/prepare",
+      "response_sha256": "621270f79094171d3c494441011ba7c1f826baced8cb9f75c296e45fc6428ec7",
+      "status": 200
+    },
+    {
+      "path": "/effect-ack/records/9372fa67487f21e23a232ffadee0f7b93cc46eb1cb9d5f929edddf64b1487600",
+      "response_sha256": "76401fa2c76229fe4f8df1c8a303771c6087d6f16066cbc8e43b3819c8e85ba5",
+      "status": 200
+    },
+    {
+      "path": "/terminal/commit",
+      "response_sha256": "d0e3f814bd5f687ffb5b36a1876cdbe044f65cb5cbe43134c0c85d5a21f14c7e",
+      "status": 200
+    },
+    {
+      "path": "/terminal/state",
+      "response_sha256": "a4873150846a41db5eecdc078149a9dc99ce654b5691faffdcc16b3245cc3063",
+      "status": 200
+    },
+    {
+      "path": "/terminal/commit",
+      "response_sha256": "e039519f4806a2bbbef520fc5ef2e993006c79b667ad47d90da0c527016c7dfa",
+      "status": 409
+    }
+  ],
+  "tree": "dec2f88d0a5f07aa4fe033ccbc5b10f9c38ec57b"
+}

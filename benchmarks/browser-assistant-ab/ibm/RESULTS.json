@@ -2,6 +2,18 @@
   "actual_ibm_inference_executed": false,
   "base_head": "f87c40bae44780e707bc300f31a2c99595ab892b",
   "base_tree": "854df81d5eac04e187d732849bc4ccedeb60b901",
+  "continuation_20261018_model_admission": {
+    "actual_ibm_inference_executed": false,
+    "evidence": "evidence/ADMISSION_PREPARATION_20261018.json",
+    "native_predecessor_source_gate": "Verified actual tested subject fa48a66/dec2f88 via job117705282028; not transferred to this changed successor",
+    "pr_draft": true,
+    "product_metrics": null,
+    "product_trials_executed": 0,
+    "scoped_tests_run": 63,
+    "sha256": "94b1fa9ae5ca9d0141d49284caa70e7cd155db8e3ea6351ccf073242ffe8d459",
+    "status": "LOCAL_INTEGRATION_AND_ADMISSION_PREPARATION_VERIFIED_PRODUCTIVE_HOST_BINDING_PENDING",
+    "winner": null
+  },
   "effect_ack_done": false,
   "evidence_files": {
     "BOOTSTRAP_SPARSE_CHECKOUT.json": {
