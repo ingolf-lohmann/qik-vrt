@@ -1,0 +1,37 @@
+{
+  "accepted_count": 1,
+  "active_count": 0,
+  "boundaries": {
+    "known_or_queued_nodes_only": true,
+    "no_global_scanning": true,
+    "no_remote_mutation_without_authorization": true,
+    "no_self_propagation": true,
+    "node_revalidation_does_not_write_to_node_repositories": true,
+    "seed_writes_only_to_seed_repository": true
+  },
+  "error_count": 3,
+  "fixed_node_count": false,
+  "generated_utc": "2026-10-18T05:30:39Z",
+  "lifecycle_states": [
+    "ACTIVE",
+    "REVOKED",
+    "STALE",
+    "SUSPENDED",
+    "UNKNOWN"
+  ],
+  "node_addition_method": "append a valid, explicitly policy-authorized TSV row",
+  "node_count": 1,
+  "qikvrt_event": "NODEMESH_OPEN_MULTI_NODE_REVALIDATION",
+  "revoked_count": 0,
+  "run_id": "owner-seed-role-migration-20261018-e0ad3755",
+  "schema": "qikvrt_nodemesh_revalidation_v2",
+  "seed_repository": "ingolf-lohmann/qik-vrt",
+  "source_index_path": "registry/NODEMESH_INDEX.json",
+  "source_index_run_id": "owner-seed-role-migration-20261018-e0ad3755",
+  "source_status_path": "registry/NODEMESH_STATUS.json",
+  "source_status_run_id": "owner-seed-role-migration-20261018-e0ad3755",
+  "stale_count": 1,
+  "status": "CONTINUE",
+  "suspended_count": 0,
+  "unknown_count": 0
+}

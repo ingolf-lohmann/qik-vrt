@@ -648,6 +648,22 @@ class OwnerSigningContinuationTests(unittest.TestCase):
         self.assertEqual(value["credential_delivery"]["state"], "PAIR_DELIVERED")
         self.assertEqual(value["credential_delivery"]["configuration_status"], "NOT_INSPECTED")
 
+    def test_missing_credential_pair_does_not_issue_an_unneeded_writer_inventory(self):
+        from tools import qikvrt_self_host as host
+        context = {**self.context, "issuer_present": False, "secret_present": False}
+        with mock.patch.object(MODULE, "amo_context", return_value=context), \
+                mock.patch.object(MODULE, "_git", side_effect=[self.tree, self.head]), \
+                mock.patch.object(MODULE, "amo_event", return_value=None), \
+                mock.patch.object(MODULE, "amo_previous", return_value=(None, True)), \
+                mock.patch.object(MODULE, "read_authority_main", return_value=self.authority), \
+                mock.patch.object(host, "firefox_amo_input", return_value=(b"", self.subject)), \
+                mock.patch.object(MODULE, "_amo_get", side_effect=[self.branch, self.rules]), \
+                mock.patch.object(MODULE, "_amo_competing_writer") as writers:
+            value = MODULE.amo_live_plan(ROOT)
+        self.assertFalse(value["dispatch"])
+        self.assertEqual(value["credential_delivery"]["state"], "PAIR_NOT_DELIVERED")
+        writers.assert_not_called()
+
     def test_actual_ci_preflight_distinguishes_request_and_delivery_without_network(self):
         workflow = (ROOT / MODULE.AMO_CI_WORKFLOW).read_text()
         script = workflow.split("          python3 -B - <<'PYAMO'\n", 1)[1].split("          PYAMO", 1)[0]
@@ -783,7 +799,8 @@ class OwnerSigningContinuationTests(unittest.TestCase):
         def read(path):
             if "/jobs?" in path:
                 return {"jobs": (jobs or {}).get(int(path.split("/")[3]), [])}
-            return {"workflow_runs": list(pushes if "event=push" in path else dispatch)}
+            rows = list(pushes if "event=push" in path else dispatch)
+            return {"total_count": len(rows), "workflow_runs": rows}
         return read
 
     def test_signing_journal_includes_owner_push_and_chooses_latest_actual_producer(self):
@@ -935,7 +952,7 @@ class OwnerSigningContinuationTests(unittest.TestCase):
         def get(root, endpoint, **kwargs):
             if endpoint.endswith("/500"): return current
             if endpoint.endswith("/499"): return caller
-            if "/workflows/" in endpoint: return {"workflow_runs": [current, caller]}
+            if "/workflows/" in endpoint: return {"total_count": 2, "workflow_runs": [current, caller]}
             if endpoint.endswith("/499/jobs?per_page=100"): return {"total_count": 1, "jobs": [job]}
             self.fail(endpoint)
         def artifact(root, run_id, name, allowed):
@@ -971,7 +988,7 @@ class OwnerSigningContinuationTests(unittest.TestCase):
                   "content": base64.b64encode(old).decode()}
         def get(root, endpoint, **kwargs):
             if endpoint.endswith("/3000"): return current
-            if "/workflows/" in endpoint: return {"workflow_runs": old_runs[:100]}
+            if "/workflows/" in endpoint: return {"total_count": len(old_runs), "workflow_runs": old_runs[:MODULE.AMO_RUN_PAGE_SIZE]}
             if endpoint.endswith("/2999"): return old_runs[0]
             if "/contents/" in endpoint: return source
             self.fail("unexpected historical scan or wait: " + endpoint)
@@ -1035,7 +1052,7 @@ class OwnerSigningContinuationTests(unittest.TestCase):
         previous = MODULE.amo_dispatch_record(self.plan(), None)
         def get(root, endpoint, **kwargs):
             if "/workflows/qikvrt_ci.yml/runs?" in endpoint:
-                return {"workflow_runs": [self.provider_run(600, actor={"login": "github-actions[bot]"})]}
+                return {"total_count": 1, "workflow_runs": [self.provider_run(600, actor={"login": "github-actions[bot]"})]}
             if "/600/jobs?" in endpoint: return {"total_count": 1, "jobs": [self.job()]}
             self.fail(endpoint)
         def run(root, run_id, workflow): return self.provider_run(run_id, workflow)
@@ -1070,6 +1087,75 @@ class OwnerSigningContinuationTests(unittest.TestCase):
         self.assertNotIn("sleep ", workflow)
         self.assertNotIn("seq 1 12", workflow)
         self.assertIn('return_run_details:true', workflow)
+
+
+class AMOMetadataPagingTests(unittest.TestCase):
+    def test_large_provider_shaped_rows_fit_without_raising_the_byte_limit_or_losing_history(self):
+        from urllib.parse import parse_qs
+        rows = [{"id": n, "repository": {"description": "x" * 13000}} for n in range(1, 101)]
+        oversized = json.dumps({"total_count": 100, "workflow_runs": rows}).encode()
+        with self.assertRaisesRegex(MODULE.ExecutorBlock, "AMO_METADATA_CAPACITY_LIMIT"):
+            MODULE._amo_object(oversized)
+        requested, sizes = [], []
+        def get(command, **kwargs):
+            self.assertEqual(command[command.index("--method") + 1], "GET")
+            query = parse_qs(command[-1].split("?", 1)[1])
+            size, page = int(query["per_page"][0]), int(query["page"][0])
+            requested.append((size, page))
+            raw = json.dumps({"total_count": len(rows), "workflow_runs": rows[(page-1)*size:page*size]}).encode()
+            sizes.append(len(raw))
+            return subprocess.CompletedProcess(command, 0, raw, b"")
+        with mock.patch.dict(os.environ, {"GH_TOKEN": "fixture-only"}), mock.patch.object(MODULE.subprocess, "run", side_effect=get):
+            pages = list(MODULE._amo_run_pages(lambda endpoint: MODULE._amo_get(ROOT, endpoint),
+                "repos/ingolf-lohmann/qik-vrt/actions/runs?branch=main", "INCOMPLETE"))
+        self.assertEqual([r["id"] for page in pages for r in page], list(range(1, 101)))
+        self.assertTrue(all(size < 1_048_576 for size in sizes))
+        self.assertEqual(MODULE.AMO_RUN_PAGE_SIZE * len(requested), 100)
+        self.assertEqual(MODULE.AMO_RUN_HISTORY_BUDGET, 1600)
+
+    def test_partial_api_search_result_cannot_establish_complete_history(self):
+        from urllib.parse import parse_qs
+        def read(endpoint):
+            page = int(parse_qs(endpoint.split("?", 1)[1])["page"][0])
+            start = (page-1) * MODULE.AMO_RUN_PAGE_SIZE
+            return {"total_count": 1010, "workflow_runs": [{"id": n+1} for n in range(start, min(start+20, 1000))]}
+        with self.assertRaisesRegex(MODULE.ExecutorBlock, "INCOMPLETE"):
+            list(MODULE._amo_run_pages(read, "runs", "INCOMPLETE"))
+
+    def test_missing_counts_count_drift_duplicate_rows_and_short_pages_fail_closed(self):
+        first = [{"id": n} for n in range(1, 21)]
+        cases = [
+            [{"workflow_runs": []}],
+            [{"total_count": True, "workflow_runs": []}],
+            [{"total_count": 40, "workflow_runs": first}, {"total_count": 41, "workflow_runs": [{"id": n} for n in range(21, 41)]}],
+            [{"total_count": 40, "workflow_runs": first}, {"total_count": 40, "workflow_runs": first}],
+            [{"total_count": 30, "workflow_runs": first}, {"total_count": 30, "workflow_runs": []}],
+        ]
+        for responses in cases:
+            with self.subTest(responses=len(responses)), self.assertRaisesRegex(MODULE.ExecutorBlock, "INCOMPLETE"):
+                list(MODULE._amo_run_pages(mock.Mock(side_effect=responses), "runs", "INCOMPLETE"))
+
+    def test_active_writer_beyond_first_page_is_observed(self):
+        from urllib.parse import parse_qs
+        calls = []
+        def read(root, endpoint):
+            calls.append(endpoint);q = parse_qs(endpoint.split("?", 1)[1]);status = q["status"][0]
+            rows = [{"id": n, "status": "queued", "name": "other"} for n in range(1, 21)]
+            rows.append({"id": 21, "status": "queued", "name": "existing-writer"})
+            if status != "queued": rows = []
+            start = (int(q["page"][0])-1)*20
+            return {"total_count": len(rows), "workflow_runs": rows[start:start+20]}
+        with mock.patch.object(MODULE, "_amo_get", side_effect=read):
+            self.assertTrue(MODULE._amo_competing_writer(ROOT, ["existing-writer"]))
+        self.assertTrue(any("status=queued" in p and "page=2" in p for p in calls))
+
+    def test_history_budget_exhaustion_never_becomes_no_prior_attempt(self):
+        from urllib.parse import parse_qs
+        def read(endpoint):
+            page = int(parse_qs(endpoint.split("?", 1)[1])["page"][0]);start=(page-1)*20
+            return {"total_count": 1601, "workflow_runs": [{"id": n+1} for n in range(start,start+20)]}
+        with self.assertRaisesRegex(MODULE.ExecutorBlock, "INCOMPLETE"):
+            list(MODULE._amo_run_pages(read, "runs", "INCOMPLETE"))
 
 
 if __name__ == "__main__":

@@ -892,5 +892,47 @@ class MirrorLifecycleGovernanceTests(unittest.TestCase):
         for directory in ("node_health", "node_registration_renewal"):
             self.assertEqual((self.root / f"evidence/{directory}/LATEST.json").read_bytes(), (self.root / f"evidence/{directory}/{self.env['QIKVRT_RUN_ID']}.json").read_bytes())
 
+class CurrentAuthoritySeedRoleTests(unittest.TestCase):
+    def test_checked_in_current_entry_matches_the_declared_authority_without_accepting_the_pending_ack(self):
+        from tools import qikvrt_seed_common as seed
+        root = Path(__file__).resolve().parents[1]
+        authority = workflow_executor.load_repository_roles(root)["AUTHORITY"]
+        nodes, policies = seed.load_nodes(root, authority)
+        nodes = [node for node in nodes if node.guid == GUID]
+        self.assertEqual(len(nodes), 1)
+        for node in nodes:
+            status, error = seed._validated_registry_entry(root, node, policies[node.guid])
+            expected = "ACCEPTED" if policies[node.guid].status == "ACTIVE" else policies[node.guid].status
+            self.assertEqual((status, error), (expected, None))
+            ack = {"qikvrt_event": "NODE_ACK_OF_SEED_ACCEPTANCE", "guid": node.guid,
+                   "repository": node.source_repository, "seed_repository": authority,
+                   "status": "ACCEPTED_BY_SEED", "schema": "qikvrt_node_seed_acknowledgement_v2",
+                   "seed_entry_sha256": "a" * 64, "seed_index_sha256": "b" * 64,
+                   "seed_acceptance_run_id": "fixture-acceptance-1"}
+            seed._validate_ack(ack, node)
+            ack["status"] = "PENDING_SEED_ACCEPTANCE"
+            with self.assertRaisesRegex(seed.SeedError, "status must equal"):
+                seed._validate_ack(ack, node)
+
+    def test_old_seed_binding_still_fails_instead_of_becoming_a_compatibility_exception(self):
+        from tools import qikvrt_seed_common as seed
+        root = Path(__file__).resolve().parents[1]
+        authority = workflow_executor.load_repository_roles(root)["AUTHORITY"]
+        nodes, policies = seed.load_nodes(root, authority)
+        nodes = [node for node in nodes if node.guid == GUID]
+        self.assertEqual(len(nodes), 1)
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory)
+            for node in nodes:
+                value = seed.read_json(root / "registry/nodes" / (node.guid + ".json"))
+                value["seed_repository"] = workflow_executor.load_repository_roles(root)["MIRROR"]
+                path = target / "registry/nodes" / (node.guid + ".json")
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(json.dumps(value))
+                status, error = seed._validated_registry_entry(target, node, policies[node.guid])
+                self.assertEqual(status, "UNKNOWN")
+                self.assertIn("seed_repository must equal", error)
+
+
 if __name__ == "__main__":
     unittest.main()
