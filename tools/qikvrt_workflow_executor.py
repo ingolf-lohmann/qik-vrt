@@ -45,6 +45,8 @@ AMO_SCOPE = "firefox-amo-unlisted"
 AMO_SCHEMA = "qikvrt-owner-amo-continuation/v1"
 AMO_OWNER_CI_REF = "integration/515-519-521-522-20261012-eceb9b63"
 AMO_OWNER_CI_AUTHORIZED_AT = "2026-10-17T09:33:35Z"
+AMO_RUN_PAGE_SIZE = 20
+AMO_RUN_HISTORY_BUDGET = 1600
 
 
 class ExecutorBlock(RuntimeError):
@@ -913,10 +915,8 @@ def amo_signing_predecessor(root: Path, run_id: int, run_attempt: int,
         ("event=push&branch=" + urllib.parse.quote(AMO_OWNER_CI_REF, safe=""), AMO_OWNER_CI_AUTHORIZED_AT)]
     candidates = []
     for query, cutoff in histories:
-        for page in range(1, 17):
-            runs = read("/actions/workflows/qikvrt_ci.yml/runs?" + query + "&per_page=100&page=" + str(page)).get("workflow_runs")
-            if not isinstance(runs, list) or len(runs) > 100:
-                raise ExecutorBlock("AMO_PREDECESSOR_RUN_INVENTORY_INCOMPLETE")
+        for runs in _amo_run_pages(read, "/actions/workflows/qikvrt_ci.yml/runs?" + query,
+                                   "AMO_PREDECESSOR_RUN_INVENTORY_INCOMPLETE"):
             stop = False
             for run in runs:
                 created = run.get("created_at", "")
@@ -941,10 +941,8 @@ def amo_signing_predecessor(root: Path, run_id: int, run_attempt: int,
                         for step in job.get("steps", [])) for job in jobs)
                 if active:
                     candidates.append((created, run["id"])); stop = True; break
-            if stop or len(runs) < 100:
+            if stop:
                 break
-        else:
-            raise ExecutorBlock("AMO_PREDECESSOR_RUN_INVENTORY_INCOMPLETE")
     previous = max(candidates, default=("", 0))[1]
     if requested not in (0, previous):
         raise ExecutorBlock("AMO_PREDECESSOR_BINDING_MISMATCH")
@@ -1095,6 +1093,52 @@ def _amo_get(root: Path, endpoint: str, binary: bool = False) -> Any:
     return _amo_object(b'{"data":' + response.stdout + b'}')["data"]
 
 
+def _amo_run_pages(read, endpoint: str, incomplete: str):
+    """Keep strict byte limits while reading the same bounded run history.
+
+    GitHub repeats repository metadata in every row. Twenty-row pages avoid
+    the observed 1 MiB overflow; no rows, original journals or lost ACKs are
+    discarded. Count drift, repeated rows and API search truncation hold.
+    A consumer may stop early only on its existing verified causal boundary.
+    """
+    seen, total = set(), None
+    separator = "&" if "?" in endpoint else "?"
+    for page in range(1, AMO_RUN_HISTORY_BUDGET // AMO_RUN_PAGE_SIZE + 1):
+        value = read(endpoint + separator + f"per_page={AMO_RUN_PAGE_SIZE}&page={page}")
+        if not isinstance(value, Mapping):
+            raise ExecutorBlock(incomplete)
+        rows, count = value.get("workflow_runs"), value.get("total_count")
+        if (not isinstance(rows, list) or len(rows) > AMO_RUN_PAGE_SIZE
+                or type(count) is not int or count < 0 or (total is not None and count != total)):
+            raise ExecutorBlock(incomplete)
+        total = count
+        for row in rows:
+            identifier = row.get("id") if isinstance(row, Mapping) else None
+            if type(identifier) is not int or identifier <= 0 or identifier in seen:
+                raise ExecutorBlock(incomplete)
+            seen.add(identifier)
+        if len(seen) > total:
+            raise ExecutorBlock(incomplete)
+        yield rows
+        if len(seen) == total:
+            return
+        if len(rows) < AMO_RUN_PAGE_SIZE:
+            raise ExecutorBlock(incomplete)
+    raise ExecutorBlock(incomplete)
+
+
+def _amo_competing_writer(root: Path, writers: Sequence[str]) -> bool:
+    for status in sorted(ACTIVE_RUN_STATUSES):
+        endpoint = f"repos/{AMO_REPOSITORY}/actions/runs?branch=main&status={status}"
+        for runs in _amo_run_pages(lambda path: _amo_get(root, path), endpoint,
+                                   "AMO_ACTIVE_WRITER_INVENTORY_INCOMPLETE"):
+            if any(run.get("status") != status for run in runs):
+                raise ExecutorBlock("AMO_ACTIVE_WRITER_INVENTORY_INCOMPLETE")
+            if any(run.get("name") in writers for run in runs):
+                return True
+    return False
+
+
 def amo_artifact(root: Path, run_id: int, name: str, allowed: set[str]) -> dict[str, bytes] | None:
     value = _amo_get(root, f"repos/{AMO_REPOSITORY}/actions/runs/{run_id}/artifacts?per_page=100")
     artifacts = value.get("artifacts")
@@ -1144,11 +1188,9 @@ def amo_previous(root: Path, current_run_id: int) -> tuple[dict[str, Any] | None
     baseline = amo_request(root)["pre_activation_main"]
     current = amo_run(root, current_run_id, AMO_NATIVE_WORKFLOW)
     current_order = (current.get("created_at", ""), current_run_id)
-    for page in range(1, 17):
-        value = _amo_get(root, f"repos/{AMO_REPOSITORY}/actions/workflows/qikvrt_workflow_executor.yml/runs?branch=main&per_page=100&page={page}")
-        runs = value.get("workflow_runs")
-        if not isinstance(runs, list):
-            raise ExecutorBlock("AMO_NATIVE_HISTORY_INVALID")
+    endpoint = f"repos/{AMO_REPOSITORY}/actions/workflows/qikvrt_workflow_executor.yml/runs?branch=main"
+    for runs in _amo_run_pages(lambda path: _amo_get(root, path), endpoint,
+                               "AMO_NATIVE_HISTORY_INCOMPLETE"):
         for run in runs:
             if run.get("id") == current_run_id:
                 continue
@@ -1228,9 +1270,7 @@ def amo_previous(root: Path, current_run_id: int) -> tuple[dict[str, Any] | None
                 raise ExecutorBlock("AMO_PREDECESSOR_INTENT_NOT_YET_PUBLISHED")
             # Platform job metadata proves this failed setup never entered POST.
             # Continue to the older original journal rather than resetting it.
-        if len(runs) < 100:
-            return None, True
-    raise ExecutorBlock("AMO_NATIVE_HISTORY_INCOMPLETE")
+    return None, True
 
 
 def amo_reconcile(root: Path, receipt: Mapping[str, Any]) -> dict[str, Any]:
@@ -1243,10 +1283,9 @@ def amo_reconcile(root: Path, receipt: Mapping[str, Any]) -> dict[str, Any]:
     if type(target) is not int or target <= 0:
         caller = amo_run(root, prior["executor_run_id"], AMO_NATIVE_WORKFLOW)
         found = []
-        for page in range(1, 17):
-            runs = _amo_get(root, f"repos/{AMO_REPOSITORY}/actions/workflows/qikvrt_ci.yml/runs?event=workflow_dispatch&per_page=100&page={page}").get("workflow_runs")
-            if not isinstance(runs, list):
-                raise ExecutorBlock("AMO_ACK_READBACK_HISTORY_INVALID")
+        endpoint = f"repos/{AMO_REPOSITORY}/actions/workflows/qikvrt_ci.yml/runs?event=workflow_dispatch"
+        for runs in _amo_run_pages(lambda path: _amo_get(root, path), endpoint,
+                                   "AMO_ACK_READBACK_HISTORY_INCOMPLETE"):
             stop = False
             for candidate in runs:
                 if candidate.get("created_at", "") < caller.get("created_at", ""):
@@ -1263,10 +1302,8 @@ def amo_reconcile(root: Path, receipt: Mapping[str, Any]) -> dict[str, Any]:
                     access = _amo_object(original["ACCESS_PREFLIGHT.json"])
                     if str(access.get("executor_run_id")) == str(prior["executor_run_id"]):
                         found.append(candidate_id)
-            if stop or len(runs) < 100:
+            if stop:
                 break
-        else:
-            raise ExecutorBlock("AMO_ACK_READBACK_HISTORY_INCOMPLETE")
         if len(found) != 1:
             if len(found) > 1:
                 raise ExecutorBlock("AMO_ACK_READBACK_AMBIGUOUS")
@@ -1488,10 +1525,9 @@ def amo_live_plan(root: Path = ROOT) -> dict[str, Any]:
                 and not (previous["last_attempt"].get("state") == "SOURCE_DRIFT"
                          and previous["last_attempt"].get("head") != context["head"])):
             result.update(state="NOOP_COMPLETION_EVENT_CANNOT_START_UPLOAD", dispatch=False)
-        runs = _amo_get(root, f"repos/{AMO_REPOSITORY}/actions/runs?branch=main&per_page=100")
         writers = load_contract(root)["dispatch_policy"]["writer_workflow_names"]
-        if not result.get("readback_only") and any(r.get("name") in writers and r.get("status") in ACTIVE_RUN_STATUSES
-               for r in runs.get("workflow_runs", [])):
+        if (result.get("dispatch") is True and not result.get("readback_only")
+                and _amo_competing_writer(root, writers)):
             result.update(state="HOLD_COMPETING_AUTHORITY_WRITER", dispatch=False)
         return result
     except (ExecutorBlock, ValueError, OSError, KeyError, TypeError, subprocess.SubprocessError) as exc:

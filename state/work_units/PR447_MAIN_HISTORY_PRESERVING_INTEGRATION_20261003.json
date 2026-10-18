@@ -227,6 +227,84 @@
         "6aaac98a545b3855c3b7af2fdb5debc80b4ded66",
         "e0ad3755b050f367d85e3615fd07af8d5a466d01"
       ]
+    },
+    {
+      "artificial_cognitive_contributions": [
+        "Observe actual Main movement; reuse exact admitted Main blobs, prove only generated-integrity overlap, retain original publication bytes, run 275 source controls, prepare another two-parent merge on the existing PR."
+      ],
+      "authorization": "Same explicit PR447 merge/push and terminal-completion instruction; no repeated approval request. The original current-head Principal review remains historical when the merged subject changes.",
+      "continuation_id": "PR447_MAIN_AFTER_PR527_PRESERVING_INTEGRATION_20261018_V2",
+      "external_effects": {
+        "contract_activation": false,
+        "force_push": false,
+        "history_rewrite": false,
+        "main_promotion": "PENDING_AUTHORIZED_NORMAL_MERGE_AFTER_FRESH_SOURCE_GATES",
+        "product_done": false,
+        "speedup_claim": false,
+        "zenodo_upload": false
+      },
+      "human_actor": "Ingolf Lohmann",
+      "integrated_main": {
+        "head": "d2c333bcb0eb3905b06464256a9559237c93317f",
+        "merged_at": "2026-10-18T06:04:24Z",
+        "pr": 527,
+        "tree": "e82eb3dfb82d82ef551057a1a03b2b49972ba52b"
+      },
+      "local_verification": {
+        "includes": [
+          "Zenodo proof and frozen original/actual Gesamt-Ausgabe bytes",
+          "publication router",
+          "byte-safe benchmark and current-role scope",
+          "workflow executor paging and admission",
+          "Seed workflows and current Authority-role controls"
+        ],
+        "log_sha256": "b3728787e9fd6097acfe50db00d8c913553ab5c7beee0c3b143528c08abe74c7",
+        "native_successor_checks": "PENDING fresh exact successor; predecessor PASS not transferred",
+        "selected_source_controls": 275,
+        "state": "PASS"
+      },
+      "main_delta": {
+        "all_blob_bytes_and_modes_independently_verified": true,
+        "overlap_with_pr447": [
+          "REPOSITORY_FILE_MANIFEST.json",
+          "REPOSITORY_FILE_MANIFEST.json.sha256",
+          "SHA256SUMS.txt"
+        ],
+        "scope": "Retain existing Main AMO history-pagination and current-Authority Seed repairs; regenerate only shared integrity trio, not frozen publication manifests.",
+        "semantic_paths": 17,
+        "unique_semantic_blobs": 13
+      },
+      "observed_at": "2026-10-18T06:07:33.899643Z",
+      "preservation": {
+        "historical_source_bindings_rewritten": false,
+        "proof_return_and_fileset_regenerated": false,
+        "publication_blob_count": 87,
+        "publication_changed_paths": []
+      },
+      "previous_candidate": {
+        "head": "3758c4038461855cb1e9fdedd008e0c2200c341f",
+        "principal_review": 5561670519,
+        "tree": "f8db2f139148518d6fb7268379693c5d15d352d1"
+      },
+      "previous_native_observations": {
+        "firefox_158_product_admission": {
+          "default_signing_policy_activation_verified": false,
+          "head": "3758c4038461855cb1e9fdedd008e0c2200c341f",
+          "job": 117600724272,
+          "no_firefox_downgrade_or_unsigned_product_exception": true,
+          "state": "HOLD_EXTENSION_INSTALLATION_OR_ACTIVATION"
+        },
+        "full_push_suite": {
+          "head": "3758c4038461855cb1e9fdedd008e0c2200c341f",
+          "job": 117599810848,
+          "make_test_exit": 0,
+          "run": 39101934550
+        }
+      },
+      "required_parent_order": [
+        "3758c4038461855cb1e9fdedd008e0c2200c341f",
+        "d2c333bcb0eb3905b06464256a9559237c93317f"
+      ]
     }
   ],
   "created_at": "2026-10-03T17:47:59.364363Z",
