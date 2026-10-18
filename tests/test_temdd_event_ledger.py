@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import http.client
 import json
 from pathlib import Path
@@ -19,6 +20,120 @@ from unittest import mock
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'src'))
 import qikvrt_temdd_event_ledger as m
+
+
+class WriterContinuityTests(unittest.TestCase):
+    """Real copied SQLite stores and OS locks, without a socket substitute."""
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.a = Path(self.temp.name) / 'a'
+        self.b = Path(self.temp.name) / 'b'
+        self.subject = {'repository': 'ingolf-lohmann/qik-vrt', 'pr': 447,
+                        'head': 'a' * 40, 'tree': 'b' * 40}
+        self.event = {'schema': m.SCHEMA, 'kind': 'READBACK', 'subject': self.subject,
+                      'provenance': {'source': 'transputer', 'native_event_id': 'fixture:common'},
+                      'observed_at': '2026-10-18T00:00:00Z', 'message': 'fixture only', 'payload': {}}
+
+    def seed(self):
+        ledger = m.Ledger(self.a, self.subject)
+        receipt = ledger.append(self.event)
+        frontier = m.digest({'epoch': ledger.epoch,
+                            'rows': ledger.db.execute('SELECT * FROM events ORDER BY seq').fetchall()})
+        ledger.close()
+        shutil.copytree(self.a, self.b)
+        return receipt, frontier
+
+    def test_copied_store_cannot_acquire_original_writer_identity(self):
+        receipt, _ = self.seed()
+        original = m.Ledger(self.a, self.subject)
+        self.addCleanup(original.close)
+        with self.assertRaisesRegex(m.Hold, 'COPIED_OR_UNADMITTED'):
+            m.Ledger(self.b, self.subject)
+        mirror = m.Ledger(self.b, self.subject, read_only=True)
+        self.addCleanup(mirror.close)
+        self.assertEqual(mirror.replay(0), [receipt])
+        with self.assertRaisesRegex(m.Hold, 'READ_ONLY'):
+            mirror.append(self.event)
+
+    def test_same_physical_store_restart_preserves_deduplication(self):
+        receipt, _ = self.seed()
+        ledger = m.Ledger(self.a, self.subject)
+        self.addCleanup(ledger.close)
+        self.assertEqual(ledger.append(self.event), receipt)
+        event = copy.deepcopy(self.event); event['provenance']['native_event_id'] = 'fixture:next'
+        self.assertEqual(ledger.append(event)['id'], ledger.epoch + ':2')
+
+    def test_replacing_owner_lock_fences_live_writer_and_its_successor(self):
+        self.seed()
+        ledger = m.Ledger(self.a, self.subject)
+        self.addCleanup(ledger.close)
+        (self.a / 'temdd/owner.lock').unlink()
+        (self.a / 'temdd/owner.lock').touch(mode=0o600)
+        with self.assertRaisesRegex(m.Hold, 'WRITER_LOCK_REPLACED'):
+            ledger.append(self.event)
+        with self.assertRaisesRegex(m.Hold, 'COPIED_OR_UNADMITTED'):
+            m.Ledger(self.a, self.subject)
+
+    def test_legacy_store_remains_readable_but_is_never_automatically_admitted(self):
+        receipt, _ = self.seed()
+        with sqlite3.connect(self.a / 'temdd/events.sqlite3') as db:
+            db.execute("UPDATE meta SET value='1' WHERE key='schema'")
+            db.execute("DELETE FROM meta WHERE key='writer_seal'")
+        path = self.a / 'temdd/events.sqlite3'
+        before = hashlib.sha256(path.read_bytes()).hexdigest()
+        with self.assertRaisesRegex(m.Hold, 'LEGACY_LEDGER_REQUIRES_FENCED'):
+            m.Ledger(self.a, self.subject)
+        reader = m.Ledger(self.a, self.subject, read_only=True)
+        self.assertEqual(reader.replay(0), [receipt]); reader.close()
+        self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), before)
+
+    def test_explicit_local_handoff_revokes_source_before_target_can_append(self):
+        receipt, frontier = self.seed()
+        result = m.Ledger.transfer_local_writer(self.a, self.b, self.subject, frontier)
+        self.assertFalse(result['distributed_fencing_verified'])
+        with self.assertRaisesRegex(m.Hold, 'COPIED_OR_UNADMITTED'):
+            m.Ledger(self.a, self.subject)
+        target = m.Ledger(self.b, self.subject)
+        self.addCleanup(target.close)
+        self.assertEqual(target.replay(0), [receipt])
+        event = copy.deepcopy(self.event); event['provenance']['native_event_id'] = 'fixture:after-transfer'
+        self.assertEqual(target.append(event)['id'], target.epoch + ':2')
+
+    def test_stale_copy_and_wrong_pin_leave_source_writer_unchanged(self):
+        _, frontier = self.seed()
+        with self.assertRaisesRegex(m.Hold, 'EXACT_LOCAL_HANDOFF_PREFIX'):
+            m.Ledger.transfer_local_writer(self.a, self.b, self.subject, '0' * 64)
+        writer = m.Ledger(self.a, self.subject)
+        event = copy.deepcopy(self.event); event['provenance']['native_event_id'] = 'fixture:unexported'
+        writer.append(event); writer.close()
+        with self.assertRaisesRegex(m.Hold, 'EXACT_LOCAL_HANDOFF_PREFIX'):
+            m.Ledger.transfer_local_writer(self.a, self.b, self.subject, frontier)
+        writer = m.Ledger(self.a, self.subject); writer.close()
+
+    def test_interrupted_transfer_admits_neither_copy(self):
+        _, frontier = self.seed()
+        connect = sqlite3.connect
+        def fail_target(path, *args, **kwargs):
+            if str(path) == str(self.b / 'temdd/events.sqlite3'):
+                raise OSError('fixture crash after durable source revocation')
+            return connect(path, *args, **kwargs)
+        with mock.patch.object(m.sqlite3, 'connect', side_effect=fail_target):
+            with self.assertRaisesRegex(OSError, 'fixture crash'):
+                m.Ledger.transfer_local_writer(self.a, self.b, self.subject, frontier)
+        for volume in (self.a, self.b):
+            with self.assertRaisesRegex(m.Hold, 'COPIED_OR_UNADMITTED'):
+                m.Ledger(volume, self.subject)
+
+    def test_active_source_and_a_copy_impersonating_source_cannot_transfer(self):
+        _, frontier = self.seed()
+        writer = m.Ledger(self.a, self.subject)
+        with self.assertRaises(BlockingIOError):
+            m.Ledger.transfer_local_writer(self.a, self.b, self.subject, frontier)
+        writer.close()
+        c = Path(self.temp.name) / 'c'; shutil.copytree(self.b, c)
+        with self.assertRaisesRegex(m.Hold, 'COPIED_OR_UNADMITTED'):
+            m.Ledger.transfer_local_writer(self.b, c, self.subject, frontier)
 
 
 class ProducerTests(unittest.TestCase):

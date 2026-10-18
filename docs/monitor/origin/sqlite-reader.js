@@ -82,7 +82,7 @@
         }
       } finally { statement.free(); }
       const meta = Object.fromEntries(rows(db, 'SELECT key,value FROM meta'));
-      if (meta.schema !== '1' || meta.epoch !== profile.ledger_id) fail('STORE_IDENTITY_MISMATCH');
+      if (!['1', '2'].includes(meta.schema) || meta.epoch !== profile.ledger_id) fail('STORE_IDENTITY_MISMATCH');
       const count = rows(db, 'SELECT COUNT(*) FROM events')[0][0];
       if (!Number.isSafeInteger(count) || count > profile.max_events) fail('LEDGER_SIZE_UNSUPPORTED');
       const records = [], events = [];

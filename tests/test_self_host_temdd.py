@@ -186,6 +186,15 @@ class NativeStandaloneTests(unittest.TestCase):
             self.assertEqual((self.volume/name).read_bytes(), raw)
             self.assertEqual((saved/name).read_bytes(), raw)
             self.assertEqual((self.volume/name).stat().st_mode & 0o777, 0o600)
+        host.load_source(self.export, 'qikvrt_effect_ack_http_terminal')
+        native = host.load_source(self.export, 'qikvrt_temdd_event_ledger')
+        subject = event['subject']
+        with sqlite3.connect(saved/'temdd/events.sqlite3') as db:
+            frontier = native.digest({'epoch':epoch,'rows':db.execute('SELECT * FROM events ORDER BY seq').fetchall()})
+        with self.assertRaisesRegex(native.Hold, 'COPIED_OR_UNADMITTED'):
+            native.Ledger(self.volume, subject)
+        transferred = native.Ledger.transfer_local_writer(saved,self.volume,subject,frontier)
+        self.assertFalse(transferred['distributed_fencing_verified'])
         self.start()
         self.assertEqual(self.get('/api/terminal')[1]['ledger_id'], epoch)
         self.assertEqual(self.sql('SELECT seq,binding,source,native_id,native_digest,body,body_digest FROM events'), before)
@@ -1015,7 +1024,7 @@ ledger.close()
         self.assertEqual(self.sql('SELECT seq,binding,source,native_id,native_digest,body,body_digest FROM events'), before)
         host.load_source(self.export, 'qikvrt_effect_ack_http_terminal')
         native = host.load_source(self.export, 'qikvrt_temdd_event_ledger')
-        ledger = native.Ledger(self.volume, self.subject)
+        ledger = native.Ledger(self.volume, self.subject, read_only=True)
         try:
             self.assertEqual(ledger.epoch, acknowledged['epoch'])
             self.assertEqual(ledger.replay(0), [acknowledged['event']])
@@ -1083,7 +1092,7 @@ ledger.close()
             code, result = self.state_cli('restore-state', snapshot, receipt['state_manifest_sha256'])
             self.assertEqual(code, 0, result)
         host.load_source(self.export, 'qikvrt_effect_ack_http_terminal')
-        native = host.load_source(self.export, 'qikvrt_temdd_event_ledger'); ledger = native.Ledger(self.volume, self.subject)
+        native = host.load_source(self.export, 'qikvrt_temdd_event_ledger'); ledger = native.Ledger(self.volume, self.subject, read_only=True)
         try: self.assertEqual(ledger.replay(0), [acknowledged['event']])
         finally: ledger.close()
         self.assertEqual(json.loads((self.volume/'monitor/node.json').read_bytes())['deliveries'], journal)
@@ -1114,6 +1123,11 @@ class NativeMigrationTests(unittest.TestCase):
         historical = self.sql('SELECT seq,binding,source,native_id,native_digest,body,body_digest FROM events')
         journal = json.loads((self.snapshot/'monitor/node.json').read_bytes())['deliveries']
         epoch = self.event['id'].split(':')[0]
+        with sqlite3.connect(self.writer_source/'temdd/events.sqlite3') as db:
+            frontier = self.native.digest({'epoch':epoch,'rows':db.execute('SELECT * FROM events ORDER BY seq').fetchall()})
+        with self.assertRaisesRegex(self.native.Hold, 'COPIED_OR_UNADMITTED'):
+            self.native.Ledger(self.volume,self.subject)
+        self.native.Ledger.transfer_local_writer(self.writer_source,self.volume,self.subject,frontier)
         self.start()
         self.assertEqual(self.get('/api/terminal')[1]['ledger_id'], epoch)
         code, prepared = self.owner_cli('durable-prepare'); self.assertEqual(code, 0, prepared)
