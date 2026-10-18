@@ -48,6 +48,8 @@ A proxy may display NACK, CONTINUE, ISOLATE or BLOCK. It may never translate tho
 
 `src/qikvrt_effect_ack_http_terminal.py` is loopback-only and deliberately has `external_effect = NONE`. It demonstrates capability discovery, bounded Prepare, a short-lived single-use exact-bound token, Commit, replay refusal and post-effect observation of a local terminal event.
 
+In this loopback HTTP profile, `ordinary_release: true` in a full Prepare record with `state: EFFECT_ACK_DONE` denotes eligibility for Commit under the bounded local policy. The Prepare response and Firefox's prepared result use `ordinary_release: false` for the unexecuted stage; execution is reported by the successful, exact-bound single-use Commit response with `ordinary_release: true` and its `TERMINAL_INPUT_ACCEPTED` post-effect evidence.
+
 It is not a replacement for `src/qikvrt_effect_ack.py`, and it must not be represented as proof of complete wire or deployment conformance. A write-capable repository, publication, deployment or actuator backend needs a separately authorized adapter and must preserve the same EFFECT_ACK gate.
 
 ## HTTP / HTML integration
