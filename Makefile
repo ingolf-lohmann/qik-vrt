@@ -227,3 +227,9 @@ self-host-container-test: tool-cache-contract
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_container
 
 test: self-host-container-test
+
+.PHONY: live-authority-mirror-ab-contract
+live-authority-mirror-ab-contract:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_live_authority_mirror_ab
+
+test: live-authority-mirror-ab-contract
