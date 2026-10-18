@@ -49,9 +49,38 @@ WORLD_FORMULA_EXPECTED = {
 EFFECT_ACK_AUDIT_SOURCE = ROOT / "QIKVRTEffectAck" / "AxiomAudit.lean"
 EFFECT_ACK_MATRIX = ROOT / "effect_ack" / "DRAFT01_CLAIM_MATRIX.json"
 FOUNDATIONAL_AXIOMS = {"propext", "Classical.choice", "Quot.sound"}
+MEASUREMENT_AUDIT_SOURCE = (
+    ROOT.parents[1] / "docs/publications/2026-08-12-observer-relative-retrocausality"
+    / "experiment-2026-10-15/AxiomAudit.lean"
+)
+MEASUREMENT_EXPECTED = {
+    "QIKVRT.V2.Physics.MeasurementTransfer.exact_readout_is_within",
+    "QIKVRT.V2.Physics.MeasurementTransfer.error_budgets_compose",
+    "QIKVRT.V2.Physics.MeasurementTransfer.separated_readback_enclosures_establish_order",
+    "QIKVRT.V2.Physics.MeasurementTransfer.admitted_run",
+    "QIKVRT.V2.Physics.MeasurementTransfer.bound_runs_correspond",
+    "QIKVRT.V2.Physics.MeasurementTransfer.bounded_prediction_transfers",
+    "QIKVRT.V2.Physics.MeasurementTransfer.order_alone_does_not_identify_clock_scale",
+    "QIKVRT.V2.Physics.MeasurementTransfer.exact_inertial_segment_example",
+    "QIKVRT.V2.Physics.MeasurementTransfer.same_coordinate_duration_allows_different_proper_durations",
+    "QIKVRT.V2.Physics.MeasurementTransfer.finite_calibration_does_not_force_next_prediction",
+}
 EFFECT_ACK_SUPPLEMENTAL = {
     "QIKVRT.EffectAck.V1.Claims.claimIds_count": set(),
     "QIKVRT.EffectAck.V1.Claims.claimIds_pairwise": set(),
+}
+
+SUCCESSION_AUDIT_SOURCE = ROOT / "QIKVRTFormalization/Hardware/AxiomAudit.lean"
+SUCCESSION_EXPECTED = {
+    "QIKVRT.V2.AuthoritySuccession." + name for name in (
+        "majority_overlap", "majority_intersection", "same_epoch_election_unique",
+        "one_effective_writer", "stale_epoch_rejected", "expired_lease_rejected",
+        "no_quorum_holds_writes", "step_preserves_invariant", "step_retirement_persists",
+        "step_epoch_monotone", "run_preserves_invariant", "run_retirement_persists",
+        "run_epoch_monotone", "retirement_irreversible", "retired_never_authority",
+        "retired_repromotion_impossible", "qualified_successor_can_write",
+        "independent_carriers_split_brain",
+    )
 }
 
 
@@ -152,6 +181,22 @@ def validate_world_formula_audit_source() -> None:
         )
 
 
+def parse_axiom_reports(output: str) -> list[tuple[str, set[str]]]:
+    """Lean wraps long dependency lists; preserve every reported dependency."""
+    pattern = re.compile(
+        r"^'(?P<name>[^']+)' (?:does not depend on any axioms|"
+        r"depends on axioms: \[(?P<axioms>[^]]*)\])$",
+        re.MULTILINE,
+    )
+    return [
+        (match.group("name"), {
+            item.strip() for item in (match.group("axioms") or "").split(",")
+            if item.strip()
+        })
+        for match in pattern.finditer(output)
+    ]
+
+
 def main() -> int:
     try:
         effect_policy = effect_ack_policy()
@@ -163,17 +208,19 @@ def main() -> int:
         name: set(FOUNDATIONAL_AXIOMS) for name in MANUSCRIPT_EXPECTED
     }
     world_formula_policy = {name: set() for name in WORLD_FORMULA_EXPECTED}
+    measurement_policy = {
+        name: set(FOUNDATIONAL_AXIOMS) for name in MEASUREMENT_EXPECTED
+    }
+    succession_policy = {name: set(FOUNDATIONAL_AXIOMS) for name in SUCCESSION_EXPECTED}
     audits = (
         (MANUSCRIPT_AUDIT_SOURCE, manuscript_policy, False),
         (EFFECT_ACK_AUDIT_SOURCE, effect_policy, True),
         (WORLD_FORMULA_AUDIT_SOURCE, world_formula_policy, True),
+        (MEASUREMENT_AUDIT_SOURCE, measurement_policy, False),
+        (SUCCESSION_AUDIT_SOURCE, succession_policy, False),
     )
     seen: set[str] = set()
     violations: list[str] = []
-    line_pattern = re.compile(
-        r"^'(?P<name>[^']+)' (?:does not depend on any axioms|"
-        r"depends on axioms: \[(?P<axioms>[^]]*)\])$"
-    )
     expected = set().union(*(policy for _, policy, _ in audits))
     for audit_source, audit_policy, require_exact in audits:
         result = subprocess.run(
@@ -187,20 +234,10 @@ def main() -> int:
         if result.returncode != 0:
             print(output, file=sys.stderr)
             return result.returncode
-        for line in output.splitlines():
-            match = line_pattern.match(line.strip())
-            if not match:
-                continue
-            name = match.group("name")
+        for name, axioms in parse_axiom_reports(output):
             if name not in audit_policy:
                 continue
             seen.add(name)
-            raw_axioms = match.group("axioms")
-            axioms = {
-                item.strip()
-                for item in (raw_axioms or "").split(",")
-                if item.strip()
-            }
             unexpected = axioms - audit_policy[name]
             if unexpected:
                 violations.append(
@@ -223,7 +260,9 @@ def main() -> int:
     print(
         f"PASS axiom audit: {len(expected)} checked theorems; "
         f"{len(effect_policy)} EFFECT_ACK constants use per-claim policies; "
-        f"{len(world_formula_policy)} world-formula theorems are axiom-free"
+        f"{len(world_formula_policy)} world-formula theorems are axiom-free; "
+        f"{len(measurement_policy)} scoped measurement-transfer theorems checked; "
+        f"{len(succession_policy)} conditional authority-succession theorems checked"
     )
     return 0
 

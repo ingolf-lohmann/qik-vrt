@@ -1,0 +1,1029 @@
+{
+  "_license": {
+    "classification": "machine_readable_prepublication_return_receipt",
+    "copyright": "Copyright 2026 Ingolf Lohmann; redaktioneller Beitrag OpenAI Codex offengelegt",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt"
+  },
+  "schema": "qikvrt_prepublication_return_receipt_v2",
+  "publication_id": "qikvrt-trust-mesh-roundtrip-20261015-v2",
+  "content_changed": true,
+  "original_files": [
+    {
+      "path": ".qikvrt/private-publication-inputs/trust-mesh-original.md",
+      "bytes": 33246,
+      "sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "git_blob_sha1": "6cfc92a0d2d1fbf34bba781d30ce9c7a6b548cba"
+    }
+  ],
+  "candidate_files": [
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.pdf",
+      "bytes": 245731,
+      "sha256": "d93882e5446443aded564e6895c6b7856d0ea7b51de7226b80690a6270961403",
+      "git_blob_sha1": "8b8cc3e2bcc95c31d628bcbafaac92452671afcb"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md",
+      "bytes": 107788,
+      "sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "git_blob_sha1": "9b8a7a44008775483bd2128fd5317d143c6ac42e"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.txt",
+      "bytes": 106821,
+      "sha256": "da75582580bc86b7424dae0f056714cdd5bb8a1fb0a8b9118948b27a68924a1d",
+      "git_blob_sha1": "df5cb03b2ec3a582e344a4e6d0cb38569f560ebe"
+    }
+  ],
+  "changed_claim_ids": [
+    "TM-001",
+    "TM-002",
+    "TM-003",
+    "TM-004",
+    "TM-005",
+    "TM-006",
+    "TM-007",
+    "TM-008",
+    "TM-009",
+    "TM-010",
+    "TM-011",
+    "TM-012",
+    "TM-013",
+    "TM-014",
+    "TM-015",
+    "TM-016",
+    "TM-017",
+    "TM-018",
+    "TM-019",
+    "TM-020",
+    "TM-021",
+    "TM-022",
+    "TM-023",
+    "TM-024",
+    "TM-025",
+    "TM-026",
+    "TM-027",
+    "TM-028",
+    "TM-029",
+    "TM-030",
+    "TM-031",
+    "TM-032",
+    "TM-033",
+    "TM-034",
+    "TM-035",
+    "TM-036",
+    "TM-037",
+    "TM-038",
+    "TM-039",
+    "TM-040",
+    "TM-041",
+    "TM-042",
+    "TM-043",
+    "TM-044",
+    "TM-045",
+    "TM-046",
+    "TM-047",
+    "TM-048",
+    "TM-049",
+    "TM-050",
+    "TM-051",
+    "TM-052",
+    "TM-053",
+    "TM-054",
+    "TM-055",
+    "TM-056",
+    "TM-057",
+    "TM-058",
+    "TM-059",
+    "TM-060",
+    "TM-061",
+    "TM-062",
+    "TM-063",
+    "TM-064",
+    "TM-065",
+    "TM-066",
+    "TM-067",
+    "TM-068",
+    "TM-069",
+    "TM-070",
+    "TM-071",
+    "TM-072",
+    "TM-073",
+    "TM-074",
+    "TM-075",
+    "TM-076",
+    "TM-077",
+    "TM-078",
+    "TM-079",
+    "TM-080",
+    "TM-081",
+    "TM-082",
+    "TM-083",
+    "TM-084",
+    "TM-085",
+    "TM-086",
+    "TM-087",
+    "TM-088",
+    "TM-089",
+    "TM-090",
+    "TM-091",
+    "TM-092",
+    "TM-093",
+    "TM-094",
+    "TM-095",
+    "TM-096",
+    "TM-097",
+    "TM-098",
+    "TM-099",
+    "TM-100",
+    "TM-101",
+    "TM-102",
+    "TM-103",
+    "TM-104",
+    "TM-105",
+    "TM-106",
+    "TM-107",
+    "TM-108",
+    "TM-109",
+    "TM-110",
+    "TM-111",
+    "TM-112",
+    "TM-113",
+    "TM-114",
+    "TM-115",
+    "TM-116",
+    "TM-117",
+    "TM-118",
+    "TM-119",
+    "TM-120",
+    "TM-121",
+    "TM-122"
+  ],
+  "change_reasons": [
+    {
+      "claim_id": "TM-001",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-002",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-003",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-004",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-005",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-006",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-007",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-008",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-009",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-010",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-011",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-012",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-013",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-014",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-015",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-016",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-017",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-018",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-019",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-020",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-021",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-022",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-023",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-024",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-025",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-026",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-027",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-028",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-029",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-030",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-031",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-032",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-033",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-034",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-035",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-036",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-037",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-038",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-039",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-040",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-041",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-042",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-043",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-044",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-045",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-046",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-047",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-048",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-049",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-050",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-051",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-052",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-053",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-054",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-055",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-056",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-057",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-058",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-059",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-060",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-061",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-062",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-063",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-064",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-065",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-066",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-067",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-068",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-069",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-070",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-071",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-072",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-073",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-074",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-075",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-076",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-077",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-078",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-079",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-080",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-081",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-082",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-083",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-084",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-085",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-086",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-087",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-088",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-089",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-090",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-091",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-092",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-093",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-094",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-095",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-096",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-097",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-098",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-099",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-100",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-101",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-102",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-103",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-104",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-105",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-106",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-107",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-108",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-109",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-110",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-111",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-112",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-113",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-114",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-115",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-116",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-117",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-118",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-119",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-120",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-121",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    },
+    {
+      "claim_id": "TM-122",
+      "reason": "Quellengebundene Neufassung mit expliziter Aussage-, Nachweis- und Wirkungsgrenze.",
+      "original_sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+      "corrected_sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "exact_candidate_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md"
+    }
+  ],
+  "change_notice_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/CHANGE_NOTICE.md",
+  "return": {
+    "candidate_returned_to_owner": false,
+    "owner_name": "Ingolf Lohmann",
+    "owner_type": "NATURAL_PERSON",
+    "return_channel": "PENDING_ACTUAL_CANDIDATE_RETURN",
+    "returned_at": null,
+    "visible_change_notice_returned": false
+  }
+}

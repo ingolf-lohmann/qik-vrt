@@ -1,0 +1,133 @@
+{
+  "schema": "qikvrt_retrocausality_trial_table_v1",
+  "config": {
+    "n": 4,
+    "alpha": 0.001,
+    "rng_bias_bound": 0.001,
+    "origin_class": "SIMULATED",
+    "time_coordinate": "SIMULATED_NS"
+  },
+  "trials": [
+    {
+      "trial_id": 0,
+      "early_bit": 0,
+      "later_bit": 0,
+      "early_end": {
+        "lo_ns": 0,
+        "hi_ns": 1,
+        "clock_id": "SIMULATED_CLOCK"
+      },
+      "locked": {
+        "lo_ns": 100,
+        "hi_ns": 101,
+        "clock_id": "SIMULATED_CLOCK"
+      },
+      "custody_ack": {
+        "lo_ns": 200,
+        "hi_ns": 201,
+        "clock_id": "SIMULATED_CLOCK"
+      },
+      "entropy_start": {
+        "lo_ns": 300,
+        "hi_ns": 301,
+        "clock_id": "SIMULATED_CLOCK"
+      },
+      "choice_complete": {
+        "lo_ns": 400,
+        "hi_ns": 401,
+        "clock_id": "SIMULATED_CLOCK"
+      }
+    },
+    {
+      "trial_id": 1,
+      "early_bit": 1,
+      "later_bit": 0,
+      "early_end": {
+        "lo_ns": 1000,
+        "hi_ns": 1001,
+        "clock_id": "SIMULATED_CLOCK"
+      },
+      "locked": {
+        "lo_ns": 1100,
+        "hi_ns": 1101,
+        "clock_id": "SIMULATED_CLOCK"
+      },
+      "custody_ack": {
+        "lo_ns": 1200,
+        "hi_ns": 1201,
+        "clock_id": "SIMULATED_CLOCK"
+      },
+      "entropy_start": {
+        "lo_ns": 1300,
+        "hi_ns": 1301,
+        "clock_id": "SIMULATED_CLOCK"
+      },
+      "choice_complete": {
+        "lo_ns": 1400,
+        "hi_ns": 1401,
+        "clock_id": "SIMULATED_CLOCK"
+      }
+    },
+    {
+      "trial_id": 2,
+      "early_bit": 0,
+      "later_bit": 1,
+      "early_end": {
+        "lo_ns": 2000,
+        "hi_ns": 2001,
+        "clock_id": "SIMULATED_CLOCK"
+      },
+      "locked": {
+        "lo_ns": 2100,
+        "hi_ns": 2101,
+        "clock_id": "SIMULATED_CLOCK"
+      },
+      "custody_ack": {
+        "lo_ns": 2200,
+        "hi_ns": 2201,
+        "clock_id": "SIMULATED_CLOCK"
+      },
+      "entropy_start": {
+        "lo_ns": 2300,
+        "hi_ns": 2301,
+        "clock_id": "SIMULATED_CLOCK"
+      },
+      "choice_complete": {
+        "lo_ns": 2400,
+        "hi_ns": 2401,
+        "clock_id": "SIMULATED_CLOCK"
+      }
+    },
+    {
+      "trial_id": 3,
+      "early_bit": 1,
+      "later_bit": 1,
+      "early_end": {
+        "lo_ns": 3000,
+        "hi_ns": 3001,
+        "clock_id": "SIMULATED_CLOCK"
+      },
+      "locked": {
+        "lo_ns": 3100,
+        "hi_ns": 3101,
+        "clock_id": "SIMULATED_CLOCK"
+      },
+      "custody_ack": {
+        "lo_ns": 3200,
+        "hi_ns": 3201,
+        "clock_id": "SIMULATED_CLOCK"
+      },
+      "entropy_start": {
+        "lo_ns": 3300,
+        "hi_ns": 3301,
+        "clock_id": "SIMULATED_CLOCK"
+      },
+      "choice_complete": {
+        "lo_ns": 3400,
+        "hi_ns": 3401,
+        "clock_id": "SIMULATED_CLOCK"
+      }
+    }
+  ],
+  "note": "SIMULATED SCHEMA EXAMPLE ONLY; not physical or confirmatory data"
+}

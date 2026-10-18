@@ -1,0 +1,107 @@
+{
+  "schema": "qikvrt_public_comment_v1",
+  "id": "universaler-transputer",
+  "date": "2026-10-12",
+  "classification": "AUTHOR_THESIS_WITH_SOURCE_BOUND_MODEL_SCOPE",
+  "title_de": "Alles ist ein universaler Transputer",
+  "languages": [
+    "de"
+  ],
+  "variants": [
+    "full"
+  ],
+  "author": "Ingolf Lohmann",
+  "canonical_url": "https://raumzeitterminal.de/news/universaler-transputer/",
+  "text_url": "article.txt",
+  "text_sha256": "bea2ce79c5998ccc8f085ec2cfe0ea4810bdc9c3c984719050549ab15bd790f1",
+  "author_accepted": true,
+  "publication_authorized": true,
+  "provenance": {
+    "human_contributions": [
+      "These, Schlussformel, Annahme und Veröffentlichungsauftrag."
+    ],
+    "artificial_cognitive_contributions": [
+      "Redaktionelle Einordnung, Quellenprüfung und Integration in die vorhandene Website."
+    ],
+    "system": "OpenAI Codex",
+    "fresh_local_lean_execution": false
+  },
+  "sources": [
+    {
+      "title": "Von Softwarearchitektur zur Weltformel – DAS UNIVERSUM ALS ROUND TRIP",
+      "record_url": "https://zenodo.org/records/21888130",
+      "doi": "10.5281/zenodo.21888130",
+      "locator": "Abschnitte 11–13"
+    },
+    {
+      "title": "QIK-VRT als Kausalitätsspiegel: Ein maschinenverifizierbares Protokoll für wissenschaftliches Faktenwachstum",
+      "record_url": "https://zenodo.org/records/21748371",
+      "doi": "10.5281/zenodo.21748371",
+      "locator": "SCIENTIFIC_FACT_GROWTH_PROTOCOL.md#Satz-T3; SFG-008; SFG-009",
+      "proof_constants": [
+        "QIKVRT.V2.Knowledge.evidenceClosed_mono",
+        "QIKVRT.V2.Knowledge.answerability_mono"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "UT-001",
+      "statement": "Alles ist ein universaler Transputer.",
+      "classification": "AUTHOR_THESIS",
+      "status": "OPEN_PHYSICAL_UNIVERSALITY_PROOF"
+    },
+    {
+      "id": "UT-002",
+      "statement": "AI wird in dieser Herleitung als Application Interface verwendet.",
+      "classification": "AUTHOR_TERMINOLOGY",
+      "status": "DECLARED"
+    },
+    {
+      "id": "UT-003",
+      "statement": "Anschlussfähigkeit allein impliziert keine universelle Rechenfähigkeit.",
+      "classification": "SCOPE_BOUNDARY",
+      "status": "DECLARED_BOUNDARY"
+    },
+    {
+      "id": "UT-004",
+      "statement": "Formaler Architekturbeweis und physikalische Identifikation besitzen getrennte Nachweispflichten.",
+      "classification": "SOURCE_BOUND",
+      "source": "10.5281/zenodo.21888130",
+      "locator": "Abschnitte 11–13",
+      "status": "SOURCE_VERIFIED"
+    },
+    {
+      "id": "UT-005",
+      "statement": "Kugel und Neutronenstern dienen als Bild für belegte Relationen, Verdichtung und Beständigkeit.",
+      "classification": "INTERPRETATIVE_METAPHOR",
+      "status": "NOT_A_PHYSICAL_PERMANENCE_CLAIM"
+    },
+    {
+      "id": "UT-006",
+      "statement": "Evidenzgeschlossene Begründungspfade bleiben im deklarierten Modell bei ausschließlich ergänzendem Wachstum erhalten.",
+      "classification": "ARCHIVED_FORMAL_MODEL_RESULT",
+      "source": "10.5281/zenodo.21748371",
+      "source_claim_ids": [
+        "SFG-008",
+        "SFG-009"
+      ],
+      "status": "ARCHIVED_SOURCE_AND_KERNEL_RECEIPT_VERIFIED",
+      "boundary": "Keine Aussage zur Wahrheit beliebiger Claims, zur Totalbeantwortbarkeit oder zur kosmologischen Unvergänglichkeit."
+    }
+  ],
+  "original_statement_sha256": "7d80ebf647cbf0a74594659e7d44c5ba344810a6531c83fc061a4c095be51048",
+  "author_acceptance_scope": "Original statement of 2026-10-12; the owner authorized the source-bound editorial addition and deployment on 2026-10-13.",
+  "updated_at": "2026-10-13T00:51:45+03:00",
+  "editorial_revision": {
+    "date": "2026-10-13",
+    "kind": "SOURCE_BOUND_CLARIFICATION",
+    "source_claim": "SFG-009",
+    "proof_constant": "QIKVRT.V2.Knowledge.answerability_mono",
+    "physical_scope_claim": "RT-OPEN-PHYSICAL-CORRESPONDENCE-001",
+    "physical_scope_state": "OPEN",
+    "original_statement_preserved": true,
+    "original_statement_bytes": 1903,
+    "history": "Prior Site and Git versions retained; no retroactive rewrite of scientific originals."
+  }
+}

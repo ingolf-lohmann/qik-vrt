@@ -60,7 +60,9 @@ CONSUMPTION_STATE = "EFFECT_RELEASED/AWAITING_REMOTE_RECONCILIATION"
 SINGLE_USE_SCOPE = "AUTHORITY_REPOSITORY_GLOBAL_FAIL_CLOSED"
 CONSUMPTION_REF_PREFIX = "refs/tags/qikvrt-zenodo-auth/"
 CONSUMPTION_KEY_SCHEMA = "qikvrt_zenodo_authorization_consumption_key_v2"
-PRODUCTION_REPOSITORY = "Goldkelch/qik-vrt"
+# New production effects belong to the Owner Authority. Historical publication
+# manifests retain their original repository binding and are not rewritten.
+PRODUCTION_REPOSITORY = "ingolf-lohmann/qik-vrt"
 PRODUCTION_GITHUB_HOST = "github.com"
 GITHUB_API_BASE = "https://api.github.com"
 GITHUB_TOKEN_ENVIRONMENT_VARIABLE = "GITHUB_TOKEN"
@@ -171,7 +173,10 @@ def _authorization_consumption_key(
     select the repository-global lock. Replacing only that nonce therefore
     cannot mint a second effect-bearing identity for the same decision.
     """
-    if repository != PRODUCTION_REPOSITORY:
+    # This pure digest builder also audits immutable historical manifests.
+    # Effect admission separately requires the current PRODUCTION_REPOSITORY
+    # in publish() and _validate_origin_repository(); no old grant is moved.
+    if repository not in {PRODUCTION_REPOSITORY, "Goldkelch/qik-vrt"}:
         _fail("authorization consumption key repository is not the pinned authority")
     if SAFE_AUTHORIZATION_ID.fullmatch(authorization_id) is None:
         _fail("authorization consumption key authorization_id is unsafe")
@@ -1209,10 +1214,10 @@ def _origin_repository_identity(raw: str) -> str:
         or any(character in raw for character in ("\x00", "\r", "\n"))
     ):
         _fail("origin push URL is structurally invalid")
-    expected_path = "/Goldkelch/qik-vrt"
+    expected_path = "/" + PRODUCTION_REPOSITORY
     if raw in {
-        "git@github.com:Goldkelch/qik-vrt",
-        "git@github.com:Goldkelch/qik-vrt.git",
+        "git@github.com:" + PRODUCTION_REPOSITORY,
+        "git@github.com:" + PRODUCTION_REPOSITORY + ".git",
     }:
         return PRODUCTION_REPOSITORY
     if "://" in raw:
@@ -1243,7 +1248,7 @@ def _origin_repository_identity(raw: str) -> str:
             and port is None
         ):
             return PRODUCTION_REPOSITORY
-    _fail("origin must be exact GitHub HTTPS or SSH for Goldkelch/qik-vrt")
+    _fail("origin must be exact GitHub HTTPS or SSH for " + PRODUCTION_REPOSITORY)
 
 
 def _validate_origin_repository(root: pathlib.Path, repository: str) -> None:
@@ -1286,9 +1291,14 @@ def _github_api_request(
     *,
     payload: Mapping[str, Any] | None = None,
     accept: tuple[int, ...] = (200,),
-) -> tuple[int, dict[str, Any]]:
+    repository: str = PRODUCTION_REPOSITORY,
+) -> tuple[int, dict[str, Any] | list[dict[str, Any]]]:
     """Use only the pinned GitHub Git-Data REST origin, with redacted errors."""
-    repository_prefix = "/repos/Goldkelch/qik-vrt/"
+    # Reuse this pinned, no-redirect transport for non-secret archive journals.
+    # Publication callers retain the pinned Owner Authority and all their gates.
+    if repository not in {"Goldkelch/qik-vrt", "ingolf-lohmann/qik-vrt"}:
+        _fail("GitHub Git-Data repository binding is not allowed")
+    repository_prefix = f"/repos/{repository}/"
     if not path.startswith(repository_prefix) or any(
         character in path for character in ("\x00", "\r", "\n", "?", "#")
     ):
@@ -1338,7 +1348,11 @@ def _github_api_request(
         value = json.loads(raw.decode("utf-8"))
     except (UnicodeDecodeError, json.JSONDecodeError):
         _fail("GitHub Git-Data API returned invalid JSON")
-    if not isinstance(value, dict):
+    matching_refs = "/git/matching-refs/" in path and method == "GET"
+    if not isinstance(value, dict) and not (
+        matching_refs and isinstance(value, list)
+        and all(isinstance(item, dict) for item in value)
+    ):
         _fail("GitHub Git-Data API returned a non-object response")
     serialized = zenodo._json_bytes(value)
     if token.encode("utf-8") in serialized:
@@ -1350,7 +1364,7 @@ def _github_ref_path(ref: str) -> str:
     if not ref.startswith("refs/tags/"):
         _fail("remote authorization consumption ref is not a tag ref")
     suffix = ref.removeprefix("refs/")
-    return "/repos/Goldkelch/qik-vrt/git/ref/" + urllib.parse.quote(
+    return "/repos/" + PRODUCTION_REPOSITORY + "/git/ref/" + urllib.parse.quote(
         suffix,
         safe="/",
     )
@@ -1447,7 +1461,7 @@ def _read_exact_existing_consumption_lock(
     _validate_github_ref_response(ref_value, ref, tag_object)
     status, tag_value = _github_api_request(
         "GET",
-        "/repos/Goldkelch/qik-vrt/git/tags/" + tag_object,
+        "/repos/" + PRODUCTION_REPOSITORY + "/git/tags/" + tag_object,
         github_token,
         accept=(200, 404),
     )
@@ -1503,7 +1517,7 @@ def _acquire_remote_consumption_lock(
     expected_tag = _expected_consumption_tag(manifest, execution_head)
     tag_status, tag_value = _github_api_request(
         "POST",
-        "/repos/Goldkelch/qik-vrt/git/tags",
+        "/repos/" + PRODUCTION_REPOSITORY + "/git/tags",
         github_token,
         payload=expected_tag,
         accept=(201,),
@@ -1517,7 +1531,7 @@ def _acquire_remote_consumption_lock(
 
     create_status, created = _github_api_request(
         "POST",
-        "/repos/Goldkelch/qik-vrt/git/refs",
+        "/repos/" + PRODUCTION_REPOSITORY + "/git/refs",
         github_token,
         payload={"ref": ref, "sha": tag_object},
         accept=(201, 422),
@@ -2584,3 +2598,4 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+

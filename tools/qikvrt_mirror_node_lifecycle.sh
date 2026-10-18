@@ -3,6 +3,7 @@ set -eu
 
 CONFIG="qikvrt/runtime/onboarding/NODE_HANDSHAKE_CONFIG.tsv"
 [ -f "$CONFIG" ] || { echo "BLOCK missing $CONFIG"; exit 2; }
+python3 -B tools/qikvrt_seed_common.py config-check --root .
 
 line=$(grep -v '^#' "$CONFIG" | grep -v '^$' | head -n 1)
 guid=$(printf '%s' "$line" | cut -f1)

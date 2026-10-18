@@ -1,0 +1,522 @@
+{
+  "_license": {
+    "classification": "work_unit_json",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "authority_readback": "HTTP_404_AT_INITIAL_OBSERVATION_NOT_REPAIRED",
+  "base_head": "468e9e42cd6194ee4ab335aa7452ba6bdee8be4a",
+  "base_tree": "023c5c7c113f96363273ef383ecace28b10f65b6",
+  "completion_claims": {
+    "EFFECT_ACK_DONE": false,
+    "MAIN_ACTIVATED": false,
+    "MESH_REGISTERED": false,
+    "PREDECESSOR_EVIDENCE_TRANSFER": false,
+    "SEED_ACCEPTED": false
+  },
+  "created_utc": "2026-10-09T18:52:24.162982Z",
+  "delivery_raumzeitterminal_de": {
+    "base_head": "468e9e42cd6194ee4ab335aa7452ba6bdee8be4a",
+    "directory": "evidence/native-runtime-acceptance/",
+    "registration_or_reachability_inferred": false,
+    "status": "REPOSITORY_DELIVERY_EVIDENCE_ABSENT"
+  },
+  "fresh_acceptance_required": true,
+  "github_route": "REST_API_ONLY",
+  "historical_entries_preserved_byte_exactly": 1158,
+  "independent_code_owner_review": "REQUIRED_PENDING",
+  "integrity_preparation": "Canonical indexed delta uses exact unchanged source blobs/modes and source-manifest digests; changed bytes are freshly hashed. Unmodified generator must freshly verify the complete actual candidate checkout in native CI.",
+  "local_preparatory_checks": [
+    {
+      "exit": 0,
+      "log_sha256": "3a37a23369b92e75b0e33d08413c8683511b6f48960b78c7c6808aab0d869403",
+      "scope": "Seed/lifecycle/REST/Ruleset",
+      "test_count": 133
+    },
+    {
+      "exit": 0,
+      "log_sha256": "a1457504f960447826a980539f297bc0af3a765003b7269f7e7e18e0a65cf335",
+      "scope": "Native review, promotion, self-heal, continuation",
+      "test_count": 161
+    }
+  ],
+  "local_verification_limit": "Preparatory tests used a sparse local checkout. They are not native exact-head CI and do not establish a complete local make test or byte rehash of unmaterialized unchanged artifacts.",
+  "native_exact_head_checks": "REQUIRED_FRESH_NOT_TRANSFERRED",
+  "next_actions": [
+    "Fresh native exact-head CI and unmodified full integrity verification on this candidate.",
+    "Actual native required Code Owner enforcement and independent exact-head approval; restore separate Authority readback.",
+    "Governed Main integration; then actual fresh Seed acceptance, reviewed generated output and independent public readback."
+  ],
+  "outputs_without_integrity_cycle": [
+    {
+      "bytes": 2148,
+      "git_blob_sha1": "d8cfd8ebf2d02bffbf0188f8f9ea2a7ad18539f9",
+      "mode": "100644",
+      "path": ".github/CODEOWNERS",
+      "sha256": "b7641aac1b1d611a27d1f34bc6c85b7c8c140736bcbd065ee680f2880683984b"
+    },
+    {
+      "bytes": 9829,
+      "git_blob_sha1": "d36040bcb9219a2f1a0f27084f46a5b8d9b023a0",
+      "mode": "100644",
+      "path": ".github/workflows/qikvrt_autonomous_pr_continuation.yml",
+      "sha256": "f5c5a146696ec902bf890c207f5535a88c5cb8666ee66df8f6aca49b64df1815"
+    },
+    {
+      "bytes": 7019,
+      "git_blob_sha1": "d20435593d215ce3d9a70290cc9654f1e0c8592b",
+      "mode": "100644",
+      "path": ".github/workflows/qikvrt_autonomous_self_heal.yml",
+      "sha256": "08f44c90da597718b4428b35c1d1f732e07b8aecef22a85e3678a965bc4b8c5c"
+    },
+    {
+      "bytes": 1749,
+      "git_blob_sha1": "efd13271fec4584ec1f6057b743a2b6c5aaf3057",
+      "mode": "100644",
+      "path": ".github/workflows/qikvrt_code_owner_review_observer.yml",
+      "sha256": "6d6975b55c358fdeebdf125aae6ed855f75bfec06164b6b47cac15bd27de4fd0"
+    },
+    {
+      "bytes": 14194,
+      "git_blob_sha1": "15e4bc87864608d2fec1cd77fcdb96cacce855ab",
+      "mode": "100644",
+      "path": ".github/workflows/qikvrt_expected_head_promotion.yml",
+      "sha256": "46386356f365d1c61fb1e9c3707f9c29d162969b27a1f2c3560e8ac636a0f192"
+    },
+    {
+      "bytes": 12056,
+      "git_blob_sha1": "ab47a8ec98c39b39bda420050cb7c970a9da6165",
+      "mode": "100644",
+      "path": ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml",
+      "sha256": "bfe554a15c993d0b46d33100682a0c8dd38718988d54c495082256a9fe8c260d"
+    },
+    {
+      "bytes": 10997,
+      "git_blob_sha1": "ca66f83148125ea7f5cacd8386f0df034cca5ded",
+      "mode": "100644",
+      "path": ".github/workflows/qikvrt_live_status_watch.yml",
+      "sha256": "bdd5e54a7ccc73384121f3d13c6abd5d8ff7a0ef6640493d41ba2590be5f3c22"
+    },
+    {
+      "bytes": 13098,
+      "git_blob_sha1": "9b3dc16431e161ccff0c0e59f4c7dbc9047355b8",
+      "mode": "100644",
+      "path": ".github/workflows/qikvrt_mirror_node_lifecycle.yml",
+      "sha256": "45854af13097cc0d696e181b14094d901bdebdc7f1d9580af4f7d05d93dc17b8"
+    },
+    {
+      "bytes": 6517,
+      "git_blob_sha1": "2ff69bac9889407a65a914619c136b2d45193d15",
+      "mode": "100644",
+      "path": ".github/workflows/qikvrt_requested_review_contract.yml",
+      "sha256": "0b449e59ae0bbaab1803169382637aa6acbc9fde92be45abf384e7988d651687"
+    },
+    {
+      "bytes": 13609,
+      "git_blob_sha1": "e32a2947c2d266de3763c0efb410d9b78e75fe5a",
+      "mode": "100644",
+      "path": ".github/workflows/qikvrt_requested_review_executor.yml",
+      "sha256": "91ae244aa9d82731a406a9cc15ab51e12eca5b034a748927fe65157de6fd2934"
+    },
+    {
+      "bytes": 4882,
+      "git_blob_sha1": "7125c55a543bf7e144bb5b51c47d17bf9b5ebfb9",
+      "mode": "100644",
+      "path": ".github/workflows/qikvrt_required_review_gate.yml",
+      "sha256": "9f67e34b70834f6c4e9054a4def9d5c9852151cc5a828f7d8b4f9ede86085740"
+    },
+    {
+      "bytes": 3590,
+      "git_blob_sha1": "4ddf8eb1e869d5dc1ba6dbc6e3a4239e82a5fbed",
+      "mode": "100644",
+      "path": ".github/workflows/qikvrt_seed_dashboard_publish.yml",
+      "sha256": "e573967c76fb26895aa1f99fea114f89b5630660d10f07dec77ded718a6788d9"
+    },
+    {
+      "bytes": 2275,
+      "git_blob_sha1": "aec37cd0c1932b22d1e91d2b546ee014d02977fa",
+      "mode": "100644",
+      "path": ".github/workflows/qikvrt_seed_mesh_audit_export.yml",
+      "sha256": "49a013ae0f3ebdaa7a95be00ef3f9c64dd31abc6aad51889a666d3e4a4bc7995"
+    },
+    {
+      "bytes": 1959,
+      "git_blob_sha1": "9b21b0af294beeb5f636ad2bcd145f43f8f40cdd",
+      "mode": "100644",
+      "path": ".github/workflows/qikvrt_seed_mesh_maintenance.yml",
+      "sha256": "fd0ebeea66e060bcc913a1fc32b06364163806cb5cb00b35486fe00d83d29a09"
+    },
+    {
+      "bytes": 1976,
+      "git_blob_sha1": "fae42d1b115e12e8e16dc2e5ab157b6f2053f93c",
+      "mode": "100644",
+      "path": ".github/workflows/qikvrt_seed_node_revalidation.yml",
+      "sha256": "6cfa6da3018f4bbeb9bac7d54b36b47c50af488933f87f9470fc130fa23e0148"
+    },
+    {
+      "bytes": 2820,
+      "git_blob_sha1": "00cfc273f6664b0ffe52f4e7d8ebebe8f7b29ab2",
+      "mode": "100644",
+      "path": ".github/workflows/qikvrt_seed_registry_acceptance.yml",
+      "sha256": "721b10969d8c95347eca01c17eb82dd47f9fa4400de7f79aef014543149e030d"
+    },
+    {
+      "bytes": 12271,
+      "git_blob_sha1": "c70f568ea10ebf5ef1acf2b54b10469f71c1c4dd",
+      "mode": "100644",
+      "path": "Makefile",
+      "sha256": "1c8749b03a2a5a5a1f37b55d7c9949cd7848c1f92abf8ff6b2837653b22cbe79"
+    },
+    {
+      "bytes": 9947,
+      "git_blob_sha1": "b9a5e4aadf64835c0b6f9022aef05296dd616eb5",
+      "mode": "100644",
+      "path": "api/qikvrt_github_api.openapi.yaml",
+      "sha256": "da155cfa0fc7a0b25f113ad58af910f5b29dd9b880a2fe6b545db8d077e23605"
+    },
+    {
+      "bytes": 10958,
+      "git_blob_sha1": "49f41dc522af7057f1ccd147e8effde3c1da6672",
+      "mode": "100644",
+      "path": "docs/GITHUB_DEPLOYMENT.md",
+      "sha256": "fd353b993806bd6944b5274f332e74602ed828395408c3e9ec04bc79370f596b"
+    },
+    {
+      "bytes": 3076,
+      "git_blob_sha1": "8cff99025f51de3f6099fbed227eea488e75ea8e",
+      "mode": "100644",
+      "path": "docs/QIKVRT_AUTONOMOUS_MESH_OPERATIONS.md",
+      "sha256": "f96af1f4293dfb5da6129d0f694a57d597bb16156951b19532e4f9c50a9ead01"
+    },
+    {
+      "bytes": 13251,
+      "git_blob_sha1": "f8960058b6df7d7b0a2bb21f74649304a7f21755",
+      "mode": "100644",
+      "path": "docs/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE.md",
+      "sha256": "1d3fe16c8031daf4b186ba7370f37241294f323547b6bd37f28aa8ea90ec3d92"
+    },
+    {
+      "bytes": 7756,
+      "git_blob_sha1": "24dd2e644dc8fc97a9a8476aaf28f5334fcd1382",
+      "mode": "100644",
+      "path": "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+      "sha256": "e1d9f659ae8ecf828db193c77775fe0b0ebee5c9d378ba56d880f8b23265959f"
+    },
+    {
+      "bytes": 401,
+      "git_blob_sha1": "75606431130108ab38387d21064bf5b9e4f09b3d",
+      "mode": "100644",
+      "path": "qikvrt/runtime/onboarding/NODE_HANDSHAKE_CONFIG.tsv",
+      "sha256": "e96b13fd486b641566859bb681a1df765b0fd3fe5e8a4ef23fcc3cf9df0f8657"
+    },
+    {
+      "bytes": 1267,
+      "git_blob_sha1": "e6bcdd1a70787b4a036b88d68e8a9f2497da47f9",
+      "mode": "100644",
+      "path": "qikvrt/runtime/onboarding/SEED_ACCEPTANCE_STATUS.json",
+      "sha256": "3214416300806fa4cb82579dcad4454150531c3de2f0631b92064ee5b0430a6c"
+    },
+    {
+      "bytes": 553,
+      "git_blob_sha1": "b788f21b62f00becc8f3882094ef85ee7d15a7fd",
+      "mode": "100644",
+      "path": "qikvrt/runtime/onboarding/SEED_REGISTRATION_REQUEST.json",
+      "sha256": "4cdeb0eb420cde38eb051709b594a385883f55622459b8997bcc975e0e273889"
+    },
+    {
+      "bytes": 313,
+      "git_blob_sha1": "cd1f7cb355f2e6345a38960ae9d1bcfce99e7881",
+      "mode": "100644",
+      "path": "registry/KNOWN_NODE_REQUESTS.tsv",
+      "sha256": "4c41bcce3b19cd06ee63b2c156ebd7930fd3bd64f38055112879d44383bb6154"
+    },
+    {
+      "bytes": 214,
+      "git_blob_sha1": "9facd85b130ff8c52b5e91a2252b7754ff29d516",
+      "mode": "100644",
+      "path": "registry/NODE_LIFECYCLE_TRANSPORT_V1.json",
+      "sha256": "45e7273c9edeccafef5095a4dc897eb658b5d91db144c89d35d6d4d72508a790"
+    },
+    {
+      "bytes": 28218,
+      "git_blob_sha1": "65a9d0243ed7b2f59ec163a608d954bbf2d18d70",
+      "mode": "100644",
+      "path": "scripts/qikvrt_api_client.py",
+      "sha256": "5f43e6626ae6dac83da48d270dc15fca6ad36971b759ab05a5394f247fb7fc6e"
+    },
+    {
+      "bytes": 17873,
+      "git_blob_sha1": "551461c57c21d317cb2b0114fc47be1db9f14a65",
+      "mode": "100644",
+      "path": "src/qikvrt_github_api_shim.py",
+      "sha256": "18deef284a26870aa9a5635768112f8be8c71ccdf7f604a268e56b92ee86335b"
+    },
+    {
+      "bytes": 8416,
+      "git_blob_sha1": "0dec4007797ee56297bdd77e64f946cd794649a7",
+      "mode": "100644",
+      "path": "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json",
+      "sha256": "19f7d1b7943b8fb36d0eac8d9104e4298602eb3baf92ae3a23163376010a872d"
+    },
+    {
+      "bytes": 7505,
+      "git_blob_sha1": "4c96038b9f970992b4d48b96c735a5969b74b5d5",
+      "mode": "100644",
+      "path": "state/work_units/QIKVRT_AUTONOMY_HANDOFF_FAIRNESS_INTEGRATION_20261008_V1.json",
+      "sha256": "c331868ca3e9432e409882286637e186030c474c8a8b21cf3a8604738a36d952"
+    },
+    {
+      "bytes": 9561,
+      "git_blob_sha1": "17a954798ccf051d35f13c51de9eb9581a0b5a19",
+      "mode": "100644",
+      "path": "state/work_units/QIKVRT_LIFECYCLE_GOVERNANCE_INTEGRATION_20261009_V1.json",
+      "sha256": "fa47b62227f721217d8a2360adf26aca7dc9c45bf8fc9aff02d94b5c2cc5b18e"
+    },
+    {
+      "bytes": 7125,
+      "git_blob_sha1": "67a578433987fd8db6ff3a740c8f6ba4435e494a",
+      "mode": "100644",
+      "path": "state/work_units/QIKVRT_PR_CONTINUATION_FAIRNESS_REPAIR_20261008_V1.json",
+      "sha256": "70d59c1791df81ead68328345e6c4b73b4566ff2e7949884a05cdea0e94ee0f4"
+    },
+    {
+      "bytes": 8804,
+      "git_blob_sha1": "ce2549e986e8d9497086726393c212487ec80ae2",
+      "mode": "100644",
+      "path": "state/work_units/QIKVRT_REST_API_CONTINUATION_20261008_V1.json",
+      "sha256": "87c759fa3d31b07d22ec512ccfa951ac24b9ab14d010cd357cb27e0ca916ad59"
+    },
+    {
+      "bytes": 7063,
+      "git_blob_sha1": "4f25a355278b71f9de5fb9c38563bb6c2fe5eaa2",
+      "mode": "100644",
+      "path": "state/work_units/QIKVRT_RULESET_CLIENT_DISPATCH_20261009_V1.json",
+      "sha256": "1a855b200fd3558569223dc88762baf847563471b6c943b88c48e2bef55a0a4f"
+    },
+    {
+      "bytes": 24930,
+      "git_blob_sha1": "48abb1f9e0198c59cd75efacc5eb4ec623247862",
+      "mode": "100644",
+      "path": "state/work_units/QIKVRT_RULESET_LIFECYCLE_CLIENT_INTEGRATION_20261009_V1.json",
+      "sha256": "da977617b6459ab7f28e10447b5606da252c4f8dae1dcd3aad996bc6b3a9ec46"
+    },
+    {
+      "bytes": 6381,
+      "git_blob_sha1": "8da2cbb20a3869819a3fe734a7ddff4212cc9425",
+      "mode": "100644",
+      "path": "state/work_units/QIKVRT_SELF_HEAL_REST_HANDOFF_REPAIR_20261008_V1.json",
+      "sha256": "cde09120ba03f476088bc8a17a026bc876ff62752faecf68bafad3f4cdc639c0"
+    },
+    {
+      "bytes": 4234,
+      "git_blob_sha1": "d08f9518bb1726ce3215a4c28ff6489c462dcb2b",
+      "mode": "100644",
+      "path": "state/work_units/SEED_IDENTITY_PROOF_REPAIR_20261009_V1.json",
+      "sha256": "d581c90e681603a49b691eb457eb23afa17200535b1a8f917592a53d600b5eb2"
+    },
+    {
+      "bytes": 11253,
+      "git_blob_sha1": "1202d24c2f23eb8fa52ab7c562a583e79f9e8444",
+      "mode": "100644",
+      "path": "tests/fixtures/ruleset_writer_legacy_v1.yml",
+      "sha256": "23ede0d211d074039921c8293bf798f46b0ac5e49866c4e0c110db45b92129d5"
+    },
+    {
+      "bytes": 37822,
+      "git_blob_sha1": "3bc8ffeac410e70a5a446879f00e0510fdb6d5f4",
+      "mode": "100644",
+      "path": "tests/test_api_client.py",
+      "sha256": "417186f33b05e73cea8cd90d0786caf5bd7793b7b192cb414648f4688b289874"
+    },
+    {
+      "bytes": 28961,
+      "git_blob_sha1": "66f13522f0a17702bc6e736ab9393c4a57f5cc7f",
+      "mode": "100644",
+      "path": "tests/test_mirror_lifecycle_publication.py",
+      "sha256": "090686696db2756e726da85d074ef7e2c559a57e9a4c50eb9f56b87da709725f"
+    },
+    {
+      "bytes": 43015,
+      "git_blob_sha1": "2a30e885bf5688d3a8ef505ddef3396cad96eb41",
+      "mode": "100644",
+      "path": "tests/test_qikvrt_autonomous_pr_continuation.py",
+      "sha256": "0859f41f30f559262030f692ee89ff6a0f789bbd67f70ee5f08ffd888c6b866e"
+    },
+    {
+      "bytes": 8463,
+      "git_blob_sha1": "532dcbc151f50c53dbf87dab8639b34947aada39",
+      "mode": "100644",
+      "path": "tests/test_qikvrt_autonomous_pre_effect_controller.py",
+      "sha256": "41e403cb8c686a06f8dce413b1e83af1bb12d74fae03c1ba369aa42dc560dba2"
+    },
+    {
+      "bytes": 10852,
+      "git_blob_sha1": "38216b3e5d37b9755612d3ab4b9dc3a3cd1d81d2",
+      "mode": "100644",
+      "path": "tests/test_qikvrt_expected_head_promotion.py",
+      "sha256": "7ffcf31cc12217ef77511d35c85f9102fe30e8549bec01d2a18dba3adda55d4a"
+    },
+    {
+      "bytes": 4025,
+      "git_blob_sha1": "03040738cfe9062cf406f3a32034132fd2ca3ddb",
+      "mode": "100644",
+      "path": "tests/test_qikvrt_expected_head_promotion_contract.py",
+      "sha256": "4463c75a19529245fab376f038ac6fbe0f45ec9f882c07191c9c6d4f824b4bc3"
+    },
+    {
+      "bytes": 7640,
+      "git_blob_sha1": "3772d9e8124a8c3961c9f27942e3429a882601e9",
+      "mode": "100644",
+      "path": "tests/test_qikvrt_requested_review_executor.py",
+      "sha256": "14661083ff0617ecc8c7c263c4448d6aec72e5a3aae6f4f1ab7043d1c7c79845"
+    },
+    {
+      "bytes": 18732,
+      "git_blob_sha1": "e88693e9e0a9e4d10a8ba43c52bf3cb80b807783",
+      "mode": "100644",
+      "path": "tests/test_qikvrt_required_review_gate.py",
+      "sha256": "dbca4480c3805d3251a43c82ffa0037b9c115d3fe2c9fd379f60266709f847ae"
+    },
+    {
+      "bytes": 32970,
+      "git_blob_sha1": "596c387f50f4d202f0bbc57413603724cbc44e1d",
+      "mode": "100644",
+      "path": "tests/test_qikvrt_self_heal_pr_materializer.py",
+      "sha256": "bd4558cbd31a66487c146f5e9d7c39a503b357cb6a8e763be54cfc9a1951d710"
+    },
+    {
+      "bytes": 26067,
+      "git_blob_sha1": "d70a18a296f0a5b10dd2ad6ecbd4af6e59456793",
+      "mode": "100644",
+      "path": "tests/test_ruleset_authority_token_route.py",
+      "sha256": "87ce7e80ef3f24e8c00de350d534cdcbbde95b34105c2775c4487529035492d9"
+    },
+    {
+      "bytes": 44584,
+      "git_blob_sha1": "7c179bdaf8295d96cb2a5864ece180682477b4d8",
+      "mode": "100644",
+      "path": "tests/test_seed_workflows.py",
+      "sha256": "1f459667f2a26a171a9f8a81cffbd8e9ba424e43955b55264dc3aaa054b93569"
+    },
+    {
+      "bytes": 19176,
+      "git_blob_sha1": "d2296d01a76179a1460b56f6973b13dbe5184f84",
+      "mode": "100644",
+      "path": "tests/test_tcpip_e2e.py",
+      "sha256": "6272a9c3a99e0facf677f7046c99f1f168366d3b9fd842e339b5b5cde80e6f3e"
+    },
+    {
+      "bytes": 10350,
+      "git_blob_sha1": "c54856ecd52e5bde6bc39093a78435e986c7e2c2",
+      "mode": "100644",
+      "path": "tools/qikvrt_autonomous_pre_effect_controller.py",
+      "sha256": "16dd96e1d1c871a36d51a383c459562f0a5ce45ed2a1e4ce05365958eaa99369"
+    },
+    {
+      "bytes": 40901,
+      "git_blob_sha1": "6428d8e08499b8d2d717d051781f75e285b00ed2",
+      "mode": "100755",
+      "path": "tools/qikvrt_autonomous_self_heal.py",
+      "sha256": "3a55a8af6e9e52e31d9cbeae97072cad476744ebe531e7f51500375683cf0893"
+    },
+    {
+      "bytes": 9545,
+      "git_blob_sha1": "78acc8c7b32b15e0416b76c3ed1b191b656b073b",
+      "mode": "100644",
+      "path": "tools/qikvrt_expected_head_promotion.py",
+      "sha256": "c29b63736380550137a8f1aec2f4a36eec0d6301f869451909fd016c02618279"
+    },
+    {
+      "bytes": 25912,
+      "git_blob_sha1": "7867e76c661eacc7cc45e19a559fbd4ca8d662fb",
+      "mode": "100644",
+      "path": "tools/qikvrt_mirror_node_lifecycle.py",
+      "sha256": "8c02081d0b2cd82ab17d80a75c11f02c940c15dfc38200dc5886ff798ebb3005"
+    },
+    {
+      "bytes": 2650,
+      "git_blob_sha1": "e0bba9bb4fdf0f50a4e7ce6cc3e2fb3445af2101",
+      "mode": "100644",
+      "path": "tools/qikvrt_mirror_node_lifecycle.sh",
+      "sha256": "a353d3c20d3c228e5d3a599f196ca4b4d22c4dd00e6e764ed9f471a9448034a7"
+    },
+    {
+      "bytes": 7767,
+      "git_blob_sha1": "b3eccb774851dc434bd75c531216e6ed1e3096ef",
+      "mode": "100644",
+      "path": "tools/qikvrt_requested_review_executor.py",
+      "sha256": "4a70a452b9642ea480e14c312d34ff6e26b648584e4dc1d396adeb83c5b65117"
+    },
+    {
+      "bytes": 13975,
+      "git_blob_sha1": "1463ec8103b315c6489201c5876d64b77af8b1f6",
+      "mode": "100644",
+      "path": "tools/qikvrt_required_review_gate.py",
+      "sha256": "4acb1cc39e7af168db64f0eb7e66b8f712596bf8bfc52efa1b08020cddf1c9f6"
+    },
+    {
+      "bytes": 61875,
+      "git_blob_sha1": "5b8e03505ae9d9f5331c24124b54fb2470a700c5",
+      "mode": "100644",
+      "path": "tools/qikvrt_seed_common.py",
+      "sha256": "d28e9909d92233f3301f32cef1f5a670b95db08df3738dae35c8b8bf2864e3bb"
+    },
+    {
+      "bytes": 17157,
+      "git_blob_sha1": "c180818bff6245dac48d73d368f2e46c3522530e",
+      "mode": "100644",
+      "path": "tools/qikvrt_self_heal_pr_materializer.py",
+      "sha256": "973655aedd43fb1c3117b3aabf90f06cc907aba85e8f37bec82c018f8f500ba5"
+    }
+  ],
+  "overlap_resolution": {
+    ".github/workflows/qikvrt_mirror_node_lifecycle.yml": "PR510 byte-exact; fresh acknowledgement step and bounded output paths retained",
+    "Makefile": "All PR508 gates plus PR510 production config-check",
+    "base": "PR510 plus all nonoverlapping PR508 changes",
+    "tests/test_mirror_lifecycle_publication.py": "PR510 superset plus explicit Seed REST permissions regressions",
+    "tests/test_seed_workflows.py": "PR510 tests and all eleven PR508 MirrorLifecycleGovernanceTests; typed independent fixture and preceding acknowledgement fixture restored",
+    "tools/qikvrt_mirror_node_lifecycle.py": "PR510 byte-exact; narrow seed-registry refs and draft-only Seed PR POST retained",
+    "tools/qikvrt_seed_common.py": "PR510 byte-exact; all PR508 callables retained"
+  },
+  "proposed_commit_parents": [
+    "468e9e42cd6194ee4ab335aa7452ba6bdee8be4a",
+    "2e847ce4af60451bef11ec1b89540d56ee4e3ea6",
+    "3fd23f9ca6c23e4f80a551d4707de55b0d7be1b9"
+  ],
+  "provenance": {
+    "artificial_cognitive_system": {
+      "contribution": "REST comparison, integration, retained fixtures, additional regressions and verification.",
+      "exact_build": "UNAVAILABLE",
+      "family": "Codex / GPT-6",
+      "provider": "OpenAI"
+    },
+    "human": {
+      "contribution": "Task, integration scope, regression and independent approval boundaries.",
+      "identifier": "Ingolf Lohmann"
+    },
+    "human_candidate_approval": "PENDING",
+    "retention": "METADATA_ONLY"
+  },
+  "repository": "ingolf-lohmann/qik-vrt",
+  "ruleset_enforcement": "CODE_OWNER_RULE_NOT_ENFORCED_AT_BASE_READBACK",
+  "schema": "qikvrt_seed_ruleset_lifecycle_integration_work_unit_v1",
+  "sources": [
+    {
+      "head": "2e847ce4af60451bef11ec1b89540d56ee4e3ea6",
+      "pull_request": 508,
+      "tree": "cde054f9aa56d98cb2389df910e0e9c19fc16deb"
+    },
+    {
+      "head": "3fd23f9ca6c23e4f80a551d4707de55b0d7be1b9",
+      "pull_request": 510,
+      "tree": "9e37f3d73f428436e7b6c0a761ac17badb7b08d5"
+    }
+  ],
+  "unchanged_writer_pins": {
+    "legacy-v1": "1202d24c2f23eb8fa52ab7c562a583e79f9e8444",
+    "lifecycle-v2": "ab47a8ec98c39b39bda420050cb7c970a9da6165"
+  },
+  "unknown_seed_registration_forbidden": true,
+  "work_unit_id": "QIKVRT-SEED-RULESET-LIFECYCLE-INTEGRATION-20261009-V1"
+}

@@ -27,7 +27,65 @@ must not be inferred from presence, transport, analysis or authority alone.
 
 QIK-VRT AI RUNTIME ENTRYPOINT
 
+Network name: QIK VRT Mesh Netzwerk.
+Principal, Schöpfer, Code Owner, Product Owner and Lizenzgeber: Ingolf Lohmann.
+His considered explicit approval is also his review (Owner clarification,
+18 October 2026), including for a Principal-authored PR. Reuse the existing
+Owner record and `tools/qikvrt_required_review_gate.py` Principal-review path.
+Record the actual connected-account event as COMMENTED, without claiming an
+independent GitHub APPROVED. Do not demand another human review or repeat an
+already granted permission. Tests, signing, platform restrictions and useful
+exact-host delivery still require their own evidence.
+The Owner's production authorization of 2026-10-13 is recorded in
+`policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json#/mesh_authority/identity_and_production_confirmation`.
+Execute through the existing authorized production paths; bind delivery and
+native acceptance to their own fresh evidence. Preserve the existing licenses.
+
 Repository evidence is canonical. Chat and model memory are non-authoritative transport context.
+
+IMMEDIATE EXECUTION — OWNER PRINCIPLE OF 2026-10-13
+
+„Was du heute kannst besorgen, das verschiebe nicht auf morgen, sondern erledige es unmittelbar, denn alles andere war, ist und wird inakzeptabel sein.“
+
+q.e.d.
+Ingolf Lohmann
+
+Execute the smallest safe, deterministic, authorized and actually callable
+successor immediately in the current work ring; continue through tests,
+persistence and fresh readback. Time passing, another status message or a
+prepared plan does not justify deferring executable work. Reuse the existing
+client-continuation gate. A concrete protected-authority or capability gap
+stays open with its causal next action; other executable work continues.
+Unchanged failed effects remain NOOP. Read the exact owner formulation and
+operational binding in `policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json`
+under `self_application_working_rule.immediate_execution_principle`.
+
+RECURSIVE SELF-APPLICATION — OWNER RULE OF 2026-10-13
+
+Read `policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json`
+and `docs/operations/AUTONOMOUS_PR_CONTINUATION.md`. Apply the working
+method to its own results, errors, omissions and open obligations across
+every applicable client, entrypoint, policy, implementation, test, runtime,
+delivery and handoff layer. Preserve the exact predecessor and derive the
+smallest authorized causal successor; execute it, test it and read it back.
+Unchanged failed effects remain NOOP until their causal prerequisites or
+actually available execution capability change. Missing or unreadable
+subjects remain open tasks. A changed subject requires fresh dependent gates.
+
+Preserve `Quod erat demonstrandum ingenium` as Ingolf Lohmann's attributed
+formulation. Iteration count, new bytes and that formulation alone establish
+neither novelty, improvement nor a mathematical or empirical proof. Bind each
+claimed result to the concrete verified delta and its declared scope.
+
+The exact delivery target remains `https://raumzeitterminal.de/`.
+DNS, TLS, useful application delivery and authenticated native execution are
+separate obligations. The existing client gate `tools/ai_handoff.py
+--client-receipt` carries predecessor duties; the existing Site snapshot path
+carries current/unreobserved tasks and its SHA-256-bound parent. Neither the
+observer nor this rule grants an otherwise unavailable effect capability.
+
+Persist and verify each layer through its supported write/readback path.
+Do not infer adoption on Main, the Mirror or another client from this candidate.
 
 PERSONAL WORKING-MEMORY ORIGIN AND CONTRIBUTION DISCLOSURE
 
@@ -166,6 +224,30 @@ Installation, task execution, commits, merges, releases, and publication remain 
 
 The bootstrap performs no implicit account creation, raw-audio publication, unconditional merge, release, deployment, Zenodo/IETF mutation or credentialed external write. These remain separate authorized effects.
 
+BINDING CLIENT CONTINUATION PROCEDURE — OWNER INSTRUCTION 2026-10-11
+
+Every client MUST follow AGENTS.md's binding client continuation procedure and
+policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json.client_continuation. Preserve the
+existing owner authorization, inspect applicable repository-native connector,
+CLI and Mesh execution routes, and execute safe deterministic successors.
+Before a terminal handoff run:
+python3 -B tools/ai_handoff.py --client-receipt <receipt.json>
+The gate rejects repeated permission requests, premature BLOCK, uninspected
+existing routes, unchanged failed retries and unverified completion claims.
+Receipt consistency is not live-effect proof. Close the action with independent
+current HEAD/TREE and exact-host raumzeitterminal.de delivery readback. Respect
+REST_API_ONLY, credentials and protected governance. The owner's authorization
+does not convert an unavailable operation into authenticated capability.
+
+OWNER CONTINUATION CLARIFICATION — 2026-10-12
+
+Die Fehler, Versäumnisse und Lücken des vorherigen Laufs sind stets zugleich
+die Aufgaben des automatisch daran anschließenden Laufs.
+Carry every observed open obligation into the successor work receipt. Close
+it only with bound evidence; preserve existing authorization and unchanged
+failure NOOP. Apply AGENTS.md and the existing shared client receipt gate.
+This rule does not imply that another client or persistent runner adopted it.
+
 REPOSITORY-NATIVE AUTONOMOUS CONTINUATION
 
 The standing natural-person authorizations for bounded repository-internal continuation are persisted at:
@@ -193,6 +275,17 @@ The repository-native workflow executor is bound by:
 - .github/workflows/qikvrt_workflow_executor.yml
 - .github/workflows/qikvrt_workflow_executor_watchdog.yml
 - .github/workflows/qikvrt_live_status_watch.yml
+
+Repository roles have exactly one normative source:
+`policy/CANONICAL_UPSTREAM_REMOTE_V1.json`. The executor contract, personal
+origin, Seed configuration, digital-twin projection and governance policy are
+validated projections of that source. `tools/qikvrt_workflow_executor.py roles`
+resolves both roles and rejects disagreement; repository names, local remotes,
+monitor availability and historical publication/tag bindings cannot override it.
+An Owner role decision and a candidate policy do not activate trusted Main.
+`authority-readback` requires the native job token, independently reads the
+Authority Main ref/commit/tree, both policies and CODEOWNERS, and reobserves the
+ref. Native platform protection and exact-head Owner review remain separate gates.
 
 It reobserves the exact `main` head and tree, inventories every workflow blob under `.github/workflows`, compares a prior executor snapshot artifact when one is available, and plans at most the contract-authorized, no-effect dispatch. It must bind its plan to workflow path, workflow blob, ref, exact commit and tree. It may not duplicate an active or terminal exact-head run, bypass a competing Authority writer, treat `action_required`, a zero-job run, or watchdog terminality as trusted gate success, or use a rerun endpoint as a substitute for an initial dispatch.
 
@@ -230,3 +323,49 @@ Competitiveness loop: identical reproducible workload and conditions -> QIK-VRT 
 Prioritize the first causal defect on the real end-user path over cosmetic CI activity or additional green infrastructure. The canonical end-user distribution path is public download -> exact bytes -> firmware/standard-platform boot -> Linux -> Mega-ST/MC68000 -> Metatransputer/Cloud Transputer -> Universal Terminal -> Firefox -> TEMDD -> Effect-Acknowledgement -> useful human task. Repair the first failing edge, create a successor subject, and restart fresh validation; never hide it behind unrelated successful lanes.
 
 Release acceptance remains finite and evidence-bound under canonical TEMDD T1-T16, including DONE only from Working Software AND publicly reachable URL AND fresh readback of that URL. Continuous improvement does not terminate when a release reaches DONE: Release_n = DONE does not imply Improvement = DONE.
+
+
+PROTECTED IONOS TOKEN EXECUTOR CONTINUITY — 2026-10-13
+
+The owner instruction `bind!` reconnects the existing #475 manual, trusted-main
+IONOS consumer to the current #523 integration candidate. Reuse
+`.github/workflows/qikvrt_workflow_executor.yml`, `task_mode=ionos-inventory-classify`,
+and existing `secrets.IONOS_TOKEN`. The provider source is unchanged. The
+mandatory workflow-executor test target now rejects a missing consumer and
+wrong/changed main before provider delivery. This is candidate source binding;
+trusted Main integration, actual secret delivery, the independently pinned
+private Cloud-principal carrier and initial REST dispatch remain required.
+Cloud-v6 GET inventory is separate from Hosting Domains/DNS/paid registration.
+The exact product domain remains `raumzeitterminal.de`; live domain delivery
+and EFFECT_ACK_DONE remain unconfirmed. Preserve existing open obligations.
+Provenance: `state/work_units/QIKVRT_IONOS_TOKEN_EXECUTOR_BIND_20261013_V1.json`.
+
+
+S1 LINUX CONTAINER PRODUCTION CANDIDATE — 2026-10-13
+
+The Owner's clarified effect is domain registration and productive Linux container
+delivery through CI, REST-only, without forced DNS edits or unconfirmed purchases.
+The existing S1 PR #457, runtime/self-host/Dockerfile, original exporter, original
+terminal/readback and .github/workflows/qikvrt_ci.yml are reused. Read
+state/work_units/QIKVRT_S1_LINUX_CONTAINER_CI_20261013_V1.json and
+runtime/self-host/README.md#linux-container-production-through-the-existing-ci-candidate-2026-10-13 .
+Two independent OCI builds and real smoke/restart are separate from protected
+versioned publication, host admission and exact https://raumzeitterminal.de acceptance.
+No Main integration, productive host, domain registration or global EFFECT_ACK_DONE
+is inferred from this source candidate. Preserve every open obligation and the
+existing native review/required-check, private storage and S1 migration boundaries.
+
+
+ORIGINAL PUBLICATION IDENTITY — ROUND TRIP
+
+The Owner-authorized original-source identity for every authorized QIK-VRT node is:
+
+- Author and responsible human: Ingolf Lohmann.
+- Title: Von Softwarearchitektur zur Weltformel – DAS UNIVERSUM ALS ROUND TRIP.
+- Zenodo record: https://zenodo.org/records/21888130
+- Version DOI: https://doi.org/10.5281/zenodo.21888130
+- Human-readable binding: docs/publications/2026-08-07-universum-als-round-trip/README.md
+- Machine-readable binding: docs/publications/2026-08-07-universum-als-round-trip/ROUND_TRIP_NODE_IDENTITY.json
+- Searchable PDF reading copy: docs/publications/2026-08-07-universum-als-round-trip/DAS_UNIVERSUM_ALS_ROUND_TRIP_DE.pdf
+
+Resolve the binding through AI_CONTEXT.json.required_read_order. Preserve the original Markdown bytes and their declared SHA-256. The PDF embeds those same original bytes and a source-identity JSON. The PDF is a format transfer, not a claim that a native PDF was already deposited in this Zenodo record. Repository presence, author attribution, independent scientific validation, runtime activation and every-node replication remain separately evidenced. Hosting on chatgpt.site does not establish official OpenAI sponsorship. “Keine KI” applies only to the local rule console.
