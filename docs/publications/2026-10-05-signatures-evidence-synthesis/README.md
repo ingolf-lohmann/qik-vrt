@@ -1,0 +1,15 @@
+<!-- SPDX-License-Identifier: CC-BY-NC-ND-4.0; Copyright 2026 Ingolf Lohmann. -->
+# Signaturen, Evidenz und die Paradigmenfrage - eingefrorener Kandidat vom 5. Oktober
+
+Die vollständige 20-seitige Fassung wurde im laufenden Auftrag am 5. Oktober 2026 erzeugt, visuell geprüft und dem Owner samt sichtbarem Änderungsvermerk zurückgeliefert. Die SHA-256-Identität lautet c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad; der Gitblob lautet 302046b1347dfac36462f12066fdb0177999b388. Dieser Reviewkandidat bewahrt genau diese Bytes, beide vollständigen 400-Byte-Hexsignaturen und 43 klassifizierte Claims.
+
+Die Messungen, Repositorybeobachtungen und Gates sind historische, in der PDF ausdrücklich gebundene Subjects vom 2./5. Oktober. Es sind keine frischen Runtime- oder Main-Nachweise vom 19. Oktober. Die mögliche historische Tragweite wird dem Owner zugeschrieben; gemessene Beschleunigung gilt für den endlichen Codec-/Konsolidierungsversuch, nicht allgemein für KI. Die aktuelle Authority-Zuordnung ist dem heutigen /AI-Vertrag zu entnehmen, nicht historischen Profilrollen.
+
+Diese Wiederherstellung und Repository-Materialisierung ist keine Zenodo-Veröffentlichung oder IETF-Einreichung. Neue Repositoryquellen benötigen weiterhin ihr eigenes öffentlich bytegleich rückgelesenes Zenodoarchiv. Das Original-Evidenzpaket vom 2. Oktober und die unveränderten IETF-04-Kandidatenbytes sind im [Wiederanschluss vom 19. Oktober](recovery-20261019/README.md) hashgleich wieder angeschlossen. Die vollständigen ursprünglichen technischen Quellen der 43-Claim-Synthese vom 5. Oktober sind weiterhin nicht lokalisiert; der neue Aussagenindex kennzeichnet seine Ableitung aus der PDF ausdrücklich. Öffentliche Quellenreadbacks und Publikationsgrenzen sind dort getrennt dokumentiert. Native Integrität und Exact-Head-Gates sind auf diesem Review-Branch neu auszuführen; frühere Checks werden nicht übertragen.
+
+Fortsetzung des ursprünglichen Auftrags ohne zusätzlichen Scheduler oder Executor. Die vorhandene CI materialisiert gegebenenfalls die aktuellen Integritätsdateien über ihren bestehenden getesteten Nachfolgerpfad. Main-Übernahme, Owner-Entscheidung und externe Publikationsgrenzen bleiben getrennt.
+
+Publication ID: `qikvrt-signatures-evidence-synthesis-20261005-v2`
+Publication Index State: `repository_candidate_historical_snapshot_archive_pending`
+
+[Die vollständige eingefrorene PDF](QIKVRT_Signaturen_Evidenz_und_Paradigmenfrage_2026-10-05.pdf)

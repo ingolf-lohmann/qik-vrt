@@ -1,0 +1,82 @@
+{
+  "archives": [
+    {
+      "bytes": 1341143,
+      "members": 15,
+      "name": "QIKVRT_Artikel_und_Quellenpaket_2026-10-05.zip",
+      "scope": "Historical original archive inspected; not a publication grant for signatures study",
+      "sha256": "4ffa0dc4aa404a00bb411b825a27ddb605c185de172d31117edeffcb94c57109",
+      "target_name_matches": []
+    },
+    {
+      "bytes": 937704,
+      "members": 201,
+      "name": "QIKVRT_Quellenarchiv_2026-10-05.zip",
+      "scope": "Historical original archive inspected; not a publication grant for signatures study",
+      "sha256": "c7d6a2c30fca945ab8e489caba585f670d8c0ccaff0e2a224246fd72167d2a17",
+      "target_name_matches": []
+    },
+    {
+      "bytes": 3054190,
+      "members": 71,
+      "name": "QIKVRT_Sinn_und_Zweck_Zenodo_Uploadpaket_2026-10-05.zip",
+      "scope": "Historical original archive inspected; not a publication grant for signatures study",
+      "sha256": "132107a02b67583aa04b6eced2fcbc45f233e59ba7b774aed1a2583b8afb74ae",
+      "target_name_matches": []
+    },
+    {
+      "bytes": 204098031,
+      "members": 15,
+      "name": "QIKVRT_Wiederanlaufpaket_2026-10-05.zip",
+      "scope": "Historical original archive inspected; not a publication grant for signatures study",
+      "sha256": "2412131c8d20ff0d64b4daec45b36aa82bd009dbe744fd10ae232b656a37293c",
+      "target_name_matches": []
+    }
+  ],
+  "authority_main": "b226770c064a167ee3a9cc70996f05db1b3bc6d1",
+  "candidate_parent": "9db818b0234111760b7a83fadfbf23dc8247e150",
+  "exact_upload_authorization_for_this_study_found": false,
+  "external_publication_mutations": 0,
+  "historical_git_bundle": {
+    "PAPER_DE_or_signature_synthesis_path_found": false,
+    "all_original_refs_imported_locally": true,
+    "bytes": 203313737,
+    "object_inventory_sha256": "c32d2f0f095ee879d9b75e4da91080e5f76538dbcfae5fbf417f8dfd5dd37182",
+    "reachable_object_count": 31470,
+    "scope": "Original saved reachable history only; excludes uncommitted files, external volumes and inaccessible iCloud corpus",
+    "sha256": "0990e66a6eea8bd9b754414d0629a04a57db3e881546b1e1b283271b2ac0b8af"
+  },
+  "library_named_claim_matrices_checked": [
+    {
+      "classification": "August1 unrelated30-claim science fact growth matrix",
+      "id": "libfile_9ba85a68cd6881919fa55e2a6c0b2b7e"
+    },
+    {
+      "classification": "August4 unrelated10-claim ontology matrix",
+      "id": "libfile_2af9ca6b750481918e31fbca89cdf5ae"
+    },
+    {
+      "classification": "August4 unrelated7-claim epistemic triad matrix",
+      "id": "libfile_1fe985819efc819184dda074c7d48bb6"
+    },
+    {
+      "classification": "August3 unrelated9-claim aphorism matrix",
+      "id": "libfile_2bda18eb87a48191a8e02200349aeb66"
+    }
+  ],
+  "merge_repair": {
+    "conflicts": [
+      "REPOSITORY_FILE_MANIFEST.json",
+      "REPOSITORY_FILE_MANIFEST.json.sha256",
+      "SHA256SUMS.txt"
+    ],
+    "main_integration_claimed": false,
+    "resolution": "Regenerate original integrity outputs for combined candidate; preserve all original publication bytes"
+  },
+  "next_action": "Locate original uncommitted5October working files via existing source corpus or authenticated original node binding; retain recovered2October package as historical original, not a substitute43-claim source. Exact final proof/return/grant still required.",
+  "observed_at": "2026-10-19T22:42:21.890251+00:00",
+  "original_5october_companions_recovered": false,
+  "original_draft_real_production_validator": "BLOCK: invalid machine proof bundle keys (missing=_license,artifacts,candidate,gates,prepublication_return; unknown=boundary_tests,candidate_fileset,claim_matrix,established_preparation,negative_schema_boundary,production_effect_allowed,required_next_contracts,state,target_production_schema,unestablished_production_gates)",
+  "original_pdf_rewritten": false,
+  "schema": "qikvrt_signature_original_source_search_successor_v1"
+}

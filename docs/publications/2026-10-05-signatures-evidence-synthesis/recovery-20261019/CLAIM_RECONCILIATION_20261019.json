@@ -1,0 +1,786 @@
+{
+  "claims": [
+    {
+      "claim_id": "C01",
+      "evidence_status": "ORIGINAL_24_CLAIM_RECORD_RECOVERED_WITH_HISTORICAL_SCOPE",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "E / EVIDENCED",
+      "printed_statement": "Beide unveränderten Transportframes umfassen jeweils genau 400 Byte und rekonstruieren dieselbe gepinnte 400-Byte-Saat.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "recovered_original_20261002_claim": {
+        "claim_id": "C01",
+        "classification": "EMPIRICALLY_EVIDENCED",
+        "evidence_refs": [
+          "signatures/GOLDKELCH_SIGNATURE_400_V1.bin",
+          "signatures/INGOLF_LOHMANN_SIGNATURE_400_V1.bin",
+          "signatures/canonical_seed.bin",
+          "evidence/GOLDKELCH_SIGNATURE_400_V1_original_verification.json",
+          "evidence/INGOLF_LOHMANN_SIGNATURE_400_V1_original_verification.json"
+        ],
+        "proof_refs": [],
+        "publication_wording": "Beide unveränderten Transportframes umfassen jeweils genau 400 Byte und rekonstruieren dieselbe gepinnte 400-Byte-Saat.",
+        "scope": "Diese zwei Dateien, Generatorparameter und endliche Prüfungen.",
+        "source_refs": [],
+        "statement": "Beide unveränderten Transportframes umfassen jeweils genau 400 Byte und rekonstruieren dieselbe gepinnte 400-Byte-Saat.",
+        "status": "EVIDENCED"
+      },
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 16
+    },
+    {
+      "claim_id": "C02",
+      "evidence_status": "ORIGINAL_24_CLAIM_RECORD_RECOVERED_WITH_HISTORICAL_SCOPE",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "E / EVIDENCED",
+      "printed_statement": "Raw DEFLATE reduziert diese konkreten 400 Saatbytes auf 260 Byte; die übrigen 140 Byte des Frames dienen Synchronisation, Header und Parität.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "recovered_original_20261002_claim": {
+        "claim_id": "C02",
+        "classification": "EMPIRICALLY_EVIDENCED",
+        "evidence_refs": [
+          "evidence/GOLDKELCH_SIGNATURE_400_V1_original_verification.json"
+        ],
+        "proof_refs": [],
+        "publication_wording": "Raw DEFLATE reduziert diese konkreten 400 Saatbytes auf 260 Byte; die übrigen 140 Byte des Frames dienen Synchronisation, Header und Parität.",
+        "scope": "zlib 1.3.2, level=1, memLevel=1, wbits=-15; kein universales Minimum.",
+        "source_refs": [],
+        "statement": "Raw DEFLATE reduziert diese konkreten 400 Saatbytes auf 260 Byte; die übrigen 140 Byte des Frames dienen Synchronisation, Header und Parität.",
+        "status": "EVIDENCED"
+      },
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 16
+    },
+    {
+      "claim_id": "C03",
+      "evidence_status": "ORIGINAL_24_CLAIM_RECORD_RECOVERED_WITH_HISTORICAL_SCOPE",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "N / DECLARED",
+      "printed_statement": "Identifier 0 bezeichnet Goldkelch/Authority und Identifier 1 ingolf-lohmann/Mirror nur im gelieferten Zweirepositoryprofil.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "recovered_original_20261002_claim": {
+        "claim_id": "C03",
+        "classification": "NORMATIVE",
+        "evidence_refs": [
+          "signatures/ingolf-signature-v1/profile.json",
+          "SIGNATURE_ERRATA.md"
+        ],
+        "proof_refs": [],
+        "publication_wording": "Identifier 0 bezeichnet Goldkelch/Authority und Identifier 1 ingolf-lohmann/Mirror nur im gelieferten Zweirepositoryprofil.",
+        "scope": "Vom Owner gewünschte Zuordnung; keine Namespace-Registrierung oder Live-Aktivierung.",
+        "source_refs": [],
+        "statement": "Identifier 0 bezeichnet Goldkelch/Authority und Identifier 1 ingolf-lohmann/Mirror nur im gelieferten Zweirepositoryprofil.",
+        "status": "DECLARED"
+      },
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 16
+    },
+    {
+      "claim_id": "C04",
+      "evidence_status": "ORIGINAL_24_CLAIM_RECORD_RECOVERED_WITH_HISTORICAL_SCOPE",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "E / EVIDENCED",
+      "printed_statement": "Je Frame wurden 93840 nichttriviale Einzelbyte-Mutationen der beiden Codewörter erkannt; ein Decoder für unbekannte Fehler wurde nicht getestet.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "recovered_original_20261002_claim": {
+        "claim_id": "C04",
+        "classification": "EMPIRICALLY_EVIDENCED",
+        "evidence_refs": [
+          "evidence/GOLDKELCH_SIGNATURE_400_V1_original_verification.json",
+          "evidence/INGOLF_LOHMANN_SIGNATURE_400_V1_original_verification.json"
+        ],
+        "proof_refs": [],
+        "publication_wording": "Je Frame wurden 93840 nichttriviale Einzelbyte-Mutationen der beiden Codewörter erkannt; ein Decoder für unbekannte Fehler wurde nicht getestet.",
+        "scope": "2 × 184 × 255 Fälle pro Frame; Erkennung, nicht Korrektur.",
+        "source_refs": [],
+        "statement": "Je Frame wurden 93840 nichttriviale Einzelbyte-Mutationen der beiden Codewörter erkannt; ein Decoder für unbekannte Fehler wurde nicht getestet.",
+        "status": "EVIDENCED"
+      },
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 16
+    },
+    {
+      "claim_id": "C05",
+      "evidence_status": "ORIGINAL_24_CLAIM_RECORD_RECOVERED_WITH_HISTORICAL_SCOPE",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "E / EVIDENCED",
+      "printed_statement": "Der 255-Bit-Kern hat im geprüften periodischen Modell Peak 255 und Nebenwerte -1; der aufgefüllte 256-Bit-Rahmen hat andere Nebenwerte.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "recovered_original_20261002_claim": {
+        "claim_id": "C05",
+        "classification": "EMPIRICALLY_EVIDENCED",
+        "evidence_refs": [
+          "evidence/SIGNATURE_INDEPENDENT_CHECK.json"
+        ],
+        "proof_refs": [],
+        "publication_wording": "Der 255-Bit-Kern hat im geprüften periodischen Modell Peak 255 und Nebenwerte -1; der aufgefüllte 256-Bit-Rahmen hat andere Nebenwerte.",
+        "scope": "Endliche digitale Korrelationsrechnung; keine physische Kanaloptimalität.",
+        "source_refs": [],
+        "statement": "Der 255-Bit-Kern hat im geprüften periodischen Modell Peak 255 und Nebenwerte -1; der aufgefüllte 256-Bit-Rahmen hat andere Nebenwerte.",
+        "status": "EVIDENCED"
+      },
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 16
+    },
+    {
+      "claim_id": "C06",
+      "evidence_status": "ORIGINAL_24_CLAIM_RECORD_RECOVERED_WITH_HISTORICAL_SCOPE",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "E / EVIDENCED",
+      "printed_statement": "Der Linux-/Firefox-Beleg bestätigt lokale HTTP-Wirkung, Replay-Abweisung und frischen Readback; vollständige Mesh-Schließung bleibt HOLD.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "recovered_original_20261002_claim": {
+        "claim_id": "C06",
+        "classification": "EMPIRICALLY_EVIDENCED",
+        "evidence_refs": [
+          "evidence/firefox-linux-ring-RECEIPT.json"
+        ],
+        "proof_refs": [],
+        "publication_wording": "Der Linux-/Firefox-Beleg bestätigt lokale HTTP-Wirkung, Replay-Abweisung und frischen Readback; vollständige Mesh-Schließung bleibt HOLD.",
+        "scope": "Run 36959391916 attempt 1; HEAD 924d66b3cb087adcbbe5da65b9fd282663a71909; lokale Loopback-Effekte.",
+        "source_refs": [],
+        "statement": "Der Linux-/Firefox-Beleg bestätigt lokale HTTP-Wirkung, Replay-Abweisung und frischen Readback; vollständige Mesh-Schließung bleibt HOLD.",
+        "status": "EVIDENCED"
+      },
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 16
+    },
+    {
+      "claim_id": "C07",
+      "evidence_status": "ORIGINAL_24_CLAIM_RECORD_RECOVERED_WITH_HISTORICAL_SCOPE",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "E / EVIDENCED",
+      "printed_statement": "Alle 56 gemessenen Codec-/Konsolidierungsläufe bewahrten die vollständigen deklarierten Eingabebytes und bestanden frischen lokalen Readback.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "recovered_original_20261002_claim": {
+        "claim_id": "C07",
+        "classification": "EMPIRICALLY_EVIDENCED",
+        "evidence_refs": [
+          "evidence/measurement.json",
+          "evidence/trial_ledger.jsonl"
+        ],
+        "proof_refs": [],
+        "publication_wording": "Alle 56 gemessenen Codec-/Konsolidierungsläufe bewahrten die vollständigen deklarierten Eingabebytes und bestanden frischen lokalen Readback.",
+        "scope": "1/2/4/8 Prozesse; je sieben starke und schwache Wiederholungen; endlicher Versuchsraum.",
+        "source_refs": [],
+        "statement": "Alle 56 gemessenen Codec-/Konsolidierungsläufe bewahrten die vollständigen deklarierten Eingabebytes und bestanden frischen lokalen Readback.",
+        "status": "EVIDENCED"
+      },
+      "review_limit": "Local 2026-10-02 codec/serialization/consolidation experiment. Not a cognition, model-quality, distributed-network or energy benchmark.",
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 16
+    },
+    {
+      "claim_id": "C08",
+      "evidence_status": "ORIGINAL_24_CLAIM_RECORD_RECOVERED_WITH_HISTORICAL_SCOPE",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "E / EVIDENCED",
+      "printed_statement": "Bei 1024 Nutzrecords sank die Medianlaufzeit von 347,480389 ms auf 97,760355 ms; der gemessene Speedup mit acht Workern beträgt 3,554410.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "recovered_original_20261002_claim": {
+        "claim_id": "C08",
+        "classification": "EMPIRICALLY_EVIDENCED",
+        "evidence_refs": [
+          "evidence/measurement.json",
+          "evidence/summary.csv"
+        ],
+        "proof_refs": [],
+        "publication_wording": "Bei 1024 Nutzrecords sank die Medianlaufzeit von 347,480389 ms auf 97,760355 ms; der gemessene Speedup mit acht Workern beträgt 3,554410.",
+        "scope": "Gleiche Nutzarbeit; Linux, CPU-Quote acht, tmpfs; kein Netzwerkbenchmark.",
+        "source_refs": [],
+        "statement": "Bei 1024 Nutzrecords sank die Medianlaufzeit von 347,480389 ms auf 97,760355 ms; der gemessene Speedup mit acht Workern beträgt 3,554410.",
+        "status": "EVIDENCED"
+      },
+      "review_limit": "Local 2026-10-02 codec/serialization/consolidation experiment. Not a cognition, model-quality, distributed-network or energy benchmark.",
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 16
+    },
+    {
+      "claim_id": "C09",
+      "evidence_status": "ORIGINAL_24_CLAIM_RECORD_RECOVERED_WITH_HISTORICAL_SCOPE",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "E / EVIDENCED",
+      "printed_statement": "Mit 256 Nutzrecords pro Worker beträgt der Durchsatzfaktor für acht gegenüber einem Worker 3,941654 bei achtfacher Nutzarbeit.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "recovered_original_20261002_claim": {
+        "claim_id": "C09",
+        "classification": "EMPIRICALLY_EVIDENCED",
+        "evidence_refs": [
+          "evidence/measurement.json",
+          "evidence/summary.csv"
+        ],
+        "proof_refs": [],
+        "publication_wording": "Mit 256 Nutzrecords pro Worker beträgt der Durchsatzfaktor für acht gegenüber einem Worker 3,941654 bei achtfacher Nutzarbeit.",
+        "scope": "Schwache Skalierung dieses Tests; längere Gesamtlaufzeit bei mehr Arbeit.",
+        "source_refs": [],
+        "statement": "Mit 256 Nutzrecords pro Worker beträgt der Durchsatzfaktor für acht gegenüber einem Worker 3,941654 bei achtfacher Nutzarbeit.",
+        "status": "EVIDENCED"
+      },
+      "review_limit": "Local 2026-10-02 codec/serialization/consolidation experiment. Not a cognition, model-quality, distributed-network or energy benchmark.",
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 16
+    },
+    {
+      "claim_id": "C10",
+      "evidence_status": "ORIGINAL_24_CLAIM_RECORD_RECOVERED_WITH_HISTORICAL_SCOPE",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "E / EVIDENCED",
+      "printed_statement": "Die vier negativen Kontrollen stoppen Konflikt und Korruption, entfernen nur exakte Duplikate und bewahren gleiche Payloads verschiedener IDs.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "recovered_original_20261002_claim": {
+        "claim_id": "C10",
+        "classification": "EMPIRICALLY_EVIDENCED",
+        "evidence_refs": [
+          "evidence/measurement.json",
+          "reproduce/measure_scaling.py"
+        ],
+        "proof_refs": [],
+        "publication_wording": "Die vier negativen Kontrollen stoppen Konflikt und Korruption, entfernen nur exakte Duplikate und bewahren gleiche Payloads verschiedener IDs.",
+        "scope": "Die implementierten endlichen Kontrollen des Messharness.",
+        "source_refs": [],
+        "statement": "Die vier negativen Kontrollen stoppen Konflikt und Korruption, entfernen nur exakte Duplikate und bewahren gleiche Payloads verschiedener IDs.",
+        "status": "EVIDENCED"
+      },
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 16
+    },
+    {
+      "claim_id": "C11",
+      "evidence_status": "ORIGINAL_24_CLAIM_RECORD_RECOVERED_WITH_HISTORICAL_SCOPE",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "E / EVIDENCED",
+      "printed_statement": "57 Tests der exakt gebundenen Codec- und Standpunktquellen bestanden nach Wiederherstellung der exakten lokalen Fixtures.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "recovered_original_20261002_claim": {
+        "claim_id": "C11",
+        "classification": "EMPIRICALLY_EVIDENCED",
+        "evidence_refs": [
+          "evidence/REPRODUCTION_VERIFICATION.json",
+          "evidence/source_binding.json"
+        ],
+        "proof_refs": [],
+        "publication_wording": "57 Tests der exakt gebundenen Codec- und Standpunktquellen bestanden nach Wiederherstellung der exakten lokalen Fixtures.",
+        "scope": "HEAD 6a1098699d096806958b9c3b50a97d205b8110e9; zwölf Gitblob-Bindungen; keine Übertragung auf andere PRs oder main.",
+        "source_refs": [],
+        "statement": "57 Tests der exakt gebundenen Codec- und Standpunktquellen bestanden nach Wiederherstellung der exakten lokalen Fixtures.",
+        "status": "EVIDENCED"
+      },
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 16
+    },
+    {
+      "claim_id": "C12",
+      "evidence_status": "ORIGINAL_24_CLAIM_RECORD_RECOVERED_WITH_HISTORICAL_SCOPE",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "E / EVIDENCED",
+      "printed_statement": "Bei acht Workern wurden im starken Test 224 doppelte Basisrecords entfernt und 1026228 Wirebytes eingespart.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "recovered_original_20261002_claim": {
+        "claim_id": "C12",
+        "classification": "EMPIRICALLY_EVIDENCED",
+        "evidence_refs": [
+          "evidence/measurement.json"
+        ],
+        "proof_refs": [],
+        "publication_wording": "Bei acht Workern wurden im starken Test 224 doppelte Basisrecords entfernt und 1026228 Wirebytes eingespart.",
+        "scope": "32 identische Basisrecords je Shard, acht Shards; kanonischer Output 4824236 Byte.",
+        "source_refs": [],
+        "statement": "Bei acht Workern wurden im starken Test 224 doppelte Basisrecords entfernt und 1026228 Wirebytes eingespart.",
+        "status": "EVIDENCED"
+      },
+      "review_limit": "Local 2026-10-02 codec/serialization/consolidation experiment. Not a cognition, model-quality, distributed-network or energy benchmark.",
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 16
+    },
+    {
+      "claim_id": "C13",
+      "evidence_status": "ORIGINAL_24_CLAIM_RECORD_RECOVERED_WITH_HISTORICAL_SCOPE",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "N / DECLARED",
+      "printed_statement": "Ein gemeinsamer Klon erhält die vollständige deklarierte Vereinigung eindeutiger Records; gleiches Bytepayload mit anderer stabiler ID bleibt erhalten.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "recovered_original_20261002_claim": {
+        "claim_id": "C13",
+        "classification": "NORMATIVE",
+        "evidence_refs": [
+          "reproduce/src/qikvrt_standpoint_codex.py",
+          "evidence/measurement.json"
+        ],
+        "proof_refs": [],
+        "publication_wording": "Ein gemeinsamer Klon erhält die vollständige deklarierte Vereinigung eindeutiger Records; gleiches Bytepayload mit anderer stabiler ID bleibt erhalten.",
+        "scope": "Konsolidierungsvertrag für konfliktfreie, vollständige Eingaben; endliche Realisierung durch C07/C10.",
+        "source_refs": [],
+        "statement": "Ein gemeinsamer Klon erhält die vollständige deklarierte Vereinigung eindeutiger Records; gleiches Bytepayload mit anderer stabiler ID bleibt erhalten.",
+        "status": "DECLARED"
+      },
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 17
+    },
+    {
+      "claim_id": "C14",
+      "evidence_status": "ORIGINAL_24_CLAIM_RECORD_RECOVERED_WITH_HISTORICAL_SCOPE",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "N / DECLARED",
+      "printed_statement": "Verlustfreie Byteübertragung bewahrt keine automatisch wahre Bedeutung und ersetzt weder Authentifizierung noch Wirkungserlaubnis.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "recovered_original_20261002_claim": {
+        "claim_id": "C14",
+        "classification": "NORMATIVE",
+        "evidence_refs": [
+          "reproduce/AI_CONTEXT.json"
+        ],
+        "proof_refs": [],
+        "publication_wording": "Verlustfreie Byteübertragung bewahrt keine automatisch wahre Bedeutung und ersetzt weder Authentifizierung noch Wirkungserlaubnis.",
+        "scope": "QIKVRT Effekt- und Evidenzgrenzen; TEMDD T1–T16 bleiben unberührt.",
+        "source_refs": [
+          "https://datatracker.ietf.org/doc/draft-lohmann-qikvrt-effect-ack/"
+        ],
+        "statement": "Verlustfreie Byteübertragung bewahrt keine automatisch wahre Bedeutung und ersetzt weder Authentifizierung noch Wirkungserlaubnis.",
+        "status": "DECLARED"
+      },
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 17
+    },
+    {
+      "claim_id": "C15",
+      "evidence_status": "ORIGINAL_24_CLAIM_RECORD_RECOVERED_WITH_HISTORICAL_SCOPE",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "N / DECLARED",
+      "printed_statement": "Der Loop trennt Vorschlag, Zulassung, getrennten Schreiber und frischen Wirkungsreadback als Arbeitsregel.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "recovered_original_20261002_claim": {
+        "claim_id": "C15",
+        "classification": "NORMATIVE",
+        "evidence_refs": [],
+        "proof_refs": [],
+        "publication_wording": "Der Loop trennt Vorschlag, Zulassung, getrennten Schreiber und frischen Wirkungsreadback als Arbeitsregel.",
+        "scope": "Autorisierte QIKVRT-Rollen; keine universale Aussage über jedes mögliche Programm.",
+        "source_refs": [
+          "https://github.com/ingolf-lohmann/qik-vrt/blob/6a1098699d096806958b9c3b50a97d205b8110e9/AGENTS.md"
+        ],
+        "statement": "Der Loop trennt Vorschlag, Zulassung, getrennten Schreiber und frischen Wirkungsreadback als Arbeitsregel.",
+        "status": "DECLARED"
+      },
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 17
+    },
+    {
+      "claim_id": "C16",
+      "evidence_status": "ORIGINAL_24_CLAIM_RECORD_RECOVERED_WITH_HISTORICAL_SCOPE",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "I / DECLARED",
+      "printed_statement": "Für KI kann das Profil die reproduzierbare Übertragung von Aufgaben, Provenienz, Evidenz und Konflikten unterstützen.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "recovered_original_20261002_claim": {
+        "claim_id": "C16",
+        "classification": "INTERPRETATIVE",
+        "evidence_refs": [
+          "evidence/measurement.json"
+        ],
+        "proof_refs": [],
+        "publication_wording": "Für KI kann das Profil die reproduzierbare Übertragung von Aufgaben, Provenienz, Evidenz und Konflikten unterstützen.",
+        "scope": "Architektonische Ableitung; kein gemessener Vorteil bei Modellqualität, Training oder Inferenz.",
+        "source_refs": [],
+        "statement": "Für KI kann das Profil die reproduzierbare Übertragung von Aufgaben, Provenienz, Evidenz und Konflikten unterstützen.",
+        "status": "DECLARED"
+      },
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 17
+    },
+    {
+      "claim_id": "C17",
+      "evidence_status": "ORIGINAL_24_CLAIM_RECORD_RECOVERED_WITH_HISTORICAL_SCOPE",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "I / DECLARED",
+      "printed_statement": "Die Idee eignet sich möglicherweise auch für Datenpipelines, verteilte Werkzeuge, Aktoren, Archivierung und Softwarelieferketten.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "recovered_original_20261002_claim": {
+        "claim_id": "C17",
+        "classification": "INTERPRETATIVE",
+        "evidence_refs": [],
+        "proof_refs": [],
+        "publication_wording": "Die Idee eignet sich möglicherweise auch für Datenpipelines, verteilte Werkzeuge, Aktoren, Archivierung und Softwarelieferketten.",
+        "scope": "Anwendungsanalyse; jede Einführung benötigt ihre eigenen Sicherheits- und Wirkungstests.",
+        "source_refs": [],
+        "statement": "Die Idee eignet sich möglicherweise auch für Datenpipelines, verteilte Werkzeuge, Aktoren, Archivierung und Softwarelieferketten.",
+        "status": "DECLARED"
+      },
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 17
+    },
+    {
+      "claim_id": "C18",
+      "evidence_status": "ORIGINAL_24_CLAIM_RECORD_RECOVERED_WITH_HISTORICAL_SCOPE",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "I / DECLARED",
+      "printed_statement": "Ingolf Lohmann bewertet das System als Paradigmenwechsel von bislang unerreichter Größenordnung.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "recovered_original_20261002_claim": {
+        "claim_id": "C18",
+        "classification": "INTERPRETATIVE",
+        "evidence_refs": [],
+        "proof_refs": [],
+        "publication_wording": "Ingolf Lohmann bewertet das System als Paradigmenwechsel von bislang unerreichter Größenordnung.",
+        "scope": "Zugeschriebene Owner-Bewertung, nicht Ergebnis einer unabhängigen Prioritätsuntersuchung.",
+        "source_refs": [],
+        "statement": "Ingolf Lohmann bewertet das System als Paradigmenwechsel von bislang unerreichter Größenordnung.",
+        "status": "DECLARED"
+      },
+      "review_limit": "Preserve attributed interpretation, explicit OPEN boundary or exact historical/public source scope; no current system-wide acceptance.",
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 17
+    },
+    {
+      "claim_id": "C19",
+      "evidence_status": "ORIGINAL_24_CLAIM_RECORD_RECOVERED_WITH_HISTORICAL_SCOPE",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "O / OPEN",
+      "printed_statement": "Globale Optimalität für künstliche Kognition und eine historisch beispiellose Überlegenheit sind offen.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "recovered_original_20261002_claim": {
+        "claim_id": "C19",
+        "classification": "OPEN",
+        "evidence_refs": [],
+        "proof_refs": [],
+        "publication_wording": "Globale Optimalität für künstliche Kognition und eine historisch beispiellose Überlegenheit sind offen.",
+        "scope": "Benötigt definierte Zielmetriken, systematischen Stand der Technik und faire Vergleichstests.",
+        "source_refs": [],
+        "statement": "Globale Optimalität für künstliche Kognition und eine historisch beispiellose Überlegenheit sind offen.",
+        "status": "OPEN"
+      },
+      "review_limit": "Preserve attributed interpretation, explicit OPEN boundary or exact historical/public source scope; no current system-wide acceptance.",
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 17
+    },
+    {
+      "claim_id": "C20",
+      "evidence_status": "ORIGINAL_24_CLAIM_RECORD_RECOVERED_WITH_HISTORICAL_SCOPE",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "O / OPEN",
+      "printed_statement": "Unbegrenzte Beschleunigung durch wiederholtes Klonen ist nicht nachgewiesen; im gemessenen Ring wachsen relative serielle Kosten.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "recovered_original_20261002_claim": {
+        "claim_id": "C20",
+        "classification": "OPEN",
+        "evidence_refs": [
+          "evidence/measurement.json"
+        ],
+        "proof_refs": [],
+        "publication_wording": "Unbegrenzte Beschleunigung durch wiederholtes Klonen ist nicht nachgewiesen; im gemessenen Ring wachsen relative serielle Kosten.",
+        "scope": "Nur bis acht lokale Worker gemessen; keine Extrapolation auf unendlich.",
+        "source_refs": [
+          "https://www.cs.cmu.edu/~18742/papers/Amdahl1967.pdf"
+        ],
+        "statement": "Unbegrenzte Beschleunigung durch wiederholtes Klonen ist nicht nachgewiesen; im gemessenen Ring wachsen relative serielle Kosten.",
+        "status": "OPEN"
+      },
+      "review_limit": "Preserve attributed interpretation, explicit OPEN boundary or exact historical/public source scope; no current system-wide acceptance.",
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 17
+    },
+    {
+      "claim_id": "C21",
+      "evidence_status": "ORIGINAL_24_CLAIM_RECORD_RECOVERED_WITH_HISTORICAL_SCOPE",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "I / DECLARED",
+      "printed_statement": "Die Signaturen liefern keine mathematische Gleichsetzung mit DNA, Zellteilung, Halbleitern, Kosmologie oder einer Planck-Skala.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "recovered_original_20261002_claim": {
+        "claim_id": "C21",
+        "classification": "INTERPRETATIVE",
+        "evidence_refs": [],
+        "proof_refs": [],
+        "publication_wording": "Die Signaturen liefern keine mathematische Gleichsetzung mit DNA, Zellteilung, Halbleitern, Kosmologie oder einer Planck-Skala.",
+        "scope": "Solche Vergleiche können Metaphern sein; ein physikalischer Wirkungsnachweis liegt hier nicht vor.",
+        "source_refs": [],
+        "statement": "Die Signaturen liefern keine mathematische Gleichsetzung mit DNA, Zellteilung, Halbleitern, Kosmologie oder einer Planck-Skala.",
+        "status": "DECLARED"
+      },
+      "review_limit": "Preserve attributed interpretation, explicit OPEN boundary or exact historical/public source scope; no current system-wide acceptance.",
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 17
+    },
+    {
+      "claim_id": "C22",
+      "evidence_status": "ORIGINAL_24_CLAIM_RECORD_RECOVERED_WITH_HISTORICAL_SCOPE",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "S / BOUND",
+      "printed_statement": "Dieser Kandidat lässt den bestehenden IETF-Version-1-Wirevertrag unverändert und ergänzt ausschließlich nichtnormative Implementierungsbelege.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "recovered_original_20261002_claim": {
+        "claim_id": "C22",
+        "classification": "SOURCE_BOUND",
+        "evidence_refs": [
+          "ietf/CANDIDATE_VALIDATION.json",
+          "ietf/draft-lohmann-qikvrt-effect-ack-04.xml"
+        ],
+        "proof_refs": [],
+        "publication_wording": "Dieser Kandidat lässt den bestehenden IETF-Version-1-Wirevertrag unverändert und ergänzt ausschließlich nichtnormative Implementierungsbelege.",
+        "scope": "XML -04 Kandidat gegenüber lokalem, exakt gebundenem -03 Quellstand.",
+        "source_refs": [],
+        "statement": "Dieser Kandidat lässt den bestehenden IETF-Version-1-Wirevertrag unverändert und ergänzt ausschließlich nichtnormative Implementierungsbelege.",
+        "status": "BOUND"
+      },
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 17
+    },
+    {
+      "claim_id": "C23",
+      "evidence_status": "ORIGINAL_24_CLAIM_RECORD_RECOVERED_WITH_HISTORICAL_SCOPE",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "N / DECLARED",
+      "printed_statement": "Transportframes, kanonische Saat und Anwendungsdaten sind getrennte Bytebudgets; zusätzliche freie 400 Byte entstehen nicht automatisch.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "recovered_original_20261002_claim": {
+        "claim_id": "C23",
+        "classification": "NORMATIVE",
+        "evidence_refs": [
+          "evidence/SIGNATURE_INDEPENDENT_CHECK.json",
+          "reproduce/src/qikvrt_standpoint_codex.py"
+        ],
+        "proof_refs": [],
+        "publication_wording": "Transportframes, kanonische Saat und Anwendungsdaten sind getrennte Bytebudgets; zusätzliche freie 400 Byte entstehen nicht automatisch.",
+        "scope": "32+8+260+100=400; beliebige Payloads brauchen zusätzlichen Speicher und Wirebytes.",
+        "source_refs": [],
+        "statement": "Transportframes, kanonische Saat und Anwendungsdaten sind getrennte Bytebudgets; zusätzliche freie 400 Byte entstehen nicht automatisch.",
+        "status": "DECLARED"
+      },
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 17
+    },
+    {
+      "claim_id": "C24",
+      "evidence_status": "ORIGINAL_24_CLAIM_RECORD_RECOVERED_WITH_HISTORICAL_SCOPE",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "O / OPEN",
+      "printed_statement": "Automatische Fehlerweiterleitung und eine produktive vollständige Authority-/Mirror-Reparatur sind durch diese Veröffentlichung nicht bewiesen.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "recovered_original_20261002_claim": {
+        "claim_id": "C24",
+        "classification": "OPEN",
+        "evidence_refs": [
+          "evidence/ROUTE_AND_RESUME_STATE.json"
+        ],
+        "proof_refs": [],
+        "publication_wording": "Automatische Fehlerweiterleitung und eine produktive vollständige Authority-/Mirror-Reparatur sind durch diese Veröffentlichung nicht bewiesen.",
+        "scope": "Separate priorisierte Reparaturanforderung bleibt offen; dokumentierter 404 legt dessen Ursache nicht fest.",
+        "source_refs": [],
+        "statement": "Automatische Fehlerweiterleitung und eine produktive vollständige Authority-/Mirror-Reparatur sind durch diese Veröffentlichung nicht bewiesen.",
+        "status": "OPEN"
+      },
+      "review_limit": "Preserve attributed interpretation, explicit OPEN boundary or exact historical/public source scope; no current system-wide acceptance.",
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 17
+    },
+    {
+      "claim_id": "C25",
+      "evidence_status": "SYNTHESIS_ROW_RECOVERED_ORIGINAL_MACHINE_METADATA_NOT_LOCATED",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "SOURCE_BOUND",
+      "printed_statement": "Diese Synthese bindet historische Messsubjects und aktuelle Repositorybeobachtung getrennt.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 17
+    },
+    {
+      "claim_id": "C26",
+      "evidence_status": "SYNTHESIS_ROW_RECOVERED_ORIGINAL_MACHINE_METADATA_NOT_LOCATED",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "SOURCE_BOUND",
+      "printed_statement": "PR #459 materialisiert den vorher verwaisten Self-Heal-Branch mit gebundenem HEAD, TREE und Main.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 17
+    },
+    {
+      "claim_id": "C27",
+      "evidence_status": "SYNTHESIS_ROW_RECOVERED_ORIGINAL_MACHINE_METADATA_NOT_LOCATED",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "SOURCE_BOUND",
+      "printed_statement": "Der #455-Kandidat prüft Branch, Draft-PR und Exact-Head-Verifier als getrennte wiederaufnehmbare Nachbedingungen.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 17
+    },
+    {
+      "claim_id": "C28",
+      "evidence_status": "SYNTHESIS_ROW_RECOVERED_ORIGINAL_MACHINE_METADATA_NOT_LOCATED",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "SOURCE_BOUND",
+      "printed_statement": "Das Audit bindet 185 Registrierungen, 77 Main-Workflowquellen, zwölf interne Writer und siebzehn getrennte Writer.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 18
+    },
+    {
+      "claim_id": "C29",
+      "evidence_status": "SYNTHESIS_ROW_RECOVERED_ORIGINAL_MACHINE_METADATA_NOT_LOCATED",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "EMPIRICALLY_EVIDENCED",
+      "printed_statement": "Der native PR-CI-Log dokumentiert 152 erfolgreiche Pflichtprüfungen je Python-Modus am exakten #455-HEAD/TREE.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 18
+    },
+    {
+      "claim_id": "C30",
+      "evidence_status": "SYNTHESIS_ROW_RECOVERED_ORIGINAL_MACHINE_METADATA_NOT_LOCATED",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "SOURCE_BOUND",
+      "printed_statement": "Die vertrauenswürdige Main-Verifier-Nachbedingung und unabhängige Review-Gates bleiben offen.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "review_limit": "Preserve attributed interpretation, explicit OPEN boundary or exact historical/public source scope; no current system-wide acceptance.",
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 18
+    },
+    {
+      "claim_id": "C31",
+      "evidence_status": "SYNTHESIS_ROW_RECOVERED_ORIGINAL_MACHINE_METADATA_NOT_LOCATED",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "NORMATIVE",
+      "printed_statement": "Wiederaufnahme ergänzt nur fehlende erlaubte Nachbedingungen und erhält unabhängige Review-, Governance- und External-Effect-Grenzen.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 18
+    },
+    {
+      "claim_id": "C32",
+      "evidence_status": "SYNTHESIS_ROW_RECOVERED_ORIGINAL_MACHINE_METADATA_NOT_LOCATED",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "INTERPRETATIVE",
+      "printed_statement": "Die gemeinsame Architektur verbindet Identität, Eingaben, Regeln, Ergebnis, Wirkung und frischen Readback.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 18
+    },
+    {
+      "claim_id": "C33",
+      "evidence_status": "SYNTHESIS_ROW_RECOVERED_ORIGINAL_MACHINE_METADATA_NOT_LOCATED",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "EMPIRICALLY_EVIDENCED",
+      "printed_statement": "Beide Frames, je 93.840 Mutationsfälle, 57 Tests und die Gruppenmediane der 56 ursprünglichen Messläufe wurden erneut geprüft.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 18
+    },
+    {
+      "claim_id": "C34",
+      "evidence_status": "SYNTHESIS_ROW_RECOVERED_ORIGINAL_MACHINE_METADATA_NOT_LOCATED",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "SOURCE_BOUND",
+      "printed_statement": "Der öffentliche kanonische Speicherrecord enthält ein historisches modellgebundenes Receipt mit neun Theoremen und vier formalen Claims.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "review_limit": "Preserve attributed interpretation, explicit OPEN boundary or exact historical/public source scope; no current system-wide acceptance.",
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 18
+    },
+    {
+      "claim_id": "C35",
+      "evidence_status": "SYNTHESIS_ROW_RECOVERED_ORIGINAL_MACHINE_METADATA_NOT_LOCATED",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "SOURCE_BOUND",
+      "printed_statement": "Die veröffentlichte Wissenschaftscharta wurde mit allen 10.127 Bytes öffentlich gleich zum Repository zurückgelesen.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "review_limit": "Preserve attributed interpretation, explicit OPEN boundary or exact historical/public source scope; no current system-wide acceptance.",
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 18
+    },
+    {
+      "claim_id": "C36",
+      "evidence_status": "SYNTHESIS_ROW_RECOVERED_ORIGINAL_MACHINE_METADATA_NOT_LOCATED",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "NORMATIVE",
+      "printed_statement": "Wissenschaftliche Aussagearten, Herkunft, Modellannahmen und unabhängige Bestätigung bleiben getrennt.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 18
+    },
+    {
+      "claim_id": "C37",
+      "evidence_status": "SYNTHESIS_ROW_RECOVERED_ORIGINAL_MACHINE_METADATA_NOT_LOCATED",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "INTERPRETATIVE",
+      "printed_statement": "Das gemeinsame Muster kann außerhalb von KI an Softwarelieferketten, Daten, Archive, Dienste und Aktoren anschließen.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 18
+    },
+    {
+      "claim_id": "C38",
+      "evidence_status": "SYNTHESIS_ROW_RECOVERED_ORIGINAL_MACHINE_METADATA_NOT_LOCATED",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "INTERPRETATIVE",
+      "printed_statement": "Ein möglicher Paradigmenwechsel betrifft die zusammenhängende Behandlung von Ergebnis, Herkunft, Zulassung und nachgewiesener Wirkung.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 18
+    },
+    {
+      "claim_id": "C39",
+      "evidence_status": "SYNTHESIS_ROW_RECOVERED_ORIGINAL_MACHINE_METADATA_NOT_LOCATED",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "NORMATIVE",
+      "printed_statement": "Menschlicher Auftrag, künstlich-kognitive Beiträge, Rechte und unabhängige Annahme werden getrennt ausgewiesen.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 18
+    },
+    {
+      "claim_id": "C40",
+      "evidence_status": "SYNTHESIS_ROW_RECOVERED_ORIGINAL_MACHINE_METADATA_NOT_LOCATED",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "NORMATIVE",
+      "printed_statement": "Publikation benötigt die exakte Kandidatenkette, Zulassung und öffentliche bytegleiche Rückprüfung.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 18
+    },
+    {
+      "claim_id": "C41",
+      "evidence_status": "SYNTHESIS_ROW_RECOVERED_ORIGINAL_MACHINE_METADATA_NOT_LOCATED",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "SOURCE_BOUND",
+      "printed_statement": "Der frisch gelesene IETF-Stand bleibt der aktive individuelle Internet-Draft -03.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "review_limit": "Preserve attributed interpretation, explicit OPEN boundary or exact historical/public source scope; no current system-wide acceptance.",
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 18
+    },
+    {
+      "claim_id": "C42",
+      "evidence_status": "SYNTHESIS_ROW_RECOVERED_ORIGINAL_MACHINE_METADATA_NOT_LOCATED",
+      "fresh_generalization_authorized": false,
+      "printed_classification": "OPEN",
+      "printed_statement": "Neue Zenodo-Quellenarchivierung, IETF-Annahme und Persistenz in beiden Live-Repositories sind noch nicht geschlossen.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "review_limit": "Preserve attributed interpretation, explicit OPEN boundary or exact historical/public source scope; no current system-wide acceptance.",
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 18
+    },
+    {
+      "claim_id": "C43",
+      "evidence_status": "SYNTHESIS_ROW_RECOVERED_ORIGINAL_MACHINE_METADATA_NOT_LOCATED",
+      "fresh_generalization_authorized": false,
+      "numeric_precision_note": "Original raw medians give +24.1248514191583 percent aggregate CPU time. The unchanged PDF says around 24.13 percent; ordinary rounding to two decimal places gives 24.12 percent. Retain original wording as history and disclose exact recalculation.",
+      "printed_classification": "EMPIRICALLY_EVIDENCED",
+      "printed_statement": "Der starke Acht-Worker-Test reduziert die Medianlatenz um rund 71,87 Prozent und erhöht die mediane aggregierte CPU-Zeit um rund 24,13 Prozent.",
+      "provenance": "2026-10-19_TRANSCRIPTION_OF_PRINTED_PDF_ROW_NOT_ORIGINAL_43_CLAIM_MATRIX",
+      "review_limit": "Local 2026-10-02 codec/serialization/consolidation experiment. Not a cognition, model-quality, distributed-network or energy benchmark.",
+      "source_pdf_sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad",
+      "source_printed_page": 18
+    }
+  ],
+  "missing_originals": [
+    "2026-10-05 PAPER_DE.md source",
+    "2026-10-05 original 43-claim CLAIM_MATRIX.json and candidate-specific CANDIDATE_FILESET.json/SHA256SUMS",
+    "2026-10-05 complete original technical companion package and final v2 machine-proof/return authorization controls"
+  ],
+  "original_24_claim_matrix": {
+    "bytes": 16803,
+    "container": "original-evidence-20261002.zip",
+    "git_blob_sha1": "ba9dd99948028b0a8b5334100026bb0027e887f5",
+    "member": "CLAIM_MATRIX.json",
+    "sha256": "112b20c7febaa048cef8d2213196b987970ded8b0748c2c483c9a2df9b162e62"
+  },
+  "production_proof_bundle": false,
+  "schema": "qikvrt_signature_claim_reconciliation_v1"
+}

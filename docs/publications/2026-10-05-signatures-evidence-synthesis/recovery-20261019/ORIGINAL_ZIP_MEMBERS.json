@@ -1,0 +1,362 @@
+{
+  "container": {
+    "bytes": 1736349,
+    "git_blob_sha1": "9b9682a7fe7efe6f2daa121140264edf40bb6121",
+    "sha256": "7d3f856c7aaa558895d45ed4b95cfb64a504300d3ac4836aed626616f2d6e7f3"
+  },
+  "manifest_self_inclusion": "Original CANDIDATE_FILESET, DRAFT proof and SHA256SUMS intentionally have distinct coverage; no missing-or-extra claim is inferred from their different counts.",
+  "member_count": 58,
+  "members": [
+    {
+      "bytes": 687,
+      "git_blob_sha1": "9e48e94cbe342400331d198caa69f4ba81ff95b3",
+      "path": "BOUNDARY_TEST_REPORT.json",
+      "sha256": "f766be610f54946930e68d75b1965f98afaa0610623bf337862b8844ce2afe0b"
+    },
+    {
+      "bytes": 17589,
+      "git_blob_sha1": "0357f7b5041d6cfbf4bc093fea7c031d6d11ae65",
+      "path": "CANDIDATE_FILESET.json",
+      "sha256": "2c3f6ba22c052d6ff1f7cf2bb9f26fbb82dfcf9f3089c5b6a8f2a23ca09c89f3"
+    },
+    {
+      "bytes": 1692,
+      "git_blob_sha1": "9ee951add2e3e2a4d1f2388094802113bd0c07ee",
+      "path": "CHANGE_NOTICE.md",
+      "sha256": "2af2416bf7d53ec02f24bf9b669cf9c195056b2cb382aa78c3ca539f57225b3a"
+    },
+    {
+      "bytes": 16803,
+      "git_blob_sha1": "ba9dd99948028b0a8b5334100026bb0027e887f5",
+      "path": "CLAIM_MATRIX.json",
+      "sha256": "112b20c7febaa048cef8d2213196b987970ded8b0748c2c483c9a2df9b162e62"
+    },
+    {
+      "bytes": 19127,
+      "git_blob_sha1": "cfe676c541842bd2b766787b1f6983e063a1eee2",
+      "path": "LICENSES/CC-BY-NC-ND-4.0.txt",
+      "sha256": "38762e3777f4ec00a6f769062a7c3f704fb78ce08303ecff88558da4c49cf9ea"
+    },
+    {
+      "bytes": 18987,
+      "git_blob_sha1": "285dfb803fbca7491d6d0b4b56d07054ffe1a906",
+      "path": "MACHINE_PROOF_BUNDLE.DRAFT.json",
+      "sha256": "79983fbf8804ebeefa8a02f61c5e2c926cea29c8b326caf38efee76b1f474e0f"
+    },
+    {
+      "bytes": 1575,
+      "git_blob_sha1": "971af1c2fcba51b79b7796bb49ceb84631476675",
+      "path": "OWNER_REQUEST_AND_ASSESSMENTS.txt",
+      "sha256": "0af13026cdf45ffe90a1e68bd9c5f48c8fbf412801cd5eab3ec212671d766dce"
+    },
+    {
+      "bytes": 32675,
+      "git_blob_sha1": "1c54683327ae118fc62545187c24d4c7279384f2",
+      "path": "PAPER.md",
+      "sha256": "9f301b7f740579351cd594bb897dde1f8b4c1b7ce43ebcd7f15ca002ec6a60da"
+    },
+    {
+      "bytes": 183707,
+      "git_blob_sha1": "786d51df67f6b23300b1d5c8bf27a9d3eb4974ca",
+      "path": "QIKVRT_400_Byte_Signaturen_und_Skalierung.pdf",
+      "sha256": "9ba92745110d39f354430019dc1b216491d0b1611c7146a2defa04ab724e6772"
+    },
+    {
+      "bytes": 1857,
+      "git_blob_sha1": "26454dcbb26cf0f77de8f513a99f806bbc033a47",
+      "path": "README.md",
+      "sha256": "e0b7b8905503d8f50b967ef8aada65c57b97ed63862b45afe1e767f897b232cb"
+    },
+    {
+      "bytes": 5976,
+      "git_blob_sha1": "312bf640280800ce7d39e3f1109f72e86e7f5b56",
+      "path": "SHA256SUMS",
+      "sha256": "abf241782a51fbeef77d0adda575e3f196b6a1e7dd19232a09bfe93e0609b45c"
+    },
+    {
+      "bytes": 613,
+      "git_blob_sha1": "3115b3eedcd7c5c5dd0f1dc78fb7fd0d0f2cbf49",
+      "path": "SIGNATURE_ERRATA.md",
+      "sha256": "5da4acfa9ec3f019bbffedad849a7857c3340191f2b1c65e5b34605b3fd001ff"
+    },
+    {
+      "bytes": 1848,
+      "git_blob_sha1": "2d23b383a3720982e178d7f59e389fb1d72ef06b",
+      "path": "ZENODO_METADATA.json",
+      "sha256": "7d0f7f0bcab7514e61a60b81b002f3722ce5adca8e6aec8557b6942437aa299d"
+    },
+    {
+      "bytes": 2400,
+      "git_blob_sha1": "20b33666ecc9befe68ffaefc3de36d77908382e7",
+      "path": "evidence/GOLDKELCH_SIGNATURE_400_V1_original_verification.json",
+      "sha256": "cae8bbc1f72520c6e0f233f78378dbe1a0965426366467ed6532eb23bc68791b"
+    },
+    {
+      "bytes": 4152,
+      "git_blob_sha1": "d798cb22aba961f6f87fba276bce9c24b91a3ce5",
+      "path": "evidence/INGOLF_LOHMANN_SIGNATURE_400_V1_original_verification.json",
+      "sha256": "ba3dfcc53200121b18e973ed812d4d3fc9f93b14421d4ca70352eb2afe2be840"
+    },
+    {
+      "bytes": 5663,
+      "git_blob_sha1": "c42f67f153fbce28ebbbd82b45ac6d8abd4ee6a6",
+      "path": "evidence/OWNER_REFLEXIVE_REQUIREMENT_435.md",
+      "sha256": "68c48d1e1bbf51f3bf22e0c70e560e05401ce8c164befe12f50e16380b7460f2"
+    },
+    {
+      "bytes": 4346,
+      "git_blob_sha1": "9c6bfb4e3246c46e16947c8ae52c08fd2e31818a",
+      "path": "evidence/REPRODUCTION_VERIFICATION.json",
+      "sha256": "2a300327115d888d889e0ffecd9c829dc5e053467a41492304190330cdebf17b"
+    },
+    {
+      "bytes": 2063,
+      "git_blob_sha1": "1ef52416a8f7ff2461eb1a5b4e32101a42f3a49c",
+      "path": "evidence/ROUTE_AND_RESUME_STATE.json",
+      "sha256": "8d4dd4b82871dad9cf06b35b07cf55ed9dd68d05892732d526f898d08236504e"
+    },
+    {
+      "bytes": 2235,
+      "git_blob_sha1": "a2457597f8bfefbc2c288cd2781699c413b0133a",
+      "path": "evidence/SIGNATURE_INDEPENDENT_CHECK.json",
+      "sha256": "a9be825fe0a5b9df6ec1e91fd15cb98de2cfeb3dffe48d9faea8d14da27a808e"
+    },
+    {
+      "bytes": 30104,
+      "git_blob_sha1": "e90f03e19c570e0c90e352960e2d3a46590bedea",
+      "path": "evidence/firefox-linux-ring-RECEIPT.json",
+      "sha256": "51713067e1b33e50422e0f0fd3cf6f75f596ededcbced37823f7dc9dbaea01f0"
+    },
+    {
+      "bytes": 117939,
+      "git_blob_sha1": "9afd59c0255106284d45050714860ad2c470b433",
+      "path": "evidence/firefox-linux-ring-native-artifact.zip",
+      "sha256": "d2705f079aed14fa270f8cb4f4e123e166c74cfbc4d86abb84efe3b4afaa4f09"
+    },
+    {
+      "bytes": 244930,
+      "git_blob_sha1": "3e8a4010aeb13e2e79bbd7ba8966f9f4dfe89bb9",
+      "path": "evidence/measurement.json",
+      "sha256": "d168377de7326d312004a45b3cadb89637e995382c9de2269ce8b16deb3da9ee"
+    },
+    {
+      "bytes": 2845,
+      "git_blob_sha1": "287b9e0b5d57ab577eb51acd6ef74a56e03c034c",
+      "path": "evidence/source_binding.json",
+      "sha256": "d7f838ec24575c1e84410aa7a1a0e924d93c6a686ae7846c2f6fc461c6b3770a"
+    },
+    {
+      "bytes": 4824236,
+      "git_blob_sha1": "3b374b74a19106335f95f982a7d8d390a8e13eec",
+      "path": "evidence/strong_fixed_work.qikvrt",
+      "sha256": "d2077e9080e399d94023f82782785f055bdbaff4403a13489bfaf43de086279c"
+    },
+    {
+      "bytes": 1691,
+      "git_blob_sha1": "06829b19b1a0de5423a6eee3ee43216b67f7762c",
+      "path": "evidence/summary.csv",
+      "sha256": "09fa2ff2e2b699f8a6179ee8535eb0751faf247961420128744f413638fdc009"
+    },
+    {
+      "bytes": 173201,
+      "git_blob_sha1": "7532a51cb606db56efca16ce33b4729c4a9c84c6",
+      "path": "evidence/trial_ledger.jsonl",
+      "sha256": "e147523d0fd79b189c2d44546d1a30aa882532517fb1f0ee0cf8d249cfbda4b5"
+    },
+    {
+      "bytes": 45248,
+      "git_blob_sha1": "24d61ebea3e2bfb3e4597efa94f75c8728b0b3a4",
+      "path": "figures/strong_scaling.png",
+      "sha256": "9adbc58c2fcfb01730c0e579d415d210868550bc1d5d141223531e88d5a18103"
+    },
+    {
+      "bytes": 41937,
+      "git_blob_sha1": "cd428a620a1f87133f73fed546bcf8decc040730",
+      "path": "figures/weak_scaling.png",
+      "sha256": "2cb90ca2668c9f1006780965e9171f431ac6e2c18d92f3a406fed52ee28285fa"
+    },
+    {
+      "bytes": 1205,
+      "git_blob_sha1": "a7eeba08b6846012e1ac0c69ea2390325152e72c",
+      "path": "ietf/CANDIDATE_VALIDATION.json",
+      "sha256": "09f2edf2f6baaf4e3f26d30e2a54048e4350c91684cf850873cb7476a370d75b"
+    },
+    {
+      "bytes": 57308,
+      "git_blob_sha1": "4b43c9fe04dd021f0c5166a0bcb6f1a951927f02",
+      "path": "ietf/draft-lohmann-qikvrt-effect-ack-04.xml",
+      "sha256": "a6d63859dfca44b19c59d5f6bfb9ed217bcb636cf763ffd3b46c74322c16ec3d"
+    },
+    {
+      "bytes": 14062,
+      "git_blob_sha1": "8c66b1d7ceadeeaa114658d0f5f1f2d0fe9fda55",
+      "path": "reproduce/AI_CONTEXT.json",
+      "sha256": "58075d8d9ef0315ea17b7b00ea04e49954cd2634a56c7a37203d753ce50b64b1"
+    },
+    {
+      "bytes": 4563,
+      "git_blob_sha1": "1a71cb64397535482ff19542d1093c0d4a6442d0",
+      "path": "reproduce/LICENSES/PolyForm-Noncommercial-1.0.0.txt",
+      "sha256": "ffcca38841adb694b6f380647e15f17c446a4d1656fed51a1e2041d064c94cc8"
+    },
+    {
+      "bytes": 400,
+      "git_blob_sha1": "9b06a2b407fb99d99d2bda5a3decc80ab68a092b",
+      "path": "reproduce/canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin",
+      "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+    },
+    {
+      "bytes": 10127,
+      "git_blob_sha1": "d6533d9be451f8ac922ef7c11cbf04900fa3066f",
+      "path": "reproduce/docs/CHARTA_MASCHINENPRUEFBARE_WISSENSCHAFT.md",
+      "sha256": "7fb4e5c369b079e93ce409e9ca4f6830476a1b6dbd42543273d85164e111a631"
+    },
+    {
+      "bytes": 13830,
+      "git_blob_sha1": "bfe0b6b5f1672c483e88e5907c2ce9186362dbe3",
+      "path": "reproduce/docs/QIKVRT_CODEC_V1.md",
+      "sha256": "060ad764f0418d5ae007e41896de56a115f261b4ca5bf6b787414cb0a41e9798"
+    },
+    {
+      "bytes": 18094,
+      "git_blob_sha1": "9440a289b8238df77775307382f58d53b8678208",
+      "path": "reproduce/measure_scaling.py",
+      "sha256": "3c23f12d9fa9b46e4cccd5c6a8d7419e94817768a0aa34f92cd849a0ba2a7977"
+    },
+    {
+      "bytes": 21531,
+      "git_blob_sha1": "88fbbd01c076b02cb733891b3235ad789475bd86",
+      "path": "reproduce/policy/QIKVRT_CODEC_CONTRACT_V1.json",
+      "sha256": "0ccf7c5f9cc6fb85b23ea7d3981901e227b40abedfe1aa0373d0e171e6753f37"
+    },
+    {
+      "bytes": 8577,
+      "git_blob_sha1": "4dc242937168eedfaced69ecebab6a1cb2c00a4e",
+      "path": "reproduce/policy/QIKVRT_STANDPOINT_CODEX_V1.json",
+      "sha256": "3048430991fb1725f1c50ad5e581dcc6d2972cffe3469c41aba68c0c0940047d"
+    },
+    {
+      "bytes": 400,
+      "git_blob_sha1": "4e67350acbde60440210bc16a92840895720b7c3",
+      "path": "reproduce/signatures/GOLDKELCH_SIGNATURE_400_V1.bin",
+      "sha256": "e189368017baf54b2dc17ac777a059ee1ecb209baa59eb7b56c4c1023397fc41"
+    },
+    {
+      "bytes": 400,
+      "git_blob_sha1": "50bfe3642181fc5c2a9793475fcccca1a9a0baa0",
+      "path": "reproduce/signatures/INGOLF_LOHMANN_SIGNATURE_400_V1.bin",
+      "sha256": "891ca697515470ed2b137b0181f515498a6e5cb99b4286df7788c90cce22cf6f"
+    },
+    {
+      "bytes": 2845,
+      "git_blob_sha1": "287b9e0b5d57ab577eb51acd6ef74a56e03c034c",
+      "path": "reproduce/source_binding.json",
+      "sha256": "d7f838ec24575c1e84410aa7a1a0e924d93c6a686ae7846c2f6fc461c6b3770a"
+    },
+    {
+      "bytes": 9042,
+      "git_blob_sha1": "bc778c696867d0eafc370deb85a650ac4e4c0326",
+      "path": "reproduce/spec/QIKVRT_STANDPOINT_CODEX_V1.md",
+      "sha256": "311075cffa0746c1873257809ef82554fde80bee0f4e0d3be1f519b583a4eb0a"
+    },
+    {
+      "bytes": 23554,
+      "git_blob_sha1": "639b48a91fccaf84b10075837c0ac29d04bfae20",
+      "path": "reproduce/src/qikvrt_codec.py",
+      "sha256": "703bb15d75b441f2eccf9d414a3134ff7afa144763dc15241a90067a15c185e5"
+    },
+    {
+      "bytes": 40709,
+      "git_blob_sha1": "ee0e2c2d38f130b98553d0d884edc2b79865fc50",
+      "path": "reproduce/src/qikvrt_effect_ack.py",
+      "sha256": "046e8703d425f97bab5533b187cfd661df99567c61d395f5f61d5df8e2b7c038"
+    },
+    {
+      "bytes": 10549,
+      "git_blob_sha1": "e5ee25be0e1485b6b359f61060276778a1a83644",
+      "path": "reproduce/src/qikvrt_standpoint_codex.py",
+      "sha256": "aedf27f794c3c3092d1bdeddbf4b9e18e6f9d359574af9c3b68a7364cde7a2a2"
+    },
+    {
+      "bytes": 22751,
+      "git_blob_sha1": "795a008b3e1c64abc05e8b7709a617281e94fd40",
+      "path": "reproduce/tests/test_qikvrt_codec.py",
+      "sha256": "3648d34ace11bcb1ddd4913e7a2d31e6406b2daec107eb6e048598cb6cd01822"
+    },
+    {
+      "bytes": 16811,
+      "git_blob_sha1": "20f465f254ba8632bd714e4456a0d0257bf462c2",
+      "path": "reproduce/tests/test_qikvrt_standpoint_codex.py",
+      "sha256": "3a1031e97f0507dc80baf5d5d26c030dfc0501fb7f8e78e5a206be7ebc604b61"
+    },
+    {
+      "bytes": 400,
+      "git_blob_sha1": "4e67350acbde60440210bc16a92840895720b7c3",
+      "path": "signatures/GOLDKELCH_SIGNATURE_400_V1.bin",
+      "sha256": "e189368017baf54b2dc17ac777a059ee1ecb209baa59eb7b56c4c1023397fc41"
+    },
+    {
+      "bytes": 400,
+      "git_blob_sha1": "50bfe3642181fc5c2a9793475fcccca1a9a0baa0",
+      "path": "signatures/INGOLF_LOHMANN_SIGNATURE_400_V1.bin",
+      "sha256": "891ca697515470ed2b137b0181f515498a6e5cb99b4286df7788c90cce22cf6f"
+    },
+    {
+      "bytes": 400,
+      "git_blob_sha1": "9b06a2b407fb99d99d2bda5a3decc80ab68a092b",
+      "path": "signatures/canonical_seed.bin",
+      "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+    },
+    {
+      "bytes": 400,
+      "git_blob_sha1": "4e67350acbde60440210bc16a92840895720b7c3",
+      "path": "signatures/goldkelch-signature-v1/GOLDKELCH_SIGNATURE_400_V1.bin",
+      "sha256": "e189368017baf54b2dc17ac777a059ee1ecb209baa59eb7b56c4c1023397fc41"
+    },
+    {
+      "bytes": 5125,
+      "git_blob_sha1": "4eaf30395b197086b57667a508d1f8d042255ac2",
+      "path": "signatures/goldkelch-signature-v1/build_verify.py",
+      "sha256": "e1448dc46901d6aace646205badbff7ad3a0b5dee364b827e032e9b6eaf567b1"
+    },
+    {
+      "bytes": 400,
+      "git_blob_sha1": "9b06a2b407fb99d99d2bda5a3decc80ab68a092b",
+      "path": "signatures/goldkelch-signature-v1/canonical_seed.bin",
+      "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+    },
+    {
+      "bytes": 400,
+      "git_blob_sha1": "4e67350acbde60440210bc16a92840895720b7c3",
+      "path": "signatures/ingolf-signature-v1/GOLDKELCH_SIGNATURE_400_V1.bin",
+      "sha256": "e189368017baf54b2dc17ac777a059ee1ecb209baa59eb7b56c4c1023397fc41"
+    },
+    {
+      "bytes": 400,
+      "git_blob_sha1": "50bfe3642181fc5c2a9793475fcccca1a9a0baa0",
+      "path": "signatures/ingolf-signature-v1/INGOLF_LOHMANN_SIGNATURE_400_V1.bin",
+      "sha256": "891ca697515470ed2b137b0181f515498a6e5cb99b4286df7788c90cce22cf6f"
+    },
+    {
+      "bytes": 6887,
+      "git_blob_sha1": "9fa0ce0358bf8e86439f33ee6b94a6d93246b8a9",
+      "path": "signatures/ingolf-signature-v1/build_verify.py",
+      "sha256": "39d67f935cd29c3a00af78b92a8f42e4a94a3b754067e0185568d02f7452d23b"
+    },
+    {
+      "bytes": 400,
+      "git_blob_sha1": "9b06a2b407fb99d99d2bda5a3decc80ab68a092b",
+      "path": "signatures/ingolf-signature-v1/canonical_seed.bin",
+      "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+    },
+    {
+      "bytes": 1687,
+      "git_blob_sha1": "d56f0d548e681b470424789258a9334324d3b9f7",
+      "path": "signatures/ingolf-signature-v1/profile.json",
+      "sha256": "f8960b4b9e475e39b825a757bc2d173d0f498e6c7ef8afe00ce425c92ce3473f"
+    }
+  ],
+  "original_fileset_entries_verified": 55,
+  "original_hashlist_entries_verified": 57,
+  "schema": "qikvrt_recovered_original_zip_members_v1"
+}

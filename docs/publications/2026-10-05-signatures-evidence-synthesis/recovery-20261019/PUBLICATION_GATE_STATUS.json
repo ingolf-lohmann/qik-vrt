@@ -1,0 +1,43 @@
+{
+  "artifact_bound_AUTHORIZE_EXACT_UPLOAD_found": false,
+  "candidate_specific_return_receipt_verified": false,
+  "exact_IETF04_submission_authorization_found": false,
+  "final_v2_machine_proof_bundle_present": false,
+  "general_task_authorization_retained": true,
+  "ietf_submitted": false,
+  "main_integrated": false,
+  "mirror_equality_claimed": false,
+  "new_external_publication_mutations": 0,
+  "next_actions": [
+    "Recover or explicitly disposition the missing 2026-10-05 original machine sources without labelling this transcription as their recovery.",
+    "Use tools/qikvrt_zenodo_machine_proof.py and the existing Authority v2 publisher; freeze the complete fileset, exact metadata and proof, return it, then validate a later detached exact-artifact authorization before any external mutation.",
+    "For IETF retain recovered original -04, perform current author review of historical date/references and authorized submission; independently read the actual admitted revision and bytes."
+  ],
+  "original_20261005_PAPER_DE_recovered": false,
+  "original_24_claim_matrix_recovered": true,
+  "original_43_claim_machine_metadata_recovered": false,
+  "original_58_member_zip": {
+    "bytes": 1736349,
+    "git_blob_sha1": "9b9682a7fe7efe6f2daa121140264edf40bb6121",
+    "sha256": "7d3f856c7aaa558895d45ed4b95cfb64a504300d3ac4836aed626616f2d6e7f3"
+  },
+  "original_pdf_unchanged": {
+    "bytes": 238186,
+    "git_blob_sha1": "302046b1347dfac36462f12066fdb0177999b388",
+    "sha256": "c10f65ca2e70db052bf66b250114130bfedd4a5f423e255a5e29a1fc9c7e12ad"
+  },
+  "printed_43_claim_rows_transcribed": true,
+  "public_byte_equal_zenodo_readback_for_this_pdf": false,
+  "publication_id": "qikvrt-signatures-evidence-synthesis-20261005-v2",
+  "schema": "qikvrt_signature_publication_gate_review_v1",
+  "search_scope_limit": "Absence is limited to inspected accessible sources. Goldkelch Mirror search reports repository not found; no global negative authorization claim.",
+  "sources_of_authority_inspected": [
+    "current Owner task permits preparation and conditions external publication",
+    "original-evidence-20261002.zip:OWNER_REQUEST_AND_ASSESSMENTS.txt (task mandate, explicitly not later upload authorization)",
+    "original-evidence-20261002.zip:README.md and evidence/ROUTE_AND_RESUME_STATE.json (final v2 proof/return/exact grant still open)",
+    "PR549 original body and empty review/comment readback",
+    "current Authority state/release/policy/publication sources searched for both publication IDs and the exact hashes"
+  ],
+  "state": "REVIEW_ARCHIVE_PREPARED_PUBLICATION_NOT_AUTHORIZED",
+  "zenodo_record_id_for_this_pdf": null
+}

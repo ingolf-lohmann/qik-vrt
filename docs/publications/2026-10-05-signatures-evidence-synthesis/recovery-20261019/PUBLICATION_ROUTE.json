@@ -1,0 +1,29 @@
+{
+  "authority": "ingolf-lohmann/qik-vrt",
+  "ietf": {
+    "actual_submission_operation_not_established": true,
+    "locked_requirements": "ietf/requirements-xml2rfc-3.34.0.txt",
+    "no_alternate_publisher_or_executor_created": true,
+    "original_input": "ietf/draft-lohmann-qikvrt-effect-ack-04.ORIGINAL.xml",
+    "renderer": "xml2rfc 3.34.0, --v3 --no-network --skip-config-files --warn-bare-unicode"
+  },
+  "license_boundary": {
+    "documentation": "CC-BY-NC-ND-4.0",
+    "existing_grants_unchanged": true,
+    "ietf_original_ipr": "trust200902",
+    "implementation": "PolyForm-Noncommercial-1.0.0"
+  },
+  "schema": "qikvrt_existing_publication_route_recovery_v1",
+  "source_head": "86b059aafcaf6e2c1d08cde84d7a5ec4fdedf722",
+  "zenodo": {
+    "capability": "runtime/capabilities/ZENODO_PUBLICATION_CAPABILITY.json",
+    "current_archive_is_publish_request": false,
+    "editorial_router": "tools/qikvrt_publication_router.py",
+    "exact_authorization_then_global_consumption_ref_required": true,
+    "manifest_schema": "qikvrt_zenodo_publication_manifest_v2",
+    "policy": "policy/zenodo-machine-proof-policy-v2.json",
+    "proof_bundle_must_be_public": true,
+    "proof_gate": "tools/qikvrt_zenodo_machine_proof.py",
+    "publisher": "tools/qikvrt_zenodo_publish.py"
+  }
+}

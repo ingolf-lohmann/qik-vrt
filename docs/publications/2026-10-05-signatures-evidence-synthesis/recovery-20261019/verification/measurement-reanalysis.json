@@ -1,0 +1,83 @@
+{
+  "measured_trials": 56,
+  "warmups": 8,
+  "all_declared_lossless_and_fresh_readback": true,
+  "groups": [
+    {
+      "mode": "strong_fixed_work",
+      "workers": 1,
+      "repeats": 7,
+      "wall_median_ms": 347.480389,
+      "cpu_median_ms": 345.030183,
+      "wall_min_ms": 338.144302,
+      "wall_max_ms": 387.402253
+    },
+    {
+      "mode": "strong_fixed_work",
+      "workers": 2,
+      "repeats": 7,
+      "wall_median_ms": 205.897096,
+      "cpu_median_ms": 355.06079,
+      "wall_min_ms": 196.717168,
+      "wall_max_ms": 233.06903
+    },
+    {
+      "mode": "strong_fixed_work",
+      "workers": 4,
+      "repeats": 7,
+      "wall_median_ms": 133.075264,
+      "cpu_median_ms": 380.576588,
+      "wall_min_ms": 128.597716,
+      "wall_max_ms": 146.099652
+    },
+    {
+      "mode": "strong_fixed_work",
+      "workers": 8,
+      "repeats": 7,
+      "wall_median_ms": 97.760355,
+      "cpu_median_ms": 428.268202,
+      "wall_min_ms": 97.101311,
+      "wall_max_ms": 112.39273
+    },
+    {
+      "mode": "weak_fixed_work_per_worker",
+      "workers": 1,
+      "repeats": 7,
+      "wall_median_ms": 91.610909,
+      "cpu_median_ms": 91.109834,
+      "wall_min_ms": 88.432906,
+      "wall_max_ms": 100.896417
+    },
+    {
+      "mode": "weak_fixed_work_per_worker",
+      "workers": 2,
+      "repeats": 7,
+      "wall_median_ms": 109.351076,
+      "cpu_median_ms": 184.426131,
+      "wall_min_ms": 104.897184,
+      "wall_max_ms": 118.870633
+    },
+    {
+      "mode": "weak_fixed_work_per_worker",
+      "workers": 4,
+      "repeats": 7,
+      "wall_median_ms": 139.398977,
+      "cpu_median_ms": 388.81145,
+      "wall_min_ms": 130.01714,
+      "wall_max_ms": 148.291982
+    },
+    {
+      "mode": "weak_fixed_work_per_worker",
+      "workers": 8,
+      "repeats": 7,
+      "wall_median_ms": 185.933966,
+      "cpu_median_ms": 835.946647,
+      "wall_min_ms": 181.590182,
+      "wall_max_ms": 210.850366
+    }
+  ],
+  "strong_speedup": 3.5544100571238717,
+  "strong_latency_reduction_percent": 71.86593600826203,
+  "aggregated_cpu_increase_percent": 24.1248514191583,
+  "scope": "Recomputed from original 2026-10-02 raw data. No new benchmark run and no AI workload or physical energy measurement."
+}

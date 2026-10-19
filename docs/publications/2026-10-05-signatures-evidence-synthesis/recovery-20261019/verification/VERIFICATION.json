@@ -1,0 +1,23 @@
+{
+  "schema": "qikvrt_signature_archive_recovery_verification_v1",
+  "original_zip_members": 58,
+  "original_hashlist_rows_passed": 57,
+  "original_fileset_bindings_passed": 55,
+  "original_claim_matrix_records": 24,
+  "synthesis_printed_rows_transcribed": 43,
+  "source_files_bound_to_historical_tree": 12,
+  "original_codec_tests_passed": 57,
+  "negative_controls_passed": 4,
+  "independent_original_snapshot_parse_passed": true,
+  "historical_rows_recomputed": 56,
+  "warmups_preserved": 8,
+  "new_benchmark_trials": 0,
+  "signature_generation_reproduced_both_400_bytes": true,
+  "single_symbol_mutation_controls_per_frame": 93840,
+  "original_ietf_xml_unchanged": true,
+  "offline_text_render_exit": 0,
+  "offline_html_render_exit": 0,
+  "xml2rfc_version": "3.34.0",
+  "new_historical_results_invented": false,
+  "production_publication_complete": false
+}

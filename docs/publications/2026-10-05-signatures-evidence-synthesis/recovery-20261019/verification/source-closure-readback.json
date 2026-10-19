@@ -1,0 +1,104 @@
+{
+  "schema": "qikvrt_original_source_closure_readback_v1",
+  "source_head": "6a1098699d096806958b9c3b50a97d205b8110e9",
+  "source_tree": "4740d8901ab8fdc1ab88479832e50f2376e57c5f",
+  "files": [
+    {
+      "path": "src/qikvrt_standpoint_codex.py",
+      "bytes": 10549,
+      "git_blob_sha1": "e5ee25be0e1485b6b359f61060276778a1a83644",
+      "sha256": "aedf27f794c3c3092d1bdeddbf4b9e18e6f9d359574af9c3b68a7364cde7a2a2",
+      "historical_tree_binding": true,
+      "git_readback_equal": true
+    },
+    {
+      "path": "src/qikvrt_effect_ack.py",
+      "bytes": 40709,
+      "git_blob_sha1": "ee0e2c2d38f130b98553d0d884edc2b79865fc50",
+      "sha256": "046e8703d425f97bab5533b187cfd661df99567c61d395f5f61d5df8e2b7c038",
+      "historical_tree_binding": true,
+      "git_readback_equal": true
+    },
+    {
+      "path": "src/qikvrt_codec.py",
+      "bytes": 23554,
+      "git_blob_sha1": "639b48a91fccaf84b10075837c0ac29d04bfae20",
+      "sha256": "703bb15d75b441f2eccf9d414a3134ff7afa144763dc15241a90067a15c185e5",
+      "historical_tree_binding": true,
+      "git_readback_equal": true
+    },
+    {
+      "path": "tests/test_qikvrt_standpoint_codex.py",
+      "bytes": 16811,
+      "git_blob_sha1": "20f465f254ba8632bd714e4456a0d0257bf462c2",
+      "sha256": "3a1031e97f0507dc80baf5d5d26c030dfc0501fb7f8e78e5a206be7ebc604b61",
+      "historical_tree_binding": true,
+      "git_readback_equal": true
+    },
+    {
+      "path": "policy/QIKVRT_STANDPOINT_CODEX_V1.json",
+      "bytes": 8577,
+      "git_blob_sha1": "4dc242937168eedfaced69ecebab6a1cb2c00a4e",
+      "sha256": "3048430991fb1725f1c50ad5e581dcc6d2972cffe3469c41aba68c0c0940047d",
+      "historical_tree_binding": true,
+      "git_readback_equal": true
+    },
+    {
+      "path": "policy/QIKVRT_CODEC_CONTRACT_V1.json",
+      "bytes": 21531,
+      "git_blob_sha1": "88fbbd01c076b02cb733891b3235ad789475bd86",
+      "sha256": "0ccf7c5f9cc6fb85b23ea7d3981901e227b40abedfe1aa0373d0e171e6753f37",
+      "historical_tree_binding": true,
+      "git_readback_equal": true
+    },
+    {
+      "path": "LICENSES/PolyForm-Noncommercial-1.0.0.txt",
+      "bytes": 4563,
+      "git_blob_sha1": "1a71cb64397535482ff19542d1093c0d4a6442d0",
+      "sha256": "ffcca38841adb694b6f380647e15f17c446a4d1656fed51a1e2041d064c94cc8",
+      "historical_tree_binding": true,
+      "git_readback_equal": true
+    },
+    {
+      "path": "AI_CONTEXT.json",
+      "bytes": 14062,
+      "git_blob_sha1": "8c66b1d7ceadeeaa114658d0f5f1f2d0fe9fda55",
+      "sha256": "58075d8d9ef0315ea17b7b00ea04e49954cd2634a56c7a37203d753ce50b64b1",
+      "historical_tree_binding": true,
+      "git_readback_equal": true
+    },
+    {
+      "path": "tests/test_qikvrt_codec.py",
+      "bytes": 22751,
+      "git_blob_sha1": "795a008b3e1c64abc05e8b7709a617281e94fd40",
+      "sha256": "3648d34ace11bcb1ddd4913e7a2d31e6406b2daec107eb6e048598cb6cd01822",
+      "historical_tree_binding": true,
+      "git_readback_equal": true
+    },
+    {
+      "path": "spec/QIKVRT_STANDPOINT_CODEX_V1.md",
+      "bytes": 9042,
+      "git_blob_sha1": "bc778c696867d0eafc370deb85a650ac4e4c0326",
+      "sha256": "311075cffa0746c1873257809ef82554fde80bee0f4e0d3be1f519b583a4eb0a",
+      "historical_tree_binding": true,
+      "git_readback_equal": true
+    },
+    {
+      "path": "docs/CHARTA_MASCHINENPRUEFBARE_WISSENSCHAFT.md",
+      "bytes": 10127,
+      "git_blob_sha1": "d6533d9be451f8ac922ef7c11cbf04900fa3066f",
+      "sha256": "7fb4e5c369b079e93ce409e9ca4f6830476a1b6dbd42543273d85164e111a631",
+      "historical_tree_binding": true,
+      "git_readback_equal": true
+    },
+    {
+      "path": "docs/QIKVRT_CODEC_V1.md",
+      "bytes": 13830,
+      "git_blob_sha1": "bfe0b6b5f1672c483e88e5907c2ce9186362dbe3",
+      "sha256": "060ad764f0418d5ae007e41896de56a115f261b4ca5bf6b787414cb0a41e9798",
+      "historical_tree_binding": true,
+      "git_readback_equal": true
+    }
+  ],
+  "scope": "Exact original package bytes bound to historical Git tree; current Main/runtime acceptance not transferred."
+}

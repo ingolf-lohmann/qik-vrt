@@ -1,0 +1,37 @@
+{
+  "all_artwork_blocks_unchanged_from_public_03": true,
+  "artwork_block_count": 0,
+  "document_date_warning": "Original 2026-10-02 date preserved. No silent date or revision bump.",
+  "ipr": "trust200902",
+  "original_candidate": {
+    "bytes": 57308,
+    "git_blob_sha1": "4b43c9fe04dd021f0c5166a0bcb6f1a951927f02",
+    "sha256": "a6d63859dfca44b19c59d5f6bfb9ed217bcb636cf763ffd3b46c74322c16ec3d"
+  },
+  "original_candidate_date": "2026-10-02",
+  "public_03_readback": {
+    "bytes": 51131,
+    "git_blob_sha1": "8ac8d45be9fab1367629698ef6b1319710c6d2a7",
+    "sha256": "fc9da2859b1d6fc685c4bb796274b06fe87879ae761003b8a78a4bba5e7d720b"
+  },
+  "public_04_readback_status": 404,
+  "public_current_revision_observed": "03",
+  "rendered_files": [
+    {
+      "bytes": 128113,
+      "git_blob_sha1": "69ac04380f5366b65b555bd1f03ac9943d8e70b3",
+      "path": "draft-lohmann-qikvrt-effect-ack-04.html",
+      "sha256": "0a5538e64db3621a96b2189ee96c97d5a5c2590c7e3d58e5220a45f99fd59bbc"
+    },
+    {
+      "bytes": 62499,
+      "git_blob_sha1": "76d958c06e8e736cdfbdfc461182195c6f990062",
+      "path": "draft-lohmann-qikvrt-effect-ack-04.txt",
+      "sha256": "4a7297c3912241d3d7082c507470de3a2619b013d20f3b046a1420ee878336f0"
+    }
+  ],
+  "rendering": "NEW_OFFLINE_DERIVATIVES_XML2RFC_3.34.0_HASH_LOCKED_REQUIREMENTS",
+  "schema": "qikvrt_ietf04_original_recovery_v1",
+  "submission_authorized_for_exact_bytes": false,
+  "submission_performed": false
+}
