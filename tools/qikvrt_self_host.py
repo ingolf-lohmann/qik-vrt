@@ -405,6 +405,97 @@ class MeshWorkCache:
                 "receipt_sha256": value["receipt"]["receipt_sha256"], "sender_receipt_durable": stored is not None,
                 "fresh_challenge_verified": True, "proposal_execution": "NOT_EXECUTED", "effect_ack_done": False}
 
+    def confirm_rule(self, peer, value, *, apply=False, transport=None):
+        """Finite native request/receipt/application/readback; never execute a work batch."""
+        terminal = load_source(ROOT, "qikvrt_effect_ack_http_terminal")
+        eap = load_source(ROOT, "qikvrt_effect_ack")
+        value = terminal.peer_rule_request(value)
+        if (value["sender_node_id"] != self.binding["node_id"] or value["sender_repository"] != self.binding["repository"]
+                or value["peer_node_id"] != peer["node_id"]
+                or any(value["subject"][k] != peer["source_" + k] for k in ("head", "tree"))
+                or type(apply) is not bool):
+            raise ValueError("PEER_RULE_PINNED_REQUEST_REQUIRED")
+        binding = terminal.peer_rule_binding(value)
+        prefix = "/api/mesh-work/rule/"
+        with self.locked():
+            requests = self.state.setdefault("rule_requests", {})
+            key = digest(mesh_wire([value["peer_node_id"], value["request_id"]]))
+            prior = requests.get(key)
+            if prior is not None and prior["request"] != value:
+                raise ValueError("PEER_RULE_SENDER_REQUEST_CONFLICT")
+            if prior is None:
+                if len(requests) >= 128: raise ValueError("PEER_RULE_SENDER_CAPACITY_HOLD")
+                requests[key] = {"request": value, "readback": None, "received_ack": None}
+                self.save()  # The exact request survives an ambiguous POST.
+            request = self.peer_request(peer, transport)
+
+            def readback():
+                challenge = secrets.token_hex(16)
+                status, result, witness = request("GET", prefix + "readback/" + value["request_id"] + "/" + challenge)
+                absent = {"schema": "qikvrt-peer-rule-absent/v1", "request_id": value["request_id"],
+                          "peer_node_id": peer["node_id"], "subject": value["subject"], "challenge": challenge,
+                          "effect_ack_done": False}
+                if status == 200 and result == absent:
+                    old = requests[key]["readback"]
+                    if requests[key].get("received_ack") or old and old["value"]["received"] is not None:
+                        raise ValueError("PEER_RULE_CONFIRMED_RECEIPT_LOST_HOLD")
+                    return {"received": None, "applied": None}
+                expected = {"schema": "qikvrt-peer-rule-readback/v1", **binding, "subject": value["subject"],
+                            "challenge": challenge, "effect_ack_done": False}
+                if (status != 200 or not isinstance(result, dict)
+                        or set(result) != set(expected) | {"received", "applied", "active_binding"}
+                        or any(result.get(k) != v for k, v in expected.items())):
+                    raise ValueError("PEER_RULE_FRESH_AUTHENTICATED_READBACK_REQUIRED")
+                for stage in ("RECEIVED", "APPLIED"):
+                    if result[stage.lower()] is not None:
+                        terminal.verify_peer_rule_receipt(value, result[stage.lower()], stage)
+                previous = requests[key]["readback"]
+                for stage in ("received", "applied"):
+                    if previous and previous["value"][stage] is not None and previous["value"][stage] != result[stage]:
+                        raise ValueError("PEER_RULE_CHANGED_NATIVE_RECEIPT")
+                ack = requests[key].get("received_ack")
+                if ack is not None and ack["receipt"] != result["received"]:
+                    raise ValueError("PEER_RULE_CHANGED_NATIVE_RECEIPT")
+                if result["applied"] is not None:
+                    if (result["received"] is None or result["active_binding"] != binding
+                            or result["received"]["native_event"]["id"].split(":")[0] != result["applied"]["native_event"]["id"].split(":")[0]
+                            or int(result["received"]["native_event"]["id"].split(":")[1]) >= int(result["applied"]["native_event"]["id"].split(":")[1])):
+                        raise ValueError("PEER_RULE_ACTIVE_NATIVE_READBACK_REQUIRED")
+                elif result["active_binding"] is not None:
+                    raise ValueError("PEER_RULE_UNCONFIRMED_ACTIVE_BINDING")
+                requests[key]["readback"] = {"value": result, "authenticated_response": witness}
+                self.save()
+                return result
+
+            # A read is required even on the first call, and before every retry
+            # after lost ACK. An unavailable read never authorizes a new POST.
+            observed = readback()
+            for operation, stage in (("receive", "received"), ("apply", "applied")):
+                if operation == "apply" and not apply: break
+                if observed[stage] is not None: continue
+                status, reply, witness = request("POST", prefix + operation, mesh_wire(value))
+                if status != 200: raise ValueError("PEER_RULE_NATIVE_OPERATION_REFUSED")
+                if operation == "receive":
+                    terminal.verify_peer_rule_receipt(value, reply, "RECEIVED")
+                    requests[key]["received_ack"] = {"receipt": reply, "authenticated_response": witness}; self.save()
+                # Never derive release from the POST result. The new GET has a
+                # new nonce and reads both original SQLite events and activation.
+                observed = readback()
+                if observed[stage] is None: raise ValueError("PEER_RULE_NATIVE_EFFECT_NOT_OBSERVED")
+            done = observed["applied"] is not None
+            evidence = tuple("sha256:" + digest(mesh_wire(observed[k])) for k in ("received", "applied") if observed[k] is not None)
+            decision = eap.effect_ack_sync(eap.EffectAckRequest(
+                protocol_root_id="native-peer-rule:" + value["rule_id"], input_id=value["request_id"],
+                payload=mesh_wire(value), declared_input_hash=binding["request_sha256"], transport_ack=True,
+                origin_checked=True, context_checked=True, semantics_reconstructed=True, effect_anticipated=True,
+                risk_classified=True, risk_level=eap.RiskLevel.LOW, responsibility_assigned=True,
+                responsibility_owner=value["peer_node_id"], policy_allows_release=done,
+                connection_decision=eap.ConnectionDecision.RELEASE if done else eap.ConnectionDecision.CONTINUE,
+                evidence_refs=evidence, required_evidence_refs=evidence,
+                open_questions=() if done else ("Native peer rule application not observed",))).to_dict()
+            return {"scope": terminal.PEER_RULE_SCOPE, "rule_effect": decision, "readback": observed,
+                    "effect_ack_done": False, "all_peer_adoption_verified": False}
+
 
 def mesh_work_transport(url, method, body, headers):
     class NoRedirect(urllib.request.HTTPRedirectHandler):
@@ -2397,6 +2488,12 @@ def native_carrier(package, pin, config, config_path, binding, token):
                 raise native.Hold(str(exc)) from exc
             return self.subject
 
+        def append(self, event):
+            with self.ledger.condition:
+                self.ensure_subject()
+                if hasattr(self, "peer_rules"): self.peer_rules.enforce_event(event)
+                return self.ledger.append(event)
+
     runtime_instance = SealedRuntime()
     ingress = server = None
     try:
@@ -2404,8 +2501,68 @@ def native_carrier(package, pin, config, config_path, binding, token):
         terminal = sys.modules["qikvrt_effect_ack_http_terminal"]
         grants = owner_rest_grants(config, token)
         rest = OwnerREST(runtime_instance, terminal, config["state_dir"])
+        rules = terminal.NativePeerRules(runtime_instance, config["node_id"], config["state_dir"], config.get("mesh_rule_grants", []))
+        runtime_instance.peer_rules = rules
 
         class OwnerHTTP(original_handler):
+            def peer_rule_http(self):
+                """Existing peer HMAC, listener, source fences and native ledger."""
+                self.close_connection = True
+                self.connection.settimeout(5)
+                peer = next((p for p in config.get("mesh_work_peers", [])
+                             if p["node_id"] == self.headers.get("x-qikvrt-mesh-node")), None)
+                if peer is None: return self._hold("MESH_WORK_PEER_NOT_ADMITTED", 403)
+                try:
+                    path = urlsplit(self.path)
+                    if (path.query or path.fragment or self.path != path.path
+                            or any(len(self.headers.get_all(k, [])) != 1 for k in
+                                   ("Host", "x-qikvrt-mesh-node", "x-qikvrt-replication-signature"))
+                            or self.headers["Host"] not in {f"127.0.0.1:{self.server.server_port}", f"localhost:{self.server.server_port}"}
+                            or self.headers.get("Origin") is not None):
+                        raise ValueError("PEER_RULE_EXACT_NATIVE_ROUTE_REQUIRED")
+                    lengths = self.headers.get_all("Content-Length", [])
+                    if (len(lengths) > 1 or self.headers.get("Transfer-Encoding") is not None
+                            or self.command == "POST" and (len(lengths) != 1 or self.headers.get("Content-Type") != "application/json")):
+                        raise ValueError("PEER_RULE_BOUNDED_BODY_REQUIRED")
+                    size = int(lengths[0]) if lengths else 0
+                    if not 0 <= size <= terminal.MAX_NATIVE_EVENT // 2 or self.command == "GET" and size:
+                        raise ValueError("PEER_RULE_BOUNDED_BODY_REQUIRED")
+                    raw = self.rfile.read(size)
+                    if len(raw) != size: raise ValueError("PEER_RULE_COMPLETE_BODY_REQUIRED")
+                    key = Path(peer["secret_file"]); private_path(key)
+                    secret = key.read_bytes().strip()
+                    signature = "sha256=" + hmac.new(secret, self.command.encode() + b"\n" + self.path.encode() + b"\n" + raw, hashlib.sha256).hexdigest()
+                    if not hmac.compare_digest(signature, self.headers["x-qikvrt-replication-signature"]):
+                        return self._hold("MESH_WORK_SIGNATURE_REQUIRED", 401)
+                    prefix = "/api/mesh-work/rule/"
+                    if self.command == "POST" and self.path in (prefix + "receive", prefix + "apply"):
+                        value = json.loads(raw)
+                        if raw != terminal.canonical_json(value): raise ValueError("PEER_RULE_CANONICAL_BYTES_REQUIRED")
+                        result = (rules.receive if self.path.endswith("/receive") else rules.apply)(value, peer)
+                    elif self.command == "GET":
+                        match = re.fullmatch(re.escape(prefix) + r"readback/([A-Za-z0-9_.:-]{1,100})/([a-f0-9]{32})", self.path)
+                        if not match: raise ValueError("PEER_RULE_EXACT_NATIVE_ROUTE_REQUIRED")
+                        key = rules.key({"sender_node_id": peer["node_id"], "request_id": match[1]})
+                        record = rules.read_meta(key, cold=True)
+                        if record is None:
+                            # A pre-admitted exact request is not copied into the
+                            # journal by a GET. Sender must first submit receive.
+                            result = {"schema": "qikvrt-peer-rule-absent/v1", "request_id": match[1],
+                                      "peer_node_id": config["node_id"], "subject": runtime_instance.ensure_subject(),
+                                      "challenge": match[2], "effect_ack_done": False}
+                        else: result = rules.readback(record["request"], peer, match[2])
+                    else: raise ValueError("PEER_RULE_EXACT_NATIVE_ROUTE_REQUIRED")
+                    body = mesh_wire(result)
+                    response_signature = "sha256=" + hmac.new(secret, b"RESPONSE\n" + self.path.encode() + b"\n" + body, hashlib.sha256).hexdigest()
+                    self.send_response(200)
+                    for k, v in {"Content-Type": "application/json", "Content-Length": str(len(body)),
+                                 "Cache-Control": "no-store", "x-qikvrt-replication-signature": response_signature}.items():
+                        self.send_header(k, v)
+                    self.end_headers(); self.wfile.write(body)
+                except (ValueError, KeyError, TypeError, RecursionError) as exc:
+                    self._hold(str(exc) if isinstance(exc, ValueError) else "PEER_RULE_INVALID_REQUEST", 409)
+                except (OSError, sqlite3.Error): self._hold("PEER_RULE_NATIVE_STORE_UNAVAILABLE", 503)
+
             def owner_guard(self, permission):
                 self.close_connection = True
                 self.connection.settimeout(5)
@@ -2432,6 +2589,7 @@ def native_carrier(package, pin, config, config_path, binding, token):
                 return grant
 
             def do_GET(self):
+                if self.path.startswith("/api/mesh-work/rule/"): return self.peer_rule_http()
                 route = urlsplit(self.path)
                 prefix = "/api/owner/receipts/"
                 if not route.path.startswith(prefix): return super().do_GET()
@@ -2449,6 +2607,7 @@ def native_carrier(package, pin, config, config_path, binding, token):
                 except (OSError, sqlite3.Error): self._hold("OWNER_REST_READBACK_UNAVAILABLE", 503)
 
             def do_POST(self):
+                if self.path.startswith("/api/mesh-work/rule/"): return self.peer_rule_http()
                 route = urlsplit(self.path)
                 operation = {"/api/owner/prepare": "prepare", "/api/owner/commit": "commit"}.get(route.path)
                 if operation is None:
@@ -2594,7 +2753,7 @@ def start(package, pin, config_path, monolith=False):
     private_path(config_path)
     raw = config_path.read_bytes()
     config = json.loads(raw)
-    fields = {"schema", "node_id", "source_head", "source_tree", "adapter", "state_dir", "host", "port", "terminal_port", "terminal_token_file", "github_webhook_secret_file", "terminal_profile", "subject_pr", "source_repository", "browser_password_file", "novnc_port", "vnc_port", "display", "migration_export_sha256", "mesh_work_peers", "owner_rest_grants", "unix_ingress", "mesh_file", "mesh_file_allowed_origins"}
+    fields = {"schema", "node_id", "source_head", "source_tree", "adapter", "state_dir", "host", "port", "terminal_port", "terminal_token_file", "github_webhook_secret_file", "terminal_profile", "subject_pr", "source_repository", "browser_password_file", "novnc_port", "vnc_port", "display", "migration_export_sha256", "mesh_work_peers", "mesh_rule_grants", "owner_rest_grants", "unix_ingress", "mesh_file", "mesh_file_allowed_origins"}
     if (set(config) - fields or config.get("schema") != "qikvrt-self-host-config/v1"
             or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,100}", config.get("node_id", ""))
             or config.get("adapter") not in {"none", "github"} or config.get("host") not in {"127.0.0.1", "0.0.0.0"}
@@ -2620,7 +2779,7 @@ def start(package, pin, config_path, monolith=False):
     if profile not in {"reference", "temdd", "firefox"}:
         raise ValueError("UNKNOWN_TERMINAL_PROFILE")
     if (type(config.get("unix_ingress", True)) is not bool
-            or profile == "reference" and (config.get("owner_rest_grants") or config.get("unix_ingress") is False)):
+            or profile == "reference" and (config.get("owner_rest_grants") or config.get("mesh_rule_grants") or config.get("unix_ingress") is False)):
         raise ValueError("NATIVE_OWNER_REST_AND_UNIX_ADAPTER_CONFIGURATION_REQUIRED")
     if profile != "reference" and (type(config.get("subject_pr")) is not int or config["subject_pr"] < 1
             or config.get("source_repository") != manifest["source_repository"]
@@ -3460,7 +3619,7 @@ def firefox_extension_probe(xpi, output, package="firefox-esr"):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("operation", choices=("firefox-amo-unlisted", "firefox-release-provision", "firefox-extension-check", "deployment-roles", "runtime-delivery-verify", "runtime-delivery-load", "docker-admit", "pack", "portable", "portable-restore", "verify", "monolith-pack", "monolith-verify", "monolith-run", "monolith-checkpoint", "monolith-origin-export", "monolith-transport-export", "monolith-transport-import", "mesh-contract", "mesh-cache-stage", "mesh-cache-idle", "mesh-cache-send", "mesh-cache-check", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state", "transfer-local-writer",
+    parser.add_argument("operation", choices=("firefox-amo-unlisted", "firefox-release-provision", "firefox-extension-check", "deployment-roles", "runtime-delivery-verify", "runtime-delivery-load", "docker-admit", "pack", "portable", "portable-restore", "verify", "monolith-pack", "monolith-verify", "monolith-run", "monolith-checkpoint", "monolith-origin-export", "monolith-transport-export", "monolith-transport-import", "mesh-contract", "mesh-cache-stage", "mesh-cache-idle", "mesh-cache-send", "mesh-cache-check", "mesh-rule-confirm", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state", "transfer-local-writer",
         "container-context", "container-carrier", "container-carrier-archive-check", "container-artifact-split", "container-artifact-join", "container-oci-check", "container-smoke", "container-production-gate", "container-deploy", "container-readback",
         "migration-inventory", "migration-verify-source", "migration-export", "migration-verify-export", "migration-import",
         "migration-verify-import", "migration-rollback", "migration-capture-supervisor", "migration-capture-arm", "migration-capture",
@@ -3482,6 +3641,7 @@ def main():
     parser.add_argument("--delivery-sha256", help="independent DELIVERY.json pin")
     parser.add_argument("--config", type=Path)
     parser.add_argument("--mesh-cache", type=Path, help="separate owner-only proposal object cache and durable outbox")
+    parser.add_argument("--apply-rule", action="store_true", help="request only the peer's separately exact-granted native rule activation")
     parser.add_argument("--work-request", type=Path, help="private explicit exportable file/work-unit selection")
     parser.add_argument("--peer", type=Path, help="private peer URL, exact source pins and owner-only key path")
     parser.add_argument("--validation-command", nargs=argparse.REMAINDER, help="explicit finite command; run against the same exact local commit")
@@ -3557,6 +3717,13 @@ def main():
             result = importlib.import_module("tools.qikvrt_self_host_container").execute(args)
         elif args.operation.startswith("provider-"):
             result = provider_module().execute(args)
+        elif args.operation == "mesh-rule-confirm":
+            if not args.mesh_cache or not args.work_request or not args.peer:
+                raise ValueError("PEER_RULE_PRIVATE_REQUEST_AND_PEER_REQUIRED")
+            private_path(args.work_request); private_path(args.peer)
+            work = json.loads(args.work_request.read_bytes())
+            cache = MeshWorkCache(args.mesh_cache, work["sender_repository"], work["sender_node_id"])
+            result = cache.confirm_rule(json.loads(args.peer.read_bytes()), work, apply=args.apply_rule)
         elif args.operation.startswith("mesh-cache-"):
             if not args.mesh_cache or not args.work_request: raise ValueError("MESH_WORK_PRIVATE_REQUEST_REQUIRED")
             private_path(args.work_request)
