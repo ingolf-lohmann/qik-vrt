@@ -630,27 +630,30 @@
     "minimum": "158.0",
     "minimum_lowered": false,
     "native_observation": {
-      "artifact_bytes": 34492,
-      "artifact_id": 12069227748,
-      "artifact_sha256": "32d8031fd963e8f266ddc95dca6c23c8e3f1addf4e47d27ebe325214e8e42155",
-      "causal_input_sha256": "3db359db3d8988e7d706ed2058e7736efc601014d6d09eec5d35aa6b9140387a",
+      "artifact_bytes": 36691,
+      "artifact_digest_provenance": "AUTHENTICATED_GITHUB_RUN_ARTIFACT_METADATA_AND_ORIGINAL_JOB_LOG",
+      "artifact_id": 12184251440,
+      "artifact_sha256": "1bd8e94125fc3c1aeb54dd74e65ec1f414259110414b099aaa0a11b68c7078f2",
+      "causal_input_sha256": "2b7ea8e83246007644bf6fa040adc0f925f1bf682d4355eafc292c768ce0d645",
       "causal_inputs": {
         "extension_blobs": {
-          "background.js": "f177c4471af23a9cf8c9e875c6931887cf92272c",
-          "content.js": "61658f2fd7ceb62b25a13ef8486ba3a7b8a5c563",
-          "manifest.json": "d311100e0cc14da7574f18a625d4e1feeedcbad7",
+          "background.js": "b01d017c510c89b1d72b1fc4d8fea0c6de6fffcb",
+          "client.html": "c65a6cf0a1d7556d3ecbfbb06028131f51d5e847",
+          "content.js": "f715fe15708b139050a237996ac2506560fcc4b3",
+          "manifest.json": "98bb7e70664a2b67bea802922ea280573073023b",
           "options.html": "0b3e36fb7b0fbb3bb187e1def2b940669e98cc81",
           "options.js": "60ef9dc9c8b85b8abe70a23d2f38faccdc7aa8a9",
-          "terminal.css": "817d1e58a80422367cb63d49dbb826428d452ee6"
+          "terminal.css": "afe9236e0edc4fb0df143820927c06400fda48f8"
         },
         "image_digest": "sha256:eda9516930cf7a51f0342e9b154b430c386ad04b80ce6401ce6b7d1a103ac74d",
-        "probe_blob": "f4784754fbe51b61523ea6b366ee0b89941cc3aa",
+        "probe_blob": "3e444f0d15856e492060d9c83f685240c150954c",
         "signed_xpi_artifact": null,
-        "terminal_entrypoint_blob": "031dbdbee810e55df133ec9176b49e036eb3d75c",
+        "terminal_entrypoint_blob": "ba610deae48577bf899b7c59bd6abf74fc92e39b",
         "upgrade_dockerfile_blob": "e4fae384b1a4a5e0cd061cf73d5c3d7f0f29a547"
       },
-      "job_id": 117145726795,
-      "original_zip_download_and_hash_verified": true,
+      "causal_inputs_provenance": "RECOMPUTED_BY_UNMODIFIED_ORIGINAL_CI_ADMISSION_CODE_ON_EXACT_23bc32c9_GIT_OBJECTS; not a byte read of the uploaded causal-inputs.json",
+      "job_id": 118040271296,
+      "original_zip_download_and_hash_verified": false,
       "receipt": {
         "binary_path": "/usr/lib/firefox/firefox",
         "binary_sha256": "a19472941a7cd7252ab5e61b02eb616a50389a784323c21dc6873a23fd700789",
@@ -660,7 +663,7 @@
         "existing_s1_bootstrap_xpi_present": false,
         "extension_activation_verified": false,
         "extension_id": "qikvrt-ai-terminal@goldkelch.local",
-        "extension_version": "1.0.0",
+        "extension_version": "1.1.0",
         "firefox_package": "firefox",
         "firefox_version_output": "[8] Sandbox: CanCreateUserNamespace() clone() failure: EPERM\nMozilla Firefox 158.0",
         "installation_method": "AddonManager.getInstallForFile persistent",
@@ -715,51 +718,57 @@
         "signed_production_package_verified": false,
         "state": "HOLD_EXTENSION_INSTALLATION_OR_ACTIVATION",
         "strict_min_version": "158.0",
-        "xpi_bytes": 9954,
-        "xpi_sha256": "1f5f583181d6134584f98bf6b59848d4542176d624d97709fa915b9934e2c46c"
+        "xpi_bytes": 12096,
+        "xpi_sha256": "2c8c45741d3905a28b39739b9de7c4ff10486082adb275f4506c7e1e0d3079be"
       },
-      "run_id": 38952009446,
-      "runtime_causal_input_sha256": "3db359db3d8988e7d706ed2058e7736efc601014d6d09eec5d35aa6b9140387a",
+      "receipt_provenance": {
+        "job_log_sha256": "0c0d24f6011752c00fc1b6b9f049506fa08a9bcdb82180e614bc27b39457f5c0",
+        "method": "JSON_READ_FROM_ORIGINAL_DECODED_GITHUB_JOB_LOG",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39245832358/job/118040271296"
+      },
+      "run_id": 39245832358,
+      "runtime_causal_input_sha256": "2b7ea8e83246007644bf6fa040adc0f925f1bf682d4355eafc292c768ce0d645",
       "runtime_causal_inputs": {
         "extension_blobs": {
-          "background.js": "f177c4471af23a9cf8c9e875c6931887cf92272c",
-          "content.js": "61658f2fd7ceb62b25a13ef8486ba3a7b8a5c563",
-          "manifest.json": "d311100e0cc14da7574f18a625d4e1feeedcbad7",
+          "background.js": "b01d017c510c89b1d72b1fc4d8fea0c6de6fffcb",
+          "client.html": "c65a6cf0a1d7556d3ecbfbb06028131f51d5e847",
+          "content.js": "f715fe15708b139050a237996ac2506560fcc4b3",
+          "manifest.json": "98bb7e70664a2b67bea802922ea280573073023b",
           "options.html": "0b3e36fb7b0fbb3bb187e1def2b940669e98cc81",
           "options.js": "60ef9dc9c8b85b8abe70a23d2f38faccdc7aa8a9",
-          "terminal.css": "817d1e58a80422367cb63d49dbb826428d452ee6"
+          "terminal.css": "afe9236e0edc4fb0df143820927c06400fda48f8"
         },
         "image_digest": "sha256:eda9516930cf7a51f0342e9b154b430c386ad04b80ce6401ce6b7d1a103ac74d",
-        "probe_runtime_sha256": "b48a15b66d47ef99d441f2291d0564990f4b16fc476a6c3b43fe45ad3e2407b3",
+        "probe_runtime_sha256": "5187dabafa9189a7a5c47f739eda4229c7842cc60062789912f0a06405957fac",
         "signed_xpi_artifact": null,
-        "terminal_entrypoint_blob": "031dbdbee810e55df133ec9176b49e036eb3d75c",
+        "terminal_entrypoint_blob": "ba610deae48577bf899b7c59bd6abf74fc92e39b",
         "upgrade_dockerfile_blob": "e4fae384b1a4a5e0cd061cf73d5c3d7f0f29a547"
       },
-      "source_head": "aba4eee6d2ea8463920bf13812dcd466ec7705e3",
-      "source_tree": "b006136a5d6aa25210715767178860404acd6aa2",
-      "subject_scope": "Actual exact-aba4eee6 Firefox158 CI container; original unsigned Standard XPI installation was rejected. No productive profile or host acceptance.",
+      "source_head": "23bc32c9c651aedea9b4f350f1865d0cb6608c4c",
+      "source_tree": "a7736d593340ef13f03f77cec9d95817ef53a85e",
+      "subject_scope": "Actual exact-23bc32c9 Firefox158 CI container; original seven-file unsigned Standard XPI persistent installation rejected under unchanged default signature enforcement. No productive profile or host acceptance.",
       "xpi_source_binding": {
-        "candidate_head": "aba4eee6d2ea8463920bf13812dcd466ec7705e3",
-        "candidate_tree": "b006136a5d6aa25210715767178860404acd6aa2",
+        "candidate_head": "23bc32c9c651aedea9b4f350f1865d0cb6608c4c",
+        "candidate_tree": "a7736d593340ef13f03f77cec9d95817ef53a85e",
         "effect_ack_done": false,
         "signed_candidate_available": false,
         "signed_production_package": false,
         "signing_blocker": "MOZILLA_SIGNING_BINDING_AND_SIGNED_XPI_UNAVAILABLE",
         "source_files": [
           {
-            "git_blob": "d311100e0cc14da7574f18a625d4e1feeedcbad7",
+            "git_blob": "98bb7e70664a2b67bea802922ea280573073023b",
             "path": "browser/firefox/qikvrt-terminal/manifest.json",
-            "sha256": "abe2708d7e4875be8a2757c9adf40c8968fdabada836d90b9a1fec4dc5799308"
+            "sha256": "2ea9cf069c064b7a52d165f18725affcc73ec0dc72162978ef9242451af1eccd"
           },
           {
-            "git_blob": "f177c4471af23a9cf8c9e875c6931887cf92272c",
+            "git_blob": "b01d017c510c89b1d72b1fc4d8fea0c6de6fffcb",
             "path": "browser/firefox/qikvrt-terminal/background.js",
-            "sha256": "c7747216fd0cf618ef3592d310ff5d1b2adad6d6c5f8339a9f1c2fe14044856b"
+            "sha256": "847ded8d266b58699b0f2fb40037b78119e40275dc9d240cbb7e8d63851d783f"
           },
           {
-            "git_blob": "61658f2fd7ceb62b25a13ef8486ba3a7b8a5c563",
+            "git_blob": "f715fe15708b139050a237996ac2506560fcc4b3",
             "path": "browser/firefox/qikvrt-terminal/content.js",
-            "sha256": "e7a9bb13052036c6445d4f0f3391b03cf54ff73cee6646ba9237eff2e8fb1e07"
+            "sha256": "a7d615a496d0bb34db8ff22758f8df4c3f3f9fdeb576f184224124884f61f077"
           },
           {
             "git_blob": "0b3e36fb7b0fbb3bb187e1def2b940669e98cc81",
@@ -772,13 +781,19 @@
             "sha256": "fc1008b5208bd1605c4a5db8d5359322bbc4783277176177757e174f93cfa92d"
           },
           {
-            "git_blob": "817d1e58a80422367cb63d49dbb826428d452ee6",
+            "git_blob": "afe9236e0edc4fb0df143820927c06400fda48f8",
             "path": "browser/firefox/qikvrt-terminal/terminal.css",
-            "sha256": "53eae4781aeb15135da760c52c5c2a8320f5c3a03e3d85866d500b293de05c87"
+            "sha256": "cd41994713759fc998d164f37a0bca75192fb083fb613767734459d8333c6636"
+          },
+          {
+            "git_blob": "c65a6cf0a1d7556d3ecbfbb06028131f51d5e847",
+            "path": "browser/firefox/qikvrt-terminal/client.html",
+            "sha256": "f1895444f985c1db4e4c3cba4cba64de3237a8ea7266dc930bfc9c4f2876d86b"
           }
         ],
-        "xpi_sha256": "1f5f583181d6134584f98bf6b59848d4542176d624d97709fa915b9934e2c46c"
-      }
+        "xpi_sha256": "2c8c45741d3905a28b39739b9de7c4ff10486082adb275f4506c7e1e0d3079be"
+      },
+      "xpi_source_binding_provenance": "DETERMINISTIC_LOCAL_RECONSTRUCTION_FROM_EXACT_23bc32c9_SOURCE_AND_XPI_HASH_MATCHED_TO_ORIGINAL_JOB_RECEIPT; not byte-read of uploaded binding JSON"
     },
     "native_observation_history": [
       {
@@ -1044,6 +1059,157 @@
         "xpi_source_binding": {
           "candidate_head": "533c8acad6f0f85291a8fd88f0268d7a9bb1e19a",
           "candidate_tree": "b9d622f652ac8f41e8b2de3b9752c8edd3285486",
+          "effect_ack_done": false,
+          "signed_candidate_available": false,
+          "signed_production_package": false,
+          "signing_blocker": "MOZILLA_SIGNING_BINDING_AND_SIGNED_XPI_UNAVAILABLE",
+          "source_files": [
+            {
+              "git_blob": "d311100e0cc14da7574f18a625d4e1feeedcbad7",
+              "path": "browser/firefox/qikvrt-terminal/manifest.json",
+              "sha256": "abe2708d7e4875be8a2757c9adf40c8968fdabada836d90b9a1fec4dc5799308"
+            },
+            {
+              "git_blob": "f177c4471af23a9cf8c9e875c6931887cf92272c",
+              "path": "browser/firefox/qikvrt-terminal/background.js",
+              "sha256": "c7747216fd0cf618ef3592d310ff5d1b2adad6d6c5f8339a9f1c2fe14044856b"
+            },
+            {
+              "git_blob": "61658f2fd7ceb62b25a13ef8486ba3a7b8a5c563",
+              "path": "browser/firefox/qikvrt-terminal/content.js",
+              "sha256": "e7a9bb13052036c6445d4f0f3391b03cf54ff73cee6646ba9237eff2e8fb1e07"
+            },
+            {
+              "git_blob": "0b3e36fb7b0fbb3bb187e1def2b940669e98cc81",
+              "path": "browser/firefox/qikvrt-terminal/options.html",
+              "sha256": "c74e5eefda9bcf0f39518e05aa613981d3367b84de9f13304a798ef1abcfaf2d"
+            },
+            {
+              "git_blob": "60ef9dc9c8b85b8abe70a23d2f38faccdc7aa8a9",
+              "path": "browser/firefox/qikvrt-terminal/options.js",
+              "sha256": "fc1008b5208bd1605c4a5db8d5359322bbc4783277176177757e174f93cfa92d"
+            },
+            {
+              "git_blob": "817d1e58a80422367cb63d49dbb826428d452ee6",
+              "path": "browser/firefox/qikvrt-terminal/terminal.css",
+              "sha256": "53eae4781aeb15135da760c52c5c2a8320f5c3a03e3d85866d500b293de05c87"
+            }
+          ],
+          "xpi_sha256": "1f5f583181d6134584f98bf6b59848d4542176d624d97709fa915b9934e2c46c"
+        }
+      },
+      {
+        "artifact_bytes": 34492,
+        "artifact_id": 12069227748,
+        "artifact_sha256": "32d8031fd963e8f266ddc95dca6c23c8e3f1addf4e47d27ebe325214e8e42155",
+        "causal_input_sha256": "3db359db3d8988e7d706ed2058e7736efc601014d6d09eec5d35aa6b9140387a",
+        "causal_inputs": {
+          "extension_blobs": {
+            "background.js": "f177c4471af23a9cf8c9e875c6931887cf92272c",
+            "content.js": "61658f2fd7ceb62b25a13ef8486ba3a7b8a5c563",
+            "manifest.json": "d311100e0cc14da7574f18a625d4e1feeedcbad7",
+            "options.html": "0b3e36fb7b0fbb3bb187e1def2b940669e98cc81",
+            "options.js": "60ef9dc9c8b85b8abe70a23d2f38faccdc7aa8a9",
+            "terminal.css": "817d1e58a80422367cb63d49dbb826428d452ee6"
+          },
+          "image_digest": "sha256:eda9516930cf7a51f0342e9b154b430c386ad04b80ce6401ce6b7d1a103ac74d",
+          "probe_blob": "f4784754fbe51b61523ea6b366ee0b89941cc3aa",
+          "signed_xpi_artifact": null,
+          "terminal_entrypoint_blob": "031dbdbee810e55df133ec9176b49e036eb3d75c",
+          "upgrade_dockerfile_blob": "e4fae384b1a4a5e0cd061cf73d5c3d7f0f29a547"
+        },
+        "job_id": 117145726795,
+        "original_zip_download_and_hash_verified": true,
+        "receipt": {
+          "binary_path": "/usr/lib/firefox/firefox",
+          "binary_sha256": "a19472941a7cd7252ab5e61b02eb616a50389a784323c21dc6873a23fd700789",
+          "debian_package_version": "158.0~build2",
+          "default_signing_policy_activation_verified": false,
+          "effect_ack_done": false,
+          "existing_s1_bootstrap_xpi_present": false,
+          "extension_activation_verified": false,
+          "extension_id": "qikvrt-ai-terminal@goldkelch.local",
+          "extension_version": "1.0.0",
+          "firefox_package": "firefox",
+          "firefox_version_output": "[8] Sandbox: CanCreateUserNamespace() clone() failure: EPERM\nMozilla Firefox 158.0",
+          "installation_method": "AddonManager.getInstallForFile persistent",
+          "ordinary_release": false,
+          "predecessor_acceptance_transferred": false,
+          "profiles": {
+            "default_signing_policy": [
+              {
+                "accepted": false,
+                "addon": null,
+                "background_registered": false,
+                "browser_version": "158.0",
+                "minimum_satisfied": true,
+                "mozilla_signed": false,
+                "persistent_installation": {
+                  "error": -5,
+                  "event": "rejected_before_install",
+                  "explicit_enable_used": false,
+                  "state": 4,
+                  "temporary_installation_used": false
+                },
+                "phase": "initial_start",
+                "policy_active": false,
+                "profile_xpi_present": false,
+                "profile_xpi_sha256": null,
+                "session_browser_version": "158.0",
+                "signatures_required": true,
+                "temporary_installation_used": false
+              },
+              {
+                "accepted": false,
+                "addon": null,
+                "background_registered": false,
+                "browser_version": "158.0",
+                "minimum_satisfied": true,
+                "mozilla_signed": false,
+                "persistent_installation": null,
+                "phase": "process_restart",
+                "policy_active": false,
+                "profile_xpi_present": false,
+                "profile_xpi_sha256": null,
+                "session_browser_version": "158.0",
+                "signatures_required": true,
+                "temporary_installation_used": false
+              }
+            ]
+          },
+          "public_production_verified": false,
+          "reference_activation_verified": false,
+          "schema": "qikvrt-firefox-extension-installation/v1",
+          "scope": "EXACT_EXISTING_S1_IMAGE_AND_CANDIDATE_XPI_DISPOSABLE_PROFILES",
+          "signed_production_package_verified": false,
+          "state": "HOLD_EXTENSION_INSTALLATION_OR_ACTIVATION",
+          "strict_min_version": "158.0",
+          "xpi_bytes": 9954,
+          "xpi_sha256": "1f5f583181d6134584f98bf6b59848d4542176d624d97709fa915b9934e2c46c"
+        },
+        "run_id": 38952009446,
+        "runtime_causal_input_sha256": "3db359db3d8988e7d706ed2058e7736efc601014d6d09eec5d35aa6b9140387a",
+        "runtime_causal_inputs": {
+          "extension_blobs": {
+            "background.js": "f177c4471af23a9cf8c9e875c6931887cf92272c",
+            "content.js": "61658f2fd7ceb62b25a13ef8486ba3a7b8a5c563",
+            "manifest.json": "d311100e0cc14da7574f18a625d4e1feeedcbad7",
+            "options.html": "0b3e36fb7b0fbb3bb187e1def2b940669e98cc81",
+            "options.js": "60ef9dc9c8b85b8abe70a23d2f38faccdc7aa8a9",
+            "terminal.css": "817d1e58a80422367cb63d49dbb826428d452ee6"
+          },
+          "image_digest": "sha256:eda9516930cf7a51f0342e9b154b430c386ad04b80ce6401ce6b7d1a103ac74d",
+          "probe_runtime_sha256": "b48a15b66d47ef99d441f2291d0564990f4b16fc476a6c3b43fe45ad3e2407b3",
+          "signed_xpi_artifact": null,
+          "terminal_entrypoint_blob": "031dbdbee810e55df133ec9176b49e036eb3d75c",
+          "upgrade_dockerfile_blob": "e4fae384b1a4a5e0cd061cf73d5c3d7f0f29a547"
+        },
+        "source_head": "aba4eee6d2ea8463920bf13812dcd466ec7705e3",
+        "source_tree": "b006136a5d6aa25210715767178860404acd6aa2",
+        "subject_scope": "Actual exact-aba4eee6 Firefox158 CI container; original unsigned Standard XPI installation was rejected. No productive profile or host acceptance.",
+        "xpi_source_binding": {
+          "candidate_head": "aba4eee6d2ea8463920bf13812dcd466ec7705e3",
+          "candidate_tree": "b006136a5d6aa25210715767178860404acd6aa2",
           "effect_ack_done": false,
           "signed_candidate_available": false,
           "signed_production_package": false,

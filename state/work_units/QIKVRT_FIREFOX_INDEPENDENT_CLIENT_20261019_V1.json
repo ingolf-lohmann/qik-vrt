@@ -127,5 +127,19 @@
       "client_timer_created": false,
       "alarms_permission_scope": "FINITE_LEGACY_CLEANUP_ONLY"
     }
+  },
+  "causal_noop_successor_20261019": {
+    "predecessor_head": "23bc32c9c651aedea9b4f350f1865d0cb6608c4c",
+    "native_input_receipt": "98cebeec5d694ef2b166c860d9049e91:9",
+    "human_instruction": "Ich möchte nicht, dass du ständig unterbrichst. Das ist inakzeptabel.",
+    "diagnosis": "Existing original CI observation cache still binds old six-file package and readmits unchanged known-failing current package.",
+    "repair": "Retain actual 23bc32c9 seven-file unsigned XPI failure in existing observation slot; append predecessor unchanged to history; original admission and activation gates remain intact.",
+    "retry_condition": "A materially changed image, seven-file package, runtime probe or valid exact-source signed-XPI binding. Source-only unrelated changes do not repeat unchanged signing failure.",
+    "causal_input_sha256": "2b7ea8e83246007644bf6fa040adc0f925f1bf682d4355eafc292c768ce0d645",
+    "unchanged_product_hold": true,
+    "credentials_or_permissions_expanded": false,
+    "new_workflow_or_executor": false,
+    "productive_effect_verified": false,
+    "effect_ack_done": false
   }
 }

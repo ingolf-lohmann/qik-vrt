@@ -264,6 +264,90 @@ class FirefoxAMOUnlistedTests(unittest.TestCase):
 
 
 class FirefoxExtensionAdmissionTests(unittest.TestCase):
+    def test_original_ci_suppresses_known_failure_and_admits_changed_inputs(self):
+        """Execute the real workflow gates; local fixtures never prove activation."""
+        import textwrap
+        workflow=(ROOT/'.github/workflows/qikvrt_ci.yml').read_text()
+        def original_step(name):
+            section=workflow.split('- name: '+name+'\n',1)[1]
+            return textwrap.dedent(section.split("python3 -B - <<'PY'\n",1)[1]
+                .split('\n          PY',1)[0])
+        admission=original_step('Admit only a materially changed image, XPI or probe')
+        activation=original_step('Enforce actual compatible activation; a diagnostic read is not admission')
+        names=('manifest.json','background.js','content.js','options.html','options.js','terminal.css','client.html')
+        with tempfile.TemporaryDirectory() as directory:
+            base=Path(directory);root=base/'source';root.mkdir()
+            work_path='state/work_units/QIKVRT_MAIN_CONVERGENCE_20261014_V1.json'
+            paths=[*('browser/firefox/qikvrt-terminal/'+name for name in names),
+                'runtime/self-host/Dockerfile','deploy/universal-terminal/entrypoint.sh',
+                'tools/qikvrt_self_host.py',work_path]
+            for relative in paths:
+                target=root/relative;target.parent.mkdir(parents=True,exist_ok=True)
+                shutil.copyfile(ROOT/relative,target)
+            def git(*args):
+                return subprocess.check_output(['git','-C',str(root),*args],
+                    stderr=subprocess.DEVNULL,text=True).strip()
+            def commit(message):
+                git('add','.')
+                git('-c','user.name=Local fixture','-c','user.email=fixture@example.invalid',
+                    'commit','--allow-empty','-m',message)
+                return git('rev-parse','HEAD')
+            git('init');parent=commit('local original-input fixture')
+            work=json.loads((root/work_path).read_bytes())
+            work['oci_publication_merge_20261014']['candidate_subject']['first_parent']=parent
+            (root/work_path).write_text(json.dumps(work))
+            commit('bind retained fixture parent')
+            def run(code,label,signed=''):
+                temp=base/label;temp.mkdir()
+                environment={**os.environ,'RUNNER_TEMP':str(temp),
+                    'GITHUB_OUTPUT':str(temp/'outputs.txt'),'AMO_SIGNED_BINDING':signed}
+                result=subprocess.run([sys.executable,'-B','-c',code],cwd=root,
+                    env=environment,text=True,capture_output=True)
+                return result,temp
+            result,temp=run(admission,'unchanged')
+            self.assertEqual(result.returncode,0,result.stderr)
+            evidence=temp/'s1-extension-evidence'
+            causal=json.loads((evidence/'causal-inputs.json').read_bytes())
+            self.assertFalse(causal['current_probe_required'])
+            reused=json.loads((evidence/'extension-installation.json').read_bytes())
+            self.assertFalse(reused['current_probe_executed'])
+            self.assertEqual(reused['reused_failure_source_head'],
+                work['firefox158_s1_upgrade']['native_observation']['source_head'])
+            self.assertFalse(reused['effect_ack_done'])
+            environment={**os.environ,'RUNNER_TEMP':str(temp)}
+            refused=subprocess.run([sys.executable,'-B','-c',activation],cwd=root,
+                env=environment,text=True,capture_output=True)
+            self.assertNotEqual(refused.returncode,0)
+            self.assertIn('unchanged failed installation remains unaccepted',refused.stderr)
+            (root/'unrelated.txt').write_text('source-only fixture change')
+            commit('unrelated change must not retry signing failure')
+            result,temp=run(admission,'unrelated')
+            self.assertEqual(result.returncode,0,result.stderr)
+            self.assertFalse(json.loads((temp/'s1-extension-evidence/causal-inputs.json')
+                .read_bytes())['current_probe_required'])
+            signed={'repository':'ingolf-lohmann/qik-vrt','run_id':1,
+                'artifact_name':'test-only-signed-fixture','file_name':'fixture.xpi',
+                'xpi_sha256':'1'*64}
+            result,temp=run(admission,'signed',json.dumps(signed))
+            self.assertEqual(result.returncode,0,result.stderr)
+            self.assertTrue(json.loads((temp/'s1-extension-evidence/causal-inputs.json')
+                .read_bytes())['current_probe_required'])
+            for label,path,extra in (
+                    ('xpi','browser/firefox/qikvrt-terminal/background.js','\n// fixture change\n'),
+                    ('probe','tools/qikvrt_self_host.py','\nADMISSION_FIXTURE_CHANGE = True\n'),
+                    ('image','runtime/self-host/Dockerfile','\n# fixture recipe change\n')):
+                original=(root/path).read_bytes()
+                changed=(original.replace(b'AS s1-firefox-release\n',
+                    b'AS s1-firefox-release\nENV QIKVRT_ADMISSION_FIXTURE=1\n',1)
+                    if label=='image' else original+extra.encode())
+                self.assertNotEqual(changed,original)
+                (root/path).write_bytes(changed);commit(label+' changed fixture')
+                result,temp=run(admission,label)
+                self.assertEqual(result.returncode,0,result.stderr)
+                self.assertTrue(json.loads((temp/'s1-extension-evidence/causal-inputs.json')
+                    .read_bytes())['current_probe_required'])
+                (root/path).write_bytes(original);commit(label+' restored fixture')
+
     def accepted(self):
         return {"minimum_satisfied": True, "policy_active": True,
             "background_registered": True, "temporary_installation_used": False,
