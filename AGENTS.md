@@ -5,6 +5,22 @@ Copyright (c) 2026 Ingolf Lohmann.
 
 # Repository agent protocol
 
+NATIVE TERMINAL / TRANSPUTER USE — ALL SESSIONS — OWNER 2026-10-19
+
+Apply `policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json#/client_continuation/native_session_use`
+in every current and future session, including Authority, Mirror and Mesh clients.
+Actually use the existing Universal Terminal and Universal Transputer: load the
+exact predecessor, bind source/task/principal/writer, accept bounded input,
+execute admitted work and persist native events, independently read back those
+events through the Terminal, then continue the next executable successor
+synchronously in the same work ring. Do not wait for a client timer or another
+Owner prompt. Retain original event bytes, identities, grants and open duties.
+An admitted original in-process API is valid; do not mock unavailable sockets,
+reset copied state or weaken writer admission. Keep unfenced original copies
+read-only. Verify actual peer request/ACK/reply; proposal ingress is not execution.
+A saved rule, a fixture or a source commit does not prove another client's
+adoption or a running productive consumer. Preserve exact evidence boundaries.
+
 These rules apply repository-wide to humans, agents, workflows, and tools that
 collect or use adaptive evidence.
 

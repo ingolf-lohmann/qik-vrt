@@ -223,6 +223,39 @@
         "semantic_or_epistemic_promotion": false,
         "predecessor_pass_transfer": false
       }
+    },
+    "native_session_use": {
+      "owner": "Ingolf Lohmann",
+      "instruction_local": "2026-10-19T10:56:49+03:00",
+      "scope": [
+        "ALL_CURRENT_SESSIONS",
+        "ALL_FUTURE_SESSIONS",
+        "AUTHORITY",
+        "MIRROR",
+        "MESH_CLIENT"
+      ],
+      "components": {
+        "terminal": "src/qikvrt_effect_ack_http_terminal.py",
+        "transputer": "src/qikvrt_temdd_event_ledger.py"
+      },
+      "required_sequence": [
+        "LOAD_EXACT_PREDECESSOR",
+        "BIND_ACTUAL_SOURCE_TASK_IDENTITY_AND_WRITER",
+        "TERMINAL_BOUNDED_INPUT",
+        "ADMITTED_NATIVE_EXECUTION_AND_EVENT_WRITE",
+        "INDEPENDENT_TERMINAL_READBACK",
+        "CONTINUE_SYNCHRONOUSLY"
+      ],
+      "retain_original_journals_and_open_work": true,
+      "require_actual_native_event_ids_and_digests": true,
+      "copied_or_unfenced_originals": "READ_ONLY_UNTIL_EXISTING_ADMISSION_SUCCEEDS",
+      "admitted_in_process_api_is_valid": true,
+      "unavailable_socket_is_not_permission_to_mock_or_weaken_admission": true,
+      "client_timer_as_continuation": false,
+      "request_same_owner_authorization_again": false,
+      "peer_request_and_reply_must_be_actually_verified": true,
+      "proposal_ingress_is_execution": false,
+      "source_rule_presence_is_client_adoption_or_runtime_acceptance": false
     }
   },
   "continuation_semantics": {
