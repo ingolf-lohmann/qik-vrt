@@ -273,7 +273,26 @@
         "proposal_receipt_is_execution": false,
         "public_peer_secret_permitted": false,
         "client_timer_as_continuation": false,
-        "saved_rule_is_verified_node_adoption": false
+        "saved_rule_is_verified_node_adoption": false,
+        "owner_confirmation_instruction_local": "2026-10-19T12:00:52+03:00",
+        "implementation_means": [
+          "QIK-VRT",
+          "Effect Acknowledgement Protocol"
+        ],
+        "owner_as_packet_relay": "FORBIDDEN_AS_OPERATIONAL_CONTINUATION",
+        "automatic_peer_request_ack_application_reply_required": true,
+        "peer_ack_must_bind": [
+          "exact_request_id",
+          "canonical_request_sha256",
+          "rule_sha256",
+          "authenticated_peer_identity",
+          "native_event_id",
+          "native_event_digest",
+          "applied_rule_readback"
+        ],
+        "archived_peer_declaration_is_current_request_ack": false,
+        "repair_missing_channel_through_existing_authorized_qikvrt_path": true,
+        "require_actual_per_node_acceptance_before_adoption_claim": true
       }
     }
   },

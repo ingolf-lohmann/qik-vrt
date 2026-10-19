@@ -301,6 +301,17 @@ Authority, otherwise the record stays `EFFECT_NACK` or `HOLD`. A missing receive
 peer admission or write identity is recorded as `HOLD` with its carrier and is not
 replaced by another service. Client timers are not a continuation mechanism.
 
+## Native peer confirmation without Principal relay
+
+Owner clarification2026-10-19T12:00:52+03:00: ALL connected and future nodes
+must solve and report through QIK-VRT and EFFECT_ACK. The Principal is not a
+packet relay. Obtain each actual peer's authenticated request/ACK/application
+reply, bound to the exact request, original message/rule hashes and native
+identity/event/digest. A historical declaration or mailbox write is not that
+reply. Repair missing channels through the existing authorized native path;
+keep unresolved nodes OPEN and do not ask the Owner to move files or renew
+existing authorization. Do not infer all-node conformance from source presence.
+
 ## Every-node universal bus
 
 Every current or future repository node, including Authority and Mirror, MUST
