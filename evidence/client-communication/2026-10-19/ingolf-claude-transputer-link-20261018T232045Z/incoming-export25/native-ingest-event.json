@@ -1,0 +1,55 @@
+{
+  "schema": "qikvrt_temdd_native_event_v1",
+  "kind": "READBACK",
+  "subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pr": 535,
+    "head": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+    "tree": "bff8937d871fb9e989d2bfbf17a210222a987893"
+  },
+  "provenance": {
+    "source": "transputer",
+    "native_event_id": "owner:claude-outgoing-20261019:verified-export-25"
+  },
+  "observed_at": "2026-10-19T08:34:04.254230Z",
+  "message": "Original peer export25 and signed reply2 verified; native immutable prefix preserved",
+  "payload": {
+    "terminal_input": {
+      "schema": "qikvrt_terminal_input_v1",
+      "text": "Ingolf Lohmann supplies original Claude outgoing export779295d5, requires verified ingestion and existing Authority receiver/peer commissioning; preserve original journals and no client timers."
+    },
+    "verification": {
+      "schema": "qikvrt-owner-carried-peer-export-verification/v1",
+      "archive_sha256": "779295d566ec0f80047d88cbf6d515d1542a1244cd1b01944dbe6d33057d555e",
+      "epoch": "b184cf99f8f74f6bb2820416511562dc",
+      "events": 25,
+      "previous_prefix_events": 4,
+      "previous_prefix_identical": true,
+      "all_manifest_files_exact": true,
+      "base64_snapshot_equal": true,
+      "sqlite_integrity": "ok",
+      "original_native_ledger_and_terminal_independent_readback": true,
+      "all_event_digests_recomputed": true,
+      "original_database_unchanged": true,
+      "last_id": "b184cf99f8f74f6bb2820416511562dc:25",
+      "last_body_digest": "75cb5d0db77a5b9b5b8b7cc98508ef9dbd8442eda2441a3e90063dace3a8cf5e",
+      "manifest_ed25519_signature_valid": true,
+      "reply2_signature_valid": true,
+      "reply2_payload_sha256": "6b5c7a6e83f93f29b06af366dbae80532f5cd26952888196cfbcce40a4c01d1d",
+      "request_id": "ingolf-claude-transputer-link-20261018T232045Z",
+      "request_digest_matches": true,
+      "key_sha256": "e592c06fd37e1397391dc9282a265d9f041fd47335cc06d1dedea13656ee0c60",
+      "trusted_key_anchor": null,
+      "transport": "OWNER_CARRIED_ORIGINAL_EXPORT",
+      "live_peer_authenticated_channel_established": false,
+      "mesh_acceptance": false,
+      "effect_ack_done": false,
+      "batch_id": "ac1db7a442606f8784a62f92308f40b1a6fbf44b7f6e8ca7d56e9145c21b9429"
+    },
+    "current_authority_head": "f5aaff5b8c018fbc73d1e81126c6fb7e30e8bf22",
+    "current_authority_tree": "af5264a31622064f34c8deaef66c44768c657d67",
+    "source_work_unit": "QIKVRT_MESH_WORK_COMMISSIONING_20261019_V1",
+    "live_receiver_started": false,
+    "peer_admitted": false
+  }
+}
