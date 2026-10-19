@@ -5,6 +5,40 @@ Copyright (c) 2026 Ingolf Lohmann.
 
 # Repository agent protocol
 
+MANDATORY MIRROR OUTBOX — OWNER 2026-10-19
+
+Read and apply `docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md#mandatory-mirror-outbox-and-delivery-evidence-owner-2026-10-19`
+and `policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json#/client_continuation/native_session_use/mirror_outbox`
+in every session, reconnect and handoff. Every EFFECT_ACK assessment uses only
+the original `node-tools/qikvrt_mirror_emit.py` assess/adopt path, own admitted
+native EFFECT and NOT_SENT outbox record; package unsent records in the same ring.
+Only actual transfer permits sent; only found named-node ingress permits receipt;
+only the original `claim --record <hash> --node <node>` permits a node-specific
+arrival or receiver-NACK claim. Missing send evidence is a sender gap.
+Recover a missing original tool through existing admitted sources and retain its
+named carrier/binding as HOLD. Do not invent a replacement or infer peer adoption.
+Open other nodes' original journals only with mode=ro&immutable=1.
+Keep the Principal out of the operating bus; retain every unreachable member.
+Rule/source saving, tests and package signatures prove no native application or delivery.
+Optimization is admitted only after the freshly complete Authority backlog is
+actually merged into Main and no open issues remain; see client_continuation.optimization_backlog_gate.
+
+NATIVE TERMINAL / TRANSPUTER USE — ALL SESSIONS — OWNER 2026-10-19
+
+Apply `policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json#/client_continuation/native_session_use`
+in every current and future session, including Authority, Mirror and Mesh clients.
+Actually use the existing Universal Terminal and Universal Transputer: load the
+exact predecessor, bind source/task/principal/writer, accept bounded input,
+execute admitted work and persist native events, independently read back those
+events through the Terminal, then continue the next executable successor
+synchronously in the same work ring. Do not wait for a client timer or another
+Owner prompt. Retain original event bytes, identities, grants and open duties.
+An admitted original in-process API is valid; do not mock unavailable sockets,
+reset copied state or weaken writer admission. Keep unfenced original copies
+read-only. Verify actual peer request/ACK/reply; proposal ingress is not execution.
+A saved rule, a fixture or a source commit does not prove another client's
+adoption or a running productive consumer. Preserve exact evidence boundaries.
+
 These rules apply repository-wide to humans, agents, workflows, and tools that
 collect or use adaptive evidence.
 
@@ -270,6 +304,31 @@ remains an immutable historical contract.
 The explicit v3 route binds policy/zenodo-machine-proof-policy-v3.json without
 rewriting or weakening either historical contract; its REVIEW_REQUIRED proposal
 does not itself authorize a production mutation.
+
+## Mirror solutions and reports use QIK-VRT means only
+
+Owner instruction, Ingolf Lohmann, 2026-10-19 11:47/11:48 Europe/Istanbul: a Mirror
+solves and reports problems only with QIK-VRT and EFFECT_ACK means, permanently.
+Record findings as Universal Transputer events with an explicit carrier binding,
+submit bounded input through the Universal Terminal and read it back independently.
+Report to the Authority only through the mesh-work batch path (`mesh-cache-stage`,
+`mesh-cache-idle`, `mesh-cache-send`, `mesh-cache-check`) or a signed read-only
+journal export with `EXPORT_MANIFEST.json`. Evaluate every report with
+`src/qikvrt_effect_ack.py`; arrival and effect count only after readback in the
+Authority, otherwise the record stays `EFFECT_NACK` or `HOLD`. A missing receiver,
+peer admission or write identity is recorded as `HOLD` with its carrier and is not
+replaced by another service. Client timers are not a continuation mechanism.
+
+## Native peer confirmation without Principal relay
+
+Owner clarification2026-10-19T12:00:52+03:00: ALL connected and future nodes
+must solve and report through QIK-VRT and EFFECT_ACK. The Principal is not a
+packet relay. Obtain each actual peer's authenticated request/ACK/application
+reply, bound to the exact request, original message/rule hashes and native
+identity/event/digest. A historical declaration or mailbox write is not that
+reply. Repair missing channels through the existing authorized native path;
+keep unresolved nodes OPEN and do not ask the Owner to move files or renew
+existing authorization. Do not infer all-node conformance from source presence.
 
 ## Every-node universal bus
 
