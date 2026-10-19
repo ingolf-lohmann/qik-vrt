@@ -679,6 +679,82 @@ class ArtifactTransportControls(unittest.TestCase):
         workflow = (Path(__file__).resolve().parents[1] / '.github/workflows/qikvrt_ci.yml').read_text()
         return textwrap.dedent(workflow.split("<<'" + marker + "'\n", 1)[1].split('\n          ' + marker, 1)[0])
 
+    def exact_part_download(self, count, variant='same'):
+        """Execute the real workflow with ZIP bytes and a by-ID-only provider fixture."""
+        import zipfile
+        self.archive.write_bytes(bytes(range(count * 8 - 1)))
+        pin = c.sha(self.archive.read_bytes())
+        split = c.artifact_split(self.archive, self.parts, pin, part_bytes=8)
+        manifest, _ = self.manifest()
+        metadata = self.root / 's1-firefox158-transport'; metadata.mkdir()
+        (metadata / 'PARTS.json').write_bytes((self.parts / 'PARTS.json').read_bytes())
+        archives = {}; records = {}; env = {'RUNNER_TEMP': str(self.root),
+            'GITHUB_TOKEN': 'fixture-only', 'GITHUB_REPOSITORY': c.REPOSITORY,
+            'GITHUB_RUN_ID': '77', 'PART_COUNT': str(count),
+            'MANIFEST_SHA256': split['parts_manifest_sha256']}
+        for part in manifest['parts']:
+            index = part['index']; data = io.BytesIO()
+            with zipfile.ZipFile(data, 'w') as zipped:
+                zipped.writestr('../escape' if variant == 'zip-path' and index == count-1 else part['name'],
+                                (self.parts / part['name']).read_bytes())
+            raw = data.getvalue(); identity = 100 + index; digest = c.sha(raw)
+            env['PART%d_ID' % index] = str(identity)
+            env['PART%d_DIGEST' % index] = digest
+            archives[identity] = raw
+            records[identity] = {'id': identity, 'expired': False,
+                'name': 'qikvrt-s1-firefox158-runtime-' + HEAD + '-part-%03d' % index,
+                'size_in_bytes': len(raw), 'digest': 'sha256:' + digest,
+                'workflow_run': {'id': 77, 'head_sha': HEAD}}
+        last = records[100 + count - 1]
+        if variant == 'missing-id': env['PART%d_ID' % (count-1)] = ''
+        if variant == 'wrong-id': last['id'] += 10
+        if variant == 'wrong-run': last['workflow_run']['id'] += 1
+        if variant == 'wrong-head': last['workflow_run']['head_sha'] = 'c' * 40
+        if variant == 'wrong-digest': last['digest'] = 'sha256:' + '0' * 64
+        if variant == 'corrupt-zip': archives[100+count-1] += b'altered'
+        if variant == 'manifest-pin': env['MANIFEST_SHA256'] = '0' * 64
+        requests = []; downloads = []
+        def get_by_id(url, token):
+            prefix = 'https://api.github.com/repos/' + c.REPOSITORY + '/actions/artifacts/'
+            self.assertTrue(url.startswith(prefix)); suffix = url[len(prefix):]
+            self.assertTrue(suffix.isdigit(), 'Collection listing must not select returned upload IDs')
+            requests.append(int(suffix))
+            return json.dumps(records[int(suffix)]).encode()
+        def download(expected, output):
+            downloads.append(expected['artifact_id'])
+            self.assertEqual(expected['run_id'], 77)
+            self.assertEqual(expected['source_head'], HEAD)
+            Path(output).write_bytes(archives[expected['artifact_id']])
+        with patch.dict(os.environ, env), patch.object(c, 'get', side_effect=get_by_id), \
+                patch.object(c, 'carrier_download', side_effect=download), \
+                patch.object(subprocess, 'check_output', return_value=HEAD):
+            exec(self.workflow_code('PYDOWNLOADPARTS'), {})
+        restored = self.root / 'restored.tar.gz'
+        delivered = self.root / 's1-firefox158-delivered'
+        (delivered / 'PARTS.json').write_bytes((self.parts / 'PARTS.json').read_bytes())
+        c.artifact_join(delivered, restored, split['parts_manifest_sha256'], pin)
+        self.assertEqual(restored.read_bytes(), self.archive.read_bytes())
+        self.assertEqual(requests, list(range(100, 100 + count)))
+        self.assertEqual(downloads, requests)
+
+    def test_workflow_restores_all_returned_parts_without_collection_listing(self):
+        # The observed failure had three uploaded parts but a listing containing only two.
+        # All 1..4 exact returned IDs must be fetched and original bytes reassembled.
+        for count in range(1, 5):
+            with self.subTest(count=count):
+                self.setUp()
+                self.exact_part_download(count)
+
+    def test_workflow_rejects_missing_or_misbound_returned_parts_and_altered_zip(self):
+        for variant in ('missing-id', 'wrong-id', 'wrong-run', 'wrong-head',
+                        'wrong-digest', 'corrupt-zip', 'zip-path', 'manifest-pin'):
+            with self.subTest(variant=variant):
+                self.setUp()
+                with self.assertRaises(AssertionError):
+                    self.exact_part_download(3, variant)
+                self.assertFalse((self.root / 'restored.tar.gz').exists())
+                self.assertFalse((self.root / 'escape').exists())
+
     def test_workflow_cache_reuses_exact_delivery_and_invalidates_only_changed_inputs(self):
         for variant in ('same', 'no-cache', 'new-image', 'new-helper', 'no-runtime-reuse', 'unverified', 'bad-id'):
             with self.subTest(variant=variant), tempfile.TemporaryDirectory() as temporary:

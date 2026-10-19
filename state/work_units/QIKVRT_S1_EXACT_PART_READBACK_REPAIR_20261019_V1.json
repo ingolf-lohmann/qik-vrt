@@ -1,0 +1,52 @@
+{
+  "schema": "qikvrt-s1-artifact-part-readback-repair/v1",
+  "human_principal": "Ingolf Lohmann",
+  "machine_contribution": "OpenAI Codex: observed source diagnosis, bounded workflow repair and regression verification",
+  "source_subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "392dd86fdf147c04dad3bb89d1a4a8438b5f0a97",
+    "tree": "ea21882417b1558e4c0ef52000ed5a88ed496d13",
+    "pr": 544
+  },
+  "failed_job": {
+    "run_id": 39251090719,
+    "job_id": 118057818127,
+    "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39251090719/job/118057818127",
+    "evidence": [
+      "2026-10-19T12:28:37.6518026Z Artifact qikvrt-s1-firefox158-runtime-392dd86fdf147c04dad3bb89d1a4a8438b5f0a97-part-002 successfully finalized. Artifact ID 12185703447",
+      "2026-10-19T12:28:37.6519408Z Artifact qikvrt-s1-firefox158-runtime-392dd86fdf147c04dad3bb89d1a4a8438b5f0a97-part-002 has been successfully uploaded! Final size is 35907599 bytes. Artifact ID is 12185703447",
+      "2026-10-19T12:28:37.8787586Z Found 7 artifact(s)",
+      "2026-10-19T12:28:41.3037661Z Total of 2 artifact(s) downloaded",
+      "2026-10-19T12:28:42.2285198Z {\"cause\": \"[Errno 2] No such file or directory: '/home/runner/work/_temp/s1-firefox158-delivered/artifact.part-002'\", \"effect_ack_done\": false, \"state\": \"HOLD\"}"
+    ]
+  },
+  "verified_failure": "The upload outputs identify three parts, including artifact 12185703447 for part-002. The succeeding collection/pattern download selected only part-000 and part-001 and exited successfully; reassembly failed on missing artifact.part-002.",
+  "cause_scope": "The workflow used collection discovery as completeness evidence instead of requiring every returned upload ID. Why that collection omitted the third artifact is not independently established.",
+  "primary_action_source": {
+    "repository": "actions/download-artifact",
+    "commit": "9000827ccba6bdab643e8b6fd33ac0654aef8333",
+    "path": "src/download-artifact.ts",
+    "blob": "0e89600357dee2ea1e44bbd163ef489aadeef5ce",
+    "finding": "Both pattern and artifact-ids selection use listArtifacts; ID selection alone can warn about missing IDs without failing."
+  },
+  "repair": "Reuse existing qikvrt_self_host_container.get and carrier_download for direct metadata and ZIP reads for every returned ID, preserving source/run/name/size/ZIP digest/part digest checks and the original artifact_join. No listing-based selection or retry loop.",
+  "tests": {
+    "cases": "1,2,3,4 parts restored byte exactly; missing IDs, wrong IDs/run/source/digests, altered ZIP/path and wrong manifest pins rejected.",
+    "fixture_scope": "Unit provider fixtures and exact original workflow Python; no live native browser or production-host acceptance.",
+    "artifact_transport_test_methods_passed": 12,
+    "container_test_methods_passed": 44,
+    "full_make_test": "PASS on this candidate code after restoring the original shallow source boundary; no runtime source guard was bypassed.",
+    "full_make_test_python_executions": 1665,
+    "full_make_test_groups": 34,
+    "full_make_test_log_sha256": "137168dd34478c408b7425b8bb39f4049e371802cef6bf384cb6d37aa53f1fa4",
+    "source_recovery_finalizer_tests_passed": 8
+  },
+  "open_obligations": [
+    "Remote exact-source CI acceptance",
+    "Main integration under current governance",
+    "Actual Firefox activation and domain delivery",
+    "Original mirror outbox implementation and authenticated peer channel"
+  ],
+  "new_effect_ack_assessment_created": false,
+  "effect_ack_done": false
+}
