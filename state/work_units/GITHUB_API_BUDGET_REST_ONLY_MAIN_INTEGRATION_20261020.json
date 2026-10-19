@@ -1,0 +1,71 @@
+{
+  "schema": "qikvrt_ai_work_unit_provenance_v1",
+  "work_unit_id": "GITHUB_API_BUDGET_REST_ONLY_MAIN_INTEGRATION_20261020",
+  "created_at": "2026-10-19T22:49:12.947404+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_commit": "b226770c064a167ee3a9cc70996f05db1b3bc6d1",
+  "source_tree": "4200dfe141fc30557f0e0d9abb5eec4176f9df25",
+  "predecessor_pr": 417,
+  "predecessor_head": "27e75695757338c60e634ed9ebd36c325f020c74",
+  "human_actor": {
+    "attribution_id": "Ingolf Lohmann",
+    "role": "Principal, Product Owner and Code Owner"
+  },
+  "human_contributions": [
+    "Existing GitHub API budget boundary",
+    "Later binding REST-only correction and current completion instruction"
+  ],
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "session_or_run_id": "01cd72b97179"
+  },
+  "artificial_cognitive_contributions": [
+    "Port the existing API-budget documents to current Main",
+    "Resolve their GraphQL recommendation against the later binding REST-only policy while retaining original PR history"
+  ],
+  "original_source_blobs": [
+    {
+      "path": "docs/QIKVRT_GITHUB_API_BUDGET_V1.md",
+      "git_blob_sha1": "b07e214ada8a6ea73a67938f57980b9bc980eb5d",
+      "sha256": "9254aa01012c3a3731e5e1ce65c4f02c57682047c085e077ce9d9daae58f9806"
+    },
+    {
+      "path": "policy/QIKVRT_GITHUB_API_BUDGET_V1.json",
+      "git_blob_sha1": "6a7cf1bf0ae84cf9404e196f5d9d9aa3a27aadfa",
+      "sha256": "37c498454997ca067a5a141f5abffb3f2398ce2d8d002a096838edf519a5bf1e"
+    }
+  ],
+  "observed_conflict": "The old unmerged candidate recommended GraphQL consolidation; current Main client_continuation.github_route is REST_API_ONLY. No GraphQL call was made.",
+  "repair": {
+    "existing_pr_updated_in_place": true,
+    "new_proxy_pr": false,
+    "existing_quota_truth_laws_preserved": true,
+    "recovery_route": "REST_API_ONLY",
+    "new_credentials_or_permissions": false,
+    "source_changes_are_policy_only": true
+  },
+  "outputs": [
+    {
+      "path": "docs/QIKVRT_GITHUB_API_BUDGET_V1.md",
+      "bytes": 1256,
+      "sha256": "a1a4672da05fa8a3cecef2193fe6837319e9dfac4e142c4c296035b31bd700ed"
+    },
+    {
+      "path": "policy/QIKVRT_GITHUB_API_BUDGET_V1.json",
+      "bytes": 814,
+      "sha256": "23db5ee523ec09a0fb3d10c2b4162216b407d800adb1d602a5cc7099d6eac1ad"
+    }
+  ],
+  "verification": {
+    "full_make_test": "REQUIRED_AFTER_INTEGRITY_REGENERATION",
+    "old_subject_pass_transferred": false
+  },
+  "completion_claims": {
+    "EFFECT_ACK_DONE": false,
+    "merge": false,
+    "live_quota_recovery": false,
+    "productive_host_acceptance": false
+  },
+  "next_action": "Regenerate integrity, validate this exact current-Main policy candidate, update the existing PR by guarded REST, and independently verify review and current-head CI."
+}
