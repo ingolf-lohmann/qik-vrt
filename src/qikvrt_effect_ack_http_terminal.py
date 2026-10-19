@@ -318,6 +318,267 @@ def durable_commit(prepared: dict[str, Any], expected_hash: str, body: dict[str,
     return receipt
 
 
+PEER_RULE_SCOPE = "NATIVE_PEER_RULE_ACTIVATION_ONLY"
+
+
+def peer_rule_request(value: dict[str, Any]) -> dict[str, Any]:
+    """Freeze bounded canonical input; incoming bytes never become executable code."""
+    try:
+        raw = canonical_json(value)
+        value = json.loads(raw)
+        if (len(raw) > MAX_NATIVE_EVENT // 2 or not isinstance(value, dict)
+                or set(value) != {"schema", "request_id", "work_unit_id", "sender_node_id", "sender_repository",
+                                  "peer_node_id", "subject", "rule_id", "rule", "rule_sha256"}
+                or value["schema"] != "qikvrt-peer-rule-request/v1"
+                or any(not isinstance(value[k], str) or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,100}", value[k])
+                       or value[k] in {"__proto__", "constructor", "prototype"}
+                       for k in ("request_id", "work_unit_id", "sender_node_id", "peer_node_id", "rule_id"))
+                or not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", value["sender_repository"])
+                or not isinstance(value["rule"], dict)
+                or value["rule_sha256"] != "sha256:" + sha256(canonical_json(value["rule"]))):
+            raise ValueError()
+        target = value["subject"]
+        if (not isinstance(target, dict) or set(target) != {"repository", "pr", "head", "tree"}
+                or not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", target["repository"])
+                or type(target["pr"]) is not int or target["pr"] < 1
+                or any(not re.fullmatch(r"[a-f0-9]{40}", target[k]) for k in ("head", "tree"))):
+            raise ValueError()
+    except (KeyError, TypeError, ValueError, RecursionError) as exc:
+        raise DurableHold("PEER_RULE_BOUNDED_EXACT_REQUEST_REQUIRED") from exc
+    return value
+
+
+def peer_rule_binding(value: dict[str, Any]) -> dict[str, Any]:
+    return {"request_id": value["request_id"], "work_unit_id": value["work_unit_id"],
+            "request_sha256": "sha256:" + sha256(canonical_json(value)), "rule_id": value["rule_id"],
+            "rule_sha256": value["rule_sha256"], "sender_node_id": value["sender_node_id"],
+            "peer_node_id": value["peer_node_id"], "scope": PEER_RULE_SCOPE}
+
+
+def verify_peer_rule_receipt(request: dict[str, Any], receipt: dict[str, Any], stage: str) -> None:
+    """Verify original native identity/body digests as well as the peer envelope."""
+    binding = peer_rule_binding(peer_rule_request(request))
+    expected = {"schema": "qikvrt-peer-rule-receipt/v1", **binding, "subject": request["subject"],
+                "stage": stage, "effect_ack_done": False}
+    if (not isinstance(receipt, dict) or set(receipt) != set(expected) | {"native_event", "native_digest"}
+            or any(receipt.get(k) != v for k, v in expected.items())):
+        raise DurableHold("PEER_RULE_RECEIPT_BINDING_MISMATCH")
+    event = receipt["native_event"]
+    try:
+        body = {k: v for k, v in event.items() if k not in ("id", "ledger_digest")}
+        native = {k: v for k, v in body.items() if k not in ("recorded_at", "payload_digest", "evidence_transfer", "dod")}
+        native["schema"] = NATIVE_SCHEMA
+        payload = {**binding, "stage": stage, "effect_ack_done": False}
+        if (set(body) != {"schema", "kind", "subject", "provenance", "observed_at", "message", "payload",
+                          "recorded_at", "payload_digest", "evidence_transfer", "dod"}
+                or not re.fullmatch(r"[a-f0-9]{32}:[1-9][0-9]*", event["id"])
+                or event["ledger_digest"] != sha256(canonical_json(body))
+                or receipt["native_digest"] != sha256(canonical_json(native))
+                or body["schema"] != "qikvrt_temdd_event_v1" or body["subject"] != request["subject"]
+                or body["provenance"] != {"source": "transputer", "native_event_id":
+                    "peer-rule:" + binding["request_sha256"][7:] + ":" + stage.lower()}
+                or body["kind"] != ("OBSERVE" if stage == "RECEIVED" else "EFFECT")
+                or body["payload"] != payload or body["payload_digest"] != sha256(canonical_json(payload))
+                or body["evidence_transfer"] != "DENY" or body["dod"] is not False):
+            raise ValueError()
+    except (TypeError, KeyError, ValueError) as exc:
+        raise DurableHold("PEER_RULE_NATIVE_EVENT_MISMATCH") from exc
+
+
+class NativePeerRules:
+    """An admitted activation in the original Transputer, not a proposal executor.
+
+    The local grant pins the full request and a rule already in the sealed source.
+    Activation installs the rule binding consumed by this native adapter, in the
+    original ledger's meta table. It does not attest a model's future behaviour.
+    No caller-supplied apply/readback callback or `applied=True` is accepted.
+    """
+    def __init__(self, runtime: Any, node_id: str, state_dir: str, grants: list[dict[str, Any]]):
+        self.runtime, self.node_id, self.state_dir = runtime, node_id, state_dir
+        self.grants = json.loads(canonical_json(grants))
+        if not isinstance(grants, list) or len(grants) > 128:
+            raise DurableHold("PEER_RULE_LOCAL_GRANTS_REQUIRED")
+        seen = set()
+        for grant in grants:
+            if (not isinstance(grant, dict) or set(grant) != {"peer_node_id", "request_id", "request_sha256",
+                    "rule_sha256", "rule_path", "rule_pointer"}
+                    or any(not isinstance(grant[k], str) or not re.fullmatch(r"sha256:[a-f0-9]{64}", grant[k])
+                           for k in ("request_sha256", "rule_sha256"))
+                    or any(not isinstance(grant[k], str) or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,100}", grant[k])
+                           for k in ("peer_node_id", "request_id"))
+                    or not isinstance(grant["rule_path"], str) or not grant["rule_path"].startswith("policy/")
+                    or not re.fullmatch(r"[A-Za-z0-9_.+/-]{1,256}", grant["rule_path"])
+                    or any(p in ("", ".", "..") for p in grant["rule_path"].split("/"))
+                    or not isinstance(grant["rule_pointer"], list) or len(grant["rule_pointer"]) > 12
+                    or any(not isinstance(k, str) or not k or len(k) > 128 for k in grant["rule_pointer"])):
+                raise DurableHold("PEER_RULE_LOCAL_GRANTS_REQUIRED")
+            key = (grant["peer_node_id"], grant["request_id"])
+            if key in seen: raise DurableHold("PEER_RULE_DUPLICATE_GRANT")
+            seen.add(key)
+
+    def admitted(self, value: dict[str, Any], peer: dict[str, Any]) -> dict[str, Any]:
+        value = peer_rule_request(value)
+        if (value["peer_node_id"] != self.node_id or value["subject"] != self.runtime.ensure_subject()
+                or value["sender_node_id"] != peer["node_id"] or value["sender_repository"] != peer["repository"]):
+            raise DurableHold("PEER_RULE_AUTHENTICATED_SUBJECT_MISMATCH")
+        grant = next((g for g in self.grants if g["peer_node_id"] == peer["node_id"]
+                      and g["request_id"] == value["request_id"]), None)
+        if (grant is None or grant["request_sha256"] != peer_rule_binding(value)["request_sha256"]
+                or grant["rule_sha256"] != value["rule_sha256"]):
+            raise DurableHold("PEER_RULE_EXACT_LOCAL_GRANT_REQUIRED")
+        path = self.runtime.root / grant["rule_path"]
+        if any(p.is_symlink() for p in (path, *path.parents)):
+            raise DurableHold("PEER_RULE_LOCAL_SOURCE_SYMLINK")
+        try:
+            with path.open("rb") as source:
+                raw = source.read(MAX_BODY + 1)
+            if len(raw) > MAX_BODY: raise ValueError()
+            rule = json.loads(raw)
+            for part in grant["rule_pointer"]: rule = rule[part]
+            if canonical_json(rule) != canonical_json(value["rule"]): raise ValueError()
+        except (OSError, ValueError, KeyError, TypeError) as exc:
+            raise DurableHold("PEER_RULE_LOCAL_SOURCE_MISMATCH") from exc
+        return value
+
+    def key(self, value: dict[str, Any]) -> str:
+        return "peer-rule:" + sha256(canonical_json([value["sender_node_id"], value["request_id"]]))
+
+    def active_key(self, value: dict[str, Any]) -> str:
+        return "peer-rule-active:" + sha256(canonical_json(value["rule_id"]))
+
+    def read_meta(self, key: str, *, cold: bool = False) -> Any:
+        if not cold:
+            row = self.runtime.ledger.db.execute("SELECT value FROM meta WHERE key=?", (key,)).fetchone()
+        else:
+            directory = _durable_directory(self.state_dir)
+            path = _durable_file(directory, "events.sqlite3")
+            with contextlib.closing(sqlite3.connect(path.as_uri() + "?mode=ro", uri=True, timeout=5)) as db:
+                db.execute("PRAGMA query_only=ON")
+                row = db.execute("SELECT value FROM meta WHERE key=?", (key,)).fetchone()
+        return json.loads(row[0]) if row else None
+
+    def record(self, value: dict[str, Any], *, create: bool = False, cold: bool = False) -> Any:
+        key = self.key(value)
+        record = self.read_meta(key, cold=cold)
+        if record is None and create:
+            binding = peer_rule_binding(value)
+            events = {}
+            for stage in ("RECEIVED", "APPLIED"):
+                events[stage] = {"schema": NATIVE_SCHEMA, "kind": "OBSERVE" if stage == "RECEIVED" else "EFFECT",
+                    "subject": value["subject"], "provenance": {"source": "transputer", "native_event_id":
+                        "peer-rule:" + binding["request_sha256"][7:] + ":" + stage.lower()},
+                    "observed_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                    "message": "Native peer rule " + stage.lower() + "; " + PEER_RULE_SCOPE,
+                    "payload": {**binding, "stage": stage, "effect_ack_done": False}}
+                self.runtime.ledger._validate(events[stage])
+            record = {"request": value, "epoch": self.runtime.ledger.epoch, "events": events}
+            record["sha256"] = sha256(canonical_json(record))
+            self.runtime.ledger._check_writer()
+            with self.runtime.ledger.db:
+                self.runtime.ledger.db.execute("INSERT INTO meta VALUES (?,?)", (key, canonical_json(record).decode()))
+            return self.record(value, cold=True)
+        if record is not None:
+            unsigned = {k: v for k, v in record.items() if k != "sha256"}
+            if (set(record) != {"request", "epoch", "events", "sha256"} or record["request"] != value
+                    or record["epoch"] != self.runtime.ledger.epoch
+                    or record["sha256"] != sha256(canonical_json(unsigned))
+                    or set(record["events"]) != {"RECEIVED", "APPLIED"}):
+                raise DurableHold("PEER_RULE_DURABLE_REQUEST_CONFLICT")
+            for stage, event in record["events"].items():
+                self.runtime.ledger._validate(event)
+                binding = peer_rule_binding(value)
+                if (event["payload"] != {**binding, "stage": stage, "effect_ack_done": False}
+                        or event["kind"] != ("OBSERVE" if stage == "RECEIVED" else "EFFECT")
+                        or event["provenance"] != {"source": "transputer", "native_event_id":
+                            "peer-rule:" + binding["request_sha256"][7:] + ":" + stage.lower()}):
+                    raise DurableHold("PEER_RULE_DURABLE_REQUEST_CONFLICT")
+        return record
+
+    def receipt(self, value: dict[str, Any], record: dict[str, Any], stage: str) -> dict[str, Any] | None:
+        epoch, event = _durable_read(self.state_dir, record["events"][stage])
+        if epoch != record["epoch"]: raise DurableHold("PEER_RULE_LEDGER_EPOCH_MISMATCH")
+        if event is None: return None
+        result = {"schema": "qikvrt-peer-rule-receipt/v1", **peer_rule_binding(value),
+                  "subject": value["subject"], "stage": stage, "native_event": event,
+                  "native_digest": sha256(canonical_json(record["events"][stage])), "effect_ack_done": False}
+        verify_peer_rule_receipt(value, result, stage)
+        return result
+
+    def receive(self, value: dict[str, Any], peer: dict[str, Any]) -> dict[str, Any]:
+        with self.runtime.ledger.condition:
+            value = self.admitted(value, peer)
+            record = self.record(value, create=True)
+            if self.receipt(value, record, "RECEIVED") is None:
+                self.runtime.append(record["events"]["RECEIVED"])
+            return self.receipt(value, record, "RECEIVED")
+
+    def apply(self, value: dict[str, Any], peer: dict[str, Any]) -> dict[str, Any]:
+        with self.runtime.ledger.condition:
+            value = self.admitted(value, peer)
+            record = self.record(value)
+            if record is None or self.receipt(value, record, "RECEIVED") is None:
+                raise DurableHold("PEER_RULE_RECEIPT_REQUIRED_BEFORE_APPLICATION")
+            binding = peer_rule_binding(value)
+            active_key = self.active_key(value)
+            active = self.read_meta(active_key)
+            if active is not None and active != binding:
+                raise DurableHold("PEER_RULE_ACTIVE_BINDING_CONFLICT")
+            # A crash between this reversible binding and the original append
+            # is recovered by the same deterministic event, never by replaying
+            # arbitrary instructions. Readback requires BOTH persisted effects.
+            self.runtime.ledger._check_writer()
+            if active is None:
+                with self.runtime.ledger.db:
+                    self.runtime.ledger.db.execute("INSERT INTO meta VALUES (?,?)",
+                        (active_key, canonical_json(binding).decode()))
+            if self.receipt(value, record, "APPLIED") is None:
+                self.runtime.append(record["events"]["APPLIED"])
+            return self.readback(value, peer, secrets.token_hex(16))
+
+    def enforce_event(self, event: dict[str, Any]) -> None:
+        """The activated binding is a writer admission guard, not just a label.
+
+        S1 calls this before EVERY subsequent native append. Missing/corrupt
+        active state, revoked grants, changed source and interrupted activation
+        hold unrelated writes. Only the exact interrupted application event can
+        complete that reversible activation. Unactivated receives add no guard.
+        """
+        rows = self.runtime.ledger.db.execute("SELECT key,value FROM meta WHERE key LIKE 'peer-rule:%'").fetchall()
+        active = dict(self.runtime.ledger.db.execute("SELECT key,value FROM meta WHERE key LIKE 'peer-rule-active:%'"))
+        for key, raw in rows:
+            record = json.loads(raw)
+            value = record["request"]
+            peer = {"node_id": value["sender_node_id"], "repository": value["sender_repository"]}
+            record = self.record(value)
+            installed = self.read_meta(self.active_key(value))
+            applied = self.receipt(value, record, "APPLIED")
+            if installed is None and applied is None: continue
+            self.admitted(value, peer)
+            if key != self.key(value) or installed != peer_rule_binding(value):
+                raise DurableHold("PEER_RULE_ACTIVE_WRITER_GUARD_MISMATCH")
+            if self.receipt(value, record, "RECEIVED") is None:
+                raise DurableHold("PEER_RULE_ACTIVE_WRITER_RECEIPT_REQUIRED")
+            if applied is None and canonical_json(event) != canonical_json(record["events"]["APPLIED"]):
+                raise DurableHold("PEER_RULE_INTERRUPTED_ACTIVATION_HOLDS_OTHER_WRITES")
+            active.pop(self.active_key(value), None)
+        if active: raise DurableHold("PEER_RULE_ORPHANED_ACTIVE_WRITER_GUARD")
+
+    def readback(self, value: dict[str, Any], peer: dict[str, Any], challenge: str) -> dict[str, Any]:
+        with self.runtime.ledger.condition:
+            if not isinstance(challenge, str) or not re.fullmatch(r"[a-f0-9]{32}", challenge):
+                raise DurableHold("PEER_RULE_FRESH_CHALLENGE_REQUIRED")
+            value = self.admitted(value, peer)  # Recheck original local rule and source on every read.
+            record = self.record(value, cold=True)
+            received = self.receipt(value, record, "RECEIVED") if record else None
+            applied = self.receipt(value, record, "APPLIED") if record else None
+            active = self.read_meta(self.active_key(value), cold=True)
+            if applied is not None and (received is None or active != peer_rule_binding(value)):
+                raise DurableHold("PEER_RULE_ACTIVE_READBACK_MISMATCH")
+            return {"schema": "qikvrt-peer-rule-readback/v1", **peer_rule_binding(value),
+                "subject": value["subject"], "challenge": challenge, "received": received, "applied": applied,
+                "active_binding": active if applied else None, "effect_ack_done": False}
+
+
 @dataclass
 class Prepared:
     token: str
@@ -574,7 +835,7 @@ class Handler(BaseHTTPRequestHandler):
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("operation", nargs="?", default="serve", choices=("serve", "durable-prepare", "durable-commit", "durable-readback"))
+    parser.add_argument("operation", nargs="?", default="serve", choices=("serve", "durable-prepare", "durable-commit", "durable-readback", "personal-auth-readback"))
     parser.add_argument("--host", default=HOST)
     parser.add_argument("--port", type=int, default=DEFAULT_PORT)
     parser.add_argument("--state-dir", default="/var/lib/qikvrt/state")
@@ -594,6 +855,22 @@ def main() -> int:
     parser.add_argument("--personal-legacy-memory-pairing", action="store_true", help="Explicit legacy test/development mode; no durable SSO or release acceptance")
     parser.add_argument("--personal-store-model-credential", action="store_true", help="Provision the selected model key to OS Secret Service from a terminal prompt, then exit")
     args = parser.parse_args()
+    if args.operation == "personal-auth-readback":
+        from qikvrt_personal_auth import AuthBlock, verify_existing_session
+        try:
+            if (not args.personal_state_dir or not args.personal_auth_config or
+                    args.personal_legacy_memory_pairing or args.personal_store_model_credential or
+                    args.host != "127.0.0.1"):
+                raise AuthBlock("EXPLICIT_PROTECTED_SSO_PROFILE_REQUIRED")
+            result = verify_existing_session(args.personal_state_dir, args.personal_auth_config,
+                                            f"http://127.0.0.1:{args.port}", args.personal_provider)
+            print(json.dumps(result, sort_keys=True))
+            return 0
+        except (ValueError, OSError) as exc:
+            # AuthBlock/load_config expose fixed reason codes, never config bytes.
+            print(json.dumps({"state": "HOLD", "reason": str(exc) if isinstance(exc, AuthBlock) else "NATIVE_SSO_READBACK_UNAVAILABLE",
+                              "effect_ack_done": False}, sort_keys=True))
+            return 2
     if args.personal_store_model_credential:
         if not args.personal_state_dir or not args.personal_auth_config or args.operation != "serve":
             raise SystemExit("BLOCK: explicit Personal state and OIDC configuration required")
@@ -662,8 +939,20 @@ def main() -> int:
                 runtime = PersonalRuntime.from_environment(args.personal_state_dir, args.personal_model, args.personal_provider)
             else:
                 raise ValueError("PROTECTED_PERSONAL_AUTH_CONFIGURATION_REQUIRED")
+            if any((args.repository, args.pr, args.expected_head, args.expected_tree)):
+                if sys.platform != "linux":
+                    raise ValueError("ADMITTED_NATIVE_TERMINAL_PLATFORM_UNAVAILABLE")
+                if not all((args.repository, args.pr, args.expected_head, args.expected_tree)) or not args.personal_auth_config:
+                    raise ValueError("EXPLICIT_PROTECTED_NATIVE_SUBJECT_REQUIRED")
+                exact = durable_subject(args.root, args.repository, args.pr, args.expected_head, args.expected_tree)
+                from qikvrt_temdd_event_ledger import Runtime
+                runtime.native_terminal = Runtime(args.root, args.state_dir, args.repository, args.pr)
+                if runtime.native_terminal.subject != exact:
+                    raise ValueError("NATIVE_PERSONAL_SUBJECT_MISMATCH")
             handler = personal_handler(Handler, runtime)
         except (ValueError, OSError) as exc:
+            if runtime:
+                runtime.close()
             raise SystemExit("BLOCK: " + str(exc)) from None
     elif args.personal_model or args.personal_auth_config or args.personal_legacy_memory_pairing:
         raise SystemExit("BLOCK: Personal arguments require --personal-state-dir")
