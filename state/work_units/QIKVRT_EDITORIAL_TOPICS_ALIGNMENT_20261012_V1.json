@@ -1,0 +1,492 @@
+{
+  "schema": "QIKVRT_EDITORIAL_TOPICS_ALIGNMENT_V1",
+  "human_actor": "Ingolf Lohmann",
+  "human_contribution": "Drei Themenrubriken vom 30. September 2026 und aktueller Abgleich-, Navigations-, Test- und Veröffentlichungsauftrag.",
+  "artificial_cognitive_contribution": "Bestandsabgleich, Quellenverknüpfung, Metadatenzuordnung, Navigation und Konsistenztests.",
+  "source_system": "OpenAI Codex / GPT-6",
+  "existing_site_project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+  "baseline_site_version": 24,
+  "baseline_site_source_commit": "1934454fe1e978dc0951c8b0f9c1139bf669b803",
+  "baseline_origin_news_http_status": 200,
+  "baseline_origin_news_byte_exact": true,
+  "repository": "ingolf-lohmann/qik-vrt",
+  "mirror": "Goldkelch/qik-vrt",
+  "github_route": "REST_API_ONLY",
+  "baseline_main_head": "eceb9b636b59643d40272e24a6493a4edd2a4fe2",
+  "baseline_main_tree": "e436ca6f80185d9fe264f1491d2bce232ae68b11",
+  "baseline_pr": 519,
+  "baseline_pr_head": "1e3c0af8c841813188754e682f852b7b5c15934f",
+  "baseline_pr_tree": "2c94433a457246ba24ef6aa0ad0e39e08114ba01",
+  "comparison": {
+    "site24_topics": [
+      "zutrittskontrolle",
+      "kuenstliche-intelligenz",
+      "physik"
+    ],
+    "site24_articles": [
+      "universaler-transputer",
+      "physics-nobel-2026-decay-continuity"
+    ],
+    "pr519_articles": [
+      "physics-nobel-2026-decay-continuity"
+    ],
+    "main_news_index_present": false,
+    "pr519_comment_source_visibility": "Site24 already includes three visible copyable source URLs absent from PR519. The published Site24 HTML is adopted verbatim; all six language sections and scientific originals are preserved."
+  },
+  "preserved_article_files": {
+    "news/physics-nobel-2026-decay-continuity/index.json": {
+      "sha256": "eca3d08d31faf8661ec70166bfb158f6b9d36a52b8f24bd22a23803966600817",
+      "bytes": 1479
+    },
+    "news/physics-nobel-2026-decay-continuity/index.html": {
+      "sha256": "ccd3145febe973b2797209a0c51937afebcb7967291054de7d9b9bbdce40b01e",
+      "bytes": 31779
+    },
+    "news/universaler-transputer/article.txt": {
+      "sha256": "bea2ce79c5998ccc8f085ec2cfe0ea4810bdc9c3c984719050549ab15bd790f1",
+      "bytes": 3744
+    },
+    "news/universaler-transputer/index.json": {
+      "sha256": "6674e05c81588739861f1f1d6be908318138e686bfe5b696b8455a38907aed22",
+      "bytes": 4131
+    },
+    "news/universaler-transputer/index.html": {
+      "sha256": "1707f52e9ad9b720d1e37e3ca5df8e42354fc2e8931679a7a3934addb22a28f9",
+      "bytes": 6953
+    }
+  },
+  "scope": "Navigation, Nachweiszuordnung und bestehende Publikationsstruktur; keine Änderung wissenschaftlich eingefrorener Originale.",
+  "new_site_created": false,
+  "scientific_originals_modified": false,
+  "acceptance_boundary": "Site-Veröffentlichung, unabhängiger Origin-Readback, Repository-Integration und raumzeitterminal.de-Auslieferung sind getrennte Nachweise.",
+  "zenodo_metadata_readback": {
+    "observed_at_utc": "2026-10-12T17:36:51.138549+00:00",
+    "records": [
+      {
+        "record_id": 21515074,
+        "http_status": 200,
+        "doi": "10.5281/zenodo.21515074",
+        "title": "Charta einer maschinenprüfbaren Wissenschaft",
+        "publication_date": "2026-07-23",
+        "version": "1.0.0-2026-07-23",
+        "metadata_sha256": "005edc6f4a882c256442cec4ee8b2d3a9c10924e532e1dd077fefcfacdc7e4a7",
+        "public_file_count": 1
+      },
+      {
+        "record_id": 23008704,
+        "http_status": 200,
+        "doi": "10.5281/zenodo.23008704",
+        "title": "Spur halten: Quality Gates für einen portablen Universal Transputer",
+        "publication_date": "2026-09-28",
+        "version": "0.1-20260928",
+        "metadata_sha256": "3ae9faf485cd01f61de5c8ffb437bd8846ee42bf0b80821746b618cd392343ae",
+        "public_file_count": 15
+      },
+      {
+        "record_id": 22907018,
+        "http_status": 200,
+        "doi": "10.5281/zenodo.22907018",
+        "title": "Quantität–Information–Kausalität (QIK): Ein operationales Rahmenmodell für Ereignisstruktur, Kausalordnung und emergente Raumzeit",
+        "publication_date": "2026-09-23",
+        "version": "2026-09-23-qik-scientific-revision",
+        "metadata_sha256": "fdfe33ed37314c97baac68ff9619e991a4f373b43a4abb25ed7d72dcb196616d",
+        "public_file_count": 8
+      },
+      {
+        "record_id": 22283396,
+        "http_status": 200,
+        "doi": "10.5281/zenodo.22283396",
+        "title": "From Exact Causal Binding to a Falsifiable Planck-Tick Gap Law",
+        "publication_date": "2026-09-03",
+        "version": "1.0.0-candidate.1",
+        "metadata_sha256": "d46a00f7a1186bf8f3081268adc68dd11ef2d69322eaaeaae9f238921bc38508",
+        "public_file_count": 6
+      },
+      {
+        "record_id": 21888130,
+        "http_status": 200,
+        "doi": "10.5281/zenodo.21888130",
+        "title": "Von Softwarearchitektur zur Weltformel – DAS UNIVERSUM ALS ROUND TRIP",
+        "publication_date": "2026-08-08",
+        "version": "1.0.0-candidate.1",
+        "metadata_sha256": "39e0b3192f9544ca8a0cde3773f0bee71c94df5f121dad10736b5100cf9f71f2",
+        "public_file_count": 54
+      }
+    ],
+    "fresh_local_lean_execution": false,
+    "scope": "Published metadata for navigation; the previous byte-verified catalog retains its exact original evidence scope."
+  },
+  "existing_article_navigation_repair": {
+    "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/",
+    "observed_final_http_status": 404,
+    "repair": "Temporary redirect to the existing repository publication index, without modifying article bytes."
+  },
+  "validation": {
+    "editorial_navigation_tests": 10,
+    "local_editorial_navigation": "PASS",
+    "retained_article_redirect_GET_HEAD": "PASS",
+    "site_typecheck": "PASS",
+    "site_framework_build": "PASS",
+    "existing_evidence_mcp_offline_regressions": "PASS",
+    "existing_publication_index_collection_metadata_preserved": true,
+    "full_local_repository_clone": false,
+    "native_full_repository_ci": "NOT_YET_OBSERVED_FOR_SUCCESSOR",
+    "governance_on_main": "CODE_OWNER_RULE_NOT_ENFORCED",
+    "rulesets": [],
+    "main_protected": false,
+    "reviews": []
+  },
+  "site_publication": {
+    "site_version": {
+      "id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea~appgver_c94a81692d608191824320b8ffb38e11",
+      "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+      "version_number": 26,
+      "source": {
+        "commit_sha": "a769ee17e76fe6ff38a20ed334d963d8e2a354fc"
+      },
+      "archive_storage": {
+        "archive_format": "tar",
+        "sediment_file_id": "file_000000001470820aadbef98588bb9838",
+        "content_hash": "sha256:e9b076442432920e277d0a4fe5ae32325182ce42ec1af67f0339242ce3160445",
+        "size_bytes": 123217920,
+        "file_count": 163
+      },
+      "screenshot_url": null,
+      "deployment_id": null
+    },
+    "site_deployment": {
+      "id": "appgdep_6acd1e447ef88191827aefad3ba4a1aa",
+      "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+      "title": "QIK-VRT · Mesh Monitor · Scheibenhard",
+      "version_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea~appgver_c94a81692d608191824320b8ffb38e11",
+      "type": "publish",
+      "status": "succeeded",
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site",
+      "has_mcp": true,
+      "screenshot_asset_pointer": null,
+      "provider_deployment_id": "site---6ac4018a3e0c8191a06187c296d6c7ea",
+      "failure_message": null,
+      "env_set_revision": 4,
+      "updated_at": "2026-10-12T17:52:50.249408+00:00"
+    },
+    "site_source_tree": "2338533d5facc41bfb0f3659dd5784b20e76097c",
+    "origin_client_specific_denial": {
+      "schema": "QIKVRT_ORIGIN_OBSERVATION_V1",
+      "observed_at_utc": "2026-10-12T17:56:44.747Z",
+      "origin": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site",
+      "method": "Independent unauthenticated Python urllib HTTPS GET after Site26 deployment",
+      "subject_source_commit": "a769ee17e76fe6ff38a20ed334d963d8e2a354fc",
+      "result": "BLOCKED_HTTP_403",
+      "files": [
+        {
+          "path": "/",
+          "http_status": 403,
+          "byte_equality_verified": false
+        },
+        {
+          "path": "/news/",
+          "http_status": 403,
+          "byte_equality_verified": false
+        },
+        {
+          "path": "/news/topics.json",
+          "http_status": 403,
+          "byte_equality_verified": false
+        },
+        {
+          "path": "/news/universaler-transputer/",
+          "http_status": 403,
+          "byte_equality_verified": false
+        },
+        {
+          "path": "/news/universaler-transputer/index.json",
+          "http_status": 403,
+          "byte_equality_verified": false
+        },
+        {
+          "path": "/news/universaler-transputer/article.txt",
+          "http_status": 403,
+          "byte_equality_verified": false
+        },
+        {
+          "path": "/news/physics-nobel-2026-decay-continuity/",
+          "http_status": 403,
+          "byte_equality_verified": false
+        },
+        {
+          "path": "/news/physics-nobel-2026-decay-continuity/index.json",
+          "http_status": 403,
+          "byte_equality_verified": false
+        },
+        {
+          "path": "/assets/css/qikvrt.css",
+          "http_status": 403,
+          "byte_equality_verified": false
+        }
+      ],
+      "independent_delivery_verified": false,
+      "publication_connector_result": "succeeded",
+      "boundary": "HTTP 200 and byte equality were observed for the predecessor Site24 only; this does not verify Site26."
+    }
+  },
+  "independent_origin_readback": {
+    "origin": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site",
+    "started_at_utc": "2026-10-12T17:57:36.130333+00:00",
+    "method": "Independent unauthenticated curl HTTPS GET outside the publishing connector; original UTF-8 bytes compared by SHA-256 and equality. The already verified news/index.html curl response is reused. Python urllib was separately denied with HTTP 403; no origin-wide denial is inferred.",
+    "files": {
+      "index.html": {
+        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/",
+        "final_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/",
+        "http_status": 200,
+        "bytes": 17377,
+        "sha256": "8b1346472271497c37919d153dd9d465741f887caf2e869131bf20a72673b80f",
+        "byte_exact_to_pushed_source": true
+      },
+      "news/index.html": {
+        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/news/",
+        "final_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/news/",
+        "http_status": 200,
+        "bytes": 11436,
+        "sha256": "6204048372390db66042037207b53d2ed681543a6fd2113a700dfd96d8b44fcb",
+        "byte_exact_to_pushed_source": true
+      },
+      "news/topics.json": {
+        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/news/topics.json",
+        "final_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/news/topics.json",
+        "http_status": 200,
+        "bytes": 9919,
+        "sha256": "b1ceb4e8f3967278b22253902d3cfedd435450d5d6dbe19e7fc2b36bdc73f11e",
+        "byte_exact_to_pushed_source": true
+      },
+      "news/universaler-transputer/index.html": {
+        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/news/universaler-transputer/",
+        "final_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/news/universaler-transputer/",
+        "http_status": 200,
+        "bytes": 4335,
+        "sha256": "58c27c1be12c31e5aff4957e8f0024f227c67ba996f00a56b5cad1dc3c98c808",
+        "byte_exact_to_pushed_source": true
+      },
+      "news/universaler-transputer/index.json": {
+        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/news/universaler-transputer/index.json",
+        "final_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/news/universaler-transputer/index.json",
+        "http_status": 200,
+        "bytes": 3354,
+        "sha256": "8e71beb00056fbe7794e99ff5ee08095f0a92f466eb5ccbfeef1a98ae35ab52a",
+        "byte_exact_to_pushed_source": true
+      },
+      "news/universaler-transputer/article.txt": {
+        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/news/universaler-transputer/article.txt",
+        "final_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/news/universaler-transputer/article.txt",
+        "http_status": 200,
+        "bytes": 1903,
+        "sha256": "7d80ebf647cbf0a74594659e7d44c5ba344810a6531c83fc061a4c095be51048",
+        "byte_exact_to_pushed_source": true
+      },
+      "news/physics-nobel-2026-decay-continuity/index.html": {
+        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/news/physics-nobel-2026-decay-continuity/",
+        "final_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/news/physics-nobel-2026-decay-continuity/",
+        "http_status": 200,
+        "bytes": 31779,
+        "sha256": "ccd3145febe973b2797209a0c51937afebcb7967291054de7d9b9bbdce40b01e",
+        "byte_exact_to_pushed_source": true
+      },
+      "news/physics-nobel-2026-decay-continuity/index.json": {
+        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/news/physics-nobel-2026-decay-continuity/index.json",
+        "final_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/news/physics-nobel-2026-decay-continuity/index.json",
+        "http_status": 200,
+        "bytes": 1479,
+        "sha256": "eca3d08d31faf8661ec70166bfb158f6b9d36a52b8f24bd22a23803966600817",
+        "byte_exact_to_pushed_source": true
+      },
+      "assets/css/qikvrt.css": {
+        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/assets/css/qikvrt.css",
+        "final_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/assets/css/qikvrt.css",
+        "http_status": 200,
+        "bytes": 6360,
+        "sha256": "2825eb34d67fd3097fc5ebf492089ac94eb8c8f6045a76ea7902b7a2c0cc272d",
+        "byte_exact_to_pushed_source": true
+      }
+    },
+    "publication_index_alias": [
+      {
+        "method": "GET",
+        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/",
+        "http_status": 308,
+        "location": "/publications"
+      },
+      {
+        "method": "GET",
+        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications",
+        "http_status": 302,
+        "location": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/index.html"
+      },
+      {
+        "method": "HEAD",
+        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/",
+        "http_status": 308,
+        "location": "/publications"
+      },
+      {
+        "method": "HEAD",
+        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications",
+        "http_status": 302,
+        "location": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/index.html"
+      }
+    ],
+    "terminal_navigation_target_http_status": 200,
+    "live_navigation_metadata_and_frozen_bytes": "PASS",
+    "completed_at_utc": "2026-10-12T17:58:22.348092+00:00",
+    "exact_requested_host_delivery_verified": false,
+    "browser_visual_qa_performed": false
+  },
+  "domain_readback": {
+    "observed_at_utc": "2026-10-12T17:51:27.048495+00:00",
+    "hostname": "raumzeitterminal.de",
+    "dns": [
+      {
+        "url": "https://cloudflare-dns.com/dns-query?name=raumzeitterminal.de&type=A",
+        "http_status": 200,
+        "answer": {
+          "Status": 3,
+          "TC": false,
+          "RD": true,
+          "RA": true,
+          "AD": false,
+          "CD": false,
+          "Question": [
+            {
+              "name": "raumzeitterminal.de",
+              "type": 1
+            }
+          ],
+          "Authority": [
+            {
+              "name": "de",
+              "type": 6,
+              "TTL": 6396,
+              "data": "f.nic.de. dns-operations.denic.de. 1791826641 7200 7200 3600000 7200"
+            }
+          ]
+        }
+      },
+      {
+        "url": "https://dns.google/resolve?name=raumzeitterminal.de&type=A",
+        "http_status": 200,
+        "answer": {
+          "Status": 3,
+          "TC": false,
+          "RD": true,
+          "RA": true,
+          "AD": false,
+          "CD": false,
+          "Question": [
+            {
+              "name": "raumzeitterminal.de.",
+              "type": 1
+            }
+          ],
+          "Authority": [
+            {
+              "name": "de.",
+              "type": 6,
+              "TTL": 1800,
+              "data": "f.nic.de. dns-operations.denic.de. 1791827416 7200 7200 3600000 7200"
+            }
+          ],
+          "Comment": "Response from 2001:67c:1011:1::53."
+        }
+      }
+    ]
+  },
+  "origin_verified": true,
+  "exact_requested_host_delivery_verified": false,
+  "site_source_delta": {
+    "path": "release/publication-pr519-sites/EDITORIAL_TOPICS_SITE_SOURCE.patch",
+    "sha256": "01015ff9232f9b01c1e45b2a6a49a2fed5f6cf498b3561f0765ca0f7f5622a48",
+    "base_commit": "1934454fe1e978dc0951c8b0f9c1139bf669b803",
+    "after_commit": "a769ee17e76fe6ff38a20ed334d963d8e2a354fc"
+  },
+  "return_boundary": {
+    "editorial_origin_scope": "VERIFIED",
+    "main_merge": "NOT_EXECUTED_GOVERNANCE_BLOCK",
+    "exact_host": "NXDOMAIN",
+    "required_continuation": "Admit independently reviewed native-governance-bound PR519 promotion; restore the existing exact-domain registrar/DNS writer for domain activation.",
+    "global_effect_ack_done": false
+  },
+  "authorized_editorial_revisions": [
+    {
+      "owner": "Ingolf Lohmann",
+      "owner_authorization": "2026-10-13: add exact proof binding, persist at intended destinations, publish suitable journalistic presentation on raumzeitterminal.de.",
+      "observed_at": "2026-10-13T00:51:45+03:00",
+      "baseline_site_version": 26,
+      "baseline_site_source": "a769ee17e76fe6ff38a20ed334d963d8e2a354fc",
+      "prior_frozen_article_files": {
+        "news/physics-nobel-2026-decay-continuity/index.json": {
+          "sha256": "eca3d08d31faf8661ec70166bfb158f6b9d36a52b8f24bd22a23803966600817",
+          "bytes": 1479
+        },
+        "news/physics-nobel-2026-decay-continuity/index.html": {
+          "sha256": "ccd3145febe973b2797209a0c51937afebcb7967291054de7d9b9bbdce40b01e",
+          "bytes": 31779
+        },
+        "news/universaler-transputer/article.txt": {
+          "sha256": "7d80ebf647cbf0a74594659e7d44c5ba344810a6531c83fc061a4c095be51048",
+          "bytes": 1903
+        },
+        "news/universaler-transputer/index.json": {
+          "sha256": "8e71beb00056fbe7794e99ff5ee08095f0a92f466eb5ccbfeef1a98ae35ab52a",
+          "bytes": 3354
+        },
+        "news/universaler-transputer/index.html": {
+          "sha256": "58c27c1be12c31e5aff4957e8f0024f227c67ba996f00a56b5cad1dc3c98c808",
+          "bytes": 4335
+        }
+      },
+      "original_statement_prefix_sha256": "7d80ebf647cbf0a74594659e7d44c5ba344810a6531c83fc061a4c095be51048",
+      "original_statement_prefix_bytes": 1903,
+      "original_statement_prefix_retained": true,
+      "new_evidence_class": "SOURCE_BOUND_EDITORIAL_CLARIFICATION",
+      "new_physical_proof_claimed": false,
+      "changed_files": {
+        "news/universaler-transputer/article.txt": {
+          "sha256": "bea2ce79c5998ccc8f085ec2cfe0ea4810bdc9c3c984719050549ab15bd790f1",
+          "bytes": 3744
+        },
+        "news/universaler-transputer/index.json": {
+          "sha256": "6674e05c81588739861f1f1d6be908318138e686bfe5b696b8455a38907aed22",
+          "bytes": 4131
+        },
+        "news/universaler-transputer/index.html": {
+          "sha256": "1707f52e9ad9b720d1e37e3ca5df8e42354fc2e8931679a7a3934addb22a28f9",
+          "bytes": 6953
+        }
+      },
+      "native_publication": {
+        "site_version": 27,
+        "site_version_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea~appgver_67a44e90991881918228cbf58f989816",
+        "site_source": "b116ae0887cb688404aeeb66a68c3b2f59ad9a6a",
+        "deployment": "appgdep_6acd576cc0e4819190894b390d52765b",
+        "site_origin": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site",
+        "archive": {
+          "archive_format": "tar",
+          "sediment_file_id": "file_00000000c544820a8370c0cb58cc203b",
+          "content_hash": "sha256:e38b7abf47ae39f18ece5f1ab3f22f205a22e6f05a7390ab48d3a38fa215d404",
+          "size_bytes": 123217920,
+          "file_count": 163
+        }
+      },
+      "verification": {
+        "editorial_navigation_tests": 10,
+        "editorial_navigation_exit": 0,
+        "source_visibility_gate": "PASS",
+        "original_statement_html_and_text_preserved": true,
+        "site_build_exit": 0,
+        "built_assets_equal_to_source": true,
+        "fresh_lean_execution": false,
+        "complete_local_qikvrt_repository_tests": false,
+        "native_successor_tests": "PENDING_FRESH_EXACT_HEAD_EXECUTION"
+      }
+    }
+  ],
+  "freeze_scope": "Current authorized article revision; prior freeze identities retained in authorized_editorial_revisions. Other article bytes remain unchanged."
+}

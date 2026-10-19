@@ -30,6 +30,13 @@ anticipation-contract:
 tool-cache-contract:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_tool_cache.py verify
 
+.PHONY: offline-browser-precheck offline-browser-test
+offline-browser-precheck: tool-cache-contract
+	QIKVRT_OFFLINE_CLIENT_DIR="$(CURDIR)/docs/monitor/offline" node runtime/offline/browser-tests/browser.test.mjs --precheck
+
+offline-browser-test: offline-browser-precheck
+	QIKVRT_OFFLINE_CLIENT_DIR="$(CURDIR)/docs/monitor/offline" node runtime/offline/browser-tests/browser.test.mjs
+
 runtime-contract: tool-cache-contract
 	sh -n tools/bootstrap-gh.sh tools/bootstrap-runtime.sh
 	sh -n tests/test_runtime_bootstrap.sh
@@ -46,17 +53,20 @@ interaction-archive-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_interaction_archive.py --help >/dev/null
 
 release-automation:
-	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_effect_ack_release_workflows tests.test_formalization_v2_release_workflow tests.test_formalization_v2_zenodo tests.test_status_release_workflows tests.test_zenodo_actions tests.test_zenodo_metadata_clarification_candidates tests.test_qikvrt_zenodo_metadata_edit tests.test_status_zenodo tests.test_zenodo_manifest_builder tests.test_status_clarification_bundle tests.test_global_completion tests.test_content_disposition_batch_002_terminal tests.test_content_disposition_batch_002_corrected_candidate tests.test_content_disposition_batch_002_owner_acceptance tests.test_content_disposition_status_after_batch_002_acceptance tests.test_content_disposition_batch_003_dispatch tests.test_transactional_workflow_trigger
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_effect_ack_release_workflows tests.test_formalization_v2_release_workflow tests.test_formalization_v2_zenodo tests.test_status_release_workflows tests.test_zenodo_actions tests.test_zenodo_metadata_clarification_candidates tests.test_qikvrt_zenodo_metadata_edit tests.test_status_zenodo tests.test_zenodo_manifest_builder tests.test_status_clarification_bundle tests.test_publication_router tests.test_global_completion tests.test_content_disposition_batch_002_terminal tests.test_content_disposition_batch_002_corrected_candidate tests.test_content_disposition_batch_002_owner_acceptance tests.test_content_disposition_status_after_batch_002_acceptance tests.test_content_disposition_batch_003_dispatch tests.test_transactional_workflow_trigger
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tests/test_content_disposition_batch_001.py
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tests/test_zenodo_union_disposition.py
 
 evidence-contract-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_retrocausality_experiment
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_archive_get_causal_journal
 	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m py_compile tools/qikvrt_zenodo_publish.py tools/qikvrt_zenodo_corpus_proof.py tools/qikvrt_zenodo_machine_proof.py tools/qikvrt_vrtcore_zenodo_publication_controls.py release/observer-relative-retrocausality-current-synthesis-zenodo-v2/finalize_authorized_controls.py tools/qikvrt_canonical_temporal_memory_kernel_evidence.py scripts/issue_agent/validate.py tests/issue_agent/test_validate.py tests/test_authority_mirror_equality_receipt.py tests/test_canonical_closing_status_article.py tests/test_charter_zenodo.py tests/test_qikvrt_self_disclosure.py tests/test_virtual_past_reception.py tests/test_quantum_classical_runtime_article.py tests/test_canonical_temporal_memory_publication.py tests/test_vrtcore_h56_zenodo_candidate.py tests/test_vrtcore_zenodo_publication_controls.py tests/test_observer_relative_retrocausality_zenodo_finalizer.py tests/test_zenodo_corpus_inventory_failure_receipt.py tests/test_zenodo_corpus_proof.py tests/test_zenodo_machine_proof_policy.py
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_canonical_temporal_memory_kernel_evidence.py --static-only >/dev/null
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.issue_agent.test_validate tests.test_authority_mirror_equality_receipt tests.test_canonical_closing_status_article tests.test_charter_zenodo tests.test_qikvrt_self_disclosure tests.test_virtual_past_reception tests.test_quantum_classical_runtime_article tests.test_canonical_temporal_memory_publication tests.test_vrtcore_h56_zenodo_candidate tests.test_vrtcore_zenodo_publication_controls tests.test_observer_relative_retrocausality_zenodo_finalizer tests.test_zenodo_corpus_inventory_failure_receipt tests.test_zenodo_corpus_proof tests.test_zenodo_machine_proof_policy
 
 workflow-executor-mesh-contract:
-	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_workflow_executor_mesh_contract tests.test_seed_workflows tests.test_qikvrt_reflexive_repository_watchdog
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host.AuthoritySuccessionModelTests
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_workflow_executor_mesh_contract tests.test_seed_workflows tests.test_qikvrt_reflexive_repository_watchdog tests.test_qikvrt_required_review_gate tests.test_qikvrt_requested_review_executor tests.test_qikvrt_expected_head_promotion tests.test_self_host_provider.RepositoryIONOSReadonlyTests
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_workflow_executor.py snapshot --expect-head "$$(git rev-parse --verify HEAD^{commit})" --json >/dev/null
 
 .PHONY: owner-reminders-test
@@ -64,7 +74,7 @@ owner-reminders-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_owner_reminders
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_owner_reminders.py >/dev/null
 
-test: owner-reminders-test
+test: owner-reminders-test issue-agent-test
 
 repository-terminal-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_repository_terminal
@@ -83,13 +93,14 @@ conformance:
 	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m unittest -v tests.test_effect_ack_conformance
 
 security:
-	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -B -m unittest -v tests.test_handler_security tests.test_api_client
+	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -B -m unittest -v tests.test_handler_security tests.test_api_client tests.test_qikvrt_ionos_dns
 
 license:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_license_transition
 
 seed:
-	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_seed_workflows
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_seed_common.py config-check --root .
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_seed_workflows tests.test_mirror_lifecycle_publication
 	@for script in tools/qikvrt_seed_*.sh; do sh -n "$$script"; done
 
 e2e:
@@ -105,6 +116,13 @@ run-api:
 	@test -n "$(QIKVRT_API_PRINCIPAL)" || (echo "BLOCK: set QIKVRT_API_PRINCIPAL" >&2; exit 2)
 	PYTHONNOUSERSITE=1 $(PYTHON) -S src/qikvrt_github_api_shim.py
 
+.PHONY: mcp-conformance-test
+mcp-conformance-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_mcp_e2e tests.test_qikvrt_mcp_adapter tests.test_mcp_integration tests.test_seed_mcp_governance
+	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m py_compile scripts/qikvrt_mcp_probe.py
+
+test: mcp-conformance-test
+
 clean:
 	rm -rf unit_state e2e_state .qikvrt/runtime .qikvrt/evidence .qikvrt/api .qikvrt/cache .qikvrt/release .qikvrt/interactions logs __pycache__ src/__pycache__ scripts/__pycache__ tests/__pycache__ tools/__pycache__
 
@@ -112,11 +130,107 @@ clean:
 .PHONY: personal-firefox-boundary-test
 personal-firefox-boundary-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_firefox_capability_boundary
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_assistant
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_auth
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_terminal_transition
+	node tests/test_qikvrt_personal_auth_ui.cjs
 
 test: personal-firefox-boundary-test
+
+.PHONY: browser-assistant-ab-test
+browser-assistant-ab-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_browser_assistant_ab
+
+test: browser-assistant-ab-test
 
 .PHONY: machine-verifiable-science-charter-test
 machine-verifiable-science-charter-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tests/test_machine_verifiable_science_charter.py
 
 test: machine-verifiable-science-charter-test
+
+.PHONY: ruleset-authority-test
+ruleset-authority-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_ruleset_authority_token_route
+
+test: ruleset-authority-test
+
+.PHONY: self-heal-materialization-test
+self-heal-materialization-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_self_heal_pr_materializer tests.test_qikvrt_autonomous_pre_effect_controller tests.test_qikvrt_continuous_auto_repair
+
+test: self-heal-materialization-test
+
+.PHONY: autonomous-pr-continuation-test
+autonomous-pr-continuation-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_autonomous_pr_continuation tests.test_qikvrt_autonomous_self_heal tests.test_qikvrt_expected_head_promotion tests.test_qikvrt_expected_head_promotion_contract
+
+test: autonomous-pr-continuation-test
+
+.PHONY: issue-agent-test
+issue-agent-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest discover -s tests/issue_agent -p 'test_*.py' -v
+
+.PHONY: digital-twin-sso-test
+digital-twin-sso-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_digital_twin_sso_gate
+
+test: digital-twin-sso-test
+
+.PHONY: public-qa-test
+public-qa-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_public_qa_server tests.test_public_question_entrypoint
+	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m py_compile runtime/public_qa/server.py
+
+test: public-qa-test
+
+.PHONY: editorial-navigation-test
+editorial-navigation-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tests/test_editorial_navigation.py
+
+test: editorial-navigation-test
+
+.PHONY: repository-monitor-test self-host-test
+repository-monitor-test:
+	node docs/monitor/observer.test.mjs
+	node --test docs/monitor/monitor.test.mjs
+	node --test docs/monitor/mesh-file.test.mjs
+
+.PHONY: temdd-event-ledger-test
+temdd-event-ledger-test: tool-cache-contract
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests/test_temdd_event_ledger.py tests/test_temdd_runtime_subject_binding.py
+
+# The historical admission target is part of explicitly selected S1 runtimes.
+# Generic portable callers retain their existing platform contract.
+ifneq ($(filter self-host self-host-firefox self-host-systemd,$(QIKVRT_RUNTIME_PROFILE)),)
+test: temdd-event-ledger-test
+endif
+
+self-host-test: tool-cache-contract temdd-event-ledger-test
+	node --test docs/monitor/mesh-file.test.mjs
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_provider
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_temdd
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_migration
+	node --check docs/monitor/self-host.mjs
+	node --check tools/qikvrt_mesh_monitor_readback.mjs
+
+.PHONY: origin-adapter-test origin-adapter-browser-test
+origin-adapter-test: tool-cache-contract
+	QIKVRT_ORIGIN_FIXTURE_DIR="$(CURDIR)/.qikvrt/evidence/origin-adapter-fixture" $(PYTHON) -B -m unittest -v tests.test_self_host_temdd.OriginExportTests
+	QIKVRT_ORIGIN_FIXTURE_DIR="$(CURDIR)/.qikvrt/evidence/origin-adapter-fixture" node --test docs/monitor/origin/origin.test.mjs
+
+origin-adapter-browser-test: origin-adapter-test
+	QIKVRT_ORIGIN_FIXTURE_DIR="$(CURDIR)/.qikvrt/evidence/origin-adapter-fixture" node --test docs/monitor/origin/origin.browser.test.mjs
+
+.PHONY: self-host-container-test
+self-host-container-test: tool-cache-contract
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_container
+
+test: self-host-container-test
+
+.PHONY: live-authority-mirror-ab-contract
+live-authority-mirror-ab-contract:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_live_authority_mirror_ab
+
+test: live-authority-mirror-ab-contract

@@ -1,12 +1,17 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2026 Ingolf Lohmann.
+import base64
 import hashlib
+import io
 import json
 import pathlib
 import re
 import subprocess
 import sys
 import unittest
+import urllib.parse
+import xml.etree.ElementTree as ET
+import zipfile
 
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -65,8 +70,32 @@ class SelfDisclosureTests(unittest.TestCase):
         self.assertEqual(self.overview['canonical_url'], CANONICAL_URL)
         self.assertIn(f'<link rel="canonical" href="{CANONICAL_URL}">', self.html)
         self.assertIn('application/ld+json', self.html)
-        self.assertIn(CANONICAL_URL, (ROOT / 'docs/sitemap.xml').read_text(encoding='utf-8'))
-        self.assertIn('https://goldkelch.github.io/qik-vrt/sitemap.xml', (ROOT / 'docs/robots.txt').read_text(encoding='utf-8'))
+        delivery = self.disclosure['bindings']['public_delivery']
+        source_binding = read_json(ROOT / delivery['source_binding_path'])
+        self.assertEqual(delivery['canonical_origin'], 'https://raumzeitterminal.de')
+        self.assertEqual(delivery['project_id'], source_binding['project_id'])
+        self.assertEqual(delivery['canonical_origin'], source_binding['production_origin'])
+        self.assertEqual(delivery['article_path'], source_binding['article_path'])
+        sitemap = ET.parse(ROOT / delivery['sitemap_path'])
+        urls = [node.text for node in sitemap.findall('.//{http://www.sitemaps.org/schemas/sitemap/0.9}loc')]
+        self.assertEqual(urls, delivery['sitemap_urls'])
+        article_url = delivery['canonical_origin'] + delivery['article_path']
+        self.assertIn(article_url, urls)
+        for url in urls:
+            parsed = urllib.parse.urlsplit(url)
+            self.assertEqual((parsed.scheme, parsed.netloc), ('https', 'raumzeitterminal.de'))
+            self.assertFalse(parsed.query or parsed.fragment)
+        self.assertIn('Sitemap: ' + delivery['canonical_origin'] + '/sitemap.xml',
+                      (ROOT / delivery['robots_path']).read_text(encoding='utf-8'))
+        article = read_json(ROOT / ('docs' + delivery['article_path'] + 'index.json'))
+        self.assertEqual(article['canonical_url'], article_url)
+        self.assertEqual(article['languages'], ['de', 'en', 'fr', 'ru', 'fa', 'zh'])
+        self.assertEqual(article['variants'], ['full', 'short'])
+        self.assertIn(f'<link rel="canonical" href="{article_url}">',
+                      (ROOT / ('docs' + delivery['article_path'] + 'index.html')).read_text(encoding='utf-8'))
+        self.assertEqual(delivery['state'], 'PREPARED_NOT_DEPLOYED')
+        self.assertFalse(delivery['public_delivery_effect_ack'])
+        self.assertFalse(source_binding['PUBLIC_DELIVERY_EFFECT_ACK'])
         self.assertIn('href="publications/"', (ROOT / 'docs/index.html').read_text(encoding='utf-8'))
 
         for path in ('AI', 'README.md'):
@@ -104,6 +133,53 @@ class SelfDisclosureTests(unittest.TestCase):
         for entry in self.overview['zenodo_records']:
             self.assertEqual(entry['doi_url'], f"https://doi.org/{entry['doi']}")
             self.assertIn(entry['doi_url'], self.html, entry['id'])
+
+    def test_qik_revision_archive_status_is_bound_to_original_public_bytes(self):
+        base = ROOT / 'docs/publications/2026-09-23-qik-scientific-revision'
+        receipt_path = base / 'PUBLICATION_READBACK_20261019.json'
+        receipt = read_json(receipt_path)
+        record_path = ROOT / receipt['record']['record_response']['path']
+        record = read_json(record_path)
+        self.assertEqual(sha256(record_path), receipt['record']['record_response']['sha256'])
+        self.assertEqual(record['id'], 22907018)
+        self.assertEqual(record['doi'], '10.5281/zenodo.22907018')
+        self.assertTrue(record['submitted'])
+        self.assertEqual(record['status'], 'published')
+        self.assertEqual(record['metadata']['version'], '2026-09-23-qik-scientific-revision')
+        files = {item['name']: item for item in receipt['files']}
+        self.assertEqual(set(files), {item['key'] for item in record['files']})
+        self.assertEqual(len(files), 8)
+        for remote in record['files']:
+            saved = ROOT / files[remote['key']]['saved_path']
+            data = saved.read_bytes()
+            self.assertEqual(len(data), remote['size'])
+            self.assertEqual('md5:' + hashlib.md5(data).hexdigest(), remote['checksum'])
+            self.assertEqual(sha256(saved), files[remote['key']]['sha256'])
+
+        parts = sorted((base / 'archive').glob('*.part-*'))
+        self.assertEqual(len(parts), 13)
+        archive = base64.b64decode(b''.join(path.read_bytes() for path in parts))
+        self.assertEqual(hashlib.sha256(archive).hexdigest(), receipt['original_archive']['sha256'])
+        expected = dict(line.split('  ', 1)[::-1] for line in (base / 'SHA256SUMS').read_text().splitlines())
+        with zipfile.ZipFile(io.BytesIO(archive)) as original:
+            self.assertEqual(set(original.namelist()), set(expected))
+            for name, digest in expected.items():
+                self.assertEqual(hashlib.sha256(original.read(name)).hexdigest(), digest)
+                self.assertEqual(original.read(name), (ROOT / files[name]['saved_path']).read_bytes())
+
+        bundle = next(item for item in self.overview['publication_bundles']
+                      if item['id'] == receipt['publication_id'])
+        self.assertEqual(bundle['state'], 'zenodo_published_exact_original_docx_verified')
+        self.assertEqual(bundle['public_readback_path'], receipt_path.relative_to(ROOT).as_posix())
+        self.assertIn('ZENODO_PUBLISHED = true', (base / 'README.md').read_text())
+        historical = ROOT / files['README.md']['saved_path']
+        self.assertIn('ZENODO_PUBLISHED = false', historical.read_text())
+        self.assertNotIn('Live-Deposition ausstehend', self.html[self.html.index(
+            'data-source="docs/publications/2026-09-23-qik-scientific-revision/README.md"'):].split('</a>', 1)[0])
+        self.assertFalse(any(name.lower().endswith('.pdf') for name in files))
+        self.assertFalse(receipt['mail_pdf']['present_in_this_zenodo_record'])
+        self.assertFalse(receipt['governance_boundary']['new_zenodo_write_performed'])
+        self.assertFalse(receipt['claims']['global_effect_ack_done'])
 
     def test_zenodo_publication_receipt_coverage(self):
         records = {entry.get('receipt_path'): entry for entry in self.overview['zenodo_records'] if entry.get('receipt_path')}

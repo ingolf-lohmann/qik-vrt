@@ -45,7 +45,8 @@
     "relation": "OBSERVE_BOTH -> CLASSIFY_GAP -> ADMIT_EXISTING_AUTHORITY_ACTION -> MATERIALIZE_SUCCESSOR -> EXECUTE_BOTH -> READBACK_BOTH -> COMPARE -> BIND -> REPEAT",
     "first_success_terminal": false,
     "first_failure_terminal": false,
-    "stop_only_on": "DECLARED_SCOPED_EFFECT_ACK_DONE_OR_HARD_AUTHORITY_BOUNDARY"
+    "stop_only_on": "HARD_AUTHORITY_BOUNDARY",
+    "after_scoped_effect_ack_done": "EFFECT_ACK_CONTINUE"
   },
   "universality_claim_boundary": {
     "cloud_transputer_universal_functionality": "TARGET_REQUIRES_CONNECTABILITY_EVIDENCE_ACROSS_DECLARED_INTERFACES",
@@ -91,5 +92,123 @@
       "EFFECT_ACK"
     ],
     "generalization_boundary": "This is a QIK-VRT conformance rule. It does not assert that every non-QIK-VRT system is universally unacceptable."
+  },
+  "self_application_working_rule": {
+    "rule_id": "QIKVRT_RECURSIVE_SELF_APPLICATION_20261013",
+    "owner": "Ingolf Lohmann",
+    "authorized_at": "2026-10-13T05:16:15+03:00",
+    "classification": "OPERATIONAL_WORKING_RULE_NOT_SCIENTIFIC_PUBLICATION",
+    "attributed_formulation": "Quod erat demonstrandum ingenium.",
+    "relation": "PREVIOUS_RESULTS_ERRORS_OMISSIONS_OPEN_DUTIES -> BIND_SUCCESSOR -> ADMIT_CAUSAL_REPAIR -> EXECUTE -> TEST -> READBACK -> CONTINUE",
+    "applicable_layers": [
+      "CLIENT",
+      "ENTRYPOINT",
+      "POLICY",
+      "IMPLEMENTATION",
+      "TESTS",
+      "RUNTIME",
+      "DIGITAL_TWIN",
+      "MESH",
+      "DELIVERY",
+      "HUMAN_INTERFACE",
+      "HANDOFF"
+    ],
+    "inherited_open_duties_must_not_be_dropped": true,
+    "unreobserved_subject_is_not_repaired": true,
+    "each_changed_subject_requires_fresh_dependent_gates": true,
+    "unchanged_failed_effect": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+    "unrelated_lifecycle_change_is_retry_admission": false,
+    "delta_requirement": "Concrete verified result or improvement in its stated scope; iteration count or new bytes alone do not prove novelty.",
+    "exact_delivery_url": "https://raumzeitterminal.de/",
+    "done_condition": [
+      "WORKING_SOFTWARE",
+      "EXACT_PUBLIC_URL",
+      "FRESH_APPLICATION_READBACK"
+    ],
+    "separate_obligations": [
+      "DOMAIN_DNS",
+      "TLS",
+      "USEFUL_APPLICATION_DELIVERY",
+      "AUTHENTICATED_NATIVE_EXECUTION"
+    ],
+    "reuse": {
+      "client_gate": "tools/ai_handoff.py --client-receipt",
+      "client_work_fields": [
+        "previous_run.execution_id",
+        "previous_run.open_work",
+        "work"
+      ],
+      "human_contract": "docs/operations/AUTONOMOUS_PR_CONTINUATION.md",
+      "site_runtime": "existing lib/evidence-core.ts / lib/evidence.ts / lib/evidence-store.ts",
+      "site_read_paths": [
+        "/api/evidence",
+        "/api/readback",
+        "/mcp"
+      ]
+    },
+    "persistence_requires_supported_write_and_readback_per_layer": true,
+    "persistence_proves_main_mirror_or_other_client_adoption": false,
+    "observer_grants_external_effect_capability": false,
+    "predecessor_evidence_transfer": false,
+    "scientific_or_universal_novelty_proof_from_owner_formulation": false,
+    "work_unit": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json",
+    "anticipated_transitions": {
+      "owner": "Ingolf Lohmann",
+      "authorized_at": "2026-10-15T08:51:24+03:00",
+      "classification": "OPERATIONAL_WORKING_RULE_NOT_SCIENTIFIC_PUBLICATION",
+      "original_wording": "Jeder sich abzeichnende Übergang ist nutzbar und zu nutzen!\n\nAlles andere war, ist und wird Verschwendung bleiben.",
+      "attribution": "Quod erat demonstrandum,\nIngolf Lohmann",
+      "implementation_instruction": "Ja,\nalso anwenden,\numsetzen und\nrealisieren!",
+      "objectives": ["RESPONSIVENESS", "ADAPTABILITY", "VERIFIED_PROGRESS_PER_HUMAN_INTERVENTION"],
+      "relation": "OBSERVE_TRANSITION -> BIND_INPUTS_AND_ACTIVATION -> EXECUTE_ADMITTED_PREPARATION -> REASSESS_AFTER_RELEVANT_CHANGE -> EXECUTE_ADMITTED_SUCCESSOR -> FRESH_READBACK",
+      "reuse": "tools/ai_handoff.py --client-receipt",
+      "receipt_field": "transition_plan",
+      "available_preparation_is_executable_successor": true,
+      "human_correction_invalidates_stale_input_binding": true,
+      "independent_alternatives_remain_available": true,
+      "activation_replaces_authorization_or_credentials": false,
+      "unchanged_causal_failure": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "measured_speedup_or_live_client_adoption_proven": false,
+      "work_unit": "state/work_units/QIKVRT_ANTICIPATED_TRANSITIONS_20261015_V1.json"
+    },
+    "immediate_execution_principle": {
+      "rule_id": "QIKVRT_IMMEDIATE_EXECUTION_20261013",
+      "owner": "Ingolf Lohmann",
+      "submitted_at": "2026-10-13T08:23:34+03:00",
+      "classification": "NORMATIVE_REPOSITORY_WORKING_PRINCIPLE",
+      "original_wording": "Was du heute kannst besorgen, das verschiebe nicht auf morgen, sondern erledige es unmittelbar, denn alles andere war, ist und wird inakzeptabel sein.",
+      "original_wording_utf8_sha256": "bedcbdda69948d33077cf4599b880caa57a502743134b449678695b4e79aada9",
+      "attribution": "q.e.d.\nIngolf Lohmann",
+      "default_disposition": "EXECUTE_IMMEDIATELY_IN_CURRENT_WORK_RING",
+      "executable_means": [
+        "AUTHORIZED",
+        "SAFE",
+        "DETERMINISTIC",
+        "CALLABLE",
+        "AUTHENTICATED",
+        "PERMITTED",
+        "ADMITTED"
+      ],
+      "complete_through": [
+        "EXECUTE",
+        "APPLICABLE_TESTS",
+        "PERSIST",
+        "FRESH_EFFECT_READBACK",
+        "CONTINUE"
+      ],
+      "defer_executable_work_to_tomorrow_or_another_turn": false,
+      "status_plan_or_elapsed_time_is_completion": false,
+      "blocked_task": "PRESERVE_OPEN_WITH_CAUSAL_EVIDENCE_RETRY_CONDITION_AND_NEXT_ACTION",
+      "independent_executable_work_while_blocked": "CONTINUE_IMMEDIATELY",
+      "unchanged_failed_effect": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "new_external_authority_granted": false,
+      "review_or_security_bypass": false,
+      "reuse_existing_client_gate": "tools/ai_handoff.py --client-receipt",
+      "existing_regressions": "make ai-runtime-contract",
+      "human_contract": "docs/operations/AUTONOMOUS_PR_CONTINUATION.md",
+      "persisted_text_proves_main_mirror_or_other_client_adoption": false,
+      "work_unit": "state/work_units/QIKVRT_IMMEDIATE_EXECUTION_20261013_V1.json"
+    }
   }
 }
+

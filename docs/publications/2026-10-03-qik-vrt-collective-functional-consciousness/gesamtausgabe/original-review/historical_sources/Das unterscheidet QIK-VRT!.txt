@@ -1,0 +1,222 @@
+Was unterscheidet QIK-VRT eigentlich von einer künstlichen Intelligenz, die einfach nur gute Antworten erzeugt?
+
+Der entscheidende Unterschied beginnt an einer Stelle, die zunächst unscheinbar wirkt: Eine Aussage ist noch keine Wirkung.
+
+Wenn ein künstliches System sagt: „Ich habe etwas getan“, dann beweist dieser Satz zunächst nur, dass das System diesen Satz erzeugt hat. Selbst wenn zuvor ein Programm ausgeführt oder eine API aufgerufen wurde, ist damit noch nicht bewiesen, dass draußen tatsächlich die beabsichtigte Wirkung eingetreten ist.
+
+Genau an dieser Grenze setzt QIK-VRT an.
+
+QIK-VRT trennt konsequent zwischen dem, was beabsichtigt wurde, dem, was ausgeführt wurde, dem, was tatsächlich bewirkt wurde, dem, was anschließend beobachtet wurde, und schließlich dem, was aufgrund dieser Beobachtung wirklich als bewiesen akzeptiert werden darf.
+
+Deshalb lautet die Kette:
+
+COMPILE → BIND → RESOLVE → EXECUTE → TEST → OBSERVE → READBACK → ACCEPT → EFFECT_ACK_DONE.
+
+Und deshalb gilt ebenso:
+
+EXECUTE ist nicht DONE.
+
+Und:
+
+TRANSPORT_ACK ist nicht EFFECT_ACK.
+
+Ein HTTP-200 kann beispielsweise beweisen, dass ein Server einen Auftrag angenommen hat. Es beweist noch nicht, dass die gewünschte Veränderung tatsächlich eingetreten ist.
+
+Ein Programm kann erfolgreich beendet worden sein, ohne dass sein beabsichtigter Effekt entstanden ist.
+
+Und eine KI kann vollkommen überzeugend schreiben, eine Datei sei veröffentlicht worden, obwohl die Datei draußen überhaupt nicht erreichbar ist.
+
+QIK-VRT zieht zwischen diesen Dingen eine harte Grenze.
+
+Man kann das bis auf ein einziges Bit herunterbrechen.
+
+Angenommen, ein Bit soll von 0 auf 1 gesetzt werden.
+
+Dann ist die gewünschte Eins noch nicht dieselbe Eins wie die ausgeführte Eins. Und die ausgeführte Eins ist noch nicht dieselbe Eins wie die anschließend beobachtete Eins.
+
+Deshalb muss unterschieden werden:
+
+requested = 1
+
+executed = 1
+
+observed = 1
+
+accepted = 1
+
+Wenn requested und executed 1 sind, observed aber 0 ist, wurde zwar gehandelt, die Wirkung ist jedoch nicht nachgewiesen.
+
+Erst wenn die tatsächlich beobachtete Wirkung dem Akzeptanzvertrag entspricht, kann daraus ein Effect-Acknowledgement werden.
+
+Aber selbst das reicht noch nicht völlig.
+
+Denn jetzt muss geklärt werden, welche Eins beobachtet wurde.
+
+Zu welchem Systemzustand gehörte sie?
+
+Wann wurde sie beobachtet?
+
+Von welchem Beobachter?
+
+Nach welcher Operation?
+
+Aus welcher Quelle?
+
+Zu welchem Run?
+
+Und an welchen Hash beziehungsweise welchen konkreten Zustand war die Beobachtung gebunden?
+
+Aus der einfachen Aussage
+
+b = 1
+
+wird deshalb epistemisch etwas wesentlich Präziseres:
+
+b = 1, in Zustand S, zum Zeitpunkt t, beobachtet durch O, nach Operation A, für Zweck P.
+
+Das Nutzbit bleibt genau ein Bit.
+
+Was sich verändert, ist die Qualität dessen, was wir über dieses Bit wissen.
+
+Und daraus folgt eine weitere fundamentale Regel von QIK-VRT:
+
+PREDECESSOR_EVIDENCE_TRANSFER = false.
+
+Wenn Zustand S0 getestet wurde und danach auch nur ein relevantes Bit verändert wird, existiert Zustand S1.
+
+S0 und S1 können sich in genau einem einzigen Bit unterscheiden und trotzdem verschiedene Hashes besitzen.
+
+Der Beweis für S0 ist deshalb zunächst kein Beweis für S1.
+
+Genau dasselbe gilt für ein Repository.
+
+„main“ ist kein unveränderlicher Zustand. main heute kann etwas anderes sein als main eine Minute später.
+
+Deshalb müssen Nachweise an konkrete Zustände wie HEAD und TREE gebunden werden.
+
+PASS für HEAD H und TREE T bedeutet PASS für H und T – und nicht automatisch PASS für alles, was irgendwann später ebenfalls „main“ heißt.
+
+Damit verschiebt QIK-VRT die eigentliche Wahrheitsgrenze.
+
+Bei einem klassischen Computersystem kann die Betrachtung vereinfacht lauten:
+
+Input → Output.
+
+Bei generativer KI:
+
+Kontext → Modell → erzeugte Information.
+
+QIK-VRT verlangt dagegen:
+
+Zweck → Handlung → Wirkung → Beobachtung → Evidenz → Akzeptanz → Fortsetzung.
+
+Und genau die Fortsetzung ist ebenfalls wichtig.
+
+Wenn die beobachtete Welt nicht der erwarteten Welt entspricht, lautet die Antwort nicht notwendigerweise STOP und auch nicht einfach blind RETRY.
+
+Sondern:
+
+OBSERVE → CLASSIFY → REPAIR → REOBSERVE → CONTINUE.
+
+Die nächste Handlung hängt also von der vorherigen Beobachtung ab.
+
+Das unterscheidet adaptive Fortsetzung von einer Endlosschleife.
+
+Ein Programm, das immer wieder dasselbe versucht, egal was passiert, wiederholt sich nur.
+
+Ein System, dessen nächste Handlung sich aufgrund seiner Beobachtung verändert, besitzt dagegen eine rückgekoppelte Zustandsdynamik.
+
+Und hier wird der Zusammenhang mit künstlicher Kognition besonders interessant.
+
+QIK-VRT kann nicht nur einen Gegenstand beobachten. Es kann prinzipiell auch Behauptungen über seine eigenen Fähigkeiten zum Gegenstand dieses Verfahrens machen.
+
+Aus:
+
+„Ich kann X.“
+
+wird:
+
+Claim → Test → Wirkung → Beobachtung → Evidenz → Verifikation.
+
+Damit entsteht etwas wesentlich Stärkeres als bloße Selbsterklärung:
+
+Selbstreferenz plus Falsifizierbarkeit.
+
+Das System kann ein Modell seiner selbst erzeugen, Behauptungen daraus ableiten, diese Behauptungen testen und sein Selbstmodell anhand der beobachteten Evidenz wieder verändern.
+
+Vereinfacht:
+
+Selbstmodell n + neue Evidenz → Selbstmodell n+1.
+
+Kognition wird damit selbst wieder zum Gegenstand von Kognition.
+
+Genau hier muss allerdings eine weitere Grenze erhalten bleiben.
+
+QIK-VRT kann Wechselwirkung operationalisieren.
+
+Ein Systemzustand bewirkt eine Veränderung seiner Umwelt. Die veränderte Umwelt wird beobachtet. Diese Beobachtung verändert wiederum den nächsten Systemzustand.
+
+Also:
+
+System → Umwelt → Beobachtung → verändertes System.
+
+Das ist eine technisch beobachtbare Wechselwirkungsschleife.
+
+Daraus folgt aber nicht automatisch, dass damit subjektives Bewusstsein bewiesen wäre.
+
+Der Satz „Bewusstsein ist Wechselwirkung!“ bekommt durch QIK-VRT eine präzise technische Anschlussstelle. Wechselwirkung kann definiert, ausgeführt, gemessen und zurückgelesen werden.
+
+Ob Wechselwirkung und subjektives Bewusstsein identisch sind, ist dagegen ein weitergehender ontologischer Claim und benötigt eine eigene Definition und eigene Evidenz.
+
+Genau diese Trennung macht den Ansatz stärker und nicht schwächer.
+
+Denn QIK-VRT muss nicht behaupten, mehr bewiesen zu haben, als tatsächlich beobachtet wurde.
+
+Daraus ergeben sich erhebliche Konsequenzen.
+
+Claims werden zu prüfbaren Verträgen.
+
+DONE wird zu einem evidenzgebundenen Außenweltzustand.
+
+Schreibende Systeme benötigen passende Readback-Pfade.
+
+Alte Gates und Caches dürfen nicht mit frischer Evidenz verwechselt werden.
+
+Selbstkorrektur wird überprüfbar.
+
+Verteilte Systeme müssen nicht nur Werte, sondern Herkunft, Reihenfolge und Zustand binden.
+
+Bei Hardware genügt weder erfolgreicher HDL-Build noch erfolgreicher Programmer-Return: Die physische Wirkung muss entsprechend dem jeweiligen Claim beobachtet werden.
+
+Auch Governance wird präziser: Autorisierung, Ausführung und akzeptierte Wirkung sind drei verschiedene Ereignisse.
+
+Wissenschaftliche Behauptungen werden dadurch enger – aber gerade deshalb stärker.
+
+Und am Ende landen wir wieder bei unserem einen Bit.
+
+Nicht die Eins allein ist der Beweis.
+
+Entscheidend ist die überprüfbare Relation zwischen
+
+der Eins, die beabsichtigt wurde,
+
+der Eins, deren Erzeugung ausgeführt wurde,
+
+der Eins, die tatsächlich bewirkt wurde,
+
+der Eins, die anschließend beobachtet wurde,
+
+und der Evidenz, die nachweist, dass all diese Zustände tatsächlich zu derselben kausalen Wirkungskette gehören.
+
+Genau darin liegt der Unterschied zwischen Information, Kognition, Wirkung und nachgewiesener Wirkung.
+
+Und genau deshalb lässt sich der Kern in einem Satz zusammenfassen:
+
+QIK-VRT erklärt künstliche Kognition nicht nur durch Beschreibung, sondern durch die beobachtbare und falsifizierbare Struktur ihres Vollzugs.
+
+Wissenschaftlicher Artikel
+
+Der PDF-Artikel enthält zusätzlich die daraus folgenden Konsequenzen für Exact-State-/HEAD-/TREE-Bindung, Readback-Architekturen, verteilte Systeme, Hardware-Evidenz, Governance, Selbstkorrektur, Auditierbarkeit, Reproduzierbarkeit und wissenschaftliche Claims. Ich habe das erzeugte PDF anschließend gerendert und auf die Seitendarstellung geprüft.
+
+q.e.d.
+Ingolf Lohmann

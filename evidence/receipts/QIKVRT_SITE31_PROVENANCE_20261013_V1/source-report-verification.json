@@ -1,0 +1,49 @@
+{
+  "schema": "qikvrt_site31_source_report_verification_v1",
+  "verified_at_utc": "2026-10-13T07:19:17.439864+00:00",
+  "original_report": {
+    "path": "evidence/receipts/QIKVRT_SITE31_PROVENANCE_20261013_V1/QIKVRT_Site30_Nutzpfadpruefung_20261013.json",
+    "bytes": 458243,
+    "sha256": "34c5ba6be739bd8fc06a381e00c94664039d14c853c14998c615fc1f6353fdbb",
+    "git_blob_sha1": "18994545b56ff45d5f0b05dc5f828bdf1cfa5d4c"
+  },
+  "site31_source_head": "4179d18907e71da125ba51a1a7250dfea82590e6",
+  "site31_source_tree": "ad09e2626b32893e0328534bf0737934d4a25538",
+  "changed_source_files": 9,
+  "eight_declared_application_file_digests_match": true,
+  "ninth_changed_file": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json",
+  "patch_reproduces_exact_successor_tree_from_site30": true,
+  "original_snapshot_json_byte_checks": [
+    {
+      "locator": "$.independent_mcp.successor_readback",
+      "bytes": 12754,
+      "sha256": "dfab516d7dde851a8672512882922371c49bc9ddf80c2deb9d4e10ca6f50e370"
+    },
+    {
+      "locator": "$.independent_successor_readback.connected_mcp_original_byte_readback",
+      "bytes": 12754,
+      "sha256": "029c79875e5623d7fed3ff65eacb012c14484933f651b3544bfc87e219d90190"
+    },
+    {
+      "locator": "$.independent_successor_readback.final_closing_readback.readback",
+      "bytes": 12754,
+      "sha256": "b10c079ccec3c8b67e9faf2d95e8fd51514c3b278b74ef46cbe2bb066a57d56e"
+    },
+    {
+      "locator": "$.browser_execution_route_continuation_20261013.closing_repository_and_delivery_readback.closure.readback",
+      "bytes": 12726,
+      "sha256": "484a19cee2d73d436d8517243c4575c763c04edd3208f6caa86b7de8918c16ee"
+    },
+    {
+      "locator": "fresh_mcp_readback",
+      "bytes": 12752,
+      "sha256": "52a00813d58515ce3c2752026106addae89911ec0a1f97de330e12bdbe6eba27"
+    }
+  ],
+  "preserved_http_scope": "Recorded original responses and hashes; no browser inference. Built assets retain their own public digests rather than inheriting raw-source hashes.",
+  "preserved_native_deployment_metadata": true,
+  "site_version31_stays_distinct_from_later_source_head": true,
+  "live_mcp_repository_observation": "Historical rate-limit control; authenticated connector repository read is separate.",
+  "effect_ack_done": false,
+  "ordinary_release": false
+}

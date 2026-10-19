@@ -59,3 +59,23 @@ wird als persönliche Reisevorbereitung ausgegeben.
 
 Prüfen: `make owner-reminders-test`; vollständiges Gate: `make test`.
 Vorschau ohne Wirkung: `python3 -B tools/qikvrt_owner_reminders.py`.
+
+## Zeitlich begrenzte Erinnerungen am 6. Oktober 2026
+
+Der neue Owner-Auftrag vom 6. Oktober wird im privaten Tagesdokument geführt.
+Sechs neutrale Registry-Einträge erinnern um 10, 12, 14, 16, 18 und 20 Uhr
+Europe/Paris. Der vorhandene Executor hat dafür einen zusätzlichen Kalender-
+Schedule am 6. Oktober; seine stündliche Prüfung bleibt erhalten.
+
+Jeder neue Eintrag besitzt ein `expires`-Ende. Verpasste ältere Zeitfenster
+werden nicht gebündelt nachgesendet; nach dem letzten heutigen Fenster erfolgt
+keine spätere Zustellung. Die 20-Uhr-Erinnerung darf bei verzögerter Zulassung
+bis vor 21 Uhr nachgeholt werden. Die persönliche Aufgabe bleibt bis 20 Uhr
+fällig. Ein Ablauf ist keine Aufgabenerledigung. Sobald Ingolf den Fund bzw.
+die Erledigung bestätigt, werden sämtliche Einträge mit dem gemeinsamen
+ID-Präfix `personal-document-20261006-` als `COMPLETED` geschlossen.
+
+Bestehende Einträge ohne `expires` behalten ihre bisherigen Hashes,
+Idempotenz- und Nachlaufregeln. Die neuen Endgrenzen sind Teil des gebundenen
+Auftrags und seiner Inhaltsidentität. Zustellung bleibt ein separat
+zurückzulesender GitHub-Kommentar, kein Nachweis menschlichen Lesens.

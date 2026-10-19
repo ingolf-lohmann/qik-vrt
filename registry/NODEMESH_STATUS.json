@@ -1,3 +1,51 @@
-{"qikvrt_event":"NODEMESH_STATUS_AGGREGATE_4AV1_OPEN_REGISTRY","generated_utc":"2026-07-20T14:41:02Z","run_id":"29751720021","seed_repository":"Goldkelch/qik-vrt","fixed_node_count":false,"node_count":1,"active_count":1,"stale_count":0,"suspended_count":0,"revoked_count":0,"unknown_count":0,"nodes":[
-    {"guid":"a84f157a-cef2-4c47-bca9-8f407085bdbe","repository":"ingolf-lohmann/qik-vrt","registry_status":"ACCEPTED","policy_status":"ACTIVE","effective_status":"ACTIVE","node_health_visible":true,"node_ack_visible":true,"node_renewal_visible":true,"heartbeat_status":"FRESH","heartbeat_utc":"2026-07-20T14:30:19Z","expires_utc":"2026-07-21T15:30:19Z"}
-]}
+{
+  "active_count": 0,
+  "error_count": 3,
+  "fixed_node_count": false,
+  "generated_utc": "2026-10-18T05:30:39Z",
+  "node_count": 1,
+  "nodes": [
+    {
+      "effective_expires_utc": "",
+      "effective_status": "STALE",
+      "errors": [
+        {
+          "error": "public lifecycle unavailable: RECORDED_HTTP_404_PUBLIC_LIFECYCLE_REF_UNAVAILABLE",
+          "source": "health"
+        },
+        {
+          "error": "public lifecycle unavailable: RECORDED_HTTP_404_PUBLIC_LIFECYCLE_REF_UNAVAILABLE",
+          "source": "ack"
+        },
+        {
+          "error": "public lifecycle unavailable: RECORDED_HTTP_404_PUBLIC_LIFECYCLE_REF_UNAVAILABLE",
+          "source": "renewal"
+        }
+      ],
+      "guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe",
+      "heartbeat_status": "MISSING",
+      "heartbeat_ttl_minutes": 1500,
+      "heartbeat_utc": "",
+      "node_ack_visible": false,
+      "node_health_visible": false,
+      "node_renewal_visible": false,
+      "policy_status": "ACTIVE",
+      "registry_status": "ACCEPTED",
+      "remote_evidence": {
+        "ack_sha256": null,
+        "health_sha256": null,
+        "renewal_sha256": null
+      },
+      "repository": "ingolf-lohmann/qik-vrt"
+    }
+  ],
+  "qikvrt_event": "NODEMESH_STATUS_AGGREGATE_OPEN_REGISTRY",
+  "revoked_count": 0,
+  "run_id": "owner-seed-role-migration-20261018-e0ad3755",
+  "schema": "qikvrt_nodemesh_status_v2",
+  "seed_repository": "ingolf-lohmann/qik-vrt",
+  "stale_count": 1,
+  "status": "CONTINUE",
+  "suspended_count": 0,
+  "unknown_count": 0
+}

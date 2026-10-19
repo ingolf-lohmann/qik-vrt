@@ -1,0 +1,1150 @@
+{
+  "artificial_cognitive_actor": {
+    "build": "UNAVAILABLE",
+    "contribution": "Located and byte-verified existing S1 source; extended its existing Docker recipe, launcher, CI, cache authority, negative tests and protected direct REST host route.",
+    "model": "GPT-6",
+    "provider": "OpenAI",
+    "system_family": "Codex"
+  },
+  "authority_repository": "ingolf-lohmann/qik-vrt",
+  "container_production_verified": false,
+  "diagnostics": {
+    "cold_container_readback_38439078193": {
+      "concurrent_successor_preserved": {
+        "added_scope": "Make standalone listener readiness include durable initial observation, explicitly start fixture as UID/GID10001, and add cold-client/start/restart regressions.",
+        "existing_protected_public_readback_route_retained": true,
+        "original_activity_source_gate_retained": true,
+        "original_bounded_before_after_reader_outputs_retained": true,
+        "parent_head": "a0c2c338f85683b808e181368062577487280b30",
+        "parent_tree": "2047cf55995d8393669574b250ef705a95bba520",
+        "typed_reader_diagnostics_retained_unchanged": true
+      },
+      "effect_ack_done": false,
+      "job_id": 115442319799,
+      "native_failure": "Independent Node client exited 20 after NATIVE_TEMDD_READY; original CLI did not expose its assertion code.",
+      "native_successor": "REQUIRED_EXACT_HEAD_CI",
+      "original_artifact": {
+        "bytes": 390690684,
+        "id": 11835280488,
+        "original_zip_byte_verified": true,
+        "sha256": "07265f82ba555062311ed330df743c2c22982f69b129b6acbfdf39bfceeb26ea"
+      },
+      "public_production_verified": false,
+      "regression": "19 container controls, including original OCI import identity matrix, typed diagnostics, explicit unprivileged fixture start, two independent readbacks, changed ledger rejection and readback failure rejection; cold first-client and process-restart regression in existing standalone suite.",
+      "repair": "Await the existing standalone monitor's durable startup observation before listener readiness. Preserve strict independent client gates, original OCI transport/digests and all original runtime/security obligations. Explicitly bind smoke UID/GID 10001:10001 and retain both original client receipts.",
+      "run_id": 38439078193,
+      "source_head": "fa313c61b957f18ab01b3f0048c5a080dac7ece7",
+      "source_reproduction": {
+        "after_first_activity_read": "CLIENT_BYTE_READBACK_VERIFIED",
+        "before_snapshot_durable": false,
+        "corrected_regression_trace_sha256": "61b1bd013abf31d1ad91d0b4501c8b14f15b04b5401816574fc18137d5c8f94b",
+        "first_assertion": "HOLD_PUBLIC_NODE_HEALTH_CONTRACT",
+        "native_cause_same_assertion": "INFERRED_FROM_EXACT_COLD_SOURCE_PENDING_NATIVE_SUCCESSOR",
+        "original_regression_trace_sha256": "f490cd4f61b7b58cdbf9d660096aa38e17fa4c771e2eacda150787d6fb1dc5eb",
+        "regression_accepts_corrected": true,
+        "regression_rejects_original": true,
+        "scope": "LOCAL_ORIGINAL_SOURCE_REFERENCE_PROFILE_NOT_NATIVE_CONTAINER"
+      },
+      "source_tree": "4863b6afc7fe92014fc5bec3e3fc7f1457c62d5b",
+      "verified_native_import": {
+        "image_config_digest": "sha256:5bcf94a66807fc5d83bfad984070cc27302a89b1ca09305faa9c9edc0f60e7c6",
+        "independent_rebuild_digest_equal": true,
+        "ordered_diff_ids_verified": true,
+        "original_oci_image_digest": "sha256:6fee115e9de0976dbf5a1fc9c7deba63e07dbd7c483b438ebd11e20428563140",
+        "state": "DOCKER_LOAD_EXACT_OCI_RUNTIME_VERIFIED"
+      }
+    },
+    "initial_full_test": {
+      "cause": "Old terminal-disposition fixture rendered following sibling CI jobs; 23 fixture errors with KeyError steps.receipt.outputs.head.",
+      "log": "evidence/native-runtime-acceptance/s1-linux-container-20261013/full-test-initial-fixture-failure.json",
+      "original_bytes_preserved_inside_json": true,
+      "repair": "Bound the existing parser to the test job; all eight original terminal controls pass.",
+      "result": "FAIL",
+      "sha256": "db389456f9b09b0a421e9e09bebfd64ce6b719d9217101c875df7f92a77f830a"
+    },
+    "local_container_executor": {
+      "container_execution_claimed": false,
+      "continuation": "Existing native GitHub Actions Docker lane on the exact successor.",
+      "docker_or_podman_available": false,
+      "linux_effective_capabilities": "0000000000000000"
+    },
+    "local_materialization_boundary": {
+      "affected_test": "test_write_then_committed_descendant_check_is_local_only",
+      "historical_subject": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+      "repair": "Retrieve exact source/trees/blobs and original signed commit through REST; no old object rewritten, test removed or result downgraded.",
+      "result": "HISTORICAL_OBJECT_MISSING"
+    },
+    "native_socket_boundary": {
+      "affected_test": "tests.test_temdd_event_ledger.ProducerTests.test_ai_surface_and_subject_are_served",
+      "code_or_test_downgrade": false,
+      "error": "PermissionError [Errno 1] Operation not permitted at socket.socket(AF_UNIX)",
+      "local_full_run_exit": 130,
+      "retry_condition": "A Linux executor admitting AF_UNIX is available; run unchanged native tests on exact successor through existing GitHub CI.",
+      "skipped_test_added": false,
+      "trace_sha256": "379c3df3d62675ccbf4d54dc20895770b20956ac749985485b7fc8c5eef06881"
+    },
+    "oci_archive_retrieval_limit_38429796715": {
+      "actual_error": "InvalidInputException: Artifact exceeds max size of 536870912 bytes: 774962841 bytes.",
+      "artifact_bytes": 774962841,
+      "artifact_id": 11831465528,
+      "artifact_payload_downloaded": false,
+      "artifact_sha256": "0056d6312decd7888ed2a1e50aec727be8c0b0ae2bb5f35299964019f6f86231",
+      "effect_ack_done": false,
+      "head": "74606b8c3c59f0d93bed8d09dd2b72a7c32235db",
+      "local_verification": "Separate artifact names/paths, metadata exclusion, failure admission and YAML/Bash syntax verified. Runtime helper and tests unchanged from 020ee4c7.",
+      "native_OCI_nondeterminism_cause": "UNKNOWN",
+      "native_successor_execution": "REQUIRED",
+      "repair": "Use the existing pinned upload action for separate original OCI archives; exclude those failed archive files from the existing small metadata artifact. Retain the other client's frozen PR494 carrier successor unchanged.",
+      "run_id": 38429796715,
+      "source_parent_head": "020ee4c72114163924b980b7d408a7524119c625",
+      "source_parent_tree": "afde795df799130b9e919e815419d649d17b8cb9",
+      "strict_digest_equality_weakened": false
+    },
+    "oci_converter_output_owner_38433471240": {
+      "actual_error": "opening file /output/image.docker.tar: permission denied",
+      "causal_fix": "Bind converter process --user to actual CI runner id -u:id -g. Retain private directory, read-only root, no network, dropped capabilities and no-new-privileges; no broad chmod.",
+      "effect_ack_done": false,
+      "job_id": 115422938193,
+      "observed_setup": "CI output directory is freshly mktemp-created with private permissions; converter uses image-default UID without runner UID/GID binding.",
+      "public_production_verified": false,
+      "run_id": 38433471240,
+      "source_head": "912a70516bf47117b1e8096838803ca5c66a73d0",
+      "source_parent_head": "912a70516bf47117b1e8096838803ca5c66a73d0",
+      "source_tree": "8bc7f9b3352f2b352e6b65fffee275fc4ecde08c",
+      "validation": "Affected Bash/YAML and exact UID/GID argument plus restrictive guards verified; existing load identity tests unchanged. Native successor REQUIRED."
+    },
+    "oci_converter_read_only_temp_38434640140": {
+      "actual_failure": "initializing source oci-archive:/input.oci.tar: mkdir /var/tmp/container_images_oci2679897582: read-only file system",
+      "causal_fix": "Provide bounded 2GiB /var/tmp and 128MiB /tmp tmpfs mounts in both existing pinned Skopeo invocations. Retain root read-only, runner UID/GID, dropped capabilities, no-new-privileges, original OCI pins, smoke network isolation and protected native publication gates.",
+      "effect_ack_done": false,
+      "job_id": 115427051106,
+      "local_validation": "YAML and complete affected Bash heredocs checked; exact temp paths and bounds asserted. Load identity tests and runtime helper unchanged.",
+      "native_successor": "REQUIRED",
+      "observed_delta": "Output-owner failure is passed; Skopeo's OCI archive source uses /var/tmp. Both local smoke converter and protected publisher use this same pinned source transport.",
+      "protected_publication_executed": false,
+      "public_production_verified": false,
+      "run_id": 38434640140,
+      "source_head": "f9f6f0c7ef731a104af3b24dce8318e73c80843b",
+      "source_parent_head": "40c2c9a4019ca9889804a57651672f414f98cf90",
+      "source_parent_tree": "229aa22c1fb43ba2b18dafde03bd5868d169beaf",
+      "source_tree": "44e0a778b47f37b119b947c786e4a50cdd37e381"
+    },
+    "oci_docker_load_format_38431347362": {
+      "actual_failure": "docker load: open /var/lib/docker/tmp/docker-import-452906887/blobs/json: no such file or directory",
+      "effect_ack_done": false,
+      "image_digest": "sha256:2e915743cfad81554d0a29875bca0c29c32b45cafdde464a229ef3a91fa46a08",
+      "independent_OCI_manifest_equality": true,
+      "job_id": 115415261860,
+      "local_validation": {
+        "container_controls": 16,
+        "five_load_guard_cases": [
+          "valid",
+          "wrong_config_id",
+          "wrong_layers",
+          "wrong_source",
+          "changed_original_archive"
+        ],
+        "local_Docker_execution": false,
+        "native_successor": "REQUIRED",
+        "result": "PASS",
+        "workflow_yaml_and_affected_bash": "PASS"
+      },
+      "pinned_converter": "quay.io/skopeo/stable@sha256:97772f3c64fd2fba720b2bafaf37239dc44d8b1c625c8383c64044832efe9ed9",
+      "primary_documentation": "https://github.com/podman-container-tools/skopeo/blob/main/docs/skopeo-copy.1.md",
+      "public_production_verified": false,
+      "repair": "Reuse existing pinned Skopeo to convert OCI archive to Docker-load archive for this CI fixture only; compare unchanged original OCI file hash, exact image-config digest, ordered DiffIDs and source labels after native load. Registry publication keeps original OCI archive/digest.",
+      "run_id": 38431347362,
+      "smoke_started": false,
+      "source_head": "020ee4c72114163924b980b7d408a7524119c625",
+      "source_parent_head": "d12362727d2e53dce9400932b02f590758ef04bb",
+      "source_parent_tree": "ca4a63b3fade2e6536dfb61f2716392f748c8d5f",
+      "source_tree": "afde795df799130b9e919e815419d649d17b8cb9"
+    },
+    "oci_rebuild_failure_38425046696": {
+      "artifact_bytes": 1031,
+      "artifact_id": 11829635147,
+      "artifact_original_bytes_verified": true,
+      "artifact_sha256": "dda711e5831cfc3244565894f467ffa4455af89ff90b883da43efe18c1ad4b6f",
+      "cause": "INDEPENDENT_OCI_REBUILD_DIGEST_MISMATCH",
+      "effect_ack_done": false,
+      "first_image_digest": "sha256:4ac5224421a02e6760cd2b64d87a1ea0023f68382490f04a90b981fa08f244a1",
+      "full_original_work_unit_preserved": true,
+      "job_id": 115393724849,
+      "local_validation": {
+        "complete_container_control_tests": 15,
+        "evidence_class": "TECHNICAL_SYNTHETIC_OCI_ARCHIVE_CONTROLS",
+        "focused_oci_tests": 6,
+        "local_docker_execution": false,
+        "native_successor_execution": "REQUIRED",
+        "partial_checkout_missing_review_helper": "Observed then repaired by materializing unchanged exact-source tools/qikvrt_required_review_gate.py; no test bypass",
+        "result": "PASS",
+        "tool_cache_contract": "PASS 27/27",
+        "workflow_yaml_and_affected_bash_syntax": "PASS"
+      },
+      "next_action": "Native successor build: read failing pair receipt, compare retained image config/history/layers and original layer filesystem contents; repair observed changed bytes without weakening equality.",
+      "public_production_verified": false,
+      "repair": "Preserve both validated OCI subjects and changed diagnostic fields before strict rejection; retain both original archives through existing always-upload step.",
+      "retained_files": [
+        "buildx-version.txt",
+        "docker-version.txt",
+        "context.json"
+      ],
+      "run_id": 38425046696,
+      "scope": "Existing OCI reproducibility gate diagnosis; underlying byte nondeterminism remains unproven until original archives are compared.",
+      "second_image_digest": "sha256:f9a7cd26a6ef0902aefa02fd7a7099c15f14f71dbc10c81bd3c5b8260903631a",
+      "source_head": "c5ce2be0e0d23bb0dad49f00ca012757862c030f",
+      "source_tree": "ec90f19f13ccf4934b4d5719d0d14492379da54b",
+      "unchanged_errors_retried": false
+    }
+  },
+  "domain_observation": {
+    "observations": [
+      {
+        "body": "{\"errorCode\":404,\"title\":\"No such domain.\",\"description\":[]}",
+        "status": 404,
+        "url": "https://rdap.denic.de/domain/raumzeitterminal.de"
+      },
+      {
+        "body": "<html>\n<head>\n    <title>502 Bad Gateway</title>\n</head>\n<body>\n    <h1>502 Bad Gateway</h1>\n    <p>[Errno 111] Connection refused</p>\n</body>\n</html>",
+        "status": 502,
+        "url": "https://raumzeitterminal.de/"
+      }
+    ],
+    "observed_at": "2026-10-13T14:44:00.626883+00:00"
+  },
+  "effect_ack_done": false,
+  "fresh_fixture_durable_observation_and_readback_diagnostic": {
+    "causal_claim_boundary": "This omitted initial observation is source-derived and matches the failing fresh-fixture contract; its exact native assertion cause awaits the now-safe constant-code diagnostic. No underlying health requirement is weakened.",
+    "job_id": 115442319799,
+    "local_original_zip_verified": true,
+    "native_artifact_id": 11835280488,
+    "native_observed": "Fixture running on observed private internal bridge; actual SELF_HOST_NATIVE_READY with exact source, manifest and config pins; original Node independent client returned generic exit20. Full assertion cause was redacted by its previous catch-all.",
+    "native_successor": "PENDING_EXACT_HEAD_CI",
+    "predecessor_acceptance_transferred": false,
+    "public_production_verified": false,
+    "repair": "Use original GET /api/activity once before first standalone readback, also before public acceptance of fresh state. Preserve original snapshot bytes and before/after independent client bytes. Original client exposes only fixed HOLD assertion codes and redacts dynamic transport/file messages; all predicates and exit20 remain unchanged.",
+    "run_id": 38439078193,
+    "source_diagnosis": "Fresh empty volume has no monitor snapshot. Standalone self-host.mjs advertises readiness without startup observeLatest; server.mjs metadata requires visible.snapshot for snapshot_durable. Original client checks that health contract before its later GET /api/activity. Existing standalone readback tests seed acknowledged durable state first.",
+    "source_parent_head": "fa313c61b957f18ab01b3f0048c5a080dac7ece7",
+    "source_parent_tree": "4863b6afc7fe92014fc5bec3e3fc7f1457c62d5b",
+    "zip_bytes": 390690684,
+    "zip_sha256": "07265f82ba555062311ed330df743c2c22982f69b129b6acbfdf39bfceeb26ea"
+  },
+  "frozen_carrier_reuse_successor": {
+    "artifact_expiry_boundary": "2026-11-07T01:08:00Z; no silent substitute on expiry",
+    "authority": "ingolf-lohmann/qik-vrt",
+    "causal_scope": "Prior unequal OCI manifest/config descriptors are verified. Attribution to a particular Debian-generated cache remains unproven. Frozen carrier reuse removes runtime re-provisioning from the production build input; fresh native successor acceptance remains required.",
+    "change": "Use the original PR494 OCI bytes as the production dependency carrier; do not regenerate the already finished Firefox/Python/Node runtime. Only freeze current committed S1 sources with the original exporter. Keep independent no-cache digest equality, native tests, protected publication/deployment and all prior failure evidence.",
+    "compose_pr494": "Original deploy/universal-terminal/compose.yaml authority reversal is outside this reused dependency image; this lane binds authority through existing S1 PACKAGE.json and production host contract.",
+    "input_contract": "runtime/self-host/CONTAINER_CARRIER.json",
+    "local_controls": "PASS_15_CONTAINER_SECURITY_AND_INTEGRITY_CONTROLS; PASS_18_EXISTING_RELEASE_WORKFLOW_CONTROLS",
+    "mirror": "Goldkelch/qik-vrt",
+    "native_successor": "PENDING_EXACT_HEAD_CI",
+    "original_delivery": {
+      "archive_bytes": 382994793,
+      "archive_sha256": "5a912ccde96253bdba5f5e82cd0a36a4ff89de58dabbe57977bc1acf298d9695",
+      "artifact_id": 11521962723,
+      "effect_ack_done": false,
+      "image_config_digest": "sha256:8c7bc142ae52acb0e3dd73b994734580697cdc21762a1d277f790c502d425fdb",
+      "image_digest": "sha256:b2c5d065f9e9253d9f9eb454a86614e94592e6a8a251b8c9b44f26295ffb59b9",
+      "ordered_layers": 7,
+      "ordinary_release": false,
+      "predecessor_acceptance_transferred": false,
+      "predecessor_source_head": "4bdda5c7534a2c4fbac224015179492a4b624b3a",
+      "predecessor_source_tree": "05e1a0b0605bcf2c2c177ceda98f112552fe02a3",
+      "public_production_verified": false,
+      "run_id": 37710500668,
+      "schema": "qikvrt-s1-container-receipt/v1",
+      "scope": "DEPENDENCY_IMAGE_ONLY",
+      "sealed_files_verified": 223,
+      "state": "ORIGINAL_FROZEN_CARRIER_VERIFIED"
+    },
+    "parent_head": "74606b8c3c59f0d93bed8d09dd2b72a7c32235db",
+    "parent_tree": "2b759bbd0f19724cb9eb7e31538fa0c9f42cd8f1"
+  },
+  "governance_at_open": {
+    "PR457_reviews": [],
+    "main_head": "52e1cf424699d5f624b0f32ecffb7f00001d974e",
+    "main_protected": false,
+    "main_tree": "5246dee77c62e6634c2b69cc22e8e870f6aeb27e",
+    "rulesets": []
+  },
+  "human_actor": {
+    "contribution": "Authorized domain registration and productive prepared-container delivery via Linux CI; REST-only; no forced DNS edits or unconfirmed purchases.",
+    "name": "Ingolf Lohmann",
+    "roles": [
+      "Principal",
+      "creator",
+      "Code Owner",
+      "Product Owner",
+      "licensor"
+    ]
+  },
+  "independent_reader_failure_diagnostics": {
+    "effect_ack_done": false,
+    "local_tests": {
+      "count": 18,
+      "result": "PASS",
+      "scope": "Local source controls only; no local Docker execution.",
+      "suite": "tests.test_self_host_container"
+    },
+    "native_run": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38439078193",
+    "native_successor_result": "PENDING",
+    "observed": "Runtime reached NATIVE_TEMDD_READY; independent Node readback failed with exit 20. Actual guard cause is not yet observable.",
+    "production_verified": false,
+    "repair": "Expose only internal typed guard codes; retain bounded original reader stdout/stderr in the existing disposable CI fixture evidence. Preserve strict failure and all source/runtime/readback checks.",
+    "source_parent_head": "fa313c61b957f18ab01b3f0048c5a080dac7ece7",
+    "source_parent_tree": "4863b6afc7fe92014fc5bec3e3fc7f1457c62d5b"
+  },
+  "integrity_checkout_bytes_repair_20261016": {
+    "all_34_native_checkout_digests_reproduced": true,
+    "cause": "The base integrity manifest hashes normalized Git blob LF bytes for 34 .cmd/.ps1 paths; existing .gitattributes correctly materializes CRLF checkout bytes. Native full-tree regeneration reports exactly these 34 differences, no added or removed paths. The same mismatch is independently reproduced by actual local Git checkout for all 34 exact original blobs. The new S1 evidence work unit digest is not in the mismatch set.",
+    "changed_source_files": 0,
+    "complete_local_repository_verification": false,
+    "diagnostic_job": 117048848360,
+    "diagnostic_run": 38923432603,
+    "effect_ack_done": false,
+    "failed_job": 117048870096,
+    "failed_run": 38923438694,
+    "gitattributes_changed": false,
+    "observed_at": "2026-10-16T15:25:52.454001+00:00",
+    "repair": "Regenerate existing canonical integrity metadata for the declared checkout bytes; preserve every source byte, .gitattributes, all guards and original failure.",
+    "source_head": "26eb263aa6ed112deb59ef922b2d2d80688d6088",
+    "source_tree": "6d76c26c02dca9a287b5d6f369f36dc9c798c36d",
+    "successor_native_verification": "PENDING",
+    "verified_sources": [
+      {
+        "checkout_bytes": 132,
+        "checkout_sha256": "41e3dc348e447d6ba8f8809827e5cf04994ee2592127c1201adb35194a0cfde2",
+        "git_blob": "03aed0afecfdcacf0bf27f232c0d9263881d3e7a",
+        "git_blob_bytes": 122,
+        "native_expected_equal": true,
+        "path": "DRY_RUN_VERIFY_ONLY.cmd"
+      },
+      {
+        "checkout_bytes": 197,
+        "checkout_sha256": "7f3505a3d39f124b2e9a9734ff31aac9bbce33c822d06c69688531dfdf0a431e",
+        "git_blob": "8baf028e7695af946154ac493fde40b281bb3f05",
+        "git_blob_bytes": 192,
+        "native_expected_equal": true,
+        "path": "GITHUB_AUTH_PREFLIGHT_ONLY.cmd"
+      },
+      {
+        "checkout_bytes": 187,
+        "checkout_sha256": "a6a699f249367bbe9428a72aa265aaf5b1cc8ca36de4505057fc770f7f46edec",
+        "git_blob": "3709447007d96261f4f60cf32f48170387ca4243",
+        "git_blob_bytes": 182,
+        "native_expected_equal": true,
+        "path": "GITHUB_DRY_RUN_VERIFY_ONLY.cmd"
+      },
+      {
+        "checkout_bytes": 178,
+        "checkout_sha256": "8b6018376311f1dcf4c1df5d7fe5193a5062254244f8277b1ed11fd80c36265d",
+        "git_blob": "efe783d6681123fff8d7f2f0e7b9f63cfc1bd32b",
+        "git_blob_bytes": 173,
+        "native_expected_equal": true,
+        "path": "GITHUB_ZENODO_UPLOAD_AND_PUBLISH.cmd"
+      },
+      {
+        "checkout_bytes": 169,
+        "checkout_sha256": "0ec2d1fb1d747879e846855df72d3454828c0932a3783b7e77fb27d3efe4db45",
+        "git_blob": "e18467c74c0ee89e8fac4724ef8c0ee6e2dcee12",
+        "git_blob_bytes": 164,
+        "native_expected_equal": true,
+        "path": "GIT_INVOCATION_SELFTEST.cmd"
+      },
+      {
+        "checkout_bytes": 168,
+        "checkout_sha256": "bf1df74b7e93461df7fde22290c9529c37c040b9aa238a3ca673da1491185500",
+        "git_blob": "7a91f2ef719c705afc5c5afc308a2aec399aebcc",
+        "git_blob_bytes": 163,
+        "native_expected_equal": true,
+        "path": "POWERSHELL_PARSE_CHECK_ONLY.cmd"
+      },
+      {
+        "checkout_bytes": 469,
+        "checkout_sha256": "319060d1386199427983421c9c20f784e35cb2870cdab27d57c80d2e5679dc2b",
+        "git_blob": "969993d0f5fcd0607c9364eefa92d47df41a3fba",
+        "git_blob_bytes": 458,
+        "native_expected_equal": true,
+        "path": "QIKVRT_V45_11_BUILD_ZIP_AND_HASH.cmd"
+      },
+      {
+        "checkout_bytes": 3075,
+        "checkout_sha256": "3ff2e4a7d21f5d82a9df1da9acf8da66a61fed9ea90acd169225d546c762fdc3",
+        "git_blob": "157da098eb5a4684f6ccbd84969b71b615573260",
+        "git_blob_bytes": 3003,
+        "native_expected_equal": true,
+        "path": "QIKVRT_V45_11_REAL_GITHUB_RELEASE.cmd"
+      },
+      {
+        "checkout_bytes": 447,
+        "checkout_sha256": "0db2ea9f83066e3d3cd433fee89892d94117817ae071c594e0d88215fa560b1f",
+        "git_blob": "58ebbc8a092af3024fe8790ac5016ccfda8fbf3e",
+        "git_blob_bytes": 436,
+        "native_expected_equal": true,
+        "path": "QIKVRT_V45_11_RUN_LOCAL_VERIFY.cmd"
+      },
+      {
+        "checkout_bytes": 478,
+        "checkout_sha256": "cf51fd42c97e462e44f9431e2b7ade68a31a52d40630a28762d139dee4580e05",
+        "git_blob": "086478ffec30376e6fc4090b2069d36d026b0a85",
+        "git_blob_bytes": 467,
+        "native_expected_equal": true,
+        "path": "QIKVRT_V45_11_RUN_PYTHON_VERIFY_OPTIONAL.cmd"
+      },
+      {
+        "checkout_bytes": 475,
+        "checkout_sha256": "5084f7598054cfa31d4ec1e56dc7af25bc1b0e61b6239ab03bf0db0a033d0d6e",
+        "git_blob": "d630e9f0574113dddfdf03ac558e32089088e737",
+        "git_blob_bytes": 464,
+        "native_expected_equal": true,
+        "path": "QIKVRT_V45_12_BUILD_ZIP_AND_HASH.cmd"
+      },
+      {
+        "checkout_bytes": 3191,
+        "checkout_sha256": "c670dc03b1602205e753ba121cef5472f8c1df1c849a5ed0fe05f3fec02e8d93",
+        "git_blob": "6614bdc1f69ca9ea748fced742943b829f8b290b",
+        "git_blob_bytes": 3124,
+        "native_expected_equal": true,
+        "path": "QIKVRT_V45_12_REAL_GITHUB_RELEASE.cmd"
+      },
+      {
+        "checkout_bytes": 434,
+        "checkout_sha256": "be7712a359f40f87fe8886553a7fc8c25646a0c162f6c6b363cbee64108f1357",
+        "git_blob": "80743d103a7ababd69bf8e2ec4d1f768ff5f1cfc",
+        "git_blob_bytes": 423,
+        "native_expected_equal": true,
+        "path": "QIKVRT_V45_12_RUN_LOCAL_VERIFY.cmd"
+      },
+      {
+        "checkout_bytes": 404,
+        "checkout_sha256": "c7dfdf9610f25f96643b7626993b96b5e2daf678997907c198f97c917c46637e",
+        "git_blob": "93c9b7ff5091f4a3d69ccbdeeff1b46f4ccf8765",
+        "git_blob_bytes": 393,
+        "native_expected_equal": true,
+        "path": "QIKVRT_V45_12_RUN_PYTHON_VERIFY_OPTIONAL.cmd"
+      },
+      {
+        "checkout_bytes": 718,
+        "checkout_sha256": "2b880a339197f4ffdd951c296191a492fa894b16577a76e5779157039f8f675a",
+        "git_blob": "3c8b5be8f3c7a288f2568fca92c579ce1e9417cd",
+        "git_blob_bytes": 703,
+        "native_expected_equal": true,
+        "path": "QIKVRT_V45_16_REAL_GITHUB_RELEASE.cmd"
+      },
+      {
+        "checkout_bytes": 642,
+        "checkout_sha256": "17b37bdcbc9d85c5cf1e0c8d7b8fc8bfa02a62e326571c59437eceba2d6de867",
+        "git_blob": "8eab014fb3c8e3e47b60be63fcf28d933680c6d1",
+        "git_blob_bytes": 627,
+        "native_expected_equal": true,
+        "path": "QIKVRT_V45_16_RUN_LOCAL_VERIFY.cmd"
+      },
+      {
+        "checkout_bytes": 710,
+        "checkout_sha256": "a410c5a9273960a83f241d094b6047f278e421e83352b10a57cc73c94ef81572",
+        "git_blob": "3158d5b0b1eda333a136ad6384f02f902528c77e",
+        "git_blob_bytes": 696,
+        "native_expected_equal": true,
+        "path": "QIKVRT_V45_19_REAL_GITHUB_RELEASE.cmd"
+      },
+      {
+        "checkout_bytes": 535,
+        "checkout_sha256": "e209f6811cec4ac907d6fea737e3b2d5398370aac3db129eb639bd2d28da8320",
+        "git_blob": "5e4c64413b4a8c8a14c6d2c1c4a1bafc8b1aceef",
+        "git_blob_bytes": 522,
+        "native_expected_equal": true,
+        "path": "QIKVRT_V45_19_RUN_LOCAL_VERIFY.cmd"
+      },
+      {
+        "checkout_bytes": 710,
+        "checkout_sha256": "5ec697d07d7f539c6be4a893559ac8d6380ee0e62292d45e8f857f8478898c33",
+        "git_blob": "5f775651b513c9eea8c94aefaafd77491f35ad97",
+        "git_blob_bytes": 696,
+        "native_expected_equal": true,
+        "path": "QIKVRT_V45_20_REAL_GITHUB_RELEASE.cmd"
+      },
+      {
+        "checkout_bytes": 535,
+        "checkout_sha256": "39a29710d4113cfbad3e58a2c08979c27c0b78a995dc6d4addab351d23129c18",
+        "git_blob": "fbf8004c1b86e41a41043bf2f8c82e8077ba2910",
+        "git_blob_bytes": 522,
+        "native_expected_equal": true,
+        "path": "QIKVRT_V45_20_RUN_LOCAL_VERIFY.cmd"
+      },
+      {
+        "checkout_bytes": 871,
+        "checkout_sha256": "e379c0d78d8b80f898235ba777acbc812a4d285e97e0c4dea797f2ecf8686d7d",
+        "git_blob": "c934763dbf740305f21ccf2aec7c4c1c3cfb8596",
+        "git_blob_bytes": 840,
+        "native_expected_equal": true,
+        "path": "incoming/qikvrt_payloads/20260708T152348Z/payload/QIKVRT_V2_13_4AO_GENERIC_PAYLOAD_UPLOAD_KIT_WSH_NO_PS_NO_GIT/START_HIER_QIKVRT_UPLOAD.cmd"
+      },
+      {
+        "checkout_bytes": 820,
+        "checkout_sha256": "5a9cb9580d4d6a4ab6b117c58a9de31f64aeae23413936d90036df300d85279b",
+        "git_blob": "5a16a3b50a245777d896551df55ad248acae94da",
+        "git_blob_bytes": 796,
+        "native_expected_equal": true,
+        "path": "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/START_HIER_AUTONOMOUS_MESH_INSTALL.cmd"
+      },
+      {
+        "checkout_bytes": 811,
+        "checkout_sha256": "140f01442242606ac2bbcbfeb57fce1d6ecb024d1c5c1ce19681e4d3719825a5",
+        "git_blob": "09329c099c5c3ded967d3756d309d9cf6c6163dd",
+        "git_blob_bytes": 787,
+        "native_expected_equal": true,
+        "path": "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/START_HIER_PRODUCTIZATION_HARDENING_INSTALL.cmd"
+      },
+      {
+        "checkout_bytes": 859,
+        "checkout_sha256": "3830afdb4aca0f5e151ad44e6ae10455b00b94d5de6937dabc63b7ed99ba66ac",
+        "git_blob": "50bc9d97973961dbbe0446df28dd8e38b49e940c",
+        "git_blob_bytes": 835,
+        "native_expected_equal": true,
+        "path": "incoming/qikvrt_payloads/20260708T172711Z/payload/QIKVRT_V2_13_4AU2_PRODUCTIZATION_RELEASE_FREEZE_ONE_COMMAND_INSTALLER/START_HIER_RELEASE_FREEZE_INSTALL.cmd"
+      },
+      {
+        "checkout_bytes": 890,
+        "checkout_sha256": "eac7f5d6bd154f8787b16facbf76dee6a2e24029cfcc7f7263ed0815cae103c6",
+        "git_blob": "0fecf7d09af128c49f304a1cf7fd9b5786f54816",
+        "git_blob_bytes": 865,
+        "native_expected_equal": true,
+        "path": "incoming/qikvrt_payloads/20260708T174539Z/payload/QIKVRT_V2_13_4AV1_OPEN_MULTI_NODE_REGISTRY_REVALIDATION_ONE_COMMAND_INSTALLER/START_HIER_OPEN_MULTI_NODE_REVALIDATION_INSTALL.cmd"
+      },
+      {
+        "checkout_bytes": 841,
+        "checkout_sha256": "93a5ffa9f24aef01eb20db40323d2dbbce7a8e338364e939fbdc28044cef7d77",
+        "git_blob": "099c9bd3ca41b44c60f55a43f3676ef89dd699e1",
+        "git_blob_bytes": 817,
+        "native_expected_equal": true,
+        "path": "incoming/qikvrt_payloads/20260708T180204Z/payload/QIKVRT_V2_13_4AV2A_OPEN_MULTI_NODE_RELEASE_FREEZE_HTA_TOKEN_FIX_ONE_COMMAND_INSTALLER/qv2134av2a_work/START_HIER_RELEASE_FREEZE_INSTALL.cmd"
+      },
+      {
+        "checkout_bytes": 810,
+        "checkout_sha256": "337ce72ddd369a98e4b6620f7dc200b52a3e8ddf211c55145840670e0389a051",
+        "git_blob": "a41cdc541f7eca49ff0be64760652b6b0d0ddec5",
+        "git_blob_bytes": 786,
+        "native_expected_equal": true,
+        "path": "incoming/qikvrt_payloads/20260708T182401Z/payload/QIKVRT_V2_13_4AW_COMMERCIAL_READINESS_PACK_ONE_COMMAND_INSTALLER/qv2134aw_work/START_HIER_COMMERCIAL_READINESS_UPLOAD.cmd"
+      },
+      {
+        "checkout_bytes": 3641,
+        "checkout_sha256": "89c49f49273c5ef296675e9a4a452e8571a8e89f04015b803839565d46e65873",
+        "git_blob": "f171ba9975ca31553a876177d1b16246770911b9",
+        "git_blob_bytes": 3586,
+        "native_expected_equal": true,
+        "path": "qikvrt.ps1"
+      },
+      {
+        "checkout_bytes": 2169,
+        "checkout_sha256": "d328dc11de94d87808959a55e427d43d22a9fbbc4e1fd4914705acd8499454ab",
+        "git_blob": "e886f6302192db5cd891f6aa1518cdc7b6690715",
+        "git_blob_bytes": 2129,
+        "native_expected_equal": true,
+        "path": "runtime/download_python_runtime.ps1"
+      },
+      {
+        "checkout_bytes": 11664,
+        "checkout_sha256": "acdf3154bb89c62e0da46eb9165090e3f907963c812188f06d031d63b8a9d7ba",
+        "git_blob": "e900a2e40e6ac0b1454653a0708a88f6e883dd7b",
+        "git_blob_bytes": 11400,
+        "native_expected_equal": true,
+        "path": "tools/bootstrap-gh.ps1"
+      },
+      {
+        "checkout_bytes": 24266,
+        "checkout_sha256": "a304946b15f0a421de4247a36698091298e5fa68965e87f9c5d35031c13f7328",
+        "git_blob": "b6d8600b7894920971890ce06d7d2ec9da510668",
+        "git_blob_bytes": 23788,
+        "native_expected_equal": true,
+        "path": "tools/bootstrap-runtime.ps1"
+      },
+      {
+        "checkout_bytes": 269,
+        "checkout_sha256": "6de5365e5017ea7cf22a30436d87ba57cdeffccc22d522705731d931d079df65",
+        "git_blob": "a3f846e97ce500c7688e0eeca622d96816df2854",
+        "git_blob_bytes": 262,
+        "native_expected_equal": true,
+        "path": "tools/git_invocation_selftest.ps1"
+      },
+      {
+        "checkout_bytes": 23354,
+        "checkout_sha256": "f5e359d31a3a6825ac1df6284b9dede953a542c06afb87fbfbe5375aa7721e59",
+        "git_blob": "0eed17af0c6e37c47d2e2501401809ce4fae2411",
+        "git_blob_bytes": 22924,
+        "native_expected_equal": true,
+        "path": "tools/github_zenodo_release_publish.ps1"
+      },
+      {
+        "checkout_bytes": 1558,
+        "checkout_sha256": "712cae5fefde539f8438e6daefb6bfac983db62db989c5e603305f540f3fe5a7",
+        "git_blob": "f9ffcd409d9cdca37b6b63ce6a7c58de14f995bf",
+        "git_blob_bytes": 1526,
+        "native_expected_equal": true,
+        "path": "tools/powershell_parse_check.ps1"
+      }
+    ]
+  },
+  "isolated_fixture_bridge_readback_repair": {
+    "actual_error": "'8080/tcp'",
+    "job_id": 115432977331,
+    "local_zip_original_bytes_verified": true,
+    "native_scope": "The loaded config/digest and ordered filesystem layers were verified; accessing NetworkSettings.Ports[8080/tcp] then failed. No successful native health/terminal/restart acceptance is inferred.",
+    "native_successor": "PENDING_EXACT_HEAD_CI",
+    "negative_controls": "Wrong network, stopped process, missing address, public, loopback and link-local IPs rejected.",
+    "original_artifact_id": 11833357409,
+    "original_fixture_log_bytes": 0,
+    "original_zip_bytes": 389877303,
+    "original_zip_sha256": "028520aff282398ad29dbb7b183834e710306bc8da02b7d31ffedfd952d2117e",
+    "permission_expansion": false,
+    "primary_documentation": "https://docs.docker.com/engine/network/port-publishing/",
+    "public_production_verified": false,
+    "repair": "Read the running fixture's exact private RFC1918 IPv4 address on its already isolated internal bridge. Host-origin readback uses that observed address rather than assuming a published host-port map. Keep internal network, remove unnecessary host port publication, and retain read-only root, user10001, dropped capabilities, no-new-privileges, real native terminal/Firefox and restart controls. Preserve nonsecret actual state/network metadata before admission. Production host deployment routing remains its separate protected contract.",
+    "run_id": 38436396721,
+    "source_parent_head": "34144622585660d4c28776b26ba2c17381b1b44f",
+    "source_parent_tree": "dc288ac41475cc745127b79e967606e883be7dc4",
+    "third_party_report_not_native_diagnosis": true
+  },
+  "native_temdd_s1_original_job_readback_20261016": {
+    "acceptance_scope": "Original exact-source native TEMDD/S1 controls executed successfully. Existing implementation and this verified result must be reused. This workflow expressly records NO_DEPLOYMENT; it does not close current host, full OS/Firefox, offline product, registry or protected-Main acceptance.",
+    "artifact": {
+      "bytes": 10403,
+      "expires_at": "2026-11-15T05:30:35Z",
+      "files": [
+        {
+          "bytes": 55757,
+          "path": "temdd-s1-tests.log",
+          "sha256": "1df6964e002419a95d2799f12bd2687774ba9a069fa461679740e7d2ca8e20b1"
+        },
+        {
+          "bytes": 440,
+          "path": "temdd-s1-binding.json",
+          "sha256": "248f6136ed822c9faff2b69dd423e94567d928ee913089770e566dcec1e770a2"
+        }
+      ],
+      "id": 12027540707,
+      "name": "qikvrt-temdd-s1-e8fbaae5cbd7ef04b718561d576cee521c51b9cd",
+      "original_zip_byte_verified": true,
+      "sha256": "2a7129aa9a93c7681a6aba0e75699c9ef47b52d59240b49def2faa8380f1d033"
+    },
+    "attribution": {
+      "artificial": "OpenAI Codex: native job/log/artifact/source readback, original-byte hash verification and scope-preserving persistence.",
+      "human": "Ingolf Lohmann: supplied the exact original job and product requirements."
+    },
+    "conclusion": "success",
+    "effect_ack_done": false,
+    "event": "pull_request",
+    "job_id": 116826855767,
+    "job_name": "native-carrier",
+    "new_executor_created": false,
+    "new_workflow_created": false,
+    "observed_at": "2026-10-16T15:20:03.917685+00:00",
+    "ordinary_release": false,
+    "original_binding": {
+      "effect_ack_done": false,
+      "native_source_sha256": "94908e6a50ce107a79965055f3ecabae10e7589d96f7a26496d2a4956b068b13",
+      "predecessor_evidence_transfer": false,
+      "run_attempt": "1",
+      "run_id": "38855798987",
+      "schema": "qikvrt-temdd-s1-native-gate/v1",
+      "scope": "EXECUTED_ORIGINAL_AND_PORTABLE_NATIVE_CONTROLS; NO_DEPLOYMENT",
+      "source_head": "e8fbaae5cbd7ef04b718561d576cee521c51b9cd",
+      "source_tree": "55c17ee5580c755e54a515219e90f0f3e7cd8f64"
+    },
+    "rerun_requested": false,
+    "run_attempt": 1,
+    "run_id": 38855798987,
+    "run_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38855798987/job/116826855767",
+    "source": "Owner-supplied original GitHub Actions job; authenticated native REST and byte-exact original artifact readback",
+    "source_head": "e8fbaae5cbd7ef04b718561d576cee521c51b9cd",
+    "source_tree": "55c17ee5580c755e54a515219e90f0f3e7cd8f64",
+    "successor_comparison": {
+      "changed_paths": [
+        "src/qikvrt_effect_ack_http_terminal.py",
+        "tools/qikvrt_self_host.py",
+        "tests/test_self_host.py",
+        "Makefile"
+      ],
+      "head": "c14cdf45d22c4599cc2ee86fde64e0fca3beba58",
+      "historical_pass_transferred_to_changed_subject": false,
+      "tree": "fcc7c0ca892d48c446d4dd25ec1aaf94b7efa641",
+      "unchanged_native_ledger_blob": "6322bd45edb9de7d2aa07dee6fbc12307148475c",
+      "unchanged_native_ledger_test_blob": "734f02a8114d4a7397b3c436f1000c9fcbc93af2",
+      "unchanged_workflow_blob": "cffcb872da82ac29d6b6f312d255d7a38948506f"
+    },
+    "tests": {
+      "all_five_suites_ok": true,
+      "cases": 265,
+      "passed": 264,
+      "skip_reason": "existing Docker delivery lane required",
+      "skipped": 1,
+      "skipped_case": "tests.test_self_host.DockerDeliveryCycleTests.test_container_start_health_persistent_profile_and_native_event_after_restart",
+      "suites": [
+        33,
+        35,
+        105,
+        70,
+        22
+      ]
+    },
+    "workflow": ".github/workflows/qikvrt_temdd.yml"
+  },
+  "oci_import_repair_task_20261013": {
+    "authorized_scope": "Repair existing PR457 OCI import and complete actual unprivileged container/restart regression through existing Linux CI using REST-only repository operations.",
+    "contribution": {
+      "artificial_cognitive_system": "OpenAI Codex / GPT-6: fresh REST readback, original artifact verification, exact-source cold-start reproduction, regression and minimal continuation repair.",
+      "build_id": "UNAVAILABLE",
+      "human": "Exact failure report, requirements and authorization."
+    },
+    "integrity_materialization": "Incremental canonical integrity update from exact original manifest and unchanged full REST tree; full current repository verification remains mandatory in existing Linux CI.",
+    "local_full_repository_tests_claimed": false,
+    "local_native_Docker_claimed": false,
+    "original_failure_preserved": true,
+    "original_pinned_carrier_unchanged": true,
+    "owner": "Ingolf Lohmann",
+    "pinned_skopeo_unchanged": true,
+    "productive_host_deployment_verified": false,
+    "raumzeitterminal_de_delivery_verified": false,
+    "registry_publication_verified": false,
+    "workflow_oci_digest_gate_unchanged": true
+  },
+  "open_work": [
+    {
+      "id": "REVIEW_AND_MAIN",
+      "next": "Preserve native protection and independent current-head review; integrate through existing review path after applicable gates.",
+      "state": "OPEN"
+    },
+    {
+      "id": "LINUX_HOST_ADMISSION",
+      "next": "Expose existing authorized HTTPS Docker Engine REST binding and protected mutual-TLS credentials; independently validate persistent volume and HTTPS route.",
+      "state": "OPEN"
+    },
+    {
+      "id": "DOMAIN_REGISTRATION",
+      "next": "Read the existing registrar contract and exact registration quote through its authorized REST connection; purchase only after exact confirmation.",
+      "state": "OPEN"
+    },
+    {
+      "id": "REGISTRY_AND_DEPLOYMENT",
+      "next": "Publish the frozen OCI archive and execute admitted create-only deployment after protected Main and host gates.",
+      "state": "OPEN"
+    },
+    {
+      "id": "RAUMZEITTERMINAL_ACCEPTANCE",
+      "next": "Independent exact-host TLS, runtime/package/image binding and real original terminal readback.",
+      "state": "OPEN"
+    },
+    {
+      "id": "DURABLE_ORIGINAL_CARRIER_CI_SOURCE",
+      "next": "Admit native protected publication, verify the original ZIP from registry by digest, then update the existing downloader binding through the same review path. No CI-source switch before publication/readback.",
+      "state": "OPEN"
+    }
+  ],
+  "operating_purpose_successor": {
+    "effect_ack_done": false,
+    "ionos_customer_configuration": {
+      "approval_rejection": {
+        "action": "Save apex A replacement in IONOS DNS UI",
+        "blocked_action_retried": false,
+        "form_cancelled": true,
+        "reason": "Saving would deactivate the active Webhosting DNS service and remove its apex/www A/AAAA and mutex records; service disruption side effect and incomplete single-target setup not explicitly admitted.",
+        "required_owner_decision": "Approve the concrete replacement of the Webhosting DNS template for this exact domain. Preserve mail records and reinstate original www A/AAAA after template deactivation unless a separately verified www deployment replaces them.",
+        "risk": "IONOS UI changes are not atomic across all records; a temporary apex/www DNS interruption is possible.",
+        "workaround_used": false
+      },
+      "current_apex_a": "217.160.0.52",
+      "current_apex_aaaa": "2001:8d8:100f:f000:0:0:0:205",
+      "current_www_a": "217.160.0.52",
+      "current_www_aaaa": "2001:8d8:100f:f000:0:0:0:205",
+      "customer_session_verified": true,
+      "domain_registration_visible": true,
+      "existing_product": "IONOS Webhosting Pro",
+      "existing_webspace_files": 8,
+      "existing_webspace_gb": 250,
+      "existing_webspace_used_gb": 0,
+      "hostname": "raumzeitterminal.de",
+      "mail_service_records_preserved": true,
+      "old_dns_template_retained": true,
+      "overall_site_domain_status": "pending",
+      "private_account_contact_payment_or_authentication_data_persisted": false,
+      "proof_screenshot_sha256": "258db4c6ec8031b644ceb643bf3e7dce09e46cab73567edb82999f2567445101",
+      "proposed_apex_a": [
+        "162.159.143.30",
+        "172.66.3.26"
+      ],
+      "proposed_apex_ttl_seconds": 300,
+      "provider_status_after_txt": "active",
+      "routing_applied": false,
+      "saved_txt_count": 2,
+      "saved_txt_records": [
+        {
+          "name": "_openai-site-verification.raumzeitterminal.de",
+          "ttl_seconds": 3600,
+          "type": "TXT",
+          "value": "openai-site-verification=5Zw42-7lgYTNm3pmkhZcwGJu1_0UvnHSVYJcGBDONbI"
+        },
+        {
+          "name": "_cf-custom-hostname.raumzeitterminal.de",
+          "ttl_seconds": 3600,
+          "type": "TXT",
+          "value": "c6e99848-baed-4087-a9fd-0d6c5b5008c8"
+        }
+      ],
+      "site_refresh_observed_at": "2026-10-16T13:12:46.446536+00:00",
+      "ssl_status_after_txt": "pending_validation",
+      "state": "TXT_SAVED_ROUTING_CHANGE_REJECTED_BY_AUTOMATIC_APPROVAL_REVIEW",
+      "zone_records_read": true
+    },
+    "observed_at": "2026-10-16T13:23:10.484Z",
+    "ordinary_release": false,
+    "owner_purposes": {
+      "arxiv_current_publication_excluded": true,
+      "attribution": {
+        "artificial": "OpenAI Codex: source inspection, supported customer-account operations, exact-byte runtime verification and evidence-bound execution preparation.",
+        "human": "Ingolf Lohmann: product goals, priority rule, explicit IONOS purchase authorization."
+      },
+      "cost_scope": "Necessary hosting, server and operations services for these purposes",
+      "domain": "raumzeitterminal.de",
+      "merchant": "IONOS",
+      "priority_rule": "Maximize the earliest useful performance gain by reusing implemented frozen runtime and full-tree portable export; measure actual throughput before claiming optimal performance.",
+      "publisher_name": "Raumzeitterminal",
+      "purchase_authorized": true,
+      "purposes": [
+        "Fully automatic publishing and business operations of the Raumzeitterminal online publishing house.",
+        "CI/CD and DevOps producing the Linux distribution with full Effect Acknowledgement Protocol implementation in the operating system and its Firefox browser, and the full QIK-VRT repository available offline within its runtime.",
+        "Own portable execution and distribution infrastructure reducing external platform dependencies."
+      ],
+      "retained_monthly_budget_eur": 150,
+      "source": "Direct Owner instruction in the current session on 2026-10-16",
+      "unlimited_spending_inferred": false
+    },
+    "prepared_server_quote": {
+      "automatic_renewal": true,
+      "billing": "1 month in advance",
+      "cpu_vcores": 12,
+      "currency": "EUR",
+      "datacenter": "EU",
+      "existing_payment_method_reused_only_after_action_time_confirmation": true,
+      "image": "Ubuntu 26.04 + Docker",
+      "initial_total_gross": 69,
+      "mandatory_terms_accepted": false,
+      "merchant": "IONOS SE",
+      "minimum_term_months": 1,
+      "monthly_gross": 59,
+      "nvme_gb": 720,
+      "optional_marketing_checked": false,
+      "product": "IONOS VPS Linux XXL+",
+      "proof_screenshot_sha256": "f1f25196a671f2b66ce6bbb2e7c89c570eedb70c135d63693db6e55871cf5190",
+      "purchase_submissions": 0,
+      "quantity": 1,
+      "ram_gb": 24,
+      "scope": "Observed final checkout; no server resource, server ID or production acceptance inferred.",
+      "selected_paid_addons": [],
+      "setup_gross": 10,
+      "state": "FINAL_CHECKOUT_PREPARED_NOT_ORDERED",
+      "vat_percent": 19
+    },
+    "priority_execution": [
+      {
+        "done": false,
+        "id": "PUBLIC_PUBLISHER_DELIVERY",
+        "next": "After the concrete routing-change decision, bind both supplied apex A targets, preserve mail and original www records, refresh TLS and independently verify exact-host application/PDF bytes.",
+        "order": 1,
+        "reuse": "Existing Site36 and existing domain registration; two TXT verifications now saved."
+      },
+      {
+        "done": false,
+        "id": "OWNED_LINUX_EXECUTION",
+        "next": "After action-time server terms confirmation, submit exactly one prepared order; read back resource and establish the existing authenticated HTTPS Docker/mTLS, state-volume and route binding before deployment.",
+        "order": 2,
+        "reuse": "Prepared IONOS VPS quote; existing frozen carrier, Linux host binding and container deploy/readback commands."
+      },
+      {
+        "done": false,
+        "id": "OWNED_CI_AND_OFFLINE_PRODUCT",
+        "next": "Retain governed current-subject gates; import the verified carrier, build from exact HEAD/TREE, produce and verify the complete-tree SQLite image, then prove native Firefox and repository use with network egress absent and durable restart/replay.",
+        "order": 3,
+        "reuse": ".github/workflows/qikvrt_ci.yml and existing tools/qikvrt_self_host.py portable exporter."
+      },
+      {
+        "done": false,
+        "id": "DISTRIBUTION_AND_EFFECT_ACK_ACCEPTANCE",
+        "next": "Complete the bootable Linux distribution and enumerate the real OS/browser effects covered; verify each required workload, crashes/lost ACK/replay and original effect readback. An OCI image or Firefox extension alone is not full OS/Firefox acceptance.",
+        "order": 4,
+        "reuse": "Existing native TEMDD/Effect-Ack ledger, HTTP/Firefox terminal, systemd and container acceptance paths."
+      },
+      {
+        "done": false,
+        "id": "PORTABLE_OWNED_OPERATIONS",
+        "next": "Operate portable publication/build execution and independently recoverable backups under Owner control; demonstrate restore/migration without platform-only runtime services. IONOS remains a hosting dependency.",
+        "order": 5,
+        "reuse": "Canonical SQLite state, exact frozen artifacts and current repository-native work units."
+      }
+    ],
+    "runtime_reuse": {
+      "frozen_carrier": {
+        "artifact_id": 11521962723,
+        "bytes": 382994793,
+        "downloaded": true,
+        "durable_registry_publication_verified": false,
+        "expires_at": "2026-11-07T01:08:00Z",
+        "local_byte_verified": true,
+        "native_expired": false,
+        "run_id": 37710500668,
+        "scope": "Existing dependency image only; no predecessor application or current-host acceptance transferred.",
+        "sha256": "5a912ccde96253bdba5f5e82cd0a36a4ff89de58dabbe57977bc1acf298d9695"
+      },
+      "local_cache_contract": {
+        "coverage_percent": 100,
+        "covered_tools": 32,
+        "declared_tools": 32,
+        "result": "PASS",
+        "scope": "Cache strategy metadata verified in the exact-source projection; not provisioning, build, CI or production acceptance."
+      },
+      "native_current_subject": {
+        "ci_run": 38902115045,
+        "conclusion": "action_required",
+        "draft": true,
+        "head": "95dd082666d7c087067c1e70e12b0308ac8ce2e2",
+        "independent_current_head_approval_found": false,
+        "merged": false,
+        "pr": 523
+      },
+      "new_executor_created": false,
+      "new_workflow_created": false,
+      "no_downgrade": true,
+      "offline_full_tree": {
+        "canonical_file": "repository.sqlite3",
+        "correction": "Earlier commentary identified only the selected-file work cache; source inspection confirms the existing complete-tree portable exporter. Reuse it instead of creating another export pipeline.",
+        "current_exact_head_export_created": false,
+        "format": "SQLITE3_WITH_CARRIER_META_AND_EVENTS",
+        "full_git_tree_blobs_modes_and_tree_digest_verified_by_source": true,
+        "git_history_carried": false,
+        "implemented_source_path": "tools/qikvrt_self_host.py",
+        "offline_production_readback_verified": false,
+        "operation": "portable",
+        "selected_work_cache_is_different": true,
+        "submodules_refused": true
+      },
+      "source": {
+        "head": "95dd082666d7c087067c1e70e12b0308ac8ce2e2",
+        "ref": "integration/515-519-521-522-20261012-eceb9b63",
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "1ddd0e46d85b85e87ceeb06b5813ec236bd36a4b"
+      },
+      "source_components": [
+        {
+          "blob": "e44b07bea6bc9a01ff28bc3572ff773534e497c8",
+          "path": "runtime/self-host/README.md"
+        },
+        {
+          "blob": "e4fae384b1a4a5e0cd061cf73d5c3d7f0f29a547",
+          "path": "runtime/self-host/Dockerfile"
+        },
+        {
+          "blob": "2d73f623ec07dc36a04f6508a7ac2a58af4b44d1",
+          "path": "tools/qikvrt_self_host.py"
+        },
+        {
+          "blob": "0d7a572f425ae4824a3dc717b9167102ec6a8776",
+          "path": "runtime/self-host/MESH_FILE.md"
+        },
+        {
+          "blob": "6a2c345c3cd0734812c1a5c896dd4f566f5add99",
+          "path": "runtime/self-host/LINUX_HOST_BINDING.example.json"
+        }
+      ]
+    },
+    "source": {
+      "head": "95dd082666d7c087067c1e70e12b0308ac8ce2e2",
+      "ref": "integration/515-519-521-522-20261012-eceb9b63",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "tree": "1ddd0e46d85b85e87ceeb06b5813ec236bd36a4b"
+    }
+  },
+  "ordinary_release": false,
+  "predecessor_evidence_transfer": false,
+  "protected_existing_session_route": {
+    "budget_monthly_eur": 150,
+    "declaration": "secrets.IONOS_TOKEN names an IONOS Cloud credential, not authenticated Hosting registrar inventory or an exposed secret-reader operation. Private remote state remains unknown.",
+    "new_secret_or_password_requested": false,
+    "nonsecret_exact_item_reference": null,
+    "owner_selection": "Geschützter Sitzungs- oder Vault-Verweis",
+    "source_library_file": "libfile_55afcea27d488191af8a916cae2f940d",
+    "supported_reader_or_native_use_operation_exposed": false,
+    "task_authorization_already_granted": true,
+    "version": 17
+  },
+  "provider_capability": {
+    "DigitalOcean_REST_authenticated": true,
+    "DigitalOcean_account_warning": "Your team has created the maximum allowed number of Droplets. Please resolve this on the control panel.",
+    "DigitalOcean_droplets": [],
+    "IONOS_REST_operation_exposed": false,
+    "existing_Mesh_operations": [
+      "qikvrt_mesh_status",
+      "qikvrt_observe",
+      "qikvrt_readback"
+    ],
+    "existing_site_environment_keys": [],
+    "existing_site_environment_revision": 8,
+    "local_host_or_registrar_credential_bindings": [],
+    "workflow_dispatch_POST_exposed": false
+  },
+  "public_productivization_verified": false,
+  "publisher_private_auth_owner_binding": {
+    "causal_claim_boundary": "Ownership mechanism is observed in converter. No registry authentication failure or successful publication is claimed for this still-protected publisher.",
+    "native_successor": "PENDING_EXACT_HEAD_CI",
+    "new_permission_scope": false,
+    "publisher_scope": "The protected publisher reads the CI-owned Docker authentication directory. Bind its Skopeo process to the same actual runner UID/GID, retaining restrictive modes, read-only mount/root, capability drop and no-new-privileges. HOME is disposable tmpfs. No credential value enters the repository or evidence.",
+    "registry_operation_executed": false,
+    "related_native_failure_job": 115422938193,
+    "related_native_failure_run": 38433471240,
+    "related_observation": "Skopeo with dropped capabilities cannot write the private CI directory without its actual owner UID/GID; converter successor binds that identity.",
+    "source_parent_head": "f9f6f0c7ef731a104af3b24dce8318e73c80843b",
+    "source_parent_tree": "44e0a778b47f37b119b947c786e4a50cdd37e381"
+  },
+  "registration_after_verified_DENIC_recovery": {
+    "cloudflare_a": {
+      "body": "",
+      "bytes": 0,
+      "completed_at": "2026-10-13T16:15:51.930570+00:00",
+      "date": "Tue, 13 Oct 2026 16:15:51 GMT",
+      "final_url": "https://cloudflare-dns.com/dns-query?name=raumzeitterminal.de&type=A",
+      "http_status": 400,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "started_at": "2026-10-13T16:15:45.208164+00:00",
+      "url": "https://cloudflare-dns.com/dns-query?name=raumzeitterminal.de&type=A"
+    },
+    "denic": {
+      "body": "{\"errorCode\":404,\"title\":\"No such domain.\",\"description\":[]}",
+      "bytes": 60,
+      "completed_at": "2026-10-13T16:15:52.420375+00:00",
+      "date": "Tue, 13 Oct 2026 16:15:52 GMT",
+      "final_url": "https://rdap.denic.de/domain/raumzeitterminal.de",
+      "http_status": 404,
+      "sha256": "a07fc609c8ce092b1e7a5113e4ea0a69c48a7ac26183c88b5df5565a40f0f5f7",
+      "started_at": "2026-10-13T16:15:45.201954+00:00",
+      "url": "https://rdap.denic.de/domain/raumzeitterminal.de"
+    },
+    "google_ns": {
+      "body": "{\"Status\":3,\"TC\":false,\"RD\":true,\"RA\":true,\"AD\":false,\"CD\":false,\"Question\":[{\"name\":\"raumzeitterminal.de.\",\"type\":2}],\"Authority\":[{\"name\":\"de.\",\"type\":6,\"TTL\":1800,\"data\":\"f.nic.de. dns-operations.denic.de. 1791908122 7200 7200 3600000 7200\"}],\"Comment\":\"Response from 194.246.96.1.\"}",
+      "bytes": 286,
+      "completed_at": "2026-10-13T16:15:53.214978+00:00",
+      "date": "Tue, 13 Oct 2026 16:15:53 GMT",
+      "final_url": "https://dns.google/resolve?name=raumzeitterminal.de&type=NS",
+      "http_status": 200,
+      "sha256": "02087ab052f3d61e4ce02ad1552a79c951fc446824b8ef2f722c8f4f42d9ad91",
+      "started_at": "2026-10-13T16:15:45.205668+00:00",
+      "url": "https://dns.google/resolve?name=raumzeitterminal.de&type=NS"
+    },
+    "rdap_retry_prerequisite": "DENIC status freshly reports All Systems Operational, 0 Active Maintenances, RDAP Operational; earlier maintenance bound observations retained separately.",
+    "tls_health": {
+      "body": "<html>\n<head>\n    <title>502 Bad Gateway</title>\n</head>\n<body>\n    <h1>502 Bad Gateway</h1>\n    <p>[Errno 111] Connection refused</p>\n</body>\n</html>",
+      "bytes": 150,
+      "completed_at": "2026-10-13T16:15:52.557483+00:00",
+      "date": null,
+      "final_url": "https://raumzeitterminal.de/health",
+      "http_status": 502,
+      "sha256": "81074a9c8dfb24290e8fc4af14d20f67f5304618d27ac713628b1126e41dbd8e",
+      "started_at": "2026-10-13T16:15:45.209225+00:00",
+      "url": "https://raumzeitterminal.de/health"
+    }
+  },
+  "registry_archive_and_integration_successor": {
+    "attribution": {
+      "artificial": "OpenAI Codex: conflict diagnosis, archive transport implementation, fixture tests and REST candidate persistence",
+      "human": "Ingolf Lohmann: requirement, code/product/licence authority and standing authorization"
+    },
+    "effect_ack_done": false,
+    "governance": {
+      "admin_write_operation_exposed": false,
+      "current_head_reviews": [],
+      "direct_GH_TOKEN_or_GITHUB_TOKEN_available": false,
+      "main_protected": false,
+      "rulesets": []
+    },
+    "integrated_main_parent": "52e1cf424699d5f624b0f32ecffb7f00001d974e",
+    "integrity_trio": "Regenerated for the merged candidate using the existing generator format, exact original manifests and freshly hashed changed/incoming bytes. Complete native full-byte verification remains required.",
+    "local_materialization": {
+      "complete_object_closure": false,
+      "complete_worktree": false,
+      "full_bootstrap": "HOLD_INCOMPLETE_LOCAL_MATERIALIZATION; missing historical portable source capsule and other unmaterialized files",
+      "full_native_candidate_checks": "NOT_EXECUTED_YET",
+      "method": "Exact selected Git blobs and independently reconstructed full trees and unsigned source commits through authenticated GitHub REST"
+    },
+    "local_tests": {
+      "main_owner_reminder_controls": {
+        "passed": 16
+      },
+      "self_host_container_controls": {
+        "passed": 21,
+        "scope": "fixtures including corruption and coherently rehashed forged original ZIP rejection; not native runtime or registry publication"
+      },
+      "tool_cache": "27/27 PASS",
+      "workflow_syntax": "YAML, embedded Python and all Bash blocks passed"
+    },
+    "main_tree": "5246dee77c62e6634c2b69cc22e8e870f6aeb27e",
+    "observed_utc": "2026-10-13T22:02:03.206901+00:00",
+    "original_conflict": "PR457 mergeable=false, mergeable_state=dirty",
+    "public_productivization_verified": false,
+    "publisher_reuse": {
+      "additional_credential_scope": false,
+      "durable_ci_source_activated": false,
+      "guards_retained": [
+        "protected Main",
+        "native required checks",
+        "independent current-head review",
+        "qikvrt-production environment",
+        "publish enable variable"
+      ],
+      "job": "container_publish",
+      "native_registry_publication_verified": false,
+      "original_zip": "11521962723 / 382994793 bytes / sha256:5a912ccde96253bdba5f5e82cd0a36a4ff89de58dabbe57977bc1acf298d9695",
+      "package": "ghcr.io/ingolf-lohmann/qik-vrt-s1",
+      "prepared_effect": "Publish exact original ZIP in deterministic OCI transport and pull the digest back through pinned Skopeo; independently recover and rehash original ZIP.",
+      "workflow": ".github/workflows/qikvrt_ci.yml"
+    },
+    "source_parent_head": "62675ded1ec23a8fd0b11936b1c9a7eac50f1780",
+    "source_parent_tree": "bd77e5a27dd692c8fcbfa64eacb61f6769687360",
+    "three_way_merge": [
+      "AGENTS.md",
+      "Makefile"
+    ]
+  },
+  "release_inventory": {
+    "OCI_image_asset_found": false,
+    "S1_current_recipe": "runtime/self-host/Dockerfile",
+    "complete_pages": 1,
+    "other_existing_carrier": "deploy/universal-terminal/Dockerfile",
+    "release_count": 4
+  },
+  "review_pr": 457,
+  "schema": "qikvrt-linux-container-production-work-unit/v1",
+  "source_materialization": {
+    "all_original_blobs_byte_verified": true,
+    "blob_count": 4041,
+    "local_history": "EXACT_HEAD_WITH_SHALLOW_PARENT_BOUNDARY",
+    "route": "GITHUB_REST_ONLY",
+    "source_head": "bb1be6decdf1e9bf01c7b24aa625613053e4a352",
+    "source_tree": "68bf501265ae7c79837e79c954d7d4f013642ea2",
+    "tar_sha256": "5323be0adecabe415c08de41907a52226057d8f1ecbd921d1d4abe3f97aa6bc4"
+  },
+  "source_parent_head": "bb1be6decdf1e9bf01c7b24aa625613053e4a352",
+  "source_parent_tree": "68bf501265ae7c79837e79c954d7d4f013642ea2",
+  "verification": {
+    "full_repository_tests": "make test repository-monitor-test self-host-test",
+    "independent_public_readback": "PENDING_ADMITTED_HOST_AND_DOMAIN",
+    "local_container_admission_tests": "PASS_12_CONTROLS",
+    "local_make_test": "PASS_BEFORE_NATIVE_S1_TARGET_ON_MODIFIED_WORKTREE",
+    "local_monitor_tests": "PASS_24_CONTROLS",
+    "native_OCI_build": "PENDING_EXACT_HEAD_CI",
+    "native_S1_local_gate": "BLOCK_AF_UNIX_SOCKET_CREATION_EPERM",
+    "native_container_claimed": false,
+    "new_admission_negative_tests": "tests/test_self_host_container.py",
+    "production_enabled_or_executed": false,
+    "successor_native_status": "NOT_EXECUTED_FOR_REGISTRY_ARCHIVE_AND_MAIN_INTEGRATION_SUCCESSOR"
+  },
+  "work_unit_id": "QIKVRT_S1_LINUX_CONTAINER_CI_20261013_V1"
+}

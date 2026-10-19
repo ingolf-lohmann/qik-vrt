@@ -58,10 +58,12 @@ def validate(config: dict) -> list[dict]:
         raise ReminderError("bounded reminder list required")
     seen = set()
     for row in rows:
-        if not isinstance(row, dict) or set(row) != {
+        required = {
             "id", "version", "state", "due", "timezone", "anchor_sha",
             "title", "private_artifacts", "acceptance"
-        }:
+        }
+        if (not isinstance(row, dict) or not required <= set(row)
+                or set(row) - required - {"expires"}):
             raise ReminderError("unknown or missing reminder field")
         if not re.fullmatch(r"[a-z0-9-]{1,80}", row["id"]) or row["id"] in seen:
             raise ReminderError("invalid or duplicate reminder ID")
@@ -75,6 +77,12 @@ def validate(config: dict) -> list[dict]:
         due = dt.datetime.fromisoformat(row["due"])
         if due.tzinfo is None or due.utcoffset() != due.astimezone(ZoneInfo(row["timezone"])).utcoffset():
             raise ReminderError("due offset disagrees with named timezone")
+        if "expires" in row:
+            expires = dt.datetime.fromisoformat(row["expires"])
+            if (expires.tzinfo is None
+                    or expires.utcoffset() != expires.astimezone(ZoneInfo(row["timezone"])).utcoffset()
+                    or instant(row["expires"]) <= instant(row["due"])):
+                raise ReminderError("expiry must follow due and match named timezone")
         if row["title"] not in {"Vorbereitete Zahlung prüfen und persönlich freigeben", "Persönlichen Tagesplan prüfen"}:
             raise ReminderError("public reminder title must use a neutral approved label")
         if row["acceptance"] != "OWNER_CONFIRMS_TASK_COMPLETION_WITH_EVIDENCE":
@@ -168,6 +176,9 @@ def execute(config, now, api=None, head=None):
         receipts.append(receipt)
         if row["state"] != "OPEN" or now < instant(row["due"]):
             receipt["notification"] = "NOT_DUE" if row["state"] == "OPEN" else row["state"]
+            continue
+        if "expires" in row and now >= instant(row["expires"]):
+            receipt["notification"] = "EXPIRED_NO_EFFECT"
             continue
         if api is None:
             receipt["notification"] = "DUE_NO_EFFECT_PREVIEW"

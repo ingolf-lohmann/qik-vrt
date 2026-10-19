@@ -67,13 +67,32 @@
       "workflow_run.completed"
     ],
     "recovery_schedule": "*/5 * * * *",
-    "exact_head_status_context": "QIKVRT requested review execution",
+    "exact_head_status_context": "QIKVRT requested review disposition",
+    "status_scope": "TECHNICAL_DISPOSITION_ONLY",
+    "native_governance_status_context": "QIKVRT required code-owner review",
+    "legacy_native_governance_status_alias": "QIKVRT requested review execution",
+    "native_status_sole_writer": ".github/workflows/qikvrt_required_review_gate.yml",
+    "execution_success_implies_enforcement_or_independent_approval": false,
     "promotion_workflow": ".github/workflows/qikvrt_expected_head_promotion.yml",
     "promotion_requires_successful_review_status": true,
+    "promotion_requires_fresh_native_rules_and_exact_head_independent_review": false,
     "duplicate_exact_head_review": "FORBIDDEN",
     "head_tree_or_scope_drift_invalidates_review": true,
-    "platform_approval_fallback": "PERSIST_SUBSTANTIVE_DISPOSITION_AS_COMMENT_WITH_EXACT_PLATFORM_LIMITATION",
-    "independent_code_owner_approval_may_be_inferred": false
+    "platform_approval_fallback": "AUTOMATED_APPROVE_DISPOSITION_IS_ALWAYS_COMMENT_ONLY",
+    "independent_code_owner_approval_may_be_inferred": false,
+    "required_check_binding": {
+      "context_source": "review_executor.native_governance_status_context",
+      "ruleset_writer": ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml",
+      "native_review_gate": ".github/workflows/qikvrt_required_review_gate.yml",
+      "trusted_status_integration_id": 15368,
+      "workflow_execution_success_satisfies_governance": false,
+      "legacy_alias_is_acceptance_substitute": false,
+      "technical_disposition_is_acceptance_substitute": false,
+      "native_code_owner_approval_still_required": false,
+      "administrative_ruleset_activation": "SEPARATE_EFFECT",
+      "owner_principal_review_is_valid_review": true
+    },
+    "promotion_requires_current_review": "OWNER_PRINCIPAL_REVIEW_OR_INDEPENDENT_NATIVE_APPROVAL"
   },
   "issue_lifecycle": {
     "unclassified_open_issue": "FORBIDDEN",
@@ -131,5 +150,79 @@
     "FINAL_PASS": false,
     "EFFECT_ACK_DONE": false,
     "FULL_AUTHORITY_MIRROR_SYNCHRONIZATION": false
+  },
+  "mesh_authority": {
+    "network_name": "QIK VRT Mesh Netzwerk",
+    "authority_repository": "ingolf-lohmann/qik-vrt",
+    "human": {
+      "name": "Ingolf Lohmann",
+      "type": "NATURAL_PERSON",
+      "github_login": "ingolf-lohmann",
+      "roles": [
+        "Principal",
+        "Schöpfer",
+        "Code Owner",
+        "Product Owner",
+        "Lizenzgeber"
+      ]
+    },
+    "executor": {
+      "name": "QIK-VRT executing instance",
+      "role": "TESTED_EVENT_MODEL_DRIVEN_EXECUTION",
+      "may_submit_native_approve": false
+    },
+    "repository": {
+      "full_name": "ingolf-lohmann/qik-vrt",
+      "role": "DURABLE_WORKING_MEMORY",
+      "may_submit_native_approve": false
+    },
+    "independent_native_code_owner_review_required": false,
+    "former_authority_repository": "Goldkelch/qik-vrt",
+    "former_authority_permission_required": false,
+    "owner_directive": {
+      "submitted_at": "2026-10-06T21:56:08Z",
+      "text": "Falsch. Die Authority ist mittlerweile bei uns.",
+      "application_authorized_at": "2026-10-06T21:58:40Z"
+    },
+    "identity_and_production_confirmation": {
+      "date": "2026-10-13",
+      "human_actor": "Ingolf Lohmann",
+      "source": "Also der Name dieses Mesh-Netzwerks lautet nach wie vor QIK VRT Mesh Netzwerk. Der Principal und Schöpfer dieses Mesh-Netzwerks bin ich, Ingolf Lohmann. Und ich bin auch der Code Owner und der Product Owner und der Lizenzgeber in einer Person. Quod erat demonstrandum. Freigabe erteilt zur Produktivierung.",
+      "production_authorized": true,
+      "native_acceptance_inferred": false,
+      "independent_review_inferred": false,
+      "license_terms_changed": false,
+      "work_unit": "state/work_units/QIKVRT_SITE33_OWNER_AUTHORIZED_PRODUCTION_20261013_V1.json"
+    },
+    "github_platform_effects_are_separate": true,
+    "role_policy_path": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+    "code_owner_review_delegation": {
+      "principal_login": "ingolf-lohmann",
+      "delegate_login": "Goldkelch",
+      "scope": "REPOSITORY_CODE_REVIEW_ONLY",
+      "state": "ACTIVE",
+      "native_approval_required": true,
+      "owner_final_authority_retained": true,
+      "self_approval_allowed": false,
+      "automated_approval_can_substitute": false,
+      "source": "state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+      "source_sha256": "798bfc42199b9b5c0459cfee3de2470d4074887c12c16b8049b6694a642256e1"
+    },
+    "principal_review": {
+      "schema": "qikvrt_principal_review_policy_v1",
+      "state": "ACTIVE",
+      "principal_login": "ingolf-lohmann",
+      "principal_github_id": 294949349,
+      "approval_is_review": true,
+      "exact_current_head_required": true,
+      "native_review_state": "COMMENTED",
+      "independent_native_approval_required": false,
+      "github_platform_protections_may_be_bypassed": false,
+      "automated_disposition_can_substitute": false,
+      "effective_at": "2026-10-18T04:02:58Z",
+      "instruction_sha256": "a454e3384e3b3740a1511d3613cf82a4aeed67036013649d2bee6cbce9ed3b76",
+      "source": "state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+      "source_sha256": "798bfc42199b9b5c0459cfee3de2470d4074887c12c16b8049b6694a642256e1"
+    }
   }
 }

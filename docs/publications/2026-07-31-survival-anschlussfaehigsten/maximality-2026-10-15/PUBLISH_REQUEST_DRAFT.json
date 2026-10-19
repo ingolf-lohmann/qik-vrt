@@ -1,0 +1,226 @@
+{
+  "schema": "qikvrt_zenodo_publication_manifest_v2",
+  "state": "draft",
+  "confirm": null,
+  "repository": "ingolf-lohmann/qik-vrt",
+  "source_head": "55ffa91bcac73d755dc0ff7394ba89d5aea4c1b9",
+  "metadata": {
+    "title": "Gesamtbetrachtung aller ermittelten Zenodo- und IETF-Veröffentlichungen: QIK-VRT und bedingte Kriterien größter Anschlussfähigkeit",
+    "upload_type": "publication",
+    "publication_type": "article",
+    "description": "Wissenschaftliche Gesamtbetrachtung des ermittelten öffentlichen Korpus von 44 Zenodo-Versionen in 32 Concept-Familien und fünf Revisionen zweier IETF-Draft-Reihen. Neun Lean-4-Sätze beweisen bedingte Kriterien im deklarierten Modell. 479 erhaltene Zenodo-Originaldateien und fünf IETF-Originaltexte sind bytegebunden. Physikalische Korrespondenz, universelle Überlegenheit, unabhängige wissenschaftliche Reproduktion und produktive Runtime-Wirkung bleiben gesonderte offene Nachweispflichten. Neue Manuskript- und Formalbeiträge: OpenAI Codex im Auftrag von Ingolf Lohmann; inhaltliche Owner-Abnahme und kandidatenspezifische Upload-Freigabe sind nicht vorausgesetzt.",
+    "creators": [
+      {
+        "name": "Lohmann, Ingolf"
+      }
+    ],
+    "version": "2026-10-15-publication-candidate.1",
+    "access_right": "open",
+    "license": "cc-by-nc-nd-4.0",
+    "language": "deu",
+    "keywords": [
+      "QIK-VRT",
+      "Lean 4",
+      "Anschlussfähigkeit",
+      "Claim-Traceability",
+      "wissenschaftliche Gesamtbetrachtung"
+    ],
+    "related_identifiers": [
+      {
+        "identifier": "10.5281/zenodo.21888130",
+        "relation": "isSupplementTo",
+        "scheme": "doi"
+      },
+      {
+        "identifier": "10.5281/zenodo.21721918",
+        "relation": "isSupplementTo",
+        "scheme": "doi"
+      }
+    ],
+    "prereserve_doi": true
+  },
+  "files": [
+    {
+      "path": "LICENSES/CC-BY-NC-ND-4.0.txt",
+      "name": "E_030a83551794_CC-BY-NC-ND-4.0.txt",
+      "git_blob_sha": "cfe676c541842bd2b766787b1f6983e063a1eee2"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/ABGLEICH_UND_BEWEISBRUECKEN_20261015.txt",
+      "name": "ABGLEICH_UND_BEWEISBRUECKEN_20261015.txt",
+      "git_blob_sha": "c5d1e49751cbc124ab662052fe347b1651b36694"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/ARTICLE_DE.txt",
+      "name": "ARTICLE_DE.txt",
+      "git_blob_sha": "87ac49065627cf2b2ec3b9492bcf3ef98a95e474"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/Anschlussfaehigkeit_und_groesstes_Element_20261015.pdf",
+      "name": "Anschlussfaehigkeit_und_groesstes_Element_20261015.pdf",
+      "git_blob_sha": "79f248ecc23b493d22704c16712b63f062481a8b"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json",
+      "name": "CORPUS_COVERAGE.json",
+      "git_blob_sha": "72ef63ff992654d0d0c72b339ef86741a7e40631"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/EXTERNAL_COMPARISON_SOURCES.json",
+      "name": "EXTERNAL_COMPARISON_SOURCES.json",
+      "git_blob_sha": "f8e2d9e8db48bc1a48d99bc3c1a7d46b3cf01c46"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/FORMAL_SOURCE_SNAPSHOT.json",
+      "name": "FORMAL_SOURCE_SNAPSHOT.json",
+      "git_blob_sha": "8d1c44d711822c97b7e4af24180a2352a88fef08"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/GESAMTBETRACHTUNG_DE.pdf",
+      "name": "GESAMTBETRACHTUNG_DE.pdf",
+      "git_blob_sha": "c53348766fb6c1f372629a295dac48d4937fb948"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/GESAMTBETRACHTUNG_DE.txt",
+      "name": "GESAMTBETRACHTUNG_DE.txt",
+      "git_blob_sha": "6c02f9ea349b316d80d103d0df586aa44bfdfebf"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/GESAMTINVENTAR_20261015.csv",
+      "name": "GESAMTINVENTAR_20261015.csv",
+      "git_blob_sha": "4001ca3893d4e273d2561818c96fc7099c7c3214"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/IETF_ALL_REVISIONS_READBACK.json",
+      "name": "IETF_ALL_REVISIONS_READBACK.json",
+      "git_blob_sha": "655f172682dbf551624321e848eafa0c3a60334e"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/OWNER_CLARIFICATION_20261015.txt",
+      "name": "OWNER_CLARIFICATION_20261015.txt",
+      "git_blob_sha": "61295b93bdcf95f4d6a9a039b2f67818994ee4a5"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/OWNER_FULL_CORPUS_REQUIREMENT_20261015.txt",
+      "name": "OWNER_FULL_CORPUS_REQUIREMENT_20261015.txt",
+      "git_blob_sha": "36523c13810b0c6ca42683e8c9eb9c691b6df557"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/OWNER_STATEMENT.txt",
+      "name": "OWNER_STATEMENT.txt",
+      "git_blob_sha": "5b3426c89e4705283f04193e3912aacdc763912c"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/PUBLICATION_SOURCES.json",
+      "name": "PUBLICATION_SOURCES.json",
+      "git_blob_sha": "4aad2b8df9298241c688f79627da7c3330abb54d"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/PUBLIC_CORPUS_RECONCILIATION.json",
+      "name": "PUBLIC_CORPUS_RECONCILIATION.json",
+      "git_blob_sha": "35191d07dbc9616a399fa6f090037612c9932caa"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/README.md",
+      "name": "README.md",
+      "git_blob_sha": "cc5affec76a397802f6f8f4f6c8dc7d6c5cb92b6"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/RECONCILIATION_CLAIM_DISPOSITIONS.json",
+      "name": "RECONCILIATION_CLAIM_DISPOSITIONS.json",
+      "git_blob_sha": "a999afac5f956c564ef8ba8ec50e094bb846d318"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/RECONCILIATION_VISIBLE_SOURCES.json",
+      "name": "RECONCILIATION_VISIBLE_SOURCES.json",
+      "git_blob_sha": "26afbd57cde05fa3eed88d3120f22bb423497e04"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SCIENTIFIC_SOURCES.zip",
+      "name": "SCIENTIFIC_SOURCES.zip",
+      "git_blob_sha": "6ba676e9c2bdbd2a4d65a58903cf22f247f41c0f"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SCIENTIFIC_SOURCE_ARCHIVE.json",
+      "name": "SCIENTIFIC_SOURCE_ARCHIVE.json",
+      "git_blob_sha": "4d4593eb46c8345ed521ac103aaaeeca0d6dacf9"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/VISIBLE_SOURCES.json",
+      "name": "VISIBLE_SOURCES.json",
+      "git_blob_sha": "1c769111ddaac9896a0bcc60fe2be13606a60c69"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/ZENODO_ALL_FILE_READBACK.json",
+      "name": "ZENODO_ALL_FILE_READBACK.json",
+      "git_blob_sha": "69975880bd083f22d285fda6a86b43b442c0dae3"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/negative/LimitedIsGreatest.lean",
+      "name": "E_6b48c56025db_LimitedIsGreatest.lean",
+      "git_blob_sha": "faf4205bab1af5dac4a2b032c71fcfdfe023cc45"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/negative/SharedInterfaceImpliesDominance.lean",
+      "name": "E_f06776d11534_SharedInterfaceImpliesDominance.lean",
+      "git_blob_sha": "1bf4d3d3d0c7a3ee623328244a731a25417f8aae"
+    },
+    {
+      "path": "docs/publications/2026-08-02-causality-is-relation-vrtcore/lean_selfexe_compat.c",
+      "name": "E_c0489969dfc5_lean_selfexe_compat.c",
+      "git_blob_sha": "4b000f83ffbf360dde435970719d4ab67ee734fe"
+    },
+    {
+      "path": "policy/qikvrt-prepublication-return-receipt-v2.schema.json",
+      "name": "E_719c0230f22e_qikvrt-prepublication-return-receipt-v2.schema.json",
+      "git_blob_sha": "ddf7e306940d256b51971ea153c33b6e493ffde4"
+    },
+    {
+      "path": "policy/qikvrt-zenodo-machine-proof-bundle-v2.schema.json",
+      "name": "E_aa742c713a34_qikvrt-zenodo-machine-proof-bundle-v2.schema.json",
+      "git_blob_sha": "22cc6f4008b4823e8a7cf5e3057d058df6c0961a"
+    },
+    {
+      "path": "policy/zenodo-machine-proof-policy-v2.json",
+      "name": "E_5c7a932ee382_zenodo-machine-proof-policy-v2.json",
+      "git_blob_sha": "e9578d30d22f845e7df684128dcd9332641c00be"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CLAIM_MATRIX.json",
+      "name": "CLAIM_MATRIX.json",
+      "git_blob_sha": "a4bc28671544a16f64dac5319904d03293da7ca4"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/KERNEL_RECEIPT.json",
+      "name": "KERNEL_RECEIPT.json",
+      "git_blob_sha": "9136b1c36ff509b302231e17f2b8306217454d87"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json",
+      "name": "SOURCE_BINDINGS.json",
+      "git_blob_sha": "b1fe83f42b69ece817210dab8852ed360bf1123b"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CHANGE_NOTICE.md",
+      "name": "CHANGE_NOTICE.md",
+      "git_blob_sha": "5eca08fa60dde9375558ad72f52d0d30796c72e4"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/PREPUBLICATION_RETURN_RECEIPT.json",
+      "name": "PREPUBLICATION_RETURN_RECEIPT.json",
+      "git_blob_sha": "bd156aab9643fea1a049f4841305dcd500eb1239"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/MACHINE_PROOF_BUNDLE_DRAFT.json",
+      "name": "MACHINE_PROOF_BUNDLE.json",
+      "git_blob_sha": "800e42ac67388049f4f390d1ec541f8889076def"
+    }
+  ],
+  "machine_proof": {
+    "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/MACHINE_PROOF_BUNDLE_DRAFT.json",
+    "git_blob_sha": "800e42ac67388049f4f390d1ec541f8889076def",
+    "policy_id": "qikvrt-zenodo-machine-proof-before-publication-v2"
+  },
+  "owner_authorization": null,
+  "evidence_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/zenodo-publication.json"
+}

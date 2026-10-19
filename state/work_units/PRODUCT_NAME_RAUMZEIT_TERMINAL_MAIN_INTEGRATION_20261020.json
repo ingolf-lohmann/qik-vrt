@@ -1,0 +1,57 @@
+{
+  "schema": "qikvrt_ai_work_unit_provenance_v1",
+  "work_unit_id": "PRODUCT_NAME_RAUMZEIT_TERMINAL_MAIN_INTEGRATION_20261020",
+  "created_at": "2026-10-19T22:46:40.648930+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_commit": "b226770c064a167ee3a9cc70996f05db1b3bc6d1",
+  "source_tree": "4200dfe141fc30557f0e0d9abb5eec4176f9df25",
+  "predecessor_pr": 465,
+  "predecessor_head": "b0dd02397386103532608c39559522b6d5f3f967",
+  "human_actor": {
+    "attribution_id": "Ingolf Lohmann",
+    "role": "Principal, Product Owner and Code Owner"
+  },
+  "human_contributions": [
+    "Existing bounded product-name correction and current completion instruction"
+  ],
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "session_or_run_id": "01cd72b97179"
+  },
+  "artificial_cognitive_contributions": [
+    "Reapply the original two product-reference substitutions onto complete current Main without altering new native-component instructions or historical citations",
+    "Preserve original work-unit bytes and both remote commit histories"
+  ],
+  "outputs": [
+    {
+      "path": "AI",
+      "bytes": 31041,
+      "sha256": "e366e34f7bd03e35b8f5866e326609da606c10244e4409b9134d95a7466eff73"
+    },
+    {
+      "path": "state/work_units/PRODUCT_NAME_RAUMZEIT_TERMINAL_20261006.json",
+      "bytes": 4118,
+      "sha256": "13d6b1f64af7bc157cab63a525166e3e8ed79b05d2d10069c1fe875ba28ad0fc"
+    }
+  ],
+  "repair": {
+    "product_reference_replacements": 2,
+    "new_component_names_changed": false,
+    "original_work_unit_changed": false,
+    "new_proxy_pr": false,
+    "history_rewrite": false
+  },
+  "verification": {
+    "exact_transformation": true,
+    "full_make_test": "REQUIRED_AFTER_INTEGRITY_REGENERATION",
+    "predecessor_pass_transferred": false
+  },
+  "completion_claims": {
+    "EFFECT_ACK_DONE": false,
+    "merge": false,
+    "deployment": false,
+    "productive_host_acceptance": false
+  },
+  "next_action": "Regenerate integrity and validate this exact candidate, then update the existing PR through guarded REST and independently read back all current-head gates."
+}
