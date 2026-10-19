@@ -53,8 +53,15 @@
     "review_note": "Original draft preserved unchanged. Absence of repository events alone does not prove a private receiver never ran, causality, or absence of autonomous work. Historical claims need exact-time branch and Actions inventory; no blanket scientific claim accepted.",
     "review_pr": 540,
     "review_pr_url": "https://github.com/ingolf-lohmann/qik-vrt/pull/540",
-    "review_candidate_head": "2dc3554fb3286ffa3cae0ffe25f395760290bc3d",
-    "required_checks": "PENDING_EXISTING_NATIVE_INTEGRITY_AND_GOVERNANCE"
+    "review_candidate_head": "fddb3efca9840a8759b4c13717478603662c5186",
+    "required_checks": "IN_PROGRESS; no successful full-gate or Main integration claim",
+    "native_predecessor_failure": "Existing publication discovery regression: JSON entry absent from human HTML atlas",
+    "source_repair": "Add one original-draft link to existing human atlas; original six document bytes unchanged",
+    "native_successor_runs": [
+      39224634517,
+      39224634431,
+      39224634426
+    ]
   },
   "receiver": {
     "state": "HOLD_ORIGINAL_HOST_CONTROL_AND_PRIVATE_PEER_BINDING_NOT_ESTABLISHED",
@@ -140,5 +147,5 @@
   "effect_ack_done": false,
   "mesh_acceptance": false,
   "live_synchronous_peer_route_verified": false,
-  "previous_ack_commit": "db831a5511e276333618e815a6bb641d43ec1e10"
+  "previous_ack_commit": "76331cd69bb1e0de28be0e3a7049bfcbec054a05"
 }
