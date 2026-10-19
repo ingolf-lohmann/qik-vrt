@@ -1,0 +1,79 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "PR412_LOSSLESS_MAIN_INTEGRATION_20261001",
+  "created_at": "2026-10-01T00:26:30.493831+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_pr": 412,
+  "source_commit": "649af1815e8874f316619f0e7f0e7111607470a4",
+  "source_tree": "94e8b8ff8f81fbc0a45e9ebe14b5e3e2eb7120b8",
+  "main_commit": "f21ed85becfa97cf11ca71c439109fba87102538",
+  "main_tree": "5857b8e8ed28df673ca97d5688ca2005c5d66efb",
+  "human_actor": "Ingolf Lohmann",
+  "human_contributions": [
+    "Explicit continuing repair, commit, push and merge authorization in current conversation"
+  ],
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6",
+    "session_or_run_id": "UNAVAILABLE"
+  },
+  "artificial_cognitive_contributions": [
+    "Lossless merge of current role-local Main into existing PR #412",
+    "Regenerated only conflicting generated integrity indexes",
+    "Fresh complete suite and package boundary readback"
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "inputs": {
+    "old_main": "c3fb7f570c55e4494a88cceae89ed0e42d989191",
+    "conflicts": [
+      "REPOSITORY_FILE_MANIFEST.json",
+      "REPOSITORY_FILE_MANIFEST.json.sha256",
+      "SHA256SUMS.txt"
+    ]
+  },
+  "outputs": [
+    "Containing commit/tree preserves both exact parents",
+    "state/work_units/PR412_LOSSLESS_MAIN_INTEGRATION_20261001.json"
+  ],
+  "git_history": {
+    "force_push": false,
+    "history_rewrite": false,
+    "strategy": "Merge existing PR head with current Main; preserve source policy/spec/test/workflow bytes"
+  },
+  "verification": {
+    "focused_boundary_tests": {
+      "result": "PASS",
+      "count": 5
+    },
+    "make_test": {
+      "result": "PASS",
+      "scope": "Local complete Makefile target on merged working tree"
+    },
+    "standard_package": {
+      "two_builds_byte_identical": true,
+      "personal_markers_absent": true,
+      "sha256": "f11d294053373381f38803c87e5b5d6bf586ff98f3d93bfcfc945a200a5c3d82",
+      "scope": "Declared seven-file Standard package; local build"
+    },
+    "hosted_exact_head_tests": "PENDING",
+    "independent_authority_readback": "HTTP_404_HOLD_UNVERIFIED"
+  },
+  "human_decision": {
+    "repair_commit_push_merge": "AUTHORIZED",
+    "native_review": "NOT_INFERRED"
+  },
+  "external_effects": {
+    "release": false,
+    "deployment": false,
+    "publication": false
+  },
+  "release_claims": {
+    "personal_edition_release": "HOLD",
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false
+  },
+  "predecessor_evidence_transfer": false
+}

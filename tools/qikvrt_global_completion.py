@@ -30,6 +30,7 @@ GLOBAL_RUN_EVIDENCE = ROOT / "evidence/receipts/global-completion-exact-head-run
 
 SCOPE_ID = "qikvrt-global-claim-scope-v1"
 TAG = "v2026.07.28-authority-mirror-zenodo-equality-1.0.0"
+# Frozen 2026-07-28 tag identities; never a live repository-role source.
 AUTH_REPO, MIRROR_REPO = "Goldkelch/qik-vrt", "ingolf-lohmann/qik-vrt"
 AUTH_TAG, MIRROR_TAG = "42389236ea638f5cd40c13a486b70b1e1bf03055", "5c710e98bea2a10035cf0ba2c8e30ffd5c98c279"
 TAG_TREE = "cc3f0421c7eb9255ec35cdd5a7326d3a21dabb9e"

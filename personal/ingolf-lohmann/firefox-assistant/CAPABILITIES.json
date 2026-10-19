@@ -1,0 +1,105 @@
+{
+  "schema": "qikvrt_personal_assistant_capabilities_v1",
+  "version": "1.3.0",
+  "product_name": "Universales Raumzeit-Terminal",
+  "product_descriptor": "Persönlicher Browserassistent für quellgebundene Recherche, Dokumentation und Fortsetzung",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "edition": "PERSONAL_OPT_IN",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "entrypoint": "src/qikvrt_effect_ack_http_terminal.py",
+  "adapter": "src/qikvrt_personal_assistant.py",
+  "firefox_surface": "http://127.0.0.1:8771/personal/",
+  "capability_readback": "/personal/capabilities",
+  "operations": [
+    "create_source_bound_task",
+    "research_documentation_turn",
+    "ordinary_history_readback",
+    "resume_observed_checkpoint",
+    "identity_sign_in",
+    "rotate_refresh_token",
+    "local_sign_out",
+    "provider_token_revocation_when_supported"
+  ],
+  "provider": {
+    "authority": "https://api.openai.com/v1",
+    "authentication": "OS_SECRET_SERVICE_MODEL_KEY; EXPLICIT_LEGACY_MEMORY_OPTION",
+    "model": "EXPLICIT_RUNTIME_ARGUMENT_REQUIRED",
+    "api": "RESPONSES_WITH_CONVERSATIONS",
+    "chatgpt_signed_in_session_bridge": "NOT_IMPLEMENTED_OR_ATTESTED",
+    "proprietary_runtime_redistributed": false
+  },
+  "client_authentication": "OIDC_AUTHORIZATION_CODE_PKCE_S256_WITH_MEMORY_ONLY_BROWSER_BEARER",
+  "credentials_in_repository_or_runtime_database": false,
+  "normal_baseline": {
+    "identity": "SAME_SOURCE_BOUND_ASSISTANT_ORDINARY_CONVERSATION_MODE",
+    "mode": "baseline",
+    "persistence": [
+      "normal provider conversation",
+      "full local transcript",
+      "saved outputs",
+      "session list and readback",
+      "browser tab restore"
+    ],
+    "same_provider_model_instructions_parameters_tools": true,
+    "automatic_history_deletion_or_reset": false,
+    "comparison_scope": "This comparator is the adapter's ordinary conversation mode. It is not a measurement of ChatGPT UI or another vendor product."
+  },
+  "qikvrt_mode": {
+    "mode": "qikvrt",
+    "additional_capability": "HASH_BOUND_OBSERVED_OUTPUT_CHECKPOINT_ON_RESUME",
+    "checkpoint_is_independent_acceptance": false,
+    "checkpoint_from_harness_oracle": false
+  },
+  "runtime_state": "PRIVATE_EXTERNAL_DIRECTORY_SQLITE_WAL_SYNCHRONOUS_FULL",
+  "ambiguous_external_result": "DURABLE_PENDING_AND_NO_AUTOMATIC_RETRY",
+  "runtime_evidence_class": "SOURCE_CAPABILITY_MANIFEST_ONLY",
+  "authenticated_runtime_readback": false,
+  "firefox_execution_observed": false,
+  "equivalent_pre_runs_observed": false,
+  "product_trials_executed": 0,
+  "product_metrics": null,
+  "product_claim_allowed": false,
+  "personal_release_effect_ack_done": false,
+  "optional_providers": {
+    "gemini": {
+      "model": "gemini-4-argon",
+      "authority": "https://generativelanguage.googleapis.com/v1beta",
+      "api": "INTERACTIONS_STATELESS_TEXT_ONLY",
+      "credentials": "SERVER_MEMORY_FROM_GEMINI_API_KEY",
+      "store": false,
+      "background": false,
+      "max_output_tokens": 4096,
+      "history": "FULL_LOCAL_TRANSCRIPT_RESUBMITTED_AS_LABELLED_DATA",
+      "live_runtime_verified": false,
+      "use_and_entitlement_review": "OPEN_FOR_LIVE_USE"
+    }
+  },
+  "identity_authentication": {
+    "implementation": "src/qikvrt_personal_auth.py",
+    "registered_provider": "UNBOUND_PENDING_PRIVATE_CONFIGURATION",
+    "public_client": true,
+    "pkce": "S256",
+    "response_mode": "form_post",
+    "id_token_validation": "RS256_SIGNATURE_ISSUER_OWNER_SUBJECT_AUDIENCE_NONCE_EXPIRY",
+    "credential_store": "LINUX_SECRET_SERVICE_VIA_SYSTEM_LIBSECRET_SECRET_TOOL",
+    "plaintext_fallback": false,
+    "refresh": "PROTECTED_PENDING_JOURNAL; GENERIC_ROTATION_OR_EXPLICIT_MICROSOFT_REPLACEMENT; NO_AMBIGUOUS_RETRY",
+    "local_session_max_age_seconds": 43200,
+    "browser_storage": "MEMORY_ONLY_NO_APPLICATION_COOKIE_LOCALSTORAGE_OR_SESSIONSTORAGE",
+    "passkeys": "DELEGATED_TO_REGISTERED_IDP_AND_DEVICE; NOT_ATTESTED",
+    "remote_revocation": "RFC7009_IF_ADVERTISED_AND_PINNED; ENDPOINT_ACK_IS_NOT_INDEPENDENT_REUSE_TEST",
+    "native_secret_store_witness": false,
+    "authenticated_identity_runtime_readback": false,
+    "firefox_identity_flow_observed": false,
+    "windows_macos_secure_backend": "NOT_IMPLEMENTED",
+    "test_evidence": "SIMULATED_OIDC_AND_STORE; SEPARATE_REAL_RSA_CONTROLS; NO_PRODUCT_AUTHENTICATION",
+    "selected_provider": "MICROSOFT_OWNER_SELECTION_20261016",
+    "provider_profiles": [
+      "oidc_public_v1",
+      "microsoft_public_v2"
+    ],
+    "provider_refresh_replay_detection": "NOT_ATTESTED; MICROSOFT_REPLACEMENT_DOES_NOT_REVOKE_OLD_TOKEN",
+    "microsoft_revocation": "LOCAL_TOKEN_REMOVAL; OPTIONAL_PROVIDER_SIGNOUT; ACCOUNT_OR_TENANT_REVOCATION_REQUIRED; NO_GRAPH_PERMISSION_EXPANSION",
+    "legacy_config_compatibility": "EXACT_EXISTING_CONFIG_AND_PROTECTED_BINDING_PRESERVED"
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "schema": "qikvrt_full_corpus_publication_admission_v1",
+  "state": "BLOCK_NOT_PUBLISHED",
+  "new_proofs_locally_kernel_checked": true,
+  "exact_head_native_workflow_receipt": {
+    "state": "VERIFIED_FOR_UNCHANGED_LEAN_INPUTS",
+    "run_id": 38711511556,
+    "native_head": "b97e55a0c4adf1abf2dd608500c55784930a4362",
+    "receipt": {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/KERNEL_RECEIPT.json",
+      "bytes": 13415,
+      "sha256": "ac3b42b050cff507d841957c1498c68cf364d58bd6278ec41c43f920ae14fc5a",
+      "git_blob_sha1": "9136b1c36ff509b302231e17f2b8306217454d87"
+    }
+  },
+  "full_candidate_return_to_owner": "DELIVERED_WITH_VISIBLE_CHANGE_NOTICE_NOT_APPROVAL",
+  "candidate_specific_exact_upload_authorization": "NOT_RECORDED",
+  "authenticated_zenodo_publisher": "NO_ZENODO_OR_GITHUB_TOKEN_DELIVERED_TO_THIS_CLIENT",
+  "mirror_read_write": "CONCRETE_GETS_404",
+  "no_parallel_controller_created": true,
+  "main_merge_performed": false,
+  "production_delivery_claimed": false,
+  "next_action": "Persist exact candidate on existing review carrier; return complete bytes and change notice; obtain native workflow and exact admitted publisher/authorization before any Zenodo effect.",
+  "validator": {
+    "argv": [
+      "python3",
+      "-B",
+      "tools/qikvrt_zenodo_machine_proof.py",
+      "--proof-bundle",
+      "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/MACHINE_PROOF_BUNDLE_DRAFT.json"
+    ],
+    "exit_code": 2,
+    "first_remaining_error": "proof bundle does not authorize the exact Zenodo upload",
+    "gate_pass_claimed": false
+  },
+  "proof_binding_prefix": "VERIFIED_BY_UNMODIFIED_PRODUCTION_VALIDATOR_THROUGH_V2_RETURN_RECEIPT",
+  "candidate_freeze": {
+    "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CANDIDATE_FREEZE.json",
+    "bytes": 100295,
+    "sha256": "9e095a1399b711fa12f6b80346334ddd5cf456d42f795567b116b6aad1a57435",
+    "git_blob_sha1": "aec450848505e1b5a18a12b23fc0b411678fc1c8"
+  },
+  "smallest_continuation": "Owner reviews exact returned payload/metadata/proof plan; only after a candidate-specific recorded decision materialize the final proof-bearing v2 manifest and canonical AUTHORIZE_EXACT_UPLOAD binding. Use the existing authenticated publisher with both required tokens and the Authority-wide consumption ref. Independently read the native public record, DOI and every uploaded file after an actual effect.",
+  "new_record_id": null,
+  "new_doi": null,
+  "upload_count": 0,
+  "candidate_return_receipt": {
+    "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/PREPUBLICATION_RETURN_RECEIPT.json",
+    "bytes": 11317,
+    "sha256": "f37afe97fc45dd705eadd0887d18c5faacd1dc6b82ed37163f13014c2bdc66fd",
+    "git_blob_sha1": "bd156aab9643fea1a049f4841305dcd500eb1239"
+  },
+  "proof_bundle_promotion_changes_require_new_exact_binding": true,
+  "planned_upload_file_count": 35,
+  "maximum_upload_files": 100,
+  "source_archive_members_byte_verified": 255,
+  "production_metadata_schema": "VERIFIED_BY_EXISTING_PUBLISHER",
+  "draft_publish_request": {
+    "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/PUBLISH_REQUEST_DRAFT.json",
+    "bytes": 10877,
+    "sha256": "46746a92bf9ccb45561b2178754b94401292973f172028d1f68651a40efe957b",
+    "git_blob_sha1": "6cf5525fc5b10c2d4abc9e072916cdb3589861ba"
+  },
+  "frozen_source_head": "55ffa91bcac73d755dc0ff7394ba89d5aea4c1b9",
+  "frozen_source_tree": "9548b446a57d58a00dbd63fb0d828f650bf4963f"
+}

@@ -1,0 +1,10 @@
+/workspace/scratch/8e977a8b5796/measurement-bridge/repo/docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/measurement-binding/negative-controls/FalseZeroBudget.lean:6:2: error: type mismatch
+  error_budgets_compose
+    (let_fun this := id (of_decide_eq_true (id (Eq.refl true)));
+    this)
+    (let_fun this := id (of_decide_eq_true (id (Eq.refl true)));
+    this)
+has type
+  Within 4 0 (2 + 2) : Prop
+but is expected to have type
+  Within 4 0 0 : Prop

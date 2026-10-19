@@ -13,10 +13,13 @@
     "deduplicate_bound_observations",
     "conditional_requests",
     "webhooks_over_polling",
-    "graphql_consolidation",
+    "rest_api_only_request_consolidation",
     "serialized_observers",
     "header_driven_backoff",
     "fresh_exact_identity_rebind_after_recovery"
   ],
-  "product_dod_on_rate_limit": false
+  "product_dod_on_rate_limit": false,
+  "github_route": "REST_API_ONLY",
+  "route_policy": "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json#/client_continuation/github_route",
+  "graphql_allowed": false
 }

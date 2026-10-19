@@ -1,0 +1,102 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "id": "QIKVRT_ZENODO_PUBLICATION_PATH_REPAIR_20261015_V1",
+  "status": "PREPARED_OWNER_AND_PUBLISHER_BLOCKED",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "pull_request": 523,
+  "source_head": "cdbdce01ba13f0c41ade9982a2d9a26a8ea4b92f",
+  "source_tree": "d79ea74ef83d0ac6eb8d938deb3d1265bfb6c720",
+  "human_contribution": "Ingolf Lohmann: task, scientific source statements, product/code authority and publication conditions",
+  "artificial_contribution": "OpenAI Codex: REST inspection, exact-file rechecks, reference/matrix/receipt repairs, existing publisher Authority alignment and regression verification",
+  "human_acceptance_inferred": false,
+  "repairs": [
+    "Disjoint candidate/artifact binding",
+    "Exact receipt#theorem and source fragments",
+    "Bidirectional 37-claim matrix projection including 13 existing supplement dispositions",
+    "Native run 38711511556 bound to all 108 unchanged formal project blobs",
+    "Existing publisher and global one-use consumption ref aligned with Owner Authority; old immutable manifests remain readable and non-executable for new effects",
+    "Actual delivery recorded in v2 return receipt; no Owner decision fabricated",
+    "Existing 100-file limit preserved: 255 unchanged source/evidence files packed with a complete verified member index; 35 unique safe upload names",
+    "Production metadata prereserve_doi requirement satisfied; non-executable final manifest template prepared; no reservation requested",
+    "Historical positive controls use their immutable recorded repository; current production Authority remains pinned"
+  ],
+  "candidate": {
+    "primary_pdf_bytes": 103905,
+    "primary_pdf_sha256": "926cceff006063d91797feaa3616cca0a6ff2c2c30d2e7f53f501ba5f3da97f6",
+    "frozen_payload_files": 29,
+    "planned_proof_bearing_upload_files": 35,
+    "freeze_sha256": "9e095a1399b711fa12f6b80346334ddd5cf456d42f795567b116b6aad1a57435",
+    "scientific_source_archive_members": 255,
+    "frozen_source_head": "55ffa91bcac73d755dc0ff7394ba89d5aea4c1b9"
+  },
+  "validation": {
+    "targeted_tests_passed": 117,
+    "retained_zenodo_originals_rehashed": 479,
+    "ietf_originals_rehashed": 5,
+    "published_source_visibility_count": 52,
+    "published_source_visibility": "PASS",
+    "strict_production_proof": "BLOCK: proof bundle does not authorize the exact Zenodo upload",
+    "complete_source_archive_gate": "FAIL: exact locator and archive pending for NEW-PROOF",
+    "fresh_native_successor_test": "REQUIRED_AFTER_PACKAGING_METADATA_CORRECTION",
+    "first_native_manuscript_run": {
+      "id": 38739544681,
+      "head": "1ea5c01473515c21127c5a7946157b665c2d9d83",
+      "conclusion": "success"
+    },
+    "first_native_full_ci": {
+      "id": 38739544691,
+      "job": 116437350667,
+      "head": "1ea5c01473515c21127c5a7946157b665c2d9d83",
+      "result": "failure",
+      "actual_cause": "test_qikvrt_zenodo_metadata_edit expected the now-canonical Owner Authority to be the wrong context; 168/169 release-automation tests passed",
+      "repair": "The negative fixture now uses the Mirror as wrong context; nine metadata-edit tests pass locally. No production boundary was relaxed."
+    },
+    "historical_control_context_repair": "Historical VRTCore decisions are audited against the repository recorded in each immutable manifest; current production Authority does not rewrite their historical context.",
+    "latest_native_full_ci": {
+      "id": 38740716962,
+      "job": 116441388008,
+      "head": "f4a5a01b02c08d6e8ec051dda6048cb017476773",
+      "tree": "7fa41b412e6af704089d9a629c309a094171a7ae",
+      "actual_full_test_outcome": "success",
+      "conclusion": "success",
+      "original_log_sha256": "b5831c3deadccaef4863199863d8a2dceaa971203400251851497725d2217209",
+      "scope": "Before final packaging correction; no PASS transfer to the successor upload metadata"
+    },
+    "latest_native_manuscript": {
+      "id": 38740724789,
+      "job": 116441414729,
+      "head": "f4a5a01b02c08d6e8ec051dda6048cb017476773",
+      "conclusion": "success"
+    }
+  },
+  "preserved": {
+    "scientific_pdf_bytes": true,
+    "all_published_original_bytes": true,
+    "all_six_physical_experiment_bridges_open": true,
+    "original_receipts_saved_under": "evidence/publication-repair-20261015/PREDECESSOR_*"
+  },
+  "production": {
+    "exact_owner_upload_authorization": "NOT_RECORDED",
+    "authenticated_publisher": "NO_ZENODO_ACCESS_TOKEN_OR_GITHUB_TOKEN_DELIVERED_TO_THIS_CLIENT",
+    "cli": "tools/qikvrt_zenodo_publish.py",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "new_parallel_workflow": false,
+    "new_pull_request": false,
+    "zenodo_mutations": 0,
+    "new_record_id": null,
+    "new_doi": null,
+    "main_merge": false,
+    "mirror_equality": false
+  },
+  "next_action": "Review delivered exact bytes and metadata; materialize only the admitted final v2 proof/return/Owner event with canonical AUTHORIZE_EXACT_UPLOAD digest binding; use the existing authenticated publisher and one-use Authority ref. After an actual upload independently read native published metadata, DOI and every original file and preserve evidence.",
+  "state_is_not_publication_or_physical_proof": true,
+  "updated_at": "2026-10-15T13:26:45.236584+00:00",
+  "integration_base_head": "b17459a655f5a2f795583d9848dcb5a351792208",
+  "integration_base_tree": "a898c7385fb5a998767175eae805d4ffc6934114",
+  "concurrent_integration_preserved": true,
+  "formal_snapshot_files": 108,
+  "concurrent_successors_preserved": [
+    "9c3c6b131698a6a233bfea75dc8f23f406969a97",
+    "b17459a655f5a2f795583d9848dcb5a351792208"
+  ]
+}

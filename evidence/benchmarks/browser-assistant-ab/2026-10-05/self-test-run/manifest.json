@@ -1,0 +1,169 @@
+{
+  "contract_sha256": "1910743f21f4303b89b019c5c95a144c611ff01a8d8c5d06a68b56965e244b75",
+  "evidence_class": "HARNESS_SELF_TEST",
+  "execution": "SYNTHETIC_CLOCK_AND_SCRIPTED_OUTPUTS",
+  "fixture_files": {
+    "document-recovery": "b81c2c30cfc70dfef3c67c269bf13eb839cb80c5b993ae8fbe475e42e1c7159e",
+    "research-costs": "cf38f611e3bd108f52f59ff2fe85f406c50e9be4d458a65d7df1ff419c3051f2"
+  },
+  "pairs": [
+    {
+      "binding": {
+        "checkpoint_sha256": "08f2181c84dc953e521f0fc650873aee8689daf3f86b5fee8443abc556e6829f",
+        "sources": {
+          "atlas-current": "371c9fe36f379a87f9fa664318e79806571788bbed0534b64ddb773b86248ec6",
+          "atlas-old": "f140c376df927467bb0e357b40d896b38074d2d229034ee3f45760c0b0770f97",
+          "beacon-current": "f8dc54bdeefef0a0a45481979f45269f77b08f9c68490df01b68b317d413a50a"
+        },
+        "task_sha256": "d9e8b02ed9e1e2eabf904b96b41a3ea345e8305f1698107379dbca11177a5466"
+      },
+      "interruption": "conversation_context_reset",
+      "order": "BA",
+      "pair_id": "p002",
+      "task_id": "research-costs",
+      "trials": [
+        "p002-qikvrt",
+        "p002-baseline"
+      ]
+    },
+    {
+      "binding": {
+        "checkpoint_sha256": "37ccd98f67f31456961aa8c2a53b40f2b9d9fd8d073ca1ccae36c319675983e9",
+        "sources": {
+          "live-status": "f34720bb811493212265e0473998b740165fe7559fd6487184bcb3528678fdfa",
+          "old-note": "f529d5b0b64b394e06375452c5977f880b9419bef81fe37aba347c79511714bb",
+          "plan": "49f3c7543bdc1f45b7db069a13ed922fb9f90cabb22eddda3b505fb0135aa839"
+        },
+        "task_sha256": "d5106b8001acbeecfb8889b06da42ad5ccbd961578fbbf7c8439a4e264dab08c"
+      },
+      "interruption": "assistant_process_loss",
+      "order": "AB",
+      "pair_id": "p003",
+      "task_id": "document-recovery",
+      "trials": [
+        "p003-baseline",
+        "p003-qikvrt"
+      ]
+    },
+    {
+      "binding": {
+        "checkpoint_sha256": "08f2181c84dc953e521f0fc650873aee8689daf3f86b5fee8443abc556e6829f",
+        "sources": {
+          "atlas-current": "371c9fe36f379a87f9fa664318e79806571788bbed0534b64ddb773b86248ec6",
+          "atlas-old": "f140c376df927467bb0e357b40d896b38074d2d229034ee3f45760c0b0770f97",
+          "beacon-current": "f8dc54bdeefef0a0a45481979f45269f77b08f9c68490df01b68b317d413a50a"
+        },
+        "task_sha256": "d9e8b02ed9e1e2eabf904b96b41a3ea345e8305f1698107379dbca11177a5466"
+      },
+      "interruption": "assistant_process_loss",
+      "order": "AB",
+      "pair_id": "p001",
+      "task_id": "research-costs",
+      "trials": [
+        "p001-baseline",
+        "p001-qikvrt"
+      ]
+    },
+    {
+      "binding": {
+        "checkpoint_sha256": "37ccd98f67f31456961aa8c2a53b40f2b9d9fd8d073ca1ccae36c319675983e9",
+        "sources": {
+          "live-status": "f34720bb811493212265e0473998b740165fe7559fd6487184bcb3528678fdfa",
+          "old-note": "f529d5b0b64b394e06375452c5977f880b9419bef81fe37aba347c79511714bb",
+          "plan": "49f3c7543bdc1f45b7db069a13ed922fb9f90cabb22eddda3b505fb0135aa839"
+        },
+        "task_sha256": "d5106b8001acbeecfb8889b06da42ad5ccbd961578fbbf7c8439a4e264dab08c"
+      },
+      "interruption": "conversation_context_reset",
+      "order": "BA",
+      "pair_id": "p004",
+      "task_id": "document-recovery",
+      "trials": [
+        "p004-qikvrt",
+        "p004-baseline"
+      ]
+    }
+  ],
+  "pairs_per_task": 2,
+  "preflight": {
+    "blockers": [
+      "EXECUTABLE_PERSONAL_RESEARCH_ASSISTANT_ADAPTER_NOT_IMPLEMENTED",
+      "BASELINE_ASSISTANT_AND_RETENTION_NOT_BOUND",
+      "FIREFOX_EXECUTABLE_UNAVAILABLE",
+      "AUTHENTICATED_PERSONAL_RUNTIME_NOT_ESTABLISHED"
+    ],
+    "environment": {
+      "firefox": {
+        "executable": null,
+        "executable_sha256": null,
+        "version": null
+      },
+      "machine": "x86_64",
+      "os": "Linux-6.18.44-x86_64-with-glibc2.39",
+      "python": "3.12.14"
+    },
+    "head": "86d7062f25f174039da0a5df8a856127553036f1",
+    "observed_utc": "2026-10-05T11:35:56Z",
+    "personal_release_candidate": {
+      "authenticated_runtime_readback": false,
+      "boundary_contract_materialized": true,
+      "personal_capability_manifest_materialized": false,
+      "personal_release_effect_ack_done": false,
+      "state": "HOLD"
+    },
+    "product_claim_allowed": false,
+    "product_metrics": null,
+    "product_trials_executed": 0,
+    "repository": "ingolf-lohmann/qik-vrt",
+    "schema": "qikvrt_browser_ab_preflight_v1",
+    "source_files": {
+      "benchmarks/browser-assistant-ab/console.html": {
+        "bytes": 4936,
+        "sha256": "e4d97ca077963bc3936e3cc3be5ed2a4f39c22aa15ed131f18758f3a1e3e0c4a"
+      },
+      "browser/firefox/qikvrt-terminal/background.js": {
+        "bytes": 10470,
+        "sha256": "d6ac437244b24f05542460df7e89614fb77b6c495c8c112b373a6049a5bfe610"
+      },
+      "browser/firefox/qikvrt-terminal/content.js": {
+        "bytes": 8904,
+        "sha256": "e7a9bb13052036c6445d4f0f3391b03cf54ff73cee6646ba9237eff2e8fb1e07"
+      },
+      "browser/firefox/qikvrt-terminal/manifest.json": {
+        "bytes": 1040,
+        "sha256": "83bcdef35587bda131c0517abda944db509f94e95aa9a35f16d8ea0f03f9b06a"
+      },
+      "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json": {
+        "bytes": 1716,
+        "sha256": "e5815ec00ef0968a8bf390d4fd5a6304d4767fcae3477cfa7a1722c5d660d55f"
+      },
+      "runtime/toolchains/CACHE_COVERAGE.json": {
+        "bytes": 3054,
+        "sha256": "6a138586aa0cbd457f336c5bc76ecbc907d914228b5df9de1bb69ac60621374b"
+      },
+      "runtime/toolchains/CACHE_REGISTRY.json": {
+        "bytes": 10574,
+        "sha256": "420c806625071b26ae6c9f245d181236726e2ce485d825e20e66e409cd181625"
+      },
+      "runtime/toolchains/TOOLCHAIN.lock.tsv": {
+        "bytes": 2599,
+        "sha256": "2cc8f03f1ffe0d1cb179778aca70d69d8ee1df9cb4552d47de75e26a96ed0a69"
+      },
+      "src/qikvrt_effect_ack_http_terminal.py": {
+        "bytes": 14765,
+        "sha256": "79f014cbba32499138c492969d55309f00aacd915d2620049480334275bbb63a"
+      },
+      "tools/qikvrt_browser_assistant_ab.py": {
+        "bytes": 36909,
+        "sha256": "097dfb70f4961adcbb2ef63aef037fa56b75e300a9377f1a124da3e0fd4167c7"
+      }
+    },
+    "status": "PRODUCT_EXECUTION_NOT_AVAILABLE",
+    "terminal_boundary": "The existing loopback bridge accepts terminal input; it is not a persistent authenticated research/documentation assistant.",
+    "tree": "5421dceb17f1ecc0fd3f5c12891ca9c1a12e7cf2",
+    "worktree_dirty": true
+  },
+  "product_claim_allowed": false,
+  "schema": "qikvrt_browser_ab_run_v1",
+  "seed": 20261005
+}

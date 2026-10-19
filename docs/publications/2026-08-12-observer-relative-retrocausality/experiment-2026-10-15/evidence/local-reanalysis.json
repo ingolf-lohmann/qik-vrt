@@ -1,0 +1,218 @@
+{
+  "schema": "qikvrt_retrocausality_local_reanalysis_v1",
+  "observed_at": "2026-10-15T12:46:09.418322+00:00",
+  "runs": [
+    {
+      "generation": "historical",
+      "transceivers": 2,
+      "n": 2048,
+      "matches": 1016,
+      "statistics": {
+        "n_attempted": 2048,
+        "known_matches": 1016,
+        "missing": 0,
+        "feasible_matches": [
+          1016,
+          1016
+        ],
+        "rng_conditional_bias_bound": 0.001,
+        "alpha_two_sided": 0.0003333333333333333,
+        "log_p_upper_bound": 0.0,
+        "p_upper_bound": 1.0,
+        "reject_bounded_randomness_null": false,
+        "abs_match_advantage_upper_99": 0.039871990828146325,
+        "interval_scope": "mean conditional match propensity; physical stationarity and transfer are separate",
+        "physical_confirmation": false,
+        "two_sided_binomial_p_under_ideal_fair_null": 0.7403089158831839
+      },
+      "statistical_use": "POST_HOC_INSTRUMENT_DIAGNOSTIC_NOT_PREREGISTERED_CONFIRMATION",
+      "raw_files": {
+        "evidence/historical-local-controls/three-observer/A_early_custodied_by_C.json": "640d6501613e81d6197782c847237c593806eccdd071bc39d13b94cf2f12db1d",
+        "evidence/historical-local-controls/three-observer/A_final.json": "0810d369733f879bea2c4ab4400b6e29de7e51f5e30b5b9d1ffd47d90b496c10",
+        "evidence/historical-local-controls/three-observer/B_final.json": "fb3bc244d84588058311df8bcee51457f7b45bafbb7ea2e5d51250fce90a09f0",
+        "evidence/historical-local-controls/three-observer/C_audit.json": "d472c402607ebe0c52e2e503398364976a0607b2ff4d08c071194c027ec5f215",
+        "evidence/historical-local-controls/three-observer/C_receipt.json": "6f9cdcec753720d21767596f47f33a506d47503f96f4881957b0245e16a771ee",
+        "evidence/historical-local-controls/three-observer/assumed_backchannel_fixture.json": "a0d12a2d78d69ff2334aa07c281a3b16ff208e9de678a993b80e7448729339c3",
+        "evidence/historical-local-controls/three-observer/controls.json": "d53f4256dc9030c32102fac5991bdab526c88c2cb074590fa55c8e12728bd455",
+        "evidence/historical-local-controls/three-observer/summary.json": "82152a8560ffbed4895ec2982f2dae57ef7edd9f3e6c4b9d3f002f8fc99cf5ec"
+      },
+      "independent_clock": false,
+      "physical_confirmation": false
+    },
+    {
+      "generation": "historical",
+      "transceivers": 4,
+      "n": 2048,
+      "matches": 998,
+      "statistics": {
+        "n_attempted": 2048,
+        "known_matches": 998,
+        "missing": 0,
+        "feasible_matches": [
+          998,
+          998
+        ],
+        "rng_conditional_bias_bound": 0.001,
+        "alpha_two_sided": 0.0003333333333333333,
+        "log_p_upper_bound": 0.0,
+        "p_upper_bound": 1.0,
+        "reject_bounded_randomness_null": false,
+        "abs_match_advantage_upper_99": 0.048661053328146325,
+        "interval_scope": "mean conditional match propensity; physical stationarity and transfer are separate",
+        "physical_confirmation": false,
+        "two_sided_binomial_p_under_ideal_fair_null": 0.259757791370807
+      },
+      "statistical_use": "POST_HOC_INSTRUMENT_DIAGNOSTIC_NOT_PREREGISTERED_CONFIRMATION",
+      "raw_files": {
+        "evidence/historical-local-controls/4-transceivers/C_audit.json": "57b3492cf3fc2d34e90c8116dfdb93c05d8b86fec62ff73da889e913ec2b7077",
+        "evidence/historical-local-controls/4-transceivers/C_custody_and_peer_records.json": "e4933a6933943b4bd4ce70ea2295023a549b3638f6acf461b69476fd00bed8b0",
+        "evidence/historical-local-controls/4-transceivers/controls.json": "adfa43d336352927c749799bf8a7ea968e1d8e52d6bfec022baa9d9c8e78c681",
+        "evidence/historical-local-controls/4-transceivers/reordering_fixture_SIMULATED.json": "51322d5116ea46bbd67d99b5af78c5d3693a3405a17f1d3cc6efbbed4e59383b",
+        "evidence/historical-local-controls/4-transceivers/summary.json": "39a97b59128dd7d6883743018c3dd5b7c732acda4a4bea418e2cbe667f739757"
+      },
+      "independent_clock": false,
+      "physical_confirmation": false
+    },
+    {
+      "generation": "historical",
+      "transceivers": 8,
+      "n": 2048,
+      "matches": 1014,
+      "statistics": {
+        "n_attempted": 2048,
+        "known_matches": 1014,
+        "missing": 0,
+        "feasible_matches": [
+          1014,
+          1014
+        ],
+        "rng_conditional_bias_bound": 0.001,
+        "alpha_two_sided": 0.0003333333333333333,
+        "log_p_upper_bound": 0.0,
+        "p_upper_bound": 1.0,
+        "reject_bounded_randomness_null": false,
+        "abs_match_advantage_upper_99": 0.040848553328146325,
+        "interval_scope": "mean conditional match propensity; physical stationarity and transfer are separate",
+        "physical_confirmation": false,
+        "two_sided_binomial_p_under_ideal_fair_null": 0.6746092332176356
+      },
+      "statistical_use": "POST_HOC_INSTRUMENT_DIAGNOSTIC_NOT_PREREGISTERED_CONFIRMATION",
+      "raw_files": {
+        "evidence/historical-local-controls/8-transceivers/C_audit.json": "9dd797e95fe7d8b687c292a691b61fc9e5342f3981f351e1ae75dc80c1c30a30",
+        "evidence/historical-local-controls/8-transceivers/C_custody_and_peer_records.json": "45fe1be5d39de97f008dbff687106e2f22509ffea887d38b057893ef15307b01",
+        "evidence/historical-local-controls/8-transceivers/controls.json": "adfa43d336352927c749799bf8a7ea968e1d8e52d6bfec022baa9d9c8e78c681",
+        "evidence/historical-local-controls/8-transceivers/reordering_fixture_SIMULATED.json": "5d1e71df98a4a6b6cc431c0b7f8003da2adb7508719fb0298674bed31b3f450a",
+        "evidence/historical-local-controls/8-transceivers/summary.json": "63b0e95769527a9c091160cad8d22c07c178cb37cfd4539edbe52b0b05d9b139"
+      },
+      "independent_clock": false,
+      "physical_confirmation": false
+    },
+    {
+      "generation": "fresh",
+      "transceivers": 2,
+      "n": 2048,
+      "matches": 992,
+      "statistics": {
+        "n_attempted": 2048,
+        "known_matches": 992,
+        "missing": 0,
+        "feasible_matches": [
+          992,
+          992
+        ],
+        "rng_conditional_bias_bound": 0.001,
+        "alpha_two_sided": 0.0003333333333333333,
+        "log_p_upper_bound": -0.1829488194400546,
+        "p_upper_bound": 0.8328107783683221,
+        "reject_bounded_randomness_null": false,
+        "abs_match_advantage_upper_99": 0.051590740828146325,
+        "interval_scope": "mean conditional match propensity; physical stationarity and transfer are separate",
+        "physical_confirmation": false,
+        "two_sided_binomial_p_under_ideal_fair_null": 0.16387104807506273
+      },
+      "statistical_use": "POST_HOC_INSTRUMENT_DIAGNOSTIC_NOT_PREREGISTERED_CONFIRMATION",
+      "raw_files": {
+        "local-control/evidence/three-observer/A_early_custodied_by_C.json": "ffac3163b5cf412dd6e5119e3dd53b4c7c3642331a7ec3d261e2f96dd46f93f8",
+        "local-control/evidence/three-observer/A_final.json": "1da1fd0afe0c7d2d87bc5359ae805aa8328cf0fb5533d92268278c36f90bc0df",
+        "local-control/evidence/three-observer/B_final.json": "adf09c9fa6a10e54ef5b01b9c5e8bdfa205f3d99b5ed1cb9373c516f61bd4df1",
+        "local-control/evidence/three-observer/C_audit.json": "fcba4db86e8a990d06597b90da906882e5b23bc7ee099e970b342de815f737dd",
+        "local-control/evidence/three-observer/C_receipt.json": "cdd82360eacb379e8019794330c26a7900559340bac19a91ff441b3759fe3b1a",
+        "local-control/evidence/three-observer/assumed_backchannel_fixture.json": "a0d12a2d78d69ff2334aa07c281a3b16ff208e9de678a993b80e7448729339c3",
+        "local-control/evidence/three-observer/controls.json": "d53f4256dc9030c32102fac5991bdab526c88c2cb074590fa55c8e12728bd455",
+        "local-control/evidence/three-observer/summary.json": "e572f2c161041c8b81b81fba746eaba237af0906fd799cc3635befdfc91f30b2"
+      },
+      "independent_clock": false,
+      "physical_confirmation": false
+    },
+    {
+      "generation": "fresh",
+      "transceivers": 4,
+      "n": 2048,
+      "matches": 1044,
+      "statistics": {
+        "n_attempted": 2048,
+        "known_matches": 1044,
+        "missing": 0,
+        "feasible_matches": [
+          1044,
+          1044
+        ],
+        "rng_conditional_bias_bound": 0.001,
+        "alpha_two_sided": 0.0003333333333333333,
+        "log_p_upper_bound": 0.0,
+        "p_upper_bound": 1.0,
+        "reject_bounded_randomness_null": false,
+        "abs_match_advantage_upper_99": 0.045731365828146325,
+        "interval_scope": "mean conditional match propensity; physical stationarity and transfer are separate",
+        "physical_confirmation": false,
+        "two_sided_binomial_p_under_ideal_fair_null": 0.3888100555196045
+      },
+      "statistical_use": "POST_HOC_INSTRUMENT_DIAGNOSTIC_NOT_PREREGISTERED_CONFIRMATION",
+      "raw_files": {
+        "local-control/evidence/4-transceivers/C_audit.json": "7bf8142b10108925b6a5c07198d8aec3345ae7de08a574d18406cec4535db47f",
+        "local-control/evidence/4-transceivers/C_custody_and_peer_records.json": "6ac2d17eb8986c69f37348c618bc2e420176070d6a777f16db51d0d97e0d795c",
+        "local-control/evidence/4-transceivers/controls.json": "adfa43d336352927c749799bf8a7ea968e1d8e52d6bfec022baa9d9c8e78c681",
+        "local-control/evidence/4-transceivers/reordering_fixture_SIMULATED.json": "51322d5116ea46bbd67d99b5af78c5d3693a3405a17f1d3cc6efbbed4e59383b",
+        "local-control/evidence/4-transceivers/summary.json": "b8e0de52f3d0fbdb1087e719e11270159a735da555b16240037d9fb556c2431c"
+      },
+      "independent_clock": false,
+      "physical_confirmation": false
+    },
+    {
+      "generation": "fresh",
+      "transceivers": 8,
+      "n": 2048,
+      "matches": 956,
+      "statistics": {
+        "n_attempted": 2048,
+        "known_matches": 956,
+        "missing": 0,
+        "feasible_matches": [
+          956,
+          956
+        ],
+        "rng_conditional_bias_bound": 0.001,
+        "alpha_two_sided": 0.0003333333333333333,
+        "log_p_upper_bound": -3.554573819440054,
+        "p_upper_bound": 0.028593558338631527,
+        "reject_bounded_randomness_null": false,
+        "abs_match_advantage_upper_99": 0.06916886582814633,
+        "interval_scope": "mean conditional match propensity; physical stationarity and transfer are separate",
+        "physical_confirmation": false,
+        "two_sided_binomial_p_under_ideal_fair_null": 0.002844444741848187
+      },
+      "statistical_use": "POST_HOC_INSTRUMENT_DIAGNOSTIC_NOT_PREREGISTERED_CONFIRMATION",
+      "raw_files": {
+        "local-control/evidence/8-transceivers/C_audit.json": "3af14f94e68047124d8b4abf5edb6a0e10221eb7d60d8f9a4c8dbd91d8b8621a",
+        "local-control/evidence/8-transceivers/C_custody_and_peer_records.json": "c9716f83f972055b717368473c6fd6edc5d99ee5dc3de63b1df44bd18ef30c17",
+        "local-control/evidence/8-transceivers/controls.json": "adfa43d336352927c749799bf8a7ea968e1d8e52d6bfec022baa9d9c8e78c681",
+        "local-control/evidence/8-transceivers/reordering_fixture_SIMULATED.json": "5d1e71df98a4a6b6cc431c0b7f8003da2adb7508719fb0298674bed31b3f450a",
+        "local-control/evidence/8-transceivers/summary.json": "d073898772959655ffd19012ebb7b160081be3e981a87ea8a37a401faff14051"
+      },
+      "independent_clock": false,
+      "physical_confirmation": false
+    }
+  ],
+  "pooling_performed": false,
+  "choice_after_custody_ack": "trusted source/host order; not independent entropy-generation evidence"
+}

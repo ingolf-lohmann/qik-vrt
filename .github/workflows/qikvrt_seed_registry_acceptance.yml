@@ -22,9 +22,13 @@ concurrency:
 
 jobs:
   run:
+    permissions:
+      contents: write
+      pull-requests: write
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
+      QIKVRT_SEED_REPOSITORY: ${{ github.repository }}
       QIKVRT_RUN_ID: ${{ inputs.run_id || format('{0}-{1}', github.run_id, github.run_attempt) }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -38,9 +42,18 @@ jobs:
           mkdir -p .qikvrt/seed-workflow
           {
             sh tools/qikvrt_seed_registry_acceptance.sh
-            sh tools/qikvrt_seed_mesh_maintenance.sh
-            sh tools/qikvrt_seed_node_revalidation.sh
+            # CONTINUE is an honest pending acknowledgement, not acceptance failure.
+            sh tools/qikvrt_seed_mesh_maintenance.sh || test "$?" -eq 10
+            sh tools/qikvrt_seed_node_revalidation.sh || test "$?" -eq 10
           } 2>&1 | tee .qikvrt/seed-workflow/registry-acceptance.log
+      - name: Propose Seed output through existing exact-head review persistence
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LIFECYCLE_RECEIPT_DIR: ${{ runner.temp }}/qikvrt-seed-registry
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B -m tools.qikvrt_mirror_node_lifecycle seed-review
       - name: Preserve local evidence without mutating the repository
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -49,6 +62,7 @@ jobs:
           if-no-files-found: error
           retention-days: 30
           path: |
+            ${{ runner.temp }}/qikvrt-seed-registry
             .qikvrt/seed-workflow/registry-acceptance.log
             registry/nodes
             registry/NODEMESH_INDEX.json

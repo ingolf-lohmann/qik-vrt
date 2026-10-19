@@ -4,9 +4,13 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import os
 import pathlib
+import shutil
+import subprocess
 import sys
 import tempfile
+import textwrap
 import unittest
 from datetime import datetime, timezone
 
@@ -68,6 +72,12 @@ def jobs(*run_ids: int) -> dict[str, object]:
 
 
 class ReflexiveRepositoryWatchdogTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.fixture_directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.fixture_directory.cleanup)
+        self.default_liveness_dir = pathlib.Path(self.fixture_directory.name) / "liveness"
+        self.write_liveness(self.default_liveness_dir)
+
     def analyze(
         self,
         runs: list[dict[str, object]],
@@ -89,7 +99,9 @@ class ReflexiveRepositoryWatchdogTests(unittest.TestCase):
             baseline=baseline,
             root=ROOT,
             observation_scope=scope,
-            node_liveness_dir=liveness_dir,
+            node_liveness_dir=(
+                liveness_dir if liveness_dir is not None else self.default_liveness_dir
+            ),
             authority_head=authority_head,
         )
 
@@ -103,7 +115,10 @@ class ReflexiveRepositoryWatchdogTests(unittest.TestCase):
     ) -> None:
         directory.mkdir(parents=True)
         records = {
-            "SEED_ACCEPTANCE_STATUS.json": {"observed_authority_commit": acceptance_head},
+            "SEED_ACCEPTANCE_STATUS.json": {
+                "observed_authority_commit": acceptance_head,
+                "seed_repository": "ingolf-lohmann/qik-vrt",
+            },
             "NODE_REGISTRATION_RENEWAL.json": {"next_renewal_due_utc": renewal_due},
             "NODE_HEALTH.json": {"expires_utc": health_expiry},
         }
@@ -395,6 +410,19 @@ class ReflexiveRepositoryWatchdogTests(unittest.TestCase):
         self.assertEqual(value["gatewatch"]["node_liveness"]["state"], "NOT_APPLICABLE")
         self.assertEqual(value["state"], "QUIESCENT_OBSERVATION")
 
+    def test_mirror_or_missing_repository_is_held_even_with_equal_authority_commit(self) -> None:
+        for repository in ("Goldkelch/qik-vrt", None):
+            path = self.default_liveness_dir / "SEED_ACCEPTANCE_STATUS.json"
+            document = {"observed_authority_commit": HEAD}
+            if repository:
+                document["seed_repository"] = repository
+            path.write_text(json.dumps(document), encoding="utf-8")
+            with self.subTest(repository=repository):
+                value = self.analyze([], {"jobs_by_run": {}})
+                self.assertEqual(value["state"], "PREEMPTIVE_HOLD_NODE_LIVENESS")
+                self.assertEqual(value["first_blocker"], "SEED_ACCEPTANCE_AUTHORITY_REPOSITORY_MISMATCH")
+                self.assertFalse(any(value["completion_claims"].values()))
+
     def test_old_same_head_receipt_detects_a_missed_gatewatch_tick(self) -> None:
         value = self.analyze(
             [],
@@ -440,12 +468,120 @@ class ReflexiveRepositoryWatchdogTests(unittest.TestCase):
         self.assertIn("observed-authority-main-head.txt", workflow)
         self.assertIn("gatewatch-receipt.json", workflow)
         self.assertIn("jq -r '.workflow_runs[].id'", workflow)
-        self.assertIn("select(.id != $current and .conclusion == \"success\")", workflow)
-        self.assertNotIn("select(.id != $current)][0]", workflow)
+        self.assertIn("select(.id != $current)", workflow)
+        self.assertIn("--previous-readback", workflow)
+        self.assertIn(".semantic_fingerprint", workflow)
         self.assertNotIn(".workflow_runs[0:20]", workflow)
         self.assertNotIn("/dispatches", workflow)
         self.assertNotIn("gh pr merge", workflow)
         self.assertNotIn("issues/comments", workflow)
+
+
+class ReflexiveObservationFailureTests(unittest.TestCase):
+    @staticmethod
+    def step_body(name: str) -> str:
+        workflow = WORKFLOW.read_text(encoding="utf-8")
+        section = workflow.split(f"      - name: {name}\n", 1)[1]
+        section = section.split("\n      - name:", 1)[0]
+        body = section.split("        run: |\n", 1)[1]
+        return textwrap.dedent(body).replace(
+            "${{ github.event.pull_request.base.ref }}", "main"
+        )
+
+    def test_authority_404_preserves_a_failure_receipt_without_hiding_the_failure(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = pathlib.Path(temporary)
+            binary = root / "bin"
+            binary.mkdir()
+            (root / "tools").mkdir()
+            shutil.copyfile(
+                ROOT / "tools/qikvrt_reflexive_repository_watchdog.py",
+                root / "tools/qikvrt_reflexive_repository_watchdog.py",
+            )
+            shutil.copyfile(ROOT / "tools/qikvrt_workflow_executor.py", root / "tools/qikvrt_workflow_executor.py")
+            contract_path = root / CONTRACT.relative_to(ROOT)
+            contract_path.parent.mkdir(parents=True)
+            shutil.copyfile(CONTRACT, contract_path)
+            policy_path = root / "policy/CANONICAL_UPSTREAM_REMOTE_V1.json"
+            policy_path.parent.mkdir(parents=True)
+            shutil.copyfile(ROOT / policy_path.relative_to(root), policy_path)
+            for name in ("qikvrt_workflow_executor.yml", "qikvrt_reflexive_repository_watchdog.yml"):
+                target = root / ".github/workflows" / name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(ROOT / target.relative_to(root), target)
+            stubs = {
+                "git": f'#!/bin/bash\nif [[ "$*" == *"HEAD^{{tree}}"* ]]; then echo {TREE}; else echo {HEAD}; fi\n',
+                # jq consumes its pipeline input even when the selected value is empty.
+                # An early-exiting stub races the producer into SIGPIPE under pipefail.
+                "jq": '#!/bin/bash\nif [[ "$1" == *"first_blocker"* ]]; then cat "${@: -1}"; else cat >/dev/null; fi\nexit 0\n',
+                "gh": f'#!/bin/bash\nif [[ "$2" == "repos/example/qik-vrt/git/ref/heads/main" ]]; then echo {HEAD}; elif [[ "$2" == *"/actions/workflows/"* ]]; then echo \'{{"workflow_runs":[]}}\'; else echo "gh: Not Found (HTTP 404)" >&2; exit 1; fi\n',
+            }
+            for name, source in stubs.items():
+                path = binary / name
+                path.write_text(source, encoding="utf-8")
+                path.chmod(0o700)
+            environment = {
+                **os.environ,
+                "PATH": str(binary) + os.pathsep + os.environ["PATH"],
+                "REPOSITORY": "example/qik-vrt",
+                "EVENT_NAME": "workflow_run",
+                "EVENT_PR": "",
+                "EXPECTED_HEAD": HEAD,
+                "CURRENT_RUN_ID": "12345",
+                "CURRENT_RUN_ATTEMPT": "2",
+                "GH_TOKEN": "test-job-token",
+            }
+            observed = subprocess.run(
+                ["bash", "-c", self.step_body("Reobserve exact head, tree, runs, jobs, and previous reflexive receipt")],
+                cwd=root, env=environment, capture_output=True, text=True, timeout=10,
+            )
+            self.assertNotEqual(observed.returncode, 0)
+            authority_readback = json.loads((root / ".qikvrt/reflexive-repository-watchdog/authority-role-readback.json").read_text())
+            self.assertEqual(authority_readback["first_blocker"], "AUTHORITY_READBACK_DENIED HTTP_404")
+            self.assertFalse(authority_readback["native_activation_verified"])
+            fallback = subprocess.run(
+                ["bash", "-c", self.step_body("Preserve failed observation as machine-readable HOLD")],
+                cwd=root, env=environment, capture_output=True, text=True, timeout=10,
+            )
+            self.assertEqual(fallback.returncode, 0, fallback.stderr)
+            self.assertIn("AUTHORITY_READBACK_DENIED HTTP_404", fallback.stdout)
+            receipt_path = root / ".qikvrt/reflexive-repository-watchdog/reflexive-watchdog-receipt.json"
+            receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+            failure_contract = json.loads(CONTRACT.read_text(encoding="utf-8"))["reflexive_deadlock_prevention"]["observation_failure"]
+            self.assertEqual(receipt["schema"], failure_contract["receipt_schema"])
+            self.assertEqual(receipt["state"], "OBSERVATION_FAILED")
+            self.assertEqual(receipt["disposition"], "HOLD")
+            self.assertEqual(receipt["failure"]["stage"], "AUTHORITY_READBACK")
+            self.assertEqual(receipt["head_sha"], HEAD)
+            self.assertEqual(receipt["tree_sha"], TREE)
+            self.assertEqual(receipt["run_id"], 12345)
+            self.assertEqual(receipt["run_attempt"], 2)
+            self.assertFalse(receipt["live_subject_reobserved"])
+            self.assertFalse(receipt["productive_edge"])
+            self.assertFalse(any(receipt["completion_claims"].values()))
+            self.assertEqual(
+                receipt_path.read_bytes(),
+                (receipt_path.parent / "gatewatch-receipt.json").read_bytes(),
+            )
+
+    def test_failure_receipt_rejects_invalid_identity_and_zero_exit(self) -> None:
+        arguments = dict(
+            expected_head=HEAD, observed_head=HEAD, observed_tree=TREE,
+            repository="example/qik-vrt", now=datetime.now(timezone.utc),
+            run_id=12345, run_attempt=1, stage="AUTHORITY_READBACK", exit_code=1,
+        )
+        for replacement in ({"expected_head": "unknown"}, {"exit_code": 0}):
+            with self.assertRaises(MODULE.ReflexiveWatchdogBlock):
+                MODULE.observation_failure_receipt(**{**arguments, **replacement})
+
+    def test_drifted_checkout_is_recorded_as_failure_not_exact_binding(self) -> None:
+        receipt = MODULE.observation_failure_receipt(
+            expected_head=HEAD, observed_head="c" * 40, observed_tree=TREE,
+            repository="example/qik-vrt", now=datetime.now(timezone.utc),
+            run_id=12345, run_attempt=1, stage="CHECKOUT_BINDING", exit_code=1,
+        )
+        self.assertFalse(receipt["expected_head_matches_checkout"])
+        self.assertFalse(receipt["completion_claims"]["EFFECT_ACK_DONE"])
 
 
 if __name__ == "__main__":

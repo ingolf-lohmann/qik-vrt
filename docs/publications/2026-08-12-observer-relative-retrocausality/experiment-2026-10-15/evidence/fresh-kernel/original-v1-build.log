@@ -1,0 +1,28 @@
+⚠ [2/10] Built QIKVRTFormalization.Foundations
+warning: ././././QIKVRTFormalization/Foundations.lean:97:21: unused variable `hAX`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [3/10] Built QIKVRTFormalization.Iteration
+warning: ././././QIKVRTFormalization/Iteration.lean:75:0: automatically included section variable(s) unused in theorem 'QIKVRT.tagged_parameter_preserved':
+  [OfNat α 0]
+  [Mul α]
+  [Add α]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [OfNat α 0] [Mul α] [Add α] in theorem ...
+note: this linter can be disabled with `set_option linter.unusedSectionVars false`
+✔ [4/10] Built QIKVRTFormalization.Gates
+⚠ [5/10] Built QIKVRTFormalization.Quantizability
+warning: ././././QIKVRTFormalization/Quantizability.lean:41:2: try 'simp at hn' instead of 'simpa using hn'
+note: this linter can be disabled with `set_option linter.unnecessarySimpa false`
+✔ [6/10] Built QIKVRTFormalization.Dimensions
+⚠ [7/10] Built QIKVRTFormalization.Retrocausality
+warning: ././././QIKVRTFormalization/Retrocausality.lean:71:5: unused variable `scheme`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+warning: ././././QIKVRTFormalization/Retrocausality.lean:72:23: unused variable `earlier`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+warning: ././././QIKVRTFormalization/Retrocausality.lean:72:31: unused variable `later`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+warning: ././././QIKVRTFormalization/Retrocausality.lean:86:5: unused variable `scheme`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+✔ [8/10] Built QIKVRTFormalization.Claims
+✔ [9/10] Built QIKVRTFormalization
+Build completed successfully.
