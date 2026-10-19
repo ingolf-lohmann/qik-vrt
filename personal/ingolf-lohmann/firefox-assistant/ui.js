@@ -4,10 +4,15 @@
 const el = id => document.getElementById(id);
 let token = "", sessionId = null, busy = false;
 let loginPopup = null, loginState = null, oidcEnabled = false;
-async function request(path, body) {
+let terminalRequired = location.hash === "#terminal", terminalBound = false;
+async function request(path, body, headers = {}) {
+  if (terminalRequired && !terminalBound && !path.startsWith("auth/") && !path.startsWith("terminal/") && path !== "capabilities") {
+    throw new Error("Zuerst den Personal-Modus ausdrücklich aktivieren");
+  }
   const response = await fetch(`/personal/${path}`, {
     method: body ? "POST" : "GET", credentials: "omit", cache: "no-store",
-    headers: {"Authorization": `Bearer ${token}`, ...(body ? {"Content-Type": "application/json"} : {})},
+    redirect: "error",
+    headers: {"Authorization": `Bearer ${token}`, ...(body ? {"Content-Type": "application/json"} : {}), ...headers},
     ...(body ? {body: JSON.stringify({...body, confirmed: true})} : {})
   });
   const result = await response.json();
@@ -49,10 +54,12 @@ async function action(fn) {
     el("sign-in").disabled = !oidcEnabled;
     el("renew").disabled = el("sign-out").disabled = !oidcEnabled || !token;
     el("token").disabled = el("connect").disabled = oidcEnabled;
+    el("terminal-bind").disabled = el("terminal-readback").disabled = !oidcEnabled || !token;
   }
 }
 fetch("/personal/auth/info", {credentials: "omit", cache: "no-store"}).then(response => response.json()).then(info => {
   oidcEnabled = info.oidc_enabled === true;
+  terminalRequired = terminalRequired || info.native_terminal_enabled === true;
   el("identity").textContent = oidcEnabled ? `Anmeldung über ${info.issuer}` : "Lokale Kopplung im bisherigen Speichermodus. Dauerhaftes SSO ist hier nicht konfiguriert.";
   el("sign-in").disabled = !oidcEnabled;
   el("token").disabled = el("connect").disabled = oidcEnabled;
@@ -75,10 +82,58 @@ window.addEventListener("message", event => {
       typeof event.data.token !== "string") return;
   loginState = null; loginPopup = null;
   token = event.data.token;
+  terminalBound = false;
   action(async () => {
     await request("capabilities");
+    if (!terminalRequired) await loadSessions();
+    el("status").textContent = terminalRequired ? "Angemeldet. Jetzt Personal-Modus aktivieren; es wurde noch keine Aufgabe übertragen." :
+      "Identität angemeldet. Modellzugang und Firefox-Produktabnahme bleiben getrennt prüfbar.";
+  });
+});
+function sorted(value) {
+  if (Array.isArray(value)) return value.map(sorted);
+  return value && typeof value === "object" ? Object.fromEntries(Object.keys(value).sort().map(key => [key, sorted(value[key])])) : value;
+}
+async function hash(value) {
+  const bytes = new TextEncoder().encode(JSON.stringify(sorted(value)));
+  return Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", bytes)), b => b.toString(16).padStart(2, "0")).join("");
+}
+async function verifyTransition(result, plan = null) {
+  const event = result.native_event;
+  if (!result.readback_verified || result.state !== "EFFECT_ACK_DONE" || result.ordinary_release !== true ||
+      result.effect_scope !== "AUTHENTICATED_NATIVE_PERSONAL_BINDING_ONLY" || !event ||
+      event.id !== result.event_id || `sha256:${event.ledger_digest}` !== result.ledger_digest ||
+      JSON.stringify(sorted(event.subject)) !== JSON.stringify(sorted(result.subject)) ||
+      event.payload?.product_acceptance !== false ||
+      (plan && JSON.stringify(sorted(event.payload.transition)) !== JSON.stringify(sorted(plan)))) throw new Error("Übergangsbindung stimmt nicht überein");
+  const {id, ledger_digest, ...body} = event;
+  if (await hash(body) !== ledger_digest || !/^[0-9a-f]{32}:[1-9][0-9]*$/.test(id)) throw new Error("Nativer Readback ist nicht hashgebunden");
+  terminalBound = true;
+}
+el("terminal-bind").addEventListener("click", event => {
+  if (!event.isTrusted || !oidcEnabled || !token || busy) return;
+  return action(async () => {
+    terminalBound = false;
+    const prepared = await request("terminal/prepare", {}, {"Effect-Ack-Request": "v=1, mode=prepare"});
+    if (!prepared.plan || await hash(prepared.plan) !== prepared.record_hash ||
+        !/^[A-Za-z0-9_-]{32,128}$/.test(prepared.commit_token || "")) throw new Error("Vorbereitung ist nicht hashgebunden");
+    const bytes = prepared.record_hash.match(/../g).map(value => String.fromCharCode(parseInt(value, 16))).join("");
+    // Dispatch exactly once; an ambiguous response requires explicit readback.
+    const committed = await request("terminal/commit", {}, {"Effect-Ack-Request":
+      `v=1, mode=commit, token=:${btoa(prepared.commit_token)}:, hash=:${btoa(bytes)}:`});
+    const readback = await request("terminal/readback");
+    if (committed.event_id !== readback.event_id || committed.ledger_digest !== readback.ledger_digest) throw new Error("Unabhängiger Readback fehlt");
+    await verifyTransition(readback, prepared.plan);
     await loadSessions();
-    el("status").textContent = "Identität angemeldet. Modellzugang und Firefox-Produktabnahme bleiben getrennt prüfbar.";
+    el("status").textContent = "Personal-Übergang frisch gebunden und unabhängig gelesen. Modell, Firefox-Aktivierung und Auslieferung bleiben separat.";
+  });
+});
+el("terminal-readback").addEventListener("click", event => {
+  if (!event.isTrusted || !oidcEnabled || !token || busy) return;
+  return action(async () => {
+    await verifyTransition(await request("terminal/readback"));
+    await loadSessions();
+    el("status").textContent = "Vorhandener nativer Personal-Übergang unabhängig gelesen.";
   });
 });
 el("renew").addEventListener("click", () => action(async () => {
@@ -90,7 +145,7 @@ el("sign-out").addEventListener("click", () => action(async () => {
   try { result = await request("auth/logout", {}); } finally {
     // The backend may already have invalidated admission before a lost ACK.
     // Always discard this page's bearer; never retry logout automatically.
-    token = ""; sessionId = null;
+    token = ""; sessionId = null; terminalBound = false;
     el("history").replaceChildren(); el("sessions").replaceChildren();
     el("provider-sign-out").replaceChildren();
     el("session").textContent = "Lokal getrennt. Anbieterstatus separat prüfen.";

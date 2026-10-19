@@ -328,7 +328,7 @@ jobs:
       contents: read
       actions: read
     concurrency:
-      group: qikvrt-amo-unlisted-${{ inputs.amo_readback_only && format('readback-{0}', github.run_id) || 'standard-1.0.0' }}
+      group: qikvrt-amo-unlisted-${{ inputs.amo_readback_only && format('readback-{0}', github.run_id) || 'standard-1.1.0' }}
       cancel-in-progress: false
     outputs:
       signed_binding: ${{ steps.sign.outputs.signed_binding }}
@@ -562,7 +562,7 @@ jobs:
           evidence=Path(os.environ['RUNNER_TEMP'])/'s1-extension-evidence'
           evidence.mkdir(mode=0o777,exist_ok=True);evidence.chmod(0o777)
           root='browser/firefox/qikvrt-terminal/'
-          files=['manifest.json','background.js','content.js','options.html','options.js','terminal.css']
+          files=['manifest.json','background.js','content.js','options.html','options.js','terminal.css','client.html']
           blob=lambda path:subprocess.check_output(['git','rev-parse','HEAD:'+path],text=True).strip()
           work=json.loads(Path('state/work_units/QIKVRT_MAIN_CONVERGENCE_20261014_V1.json').read_bytes())
           upgrade=work.get('firefox158_s1_upgrade',{})
@@ -861,7 +861,7 @@ jobs:
           from pathlib import Path
           evidence=Path(os.environ['RUNNER_TEMP'])/'s1-extension-evidence'
           root=Path('browser/firefox/qikvrt-terminal')
-          names=['manifest.json','background.js','content.js','options.html','options.js','terminal.css']
+          names=['manifest.json','background.js','content.js','options.html','options.js','terminal.css','client.html']
           records=[]
           with zipfile.ZipFile(evidence/'candidate.xpi','w',zipfile.ZIP_DEFLATED) as z:
               for name in names:

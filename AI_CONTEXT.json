@@ -275,5 +275,19 @@
     "scope": "Deployment assurance and source/applicability triage for Safety and Security use of QIKVRT/EAP",
     "wire_protocol_changed": false,
     "conformity_or_certification_inferred": false
+  },
+  "native_session_use": {
+    "policy": "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json#/client_continuation/native_session_use",
+    "terminal": "src/qikvrt_effect_ack_http_terminal.py",
+    "transputer": "src/qikvrt_temdd_event_ledger.py",
+    "scope": [
+      "ALL_CURRENT_SESSIONS",
+      "ALL_FUTURE_SESSIONS",
+      "AUTHORITY",
+      "MIRROR",
+      "MESH_CLIENT"
+    ],
+    "requires_actual_use": true,
+    "client_timer_as_continuation": false
   }
 }

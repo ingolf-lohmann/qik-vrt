@@ -616,6 +616,267 @@ class OriginExportTests(unittest.TestCase):
             shutil.copy2(output/'repository.sqlite3',target/'full-tree.sqlite3')
             (target/'full-tree-profile.json').write_bytes(host.raw_json(profile))
 
+class NativePeerRuleTests(unittest.TestCase):
+    """Original sealed S1 process, native SQLite and real HMAC HTTP, fixture peers only."""
+    setUpClass = classmethod(StandaloneTests.setUpClass.__func__)
+    tearDownClass = classmethod(StandaloneTests.tearDownClass.__func__)
+    save_config = StandaloneTests.save_config
+    command = StandaloneTests.command
+    start = StandaloneTests.start
+    stop = StandaloneTests.stop
+    get = StandaloneTests.get
+    sql = NativeStandaloneTests.sql
+
+    def setUp(self):
+        import base64
+        StandaloneTests.setUp(self)
+        self.rule_key = self.work/'peer.key'; self.rule_key.write_text('synthetic-distinct-native-peer-hmac-key-for-tests')
+        self.rule_key.chmod(0o600)
+        self.rule = json.loads((self.export/'policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json').read_bytes())['client_continuation']
+        self.request = {'schema':'qikvrt-peer-rule-request/v1', 'request_id':'native-rule:fixture-001',
+            'work_unit_id':'fixture:original-owner-unit', 'sender_node_id':'fixture:sender',
+            'sender_repository':'ingolf-lohmann/qik-vrt', 'peer_node_id':self.config['node_id'],
+            'subject':{'repository':'ingolf-lohmann/qik-vrt','pr':457,'head':self.head,'tree':self.tree},
+            'rule_id':'fixture:native-communication-v1', 'rule':self.rule,
+            'rule_sha256':'sha256:'+host.digest(host.mesh_wire(self.rule))}
+        self.grant = {'peer_node_id':self.request['sender_node_id'], 'request_id':self.request['request_id'],
+            'request_sha256':'sha256:'+host.digest(host.mesh_wire(self.request)),
+            'rule_sha256':self.request['rule_sha256'], 'rule_path':'policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json',
+            'rule_pointer':['client_continuation']}
+        self.config.update(terminal_profile='temdd',subject_pr=457,source_repository='ingolf-lohmann/qik-vrt',unix_ingress=False,
+            mesh_work_peers=[{'node_id':'fixture:sender','repository':'ingolf-lohmann/qik-vrt','secret_file':str(self.rule_key)}],
+            mesh_rule_grants=[self.grant])
+        self.save_config()
+        self.peer = {'node_id':self.config['node_id'],'source_head':self.head,'source_tree':self.tree,
+            'secret_file':str(self.rule_key),'url':'http://127.0.0.1:'+str(self.config['terminal_port'])}
+        self.cache = host.MeshWorkCache(self.work/'rule-cache','ingolf-lohmann/qik-vrt','fixture:sender')
+        self.calls = []
+
+    def transport(self, url, method, raw, headers):
+        self.calls.append((method,url))
+        return host.mesh_work_transport(url,method,raw,headers)
+
+    def confirm(self, apply=True, transport=None, request=None):
+        return self.cache.confirm_rule(self.peer, request or self.request, apply=apply, transport=transport or self.transport)
+
+    def test_receipt_and_application_are_separate_original_events_and_scoped_effect_ack(self):
+        self.start()
+        receipt = self.confirm(apply=False)
+        self.assertEqual(receipt['rule_effect']['state'],'EFFECT_ACK_CONTINUE')
+        self.assertIsNone(receipt['readback']['applied'])
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'),[(1,)])
+        self.assertEqual(self.sql("SELECT COUNT(*) FROM meta WHERE key LIKE 'peer-rule-active:%'"),[(0,)])
+        result = self.confirm()
+        self.assertEqual(result['rule_effect']['state'],'EFFECT_ACK_DONE')
+        self.assertEqual(result['scope'],'NATIVE_PEER_RULE_ACTIVATION_ONLY')
+        self.assertFalse(result['effect_ack_done']);self.assertFalse(result['all_peer_adoption_verified'])
+        readback=result['readback']; received=readback['received']['native_event']; applied=readback['applied']['native_event']
+        self.assertNotEqual(received['id'],applied['id'])
+        self.assertEqual(received['id'].split(':')[0],applied['id'].split(':')[0])
+        self.assertEqual(received['payload']['request_sha256'],self.grant['request_sha256'])
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'),[(2,)])
+        self.assertEqual(len([c for c in self.calls if c[0]=='POST']),2)
+
+    def test_repeat_restart_and_lost_application_ack_do_not_reexecute_or_replace_native_identity(self):
+        self.start(); self.confirm(apply=False)
+        def lose(url,method,raw,headers):
+            response=self.transport(url,method,raw,headers)
+            if method=='POST' and url.endswith('/apply'): raise TimeoutError('synthetic lost ACK')
+            return response
+        with self.assertRaises(TimeoutError): self.confirm(transport=lose)
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'),[(2,)])
+        self.stop(abrupt=True); self.start(); self.calls.clear()
+        first=self.confirm(); second=self.confirm()
+        self.assertEqual(first['readback']['applied'],second['readback']['applied'])
+        self.assertFalse(any(c[0]=='POST' for c in self.calls))
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'),[(2,)])
+
+    def test_lost_receive_ack_is_resolved_by_challenged_readback_before_any_post(self):
+        self.start()
+        def lose(url,method,raw,headers):
+            result=self.transport(url,method,raw,headers)
+            if method=='POST': raise TimeoutError('synthetic receive reply lost')
+            return result
+        with self.assertRaises(TimeoutError): self.confirm(apply=False,transport=lose)
+        self.calls.clear(); self.confirm(apply=False)
+        self.assertTrue(all(c[0]=='GET' for c in self.calls))
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'),[(1,)])
+
+    def test_each_request_identity_rule_and_subject_mutation_is_rejected_without_event(self):
+        self.start()
+        cases=[('request_id','different'),('work_unit_id','different'),('sender_node_id','different'),
+            ('sender_repository','Goldkelch/qik-vrt'),('peer_node_id','different'),('rule_id','different'),
+            ('rule_sha256','sha256:'+'0'*64)]
+        for name,bad in cases:
+            value=json.loads(host.mesh_wire(self.request));value[name]=bad
+            with self.subTest(name=name),self.assertRaises(ValueError): self.confirm(request=value)
+        for name,bad in [('head','0'*40),('tree','0'*40),('repository','Goldkelch/qik-vrt'),('pr',458)]:
+            value=json.loads(host.mesh_wire(self.request));value['subject'][name]=bad
+            with self.subTest(name=name),self.assertRaises(ValueError): self.confirm(request=value)
+        value=json.loads(host.mesh_wire(self.request));value['rule']['binding_for_all_clients']=False
+        value['rule_sha256']='sha256:'+host.digest(host.mesh_wire(value['rule']))
+        with self.assertRaises(ValueError):self.confirm(request=value)
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'),[(0,)])
+
+    def test_absent_local_grant_and_wrong_private_key_cannot_create_a_receipt(self):
+        self.config['mesh_rule_grants']=[];self.save_config();self.start()
+        with self.assertRaises(ValueError):self.confirm()
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'),[(0,)])
+        wrong=self.work/'untrusted-peer.key';wrong.write_text('synthetic-wrong-untrusted-native-peer-hmac-key');wrong.chmod(0o600)
+        self.peer['secret_file']=str(wrong)
+        with self.assertRaises(ValueError):self.confirm()
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'),[(0,)])
+
+    def test_apply_before_receive_is_refused_and_no_event_or_activation_appears(self):
+        self.start()
+        with self.assertRaises(ValueError):
+            self.cache.peer_request(self.peer)('POST','/api/mesh-work/rule/apply',host.mesh_wire(self.request))
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'),[(0,)])
+        self.assertEqual(self.sql("SELECT COUNT(*) FROM meta WHERE key LIKE 'peer-rule-active:%'"),[(0,)])
+
+    def rewrite_readback(self, mutate, *, sign=True):
+        import hmac,base64
+        def transport(url,method,raw,headers):
+            status,data,signature=self.transport(url,method,raw,headers)
+            if method=='GET':
+                value=json.loads(data);mutate(value);data=host.mesh_wire(value)
+                if sign:
+                    path=urllib.parse.urlsplit(url).path
+                    signature='sha256='+hmac.new(self.rule_key.read_bytes(),b'RESPONSE\n'+path.encode()+b'\n'+data,hashlib.sha256).hexdigest()
+            return status,data,signature
+        return transport
+
+    def test_full_receipt_binding_survives_even_authentic_envelope_field_substitution(self):
+        self.start();self.confirm()
+        cases={'request_id':'wrong','work_unit_id':'wrong','request_sha256':'sha256:'+'f'*64,
+            'rule_sha256':'sha256:'+'f'*64,'rule_id':'wrong','peer_node_id':'wrong','sender_node_id':'wrong','scope':'GLOBAL',
+            'subject':dict(self.request['subject'],pr=458),'challenge':'0'*32}
+        for name,bad in cases.items():
+            def mutate(v):v[name]=bad
+            with self.subTest(name=name),self.assertRaises(ValueError):self.confirm(transport=self.rewrite_readback(mutate))
+        for name,bad in cases.items():
+            if name=='challenge':continue
+            def mutate(v):v['applied'][name]=bad
+            with self.subTest(receipt=name),self.assertRaises(ValueError):self.confirm(transport=self.rewrite_readback(mutate))
+
+    def test_native_event_id_epoch_digest_provenance_payload_and_source_are_required(self):
+        self.start();self.confirm()
+        for name in ('id','ledger_digest','provenance','payload','subject','payload_digest'):
+            def mutate(v):
+                event=v['applied']['native_event']
+                event[name] = '0'*64 if name in ('ledger_digest','payload_digest') else ('f'*32+':999' if name=='id' else {})
+            with self.subTest(name=name),self.assertRaises(ValueError):self.confirm(transport=self.rewrite_readback(mutate))
+        def mutate(v):v['applied']['native_digest']='0'*64
+        with self.assertRaises(ValueError):self.confirm(transport=self.rewrite_readback(mutate))
+
+    def test_untrusted_or_replayed_challenge_and_request_hash_cannot_complete(self):
+        self.start();self.confirm()
+        def mutate(v):v['challenge']='0'*32
+        with self.assertRaises(ValueError):self.confirm(transport=self.rewrite_readback(mutate,sign=False))
+        prior=self.confirm()['readback']
+        def replay(v):v.clear();v.update(prior)
+        with self.assertRaises(ValueError):self.confirm(transport=self.rewrite_readback(replay))
+
+    def test_active_binding_corruption_and_deletion_of_acknowledged_event_fail_closed(self):
+        self.start();result=self.confirm()
+        self.stop()
+        path=self.volume/'temdd/events.sqlite3'
+        with sqlite3.connect(path) as db:
+            db.execute("DELETE FROM meta WHERE key LIKE 'peer-rule-active:%'")
+        self.start()
+        with self.assertRaises(ValueError):self.confirm()
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'),[(2,)])
+
+    def test_acknowledged_request_cannot_silently_disappear_and_be_reapplied(self):
+        self.start();self.confirm();self.stop()
+        with sqlite3.connect(self.volume/'temdd/events.sqlite3') as db:
+            db.execute("DELETE FROM events");db.execute("DELETE FROM meta WHERE key LIKE 'peer-rule:%' OR key LIKE 'peer-rule-active:%'")
+        self.start();self.calls.clear()
+        with self.assertRaisesRegex(ValueError,'RECEIPT_LOST_HOLD'):self.confirm()
+        self.assertFalse(any(c[0]=='POST' for c in self.calls))
+
+    def test_readback_unavailable_does_not_trigger_another_effectful_attempt(self):
+        self.start()
+        def unavailable(url,method,raw,headers):
+            self.calls.append((method,url));raise TimeoutError('synthetic unavailable original readback')
+        with self.assertRaises(TimeoutError):self.confirm(transport=unavailable)
+        self.assertEqual([c[0] for c in self.calls],['GET'])
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'),[(0,)])
+
+    def test_activation_is_enforced_on_subsequent_original_native_writes(self):
+        self.owner_token=self.work/'owner.key';self.owner_token.write_text('synthetic-native-owner-rest-key-separated-from-peer');self.owner_token.chmod(0o600)
+        self.config['owner_rest_grants']=[{'principal':'owner:fixture','token_file':str(self.owner_token),
+            'permissions':['prepare','commit','readback']}]
+        self.save_config();self.start();self.confirm()
+        original=self.request
+        self.request={'schema':'qikvrt_owner_rest_input_v1','request_id':'owner:after-active-guard',
+            'subject':original['subject'],'input':{'schema':'qikvrt_terminal_input_v1','text':'Actual next native write through active guard'}}
+        self.rest=OwnerRESTMonolithTests.rest.__get__(self)
+        status,p=self.rest('prepare');self.assertEqual(status,200,p)
+        status,r=self.rest('commit',prepared=p);self.assertEqual(status,200,r)
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'),[(3,)])
+        self.stop()
+        with sqlite3.connect(self.volume/'temdd/events.sqlite3') as db:db.execute("DELETE FROM meta WHERE key LIKE 'peer-rule-active:%'")
+        self.start()
+        self.request['request_id']='owner:corrupt-active-guard'
+        status,p=self.rest('prepare');self.assertEqual(status,200,p)
+        status,r=self.rest('commit',prepared=p);self.assertEqual(status,409,r)
+        self.assertIn('ACTIVE_WRITER_GUARD',r['cause'] if 'cause' in r else str(r))
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'),[(3,)])
+
+    def test_applied_peer_grant_revocation_blocks_fresh_confirmation(self):
+        self.start();self.confirm();self.stop()
+        self.config['mesh_rule_grants']=[];self.save_config()
+        # Source/config binding cannot silently change on an admitted volume.
+        denied=self.command()
+        result=subprocess.run(denied,capture_output=True,text=True,timeout=10)
+        self.assertNotEqual(result.returncode,0)
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'),[(2,)])
+
+    def test_signed_replaced_epoch_is_rejected_against_retained_original_receipt(self):
+        self.start();self.confirm()
+        def replace(v):
+            for stage in ('received','applied'):
+                event=v[stage]['native_event'];event['id']='f'*32+':'+event['id'].split(':')[1]
+        with self.assertRaisesRegex(ValueError,'CHANGED_NATIVE_RECEIPT'):self.confirm(transport=self.rewrite_readback(replace))
+
+    def test_cli_uses_the_same_existing_cache_and_native_adapter(self):
+        self.start()
+        request=self.work/'rule-request.json';request.write_bytes(host.mesh_wire(self.request));request.chmod(0o600)
+        peer=self.work/'peer.json';peer.write_bytes(host.mesh_wire(self.peer));peer.chmod(0o600)
+        result=subprocess.run([sys.executable,'-B',str(self.export/'tools/qikvrt_self_host.py'),'mesh-rule-confirm',
+            '--mesh-cache',str(self.work/'cli-cache'),'--work-request',str(request),'--peer',str(peer),'--apply-rule'],
+            capture_output=True,text=True,timeout=15)
+        self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+        value=json.loads(result.stdout)
+        self.assertEqual(value['rule_effect']['state'],'EFFECT_ACK_DONE');self.assertFalse(value['effect_ack_done'])
+
+    def test_fault_after_guard_commit_recovers_only_the_original_application_event(self):
+        terminal=host.load_source(self.export,'qikvrt_effect_ack_http_terminal')
+        native=host.load_source(self.export,'qikvrt_temdd_event_ledger')
+        runtime=native.Runtime(self.source,self.volume,'ingolf-lohmann/qik-vrt',457)
+        rules=terminal.NativePeerRules(runtime,self.config['node_id'],str(self.volume),[self.grant])
+        peer=self.config['mesh_work_peers'][0]
+        try:
+            original=rules.receive(self.request,peer)
+            with patch.object(runtime,'append',side_effect=OSError('injected failure after actual guard COMMIT')):
+                with self.assertRaises(OSError):rules.apply(self.request,peer)
+            observed=rules.readback(self.request,peer,'a'*32)
+            self.assertIsNone(observed['applied'])
+            self.assertEqual(self.sql('SELECT COUNT(*) FROM events'),[(1,)])
+            event=rules.record(self.request)['events']['RECEIVED']
+            with self.assertRaisesRegex(ValueError,'INTERRUPTED_ACTIVATION'):rules.enforce_event(event)
+        finally:runtime.ledger.close()
+        runtime=native.Runtime(self.source,self.volume,'ingolf-lohmann/qik-vrt',457)
+        try:
+            rules=terminal.NativePeerRules(runtime,self.config['node_id'],str(self.volume),[self.grant])
+            result=rules.apply(self.request,peer)
+            self.assertEqual(result['received'],original)
+            self.assertIsNotNone(result['applied'])
+            self.assertEqual(self.sql('SELECT COUNT(*) FROM events'),[(2,)])
+        finally:runtime.ledger.close()
+
+
 class OwnerRESTMonolithTests(unittest.TestCase):
     """Actual S1 process, authenticated HTTP and original SQLite; no AF_UNIX."""
     setUpClass = MonolithicStoreTests.__dict__['setUpClass']
