@@ -574,7 +574,7 @@ class Handler(BaseHTTPRequestHandler):
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("operation", nargs="?", default="serve", choices=("serve", "durable-prepare", "durable-commit", "durable-readback"))
+    parser.add_argument("operation", nargs="?", default="serve", choices=("serve", "durable-prepare", "durable-commit", "durable-readback", "personal-auth-readback"))
     parser.add_argument("--host", default=HOST)
     parser.add_argument("--port", type=int, default=DEFAULT_PORT)
     parser.add_argument("--state-dir", default="/var/lib/qikvrt/state")
@@ -594,6 +594,22 @@ def main() -> int:
     parser.add_argument("--personal-legacy-memory-pairing", action="store_true", help="Explicit legacy test/development mode; no durable SSO or release acceptance")
     parser.add_argument("--personal-store-model-credential", action="store_true", help="Provision the selected model key to OS Secret Service from a terminal prompt, then exit")
     args = parser.parse_args()
+    if args.operation == "personal-auth-readback":
+        from qikvrt_personal_auth import AuthBlock, verify_existing_session
+        try:
+            if (not args.personal_state_dir or not args.personal_auth_config or
+                    args.personal_legacy_memory_pairing or args.personal_store_model_credential or
+                    args.host != "127.0.0.1"):
+                raise AuthBlock("EXPLICIT_PROTECTED_SSO_PROFILE_REQUIRED")
+            result = verify_existing_session(args.personal_state_dir, args.personal_auth_config,
+                                            f"http://127.0.0.1:{args.port}", args.personal_provider)
+            print(json.dumps(result, sort_keys=True))
+            return 0
+        except (ValueError, OSError) as exc:
+            # AuthBlock/load_config expose fixed reason codes, never config bytes.
+            print(json.dumps({"state": "HOLD", "reason": str(exc) if isinstance(exc, AuthBlock) else "NATIVE_SSO_READBACK_UNAVAILABLE",
+                              "effect_ack_done": False}, sort_keys=True))
+            return 2
     if args.personal_store_model_credential:
         if not args.personal_state_dir or not args.personal_auth_config or args.operation != "serve":
             raise SystemExit("BLOCK: explicit Personal state and OIDC configuration required")

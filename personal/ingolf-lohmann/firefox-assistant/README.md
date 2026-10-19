@@ -3,6 +3,54 @@
 
 # Universales Raumzeit-Terminal
 
+## Native SSO-Produktivprüfung, 19.10.2026
+
+Der vorhandene Terminal-Einstieg kann eine bereits erteilte, geschützte
+SSO-Sitzung jetzt unabhängig von Modell-Key und HTTP-Listener zurücklesen:
+
+```bash
+python3 -B src/qikvrt_effect_ack_http_terminal.py personal-auth-readback \
+  --personal-state-dir /private/runtime/qikvrt-personal \
+  --personal-auth-config /private/runtime/registered-oidc.json
+```
+
+Dies ist eine **aktive Token-Erneuerung** beim genau gebundenen Anbieter,
+keine rein lokale Statusabfrage. Sie verwendet dieselbe private Konfiguration,
+denselben OS Secret Service, dieselbe profilgebundene Schreibsperre und das
+vorhandene Refresh-Pending-Journal. Ein laufender PersonalRuntime blockiert den
+konkurrierenden CLI-Schreiber. Ausgegeben werden ausschließlich Status und
+Nachweisgrenzen, keine lokalen Bearer, Access- oder Refresh-Tokens. Die
+Wiederaufnahme verlängert die bestehende zwölfstündige Sitzungsgrenze nicht.
+Bei ungeklärter Erneuerung gibt es keinen automatischen weiteren Versuch.
+Die Operation startet keinen Passwortdialog und legt keine Ersatzablage an.
+
+Der Aufruf ist für den zugelassenen nativen Desktop-Benutzer bestimmt. Es gibt
+keinen unauthentifizierten HTTP-Endpunkt, der einen gespeicherten Bearer an
+eine neu geöffnete Browserseite ausgibt. Der bestehende Firefox-Anmeldepfad und
+seine Origin-/PKCE-/State-/Nonce-Prüfungen bleiben erhalten. Eine fremde
+Cloud-Browser-Sitzung wird durch diese Funktion nicht angemeldet.
+
+Produktivabnahme verlangt weiterhin die bestehende registrierte Public-Client-
+und Owner-Subject-Bindung sowie einen tatsächlich verfügbaren, geschützten
+OS-Speicher unter dem angemeldeten Benutzer. Ein Test mit simuliertem IdP oder
+Speicher ist kein produktiver SSO-Nachweis. Die lokalen Unit-Tests prüfen
+Neustart, Ablauf, Logout-/Pending-Zustände, konkurrierenden Schreiber,
+verlorene Refresh-Antwort und geheimnisfreie Ausgabe.
+
+Für die bereits autorisierte OneNote-Arbeit gilt zusätzlich: Der bestehende
+Identity-Pfad fordert nur `openid offline_access` an. Das ist keine delegierte
+Microsoft-Graph-Berechtigung für OneNote. Der genaue native Adapter benötigt
+eine zum registrierten Client gehörende, autorisierte Notes-Berechtigung und
+einen eigenen Seiten-Readback. Eine vorhandene Outlook-/OneDrive-Verbindung
+liefert diesem Runtime keine exportierbaren Tokens. Der neue Readback fordert
+keine zusätzlichen Scopes an und behauptet keinen OneNote-Effekt.
+
+Primärquellen zur getrennten API-Berechtigung:
+
+- https://learn.microsoft.com/en-us/graph/api/resources/onenote-api-overview?view=graph-rest-1.0
+- https://learn.microsoft.com/en-us/graph/permissions-reference#notesreadwrite
+- https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-auth-code-flow
+
 ## Geschützter Personal-Anmeldepfad, 16.10.2026
 
 Der vorhandene Personal-Adapter hat jetzt einen ausführbaren, ausdrücklich
