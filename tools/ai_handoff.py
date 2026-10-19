@@ -538,6 +538,88 @@ def validate_client_work(receipt: dict[str, Any], predecessor: dict[str, Any] | 
         fail("CLIENT_DONE_WITH_OPEN_WORK")
 
 
+def validate_client_communications(receipt: dict[str, Any], subject: dict[str, Any]) -> None:
+    """Check declared evidence scope, without issuing an Effect-Ack assessment.
+
+    Historical receipts without this field remain readable. These consistency
+    checks neither run the original outbox tool nor authenticate its evidence.
+    """
+    records = receipt.get("communications", [])
+    if not isinstance(records, list):
+        fail("CLIENT_COMMUNICATION_INVALID")
+    identifiers: set[str] = set()
+    scopes = {"NOT_SENT", "SENT", "RECEIVED", "APPLIED", "RECEIVER_NACK", "PRINCIPAL_RETURN"}
+    for record in records:
+        if (not isinstance(record, dict)
+            or set(record) != {"id", "message_sha256", "sender", "recipient", "claim", "evidence"}
+            or any(not isinstance(record.get(key), str) or not record[key].strip()
+                   for key in ("id", "sender"))
+            or record["id"] in identifiers
+            or not isinstance(record.get("claim"), str)
+            or record.get("claim") not in scopes
+            or not isinstance(record.get("message_sha256"), str)
+            or not re.fullmatch(r"sha256:[0-9a-f]{64}", record["message_sha256"])
+            or not isinstance(record.get("evidence"), dict)):
+            fail("CLIENT_COMMUNICATION_INVALID")
+        identifiers.add(record["id"])
+        claim, evidence = record["claim"], record["evidence"]
+        if set(evidence) - {"send", "ingress", "outbox_claim", "application", "readback", "return"}:
+            fail("CLIENT_COMMUNICATION_INVALID")
+        if claim == "NOT_SENT":
+            if evidence:
+                fail("CLIENT_UNSENT_WITH_DELIVERY_EVIDENCE")
+            if not isinstance(record["recipient"], str) or not record["recipient"].strip():
+                fail("CLIENT_COMMUNICATION_INVALID")
+            continue
+        if claim == "PRINCIPAL_RETURN":
+            if record["recipient"] is not None or set(evidence) != {"return"}:
+                fail("CLIENT_PRINCIPAL_RETURN_RECEIVER_INFERRED")
+            returned = evidence["return"]
+            if (not isinstance(returned, dict)
+                or returned.get("message_sha256") != record["message_sha256"]
+                or not isinstance(returned.get("evidence"), str) or not returned["evidence"].strip()):
+                fail("CLIENT_COMMUNICATION_EVIDENCE_BINDING_MISMATCH")
+            continue
+        if not isinstance(record["recipient"], str) or not record["recipient"].strip():
+            fail("CLIENT_COMMUNICATION_INVALID")
+
+        def proof(kind: str) -> dict[str, Any]:
+            value = evidence.get(kind)
+            if (not isinstance(value, dict) or not isinstance(value.get("evidence"), str)
+                or not value["evidence"].strip()):
+                fail("CLIENT_COMMUNICATION_" + kind.upper() + "_REQUIRED")
+            if (value.get("message_sha256") != record["message_sha256"]
+                or value.get("node") != record["recipient"]):
+                fail("CLIENT_COMMUNICATION_EVIDENCE_BINDING_MISMATCH")
+            return value
+
+        sent = proof("send")
+        if (sent.get("sender") != record["sender"]
+            or not isinstance(sent.get("channel"), str) or not sent["channel"].strip()):
+            fail("CLIENT_COMMUNICATION_EVIDENCE_BINDING_MISMATCH")
+        if claim == "SENT":
+            continue
+        outbox = proof("outbox_claim")
+        if (outbox.get("tool") != "node-tools/qikvrt_mirror_emit.py claim"
+            or not isinstance(outbox.get("record_sha256"), str)
+            or not re.fullmatch(r"sha256:[0-9a-f]{64}", outbox["record_sha256"])):
+            fail("CLIENT_COMMUNICATION_OUTBOX_CLAIM_REQUIRED")
+        if claim in ("RECEIVED", "APPLIED"):
+            proof("ingress")
+        if claim == "APPLIED":
+            applied, readback = proof("application"), proof("readback")
+            if (applied.get("subject") != subject
+                or not isinstance(applied.get("native_event_id"), str)
+                or not applied["native_event_id"].strip()
+                or not isinstance(applied.get("ledger_digest"), str)
+                or not re.fullmatch(r"sha256:[0-9a-f]{64}", applied["ledger_digest"])
+                or readback.get("independent") is not True
+                or any(readback.get(key) != applied.get(key)
+                       for key in ("subject", "native_event_id", "ledger_digest"))
+                or readback["evidence"] == applied["evidence"]):
+                fail("CLIENT_COMMUNICATION_APPLICATION_READBACK_MISMATCH")
+
+
 def validate_client_receipt(receipt: dict[str, Any]) -> str:
     """Validate consistency; never authenticate a client or prove live effects."""
     if receipt.get("schema") != "qikvrt-client-continuation/1":
@@ -611,6 +693,7 @@ def validate_client_receipt(receipt: dict[str, Any]) -> str:
     predecessor = client_previous_receipt(receipt)
     validate_client_work(receipt, predecessor)
     validate_client_knowledge(receipt, predecessor)
+    validate_client_communications(receipt, subject)
     if executable and state != "CONTINUE":
         fail("CLIENT_PREMATURE_RETURN_WITH_EXECUTABLE_SUCCESSOR")
     pending = receipt.get("pending_execution")
