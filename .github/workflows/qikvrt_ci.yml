@@ -1027,13 +1027,73 @@ jobs:
           compression-level: 0
           retention-days: 90
           if-no-files-found: error
-      - name: Independently download the bounded dependency parts
+      - name: Independently download every exact returned dependency artifact ID
         if: steps.runtime-parts.outcome == 'success'
-        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
-        with:
-          pattern: qikvrt-s1-firefox158-runtime-${{ github.event.pull_request.head.sha || github.sha }}-part-*
-          path: ${{ runner.temp }}/s1-firefox158-delivered
-          merge-multiple: true
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          PART_COUNT: ${{ steps.runtime-parts.outputs.part_count }}
+          MANIFEST_SHA256: ${{ steps.runtime-parts.outputs.manifest_sha256 }}
+          PART0_ID: ${{ steps.runtime-part-0.outputs.artifact-id }}
+          PART0_DIGEST: ${{ steps.runtime-part-0.outputs.artifact-digest }}
+          PART1_ID: ${{ steps.runtime-part-1.outputs.artifact-id }}
+          PART1_DIGEST: ${{ steps.runtime-part-1.outputs.artifact-digest }}
+          PART2_ID: ${{ steps.runtime-part-2.outputs.artifact-id }}
+          PART2_DIGEST: ${{ steps.runtime-part-2.outputs.artifact-digest }}
+          PART3_ID: ${{ steps.runtime-part-3.outputs.artifact-id }}
+          PART3_DIGEST: ${{ steps.runtime-part-3.outputs.artifact-digest }}
+        run: |
+          python3 -B - <<'PYDOWNLOADPARTS'
+          import hashlib,json,os,re,stat,subprocess,tempfile,zipfile
+          from pathlib import Path
+          from tools import qikvrt_self_host_container as transport
+          root=Path(os.environ['RUNNER_TEMP']);metadata=root/'s1-firefox158-transport'
+          raw=(metadata/'PARTS.json').read_bytes()
+          assert hashlib.sha256(raw).hexdigest()==os.environ['MANIFEST_SHA256']
+          manifest=json.loads(raw);count=int(os.environ['PART_COUNT'])
+          assert manifest['schema']=='qikvrt-container-artifact-parts/v1'
+          assert 1<=count<=4 and len(manifest['parts'])==count
+          head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          assert re.fullmatch(r'[a-f0-9]{40}',head)
+          delivered=root/'s1-firefox158-delivered';delivered.mkdir(mode=0o700)
+          for index,part in enumerate(manifest['parts']):
+              name='artifact.part-%03d'%index
+              assert part['index']==index and part['name']==name
+              assert type(part['bytes']) is int and 0<part['bytes']<=transport.ARTIFACT_PART_BYTES
+              assert re.fullmatch(r'[a-f0-9]{64}',part['sha256'])
+              identity=os.environ['PART%d_ID'%index]
+              digest=os.environ['PART%d_DIGEST'%index].removeprefix('sha256:')
+              assert re.fullmatch(r'[1-9][0-9]*',identity) and re.fullmatch(r'[a-f0-9]{64}',digest)
+              base='https://api.github.com/repos/ingolf-lohmann/qik-vrt/actions/artifacts/'+identity
+              observed=json.loads(transport.get(base,os.environ['GITHUB_TOKEN']))
+              assert observed['id']==int(identity) and observed['expired'] is False
+              assert observed['name']=='qikvrt-s1-firefox158-runtime-'+head+'-part-%03d'%index
+              assert observed['digest']=='sha256:'+digest
+              assert type(observed['size_in_bytes']) is int and 0<observed['size_in_bytes']<536870912
+              assert observed['workflow_run']['id']==int(os.environ['GITHUB_RUN_ID'])
+              assert observed['workflow_run']['head_sha']==head
+              bound={'repository':'ingolf-lohmann/qik-vrt','artifact_id':int(identity),
+                  'archive_bytes':observed['size_in_bytes'],'archive_sha256':digest,
+                  'run_id':int(os.environ['GITHUB_RUN_ID']),'source_head':head}
+              with tempfile.TemporaryDirectory(prefix='qikvrt-part-',dir=root) as temporary:
+                  archive=Path(temporary)/'part.zip'
+                  transport.carrier_download(bound,archive)
+                  with archive.open('rb') as source:
+                      assert archive.stat().st_size==bound['archive_bytes']
+                      assert hashlib.file_digest(source,'sha256').hexdigest()==digest
+                  with zipfile.ZipFile(archive) as zipped:
+                      entries=zipped.infolist();assert len(entries)==1
+                      entry=entries[0]
+                      assert entry.filename==name and entry.file_size==part['bytes']
+                      assert stat.S_IFMT(entry.external_attr>>16) in (0,stat.S_IFREG)
+                      with zipped.open(entry) as source,(delivered/name).open('xb') as destination:
+                          remaining=part['bytes'];part_hash=hashlib.sha256()
+                          while remaining:
+                              block=source.read(min(1024*1024,remaining));assert block
+                              destination.write(block);part_hash.update(block);remaining-=len(block)
+                          assert not source.read(1) and part_hash.hexdigest()==part['sha256']
+          assert sorted(p.name for p in delivered.iterdir())==['artifact.part-%03d'%i for i in range(count)]
+          print('EXACT_RETURNED_ARTIFACT_IDS_AND_BYTES_VERIFIED')
+          PYDOWNLOADPARTS
       - name: Reassemble independently delivered original bytes and bind part artifacts
         if: steps.runtime-parts.outcome == 'success'
         env:
