@@ -5,6 +5,24 @@ Copyright (c) 2026 Ingolf Lohmann.
 
 # Repository agent protocol
 
+MANDATORY MIRROR OUTBOX — OWNER 2026-10-19
+
+Read and apply `docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md#mandatory-mirror-outbox-and-delivery-evidence-owner-2026-10-19`
+and `policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json#/client_continuation/native_session_use/mirror_outbox`
+in every session, reconnect and handoff. Every EFFECT_ACK assessment uses only
+the original `node-tools/qikvrt_mirror_emit.py` assess/adopt path, own admitted
+native EFFECT and NOT_SENT outbox record; package unsent records in the same ring.
+Only actual transfer permits sent; only found named-node ingress permits receipt;
+only the original `claim --record <hash> --node <node>` permits a node-specific
+arrival or receiver-NACK claim. Missing send evidence is a sender gap.
+Recover a missing original tool through existing admitted sources and retain its
+named carrier/binding as HOLD. Do not invent a replacement or infer peer adoption.
+Open other nodes' original journals only with mode=ro&immutable=1.
+Keep the Principal out of the operating bus; retain every unreachable member.
+Rule/source saving, tests and package signatures prove no native application or delivery.
+Optimization is admitted only after the freshly complete Authority backlog is
+actually merged into Main and no open issues remain; see client_continuation.optimization_backlog_gate.
+
 NATIVE TERMINAL / TRANSPUTER USE — ALL SESSIONS — OWNER 2026-10-19
 
 Apply `policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json#/client_continuation/native_session_use`

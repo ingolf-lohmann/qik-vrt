@@ -330,3 +330,101 @@ and MUST NOT be projected as a terminal snapshot.
 ## Communication boundary
 
 The client MUST not answer with long explanations when it can perform the next executable action. Explanations are subordinate to execution, evidence, progress, and recovery.
+
+## Mandatory Mirror outbox and delivery evidence — Owner 2026-10-19
+
+Apply this standing rule in every session, reconnect and handoff. Solve and
+report QIK-VRT problems only through the existing Universal Transputer,
+Universal Terminal, Mesh and Effect Acknowledgement Protocol. Preserve the
+Authority `ingolf-lohmann/qik-vrt`; treat `Goldkelch/qik-vrt` as Mirror/former
+Authority under `policy/CANONICAL_UPSTREAM_REMOTE_V1.json`. Claude remains the
+read-only reviewing Mirror (`git clone --mirror`); do not impose that role on
+an otherwise admitted Authority writer. Open other nodes' original journals
+only with `mode=ro&immutable=1`; never serve or append to them.
+
+1. Read AI, then AI_CONTEXT.json in required_read_order. Freshly read
+   Authority Main HEAD/TREE, open PR heads, communication/claude/* and all
+   branches with newer commit times through admitted Git/REST adapters. Apply
+   policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json#/client_continuation/native_session_use.
+   Actually use src/qikvrt_temdd_event_ledger.py and
+   src/qikvrt_effect_ack_http_terminal.py. Inspect the existing tool contract
+   and run `python3 -B node-tools/qikvrt_mirror_emit.py status` when present.
+2. Create EVERY EFFECT_ACK assessment solely through that tool's assess or
+   adopt: require original effect_ack_sync, verify_protocol, an EFFECT
+   event through the own admitted Transputer Runtime and an outbox NOT_SENT
+   record. Do not replace this with a JSON file, direct engine call, chat
+   assessment or append to a copied journal. If unavailable, recover the actual
+   tool through admitted existing QIK-VRT sources; repair only its proven gap
+   using original components. Keep the missing source/binding as HOLD with a
+   named carrier; invent neither a replacement implementation nor CLI options.
+3. After each assessment, in the same work ring, run package for all unsent
+   records and verify the Ed25519-signed export. Use the existing Mesh Work
+   Batch (mesh-cache-stage/idle/send, then mesh-cache-check) or signed
+   original journal export (snapshot, Base64, events.jsonl, signed
+   EXPORT_MANIFEST.json). A package or signature proves no delivery. If no
+   admitted route is available, retain HOLD and name its concrete carrier;
+   never ask the Owner to relay or introduce another service.
+4. Record sent only after actual transfer: bind channel, recipient and
+   canonical sha256: of the transferred bytes. Register receipt only from
+   found ingress evidence at the named node. Derive EVERY node-specific
+   arrival or receiver-NACK statement exclusively from
+   `claim --record <hash> --node <node>`; preserve its exact subject and output.
+   Without send proof the result is NICHT_ZUGESTELLT: assert neither receiver,
+   ingress nor receiver NACK. Missing ingress without sending is a sender gap.
+   Actual sending without ingress proof permits EFFECT_NACK only as established
+   by that claim. Do not guess a claim when the tool or evidence is unavailable.
+5. On each incoming message/session event, search recent branches with
+   git grep and incoming attachments for each own package SHA-256 and commit
+   ID. Register matched named-node ingress as receipt; separately verify PR/Main
+   adoption and actual effect. Bind all evidence to the exact version. An own
+   output returned byte-identically by the Principal proves somewhere-arrival
+   and return by the Principal only. Assess EFFECT_ACK_CONTINUE through the
+   outbox before reporting; infer no location, Authority ingress, authenticated
+   peer adoption, NACK or DONE. Do not use Principal relay as the operating bus.
+6. For each new Authority head, execute a finite exact-subject transition:
+   tools/qikvrt_integrity.py verify, ledger tests, compilation and applicable
+   regression checks, evidence and a concrete successor. Use normal checkout
+   EOL behavior. Preserve BLOCK corrections as successors; HOLD/CONTINUE and
+   open productive work are never NOOP. Do not use client timers or repeated
+   Owner prompting. Broadcast through admitted Mesh paths to registry
+   registry/NODEMESH_INDEX.json, Codex, Goldkelch Mirror, Originalhost and
+   Mesh-Monitor with sender/recipient/message-hash binding; retain unreachable
+   nodes in coverage without claiming delivery.
+7. Serve only a clean checkout with explicit `--repository ingolf-lohmann/qik-vrt`
+   and `--pr <actual PR number>`; use no default or invented PR. Use only
+   OBSERVE, CLASSIFY, ACTION, EFFECT, READBACK, SUCCESSOR, HOLD. Admit inputs
+   through Terminal prepare/commit, Effect-Ack-Request and Structured Field
+   bytes :base64:; independently read /api/temdd/events and /terminal/state.
+   Correct errors with a successor carrying corrects; never rewrite history.
+8. Separate proposal receipt, authenticated rule application and independent
+   readback. Bind peer confirmations to request ID/hash, rule hash, node,
+   native event identity and independently read effect. Assert EFFECT_ACK_DONE
+   only for actual application with independent readback, never for source
+   tests, packaging, sending, skill saving or an unverified Claude report.
+   Preserve human/machine provenance; label supplied Owner reports
+   OWNER_ASSERTED. Report concise facts and full available hashes; never
+   expand a hash prefix into invented evidence.
+
+This outbox rule supersedes older instructions allowing assessments outside
+the outbox or inferring NACK merely from missing evidence. Saving it establishes
+only the verified rule save, not installation of the tool or another node's
+adoption, receipt or effect.
+
+### Optimization requires completed backlog
+
+Apply the Owner's direct correction of 2026-10-08, reaffirmed on 2026-10-19:
+optimization starts only after all PRs in the authorized scope are actually
+merged into Main and no issues remain open. Before every optimization unit,
+freshly read every page of the Authority PR/issue inventories and bind their
+merge/ancestry readback to current Main. Draft, blocked, unapproved and unmerged
+work remains completion backlog. Closing an unmerged PR, deleting an issue,
+narrowing scope or reaching an idle/unavailable client cannot satisfy this gate.
+Incomplete, inaccessible or stale inventories hold optimization. New open work
+returns priority to completion. Unattended operation requires its own observed
+authorized persistent executor.
+
+Provenance: standing procedure and authorization supplied by Ingolf Lohmann on
+2026-10-19; repository placement and policy mapping by OpenAI Codex.
+Source-rule persistence is separate from native execution, outbox installation,
+Main integration, live Mirror ACK/reply, productive host acceptance and other-client
+adoption. Preserve every predecessor obligation and original journal.
