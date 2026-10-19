@@ -100,5 +100,32 @@
       "state": "OPEN",
       "criteria": "After existing scoped backlog-completion gate, use comparable evaluations, reviewed bounded changes, regressions, exact-source signed updates and independent effect readback; no self-mutation or new scheduler"
     }
-  ]
+  ],
+  "causal_successor_20261019": {
+    "owner_input": "Weiter…",
+    "native_input_receipt": "98cebeec5d694ef2b166c860d9049e91:6",
+    "predecessor_head": "c20bef5121a14e00895d8e49cdc41c6857da80ce",
+    "diagnoses": [
+      "Existing recurring5-minute client alarm contradicts event-driven Owner rule.",
+      "Missing Mozilla data_collection_permissions declaration for newly submitted add-ons."
+    ],
+    "repairs": [
+      "Clear prior alarm exactly once; no alarm creation or alarm continuation listener; hold all message routes when cleanup fails.",
+      "Declare command/page/voice-camera categories; reject absent or false-none signing input before AMO transport."
+    ],
+    "sources": [
+      "https://extensionworkshop.com/documentation/develop/firefox-builtin-data-consent/",
+      "https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/browser_specific_settings"
+    ],
+    "boundaries": {
+      "original_unsigned_xpi_failure_retained": true,
+      "amo_submission_requested": false,
+      "amo_authentication_verified": false,
+      "real_firefox_update_restart_acceptance": false,
+      "productive_session_verified": false,
+      "signature_policy_weakened": false,
+      "client_timer_created": false,
+      "alarms_permission_scope": "FINITE_LEGACY_CLEANUP_ONLY"
+    }
+  }
 }

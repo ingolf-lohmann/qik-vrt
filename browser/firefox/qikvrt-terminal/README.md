@@ -287,3 +287,32 @@ Primary sources:
 - https://extensionworkshop.com/documentation/publish/signing-and-distribution-overview/
 - https://mozilla.github.io/addons-server/topics/api/v4_frozen/signing.html
 - https://mozilla.github.io/addons-server/topics/api/auth.html
+
+
+## Event-driven continuation and AMO data consent (19 October 2026)
+
+The client no longer creates a repeating five-minute alarm. A finite background
+migration clears the preceding version's `qikvrt-repository-watchdog` alarm.
+The existing `alarms` permission is retained only for this cleanup; failed cleanup
+holds observation/prepare/commit before any network request. Repository observation
+runs on explicit requests, installation and browser startup. No timer or alarm
+listener drives continuation. This source behavior still requires installed
+Firefox update/restart acceptance; local JavaScript regression is not that witness.
+
+The manifest declares `personalCommunications` (submitted command text),
+`browsingActivity` (the submitted page URL), and `personallyIdentifyingInfo`
+(explicit voice/camera payloads). These are sent only after explicit Prepare
+through the existing loopback backend. Loopback still crosses the browser
+boundary, so `none` would be inaccurate. Required consent is shown by supported
+Firefox at installation; minimum158.0 is unchanged. No telemetry or new host
+permission is introduced. The exact-source AMO producer rejects absent or
+misleading declarations before accessing the AMO transport.
+
+Mozilla requires this declaration for newly submitted add-ons since3November2025;
+this source gap is separate from the observed unsigned-XPI error-5 and the
+unavailable signing credentials/dispatch. The repair does not claim AMO access,
+a signed package or productive installation.
+
+Sources:
+- https://extensionworkshop.com/documentation/develop/firefox-builtin-data-consent/
+- https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/browser_specific_settings

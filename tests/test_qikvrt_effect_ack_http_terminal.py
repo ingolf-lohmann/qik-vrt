@@ -58,7 +58,9 @@ class EffectAckHttpTerminalContractTests(unittest.TestCase):
         content = (ROOT / "browser/firefox/qikvrt-terminal/content.js").read_text(encoding="utf-8")
         manifest = (ROOT / "browser/firefox/qikvrt-terminal/manifest.json").read_text(encoding="utf-8")
         self.assertIn("browser.alarms", background)
-        self.assertIn("WATCHDOG_PERIOD_MINUTES = 5", background)
+        self.assertNotIn("browser.alarms.create", background)
+        self.assertNotIn("browser.alarms.onAlarm", background)
+        self.assertIn("browser.alarms.clear(WATCHDOG_ALARM)", background)
         self.assertIn("validated DONE prepare result required", background)
         self.assertIn("record_validated", background)
         self.assertIn("compact/full record hash mismatch", background)
@@ -179,7 +181,7 @@ class FirefoxAuthorityRegressionTests(unittest.TestCase):
         self.assertFalse(manifest.get("optional_host_permissions"))
         self.assertEqual(manifest["browser_specific_settings"]["gecko"]["strict_min_version"], "158.0")
 
-    def run_adapter(self, assertions: str) -> None:
+    def run_adapter(self, assertions: str, *, clear_failure: bool = False) -> None:
         native_input = {"schema": "qikvrt_terminal_input_v1", "text": "test",
                         "page": "https://github.com/Goldkelch/qik-vrt/blob/main/AI"}
         state = terminal.State()
@@ -202,6 +204,9 @@ const stored = {qikvrtAuthority: policy.mirror.repository};
 const fixture = __NATIVE_FIXTURE__;
 let openClient;
 const opened = [];
+const clearedAlarms = [];
+const lifecycle = {};
+let clearFailure = __CLEAR_FAILURE__;
 const sandbox = {
   console, URL, Uint8Array, atob, btoa, TextEncoder, crypto: require('node:crypto').webcrypto,
   location: {href: `https://github.com/${policy.mirror.repository}/blob/main/AI`},
@@ -210,10 +215,12 @@ const sandbox = {
     action: {onClicked: {addListener(value) { openClient = value; }}},
     tabs: {create: async value => { opened.push(value); }},
     storage: {local: {get: async () => stored, set: async value => Object.assign(stored, value)}},
-    // Leave automatic startup pending; only explicitly requested operations run.
-    alarms: {get: () => new Promise(() => {}), create: async () => {}, onAlarm: {addListener() {}}},
+    // Timer APIs are forbidden; the finite migration must clear the old alarm.
+    alarms: {clear: async name => { clearedAlarms.push(name); if (clearFailure) throw Error("clear refused"); return true; },
+      create() { throw Error("client timer forbidden"); },
+      onAlarm: {addListener() { throw Error("alarm continuation forbidden"); }}},
     runtime: {getURL: path => 'moz-extension://qikvrt-test/' + path,
-      onInstalled: {addListener() {}}, onStartup: {addListener() {}},
+      onInstalled: {addListener(fn) { lifecycle.installed = fn; }}, onStartup: {addListener(fn) { lifecycle.startup = fn; }},
       onMessage: {addListener(value) { listener = value; }}},
   },
 };
@@ -243,6 +250,7 @@ async function prepare({prepareAck = ack(), body = preparedBody, record = fullRe
   return listener({kind: 'PREPARE_EFFECT', payload: input});
 }
 """
+        harness = harness.replace("__CLEAR_FAILURE__", json.dumps(clear_failure))
         harness = harness.replace("__NATIVE_FIXTURE__", json.dumps({
             "input": native_input, "digest": digest, "record": record,
             "successor_digest": successor_digest, "successor": successor}))
@@ -251,6 +259,26 @@ async function prepare({prepareAck = ack(), body = preparedBody, record = fullRe
             cwd=ROOT, text=True, capture_output=True, timeout=15, check=False,
         )
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_event_only_startup_clears_legacy_alarm_without_network_poll(self) -> None:
+        self.run_adapter(r"""
+await Promise.resolve();
+assert.deepEqual(clearedAlarms, ['qikvrt-repository-watchdog']);
+assert.equal(calls.length, 0);
+assert.equal(typeof lifecycle.installed, 'function');
+assert.equal(typeof lifecycle.startup, 'function');
+""")
+
+    def test_failed_alarm_cleanup_holds_before_any_network_or_commit(self) -> None:
+        self.run_adapter(r"""
+// The initial finite migration fails before any user request.
+for (const kind of ['OBSERVE_AUTHORITY', 'PREPARE_EFFECT', 'COMMIT_EFFECT']) {
+  const result = await listener({kind, payload: fixture.input});
+  assert.equal(result.ok, false);
+  assert.equal(result.reason, 'legacy client alarm cleanup failed');
+}
+assert.equal(calls.length, 0);
+""", clear_failure=True)
 
     def test_observation_uses_authority_even_from_mirror_entrypoint(self) -> None:
         self.run_adapter(r"""

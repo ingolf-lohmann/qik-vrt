@@ -3044,6 +3044,12 @@ def firefox_amo_input(root, head, tree):
             gecko.get("id") != "qikvrt-ai-terminal@goldkelch.local" or
             not re.fullmatch(r"[A-Za-z0-9_.+-]{1,64}", manifest.get("version", ""))):
         raise ValueError("AMO_STANDARD_ID_AND_FIREFOX158_MINIMUM_REQUIRED")
+    # The Standard sends explicit command text, source-page URL and optional
+    # voice/camera payloads to the owner-local backend, outside the browser.
+    # Declaring "none" would misrepresent that boundary even for loopback.
+    consent = gecko.get("data_collection_permissions")
+    if consent != {"required": ["personalCommunications", "browsingActivity", "personallyIdentifyingInfo"]}:
+        raise ValueError("AMO_STANDARD_DATA_COLLECTION_DECLARATION_REQUIRED")
     raw = stream.getvalue()
     if len(raw) > 1024 * 1024: raise ValueError("AMO_BOUNDED_STANDARD_XPI_REQUIRED")
     return raw, {"repository": "ingolf-lohmann/qik-vrt", "source_head": head, "source_tree": tree,

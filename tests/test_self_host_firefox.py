@@ -92,6 +92,25 @@ class FirefoxAMOUnlistedTests(unittest.TestCase):
         self.assertEqual(len(binding['source_files']),7);self.assertEqual(binding['strict_min_version'],'158.0')
         self.assertEqual(binding['source_head'],self.head)
 
+    def test_missing_or_false_no_data_consent_is_rejected_before_upload(self):
+        # Separate committed fixtures exercise actual source admission, not a
+        # patched producer or a dirty-working-copy shortcut.
+        import copy
+        for declaration in (None, {"required": ["none"]}):
+            with self.subTest(declaration=declaration), tempfile.TemporaryDirectory() as tmp:
+                root=Path(tmp)/'source'; shutil.copytree(self.root,root)
+                path=root/'browser/firefox/qikvrt-terminal/manifest.json'
+                manifest=json.loads(path.read_text());gecko=manifest['browser_specific_settings']['gecko']
+                if declaration is None: gecko.pop('data_collection_permissions',None)
+                else: gecko['data_collection_permissions']=declaration
+                path.write_text(json.dumps(manifest))
+                def git(*args):
+                    return subprocess.check_output(['git','-C',str(root),*args],stderr=subprocess.DEVNULL).decode().strip()
+                git('add','.');git('-c','user.name=Fixture','-c','user.email=fixture@example.invalid','commit','-m','missing or misleading consent')
+                with self.mock.patch.object(host,'firefox_amo_transport',side_effect=AssertionError('no HTTP')):
+                    with self.assertRaisesRegex(ValueError,'DATA_COLLECTION_DECLARATION_REQUIRED'):
+                        host.firefox_amo_unlisted(root,self.output,git('rev-parse','HEAD'),git('rev-parse','HEAD^{tree}'),self.state,True)
+
     def test_wrong_head_tree_and_dirty_source_fail_before_http(self):
         with self.assertRaisesRegex(ValueError,'EXACT_HEAD_TREE'):
             host.firefox_amo_input(self.root,'0'*40,self.tree)

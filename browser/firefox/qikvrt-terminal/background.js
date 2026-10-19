@@ -3,7 +3,10 @@ const AUTHORITY = "ingolf-lohmann/qik-vrt";
 const DEFAULT_BACKEND = "http://127.0.0.1:8771";
 const ALLOWED_BACKENDS = new Set(["http://127.0.0.1:8771", "http://localhost:8771"]);
 const WATCHDOG_ALARM = "qikvrt-repository-watchdog";
-const WATCHDOG_PERIOD_MINUTES = 5;
+// The alarms permission is retained only to clear the preceding version's alarm.
+// No client timer is created or used for continuation.
+const legacyAlarmCleanup = browser.alarms.clear(WATCHDOG_ALARM)
+  .then(() => true, () => false);
 const STATE_MAP = new Map([
   ["nack", "EFFECT_NACK"],
   ["continue", "EFFECT_ACK_CONTINUE"],
@@ -105,9 +108,8 @@ async function persistWatchdogFrame() {
   return frame;
 }
 
-async function ensureWatchdog() {
-  const current = await browser.alarms.get(WATCHDOG_ALARM);
-  if (!current) await browser.alarms.create(WATCHDOG_ALARM, {periodInMinutes: WATCHDOG_PERIOD_MINUTES});
+async function observeLifecycleEvent() {
+  if (!await legacyAlarmCleanup) return fail("legacy client alarm cleanup failed");
   return persistWatchdogFrame();
 }
 
@@ -277,12 +279,11 @@ async function commitEffect(payload) {
   }
 }
 
-browser.runtime.onInstalled.addListener(() => { ensureWatchdog().catch(() => undefined); });
-browser.runtime.onStartup.addListener(() => { ensureWatchdog().catch(() => undefined); });
-browser.alarms.onAlarm.addListener(alarm => { if (alarm.name === WATCHDOG_ALARM) persistWatchdogFrame().catch(() => undefined); });
-ensureWatchdog().catch(() => undefined);
+browser.runtime.onInstalled.addListener(() => { observeLifecycleEvent().catch(() => undefined); });
+browser.runtime.onStartup.addListener(() => { observeLifecycleEvent().catch(() => undefined); });
 
-browser.runtime.onMessage.addListener(message => {
+browser.runtime.onMessage.addListener(async message => {
+  if (!await legacyAlarmCleanup) return fail("legacy client alarm cleanup failed");
   if (!message || typeof message.kind !== "string") return Promise.resolve(fail("invalid message"));
   if (message.kind === "OBSERVE_AUTHORITY") return persistWatchdogFrame().catch(error => fail(error.message));
   if (message.kind === "DISCOVER_EFFECT_ACK") return discover().catch(error => fail(error.message));
