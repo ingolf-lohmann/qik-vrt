@@ -1221,6 +1221,12 @@ m.server.closeAllConnections();await new Promise(r=>m.server.close(r));
         self.assertFalse((second/".git").exists())
         host.verify(second,self.pin)
 
+    def test_standard_firefox_entry_survives_the_real_frozen_package_export(self):
+        name = "browser/firefox/qikvrt-terminal/client.html"
+        exported = (self.export / name).read_bytes()
+        self.assertEqual(exported, (ROOT / name).read_bytes())
+        self.assertEqual(self.manifest["files"][name]["sha256"], host.digest(exported))
+
     def test_static_react_export_serves_each_scope_and_preserves_original_bytes(self):
         self.start()
         for route in ("/mesh", "/node?repository=ingolf-lohmann%2Fqik-vrt", "/client"):
