@@ -1,0 +1,247 @@
+{
+  "schema": "qikvrt-original-native-ci-followup/1",
+  "subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pr": 548,
+    "head": "dcaec0066a1e6516c0d8f1655897b57f1652acdb",
+    "tree": "20db7cd76b87414315ef678a749f2dd2589660f1"
+  },
+  "run_id": 39254764275,
+  "job_id": 118072255172,
+  "transport": {
+    "artifact_id": 12188115946,
+    "zip_sha256": "2263bbdd4a895ce60fface1e68693866d9be82cfbe49c5949c68519f2abf8bed",
+    "original_delivery": {
+      "connector_max_artifact_bytes": 536870912,
+      "effect_ack_done": false,
+      "exporter_head": "dcaec0066a1e6516c0d8f1655897b57f1652acdb",
+      "exporter_tree": "20db7cd76b87414315ef678a749f2dd2589660f1",
+      "extension_activation_verified": false,
+      "image_imported": false,
+      "independent_download_back_verified": true,
+      "original_archive_restored_verified": true,
+      "original_image": {
+        "archive_bytes": 572796305,
+        "archive_sha256": "77715d5d2bf31a4cbef244b7a2e6acd6b3d172f5514110615862cfe15a124bf7",
+        "image_id": "sha256:558cd8433317971a62f815b21a9f65e1bfa76b98a82ee6caef14deeca23e8b3f",
+        "source_head": "dcaec0066a1e6516c0d8f1655897b57f1652acdb",
+        "source_tree": "20db7cd76b87414315ef678a749f2dd2589660f1"
+      },
+      "part_payload_max_bytes": 268435456,
+      "parts": [
+        {
+          "artifact_id": 12187663993,
+          "artifact_name": "qikvrt-s1-firefox158-runtime-dcaec0066a1e6516c0d8f1655897b57f1652acdb-part-000",
+          "index": 0,
+          "zip_sha256": "1fdca6c63a8e6f179d55483af5f709f72db7074b2da344b4bb5d6aef0ff4f7b0"
+        },
+        {
+          "artifact_id": 12187978432,
+          "artifact_name": "qikvrt-s1-firefox158-runtime-dcaec0066a1e6516c0d8f1655897b57f1652acdb-part-001",
+          "index": 1,
+          "zip_sha256": "057cedc68fdff0b7530b21967a4001f94f3c40ce51d9d39cd3fa972826dabf89"
+        },
+        {
+          "artifact_id": 12187833726,
+          "artifact_name": "qikvrt-s1-firefox158-runtime-dcaec0066a1e6516c0d8f1655897b57f1652acdb-part-002",
+          "index": 2,
+          "zip_sha256": "81e4ae2f41fa92878194223adf87218759e94e58d1e531508e4bd5572b627d0b"
+        }
+      ],
+      "parts_manifest_sha256": "5cdd8ff4c9e533b6e97ad11ff84d05eda90b0824baf82b7d1cbd6763e5e0a173",
+      "public_production_verified": false,
+      "repository": "ingolf-lohmann/qik-vrt",
+      "run_id": 39254764275,
+      "schema": "qikvrt-container-artifact-delivery/v1"
+    },
+    "original_restore_receipt": {
+      "archive_bytes": 572796305,
+      "archive_sha256": "77715d5d2bf31a4cbef244b7a2e6acd6b3d172f5514110615862cfe15a124bf7",
+      "effect_ack_done": false,
+      "extension_activation_verified": false,
+      "image_imported": false,
+      "ordinary_release": false,
+      "part_count": 3,
+      "parts_manifest_sha256": "5cdd8ff4c9e533b6e97ad11ff84d05eda90b0824baf82b7d1cbd6763e5e0a173",
+      "public_production_verified": false,
+      "schema": "qikvrt-s1-container-receipt/v1",
+      "state": "ORIGINAL_ARTIFACT_REASSEMBLED_VERIFIED"
+    }
+  },
+  "activation": {
+    "artifact_id": 12188043348,
+    "zip_sha256": "865a598c4a9808579eb1a2e7b1b4d095d8e47456006378b462c8bdfa0da68fd6",
+    "original_source_binding": {
+      "candidate_head": "dcaec0066a1e6516c0d8f1655897b57f1652acdb",
+      "candidate_tree": "20db7cd76b87414315ef678a749f2dd2589660f1",
+      "effect_ack_done": false,
+      "signed_candidate_available": false,
+      "signed_production_package": false,
+      "signing_blocker": "MOZILLA_SIGNING_BINDING_AND_SIGNED_XPI_UNAVAILABLE",
+      "source_files": [
+        {
+          "git_blob": "d311100e0cc14da7574f18a625d4e1feeedcbad7",
+          "path": "browser/firefox/qikvrt-terminal/manifest.json",
+          "sha256": "abe2708d7e4875be8a2757c9adf40c8968fdabada836d90b9a1fec4dc5799308"
+        },
+        {
+          "git_blob": "f177c4471af23a9cf8c9e875c6931887cf92272c",
+          "path": "browser/firefox/qikvrt-terminal/background.js",
+          "sha256": "c7747216fd0cf618ef3592d310ff5d1b2adad6d6c5f8339a9f1c2fe14044856b"
+        },
+        {
+          "git_blob": "61658f2fd7ceb62b25a13ef8486ba3a7b8a5c563",
+          "path": "browser/firefox/qikvrt-terminal/content.js",
+          "sha256": "e7a9bb13052036c6445d4f0f3391b03cf54ff73cee6646ba9237eff2e8fb1e07"
+        },
+        {
+          "git_blob": "0b3e36fb7b0fbb3bb187e1def2b940669e98cc81",
+          "path": "browser/firefox/qikvrt-terminal/options.html",
+          "sha256": "c74e5eefda9bcf0f39518e05aa613981d3367b84de9f13304a798ef1abcfaf2d"
+        },
+        {
+          "git_blob": "60ef9dc9c8b85b8abe70a23d2f38faccdc7aa8a9",
+          "path": "browser/firefox/qikvrt-terminal/options.js",
+          "sha256": "fc1008b5208bd1605c4a5db8d5359322bbc4783277176177757e174f93cfa92d"
+        },
+        {
+          "git_blob": "817d1e58a80422367cb63d49dbb826428d452ee6",
+          "path": "browser/firefox/qikvrt-terminal/terminal.css",
+          "sha256": "53eae4781aeb15135da760c52c5c2a8320f5c3a03e3d85866d500b293de05c87"
+        }
+      ],
+      "xpi_sha256": "1f5f583181d6134584f98bf6b59848d4542176d624d97709fa915b9934e2c46c"
+    },
+    "original_installation": {
+      "binary_path": "/usr/lib/firefox/firefox",
+      "binary_sha256": "a19472941a7cd7252ab5e61b02eb616a50389a784323c21dc6873a23fd700789",
+      "debian_package_version": "158.0~build2",
+      "default_signing_policy_activation_verified": false,
+      "effect_ack_done": false,
+      "existing_s1_bootstrap_xpi_present": false,
+      "extension_activation_verified": false,
+      "extension_id": "qikvrt-ai-terminal@goldkelch.local",
+      "extension_version": "1.0.0",
+      "firefox_package": "firefox",
+      "firefox_version_output": "[8] Sandbox: CanCreateUserNamespace() clone() failure: EPERM\nMozilla Firefox 158.0",
+      "installation_method": "AddonManager.getInstallForFile persistent",
+      "ordinary_release": false,
+      "predecessor_acceptance_transferred": false,
+      "profiles": {
+        "default_signing_policy": [
+          {
+            "accepted": false,
+            "addon": null,
+            "background_registered": false,
+            "browser_version": "158.0",
+            "minimum_satisfied": true,
+            "mozilla_signed": false,
+            "persistent_installation": {
+              "error": -5,
+              "event": "rejected_before_install",
+              "explicit_enable_used": false,
+              "state": 4,
+              "temporary_installation_used": false
+            },
+            "phase": "initial_start",
+            "policy_active": false,
+            "profile_xpi_present": false,
+            "profile_xpi_sha256": null,
+            "session_browser_version": "158.0",
+            "signatures_required": true,
+            "temporary_installation_used": false
+          },
+          {
+            "accepted": false,
+            "addon": null,
+            "background_registered": false,
+            "browser_version": "158.0",
+            "minimum_satisfied": true,
+            "mozilla_signed": false,
+            "persistent_installation": null,
+            "phase": "process_restart",
+            "policy_active": false,
+            "profile_xpi_present": false,
+            "profile_xpi_sha256": null,
+            "session_browser_version": "158.0",
+            "signatures_required": true,
+            "temporary_installation_used": false
+          }
+        ]
+      },
+      "public_production_verified": false,
+      "reference_activation_verified": false,
+      "schema": "qikvrt-firefox-extension-installation/v1",
+      "scope": "EXACT_EXISTING_S1_IMAGE_AND_CANDIDATE_XPI_DISPOSABLE_PROFILES",
+      "signed_production_package_verified": false,
+      "state": "HOLD_EXTENSION_INSTALLATION_OR_ACTIVATION",
+      "strict_min_version": "158.0",
+      "xpi_bytes": 9954,
+      "xpi_sha256": "1f5f583181d6134584f98bf6b59848d4542176d624d97709fa915b9934e2c46c"
+    }
+  },
+  "amo": {
+    "artifact_id": 12187598366,
+    "zip_sha256": "9e9e0e6ebafce3159f1c2e1b6694edfa61da749763ed92534e7a16d400765339",
+    "original_preflight": {
+      "amo_authentication_verified": false,
+      "credential_delivery": {
+        "amo_authentication_verified": false,
+        "configuration_status": "NOT_INSPECTED",
+        "credential_values_read": false,
+        "issuer_present": false,
+        "scope": "CURRENT_JOB_SECRET_CONTEXT_ONLY",
+        "secret_names": [
+          "AMO_JWT_ISSUER",
+          "AMO_JWT_SECRET"
+        ],
+        "secret_present": false,
+        "state": "PAIR_NOT_DELIVERED"
+      },
+      "credential_values_read": false,
+      "effect_ack_done": false,
+      "executor_run_id": "0",
+      "first_boundary": "AMO_SIGNING_NOT_REQUESTED",
+      "issuer_present": false,
+      "readback_only": false,
+      "repository": "ingolf-lohmann/qik-vrt",
+      "request_mode": "NONE",
+      "schema": "qikvrt-amo-secure-access-preflight/v1",
+      "secret_names": [
+        "AMO_JWT_ISSUER",
+        "AMO_JWT_SECRET"
+      ],
+      "secret_present": false,
+      "signing_requested": false,
+      "source_head": "dcaec0066a1e6516c0d8f1655897b57f1652acdb",
+      "source_tree": "20db7cd76b87414315ef678a749f2dd2589660f1"
+    }
+  },
+  "own_native": {
+    "all_original_terminal_reads_equal": true,
+    "copied_writer_resumed": false,
+    "database_sha256_unchanged": "71607c6f3252726972069bdf7a358cb14a45df5939e0b50d456945f043b5ef9b",
+    "epoch": "45a854a6c61248d29109b7ff1f15276b",
+    "events": 9,
+    "latest_digest": "ed61e9dd4933d4b6bd27f79ab110c80de5a53184de08fdfcba4550ea7975a874",
+    "latest_id": "45a854a6c61248d29109b7ff1f15276b:9",
+    "schema": "qikvrt-own-native-cold-readback/1",
+    "snapshot_sha256": "6fbba817779c780082d4b1431438e196449e1d7e5abcd82a6558ef503e31fc98",
+    "subject": {
+      "head": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+      "pr": 538,
+      "repository": "ingolf-lohmann/qik-vrt",
+      "tree": "15eb1a7bdd2c1880405df1026b14756f0fe72714"
+    }
+  },
+  "review": {
+    "id": 5572084638,
+    "state": "COMMENT",
+    "approval": false
+  },
+  "scope": "Source-bound candidate native CI and file persistence, not Main/host/peer acceptance",
+  "next_action": "Existing admitted AMO signer with protected job credential delivery and exact-source signed XPI binding; original activation readback. Draft transition remains REST-only and not exposed. No unchanged rerun.",
+  "source_change": false,
+  "formal_assessment_created": false,
+  "effect_ack_done": false
+}
