@@ -78,5 +78,24 @@
     "retry_condition": "Materially restored supported Skills existing-object persistence; no unchanged push retry"
   },
   "live_peer_and_productive_host_state": "OPEN_NOT_ESTABLISHED_BY_THIS_RULE",
-  "effect_ack_done": false
+  "effect_ack_done": false,
+  "instruction_successors": [
+    {
+      "owner_instruction_at": "2026-10-19T12:00:52+03:00",
+      "scope": "ALL_CONNECTED_AND_FUTURE_NODES",
+      "required_means": [
+        "QIK-VRT",
+        "Effect Acknowledgement Protocol"
+      ],
+      "owner_packet_relay_accepted": false,
+      "actual_peer_confirmation_required": true,
+      "exact_request_id": "qikvrt-all-node-native-rule-20261019T090052Z",
+      "exact_request_canonical_sha256": "2708c65e3bbf985da093f7755406ed49f5d07fd9ae90b8dd5129f99568d5334b",
+      "request_publication_commit": "df3f1976e354baf6b89c171549653241e5afe183",
+      "peer_ack_observed": false,
+      "effect_ack_state": "EFFECT_NACK",
+      "original_peer_rule_candidate": "53151f6d38d46a84ad6fcc790a11bf9fba8cf891",
+      "original_peer_rule_scope": "Owner-carried source declaration predating this request; not current automatic delivery or ACK"
+    }
+  ]
 }
