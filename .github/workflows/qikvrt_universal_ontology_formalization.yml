@@ -59,6 +59,16 @@ jobs:
           echo "head=$actual" >> "$GITHUB_OUTPUT"
           echo "tree=$tree" >> "$GITHUB_OUTPUT"
 
+      - name: Restore existing exact-toolchain Lean runtime before installer
+        uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: |
+            ~/.elan
+            formalization/QIKVRT_Formalization_v2.0/.lake/packages
+          key: qikvrt-lean-${{ runner.os }}-${{ hashFiles('formalization/QIKVRT_Formalization_v2.0/lean-toolchain', 'formalization/QIKVRT_Formalization_v2.0/lakefile.toml', 'formalization/QIKVRT_Formalization_v2.0/lake-manifest.json') }}-${{ github.sha }}
+          restore-keys: |
+            qikvrt-lean-${{ runner.os }}-${{ hashFiles('formalization/QIKVRT_Formalization_v2.0/lean-toolchain', 'formalization/QIKVRT_Formalization_v2.0/lakefile.toml', 'formalization/QIKVRT_Formalization_v2.0/lake-manifest.json') }}-
+
       - uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9 # v1
         with:
           lake-package-directory: formalization/QIKVRT_Formalization_v2.0

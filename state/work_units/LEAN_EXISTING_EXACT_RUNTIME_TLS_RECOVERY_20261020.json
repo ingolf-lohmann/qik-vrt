@@ -1,0 +1,102 @@
+{
+  "schema": "qikvrt_ai_work_unit_provenance_v1",
+  "work_unit_id": "LEAN_EXISTING_EXACT_RUNTIME_TLS_RECOVERY_20261020",
+  "created_at": "2026-10-19T23:27:54.757408+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_commit": "3a8b0af33ca3d70259e6ea281e800de9df50923e",
+  "source_tree": "adc1aede17a31afac5a7ebad8a51aa229f69ba45",
+  "human_actor": {
+    "attribution_id": "Ingolf Lohmann",
+    "role": "Principal, Product Owner and Code Owner"
+  },
+  "human_contributions": [
+    "Existing causal-repair and completion authorization; REST-only, no downgrades and preserve actual native proof boundaries"
+  ],
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "session_or_run_id": "01cd72b97179"
+  },
+  "artificial_cognitive_contributions": [
+    "Diagnose two real exact-head CI failures before Lean compilation",
+    "Reuse the existing declared Lean cache producer and same manifest-bound namespace in both affected workflows before the installer"
+  ],
+  "failure": {
+    "jobs": [
+      118354790567,
+      118354791102
+    ],
+    "observed_at": "2026-10-19T23:00:30Z",
+    "stage": "Original lean-action install_elan.sh invokes lean --version before its later build cache",
+    "error": "TLS connect error35 downloading unchanged Lean4.19.0 from releases.lean-lang.org",
+    "theorem_failure_established": false,
+    "precise_network_root_cause": "UNESTABLISHED"
+  },
+  "material_causal_evidence": {
+    "public_rest_read_at": "2026-10-19T23:25:21.239501+00:00",
+    "existing_current_pr_cache_id": 9188841275,
+    "existing_main_cache_id": 9110060268,
+    "cache_namespace": "qikvrt-lean-Linux-e98edb9a58c2cc5a9afba56af079c9f96704079c0a4363ee77329e8081841dd6-",
+    "existing_producer": ".github/workflows/qikvrt_manuscript_proof.yml",
+    "official_installer_source": "https://raw.githubusercontent.com/leanprover/lean-action/38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9/scripts/install_elan.sh",
+    "cache_content_acceptance": "Fresh original Lean version, library build and axiom audits still required; provider cache metadata is not a kernel receipt"
+  },
+  "repair_class": "CAUSAL_REPAIR_OF_OBSERVED_FAILED_RUNTIME_PROVISION",
+  "backlog_optimization_gate": "Preserved. This repairs the two actually failed provision steps; no speculative optimization, new executor, new runtime or version change.",
+  "change": {
+    "restore_only": true,
+    "cache_writer_unchanged": true,
+    "generic_os_restore_fallback": false,
+    "new_credentials_or_scopes": false,
+    "new_trigger": false,
+    "new_scheduler": false,
+    "lean_action_pin_unchanged": true,
+    "toolchain_bytes_unchanged": true,
+    "all_original_proof_steps_byte_preserved": true,
+    "new_direct_download_implementation": false
+  },
+  "unchanged_input_bindings": {
+    "formalization/QIKVRT_Formalization_v2.0/lean-toolchain": "ee6fd37555065223ddad24dff70b5447dfbac23c14f48fb8e3ddf266104bfa87",
+    "formalization/QIKVRT_Formalization_v2.0/lakefile.toml": "45d01cd75d0b966cceaed22a246d804811544f8b7c0403ba5d7a6d0e78a55f30",
+    "formalization/QIKVRT_Formalization_v2.0/lake-manifest.json": "07d6545fe29e15a39f08519aac71f6ea5fc0530d0d5101d5b3e8df93cf9f7e5e"
+  },
+  "workflow_delta": {
+    ".github/workflows/qikvrt_measurement_independence_formalization.yml": {
+      "sha256": "dcfef2893b14b01699c38121769cb7f4a20d1ceb05667e56b69204d6dc9da4b2",
+      "after_sha256": "3e2e57020d3aba8213417dc199764e785ed8dcfe096f5cd6b93263bc3a141770",
+      "only_delta": "Insert restore-only existing content/version-bound cache before the unchanged original installer"
+    },
+    ".github/workflows/qikvrt_universal_ontology_formalization.yml": {
+      "sha256": "aedb87486a2a584bd0ebcb818045dadf82a814deef048467deaf402e9d4787c7",
+      "after_sha256": "64773e52aff37d8e29c1f25ffef412dec7c0798dc9cd0e892bbc94256bf78580",
+      "only_delta": "Insert restore-only existing content/version-bound cache before the unchanged original installer"
+    }
+  },
+  "limitations": [
+    "A cache miss still uses the unchanged official installer and can retain its original TLS error.",
+    "Real native CI must establish cache restore and fresh proof execution on the resulting exact candidate.",
+    "This does not establish Main governance, signed XPI, productive host acceptance, peer delivery or EFFECT_ACK_DONE."
+  ],
+  "outputs": [
+    {
+      "path": ".github/workflows/qikvrt_measurement_independence_formalization.yml",
+      "sha256": "3e2e57020d3aba8213417dc199764e785ed8dcfe096f5cd6b93263bc3a141770"
+    },
+    {
+      "path": ".github/workflows/qikvrt_universal_ontology_formalization.yml",
+      "sha256": "64773e52aff37d8e29c1f25ffef412dec7c0798dc9cd0e892bbc94256bf78580"
+    }
+  ],
+  "verification": {
+    "full_make_test": "REQUIRED_AFTER_INTEGRITY_REGENERATION",
+    "native_exact_candidate_ci": "REQUIRED",
+    "old_subject_pass_transferred": false
+  },
+  "completion_claims": {
+    "EFFECT_ACK_DONE": false,
+    "merge": false,
+    "native_ci_success": false,
+    "network_root_cause_fixed_globally": false,
+    "productive_host_acceptance": false
+  }
+}
