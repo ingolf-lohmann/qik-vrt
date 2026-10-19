@@ -1,0 +1,66 @@
+{
+  "schema": "qikvrt-attached-original-package-verification/1",
+  "json": {
+    "bytes": 3744,
+    "sha256": "92ff71c9e07069e6797cdab91f18e0898f9444906be04c64598449be51e59f90",
+    "signature_valid": true,
+    "body_hash_valid": true,
+    "self_declared_public_key_sha256": "dbc84276b06770e658bbef6eae2b9dcab5b68cb1cd2486a7d21d7f2aa524c6a6",
+    "external_trust_anchor": null,
+    "same_bytes_as_previous_supplied_export": true
+  },
+  "bundle": {
+    "bytes": 6361,
+    "sha256": "fa7cd1c711d2c21e101fde3b33b0b81f0b552dfcc2359220c3e56a46629d2227",
+    "ref_head": "6d3803a18521b15612f1c38e3b492e0a9f3b342a",
+    "prerequisite": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+    "git_bundle_verify_success": true,
+    "same_hash_as_verified_v12_original": true,
+    "original_ssh_signer_authentication": false
+  },
+  "original_protocol_checks": [
+    {
+      "record_hash": "sha256:39f90d55f7d0a4c3206de5a5bcc0e824e213ae8a2bca7ac1c92d2b3cad76e45c",
+      "original_protocol_hash": "sha256:a4d643cdfe0dfed406992728c68f7ea3bb6a99355e35516349870e4787813de9",
+      "original_verify_protocol_pass": true,
+      "supplied_peer_record_state": "EFFECT_ACK_CONTINUE",
+      "own_assessment_created": false
+    }
+  ],
+  "authority_candidate": {
+    "pr": 544,
+    "head": "392dd86fdf147c04dad3bb89d1a4a8438b5f0a97",
+    "tree": "ea21882417b1558e4c0ef52000ed5a88ed496d13",
+    "original_tree_unchanged": true,
+    "article_bytes": 9968,
+    "article_sha256": "7649987164e78a88393b5195c28eed30c96951bc678fbb12f4c63271ee65c277",
+    "original_article_bytes_identical": true,
+    "draft": true,
+    "main_adoption_verified": false
+  },
+  "causal_ci_successor": {
+    "head": "be8734ec56947e0d46c1b96c7906a02688da88a2",
+    "tree": "2963845f097d556547172712e2126a471eb8e679",
+    "pr": 550,
+    "branch": "fix/ci-finalized-firefox-parts-20261019-abaab70d",
+    "url": "https://github.com/ingolf-lohmann/qik-vrt/pull/550",
+    "files": [
+      {
+        "path": ".github/workflows/qikvrt_ci.yml",
+        "blob": "aa59916c42c1e8fcbdcba6dd18e3f61ce871c08f",
+        "exact": true
+      },
+      {
+        "path": "tests/test_ci_artifact_delivery.py",
+        "blob": "e9a50d94ab6f45bcc7c08a6a9a0aa86c8e762182",
+        "exact": true
+      }
+    ],
+    "native_full_ci_verified": false,
+    "source_merge_done": false
+  },
+  "formal_outbox_assessment_created": false,
+  "new_authenticated_native_peer_reply_observed": false,
+  "client_timer_created": false,
+  "owner_packet_relay_requested": false
+}
