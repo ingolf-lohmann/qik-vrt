@@ -365,6 +365,24 @@ export function createMonitor(options = {}) {
       return {...status, whole_transputer_verified:false};
     } catch (error) { return {state:'BLOCK', cause:error.message, whole_transputer_verified:false}; }
   }
+  function durableMeshInbox() {
+    if (store.storageFailed) throw Error('MESH_WORK_STORAGE_RESTART_REQUIRED');
+    const disk = new MonitorStore(store.path,nodeId);
+    if (meshWire(disk.state.mesh_work || null)!==meshWire(store.state.mesh_work || null)) throw Error('MESH_WORK_DURABLE_READBACK_MISMATCH');
+    return disk.state.mesh_work;
+  }
+  function meshWorkStatus() {
+    const base={admitted_peers:meshPeers.length,received_peers:0,proposal_execution:'NOT_EXECUTED',effect_ack_done:false};
+    if (!meshPeers.length) return {...base,state:'NO_PEERS_ADMITTED'};
+    if (role==='replica') return {...base,state:'READ_ONLY_REPLICA'};
+    try {
+      const inbox=durableMeshInbox();
+      const received=meshPeers.filter(peer=>Object.values(inbox?.nodes[peer.node_id]?.receipts || {}).some(receipt=>
+        receipt.repository===peer.repository && receipt.serving_node_id===nodeId &&
+        receipt.source_head===sourceHead && receipt.source_tree===sourceTree)).length;
+      return {...base,received_peers:received,state:received===meshPeers.length ? 'PEER_BATCHES_DURABLE' : 'PEER_BATCH_REQUIRED'};
+    } catch (_) {return {...base,state:'DURABLE_READBACK_HOLD'};}
+  }
   const metadata = () => {
     const visible = store.visible();
     const binding = {schema: 'qikvrt-monitor-binding/v1', node_id: role === 'replica' ? primaryId : nodeId, serving_node_id: nodeId, epoch: visible.epoch,
@@ -383,7 +401,7 @@ export function createMonitor(options = {}) {
     losslessness_scope: replicaUrl ? 'Configured two-node durable receipt and confirmed-prefix replay; independently deployed failover remains unverified.' :
       'Single-node durable receipt or read-only replicated checkpoint. Deployed Mesh failover remains a separate gate.',
     snapshot_durable: !!visible.snapshot, connected_clients: clients.size,
-    operation_error: operationError,
+    operation_error: operationError, mesh_work:meshWorkStatus(),
     runtime_health: options.runtimeHealth?.() || {state:'UNKNOWN', cause:'SYSTEM_RUNTIME_HEALTH_NOT_BOUND'},
     native_runtime: nativeStatus(), workflow_success_is_effect_ack_done: false};
     binding.health = globalThis.QikvrtHealth.project(visible.snapshot,binding,null,Date.now());
@@ -506,6 +524,14 @@ export function createMonitor(options = {}) {
           if (id && request.method==='GET' && !raw.length) {
             const receipt=store.state.mesh_work?.nodes[peer.node_id]?.receipts[id];
             return receipt ? reply(200,receipt) : reply(404,{error:'MESH_WORK_RECEIPT_NOT_FOUND'});
+          }
+          const live=/^\/api\/mesh-work\/readback\/([a-f0-9]{64})\/([a-f0-9]{32})$/.exec(path);
+          if (live && request.method==='GET' && !raw.length) {
+            const receipt=durableMeshInbox()?.nodes[peer.node_id]?.receipts[live[1]];
+            if (!receipt) return reply(404,{error:'MESH_WORK_RECEIPT_NOT_FOUND'});
+            return reply(200,{schema:'qikvrt-repository-work-live-readback/v1',challenge:live[2],
+              serving_node_id:nodeId,source_head:sourceHead,source_tree:sourceTree,receipt,
+              proposal_execution:'NOT_EXECUTED',effect_ack_done:false});
           }
           return reply(405,{error:'MESH_WORK_OPERATION_NOT_ALLOWED'});
         } catch(error) {return reply(store.storageFailed?503:409,{error:error.message,effect_ack_done:false});}

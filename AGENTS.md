@@ -287,6 +287,20 @@ The explicit v3 route binds policy/zenodo-machine-proof-policy-v3.json without
 rewriting or weakening either historical contract; its REVIEW_REQUIRED proposal
 does not itself authorize a production mutation.
 
+## Mirror solutions and reports use QIK-VRT means only
+
+Owner instruction, Ingolf Lohmann, 2026-10-19 11:47/11:48 Europe/Istanbul: a Mirror
+solves and reports problems only with QIK-VRT and EFFECT_ACK means, permanently.
+Record findings as Universal Transputer events with an explicit carrier binding,
+submit bounded input through the Universal Terminal and read it back independently.
+Report to the Authority only through the mesh-work batch path (`mesh-cache-stage`,
+`mesh-cache-idle`, `mesh-cache-send`, `mesh-cache-check`) or a signed read-only
+journal export with `EXPORT_MANIFEST.json`. Evaluate every report with
+`src/qikvrt_effect_ack.py`; arrival and effect count only after readback in the
+Authority, otherwise the record stays `EFFECT_NACK` or `HOLD`. A missing receiver,
+peer admission or write identity is recorded as `HOLD` with its carrier and is not
+replaced by another service. Client timers are not a continuation mechanism.
+
 ## Every-node universal bus
 
 Every current or future repository node, including Authority and Mirror, MUST
