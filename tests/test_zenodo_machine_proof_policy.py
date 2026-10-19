@@ -29,6 +29,7 @@ if str(ROOT) not in sys.path:
 from tools import qikvrt_zenodo_actions as zenodo
 from tools import qikvrt_zenodo_machine_proof as proof
 from tools import qikvrt_zenodo_publish as publish
+from tools import qikvrt_required_review_gate as review_gate
 
 SOURCE_HEAD = "a" * 40
 AUTHORIZATION_NONCE = "b" * 64
@@ -1052,14 +1053,14 @@ class FakeV3ReviewAcceptanceV2(FakeV3GitHub):
             "head": {"sha": review["head_sha"], "repo": {"full_name": repo}},
             "base": {"sha": review["base_sha"], "ref": "main", "repo": {"full_name": repo}}}
         config = json.loads((ROOT / "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json").read_text())["mesh_authority"]["principal_review"]
-        body = {"schema": publish.review_gate.PRINCIPAL_REVIEW_SCHEMA, "repository": repo,
+        body = {"schema": review_gate.PRINCIPAL_REVIEW_SCHEMA, "repository": repo,
             "pull_request": 123, "head_sha": review["head_sha"], "base_sha": review["base_sha"],
             "owner_record_sha256": config["source_sha256"], "instruction_sha256": config["instruction_sha256"],
             "decision": "APPROVE"}
         self.native = {"id": 456, "state": "COMMENTED" if principal else "APPROVED",
             "commit_id": review["head_sha"], "submitted_at": "2026-10-19T09:30:20Z",
             "user": {"login": review["reviewer_login"], "type": "User", "id": config["principal_github_id"] if principal else 2},
-            "body": publish.review_gate.PRINCIPAL_REVIEW_MARKER + "\n```json\n" + json.dumps(body) + "\n```" if principal else "Independent contract approval"}
+            "body": review_gate.PRINCIPAL_REVIEW_MARKER + "\n```json\n" + json.dumps(body) + "\n```" if principal else "Independent contract approval"}
         self.reviews = [self.native]
         self.ruleset = {"id": 789, "target": "branch", "enforcement": "active", "bypass_actors": [],
             "conditions": {"ref_name": {"include": ["refs/heads/main"], "exclude": []}},
@@ -1068,9 +1069,9 @@ class FakeV3ReviewAcceptanceV2(FakeV3GitHub):
                 "require_code_owner_review": not principal, "require_last_push_approval": not principal,
                 "dismiss_stale_reviews_on_push": True}},
                 {"type": "required_status_checks", "parameters": {"strict_required_status_checks_policy": True,
-                    "required_status_checks": [{"context": publish.review_gate.GOVERNANCE_STATUS_CONTEXT, "integration_id": 15368}]}}]}
+                    "required_status_checks": [{"context": review_gate.GOVERNANCE_STATUS_CONTEXT, "integration_id": 15368}]}}]}
         target = f"https://github.com/{repo}/actions/runs/987"
-        self.status = {"id": 900, "context": publish.review_gate.GOVERNANCE_STATUS_CONTEXT,
+        self.status = {"id": 900, "context": review_gate.GOVERNANCE_STATUS_CONTEXT,
             "state": "success", "created_at": "2026-10-19T09:30:25Z", "target_url": target,
             "creator": {"login": "github-actions[bot]", "type": "Bot"}}
         self.statuses = [self.status]
@@ -5391,6 +5392,19 @@ class V3ReviewAcceptanceV2Tests(unittest.TestCase):
                     mock.patch.object(publish.urllib.request, "build_opener") as factory:
                 with self.assertRaises(zenodo.ZenodoError): publish._github_api_request(method, target, TEST_GITHUB_TOKEN, query=query)
                 factory.assert_not_called()
+
+    def test_historical_standalone_publisher_does_not_require_the_new_review_module(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            for relative in ("tools/qikvrt_zenodo_publish.py", "tools/qikvrt_zenodo_actions.py", "tools/qikvrt_zenodo_machine_proof.py"):
+                write(root, relative, (ROOT / relative).read_bytes())
+            code = ("from tools import qikvrt_zenodo_publish as p; "
+                    "assert p.SCHEMA_V2 == 'qikvrt_zenodo_publication_manifest_v2'; "
+                    "print(p.V3_ACTIVATION_SCHEMA)")
+            completed = subprocess.run([sys.executable, "-S", "-B", "-c", code], cwd=root,
+                text=True, capture_output=True, check=False, timeout=10)
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+            self.assertEqual(completed.stdout.strip(), publish.V3_ACTIVATION_SCHEMA)
 
 
 if __name__ == "__main__":

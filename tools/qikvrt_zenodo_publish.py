@@ -39,11 +39,9 @@ from typing import Any, NoReturn
 try:
     from tools import qikvrt_zenodo_actions as zenodo
     from tools import qikvrt_zenodo_machine_proof as machine_proof
-    from tools import qikvrt_required_review_gate as review_gate
 except ModuleNotFoundError:
     import qikvrt_zenodo_actions as zenodo  # type: ignore[no-redef]
     import qikvrt_zenodo_machine_proof as machine_proof  # type: ignore[no-redef]
-    import qikvrt_required_review_gate as review_gate  # type: ignore[no-redef]
 
 SCHEMA = "qikvrt_zenodo_publication_manifest_v1"
 SCHEMA_V2 = "qikvrt_zenodo_publication_manifest_v2"
@@ -60,7 +58,7 @@ V3_REVIEW_V2_CONTRACT_PATHS = (
     V3_REVIEW_POLICY_PATH,
     "tools/qikvrt_required_review_gate.py",
     "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
-    review_gate.OWNER_RECORD,
+    "state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
     ".github/workflows/qikvrt_required_review_gate.yml",
 )
 V3_CONTRACT_CODE_PATHS = (
@@ -930,6 +928,22 @@ def _v3_review_policy_identity(root: pathlib.Path) -> dict[str, Any]:
     return _identity(V3_REVIEW_POLICY_PATH, raw)
 
 
+def _v3_review_gate():
+    """The new dependency belongs only to explicitly selected acceptance-v2.
+
+    Historical standalone V1/V2 and activation-v1 carriers retain their three
+    original publisher modules; no Principal module is imposed on that path.
+    """
+    try:
+        from tools import qikvrt_required_review_gate
+    except ImportError:
+        try:
+            import qikvrt_required_review_gate
+        except ImportError:
+            _fail("v3 review acceptance v2 requires the existing review gate module")
+    return qikvrt_required_review_gate
+
+
 def _v3_activation_statement(
     contracts: list[dict[str, Any]], review: Mapping[str, Any], *,
     activation_schema: str = V3_ACTIVATION_SCHEMA,
@@ -1698,6 +1712,7 @@ def _verify_v3_contract_review_v2(
     A COMMENTED Principal decision never becomes APPROVED, activation or an
     exact-upload grant. The unchanged v1 route retains independent approval.
     """
+    review_gate = _v3_review_gate()
     activation = manifest["contract_activation"]
     review = activation["review"]
     if (activation.get("review_policy") != _v3_review_policy_identity(root)

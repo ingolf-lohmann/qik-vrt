@@ -17,6 +17,9 @@ There is no automatic fallback, inferred APPROVED state or conversion of an old
 activation into a new one. A Principal-authored PR is permitted only by the
 existing explicitly bound Owner decision. An independent reviewer cannot
 approve their own PR. A technical disposition cannot satisfy either route.
+The existing review module is loaded only for activation-v2. Historical
+standalone V1/V2 and activation-v1 carriers keep their original three-module
+publisher dependency closure, including the isolated V2 finalizer.
 
 The activation-v2 file keeps the v1 fields and adds `review_policy`, the exact
 `{path,bytes,sha256,git_blob_sha}` identity of

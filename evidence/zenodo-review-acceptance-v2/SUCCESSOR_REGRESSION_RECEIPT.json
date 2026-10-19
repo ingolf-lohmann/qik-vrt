@@ -1,0 +1,53 @@
+{
+  "schema": "qikvrt_zenodo_review_acceptance_successor_regression_v1",
+  "corrects": "Initial PR553 publisher eagerly imported the review module and failed the existing isolated V2 finalizer dependency contract.",
+  "predecessor_head": "3ed894280531a0865f2673b48469a3c45dbb9ca2",
+  "predecessor_native_run": 39338621928,
+  "predecessor_native_job": 118354327394,
+  "causal_reproduction": [
+    {
+      "subject": "before",
+      "publisher_sha256": "da7d5d41681361d673fef9150fb3fda1a3a7f736394c256ed52b0fbc95fb8daa",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/tmp/tmpnfpcpene/tools/qikvrt_zenodo_publish.py\", line 42, in <module>\n    from tools import qikvrt_required_review_gate as review_gate\nImportError: cannot import name 'qikvrt_required_review_gate' from 'tools' (unknown location)\n"
+    },
+    {
+      "subject": "after",
+      "publisher_sha256": "bbceebb7cf9f7a34adcc62ade5be9659d9e57cc54b8e210163a71cd79479eb2d",
+      "exit_code": 0,
+      "stdout": "qikvrt_zenodo_publication_manifest_v2\n",
+      "stderr": ""
+    }
+  ],
+  "repair": "Load the existing review module only inside explicitly selected activation-v2 verification. Preserve the original isolated V1/V2 dependency closure.",
+  "observed_at": "2026-10-19T23:01:56.117660+00:00",
+  "tested_files": [
+    {
+      "path": "tools/qikvrt_zenodo_publish.py",
+      "bytes": 122094,
+      "sha256": "bbceebb7cf9f7a34adcc62ade5be9659d9e57cc54b8e210163a71cd79479eb2d",
+      "git_blob_sha": "99727a7ac567fc1c8ff76de6a72d8e35bea72d43"
+    },
+    {
+      "path": "tests/test_zenodo_machine_proof_policy.py",
+      "bytes": 241247,
+      "sha256": "b32bc879ae807be2c7c4bcea40ea258cacdd80642960e29cc0edee69489f98d2",
+      "git_blob_sha": "3b93b9af12e6a4e212e0b89972cb6adcabc97b5f"
+    },
+    {
+      "path": "policy/ZENODO_V3_REVIEW_ACCEPTANCE_V2.md",
+      "bytes": 5162,
+      "sha256": "1dce93aab8d7b2f8d8a6a7ba63bb35723f436cc79269c11dbaa2475e96cb5190",
+      "git_blob_sha": "5b3b45a95f029c74e26e8a3ad06df993a282e168"
+    }
+  ],
+  "targeted_tests": {
+    "result": "PASS",
+    "count": 31,
+    "log_sha256": "98614cff1e6f9b47e039ec7dfd14d83a4bef623a2fc1635b014c633bfbc41618"
+  },
+  "native_full_tests": "PENDING_CURRENT_SUCCESSOR_CI",
+  "source_integration": "PENDING_GOVERNANCE",
+  "zenodo_effect": "NOT_EXECUTED"
+}
