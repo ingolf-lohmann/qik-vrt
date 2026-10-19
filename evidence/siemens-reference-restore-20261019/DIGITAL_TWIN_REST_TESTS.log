@@ -1,0 +1,16 @@
+test_contract_and_distinct_poles (tests.test_qikvrt_digital_twin_rest.T.test_contract_and_distinct_poles) ... ok
+test_duplicate_transition_conflicts_without_mutation (tests.test_qikvrt_digital_twin_rest.T.test_duplicate_transition_conflicts_without_mutation) ... ok
+test_invalid_target_and_open_schema_do_not_mutate (tests.test_qikvrt_digital_twin_rest.T.test_invalid_target_and_open_schema_do_not_mutate) ... ok
+test_prepared_transition_rejects_changed_version_or_state (tests.test_qikvrt_digital_twin_rest.T.test_prepared_transition_rejects_changed_version_or_state) ... ok
+test_reobserve_rejects_different_twin_or_unpreserved_state (tests.test_qikvrt_digital_twin_rest.T.test_reobserve_rejects_different_twin_or_unpreserved_state) ... ok
+test_reobserve_rejects_uncommanded_velocity (tests.test_qikvrt_digital_twin_rest.T.test_reobserve_rejects_uncommanded_velocity) ... ok
+test_stale_write_holds (tests.test_qikvrt_digital_twin_rest.T.test_stale_write_holds) ... ok
+test_transition_and_readback (tests.test_qikvrt_digital_twin_rest.T.test_transition_and_readback) ... ok
+test_no_remote_digital_twin_reference_without_validated_sso (tests.test_digital_twin_sso_gate.DigitalTwinSSOGateTests.test_no_remote_digital_twin_reference_without_validated_sso) ... ok
+test_public_question_access_does_not_inherit_owner_privileges (tests.test_digital_twin_sso_gate.DigitalTwinSSOGateTests.test_public_question_access_does_not_inherit_owner_privileges) ... ok
+test_sso_is_mandatory_for_all_privileged_lifecycle_transitions (tests.test_digital_twin_sso_gate.DigitalTwinSSOGateTests.test_sso_is_mandatory_for_all_privileged_lifecycle_transitions) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.527s
+
+OK
