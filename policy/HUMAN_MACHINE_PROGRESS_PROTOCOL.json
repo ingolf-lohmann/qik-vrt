@@ -255,7 +255,26 @@
       "request_same_owner_authorization_again": false,
       "peer_request_and_reply_must_be_actually_verified": true,
       "proposal_ingress_is_execution": false,
-      "source_rule_presence_is_client_adoption_or_runtime_acceptance": false
+      "source_rule_presence_is_client_adoption_or_runtime_acceptance": false,
+      "node_communication": {
+        "owner_instruction_local": "2026-10-19T11:50:07+03:00",
+        "scope": "EVERY_CURRENT_AND_FUTURE_QIK_VRT_NODE",
+        "directions": [
+          "RECEIVE_FROM_CLAUDE_AND_EVERY_OTHER_NODE",
+          "SEND_TO_CLAUDE_AND_EVERY_OTHER_NODE"
+        ],
+        "transport": "EXISTING_UNIVERSAL_TRANSPUTER_AND_UNIVERSAL_TERMINAL",
+        "reuse_existing_registry_and_peer_protocol": true,
+        "preserve_original_bytes_and_message_work_unit_request_identity": true,
+        "require_native_event_epoch_and_digests": true,
+        "require_authenticated_peer_binding_and_independent_ack_reply_readback": true,
+        "unavailable_nodes_remain_in_coverage": true,
+        "human_carried_export_is_live_bus": false,
+        "proposal_receipt_is_execution": false,
+        "public_peer_secret_permitted": false,
+        "client_timer_as_continuation": false,
+        "saved_rule_is_verified_node_adoption": false
+      }
     }
   },
   "continuation_semantics": {
