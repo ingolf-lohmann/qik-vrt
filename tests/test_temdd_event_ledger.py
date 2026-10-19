@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import copy
+import contextlib
 import hashlib
 import http.client
+import io
 import json
 from pathlib import Path
 import shutil
@@ -99,6 +101,73 @@ class WriterContinuityTests(unittest.TestCase):
         self.assertEqual(target.replay(0), [receipt])
         event = copy.deepcopy(self.event); event['provenance']['native_event_id'] = 'fixture:after-transfer'
         self.assertEqual(target.append(event)['id'], target.epoch + ':2')
+
+    def handoff_cli(self, source, frontier, config_drift=False):
+        """Real CLI path check and native transfer; package gates have own suites."""
+        from tests.test_self_host import host
+        config = {'state_dir': str(self.b), 'source_repository': self.subject['repository'],
+                  'subject_pr': self.subject['pr'], 'source_head': self.subject['head'],
+                  'source_tree': self.subject['tree']}
+        config_path = self.a.parent / 'config.json'
+        config_bytes = json.dumps(config, sort_keys=True).encode()
+        config_path.write_bytes(config_bytes + (b'\n' if config_drift else b''))
+        config_path.chmod(0o600)
+        binding = {'config_sha256': hashlib.sha256(config_bytes).hexdigest()}
+        argv = ['qikvrt_self_host.py', 'transfer-local-writer', '--root', str(ROOT),
+                '--manifest-sha256', 'c' * 64, '--config', str(config_path),
+                '--source-state-dir', str(source), '--frontier-sha256', frontier]
+        output = io.StringIO()
+        with mock.patch.object(sys, 'argv', argv), \
+                mock.patch.object(host, 'state_binding', return_value=(self.b, binding)), \
+                mock.patch.object(host, 'packaged_subject', return_value=self.subject), \
+                mock.patch.object(host, 'load_source', side_effect=lambda _root, name:
+                    m if name == 'qikvrt_temdd_event_ledger' else m.terminal), \
+                contextlib.redirect_stdout(output):
+            code = host.main()
+        return code, json.loads(output.getvalue())
+
+    def test_cli_handoff_accepts_private_source_directory_and_revokes_original(self):
+        receipt, frontier = self.seed()
+        self.a.chmod(0o700); self.b.chmod(0o700)
+        code, result = self.handoff_cli(self.a, frontier)
+        self.assertEqual(code, 0, result)
+        self.assertFalse(result['distributed_fencing_verified'])
+        with self.assertRaisesRegex(m.Hold, 'COPIED_OR_UNADMITTED'):
+            m.Ledger(self.a, self.subject)
+        target = m.Ledger(self.b, self.subject)
+        self.addCleanup(target.close)
+        self.assertEqual(target.replay(0), [receipt])
+
+    def test_cli_handoff_rejects_regular_file_without_revoking_original(self):
+        receipt, frontier = self.seed()
+        self.a.chmod(0o700); self.b.chmod(0o700)
+        wrong = self.a.parent / 'source-file'; wrong.touch(mode=0o600)
+        code, result = self.handoff_cli(wrong, frontier)
+        self.assertEqual(code, 2, result)
+        self.assertEqual(result['cause'], 'OWNER_ONLY_PRIVATE_PATH_REQUIRED')
+        source = m.Ledger(self.a, self.subject)
+        self.addCleanup(source.close)
+        self.assertEqual(source.replay(0), [receipt])
+
+    def test_cli_handoff_rejects_public_directory_without_revoking_original(self):
+        receipt, frontier = self.seed()
+        self.a.chmod(0o755); self.b.chmod(0o700)
+        code, result = self.handoff_cli(self.a, frontier)
+        self.assertEqual(code, 2, result)
+        self.assertEqual(result['cause'], 'OWNER_ONLY_PRIVATE_PATH_REQUIRED')
+        source = m.Ledger(self.a, self.subject)
+        self.addCleanup(source.close)
+        self.assertEqual(source.replay(0), [receipt])
+
+    def test_cli_handoff_rejects_changed_config_bytes_without_revoking_original(self):
+        receipt, frontier = self.seed()
+        self.a.chmod(0o700); self.b.chmod(0o700)
+        code, result = self.handoff_cli(self.a, frontier, config_drift=True)
+        self.assertEqual(code, 2, result)
+        self.assertEqual(result['cause'], 'EXACT_CONFIGURATION_CHANGED')
+        source = m.Ledger(self.a, self.subject)
+        self.addCleanup(source.close)
+        self.assertEqual(source.replay(0), [receipt])
 
     def test_stale_copy_and_wrong_pin_leave_source_writer_unchanged(self):
         _, frontier = self.seed()

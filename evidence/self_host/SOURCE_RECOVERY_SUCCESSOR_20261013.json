@@ -25,8 +25,8 @@
       "historical_archive_path": "evidence/self_host/original-recovered/tests/test_temdd_event_ledger.py",
       "historical_git_blob": "187230e0bab7512811c0e9d71c4f6498be5f06ef",
       "historical_sha256": "662d41da4b1e15237ee73ce73347d090c32e6fa7dcaaea208e95938cf20b3966",
-      "successor_git_blob": "ab936edc046d8d6d4884665a6c4eeb481fa64097",
-      "successor_sha256": "66ad86cdd50ba90ecdebdd3319f7fe5d9207959f8fa11675706ba735153b142a"
+      "successor_git_blob": "033dacfaeafb0bbaa642debe41287e1f4e0d2a3f",
+      "successor_sha256": "0e11721cd558effbfc0d85d1f257547e15293bf848de117d03d268a5aafa5b5d"
     },
     {
       "restored_path": "deploy/universal-terminal/Dockerfile",
@@ -201,5 +201,15 @@
     ],
     "predecessor_pass_transferred": false,
     "scope": "Copied-writer rejection and explicit local revoke-before-admit transfer; no distributed admission claim"
+  },
+  "directory_cli_successor_20261019": {
+    "predecessor_head": "1e99c6ae4b299eed36cc31d495a635efda92c1a4",
+    "predecessor_receipt_archive": "evidence/self_host/original-recovered/SOURCE_RECOVERY_SUCCESSOR_before_DIRECTORY_CLI_20261019.json",
+    "predecessor_receipt_sha256": "a163508bf8534f724a87759d582b857f5052cbeeecf19ce81e422fb242a7ef63",
+    "change": "Add four independent CLI controls to the existing exact-config and private-directory repair: valid0700, regular0600file, public0755directory and config-byte drift. Use the actual (volume,binding) state_binding return contract. Preserve all historical original bytes and archived predecessor receipt; no self-host implementation is changed in this test successor.",
+    "historical_originals_rewritten": false,
+    "predecessor_pass_transferred": false,
+    "base_head": "a73c64d9a2202d00d7c9ffc30058307e7b722efb",
+    "base_tree": "0739be7feb7441b29be5c2c99e7c6e9c77a25beb"
   }
 }
