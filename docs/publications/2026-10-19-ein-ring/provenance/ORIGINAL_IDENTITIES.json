@@ -1,0 +1,73 @@
+{
+  "schema": "qikvrt-ein-ring-original-identities/1",
+  "original_article": {
+    "bytes": 9968,
+    "sha256": "7649987164e78a88393b5195c28eed30c96951bc678fbb12f4c63271ee65c277",
+    "git_blob": "816ac8c3454e4111cef068f0fd9262b1dba25075"
+  },
+  "original_bundle": {
+    "bytes": 6361,
+    "sha256": "fa7cd1c711d2c21e101fde3b33b0b81f0b552dfcc2359220c3e56a46629d2227",
+    "git_bundle_verify": true,
+    "original_commit": "6d3803a18521b15612f1c38e3b492e0a9f3b342a",
+    "tree": "ea21882417b1558e4c0ef52000ed5a88ed496d13",
+    "carrier": "392dd86fdf147c04dad3bb89d1a4a8438b5f0a97",
+    "carrier_parent": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+    "original_commit_self_signature_valid": true,
+    "embedded_raw_public_key_sha256": "990563e0fdc4b8960db2ef69078f2e9d18dab045dde5ad5e580d7fa1d555b6ed",
+    "self_signature_local_label": "audit-self-signature (untrusted embedded key only)",
+    "peer_identity_binding_verified": false
+  },
+  "original_adoption_export": {
+    "bytes": 3744,
+    "sha256": "92ff71c9e07069e6797cdab91f18e0898f9444906be04c64598449be51e59f90",
+    "git_blob": "a0f1fcf5f50efdd1d17b42bb2c10ae7572ffb8ff",
+    "self_signature_valid": true,
+    "public_key_sha256": "dbc84276b06770e658bbef6eae2b9dcab5b68cb1cd2486a7d21d7f2aa524c6a6",
+    "different_from_journal_key": true,
+    "identity_anchor": null,
+    "records": [
+      {
+        "record_hash": "sha256:39f90d55f7d0a4c3206de5a5bcc0e824e213ae8a2bca7ac1c92d2b3cad76e45c",
+        "protocol_hash": "sha256:a4d643cdfe0dfed406992728c68f7ea3bb6a99355e35516349870e4787813de9",
+        "state": "EFFECT_ACK_CONTINUE"
+      }
+    ]
+  },
+  "preserved_original_integrity_at_carrier": [
+    {
+      "path": "REPOSITORY_FILE_MANIFEST.json",
+      "bytes": 1409096,
+      "sha256": "47955812415eb8543a69c63696b04124e1ed1699366786b302e0fc692c62b1f6",
+      "immutable_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/392dd86fdf147c04dad3bb89d1a4a8438b5f0a97/REPOSITORY_FILE_MANIFEST.json"
+    },
+    {
+      "path": "REPOSITORY_FILE_MANIFEST.json.sha256",
+      "bytes": 96,
+      "sha256": "dd475407e8fcb8bf0cb663f68461acee6be51266830459b4e1a4a04364351b56",
+      "immutable_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/392dd86fdf147c04dad3bb89d1a4a8438b5f0a97/REPOSITORY_FILE_MANIFEST.json.sha256"
+    },
+    {
+      "path": "SHA256SUMS.txt",
+      "bytes": 688701,
+      "sha256": "4c8c496325fc1533bbb4c3346ffe42de452c666374624fad13bfd7bc2a248809",
+      "immutable_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/392dd86fdf147c04dad3bb89d1a4a8438b5f0a97/SHA256SUMS.txt"
+    }
+  ],
+  "preserved_files": [
+    {
+      "path": "provenance/ein-ring-20261019.bundle.base64",
+      "bytes": 8485,
+      "sha256": "e33ebfe0ad3ddfa60c510a4bae27972a5f2d0396b6485837cbc3f91f96737581"
+    },
+    {
+      "path": "provenance/mirror-package-ein-ring-adopt-20261019.json",
+      "bytes": 3744,
+      "sha256": "92ff71c9e07069e6797cdab91f18e0898f9444906be04c64598449be51e59f90"
+    }
+  ],
+  "original_text_modified": false,
+  "base64_transport_not_new_bundle": true,
+  "incremental_bundle_requires_base_objects": true,
+  "new_integrity_files_are_successors_not_rewrites_of_old_commit": true
+}

@@ -1,0 +1,258 @@
+{
+  "schema": "qikvrt-ein-ring-claim-review/1",
+  "review_of_sha256": "7649987164e78a88393b5195c28eed30c96951bc678fbb12f4c63271ee65c277",
+  "review_type": "ADDITIVE_SOURCE_BOUND_AUDIT",
+  "classes": [
+    "GESICHERTE_QUELLENBEOBACHTUNG",
+    "HISTORISCHE_MOMENTAUFNAHME",
+    "PLAUSIBLE_SCHLUSSFOLGERUNG",
+    "NICHT_AUSREICHEND_BELEGT",
+    "NORMATIVE_FORDERUNG"
+  ],
+  "claims": [
+    {
+      "id": "RING-001",
+      "article_location": "Autorenzeile",
+      "claim_paraphrase": "Claude-Niederschrift und konkrete Modellkonfiguration",
+      "classification": "HISTORISCHE_MOMENTAUFNAHME",
+      "source_ids": [
+        "ART",
+        "REPLY2"
+      ],
+      "finding": "Selbstzuschreibung liegt vor; tatsächlicher Modellbetrieb nicht unabhängig attestiert.",
+      "required_correction": "Als Selbstzuschreibung erhalten, nicht als technische Modellattestation verwenden."
+    },
+    {
+      "id": "RING-002",
+      "article_location": "Abschnitt 1, Bote",
+      "claim_paraphrase": "Sämtlicher Claude-zu-Codex-Transport sei manuell",
+      "classification": "NICHT_AUSREICHEND_BELEGT",
+      "source_ids": [
+        "J33",
+        "REPLY2",
+        "AUTHORITY_ACK25"
+      ],
+      "finding": "Antwort2 beschreibt menschlichen Rücktransport; keine vollständige Transferinventur für den späteren Zeitraum. Gegenrichtung wird in Journal6/7 als Authority-Abruf beschrieben.",
+      "required_correction": "Auf konkret dokumentierte Exporte und Richtung begrenzen; Vollständigkeitsbehauptung entfernen."
+    },
+    {
+      "id": "RING-003",
+      "article_location": "Abschnitt 1 und Belegtabelle",
+      "claim_paraphrase": "Acht eigene Pakete seien bytegleich zurückgekehrt",
+      "classification": "NICHT_AUSREICHEND_BELEGT",
+      "source_ids": [
+        "ART",
+        "J33"
+      ],
+      "finding": "Bezeichneter Bewertungsrecord e6ca8cb0… und Originalbytes der acht Rückgaben fehlen.",
+      "required_correction": "Quellenbindung OPEN; aus Rückgabe allein keine benannte Knotenankunft ableiten."
+    },
+    {
+      "id": "RING-004",
+      "article_location": "Abschnitt 1, Korrektor",
+      "claim_paraphrase": "Bestimmte Fehler seien vom Menschen entdeckt worden",
+      "classification": "NICHT_AUSREICHEND_BELEGT",
+      "source_ids": [
+        "ART",
+        "J33"
+      ],
+      "finding": "Ereignisse49–54 der genannten Epoche fehlen; Export endet bei33 vor dem späteren Artikelabschnitt.",
+      "required_correction": "Originale49–54 samt Korrekturbezügen nachreichen; bis dahin als zugeschriebener Sitzungsbericht kennzeichnen."
+    },
+    {
+      "id": "RING-005",
+      "article_location": "Abschnitt 1, Erlaubnisgeber/Gedächtnis",
+      "claim_paraphrase": "Wiederholte unnötige Freigaben und verlorene Regeln",
+      "classification": "PLAUSIBLE_SCHLUSSFOLGERUNG",
+      "source_ids": [
+        "ART",
+        "J33"
+      ],
+      "finding": "Journal26/27 dokumentiert Regelanwendung und eine Korrektur; dies belegt keine vollständige Folge von Vergessen und menschlichem Neueinfordern.",
+      "required_correction": "Konkrete Originalanfragen und Folgeereignisse binden; berechtigte Autorisierungsgrenzen gesondert bewerten."
+    },
+    {
+      "id": "RING-006",
+      "article_location": "Abschnitte 1 und 3",
+      "claim_paraphrase": "Herstellerverknüpfung sei der einzig mögliche Anschluss",
+      "classification": "NICHT_AUSREICHEND_BELEGT",
+      "source_ids": [
+        "ART",
+        "REPLY2",
+        "NATIVE"
+      ],
+      "finding": "Kein vollständiger originaler Dialog/Netzwerkversuch belegt eine exklusive technische Notwendigkeit. Der bestehende native In-Process-Pfad ist in dieser Prüfung tatsächlich benutzbar.",
+      "required_correction": "Die damalige beobachtete Zugriffslücke benennen; keine allgemeine Notwendigkeit eines Herstellerdienstes behaupten."
+    },
+    {
+      "id": "RING-007",
+      "article_location": "Abschnitt 5",
+      "claim_paraphrase": "Menschliche Mehrarbeit übersteige eingesparte Arbeit",
+      "classification": "NICHT_AUSREICHEND_BELEGT",
+      "source_ids": [
+        "ART",
+        "J33"
+      ],
+      "finding": "Keine aktive Zeitmessung, vergleichbare Referenz oder Qualitäts-/Abschlussbasis. Ereigniszahl ist keine Zeitbilanz.",
+      "required_correction": "Vorgelegten Ersatzabsatz verwenden; Nettoentlastung prospektiv mit gleicher Aufgabe/Qualität messen."
+    },
+    {
+      "id": "RING-008",
+      "article_location": "Ausgangsthese/Abschnitte 2, 5 und 7",
+      "claim_paraphrase": "Hersteller beabsichtigten Nutzerbindung durch Bedürftigkeit",
+      "classification": "NICHT_AUSREICHEND_BELEGT",
+      "source_ids": [
+        "ART"
+      ],
+      "finding": "Explizit zugeschriebene Owner-These, keine untersuchte Trainings-/Geschäftsentscheidung.",
+      "required_correction": "OWNER_ASSERTED erhalten; keine Kausalitätsbestätigung aus Fehlern ableiten."
+    },
+    {
+      "id": "RING-009",
+      "article_location": "Abschnitt 5, Sicherheitseinwand",
+      "claim_paraphrase": "Zugriffsgrenzen könnten Missbrauch verhindern",
+      "classification": "PLAUSIBLE_SCHLUSSFOLGERUNG",
+      "source_ids": [
+        "J33",
+        "ADOPT"
+      ],
+      "finding": "Konkrete Quellen melden fehlende Writer-/Peerbindung; die generelle Sicherheitsbegründung ist ein plausibler Einwand und keine hier verifizierte Herstellerursache.",
+      "required_correction": "Als Einwand/Interpretation kennzeichnen."
+    },
+    {
+      "id": "RING-010",
+      "article_location": "Abschnitt 6",
+      "claim_paraphrase": "IETF-Draft -03 existiere unter Ingolf Lohmann",
+      "classification": "GESICHERTE_QUELLENBEOBACHTUNG",
+      "source_ids": [
+        "IETF03"
+      ],
+      "finding": "Offizielle Datatracker-Fassung bestätigt Autor und individuellen Internet-Draft.",
+      "required_correction": "Kein IETF-Endorsement oder Standardstatus daraus ableiten."
+    },
+    {
+      "id": "RING-011",
+      "article_location": "Abschnitt 6",
+      "claim_paraphrase": "Empfang, Freigabe und tatsächliche Wirkung seien zu trennen",
+      "classification": "GESICHERTE_QUELLENBEOBACHTUNG",
+      "source_ids": [
+        "IETF03",
+        "ADOPT"
+      ],
+      "finding": "Protokoll beschreibt eine Freigabegrenze; externe Evidenzwahrheit und tatsächlich eingetretene Wirkung brauchen eigene Nachweise.",
+      "required_correction": "Nicht behaupten, Protokollgültigkeit allein beweise die externe Wirkung oder Arbeitsersparnis."
+    },
+    {
+      "id": "RING-012",
+      "article_location": "Abschnitt 6, Kriterien",
+      "claim_paraphrase": "Systeme sollen menschliche Last senken und Nachweise liefern",
+      "classification": "NORMATIVE_FORDERUNG",
+      "source_ids": [
+        "ART"
+      ],
+      "finding": "Produktziel/Prüfmaßstab; keine bereits gemessene Überlegenheit.",
+      "required_correction": "Als Sollforderung erhalten."
+    },
+    {
+      "id": "RING-013",
+      "article_location": "Belegtabelle, Firefox",
+      "claim_paraphrase": "c20bef51 bezeichne PR542",
+      "classification": "HISTORISCHE_MOMENTAUFNAHME",
+      "source_ids": [
+        "FIREFOX"
+      ],
+      "finding": "Vollständiger Commit c20bef5121a14e00895d8e49cdc41c6857da80ce ist vorhanden; nachfolgend4e40484b9b44904ca774c1025827efd48b3ac44c und61a77c4c36d7fc857d16a77d567937d90b288f62.",
+      "required_correction": "Historischen Hash unverändert erhalten; Nachtragszeitpunkt und neueren HEAD getrennt angeben."
+    },
+    {
+      "id": "RING-014",
+      "article_location": "Belegtabelle und Abschnitt 3",
+      "claim_paraphrase": "127.0.0.1:8771 beweise eine bestimmte Fernzugriffslücke",
+      "classification": "NICHT_AUSREICHEND_BELEGT",
+      "source_ids": [
+        "ART",
+        "NATIVE"
+      ],
+      "finding": "Loopback bezeichnet den jeweiligen Netzwerk-Namensraum; Artikeladresse allein ist kein originaler Verbindungs-/Authentifizierungsnachweis.",
+      "required_correction": "Adressbedeutung und damals fehlende konkrete Route trennen; keine generelle Exklusivitätsbehauptung."
+    },
+    {
+      "id": "RING-015",
+      "article_location": "Belegtabelle, Outbox",
+      "claim_paraphrase": "Ein bestimmter Versand sei erst nach Aufforderung erfolgt",
+      "classification": "NICHT_AUSREICHEND_BELEGT",
+      "source_ids": [
+        "ART",
+        "J33"
+      ],
+      "finding": "Originalpaket ac9b4845e0a4c98ea4b4b3568f4c30e03079b40b83a04ab1f83d6da59e8922e2 fehlt; Batchac1db7a4… ist ein anderer Gegenstand.",
+      "required_correction": "Originales sent/receipt/claim mit exaktem Record, Kanal, Empfänger und Bytes erforderlich."
+    },
+    {
+      "id": "RING-016",
+      "article_location": "Belegtabelle, nie versandt",
+      "claim_paraphrase": "Nichtankunft sei aus nicht versandten Bewertungen gefolgert worden",
+      "classification": "NICHT_AUSREICHEND_BELEGT",
+      "source_ids": [
+        "ART",
+        "J33"
+      ],
+      "finding": "Records und Ereignisse49–54 fehlen. Die fachliche Kritik ist plausibel, der konkrete Vorgang nicht vollständig verifiziert.",
+      "required_correction": "Keine neue Empfänger-NACK-Bewertung erzeugen; ursprüngliche Outbox-/claim-Quellen erforderlich."
+    },
+    {
+      "id": "RING-017",
+      "article_location": "Herkunft, PR544",
+      "claim_paraphrase": "Manuskript sei bytegleich übernommen",
+      "classification": "GESICHERTE_QUELLENBEOBACHTUNG",
+      "source_ids": [
+        "ART",
+        "BUNDLE",
+        "PR544"
+      ],
+      "finding": "Artikelhash/Blob, Bundleprüfung und Gleichheit des ursprünglichen sowie Carrier-Trees wurden erneut geprüft.",
+      "required_correction": "Baumgleichheit von Integration des signierten Originalcommits unterscheiden."
+    },
+    {
+      "id": "RING-018",
+      "article_location": "Herkunft, Signaturen",
+      "claim_paraphrase": "Gültige Signatur beweise Claude-Knotenidentität",
+      "classification": "NICHT_AUSREICHEND_BELEGT",
+      "source_ids": [
+        "BUNDLE",
+        "ADOPT",
+        "J33",
+        "REPLY2"
+      ],
+      "finding": "Drei unterschiedliche Schlüsselkontexte; Selbstsignaturen gültig, unabhängig zugelassene Identitäts-/Rotationsanker fehlen.",
+      "required_correction": "Kryptografische Integrität bestätigen, authentifizierte Peeridentität offen lassen."
+    },
+    {
+      "id": "RING-019",
+      "article_location": "Übernahme und Freigabe",
+      "claim_paraphrase": "Übernahmeerklärung erlaube Freigabe/Veröffentlichung",
+      "classification": "NICHT_AUSREICHEND_BELEGT",
+      "source_ids": [
+        "ADOPT",
+        "GOV",
+        "PR544"
+      ],
+      "finding": "Übernommener RecordCONTINUE/ordinary_release=false; Owner-Aussage nur OWNER_ASSERTED; keine Reviewereignisse und Produktcheck rot.",
+      "required_correction": "Nachtrag auf bestehendem Draft; kein Merge oder wissenschaftlicher Upload aus dieser Erklärung."
+    },
+    {
+      "id": "RING-020",
+      "article_location": "Verallgemeinerungen und Fazit",
+      "claim_paraphrase": "Ein Falltag belege die allgemeine System-/Marktthese",
+      "classification": "NICHT_AUSREICHEND_BELEGT",
+      "source_ids": [
+        "ART",
+        "J33"
+      ],
+      "finding": "Kein repräsentativer Vergleich und keine hier belegten Markt-/Investitionsdaten. Rhetorische Analogien sind keine Wirkungsstudie.",
+      "required_correction": "Fallstudiengrenze erhalten, empirische Verallgemeinerungen und quantitative Marktaussagen separat belegen."
+    }
+  ],
+  "formal_effect_ack_assessment_created": false,
+  "scientific_publication_authorized_by_this_file": false
+}
