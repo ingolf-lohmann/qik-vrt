@@ -42,6 +42,7 @@ class FirefoxAMOUnlistedTests(unittest.TestCase):
         git('init');git('add','.')
         git('-c','user.name=Local fixture','-c','user.email=fixture@example.invalid','commit','-m','local test fixture')
         cls.head=git('rev-parse','HEAD');cls.tree=git('rev-parse','HEAD^{tree}')
+        cls.version=json.loads((cls.root/'browser/firefox/qikvrt-terminal/manifest.json').read_bytes())['version']
 
     @classmethod
     def tearDownClass(cls): cls.fixture.cleanup()
@@ -77,7 +78,7 @@ class FirefoxAMOUnlistedTests(unittest.TestCase):
 
     def response(self,signed=None,**changes):
         raw=signed if signed is not None else self.signed()
-        value={'guid':'qikvrt-ai-terminal@goldkelch.local','version':'1.1.0',
+        value={'guid':'qikvrt-ai-terminal@goldkelch.local','version':self.version,
             'processed':True,'valid':True,'reviewed':True,'passed_review':True,
             'files':[{'signed':True,'hash':'sha256:'+host.digest(raw),
                 'download_url':'https://addons.mozilla.org/api/v4/downloads/file/123/standard.xpi'}]}
@@ -281,16 +282,9 @@ class FirefoxExtensionAdmissionTests(unittest.TestCase):
             paths=[*('browser/firefox/qikvrt-terminal/'+name for name in names),
                 'runtime/self-host/Dockerfile','deploy/universal-terminal/entrypoint.sh',
                 'tools/qikvrt_self_host.py',work_path]
-            # The cached rejection is historical evidence. A successor package
-            # may legitimately change, so reconstruct the original causal bytes
-            # instead of assuming that today's working tree is that failure.
-            current_work=json.loads((ROOT/work_path).read_bytes())
-            failed_head=current_work['firefox158_s1_upgrade']['native_observation']['source_head']
             for relative in paths:
                 target=root/relative;target.parent.mkdir(parents=True,exist_ok=True)
-                original=((ROOT/relative).read_bytes() if relative==work_path else
-                    subprocess.check_output(['git','-C',str(ROOT),'show',failed_head+':'+relative]))
-                target.write_bytes(original)
+                shutil.copyfile(ROOT/relative,target)
             def git(*args):
                 return subprocess.check_output(['git','-C',str(root),*args],
                     stderr=subprocess.DEVNULL,text=True).strip()
@@ -311,6 +305,19 @@ class FirefoxExtensionAdmissionTests(unittest.TestCase):
                 result=subprocess.run([sys.executable,'-B','-c',code],cwd=root,
                     env=environment,text=True,capture_output=True)
                 return result,temp
+            # Bind a deliberately failed *local fixture* to its observed
+            # inputs. No historical Git objects or deployed-effect claim are
+            # needed in a sealed source export with only its current commit.
+            result,initial=run(admission,'fixture-observation')
+            self.assertEqual(result.returncode,0,result.stderr)
+            observed=json.loads((initial/'s1-extension-evidence/causal-inputs.json').read_bytes())
+            prior=work['firefox158_s1_upgrade']['native_observation']
+            prior['runtime_causal_input_sha256']=observed['sha256']
+            prior['runtime_causal_inputs']=observed['inputs']
+            prior['source_head']=git('rev-parse','HEAD')
+            prior['subject_scope']='SIMULATED_LOCAL_FAILURE_CACHE_NOT_FIREFOX_ACTIVATION'
+            (root/work_path).write_text(json.dumps(work))
+            commit('bind simulated unchanged failure inputs')
             result,temp=run(admission,'unchanged')
             self.assertEqual(result.returncode,0,result.stderr)
             evidence=temp/'s1-extension-evidence'

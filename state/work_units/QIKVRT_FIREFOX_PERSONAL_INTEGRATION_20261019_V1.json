@@ -24,7 +24,9 @@
     "target": "EXISTING_PR542_NO_COMPETING_PR",
     "merge_parent": "5ca8f7bd9930e133777d976887b675e142f7e6ce",
     "sso_source_changes": "REUSE_WITHOUT_REIMPLEMENTATION",
-    "concurrent_successor": "PRESERVE_f739df7d_CAUSAL_FAILURE_CACHE_AND_BIND_ITS_TEST_TO_ORIGINAL_FAILED_INPUT_BYTES",
+    "concurrent_successor": "PRESERVE_f739df7d_CAUSAL_FAILURE_CACHE_AND_EXERCISE_IT_WITH_EXPLICIT_LOCAL_FAILURE_FIXTURES_WITHOUT_REQUIRING_HISTORICAL_OBJECTS_OR_CLAIMING_DEPLOYED_EFFECTS",
+    "native_preflight_causal_repair": "Original job118054208998 failed before native execution because Firefox --version exceeded10s. Preserve that missing product observation explicitly while allowing the separate original native transport checks; no timeout retry or product PASS.",
+    "signing_fixture_successor": "Bind simulated AMO response version to exact fixture manifest and use an explicitly simulated causal-failure cache fixture that also runs without historical Git objects. Production signature and source-binding requirements unchanged.",
     "integrity": "REGENERATE_ALL_THREE_WITH_tools/qikvrt_integrity.py_AND_VERIFY_REPEAT_BYTE_EQUALITY",
     "external_runtime_service_added": false
   },

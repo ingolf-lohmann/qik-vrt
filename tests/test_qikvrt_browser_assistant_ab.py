@@ -16,6 +16,30 @@ from tools import qikvrt_browser_assistant_ab as ab
 
 
 class NativeCarrierBoundaryTests(unittest.TestCase):
+    def test_firefox_version_timeout_is_recorded_without_product_acceptance(self):
+        with tempfile.TemporaryDirectory() as temp:
+            executable = Path(temp) / 'firefox'
+            executable.write_bytes(b'version-probe-fixture-not-a-browser')
+            with mock.patch.object(ab.shutil, 'which', return_value=str(executable)), \
+                    mock.patch.object(ab, 'git', side_effect=lambda *args: '' if args[0] == 'status' else 'a' * 40), \
+                    mock.patch.object(ab.subprocess, 'run', side_effect=ab.subprocess.TimeoutExpired([str(executable), '--version'], 10)) as call:
+                observed = ab.preflight()
+            self.assertEqual(call.call_count, 1)
+            self.assertIsNone(observed['environment']['firefox']['version'])
+            self.assertIn('FIREFOX_VERSION_PROBE_TIMED_OUT', observed['blockers'])
+            self.assertFalse(observed['authenticated_runtime_readback'])
+            self.assertFalse(observed['product_claim_allowed'])
+            self.assertEqual(observed['product_trials_executed'], 0)
+
+    def test_firefox_probe_oserror_is_explicit_and_not_retried(self):
+        with mock.patch.object(ab.shutil, 'which', return_value='/missing/fixture/firefox'), \
+                mock.patch.object(ab, 'git', side_effect=lambda *args: '' if args[0] == 'status' else 'a' * 40), \
+                mock.patch.object(ab.subprocess, 'run', side_effect=OSError('fixture denial')) as call:
+            observed = ab.preflight()
+        self.assertEqual(call.call_count, 1)
+        self.assertIn('FIREFOX_VERSION_PROBE_UNAVAILABLE', observed['blockers'])
+        self.assertFalse(observed['product_claim_allowed'])
+
     def test_other_checkout_cannot_supply_native_source_or_launch_a_process(self):
         with tempfile.TemporaryDirectory() as temp, mock.patch.object(ab, "preflight") as product_observation:
             output = Path(temp) / "untouched"
