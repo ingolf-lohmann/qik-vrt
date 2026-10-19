@@ -1,0 +1,458 @@
+{
+  "schema": "qikvrt_fob_claim_review_v1",
+  "work_unit_id": "QIKVRT_FOB_CLAIM_REVIEW_20261019_V1",
+  "prepared_at_utc": "2026-10-19T09:39:06.811373Z",
+  "human_actor": "Ingolf Lohmann",
+  "artificial_cognitive_actor": "OpenAI Codex",
+  "authorization": "Current explicit twelve-claim review and additive correction task; no publication grant",
+  "status": "AUTHOR_REVIEW_ADDENDUM_NOT_PUBLISHED",
+  "corrects_original_claim_assessments": true,
+  "original_files_modified": false,
+  "review_source_head": "d9327e5bbcd4ced378ee03509a44c5b28dec4c14",
+  "review_source_tree": "dc3137182b4ccb6a8fface2cb3636583586d8b4d",
+  "historical_baseline": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+  "integrated_successor": "f5aaff5b8c018fbc73d1e81126c6fb7e30e8bf22",
+  "claim_count": 12,
+  "claims": [
+    {
+      "claim_id": "FOB-001",
+      "original_statement": "Der Mirror-zu-Authority-Weg mesh-cache-stage/idle/send mit HMAC-POST /api/mesh-work/batch ist spezifiziert und implementiert.",
+      "original_classification": "SOURCE_BOUND",
+      "original_status": "BOUND",
+      "review_status": "CONFIRMED_WITHIN_SOURCE_SCOPE",
+      "source_ids": [
+        "S02",
+        "S03",
+        "S05",
+        "S07"
+      ],
+      "corrected_wording": "Die drei Cache-Schritte, HMAC-POST und atomarer Vorschlagsempfang sind am genannten Ausgangsstand implementiert. PR537 ergänzt diesen Pfad um dauerhafte Quittungen und mesh-cache-check.",
+      "evidence_boundary": "Quellcode und Spezifikation belegen Funktionsumfang; kein produktiver Netzbetrieb folgt daraus."
+    },
+    {
+      "claim_id": "FOB-002",
+      "original_statement": "MeshWorkCacheTests (24) und MeshContractTests (27) bestehen auf main 60afe42d.",
+      "original_classification": "TEST_EVIDENCE",
+      "original_status": "BOUND",
+      "review_status": "CONFIRMED_BY_REEXECUTION",
+      "source_ids": [
+        "S04",
+        "S06"
+      ],
+      "corrected_wording": "Auf 60afe42d bestehen24 MeshWorkCacheTests und27 MeshContractTests (51/51). Nach PR 537 bestehen36+27 (63/63). Beide exakten Stände wurden erneut ohne Teständerung ausgeführt.",
+      "evidence_boundary": "Die originalen lokalen HTTP-, Git-, Node- und Dateisystem-Fixtures sind echte Funktionstests; sie ersetzen keinen getrennten produktiven Host-/Peer-Lauf."
+    },
+    {
+      "claim_id": "FOB-003",
+      "original_statement": "In der öffentlichen Versionsgeschichte aller Branches der Authority existiert kein gesendeter Mesh-Work-Stapel, keine Empfangsquittung und keine Peer-Aufnahme in mesh_work_peers.",
+      "original_classification": "REPOSITORY_OBSERVATION",
+      "original_status": "BOUND",
+      "review_status": "CORRECTION_REQUIRED",
+      "source_ids": [
+        "S02",
+        "S05",
+        "S17",
+        "S18"
+      ],
+      "corrected_wording": "Für die geprüften Versionen und vorliegenden Artefakte ist keine vollständige produktive Abnahmekette aus zugelassenem Peer, tatsächlich gesendetem Stapel, authentifizierter Empfängerquittung und erneutem Readback nach Neustart belegt. Private Peer-Konfiguration wurde nicht eingesehen.",
+      "evidence_boundary": "Keine vollständige historische Bestandsaufnahme sämtlicher damaliger oder gelöschter Branches. git log --grep durchsucht Commit-Nachrichten; git grep ohne Versionsargument nur einen Checkout. Öffentliche Dokumentationslücke ist kein Beweis einer nie ausgeführten Operation. Private Schlüssel und Peer-Konfiguration gehören laut Vertrag gerade nicht in Git."
+    },
+    {
+      "claim_id": "FOB-004",
+      "original_statement": "Ein laufender Empfänger bei der Authority fehlt, weil der dauerhafte Host nicht aufgenommen ist.",
+      "original_classification": "DERIVED",
+      "original_status": "BOUND",
+      "review_status": "CORRECTION_REQUIRED",
+      "source_ids": [
+        "S05",
+        "S08",
+        "S09",
+        "S18",
+        "S28"
+      ],
+      "corrected_wording": "Die produktive Aufnahme des ursprünglichen S1-Empfängers und seines konkreten Peers ist im geprüften Nachweisbestand offen. Die Beobachtung von HTTP 525 an raumzeitterminal.de bestätigt einen fehlgeschlagenen HTTPS-Zugriff zu diesem Zeitpunkt. Ob anderswo ein Empfängerprozess lief, ist damit nicht entschieden.",
+      "evidence_boundary": "Fehlende zugelassene Host-Steueroperation ist kein Nachweis eines ausgeschalteten Hosts. Ein TLS-/Proxy-Fehler misst keinen Prozesszustand und belegt die behauptete Kausalität nicht."
+    },
+    {
+      "claim_id": "FOB-005",
+      "original_statement": "Der Merge ffe84ddf ist im Herkunftsnachweis als Folge eines direkten Auftrags von Ingolf Lohmann verzeichnet; der Claude-Kandidat b933ae8d kommt darin nicht vor.",
+      "original_classification": "SOURCE_BOUND",
+      "original_status": "BOUND",
+      "review_status": "CONFIRMED_DOCUMENTARY_SCOPE",
+      "source_ids": [
+        "S11",
+        "S17",
+        "S20"
+      ],
+      "corrected_wording": "Der Herkunftsnachweis auf ffe84ddf nennt den direkten Auftrag Ingolf Lohmanns und die maschinellen Eingaben aus PR #535/#536. Der Claude-Kandidat b933ae8d wird dort nicht genannt.",
+      "evidence_boundary": "Das bestätigt die Dokumentation dieses Vorgangs; es beweist weder Nichtempfang noch Einflusslosigkeit eines ungenannten Vorschlags und keine vollständige Kausalgeschichte aller Nachtarbeiten."
+    },
+    {
+      "claim_id": "FOB-006",
+      "original_statement": "Zwischen 2026-10-19T01:05Z und 07:10Z entstand kein Commit in der Authority.",
+      "original_classification": "REPOSITORY_OBSERVATION",
+      "original_status": "BOUND",
+      "review_status": "CORRECTION_REQUIRED",
+      "source_ids": [
+        "S22",
+        "S23",
+        "S24",
+        "S26"
+      ],
+      "corrected_wording": "Die heute von main erreichbare Historie enthält im API-Zeitfenster 01:05:00–07:10:00Z nur 60afe42d mit Committerzeit 01:05:07Z und keinen weiteren Commit danach. Die Actions-API enthält für dasselbe Fenster189 eindeutige Lauf-Einträge auf zwei Seiten, darunter autonome Ausführungen.",
+      "evidence_boundary": "Eine Aussage über alle damals sichtbaren Branches ist ohne damaligen vollständigen Ref-Snapshot nicht geschlossen. Die zusätzliche Manuskriptaussage, es gebe keine Workflow-Spuren, ist durch originale Run-/Job-Logs widerlegt. Ein Lauf belegt für sich keinen Fortschritt oder produktiven Effekt."
+    },
+    {
+      "claim_id": "FOB-007",
+      "original_statement": "PR #535 Head c9514d2a enthielt noch die Defaults Goldkelch/qik-vrt und PR 1103.",
+      "original_classification": "TEST_EVIDENCE",
+      "original_status": "BOUND",
+      "review_status": "CONFIRMED_EXACT_HEAD",
+      "source_ids": [
+        "S12"
+      ],
+      "corrected_wording": "Der Parser auf c9514d2a enthält die Defaults Goldkelch/qik-vrt und 1103. Der integrierte Stand 60afe42d verlangt ausdrückliche Angaben für repository und pr; der alte Fehler darf nicht unverändert dem Nachfolger zugeschrieben werden.",
+      "evidence_boundary": "Der historische Codebefund ist bestätigt. Ein neuer Serve-Lauf mit den falschen Defaults wurde für diese Prüfung nicht ausgelöst."
+    },
+    {
+      "claim_id": "FOB-008",
+      "original_statement": "ffe84ddf verletzt auf normalem Checkout die Integritätsprüfung (34 LF-gehashte .cmd/.ps1-Einträge); Claude-Korrektur 07497e6b und CI-Korrektur b179dfeb haben denselben Tree bff8937d.",
+      "original_classification": "TEST_EVIDENCE",
+      "original_status": "BOUND",
+      "review_status": "PARTIALLY_VERIFIED",
+      "source_ids": [
+        "S13",
+        "S14",
+        "S17",
+        "S27"
+      ],
+      "corrected_wording": "Auf normalem EOL-beachtendem Checkout von ffe84ddf scheitert die originale Integritätsprüfung.34 betroffene.cmd/.ps1-Einträge tragen den Hash der LF-Fassung statt der vorhandenen CRLF-Bytes. CI-Commit b179dfeb und Main 60afe42d sind auf denselben Tree bff8937d871fb9e989d2bfbf17a210222a987893 gebunden. Für die behauptete Treegleichheit des Claude-Commits 07497e6b liegt hier nur der ursprüngliche Mirrorbericht vor.",
+      "evidence_boundary": "Der 07497e6b-Commit ist im Authority-API nicht auflösbar (422). Die vorliegenden Originalexporte enthalten keinen unabhängig prüfbaren Original-Git-Commit samt Tree-Closure dafür. Fehlender API-Zugriff widerlegt den Mirrorbericht nicht; die Gleichheit bleibt ausdrücklich ungeschlossen."
+    },
+    {
+      "claim_id": "FOB-009",
+      "original_statement": "Beide Knoten rechneten die EFFECT_ACK-Records v1 e41e9787 und v2 198885ad mit src/qikvrt_effect_ack.py identisch nach; Zustand jeweils EFFECT_ACK_BLOCK.",
+      "original_classification": "TEST_EVIDENCE",
+      "original_status": "BOUND",
+      "review_status": "CONFIRMED_PROTOCOL_AND_ATTRIBUTED_PEER_SCOPE",
+      "source_ids": [
+        "S15",
+        "S16",
+        "S17",
+        "S18",
+        "S19"
+      ],
+      "corrected_wording": "Die originalen Records v1(e41e9787…) undv2(198885ad…) lassen sich mit der vorhandenen effect_ack_sync-Implementierung vollständig identisch nachrechnen; verify_protocol_chain besteht. Beide bleiben EFFECT_ACK_BLOCK. Das Mirrorjournal enthält eigene Nachrechen-Einträge8 und10.",
+      "evidence_boundary": "Das belegt die native Protokollberechnung und den dokumentierten Peerbericht; es authentifiziert keinen Live-Rückkanal. Später übergebene und bytegeprüfte Signaturdateien sind als Nachfolge-Evidenz zu führen, ohne alte BLOCK-Records umzuschreiben oder automatischDONE abzuleiten."
+    },
+    {
+      "claim_id": "FOB-010",
+      "original_statement": "Die These, die künstlich-kognitiven Systeme trügen keinerlei Anteil, ist die zugeschriebene Aussage des Autors.",
+      "original_classification": "OWNER_ASSERTED",
+      "original_status": "BOUND",
+      "review_status": "CONFIRMED_ATTRIBUTION_ONLY",
+      "source_ids": [
+        "S01",
+        "S20",
+        "S21"
+      ],
+      "corrected_wording": "Die Formulierung, künstlich-kognitive Systeme hätten keinerlei Anteil, wird im Original Ingolf Lohmann als OWNER_ASSERTED zugeschrieben. Die dokumentierten maschinellen Implementierungs-, Prüf- und Nachrechenbeiträge bleiben gesondert ausgewiesen.",
+      "evidence_boundary": "Die Zuschreibung ist bestätigt; die Behauptung ist damit weder formales Ergebnis noch empirisch nachgewiesene Anteilsbilanz. Die originalen Audioaufnahmen wurden in diesem Review nicht akustisch neu verifiziert."
+    },
+    {
+      "claim_id": "FOB-011",
+      "original_statement": "Kein maschineller Beitrag dieser Nacht entstand aus eigenem Antrieb ohne menschlichen Auslöser.",
+      "original_classification": "DERIVED",
+      "original_status": "BOUND",
+      "review_status": "CORRECTION_REQUIRED",
+      "source_ids": [
+        "S11",
+        "S17",
+        "S20",
+        "S22",
+        "S23",
+        "S24"
+      ],
+      "corrected_wording": "Die dokumentierten Arbeiten stehen unter menschlichem Auftrag und menschlicher Autorisierung; einzelne maschinelle Prüf-, Fortsetzungs- und Ableitungsschritte sind mit eigener Herkunft belegt. Über einen menschlichen Einzelanstoß für ausnahmslos jeden Beitrag oder den hypothetischen Verlauf ohne Steuerung erlauben diese Daten keine universelle Aussage.",
+      "evidence_boundary": "Eigener Antrieb ist nicht operationalisiert. Ein dokumentierter menschlicher Auftrag, eine Commit-Pause und ausgewählte Herkunftsangaben beweisen die universelle oder kontrafaktische Kausalbehauptung nicht. Autonome Workflow-Ausführung und verantwortliche menschliche Autorisierung sind getrennte Fragen."
+    },
+    {
+      "claim_id": "FOB-012",
+      "original_statement": "Diese Arbeit ist eine Autorenprüffassung; keine Zenodo-, IETF- oder Plattformveröffentlichung ist erfolgt.",
+      "original_classification": "STATUS",
+      "original_status": "BOUND",
+      "review_status": "CONFIRMED_DECLARED_STATUS_ONLY",
+      "source_ids": [
+        "S21",
+        "S29"
+      ],
+      "corrected_wording": "Die erhaltene OriginaldateiPUBLICATION_STATUS.json kennzeichnet den Artikel als AUTHOR_REVIEW_CANDIDATE; Zenodo und andere finale Plattformfreigaben sind dort NOT_PUBLISHED. Der öffentlichePR stellt bereits eine Prüffassung bereit. Für diese genaue Arbeit liegt in den geprüften Nachweisen kein bestätigter finaler Veröffentlichungs-Effekt vor.",
+      "evidence_boundary": "Deklarierter Status ist keine vollständige unabhängige Inventur sämtlicher Publikationsplattformen. Dieser Nachtrag autorisiert und bewirkt weder Zenodo-/IETF-Veröffentlichung noch Merge oder produktive Auslieferung."
+    }
+  ],
+  "original_file_bindings": [
+    {
+      "path": "CC-BY-NC-ND-4.0.txt",
+      "bytes": 19127,
+      "sha256": "38762e3777f4ec00a6f769062a7c3f704fb78ce08303ecff88558da4c49cf9ea",
+      "git_blob_sha1": "cfe676c541842bd2b766787b1f6983e063a1eee2"
+    },
+    {
+      "path": "CLAIM_MATRIX.json",
+      "bytes": 5980,
+      "sha256": "9d4964f4111f55971d714fe45a3a8ed2d18c5d7cf4577c995d7fcb1b069ed110",
+      "git_blob_sha1": "5ee934b19f31d74bfb28795b78a777feaab095ca"
+    },
+    {
+      "path": "LICENSE_NOTICE.md",
+      "bytes": 463,
+      "sha256": "08920800f88fb2753bd50b4d64962ba63f901448be5d2ec3a10fd6ec281f4703",
+      "git_blob_sha1": "b800bdcb3c3f2231f6b1953cf734d93a15344002"
+    },
+    {
+      "path": "PUBLICATION_STATUS.json",
+      "bytes": 2564,
+      "sha256": "77f5f2c58550622f303dd954adf866bb23a088c2a66e152bc4f8321f189eb1a5",
+      "git_blob_sha1": "45681b2d317960adba58daad5750f5e2124af389"
+    },
+    {
+      "path": "QIKVRT_Funktion_ohne_Betrieb_20261019.md",
+      "bytes": 15866,
+      "sha256": "94b185850ae38a024f054f8f4e7298b2a0cf5f70471ec6e7607e16cf785d1088",
+      "git_blob_sha1": "28291f1d776042e190b82fe91ecf7ea24fe409ce"
+    },
+    {
+      "path": "README.md",
+      "bytes": 596,
+      "sha256": "8eeeff93fd5aec6ede356dfeaf19da5509479144056d48662622345c21f73ce3",
+      "git_blob_sha1": "346f5e1f8c6cba23675b9a7ba655eaee3097901f"
+    }
+  ],
+  "sources": [
+    {
+      "id": "S01",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "commit": "d9327e5bbcd4ced378ee03509a44c5b28dec4c14",
+      "path": "docs/publications/2026-10-19-funktion-ohne-betrieb/CLAIM_MATRIX.json",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/d9327e5bbcd4ced378ee03509a44c5b28dec4c14/docs/publications/2026-10-19-funktion-ohne-betrieb/CLAIM_MATRIX.json",
+      "scope": "Unchanged original 12-claim matrix"
+    },
+    {
+      "id": "S02",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "commit": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "path": "runtime/self-host/README.md",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/60afe42d3f7bb7992b78c747878582738a97dc6a/runtime/self-host/README.md",
+      "scope": "Manuscript source baseline, cache/idle/send and private peer contract"
+    },
+    {
+      "id": "S03",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "commit": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "path": "tools/qikvrt_self_host.py",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/60afe42d3f7bb7992b78c747878582738a97dc6a/tools/qikvrt_self_host.py",
+      "scope": "Original executable cache and transport"
+    },
+    {
+      "id": "S04",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "commit": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "path": "tests/test_self_host.py",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/60afe42d3f7bb7992b78c747878582738a97dc6a/tests/test_self_host.py",
+      "scope": "24 cache +27 contract tests, independently rerun"
+    },
+    {
+      "id": "S05",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "commit": "f5aaff5b8c018fbc73d1e81126c6fb7e30e8bf22",
+      "path": "runtime/self-host/README.md",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/f5aaff5b8c018fbc73d1e81126c6fb7e30e8bf22/runtime/self-host/README.md",
+      "scope": "Commissioning, retained receipts, fresh challenge and restart readback"
+    },
+    {
+      "id": "S06",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "commit": "f5aaff5b8c018fbc73d1e81126c6fb7e30e8bf22",
+      "path": "tests/test_self_host.py",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/f5aaff5b8c018fbc73d1e81126c6fb7e30e8bf22/tests/test_self_host.py",
+      "scope": "36 cache +27 contract tests, independently rerun"
+    },
+    {
+      "id": "S07",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "commit": "f5aaff5b8c018fbc73d1e81126c6fb7e30e8bf22",
+      "path": "tools/qikvrt_self_host.py",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/f5aaff5b8c018fbc73d1e81126c6fb7e30e8bf22/tools/qikvrt_self_host.py",
+      "scope": "Receipt retention, check and witness validation"
+    },
+    {
+      "id": "S08",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "commit": "f5aaff5b8c018fbc73d1e81126c6fb7e30e8bf22",
+      "path": "docs/monitor/server.mjs",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/f5aaff5b8c018fbc73d1e81126c6fb7e30e8bf22/docs/monitor/server.mjs",
+      "scope": "Receiver durable inbox readback and public acceptance gate"
+    },
+    {
+      "id": "S09",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "commit": "f5aaff5b8c018fbc73d1e81126c6fb7e30e8bf22",
+      "path": "state/work_units/QIKVRT_MESH_WORK_COMMISSIONING_20261019_V1.json",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/f5aaff5b8c018fbc73d1e81126c6fb7e30e8bf22/state/work_units/QIKVRT_MESH_WORK_COMMISSIONING_20261019_V1.json",
+      "scope": "Preparation snapshot; later native test and merge records supersede pending source markers"
+    },
+    {
+      "id": "S10",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "commit": "f5aaff5b8c018fbc73d1e81126c6fb7e30e8bf22",
+      "path": "evidence/native-runtime-acceptance/mesh-work-commissioning-20261019/predecessor-failure.log",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/f5aaff5b8c018fbc73d1e81126c6fb7e30e8bf22/evidence/native-runtime-acceptance/mesh-work-commissioning-20261019/predecessor-failure.log",
+      "scope": "Two predecessor controls fail: missing receipts and missing receipt-digest rejection"
+    },
+    {
+      "id": "S11",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "commit": "ffe84ddf3adde8443d8671b5d3bd0b24bbf1a1f6",
+      "path": "state/work_units/QIKVRT_TEMDD_CONSOLIDATION_20261019_V1.json",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/ffe84ddf3adde8443d8671b5d3bd0b24bbf1a1f6/state/work_units/QIKVRT_TEMDD_CONSOLIDATION_20261019_V1.json",
+      "scope": "Attributed direct human task and two machine source inputs; absence of b933 is documentary only"
+    },
+    {
+      "id": "S12",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "commit": "c9514d2a67c73155ca33fdbc820d8598af4e396f",
+      "path": "src/qikvrt_temdd_event_ledger.py",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/c9514d2a67c73155ca33fdbc820d8598af4e396f/src/qikvrt_temdd_event_ledger.py",
+      "scope": "Historical explicit parser defaults Goldkelch/qik-vrt and1103"
+    },
+    {
+      "id": "S13",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "commit": "ffe84ddf3adde8443d8671b5d3bd0b24bbf1a1f6",
+      "path": "REPOSITORY_FILE_MANIFEST.json",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/ffe84ddf3adde8443d8671b5d3bd0b24bbf1a1f6/REPOSITORY_FILE_MANIFEST.json",
+      "scope": "34 stored LF digests disagree with normal CRLF checkout bytes"
+    },
+    {
+      "id": "S14",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "commit": "b179dfebd4a9205fc6645ea3c285a78d0a881594",
+      "path": "",
+      "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/commits/b179dfebd4a9205fc6645ea3c285a78d0a881594",
+      "scope": "CI correction commit resolves to tree bff8937d871fb9e989d2bfbf17a210222a987893"
+    },
+    {
+      "id": "S15",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "commit": "894e6501bbc40ee00984649daa2f49caafc0a564",
+      "path": "evidence/client-communication/2026-10-19/ingolf-claude-transputer-link-20261018T232045Z/effect-ack-local-result-v1.json",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/894e6501bbc40ee00984649daa2f49caafc0a564/evidence/client-communication/2026-10-19/ingolf-claude-transputer-link-20261018T232045Z/effect-ack-local-result-v1.json",
+      "scope": "Original BLOCK v1 record"
+    },
+    {
+      "id": "S16",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "commit": "894e6501bbc40ee00984649daa2f49caafc0a564",
+      "path": "evidence/client-communication/2026-10-19/ingolf-claude-transputer-link-20261018T232045Z/existing-effect-ack-signed-reply-v2.json",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/894e6501bbc40ee00984649daa2f49caafc0a564/evidence/client-communication/2026-10-19/ingolf-claude-transputer-link-20261018T232045Z/existing-effect-ack-signed-reply-v2.json",
+      "scope": "Original BLOCK v2 record, immutable historical decision"
+    },
+    {
+      "id": "S17",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "commit": "894e6501bbc40ee00984649daa2f49caafc0a564",
+      "path": "evidence/client-communication/2026-10-19/ingolf-claude-transputer-link-20261018T232045Z/incoming-export25/events.jsonl",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/894e6501bbc40ee00984649daa2f49caafc0a564/evidence/client-communication/2026-10-19/ingolf-claude-transputer-link-20261018T232045Z/incoming-export25/events.jsonl",
+      "scope": "Exported Mirror events, including15/17/19/20/24; node attribution is not an externally trusted clock or live channel"
+    },
+    {
+      "id": "S18",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "commit": "894e6501bbc40ee00984649daa2f49caafc0a564",
+      "path": "evidence/client-communication/2026-10-19/ingolf-claude-transputer-link-20261018T232045Z/incoming-export25/VERIFICATION.json",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/894e6501bbc40ee00984649daa2f49caafc0a564/evidence/client-communication/2026-10-19/ingolf-claude-transputer-link-20261018T232045Z/incoming-export25/VERIFICATION.json",
+      "scope": "Byte-verified Owner-carried export; frozen batch ac1db7a4 is not a send/receiver receipt; no trusted peer-key anchor"
+    },
+    {
+      "id": "S19",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "commit": "d9327e5bbcd4ced378ee03509a44c5b28dec4c14",
+      "path": "src/qikvrt_effect_ack.py",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/d9327e5bbcd4ced378ee03509a44c5b28dec4c14/src/qikvrt_effect_ack.py",
+      "scope": "Unchanged native gate, module SHA256046e8703d425f97bab5533b187cfd661df99567c61d395f5f61d5df8e2b7c038"
+    },
+    {
+      "id": "S20",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "commit": "d9327e5bbcd4ced378ee03509a44c5b28dec4c14",
+      "path": "policy/AI_PERSONAL_WORKING_MEMORY_ORIGIN_AND_ATTRIBUTION_V1.json",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/d9327e5bbcd4ced378ee03509a44c5b28dec4c14/policy/AI_PERSONAL_WORKING_MEMORY_ORIGIN_AND_ATTRIBUTION_V1.json",
+      "scope": "Separate human, machine, joint and unresolved provenance"
+    },
+    {
+      "id": "S21",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "commit": "d9327e5bbcd4ced378ee03509a44c5b28dec4c14",
+      "path": "docs/publications/2026-10-19-funktion-ohne-betrieb/PUBLICATION_STATUS.json",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/d9327e5bbcd4ced378ee03509a44c5b28dec4c14/docs/publications/2026-10-19-funktion-ohne-betrieb/PUBLICATION_STATUS.json",
+      "scope": "Declared AUTHOR_REVIEW_CANDIDATE and NOT_PUBLISHED; no final public release is inferred"
+    },
+    {
+      "id": "S22",
+      "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/actions/runs?created=2026-10-19T01%3A05%3A00Z..2026-10-19T07%3A10%3A00Z&per_page=100",
+      "scope": "Two pages,189 unique run IDs; recorded current API view, not reconstructed07:10 API snapshot"
+    },
+    {
+      "id": "S23",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39187203199/job/117852018768",
+      "scope": "Scheduled self-heal01:50:55Z, executed bounded controller and endedNOOP"
+    },
+    {
+      "id": "S24",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39203136162/job/117900171737",
+      "scope": "Scheduled draft continuation05:10:12Z, failed at non-allowlisted merge conflicts before branch push"
+    },
+    {
+      "id": "S25",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39219160024/job/117950110425",
+      "scope": "Workflow metadata says initial325198f1; actual terminal tested subject is09cc538c/treeaf5264a3, matching merge tree"
+    },
+    {
+      "id": "S26",
+      "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/commits?sha=main&since=2026-10-19T01%3A05%3A00Z&until=2026-10-19T07%3A10%3A00Z&per_page=100",
+      "scope": "Current main ancestry by committer-time filter: sole entry60afe at01:05:07Z; not an all-branches or historical ref inventory"
+    },
+    {
+      "id": "S27",
+      "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/commits/07497e6b56e0f4ad8300fd11612aa7ace2b43bd0",
+      "scope": "Observed422 No commit found; original Claude Git object is not independently available here. This is not proof of nonexistence"
+    },
+    {
+      "id": "S28",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/pull/537",
+      "scope": "Merged08:21:51Z, source integration and separate open productive acceptance"
+    },
+    {
+      "id": "S29",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/pull/540",
+      "scope": "Existing author review integration path; no additional PR or publication"
+    }
+  ],
+  "summary": {
+    "confirmed_with_stated_boundaries": 7,
+    "correction_required": 4,
+    "partially_verified": 1
+  },
+  "open_evidence": [
+    "Original Claude07497e6b Git object and its root-tree closure via existing authenticated peer path",
+    "Complete contemporaneous all-branch snapshot for historical universal negative",
+    "Productive original-host/peer/batch/receipt/restart/public-HTTPS acceptance",
+    "Actual peer ACK of this addendum"
+  ],
+  "release_claims": {
+    "EFFECT_ACK_DONE": false,
+    "ordinary_release": false,
+    "published": false,
+    "merged": false
+  }
+}

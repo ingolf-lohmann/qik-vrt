@@ -1,0 +1,203 @@
+{
+  "schema": "qikvrt_fob_evidence_receipt_v1",
+  "observed_at_utc": "2026-10-19T09:39:06.811373Z",
+  "source_acquisition": "Existing GitHub REST adapter and exact REST source objects; no Git network transport",
+  "source_closure": "Full tree verified against original tree SHA for each checked subject; history remains explicitly shallow, not an all-branch clone",
+  "tools": {
+    "python": "3.12.14",
+    "node": "24.19.0",
+    "git": "2.51.1",
+    "tool_cache": "34/34 PASS"
+  },
+  "native_session": {
+    "epoch": "48a0633b1ea547b3b8a77d92a85e1991",
+    "source_head": "d9327e5bbcd4ced378ee03509a44c5b28dec4c14",
+    "source_tree": "dc3137182b4ccb6a8fface2cb3636583586d8b4d",
+    "pr": 540,
+    "original_transputer_runtime_used": true,
+    "original_terminal_input_validation_used": true,
+    "independent_terminal_sqlite_readback": true,
+    "http_unix_serve": "HOLD_EPERM_OPERATION_NOT_PERMITTED; original admitted in-process API used without weakening guards",
+    "copied_predecessor_journals": "mode=ro&immutable=1; never appended",
+    "predecessor_library_identity": "libfile_8ff514ee33a08191a6573ae98c5acb5a",
+    "native_events": [
+      "48a0633b1ea547b3b8a77d92a85e1991:1",
+      "48a0633b1ea547b3b8a77d92a85e1991:2",
+      "48a0633b1ea547b3b8a77d92a85e1991:3"
+    ],
+    "separate_process_cold_terminal_readback": true
+  },
+  "test_subjects": [
+    {
+      "head": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "tree": "bff8937d871fb9e989d2bfbf17a210222a987893",
+      "cache_tests": 24,
+      "contract_tests": 27,
+      "exit_code": 0
+    },
+    {
+      "head": "f5aaff5b8c018fbc73d1e81126c6fb7e30e8bf22",
+      "tree": "af5264a31622064f34c8deaef66c44768c657d67",
+      "cache_tests": 36,
+      "contract_tests": 27,
+      "exit_code": 0
+    },
+    {
+      "head": "d9327e5bbcd4ced378ee03509a44c5b28dec4c14",
+      "tree": "dc3137182b4ccb6a8fface2cb3636583586d8b4d",
+      "cache_tests": 36,
+      "contract_tests": 27,
+      "exit_code": 0
+    }
+  ],
+  "actions_window": {
+    "created_since": "2026-10-19T01:05:00Z",
+    "created_until": "2026-10-19T07:10:00Z",
+    "pages": 2,
+    "unique_runs": 189,
+    "observation_is_current_api_not_contemporaneous_snapshot": true
+  },
+  "native537": {
+    "run_id": 39219160024,
+    "job_id": 117950110425,
+    "metadata_initial_head": "325198f1271c6d4c38b5f9e42d98996528f76df4",
+    "terminal_tested_head": "09cc538c3314c6fc6247920fea56957fc5216490",
+    "terminal_tested_tree": "af5264a31622064f34c8deaef66c44768c657d67",
+    "test_job_conclusion": "success",
+    "whole_workflow_all_green": false,
+    "firefox_job": 117957747997,
+    "firefox_conclusion": "failure",
+    "production_host_jobs": "skipped"
+  },
+  "delivery_observation": {
+    "snapshot_id": "2bb0b8e5-4de6-463d-bae2-effd201f2bfc",
+    "snapshot_sha256": "1dc7c30c5ec4d9e6b7d526d1b2323f626c6d11e93f514ca1efec30bf7f737f7d",
+    "readback_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/readback?id=2bb0b8e5-4de6-463d-bae2-effd201f2bfc",
+    "host": "raumzeitterminal.de",
+    "status": 525,
+    "observed_at": "2026-10-19T09:25:19.894Z",
+    "scope": "HTTPS error observed; no receiver process-state inference"
+  },
+  "evidence_files": [
+    {
+      "path": "evidence/actions-window-189-runs.json",
+      "bytes": 71221,
+      "sha256": "c8bb627df817e7ab0bbecff5ca5bcb8fa035696e500fd5b1a47104a37dede638",
+      "git_blob_sha1": "72a5d54de9021f12975edd8018ead0812e75c1c4"
+    },
+    {
+      "path": "evidence/baseline-51-tests.log",
+      "bytes": 151,
+      "sha256": "51d54a7b792e56c48bc730ed9ada78b3b81a0d8a9855e7eed95109d49b9efe52",
+      "git_blob_sha1": "a25a3c433f632a95d4dd0661611ce7f7d001524d"
+    },
+    {
+      "path": "evidence/draft-continuation-block.log",
+      "bytes": 1453,
+      "sha256": "d820598e02e5a4f02bb599031fbe20ad28026ea77c45105bdddd9528585802bd",
+      "git_blob_sha1": "883613e1dbdf3af412cce08a342eeb947dc9937c"
+    },
+    {
+      "path": "evidence/effect-ack-review.json",
+      "bytes": 1077,
+      "sha256": "caeb1440321daeeb04b69b500996f5f2b46be56acda719e632b63bdf659edebf",
+      "git_blob_sha1": "0d14515b2292b2c4b1276fb37853031b6d74d5e7"
+    },
+    {
+      "path": "evidence/ffe84-34-eol-mismatches.json",
+      "bytes": 12361,
+      "sha256": "840fc1316f9df6abbbf183926f8de8e80f058eb4c04c5ce7444df43ff8c31cd0",
+      "git_blob_sha1": "a57a6b543d176cf8afeb6fdf359aaa5619ed8c13"
+    },
+    {
+      "path": "evidence/ffe84-integrity.log",
+      "bytes": 66,
+      "sha256": "35486c07b2bb6f0c938eafb1cff7b17942eea82785c98476f98955dae37c778c",
+      "git_blob_sha1": "33a1f2420de0ccfd0c4b590c8f8305020fb0e336"
+    },
+    {
+      "path": "evidence/full-make-test-summary.log",
+      "bytes": 1131,
+      "sha256": "d0fc52867142cc60bc936ce4530f7d59ffcb74d121f7c2af0a2ca13d9d196db9",
+      "git_blob_sha1": "5b9d167bbc9aad460e5ac602eca877163b796e2b"
+    },
+    {
+      "path": "evidence/native-cold-readback.json",
+      "bytes": 517,
+      "sha256": "7d7204d750424c4f49f690e368c9b37ee96f550d75c1bd2e01e42b980b90204e",
+      "git_blob_sha1": "83740bb5b58c305145054faec32b98c6ee30d51e"
+    },
+    {
+      "path": "evidence/native-result-event.json",
+      "bytes": 1229,
+      "sha256": "0026f7b14f66ec7471e9bc750e6d5e43b7ac64a150ebd39ab7a65e4d418ee87b",
+      "git_blob_sha1": "09d4f08ae03decb0781a7bea05345677975461a7"
+    },
+    {
+      "path": "evidence/native-result-receipt.json",
+      "bytes": 1538,
+      "sha256": "bb9c1f2339d5311dabf94fe35e30b45235939f76c0a47cad987a605c886f3e12",
+      "git_blob_sha1": "6370aa94d20127b48aa06cc01d0983112b76acc4"
+    },
+    {
+      "path": "evidence/owner-input.json",
+      "bytes": 1351,
+      "sha256": "5fb1555a104499c1cb4c462df12e88d8e154eed36b1a1e85310238c1bf600d59",
+      "git_blob_sha1": "bcc634c977dd7953a36743bd9b8e0742cc3a4f25"
+    },
+    {
+      "path": "evidence/owner-receipt.json",
+      "bytes": 1660,
+      "sha256": "91e7d82e64727d465dbeaad91a8c15d1dcadfa9bd77ddcf59f404d7c5f915fe7",
+      "git_blob_sha1": "dd0237c14962a73dc90ee8dd798d09f00076ac6e"
+    },
+    {
+      "path": "evidence/pr537-63-tests.log",
+      "bytes": 163,
+      "sha256": "26f22890dc869a3c1c7928b3b1fbd3e4e6286befeaedb48ddbf011b7203ad736",
+      "git_blob_sha1": "1b6370e4b34d6bf0cdf205031a702ed9a23a4035"
+    },
+    {
+      "path": "evidence/pr537-native-tested-subject.log",
+      "bytes": 326,
+      "sha256": "db7c2ec01fd3ac871e74a4239f38c2bd18b04c33290173cf90c875b97b2af8ed",
+      "git_blob_sha1": "09963f3d642948301540b331c2fffb41cd604ed8"
+    },
+    {
+      "path": "evidence/pr540-63-tests.log",
+      "bytes": 163,
+      "sha256": "571756f9bd98ace57d48a1bf0a7f1826faefefc2d068ae68a8faafde93c08c1f",
+      "git_blob_sha1": "5465a625d1854d43f92becb418d4642e2364e375"
+    },
+    {
+      "path": "evidence/review-admission.json",
+      "bytes": 2824,
+      "sha256": "f41655bea1a7d75b4296804ff74d79e135f62f2b0d995022e6d4053532a22e21",
+      "git_blob_sha1": "d005597b9ab8027e72906889156f5ab33e10b112"
+    },
+    {
+      "path": "evidence/self-heal-noop.log",
+      "bytes": 200,
+      "sha256": "44e574694fcceac79942014daa8e7a4245707123fa7858ec0f69165d2cae1476",
+      "git_blob_sha1": "ea4ec29b1f36468f22adc15b7b136a7c306e7de7"
+    }
+  ],
+  "unresolved_sources": [
+    {
+      "id": "S27",
+      "state": "AUTHORITY_API_422_ORIGINAL_GIT_OBJECT_NOT_AVAILABLE",
+      "not_a_nonexistence_proof": true
+    }
+  ],
+  "effect_ack_done": false,
+  "publication_authorized": false,
+  "complete_local_gate": {
+    "command": "make test",
+    "exit_code": 0,
+    "base_head": "d9327e5bbcd4ced378ee03509a44c5b28dec4c14",
+    "scope": "All existing make-test targets on unchanged implementation plus additive review files; final evidence receipt and inventory metadata are appended after the run",
+    "log_sha256": "a861b0ef0baabddf34c395df0cb1c5972a21613c49860373e735719a8e6a78a3",
+    "log_bytes": 319978,
+    "repeat_suite_totals_not_summed": true
+  }
+}

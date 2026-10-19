@@ -1,0 +1,26 @@
+{
+  "schema": "qikvrt_fob_native_effect_ack_review_v1",
+  "source_head": "d9327e5bbcd4ced378ee03509a44c5b28dec4c14",
+  "source_module_sha256": "046e8703d425f97bab5533b187cfd661df99567c61d395f5f61d5df8e2b7c038",
+  "peer_source_head": "894e6501bbc40ee00984649daa2f49caafc0a564",
+  "chain_verified": true,
+  "protocols": [
+    {
+      "file": "effect-ack-local-result-v1.json",
+      "saved_hash": "sha256:e41e9787c6996b5dce79ce8b217e8124cd31249036a3cc7ee08c224628d6788a",
+      "recomputed_hash": "sha256:e41e9787c6996b5dce79ce8b217e8124cd31249036a3cc7ee08c224628d6788a",
+      "identical": true,
+      "state": "EFFECT_ACK_BLOCK"
+    },
+    {
+      "file": "existing-effect-ack-signed-reply-v2.json",
+      "saved_hash": "sha256:198885adc51475fbb91ca7cddd5a9fb041fb8925bbb09be3942504030662508d",
+      "recomputed_hash": "sha256:198885adc51475fbb91ca7cddd5a9fb041fb8925bbb09be3942504030662508d",
+      "identical": true,
+      "state": "EFFECT_ACK_BLOCK"
+    }
+  ],
+  "trusted_peer_identity_established": false,
+  "live_channel_established": false,
+  "effect_ack_done": false
+}

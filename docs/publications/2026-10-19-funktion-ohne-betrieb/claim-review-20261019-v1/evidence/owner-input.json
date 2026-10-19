@@ -1,0 +1,29 @@
+{
+  "schema": "qikvrt_temdd_native_event_v1",
+  "kind": "OBSERVE",
+  "subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pr": 540,
+    "head": "d9327e5bbcd4ced378ee03509a44c5b28dec4c14",
+    "tree": "dc3137182b4ccb6a8fface2cb3636583586d8b4d"
+  },
+  "provenance": {
+    "source": "transputer",
+    "native_event_id": "owner:pr540-claim-review:20261019:v1"
+  },
+  "observed_at": "2026-10-19T09:29:05.722981Z",
+  "message": "Bounded Owner review instruction accepted through original Terminal input contract",
+  "payload": {
+    "adapter": "ORIGINAL_OWNER_NATIVE_IN_PROCESS_API",
+    "terminal_input": {
+      "schema": "qikvrt_terminal_input_v1",
+      "text": "Ingolf Lohmann: Prüfe alle zwölf Aussagen von Funktion ohne Betrieb (PR540) gegen exakte Repository-Versionen, Commit-Zeiten, native Tests und EFFECT_ACK-Nachweise; berücksichtige PR537. Originalfassung erhalten, quellengebundenen Nachtrag im bestehenden PR-Weg erstellen. Keine Veröffentlichung und kein paralleler PR."
+    },
+    "input_hash": "sha256:2f1c57a5888fe09782174174aec5523fb194c7876cccd56d3ee03ca4fc442be9",
+    "predecessor_archive": "libfile_8ff514ee33a08191a6573ae98c5acb5a",
+    "copied_predecessor_journals": "READ_ONLY_IMMUTABLE",
+    "http_unix_serve": "HOLD_OPERATION_NOT_PERMITTED",
+    "publication_authorized": false,
+    "effect_ack_done": false
+  }
+}

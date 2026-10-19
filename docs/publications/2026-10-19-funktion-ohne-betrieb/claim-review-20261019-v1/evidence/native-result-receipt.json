@@ -1,0 +1,42 @@
+{
+  "dod": false,
+  "evidence_transfer": "DENY",
+  "kind": "CLASSIFY",
+  "message": "Twelve-claim source review classified; addendum frozen for existing PR540",
+  "observed_at": "2026-10-19T09:42:25.187055Z",
+  "payload": {
+    "actions_window_unique_runs": 189,
+    "addendum_sha256": "bace0f2ec175d2b50435412e6f6f4831e02b3fb92ef087574c69aca0ce7850c8",
+    "effect_ack_done": false,
+    "effect_ack_v1_v2_recomputed": "BOTH_BLOCK_IDENTICAL_HASHES",
+    "open_evidence": [
+      "original Claude07497e6b Git object",
+      "productive host/peer/batch/restart acceptance",
+      "peer ACK of review"
+    ],
+    "originals_preserved": true,
+    "publication_authorized": false,
+    "review_sha256": "00246df47cafebd0d4cbc2ec521a8e41f4fa0f3eea56ee390706feeda1b32492",
+    "test_results": {
+      "60afe42d": "51/51",
+      "d9327e5b": "63/63",
+      "f5aaff5b": "63/63"
+    },
+    "work_unit": "QIKVRT_FOB_CLAIM_REVIEW_20261019_V1"
+  },
+  "payload_digest": "56a14d238a4b498d2693facc9788df0fa016d4ec8acc84e83f878dcf54070d1a",
+  "provenance": {
+    "native_event_id": "pr540-review:claim-findings:v1",
+    "source": "transputer"
+  },
+  "recorded_at": "2026-10-19T09:42:25.212197Z",
+  "schema": "qikvrt_temdd_event_v1",
+  "subject": {
+    "head": "d9327e5bbcd4ced378ee03509a44c5b28dec4c14",
+    "pr": 540,
+    "repository": "ingolf-lohmann/qik-vrt",
+    "tree": "dc3137182b4ccb6a8fface2cb3636583586d8b4d"
+  },
+  "id": "48a0633b1ea547b3b8a77d92a85e1991:3",
+  "ledger_digest": "68f6035cc0f924897f08510853423efb0467ef48035a4b5d6e3a95368a298ae9"
+}

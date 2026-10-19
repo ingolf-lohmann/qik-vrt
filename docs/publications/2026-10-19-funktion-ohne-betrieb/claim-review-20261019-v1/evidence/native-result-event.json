@@ -1,0 +1,36 @@
+{
+  "schema": "qikvrt_temdd_native_event_v1",
+  "kind": "CLASSIFY",
+  "subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pr": 540,
+    "head": "d9327e5bbcd4ced378ee03509a44c5b28dec4c14",
+    "tree": "dc3137182b4ccb6a8fface2cb3636583586d8b4d"
+  },
+  "provenance": {
+    "source": "transputer",
+    "native_event_id": "pr540-review:claim-findings:v1"
+  },
+  "observed_at": "2026-10-19T09:42:25.187055Z",
+  "message": "Twelve-claim source review classified; addendum frozen for existing PR540",
+  "payload": {
+    "work_unit": "QIKVRT_FOB_CLAIM_REVIEW_20261019_V1",
+    "review_sha256": "00246df47cafebd0d4cbc2ec521a8e41f4fa0f3eea56ee390706feeda1b32492",
+    "addendum_sha256": "bace0f2ec175d2b50435412e6f6f4831e02b3fb92ef087574c69aca0ce7850c8",
+    "test_results": {
+      "60afe42d": "51/51",
+      "f5aaff5b": "63/63",
+      "d9327e5b": "63/63"
+    },
+    "actions_window_unique_runs": 189,
+    "effect_ack_v1_v2_recomputed": "BOTH_BLOCK_IDENTICAL_HASHES",
+    "originals_preserved": true,
+    "open_evidence": [
+      "original Claude07497e6b Git object",
+      "productive host/peer/batch/restart acceptance",
+      "peer ACK of review"
+    ],
+    "publication_authorized": false,
+    "effect_ack_done": false
+  }
+}
