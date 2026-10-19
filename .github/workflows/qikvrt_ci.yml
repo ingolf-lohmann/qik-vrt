@@ -1029,11 +1029,129 @@ jobs:
           if-no-files-found: error
       - name: Independently download the bounded dependency parts
         if: steps.runtime-parts.outcome == 'success'
-        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
-        with:
-          pattern: qikvrt-s1-firefox158-runtime-${{ github.event.pull_request.head.sha || github.sha }}-part-*
-          path: ${{ runner.temp }}/s1-firefox158-delivered
-          merge-multiple: true
+        env:
+          ARTIFACT_TOKEN: ${{ github.token }}
+          PART_COUNT: ${{ steps.runtime-parts.outputs.part_count }}
+          PART0_ID: ${{ steps.runtime-part-0.outputs.artifact-id }}
+          PART0_DIGEST: ${{ steps.runtime-part-0.outputs.artifact-digest }}
+          PART1_ID: ${{ steps.runtime-part-1.outputs.artifact-id }}
+          PART1_DIGEST: ${{ steps.runtime-part-1.outputs.artifact-digest }}
+          PART2_ID: ${{ steps.runtime-part-2.outputs.artifact-id }}
+          PART2_DIGEST: ${{ steps.runtime-part-2.outputs.artifact-digest }}
+          PART3_ID: ${{ steps.runtime-part-3.outputs.artifact-id }}
+          PART3_DIGEST: ${{ steps.runtime-part-3.outputs.artifact-digest }}
+        run: |
+          python3 -B - <<'PYFINALIZEDPARTS'
+          # Exact finalized upload IDs are the delivery authority. A list response may
+          # omit an already finalized part and must not select the original byte set.
+          import hashlib
+          import json
+          import os
+          import re
+          import shutil
+          import tempfile
+          import zipfile
+          from pathlib import Path
+          from urllib.error import HTTPError
+          from urllib.parse import urlsplit
+          from urllib.request import HTTPRedirectHandler, Request, build_opener
+          
+          
+          class NoCredentialRedirect(HTTPRedirectHandler):
+              def redirect_request(self, req, fp, code, msg, headers, newurl):
+                  return None
+          
+          
+          class HTTPSPayloadRedirect(HTTPRedirectHandler):
+              def redirect_request(self, req, fp, code, msg, headers, newurl):
+                  parsed = urlsplit(newurl)
+                  if parsed.scheme != 'https' or not parsed.hostname or parsed.username or parsed.password:
+                      raise RuntimeError('ARTIFACT_PAYLOAD_HTTPS_REQUIRED')
+                  return super().redirect_request(req, fp, code, msg, headers, newurl)
+          
+          
+          def download_finalized_parts(env):
+              count = int(env['PART_COUNT'])
+              if not 1 <= count <= 4:
+                  raise RuntimeError('ARTIFACT_PART_COUNT_OUT_OF_RANGE')
+              repository = env['GITHUB_REPOSITORY']
+              if not re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', repository):
+                  raise RuntimeError('ARTIFACT_REPOSITORY_REQUIRED')
+              records = []
+              for index in range(count):
+                  artifact_id = env.get(f'PART{index}_ID', '')
+                  digest = env.get(f'PART{index}_DIGEST', '').removeprefix('sha256:')
+                  if not re.fullmatch(r'[1-9][0-9]*', artifact_id):
+                      raise RuntimeError('FINALIZED_ARTIFACT_ID_REQUIRED')
+                  if not re.fullmatch(r'[0-9a-f]{64}', digest):
+                      raise RuntimeError('FINALIZED_ARTIFACT_DIGEST_REQUIRED')
+                  records.append((index, artifact_id, digest))
+              if len({record[1] for record in records}) != count:
+                  raise RuntimeError('DISTINCT_FINALIZED_ARTIFACT_IDS_REQUIRED')
+              token = env['ARTIFACT_TOKEN']
+              if not token:
+                  raise RuntimeError('EXISTING_ARTIFACT_READ_CREDENTIAL_REQUIRED')
+              target = Path(env['RUNNER_TEMP']) / 's1-firefox158-delivered'
+              target.mkdir(parents=True, exist_ok=True)
+              api = build_opener(NoCredentialRedirect())
+              payload = build_opener(HTTPSPayloadRedirect())
+              for index, artifact_id, expected in records:
+                  name = f'artifact.part-{index:03d}'
+                  destination = target / name
+                  if destination.exists():
+                      raise RuntimeError('EXISTING_DELIVERY_PART_REQUIRES_READBACK')
+                  request = Request(
+                      f'https://api.github.com/repos/{repository}/actions/artifacts/{artifact_id}/zip',
+                      headers={'Authorization': f'Bearer {token}',
+                               'Accept': 'application/vnd.github+json',
+                               'X-GitHub-Api-Version': '2022-11-28'})
+                  try:
+                      with api.open(request, timeout=60):
+                          raise RuntimeError('ARTIFACT_DOWNLOAD_REDIRECT_REQUIRED')
+                  except HTTPError as error:
+                      try:
+                          if error.code != 302:
+                              raise RuntimeError('FINALIZED_ARTIFACT_LOOKUP_FAILED') from None
+                          location = error.headers.get('Location', '')
+                      finally:
+                          error.close()
+                  except OSError:
+                      raise RuntimeError('FINALIZED_ARTIFACT_LOOKUP_FAILED') from None
+                  parsed = urlsplit(location)
+                  if parsed.scheme != 'https' or not parsed.hostname or parsed.username or parsed.password:
+                      raise RuntimeError('ARTIFACT_PAYLOAD_HTTPS_REQUIRED')
+                  # The GitHub credential is used only at the fixed API origin. Signed
+                  # payload requests and subsequent HTTPS redirects carry no credential.
+                  with tempfile.TemporaryFile() as archive:
+                      digest = hashlib.sha256()
+                      length = 0
+                      try:
+                          with payload.open(Request(location), timeout=60) as response:
+                              while chunk := response.read(1024 * 1024):
+                                  length += len(chunk)
+                                  if length > 268435456 + 1048576:
+                                      raise RuntimeError('ARTIFACT_ZIP_EXCEEDS_PART_BOUND')
+                                  digest.update(chunk)
+                                  archive.write(chunk)
+                      except OSError:
+                          raise RuntimeError('ARTIFACT_PAYLOAD_READ_FAILED') from None
+                      if digest.hexdigest() != expected:
+                          raise RuntimeError('FINALIZED_ARTIFACT_ZIP_DIGEST_MISMATCH')
+                      archive.seek(0)
+                      with zipfile.ZipFile(archive) as source:
+                          members = source.infolist()
+                          if (len(members) != 1 or members[0].filename != name
+                                  or members[0].is_dir() or members[0].file_size > 268435456):
+                              raise RuntimeError('EXACT_BOUNDED_ARTIFACT_PART_REQUIRED')
+                          with source.open(members[0]) as incoming, destination.open('xb') as outgoing:
+                              shutil.copyfileobj(incoming, outgoing, 1024 * 1024)
+              return {'state': 'EXACT_FINALIZED_PART_ZIPS_READ_BACK', 'parts': count,
+                      'artifact_ids': [record[1] for record in records], 'effect_ack_done': False}
+          
+          
+          if __name__ == '__main__':
+              print(json.dumps(download_finalized_parts(os.environ), sort_keys=True))
+          PYFINALIZEDPARTS
       - name: Reassemble independently delivered original bytes and bind part artifacts
         if: steps.runtime-parts.outcome == 'success'
         env:
