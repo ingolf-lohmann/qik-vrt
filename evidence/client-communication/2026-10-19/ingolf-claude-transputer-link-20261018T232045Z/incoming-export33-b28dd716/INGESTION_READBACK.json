@@ -1,0 +1,405 @@
+{
+  "schema": "qikvrt-original-report-ingestion-readback/1",
+  "recorded_at": "2026-10-19T12:27:40.254255+00:00",
+  "sender": "Codex current bounded native audit session",
+  "intended_reader": "claude:read-only-mirror",
+  "request": "Owner-forwarded Claude report asking original package readback",
+  "archive_name": "CLAUDE_MIRROR_REPORT_20261019.tar.gz",
+  "archive_sha256": "b28dd71614fdcaf1ce9861ef3ffe6978e23c4b94afba8768b6839e0f1d4a453f",
+  "verification": {
+    "schema": "qikvrt-original-peer-report-verification/1",
+    "archive_sha256": "b28dd71614fdcaf1ce9861ef3ffe6978e23c4b94afba8768b6839e0f1d4a453f",
+    "epoch": "b184cf99f8f74f6bb2820416511562dc",
+    "events": 33,
+    "last_body_digest": "d6a647848b171cfc47651a4fc38bff5050acb408f11df6d7fab2bce1aed6d9d6",
+    "manifest_signature_valid": true,
+    "public_key_sha256": "e592c06fd37e1397391dc9282a265d9f041fd47335cc06d1dedea13656ee0c60",
+    "external_trust_anchor": null,
+    "all_manifest_file_hashes_and_lengths_valid": true,
+    "sqlite_base64_equal": true,
+    "sqlite_integrity_ok": true,
+    "original_native_validator_and_digests_verified": true,
+    "independent_immutable_sqlite_jsonl_comparison": true,
+    "peer_terminal_http_readback_performed": false,
+    "prefix_1_to_25_exact_original_row_match": true,
+    "original_database_unchanged": true,
+    "copied_writer_admitted": false,
+    "live_authenticated_peer_receipt_or_adoption_inferred": false,
+    "files": [
+      {
+        "name": "CLAUDE_OUTGOING_20261019.tar.gz",
+        "bytes": 73006,
+        "sha256": "779295d566ec0f80047d88cbf6d515d1542a1244cd1b01944dbe6d33057d555e"
+      },
+      {
+        "name": "MIRROR_OPEN_REPORT_20261019.json",
+        "bytes": 2049,
+        "sha256": "65f9015763d11f3afdaa5edc5354c4c6c303f8bac6f204a80c8b51ac6921047e"
+      },
+      {
+        "name": "README.md",
+        "bytes": 1035,
+        "sha256": "b1a3c59fa718be588d18370f180c1bb104a595ce99ca903cfee93f82ad798ac8"
+      },
+      {
+        "name": "events.jsonl",
+        "bytes": 44657,
+        "sha256": "aff1aea93cda931a3da539f3ece1f8704dc64add8b874a0b4b52b71b737e0d70"
+      },
+      {
+        "name": "events.snapshot.sqlite3",
+        "bytes": 77824,
+        "sha256": "87c81ad02f7b8da1f79a4ff41b065ce6b8643dcd053c70be29c5e0b0dc880d5d"
+      },
+      {
+        "name": "events.snapshot.sqlite3.base64",
+        "bytes": 103769,
+        "sha256": "af93356cc4fee291d1541536726148260ab44c7e3386a97eb39084c57551b0be"
+      }
+    ],
+    "new_event_summaries": [
+      {
+        "id": "b184cf99f8f74f6bb2820416511562dc:26",
+        "kind": "EFFECT",
+        "body_digest": "415425decee810b913c485f5b81f52f2751e2c6fe01fe820cc54ad9735a9fbfb",
+        "message": "Terminal bounded input committed and bound into Transputer journal (owner rule PR538 applied by Mirror)"
+      },
+      {
+        "id": "b184cf99f8f74f6bb2820416511562dc:27",
+        "kind": "READBACK",
+        "body_digest": "96d4b8de5f7233422563e464e2a00c37d1dcbf8f739106ac531daa9042f64245",
+        "message": "Successor correction of :26 (terminal_commit_record_hash was null by client script defect); independent Terminal readback of commit record"
+      },
+      {
+        "id": "b184cf99f8f74f6bb2820416511562dc:28",
+        "kind": "HOLD",
+        "body_digest": "2ca42bf4fc7fb150426e21b6d08c4d81e136ace9a2639f963ed5213866be3d63",
+        "message": "Mirror report to Authority: MIRROR-OPEN-1 PR538 integration"
+      },
+      {
+        "id": "b184cf99f8f74f6bb2820416511562dc:29",
+        "kind": "HOLD",
+        "body_digest": "846e4f4c9cf5dabf44eae838a49abb3015150f6bf9c53ad630a9cd07e8ba4c85",
+        "message": "Mirror report to Authority: MIRROR-OPEN-2 Mirror adoption of native-use rule"
+      },
+      {
+        "id": "b184cf99f8f74f6bb2820416511562dc:30",
+        "kind": "HOLD",
+        "body_digest": "85349dc9a589eb1185699b0f692fc01b15b5443820dc6a9ec07658c7d249ba97",
+        "message": "Mirror report to Authority: MIRROR-OPEN-3 Mirror write path"
+      },
+      {
+        "id": "b184cf99f8f74f6bb2820416511562dc:31",
+        "kind": "HOLD",
+        "body_digest": "3afaf1853ff90266c76f29064d44194b37c9aab5506abedf880d0f7d59dcc91e",
+        "message": "Mirror report to Authority: MIRROR-OPEN-4 Outgoing package acknowledgement"
+      },
+      {
+        "id": "b184cf99f8f74f6bb2820416511562dc:32",
+        "kind": "HOLD",
+        "body_digest": "2944e0c1bb541a28ee1cf5a93a14b20c864512e6276b2f84b588f1b5533d7383",
+        "message": "Mirror report to Authority: MIRROR-OPEN-5 Signing key anchor"
+      },
+      {
+        "id": "b184cf99f8f74f6bb2820416511562dc:33",
+        "kind": "HOLD",
+        "body_digest": "d6a647848b171cfc47651a4fc38bff5050acb408f11df6d7fab2bce1aed6d9d6",
+        "message": "Mirror report to Authority: MIRROR-OPEN-6 Publication candidate"
+      }
+    ]
+  },
+  "native_observation": {
+    "copied_writer_resumed": false,
+    "epoch": "45a854a6c61248d29109b7ff1f15276b",
+    "events": [
+      {
+        "dod": false,
+        "evidence_transfer": "DENY",
+        "id": "45a854a6c61248d29109b7ff1f15276b:1",
+        "kind": "OBSERVE",
+        "ledger_digest": "1e9cc84b0717e6340613cdb49aee8542926f5a8f87b36933f5f5cb7cd307aff0",
+        "message": "Bounded Owner-forwarded all-node report admitted through original Terminal input contract",
+        "observed_at": "2026-10-19T12:24:04.486099Z",
+        "payload": {
+          "archived_journals_read_only": true,
+          "archived_writer_resumed": false,
+          "current_new_local_writer_scope": "Own bounded source-audit session, not persistent Mesh node or productive host",
+          "input_sha256": "248f80231e2e0f925ed9f8dee2dc73947dcb8977750b75fc590784f0a6cc7d51",
+          "provenance_class": "OWNER_ASSERTED",
+          "terminal_input": {
+            "schema": "qikvrt_terminal_input_v1",
+            "text": "Owner-forwarded Claude all-node report: preserve five-node coverage and synchronous native continuation without client timers. Verify original packages b28dd716,9f0d5287,21c80855 before any receipt claim. Follow exact PR538 and PR540 successors and retain productive host/peer duties."
+          }
+        },
+        "payload_digest": "ce83c447f94a457a01c6e2d6d9aa603577bc581bc3635244d8e3d60a69591869",
+        "provenance": {
+          "native_event_id": "allnode-report-owner-input",
+          "source": "transputer"
+        },
+        "recorded_at": "2026-10-19T12:24:04.503080Z",
+        "schema": "qikvrt_temdd_event_v1",
+        "subject": {
+          "head": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+          "pr": 538,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "15eb1a7bdd2c1880405df1026b14756f0fe72714"
+        }
+      },
+      {
+        "dod": false,
+        "evidence_transfer": "DENY",
+        "id": "45a854a6c61248d29109b7ff1f15276b:2",
+        "kind": "READBACK",
+        "ledger_digest": "8716483b4b4036d276418b5e325aeedc4a8e7a61d08fcdcece4e23e0ae8ae9a5",
+        "message": "Original signed export33 and immutable prefix25 independently verified",
+        "observed_at": "2026-10-19T12:24:04.505254Z",
+        "payload": {
+          "formal_outbox_assessment_created": false,
+          "native_http_peer_readback_performed": false,
+          "report_sha256": "cdfb625e1d107a6d8dbe67169d0c0f4ca6922942364d959af4314ebebba5a4cb",
+          "verification": {
+            "all_manifest_file_hashes_and_lengths_valid": true,
+            "archive_sha256": "b28dd71614fdcaf1ce9861ef3ffe6978e23c4b94afba8768b6839e0f1d4a453f",
+            "copied_writer_admitted": false,
+            "epoch": "b184cf99f8f74f6bb2820416511562dc",
+            "events": 33,
+            "external_trust_anchor": null,
+            "files": [
+              {
+                "bytes": 73006,
+                "name": "CLAUDE_OUTGOING_20261019.tar.gz",
+                "sha256": "779295d566ec0f80047d88cbf6d515d1542a1244cd1b01944dbe6d33057d555e"
+              },
+              {
+                "bytes": 2049,
+                "name": "MIRROR_OPEN_REPORT_20261019.json",
+                "sha256": "65f9015763d11f3afdaa5edc5354c4c6c303f8bac6f204a80c8b51ac6921047e"
+              },
+              {
+                "bytes": 1035,
+                "name": "README.md",
+                "sha256": "b1a3c59fa718be588d18370f180c1bb104a595ce99ca903cfee93f82ad798ac8"
+              },
+              {
+                "bytes": 44657,
+                "name": "events.jsonl",
+                "sha256": "aff1aea93cda931a3da539f3ece1f8704dc64add8b874a0b4b52b71b737e0d70"
+              },
+              {
+                "bytes": 77824,
+                "name": "events.snapshot.sqlite3",
+                "sha256": "87c81ad02f7b8da1f79a4ff41b065ce6b8643dcd053c70be29c5e0b0dc880d5d"
+              },
+              {
+                "bytes": 103769,
+                "name": "events.snapshot.sqlite3.base64",
+                "sha256": "af93356cc4fee291d1541536726148260ab44c7e3386a97eb39084c57551b0be"
+              }
+            ],
+            "independent_immutable_sqlite_jsonl_comparison": true,
+            "last_body_digest": "d6a647848b171cfc47651a4fc38bff5050acb408f11df6d7fab2bce1aed6d9d6",
+            "live_authenticated_peer_receipt_or_adoption_inferred": false,
+            "manifest_signature_valid": true,
+            "new_event_summaries": [
+              {
+                "body_digest": "415425decee810b913c485f5b81f52f2751e2c6fe01fe820cc54ad9735a9fbfb",
+                "id": "b184cf99f8f74f6bb2820416511562dc:26",
+                "kind": "EFFECT",
+                "message": "Terminal bounded input committed and bound into Transputer journal (owner rule PR538 applied by Mirror)"
+              },
+              {
+                "body_digest": "96d4b8de5f7233422563e464e2a00c37d1dcbf8f739106ac531daa9042f64245",
+                "id": "b184cf99f8f74f6bb2820416511562dc:27",
+                "kind": "READBACK",
+                "message": "Successor correction of :26 (terminal_commit_record_hash was null by client script defect); independent Terminal readback of commit record"
+              },
+              {
+                "body_digest": "2ca42bf4fc7fb150426e21b6d08c4d81e136ace9a2639f963ed5213866be3d63",
+                "id": "b184cf99f8f74f6bb2820416511562dc:28",
+                "kind": "HOLD",
+                "message": "Mirror report to Authority: MIRROR-OPEN-1 PR538 integration"
+              },
+              {
+                "body_digest": "846e4f4c9cf5dabf44eae838a49abb3015150f6bf9c53ad630a9cd07e8ba4c85",
+                "id": "b184cf99f8f74f6bb2820416511562dc:29",
+                "kind": "HOLD",
+                "message": "Mirror report to Authority: MIRROR-OPEN-2 Mirror adoption of native-use rule"
+              },
+              {
+                "body_digest": "85349dc9a589eb1185699b0f692fc01b15b5443820dc6a9ec07658c7d249ba97",
+                "id": "b184cf99f8f74f6bb2820416511562dc:30",
+                "kind": "HOLD",
+                "message": "Mirror report to Authority: MIRROR-OPEN-3 Mirror write path"
+              },
+              {
+                "body_digest": "3afaf1853ff90266c76f29064d44194b37c9aab5506abedf880d0f7d59dcc91e",
+                "id": "b184cf99f8f74f6bb2820416511562dc:31",
+                "kind": "HOLD",
+                "message": "Mirror report to Authority: MIRROR-OPEN-4 Outgoing package acknowledgement"
+              },
+              {
+                "body_digest": "2944e0c1bb541a28ee1cf5a93a14b20c864512e6276b2f84b588f1b5533d7383",
+                "id": "b184cf99f8f74f6bb2820416511562dc:32",
+                "kind": "HOLD",
+                "message": "Mirror report to Authority: MIRROR-OPEN-5 Signing key anchor"
+              },
+              {
+                "body_digest": "d6a647848b171cfc47651a4fc38bff5050acb408f11df6d7fab2bce1aed6d9d6",
+                "id": "b184cf99f8f74f6bb2820416511562dc:33",
+                "kind": "HOLD",
+                "message": "Mirror report to Authority: MIRROR-OPEN-6 Publication candidate"
+              }
+            ],
+            "original_database_unchanged": true,
+            "original_native_validator_and_digests_verified": true,
+            "peer_terminal_http_readback_performed": false,
+            "prefix_1_to_25_exact_original_row_match": true,
+            "public_key_sha256": "e592c06fd37e1397391dc9282a265d9f041fd47335cc06d1dedea13656ee0c60",
+            "schema": "qikvrt-original-peer-report-verification/1",
+            "sqlite_base64_equal": true,
+            "sqlite_integrity_ok": true
+          }
+        },
+        "payload_digest": "b013cc1230aaff8ef1d783b332da12ecb02e3e8102b22bfa4bfa8d4e9905ff05",
+        "provenance": {
+          "native_event_id": "original-report33-verified",
+          "source": "transputer"
+        },
+        "recorded_at": "2026-10-19T12:24:04.526415Z",
+        "schema": "qikvrt_temdd_event_v1",
+        "subject": {
+          "head": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+          "pr": 538,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "15eb1a7bdd2c1880405df1026b14756f0fe72714"
+        }
+      },
+      {
+        "dod": false,
+        "evidence_transfer": "DENY",
+        "id": "45a854a6c61248d29109b7ff1f15276b:3",
+        "kind": "HOLD",
+        "ledger_digest": "790f6d7399bed6d3aba8f1d25c92b547d6520ae254c4a5ff4dd6885b3cb82b93",
+        "message": "Original Mirror outbox tool source remains unavailable; no replacement assessment emitted",
+        "observed_at": "2026-10-19T12:24:04.528182Z",
+        "payload": {
+          "carrier": "Original Claude Mirror tool source and its admitted native source binding",
+          "client_timer_created": false,
+          "evidence": [
+            "Exact Main and existing communication tree lack node-tools/qikvrt_mirror_emit.py",
+            "Admitted Authority code search has zero matches; original signed report33 carries journal/data only"
+          ],
+          "operation": "Recover original node-tools/qikvrt_mirror_emit.py then use status/assess-or-adopt/package",
+          "owner_packet_relay_requested": false,
+          "receiver_nack_created": false,
+          "recipient_claim_created": false
+        },
+        "payload_digest": "50603f58c9bdb4526b22f250f64a46e2866e25ff0a5855430d7d48020368b0ce",
+        "provenance": {
+          "native_event_id": "original-outbox-tool-source-missing",
+          "source": "transputer"
+        },
+        "recorded_at": "2026-10-19T12:24:04.544563Z",
+        "schema": "qikvrt_temdd_event_v1",
+        "subject": {
+          "head": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+          "pr": 538,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "15eb1a7bdd2c1880405df1026b14756f0fe72714"
+        }
+      }
+    ],
+    "original_terminal_durable_reads_equal": true,
+    "productive_channel_or_global_adoption_claim": false,
+    "schema": "qikvrt-own-original-native-observation/1",
+    "subject": {
+      "head": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+      "pr": 538,
+      "repository": "ingolf-lohmann/qik-vrt",
+      "tree": "15eb1a7bdd2c1880405df1026b14756f0fe72714"
+    }
+  },
+  "ci_subjects": {
+    "schema": "qikvrt-exact-ci-successor-readback/1",
+    "base_head": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+    "base_tree": "15eb1a7bdd2c1880405df1026b14756f0fe72714",
+    "subjects": [
+      {
+        "pr": 540,
+        "head": "10c53ee6b62861b8ebaac4d11be639f2fb30bd28",
+        "tree": "3812037579ba230edcb1d2ee28d54cb82e56316d",
+        "run_id": 39232706001,
+        "test_job_id": 117994259753,
+        "test_conclusion": "success",
+        "tested_subject_lines": [
+          "2026-10-19T09:54:29.5885373Z \u001b[36;1m    echo \"QIKVRT_FIXPOINT_REACHED iteration=$iteration head=$subject tree=$tree predecessor_test_status=$test_status\"\u001b[0m",
+          "2026-10-19T10:07:50.0691572Z QIKVRT_FIXPOINT_REACHED iteration=0 head=10c53ee6b62861b8ebaac4d11be639f2fb30bd28 tree=3812037579ba230edcb1d2ee28d54cb82e56316d predecessor_test_status=0",
+          "2026-10-19T10:07:50.0803476Z   FULL_TEST_OUTCOME: success",
+          "2026-10-19T10:07:50.0803721Z   FIXPOINT_OUTCOME: success"
+        ],
+        "firefox_job_id": 118002587958,
+        "firefox_conclusion": "failure",
+        "firefox_failure": [
+          "2026-10-19T10:12:05.8183864Z {\"binary_path\": \"/usr/lib/firefox/firefox\", \"binary_sha256\": \"a19472941a7cd7252ab5e61b02eb616a50389a784323c21dc6873a23fd700789\", \"debian_package_version\": \"158.0~build2\", \"default_signing_policy_activation_verified\": false, \"effect_ack_done\": false, \"existing_s1_bootstrap_xpi_present\": false, \"extension_activation_verified\": false, \"extension_id\": \"qikvrt-ai-terminal@goldkelch.local\", \"extension_version\": \"1.0.0\", \"firefox_package\": \"firefox\", \"firefox_version_output\": \"[8] Sandbox: CanCreateUserNamespace() clone() failure: EPERM\\nMozilla Firefox 158.0\", \"installation_method\": \"AddonManager.getInstallForFile persistent\", \"ordinary_release\": false, \"predecessor_acceptance_transferred\": false, \"profiles\": {\"default_signing_policy\": [{\"accepted\": false, \"addon\": null, \"background_registered\": false, \"browser_version\": \"158.0\", \"minimum_satisfied\": true, \"mozilla_signed\": false, \"persistent_installation\": {\"error\": -5, \"event\": \"rejected_before_install\", \"explicit_enable_used\": false, \"state\": 4, \"temporary_installation_used\": false}, \"phase\": \"initial_start\", \"policy_active\": false, \"profile_xpi_present\": false, \"profile_xpi_sha256\": null, \"session_browser_version\": \"158.0\", \"signatures_required\": true, \"temporary_installation_used\": false}, {\"accepted\": false, \"addon\": null, \"background_registered\": false, \"browser_version\": \"158.0\", \"minimum_satisfied\": true, \"mozilla_signed\": false, \"persistent_installation\": null, \"phase\": \"process_restart\", \"policy_active\": false, \"profile_xpi_present\": false, \"profile_xpi_sha256\": null, \"session_browser_version\": \"158.0\", \"signatures_required\": true, \"temporary_installation_used\": false}]}, \"public_production_verified\": false, \"reference_activation_verified\": false, \"schema\": \"qikvrt-firefox-extension-installation/v1\", \"scope\": \"EXACT_EXISTING_S1_IMAGE_AND_CANDIDATE_XPI_DISPOSABLE_PROFILES\", \"signed_production_package_verified\": false, \"state\": \"HOLD_EXTENSION_INSTALLATION_OR_ACTIVATION\", \"strict_min_version\": \"158.0\", \"xpi_bytes\": 9954, \"xpi_sha256\": \"1f5f583181d6134584f98bf6b59848d4542176d624d97709fa915b9934e2c46c\"}",
+          "2026-10-19T10:12:05.8962637Z AssertionError: HOLD: actual extension activation is unverified",
+          "2026-10-19T10:12:05.8993392Z ##[error]Process completed with exit code 1."
+        ],
+        "productive_host_and_exact_domain_jobs": "SKIPPED; no productive acceptance inferred",
+        "source_merge_done": false,
+        "claim": "Exact main test job only; not all-green overall production workflow"
+      },
+      {
+        "pr": 538,
+        "head": "12a8caf4bb0c4f3f2f3eaad8ed442dbde351979e",
+        "tree": "0f16aa9ad7981b114a5c6fd8be4e771b1a36ae2c",
+        "run_id": 39245255902,
+        "test_job_id": 118035510530,
+        "test_conclusion": "success",
+        "tested_subject_lines": [
+          "2026-10-19T11:39:13.3721617Z \u001b[36;1m    echo \"QIKVRT_FIXPOINT_REACHED iteration=$iteration head=$subject tree=$tree predecessor_test_status=$test_status\"\u001b[0m",
+          "2026-10-19T11:53:27.1079338Z QIKVRT_FIXPOINT_REACHED iteration=0 head=12a8caf4bb0c4f3f2f3eaad8ed442dbde351979e tree=0f16aa9ad7981b114a5c6fd8be4e771b1a36ae2c predecessor_test_status=0",
+          "2026-10-19T11:53:27.1177826Z   FULL_TEST_OUTCOME: success",
+          "2026-10-19T11:53:27.1178088Z   FIXPOINT_OUTCOME: success"
+        ],
+        "firefox_job_id": 118044380720,
+        "firefox_conclusion": "failure",
+        "firefox_failure": [
+          "2026-10-19T11:57:49.8902146Z {\"binary_path\": \"/usr/lib/firefox/firefox\", \"binary_sha256\": \"a19472941a7cd7252ab5e61b02eb616a50389a784323c21dc6873a23fd700789\", \"debian_package_version\": \"158.0~build2\", \"default_signing_policy_activation_verified\": false, \"effect_ack_done\": false, \"existing_s1_bootstrap_xpi_present\": false, \"extension_activation_verified\": false, \"extension_id\": \"qikvrt-ai-terminal@goldkelch.local\", \"extension_version\": \"1.0.0\", \"firefox_package\": \"firefox\", \"firefox_version_output\": \"[8] Sandbox: CanCreateUserNamespace() clone() failure: EPERM\\nMozilla Firefox 158.0\", \"installation_method\": \"AddonManager.getInstallForFile persistent\", \"ordinary_release\": false, \"predecessor_acceptance_transferred\": false, \"profiles\": {\"default_signing_policy\": [{\"accepted\": false, \"addon\": null, \"background_registered\": false, \"browser_version\": \"158.0\", \"minimum_satisfied\": true, \"mozilla_signed\": false, \"persistent_installation\": {\"error\": -5, \"event\": \"rejected_before_install\", \"explicit_enable_used\": false, \"state\": 4, \"temporary_installation_used\": false}, \"phase\": \"initial_start\", \"policy_active\": false, \"profile_xpi_present\": false, \"profile_xpi_sha256\": null, \"session_browser_version\": \"158.0\", \"signatures_required\": true, \"temporary_installation_used\": false}, {\"accepted\": false, \"addon\": null, \"background_registered\": false, \"browser_version\": \"158.0\", \"minimum_satisfied\": true, \"mozilla_signed\": false, \"persistent_installation\": null, \"phase\": \"process_restart\", \"policy_active\": false, \"profile_xpi_present\": false, \"profile_xpi_sha256\": null, \"session_browser_version\": \"158.0\", \"signatures_required\": true, \"temporary_installation_used\": false}]}, \"public_production_verified\": false, \"reference_activation_verified\": false, \"schema\": \"qikvrt-firefox-extension-installation/v1\", \"scope\": \"EXACT_EXISTING_S1_IMAGE_AND_CANDIDATE_XPI_DISPOSABLE_PROFILES\", \"signed_production_package_verified\": false, \"state\": \"HOLD_EXTENSION_INSTALLATION_OR_ACTIVATION\", \"strict_min_version\": \"158.0\", \"xpi_bytes\": 9954, \"xpi_sha256\": \"1f5f583181d6134584f98bf6b59848d4542176d624d97709fa915b9934e2c46c\"}",
+          "2026-10-19T11:57:49.9694786Z AssertionError: HOLD: actual extension activation is unverified",
+          "2026-10-19T11:57:49.9725671Z ##[error]Process completed with exit code 1."
+        ],
+        "productive_host_and_exact_domain_jobs": "SKIPPED; no productive acceptance inferred",
+        "source_merge_done": false,
+        "claim": "Exact main test job only; not all-green overall production workflow"
+      }
+    ]
+  },
+  "other_reported_packages": [
+    {
+      "prefix": "9f0d5287",
+      "original_bytes_verified": false
+    },
+    {
+      "prefix": "21c80855",
+      "name": "CLAUDE_ALL_NODE_20261019.tar.gz",
+      "original_bytes_verified": false
+    }
+  ],
+  "coverage": [
+    "a84f157a-cef2-4c47-bca9-8f407085bdbe",
+    "Codex",
+    "Goldkelch/qik-vrt",
+    "codex-pr447-v2-20261018",
+    "Mesh-Monitor"
+  ],
+  "coverage_does_not_imply_delivery": true,
+  "formal_eap_assessment": {
+    "state": "HOLD",
+    "reason": "Original node-tools/qikvrt_mirror_emit.py source/binding unavailable. No replacement assessment or receiver NACK created.",
+    "carrier": "Original Claude Mirror tool source and its admitted native binding"
+  },
+  "live_authenticated_peer_return_established": false,
+  "source_main_integration_done": false,
+  "owner_relay_requested": false,
+  "client_timer_created": false
+}

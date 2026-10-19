@@ -1,0 +1,102 @@
+{
+  "schema": "qikvrt-original-peer-report-verification/1",
+  "archive_sha256": "b28dd71614fdcaf1ce9861ef3ffe6978e23c4b94afba8768b6839e0f1d4a453f",
+  "epoch": "b184cf99f8f74f6bb2820416511562dc",
+  "events": 33,
+  "last_body_digest": "d6a647848b171cfc47651a4fc38bff5050acb408f11df6d7fab2bce1aed6d9d6",
+  "manifest_signature_valid": true,
+  "public_key_sha256": "e592c06fd37e1397391dc9282a265d9f041fd47335cc06d1dedea13656ee0c60",
+  "external_trust_anchor": null,
+  "all_manifest_file_hashes_and_lengths_valid": true,
+  "sqlite_base64_equal": true,
+  "sqlite_integrity_ok": true,
+  "original_native_validator_and_digests_verified": true,
+  "independent_immutable_sqlite_jsonl_comparison": true,
+  "peer_terminal_http_readback_performed": false,
+  "prefix_1_to_25_exact_original_row_match": true,
+  "original_database_unchanged": true,
+  "copied_writer_admitted": false,
+  "live_authenticated_peer_receipt_or_adoption_inferred": false,
+  "files": [
+    {
+      "name": "CLAUDE_OUTGOING_20261019.tar.gz",
+      "bytes": 73006,
+      "sha256": "779295d566ec0f80047d88cbf6d515d1542a1244cd1b01944dbe6d33057d555e"
+    },
+    {
+      "name": "MIRROR_OPEN_REPORT_20261019.json",
+      "bytes": 2049,
+      "sha256": "65f9015763d11f3afdaa5edc5354c4c6c303f8bac6f204a80c8b51ac6921047e"
+    },
+    {
+      "name": "README.md",
+      "bytes": 1035,
+      "sha256": "b1a3c59fa718be588d18370f180c1bb104a595ce99ca903cfee93f82ad798ac8"
+    },
+    {
+      "name": "events.jsonl",
+      "bytes": 44657,
+      "sha256": "aff1aea93cda931a3da539f3ece1f8704dc64add8b874a0b4b52b71b737e0d70"
+    },
+    {
+      "name": "events.snapshot.sqlite3",
+      "bytes": 77824,
+      "sha256": "87c81ad02f7b8da1f79a4ff41b065ce6b8643dcd053c70be29c5e0b0dc880d5d"
+    },
+    {
+      "name": "events.snapshot.sqlite3.base64",
+      "bytes": 103769,
+      "sha256": "af93356cc4fee291d1541536726148260ab44c7e3386a97eb39084c57551b0be"
+    }
+  ],
+  "new_event_summaries": [
+    {
+      "id": "b184cf99f8f74f6bb2820416511562dc:26",
+      "kind": "EFFECT",
+      "body_digest": "415425decee810b913c485f5b81f52f2751e2c6fe01fe820cc54ad9735a9fbfb",
+      "message": "Terminal bounded input committed and bound into Transputer journal (owner rule PR538 applied by Mirror)"
+    },
+    {
+      "id": "b184cf99f8f74f6bb2820416511562dc:27",
+      "kind": "READBACK",
+      "body_digest": "96d4b8de5f7233422563e464e2a00c37d1dcbf8f739106ac531daa9042f64245",
+      "message": "Successor correction of :26 (terminal_commit_record_hash was null by client script defect); independent Terminal readback of commit record"
+    },
+    {
+      "id": "b184cf99f8f74f6bb2820416511562dc:28",
+      "kind": "HOLD",
+      "body_digest": "2ca42bf4fc7fb150426e21b6d08c4d81e136ace9a2639f963ed5213866be3d63",
+      "message": "Mirror report to Authority: MIRROR-OPEN-1 PR538 integration"
+    },
+    {
+      "id": "b184cf99f8f74f6bb2820416511562dc:29",
+      "kind": "HOLD",
+      "body_digest": "846e4f4c9cf5dabf44eae838a49abb3015150f6bf9c53ad630a9cd07e8ba4c85",
+      "message": "Mirror report to Authority: MIRROR-OPEN-2 Mirror adoption of native-use rule"
+    },
+    {
+      "id": "b184cf99f8f74f6bb2820416511562dc:30",
+      "kind": "HOLD",
+      "body_digest": "85349dc9a589eb1185699b0f692fc01b15b5443820dc6a9ec07658c7d249ba97",
+      "message": "Mirror report to Authority: MIRROR-OPEN-3 Mirror write path"
+    },
+    {
+      "id": "b184cf99f8f74f6bb2820416511562dc:31",
+      "kind": "HOLD",
+      "body_digest": "3afaf1853ff90266c76f29064d44194b37c9aab5506abedf880d0f7d59dcc91e",
+      "message": "Mirror report to Authority: MIRROR-OPEN-4 Outgoing package acknowledgement"
+    },
+    {
+      "id": "b184cf99f8f74f6bb2820416511562dc:32",
+      "kind": "HOLD",
+      "body_digest": "2944e0c1bb541a28ee1cf5a93a14b20c864512e6276b2f84b588f1b5533d7383",
+      "message": "Mirror report to Authority: MIRROR-OPEN-5 Signing key anchor"
+    },
+    {
+      "id": "b184cf99f8f74f6bb2820416511562dc:33",
+      "kind": "HOLD",
+      "body_digest": "d6a647848b171cfc47651a4fc38bff5050acb408f11df6d7fab2bce1aed6d9d6",
+      "message": "Mirror report to Authority: MIRROR-OPEN-6 Publication candidate"
+    }
+  ]
+}

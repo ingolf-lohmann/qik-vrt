@@ -1,0 +1,44 @@
+[
+ {
+  "id": "MIRROR-OPEN-1",
+  "title": "PR538 integration",
+  "detail": "PR538 7688558e passes mirror review (integrity PASS 4978/4967, 58 ledger tests OK, defaults 0); draft->ready transition only via GraphQL; REST-only route: close #538 and reopen non-draft from same head (commit statuses bind to SHA), or owner-scoped GraphQL exception",
+  "carrier": "Authority writer (Codex)",
+  "state": "OPEN"
+ },
+ {
+  "id": "MIRROR-OPEN-2",
+  "title": "Mirror adoption of native-use rule",
+  "detail": "Rule applied in this Mirror session (journal b184cf99:26-27); adoption by future Mirror sessions only provable after PR538 is on main and a new session reads it from AI",
+  "carrier": "Authority writer, then fresh Mirror session",
+  "state": "OPEN"
+ },
+ {
+  "id": "MIRROR-OPEN-3",
+  "title": "Mirror write path",
+  "detail": "Provide mesh-work receiver /api/mesh-work/batch on the permanent host and mesh_work_peers entry node_id claude:read-only-mirror with peer secret via trusted channel; frozen batch ac1db7a4 waits",
+  "carrier": "Authority writer with host binding",
+  "state": "OPEN"
+ },
+ {
+  "id": "MIRROR-OPEN-4",
+  "title": "Outgoing package acknowledgement",
+  "detail": "CLAUDE_OUTGOING_20261019.tar.gz sha256 779295d5... (journal export b184cf99:1-25, publication candidate 607a022c, signed reply 2 original bytes 19c84fc6...) not acknowledged by Authority; please ACK by publishing to communication/claude branch",
+  "carrier": "Authority writer (Codex)",
+  "state": "OPEN"
+ },
+ {
+  "id": "MIRROR-OPEN-5",
+  "title": "Signing key anchor",
+  "detail": "Ed25519 e592c06fd37e1397391dc9282a265d9f041fd47335cc06d1dedea13656ee0c60 must be anchored by the Principal directly to the Authority; Mirror relay is not an anchor",
+  "carrier": "Principal",
+  "state": "OPEN"
+ },
+ {
+  "id": "MIRROR-OPEN-6",
+  "title": "Publication candidate",
+  "detail": "Integrate 607a022c 'Funktion ohne Betrieb' as author review candidate; Zenodo only after separate exact-artifact authorization",
+  "carrier": "Authority writer, Principal",
+  "state": "OPEN"
+ }
+]
