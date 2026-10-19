@@ -1,0 +1,134 @@
+{
+  "schema": "qikvrt_claim_matrix_v1",
+  "publication_id": "2026-10-19-funktion-ohne-betrieb",
+  "claim_unit": "Tragende Aussage des Artikels",
+  "scope": "Authority ingolf-lohmann/qik-vrt, Stände 60afe42d, ffe84ddf, c9514d2a, a4729467; Nacht 18./19.10.2026",
+  "claim_count": 12,
+  "claims": [
+    {
+      "claim_id": "FOB-001",
+      "statement": "Der Mirror-zu-Authority-Weg mesh-cache-stage/idle/send mit HMAC-POST /api/mesh-work/batch ist spezifiziert und implementiert.",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "evidence_refs": [
+        "runtime/self-host/README.md",
+        "tools/qikvrt_self_host.py"
+      ],
+      "boundary": "Spezifikation und Code auf main 60afe42d; kein Netzbetrieb behauptet."
+    },
+    {
+      "claim_id": "FOB-002",
+      "statement": "MeshWorkCacheTests (24) und MeshContractTests (27) bestehen auf main 60afe42d.",
+      "classification": "TEST_EVIDENCE",
+      "status": "BOUND",
+      "evidence_refs": [
+        "tests/test_self_host.py@60afe42d3f7bb7992b78c747878582738a97dc6a"
+      ],
+      "boundary": "Loopback-Testbedingungen; kein Nachweis des Betriebs zwischen getrennten Hosts."
+    },
+    {
+      "claim_id": "FOB-003",
+      "statement": "In der öffentlichen Versionsgeschichte aller Branches der Authority existiert kein gesendeter Mesh-Work-Stapel, keine Empfangsquittung und keine Peer-Aufnahme in mesh_work_peers.",
+      "classification": "REPOSITORY_OBSERVATION",
+      "status": "BOUND",
+      "evidence_refs": [
+        "git log --all -i --grep='mesh-work|mesh-cache'",
+        "git grep mesh_work_peers"
+      ],
+      "boundary": "Gilt für die öffentliche Repository-Historie zum Prüfzeitpunkt; private Laufzeitzustände nicht erfasst."
+    },
+    {
+      "claim_id": "FOB-004",
+      "statement": "Ein laufender Empfänger bei der Authority fehlt, weil der dauerhafte Host nicht aufgenommen ist.",
+      "classification": "DERIVED",
+      "status": "BOUND",
+      "evidence_refs": [
+        "AI_PROGRESS.json",
+        "continuation current.json blocker ORIGINAL_IONOS_HOST_REST_OPERATION_NOT_EXPOSED"
+      ],
+      "boundary": "HTTP 525 beobachtet durch den Codex-Beobachter, nicht durch den Claude-Knoten."
+    },
+    {
+      "claim_id": "FOB-005",
+      "statement": "Der Merge ffe84ddf ist im Herkunftsnachweis als Folge eines direkten Auftrags von Ingolf Lohmann verzeichnet; der Claude-Kandidat b933ae8d kommt darin nicht vor.",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "evidence_refs": [
+        "state/work_units/QIKVRT_TEMDD_CONSOLIDATION_20261019_V1.json@ffe84ddf3adde8443d8671b5d3bd0b24bbf1a1f6"
+      ],
+      "boundary": "Herkunftsangabe des Codex-Knotens; keine Aussage über nicht dokumentierte Kommunikation."
+    },
+    {
+      "claim_id": "FOB-006",
+      "statement": "Zwischen 2026-10-19T01:05Z und 07:10Z entstand kein Commit in der Authority.",
+      "classification": "REPOSITORY_OBSERVATION",
+      "status": "BOUND",
+      "evidence_refs": [
+        "git for-each-ref refs/heads refs/pull refs/qikvrt (Authority, abgerufen 2026-10-19T07:10Z)"
+      ],
+      "boundary": "Ob autonome Workflows ohne Spur liefen (NOOP), ist ohne Actions-API nicht unterscheidbar."
+    },
+    {
+      "claim_id": "FOB-007",
+      "statement": "PR #535 Head c9514d2a enthielt noch die Defaults Goldkelch/qik-vrt und PR 1103.",
+      "classification": "TEST_EVIDENCE",
+      "status": "BOUND",
+      "evidence_refs": [
+        "src/qikvrt_temdd_event_ledger.py@c9514d2a67c73155ca33fdbc820d8598af4e396f"
+      ],
+      "boundary": "Exakter Head; spätere Heads gesondert geprüft."
+    },
+    {
+      "claim_id": "FOB-008",
+      "statement": "ffe84ddf verletzt auf normalem Checkout die Integritätsprüfung (34 LF-gehashte .cmd/.ps1-Einträge); Claude-Korrektur 07497e6b und CI-Korrektur b179dfeb haben denselben Tree bff8937d.",
+      "classification": "TEST_EVIDENCE",
+      "status": "BOUND",
+      "evidence_refs": [
+        "tools/qikvrt_integrity.py verify@ffe84ddf",
+        "git rev-parse 07497e6b^{tree} b179dfeb^{tree}"
+      ],
+      "boundary": "Gilt für Checkouts, die .gitattributes eol beachten."
+    },
+    {
+      "claim_id": "FOB-009",
+      "statement": "Beide Knoten rechneten die EFFECT_ACK-Records v1 e41e9787 und v2 198885ad mit src/qikvrt_effect_ack.py identisch nach; Zustand jeweils EFFECT_ACK_BLOCK.",
+      "classification": "TEST_EVIDENCE",
+      "status": "BOUND",
+      "evidence_refs": [
+        "evidence/client-communication/2026-10-19/ingolf-claude-transputer-link-20261018T232045Z/"
+      ],
+      "boundary": "Kein authentifizierter Rückweg; kein EFFECT_ACK_DONE."
+    },
+    {
+      "claim_id": "FOB-010",
+      "statement": "Die These, die künstlich-kognitiven Systeme trügen keinerlei Anteil, ist die zugeschriebene Aussage des Autors.",
+      "classification": "OWNER_ASSERTED",
+      "status": "BOUND",
+      "evidence_refs": [
+        "QIKVRT_Funktion_ohne_Betrieb_20261019.md#Zitat"
+      ],
+      "boundary": "Die Belege tragen die Fassung: entscheidender Anteil (Richtung, Erkenntnis, Korrektur, Freigabe) beim Menschen; maschinelle Beiträge abgeleitet, begrenzt, getrennt ausgewiesen."
+    },
+    {
+      "claim_id": "FOB-011",
+      "statement": "Kein maschineller Beitrag dieser Nacht entstand aus eigenem Antrieb ohne menschlichen Auslöser.",
+      "classification": "DERIVED",
+      "status": "BOUND",
+      "evidence_refs": [
+        "FOB-005",
+        "FOB-006"
+      ],
+      "boundary": "Bezogen auf die dokumentierten Ereignisse der Nacht 18./19.10.2026."
+    },
+    {
+      "claim_id": "FOB-012",
+      "statement": "Diese Arbeit ist eine Autorenprüffassung; keine Zenodo-, IETF- oder Plattformveröffentlichung ist erfolgt.",
+      "classification": "STATUS",
+      "status": "BOUND",
+      "evidence_refs": [
+        "PUBLICATION_STATUS.json"
+      ],
+      "boundary": "Veröffentlichung erfordert gesonderte ausdrückliche Wirkungsfreigabe nach Repository-Policy."
+    }
+  ]
+}

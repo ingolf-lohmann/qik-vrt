@@ -1,0 +1,54 @@
+{
+  "schema": "qikvrt-publication-distribution-status/v1",
+  "prepared_at_utc": "2026-10-19T07:39:06.536200+00:00",
+  "human_owner": "Ingolf Lohmann",
+  "human_request_received_at": "2026-10-19T07:36:00Z",
+  "human_request": "Und dazu verfasst du mir nun einen ausführlichen Artikel, der für die Allgemeinheit anschlussfähig und verständlich ist und für die Fachwelt alle Zweifel ausräumt. In der Art und Weise, wie das QIKVRT-Repository es vorsieht und wirst dann auch dafür sorgen, dass dieser Artikel zu gegebener Zeit, wie viele andere Artikel, die noch in der Pipeline sind, auf Zenodo und auf anderen öffentlichen Plattformen, wie natürlich dann auch in allen Repository Notes selbst, enthalten ist, auffindbar ist und wie alle anderen Artikel auch Teil des Gesamtwerks bleibt.",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "base_commit": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+  "state": "AUTHOR_REVIEW_CANDIDATE",
+  "artificial_cognitive_actor": "Claude (Anthropic), configured model claude-opus-5-5",
+  "human_actor": "Ingolf Lohmann",
+  "distribution": {
+    "repository_nodes": "PENDING_INTEGRATION_VIA_EXISTING_GATES",
+    "zenodo": "NOT_PUBLISHED; requires separate explicit exact-artifact owner authorization and the existing Zenodo publication route",
+    "other_platforms": "NOT_PUBLISHED",
+    "ietf": "NOT_APPLICABLE"
+  },
+  "files": [
+    {
+      "path": "CC-BY-NC-ND-4.0.txt",
+      "bytes": 19127,
+      "sha256": "38762e3777f4ec00a6f769062a7c3f704fb78ce08303ecff88558da4c49cf9ea",
+      "git_blob_sha1": "cfe676c541842bd2b766787b1f6983e063a1eee2"
+    },
+    {
+      "path": "CLAIM_MATRIX.json",
+      "bytes": 5980,
+      "sha256": "9d4964f4111f55971d714fe45a3a8ed2d18c5d7cf4577c995d7fcb1b069ed110",
+      "git_blob_sha1": "5ee934b19f31d74bfb28795b78a777feaab095ca"
+    },
+    {
+      "path": "LICENSE_NOTICE.md",
+      "bytes": 463,
+      "sha256": "08920800f88fb2753bd50b4d64962ba63f901448be5d2ec3a10fd6ec281f4703",
+      "git_blob_sha1": "b800bdcb3c3f2231f6b1953cf734d93a15344002"
+    },
+    {
+      "path": "QIKVRT_Funktion_ohne_Betrieb_20261019.md",
+      "bytes": 15866,
+      "sha256": "94b185850ae38a024f054f8f4e7298b2a0cf5f70471ec6e7607e16cf785d1088",
+      "git_blob_sha1": "28291f1d776042e190b82fe91ecf7ea24fe409ce"
+    },
+    {
+      "path": "README.md",
+      "bytes": 596,
+      "sha256": "8eeeff93fd5aec6ede356dfeaf19da5509479144056d48662622345c21f73ce3",
+      "git_blob_sha1": "346f5e1f8c6cba23675b9a7ba655eaee3097901f"
+    }
+  ],
+  "claims": {
+    "EFFECT_ACK_DONE": false,
+    "published": false
+  }
+}
