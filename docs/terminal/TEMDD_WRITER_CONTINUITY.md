@@ -40,3 +40,18 @@ collision cannot be repaired by deleting, renumbering or relabeling acknowledged
 events, or by declaring one copied branch authoritative. Reconciliation evidence
 must preserve every branch, qualify conflicting receipts by their original
 digest, and separately establish the next admitted writer.
+
+## Consolidated carrier and writer admission — 19 October 2026
+
+The existing PR #535 integration combines these writer controls with PR #536's
+explicit `--repository` and `--pr` admission and container guard. A missing
+binding is rejected before state or listeners are created. Explicit carrier
+arguments prevent accidental defaults; they do not authenticate a peer or a
+claimed PR association. No distributed exclusion follows from local file locks.
+
+The historical implementation is exercised only in an isolated regression to
+reproduce 23 common events and two different event-24 receipts with the same ID.
+The repaired implementation reads both full histories, refuses legacy takeover,
+and leaves both SQLite files byte-identical. This fixture does not mutate or
+retroactively repair the actual observed journals. The two predecessor recovery
+receipts and native S1 ZIP artifacts are retained as exact original bytes.

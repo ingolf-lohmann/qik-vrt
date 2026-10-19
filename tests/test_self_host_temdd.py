@@ -78,6 +78,15 @@ class SourceRecoveryTests(unittest.TestCase):
         successor = json.loads((ROOT / 'evidence/self_host/SOURCE_RECOVERY_SUCCESSOR_20261013.json').read_bytes())
         self.assertEqual(successor['historical_receipt_sha256'], hashlib.sha256(receipt_bytes).hexdigest())
         self.assertFalse(successor['predecessor_pass_transferred'])
+        update = successor['temdd_explicit_subject_20261018']
+        previous_bytes = (ROOT / update['previous_receipt_path']).read_bytes()
+        self.assertEqual(hashlib.sha256(previous_bytes).hexdigest(), update['previous_receipt_sha256'])
+        self.assertFalse(update['predecessor_pass_transferred'])
+        previous = json.loads(previous_bytes)
+        self.assertEqual(previous['historical_receipt_sha256'], successor['historical_receipt_sha256'])
+        previous_bindings = {entry['restored_path']: entry for entry in previous['changed_originals']}
+        for entry in update['preserved_previous_successor_bindings']:
+            self.assertEqual(entry, previous_bindings[entry['restored_path']])
         changed = {entry['restored_path']:entry for entry in successor['changed_originals']}
         self.assertEqual(set(changed), {f['restored_path'] for f in r['files'] if
             hashlib.sha256((ROOT/f['restored_path']).read_bytes()).hexdigest() != f['sha256']})
@@ -94,6 +103,20 @@ class SourceRecoveryTests(unittest.TestCase):
             self.assertEqual(len(raw), f['bytes'], f['restored_path'])
             self.assertEqual(hashlib.sha256(raw).hexdigest(), f['sha256'])
             self.assertEqual(hashlib.sha1(('blob '+str(len(raw))+'\0').encode()+raw).hexdigest(), f['git_blob_sha1'])
+
+    def test_consolidation_preserves_both_predecessor_recovery_receipts(self):
+        successor = json.loads((ROOT / 'evidence/self_host/SOURCE_RECOVERY_SUCCESSOR_20261013.json').read_bytes())
+        update = successor['temdd_consolidation_20261019']
+        self.assertEqual(update['integration_pr'], 535)
+        self.assertFalse(update['predecessor_pass_transferred'])
+        self.assertFalse(update['distributed_writer_exclusion_proved'])
+        self.assertFalse(update['production_host_admitted'])
+        self.assertEqual({item['pr'] for item in update['predecessors']}, {535, 536})
+        for item in update['predecessors']:
+            raw = (ROOT / item['receipt_path']).read_bytes()
+            self.assertEqual(hashlib.sha256(raw).hexdigest(), item['receipt_sha256'])
+            self.assertEqual(host.git_blob_digest(raw), item['receipt_git_blob'])
+            self.assertEqual(json.loads(raw)['historical_receipt_sha256'], successor['historical_receipt_sha256'])
 
     def test_native_kernel_is_in_the_export_and_no_provider_is_required(self):
         definition = json.loads((ROOT / host.DEFINITION).read_bytes())

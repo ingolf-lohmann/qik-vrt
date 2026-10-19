@@ -61,6 +61,10 @@ def utc():
 
 def subject(root, repository, pr):
     """Observe one clean immutable checkout, without a floating tree lookup."""
+    if not isinstance(repository, str) or not re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', repository):
+        raise Hold('REPOSITORY_REQUIRED')
+    if type(pr) is not int or pr < 1:
+        raise Hold('PR_REQUIRED')
     def git(*args):
         return subprocess.check_output(['git', '-C', str(root), *args],
             stderr=subprocess.DEVNULL, timeout=5, text=True).strip()
@@ -74,10 +78,6 @@ def subject(root, repository, pr):
             raise Hold('EXACT_SUBJECT_CHANGED')
     except (OSError, subprocess.SubprocessError) as exc:
         raise Hold('EXACT_SUBJECT_UNOBSERVABLE_OR_DIRTY') from exc
-    if not re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', repository):
-        raise Hold('REPOSITORY_REQUIRED')
-    if type(pr) is not int or pr < 1:
-        raise Hold('PR_REQUIRED')
     return {'repository': repository, 'pr': pr, 'head': head, 'tree': tree}
 
 
@@ -548,8 +548,8 @@ def main():
     parser.add_argument('--host', default='127.0.0.1')
     parser.add_argument('--port', type=int, default=8771)
     parser.add_argument('--root', default=str(Path(__file__).resolve().parents[1]))
-    parser.add_argument('--repository', default='Goldkelch/qik-vrt')
-    parser.add_argument('--pr', type=int, default=1103)
+    parser.add_argument('--repository', help='Explicit owner/repository of the serve carrier; no inferred default')
+    parser.add_argument('--pr', type=int, help='Explicit positive PR binding of the serve carrier; no historical default')
     args = parser.parse_args()
     try:
         if args.operation == 'append':

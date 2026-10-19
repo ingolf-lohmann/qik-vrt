@@ -14,13 +14,11 @@ DISPLAY_VALUE="${DISPLAY:-:99}"
 START_URL="${QIKVRT_START_URL:-about:blank}"
 
 # BEGIN TEMDD deployment subject binding
-# Exact deployments must not silently inherit the language carrier's PR 1103.
-# Unsealed standalone/reference launches retain their existing compatibility.
+# Every ledger launch needs its actual carrier identity, including reference
+# launches. Missing values must not create a journal under a historical subject.
 set --
-if [ -n "${QIKVRT_EXACT_HEAD:-}${QIKVRT_EXACT_TREE:-}" ]; then
-  : "${QIKVRT_TEMDD_PR:?BLOCK: QIKVRT_TEMDD_PR is required for an exact deployment}"
-  : "${QIKVRT_TEMDD_REPOSITORY:?BLOCK: QIKVRT_TEMDD_REPOSITORY is required for an exact deployment}"
-fi
+: "${QIKVRT_TEMDD_PR:?BLOCK: QIKVRT_TEMDD_PR is required for every TEMDD launch}"
+: "${QIKVRT_TEMDD_REPOSITORY:?BLOCK: QIKVRT_TEMDD_REPOSITORY is required for every TEMDD launch}"
 if [ "${QIKVRT_TEMDD_PR+x}" = x ]; then
   case "$QIKVRT_TEMDD_PR" in
     ''|*[!0-9]*|0*)
