@@ -8,3 +8,8 @@ Die Messungen, Repositorybeobachtungen und Gates sind historische, in der PDF au
 Diese Wiederherstellung und Repository-Materialisierung ist keine Zenodo-Veröffentlichung oder IETF-Einreichung. Neue Repositoryquellen benötigen weiterhin ihr eigenes öffentlich bytegleich rückgelesenes Zenodoarchiv. Die komplette technische Begleitfassung und die IETF-04-Kandidatenbytes sind vor einer späteren endgültigen Publikation aus den exakten Originalen wieder anzuschließen und am aktuellen Quellenkatalog abzugleichen. Native Integrität und Exact-Head-Gates sind auf diesem Review-Branch neu auszuführen; frühere Checks werden nicht übertragen.
 
 Fortsetzung des ursprünglichen Auftrags ohne zusätzlichen Scheduler oder Executor. Die vorhandene CI materialisiert gegebenenfalls die aktuellen Integritätsdateien über ihren bestehenden getesteten Nachfolgerpfad. Main-Übernahme, Owner-Entscheidung und externe Publikationsgrenzen bleiben getrennt.
+
+Publication ID: `qikvrt-signatures-evidence-synthesis-20261005-v2`
+Publication Index State: `repository_candidate_historical_snapshot_archive_pending`
+
+[Die vollständige eingefrorene PDF](QIKVRT_Signaturen_Evidenz_und_Paradigmenfrage_2026-10-05.pdf)
