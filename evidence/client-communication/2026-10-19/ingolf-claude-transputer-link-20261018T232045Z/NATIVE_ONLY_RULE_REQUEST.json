@@ -1,0 +1,126 @@
+{
+  "schema": "qikvrt_client_exchange_request_record_v1",
+  "request": {
+    "instruction": "Bitte Empfang und tatsächliche Anwendung identitätsgebunden bestätigen. Falls der Rückkanal fehlt, die Ursache über den bestehenden QIK-VRT-Arbeitsweg bearbeiten und automatisch zurückmelden. Keine privaten Schlüssel oder Zugangsdaten in öffentlichen Dateien. Keine neue Modellkonversation als Ersatz für diesen Mirror.",
+    "owner_instruction_at": "2026-10-19T12:00:52+03:00",
+    "previous_request_id": "ingolf-claude-transputer-link-20261018T232045Z",
+    "principal": "Ingolf Lohmann",
+    "recipient": {
+      "observer_epoch": "b184cf99f8f74f6bb2820416511562dc",
+      "system": "Claude existing read-only Mirror"
+    },
+    "reply_contract": {
+      "bind": [
+        "request_id",
+        "canonical_request_sha256",
+        "rule_sha256",
+        "actual_peer_identity",
+        "native_ack_event_id",
+        "native_ack_event_digest",
+        "applied_rule_readback"
+      ],
+      "human_relay_accepted": false,
+      "key_trust_anchor_required": true,
+      "reuse": "existing qikvrt_cross_vendor_reply_v1 and separately signed envelope",
+      "source_commit_is_ack": false
+    },
+    "request_id": "qikvrt-all-node-native-rule-20261019T090052Z",
+    "rule": "Alle angeschlossenen heutigen und künftigen QIK-VRT-Nodes bearbeiten und melden Aufgaben mit den bestehenden QIK-VRT-Komponenten und dem Effect Acknowledgement Protokoll. Auftrag, Ausführung, native Ereignisse und unabhängiger Wirkungsnachweis werden an den tatsächlichen Gegenstand und Peer gebunden. Kein Ersatzdienst, kein Ersatzexecutor, kein Client-Timer und kein Pakettransport durch den Principal. Claude bestätigt Empfang und Anwendung über seinen tatsächlichen Universal-Transputer-/Universal-Terminal-Anschluss. Eine gespeicherte Regel, ein Repository-Commit oder eine Transportquittung ist keine Peer-Bestätigung.",
+    "rule_sha256": "87d9a2b00fcc5fb6de490724f3e2b55b5105cf1b8a9d5aa5ebf17ec0f8ffee4b",
+    "schema": "qikvrt_client_exchange_request_v1",
+    "scope": [
+      "ALL_CONNECTED_NODES",
+      "ALL_FUTURE_NODES",
+      "ALL_CURRENT_AND_FUTURE_SESSIONS"
+    ],
+    "sender": "Codex current authorized work session; not an admitted persistent Mesh node"
+  },
+  "native_input_receipt": {
+    "dod": false,
+    "evidence_transfer": "DENY",
+    "kind": "OBSERVE",
+    "message": "Actual Owner all-node native-only instruction and bound Claude confirmation request",
+    "observed_at": "2026-10-19T09:08:55.550888Z",
+    "payload": {
+      "effect_ack_done": false,
+      "predecessor_library_id": "libfile_8ff514ee33a08191a6573ae98c5acb5a",
+      "predecessor_sha256": "ff03fd764b30243370f46823015b7fbd625eff2f03080c53779f2cfba2c133e7",
+      "predecessor_version": 6,
+      "request_sha256": "2708c65e3bbf985da093f7755406ed49f5d07fd9ae90b8dd5129f99568d5334b",
+      "rule_sha256": "87d9a2b00fcc5fb6de490724f3e2b55b5105cf1b8a9d5aa5ebf17ec0f8ffee4b",
+      "scope": "ADMITTED_ORIGINAL_IN_PROCESS_NATIVE_API; socket listener observed EPERM; same existing writer namespace retained; no peer execution inferred",
+      "terminal_input": {
+        "schema": "qikvrt_terminal_input_v1",
+        "text": "{\"instruction\":\"Bitte Empfang und tatsächliche Anwendung identitätsgebunden bestätigen. Falls der Rückkanal fehlt, die Ursache über den bestehenden QIK-VRT-Arbeitsweg bearbeiten und automatisch zurückmelden. Keine privaten Schlüssel oder Zugangsdaten in öffentlichen Dateien. Keine neue Modellkonversation als Ersatz für diesen Mirror.\",\"owner_instruction_at\":\"2026-10-19T12:00:52+03:00\",\"previous_request_id\":\"ingolf-claude-transputer-link-20261018T232045Z\",\"principal\":\"Ingolf Lohmann\",\"recipient\":{\"observer_epoch\":\"b184cf99f8f74f6bb2820416511562dc\",\"system\":\"Claude existing read-only Mirror\"},\"reply_contract\":{\"bind\":[\"request_id\",\"canonical_request_sha256\",\"rule_sha256\",\"actual_peer_identity\",\"native_ack_event_id\",\"native_ack_event_digest\",\"applied_rule_readback\"],\"human_relay_accepted\":false,\"key_trust_anchor_required\":true,\"reuse\":\"existing qikvrt_cross_vendor_reply_v1 and separately signed envelope\",\"source_commit_is_ack\":false},\"request_id\":\"qikvrt-all-node-native-rule-20261019T090052Z\",\"rule\":\"Alle angeschlossenen heutigen und künftigen QIK-VRT-Nodes bearbeiten und melden Aufgaben mit den bestehenden QIK-VRT-Komponenten und dem Effect Acknowledgement Protokoll. Auftrag, Ausführung, native Ereignisse und unabhängiger Wirkungsnachweis werden an den tatsächlichen Gegenstand und Peer gebunden. Kein Ersatzdienst, kein Ersatzexecutor, kein Client-Timer und kein Pakettransport durch den Principal. Claude bestätigt Empfang und Anwendung über seinen tatsächlichen Universal-Transputer-/Universal-Terminal-Anschluss. Eine gespeicherte Regel, ein Repository-Commit oder eine Transportquittung ist keine Peer-Bestätigung.\",\"rule_sha256\":\"87d9a2b00fcc5fb6de490724f3e2b55b5105cf1b8a9d5aa5ebf17ec0f8ffee4b\",\"schema\":\"qikvrt_client_exchange_request_v1\",\"scope\":[\"ALL_CONNECTED_NODES\",\"ALL_FUTURE_NODES\",\"ALL_CURRENT_AND_FUTURE_SESSIONS\"],\"sender\":\"Codex current authorized work session; not an admitted persistent Mesh node\"}"
+      }
+    },
+    "payload_digest": "36392f8475cd75171b26a0435042bdc572433ddbd0bf5bedc5b87fd8cf1360ff",
+    "provenance": {
+      "native_event_id": "qikvrt-all-node-native-rule-20261019T090052Z:owner-request",
+      "source": "transputer"
+    },
+    "recorded_at": "2026-10-19T09:08:55.569974Z",
+    "schema": "qikvrt_temdd_event_v1",
+    "subject": {
+      "head": "f5aaff5b8c018fbc73d1e81126c6fb7e30e8bf22",
+      "pr": 538,
+      "repository": "ingolf-lohmann/qik-vrt",
+      "tree": "af5264a31622064f34c8deaef66c44768c657d67"
+    },
+    "id": "9de4426c08084ae39a4c626348b3e58b:1",
+    "ledger_digest": "65380ed79cce92a7a32eb538e467122a14901244b6b89eed9e0055e313531c1a"
+  },
+  "effect_ack": {
+    "state": "EFFECT_NACK",
+    "ordinary_release": false,
+    "responsibility_protocol": {
+      "schema": "qikvrt_responsibility_protocol_v1",
+      "protocol_root_id": "qikvrt-all-node-native-rule-20261019T090052Z",
+      "protocol_version": 1,
+      "protocol_id": "qikvrt-all-node-native-rule-20261019T090052Z:v1",
+      "previous_protocol_id": null,
+      "previous_protocol_hash": null,
+      "protocol_hash": "sha256:c2016c860f34027a3ceb1ae0a55e7921866fd3ddcfabfe51d304a226bc870e0c",
+      "input_id": "qikvrt-all-node-native-rule-20261019T090052Z:claude-confirmation",
+      "input_hash": "sha256:2708c65e3bbf985da093f7755406ed49f5d07fd9ae90b8dd5129f99568d5334b",
+      "state": "EFFECT_NACK",
+      "transport_ack": false,
+      "origin_checked": true,
+      "context_checked": true,
+      "semantics_reconstructed": true,
+      "effect_anticipated": true,
+      "risk_classified": true,
+      "risk_level": "LOW",
+      "responsibility_assigned": true,
+      "responsibility_owner": "Codex execution under Principal Ingolf Lohmann authorization",
+      "connection_decided": true,
+      "connection_decision": "BLOCK",
+      "policy_allows_release": false,
+      "ordinary_release": false,
+      "reasons": [
+        "NO_EFFECT_CHECKABLE_RECEPTION",
+        "No authenticated receipt or application acknowledgment from the actual Claude Mirror is observed."
+      ],
+      "evidence_refs": [
+        "sha256:65380ed79cce92a7a32eb538e467122a14901244b6b89eed9e0055e313531c1a"
+      ],
+      "required_evidence_refs": [],
+      "open_questions": [
+        "Actual peer return operation and trusted key binding are not established.",
+        "Original productive receiver/host admission remains open."
+      ],
+      "next_required_checks": [
+        "ESTABLISH_EFFECT_CHECKABLE_RECEPTION",
+        "Publish exact request to the already used Authority communication branch.",
+        "Receive and independently verify original peer reply bound to this request and rule digest without Owner relay."
+      ],
+      "created_utc": "2026-10-19T09:08:55.574142Z"
+    }
+  },
+  "request_canonical_sha256": "2708c65e3bbf985da093f7755406ed49f5d07fd9ae90b8dd5129f99568d5334b",
+  "expected_reply_path": "evidence/client-communication/2026-10-19/ingolf-claude-transputer-link-20261018T232045Z/NATIVE_ONLY_RULE_ACK.json",
+  "delivery_state": "AUTHORITY_MAILBOX_PUBLICATION_REQUESTED; actual peer receipt not observed",
+  "peer_ack_observed": false,
+  "human_relay_accepted": false,
+  "effect_ack_done": false
+}
