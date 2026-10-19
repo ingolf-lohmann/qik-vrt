@@ -16,7 +16,7 @@ from unittest.mock import patch
 
 from src import qikvrt_personal_assistant as p
 from src import qikvrt_personal_auth as a
-if os.name == 'posix':
+if sys.platform == 'linux':
     from src import qikvrt_temdd_event_ledger as n
 else:
     n = None
@@ -25,7 +25,7 @@ from src.qikvrt_effect_ack import ResponsibilityProtocol, verify_protocol, verif
 from tests.test_qikvrt_personal_auth import VaultDouble, IdPDouble, CONFIG
 
 
-@unittest.skipUnless(n is not None, 'original admitted native writer requires POSIX; no Windows acceptance inferred')
+@unittest.skipUnless(n is not None, 'original admitted native writer requires Linux; no other-platform acceptance inferred')
 class PersonalTerminalTransitionTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()

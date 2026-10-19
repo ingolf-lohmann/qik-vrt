@@ -508,17 +508,18 @@ function node() {
     textContent: '', setAttribute() {}, classList: {toggle() {}},
     addEventListener(name, action) { this.listeners[name] = action; }};
 }
-const host = node(), output = node(), status = node(), command = node(), commit = node();
+const host = node(), output = node(), status = node(), command = node(), commit = node(), personal = node();
 const elements = {'[data-role=output]': output, '[data-role=status]': status,
   '[data-role=command]': command, '[data-role=video]': node(),
-  '[data-role=media-state]': node(), '[data-act=commit]': commit, '[data-act=snapshot]': node()};
+  '[data-role=media-state]': node(), '[data-act=commit]': commit, '[data-act=snapshot]': node(), '[data-act=personal]': personal};
 host.querySelector = selector => elements[selector] || node();
 const calls = [];
 let answer = async () => ({ok: true});
 const sandbox = {console, location: {href: 'moz-extension://fixture/client.html'},
   document: {getElementById: () => null, createElement: () => host, body: {appendChild() {}}},
   browser: {storage: {local: {get: async () => ({})}},
-    runtime: {sendMessage: async message => { calls.push(message); return answer(message); }, openOptionsPage() {}}}};
+    runtime: {getURL: path => 'moz-extension://fixture/' + path,
+      sendMessage: async message => { calls.push(message); return answer(message); }, openOptionsPage() {}}}};
 vm.createContext(sandbox);
 vm.runInContext(fs.readFileSync('browser/firefox/qikvrt-terminal/content.js', 'utf8'), sandbox);
 const tick = () => new Promise(resolve => setImmediate(resolve));
@@ -529,6 +530,22 @@ const prepared = {record_validated: true, effect_ack: {state: 'EFFECT_ACK_DONE'}
             assertions + "\n})().catch(error => { console.error(error); process.exitCode = 1; });"],
             cwd=ROOT, capture_output=True, text=True, timeout=15)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_personal_button_requires_trusted_explicit_action_and_only_requests_navigation(self):
+        self.run_ui(r'''
+calls.length = 0;
+assert.equal(personal.hidden, false);
+await personal.listeners.click({isTrusted:false});
+assert.equal(calls.length, 0);
+let stopped = false;
+await personal.listeners.click({isTrusted:true,stopPropagation(){stopped=true;}});
+assert.equal(stopped, true);
+assert.equal(calls.length, 1);
+assert.equal(calls[0].kind, 'OPEN_PERSONAL');
+assert.equal(calls[0].payload.confirmed, true);
+assert.equal(Object.keys(calls[0].payload).length, 1);
+assert.equal(status.dataset.state, 'EFFECT_ACK_CONTINUE');
+''')
 
     def test_edit_during_prepare_and_double_click_cannot_release_stale_input(self):
         self.run_ui(r"""

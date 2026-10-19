@@ -679,7 +679,7 @@ def main() -> int:
             else:
                 raise ValueError("PROTECTED_PERSONAL_AUTH_CONFIGURATION_REQUIRED")
             if any((args.repository, args.pr, args.expected_head, args.expected_tree)):
-                if os.name != "posix":
+                if sys.platform != "linux":
                     raise ValueError("ADMITTED_NATIVE_TERMINAL_PLATFORM_UNAVAILABLE")
                 if not all((args.repository, args.pr, args.expected_head, args.expected_tree)) or not args.personal_auth_config:
                     raise ValueError("EXPLICIT_PROTECTED_NATIVE_SUBJECT_REQUIRED")
