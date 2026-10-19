@@ -705,6 +705,94 @@ class ClientContinuationRegressionTests(unittest.TestCase):
         self.receipt["requested_authorization_again"] = True
         self.rejected("CLIENT_REPEATED_AUTHORIZATION_REQUEST")
 
+    def communication(self, claim="RECEIVED") -> dict:
+        """Declared fixtures; these records do not authenticate a real node."""
+        packet = "sha256:" + "1" * 64
+        bound = {"message_sha256": packet, "node": "claude-mirror"}
+        event = {**bound, "subject": self.subject,
+                 "native_event_id": "fixture:epoch:4", "ledger_digest": "sha256:" + "2" * 64}
+        record = {
+            "id": "fixture:message-1", "message_sha256": packet,
+            "sender": "codex", "recipient": "claude-mirror", "claim": claim,
+            "evidence": {
+                "send": {**bound, "sender": "codex", "channel": "fixture:mesh",
+                         "evidence": "fixture:actual-transfer"},
+                "ingress": {**bound, "evidence": "fixture:named-ingress"},
+                "outbox_claim": {**bound, "tool": "node-tools/qikvrt_mirror_emit.py claim",
+                                 "record_sha256": "sha256:" + "3" * 64,
+                                 "evidence": "fixture:original-claim-output"},
+                "application": {**event, "evidence": "fixture:application-event"},
+                "readback": {**event, "independent": True,
+                             "evidence": "fixture:independent-terminal-readback"},
+            },
+        }
+        self.receipt["communications"] = [record]
+        return record
+
+    def test_communication_without_send_cannot_claim_arrival_or_receiver_nack(self) -> None:
+        for claim in ("SENT", "RECEIVED", "APPLIED", "RECEIVER_NACK"):
+            with self.subTest(claim=claim):
+                record = self.communication(claim)
+                del record["evidence"]["send"]
+                self.rejected("CLIENT_COMMUNICATION_SEND_REQUIRED")
+
+    def test_named_arrival_requires_original_outbox_claim(self) -> None:
+        record = self.communication()
+        del record["evidence"]["outbox_claim"]
+        self.rejected("CLIENT_COMMUNICATION_OUTBOX_CLAIM_REQUIRED")
+
+    def test_communication_evidence_cannot_move_to_another_packet_or_node(self) -> None:
+        for kind in ("send", "ingress", "outbox_claim"):
+            for key, value in (("message_sha256", "sha256:" + "9" * 64), ("node", "other-node")):
+                with self.subTest(kind=kind, key=key):
+                    record = self.communication()
+                    record["evidence"][kind][key] = value
+                    self.rejected("CLIENT_COMMUNICATION_EVIDENCE_BINDING_MISMATCH")
+
+    def test_principal_return_does_not_name_a_receiver(self) -> None:
+        record = self.communication("PRINCIPAL_RETURN")
+        record["evidence"] = {"return": {"message_sha256": record["message_sha256"],
+                                             "evidence": "fixture:byte-identical-return"}}
+        self.rejected("CLIENT_PRINCIPAL_RETURN_RECEIVER_INFERRED")
+        record["recipient"] = None
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_not_sent_and_sent_have_distinct_admissible_scopes(self) -> None:
+        record = self.communication("NOT_SENT")
+        record["evidence"] = {}
+        self.assertEqual(self.check(), "CONTINUE")
+        record = self.communication("SENT")
+        record["evidence"] = {"send": record["evidence"]["send"]}
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_not_sent_cannot_smuggle_delivery_evidence(self) -> None:
+        self.communication("NOT_SENT")
+        self.rejected("CLIENT_UNSENT_WITH_DELIVERY_EVIDENCE")
+
+    def test_declared_application_needs_exact_independent_native_readback(self) -> None:
+        for key, value in (("independent", False), ("native_event_id", "fixture:another-event"),
+                           ("ledger_digest", "sha256:" + "9" * 64),
+                           ("subject", {**self.subject, "head": "c" * 40})):
+            with self.subTest(key=key):
+                record = self.communication("APPLIED")
+                record["evidence"]["readback"][key] = value
+                self.rejected("CLIENT_COMMUNICATION_APPLICATION_READBACK_MISMATCH")
+
+    def test_complete_declared_communication_chain_is_consistent(self) -> None:
+        self.communication("APPLIED")
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_communication_schema_is_strict(self) -> None:
+        for key, value in (("claim", "DONE"), ("message_sha256", "1" * 64), ("sender", "")):
+            with self.subTest(key=key):
+                self.communication()[key] = value
+                self.rejected("CLIENT_COMMUNICATION_INVALID")
+
+    def test_duplicate_communication_ids_are_rejected(self) -> None:
+        record = self.communication()
+        self.receipt["communications"].append(copy.deepcopy(record))
+        self.rejected("CLIENT_COMMUNICATION_INVALID")
+
     def test_missing_owner_grant_is_not_invented(self) -> None:
         self.receipt["authorization"]["granted"] = False
         self.rejected("CLIENT_OWNER_AUTHORIZATION_MISSING")

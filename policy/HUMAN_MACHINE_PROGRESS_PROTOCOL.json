@@ -181,6 +181,19 @@
       "historical_receipts_without_plan_remain_readable": true,
       "plan_is_execution_or_speedup_proof": false
     },
+    "communication_evidence": {
+      "owner_instruction": "Ingolf Lohmann, 2026-10-19: Erkenne dich selbst und verbessere dich.",
+      "receipt_field": "communications",
+      "validator": "tools/ai_handoff.py --client-receipt",
+      "original_claim_tool": "node-tools/qikvrt_mirror_emit.py claim",
+      "historical_receipts_without_field_remain_readable": true,
+      "canonical_message_sha256_and_named_node_required": true,
+      "unsent_packet_proves_arrival_or_receiver_nack": false,
+      "principal_return_proves_named_receiver_or_application": false,
+      "application_requires_exact_independent_native_readback": true,
+      "validator_issues_effect_ack_assessments": false,
+      "consistency_proves_evidence_authenticity_or_client_adoption": false
+    },
     "knowledge_continuity": {
       "owner_instruction": "Ingolf Lohmann, 2026-10-16: Knowledge loss itself is the defect regardless of when it occurs.",
       "existing_policy": "policy/QIKVRT_EPISTEMIC_CONNECTABILITY_CONTINUITY_V1.json",
