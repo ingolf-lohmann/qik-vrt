@@ -50,7 +50,11 @@
     "original_candidate_preserved": true,
     "main_integrated": false,
     "zenodo_published": false,
-    "review_note": "Original draft preserved unchanged. Absence of repository events alone does not prove a private receiver never ran, causality, or absence of autonomous work. Historical claims need exact-time branch and Actions inventory; no blanket scientific claim accepted."
+    "review_note": "Original draft preserved unchanged. Absence of repository events alone does not prove a private receiver never ran, causality, or absence of autonomous work. Historical claims need exact-time branch and Actions inventory; no blanket scientific claim accepted.",
+    "review_pr": 540,
+    "review_pr_url": "https://github.com/ingolf-lohmann/qik-vrt/pull/540",
+    "review_candidate_head": "2dc3554fb3286ffa3cae0ffe25f395760290bc3d",
+    "required_checks": "PENDING_EXISTING_NATIVE_INTEGRITY_AND_GOVERNANCE"
   },
   "receiver": {
     "state": "HOLD_ORIGINAL_HOST_CONTROL_AND_PRIVATE_PEER_BINDING_NOT_ESTABLISHED",
@@ -63,7 +67,13 @@
     "key_delivery": "Existing authorized trusted private host/secret-manager channel only; no key in public Git/chat/artifact",
     "retry_condition": "Callable authenticated original-host operation, admitted persistent source/state and private sender/receiver peer binding",
     "next_action": "Start/admit existing S1 receiver on original IONOS host, provision distinct private key for this exact peer, then give actual URL/current source pins through original trusted route. Submit same frozen batch once and independently verify receipt/challenged disk readback before and after restart.",
-    "sender_note": "Keep original frozen batch and outbox. Archive contains its declared id but no batch packet; the packet hash itself was not verified. Do not send to an invented URL or create another batch to manufacture progress."
+    "sender_note": "Keep original frozen batch and outbox. Archive contains its declared id but no batch packet; the packet hash itself was not verified. Do not send to an invented URL or create another batch to manufacture progress.",
+    "latest_existing_host_receipt": {
+      "library_file_id": "libfile_6526329fa28c81918e84511b48d4672e",
+      "version": 45,
+      "state": "HOLD_NO_CALLABLE_AUTHENTICATED_ORIGINAL_HOST_CONTROL",
+      "other_client_source_pr537_integrated": true
+    }
   },
   "native_ingest": {
     "dod": false,
@@ -129,5 +139,6 @@
   "client_timers": "DISABLED_NO_REPLACEMENT",
   "effect_ack_done": false,
   "mesh_acceptance": false,
-  "live_synchronous_peer_route_verified": false
+  "live_synchronous_peer_route_verified": false,
+  "previous_ack_commit": "db831a5511e276333618e815a6bb641d43ec1e10"
 }
