@@ -39,9 +39,11 @@ from typing import Any, NoReturn
 try:
     from tools import qikvrt_zenodo_actions as zenodo
     from tools import qikvrt_zenodo_machine_proof as machine_proof
+    from tools import qikvrt_required_review_gate as review_gate
 except ModuleNotFoundError:
     import qikvrt_zenodo_actions as zenodo  # type: ignore[no-redef]
     import qikvrt_zenodo_machine_proof as machine_proof  # type: ignore[no-redef]
+    import qikvrt_required_review_gate as review_gate  # type: ignore[no-redef]
 
 SCHEMA = "qikvrt_zenodo_publication_manifest_v1"
 SCHEMA_V2 = "qikvrt_zenodo_publication_manifest_v2"
@@ -51,6 +53,16 @@ EVIDENCE_SCHEMA = "qikvrt_zenodo_publication_evidence_v1"
 EVIDENCE_SCHEMA_V2 = "qikvrt_zenodo_publication_evidence_v2"
 EVIDENCE_SCHEMA_V3 = "qikvrt_zenodo_publication_evidence_v3"
 V3_ACTIVATION_SCHEMA = "qikvrt_zenodo_v3_contract_activation_v1"
+V3_ACTIVATION_SCHEMA_V2 = "qikvrt_zenodo_v3_contract_activation_v2"
+V3_REVIEW_POLICY_PATH = "policy/zenodo-v3-review-acceptance-v2.json"
+V3_REVIEW_POLICY_SHA256 = "a666dc7fb03e94ac08f01246d499406d8335e2aae2d31f87147697c1f6ffb18d"
+V3_REVIEW_V2_CONTRACT_PATHS = (
+    V3_REVIEW_POLICY_PATH,
+    "tools/qikvrt_required_review_gate.py",
+    "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+    review_gate.OWNER_RECORD,
+    ".github/workflows/qikvrt_required_review_gate.yml",
+)
 V3_CONTRACT_CODE_PATHS = (
     "tools/qikvrt_zenodo_publish.py",
     "tools/qikvrt_zenodo_machine_proof.py",
@@ -883,12 +895,20 @@ def load_manifest(path: pathlib.Path, root: pathlib.Path) -> dict[str, Any]:
     return result
 
 
-def _v3_contract_identities(root: pathlib.Path) -> list[dict[str, Any]]:
+def _v3_contract_identities(
+    root: pathlib.Path, *, activation_schema: str = V3_ACTIVATION_SCHEMA,
+) -> list[dict[str, Any]]:
+    if not isinstance(activation_schema, str) or activation_schema not in {V3_ACTIVATION_SCHEMA, V3_ACTIVATION_SCHEMA_V2}:
+        _fail("unsupported v3 contract activation schema")
     try:
         controls = machine_proof.publication_contract_blobs(root, v3=True)
     except machine_proof.ProofGateError as exc:
         _fail("v3 contract controls rejected: " + str(exc))
-    for relative in V3_CONTRACT_CODE_PATHS:
+    extra = ()
+    if activation_schema == V3_ACTIVATION_SCHEMA_V2:
+        _v3_review_policy_identity(root)
+        extra = V3_REVIEW_V2_CONTRACT_PATHS
+    for relative in (*V3_CONTRACT_CODE_PATHS, *extra):
         control = _safe_relative(root, relative, "v3 contract code", must_exist=True)
         controls[relative] = _git_blob_sha(
             zenodo.read_regular_file(control, zenodo.MAX_JSON_BYTES)
@@ -902,7 +922,29 @@ def _v3_contract_identities(root: pathlib.Path) -> list[dict[str, Any]]:
     ]
 
 
-def _v3_activation_statement(contracts: list[dict[str, Any]], review: Mapping[str, Any]) -> str:
+def _v3_review_policy_identity(root: pathlib.Path) -> dict[str, Any]:
+    path = _safe_relative(root, V3_REVIEW_POLICY_PATH, "v3 review acceptance policy", must_exist=True)
+    raw = zenodo.read_regular_file(path, zenodo.MAX_JSON_BYTES)
+    if hashlib.sha256(raw).hexdigest() != V3_REVIEW_POLICY_SHA256:
+        _fail("v3 review acceptance v2 policy bytes differ")
+    return _identity(V3_REVIEW_POLICY_PATH, raw)
+
+
+def _v3_activation_statement(
+    contracts: list[dict[str, Any]], review: Mapping[str, Any], *,
+    activation_schema: str = V3_ACTIVATION_SCHEMA,
+) -> str:
+    if activation_schema == V3_ACTIVATION_SCHEMA_V2:
+        return (
+            "ACTIVATE_REVIEWED_V3_PRODUCTION_CONTRACT "
+            "review_contract=qikvrt_zenodo_v3_review_acceptance_v2 "
+            f"contracts_sha256={hashlib.sha256(zenodo._json_bytes(contracts)).hexdigest()} "
+            f"repository={review['repository']} pr_number={review['pr_number']} "
+            f"head_sha={review['head_sha']} base_sha={review['base_sha']} "
+            f"review_id={review['review_id']} review_basis={review['basis']}"
+        )
+    if activation_schema != V3_ACTIVATION_SCHEMA:
+        _fail("unsupported v3 contract activation schema")
     return (
         "ACTIVATE_REVIEWED_V3_PRODUCTION_CONTRACT "
         f"contracts_sha256={hashlib.sha256(zenodo._json_bytes(contracts)).hexdigest()} "
@@ -927,7 +969,9 @@ def _validate_v3_contract_activation(
                     evidence_path.relative_to(root).as_posix()}
     if isinstance(owner_binding, dict):
         control_only.add(owner_binding.get("path"))
-    contracts = _v3_contract_identities(root)
+    activation_schema = record.get("schema")
+    versioned = activation_schema == V3_ACTIVATION_SCHEMA_V2
+    contracts = _v3_contract_identities(root, activation_schema=activation_schema)
     if (relative in control_only
             or relative in {item["path"] for item in files}
             or relative in {item["path"] for item in contracts}):
@@ -935,9 +979,8 @@ def _validate_v3_contract_activation(
     zenodo._check_exact_keys(record, {
         "schema", "decision", "principal", "contracts", "review", "authorized_at",
         "exact_statement", "statement_sha256",
-    }, "v3 contract activation")
-    if (record["schema"] != V3_ACTIVATION_SCHEMA
-            or record["decision"] != "ACTIVATE_REVIEWED_V3_PRODUCTION_CONTRACT"
+    } | ({"review_policy"} if versioned else set()), "v3 contract activation")
+    if (record["decision"] != "ACTIVATE_REVIEWED_V3_PRODUCTION_CONTRACT"
             or record["principal"] != {"name": "Ingolf Lohmann", "type": "NATURAL_PERSON"}
             or record["contracts"] != contracts):
         _fail("v3 contract activation decision or exact contract bindings differ")
@@ -947,7 +990,7 @@ def _validate_v3_contract_activation(
     zenodo._check_exact_keys(review, {
         "repository", "pr_number", "head_sha", "tree_sha", "review_id",
         "reviewer_login", "ruleset_id",
-    }, "v3 contract activation review")
+    } | ({"basis", "base_sha"} if versioned else set()), "v3 contract activation review")
     if (review["repository"] != PRODUCTION_REPOSITORY
             or any(isinstance(review[k], bool) or not isinstance(review[k], int)
                    or review[k] <= 0 for k in ("pr_number", "review_id", "ruleset_id"))
@@ -956,13 +999,24 @@ def _validate_v3_contract_activation(
             or not isinstance(review["reviewer_login"], str)
             or re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9-]{0,38}", review["reviewer_login"]) is None):
         _fail("v3 contract activation review identity is invalid")
+    if versioned:
+        if (not isinstance(review["basis"], str)
+                or review["basis"] not in {"OWNER_PRINCIPAL_REVIEW", "INDEPENDENT_NATIVE_APPROVAL"}
+                or not isinstance(review["base_sha"], str)
+                or HEX40.fullmatch(review["base_sha"]) is None):
+            _fail("v3 review acceptance v2 basis or base identity is invalid")
+        _validate_identity(record["review_policy"], _v3_review_policy_identity(root),
+                           "v3 review acceptance policy")
     authorized_at = _validate_rfc3339(record["authorized_at"], "v3 activation authorized_at")
-    statement = _v3_activation_statement(contracts, review)
+    statement = _v3_activation_statement(contracts, review, activation_schema=activation_schema)
     if (record["exact_statement"] != statement
             or record["statement_sha256"] != hashlib.sha256(statement.encode()).hexdigest()):
         _fail("v3 contract activation canonical decision statement differs")
-    return {**observed, "review": dict(review), "contracts": contracts,
-            "authorized_at": authorized_at, "statement_sha256": record["statement_sha256"]}
+    result = {**observed, "review": dict(review), "contracts": contracts,
+              "authorized_at": authorized_at, "statement_sha256": record["statement_sha256"]}
+    if versioned:
+        result.update(activation_schema=activation_schema, review_policy=record["review_policy"])
+    return result
 
 
 def _v3_evidence_schema(manifest: Mapping[str, Any]) -> str:
@@ -1440,6 +1494,7 @@ def _github_api_request(
     payload: Mapping[str, Any] | None = None,
     accept: tuple[int, ...] = (200,),
     repository: str = PRODUCTION_REPOSITORY,
+    query: Mapping[str, int] | None = None,
 ) -> tuple[int, dict[str, Any] | list[dict[str, Any]]]:
     """Use only the pinned GitHub Git-Data REST origin, with redacted errors."""
     # Reuse this pinned, no-redirect transport for non-secret archive journals.
@@ -1455,7 +1510,18 @@ def _github_api_request(
         _fail(f"{GITHUB_TOKEN_ENVIRONMENT_VARIABLE} is missing or structurally invalid")
     if method not in {"GET", "POST"}:
         _fail("unsupported GitHub Git-Data API method")
+    if query is not None and (
+        method != "GET" or repository != PRODUCTION_REPOSITORY
+        or re.fullmatch(re.escape(repository_prefix)
+                        + r"(?:pulls/[1-9][0-9]*/reviews|commits/[0-9a-f]{40}/statuses)", path) is None
+        or set(query) != {"per_page", "page"}
+        or type(query["per_page"]) is not int or query["per_page"] != INVENTORY_PAGE_SIZE
+        or type(query["page"]) is not int or not 1 <= query["page"] <= MAX_INVENTORY_PAGES
+    ):
+        _fail("GitHub review inventory query escaped its bounded contract")
     url = GITHUB_API_BASE + path
+    if query is not None:
+        url += "?" + urllib.parse.urlencode(query)
     body = None if payload is None else zenodo._json_bytes(payload)
     request = urllib.request.Request(
         url,
@@ -1498,7 +1564,7 @@ def _github_api_request(
         _fail("GitHub Git-Data API returned invalid JSON")
     matching_refs = "/git/matching-refs/" in path and method == "GET"
     if not isinstance(value, dict) and not (
-        matching_refs and isinstance(value, list)
+        (matching_refs or query is not None) and isinstance(value, list)
         and all(isinstance(item, dict) for item in value)
     ):
         _fail("GitHub Git-Data API returned a non-object response")
@@ -1509,6 +1575,18 @@ def _github_api_request(
 
 
 def _verify_v3_contract_review(
+    root: pathlib.Path, manifest: Mapping[str, Any], token: str,
+) -> None:
+    """Select the explicit activation version; never fall back between models."""
+    schema = manifest["contract_activation"].get("activation_schema", V3_ACTIVATION_SCHEMA)
+    if schema == V3_ACTIVATION_SCHEMA:
+        return _verify_v3_contract_review_v1(root, manifest, token)
+    if schema == V3_ACTIVATION_SCHEMA_V2:
+        return _verify_v3_contract_review_v2(root, manifest, token)
+    _fail("unsupported v3 contract activation schema")
+
+
+def _verify_v3_contract_review_v1(
     root: pathlib.Path, manifest: Mapping[str, Any], token: str,
 ) -> None:
     """Reobserve actual independent review and governance before any effect.
@@ -1569,6 +1647,11 @@ def _verify_v3_contract_review(
             or isinstance(count, bool) or not isinstance(count, int) or count < 1):
         _fail("v3 contract CODE_OWNER_RULE_NOT_ENFORCED")
 
+    _verify_v3_code_owner(root, activation)
+
+
+def _verify_v3_code_owner(root: pathlib.Path, activation: Mapping[str, Any]) -> None:
+    review = activation["review"]
     owners_path = root / ".github/CODEOWNERS"
     owners = owners_path.read_text(encoding="utf-8").splitlines()
     for contract in activation["contracts"]:
@@ -1586,6 +1669,168 @@ def _verify_v3_contract_review(
                 matched = principals
         if not matched or "@" + review["reviewer_login"] not in matched:
             _fail("v3 contract reviewer is not its recorded Code Owner")
+
+
+def _github_review_inventory(path: str, token: str) -> list[dict[str, Any]]:
+    """Read every bounded page; inaccessible, duplicate or truncated input blocks."""
+    result: list[dict[str, Any]] = []
+    seen: set[int] = set()
+    for page in range(1, MAX_INVENTORY_PAGES + 1):
+        _status, values = _github_api_request("GET", path, token,
+            query={"per_page": INVENTORY_PAGE_SIZE, "page": page})
+        if not isinstance(values, list) or len(values) > INVENTORY_PAGE_SIZE:
+            _fail("v3 review inventory is not a bounded list")
+        for item in values:
+            if not isinstance(item, dict) or type(item.get("id")) is not int or item["id"] <= 0 or item["id"] in seen:
+                _fail("v3 review inventory has invalid or duplicate identities")
+            seen.add(item["id"])
+            result.append(item)
+        if len(values) < INVENTORY_PAGE_SIZE:
+            return result
+    _fail("v3 review inventory exceeds its complete-pagination bound")
+
+
+def _verify_v3_contract_review_v2(
+    root: pathlib.Path, manifest: Mapping[str, Any], token: str,
+) -> None:
+    """Reuse Principal validation, independently read live review/status/rules.
+
+    A COMMENTED Principal decision never becomes APPROVED, activation or an
+    exact-upload grant. The unchanged v1 route retains independent approval.
+    """
+    activation = manifest["contract_activation"]
+    review = activation["review"]
+    if (activation.get("review_policy") != _v3_review_policy_identity(root)
+            or activation.get("contracts") != _v3_contract_identities(root, activation_schema=V3_ACTIVATION_SCHEMA_V2)):
+        _fail("v3 review acceptance v2 controls are not exact-bound")
+    prefix = "/repos/" + PRODUCTION_REPOSITORY
+    pr_path = f"{prefix}/pulls/{review['pr_number']}"
+    _status, pr = _github_api_request("GET", pr_path, token)
+    if (pr.get("number") != review["pr_number"] or pr.get("merged") is not True
+            or pr.get("state") != "closed"
+            or pr.get("head", {}).get("sha") != review["head_sha"]
+            or pr.get("head", {}).get("repo", {}).get("full_name") != PRODUCTION_REPOSITORY
+            or pr.get("base", {}).get("sha") != review["base_sha"]
+            or pr.get("base", {}).get("ref") != "main"
+            or pr.get("base", {}).get("repo", {}).get("full_name") != PRODUCTION_REPOSITORY):
+        _fail("v3 review acceptance v2 lacks its exact merged Authority PR/base")
+    _status, tree = _git(root, "rev-parse", "--verify", review["head_sha"] + "^{tree}")
+    if tree != review["tree_sha"]:
+        _fail("v3 review acceptance v2 reviewed TREE differs")
+    merge_sha = pr.get("merge_commit_sha")
+    if not isinstance(merge_sha, str) or HEX40.fullmatch(merge_sha) is None:
+        _fail("v3 review acceptance v2 native merge identity missing")
+    ancestry, _ = _git(root, "merge-base", "--is-ancestor", merge_sha,
+                       manifest["source_head"], accepted=frozenset({0, 1}))
+    if ancestry != 0:
+        _fail("v3 review acceptance v2 reviewed merge is not in frozen ancestry")
+    reviews = _github_review_inventory(pr_path + "/reviews", token)
+    native = next((item for item in reviews if item["id"] == review["review_id"]), None)
+    if (native is None or native.get("commit_id") != review["head_sha"]
+            or native.get("user", {}).get("login") != review["reviewer_login"]
+            or native.get("user", {}).get("type") != "User"
+            or type(native.get("user", {}).get("id")) is not int or native["user"]["id"] <= 0):
+        _fail("v3 review acceptance v2 native review identity is missing or divergent")
+    reviewed_at = _validate_rfc3339(native.get("submitted_at"), "v3 native review submitted_at")
+    merged_at = _validate_rfc3339(pr.get("merged_at"), "v3 native PR merged_at")
+    parse_time = lambda value: datetime.datetime.fromisoformat(value.replace("Z", "+00:00"))
+    if not parse_time(reviewed_at) <= parse_time(merged_at) <= parse_time(activation["authorized_at"]):
+        _fail("v3 review acceptance v2 activation predates review or merge")
+    _status, ruleset = _github_api_request("GET", f"{prefix}/rulesets/{review['ruleset_id']}", token)
+    conditions = ruleset.get("conditions")
+    ref_names = conditions.get("ref_name") if isinstance(conditions, dict) else None
+    if not isinstance(ref_names, dict):
+        _fail("v3 review acceptance v2 MAIN_RULESET_NOT_ENFORCED")
+    include = ref_names.get("include")
+    rules = ruleset.get("rules")
+    if (ruleset.get("id") != review["ruleset_id"] or ruleset.get("target") != "branch"
+            or ruleset.get("enforcement") != "active" or ruleset.get("bypass_actors") != []
+            or not isinstance(include, list) or not all(isinstance(ref, str) for ref in include)
+            or not set(include) & {"refs/heads/main", "~ALL"}
+            or ref_names.get("exclude") != [] or not isinstance(rules, list)):
+        _fail("v3 review acceptance v2 MAIN_RULESET_NOT_ENFORCED")
+    parameters = [rule["parameters"] for rule in rules if isinstance(rule, dict)
+                  and rule.get("type") == "required_status_checks"
+                  and isinstance(rule.get("parameters"), dict)]
+    trusted = any(params.get("strict_required_status_checks_policy") is True
+        and isinstance(params.get("required_status_checks"), list)
+        and any(isinstance(check, dict) and check.get("context") == review_gate.GOVERNANCE_STATUS_CONTEXT
+                and type(check.get("integration_id")) is int and check["integration_id"] == 15368
+                for check in params["required_status_checks"]) for params in parameters)
+    pull_rules = [rule["parameters"] for rule in rules
+                  if isinstance(rule, dict) and rule.get("type") == "pull_request"
+                  and isinstance(rule.get("parameters"), dict)]
+    if not trusted or not any(params.get("dismiss_stale_reviews_on_push") is True
+            and type(params.get("required_approving_review_count")) is int
+            and params["required_approving_review_count"] >= 0
+            and type(params.get("require_code_owner_review")) is bool
+            and type(params.get("require_last_push_approval")) is bool for params in pull_rules):
+        _fail("v3 review acceptance v2 TRUSTED_GOVERNANCE_STATUS_NOT_REQUIRED")
+    try:
+        policy, _raw = zenodo._load_json_file(root / "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json")
+        configured = review_gate.validate_review_acceptance_policy(policy, root)
+        if review["basis"] == "OWNER_PRINCIPAL_REVIEW":
+            if configured is None:
+                _fail("v3 Principal review lacks the active bound Owner decision")
+            decision = review_gate._evaluate_principal_review(pr, reviews, configured,
+                native_enforcement=review_gate.native_code_owner_rule_is_enforced(rules))
+            if decision["gate_state"] != "success" or decision["review_id"] != review["review_id"]:
+                _fail("v3 Principal review rejected: " + str(decision["first_blocker"]))
+        elif review["basis"] == "INDEPENDENT_NATIVE_APPROVAL":
+            _verify_v3_contract_review_v1(root, manifest, token)
+            decisive = [item for item in reviews if item.get("commit_id") == review["head_sha"]
+                and item.get("user", {}).get("login") == review["reviewer_login"]
+                and item.get("state") in review_gate.DECISIVE_REVIEW_STATES]
+            if not decisive or max(decisive, key=review_gate._review_sort_key)["id"] != review["review_id"]:
+                _fail("v3 independent approval superseded by a later decision")
+            # An explicit Principal revocation must also block an independent route.
+            if configured is not None:
+                principal = review_gate._evaluate_principal_review(pr, reviews, configured, native_enforcement=True)
+                if principal["gate_state"] == "failure" or principal["first_blocker"] == "OWNER_PRINCIPAL_REVIEW_DISMISSED":
+                    _fail("v3 independent approval conflicts with the current Principal decision")
+        else:
+            _fail("unsupported v3 review acceptance v2 basis")
+    except review_gate.ReviewGateInputError as exc:
+        _fail("v3 Principal review policy rejected: " + str(exc))
+    _verify_v3_code_owner(root, activation)
+    statuses = _github_review_inventory(f"{prefix}/commits/{review['head_sha']}/statuses", token)
+    matching = [item for item in statuses if item.get("context") == review_gate.GOVERNANCE_STATUS_CONTEXT]
+    if not matching:
+        _fail("v3 review acceptance v2 native governance status missing")
+    for item in matching:
+        _validate_rfc3339(item.get("created_at"), "v3 native governance status created_at")
+    status = max(matching, key=lambda item: (parse_time(item["created_at"]), item["id"]))
+    creator = status.get("creator", {})
+    target = status.get("target_url")
+    target_match = re.fullmatch(r"https://github\.com/" + re.escape(PRODUCTION_REPOSITORY)
+                               + r"/actions/runs/([1-9][0-9]*)", target or "")
+    if (status.get("state") != "success" or creator.get("login") != "github-actions[bot]"
+            or creator.get("type") != "Bot" or target_match is None
+            or not parse_time(reviewed_at) <= parse_time(status["created_at"]) <= parse_time(merged_at)):
+        _fail("v3 review acceptance v2 native governance status is stale, untrusted or unsuccessful")
+    _status, run = _github_api_request("GET", f"{prefix}/actions/runs/{target_match[1]}", token)
+    run_head = run.get("head_sha")
+    if (run.get("id") != int(target_match[1]) or run.get("html_url") != target
+            or run.get("status") != "completed" or run.get("conclusion") != "success"
+            or run.get("path") != ".github/workflows/qikvrt_required_review_gate.yml"
+            or run.get("head_branch") != "main"
+            or run.get("event") not in {"workflow_run", "workflow_dispatch", "schedule"}
+            or run.get("repository", {}).get("full_name") != PRODUCTION_REPOSITORY
+            or run.get("head_repository", {}).get("full_name") != PRODUCTION_REPOSITORY
+            or not isinstance(run_head, str) or HEX40.fullmatch(run_head) is None):
+        _fail("v3 review acceptance v2 governance status has no trusted Main workflow")
+    ancestry, _ = _git(root, "merge-base", "--is-ancestor", run_head,
+                       manifest["source_head"], accepted=frozenset({0, 1}))
+    if ancestry != 0:
+        _fail("v3 review acceptance v2 governance workflow is outside frozen ancestry")
+    controls = {item["path"]: item["git_blob_sha"] for item in activation["contracts"]}
+    for relative in V3_REVIEW_V2_CONTRACT_PATHS[1:]:
+        _status, actual = _git(root, "rev-parse", "--verify", run_head + ":" + relative)
+        if actual != controls[relative]:
+            _fail("v3 trusted governance workflow source differs: " + relative)
+    _status, current_pr = _github_api_request("GET", pr_path, token)
+    if current_pr != pr or _github_review_inventory(pr_path + "/reviews", token) != reviews:
+        _fail("v3 review acceptance v2 native subject or decisions changed during verification")
 
 
 def _github_ref_path(ref: str) -> str:
