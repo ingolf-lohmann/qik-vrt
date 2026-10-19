@@ -1,0 +1,92 @@
+{
+  "schema": "qikvrt_ss03_conformance_work_unit_v1",
+  "work_unit_id": "QIKVRT_SS03_PHYSICAL_CONFORMANCE_20261019_V1",
+  "status": "SIMULATION_CONTROLS_IMPLEMENTED_PHYSICAL_ADAPTER_CONFORMANCE_OPEN",
+  "authorization": {
+    "principal": "Ingolf Lohmann",
+    "source": "Direct Owner action of 19 October 2026",
+    "scope": "Reproducible SS-03 positive/negative conformance tests using original native components, unchanged five states and interfaces; no physical installation or certification claim."
+  },
+  "source_subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+    "tree": "15eb1a7bdd2c1880405df1026b14756f0fe72714",
+    "requirements_register": "state/work_units/QIKVRT_SAFETY_SECURITY_IMPACT_20261019_V1.json",
+    "requirement_id": "SS-03"
+  },
+  "inspection": {
+    "core": "src/qikvrt_effect_ack.py:effect_ack_sync",
+    "adapters": [
+      "src/qikvrt_api_handler.py:_effect_request",
+      "src/qikvrt_mcp_adapter.py:_gate",
+      "src/qikvrt_effect_ack_http_terminal.py",
+      "src/qikvrt_temdd_event_ledger.py"
+    ],
+    "physical_production_adapter_found": false,
+    "scope": "Current src/tools/tests/runtime source; no actuator I/O capability inferred from HTTP or journal success."
+  },
+  "implementation": {
+    "test_module": "tests/test_physical_effect_ack_conformance.py",
+    "test_class": "PhysicalEffectSimulationConformanceTests",
+    "new_cases": 22,
+    "original_cases": 41,
+    "complete_module_cases": 22,
+    "command": "make conformance",
+    "focused_command": "python3 -B -m unittest -v tests.test_physical_effect_ack_conformance.PhysicalEffectSimulationConformanceTests",
+    "model_transition": [
+      "unsecured",
+      "secured"
+    ],
+    "freshness_bound_fixture_ms": 100,
+    "command_deadline_fixture_ms": 1200,
+    "clock_kind": "DETERMINISTIC_SIMULATED_ELAPSED_MILLISECONDS_NO_SLEEP",
+    "complete_native_conformance_gate_cases": 63
+  },
+  "coverage": [
+    "exact actuator/transition/effect/authorization/principal/policy/configuration/firmware/hash binding",
+    "command ACK vs output vs independently observed condition",
+    "lost reply with same-effect readback and one dispatch",
+    "unresponsive/stuck actuator",
+    "contradictory/missing/untrusted/duplicate/self-report sensors",
+    "freshness threshold, precommand/future capture and uncertain clock",
+    "sensor sequence replay, old DONE and idempotent same-effect reevaluation",
+    "protective successor and immutable original protocol",
+    "native original Ledger and independent Terminal readback of exact simulated evidence",
+    "explicit bad-adapter trust-boundary control"
+  ],
+  "invariants": {
+    "five_states_changed": false,
+    "protocol_interfaces_changed": false,
+    "production_sources_changed": false,
+    "new_service_or_executor": false,
+    "original_requirements_register_changed": false,
+    "copied_original_journal_appended": false,
+    "original_conformance_module_byte_frozen": true
+  },
+  "contribution_attribution": {
+    "human": "Ingolf Lohmann: requirement, scope, authorization and constraints",
+    "artificial_cognitive": "Codex: source inspection, test-only model, controls, execution and technical documentation"
+  },
+  "acceptance_boundary": {
+    "epistemic_class": "DETERMINISTIC_SOFTWARE_SIMULATION_AND_NATIVE_STORAGE_CONTRACT_TEST",
+    "ss03_state": "OPEN_PHYSICAL_ADAPTER_CONFORMANCE",
+    "physical_hardware_tests_run": false,
+    "physical_installation_accepted": false,
+    "standards_conformity_claimed": false,
+    "functional_safety_certification_claimed": false,
+    "global_effect_ack_done": false
+  },
+  "next_action": "Bind actual admitted physical adapter and exact hardware/configuration/trust/clock boundary; execute the declared controls on hardware and independently read back original device/sensor evidence. Source simulation success does not close this duty.",
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt"
+  },
+  "reuse_resolution": {
+    "original_module_is_frozen_source": "docs/publications/2026-07-30-canonical-temporal-memory-effect-ack/SOURCE_EVIDENCE_BINDINGS.json#REPOSITORY-EFFECT-ACK-CONFORMANCE",
+    "native_gate": "Makefile:conformance",
+    "parallel_production_implementation": false,
+    "reason": "The first full regression run rejected modification of the frozen original module; preserve its bytes and extend the same conformance target with a test-only module."
+  }
+}
