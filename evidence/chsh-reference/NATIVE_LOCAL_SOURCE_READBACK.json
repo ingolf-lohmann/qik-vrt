@@ -1,0 +1,142 @@
+{
+  "claims_do_not_transfer_to_successor_head": true,
+  "formal_effect_ack_assessment_created": false,
+  "method": "Original Terminal bounded-input validation; admitted original Runtime.append; fresh independent Terminal SQLite read-only readback; no socket mock",
+  "native_source_files": {
+    "src/qikvrt_effect_ack_http_terminal.py": "fa685db7986e72ccd4a1b42a8bb9d722001b816736be57ea0db477380d1e20a5",
+    "src/qikvrt_temdd_event_ledger.py": "f090abf4684907965ea2fe611ea4c3da3968660c19c1b881f925a144f15ad2a5"
+  },
+  "own_session_epoch": "eb45aecb20ea40eab5202fd3dbfb7e1f",
+  "peer_delivery_verified": false,
+  "qik_derivation": false,
+  "records": [
+    {
+      "independent_readback": {
+        "dod": false,
+        "evidence_transfer": "DENY",
+        "id": "eb45aecb20ea40eab5202fd3dbfb7e1f:1",
+        "kind": "OBSERVE",
+        "ledger_digest": "e34b86d63def5b8824f795abc5fb89521ba57a1cd45fdbdc47fbd79655f28668",
+        "message": "Owner-authorized CHSH instruction admitted through original bounded Terminal input",
+        "observed_at": "2026-10-19T16:34:08.208564Z",
+        "payload": {
+          "input_sha256": "297c28683b41ba2d3d8d15970ef743f6fb2efec1ee043a07e7c5916baf9fa10d",
+          "terminal_input": {
+            "schema": "qikvrt_terminal_input_v1",
+            "text": "Direkter Auftrag von Ingolf Lohmann: Entwickle und pruefe einen reproduzierbaren CHSH-Minimalbenchmark fuer QIK R1. Messsettings, vollstaendige Wahrscheinlichkeiten, Korrelationen, lokale/QM/PR-Referenzen, positive und negative Kontrollen, QIK-Zuordnung und verbleibende Ableitungspflichten dokumentieren. Wissenschaftliches Original unveraendert erhalten. Dieser lokale Readback behauptet weder eine QIK-Ableitung noch physikalische Messung oder Peer-Anwendung."
+          },
+          "work_unit_id": "QIK_R1_CHSH_MINIMALBENCHMARK_20261019_V1"
+        },
+        "payload_digest": "4de6cb293b40600ae270fc41106b9afb94233fbb21e5d26baf62cfc9d84b78ec",
+        "provenance": {
+          "native_event_id": "chsh:2069ee74f4fd48a7926387a51250dac0",
+          "source": "transputer"
+        },
+        "recorded_at": "2026-10-19T16:34:08.222481Z",
+        "schema": "qikvrt_temdd_event_v1",
+        "subject": {
+          "head": "704d6f2a60306ce74d2c71c18836a797d4c48559",
+          "pr": 552,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "e475c8ffc98601f8c702e25402f77bc572c188ff"
+        }
+      },
+      "original_event": {
+        "kind": "OBSERVE",
+        "message": "Owner-authorized CHSH instruction admitted through original bounded Terminal input",
+        "observed_at": "2026-10-19T16:34:08.208564Z",
+        "payload": {
+          "input_sha256": "297c28683b41ba2d3d8d15970ef743f6fb2efec1ee043a07e7c5916baf9fa10d",
+          "terminal_input": {
+            "schema": "qikvrt_terminal_input_v1",
+            "text": "Direkter Auftrag von Ingolf Lohmann: Entwickle und pruefe einen reproduzierbaren CHSH-Minimalbenchmark fuer QIK R1. Messsettings, vollstaendige Wahrscheinlichkeiten, Korrelationen, lokale/QM/PR-Referenzen, positive und negative Kontrollen, QIK-Zuordnung und verbleibende Ableitungspflichten dokumentieren. Wissenschaftliches Original unveraendert erhalten. Dieser lokale Readback behauptet weder eine QIK-Ableitung noch physikalische Messung oder Peer-Anwendung."
+          },
+          "work_unit_id": "QIK_R1_CHSH_MINIMALBENCHMARK_20261019_V1"
+        },
+        "provenance": {
+          "native_event_id": "chsh:2069ee74f4fd48a7926387a51250dac0",
+          "source": "transputer"
+        },
+        "schema": "qikvrt_temdd_native_event_v1",
+        "subject": {
+          "head": "704d6f2a60306ce74d2c71c18836a797d4c48559",
+          "pr": 552,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "e475c8ffc98601f8c702e25402f77bc572c188ff"
+        }
+      }
+    },
+    {
+      "independent_readback": {
+        "dod": false,
+        "evidence_transfer": "DENY",
+        "id": "eb45aecb20ea40eab5202fd3dbfb7e1f:2",
+        "kind": "READBACK",
+        "ledger_digest": "fe15058f6d6e799a2a50f1b8567b178d8689dc203ab8bd5017260b274e9bd3a5",
+        "message": "Computed CHSH references and passing source tests independently read from original native ledger",
+        "observed_at": "2026-10-19T16:34:08.224015Z",
+        "payload": {
+          "S": {
+            "local_shared_bit": 2.0,
+            "no_signalling_pr_box": 4.0,
+            "quantum_born_phi_plus": 2.8284271247461894
+          },
+          "focused_tests": 30,
+          "full_R1": "OPEN",
+          "full_make_unittest_executions": 1693,
+          "qik_derivation": false,
+          "reference_results_sha256": "331ab05aabe0cc4b6a26a92cad66250c877509167225974ecf8261043c4fb3e1"
+        },
+        "payload_digest": "6b1d55b9e4488dfc66220ab97fd69a63ecc4948271dedfa515505770a8549197",
+        "provenance": {
+          "native_event_id": "chsh:0c817d3c30d24f55834c92c075f7f318",
+          "source": "transputer"
+        },
+        "recorded_at": "2026-10-19T16:34:08.249402Z",
+        "schema": "qikvrt_temdd_event_v1",
+        "subject": {
+          "head": "704d6f2a60306ce74d2c71c18836a797d4c48559",
+          "pr": 552,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "e475c8ffc98601f8c702e25402f77bc572c188ff"
+        }
+      },
+      "original_event": {
+        "kind": "READBACK",
+        "message": "Computed CHSH references and passing source tests independently read from original native ledger",
+        "observed_at": "2026-10-19T16:34:08.224015Z",
+        "payload": {
+          "S": {
+            "local_shared_bit": 2.0,
+            "no_signalling_pr_box": 4.0,
+            "quantum_born_phi_plus": 2.8284271247461894
+          },
+          "focused_tests": 30,
+          "full_R1": "OPEN",
+          "full_make_unittest_executions": 1693,
+          "qik_derivation": false,
+          "reference_results_sha256": "331ab05aabe0cc4b6a26a92cad66250c877509167225974ecf8261043c4fb3e1"
+        },
+        "provenance": {
+          "native_event_id": "chsh:0c817d3c30d24f55834c92c075f7f318",
+          "source": "transputer"
+        },
+        "schema": "qikvrt_temdd_native_event_v1",
+        "subject": {
+          "head": "704d6f2a60306ce74d2c71c18836a797d4c48559",
+          "pr": 552,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "e475c8ffc98601f8c702e25402f77bc572c188ff"
+        }
+      }
+    }
+  ],
+  "schema": "qikvrt-chsh-native-in-process-readback/1",
+  "socket_transport_verified": false,
+  "subject": {
+    "head": "704d6f2a60306ce74d2c71c18836a797d4c48559",
+    "pr": 552,
+    "repository": "ingolf-lohmann/qik-vrt",
+    "tree": "e475c8ffc98601f8c702e25402f77bc572c188ff"
+  }
+}

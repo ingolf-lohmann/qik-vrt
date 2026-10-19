@@ -12,7 +12,9 @@
     "docs/QIK_R1_CHSH_MINIMALBENCHMARK.md",
     "evidence/chsh-reference/REFERENCE_RESULTS.json",
     "evidence/chsh-reference/SOURCE_BINDINGS.json",
-    "evidence/chsh-reference/VALIDATION.txt"
+    "evidence/chsh-reference/VALIDATION.txt",
+    "evidence/chsh-reference/NATIVE_LOCAL_SOURCE_READBACK.json",
+    "evidence/chsh-reference/NATIVE_PUBLISHED_SOURCE_READBACK.json"
   ],
   "open_research": {
     "id": "QIK_R1_CORRELATION_LAW",
@@ -25,6 +27,15 @@
     "merge_or_publication": false,
     "mesh_native_execution_verified": false,
     "mirror_outbox_tool": "node-tools/qikvrt_mirror_emit.py absent from current Main tree and v23 carrier; no formal assessment, sent, receipt, NACK or peer adoption claim created",
+    "native_in_process": {
+      "exact_published_source_head": "ae2e3283bae67a2e0e0abe4af96540100fcbca68",
+      "exact_tree": "e475c8ffc98601f8c702e25402f77bc572c188ff",
+      "method": "Original bounded Terminal API, admitted Runtime.append, fresh independent Terminal SQLite readback",
+      "pr": 552,
+      "readback": "evidence/chsh-reference/NATIVE_PUBLISHED_SOURCE_READBACK.json",
+      "scope": "Own local journal of the exact published source; no remote Mesh execution or peer adoption",
+      "verified": true
+    },
     "native_transport": "Local socket permission denied; original admitted in-process Runtime/Terminal use remains separately bound"
   },
   "predecessor_context": {
