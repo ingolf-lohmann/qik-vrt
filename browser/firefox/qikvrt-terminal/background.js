@@ -282,9 +282,19 @@ async function commitEffect(payload) {
 browser.runtime.onInstalled.addListener(() => { observeLifecycleEvent().catch(() => undefined); });
 browser.runtime.onStartup.addListener(() => { observeLifecycleEvent().catch(() => undefined); });
 
-browser.runtime.onMessage.addListener(async message => {
+browser.runtime.onMessage.addListener(async (message, sender) => {
   if (!await legacyAlarmCleanup) return fail("legacy client alarm cleanup failed");
   if (!message || typeof message.kind !== "string") return Promise.resolve(fail("invalid message"));
+  if (message.kind === "OPEN_PERSONAL") {
+    // Navigation only. This package never fetches or receives protected data.
+    if (message.payload?.confirmed !== true || sender?.id !== browser.runtime.id ||
+        sender?.url !== browser.runtime.getURL("client.html")) return fail("explicit packaged-tab action required");
+    try {
+      await browser.tabs.create({url: "http://127.0.0.1:8771/personal/#terminal"});
+      return {ok: true, state: "EFFECT_ACK_CONTINUE", ordinary_release: false,
+        effect_scope: "NAVIGATION_ONLY", productive_effect_verified: false};
+    } catch (_) { return fail("local interface could not open"); }
+  }
   if (message.kind === "OBSERVE_AUTHORITY") return persistWatchdogFrame().catch(error => fail(error.message));
   if (message.kind === "DISCOVER_EFFECT_ACK") return discover().catch(error => fail(error.message));
   if (message.kind === "PREPARE_EFFECT") return prepareEffect(message.payload).catch(error => fail(error.message));

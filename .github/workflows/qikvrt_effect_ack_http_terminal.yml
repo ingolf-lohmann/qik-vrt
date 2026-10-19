@@ -327,7 +327,7 @@ jobs:
         env:
           PYTHONDONTWRITEBYTECODE: "1"
           PYTHONNOUSERSITE: "1"
-        run: python3 -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal
+        run: python3 -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal tests.test_qikvrt_personal_terminal_transition
 
       - name: Freeze and verify exact-head standalone package
         shell: bash

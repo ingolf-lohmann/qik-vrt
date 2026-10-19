@@ -316,3 +316,11 @@ a signed package or productive installation.
 Sources:
 - https://extensionworkshop.com/documentation/develop/firefox-builtin-data-consent/
 - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/browser_specific_settings
+# Ausdrücklicher Personal-Übergang
+
+Im unabhängigen Erweiterungs-Tab öffnet „Personal öffnen“ die vorhandene lokale
+Personal-Oberfläche. Nur der genaue Erweiterungs-Tab darf diese Navigation
+auslösen. Die Standard-Erweiterung liest keine Personal-API, übernimmt keine
+Tokens und überträgt weder Eingabetext noch Medien oder Sitzungszustand.
+Anmeldung und ausdrückliche Aktivierung erfolgen ausschließlich in der lokalen
+Personal-Oberfläche. Eine geöffnete Seite ist noch kein bestätigter Übergang.

@@ -1,6 +1,6 @@
 {
   "schema": "qikvrt_personal_firefox_capability_boundary_v1",
-  "version": "1.2",
+  "version": "1.3",
   "source_subject": {
     "repository_roles_source": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
     "standard_repository": "ingolf-lohmann/qik-vrt",
@@ -12,6 +12,20 @@
   "transitions": {
     "standard_to_personal": "ALLOW_WITH_FRESH_BINDING",
     "personal_to_standard": "DENY_BY_DEFAULT"
+  },
+  "standard_to_personal_binding": {
+    "standard_action": "EXPLICIT_PACKAGED_TAB_NAVIGATION_ONLY",
+    "destination": "http://127.0.0.1:8771/personal/#terminal",
+    "protected_exchange_in_standard": false,
+    "personal_origin": "EXACT_REGISTERED_LOOPBACK_ORIGIN",
+    "authentication": "EXISTING_OIDC_WITH_FORCED_FRESH_PROVIDER_VALIDATION",
+    "native_admission": "EXPLICIT_CLEAN_HEAD_TREE_REPOSITORY_AND_PR",
+    "protocol": "EXISTING_EFFECT_ACK_PREPARE_COMMIT_AND_INDEPENDENT_NATIVE_READBACK",
+    "preparation_ttl_seconds": 120,
+    "single_use": true,
+    "ambiguous_commit": "EXPLICIT_AUTHENTICATED_READBACK_WITHOUT_RETRY",
+    "release_scope": "AUTHENTICATED_NATIVE_PERSONAL_BINDING_ONLY",
+    "productive_sso_firefox_or_public_delivery_inferred": false
   },
   "invariants": {
     "personal_capability_leak_to_standard": "DENY",

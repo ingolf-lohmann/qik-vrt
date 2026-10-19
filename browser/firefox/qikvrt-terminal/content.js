@@ -7,7 +7,7 @@
   host.innerHTML = `
     <header class="qv-head">
       <div><strong>QIKVRT · AI TERMINAL</strong><small> source-bound · EFFECT_ACK gated</small></div>
-      <div class="qv-head-actions"><button data-act="observe">↻ Observe</button><button data-act="options" aria-label="Personalize">⚙</button><button data-act="collapse" aria-label="Collapse">—</button></div>
+      <div class="qv-head-actions"><button data-act="personal" hidden>Personal öffnen</button><button data-act="observe">↻ Observe</button><button data-act="options" aria-label="Personalize">⚙</button><button data-act="collapse" aria-label="Collapse">—</button></div>
     </header>
     <div class="qv-body">
       <div class="qv-status" data-role="status">OBSERVE</div>
@@ -28,6 +28,20 @@
       </div>
     </div>`;
   document.body.appendChild(host);
+  const personalButton = host.querySelector("[data-act=personal]");
+  personalButton.hidden = location.href !== browser.runtime.getURL("client.html");
+  personalButton.addEventListener("click", async event => {
+    if (!event.isTrusted || personalButton.hidden || busy) return;
+    event.stopPropagation();
+    busy = true;
+    try {
+      const result = await send("OPEN_PERSONAL", {confirmed: true});
+      render(result);
+      setState(result.ok ? "EFFECT_ACK_CONTINUE" : "HOLD", result.ok ?
+        "In der Personal-Oberfläche anmelden und den Übergang bestätigen." : result.reason);
+    } catch (_) { setState("HOLD", "Personal-Oberfläche konnte nicht geöffnet werden."); }
+    finally { busy = false; }
+  });
 
   const $ = selector => host.querySelector(selector);
   const output = $("[data-role=output]");

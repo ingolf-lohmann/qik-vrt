@@ -1,0 +1,83 @@
+{
+  "schema": "qikvrt_firefox_personal_integration_work_unit_v1",
+  "work_unit_id": "QIKVRT_FIREFOX_PERSONAL_INTEGRATION_20261019_V1",
+  "authorization": {
+    "principal": "Ingolf Lohmann",
+    "source": "Direct Owner task of 2026-10-19: integrate PR542 and PR543 through existing QIK-VRT paths and add explicit authenticated Standard-to-Personal transition",
+    "scope": "SOURCE_INTEGRATION_AND_EXISTING_ADMITTED_REGRESSION_AND_NATIVE_READBACK_PATHS",
+    "repeat_owner_permission_required": false,
+    "signing_sso_or_governance_bypass": false
+  },
+  "predecessors": {
+    "authority_main": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+    "firefox_pr": 542,
+    "firefox_head": "f739df7d225b5039642862b1c8f24974dea821f6",
+    "inspected_initial_firefox_head": "23bc32c9c651aedea9b4f350f1865d0cb6608c4c",
+    "firefox_prior_owner_locator": "c20bef5121a14e00895d8e49cdc41c6857da80ce",
+    "sso_pr": 543,
+    "sso_head": "5ca8f7bd9930e133777d976887b675e142f7e6ce",
+    "continuation": "libfile_8ff514ee33a08191a6573ae98c5acb5a",
+    "original_journal_copies": "READ_ONLY_NO_WRITER_ADMISSION_TRANSFER",
+    "all_predecessor_open_duties_retained": true
+  },
+  "integration": {
+    "target": "EXISTING_PR542_NO_COMPETING_PR",
+    "merge_parent": "5ca8f7bd9930e133777d976887b675e142f7e6ce",
+    "sso_source_changes": "REUSE_WITHOUT_REIMPLEMENTATION",
+    "concurrent_successor": "PRESERVE_f739df7d_CAUSAL_FAILURE_CACHE_AND_BIND_ITS_TEST_TO_ORIGINAL_FAILED_INPUT_BYTES",
+    "integrity": "REGENERATE_ALL_THREE_WITH_tools/qikvrt_integrity.py_AND_VERIFY_REPEAT_BYTE_EQUALITY",
+    "external_runtime_service_added": false
+  },
+  "transition": {
+    "standard": "EXPLICIT_TRUSTED_PACKAGED_TAB_ACTION_OPENS_FIXED_LOCAL_URL_WITHOUT_PAYLOAD",
+    "personal": "EXISTING_OIDC_EXACT_LOOPBACK_ORIGIN_WITH_EXPLICIT_ACTIVATION",
+    "freshness": "CLEAN_EXACT_REPOSITORY_PR_HEAD_TREE_AND_FORCED_PROVIDER_REFRESH",
+    "admission": "EXISTING_NATIVE_RUNTIME_WRITER_FENCE_AND_ORIGINAL_TERMINAL_INPUT_CONTRACT",
+    "prepare": "HASH_BOUND_SINGLE_USE_120_SECONDS",
+    "commit": "ONE_ATTEMPT_ORIGINAL_TRANSPUTER_APPEND",
+    "readback": "ORIGINAL_TERMINAL_FRESH_READ_ONLY_SQLITE_AND_SEPARATE_AUTHENTICATED_GET",
+    "ambiguous_result": "EXPLICIT_READBACK_NO_AUTOMATIC_RETRY",
+    "effect_ack": "ORIGINAL_EFFECT_ACK_SYNC_ENGINE",
+    "release_scope": "AUTHENTICATED_NATIVE_PERSONAL_BINDING_ONLY",
+    "protected_credentials_in_standard_or_journal": false,
+    "existing_native_source_arguments_required": true
+  },
+  "validation_commands": [
+    "make test",
+    "make personal-firefox-boundary-test",
+    "python3 -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal",
+    "python3 -B -m unittest -v tests.test_qikvrt_personal_terminal_transition",
+    "python3 -B tools/qikvrt_integrity.py verify",
+    "python3 -B tools/ai_handoff.py --client-receipt <bound-receipt>"
+  ],
+  "evidence_boundaries": {
+    "native_transition_regressions": "REAL_ORIGINAL_JOURNAL_AND_SEPARATE_PROCESS_READBACK_WITH_EXPLICIT_IDP_AND_VAULT_DOUBLES",
+    "browser_controller_regressions": "SIMULATED_DOM_AND_BROWSER_API_NOT_INSTALLED_FIREFOX",
+    "source_integration_on_main": false,
+    "persistent_signed_firefox_activation": false,
+    "productive_microsoft_sso": false,
+    "model_or_onenote_effect": false,
+    "exact_public_delivery": false,
+    "general_effect_ack_done": false,
+    "predecessor_pass_transfer": false
+  },
+  "contribution_attribution": {
+    "human": "Ingolf Lohmann: purpose, boundary requirements and authorization",
+    "artificial_cognitive": "Codex: current-state inspection, source integration, implementation and verification",
+    "acceptance_does_not_reclassify_origin": true
+  },
+  "open_acceptance": [
+    "EXACT_CANDIDATE_GOVERNANCE_GATES_AND_MAIN_READBACK",
+    "MOZILLA_SIGNED_EXTENSION_INSTALL_UPDATE_AND_RESTART",
+    "ORIGINAL_ADMITTED_HOST_AND_PRODUCTIVE_PROTECTED_IDENTITY",
+    "AUTHENTICATED_LIVE_PEER_RETURN",
+    "EXACT_raumzeitterminal.de_USEFUL_TLS_DELIVERY"
+  ],
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "classification": "source_integration_work_unit"
+  }
+}

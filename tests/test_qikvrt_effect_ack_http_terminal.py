@@ -260,6 +260,26 @@ async function prepare({prepareAck = ack(), body = preparedBody, record = fullRe
         )
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
+    def test_personal_navigation_is_explicit_packaged_tab_only_and_has_no_data_exchange(self):
+        self.run_adapter(r'''
+sandbox.browser.runtime.id = 'qikvrt-test';
+const sender = {id:'qikvrt-test', url:sandbox.browser.runtime.getURL('client.html')};
+for (const [payload, origin] of [[null,sender], [{confirmed:false},sender], [{confirmed:true},{}],
+  [{confirmed:true},{id:'other',url:sender.url}], [{confirmed:true},{id:sender.id,url:'https://github.com/ingolf-lohmann/qik-vrt/blob/main/AI'}]]) {
+  const result = await listener({kind:'OPEN_PERSONAL',payload}, origin);
+  assert.equal(result.ok, false);
+}
+assert.equal(opened.length, 0);
+const result = await listener({kind:'OPEN_PERSONAL',payload:{confirmed:true}}, sender);
+assert.equal(opened.length, 1);
+assert.equal(opened[0].url, 'http://127.0.0.1:8771/personal/#terminal');
+assert.equal(Object.keys(opened[0]).length, 1);
+assert.equal(result.state, 'EFFECT_ACK_CONTINUE');
+assert.equal(result.ordinary_release, false);
+assert.equal(calls.length, 0, 'navigation must not fetch protected data');
+assert.equal(JSON.stringify(stored).includes('token'), false);
+''')
+
     def test_event_only_startup_clears_legacy_alarm_without_network_poll(self) -> None:
         self.run_adapter(r"""
 await Promise.resolve();

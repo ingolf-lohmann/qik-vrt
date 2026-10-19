@@ -281,9 +281,16 @@ class FirefoxExtensionAdmissionTests(unittest.TestCase):
             paths=[*('browser/firefox/qikvrt-terminal/'+name for name in names),
                 'runtime/self-host/Dockerfile','deploy/universal-terminal/entrypoint.sh',
                 'tools/qikvrt_self_host.py',work_path]
+            # The cached rejection is historical evidence. A successor package
+            # may legitimately change, so reconstruct the original causal bytes
+            # instead of assuming that today's working tree is that failure.
+            current_work=json.loads((ROOT/work_path).read_bytes())
+            failed_head=current_work['firefox158_s1_upgrade']['native_observation']['source_head']
             for relative in paths:
                 target=root/relative;target.parent.mkdir(parents=True,exist_ok=True)
-                shutil.copyfile(ROOT/relative,target)
+                original=((ROOT/relative).read_bytes() if relative==work_path else
+                    subprocess.check_output(['git','-C',str(ROOT),'show',failed_head+':'+relative]))
+                target.write_bytes(original)
             def git(*args):
                 return subprocess.check_output(['git','-C',str(root),*args],
                     stderr=subprocess.DEVNULL,text=True).strip()
