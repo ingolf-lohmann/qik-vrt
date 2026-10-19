@@ -2,17 +2,17 @@
   "EFFECT_ACK_DONE": false,
   "artifacts": {
     "ANSWER.md": "28bba5b8db1e3be813f9f528171228cba676f83c8ec1cd28bbd03217e46d9280",
-    "CONTEXT.md": "2284b89e73a0bba51e1f4a6d6cdec6d2ebe1b619f867e50d03ec8acddc1e6745",
-    "REQUEST.json": "9b5cdacd0fad4cd9bb17a32f26ac502d6ec70fd7a168faeb2735f3a2a9fe6fa4",
-    "REQUEST.sha256": "041d9bdbfd6e0b8f8d597618605ca6da789d2196c66b75063b0b7610b570b307",
-    "STATUS.json": "7ee99fd6af635767b1990603ef0245f307b129f3f4bcd510932256e1030e9f46"
+    "CONTEXT.md": "e4e9a299bd7bcf4d507ca6c8dc06a7658a8d6f5008c8a98e1443183bdcb5e1a7",
+    "REQUEST.json": "cde51e6f785ec60c86f6fc438b73c5f5332c0837466e6f4b75a8c9e730caa2ad",
+    "REQUEST.sha256": "70067be953658bfde5ce4f99377b000c4a1aff03247294be08f80eca0e8e5a2f",
+    "STATUS.json": "c9f414da01b2d88b61e5834a13aa900a89aaa0e09eb9f1b03a50dbc559dc3b0e"
   },
   "automatic_issue_close": false,
   "automatic_merge": false,
   "execute": true,
-  "fingerprint": "d68687997ea6a69003d99fed1d4baa7d9ff591b342c3839614449cc0d886541f",
+  "fingerprint": "ffb0399e022af6349323a0b1170350b62b1a219a6fc1e4cfa4d0a3c42f0fab3a",
   "inputs": {
-    "context_sha256": "2284b89e73a0bba51e1f4a6d6cdec6d2ebe1b619f867e50d03ec8acddc1e6745",
+    "context_sha256": "e4e9a299bd7bcf4d507ca6c8dc06a7658a8d6f5008c8a98e1443183bdcb5e1a7",
     "processor_blobs": {
       ".github/workflows/issue-agent-backlog-resume.yml": "f45ac3b13f8059f51030c50a454d5af78d9b9bda08e9cd0769132fc243fef333",
       ".github/workflows/issue-autonomous-processing.yml": "bd86991d0347159d79169ad8ccb7273579b584360d859a1147774979d967174c",
@@ -29,9 +29,9 @@
     "request_sha256": "9472fbce07875107263fa465fa0e8de6c5283c9045129132928abf571339c677"
   },
   "issue_number": 503,
-  "previous_branch_head": "bb985199d23448fb03c4cf22bcaa15b27702b709",
+  "previous_branch_head": "0edd6a9f043e72624dbb2ba2b604f7e949d19400",
   "processing_status": "BLOCK",
-  "reason": "LEGACY_PROCESSOR_MIGRATION",
+  "reason": "NEW_CAUSAL_INPUT",
   "recorded": true,
   "repository": "ingolf-lohmann/qik-vrt",
   "schema": "qikvrt_issue_causal_attempt_v1"

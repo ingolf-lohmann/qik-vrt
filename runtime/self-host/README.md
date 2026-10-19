@@ -226,7 +226,60 @@ python3 -B tools/qikvrt_self_host.py mesh-cache-idle \
 python3 -B tools/qikvrt_self_host.py mesh-cache-send \
   --mesh-cache /private/cache/local-work --work-request /private/owner/work.json \
   --peer /private/owner/cloud-peer.json
+python3 -B tools/qikvrt_self_host.py mesh-cache-check \
+  --mesh-cache /private/cache/local-work --work-request /private/owner/work.json \
+  --peer /private/owner/cloud-peer.json
 ```
+
+### Commission the original host and retain operating evidence
+
+Source tests and a running listener do not establish a working Mirror return
+path. No peer is admitted by default. Start the existing admitted S1 service on
+the original owner-controlled host with an explicitly provisioned private peer
+entry; preserve its existing state, supervisor and protected credential binding.
+Railway or another managed replacement is not a prerequisite.
+
+The receiver's private config uses `mesh_work_peers` entries with `node_id`,
+`repository` and `secret_file`. The sender's private `--peer` document declares
+the receiver's `url`, `node_id`, `source_head`, `source_tree` and `secret_file`.
+Both protected key files must contain the same admitted key. Do not put these
+files or keys in Git, work instructions, publication archives or chat. Verify
+the actual node identities and source pins independently before admitting them.
+
+Stage an actual, explicitly exportable committed Work Unit, execute its real
+validation, send the frozen batch, then run `mesh-cache-check` on the sender.
+`send` atomically retains the authenticated GET receipt, its original response
+bytes and response signature in the existing private `CACHE_STATE.json`, alongside
+`last_ack`; a successful acknowledgement is therefore auditable after restart.
+No second ledger or scheduler is created. Existing cache states remain readable.
+An older acknowledged batch can be checked remotely, but absence of its retained
+sender response is reported as `sender_receipt_durable=false`, never fabricated.
+
+`check` sends only one authenticated GET with a fresh unpredictable challenge to
+`/api/mesh-work/readback/<batch_id>/<challenge>`. The existing receiver reloads
+and validates its durable original inbox, compares it with the running state,
+and returns the challenge, current source identity and exact stored receipt.
+The sender verifies the signature, challenge, current receiver pins, batch and
+receipt digest, and any retained original sender witness. It never POSTs,
+executes proposals, changes the cache or repairs a lost receiver inbox.
+
+Restart the same admitted receiver service and reopen the same sender cache;
+repeat `mesh-cache-check` and retain both results with the host acceptance.
+Recheck after changes to source, peer admission, keys or storage. Missing peers,
+missing receipts, stale source pins, disk divergence, replayed readbacks and
+unavailable routes remain HOLD; resolve them causally before another send.
+A changed key needs its protected historical-verification/rotation procedure;
+an old witness is not silently relabeled with the new key.
+
+`/api/node` exposes only aggregate proposal readiness: `NO_PEERS_ADMITTED`,
+`PEER_BATCH_REQUIRED`, `PEER_BATCHES_DURABLE` or a readback HOLD. Credentials and
+proposal bodies remain private. The existing independent public verifier refuses
+acceptance of standalone `raumzeitterminal.de` when any admitted peer lacks a
+durable batch for the current receiver source, or no peer is admitted. This gate
+does not prevent local startup needed for commissioning. Private challenged
+readback, actual host restart and public HTTPS acceptance are separate duties.
+These checks cover proposal continuity; native-effect replication, quorum/fencing,
+zero duplicate irreversible effects and numerical recovery SLO remain separate.
 
 The explicit validation command has a 60-second bound; a timeout/failure holds
 the batch. The finite idle proof means: cache writer lock held; clean local

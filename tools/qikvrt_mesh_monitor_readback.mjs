@@ -13,6 +13,12 @@ import {isIPv4} from 'node:net';
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
 class ReadbackGuardError extends Error {}
 const require = (condition, code) => {if (!condition) throw new ReadbackGuardError(code);};
+export function requireMeshWorkReadback(node) {
+  require(node.mesh_work?.state==='PEER_BATCHES_DURABLE' && Number.isSafeInteger(node.mesh_work.admitted_peers) &&
+    node.mesh_work.admitted_peers>0 && node.mesh_work.received_peers===node.mesh_work.admitted_peers &&
+    node.mesh_work.proposal_execution==='NOT_EXECUTED' && node.mesh_work.effect_ack_done===false,
+    'HOLD_PUBLIC_MESH_PEER_BATCH_REQUIRED');
+}
 export function readbackFailure(error) {
   return {state:'HOLD_PUBLIC_OR_INDEPENDENT_CLIENT_READBACK',
     cause:error instanceof ReadbackGuardError ? error.message : 'READBACK_UNCLASSIFIED_ERROR',
@@ -72,6 +78,7 @@ export async function verifyClient(plan = contract, request = fetch) {
     require(node.snapshot_durable === true && node.operation_error === null && node.periodic_polling === false &&
       node.webhook_secret_configured === (plan.standalone ? plan.adapter === 'github' : true) && ['HEALTHY','DEGRADED','UNKNOWN'].includes(node.health?.state) &&
       Array.isArray(node.health?.checks), 'HOLD_PUBLIC_NODE_HEALTH_CONTRACT');
+    if (plan.standalone && new URL(plan.public_url).hostname==='raumzeitterminal.de') requireMeshWorkReadback(node);
   }
   if (plan.standalone) {
     const runtime = await get('/api/runtime');

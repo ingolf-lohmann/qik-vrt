@@ -49,11 +49,20 @@ class TEMDDRuntimeSubjectBindingTests(unittest.TestCase):
             index = args.index("--repository")
             self.assertEqual(args[index:index + 2], ["--repository", repository])
 
-    def test_unsealed_reference_launch_keeps_compatibility(self):
-        self.assert_subject({}, None)
+    def test_unsealed_launch_requires_both_explicit_subject_fields(self):
+        for variables, missing in (({}, 'QIKVRT_TEMDD_PR'),
+                ({'QIKVRT_TEMDD_PR': '1124'}, 'QIKVRT_TEMDD_REPOSITORY'),
+                ({'QIKVRT_TEMDD_REPOSITORY': 'ingolf-lohmann/qik-vrt'}, 'QIKVRT_TEMDD_PR')):
+            with self.subTest(variables=variables):
+                result = self.invoke(variables)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn(missing, result.stderr)
+                self.assertEqual(result.stdout, '')
 
     def test_explicit_pr_is_passed_as_two_arguments(self):
-        self.assert_subject({"QIKVRT_TEMDD_PR": "1124"}, "1124")
+        self.assert_subject({"QIKVRT_TEMDD_PR": "1124",
+                             "QIKVRT_TEMDD_REPOSITORY": "ingolf-lohmann/qik-vrt"},
+                            "1124", "ingolf-lohmann/qik-vrt")
 
     def test_exact_head_requires_explicit_pr(self):
         result = self.invoke({"QIKVRT_EXACT_HEAD": "a" * 40})
@@ -85,14 +94,15 @@ class TEMDDRuntimeSubjectBindingTests(unittest.TestCase):
     def test_explicit_repository_does_not_assume_authority_or_mirror(self):
         for repository in ("ingolf-lohmann/qik-vrt", "Goldkelch/qik-vrt"):
             with self.subTest(repository=repository):
-                self.assert_subject({"QIKVRT_TEMDD_REPOSITORY": repository},
-                                    None, repository)
+                self.assert_subject({"QIKVRT_TEMDD_REPOSITORY": repository,
+                                     "QIKVRT_TEMDD_PR": "1124"},
+                                    "1124", repository)
 
     def test_invalid_repository_cannot_start_ledger(self):
         for value in ("", "owner", "/repo", "owner/", "a/b/c", "a b/c", "a/b;echo BAD",
                       "a/b\n", "https://github.com/owner/repo"):
             with self.subTest(value=value):
-                result = self.invoke({"QIKVRT_TEMDD_REPOSITORY": value})
+                result = self.invoke({"QIKVRT_TEMDD_REPOSITORY": value, "QIKVRT_TEMDD_PR": "1124"})
                 self.assertNotEqual(result.returncode, 0)
                 self.assertIn("QIKVRT_TEMDD_REPOSITORY", result.stderr)
                 self.assertEqual(result.stdout, "")
@@ -100,7 +110,8 @@ class TEMDDRuntimeSubjectBindingTests(unittest.TestCase):
     def test_invalid_pr_cannot_start_ledger(self):
         for value in ("", "0", "01124", "-1", "1124;echo BAD", " 1124", "1124\n", "abc"):
             with self.subTest(value=value):
-                result = self.invoke({"QIKVRT_TEMDD_PR": value})
+                result = self.invoke({"QIKVRT_TEMDD_PR": value,
+                                      "QIKVRT_TEMDD_REPOSITORY": "ingolf-lohmann/qik-vrt"})
                 self.assertNotEqual(result.returncode, 0)
                 self.assertIn("QIKVRT_TEMDD_PR", result.stderr)
                 self.assertEqual(result.stdout, "")

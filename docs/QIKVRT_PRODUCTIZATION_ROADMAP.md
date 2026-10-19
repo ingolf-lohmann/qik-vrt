@@ -166,3 +166,48 @@ nativen Runtime- und Firefox/noVNC-Neustart zurücklesen. Host-Identität,
 persistentes Gerät und authentisiertes öffentliches HTTPS bleiben davon
 getrennt **OPEN**. Keine Installation oder öffentliche Abnahme wird behauptet.
 Work Unit: `state/work_units/S1_PRODUCTIVE_TERMINAL_SOURCE_RECOVERY_20261005.json`.
+
+
+## Safety-/Security-Anschlussfähigkeit — Freigabe vom 19. Oktober 2026
+
+Ingolf Lohmann hat die Einarbeitung relevanter behördlicher Vorgaben und
+Marktentwicklungen für den Einsatz von QIKVRT und des Effect Acknowledgement
+Protocol in Safety und Security freigegeben. Der bestehende Entwicklungsweg
+wird um einen quellengebundenen Anforderungsabgleich ergänzt:
+[`QIKVRT_SAFETY_SECURITY_IMPACT_20261019_V1`](../state/work_units/QIKVRT_SAFETY_SECURITY_IMPACT_20261019_V1.json).
+
+Der Abgleich unterscheidet bindendes Recht, behördliche Leitlinie,
+verabschiedeten Standard, Entwurf, bestätigte produktspezifische Prüfevidenz
+und Herstellerankündigung. Veröffentlichungs-, Ereignis-, Anwendungs- und
+Fristdatum bleiben getrennt; ein unbekanntes Datum bleibt unbekannt.
+Jurisdiktion, konkrete Produktkonfiguration und Rolle des Wirtschaftsakteurs
+müssen zur abgeleiteten Pflicht passen. Ein Zertifikat für einen Leser oder
+ein Kryptomodul ist keine Abnahme der gesamten Installation.
+
+Neue wesentliche Erkenntnisse aus der bestehenden Recherche und Entwicklung
+werden auf betroffene Komponenten, Architekturentscheidungen, Abhängigkeiten
+und Beschaffung abgebildet. Daraus entstehen konkrete Anforderungen mit
+Prüfkriterien und offenen Nachweisen. Vorhandene EAP-, Terminal-, Transputer-,
+Self-Host-, Review- und Integritätswege werden weiterverwendet. Unveränderte
+Meldungen erzeugen keinen neuen Änderungsauftrag. Marktänderungen sind nur
+relevant, wenn sie Unterstützung, Lieferfähigkeit, Produktlebenszyklus,
+Abhängigkeiten oder Beschaffung tatsächlich betreffen.
+
+Die erste Fassung bindet die ASD-OT-Leitlinie vom 15. Oktober, den
+herstellerseitig gemeldeten T30-Prüfstatus vom 16. Oktober sowie ergänzende
+IEC-/SIA- und EU-Kommissionsquellen. Sie konkretisiert isolierten Betrieb,
+lokale Identitäten und Schlüssel, sichere Leserkommunikation und Updates,
+frische physische Rückmeldung, Fencing, Protokollierung, Wiederherstellung
+und den eigenständig abgesicherten Flucht-/Notfallbetrieb. Die CRA-Prüfung
+bleibt rollen- und produktspezifisch; eine tatsächliche Meldepflicht von
+QIKVRT wird aus diesem Register allein nicht behauptet.
+
+**Abnahme:** Die Anforderungen sind spezifiziert; ihre Umsetzung und
+Wirksamkeit sind je Einsatzprofil durch Originalnachweise zu schließen.
+Die bestehenden fünf EAP-Zustände und das Wire-Format werden hier nicht
+geändert. Insbesondere darf ein Ausfall von Fernbestätigung oder Mesh-Quorum
+keine ungeprüfte Abhängigkeit sicherheitskritischer Fluchtfunktionen erzeugen.
+Die lokale Schutzfunktion benötigt eine eigene zugelassene, gefahrenbezogene
+Entscheidung und Prüfung; sie ist keine allgemeine Freigabe gewöhnlicher
+Nicht-DONE-Wirkungen. Ein Repository-Abgleich oder CI-Erfolg ersetzt weder
+die reale Installationserprobung noch eine vorgeschriebene Konformitätsbewertung.
