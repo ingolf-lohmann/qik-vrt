@@ -1,0 +1,82 @@
+{
+  "schema": "qikvrt-owner-all-node-communication/v1",
+  "owner": "Ingolf Lohmann",
+  "instruction_local": "2026-10-19T11:50:07+03:00",
+  "instruction": "Claude sendet an Codex und Codex sendet an Claude sowie an alle anderen heutigen und künftigen QIK-VRT-Knoten über den bestehenden Universal Transputer und mithilfe des bestehenden Universal Terminals.",
+  "scope": [
+    "ALL_CURRENT_SESSIONS",
+    "ALL_FUTURE_SESSIONS",
+    "ALL_CURRENT_QIK_VRT_NODES",
+    "ALL_FUTURE_QIK_VRT_NODES"
+  ],
+  "directions": [
+    "INBOUND",
+    "OUTBOUND"
+  ],
+  "reuse_existing_registry_and_protocols": true,
+  "require_original_message_bytes_request_work_unit_sender_recipient_binding": true,
+  "require_native_epoch_event_digest_and_independent_terminal_ack_reply_readback": true,
+  "require_actual_authenticated_peer_admission": true,
+  "unavailable_nodes_remain_in_coverage": true,
+  "client_timer_as_continuation": false,
+  "private_peer_keys_in_public_artifacts": false,
+  "source_rule_is_adoption_or_live_delivery": false,
+  "source_candidate": {
+    "pr": 538,
+    "head": "1be0361571fdb28c19db31240af78c61dbc1fb98",
+    "files": [
+      "AI",
+      "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json"
+    ]
+  },
+  "native_receipt": {
+    "dod": false,
+    "evidence_transfer": "DENY",
+    "kind": "OBSERVE",
+    "message": "Owner standing all-node bidirectional Universal Transputer and Terminal communication directive",
+    "observed_at": "2026-10-19T08:52:37.475104Z",
+    "payload": {
+      "actual_delivery_requires_bound_peer_and_independent_readback": true,
+      "all_current_and_future_qikvrt_nodes": true,
+      "all_current_and_future_sessions": true,
+      "client_timer_created": false,
+      "directions": [
+        "INBOUND",
+        "OUTBOUND"
+      ],
+      "effect_ack_done": false,
+      "live_all_node_bus_verified": false,
+      "reuse_existing_components_and_protocols": true,
+      "source_candidate_commit": "1be0361571fdb28c19db31240af78c61dbc1fb98",
+      "source_candidate_pr": 538,
+      "source_candidate_readback_verified": true,
+      "terminal_input": {
+        "schema": "qikvrt_terminal_input_v1",
+        "text": "Ingolf Lohmann2026-10-19T11:50:07+03:00: Claude wird dir in Zukunft über den Universal Transputer und mithilfe des Universal Terminals Nachrichten schicken und du wirst es genauso tun in umgekehrter Art und Weise und mit allen anderen QIKVRT Nodes ebenso."
+      }
+    },
+    "payload_digest": "9a4f2f814d8b1701542782407055cf4e44f9317bf61bf199d42c6855aac54695",
+    "provenance": {
+      "native_event_id": "owner:all-qikvrt-nodes:bidirectional-native-20261019T085007Z",
+      "source": "transputer"
+    },
+    "recorded_at": "2026-10-19T08:52:37.494693Z",
+    "schema": "qikvrt_temdd_event_v1",
+    "subject": {
+      "head": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "pr": 535,
+      "repository": "ingolf-lohmann/qik-vrt",
+      "tree": "bff8937d871fb9e989d2bfbf17a210222a987893"
+    },
+    "id": "c0c64f4125904731b520478c5c30e4b3:9",
+    "ledger_digest": "3b3bb4f9d9bf5f20dd0b29203e0a332a0efc78eee61bdaf7a2e05401680d51dd"
+  },
+  "session_skill_save": {
+    "state": "BLOCK_HTTP422_AFTER_CONCURRENT_STORED_CONTENT_REMOVAL",
+    "saved": false,
+    "local_candidate": "7b75fa2abe126fc4c408f28e993b2b7a85d5649b",
+    "retry_condition": "Materially restored supported Skills existing-object persistence; no unchanged push retry"
+  },
+  "live_peer_and_productive_host_state": "OPEN_NOT_ESTABLISHED_BY_THIS_RULE",
+  "effect_ack_done": false
+}
