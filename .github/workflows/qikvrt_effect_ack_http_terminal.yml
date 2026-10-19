@@ -364,7 +364,7 @@ jobs:
           (
             cd browser/firefox/qikvrt-terminal
             zip -X -9 /tmp/qikvrt-firefox-package/qikvrt-ai-terminal.xpi \
-              manifest.json background.js content.js terminal.css options.html options.js README.md
+              manifest.json background.js content.js terminal.css options.html options.js client.html README.md
           )
           sha256sum /tmp/qikvrt-firefox-package/qikvrt-ai-terminal.xpi \
             > /tmp/qikvrt-firefox-package/qikvrt-ai-terminal.xpi.sha256

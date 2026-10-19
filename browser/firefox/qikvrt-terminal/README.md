@@ -8,6 +8,53 @@ The client is a Manifest V3 WebExtension rather than a forked Firefox binary. Th
 
 When installed, the content script is injected on the configured QIKVRT AI surfaces and presents a source-bound terminal with repository observation, text input, explicit microphone recording, explicit camera preview/snapshot, Prepare/Commit gating and local personalization.
 
+## Independent Firefox frontend (1.1.0)
+
+The toolbar action opens the packaged `client.html` in its own Firefox tab.
+The tab loads the existing `content.js` and `terminal.css` directly from the
+installed extension. Its interface can open without GitHub, a published website
+or another frontend service. Backend unavailability remains visible as HOLD.
+The existing page overlays remain available. No additional permission or host
+origin is requested.
+
+Prepare freezes the submitted input. Editing it or changing captured media
+invalidates preparation; a pending preparation cannot enable Commit for a
+subsequently edited input. Duplicate UI submissions are serialized.
+
+Commit re-reads the preparation record and checks its SHA-256 and exact input.
+After the single commit attempt, the client separately fetches and hashes the
+successor responsibility record, then re-reads `/terminal/state` and compares
+the accepted event with the requested input and commit response. Missing,
+changed or unavailable evidence stays HOLD, with no automatic commit retry.
+The effect result remains visible instead of being overwritten by an unrelated
+repository observation.
+
+This first verified effect scope is `LOOPBACK_TERMINAL_INPUT_ONLY`, with
+`external_effect=NONE`. The reference bridge is memory-backed. It is not a
+durable cognitive conversation, an admitted productive host, an actuator
+confirmation or an authenticated Personal runtime. Those integrations retain
+their original admission, journal and independent-readback obligations.
+Unsubmitted input/media and prepared tokens are not persisted by this frontend.
+
+Build and signing paths include the seven exact Standard components, including
+`client.html`; signed-file verification rejects missing, changed or foreign
+payloads. Normal persistent installation still requires the existing official
+AMO signing and actual activation/restart gates, without reducing Firefox 158.
+
+Continued improvement uses the existing
+`policy/HUMAN_MACHINE_INTERFACE_ADAPTATION_V1.json` evaluation matrix and
+`policy/COLLECTIVE_ADAPTIVE_COGNITION.json` proposal boundary. Establish actual
+host/session operation first, measure comparable useful-task outcomes, review
+the smallest change, run regression and restart controls, then read its effect
+back. No self-modifying code or new timer/executor is introduced. The standing
+backlog-completion condition still governs the later optimization phase.
+
+Provider API references:
+
+- https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/action
+- https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/create
+- https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Content_Security_Policy
+
 ## Repository binding and entrypoints
 
 `policy/CANONICAL_UPSTREAM_REMOTE_V1.json` selects `ingolf-lohmann/qik-vrt`
@@ -141,7 +188,7 @@ No authorized AMO signing binding or matching signed XPI is currently establishe
 The exact-source unsigned native XPI is retained as a signing input and negative
 control. Secure AMO signing for self-distribution is the official `unlisted`
 route; developer credentials stay in its supported private connection/store.
-Use an actually admitted signer on the exact six-file Standard payload. Do
+Use an actually admitted signer on the exact Standard payload. Do
 not paste credentials into chat, the repository, artifacts, logs or caches.
 
 A returned signed XPI can be connected through `firefox158_s1_upgrade.signed_xpi_artifact`
@@ -189,9 +236,10 @@ activation or public delivery. The signing admission gate correctly remains red.
 producer through Mozilla's documented REST Signing API v4. That supported API
 is frozen; no Firefox or runtime version is lowered. The upload always declares
 `channel=unlisted`. It contains exactly the committed `manifest.json`,
-`background.js`, `content.js`, `options.html`, `options.js` and `terminal.css`.
+`background.js`, `content.js`, `options.html`, `options.js`, `terminal.css` and
+`client.html`.
 README, Personal payloads, credentials and build artifacts are excluded. The
-current HEAD/TREE, all six original Git blobs and SHA-256 values are checked
+current HEAD/TREE, all seven original Git blobs and SHA-256 values are checked
 before any request. The unchanged add-on ID and minimum `158.0` are mandatory.
 
 Use the existing `.github/workflows/qikvrt_ci.yml` REST `workflow_dispatch`
@@ -214,7 +262,7 @@ upload or a rejected unchanged version remains HOLD/PENDING; resume reads the
 existing AMO version without another PUT. No automatic version bump occurs.
 
 Mozilla's original downloaded XPI is retained byte-exact as
-`standard-signed.xpi`. Its SHA-256 must equal AMO's signed-file hash, and all six
+`standard-signed.xpi`. Its SHA-256 must equal AMO's signed-file hash, and all seven
 components must remain byte-identical, with only known signing metadata added.
 An AMO API flag and signature-file presence do not prove cryptographic browser
 acceptance. Authenticated API calls remain on addons.mozilla.org; download

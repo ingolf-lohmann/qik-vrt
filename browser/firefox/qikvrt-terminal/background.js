@@ -16,6 +16,25 @@ function fail(reason) {
   return {ok: false, state: "HOLD", ordinary_release: false, reason};
 }
 
+// Opens the packaged frontend from any page, without additional host access.
+browser.action.onClicked.addListener(() => {
+  browser.tabs.create({url: browser.runtime.getURL("client.html")})
+    .catch(error => console.error("QIKVRT client could not open:", error.message));
+});
+
+function canonicalValue(value) {
+  if (Array.isArray(value)) return value.map(canonicalValue);
+  if (value && typeof value === "object") {
+    return Object.fromEntries(Object.keys(value).sort().map(key => [key, canonicalValue(value[key])]));
+  }
+  return value;
+}
+
+async function contentHash(value) {
+  const bytes = new TextEncoder().encode(JSON.stringify(canonicalValue(value)));
+  return bytesToHex(new Uint8Array(await crypto.subtle.digest("SHA-256", bytes)));
+}
+
 async function github(path) {
   const response = await fetch(`https://api.github.com/repos/${AUTHORITY}${path}`, {
     method: "GET",
@@ -160,7 +179,7 @@ async function backendBase() {
 
 async function backendRequest(path, init) {
   const base = await backendBase();
-  const response = await fetch(`${base}${path}`, {credentials: "omit", cache: "no-store", ...init});
+  const response = await fetch(`${base}${path}`, {credentials: "omit", cache: "no-store", redirect: "error", ...init});
   const effect = parseEffectAck(response.headers.get("Effect-Ack"));
   const type = response.headers.get("content-type") || "";
   const body = type.includes("application/json") ? await response.json() : {text: await response.text()};
@@ -172,20 +191,32 @@ async function discover() {
   return {...result, discovered: result.http_status >= 200 && result.http_status < 300};
 }
 
-async function validatePreparedRecord(result) {
+async function validateRecord(recordResult, hash, inputHash) {
+  const record = recordResult.body;
+  const ack = recordResult.effect_ack;
+  if (recordResult.http_status !== 200 || !ack || ack.state !== "EFFECT_ACK_DONE" ||
+      ack.record_hash !== hash || !record ||
+      record.schema !== "qikvrt_effect_ack_http_terminal_record_v1" ||
+      record.state !== "EFFECT_ACK_DONE" || record.ordinary_release !== true ||
+      record.policy_allows_release !== true || record.external_effect !== "NONE" ||
+      record.record_hash !== `sha256:${hash}` || record.input_hash !== `sha256:${inputHash}`) {
+    return false;
+  }
+  const {record_hash, ...bytes} = record;
+  return await contentHash(bytes) === hash;
+}
+
+async function validatePreparedRecord(result, inputHash) {
   const effect = result.effect_ack;
   const body = result.body;
   if (!effect || effect.state !== "EFFECT_ACK_DONE") return fail("prepare is not DONE");
   if (!body || typeof body.record_hash !== "string" || !/^[0-9a-f]{64}$/.test(body.record_hash)) return fail("prepare record hash unavailable");
   if (body.record_hash !== effect.record_hash) return fail("compact/full record hash mismatch");
   if (!effect.commit_token || body.commit_token !== effect.commit_token) return fail("compact/full commit token mismatch");
-  if (typeof body.record_url !== "string" || !body.record_url.startsWith("/effect-ack/records/")) return fail("bound record URL unavailable");
+  if (body.record_url !== `/effect-ack/records/${body.record_hash}`) return fail("bound record URL unavailable");
   const recordResult = await backendRequest(body.record_url, {method: "GET"});
   const record = recordResult.body;
-  if (recordResult.http_status !== 200 || !recordResult.effect_ack || !record) return fail("full record unavailable");
-  if (recordResult.effect_ack.record_hash !== body.record_hash) return fail("record response hash mismatch");
-  if (record.state !== "EFFECT_ACK_DONE" || record.ordinary_release !== true) return fail("full record is not release-eligible DONE");
-  if (record.record_hash !== `sha256:${body.record_hash}`) return fail("full record self-binding mismatch");
+  if (!await validateRecord(recordResult, body.record_hash, inputHash)) return fail("full record digest, input or release binding mismatch");
   return {...result, record_validated: true, full_record: record, ordinary_release: false};
 }
 
@@ -199,7 +230,7 @@ async function prepareEffect(payload) {
   });
   if (!result.effect_ack) return fail("missing or malformed Effect-Ack response");
   if (result.effect_ack.state !== "EFFECT_ACK_DONE") return {...result, record_validated: false, ordinary_release: false};
-  return validatePreparedRecord(result);
+  return validatePreparedRecord(result, await contentHash(payload));
 }
 
 async function commitEffect(payload) {
@@ -209,14 +240,41 @@ async function commitEffect(payload) {
   const token = prepared.effect_ack.commit_token;
   const hash = prepared.effect_ack.record_hash;
   if (typeof token !== "string" || typeof hash !== "string") return fail("prepare binding unavailable");
+  const inputHash = await contentHash(payload.request || {});
+  const revalidated = await validatePreparedRecord(prepared, inputHash);
+  if (revalidated.record_validated !== true) return revalidated;
   const effectAckRequest = `v=1, mode=commit, token=${sfBytesFromAscii(token)}, hash=${sfBytesFromHex(hash)}`;
+  // A dispatched commit is never automatically retried, including lost replies.
+  try {
   const result = await backendRequest("/terminal/commit", {
     method: "POST",
     headers: {"Content-Type": "application/json", "Effect-Ack-Request": effectAckRequest},
     body: JSON.stringify(payload.request || {})
   });
-  const done = result.effect_ack && result.effect_ack.state === "EFFECT_ACK_DONE";
-  return {...result, ordinary_release: Boolean(done && result.body && result.body.ordinary_release === true)};
+  const done = result.http_status === 200 && result.effect_ack &&
+    result.effect_ack.state === "EFFECT_ACK_DONE" && result.body && result.body.ordinary_release === true;
+  if (!done) return {...result, ordinary_release: false, commit_attempted: true, retry_allowed: false};
+  const successorHash = result.effect_ack.record_hash;
+  if (successorHash === hash) {
+    return {...fail("prepare record cannot attest the committed effect"), commit_attempted: true, retry_allowed: false};
+  }
+  const record = await backendRequest(`/effect-ack/records/${successorHash}`, {method: "GET"});
+  if (!await validateRecord(record, successorHash, inputHash)) {
+    return {...fail("commit successor record failed independent readback"), commit_attempted: true, retry_allowed: false};
+  }
+  const state = await backendRequest("/terminal/state", {method: "GET"});
+  const event = state.body && state.body.last_event;
+  if (state.http_status !== 200 || !event || event.kind !== "TERMINAL_INPUT_ACCEPTED" ||
+      event.input_hash !== inputHash || event.record_hash !== hash || event.external_effect !== "NONE" ||
+      JSON.stringify(canonicalValue(event)) !== JSON.stringify(canonicalValue(result.body.post_effect))) {
+    return {...fail("committed input failed independent state readback"), commit_attempted: true, retry_allowed: false};
+  }
+  return {...result, ordinary_release: true, readback_verified: true,
+    readback_record: record.body, readback_event: event, commit_attempted: true, retry_allowed: false,
+    effect_scope: "LOOPBACK_TERMINAL_INPUT_ONLY", productive_effect_verified: false};
+  } catch (error) {
+    return {...fail(error.message), commit_attempted: true, retry_allowed: false};
+  }
 }
 
 browser.runtime.onInstalled.addListener(() => { ensureWatchdog().catch(() => undefined); });

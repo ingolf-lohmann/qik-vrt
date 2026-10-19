@@ -1,6 +1,6 @@
 {
   "schema": "qikvrt_personal_firefox_capability_boundary_v1",
-  "version": "1.1",
+  "version": "1.2",
   "source_subject": {
     "repository_roles_source": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
     "standard_repository": "ingolf-lohmann/qik-vrt",
@@ -30,6 +30,7 @@
       "terminal.css",
       "options.html",
       "options.js",
+      "client.html",
       "README.md"
     ],
     "forbidden_personal_markers": [

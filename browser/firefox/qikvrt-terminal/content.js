@@ -46,6 +46,16 @@
   let snapshotBlob = null;
   let prepared = null;
   let preparedRequest = null;
+  let inputRevision = 0;
+  let busy = false;
+
+  function invalidatePreparation() {
+    inputRevision += 1;
+    prepared = null;
+    preparedRequest = null;
+    commitButton.disabled = true;
+  }
+  command.addEventListener("input", invalidatePreparation);
 
   function render(value) {
     output.textContent = typeof value === "string" ? value : JSON.stringify(value, null, 2);
@@ -88,6 +98,7 @@
   }
 
   async function toggleAudio() {
+    invalidatePreparation();
     const button = $("[data-act=audio]");
     if (audioRecorder && audioRecorder.state === "recording") {
       audioRecorder.stop();
@@ -102,6 +113,7 @@
     audioRecorder = new MediaRecorder(audioStream);
     audioRecorder.ondataavailable = event => { if (event.data.size) audioChunks.push(event.data); };
     audioRecorder.onstop = () => {
+      invalidatePreparation();
       audioBlob = new Blob(audioChunks, {type: audioRecorder.mimeType || "audio/webm"});
       mediaState.textContent = `audio local · ${audioBlob.size} B · explicit Prepare required`;
     };
@@ -111,6 +123,7 @@
   }
 
   async function toggleCamera() {
+    invalidatePreparation();
     const button = $("[data-act=camera]");
     if (videoStream) {
       videoStream.getTracks().forEach(t => t.stop());
@@ -132,6 +145,7 @@
   }
 
   async function takeSnapshot() {
+    invalidatePreparation();
     if (!videoStream || !video.videoWidth) throw new Error("camera preview unavailable");
     const canvas = document.createElement("canvas");
     const maxWidth = 1280;
@@ -145,6 +159,7 @@
   }
 
   async function prepare() {
+    const revision = inputRevision;
     setState("PREPARE", "no protected effect");
     commitButton.disabled = true;
     prepared = null;
@@ -158,16 +173,22 @@
       video: await blobPayload(snapshotBlob, "video_snapshot")
     };
     const result = await send("PREPARE_EFFECT", request);
+    if (revision !== inputRevision) {
+      setState("HOLD", "input changed during preparation; prepare the current input");
+      return;
+    }
     prepared = result;
     preparedRequest = request;
     render(result);
-    const done = result && result.effect_ack && result.effect_ack.state === "EFFECT_ACK_DONE";
+    const done = result && result.record_validated === true &&
+      result.effect_ack && result.effect_ack.state === "EFFECT_ACK_DONE";
     commitButton.disabled = !done;
     setState(done ? "PREPARED_DONE" : "HOLD", done ? "exact prepared payload frozen for commit" : (result.reason || "non-DONE"));
   }
 
   async function commit() {
-    if (!prepared || !preparedRequest || !prepared.effect_ack || prepared.effect_ack.state !== "EFFECT_ACK_DONE") {
+    if (!prepared || prepared.record_validated !== true || !preparedRequest ||
+        !prepared.effect_ack || prepared.effect_ack.state !== "EFFECT_ACK_DONE") {
       setState("HOLD", "DONE prepare required");
       return;
     }
@@ -175,15 +196,18 @@
     setState("COMMIT", "exact prepared binding");
     const result = await send("COMMIT_EFFECT", {confirmed: true, prepared, request: preparedRequest});
     render(result);
-    setState(result && result.ordinary_release ? "EFFECT_ACK_DONE" : "HOLD", result && result.ordinary_release ? "post-effect reobserve required" : "commit not released");
+    const verified = result && result.ordinary_release === true && result.readback_verified === true;
+    setState(verified ? "EFFECT_ACK_DONE" : "HOLD", verified
+      ? "independently read back · local terminal input only" : (result.reason || "effect readback not verified"));
     prepared = null;
     preparedRequest = null;
-    await observe();
   }
 
   host.addEventListener("click", async event => {
     const button = event.target.closest("button[data-act]");
     if (!button) return;
+    if (busy) return;
+    busy = true;
     try {
       const act = button.dataset.act;
       if (act === "observe") await observe();
@@ -195,8 +219,11 @@
       else if (act === "options") browser.runtime.openOptionsPage();
       else if (act === "collapse") host.classList.toggle("qv-collapsed");
     } catch (error) {
+      invalidatePreparation();
       setState("HOLD", error.message);
       render({state: "HOLD", reason: error.message, ordinary_release: false});
+    } finally {
+      busy = false;
     }
   });
 

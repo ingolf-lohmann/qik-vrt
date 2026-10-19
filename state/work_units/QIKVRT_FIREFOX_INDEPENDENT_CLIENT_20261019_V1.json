@@ -1,0 +1,104 @@
+{
+  "schema": "qikvrt_firefox_independent_client_work_unit_v1",
+  "work_unit_id": "QIKVRT_FIREFOX_INDEPENDENT_CLIENT_20261019_V1",
+  "date": "2026-10-19",
+  "status": "IMPLEMENTED_CANDIDATE_PRODUCTIVE_ACCEPTANCE_OPEN",
+  "authorization": {
+    "principal": "Ingolf Lohmann",
+    "source": "Direct Owner instruction 2026-10-19: begin an independent Firefox frontend with the QIK-VRT Effect Acknowledgement Protocol module and continuing improvement",
+    "scope": "Reuse and extend the existing Firefox client and native QIK-VRT contracts",
+    "credentials_or_permissions_expanded": false
+  },
+  "source_subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+    "tree": "15eb1a7bdd2c1880405df1026b14756f0fe72714"
+  },
+  "attribution": {
+    "human": "Ingolf Lohmann: product goal, QIK-VRT/EAP authorship and authorization",
+    "artificial_cognitive": "Codex: implementation, code review and regression verification",
+    "human_origin_inferred_from_acceptance": false
+  },
+  "reuse": {
+    "frontend": "browser/firefox/qikvrt-terminal",
+    "terminal": "src/qikvrt_effect_ack_http_terminal.py",
+    "transputer": "src/qikvrt_temdd_event_ledger.py",
+    "packaging": "tools/qikvrt_self_host.py",
+    "ci": ".github/workflows/qikvrt_ci.yml",
+    "improvement": "policy/HUMAN_MACHINE_INTERFACE_ADAPTATION_V1.json",
+    "new_executor": false,
+    "new_provider": false,
+    "wire_protocol_changed": false
+  },
+  "implemented": [
+    "Packaged client tab opened through the existing Firefox toolbar action API",
+    "Existing UI and backend reused with unchanged host permissions",
+    "Prepared input invalidated on edits and media changes; duplicate UI operations serialized",
+    "Precommit full-record SHA-256 and input revalidation",
+    "Independent successor-record hash and accepted-event readback after a single commit attempt",
+    "Missing or conflicting readback holds without automatic retry",
+    "Exact seven-file Standard build, signing and signed-return inventory"
+  ],
+  "effect_boundary": {
+    "accepted_profile": "LOOPBACK_TERMINAL_INPUT_ONLY",
+    "reference_backend_durable": false,
+    "external_effect": "NONE",
+    "productive_cognitive_session_verified": false,
+    "extension_persistent_activation_verified": false,
+    "main_integration_verified": false,
+    "public_delivery_verified": false,
+    "effect_ack_done": false,
+    "ordinary_release": false
+  },
+  "native_work_receipt": {
+    "id": "a43129a6eb8e4a45a7830798df852adc:1",
+    "ledger_digest": "a8750f809c5d3ba318f603f85a2dc82af17299b44390f0c3aa24d4a9061981df",
+    "method": "Original bounded Terminal input, admitted in-process Runtime.append, independent separate-process original Terminal readback",
+    "scope": "Own-session input persistence only",
+    "http_unix_transport": "HOLD_EPERM"
+  },
+  "continuation": {
+    "predecessor": "libfile_8ff514ee33a08191a6573ae98c5acb5a:v7",
+    "original_journals_retained_read_only": true,
+    "prior_knowledge_and_open_duties_preserved": true,
+    "client_timer_added": false,
+    "owner_relay_required": false
+  },
+  "acceptance": [
+    {
+      "id": "SOURCE",
+      "state": "OPEN",
+      "criteria": "Current candidate integrity, compilation, full make test, Firefox adapter/UI state-machine and exact-package negative controls; report unavailable native socket/browser lanes separately"
+    },
+    {
+      "id": "INSTALL",
+      "state": "OPEN",
+      "criteria": "Exact candidate signed by the existing authorized official AMO path and accepted under normal Firefox >=158 signature enforcement before and after process restart"
+    },
+    {
+      "id": "NATIVE_SESSION",
+      "state": "OPEN",
+      "criteria": "Bind the same Work Unit/principal/source to the original durable owner-host Runtime and authenticated Personal adapter; resume original journal/epoch with fresh native Terminal readback"
+    },
+    {
+      "id": "RECOVERY",
+      "state": "OPEN",
+      "criteria": "Zero lost acknowledged inputs and zero duplicate irreversible effects across lost ACK, disconnect, restart, update and rollback in the admitted native runtime"
+    },
+    {
+      "id": "PEER",
+      "state": "OPEN",
+      "criteria": "Real identity-bound bidirectional peer request, ACK and reply; never infer from a proposal receipt or human-carried archive"
+    },
+    {
+      "id": "DELIVERY",
+      "state": "OPEN",
+      "criteria": "Fresh useful-task acceptance at exact https://raumzeitterminal.de with DNS/TLS/application/source bindings"
+    },
+    {
+      "id": "IMPROVEMENT",
+      "state": "OPEN",
+      "criteria": "After existing scoped backlog-completion gate, use comparable evaluations, reviewed bounded changes, regressions, exact-source signed updates and independent effect readback; no self-mutation or new scheduler"
+    }
+  ]
+}

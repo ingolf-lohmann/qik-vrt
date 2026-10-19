@@ -25,12 +25,12 @@ from tests.test_self_host import host, ROOT
 
 
 class FirefoxAMOUnlistedTests(unittest.TestCase):
-    """Real six-file Git input; mocked AMO HTTP is never Mozilla signature proof."""
+    """Real exact-file Git input; mocked AMO HTTP is never Mozilla signature proof."""
     @classmethod
     def setUpClass(cls):
         cls.fixture = tempfile.TemporaryDirectory()
         cls.root = Path(cls.fixture.name) / 'source'; cls.root.mkdir()
-        cls.names = ('manifest.json','background.js','content.js','options.html','options.js','terminal.css')
+        cls.names = ('manifest.json','background.js','content.js','options.html','options.js','terminal.css','client.html')
         for relative in [*("browser/firefox/qikvrt-terminal/" + name for name in cls.names),
                 'policy/CANONICAL_UPSTREAM_REMOTE_V1.json']:
             path = cls.root / relative; path.parent.mkdir(parents=True,exist_ok=True)
@@ -77,19 +77,19 @@ class FirefoxAMOUnlistedTests(unittest.TestCase):
 
     def response(self,signed=None,**changes):
         raw=signed if signed is not None else self.signed()
-        value={'guid':'qikvrt-ai-terminal@goldkelch.local','version':'1.0.0',
+        value={'guid':'qikvrt-ai-terminal@goldkelch.local','version':'1.1.0',
             'processed':True,'valid':True,'reviewed':True,'passed_review':True,
             'files':[{'signed':True,'hash':'sha256:'+host.digest(raw),
                 'download_url':'https://addons.mozilla.org/api/v4/downloads/file/123/standard.xpi'}]}
         value.update(changes);return json.dumps(value).encode()
 
-    def test_exact_deterministic_six_committed_files_and_no_personal_or_readme(self):
+    def test_exact_deterministic_committed_files_and_no_personal_or_readme(self):
         import io,zipfile
         first,binding=host.firefox_amo_input(self.root,self.head,self.tree)
         self.assertEqual(first,host.firefox_amo_input(self.root,self.head,self.tree)[0])
         with zipfile.ZipFile(io.BytesIO(first)) as archive:
             self.assertCountEqual(archive.namelist(),self.names)
-        self.assertEqual(len(binding['source_files']),6);self.assertEqual(binding['strict_min_version'],'158.0')
+        self.assertEqual(len(binding['source_files']),7);self.assertEqual(binding['strict_min_version'],'158.0')
         self.assertEqual(binding['source_head'],self.head)
 
     def test_wrong_head_tree_and_dirty_source_fail_before_http(self):
@@ -307,7 +307,7 @@ class FirefoxExtensionAdmissionTests(unittest.TestCase):
     def test_signature_metadata_cannot_replace_source_or_browser_verification(self):
         import zipfile
         source=ROOT/'browser/firefox/qikvrt-terminal'
-        names=('manifest.json','background.js','content.js','options.html','options.js','terminal.css')
+        names=('manifest.json','background.js','content.js','options.html','options.js','terminal.css','client.html')
         with tempfile.TemporaryDirectory() as directory:
             path=Path(directory)/'candidate.xpi'
             for extra,changed in ((None,False),('META-INF/mozilla.rsa',False),

@@ -2937,13 +2937,13 @@ def firefox_xpi_source_binding(xpi, source):
     xpi, source = Path(xpi), Path(source)
     raw = xpi.read_bytes()
     if not 0 < len(raw) <= 1024 * 1024: raise ValueError("BOUNDED_FIREFOX_XPI_REQUIRED")
-    names = {"manifest.json", "background.js", "content.js", "options.html", "options.js", "terminal.css"}
+    names = {"manifest.json", "background.js", "content.js", "options.html", "options.js", "terminal.css", "client.html"}
     metadata = {"meta-inf/manifest.mf", "meta-inf/mozilla.sf", "meta-inf/mozilla.rsa",
         "meta-inf/cose.manifest", "meta-inf/cose.sig"}
     records = []
     with zipfile.ZipFile(xpi) as archive:
         entries = archive.infolist(); actual = [entry.filename for entry in entries]
-        if len(actual) != len(set(actual)) or not names <= set(actual) or len(actual) > 12:
+        if len(actual) != len(set(actual)) or not names <= set(actual) or len(actual) > len(names) + len(metadata) + 1:
             raise ValueError("EXACT_STANDARD_FIREFOX_XPI_INVENTORY_REQUIRED")
         for entry in entries:
             if (entry.flag_bits & 1 or entry.file_size > 1024 * 1024 or
@@ -3009,7 +3009,7 @@ def firefox_amo_runtime_fingerprint(source):
 
 
 def firefox_amo_input(root, head, tree):
-    """The signing upload is precisely the six committed Standard components."""
+    """The signing upload is precisely the committed Standard components."""
     import io
     import zipfile
     root = Path(root)
@@ -3021,7 +3021,7 @@ def firefox_amo_input(root, head, tree):
     policy = json.loads(git(root, "show", head + ":policy/CANONICAL_UPSTREAM_REMOTE_V1.json"))
     if policy["canonical_upstream"]["repository"] != "ingolf-lohmann/qik-vrt":
         raise ValueError("AMO_OWNER_AUTHORITY_REQUIRED")
-    names = ("manifest.json", "background.js", "content.js", "options.html", "options.js", "terminal.css")
+    names = ("manifest.json", "background.js", "content.js", "options.html", "options.js", "terminal.css", "client.html")
     prefix = "browser/firefox/qikvrt-terminal/"
     stream = io.BytesIO(); records = []
     with zipfile.ZipFile(stream, "w", zipfile.ZIP_DEFLATED) as archive:
@@ -3223,7 +3223,7 @@ def firefox_amo_unlisted_apply(root, output, head, tree, state_dir, submit=False
             synced_private_file(artifact, signed)
         try:
             checked = firefox_xpi_source_binding(artifact, Path(root) / "browser/firefox/qikvrt-terminal")
-            if (len(checked["source_files"]) != 6 or not checked["signature_metadata_present"]):
+            if (len(checked["source_files"]) != 7 or not checked["signature_metadata_present"]):
                 raise ValueError("AMO_SIX_STANDARD_COMPONENTS_AND_SIGNATURE_METADATA_REQUIRED")
         except BaseException:
             artifact.unlink(); raise
