@@ -1704,14 +1704,14 @@ class MeshWorkCacheTests(unittest.TestCase):
         self.calls.append((method, url, len(raw)))
         return host.mesh_work_transport(url, method, raw, headers)
 
-    def cloud(self, occupied=False, label="cloud"):
+    def cloud(self, occupied=False, label="cloud", admitted=True):
         import select
         state = self.directory / (label + ".json")
         config = self.directory / (label + "-config.json")
         config.write_bytes(host.raw_json({"statePath": str(state), "env": {
             "QIKVRT_MONITOR_NODE_ID": self.peer["node_id"], "QIKVRT_MONITOR_SOURCE_HEAD": self.peer["source_head"],
             "QIKVRT_MONITOR_SOURCE_TREE": self.peer["source_tree"],
-            "QIKVRT_MESH_WORK_PEERS": json.dumps([{"node_id": "local:fixture", "repository": "ingolf-lohmann/qik-vrt", "secret_file": str(self.key)}])}}))
+            "QIKVRT_MESH_WORK_PEERS": json.dumps([{"node_id": "local:fixture", "repository": "ingolf-lohmann/qik-vrt", "secret_file": str(self.key)}] if admitted else [])}}))
         code = "import {readFileSync} from 'node:fs';import {createMonitor} from './docs/monitor/server.mjs';const m=createMonitor(JSON.parse(readFileSync(process.argv[1])));m.server.listen(0,'127.0.0.1',()=>console.log(JSON.stringify({port:m.server.address().port})));"
         process = subprocess.Popen(["node", "--input-type=module", "-e", code, str(config)], cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
         def stop():
@@ -1782,6 +1782,147 @@ class MeshWorkCacheTests(unittest.TestCase):
                 run_id=os.environ.get("GITHUB_RUN_ID"), source_binding_scope="EXACT_CHECKOUT" if source_head else "SELECTED_API_FILES_ONLY")
             path = Path(os.environ["QIKVRT_MESH_WORK_TEST_EVIDENCE"]); path.mkdir(parents=True, exist_ok=True)
             (path / "LOCAL_WORK_BATCH.json").write_bytes(host.raw_json(evidence))
+
+
+    def node_mesh_status(self):
+        with urllib.request.urlopen(self.peer["url"] + "/api/node", timeout=5) as response:
+            return json.load(response)["mesh_work"]
+
+    def test_operating_check_requires_received_batch_and_no_peer_is_ready_by_default(self):
+        state, stop = self.cloud(admitted=False)
+        self.assertEqual(self.node_mesh_status()["state"], "NO_PEERS_ADMITTED")
+        self.stage(); self.freeze()
+        with self.assertRaisesRegex(ValueError, "CONFIRMED_BATCH_REQUIRED"):
+            self.cache.check(self.peer, self.transport)
+        self.assertFalse(self.calls)
+        stop(); self.cloud()
+        self.assertEqual(self.node_mesh_status()["state"], "PEER_BATCH_REQUIRED")
+
+    def test_public_peer_gate_rejects_missing_admission_and_missing_batch_then_accepts_durable_batch(self):
+        code = "import {requireMeshWorkReadback} from './tools/qikvrt_mesh_monitor_readback.mjs';try {requireMeshWorkReadback({mesh_work:JSON.parse(process.argv[1])});console.log('PEER_GATE_PASS');}catch(error){console.log(error.message);}"
+        def gate():
+            return subprocess.check_output(["node", "--input-type=module", "-e", code,
+                json.dumps(self.node_mesh_status())], cwd=ROOT, text=True).strip()
+        _, stop = self.cloud(admitted=False)
+        self.assertEqual(gate(), "HOLD_PUBLIC_MESH_PEER_BATCH_REQUIRED")
+        stop(); self.cloud()
+        self.assertEqual(gate(), "HOLD_PUBLIC_MESH_PEER_BATCH_REQUIRED")
+        self.stage(); self.freeze(); self.cache.send(self.peer)
+        self.assertEqual(gate(), "PEER_GATE_PASS")
+
+    def test_signed_sender_receipt_and_live_check_survive_both_process_restarts(self):
+        state, stop = self.cloud(); self.stage(); self.freeze()
+        sent = self.cache.send(self.peer, self.transport)
+        retained = self.state()["receipts"][sent["batch_id"]]
+        self.assertEqual(json.loads(base64.b64decode(retained["authenticated_response"]["body_base64"])), retained["receipt"])
+        self.assertTrue(sent["sender_receipt_durable"])
+        self.assertEqual(self.node_mesh_status()["state"], "PEER_BATCHES_DURABLE")
+        sender_before = self.cache.path.read_bytes(); receiver_before = state.read_bytes()
+        stop(); self.cloud()
+        self.cache = host.MeshWorkCache(self.cache.directory, **self.cache.binding)
+        self.calls.clear()
+        result = self.cache.check(self.peer, self.transport)
+        self.assertEqual(result["state"], "MESH_WORK_PEER_BATCH_VERIFIED")
+        self.assertTrue(result["fresh_challenge_verified"]); self.assertTrue(result["sender_receipt_durable"])
+        self.assertEqual([method for method, _, _ in self.calls], ["GET"])
+        self.assertEqual(self.cache.path.read_bytes(), sender_before)
+        self.assertEqual(state.read_bytes(), receiver_before)
+        self.assertFalse(result["effect_ack_done"])
+
+    def test_live_check_holds_on_cold_receiver_inbox_loss_without_reposting(self):
+        state, stop = self.cloud(); self.stage(); self.freeze(); self.cache.send(self.peer)
+        sender_before = self.cache.path.read_bytes()
+        stop(); state.unlink(); self.cloud(); self.calls.clear()
+        with self.assertRaisesRegex(ValueError, "FRESH_RECEIVER_READBACK_REQUIRED"):
+            self.cache.check(self.peer, self.transport)
+        self.assertEqual([m for m, _, _ in self.calls], ["GET"])
+        self.assertEqual(self.cache.path.read_bytes(), sender_before)
+        self.assertEqual(self.node_mesh_status()["state"], "PEER_BATCH_REQUIRED")
+
+    def test_running_receiver_cannot_prove_durability_after_disk_loss(self):
+        state, _ = self.cloud(); self.stage(); self.freeze(); self.cache.send(self.peer)
+        state.unlink()
+        with self.assertRaisesRegex(ValueError, "FRESH_RECEIVER_READBACK_REQUIRED"):
+            self.cache.check(self.peer, self.transport)
+        self.assertEqual(self.node_mesh_status()["state"], "DURABLE_READBACK_HOLD")
+        self.assertFalse(state.exists())
+
+    def test_receiver_source_upgrade_invalidates_current_commissioning_but_preserves_history(self):
+        state, stop = self.cloud(); self.stage(); self.freeze(); self.cache.send(self.peer)
+        expected_peer = dict(self.peer); original = state.read_bytes()
+        stop(); self.peer["source_head"] = "c" * 40; self.cloud()
+        expected_peer["url"] = self.peer["url"]
+        with self.assertRaisesRegex(ValueError, "FRESH_RECEIVER_READBACK_REQUIRED"):
+            self.cache.check(expected_peer, self.transport)
+        self.assertEqual(self.node_mesh_status()["state"], "PEER_BATCH_REQUIRED")
+        self.assertEqual(state.read_bytes(), original)
+
+    def test_revoked_peer_fails_authenticated_readback_and_never_posts(self):
+        state, stop = self.cloud(); self.stage(); self.freeze(); self.cache.send(self.peer)
+        original = state.read_bytes()
+        stop(); self.cloud(admitted=False); self.calls.clear()
+        with self.assertRaisesRegex(ValueError, "AUTHENTICATED_READBACK_REQUIRED"):
+            self.cache.check(self.peer, self.transport)
+        self.assertEqual([m for m, _, _ in self.calls], ["GET"])
+        self.assertEqual(self.node_mesh_status()["state"], "NO_PEERS_ADMITTED")
+        self.assertEqual(state.read_bytes(), original)
+
+    def test_previous_authenticated_live_reply_cannot_answer_a_fresh_challenge(self):
+        self.cloud(); self.stage(); self.freeze(); self.cache.send(self.peer)
+        responses = []
+        def capture(url, method, raw, headers):
+            response = self.transport(url, method, raw, headers); responses.append(response); return response
+        self.cache.check(self.peer, capture)
+        with self.assertRaisesRegex(ValueError, "AUTHENTICATED_READBACK_REQUIRED"):
+            self.cache.check(self.peer, lambda *args: responses[0])
+
+    def test_authenticated_bad_receipt_digest_holds_outbox_before_a_single_recovery_read(self):
+        self.cloud(); self.stage(); self.freeze()
+        def corrupt(url, method, raw, headers):
+            status, data, signature = self.transport(url, method, raw, headers)
+            if method == "GET":
+                receipt = json.loads(data); receipt["receipt_sha256"] = "0" * 64
+                data = host.mesh_wire(receipt)
+                path = urllib.parse.urlsplit(url).path
+                signature = "sha256=" + hmac.new(self.key.read_bytes(), b"RESPONSE\n" + path.encode() + b"\n" + data, hashlib.sha256).hexdigest()
+            return status, data, signature
+        with self.assertRaisesRegex(ValueError, "RECEIPT_BINDING_MISMATCH"):
+            self.cache.send(self.peer, corrupt)
+        self.assertIsNotNone(self.state()["pending"])
+        self.cache.send(self.peer, self.transport)
+        self.assertEqual([m for m, _, _ in self.calls], ["POST", "GET", "GET"])
+
+    def test_retained_sender_witness_corruption_is_not_accepted_as_operating_evidence(self):
+        self.cloud(); self.stage(); self.freeze(); self.cache.send(self.peer)
+        with self.cache.locked():
+            self.cache.state["receipts"][self.cache.state["last_ack"]]["authenticated_response"]["signature"] = "sha256=" + "0" * 64
+            self.cache.save()
+        with self.assertRaisesRegex(ValueError, "DURABLE_SENDER_RECEIPT_MISMATCH"):
+            self.cache.check(self.peer, self.transport)
+
+    def test_legacy_ack_is_live_checkable_without_inventing_retained_sender_bytes(self):
+        self.cloud(); self.stage(); self.freeze(); self.cache.send(self.peer)
+        with self.cache.locked():
+            del self.cache.state["receipts"]; self.cache.save()
+        original = self.cache.path.read_bytes()
+        result = self.cache.check(self.peer, self.transport)
+        self.assertFalse(result["sender_receipt_durable"])
+        self.assertTrue(result["fresh_challenge_verified"])
+        self.assertEqual(self.cache.path.read_bytes(), original)
+
+    def test_check_cli_recovers_operating_evidence_without_original_source_checkout(self):
+        self.cloud(); self.stage(); self.freeze(); self.cache.send(self.peer)
+        work = self.directory / "check-work.json"; peer = self.directory / "check-peer.json"
+        work.write_bytes(host.raw_json({"schema": "qikvrt-repository-work-request/v1",
+            "scope": host.MESH_WORK_SCOPE, **self.cache.binding})); work.chmod(0o600)
+        peer.write_bytes(host.raw_json(self.peer)); peer.chmod(0o600)
+        original = self.cache.path.read_bytes(); shutil.rmtree(self.repo)
+        run = subprocess.run([sys.executable, "-B", str(ROOT / "tools/qikvrt_self_host.py"),
+            "mesh-cache-check", "--mesh-cache", str(self.cache.directory),
+            "--work-request", str(work), "--peer", str(peer)], capture_output=True, text=True, timeout=15)
+        self.assertEqual(run.returncode, 0, run.stderr + run.stdout)
+        self.assertEqual(json.loads(run.stdout)["state"], "MESH_WORK_PEER_BATCH_VERIFIED")
+        self.assertEqual(self.cache.path.read_bytes(), original)
 
     def test_warm_objects_and_original_instruction_bytes_survive_restart(self):
         first = self.stage()
