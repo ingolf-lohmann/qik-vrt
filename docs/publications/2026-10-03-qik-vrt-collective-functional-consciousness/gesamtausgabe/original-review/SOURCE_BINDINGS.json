@@ -1,0 +1,264 @@
+{
+  "boundary": "Only historical_sources are byte-exact originals archived here. Connector readings are identified by source references and reported Git identities; mutable PR text is not an immutable raw snapshot.",
+  "read_date": "2026-10-03",
+  "schema": "qikvrt_editorial_source_bindings_draft_v1",
+  "sources": {
+    "C1": {
+      "not_a_live_benchmark": true,
+      "result": {
+        "bytes": 3160,
+        "git_blob_sha1_computed_locally": "ed6de7a21c4e5c0bcc1b0e008f3ce1baf7217a70",
+        "path": "calculations/RECALCULATIONS_AND_METHOD_CONTROLS.json",
+        "sha256": "fcc754ccf0f6b594a398599727995dc4ea30242a4322bfeee6cd9ddf542c0ba7"
+      },
+      "script": {
+        "bytes": 2968,
+        "git_blob_sha1_computed_locally": "29ed3ecdbdb0b25d3fcc21e63f4c0fd8e79a07b3",
+        "path": "calculations/calculate.py",
+        "sha256": "43aae55bd6ac5467f6e24ec2e9437ebdc25be6d2f02e59b5c09399f2beb69eb4"
+      },
+      "type": "local_calculation_and_negative_controls"
+    },
+    "L1": {
+      "bytes": 247170,
+      "git_blob_sha1_computed_locally": "dc874cd8b459967770a089273431e5128b413813",
+      "path": "historical_sources/QIKVRT_SINN_UND_ZWECK(4).pdf",
+      "sha256": "6a15c71919a6c703cfeabfa3e1e13d9d1928c2a9accdfc333aef807c267f31ca",
+      "type": "exact_original_local_file"
+    },
+    "L2": {
+      "bytes": 8385,
+      "git_blob_sha1_computed_locally": "2ca548b2926291468b50c38062abe661d7cfc9f2",
+      "path": "historical_sources/Das unterscheidet QIK-VRT!.txt",
+      "sha256": "19967f897e995126c9650ed708683373c8a66e71dd9207904af3ca484d45087d",
+      "type": "exact_original_local_file"
+    },
+    "L3": {
+      "bytes": 9169,
+      "git_blob_sha1_computed_locally": "e463871716b8d00fe77bac43d7521d7922fe02cb",
+      "path": "historical_sources/qikvrt_collective_cognition_ab_microbenchmark_20261003.json",
+      "sha256": "e07cd0673e72f6f84becb234c015ea00989e5ee283ec7ba32e59a982da047eb3",
+      "type": "exact_original_local_file"
+    },
+    "L4": {
+      "boundary": "Historical text is retained, not silently promoted into current evidence. The complete ChatGPT transcript is not a mounted archival artifact.",
+      "files": [
+        {
+          "bytes": 358,
+          "git_blob_sha1_computed_locally": "86e803c3829fd3986c02ba7810a3cd69c2cbb8d1",
+          "path": "historical_sources/QIK-VRT_A_B_microbenchmark.csv",
+          "sha256": "06a9fe29a91eb5d090687723f2779cb29a4d122304f0a4cefb79e097413fb480"
+        },
+        {
+          "bytes": 14775,
+          "git_blob_sha1_computed_locally": "673b856802ca3199cbd8b2646a36f58d2e18c375",
+          "path": "historical_sources/QIK-VRT_Prosa_Kognition_Speicher_Bewusstsein_Forecast_2026-10-03.txt",
+          "sha256": "f051d6dd4a1384e237ac06a2d91911368027e26e0ec0bdcaeb4bb21706dcc933"
+        },
+        {
+          "bytes": 143857,
+          "git_blob_sha1_computed_locally": "b2beb3fbea89b449443f7fbf53ff5a5dcd9f1a12",
+          "path": "historical_sources/QIK-VRT_Die_universelle_Huelle_2026-10-03.pdf",
+          "sha256": "83bd343294ebf14f92b6454b3977343030aa0a2f88ba0803c94bedfbd4ebf18d"
+        },
+        {
+          "bytes": 82564,
+          "git_blob_sha1_computed_locally": "7e1dae9f57ff1e9073e6987226d3424a053d3b49",
+          "path": "historical_sources/QIK-VRT_Kognition_Wirkung_Evidenz_2026-10-03.pdf",
+          "sha256": "5f3c824d7febe92808ffdcde8533fc3efa2eb0ab0dbc08313181ac00ecbe62bb"
+        },
+        {
+          "bytes": 176577,
+          "git_blob_sha1_computed_locally": "bc1cd73da3435d7169304ca7b886c7b2c5807174",
+          "path": "historical_sources/QIK-VRT_Kollektives_Funktionales_Bewusstsein_Zenodo_Candidate_2026-10-03.pdf",
+          "sha256": "63f732e0f2825f650ce00e0d8be81a2ca7a1aac0dd545298c47b9ab0d7ffb9b9"
+        },
+        {
+          "bytes": 169240,
+          "git_blob_sha1_computed_locally": "3408c9debd2868cc55fff578b7a3b2bf8926ee82",
+          "path": "historical_sources/QIK-VRT_Kuenstliche_Kognition_Speicher_Bewusstsein_2026-10-03.pdf",
+          "sha256": "6d306e287f6a895a8a67d485b6381e2cfabb84370645de811975be5a55359a2d"
+        },
+        {
+          "bytes": 127288,
+          "git_blob_sha1_computed_locally": "a0079f1e7fdae0e0f2aac913d6f8b52aa184e5fb",
+          "path": "historical_sources/QIK-VRT_Wissenschaftlicher_Artikel_Kognition_Speicher_Bewusstsein_Forecast_2026-10-03.pdf",
+          "sha256": "e3a7189f12731593c965a4a46f53b75bc5c94500f0e4292522a0b2de20df9f07"
+        },
+        {
+          "bytes": 375155,
+          "git_blob_sha1_computed_locally": "154acca77c9f8ca4cea5a6257f57aafb07b7fa73",
+          "path": "historical_sources/QIK-VRT_Wissenschaftlicher_Artikel_Kognition_Wirkung_Evidenz_2026-10-03.pdf",
+          "sha256": "ec66cc8ce638390bd9e4f792c90a6a4031991663c6102e08fe329c96ce7815cc"
+        }
+      ],
+      "type": "historical_conversation_and_supplied_artifacts"
+    },
+    "R1": {
+      "git_blob_sha1_from_connector": "702a1e006a1aeed035b504d3a19416d6740844c2",
+      "head": "8153c4e69a6245aadf67f0741fb50d9707c19e34",
+      "raw_source_bytes_archived_here": false,
+      "reading_scope": "Current main entrypoint and bounded task/improvement/provenance contract",
+      "repository_path": "AI",
+      "type": "connector_read_repository_file",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/8153c4e69a6245aadf67f0741fb50d9707c19e34/AI"
+    },
+    "R10": {
+      "git_blob_sha1_from_connector": "477a02fbb21954da7099831b72b71b51169952ec",
+      "head": "8153c4e69a6245aadf67f0741fb50d9707c19e34",
+      "raw_source_bytes_archived_here": false,
+      "reading_scope": "Active v2 policy; exact return and later single-use authorization required.",
+      "repository_path": "policy/ZENODO_MACHINE_PROOF_BEFORE_PUBLICATION.md",
+      "type": "connector_read_repository_file",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/8153c4e69a6245aadf67f0741fb50d9707c19e34/policy/ZENODO_MACHINE_PROOF_BEFORE_PUBLICATION.md"
+    },
+    "R11": {
+      "git_blob_sha1_from_connector": "acafd1ae37dcb9ffcab371fa79e3e874cfe83b91",
+      "head": "a31ebb7eb810334c4f00ebadd4604fa5cf45abea",
+      "raw_source_bytes_archived_here": false,
+      "reading_scope": "Static audit: timers after downloads, text-mode blob processing, mode/content mismatch, not distributed end-to-end effect test.",
+      "repository_path": "tools/qikvrt_live_authority_mirror_ab.py",
+      "type": "connector_read_repository_file",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/a31ebb7eb810334c4f00ebadd4604fa5cf45abea/tools/qikvrt_live_authority_mirror_ab.py"
+    },
+    "R12": {
+      "git_blob_sha1_from_connector": "bd2b893176d93814f38d024b5a095b770eee2aa3",
+      "head": "8153c4e69a6245aadf67f0741fb50d9707c19e34",
+      "raw_source_bytes_archived_here": false,
+      "reading_scope": "Current file contains volatile historical state, bundled Windows Python false; not full release audit.",
+      "repository_path": "runtime/RUNTIME_DEPENDENCY_MANIFEST.json",
+      "type": "connector_read_repository_file",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/8153c4e69a6245aadf67f0741fb50d9707c19e34/runtime/RUNTIME_DEPENDENCY_MANIFEST.json"
+    },
+    "R13": {
+      "context": "QIKVRT requested review execution",
+      "head": "a31ebb7eb810334c4f00ebadd4604fa5cf45abea",
+      "producer_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37128331601",
+      "state": "failure",
+      "type": "fresh_connector_commit_status"
+    },
+    "R14": {
+      "head": "a31ebb7eb810334c4f00ebadd4604fa5cf45abea",
+      "message": "Prepare immutable v3 proof readiness without activating publication",
+      "production_v3_activated": false,
+      "type": "fresh_connector_commit_read",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/commit/a31ebb7eb810334c4f00ebadd4604fa5cf45abea"
+    },
+    "R15": {
+      "head": "8153c4e69a6245aadf67f0741fb50d9707c19e34",
+      "type": "fresh_connector_main_ref_read",
+      "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/ref/heads/main"
+    },
+    "R2": {
+      "head_or_documented_head": "a31ebb7eb810334c4f00ebadd4604fa5cf45abea",
+      "mutable_pr_body_is_not_exact_source_snapshot": true,
+      "read_date": "2026-10-03",
+      "reading_scope": "Metadata head differs from predecessor head narrated in PR body; no predecessor gate transfer.",
+      "type": "fresh_connector_pr_read",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/pull/447"
+    },
+    "R3": {
+      "artifact_id": 11276355127,
+      "artifact_independently_redownloaded_here": false,
+      "head": "a31ebb7eb810334c4f00ebadd4604fa5cf45abea",
+      "job_id": 111218106133,
+      "log_declared_zip_sha256": "91a9d085b78ed856aa818e390e1c39888a78d826c94c07cb6b23c92c9e3ee393",
+      "result": "HOLD_AUTHORITY_CREDENTIAL_DELIVERY_NOT_ESTABLISHED",
+      "run_id": 37128318275,
+      "speedup_claim": false,
+      "tree": "8d9e02da17284a9a9bca95e373cee5a513570295",
+      "type": "fresh_connector_job_log_read",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37128318275/job/111218106133"
+    },
+    "R4": {
+      "head_or_documented_head": "a1d35df440eada9bfae24df335f08da67dd5a875",
+      "mutable_pr_body_is_not_exact_source_snapshot": true,
+      "read_date": "2026-10-03",
+      "reading_scope": "Positive bounded 1/2/4 native results reported in PR; source-bound here, original trial archives not independently downloaded in this run.",
+      "type": "fresh_connector_pr_read",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/pull/443"
+    },
+    "R5": {
+      "head_or_documented_head": "d4abb49133dc509233acff1df8dc202af65d6475",
+      "mutable_pr_body_is_not_exact_source_snapshot": true,
+      "read_date": "2026-10-03",
+      "reading_scope": "Continuity contract and explicitly unexecuted client interruption test.",
+      "type": "fresh_connector_pr_read",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/pull/445"
+    },
+    "R6": {
+      "head_or_documented_head": "b0e3828c9f02fb7772dc094afd9182d937c86f93",
+      "mutable_pr_body_is_not_exact_source_snapshot": true,
+      "read_date": "2026-10-03",
+      "reading_scope": "Documented platform witnesses and unverified Windows11 AMD64 client; no inferred universal carrier absence.",
+      "type": "fresh_connector_pr_read",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/pull/438"
+    },
+    "R7": {
+      "head_or_documented_head": "3c9c5004fc9afe4cefcf1d4f4964a71ae8911fd3",
+      "mutable_pr_body_is_not_exact_source_snapshot": true,
+      "read_date": "2026-10-03",
+      "reading_scope": "Seed discoverability, retained recovery, governance/access boundaries.",
+      "type": "fresh_connector_pr_read",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/pull/437"
+    },
+    "R8": {
+      "head_or_documented_head": "ce344c122f363aa00d18f935735126947f2b8454",
+      "mutable_pr_body_is_not_exact_source_snapshot": true,
+      "read_date": "2026-10-03",
+      "reading_scope": "Owner assimilation directive, no replacement effect claimed.",
+      "type": "fresh_connector_pr_read",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/pull/448"
+    },
+    "R9": {
+      "head_or_documented_head": "1dd9691939f038e5e48693db77446e56196a2194",
+      "mutable_pr_body_is_not_exact_source_snapshot": true,
+      "read_date": "2026-10-03",
+      "reading_scope": "Lifecycle governance candidate, no actual Main adoption.",
+      "type": "fresh_connector_pr_read",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/pull/449"
+    },
+    "W1": {
+      "description": "QIK-VRT EFFECT_ACK individual Internet-Draft -03; not an RFC; pre-effect authorization boundary.",
+      "full_external_bytes_included": false,
+      "type": "external_primary_source_research",
+      "url": "https://datatracker.ietf.org/doc/draft-lohmann-qikvrt-effect-ack/"
+    },
+    "W2": {
+      "description": "Saltzer, Reed, Clark. End-to-End Arguments in System Design, 1984.",
+      "full_external_bytes_included": false,
+      "type": "external_primary_source_research",
+      "url": "https://web.mit.edu/saltzer/www/publications/pubs.html"
+    },
+    "W3": {
+      "description": "Remote ATtestation procedureS Architecture, 2023; related prior architecture, not QIK-VRT validation.",
+      "full_external_bytes_included": false,
+      "type": "external_primary_source_research",
+      "url": "https://www.rfc-editor.org/rfc/rfc9334"
+    },
+    "W4": {
+      "description": "Butlin et al. Consciousness in Artificial Intelligence, 2023.",
+      "full_external_bytes_included": false,
+      "type": "external_primary_source_research",
+      "url": "https://arxiv.org/abs/2308.08708"
+    },
+    "W5": {
+      "description": "Butlin et al. Identifying indicators of consciousness in AI systems.",
+      "full_external_bytes_included": false,
+      "type": "external_primary_source_research",
+      "url": "https://doi.org/10.1016/j.tics.2025.10.011"
+    },
+    "W6": {
+      "description": "arXiv submission and moderation documentation, read through official documentation sources.",
+      "full_external_bytes_included": false,
+      "type": "external_primary_source_research",
+      "url": "https://info.arxiv.org/help/submit/index.html"
+    },
+    "W7": {
+      "description": "Rice 1953. Classes of Recursively Enumerable Sets and Their Decision Problems.",
+      "full_external_bytes_included": false,
+      "type": "external_primary_source_research",
+      "url": "https://www.ams.org/journals/tran/1953-074-02/S0002-9947-1953-0053041-6/S0002-9947-1953-0053041-6.pdf"
+    }
+  }
+}

@@ -5,15 +5,28 @@ name: QIKVRT requested review contract
 on:
   pull_request:
     paths:
+      - ".github/CODEOWNERS"
       - ".github/workflows/qikvrt_requested_review_executor.yml"
       - ".github/workflows/qikvrt_requested_review_contract.yml"
       - ".github/workflows/qikvrt_code_owner_review_observer.yml"
       - ".github/workflows/qikvrt_required_review_gate.yml"
       - ".github/workflows/qikvrt_expected_head_promotion.yml"
+      - ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml"
+      - ".github/workflows/qikvrt_mirror_node_lifecycle.yml"
+      - ".github/workflows/qikvrt_live_status_watch.yml"
+      - "tools/qikvrt_mirror_node_lifecycle.sh"
+      - "tools/qikvrt_mirror_node_lifecycle.py"
+      - "tools/qikvrt_seed_common.py"
+      - "tests/test_mirror_lifecycle_publication.py"
+      - "tests/test_seed_workflows.py"
+      - "tools/qikvrt_expected_head_promotion.py"
       - "tools/qikvrt_requested_review_executor.py"
       - "tools/qikvrt_required_review_gate.py"
       - "tests/test_qikvrt_requested_review_executor.py"
       - "tests/test_qikvrt_required_review_gate.py"
+      - "tests/test_ruleset_authority_token_route.py"
+      - "tests/test_qikvrt_expected_head_promotion.py"
+      - "tests/test_qikvrt_expected_head_promotion_contract.py"
       - "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json"
       - "state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json"
   workflow_dispatch:
@@ -42,6 +55,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha || github.sha }}"
           python3 -m py_compile \
             tools/qikvrt_requested_review_executor.py \
             tools/qikvrt_required_review_gate.py \
@@ -50,7 +64,44 @@ jobs:
           python3 -B -m unittest -v \
             tests.test_qikvrt_requested_review_executor \
             tests.test_qikvrt_required_review_gate \
-            tests.test_qikvrt_expected_head_promotion
+            tests.test_qikvrt_expected_head_promotion \
+            tests.test_qikvrt_expected_head_promotion_contract \
+            tests.test_ruleset_authority_token_route \
+            tests.test_seed_workflows.MirrorLifecycleGovernanceTests \
+            tests.test_mirror_lifecycle_publication
+
+      - name: Record exact-head generated context witness without administrative effect
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B - <<'PY'
+          import json, subprocess
+          from tools.qikvrt_required_review_gate import resolve_required_code_owner
+          from tests.test_ruleset_authority_token_route import RequiredReviewContextContractTests
+          check = RequiredReviewContextContractTests()
+          check.setUp()
+          desired, namespace, _ = check.run_writer()
+          statuses = check.run_gate()
+          status = next(item for item in statuses if item['context'] == check.context)
+          checks = next(rule['parameters']['required_status_checks'] for rule in desired['rules'] if rule['type'] == 'required_status_checks')
+          assert {'context': status['context'], 'integration_id': 15368} in checks
+          print(json.dumps({
+              'schema': 'qikvrt_generated_review_context_witness_v1',
+              'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip(),
+              'required_status_checks': checks,
+              'generated_status_context': status['context'],
+              'generated_native_alias': check.legacy,
+              'generated_disposition_context': check.disposition,
+              'native_approval_required': True,
+              'authority_repository': check.repository,
+              'required_code_owner': resolve_required_code_owner(check.repository),
+              'writer_post_sha256': namespace['post_hash'],
+              'api_calls_intercepted': True,
+              'administrative_effect': False,
+              'native_code_owner_approval_implied': False,
+          }, sort_keys=True))
+          PY
 
       - name: Verify event, recovery, identity and promotion bindings
         shell: bash
@@ -66,5 +117,9 @@ jobs:
           grep -F 'require_code_owner_review' tools/qikvrt_required_review_gate.py
           grep -F 'dismiss_stale_reviews_on_push' tools/qikvrt_required_review_gate.py
           grep -F 'require_last_push_approval' tools/qikvrt_required_review_gate.py
-          grep -F 'QIKVRT requested review execution' .github/workflows/qikvrt_expected_head_promotion.yml
           grep -F 'statuses?per_page=100' .github/workflows/qikvrt_expected_head_promotion.yml
+          grep -F 'STATUS_CONTEXT: QIKVRT requested review disposition' .github/workflows/qikvrt_requested_review_executor.yml
+          grep -F 'STATUS_CONTEXT: QIKVRT required code-owner review' .github/workflows/qikvrt_required_review_gate.yml
+          grep -F 'QIKVRT required code-owner review' .github/workflows/qikvrt_expected_head_promotion.yml
+          grep -F 'governance_projection' tools/qikvrt_expected_head_promotion.py
+          grep -F '(EXECUTION_ONLY)' .github/workflows/qikvrt_live_status_watch.yml

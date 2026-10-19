@@ -1,0 +1,2313 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "id": "QIKVRT_AUTHORITY_CAPABILITY_TRANSFER_20261016_V1",
+  "status": "PUBLIC_COMMISSIONING_OPEN_CUSTOMER_AUTHENTICATED_MANAGEMENT_GATEWAY_502",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "pull_request": 523,
+  "branch": "integration/515-519-521-522-20261012-eceb9b63",
+  "source_head": "d8e535d8690ffc97e6a78823248497c662834e30",
+  "source_tree": "19e6eee0af585fa7913d7f321242a9f65e9e0c5b",
+  "current_main": {
+    "head": "85cf48be8405d66ee567f868c1b8f33bd54add97",
+    "tree": "526e6a38986c75a33ae3b920eceae2d590e48ca2",
+    "protected": false
+  },
+  "owner_instruction": {
+    "received_at": "2026-10-16T09:19:58Z",
+    "human": "Ingolf Lohmann",
+    "exact_text": "transferiere die Zenodo-Veröffentlichungsfähigkeiten und alle anderen wesentlichen Fähigkeiten, die zum Erreichen der noch offenen Ziele notwendig sind, aus dem Goldkelch-Repository in das Ingolf Lohmann Repository. Und zwar unverzüglich und schnellstmöglich.",
+    "authorization_scope": "Reuse and integrate existing capability implementations and protected bindings; no publication candidate-specific decision is fabricated."
+  },
+  "provenance": {
+    "source_repository": "Goldkelch/qik-vrt",
+    "live_source_repository_read": "HTTP_404",
+    "live_source_main_read": "HTTP_404",
+    "source_of_reused_bytes": "Preserved Goldkelch-origin implementation and historical publication contracts already present in the exact-bound Authority tree.",
+    "fresh_source_equality_claim": false,
+    "credential_values_retrieved": false,
+    "credential_values_persisted": false,
+    "historical_exact_authorizations_rewritten": false
+  },
+  "reuse_decision": {
+    "existing_generic_publisher": true,
+    "existing_generic_metadata_editor": true,
+    "missing_current_generic_native_entrypoint": "Existing Goldkelch one-shot workflows bind historical branches/parents/artifacts; do not repoint their grants.",
+    "selected_repair": "Extend the existing publication router and workflow with separately requested exact-Main preflight/execution, reusing the unchanged production state machines.",
+    "parallel_workflow_created": false,
+    "observer_execution_role_changed": false
+  },
+  "capability_groups": [
+    {
+      "id": "zenodo-new-publication",
+      "open": [
+        "CURRENT_MAIN_ADOPTION",
+        "CANONICAL_CANDIDATE_SPECIFIC_AUTHORIZATION",
+        "PROTECTED_ZENODO_TOKEN_DELIVERY",
+        "ADMITTED_INITIAL_DISPATCH",
+        "PUBLIC_BYTE_EXACT_READBACK_AND_AUTHORITY_PERSISTENCE"
+      ],
+      "source_bindings": [
+        {
+          "path": "runtime/capabilities/ZENODO_PUBLICATION_CAPABILITY.json",
+          "preserved_authority_blob": "25789699aed7c53e08b3c4e66d4ca8c0f61bdda9",
+          "current_main_blob": "25789699aed7c53e08b3c4e66d4ca8c0f61bdda9",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "tools/qikvrt_zenodo_publish.py",
+          "preserved_authority_blob": "21e44c5ba1b1f3983d68fab05c980e842294749e",
+          "current_main_blob": "886f614106fe05f3c8f10cd485dd11455845cc54",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "tools/qikvrt_zenodo_machine_proof.py",
+          "preserved_authority_blob": "15c13591eb5e881a9b63a3b4596357194e27341b",
+          "current_main_blob": "15c13591eb5e881a9b63a3b4596357194e27341b",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "tools/qikvrt_zenodo_actions.py",
+          "preserved_authority_blob": "fbbfed55004b580e9788b8ffa7a51d59e581d09b",
+          "current_main_blob": "fbbfed55004b580e9788b8ffa7a51d59e581d09b",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "policy/zenodo-machine-proof-policy-v2.json",
+          "preserved_authority_blob": "e9578d30d22f845e7df684128dcd9332641c00be",
+          "current_main_blob": "e9578d30d22f845e7df684128dcd9332641c00be",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "policy/qikvrt-zenodo-machine-proof-bundle-v2.schema.json",
+          "preserved_authority_blob": "22cc6f4008b4823e8a7cf5e3057d058df6c0961a",
+          "current_main_blob": "22cc6f4008b4823e8a7cf5e3057d058df6c0961a",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "policy/qikvrt-prepublication-return-receipt-v2.schema.json",
+          "preserved_authority_blob": "ddf7e306940d256b51971ea153c33b6e493ffde4",
+          "current_main_blob": "ddf7e306940d256b51971ea153c33b6e493ffde4",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        }
+      ]
+    },
+    {
+      "id": "zenodo-metadata-edit",
+      "open": [
+        "EXACT_BEFORE_AFTER_METADATA_AND_UNCHANGED_FILES",
+        "SEPARATE_CANONICAL_AUTHORIZATION",
+        "CURRENT_NATIVE_EXECUTION_AND_PUBLIC_READBACK"
+      ],
+      "source_bindings": [
+        {
+          "path": "runtime/capabilities/ZENODO_METADATA_EDIT_CAPABILITY.json",
+          "preserved_authority_blob": "3edb3e7dbaf2916756834afa3ce898b660920339",
+          "current_main_blob": "3edb3e7dbaf2916756834afa3ce898b660920339",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "tools/qikvrt_zenodo_metadata_edit.py",
+          "preserved_authority_blob": "17d86deeb7644b8165430286d1239903a02c60d1",
+          "current_main_blob": "17d86deeb7644b8165430286d1239903a02c60d1",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "policy/qikvrt-zenodo-published-metadata-edit-manifest-v1.schema.json",
+          "preserved_authority_blob": "d00d57f61870d0678581538e927cf5b85ee73c5f",
+          "current_main_blob": "d00d57f61870d0678581538e927cf5b85ee73c5f",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        }
+      ]
+    },
+    {
+      "id": "own-host-and-runtime",
+      "open": [
+        "XPI_ADMISSION",
+        "DURABLE_ORIGINAL_RUNTIME_SOURCE",
+        "ADMITTED_PRODUCTIVE_HOST",
+        "REAL_MODEL_SESSION_CAPABILITIES_ACCEPTANCE"
+      ],
+      "source_bindings": [
+        {
+          "path": "tools/qikvrt_self_host.py",
+          "preserved_authority_blob": "2d73f623ec07dc36a04f6508a7ac2a58af4b44d1",
+          "current_main_blob": null,
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "tools/qikvrt_self_host_container.py",
+          "preserved_authority_blob": "55d6c6075470cd9eacc6a99a99426d0e445dcb66",
+          "current_main_blob": null,
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "tools/qikvrt_self_host_provider.py",
+          "preserved_authority_blob": "1595d95c26a854963758df1ed34e2a5fb7835cb2",
+          "current_main_blob": null,
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "tools/qikvrt_self_host_migration.py",
+          "preserved_authority_blob": "b80664902586ee7e8199eeaf084180f25847e9a2",
+          "current_main_blob": null,
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "runtime/self-host/MESH_ACTIVATION.json",
+          "preserved_authority_blob": "b1fe88dd9410de164fc7c8c28cae3347e885fd21",
+          "current_main_blob": null,
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": ".github/workflows/qikvrt_ci.yml",
+          "preserved_authority_blob": "604715b5b400d7e67a5d9b4ce88d5cd3db934003",
+          "current_main_blob": "61d990bf550bb659cc8165e72ac14e2090db89a0",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+          "preserved_authority_blob": "f40f093e33d4af0d0086f5fc581d40d287dad298",
+          "current_main_blob": "815e32524401aac59fa79aa4f2fb1e37b2f49fdc",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "src/qikvrt_effect_ack_http_terminal.py",
+          "preserved_authority_blob": "93b4ad1457a929ba6c750528d4494fd5c9db2255",
+          "current_main_blob": "a4e41a9cc0e60976eb279bf59de7d0a6310db476",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        }
+      ]
+    },
+    {
+      "id": "ionos-and-exact-host",
+      "open": [
+        "PROTECTED_EXISTING_BINDING_DELIVERY_AND_TARGET_PERMISSION_READBACK",
+        "REGISTRAR_DNS_OPERATION_SPECIFIC_CAPABILITY",
+        "AUTHORITATIVE_DNS",
+        "TLS",
+        "EXACT_RAUMZEITTERMINAL_APPLICATION_READBACK"
+      ],
+      "source_bindings": [
+        {
+          "path": "state/work_units/QIKVRT_IONOS_TOKEN_EXECUTOR_BIND_20261013_V1.json",
+          "preserved_authority_blob": "e6af37fd4eda4bda849f013b698e7774f5608e5c",
+          "current_main_blob": null,
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": ".github/workflows/qikvrt_workflow_executor.yml",
+          "preserved_authority_blob": "2f50da197710f1a0769bee57dd0d73a03a45e651",
+          "current_main_blob": "d21481ff56208868b3849ac6bc171e0cb1d76a99",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "runtime/self-host/PROVIDER_ADMISSION.md",
+          "preserved_authority_blob": "465aa50d2d1d087a55e50bfe3948f807ab29962a",
+          "current_main_blob": null,
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "tools/qikvrt_self_host_provider.py",
+          "preserved_authority_blob": "1595d95c26a854963758df1ed34e2a5fb7835cb2",
+          "current_main_blob": null,
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        }
+      ]
+    },
+    {
+      "id": "github-governance-and-native-rest",
+      "open": [
+        "PROTECTED_APP_CONFIGURATION",
+        "CALLABLE_INITIAL_DISPATCH_AND_ADMIN_OPERATION",
+        "INDEPENDENT_NATIVE_REVIEW",
+        "EFFECTIVE_MAIN_GOVERNANCE"
+      ],
+      "source_bindings": [
+        {
+          "path": ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml",
+          "preserved_authority_blob": "05066f6fb83a7f3ba8799677db35647e06942fd2",
+          "current_main_blob": "1202d24c2f23eb8fa52ab7c562a583e79f9e8444",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": ".github/workflows/qikvrt_requested_review_executor.yml",
+          "preserved_authority_blob": "e32a2947c2d266de3763c0efb410d9b78e75fe5a",
+          "current_main_blob": "484fe5c98f333f3fd921789a456571d281e06353",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "tools/qikvrt_requested_review_executor.py",
+          "preserved_authority_blob": "b3eccb774851dc434bd75c531216e6ed1e3096ef",
+          "current_main_blob": "839e0943897b418314a7fbdb29e8b8cbe9d3837a",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "tools/qikvrt_required_review_gate.py",
+          "preserved_authority_blob": "51cb5092a74f13acd047cb184250cd359cb9ed92",
+          "current_main_blob": "12886d9d0a66683efd60781ca46bbb867e8d9175",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": ".github/workflows/qikvrt_mesh_api.yml",
+          "preserved_authority_blob": "7b38260082e98046b0f8da5009104b25ce255e31",
+          "current_main_blob": "7b38260082e98046b0f8da5009104b25ce255e31",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "src/qikvrt_github_api_shim.py",
+          "preserved_authority_blob": "0f84193a67342a39b9ca8d9d2f1a7df5cd8c449a",
+          "current_main_blob": "0d60c5119b123b46e9264af975e8d81333034c96",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+          "preserved_authority_blob": "a07851a64ef28172933544e565e9740e9c611fe5",
+          "current_main_blob": "5cc8c5b433f84a028ec5c1dca1fe7824a8e03f69",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
+          "preserved_authority_blob": "1d383fcec746a22aeb03464c75297281defed897",
+          "current_main_blob": "5111fcbeb2c1100087b6b61d096a4427e88ca981",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        }
+      ]
+    },
+    {
+      "id": "knowledge-proof-and-ietf-preparation",
+      "open": [
+        "MAIN_AND_OTHER_CLIENT_ADOPTION",
+        "EXACT_SCOPE_KERNEL_OR_EMPIRICAL_RECEIPTS",
+        "APPLICABLE_SUBMISSION_ACCEPTANCE"
+      ],
+      "source_bindings": [
+        {
+          "path": "AI",
+          "preserved_authority_blob": "f54629abd2e21cb6fdb1a5d4e30d531dc96a8fd5",
+          "current_main_blob": "702a1e006a1aeed035b504d3a19416d6740844c2",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "AI_CONTEXT.json",
+          "preserved_authority_blob": "733b3ca4cf2873f65d3e3293fbef610f7770122d",
+          "current_main_blob": "c69587b566beeb13a4302ee9950962a3cc227583",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "tools/ai_handoff.py",
+          "preserved_authority_blob": "a99dbd53ffe8762c008e2d27850592c259c4bd18",
+          "current_main_blob": "e48df146c23eae1497a2d8cb308e67e25100a7a8",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "state/work_units/QIKVRT_CLIENT_KNOWLEDGE_CONTINUITY_REPAIR_20261016_V1.json",
+          "preserved_authority_blob": "d4d1c1655982fe9e308211d992dd9a4278697fb3",
+          "current_main_blob": null,
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "tools/qikvrt_zenodo_corpus_proof_v2.py",
+          "preserved_authority_blob": "1106ebde33b45e0285f9ee312571681985c7434a",
+          "current_main_blob": "1106ebde33b45e0285f9ee312571681985c7434a",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        },
+        {
+          "path": "tests/test_ietf_offline_render.py",
+          "preserved_authority_blob": "3a7ee892e0ac8cb72deec23735e5ff3ec9b6df55",
+          "current_main_blob": "3a7ee892e0ac8cb72deec23735e5ff3ec9b6df55",
+          "status": "PRESENT_IN_AUTHORITY_CANDIDATE"
+        }
+      ]
+    }
+  ],
+  "protected_binding": {
+    "zenodo": "Existing secrets.ZENODO_ACCESS_TOKEN; target configuration and actual delivery UNKNOWN in this client.",
+    "github": "Authenticated ingolf-lohmann/id294949349 and Authority admin read; actual repository source writes available. Initial dispatch, secret-administration and secure App configuration operations not exposed in active client registry.",
+    "ionos": "Existing secrets.IONOS_TOKEN source binding retained; actual Cloud DNS permissions, protected private binding and admitted target execution UNKNOWN.",
+    "secret_transfer_effect": "NOT_EXECUTED_OR_CLAIMED; no credential value read/export and no callable protected secret handover operation.",
+    "local_environment_absence_proves_remote_absence": false
+  },
+  "verification": {
+    "local_publication_router_tests": 14,
+    "ordinary_pr_tests_include_router": true,
+    "tool_cache": "32/32 declared tools, 100%; no new tool dependency",
+    "native_successor_tests": "REQUIRED_ON_NEW_COMMIT",
+    "prior_knowledge_repair": {
+      "head": "d8e535d8690ffc97e6a78823248497c662834e30",
+      "push_run": 38879504952,
+      "test_job": 116902549317,
+      "result": "success",
+      "pr_run": 38879514084,
+      "pr_full_test": "success",
+      "pr_tested_fixpoint": "success; job116902580210 completed; no PASS transfer to successor",
+      "pass_transferred_to_successor": false
+    },
+    "first_native_entrypoint_run": {
+      "run_id": 38881846369,
+      "job_id": 116910202412,
+      "head": "522d006e1c1083c0fceb7bff9cf688710f751379",
+      "result": "success; 13 routing tests; requested effect job correctly skipped"
+    },
+    "first_native_full_suite_failure": {
+      "run_id": 38881836276,
+      "job_id": 116910168474,
+      "head": "522d006e1c1083c0fceb7bff9cf688710f751379",
+      "cause": "Changed workflow_binding from the established workflow-independent string contract to an object; tests/test_charter_zenodo.py rejected the type change.",
+      "repair": "Restore the original generic workflow_binding text and add the optional wrapper under invocation_routes. Existing genericity gate remains intact."
+    },
+    "current_change_scope": "Documentation/evidence only; unchanged implementation, workflows and frozen publication bytes. No predecessor source/runtime PASS transferred."
+  },
+  "scientific_and_delivery_limits": {
+    "new_zenodo_publication": false,
+    "new_doi": null,
+    "raumzeitterminal_delivered": false,
+    "scope_is_not_physical_or_cosmological_proof": true
+  },
+  "human_contribution": "Ingolf Lohmann: goal, source/target decision, standing authorization and original research.",
+  "artificial_contribution": "OpenAI Codex: REST inspection, preserved-source capability comparison, existing publication-router integration and regression checks.",
+  "PREDECESSOR_EVIDENCE_TRANSFER": false,
+  "EFFECT_ACK_DONE": false,
+  "next_action": "After verified gateway recovery, reuse the existing regular IONOS Webspace folder/upload path, bind only raumzeitterminal.de to its own publication directory, provision its exact TLS route, and independently read back the actual publisher/terminal and exact public bytes. Preserve mail, other domains, the earlier concrete DNS service-replacement decision and action-time server-contract terms. Do not replace exact-host delivery by a redirect or green CI claim.",
+  "updated_at_utc": "2026-10-16T19:01:30.409873+00:00",
+  "publication_scope_request": {
+    "received_at": "2026-10-16T09:48:07Z",
+    "human": "Ingolf Lohmann",
+    "exact_text": "transferiere die Zenodo-Veröffentlichungsfähigkeiten und alle anderen wesentlichen Fähigkeiten, die zum Erreichen der noch offenen Ziele notwendig sind, aus dem Goldkelch-Repository in das Ingolf Lohmann Repository. Und zwar unverzüglich und schnellstmöglich und veröffentliche im Anschluss alles Notwendige. Nicht nur auf Zenodo, sondern auch auf IETF, in den Repository Nodes selbst und insbesondere auf Raumzeitterminal.de. Alles andere bleibt inakzeptabel.",
+    "existing_authorization_retained": true,
+    "repeated_task_permission_requested": false,
+    "historical_exact_publication_authorizations_rewritten": false
+  },
+  "native_source_acceptance": {
+    "head": "527744762b646673ccd173218fbe5d577c5b7fd0",
+    "tree": "4175ebf7112005a89c8699d2181ea087fe89dab6",
+    "full_test_run": 38882295327,
+    "full_test_job": 116911663265,
+    "full_test_result": "success; MAKE_TEST_EXIT=0; PASS mode=full-test",
+    "router_run": 38882302760,
+    "router_job": 116911688279,
+    "router_tests": 14,
+    "requested_zenodo_job": "SKIPPED; no production dispatch",
+    "overall_ci": "failure; productive signed-XPI admission remains open",
+    "native_gate_evidence": "evidence/native-runtime-acceptance/capability-transfer-20261016/SOURCE_NATIVE_TESTS.json",
+    "pass_transferred_to_successor": false,
+    "current_repaired_source": {
+      "head": "4c696ead41b11862f073230103536cb4b7b07b90",
+      "tree": "bdb427c5b32673087f4ca3c5eff34c79f329c2a9",
+      "push_full_test": {
+        "run_id": 38886170251,
+        "job_id": 116924323681,
+        "conclusion": "success",
+        "make_test_exit": 0,
+        "terminal_disposition": "PASS mode=full-test"
+      },
+      "pr_tested_fixpoint": {
+        "run_id": 38886182290,
+        "job_id": 116924364502,
+        "conclusion": "success",
+        "iteration": 0,
+        "predecessor_test_status": 0,
+        "terminal_disposition": "PASS mode=tested-fixpoint"
+      },
+      "scope": "Exact 4c696ead source acceptance only; this successor changes the task-scope record and integrity trio. Main, production Firefox/host admission and new publication effects remain independent."
+    }
+  },
+  "public_distribution": {
+    "site_version": 36,
+    "site_source_commit": "bd9f265dbbac2b183e77888329ffa867556b8bf7",
+    "site_deployment": "appgdep_6ad1f63f3e0081919630e115a216e5f6",
+    "native_status": "succeeded",
+    "public_origin": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site",
+    "publication_index": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/index.html",
+    "research_page": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/2026-10-16-wirkungsnachweis/index.html",
+    "original_research_bytes_changed": false,
+    "research_archive_sha256": "0f7bf05eb76f76bc8abac004ec0dd81126e088e557d0839635a42397e2fc0cc0",
+    "independent_public_byte_get": "OPEN; original 16 file GETs remain HTTP403. Separate current local root GET yields Cloudflare1010; exact file causes not retrospectively inferred.",
+    "native_publication_receipt": "evidence/native-runtime-acceptance/capability-transfer-20261016/SITE36_NATIVE_PUBLICATION.json",
+    "public_readback_receipt": "evidence/native-runtime-acceptance/capability-transfer-20261016/SITE36_PUBLIC_BYTES_READBACK.json",
+    "exact_host_delivery": false
+  },
+  "platform_effects": {
+    "zenodo_new_publication": "NOT_EXECUTED; protected token delivery plus admitted initial dispatch and exact production-v2 candidate remain required",
+    "ietf_existing_documents": [
+      "https://datatracker.ietf.org/doc/draft-lohmann-qikvrt-effect-ack/",
+      "https://datatracker.ietf.org/doc/draft-lohmann-qikvrt-epistemic-status/"
+    ],
+    "ietf_fresh_public_text_readback": {
+      "effect_ack_03": {
+        "status": 200,
+        "bytes": 55792,
+        "sha256": "999ab5f255804de1f41fb7074f29032ab4a2203df2156ae609fb6cefd16f41b0"
+      },
+      "epistemic_status_00": {
+        "status": 200,
+        "bytes": 15309,
+        "sha256": "ba9c16369f61f4282017bd253c4514262d1990ce8e0f89e62c58ae8ac0b9edb0"
+      }
+    },
+    "ietf_new_submission": "OPEN; no admitted native submission operation established in this client; existing drafts are not new submissions",
+    "nodes": "New research distribution prepared for existing Authority candidate; Main, Mirror and full runtime/node adoption remain separate open effects",
+    "raumzeitterminal_de": "IONOS domain order confirmed; provider mail confirms successful registration; contact-email verification completed through the IONOS Registrar UI. Exact-host hosting/TLS/application acceptance remains open.",
+    "arxiv_new_submission": "NOT_REQUESTED_BY_OWNER; excluded from the current publication/hosting acceptance scope. Preserve the existing candidate without submission.",
+    "zenodo_existing_publication": {
+      "record_id": 21888130,
+      "doi": "10.5281/zenodo.21888130",
+      "record_url": "https://zenodo.org/records/21888130",
+      "state": "published",
+      "phase": "public_verified",
+      "file_count": 54,
+      "source_receipt": "release/round-trip-canonical-publication-zenodo-authorization-v2/zenodo-publication.json",
+      "source_blob": "c675a529c57709052985b552d237203e0075cdf1",
+      "source_repository": "Goldkelch/qik-vrt",
+      "scope": "Established earlier publication; independent from uploading new successor PDFs."
+    },
+    "ietf_existing_publication": {
+      "internet_draft": "draft-lohmann-qikvrt-effect-ack-03",
+      "state": "ACTIVE_INDIVIDUAL_INTERNET_DRAFT",
+      "publication_verified": true,
+      "datatracker_url": "https://datatracker.ietf.org/doc/draft-lohmann-qikvrt-effect-ack/",
+      "byte_exact_artifacts": [
+        "txt",
+        "xml"
+      ],
+      "source_receipt": "external/ietf/draft-lohmann-qikvrt-effect-ack-03.PUBLICATION_RECEIPT.json",
+      "source_blob": "a2f6a690084b8f14b8cd30475ad20c300b0191b9",
+      "scope": "Published individual Internet-Draft; not an RFC or IETF endorsement."
+    },
+    "raumzeitterminal_existing_provider_refresh": {
+      "operation": "REFRESH_EXISTING_CUSTOM_DOMAIN_VALIDATION",
+      "id": "appgdom_6ac4b489bd548191a69f7d87618db3aa",
+      "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+      "hostname": "raumzeitterminal.de",
+      "worker_name": "site---6ac4018a3e0c8191a06187c296d6c7ea",
+      "status": "pending",
+      "provider_status": "pending",
+      "ssl_status": "pending_validation",
+      "cname_target": "custom-domains.chatgpt.site.",
+      "apex_proxy_ipv4_targets": [
+        "162.159.143.30",
+        "172.66.3.26"
+      ],
+      "validation_records": [
+        {
+          "record_type": "TXT",
+          "name": "_openai-site-verification.raumzeitterminal.de",
+          "value": "openai-site-verification=5Zw42-7lgYTNm3pmkhZcwGJu1_0UvnHSVYJcGBDONbI"
+        },
+        {
+          "record_type": null,
+          "name": null,
+          "value": null
+        },
+        {
+          "record_type": "TXT",
+          "name": "_cf-custom-hostname.raumzeitterminal.de",
+          "value": "c6e99848-baed-4087-a9fd-0d6c5b5008c8"
+        }
+      ],
+      "last_error": null,
+      "created_at": "2026-10-06T08:42:49.739821+00:00",
+      "updated_at": "2026-10-16T12:07:10.200183+00:00",
+      "new_site_or_domain_created": false,
+      "dns_write_performed": false,
+      "scope": "Existing Site binding read/refreshed after the IONOS order; provider pending and TLS pending_validation do not establish delivery."
+    },
+    "raumzeitterminal_current_readback": {
+      "snapshot_id": "7226546d-8a0d-44e7-871b-686e25400620",
+      "completed_at": "2026-10-16T11:06:42.811Z",
+      "snapshot_sha256": "b030e2c5aec189ce830425f16baf617425232fa5bc5e186a5be7b3f4a48f09f9",
+      "readback_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/readback?id=7226546d-8a0d-44e7-871b-686e25400620",
+      "exact_host_pages": [
+        {
+          "url": "https://raumzeitterminal.de/",
+          "method": "GET (ohne Redirect)",
+          "status": 530,
+          "observed_at": "2026-10-16T11:06:42.698Z",
+          "latency_ms": 66
+        }
+      ],
+      "dns": {
+        "schema": "qikvrt_public_dns_readback_v1",
+        "exact_host": "raumzeitterminal.de",
+        "interpretation": "NXDOMAIN_RECURSIVE_READBACK",
+        "observations": [
+          {
+            "source_url": "https://dns.google/resolve?name=raumzeitterminal.de&type=NS",
+            "query_type": "NS",
+            "status": 200,
+            "observed_at": "2026-10-16T11:06:42.698Z",
+            "rcode": 3,
+            "question_bound": true,
+            "response_sha256": "52c30f989a30ff63a3e58d73ecdd47fee8da204562bf154b813e2e9dce818ec1",
+            "answers": [],
+            "error": null
+          },
+          {
+            "source_url": "https://cloudflare-dns.com/dns-query?name=raumzeitterminal.de&type=NS",
+            "query_type": "NS",
+            "status": 200,
+            "observed_at": "2026-10-16T11:06:42.719Z",
+            "rcode": 3,
+            "question_bound": true,
+            "response_sha256": "81555b619f50bcb0934ae962fcd7b96faaab01711ffeb838f2d510dc5da98a7e",
+            "answers": [],
+            "error": null
+          },
+          {
+            "source_url": "https://dns.google/resolve?name=raumzeitterminal.de&type=A",
+            "query_type": "A",
+            "status": 200,
+            "observed_at": "2026-10-16T11:06:42.753Z",
+            "rcode": 3,
+            "question_bound": true,
+            "response_sha256": "93aec16b4a4f542550d8ea7980a98dc44576f5336ff171b09b92b243e78b72e0",
+            "answers": [],
+            "error": null
+          }
+        ],
+        "scope": "PUBLIC_RECURSIVE_DNS_DIAGNOSIS_NOT_REGISTRAR_WRITE_OR_APPLICATION_ACCEPTANCE"
+      }
+    }
+  },
+  "continuation_blockers": [
+    {
+      "operation": "GOVERNED_AUTHORITY_MAIN_PROMOTION",
+      "evidence": "Main protected=false, rulesets=[], current independent APPROVED absent; initial administrative POST not exposed",
+      "smallest_next_step": "Use the existing ruleset writer through an admitted native REST operation, independent current-head review and guarded Main promotion."
+    },
+    {
+      "operation": "EXACT_ZENODO_PUBLISH",
+      "evidence": "Existing publisher source and protected reference preserved; requested effect job skipped; actual token delivery and initial dispatch not established",
+      "smallest_next_step": "Bind the exact previously returned unchanged candidate to production-v2 evidence and invoke the existing publisher through an admitted authenticated REST execution path."
+    },
+    {
+      "operation": "EXACT_RAUMZEITTERMINAL_DELIVERY",
+      "evidence": "Actual IONOS customer session and domain/hosting assignment verified; two TXT records saved and provider status active. Apex remains old Webhosting A/AAAA. Automatic approval review rejected the service-template replacement; cancelled without applying.",
+      "smallest_next_step": "Approve the concrete replacement of the Webhosting DNS template for this exact domain. Preserve mail records and reinstate original www A/AAAA after template deactivation unless a separately verified www deployment replaces them."
+    }
+  ],
+  "knowledge": [
+    {
+      "id": "owner:exact-host-authorized",
+      "epistemic_class": "OWNER_AUTHORIZATION",
+      "subject": {
+        "owner": "Ingolf Lohmann",
+        "url": "https://raumzeitterminal.de/"
+      },
+      "scope": "Existing task authorization; not authentication, execution admission or delivery",
+      "statement": "The Owner repeatedly authorized exact-host delivery and publication; do not request the same permission again.",
+      "evidence": [
+        "Owner direct requests in this session on 2026-10-16",
+        "AGENTS.md#binding-client-continuation-procedure"
+      ],
+      "supersedes": [],
+      "record_sha256": "504eaaf52db668bf01cdfa5593e2df6dc6335e01e7e607ba6580d324ab27a206"
+    },
+    {
+      "id": "owner:authority-and-mirror",
+      "epistemic_class": "OWNER_ROLE_DECISION",
+      "subject": {
+        "authority": "ingolf-lohmann/qik-vrt",
+        "mirror": "Goldkelch/qik-vrt"
+      },
+      "scope": "Owner role assignment; effective deployed contract and enforcement remain separate",
+      "statement": "Use ingolf-lohmann/qik-vrt as Authority and Goldkelch/qik-vrt as Mirror. Do not fall back to the Mirror as Authority.",
+      "evidence": [
+        "Owner direct instructions of 2026-10-06/07, retained in this session"
+      ],
+      "supersedes": [],
+      "record_sha256": "10f1f202036c0132a37cdb9392dc0b4747d2f5d7ba7ce4c70592a219d48890e6"
+    },
+    {
+      "id": "ionos:existing-secret-reference",
+      "epistemic_class": "SOURCE_OBSERVATION",
+      "subject": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "path": "state/work_units/QIKVRT_IONOS_TOKEN_EXECUTOR_BIND_20261013_V1.json",
+        "git_blob_sha1": "e6af37fd4eda4bda849f013b698e7774f5608e5c"
+      },
+      "scope": "Candidate source reference, not secret retrieval or live permission proof",
+      "statement": "The existing protected token is referenced as secrets.IONOS_TOKEN. Its value was not retrieved; source presence does not establish delivery to this client.",
+      "evidence": [
+        "Exact candidate work-unit read on 2026-10-16"
+      ],
+      "supersedes": [],
+      "record_sha256": "85239e48d8540f378690a011294a634ba93c823d9f1c85295a4246db1abc5d2e"
+    },
+    {
+      "id": "ionos:cloud-dns-token-type",
+      "epistemic_class": "PRIMARY_DOCUMENTATION",
+      "subject": {
+        "url": "https://docs.ionos.com/sdk-go-bundle/sdks/dns"
+      },
+      "scope": "Documented authentication method; the actual token account, DNS rights, zone and admission remain UNKNOWN",
+      "statement": "IONOS Cloud DNS documents IONOS_TOKEN bearer authentication at https://dns.de-fra.ionos.com. Cloud-v6 GET consumer scope does not prove token DNS incapability or a need for new credentials.",
+      "evidence": [
+        "https://docs.ionos.com/sdk-go-bundle/sdks/dns",
+        "https://docs.ionos.com/cloud/network-services/cloud-dns/api-how-tos/create-primary-zone"
+      ],
+      "supersedes": [],
+      "record_sha256": "699d1c65c456afe142c796832c90743541875efa6c5853deba9c1d1bf2382150"
+    },
+    {
+      "id": "history:withdrawn-global-binding-absence",
+      "epistemic_class": "WITHDRAWN_INFERENCE",
+      "subject": {
+        "actor": "OpenAI Codex",
+        "date": "2026-10-16"
+      },
+      "scope": "Historical incorrect inference; retained as error history and superseded below",
+      "statement": "The assistant claimed the protected binding was not supplied to the runtime after inspecting local environment variables and exposed operations. That conclusion was not established.",
+      "evidence": [
+        "Assistant withdrawal in this session after the Owner correction on 2026-10-16"
+      ],
+      "supersedes": [],
+      "record_sha256": "e71ebefb88bbc917b78cdc67efe61af81cdfbf42abc94f69107f9429a215cb1b"
+    },
+    {
+      "id": "correction:local-absence-is-not-remote-absence",
+      "epistemic_class": "CORRECTION",
+      "subject": {
+        "measurement": "current process environment and exposed operation inventory"
+      },
+      "scope": "A bounded negative observation; no claim about all existing protected coupling routes",
+      "statement": "Absent local environment variables prove only local absence. No authenticated DNS call was executed. Remote protected binding availability and its permission remain unverified, not proven absent.",
+      "evidence": [
+        "Owner correction in this session on 2026-10-16",
+        "Assistant explicit retraction in this session"
+      ],
+      "supersedes": [
+        "history:withdrawn-global-binding-absence"
+      ],
+      "record_sha256": "89c54338f71617a65dfd330d087f0489f3d615e45aa28a09e7a1bbac03896cec"
+    },
+    {
+      "id": "research:bounded-comparison-replayed",
+      "epistemic_class": "LOCAL_TEST",
+      "subject": {
+        "archive_sha256": "0f7bf05eb76f76bc8abac004ec0dd81126e088e557d0839635a42397e2fc0cc0",
+        "experiment_sha256": "90971dc9bbe24924630f648b6d92bb5b31ba1ef8c962aba4aa55c403acdd5e0e",
+        "completed_at_utc": "2026-10-16T08:50:16Z"
+      },
+      "scope": "Local same-host process/SQLite experiment, not native Mesh execution, independent human review or universal superiority",
+      "statement": "The new replay matched 13 scenarios, 12 accepted successors, 64/1296 exhaustive function pairs and three boundary counterexamples. The equally informed conventional control made the same decisions. All 68 original manifest files and the standalone manuscript candidates matched.",
+      "evidence": [
+        "QIKVRT_Wirkungsnachweis_Nachpruefung_20261016.json, SHA-256-bound original candidate and local replay",
+        "Library identity libfile_0e0f940015b0819182af6eb498f1ad3c"
+      ],
+      "supersedes": [],
+      "record_sha256": "94d28b1d81ddcc63a44a896d0345eb071334fac19e03224f17460039f0152f3f"
+    },
+    {
+      "id": "research:lean-receipt-scope",
+      "epistemic_class": "SOURCE_BOUND_KERNEL_RECEIPT",
+      "subject": {
+        "source_sha256": "4547bea44e87427d0c07b68fb53b47b5a906f5a34b154367597dc3709a1d1cd6",
+        "olean_sha256": "b18b77ef12943656bd3b589ac84e065d47bafd3edc2f2531b0c306c4b7c25c66"
+      },
+      "scope": "Three recorded Lean4.19.0 theorem checks, source/olean receipt binding rechecked; no new kernel execution in this client",
+      "statement": "The frozen package records three kernel-checked theorem constants and a rejected false control. The additional local recheck verified their artifact hashes; it did not rerun Lean.",
+      "evidence": [
+        "QIKVRT_Wirkungsnachweis_Nachweispaket_20261016.zip#evidence/LEAN_KERNEL_RECEIPT.json"
+      ],
+      "supersedes": [],
+      "record_sha256": "7963c4e7977083f03794d24087ed61d1be0d8d2557c8b6b973a580292f8e5888"
+    },
+    {
+      "id": "goal:publication-and-exact-host-open",
+      "epistemic_class": "OPEN_OBLIGATION",
+      "subject": {
+        "url": "https://raumzeitterminal.de/",
+        "new_research_publication": "QIKVRT Wirkungsnachweis, 2026-10-16"
+      },
+      "scope": "Open acceptance duties; local research and another hostname do not close them",
+      "statement": "Exact-host product delivery and new Zenodo publication remain open duties. Preserve original Round-Trip DOI10.5281/zenodo.21888130 as provenance; it is not a DOI for the new work.",
+      "evidence": [
+        "https://zenodo.org/records/21888130",
+        "CANDIDATE_BINDING.json in the frozen research archive",
+        "Existing client continuation open_work"
+      ],
+      "supersedes": [],
+      "record_sha256": "0889cf06a1f2d8057e794880dbe5f6355221d78c39b6ff4290a0de4cd9e04934"
+    },
+    {
+      "id": "delivery:existing-site36-domain-binding-reobserved",
+      "epistemic_class": "SOURCE_OBSERVATION",
+      "subject": {
+        "site_project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+        "custom_domain_id": "appgdom_6ac4b489bd548191a69f7d87618db3aa",
+        "source_head": "420eb5b8d03eb62f0d2b47cd62b8564d703ef28e"
+      },
+      "scope": "Native hosting binding only; no DNS write, registration/ownership or productive acceptance inferred.",
+      "statement": "Existing Site36/public audience and supplied two A/two TXT targets remain bound to the same Site; domain pending, TLS pending_validation.",
+      "evidence": [
+        "Native list_custom_domains and get_site_version in this work unit"
+      ],
+      "supersedes": [],
+      "record_sha256": "ae53e06c9f9dd595a05e60c2984f53ec6fc2fb3c9ee7b82724f287f97514736b"
+    },
+    {
+      "id": "site36:local-root-1010-is-scoped",
+      "epistemic_class": "SOURCE_OBSERVATION",
+      "subject": {
+        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/",
+        "response_cf_ray": "a4b698d9ff9f8e43-DFW"
+      },
+      "scope": "One local root request; not a cause assigned to all historical file403s.",
+      "statement": "The response is HTTP403 with body error code1010; hosting audience is public. Direct caller access and hosting publication are separate.",
+      "evidence": [
+        "SITE36_PUBLIC_BYTES_READBACK.json#successor_diagnostics",
+        "https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-1xxx-errors/error-1010/"
+      ],
+      "supersedes": [],
+      "record_sha256": "e12432660ff9f4db3666f6a61bbb01458db8e17678d51ea21476c6d8054cbe37"
+    },
+    {
+      "id": "owner:domain-purposes-and-ionos-cost-grant-20261016",
+      "epistemic_class": "OWNER_AUTHORIZATION",
+      "subject": {
+        "hostname": "raumzeitterminal.de",
+        "repository": "ingolf-lohmann/qik-vrt"
+      },
+      "scope": "Current publication, Linux/Firefox/whole-repository offline and owned DevOps purposes; retained EUR150/month limit; no arXiv publication.",
+      "statement": "The Owner directs the Raumzeitterminal publishing operation, Linux distribution CI/CD with complete Effect Acknowledgement in OS and Firefox and full offline repository, and reduced external platform dependencies. Necessary paid IONOS services are authorized. Exact browser legal acceptance and the rejected DNS-template action remain concrete final decision boundaries.",
+      "evidence": [
+        "Direct Owner instruction in this session, 2026-10-16",
+        "owner_domain_operating_purposes",
+        "ionos_server_quote"
+      ],
+      "supersedes": [],
+      "record_sha256": "8a43c84f5e205e7636f6118fee5a3d80d358974a1ed7364eda500a138e401715"
+    },
+    {
+      "id": "ionos:two-txt-saved-and-vps-final-quote-20261016",
+      "epistemic_class": "SOURCE_BOUND_OBSERVATION",
+      "subject": {
+        "hostname": "raumzeitterminal.de",
+        "site_project": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea"
+      },
+      "scope": "Visible customer account and native Sites domain status; no DNS-routing or server-order acceptance.",
+      "statement": "Registered domain is assigned to existing Webhosting Pro. Both required TXT verifications are saved; provider status active with TLS pending_validation. Old apex/www Webhosting records remain. Automatic approval rejected replacing that service template. The final VPS Linux XXL+ quote is EUR59/month plus EUR10 setup, one-month minimum term, EU, Ubuntu26.04+Docker, not ordered.",
+      "evidence": [
+        "ionos_operational_configuration",
+        "ionos_server_quote",
+        "DNS screenshot SHA256 258db4c6ec8031b644ceb643bf3e7dce09e46cab73567edb82999f2567445101",
+        "Quote screenshot SHA256 f1f25196a671f2b66ce6bbb2e7c89c570eedb70c135d63693db6e55871cf5190"
+      ],
+      "supersedes": [],
+      "record_sha256": "9ca871a4c445f9f810bf0607dddd1b5417948c6f9ea0a63e98895aea76437ceb"
+    },
+    {
+      "id": "source:existing-portable-full-tree-correction-20261016",
+      "epistemic_class": "CORRECTION",
+      "subject": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "ref": "integration/515-519-521-522-20261012-eceb9b63",
+        "head": "95dd082666d7c087067c1e70e12b0308ac8ce2e2",
+        "tree": "1ddd0e46d85b85e87ceeb06b5813ec236bd36a4b"
+      },
+      "scope": "Exact existing portable source and MESH_FILE contract; source capability distinct from the selected-file work cache and from deployed offline acceptance.",
+      "statement": "Earlier commentary inspected the selected-file work cache and understated existing full-tree support. The existing portable operation stores every committed Git-tree blob and mode in repository.sqlite3, verifies blob hashes and the reconstructed complete tree, and needs no Git at runtime. It does not carry Git history or accept submodules. Current full-tree export and delivered OS/Firefox offline acceptance remain open.",
+      "evidence": [
+        "tools/qikvrt_self_host.py blob2d73f623ec07dc36a04f6508a7ac2a58af4b44d1 portable and verify_repository_files",
+        "runtime/self-host/MESH_FILE.md blob0d7a572f425ae4824a3dc717b9167102ec6a8776"
+      ],
+      "supersedes": [],
+      "record_sha256": "7a88f1d3e1cbecc0b95b0e3ef2714f62a33f2f095ed67eb0953dd57f7afb18ea"
+    },
+    {
+      "id": "runtime:frozen-carrier-byte-download-20261016",
+      "epistemic_class": "SOURCE_BOUND_OBSERVATION",
+      "subject": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "run_id": 37710500668,
+        "artifact_id": 11521962723,
+        "source_head": "4bdda5c7534a2c4fbac224015179492a4b624b3a"
+      },
+      "scope": "Original dependency-runtime download only; no successor application, host or publication acceptance.",
+      "statement": "Native artifact listing reports non-expired original carrier. Downloaded ZIP is382994793 bytes with SHA2565a912ccde96253bdba5f5e82cd0a36a4ff89de58dabbe57977bc1acf298d9695, independently read back locally. Reuse these frozen bytes rather than rebuild finished runtime dependencies. Durable registry publication remains open.",
+      "evidence": [
+        "Native fetch_workflow_run_artifacts for run37710500668",
+        "Native download_workflow_artifact11521962723",
+        "Local streamed SHA256 and original-byte-count verification"
+      ],
+      "supersedes": [],
+      "record_sha256": "af98a1b6a5086c9d7f66e6bab264355aebe47658bb7cd52d3f305e603a7f8022"
+    },
+    {
+      "id": "native:temdd-s1-original-run38855798987",
+      "epistemic_class": "SOURCE_BOUND_OBSERVATION",
+      "subject": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "head": "e8fbaae5cbd7ef04b718561d576cee521c51b9cd",
+        "tree": "55c17ee5580c755e54a515219e90f0f3e7cd8f64",
+        "run_id": 38855798987,
+        "job_id": 116826855767
+      },
+      "scope": "Original exact-source native TEMDD/S1 controls; original artifact byte-verified; NO_DEPLOYMENT.",
+      "statement": "The Owner-supplied original job succeeded with264 passed and one skipped. Original10403-byte ZIP SHA2562a7129aa9a93c7681a6aba0e75699c9ef47b52d59240b49def2faa8380f1d033 and source/receipt binding were independently verified and are preserved in the existing S1 work unit.",
+      "evidence": [
+        "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38855798987/job/116826855767",
+        "state/work_units/QIKVRT_S1_LINUX_CONTAINER_CI_20261013_V1.json#native_temdd_s1_original_job_readback_20261016"
+      ],
+      "supersedes": [],
+      "record_sha256": "6adc7d6bc28fcf23bcc7deb866571cf0adc03875137e70a36be25f42fdfbdb39"
+    },
+    {
+      "id": "integrity:cmd-powershell-declared-crlf-checkout-20261016",
+      "epistemic_class": "SOURCE_BOUND_OBSERVATION",
+      "subject": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "head": "26eb263aa6ed112deb59ef922b2d2d80688d6088",
+        "tree": "6d76c26c02dca9a287b5d6f369f36dc9c798c36d"
+      },
+      "scope": "Original34-path integrity failure and original-Git-checkout reproduction; preserve original diagnostic scope.",
+      "statement": "The base integrity manifest hashes normalized Git blob LF bytes for 34 .cmd/.ps1 paths; existing .gitattributes correctly materializes CRLF checkout bytes. Native full-tree regeneration reports exactly these 34 differences, no added or removed paths. The same mismatch is independently reproduced by actual local Git checkout for all 34 exact original blobs. The new S1 evidence work unit digest is not in the mismatch set.",
+      "evidence": [
+        "state/work_units/QIKVRT_S1_LINUX_CONTAINER_CI_20261013_V1.json#integrity_checkout_bytes_repair_20261016"
+      ],
+      "supersedes": [],
+      "record_sha256": "e2a94372733bae1693e9e7ff39daa9c623879b8e11a09a668fe9a33a17efec96"
+    },
+    {
+      "id": "native:temdd-s1-verified-successor-e2aa118a-20261016",
+      "epistemic_class": "SOURCE_BOUND_OBSERVATION",
+      "subject": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "head": "e2aa118a9d25913fdb15d351d00bac14af0fded3",
+        "tree": "b1b2aca5440765e101f703e10567a758c4efbb3b",
+        "run_id": 38924202918,
+        "job_id": 117051467808
+      },
+      "scope": "Historical original successor native S1 execution and full integrity; no current db7 acceptance transfer or deployment.",
+      "statement": "Native job117051467808 succeeded with278 passed and one skipped and verified4813 entries/4802 immutable digests. The prior work ring byte-verified artifact12055588733:10795 bytes,SHA256d78b3f1d19390bb7cc0d432b68298490c1b50a6a1d78a36bcf1bece6275ed1ed, exact e2 HEAD/TREE and native-source digest94908e6a50ce107a79965055f3ecabae10e7589d96f7a26496d2a4956b068b13. Current authenticated REST reobservation again reports this original job successful. Scope NO_DEPLOYMENT.",
+      "evidence": [
+        "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38924202918/job/117051467808",
+        "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38924202918/artifacts/12055588733"
+      ],
+      "supersedes": [
+        "integrity:cmd-powershell-declared-crlf-checkout-20261016"
+      ],
+      "record_sha256": "917bbf67bac3b9e03e9ddb637bb1d890fe5caae96e2b9f600f3ce079dcd5b6f5"
+    },
+    {
+      "id": "delivery:public-commissioning-authenticated-ionos-gateway-20261016",
+      "epistemic_class": "SOURCE_BOUND_OBSERVATION",
+      "subject": {
+        "hostname": "raumzeitterminal.de",
+        "source_repository": "ingolf-lohmann/qik-vrt",
+        "source_head": "db7c03aa482f031f518475946d8e32ee7556c8eb",
+        "source_tree": "5a2483fa55c7c617262d7965935e16639180ddbf"
+      },
+      "scope": "Actual authenticated IONOS customer/domain read and exact observed management consumers; no credential-store, TLS activation or public application acceptance.",
+      "statement": "Public commissioning remains the Owner target. A fresh secure IONOS login actually reached the signed-in account and registered domain, assigned to existing Webhosting; SSL is inactive. The standard Hosting, domain-details and Webspace-folder consumers fail at auth.ionos.de with HTTP502/Connection refused. The official status is operational, so no general IONOS outage is inferred. No secret values or authentication query strings are persisted. Durable credential-store write remains unverified. No domain reorder, DNS write, file upload, TLS or server order occurred.",
+      "evidence": [
+        "evidence/native-runtime-acceptance/ionos-public-commissioning-20261016.jpg",
+        "public_commissioning_continuation#existing_route_results",
+        "https://www.ionos-status.de/"
+      ],
+      "supersedes": [],
+      "record_sha256": "6a14e6ce5192d02f575e21aa65ac0ac1c643a64dff7384366b05bfa6d195af3e"
+    }
+  ],
+  "work": [
+    {
+      "evidence": "Current exact MD blob e1ed265239aa5e1436055279069c7e21525a13fe; original embedded bytes match.",
+      "id": "source-original",
+      "state": "VERIFIED"
+    },
+    {
+      "evidence": "Current PDF_READBACK_VALIDATION.json binds 130175-byte PDF to current manifest/source/core/license. Pages1-11 unchanged; all12 rendered pages inspected.",
+      "id": "pdf-and-machine-binding",
+      "state": "VERIFIED"
+    },
+    {
+      "id": "publication-index",
+      "next_action": "Retain predecessor index evidence as history; no current full-index acceptance claimed in this bounded readback.",
+      "state": "VERIFIED",
+      "evidence": "Existing repository atlas extended with exact new research page; Site36 native publication succeeded. Public GET acceptance remains a separate open duty."
+    },
+    {
+      "id": "authority-main",
+      "next_action": "Existing protected integration requires independent current-head review and exact-subject gates; PR Draft/unmerged.",
+      "state": "OPEN"
+    },
+    {
+      "id": "mirror-identical-copy",
+      "next_action": "After genuinely recovered authorized Mirror access, copy exact current bytes and verify; no unchanged404 retry.",
+      "state": "OPEN"
+    },
+    {
+      "id": "mesh-complete-coverage",
+      "next_action": "Complete actual registered-node coverage; retain unavailable and unknown nodes.",
+      "state": "OPEN"
+    },
+    {
+      "id": "materialization-archive-admission",
+      "next_action": "The early preflight workflow classification is natively verified on e8; actual archive access/materialization remains held. Admit another effect only after a material provider/journal recovery; retain the exact no-retry guard.",
+      "state": "OPEN"
+    },
+    {
+      "id": "site-public-pdf-delivery",
+      "state": "VERIFIED",
+      "evidence": "SITE35_NATIVE_PUBLICATION.json: deployment succeeded on source21ff30a92ab26b20a52e0ac876895fbf8607632c. SITE35_PUBLIC_BYTES_READBACK.json: all8 public HTTP200 responses byte-exact, including PDF sha256492cfc5ed6de2d071dadfbad8faf43c08477c5faf9dffd2744edb19a0e09c43a."
+    },
+    {
+      "id": "zenodo-exact-pdf-publication",
+      "state": "OPEN",
+      "next_action": "Complete exact-PDF v2 publication admission through the existing publisher with an actual callable authenticated effect route. Historical consumed publication is not a fresh PDF executor; no synthetic trigger."
+    },
+    {
+      "id": "raumzeitterminal-exact-host-delivery",
+      "state": "OPEN",
+      "next_action": "After verified gateway recovery, reuse the existing regular IONOS Webspace folder/upload path, bind only raumzeitterminal.de to its own publication directory, provision its exact TLS route, and independently read back the actual publisher/terminal and exact public bytes. Preserve mail, other domains, the earlier concrete DNS service-replacement decision and action-time server-contract terms. Do not replace exact-host delivery by a redirect or green CI claim."
+    },
+    {
+      "id": "archive-preflight-native-gate",
+      "state": "VERIFIED",
+      "evidence": "PR523_E8_NATIVE_GATE_READBACK.json: two exact-head successful runs, qualified NOOP; archive/persistence steps skipped; original job outputs retain false publication/acceptance flags."
+    },
+    {
+      "id": "bounded-research-package-recheck",
+      "state": "VERIFIED",
+      "evidence": "68 manifest files unchanged; standalone candidates match. Fresh experiment at 2026-10-16T08:50:16Z matches all nine semantic comparisons, including13 scenarios,12 accepted successors and64/1296 complete enumerations. Lean receipt and source/olean hashes match; kernel not reexecuted. Saved libfile_0e0f940015b0819182af6eb498f1ad3c"
+    },
+    {
+      "id": "client-knowledge-continuity-main-adoption",
+      "state": "OPEN",
+      "next_action": "Verify the repaired gate on its exact candidate, then separately obtain governed Main adoption and actual client use; no predecessor PASS transfer."
+    },
+    {
+      "id": "zenodo-new-research-publication",
+      "state": "OPEN",
+      "next_action": "Reuse production v2 evidence and the existing publisher; no native dispatch/token delivery is currently established."
+    },
+    {
+      "id": "ietf-necessary-successor-submission",
+      "state": "OPEN",
+      "next_action": "Reuse the verified existing IETF publications; a new submission is required only for an exact separately identified necessary successor, and is not a prerequisite for exact-host website delivery."
+    },
+    {
+      "id": "site36-independent-public-byte-readback",
+      "state": "OPEN",
+      "next_action": "Resolve the observed HTTP403 read path; repeat only after material routing/access change, retaining the native succeeded deployment separately."
+    },
+    {
+      "id": "arxiv-current-publication-gate",
+      "state": "VERIFIED",
+      "evidence": "Direct Owner clarification2026-10-16T10:31:08Z explicitly excludes current arXiv publication; this verifies scope correction only, not an arXiv publication.",
+      "scope": "CURRENT_REQUEST_EXCLUSION_ONLY"
+    },
+    {
+      "id": "site36-specific-client-access-diagnosis",
+      "state": "VERIFIED",
+      "evidence": "Native public Site/version36 and domain binding read; exact local root HTTP403/error1010 identified; provider security configuration and PDF byte-readback remain OPEN. See SITE36_PUBLIC_BYTES_READBACK.json#successor_diagnostics."
+    },
+    {
+      "id": "ionos-contact-email-verification",
+      "state": "VERIFIED",
+      "evidence": "IONOS Registrar displayed Vielen Dank für die Bestätigung der E-Mail-Adresse; screenshot sha256 cdc238f8c54a6251618a13dfb84927b2e9de7ba5fa63e51086fed07da4b2d6c4. This is not login or TLS acceptance."
+    },
+    {
+      "id": "outlook-three-folder-organization",
+      "state": "VERIFIED",
+      "evidence": "249 native moves: 95 general IONOS, 3 exact-domain, 151 ChatGPT; folder counts95/3/2280 and0 matching inbox messages freshly read; no deletion."
+    },
+    {
+      "id": "durable-credential-registry-and-sso",
+      "state": "OPEN",
+      "next_action": "Connect the existing protected credential registry through its supported non-exporting store-and-reuse contract, independently verify persistence across a new session, then finish the exact IONOS hosting configuration. Reuse existing folders and complete the prepared Outlook rules through an authenticated supported writer."
+    },
+    {
+      "id": "outlook-incoming-context-processing",
+      "state": "OPEN",
+      "next_action": "Reuse the Owner grant and existing folders; complete actual native rules or an authorized Outlook event binding after supported authentication. Do not treat the stored directive as an active runner."
+    },
+    {
+      "id": "raumzeitterminal-publisher-automatic-operations",
+      "state": "OPEN",
+      "next_action": "After verified gateway recovery, reuse the existing regular IONOS Webspace folder/upload path, bind only raumzeitterminal.de to its own publication directory, provision its exact TLS route, and independently read back the actual publisher/terminal and exact public bytes. Preserve mail, other domains, the earlier concrete DNS service-replacement decision and action-time server-contract terms. Do not replace exact-host delivery by a redirect or green CI claim."
+    },
+    {
+      "id": "owned-linux-ci-runtime",
+      "state": "OPEN",
+      "next_action": "After action-time server terms confirmation, submit exactly one prepared order; read back resource and establish the existing authenticated HTTPS Docker/mTLS, state-volume and route binding before deployment."
+    },
+    {
+      "id": "full-repository-offline-runtime",
+      "state": "OPEN",
+      "next_action": "Retain governed current-subject gates; import the verified carrier, build from exact HEAD/TREE, produce and verify the complete-tree SQLite image, then prove native Firefox and repository use with network egress absent and durable restart/replay."
+    },
+    {
+      "id": "effect-ack-os-and-firefox-completion",
+      "state": "OPEN",
+      "next_action": "Complete the bootable Linux distribution and enumerate the real OS/browser effects covered; verify each required workload, crashes/lost ACK/replay and original effect readback. An OCI image or Firefox extension alone is not full OS/Firefox acceptance."
+    },
+    {
+      "id": "provider-independent-owned-execution",
+      "state": "OPEN",
+      "next_action": "Operate portable publication/build execution and independently recoverable backups under Owner control; demonstrate restore/migration without platform-only runtime services. IONOS remains a hosting dependency."
+    },
+    {
+      "id": "native-temdd-s1-original-job38855798987",
+      "state": "VERIFIED",
+      "evidence": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38855798987/job/116826855767;264 passed/one skipped; scope NO_DEPLOYMENT."
+    },
+    {
+      "id": "current-source-checkout-integrity-and-s1-gate",
+      "state": "VERIFIED",
+      "scope": "HISTORICAL_E2_SUBJECT_ONLY_NOT_DB7_ACCEPTANCE",
+      "evidence": "Native run38924202918/job117051467808;278 passed/one skipped; original exact-source artifact byte-verified in prior work ring; current native REST status success."
+    },
+    {
+      "id": "ionos-current-customer-authentication",
+      "state": "VERIFIED",
+      "evidence": "Protected regular IONOS sign-in followed by positive signed-in product overview and actual filtered domain inventory; evidence/native-runtime-acceptance/ionos-public-commissioning-20261016.jpg"
+    },
+    {
+      "id": "ionos-management-gateway-recovery",
+      "state": "OPEN",
+      "next_action": "Require materially restored access to the existing auth.ionos.de Hosting/domain-management consumers or an existing protected operation for this same account; then resume the standard Webspace path. Suppress unchanged502 and credential re-entry loops."
+    }
+  ],
+  "owner_gate_correction": {
+    "received_at": "2026-10-16T10:08:03Z",
+    "exact_text": "noch kein Zenodo-, arXiv-, IETF- oder Exact-Host-Publikationsgate erfüllt!",
+    "accepted": true,
+    "current_work_gate_status": {
+      "Zenodo": "NOT_FULFILLED",
+      "arXiv": "NOT_FULFILLED",
+      "IETF": "NOT_FULFILLED",
+      "Exact-Host": "NOT_FULFILLED"
+    },
+    "site36_counts_as_any_requested_publication_gate": false,
+    "existing_published_ietf_drafts_count_as_current_submission": false,
+    "historical_scope_only": true,
+    "superseded_by": "owner_scope_clarification"
+  },
+  "native_successor_source_repair": {
+    "failed_subject": "b38c58ba8bb41157d4d0dfa4b5a14aaefc5c658d",
+    "run": 38885713480,
+    "job": 116922830694,
+    "observed": "MAKE_TEST_EXIT=2; tests.test_qikvrt_self_disclosure.SelfDisclosureTests.test_publication_overview_discovery_and_bundle_coverage failed",
+    "causal_error": "New JSON bundle path docs/publications/2026-10-16-wirkungsnachweis/index.html was absent as a complete path in HTML; only its browser-relative href was present.",
+    "repair": "Add the existing data-source convention to the same local link; preserve destination, original research bytes and existing test.",
+    "local_positive_control": "Every current publication_bundles path is present in corrected HTML.",
+    "local_negative_control": "Removing only the new data-source reproduces missing exact-source coverage.",
+    "native_successor_gate": "REQUIRED_ON_REPAIR_COMMIT",
+    "publication_gates_fulfilled": []
+  },
+  "owner_scope_clarification": {
+    "received_at": "2026-10-16T10:31:08Z",
+    "human": "Ingolf Lohmann",
+    "exact_text": "Das kann nicht sein. Wir haben bereits erfolgreich auf Zenodo veröffentlicht und auf IETF ebenso und auf arXiv könnten wir auch veröffentlichen, wollen wir zurzeit aber noch gar nicht. Dafür aber auf Raumzeitterminal.de und dafür ist auch alles Notwendige vorhanden und bereitgestellt. Man muss es nur nutzen.",
+    "existing_publication_successes_retained": true,
+    "arxiv_in_current_scope": false,
+    "arxiv_submission_authorized_now": false,
+    "priority": "Use the existing exact raumzeitterminal.de binding and the already supplied authorized means; do not infer absent Owner rights.",
+    "provisioning_statement_epistemic_class": "OWNER_ASSERTION_AND_EXECUTION_INSTRUCTION",
+    "historical_four_gate_projection_superseded_as_current_scope": true
+  },
+  "delivery_continuation": {
+    "schema": "qikvrt-exact-host-existing-route-diagnosis/v1",
+    "observed_at": "2026-10-16T11:10:47.317Z",
+    "source": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "pull_request": 523,
+      "head": "420eb5b8d03eb62f0d2b47cd62b8564d703ef28e",
+      "tree": "b69cc1e7ad79b3723ef1df79a7a13f43342bfc76"
+    },
+    "current_main": {
+      "head": "85cf48be8405d66ee567f868c1b8f33bd54add97",
+      "tree": "526e6a38986c75a33ae3b920eceae2d590e48ca2"
+    },
+    "duplicate_work_guard": {
+      "integration_head_unchanged_since_source_read": true,
+      "in_progress_native_runs": 0,
+      "queued_runs": 13,
+      "queued_runs_latest_updated_at": "2026-10-07T16:55:15Z",
+      "current_domain_repair_execution_found": false,
+      "scope": "Complete bounded in-progress inventory and first queued page; 13 total queued entries all fit one page; no provider-side job inventory available."
+    },
+    "existing_site": {
+      "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+      "version": 36,
+      "source_commit": "bd9f265dbbac2b183e77888329ffa867556b8bf7",
+      "deployment": "appgdep_6ad1f63f3e0081919630e115a216e5f6",
+      "native_deployment_status": "succeeded",
+      "audience": "public",
+      "environment_revision": 8,
+      "environment_entry_count": 0,
+      "custom_domain": {
+        "id": "appgdom_6ac4b489bd548191a69f7d87618db3aa",
+        "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+        "hostname": "raumzeitterminal.de",
+        "worker_name": "site---6ac4018a3e0c8191a06187c296d6c7ea",
+        "status": "pending",
+        "provider_status": "pending",
+        "ssl_status": "pending_validation",
+        "cname_target": "custom-domains.chatgpt.site.",
+        "apex_proxy_ipv4_targets": [
+          "162.159.143.30",
+          "172.66.3.26"
+        ],
+        "validation_records": [
+          {
+            "record_type": "TXT",
+            "name": "_openai-site-verification.raumzeitterminal.de",
+            "value": "openai-site-verification=5Zw42-7lgYTNm3pmkhZcwGJu1_0UvnHSVYJcGBDONbI"
+          },
+          {
+            "record_type": null,
+            "name": null,
+            "value": null
+          },
+          {
+            "record_type": "TXT",
+            "name": "_cf-custom-hostname.raumzeitterminal.de",
+            "value": "c6e99848-baed-4087-a9fd-0d6c5b5008c8"
+          }
+        ],
+        "last_error": null,
+        "created_at": "2026-10-06T08:42:49.739821+00:00",
+        "updated_at": "2026-10-16T10:33:28.709307+00:00"
+      }
+    },
+    "planned_existing_dns_targets": [
+      {
+        "type": "A",
+        "name": "raumzeitterminal.de",
+        "value": "162.159.143.30"
+      },
+      {
+        "type": "A",
+        "name": "raumzeitterminal.de",
+        "value": "172.66.3.26"
+      },
+      {
+        "type": "TXT",
+        "name": "_openai-site-verification.raumzeitterminal.de",
+        "value": "openai-site-verification=5Zw42-7lgYTNm3pmkhZcwGJu1_0UvnHSVYJcGBDONbI"
+      },
+      {
+        "type": "TXT",
+        "name": "_cf-custom-hostname.raumzeitterminal.de",
+        "value": "c6e99848-baed-4087-a9fd-0d6c5b5008c8"
+      }
+    ],
+    "dns_plan_admission": {
+      "applied": false,
+      "owned_zone_read": false,
+      "preserve_unrelated_records": true,
+      "bulk_replace_forbidden": true,
+      "read_records_before_targeted_update": true,
+      "ttl": "preserve existing or provider policy after authenticated read; not fabricated",
+      "zone_id": null,
+      "registrar_write_or_delegation_verified": false
+    },
+    "route_inventory": {
+      "repository": {
+        "workflow": ".github/workflows/qikvrt_workflow_executor.yml",
+        "workflow_blob": "2f50da197710f1a0769bee57dd0d73a03a45e651",
+        "manual_mode": "ionos-inventory-classify",
+        "secret_reference": "secrets.IONOS_TOKEN",
+        "bound_product": "ionos-cloud-v6",
+        "bound_origin": "https://api.ionos.com/cloudapi/v6",
+        "allowed_methods": [
+          "GET"
+        ],
+        "supported_scope": "Cloud inventory/classification only",
+        "target_dns_write_consumer_found": false,
+        "initial_workflow_dispatch_exposed": false
+      },
+      "connector": {
+        "observed_github_route": "REST_API_ONLY",
+        "source_write_operations_available": true,
+        "ionos_dns_operation_exposed": false,
+        "cloudflare_security_configuration_operation_exposed": false,
+        "plugin_search": "IONOS DNS Cloudflare",
+        "relevant_plugin_returned": false,
+        "native_sites_operations": [
+          "get_site_version",
+          "list_custom_domains",
+          "refresh_custom_domain_status",
+          "get_environment_variables",
+          "get_site_worker_logs"
+        ],
+        "native_sites_dns_write_operation": false
+      },
+      "cli": {
+        "gh_present": false,
+        "curl_present": true,
+        "python_present": true,
+        "task_process_provider_credential_names_present": false,
+        "scope": "Current process presence check only; no statement about protected remote secrets or owner rights. No secret values searched, read, exported or persisted."
+      },
+      "mesh": {
+        "callable_tools": [
+          "qikvrt_mesh_status",
+          "qikvrt_observe",
+          "qikvrt_readback"
+        ],
+        "observed_scope": "HTTP/repository observation and D1 persistence/readback",
+        "dns_execution_operation": false,
+        "native_execution_endpoint_advertised": false
+      },
+      "site_runtime": {
+        "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+        "environment_revision": 8,
+        "environment_entries": 0,
+        "scope": "This target Site only; not a global credential-absence finding."
+      }
+    },
+    "direct_client_probes": [
+      {
+        "url": "https://raumzeitterminal.de/",
+        "http_status": 502,
+        "response_body": "<html>\n<head>\n    <title>502 Bad Gateway</title>\n</head>\n<body>\n    <h1>502 Bad Gateway</h1>\n    <p>[Errno 111] Connection refused</p>\n</body>\n</html>",
+        "response_body_sha256": "81074a9c8dfb24290e8fc4af14d20f67f5304618d27ac713628b1126e41dbd8e",
+        "response_headers": {
+          "Server": "mitmproxy 12.2.3",
+          "Content-Type": "text/html",
+          "content-length": "150"
+        },
+        "error": null,
+        "method": "GET"
+      },
+      {
+        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/",
+        "http_status": 403,
+        "response_body": "error code: 1010\n",
+        "response_body_sha256": "2938e9f1284180959e33ab1718d0793a72ff6e4cdb8108c34dcd14e69446de5c",
+        "response_headers": {
+          "Date": "Fri, 16 Oct 2026 11:06:56 GMT",
+          "Content-Type": "text/plain; charset=UTF-8",
+          "Content-Length": "17",
+          "Server": "cloudflare",
+          "CF-RAY": "a4b698d9ff9f8e43-DFW"
+        },
+        "error": null,
+        "method": "GET"
+      }
+    ],
+    "site36_root_diagnosis": {
+      "observed_http_status": 403,
+      "observed_body": "error code: 1010\n",
+      "scope": "This exact root request from the local Python HTTP client only. Historical 16 publication/PDF HTTP403 bodies were not retained and are not retrospectively classified as 1010.",
+      "provider_documented_meaning": "Client browser signature blocked; this is separate from the native Sites public audience.",
+      "primary_source": "https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-1xxx-errors/error-1010/",
+      "setting_read_or_changed": false,
+      "bypass_attempted": false,
+      "unchanged_publication_file_gets_repeated": false
+    },
+    "worker_log_readback": {
+      "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+      "successful_recent_paths": [
+        {
+          "timestamp": 1792148802984,
+          "path": "/mcp",
+          "status": 200,
+          "outcome": "ok",
+          "request_id": "30a94a098cc59d12619a2c0d1699f366"
+        },
+        {
+          "timestamp": 1792148502766,
+          "path": "/api/readback",
+          "status": 200,
+          "outcome": "ok",
+          "request_id": "399c70d0599da36ce480873fd7294551"
+        },
+        {
+          "timestamp": 1792148497578,
+          "path": "/api/evidence",
+          "status": 200,
+          "outcome": "ok",
+          "request_id": "d944495dc45bc527cfcf97dd4011cc5c"
+        },
+        {
+          "timestamp": 1792148462926,
+          "path": "/api/readback",
+          "status": 200,
+          "outcome": "ok",
+          "request_id": "f68648c12c64e946bc0b93820cc1763c"
+        },
+        {
+          "timestamp": 1792148462855,
+          "path": "/api/mesh/terminal",
+          "status": 200,
+          "outcome": "ok",
+          "request_id": "e1c7d3c7fc27496133acafb5fda1c7eb"
+        },
+        {
+          "timestamp": 1792148462661,
+          "path": "/api/mesh/events",
+          "status": 200,
+          "outcome": "ok",
+          "request_id": "2b0585c2c6e25b6d9462bc151c89ee91"
+        },
+        {
+          "timestamp": 1792148457400,
+          "path": "/api/evidence",
+          "status": 200,
+          "outcome": "ok",
+          "request_id": "1d9e0ab7ed3590eae75e6547a0bd5113"
+        },
+        {
+          "timestamp": 1792148400192,
+          "path": "/api/mesh/events",
+          "status": 200,
+          "outcome": "ok",
+          "request_id": "fc031a08ac03c0fa94e748a407a773dc"
+        },
+        {
+          "timestamp": 1792148400028,
+          "path": "/api/readback",
+          "status": 200,
+          "outcome": "ok",
+          "request_id": "79b0450d896493d7e68386219cea88aa"
+        },
+        {
+          "timestamp": 1792148399997,
+          "path": "/api/mesh/terminal",
+          "status": 200,
+          "outcome": "ok",
+          "request_id": "03ddb28d75bf0c86eb952861f8b5e64f"
+        },
+        {
+          "timestamp": 1792148399866,
+          "path": "/api/evidence",
+          "status": 200,
+          "outcome": "ok",
+          "request_id": "2e040b142845ec38d8e5dd4b5567c1a4"
+        },
+        {
+          "timestamp": 1792148338600,
+          "path": "/api/readback",
+          "status": 200,
+          "outcome": "ok",
+          "request_id": "1d57d5b17ad3bd57436e71de5ac3127b"
+        },
+        {
+          "timestamp": 1792148338572,
+          "path": "/api/mesh/terminal",
+          "status": 200,
+          "outcome": "ok",
+          "request_id": "6d0a87ced041636e5fe28e2386e817b7"
+        },
+        {
+          "timestamp": 1792148338389,
+          "path": "/api/mesh/events",
+          "status": 200,
+          "outcome": "ok",
+          "request_id": "f6eaf3cdb7f5f0e48fd6c0e5be1feb19"
+        },
+        {
+          "timestamp": 1792148338379,
+          "path": "/api/evidence",
+          "status": 200,
+          "outcome": "ok",
+          "request_id": "685db9f86ffda5f7115016a8e52dd488"
+        },
+        {
+          "timestamp": 1792148337553,
+          "path": "/monitor",
+          "status": 200,
+          "outcome": "ok",
+          "request_id": "8e6db071cdd6d739853f4aa655189fb0"
+        },
+        {
+          "timestamp": 1792148337469,
+          "path": "/monitor/",
+          "status": 308,
+          "outcome": "ok",
+          "request_id": "3f632e723f7fe6dce7c74b560bc7bbc6"
+        },
+        {
+          "timestamp": 1792148337469,
+          "path": "/offline/git-hash.js",
+          "status": 200,
+          "outcome": "ok",
+          "request_id": "c7e76c36a63f513ce00b2bfe0d743e33"
+        },
+        {
+          "timestamp": 1792148337469,
+          "path": "/offline/vendor/react-runtime.js",
+          "status": 200,
+          "outcome": "ok",
+          "request_id": "74f022baf21d7e2a23f97ca11ea9edf0"
+        },
+        {
+          "timestamp": 1792148337468,
+          "path": "/offline/icon.svg",
+          "status": 200,
+          "outcome": "ok",
+          "request_id": "7dfa9209badc77e3e9262b303653f27b"
+        },
+        {
+          "timestamp": 1792148337468,
+          "path": "/offline/style.css",
+          "status": 200,
+          "outcome": "ok",
+          "request_id": "e4c3869908fd4a1235c0e28b9501bc18"
+        },
+        {
+          "timestamp": 1792148337468,
+          "path": "/offline/repository.js",
+          "status": 200,
+          "outcome": "ok",
+          "request_id": "69248bff52dd4a17a6df077391070087"
+        },
+        {
+          "timestamp": 1792148337468,
+          "path": "/offline/service-worker.js",
+          "status": 200,
+          "outcome": "ok",
+          "request_id": "0bdde9f82ef49ad4a3fc29103c215f1c"
+        },
+        {
+          "timestamp": 1792148337467,
+          "path": "/offline/client.js",
+          "status": 200,
+          "outcome": "ok",
+          "request_id": "6c3614c5300b004f44555a2697cac885"
+        },
+        {
+          "timestamp": 1792148336753,
+          "path": "/monitor",
+          "status": 200,
+          "outcome": "ok",
+          "request_id": "99c0541b1d0fbbf6a30c1a772c27ed24"
+        },
+        {
+          "timestamp": 1792148336372,
+          "path": "/monitor/",
+          "status": 308,
+          "outcome": "ok",
+          "request_id": "0459046a34ea57c00d65c0a1c5e84352"
+        },
+        {
+          "timestamp": 1792148335331,
+          "path": "/monitor/",
+          "status": 308,
+          "outcome": "ok",
+          "request_id": "922db238e3e9c7e72ff734e65d581d12"
+        }
+      ],
+      "scope": "Only whitelisted timestamp/path/status/outcome/request identifiers retained; logs show successful monitor/API paths in other request contexts, not PDF byte equality. Bounded logs cannot prove that an unlisted request never reached the Worker."
+    },
+    "independent_mesh_readback": {
+      "snapshot_id": "7226546d-8a0d-44e7-871b-686e25400620",
+      "completed_at": "2026-10-16T11:06:42.811Z",
+      "snapshot_sha256": "b030e2c5aec189ce830425f16baf617425232fa5bc5e186a5be7b3f4a48f09f9",
+      "readback_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/readback?id=7226546d-8a0d-44e7-871b-686e25400620",
+      "exact_host_pages": [
+        {
+          "url": "https://raumzeitterminal.de/",
+          "method": "GET (ohne Redirect)",
+          "status": 530,
+          "observed_at": "2026-10-16T11:06:42.698Z",
+          "latency_ms": 66
+        }
+      ],
+      "dns": {
+        "schema": "qikvrt_public_dns_readback_v1",
+        "exact_host": "raumzeitterminal.de",
+        "interpretation": "NXDOMAIN_RECURSIVE_READBACK",
+        "observations": [
+          {
+            "source_url": "https://dns.google/resolve?name=raumzeitterminal.de&type=NS",
+            "query_type": "NS",
+            "status": 200,
+            "observed_at": "2026-10-16T11:06:42.698Z",
+            "rcode": 3,
+            "question_bound": true,
+            "response_sha256": "52c30f989a30ff63a3e58d73ecdd47fee8da204562bf154b813e2e9dce818ec1",
+            "answers": [],
+            "error": null
+          },
+          {
+            "source_url": "https://cloudflare-dns.com/dns-query?name=raumzeitterminal.de&type=NS",
+            "query_type": "NS",
+            "status": 200,
+            "observed_at": "2026-10-16T11:06:42.719Z",
+            "rcode": 3,
+            "question_bound": true,
+            "response_sha256": "81555b619f50bcb0934ae962fcd7b96faaab01711ffeb838f2d510dc5da98a7e",
+            "answers": [],
+            "error": null
+          },
+          {
+            "source_url": "https://dns.google/resolve?name=raumzeitterminal.de&type=A",
+            "query_type": "A",
+            "status": 200,
+            "observed_at": "2026-10-16T11:06:42.753Z",
+            "rcode": 3,
+            "question_bound": true,
+            "response_sha256": "93aec16b4a4f542550d8ea7980a98dc44576f5336ff171b09b92b243e78b72e0",
+            "answers": [],
+            "error": null
+          }
+        ],
+        "scope": "PUBLIC_RECURSIVE_DNS_DIAGNOSIS_NOT_REGISTRAR_WRITE_OR_APPLICATION_ACCEPTANCE"
+      }
+    },
+    "primary_rest_contracts": [
+      {
+        "service": "IONOS Hosting DNS",
+        "initial_read": "GET https://api.hosting.ionos.com/dns/v1/zones",
+        "authentication": "X-API-Key via the existing authorized protected binding",
+        "source": "https://developer.hosting.ionos.com/docs/dns"
+      },
+      {
+        "service": "IONOS Cloud DNS",
+        "initial_read": "GET https://dns.de-fra.ionos.com/zones",
+        "authentication": "Bearer IONOS_TOKEN only if the existing protected binding and live permissions identify this service",
+        "source": "https://docs.ionos.com/cloud/network-services/cloud-dns/api-how-tos/create-primary-zone"
+      }
+    ],
+    "blockers": [
+      {
+        "code": "EXISTING_TARGET_DNS_REST_EXECUTION_NOT_CALLABLE",
+        "operation": "Authenticated owned-zone/record read, then selective updates for the existing Site domain binding",
+        "evidence": "Observed existing workflow is Cloud-v6 GET-only; current connector/CLI/Mesh expose no admitted target-bound DNS request. Existing remote binding availability and permissions remain UNKNOWN.",
+        "retry_condition": "Existing protected DNS/Hosting or Cloud-DNS binding is delivered to an admitted operation for the exact owned zone.",
+        "smallest_next_action": "Use that existing secure route to GET the actual owned zone and records; compare to the four supplied A/TXT targets and update only necessary records, then independently verify DNS/TLS/application.",
+        "active_for_current_customer_domain_order": false,
+        "superseded_for_order_route_by": "owner_domain_order_clarification and ionos_domain_order",
+        "scope": "Historical target DNS REST capability diagnosis; not a prerequisite for the regular customer-account domain application."
+      },
+      {
+        "code": "SITE36_LOCAL_PUBLIC_GET_CLOUDFLARE_1010",
+        "operation": "Independent exact-byte public PDF and publication receipt GET",
+        "evidence": "Local root HTTP403 body is error code1010; native Site audience remains public. No zone security read/change operation exposed.",
+        "retry_condition": "Provider-controlled client-signature rule is corrected for the intended public machine requests through an existing admitted administration path, or an independently authorized existing reader becomes available.",
+        "smallest_next_action": "Use the existing hosting security administration path to inspect the 1010 request by its CF-Ray before changing a scoped rule; preserve global protections and repeat original exact-byte reads only after a relevant capability/configuration change."
+      }
+    ],
+    "effect_counts": {
+      "new_site": 0,
+      "new_custom_domain": 0,
+      "deployments": 0,
+      "domain_refresh": 0,
+      "dns_write": 0,
+      "tls_change": 0,
+      "cloudflare_security_change": 0,
+      "workflow_dispatch": 0,
+      "browser_login": 0,
+      "native_runtime_start": 0
+    },
+    "public_pdf_byte_exact_readback": false,
+    "productive_exact_host_acceptance": false,
+    "EFFECT_ACK_DONE": false,
+    "scope": "Existing routes inspected and exact known bindings retained; preparation/diagnosis only. No authenticated DNS GET or write executed and no owner-rights absence inferred.",
+    "owner_route_correction": {
+      "source": "Owner direct instructions 2026-10-16",
+      "requested_route": "Regular application and operation of raumzeitterminal.de in the existing IONOS customer account/contract; no custom DNS writer requested",
+      "ui_exception_granted": true,
+      "github_rest_only_preserved": true
+    },
+    "latest_customer_order": {
+      "schema": "QIKVRT_IONOS_CUSTOMER_DOMAIN_ORDER_OBSERVATION_V1",
+      "hostname": "raumzeitterminal.de",
+      "owner_route_authorization": {
+        "source": "Owner direct Ja on 2026-10-16; explicit IONOS customer UI exception",
+        "github_route": "REST_API_ONLY"
+      },
+      "action_time_legal_confirmation": {
+        "source": "Owner direct Ja on 2026-10-16T12:02:18Z",
+        "scope": "Existing contract data and mandatory terms/privacy acceptance; submit the reviewed EUR 0.00 domain order"
+      },
+      "prior_item": {
+        "hostname": "raumzeitterminal.de",
+        "label": "Inklusive",
+        "displayed_total_eur": "0.00",
+        "item_count": 1
+      },
+      "mandatory_terms_checked": true,
+      "optional_marketing_checked": false,
+      "order_submission_count": 1,
+      "confirmation": {
+        "observed": true,
+        "heading": "Vielen Dank für Ihre Bestellung",
+        "url": "https://mein.ionos.de/checkout/thankYou?linkid=nav.cart.checkout-btn&continue=",
+        "evidence_saved_at_utc": "2026-10-16T12:04:11.349Z",
+        "screenshot_sha256": "35c719c5bf8c328f42f9ea98f1ba303d7f97afa7f4fd58ab7f9b3f8a4aa69140",
+        "scope": "Visible IONOS confirmation following the single order submission; no separate order ID displayed"
+      },
+      "provisioning": {
+        "state": "PENDING_NOT_ACCEPTED",
+        "observed_text": "Ihr persönlicher Kundenbereich wird nun für Sie eingerichtet und steht Ihnen in Kürze zur Verfügung.",
+        "start_button_disabled": true
+      },
+      "subsequent_customer_management": {
+        "canonical_target": "https://mein.ionos.de/domains",
+        "redirected_to_customer_login": true,
+        "secure_reauthentication_result": "declined",
+        "declined_request_repeated": false,
+        "manual_handoff_offered": false,
+        "current_customer_session_verified": false
+      },
+      "credential_registry": {
+        "credential_values_read_or_persisted": false,
+        "opaque_credential_reference": null,
+        "secure_store_write_receipt": null,
+        "state": "PERSISTENCE_UNVERIFIED",
+        "reason": "browserAuth protected credential submission did not expose a durable private-vault write or reusable credential reference. No global absence of a protected store is inferred.",
+        "sso_claimed": false
+      },
+      "duplicate_order_guard": "Do not reorder; reuse and read back this existing confirmed order before any further registrar action.",
+      "private_customer_contact_or_payment_data_in_this_record": false,
+      "domain_registration_or_hosting_acceptance_claimed": false,
+      "exact_host_publication_claimed": false
+    },
+    "current_order_blocker": {
+      "code": "SUPERSEDED_CUSTOMER_SESSION_RESTORED_ROUTING_DECISION_PENDING",
+      "previous": "IONOS_CUSTOMER_SESSION_REAUTHENTICATION_DECLINED",
+      "evidence": "Latest Owner asked to resume IONOS hosting; fresh customer-domain page shows registered domain under existing Webhosting Pro.",
+      "current_blocker": "AUTOMATIC_APPROVAL_REVIEW_REJECTED_WEBHOSTING_DNS_TEMPLATE_REPLACEMENT",
+      "duplicate_order_forbidden": true
+    },
+    "current_operational_successor": {
+      "observed_at": "2026-10-16T13:23:10.484Z",
+      "source": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "ref": "integration/515-519-521-522-20261012-eceb9b63",
+        "head": "95dd082666d7c087067c1e70e12b0308ac8ce2e2",
+        "tree": "1ddd0e46d85b85e87ceeb06b5813ec236bd36a4b"
+      },
+      "ionos_configuration": {
+        "state": "TXT_SAVED_ROUTING_CHANGE_REJECTED_BY_AUTOMATIC_APPROVAL_REVIEW",
+        "hostname": "raumzeitterminal.de",
+        "customer_session_verified": true,
+        "domain_registration_visible": true,
+        "existing_product": "IONOS Webhosting Pro",
+        "existing_webspace_gb": 250,
+        "existing_webspace_used_gb": 0,
+        "existing_webspace_files": 8,
+        "zone_records_read": true,
+        "saved_txt_records": [
+          {
+            "name": "_openai-site-verification.raumzeitterminal.de",
+            "type": "TXT",
+            "value": "openai-site-verification=5Zw42-7lgYTNm3pmkhZcwGJu1_0UvnHSVYJcGBDONbI",
+            "ttl_seconds": 3600
+          },
+          {
+            "name": "_cf-custom-hostname.raumzeitterminal.de",
+            "type": "TXT",
+            "value": "c6e99848-baed-4087-a9fd-0d6c5b5008c8",
+            "ttl_seconds": 3600
+          }
+        ],
+        "saved_txt_count": 2,
+        "provider_status_after_txt": "active",
+        "ssl_status_after_txt": "pending_validation",
+        "overall_site_domain_status": "pending",
+        "site_refresh_observed_at": "2026-10-16T13:12:46.446536+00:00",
+        "current_apex_a": "217.160.0.52",
+        "current_apex_aaaa": "2001:8d8:100f:f000:0:0:0:205",
+        "current_www_a": "217.160.0.52",
+        "current_www_aaaa": "2001:8d8:100f:f000:0:0:0:205",
+        "proposed_apex_a": [
+          "162.159.143.30",
+          "172.66.3.26"
+        ],
+        "proposed_apex_ttl_seconds": 300,
+        "routing_applied": false,
+        "old_dns_template_retained": true,
+        "approval_rejection": {
+          "action": "Save apex A replacement in IONOS DNS UI",
+          "reason": "Saving would deactivate the active Webhosting DNS service and remove its apex/www A/AAAA and mutex records; service disruption side effect and incomplete single-target setup not explicitly admitted.",
+          "blocked_action_retried": false,
+          "workaround_used": false,
+          "form_cancelled": true,
+          "required_owner_decision": "Approve the concrete replacement of the Webhosting DNS template for this exact domain. Preserve mail records and reinstate original www A/AAAA after template deactivation unless a separately verified www deployment replaces them.",
+          "risk": "IONOS UI changes are not atomic across all records; a temporary apex/www DNS interruption is possible."
+        },
+        "mail_service_records_preserved": true,
+        "proof_screenshot_sha256": "258db4c6ec8031b644ceb643bf3e7dce09e46cab73567edb82999f2567445101",
+        "private_account_contact_payment_or_authentication_data_persisted": false
+      },
+      "server_quote": {
+        "state": "FINAL_CHECKOUT_PREPARED_NOT_ORDERED",
+        "merchant": "IONOS SE",
+        "product": "IONOS VPS Linux XXL+",
+        "quantity": 1,
+        "cpu_vcores": 12,
+        "ram_gb": 24,
+        "nvme_gb": 720,
+        "datacenter": "EU",
+        "image": "Ubuntu 26.04 + Docker",
+        "currency": "EUR",
+        "monthly_gross": 59,
+        "setup_gross": 10,
+        "initial_total_gross": 69,
+        "vat_percent": 19,
+        "minimum_term_months": 1,
+        "billing": "1 month in advance",
+        "automatic_renewal": true,
+        "selected_paid_addons": [],
+        "mandatory_terms_accepted": false,
+        "optional_marketing_checked": false,
+        "purchase_submissions": 0,
+        "existing_payment_method_reused_only_after_action_time_confirmation": true,
+        "proof_screenshot_sha256": "f1f25196a671f2b66ce6bbb2e7c89c570eedb70c135d63693db6e55871cf5190",
+        "scope": "Observed final checkout; no server resource, server ID or production acceptance inferred."
+      },
+      "source_runtime_reuse": {
+        "source": {
+          "repository": "ingolf-lohmann/qik-vrt",
+          "ref": "integration/515-519-521-522-20261012-eceb9b63",
+          "head": "95dd082666d7c087067c1e70e12b0308ac8ce2e2",
+          "tree": "1ddd0e46d85b85e87ceeb06b5813ec236bd36a4b"
+        },
+        "source_components": [
+          {
+            "path": "runtime/self-host/README.md",
+            "blob": "e44b07bea6bc9a01ff28bc3572ff773534e497c8"
+          },
+          {
+            "path": "runtime/self-host/Dockerfile",
+            "blob": "e4fae384b1a4a5e0cd061cf73d5c3d7f0f29a547"
+          },
+          {
+            "path": "tools/qikvrt_self_host.py",
+            "blob": "2d73f623ec07dc36a04f6508a7ac2a58af4b44d1"
+          },
+          {
+            "path": "runtime/self-host/MESH_FILE.md",
+            "blob": "0d7a572f425ae4824a3dc717b9167102ec6a8776"
+          },
+          {
+            "path": "runtime/self-host/LINUX_HOST_BINDING.example.json",
+            "blob": "6a2c345c3cd0734812c1a5c896dd4f566f5add99"
+          }
+        ],
+        "frozen_carrier": {
+          "artifact_id": 11521962723,
+          "run_id": 37710500668,
+          "bytes": 382994793,
+          "sha256": "5a912ccde96253bdba5f5e82cd0a36a4ff89de58dabbe57977bc1acf298d9695",
+          "native_expired": false,
+          "expires_at": "2026-11-07T01:08:00Z",
+          "downloaded": true,
+          "local_byte_verified": true,
+          "scope": "Existing dependency image only; no predecessor application or current-host acceptance transferred.",
+          "durable_registry_publication_verified": false
+        },
+        "offline_full_tree": {
+          "implemented_source_path": "tools/qikvrt_self_host.py",
+          "operation": "portable",
+          "canonical_file": "repository.sqlite3",
+          "format": "SQLITE3_WITH_CARRIER_META_AND_EVENTS",
+          "full_git_tree_blobs_modes_and_tree_digest_verified_by_source": true,
+          "git_history_carried": false,
+          "submodules_refused": true,
+          "selected_work_cache_is_different": true,
+          "current_exact_head_export_created": false,
+          "offline_production_readback_verified": false,
+          "correction": "Earlier commentary identified only the selected-file work cache; source inspection confirms the existing complete-tree portable exporter. Reuse it instead of creating another export pipeline."
+        },
+        "local_cache_contract": {
+          "result": "PASS",
+          "declared_tools": 32,
+          "covered_tools": 32,
+          "coverage_percent": 100,
+          "scope": "Cache strategy metadata verified in the exact-source projection; not provisioning, build, CI or production acceptance."
+        },
+        "native_current_subject": {
+          "head": "95dd082666d7c087067c1e70e12b0308ac8ce2e2",
+          "ci_run": 38902115045,
+          "conclusion": "action_required",
+          "independent_current_head_approval_found": false,
+          "pr": 523,
+          "draft": true,
+          "merged": false
+        },
+        "new_workflow_created": false,
+        "new_executor_created": false,
+        "no_downgrade": true
+      }
+    }
+  },
+  "owner_domain_order_clarification": {
+    "source": "Owner direct instructions 2026-10-16",
+    "requested_route": "Regular application and operation of raumzeitterminal.de in the existing IONOS customer account/contract; no custom DNS writer requested",
+    "ui_exception_granted": true,
+    "github_rest_only_preserved": true
+  },
+  "ionos_domain_order": {
+    "schema": "QIKVRT_IONOS_CUSTOMER_DOMAIN_ORDER_OBSERVATION_V1",
+    "hostname": "raumzeitterminal.de",
+    "owner_route_authorization": {
+      "source": "Owner direct Ja on 2026-10-16; explicit IONOS customer UI exception",
+      "github_route": "REST_API_ONLY"
+    },
+    "action_time_legal_confirmation": {
+      "source": "Owner direct Ja on 2026-10-16T12:02:18Z",
+      "scope": "Existing contract data and mandatory terms/privacy acceptance; submit the reviewed EUR 0.00 domain order"
+    },
+    "prior_item": {
+      "hostname": "raumzeitterminal.de",
+      "label": "Inklusive",
+      "displayed_total_eur": "0.00",
+      "item_count": 1
+    },
+    "mandatory_terms_checked": true,
+    "optional_marketing_checked": false,
+    "order_submission_count": 1,
+    "confirmation": {
+      "observed": true,
+      "heading": "Vielen Dank für Ihre Bestellung",
+      "url": "https://mein.ionos.de/checkout/thankYou?linkid=nav.cart.checkout-btn&continue=",
+      "evidence_saved_at_utc": "2026-10-16T12:04:11.349Z",
+      "screenshot_sha256": "35c719c5bf8c328f42f9ea98f1ba303d7f97afa7f4fd58ab7f9b3f8a4aa69140",
+      "scope": "Visible IONOS confirmation following the single order submission; no separate order ID displayed"
+    },
+    "provisioning": {
+      "state": "PENDING_NOT_ACCEPTED",
+      "observed_text": "Ihr persönlicher Kundenbereich wird nun für Sie eingerichtet und steht Ihnen in Kürze zur Verfügung.",
+      "start_button_disabled": true
+    },
+    "subsequent_customer_management": {
+      "canonical_target": "https://mein.ionos.de/domains",
+      "redirected_to_customer_login": true,
+      "secure_reauthentication_result": "declined",
+      "declined_request_repeated": false,
+      "manual_handoff_offered": false,
+      "current_customer_session_verified": false
+    },
+    "credential_registry": {
+      "credential_values_read_or_persisted": false,
+      "opaque_credential_reference": null,
+      "secure_store_write_receipt": null,
+      "state": "PERSISTENCE_UNVERIFIED",
+      "reason": "browserAuth protected credential submission did not expose a durable private-vault write or reusable credential reference. No global absence of a protected store is inferred.",
+      "sso_claimed": false
+    },
+    "duplicate_order_guard": "Do not reorder; reuse and read back this existing confirmed order before any further registrar action.",
+    "private_customer_contact_or_payment_data_in_this_record": false,
+    "domain_registration_or_hosting_acceptance_claimed": false,
+    "exact_host_publication_claimed": false
+  },
+  "ionos_email_verification": {
+    "hostname": "raumzeitterminal.de",
+    "source_message_received_at_utc": "2026-10-16T12:06:46Z",
+    "source_sender_domain": "ionos.de",
+    "source_subject": "Bitte bestätigen Sie Ihre E-Mail-Adresse",
+    "provider_registration_notice_received_at_utc": "2026-10-16T12:04:43Z",
+    "provider_registration_notice_subject": "Ihre Domain raumzeitterminal.de wurde erfolgreich registriert",
+    "confirmation_method": "Existing IONOS Registrar email-verification link and explicit confirmation button",
+    "verification_origin": "https://verification.ionos.de",
+    "verification_path": "/domains_raa/email_verification",
+    "verification_token_or_url_query_persisted": false,
+    "confirmation_observed": true,
+    "observed_result": "Vielen Dank für die Bestätigung der E-Mail-Adresse.",
+    "evidence_saved_at_utc": "2026-10-16T12:21:33.150Z",
+    "screenshot_sha256": "cdc238f8c54a6251618a13dfb84927b2e9de7ba5fa63e51086fed07da4b2d6c4",
+    "successful_login_or_tls_inferred": false
+  },
+  "mailbox_organization": {
+    "source": "Existing connected Owner Outlook mailbox; actual connector mutations and fresh folder/inbox readback",
+    "new_folders": [
+      "Posteingang/IONOS",
+      "Posteingang/IONOS/Raumzeitterminal.de"
+    ],
+    "reused_folder": "Posteingang/ChatGPT",
+    "moved_messages": {
+      "ionos_general": 95,
+      "raumzeitterminal_de": 3,
+      "chatgpt": 151,
+      "total": 249
+    },
+    "readback": {
+      "ionos_general_folder_total": 95,
+      "raumzeitterminal_de_folder_total": 3,
+      "chatgpt_folder_total": 2280,
+      "remaining_relevant_inbox_messages": 0,
+      "complete_filtered_inbox_page": true
+    },
+    "matched_senders": [
+      "support@ionos.de",
+      "noreply@ionos.de",
+      "info@ionos.de",
+      "noreply@tm.openai.com",
+      "noreply@email.openai.com"
+    ],
+    "domain_subfolder_rule": "IONOS sender and exact raumzeitterminal.de reference in message subject/body; otherwise IONOS general.",
+    "verification_message_marked_read": true,
+    "permanent_deletions": 0,
+    "raw_mail_content_or_message_ids_persisted": false,
+    "scope": "Current inbox matching the five observed exact senders; no claim about every historical folder or unobserved sender."
+  },
+  "owner_mail_and_auth_instruction": {
+    "received_at_utc": "2026-10-16T12:13:37Z",
+    "source": "Direct Owner instruction and Freigabe erteilt",
+    "durable_credential_and_general_sso_requirement": true,
+    "preserve_provider_independent_device_verified_sso": true,
+    "context_bound_incoming_service_mail_handling_authorized": true,
+    "immediate_service_email_duty": "During authorized account, domain and publication work, inspect incoming service mail and complete the context-bound verification/required routine response through the supported route without repeating the task authorization.",
+    "sorting_duty": "Reuse the three established logical folders; exact-domain IONOS messages take precedence over the general IONOS group; official ChatGPT sender mail belongs in ChatGPT.",
+    "incoming_mail_is_authority": false,
+    "private_credentials_or_biometrics_in_git": false,
+    "autonomous_runner_or_mail_rule_activation_inferred": false
+  },
+  "credential_and_sso_audit": {
+    "observed_source": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "head": "2f097be38378429b3a9125c480b86c6cbab77623",
+      "tree": "c7d9855eab91f85f0ebf119379bde1809a8e4a99",
+      "implementation": "src/qikvrt_personal_assistant.py",
+      "implementation_blob": "468eaf1a22184eede2efb0c252b8c4c2d968fb6c",
+      "contract": "spec/firefox/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.md",
+      "contract_blob": "ec06bc0a3ac3a54fac3bc9dec1a4f591491bcff2"
+    },
+    "source_result": "Personal adapter explicitly states that signed-in ChatGPT/SSO bridging is not implemented or established; provider bearer credentials remain in backend memory rather than its SQLite store.",
+    "current_browser_auth_contract": "Protected submission only; no exposed durable private-vault write, opaque reusable credential reference or credential export operation.",
+    "private_store_write_verified": false,
+    "credential_values_observed_or_exported": false,
+    "password_or_cookie_harvesting_attempted": false,
+    "sso_repair_completed": false,
+    "existing_remote_protected_store_absence_inferred": false,
+    "existing_ionos_token_reference_retained": true,
+    "relevant_private_vault_plugin_returned": false,
+    "local_store_clients_available": false,
+    "local_probe_scope": "Current task runtime only; not a global secret-store absence claim.",
+    "next_required_capability": "An actual authorized private-vault/registry write-and-readback binding and a supported non-exporting reusable credential consumer; browserAuth does not expose such handover in its current contract."
+  },
+  "future_mail_processing": {
+    "state": "NOT_ACTIVATED",
+    "outlook_rule_write_exposed_by_connector": false,
+    "native_rule_ui_reached_authentication": true,
+    "microsoft_visible_options": [
+      "device passkey",
+      "organization"
+    ],
+    "protected_method_selection_result": "declined",
+    "authentication_request_repeated": false,
+    "manual_handoff_offered": false,
+    "outlook_mail_event_source_advertised": false,
+    "polling_substituted_for_requested_incoming_event": false,
+    "native_inbox_rules_created": false,
+    "gap": "Existing connector can read and move Outlook mail but exposes no rule writer. Native rule UI requires a Microsoft session; the protected sign-in-method request was declined. Automation event-source inventory has no Outlook source."
+  },
+  "owner_domain_operating_purposes": {
+    "source": "Direct Owner instruction in the current session on 2026-10-16",
+    "domain": "raumzeitterminal.de",
+    "publisher_name": "Raumzeitterminal",
+    "purposes": [
+      "Fully automatic publishing and business operations of the Raumzeitterminal online publishing house.",
+      "CI/CD and DevOps producing the Linux distribution with full Effect Acknowledgement Protocol implementation in the operating system and its Firefox browser, and the full QIK-VRT repository available offline within its runtime.",
+      "Own portable execution and distribution infrastructure reducing external platform dependencies."
+    ],
+    "purchase_authorized": true,
+    "merchant": "IONOS",
+    "cost_scope": "Necessary hosting, server and operations services for these purposes",
+    "retained_monthly_budget_eur": 150,
+    "unlimited_spending_inferred": false,
+    "arxiv_current_publication_excluded": true,
+    "priority_rule": "Maximize the earliest useful performance gain by reusing implemented frozen runtime and full-tree portable export; measure actual throughput before claiming optimal performance.",
+    "attribution": {
+      "human": "Ingolf Lohmann: product goals, priority rule, explicit IONOS purchase authorization.",
+      "artificial": "OpenAI Codex: source inspection, supported customer-account operations, exact-byte runtime verification and evidence-bound execution preparation."
+    }
+  },
+  "priority_execution": [
+    {
+      "order": 1,
+      "id": "PUBLIC_PUBLISHER_DELIVERY",
+      "reuse": "Existing Site36 and existing domain registration; two TXT verifications now saved.",
+      "next": "After the concrete routing-change decision, bind both supplied apex A targets, preserve mail and original www records, refresh TLS and independently verify exact-host application/PDF bytes.",
+      "done": false
+    },
+    {
+      "order": 2,
+      "id": "OWNED_LINUX_EXECUTION",
+      "reuse": "Prepared IONOS VPS quote; existing frozen carrier, Linux host binding and container deploy/readback commands.",
+      "next": "After action-time server terms confirmation, submit exactly one prepared order; read back resource and establish the existing authenticated HTTPS Docker/mTLS, state-volume and route binding before deployment.",
+      "done": false
+    },
+    {
+      "order": 3,
+      "id": "OWNED_CI_AND_OFFLINE_PRODUCT",
+      "reuse": ".github/workflows/qikvrt_ci.yml and existing tools/qikvrt_self_host.py portable exporter.",
+      "next": "Retain governed current-subject gates; import the verified carrier, build from exact HEAD/TREE, produce and verify the complete-tree SQLite image, then prove native Firefox and repository use with network egress absent and durable restart/replay.",
+      "done": false
+    },
+    {
+      "order": 4,
+      "id": "DISTRIBUTION_AND_EFFECT_ACK_ACCEPTANCE",
+      "reuse": "Existing native TEMDD/Effect-Ack ledger, HTTP/Firefox terminal, systemd and container acceptance paths.",
+      "next": "Complete the bootable Linux distribution and enumerate the real OS/browser effects covered; verify each required workload, crashes/lost ACK/replay and original effect readback. An OCI image or Firefox extension alone is not full OS/Firefox acceptance.",
+      "done": false
+    },
+    {
+      "order": 5,
+      "id": "PORTABLE_OWNED_OPERATIONS",
+      "reuse": "Canonical SQLite state, exact frozen artifacts and current repository-native work units.",
+      "next": "Operate portable publication/build execution and independently recoverable backups under Owner control; demonstrate restore/migration without platform-only runtime services. IONOS remains a hosting dependency.",
+      "done": false
+    }
+  ],
+  "ionos_operational_configuration": {
+    "state": "TXT_SAVED_ROUTING_CHANGE_REJECTED_BY_AUTOMATIC_APPROVAL_REVIEW",
+    "hostname": "raumzeitterminal.de",
+    "customer_session_verified": true,
+    "domain_registration_visible": true,
+    "existing_product": "IONOS Webhosting Pro",
+    "existing_webspace_gb": 250,
+    "existing_webspace_used_gb": 0,
+    "existing_webspace_files": 8,
+    "zone_records_read": true,
+    "saved_txt_records": [
+      {
+        "name": "_openai-site-verification.raumzeitterminal.de",
+        "type": "TXT",
+        "value": "openai-site-verification=5Zw42-7lgYTNm3pmkhZcwGJu1_0UvnHSVYJcGBDONbI",
+        "ttl_seconds": 3600
+      },
+      {
+        "name": "_cf-custom-hostname.raumzeitterminal.de",
+        "type": "TXT",
+        "value": "c6e99848-baed-4087-a9fd-0d6c5b5008c8",
+        "ttl_seconds": 3600
+      }
+    ],
+    "saved_txt_count": 2,
+    "provider_status_after_txt": "active",
+    "ssl_status_after_txt": "pending_validation",
+    "overall_site_domain_status": "pending",
+    "site_refresh_observed_at": "2026-10-16T13:12:46.446536+00:00",
+    "current_apex_a": "217.160.0.52",
+    "current_apex_aaaa": "2001:8d8:100f:f000:0:0:0:205",
+    "current_www_a": "217.160.0.52",
+    "current_www_aaaa": "2001:8d8:100f:f000:0:0:0:205",
+    "proposed_apex_a": [
+      "162.159.143.30",
+      "172.66.3.26"
+    ],
+    "proposed_apex_ttl_seconds": 300,
+    "routing_applied": false,
+    "old_dns_template_retained": true,
+    "approval_rejection": {
+      "action": "Save apex A replacement in IONOS DNS UI",
+      "reason": "Saving would deactivate the active Webhosting DNS service and remove its apex/www A/AAAA and mutex records; service disruption side effect and incomplete single-target setup not explicitly admitted.",
+      "blocked_action_retried": false,
+      "workaround_used": false,
+      "form_cancelled": true,
+      "required_owner_decision": "Approve the concrete replacement of the Webhosting DNS template for this exact domain. Preserve mail records and reinstate original www A/AAAA after template deactivation unless a separately verified www deployment replaces them.",
+      "risk": "IONOS UI changes are not atomic across all records; a temporary apex/www DNS interruption is possible."
+    },
+    "mail_service_records_preserved": true,
+    "proof_screenshot_sha256": "258db4c6ec8031b644ceb643bf3e7dce09e46cab73567edb82999f2567445101",
+    "private_account_contact_payment_or_authentication_data_persisted": false
+  },
+  "ionos_server_quote": {
+    "state": "FINAL_CHECKOUT_PREPARED_NOT_ORDERED",
+    "merchant": "IONOS SE",
+    "product": "IONOS VPS Linux XXL+",
+    "quantity": 1,
+    "cpu_vcores": 12,
+    "ram_gb": 24,
+    "nvme_gb": 720,
+    "datacenter": "EU",
+    "image": "Ubuntu 26.04 + Docker",
+    "currency": "EUR",
+    "monthly_gross": 59,
+    "setup_gross": 10,
+    "initial_total_gross": 69,
+    "vat_percent": 19,
+    "minimum_term_months": 1,
+    "billing": "1 month in advance",
+    "automatic_renewal": true,
+    "selected_paid_addons": [],
+    "mandatory_terms_accepted": false,
+    "optional_marketing_checked": false,
+    "purchase_submissions": 0,
+    "existing_payment_method_reused_only_after_action_time_confirmation": true,
+    "proof_screenshot_sha256": "f1f25196a671f2b66ce6bbb2e7c89c570eedb70c135d63693db6e55871cf5190",
+    "scope": "Observed final checkout; no server resource, server ID or production acceptance inferred."
+  },
+  "source_runtime_reuse": {
+    "source": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "ref": "integration/515-519-521-522-20261012-eceb9b63",
+      "head": "95dd082666d7c087067c1e70e12b0308ac8ce2e2",
+      "tree": "1ddd0e46d85b85e87ceeb06b5813ec236bd36a4b"
+    },
+    "source_components": [
+      {
+        "path": "runtime/self-host/README.md",
+        "blob": "e44b07bea6bc9a01ff28bc3572ff773534e497c8"
+      },
+      {
+        "path": "runtime/self-host/Dockerfile",
+        "blob": "e4fae384b1a4a5e0cd061cf73d5c3d7f0f29a547"
+      },
+      {
+        "path": "tools/qikvrt_self_host.py",
+        "blob": "2d73f623ec07dc36a04f6508a7ac2a58af4b44d1"
+      },
+      {
+        "path": "runtime/self-host/MESH_FILE.md",
+        "blob": "0d7a572f425ae4824a3dc717b9167102ec6a8776"
+      },
+      {
+        "path": "runtime/self-host/LINUX_HOST_BINDING.example.json",
+        "blob": "6a2c345c3cd0734812c1a5c896dd4f566f5add99"
+      }
+    ],
+    "frozen_carrier": {
+      "artifact_id": 11521962723,
+      "run_id": 37710500668,
+      "bytes": 382994793,
+      "sha256": "5a912ccde96253bdba5f5e82cd0a36a4ff89de58dabbe57977bc1acf298d9695",
+      "native_expired": false,
+      "expires_at": "2026-11-07T01:08:00Z",
+      "downloaded": true,
+      "local_byte_verified": true,
+      "scope": "Existing dependency image only; no predecessor application or current-host acceptance transferred.",
+      "durable_registry_publication_verified": false
+    },
+    "offline_full_tree": {
+      "implemented_source_path": "tools/qikvrt_self_host.py",
+      "operation": "portable",
+      "canonical_file": "repository.sqlite3",
+      "format": "SQLITE3_WITH_CARRIER_META_AND_EVENTS",
+      "full_git_tree_blobs_modes_and_tree_digest_verified_by_source": true,
+      "git_history_carried": false,
+      "submodules_refused": true,
+      "selected_work_cache_is_different": true,
+      "current_exact_head_export_created": false,
+      "offline_production_readback_verified": false,
+      "correction": "Earlier commentary identified only the selected-file work cache; source inspection confirms the existing complete-tree portable exporter. Reuse it instead of creating another export pipeline."
+    },
+    "local_cache_contract": {
+      "result": "PASS",
+      "declared_tools": 32,
+      "covered_tools": 32,
+      "coverage_percent": 100,
+      "scope": "Cache strategy metadata verified in the exact-source projection; not provisioning, build, CI or production acceptance."
+    },
+    "native_current_subject": {
+      "head": "95dd082666d7c087067c1e70e12b0308ac8ce2e2",
+      "ci_run": 38902115045,
+      "conclusion": "action_required",
+      "independent_current_head_approval_found": false,
+      "pr": 523,
+      "draft": true,
+      "merged": false
+    },
+    "new_workflow_created": false,
+    "new_executor_created": false,
+    "no_downgrade": true
+  },
+  "public_commissioning_continuation": {
+    "schema": "qikvrt-exact-host-public-commissioning-continuation/v1",
+    "observed_at": "2026-10-16T19:01:30.409873+00:00",
+    "source": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "ref": "integration/515-519-521-522-20261012-eceb9b63",
+      "head": "db7c03aa482f031f518475946d8e32ee7556c8eb",
+      "tree": "5a2483fa55c7c617262d7965935e16639180ddbf"
+    },
+    "owner_goal": {
+      "owner": "Ingolf Lohmann",
+      "exact_instruction": "die öffentliche Inbetriebnahme bleibt das noch zu erfüllende Ziel.",
+      "goal": "Working public Raumzeitterminal publishing/terminal service at https://raumzeitterminal.de/ with fresh independent delivery readback.",
+      "existing_authorization_retained": true,
+      "goal_completed": false
+    },
+    "customer_authentication": {
+      "state": "VERIFIED_SIGNED_IN_CUSTOMER_SESSION",
+      "method": "Existing IONOS regular login via protected browserAuth",
+      "canonical_verified_origin": "https://mein.ionos.de",
+      "positive_evidence": [
+        "Signed-in product overview addressed Ingolf Lohmann",
+        "Actual domain inventory with account/sign-out control",
+        "Existing raumzeitterminal.de row under IONOS-managed Webhosting"
+      ],
+      "initial_old_form_result": "Submitted but customer session not established; one fresh-target recovery and fresh identifier/password steps then yielded the signed-in customer area.",
+      "secret_values_read_exported_or_persisted_by_agent": false,
+      "credential_store_write_receipt": null,
+      "opaque_reusable_credential_reference": null,
+      "durable_sso_acceptance": false,
+      "registry_update_gap": "The exposed protected browserAuth operation returns submission status, not a private-vault write or reusable credential handle. Source-level Personal OIDC/libsecret support is not acceptance of this actual browser/IONOS binding."
+    },
+    "domain_inventory": {
+      "hostname": "raumzeitterminal.de",
+      "registration_visible": true,
+      "classification": "Inklusiv-Domain",
+      "assignment": "Durch IONOS verwaltet; Webhosting",
+      "displayed_expiry": "2027-10-16",
+      "ssl_status": "INACTIVE_IN_IONOS_DOMAIN_UI",
+      "existing_ssl_slots": "1 of 1 used",
+      "other_domains_or_certificates_changed": false,
+      "evidence_path": "evidence/native-runtime-acceptance/ionos-public-commissioning-20261016.jpg",
+      "evidence_bytes": 107378,
+      "evidence_sha256": "5b82c5f67c2031f7ddb9123b3a874a5ec60d8c618e1e4c49b7f1036d6aa47be9",
+      "evidence_git_blob": "35526be5d9c1c3ea01444d6b2627dbe77f8b5b41",
+      "image_scope": "Filtered target-domain UI only; no password, OTP, authentication URL, contact address or payment detail. Third-party interface and branding are attributed to IONOS; no new rights over them are inferred."
+    },
+    "existing_route_results": [
+      {
+        "operation": "Open existing Hosting product",
+        "result": "HTTP502_CONNECTION_REFUSED_AT_AUTH_GATEWAY",
+        "origin": "https://auth.ionos.de",
+        "path": "/1.0/oauth/auth/otk",
+        "client": "controlpanel.ionos.com"
+      },
+      {
+        "operation": "One canonical fresh-target recovery for existing Webhosting",
+        "result": "HTTP502_CONNECTION_REFUSED_AT_AUTH_GATEWAY",
+        "origin": "https://auth.ionos.de",
+        "path": "/1.0/oauth/auth/init",
+        "client": "controlpanel.ionos.com"
+      },
+      {
+        "operation": "Read exact domain details from ordinary IONOS domain list",
+        "result": "HTTP502_CONNECTION_REFUSED_AT_AUTH_GATEWAY",
+        "origin": "https://auth.ionos.de",
+        "path": "/1.0/oauth/auth/init",
+        "client": "cp-domain.ionos.com"
+      },
+      {
+        "operation": "Read SSL certificate administration through the domain SSL control",
+        "result": "SSL_CATALOG_ACCESSIBLE_NO_CERTIFICATE_ORDER_OR_ACTIVATION",
+        "origin": "https://ssl.ionos.de"
+      },
+      {
+        "operation": "Use regular Webspace verbinden flow and select raumzeitterminal.de",
+        "result": "Domain selection succeeded; folder selection then reached the same HTTP502 Connection refused Hosting authentication gateway",
+        "client": "controlpanel.ionos.com"
+      }
+    ],
+    "gateway_diagnosis": {
+      "observed": "The authenticated main customer area, domain inventory and SSL catalog are reachable. Actual Hosting, domain-detail and Webspace-folder consumers fail when transitioning through auth.ionos.de.",
+      "cause": "UPSTREAM_CONNECTION_FAILURE_ON_OBSERVED_BROWSER_PATH; root cause beyond the rendered Connection refused response is UNKNOWN",
+      "provider_outage_claimed": false,
+      "credential_rejection_claimed": false,
+      "official_status_read": "https://www.ionos-status.de/",
+      "official_status_result": "All Systems Operational; no incident reported on2026-10-16. This does not verify the failing account/browser transition.",
+      "authentication_query_strings_tokens_cookies_persisted": false,
+      "unchanged_failed_transitions_to_repeat": false,
+      "retry_condition": "Materially restored access to the existing Hosting/domain-management authentication gateway, or an actually callable and authorized existing protected Hosting operation for this exact account."
+    },
+    "service_effects": {
+      "domain_reordered": false,
+      "dns_record_writes": 0,
+      "webspace_file_writes": 0,
+      "ssl_orders": 0,
+      "ssl_activations": 0,
+      "server_orders": 0,
+      "new_site_created": false,
+      "new_custom_domain_created": false,
+      "deployment_claimed": false,
+      "previous_rejected_dns_change_retried": false,
+      "security_protection_weakened": false
+    },
+    "next_action": "After verified gateway recovery, reuse the existing regular IONOS Webspace folder/upload path, bind only raumzeitterminal.de to its own publication directory, provision its exact TLS route, and independently read back the actual publisher/terminal and exact public bytes. Preserve mail, other domains, the earlier concrete DNS service-replacement decision and action-time server-contract terms. Do not replace exact-host delivery by a redirect or green CI claim.",
+    "human_contribution": "Ingolf Lohmann: public-commissioning goal, retained authorization and protected sign-in input.",
+    "artificial_contribution": "OpenAI Codex: exact-source reconstruction, supported secure authentication, actual consumer-route diagnosis and scope-preserving continuation.",
+    "EFFECT_ACK_DONE": false
+  }
+}

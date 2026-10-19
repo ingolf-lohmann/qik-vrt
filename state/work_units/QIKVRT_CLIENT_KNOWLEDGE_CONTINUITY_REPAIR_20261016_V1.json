@@ -1,0 +1,281 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "work_unit_provenance"
+  },
+  "schema": "qikvrt_ai_work_unit_v1",
+  "work_unit_id": "QIKVRT_CLIENT_KNOWLEDGE_CONTINUITY_REPAIR_20261016_V1",
+  "execution_id": "QIKVRT_CLIENT_KNOWLEDGE_CONTINUITY_REPAIR_20261016_V1",
+  "created_at_utc": "2026-10-16T09:13:31.232392+00:00",
+  "human_actor": {
+    "class": "HUMAN",
+    "attribution_id": "Ingolf Lohmann"
+  },
+  "artificial_cognitive_actor": {
+    "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "system_family": "OpenAI Codex",
+    "model_build": "UNAVAILABLE"
+  },
+  "owner_correction": "Es war, ist und bleibt inakzeptabel, dass du alles über Bord wirfst, was du an Wissen hast. Wann diese Situation eintreten, spielt keine Rolle. Die Tatsache, dass es so ist, ist der Fehler.",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_pr": 523,
+  "source_commit": "3535db0f2b1996dd8c7b28df21c62965dcc0a388",
+  "source_tree": "2aa9dd25be4cfc028ed4ab7188909555c7f48152",
+  "reuse": {
+    "validator": "tools/ai_handoff.py --client-receipt",
+    "tests": "tests/test_ai_runtime_bootloader.py#ClientContinuationRegressionTests",
+    "policy": "policy/QIKVRT_EPISTEMIC_CONNECTABILITY_CONTINUITY_V1.json",
+    "new_executor": false,
+    "new_credential_store": false,
+    "new_trigger": false
+  },
+  "diagnosis": "The existing gate retained declared open work but ignored knowledge records and did not bind a caller summary to the actual saved predecessor. Local environment absence was also incorrectly generalized to protected remote absence.",
+  "baseline_regression": {
+    "test": "test_handoff_rejects_discarding_known_records",
+    "old_result": "FAIL: SystemExit not raised; old validator accepted the omission",
+    "scope": "Local exact-source reproduction; not a native product effect"
+  },
+  "repair": {
+    "append_only_knowledge_and_corrections": true,
+    "pinned_predecessor_knowledge_and_open_work": true,
+    "historical_receipts_still_readable": true,
+    "bounded_predecessor_bytes": 2097152,
+    "no_automatic_truth_or_complete_snapshot_claim": true
+  },
+  "verification": {
+    "local_client_regressions": 83,
+    "local_client_regressions_passed": true,
+    "cache_coverage": "32/32, 100%",
+    "native_ci": "PENDING_ON_EXACT_SUCCESSOR",
+    "main_adoption": "NOT_CLAIMED",
+    "all_client_adoption": "NOT_CLAIMED"
+  },
+  "previous_run": {
+    "execution_id": "QIKVRT_BOUNDED_RESEARCH_RECHECK_20261016_0850Z",
+    "open_work": [
+      "publication-index",
+      "authority-main",
+      "mirror-identical-copy",
+      "mesh-complete-coverage",
+      "materialization-archive-admission",
+      "zenodo-exact-pdf-publication",
+      "raumzeitterminal-exact-host-delivery"
+    ]
+  },
+  "knowledge": [
+    {
+      "id": "owner:exact-host-authorized",
+      "epistemic_class": "OWNER_AUTHORIZATION",
+      "subject": {
+        "owner": "Ingolf Lohmann",
+        "url": "https://raumzeitterminal.de/"
+      },
+      "scope": "Existing task authorization; not authentication, execution admission or delivery",
+      "statement": "The Owner repeatedly authorized exact-host delivery and publication; do not request the same permission again.",
+      "evidence": [
+        "Owner direct requests in this session on 2026-10-16",
+        "AGENTS.md#binding-client-continuation-procedure"
+      ],
+      "supersedes": [],
+      "record_sha256": "504eaaf52db668bf01cdfa5593e2df6dc6335e01e7e607ba6580d324ab27a206"
+    },
+    {
+      "id": "owner:authority-and-mirror",
+      "epistemic_class": "OWNER_ROLE_DECISION",
+      "subject": {
+        "authority": "ingolf-lohmann/qik-vrt",
+        "mirror": "Goldkelch/qik-vrt"
+      },
+      "scope": "Owner role assignment; effective deployed contract and enforcement remain separate",
+      "statement": "Use ingolf-lohmann/qik-vrt as Authority and Goldkelch/qik-vrt as Mirror. Do not fall back to the Mirror as Authority.",
+      "evidence": [
+        "Owner direct instructions of 2026-10-06/07, retained in this session"
+      ],
+      "supersedes": [],
+      "record_sha256": "10f1f202036c0132a37cdb9392dc0b4747d2f5d7ba7ce4c70592a219d48890e6"
+    },
+    {
+      "id": "ionos:existing-secret-reference",
+      "epistemic_class": "SOURCE_OBSERVATION",
+      "subject": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "path": "state/work_units/QIKVRT_IONOS_TOKEN_EXECUTOR_BIND_20261013_V1.json",
+        "git_blob_sha1": "e6af37fd4eda4bda849f013b698e7774f5608e5c"
+      },
+      "scope": "Candidate source reference, not secret retrieval or live permission proof",
+      "statement": "The existing protected token is referenced as secrets.IONOS_TOKEN. Its value was not retrieved; source presence does not establish delivery to this client.",
+      "evidence": [
+        "Exact candidate work-unit read on 2026-10-16"
+      ],
+      "supersedes": [],
+      "record_sha256": "85239e48d8540f378690a011294a634ba93c823d9f1c85295a4246db1abc5d2e"
+    },
+    {
+      "id": "ionos:cloud-dns-token-type",
+      "epistemic_class": "PRIMARY_DOCUMENTATION",
+      "subject": {
+        "url": "https://docs.ionos.com/sdk-go-bundle/sdks/dns"
+      },
+      "scope": "Documented authentication method; the actual token account, DNS rights, zone and admission remain UNKNOWN",
+      "statement": "IONOS Cloud DNS documents IONOS_TOKEN bearer authentication at https://dns.de-fra.ionos.com. Cloud-v6 GET consumer scope does not prove token DNS incapability or a need for new credentials.",
+      "evidence": [
+        "https://docs.ionos.com/sdk-go-bundle/sdks/dns",
+        "https://docs.ionos.com/cloud/network-services/cloud-dns/api-how-tos/create-primary-zone"
+      ],
+      "supersedes": [],
+      "record_sha256": "699d1c65c456afe142c796832c90743541875efa6c5853deba9c1d1bf2382150"
+    },
+    {
+      "id": "history:withdrawn-global-binding-absence",
+      "epistemic_class": "WITHDRAWN_INFERENCE",
+      "subject": {
+        "actor": "OpenAI Codex",
+        "date": "2026-10-16"
+      },
+      "scope": "Historical incorrect inference; retained as error history and superseded below",
+      "statement": "The assistant claimed the protected binding was not supplied to the runtime after inspecting local environment variables and exposed operations. That conclusion was not established.",
+      "evidence": [
+        "Assistant withdrawal in this session after the Owner correction on 2026-10-16"
+      ],
+      "supersedes": [],
+      "record_sha256": "e71ebefb88bbc917b78cdc67efe61af81cdfbf42abc94f69107f9429a215cb1b"
+    },
+    {
+      "id": "correction:local-absence-is-not-remote-absence",
+      "epistemic_class": "CORRECTION",
+      "subject": {
+        "measurement": "current process environment and exposed operation inventory"
+      },
+      "scope": "A bounded negative observation; no claim about all existing protected coupling routes",
+      "statement": "Absent local environment variables prove only local absence. No authenticated DNS call was executed. Remote protected binding availability and its permission remain unverified, not proven absent.",
+      "evidence": [
+        "Owner correction in this session on 2026-10-16",
+        "Assistant explicit retraction in this session"
+      ],
+      "supersedes": [
+        "history:withdrawn-global-binding-absence"
+      ],
+      "record_sha256": "89c54338f71617a65dfd330d087f0489f3d615e45aa28a09e7a1bbac03896cec"
+    },
+    {
+      "id": "research:bounded-comparison-replayed",
+      "epistemic_class": "LOCAL_TEST",
+      "subject": {
+        "archive_sha256": "0f7bf05eb76f76bc8abac004ec0dd81126e088e557d0839635a42397e2fc0cc0",
+        "experiment_sha256": "90971dc9bbe24924630f648b6d92bb5b31ba1ef8c962aba4aa55c403acdd5e0e",
+        "completed_at_utc": "2026-10-16T08:50:16Z"
+      },
+      "scope": "Local same-host process/SQLite experiment, not native Mesh execution, independent human review or universal superiority",
+      "statement": "The new replay matched 13 scenarios, 12 accepted successors, 64/1296 exhaustive function pairs and three boundary counterexamples. The equally informed conventional control made the same decisions. All 68 original manifest files and the standalone manuscript candidates matched.",
+      "evidence": [
+        "QIKVRT_Wirkungsnachweis_Nachpruefung_20261016.json, SHA-256-bound original candidate and local replay",
+        "Library identity libfile_0e0f940015b0819182af6eb498f1ad3c"
+      ],
+      "supersedes": [],
+      "record_sha256": "94d28b1d81ddcc63a44a896d0345eb071334fac19e03224f17460039f0152f3f"
+    },
+    {
+      "id": "research:lean-receipt-scope",
+      "epistemic_class": "SOURCE_BOUND_KERNEL_RECEIPT",
+      "subject": {
+        "source_sha256": "4547bea44e87427d0c07b68fb53b47b5a906f5a34b154367597dc3709a1d1cd6",
+        "olean_sha256": "b18b77ef12943656bd3b589ac84e065d47bafd3edc2f2531b0c306c4b7c25c66"
+      },
+      "scope": "Three recorded Lean4.19.0 theorem checks, source/olean receipt binding rechecked; no new kernel execution in this client",
+      "statement": "The frozen package records three kernel-checked theorem constants and a rejected false control. The additional local recheck verified their artifact hashes; it did not rerun Lean.",
+      "evidence": [
+        "QIKVRT_Wirkungsnachweis_Nachweispaket_20261016.zip#evidence/LEAN_KERNEL_RECEIPT.json"
+      ],
+      "supersedes": [],
+      "record_sha256": "7963c4e7977083f03794d24087ed61d1be0d8d2557c8b6b973a580292f8e5888"
+    },
+    {
+      "id": "goal:publication-and-exact-host-open",
+      "epistemic_class": "OPEN_OBLIGATION",
+      "subject": {
+        "url": "https://raumzeitterminal.de/",
+        "new_research_publication": "QIKVRT Wirkungsnachweis, 2026-10-16"
+      },
+      "scope": "Open acceptance duties; local research and another hostname do not close them",
+      "statement": "Exact-host product delivery and new Zenodo publication remain open duties. Preserve original Round-Trip DOI10.5281/zenodo.21888130 as provenance; it is not a DOI for the new work.",
+      "evidence": [
+        "https://zenodo.org/records/21888130",
+        "CANDIDATE_BINDING.json in the frozen research archive",
+        "Existing client continuation open_work"
+      ],
+      "supersedes": [],
+      "record_sha256": "0889cf06a1f2d8057e794880dbe5f6355221d78c39b6ff4290a0de4cd9e04934"
+    }
+  ],
+  "work": [
+    {
+      "evidence": "Current exact MD blob e1ed265239aa5e1436055279069c7e21525a13fe; original embedded bytes match.",
+      "id": "source-original",
+      "state": "VERIFIED"
+    },
+    {
+      "evidence": "Current PDF_READBACK_VALIDATION.json binds 130175-byte PDF to current manifest/source/core/license. Pages1-11 unchanged; all12 rendered pages inspected.",
+      "id": "pdf-and-machine-binding",
+      "state": "VERIFIED"
+    },
+    {
+      "id": "publication-index",
+      "next_action": "Retain predecessor index evidence as history; no current full-index acceptance claimed in this bounded readback.",
+      "state": "OPEN"
+    },
+    {
+      "id": "authority-main",
+      "next_action": "Existing protected integration requires independent current-head review and exact-subject gates; PR Draft/unmerged.",
+      "state": "OPEN"
+    },
+    {
+      "id": "mirror-identical-copy",
+      "next_action": "After genuinely recovered authorized Mirror access, copy exact current bytes and verify; no unchanged404 retry.",
+      "state": "OPEN"
+    },
+    {
+      "id": "mesh-complete-coverage",
+      "next_action": "Complete actual registered-node coverage; retain unavailable and unknown nodes.",
+      "state": "OPEN"
+    },
+    {
+      "id": "materialization-archive-admission",
+      "next_action": "The early preflight workflow classification is natively verified on e8; actual archive access/materialization remains held. Admit another effect only after a material provider/journal recovery; retain the exact no-retry guard.",
+      "state": "OPEN"
+    },
+    {
+      "id": "site-public-pdf-delivery",
+      "state": "VERIFIED",
+      "evidence": "SITE35_NATIVE_PUBLICATION.json: deployment succeeded on source21ff30a92ab26b20a52e0ac876895fbf8607632c. SITE35_PUBLIC_BYTES_READBACK.json: all8 public HTTP200 responses byte-exact, including PDF sha256492cfc5ed6de2d071dadfbad8faf43c08477c5faf9dffd2744edb19a0e09c43a."
+    },
+    {
+      "id": "zenodo-exact-pdf-publication",
+      "state": "OPEN",
+      "next_action": "Complete exact-PDF v2 publication admission through the existing publisher with an actual callable authenticated effect route. Historical consumed publication is not a fresh PDF executor; no synthetic trigger."
+    },
+    {
+      "id": "raumzeitterminal-exact-host-delivery",
+      "state": "OPEN",
+      "next_action": "Bind and admit existing IONOS token through the protected existing consumer; inspect exact Cloud DNS zone, token permission and registration/delegation before any DNS effect. Current callable initial REST dispatch remains unexposed. No new credential requirement inferred."
+    },
+    {
+      "id": "archive-preflight-native-gate",
+      "state": "VERIFIED",
+      "evidence": "PR523_E8_NATIVE_GATE_READBACK.json: two exact-head successful runs, qualified NOOP; archive/persistence steps skipped; original job outputs retain false publication/acceptance flags."
+    },
+    {
+      "id": "bounded-research-package-recheck",
+      "state": "VERIFIED",
+      "evidence": "68 manifest files unchanged; standalone candidates match. Fresh experiment at 2026-10-16T08:50:16Z matches all nine semantic comparisons, including13 scenarios,12 accepted successors and64/1296 complete enumerations. Lean receipt and source/olean hashes match; kernel not reexecuted. Saved libfile_0e0f940015b0819182af6eb498f1ad3c"
+    },
+    {
+      "id": "client-knowledge-continuity-main-adoption",
+      "state": "OPEN",
+      "next_action": "Verify the repaired gate on its exact candidate, then separately obtain governed Main adoption and actual client use; no predecessor PASS transfer."
+    }
+  ],
+  "PREDECESSOR_EVIDENCE_TRANSFER": false,
+  "EFFECT_ACK_DONE": false
+}

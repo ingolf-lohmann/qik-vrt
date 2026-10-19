@@ -47,6 +47,112 @@ bind the changed bytes.
 
 ## Trigger semantics
 
+### Exact tested subject after integrity re-entry — 2026-10-17
+
+The existing CI test job publishes its accepted committed HEAD and TREE only
+after the terminal full-test/fixpoint gate succeeds. Offline-browser and S1
+container source checks consume that subject through `needs.test`, then verify
+both identities independently after checkout. They must not silently check out
+the original event HEAD after the admitted integrity writer advances the PR.
+The handoff rejects uncommitted changes, a changed remote ref, unrelated ancestry
+and successor changes outside the three existing integrity files. Other source
+changes require fresh admission and their own exact-subject tests.
+
+This fixes the downstream materialization handoff; it does not approve a
+workflow or publish a synthetic commit status. GitHub-token PR synchronization
+still creates approval-required workflow runs under the provider contract:
+https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow
+The existing REST admission, independent review, signing and publication
+boundaries remain separate. No new trigger, credential, permission or executor
+is introduced. A successful upstream test job does not accept another job's
+execution, the whole workflow, a publication or exact-host delivery.
+
+### Owner-requested signing and GitHub completion feedback — 2026-10-17
+
+The existing `QIKVRT workflow executor` now has a separately bounded signing
+continuation for the Owner's explicit persistent-execution request. Its ordinary
+watchdog allowlist remains effect-free. The additional capability is fixed to
+the official AMO unlisted endpoint and the exact deterministic six-component
+Standard XPI digest in `WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json`.
+
+The existing executor receives GitHub `workflow_run: completed` events for
+`QIKVRT CI` and its existing watchdog. A read-only receiver independently GETs
+the original run, jobs and steps and stores `GITHUB_RUN_FEEDBACK.json`. This
+includes actual `cancelled`, `timed_out` or `failure` conclusions. GitHub may
+omit the underlying cancellation reason; that remains
+`NOT_EXPOSED_BY_GITHUB`. Original signing preflight and receipt boundary codes
+are retained when available. A single bounded original-log read per failed job
+may add failed repository test identifiers, `MAKE_TEST_EXIT` codes or the known
+GitHub execution-limit/concurrency reason codes. Arbitrary exception text,
+raw logs and credential values are not forwarded. A log unavailable under the
+existing Actions read permission remains explicitly unavailable. An elapsed
+interval is never abortion evidence.
+
+This is asynchronous provider push feedback, not a blocking synchronous call.
+The receiver checks out its own Main event SHA, never triggering-run source or
+executable artifacts. It has no dependency on the caller and no workflow-global
+concurrency lock. Original signing-job artifacts can be reconciled even when
+another job keeps the full CI workflow in progress. A run still active without
+a provider completion event remains pending; no application timer declares it
+dead. Existing unrelated reminder schedules do not drive this signing path.
+
+For an initial upload the existing executor requires current native Main
+protection, independent code-owner review enforcement and required checks;
+the request and six-component package must match exactly. Only the existing
+AMO secret names' presence booleans and a non-secret opaque binding revision
+are visible to the coordinator. Values reach only the existing signing step.
+Direct Owner invocation of that step retains its exact PR523 admission.
+Delegated `github-actions[bot]` invocation additionally verifies the original
+Main-run intent artifact, its digest and the actual started dispatch step.
+It never waits for its caller's later receipt or overall return.
+
+Credential diagnostics are scoped to the current job's secret context. Both
+the CI `ACCESS_PREFLIGHT.json` and the coordinator's intent/HOLD receipt retain
+`credential_delivery`, including when native protection blocks admission.
+`PAIR_NOT_DELIVERED` and `PARTIAL_PAIR_DELIVERED` do not establish that a key is
+absent from repository, organization, environment or private credential storage.
+`configuration_status=NOT_INSPECTED` and unverified AMO authentication stay
+explicit. A non-requested CI invocation reports `AMO_SIGNING_NOT_REQUESTED`,
+independently of credential delivery. None of these observations admit signing.
+
+The existing two AMO jobs reference repository/organization secret contexts;
+neither names a GitHub environment. Environment-scoped secrets require their
+actual, separately admitted job/environment binding and any native approvals.
+An unreadable secret inventory cannot supply that binding. Do not guess an
+environment name, copy secrets, expand permissions or relocate credentials to
+make a preflight pass. Reobserve the existing protected binding through an
+authorized secret-metadata operation first. The unchanged package, required
+Main protection, independent review and original intent remain mandatory.
+
+The first activation has an exact source boundary: the independently observed
+pre-activation Main commit and original contract blob are pinned in the Owner
+request. Its original bytes must prove that this signing producer did not yet
+exist. Reaching that source bounds historical discovery without scanning years
+of older jobs or spending the repository token's request budget on them. Later
+old-source runs with any other head cannot erase an admitted producer's journal.
+This is a source-lineage boundary, with no deadline or age-based abort rule.
+
+Before dispatch an immutable intent is uploaded and admission is read again.
+The native workflow token invokes the existing CI with
+`return_run_details: true`; the immediate returned run ID is journaled. There
+is no run-ID polling loop. A missing HTTP acknowledgement is ambiguous and
+must be recovered from an original CI preflight backlink; it cannot authorize
+a replacement upload. Provider-confirmed cancellation or pending AMO signing
+permits one independent GET-only readback, using a separate concurrency group
+so it cannot queue behind a stuck writer. A GET 404 in that mode cannot PUT,
+even when the original journal is missing. Pending or aborted recovery does
+not dispatch another unchanged recovery loop. A new provider observation or
+explicitly changed authorized binding is required for a subsequent decision.
+
+Native Actions artifacts carry the non-secret continuation journal and the
+existing live progress schema. Unrelated commits or observation timestamps do
+not reset a failed attempt. This source change becomes a live event consumer
+only after its ordinary protected Main integration and native admission; a
+candidate commit or passing fixture test does not activate it. Firefox 158
+default-policy acceptance, protected production image/profile admission,
+runtime health, exact-domain forwarding removal and fresh public readback
+remain independent open obligations.
+
 A push performed with the workflow-provided `GITHUB_TOKEN` does not recursively
 start ordinary push or pull-request workflows. The worker therefore emits the
 explicit repository-dispatch event
@@ -82,3 +188,160 @@ and no Mirror or Zenodo effect is authorized by this contract.
 - deployment;
 - Zenodo or IETF mutation;
 - repository-wide `PASS`, `FINAL_PASS`, or `EFFECT_ACK_DONE` claims.
+
+## Immediate execution — Owner principle of 2026-10-13
+
+> Was du heute kannst besorgen, das verschiebe nicht auf morgen, sondern erledige es unmittelbar, denn alles andere war, ist und wird inakzeptabel sein.
+>
+> q.e.d.
+> Ingolf Lohmann
+
+Execute every safe, deterministic, authorized and actually callable next action
+in the current work ring, through its tests, persistence and fresh readback.
+Do not postpone executable work to another day, chat or run merely to return
+an intermediate status. Reuse `tools/ai_handoff.py --client-receipt`: it already
+rejects a terminal handoff with an executable successor. Its consistency
+result is separate from live execution evidence. A genuine external or
+protected-authority blocker keeps the task open with its exact retry condition;
+other executable work continues. Preserve causal NOOP for unchanged failed
+effects, existing authorization and review boundaries. The machine binding
+extends `self_application_working_rule.immediate_execution_principle` in the
+existing recursive policy, with no parallel controller or trigger.
+
+## Recursive self-application — Owner rule of 2026-10-13
+
+The Owner's 2026-10-15 transition instruction also applies to the client's
+preparation before a later effect becomes available. Use `transition_plan` in
+the existing `tools/ai_handoff.py --client-receipt` contract documented in
+`docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md`: bind current task inputs, retain
+activation conditions and alternatives, and execute admitted preparation now.
+Consume the emitted ready actions through the existing executor, reassess after
+human corrections, and retain causal NOOP and every existing effect boundary.
+This source-level capability is not proof of a deployed autonomous consumer or
+a measured speedup.
+
+Apply the working method to its own results, errors, omissions and open
+obligations across every applicable layer. Consume the exact preceding run's
+results as successor inputs. Keep task identity, source, affected subject,
+acceptance criterion and the smallest authorized causal repair. Execute an
+admitted repair, test the changed subject, read back its effect and continue.
+An unreadable or vanished subject remains an unreobserved obligation.
+
+The existing `tools/ai_handoff.py --client-receipt` gate rejects dropped
+predecessor duties, premature completion, uninspected existing routes,
+unchanged failed retries and missing effect readbacks. Reuse that gate.
+The existing Site evidence collector now carries current and unreobserved
+duties in each persisted snapshot, with the previous verified snapshot's ID
+and SHA-256. Its original-byte readback covers the duties as part of the same
+record. The observer dispatches no native effects, DNS writes or permission
+changes. Recording a task does not establish an available executor.
+
+An unchanged failed effect is NOOP until its causal prerequisites or genuinely
+available execution capability change. Observation clocks and unrelated node
+lifecycle commits do not authorize another attempt. Other admitted work
+continues. Each changed subject needs fresh dependent gates; predecessors
+remain historical evidence, and their PASS does not transfer.
+
+Preserve “Quod erat demonstrandum ingenium” as Ingolf Lohmann's formulation.
+A scientific proof, novelty or improvement claim needs a concrete verified
+delta in a stated scope. Iteration count, new bytes and the attributed phrase
+alone do not establish that claim. This is an operational working rule.
+
+The product-delivery target is `https://raumzeitterminal.de/`. DNS, TLS, useful
+application delivery and authenticated native execution are separate
+obligations. A different hostname, a successful observer, repository tests or
+an HTTP-200-only observation does not establish product acceptance. Persist
+and read back each layer through its supported authorized path; mark unknown
+propagation rather than claiming adoption on Main, the Mirror or other clients.
+
+The existing draft integration candidate #523 is reused for this request.
+No parallel controller, new trigger or review bypass is created.
+
+## Direct Owner Firefox signing REST client — 2026-10-17
+
+Ingolf Lohmann explicitly renewed `APPROVED` / Product Owner authorization
+for Firefox admission repair and PR523 integration on 2026-10-17 at
+11:19:29 Europe/Istanbul. The exact instruction and its scope are retained at
+https://github.com/ingolf-lohmann/qik-vrt/pull/523#issuecomment-6231678308.
+This is an Owner instruction, not an independent native GitHub review.
+
+Reuse `scripts/qikvrt_api_client.py` with an already authorized GitHub token
+securely supplied as `QIKVRT_API_TOKEN`. A local adapter token is not a GitHub
+credential. No token value belongs in arguments, source, logs or receipts.
+
+`--operation firefox_amo_access` performs GETs for the two fixed repository
+secret names `AMO_JWT_ISSUER` and `AMO_JWT_SECRET`. It reports only the name and
+creation/update times. It neither retrieves values nor changes their binding.
+Denials retain `NOT_INSPECTED`; configured metadata does not establish job
+delivery or Mozilla authentication. Environment/organization/vault scopes
+remain uninspected. This read is not a prerequisite for an otherwise admitted
+signing dispatch: Actions-write and Secrets-read are separate permissions.
+
+The existing direct Owner signing branch does not depend on a Main merge.
+Use `--operation firefox_amo_dispatch --dry-run false --accept-effect`, the
+current PR523 `--ref`, independently reviewed `--amo-expected-head`,
+`--amo-expected-tree` and `--amo-workflow-blob`, and a stable `--request-id`.
+An optional `--amo-previous-run-id` binds the prior native producer; the
+existing workflow resolves and recovers its original signing journal.
+The client verifies the six-component package against the existing Owner
+request, reads current PR523 HEAD/TREE and immutable workflow bytes, then
+reobserves source admission under the existing durable client journal lock.
+It dispatches only `qikvrt_ci.yml`, with `amo_executor_run_id=0`; the actual
+consumer must enforce `GITHUB_ACTOR=ingolf-lohmann` before any signing effect.
+No generic workflow dispatch, new server, proxy, trigger or permission grant
+is added. The existing Ruleset writer route remains unchanged.
+
+The existing private journal is keyed by official add-on/version rather than
+request ID, ref or unrelated HEAD/TREE changes. A pending or ambiguous dispatch
+survives restart and remains readback-only. HTTP200/204 means transport
+acceptance only. Retrieve the original native run, job logs, signing journal,
+receipt and signed XPI through the existing GitHub readback operations. Verify
+the exact source binding, Mozilla signature, default-policy Firefox activation
+and persistent restart. Never infer these effects from metadata or a dispatch
+response, and never edit/delete a journal to force a new submission.
+
+Each operation reuses the existing repository/exact-host closing readback.
+The OpenAPI source describes the bounded GitHub operations; changing it does
+not register them with ChatGPT. A securely credentialed, callable runtime and
+the active connector's actual operation exposure remain independent activation
+conditions. A repository commit or fixture PASS cannot close that live gap.
+Independent native approval and effective Main protection remain separate
+merge gates after successful Firefox admission.
+
+## Direct Owner handoff to the existing Linux CI job — 2026-10-17
+
+Ingolf Lohmann explicitly authorized the Linux CI/CD pipeline to take over
+this operation at 12:33:35 Europe/Istanbul. The exact instruction is retained
+in `WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json#/owner_ci_handoff`. This extends
+the existing direct Owner signing path; the protected Main delegation and
+its native protection requirements retain their separate admission rules.
+
+The existing `amo_unlisted` job now depends on the successful `test` job and
+checks out its exact committed HEAD/TREE output. An Owner push to the existing
+PR523 integration branch can request signing without a separate dispatch.
+The preflight and the signing consumer independently validate the fixed
+repository, workflow source SHA, branch, original and triggering Owner actor,
+first run attempt, successful tested subject, freshly read current open PR523,
+and the already authorized deterministic six-component XPI digest. Bot pushes,
+PR events, forks, other refs, stale subjects and changed packages cannot use
+this handoff. It does not create an independent review or authorize Main
+promotion. Workflow triggers, token permissions and Firefox signature policy
+are unchanged.
+
+The existing add-on/version concurrency group remains the upload writer fence.
+Before an effect, the existing journal resolver inspects both actual manual
+dispatch producers and Owner-push producers since this grant. Only a started
+official signing step counts; a successful presence-only preflight does not.
+The newest actual producer's original journal must be recovered before the
+existing signing consumer runs. An incomplete inventory, lost original
+journal or source drift holds the effect; reruns cannot replace fresh admitted
+readback. The existing consumer persists upload intent before PUT and never
+resubmits an unresolved upload, even if the repository HEAD changes.
+
+`ACCESS_PREFLIGHT.json` records `DIRECT_OWNER_TESTED_PUSH`, its exact source
+and authorization binding, and the job-scoped credential delivery state.
+Missing credential delivery keeps `submit=false` and reports
+`AMO_CREDENTIAL_PAIR_NOT_DELIVERED_TO_THIS_JOB`. This proves neither remote
+secret-store absence nor Mozilla authentication. Original native receipts and
+the signed XPI, followed by actual default-policy Firefox activation and
+persistent restart, remain required before effect completion.

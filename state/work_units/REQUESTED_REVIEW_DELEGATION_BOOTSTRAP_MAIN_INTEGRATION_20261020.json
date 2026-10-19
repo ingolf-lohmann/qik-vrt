@@ -1,0 +1,87 @@
+{
+  "schema": "qikvrt_ai_work_unit_provenance_v1",
+  "work_unit_id": "REQUESTED_REVIEW_DELEGATION_BOOTSTRAP_MAIN_INTEGRATION_20261020",
+  "created_at": "2026-10-19T22:37:26.941216+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_commit": "b226770c064a167ee3a9cc70996f05db1b3bc6d1",
+  "source_tree": "4200dfe141fc30557f0e0d9abb5eec4176f9df25",
+  "predecessor_pr": 427,
+  "predecessor_head": "5254836e0865970cf79da2f012f74bcd04941857",
+  "predecessor_tree": "2c0631000913ac82036c19808a77805a598602c2",
+  "merge_base": "c621b863945adab208d4ed72f6197c7220b1dbb4",
+  "human_actor": {
+    "attribution_id": "Ingolf Lohmann",
+    "role": "Principal, Product Owner and Code Owner"
+  },
+  "human_contributions": [
+    "Standing authorization for repository-internal causal repair and backlog integration",
+    "Run until all done; retain existing grants and REST-only route"
+  ],
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "session_or_run_id": "01cd72b97179"
+  },
+  "artificial_cognitive_contributions": [
+    "Recovered and verified all 5154 current Main source blobs with normal Git attributes",
+    "Three-way port of the original PR427 implementation onto current Main, preserving current owner review policy and all original incident bytes",
+    "Deduplicated mandatory policy discovery and placed its existing delegation beside it before route selection"
+  ],
+  "repair": {
+    "existing_pr_updated_in_place": true,
+    "new_proxy_pr": false,
+    "preserve_original_pr_parent": true,
+    "preserve_current_main_parent": true,
+    "original_work_unit": "state/work_units/REQUESTED_REVIEW_DELEGATION_BOOTSTRAP_LEARNING_20261001.json",
+    "original_work_unit_changed": false,
+    "existing_owner_principal_review_policy_changed": false,
+    "required_read_order_unique": true,
+    "new_executor_or_automatic_effect": false
+  },
+  "outputs": [
+    {
+      "path": "AI_CONTEXT.json",
+      "bytes": 16678,
+      "sha256": "8d36b01d6e5ccec89d1da381e7ba8b91483597b2c3a35b32fa19bd8b5c2e19f3"
+    },
+    {
+      "path": "Makefile",
+      "bytes": 17258,
+      "sha256": "83d23c2504949e597e92f759ec439571cad9e8df82d04422568ea99535e92968"
+    },
+    {
+      "path": "tools/ai_runtime_bootloader.py",
+      "bytes": 19714,
+      "sha256": "d01da79517da6be5413898e16ea238bd142c9bfd9e61cab65b339e517a01d6ee"
+    },
+    {
+      "path": "tests/test_human_machine_interface_adaptation.py",
+      "bytes": 7136,
+      "sha256": "2fddd19abc217daa15fd16578daff3462840705dd6172fbabe4a0ad49c470e65"
+    }
+  ],
+  "verification": {
+    "targeted_command": "python3 -B -m unittest tests.test_ai_runtime_bootloader tests.test_human_machine_interface_adaptation",
+    "targeted_tests": 119,
+    "targeted_failures": 0,
+    "full_make_test": "REQUIRED_AFTER_INTEGRITY_REGENERATION",
+    "old_subject_pass_transferred": false
+  },
+  "source_scope": {
+    "complete_current_working_tree": true,
+    "complete_commit_history": false,
+    "native_host_acceptance": false
+  },
+  "external_effects": {
+    "force_push": false,
+    "merge": false,
+    "deployment": false,
+    "release": false
+  },
+  "completion_claims": {
+    "EFFECT_ACK_DONE": false,
+    "repository_backlog_complete": false,
+    "native_peer_delivery": false
+  },
+  "next_action": "Regenerate integrity, run applicable gates on this exact current-Main candidate, fast-forward the existing PR branch through guarded REST, then verify current review and all required checks before considering merge."
+}

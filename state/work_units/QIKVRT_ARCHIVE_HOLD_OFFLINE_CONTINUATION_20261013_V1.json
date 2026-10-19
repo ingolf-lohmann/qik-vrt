@@ -1,0 +1,415 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_ARCHIVE_HOLD_OFFLINE_CONTINUATION_20261013_V1",
+  "created_at": "2026-10-13T11:07:03.355616+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_pr": 523,
+  "source_ref": "integration/515-519-521-522-20261012-eceb9b63",
+  "source_commit": "412788d662cdc05f839b32ee6632b602d9c1e4f1",
+  "source_tree": "af55d952c8ead5bb83eb1056448fff39ee5dfa63",
+  "human_actor": "Ingolf Lohmann",
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6",
+    "session_or_run_id": "UNAVAILABLE",
+    "tools_and_adapters": [
+      "GitHub REST connector",
+      "local Bash/Python/Git verification"
+    ],
+    "identity_and_observation_limits": "Platform principal and Git author do not establish a natural-person or model identity."
+  },
+  "human_contributions": [
+    "Authorized repair of the existing PR candidate; supplied exact failed run IDs and continuation defect.",
+    "Required unchanged NOOP protection, immutable journals and no offline-to-archive PASS promotion."
+  ],
+  "artificial_cognitive_contributions": [
+    "Independently read original steps/logs and exact workflow sources.",
+    "Separated existing deterministic read-only disposition checks from external materialization.",
+    "Added prerequisite-bound !cancelled conditions to local disposition, integrity and repository gates; kept raw archive failures and success-only persistence.",
+    "Bound Batch-003 checkout to the exact event source HEAD.",
+    "Extended the existing archive-journal regression module; no new executor, workflow, trigger or permission scope."
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "inputs": [
+    {
+      "path": ".github/workflows/qikvrt_batch04_integrity.yml",
+      "source_commit": "412788d662cdc05f839b32ee6632b602d9c1e4f1",
+      "bytes": 18938,
+      "sha256": "e04bedfeaebfd6e2b35ad76103dff39fbc0b7458eba799d437a8a5fd80f3f0b6",
+      "git_blob_sha1": "941626f4101134f0f0c13237e5dfb4dba83ca493"
+    },
+    {
+      "path": ".github/workflows/qikvrt_batch003_remaining_disposition.yml",
+      "source_commit": "412788d662cdc05f839b32ee6632b602d9c1e4f1",
+      "bytes": 5463,
+      "sha256": "3b89bb6cfc70fa5ef69432fb2ba9bc8bb7c8d5bd3e109fad2e7b8c3fa191ad6f",
+      "git_blob_sha1": "562220c906fb6e4b20b63088f2d83116e0bdce05"
+    },
+    {
+      "path": "tests/test_archive_get_causal_journal.py",
+      "source_commit": "412788d662cdc05f839b32ee6632b602d9c1e4f1",
+      "bytes": 18561,
+      "sha256": "c528a291a18eb60ca56f29b462538dba79ec429519e07a6ef6f994674d96bd52",
+      "git_blob_sha1": "b9505c0da8a9977c2a2dd059aa211134660f4fae"
+    },
+    {
+      "path": "state/work_units/QIKVRT_SITE32_BROWSER_PROVENANCE_SUCCESSOR_20261013_V1.json",
+      "bytes": 44792,
+      "sha256": "2b794e8b8621bf5a4b7aa0c30d38182fd6074d0f60466977ce7a60786de5ef32",
+      "git_blob_sha1": "d23168834f0e6647d16a382566b92b9bac9f5979"
+    }
+  ],
+  "outputs": [
+    {
+      "path": ".github/workflows/qikvrt_batch04_integrity.yml",
+      "bytes": 21678,
+      "sha256": "d859151c10219b270c6df995ddb2e34f433495afd19bef6c16f2c751d963c930",
+      "git_blob_sha1": "dd8b3ebf3d72addce55bfef2d82c253b03f84c61"
+    },
+    {
+      "path": ".github/workflows/qikvrt_batch003_remaining_disposition.yml",
+      "bytes": 6179,
+      "sha256": "1c4e537f341dab7cade1c8faeabb2162823739240cc2db2b95af2c7ca9073a6c",
+      "git_blob_sha1": "87ca1567183419ffee66b3f825535806252c6abf"
+    },
+    {
+      "path": "tests/test_archive_get_causal_journal.py",
+      "bytes": 30279,
+      "sha256": "3bf48af10b138dff6d4be39c4193745ef91d39977c388c92455140c055e327dc",
+      "git_blob_sha1": "c27bfdc6d32e6478272f629ddc212c3f4a6e559f"
+    },
+    {
+      "path": "evidence/archive-hold-continuation/20261013/run-38364764310-job-115187123115.log",
+      "bytes": 143943,
+      "sha256": "1a66e4301f9bca63ee037a8d7844382d7dac02401ca3ca9057a64e045fe41875",
+      "git_blob_sha1": "ac08ef24b5f51f3af450516b5656fd31cd0565c9"
+    },
+    {
+      "path": "evidence/archive-hold-continuation/20261013/run-38364764426-job-115187123305.log",
+      "bytes": 127922,
+      "sha256": "62588e17d856d760473a6f95cba255345fbccb089bd63655244fed7992788e41",
+      "git_blob_sha1": "4265d258144b009531a0cd84d206e13d6e2662db"
+    },
+    {
+      "path": "evidence/archive-hold-continuation/20261013/local-make-test.log",
+      "bytes": 227564,
+      "sha256": "0a1fe10d13ae23afd0861b53372dc88c3f0ef0e9edc77d3879a2314daa339462",
+      "git_blob_sha1": "da13201d292cd0c7db975de9724f13db23ba6146"
+    }
+  ],
+  "git_history": {
+    "history_preserving_parent": "412788d662cdc05f839b32ee6632b602d9c1e4f1",
+    "branch": "integration/515-519-521-522-20261012-eceb9b63",
+    "transport": "REST_API_ONLY",
+    "force_push": false
+  },
+  "verification": {
+    "focused_archive_regressions": {
+      "command": "python3 -B -m unittest -v tests.test_archive_get_causal_journal",
+      "exit_code": 0,
+      "tests": 27,
+      "new_workflow_regression_methods": 6,
+      "scope": "Current candidate worktree; native successor readback remains separate."
+    },
+    "full_repository_gates": {
+      "command": "make test",
+      "exit_code": 0,
+      "reported_test_executions": 1198,
+      "reported_test_invocations": 25,
+      "log_path": "evidence/archive-hold-continuation/20261013/local-make-test.log",
+      "log_sha256": "0a1fe10d13ae23afd0861b53372dc88c3f0ef0e9edc77d3879a2314daa339462",
+      "scope": "Changed workflow/test code and provenance worktree; integrity regenerated before execution. Final metadata-only successor must receive fresh integrity and native exact-head gates."
+    },
+    "native_successor_workflows": {
+      "state": "PENDING_EXACT_HEAD_READBACK"
+    },
+    "syntax": {
+      "yaml": "Both workflows parsed; no added runtime dependency",
+      "bash": "Every embedded run body passes bash -n",
+      "diff_check": "git diff --check passed"
+    }
+  },
+  "data_dependencies": {
+    "archive_materialization": {
+      "input": "Exact current source files, original archive causal journal and public Zenodo response",
+      "failure": "Nonzero original status retained, including NOOP_UNCHANGED_ZENODO_FAILURE_OR_UNRESOLVED_GET",
+      "continue_on_error": false
+    },
+    "offline_disposition": {
+      "input": "Existing repository subject receipts, claim matrices, hash bindings, historical source capsule and status projection",
+      "independent_of_external_success": true,
+      "network_required": false,
+      "partial_or_missing_evidence": "Existing verifier fails; no fallback or synthetic PASS."
+    },
+    "repository_integrity": {
+      "input": "Actual checked-out worktree bytes and existing generator/verify contract",
+      "independent_of_external_success": true,
+      "does_not_prove": "Archive access, archival acceptance, publication or any missing external effect."
+    },
+    "repository_gates": {
+      "input": "Exact checked-out worktree, integrity files and existing make test targets",
+      "independent_of_external_success": true,
+      "local_failure_does_not_skip_other_gate": true
+    },
+    "manuscript_and_release_materialization": {
+      "input": "Existing deterministic manuscript and package inputs",
+      "existing_order_preserved": true
+    },
+    "aphorism_provision_and_materialization": {
+      "input": "Publication runtime provisioning and generated publication assets",
+      "default_success_dependency_preserved": true,
+      "not_reclassified_as_offline_gate": true
+    },
+    "persistence": {
+      "input": "Every preceding step successful",
+      "condition": "success()",
+      "forbidden_after_archive_hold": true
+    },
+    "diagnostics": {
+      "condition": "always()",
+      "original_archive_journal_path": ".qikvrt/runtime/archive-get-journal/**",
+      "hidden_files_and_retention_preserved": true
+    }
+  },
+  "original_failed_executions": [
+    {
+      "run_id": 38364764310,
+      "job_id": 115187123115,
+      "conclusion": "failure",
+      "source_head": "412788d662cdc05f839b32ee6632b602d9c1e4f1",
+      "failure": "NOOP_UNCHANGED_ZENODO_FAILURE_OR_UNRESOLVED_GET",
+      "log_path": "evidence/archive-hold-continuation/20261013/run-38364764310-job-115187123115.log"
+    },
+    {
+      "run_id": 38364764426,
+      "job_id": 115187123305,
+      "conclusion": "failure",
+      "source_head": "412788d662cdc05f839b32ee6632b602d9c1e4f1",
+      "failure": "NOOP_UNCHANGED_ZENODO_FAILURE_OR_UNRESOLVED_GET",
+      "log_path": "evidence/archive-hold-continuation/20261013/run-38364764426-job-115187123305.log"
+    }
+  ],
+  "predecessor": {
+    "path": "state/work_units/QIKVRT_SITE32_BROWSER_PROVENANCE_SUCCESSOR_20261013_V1.json",
+    "bytes": 44792,
+    "sha256": "2b794e8b8621bf5a4b7aa0c30d38182fd6074d0f60466977ce7a60786de5ef32",
+    "git_blob_sha1": "d23168834f0e6647d16a382566b92b9bac9f5979"
+  },
+  "inherited_open_obligations": [
+    {
+      "id": "delivery:raumzeitterminal.de",
+      "layer": "DELIVERY",
+      "target": "raumzeitterminal.de",
+      "label": "Produktdomain in Betrieb nehmen",
+      "reason": "EXACT_HOST_NXDOMAIN_HTTP_530",
+      "acceptance": "DNS und TLS für raumzeitterminal.de, gebundene Anwendung und frischer Nutzpfad-Readback bestätigen.",
+      "subject": {
+        "url": "https://raumzeitterminal.de/"
+      },
+      "semantic_sha256": "5afbeef30fbb021c40ac673f137ee417af2ded95b522e5ace2167e1f07af92cc",
+      "state": "OPEN",
+      "transition": "CHANGED_OBSERVATION",
+      "retry_condition": "Material geänderte Domain-/DNS-/TLS-Evidenz oder ein authentifizierter Schreibzugang für genau diese Domain; danach die ursprüngliche Auslieferung prüfen.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Material geänderte Domain-/DNS-/TLS-Evidenz oder ein authentifizierter Schreibzugang für genau diese Domain; danach die ursprüngliche Auslieferung prüfen.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "governance:qik-vrt",
+      "layer": "GOVERNANCE",
+      "target": "ingolf-lohmann/qik-vrt",
+      "label": "Native Authority-Bindung bestätigen",
+      "reason": "NATIVE_AUTHORITY_BINDING_NOT_VERIFIED",
+      "acceptance": "Aktuelle Authority-Bindung, Governance und zugelassene Operation am exakten Gegenstand unabhängig zurücklesen.",
+      "subject": {},
+      "semantic_sha256": "3ce3d30b4a258ec59bfb8e6d5569ac84138276bb0748486f49d93017496e4b8e",
+      "state": "OPEN",
+      "transition": "UNCHANGED",
+      "retry_condition": "Neue gebundene Authority-/Governance-Evidenz und die erforderliche zugelassene Operation.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Neue gebundene Authority-/Governance-Evidenz und die erforderliche zugelassene Operation.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "native:qik-vrt",
+      "layer": "RUNTIME",
+      "target": "qik-vrt",
+      "label": "Native Terminal-Ausführung abnehmen",
+      "reason": "AUTHENTICATED_NATIVE_EXECUTION_NOT_ACCEPTED",
+      "acceptance": "Identitätsgebundene Ausführung und unabhängigen Effect-Readback am freigegebenen Runtime-Host nachweisen.",
+      "subject": {},
+      "semantic_sha256": "acfd89257d2e10c21f95ccb4d111bc45b9e8f64f748fb60471aaf860085dcdea",
+      "state": "OPEN",
+      "transition": "UNCHANGED",
+      "retry_condition": "Ein authentifizierter, identitätsgebundener Ausführungsweg ist tatsächlich verfügbar und für den konkreten Auftrag zugelassen.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Ein authentifizierter, identitätsgebundener Ausführungsweg ist tatsächlich verfügbar und für den konkreten Auftrag zugelassen.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "registry:qik-vrt",
+      "layer": "REGISTRY",
+      "target": "qik-vrt",
+      "label": "Knotenverzeichnis vollständig zurücklesen",
+      "reason": "REGISTRY_DISCOVERY_INCOMPLETE",
+      "acceptance": "Vollständige Quellen mit aktuellen HEAD/TREE-Bindungen lesen.",
+      "subject": {},
+      "semantic_sha256": "f9892acb87572ca11e0986104ebf6a04a0438fbdcb89ad0843b6662d4e5607ca",
+      "state": "OPEN",
+      "transition": "UNCHANGED",
+      "retry_condition": "Geänderte Quellen-/Zugriffsevidenz für die betroffenen Verzeichnisquellen.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Geänderte Quellen-/Zugriffsevidenz für die betroffenen Verzeichnisquellen.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "repository:Goldkelch/qik-vrt",
+      "layer": "REPOSITORY",
+      "target": "Goldkelch/qik-vrt",
+      "label": "Aktuellen Repository-Gegenstand lesen",
+      "reason": "REPOSITORY_NOT_FOUND",
+      "acceptance": "Aktuellen HEAD und TREE über den erlaubten REST-Pfad zurücklesen.",
+      "subject": {
+        "repository": "Goldkelch/qik-vrt",
+        "head": null,
+        "tree": null
+      },
+      "semantic_sha256": "a7bb27dcba97eea2252cf151e48b26e74415019d93f90d22e15c5bacd75352b0",
+      "state": "OPEN",
+      "transition": "UNCHANGED",
+      "retry_condition": "Neue, unabhängig bestätigte Quellenbindung oder wiederhergestellter Zugriff erforderlich.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Neue, unabhängig bestätigte Quellenbindung oder wiederhergestellter Zugriff erforderlich.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "repository:ingolf-lohmann/qik-vrt",
+      "layer": "REPOSITORY",
+      "target": "ingolf-lohmann/qik-vrt",
+      "label": "Aktuellen Repository-Gegenstand lesen",
+      "reason": "REPOSITORY_RATE_LIMITED",
+      "acceptance": "Aktuellen HEAD und TREE über den erlaubten REST-Pfad zurücklesen.",
+      "subject": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "head": null,
+        "tree": null
+      },
+      "semantic_sha256": "452e066819947d286f891b27aa36018c470d5ac423615123741d50e7df73386f",
+      "state": "OPEN",
+      "transition": "UNCHANGED",
+      "retry_condition": "Material geänderte Zugriffs- oder Quellenbindung; unveränderte Zugriffssperren bleiben NOOP.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Material geänderte Zugriffs- oder Quellenbindung; unveränderte Zugriffssperren bleiben NOOP.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "runtime:Goldkelch/qik-vrt",
+      "layer": "RUNTIME",
+      "target": "Goldkelch/qik-vrt",
+      "label": "Knoten-Runtime anschließen",
+      "reason": "RUNTIME_ENDPOINT_NOT_ADVERTISED",
+      "acceptance": "Frischen, identitätsgebundenen Runtime-Befund am angekündigten Endpunkt lesen; dies ersetzt keine native Effektabnahme.",
+      "subject": {
+        "repository": "Goldkelch/qik-vrt",
+        "head": null,
+        "tree": null
+      },
+      "semantic_sha256": "470f253ac5e04fdacbf4262d1f03ccee465c8822e89312675cb46cc3f5549ed1",
+      "state": "OPEN",
+      "transition": "UNCHANGED",
+      "retry_condition": "Material geänderter Runtime-Endpunkt, Zugriff oder identitätsgebundener Runtime-Befund.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Material geänderter Runtime-Endpunkt, Zugriff oder identitätsgebundener Runtime-Befund.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "runtime:ingolf-lohmann/qik-vrt",
+      "layer": "RUNTIME",
+      "target": "ingolf-lohmann/qik-vrt",
+      "label": "Knoten-Runtime anschließen",
+      "reason": "RUNTIME_ENDPOINT_NOT_ADVERTISED",
+      "acceptance": "Frischen, identitätsgebundenen Runtime-Befund am angekündigten Endpunkt lesen; dies ersetzt keine native Effektabnahme.",
+      "subject": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "head": null,
+        "tree": null
+      },
+      "semantic_sha256": "a3af1fe781dd9e39f1eeefe027123bfaceb723b890f7af5ed82603b3737e7bdc",
+      "state": "OPEN",
+      "transition": "UNCHANGED",
+      "retry_condition": "Material geänderter Runtime-Endpunkt, Zugriff oder identitätsgebundener Runtime-Befund.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Material geänderter Runtime-Endpunkt, Zugriff oder identitätsgebundener Runtime-Befund.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "MAIN_GOVERNANCE_AND_INTEGRATION",
+      "state": "OPEN",
+      "source": "https://github.com/ingolf-lohmann/qik-vrt/pull/523",
+      "evidence": "Current rulesets=[], reviews=[]; requested review execution failure CODE_OWNER_RULE_NOT_ENFORCED.",
+      "next_action": "Use an admitted existing native ruleset writer and independent exact-head review before guarded Main integration.",
+      "source_predecessor": "state/work_units/QIKVRT_IMMEDIATE_EXECUTION_20261013_V1.json"
+    },
+    {
+      "id": "EXACT_DOMAIN_DELIVERY",
+      "state": "OPEN",
+      "source": "https://raumzeitterminal.de/",
+      "next_action": "Usable target-bound authenticated registrar/DNS write, then DNS/TLS and useful application readback; unchanged denied writes remain NOOP.",
+      "source_predecessor": "state/work_units/QIKVRT_IMMEDIATE_EXECUTION_20261013_V1.json"
+    },
+    {
+      "id": "AUTHENTICATED_NATIVE_RUNTIME",
+      "state": "OPEN",
+      "source": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json",
+      "next_action": "Establish an actual identity-bound native runtime start and independent effect readback.",
+      "source_predecessor": "state/work_units/QIKVRT_IMMEDIATE_EXECUTION_20261013_V1.json"
+    },
+    {
+      "id": "BROWSER_USE_PATH_ACCEPTANCE",
+      "state": "OPEN",
+      "next_action": "Use an already admitted browser/device path exposing real network interruption, an uncached negative control and profile-preserving process restart for the exact derived Site32 client; independently bind original bytes and recorded behaviour.",
+      "source_predecessor": "original_report#independent_successor_readback.client_continuation.work",
+      "partial_verified_scope": "Site32 public React navigation and local first-visit create/save/normal-reload/reopen/verify are recorded. The original broader obligation stays OPEN for actual network loss, uncached negative control and durable process restart; console/engine/physical-device limits are not erased."
+    },
+    {
+      "id": "NATIVE_GOVERNANCE_AND_PR523_MAIN_INTEGRATION",
+      "state": "OPEN",
+      "next_action": "Use the existing admitted native ruleset writer and independent exact-head review, then guarded Main integration; rulesets=[], main.protected=false, reviews=[] remain observed."
+    },
+    {
+      "id": "DNS_TLS_EXACT_DOMAIN_DELIVERY",
+      "state": "OPEN",
+      "next_action": "Use target-bound authenticated domain/DNS writer when available; independently accept DNS, TLS and the actual application on https://raumzeitterminal.de/. HTTP 530 remains OPEN."
+    },
+    {
+      "id": "SITE32_CURRENT_DERIVED_CLIENT_NETWORK_LOSS_AND_PROCESS_RESTART",
+      "state": "OPEN",
+      "next_action": "Perform true network interruption, uncached negative control and persistent browser-process restart on exact changed client32 bytes when an admitted controller exposes these controls."
+    },
+    {
+      "id": "SITE32_PHYSICAL_IPHONE_AND_DIAGNOSTIC_COVERAGE",
+      "state": "OPEN",
+      "next_action": "Actual iPhone/device, engine/viewport and console/network observations require their own supported acceptance path; do not infer them from configured lite mode or normal reload."
+    }
+  ],
+  "obligation_mapping_note": "All predecessor obligations retained unchanged; this narrow workflow repair transfers no predecessor PASS. Closing live workflow proof is independently bound to the new successor.",
+  "human_decision": "EXISTING_EXPLICIT_WORKFLOW_REPAIR_AUTHORIZATION_REUSED; GENERATED_CHANGE_NOT_YET_OWNER_REVIEWED",
+  "external_effects": {
+    "authorized": "Update existing PR #523 head through non-force REST ref update and observe native event-triggered workflows.",
+    "main_integration": false,
+    "zenodo_get_retried": false,
+    "zenodo_mutation": false,
+    "release": false,
+    "deployment": false
+  },
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "ordinary_release": false,
+    "proof_corpus_published_on_zenodo": false
+  },
+  "exact_delivery_url": "https://raumzeitterminal.de/"
+}

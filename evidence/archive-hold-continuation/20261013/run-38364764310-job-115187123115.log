@@ -1,0 +1,1138 @@
+﻿2026-10-13T07:46:01.9122037Z Current runner version: '2.337.0'
+2026-10-13T07:46:01.9146843Z ##[group]Runner Image Provisioner
+2026-10-13T07:46:01.9147719Z Hosted Compute Agent
+2026-10-13T07:46:01.9148262Z Version: 20261002.596
+2026-10-13T07:46:01.9148831Z Commit: c3d12f3313a95f25162a1503be624f3b0617f8c0
+2026-10-13T07:46:01.9149521Z Build Date: 2026-10-02T22:28:27Z
+2026-10-13T07:46:01.9150161Z Worker ID: {16953bdd-320b-4d35-a2bc-71ae771d83f7}
+2026-10-13T07:46:01.9150791Z Region: westus3
+2026-10-13T07:46:01.9151310Z Cloud: Azure
+2026-10-13T07:46:01.9151806Z ##[endgroup]
+2026-10-13T07:46:01.9153259Z ##[group]Operating System
+2026-10-13T07:46:01.9153999Z Ubuntu
+2026-10-13T07:46:01.9154482Z 24.04.5
+2026-10-13T07:46:01.9154973Z LTS
+2026-10-13T07:46:01.9155431Z ##[endgroup]
+2026-10-13T07:46:01.9155982Z ##[group]Runner Image
+2026-10-13T07:46:01.9156820Z Image: ubuntu-24.04
+2026-10-13T07:46:01.9157339Z Version: 20261004.327.1
+2026-10-13T07:46:01.9158545Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261004.327/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-13T07:46:01.9159938Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261004.327
+2026-10-13T07:46:01.9160833Z ##[endgroup]
+2026-10-13T07:46:01.9161935Z ##[group]GITHUB_TOKEN Permissions
+2026-10-13T07:46:01.9163866Z Actions: write
+2026-10-13T07:46:01.9164388Z Contents: write
+2026-10-13T07:46:01.9164978Z Metadata: read
+2026-10-13T07:46:01.9165496Z ##[endgroup]
+2026-10-13T07:46:01.9168015Z Secret source: Actions
+2026-10-13T07:46:01.9168853Z Cache mode: write
+2026-10-13T07:46:01.9169464Z Prepare workflow directory
+2026-10-13T07:46:01.9700412Z Prepare all required actions
+2026-10-13T07:46:01.9750493Z Getting action download info
+2026-10-13T07:46:02.2920486Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-10-13T07:46:02.4033504Z Download action repository 'actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-10-13T07:46:02.4947786Z Download action repository 'actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a' (SHA:043fb46d1a93c77aae656e7c1c64a875d1fc6a0a)
+2026-10-13T07:46:02.6788314Z Complete job name: materialize
+2026-10-13T07:46:02.7554008Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-10-13T07:46:02.7554934Z with:
+2026-10-13T07:46:02.7555358Z   ref: 412788d662cdc05f839b32ee6632b602d9c1e4f1
+2026-10-13T07:46:02.7555879Z   fetch-depth: 0
+2026-10-13T07:46:02.7556459Z   repository: ingolf-lohmann/qik-vrt
+2026-10-13T07:46:02.7560347Z   token: ***
+2026-10-13T07:46:02.7560722Z   ssh-strict: true
+2026-10-13T07:46:02.7561116Z   ssh-user: git
+2026-10-13T07:46:02.7561513Z   persist-credentials: true
+2026-10-13T07:46:02.7561940Z   clean: true
+2026-10-13T07:46:02.7562343Z   sparse-checkout-cone-mode: true
+2026-10-13T07:46:02.7562807Z   fetch-tags: false
+2026-10-13T07:46:02.7563209Z   show-progress: true
+2026-10-13T07:46:02.7563600Z   lfs: false
+2026-10-13T07:46:02.7563983Z   submodules: false
+2026-10-13T07:46:02.7564374Z   set-safe-directory: true
+2026-10-13T07:46:02.7564822Z   allow-unsafe-pr-checkout: false
+2026-10-13T07:46:02.7565525Z env:
+2026-10-13T07:46:02.7566027Z   TARGET_REF: integration/515-519-521-522-20261012-eceb9b63
+2026-10-13T07:46:02.7567023Z   EXPECTED_HEAD: 412788d662cdc05f839b32ee6632b602d9c1e4f1
+2026-10-13T07:46:02.7567700Z   QIKVRT_ARCHIVE_JOURNAL_REPOSITORY: ingolf-lohmann/qik-vrt
+2026-10-13T07:46:02.7568423Z   QIKVRT_ARCHIVE_SOURCE_HEAD: 412788d662cdc05f839b32ee6632b602d9c1e4f1
+2026-10-13T07:46:02.7572430Z   QIKVRT_GITHUB_TOKEN: ***
+2026-10-13T07:46:02.7572885Z   QIKVRT_ARCHIVE_RETRY_EVIDENCE_FILE: 
+2026-10-13T07:46:02.7573342Z ##[endgroup]
+2026-10-13T07:46:02.8564534Z Syncing repository: ingolf-lohmann/qik-vrt
+2026-10-13T07:46:02.8567624Z ##[group]Getting Git version info
+2026-10-13T07:46:02.8569242Z Working directory is '/home/runner/work/qik-vrt/qik-vrt'
+2026-10-13T07:46:02.8571161Z [command]/usr/bin/git version
+2026-10-13T07:46:02.8594007Z git version 2.55.0
+2026-10-13T07:46:02.8614107Z ##[endgroup]
+2026-10-13T07:46:02.8624499Z Temporarily overriding HOME='/home/runner/work/_temp/99c6a8e2-0706-41cc-ada4-3dd7ae02aacb' before making global git config changes
+2026-10-13T07:46:02.8627145Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-13T07:46:02.8631706Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/qik-vrt/qik-vrt
+2026-10-13T07:46:02.8682036Z Deleting the contents of '/home/runner/work/qik-vrt/qik-vrt'
+2026-10-13T07:46:02.8684085Z ##[group]Determining repository object format
+2026-10-13T07:46:02.8685607Z ##[endgroup]
+2026-10-13T07:46:02.8686969Z ##[group]Initializing the repository
+2026-10-13T07:46:02.8692205Z [command]/usr/bin/git init /home/runner/work/qik-vrt/qik-vrt
+2026-10-13T07:46:02.8808488Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-13T07:46:02.8812675Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-13T07:46:02.8817723Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-13T07:46:02.8819118Z hint: call:
+2026-10-13T07:46:02.8822239Z hint:
+2026-10-13T07:46:02.8823106Z hint: 	git config --global init.defaultBranch <name>
+2026-10-13T07:46:02.8824199Z hint:
+2026-10-13T07:46:02.8825263Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-13T07:46:02.8827116Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-13T07:46:02.8828519Z hint:
+2026-10-13T07:46:02.8829309Z hint: 	git branch -m <name>
+2026-10-13T07:46:02.8830218Z hint:
+2026-10-13T07:46:02.8831281Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-13T07:46:02.8833055Z Initialized empty Git repository in /home/runner/work/qik-vrt/qik-vrt/.git/
+2026-10-13T07:46:02.8836039Z [command]/usr/bin/git remote add origin https://github.com/ingolf-lohmann/qik-vrt
+2026-10-13T07:46:02.8865179Z ##[endgroup]
+2026-10-13T07:46:02.8866784Z ##[group]Disabling automatic garbage collection
+2026-10-13T07:46:02.8869222Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-13T07:46:02.8907735Z ##[endgroup]
+2026-10-13T07:46:02.8908768Z ##[group]Setting up auth
+2026-10-13T07:46:02.8909814Z Removing SSH command configuration
+2026-10-13T07:46:02.8910809Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-13T07:46:02.8942612Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-13T07:46:02.9248966Z Removing HTTP extra header
+2026-10-13T07:46:02.9255271Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-13T07:46:02.9291953Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-13T07:46:02.9505248Z Removing includeIf entries pointing to credentials config files
+2026-10-13T07:46:02.9511940Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-13T07:46:02.9542136Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-13T07:46:02.9748000Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-f50f7244-49c9-4e37-bac4-f52560396a8a.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-13T07:46:02.9789970Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git.path /home/runner/work/_temp/git-credentials-f50f7244-49c9-4e37-bac4-f52560396a8a.config
+2026-10-13T07:46:02.9825894Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-f50f7244-49c9-4e37-bac4-f52560396a8a.config
+2026-10-13T07:46:02.9861915Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-f50f7244-49c9-4e37-bac4-f52560396a8a.config
+2026-10-13T07:46:02.9897338Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-f50f7244-49c9-4e37-bac4-f52560396a8a.config
+2026-10-13T07:46:02.9926000Z ##[endgroup]
+2026-10-13T07:46:02.9926909Z ##[group]Fetching the repository
+2026-10-13T07:46:02.9937013Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+2026-10-13T07:46:12.9565855Z From https://github.com/ingolf-lohmann/qik-vrt
+2026-10-13T07:46:12.9567675Z  * [new branch]        admin/admit-pr1173-24c4a886 -> origin/admin/admit-pr1173-24c4a886
+2026-10-13T07:46:12.9569361Z  * [new branch]        agent/action-required-trusted-carrier-standard-v1 -> origin/agent/action-required-trusted-carrier-standard-v1
+2026-10-13T07:46:12.9572791Z  * [new branch]        agent/aphorism-corpus-scientific-assessment-mirror-v2 -> origin/agent/aphorism-corpus-scientific-assessment-mirror-v2
+2026-10-13T07:46:12.9574961Z  * [new branch]        agent/aphorism-corpus-scientific-assessment-mirror-v3 -> origin/agent/aphorism-corpus-scientific-assessment-mirror-v3
+2026-10-13T07:46:12.9577267Z  * [new branch]        agent/aphorism-corpus-scientific-assessment-v2-mirror -> origin/agent/aphorism-corpus-scientific-assessment-v2-mirror
+2026-10-13T07:46:12.9578788Z  * [new branch]        agent/authority-041fb501-exact-transfer -> origin/agent/authority-041fb501-exact-transfer
+2026-10-13T07:46:12.9580121Z  * [new branch]        agent/authority-4211d774-exact-transfer -> origin/agent/authority-4211d774-exact-transfer
+2026-10-13T07:46:12.9581376Z  * [new branch]        agent/authority-4211d774-materialized -> origin/agent/authority-4211d774-materialized
+2026-10-13T07:46:12.9582640Z  * [new branch]        agent/bootstrap-authority-041fb501 -> origin/agent/bootstrap-authority-041fb501
+2026-10-13T07:46:12.9583969Z  * [new branch]        agent/canonical-upstream-remote-policy-v1 -> origin/agent/canonical-upstream-remote-policy-v1
+2026-10-13T07:46:12.9585524Z  * [new branch]        agent/complete-runtime-tool-cache -> origin/agent/complete-runtime-tool-cache
+2026-10-13T07:46:12.9586840Z  * [new branch]        agent/complete-runtime-tool-cache-v4 -> origin/agent/complete-runtime-tool-cache-v4
+2026-10-13T07:46:12.9588318Z  * [new branch]        agent/contiguous-output-role-local-adoption-v1 -> origin/agent/contiguous-output-role-local-adoption-v1
+2026-10-13T07:46:12.9589603Z  * [new branch]        agent/cross-ai-session-handoff -> origin/agent/cross-ai-session-handoff
+2026-10-13T07:46:12.9590845Z  * [new branch]        agent/cumulative-tool-cache-registry -> origin/agent/cumulative-tool-cache-registry
+2026-10-13T07:46:12.9592594Z  * [new branch]        agent/current-main-anticipation-refresh-pr366-pr211-v1 -> origin/agent/current-main-anticipation-refresh-pr366-pr211-v1
+2026-10-13T07:46:12.9594178Z  * [new branch]        agent/current-main-anticipation-refresh-pr368-pr214-v1 -> origin/agent/current-main-anticipation-refresh-pr368-pr214-v1
+2026-10-13T07:46:12.9595680Z  * [new branch]        agent/current-main-anticipation-refresh-pr368-pr214-v2 -> origin/agent/current-main-anticipation-refresh-pr368-pr214-v2
+2026-10-13T07:46:12.9597456Z  * [new branch]        agent/current-main-anticipation-refresh-pr382-pr217-v1 -> origin/agent/current-main-anticipation-refresh-pr382-pr217-v1
+2026-10-13T07:46:12.9599297Z  * [new branch]        agent/current-main-anticipation-refresh-pr387-pr223-mirror-v1 -> origin/agent/current-main-anticipation-refresh-pr387-pr223-mirror-v1
+2026-10-13T07:46:12.9600741Z  * [new branch]        agent/dynamic-simplex-role-local-adoption-v1 -> origin/agent/dynamic-simplex-role-local-adoption-v1
+2026-10-13T07:46:12.9602130Z  * [new branch]        agent/effect-ack-http-terminal-mirror-4211d77 -> origin/agent/effect-ack-http-terminal-mirror-4211d77
+2026-10-13T07:46:12.9603466Z  * [new branch]        agent/effect-ack-lean-v1   -> origin/agent/effect-ack-lean-v1
+2026-10-13T07:46:12.9604870Z  * [new branch]        agent/fix-exact-head-dispatch-receipt-binding-v1 -> origin/agent/fix-exact-head-dispatch-receipt-binding-v1
+2026-10-13T07:46:12.9606139Z  * [new branch]        agent/formal-evidence-audio-2026-07-22 -> origin/agent/formal-evidence-audio-2026-07-22
+2026-10-13T07:46:12.9607505Z  * [new branch]        agent/formalization-cache-hmi-batch04 -> origin/agent/formalization-cache-hmi-batch04
+2026-10-13T07:46:12.9608856Z  * [new branch]        agent/formalization-v2-alpha2-postpublication -> origin/agent/formalization-v2-alpha2-postpublication
+2026-10-13T07:46:12.9610136Z  * [new branch]        agent/formalization-v2-batch03-shift -> origin/agent/formalization-v2-batch03-shift
+2026-10-13T07:46:12.9611667Z  * [new branch]        agent/harden-reusable-zenodo-finalization -> origin/agent/harden-reusable-zenodo-finalization
+2026-10-13T07:46:12.9612956Z  * [new branch]        agent/human-machine-progress-protocol -> origin/agent/human-machine-progress-protocol
+2026-10-13T07:46:12.9614034Z  * [new branch]        agent/ietf-effect-ack-01   -> origin/agent/ietf-effect-ack-01
+2026-10-13T07:46:12.9615367Z  * [new branch]        agent/labyrinth-closure-proof-20261004-v1 -> origin/agent/labyrinth-closure-proof-20261004-v1
+2026-10-13T07:46:12.9616869Z  * [new branch]        agent/manuscript-formalization-v2-alpha -> origin/agent/manuscript-formalization-v2-alpha
+2026-10-13T07:46:12.9618270Z  * [new branch]        agent/official-status-clarification-20260722 -> origin/agent/official-status-clarification-20260722
+2026-10-13T07:46:12.9619581Z  * [new branch]        agent/perfect-optimum-v1   -> origin/agent/perfect-optimum-v1
+2026-10-13T07:46:12.9621121Z  * [new branch]        agent/port-authority-pr368-pre-spacetime-ontology-v1 -> origin/agent/port-authority-pr368-pre-spacetime-ontology-v1
+2026-10-13T07:46:12.9622666Z  * [new branch]        agent/port-authority-pr404-bounded-self-healing-mirror-v1 -> origin/agent/port-authority-pr404-bounded-self-healing-mirror-v1
+2026-10-13T07:46:12.9624593Z  * [new branch]        agent/port-authority-pr404-bounded-self-healing-mirror-v2-current-main -> origin/agent/port-authority-pr404-bounded-self-healing-mirror-v2-current-main
+2026-10-13T07:46:12.9626210Z  * [new branch]        agent/port-round-trip-zenodo-publication-v1 -> origin/agent/port-round-trip-zenodo-publication-v1
+2026-10-13T07:46:12.9627694Z  * [new branch]        agent/privacy-preserving-interaction-archive -> origin/agent/privacy-preserving-interaction-archive
+2026-10-13T07:46:12.9629279Z  * [new branch]        agent/privacy-preserving-interaction-archive-final -> origin/agent/privacy-preserving-interaction-archive-final
+2026-10-13T07:46:12.9630660Z  * [new branch]        agent/recursive-haltpoint-v1 -> origin/agent/recursive-haltpoint-v1
+2026-10-13T07:46:12.9632211Z  * [new branch]        agent/renew-mirror-node-liveness-after-expiry-v1 -> origin/agent/renew-mirror-node-liveness-after-expiry-v1
+2026-10-13T07:46:12.9633623Z  * [new branch]        agent/renew-mirror-node-liveness-after-expiry-v2 -> origin/agent/renew-mirror-node-liveness-after-expiry-v2
+2026-10-13T07:46:12.9634971Z  * [new branch]        agent/requested-review-and-issue-lifecycle-v1 -> origin/agent/requested-review-and-issue-lifecycle-v1
+2026-10-13T07:46:12.9636420Z  * [new branch]        agent/requested-review-executor-v1 -> origin/agent/requested-review-executor-v1
+2026-10-13T07:46:12.9637802Z  * [new branch]        agent/restore-mirror-node-liveness-v1 -> origin/agent/restore-mirror-node-liveness-v1
+2026-10-13T07:46:12.9639299Z  * [new branch]        agent/round-trip-canonical-zenodo-identity-v1-mirror -> origin/agent/round-trip-canonical-zenodo-identity-v1-mirror
+2026-10-13T07:46:12.9640565Z  * [new branch]        agent/runtime-progress-step-telemetry -> origin/agent/runtime-progress-step-telemetry
+2026-10-13T07:46:12.9642046Z  * [new branch]        agent/self-healing-repository-collective-intelligence-v1 -> origin/agent/self-healing-repository-collective-intelligence-v1
+2026-10-13T07:46:12.9643600Z  * [new branch]        agent/slack-update-adapter-and-work-unit -> origin/agent/slack-update-adapter-and-work-unit
+2026-10-13T07:46:12.9644889Z  * [new branch]        agent/status-clarification-doi-21500322 -> origin/agent/status-clarification-doi-21500322
+2026-10-13T07:46:12.9646519Z  * [new branch]        agent/synchronous-repository-first-terminal-receipt-v1 -> origin/agent/synchronous-repository-first-terminal-receipt-v1
+2026-10-13T07:46:12.9648084Z  * [new branch]        agent/unicode-data-exchange-standard-v1-20260923 -> origin/agent/unicode-data-exchange-standard-v1-20260923
+2026-10-13T07:46:12.9649677Z  * [new branch]        agent/universal-io-persistence-knowledge-pipeline-v1 -> origin/agent/universal-io-persistence-knowledge-pipeline-v1
+2026-10-13T07:46:12.9651230Z  * [new branch]        agent/virtual-past-reception-clarification-v1 -> origin/agent/virtual-past-reception-clarification-v1
+2026-10-13T07:46:12.9652406Z  * [new branch]        agent/wirkungsquadrat-v1   -> origin/agent/wirkungsquadrat-v1
+2026-10-13T07:46:12.9653840Z  * [new branch]        agent/world-formula-formalization-delegation-current-main-v2 -> origin/agent/world-formula-formalization-delegation-current-main-v2
+2026-10-13T07:46:12.9655600Z  * [new branch]        agent/world-formula-formalization-delegation-v1 -> origin/agent/world-formula-formalization-delegation-v1
+2026-10-13T07:46:12.9657439Z  * [new branch]        anticipation/current-main-r11-binding-after-pr368-pr214-v1 -> origin/anticipation/current-main-r11-binding-after-pr368-pr214-v1
+2026-10-13T07:46:12.9659000Z  * [new branch]        architecture/universal-transputer-c90-v1 -> origin/architecture/universal-transputer-c90-v1
+2026-10-13T07:46:12.9659809Z  * [new branch]        audit/full-repository-selftest-20260928-v1 -> origin/audit/full-repository-selftest-20260928-v1
+2026-10-13T07:46:12.9660583Z  * [new branch]        automation/diagnose-alpha3-mirror-push -> origin/automation/diagnose-alpha3-mirror-push
+2026-10-13T07:46:12.9661534Z  * [new branch]        automation/dispatch-manuscript-proof-c3931554 -> origin/automation/dispatch-manuscript-proof-c3931554
+2026-10-13T07:46:12.9662742Z  * [new branch]        automation/effect-ack-universality-finalize-20260722 -> origin/automation/effect-ack-universality-finalize-20260722
+2026-10-13T07:46:12.9663619Z  * [new branch]        automation/equality-receipt-49850f-7ebe2b -> origin/automation/equality-receipt-49850f-7ebe2b
+2026-10-13T07:46:12.9665306Z  * [new branch]        automation/execute-alpha3-authority-mirror -> origin/automation/execute-alpha3-authority-mirror
+2026-10-13T07:46:12.9666957Z  * [new branch]        automation/formalization-v2-alpha2-validator-repair-20260723 -> origin/automation/formalization-v2-alpha2-validator-repair-20260723
+2026-10-13T07:46:12.9668902Z  * [new branch]        automation/import-audio-runtime-authority-20260725 -> origin/automation/import-audio-runtime-authority-20260725
+2026-10-13T07:46:12.9670561Z  * [new branch]        automation/import-authority-tree-49850f649283 -> origin/automation/import-authority-tree-49850f649283
+2026-10-13T07:46:12.9672268Z  * [new branch]        automation/import-dependency-authority-20260724 -> origin/automation/import-dependency-authority-20260724
+2026-10-13T07:46:12.9674196Z  * [new branch]        automation/import-final-repository-mesh-authority-20260724 -> origin/automation/import-final-repository-mesh-authority-20260724
+2026-10-13T07:46:12.9675808Z  * [new branch]        automation/mirror-charter-authority-20260724 -> origin/automation/mirror-charter-authority-20260724
+2026-10-13T07:46:12.9676887Z  * [new branch]        automation/mirror-manuscript-formalization-v2 -> origin/automation/mirror-manuscript-formalization-v2
+2026-10-13T07:46:12.9677748Z  * [new branch]        automation/port-authority-pr564-scope-d6a937 -> origin/automation/port-authority-pr564-scope-d6a937
+2026-10-13T07:46:12.9678898Z  * [new branch]        automation/pr238-exact-head-verification-3987d56a-v1 -> origin/automation/pr238-exact-head-verification-3987d56a-v1
+2026-10-13T07:46:12.9680481Z  * [new branch]        automation/pr240-exact-head-verification-fe1d7a9a-v1 -> origin/automation/pr240-exact-head-verification-fe1d7a9a-v1
+2026-10-13T07:46:12.9681421Z  * [new branch]        automation/pr242-exact-head-verification-9d467632-v1 -> origin/automation/pr242-exact-head-verification-9d467632-v1
+2026-10-13T07:46:12.9682332Z  * [new branch]        automation/pr245-exact-head-verification-e1941ce7-v1 -> origin/automation/pr245-exact-head-verification-e1941ce7-v1
+2026-10-13T07:46:12.9683345Z  * [new branch]        automation/pr467-exact-head-verification-5190d43b-v1 -> origin/automation/pr467-exact-head-verification-5190d43b-v1
+2026-10-13T07:46:12.9684615Z  * [new branch]        automation/product-owner-effect-boundary-current-main-v1 -> origin/automation/product-owner-effect-boundary-current-main-v1
+2026-10-13T07:46:12.9685592Z  * [new branch]        automation/publication-overview-dependency-677fdef7 -> origin/automation/publication-overview-dependency-677fdef7
+2026-10-13T07:46:12.9686566Z  * [new branch]        automation/qce-current-main-port-v1 -> origin/automation/qce-current-main-port-v1
+2026-10-13T07:46:12.9687334Z  * [new branch]        automation/repository-mesh-sync-tag-20260724 -> origin/automation/repository-mesh-sync-tag-20260724
+2026-10-13T07:46:12.9688197Z  * [new branch]        automation/seed-batch003-authority-objects-6f4a57dd -> origin/automation/seed-batch003-authority-objects-6f4a57dd
+2026-10-13T07:46:12.9689350Z  * [new branch]        automation/self-heal-03cba75c458ab3f53200d646 -> origin/automation/self-heal-03cba75c458ab3f53200d646
+2026-10-13T07:46:12.9690161Z  * [new branch]        automation/self-heal-06bea7264007202f10a00ed3 -> origin/automation/self-heal-06bea7264007202f10a00ed3
+2026-10-13T07:46:12.9690959Z  * [new branch]        automation/self-heal-07142cd7a89ebe9e39786c4d -> origin/automation/self-heal-07142cd7a89ebe9e39786c4d
+2026-10-13T07:46:12.9691763Z  * [new branch]        automation/self-heal-095f7567d68e00129d0ef5d2 -> origin/automation/self-heal-095f7567d68e00129d0ef5d2
+2026-10-13T07:46:12.9692684Z  * [new branch]        automation/self-heal-0bf4233c6e4298398c7fab0f -> origin/automation/self-heal-0bf4233c6e4298398c7fab0f
+2026-10-13T07:46:12.9693492Z  * [new branch]        automation/self-heal-0f9e77b9e9b661a4db0c07cc -> origin/automation/self-heal-0f9e77b9e9b661a4db0c07cc
+2026-10-13T07:46:12.9694293Z  * [new branch]        automation/self-heal-13b9dad909295762cd3dead1 -> origin/automation/self-heal-13b9dad909295762cd3dead1
+2026-10-13T07:46:12.9695087Z  * [new branch]        automation/self-heal-15248ed9d90b7a2117d704fd -> origin/automation/self-heal-15248ed9d90b7a2117d704fd
+2026-10-13T07:46:12.9695877Z  * [new branch]        automation/self-heal-179167f487fb9df614fff07d -> origin/automation/self-heal-179167f487fb9df614fff07d
+2026-10-13T07:46:12.9697111Z  * [new branch]        automation/self-heal-192cd2033b0efbafb411bfc3 -> origin/automation/self-heal-192cd2033b0efbafb411bfc3
+2026-10-13T07:46:12.9698361Z  * [new branch]        automation/self-heal-24a786de1b669c13f83e4020 -> origin/automation/self-heal-24a786de1b669c13f83e4020
+2026-10-13T07:46:12.9699484Z  * [new branch]        automation/self-heal-28db1e9bf31f292b8104c21d -> origin/automation/self-heal-28db1e9bf31f292b8104c21d
+2026-10-13T07:46:12.9700283Z  * [new branch]        automation/self-heal-2c670903da315d6c917376cb -> origin/automation/self-heal-2c670903da315d6c917376cb
+2026-10-13T07:46:12.9701077Z  * [new branch]        automation/self-heal-2f68655be93aca03e42fd992 -> origin/automation/self-heal-2f68655be93aca03e42fd992
+2026-10-13T07:46:12.9701867Z  * [new branch]        automation/self-heal-4038202148f33d0b1c7549d1 -> origin/automation/self-heal-4038202148f33d0b1c7549d1
+2026-10-13T07:46:12.9702652Z  * [new branch]        automation/self-heal-42141c1240172e195193b0b3 -> origin/automation/self-heal-42141c1240172e195193b0b3
+2026-10-13T07:46:12.9703455Z  * [new branch]        automation/self-heal-43b8a1f64f0e6efaf9b8d6a8 -> origin/automation/self-heal-43b8a1f64f0e6efaf9b8d6a8
+2026-10-13T07:46:12.9704629Z  * [new branch]        automation/self-heal-468f6a3e8cd64c7b42bf90c3 -> origin/automation/self-heal-468f6a3e8cd64c7b42bf90c3
+2026-10-13T07:46:12.9705434Z  * [new branch]        automation/self-heal-48239acf7c5d51dd4033367f -> origin/automation/self-heal-48239acf7c5d51dd4033367f
+2026-10-13T07:46:12.9706233Z  * [new branch]        automation/self-heal-498483f4d8ee16eb654a3a6b -> origin/automation/self-heal-498483f4d8ee16eb654a3a6b
+2026-10-13T07:46:12.9707224Z  * [new branch]        automation/self-heal-4b659d244cd06ecd3c1359eb -> origin/automation/self-heal-4b659d244cd06ecd3c1359eb
+2026-10-13T07:46:12.9708029Z  * [new branch]        automation/self-heal-4cab51719f0021aaf37e05ce -> origin/automation/self-heal-4cab51719f0021aaf37e05ce
+2026-10-13T07:46:12.9709257Z  * [new branch]        automation/self-heal-4ece5a5282f0ea2904d582ff -> origin/automation/self-heal-4ece5a5282f0ea2904d582ff
+2026-10-13T07:46:12.9710063Z  * [new branch]        automation/self-heal-4f452232ff6cf1df61f44f3d -> origin/automation/self-heal-4f452232ff6cf1df61f44f3d
+2026-10-13T07:46:12.9710859Z  * [new branch]        automation/self-heal-4fa749515d8558bee1e9a6f1 -> origin/automation/self-heal-4fa749515d8558bee1e9a6f1
+2026-10-13T07:46:12.9711683Z  * [new branch]        automation/self-heal-51fc89697c99317a0acc4a34 -> origin/automation/self-heal-51fc89697c99317a0acc4a34
+2026-10-13T07:46:12.9712704Z  * [new branch]        automation/self-heal-530c84b1bfefb3e1e1618916 -> origin/automation/self-heal-530c84b1bfefb3e1e1618916
+2026-10-13T07:46:12.9714092Z  * [new branch]        automation/self-heal-53e7c3a196e032c48003c155 -> origin/automation/self-heal-53e7c3a196e032c48003c155
+2026-10-13T07:46:12.9715073Z  * [new branch]        automation/self-heal-57b56e51b249931f8f097575 -> origin/automation/self-heal-57b56e51b249931f8f097575
+2026-10-13T07:46:12.9715873Z  * [new branch]        automation/self-heal-57dd1718f14f6c41e3a30c3f -> origin/automation/self-heal-57dd1718f14f6c41e3a30c3f
+2026-10-13T07:46:12.9716929Z  * [new branch]        automation/self-heal-57fd7d2389b605e559c8f351 -> origin/automation/self-heal-57fd7d2389b605e559c8f351
+2026-10-13T07:46:12.9717895Z  * [new branch]        automation/self-heal-5af5ab2670695a64c87eedc1 -> origin/automation/self-heal-5af5ab2670695a64c87eedc1
+2026-10-13T07:46:12.9718789Z  * [new branch]        automation/self-heal-5bfdad61dc7ba248424523da -> origin/automation/self-heal-5bfdad61dc7ba248424523da
+2026-10-13T07:46:12.9719684Z  * [new branch]        automation/self-heal-5e635818f781065c4fbd51ef -> origin/automation/self-heal-5e635818f781065c4fbd51ef
+2026-10-13T07:46:12.9720468Z  * [new branch]        automation/self-heal-60fdf1011039583327300e65 -> origin/automation/self-heal-60fdf1011039583327300e65
+2026-10-13T07:46:12.9721254Z  * [new branch]        automation/self-heal-65967df9a99895cab2a8af1a -> origin/automation/self-heal-65967df9a99895cab2a8af1a
+2026-10-13T07:46:12.9722035Z  * [new branch]        automation/self-heal-6977bf961bfa7b9f8fe1ad2a -> origin/automation/self-heal-6977bf961bfa7b9f8fe1ad2a
+2026-10-13T07:46:12.9722848Z  * [new branch]        automation/self-heal-6dd2e08ba327c02020bceb2a -> origin/automation/self-heal-6dd2e08ba327c02020bceb2a
+2026-10-13T07:46:12.9723636Z  * [new branch]        automation/self-heal-6fa829d9a2cd2411c544d212 -> origin/automation/self-heal-6fa829d9a2cd2411c544d212
+2026-10-13T07:46:12.9724416Z  * [new branch]        automation/self-heal-7202192781e935d99226ccd2 -> origin/automation/self-heal-7202192781e935d99226ccd2
+2026-10-13T07:46:12.9725245Z  * [new branch]        automation/self-heal-753b1f75ac6e972893d79299 -> origin/automation/self-heal-753b1f75ac6e972893d79299
+2026-10-13T07:46:12.9726595Z  * [new branch]        automation/self-heal-75e9cd03d2e511804933680d -> origin/automation/self-heal-75e9cd03d2e511804933680d
+2026-10-13T07:46:12.9727398Z  * [new branch]        automation/self-heal-7b487489150c8f0d31cc311e -> origin/automation/self-heal-7b487489150c8f0d31cc311e
+2026-10-13T07:46:12.9728412Z  * [new branch]        automation/self-heal-829406f311f66d0424f96bec -> origin/automation/self-heal-829406f311f66d0424f96bec
+2026-10-13T07:46:12.9729196Z  * [new branch]        automation/self-heal-833074760ee53825a9f63a38 -> origin/automation/self-heal-833074760ee53825a9f63a38
+2026-10-13T07:46:12.9729979Z  * [new branch]        automation/self-heal-84207d6c3de32cf9117f17cc -> origin/automation/self-heal-84207d6c3de32cf9117f17cc
+2026-10-13T07:46:12.9730764Z  * [new branch]        automation/self-heal-8cca53542f580622c601e5c2 -> origin/automation/self-heal-8cca53542f580622c601e5c2
+2026-10-13T07:46:12.9731551Z  * [new branch]        automation/self-heal-8e2319fe9638708da1c47103 -> origin/automation/self-heal-8e2319fe9638708da1c47103
+2026-10-13T07:46:12.9732329Z  * [new branch]        automation/self-heal-8f707f6154b8b2e439c25d2e -> origin/automation/self-heal-8f707f6154b8b2e439c25d2e
+2026-10-13T07:46:12.9733123Z  * [new branch]        automation/self-heal-8fbc2e7b7b609b4893ade00b -> origin/automation/self-heal-8fbc2e7b7b609b4893ade00b
+2026-10-13T07:46:12.9733917Z  * [new branch]        automation/self-heal-9180fe1721546dca9e4c4735 -> origin/automation/self-heal-9180fe1721546dca9e4c4735
+2026-10-13T07:46:12.9734705Z  * [new branch]        automation/self-heal-9231566c4b8d779c94fa8277 -> origin/automation/self-heal-9231566c4b8d779c94fa8277
+2026-10-13T07:46:12.9735492Z  * [new branch]        automation/self-heal-9246f80548e07ad5f993babb -> origin/automation/self-heal-9246f80548e07ad5f993babb
+2026-10-13T07:46:12.9736418Z  * [new branch]        automation/self-heal-92c7a2ff43312e34325fdebf -> origin/automation/self-heal-92c7a2ff43312e34325fdebf
+2026-10-13T07:46:12.9737251Z  * [new branch]        automation/self-heal-933c925609d2d49c2af1149f -> origin/automation/self-heal-933c925609d2d49c2af1149f
+2026-10-13T07:46:12.9738152Z  * [new branch]        automation/self-heal-96a7cf0d88215107a856705a -> origin/automation/self-heal-96a7cf0d88215107a856705a
+2026-10-13T07:46:12.9738946Z  * [new branch]        automation/self-heal-9879090b5ab60382a7422668 -> origin/automation/self-heal-9879090b5ab60382a7422668
+2026-10-13T07:46:12.9739824Z  * [new branch]        automation/self-heal-9ac06b940e12c658eb9098d6 -> origin/automation/self-heal-9ac06b940e12c658eb9098d6
+2026-10-13T07:46:12.9740700Z  * [new branch]        automation/self-heal-9bff12d0fd0505e7cc5c8ed7 -> origin/automation/self-heal-9bff12d0fd0505e7cc5c8ed7
+2026-10-13T07:46:12.9741503Z  * [new branch]        automation/self-heal-a074bb4e79df14dab1042967 -> origin/automation/self-heal-a074bb4e79df14dab1042967
+2026-10-13T07:46:12.9742296Z  * [new branch]        automation/self-heal-a18e61133b7e646b3568a08b -> origin/automation/self-heal-a18e61133b7e646b3568a08b
+2026-10-13T07:46:12.9743087Z  * [new branch]        automation/self-heal-a4d0ff9eec2f843dad03d824 -> origin/automation/self-heal-a4d0ff9eec2f843dad03d824
+2026-10-13T07:46:12.9743896Z  * [new branch]        automation/self-heal-a56b0c79350b931d1daee4f6 -> origin/automation/self-heal-a56b0c79350b931d1daee4f6
+2026-10-13T07:46:12.9744690Z  * [new branch]        automation/self-heal-aced370436b5673aca143ed3 -> origin/automation/self-heal-aced370436b5673aca143ed3
+2026-10-13T07:46:12.9745498Z  * [new branch]        automation/self-heal-ae8a90ada0cf605f4e37e604 -> origin/automation/self-heal-ae8a90ada0cf605f4e37e604
+2026-10-13T07:46:12.9746377Z  * [new branch]        automation/self-heal-b1a49d479a7b932db7dd593e -> origin/automation/self-heal-b1a49d479a7b932db7dd593e
+2026-10-13T07:46:12.9747175Z  * [new branch]        automation/self-heal-b3d4dc11bf1ccfaa0e3c97a7 -> origin/automation/self-heal-b3d4dc11bf1ccfaa0e3c97a7
+2026-10-13T07:46:12.9747967Z  * [new branch]        automation/self-heal-b4511c106d849d49ff92251a -> origin/automation/self-heal-b4511c106d849d49ff92251a
+2026-10-13T07:46:12.9748764Z  * [new branch]        automation/self-heal-b4f9d1f3cc8d30a8b896e0ae -> origin/automation/self-heal-b4f9d1f3cc8d30a8b896e0ae
+2026-10-13T07:46:12.9749558Z  * [new branch]        automation/self-heal-b969c1cbe3a4706b2afabd88 -> origin/automation/self-heal-b969c1cbe3a4706b2afabd88
+2026-10-13T07:46:12.9750433Z  * [new branch]        automation/self-heal-bb75c22b698e8876c7e37155 -> origin/automation/self-heal-bb75c22b698e8876c7e37155
+2026-10-13T07:46:12.9751231Z  * [new branch]        automation/self-heal-bc0928bcb5dd2f3378f39c9a -> origin/automation/self-heal-bc0928bcb5dd2f3378f39c9a
+2026-10-13T07:46:12.9752026Z  * [new branch]        automation/self-heal-bcc2676f3f3c7105a1a02057 -> origin/automation/self-heal-bcc2676f3f3c7105a1a02057
+2026-10-13T07:46:12.9752819Z  * [new branch]        automation/self-heal-bd2c52aab2488f40d2da016f -> origin/automation/self-heal-bd2c52aab2488f40d2da016f
+2026-10-13T07:46:12.9753629Z  * [new branch]        automation/self-heal-bdb88d0f7d87a6cada644266 -> origin/automation/self-heal-bdb88d0f7d87a6cada644266
+2026-10-13T07:46:12.9754438Z  * [new branch]        automation/self-heal-block-receipt-289fdc93 -> origin/automation/self-heal-block-receipt-289fdc93
+2026-10-13T07:46:12.9755253Z  * [new branch]        automation/self-heal-block-receipt-289fdc93-v2 -> origin/automation/self-heal-block-receipt-289fdc93-v2
+2026-10-13T07:46:12.9756080Z  * [new branch]        automation/self-heal-c3bd74fed3f9d69fe7f33123 -> origin/automation/self-heal-c3bd74fed3f9d69fe7f33123
+2026-10-13T07:46:12.9757058Z  * [new branch]        automation/self-heal-c99ab7b609bc09afc148ff8a -> origin/automation/self-heal-c99ab7b609bc09afc148ff8a
+2026-10-13T07:46:12.9757861Z  * [new branch]        automation/self-heal-cf195a8a884a4a4c3cfbcf18 -> origin/automation/self-heal-cf195a8a884a4a4c3cfbcf18
+2026-10-13T07:46:12.9758660Z  * [new branch]        automation/self-heal-d80547dcf798b6f5bd9487e1 -> origin/automation/self-heal-d80547dcf798b6f5bd9487e1
+2026-10-13T07:46:12.9759450Z  * [new branch]        automation/self-heal-d9427551b85f52ce21e7453b -> origin/automation/self-heal-d9427551b85f52ce21e7453b
+2026-10-13T07:46:12.9760239Z  * [new branch]        automation/self-heal-dab195feae3e0d57df22a56b -> origin/automation/self-heal-dab195feae3e0d57df22a56b
+2026-10-13T07:46:12.9761046Z  * [new branch]        automation/self-heal-dbefc01d712d25643c8277f0 -> origin/automation/self-heal-dbefc01d712d25643c8277f0
+2026-10-13T07:46:12.9761925Z  * [new branch]        automation/self-heal-dfa20ee9fbfd002c53fe4379 -> origin/automation/self-heal-dfa20ee9fbfd002c53fe4379
+2026-10-13T07:46:12.9762721Z  * [new branch]        automation/self-heal-e0ae8d8ba3336962b6ad4afe -> origin/automation/self-heal-e0ae8d8ba3336962b6ad4afe
+2026-10-13T07:46:12.9763518Z  * [new branch]        automation/self-heal-e220f909b5dd1b599552e411 -> origin/automation/self-heal-e220f909b5dd1b599552e411
+2026-10-13T07:46:12.9764308Z  * [new branch]        automation/self-heal-e4d6a939ac3074c4f50a689e -> origin/automation/self-heal-e4d6a939ac3074c4f50a689e
+2026-10-13T07:46:12.9765100Z  * [new branch]        automation/self-heal-e522e047b1e8e12b7679b7fa -> origin/automation/self-heal-e522e047b1e8e12b7679b7fa
+2026-10-13T07:46:12.9765890Z  * [new branch]        automation/self-heal-f037bf1bda3fa1490d6fdf8d -> origin/automation/self-heal-f037bf1bda3fa1490d6fdf8d
+2026-10-13T07:46:12.9766838Z  * [new branch]        automation/self-heal-f237f2d0d6c57af89fdeae30 -> origin/automation/self-heal-f237f2d0d6c57af89fdeae30
+2026-10-13T07:46:12.9767824Z  * [new branch]        automation/self-heal-f493c5bb06a2a2c4123a8c22 -> origin/automation/self-heal-f493c5bb06a2a2c4123a8c22
+2026-10-13T07:46:12.9768632Z  * [new branch]        automation/self-heal-f6c88a3a52a9003e6ef6c7eb -> origin/automation/self-heal-f6c88a3a52a9003e6ef6c7eb
+2026-10-13T07:46:12.9769418Z  * [new branch]        automation/self-heal-fa51a3d80392839586c75daa -> origin/automation/self-heal-fa51a3d80392839586c75daa
+2026-10-13T07:46:12.9770207Z  * [new branch]        automation/self-heal-fa5f1c2e8273ba1321b5bd01 -> origin/automation/self-heal-fa5f1c2e8273ba1321b5bd01
+2026-10-13T07:46:12.9771049Z  * [new branch]        automation/status-clarification-finalize-20260722 -> origin/automation/status-clarification-finalize-20260722
+2026-10-13T07:46:12.9771949Z  * [new branch]        automation/tag-post-publication-equality-20260728 -> origin/automation/tag-post-publication-equality-20260728
+2026-10-13T07:46:12.9772936Z  * [new branch]        automation/trigger-alpha3-authority-mirror-v2 -> origin/automation/trigger-alpha3-authority-mirror-v2
+2026-10-13T07:46:12.9773930Z  * [new branch]        bootstrap/finalize-formalization-v2-publication-mirror-20260724 -> origin/bootstrap/finalize-formalization-v2-publication-mirror-20260724
+2026-10-13T07:46:12.9774976Z  * [new branch]        bootstrap/quantum-runtime-article-sync-controller-v1 -> origin/bootstrap/quantum-runtime-article-sync-controller-v1
+2026-10-13T07:46:12.9775890Z  * [new branch]        candidate/authority-pr489-ai-entrypoint-port-v1 -> origin/candidate/authority-pr489-ai-entrypoint-port-v1
+2026-10-13T07:46:12.9777056Z  * [new branch]        candidate/bounded-autonomous-self-healing-archive-v1 -> origin/candidate/bounded-autonomous-self-healing-archive-v1
+2026-10-13T07:46:12.9777954Z  * [new branch]        candidate/canonical-owner-delivery-monitor-v1 -> origin/candidate/canonical-owner-delivery-monitor-v1
+2026-10-13T07:46:12.9778889Z  * [new branch]        candidate/document-delivery-canonical-pair-binding-v1 -> origin/candidate/document-delivery-canonical-pair-binding-v1
+2026-10-13T07:46:12.9779857Z  * [new branch]        candidate/mandelbrot-42-proof-dependency-closure-v1 -> origin/candidate/mandelbrot-42-proof-dependency-closure-v1
+2026-10-13T07:46:12.9780775Z  * [new branch]        candidate/mandelbrot-42-proof-reproduction-port-v1 -> origin/candidate/mandelbrot-42-proof-reproduction-port-v1
+2026-10-13T07:46:12.9781657Z  * [new branch]        candidate/mesh-monitor-mirror-20261004-29a55ae4 -> origin/candidate/mesh-monitor-mirror-20261004-29a55ae4
+2026-10-13T07:46:12.9782531Z  * [new branch]        candidate/monolithic-mesh-file-20261006-a670db09 -> origin/candidate/monolithic-mesh-file-20261006-a670db09
+2026-10-13T07:46:12.9783454Z  * [new branch]        candidate/port-authority-pr327-pr328-zenodo-controls-v1 -> origin/candidate/port-authority-pr327-pr328-zenodo-controls-v1
+2026-10-13T07:46:12.9784403Z  * [new branch]        candidate/post-pr303-pr176-anticipation-refresh-v1 -> origin/candidate/post-pr303-pr176-anticipation-refresh-v1
+2026-10-13T07:46:12.9785386Z  * [new branch]        candidate/post-pr309-pr181-anticipation-refresh-v1 -> origin/candidate/post-pr309-pr181-anticipation-refresh-v1
+2026-10-13T07:46:12.9786539Z  * [new branch]        candidate/pre-spacetime-ontology-zenodo-publication-receipt-mirror-v1 -> origin/candidate/pre-spacetime-ontology-zenodo-publication-receipt-mirror-v1
+2026-10-13T07:46:12.9787770Z  * [new branch]        candidate/pre-spacetime-ontology-zenodo-scoped-effect-ack-mirror-v1 -> origin/candidate/pre-spacetime-ontology-zenodo-scoped-effect-ack-mirror-v1
+2026-10-13T07:46:12.9788884Z  * [new branch]        candidate/provider-independent-roadmap-20261004-eeef48fd -> origin/candidate/provider-independent-roadmap-20261004-eeef48fd
+2026-10-13T07:46:12.9789873Z  * [new branch]        candidate/publication-runtime-adapter-20261005-86e0ba74 -> origin/candidate/publication-runtime-adapter-20261005-86e0ba74
+2026-10-13T07:46:12.9790884Z  * [new branch]        candidate/qikvrt-p1-history-and-api-execution-contract-v1 -> origin/candidate/qikvrt-p1-history-and-api-execution-contract-v1
+2026-10-13T07:46:12.9791908Z  * [new branch]        candidate/qikvrt-public-explanation-and-proof-program-v1 -> origin/candidate/qikvrt-public-explanation-and-proof-program-v1
+2026-10-13T07:46:12.9792975Z  * [new branch]        candidate/r11-read-only-observation-dispatch-contract-mirror-v1 -> origin/candidate/r11-read-only-observation-dispatch-contract-mirror-v1
+2026-10-13T07:46:12.9793978Z  * [new branch]        candidate/repository-live-monitor-deliveries-v1 -> origin/candidate/repository-live-monitor-deliveries-v1
+2026-10-13T07:46:12.9794755Z  * [new branch]        candidate/repository-live-monitor-v1 -> origin/candidate/repository-live-monitor-v1
+2026-10-13T07:46:12.9795633Z  * [new branch]        candidate/repository-operated-owner-delivery-effect-ack-v1 -> origin/candidate/repository-operated-owner-delivery-effect-ack-v1
+2026-10-13T07:46:12.9796790Z  * [new branch]        candidate/round-trip-publication-port-v1 -> origin/candidate/round-trip-publication-port-v1
+2026-10-13T07:46:12.9797577Z  * [new branch]        candidate/vrtcore-h3-authority-pr320-port-v1 -> origin/candidate/vrtcore-h3-authority-pr320-port-v1
+2026-10-13T07:46:12.9798384Z  * [new branch]        candidate/vrtcore-h56-authority-pr323-port-v1 -> origin/candidate/vrtcore-h56-authority-pr323-port-v1
+2026-10-13T07:46:12.9799250Z  * [new branch]        claude/mesh-liveness-outside-integrity-manifest -> origin/claude/mesh-liveness-outside-integrity-manifest
+2026-10-13T07:46:12.9800117Z  * [new branch]        codex/port-authority-pr-559-runtime-promotion -> origin/codex/port-authority-pr-559-runtime-promotion
+2026-10-13T07:46:12.9800876Z  * [new branch]        codex/publication-overview-20260801 -> origin/codex/publication-overview-20260801
+2026-10-13T07:46:12.9801531Z  * [new branch]        codex/verify-pr-274-exact-tree -> origin/codex/verify-pr-274-exact-tree
+2026-10-13T07:46:12.9802123Z  * [new branch]        copilot/crates-io-dashboard -> origin/copilot/crates-io-dashboard
+2026-10-13T07:46:12.9802733Z  * [new branch]        copilot/improve-crates-dashboard -> origin/copilot/improve-crates-dashboard
+2026-10-13T07:46:12.9803413Z  * [new branch]        copilot/update-documentation-for-api -> origin/copilot/update-documentation-for-api
+2026-10-13T07:46:12.9804266Z  * [new branch]        dependabot/github_actions/main/actions/upload-artifact-7.0.1 -> origin/dependabot/github_actions/main/actions/upload-artifact-7.0.1
+2026-10-13T07:46:12.9805228Z  * [new branch]        dependabot/github_actions/main/leanprover/lean-action-1.6.0 -> origin/dependabot/github_actions/main/leanprover/lean-action-1.6.0
+2026-10-13T07:46:12.9806461Z  * [new branch]        dependabot/npm_and_yarn/tools/offline-audio-transcription/main/sherpa-onnx-node-1.13.6 -> origin/dependabot/npm_and_yarn/tools/offline-audio-transcription/main/sherpa-onnx-node-1.13.6
+2026-10-13T07:46:12.9807721Z  * [new branch]        dependabot/pip/runtime/toolchains/main/platformdirs-4.11.5 -> origin/dependabot/pip/runtime/toolchains/main/platformdirs-4.11.5
+2026-10-13T07:46:12.9808697Z  * [new branch]        docs/charta-machine-verifiable-science-bootstrap-v1 -> origin/docs/charta-machine-verifiable-science-bootstrap-v1
+2026-10-13T07:46:12.9809620Z  * [new branch]        docs/mesh-evidence-sphere-canonical-invariant-v1 -> origin/docs/mesh-evidence-sphere-canonical-invariant-v1
+2026-10-13T07:46:12.9810437Z  * [new branch]        docs/mesh-evidence-sphere-monotonic-v1 -> origin/docs/mesh-evidence-sphere-monotonic-v1
+2026-10-13T07:46:12.9811319Z  * [new branch]        docs/professional-self-obsolescence-zenodo-core-20260925 -> origin/docs/professional-self-obsolescence-zenodo-core-20260925
+2026-10-13T07:46:12.9812201Z  * [new branch]        docs/qikvrt-roundtrip-unified-20260920 -> origin/docs/qikvrt-roundtrip-unified-20260920
+2026-10-13T07:46:12.9812995Z  * [new branch]        docs/qikvrt-standard-evidence-repair-20260921 -> origin/docs/qikvrt-standard-evidence-repair-20260921
+2026-10-13T07:46:12.9813862Z  * [new branch]        docs/quality-gates-and-closure-archive-20260928 -> origin/docs/quality-gates-and-closure-archive-20260928
+2026-10-13T07:46:12.9814667Z  * [new branch]        docs/universal-effect-ack-frontdoor-v1 -> origin/docs/universal-effect-ack-frontdoor-v1
+2026-10-13T07:46:12.9815461Z  * [new branch]        docs/universales-universalprinzip-20260919-v1 -> origin/docs/universales-universalprinzip-20260919-v1
+2026-10-13T07:46:12.9816434Z  * [new branch]        evidence/batch-002-authority-mirror-equality-pr194-pr93 -> origin/evidence/batch-002-authority-mirror-equality-pr194-pr93
+2026-10-13T07:46:12.9817653Z  * [new branch]        evidence/batch-002-corrected-authority-mirror-equality-pr209-pr100 -> origin/evidence/batch-002-corrected-authority-mirror-equality-pr209-pr100
+2026-10-13T07:46:12.9818819Z  * [new branch]        evidence/batch-002-terminal-authority-mirror-equality-pr201-pr96 -> origin/evidence/batch-002-terminal-authority-mirror-equality-pr201-pr96
+2026-10-13T07:46:12.9820053Z  * [new branch]        evidence/batch003-dispatch-authority-mirror-equality-pr220-pr117 -> origin/evidence/batch003-dispatch-authority-mirror-equality-pr220-pr117
+2026-10-13T07:46:12.9821086Z  * [new branch]        evidence/batch003-first-subject-equality-pr225-pr128 -> origin/evidence/batch003-first-subject-equality-pr225-pr128
+2026-10-13T07:46:12.9822043Z  * [new branch]        evidence/batch003-first-subject-equality-pr225-pr128-v1 -> origin/evidence/batch003-first-subject-equality-pr225-pr128-v1
+2026-10-13T07:46:12.9823125Z  * [new branch]        evidence/batch003-second-subject-projector-equality-pr240-pr132-v1 -> origin/evidence/batch003-second-subject-projector-equality-pr240-pr132-v1
+2026-10-13T07:46:12.9824217Z  * [new branch]        evidence/batch003-subject-2581811-equality-pr225-pr128-v1 -> origin/evidence/batch003-subject-2581811-equality-pr225-pr128-v1
+2026-10-13T07:46:12.9825184Z  * [new branch]        evidence/bootstrap-runtime-archive-bc2da76a-20261005 -> origin/evidence/bootstrap-runtime-archive-bc2da76a-20261005
+2026-10-13T07:46:12.9826244Z  * [new branch]        evidence/bootstrap-runtime-owner-authorization-83439a26-20261005 -> origin/evidence/bootstrap-runtime-owner-authorization-83439a26-20261005
+2026-10-13T07:46:12.9827255Z  * [new branch]        evidence/open-node-native-ci-20261006 -> origin/evidence/open-node-native-ci-20261006
+2026-10-13T07:46:12.9828237Z  * [new branch]        evidence/post-acceptance-status-authority-mirror-equality-pr215-pr110 -> origin/evidence/post-acceptance-status-authority-mirror-equality-pr215-pr110
+2026-10-13T07:46:12.9829340Z  * [new branch]        evidence/post-acceptance-status-equality-pr215-pr110 -> origin/evidence/post-acceptance-status-equality-pr215-pr110
+2026-10-13T07:46:12.9830394Z  * [new branch]        evidence/post-acceptance-status-equality-pr215-pr110-recovered-v2 -> origin/evidence/post-acceptance-status-equality-pr215-pr110-recovered-v2
+2026-10-13T07:46:12.9831424Z  * [new branch]        evidence/pr323-pr197-reciprocal-equality-mirror-v1 -> origin/evidence/pr323-pr197-reciprocal-equality-mirror-v1
+2026-10-13T07:46:12.9832431Z  * [new branch]        evidence/pr356-pr204-reciprocal-equality-mirror-v1 -> origin/evidence/pr356-pr204-reciprocal-equality-mirror-v1
+2026-10-13T07:46:12.9833318Z  * [new branch]        evidence/pr368-pr214-reciprocal-equality-clean-v1 -> origin/evidence/pr368-pr214-reciprocal-equality-clean-v1
+2026-10-13T07:46:12.9834199Z  * [new branch]        evidence/pr368-pr214-reciprocal-equality-mirror-v1 -> origin/evidence/pr368-pr214-reciprocal-equality-mirror-v1
+2026-10-13T07:46:12.9835073Z  * [new branch]        evidence/pr461-frozen-candidate-bc2da76a-20261005 -> origin/evidence/pr461-frozen-candidate-bc2da76a-20261005
+2026-10-13T07:46:12.9836018Z  * [new branch]        evidence/pre-spacetime-zenodo-receipt-equality-mirror-v1 -> origin/evidence/pre-spacetime-zenodo-receipt-equality-mirror-v1
+2026-10-13T07:46:12.9837204Z  * [new branch]        evidence/projector-repair-equality-pr240-pr132-v1 -> origin/evidence/projector-repair-equality-pr240-pr132-v1
+2026-10-13T07:46:12.9838062Z  * [new branch]        evidence/reciprocal-equality-pr249-pr147-v1 -> origin/evidence/reciprocal-equality-pr249-pr147-v1
+2026-10-13T07:46:12.9838859Z  * [new branch]        evidence/reciprocal-equality-pr273-pr155-v1 -> origin/evidence/reciprocal-equality-pr273-pr155-v1
+2026-10-13T07:46:12.9839648Z  * [new branch]        evidence/reciprocal-equality-pr277-pr158-v1 -> origin/evidence/reciprocal-equality-pr277-pr158-v1
+2026-10-13T07:46:12.9840443Z  * [new branch]        evidence/reciprocal-equality-pr278-pr163-v1 -> origin/evidence/reciprocal-equality-pr278-pr163-v1
+2026-10-13T07:46:12.9841236Z  * [new branch]        evidence/reciprocal-equality-pr297-pr174-v1 -> origin/evidence/reciprocal-equality-pr297-pr174-v1
+2026-10-13T07:46:12.9842027Z  * [new branch]        evidence/reciprocal-equality-pr307-pr179-v1 -> origin/evidence/reciprocal-equality-pr307-pr179-v1
+2026-10-13T07:46:12.9843072Z  * [new branch]        evidence/reciprocal-equality-survival-pr284-pr286-pr167-v1 -> origin/evidence/reciprocal-equality-survival-pr284-pr286-pr167-v1
+2026-10-13T07:46:12.9844031Z  * [new branch]        evidence/requirements-carrier-readback-20260923 -> origin/evidence/requirements-carrier-readback-20260923
+2026-10-13T07:46:12.9845048Z  * [new branch]        evidence/six-corrected-candidates-equality-pr249-pr145-current-v2 -> origin/evidence/six-corrected-candidates-equality-pr249-pr145-current-v2
+2026-10-13T07:46:12.9846136Z  * [new branch]        evidence/six-corrected-candidates-equality-pr249-pr145-v1 -> origin/evidence/six-corrected-candidates-equality-pr249-pr145-v1
+2026-10-13T07:46:12.9847251Z  * [new branch]        evidence/six-corrected-candidates-equality-pr249-pr147-v1 -> origin/evidence/six-corrected-candidates-equality-pr249-pr147-v1
+2026-10-13T07:46:12.9848371Z  * [new branch]        execution/construct-owner-accepted-six-mirror-candidate-7d87a600-v1 -> origin/execution/construct-owner-accepted-six-mirror-candidate-7d87a600-v1
+2026-10-13T07:46:12.9849573Z  * [new branch]        execution/history-preserving-mirror-sync-0fea97ca-from-11a20a81-v1 -> origin/execution/history-preserving-mirror-sync-0fea97ca-from-11a20a81-v1
+2026-10-13T07:46:12.9850742Z  * [new branch]        execution/history-preserving-mirror-sync-0fea97ca-from-1ac57c68-v1 -> origin/execution/history-preserving-mirror-sync-0fea97ca-from-1ac57c68-v1
+2026-10-13T07:46:12.9851914Z  * [new branch]        execution/history-preserving-mirror-sync-0fea97ca-from-c9fe9826-v1 -> origin/execution/history-preserving-mirror-sync-0fea97ca-from-c9fe9826-v1
+2026-10-13T07:46:12.9853080Z  * [new branch]        execution/history-preserving-mirror-sync-191bee0e-from-a6b45c22-v1 -> origin/execution/history-preserving-mirror-sync-191bee0e-from-a6b45c22-v1
+2026-10-13T07:46:12.9854239Z  * [new branch]        execution/history-preserving-mirror-sync-191bee0e-from-a6b45c22-v3 -> origin/execution/history-preserving-mirror-sync-191bee0e-from-a6b45c22-v3
+2026-10-13T07:46:12.9855511Z  * [new branch]        execution/history-preserving-mirror-sync-191bee0e-from-acb45bd6-v2 -> origin/execution/history-preserving-mirror-sync-191bee0e-from-acb45bd6-v2
+2026-10-13T07:46:12.9856853Z  * [new branch]        execution/history-preserving-mirror-sync-6f4a57dd-from-3c8a6816-v1 -> origin/execution/history-preserving-mirror-sync-6f4a57dd-from-3c8a6816-v1
+2026-10-13T07:46:12.9858063Z  * [new branch]        execution/history-preserving-mirror-sync-authority-7d87-from-afcd-v1 -> origin/execution/history-preserving-mirror-sync-authority-7d87-from-afcd-v1
+2026-10-13T07:46:12.9859144Z  * [new branch]        execution/history-preserving-mirror-sync-pr240-v1 -> origin/execution/history-preserving-mirror-sync-pr240-v1
+2026-10-13T07:46:12.9860044Z  * [new branch]        execution/history-preserving-mirror-sync-pr249-v1 -> origin/execution/history-preserving-mirror-sync-pr249-v1
+2026-10-13T07:46:12.9860964Z  * [new branch]        execution/runtime-article-exact-tree-from-0698e6-v1 -> origin/execution/runtime-article-exact-tree-from-0698e6-v1
+2026-10-13T07:46:12.9862030Z  * [new branch]        execution/sync-accepted-corrected-batch002-524fabd5-from-daf42fd3-v1 -> origin/execution/sync-accepted-corrected-batch002-524fabd5-from-daf42fd3-v1
+2026-10-13T07:46:12.9863103Z  * [new branch]        execution/sync-authority-batch002-combined-20260728-v1 -> origin/execution/sync-authority-batch002-combined-20260728-v1
+2026-10-13T07:46:12.9864132Z  * [new branch]        execution/sync-post-acceptance-status-191bee0e-from-c0bbf858-v1 -> origin/execution/sync-post-acceptance-status-191bee0e-from-c0bbf858-v1
+2026-10-13T07:46:12.9865014Z  * [new branch]        feat/authority-review-receiver-v1 -> origin/feat/authority-review-receiver-v1
+2026-10-13T07:46:12.9865757Z  * [new branch]        feature/digital-twin-scheduling-sync-20261001 -> origin/feature/digital-twin-scheduling-sync-20261001
+2026-10-13T07:46:12.9866787Z  * [new branch]        feature/digital-twin-scheduling-v1-20261001 -> origin/feature/digital-twin-scheduling-v1-20261001
+2026-10-13T07:46:12.9867577Z  * [new branch]        fix/autonomous-mirror-lifecycle-20260926 -> origin/fix/autonomous-mirror-lifecycle-20260926
+2026-10-13T07:46:12.9868353Z  * [new branch]        fix/autonomous-pr-closure-engine-20260923 -> origin/fix/autonomous-pr-closure-engine-20260923
+2026-10-13T07:46:12.9869140Z  * [new branch]        fix/autonomous-pr-fairness-20261008-2be42d8b -> origin/fix/autonomous-pr-fairness-20261008-2be42d8b
+2026-10-13T07:46:12.9870002Z  * [new branch]        fix/brief-2610-publisher-authority-20261010-0b39160c -> origin/fix/brief-2610-publisher-authority-20261010-0b39160c
+2026-10-13T07:46:12.9870827Z  * [new branch]        fix/github-api-rate-budget-v1-20260928 -> origin/fix/github-api-rate-budget-v1-20260928
+2026-10-13T07:46:12.9871475Z  * [new branch]        fix/global-noop-exclusion  -> origin/fix/global-noop-exclusion
+2026-10-13T07:46:12.9872045Z  * [new branch]        fix/global-noop-exclusion-v1 -> origin/fix/global-noop-exclusion-v1
+2026-10-13T07:46:12.9872760Z  * [new branch]        fix/microsoft-support-effect-carrier-v1 -> origin/fix/microsoft-support-effect-carrier-v1
+2026-10-13T07:46:12.9873475Z  * [new branch]        fix/openai-subscription-effect-v1 -> origin/fix/openai-subscription-effect-v1
+2026-10-13T07:46:12.9874199Z  * [new branch]        fix/ruleset-canonical-token-route-20260927 -> origin/fix/ruleset-canonical-token-route-20260927
+2026-10-13T07:46:12.9875032Z  * [new branch]        fix/self-heal-pr-postcondition-20261004-93be182a -> origin/fix/self-heal-pr-postcondition-20261004-93be182a
+2026-10-13T07:46:12.9875872Z  * [new branch]        fix/self-heal-rest-handoff-20261008-512ec968 -> origin/fix/self-heal-rest-handoff-20261008-512ec968
+2026-10-13T07:46:12.9876864Z  * [new branch]        governance/machine-verifiable-science-charter-v1 -> origin/governance/machine-verifiable-science-charter-v1
+2026-10-13T07:46:12.9877824Z  * [new branch]        governance/machine-verifiable-science-charter-v1-postmerge -> origin/governance/machine-verifiable-science-charter-v1-postmerge
+2026-10-13T07:46:12.9879109Z  * [new branch]        infrastructure/history-preserving-mirror-sync-pr225-materializer-hook-v1 -> origin/infrastructure/history-preserving-mirror-sync-pr225-materializer-hook-v1
+2026-10-13T07:46:12.9880245Z  * [new branch]        infrastructure/history-preserving-mirror-sync-pr225-v1 -> origin/infrastructure/history-preserving-mirror-sync-pr225-v1
+2026-10-13T07:46:12.9881156Z  * [new branch]        infrastructure/history-preserving-mirror-sync-v2 -> origin/infrastructure/history-preserving-mirror-sync-v2
+2026-10-13T07:46:12.9882127Z  * [new branch]        infrastructure/history-preserving-mirror-sync-v2-pr-trigger -> origin/infrastructure/history-preserving-mirror-sync-v2-pr-trigger
+2026-10-13T07:46:12.9883038Z  * [new branch]        integration/515-519-521-522-20261012-eceb9b63 -> origin/integration/515-519-521-522-20261012-eceb9b63
+2026-10-13T07:46:12.9883908Z  * [new branch]        integration/autonomy-handoff-fairness-20261008-d87a68c3 -> origin/integration/autonomy-handoff-fairness-20261008-d87a68c3
+2026-10-13T07:46:12.9884811Z  * [new branch]        integration/browser-ab-personal-http-20261008 -> origin/integration/browser-ab-personal-http-20261008
+2026-10-13T07:46:12.9885765Z  * [new branch]        integration/claude-mcp-consolidated-20261009-f760a409-18d2598f -> origin/integration/claude-mcp-consolidated-20261009-f760a409-18d2598f
+2026-10-13T07:46:12.9886880Z  * [new branch]        integration/claude-remote-mcp-readback-20261009-468e9e42 -> origin/integration/claude-remote-mcp-readback-20261009-468e9e42
+2026-10-13T07:46:12.9887767Z  * [new branch]        integration/claude-remote-mcp-rest-20261009 -> origin/integration/claude-remote-mcp-rest-20261009
+2026-10-13T07:46:12.9888673Z  * [new branch]        integration/lifecycle-governance-public-readback-20261009 -> origin/integration/lifecycle-governance-public-readback-20261009
+2026-10-13T07:46:12.9889683Z  * [new branch]        integration/ontology-difference-publication -> origin/integration/ontology-difference-publication
+2026-10-13T07:46:12.9890599Z  * [new branch]        integration/owner-seal-layer-persistence-20261010-6ec5a830 -> origin/integration/owner-seal-layer-persistence-20261010-6ec5a830
+2026-10-13T07:46:12.9891525Z  * [new branch]        integration/personal-claude-budget-503-20261009 -> origin/integration/personal-claude-budget-503-20261009
+2026-10-13T07:46:12.9892360Z  * [new branch]        integration/ruleset-client-lifecycle-20261009 -> origin/integration/ruleset-client-lifecycle-20261009
+2026-10-13T07:46:12.9893270Z  * [new branch]        integration/seed-mcp-governance-512-513-20261009-14c71097 -> origin/integration/seed-mcp-governance-512-513-20261009-14c71097
+2026-10-13T07:46:12.9894183Z  * [new branch]        integration/seed-ruleset-lifecycle-20261009-v1 -> origin/integration/seed-ruleset-lifecycle-20261009-v1
+2026-10-13T07:46:12.9894846Z  * [new branch]        issue-agent/362            -> origin/issue-agent/362
+2026-10-13T07:46:12.9895334Z  * [new branch]        issue-agent/363            -> origin/issue-agent/363
+2026-10-13T07:46:12.9895805Z  * [new branch]        issue-agent/368            -> origin/issue-agent/368
+2026-10-13T07:46:12.9896260Z  * [new branch]        issue-agent/374            -> origin/issue-agent/374
+2026-10-13T07:46:12.9897006Z  * [new branch]        issue-agent/376            -> origin/issue-agent/376
+2026-10-13T07:46:12.9897461Z  * [new branch]        issue-agent/380            -> origin/issue-agent/380
+2026-10-13T07:46:12.9897918Z  * [new branch]        issue-agent/458            -> origin/issue-agent/458
+2026-10-13T07:46:12.9898370Z  * [new branch]        issue-agent/460            -> origin/issue-agent/460
+2026-10-13T07:46:12.9898822Z  * [new branch]        issue-agent/466            -> origin/issue-agent/466
+2026-10-13T07:46:12.9899272Z  * [new branch]        issue-agent/503            -> origin/issue-agent/503
+2026-10-13T07:46:12.9899712Z  * [new branch]        main                       -> origin/main
+2026-10-13T07:46:12.9900318Z  * [new branch]        mesh/recursive-authority-906-admission-v1 -> origin/mesh/recursive-authority-906-admission-v1
+2026-10-13T07:46:12.9901221Z  * [new branch]        mesh/review-authority-966-2db106e5-v1 -> origin/mesh/review-authority-966-2db106e5-v1
+2026-10-13T07:46:12.9901913Z  * [new branch]        mirror/audio-runtime-final-20260725 -> origin/mirror/audio-runtime-final-20260725
+2026-10-13T07:46:12.9902537Z  * [new branch]        mirror/charter-publication -> origin/mirror/charter-publication
+2026-10-13T07:46:12.9903226Z  * [new branch]        mirror/corpus-closure-effective-current-v1 -> origin/mirror/corpus-closure-effective-current-v1
+2026-10-13T07:46:12.9903958Z  * [new branch]        mirror/dependency-security-final -> origin/mirror/dependency-security-final
+2026-10-13T07:46:12.9904686Z  * [new branch]        mirror/formalization-v2-alpha3-publication -> origin/mirror/formalization-v2-alpha3-publication
+2026-10-13T07:46:12.9905507Z  * [new branch]        mirror/manuscript-formalization-v2-completion -> origin/mirror/manuscript-formalization-v2-completion
+2026-10-13T07:46:12.9906491Z  * [new branch]        mirror/port-authority-pr568-workflow-executor-mesh-v1 -> origin/mirror/port-authority-pr568-workflow-executor-mesh-v1
+2026-10-13T07:46:12.9907422Z  * [new branch]        mirror/port-authority-pr582-reflexive-watchdog-v1 -> origin/mirror/port-authority-pr582-reflexive-watchdog-v1
+2026-10-13T07:46:12.9908211Z  * [new branch]        mirror/repository-mesh-sync-20260724 -> origin/mirror/repository-mesh-sync-20260724
+2026-10-13T07:46:12.9908890Z  * [new branch]        mirror/repository-mesh-sync-final -> origin/mirror/repository-mesh-sync-final
+2026-10-13T07:46:12.9909621Z  * [new branch]        mirror/round-trip-prepublication-return-v1 -> origin/mirror/round-trip-prepublication-return-v1
+2026-10-13T07:46:12.9910345Z  * [new branch]        ops/ruleset-admin-bridge-20260915 -> origin/ops/ruleset-admin-bridge-20260915
+2026-10-13T07:46:12.9911258Z  * [new branch]        orchestration/history-preserving-mirror-sync-pr217-v1 -> origin/orchestration/history-preserving-mirror-sync-pr217-v1
+2026-10-13T07:46:12.9912211Z  * [new branch]        orchestration/history-preserving-mirror-sync-pr225-v1 -> origin/orchestration/history-preserving-mirror-sync-pr225-v1
+2026-10-13T07:46:12.9913149Z  * [new branch]        owner/qikvrt-evolutionary-automation-delegation-v1 -> origin/owner/qikvrt-evolutionary-automation-delegation-v1
+2026-10-13T07:46:12.9914057Z  * [new branch]        personal/autonomous-optimal-goal-contract-20260927 -> origin/personal/autonomous-optimal-goal-contract-20260927
+2026-10-13T07:46:12.9915102Z  * [new branch]        personal/autonomous-optimal-goal-contract-rebased-5418499-20260927 -> origin/personal/autonomous-optimal-goal-contract-rebased-5418499-20260927
+2026-10-13T07:46:12.9916103Z  * [new branch]        personal/firefox-capability-boundary-20260927 -> origin/personal/firefox-capability-boundary-20260927
+2026-10-13T07:46:12.9917150Z  * [new branch]        personal/reminders-and-dayplan-20261006 -> origin/personal/reminders-and-dayplan-20261006
+2026-10-13T07:46:12.9917887Z  * [new branch]        policy/answer-search-roadmap-20260928 -> origin/policy/answer-search-roadmap-20260928
+2026-10-13T07:46:12.9918730Z  * [new branch]        policy/owner-no-reinteraction-standing-delegation-v1 -> origin/policy/owner-no-reinteraction-standing-delegation-v1
+2026-10-13T07:46:12.9919550Z  * [new branch]        policy/qikvrt-note-inheritance-v1 -> origin/policy/qikvrt-note-inheritance-v1
+2026-10-13T07:46:12.9920218Z  * [new branch]        policy/qikvrt-notes-inheritance-v1 -> origin/policy/qikvrt-notes-inheritance-v1
+2026-10-13T07:46:12.9920944Z  * [new branch]        policy/universal-proof-thought-schema-v1 -> origin/policy/universal-proof-thought-schema-v1
+2026-10-13T07:46:12.9921697Z  * [new branch]        port/authority-pr297-current-main-v1 -> origin/port/authority-pr297-current-main-v1
+2026-10-13T07:46:12.9922441Z  * [new branch]        port/authority-pr562-round-trip-freeze-v1 -> origin/port/authority-pr562-round-trip-freeze-v1
+2026-10-13T07:46:12.9923391Z  * [new branch]        port/continuous-auto-repair-authority-8de77d3a-v1 -> origin/port/continuous-auto-repair-authority-8de77d3a-v1
+2026-10-13T07:46:12.9924326Z  * [new branch]        port/pr489-ai-entrypoint-continuous-optimization-v1 -> origin/port/pr489-ai-entrypoint-continuous-optimization-v1
+2026-10-13T07:46:12.9925104Z  * [new branch]        port/pr516-ordered-qce-stack-v1 -> origin/port/pr516-ordered-qce-stack-v1
+2026-10-13T07:46:12.9925714Z  * [new branch]        port/pr516-ordered-qce-stack-v2 -> origin/port/pr516-ordered-qce-stack-v2
+2026-10-13T07:46:12.9926506Z  * [new branch]        port/pr516-ordered-qce-stack-v2-current-main -> origin/port/pr516-ordered-qce-stack-v2-current-main
+2026-10-13T07:46:12.9927404Z  * [new branch]        port/round-trip-final-byte-freeze-authority-f907-v1 -> origin/port/round-trip-final-byte-freeze-authority-f907-v1
+2026-10-13T07:46:12.9928231Z  * [new branch]        port/round-trip-final-byte-freeze-v1 -> origin/port/round-trip-final-byte-freeze-v1
+2026-10-13T07:46:12.9929042Z  * [new branch]        port/round-trip-publication-corpus-precedence-v1 -> origin/port/round-trip-publication-corpus-precedence-v1
+2026-10-13T07:46:12.9929891Z  * [new branch]        publication/leibniz-qikvrt-persistence-v1 -> origin/publication/leibniz-qikvrt-persistence-v1
+2026-10-13T07:46:12.9930631Z  * [new branch]        publication/nash-kognition-20260923-v1 -> origin/publication/nash-kognition-20260923-v1
+2026-10-13T07:46:12.9931450Z  * [new branch]        publication/ontology-difference-reverse-engineering -> origin/publication/ontology-difference-reverse-engineering
+2026-10-13T07:46:12.9932293Z  * [new branch]        publication/original-sketches-20261002-v1 -> origin/publication/original-sketches-20261002-v1
+2026-10-13T07:46:12.9932962Z  * [new branch]        publication/pr1128-dossier-v2 -> origin/publication/pr1128-dossier-v2
+2026-10-13T07:46:12.9933659Z  * [new branch]        publication/qik-scientific-revision-20260923 -> origin/publication/qik-scientific-revision-20260923
+2026-10-13T07:46:12.9934616Z  * [new branch]        publication/raumzeitterminal-nobel-decay-20261010 -> origin/publication/raumzeitterminal-nobel-decay-20261010
+2026-10-13T07:46:12.9935421Z  * [new branch]        publication/roundtrip-unified-20260920 -> origin/publication/roundtrip-unified-20260920
+2026-10-13T07:46:12.9936146Z  * [new branch]        publication/survival-anschlussfaehig-v1 -> origin/publication/survival-anschlussfaehig-v1
+2026-10-13T07:46:12.9936976Z  * [new branch]        qikvrt-node/v2.13.4-node   -> origin/qikvrt-node/v2.13.4-node
+2026-10-13T07:46:12.9937515Z  * [new branch]        qikvrt-node/v2.13.4-node-r -> origin/qikvrt-node/v2.13.4-node-r
+2026-10-13T07:46:12.9938170Z  * [new branch]        qikvrt/retained-authority/20260816-d18af01d -> origin/qikvrt/retained-authority/20260816-d18af01d
+2026-10-13T07:46:12.9938801Z  * [new branch]        qikvrt/zenodo-state        -> origin/qikvrt/zenodo-state
+2026-10-13T07:46:12.9939778Z  * [new branch]        receipts/owner-reminders/37213767b42749e39dd287c92b9b1313bc9c51ef48cf362d23d4f46d5f35fc9f -> origin/receipts/owner-reminders/37213767b42749e39dd287c92b9b1313bc9c51ef48cf362d23d4f46d5f35fc9f
+2026-10-13T07:46:12.9941166Z  * [new branch]        receipts/owner-reminders/584523e254697eae4f488945a9c00de9397692777d0fc5404a59f4682cf3a05b -> origin/receipts/owner-reminders/584523e254697eae4f488945a9c00de9397692777d0fc5404a59f4682cf3a05b
+2026-10-13T07:46:12.9942553Z  * [new branch]        receipts/owner-reminders/b59dbacb5ccb9423184c2fd5b2747f840f557b79d3ddb4ad9756d4c608803494 -> origin/receipts/owner-reminders/b59dbacb5ccb9423184c2fd5b2747f840f557b79d3ddb4ad9756d4c608803494
+2026-10-13T07:46:12.9943961Z  * [new branch]        receipts/owner-reminders/bac388efbfd2a548733e0d46eb38f7f53726c3cc37eee8a5d40d3de70611a2f8 -> origin/receipts/owner-reminders/bac388efbfd2a548733e0d46eb38f7f53726c3cc37eee8a5d40d3de70611a2f8
+2026-10-13T07:46:12.9945377Z  * [new branch]        receipts/owner-reminders/dc0366b99a2e22c859561cc9ef9f83a5dd1ad732dac36f4cf21ea1a743e9fd55 -> origin/receipts/owner-reminders/dc0366b99a2e22c859561cc9ef9f83a5dd1ad732dac36f4cf21ea1a743e9fd55
+2026-10-13T07:46:12.9946689Z  * [new branch]        release/brief-2610-owner-authorization-20261010 -> origin/release/brief-2610-owner-authorization-20261010
+2026-10-13T07:46:12.9947493Z  * [new branch]        release/effect-ack-universality-20260722 -> origin/release/effect-ack-universality-20260722
+2026-10-13T07:46:12.9948269Z  * [new branch]        repair/activate-observation-hold-20261001 -> origin/repair/activate-observation-hold-20261001
+2026-10-13T07:46:12.9949118Z  * [new branch]        repair/authority-contract-20261007 -> origin/repair/authority-contract-20261007
+2026-10-13T07:46:12.9950234Z  * [new branch]        repair/continuation-noop-verifier-dispatch-v1 -> origin/repair/continuation-noop-verifier-dispatch-v1
+2026-10-13T07:46:12.9951446Z  * [new branch]        repair/continuation-pr-head-origin-main-binding-v1 -> origin/repair/continuation-pr-head-origin-main-binding-v1
+2026-10-13T07:46:12.9952394Z  * [new branch]        repair/continuous-mirror-liveness-gatewatch-0d1b-v1 -> origin/repair/continuous-mirror-liveness-gatewatch-0d1b-v1
+2026-10-13T07:46:12.9953257Z  * [new branch]        repair/exact-pr-head-admission-carrier-v1 -> origin/repair/exact-pr-head-admission-carrier-v1
+2026-10-13T07:46:12.9954060Z  * [new branch]        repair/exact-verifier-base-checkout-126f-v1 -> origin/repair/exact-verifier-base-checkout-126f-v1
+2026-10-13T07:46:12.9954924Z  * [new branch]        repair/governance-enforcement-successor-20260923-v1 -> origin/repair/governance-enforcement-successor-20260923-v1
+2026-10-13T07:46:12.9955788Z  * [new branch]        repair/ietf-revision03-archival-warning-v1 -> origin/repair/ietf-revision03-archival-warning-v1
+2026-10-13T07:46:12.9956653Z  * [new branch]        repair/main-test-gaps-20261001 -> origin/repair/main-test-gaps-20261001
+2026-10-13T07:46:12.9957321Z  * [new branch]        repair/mesh-role-local-completion-v1 -> origin/repair/mesh-role-local-completion-v1
+2026-10-13T07:46:12.9958165Z  * [new branch]        repair/mirror-aphorism-boundary-v2 -> origin/repair/mirror-aphorism-boundary-v2
+2026-10-13T07:46:12.9958906Z  * [new branch]        repair/mirror-aphorism-final-boundary-v3 -> origin/repair/mirror-aphorism-final-boundary-v3
+2026-10-13T07:46:12.9959851Z  * [new branch]        repair/mirror-reflexive-watchdog-all-observed-jobs-c54a0fba-v1 -> origin/repair/mirror-reflexive-watchdog-all-observed-jobs-c54a0fba-v1
+2026-10-13T07:46:12.9960875Z  * [new branch]        repair/mirror-role-local-pre-effect-cas-20260918-v1 -> origin/repair/mirror-role-local-pre-effect-cas-20260918-v1
+2026-10-13T07:46:12.9961880Z  * [new branch]        repair/node-liveness-test-disable-auto-maintenance-0a792-v1 -> origin/repair/node-liveness-test-disable-auto-maintenance-0a792-v1
+2026-10-13T07:46:12.9962974Z  * [new branch]        repair/node-liveness-test-disable-auto-maintenance-0a792620-v1 -> origin/repair/node-liveness-test-disable-auto-maintenance-0a792620-v1
+2026-10-13T07:46:12.9963986Z  * [new branch]        repair/permanent-mirror-liveness-current-main-v1 -> origin/repair/permanent-mirror-liveness-current-main-v1
+2026-10-13T07:46:12.9964897Z  * [new branch]        repair/pr1214-seed-revalidation-stale-heartbeat-v1 -> origin/repair/pr1214-seed-revalidation-stale-heartbeat-v1
+2026-10-13T07:46:12.9965701Z  * [new branch]        repair/pr295-isolated-materializer-v1 -> origin/repair/pr295-isolated-materializer-v1
+2026-10-13T07:46:12.9966591Z  * [new branch]        repair/pr353-pr355-materialized-trusted-successor-v1 -> origin/repair/pr353-pr355-materialized-trusted-successor-v1
+2026-10-13T07:46:12.9967520Z  * [new branch]        repair/pr353-watchdog-liveness-fixture-isolation-v1 -> origin/repair/pr353-watchdog-liveness-fixture-isolation-v1
+2026-10-13T07:46:12.9968344Z  * [new branch]        repair/pr487-watchdog-readback-20261007 -> origin/repair/pr487-watchdog-readback-20261007
+2026-10-13T07:46:12.9969122Z  * [new branch]        repair/pre-effect-origin-parser-da3d771c-v1 -> origin/repair/pre-effect-origin-parser-da3d771c-v1
+2026-10-13T07:46:12.9970084Z  * [new branch]        repair/publication-overview-dependency-677fdef-v1 -> origin/repair/publication-overview-dependency-677fdef-v1
+2026-10-13T07:46:12.9971006Z  * [new branch]        repair/qik-scientific-revision-governance-20260923 -> origin/repair/qik-scientific-revision-governance-20260923
+2026-10-13T07:46:12.9971877Z  * [new branch]        repair/renew-mirror-node-liveness-20260911-v1 -> origin/repair/renew-mirror-node-liveness-20260911-v1
+2026-10-13T07:46:12.9972926Z  * [new branch]        repair/renew-mirror-node-liveness-after-main-restoration-20260819-v1 -> origin/repair/renew-mirror-node-liveness-after-main-restoration-20260819-v1
+2026-10-13T07:46:12.9973954Z  * [new branch]        repair/restore-role-local-node-state-20260818 -> origin/repair/restore-role-local-node-state-20260818
+2026-10-13T07:46:12.9974759Z  * [new branch]        repair/role-local-pre-effect-main-20261001 -> origin/repair/role-local-pre-effect-main-20261001
+2026-10-13T07:46:12.9975596Z  * [new branch]        repair/ruleset-client-dispatch-20261009-80b68b00 -> origin/repair/ruleset-client-dispatch-20261009-80b68b00
+2026-10-13T07:46:12.9976419Z  * [new branch]        repair/scaling-lossless-worker-v1 -> origin/repair/scaling-lossless-worker-v1
+2026-10-13T07:46:12.9977318Z  * [new branch]        repair/seed-acceptance-probe-json-1e1bf6af-v1 -> origin/repair/seed-acceptance-probe-json-1e1bf6af-v1
+2026-10-13T07:46:12.9978151Z  * [new branch]        repair/windows-python-offline-cache-20261003 -> origin/repair/windows-python-offline-cache-20261003
+2026-10-13T07:46:12.9978945Z  * [new branch]        research/temdd-liveness-convergence-v1 -> origin/research/temdd-liveness-convergence-v1
+2026-10-13T07:46:12.9979686Z  * [new branch]        review/zenodo-access-preflight-20261005 -> origin/review/zenodo-access-preflight-20261005
+2026-10-13T07:46:12.9980451Z  * [new branch]        seed/batch003-authority-objects-6f4a57dd -> origin/seed/batch003-authority-objects-6f4a57dd
+2026-10-13T07:46:12.9981584Z  * [new branch]        seed/batch003-current-authority-db60a080 -> origin/seed/batch003-current-authority-db60a080
+2026-10-13T07:46:12.9982413Z  * [new branch]        staging/ai-handoff-clean   -> origin/staging/ai-handoff-clean
+2026-10-13T07:46:12.9983053Z  * [new branch]        staging/arxiv-kontinuitaet-a2dbd3ac-v1 -> origin/staging/arxiv-kontinuitaet-a2dbd3ac-v1
+2026-10-13T07:46:12.9983785Z  * [new branch]        staging/cumulative-tool-cache-registry -> origin/staging/cumulative-tool-cache-registry
+2026-10-13T07:46:12.9984544Z  * [new branch]        staging/cumulative-tool-cache-registry-v2 -> origin/staging/cumulative-tool-cache-registry-v2
+2026-10-13T07:46:12.9985339Z  * [new branch]        staging/ietf-epistemic-status-00-a2dbd3ac-v1 -> origin/staging/ietf-epistemic-status-00-a2dbd3ac-v1
+2026-10-13T07:46:12.9986040Z  * [new branch]        state/mirror-node-a84f157a-v1 -> origin/state/mirror-node-a84f157a-v1
+2026-10-13T07:46:12.9986905Z  * [new branch]        successor/pr286-requested-review-lifecycle-9cccdb0-v1 -> origin/successor/pr286-requested-review-lifecycle-9cccdb0-v1
+2026-10-13T07:46:12.9987801Z  * [new branch]        successor/pr295-reflexive-watchdog-85eed663-v1 -> origin/successor/pr295-reflexive-watchdog-85eed663-v1
+2026-10-13T07:46:12.9988826Z  * [new branch]        sync/accepted-corrected-batch002-authority-524fabd5-from-daf42fd3-v1 -> origin/sync/accepted-corrected-batch002-authority-524fabd5-from-daf42fd3-v1
+2026-10-13T07:46:12.9989808Z  * [new branch]        sync/authority-42389236-zenodo-evidence -> origin/sync/authority-42389236-zenodo-evidence
+2026-10-13T07:46:12.9990451Z  * [new branch]        sync/authority-49850f649283 -> origin/sync/authority-49850f649283
+2026-10-13T07:46:12.9991099Z  * [new branch]        sync/authority-599866-global-completion -> origin/sync/authority-599866-global-completion
+2026-10-13T07:46:12.9991752Z  * [new branch]        sync/authority-5c0a60dac2da -> origin/sync/authority-5c0a60dac2da
+2026-10-13T07:46:12.9992308Z  * [new branch]        sync/authority-b64e4c782634 -> origin/sync/authority-b64e4c782634
+2026-10-13T07:46:12.9993058Z  * [new branch]        sync/authority-pr307-current-main-v1 -> origin/sync/authority-pr307-current-main-v1
+2026-10-13T07:46:12.9993944Z  * [new branch]        sync/batch003-dispatch-authority-6f4a57dd-from-3c8a6816-v1 -> origin/sync/batch003-dispatch-authority-6f4a57dd-from-3c8a6816-v1
+2026-10-13T07:46:12.9995023Z  * [new branch]        sync/batch003-first-subject-authority-0fea97ca-from-11a20a81-v1 -> origin/sync/batch003-first-subject-authority-0fea97ca-from-11a20a81-v1
+2026-10-13T07:46:12.9996154Z  * [new branch]        sync/batch003-first-subject-authority-0fea97ca-from-1ac57c68-v1 -> origin/sync/batch003-first-subject-authority-0fea97ca-from-1ac57c68-v1
+2026-10-13T07:46:12.9997426Z  * [new branch]        sync/batch003-first-subject-authority-0fea97ca-from-c9fe9826-v1 -> origin/sync/batch003-first-subject-authority-0fea97ca-from-c9fe9826-v1
+2026-10-13T07:46:12.9998368Z  * [new branch]        sync/canonical-status-article-b47d-v1 -> origin/sync/canonical-status-article-b47d-v1
+2026-10-13T07:46:12.9999331Z  * [new branch]        sync/canonical-temporal-memory-authority-944438bd-from-a7520583-v1 -> origin/sync/canonical-temporal-memory-authority-944438bd-from-a7520583-v1
+2026-10-13T07:46:13.0000321Z  * [new branch]        sync/canonical-zenodo-union-4892e744-v2 -> origin/sync/canonical-zenodo-union-4892e744-v2
+2026-10-13T07:46:13.0001227Z  * [new branch]        sync/construction-base-authority-7d87a600-from-afcd0255-v1 -> origin/sync/construction-base-authority-7d87a600-from-afcd0255-v1
+2026-10-13T07:46:13.0002190Z  * [new branch]        sync/content-disposition-batch-001-98194f45-v1 -> origin/sync/content-disposition-batch-001-98194f45-v1
+2026-10-13T07:46:13.0003033Z  * [new branch]        sync/content-disposition-batch-001-98194f45-v2 -> origin/sync/content-disposition-batch-001-98194f45-v2
+2026-10-13T07:46:13.0004006Z  * [new branch]        sync/content-disposition-batch-002-3ba298e0-v1 -> origin/sync/content-disposition-batch-002-3ba298e0-v1
+2026-10-13T07:46:13.0005069Z  * [new branch]        sync/content-disposition-batch-002-terminal-5d52adc8-from-30efd108-v1 -> origin/sync/content-disposition-batch-002-terminal-5d52adc8-from-30efd108-v1
+2026-10-13T07:46:13.0006126Z  * [new branch]        sync/current-batch003-db60a080-from-518677ee-v1 -> origin/sync/current-batch003-db60a080-from-518677ee-v1
+2026-10-13T07:46:13.0006944Z  * [new branch]        sync/global-completion-599866-v2 -> origin/sync/global-completion-599866-v2
+2026-10-13T07:46:13.0007602Z  * [new branch]        sync/global-finalization-b771-v1 -> origin/sync/global-finalization-b771-v1
+2026-10-13T07:46:13.0008505Z  * [new branch]        sync/global-system-closure-authority-844643be-from-ff8bdd5f-v1 -> origin/sync/global-system-closure-authority-844643be-from-ff8bdd5f-v1
+2026-10-13T07:46:13.0009351Z  * [new branch]        sync/goldkelch-main-2e8192d -> origin/sync/goldkelch-main-2e8192d
+2026-10-13T07:46:13.0010186Z  * [new branch]        sync/post-acceptance-status-191bee0e-from-a6b45c22-v1 -> origin/sync/post-acceptance-status-191bee0e-from-a6b45c22-v1
+2026-10-13T07:46:13.0011249Z  * [new branch]        sync/post-acceptance-status-authority-191bee0e-from-a6b45c22-v3 -> origin/sync/post-acceptance-status-authority-191bee0e-from-a6b45c22-v3
+2026-10-13T07:46:13.0012384Z  * [new branch]        sync/post-acceptance-status-authority-191bee0e-from-a6b45c22-v4 -> origin/sync/post-acceptance-status-authority-191bee0e-from-a6b45c22-v4
+2026-10-13T07:46:13.0013528Z  * [new branch]        sync/post-acceptance-status-authority-191bee0e-from-acb45bd6-v2 -> origin/sync/post-acceptance-status-authority-191bee0e-from-acb45bd6-v2
+2026-10-13T07:46:13.0014684Z  * [new branch]        sync/post-acceptance-status-authority-191bee0e-from-c0bbf858-v1 -> origin/sync/post-acceptance-status-authority-191bee0e-from-c0bbf858-v1
+2026-10-13T07:46:13.0015674Z  * [new branch]        sync/pr273-authority-b5452d9e-from-0bc051d5-v1 -> origin/sync/pr273-authority-b5452d9e-from-0bc051d5-v1
+2026-10-13T07:46:13.0017018Z  * [new branch]        sync/projector-repair-authority-1f559a19-from-465b46fd-v1 -> origin/sync/projector-repair-authority-1f559a19-from-465b46fd-v1
+2026-10-13T07:46:13.0018016Z  * [new branch]        sync/quantum-classical-runtime-article-3a186-v1 -> origin/sync/quantum-classical-runtime-article-3a186-v1
+2026-10-13T07:46:13.0018902Z  * [new branch]        sync/quantum-runtime-article-zenodo-3a186cb5-v1 -> origin/sync/quantum-runtime-article-zenodo-3a186cb5-v1
+2026-10-13T07:46:13.0019848Z  * [new branch]        sync/runtime-article-authority-tree-3a186-from-0698e-v1 -> origin/sync/runtime-article-authority-tree-3a186-from-0698e-v1
+2026-10-13T07:46:13.0020954Z  * [new branch]        sync/six-corrected-candidates-authority-7d87a600-from-afcd0255-v1 -> origin/sync/six-corrected-candidates-authority-7d87a600-from-afcd0255-v1
+2026-10-13T07:46:13.0022144Z  * [new branch]        sync/six-corrected-candidates-authority-7d87a600-from-c2a6e75-v1 -> origin/sync/six-corrected-candidates-authority-7d87a600-from-c2a6e75-v1
+2026-10-13T07:46:13.0023323Z  * [new branch]        sync/six-corrected-candidates-authority-7d87a600-from-c2a6e75e-v1 -> origin/sync/six-corrected-candidates-authority-7d87a600-from-c2a6e75e-v1
+2026-10-13T07:46:13.0024488Z  * [new branch]        sync/survival-postpublication-authority-3e6981a5-from-cd5ea13e-v1 -> origin/sync/survival-postpublication-authority-3e6981a5-from-cd5ea13e-v1
+2026-10-13T07:46:13.0025515Z  * [new branch]        sync/survival-postpublication-authority-pr286-v1 -> origin/sync/survival-postpublication-authority-pr286-v1
+2026-10-13T07:46:13.0026550Z  * [new branch]        sync/whole-tree-authority-2071b2946ef5-from-c8bb2dfaad51-v1 -> origin/sync/whole-tree-authority-2071b2946ef5-from-c8bb2dfaad51-v1
+2026-10-13T07:46:13.0027587Z  * [new branch]        sync/whole-tree-authority-d18af01d2b56-from-c8bb2dfaad51-v1 -> origin/sync/whole-tree-authority-d18af01d2b56-from-c8bb2dfaad51-v1
+2026-10-13T07:46:13.0028632Z  * [new branch]        sync/whole-tree-receipt-pr634-pr344-mirror-v1 -> origin/sync/whole-tree-receipt-pr634-pr344-mirror-v1
+2026-10-13T07:46:13.0029410Z  * [new branch]        temdd/executable-runtime-20260923-v1 -> origin/temdd/executable-runtime-20260923-v1
+2026-10-13T07:46:13.0030000Z  * [new branch]        tmp-do-not-use             -> origin/tmp-do-not-use
+2026-10-13T07:46:13.0030490Z  * [new branch]        tmp/b0a7-tree-probe        -> origin/tmp/b0a7-tree-probe
+2026-10-13T07:46:13.0031013Z  * [new branch]        tmp/probe-base-tree-465b   -> origin/tmp/probe-base-tree-465b
+2026-10-13T07:46:13.0031762Z  * [new branch]        transport/mirror-aphorism-candidate-bytes-20260804-v1 -> origin/transport/mirror-aphorism-candidate-bytes-20260804-v1
+2026-10-13T07:46:13.0032621Z  * [new branch]        transport/r11-v2-mirror-materializer-once -> origin/transport/r11-v2-mirror-materializer-once
+2026-10-13T07:46:13.0033447Z  * [new branch]        trigger/quantum-runtime-article-sync-3a186cb5-v1 -> origin/trigger/quantum-runtime-article-sync-3a186cb5-v1
+2026-10-13T07:46:13.0034254Z  * [new branch]        trusted/dispatch-pr334-exact-901943d6-v2 -> origin/trusted/dispatch-pr334-exact-901943d6-v2
+2026-10-13T07:46:13.0035050Z  * [new branch]        trusted/execute-runtime-article-sync-c8af0bdb -> origin/trusted/execute-runtime-article-sync-c8af0bdb
+2026-10-13T07:46:13.0035970Z  * [new branch]        trusted/materialize-mirror-authority-0ab86d6f-20260729-v1 -> origin/trusted/materialize-mirror-authority-0ab86d6f-20260729-v1
+2026-10-13T07:46:13.0037288Z  * [new branch]        trusted/materialize-node-liveness-test-maintenance-repair-0a792620-v1 -> origin/trusted/materialize-node-liveness-test-maintenance-repair-0a792620-v1
+2026-10-13T07:46:13.0038490Z  * [new branch]        trusted/materialize-scoped-zenodo-effect-ack-equality-mirror-v1 -> origin/trusted/materialize-scoped-zenodo-effect-ack-equality-mirror-v1
+2026-10-13T07:46:13.0039509Z  * [new branch]        trusted/post-pr382-pr217-anticipation-refresh-v1 -> origin/trusted/post-pr382-pr217-anticipation-refresh-v1
+2026-10-13T07:46:13.0040283Z  * [new branch]        trusted/pr101-equality-27d6d48f -> origin/trusted/pr101-equality-27d6d48f
+2026-10-13T07:46:13.0041163Z  * [new branch]        trusted/pr103-history-preserving-sync-v2-8653eb9f -> origin/trusted/pr103-history-preserving-sync-v2-8653eb9f
+2026-10-13T07:46:13.0041970Z  * [new branch]        trusted/pr103-history-sync-v2-8653eb9f -> origin/trusted/pr103-history-sync-v2-8653eb9f
+2026-10-13T07:46:13.0042682Z  * [new branch]        trusted/pr106-sync-pr-trigger-30564d93 -> origin/trusted/pr106-sync-pr-trigger-30564d93
+2026-10-13T07:46:13.0043485Z  * [new branch]        trusted/pr112-post-acceptance-equality-e390f7eb -> origin/trusted/pr112-post-acceptance-equality-e390f7eb
+2026-10-13T07:46:13.0044302Z  * [new branch]        trusted/pr118-batch003-equality-b7e770be -> origin/trusted/pr118-batch003-equality-b7e770be
+2026-10-13T07:46:13.0045016Z  * [new branch]        trusted/pr121-mirror-sync-v4-b6cf8a55 -> origin/trusted/pr121-mirror-sync-v4-b6cf8a55
+2026-10-13T07:46:13.0045750Z  * [new branch]        trusted/pr124-constructor-hook-5595daad -> origin/trusted/pr124-constructor-hook-5595daad
+2026-10-13T07:46:13.0046550Z  * [new branch]        trusted/pr124-constructor-hook-ae2ee510 -> origin/trusted/pr124-constructor-hook-ae2ee510
+2026-10-13T07:46:13.0047336Z  * [new branch]        trusted/pr129-first-subject-equality-070e061e -> origin/trusted/pr129-first-subject-equality-070e061e
+2026-10-13T07:46:13.0048172Z  * [new branch]        trusted/pr134-constructor-exact-bytes-f9731ac3 -> origin/trusted/pr134-constructor-exact-bytes-f9731ac3
+2026-10-13T07:46:13.0049060Z  * [new branch]        trusted/pr134-constructor-infrastructure-f9731ac3 -> origin/trusted/pr134-constructor-infrastructure-f9731ac3
+2026-10-13T07:46:13.0049898Z  * [new branch]        trusted/pr134-exact-tree-retrigger-f973-v1 -> origin/trusted/pr134-exact-tree-retrigger-f973-v1
+2026-10-13T07:46:13.0050635Z  * [new branch]        trusted/pr134-infrastructure-6d9dde77 -> origin/trusted/pr134-infrastructure-6d9dde77
+2026-10-13T07:46:13.0051521Z  * [new branch]        trusted/pr148-six-corrected-equality-66868dec -> origin/trusted/pr148-six-corrected-equality-66868dec
+2026-10-13T07:46:13.0052318Z  * [new branch]        trusted/pr149-reciprocal-equality-73c0d8cb -> origin/trusted/pr149-reciprocal-equality-73c0d8cb
+2026-10-13T07:46:13.0053047Z  * [new branch]        trusted/pr152-pr145-receipt-61563962 -> origin/trusted/pr152-pr145-receipt-61563962
+2026-10-13T07:46:13.0053810Z  * [new branch]        trusted/pr152-pr145-receipt-exact-head-61563962 -> origin/trusted/pr152-pr145-receipt-exact-head-61563962
+2026-10-13T07:46:13.0054631Z  * [new branch]        trusted/pr156-reciprocal-equality-5efd79a2 -> origin/trusted/pr156-reciprocal-equality-5efd79a2
+2026-10-13T07:46:13.0055385Z  * [new branch]        trusted/pr158-global-closure-41393e71 -> origin/trusted/pr158-global-closure-41393e71
+2026-10-13T07:46:13.0056169Z  * [new branch]        trusted/pr158-global-closure-exact-head-41393e71 -> origin/trusted/pr158-global-closure-exact-head-41393e71
+2026-10-13T07:46:13.0057240Z  * [new branch]        trusted/pr161-reciprocal-equality-609becdd -> origin/trusted/pr161-reciprocal-equality-609becdd
+2026-10-13T07:46:13.0058029Z  * [new branch]        trusted/pr168-reciprocal-equality-1d8737f6 -> origin/trusted/pr168-reciprocal-equality-1d8737f6
+2026-10-13T07:46:13.0058846Z  * [new branch]        trusted/pr192-vrtcore-h3-port-executor-e1c7ae2b -> origin/trusted/pr192-vrtcore-h3-port-executor-e1c7ae2b
+2026-10-13T07:46:13.0059685Z  * [new branch]        trusted/pr245-zero-job-retrigger-e1941ce7-v2 -> origin/trusted/pr245-zero-job-retrigger-e1941ce7-v2
+2026-10-13T07:46:13.0060517Z  * [new branch]        trusted/pr248-exact-head-verification-4d66d0c-v1 -> origin/trusted/pr248-exact-head-verification-4d66d0c-v1
+2026-10-13T07:46:13.0061439Z  * [new branch]        trusted/pr249-mirror-constructor-current-main-c2a6-v1 -> origin/trusted/pr249-mirror-constructor-current-main-c2a6-v1
+2026-10-13T07:46:13.0062430Z  * [new branch]        trusted/pr249-mirror-constructor-trigger-current-v2-temp -> origin/trusted/pr249-mirror-constructor-trigger-current-v2-temp
+2026-10-13T07:46:13.0063464Z  * [new branch]        trusted/pr249-mirror-constructor-trigger-main-v1 -> origin/trusted/pr249-mirror-constructor-trigger-main-v1
+2026-10-13T07:46:13.0064300Z  * [new branch]        trusted/pr249-mirror-constructor-trigger-v1 -> origin/trusted/pr249-mirror-constructor-trigger-v1
+2026-10-13T07:46:13.0065144Z  * [new branch]        trusted/pr250-exact-head-verification-5f9fe419-v1 -> origin/trusted/pr250-exact-head-verification-5f9fe419-v1
+2026-10-13T07:46:13.0065929Z  * [new branch]        trusted/pr252-exact-head-df5b95fb-v1 -> origin/trusted/pr252-exact-head-df5b95fb-v1
+2026-10-13T07:46:13.0066684Z  * [new branch]        trusted/pr254-exact-head-e7c43170-v1 -> origin/trusted/pr254-exact-head-e7c43170-v1
+2026-10-13T07:46:13.0067357Z  * [new branch]        trusted/pr256-exact-head-91b11e53-v1 -> origin/trusted/pr256-exact-head-91b11e53-v1
+2026-10-13T07:46:13.0068031Z  * [new branch]        trusted/pr262-eea0d0da-exact-head-v1 -> origin/trusted/pr262-eea0d0da-exact-head-v1
+2026-10-13T07:46:13.0068814Z  * [new branch]        trusted/pr262-exact-head-verification-eea0d0da-v1 -> origin/trusted/pr262-exact-head-verification-eea0d0da-v1
+2026-10-13T07:46:13.0069592Z  * [new branch]        trusted/pr265-2b3a5b0c-exact-head-v1 -> origin/trusted/pr265-2b3a5b0c-exact-head-v1
+2026-10-13T07:46:13.0070264Z  * [new branch]        trusted/pr268-exact-head-fb32431d-v1 -> origin/trusted/pr268-exact-head-fb32431d-v1
+2026-10-13T07:46:13.0071009Z  * [new branch]        trusted/pr272-literal-exact-head-6f694a8a-v1 -> origin/trusted/pr272-literal-exact-head-6f694a8a-v1
+2026-10-13T07:46:13.0071798Z  * [new branch]        trusted/pr323-h5-h6-port-executor-4ce9c07b -> origin/trusted/pr323-h5-h6-port-executor-4ce9c07b
+2026-10-13T07:46:13.0072622Z  * [new branch]        trusted/pr323-pr197-receipt-executor-mirror-v1 -> origin/trusted/pr323-pr197-receipt-executor-mirror-v1
+2026-10-13T07:46:13.0073536Z  * [new branch]        trusted/pr356-pr204-receipt-executor-mirror-v1 -> origin/trusted/pr356-pr204-receipt-executor-mirror-v1
+2026-10-13T07:46:13.0074375Z  * [new branch]        trusted/pr356-pr204-receipt-executor-mirror-v2 -> origin/trusted/pr356-pr204-receipt-executor-mirror-v2
+2026-10-13T07:46:13.0075194Z  * [new branch]        trusted/pr356-pr204-receipt-executor-mirror-v3 -> origin/trusted/pr356-pr204-receipt-executor-mirror-v3
+2026-10-13T07:46:13.0076015Z  * [new branch]        trusted/pr356-pr204-receipt-executor-mirror-v4 -> origin/trusted/pr356-pr204-receipt-executor-mirror-v4
+2026-10-13T07:46:13.0077007Z  * [new branch]        trusted/pr368-mirror-current-main-port-v1 -> origin/trusted/pr368-mirror-current-main-port-v1
+2026-10-13T07:46:13.0077837Z  * [new branch]        trusted/pr368-pr214-reciprocal-equality-mirror-v1 -> origin/trusted/pr368-pr214-reciprocal-equality-mirror-v1
+2026-10-13T07:46:13.0078625Z  * [new branch]        trusted/pr384-mirror-request-port-v1 -> origin/trusted/pr384-mirror-request-port-v1
+2026-10-13T07:46:13.0079310Z  * [new branch]        trusted/pr55-materialized-8b951ef0 -> origin/trusted/pr55-materialized-8b951ef0
+2026-10-13T07:46:13.0080003Z  * [new branch]        trusted/pr57-materialized-c3abe8ae -> origin/trusted/pr57-materialized-c3abe8ae
+2026-10-13T07:46:13.0080792Z  * [new branch]        trusted/pr59-zenodo-evidence-materialized-90636489 -> origin/trusted/pr59-zenodo-evidence-materialized-90636489
+2026-10-13T07:46:13.0081615Z  * [new branch]        trusted/pr61-global-completion-9f7bd91c -> origin/trusted/pr61-global-completion-9f7bd91c
+2026-10-13T07:46:13.0082379Z  * [new branch]        trusted/pr62-authority-tree-sync-2fda06e1 -> origin/trusted/pr62-authority-tree-sync-2fda06e1
+2026-10-13T07:46:13.0083180Z  * [new branch]        trusted/pr62-global-completion-exact-2d5f255d -> origin/trusted/pr62-global-completion-exact-2d5f255d
+2026-10-13T07:46:13.0083956Z  * [new branch]        trusted/pr66-finalization-sync-95c0e036 -> origin/trusted/pr66-finalization-sync-95c0e036
+2026-10-13T07:46:13.0084720Z  * [new branch]        trusted/pr66-global-finalization-e6b3f1a7 -> origin/trusted/pr66-global-finalization-e6b3f1a7
+2026-10-13T07:46:13.0085639Z  * [new branch]        trusted/pr69-persist-authority-tree-56a70fd0 -> origin/trusted/pr69-persist-authority-tree-56a70fd0
+2026-10-13T07:46:13.0086544Z  * [new branch]        trusted/pr69-status-article-b47d-exact-c3931554 -> origin/trusted/pr69-status-article-b47d-exact-c3931554
+2026-10-13T07:46:13.0087316Z  * [new branch]        trusted/pr73-runtime-sync-c5439e6d -> origin/trusted/pr73-runtime-sync-c5439e6d
+2026-10-13T07:46:13.0087969Z  * [new branch]        trusted/pr74-mirror-sync-5b783984 -> origin/trusted/pr74-mirror-sync-5b783984
+2026-10-13T07:46:13.0088605Z  * [new branch]        trusted/pr74-mirror-sync-a857059b -> origin/trusted/pr74-mirror-sync-a857059b
+2026-10-13T07:46:13.0089282Z  * [new branch]        trusted/pr77-sync-controller-b1436bd0 -> origin/trusted/pr77-sync-controller-b1436bd0
+2026-10-13T07:46:13.0089984Z  * [new branch]        trusted/pr78-controller-b1436bd0-v2 -> origin/trusted/pr78-controller-b1436bd0-v2
+2026-10-13T07:46:13.0090665Z  * [new branch]        trusted/pr94-pair-receipt-24cb703a -> origin/trusted/pr94-pair-receipt-24cb703a
+2026-10-13T07:46:13.0091281Z  * [new branch]        trusted/pr96-mirror-9307d6e7 -> origin/trusted/pr96-mirror-9307d6e7
+2026-10-13T07:46:13.0091866Z  * [new branch]        trusted/pr98-equality-7d9cf83a -> origin/trusted/pr98-equality-7d9cf83a
+2026-10-13T07:46:13.0092671Z  * [new branch]        trusted/pre-spacetime-zenodo-receipt-equality-mirror-v1 -> origin/trusted/pre-spacetime-zenodo-receipt-equality-mirror-v1
+2026-10-13T07:46:13.0093654Z  * [new branch]        trusted/recover-pr309-exact-verifier-dispatch-126f-v1 -> origin/trusted/recover-pr309-exact-verifier-dispatch-126f-v1
+2026-10-13T07:46:13.0094620Z  * [new branch]        trusted/recover-pr313-exact-verifier-dispatch-9dcc-v1 -> origin/trusted/recover-pr313-exact-verifier-dispatch-9dcc-v1
+2026-10-13T07:46:13.0095676Z  * [new branch]        trusted/repair-mirror-pr228-materializer-timeout-v1 -> origin/trusted/repair-mirror-pr228-materializer-timeout-v1
+2026-10-13T07:46:13.0096837Z  * [new branch]        trusted/trigger-canonical-zenodo-union-sync-4892e744-v1 -> origin/trusted/trigger-canonical-zenodo-union-sync-4892e744-v1
+2026-10-13T07:46:13.0097819Z  * [new branch]        trusted/trigger-canonical-zenodo-union-sync-4892e744-v2 -> origin/trusted/trigger-canonical-zenodo-union-sync-4892e744-v2
+2026-10-13T07:46:13.0098756Z  * [new branch]        trusted/trigger-construct-mirror-pr249-7d87a600-v1 -> origin/trusted/trigger-construct-mirror-pr249-7d87a600-v1
+2026-10-13T07:46:13.0099632Z  * [new branch]        trusted/trigger-construct-mirror-pr249-clean-v1 -> origin/trusted/trigger-construct-mirror-pr249-clean-v1
+2026-10-13T07:46:13.0100631Z  * [new branch]        trusted/trigger-content-disposition-batch-001-sync-98194f45-v1 -> origin/trusted/trigger-content-disposition-batch-001-sync-98194f45-v1
+2026-10-13T07:46:13.0101732Z  * [new branch]        trusted/trigger-content-disposition-batch-001-sync-98194f45-v2 -> origin/trusted/trigger-content-disposition-batch-001-sync-98194f45-v2
+2026-10-13T07:46:13.0102824Z  * [new branch]        trusted/trigger-content-disposition-batch-002-sync-3ba298e0-v1 -> origin/trusted/trigger-content-disposition-batch-002-sync-3ba298e0-v1
+2026-10-13T07:46:13.0103849Z  * [new branch]        trusted/trigger-quantum-runtime-article-sync-3a186cb5 -> origin/trusted/trigger-quantum-runtime-article-sync-3a186cb5
+2026-10-13T07:46:13.0104893Z  * [new branch]        trusted/verify-mirror-pre-spacetime-zenodo-effect-ack-098ef9f-v1 -> origin/trusted/verify-mirror-pre-spacetime-zenodo-effect-ack-098ef9f-v1
+2026-10-13T07:46:13.0105884Z  * [new branch]        trusted/verify-pr174-materialized-db15d2fe-v1 -> origin/trusted/verify-pr174-materialized-db15d2fe-v1
+2026-10-13T07:46:13.0106783Z  * [new branch]        trusted/verify-pr177-materialized-9c36a403-v1 -> origin/trusted/verify-pr177-materialized-9c36a403-v1
+2026-10-13T07:46:13.0107595Z  * [new branch]        trusted/verify-pr179-materialized-3c5cf7f0-v1 -> origin/trusted/verify-pr179-materialized-3c5cf7f0-v1
+2026-10-13T07:46:13.0108486Z  * [new branch]        trusted/verify-pr288-468a388-zero-tree-v1 -> origin/trusted/verify-pr288-468a388-zero-tree-v1
+2026-10-13T07:46:13.0109226Z  * [new branch]        trusted/verify-pr293-exact-1df3a832-v1 -> origin/trusted/verify-pr293-exact-1df3a832-v1
+2026-10-13T07:46:13.0109970Z  * [new branch]        trusted/verify-pr295-c4083452-zero-tree-v1 -> origin/trusted/verify-pr295-c4083452-zero-tree-v1
+2026-10-13T07:46:13.0110733Z  * [new branch]        trusted/verify-pr299-1b9bef85-zero-tree-v1 -> origin/trusted/verify-pr299-1b9bef85-zero-tree-v1
+2026-10-13T07:46:13.0111486Z  * [new branch]        trusted/verify-pr301-2e1b6df-zero-tree-v1 -> origin/trusted/verify-pr301-2e1b6df-zero-tree-v1
+2026-10-13T07:46:13.0112241Z  * [new branch]        trusted/verify-pr304-653ce31f-zero-tree-v1 -> origin/trusted/verify-pr304-653ce31f-zero-tree-v1
+2026-10-13T07:46:13.0113001Z  * [new branch]        trusted/verify-pr306-413e180b-zero-tree-v1 -> origin/trusted/verify-pr306-413e180b-zero-tree-v1
+2026-10-13T07:46:13.0113763Z  * [new branch]        trusted/verify-pr311-ac42f748-zero-tree-v1 -> origin/trusted/verify-pr311-ac42f748-zero-tree-v1
+2026-10-13T07:46:13.0114529Z  * [new branch]        trusted/verify-pr315-6e6e541a-zero-tree-v1 -> origin/trusted/verify-pr315-6e6e541a-zero-tree-v1
+2026-10-13T07:46:13.0115268Z  * [new branch]        trusted/verify-pr321-exact-112d57fb-v1 -> origin/trusted/verify-pr321-exact-112d57fb-v1
+2026-10-13T07:46:13.0115986Z  * [new branch]        trusted/verify-pr324-exact-4913f738-v1 -> origin/trusted/verify-pr324-exact-4913f738-v1
+2026-10-13T07:46:13.0116856Z  * [new branch]        trusted/verify-pr329-exact-05bdb495-v1 -> origin/trusted/verify-pr329-exact-05bdb495-v1
+2026-10-13T07:46:13.0117569Z  * [new branch]        trusted/verify-pr332-exact-a6ec8673-v1 -> origin/trusted/verify-pr332-exact-a6ec8673-v1
+2026-10-13T07:46:13.0118426Z  * [new branch]        trusted/verify-pr334-dispatch-901943d6-v1 -> origin/trusted/verify-pr334-dispatch-901943d6-v1
+2026-10-13T07:46:13.0119450Z  * [new branch]        trusted/verify-reciprocal-equality-survival-pr284-pr286-pr167-mirror-v1 -> origin/trusted/verify-reciprocal-equality-survival-pr284-pr286-pr167-mirror-v1
+2026-10-13T07:46:13.0120520Z  * [new branch]        trusted/verify-runtime-article-mirror-30fb5afd -> origin/trusted/verify-runtime-article-mirror-30fb5afd
+2026-10-13T07:46:13.0198986Z  * [new branch]        trusted/verify-runtime-article-mirror-e22fa5a8 -> origin/trusted/verify-runtime-article-mirror-e22fa5a8
+2026-10-13T07:46:13.0200573Z  * [new branch]        verification/pr277-exact-head-de57e847 -> origin/verification/pr277-exact-head-de57e847
+2026-10-13T07:46:13.0201724Z  * [new branch]        verify/actions-node24-ubuntu26-20261007 -> origin/verify/actions-node24-ubuntu26-20261007
+2026-10-13T07:46:13.0202800Z  * [new branch]        verify/pr183-exact-head-694d002 -> origin/verify/pr183-exact-head-694d002
+2026-10-13T07:46:13.0203817Z  * [new branch]        verify/pr185-exact-head-a4f7c49 -> origin/verify/pr185-exact-head-a4f7c49
+2026-10-13T07:46:13.0204760Z  * [new branch]        verify/pr270-exact-head-v1 -> origin/verify/pr270-exact-head-v1
+2026-10-13T07:46:13.0205745Z  * [new branch]        verify/pr279-exact-92872b0 -> origin/verify/pr279-exact-92872b0
+2026-10-13T07:46:13.0207020Z  * [new branch]        verify/pr281-exact-11e2483-zero-tree-v1 -> origin/verify/pr281-exact-11e2483-zero-tree-v1
+2026-10-13T07:46:13.0208566Z  * [new branch]        verify/pr283-self-heal-receipt-78f18f2-zero-tree-v1 -> origin/verify/pr283-self-heal-receipt-78f18f2-zero-tree-v1
+2026-10-13T07:46:13.0210078Z  * [new branch]        verify/pr286-exact-3f242d1-zero-tree-v1 -> origin/verify/pr286-exact-3f242d1-zero-tree-v1
+2026-10-13T07:46:13.0211490Z  * [new branch]        verify/pr286-exact-e6a57f8-zero-tree-v2 -> origin/verify/pr286-exact-e6a57f8-zero-tree-v2
+2026-10-13T07:46:13.0213049Z  * [new branch]        verify/pr288-publication-overview-468a388-zero-tree-v1 -> origin/verify/pr288-publication-overview-468a388-zero-tree-v1
+2026-10-13T07:46:13.0214871Z  * [new branch]        verify/pr353-exact-head-2280eaeb-20260818 -> origin/verify/pr353-exact-head-2280eaeb-20260818
+2026-10-13T07:46:13.0216226Z  * [new branch]        verify/pr357-integrity-isolated-4d320b6f-v1 -> origin/verify/pr357-integrity-isolated-4d320b6f-v1
+2026-10-13T07:46:13.0217433Z  * [new branch]        verify/pr487-then-pr488-retention-node24-20261007 -> origin/verify/pr487-then-pr488-retention-node24-20261007
+2026-10-13T07:46:13.0218161Z  * [new branch]        work/20260815-ai-bootstrap -> origin/work/20260815-ai-bootstrap
+2026-10-13T07:46:13.0218826Z  * [new branch]        work/20260906-author-positioning-roundtrip -> origin/work/20260906-author-positioning-roundtrip
+2026-10-13T07:46:13.0219577Z  * [new branch]        work/actions-node24-ubuntu26-20261007 -> origin/work/actions-node24-ubuntu26-20261007
+2026-10-13T07:46:13.0220394Z  * [new branch]        work/actions-retention-evidence-20261007-3d614851 -> origin/work/actions-retention-evidence-20261007-3d614851
+2026-10-13T07:46:13.0221224Z  * [new branch]        work/api-acceptance-rest-repair-20261001 -> origin/work/api-acceptance-rest-repair-20261001
+2026-10-13T07:46:13.0222022Z  * [new branch]        work/authority-recovery-acceptance-20261002 -> origin/work/authority-recovery-acceptance-20261002
+2026-10-13T07:46:13.0222803Z  * [new branch]        work/authority-url-probe-20261003-6fb101b -> origin/work/authority-url-probe-20261003-6fb101b
+2026-10-13T07:46:13.0223550Z  * [new branch]        work/bootstrap-runtime-release-20261005 -> origin/work/bootstrap-runtime-release-20261005
+2026-10-13T07:46:13.0224257Z  * [new branch]        work/browser-assistant-ab-20261005 -> origin/work/browser-assistant-ab-20261005
+2026-10-13T07:46:13.0224985Z  * [new branch]        work/chat-interruption-continuity-20261002 -> origin/work/chat-interruption-continuity-20261002
+2026-10-13T07:46:13.0225860Z  * [new branch]        work/claim-audit-20261001-469a95ac -> origin/work/claim-audit-20261001-469a95ac
+2026-10-13T07:46:13.0226829Z  * [new branch]        work/client-end-of-action-regressions-20261012-v1 -> origin/work/client-end-of-action-regressions-20261012-v1
+2026-10-13T07:46:13.0227723Z  * [new branch]        work/closure-promotion-consolidation-20261001 -> origin/work/closure-promotion-consolidation-20261001
+2026-10-13T07:46:13.0228598Z  * [new branch]        work/collective-functional-consciousness-20261003 -> origin/work/collective-functional-consciousness-20261003
+2026-10-13T07:46:13.0229379Z  * [new branch]        work/delegation-bootstrap-20261001 -> origin/work/delegation-bootstrap-20261001
+2026-10-13T07:46:13.0230087Z  * [new branch]        work/firefox-runtime-delivery-20261008 -> origin/work/firefox-runtime-delivery-20261008
+2026-10-13T07:46:13.0230802Z  * [new branch]        work/firefox-windows-witness-20261001 -> origin/work/firefox-windows-witness-20261001
+2026-10-13T07:46:13.0231529Z  * [new branch]        work/full-node-recovery-20261001-c621b863 -> origin/work/full-node-recovery-20261001-c621b863
+2026-10-13T07:46:13.0232242Z  * [new branch]        work/governance-reconcile-20261006 -> origin/work/governance-reconcile-20261006
+2026-10-13T07:46:13.0233022Z  * [new branch]        work/human-readable-feedback-goal-20261006-68d15cbf -> origin/work/human-readable-feedback-goal-20261006-68d15cbf
+2026-10-13T07:46:13.0233849Z  * [new branch]        work/ietf169906-main-successor-20261006-v1 -> origin/work/ietf169906-main-successor-20261006-v1
+2026-10-13T07:46:13.0234640Z  * [new branch]        work/issue-processing-repair-20261007-3d614851 -> origin/work/issue-processing-repair-20261007-3d614851
+2026-10-13T07:46:13.0235471Z  * [new branch]        work/linux-ring-scale-consolidation-20261002 -> origin/work/linux-ring-scale-consolidation-20261002
+2026-10-13T07:46:13.0236151Z  * [new branch]        work/mail-webhooks-20261006 -> origin/work/mail-webhooks-20261006
+2026-10-13T07:46:13.0237006Z  * [new branch]        work/mesh-collective-goals-20261006-79ddba3b -> origin/work/mesh-collective-goals-20261006-79ddba3b
+2026-10-13T07:46:13.0237918Z  * [new branch]        work/meta-transistor-feedback-20261001-7e5a588d -> origin/work/meta-transistor-feedback-20261001-7e5a588d
+2026-10-13T07:46:13.0238802Z  * [new branch]        work/mirror-lifecycle-governance-20261003-8153c4e6 -> origin/work/mirror-lifecycle-governance-20261003-8153c4e6
+2026-10-13T07:46:13.0239784Z  * [new branch]        work/mirror-lifecycle-governance-successor-20261006-71f8c153 -> origin/work/mirror-lifecycle-governance-successor-20261006-71f8c153
+2026-10-13T07:46:13.0240729Z  * [new branch]        work/native-acceptance-new-project-20261006 -> origin/work/native-acceptance-new-project-20261006
+2026-10-13T07:46:13.0241466Z  * [new branch]        work/node-client-monolith-20261006 -> origin/work/node-client-monolith-20261006
+2026-10-13T07:46:13.0242211Z  * [new branch]        work/node-genesis-recovery-c621b863-20261001 -> origin/work/node-genesis-recovery-c621b863-20261001
+2026-10-13T07:46:13.0243016Z  * [new branch]        work/offline-iphone-repository-20261007 -> origin/work/offline-iphone-repository-20261007
+2026-10-13T07:46:13.0243857Z  * [new branch]        work/offline-iphone-repository-auto-update-20261008 -> origin/work/offline-iphone-repository-auto-update-20261008
+2026-10-13T07:46:13.0244853Z  * [new branch]        work/offline-iphone-repository-update-integration-20261008 -> origin/work/offline-iphone-repository-update-integration-20261008
+2026-10-13T07:46:13.0245813Z  * [new branch]        work/offline-post-activation-recovery-20261008 -> origin/work/offline-post-activation-recovery-20261008
+2026-10-13T07:46:13.0246728Z  * [new branch]        work/offline-safe-autoupdate-20261008 -> origin/work/offline-safe-autoupdate-20261008
+2026-10-13T07:46:13.0247431Z  * [new branch]        work/open-node-seed-lookup-20261006 -> origin/work/open-node-seed-lookup-20261006
+2026-10-13T07:46:13.0248402Z  * [new branch]        work/owner-dependency-assimilation-20261003-8153c4e6-4796ff30 -> origin/work/owner-dependency-assimilation-20261003-8153c4e6-4796ff30
+2026-10-13T07:46:13.0249382Z  * [new branch]        work/owner-end-of-action-grundregel-20261009-v1 -> origin/work/owner-end-of-action-grundregel-20261009-v1
+2026-10-13T07:46:13.0250280Z  * [new branch]        work/owner-hotpath-current-criteria-20261004-8658b113 -> origin/work/owner-hotpath-current-criteria-20261004-8658b113
+2026-10-13T07:46:13.0251052Z  * [new branch]        work/owner-reminders-20261006 -> origin/work/owner-reminders-20261006
+2026-10-13T07:46:13.0251630Z  * [new branch]        work/pipeline-mtbf-20260930 -> origin/work/pipeline-mtbf-20260930
+2026-10-13T07:46:13.0252305Z  * [new branch]        work/pre-spacetime-index-binding-20261007 -> origin/work/pre-spacetime-index-binding-20261007
+2026-10-13T07:46:13.0253055Z  * [new branch]        work/processor-clock-core-20261001 -> origin/work/processor-clock-core-20261001
+2026-10-13T07:46:13.0253799Z  * [new branch]        work/product-name-raumzeit-terminal-20261006 -> origin/work/product-name-raumzeit-terminal-20261006
+2026-10-13T07:46:13.0254650Z  * [new branch]        work/provider-admission-main-successor-20261006 -> origin/work/provider-admission-main-successor-20261006
+2026-10-13T07:46:13.0255495Z  * [new branch]        work/provider-neutral-admission-20261006 -> origin/work/provider-neutral-admission-20261006
+2026-10-13T07:46:13.0256172Z  * [new branch]        work/qikvrt-codec-v1-20261001 -> origin/work/qikvrt-codec-v1-20261001
+2026-10-13T07:46:13.0256967Z  * [new branch]        work/qikvrt-standpoint-codex-v1-20261001 -> origin/work/qikvrt-standpoint-codex-v1-20261001
+2026-10-13T07:46:13.0257711Z  * [new branch]        work/raumzeitterminal-entry-20261006 -> origin/work/raumzeitterminal-entry-20261006
+2026-10-13T07:46:13.0258524Z  * [new branch]        work/react-authority404-feedback-b9e03ef6-20261006 -> origin/work/react-authority404-feedback-b9e03ef6-20261006
+2026-10-13T07:46:13.0259359Z  * [new branch]        work/react-feedback-main-71f8c153-20261007 -> origin/work/react-feedback-main-71f8c153-20261007
+2026-10-13T07:46:13.0260173Z  * [new branch]        work/reciprocal-devops-dod-20261001 -> origin/work/reciprocal-devops-dod-20261001
+2026-10-13T07:46:13.0260883Z  * [new branch]        work/ref-cas-readback-20261010-d8775f20 -> origin/work/ref-cas-readback-20261010-d8775f20
+2026-10-13T07:46:13.0261601Z  * [new branch]        work/required-review-context-20261006 -> origin/work/required-review-context-20261006
+2026-10-13T07:46:13.0262591Z  * [new branch]        work/seed-identity-proof-repair-20261009-v1 -> origin/work/seed-identity-proof-repair-20261009-v1
+2026-10-13T07:46:13.0263530Z  * [new branch]        work/software-independent-promotion-proof-20261001-469a95ac -> origin/work/software-independent-promotion-proof-20261001-469a95ac
+2026-10-13T07:46:13.0264436Z  * [new branch]        work/storage-contract-successor-20261006 -> origin/work/storage-contract-successor-20261006
+2026-10-13T07:46:13.0265053Z  * [new tag]           qikvrt-v13.164-1077-22520  -> qikvrt-v13.164-1077-22520
+2026-10-13T07:46:13.0265514Z  * [new tag]           qikvrt-v13.164-1154-32539  -> qikvrt-v13.164-1154-32539
+2026-10-13T07:46:13.0265975Z  * [new tag]           qikvrt-v13.164-1210-14474  -> qikvrt-v13.164-1210-14474
+2026-10-13T07:46:13.0266564Z  * [new tag]           qikvrt-v13.164-22247-6631  -> qikvrt-v13.164-22247-6631
+2026-10-13T07:46:13.0267031Z  * [new tag]           qikvrt-v13.164-22398-29721 -> qikvrt-v13.164-22398-29721
+2026-10-13T07:46:13.0267499Z  * [new tag]           qikvrt-v13.164-24462-6970  -> qikvrt-v13.164-24462-6970
+2026-10-13T07:46:13.0267954Z  * [new tag]           qikvrt-v13.164-25507-5820  -> qikvrt-v13.164-25507-5820
+2026-10-13T07:46:13.0268415Z  * [new tag]           qikvrt-v13.164-25859-13699 -> qikvrt-v13.164-25859-13699
+2026-10-13T07:46:13.0268868Z  * [new tag]           qikvrt-v13.164-28434-5434  -> qikvrt-v13.164-28434-5434
+2026-10-13T07:46:13.0269328Z  * [new tag]           qikvrt-v13.164-32156-13407 -> qikvrt-v13.164-32156-13407
+2026-10-13T07:46:13.0269912Z  * [new tag]           qikvrt-v13.164-6987-26786  -> qikvrt-v13.164-6987-26786
+2026-10-13T07:46:13.0270378Z  * [new tag]           qikvrt-v13.164-7235-7788   -> qikvrt-v13.164-7235-7788
+2026-10-13T07:46:13.0270843Z  * [new tag]           qikvrt-v13.164-9927-19949  -> qikvrt-v13.164-9927-19949
+2026-10-13T07:46:13.0271276Z  * [new tag]           v2.13.4-node               -> v2.13.4-node
+2026-10-13T07:46:13.0271685Z  * [new tag]           v2.13.4-node-r             -> v2.13.4-node-r
+2026-10-13T07:46:13.0272163Z  * [new tag]           v2.13.4au1-node-productization -> v2.13.4au1-node-productization
+2026-10-13T07:46:13.0272734Z  * [new tag]           v2.13.4av1-node-open-multi-node -> v2.13.4av1-node-open-multi-node
+2026-10-13T07:46:13.0273358Z  * [new tag]           v2026.07.22-effect-ack-universality-1.0.0 -> v2026.07.22-effect-ack-universality-1.0.0
+2026-10-13T07:46:13.0273959Z  * [new tag]           v2026.07.22-ietf-effect-ack-01 -> v2026.07.22-ietf-effect-ack-01
+2026-10-13T07:46:13.0274554Z  * [new tag]           v2026.07.22-status-clarification-1.0.0 -> v2026.07.22-status-clarification-1.0.0
+2026-10-13T07:46:13.0275200Z  * [new tag]           v2026.07.24-repository-mesh-sync-1.0.0 -> v2026.07.24-repository-mesh-sync-1.0.0
+2026-10-13T07:46:13.0275930Z  * [new tag]           v2026.07.28-authority-mirror-zenodo-equality-1.0.0 -> v2026.07.28-authority-mirror-zenodo-equality-1.0.0
+2026-10-13T07:46:13.0277712Z [command]/usr/bin/git rev-parse --verify --quiet 412788d662cdc05f839b32ee6632b602d9c1e4f1^{object}
+2026-10-13T07:46:13.0278216Z 412788d662cdc05f839b32ee6632b602d9c1e4f1
+2026-10-13T07:46:13.0279046Z ##[endgroup]
+2026-10-13T07:46:13.0279487Z ##[group]Determining the checkout info
+2026-10-13T07:46:13.0279941Z ##[endgroup]
+2026-10-13T07:46:13.0280229Z [command]/usr/bin/git sparse-checkout disable
+2026-10-13T07:46:13.0281110Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-13T07:46:13.0282073Z ##[group]Checking out the ref
+2026-10-13T07:46:13.0282513Z [command]/usr/bin/git checkout --progress --force 412788d662cdc05f839b32ee6632b602d9c1e4f1
+2026-10-13T07:46:13.9793667Z Updating files:  89% (3663/4081)
+2026-10-13T07:46:13.9809992Z Updating files:  90% (3673/4081)
+2026-10-13T07:46:13.9840209Z Updating files:  91% (3714/4081)
+2026-10-13T07:46:13.9858524Z Updating files:  92% (3755/4081)
+2026-10-13T07:46:13.9890867Z Updating files:  93% (3796/4081)
+2026-10-13T07:46:13.9920465Z Updating files:  94% (3837/4081)
+2026-10-13T07:46:13.9953058Z Updating files:  95% (3877/4081)
+2026-10-13T07:46:13.9990203Z Updating files:  96% (3918/4081)
+2026-10-13T07:46:14.0022809Z Updating files:  97% (3959/4081)
+2026-10-13T07:46:14.0058628Z Updating files:  98% (4000/4081)
+2026-10-13T07:46:14.0093893Z Updating files:  99% (4041/4081)
+2026-10-13T07:46:14.0094739Z Updating files: 100% (4081/4081)
+2026-10-13T07:46:14.0096757Z Updating files: 100% (4081/4081), done.
+2026-10-13T07:46:14.0149713Z Note: switching to '412788d662cdc05f839b32ee6632b602d9c1e4f1'.
+2026-10-13T07:46:14.0150322Z 
+2026-10-13T07:46:14.0150892Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-13T07:46:14.0151580Z changes and commit them, and you can discard any commits you make in this
+2026-10-13T07:46:14.0152368Z state without impacting any branches by switching back to a branch.
+2026-10-13T07:46:14.0152869Z 
+2026-10-13T07:46:14.0153251Z If you want to create a new branch to retain commits you create, you may
+2026-10-13T07:46:14.0154105Z do so (now or later) by using -c with the switch command. Example:
+2026-10-13T07:46:14.0154591Z 
+2026-10-13T07:46:14.0154807Z   git switch -c <new-branch-name>
+2026-10-13T07:46:14.0155075Z 
+2026-10-13T07:46:14.0155209Z Or undo this operation with:
+2026-10-13T07:46:14.0155384Z 
+2026-10-13T07:46:14.0155512Z   git switch -
+2026-10-13T07:46:14.0155654Z 
+2026-10-13T07:46:14.0155908Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-13T07:46:14.0156503Z 
+2026-10-13T07:46:14.0157082Z HEAD is now at 412788d6 docs: extend QIK-VRT provenance with scoped Site 32 browser evidence
+2026-10-13T07:46:14.0191782Z ##[endgroup]
+2026-10-13T07:46:14.0233471Z [command]/usr/bin/git log -1 --format=%H
+2026-10-13T07:46:14.0259425Z 412788d662cdc05f839b32ee6632b602d9c1e4f1
+2026-10-13T07:46:14.0465214Z ##[group]Run set -euo pipefail
+2026-10-13T07:46:14.0465697Z [36;1mset -euo pipefail[0m
+2026-10-13T07:46:14.0466028Z [36;1mtest -n "$TARGET_REF"[0m
+2026-10-13T07:46:14.0466580Z [36;1mtest -n "$EXPECTED_HEAD"[0m
+2026-10-13T07:46:14.0467091Z [36;1mlocal_head="$(git rev-parse --verify HEAD^{commit})"[0m
+2026-10-13T07:46:14.0467766Z [36;1mremote_head="$(git ls-remote --heads origin "refs/heads/$TARGET_REF" | awk 'NR == 1 { print $1 }')"[0m
+2026-10-13T07:46:14.0468299Z [36;1mtest "$local_head" = "$EXPECTED_HEAD"[0m
+2026-10-13T07:46:14.0468649Z [36;1mtest "$remote_head" = "$EXPECTED_HEAD"[0m
+2026-10-13T07:46:14.0645308Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-13T07:46:14.0645774Z env:
+2026-10-13T07:46:14.0646079Z   TARGET_REF: integration/515-519-521-522-20261012-eceb9b63
+2026-10-13T07:46:14.0646681Z   EXPECTED_HEAD: 412788d662cdc05f839b32ee6632b602d9c1e4f1
+2026-10-13T07:46:14.0647098Z   QIKVRT_ARCHIVE_JOURNAL_REPOSITORY: ingolf-lohmann/qik-vrt
+2026-10-13T07:46:14.0647601Z   QIKVRT_ARCHIVE_SOURCE_HEAD: 412788d662cdc05f839b32ee6632b602d9c1e4f1
+2026-10-13T07:46:14.0650874Z   QIKVRT_GITHUB_TOKEN: ***
+2026-10-13T07:46:14.0651181Z   QIKVRT_ARCHIVE_RETRY_EVIDENCE_FILE: 
+2026-10-13T07:46:14.0651484Z ##[endgroup]
+2026-10-13T07:46:14.5009405Z ##[group]Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+2026-10-13T07:46:14.5009819Z with:
+2026-10-13T07:46:14.5010022Z   python-version: 3.12
+2026-10-13T07:46:14.5010246Z   check-latest: false
+2026-10-13T07:46:14.5013009Z   token: ***
+2026-10-13T07:46:14.5013226Z   update-environment: true
+2026-10-13T07:46:14.5013466Z   allow-prereleases: false
+2026-10-13T07:46:14.5013703Z   freethreaded: false
+2026-10-13T07:46:14.5013934Z env:
+2026-10-13T07:46:14.5014173Z   TARGET_REF: integration/515-519-521-522-20261012-eceb9b63
+2026-10-13T07:46:14.5014538Z   EXPECTED_HEAD: 412788d662cdc05f839b32ee6632b602d9c1e4f1
+2026-10-13T07:46:14.5014908Z   QIKVRT_ARCHIVE_JOURNAL_REPOSITORY: ingolf-lohmann/qik-vrt
+2026-10-13T07:46:14.5015302Z   QIKVRT_ARCHIVE_SOURCE_HEAD: 412788d662cdc05f839b32ee6632b602d9c1e4f1
+2026-10-13T07:46:14.5018428Z   QIKVRT_GITHUB_TOKEN: ***
+2026-10-13T07:46:14.5018680Z   QIKVRT_ARCHIVE_RETRY_EVIDENCE_FILE: 
+2026-10-13T07:46:14.5018947Z ##[endgroup]
+2026-10-13T07:46:14.6363023Z ##[group]Installed versions
+2026-10-13T07:46:14.6848071Z (node:2260) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-13T07:46:14.6849574Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-13T07:46:14.6850268Z Successfully set up CPython (3.12.15)
+2026-10-13T07:46:14.6851332Z ##[endgroup]
+2026-10-13T07:46:14.6963137Z ##[group]Run set -euo pipefail
+2026-10-13T07:46:14.6963472Z [36;1mset -euo pipefail[0m
+2026-10-13T07:46:14.6963761Z [36;1mroot="formalization/QIKVRT_Formalization_v2.0"[0m
+2026-10-13T07:46:14.6964147Z [36;1mif [ ! -f "$root/scripts/materialize_completion.py" ]; then[0m
+2026-10-13T07:46:14.6964573Z [36;1m  echo "Completion materializer is not present on this branch."[0m
+2026-10-13T07:46:14.6964926Z [36;1m  exit 0[0m
+2026-10-13T07:46:14.6965121Z [36;1mfi[0m
+2026-10-13T07:46:14.6965308Z [36;1m([0m
+2026-10-13T07:46:14.6965502Z [36;1m  cd "$root"[0m
+2026-10-13T07:46:14.6965757Z [36;1m  python3 scripts/materialize_completion.py[0m
+2026-10-13T07:46:14.6966105Z [36;1m  python3 scripts/render_completion_proof_map.py[0m
+2026-10-13T07:46:14.6966997Z [36;1m  python3 scripts/render_completion_verification_report.py[0m
+2026-10-13T07:46:14.6967533Z [36;1m  python3 scripts/materialize_completion_proof_manifest.py[0m
+2026-10-13T07:46:14.6967968Z [36;1m  python3 scripts/materialize_completion.py --check[0m
+2026-10-13T07:46:14.6968487Z [36;1m  python3 scripts/render_completion_proof_map.py --check[0m
+2026-10-13T07:46:14.6968912Z [36;1m  python3 scripts/render_completion_verification_report.py --check[0m
+2026-10-13T07:46:14.6969383Z [36;1m  python3 scripts/materialize_completion_proof_manifest.py --check[0m
+2026-10-13T07:46:14.6969802Z [36;1m  python3 scripts/validate_completion_claim_graph.py[0m
+2026-10-13T07:46:14.6970110Z [36;1m)[0m
+2026-10-13T07:46:14.7092713Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-13T07:46:14.7093079Z env:
+2026-10-13T07:46:14.7093339Z   TARGET_REF: integration/515-519-521-522-20261012-eceb9b63
+2026-10-13T07:46:14.7093711Z   EXPECTED_HEAD: 412788d662cdc05f839b32ee6632b602d9c1e4f1
+2026-10-13T07:46:14.7094097Z   QIKVRT_ARCHIVE_JOURNAL_REPOSITORY: ingolf-lohmann/qik-vrt
+2026-10-13T07:46:14.7094496Z   QIKVRT_ARCHIVE_SOURCE_HEAD: 412788d662cdc05f839b32ee6632b602d9c1e4f1
+2026-10-13T07:46:14.7097530Z   QIKVRT_GITHUB_TOKEN: ***
+2026-10-13T07:46:14.7097802Z   QIKVRT_ARCHIVE_RETRY_EVIDENCE_FILE: 
+2026-10-13T07:46:14.7098142Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-13T07:46:14.7098587Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-13T07:46:14.7098994Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-13T07:46:14.7099502Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-13T07:46:14.7100150Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-13T07:46:14.7100832Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-13T07:46:14.7101394Z ##[endgroup]
+2026-10-13T07:46:15.2617318Z PASS wrote: 20 definitions bound, 20 theorem environments closed, 42 strong bindings, 0 pending formal nodes
+2026-10-13T07:46:15.3133538Z PASS wrote completion proof map: /home/runner/work/qik-vrt/qik-vrt/formalization/QIKVRT_Formalization_v2.0/MANUSCRIPT_PROOF_MAP.md
+2026-10-13T07:46:15.3567580Z PASS wrote completion verification report: /home/runner/work/qik-vrt/qik-vrt/formalization/QIKVRT_Formalization_v2.0/VERIFICATION_REPORT.md
+2026-10-13T07:46:15.3998606Z PASS wrote completion proof-object manifest: 31 manuscript proof bindings
+2026-10-13T07:46:15.4553915Z PASS verified: 20 definitions bound, 20 theorem environments closed, 42 strong bindings, 0 pending formal nodes
+2026-10-13T07:46:15.4992303Z PASS completion proof map current: /home/runner/work/qik-vrt/qik-vrt/formalization/QIKVRT_Formalization_v2.0/MANUSCRIPT_PROOF_MAP.md
+2026-10-13T07:46:15.5458394Z PASS completion verification report current: /home/runner/work/qik-vrt/qik-vrt/formalization/QIKVRT_Formalization_v2.0/VERIFICATION_REPORT.md
+2026-10-13T07:46:15.5894300Z PASS completion proof-object manifest current: 31 manuscript proof bindings
+2026-10-13T07:46:15.6571749Z PASS completed claim graph: 40 formal environments closed, 42 strong bindings, 0 pending formal nodes, no forbidden promotions
+2026-10-13T07:46:15.6670113Z ##[group]Run set -euo pipefail
+2026-10-13T07:46:15.6670463Z [36;1mset -euo pipefail[0m
+2026-10-13T07:46:15.6670872Z [36;1mscript="formalization/QIKVRT_Formalization_v2.0/scripts/package_release.py"[0m
+2026-10-13T07:46:15.6671378Z [36;1mmanifest="release/formalization-v2-alpha2-zenodo.json"[0m
+2026-10-13T07:46:15.6671861Z [36;1marchive="release/formalization-v2/QIKVRT_Formalization_v2.0-alpha.2.zip"[0m
+2026-10-13T07:46:15.6672337Z [36;1msums="release/formalization-v2/ZENODO_SHA256SUMS-alpha.2"[0m
+2026-10-13T07:46:15.6672725Z [36;1mif [ ! -f "$script" ] || [ ! -f "$manifest" ]; then[0m
+2026-10-13T07:46:15.6673137Z [36;1m  echo "Formalization release bundle is not present on this branch."[0m
+2026-10-13T07:46:15.6673494Z [36;1m  exit 0[0m
+2026-10-13T07:46:15.6673679Z [36;1mfi[0m
+2026-10-13T07:46:15.6673870Z [36;1mpython3 "$script" \[0m
+2026-10-13T07:46:15.6674108Z [36;1m  --repository-root . \[0m
+2026-10-13T07:46:15.6674352Z [36;1m  --output "$archive" \[0m
+2026-10-13T07:46:15.6674649Z [36;1m  --zenodo-checksums "$sums"[0m
+2026-10-13T07:46:15.6674908Z [36;1mpython3 - <<'PY'[0m
+2026-10-13T07:46:15.6675280Z [36;1mfrom __future__ import annotations[0m
+2026-10-13T07:46:15.6675536Z [36;1m[0m
+2026-10-13T07:46:15.6675719Z [36;1mimport hashlib[0m
+2026-10-13T07:46:15.6675939Z [36;1mimport json[0m
+2026-10-13T07:46:15.6676148Z [36;1mimport pathlib[0m
+2026-10-13T07:46:15.6676642Z [36;1mimport re[0m
+2026-10-13T07:46:15.6676864Z [36;1m[0m
+2026-10-13T07:46:15.6677065Z [36;1mroot = pathlib.Path('.').resolve()[0m
+2026-10-13T07:46:15.6677454Z [36;1mmanifest_path = root / 'release/formalization-v2-alpha2-zenodo.json'[0m
+2026-10-13T07:46:15.6677917Z [36;1mvalue = json.loads(manifest_path.read_text(encoding='utf-8'))[0m
+2026-10-13T07:46:15.6678274Z [36;1mfiles = value['software']['files'][0m
+2026-10-13T07:46:15.6678539Z [36;1marchive_digest = None[0m
+2026-10-13T07:46:15.6678771Z [36;1mfor entry in files:[0m
+2026-10-13T07:46:15.6679016Z [36;1m    path = root / entry['path'][0m
+2026-10-13T07:46:15.6679316Z [36;1m    raw = path.read_bytes()[0m
+2026-10-13T07:46:15.6679568Z [36;1m    entry['size'] = len(raw)[0m
+2026-10-13T07:46:15.6679931Z [36;1m    entry['md5'] = hashlib.md5(raw, usedforsecurity=False).hexdigest()[0m
+2026-10-13T07:46:15.6680341Z [36;1m    entry['sha256'] = hashlib.sha256(raw).hexdigest()[0m
+2026-10-13T07:46:15.6680727Z [36;1m    if entry['name'] == 'QIKVRT_Formalization_v2.0-alpha.2.zip':[0m
+2026-10-13T07:46:15.6681087Z [36;1m        archive_digest = entry['sha256'][0m
+2026-10-13T07:46:15.6681376Z [36;1mif archive_digest is None:[0m
+2026-10-13T07:46:15.6681758Z [36;1m    raise SystemExit('BLOCK: archive entry is absent from the Zenodo manifest')[0m
+2026-10-13T07:46:15.6682213Z [36;1mnotes = value['software']['metadata']['notes'][0m
+2026-10-13T07:46:15.6682515Z [36;1mnotes, count = re.subn([0m
+2026-10-13T07:46:15.6682803Z [36;1m    r'Autorisiertes Archiv SHA-256: [0-9a-f]{64}\.',[0m
+2026-10-13T07:46:15.6683164Z [36;1m    f'Autorisiertes Archiv SHA-256: {archive_digest}.',[0m
+2026-10-13T07:46:15.6683463Z [36;1m    notes,[0m
+2026-10-13T07:46:15.6683669Z [36;1m    count=1,[0m
+2026-10-13T07:46:15.6683874Z [36;1m)[0m
+2026-10-13T07:46:15.6684059Z [36;1mif count != 1:[0m
+2026-10-13T07:46:15.6684382Z [36;1m    raise SystemExit('BLOCK: archive digest note is absent or ambiguous')[0m
+2026-10-13T07:46:15.6684795Z [36;1mvalue['software']['metadata']['notes'] = notes[0m
+2026-10-13T07:46:15.6685104Z [36;1mmanifest_path.write_text([0m
+2026-10-13T07:46:15.6685413Z [36;1m    json.dumps(value, ensure_ascii=False, indent=2) + '\n',[0m
+2026-10-13T07:46:15.6685746Z [36;1m    encoding='utf-8',[0m
+2026-10-13T07:46:15.6685977Z [36;1m    newline='\n',[0m
+2026-10-13T07:46:15.6686187Z [36;1m)[0m
+2026-10-13T07:46:15.6686443Z [36;1mPY[0m
+2026-10-13T07:46:15.6686720Z [36;1mpython3 -B tests/test_formalization_v2_release_workflow.py[0m
+2026-10-13T07:46:15.6728474Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-13T07:46:15.6729009Z env:
+2026-10-13T07:46:15.6729269Z   TARGET_REF: integration/515-519-521-522-20261012-eceb9b63
+2026-10-13T07:46:15.6729632Z   EXPECTED_HEAD: 412788d662cdc05f839b32ee6632b602d9c1e4f1
+2026-10-13T07:46:15.6730018Z   QIKVRT_ARCHIVE_JOURNAL_REPOSITORY: ingolf-lohmann/qik-vrt
+2026-10-13T07:46:15.6730406Z   QIKVRT_ARCHIVE_SOURCE_HEAD: 412788d662cdc05f839b32ee6632b602d9c1e4f1
+2026-10-13T07:46:15.6733515Z   QIKVRT_GITHUB_TOKEN: ***
+2026-10-13T07:46:15.6733764Z   QIKVRT_ARCHIVE_RETRY_EVIDENCE_FILE: 
+2026-10-13T07:46:15.6734087Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-13T07:46:15.6734490Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-13T07:46:15.6734914Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-13T07:46:15.6735289Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-13T07:46:15.6735661Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-13T07:46:15.6736053Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-13T07:46:15.6736566Z ##[endgroup]
+2026-10-13T07:46:15.8327415Z 500087f6aeee41787959cfc8902852503e2182019ae4f3e88f115e94a1f5e689
+2026-10-13T07:46:16.5643955Z .........
+2026-10-13T07:46:16.5644711Z ----------------------------------------------------------------------
+2026-10-13T07:46:16.5645811Z Ran 9 tests in 0.296s
+2026-10-13T07:46:16.5646184Z 
+2026-10-13T07:46:16.5646590Z OK
+2026-10-13T07:46:16.5814871Z ##[group]Run set -euo pipefail
+2026-10-13T07:46:16.5815221Z [36;1mset -euo pipefail[0m
+2026-10-13T07:46:16.5815621Z [36;1mfinal_script="tools/qikvrt_content_disposition_batch_003_remaining_archives.py"[0m
+2026-10-13T07:46:16.5816598Z [36;1mfinal_receipt="release/zenodo-corpus-proof-2026-07-28/canonical-union/retrospective-proof-corpus/RETROSPECTIVE_PROOF_CORPUS_RECEIPT.json"[0m
+2026-10-13T07:46:16.5817396Z [36;1msecond_script="tools/qikvrt_content_disposition_batch_003_subject_172dd9bc2738fa43.py"[0m
+2026-10-13T07:46:16.5817960Z [36;1mrecursive_probe="tools/qikvrt_batch003_subject_172dd_recursive_probe.py"[0m
+2026-10-13T07:46:16.5818525Z [36;1msecond_report="$RUNNER_TEMP/SUBJECT-172dd9bc2738fa43_RECURSIVE_PUBLIC_ARCHIVE_PROBE.json"[0m
+2026-10-13T07:46:16.5819144Z [36;1mfirst_script="tools/qikvrt_content_disposition_batch_003_subject_2581811b342e505d.py"[0m
+2026-10-13T07:46:16.5819875Z [36;1mfirst_work_unit="work-units/RECOVER_EXACT_PUBLIC_INDEX_BYTES_AND_EXTRACT_CLASSIFY_BATCH_003_SUBJECT_2581811B342E505D.json"[0m
+2026-10-13T07:46:16.5820522Z [36;1mdispatch_script="tools/qikvrt_content_disposition_batch_003_dispatch.py"[0m
+2026-10-13T07:46:16.5821282Z [36;1mdispatch_receipt="release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-003/dispatch/BATCH_003_DISPATCH_RECEIPT.json"[0m
+2026-10-13T07:46:16.5822103Z [36;1mpost_script="tools/qikvrt_content_disposition_status_after_batch_002_acceptance_compat.py"[0m
+2026-10-13T07:46:16.5822954Z [36;1mpost_receipt="release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-002/post-acceptance/POST_ACCEPTANCE_STATUS_PROJECTION.json"[0m
+2026-10-13T07:46:16.5823689Z [36;1mif [ -f "$final_script" ] && [ -f "$final_receipt" ]; then[0m
+2026-10-13T07:46:16.5824153Z [36;1m  python3 -B -m tools.qikvrt_content_disposition_batch_003_remaining_archives \[0m
+2026-10-13T07:46:16.5824559Z [36;1m    --materialize --json[0m
+2026-10-13T07:46:16.5824939Z [36;1m  python3 -B -m tools.qikvrt_content_disposition_batch_003_remaining_archives \[0m
+2026-10-13T07:46:16.5825331Z [36;1m    --check --json[0m
+2026-10-13T07:46:16.5825660Z [36;1m  python3 -B "$dispatch_script" --check-status-projection --json[0m
+2026-10-13T07:46:16.5826095Z [36;1melif [ -f "$second_script" ] && [ -f "$recursive_probe" ]; then[0m
+2026-10-13T07:46:16.5826704Z [36;1m  python3 -B -m tools.qikvrt_batch003_subject_172dd_recursive_probe \[0m
+2026-10-13T07:46:16.5827081Z [36;1m    --output "$second_report"[0m
+2026-10-13T07:46:16.5827444Z [36;1m  python3 -B "$second_script" --report "$second_report" --materialize[0m
+2026-10-13T07:46:16.5827835Z [36;1m  python3 -B "$second_script" --check[0m
+2026-10-13T07:46:16.5828187Z [36;1melif [ -f "$first_script" ] && [ -f "$first_work_unit" ]; then[0m
+2026-10-13T07:46:16.5828617Z [36;1m  python3 -B "$first_script" --verify-public-record --materialize[0m
+2026-10-13T07:46:16.5829003Z [36;1m  python3 -B "$first_script" --check[0m
+2026-10-13T07:46:16.5829298Z [36;1m  python3 -B -m unittest -v \[0m
+2026-10-13T07:46:16.5829654Z [36;1m    tests.test_content_disposition_batch_003_subject_2581811b342e505d \[0m
+2026-10-13T07:46:16.5830074Z [36;1m    tests.test_content_disposition_batch_003_dispatch[0m
+2026-10-13T07:46:16.5830472Z [36;1melif [ -f "$dispatch_script" ] && [ -f "$dispatch_receipt" ]; then[0m
+2026-10-13T07:46:16.5830869Z [36;1m  python3 -B "$dispatch_script" --materialize[0m
+2026-10-13T07:46:16.5831234Z [36;1m  python3 -B "$dispatch_script" --check-status-projection[0m
+2026-10-13T07:46:16.5831630Z [36;1melif [ -f "$post_script" ] && [ -f "$post_receipt" ]; then[0m
+2026-10-13T07:46:16.5831991Z [36;1m  python3 -B "$post_script" --materialize[0m
+2026-10-13T07:46:16.5832335Z [36;1m  python3 -B "$post_script" --check-status-projection[0m
+2026-10-13T07:46:16.5832815Z [36;1melse[0m
+2026-10-13T07:46:16.5833167Z [36;1m  echo "No current content-disposition status projector is present on this branch."[0m
+2026-10-13T07:46:16.5833575Z [36;1mfi[0m
+2026-10-13T07:46:16.5872173Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-13T07:46:16.5872511Z env:
+2026-10-13T07:46:16.5872763Z   TARGET_REF: integration/515-519-521-522-20261012-eceb9b63
+2026-10-13T07:46:16.5873135Z   EXPECTED_HEAD: 412788d662cdc05f839b32ee6632b602d9c1e4f1
+2026-10-13T07:46:16.5873496Z   QIKVRT_ARCHIVE_JOURNAL_REPOSITORY: ingolf-lohmann/qik-vrt
+2026-10-13T07:46:16.5873890Z   QIKVRT_ARCHIVE_SOURCE_HEAD: 412788d662cdc05f839b32ee6632b602d9c1e4f1
+2026-10-13T07:46:16.5877160Z   QIKVRT_GITHUB_TOKEN: ***
+2026-10-13T07:46:16.5877407Z   QIKVRT_ARCHIVE_RETRY_EVIDENCE_FILE: 
+2026-10-13T07:46:16.5877734Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-13T07:46:16.5878139Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-13T07:46:16.5878588Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-13T07:46:16.5878960Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-13T07:46:16.5879324Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-13T07:46:16.5879706Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-13T07:46:16.5880016Z ##[endgroup]
+2026-10-13T07:46:17.2032048Z Traceback (most recent call last):
+2026-10-13T07:46:17.2042518Z   File "<frozen runpy>", line 198, in _run_module_as_main
+2026-10-13T07:46:17.2043426Z   File "<frozen runpy>", line 88, in _run_code
+2026-10-13T07:46:17.2044720Z   File "/home/runner/work/qik-vrt/qik-vrt/tools/qikvrt_content_disposition_batch_003_remaining_archives.py", line 248, in <module>
+2026-10-13T07:46:17.2046141Z     if __name__=='__main__':raise SystemExit(main())
+2026-10-13T07:46:17.2046869Z                                              ^^^^^^
+2026-10-13T07:46:17.2048055Z   File "/home/runner/work/qik-vrt/qik-vrt/tools/qikvrt_content_disposition_batch_003_remaining_archives.py", line 243, in main
+2026-10-13T07:46:17.2049274Z     if args.materialize:materialize()
+2026-10-13T07:46:17.2049723Z                         ^^^^^^^^^^^^^
+2026-10-13T07:46:17.2050392Z   File "/home/runner/work/qik-vrt/qik-vrt/tools/qikvrt_content_disposition_batch_003_remaining_archives.py", line 238, in materialize
+2026-10-13T07:46:17.2051314Z     for ordinal,config in enumerate(probe.SUBJECTS,1):results.append(materialize_subject(config,cache,ordinal))
+2026-10-13T07:46:17.2051984Z                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-13T07:46:17.2052792Z   File "/home/runner/work/qik-vrt/qik-vrt/tools/qikvrt_content_disposition_batch_003_remaining_archives.py", line 140, in materialize_subject
+2026-10-13T07:46:17.2054400Z     subject_id=config['subject_id'];observations=[probe.record(config,r,cache) for r in config['records']];payload=cache[config['file']['sha256']];rows=payload['rows'];entries={x['qualified_path']:x for x in rows};texts=[x for x in rows if x.get('content_class')=='TEXT' and not x.get('third_party_or_cache')]
+2026-10-13T07:46:17.2055692Z                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-13T07:46:17.2056508Z   File "/home/runner/work/qik-vrt/qik-vrt/tools/qikvrt_batch003_remaining_archive_probe.py", line 323, in record
+2026-10-13T07:46:17.2057497Z     rid=rec['id'];input_key=request_input(subject,rec);raw=get(f'https://zenodo.org/api/records/{rid}','application/json',8*1024*1024,input_key=input_key)
+2026-10-13T07:46:17.2058336Z                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-13T07:46:17.2059063Z   File "/home/runner/work/qik-vrt/qik-vrt/tools/qikvrt_batch003_remaining_archive_probe.py", line 259, in get
+2026-10-13T07:46:17.2059912Z     return journal().execute(url,accept,limit,input_key or digest({'url':url,'accept':accept,'limit':limit}),fetch,retry)
+2026-10-13T07:46:17.2060959Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-13T07:46:17.2061781Z   File "/home/runner/work/qik-vrt/qik-vrt/tools/qikvrt_batch003_remaining_archive_probe.py", line 180, in execute
+2026-10-13T07:46:17.2062468Z     try:current,key=self.admit(url,input_key,resource,attempts,retry)
+2026-10-13T07:46:17.2062921Z                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-13T07:46:17.2063563Z   File "/home/runner/work/qik-vrt/qik-vrt/tools/qikvrt_batch003_remaining_archive_probe.py", line 137, in admit
+2026-10-13T07:46:17.2064228Z     if not retry:fail('NOOP_UNCHANGED_ZENODO_FAILURE_OR_UNRESOLVED_GET')
+2026-10-13T07:46:17.2064678Z                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-13T07:46:17.2065284Z   File "/home/runner/work/qik-vrt/qik-vrt/tools/qikvrt_batch003_remaining_archive_probe.py", line 239, in fail
+2026-10-13T07:46:17.2065883Z     def fail(x:str):raise E(x)
+2026-10-13T07:46:17.2066167Z                     ^^^^^^^^^^
+2026-10-13T07:46:17.2066973Z tools.qikvrt_batch003_remaining_archive_probe.E: NOOP_UNCHANGED_ZENODO_FAILURE_OR_UNRESOLVED_GET
+2026-10-13T07:46:17.2217452Z ##[error]Process completed with exit code 1.
+2026-10-13T07:46:17.2318859Z ##[group]Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+2026-10-13T07:46:17.2319259Z with:
+2026-10-13T07:46:17.2319538Z   name: qikvrt-archive-causal-journal-materialization-1
+2026-10-13T07:46:17.2319853Z   retention-days: 30
+2026-10-13T07:46:17.2320063Z   if-no-files-found: warn
+2026-10-13T07:46:17.2320291Z   include-hidden-files: true
+2026-10-13T07:46:17.2320550Z   path: .qikvrt/runtime/archive-get-journal/**
+2026-10-13T07:46:17.2320837Z   compression-level: 6
+2026-10-13T07:46:17.2321053Z   overwrite: false
+2026-10-13T07:46:17.2321246Z   archive: true
+2026-10-13T07:46:17.2321436Z env:
+2026-10-13T07:46:17.2321668Z   TARGET_REF: integration/515-519-521-522-20261012-eceb9b63
+2026-10-13T07:46:17.2322037Z   EXPECTED_HEAD: 412788d662cdc05f839b32ee6632b602d9c1e4f1
+2026-10-13T07:46:17.2322394Z   QIKVRT_ARCHIVE_JOURNAL_REPOSITORY: ingolf-lohmann/qik-vrt
+2026-10-13T07:46:17.2322785Z   QIKVRT_ARCHIVE_SOURCE_HEAD: 412788d662cdc05f839b32ee6632b602d9c1e4f1
+2026-10-13T07:46:17.2325713Z   QIKVRT_GITHUB_TOKEN: ***
+2026-10-13T07:46:17.2325964Z   QIKVRT_ARCHIVE_RETRY_EVIDENCE_FILE: 
+2026-10-13T07:46:17.2326438Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-13T07:46:17.2326885Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-13T07:46:17.2327285Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-13T07:46:17.2327648Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-13T07:46:17.2328011Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-13T07:46:17.2328379Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-13T07:46:17.2328705Z ##[endgroup]
+2026-10-13T07:46:17.3701426Z With the provided path, there will be 2 files uploaded
+2026-10-13T07:46:17.3702414Z Artifact name is valid!
+2026-10-13T07:46:17.3717164Z Root directory input is valid!
+2026-10-13T07:46:17.7027147Z Uploading artifact: qikvrt-archive-causal-journal-materialization-1.zip
+2026-10-13T07:46:17.7071514Z Beginning upload of artifact content to blob storage
+2026-10-13T07:46:17.9397759Z Uploaded bytes 1243
+2026-10-13T07:46:17.9960719Z Finished uploading artifact content to blob storage!
+2026-10-13T07:46:17.9961831Z SHA256 digest of uploaded artifact is 1847d676bc6e9b293b11b7de26389e76370b9b3d6a6e7c2e11afd519c09543af
+2026-10-13T07:46:17.9962487Z Finalizing artifact upload
+2026-10-13T07:46:18.3576872Z Artifact qikvrt-archive-causal-journal-materialization-1 successfully finalized. Artifact ID 11796118606
+2026-10-13T07:46:18.3578719Z Artifact qikvrt-archive-causal-journal-materialization-1 has been successfully uploaded! Final size is 1243 bytes. Artifact ID is 11796118606
+2026-10-13T07:46:18.3581122Z Artifact download URL: https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38364764310/artifacts/11796118606
+2026-10-13T07:46:18.3774768Z Post job cleanup.
+2026-10-13T07:46:18.4618814Z [command]/usr/bin/git version
+2026-10-13T07:46:18.4659421Z git version 2.55.0
+2026-10-13T07:46:18.4694350Z Temporarily overriding HOME='/home/runner/work/_temp/9dc2dc4f-dbfd-4d12-931f-4367a86597fb' before making global git config changes
+2026-10-13T07:46:18.4695774Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-13T07:46:18.4700783Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/qik-vrt/qik-vrt
+2026-10-13T07:46:18.4731984Z Removing SSH command configuration
+2026-10-13T07:46:18.4738527Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-13T07:46:18.4770271Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-13T07:46:18.4972783Z Removing HTTP extra header
+2026-10-13T07:46:18.4980000Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-13T07:46:18.5013248Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-13T07:46:18.5259121Z Removing includeIf entries pointing to credentials config files
+2026-10-13T07:46:18.5260274Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-13T07:46:18.5275986Z includeif.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git.path
+2026-10-13T07:46:18.5277246Z includeif.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git/worktrees/*.path
+2026-10-13T07:46:18.5278220Z includeif.gitdir:/github/workspace/.git.path
+2026-10-13T07:46:18.5279088Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-13T07:46:18.5285030Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git.path
+2026-10-13T07:46:18.5306012Z /home/runner/work/_temp/git-credentials-f50f7244-49c9-4e37-bac4-f52560396a8a.config
+2026-10-13T07:46:18.5315477Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-f50f7244\-49c9\-4e37\-bac4\-f52560396a8a\.config
+2026-10-13T07:46:18.5352961Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git/worktrees/*.path
+2026-10-13T07:46:18.5374723Z /home/runner/work/_temp/git-credentials-f50f7244-49c9-4e37-bac4-f52560396a8a.config
+2026-10-13T07:46:18.5384305Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-f50f7244\-49c9\-4e37\-bac4\-f52560396a8a\.config
+2026-10-13T07:46:18.5413965Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-13T07:46:18.5435504Z /github/runner_temp/git-credentials-f50f7244-49c9-4e37-bac4-f52560396a8a.config
+2026-10-13T07:46:18.5443030Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-f50f7244\-49c9\-4e37\-bac4\-f52560396a8a\.config
+2026-10-13T07:46:18.5479698Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-13T07:46:18.5504100Z /github/runner_temp/git-credentials-f50f7244-49c9-4e37-bac4-f52560396a8a.config
+2026-10-13T07:46:18.5510718Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-f50f7244\-49c9\-4e37\-bac4\-f52560396a8a\.config
+2026-10-13T07:46:18.5546026Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-13T07:46:18.5749329Z Removing credentials config '/home/runner/work/_temp/git-credentials-f50f7244-49c9-4e37-bac4-f52560396a8a.config'
+2026-10-13T07:46:18.5889495Z Cleaning up orphan processes
+2026-10-13T07:46:18.6124367Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

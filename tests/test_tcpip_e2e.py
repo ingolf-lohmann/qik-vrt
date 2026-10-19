@@ -127,6 +127,26 @@ class TcpIpEndToEndTests(unittest.TestCase):
     def workflow(inputs: dict[str, object]) -> dict[str, object]:
         return {"ref": "main", "inputs": inputs}
 
+    def test_optional_run_details_preserves_local_synchronous_effect_boundary(self):
+        path = "/repos/owner/repo/actions/workflows/qikvrt_mesh_api.yml/dispatches"
+        body = self.workflow({
+            "operation": "release_status", "artifact_id": "status",
+            "dry_run": True, "request_id": "optional-run-details", "effect_accepted": False,
+        })
+        for flag in (False, True):
+            with self.subTest(return_run_details=flag):
+                status, response = self.request("POST", path, {**body, "return_run_details": flag})
+                self.assertEqual(status, 202)
+                result = response["handler_result"]
+                self.assertEqual(result["effect_state"], EffectState.EFFECT_ACK_CONTINUE.value)
+                self.assertFalse(result["ordinary_release"])
+                self.assertNotIn("workflow_run_id", response)
+        for flag in ("true", 1, None):
+            with self.subTest(invalid_return_run_details=flag):
+                status, response = self.request("POST", path, {**body, "return_run_details": flag})
+                self.assertEqual(status, 400)
+                self.assertIn("return_run_details must be boolean", response["reason"])
+
     def test_complete_api_flow_and_all_five_effect_states(self) -> None:
         workflow = (REPOSITORY_ROOT / ".github/workflows/qikvrt_mesh_api.yml").read_text(
             encoding="utf-8"

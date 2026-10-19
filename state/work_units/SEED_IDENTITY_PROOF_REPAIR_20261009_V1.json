@@ -1,0 +1,76 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "id": "SEED_IDENTITY_PROOF_REPAIR_20261009_V1",
+  "human_authorization": "Ingolf Lohmann, 2026-10-09: close the diagnosed gap and prevent recurrence; Freigabe erteilt.",
+  "human_contribution": "Repair objective and effect authorization",
+  "artificial_cognitive_contribution": "OpenAI Codex: source diagnosis, coherent migration, guarded acknowledgement, reuse of existing lifecycle persistence, regression tests",
+  "subject_binding": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "base_head": "468e9e42cd6194ee4ab335aa7452ba6bdee8be4a",
+    "base_tree": "023c5c7c113f96363273ef383ecace28b10f65b6",
+    "route": "REST_API_ONLY"
+  },
+  "reuse": {
+    "seed_validator": "tools/qikvrt_seed_common.py",
+    "lifecycle_publisher": "tools/qikvrt_mirror_node_lifecycle.py from PR505/PR508, extended for Seed Draft output",
+    "integrity": "Existing generator unchanged; source and historical evidence remain digest-bound",
+    "prior_submission": "Attached seed-repoint bytes were independently hash-checked; unsupported acceptance was not adopted"
+  },
+  "implemented_controls": [
+    "Handshake URL, GUID, repository, request and allowlist consistency before lifecycle writes",
+    "Workflow Seed identity bound to executing repository",
+    "Fresh exact-commit Seed acknowledgement with bounded age, request and source hashes, acceptance run and ref readback",
+    "Historical acceptance retained; new identity starts PENDING_SEED_ACCEPTANCE",
+    "Seed Draft persistence with native governance, exact base/tree and path allowlist, create-only candidate ref and PR readback",
+    "Existing TTL-bound public lifecycle transport; no direct Main push"
+  ],
+  "local_verification": {
+    "focused_tests": "55 tests across seed workflows, lifecycle publication and integrity passed",
+    "workflow_shell_syntax": "All 7 embedded Bash blocks validated",
+    "full_repository_suite": "make test rc=0; full declared local target completed after exact REST restoration of the required historical snapshot. Local ancestor closure remains explicitly shallow; native exact-head CI is separate.",
+    "main_integrity_failure_reproduced": true,
+    "tool_cache_coverage": "14/14 strategies verified",
+    "additional_contract_tests": "28 security, API client and Mesh executor contract tests passed",
+    "historical_source_restoration": {
+      "commit": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+      "tree": "10bceed0af444e5704e4c2946402355c0c957e0d",
+      "git_identity_verified": true,
+      "complete_selected_snapshot": true,
+      "complete_ancestor_history": false
+    }
+  },
+  "delivery_observation": {
+    "host": "raumzeitterminal.de",
+    "domain_binding_status": "pending",
+    "tls_status": "pending_validation",
+    "main_native_runtime_acceptance_directory": "ABSENT at bound Main tree",
+    "domain_delivery_claimed": false
+  },
+  "required_continuation": [
+    "Run native exact-head checks and obtain required independent Code Owner review with native rules enforced",
+    "Integrate the reviewed source candidate; no direct Main write or automatic gate bypass",
+    "Execute Seed acceptance and read back its generated Draft and reviewed Main publication",
+    "Execute node acknowledgement against that fresh public Seed commit, then read back reviewed node status",
+    "Verify the actual runtime endpoint and raumzeitterminal.de delivery independently"
+  ],
+  "effect_state": "EFFECT_ACK_CONTINUE",
+  "completion_claims": {
+    "main_integrated": false,
+    "mesh_registration_completed": false,
+    "public_runtime_delivered": false,
+    "EFFECT_ACK_DONE": false
+  },
+  "native_successor_findings": {
+    "first_head": "79263776835a3194fb2a4a15a616945bf92462e4",
+    "ci_run": 37946468951,
+    "full_ci": "success",
+    "finite_model_run": 37946468940,
+    "finite_model": "success",
+    "contract_run": 37946469009,
+    "ubuntu_macos_windows_contracts": "success",
+    "isolated_watchdog_regression": "Reproduced onboarding removal failure, repaired fixture isolation; actual config checked separately in Make target",
+    "authority_readback": "Goldkelch/qik-vrt 404 in reflexive watchdog; no unchanged retry",
+    "current_rulesets": [],
+    "independent_reviews": []
+  }
+}

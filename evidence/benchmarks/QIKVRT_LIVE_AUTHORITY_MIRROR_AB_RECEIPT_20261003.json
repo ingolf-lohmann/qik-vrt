@@ -1,0 +1,28 @@
+{
+  "schema":"qikvrt_live_authority_mirror_ab_receipt_v1",
+  "observed_at":"2026-10-03T10:51:22Z",
+  "repository":"ingolf-lohmann/qik-vrt",
+  "pr":447,
+  "execution_head":"a63f06a74fbf7424ea2bc48a980d6ad28b47603d",
+  "workflow_run_id":37117759820,
+  "job_id":111187759007,
+  "artifact_id":11272038130,
+  "artifact_sha256":"1d1c804b63b612f2a52ce41b75515e6984a7e8dfe942cee74db6b4b307d98688",
+  "mirror_head":"8704969da54ed9c0ad08d4540ea89aee15d85ae2",
+  "authority_head":null,
+  "repeats_requested":12,
+  "execution_status":"PASS_MEASUREMENT_EXECUTED",
+  "measurement_result":"HOLD_AUTHORITY_MAIN_UNAVAILABLE",
+  "authority_error":"fatal: could not read Username for 'https://github.com': No such device or address",
+  "claims":{
+    "algorithmic_microbenchmark":"PASS",
+    "live_repository_delta_reduction":"PASS",
+    "live_distributed_authority_mirror_wall_speedup":"OPEN"
+  },
+  "non_claims":[
+    "No live Authority/Mirror wall-time speedup was measured.",
+    "The successful workflow run means the measurement procedure completed; it does not mean the speedup claim passed.",
+    "Historical Authority fetchability is not transferred to current Authority main availability."
+  ],
+  "next_required_effect":"BIND_AUTHORIZED_AUTHORITY_READ_CARRIER_THEN_RERUN_EXACT_SAME_BENCHMARK"
+}

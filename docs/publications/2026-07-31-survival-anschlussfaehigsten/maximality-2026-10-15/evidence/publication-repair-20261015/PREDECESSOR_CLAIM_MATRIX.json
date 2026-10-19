@@ -1,0 +1,351 @@
+{
+  "schema": "qikvrt_maximality_claim_matrix_v1",
+  "publication_id": "qikvrt-connectability-maximality-20261015-v1",
+  "claim_count": 24,
+  "claims": [
+    {
+      "claim_id": "MAX-001",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "statement": "A family of pointed viability simulations into the target implies GreatestIn for the declared family.",
+      "scope": "Exactly the Lean proposition and its typed hypotheses; shared label meaning and concrete implementation correspondence are external. No QIK-VRT global superiority or empirical reality claim.",
+      "proof_refs": [
+        "QIKVRT.V2.ConnectabilityMaximality.MAX001_simulation_family_implies_greatest"
+      ],
+      "evidence_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/KERNEL_RECEIPT.json"
+      ],
+      "source_refs": [
+        "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ConnectabilityMaximality.lean"
+      ]
+    },
+    {
+      "claim_id": "MAX-002",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "statement": "GreatestIn is equivalent to inclusion of the union of member languages in the target language.",
+      "scope": "Exactly the Lean proposition and its typed hypotheses; shared label meaning and concrete implementation correspondence are external. No QIK-VRT global superiority or empirical reality claim.",
+      "proof_refs": [
+        "QIKVRT.V2.ConnectabilityMaximality.MAX002_greatest_iff_union_inclusion"
+      ],
+      "evidence_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/KERNEL_RECEIPT.json"
+      ],
+      "source_refs": [
+        "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ConnectabilityMaximality.lean"
+      ]
+    },
+    {
+      "claim_id": "MAX-003",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "statement": "GreatestIn for all finite words implies dominance at every finite horizon.",
+      "scope": "Exactly the Lean proposition and its typed hypotheses; shared label meaning and concrete implementation correspondence are external. No QIK-VRT global superiority or empirical reality claim.",
+      "proof_refs": [
+        "QIKVRT.V2.ConnectabilityMaximality.MAX003_greatest_implies_every_finite_horizon"
+      ],
+      "evidence_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/KERNEL_RECEIPT.json"
+      ],
+      "source_refs": [
+        "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ConnectabilityMaximality.lean"
+      ]
+    },
+    {
+      "claim_id": "MAX-004",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "statement": "One accepted member trace missing in the target refutes GreatestIn.",
+      "scope": "Exactly the Lean proposition and its typed hypotheses; shared label meaning and concrete implementation correspondence are external. No QIK-VRT global superiority or empirical reality claim.",
+      "proof_refs": [
+        "QIKVRT.V2.ConnectabilityMaximality.MAX004_missing_trace_refutes_greatest"
+      ],
+      "evidence_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/KERNEL_RECEIPT.json"
+      ],
+      "source_refs": [
+        "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ConnectabilityMaximality.lean"
+      ]
+    },
+    {
+      "claim_id": "MAX-005",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "statement": "The two explicit systems share a viable event, but limited does not dominate extended.",
+      "scope": "Exactly the Lean proposition and its typed hypotheses; shared label meaning and concrete implementation correspondence are external. No QIK-VRT global superiority or empirical reality claim.",
+      "proof_refs": [
+        "QIKVRT.V2.ConnectabilityMaximality.MAX005_shared_interface_does_not_imply_greatest"
+      ],
+      "evidence_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/KERNEL_RECEIPT.json"
+      ],
+      "source_refs": [
+        "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ConnectabilityMaximality.lean"
+      ]
+    },
+    {
+      "claim_id": "MAX-006",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "statement": "The explicit extended Bool system is greatest in any declared Bool-labelled family.",
+      "scope": "Exactly the Lean proposition and its typed hypotheses; shared label meaning and concrete implementation correspondence are external. No QIK-VRT global superiority or empirical reality claim.",
+      "proof_refs": [
+        "QIKVRT.V2.ConnectabilityMaximality.MAX006_extended_greatest_in_any_bool_family"
+      ],
+      "evidence_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/KERNEL_RECEIPT.json"
+      ],
+      "source_refs": [
+        "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ConnectabilityMaximality.lean"
+      ]
+    },
+    {
+      "claim_id": "MAX-007",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "statement": "The explicit limited system is not greatest in the two-member family.",
+      "scope": "Exactly the Lean proposition and its typed hypotheses; shared label meaning and concrete implementation correspondence are external. No QIK-VRT global superiority or empirical reality claim.",
+      "proof_refs": [
+        "QIKVRT.V2.ConnectabilityMaximality.MAX007_limited_not_greatest_in_counterexample_family"
+      ],
+      "evidence_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/KERNEL_RECEIPT.json"
+      ],
+      "source_refs": [
+        "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ConnectabilityMaximality.lean"
+      ]
+    },
+    {
+      "claim_id": "MAX-008",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "statement": "Member-language coverage by an environment and pointed simulation of that environment into the target imply GreatestIn.",
+      "scope": "Exactly the Lean proposition and its typed hypotheses; shared label meaning and concrete implementation correspondence are external. No QIK-VRT global superiority or empirical reality claim.",
+      "proof_refs": [
+        "QIKVRT.V2.ConnectabilityMaximality.MAX008_environment_bridge_implies_greatest"
+      ],
+      "evidence_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/KERNEL_RECEIPT.json"
+      ],
+      "source_refs": [
+        "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ConnectabilityMaximality.lean"
+      ]
+    },
+    {
+      "claim_id": "MAX-009",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "statement": "Full inclusion of one declared environment alone does not imply greatestness in a larger comparison family.",
+      "scope": "Exactly the Lean proposition and its typed hypotheses; shared label meaning and concrete implementation correspondence are external. No QIK-VRT global superiority or empirical reality claim.",
+      "proof_refs": [
+        "QIKVRT.V2.ConnectabilityMaximality.MAX009_environment_inclusion_alone_insufficient"
+      ],
+      "evidence_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/KERNEL_RECEIPT.json"
+      ],
+      "source_refs": [
+        "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ConnectabilityMaximality.lean"
+      ]
+    },
+    {
+      "claim_id": "OPEN-QIK-001",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "statement": "Bind an exact QIK-VRT implementation and establish its refinement to the pointed viable-trace model.",
+      "scope": "This candidate and the stated requested effect.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "OPEN-CLASS-001",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "statement": "Define the comparison family independently and justify historical completeness at the claimed cutoff.",
+      "scope": "This candidate and the stated requested effect.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "OPEN-SEM-001",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "statement": "Justify common label semantics, contracts and the claimed correspondence to reality.",
+      "scope": "This candidate and the stated requested effect.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "OPEN-SIM-001",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "statement": "Construct simulations or prove language coverage for all justified comparison members.",
+      "scope": "This candidate and the stated requested effect.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "OPEN-RESOURCE-001",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "statement": "Bind any claimed common resource, latency, security and operating-condition constraints.",
+      "scope": "This candidate and the stated requested effect.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "OPEN-GLOBAL-001",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "statement": "The concrete all-humanity historical greatestness claim is not proved by this candidate.",
+      "scope": "This candidate and the stated requested effect.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "OPEN-ZENODO-001",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "statement": "No new Zenodo record or DOI exists for these new proof bytes; exact publication remains pending.",
+      "scope": "This candidate and the stated requested effect.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "OPEN-MIRROR-001",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "statement": "Goldkelch/qik-vrt concrete repository reads return 404 despite listing permissions; no mirror write or equality is established.",
+      "scope": "This candidate and the stated requested effect.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "OPEN-DELIVERY-001",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "statement": "No new raumzeitterminal.de delivery acceptance is established by the formal proof or repository copy.",
+      "scope": "This candidate and the stated requested effect.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "OWNER-001",
+      "classification": "INTERPRETATIVE",
+      "status": "DECLARED",
+      "publication_wording": "INTERPRETATIVE_DECLARATION",
+      "statement": "Ingolf Lohmann asserts the historical greatestness and reality-correspondence claim; attribution does not establish its truth.",
+      "scope": "Attributed source, recorded local verification or declared publication process only.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/OWNER_STATEMENT.txt"
+      ]
+    },
+    {
+      "claim_id": "SOURCE-001",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "statement": "The full public corpus includes all 44 identified Zenodo versions and five native IETF revisions. All 479 native Zenodo files are byte-verified. Historical proof results retain their exact scopes; only the nine new results were independently kernel-executed here.",
+      "scope": "Attributed source, recorded local verification or declared publication process only.",
+      "proof_refs": [],
+      "evidence_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/ZENODO_ALL_FILE_READBACK.json",
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/IETF_ALL_REVISIONS_READBACK.json"
+      ],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+      ]
+    },
+    {
+      "claim_id": "CHECK-001",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "status": "EVIDENCED",
+      "publication_wording": "EMPIRICALLY_SUPPORTED",
+      "statement": "The recorded Lean execution accepted nine theorems without axioms and rejected both deliberately invalid proof attempts. No independent reproduction is claimed.",
+      "scope": "Attributed source, recorded local verification or declared publication process only.",
+      "proof_refs": [],
+      "evidence_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/KERNEL_RECEIPT.json"
+      ],
+      "source_refs": []
+    },
+    {
+      "claim_id": "PUB-RULE-001",
+      "classification": "NORMATIVE",
+      "status": "DECLARED",
+      "publication_wording": "NORMATIVE_DECLARATION",
+      "statement": "Exact candidate return, publication authorization, existing governance and public readback are required before claiming Zenodo publication.",
+      "scope": "Attributed source, recorded local verification or declared publication process only.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "policy/zenodo-machine-proof-policy-v2.json"
+      ]
+    },
+    {
+      "claim_id": "OWNER-002",
+      "classification": "INTERPRETATIVE",
+      "status": "DECLARED",
+      "publication_wording": "INTERPRETATIVE_DECLARATION",
+      "statement": "Ingolf Lohmann adds that reality includes all virtual realities and regards the loop as sufficiently closed by connection to real physics. Physical membership is distinguished from behavioral refinement into QIK-VRT.",
+      "scope": "Attributed clarification; MAX-008 gives the conditional bridge and MAX-009 its missing-coverage boundary. No global QIK-VRT implementation theorem is inferred.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/OWNER_CLARIFICATION_20261015.txt"
+      ]
+    },
+    {
+      "claim_id": "OWNER-003",
+      "classification": "NORMATIVE",
+      "status": "DECLARED",
+      "publication_wording": "NORMATIVE_DECLARATION",
+      "statement": "Owner requires all Zenodo and IETF publications in the overall assessment. All identified public publications and all their native files are included; inventory limitations are explicit.",
+      "scope": "Full identified public author corpus as of 2026-10-15.",
+      "proof_refs": [],
+      "evidence_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+      ],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/OWNER_FULL_CORPUS_REQUIREMENT_20261015.txt"
+      ]
+    }
+  ],
+  "author_contribution": {
+    "human": "Ingolf Lohmann: QIK-VRT architecture, original assertion, task and terminology.",
+    "artificial": "OpenAI Codex: new formalization, proofs, countermodel, candidate report and execution record.",
+    "human_review_of_generated_candidate": "PENDING"
+  },
+  "completion_claims": {
+    "global_greatestness_proved": false,
+    "publication_complete": false
+  }
+}
