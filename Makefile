@@ -233,3 +233,10 @@ live-authority-mirror-ab-contract:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_live_authority_mirror_ab
 
 test: live-authority-mirror-ab-contract
+
+.PHONY: chsh-reference-test
+chsh-reference-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_chsh_benchmark
+	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m py_compile src/qikvrt_chsh_benchmark.py
+
+test: chsh-reference-test
