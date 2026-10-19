@@ -7,6 +7,7 @@ Run only in the declared Firefox dependency carrier. Missing tools are errors.
 """
 from __future__ import annotations
 import base64
+import ctypes
 from datetime import datetime, timezone
 import json
 import os
@@ -16,6 +17,7 @@ import socket
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 
 from tests.test_self_host_temdd import NativeStandaloneTests
@@ -60,11 +62,17 @@ class FirefoxAMOUnlistedTests(unittest.TestCase):
         import io,zipfile
         stream=io.BytesIO()
         with zipfile.ZipFile(stream,'w') as archive:
+            def write(name,raw):
+                # Separate mocked AMO responses must bind the same fixture
+                # bytes even when their creation crosses a ZIP clock tick.
+                info=zipfile.ZipInfo(name,(2000,1,1,0,0,0))
+                info.external_attr=0o100644 << 16
+                archive.writestr(info,raw)
             for name in self.names:
                 raw=(self.root/'browser/firefox/qikvrt-terminal'/name).read_bytes()
-                archive.writestr(name,raw+b'wrong source' if changed and name=='content.js' else raw)
-            archive.writestr('META-INF/mozilla.rsa',b'fixture only; not a Mozilla signature')
-            if extra:archive.writestr(extra,b'foreign or duplicate bytes')
+                write(name,raw+b'wrong source' if changed and name=='content.js' else raw)
+            write('META-INF/mozilla.rsa',b'fixture only; not a Mozilla signature')
+            if extra:write(extra,b'foreign or duplicate bytes')
         return stream.getvalue()
 
     def response(self,signed=None,**changes):
@@ -139,7 +147,12 @@ class FirefoxAMOUnlistedTests(unittest.TestCase):
             self.assertNotIn(self.env['WEB_EXT_API_SECRET'],text)
 
     def test_existing_version_is_read_back_without_put_or_version_bump(self):
-        with self.mock.patch.object(host,'firefox_amo_transport',side_effect=[(200,self.response()),(200,self.signed())]) as call:
+        import zipfile
+        before=(2026,10,18,16,44,0,6,291,-1)
+        after=(2026,10,18,16,44,2,6,291,-1)
+        with self.mock.patch.object(zipfile.time,'localtime',side_effect=[before]*7+[after]*7):
+            response=self.response();signed=self.signed()
+        with self.mock.patch.object(host,'firefox_amo_transport',side_effect=[(200,response),(200,signed)]) as call:
             r=self.invoke()
         self.assertFalse(r['submission_attempted']);self.assertEqual([x.args[1] for x in call.call_args_list],['GET','GET'])
 
@@ -375,6 +388,7 @@ class FirefoxExtensionAdmissionTests(unittest.TestCase):
 class FirefoxCarrierTests(NativeStandaloneTests):
     # The inherited native controls also execute against this browser profile.
     START_TIMEOUT = 60
+    PORT_NAMES = ('port', 'terminal_port', 'novnc_port', 'vnc_port')
     @classmethod
     def setUpClass(cls):
         cls.scratch = tempfile.TemporaryDirectory(prefix='qikvrt-firefox-exact-')
@@ -390,12 +404,9 @@ class FirefoxCarrierTests(NativeStandaloneTests):
 
     def setUp(self):
         super().setUp()
-        def port():
-            with socket.socket() as s:
-                s.bind(('127.0.0.1',0)); return s.getsockname()[1]
         password = self.work/'vnc.password'; password.write_text('Test9Vnc'); password.chmod(0o600)
         self.config.update(terminal_profile='firefox',display=':'+str(100 + os.getpid()%5000),
-            novnc_port=port(),vnc_port=port(),browser_password_file=str(password))
+            browser_password_file=str(password))
         self.save_config()
 
     def start(self,path=None):
@@ -420,7 +431,8 @@ class FirefoxCarrierTests(NativeStandaloneTests):
                     for f in (self.volume/'browser/logs').glob('*.log')}
                 (p/('FAILURE_'+self._testMethodName+'.json')).write_bytes(host.raw_json({
                     'source_head':self.head,'source_tree':self.tree,'manifest_sha256':self.pin,
-                    'runtime_failure':str(exc),'fixture_component_logs':logs,'effect_ack_done':False}))
+                    'runtime_failure':str(exc),'fixture_component_logs':logs,
+                    'fixture_ports':{name:self.config[name] for name in self.PORT_NAMES},'effect_ack_done':False}))
             raise
 
     def websocket_rfb_auth(self):
@@ -501,6 +513,62 @@ class FirefoxCarrierTests(NativeStandaloneTests):
             (p/'FIREFOX_NATIVE_READBACK.json').write_bytes(host.raw_json(receipt))
             (p/'MANIFEST.json').write_bytes((self.export/'MANIFEST.json').read_bytes())
             (p/'DISTRIBUTION_PACKAGES.tsv').write_bytes(Path('/usr/local/share/qikvrt-distribution-packages.tsv').read_bytes())
+
+    def test_display_generation_survives_last_readiness_client_disconnect(self):
+        # A real X11 atom is deleted by a server reset. Exercise the launcher's
+        # command, with the previous reset behavior as a causal control; neither
+        # a static argv assertion nor a persistent observer can establish this.
+        x11 = ctypes.CDLL('libX11.so.6')
+        x11.XOpenDisplay.argtypes = [ctypes.c_char_p]
+        x11.XOpenDisplay.restype = ctypes.c_void_p
+        x11.XInternAtom.argtypes = [ctypes.c_void_p, ctypes.c_char_p, ctypes.c_int]
+        x11.XInternAtom.restype = ctypes.c_ulong
+        x11.XSync.argtypes = [ctypes.c_void_p, ctypes.c_int]
+        x11.XCloseDisplay.argtypes = [ctypes.c_void_p]
+        display = self.config['display'].encode()
+        name = ('QIKVRT_LAST_CLIENT_' + str(os.getpid())).encode()
+
+        def atom(only_if_exists, process):
+            until = time.monotonic() + 5
+            while time.monotonic() < until:
+                self.assertIsNone(process.poll(), 'Xvfb exited before X11 readback')
+                connection = x11.XOpenDisplay(display)
+                if connection:
+                    try:
+                        value = x11.XInternAtom(connection, name, only_if_exists)
+                        x11.XSync(connection, 0)
+                        return value
+                    finally:
+                        x11.XCloseDisplay(connection)
+                time.sleep(.025)
+            self.fail('X11 connection unavailable for display-generation readback')
+
+        command = host._xvfb_command(self.config['display'])
+        for preserve in (False, True):
+            with self.subTest(preserve=preserve):
+                argv = command if preserve else [x for x in command if x != '-noreset']
+                log = self.work / ('x11-generation-' + str(preserve) + '.log')
+                with log.open('wb') as output:
+                    process = subprocess.Popen(argv, stdout=output, stderr=output)
+                    try:
+                        original = atom(0, process)
+                        self.assertNotEqual(original, 0)
+                        observed = original
+                        until = time.monotonic() + 5
+                        probes = 0
+                        while time.monotonic() < until:
+                            # No X11 client is connected during this interval.
+                            time.sleep(.1)
+                            observed = atom(1, process)
+                            probes += 1
+                            if preserve:
+                                self.assertEqual(observed, original)
+                                if probes == 3: break
+                            elif observed == 0: break
+                        self.assertEqual(observed, original if preserve else 0)
+                    finally:
+                        process.terminate()
+                        process.wait(timeout=5)
 
     def test_crash_restart_preserves_firefox_profile_and_acknowledged_native_bytes(self):
         self.start(); prepared,event=self.commit_input()

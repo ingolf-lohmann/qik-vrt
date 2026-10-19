@@ -1,0 +1,44 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "id": "TEMDD_LOCAL_WRITER_CLI_DIRECTORY_20261019",
+  "principal": "Ingolf Lohmann",
+  "authorization": "Standing integration/necessary-repair grant; direct instruction2026-10-19T03:02:48+03:00 to continue repository work and existing Claude cooperation without repeated human handoff.",
+  "problem": "transfer-local-writer validates source-state-dir with the regular-file default. Four native restoration cases fail OWNER_ONLY_PRIVATE_PATH_REQUIRED.",
+  "affected_native_jobs": [
+    117811401342,
+    117811401267,
+    117811401011
+  ],
+  "repair": "Retain the complete existing a73c64d9 repair unchanged. Independently test its real CLI with actual native transfer, source revocation, immutable prefix and config byte pin; package/source admission has separate full suites.",
+  "regressions": {
+    "before": "3CLI controls: valid directory and file-type assertions fail; public-directory rejection passes.",
+    "after": "12WriterContinuityTests pass, including4CLI controls. Rejected file/public-directory/config drift leave the original writer usable with the exact original event. The valid directory revokes the source before target admission and preserves its event. Real SQLite and OS locks; only outer package/source admission is stubbed in these dispatch unit controls."
+  },
+  "full_suite": "Full local make test and fresh successor CI required; results to be independently recorded after this immutable candidate is created.",
+  "native_acceptance": "Not claimed by focused controls",
+  "scope": "Source repair only; no original ledger writes, distributed fencing proof, credentials, key anchor, deployment or peer acceptance.",
+  "contributions": {
+    "human": "Ingolf Lohmann: scope, authorization, product/evidence requirements",
+    "artificial": "OpenAI Codex: current native log diagnosis, repair and regression controls",
+    "claude": "Independent verification to be requested through existing Authority route; execution not presumed."
+  },
+  "EFFECT_ACK_DONE": false,
+  "defect_base": {
+    "pr": 535,
+    "head": "1e99c6ae4b299eed36cc31d495a635efda92c1a4",
+    "tree": "36969f4291410f8f4d1c8a8acf7332c34887dee2"
+  },
+  "base": {
+    "pr": 535,
+    "head": "a73c64d9a2202d00d7c9ffc30058307e7b722efb",
+    "tree": "0739be7feb7441b29be5c2c99e7c6e9c77a25beb"
+  },
+  "native_source_evidence": {
+    "head": "a73c64d9a2202d00d7c9ffc30058307e7b722efb",
+    "job": 117828760380,
+    "run": 39179409855,
+    "conclusion": "success",
+    "scope": "Existing native-carrier job read back independently; no PASS transferred to this new test successor."
+  },
+  "concurrent_repair_preserved": true
+}

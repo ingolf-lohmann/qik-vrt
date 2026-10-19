@@ -2,6 +2,7 @@
 # Copyright 2026 Ingolf Lohmann. Implementation contribution: OpenAI Codex.
 """Real exported-process tests; local filesystem/HTTP evidence, not deployment."""
 from __future__ import annotations
+import contextlib
 import hashlib
 import importlib.util
 import json
@@ -27,6 +28,63 @@ ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location("selfhost", ROOT / "tools/qikvrt_self_host.py")
 host = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(host)
+
+
+class BrowserStartupTests(unittest.TestCase):
+    """Model the Xserver last-client reset between readiness and GUI startup.
+
+    The isolated native Firefox/restart suite separately checks real binaries.
+    """
+    def launch(self, broken_firefox=False):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        volume = Path(temporary.name)
+        volume.chmod(0o700)
+        password = volume / 'vnc.password'
+        password.write_bytes(b'Test9Vnc'); password.chmod(0o600)
+        processes, display = [], {'noreset': False, 'resetting': False}
+        class Child:
+            def __init__(self, code=None): self.code = code
+            def poll(self): return self.code
+            def terminate(self): self.code = -15
+            def wait(self, timeout=None): return self.code
+        def spawn(argv, **kwargs):
+            if argv[0] == 'Xvfb': display['noreset'] = '-noreset' in argv
+            code = 1 if argv[0] == 'firefox' and (display['resetting'] or broken_firefox) else None
+            child = Child(code); processes.append(child); return child
+        def probe(argv, **kwargs):
+            # xdpyinfo succeeds and then closes the sole X connection. The
+            # following GUI clients race with reset unless the server retains it.
+            self.assertEqual(argv[0], 'xdpyinfo')
+            display['resetting'] = not display['noreset']
+            return subprocess.CompletedProcess(argv, 0)
+        config = {'browser_password_file': str(password), 'display': ':107',
+            'vnc_port': 5901, 'novnc_port': 6080, 'terminal_port': 8080}
+        manifest = {'browser_runtime': {'firefox_command': 'firefox'}}
+        with mock.patch.object(host.shutil, 'which', side_effect=lambda name: name), \
+                mock.patch.object(host, 'firefox_binary', return_value=Path('firefox')), \
+                mock.patch.object(host.subprocess, 'Popen', side_effect=spawn), \
+                mock.patch.object(host.subprocess, 'run', side_effect=probe), \
+                mock.patch.object(host.subprocess, 'check_output', return_value=b'"QIK-VRT TEMDD Live Universal Terminal" ("Navigator" "firefox")'), \
+                mock.patch.object(host, 'novnc_readback', return_value=True):
+            try:
+                result = host.browser_carrier(ROOT, manifest, config, volume)
+            except ValueError:
+                self.assertTrue(all(child.poll() is not None for child in processes))
+                raise
+        return result
+
+    def test_last_readiness_client_disconnect_does_not_reset_display(self):
+        processes, logs = self.launch()
+        try:
+            self.assertEqual(len(processes), 4)
+            self.assertTrue(all(child.poll() is None for child in processes))
+        finally:
+            host.stop_children(processes, logs)
+
+    def test_actual_browser_child_exit_still_holds_and_reaps_children(self):
+        with self.assertRaisesRegex(ValueError, 'BROWSER_CHILD_EXITED'):
+            self.launch(broken_firefox=True)
 
 
 class AuthoritySuccessionModelTests(unittest.TestCase):
@@ -1010,17 +1068,18 @@ class StandaloneTests(unittest.TestCase):
         self.token_file = self.work / "terminal.token"
         self.token_file.write_text("test-only-32-byte-local-token-no-real-credential")
         self.token_file.chmod(0o600)
-        # Keep both sockets bound until the pair is selected. Closing the
+        # Keep all sockets bound until this profile's listeners are selected. Closing the
         # first bind(0) before the second permits the kernel to reuse its port,
         # producing an invalid fixture which the real startup guard rejects.
-        with socket.socket() as monitor, socket.socket() as terminal:
-            monitor.bind(("127.0.0.1", 0))
-            terminal.bind(("127.0.0.1", 0))
-            monitor_port = monitor.getsockname()[1]
-            terminal_port = terminal.getsockname()[1]
+        ports = {}
+        with contextlib.ExitStack() as held:
+            for name in getattr(self, 'PORT_NAMES', ('port', 'terminal_port')):
+                listener = held.enter_context(socket.socket())
+                listener.bind(("127.0.0.1", 0))
+                ports[name] = listener.getsockname()[1]
         self.config = {"schema":"qikvrt-self-host-config/v1","node_id":"fixture:standalone",
             "source_head":self.head,"source_tree":self.tree,"adapter":"none","state_dir":str(self.volume),
-            "host":"127.0.0.1","port":monitor_port,"terminal_port":terminal_port,"terminal_token_file":str(self.token_file)}
+            "host":"127.0.0.1",**ports,"terminal_token_file":str(self.token_file)}
         self.config_path = self.work / "config.json"
         self.save_config()
         self.url = "http://127.0.0.1:"+str(self.config["port"])
@@ -1394,15 +1453,24 @@ assert.equal(transports,0);console.log('PROVIDER_NEGATIVE_CONTROL_TRANSPORT_COUN
                 active.add(self.port)
             def getsockname(self): return ('127.0.0.1', self.port)
             def close(self): active.discard(self.port)
-        probe = StandaloneTests('test_surviving_monitor_retains_lock_after_launcher_only_sigkill')
-        try:
-            with mock.patch.object(socket, 'socket', ReusingSocket):
-                probe.setUp()
-            self.assertNotEqual(probe.config['port'], probe.config['terminal_port'])
-            self.assertEqual(len(sockets), 2)
-            self.assertFalse(active)
-        finally:
-            probe.doCleanups()
+        for names in (('port', 'terminal_port'),
+                ('port', 'terminal_port', 'novnc_port', 'vnc_port')):
+            with self.subTest(listeners=names):
+                sockets.clear()
+                if len(names) == 4:
+                    from tests.test_self_host_firefox import FirefoxCarrierTests
+                    probe = FirefoxCarrierTests('test_sigkill_restart_keeps_epoch_native_id_and_original_event_bytes')
+                    probe.head, probe.tree = self.head, self.tree
+                else:
+                    probe = StandaloneTests('test_surviving_monitor_retains_lock_after_launcher_only_sigkill')
+                try:
+                    with mock.patch.object(socket, 'socket', ReusingSocket):
+                        probe.setUp()
+                    self.assertEqual(len({probe.config[name] for name in names}), len(names))
+                    self.assertEqual(len(sockets), len(names))
+                    self.assertFalse(active)
+                finally:
+                    probe.doCleanups()
 
     def test_equal_monitor_and_terminal_ports_are_rejected_before_listener(self):
         self.config['terminal_port'] = self.config['port']
@@ -1636,14 +1704,14 @@ class MeshWorkCacheTests(unittest.TestCase):
         self.calls.append((method, url, len(raw)))
         return host.mesh_work_transport(url, method, raw, headers)
 
-    def cloud(self, occupied=False, label="cloud"):
+    def cloud(self, occupied=False, label="cloud", admitted=True):
         import select
         state = self.directory / (label + ".json")
         config = self.directory / (label + "-config.json")
         config.write_bytes(host.raw_json({"statePath": str(state), "env": {
             "QIKVRT_MONITOR_NODE_ID": self.peer["node_id"], "QIKVRT_MONITOR_SOURCE_HEAD": self.peer["source_head"],
             "QIKVRT_MONITOR_SOURCE_TREE": self.peer["source_tree"],
-            "QIKVRT_MESH_WORK_PEERS": json.dumps([{"node_id": "local:fixture", "repository": "ingolf-lohmann/qik-vrt", "secret_file": str(self.key)}])}}))
+            "QIKVRT_MESH_WORK_PEERS": json.dumps([{"node_id": "local:fixture", "repository": "ingolf-lohmann/qik-vrt", "secret_file": str(self.key)}] if admitted else [])}}))
         code = "import {readFileSync} from 'node:fs';import {createMonitor} from './docs/monitor/server.mjs';const m=createMonitor(JSON.parse(readFileSync(process.argv[1])));m.server.listen(0,'127.0.0.1',()=>console.log(JSON.stringify({port:m.server.address().port})));"
         process = subprocess.Popen(["node", "--input-type=module", "-e", code, str(config)], cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
         def stop():
@@ -1714,6 +1782,147 @@ class MeshWorkCacheTests(unittest.TestCase):
                 run_id=os.environ.get("GITHUB_RUN_ID"), source_binding_scope="EXACT_CHECKOUT" if source_head else "SELECTED_API_FILES_ONLY")
             path = Path(os.environ["QIKVRT_MESH_WORK_TEST_EVIDENCE"]); path.mkdir(parents=True, exist_ok=True)
             (path / "LOCAL_WORK_BATCH.json").write_bytes(host.raw_json(evidence))
+
+
+    def node_mesh_status(self):
+        with urllib.request.urlopen(self.peer["url"] + "/api/node", timeout=5) as response:
+            return json.load(response)["mesh_work"]
+
+    def test_operating_check_requires_received_batch_and_no_peer_is_ready_by_default(self):
+        state, stop = self.cloud(admitted=False)
+        self.assertEqual(self.node_mesh_status()["state"], "NO_PEERS_ADMITTED")
+        self.stage(); self.freeze()
+        with self.assertRaisesRegex(ValueError, "CONFIRMED_BATCH_REQUIRED"):
+            self.cache.check(self.peer, self.transport)
+        self.assertFalse(self.calls)
+        stop(); self.cloud()
+        self.assertEqual(self.node_mesh_status()["state"], "PEER_BATCH_REQUIRED")
+
+    def test_public_peer_gate_rejects_missing_admission_and_missing_batch_then_accepts_durable_batch(self):
+        code = "import {requireMeshWorkReadback} from './tools/qikvrt_mesh_monitor_readback.mjs';try {requireMeshWorkReadback({mesh_work:JSON.parse(process.argv[1])});console.log('PEER_GATE_PASS');}catch(error){console.log(error.message);}"
+        def gate():
+            return subprocess.check_output(["node", "--input-type=module", "-e", code,
+                json.dumps(self.node_mesh_status())], cwd=ROOT, text=True).strip()
+        _, stop = self.cloud(admitted=False)
+        self.assertEqual(gate(), "HOLD_PUBLIC_MESH_PEER_BATCH_REQUIRED")
+        stop(); self.cloud()
+        self.assertEqual(gate(), "HOLD_PUBLIC_MESH_PEER_BATCH_REQUIRED")
+        self.stage(); self.freeze(); self.cache.send(self.peer)
+        self.assertEqual(gate(), "PEER_GATE_PASS")
+
+    def test_signed_sender_receipt_and_live_check_survive_both_process_restarts(self):
+        state, stop = self.cloud(); self.stage(); self.freeze()
+        sent = self.cache.send(self.peer, self.transport)
+        retained = self.state()["receipts"][sent["batch_id"]]
+        self.assertEqual(json.loads(base64.b64decode(retained["authenticated_response"]["body_base64"])), retained["receipt"])
+        self.assertTrue(sent["sender_receipt_durable"])
+        self.assertEqual(self.node_mesh_status()["state"], "PEER_BATCHES_DURABLE")
+        sender_before = self.cache.path.read_bytes(); receiver_before = state.read_bytes()
+        stop(); self.cloud()
+        self.cache = host.MeshWorkCache(self.cache.directory, **self.cache.binding)
+        self.calls.clear()
+        result = self.cache.check(self.peer, self.transport)
+        self.assertEqual(result["state"], "MESH_WORK_PEER_BATCH_VERIFIED")
+        self.assertTrue(result["fresh_challenge_verified"]); self.assertTrue(result["sender_receipt_durable"])
+        self.assertEqual([method for method, _, _ in self.calls], ["GET"])
+        self.assertEqual(self.cache.path.read_bytes(), sender_before)
+        self.assertEqual(state.read_bytes(), receiver_before)
+        self.assertFalse(result["effect_ack_done"])
+
+    def test_live_check_holds_on_cold_receiver_inbox_loss_without_reposting(self):
+        state, stop = self.cloud(); self.stage(); self.freeze(); self.cache.send(self.peer)
+        sender_before = self.cache.path.read_bytes()
+        stop(); state.unlink(); self.cloud(); self.calls.clear()
+        with self.assertRaisesRegex(ValueError, "FRESH_RECEIVER_READBACK_REQUIRED"):
+            self.cache.check(self.peer, self.transport)
+        self.assertEqual([m for m, _, _ in self.calls], ["GET"])
+        self.assertEqual(self.cache.path.read_bytes(), sender_before)
+        self.assertEqual(self.node_mesh_status()["state"], "PEER_BATCH_REQUIRED")
+
+    def test_running_receiver_cannot_prove_durability_after_disk_loss(self):
+        state, _ = self.cloud(); self.stage(); self.freeze(); self.cache.send(self.peer)
+        state.unlink()
+        with self.assertRaisesRegex(ValueError, "FRESH_RECEIVER_READBACK_REQUIRED"):
+            self.cache.check(self.peer, self.transport)
+        self.assertEqual(self.node_mesh_status()["state"], "DURABLE_READBACK_HOLD")
+        self.assertFalse(state.exists())
+
+    def test_receiver_source_upgrade_invalidates_current_commissioning_but_preserves_history(self):
+        state, stop = self.cloud(); self.stage(); self.freeze(); self.cache.send(self.peer)
+        expected_peer = dict(self.peer); original = state.read_bytes()
+        stop(); self.peer["source_head"] = "c" * 40; self.cloud()
+        expected_peer["url"] = self.peer["url"]
+        with self.assertRaisesRegex(ValueError, "FRESH_RECEIVER_READBACK_REQUIRED"):
+            self.cache.check(expected_peer, self.transport)
+        self.assertEqual(self.node_mesh_status()["state"], "PEER_BATCH_REQUIRED")
+        self.assertEqual(state.read_bytes(), original)
+
+    def test_revoked_peer_fails_authenticated_readback_and_never_posts(self):
+        state, stop = self.cloud(); self.stage(); self.freeze(); self.cache.send(self.peer)
+        original = state.read_bytes()
+        stop(); self.cloud(admitted=False); self.calls.clear()
+        with self.assertRaisesRegex(ValueError, "AUTHENTICATED_READBACK_REQUIRED"):
+            self.cache.check(self.peer, self.transport)
+        self.assertEqual([m for m, _, _ in self.calls], ["GET"])
+        self.assertEqual(self.node_mesh_status()["state"], "NO_PEERS_ADMITTED")
+        self.assertEqual(state.read_bytes(), original)
+
+    def test_previous_authenticated_live_reply_cannot_answer_a_fresh_challenge(self):
+        self.cloud(); self.stage(); self.freeze(); self.cache.send(self.peer)
+        responses = []
+        def capture(url, method, raw, headers):
+            response = self.transport(url, method, raw, headers); responses.append(response); return response
+        self.cache.check(self.peer, capture)
+        with self.assertRaisesRegex(ValueError, "AUTHENTICATED_READBACK_REQUIRED"):
+            self.cache.check(self.peer, lambda *args: responses[0])
+
+    def test_authenticated_bad_receipt_digest_holds_outbox_before_a_single_recovery_read(self):
+        self.cloud(); self.stage(); self.freeze()
+        def corrupt(url, method, raw, headers):
+            status, data, signature = self.transport(url, method, raw, headers)
+            if method == "GET":
+                receipt = json.loads(data); receipt["receipt_sha256"] = "0" * 64
+                data = host.mesh_wire(receipt)
+                path = urllib.parse.urlsplit(url).path
+                signature = "sha256=" + hmac.new(self.key.read_bytes(), b"RESPONSE\n" + path.encode() + b"\n" + data, hashlib.sha256).hexdigest()
+            return status, data, signature
+        with self.assertRaisesRegex(ValueError, "RECEIPT_BINDING_MISMATCH"):
+            self.cache.send(self.peer, corrupt)
+        self.assertIsNotNone(self.state()["pending"])
+        self.cache.send(self.peer, self.transport)
+        self.assertEqual([m for m, _, _ in self.calls], ["POST", "GET", "GET"])
+
+    def test_retained_sender_witness_corruption_is_not_accepted_as_operating_evidence(self):
+        self.cloud(); self.stage(); self.freeze(); self.cache.send(self.peer)
+        with self.cache.locked():
+            self.cache.state["receipts"][self.cache.state["last_ack"]]["authenticated_response"]["signature"] = "sha256=" + "0" * 64
+            self.cache.save()
+        with self.assertRaisesRegex(ValueError, "DURABLE_SENDER_RECEIPT_MISMATCH"):
+            self.cache.check(self.peer, self.transport)
+
+    def test_legacy_ack_is_live_checkable_without_inventing_retained_sender_bytes(self):
+        self.cloud(); self.stage(); self.freeze(); self.cache.send(self.peer)
+        with self.cache.locked():
+            del self.cache.state["receipts"]; self.cache.save()
+        original = self.cache.path.read_bytes()
+        result = self.cache.check(self.peer, self.transport)
+        self.assertFalse(result["sender_receipt_durable"])
+        self.assertTrue(result["fresh_challenge_verified"])
+        self.assertEqual(self.cache.path.read_bytes(), original)
+
+    def test_check_cli_recovers_operating_evidence_without_original_source_checkout(self):
+        self.cloud(); self.stage(); self.freeze(); self.cache.send(self.peer)
+        work = self.directory / "check-work.json"; peer = self.directory / "check-peer.json"
+        work.write_bytes(host.raw_json({"schema": "qikvrt-repository-work-request/v1",
+            "scope": host.MESH_WORK_SCOPE, **self.cache.binding})); work.chmod(0o600)
+        peer.write_bytes(host.raw_json(self.peer)); peer.chmod(0o600)
+        original = self.cache.path.read_bytes(); shutil.rmtree(self.repo)
+        run = subprocess.run([sys.executable, "-B", str(ROOT / "tools/qikvrt_self_host.py"),
+            "mesh-cache-check", "--mesh-cache", str(self.cache.directory),
+            "--work-request", str(work), "--peer", str(peer)], capture_output=True, text=True, timeout=15)
+        self.assertEqual(run.returncode, 0, run.stderr + run.stdout)
+        self.assertEqual(json.loads(run.stdout)["state"], "MESH_WORK_PEER_BATCH_VERIFIED")
+        self.assertEqual(self.cache.path.read_bytes(), original)
 
     def test_warm_objects_and_original_instruction_bytes_survive_restart(self):
         first = self.stage()

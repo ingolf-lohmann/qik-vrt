@@ -3,9 +3,13 @@
 from __future__ import annotations
 
 import copy
+import contextlib
+import hashlib
 import http.client
+import io
 import json
 from pathlib import Path
+import selectors
 import shutil
 import socket
 import sqlite3
@@ -19,6 +23,230 @@ from unittest import mock
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'src'))
 import qikvrt_temdd_event_ledger as m
+
+
+class WriterContinuityTests(unittest.TestCase):
+    """Real copied SQLite stores and OS locks, without a socket substitute."""
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.a = Path(self.temp.name) / 'a'
+        self.b = Path(self.temp.name) / 'b'
+        self.subject = {'repository': 'ingolf-lohmann/qik-vrt', 'pr': 447,
+                        'head': 'a' * 40, 'tree': 'b' * 40}
+        self.event = {'schema': m.SCHEMA, 'kind': 'READBACK', 'subject': self.subject,
+                      'provenance': {'source': 'transputer', 'native_event_id': 'fixture:common'},
+                      'observed_at': '2026-10-18T00:00:00Z', 'message': 'fixture only', 'payload': {}}
+
+    def seed(self):
+        ledger = m.Ledger(self.a, self.subject)
+        receipt = ledger.append(self.event)
+        frontier = m.digest({'epoch': ledger.epoch,
+                            'rows': ledger.db.execute('SELECT * FROM events ORDER BY seq').fetchall()})
+        ledger.close()
+        shutil.copytree(self.a, self.b)
+        return receipt, frontier
+
+    def test_copied_store_cannot_acquire_original_writer_identity(self):
+        receipt, _ = self.seed()
+        original = m.Ledger(self.a, self.subject)
+        self.addCleanup(original.close)
+        with self.assertRaisesRegex(m.Hold, 'COPIED_OR_UNADMITTED'):
+            m.Ledger(self.b, self.subject)
+        mirror = m.Ledger(self.b, self.subject, read_only=True)
+        self.addCleanup(mirror.close)
+        self.assertEqual(mirror.replay(0), [receipt])
+        with self.assertRaisesRegex(m.Hold, 'READ_ONLY'):
+            mirror.append(self.event)
+
+    def test_same_physical_store_restart_preserves_deduplication(self):
+        receipt, _ = self.seed()
+        ledger = m.Ledger(self.a, self.subject)
+        self.addCleanup(ledger.close)
+        self.assertEqual(ledger.append(self.event), receipt)
+        event = copy.deepcopy(self.event); event['provenance']['native_event_id'] = 'fixture:next'
+        self.assertEqual(ledger.append(event)['id'], ledger.epoch + ':2')
+
+    def test_replacing_owner_lock_fences_live_writer_and_its_successor(self):
+        self.seed()
+        ledger = m.Ledger(self.a, self.subject)
+        self.addCleanup(ledger.close)
+        (self.a / 'temdd/owner.lock').unlink()
+        (self.a / 'temdd/owner.lock').touch(mode=0o600)
+        with self.assertRaisesRegex(m.Hold, 'WRITER_LOCK_REPLACED'):
+            ledger.append(self.event)
+        with self.assertRaisesRegex(m.Hold, 'COPIED_OR_UNADMITTED'):
+            m.Ledger(self.a, self.subject)
+
+    def test_legacy_store_remains_readable_but_is_never_automatically_admitted(self):
+        receipt, _ = self.seed()
+        with sqlite3.connect(self.a / 'temdd/events.sqlite3') as db:
+            db.execute("UPDATE meta SET value='1' WHERE key='schema'")
+            db.execute("DELETE FROM meta WHERE key='writer_seal'")
+        path = self.a / 'temdd/events.sqlite3'
+        before = hashlib.sha256(path.read_bytes()).hexdigest()
+        with self.assertRaisesRegex(m.Hold, 'LEGACY_LEDGER_REQUIRES_FENCED'):
+            m.Ledger(self.a, self.subject)
+        reader = m.Ledger(self.a, self.subject, read_only=True)
+        self.assertEqual(reader.replay(0), [receipt]); reader.close()
+        self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), before)
+
+    def test_explicit_local_handoff_revokes_source_before_target_can_append(self):
+        receipt, frontier = self.seed()
+        result = m.Ledger.transfer_local_writer(self.a, self.b, self.subject, frontier)
+        self.assertFalse(result['distributed_fencing_verified'])
+        with self.assertRaisesRegex(m.Hold, 'COPIED_OR_UNADMITTED'):
+            m.Ledger(self.a, self.subject)
+        target = m.Ledger(self.b, self.subject)
+        self.addCleanup(target.close)
+        self.assertEqual(target.replay(0), [receipt])
+        event = copy.deepcopy(self.event); event['provenance']['native_event_id'] = 'fixture:after-transfer'
+        self.assertEqual(target.append(event)['id'], target.epoch + ':2')
+
+    def handoff_cli(self, source, frontier, config_drift=False):
+        """Real CLI path check and native transfer; package gates have own suites."""
+        from tests.test_self_host import host
+        config = {'state_dir': str(self.b), 'source_repository': self.subject['repository'],
+                  'subject_pr': self.subject['pr'], 'source_head': self.subject['head'],
+                  'source_tree': self.subject['tree']}
+        config_path = self.a.parent / 'config.json'
+        config_bytes = json.dumps(config, sort_keys=True).encode()
+        config_path.write_bytes(config_bytes + (b'\n' if config_drift else b''))
+        config_path.chmod(0o600)
+        binding = {'config_sha256': hashlib.sha256(config_bytes).hexdigest()}
+        argv = ['qikvrt_self_host.py', 'transfer-local-writer', '--root', str(ROOT),
+                '--manifest-sha256', 'c' * 64, '--config', str(config_path),
+                '--source-state-dir', str(source), '--frontier-sha256', frontier]
+        output = io.StringIO()
+        with mock.patch.object(sys, 'argv', argv), \
+                mock.patch.object(host, 'state_binding', return_value=(self.b, binding)), \
+                mock.patch.object(host, 'packaged_subject', return_value=self.subject), \
+                mock.patch.object(host, 'load_source', side_effect=lambda _root, name:
+                    m if name == 'qikvrt_temdd_event_ledger' else m.terminal), \
+                contextlib.redirect_stdout(output):
+            code = host.main()
+        return code, json.loads(output.getvalue())
+
+    def test_cli_handoff_accepts_private_source_directory_and_revokes_original(self):
+        receipt, frontier = self.seed()
+        self.a.chmod(0o700); self.b.chmod(0o700)
+        code, result = self.handoff_cli(self.a, frontier)
+        self.assertEqual(code, 0, result)
+        self.assertFalse(result['distributed_fencing_verified'])
+        with self.assertRaisesRegex(m.Hold, 'COPIED_OR_UNADMITTED'):
+            m.Ledger(self.a, self.subject)
+        target = m.Ledger(self.b, self.subject)
+        self.addCleanup(target.close)
+        self.assertEqual(target.replay(0), [receipt])
+
+    def test_cli_handoff_rejects_regular_file_without_revoking_original(self):
+        receipt, frontier = self.seed()
+        self.a.chmod(0o700); self.b.chmod(0o700)
+        wrong = self.a.parent / 'source-file'; wrong.touch(mode=0o600)
+        code, result = self.handoff_cli(wrong, frontier)
+        self.assertEqual(code, 2, result)
+        self.assertEqual(result['cause'], 'OWNER_ONLY_PRIVATE_PATH_REQUIRED')
+        source = m.Ledger(self.a, self.subject)
+        self.addCleanup(source.close)
+        self.assertEqual(source.replay(0), [receipt])
+
+    def test_cli_handoff_rejects_public_directory_without_revoking_original(self):
+        receipt, frontier = self.seed()
+        self.a.chmod(0o755); self.b.chmod(0o700)
+        code, result = self.handoff_cli(self.a, frontier)
+        self.assertEqual(code, 2, result)
+        self.assertEqual(result['cause'], 'OWNER_ONLY_PRIVATE_PATH_REQUIRED')
+        source = m.Ledger(self.a, self.subject)
+        self.addCleanup(source.close)
+        self.assertEqual(source.replay(0), [receipt])
+
+    def test_cli_handoff_rejects_changed_config_bytes_without_revoking_original(self):
+        receipt, frontier = self.seed()
+        self.a.chmod(0o700); self.b.chmod(0o700)
+        code, result = self.handoff_cli(self.a, frontier, config_drift=True)
+        self.assertEqual(code, 2, result)
+        self.assertEqual(result['cause'], 'EXACT_CONFIGURATION_CHANGED')
+        source = m.Ledger(self.a, self.subject)
+        self.addCleanup(source.close)
+        self.assertEqual(source.replay(0), [receipt])
+
+    def test_stale_copy_and_wrong_pin_leave_source_writer_unchanged(self):
+        _, frontier = self.seed()
+        with self.assertRaisesRegex(m.Hold, 'EXACT_LOCAL_HANDOFF_PREFIX'):
+            m.Ledger.transfer_local_writer(self.a, self.b, self.subject, '0' * 64)
+        writer = m.Ledger(self.a, self.subject)
+        event = copy.deepcopy(self.event); event['provenance']['native_event_id'] = 'fixture:unexported'
+        writer.append(event); writer.close()
+        with self.assertRaisesRegex(m.Hold, 'EXACT_LOCAL_HANDOFF_PREFIX'):
+            m.Ledger.transfer_local_writer(self.a, self.b, self.subject, frontier)
+        writer = m.Ledger(self.a, self.subject); writer.close()
+
+    def test_interrupted_transfer_admits_neither_copy(self):
+        _, frontier = self.seed()
+        connect = sqlite3.connect
+        def fail_target(path, *args, **kwargs):
+            if str(path) == str(self.b / 'temdd/events.sqlite3'):
+                raise OSError('fixture crash after durable source revocation')
+            return connect(path, *args, **kwargs)
+        with mock.patch.object(m.sqlite3, 'connect', side_effect=fail_target):
+            with self.assertRaisesRegex(OSError, 'fixture crash'):
+                m.Ledger.transfer_local_writer(self.a, self.b, self.subject, frontier)
+        for volume in (self.a, self.b):
+            with self.assertRaisesRegex(m.Hold, 'COPIED_OR_UNADMITTED'):
+                m.Ledger(volume, self.subject)
+
+    def test_historical_fork_after_23_preserves_both_original_suffixes_and_receipts(self):
+        # Reproduce the historical copied-writer defect with its preserved
+        # implementation, in isolated fixtures only. Never edit real journals.
+        source = ROOT / 'evidence/self_host/original-recovered/src/qikvrt_temdd_event_ledger.py'
+        namespace = {'__name__': 'historical_fork_fixture', '__package__': None}
+        exec(compile(source.read_bytes(), str(source), 'exec'), namespace)
+        legacy = namespace['Ledger']
+        writer = legacy(self.a, self.subject)
+        common = []
+        for seq in range(1, 24):
+            event = copy.deepcopy(self.event)
+            event['provenance']['native_event_id'] = f'fixture:common:{seq}'
+            common.append(writer.append(event))
+        writer.close()
+        shutil.copytree(self.a, self.b)
+        branches = []
+        for volume, label in ((self.a, 'original-a'), (self.b, 'original-b')):
+            writer = legacy(volume, self.subject)
+            event = copy.deepcopy(self.event)
+            event['provenance']['native_event_id'] = f'fixture:suffix:{label}'
+            event['message'] = label
+            suffix = writer.append(event)
+            writer.close()
+            branches.append(common + [suffix])
+        self.assertEqual(branches[0][-1]['id'], branches[1][-1]['id'])
+        self.assertNotEqual(branches[0][-1]['ledger_digest'], branches[1][-1]['ledger_digest'])
+        before = {volume: (volume / 'temdd/events.sqlite3').read_bytes()
+                  for volume in (self.a, self.b)}
+        with self.assertRaisesRegex(m.Hold, 'LEGACY_LEDGER_REQUIRES_FENCED'):
+            m.Ledger.transfer_local_writer(self.a, self.b, self.subject, '0' * 64)
+        for volume, expected in zip((self.a, self.b), branches):
+            with self.assertRaisesRegex(m.Hold, 'LEGACY_LEDGER_REQUIRES_FENCED'):
+                m.Ledger(volume, self.subject)
+            reader = m.Ledger(volume, self.subject, read_only=True)
+            try:
+                self.assertEqual(reader.replay(0), expected)
+                self.assertEqual(reader.history_frontier(), m.digest({
+                    'epoch': reader.epoch,
+                    'rows': reader.db.execute('SELECT * FROM events ORDER BY seq').fetchall()}))
+            finally:
+                reader.close()
+            self.assertEqual((volume / 'temdd/events.sqlite3').read_bytes(), before[volume])
+
+    def test_active_source_and_a_copy_impersonating_source_cannot_transfer(self):
+        _, frontier = self.seed()
+        writer = m.Ledger(self.a, self.subject)
+        with self.assertRaises(BlockingIOError):
+            m.Ledger.transfer_local_writer(self.a, self.b, self.subject, frontier)
+        writer.close()
+        c = Path(self.temp.name) / 'c'; shutil.copytree(self.b, c)
+        with self.assertRaisesRegex(m.Hold, 'COPIED_OR_UNADMITTED'):
+            m.Ledger.transfer_local_writer(self.b, c, self.subject, frontier)
 
 
 class ProducerTests(unittest.TestCase):
@@ -367,6 +595,57 @@ class ProducerTests(unittest.TestCase):
         self.assertEqual(result.returncode, 2)
         self.assertEqual(json.loads(result.stderr)['state'], 'HOLD')
         self.assertEqual(len(self.runtime.ledger.replay(0)), 1)
+
+    def test_cli_serve_missing_subject_never_creates_state(self):
+        for index, (options, reason) in enumerate([
+                ([], 'REPOSITORY_REQUIRED'),
+                (['--pr', '534'], 'REPOSITORY_REQUIRED'),
+                (['--repository', 'ingolf-lohmann/qik-vrt'], 'PR_REQUIRED')]):
+            with self.subTest(options=options):
+                state = Path(self.temp.name) / f'unbound-{index}'
+                command = [sys.executable, '-B', str(ROOT/'src/qikvrt_temdd_event_ledger.py'),
+                           'serve', '--root', str(self.root), '--state-dir', str(state),
+                           '--port', '0', *options]
+                result = subprocess.run(command, capture_output=True, text=True, timeout=3)
+                self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+                self.assertEqual(json.loads(result.stderr)['reason'], reason)
+                self.assertEqual(result.stdout, '')
+                self.assertFalse(state.exists())
+
+    def test_cli_serve_reads_back_explicit_subject(self):
+        state = Path(self.temp.name) / 'explicit-node'
+        expected = m.subject(self.root, 'ingolf-lohmann/qik-vrt', 534)
+        command = [sys.executable, '-B', str(ROOT/'src/qikvrt_temdd_event_ledger.py'),
+                   'serve', '--root', str(self.root), '--state-dir', str(state), '--port', '0',
+                   '--repository', expected['repository'], '--pr', str(expected['pr'])]
+        child = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        try:
+            with selectors.DefaultSelector() as ready:
+                ready.register(child.stdout, selectors.EVENT_READ)
+                self.assertTrue(ready.select(5), 'CLI listener did not become ready')
+                listener = json.loads(child.stdout.readline())
+            self.assertEqual(listener, {'state': 'LISTENING', 'subject': expected, 'dod': False})
+            event = self.event('cli:explicit-subject', subject=expected)
+            receipt = m.submit(state, event)
+            self.assertEqual(receipt['event']['subject'], expected)
+            self.assertFalse(receipt['authority_effect'])
+            with sqlite3.connect((state/'temdd/events.sqlite3').as_uri() + '?mode=ro', uri=True) as db:
+                stored = json.loads(db.execute('SELECT body FROM events ORDER BY seq DESC LIMIT 1').fetchone()[0])
+            self.assertEqual(stored['subject'], expected)
+            self.assertEqual(stored['provenance'], event['provenance'])
+        finally:
+            child.terminate()
+            child.communicate(timeout=5)
+
+    def test_subject_correction_preserves_predecessor_bytes_without_relabeling(self):
+        first = self.runtime.append(self.event())
+        original = self.runtime.ledger.db.execute('SELECT body FROM events').fetchone()[0]
+        self.runtime.ledger.close()
+        self.runtime = m.Runtime(self.root, self.state, 'ingolf-lohmann/qik-vrt', 534)
+        self.assertEqual(self.runtime.ledger.replay(0), [])
+        self.assertEqual(self.runtime.ledger.db.execute('SELECT body FROM events').fetchone()[0], original)
+        self.assertEqual(json.loads(original)['subject'], first['subject'])
+        self.assertNotEqual(self.runtime.subject, first['subject'])
 
     def test_repository_entrypoint_and_test_admission(self):
         entrypoint = (ROOT/'deploy/universal-terminal/entrypoint.sh').read_text()

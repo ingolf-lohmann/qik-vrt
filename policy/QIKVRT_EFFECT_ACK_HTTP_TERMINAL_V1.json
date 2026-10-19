@@ -66,5 +66,14 @@
     "repository": "Goldkelch/qik-vrt",
     "commit": "88dde0ba2394e941f11b8e848fcd4899bbc5d29c"
   },
-  "role_policy_path": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json"
+  "role_policy_path": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+  "deployment_assurance": {
+    "requirements_register": "state/work_units/QIKVRT_SAFETY_SECURITY_IMPACT_20261019_V1.json",
+    "threat_model": "docs/QIKVRT_THREAT_MODEL.md",
+    "physical_feedback_required_for_physical_effect_claim": true,
+    "safety_emergency_path_requires_separate_local_hazard_based_admission": true,
+    "remote_ack_or_quorum_must_not_be_an_unassessed_egress_dependency": true,
+    "source_mapping_is_not_conformity_evidence": true,
+    "wire_protocol_changed": false
+  }
 }
