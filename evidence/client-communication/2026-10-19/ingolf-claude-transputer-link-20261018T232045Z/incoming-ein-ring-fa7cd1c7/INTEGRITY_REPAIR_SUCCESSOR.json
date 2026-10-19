@@ -1,0 +1,64 @@
+{
+  "authorization": "Direct production instruction of 2026-10-19; already retained in canonical PR544; no renewed grant requested.",
+  "base": {
+    "head": "4c44ac89f6c1a8b0800d5e502c4cf7a2bb6700ef",
+    "ref": "communication/claude/ingolf-20261018T232045Z",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "tree": "d9b8eba15178aad3328ddec8bbd43e5606b6f455"
+  },
+  "canonical_article": {
+    "article_sha256": "7649987164e78a88393b5195c28eed30c96951bc678fbb12f4c63271ee65c277",
+    "head": "392dd86fdf147c04dad3bb89d1a4a8438b5f0a97",
+    "pr": 544,
+    "superseded_adopt_script_executed": false,
+    "tree": "ea21882417b1558e4c0ef52000ed5a88ed496d13"
+  },
+  "current_successor": {
+    "before_new_provenance_files": "PASS: 5020 classified entries / 5009 immutable digests; 55 added checksum entries.",
+    "observed_failure": "BLOCK repository manifest differs from deterministic regeneration",
+    "original_commit_or_main_adoption": false,
+    "repair": "Existing tools/qikvrt_integrity.py generate, preserving every existing source/evidence/journal byte; additionally covers the newer CI548 native readback.",
+    "source_or_journal_changed": false
+  },
+  "effect_ack_done": false,
+  "native_current": {
+    "epoch": "bcdbbe9c30984e24beb3b12ead4fcbd7",
+    "full_native_regression": "81 executed: 33 socket environment errors; no overall PASS",
+    "independent_cold_readback": true,
+    "input_events": 2,
+    "pr": 544,
+    "route": "Original Runtime.append and original Terminal _durable_read, separate process; own local journal only.",
+    "socket_error": "PermissionError: [Errno 1] Operation not permitted",
+    "socket_free_regressions": "17 tests PASS",
+    "source_head": "392dd86fdf147c04dad3bb89d1a4a8438b5f0a97",
+    "source_tree": "ea21882417b1558e4c0ef52000ed5a88ed496d13"
+  },
+  "ordinary_release": false,
+  "original_fix": {
+    "bundle_bytes": 8551,
+    "bundle_sha256": "50a3ec2d6ee530c8d44c081c5aec51fda0e2e00c05ae886741c12c35f1390a44",
+    "commit": "6015aaeb49bc28fe6e429b0d1fc7de1e827d8ce0",
+    "independent_verify": "PASS: 5019 classified entries / 5008 immutable digests",
+    "prerequisite": "bd6f6284014f54eb9f46920669c3c766d534403d",
+    "scope": "Three integrity metadata files only; 54 added checksum entries.",
+    "ssh_signature": "Present in original commit; admitted allowed-signers identity unavailable; no authenticated peer binding inferred.",
+    "tree": "b0e8dda5a5f36551bbe2582d3e9997122502bb5d"
+  },
+  "owner": "Ingolf Lohmann",
+  "poc_declaration": "OWNER_ASSERTED",
+  "production_obligations": {
+    "domain": "Independent snapshot050acc99-e30c-491f-a812-72c1ca488f9a, 2026-10-19T14:47:33.298Z: raumzeitterminal.de HTTP525; runtime remains unaccepted.",
+    "firefox": "Mozilla AMO job118064340764 executed AMO_SUBMISSION_NOT_REQUESTED; AMO_ISSUER_PRESENT=false and AMO_SECRET_PRESENT=false in that job. No inference about other remote stores. Installation job118069446980 rejected exact unsigned XPI 1f5f583181d6134584f98bf6b59848d4542176d624d97709fa915b9934e2c46c with error -5.",
+    "host": "Existing original protected qikvrt-production host binding and native admission; actual server/node/PR/source/state/writer frontier required.",
+    "native_assessment": "Original node-tools/qikvrt_mirror_emit.py absent from Main, current communication tree and supplied archives; status/assess/adopt/package/sent/receipt/claim not executed; no replacement EAP assessment.",
+    "peer": "No authenticated live Claude reply or rule-application readback observed in this work unit."
+  },
+  "provenance": {
+    "current_verification": "OpenAI Codex: independent Git reconstruction, original candidate verification, current-source regeneration, native input/readback, current evidence inspection.",
+    "human": "Ingolf Lohmann: thesis, product scope, production authorization.",
+    "original_fix": "Claude Mirror: diagnosed metadata gap and supplied signed candidate; exact model identity self-attributed only."
+  },
+  "result_kind": "FACTUAL_SOURCE_REPAIR_PROVENANCE_NOT_EAP_ASSESSMENT",
+  "schema": "qikvrt_integrity_repair_successor_v1",
+  "work_unit": "QIKVRT_PRODUCTION_CONTINUATION_20261019_V1"
+}
