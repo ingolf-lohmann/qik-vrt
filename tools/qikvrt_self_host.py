@@ -69,7 +69,8 @@ MESH_CACHE_SOURCE_FILES = ["tools/qikvrt_self_host.py", "docs/monitor/server.mjs
 MESH_CACHE_INVARIANTS = ("all_nodes", "content_addressed_original_bytes", "fresh_checks_on_warm_path",
     "source_bound_validation", "stable_idle_before_transfer", "single_frozen_batch", "atomic_receiver_install",
     "conditional_base_match", "persist_ambiguous_transfer", "readback_before_retry", "authenticated_independent_readback",
-    "preserve_work_units_and_instruction_bytes", "hold_on_capacity_or_unknown_state")
+    "preserve_work_units_and_instruction_bytes", "hold_on_capacity_or_unknown_state",
+    "durable_authenticated_sender_receipt", "fresh_challenged_receiver_readback", "production_requires_received_peer_batch")
 
 
 def mesh_wire(value):
@@ -294,47 +295,21 @@ class MeshWorkCache:
                 raise ValueError("MESH_WORK_VALIDATED_IDLE_BATCH_REQUIRED")
             raw, packet = self.pending()
             if not self.state["pending"]["attempted"]: self.current()
-            secret_path = Path(peer["secret_file"])
-            private_path(secret_path)
-            secret = secret_path.read_bytes().strip()
-            if not 32 <= len(secret) <= 256 or not secret.isascii() or any(c <= 32 or c >= 127 for c in secret):
-                raise ValueError("MESH_WORK_PEER_KEY_REQUIRED")
-            target = urllib.parse.urlsplit(peer["url"])
-            if (target.scheme not in ("http", "https") or not target.hostname or target.username or target.password
-                    or target.path not in ("", "/") or target.query or target.fragment
-                    or (target.scheme == "http" and target.hostname not in ("127.0.0.1", "localhost"))
-                    or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,100}", peer.get("node_id", ""))
-                    or any(not re.fullmatch(r"[a-f0-9]{40}", peer.get(k, "")) for k in ("source_head", "source_tree"))):
-                raise ValueError("MESH_WORK_PINNED_PEER_REQUIRED")
-            def request(method, path, body=b""):
-                signature = "sha256=" + hmac.new(secret, method.encode() + b"\n" + path.encode() + b"\n" + body, hashlib.sha256).hexdigest()
-                headers = {"Content-Type": "application/json", "x-qikvrt-mesh-node": self.binding["node_id"],
-                           "x-qikvrt-replication-signature": signature}
-                status, data, response_signature = (transport or mesh_work_transport)(peer["url"].rstrip("/") + path, method, body, headers)
-                expected = "sha256=" + hmac.new(secret, b"RESPONSE\n" + path.encode() + b"\n" + data, hashlib.sha256).hexdigest()
-                if not isinstance(response_signature, str) or not hmac.compare_digest(expected, response_signature):
-                    raise ValueError("MESH_WORK_AUTHENTICATED_READBACK_REQUIRED")
-                return status, json.loads(data)
+            request = self.peer_request(peer, transport)
             path = "/api/mesh-work/receipt/" + packet["batch_id"]
-            known = None
+            known = witness = None
             if self.state["pending"]["attempted"]:
-                status, known = request("GET", path)
+                status, known, witness = request("GET", path)
                 if status == 404: known = None
                 elif status != 200: raise ValueError("MESH_WORK_RECEIPT_UNAVAILABLE")
             if known is None:
                 self.current()  # No new payload transfer from an invalidated idle.
                 self.state["pending"]["attempted"] = True; self.save()
-                status, _ = request("POST", "/api/mesh-work/batch", raw)
+                status, _, _ = request("POST", "/api/mesh-work/batch", raw)
                 if status != 200: raise ValueError("MESH_WORK_TRANSFER_REFUSED")
-                status, known = request("GET", path)
+                status, known, witness = request("GET", path)
                 if status != 200: raise ValueError("MESH_WORK_RECEIPT_UNAVAILABLE")
-            expected = {"schema": "qikvrt-repository-work-receipt/v1", **self.binding,
-                "batch_id": packet["batch_id"], "revision": packet["revision"],
-                "entries_sha256": packet["idle"]["entries_sha256"], "scope": MESH_WORK_SCOPE,
-                "serving_node_id": peer["node_id"], "source_head": peer["source_head"], "source_tree": peer["source_tree"],
-                "proposal_execution": "NOT_EXECUTED", "effect_ack_done": False}
-            if not isinstance(known, dict) or any(known.get(k) != v for k, v in expected.items()):
-                raise ValueError("MESH_WORK_RECEIPT_BINDING_MISMATCH")
+            self.validate_receipt(packet, peer, known)
             try:
                 self.current()
                 local_mode = "IDLE_STABLE_VALIDATED"
@@ -342,13 +317,93 @@ class MeshWorkCache:
                 # A known receipt resolves only this already-delivered batch.
                 # New local work must be staged/validated afresh, never resent.
                 local_mode = "DIRTY"
+            self.state.setdefault("receipts", {})[packet["batch_id"]] = {
+                "receipt": known, "authenticated_response": witness}
             self.state.update(last_ack=packet["batch_id"], pending=None, work_units=[],
                 mode=local_mode, idle=self.state.get("idle") if local_mode == "IDLE_STABLE_VALIDATED" else None,
                 acknowledged_objects=sorted(set(self.state["acknowledged_objects"]) | set(packet["objects"])))
             self.save()
             return {"state": "MESH_WORK_BATCH_READBACK_CONFIRMED", "batch_id": packet["batch_id"],
-                    "local_idle_state": local_mode,
+                    "local_idle_state": local_mode, "sender_receipt_durable": True,
                     "proposal_execution": "NOT_EXECUTED", "whole_mesh_distribution_verified": False, "effect_ack_done": False}
+
+    def peer_request(self, peer, transport=None):
+        secret_path = Path(peer["secret_file"])
+        private_path(secret_path)
+        secret = secret_path.read_bytes().strip()
+        if not 32 <= len(secret) <= 256 or not secret.isascii() or any(c <= 32 or c >= 127 for c in secret):
+            raise ValueError("MESH_WORK_PEER_KEY_REQUIRED")
+        target = urllib.parse.urlsplit(peer["url"])
+        if (target.scheme not in ("http", "https") or not target.hostname or target.username or target.password
+                or target.path not in ("", "/") or target.query or target.fragment
+                or (target.scheme == "http" and target.hostname not in ("127.0.0.1", "localhost"))
+                or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,100}", peer.get("node_id", ""))
+                or any(not re.fullmatch(r"[a-f0-9]{40}", peer.get(k, "")) for k in ("source_head", "source_tree"))):
+            raise ValueError("MESH_WORK_PINNED_PEER_REQUIRED")
+        def request(method, path, body=b""):
+            signature = "sha256=" + hmac.new(secret, method.encode() + b"\n" + path.encode() + b"\n" + body, hashlib.sha256).hexdigest()
+            headers = {"Content-Type": "application/json", "x-qikvrt-mesh-node": self.binding["node_id"],
+                       "x-qikvrt-replication-signature": signature}
+            status, data, response_signature = (transport or mesh_work_transport)(peer["url"].rstrip("/") + path, method, body, headers)
+            expected = "sha256=" + hmac.new(secret, b"RESPONSE\n" + path.encode() + b"\n" + data, hashlib.sha256).hexdigest()
+            if not isinstance(response_signature, str) or not hmac.compare_digest(expected, response_signature):
+                raise ValueError("MESH_WORK_AUTHENTICATED_READBACK_REQUIRED")
+            return status, json.loads(data), {"path": path,
+                "body_base64": base64.b64encode(data).decode(), "signature": response_signature}
+        return request
+
+    def validate_receipt(self, packet, peer, known):
+        expected = {"schema": "qikvrt-repository-work-receipt/v1", **self.binding,
+            "batch_id": packet["batch_id"], "revision": packet["revision"],
+            "entries_sha256": packet["idle"]["entries_sha256"], "scope": MESH_WORK_SCOPE,
+            "serving_node_id": peer["node_id"], "source_head": peer["source_head"], "source_tree": peer["source_tree"],
+            "proposal_execution": "NOT_EXECUTED", "effect_ack_done": False}
+        if (not isinstance(known, dict) or set(known) != set(expected) | {"receipt_sha256"}
+                or any(known.get(k) != v for k, v in expected.items())
+                or known.get("receipt_sha256") != digest(mesh_wire({k: v for k, v in known.items() if k != "receipt_sha256"}))):
+            raise ValueError("MESH_WORK_RECEIPT_BINDING_MISMATCH")
+
+    def check(self, peer, transport=None):
+        """Fresh receiver proof for an acknowledged batch; never POST or repair state."""
+        with self.locked():
+            batch_id = self.state["last_ack"]
+            if batch_id == "0" * 64:
+                raise ValueError("MESH_WORK_CONFIRMED_BATCH_REQUIRED")
+            path = self.directory / "outbox" / batch_id
+            private_path(path)
+            raw = path.read_bytes(); packet = json.loads(raw)
+            unsigned = dict(packet); unsigned.pop("batch_id", None)
+            if (packet.get("batch_id") != batch_id or digest(mesh_wire(unsigned)) != batch_id
+                    or raw != mesh_wire(packet) or len(raw) > MESH_WORK_MAX):
+                raise ValueError("MESH_WORK_OUTBOX_READBACK_MISMATCH")
+            challenge = secrets.token_hex(16)
+            status, value, _ = self.peer_request(peer, transport)("GET",
+                "/api/mesh-work/readback/" + batch_id + "/" + challenge)
+            expected = {"schema": "qikvrt-repository-work-live-readback/v1", "challenge": challenge,
+                "serving_node_id": peer["node_id"], "source_head": peer["source_head"], "source_tree": peer["source_tree"],
+                "proposal_execution": "NOT_EXECUTED", "effect_ack_done": False}
+            if (status != 200 or not isinstance(value, dict) or set(value) != set(expected) | {"receipt"}
+                    or any(value.get(k) != v for k, v in expected.items())):
+                raise ValueError("MESH_WORK_FRESH_RECEIVER_READBACK_REQUIRED")
+            self.validate_receipt(packet, peer, value["receipt"])
+            stored = self.state.get("receipts", {}).get(batch_id)
+            if stored is not None:
+                try:
+                    witness = stored["authenticated_response"]
+                    original = base64.b64decode(witness["body_base64"], validate=True)
+                    original_path = "/api/mesh-work/receipt/" + batch_id
+                    expected_signature = "sha256=" + hmac.new(Path(peer["secret_file"]).read_bytes().strip(),
+                        b"RESPONSE\n" + original_path.encode() + b"\n" + original, hashlib.sha256).hexdigest()
+                    if (stored["receipt"] != value["receipt"] or witness["path"] != original_path
+                            or json.loads(original) != value["receipt"]
+                            or not hmac.compare_digest(expected_signature, witness["signature"])):
+                        raise ValueError("invalid sender witness")
+                except (KeyError, TypeError, ValueError) as exc:
+                    raise ValueError("MESH_WORK_DURABLE_SENDER_RECEIPT_MISMATCH") from exc
+            return {"state": "MESH_WORK_PEER_BATCH_VERIFIED", "batch_id": batch_id,
+                "receiver": {k: peer[k] for k in ("node_id", "source_head", "source_tree")},
+                "receipt_sha256": value["receipt"]["receipt_sha256"], "sender_receipt_durable": stored is not None,
+                "fresh_challenge_verified": True, "proposal_execution": "NOT_EXECUTED", "effect_ack_done": False}
 
 
 def mesh_work_transport(url, method, body, headers):
@@ -3399,7 +3454,7 @@ def firefox_extension_probe(xpi, output, package="firefox-esr"):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("operation", choices=("firefox-amo-unlisted", "firefox-release-provision", "firefox-extension-check", "deployment-roles", "runtime-delivery-verify", "runtime-delivery-load", "docker-admit", "pack", "portable", "portable-restore", "verify", "monolith-pack", "monolith-verify", "monolith-run", "monolith-checkpoint", "monolith-origin-export", "monolith-transport-export", "monolith-transport-import", "mesh-contract", "mesh-cache-stage", "mesh-cache-idle", "mesh-cache-send", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state", "transfer-local-writer",
+    parser.add_argument("operation", choices=("firefox-amo-unlisted", "firefox-release-provision", "firefox-extension-check", "deployment-roles", "runtime-delivery-verify", "runtime-delivery-load", "docker-admit", "pack", "portable", "portable-restore", "verify", "monolith-pack", "monolith-verify", "monolith-run", "monolith-checkpoint", "monolith-origin-export", "monolith-transport-export", "monolith-transport-import", "mesh-contract", "mesh-cache-stage", "mesh-cache-idle", "mesh-cache-send", "mesh-cache-check", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state", "transfer-local-writer",
         "container-context", "container-carrier", "container-carrier-archive-check", "container-artifact-split", "container-artifact-join", "container-oci-check", "container-smoke", "container-production-gate", "container-deploy", "container-readback",
         "migration-inventory", "migration-verify-source", "migration-export", "migration-verify-export", "migration-import",
         "migration-verify-import", "migration-rollback", "migration-capture-supervisor", "migration-capture-arm", "migration-capture",
@@ -3511,7 +3566,7 @@ def main():
             else:
                 if not args.peer: raise ValueError("MESH_WORK_PRIVATE_PEER_REQUIRED")
                 private_path(args.peer)
-                result = cache.send(json.loads(args.peer.read_bytes()))
+                result = (cache.check if args.operation == "mesh-cache-check" else cache.send)(json.loads(args.peer.read_bytes()))
         elif args.operation.startswith("migration-"):
             result = migration_module().execute(args, verify, load_source, private_path)
         elif args.operation == "mesh-contract":
@@ -3602,4 +3657,5 @@ def main():
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
 
