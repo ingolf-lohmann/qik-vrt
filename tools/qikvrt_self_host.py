@@ -1469,7 +1469,7 @@ def inspect_stable_monolith(store, pin, *, check_runtime=True):
         with contextlib.closing(sqlite3.connect(store.as_uri() + "?mode=ro", uri=True)) as db:
             db.execute("PRAGMA trusted_schema=OFF")
             meta = dict(db.execute("SELECT key,value FROM meta"))
-            if meta.get("schema") != "1" or not re.fullmatch(r"[a-f0-9]{32}", meta.get("epoch", "")):
+            if meta.get("schema") not in ("1", "2") or not re.fullmatch(r"[a-f0-9]{32}", meta.get("epoch", "")):
                 raise ValueError("MONOLITH_LEDGER_IDENTITY_MISMATCH")
             count, last = 0, 0
             for seq, binding, source, native_id, native_sha, body, body_sha in db.execute(
@@ -1883,7 +1883,7 @@ def restore_state(package, pin, config_path, snapshot, snapshot_pin):
     return {"state": "STATE_BYTES_RESTORED_PENDING_HOST_ADMISSION_AND_RUNTIME_READBACK",
         "state_manifest_sha256": snapshot_pin, "files": len(manifest["files"]),
         "source_data_changed": False, "host_admission_verified": False,
-        "runtime_readback_verified": False, "railway_cutover_verified": False, "effect_ack_done": False}
+        "writer_admission_verified": False, "runtime_readback_verified": False, "railway_cutover_verified": False, "effect_ack_done": False}
 
 
 def own_host_observation(volume):
@@ -2442,6 +2442,13 @@ def novnc_readback(package, port):
         return response.status == 200 and response.read() == (package / 'runtime/self-host/novnc/vnc.html').read_bytes()
 
 
+def _xvfb_command(display):
+    # The one-shot xdpyinfo readiness client disconnects before Firefox starts.
+    # Keep that display generation alive while its first persistent clients join.
+    return [shutil.which("Xvfb"), display, "-screen", "0", "1440x900x24",
+            "-noreset", "-nolisten", "tcp"]
+
+
 def browser_carrier(package, manifest, config, volume):
     """New portable start adapter of the recovered Firefox/Xvfb/VNC recipe.
 
@@ -2478,10 +2485,7 @@ def browser_carrier(package, manifest, config, volume):
             time.sleep(.05)  # bounded startup probe, no runtime polling
         raise ValueError("BROWSER_STARTUP_READBACK_TIMEOUT:" + edge)
     try:
-        # xdpyinfo closes the first X connection. Keep the display initialized
-        # while Firefox and VNC attach; Xserver otherwise resets on last-client
-        # disconnect (Xserver(1), -noreset).
-        spawn("xvfb", [shutil.which("Xvfb"), config["display"], "-screen", "0", "1440x900x24", "-nolisten", "tcp", "-noreset"])
+        spawn("xvfb", _xvfb_command(config["display"]))
         ready(lambda: subprocess.run([shutil.which("xdpyinfo"), "-display", config["display"]],
             env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=2).returncode == 0, 'X11_DISPLAY')
         spawn("vnc", [shutil.which("x11vnc"), "-display", config["display"], "-forever", "-shared", "-localhost",
@@ -3395,7 +3399,7 @@ def firefox_extension_probe(xpi, output, package="firefox-esr"):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("operation", choices=("firefox-amo-unlisted", "firefox-release-provision", "firefox-extension-check", "deployment-roles", "runtime-delivery-verify", "runtime-delivery-load", "docker-admit", "pack", "portable", "portable-restore", "verify", "monolith-pack", "monolith-verify", "monolith-run", "monolith-checkpoint", "monolith-origin-export", "monolith-transport-export", "monolith-transport-import", "mesh-contract", "mesh-cache-stage", "mesh-cache-idle", "mesh-cache-send", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state",
+    parser.add_argument("operation", choices=("firefox-amo-unlisted", "firefox-release-provision", "firefox-extension-check", "deployment-roles", "runtime-delivery-verify", "runtime-delivery-load", "docker-admit", "pack", "portable", "portable-restore", "verify", "monolith-pack", "monolith-verify", "monolith-run", "monolith-checkpoint", "monolith-origin-export", "monolith-transport-export", "monolith-transport-import", "mesh-contract", "mesh-cache-stage", "mesh-cache-idle", "mesh-cache-send", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state", "transfer-local-writer",
         "container-context", "container-carrier", "container-carrier-archive-check", "container-artifact-split", "container-artifact-join", "container-oci-check", "container-smoke", "container-production-gate", "container-deploy", "container-readback",
         "migration-inventory", "migration-verify-source", "migration-export", "migration-verify-export", "migration-import",
         "migration-verify-import", "migration-rollback", "migration-capture-supervisor", "migration-capture-arm", "migration-capture",
@@ -3420,6 +3424,8 @@ def main():
     parser.add_argument("--work-request", type=Path, help="private explicit exportable file/work-unit selection")
     parser.add_argument("--peer", type=Path, help="private peer URL, exact source pins and owner-only key path")
     parser.add_argument("--validation-command", nargs=argparse.REMAINDER, help="explicit finite command; run against the same exact local commit")
+    parser.add_argument("--source-state-dir", type=Path, help="actual observable stopped original store; never a copied snapshot")
+    parser.add_argument("--frontier-sha256", help="independent pin of all original ledger rows and epoch")
     parser.add_argument("--state-snapshot", type=Path, help="private exact-byte snapshot directory; never a public export")
     parser.add_argument("--state-manifest-sha256", help="independently obtained private state manifest pin")
     parser.add_argument("--admission", type=Path, help="private operator host declaration; no secrets")
@@ -3564,6 +3570,21 @@ def main():
             raise ValueError("ORIGINAL_LAUNCHER_EXEC_REQUIRED")
         elif args.operation == "snapshot-state":
             result = snapshot_state(args.root.resolve(), args.manifest_sha256, args.config, args.output)
+        elif args.operation == "transfer-local-writer":
+            if not args.source_state_dir or not re.fullmatch(r"[a-f0-9]{64}", args.frontier_sha256 or ""):
+                raise ValueError("ORIGINAL_LOCAL_STORE_AND_FRONTIER_PIN_REQUIRED")
+            volume, binding = state_binding(args.root.resolve(), args.manifest_sha256, args.config)
+            config_bytes = args.config.read_bytes()
+            if digest(config_bytes) != binding['config_sha256']:
+                raise ValueError("EXACT_CONFIGURATION_CHANGED")
+            config = json.loads(config_bytes)
+            private_path(args.source_state_dir, directory=True)
+            load_source(args.root.resolve(), "qikvrt_effect_ack_http_terminal")
+            native = load_source(args.root.resolve(), "qikvrt_temdd_event_ledger")
+            exact = packaged_subject(args.root.resolve(), args.manifest_sha256,
+                config["source_repository"], config["subject_pr"], config["source_head"], config["source_tree"])
+            result = native.Ledger.transfer_local_writer(args.source_state_dir,
+                volume, exact, args.frontier_sha256)
         elif args.operation == "restore-state":
             result = restore_state(args.root.resolve(), args.manifest_sha256, args.config,
                                    args.state_snapshot, args.state_manifest_sha256)
