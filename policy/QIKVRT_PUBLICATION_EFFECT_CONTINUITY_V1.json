@@ -1,0 +1,60 @@
+{
+  "schema": "qikvrt_publication_effect_continuity_v1",
+  "owner": "Ingolf Lohmann",
+  "date": "2026-10-19",
+  "status": "NORMATIVE_CANDIDATE_NOT_PRODUCTION_ACCEPTED",
+  "authority": "ingolf-lohmann/qik-vrt",
+  "mirror": "Goldkelch/qik-vrt",
+  "execution_plane": "EXISTING_UNIVERSAL_TRANSPUTER",
+  "interaction_plane": "EXISTING_UNIVERSAL_TERMINAL",
+  "acknowledgement": "EFFECT_ACK",
+  "purpose": "Preserve independently verifiable, resumable publication delivery across current and future targets without transferring evidence between domains.",
+  "targets": {
+    "zenodo": {
+      "effect": "PUBLIC_ARCHIVAL_DEPOSITION",
+      "readback": "PUBLIC_RECORD_AND_EXACT_FILE_REDOWNLOAD",
+      "receipt": "RECORD_ID_DOI_FILE_DIGEST"
+    },
+    "ietf": {
+      "effect": "TRACKER_SUBMISSION_OR_POSTING",
+      "readback": "PUBLIC_DATATRACKER_RECORD_AND_REVISION",
+      "receipt": "SUBMISSION_ID_REVISION_STATUS"
+    },
+    "arxiv": {
+      "effect": "MANUSCRIPT_SUBMISSION",
+      "readback": "PUBLIC_ARXIV_RECORD_AND_SOURCE_VERSION",
+      "receipt": "ARXIV_ID_VERSION_STATUS"
+    },
+    "ionos": {
+      "effect": "OWNER_CONTROLLED_HOST_PUBLICATION",
+      "readback": "PUBLIC_HTTPS_EXACT_ORIGIN_AND_CONTENT_DIGEST",
+      "receipt": "DEPLOYMENT_ID_TLS_HTTP_CONTENT_DIGEST"
+    }
+  },
+  "future_targets": "ADD_VERSIONED_ADAPTER_WITH_DISTINCT_EFFECT_ORACLE_AND_NO_EVIDENCE_INHERITANCE",
+  "workflow": [
+    "BIND_EXACT_SUBJECT_AND_AUTHORIZATION",
+    "PREPARE_IMMUTABLE_FILESET",
+    "VALIDATE_CONTENT_PROVENANCE_AND_DESTINATION_CONTRACT",
+    "ADMIT_EXISTING_AUTHENTICATED_ADAPTER",
+    "EXECUTE_ONCE_WITH_IDEMPOTENCY_KEY",
+    "RETAIN_PROVIDER_RESPONSE",
+    "INDEPENDENT_PUBLIC_READBACK",
+    "COMPARE_ORACLE_AND_FILE_DIGESTS",
+    "APPEND_DURABLE_RECEIPT_TO_ORIGINAL_JOURNAL",
+    "EFFECT_ACK_DONE_FOR_THIS_TARGET_ONLY"
+  ],
+  "invariants": [
+    "TRANSPORT_ACK_NE_EFFECT_ACK",
+    "EXEC_ACK_NE_EFFECT_ACK",
+    "VERIFIED_TARGET_A_NOT_IMPLIES_VERIFIED_TARGET_B",
+    "PREDECESSOR_EVIDENCE_TRANSFER=false",
+    "NO_GLOBAL_DONE_FROM_LOCAL_PUBLICATION",
+    "NO_SECRET_OR_CREDENTIAL_IN_PUBLIC_RECEIPTS",
+    "NO_UNCHANGED_FAILED_RETRY",
+    "NO_FAKE_DOI_OR_SUBMISSION_ID",
+    "PRESERVE_UNPUBLISHED_AND_FAILED_ATTEMPTS"
+  ],
+  "fail_closed": "NO_FRESH_INDEPENDENT_TARGET_READBACK => TARGET_EFFECT_ACK_DONE=false",
+  "note": "Owner authorization is retained, but this contract does not itself establish deployed Transputer, authenticated publication adapters or any new external publication."
+}
