@@ -1,0 +1,313 @@
+{
+  "schema": "qikvrt_safety_security_impact_work_unit_v1",
+  "work_unit_id": "QIKVRT_SAFETY_SECURITY_IMPACT_20261019_V1",
+  "status": "REQUIREMENTS_SPECIFIED_DEPLOYMENT_ACCEPTANCE_OPEN",
+  "date": "2026-10-19",
+  "authorization": {
+    "principal": "Ingolf Lohmann",
+    "decision": "Freigabe erteilt",
+    "scope": "Incorporate relevant authority guidance, requirements and material market developments into QIKVRT and Effect Acknowledgement Protocol engineering.",
+    "source": "Direct Owner instruction in this work unit, 2026-10-19",
+    "external_reporting_or_publication_implied": false,
+    "instruction_verbatim": "Da QIKVRT und das Effect Acknowledgement Protocol letztlich auch für Safety and Security einzusetzen sind, sind derartige behördliche Vorgaben und ähnliche Dinge, die Impact haben, geeignet einzuarbeiten, um mit diesen Vorgaben und Marktentwicklungen kompatibel zu bleiben und Schritt zu halten. Freigabe erteilt."
+  },
+  "source_subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "f5aaff5b8c018fbc73d1e81126c6fb7e30e8bf22",
+    "tree": "af5264a31622064f34c8deaef66c44768c657d67"
+  },
+  "contribution_attribution": {
+    "human": "Ingolf Lohmann: purpose, relevance decision and authorization",
+    "artificial_cognitive": "Codex: source checking, applicability separation, engineering requirements and acceptance design",
+    "human_origin_inferred_from_acceptance": false
+  },
+  "reuse": {
+    "core": "src/qikvrt_effect_ack.py",
+    "native_runtime": "src/qikvrt_temdd_event_ledger.py",
+    "terminal": "src/qikvrt_effect_ack_http_terminal.py",
+    "self_host": "runtime/self-host/MESH_ACTIVATION.json",
+    "governance": "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+    "new_executor_or_wire_protocol": false
+  },
+  "sources": [
+    {
+      "id": "ASD_OT_20261015",
+      "organization": "Australian Signals Directorate",
+      "title": "Essentials for OT",
+      "url": "https://www.cyber.gov.au/publication/essentials-for-ot",
+      "publication_date": "2026-10-15",
+      "event_date": "2026-10-15",
+      "observed_date": "2026-10-19",
+      "evidence": "OFFICIAL_GUIDANCE_OPENED",
+      "legal_status": "GUIDANCE_NOT_EU_LEGISLATION",
+      "scope": "OT; deployment-specific applicability must be assessed",
+      "anchors": [
+        "GOV-07",
+        "GOV-11",
+        "GOV-14",
+        "IDE-05",
+        "IDE-06",
+        "RES-01",
+        "REC-02",
+        "PRO-13",
+        "PRO-15",
+        "PRO-16",
+        "PRO-18",
+        "PRO-19",
+        "DET-01"
+      ],
+      "summary": "Official OT guidance addresses isolation exercises, independent recovery, credentials, dependencies, physical access, safety boundaries and locally available investigation. This engineering mapping is an explicit QIKVRT derivation, not an ASD certification."
+    },
+    {
+      "id": "EU_CRA_REPORTING_20260911",
+      "organization": "European Commission DG CONNECT",
+      "title": "Cyber Resilience Act - Reporting obligations",
+      "url": "https://digital-strategy.ec.europa.eu/en/policies/cra-reporting",
+      "publication_date": null,
+      "last_update": "2026-09-11",
+      "observed_date": "2026-10-19",
+      "evidence": "OFFICIAL_IMPLEMENTATION_GUIDANCE_OPENED",
+      "legal_instrument": "Regulation (EU) 2024/2847",
+      "legal_text_url": "https://eur-lex.europa.eu/eli/reg/2024/2847/oj",
+      "legal_text_direct_readback": "NOT_ESTABLISHED_ANTI_BOT_PAGE",
+      "dates": [
+        {
+          "date": "2026-09-11",
+          "scope": "Manufacturer reporting under Article 14"
+        },
+        {
+          "date": "2027-12-11",
+          "scope": "Open-source software steward reporting under Article 24(3), per Commission guidance"
+        }
+      ],
+      "summary": "For applicable manufacturers, early warning is due within 24 hours and notification within 72 hours of awareness. Product scope and the actual economic-operator role require a separate assessment; QIKVRT duties are not inferred merely from source availability.",
+      "applicability": "OPEN_ROLE_PRODUCT_MARKET_AND_EXCEPTION_ASSESSMENT"
+    },
+    {
+      "id": "IEC_OSDP_2020",
+      "organization": "IEC",
+      "title": "IEC 60839-11-5:2020",
+      "url": "https://webstore.iec.ch/en/publication/33414",
+      "publication_date": "2020-07-08",
+      "observed_date": "2026-10-19",
+      "evidence": "OFFICIAL_CATALOG_SCOPE_OPENED_FULL_STANDARD_NOT_ACCESSED",
+      "scope": "Access-control-unit/peripheral communications for physical security; no whole-system safety claim"
+    },
+    {
+      "id": "SIA_OSDP_VERIFIED",
+      "organization": "Security Industry Association",
+      "title": "OSDP Verified Products",
+      "url": "https://www.securityindustry.org/industry-standards/open-supervised-device-protocol/sia-osdp-verified/sia-osdp-verified-products/",
+      "publication_date": null,
+      "observed_date": "2026-10-19",
+      "evidence": "SCHEME_OWNER_GUIDANCE_OPENED",
+      "scope": "Listed device and declared performance profile; verification alone does not establish installation interoperability"
+    },
+    {
+      "id": "GALLAGHER_T30_20261016",
+      "organization": "Gallagher Security",
+      "title": "Gallagher Security announces NPSA compliance for the High Security T30 Keypad Reader",
+      "url": "https://www.security.gallagher.com/en-GB/News/Gallagher-Security-announces-NPSA-compliance-for-the-High-Security-T30-Keypad-Reader",
+      "publication_date": "2026-10-16",
+      "event_date": null,
+      "observed_date": "2026-10-19",
+      "evidence": "MANUFACTURER_ANNOUNCEMENT_OPENED_INDEPENDENT_APPROVAL_NOT_VERIFIED",
+      "claimed_approval_scope": "Readers and Keypads",
+      "scope_limits": "Approval date, approved hardware/firmware/configuration, controller and credential combination not independently established; no whole-system approval inferred",
+      "decision": "PROCUREMENT_EVIDENCE_REQUEST_ONLY_NO_VENDOR_DEPENDENCY_OR_CORE_CHANGE"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "SS-01",
+      "sources": [
+        "ASD_OT_20261015"
+      ],
+      "anchors": [
+        "PRO-19",
+        "GOV-07",
+        "PRO-15"
+      ],
+      "requirement": "Declare a site isolation duration and test local operation with cloud, external identity, licensing, repository and supplier services unreachable. Use an approved local credential/revocation policy with explicit freshness limits.",
+      "acceptance": "Exercise the real workload throughout the declared interval, including expired and revoked credentials, reboot and restoration. Preserve uncertain state; do not grant new authority from loss of connectivity.",
+      "state": "OPEN_DEPLOYMENT_TEST"
+    },
+    {
+      "id": "SS-02",
+      "sources": [
+        "ASD_OT_20261015"
+      ],
+      "anchors": [
+        "IDE-05",
+        "IDE-06",
+        "PRO-18",
+        "PRO-15"
+      ],
+      "requirement": "Define the hazardous states of each installation and keep the approved local egress, fire, alarm and emergency functions independent of remote Effect-Ack or Mesh quorum availability.",
+      "acceptance": "Under the site hazard analysis, test fire input, power loss, partition and sensor disagreement together. Neither a generic fail-open rule nor denial of every action is an accepted safety argument.",
+      "state": "OPEN_HAZARD_ANALYSIS_AND_FIELD_TEST"
+    },
+    {
+      "id": "SS-03",
+      "sources": [
+        "ASD_OT_20261015"
+      ],
+      "anchors": [
+        "IDE-05",
+        "IDE-06"
+      ],
+      "classification": "QIKVRT_ENGINEERING_DERIVATION",
+      "requirement": "Bind a physical Effect-Ack claim to the exact actuator, requested transition, authorization, policy/configuration/firmware identity, observation source and freshness window. Separate command acceptance, output transition and independently observed physical condition.",
+      "acceptance": "Lost response, stale/replayed acknowledgement, stuck actuator and contradictory feedback must not produce a stronger physical DONE claim. Keep the existing DONE-only ordinary-release rule; assess a safety action through its separately admitted local path.",
+      "state": "OPEN_PHYSICAL_ADAPTER_CONFORMANCE"
+    },
+    {
+      "id": "SS-04",
+      "sources": [
+        "ASD_OT_20261015"
+      ],
+      "anchors": [
+        "PRO-13",
+        "RES-01"
+      ],
+      "requirement": "Use distinct device/account credentials, protected keys, least privilege and tested local break-glass access. Document rotation, revocation, trust roots and loss of external authentication without putting secrets or raw biometrics into evidence records.",
+      "acceptance": "Exercise isolated break-glass, key rotation, expired credentials and compromise response. Record the authorized actor and outcome with a non-secret credential reference.",
+      "state": "OPEN_IDENTITY_KEY_LIFECYCLE_TEST"
+    },
+    {
+      "id": "SS-05",
+      "sources": [
+        "IEC_OSDP_2020",
+        "SIA_OSDP_VERIFIED",
+        "GALLAGHER_T30_20261016"
+      ],
+      "classification": "QIKVRT_ENGINEERING_DERIVATION",
+      "requirement": "Treat reader-controller security and interoperability as a separate adapter contract. Require authenticated communication, controlled commissioning, protected device keys and explicit supported versions; reject silent insecure fallback.",
+      "acceptance": "Verify the exact reader/controller/credential/firmware combination, tamper and disconnect behavior, key provisioning and replacement. OSDP profile verification, HBUS claims and an Effect-Ack receipt do not substitute for each other.",
+      "state": "OPEN_ADAPTER_AND_SCHEME_EVIDENCE"
+    },
+    {
+      "id": "SS-06",
+      "sources": [
+        "ASD_OT_20261015"
+      ],
+      "anchors": [
+        "PRO-16",
+        "GOV-14"
+      ],
+      "requirement": "Bind firmware and update provenance, authenticated integrity, compatibility and approval before installation. Preserve a verified forward-repair/recovery path and an unsupported-component replacement plan.",
+      "acceptance": "Reject tampered, unauthorized, incompatible or obsolete update candidates. Exercise interrupted update and verified recovery while isolated; do not infer secure boot or update certification from a source hash.",
+      "state": "OPEN_UPDATE_AND_RECOVERY_TEST"
+    },
+    {
+      "id": "SS-07",
+      "sources": [
+        "ASD_OT_20261015"
+      ],
+      "anchors": [
+        "REC-02",
+        "PRO-19"
+      ],
+      "requirement": "Reuse the native journal and fencing contracts. Define numerical recovery and interruption objectives, durable acknowledgement scope and independent-failure assumptions. Preserve confirmed reads when ordinary protected writes lack safe quorum.",
+      "acceptance": "On the actual declared storage and workload, test crash, lost ACK, partition, takeover, rejoin, capacity exhaustion and corrupted state: zero lost acknowledged effects and zero duplicate irreversible effects within the declared fault model. Process restart alone is not power-loss proof.",
+      "state": "OPEN_NATIVE_HOST_FAULT_MATRIX"
+    },
+    {
+      "id": "SS-08",
+      "sources": [
+        "ASD_OT_20261015"
+      ],
+      "anchors": [
+        "DET-01",
+        "RES-01"
+      ],
+      "requirement": "Keep audit capture, lookup and recovery information available locally during isolation. Bind source identity, event ID, time uncertainty, policy version and record digest; retain disagreements and avoid secret or unnecessary personal data.",
+      "acceptance": "Test full storage, clock uncertainty, reboot, tampering and local investigation without an external SIEM. Declare retention/capacity and behavior before log exhaustion.",
+      "state": "OPEN_OFFLINE_AUDIT_TEST"
+    },
+    {
+      "id": "SS-09",
+      "sources": [
+        "ASD_OT_20261015"
+      ],
+      "anchors": [
+        "GOV-07",
+        "REC-02",
+        "PRO-16"
+      ],
+      "requirement": "Prepare site-local recovery material and required assets without reliance on the failed system or supplier. Reconnection requires an authorized reconciliation of configuration, credentials and evidence.",
+      "acceptance": "Recover a minimum viable service without supplier assistance; exercise threat assessment, safe reconnection, buffered-event reconciliation and revocation propagation without replaying an ambiguous physical effect.",
+      "state": "OPEN_RECOVERY_AND_REJOIN_EXERCISE"
+    },
+    {
+      "id": "SS-10",
+      "sources": [
+        "EU_CRA_REPORTING_20260911"
+      ],
+      "requirement": "Maintain an applicability decision for the exact product, EU market activity and economic-operator role. For an applicable manufacturer, bind incident-awareness time, responsible person, reporting route and the 24h/72h deadlines to the incident workflow.",
+      "acceptance": "Complete and retain the role/scope assessment, then exercise the approved reporting process with test data. No live authority notification is authorized merely by this requirements record.",
+      "state": "OPEN_APPLICABILITY_AND_PROCESS_TEST"
+    },
+    {
+      "id": "SS-11",
+      "sources": [
+        "ASD_OT_20261015",
+        "GALLAGHER_T30_20261016",
+        "SIA_OSDP_VERIFIED"
+      ],
+      "anchors": [
+        "GOV-11",
+        "GOV-14"
+      ],
+      "requirement": "Track supplier support, replacement availability, dependency concentration, end-of-life and the exact scope of assurance evidence. Record announcement, delivery and approval as distinct states.",
+      "acceptance": "Before a dependency or procurement change, obtain authoritative evidence for the exact configuration, support horizon and supply consequence. A manufacturer announcement alone cannot close an approval obligation.",
+      "state": "OPEN_COMPONENT_SPECIFIC_EVIDENCE"
+    }
+  ],
+  "change_intake": {
+    "trigger": "A newly verified or materially changed authority requirement, advisory, standard, certification scope, supported product lifecycle or material supply/dependency change encountered in the existing research/engineering workflow.",
+    "required_fields": [
+      "source_url",
+      "issuer",
+      "edition_or_version",
+      "publication_date",
+      "event_date",
+      "effective_date",
+      "binding_deadline",
+      "draft_or_adopted_state",
+      "jurisdiction",
+      "product_and_role_scope",
+      "evidence_class",
+      "affected_components",
+      "architecture_or_procurement_impact",
+      "acceptance_criteria",
+      "owner_and_next_action"
+    ],
+    "rules": [
+      "Compare against the existing register and preserve source-bound history; unchanged information is NOOP.",
+      "Assess applicability before describing a source as a binding product requirement.",
+      "Reuse existing EAP, native Runtime, Terminal, self-host, review and integrity paths; create no timer or replacement executor.",
+      "Implement safe authorized changes as reviewable exact-head candidates; preserve every failed or unobserved acceptance duty.",
+      "Only exact configuration-bound test/assessment evidence can close a requirement. Source discovery, CI and approval do not establish deployment safety or legal conformity."
+    ]
+  },
+  "acceptance_boundary": {
+    "wire_protocol_changed": false,
+    "five_state_semantics_changed": false,
+    "ordinary_non_done_release_allowed": false,
+    "standards_conformity_claimed": false,
+    "functional_safety_certification_claimed": false,
+    "physical_installation_accepted": false,
+    "live_authority_report_sent": false,
+    "ietf_or_zenodo_publication": false,
+    "global_effect_ack_done": false
+  },
+  "next_action": "Run the declared acceptance cases on an admitted deployment/product adapter; bind evidence and close only the exact passing requirement. Preserve unrelated predecessor obligations.",
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "classification": "source_bound_engineering_requirements_work_unit"
+  }
+}
