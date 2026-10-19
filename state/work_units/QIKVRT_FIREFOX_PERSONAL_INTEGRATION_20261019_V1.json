@@ -81,5 +81,19 @@
     "license": "CC-BY-NC-ND-4.0",
     "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
     "classification": "source_integration_work_unit"
+  },
+  "native_observation_successor_20261019": {
+    "source_predecessor": "9c0436b9ce7737c54969eb74afde532d0a123fb2",
+    "retained_native_failure_head": "4e40484b9b44904ca774c1025827efd48b3ac44c",
+    "native_job_id": 118057373191,
+    "native_run_id": 39250913178,
+    "xpi_sha256": "b397318f78aed849f9099d3d966652739943d1520a84805d1a071980ac6de6b1",
+    "xpi_version": "1.2.0",
+    "scope": "Actual default-policy Firefox158 negative observation; no product/SSO/installed transition acceptance.",
+    "previous_observation_retained_in_history": true,
+    "unchanged_failed_trial_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+    "fixture_isolation_repair": "Isolate platform.platform while mocking subprocess.run for Firefox diagnostics; platform metadata may execute uname through the same shared mock. Current original9c target33 showed an extra call; preserve one bounded Firefox attempt and all product blockers.",
+    "reuse": "Preserve the complete9c diagnostic and AMO fixture implementation; do not replace it with the concurrently prepared equivalent candidate.",
+    "effect_ack_done": false
   }
 }

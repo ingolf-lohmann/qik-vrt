@@ -21,6 +21,7 @@ class NativeCarrierBoundaryTests(unittest.TestCase):
             executable = Path(temp) / 'firefox'
             executable.write_bytes(b'version-probe-fixture-not-a-browser')
             with mock.patch.object(ab.shutil, 'which', return_value=str(executable)), \
+                    mock.patch.object(ab.platform, 'platform', return_value='diagnostic fixture'), \
                     mock.patch.object(ab, 'git', side_effect=lambda *args: '' if args[0] == 'status' else 'a' * 40), \
                     mock.patch.object(ab.subprocess, 'run', side_effect=ab.subprocess.TimeoutExpired([str(executable), '--version'], 10)) as call:
                 observed = ab.preflight()
@@ -33,6 +34,7 @@ class NativeCarrierBoundaryTests(unittest.TestCase):
 
     def test_firefox_probe_oserror_is_explicit_and_not_retried(self):
         with mock.patch.object(ab.shutil, 'which', return_value='/missing/fixture/firefox'), \
+                mock.patch.object(ab.platform, 'platform', return_value='diagnostic fixture'), \
                 mock.patch.object(ab, 'git', side_effect=lambda *args: '' if args[0] == 'status' else 'a' * 40), \
                 mock.patch.object(ab.subprocess, 'run', side_effect=OSError('fixture denial')) as call:
             observed = ab.preflight()
