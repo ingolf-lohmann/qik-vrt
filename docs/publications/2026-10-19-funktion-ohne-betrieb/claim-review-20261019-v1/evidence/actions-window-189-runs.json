@@ -1,0 +1,1903 @@
+{
+  "count": 189,
+  "unique_count": 189,
+  "events": {
+    "schedule": 18,
+    "workflow_run": 163,
+    "workflow_dispatch": 1,
+    "issue_comment": 1,
+    "push": 6
+  },
+  "runs": [
+    {
+      "id": 39212837241,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "schedule",
+      "created_at": "2026-10-19T06:56:25Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39212837241"
+    },
+    {
+      "id": 39211956108,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T06:47:27Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39211956108"
+    },
+    {
+      "id": 39211931792,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T06:47:12Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39211931792"
+    },
+    {
+      "id": 39211926628,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T06:47:09Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39211926628"
+    },
+    {
+      "id": 39211923482,
+      "name": "QIK-VRT expected-head promotion executor",
+      "event": "schedule",
+      "created_at": "2026-10-19T06:47:07Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39211923482"
+    },
+    {
+      "id": 39209190478,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T06:18:53Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39209190478"
+    },
+    {
+      "id": 39209181998,
+      "name": "QIKVRT workflow executor watchdog",
+      "event": "workflow_dispatch",
+      "created_at": "2026-10-19T06:18:47Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39209181998"
+    },
+    {
+      "id": 39209168676,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T06:18:38Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39209168676"
+    },
+    {
+      "id": 39209152963,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T06:18:28Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39209152963"
+    },
+    {
+      "id": 39209150031,
+      "name": "QIKVRT workflow executor",
+      "event": "schedule",
+      "created_at": "2026-10-19T06:18:26Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39209150031"
+    },
+    {
+      "id": 39206453262,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T05:48:35Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39206453262"
+    },
+    {
+      "id": 39206434772,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T05:48:21Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39206434772"
+    },
+    {
+      "id": 39206430476,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T05:48:18Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39206430476"
+    },
+    {
+      "id": 39206428047,
+      "name": "QIK-VRT expected-head promotion executor",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T05:48:17Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39206428047"
+    },
+    {
+      "id": 39205935693,
+      "name": "QIKVRT required code-owner review",
+      "event": "schedule",
+      "created_at": "2026-10-19T05:42:29Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39205935693"
+    },
+    {
+      "id": 39204221102,
+      "name": "QIKVRT Seed Node Revalidation",
+      "event": "schedule",
+      "created_at": "2026-10-19T05:22:31Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39204221102"
+    },
+    {
+      "id": 39204171738,
+      "name": "QIKVRT Seed Mesh Audit Build",
+      "event": "schedule",
+      "created_at": "2026-10-19T05:21:59Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39204171738"
+    },
+    {
+      "id": 39203649237,
+      "name": "QIKVRT Seed Mesh Maintenance",
+      "event": "schedule",
+      "created_at": "2026-10-19T05:16:02Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39203649237"
+    },
+    {
+      "id": 39203646585,
+      "name": "Issue agent backlog resume",
+      "event": "schedule",
+      "created_at": "2026-10-19T05:16:00Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39203646585"
+    },
+    {
+      "id": 39203370492,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T05:12:53Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39203370492"
+    },
+    {
+      "id": 39203143573,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T05:10:17Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39203143573"
+    },
+    {
+      "id": 39203139128,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T05:10:14Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39203139128"
+    },
+    {
+      "id": 39203136162,
+      "name": "QIK-VRT autonomous draft-PR continuation",
+      "event": "schedule",
+      "created_at": "2026-10-19T05:10:12Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39203136162"
+    },
+    {
+      "id": 39202695103,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T05:04:59Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39202695103"
+    },
+    {
+      "id": 39202679020,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T05:04:47Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39202679020"
+    },
+    {
+      "id": 39202674782,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T05:04:44Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39202674782"
+    },
+    {
+      "id": 39202672359,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T05:04:42Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39202672359"
+    },
+    {
+      "id": 39202672672,
+      "name": "QIK-VRT expected-head promotion executor",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T05:04:42Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39202672672"
+    },
+    {
+      "id": 39202653642,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T05:04:28Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39202653642"
+    },
+    {
+      "id": 39202649202,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T05:04:25Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39202649202"
+    },
+    {
+      "id": 39202646559,
+      "name": "QIK-VRT expected-head promotion executor",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T05:04:24Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39202646559"
+    },
+    {
+      "id": 39202646574,
+      "name": "QIKVRT required code-owner review",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T05:04:24Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39202646574"
+    },
+    {
+      "id": 39202599472,
+      "name": "QIKVRT requested review executor",
+      "event": "schedule",
+      "created_at": "2026-10-19T05:03:50Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39202599472"
+    },
+    {
+      "id": 39201349353,
+      "name": "QIKVRT Seed Registry Acceptance",
+      "event": "schedule",
+      "created_at": "2026-10-19T04:48:46Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39201349353"
+    },
+    {
+      "id": 39200415368,
+      "name": "QIKVRT mirror node lifecycle",
+      "event": "schedule",
+      "created_at": "2026-10-19T04:37:41Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39200415368"
+    },
+    {
+      "id": 39199691938,
+      "name": "QIKVRT Seed Dashboard Build",
+      "event": "schedule",
+      "created_at": "2026-10-19T04:29:05Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39199691938"
+    },
+    {
+      "id": 39192524442,
+      "name": "Issue agent auto-finish",
+      "event": "schedule",
+      "created_at": "2026-10-19T02:59:28Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39192524442"
+    },
+    {
+      "id": 39187238244,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:51:25Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39187238244"
+    },
+    {
+      "id": 39187209195,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:51:00Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39187209195"
+    },
+    {
+      "id": 39187205403,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:50:57Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39187205403"
+    },
+    {
+      "id": 39187203199,
+      "name": "QIK-VRT autonomous bounded self-heal",
+      "event": "schedule",
+      "created_at": "2026-10-19T01:50:55Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39187203199"
+    },
+    {
+      "id": 39186836446,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "schedule",
+      "created_at": "2026-10-19T01:45:52Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39186836446"
+    },
+    {
+      "id": 39186224805,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:37:46Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39186224805"
+    },
+    {
+      "id": 39186210592,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:37:35Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39186210592"
+    },
+    {
+      "id": 39186207215,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:37:32Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39186207215"
+    },
+    {
+      "id": 39186205195,
+      "name": "QIK-VRT expected-head promotion executor",
+      "event": "schedule",
+      "created_at": "2026-10-19T01:37:30Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39186205195"
+    },
+    {
+      "id": 39184962258,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:21:19Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184962258"
+    },
+    {
+      "id": 39184949131,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:21:04Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184949131"
+    },
+    {
+      "id": 39184939041,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:20:51Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184939041"
+    },
+    {
+      "id": 39184937407,
+      "name": "QIKVRT workflow executor",
+      "event": "schedule",
+      "created_at": "2026-10-19T01:20:50Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184937407"
+    },
+    {
+      "id": 39184629698,
+      "name": "Publication 60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:16:46Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184629698"
+    },
+    {
+      "id": 39184610521,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:16:32Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184610521"
+    },
+    {
+      "id": 39184580988,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:16:08Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184580988"
+    },
+    {
+      "id": 39184580723,
+      "name": "QIK-VRT expected-head promotion executor",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:16:08Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184580723"
+    },
+    {
+      "id": 39184574098,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:16:03Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184574098"
+    },
+    {
+      "id": 39184574703,
+      "name": "QIKVRT required code-owner review",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:16:03Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184574703"
+    },
+    {
+      "id": 39184574689,
+      "name": "QIK-VRT expected-head promotion executor",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:16:03Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184574689"
+    },
+    {
+      "id": 39184570434,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:16:00Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184570434"
+    },
+    {
+      "id": 39184559656,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:15:52Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184559656"
+    },
+    {
+      "id": 39184556075,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:15:49Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184556075"
+    },
+    {
+      "id": 39184556309,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:15:49Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184556309"
+    },
+    {
+      "id": 39184554163,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:15:48Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184554163"
+    },
+    {
+      "id": 39184551828,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:15:46Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184551828"
+    },
+    {
+      "id": 39184552357,
+      "name": "QIKVRT required code-owner review",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:15:46Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184552357"
+    },
+    {
+      "id": 39184552299,
+      "name": "QIK-VRT expected-head promotion executor",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:15:46Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184552299"
+    },
+    {
+      "id": 39184536069,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:15:35Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184536069"
+    },
+    {
+      "id": 39184536224,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:15:35Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184536224"
+    },
+    {
+      "id": 39184536355,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:15:35Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184536355"
+    },
+    {
+      "id": 39184535259,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:15:34Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184535259"
+    },
+    {
+      "id": 39184534882,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:15:34Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184534882"
+    },
+    {
+      "id": 39184531488,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:15:32Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184531488"
+    },
+    {
+      "id": 39184531608,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:15:32Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184531608"
+    },
+    {
+      "id": 39184532830,
+      "name": "QIKVRT requested review executor",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:15:32Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184532830"
+    },
+    {
+      "id": 39184532848,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:15:32Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184532848"
+    },
+    {
+      "id": 39184532878,
+      "name": "QIK-VRT expected-head promotion executor",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:15:32Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184532878"
+    },
+    {
+      "id": 39184532836,
+      "name": "QIK-VRT autonomous bounded self-heal",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:15:32Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184532836"
+    },
+    {
+      "id": 39184531371,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:15:31Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184531371"
+    },
+    {
+      "id": 39184531392,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:15:31Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184531392"
+    },
+    {
+      "id": 39184528882,
+      "name": "QIKVRT repository evidence materialization",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:15:30Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "skipped",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184528882"
+    },
+    {
+      "id": 39184528811,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:15:30Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184528811"
+    },
+    {
+      "id": 39184528809,
+      "name": "QIKVRT workflow executor",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:15:30Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184528809"
+    },
+    {
+      "id": 39184528810,
+      "name": "QIK-VRT expected-head promotion executor",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:15:30Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184528810"
+    },
+    {
+      "id": 39184528745,
+      "name": "QIKVRT requested review executor",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:15:30Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184528745"
+    },
+    {
+      "id": 39184528785,
+      "name": "QIK-VRT autonomous bounded self-heal",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:15:30Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184528785"
+    },
+    {
+      "id": 39184469076,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:14:46Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184469076"
+    },
+    {
+      "id": 39184466849,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:14:44Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184466849"
+    },
+    {
+      "id": 39184461198,
+      "name": "QIK-VRT expected-head promotion executor",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:14:40Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184461198"
+    },
+    {
+      "id": 39184446948,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:14:29Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184446948"
+    },
+    {
+      "id": 39184443480,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:14:27Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184443480"
+    },
+    {
+      "id": 39184440832,
+      "name": "QIKVRT required code-owner review",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:14:25Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184440832"
+    },
+    {
+      "id": 39184440820,
+      "name": "QIK-VRT expected-head promotion executor",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:14:25Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184440820"
+    },
+    {
+      "id": 39184435136,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:14:20Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184435136"
+    },
+    {
+      "id": 39184431761,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:14:18Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184431761"
+    },
+    {
+      "id": 39184421531,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:14:11Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184421531"
+    },
+    {
+      "id": 39184422974,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:14:11Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184422974"
+    },
+    {
+      "id": 39184417448,
+      "name": "QIKVRT required code-owner review",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:14:08Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184417448"
+    },
+    {
+      "id": 39184417466,
+      "name": "QIK-VRT expected-head promotion executor",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:14:08Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184417466"
+    },
+    {
+      "id": 39184401865,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:13:57Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184401865"
+    },
+    {
+      "id": 39184401482,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:13:56Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184401482"
+    },
+    {
+      "id": 39184397741,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:13:54Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184397741"
+    },
+    {
+      "id": 39184397943,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:13:54Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184397943"
+    },
+    {
+      "id": 39184398453,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:13:54Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184398453"
+    },
+    {
+      "id": 39184397687,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:13:54Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184397687"
+    },
+    {
+      "id": 39184395858,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:13:52Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184395858"
+    },
+    {
+      "id": 39184395750,
+      "name": "QIKVRT requested review executor",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:13:52Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184395750"
+    },
+    {
+      "id": 39184395700,
+      "name": "QIK-VRT expected-head promotion executor",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:13:52Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184395700"
+    },
+    {
+      "id": 39184395818,
+      "name": "QIK-VRT expected-head promotion executor",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:13:52Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184395818"
+    },
+    {
+      "id": 39184395689,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:13:52Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184395689"
+    },
+    {
+      "id": 39184395836,
+      "name": "QIKVRT requested review executor",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:13:52Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184395836"
+    },
+    {
+      "id": 39184395891,
+      "name": "QIK-VRT autonomous bounded self-heal",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:13:52Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184395891"
+    },
+    {
+      "id": 39184395677,
+      "name": "QIK-VRT autonomous bounded self-heal",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:13:52Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184395677"
+    },
+    {
+      "id": 39184159795,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:55Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184159795"
+    },
+    {
+      "id": 39184149760,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:47Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184149760"
+    },
+    {
+      "id": 39184138724,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:38Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184138724"
+    },
+    {
+      "id": 39184136705,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:37Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184136705"
+    },
+    {
+      "id": 39184136508,
+      "name": "QIKVRT required code-owner review",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:37Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184136508"
+    },
+    {
+      "id": 39184136469,
+      "name": "QIK-VRT expected-head promotion executor",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:37Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184136469"
+    },
+    {
+      "id": 39184135255,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:36Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184135255"
+    },
+    {
+      "id": 39184132589,
+      "name": "QIK-VRT expected-head promotion executor",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:34Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184132589"
+    },
+    {
+      "id": 39184131719,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:33Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184131719"
+    },
+    {
+      "id": 39184114062,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:21Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184114062"
+    },
+    {
+      "id": 39184115556,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:21Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184115556"
+    },
+    {
+      "id": 39184112637,
+      "name": "QIKVRT required code-owner review",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:20Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184112637"
+    },
+    {
+      "id": 39184113311,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:20Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184113311"
+    },
+    {
+      "id": 39184112666,
+      "name": "QIK-VRT expected-head promotion executor",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:20Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184112666"
+    },
+    {
+      "id": 39184111193,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:19Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184111193"
+    },
+    {
+      "id": 39184095644,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:09Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184095644"
+    },
+    {
+      "id": 39184090880,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:06Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184090880"
+    },
+    {
+      "id": 39184091305,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:06Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184091305"
+    },
+    {
+      "id": 39184090526,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:06Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184090526"
+    },
+    {
+      "id": 39184091315,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:06Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184091315"
+    },
+    {
+      "id": 39184089736,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:05Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184089736"
+    },
+    {
+      "id": 39184088020,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:04Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184088020"
+    },
+    {
+      "id": 39184088241,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:04Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184088241"
+    },
+    {
+      "id": 39184088182,
+      "name": "QIKVRT requested review executor",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:04Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184088182"
+    },
+    {
+      "id": 39184088185,
+      "name": "QIK-VRT autonomous bounded self-heal",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:04Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184088185"
+    },
+    {
+      "id": 39184088167,
+      "name": "QIK-VRT expected-head promotion executor",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:04Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184088167"
+    },
+    {
+      "id": 39184086443,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:03Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184086443"
+    },
+    {
+      "id": 39184086700,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:03Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184086700"
+    },
+    {
+      "id": 39184086379,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:03Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184086379"
+    },
+    {
+      "id": 39184086562,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:03Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184086562"
+    },
+    {
+      "id": 39184083642,
+      "name": "QIKVRT repository evidence materialization",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:01Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "skipped",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184083642"
+    },
+    {
+      "id": 39184083735,
+      "name": "QIK-VRT expected-head promotion executor",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:01Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184083735"
+    },
+    {
+      "id": 39184083652,
+      "name": "QIKVRT requested review executor",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:01Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184083652"
+    },
+    {
+      "id": 39184083690,
+      "name": "QIKVRT workflow executor",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:01Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184083690"
+    },
+    {
+      "id": 39184083700,
+      "name": "QIK-VRT autonomous bounded self-heal",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:01Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "skipped",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184083700"
+    },
+    {
+      "id": 39184083714,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:10:01Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39184083714"
+    },
+    {
+      "id": 39183935468,
+      "name": "QIK-VRT expected-head promotion executor",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:08:09Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183935468"
+    },
+    {
+      "id": 39183935854,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:08:09Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183935854"
+    },
+    {
+      "id": 39183921277,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:07:58Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183921277"
+    },
+    {
+      "id": 39183917186,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:07:56Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183917186"
+    },
+    {
+      "id": 39183916416,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:07:55Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183916416"
+    },
+    {
+      "id": 39183914943,
+      "name": "QIKVRT required code-owner review",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:07:54Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183914943"
+    },
+    {
+      "id": 39183914836,
+      "name": "QIK-VRT expected-head promotion executor",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:07:54Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183914836"
+    },
+    {
+      "id": 39183913882,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:07:53Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183913882"
+    },
+    {
+      "id": 39183907004,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:07:48Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183907004"
+    },
+    {
+      "id": 39183898639,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:07:41Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183898639"
+    },
+    {
+      "id": 39183898496,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:07:41Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183898496"
+    },
+    {
+      "id": 39183895449,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:07:39Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183895449"
+    },
+    {
+      "id": 39183894125,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:07:38Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183894125"
+    },
+    {
+      "id": 39183894494,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:07:38Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183894494"
+    },
+    {
+      "id": 39183894221,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:07:38Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183894221"
+    },
+    {
+      "id": 39183894266,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:07:38Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183894266"
+    },
+    {
+      "id": 39183892226,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:07:37Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183892226"
+    },
+    {
+      "id": 39183892117,
+      "name": "QIKVRT workflow executor",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:07:36Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183892117"
+    },
+    {
+      "id": 39183892079,
+      "name": "QIKVRT requested review executor",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:07:36Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183892079"
+    },
+    {
+      "id": 39183892067,
+      "name": "QIK-VRT autonomous bounded self-heal",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:07:36Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "skipped",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183892067"
+    },
+    {
+      "id": 39183892145,
+      "name": "QIK-VRT expected-head promotion executor",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:07:36Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183892145"
+    },
+    {
+      "id": 39183892132,
+      "name": "QIKVRT repository evidence materialization",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:07:36Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183892132"
+    },
+    {
+      "id": 39183744005,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:05:46Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183744005"
+    },
+    {
+      "id": 39183745150,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:05:46Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183745150"
+    },
+    {
+      "id": 39183745186,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:05:46Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183745186"
+    },
+    {
+      "id": 39183741781,
+      "name": "QIKVRT live status watch",
+      "event": "issue_comment",
+      "created_at": "2026-10-19T01:05:44Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "skipped",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183741781"
+    },
+    {
+      "id": 39183733250,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:05:38Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183733250"
+    },
+    {
+      "id": 39183725703,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:05:32Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183725703"
+    },
+    {
+      "id": 39183700451,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:05:14Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183700451"
+    },
+    {
+      "id": 39183700388,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:05:14Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183700388"
+    },
+    {
+      "id": 39183700436,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:05:14Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183700436"
+    },
+    {
+      "id": 39183695933,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:05:11Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183695933"
+    },
+    {
+      "id": 39183695918,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:05:11Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183695918"
+    },
+    {
+      "id": 39183695787,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:05:11Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183695787"
+    },
+    {
+      "id": 39183693758,
+      "name": "QIKVRT repository evidence materialization",
+      "event": "push",
+      "created_at": "2026-10-19T01:05:10Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183693758"
+    },
+    {
+      "id": 39183693704,
+      "name": "QIKVRT CI",
+      "event": "push",
+      "created_at": "2026-10-19T01:05:10Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183693704"
+    },
+    {
+      "id": 39183693721,
+      "name": "QIKVRT EFFECT_ACK HTTP Firefox terminal",
+      "event": "push",
+      "created_at": "2026-10-19T01:05:10Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183693721"
+    },
+    {
+      "id": 39183693711,
+      "name": "QIK-VRT autonomous bounded self-heal",
+      "event": "push",
+      "created_at": "2026-10-19T01:05:10Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183693711"
+    },
+    {
+      "id": 39183693713,
+      "name": "QIKVRT Seed Dashboard Build",
+      "event": "push",
+      "created_at": "2026-10-19T01:05:10Z",
+      "head_sha": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183693713"
+    },
+    {
+      "id": 39183687726,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:05:06Z",
+      "head_sha": "6bb52daf5e1fd0effcf874efb9826ed5f1f0cfde",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183687726"
+    },
+    {
+      "id": 39183683156,
+      "name": "QIKVRT reflexive repository watchdog",
+      "event": "workflow_run",
+      "created_at": "2026-10-19T01:05:02Z",
+      "head_sha": "6bb52daf5e1fd0effcf874efb9826ed5f1f0cfde",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183683156"
+    },
+    {
+      "id": 39183680645,
+      "name": "QIKVRT CI",
+      "event": "push",
+      "created_at": "2026-10-19T01:05:01Z",
+      "head_sha": "215de33bfc7fafdb09eb5dc7148e5e2038fa0de5",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/39183680645"
+    }
+  ]
+}

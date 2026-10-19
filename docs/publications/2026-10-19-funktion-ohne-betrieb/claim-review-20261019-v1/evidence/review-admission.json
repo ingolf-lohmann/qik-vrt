@@ -1,0 +1,82 @@
+{
+  "event": {
+    "schema": "qikvrt_temdd_native_event_v1",
+    "kind": "ACTION",
+    "subject": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "pr": 540,
+      "head": "d9327e5bbcd4ced378ee03509a44c5b28dec4c14",
+      "tree": "dc3137182b4ccb6a8fface2cb3636583586d8b4d"
+    },
+    "provenance": {
+      "source": "transputer",
+      "native_event_id": "pr540-review:admit-exact-source-tests:v1"
+    },
+    "observed_at": "2026-10-19T09:29:39.703898Z",
+    "message": "Admit bounded claim review against original and PR537 exact source; original author files remain frozen",
+    "payload": {
+      "work_unit": "QIKVRT_FOB_CLAIM_REVIEW_20261019_V1",
+      "source_subjects": [
+        "60afe42d3f7bb7992b78c747878582738a97dc6a",
+        "f5aaff5b8c018fbc73d1e81126c6fb7e30e8bf22",
+        "d9327e5bbcd4ced378ee03509a44c5b28dec4c14"
+      ],
+      "actions": [
+        "read exact original evidence",
+        "run native cache and contract controls on two exact subjects",
+        "verify EFFECT_ACK chain",
+        "append review on existing PR540 branch through GitHub REST adapter"
+      ],
+      "excluded_effects": [
+        "merge",
+        "Zenodo",
+        "IETF",
+        "deployment"
+      ],
+      "effect_ack_done": false
+    }
+  },
+  "receipt": {
+    "dod": false,
+    "evidence_transfer": "DENY",
+    "kind": "ACTION",
+    "message": "Admit bounded claim review against original and PR537 exact source; original author files remain frozen",
+    "observed_at": "2026-10-19T09:29:39.703898Z",
+    "payload": {
+      "actions": [
+        "read exact original evidence",
+        "run native cache and contract controls on two exact subjects",
+        "verify EFFECT_ACK chain",
+        "append review on existing PR540 branch through GitHub REST adapter"
+      ],
+      "effect_ack_done": false,
+      "excluded_effects": [
+        "merge",
+        "Zenodo",
+        "IETF",
+        "deployment"
+      ],
+      "source_subjects": [
+        "60afe42d3f7bb7992b78c747878582738a97dc6a",
+        "f5aaff5b8c018fbc73d1e81126c6fb7e30e8bf22",
+        "d9327e5bbcd4ced378ee03509a44c5b28dec4c14"
+      ],
+      "work_unit": "QIKVRT_FOB_CLAIM_REVIEW_20261019_V1"
+    },
+    "payload_digest": "20617edf99c7c060f877d764baf73d9a029f18463bc0878eb8b02fc113c3aa31",
+    "provenance": {
+      "native_event_id": "pr540-review:admit-exact-source-tests:v1",
+      "source": "transputer"
+    },
+    "recorded_at": "2026-10-19T09:29:39.715127Z",
+    "schema": "qikvrt_temdd_event_v1",
+    "subject": {
+      "head": "d9327e5bbcd4ced378ee03509a44c5b28dec4c14",
+      "pr": 540,
+      "repository": "ingolf-lohmann/qik-vrt",
+      "tree": "dc3137182b4ccb6a8fface2cb3636583586d8b4d"
+    },
+    "id": "48a0633b1ea547b3b8a77d92a85e1991:2",
+    "ledger_digest": "d5e16055245729b7f158c9a83316ee6ab5f0e916e55bc33a31a1250f6a39c22c"
+  }
+}
