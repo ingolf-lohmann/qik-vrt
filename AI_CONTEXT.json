@@ -165,7 +165,8 @@
     "state/authorization/delegations/OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_V1.json",
     "policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json",
     "docs/publications/2026-08-07-universum-als-round-trip/README.md",
-    "docs/publications/2026-08-07-universum-als-round-trip/ROUND_TRIP_NODE_IDENTITY.json"
+    "docs/publications/2026-08-07-universum-als-round-trip/ROUND_TRIP_NODE_IDENTITY.json",
+    "state/work_units/QIKVRT_SAFETY_SECURITY_IMPACT_20261019_V1.json"
   ],
   "session_protocol": {
     "startup": [
@@ -266,5 +267,13 @@
     "client_gate": "tools/ai_handoff.py --client-receipt",
     "default_disposition": "EXECUTE_IMMEDIATELY_IN_CURRENT_WORK_RING",
     "unobserved_adoption_inferred": false
+  },
+  "safety_security_assurance": {
+    "human_contract": "docs/QIKVRT_THREAT_MODEL.md",
+    "productization_contract": "docs/QIKVRT_PRODUCTIZATION_ROADMAP.md",
+    "requirements_register": "state/work_units/QIKVRT_SAFETY_SECURITY_IMPACT_20261019_V1.json",
+    "scope": "Deployment assurance and source/applicability triage for Safety and Security use of QIKVRT/EAP",
+    "wire_protocol_changed": false,
+    "conformity_or_certification_inferred": false
   }
 }

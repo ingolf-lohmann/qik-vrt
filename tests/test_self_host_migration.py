@@ -42,8 +42,10 @@ class MigrationTests(unittest.TestCase):
         self.native = migration.native_source(self.export, host.load_source)
         self.subject = {"repository": "Goldkelch/qik-vrt", "pr": 1103, "head": "a" * 40, "tree": "b" * 40}
         (self.snapshot / "state").mkdir(mode=0o700)
-        ledger = self.native.Ledger(self.snapshot / "state", self.subject)
+        self.writer_source = self.work / "original-writer"
+        ledger = self.native.Ledger(self.writer_source, self.subject)
         self.event = ledger.append(self.native_event("fixture:first")); ledger.close()
+        shutil.copytree(self.writer_source / "temdd", self.snapshot / "state/temdd")
         def file(name, data): migration.write(self.snapshot / name, data)
         file("binding.json", migration.raw({"schema": "qikvrt-self-host-volume/v1",
             "node_id": self.config["node_id"], "source_head": self.subject["head"],

@@ -3276,6 +3276,51 @@ getrennt **OPEN**. Keine Installation oder öffentliche Abnahme wird behauptet.
 Work Unit: `state/work_units/S1_PRODUCTIVE_TERMINAL_SOURCE_RECOVERY_20261005.json`.
 
 
+## Safety-/Security-Anschlussfähigkeit — Freigabe vom 19. Oktober 2026
+
+Ingolf Lohmann hat die Einarbeitung relevanter behördlicher Vorgaben und
+Marktentwicklungen für den Einsatz von QIKVRT und des Effect Acknowledgement
+Protocol in Safety und Security freigegeben. Der bestehende Entwicklungsweg
+wird um einen quellengebundenen Anforderungsabgleich ergänzt:
+[`QIKVRT_SAFETY_SECURITY_IMPACT_20261019_V1`](../state/work_units/QIKVRT_SAFETY_SECURITY_IMPACT_20261019_V1.json).
+
+Der Abgleich unterscheidet bindendes Recht, behördliche Leitlinie,
+verabschiedeten Standard, Entwurf, bestätigte produktspezifische Prüfevidenz
+und Herstellerankündigung. Veröffentlichungs-, Ereignis-, Anwendungs- und
+Fristdatum bleiben getrennt; ein unbekanntes Datum bleibt unbekannt.
+Jurisdiktion, konkrete Produktkonfiguration und Rolle des Wirtschaftsakteurs
+müssen zur abgeleiteten Pflicht passen. Ein Zertifikat für einen Leser oder
+ein Kryptomodul ist keine Abnahme der gesamten Installation.
+
+Neue wesentliche Erkenntnisse aus der bestehenden Recherche und Entwicklung
+werden auf betroffene Komponenten, Architekturentscheidungen, Abhängigkeiten
+und Beschaffung abgebildet. Daraus entstehen konkrete Anforderungen mit
+Prüfkriterien und offenen Nachweisen. Vorhandene EAP-, Terminal-, Transputer-,
+Self-Host-, Review- und Integritätswege werden weiterverwendet. Unveränderte
+Meldungen erzeugen keinen neuen Änderungsauftrag. Marktänderungen sind nur
+relevant, wenn sie Unterstützung, Lieferfähigkeit, Produktlebenszyklus,
+Abhängigkeiten oder Beschaffung tatsächlich betreffen.
+
+Die erste Fassung bindet die ASD-OT-Leitlinie vom 15. Oktober, den
+herstellerseitig gemeldeten T30-Prüfstatus vom 16. Oktober sowie ergänzende
+IEC-/SIA- und EU-Kommissionsquellen. Sie konkretisiert isolierten Betrieb,
+lokale Identitäten und Schlüssel, sichere Leserkommunikation und Updates,
+frische physische Rückmeldung, Fencing, Protokollierung, Wiederherstellung
+und den eigenständig abgesicherten Flucht-/Notfallbetrieb. Die CRA-Prüfung
+bleibt rollen- und produktspezifisch; eine tatsächliche Meldepflicht von
+QIKVRT wird aus diesem Register allein nicht behauptet.
+
+**Abnahme:** Die Anforderungen sind spezifiziert; ihre Umsetzung und
+Wirksamkeit sind je Einsatzprofil durch Originalnachweise zu schließen.
+Die bestehenden fünf EAP-Zustände und das Wire-Format werden hier nicht
+geändert. Insbesondere darf ein Ausfall von Fernbestätigung oder Mesh-Quorum
+keine ungeprüfte Abhängigkeit sicherheitskritischer Fluchtfunktionen erzeugen.
+Die lokale Schutzfunktion benötigt eine eigene zugelassene, gefahrenbezogene
+Entscheidung und Prüfung; sie ist keine allgemeine Freigabe gewöhnlicher
+Nicht-DONE-Wirkungen. Ein Repository-Abgleich oder CI-Erfolg ersetzt weder
+die reale Installationserprobung noch eine vorgeschriebene Konformitätsbewertung.
+
+
 ## `docs/QIKVRT_THREAT_MODEL.md`
 
 # QIK-VRT Threat Model Summary
@@ -3296,6 +3341,45 @@ Controls:
 - known-node registry only
 - no global scanning
 - seed and node self-write boundaries
+
+
+## Safety/Security deployment assurance — Owner authorization, 19 October 2026
+
+QIKVRT and the Effect Acknowledgement Protocol are intended for Safety and
+Security applications as well. The requirements and source/applicability
+register is [QIKVRT_SAFETY_SECURITY_IMPACT_20261019_V1](../state/work_units/QIKVRT_SAFETY_SECURITY_IMPACT_20261019_V1.json).
+These are engineering requirements with open deployment acceptance, not
+certification, legal conformity or a verified physical installation.
+
+The existing five-state protocol and DONE-only ordinary-release rule remain
+the effect boundary. A received command, a transport ACK and a physical
+condition are separate claims. A physical adapter must bind the exact actuator,
+authorized transition, configuration and fresh observation evidence; it cannot
+claim a door is secured merely because a command or relay output was accepted.
+
+| Threat or dependency | Required assurance and acceptance |
+| --- | --- |
+| Cloud, identity, licensing or supplier outage | Declare an isolation interval; test local decisions, revocation/freshness rules, emergency access and vendor-independent recovery. |
+| Egress or alarm blocked by a remote gate | Bind a site-specific hazard analysis; retain separately admitted local safety paths and test fire, power loss and network loss together. No universal fail-open/fail-closed assumption. |
+| Forged, stale or conflicting physical feedback | Bind source, effect ID, policy and observation window; test replay, sensor conflict, stuck actuators and ambiguous responses. |
+| Reader bus or credential compromise | Test authenticated links, commissioning, key lifecycle and exact controller/reader/credential/firmware interoperability. |
+| Compromised or unsupported firmware | Require authenticated update provenance and compatibility; test isolated interrupted-update recovery and a verified forward-repair path. |
+| Partition, crash, takeover or full audit store | Reuse native durable journals/fencing; declare RTO and storage limits; prove the claimed workload's acknowledgement/replay and local audit behavior. |
+| Supplier assurance or legal scope overstated | Separate primary evidence, manufacturer claims and engineering derivation; retain exact scope, applicability and open evidence duties. |
+
+ASD's OT guidance is a useful assurance input, not EU legislation. Its
+publication does not establish QIKVRT compliance. The Gallagher T30 announcement
+is an unverified manufacturer approval claim and supplies a procurement
+evidence request, not a new QIKVRT dependency. IEC/SIA product/profile evidence
+does not establish the interoperability or safety of a whole installation.
+For EU CRA reporting, first determine the actual product and operator role;
+record the applicable awareness-based deadlines and responsible route without
+automatically sending a live notification.
+
+Every new material source change follows the register's change-intake process.
+Preserve older source identities and open tests; only bound acceptance evidence
+can close the corresponding deployment obligation. No additional executor,
+client timer or implicit IETF/Zenodo publication is introduced.
 
 
 ## `docs/README_DEPLOY_GITHUB_PAGES_DE.md`
@@ -3450,176 +3534,22 @@ independent current-head Code Owner approval remain separately required. No
 predecessor test or availability observation substitutes for those effects.
 
 
-## `docs/TEST_INVENTORY.md`
+## `docs/publications/2026-08-06-qce-superdeterminism-boundary/VERIFICATION_TRIGGER.md`
 
-# Test inventory
+# Exact-head verification trigger
 
-The 2026-07-22 EFFECT_ACK-universality release discovers twelve executable
-Python test modules and runs 128 tests. The command-line offline-render checker
-and the C90/shell gates are exercised separately by `make test`.
+This file intentionally triggers the branch-bound exact-head verification workflow after the workflow definition itself has been materialized.
 
-| Module | Tests |
-|---|---:|
-| `tests/test_api_client.py` | 4 |
-| `tests/test_effect_ack_conformance.py` | 41 |
-| `tests/test_handler_security.py` | 17 |
-| `tests/test_handler_unit.py` | 6 |
-| `tests/test_integrity.py` | 1 |
-| `tests/test_launcher_runtime.py` | 15 |
-| `tests/test_license_transition.py` | 5 |
-| `tests/test_seed_workflows.py` | 12 |
-| `tests/test_tcpip_e2e.py` | 1 |
-| `tests/test_effect_ack_release_workflows.py` | 7 |
-| `tests/test_zenodo_actions.py` | 17 |
-| `tests/test_zenodo_manifest_builder.py` | 2 |
-| **Total** | **128** |
-
-The complete gate is:
-
-```bash
-make test
-```
-
-It also performs strict ANSI-C90 compilation and exhaustive model comparison,
-scientific-proof regeneration, adaptive-runtime controls, active Python and
-shell syntax checks, workflow and OpenAPI YAML parsing, JSON parsing,
-license-transition verification, and canonical integrity verification. Static
-gates and executable unit/end-to-end tests remain distinct even though
-`make test` runs them as one verification path.
-
-The local result is reference conformance, not production certification. The
-corresponding hosted release evidence is retained on the public
-`qikvrt/zenodo-state` branch after exact-tree CI and finalization.
+It carries no scientific claim and no external effect.
 
 
-## `docs/TRANSACTIONAL_GITHUB_WORKFLOW_TRIGGER_PROTOCOL.md`
+## `docs/qikvrt_trust_mesh/QIKVRT_4AW_ROLE_MARKER.md`
 
-<!-- SPDX-License-Identifier: CC-BY-NC-ND-4.0 -->
-<!-- Copyright 2026 Ingolf Lohmann. -->
-# Transactional GitHub workflow trigger protocol
+# QIKVRT 4AW Role Marker
 
-Canonical failure class: `NON_ATOMIC_MULTI_COMMIT_WORKFLOW_TRIGGER_ORDERING_RACE`.
+Role: seed
 
-Repository transactions are assembled as payload writes, exact manifest/hash binding, and one final JSON ready-marker write. Workflows watch only the ready marker and invoke `tools/qikvrt_transactional_workflow_trigger.py verify` before any effect. Missing or malformed markers, missing or unexpected changed paths, absent files, hash divergence and false completion claims block execution.
+Commercial readiness package for QIK-VRT Trust Mesh.
 
-A verified trigger proves only transaction completeness. It does not prove task completion, merge, publication, Authority/Mirror equality, `PASS`, `FINAL_PASS` or `EFFECT_ACK_DONE`.
-
-
-## `docs/architecture/GLOBAL_SYSTEM_CLOSURE_V1.md`
-
-<!--
-SPDX-License-Identifier: CC-BY-NC-ND-4.0
-Copyright 2026 Ingolf Lohmann.
--->
-
-# QIK-VRT Global System Closure v1
-
-## Bounded closure contract
-
-QIK-VRT is externally treatable as one closed repository process only when
-every interaction advances the same canonical chain and produces one
-checkable successor state:
-
-`INTERACTION -> EVIDENCE -> WORK_UNIT -> CANDIDATE -> GATES -> EFFECT_ACK -> EFFECT -> RECEIPT -> OBSERVATION`
-
-“One system” means one entrypoint, one ordered productive chain, one selected
-next effect per scope, and hash-linked receipts. It does not require a
-single-file implementation. Internal implementations remain replaceable
-capabilities.
-
-This contract is a repository-control specification. It is not a theorem that
-every historical or physical claim is true, and it does not expand the finite
-`qikvrt-global-claim-scope-v1` completion receipt.
-
-## Monotone, measured advancement
-
-A candidate advances this closure scope only when:
-
-1. at least one declared integer gate metric increases and none decreases; or
-2. the canonical metric map is byte-stable and the transition is recorded as
-   `BYTE_STABLE_NO_OP`.
-
-A regression is rejected rather than made canonical. Metrics establish only
-their declared bounded comparison; they do not prove hidden quality,
-completeness, safety, consensus, or eventual termination.
-
-## Persistence and recovery
-
-Each transition is a small, content-addressed checkpoint that binds its
-predecessor:
-
-1. `CONTRACT_BOUND`
-2. `ANTICIPATION_MATERIALIZED`
-3. `EFFECT_INTENTS_GATED`
-4. `CANDIDATE_VERIFIED`
-5. `AUTHORITY_OBSERVED`
-6. `MIRROR_OBSERVED`
-7. `RECEIPT_CLOSED`
-
-Before an external mutation, a local candidate may be abandoned or reverted.
-After a possibly executed remote mutation, the system must not claim rollback.
-It observes the external state read-only and continues through idempotent replay
-or forward repair.
-
-## Effect boundary
-
-The existing five-state EFFECT_ACK implementation remains the only ordinary
-release gate. Observation and anticipation may produce evidence, projections,
-work units, and inert effect intents; they cannot manufacture
-`EFFECT_ACK_DONE`.
-
-Every external effect still requires fresh effect-specific evaluation,
-provenance and responsibility binding, the applicable gates, explicit human
-authorization, and a subsequent effect receipt. A due time, workflow success,
-transport acknowledgement, or local zero exit code is not effect permission.
-
-Target/time/payload envelope validation is deliberately separable from this
-core. A concrete target, dispatch record, or publication queue is not part of
-the closure-core projection.
-
-## Current-main projection
-
-`tools/qikvrt_anticipation.py` consumes an input bound to the current Authority
-status files and a named Git tree. It deterministically materializes:
-
-- `anticipation/current.json`
-- `anticipation/history.jsonl`
-- `anticipation/trends.json`
-- `anticipation/derivatives.json`
-- `anticipation/next-effect.json`
-- `receipts/anticipation/0001-contract-bound.json`
-- `receipts/anticipation/0002-anticipation-materialized.json`
-
-The projection is scope-qualified and remains
-`EFFECT_ACK_CONTINUE`. It does not dispatch, merge, synchronize repositories,
-publish to Zenodo, or infer repository-wide completion. The next effect is a
-proposal for the earliest safe incomplete persistence stage.
-
-## Supersession boundary
-
-The concrete PR-202 evidence, historical PR-203 trees, old live target
-envelope, old target evaluation, old Zenodo queue, and their receipts remain
-historical evidence only. Their hashes and remote gates do not transfer to this
-current-main candidate.
-
-
-## `docs/articles/a013_truth_future_quote.md`
-
-# Die Wahrheit in der Unterscheidung
-
-## Status
-
-`ARTICLE_STATUS = IMAGE_QUOTE_CANONICAL_TEXT`  
-`QIKVRT_GATE = DISTINCTION_PROTECTS_FUTURE`
-
-## Kanonischer Bildsatz
-
-Die Katastrophe beginnt nicht, wenn alle lügen.
-
-Sie beginnt, wenn niemand mehr zuverlässig unterscheiden kann, was Fakt, Deutung, Manipulation oder Rauschen ist.
-
-Wer diese Unterscheidung zurückbringt, schützt Wahrheit und Zukunft.
-
-q.e.d.  
-Ingolf Lohmann
+Reference run: 4AV1_20260708T174034Z_709544
 

@@ -184,7 +184,7 @@ def _durable_read(state_dir: str, event: dict[str, Any] | None = None) -> tuple[
         db.execute("BEGIN")
         meta = dict(db.execute("SELECT key,value FROM meta"))
         epoch = meta.get("epoch", "")
-        if meta.get("schema") != "1" or not re.fullmatch(r"[0-9a-f]{32}", epoch):
+        if meta.get("schema") not in ("1", "2") or not re.fullmatch(r"[0-9a-f]{32}", epoch):
             raise DurableHold("UNKNOWN_LEDGER_SCHEMA")
         if event is None:
             return epoch, None
