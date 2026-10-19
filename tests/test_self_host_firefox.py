@@ -25,12 +25,12 @@ from tests.test_self_host import host, ROOT
 
 
 class FirefoxAMOUnlistedTests(unittest.TestCase):
-    """Real six-file Git input; mocked AMO HTTP is never Mozilla signature proof."""
+    """Real exact-file Git input; mocked AMO HTTP is never Mozilla signature proof."""
     @classmethod
     def setUpClass(cls):
         cls.fixture = tempfile.TemporaryDirectory()
         cls.root = Path(cls.fixture.name) / 'source'; cls.root.mkdir()
-        cls.names = ('manifest.json','background.js','content.js','options.html','options.js','terminal.css')
+        cls.names = ('manifest.json','background.js','content.js','options.html','options.js','terminal.css','client.html')
         for relative in [*("browser/firefox/qikvrt-terminal/" + name for name in cls.names),
                 'policy/CANONICAL_UPSTREAM_REMOTE_V1.json']:
             path = cls.root / relative; path.parent.mkdir(parents=True,exist_ok=True)
@@ -42,6 +42,7 @@ class FirefoxAMOUnlistedTests(unittest.TestCase):
         git('init');git('add','.')
         git('-c','user.name=Local fixture','-c','user.email=fixture@example.invalid','commit','-m','local test fixture')
         cls.head=git('rev-parse','HEAD');cls.tree=git('rev-parse','HEAD^{tree}')
+        cls.version=json.loads((cls.root/'browser/firefox/qikvrt-terminal/manifest.json').read_bytes())['version']
 
     @classmethod
     def tearDownClass(cls): cls.fixture.cleanup()
@@ -77,20 +78,39 @@ class FirefoxAMOUnlistedTests(unittest.TestCase):
 
     def response(self,signed=None,**changes):
         raw=signed if signed is not None else self.signed()
-        value={'guid':'qikvrt-ai-terminal@goldkelch.local','version':'1.0.0',
+        value={'guid':'qikvrt-ai-terminal@goldkelch.local','version':self.version,
             'processed':True,'valid':True,'reviewed':True,'passed_review':True,
             'files':[{'signed':True,'hash':'sha256:'+host.digest(raw),
                 'download_url':'https://addons.mozilla.org/api/v4/downloads/file/123/standard.xpi'}]}
         value.update(changes);return json.dumps(value).encode()
 
-    def test_exact_deterministic_six_committed_files_and_no_personal_or_readme(self):
+    def test_exact_deterministic_committed_files_and_no_personal_or_readme(self):
         import io,zipfile
         first,binding=host.firefox_amo_input(self.root,self.head,self.tree)
         self.assertEqual(first,host.firefox_amo_input(self.root,self.head,self.tree)[0])
         with zipfile.ZipFile(io.BytesIO(first)) as archive:
             self.assertCountEqual(archive.namelist(),self.names)
-        self.assertEqual(len(binding['source_files']),6);self.assertEqual(binding['strict_min_version'],'158.0')
+        self.assertEqual(len(binding['source_files']),7);self.assertEqual(binding['strict_min_version'],'158.0')
         self.assertEqual(binding['source_head'],self.head)
+
+    def test_missing_or_false_no_data_consent_is_rejected_before_upload(self):
+        # Separate committed fixtures exercise actual source admission, not a
+        # patched producer or a dirty-working-copy shortcut.
+        import copy
+        for declaration in (None, {"required": ["none"]}):
+            with self.subTest(declaration=declaration), tempfile.TemporaryDirectory() as tmp:
+                root=Path(tmp)/'source'; shutil.copytree(self.root,root)
+                path=root/'browser/firefox/qikvrt-terminal/manifest.json'
+                manifest=json.loads(path.read_text());gecko=manifest['browser_specific_settings']['gecko']
+                if declaration is None: gecko.pop('data_collection_permissions',None)
+                else: gecko['data_collection_permissions']=declaration
+                path.write_text(json.dumps(manifest))
+                def git(*args):
+                    return subprocess.check_output(['git','-C',str(root),*args],stderr=subprocess.DEVNULL).decode().strip()
+                git('add','.');git('-c','user.name=Fixture','-c','user.email=fixture@example.invalid','commit','-m','missing or misleading consent')
+                with self.mock.patch.object(host,'firefox_amo_transport',side_effect=AssertionError('no HTTP')):
+                    with self.assertRaisesRegex(ValueError,'DATA_COLLECTION_DECLARATION_REQUIRED'):
+                        host.firefox_amo_unlisted(root,self.output,git('rev-parse','HEAD'),git('rev-parse','HEAD^{tree}'),self.state,True)
 
     def test_wrong_head_tree_and_dirty_source_fail_before_http(self):
         with self.assertRaisesRegex(ValueError,'EXACT_HEAD_TREE'):
@@ -245,6 +265,103 @@ class FirefoxAMOUnlistedTests(unittest.TestCase):
 
 
 class FirefoxExtensionAdmissionTests(unittest.TestCase):
+    def test_original_ci_suppresses_known_failure_and_admits_changed_inputs(self):
+        """Execute the real workflow gates; local fixtures never prove activation."""
+        import textwrap
+        workflow=(ROOT/'.github/workflows/qikvrt_ci.yml').read_text()
+        def original_step(name):
+            section=workflow.split('- name: '+name+'\n',1)[1]
+            return textwrap.dedent(section.split("python3 -B - <<'PY'\n",1)[1]
+                .split('\n          PY',1)[0])
+        admission=original_step('Admit only a materially changed image, XPI or probe')
+        activation=original_step('Enforce actual compatible activation; a diagnostic read is not admission')
+        names=('manifest.json','background.js','content.js','options.html','options.js','terminal.css','client.html')
+        with tempfile.TemporaryDirectory() as directory:
+            base=Path(directory);root=base/'source';root.mkdir()
+            work_path='state/work_units/QIKVRT_MAIN_CONVERGENCE_20261014_V1.json'
+            paths=[*('browser/firefox/qikvrt-terminal/'+name for name in names),
+                'runtime/self-host/Dockerfile','deploy/universal-terminal/entrypoint.sh',
+                'tools/qikvrt_self_host.py',work_path]
+            for relative in paths:
+                target=root/relative;target.parent.mkdir(parents=True,exist_ok=True)
+                shutil.copyfile(ROOT/relative,target)
+            def git(*args):
+                return subprocess.check_output(['git','-C',str(root),*args],
+                    stderr=subprocess.DEVNULL,text=True).strip()
+            def commit(message):
+                git('add','.')
+                git('-c','user.name=Local fixture','-c','user.email=fixture@example.invalid',
+                    'commit','--allow-empty','-m',message)
+                return git('rev-parse','HEAD')
+            git('init');parent=commit('local original-input fixture')
+            work=json.loads((root/work_path).read_bytes())
+            work['oci_publication_merge_20261014']['candidate_subject']['first_parent']=parent
+            (root/work_path).write_text(json.dumps(work))
+            commit('bind retained fixture parent')
+            def run(code,label,signed=''):
+                temp=base/label;temp.mkdir()
+                environment={**os.environ,'RUNNER_TEMP':str(temp),
+                    'GITHUB_OUTPUT':str(temp/'outputs.txt'),'AMO_SIGNED_BINDING':signed}
+                result=subprocess.run([sys.executable,'-B','-c',code],cwd=root,
+                    env=environment,text=True,capture_output=True)
+                return result,temp
+            # Bind a deliberately failed *local fixture* to its observed
+            # inputs. No historical Git objects or deployed-effect claim are
+            # needed in a sealed source export with only its current commit.
+            result,initial=run(admission,'fixture-observation')
+            self.assertEqual(result.returncode,0,result.stderr)
+            observed=json.loads((initial/'s1-extension-evidence/causal-inputs.json').read_bytes())
+            prior=work['firefox158_s1_upgrade']['native_observation']
+            prior['runtime_causal_input_sha256']=observed['sha256']
+            prior['runtime_causal_inputs']=observed['inputs']
+            prior['source_head']=git('rev-parse','HEAD')
+            prior['subject_scope']='SIMULATED_LOCAL_FAILURE_CACHE_NOT_FIREFOX_ACTIVATION'
+            (root/work_path).write_text(json.dumps(work))
+            commit('bind simulated unchanged failure inputs')
+            result,temp=run(admission,'unchanged')
+            self.assertEqual(result.returncode,0,result.stderr)
+            evidence=temp/'s1-extension-evidence'
+            causal=json.loads((evidence/'causal-inputs.json').read_bytes())
+            self.assertFalse(causal['current_probe_required'])
+            reused=json.loads((evidence/'extension-installation.json').read_bytes())
+            self.assertFalse(reused['current_probe_executed'])
+            self.assertEqual(reused['reused_failure_source_head'],
+                work['firefox158_s1_upgrade']['native_observation']['source_head'])
+            self.assertFalse(reused['effect_ack_done'])
+            environment={**os.environ,'RUNNER_TEMP':str(temp)}
+            refused=subprocess.run([sys.executable,'-B','-c',activation],cwd=root,
+                env=environment,text=True,capture_output=True)
+            self.assertNotEqual(refused.returncode,0)
+            self.assertIn('unchanged failed installation remains unaccepted',refused.stderr)
+            (root/'unrelated.txt').write_text('source-only fixture change')
+            commit('unrelated change must not retry signing failure')
+            result,temp=run(admission,'unrelated')
+            self.assertEqual(result.returncode,0,result.stderr)
+            self.assertFalse(json.loads((temp/'s1-extension-evidence/causal-inputs.json')
+                .read_bytes())['current_probe_required'])
+            signed={'repository':'ingolf-lohmann/qik-vrt','run_id':1,
+                'artifact_name':'test-only-signed-fixture','file_name':'fixture.xpi',
+                'xpi_sha256':'1'*64}
+            result,temp=run(admission,'signed',json.dumps(signed))
+            self.assertEqual(result.returncode,0,result.stderr)
+            self.assertTrue(json.loads((temp/'s1-extension-evidence/causal-inputs.json')
+                .read_bytes())['current_probe_required'])
+            for label,path,extra in (
+                    ('xpi','browser/firefox/qikvrt-terminal/background.js','\n// fixture change\n'),
+                    ('probe','tools/qikvrt_self_host.py','\nADMISSION_FIXTURE_CHANGE = True\n'),
+                    ('image','runtime/self-host/Dockerfile','\n# fixture recipe change\n')):
+                original=(root/path).read_bytes()
+                changed=(original.replace(b'AS s1-firefox-release\n',
+                    b'AS s1-firefox-release\nENV QIKVRT_ADMISSION_FIXTURE=1\n',1)
+                    if label=='image' else original+extra.encode())
+                self.assertNotEqual(changed,original)
+                (root/path).write_bytes(changed);commit(label+' changed fixture')
+                result,temp=run(admission,label)
+                self.assertEqual(result.returncode,0,result.stderr)
+                self.assertTrue(json.loads((temp/'s1-extension-evidence/causal-inputs.json')
+                    .read_bytes())['current_probe_required'])
+                (root/path).write_bytes(original);commit(label+' restored fixture')
+
     def accepted(self):
         return {"minimum_satisfied": True, "policy_active": True,
             "background_registered": True, "temporary_installation_used": False,
@@ -307,7 +424,7 @@ class FirefoxExtensionAdmissionTests(unittest.TestCase):
     def test_signature_metadata_cannot_replace_source_or_browser_verification(self):
         import zipfile
         source=ROOT/'browser/firefox/qikvrt-terminal'
-        names=('manifest.json','background.js','content.js','options.html','options.js','terminal.css')
+        names=('manifest.json','background.js','content.js','options.html','options.js','terminal.css','client.html')
         with tempfile.TemporaryDirectory() as directory:
             path=Path(directory)/'candidate.xpi'
             for extra,changed in ((None,False),('META-INF/mozilla.rsa',False),

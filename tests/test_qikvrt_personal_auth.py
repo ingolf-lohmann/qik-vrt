@@ -5,6 +5,7 @@
 No test provisions a real credential, signs in a person or attests Firefox.
 """
 import copy
+import contextlib
 import io
 import json
 import os
@@ -44,6 +45,9 @@ class VaultDouble:
     def write(self, value):
         self.value = copy.deepcopy(value)
         self.writes.append(copy.deepcopy(value))
+
+    def provision_lock(self, state_dir):
+        return contextlib.nullcontext()
 
 
 class IdPDouble:
@@ -118,6 +122,17 @@ class MicrosoftCompatibilityTests(unittest.TestCase):
     def login(self, **fields):
         begin = self.auth.begin()
         return self.auth.complete({"state": begin["state"], "code": "SIMULATED_ONETIME_CODE", **fields})
+
+    def test_resume_reuses_microsoft_grant_without_new_authorization(self):
+        local = self.login()
+        restarted = a.PersonalAuth(self.vault, MS_CONFIG, transport=self.idp, clock=lambda: self.now[0])
+        count = len(self.idp.calls)
+        self.assertEqual(restarted.resume()["state"], "AUTHENTICATED")
+        self.assertEqual(len(self.idp.calls), count + 1)
+        fields = self.idp.calls[-1][1]
+        self.assertEqual(fields["grant_type"], "refresh_token")
+        self.assertEqual(fields["scope"], "openid offline_access")
+        self.assertFalse(restarted.status()["live_authentication_observed_this_process"])
 
     def test_observed_discovery_shape_accepts_only_explicit_microsoft_profile(self):
         begin = self.auth.begin()
@@ -302,6 +317,79 @@ class LifecycleTests(unittest.TestCase):
         begin = self.auth.begin()
         token = self.auth.complete({"state": begin["state"], "code": "test-code-one-use"})
         return token
+
+    def test_resume_after_restart_refreshes_before_returning_status(self):
+        local = self.login()
+        before = self.vault.read()["auth"]
+        restarted = a.PersonalAuth(self.vault, CONFIG, transport=self.idp, clock=lambda: self.now[0])
+        count = len(self.idp.calls)
+        self.assertEqual(restarted.resume()["state"], "AUTHENTICATED")
+        after = self.vault.read()["auth"]
+        self.assertEqual(len(self.idp.calls), count + 1)
+        self.assertEqual(self.idp.calls[-1][1]["grant_type"], "refresh_token")
+        self.assertNotEqual(before["refresh_token"], after["refresh_token"])
+        self.assertEqual(before["local_until"], after["local_until"])
+        self.assertFalse(restarted.status()["live_authentication_observed_this_process"])
+
+    def test_native_session_readback_needs_no_model_key_and_returns_no_bearer(self):
+        self.now[0] = a.time.time()
+        local = self.login()
+        with patch.object(a, "load_config", return_value=CONFIG), patch.object(a, "OSSecretStore", return_value=self.vault), \
+                patch.object(a, "OIDCTransport", return_value=self.idp):
+            result = a.verify_existing_session("fixture-profile", "fixture-config", "http://127.0.0.1:8771", "openai")
+        raw = json.dumps(result)
+        for value in (local, self.vault.read()["auth"]["access_token"], self.vault.read()["auth"]["refresh_token"]):
+            self.assertNotIn(value, raw)
+        self.assertEqual(result["identity"]["state"], "AUTHENTICATED")
+        self.assertFalse(result["model_request_executed"])
+        self.assertFalse(result["onenote_access_verified"])
+        self.assertFalse(result["effect_ack_done"])
+
+    def test_native_session_readback_holds_competing_writer_before_refresh(self):
+        self.login(); count = len(self.idp.calls)
+        @contextlib.contextmanager
+        def locked(_):
+            raise a.AuthBlock("OS_CREDENTIAL_PROFILE_IN_USE")
+            yield
+        with patch.object(a, "load_config", return_value=CONFIG), patch.object(a, "OSSecretStore", return_value=self.vault), \
+                patch.object(self.vault, "provision_lock", side_effect=locked):
+            with self.assertRaisesRegex(a.AuthBlock, "PROFILE_IN_USE"):
+                a.verify_existing_session("fixture-profile", "fixture-config", "http://127.0.0.1:8771", "openai")
+        self.assertEqual(count, len(self.idp.calls))
+
+    def test_resume_signed_out_expired_and_pending_do_not_request_tokens(self):
+        for state in ("SIGNED_OUT", "AUTHORIZATION_PENDING", "REFRESH_PENDING", "REVOCATION_PENDING"):
+            with self.subTest(state=state):
+                self.vault.value["auth"] = {"binding": self.auth.binding, "state": state}
+                count = len(self.idp.calls)
+                with self.assertRaises(a.AuthBlock): self.auth.resume()
+                self.assertEqual(count, len(self.idp.calls))
+        self.vault.value.pop("auth")
+        self.login(); self.now[0] += 43201
+        count = len(self.idp.calls)
+        with self.assertRaises(a.AuthBlock): self.auth.resume()
+        self.assertEqual(count, len(self.idp.calls))
+
+    def test_resume_ambiguous_refresh_stays_pending_without_retry(self):
+        self.login(); self.idp.fail = ("token", "OIDC_RESULT_UNRESOLVED_NO_RETRY")
+        with self.assertRaises(a.AuthBlock): self.auth.resume()
+        self.assertEqual(self.auth.status()["state"], "REFRESH_PENDING")
+        count = len(self.idp.calls)
+        restarted = a.PersonalAuth(self.vault, CONFIG, transport=self.idp, clock=lambda: self.now[0])
+        with self.assertRaises(a.AuthBlock): restarted.resume()
+        self.assertEqual(count, len(self.idp.calls))
+
+    def test_resume_does_not_overlap_explicit_sign_in(self):
+        self.login(); self.auth.begin()
+        count = len(self.idp.calls)
+        with self.assertRaisesRegex(a.AuthBlock, "AUTHORIZATION_ALREADY_PENDING"): self.auth.resume()
+        self.assertEqual(count, len(self.idp.calls))
+
+    def test_resume_requires_durable_pending_write_before_token_exchange(self):
+        self.login(); count = len(self.idp.calls)
+        with patch.object(self.vault, "write", side_effect=a.AuthBlock("PROTECTED_STORE_READBACK_MISMATCH")):
+            with self.assertRaises(a.AuthBlock): self.auth.resume()
+        self.assertEqual(count, len(self.idp.calls))
 
     def test_pkce_nonce_state_form_post_and_no_token_in_authorization_url(self):
         begin = self.auth.begin()
@@ -492,6 +580,12 @@ class LifecycleTests(unittest.TestCase):
 
 
 class ProtectedStoreAndConfigTests(unittest.TestCase):
+    def test_native_readback_cli_requires_explicit_profile_and_starts_no_listener(self):
+        result = subprocess.run([sys.executable, "-B", "src/qikvrt_effect_ack_http_terminal.py", "personal-auth-readback"],
+                                cwd=a.ROOT, capture_output=True, text=True, timeout=5)
+        self.assertEqual(result.returncode, 2)
+        self.assertEqual(json.loads(result.stdout), {"state": "HOLD", "reason": "EXPLICIT_PROTECTED_SSO_PROFILE_REQUIRED", "effect_ack_done": False})
+
     def test_provisioning_reuses_runtime_writer_lock(self):
         if sys.platform != "linux": self.skipTest("Linux Secret Service path only")
         with tempfile.TemporaryDirectory() as tmp:
