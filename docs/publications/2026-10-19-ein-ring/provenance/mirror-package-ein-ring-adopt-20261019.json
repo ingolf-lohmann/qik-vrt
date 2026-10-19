@@ -1,0 +1,80 @@
+{
+  "body": {
+    "created_utc": "2026-10-19T12:11:29Z",
+    "node": "claude-mirror",
+    "records": {
+      "sha256:39f90d55f7d0a4c3206de5a5bcc0e824e213ae8a2bca7ac1c92d2b3cad76e45c": {
+        "created_utc": "2026-10-19T12:11:29Z",
+        "node": "claude-mirror",
+        "protocol": {
+          "connection_decided": true,
+          "connection_decision": "CONTINUE",
+          "context_checked": true,
+          "created_utc": "2026-10-19T12:11:29.099952Z",
+          "effect_anticipated": true,
+          "evidence_refs": [
+            "sha256:7649987164e78a88393b5195c28eed30c96951bc678fbb12f4c63271ee65c277",
+            "sha256:fa7cd1c711d2c21e101fde3b33b0b81f0b552dfcc2359220c3e56a46629d2227"
+          ],
+          "input_hash": "sha256:fa7cd1c711d2c21e101fde3b33b0b81f0b552dfcc2359220c3e56a46629d2227",
+          "input_id": "bundle:6d3803a18521b15612f1c38e3b492e0a9f3b342a",
+          "next_required_checks": [
+            "OPEN_QUESTIONS_REMAIN",
+            "ORIGIN_UNCHECKED",
+            "POLICY_DENIES_RELEASE",
+            "RELEASE_NOT_SELECTED",
+            "REQUIRED_CHECKS_REMAIN",
+            "integrity verify on resulting main HEAD",
+            "readback of 6d3803a (or merge containing it) on Authority main"
+          ],
+          "open_questions": [
+            "carrier for push/PR of 6d3803a into ingolf-lohmann/qik-vrt"
+          ],
+          "ordinary_release": false,
+          "origin_checked": false,
+          "policy_allows_release": false,
+          "previous_protocol_hash": null,
+          "previous_protocol_id": null,
+          "protocol_hash": "sha256:a4d643cdfe0dfed406992728c68f7ea3bb6a99355e35516349870e4787813de9",
+          "protocol_id": "mirror:bundle:ein-ring-20261019:adopt:v1",
+          "protocol_root_id": "mirror:bundle:ein-ring-20261019:adopt",
+          "protocol_version": 1,
+          "reasons": [
+            "6d3803a not on any Authority ref",
+            "Authority push HOLD: no write identity in this session (add_repo push: GitHub account not linked)",
+            "OPEN_QUESTIONS_REMAIN",
+            "ORIGIN_UNCHECKED",
+            "OWNER_ASSERTED 2026-10-19T12:11Z Ingolf Lohmann: \"Der Kandidat wird übernommen.\"",
+            "POLICY_DENIES_RELEASE",
+            "RELEASE_NOT_SELECTED",
+            "REQUIRED_CHECKS_REMAIN",
+            "SSH commit signature present, not verified (no allowed-signers binding)",
+            "bundle prerequisite fbc450c == Authority main HEAD",
+            "diff: +docs/publications/2026-10-19-ein-ring/*.md (90 lines), manifest/SHA256SUMS updates",
+            "evidence: bundle bytes; article bytes 7649987164e78a88393b5195c28eed30c96951bc678fbb12f4c63271ee65c277; commits 6d3803a / base fbc450c",
+            "text marked candidate / Autorenpruefassung; not published",
+            "tools/qikvrt_integrity.py verify PASS (4983 entries, 4972 digests) at 6d3803a"
+          ],
+          "required_evidence_refs": [],
+          "responsibility_assigned": true,
+          "responsibility_owner": "Ingolf Lohmann",
+          "risk_classified": true,
+          "risk_level": "LOW",
+          "schema": "qikvrt_responsibility_protocol_v1",
+          "semantics_reconstructed": true,
+          "state": "EFFECT_ACK_CONTINUE",
+          "transport_ack": true
+        },
+        "schema": "qikvrt_mirror_outbox_record_v1",
+        "state": "EFFECT_ACK_CONTINUE"
+      }
+    },
+    "schema": "qikvrt_mirror_signed_export_v1"
+  },
+  "signature": {
+    "alg": "Ed25519",
+    "public_key_b64": "dnhGShSLF2BayEUvwUTUJxygyEZYKmnz2WQwSGMs9E4=",
+    "sig_b64": "aguMQSQfaakb30NVnCoT/E7RYsOn+u535n4j8eM9+M5+7VoXNAFIdjsehWC3Y5zFazHBpLTSG54OgYYbuMvDDQ==",
+    "signed_sha256": "sha256:aa37682ab8e8df5358eea78841443b6dfd6bcdb6b249c621a6a296b09d652a14"
+  }
+}

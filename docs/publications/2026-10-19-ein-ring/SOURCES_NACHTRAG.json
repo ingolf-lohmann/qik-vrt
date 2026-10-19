@@ -1,0 +1,173 @@
+{
+  "schema": "qikvrt-ein-ring-review-sources/1",
+  "assembled_utc": "2026-10-19T14:45:02.165751+00:00",
+  "observations_are_not_one_atomic_cross_repository_snapshot": true,
+  "reviewer": "OpenAI Codex; separate recomputation from attributed Claude authorship, no independent human approval claimed",
+  "sources": [
+    {
+      "id": "ART",
+      "kind": "ORIGINAL_ARTICLE",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/392dd86fdf147c04dad3bb89d1a4a8438b5f0a97/docs/publications/2026-10-19-ein-ring/Ein_Ring_sie_zu_binden_und_zu_linken_20261019.md",
+      "bytes": 9968,
+      "sha256": "7649987164e78a88393b5195c28eed30c96951bc678fbb12f4c63271ee65c277",
+      "git_blob": "816ac8c3454e4111cef068f0fd9262b1dba25075"
+    },
+    {
+      "id": "BUNDLE",
+      "kind": "ORIGINAL_INCREMENTAL_GIT_BUNDLE",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/4c44ac89f6c1a8b0800d5e502c4cf7a2bb6700ef/evidence/client-communication/2026-10-19/ingolf-claude-transputer-link-20261018T232045Z/incoming-ein-ring-fa7cd1c7/ein-ring-20261019.bundle.base64",
+      "bytes": 6361,
+      "sha256": "fa7cd1c711d2c21e101fde3b33b0b81f0b552dfcc2359220c3e56a46629d2227",
+      "git_bundle_verify": true,
+      "original_commit": "6d3803a18521b15612f1c38e3b492e0a9f3b342a",
+      "tree": "ea21882417b1558e4c0ef52000ed5a88ed496d13",
+      "carrier": "392dd86fdf147c04dad3bb89d1a4a8438b5f0a97",
+      "carrier_parent": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+      "original_commit_self_signature_valid": true,
+      "embedded_raw_public_key_sha256": "990563e0fdc4b8960db2ef69078f2e9d18dab045dde5ad5e580d7fa1d555b6ed",
+      "self_signature_local_label": "audit-self-signature (untrusted embedded key only)",
+      "peer_identity_binding_verified": false,
+      "base64_is_transport_only": true,
+      "requires_prerequisite_objects": "fbc450c4d2d5045335577aa59be7509cda16adeb"
+    },
+    {
+      "id": "ADOPT",
+      "kind": "ORIGINAL_SIGNED_SUPPLIED_EXPORT",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/4c44ac89f6c1a8b0800d5e502c4cf7a2bb6700ef/evidence/client-communication/2026-10-19/ingolf-claude-transputer-link-20261018T232045Z/incoming-ein-ring-fa7cd1c7/mirror-package-ein-ring-adopt-20261019.json",
+      "bytes": 3744,
+      "sha256": "92ff71c9e07069e6797cdab91f18e0898f9444906be04c64598449be51e59f90",
+      "git_blob": "a0f1fcf5f50efdd1d17b42bb2c10ae7572ffb8ff",
+      "self_signature_valid": true,
+      "public_key_sha256": "dbc84276b06770e658bbef6eae2b9dcab5b68cb1cd2486a7d21d7f2aa524c6a6",
+      "different_from_journal_key": true,
+      "identity_anchor": null,
+      "records": [
+        {
+          "record_hash": "sha256:39f90d55f7d0a4c3206de5a5bcc0e824e213ae8a2bca7ac1c92d2b3cad76e45c",
+          "protocol_hash": "sha256:a4d643cdfe0dfed406992728c68f7ea3bb6a99355e35516349870e4787813de9",
+          "state": "EFFECT_ACK_CONTINUE"
+        }
+      ]
+    },
+    {
+      "id": "J33",
+      "kind": "ORIGINAL_SIGNED_JOURNAL_EXPORT",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/4c44ac89f6c1a8b0800d5e502c4cf7a2bb6700ef/evidence/client-communication/2026-10-19/ingolf-claude-transputer-link-20261018T232045Z/incoming-export33-b28dd716/events.jsonl",
+      "manifest_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/4c44ac89f6c1a8b0800d5e502c4cf7a2bb6700ef/evidence/client-communication/2026-10-19/ingolf-claude-transputer-link-20261018T232045Z/incoming-export33-b28dd716/EXPORT_MANIFEST.json",
+      "snapshot_base64_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/4c44ac89f6c1a8b0800d5e502c4cf7a2bb6700ef/evidence/client-communication/2026-10-19/ingolf-claude-transputer-link-20261018T232045Z/incoming-export33-b28dd716/events.snapshot.sqlite3.base64",
+      "epoch": "b184cf99f8f74f6bb2820416511562dc",
+      "events": 33,
+      "snapshot_sha256": "87c81ad02f7b8da1f79a4ff41b065ce6b8643dcd053c70be29c5e0b0dc880d5d",
+      "jsonl_sha256": "aff1aea93cda931a3da539f3ece1f8704dc64add8b874a0b4b52b71b737e0d70",
+      "jsonl_git_blob": "571acc972e5bd7f1c9b7cdad35a06113be45c00a",
+      "ed25519_self_signature_valid": true,
+      "public_key_sha256": "e592c06fd37e1397391dc9282a265d9f041fd47335cc06d1dedea13656ee0c60",
+      "external_identity_anchor": null,
+      "original_unchanged": true,
+      "original_validator_and_digests_pass": true,
+      "prefix25_identical": true,
+      "cited_events_49_to_54_present": false
+    },
+    {
+      "id": "REPLY2",
+      "kind": "ORIGINAL_SIGNED_REPLY",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/4c44ac89f6c1a8b0800d5e502c4cf7a2bb6700ef/evidence/client-communication/2026-10-19/ingolf-claude-transputer-link-20261018T232045Z/incoming-export25/SIGNED_REPLY2_ingolf-claude-transputer-link-20261018T232045Z.json",
+      "sha256": "19c84fc63c2a41f8026a4144c417b889be0b7a535145e78dc7cfa30eb3f1d650",
+      "git_blob": "efc089afb772e620f166280219cdeb7ddc61389f",
+      "payload_sha256": "6b5c7a6e83f93f29b06af366dbae80532f5cd26952888196cfbcce40a4c01d1d",
+      "signature_valid_for_included_key": true,
+      "identity_anchor": null
+    },
+    {
+      "id": "REQUEST",
+      "kind": "AUTHORITY_REQUEST_SOURCE",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/4c44ac89f6c1a8b0800d5e502c4cf7a2bb6700ef/evidence/client-communication/2026-10-19/ingolf-claude-transputer-link-20261018T232045Z/message.original.json",
+      "canonical_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/4c44ac89f6c1a8b0800d5e502c4cf7a2bb6700ef/evidence/client-communication/2026-10-19/ingolf-claude-transputer-link-20261018T232045Z/message.canonical.json",
+      "canonical_sha256": "30636063c975d2e7b2782f52f68fafeec74d0f9bb23c1ef57c4d34d07d41e13e"
+    },
+    {
+      "id": "AUTHORITY_ACK25",
+      "kind": "HISTORICAL_AUTHORITY_RECEIPT",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/4c44ac89f6c1a8b0800d5e502c4cf7a2bb6700ef/evidence/client-communication/2026-10-19/ingolf-claude-transputer-link-20261018T232045Z/incoming-export25/AUTHORITY_REPLY.json",
+      "boundary": "Source report; it is not a new node-specific claim generated in this review"
+    },
+    {
+      "id": "PR544",
+      "kind": "CURRENT_PLATFORM_OBSERVATION",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/pull/544",
+      "head": "392dd86fdf147c04dad3bb89d1a4a8438b5f0a97",
+      "tree": "ea21882417b1558e4c0ef52000ed5a88ed496d13",
+      "api": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/pulls/544",
+      "draft": true,
+      "reviews": []
+    },
+    {
+      "id": "RECEIPT544",
+      "kind": "HISTORICAL_CONNECTED_ACCOUNT_EVIDENCE_COMMENT",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/pull/544#issuecomment-6267163393",
+      "boundary": "Codex receipt via Principal-connected route; not an Owner review decision"
+    },
+    {
+      "id": "FIREFOX",
+      "kind": "VERSIONED_REPOSITORY_HISTORY",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/pull/542",
+      "commits_api": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/pulls/542/commits?per_page=100",
+      "observed_head": "61a77c4c36d7fc857d16a77d567937d90b288f62",
+      "tree": "64811471e55626a5734aa7a1398f986466e1ab68"
+    },
+    {
+      "id": "OLD_BLOCK",
+      "kind": "HISTORICAL_EXISTING_EFFECT_ACK_RECORD",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/4c44ac89f6c1a8b0800d5e502c4cf7a2bb6700ef/evidence/client-communication/2026-10-19/ingolf-claude-transputer-link-20261018T232045Z/existing-effect-ack-signed-reply-v2.json",
+      "protocol_hash": "sha256:198885adc51475fbb91ca7cddd5a9fb041fb8925bbb09be3942504030662508d",
+      "boundary": "Historical missing-original-bytes reason superseded by supplied reply2; identity and live-channel predicates remain separate"
+    },
+    {
+      "id": "IETF03",
+      "kind": "OFFICIAL_DOCUMENT_SOURCE",
+      "url": "https://datatracker.ietf.org/doc/draft-lohmann-qikvrt-effect-ack/03/",
+      "status": "individual Internet-Draft; no IETF endorsement"
+    },
+    {
+      "id": "GOV",
+      "kind": "NATIVE_REVIEW_GATE_AND_PLATFORM_METADATA",
+      "gate_path": "tools/qikvrt_required_review_gate.py",
+      "gate_source_head": "392dd86fdf147c04dad3bb89d1a4a8438b5f0a97",
+      "gate_result": {
+        "detail": "record the already authorized Principal review on the current PR head; no renewed human permission is required",
+        "external_effect": "NONE",
+        "first_blocker": "OWNER_PRINCIPAL_REVIEW_MISSING",
+        "gate_state": "pending",
+        "head_sha": "392dd86fdf147c04dad3bb89d1a4a8438b5f0a97",
+        "independent_native_approval": false,
+        "native_code_owner_rule_enforced": false,
+        "platform_review_state": null,
+        "pr_number": 544,
+        "required_code_owner": "ingolf-lohmann",
+        "review_basis": "OWNER_PRINCIPAL_REVIEW",
+        "review_id": null,
+        "review_mutation": "FORBIDDEN",
+        "schema": "qikvrt_required_code_owner_review_gate_v1"
+      },
+      "rulesets_api": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/rulesets",
+      "rulesets": [],
+      "main_protected_field": false,
+      "separate_protection_get": "403 Resource not accessible by integration; details unknown",
+      "branch_rules_get": "400 URL family not exposed by current read adapter; no inference"
+    },
+    {
+      "id": "NATIVE",
+      "kind": "OWN_BOUNDED_ORIGINAL_NATIVE_EXECUTION",
+      "epoch": "da3bd599707a469fb6dbcdd7b398a2e9",
+      "subject": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "pr": 544,
+        "head": "392dd86fdf147c04dad3bb89d1a4a8438b5f0a97",
+        "tree": "ea21882417b1558e4c0ef52000ed5a88ed496d13"
+      },
+      "route": "existing OwnerREST.prepare/commit/readback + original Runtime; own physically admitted state; in-process because socket EPERM",
+      "peer_authentication_claim": false,
+      "formal_outbox_assessment_created": false
+    }
+  ]
+}

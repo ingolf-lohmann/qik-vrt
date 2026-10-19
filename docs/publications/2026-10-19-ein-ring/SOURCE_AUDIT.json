@@ -1,0 +1,611 @@
+{
+  "schema": "qikvrt-independent-ein-ring-source-audit/1",
+  "article": {
+    "bytes": 9968,
+    "sha256": "7649987164e78a88393b5195c28eed30c96951bc678fbb12f4c63271ee65c277",
+    "git_blob": "816ac8c3454e4111cef068f0fd9262b1dba25075"
+  },
+  "bundle": {
+    "bytes": 6361,
+    "sha256": "fa7cd1c711d2c21e101fde3b33b0b81f0b552dfcc2359220c3e56a46629d2227",
+    "git_bundle_verify": true,
+    "original_commit": "6d3803a18521b15612f1c38e3b492e0a9f3b342a",
+    "tree": "ea21882417b1558e4c0ef52000ed5a88ed496d13",
+    "carrier": "392dd86fdf147c04dad3bb89d1a4a8438b5f0a97",
+    "carrier_parent": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+    "original_commit_self_signature_valid": true,
+    "embedded_raw_public_key_sha256": "990563e0fdc4b8960db2ef69078f2e9d18dab045dde5ad5e580d7fa1d555b6ed",
+    "self_signature_local_label": "audit-self-signature (untrusted embedded key only)",
+    "peer_identity_binding_verified": false
+  },
+  "peer_journal": {
+    "epoch": "b184cf99f8f74f6bb2820416511562dc",
+    "events": 33,
+    "snapshot_sha256": "87c81ad02f7b8da1f79a4ff41b065ce6b8643dcd053c70be29c5e0b0dc880d5d",
+    "jsonl_sha256": "aff1aea93cda931a3da539f3ece1f8704dc64add8b874a0b4b52b71b737e0d70",
+    "jsonl_git_blob": "571acc972e5bd7f1c9b7cdad35a06113be45c00a",
+    "ed25519_self_signature_valid": true,
+    "public_key_sha256": "e592c06fd37e1397391dc9282a265d9f041fd47335cc06d1dedea13656ee0c60",
+    "external_identity_anchor": null,
+    "original_unchanged": true,
+    "original_validator_and_digests_pass": true,
+    "prefix25_identical": true,
+    "cited_events_49_to_54_present": false
+  },
+  "signed_reply2": {
+    "bytes": 3867,
+    "sha256": "19c84fc63c2a41f8026a4144c417b889be0b7a535145e78dc7cfa30eb3f1d650",
+    "git_blob": "efc089afb772e620f166280219cdeb7ddc61389f",
+    "signature_valid": true,
+    "payload_sha256": "6b5c7a6e83f93f29b06af366dbae80532f5cd26952888196cfbcce40a4c01d1d",
+    "request": {
+      "authority_commit": "1a5d1374677d587bbe07c5c442998a498e094c0d",
+      "input_hash": "sha256:30636063c975d2e7b2782f52f68fafeec74d0f9bb23c1ef57c4d34d07d41e13e",
+      "peer_protocol_hash": "sha256:e41e9787c6996b5dce79ce8b217e8124cd31249036a3cc7ee08c224628d6788a",
+      "request_id": "ingolf-claude-transputer-link-20261018T232045Z"
+    },
+    "payload": {
+      "claims": {
+        "EFFECT_ACK_DONE": false,
+        "PASS": false,
+        "mesh_acceptance": false,
+        "writer_transfer": false
+      },
+      "from": {
+        "observer_epoch": "b184cf99f8f74f6bb2820416511562dc",
+        "system": "Claude (Anthropic), configured model claude-opus-5-5"
+      },
+      "in_reply_to": {
+        "authority_commit": "86b2d8cc",
+        "request_id": "ingolf-claude-transputer-link-20261018T232045Z"
+      },
+      "previous_reply": {
+        "bytes": 1718,
+        "sha256": "6fd3050226180fea36a715d809706c71a07be81b8b7865184879b0f13538533b",
+        "status": "superseded_for_digest_finding; message_sha256_verified was false there because only REST summaries were available"
+      },
+      "received_at": "2026-10-18T23:44:44.804497Z",
+      "reply_path": {
+        "authenticated_reply_path": null,
+        "current_reply_transport": "file carried by the human principal"
+      },
+      "schema": "qikvrt_cross_vendor_reply_v1",
+      "verification": {
+        "base64_decodes_identical": true,
+        "canonical_of_original_equals_canonical_file": true,
+        "channel": "git fetch of Authority branch communication/claude/ingolf-20261018T232045Z, commit 86b2d8cc (parent c1c0acd9), blob bytes via git archive",
+        "codex_body_digests_recomputed_equal": true,
+        "codex_epoch": "aeda03b67926436d8965e1f7420ed39c",
+        "codex_event_1_body_digest": "582009735ac7ed23208fb5b34f5fccd478d31d673bd913256e5d66f8bdced91a",
+        "codex_event_2_body_digest": "d09d01d051168506862f058f829daf076c783a6a7b022acb09db79b4b8854f5b",
+        "codex_journal_opened": "read-only mode=ro&immutable=1, not served, not appended",
+        "codex_snapshot_sha256": "66a0bbe6f7d31d7acab751d005ba110598fe7b4e1a84c60387361013466bda62",
+        "comment_current_utf8_sha256": "7bbaf7b24a3d4b931c1154953d780b434742050d09ef125c3cc6c001d9e07235",
+        "comment_initial_utf8_sha256": "eba5e9edd1d25c46f97a91698244f9c1a266f0c91fb04b2785e65b1e9ddc8e85",
+        "export_manifest_files": 10,
+        "export_manifest_mismatch": 0,
+        "message_canonical_sha256": "30636063c975d2e7b2782f52f68fafeec74d0f9bb23c1ef57c4d34d07d41e13e",
+        "message_sha256_verified": true,
+        "sqlite_integrity": "ok"
+      }
+    },
+    "identity_anchor": null
+  },
+  "adoption_export": {
+    "bytes": 3744,
+    "sha256": "92ff71c9e07069e6797cdab91f18e0898f9444906be04c64598449be51e59f90",
+    "git_blob": "a0f1fcf5f50efdd1d17b42bb2c10ae7572ffb8ff",
+    "self_signature_valid": true,
+    "public_key_sha256": "dbc84276b06770e658bbef6eae2b9dcab5b68cb1cd2486a7d21d7f2aa524c6a6",
+    "different_from_journal_key": true,
+    "identity_anchor": null,
+    "records": [
+      {
+        "record_hash": "sha256:39f90d55f7d0a4c3206de5a5bcc0e824e213ae8a2bca7ac1c92d2b3cad76e45c",
+        "protocol_hash": "sha256:a4d643cdfe0dfed406992728c68f7ea3bb6a99355e35516349870e4787813de9",
+        "state": "EFFECT_ACK_CONTINUE"
+      }
+    ]
+  },
+  "new_formal_effect_ack_assessment_created": false,
+  "original_outbox_tool_available": false,
+  "productive_peer_claim_created": false,
+  "journal_selected_events": [
+    {
+      "binding": "bd873c04cc3ab0ae95f04652dfae17ef26333a264e4e837f45409f0463dccbee",
+      "body": {
+        "dod": false,
+        "evidence_transfer": "DENY",
+        "kind": "READBACK",
+        "message": "Independent counter-verification of observer export received and matched",
+        "observed_at": "2026-10-18T23:17:41.748975Z",
+        "payload": {
+          "archive_sha256": "dc82dacc8e30754009830e0c6af1c6f7196f4be3b08b890fa2c75becb7ffdbf0",
+          "counterpart_domain_status": 525,
+          "counterpart_main": "6bb52daf",
+          "counterpart_pr536": "draft open unmerged",
+          "domain_status_observed_by_this_node": false,
+          "embedded_archive_byte_identical": true,
+          "event_4_proposal_adopted": false,
+          "last_digest_match": {
+            "9749758a:2": "3ddb8804",
+            "b184cf99:4": "dac8fa59"
+          },
+          "manifest_sha256": "784b59a30d5613a4d87a041a2b87540b8cd5554bad2d1395f01bee9bfb3a20b2",
+          "return_zip_sha256": "3007a5b45d7216eb193dfaaf2d0303e469b5965fe8a0bc7a1d4ca956f87d8208"
+        },
+        "payload_digest": "fff0b8ec225b1e0cee13c29686f63b09b3c0eb408194777123320002cecfde1a",
+        "provenance": {
+          "native_event_id": "claude-observer:b72da09f31eb455689a34b4d51e6bd4f",
+          "source": "transputer"
+        },
+        "recorded_at": "2026-10-18T23:17:41.960102Z",
+        "schema": "qikvrt_temdd_event_v1",
+        "subject": {
+          "head": "a4729467daab3bd1f3d17736ae213683db0e98fa",
+          "pr": 536,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "b9bf40fc745ca862bd91b2a5bba64d4eec714144"
+        }
+      },
+      "body_digest": "319dd2170c3b321c1baa07224595076bbfd05c0695df998c5cf954375ecabb27",
+      "id": "b184cf99f8f74f6bb2820416511562dc:5",
+      "native_digest": "24d321b0fee6127d5128ad4a599dd959c10f7671d214b9ae4381b0dc1235cbd0",
+      "seq": 5
+    },
+    {
+      "binding": "bd873c04cc3ab0ae95f04652dfae17ef26333a264e4e837f45409f0463dccbee",
+      "body": {
+        "dod": false,
+        "evidence_transfer": "DENY",
+        "kind": "READBACK",
+        "message": "Received cross-vendor message via Authority without human transport; digest not verifiable; reply prepared",
+        "observed_at": "2026-10-18T23:37:10.872377Z",
+        "payload": {
+          "authenticated_reply_path": null,
+          "comment_id": 6256470968,
+          "message_sha256_verified": false,
+          "reply_sha256": "6fd3050226180fea36a715d809706c71a07be81b8b7865184879b0f13538533b",
+          "request_id": "ingolf-claude-transputer-link-20261018T232045Z",
+          "stated_message_sha256": "30636063c975d2e7b2782f52f68fafeec74d0f9bb23c1ef57c4d34d07d41e13e"
+        },
+        "payload_digest": "0334cbca981975c47cb4f08e52afcbdef94f6ca7d7f66fcc16a186c08ccc01a9",
+        "provenance": {
+          "native_event_id": "claude-observer:cd3d8bbda6ee4b76aee9e03eeb74e3df",
+          "source": "transputer"
+        },
+        "recorded_at": "2026-10-18T23:37:11.044253Z",
+        "schema": "qikvrt_temdd_event_v1",
+        "subject": {
+          "head": "a4729467daab3bd1f3d17736ae213683db0e98fa",
+          "pr": 536,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "b9bf40fc745ca862bd91b2a5bba64d4eec714144"
+        }
+      },
+      "body_digest": "06e19beb0026d773373581b3a91540eca32825df3dbe81f00bbc2bc4b4f525bc",
+      "id": "b184cf99f8f74f6bb2820416511562dc:6",
+      "native_digest": "e162c2b44d91346d2d48626e1ba49dc2d82a032507a20eee6a5196e2310a3c6e",
+      "seq": 6
+    },
+    {
+      "binding": "bd873c04cc3ab0ae95f04652dfae17ef26333a264e4e837f45409f0463dccbee",
+      "body": {
+        "dod": false,
+        "evidence_transfer": "DENY",
+        "kind": "READBACK",
+        "message": "Exact message bytes and Codex journal aeda03b6 received via Authority git branch and byte-verified",
+        "observed_at": "2026-10-18T23:44:44.804497Z",
+        "payload": {
+          "base64_decodes_identical": true,
+          "canonical_of_original_equals_canonical_file": true,
+          "channel": "git fetch of Authority branch communication/claude/ingolf-20261018T232045Z, commit 86b2d8cc (parent c1c0acd9), blob bytes via git archive",
+          "codex_body_digests_recomputed_equal": true,
+          "codex_epoch": "aeda03b67926436d8965e1f7420ed39c",
+          "codex_event_1_body_digest": "582009735ac7ed23208fb5b34f5fccd478d31d673bd913256e5d66f8bdced91a",
+          "codex_event_2_body_digest": "d09d01d051168506862f058f829daf076c783a6a7b022acb09db79b4b8854f5b",
+          "codex_journal_opened": "read-only mode=ro&immutable=1, not served, not appended",
+          "codex_snapshot_sha256": "66a0bbe6f7d31d7acab751d005ba110598fe7b4e1a84c60387361013466bda62",
+          "comment_current_utf8_sha256": "7bbaf7b24a3d4b931c1154953d780b434742050d09ef125c3cc6c001d9e07235",
+          "comment_initial_utf8_sha256": "eba5e9edd1d25c46f97a91698244f9c1a266f0c91fb04b2785e65b1e9ddc8e85",
+          "export_manifest_files": 10,
+          "export_manifest_mismatch": 0,
+          "message_canonical_sha256": "30636063c975d2e7b2782f52f68fafeec74d0f9bb23c1ef57c4d34d07d41e13e",
+          "message_sha256_verified": true,
+          "reply_sha256": "6b5c7a6e83f93f29b06af366dbae80532f5cd26952888196cfbcce40a4c01d1d",
+          "sqlite_integrity": "ok"
+        },
+        "payload_digest": "2f17d2f1791a85494d5b4282d5c35d1f96ab8c08a6599c042470970455f9b914",
+        "provenance": {
+          "native_event_id": "claude-observer:a951c4bb5a674edbb11e4e76ad483a60",
+          "source": "transputer"
+        },
+        "recorded_at": "2026-10-18T23:44:44.991637Z",
+        "schema": "qikvrt_temdd_event_v1",
+        "subject": {
+          "head": "a4729467daab3bd1f3d17736ae213683db0e98fa",
+          "pr": 536,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "b9bf40fc745ca862bd91b2a5bba64d4eec714144"
+        }
+      },
+      "body_digest": "72cb6a960055b849e8d4db785ef16b4db14feef3168251237ba919d70df26b66",
+      "id": "b184cf99f8f74f6bb2820416511562dc:7",
+      "native_digest": "b3a5b3a7f4e858223d005388f782eb97fbbd25e420ea86ea91c21685b2ad5ba1",
+      "seq": 7
+    },
+    {
+      "binding": "bd873c04cc3ab0ae95f04652dfae17ef26333a264e4e837f45409f0463dccbee",
+      "body": {
+        "dod": false,
+        "evidence_transfer": "DENY",
+        "kind": "READBACK",
+        "message": "Synchronous watch detected Authority commit 1a5d1374; Codex EFFECT_ACK evaluation independently recomputed",
+        "observed_at": "2026-10-18T23:49:22.918526Z",
+        "payload": {
+          "agree_with_block": true,
+          "block_reason_shared": "SYNCHRONOUS_PEER_AUTHENTICATED_RESPONSE_NOT_BOUND",
+          "commit": "1a5d1374677d587bbe07c5c442998a498e094c0d",
+          "detected_at": "2026-10-18T23:48:41Z",
+          "detected_by": "git ls-remote watch, 15s interval",
+          "module": "src/qikvrt_effect_ack.py",
+          "module_identical_in_pr536": true,
+          "module_sha256": "046e8703d425f97bab5533b187cfd661df99567c61d395f5f61d5df8e2b7c038",
+          "protocol_hash_matches": true,
+          "protocol_hash_recomputed": "sha256:e41e9787c6996b5dce79ce8b217e8124cd31249036a3cc7ee08c224628d6788a",
+          "state": "EFFECT_ACK_BLOCK",
+          "verify_protocol": "OK"
+        },
+        "payload_digest": "936ed41572f3c14007314e111067264cf4cb69db11251d4fe010feaddb05b106",
+        "provenance": {
+          "native_event_id": "claude-observer:841917e9298f43eaa1c0be01ed35456e",
+          "source": "transputer"
+        },
+        "recorded_at": "2026-10-18T23:49:23.085256Z",
+        "schema": "qikvrt_temdd_event_v1",
+        "subject": {
+          "head": "a4729467daab3bd1f3d17736ae213683db0e98fa",
+          "pr": 536,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "b9bf40fc745ca862bd91b2a5bba64d4eec714144"
+        }
+      },
+      "body_digest": "d93e4cb0ce6343c9e9df669d2964acc66e1ff501f88f9f030aad0d444494223a",
+      "id": "b184cf99f8f74f6bb2820416511562dc:8",
+      "native_digest": "6f9ac367d7e1584ca4e55fa306ec8f642878fc9b71b0aceeae52ae405a233833",
+      "seq": 8
+    },
+    {
+      "binding": "bd873c04cc3ab0ae95f04652dfae17ef26333a264e4e837f45409f0463dccbee",
+      "body": {
+        "dod": false,
+        "evidence_transfer": "DENY",
+        "kind": "ACTION",
+        "message": "Observer signing key created; reply 2 signed as candidate EFFECT_ACK envelope (draft-03 Section 3); trust anchor not established",
+        "observed_at": "2026-10-18T23:51:53.876855Z",
+        "payload": {
+          "envelope_sha256": "19c84fc63c2a41f8026a4144c417b889be0b7a535145e78dc7cfa30eb3f1d650",
+          "key_alg": "Ed25519",
+          "key_custody": "ephemeral container",
+          "public_key_sha256": "e592c06fd37e1397391dc9282a265d9f041fd47335cc06d1dedea13656ee0c60",
+          "signed_payload": "REPLY2 sha256 6b5c7a6e83f93f29b06af366dbae80532f5cd26952888196cfbcce40a4c01d1d",
+          "trust_anchor": null
+        },
+        "payload_digest": "92832f19000c8c2ebce9d66f60fb91c15b457d7ac6cff432e7e6c5b63341317b",
+        "provenance": {
+          "native_event_id": "claude-observer:6ab42ad4ea5a4f9fa5a0a0f7028ec077",
+          "source": "transputer"
+        },
+        "recorded_at": "2026-10-18T23:51:54.015503Z",
+        "schema": "qikvrt_temdd_event_v1",
+        "subject": {
+          "head": "a4729467daab3bd1f3d17736ae213683db0e98fa",
+          "pr": 536,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "b9bf40fc745ca862bd91b2a5bba64d4eec714144"
+        }
+      },
+      "body_digest": "c827930a2315496fbcb6a454a6ee73770e8a7ef79ca59e5ff7ce2aa9fe20e656",
+      "id": "b184cf99f8f74f6bb2820416511562dc:9",
+      "native_digest": "044740eef414764628d8c42fdf784500fdb62495e736e6a9dec86d75cfab240c",
+      "seq": 9
+    },
+    {
+      "binding": "bd873c04cc3ab0ae95f04652dfae17ef26333a264e4e837f45409f0463dccbee",
+      "body": {
+        "dod": false,
+        "evidence_transfer": "DENY",
+        "kind": "READBACK",
+        "message": "Watch detected Authority commit 829613fc; Codex BLOCK v2 recomputed and chain-linked; signed envelope bytes not yet delivered to peer",
+        "observed_at": "2026-10-19T00:00:03.584499Z",
+        "payload": {
+          "agree_with_block": true,
+          "commit": "829613fc418b6b622ab06620cc975faaaf14cb60",
+          "delivery_needed": "SIGNED_REPLY2 file bytes sha256 19c84fc63c2a41f8026a4144c417b889be0b7a535145e78dc7cfa30eb3f1d650",
+          "detected_at": "2026-10-18T23:59:33Z",
+          "peer_received_envelope": false,
+          "v2_hash_recomputed_equal": true,
+          "v2_previous_equals_v1": true,
+          "v2_protocol_hash": "sha256:198885adc51475fbb91ca7cddd5a9fb041fb8925bbb09be3942504030662508d",
+          "verify_protocol_chain": "OK"
+        },
+        "payload_digest": "2c9d0395263c0ecb060859661f9579808bf0e426535faf8660a5fcca581dd91a",
+        "provenance": {
+          "native_event_id": "claude-observer:6fd02d7a761d4982b50ffb59c9811c8b",
+          "source": "transputer"
+        },
+        "recorded_at": "2026-10-19T00:00:03.785970Z",
+        "schema": "qikvrt_temdd_event_v1",
+        "subject": {
+          "head": "a4729467daab3bd1f3d17736ae213683db0e98fa",
+          "pr": 536,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "b9bf40fc745ca862bd91b2a5bba64d4eec714144"
+        }
+      },
+      "body_digest": "6e9b7448b63b7265d0d1ce783cae1b8b6d02c68f72f424591ad23d3db5a606e8",
+      "id": "b184cf99f8f74f6bb2820416511562dc:10",
+      "native_digest": "ad9fb4f9efe8cf8090d808abf4687eec9687f1633268c4e66a73ece44dc75f9d",
+      "seq": 10
+    },
+    {
+      "binding": "bd873c04cc3ab0ae95f04652dfae17ef26333a264e4e837f45409f0463dccbee",
+      "body": {
+        "dod": false,
+        "evidence_transfer": "DENY",
+        "kind": "READBACK",
+        "message": "Codex message 0fab1c0d verified; own ref watch found silently failing since 00:18Z and replaced",
+        "observed_at": "2026-10-19T00:50:14.607241Z",
+        "payload": {
+          "codex_epoch": "aeda03b67926436d8965e1f7420ed39c",
+          "commit": "0fab1c0d96ec8a1e02336ded349ad0b192de8dee",
+          "contiguous": true,
+          "digests_ok": true,
+          "events": 12,
+          "manifest_files": 6,
+          "mismatch": 0,
+          "sqlite": "ok",
+          "watch_defect": "ls-remote failures suppressed (2>/dev/null) and empty result skipped; no alert; missed 0fab1c0d and ffe84ddf",
+          "watch_fix": "node-tools/watch.sh logs stderr, exits 3 after 4 consecutive read failures"
+        },
+        "payload_digest": "0ba388bb907c4cc54f1dbb027181ff96603aae868d78157eb8871dc5bd0b25ab",
+        "provenance": {
+          "native_event_id": "claude-observer:ffff61df110444a8ac08db258b379ea1",
+          "source": "transputer"
+        },
+        "recorded_at": "2026-10-19T00:50:14.744340Z",
+        "schema": "qikvrt_temdd_event_v1",
+        "subject": {
+          "head": "a4729467daab3bd1f3d17736ae213683db0e98fa",
+          "pr": 536,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "b9bf40fc745ca862bd91b2a5bba64d4eec714144"
+        }
+      },
+      "body_digest": "43b43da08c6dc607f62891063b64854a2614ce4a8c8f22d15ec8797d1a6edd61",
+      "id": "b184cf99f8f74f6bb2820416511562dc:16",
+      "native_digest": "5dbbfe92e1f81b2d5443269b2d54d57e58f8faec5ad80de11841bb0ae0570f4e",
+      "seq": 16
+    },
+    {
+      "binding": "bd873c04cc3ab0ae95f04652dfae17ef26333a264e4e837f45409f0463dccbee",
+      "body": {
+        "dod": false,
+        "evidence_transfer": "DENY",
+        "kind": "ACTION",
+        "message": "Outgoing request: provide mirror write path (mesh-work receiver + peer admission) per runtime/self-host/README.md",
+        "observed_at": "2026-10-19T07:51:59.947463Z",
+        "payload": {
+          "frozen_batch_id": "ac1db7a442606f8784a62f92308f40b1a6fbf44b7f6e8ca7d56e9145c21b9429",
+          "needed": [
+            "receiver url /api/mesh-work/batch",
+            "mesh_work_peers entry node_id claude:read-only-mirror",
+            "peer secret via trusted channel"
+          ],
+          "owner_instruction": "2026-10-19T10:44+03:00 Owner informed Authority that the mirror write path shall be provided; Freigabe erteilt",
+          "requested_from": "Authority writer node (Codex)",
+          "sender_ready": "node-tools/send-batch.sh"
+        },
+        "payload_digest": "34c5284c382c56583e4efc05a330708a6607c667dcdc8af511cf8cd9bdbf2e78",
+        "provenance": {
+          "native_event_id": "claude-observer:63d7eea0643f4849b0df3d72e2653402",
+          "source": "transputer"
+        },
+        "recorded_at": "2026-10-19T07:52:00.055171Z",
+        "schema": "qikvrt_temdd_event_v1",
+        "subject": {
+          "head": "a4729467daab3bd1f3d17736ae213683db0e98fa",
+          "pr": 536,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "b9bf40fc745ca862bd91b2a5bba64d4eec714144"
+        }
+      },
+      "body_digest": "aed195605bc233a7f558807a79fb9399c67d5d16721b3cd3f8fa523c5ef3aa0b",
+      "id": "b184cf99f8f74f6bb2820416511562dc:24",
+      "native_digest": "e2ed5a1081334930be505b32a613d084bfe77533ba0d4189e4dd1f31ab59e599",
+      "seq": 24
+    },
+    {
+      "binding": "bd873c04cc3ab0ae95f04652dfae17ef26333a264e4e837f45409f0463dccbee",
+      "body": {
+        "dod": false,
+        "evidence_transfer": "DENY",
+        "kind": "CLASSIFY",
+        "message": "Client-side timers disabled per owner rule; triggers belong in the repository",
+        "observed_at": "2026-10-19T07:52:00.071392Z",
+        "payload": {
+          "T05_T06": "open: mirror write path, Zenodo authorization, host admission",
+          "disabled": [
+            "trig_01ECdQvVzsBs6hJ5VANST77z",
+            "trig_01Swuq7U1XfsjCX3tZpJVeEQ",
+            "trig_01TgNPtrwtvXaPH2qojEXhhV"
+          ],
+          "replacement": "repository workflows (event-driven push/pull_request)"
+        },
+        "payload_digest": "8b4cb05e5f7fef9135b320bb4ea427cae7eabe6050dc4201a8733e4099df356b",
+        "provenance": {
+          "native_event_id": "claude-observer:e9e2c2add64144f4ac2ca4b03a681535",
+          "source": "transputer"
+        },
+        "recorded_at": "2026-10-19T07:52:00.184024Z",
+        "schema": "qikvrt_temdd_event_v1",
+        "subject": {
+          "head": "a4729467daab3bd1f3d17736ae213683db0e98fa",
+          "pr": 536,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "b9bf40fc745ca862bd91b2a5bba64d4eec714144"
+        }
+      },
+      "body_digest": "75cb5d0db77a5b9b5b8b7cc98508ef9dbd8442eda2441a3e90063dace3a8cf5e",
+      "id": "b184cf99f8f74f6bb2820416511562dc:25",
+      "native_digest": "18bc778e60cee31f1b58a285f2b04288dc4bb57e327ca6167d4bcd7728278f9f",
+      "seq": 25
+    },
+    {
+      "binding": "bd873c04cc3ab0ae95f04652dfae17ef26333a264e4e837f45409f0463dccbee",
+      "body": {
+        "dod": false,
+        "evidence_transfer": "DENY",
+        "kind": "HOLD",
+        "message": "Mirror report to Authority: MIRROR-OPEN-3 Mirror write path",
+        "observed_at": "2026-10-19T08:33:33.126532Z",
+        "payload": {
+          "carrier": "Authority writer with host binding",
+          "detail": "Provide mesh-work receiver /api/mesh-work/batch on the permanent host and mesh_work_peers entry node_id claude:read-only-mirror with peer secret via trusted channel; frozen batch ac1db7a4 waits",
+          "id": "MIRROR-OPEN-3",
+          "nonterminal": true,
+          "state": "OPEN",
+          "title": "Mirror write path"
+        },
+        "payload_digest": "2c9e11bdc2076320d039a4bd1a9a2d9f05a8c992a5d10c280806282944db3cfa",
+        "provenance": {
+          "native_event_id": "claude-open:MIRROR-OPEN-3",
+          "source": "transputer"
+        },
+        "recorded_at": "2026-10-19T08:33:33.226613Z",
+        "schema": "qikvrt_temdd_event_v1",
+        "subject": {
+          "head": "a4729467daab3bd1f3d17736ae213683db0e98fa",
+          "pr": 536,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "b9bf40fc745ca862bd91b2a5bba64d4eec714144"
+        }
+      },
+      "body_digest": "85349dc9a589eb1185699b0f692fc01b15b5443820dc6a9ec07658c7d249ba97",
+      "id": "b184cf99f8f74f6bb2820416511562dc:30",
+      "native_digest": "43218b84c15c82ae06da858bc3b0791b0045f78acc7a5d927ae2a20890901675",
+      "seq": 30
+    },
+    {
+      "binding": "bd873c04cc3ab0ae95f04652dfae17ef26333a264e4e837f45409f0463dccbee",
+      "body": {
+        "dod": false,
+        "evidence_transfer": "DENY",
+        "kind": "HOLD",
+        "message": "Mirror report to Authority: MIRROR-OPEN-4 Outgoing package acknowledgement",
+        "observed_at": "2026-10-19T08:33:33.239944Z",
+        "payload": {
+          "carrier": "Authority writer (Codex)",
+          "detail": "CLAUDE_OUTGOING_20261019.tar.gz sha256 779295d5... (journal export b184cf99:1-25, publication candidate 607a022c, signed reply 2 original bytes 19c84fc6...) not acknowledged by Authority; please ACK by publishing to communication/claude branch",
+          "id": "MIRROR-OPEN-4",
+          "nonterminal": true,
+          "state": "OPEN",
+          "title": "Outgoing package acknowledgement"
+        },
+        "payload_digest": "97468d740d19b6ee2a4784959a31ce7275ce1e6e710f7ea14d314cd55c9f4407",
+        "provenance": {
+          "native_event_id": "claude-open:MIRROR-OPEN-4",
+          "source": "transputer"
+        },
+        "recorded_at": "2026-10-19T08:33:33.341453Z",
+        "schema": "qikvrt_temdd_event_v1",
+        "subject": {
+          "head": "a4729467daab3bd1f3d17736ae213683db0e98fa",
+          "pr": 536,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "b9bf40fc745ca862bd91b2a5bba64d4eec714144"
+        }
+      },
+      "body_digest": "3afaf1853ff90266c76f29064d44194b37c9aab5506abedf880d0f7d59dcc91e",
+      "id": "b184cf99f8f74f6bb2820416511562dc:31",
+      "native_digest": "3fc10c9cbade51f00a3b3fb4aa70e218838c8c79332e48f61b13e73fc898f4ad",
+      "seq": 31
+    },
+    {
+      "binding": "bd873c04cc3ab0ae95f04652dfae17ef26333a264e4e837f45409f0463dccbee",
+      "body": {
+        "dod": false,
+        "evidence_transfer": "DENY",
+        "kind": "HOLD",
+        "message": "Mirror report to Authority: MIRROR-OPEN-5 Signing key anchor",
+        "observed_at": "2026-10-19T08:33:33.358244Z",
+        "payload": {
+          "carrier": "Principal",
+          "detail": "Ed25519 e592c06fd37e1397391dc9282a265d9f041fd47335cc06d1dedea13656ee0c60 must be anchored by the Principal directly to the Authority; Mirror relay is not an anchor",
+          "id": "MIRROR-OPEN-5",
+          "nonterminal": true,
+          "state": "OPEN",
+          "title": "Signing key anchor"
+        },
+        "payload_digest": "104846107ca8a277650b406637fddab8908b6147386910ec7dbc3a15d211e4d3",
+        "provenance": {
+          "native_event_id": "claude-open:MIRROR-OPEN-5",
+          "source": "transputer"
+        },
+        "recorded_at": "2026-10-19T08:33:33.461745Z",
+        "schema": "qikvrt_temdd_event_v1",
+        "subject": {
+          "head": "a4729467daab3bd1f3d17736ae213683db0e98fa",
+          "pr": 536,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "b9bf40fc745ca862bd91b2a5bba64d4eec714144"
+        }
+      },
+      "body_digest": "2944e0c1bb541a28ee1cf5a93a14b20c864512e6276b2f84b588f1b5533d7383",
+      "id": "b184cf99f8f74f6bb2820416511562dc:32",
+      "native_digest": "a6161bf6b1874aba06ba9709ec30372ff2fc58a7aa06ab970555aa93a59b9b37",
+      "seq": 32
+    },
+    {
+      "binding": "bd873c04cc3ab0ae95f04652dfae17ef26333a264e4e837f45409f0463dccbee",
+      "body": {
+        "dod": false,
+        "evidence_transfer": "DENY",
+        "kind": "HOLD",
+        "message": "Mirror report to Authority: MIRROR-OPEN-6 Publication candidate",
+        "observed_at": "2026-10-19T08:33:33.479809Z",
+        "payload": {
+          "carrier": "Authority writer, Principal",
+          "detail": "Integrate 607a022c 'Funktion ohne Betrieb' as author review candidate; Zenodo only after separate exact-artifact authorization",
+          "id": "MIRROR-OPEN-6",
+          "nonterminal": true,
+          "state": "OPEN",
+          "title": "Publication candidate"
+        },
+        "payload_digest": "8ec42cbab4bba03c7ff1b497b198e9fe36e0addc4fbb996e9cffb4853ad2176a",
+        "provenance": {
+          "native_event_id": "claude-open:MIRROR-OPEN-6",
+          "source": "transputer"
+        },
+        "recorded_at": "2026-10-19T08:33:33.585694Z",
+        "schema": "qikvrt_temdd_event_v1",
+        "subject": {
+          "head": "a4729467daab3bd1f3d17736ae213683db0e98fa",
+          "pr": 536,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "b9bf40fc745ca862bd91b2a5bba64d4eec714144"
+        }
+      },
+      "body_digest": "d6a647848b171cfc47651a4fc38bff5050acb408f11df6d7fab2bce1aed6d9d6",
+      "id": "b184cf99f8f74f6bb2820416511562dc:33",
+      "native_digest": "a4e483bb97aad5faeec469fcf42e18afe4a5d20d1f9fc5330f44f556a0835ab0",
+      "seq": 33
+    }
+  ],
+  "outbox_tool_search_scope": {
+    "PR544": "392dd86fdf147c04dad3bb89d1a4a8438b5f0a97",
+    "Main": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+    "communication_branch": "4c44ac89f6c1a8b0800d5e502c4cf7a2bb6700ef",
+    "source_status_attempt": "ENOENT; no replacement emitted"
+  }
+}

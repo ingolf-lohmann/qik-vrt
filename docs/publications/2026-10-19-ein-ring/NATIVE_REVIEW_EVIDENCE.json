@@ -1,0 +1,128 @@
+{
+  "schema": "qikvrt-ein-ring-own-native-review-evidence/1",
+  "subject": {
+    "head": "392dd86fdf147c04dad3bb89d1a4a8438b5f0a97",
+    "pr": 544,
+    "repository": "ingolf-lohmann/qik-vrt",
+    "tree": "ea21882417b1558e4c0ef52000ed5a88ed496d13"
+  },
+  "original_components": [
+    "src/qikvrt_temdd_event_ledger.py",
+    "src/qikvrt_effect_ack_http_terminal.py",
+    "tools/qikvrt_self_host.py:OwnerREST"
+  ],
+  "route": "Existing in-process prepare/commit/readback; socket bind EPERM, no socket mocked",
+  "own_admission_scope": "Current own physical session state; not another node or public host",
+  "receipts": [
+    {
+      "dod": false,
+      "evidence_transfer": "DENY",
+      "id": "da3bd599707a469fb6dbcdd7b398a2e9:1",
+      "kind": "OBSERVE",
+      "ledger_digest": "5109cbcf13b0ab763e8f79edb13f1cb34173ce1e6f9d52ed67eea2075e00336d",
+      "message": "Universal Terminal: hash-bound durable input observation",
+      "observed_at": "2026-10-19T14:38:07Z",
+      "payload": {
+        "adapter": "QIKVRT_OWNER_REST_TERMINAL_V1",
+        "effect_ack_done": false,
+        "input_hash": "sha256:cd1862b2e22e62c0677a32ebf913c61bc281129ddcbebda0f73987b4388a6906",
+        "principal": "Codex:PR544:OwnerAuthorizedAudit",
+        "request_id": "pr544-independent-source-audit-input",
+        "terminal_input": {
+          "schema": "qikvrt_terminal_input_v1",
+          "text": "Ingolf Lohmann authorizes an independent, source-bound review of Claude article Ein Ring in existing PR544. Preserve original manuscript, hashes, signed bundle and all provenance; compare original journals, exact repository versions, message receipts and existing EFFECT_ACK proofs. Prepare an additive correction note on existing PR544. Separate observations, historical states, inference and unsupported claims. Check human effort baseline and actual Claude/Codex communication directions. No new service, parallel executor, merge bypass or scientific publication inferred from supplied adoption statement. Socket bind returned EPERM in this client; use existing original in-process OwnerREST/Runtime/Terminal with own physical journal, never copied foreign journals as writers.\n"
+        }
+      },
+      "payload_digest": "25ba0e57770364471e642b781bdb2927f30dbd00afb91a7581d77a1e1a402d12",
+      "provenance": {
+        "native_event_id": "terminal:8184f7558fa8af9fa907f12cca7093fa344404a4f7fb4339",
+        "source": "transputer"
+      },
+      "recorded_at": "2026-10-19T14:38:07.224060Z",
+      "schema": "qikvrt_temdd_event_v1",
+      "subject": {
+        "head": "392dd86fdf147c04dad3bb89d1a4a8438b5f0a97",
+        "pr": 544,
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "ea21882417b1558e4c0ef52000ed5a88ed496d13"
+      }
+    },
+    {
+      "dod": false,
+      "evidence_transfer": "DENY",
+      "id": "da3bd599707a469fb6dbcdd7b398a2e9:3",
+      "kind": "HOLD",
+      "ledger_digest": "c5fdb18219d5803605d67ae7a164b75694d1dd95ecf21e7eaccf72cc98e2a4e9",
+      "message": "Original Mirror assessment/outbox tool is missing from inspected native sources; preserve original supplied protocol and source carrier without replacement",
+      "observed_at": "2026-10-19T14:39:08.920940Z",
+      "payload": {
+        "next_action": "Recover original tool via admitted existing native source route; use status/assess-or-adopt/package and node claim only after its real binding is available",
+        "no_new_assess_or_adopt": true,
+        "no_receiver_nack_created": true,
+        "no_send_or_receipt_or_claim_created": true,
+        "observed_error": "ENOENT on exact PR544 carrier",
+        "original_tool": "node-tools/qikvrt_mirror_emit.py",
+        "requested_owner_relay": false,
+        "source_carrier": "Original Claude Mirror tool with its admitted source, journal, signer and node binding",
+        "status_attempt": "python3 -B node-tools/qikvrt_mirror_emit.py status"
+      },
+      "payload_digest": "27a571e0617c2716c8d09af02439cee488929dfab8e1bf9eff6ae14930701194",
+      "provenance": {
+        "native_event_id": "pr544-original-outbox-source-boundary",
+        "source": "transputer"
+      },
+      "recorded_at": "2026-10-19T14:39:08.933376Z",
+      "schema": "qikvrt_temdd_event_v1",
+      "subject": {
+        "head": "392dd86fdf147c04dad3bb89d1a4a8438b5f0a97",
+        "pr": 544,
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "ea21882417b1558e4c0ef52000ed5a88ed496d13"
+      }
+    },
+    {
+      "dod": false,
+      "evidence_transfer": "DENY",
+      "id": "da3bd599707a469fb6dbcdd7b398a2e9:2",
+      "kind": "READBACK",
+      "ledger_digest": "ea0133ded40973df26e6252706dacf0c8b92efc4735ea532a142aedf93e24e59",
+      "message": "Independently verified original manuscript, signed bundle, report33 immutable journal and signed reply2; no peer identity or productive delivery inferred",
+      "observed_at": "2026-10-19T14:39:08.756042Z",
+      "payload": {
+        "article_sha256": "7649987164e78a88393b5195c28eed30c96951bc678fbb12f4c63271ee65c277",
+        "bundle_sha256": "fa7cd1c711d2c21e101fde3b33b0b81f0b552dfcc2359220c3e56a46629d2227",
+        "effort_baseline_present": false,
+        "journal_epoch": "b184cf99f8f74f6bb2820416511562dc",
+        "journal_events": 33,
+        "journal_snapshot_sha256": "87c81ad02f7b8da1f79a4ff41b065ce6b8643dcd053c70be29c5e0b0dc880d5d",
+        "missing_cited_events": [
+          49,
+          50,
+          51,
+          52,
+          53,
+          54
+        ],
+        "new_formal_effect_ack_assessment_created": false,
+        "peer_identity_anchor_verified": false,
+        "verification_path": "evidence/ORIGINAL_AUDIT.json"
+      },
+      "payload_digest": "dc7cce6aa3a597dd533738a557186e48c64e55ff7e16f3305990f61ac95bf8b6",
+      "provenance": {
+        "native_event_id": "pr544-original-source-verification",
+        "source": "transputer"
+      },
+      "recorded_at": "2026-10-19T14:39:08.768851Z",
+      "schema": "qikvrt_temdd_event_v1",
+      "subject": {
+        "head": "392dd86fdf147c04dad3bb89d1a4a8438b5f0a97",
+        "pr": 544,
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "ea21882417b1558e4c0ef52000ed5a88ed496d13"
+      }
+    }
+  ],
+  "fresh_terminal_cold_readback_required": true,
+  "formal_outbox_assessment_created": false,
+  "copied_original_writer_resumed": false
+}
