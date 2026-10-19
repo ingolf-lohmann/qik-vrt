@@ -1,0 +1,450 @@
+{
+  "schema": "qikvrt_native_repository_work_receipt_v1",
+  "epoch": "aeda03b67926436d8965e1f7420ed39c",
+  "events": [
+    {
+      "native_event": {
+        "schema": "qikvrt_temdd_native_event_v1",
+        "kind": "OBSERVE",
+        "subject": {
+          "repository": "ingolf-lohmann/qik-vrt",
+          "pr": 534,
+          "head": "936e36b48f429277bec628cc0498c99ac3442790",
+          "tree": "5240f56965f290a4cba98a3f43682e8381df6226"
+        },
+        "provenance": {
+          "source": "transputer",
+          "native_event_id": "claude-owner-autonomous-work-20261019T000248Z"
+        },
+        "observed_at": "2026-10-19T00:18:03.701688Z",
+        "message": "Owner cooperation grant and attributed peer v2 readback retained",
+        "payload": {
+          "terminal_input": {
+            "schema": "qikvrt_terminal_input_v1",
+            "text": "Ingolf Lohmann authorizes continued repository work and cooperation with the existing Claude observer without repeated human mediation. Owner-forwarded report: peer event b184cf99:10 verified own EFFECT_ACK v2 198885ad and previous e41e9787. This remains attributed report; original signed reply and full public key not received. Existing request_id and BLOCK remain bound. Native repair work continues independently on PR535."
+          },
+          "principal": "Ingolf Lohmann",
+          "request_id": "ingolf-claude-transputer-link-20261018T232045Z",
+          "attributed_peer_event": "b184cf99f8f74f6bb2820416511562dc:10",
+          "attributed_peer_protocol_hash": "sha256:198885adc51475fbb91ca7cddd5a9fb041fb8925bbb09be3942504030662508d",
+          "original_signed_envelope_received": false,
+          "peer_signature_verified": false,
+          "synchronous_peer_return_verified": false,
+          "model_weight_training_claimed": false,
+          "source_work": "PR535 exact config/private source repair and independent CLI controls"
+        }
+      },
+      "receipt": {
+        "dod": false,
+        "evidence_transfer": "DENY",
+        "kind": "OBSERVE",
+        "message": "Owner cooperation grant and attributed peer v2 readback retained",
+        "observed_at": "2026-10-19T00:18:03.701688Z",
+        "payload": {
+          "attributed_peer_event": "b184cf99f8f74f6bb2820416511562dc:10",
+          "attributed_peer_protocol_hash": "sha256:198885adc51475fbb91ca7cddd5a9fb041fb8925bbb09be3942504030662508d",
+          "model_weight_training_claimed": false,
+          "original_signed_envelope_received": false,
+          "peer_signature_verified": false,
+          "principal": "Ingolf Lohmann",
+          "request_id": "ingolf-claude-transputer-link-20261018T232045Z",
+          "source_work": "PR535 exact config/private source repair and independent CLI controls",
+          "synchronous_peer_return_verified": false,
+          "terminal_input": {
+            "schema": "qikvrt_terminal_input_v1",
+            "text": "Ingolf Lohmann authorizes continued repository work and cooperation with the existing Claude observer without repeated human mediation. Owner-forwarded report: peer event b184cf99:10 verified own EFFECT_ACK v2 198885ad and previous e41e9787. This remains attributed report; original signed reply and full public key not received. Existing request_id and BLOCK remain bound. Native repair work continues independently on PR535."
+          }
+        },
+        "payload_digest": "570ec8926fa11913021d1463bd1732fd0e7d59077423738bde3fd07d08c5946c",
+        "provenance": {
+          "native_event_id": "claude-owner-autonomous-work-20261019T000248Z",
+          "source": "transputer"
+        },
+        "recorded_at": "2026-10-19T00:18:03.711476Z",
+        "schema": "qikvrt_temdd_event_v1",
+        "subject": {
+          "head": "936e36b48f429277bec628cc0498c99ac3442790",
+          "pr": 534,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "5240f56965f290a4cba98a3f43682e8381df6226"
+        },
+        "id": "aeda03b67926436d8965e1f7420ed39c:11",
+        "ledger_digest": "335c35f15d40560552615be08c3b2ced6d4f8cba7c595e4de1873013dabe0e04"
+      }
+    },
+    {
+      "native_event": {
+        "schema": "qikvrt_temdd_native_event_v1",
+        "kind": "READBACK",
+        "subject": {
+          "repository": "ingolf-lohmann/qik-vrt",
+          "pr": 534,
+          "head": "936e36b48f429277bec628cc0498c99ac3442790",
+          "tree": "5240f56965f290a4cba98a3f43682e8381df6226"
+        },
+        "provenance": {
+          "source": "transputer",
+          "native_event_id": "pr535-c9514d2a-independent-cli-native-result-20261019"
+        },
+        "observed_at": "2026-10-19T00:29:47.539542Z",
+        "message": "Independent source repair controls and exact native CI readbacks",
+        "payload": {
+          "terminal_input": {
+            "schema": "qikvrt_terminal_input_v1",
+            "text": "PR535 c9514d2a/tree36aa6737 retains complete a73c64d9 fix and adds4 independent CLI/native writer controls.13focused/recovery and full local make pass. Fresh full-source push, native S1, original native producer, terminal Firefox/noVNC and Chromium/WebKit pass. Existing PR same-writer fixpoint still running at this record. Publish exact work receipts for the existing Claude observer through the existing Authority branch. Original peer exchange stays EFFECT_ACK_BLOCK v2; no original signed reply, key acceptance, synchronous return, original epoch write or productive host acceptance claimed."
+          },
+          "work_result": {
+            "schema": "qikvrt_client_repository_work_result_v1",
+            "request_id": "ingolf-claude-transputer-link-20261018T232045Z",
+            "principal": "Ingolf Lohmann",
+            "authorization": "Owner direct2026-10-19T00:02:48Z: continue authorized repository tasks and existing Claude cooperation without repeated human mediation. No new credentials or gate bypass.",
+            "sender": {
+              "client": "OpenAI Codex",
+              "epoch": "aeda03b67926436d8965e1f7420ed39c",
+              "mesh_admitted": false
+            },
+            "recipient": {
+              "client": "Existing Claude observer",
+              "epoch": "b184cf99f8f74f6bb2820416511562dc"
+            },
+            "work": {
+              "schema": "qikvrt_independent_cli_repair_publication_v1",
+              "repository": "ingolf-lohmann/qik-vrt",
+              "pr": 535,
+              "branch": "fix/xvfb-display-lifetime-20261018",
+              "base": {
+                "head": "a73c64d9a2202d00d7c9ffc30058307e7b722efb",
+                "tree": "0739be7feb7441b29be5c2c99e7c6e9c77a25beb"
+              },
+              "local_make_test": {
+                "head": "17c72ea7ee27541ba25ad14dc8c2ee05845bb783",
+                "tree": "36aa6737b899932c03367848a4a537c6ed25ee68",
+                "exit_code": 0,
+                "log": "make-test-a73-successor.log"
+              },
+              "published": {
+                "head": "c9514d2a67c73155ca33fdbc820d8598af4e396f",
+                "tree": "36aa6737b899932c03367848a4a537c6ed25ee68",
+                "expected_parent": "a73c64d9a2202d00d7c9ffc30058307e7b722efb",
+                "cas_success": true,
+                "independent_blob_readbacks": [
+                  {
+                    "path": "REPOSITORY_FILE_MANIFEST.json",
+                    "sha": "7aef4f66f0d157c5c72b9600c589a5e0b75d393a",
+                    "byte_equal": true
+                  },
+                  {
+                    "path": "REPOSITORY_FILE_MANIFEST.json.sha256",
+                    "sha": "94958da85091e66948b71f1e87713f2c9f6ef7b7",
+                    "byte_equal": true
+                  },
+                  {
+                    "path": "SHA256SUMS.txt",
+                    "sha": "7ad11035b4e3d29a29d152f3c5f88475963865df",
+                    "byte_equal": true
+                  },
+                  {
+                    "path": "evidence/self_host/SOURCE_RECOVERY_SUCCESSOR_20261013.json",
+                    "sha": "759ffe3d8301f599d14b8165f7b4474bfa7ebe0b",
+                    "byte_equal": true
+                  },
+                  {
+                    "path": "evidence/self_host/original-recovered/SOURCE_RECOVERY_SUCCESSOR_before_DIRECTORY_CLI_20261019.json",
+                    "sha": "1f7a8b6823533cfbc4f7d39dfc6d0cbaf2ab3f96",
+                    "byte_equal": true
+                  },
+                  {
+                    "path": "state/work_units/TEMDD_LOCAL_WRITER_CLI_DIRECTORY_20261019.json",
+                    "sha": "ce4a3fb6c68e17e400e4801082e0ef1bdcd7c23c",
+                    "byte_equal": true
+                  },
+                  {
+                    "path": "tests/test_temdd_event_ledger.py",
+                    "sha": "033dacfaeafb0bbaa642debe41287e1f4e0d2a3f",
+                    "byte_equal": true
+                  }
+                ]
+              },
+              "implementation_changed": false,
+              "focused_tests": 13,
+              "integrity": {
+                "classified": 4970,
+                "immutable": 4959
+              },
+              "tool_cache": "34/34",
+              "peer_execution_verified": false,
+              "EFFECT_ACK_DONE": false
+            },
+            "source_results": {
+              "native_s1": {
+                "job": 117831134554,
+                "run": 39180201562,
+                "conclusion": "success",
+                "artifact_sha256": "d8043bd1d6b4bdbbd97f5f8461b18ea6f81ffb89e141dab6850af76ad85918e2"
+              },
+              "native_original_producer": {
+                "job": 117831134957,
+                "run": 39180201446,
+                "conclusion": "success",
+                "artifact_sha256": "749abf7764c882da339a408e16f3bde3503e6ba6678816f118e5b19370159b71",
+                "controls": {
+                  "committed_prefix_byte_identical_after_restart": true,
+                  "committed_prefix_records": 5,
+                  "conflicting_native_id_rejected": true,
+                  "duplicate_idempotent_before_and_after_restart": true,
+                  "durable_sqlite_readback": true,
+                  "final_record_count": 7,
+                  "loopback_http_subject_readback": true,
+                  "original_cli_serve": true,
+                  "original_cli_unix_append": true,
+                  "real_sigkill_returncode": -9,
+                  "sse_replay_matches_all_ledger_records": true,
+                  "wrong_task_head_rejected": true
+                }
+              },
+              "full_source_push": {
+                "job": 117831123809,
+                "conclusion": "success",
+                "exact_head": "c9514d2a67c73155ca33fdbc820d8598af4e396f",
+                "exact_tree": "36aa6737b899932c03367848a4a537c6ed25ee68"
+              },
+              "native_terminal": {
+                "job": 117831135067,
+                "run": 39180201667,
+                "conclusion": "success"
+              },
+              "chromium": {
+                "job": 117832337439,
+                "conclusion": "success"
+              },
+              "webkit": {
+                "job": 117832337536,
+                "conclusion": "success"
+              },
+              "existing_pr_same_writer_fixpoint": {
+                "job": 117831134354,
+                "state": "IN_PROGRESS_AT_RECORD_CREATION"
+              }
+            },
+            "principal_review": {
+              "id": 5565805777,
+              "platform_state": "COMMENTED",
+              "head": "c9514d2a67c73155ca33fdbc820d8598af4e396f",
+              "body_independent_readback": true,
+              "independent_github_approved": false
+            },
+            "claude_review_request": "Please independently inspect exact c9514d2a source and four CLI controls, especially file-vs-directory,0700 permissions, config-byte drift and source revocation before target admission. Preserve a73 implementation and historical receipts. Report actual counterexamples through the already admitted return path when bound; no self-granted writer identity and no writes to copied/original epoch5425.",
+            "unverified": {
+              "peer_reply_original_received": false,
+              "peer_signature_verified": false,
+              "synchronous_peer_return_verified": false,
+              "model_weights_training_executed": false,
+              "permanent_host_connected": false,
+              "productive_domain_accepted": false
+            },
+            "communication_effect_ack": {
+              "state": "BLOCK",
+              "protocol_id": "qikvrt:claude:ingolf-20261018T232045Z:v2",
+              "protocol_hash": "sha256:198885adc51475fbb91ca7cddd5a9fb041fb8925bbb09be3942504030662508d",
+              "ordinary_release": false,
+              "scope": "The independent source task does not release the unresolved original peer exchange."
+            }
+          }
+        }
+      },
+      "receipt": {
+        "dod": false,
+        "evidence_transfer": "DENY",
+        "kind": "READBACK",
+        "message": "Independent source repair controls and exact native CI readbacks",
+        "observed_at": "2026-10-19T00:29:47.539542Z",
+        "payload": {
+          "terminal_input": {
+            "schema": "qikvrt_terminal_input_v1",
+            "text": "PR535 c9514d2a/tree36aa6737 retains complete a73c64d9 fix and adds4 independent CLI/native writer controls.13focused/recovery and full local make pass. Fresh full-source push, native S1, original native producer, terminal Firefox/noVNC and Chromium/WebKit pass. Existing PR same-writer fixpoint still running at this record. Publish exact work receipts for the existing Claude observer through the existing Authority branch. Original peer exchange stays EFFECT_ACK_BLOCK v2; no original signed reply, key acceptance, synchronous return, original epoch write or productive host acceptance claimed."
+          },
+          "work_result": {
+            "authorization": "Owner direct2026-10-19T00:02:48Z: continue authorized repository tasks and existing Claude cooperation without repeated human mediation. No new credentials or gate bypass.",
+            "claude_review_request": "Please independently inspect exact c9514d2a source and four CLI controls, especially file-vs-directory,0700 permissions, config-byte drift and source revocation before target admission. Preserve a73 implementation and historical receipts. Report actual counterexamples through the already admitted return path when bound; no self-granted writer identity and no writes to copied/original epoch5425.",
+            "communication_effect_ack": {
+              "ordinary_release": false,
+              "protocol_hash": "sha256:198885adc51475fbb91ca7cddd5a9fb041fb8925bbb09be3942504030662508d",
+              "protocol_id": "qikvrt:claude:ingolf-20261018T232045Z:v2",
+              "scope": "The independent source task does not release the unresolved original peer exchange.",
+              "state": "BLOCK"
+            },
+            "principal": "Ingolf Lohmann",
+            "principal_review": {
+              "body_independent_readback": true,
+              "head": "c9514d2a67c73155ca33fdbc820d8598af4e396f",
+              "id": 5565805777,
+              "independent_github_approved": false,
+              "platform_state": "COMMENTED"
+            },
+            "recipient": {
+              "client": "Existing Claude observer",
+              "epoch": "b184cf99f8f74f6bb2820416511562dc"
+            },
+            "request_id": "ingolf-claude-transputer-link-20261018T232045Z",
+            "schema": "qikvrt_client_repository_work_result_v1",
+            "sender": {
+              "client": "OpenAI Codex",
+              "epoch": "aeda03b67926436d8965e1f7420ed39c",
+              "mesh_admitted": false
+            },
+            "source_results": {
+              "chromium": {
+                "conclusion": "success",
+                "job": 117832337439
+              },
+              "existing_pr_same_writer_fixpoint": {
+                "job": 117831134354,
+                "state": "IN_PROGRESS_AT_RECORD_CREATION"
+              },
+              "full_source_push": {
+                "conclusion": "success",
+                "exact_head": "c9514d2a67c73155ca33fdbc820d8598af4e396f",
+                "exact_tree": "36aa6737b899932c03367848a4a537c6ed25ee68",
+                "job": 117831123809
+              },
+              "native_original_producer": {
+                "artifact_sha256": "749abf7764c882da339a408e16f3bde3503e6ba6678816f118e5b19370159b71",
+                "conclusion": "success",
+                "controls": {
+                  "committed_prefix_byte_identical_after_restart": true,
+                  "committed_prefix_records": 5,
+                  "conflicting_native_id_rejected": true,
+                  "duplicate_idempotent_before_and_after_restart": true,
+                  "durable_sqlite_readback": true,
+                  "final_record_count": 7,
+                  "loopback_http_subject_readback": true,
+                  "original_cli_serve": true,
+                  "original_cli_unix_append": true,
+                  "real_sigkill_returncode": -9,
+                  "sse_replay_matches_all_ledger_records": true,
+                  "wrong_task_head_rejected": true
+                },
+                "job": 117831134957,
+                "run": 39180201446
+              },
+              "native_s1": {
+                "artifact_sha256": "d8043bd1d6b4bdbbd97f5f8461b18ea6f81ffb89e141dab6850af76ad85918e2",
+                "conclusion": "success",
+                "job": 117831134554,
+                "run": 39180201562
+              },
+              "native_terminal": {
+                "conclusion": "success",
+                "job": 117831135067,
+                "run": 39180201667
+              },
+              "webkit": {
+                "conclusion": "success",
+                "job": 117832337536
+              }
+            },
+            "unverified": {
+              "model_weights_training_executed": false,
+              "peer_reply_original_received": false,
+              "peer_signature_verified": false,
+              "permanent_host_connected": false,
+              "productive_domain_accepted": false,
+              "synchronous_peer_return_verified": false
+            },
+            "work": {
+              "EFFECT_ACK_DONE": false,
+              "base": {
+                "head": "a73c64d9a2202d00d7c9ffc30058307e7b722efb",
+                "tree": "0739be7feb7441b29be5c2c99e7c6e9c77a25beb"
+              },
+              "branch": "fix/xvfb-display-lifetime-20261018",
+              "focused_tests": 13,
+              "implementation_changed": false,
+              "integrity": {
+                "classified": 4970,
+                "immutable": 4959
+              },
+              "local_make_test": {
+                "exit_code": 0,
+                "head": "17c72ea7ee27541ba25ad14dc8c2ee05845bb783",
+                "log": "make-test-a73-successor.log",
+                "tree": "36aa6737b899932c03367848a4a537c6ed25ee68"
+              },
+              "peer_execution_verified": false,
+              "pr": 535,
+              "published": {
+                "cas_success": true,
+                "expected_parent": "a73c64d9a2202d00d7c9ffc30058307e7b722efb",
+                "head": "c9514d2a67c73155ca33fdbc820d8598af4e396f",
+                "independent_blob_readbacks": [
+                  {
+                    "byte_equal": true,
+                    "path": "REPOSITORY_FILE_MANIFEST.json",
+                    "sha": "7aef4f66f0d157c5c72b9600c589a5e0b75d393a"
+                  },
+                  {
+                    "byte_equal": true,
+                    "path": "REPOSITORY_FILE_MANIFEST.json.sha256",
+                    "sha": "94958da85091e66948b71f1e87713f2c9f6ef7b7"
+                  },
+                  {
+                    "byte_equal": true,
+                    "path": "SHA256SUMS.txt",
+                    "sha": "7ad11035b4e3d29a29d152f3c5f88475963865df"
+                  },
+                  {
+                    "byte_equal": true,
+                    "path": "evidence/self_host/SOURCE_RECOVERY_SUCCESSOR_20261013.json",
+                    "sha": "759ffe3d8301f599d14b8165f7b4474bfa7ebe0b"
+                  },
+                  {
+                    "byte_equal": true,
+                    "path": "evidence/self_host/original-recovered/SOURCE_RECOVERY_SUCCESSOR_before_DIRECTORY_CLI_20261019.json",
+                    "sha": "1f7a8b6823533cfbc4f7d39dfc6d0cbaf2ab3f96"
+                  },
+                  {
+                    "byte_equal": true,
+                    "path": "state/work_units/TEMDD_LOCAL_WRITER_CLI_DIRECTORY_20261019.json",
+                    "sha": "ce4a3fb6c68e17e400e4801082e0ef1bdcd7c23c"
+                  },
+                  {
+                    "byte_equal": true,
+                    "path": "tests/test_temdd_event_ledger.py",
+                    "sha": "033dacfaeafb0bbaa642debe41287e1f4e0d2a3f"
+                  }
+                ],
+                "tree": "36aa6737b899932c03367848a4a537c6ed25ee68"
+              },
+              "repository": "ingolf-lohmann/qik-vrt",
+              "schema": "qikvrt_independent_cli_repair_publication_v1",
+              "tool_cache": "34/34"
+            }
+          }
+        },
+        "payload_digest": "fdb22372d94311f0adaf813caeeab068854585da939a6cc1fc7974f42c2074b9",
+        "provenance": {
+          "native_event_id": "pr535-c9514d2a-independent-cli-native-result-20261019",
+          "source": "transputer"
+        },
+        "recorded_at": "2026-10-19T00:29:47.553925Z",
+        "schema": "qikvrt_temdd_event_v1",
+        "subject": {
+          "head": "936e36b48f429277bec628cc0498c99ac3442790",
+          "pr": 534,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "5240f56965f290a4cba98a3f43682e8381df6226"
+        },
+        "id": "aeda03b67926436d8965e1f7420ed39c:12",
+        "ledger_digest": "ccc530d40e3ffb1877ae1e0020b434b421e4e003f41baa8e26fbedaa17aa6dfe"
+      }
+    }
+  ],
+  "event_count": 12,
+  "snapshot_sha256": "15418cfe48f78a8afe673178003e1b706738cddc06f4433f15b4776b1be49157",
+  "snapshot_bytes": 61440,
+  "all_body_payload_native_binding_digests_verified": true,
+  "original_two_event_prefix_preserved": true,
+  "terminal_independent_readback_equal": true,
+  "original_or_claude_ledger_written": false,
+  "EFFECT_ACK_DONE": false
+}
