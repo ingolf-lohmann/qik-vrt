@@ -1,4 +1,7 @@
 import json
+import copy
+from unittest.mock import patch
+from tools import ai_runtime_bootloader as boot
 import unittest
 from pathlib import Path
 
@@ -74,6 +77,56 @@ class TestHumanMachineInterfaceAdaptation(unittest.TestCase):
         self.assertFalse(self.policy["release_claims"]["PASS"])
         self.assertFalse(self.policy["release_claims"]["FINAL_PASS"])
         self.assertFalse(self.policy["release_claims"]["EFFECT_ACK_DONE"])
+
+    def test_startup_resolves_existing_review_delegation(self):
+        authority = boot.load_requested_review_authority(self.context, "ingolf-lohmann/qik-vrt")
+        self.assertTrue(authority["authorization_established"])
+        self.assertEqual(authority["route"]["state"], "CAPABILITY_AND_ADMISSION_UNVERIFIED")
+        self.assertFalse(authority["merge_authorized"])
+        self.assertFalse(authority["independent_account_approval"])
+
+    def test_missing_discovery_binding_fails_closed(self):
+        context = copy.deepcopy(self.context)
+        context["required_read_order"].remove("state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json")
+        with self.assertRaises(boot.BootBlock):
+            boot.load_requested_review_authority(context, "ingolf-lohmann/qik-vrt")
+
+    def test_revoked_delegation_is_not_reused(self):
+        real = boot.load_json_object
+        def revoked(path, label):
+            data = real(path, label)
+            if "OWNER_REQUESTED_REVIEW" in str(path):
+                data["state"] = "REVOKED"
+            return data
+        with patch.object(boot, "load_json_object", side_effect=revoked):
+            self.assertFalse(boot.load_requested_review_authority(self.context, "ingolf-lohmann/qik-vrt")["authorization_established"])
+
+    def test_foreign_repository_cannot_inherit_scoped_authority(self):
+        self.assertFalse(boot.load_requested_review_authority(self.context, "other/project")["authorization_established"])
+
+    def test_reviewer_422_and_write_preserve_authority_as_conflicting_evidence(self):
+        route = boot.classify_review_route(True, "REJECTED", "WRITE")
+        self.assertEqual(route["state"], "CONFLICTING_PLATFORM_EVIDENCE")
+        self.assertTrue(route["authorization_established"])
+        self.assertFalse(route["review_accepted"])
+        self.assertFalse(route["effect_ack_done"])
+        self.assertNotIn("RESOLVE_SCOPED_OWNER_AUTHORITY", route["next_action"])
+
+    def test_request_receipt_never_becomes_review_or_effect(self):
+        route = boot.classify_review_route(True, "RECORDED", "WRITE")
+        self.assertEqual(route["state"], "REQUEST_RECORDED_REVIEW_NOT_ESTABLISHED")
+        self.assertFalse(route["review_accepted"])
+        self.assertFalse(route["effect_ack_done"])
+
+    def test_permission_never_creates_owner_authorization(self):
+        route = boot.classify_review_route(False, "RECORDED", "WRITE")
+        self.assertEqual(route["state"], "AUTHORIZATION_NOT_ESTABLISHED")
+        self.assertFalse(route["authorization_established"])
+
+    def test_invalid_route_observation_is_rejected(self):
+        for arguments in [(1, "UNVERIFIED", "WRITE"), (True, "APPROVED", "WRITE"), (True, "REJECTED", "admin")]:
+            with self.assertRaises(boot.BootBlock):
+                boot.classify_review_route(*arguments)
 
 
 if __name__ == "__main__":

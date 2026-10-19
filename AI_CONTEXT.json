@@ -97,7 +97,13 @@
     "minimum_comparable_observations_before_preference": 3,
     "quality_regression_allowed": false,
     "mandatory_gate_reduction_allowed": false,
-    "rule": "Repeated use should become faster and clearer through exact-key caching, incremental processing, stable preference reuse, comparable evaluation matrices and reviewed optimization, never by weakening evidence, provenance, authorization or scientific boundaries."
+    "rule": "Repeated use should become faster and clearer through exact-key caching, incremental processing, stable preference reuse, comparable evaluation matrices and reviewed optimization, never by weakening evidence, provenance, authorization or scientific boundaries.",
+    "requested_review_authority": {
+      "delegation": "state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+      "policy": "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+      "boot_report_field": "requested_review_authority",
+      "rule": "Resolve existing scoped authorization before asking for permission or choosing execution routes. Authorization, callable capability, platform admission and accepted effect remain separate; endpoint rejection never revokes owner authorization."
+    }
   },
   "project": {
     "name": "QIK-VRT",
@@ -140,6 +146,7 @@
     "AGENTS.md",
     "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
     "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+    "state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
     "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
     "docs/AI_PERSONAL_WORKING_MEMORY_ORIGIN_AND_ATTRIBUTION.md",
     "policy/AI_PERSONAL_WORKING_MEMORY_ORIGIN_AND_ATTRIBUTION_V1.json",
