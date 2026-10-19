@@ -3573,14 +3573,18 @@ def main():
         elif args.operation == "transfer-local-writer":
             if not args.source_state_dir or not re.fullmatch(r"[a-f0-9]{64}", args.frontier_sha256 or ""):
                 raise ValueError("ORIGINAL_LOCAL_STORE_AND_FRONTIER_PIN_REQUIRED")
-            config, _ = state_binding(args.root.resolve(), args.manifest_sha256, args.config)
-            private_path(args.source_state_dir)
+            volume, binding = state_binding(args.root.resolve(), args.manifest_sha256, args.config)
+            config_bytes = args.config.read_bytes()
+            if digest(config_bytes) != binding['config_sha256']:
+                raise ValueError("EXACT_CONFIGURATION_CHANGED")
+            config = json.loads(config_bytes)
+            private_path(args.source_state_dir, directory=True)
             load_source(args.root.resolve(), "qikvrt_effect_ack_http_terminal")
             native = load_source(args.root.resolve(), "qikvrt_temdd_event_ledger")
             exact = packaged_subject(args.root.resolve(), args.manifest_sha256,
                 config["source_repository"], config["subject_pr"], config["source_head"], config["source_tree"])
             result = native.Ledger.transfer_local_writer(args.source_state_dir,
-                Path(config["state_dir"]), exact, args.frontier_sha256)
+                volume, exact, args.frontier_sha256)
         elif args.operation == "restore-state":
             result = restore_state(args.root.resolve(), args.manifest_sha256, args.config,
                                    args.state_snapshot, args.state_manifest_sha256)
