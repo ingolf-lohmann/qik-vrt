@@ -1,0 +1,26 @@
+{
+  "kind": "OBSERVE",
+  "message": "Publication recovery bounded Owner input through original native in-process API",
+  "observed_at": "2026-10-19T15:39:34.007979Z",
+  "payload": {
+    "original_journals": "READ_ONLY",
+    "predecessor": "libfile_8ff514ee33a08191a6573ae98c5acb5a",
+    "socket": "ERRNO1_NOT_PERMITTED",
+    "terminal_input": {
+      "schema": "qikvrt_terminal_input_v1",
+      "text": "Owner task: complete PR549 400-byte signatures publication package; preserve original PDF and historical evidence. Original evidence ZIP 7d3f856c7aaa558895d45ed4b95cfb64a504300d3ac4836aed626616f2d6e7f3 recovered. External publication only after exact-artifact authorization and independent readback. Socket bind is unavailable (Errno1), so use existing native in-process input/Runtime/readback API; no copied writer, no mock socket or external publication."
+    },
+    "transport": "ORIGINAL_IN_PROCESS_API"
+  },
+  "provenance": {
+    "native_event_id": "publication549:owner-input:adbb7782b34e43cca37de37c02d56010",
+    "source": "transputer"
+  },
+  "schema": "qikvrt_temdd_native_event_v1",
+  "subject": {
+    "head": "86b059aafcaf6e2c1d08cde84d7a5ec4fdedf722",
+    "pr": 549,
+    "repository": "ingolf-lohmann/qik-vrt",
+    "tree": "48317ce9b44afc7af79fbc7e95f914e090157a68"
+  }
+}

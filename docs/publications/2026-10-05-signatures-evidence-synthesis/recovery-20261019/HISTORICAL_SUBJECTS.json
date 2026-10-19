@@ -1,0 +1,73 @@
+{
+  "historical_repository_roles": "Identifier 0 Goldkelch/Authority and 1 ingolf-lohmann/Mirror apply only to original historical profile; current Authority is ingolf-lohmann/qik-vrt under current canonical policy.",
+  "schema": "qikvrt_signature_historical_subject_map_v1",
+  "signature_meaning": "400-byte transport frames, not a cryptographic signature or proof of human/peer identity.",
+  "subjects": [
+    {
+      "experiment": "Local finite codec, process replication and lossless consolidation; 56 measured rows plus 8 warmups",
+      "head": "6a1098699d096806958b9c3b50a97d205b8110e9",
+      "id": "R01",
+      "original_zip_sha256": "7d3f856c7aaa558895d45ed4b95cfb64a504300d3ac4836aed626616f2d6e7f3",
+      "scope_excludes": [
+        "AI semantic quality",
+        "unbounded speedup",
+        "physical energy savings",
+        "production live Mesh"
+      ],
+      "source_paths": [
+        "evidence/measurement.json",
+        "evidence/trial_ledger.jsonl",
+        "reproduce/source_binding.json"
+      ],
+      "tree": "4740d8901ab8fdc1ab88479832e50f2376e57c5f",
+      "when": "2026-10-02"
+    },
+    {
+      "attempt": 1,
+      "experiment": "Linux Firefox loopback HTTP/EAP witness, temporary extension, replay rejection",
+      "head": "924d66b3cb087adcbbe5da65b9fd282663a71909",
+      "id": "R02",
+      "original_receipt_state": "HOLD",
+      "run": 36959391916,
+      "scope_excludes": [
+        "current Firefox production extension",
+        "operating system from seed",
+        "full current Authority-Mirror activation"
+      ],
+      "source_paths": [
+        "evidence/firefox-linux-ring-RECEIPT.json",
+        "evidence/firefox-linux-ring-native-artifact.zip"
+      ],
+      "tree": "ab96e2f3009f25323900171bd6fbbf9320eb7bde"
+    },
+    {
+      "experiment": "Resumable branch / draft PR / exact-head verifier postconditions",
+      "head": "9ecedf844db854fca23ecde3acdf797fab7e9e14",
+      "id": "R03",
+      "pr": 455,
+      "scope_excludes": [
+        "new current-head native tests",
+        "Main integration of this candidate"
+      ],
+      "sources": [
+        "historical-sources/writer-unit.json",
+        "historical-sources/writer-doc.md"
+      ],
+      "tree": "7c128b4ce9b5291c3c87a097eca65642c1b91a34",
+      "when": "2026-10-05"
+    },
+    {
+      "base": "86d7062f25f174039da0a5df8a856127553036f1",
+      "experiment": "Historical orphan self-heal branch materialization",
+      "head": "9c431098c4680f295a90bafe49ba747a74d288e6",
+      "id": "R04",
+      "pr": 459,
+      "scope_excludes": [
+        "current writer admission",
+        "Zenodo or IETF publication"
+      ],
+      "tree": "c94eaea15ef6d07d4c7661958061036011127692",
+      "when": "2026-10-05"
+    }
+  ]
+}

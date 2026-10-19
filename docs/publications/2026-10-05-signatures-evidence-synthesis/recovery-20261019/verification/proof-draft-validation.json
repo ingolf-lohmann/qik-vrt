@@ -1,0 +1,6 @@
+{
+  "validator": "tools/qikvrt_zenodo_machine_proof.py:validate_bundle",
+  "result": "REJECTED",
+  "reason": "invalid machine proof bundle keys (missing=_license,artifacts,candidate,gates,prepublication_return; unknown=boundary_tests,candidate_fileset,claim_matrix,established_preparation,negative_schema_boundary,production_effect_allowed,required_next_contracts,state,target_production_schema,unestablished_production_gates)",
+  "external_mutation_attempted": false
+}

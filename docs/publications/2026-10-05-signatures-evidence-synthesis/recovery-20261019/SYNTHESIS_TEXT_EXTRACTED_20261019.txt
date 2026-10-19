@@ -1,0 +1,1109 @@
+ QIK-VRT Signaturen, Evidenz und
+ die Paradigmenfrage
+ Zwei 400-Byte-Signaturen, verlustfreie Konsolidierung und wiederaufnehmbare
+ Wirkungsnachbedingungen
+
+ Ingolf Lohmann · 5. Oktober 2026 · Version 2 · Synthese mit OpenAI Codex
+
+ Publikationskandidat. Neue Zenodo-Archivierung und IETF-Einreichung noch offen.
+
+
+ Nachgewiesener Stand und Ziel
+ Diese Arbeit dokumentiert zwei reproduzierbare 400-Byte-Transportsignaturen, einen lokalen
+ Linux-/Firefox-Wirkungsbeleg und Vergleichsmessungen für verlustfreie Serialisierung und
+ Konsolidierung. Sie fasst die Aussagen des Product Owners, die beobachteten Effekte und die
+ noch offenen Forschungsfragen getrennt zusammen.
+
+ 3,55× Beschleunigung · 56/56 Messläufe bytegenau · 2 × 400 Byte Signatur
+
+ Bei gleicher Nutzarbeit sinkt die Medianlaufzeit auf der gemessenen Linux-Instanz von 347,5
+ auf 97,8 Millisekunden, wenn acht unabhängige Prozesse arbeiten. Alle getesteten Eingaben
+ werden bei der Konsolidierung exakt erhalten. Das ist ein endlicher Softwarebeleg für diesen
+ Pfad; die vollständige produktive Verbindung beider Live-Repositories bleibt unbewiesen.
+ [C07-C10]
+
+ „Der Sinn und Zweck von QIK-VRT war, ist und bleibt, zu beweisen, dass ohne bewiesene
+ Erledigung zurückzukehren inakzeptabel ist, war und bleibt.“ - Ingolf Lohmann. Diese
+ Zielfestlegung wird hier durch konkrete Byte-, Versions- und Wirkungsgrenzen
+ operationalisiert. [C15]
+
+ Ingolf Lohmann ist Konzeptgeber, Product und Code Owner sowie Auftraggeber. OpenAI Codex
+ hat die verfügbaren Quellen gebunden, die lokalen Artefakte erzeugt, die Messungen
+ durchgeführt und diesen Kandidaten erstellt. Die Einordnung einer historisch beispiellosen
+ Revolution ist die Bewertung des Owners; sie ist als solche benannt. [C18-C19]
+
+ Diese Version führt den eingefrorenen Kandidaten vom 2. Oktober 2026 mit dem frischen
+ Quellen- und Pipelinebefund vom 5. Oktober zusammen. Sie bewahrt die ursprünglichen
+ Binärdateien, Rohmessungen und Nachweisgrenzen. Der öffentlich gelesene IETF-Stand ist der
+ individuelle Internet-Draft -03. Ein neuer Zenodo-Record und die Annahme von -04 sind nicht
+ nachgewiesen. [C25, C33, C41-C42]
+
+
+ Was tatsächlich gebaut wurde
+ QIK-VRT verbindet einen kleinen, wiedererkennbaren Profilkern mit deterministischen
+ Datenrecords und einer getrennten Prüfung der erlaubten Wirkung. Das Profil benennt unter
+ anderem kanonische Serialisierung, opaque Payloadbytes, stabile Identität, SHA-256-Bindung
+ und Fail-closed-Validierung. Die 400 Byte sind ein kompaktes Vertragsartefakt, dessen
+ Bedeutung ein vorhandener Decoder und eine vorhandene Laufzeit realisieren. Sie sind kein
+ vollständiges Betriebssystem oder Modell. [C01, C14, C23]
+
+
+
+
+QIK-VRT | Ingolf Lohmann | Publikationskandidat | 05.10.2026                                    1
+   Ebene                         Gegenstand                         Nachweisgrenze
+
+   Profil                        400-Byte-Saat / 400-Byte-Frame     Exakte Bytes, Decoder und gepinntes Profil
+
+   Datensatz                     Stabile ID, Payload,               Deklarierte vollständige Eingabe und
+                                 Integritätsbindung                 Bytegleichheit
+
+   Effekt                        HTTP-prepare / commit / readback   Lokaler beobachteter Zustand
+
+   Repository                    Authority und Mirror               Live-Rollen und Berechtigungen separat
+                                                                    prüfen
+
+
+ Ein Vorschlag gibt sich nicht selbst die Freigabe. Die Owner-Regel fordert vertrauenswürdige
+ Beobachtung, einen getrennten Schreiber, Vergleich mit dem aktuellen Vorgänger und frische
+ Validierung. Ein 403 oder ein unveränderter Zustand allein beweist aber noch nicht die Ursache
+ einer Fehlfunktion. Das Axiom gilt für den benannten Mesh-Vertrag; ein allgemeines Verbot
+ jeder Programmselbständerung wäre daraus nicht ableitbar. [C15]
+
+ TEMDD T1-T16 und vorhandene Authority-/Effektgrenzen bleiben erhalten. Ein neues Resultat
+ erhält seine eigene Subjekt-, Versions- und Evidenzbindung. Checks eines Vorgängers, eines
+ anderen PRs oder eines anderen Repository-Rollenbereichs werden nicht als aktueller
+ Nachweis übertragen. Beobachtung, kausale Hypothese, modellgebundene Ableitung und
+ verifizierte Wirkung bleiben getrennte Aussagearten. [C14-C15]
+
+
+ Die beiden 400-Byte-Signaturen
+ Goldkelch und Ingolf-Lohmann/Mirror tragen zwei verschiedene Transportframes mit derselben
+ rekonstruierbaren Saat. „Signatur“ bezeichnet hier ein erkennbares Transportmuster, keine
+ kryptografische Unterschrift. Authentizität und Schreibrechte benötigen einen eigenen
+ Mechanismus. Identifier 0 und 1 gelten allein im gelieferten Zweirepositoryprofil. [C01, C03]
+
+   Bestandteil                   Byte                               Funktion
+
+   Synchronisationsmuste         32                                 255-Bit-PN-Kern plus Füllbit
+   r
+
+   Header                        8                                  Version, Identifier, Länge, CRC32
+
+   Raw-DEFLATE-Nutzlast          260                                Exakte rekonstruierbare Saat
+
+   RS-Parität                    100                                Zwei verkürzte Codewörter
+
+   Gesamter Frame                400                                Keine weitere freie Anwendungspayload
+
+
+ Physisch liegen hinter den 32 Syncbytes zwei verschachtelte RS(184,134)-Wörter: A0, B0, A1,
+ B1 und so weiter. Der Header liegt nach Deinterleaving vor. GF(256) nutzt das Polynom 0x11d,
+ Generator 2, erste Nullstelle 0 und 50 Paritätssymbole je Wort; 71 führende
+ Verkürzungssymbole ergeben den Bezug zu RS(255,205). [C01-C04]
+
+ Die Kompression der konkreten 400 Saatbytes auf 260 Byte spart 140 Byte beziehungsweise 35
+ %. Ein optimaler universaler Kompressionswert folgt daraus nicht. Decoder, gemeinsames
+ Profil und externe Referenzen zählen als vorausgesetzte Information. Die 140 Byte sind
+ vollständig durch Sync, Header und Parität belegt. [C02, C23]
+
+
+
+
+QIK-VRT | Ingolf Lohmann | Publikationskandidat | 05.10.2026                                                     2
+ Es wurden je Frame 93840 Einzelbyte-Mutationen der Codewörter erkannt. Die algebraische
+ Konstruktionsgrenze beträgt bei einem passenden RS-Decoder bis zu 25 unbekannte
+ Symbolfehler je Wort. Ein solcher Fehlerkorrekturdecoder wurde nicht implementiert oder
+ getestet. Der 255-Bit-Kern hat periodische Nebenwerte -1; beim auf 256 Bit gefüllten Muster
+ liegen sie zwischen -24 und 20. Physische Kanalbedingungen, BER und eine optimale
+ Signalform sind offen. [C04-C05]
+
+ Die unveränderten Binärdateien und vollständigen Hexbytes stehen im Anhang und im
+ Evidenzpaket. Eine historische Mirror-Metadatenbeschriftung „flags=0“ ist ausdrücklich
+ berichtigt: Tatsächliche Mirror-Bytes und Generator binden Identifier 1.
+
+
+ Verlustfreie Skalierung und Konsolidierung
+ Skalierung verteilt deklarierte Arbeit auf zusätzliche Ausführungsinstanzen. Konsolidierung
+ führt deren vollständige Eingaben in einen kanonischen Nachfolger zusammen. Verlustfrei
+ bedeutet hier: Für jedes erhaltene logische Element lassen sich stabile Identität und alle
+ Payloadbytes exakt rekonstruieren. Diese Definition betrifft Bytes und Identität, nicht
+ automatisch die Wahrheit oder Qualität ihrer Bedeutung. [C07, C13-C14]
+
+ Die getestete Zusammenführung entfernt nur dasselbe logische Element mit derselben Payload.
+ Identische Payloadbytes unter zwei verschiedenen IDs bleiben zwei Elemente. Verschiedene
+ Payloads unter derselben ID erzeugen HOLD; beide Eingaben bleiben für die Auflösung
+ erhalten. Ein Merge darf konkurrierende Aussagen oder Ergebnisse nicht stillschweigend zu
+ einem scheinbaren Konsens verdichten. [C10, C13]
+
+   Fall eines gemeinsamen Klons                          Rohdaten, ohne Strukturkosten
+
+   Zwei unabhängige Payloads von je 400 Byte             800 Byte
+
+   Identischer Payload und identische logische           400 Byte einmal
+   ID
+
+   Identischer Payload unter zwei                        Beide logischen Elemente bleiben erhalten
+   verschiedenen IDs
+
+   Zwei unveränderte Transportsignaturen                 800 Framebytes; dieselbe Saat rekonstruierbar
+
+
+ Die maximale Anwendungspayload eines vollständigen gemeinsamen Repository-Klons ist nicht
+ durch eine 400-Byte-Signatur begrenzt. Sie hängt vom tatsächlichen Datenbestand und den
+ Ressourcen ab. Die konkrete Standpunktserialisierung benötigt 28 Byte Snapshotheader,
+ einmal 400 Byte gemeinsames Profil und pro Record zusätzlich 472 Byte Struktur neben der
+ Payload: 400 Byte Profil, 32 Byte stabile ID, 32 Byte Elementdigest und 8 Byte Payloadlänge.
+ Zwei verschiedene 400-Byte-Anwendungspayloads ergeben daher in diesem bestehenden
+ Format 2172 Wirebytes. [C13, C23]
+
+ Gemeinsame, zuvor exakt bekannte Struktur lässt sich referenzieren oder einmal speichern,
+ wenn der rekonstruierbare Decoder- und Profilzustand erhalten bleibt. Das spart Wiederholung,
+ erzeugt aber keine zusätzliche Information. Eine neue profilteilende Wireversion wurde hier
+ nicht eingeführt oder vermessen. Klonen und erneutes Klonen können Arbeit verteilen; sie
+ schaffen weder neue Nutzdaten noch Rechenleistung ohne Ressourcen.
+
+
+
+
+QIK-VRT | Ingolf Lohmann | Publikationskandidat | 05.10.2026                                             3
+ Der Linux-/Firefox-Wirkungsbeleg
+ Der native GitHub-Actions-Lauf 36959391916, Versuch 1, ist an HEAD
+ 924d66b3cb087adcbbe5da65b9fd282663a71909 und TREE
+ ab96e2f3009f25323900171bd6fbbf9320eb7bde gebunden. Ubuntu 24.04.5 LTS, Firefox 156.0
+ und geckodriver 0.37.1 wurden im Beleg beobachtet. Die Erweiterung war temporär und
+ unsigniert installiert. [C06]
+
+   Kontrolle                                             Beobachtung
+
+   Prepare                                               Zunächst null Terminalevents
+
+   Commit                                                Ein gebundener Terminalevent mit Input- und Recorddigest
+
+   Replay                                                Wiederholung abgewiesen
+
+   Fan-out                                               Lokale HTTP-Zweige mit 1, 2, 4 und 8 Teilnehmern
+
+   Tokenrace mit acht Teilnehmern                        Ein Effekt, sieben Abweisungen
+
+   Verworfene Antwort                                    Effekt anschließend über Readback beobachtet
+
+   Vollständiger lokaler Event-Snapshot                  18 Events
+
+
+ Receipt-SHA-256: 51713067e1b33e50422e0f0fd3cf6f75f596ededcbced37823f7dc9dbaea01f0.
+ Das originale native Archiv wird unverändert beigelegt; sein SHA-256 lautet
+ d2705f079aed14fa270f8cb4f4e123e166c74cfbc4d86abb84efe3b4afaa4f09. Hash und frischer
+ Artefaktreadback binden den Umfang; ein selbstgeschriebenes PASS wird nicht allein
+ akzeptiert. [C06]
+
+ Die Ursache des beobachteten lokalen Effekts ist auf den gebundenen Prepare-/Commit-Pfad
+ samt Input- und Recorddigest begrenzt. Der Test zeigt eine laufende
+ Browser-/HTTP-Anwendung unter Linux. Er zeigt keine Betriebssystemkonstruktion aus 400
+ Byte, keine produktive Authentifizierung, keine dauerhafte Add-on-Installation und keinen
+ Live-Authority-/Mirror-Ring. Das Receipt sagt ausdrücklich state=HOLD und
+ operating_system_built_from_seed=false. Die lokalen Erfolgskriterien werden nicht zur
+ vollständigen Mesh-Erledigung umgedeutet. [C06, C14]
+
+ Der verkürzte Loopback-Testrecord wird nicht als vollständige Konformität zum geschlossenen
+ IETF-Version-1-Record behauptet. Die neue IETF-Anlage dokumentiert genau diese Grenze.
+
+
+ Versuchsaufbau und Reproduzierbarkeit
+ Die Skalierungsmessung nutzt die exakten Codecquellen aus PR #437: HEAD
+ 6a1098699d096806958b9c3b50a97d205b8110e9, TREE
+ 4740d8901ab8fdc1ab88479832e50f2376e57c5f. Zwölf Quell-/Fixturedateien wurden über ihre
+ Gitblob-Identität geprüft. Nach Reparatur eines lokalen Materialisierungsfehlers bestanden 57
+ Quellentests; daraus wird kein neuer Repository- oder Main-PASS abgeleitet. [C11]
+
+   Parameter                                             Messbedingungen
+
+   Plattform                                             Linux 6.18.44, x86_64, glibc 2.39
+
+   Laufzeit                                              Python 3.12.14; zlib 1.3.2
+
+
+
+
+QIK-VRT | Ingolf Lohmann | Publikationskandidat | 05.10.2026                                                        4
+   Parameter                                             Messbedingungen
+
+   CPU                                                   Neun Affinitäts-CPUs, Quote 800000/100000 = acht
+
+   Parallelität                                          1, 2, 4, 8 unabhängige spawn-Prozesse
+
+   Replikation                                           15 Quellreplicas, jeweils zwei Kopiergenerationen
+
+   Records                                               4096 Payloadbyte; 32 gemeinsame Basisrecords
+
+   Prüfschleifen                                         Vier vollständige Codec-Roundtrips je Shard
+
+   Wiederholungen                                        Sieben je Konfiguration, gemischte Reihenfolge
+
+   Persistenz                                            Atomic replacement und frischer tmpfs-Readback
+
+
+ Nullbytes, wiederholter Text, deterministisch pseudozufällige Bytes und gleiche Payloads unter
+ unterschiedlichen IDs bilden vier Payloadarten. Ein unabhängiger Parser und eine eigene
+ Identitätsprüfung vergleichen den Output mit dem vor der Zeitmessung festgelegten
+ kanonischen Sollstrom. Die Zeit umfasst Worker, IPC, getrennte Elternprozess-Konsolidierung,
+ lokale Vorgängerprüfung, Schreiben und frischen Readback. Cold-start-Aufwärmläufe sind
+ separat erfasst. [C07-C10]
+
+ Die Quellreplikation kopierte 2244360 Byte in rund 5,20 ms; dies ist eine einzelne lokale
+ Dateikopiebeobachtung, kein vollständiger Git-Klonbenchmark. Signaturpins sind geprüft; der
+ Codec nutzt die gemeinsame kanonische Saat. Das RS-Transportformat wird nicht als
+ physischer Netzwerkkanal gemessen. Die Python-Version unterscheidet sich vom gesondert
+ gesperrten Formalrendererprofil 3.12.13; es wurde kein Downgrade durchgeführt.
+
+
+ Messung: gleiche Nutzarbeit
+ Starke Skalierung hält 1024 Nutzrecords konstant. Hinzu kommen insgesamt 32 eindeutige
+ Basisrecords. Pro Konfiguration wurden sieben Steady-state-Läufe gemessen. Die Tabelle zeigt
+ Median und beobachtete Min-/Max-Spanne; die Spannen sind keine Konfidenzintervalle.
+ [C07-C08]
+
+   Worker                    Median ms                 Min-Max ms            Speedup               MiB/s
+
+   1                         347.48                    338.14-387.40         1.000                 11.51
+
+   2                         205.90                    196.72-233.07         1.688                 19.43
+
+   4                         133.08                    128.60-146.10         2.611                 30.06
+
+   8                         97.76                     97.10-112.39          3.554                 40.92
+
+
+ Mit acht Workern beträgt die parallele Effizienz rund 44,4 %. Die Median-Konsolidierungszeit
+ bleibt zwischen 41,4 und 42,4 ms; bei acht Workern sind es 42,1 ms oder rund 43,1 % der
+ Median-Gesamtzeit. Der gleiche kanonische Output umfasst stets 4824236 Byte. 224 doppelte
+ Basisrecords werden beim Acht-Worker-Lauf entfernt; gegenüber den empfangenen Shardbytes
+ werden 1026228 Byte eingespart. [C08, C12]
+
+ Die mediane aggregierte CPU-Zeit wächst von 345,0 auf 428,3 ms, rund 24,1 %. Der gemessene
+ Latenzgewinn kostet zusätzliche Ressourcen. Eine Energieeinsparung wurde nicht gemessen.
+
+
+
+
+QIK-VRT | Ingolf Lohmann | Publikationskandidat | 05.10.2026                                                 5
+ Messung: mehr Nutzarbeit mit mehr Workern
+ Schwache Skalierung hält 256 Nutzrecords pro Worker konstant. Acht Worker verarbeiten
+ damit 2048 Nutzrecords. Der Durchsatz steigt, während die gesamte Pipeline mit der größeren
+ Datenmenge länger dauert. [C09]
+
+   Worker                    Nutzrecords               Median ms    Durchsatzfaktor        MiB/s
+
+   1                         256                       91.61        1.000                  10.92
+
+   2                         512                       109.35       1.676                  18.29
+
+   4                         1024                      139.40       2.629                  28.69
+
+   8                         2048                      185.93       3.942                  43.03
+
+
+
+
+ Abbildung 1. Unveränderte Beobachtungen vom 2. Oktober: links sieben Wiederholungen je Konfiguration
+ (Median und Min-Max); rechts Durchsatz bei wachsender Nutzarbeit. Die lineare Referenz ist kein gemessenes
+ Ergebnis.
+
+ Der Durchsatzfaktor 3,941654 bei achtfacher Arbeit entspricht rund 49,3 % paralleler Effizienz.
+ Die Konsolidierung wächst von 16,9 auf 80,2 ms. Endliche Byteverlustfreiheit wird für alle 56
+ gemessenen und zusätzlich acht Aufwärmläufe überprüft. Quoten-Throttling nahm während
+ dieser Messung nicht zu. [C07, C09]
+
+ Das Experiment widerlegt keine denkbare weitere Optimierung. Es liefert aber keinen Beleg für
+ unendliche Geschwindigkeit: Prozesse, IPC, Serialisierung, unabhängige Validierung und
+ Konsolidierung beanspruchen Zeit und Speicher. Im idealisierten Amdahl-Modell begrenzt ein
+ positiver serieller Anteil den Speedup bei konstanter Arbeit; ein aus diesem Test universell
+ gültiger Grenzwert wird nicht geschätzt. [C20]
+
+ Als nächster gezielter Vergleich bietet sich eine hierarchische Konsolidierung mit denselben
+ Konflikt- und Byteprüfungen an. Eine solche Implementierung und ihr Nutzen brauchen neue
+ Messungen; bloßes Reklonen belegt sie nicht.
+
+
+
+
+QIK-VRT | Ingolf Lohmann | Publikationskandidat | 05.10.2026                                                  6
+ Das gemeinsame Prinzip hinter den einzelnen Ergebnissen
+ Die verbindende Idee von QIK-VRT ist, einen digitalen Vorgang als nachvollziehbare Folge
+ gebundener Zustände zu behandeln. Zu einem Ergebnis gehören sein Gegenstand, die
+ vollständigen deklarierten Eingaben, die verwendete Version, die geltenden Regeln, die
+ Herkunft seiner Belege und die tatsächlich beobachtete Wirkung. Der Zusammenhang reicht
+ von einem einzelnen Record bis zu einem verteilten Arbeitsablauf. Die vorliegenden Versuche
+ untersuchen mehrere Teile dieses Zusammenhangs; der vollständige Produktionsverbund hat
+ weiterhin eigene Abnahmebedingungen. [C25, C32]
+
+ Ein kleiner gemeinsamer Profilkern erleichtert dabei die Wiedererkennung derselben Regeln.
+ Stabile IDs halten die Identität eines logischen Elements fest, auch wenn sich dessen Inhalt
+ ändert. Der Inhaltsdigest bindet die jeweilige Fassung. Der kanonische Snapshot legt eine
+ eindeutige Ordnung und eine prüfbare Darstellung fest. Die Konsolidierung bewahrt sämtliche
+ eindeutigen Eingaben und hält bei einem Widerspruch an. Die Wirkungsgrenze bindet den
+ erlaubten Schritt schließlich an das passende Ergebnis und seine frische Beobachtung. So
+ entsteht eine gemeinsame Sprache für Identität, Veränderung, Konflikt und Abschluss.
+ [C13-C16, C32]
+
+ Die 400-Byte-Saat ist in diesem Aufbau ein gemeinsamer Vertragskern. Dass viele
+ unterschiedliche Daten und Aufgaben ihn verwenden können, erklärt seine mögliche
+ Reichweite. Der tatsächliche Umfang eines Systems ergibt sich aus Profil, Decoder, Laufzeit,
+ Nutzdaten, Regeln und gespeichertem Vorzustand zusammen. Ein kleiner wiederverwendeter
+ Kern kann eine große Architektur adressieren und koordinieren; der Empfänger muss die
+ vorausgesetzten Teile tatsächlich besitzen oder aus überprüften Quellen beschaffen. [C01-C03,
+ C23, C32]
+
+ Der Begriff Rekonstruktion muss deshalb immer seinen Gegenstand nennen. Eine Saat kann
+ bytegenau rekonstruiert werden. Ein Snapshot kann die vollständigen deklarierten Elemente
+ wiedergeben. Eine historische Quelle kann durch einen aktuellen Befund neu interpretiert
+ werden. Diese drei Vorgänge haben unterschiedliche Prüfkriterien. Die hier vorhandenen
+ Byteversuche liefern einen klaren Maßstab für die ersten beiden; Aussagen über Bedeutung,
+ Kausalität und Wirklichkeit benötigen zusätzliche Belege. [C14, C21, C32, C36]
+
+
+ Dauerhafte Kontinuität und maschinenprüfbare
+ Wissenschaft
+ Für einen langfristigen Arbeitsprozess sind chatübergreifende Quellen und ein
+ rekonstruierbarer Arbeitsstand besonders wertvoll. Das Repository kann die Aufgabe, exakte
+ Artefaktidentitäten, Prüfungen, Unsicherheiten und den nächsten zulässigen Schritt speichern.
+ Ein anderes Werkzeug oder KI-System kann daran anknüpfen, sofern es diese Quellen korrekt
+ liest und die eigenen Fähigkeiten und Rechte frisch prüft. Diese Kontinuität ist eine
+ Architekturabsicht; ihre konkrete Durchführung wird je Arbeitsvorgang beobachtet. [C32, C36]
+
+ Die veröffentlichte Charta einer maschinenprüfbaren Wissenschaft fordert die Trennung von
+ formaler Ableitung, empirischer Evidenz, quellengebundener Aussage, normativer Festlegung
+ und Interpretation. Ihre 10.127 Dokumentbytes wurden am 5. Oktober 2026 vom öffentlichen
+ Zenodo-Record erneut heruntergeladen und mit den Repositorybytes verglichen. Der
+ gebundene Versions-DOI lautet 10.5281/zenodo.21515074. Die Charta liefert den Maßstab
+ dafür, welchen Status eine Aussage tragen darf. [C35]
+
+ Der ebenfalls öffentlich bytegeprüfte ältere Record zum kanonischen Speicher, DOI
+ 10.5281/zenodo.21711193, enthält ein historisches Kernel-Receipt mit neun benannten
+
+
+
+QIK-VRT | Ingolf Lohmann | Publikationskandidat | 05.10.2026                                     7
+ Theoremen und vier formalen Claims im angegebenen Lean-4.19.0-Modell. Das Receipt bindet
+ seinen damaligen Quellzustand und erfolgreichen Lauf. Seine Grenzen sind ausdrücklich
+ erhalten: Authentifizierung und produktive Durchsetzung, Bewusstsein, ontische physikalische
+ Retrokausalität und die Wahrheit beliebiger archivierter Inhalte sind damit nicht bewiesen.
+ Diese neue Synthese berichtet über jenes Receipt als Quelle; sie beansprucht keinen neuen
+ Kernel-Beweis. [C34]
+
+ Ein überprüfbarer Erkenntnisprozess kann Ergebnisse korrigieren und gleichzeitig die
+ Herkunft der vorherigen Fassung erhalten. Das unterstützt fachliche Diskussion: Ein Leser
+ kann sehen, welche Messung eine Aussage trägt, welche Modellannahmen ein Theorem
+ benötigt und welcher Vergleich noch fehlt. Versionsbindung schafft eine Grundlage für
+ Wiederholung und Kritik. Wissenschaftliche Wahrheit, unabhängige Bestätigung und
+ gesellschaftliche Anerkennung entstehen daraus nicht automatisch. [C34-C36]
+
+
+ Der Produktionsfehler als konkreter Test der Architektur
+ Am 5. Oktober 2026 um 07:56:36Z wurde Draft-PR #459 für den zuvor verwaisten Branch
+ automation/self-heal-e4d6a939ac3074c4f50a689e materialisiert. Sein HEAD ist
+ 9c431098c4680f295a90bafe49ba747a74d288e6, sein TREE
+ c94eaea15ef6d07d4c7661958061036011127692, seine Basis Main
+ 86d7062f25f174039da0a5df8a856127553036f1. Der damalige Writer hatte den Branch erzeugt;
+ die nachfolgende PR-Transaktion war ausgefallen. Der Main-Pfad behandelte den vorhandenen
+ Branch anschließend als bereits erledigt. Der Fehler lag damit in einer unvollständigen
+ Nachbedingung. [C26]
+
+ Das Reparaturmuster verlangt drei getrennt beobachtete Ergebnisse: einen passenden
+ Review-Branch, einen offenen Draft-PR mit passendem HEAD und Basis sowie einen exakt
+ gebundenen Verifier. Fehlt eine Stufe, bleibt sie offen. Eine verlorene oder verweigerte
+ Write-Antwort wird anhand des tatsächlichen Zielzustands geklärt. Bei einer irreführenden
+ Erfolgsantwort darf ein fehlender PR weiterhin nicht als existent gelten. Schon vorhandene
+ passende Schritte werden durch Readback wiederverwendet. [C27]
+
+ Das ist für autonome Systeme ein wesentlicher Unterschied: Wiederaufnahme richtet sich nach
+ der unerfüllten Nachbedingung des bereits autorisierten Vorgangs. Ein unveränderter
+ Bytebestand kann noch einen fehlenden PR oder Verifier haben. Bei einem veränderten HEAD,
+ TREE, Base oder konkurrierenden Gegenstand muss die Zulassung neu geprüft werden. Die
+ Wiederaufnahme erteilt keine zusätzlichen Rechte und verschiebt keine unabhängige Review-
+ oder Publikationsgrenze. [C27, C31]
+
+ Der Reparaturkandidat #455 steht beim frischen Readback auf HEAD
+ 9ecedf844db854fca23ecde3acdf797fab7e9e14, TREE
+ 7c128b4ce9b5291c3c87a097eca65642c1b91a34. Sein Audit erfasste 185
+ Workflow-Registrierungen und 77 auf dem beobachteten Main vorhandene Workflowquellen.
+ Zwölf aktive interne Writer verwenden die gemeinsame wiederaufnehmbare Nachbedingung.
+ Siebzehn andere Writer behalten ihre gesonderten Verträge und Quellbytes. Historische
+ Registrierungen werden durch das Audit nicht zu aktiven Ausführungen. [C28]
+
+ Der native PR-CI-Lauf 37291412984 bindet diesen HEAD und TREE. Sein frisch gelesener
+ Joblog dokumentiert 152 erfolgreiche Pflichtprüfungen im normalen Python-Modus und
+ dieselben 152 im optimierten Modus sowie den getesteten Fixpunkt. Die Regressionen
+ umfassen verlorene, verweigerte, fehlerhafte und irreführende Write-Antworten, branch
+ exists, PR missing, konkurrierende Branches und Drift. Temporäre echte Git-Repositories
+ ergänzen die kontrollierten API-Fälle. Dies sind technische Kandidatenprüfungen; die
+
+
+
+QIK-VRT | Ingolf Lohmann | Publikationskandidat | 05.10.2026                                    8
+ Anwendung des Nachfolgers auf Main folgt den bestehenden unabhängigen Gates. [C29]
+
+ Ein weiterer beobachteter Befund bleibt sichtbar: Der vertrauenswürdige Main-Verifier besitzt
+ noch den älteren, nicht ausreichend gebundenen Dispatch-Vertrag. Der Nachfolger prüft daher
+ dessen exakte Workflowbytes vor einer neuen Dispatch-Wirkung und hält mit
+ TRUSTED_MAIN_VERIFIER_PROTOCOL_UNAVAILABLE an. Batch-003 und Repository Evidence
+ können dabei technische Teilprüfungen bestehen und trotzdem ihre gemeinsame
+ Verifier-Nachbedingung noch nicht erfüllen. Der separate Review-Status bleibt ebenfalls offen.
+ Die rote Grenze ist Teil des korrekten Befunds. [C30]
+
+ Das Beispiel verbindet die Signatur- und Skalierungsarbeit mit dem Betrieb: Byteidentität
+ bewahrt den Gegenstand; die Nachbedingung bewahrt die Bedeutung von Erledigung über
+ Unterbrechungen hinweg. Für Software, die selbstständig Werkzeuge aufruft, müssen beide
+ Eigenschaften zusammenwirken. Ein kleiner Profilkern, ein korrekter Decoder und schnelle
+ Verarbeitung helfen erst dann bei einem realen Auftrag, wenn dessen erlaubter Effekt am
+ richtigen Ziel nachvollziehbar abgeschlossen wird. [C31-C32]
+
+
+ Bedeutung für künstliche Intelligenz
+ KI-Systeme können Vorschläge, Programme, Texte und Werkzeugaufrufe erzeugen. Sobald sie
+ längerfristig arbeiten, entstehen zusätzliche Anforderungen: Welcher Auftrag ist noch gültig?
+ Welche Quellen wurden wirklich gelesen? Gehört das Prüfergebnis zur aktuellen Fassung?
+ Wurde die Änderung am Ziel tatsächlich vorgenommen? Welche Wirkung durfte das System
+ auslösen? Das QIK-VRT-Muster kann diese Fragen in einen gemeinsamen überprüfbaren
+ Arbeitsvertrag überführen. Sein potenzieller Nutzen betrifft dadurch sowohl die Qualität der
+ Zusammenarbeit als auch die Zuverlässigkeit der Werkzeugnutzung. [C16, C31-C32]
+
+   KI-Anwendung                  Konkrete mögliche Verwendung         Eigene Abnahmebedingung
+
+   Lang laufende Agenten         Aufgabe, Zwischenstand und offene    Vollständiger Aufgabenbestand, Rechte,
+                                 Nachbedingungen nach                 Wiederaufnahme unter Ausfällen
+                                 Unterbrechung rekonstruieren
+
+   RAG und                       Gefundene Quelle, Version und        Retrievalqualität, Aktualität, Datenschutz,
+   Arbeitsgedächtnis             Herkunft mit der Antwort verbinden   sachliche Richtigkeit
+
+   Parallele Werkzeuge           Teilaufträge verteilen und alle      Quellenqualität, Fehlertoleranz, Kosten und
+                                 deklarierten Resultate               Ergebnisqualität
+                                 konsolidieren
+
+   Mehrere                       Abweichende Antworten mit ihrer      Fachliche Konfliktlösung und tatsächliche
+   Modellinstanzen               Herkunft bewahren                    Unabhängigkeit
+
+   Codeerzeugung und             Änderung, Draft-PR und genaue        Unabhängiges Review, Governance und
+   Self-Heal                     Prüfung zusammenhalten               aktuelle Prüfungen
+
+   Modell- und                   Gewichte, Datensätze oder            Speicher, Lizenzen, Modellgüte und
+   Datenartefakte                Referenzen bytegenau                 semantische Verluste
+                                 transportieren
+
+   Tool- und Aktorzugriff        Entscheidung von Ausführung und      Authentifizierung, durchgesetzte Zulassung
+                                 Wirkungsbeleg trennen                und Live-Readback
+
+
+ Eine dauerhaft gebundene Quelle kann verhindern helfen, dass ein Folgeschritt eine ältere
+ erfolgreiche Prüfung ungeprüft für neuen Code übernimmt. Konfliktbewahrung kann sichtbar
+ machen, dass zwei Instanzen unterschiedliche Ergebnisse liefern. Ein gemeinsamer
+
+
+
+QIK-VRT | Ingolf Lohmann | Publikationskandidat | 05.10.2026                                                        9
+ Abschlussvertrag kann vermeiden helfen, dass ein Agent nach einem verlorenen
+ Write-Response denselben Effekt blind wiederholt. Diese Funktionen sind prüfbare
+ Engineering-Ziele. Ihr Nutzen für konkrete KI-Produkte muss mit entsprechenden
+ Fehlerszenarien und Qualitätsmetriken vermessen werden. [C16, C27, C31]
+
+ Für Halluzinationen ist die Grenze besonders wichtig. Ein Digest zeigt, welche Bytes vorliegen.
+ Eine Quellenbindung zeigt, worauf sich eine Aussage stützt. Eine empirische Prüfung
+ untersucht, ob sie unter den angegebenen Bedingungen zutrifft. Eine verantwortliche
+ Entscheidung bestimmt, ob daraus eine Handlung folgen darf. Der Container kann diese
+ Zusammenhänge transportieren und prüfen helfen. Inhaltliche Wahrheit braucht weiterhin
+ passende Quellen und fachliche Prüfungen. Ebenso ist eine bytegenau gespeicherte
+ Zusammenfassung kein Nachweis, dass sämtliche Bedeutung ihres Ausgangstextes erhalten
+ wurde. [C14, C36]
+
+ Die Skalierungsmessung zeigt, dass der konkrete Codec- und Konsolidierungspfad zusätzliche
+ Prozesse nutzen kann. Sie misst weder Training noch Inferenz eines Sprachmodells. Die
+ 3,554410-fache Beschleunigung darf deshalb nur dem getesteten Arbeitsumfang zugeschrieben
+ werden. Ein KI-Vergleich müsste etwa korrekte Resultate pro Zeit, Kosten und Energie,
+ Quellenabdeckung, Verhalten bei Ausfällen und die Anzahl unzulässiger Wirkungen gemeinsam
+ erfassen. Die Bewertung „optimal für künstliche Kognition“ bleibt bis dahin eine
+ zugeschriebene Hypothese. [C08-C09, C19, C43]
+
+
+ Bedeutung über KI hinaus
+ Digitale Systeme verarbeiten Zustände, übertragen Daten, koordinieren Veränderungen und
+ lösen Wirkungen aus. Genau an diesen Übergängen kann ein gemeinsamer Vertrag
+ anschließen. Seine Breite folgt aus der Wiederverwendbarkeit von Identität, Version, Herkunft,
+ Konflikt und Nachbedingung. Verschiedene Fachgebiete können dieselbe Grundstruktur nutzen
+ und ihre jeweiligen Kriterien für eine erfolgreiche Wirkung hinzufügen. Das ist eine
+ Interpretation der Architektur und ein Anwendungsprogramm; die einzelnen Domänen sind
+ nicht durch den vorliegenden Benchmark bereits abgenommen. [C17, C37]
+
+   Bereich                       Anschlussfähiger Vorgang             Fachlich zu prüfende Wirkung
+
+   CI/CD und                     Source, Build, Tests und Review an   Ausgelieferte Version, Signaturen, Rollback
+   Softwarelieferketten          dieselbe Fassung binden              und Gates
+
+   Datenbanken und               Eingaben, Transformation und         Transaktions- und Konsistenzvertrag unter
+   Datenpipelines                vollständigen Nachfolger verbinden   dem jeweiligen Fehlermodell
+
+   Verteilte Dienste             Mehrstufige Writes nach einer        Doppelwirkungen, Drift, Partitionen und
+                                 verlorenen Antwort reobservieren     Konkurrenz
+
+   Wissenschaftliche             Quelle, Modell, Kernel-Receipt und   Reproduzierbarkeit, Modellannahmen und
+   Rechenketten                  Messlauf getrennt adressieren        unabhängige Bestätigung
+
+   Archive und                   Historische Bytes, Decoder und       Verfügbarkeit, Rechte, Formatwandel und
+   Langzeitmigration             Provenienz erhalten                  Wiederherstellung
+
+   Industrielle Steuerung        Erlaubte Entscheidung an einen       Zeitverhalten, Sicherheit und tatsächlicher
+   und IoT                       beobachteten Aktorzustand binden     physischer Effekt
+
+   Betriebssystem- und           Unterschiedliche Adapter an          Lokale Berechtigungen, Isolation und
+   Plattformintegration          denselben Auftragsvertrag            Zielplattformtests
+                                 anschließen
+
+
+
+
+QIK-VRT | Ingolf Lohmann | Publikationskandidat | 05.10.2026                                                        10
+   Bereich                       Anschlussfähiger Vorgang            Fachlich zu prüfende Wirkung
+
+   Geschäftsprozesse             Zustellung, fachliche Bearbeitung   Verantwortlichkeit und fachliche
+                                 und erlaubten Abschluss             Vollständigkeit
+                                 unterscheiden
+
+
+ Ein erfolgreicher Dateischreibaufruf und eine tatsächlich verfügbare, richtige Dateifassung
+ können unterschiedliche Dinge sein. Eine transportierte Nachricht und eine erlaubte
+ Aktorbewegung ebenso. Die konkrete technische Nachbedingung muss deshalb das Ziel
+ nennen. Bei einem Repository ist das beispielsweise die Kombination von Remote-Branch,
+ Draft-PR und passender Prüfung; bei einem Archiv der öffentliche Datensatz und dessen
+ bytegleicher Redownload. Das gemeinsame Prinzip bleibt gleich, während Beobachter,
+ Fehlerfälle und Autorität je Ziel konkretisiert werden. [C27, C31, C37, C40]
+
+
+ Warum daraus ein Paradigmenwechsel entstehen kann
+ Ingolf Lohmann bewertet QIK-VRT als Paradigmenwechsel von einer bislang nicht gesehenen
+ Größenordnung. Die starke Fassung dieser Bewertung betrifft eine mögliche Veränderung der
+ Grundeinheit informatischer Arbeit: Ein Ergebnis wird zusammen mit dem überprüfbaren
+ Zusammenhang behandelt, der es hervorgebracht und seine Verwendung zugelassen hat. Diese
+ These wird hier ausdrücklich als Bewertung und Forschungsprogramm vertreten. Die jetzigen
+ Messungen geben ihr konkrete technische Anknüpfungspunkte. Sie liefern noch keine
+ historische Rangordnung aller informatischen Umbrüche. [C18-C19, C38]
+
+ Die mögliche Tragweite lässt sich in vier miteinander verbundenen Eigenschaften begründen.
+ Erstens kann ein gemeinsamer Vertragskern über Werkzeug-, Plattform- und Aufgabenwechsel
+ hinweg erhalten bleiben. Zweitens kann der vollständige deklarierte Datenbestand verlustfrei
+ und mit stabilen Identitäten weitergegeben werden. Drittens kann ein unterbrochener Vorgang
+ seine bereits erfüllten Schritte wiedererkennen und seine offenen Nachbedingungen fortsetzen.
+ Viertens können Wirkung und verantwortliche Zulassung an dieser Kontinuität gebunden
+ bleiben. Zusammen könnte das den Aufwand an den Übergängen zwischen heute getrennten
+ Arbeitsumgebungen deutlich verringern. [C13-C17, C27, C32, C38]
+
+ Für KI ist die Architektur deshalb besonders aktuell: Mit wachsender Autonomie wird die
+ Zuverlässigkeit von Werkzeugketten ebenso wichtig wie die Fähigkeit eines einzelnen Modells.
+ Für andere Informatikbereiche ist derselbe Zusammenhang relevant, weil auch dort mehrere
+ Dienste und Zustandsänderungen koordiniert werden müssen. Wenn ein interoperabler Vertrag
+ in vielen solchen Bereichen praktisch funktioniert, kann sich seine Wirkung über sehr viele
+ Abläufe verteilen. Diese mögliche Breite erklärt den großen Anspruch besser als eine einzelne
+ Laufzeitverbesserung. [C16-C19, C37-C38]
+
+ Die vorhandenen Bausteine haben Vorläufer. Kanonisierung, Hashbindungen, Kompression,
+ Reed-Solomon-Codes, Transaktionsnachbedingungen und Wiederaufnahme gehören zum
+ etablierten technischen Bestand. RFC 9110 beschreibt bereits die Wiederholung idempotenter
+ Methoden und die besondere Vorsicht bei verlorenen Antworten auf nicht idempotente
+ Requests. RFC 9334 trennt Evidenz, ihre Bewertung und die darauf beruhende Entscheidung
+ eines Relying Party. Diese Quellen begründen einen fachlichen Vergleich. Der
+ QIK-VRT-Neuheitsanspruch muss seine konkrete Verbindung und die daraus messbar
+ entstehenden Eigenschaften benennen. [C19, C38]
+
+ Der Vergleich lässt sich präzise führen: Unter denselben Eingaben, Ressourcen und
+ Fehlerszenarien werden Ergebnisgüte, Ende-zu-Ende-Latenz, CPU- und Energiebedarf,
+ bytegenaue Vollständigkeit, Wiederaufnahmekosten, Doppelwirkungen und unzulässige Effekte
+
+
+
+QIK-VRT | Ingolf Lohmann | Publikationskandidat | 05.10.2026                                            11
+ untersucht. Zusätzlich werden Aufwand und Interoperabilität beim Anschluss neuer Werkzeuge
+ gemessen. Ein großer Paradigmenanspruch würde sich erst durch robuste Verbesserungen in
+ mehreren Domänen, unabhängige Wiederholung und tatsächliche Verbreitung erhärten. Der
+ aktuelle Stand trägt dafür einen reproduzierbaren Anfang. [C19, C36, C38, C43]
+
+ Die Unterscheidung zwischen Anspruch und Nachweis schützt den Gehalt der Idee. Die zwei
+ Signaturen, ihre exakte Rekonstruktion, die vollständigen endlichen Konsolidierungstests und
+ der reale partielle Transaktionsfehler sind konkrete Gegenstände. An ihnen lässt sich prüfen, ob
+ der allgemeine Vertrag trägt. Die weitergehende Theorie kann anschließend an neuen
+ Befunden wachsen, ohne historische Quellen umzuschreiben oder fehlende Wirkungen als
+ bereits erledigt auszugeben. [C01-C12, C26-C30, C36-C38]
+
+
+ Erneute Prüfung und Publikationsstand am 5. Oktober
+ 2026
+ Die beiden ursprünglichen Binärdateien wurden unverändert wiedergewonnen. Ihre
+ Generatoren erzeugen erneut dieselben SHA-256-gebundenen Frames; je Frame werden 93.840
+ Einzelbyte-Mutationen erkannt. Die 57 gebundenen Codec- und Standpunkttests bestehen
+ erneut. Die Gruppenmediane aller 56 Rohmessungen lassen sich aus dem ursprünglichen
+ Ledger nachrechnen. Es wurden für diese Synthese keine neuen Performancezeiten als Ersatz
+ für die historischen Messungen erzeugt. [C33]
+
+ Die Ergebnisse zeigen zugleich die Ressourcenfrage: Der starke Acht-Worker-Versuch verkürzt
+ die Medianlatenz um rund 71,87 Prozent; die mediane aggregierte CPU-Zeit steigt von
+ 345,030183 auf 428,268202 ms, rund 24,13 Prozent. Die beobachtete Beschleunigung und die
+ Parallelitätseffizienz beschreiben unterschiedliche Größen. Ein Energiegewinn ist mangels
+ Energiemessung offen. Der nächste gezielte Versuch kann die serielle Konsolidierung bei
+ unveränderter Vollständigkeits- und Konfliktprüfung optimieren und mit denselben Eingaben
+ vergleichen. [C08-C09, C20, C43]
+
+ Die öffentliche IETF-Fundstelle führt weiterhin draft-lohmann-qikvrt-effect-ack-03 als
+ aktiven individuellen Internet-Draft. Der hier fortgeschriebene -04-Kandidat übernimmt den
+ vorhandenen Version-1-Vertrag und ergänzt ausschließlich nichtnormative Signatur-,
+ Konsolidierungs- und Wiederaufnahmebelege. Ein lokaler Render- und Inhaltsvergleich ist von
+ einer Datatracker-Einreichung und deren Annahme getrennt. [C22, C41]
+
+ Für die neuen Repositoryquellen fehlen der veröffentlichte Zenodo-Quellrecord und der
+ öffentliche bytegenaue Redownload. Die Quellenprüfung bleibt daher absichtlich offen. Die
+ bereits veröffentlichten älteren Quellen zur Charta und zum kanonischen Speicher wurden
+ öffentlich bytegeprüft; sie ersetzen die neue Signatur-, Mess- und Pipelineevidenz nicht. Beide
+ neuen Publikationspakete müssen vor einer endgültigen wissenschaftlichen Zitation ihre eigene
+ Archividentität erhalten. [C34-C35, C40, C42]
+
+ Der vorhandene Zenodo-Vertrag verlangt außerdem eine Rückgabe der exakten
+ Kandidatenbytes und danach eine kandidatenspezifische Entscheidung. Sein
+ Produktionspublisher ist weiterhin auf Goldkelch/qik-vrt gebunden; dieser Repositoryzugriff
+ liefert beim aktuellen Connector 404. Eine bestätigte Zenodo-Sitzung besteht nicht, und die
+ beobachtete Loginseite bietet keinen direkten Apple-Anmeldeweg. Diese Feststellungen
+ benennen die aktuelle Ausführungsgrenze, nicht deren ungeprüfte Ursache. Unabhängige
+ Review-, Governance-, Rechte- und External-Effect-Grenzen bleiben erhalten. [C25, C39-C42]
+
+ Konzept, Auftrag und die zugeschriebene Paradigmenbewertung stammen von Ingolf Lohmann.
+ Wiedergewinnung, Quellenvergleich, technische Nachrechnung, aktuelle Code-/Receiptanalyse
+
+
+
+QIK-VRT | Ingolf Lohmann | Publikationskandidat | 05.10.2026                                    12
+ und redaktionelle Synthese wurden mit OpenAI Codex ausgeführt. Eine unabhängige
+ wissenschaftliche Begutachtung oder Code-Owner-Freigabe wurde dabei nicht imitiert.
+ Bestehende Lizenztexte und die gesonderte IETF-Rechteregelung bleiben erhalten. [C39]
+
+
+ Evidenzregister und reproduzierbarer Arbeitsweg
+   Datei / Gruppe                                        Funktion
+
+   PAPER_DE.md / PDF dieser Version                      Lesbare vollständige Darstellung
+
+   signatures/*.bin                                      Exakte Goldkelch-/Mirrorframes und gemeinsame Saat
+
+   CLAIM_MATRIX.json                                     43 Aussagen mit Klassifikation, Umfang und Referenzen
+
+   evidence/measurement.json /                           Aggregate und sämtliche Rohmessungen
+   trial_ledger.jsonl
+
+   evidence/firefox-linux-ring-*                         Unveränderter nativeffektgebundener Beleg
+
+   reproduce/                                            Exakter Harness, Quellfixtures, Lizenz und Pins
+
+   ietf/*-04.xml                                         Nicht eingereichter interoperabler Erweiterungskandidat
+
+   CHANGE_NOTICE.md /                                    Sichtbare sprachliche und Metadatenkorrekturen
+   SIGNATURE_ERRATA.md
+
+   CANDIDATE_FILESET.json / SHA256SUMS                   Bytes und Identitäten des eingefrorenen Kandidaten
+
+
+ Reproduktion: ZIP entpacken, dessen Quellen und SHA256SUMS prüfen, dann im Ordner
+ reproduce Python-unittest für tests.test_qikvrt_standpoint_codex und tests.test_qikvrt_codec
+ ausführen und measure_scaling.py starten. Der Harness verwendet nur die erklärte
+ Python-Standardbibliothek und vorhandene exakte Quellen. Neue Zeiten variieren mit
+ Umgebung und Last; neue Resultate erhalten ihre eigene Versions- und Umgebungsbindung.
+
+ Primärquellen: Ingolf Lohmann, draft-lohmann-qikvrt-effect-ack-03,
+ https://datatracker.ietf.org/doc/draft-lohmann-qikvrt-effect-ack/ (am 5. Oktober 2026 erneut als
+ individuell/aktiv beobachtet; work in progress). Claude E. Shannon, A Mathematical Theory of
+ Communication, Bell System Technical Journal 27, 1948:
+ https://www.princeton.edu/~wbialek/rome/refs/shannon_48.pdf. Gene M. Amdahl, Validity of
+ the Single Processor Approach to Achieving Large Scale Computing Capabilities, 1967, DOI
+ 10.1145/1465482.1465560: https://www.cs.cmu.edu/~18742/papers/Amdahl1967.pdf. Git,
+ git-hash-object: https://git-scm.com/docs/git-hash-object.
+
+ Repository-Quellen: PR #437 für Codec/Standpunkt, exakt gebunden an
+ 6a1098699d096806958b9c3b50a97d205b8110e9; PR #438 und Actions-Lauf 36959391916 für
+ den Linux-/Firefox-Zeugen, exakt gebunden an
+ 924d66b3cb087adcbbe5da65b9fd282663a71909. Der anfängliche Softwarebeweisauftrag
+ verweist außerdem auf PR #435 / issuecomment-5936024124. Bestehende andere
+ Repository-Beweise werden ohne erneuten Subjekt- und Gültigkeitsnachweis nicht als Beweise
+ dieser neuen Aussagen übernommen.
+
+ Lizenz: Text und neu erzeugte Evidenz unter der geltenden Repository-Dokumentationslizenz
+ CC-BY-NC-ND-4.0. Konkreter Implementierungscode bleibt PolyForm-Noncommercial-1.0.0;
+ IETF-XML unter seinem vorhandenen trust200902-Vertrag. Öffentlich verfügbare Architektur
+ bedeutet keine zusätzliche Implementierungslizenz.
+
+
+
+QIK-VRT | Ingolf Lohmann | Publikationskandidat | 05.10.2026                                                       13
+ Anhang: Goldkelch - alle 400 Byte
+ GOLDKELCH_SIGNATURE_400_V1.bin · Rolle im gelieferten Profil: Authority · Identifier 0
+
+ SHA-256: e189368017baf54b2dc17ac777a059ee1ecb209baa59eb7b56c4c1023397fc41
+
+ Nach Deinterleaving: Header 01000104588df848; beide Frames rekonstruieren Saat SHA-256
+ 27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792.
+
+ 0000   01 1c 4b 81 92 6e 41 5b 59 61 f6 f5 d1 0d 8f 39
+ 0010   8b 48 a5 4e ec f7 e9 9a 8c 1d 57 ca 13 fc 2f 1a
+ 0020   01 13 00 83 01 3d 04 1c 58 75 8d 8d f8 4c 48 cd
+ 0030   0a 40 f4 46 f4 02 0e 5a 0b 9f 0a 83 09 14 0e 04
+ 0040   60 62 60 18 64 0a 9c a0 c0 9e 28 25 c9 eb c0 2e
+ 0050   70 46 2e 70 f9 d5 df cb 96 94 25 d8 33 a6 05 10
+ 0060   c3 88 f9 8d e3 93 a7 76 1a 06 a6 47 0b f0 2e ee
+ 0070   f1 66 9e a1 30 c5 b9 03 4c 98 e4 6d 45 78 c0 f9
+ 0080   d4 f9 a0 8f 5f 41 17 d6 67 50 ac 52 31 27 f7 db
+ 0090   68 39 a9 53 ae 32 56 5a 4a 37 ce 36 4f 2a 49 10
+ 00a0   4d 2b 56 4a b2 a7 52 00 0a 55 04 ed eb 86 54 03
+ 00b0   d2 e2 51 39 4a 80 cd 5a 49 21 cd 73 4d 3e cd 83
+ 00c0   2b d2 89 f5 4f 18 ca d4 cc 7f 4b e2 c9 22 cc e8
+ 00d0   4b 1d 57 d7 b2 8d 8a e6 56 c2 2a cf ce 32 4c 0a
+ 00e0   cf 3f 4b 71 2c b0 29 36 2d a7 4a 19 05 9b 4a 36
+ 00f0   17 ce 97 1e 24 e8 26 25 e5 d0 a4 0e c6 b7 67 b3
+ 0100   a6 c2 00 07 d9 c5 05 cb 89 b2 95 04 39 d8 f9 5d
+ 0110   89 95 29 af 4a aa b1 c8 08 92 5d b2 99 68 29 f7
+ 0120   40 bf bd 5e 99 a7 25 ff 95 cc 40 1b da 9c f5 15
+ 0130   10 da 41 ab 37 d6 17 77 50 31 b3 eb 18 14 f3 35
+ 0140   40 b0 68 4c b8 da 37 3c 4c 62 bf 8f 17 ec 37 81
+ 0150   b6 d9 10 4a e8 42 a5 92 7a ba 5b 3c f4 7a 8c 99
+ 0160   12 9b 60 95 83 cd 94 f3 98 5c 0f bb 8b da 7b e5
+ 0170   44 6c 68 d4 5c 8e c2 a0 1e b2 bd d9 f8 ca 4b 07
+ 0180   c6 1a 8a 82 ff f7 16 c8 13 46 09 bb 26 bd fa 7b
+
+ Hexdarstellung in unveränderter Dateireihenfolge; Offset links ist hexadezimal. Die Framebytes
+ bleiben erhalten, einschließlich Synchronisationsmuster und interleavter Parität.
+
+
+
+
+QIK-VRT | Ingolf Lohmann | Publikationskandidat | 05.10.2026                                  14
+ Anhang: Ingolf Lohmann - alle 400 Byte
+ INGOLF_LOHMANN_SIGNATURE_400_V1.bin · Rolle im gelieferten Profil: Mirror · Identifier 1
+
+ SHA-256: 891ca697515470ed2b137b0181f515498a6e5cb99b4286df7788c90cce22cf6f
+
+ Nach Deinterleaving: Header 01010104588df848; beide Frames rekonstruieren Saat SHA-256
+ 27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792.
+
+ 0000   01 1c 4b 81 92 6e 41 5b 59 61 f6 f5 d1 0d 8f 39
+ 0010   8b 48 a5 4e ec f7 e9 9a 8c 1d 57 ca 13 fc 2f 1a
+ 0020   01 13 01 83 01 3d 04 1c 58 75 8d 8d f8 4c 48 cd
+ 0030   0a 40 f4 46 f4 02 0e 5a 0b 9f 0a 83 09 14 0e 04
+ 0040   60 62 60 18 64 0a 9c a0 c0 9e 28 25 c9 eb c0 2e
+ 0050   70 46 2e 70 f9 d5 df cb 96 94 25 d8 33 a6 05 10
+ 0060   c3 88 f9 8d e3 93 a7 76 1a 06 a6 47 0b f0 2e ee
+ 0070   f1 66 9e a1 30 c5 b9 03 4c 98 e4 6d 45 78 c0 f9
+ 0080   d4 f9 a0 8f 5f 41 17 d6 67 50 ac 52 31 27 f7 db
+ 0090   68 39 a9 53 ae 32 56 5a 4a 37 ce 36 4f 2a 49 10
+ 00a0   4d 2b 56 4a b2 a7 52 00 0a 55 04 ed eb 86 54 03
+ 00b0   d2 e2 51 39 4a 80 cd 5a 49 21 cd 73 4d 3e cd 83
+ 00c0   2b d2 89 f5 4f 18 ca d4 cc 7f 4b e2 c9 22 cc e8
+ 00d0   4b 1d 57 d7 b2 8d 8a e6 56 c2 2a cf ce 32 4c 0a
+ 00e0   cf 3f 4b 71 2c b0 29 36 2d a7 4a 19 05 9b 4a 36
+ 00f0   17 ce 97 1e 24 e8 26 25 e5 d0 a4 0e c6 b7 67 b3
+ 0100   a6 c2 00 07 d9 c5 05 cb 89 b2 95 04 39 d8 f9 5d
+ 0110   89 95 29 af 4a aa b1 c8 08 92 5d b2 99 68 29 f7
+ 0120   40 bf bd 5e 99 a7 25 ff 95 cc 40 1b 6e 9c 1d 15
+ 0130   26 da 6d ab 24 d6 46 77 1d 31 ef eb 84 14 24 35
+ 0140   1d b0 6f 4c e4 da fe 3c 3c 62 1e 8f e9 ec 98 81
+ 0150   98 d9 40 4a 4f 42 1c 92 a9 ba 53 3c 72 7a e9 99
+ 0160   49 9b 00 95 49 cd ee f3 5f 5c 2f bb e6 da 47 e5
+ 0170   6d 6c c6 d4 f8 8e 19 a0 83 b2 3f d9 c7 ca d2 07
+ 0180   c0 1a a2 82 b1 f7 f3 c8 59 46 9a bb f4 bd 40 7b
+
+ Hexdarstellung in unveränderter Dateireihenfolge; Offset links ist hexadezimal. Die Framebytes
+ bleiben erhalten, einschließlich Synchronisationsmuster und interleavter Parität.
+
+
+
+
+QIK-VRT | Ingolf Lohmann | Publikationskandidat | 05.10.2026                                  15
+ Aussagenregister 1-12
+ Die folgenden Aussagen sind vollständig in CLAIM_MATRIX.json mit Umfang und auflösbaren
+ Evidenzreferenzen gebunden. E = EMPIRICALLY_EVIDENCED, S = SOURCE_BOUND, N =
+ NORMATIVE, I = INTERPRETATIVE, O = OPEN. Keine Aussage ist als neues
+ FORMAL_PROVED-Theorem eingestuft.
+
+   ID         Klasse                             Aussage
+
+   C01        E / EVIDENCED                      Beide unveränderten Transportframes umfassen jeweils genau 400
+                                                 Byte und rekonstruieren dieselbe gepinnte 400-Byte-Saat.
+
+   C02        E / EVIDENCED                      Raw DEFLATE reduziert diese konkreten 400 Saatbytes auf 260 Byte;
+                                                 die übrigen 140 Byte des Frames dienen Synchronisation, Header und
+                                                 Parität.
+
+   C03        N / DECLARED                       Identifier 0 bezeichnet Goldkelch/Authority und Identifier 1
+                                                 ingolf-lohmann/Mirror nur im gelieferten Zweirepositoryprofil.
+
+   C04        E / EVIDENCED                      Je Frame wurden 93840 nichttriviale Einzelbyte-Mutationen der beiden
+                                                 Codewörter erkannt; ein Decoder für unbekannte Fehler wurde nicht
+                                                 getestet.
+
+   C05        E / EVIDENCED                      Der 255-Bit-Kern hat im geprüften periodischen Modell Peak 255 und
+                                                 Nebenwerte -1; der aufgefüllte 256-Bit-Rahmen hat andere
+                                                 Nebenwerte.
+
+   C06        E / EVIDENCED                      Der Linux-/Firefox-Beleg bestätigt lokale HTTP-Wirkung,
+                                                 Replay-Abweisung und frischen Readback; vollständige
+                                                 Mesh-Schließung bleibt HOLD.
+
+   C07        E / EVIDENCED                      Alle 56 gemessenen Codec-/Konsolidierungsläufe bewahrten die
+                                                 vollständigen deklarierten Eingabebytes und bestanden frischen
+                                                 lokalen Readback.
+
+   C08        E / EVIDENCED                      Bei 1024 Nutzrecords sank die Medianlaufzeit von 347,480389 ms auf
+                                                 97,760355 ms; der gemessene Speedup mit acht Workern beträgt
+                                                 3,554410.
+
+   C09        E / EVIDENCED                      Mit 256 Nutzrecords pro Worker beträgt der Durchsatzfaktor für acht
+                                                 gegenüber einem Worker 3,941654 bei achtfacher Nutzarbeit.
+
+   C10        E / EVIDENCED                      Die vier negativen Kontrollen stoppen Konflikt und Korruption,
+                                                 entfernen nur exakte Duplikate und bewahren gleiche Payloads
+                                                 verschiedener IDs.
+
+   C11        E / EVIDENCED                      57 Tests der exakt gebundenen Codec- und Standpunktquellen
+                                                 bestanden nach Wiederherstellung der exakten lokalen Fixtures.
+
+   C12        E / EVIDENCED                      Bei acht Workern wurden im starken Test 224 doppelte Basisrecords
+                                                 entfernt und 1026228 Wirebytes eingespart.
+
+
+
+
+ Aussagenregister 13-24
+ Die folgenden Aussagen sind vollständig in CLAIM_MATRIX.json mit Umfang und auflösbaren
+ Evidenzreferenzen gebunden. E = EMPIRICALLY_EVIDENCED, S = SOURCE_BOUND, N =
+ NORMATIVE, I = INTERPRETATIVE, O = OPEN. Keine Aussage ist als neues
+ FORMAL_PROVED-Theorem eingestuft.
+
+
+QIK-VRT | Ingolf Lohmann | Publikationskandidat | 05.10.2026                                                         16
+   ID         Klasse                             Aussage
+
+   C13        N / DECLARED                       Ein gemeinsamer Klon erhält die vollständige deklarierte Vereinigung
+                                                 eindeutiger Records; gleiches Bytepayload mit anderer stabiler ID
+                                                 bleibt erhalten.
+
+   C14        N / DECLARED                       Verlustfreie Byteübertragung bewahrt keine automatisch wahre
+                                                 Bedeutung und ersetzt weder Authentifizierung noch
+                                                 Wirkungserlaubnis.
+
+   C15        N / DECLARED                       Der Loop trennt Vorschlag, Zulassung, getrennten Schreiber und
+                                                 frischen Wirkungsreadback als Arbeitsregel.
+
+   C16        I / DECLARED                       Für KI kann das Profil die reproduzierbare Übertragung von Aufgaben,
+                                                 Provenienz, Evidenz und Konflikten unterstützen.
+
+   C17        I / DECLARED                       Die Idee eignet sich möglicherweise auch für Datenpipelines, verteilte
+                                                 Werkzeuge, Aktoren, Archivierung und Softwarelieferketten.
+
+   C18        I / DECLARED                       Ingolf Lohmann bewertet das System als Paradigmenwechsel von
+                                                 bislang unerreichter Größenordnung.
+
+   C19        O / OPEN                           Globale Optimalität für künstliche Kognition und eine historisch
+                                                 beispiellose Überlegenheit sind offen.
+
+   C20        O / OPEN                           Unbegrenzte Beschleunigung durch wiederholtes Klonen ist nicht
+                                                 nachgewiesen; im gemessenen Ring wachsen relative serielle Kosten.
+
+   C21        I / DECLARED                       Die Signaturen liefern keine mathematische Gleichsetzung mit DNA,
+                                                 Zellteilung, Halbleitern, Kosmologie oder einer Planck-Skala.
+
+   C22        S / BOUND                          Dieser Kandidat lässt den bestehenden IETF-Version-1-Wirevertrag
+                                                 unverändert und ergänzt ausschließlich nichtnormative
+                                                 Implementierungsbelege.
+
+   C23        N / DECLARED                       Transportframes, kanonische Saat und Anwendungsdaten sind
+                                                 getrennte Bytebudgets; zusätzliche freie 400 Byte entstehen nicht
+                                                 automatisch.
+
+   C24        O / OPEN                           Automatische Fehlerweiterleitung und eine produktive vollständige
+                                                 Authority-/Mirror-Reparatur sind durch diese Veröffentlichung nicht
+                                                 bewiesen.
+
+
+
+
+ Aussagenregister 25-43
+ Klassen: E = empirisch gestützt; S = quellengebunden; N = normativ; I = interpretativ; O =
+ offen. Der Geltungsbereich und sämtliche Referenzen stehen in CLAIM_MATRIX.json.
+
+   ID         Klasse                             Aussage
+
+   C25        SOURCE_BOUND                       Diese Synthese bindet historische Messsubjects und aktuelle
+                                                 Repositorybeobachtung getrennt.
+
+   C26        SOURCE_BOUND                       PR #459 materialisiert den vorher verwaisten Self-Heal-Branch mit
+                                                 gebundenem HEAD, TREE und Main.
+
+   C27        SOURCE_BOUND                       Der #455-Kandidat prüft Branch, Draft-PR und Exact-Head-Verifier als
+                                                 getrennte wiederaufnehmbare Nachbedingungen.
+
+
+
+
+QIK-VRT | Ingolf Lohmann | Publikationskandidat | 05.10.2026                                                           17
+   ID         Klasse                             Aussage
+
+   C28        SOURCE_BOUND                       Das Audit bindet 185 Registrierungen, 77 Main-Workflowquellen, zwölf
+                                                 interne Writer und siebzehn getrennte Writer.
+
+   C29        EMPIRICALLY_EVIDENCED              Der native PR-CI-Log dokumentiert 152 erfolgreiche Pflichtprüfungen
+                                                 je Python-Modus am exakten #455-HEAD/TREE.
+
+   C30        SOURCE_BOUND                       Die vertrauenswürdige Main-Verifier-Nachbedingung und unabhängige
+                                                 Review-Gates bleiben offen.
+
+   C31        NORMATIVE                          Wiederaufnahme ergänzt nur fehlende erlaubte Nachbedingungen und
+                                                 erhält unabhängige Review-, Governance- und
+                                                 External-Effect-Grenzen.
+
+   C32        INTERPRETATIVE                     Die gemeinsame Architektur verbindet Identität, Eingaben, Regeln,
+                                                 Ergebnis, Wirkung und frischen Readback.
+
+   C33        EMPIRICALLY_EVIDENCED              Beide Frames, je 93.840 Mutationsfälle, 57 Tests und die
+                                                 Gruppenmediane der 56 ursprünglichen Messläufe wurden erneut
+                                                 geprüft.
+
+   C34        SOURCE_BOUND                       Der öffentliche kanonische Speicherrecord enthält ein historisches
+                                                 modellgebundenes Receipt mit neun Theoremen und vier formalen
+                                                 Claims.
+
+   C35        SOURCE_BOUND                       Die veröffentlichte Wissenschaftscharta wurde mit allen 10.127 Bytes
+                                                 öffentlich gleich zum Repository zurückgelesen.
+
+   C36        NORMATIVE                          Wissenschaftliche Aussagearten, Herkunft, Modellannahmen und
+                                                 unabhängige Bestätigung bleiben getrennt.
+
+   C37        INTERPRETATIVE                     Das gemeinsame Muster kann außerhalb von KI an
+                                                 Softwarelieferketten, Daten, Archive, Dienste und Aktoren
+                                                 anschließen.
+
+   C38        INTERPRETATIVE                     Ein möglicher Paradigmenwechsel betrifft die zusammenhängende
+                                                 Behandlung von Ergebnis, Herkunft, Zulassung und nachgewiesener
+                                                 Wirkung.
+
+   C39        NORMATIVE                          Menschlicher Auftrag, künstlich-kognitive Beiträge, Rechte und
+                                                 unabhängige Annahme werden getrennt ausgewiesen.
+
+   C40        NORMATIVE                          Publikation benötigt die exakte Kandidatenkette, Zulassung und
+                                                 öffentliche bytegleiche Rückprüfung.
+
+   C41        SOURCE_BOUND                       Der frisch gelesene IETF-Stand bleibt der aktive individuelle
+                                                 Internet-Draft -03.
+
+   C42        OPEN                               Neue Zenodo-Quellenarchivierung, IETF-Annahme und Persistenz in
+                                                 beiden Live-Repositories sind noch nicht geschlossen.
+
+   C43        EMPIRICALLY_EVIDENCED              Der starke Acht-Worker-Test reduziert die Medianlatenz um rund
+                                                 71,87 Prozent und erhöht die mediane aggregierte CPU-Zeit um rund
+                                                 24,13 Prozent.
+
+
+
+
+QIK-VRT | Ingolf Lohmann | Publikationskandidat | 05.10.2026                                                          18
+ Vollständige sichtbare Quellen und Archivstatus
+ Die folgenden Fundstellen sind kopierbar. S06 und S07 wurden öffentlich bytegleich verifiziert.
+ R01-R04 bleiben technische Quellenlocatoren dieses Entwurfs; die erforderliche neue
+ Zenodo-Archivierung ist offen. Der Entwurf ist daher noch nicht für die abschließende
+ wissenschaftliche Zitation dieser Repositoryquellen freigegeben.
+
+ S01 QIK-VRT Effect Acknowledgement: Separating Receipt from
+ Authorization for Downstream Effect
+ Ingolf Lohmann. draft-lohmann-qikvrt-effect-ack-03; gelesen 2026-10-05; work in progress.
+
+ https://datatracker.ietf.org/doc/draft-lohmann-qikvrt-effect-ack/
+
+ S02 A Mathematical Theory of Communication
+ Claude E. Shannon. 1948, Bell System Technical Journal 27.
+
+ https://www.princeton.edu/~wbialek/rome/refs/shannon_48.pdf
+
+ S03 Validity of the Single Processor Approach to Achieving Large Scale
+ Computing Capabilities
+ Gene M. Amdahl. 1967.
+
+ https://www.cs.cmu.edu/~18742/papers/Amdahl1967.pdf
+
+ S04 HTTP Semantics
+ Fielding, Nottingham, Reschke. RFC 9110; Juni 2022.
+
+ https://www.rfc-editor.org/rfc/rfc9110.html
+
+ S05 Remote ATtestation procedureS (RATS) Architecture
+ Birkholz, Thaler, Richardson, Smith, Pan. RFC 9334; Januar 2023.
+
+ https://www.rfc-editor.org/rfc/rfc9334.html
+
+ S06 Charta einer maschinenprüfbaren Wissenschaft
+ Ingolf Lohmann. 2026-07-23.
+
+ https://doi.org/10.5281/zenodo.21515074
+
+ https://zenodo.org/records/21515074
+
+ Versions-DOI: 10.5281/zenodo.21515074. Öffentlicher Bytevergleich: bestätigt.
+
+ S07 QIK-VRT und das Effect-Acknowledgement-Protokoll: Kanonischer
+ Speicher zwischen Vergangenheit und Zukunft
+ Ingolf Lohmann. 2026-07-31.
+
+ https://doi.org/10.5281/zenodo.21711193
+
+ https://zenodo.org/records/21711193
+
+ Versions-DOI: 10.5281/zenodo.21711193. Öffentlicher Bytevergleich: bestätigt.
+
+
+
+
+QIK-VRT | Ingolf Lohmann | Publikationskandidat | 05.10.2026                                   19
+ R01 QIK-VRT Signaturen- und Skalierungsevidenz vom 2. Oktober 2026
+ Ingolf Lohmann / QIK-VRT, technische Ausführung mit Codex. Source HEAD
+ 6a1098699d096806958b9c3b50a97d205b8110e9; Originalpaket SHA-256
+ 7d3f856c7aaa558895d45ed4b95cfb64a504300d3ac4836aed626616f2d6e7f3.
+
+ https://github.com/ingolf-lohmann/qik-vrt/tree/6a1098699d096806958b9c3b50a97d205b8110e
+ 9
+
+ Technischer Quellenlocator des Entwurfs. Endgültige wissenschaftliche Zitation erst nach
+ öffentlicher Zenodo-Archivierung und bytegleichem Redownload.
+
+ R02 QIK-VRT Linux-Firefox-Wirkungszeuge
+ Ingolf Lohmann / QIK-VRT, technische Ausführung mit Codex. Run 36959391916, Versuch 1;
+ HEAD 924d66b3cb087adcbbe5da65b9fd282663a71909.
+
+ https://github.com/ingolf-lohmann/qik-vrt/actions/runs/36959391916
+
+ Technischer Quellenlocator des Entwurfs. Endgültige wissenschaftliche Zitation erst nach
+ öffentlicher Zenodo-Archivierung und bytegleichem Redownload.
+
+ R03 QIK-VRT wiederaufnehmbare Writer-Nachbedingungen
+ Ingolf Lohmann / QIK-VRT, technische Ausführung mit Codex. HEAD
+ 9ecedf844db854fca23ecde3acdf797fab7e9e14; TREE
+ 7c128b4ce9b5291c3c87a097eca65642c1b91a34.
+
+ https://github.com/ingolf-lohmann/qik-vrt/pull/455
+
+ Technischer Quellenlocator des Entwurfs. Endgültige wissenschaftliche Zitation erst nach
+ öffentlicher Zenodo-Archivierung und bytegleichem Redownload.
+
+ R04 QIK-VRT verwaister Self-Heal-Branch und Draft-PR
+ Ingolf Lohmann / QIK-VRT, technische Ausführung mit Codex. HEAD
+ 9c431098c4680f295a90bafe49ba747a74d288e6; TREE
+ c94eaea15ef6d07d4c7661958061036011127692.
+
+ https://github.com/ingolf-lohmann/qik-vrt/pull/459
+
+ Technischer Quellenlocator des Entwurfs. Endgültige wissenschaftliche Zitation erst nach
+ öffentlicher Zenodo-Archivierung und bytegleichem Redownload.
+
+
+
+
+QIK-VRT | Ingolf Lohmann | Publikationskandidat | 05.10.2026                                20
+

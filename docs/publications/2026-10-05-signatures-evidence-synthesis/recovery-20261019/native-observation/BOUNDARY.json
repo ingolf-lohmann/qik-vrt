@@ -1,0 +1,12 @@
+{
+  "schema": "qikvrt_signature_recovery_native_boundary_v1",
+  "original_native_input_and_readback_performed": true,
+  "transport": "ORIGINAL_ADMITTED_IN_PROCESS_API",
+  "socket_binding_observation": "Errno 1 Operation not permitted; no substitute socket created",
+  "formal_outbox_assessment_created": false,
+  "outbox_source_carrier": "Original node-tools/qikvrt_mirror_emit.py and admitted node binding remain unavailable in inspected Authority/communication source and predecessor archive.",
+  "outbox_delivery_or_receiver_claim_created": false,
+  "native_assessment_tool_replacement_created": false,
+  "copied_foreign_journal_appended": false,
+  "global_effect_or_publication_claim": false
+}

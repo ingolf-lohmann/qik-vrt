@@ -1,0 +1,36 @@
+{
+  "schema": "qikvrt_signature_recovery_continuation_v1",
+  "predecessor_library_id": "libfile_8ff514ee33a08191a6573ae98c5acb5a",
+  "predecessor_archive_name": "QIKVRT_Autostart_20261019_v21.zip",
+  "scoped_predecessor_receipt_sha256": "0d366639d4ae8629bd66f01815208a48559260eef27fe38b8e00a35764e2a7d6",
+  "publication_obligations_preserved": [
+    {
+      "id": "signature-synthesis-frozen-pdf-recovery-20261019-775c449e9a62",
+      "state": "VERIFIED",
+      "evidence": "PR549; exact302046b1Gitblob and c10f65caSHA256 238186bytes; recovered PDF; original source archive7d3f856c byte-verified"
+    },
+    {
+      "id": "signature-synthesis-current-discovery-and-native-fixpoint-20261019",
+      "state": "OPEN",
+      "next_action": "Existing writer advanced549 to86b059aa/tree48317ce9 and original fixpoint testjob118072097548 passed. Finish admitted original run39256228787 and current-head gates after real native approval; initial workflow approval REST action is not exposed. Do not rerun to bypass."
+    },
+    {
+      "id": "signature-synthesis-complete-source-and-publication-20261019",
+      "state": "OPEN",
+      "next_action": "Reattach all exact companion sources and IETF04 candidate, current catalog and proof envelope; archive repository-derived sources first, preserve exact returned byte authorization and native production boundaries; public byte-readback and both-repository equality remain required."
+    }
+  ],
+  "completed_here": [
+    "Original 58-member R01 evidence package recovered byte-identically",
+    "Original IETF04 XML recovered byte-identically and rendered offline",
+    "24 original machine claim records and 43 printed synthesis rows clearly distinguished",
+    "Current public IETF03 and cited source record bytes independently read"
+  ],
+  "open": [
+    "Complete original technical source of 2026-10-05 synthesis remains unlocated",
+    "Full v2 machine proof, candidate-specific return receipt and later exact detached upload/submission authorizations",
+    "Fresh native PR549 candidate checks and governed Main effect",
+    "Zenodo public exact-byte readback and Mirror equality after actual permitted publication"
+  ],
+  "unrelated_predecessor_obligations": "Retained in original predecessor unchanged; this publication work does not close them."
+}
