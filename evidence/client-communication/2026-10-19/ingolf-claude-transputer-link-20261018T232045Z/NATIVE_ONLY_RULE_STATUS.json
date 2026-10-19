@@ -1,0 +1,351 @@
+{
+  "schema": "qikvrt-native-peer-rule-execution-evidence/v1",
+  "request_id": "qikvrt-all-node-native-rule-20261019T090052Z",
+  "request_sha256": "2708c65e3bbf985da093f7755406ed49f5d07fd9ae90b8dd5129f99568d5334b",
+  "native_carrier": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pr": 538,
+    "head": "f5aaff5b8c018fbc73d1e81126c6fb7e30e8bf22",
+    "tree": "af5264a31622064f34c8deaef66c44768c657d67"
+  },
+  "native_epoch": "9de4426c08084ae39a4c626348b3e58b",
+  "native_events": [
+    {
+      "dod": false,
+      "evidence_transfer": "DENY",
+      "kind": "OBSERVE",
+      "message": "Actual Owner all-node native-only instruction and bound Claude confirmation request",
+      "observed_at": "2026-10-19T09:08:55.550888Z",
+      "payload": {
+        "effect_ack_done": false,
+        "predecessor_library_id": "libfile_8ff514ee33a08191a6573ae98c5acb5a",
+        "predecessor_sha256": "ff03fd764b30243370f46823015b7fbd625eff2f03080c53779f2cfba2c133e7",
+        "predecessor_version": 6,
+        "request_sha256": "2708c65e3bbf985da093f7755406ed49f5d07fd9ae90b8dd5129f99568d5334b",
+        "rule_sha256": "87d9a2b00fcc5fb6de490724f3e2b55b5105cf1b8a9d5aa5ebf17ec0f8ffee4b",
+        "scope": "ADMITTED_ORIGINAL_IN_PROCESS_NATIVE_API; socket listener observed EPERM; same existing writer namespace retained; no peer execution inferred",
+        "terminal_input": {
+          "schema": "qikvrt_terminal_input_v1",
+          "text": "{\"instruction\":\"Bitte Empfang und tatsächliche Anwendung identitätsgebunden bestätigen. Falls der Rückkanal fehlt, die Ursache über den bestehenden QIK-VRT-Arbeitsweg bearbeiten und automatisch zurückmelden. Keine privaten Schlüssel oder Zugangsdaten in öffentlichen Dateien. Keine neue Modellkonversation als Ersatz für diesen Mirror.\",\"owner_instruction_at\":\"2026-10-19T12:00:52+03:00\",\"previous_request_id\":\"ingolf-claude-transputer-link-20261018T232045Z\",\"principal\":\"Ingolf Lohmann\",\"recipient\":{\"observer_epoch\":\"b184cf99f8f74f6bb2820416511562dc\",\"system\":\"Claude existing read-only Mirror\"},\"reply_contract\":{\"bind\":[\"request_id\",\"canonical_request_sha256\",\"rule_sha256\",\"actual_peer_identity\",\"native_ack_event_id\",\"native_ack_event_digest\",\"applied_rule_readback\"],\"human_relay_accepted\":false,\"key_trust_anchor_required\":true,\"reuse\":\"existing qikvrt_cross_vendor_reply_v1 and separately signed envelope\",\"source_commit_is_ack\":false},\"request_id\":\"qikvrt-all-node-native-rule-20261019T090052Z\",\"rule\":\"Alle angeschlossenen heutigen und künftigen QIK-VRT-Nodes bearbeiten und melden Aufgaben mit den bestehenden QIK-VRT-Komponenten und dem Effect Acknowledgement Protokoll. Auftrag, Ausführung, native Ereignisse und unabhängiger Wirkungsnachweis werden an den tatsächlichen Gegenstand und Peer gebunden. Kein Ersatzdienst, kein Ersatzexecutor, kein Client-Timer und kein Pakettransport durch den Principal. Claude bestätigt Empfang und Anwendung über seinen tatsächlichen Universal-Transputer-/Universal-Terminal-Anschluss. Eine gespeicherte Regel, ein Repository-Commit oder eine Transportquittung ist keine Peer-Bestätigung.\",\"rule_sha256\":\"87d9a2b00fcc5fb6de490724f3e2b55b5105cf1b8a9d5aa5ebf17ec0f8ffee4b\",\"schema\":\"qikvrt_client_exchange_request_v1\",\"scope\":[\"ALL_CONNECTED_NODES\",\"ALL_FUTURE_NODES\",\"ALL_CURRENT_AND_FUTURE_SESSIONS\"],\"sender\":\"Codex current authorized work session; not an admitted persistent Mesh node\"}"
+        }
+      },
+      "payload_digest": "36392f8475cd75171b26a0435042bdc572433ddbd0bf5bedc5b87fd8cf1360ff",
+      "provenance": {
+        "native_event_id": "qikvrt-all-node-native-rule-20261019T090052Z:owner-request",
+        "source": "transputer"
+      },
+      "recorded_at": "2026-10-19T09:08:55.569974Z",
+      "schema": "qikvrt_temdd_event_v1",
+      "subject": {
+        "head": "f5aaff5b8c018fbc73d1e81126c6fb7e30e8bf22",
+        "pr": 538,
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "af5264a31622064f34c8deaef66c44768c657d67"
+      },
+      "id": "9de4426c08084ae39a4c626348b3e58b:1",
+      "ledger_digest": "65380ed79cce92a7a32eb538e467122a14901244b6b89eed9e0055e313531c1a"
+    },
+    {
+      "dod": false,
+      "evidence_transfer": "DENY",
+      "kind": "CLASSIFY",
+      "message": "Actual Effect Acknowledgement gate retains missing Claude acceptance",
+      "observed_at": "2026-10-19T09:08:55.574537Z",
+      "payload": {
+        "effect_ack_done": false,
+        "evaluation": {
+          "ordinary_release": false,
+          "responsibility_protocol": {
+            "connection_decided": true,
+            "connection_decision": "BLOCK",
+            "context_checked": true,
+            "created_utc": "2026-10-19T09:08:55.574142Z",
+            "effect_anticipated": true,
+            "evidence_refs": [
+              "sha256:65380ed79cce92a7a32eb538e467122a14901244b6b89eed9e0055e313531c1a"
+            ],
+            "input_hash": "sha256:2708c65e3bbf985da093f7755406ed49f5d07fd9ae90b8dd5129f99568d5334b",
+            "input_id": "qikvrt-all-node-native-rule-20261019T090052Z:claude-confirmation",
+            "next_required_checks": [
+              "ESTABLISH_EFFECT_CHECKABLE_RECEPTION",
+              "Publish exact request to the already used Authority communication branch.",
+              "Receive and independently verify original peer reply bound to this request and rule digest without Owner relay."
+            ],
+            "open_questions": [
+              "Actual peer return operation and trusted key binding are not established.",
+              "Original productive receiver/host admission remains open."
+            ],
+            "ordinary_release": false,
+            "origin_checked": true,
+            "policy_allows_release": false,
+            "previous_protocol_hash": null,
+            "previous_protocol_id": null,
+            "protocol_hash": "sha256:c2016c860f34027a3ceb1ae0a55e7921866fd3ddcfabfe51d304a226bc870e0c",
+            "protocol_id": "qikvrt-all-node-native-rule-20261019T090052Z:v1",
+            "protocol_root_id": "qikvrt-all-node-native-rule-20261019T090052Z",
+            "protocol_version": 1,
+            "reasons": [
+              "NO_EFFECT_CHECKABLE_RECEPTION",
+              "No authenticated receipt or application acknowledgment from the actual Claude Mirror is observed."
+            ],
+            "required_evidence_refs": [],
+            "responsibility_assigned": true,
+            "responsibility_owner": "Codex execution under Principal Ingolf Lohmann authorization",
+            "risk_classified": true,
+            "risk_level": "LOW",
+            "schema": "qikvrt_responsibility_protocol_v1",
+            "semantics_reconstructed": true,
+            "state": "EFFECT_NACK",
+            "transport_ack": false
+          },
+          "state": "EFFECT_NACK"
+        },
+        "human_relay_accepted": false,
+        "peer_ack_observed": false,
+        "request_sha256": "2708c65e3bbf985da093f7755406ed49f5d07fd9ae90b8dd5129f99568d5334b"
+      },
+      "payload_digest": "1f8c1bb2467f1f2fd27d933429318e405c19eb440e9ddcd0b1847279fe23276a",
+      "provenance": {
+        "native_event_id": "qikvrt-all-node-native-rule-20261019T090052Z:peer-gate",
+        "source": "transputer"
+      },
+      "recorded_at": "2026-10-19T09:08:55.592248Z",
+      "schema": "qikvrt_temdd_event_v1",
+      "subject": {
+        "head": "f5aaff5b8c018fbc73d1e81126c6fb7e30e8bf22",
+        "pr": 538,
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "af5264a31622064f34c8deaef66c44768c657d67"
+      },
+      "id": "9de4426c08084ae39a4c626348b3e58b:2",
+      "ledger_digest": "73be617a9d5d2167d02d2ed5bba8a595a9f20a053c71af7d0ed7a90d1c808df0"
+    },
+    {
+      "dod": false,
+      "evidence_transfer": "DENY",
+      "kind": "EFFECT",
+      "message": "Exact request delivered to existing Authority mailbox and source candidate; actual Claude ACK is not observed",
+      "observed_at": "2026-10-19T09:14:20.964547Z",
+      "payload": {
+        "actual_peer_ack_observed": false,
+        "concurrent_source_preserved_from": "5f4df8f7ea4aee7ea6bcbfea9af40fb702b357bb",
+        "effect_ack_done": false,
+        "first_cas_ambiguous_followed_by_actual_ref_readback": true,
+        "historical_peer_declaration_commit": "53151f6d38d46a84ad6fcc790a11bf9fba8cf891",
+        "historical_peer_declaration_scope": "Owner-carried source declaration, no live or current-request acknowledgment",
+        "mailbox_blob": "7c8a78bab1d35ad1a086184fdafa832a441b0209",
+        "mailbox_commit": "df3f1976e354baf6b89c171549653241e5afe183",
+        "mailbox_independent_exact_readback": true,
+        "other_original_journals_written": false,
+        "owner_relay_used": false,
+        "source_candidate_exact_three_file_readback": true,
+        "source_candidate_head": "8926e208c3f6d053f1b94a6b864e591fbb818685",
+        "source_candidate_pr": 538,
+        "source_integrated_main": false,
+        "standing_rule_commit": "75295793b3a7385bc7ac266d0c9faf8027c3fdb3"
+      },
+      "payload_digest": "eb3459fca0634ccf7db9b8651b02d09e71faa2304c5efe0a5b66c9dbb7e0851a",
+      "provenance": {
+        "native_event_id": "qikvrt-all-node-native-rule-20261019T090052Z:authority-publication",
+        "source": "transputer"
+      },
+      "recorded_at": "2026-10-19T09:14:20.982122Z",
+      "schema": "qikvrt_temdd_event_v1",
+      "subject": {
+        "head": "f5aaff5b8c018fbc73d1e81126c6fb7e30e8bf22",
+        "pr": 538,
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "af5264a31622064f34c8deaef66c44768c657d67"
+      },
+      "id": "9de4426c08084ae39a4c626348b3e58b:3",
+      "ledger_digest": "020f1f2ef5173964d7d1c8f8d868c971c6cc3cf9f060bdec24f1d9da7729603e"
+    },
+    {
+      "dod": false,
+      "evidence_transfer": "DENY",
+      "kind": "CLASSIFY",
+      "message": "Existing Effect Ack chain preserves missing actual Claude confirmation after real message publication",
+      "observed_at": "2026-10-19T09:14:20.985691Z",
+      "payload": {
+        "automatic_channel_repaired": false,
+        "effect_ack_done": false,
+        "evaluation": {
+          "ordinary_release": false,
+          "responsibility_protocol": {
+            "connection_decided": true,
+            "connection_decision": "BLOCK",
+            "context_checked": true,
+            "created_utc": "2026-10-19T09:14:20.985042Z",
+            "effect_anticipated": true,
+            "evidence_refs": [
+              "sha256:020f1f2ef5173964d7d1c8f8d868c971c6cc3cf9f060bdec24f1d9da7729603e"
+            ],
+            "input_hash": "sha256:2708c65e3bbf985da093f7755406ed49f5d07fd9ae90b8dd5129f99568d5334b",
+            "input_id": "qikvrt-all-node-native-rule-20261019T090052Z:claude-confirmation",
+            "next_required_checks": [
+              "ESTABLISH_EFFECT_CHECKABLE_RECEPTION",
+              "Use original admitted host control and peer transport when actually available; retain same request bytes and ID.",
+              "Validate actual peer signed/native reply and application readback without Principal relay."
+            ],
+            "open_questions": [
+              "No callable authenticated original-host/peer return operation is established.",
+              "Source candidate native CI is running; no current Main integration or global adoption claim."
+            ],
+            "ordinary_release": false,
+            "origin_checked": true,
+            "policy_allows_release": false,
+            "previous_protocol_hash": "sha256:c2016c860f34027a3ceb1ae0a55e7921866fd3ddcfabfe51d304a226bc870e0c",
+            "previous_protocol_id": "qikvrt-all-node-native-rule-20261019T090052Z:v1",
+            "protocol_hash": "sha256:41c311bb3d176308a3c3985c30c93f4a7b1a28a5f8394e4edfff7c93e2306c77",
+            "protocol_id": "qikvrt-all-node-native-rule-20261019T090052Z:v2",
+            "protocol_root_id": "qikvrt-all-node-native-rule-20261019T090052Z",
+            "protocol_version": 2,
+            "reasons": [
+              "Authority mailbox receipt is verified; actual Claude receipt and applied-rule reply remain unobserved.",
+              "NO_EFFECT_CHECKABLE_RECEPTION"
+            ],
+            "required_evidence_refs": [],
+            "responsibility_assigned": true,
+            "responsibility_owner": "Codex execution under Principal Ingolf Lohmann authorization",
+            "risk_classified": true,
+            "risk_level": "LOW",
+            "schema": "qikvrt_responsibility_protocol_v1",
+            "semantics_reconstructed": true,
+            "state": "EFFECT_NACK",
+            "transport_ack": false
+          },
+          "state": "EFFECT_NACK"
+        },
+        "peer_confirmation_observed": false
+      },
+      "payload_digest": "cf4defba8ffd8b11e1a4eee182327aa50ba0003e9da6f3aec15e90adf5a99f60",
+      "provenance": {
+        "native_event_id": "qikvrt-all-node-native-rule-20261019T090052Z:peer-gate-after-publication",
+        "source": "transputer"
+      },
+      "recorded_at": "2026-10-19T09:14:21.003305Z",
+      "schema": "qikvrt_temdd_event_v1",
+      "subject": {
+        "head": "f5aaff5b8c018fbc73d1e81126c6fb7e30e8bf22",
+        "pr": 538,
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "af5264a31622064f34c8deaef66c44768c657d67"
+      },
+      "id": "9de4426c08084ae39a4c626348b3e58b:4",
+      "ledger_digest": "2e1d3110d0c161b22b29fb4779fe71176f36e21d104adc0029020c273fd5c780"
+    }
+  ],
+  "independent_cold_original_terminal_readback": true,
+  "original_engine_protocol_chain": [
+    {
+      "schema": "qikvrt_responsibility_protocol_v1",
+      "protocol_root_id": "qikvrt-all-node-native-rule-20261019T090052Z",
+      "protocol_version": 1,
+      "protocol_id": "qikvrt-all-node-native-rule-20261019T090052Z:v1",
+      "previous_protocol_id": null,
+      "previous_protocol_hash": null,
+      "protocol_hash": "sha256:c2016c860f34027a3ceb1ae0a55e7921866fd3ddcfabfe51d304a226bc870e0c",
+      "input_id": "qikvrt-all-node-native-rule-20261019T090052Z:claude-confirmation",
+      "input_hash": "sha256:2708c65e3bbf985da093f7755406ed49f5d07fd9ae90b8dd5129f99568d5334b",
+      "state": "EFFECT_NACK",
+      "transport_ack": false,
+      "origin_checked": true,
+      "context_checked": true,
+      "semantics_reconstructed": true,
+      "effect_anticipated": true,
+      "risk_classified": true,
+      "risk_level": "LOW",
+      "responsibility_assigned": true,
+      "responsibility_owner": "Codex execution under Principal Ingolf Lohmann authorization",
+      "connection_decided": true,
+      "connection_decision": "BLOCK",
+      "policy_allows_release": false,
+      "ordinary_release": false,
+      "reasons": [
+        "NO_EFFECT_CHECKABLE_RECEPTION",
+        "No authenticated receipt or application acknowledgment from the actual Claude Mirror is observed."
+      ],
+      "evidence_refs": [
+        "sha256:65380ed79cce92a7a32eb538e467122a14901244b6b89eed9e0055e313531c1a"
+      ],
+      "required_evidence_refs": [],
+      "open_questions": [
+        "Actual peer return operation and trusted key binding are not established.",
+        "Original productive receiver/host admission remains open."
+      ],
+      "next_required_checks": [
+        "ESTABLISH_EFFECT_CHECKABLE_RECEPTION",
+        "Publish exact request to the already used Authority communication branch.",
+        "Receive and independently verify original peer reply bound to this request and rule digest without Owner relay."
+      ],
+      "created_utc": "2026-10-19T09:08:55.574142Z"
+    },
+    {
+      "schema": "qikvrt_responsibility_protocol_v1",
+      "protocol_root_id": "qikvrt-all-node-native-rule-20261019T090052Z",
+      "protocol_version": 2,
+      "protocol_id": "qikvrt-all-node-native-rule-20261019T090052Z:v2",
+      "previous_protocol_id": "qikvrt-all-node-native-rule-20261019T090052Z:v1",
+      "previous_protocol_hash": "sha256:c2016c860f34027a3ceb1ae0a55e7921866fd3ddcfabfe51d304a226bc870e0c",
+      "protocol_hash": "sha256:41c311bb3d176308a3c3985c30c93f4a7b1a28a5f8394e4edfff7c93e2306c77",
+      "input_id": "qikvrt-all-node-native-rule-20261019T090052Z:claude-confirmation",
+      "input_hash": "sha256:2708c65e3bbf985da093f7755406ed49f5d07fd9ae90b8dd5129f99568d5334b",
+      "state": "EFFECT_NACK",
+      "transport_ack": false,
+      "origin_checked": true,
+      "context_checked": true,
+      "semantics_reconstructed": true,
+      "effect_anticipated": true,
+      "risk_classified": true,
+      "risk_level": "LOW",
+      "responsibility_assigned": true,
+      "responsibility_owner": "Codex execution under Principal Ingolf Lohmann authorization",
+      "connection_decided": true,
+      "connection_decision": "BLOCK",
+      "policy_allows_release": false,
+      "ordinary_release": false,
+      "reasons": [
+        "Authority mailbox receipt is verified; actual Claude receipt and applied-rule reply remain unobserved.",
+        "NO_EFFECT_CHECKABLE_RECEPTION"
+      ],
+      "evidence_refs": [
+        "sha256:020f1f2ef5173964d7d1c8f8d868c971c6cc3cf9f060bdec24f1d9da7729603e"
+      ],
+      "required_evidence_refs": [],
+      "open_questions": [
+        "No callable authenticated original-host/peer return operation is established.",
+        "Source candidate native CI is running; no current Main integration or global adoption claim."
+      ],
+      "next_required_checks": [
+        "ESTABLISH_EFFECT_CHECKABLE_RECEPTION",
+        "Use original admitted host control and peer transport when actually available; retain same request bytes and ID.",
+        "Validate actual peer signed/native reply and application readback without Principal relay."
+      ],
+      "created_utc": "2026-10-19T09:14:20.985042Z"
+    }
+  ],
+  "authority_request_commit": "df3f1976e354baf6b89c171549653241e5afe183",
+  "authority_rule_successor_commit": "75295793b3a7385bc7ac266d0c9faf8027c3fdb3",
+  "source_candidate_pr": 538,
+  "source_candidate_head": "8926e208c3f6d053f1b94a6b864e591fbb818685",
+  "candidate_content_independent_readback": true,
+  "source_candidate_integrated_main": false,
+  "current_peer_confirmation": false,
+  "current_live_peer_return_channel": false,
+  "owner_packet_relay_used": false,
+  "owner_action_requested": false,
+  "actual_state": "EFFECT_NACK",
+  "effect_ack_done": false,
+  "blocker": {
+    "operation": "Obtain authenticated receipt and applied-rule reply from the actual existing Claude Mirror without Owner packet transport",
+    "reason": "No admitted callable original-host receiver and trusted live peer-return operation is established in the existing interfaces. Existing QIK-VRT MCP operations are read-only; original host commissioning receipt retains its own control/admission gap.",
+    "next_action": "Repair and admit the existing original-host/peer connection through its authorized QIK-VRT control path; consume the exact frozen request once, verify actual peer identity/request/rule/native event and application readback. Keep this pending and retain original journals; no substitute executor or public credential.",
+    "source_enforcement": "Existing all-node source contract extended on PR538; native CI remains a separate pending/failed-gate scope."
+  },
+  "predecessor": {
+    "library_file_id": "libfile_8ff514ee33a08191a6573ae98c5acb5a",
+    "version": 6,
+    "sha256": "ff03fd764b30243370f46823015b7fbd625eff2f03080c53779f2cfba2c133e7",
+    "all_original_knowledge_and_open_obligations_retained": true
+  }
+}
