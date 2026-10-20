@@ -850,6 +850,7 @@ def main() -> int:
     parser.add_argument("--prepare-hash")
     parser.add_argument("--personal-state-dir", help="Opt-in Personal adapter: private runtime data directory")
     parser.add_argument("--personal-model", help="Explicit model identifier; no implicit model substitution")
+    parser.add_argument("--personal-retrieval-model-dir", type=Path, help="Optional verified local embedding model directory; no download or cloud fallback")
     parser.add_argument("--personal-provider", choices=("openai", "gemini"), default="openai")
     parser.add_argument("--personal-auth-config", type=Path, help="Private registered OIDC public-client configuration; enables OS Secret Service mode")
     parser.add_argument("--personal-legacy-memory-pairing", action="store_true", help="Explicit legacy test/development mode; no durable SSO or release acceptance")
@@ -949,16 +950,23 @@ def main() -> int:
                 runtime.native_terminal = Runtime(args.root, args.state_dir, args.repository, args.pr)
                 if runtime.native_terminal.subject != exact:
                     raise ValueError("NATIVE_PERSONAL_SUBJECT_MISMATCH")
+            if args.personal_retrieval_model_dir:
+                try:
+                    from .qikvrt_personal_retrieval import LocalRetrieval
+                except ImportError:
+                    from qikvrt_personal_retrieval import LocalRetrieval
+                runtime.retrieval_engine = LocalRetrieval.from_directory(args.personal_retrieval_model_dir)
             handler = personal_handler(Handler, runtime)
         except (ValueError, OSError) as exc:
             if runtime:
                 runtime.close()
             raise SystemExit("BLOCK: " + str(exc)) from None
-    elif args.personal_model or args.personal_auth_config or args.personal_legacy_memory_pairing:
+    elif args.personal_model or args.personal_auth_config or args.personal_legacy_memory_pairing or args.personal_retrieval_model_dir:
         raise SystemExit("BLOCK: Personal arguments require --personal-state-dir")
     server = ThreadingHTTPServer((args.host, args.port), handler)
     print(json.dumps({"state": "READY", "host": args.host, "port": args.port,
                       "personal_adapter_enabled": runtime is not None,
+                      "local_retrieval_enabled": runtime is not None and runtime.retrieval_engine is not None,
                       "external_effects": "AUTHENTICATED_MODEL_REQUESTS_ONLY" if runtime else "NONE"}, sort_keys=True), flush=True)
     try:
         server.serve_forever()

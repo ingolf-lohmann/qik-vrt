@@ -86,6 +86,12 @@
     },
     {
       "cache_class": "ecosystem-cache",
+      "component": "personal-retrieval",
+      "provider": "Official PyPI distributions and pinned perplexity-ai Hugging Face model revision; optional isolated environment only",
+      "version": "sentence-transformers6.0.0+transformers5.4.0+torch2.14.1"
+    },
+    {
+      "cache_class": "ecosystem-cache",
       "component": "playwright-offline-tests",
       "provider": "npm integrity-bound package and browser artifacts",
       "version": "1.62.1"
@@ -207,10 +213,10 @@
   ],
   "coverage_basis": "unique components in runtime/toolchains/TOOLCHAIN.lock.tsv",
   "coverage_percent": 100,
-  "covered_components": 34,
-  "declared_components": 34,
-  "lock_sha256": "9eafe8dfac94cc6aebd2b2d43e5e62b9791e61521ed8d933dff51d6360e3500f",
-  "registry_sha256": "3ead8e595b77d396df5d2f931e4f140bfdf28d9b0913e2e5605160e53117f7c4",
+  "covered_components": 35,
+  "declared_components": 35,
+  "lock_sha256": "383f48815128c036de06ef1039291f56923632533399bf11bbe7f67dc3142dd6",
+  "registry_sha256": "4bf7a4673a8169dea42ae627489ca91af2e64397ed0e2554b920b432d0fb6225",
   "rules": {
     "all_declared_tools_have_cache_strategy": true,
     "cache_never_replaces_required_checks": true,
