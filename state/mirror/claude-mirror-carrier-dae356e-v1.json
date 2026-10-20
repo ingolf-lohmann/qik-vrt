@@ -1,0 +1,17 @@
+{
+  "schema": "qikvrt.claude-mirror-carrier-record.v1",
+  "status": "HOLD",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "base_commit": "a38455c739f7f475b2a93447de1db4ea87e4200c",
+  "bundle_sha256": "d0b1c993e9c6edfeddd227310c2a7d9662eace2b2bfc97ede4e40978fdc466b0",
+  "expected_head": "dae356e4df1b3892e58768047b1a5edd1e68c52e",
+  "target_ref": "communication/claude/mirror-20261020T1827Z",
+  "bundle_binary_stored": false,
+  "bundle_head_checked_locally": true,
+  "bundle_verify": "HOLD: prerequisite base commit unavailable in isolated local repository",
+  "push": "NOT_RUN",
+  "independent_readback": "NOT_RUN",
+  "accept": "OPEN",
+  "effect_ack_done": false,
+  "reason": "Carrier transfer, target-bound readback and separate acceptance are required before activation can be claimed."
+}
