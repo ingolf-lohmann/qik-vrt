@@ -1,0 +1,128 @@
+{
+  "schema": "qikvrt_owner_mail_problem_watch_repair_v1",
+  "principal": "ingolf-lohmann",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "owner_instruction": "2026-10-20T14:49:24+03:00",
+  "reuse": {
+    "existing_pr": 477,
+    "predecessor_head": "93bab442e7cebe13cf11a909df8f949cd65f6dc8",
+    "predecessor_tree": "900b0d020a6181c872bd0c66f5d3dd689311818c",
+    "current_main_head": "a38455c739f7f475b2a93447de1db4ea87e4200c",
+    "current_main_tree": "b733ce6cc611dc59c426df531d9128efc0d000b9"
+  },
+  "observations": {
+    "mail_route": "SMTP",
+    "recipient": "support@github.com",
+    "ndr_status": "554 5.7.1",
+    "recipient_acceptance": false,
+    "support_ticket": false,
+    "cause_of_repository_404": "UNKNOWN",
+    "paused_client_mail_watch": true,
+    "native_pr_477_merged": false,
+    "productive_graph_binding": "NOT_ESTABLISHED",
+    "support_portal_authentication": "NO_AVAILABLE_UNATTENDED_SECURE_AUTHENTICATION_BRIDGE",
+    "support_portal_body_submitted": false,
+    "owner_authentication_requested": false
+  },
+  "repair": {
+    "source_of_mandate": "personal/ingolf-lohmann/reminders/MAIL_PROBLEM_WATCH_V1.json",
+    "startup_binding": "AI -> AI_CONTEXT.json.required_read_order",
+    "carrier": "EXISTING_NATIVE_REST_GRAPH_EVENT_CONSUMER",
+    "current_mcp_routes_preserved": true,
+    "reported_problem_categories": [
+      "DELIVERY_FAILURE_REPORTED",
+      "SUPPORT_CHANNEL_REJECTED_REPORTED",
+      "OPERATIONAL_FAILURE_REPORTED"
+    ],
+    "source_message_mutation": false,
+    "automatic_reply_or_resend": false,
+    "new_timer_or_worker": false
+  },
+  "verification": {
+    "tool_cache_contract": "PASS_35_OF_35",
+    "mail_webhook_reminder_tests": {
+      "count": 120,
+      "result": "PASS",
+      "python": "3.12.14",
+      "log_sha256": "51b68824173754e308e664bfcd782f76e9e51ad169e9e0a409d37238568398ec",
+      "scope": "SYNTHETIC_PROVIDER_AND_NATIVE_LOOPBACK_CONTROLS",
+      "log_path": "evidence/mail-problem-watch/20261020/MAIL_NATIVE_TESTS.log"
+    },
+    "new_problem_controls": 14,
+    "modern_rest_mcp_regressions": {
+      "count": 213,
+      "result": "PASS",
+      "python": "3.12.14",
+      "log_sha256": "29df13c6cab5a63f72b3b16111acd0ed3ad0e7471535e70a6c270bb940e47558",
+      "log_path": "evidence/mail-problem-watch/20261020/REST_MCP_TESTS.log"
+    },
+    "full_make_test": "PREDECESSOR_EXACT_SOURCE_NATIVE_JOBS_SUCCESS; DOCUMENTARY_SUCCESSOR_REQUIRES_OWN_CI",
+    "integrity_generation": "FRESH_MAIN_MANIFEST_PLUS_EXACT_CHANGED_BYTES; FULL_TREE_VERIFICATION_REQUIRES_NATIVE_CHECKOUT",
+    "rest_mcp_log_path": "evidence/mail-problem-watch/20261020/REST_MCP_TESTS.log",
+    "predecessor_native_source_ci": {
+      "head": "d54e632e055858df8169639977addf378a274969",
+      "tree": "604ebc5ace64a34698853c7fad36cc4b5a82661e",
+      "push": {
+        "run_id": 39420772732,
+        "source_test_job": 118620865156,
+        "result": "SUCCESS"
+      },
+      "pull_request": {
+        "run_id": 39420779762,
+        "source_test_job": 118620888898,
+        "result": "SUCCESS"
+      },
+      "browser_engines": [
+        "CHROMIUM_SUCCESS",
+        "WEBKIT_SUCCESS"
+      ],
+      "productive_firefox_or_host_acceptance_inferred": false
+    }
+  },
+  "open_work": [
+    {
+      "id": "GOVERNED_MAIN_INTEGRATION",
+      "state": "OPEN",
+      "next": "Fresh exact-candidate required gates and Principal review before Main integration; preserve old PR history."
+    },
+    {
+      "id": "PRODUCTIVE_GRAPH_ACTIVATION",
+      "state": "OPEN",
+      "next": "Use original protected host/OAuth/mailbox/HTTPS callback/subscription bindings; prove genuine provider readback."
+    },
+    {
+      "id": "PRIVATE_ALERT_DELIVERY",
+      "state": "OPEN",
+      "next": "Bind existing admitted private notification carrier and independently read its delivery; attention intent is not a sent alert."
+    },
+    {
+      "id": "SUPPORT_TICKET_ACCEPTANCE",
+      "state": "OPEN",
+      "next": "Reuse the existing original native route under the standing 2026-10-20T15:28:32+03:00 grant when an admitted unattended secure authentication binding is actually available. Both official portal routes require sign-in/email verification in this client. Do not ask the Owner again, extract or publish credentials, resend SMTP unchanged, or count an email-verification request as a Support ticket."
+    },
+    {
+      "id": "EXACT_DOMAIN_DELIVERY",
+      "state": "OPEN",
+      "next": "Read current raumzeitterminal.de acceptance independently; source tests do not establish domain delivery."
+    }
+  ],
+  "privacy": {
+    "mail_originals_in_git": false,
+    "real_message_ids_in_git": false,
+    "oauth_material_in_git": false,
+    "private_contacts_in_git": false
+  },
+  "contributions": {
+    "human": "Ingolf Lohmann: requirements, authorization, diagnosis prompt",
+    "artificial": "OpenAI Codex: bounded diagnosis, source integration and synthetic/native-loopback verification",
+    "model_build": "UNAVAILABLE",
+    "no_unverified_peer_adoption": true
+  },
+  "native_activation_verified": false,
+  "notification_sent": false,
+  "effect_ack_done": false,
+  "predecessor_evidence_transfer": false,
+  "native_continuation_authorization": "state/authorization/delegations/OWNER_NATIVE_SUPPORT_CONTINUATION_V1.json",
+  "native_receipt": "evidence/mail-problem-watch/20261020/NATIVE_CONTINUATION_RECEIPT.json",
+  "continuation_not_complete": true
+}

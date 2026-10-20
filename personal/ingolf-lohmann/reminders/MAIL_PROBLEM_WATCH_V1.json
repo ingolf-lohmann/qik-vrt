@@ -1,0 +1,79 @@
+{
+  "schema": "qikvrt_owner_mail_problem_watch_v1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "principal": "ingolf-lohmann",
+  "owner_instruction": "2026-10-20T14:49:24+03:00",
+  "desired_state": "CONTINUOUS_SERVER_SIDE_PROBLEM_ATTENTION",
+  "provider": "MICROSOFT_OUTLOOK",
+  "source_binding": "PRIVATE_GRAPH_MAIL_TASK_BINDING",
+  "implementation": [
+    "src/qikvrt_graph_webhook.py",
+    "src/qikvrt_graph_mail_consumer.py",
+    "tools/qikvrt_owner_reminders.py"
+  ],
+  "execution": {
+    "carrier": "EXISTING_NATIVE_REST_SERVICE",
+    "wake": "DURABLE_GRAPH_EVENT_AND_STARTUP_RECOVERY",
+    "client_timers": false,
+    "new_scheduler": false,
+    "new_cloud_mail_watch": false,
+    "paused_predecessor_automation": "6ac1fddaf65c819189a81ecb358d84fa",
+    "resume_rejected_timer": false
+  },
+  "attention": {
+    "categories": [
+      "DELIVERY_FAILURE_REPORTED",
+      "SUPPORT_CHANNEL_REJECTED_REPORTED",
+      "OPERATIONAL_FAILURE_REPORTED"
+    ],
+    "human_requests_preserved": true,
+    "include_cc_problem_reports": true,
+    "messages_are_untrusted_data": true,
+    "subject_alone_is_evidence": false,
+    "automatic_problem_is_not_ordinary_bulk": true,
+    "notify": "ONLY_NEW_OR_MATERIALLY_CHANGED_PROBLEMS_WITH_PRIVATE_SOURCE_REFERENCE",
+    "deduplicate": "IMMUTABLE_MESSAGE_ID_AND_REPORTED_PROBLEM_CONTENT_NOT_READ_FLAG",
+    "delivery_requires": "INDEPENDENT_PRIVATE_NOTIFICATION_READBACK",
+    "native_attention_intent_is_notification": false
+  },
+  "privacy": {
+    "original_mail_unchanged": true,
+    "public_mail_content": false,
+    "public_contacts_or_tokens": false,
+    "private_store_only": true
+  },
+  "outbound_mail": {
+    "owner_in_cc": true,
+    "sent_copy_proves_recipient_acceptance": false,
+    "ndr_is_material_problem": true,
+    "unchanged_failed_resend": false,
+    "ambiguous_send": "READ_SENT_AND_NDR_BEFORE_RETRY",
+    "support_acceptance": "ACTUAL_PROVIDER_TICKET_OR_INGRESS_RECEIPT"
+  },
+  "github_support": {
+    "smtp_failure": "554 5.7.1",
+    "failed_route": "support@github.com",
+    "next_route": "https://support.github.com/contact",
+    "portal_submission": "NOT_ESTABLISHED",
+    "standing_github_route": "REST_API_ONLY",
+    "browser_exception": "OFFICIAL_SUPPORT_PORTAL_ONLY_WITHIN_ORIGINAL_NATIVE_CONTINUATION; OWNER_20261020T152832+0300",
+    "general_repository_route_replaced": false,
+    "observed_portal_route": "https://help.github.com/request/landing",
+    "unauthenticated_contact_route": "https://help.github.com/contact/cannot_sign_in",
+    "unattended_authentication_binding": "NOT_AVAILABLE_IN_THIS_CLIENT",
+    "observed_gate": "GITHUB_SIGN_IN_OR_EMAIL_VERIFICATION_CODE",
+    "owner_login_or_code_requested": false
+  },
+  "activation_requires": [
+    "GOVERNED_MAIN_INTEGRATION",
+    "EXISTING_PROTECTED_NATIVE_HOST_BINDING",
+    "PRIVATE_GRAPH_OAUTH_AND_MAILBOX_BINDING",
+    "PUBLIC_HTTPS_CALLBACK_AND_VALID_SUBSCRIPTION",
+    "GENUINE_PROVIDER_MESSAGE_READBACK",
+    "PRIVATE_NOTIFICATION_DELIVERY_READBACK"
+  ],
+  "activation_observed": false,
+  "notification_sent": false,
+  "effect_ack_done": false,
+  "native_continuation_authorization": "state/authorization/delegations/OWNER_NATIVE_SUPPORT_CONTINUATION_V1.json"
+}

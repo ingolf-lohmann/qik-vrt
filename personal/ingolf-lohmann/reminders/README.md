@@ -79,3 +79,13 @@ Bestehende Einträge ohne `expires` behalten ihre bisherigen Hashes,
 Idempotenz- und Nachlaufregeln. Die neuen Endgrenzen sind Teil des gebundenen
 Auftrags und seiner Inhaltsidentität. Zustellung bleibt ein separat
 zurückzulesender GitHub-Kommentar, kein Nachweis menschlichen Lesens.
+
+## Dauerhafte Postfach-Problemerkennung
+
+Der fortgeltende Auftrag vom 20. Oktober 2026 steht in
+`MAIL_PROBLEM_WATCH_V1.json`; die bestehende ereignisgebundene Laufzeit und
+PR #477 werden wiederverwendet. Zustellfehler, abgewiesene Supportwege und
+automatische Betriebsfehler dürfen nicht als normale Massenpost verschwinden.
+Private Aufmerksamkeitsabsicht, tatsächliche Benachrichtigung und Annahme der
+Supportanfrage benötigen jeweils eigene Nachweise. Siehe
+`docs/GRAPH_MAIL_WEBHOOK.md`. Keine neue Client-Automation.

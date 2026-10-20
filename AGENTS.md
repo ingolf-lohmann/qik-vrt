@@ -393,3 +393,21 @@ self-modification, and recursive agent spawning are prohibited.
 The normative machine-readable policy is
 `policy/COLLECTIVE_ADAPTIVE_COGNITION.json`. The explanatory contract is
 `docs/COLLECTIVE_ADAPTIVE_COGNITION.md`.
+
+## Owner mailbox problem watch — 20 October 2026
+
+Read `personal/ingolf-lohmann/reminders/MAIL_PROBLEM_WATCH_V1.json` and
+`docs/GRAPH_MAIL_WEBHOOK.md`. Reuse the existing native Graph event consumer
+from PR #477. Never discard automatic delivery, support-channel or workflow
+failure reports as ordinary bulk mail. Private attention is not a sent alert;
+verify actual notification delivery separately. Keep original mail and private
+state out of the public repository. Never reactivate the rejected client timer
+as an activation workaround. Sent Items is not recipient acceptance.
+
+OWNER NATIVE SUPPORT CONTINUATION — 2026-10-20T15:28:32+03:00
+Read state/authorization/delegations/OWNER_NATIVE_SUPPORT_CONTINUATION_V1.json. The existing original Universal Terminal/Transputer
+path is authorized for cases such as failed Support delivery without renewed
+generic permission or Owner packet relay. Reuse admitted protected adapters;
+GitHub repository operations remain REST_API_ONLY. Preserve an unavailable
+unattended authentication binding as a concrete HOLD, never as a permission
+request, invented credential, completed ticket or active mailbox watch.

@@ -76,6 +76,12 @@ owner-reminders-test:
 
 test: owner-reminders-test issue-agent-test
 
+.PHONY: graph-mail-webhook-test
+graph-mail-webhook-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_graph_mail_webhook tests.test_graph_mail_consumer tests.test_mail_problem_watch
+
+test: graph-mail-webhook-test
+
 repository-terminal-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_repository_terminal
 
