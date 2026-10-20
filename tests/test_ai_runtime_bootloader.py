@@ -166,6 +166,122 @@ class AIRuntimeBootloaderContractTests(unittest.TestCase):
         self.assertNotIn("source commit is unavailable", completed.stderr)
 
 
+class SessionHarmonizationTests(unittest.TestCase):
+    """A capability difference must not become rule drift or peer adoption."""
+
+    def receipt(self):
+        fixture = ClientContinuationRegressionTests()
+        fixture.setUp()
+        value = copy.deepcopy(fixture.receipt)
+        value["schema"] = "qikvrt-client-continuation/2"
+        value["session_contract"] = fixture.handoff.session_rule_contract()
+        value["session"] = {
+            "id": "fixture:session", "node_id": "fixture:node",
+            "repository": value["subject"]["repository"],
+            "evidence": "fixture:own-native-input-and-independent-terminal-readback",
+            "all_nodes_adopted": False,
+            "capability_observations": [{
+                "session_id": "fixture:session", "node_id": "fixture:node",
+                "repository": value["subject"]["repository"],
+                "scope": "THIS_SESSION_ONLY", "operation": "create-commit",
+                "method": "POST", "route": "existing-github-rest-connector",
+                "state": "UNKNOWN", "evidence": "fixture:bounded-inventory",
+                "observed_at": "2026-10-20T10:00:00Z",
+            }],
+        }
+        return fixture.handoff, value
+
+    def rejected(self, handoff, value, error):
+        with contextlib.redirect_stderr(io.StringIO()) as errors:
+            with self.assertRaises(SystemExit):
+                handoff.validate_client_receipt(value, require_session_contract=True)
+        self.assertIn(error, errors.getvalue())
+
+    def test_different_capabilities_preserve_identical_rules_and_authorization(self):
+        handoff, value = self.receipt()
+        original = copy.deepcopy(value["session_contract"])
+        for state in ("AVAILABLE", "UNAVAILABLE", "UNKNOWN"):
+            value["session"]["capability_observations"][0]["state"] = state
+            self.assertEqual(handoff.validate_client_receipt(value, require_session_contract=True), "CONTINUE")
+            self.assertEqual(value["session_contract"], original)
+            self.assertTrue(value["authorization"]["granted"])
+
+    def test_missing_or_stale_rule_binding_blocks_current_session(self):
+        handoff, value = self.receipt()
+        del value["session_contract"]["rule_bindings"]["AGENTS.md"]
+        self.rejected(handoff, value, "CLIENT_SHARED_RULE_CONTRACT_DRIFT")
+
+    def test_new_rule_bytes_invalidate_previous_receipt(self):
+        handoff, value = self.receipt()
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            for name in value["session_contract"]["rule_bindings"]:
+                target = root / name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes((ROOT / name).read_bytes())
+            with (root / "CLAUDE.md").open("a") as file:
+                file.write("\nChanged adapter rule\n")
+            with patch.object(handoff, "ROOT", root):
+                self.rejected(handoff, value, "CLIENT_SHARED_RULE_CONTRACT_DRIFT")
+
+    def test_capability_cannot_escape_its_node_session_or_repository(self):
+        for field, replacement in (("node_id", "other-node"), ("session_id", "other-session"),
+                                   ("repository", "other/repository"), ("scope", "ALL_NODES")):
+            handoff, value = self.receipt()
+            value["session"]["capability_observations"][0][field] = replacement
+            self.rejected(handoff, value, "CLIENT_CAPABILITY_SCOPE_LEAK")
+
+    def test_byte_agreement_cannot_claim_global_adoption(self):
+        handoff, value = self.receipt()
+        value["session"]["all_nodes_adopted"] = True
+        self.rejected(handoff, value, "CLIENT_UNVERIFIED_GLOBAL_ADOPTION")
+
+    def test_conflicting_or_duplicate_local_capability_blocks(self):
+        handoff, value = self.receipt()
+        item = copy.deepcopy(value["session"]["capability_observations"][0])
+        item["state"] = "AVAILABLE"
+        value["session"]["capability_observations"].append(item)
+        self.rejected(handoff, value, "CLIENT_DUPLICATE_CAPABILITY_OBSERVATION")
+
+    def test_rule_harmonization_cannot_renew_same_authorization(self):
+        handoff, value = self.receipt()
+        value["requested_authorization_again"] = True
+        self.rejected(handoff, value, "CLIENT_REPEATED_AUTHORIZATION_REQUEST")
+
+    def test_legacy_remains_readable_but_is_rejected_at_current_boundary(self):
+        handoff, value = self.receipt()
+        value["schema"] = "qikvrt-client-continuation/1"
+        del value["session"], value["session_contract"]
+        self.assertEqual(handoff.validate_client_receipt(value), "CONTINUE")
+        self.rejected(handoff, value, "CLIENT_CURRENT_SESSION_REQUIRES_V2")
+
+    def test_every_existing_adapter_is_bound_without_new_provider_selection(self):
+        handoff, value = self.receipt()
+        adapters = json.loads((ROOT / "AI_ADAPTERS.json").read_text())["adapters"]
+        self.assertEqual(len(adapters), 14)
+        for item in adapters:
+            self.assertIn(item["path"], value["session_contract"]["rule_bindings"])
+            if item["path"] != "AGENTS.md":
+                self.assertIn("--require-session-contract", (ROOT / item["path"]).read_text())
+
+    def test_cli_defaults_to_current_admission_and_requires_explicit_legacy_mode(self):
+        handoff, value = self.receipt()
+        with tempfile.TemporaryDirectory() as directory:
+            path = pathlib.Path(directory) / "receipt.json"
+            def run(*flags):
+                path.write_text(json.dumps(value))
+                return subprocess.run([sys.executable, "-B", str(ROOT / "tools/ai_handoff.py"),
+                                       "--client-receipt", str(path), *flags],
+                                      capture_output=True, text=True, timeout=30)
+            self.assertEqual(run().returncode, 0)
+            value["schema"] = "qikvrt-client-continuation/1"
+            del value["session"], value["session_contract"]
+            self.assertIn("CLIENT_CURRENT_SESSION_REQUIRES_V2", run().stderr)
+            historical = run("--historical-client-receipt")
+            self.assertEqual(historical.returncode, 0, historical.stderr)
+            self.assertIn("LEGACY_NOT_ASSESSED", historical.stdout)
+
+
 class ClientContinuationRegressionTests(unittest.TestCase):
     """Client behavior receipts are fixtures, never productive effect evidence."""
 
@@ -692,7 +808,7 @@ class ClientContinuationRegressionTests(unittest.TestCase):
             path = pathlib.Path(directory) / "client.json"
             path.write_text(json.dumps(self.receipt))
             result = subprocess.run(
-                [sys.executable, "-B", "tools/ai_handoff.py", "--client-receipt", str(path)],
+                [sys.executable, "-B", "tools/ai_handoff.py", "--client-receipt", str(path), "--historical-client-receipt"],
                 cwd=ROOT, capture_output=True, text=True, timeout=10)
         self.assertEqual(result.returncode, 0, result.stderr)
         line = next(line for line in result.stdout.splitlines()
@@ -894,7 +1010,7 @@ class ClientContinuationRegressionTests(unittest.TestCase):
                 with self.subTest(body=body):
                     path.write_text(body)
                     result = subprocess.run(
-                        [sys.executable, "-B", "tools/ai_handoff.py", "--client-receipt", str(path)],
+                        [sys.executable, "-B", "tools/ai_handoff.py", "--client-receipt", str(path), "--historical-client-receipt"],
                         cwd=ROOT, capture_output=True, text=True, timeout=10)
                     self.assertEqual(result.returncode, 2)
                     self.assertIn("AI_HANDOFF_BLOCK", result.stderr)
@@ -905,7 +1021,7 @@ class ClientContinuationRegressionTests(unittest.TestCase):
             path = pathlib.Path(directory) / "client.json"
             path.write_text(json.dumps(self.receipt))
             result = subprocess.run(
-                [sys.executable, "-B", "tools/ai_handoff.py", "--client-receipt", str(path)],
+                [sys.executable, "-B", "tools/ai_handoff.py", "--client-receipt", str(path), "--historical-client-receipt"],
                 cwd=ROOT, capture_output=True, text=True, timeout=10)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn("CLIENT_HANDOFF_CONSISTENCY=VALID", result.stdout)
@@ -1050,7 +1166,7 @@ class ClientContinuationRegressionTests(unittest.TestCase):
                             receipt["readback"]["repository"]["observed_at"] = "2026-10-11T09:59:59Z"
                         path.write_text(json.dumps(receipt))
                         result = subprocess.run(
-                            [sys.executable, "-B", "tools/ai_handoff.py", "--client-receipt", str(path)],
+                            [sys.executable, "-B", "tools/ai_handoff.py", "--client-receipt", str(path), "--historical-client-receipt"],
                             cwd=ROOT, capture_output=True, text=True, timeout=10)
                         self.assertEqual(result.returncode, 0 if fresh else 2, result.stderr)
                         self.assertNotIn("Traceback", result.stderr)

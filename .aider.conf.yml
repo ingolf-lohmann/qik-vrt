@@ -2,3 +2,5 @@ read:
   - AI
   - AI_CONTEXT.json
   - AGENTS.md
+
+# Shared rules and current-session gate: tools/ai_handoff.py --client-receipt RECEIPT --require-session-contract

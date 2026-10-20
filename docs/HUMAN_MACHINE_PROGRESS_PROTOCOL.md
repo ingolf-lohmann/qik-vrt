@@ -428,3 +428,79 @@ Provenance: standing procedure and authorization supplied by Ingolf Lohmann on
 Source-rule persistence is separate from native execution, outbox installation,
 Main integration, live Mirror ACK/reply, productive host acceptance and other-client
 adoption. Preserve every predecessor obligation and original journal.
+# Shared session and Mesh rule admission — Owner 2026-10-20
+
+The same binding rule set applies to Authority, Mirror, current clients, new
+sessions and future registered nodes. A session's missing POST operation,
+credential or transport does not revoke an existing Owner grant and does not
+establish that another node lacks that capability. Capability observations must
+name their actual session, node, repository, operation, method, time and evidence.
+They are always `THIS_SESSION_ONLY`. Continue independently executable admitted
+work; preserve a blocked operation with its causal retry condition.
+
+The existing `tools/ai_handoff.py` now computes a shared rule contract from the
+existing entrypoints, adapter registry, all 14 registered client adapters,
+working policy, grants and validator. It uses SHA-256 of exact source bytes;
+capability observations are deliberately outside that digest. Consequently two
+clients can have different access and still bind exactly the same rules. A rule
+or adapter change invalidates the previous rule contract and requires a successor
+receipt. Compare the contract with independently read Authority source at the
+actual accepted ref before claiming canonical equality; a modified local fork
+cannot authenticate its own Authority identity by hashing itself.
+
+For every new session, reconnect and node handoff:
+
+1. Load `/AI`, its required read order and the pinned predecessor, including all
+   grants, original journals, knowledge and open work.
+2. Obtain the local exact-byte contract with
+   `python3 -B tools/ai_handoff.py --session-contract`. Bind its source HEAD/TREE
+   and the independently observed Authority contract separately.
+3. Use `qikvrt-client-continuation/2`. Retain all existing receipt fields and add
+   `session_contract` equal to that command's JSON output, plus `session` below.
+4. Validate with `python3 -B tools/ai_handoff.py --client-receipt RECEIPT
+   --require-session-contract`. Current-session mode is the default. Legacy
+   version-1 receipts require the explicit `--historical-client-receipt` flag;
+   they remain readable as history and print `LEGACY_NOT_ASSESSED`.
+5. Apply the admitted instruction through the original Universal Terminal and
+   Transputer, then independently read its native events back. For peer
+   adoption use the original Mirror outbox's authenticated request, ACK and
+   application readback; the hash check is only a local consistency gate.
+
+The `session` object has these fields (values below are illustrative, never live
+acceptance evidence):
+
+```json
+{
+  "id": "actual-session-id",
+  "node_id": "actual-node-id",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "evidence": "original native input and independent Terminal readback locator",
+  "all_nodes_adopted": false,
+  "capability_observations": [{
+    "session_id": "actual-session-id",
+    "node_id": "actual-node-id",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "scope": "THIS_SESSION_ONLY",
+    "operation": "initial-workflow-approval",
+    "method": "POST",
+    "route": "existing-github-rest-connector",
+    "state": "UNKNOWN",
+    "observed_at": "2026-10-20T00:00:00Z",
+    "evidence": "bounded operation-inventory source"
+  }]
+}
+```
+
+`AVAILABLE`, `UNAVAILABLE` and `UNKNOWN` record observations, not permission or
+execution admission. Existing action authorization, exact operation/method and
+subject checks still decide whether an action may execute. Never put credentials
+in this object. Receipt validation does not authenticate the supplied observation.
+
+Coverage comes from `registry/NODEMESH_INDEX.json` and the existing native
+Mirror-outbox coverage contract. Keep Authority, Codex, Goldkelch Mirror,
+Originalhost, Mesh-Monitor, every registered node and unavailable members in the
+adoption backlog. A client receipt cannot assert `all_nodes_adopted=true`;
+actual node acceptance belongs to the original authenticated return path. There
+is no new scheduler, credential store, broadcaster or substitute executor here.
+Source integration, startup by another client and productive node adoption are
+separate effects requiring their own independent readback.

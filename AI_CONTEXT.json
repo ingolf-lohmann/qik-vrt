@@ -289,5 +289,14 @@
     ],
     "requires_actual_use": true,
     "client_timer_as_continuation": false
+  },
+  "session_harmonization": {
+    "policy": "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json#/client_continuation/session_harmonization",
+    "rule_contract": "tools/ai_handoff.py --session-contract",
+    "current_receipt_schema": "qikvrt-client-continuation/2",
+    "validator": "tools/ai_handoff.py --client-receipt RECEIPT --require-session-contract",
+    "historical_read_only": "tools/ai_handoff.py --client-receipt RECEIPT --historical-client-receipt",
+    "capabilities_change_rules": false,
+    "rule_equality_proves_peer_adoption": false
   }
 }
