@@ -13,5 +13,26 @@
   "independent_readback": "NOT_RUN",
   "accept": "OPEN",
   "effect_ack_done": false,
-  "reason": "Carrier transfer, target-bound readback and separate acceptance are required before activation can be claimed."
+  "reason": "Carrier transfer, target-bound readback and separate acceptance are required before activation can be claimed.",
+  "apply_helper": {
+    "path": "scripts/apply_claude_mirror_bundle.sh",
+    "hardening_commit": "9531180c23f207f84b358cc4c8e2f58b5c90bc45",
+    "default_mode": "--no-push",
+    "remote_mutation_requires": "--push",
+    "checks": [
+      "bundle_sha256",
+      "base_commit",
+      "git_bundle_verify",
+      "expected_head",
+      "base_ancestry",
+      "repository_integrity",
+      "remote_ref_fast_forward",
+      "push_dry_run"
+    ],
+    "executed_against_actual_bundle": false
+  },
+  "hosted_ci": {
+    "status": "IN_PROGRESS_AT_LAST_READBACK",
+    "commit": "9531180c23f207f84b358cc4c8e2f58b5c90bc45"
+  }
 }
