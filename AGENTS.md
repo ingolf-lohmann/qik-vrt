@@ -5,6 +5,22 @@ Copyright (c) 2026 Ingolf Lohmann.
 
 # Repository agent protocol
 
+SESSION AND MESH RULE HARMONIZATION — OWNER 2026-10-20
+
+Apply policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json#/client_continuation/session_harmonization.
+At every new session, reconnect and node handoff, load the common rule bytes via
+`python3 -B tools/ai_handoff.py --session-contract`. Retain the original grants
+and open work. Use a qikvrt-client-continuation/2 receipt and validate it with
+`python3 -B tools/ai_handoff.py --client-receipt RECEIPT --require-session-contract`.
+A missing local operation or credential is a THIS_SESSION_ONLY capability fact,
+not a different rule, revoked grant, remote credential absence or global blocker.
+Do not ask the Owner to renew the same authorization or carry packets.
+Bind actual node request/ACK/application through the existing native components
+and original Mirror outbox. Rule byte equality is not authenticated adoption;
+unreachable nodes remain OPEN. Version-1 receipts remain historical evidence.
+
+
+
 MANDATORY MIRROR OUTBOX — OWNER 2026-10-19
 
 Read and apply `docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md#mandatory-mirror-outbox-and-delivery-evidence-owner-2026-10-19`

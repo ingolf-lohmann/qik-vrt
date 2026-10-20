@@ -1,0 +1,41 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "id": "QIKVRT_SESSION_MESH_RULE_HARMONIZATION_20261020_V1",
+  "owner": "Ingolf Lohmann",
+  "authorization": {
+    "source": "DIRECT_OWNER_INSTRUCTION_2026_10_20",
+    "text": "Ja, dann ändere das jetzt endlich ein für alle Mal und harmonisiere das über alle Sitzungen und über alle Mesh Repository Nodes hinweg, weil genau das ist QIKVRT und Effected Acknowledgement Protocol. Endlich richtig gemacht. Danke, Ingolf Lohmann.",
+    "requested_again": false
+  },
+  "state": "SOURCE_CANDIDATE_REQUIRES_INTEGRATION_AND_NODE_READBACK",
+  "reuse": {
+    "validator": "tools/ai_handoff.py",
+    "policy": "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json#/client_continuation/session_harmonization",
+    "native_terminal": "src/qikvrt_effect_ack_http_terminal.py",
+    "native_transputer": "src/qikvrt_temdd_event_ledger.py",
+    "original_outbox": "node-tools/qikvrt_mirror_emit.py"
+  },
+  "rule_contract_sha256": "730fdccda5cfbd5d5913cdc3598e0a8cb1236bf4f74dd3d2277f57e813e4cc6b",
+  "adoption_coverage": {
+    "sources": [
+      "registry/NODEMESH_INDEX.json",
+      "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json#/client_continuation/native_session_use/mirror_outbox/broadcast_coverage"
+    ],
+    "authority": "OPEN_MAIN_INTEGRATION",
+    "codex": "OWN_CANDIDATE_GATE_ONLY",
+    "Goldkelch Mirror": "OPEN_AUTHENTICATED_REQUEST_ACK_APPLICATION_RETURN",
+    "Originalhost": "OPEN_PROTECTED_HOST_BINDING",
+    "Mesh-Monitor": "OBSERVER_ONLY_NO_NATIVE_ADOPTION",
+    "every_registered_and_future_node": "OPEN_UNTIL_EXACT_RULE_NATIVE_APPLICATION_READBACK"
+  },
+  "boundaries": {
+    "same_rules_despite_different_capabilities": true,
+    "new_session_or_missing_local_operation_revokes_grant": false,
+    "rule_hash_is_authenticated_adoption": false,
+    "unavailable_node_may_be_dropped": false,
+    "owner_packet_relay": false,
+    "new_timer_or_executor": false,
+    "all_nodes_adopted": false,
+    "effect_ack_done": false
+  }
+}

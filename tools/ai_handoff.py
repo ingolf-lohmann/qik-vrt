@@ -538,10 +538,93 @@ def validate_client_work(receipt: dict[str, Any], predecessor: dict[str, Any] | 
         fail("CLIENT_DONE_WITH_OPEN_WORK")
 
 
-def validate_client_receipt(receipt: dict[str, Any]) -> str:
+def session_rule_contract() -> dict[str, Any]:
+    """Bind shared rules, independently of a client's credentials or transport.
+
+    This is byte consistency, never authenticated peer adoption. The original
+    Terminal/Transputer and Mirror outbox retain their acceptance authority.
+    """
+    protocol = load_json(ROOT / "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json")
+    policy = protocol.get("client_continuation", {}).get("session_harmonization")
+    if not isinstance(policy, dict) or policy.get("schema") != "qikvrt-session-harmonization/1":
+        fail("CLIENT_SHARED_RULE_POLICY_MISSING")
+    registry = load_json(ROOT / "AI_ADAPTERS.json")
+    bindings = {}
+    paths = policy.get("rule_sources")
+    if not isinstance(paths, list) or not paths or len(paths) != len(set(paths)):
+        fail("CLIENT_SHARED_RULE_SOURCES_INVALID")
+    for item in registry.get("adapters", []):
+        path = item.get("path") if isinstance(item, dict) else None
+        if not isinstance(path, str) or path not in paths:
+            fail("CLIENT_ADAPTER_NOT_BOUND_TO_SHARED_RULES")
+    for path in paths:
+        if (not isinstance(path, str) or Path(path).is_absolute()
+                or ".." in Path(path).parts):
+            fail("CLIENT_SHARED_RULE_PATH_INVALID")
+        target = ROOT / path
+        if not target.resolve().is_relative_to(ROOT.resolve()):
+            fail("CLIENT_SHARED_RULE_PATH_INVALID")
+        try:
+            raw = target.read_bytes()
+        except OSError:
+            fail("CLIENT_SHARED_RULE_SOURCE_UNAVAILABLE:" + path)
+        bindings[path] = hashlib.sha256(raw).hexdigest()
+    value = {"schema": "qikvrt-session-rule-contract/1",
+             "authority_repository": policy["authority_repository"],
+             "rule_bindings": bindings}
+    value["rules_sha256"] = hashlib.sha256(json.dumps(
+        value, sort_keys=True, separators=(",", ":"), ensure_ascii=False,
+        allow_nan=False).encode()).hexdigest()
+    return value
+
+
+def validate_session_harmonization(receipt: dict[str, Any], *, required: bool = False) -> None:
+    if receipt.get("schema") == "qikvrt-client-continuation/1":
+        if required or "session_contract" in receipt or "session" in receipt:
+            fail("CLIENT_CURRENT_SESSION_REQUIRES_V2")
+        return  # historical readability is not current session acceptance
+    if receipt.get("session_contract") != session_rule_contract():
+        fail("CLIENT_SHARED_RULE_CONTRACT_DRIFT")
+    session = require(receipt, "session", dict)
+    for key in ("id", "node_id", "evidence"):
+        if not isinstance(session.get(key), str) or not session[key].strip():
+            fail("CLIENT_SESSION_BINDING_MISSING:" + key)
+    if session.get("repository") != receipt.get("subject", {}).get("repository"):
+        fail("CLIENT_SESSION_REPOSITORY_MISMATCH")
+    observations = require(session, "capability_observations", list)
+    if not observations:
+        fail("CLIENT_SESSION_CAPABILITY_INVENTORY_MISSING")
+    seen = set()
+    for item in observations:
+        if not isinstance(item, dict):
+            fail("CLIENT_CAPABILITY_OBSERVATION_INVALID")
+        if (item.get("session_id") != session["id"]
+                or item.get("node_id") != session["node_id"]
+                or item.get("repository") != session["repository"]
+                or item.get("scope") != "THIS_SESSION_ONLY"):
+            fail("CLIENT_CAPABILITY_SCOPE_LEAK")
+        for key in ("operation", "route", "evidence"):
+            if not isinstance(item.get(key), str) or not item[key].strip():
+                fail("CLIENT_CAPABILITY_OBSERVATION_INVALID")
+        if item.get("method") not in {"GET", "POST", "PUT", "PATCH", "DELETE", "IN_PROCESS"}:
+            fail("CLIENT_CAPABILITY_METHOD_INVALID")
+        if item.get("state") not in {"AVAILABLE", "UNAVAILABLE", "UNKNOWN"}:
+            fail("CLIENT_CAPABILITY_STATE_INVALID")
+        client_time(item.get("observed_at"), "CLIENT_CAPABILITY_TIME_INVALID")
+        key = (item["route"], item["operation"], item["method"])
+        if key in seen:
+            fail("CLIENT_DUPLICATE_CAPABILITY_OBSERVATION")
+        seen.add(key)
+    # Client statements are not the original authenticated per-node return path.
+    if session.get("all_nodes_adopted") is not False:
+        fail("CLIENT_UNVERIFIED_GLOBAL_ADOPTION")
+
+
+def validate_client_receipt(receipt: dict[str, Any], *, require_session_contract: bool = False) -> str:
     """Validate consistency; never authenticate a client or prove live effects."""
-    if receipt.get("schema") != "qikvrt-client-continuation/1":
+    if receipt.get("schema") not in {"qikvrt-client-continuation/1", "qikvrt-client-continuation/2"}:
         fail("CLIENT_RECEIPT_SCHEMA_INVALID")
+    validate_session_harmonization(receipt, required=require_session_contract)
     subject = require(receipt, "subject", dict)
     if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", str(subject.get("repository", ""))):
         fail("CLIENT_SUBJECT_INVALID")
@@ -936,12 +1019,29 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--client-receipt", type=Path,
                         help="Validate a non-secret client continuation receipt; no live-effect proof")
+    parser.add_argument("--session-contract", action="store_true",
+                        help="Print the shared rule byte bindings; no peer adoption claim")
+    parser.add_argument("--require-session-contract", action="store_true",
+                        help="Reject legacy receipts at a current session boundary")
+    parser.add_argument("--historical-client-receipt", action="store_true",
+                        help="Read a legacy receipt as history, never as current session admission")
     args = parser.parse_args()
+    if args.session_contract:
+        if args.client_receipt is not None or args.require_session_contract or args.historical_client_receipt:
+            parser.error("--session-contract cannot validate a receipt")
+        print(json.dumps(session_rule_contract(), sort_keys=True, indent=2))
+        return 0
+    if args.require_session_contract and args.client_receipt is None:
+        parser.error("--require-session-contract requires --client-receipt")
+    if args.historical_client_receipt and (args.client_receipt is None or args.require_session_contract):
+        parser.error("historical receipt mode requires --client-receipt and excludes current admission")
     if args.client_receipt is not None:
         receipt = load_json(args.client_receipt)
-        state = validate_client_receipt(receipt)
+        state = validate_client_receipt(receipt, require_session_contract=not args.historical_client_receipt)
         print("CLIENT_HANDOFF_CONSISTENCY=VALID")
         print("CLIENT_STATE=" + state)
+        print("CLIENT_SESSION_RULES=" + ("BYTE_CONSISTENT_NOT_PEER_ADOPTION"
+              if receipt["schema"].endswith("/2") else "LEGACY_NOT_ASSESSED"))
         plan = client_transition_plan(receipt)
         if plan is not None:
             print("CLIENT_TRANSITION_PLAN=" + json.dumps(plan, sort_keys=True, separators=(",", ":")))
@@ -968,6 +1068,7 @@ def main() -> int:
         fail("missing required files: " + ", ".join(missing))
 
     registry_name, adapter_count = validate_adapters(context)
+    session_rule_contract()
     projection_check = validate_progress(context)
 
     licensing = require(context, "licensing_policy", dict)
