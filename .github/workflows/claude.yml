@@ -1,5 +1,9 @@
 name: claude
 on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '17 * * * *'
   issue_comment:
     types: [created]
   issues:
@@ -10,7 +14,7 @@ permissions:
   issues: write
 jobs:
   m:
-    if: contains(github.event.comment.body || github.event.issue.body, '@claude')
+    if: contains(github.event.comment.body || github.event.issue.body || '@claude', '@claude')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -18,3 +22,4 @@ jobs:
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ github.token }}
+          prompt: ${{ (github.event_name == 'push' || github.event_name == 'schedule') && 'Bearbeite jedes offene Issue, dessen Text oder Kommentar @claude enthaelt und noch keine Antwort von dir hat, nach seinem Text. Ist nichts offen, beende sofort.' || '' }}
