@@ -33,6 +33,7 @@ OWNER = "ingolf-lohmann"
 SHA = re.compile(r"[0-9a-f]{40}\Z")
 MAX_BYTES = 1_048_576
 CONFIG = "personal/ingolf-lohmann/reminders/OWNER_REMINDERS_V1.json"
+
 MAIL_TASK_SCOPE = "PRIVATE_MAIL_CLASSIFICATION_AND_TASK_PLAN_ONLY"
 MAIL_RULES = (
     ("DE_EXPLICIT_REQUEST", re.compile(
@@ -52,6 +53,38 @@ def mail_address(value):
     if not isinstance(value, str) or not re.fullmatch(r"[^\s@<>]{1,64}@[^\s@<>]{1,190}", value):
         raise ReminderError("bounded private mail address required")
     return value.casefold()
+
+
+def reported_mail_problem(subject, text, headers, sender):
+    """Classify a received report, never authenticate its sender or execute it.
+
+    Require evidence in the unquoted current text. A subject or status number
+    alone cannot assert delivery failure. All resulting items remain private.
+    """
+    if not text.strip():
+        return None
+    delivery_subject = re.search(
+        r"(?:unzustellbar|undeliverable|delivery status notification|mail delivery failed|returned mail|failure notice)",
+        subject, re.I)
+    delivery_sender = bool(sender and re.fullmatch(
+        r"(?:mailer-daemon|postmaster|mail-delivery-system)", sender.split("@", 1)[0], re.I))
+    delivery_header = any(h["name"].casefold() == "content-type" and
+        "multipart/report" in h["value"].casefold() and "delivery-status" in h["value"].casefold()
+        for h in headers)
+    failed_text = re.search(
+        r"(?:delivery has failed|wasn['’]t delivered|could not be delivered|message (?:was )?rejected|"
+        r"nicht zugestellt|zustellung.{0,40}(?:fehlgeschlagen|abgelehnt)|final-recipient|diagnostic-code)", text, re.I)
+    failed_status = re.search(r"(?<![\d.])[45]\.[0-7]\.\d{1,3}(?![\d.])", text)
+    if (delivery_subject or delivery_sender or delivery_header) and failed_text and failed_status:
+        return "DELIVERY_FAILURE_REPORTED"
+    if (re.search(r"(?:new support requests|neue supportanfragen|no longer accept|nicht mehr angenommen)", text, re.I)
+            and re.search(r"(?:require|must|no longer accept|nicht mehr|nur noch|müssen)", text, re.I)
+            and re.search(r"(?:support portal|support website|support\.github\.com|help\.github\.com)", text, re.I)):
+        return "SUPPORT_CHANNEL_REJECTED_REPORTED"
+    if (re.search(r"(?:run failed:|workflow.{0,60}failed|lauf fehlgeschlagen)", subject, re.I)
+            and re.search(r"(?:all jobs have failed|some jobs were not successful|failed in|fehlgeschlagen)", text, re.I)):
+        return "OPERATIONAL_FAILURE_REPORTED"
+    return None
 
 
 def classify_private_mail(message, *, owner_addresses, human_senders):
@@ -104,8 +137,13 @@ def classify_private_mail(message, *, owner_addresses, human_senders):
     urgent = bool(not negated and re.search(r"\b(?:dringend|urgent|urgence|asap)\b", urgency_text, re.I))
     human_request = bool(complete and direct and rule and address in humans and address not in owners
                          and not automated and message["isDraft"] is False)
-    important = message.get("importance") == "high" or human_request
-    category = ("AUTOMATED_OR_BULK" if automated else "INSUFFICIENT_PROJECTION" if not complete
+    owner_recipient = bool(complete and any(mail_address(r["emailAddress"]["address"]) in owners
+        for r in recipients + message.get("ccRecipients", [])))
+    problem = (reported_mail_problem(message.get("subject", ""), text,
+        message["internetMessageHeaders"], address)
+        if complete and owner_recipient and address not in owners and message["isDraft"] is False else None)
+    important = message.get("importance") == "high" or human_request or bool(problem)
+    category = (problem if problem else "AUTOMATED_OR_BULK" if automated else "INSUFFICIENT_PROJECTION" if not complete
                 else "DIRECT_HUMAN_REQUEST" if human_request
                 else "DIRECT_REQUEST_SENDER_UNVERIFIED" if direct and rule and address not in owners
                 and message["isDraft"] is False else "URGENT" if urgent
@@ -114,7 +152,8 @@ def classify_private_mail(message, *, owner_addresses, human_senders):
             "direct_to_owner": direct, "request_rule": rule, "request_excerpt": excerpt,
             "task_derivable": human_request,
             "human_sender_basis": "PRIVATE_CONTACT_CLASSIFICATION_NOT_IDENTITY_ATTESTATION",
-            "coverage": "SELECTED_CURRENT_UNIQUE_BODY_RULES_ONLY"}
+            "coverage": ("SELECTED_CURRENT_UNIQUE_BODY_PROBLEM_SIGNALS_ONLY" if problem
+                         else "SELECTED_CURRENT_UNIQUE_BODY_RULES_ONLY")}
 
 
 def project_private_mail_plan(mail, tasks, lifecycle, *, owner, timezone, observed_at):

@@ -1,0 +1,6 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann.
+# Optional Personal-only environment. No implicit install; never downgrade an existing environment.
+cryptography==50.0.2
+cffi==2.1.1
+pycparser==3.0

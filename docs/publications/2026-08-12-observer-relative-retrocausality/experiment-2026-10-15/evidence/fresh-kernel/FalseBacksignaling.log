@@ -1,0 +1,6 @@
+/workspace/scratch/9d7237237e83/qik-vrt/docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/negative/FalseBacksignaling.lean:6:2: error: tactic 'decide' proved that the proposition
+  { emitOld := 0, emitNew := 1, receiveOld := 3, receiveNew := 2 }.receiveOld <
+      { emitOld := 0, emitNew := 1, receiveOld := 3, receiveNew := 2 }.emitOld ∨
+    { emitOld := 0, emitNew := 1, receiveOld := 3, receiveNew := 2 }.receiveNew <
+      { emitOld := 0, emitNew := 1, receiveOld := 3, receiveNew := 2 }.emitNew
+is false

@@ -1,0 +1,22 @@
+test_compose_and_mirror_defaults_match_the_same_current_contract (tests.test_self_host.DeploymentRoleTests.test_compose_and_mirror_defaults_match_the_same_current_contract) ... ok
+test_original_reversed_defaults_and_overrides_are_refused (tests.test_self_host.DeploymentRoleTests.test_original_reversed_defaults_and_overrides_are_refused) ... ok
+test_owner_projection_drift_is_rejected_without_network_or_effect (tests.test_self_host.DeploymentRoleTests.test_owner_projection_drift_is_rejected_without_network_or_effect) ... ok
+test_roles_come_from_current_policy_and_owner_projection (tests.test_self_host.DeploymentRoleTests.test_roles_come_from_current_policy_and_owner_projection) ... ok
+test_full_byte_binding_does_not_claim_runtime_or_public_delivery (tests.test_self_host.RuntimeDeliveryTests.test_full_byte_binding_does_not_claim_runtime_or_public_delivery) ... ok
+test_missing_actual_engine_connection_stays_a_specific_hold (tests.test_self_host.RuntimeDeliveryTests.test_missing_actual_engine_connection_stays_a_specific_hold) ... ok
+test_relabelled_source_or_image_is_rejected (tests.test_self_host.RuntimeDeliveryTests.test_relabelled_source_or_image_is_rejected) ... ok
+test_tampered_image_or_package_refused_before_docker_load (tests.test_self_host.RuntimeDeliveryTests.test_tampered_image_or_package_refused_before_docker_load) ... ok
+test_unsafe_package_archive_is_rejected (tests.test_self_host.RuntimeDeliveryTests.test_unsafe_package_archive_is_rejected) ... ok
+test_wrong_independent_delivery_pin_is_rejected (tests.test_self_host.RuntimeDeliveryTests.test_wrong_independent_delivery_pin_is_rejected) ... ok
+test_different_domain_or_unadmitted_execution_is_refused (tests.test_self_host.DockerAdmissionTests.test_different_domain_or_unadmitted_execution_is_refused) ... ok
+test_failed_in_container_runtime_verification_is_not_replaced_by_host_validation (tests.test_self_host.DockerAdmissionTests.test_failed_in_container_runtime_verification_is_not_replaced_by_host_validation) ... ok
+test_invalid_port_or_unsafe_mount_never_reaches_container_start (tests.test_self_host.DockerAdmissionTests.test_invalid_port_or_unsafe_mount_never_reaches_container_start) ... ok
+test_one_existing_supervisor_and_separate_persistent_volume_without_public_claim (tests.test_self_host.DockerAdmissionTests.test_one_existing_supervisor_and_separate_persistent_volume_without_public_claim) ... ok
+test_remote_docker_override_is_not_an_admitted_local_host (tests.test_self_host.DockerAdmissionTests.test_remote_docker_override_is_not_an_admitted_local_host) ... ok
+test_batch003_requires_s1_runtime_and_tests_before_persistence (tests.test_self_host.WorkflowRuntimeTests.test_batch003_requires_s1_runtime_and_tests_before_persistence) ... ok
+test_terminal_lane_requires_real_supervisor_recovery_without_host_acceptance_inference (tests.test_self_host.WorkflowRuntimeTests.test_terminal_lane_requires_real_supervisor_recovery_without_host_acceptance_inference) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.063s
+
+OK

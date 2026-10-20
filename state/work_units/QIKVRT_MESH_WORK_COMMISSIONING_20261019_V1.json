@@ -1,0 +1,92 @@
+{
+  "schema": "qikvrt-mesh-work-commissioning-repair/v1",
+  "work_unit_id": "QIKVRT_MESH_WORK_COMMISSIONING_20261019_V1",
+  "owner": "Ingolf Lohmann",
+  "authorization": "Direct Owner instruction2026-10-19: bring the existing Mirror-to-Authority proposal path into operation and prevent silent regressions; Freigabe erteilt. Existing owner-controlled original S1/IONOS host and REST-only routing remain required.",
+  "base": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "ref": "main",
+    "head": "60afe42d3f7bb7992b78c747878582738a97dc6a",
+    "tree": "bff8937d871fb9e989d2bfbf17a210222a987893"
+  },
+  "observed_gaps": [
+    "Sender previously discarded authenticated receipt response bytes after acknowledgement.",
+    "Sender previously did not validate the receipt self digest.",
+    "No fresh challenged receiver-disk readback existed after completed sender acknowledgement.",
+    "Standalone public acceptance did not require an admitted peer or a current-source received batch."
+  ],
+  "repair_files": [
+    {
+      "path": "tools/qikvrt_self_host.py",
+      "bytes": 230835,
+      "sha256": "731671e7ba3399f0e0a07bc59b08b62b7bf5d33ea4d5d4c89bbaf7a6b1a42f46",
+      "git_blob_sha1": "0affb0397d161ca80ebffdd42d0f95d32d17d102"
+    },
+    {
+      "path": "tools/qikvrt_mesh_monitor_readback.mjs",
+      "bytes": 14458,
+      "sha256": "5b2dddd11361e2cf73340d27b8d0e3c96ccb7a823695e7dd07713e037b531e46",
+      "git_blob_sha1": "eba6243cbbb9d6a833e1e8676726030b1405ddea"
+    },
+    {
+      "path": "docs/monitor/server.mjs",
+      "bytes": 48863,
+      "sha256": "0ce697a4def81310453d54bd64110e1aff414e5dd0ceb29eae0f609597926579",
+      "git_blob_sha1": "6ab9c9ff8b01cbd6c54b787bc7422e9b5a5b0ab9"
+    },
+    {
+      "path": "tests/test_self_host.py",
+      "bytes": 137283,
+      "sha256": "12dc519907780c8e8af599f1c8d4fe31e3dd1830197008249eeec33376fc0d07",
+      "git_blob_sha1": "2b9676d783af8603ba4af175f28f5057b560cafc"
+    },
+    {
+      "path": "runtime/self-host/MESH_ACTIVATION.json",
+      "bytes": 23126,
+      "sha256": "bb2c09cf05419e0723586256158f88c74f85af889b5ac1b78af2d8b7bea74d33",
+      "git_blob_sha1": "b4c94bb7e6ff5ce9d67fa56d3cbfbcafec0724c9"
+    },
+    {
+      "path": "runtime/self-host/README.md",
+      "bytes": 73964,
+      "sha256": "36f05b14d0d853121dbaac3e3dcb101d20a98b30fd27167de8a0e803931864c7",
+      "git_blob_sha1": "8d48c97b19cf4763854b2ca8d5be345c6fd856af"
+    }
+  ],
+  "local_validation": {
+    "baseline_mesh_cache_and_contract": "51 tests PASS on exact selected Main bytes",
+    "successor_mesh_cache_and_contract": "63 tests PASS on exact listed candidate file bytes",
+    "original_subject_negative_controls": "2 expected predecessor failures: absent retained receipt and accepted malformed authenticated receipt digest",
+    "scope": "LOCAL_LINUX_PYTHON_TO_NODE_LOOPBACK; no production peer or public host acceptance",
+    "tool_cache": "34/34 declared cache strategies;100 percent",
+    "full_native_source_validation": "REQUIRED_PENDING"
+  },
+  "deployment": {
+    "provider": "Existing owner-controlled IONOS host",
+    "existing_contract": "114100762",
+    "protected_host_control_binding": "NOT_ESTABLISHED_IN_INSPECTED_SUPPORTED_ROUTES",
+    "host_started": false,
+    "actual_server_state": "UNKNOWN",
+    "peer_admitted": false,
+    "production_batch_sent": false,
+    "production_receipt_observed": false,
+    "smallest_next_effect": "Use the original protected host management binding to verify actual server identity, install/admit the existing S1 runtime and explicit peer key/config, send a real exportable Work Unit, check it from the sender, restart the same service and check again.",
+    "retry_condition": "Actually available authenticated original-host management operation, exact host/source/state admission and privately provisioned sender/receiver peer binding; general renewed authorization is not a substitute."
+  },
+  "source_gate_does_not_start_runtime": true,
+  "native_effect_replication_and_fencing_separate": true,
+  "effect_ack_done": false,
+  "public_domain_observation": {
+    "url": "https://raumzeitterminal.de/",
+    "status": 525,
+    "observed_at": "2026-10-19T07:42:42.819Z",
+    "scope": "Existing observer no-follow server-side GET vantage only; Owner browser access is not inferred."
+  },
+  "historical_predecessors": {
+    "host_receipt_library_file_id": "libfile_6526329fa28c81918e84511b48d4672e",
+    "host_receipt_version": 43,
+    "communication_archive_library_file_id": "libfile_f5dd09c238d48191b84bfe409848f0a6",
+    "communication_archive_version": 8
+  },
+  "publication_scope": "Operational repair evidence, not a new scientific publication or universal permanence proof."
+}

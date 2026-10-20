@@ -7,6 +7,7 @@ state and performs no network access.
 
 from __future__ import annotations
 
+import argparse
 import datetime as dt
 import hashlib
 import json
@@ -16,6 +17,7 @@ import subprocess
 import sys
 from pathlib import Path
 from typing import Any, NoReturn
+from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 ROOT_STR = str(ROOT)
@@ -79,6 +81,562 @@ def git_value(*args: str) -> str:
     except (OSError, subprocess.SubprocessError):
         return "unavailable"
     return proc.stdout.strip() or "unavailable"
+
+
+def client_causal_key(value: dict[str, Any]) -> str:
+    """Exclude observation clocks and unrelated repository lifecycle changes."""
+    parts = {key: value.get(key) for key in ("subject", "error", "cause", "capability")}
+    if any(not isinstance(v, str) or not re.fullmatch(r"[0-9a-f]{64}", v)
+           for v in parts.values()):
+        fail("CLIENT_CAUSAL_EVIDENCE_INCOMPLETE")
+    return hashlib.sha256(json.dumps(parts, sort_keys=True).encode()).hexdigest()
+
+
+def validate_client_action(action: dict[str, Any], subject: dict[str, Any]) -> bool:
+    if not isinstance(action, dict) or action.get("subject") != subject:
+        fail("CLIENT_ACTION_SUBJECT_DRIFT")
+    if action.get("route") not in ("connector", "cli", "mesh"):
+        fail("CLIENT_ACTION_ROUTE_INVALID")
+    if action.get("method") not in ("GET", "POST", "PUT", "PATCH", "DELETE"):
+        fail("CLIENT_ACTION_METHOD_INVALID")
+    service = str(action.get("service", "")).casefold()
+    if service in ("github", "ionos"):
+        policy = load_json(ROOT / "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json")
+        required_route = policy.get("client_continuation", {}).get(service + "_route")
+        if required_route != "REST_API_ONLY":
+            fail("CLIENT_" + service.upper() + "_ROUTE_POLICY_INVALID")
+        if action.get("transport") != required_route:
+            fail("CLIENT_" + service.upper() + "_ROUTE_FORBIDDEN")
+    for key in ("operation", "evidence"):
+        if not isinstance(action.get(key), str) or not action[key].strip():
+            fail("CLIENT_ACTION_" + key.upper() + "_MISSING")
+    predicates = ("authorized", "safe", "deterministic", "callable",
+                  "authenticated", "permitted", "admitted")
+    if any(type(action.get(key)) is not bool for key in predicates):
+        fail("CLIENT_ACTION_PREDICATE_INVALID")
+    if action["callable"] and (
+        action.get("observed_method") != action["method"]
+        or action.get("observed_operation") != action["operation"]
+        or action.get("observed_repository") != subject["repository"]
+    ):
+        fail("CLIENT_CALLABLE_OPERATION_BINDING_MISMATCH")
+    retry_changed = True
+    if "retry" in action:
+        retry = require(action, "retry", dict)
+        retry_changed = (client_causal_key(require(retry, "current", dict))
+                         != client_causal_key(require(retry, "previous", dict)))
+    return all(action[key] for key in predicates) and retry_changed
+
+
+def client_transition_plan(receipt: dict[str, Any]) -> dict[str, Any] | None:
+    """Expose admitted preparation before a future effect becomes executable.
+
+    This is a read-only plan, not an executor or an effect receipt. Historical
+    receipts remain readable. A supplied plan must match the current subject
+    and input identity; human corrections require re-evaluation before reuse.
+    """
+    if "transition_plan" not in receipt:
+        return None
+    plan = receipt["transition_plan"]
+    if not isinstance(plan, dict):
+        fail("CLIENT_TRANSITION_PLAN_INVALID")
+    subject = require(receipt, "subject", dict)
+    if plan.get("subject") != subject:
+        fail("CLIENT_TRANSITION_SUBJECT_DRIFT")
+    input_digest = receipt.get("input_sha256")
+    if (not isinstance(input_digest, str)
+        or not re.fullmatch(r"[0-9a-f]{64}", input_digest)
+        or plan.get("input_sha256") != input_digest):
+        fail("CLIENT_TRANSITION_INPUT_DRIFT")
+    transitions = plan.get("transitions")
+    if not isinstance(transitions, list):
+        fail("CLIENT_TRANSITION_LIST_INVALID")
+    ready: list[dict[str, Any]] = []
+    waiting: list[dict[str, Any]] = []
+    identifiers: set[str] = set()
+    for transition in transitions:
+        if not isinstance(transition, dict):
+            fail("CLIENT_TRANSITION_INVALID")
+        identifier = transition.get("id")
+        if (not isinstance(identifier, str) or not identifier.strip()
+            or identifier in identifiers):
+            fail("CLIENT_TRANSITION_ID_INVALID")
+        identifiers.add(identifier)
+        evidence = transition.get("evidence")
+        if not isinstance(evidence, str) or not evidence.strip():
+            fail("CLIENT_TRANSITION_EVIDENCE_MISSING")
+        activation = transition.get("activation")
+        if not isinstance(activation, list) or not activation:
+            fail("CLIENT_TRANSITION_ACTIVATION_INVALID")
+        conditions: set[str] = set()
+        missing: list[str] = []
+        for condition in activation:
+            if not isinstance(condition, dict):
+                fail("CLIENT_TRANSITION_ACTIVATION_INVALID")
+            condition_id = condition.get("id")
+            if (not isinstance(condition_id, str) or not condition_id.strip()
+                or condition_id in conditions
+                or type(condition.get("satisfied")) is not bool
+                or not isinstance(condition.get("evidence"), str)
+                or not condition["evidence"].strip()):
+                fail("CLIENT_TRANSITION_ACTIVATION_INVALID")
+            conditions.add(condition_id)
+            if not condition["satisfied"]:
+                missing.append(condition_id)
+        preparation = transition.get("preparation")
+        if not isinstance(preparation, list):
+            fail("CLIENT_TRANSITION_PREPARATION_INVALID")
+        for index, action in enumerate(preparation):
+            if validate_client_action(action, subject):
+                ready.append({"transition_id": identifier, "stage": "PREPARE",
+                              "index": index, "action": action})
+        action = require(transition, "action", dict)
+        admitted = validate_client_action(action, subject)
+        if not missing and admitted:
+            ready.append({"transition_id": identifier, "stage": "EXECUTE", "action": action})
+        else:
+            waiting.append({"transition_id": identifier, "activation": missing,
+                            "action_admitted": admitted, "evidence": evidence})
+    return {"input_sha256": input_digest, "ready": ready, "waiting": waiting,
+            "scope": "PLANNING_ONLY_NOT_EXECUTION_OR_EFFECT_PROOF"}
+
+
+def client_end_of_action_domain() -> str:
+    """Reuse the exact Owner contract, not a second client governance policy."""
+    policy = load_json(ROOT / "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json")
+    binding = policy.get("client_continuation", {}).get("end_of_action_rule", {})
+    path = binding.get("path")
+    if (not isinstance(path, str) or Path(path).is_absolute()
+        or ".." in Path(path).parts):
+        fail("CLIENT_OWNER_CLOSING_RULE_BINDING_INVALID")
+    try:
+        raw = (ROOT / path).read_bytes()
+    except OSError:
+        fail("CLIENT_OWNER_CLOSING_RULE_UNAVAILABLE")
+    if hashlib.sha256(raw).hexdigest() != binding.get("sha256"):
+        fail("CLIENT_OWNER_CLOSING_RULE_DIGEST_DRIFT")
+    rule = load_json(ROOT / path)
+    if (rule.get("delegation_id") != "OWNER-END-OF-ACTION-VERIFICATION-GRUNDREGEL-V1"
+        or rule.get("state") != "ACTIVE"):
+        fail("CLIENT_OWNER_CLOSING_RULE_INACTIVE")
+    for duty in require(rule, "duties_at_end_of_every_action", list):
+        if isinstance(duty, dict) and duty.get("id") == "REOBSERVE_RAUMZEITTERMINAL_DELIVERY_EVIDENCE":
+            return require(duty, "domain", str)
+    fail("CLIENT_OWNER_CLOSING_RULE_DOMAIN_MISSING")
+
+
+def client_time(value: Any, code: str) -> dt.datetime:
+    if not isinstance(value, str):
+        fail(code)
+    try:
+        result = dt.datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        fail(code)
+    if result.utcoffset() is None:
+        fail(code)
+    return result
+
+
+def client_public_url(value: Any, hostname: str) -> bool:
+    if not isinstance(value, str):
+        return False
+    try:
+        parsed = urlsplit(value)
+        return (parsed.scheme == "https" and parsed.hostname == hostname
+                and parsed.port in (None, 443) and parsed.username is None
+                and parsed.password is None)
+    except ValueError:
+        return False
+
+
+def validate_client_readback(readback: Any, subject: dict[str, Any], window: Any) -> None:
+    """Check action-bound chronology; supplied receipts still need live verification."""
+    if (not isinstance(window, dict) or not isinstance(window.get("id"), str)
+        or not window["id"].strip()):
+        fail("CLIENT_ACTION_WINDOW_INVALID")
+    completed = client_time(window.get("completed_at"), "CLIENT_ACTION_WINDOW_INVALID")
+    closed = client_time(window.get("closed_at"), "CLIENT_ACTION_WINDOW_INVALID")
+    if closed <= completed:
+        fail("CLIENT_ACTION_WINDOW_INVALID")
+    if not isinstance(readback, dict):
+        fail("CLIENT_CLOSING_READBACK_MISSING")
+    repository = require(readback, "repository", dict)
+    source = repository.get("source")
+    if (repository.get("repository") != subject["repository"]
+        or not isinstance(source, str) or not source.strip()):
+        fail("CLIENT_REPOSITORY_READBACK_MISSING")
+    for key in ("head", "tree"):
+        if not re.fullmatch(r"[0-9a-f]{40}", str(repository.get(key, ""))):
+            fail("CLIENT_REPOSITORY_READBACK_INVALID")
+    if any(repository.get(key) != subject[key] for key in ("ref", "head", "tree")):
+        fail("CLIENT_REPOSITORY_READBACK_SUBJECT_DRIFT")
+    delivery = require(readback, "delivery", dict)
+    hostname = client_end_of_action_domain()
+    source = delivery.get("source")
+    if (delivery.get("hostname") != hostname
+        or not isinstance(source, str) or not source.strip()):
+        fail("CLIENT_EXACT_HOST_READBACK_MISSING")
+    if delivery.get("state") not in ("UNKNOWN", "PENDING", "VERIFIED"):
+        fail("CLIENT_DELIVERY_READBACK_INVALID")
+    if delivery.get("method") != "GET" or not client_public_url(delivery.get("url"), hostname):
+        fail("CLIENT_PUBLIC_DELIVERY_URL_INVALID")
+    for kind in ("repository", "delivery"):
+        observation = readback[kind]
+        if observation.get("action_id") != window["id"]:
+            fail("CLIENT_READBACK_ACTION_DRIFT:" + kind)
+        observed = client_time(observation.get("observed_at"), "CLIENT_READBACK_TIME_INVALID:" + kind)
+        if not completed < observed <= closed:
+            fail("CLIENT_READBACK_NOT_FRESH:" + kind)
+    if delivery["state"] == "VERIFIED":
+        if (type(delivery.get("http_status")) is not int or delivery["http_status"] != 200
+            or not isinstance(delivery.get("response_sha256"), str)
+            or not re.fullmatch(r"[0-9a-f]{64}", delivery["response_sha256"])
+            or not client_public_url(delivery.get("final_url"), hostname)):
+            fail("CLIENT_PUBLIC_DELIVERY_PROOF_INCOMPLETE")
+
+
+def client_previous_receipt(receipt: dict[str, Any]) -> dict[str, Any] | None:
+    """Read an explicitly pinned predecessor, without discovering other files."""
+    previous = receipt.get("previous_run")
+    if not isinstance(previous, dict):
+        return None
+    if not {"receipt_path", "receipt_sha256"} & previous.keys():
+        return None
+    relative, digest = previous.get("receipt_path"), previous.get("receipt_sha256")
+    if (not isinstance(relative, str) or not relative.strip() or "\x00" in relative
+        or Path(relative).is_absolute() or ".." in Path(relative).parts
+        or not isinstance(digest, str) or not re.fullmatch(r"[0-9a-f]{64}", digest)):
+        fail("CLIENT_PREVIOUS_RECEIPT_BINDING_INVALID")
+    path = ROOT / relative
+    try:
+        if path.resolve(strict=True) != path.absolute() or not path.is_file():
+            fail("CLIENT_PREVIOUS_RECEIPT_BINDING_INVALID")
+        with path.open("rb") as stream:
+            raw = stream.read(2 * 1024 * 1024 + 1)
+    except (OSError, ValueError, RuntimeError):
+        fail("CLIENT_PREVIOUS_RECEIPT_UNAVAILABLE")
+    if len(raw) > 2 * 1024 * 1024:
+        fail("CLIENT_PREVIOUS_RECEIPT_TOO_LARGE")
+    if hashlib.sha256(raw).hexdigest() != digest:
+        fail("CLIENT_PREVIOUS_RECEIPT_DIGEST_DRIFT")
+    try:
+        value = json.loads(raw)
+    except (ValueError, UnicodeError):
+        fail("CLIENT_PREVIOUS_RECEIPT_INVALID")
+    if (not isinstance(value, dict) or not previous.get("execution_id")
+        or value.get("execution_id") != previous["execution_id"]):
+        fail("CLIENT_PREVIOUS_RECEIPT_IDENTITY_DRIFT")
+    return value
+
+
+def client_knowledge_records(value: Any) -> dict[str, dict[str, Any]]:
+    """Verify declared record identity and scope; hashes do not prove truth."""
+    if not isinstance(value, list):
+        fail("CLIENT_KNOWLEDGE_INVALID")
+    records: dict[str, dict[str, Any]] = {}
+    for record in value:
+        if not isinstance(record, dict):
+            fail("CLIENT_KNOWLEDGE_INVALID")
+        for key in ("id", "epistemic_class", "scope", "statement"):
+            if not isinstance(record.get(key), str) or not record[key].strip():
+                fail("CLIENT_KNOWLEDGE_INVALID")
+        identifier = record["id"]
+        if identifier in records or not isinstance(record.get("subject"), dict) or not record["subject"]:
+            fail("CLIENT_KNOWLEDGE_ID_OR_SUBJECT_INVALID")
+        evidence, supersedes = record.get("evidence"), record.get("supersedes", [])
+        if (not isinstance(evidence, list) or not evidence
+            or any(not isinstance(x, str) or not x.strip() for x in evidence)
+            or not isinstance(supersedes, list)
+            or any(not isinstance(x, str) or not x.strip() for x in supersedes)
+            or len(set(supersedes)) != len(supersedes)):
+            fail("CLIENT_KNOWLEDGE_EVIDENCE_OR_CORRECTION_INVALID")
+        payload = {key: item for key, item in record.items() if key != "record_sha256"}
+        try:
+            wire = json.dumps(payload, sort_keys=True, ensure_ascii=False,
+                              separators=(",", ":"), allow_nan=False).encode("utf-8")
+        except (ValueError, TypeError, UnicodeError):
+            fail("CLIENT_KNOWLEDGE_INVALID")
+        if hashlib.sha256(wire).hexdigest() != record.get("record_sha256"):
+            fail("CLIENT_KNOWLEDGE_DIGEST_DRIFT")
+        records[identifier] = record
+    visited: set[str] = set()
+    visiting: set[str] = set()
+
+    for identifier in records:
+        stack = [(identifier, False)]
+        while stack:
+            current, leaving = stack.pop()
+            if leaving:
+                visiting.remove(current)
+                visited.add(current)
+                continue
+            if current not in records:
+                fail("CLIENT_KNOWLEDGE_CORRECTION_TARGET_MISSING")
+            if current in visiting:
+                fail("CLIENT_KNOWLEDGE_CORRECTION_CYCLE")
+            if current in visited:
+                continue
+            visiting.add(current)
+            stack.append((current, True))
+            stack.extend((parent, False) for parent in records[current].get("supersedes", []))
+    return records
+
+
+def client_historical_knowledge_encodings(
+    receipt: dict[str, Any], predecessor: dict[str, Any] | None,
+) -> dict[str, tuple[dict[str, Any], str]]:
+    """Admit only declared historical bytes from the already pinned predecessor.
+
+    New records still require the canonical compact digest. This is an explicit
+    versioned reader contract, never a try-both-encodings fallback or a rewrite
+    of the stored predecessor. Its return value is a validation projection only.
+    """
+    migration = receipt.get("knowledge_encoding_migration")
+    if migration is None:
+        return {}
+    policy = load_json(ROOT / "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json")
+    contract = policy.get("client_continuation", {}).get(
+        "knowledge_continuity", {}).get("historical_encoding_migration", {})
+    schema = "qikvrt-knowledge-historical-encoding-migration/v1"
+    codec = "json-sorted-spaced-utf8/v1"
+    if (not isinstance(contract, dict)
+        or contract.get("schema") != schema or contract.get("codec") != codec
+        or contract.get("scope") != "EXACT_PINNED_PREDECESSOR_RECORDS_ONLY"
+        or contract.get("requires_pinned_predecessor") is not True
+        or contract.get("new_records_remain_canonical") is not True):
+        fail("CLIENT_KNOWLEDGE_MIGRATION_POLICY_UNAVAILABLE")
+    if predecessor is None:
+        fail("CLIENT_KNOWLEDGE_MIGRATION_PREDECESSOR_REQUIRED")
+    previous = require(receipt, "previous_run", dict)
+    if (not isinstance(migration, dict)
+        or set(migration) != {"schema", "predecessor_sha256", "records"}
+        or migration.get("schema") != schema
+        or migration.get("predecessor_sha256") != previous.get("receipt_sha256")):
+        fail("CLIENT_KNOWLEDGE_MIGRATION_BINDING_INVALID")
+    entries = migration["records"]
+    if not isinstance(entries, list) or not 1 <= len(entries) <= 128:
+        fail("CLIENT_KNOWLEDGE_MIGRATION_RECORDS_INVALID")
+    inherited = require(predecessor, "knowledge", list)
+    current = require(receipt, "knowledge", list)
+    accepted: dict[str, tuple[dict[str, Any], str]] = {}
+    for entry in entries:
+        if (not isinstance(entry, dict)
+            or set(entry) != {"id", "codec", "record_sha256", "canonical_sha256"}
+            or not isinstance(entry.get("id"), str) or not entry["id"].strip()
+            or entry["id"] in accepted or entry.get("codec") != codec):
+            fail("CLIENT_KNOWLEDGE_MIGRATION_RECORDS_INVALID")
+        identifier = entry["id"]
+        originals = [record for record in inherited
+                     if isinstance(record, dict) and record.get("id") == identifier]
+        successors = [record for record in current
+                      if isinstance(record, dict) and record.get("id") == identifier]
+        if len(originals) != 1 or len(successors) != 1:
+            fail("CLIENT_KNOWLEDGE_MIGRATION_RECORD_NOT_IN_PREDECESSOR")
+        original = originals[0]
+        if successors[0] != original:
+            fail("CLIENT_KNOWLEDGE_HISTORY_REWRITTEN")
+        payload = {key: value for key, value in original.items() if key != "record_sha256"}
+        try:
+            historical = json.dumps(payload, sort_keys=True, ensure_ascii=False,
+                                    separators=(", ", ": "), allow_nan=False).encode("utf-8")
+            canonical = json.dumps(payload, sort_keys=True, ensure_ascii=False,
+                                   separators=(",", ":"), allow_nan=False).encode("utf-8")
+        except (ValueError, TypeError, UnicodeError):
+            fail("CLIENT_KNOWLEDGE_INVALID")
+        old_digest = hashlib.sha256(historical).hexdigest()
+        canonical_digest = hashlib.sha256(canonical).hexdigest()
+        if (old_digest == canonical_digest or original.get("record_sha256") != old_digest
+            or entry["record_sha256"] != old_digest
+            or entry["canonical_sha256"] != canonical_digest):
+            fail("CLIENT_KNOWLEDGE_MIGRATION_ENCODING_MISMATCH")
+        accepted[identifier] = (original, canonical_digest)
+    return accepted
+
+
+def client_knowledge_validation_projection(
+    records: Any, historical: dict[str, tuple[dict[str, Any], str]],
+) -> Any:
+    """Preserve source records; normalize only the explicitly verified reader view."""
+    if not isinstance(records, list):
+        return records  # The existing strict validator reports the schema error.
+    projected = []
+    for record in records:
+        identifier = record.get("id") if isinstance(record, dict) else None
+        binding = historical.get(identifier) if isinstance(identifier, str) else None
+        if binding is None:
+            projected.append(record)
+            continue
+        original, canonical_digest = binding
+        if record != original:
+            fail("CLIENT_KNOWLEDGE_HISTORY_REWRITTEN")
+        projected.append(dict(record, record_sha256=canonical_digest))
+    return projected
+
+
+def validate_client_knowledge(receipt: dict[str, Any], predecessor: dict[str, Any] | None) -> None:
+    """Preserve facts, unknowns and corrections without predecessor PASS transfer."""
+    historical = client_historical_knowledge_encodings(receipt, predecessor)
+    current = client_knowledge_records(client_knowledge_validation_projection(
+        receipt.get("knowledge", []), historical))
+    previous = receipt.get("previous_run")
+    sources = [previous] if isinstance(previous, dict) else []
+    if predecessor is not None:
+        sources.append(predecessor)
+    for source in sources:
+        for identifier, record in client_knowledge_records(client_knowledge_validation_projection(
+                source.get("knowledge", []), historical)).items():
+            if identifier not in current:
+                fail("CLIENT_PREDECESSOR_KNOWLEDGE_DROPPED")
+            if current[identifier]["record_sha256"] != record["record_sha256"]:
+                fail("CLIENT_KNOWLEDGE_HISTORY_REWRITTEN")
+
+
+def validate_client_work(receipt: dict[str, Any], predecessor: dict[str, Any] | None = None) -> None:
+    """An observed predecessor's open duties are work for its successor.
+
+    Historical receipts without a predecessor remain readable. An explicitly
+    supplied predecessor cannot be silently dropped; closing a carried duty
+    requires evidence. This checks consistency, not evidence authenticity.
+    """
+    previous = receipt.get("previous_run")
+    if previous is None and "work" not in receipt:
+        return
+    work = require(receipt, "work", list)
+    tasks: dict[str, dict[str, Any]] = {}
+    for task in work:
+        if not isinstance(task, dict):
+            fail("CLIENT_WORK_INVALID")
+        identifier = task.get("id")
+        if not isinstance(identifier, str) or not identifier.strip() or identifier in tasks:
+            fail("CLIENT_WORK_ID_INVALID")
+        if task.get("state") not in ("OPEN", "VERIFIED"):
+            fail("CLIENT_WORK_STATE_INVALID")
+        if task["state"] == "VERIFIED":
+            if not isinstance(task.get("evidence"), str) or not task["evidence"].strip():
+                fail("CLIENT_WORK_CLOSED_WITHOUT_EVIDENCE")
+        elif not isinstance(task.get("next_action"), str) or not task["next_action"].strip():
+            fail("CLIENT_OPEN_WORK_WITHOUT_SUCCESSOR")
+        tasks[identifier] = task
+    if previous is not None:
+        if not isinstance(previous, dict) or not isinstance(previous.get("execution_id"), str) or not previous["execution_id"].strip():
+            fail("CLIENT_PREVIOUS_RUN_INVALID")
+        inherited = require(previous, "open_work", list)
+        if any(not isinstance(identifier, str) or not identifier.strip() for identifier in inherited):
+            fail("CLIENT_PREVIOUS_RUN_INVALID")
+        if len(set(inherited)) != len(inherited):
+            fail("CLIENT_PREVIOUS_RUN_INVALID")
+        if not set(inherited) <= set(tasks):
+            fail("CLIENT_PREDECESSOR_OPEN_WORK_DROPPED")
+    if predecessor is not None:
+        prior_work = require(predecessor, "work", list)
+        for task in prior_work:
+            if not isinstance(task, dict) or task.get("state") not in ("OPEN", "VERIFIED"):
+                fail("CLIENT_PREVIOUS_WORK_INVALID")
+            if task["state"] == "OPEN" and task.get("id") not in tasks:
+                fail("CLIENT_PREDECESSOR_OPEN_WORK_DROPPED")
+    if receipt.get("state") == "DONE" and any(task["state"] == "OPEN" for task in work):
+        fail("CLIENT_DONE_WITH_OPEN_WORK")
+
+
+def validate_client_receipt(receipt: dict[str, Any]) -> str:
+    """Validate consistency; never authenticate a client or prove live effects."""
+    if receipt.get("schema") != "qikvrt-client-continuation/1":
+        fail("CLIENT_RECEIPT_SCHEMA_INVALID")
+    subject = require(receipt, "subject", dict)
+    if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", str(subject.get("repository", ""))):
+        fail("CLIENT_SUBJECT_INVALID")
+    for key in ("head", "tree"):
+        if not re.fullmatch(r"[0-9a-f]{40}", str(subject.get(key, ""))):
+            fail("CLIENT_SUBJECT_INVALID")
+    if not isinstance(subject.get("ref"), str) or not subject["ref"].strip():
+        fail("CLIENT_SUBJECT_INVALID")
+    authorization = require(receipt, "authorization", dict)
+    if (authorization.get("granted") is not True
+        or not isinstance(authorization.get("source"), str)
+        or not authorization["source"].strip()):
+        fail("CLIENT_OWNER_AUTHORIZATION_MISSING")
+    if receipt.get("requested_authorization_again") is not False:
+        fail("CLIENT_REPEATED_AUTHORIZATION_REQUEST")
+    inventory = require(receipt, "inventory", dict)
+    for kind in ("repository", "connector", "cli", "mesh"):
+        if not isinstance(inventory.get(kind), str) or not inventory[kind].strip():
+            fail("CLIENT_EXISTING_ROUTE_NOT_INSPECTED:" + kind)
+    attempts = require(receipt, "attempts", list)
+    executed_keys: set[str] = set()
+    closed_actions: set[str] = set()
+    for attempt in attempts:
+        if not isinstance(attempt, dict):
+            fail("CLIENT_ATTEMPT_INVALID")
+        count = attempt.get("effect_count")
+        if isinstance(count, bool) or not isinstance(count, int) or count not in (0, 1):
+            fail("CLIENT_EFFECT_COUNT_INVALID")
+        if any(type(attempt.get(key)) is not bool
+               for key in ("ambiguous_effect", "readback_before_effect")):
+            fail("CLIENT_ATTEMPT_PREDICATE_INVALID")
+        current = client_causal_key(require(attempt, "current", dict))
+        previous = attempt.get("previous")
+        if previous is not None:
+            if not isinstance(previous, dict):
+                fail("CLIENT_ATTEMPT_INVALID")
+            if current == client_causal_key(previous) and count:
+                fail("CLIENT_UNCHANGED_FAILURE_RETRIED")
+        if attempt.get("ambiguous_effect") is not False:
+            if attempt.get("readback_before_effect") is not True and count:
+                fail("CLIENT_AMBIGUOUS_EFFECT_RETRIED_WITHOUT_READBACK")
+        if count:
+            if not validate_client_action(require(attempt, "action", dict), subject):
+                fail("CLIENT_EFFECT_WITHOUT_ADMISSION")
+            if current in executed_keys:
+                fail("CLIENT_DUPLICATE_CAUSAL_ATTEMPT")
+            executed_keys.add(current)
+            validate_client_readback(attempt.get("readback"), subject, attempt.get("action_window"))
+            action_id = attempt["action_window"]["id"]
+            if action_id in closed_actions:
+                fail("CLIENT_CLOSING_ACTION_REUSED")
+            closed_actions.add(action_id)
+    actions = require(receipt, "next_actions", list)
+    executable = False
+    for action in actions:
+        executable |= validate_client_action(action, subject)
+    transition_plan = client_transition_plan(receipt)
+    if transition_plan is not None:
+        executable |= bool(transition_plan["ready"])
+    readback = receipt.get("readback")
+    validate_client_readback(readback, subject, receipt.get("action_window"))
+    repository = readback["repository"]
+    delivery = readback["delivery"]
+    state = receipt.get("state")
+    if state not in ("CONTINUE", "BLOCK", "DONE", "OWNER_CHOICE"):
+        fail("CLIENT_RETURN_STATE_INVALID")
+    predecessor = client_previous_receipt(receipt)
+    validate_client_work(receipt, predecessor)
+    validate_client_knowledge(receipt, predecessor)
+    if executable and state != "CONTINUE":
+        fail("CLIENT_PREMATURE_RETURN_WITH_EXECUTABLE_SUCCESSOR")
+    pending = receipt.get("pending_execution")
+    if state == "CONTINUE" and not executable and (
+        not isinstance(pending, str) or not pending.strip()
+    ):
+        fail("CLIENT_CONTINUATION_WITHOUT_SUCCESSOR_OR_EXECUTION")
+    if state == "BLOCK":
+        blocker = require(receipt, "blocker", dict)
+        for key in ("operation", "reason", "evidence", "retry_condition", "next_action"):
+            if not isinstance(blocker.get(key), str) or not blocker[key].strip():
+                fail("CLIENT_BLOCKER_NOT_CONCRETE:" + key)
+    if state == "OWNER_CHOICE":
+        choices = require(receipt, "owner_choices", list)
+        if len(choices) < 2 or any(not isinstance(c, str) or not c.strip() for c in choices) or len(set(choices)) != len(choices):
+            fail("CLIENT_OWNER_CHOICE_INVALID")
+    if state == "DONE":
+        if transition_plan is not None and transition_plan["waiting"]:
+            fail("CLIENT_DONE_WITH_PENDING_TRANSITION")
+        if (repository.get("ref") != "main"
+            or any(repository.get(key) != subject[key] for key in ("head", "tree"))
+            or delivery.get("state") != "VERIFIED"
+            or any(delivery.get(key) is not True for key in ("working_software", "tls", "independent"))
+            or any(delivery.get(key) != subject[key] for key in ("head", "tree"))):
+            fail("CLIENT_DONE_WITHOUT_EXACT_EFFECT_READBACK")
+    return state
 
 def validate_bound_file(
     receipt: dict[str, Any],
@@ -375,6 +933,20 @@ def validate_adapters(context: dict[str, Any]) -> tuple[str, int]:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--client-receipt", type=Path,
+                        help="Validate a non-secret client continuation receipt; no live-effect proof")
+    args = parser.parse_args()
+    if args.client_receipt is not None:
+        receipt = load_json(args.client_receipt)
+        state = validate_client_receipt(receipt)
+        print("CLIENT_HANDOFF_CONSISTENCY=VALID")
+        print("CLIENT_STATE=" + state)
+        plan = client_transition_plan(receipt)
+        if plan is not None:
+            print("CLIENT_TRANSITION_PLAN=" + json.dumps(plan, sort_keys=True, separators=(",", ":")))
+        print("LIVE_EFFECT_VERIFICATION=NOT_PERFORMED")
+        return 0
     context = load_json(CONTEXT_PATH)
     schema = require(context, "schema", str)
     if schema not in SUPPORTED_CONTEXT_SCHEMAS:

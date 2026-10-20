@@ -1,0 +1,44 @@
+{
+  "schema": "qikvrt-native-peer-rule-work-unit/v1",
+  "work_unit_id": "QIKVRT_NATIVE_PEER_RULE_ACK_20261019_V1",
+  "owner": "Ingolf Lohmann",
+  "authorization": "Direct task: develop native automatic authenticated peer receipt/application confirmation and reproducible full binding conformance; use existing native infrastructure and preserve journals and security boundaries.",
+  "parent_pr": 538,
+  "parent_head": "984f1398a533fdcfbfb214e58250576e89c3e290",
+  "observed_main": {
+    "head": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+    "tree": "15eb1a7bdd2c1880405df1026b14756f0fe72714"
+  },
+  "implementation_scope": "Native rule admission guard on existing original S1 Terminal/Transputer; unchanged proposal-only Mesh Work Batch interfaces",
+  "requires_exact_local_grant": true,
+  "original_journals_replaced": false,
+  "new_service_or_parallel_executor": false,
+  "owner_message_relay_required": false,
+  "conformance_command": "python3 -B -m unittest -v tests.test_self_host_temdd.NativePeerRuleTests",
+  "full_validation_command": "make test repository-monitor-test self-host-test",
+  "real_claude_ack_verified": false,
+  "all_peer_adoption_verified": false,
+  "main_integration_verified": false,
+  "effect_ack_done": false,
+  "live_execution_boundary": {
+    "public_registry_native_endpoint": "NOT_ADVERTISED",
+    "callable_mesh_connector": "READ_ONLY_OBSERVATIONS; NO PEER REQUEST/APPLY OPERATION",
+    "authenticated_github_rest": "AVAILABLE_AS_INGOLF_LOHMANN; DOES_NOT_PROVIDE_A_PRIVATE_PEER_KEY_OR_HOST_SESSION",
+    "local_cli_and_private_binding": "No gh executable or local Mesh/host configuration binding; not proof of remote credential absence",
+    "resume_when": "Original admitted peer Terminal endpoint and private HMAC/source/grant binding are available via existing authorized host; run same finite mesh-rule-confirm and verify real native reply."
+  },
+  "coverage": "Unavailable registered peers and previous open duties remain open; tests use only synthetic nodes",
+  "owner_input_event": {
+    "id": "8704976e2c84439498754b79bf78446d:1",
+    "ledger_digest": "7687f83fa858d8b9a4f93393c9ef32434ae018c27f70604c970afeeb460d2aed",
+    "independent_original_terminal_readback": true
+  },
+  "predecessor": {
+    "library_identity": "libfile_8ff514ee33a08191a6573ae98c5acb5a",
+    "version": 9,
+    "execution_id": "QIKVRT_SSO_PRODUCTION_20261019_V1",
+    "receipt_sha256": "a1483c7c76e4abe4f3ebe1c221dfca5fc5e5e39ae202a0ba6a1e31e74377c009",
+    "inherited_work_records": 174,
+    "inherited_knowledge_records": 198
+  }
+}

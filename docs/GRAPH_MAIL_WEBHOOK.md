@@ -379,3 +379,40 @@ No new dependency or undeclared runtime is required.
 
 - [Message delta rounds and folder scope](https://learn.microsoft.com/en-us/graph/api/message-delta)
 - [Immutable Outlook IDs](https://learn.microsoft.com/en-us/graph/outlook-immutable-id)
+
+
+## Owner problem-watch repair — 20 October 2026
+
+The source of the continuing mandate is
+`personal/ingolf-lohmann/reminders/MAIL_PROBLEM_WATCH_V1.json`, resolved by
+`AI_CONTEXT.json`. The former client mail automation remains paused; this
+repair does not reintroduce it or create another scheduler. The existing
+PR #477 sources are integrated with the current Main REST/MCP implementation;
+current MCP authentication, scopes, source binding and routes are preserved.
+
+Received automatic messages can carry material problems. A non-draft report
+addressed to the owner in To or CC enters the private attention lane when its
+current unquoted text and context meet a bounded delivery, support-channel or
+operational-failure rule. This creates no sender authentication, human task,
+automatic reply, resend or subscription mutation. Ordinary bulk messages stay
+ordinary bulk. A subject alone, a quoted failure, HTML without selected text,
+self-sent messages and drafts cannot establish a reported problem.
+
+The verified SMTP rejection is `554 5.7.1`; it establishes rejection of the
+email route, not a reason for the repository's HTTP 404. Do not repeat the
+same send. The next official support route is
+https://support.github.com/contact. Only an actual ticket or ingress receipt
+establishes that GitHub Support accepted the request. A Sent Items copy and
+the owner's CC copy are separate from that acceptance.
+
+Classification remains bounded rule evidence. The private original records
+are preserved. A checkpoint containing a predecessor classification that
+differs under these repaired rules fails independent verification and stays
+HOLD; do not rewrite its original bytes. Such state requires an explicitly
+bound migration/rebuild from its original source chain before activation.
+
+No productive host, protected OAuth delivery, subscription, independent live
+message readback or private notification delivery is established by this
+source change. The existing private day-plan attention lane still expresses
+notification intent; it does not perform or claim delivery. Test fixtures
+remain synthetic and cannot establish productive monitoring.

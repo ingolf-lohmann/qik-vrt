@@ -1,0 +1,69 @@
+{
+  "activation_error": "NO_REVIEWED_V3_ACTIVATION_NO_V3_PRODUCTION_MUTATION: detached activation missing",
+  "authorization_consumed": false,
+  "canonical_metadata_sha256": "ecfc08957a83f5a885b77329cf4b6baa96bef78852783a7c8169cdfc69339df0",
+  "claim_count": 30,
+  "claim_matrix_bidirectional_projection": "PASS",
+  "contract_activation_present": false,
+  "external_publication_effect": "NONE",
+  "fileset_closure": "PASS",
+  "github_effect_calls": 0,
+  "negative_controls": [
+    {
+      "error": "bundle claims differ bidirectionally from the bound CLAIM_MATRIX: missing_from_bundle=C30",
+      "result": "REJECTED_AS_EXPECTED",
+      "test_id": "CLAIM_OMISSION"
+    },
+    {
+      "error": "SHA-256 mismatch for docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/QIK-VRT_Die_wirksame_Kontinuitaet_Gesamtausgabe_2026-10-03.pdf",
+      "result": "REJECTED_AS_EXPECTED",
+      "test_id": "PDF_TAMPER"
+    },
+    {
+      "error": "C21 has a disposition inconsistent with OPEN",
+      "result": "REJECTED_AS_EXPECTED",
+      "test_id": "OPEN_PROMOTION"
+    },
+    {
+      "error": "invalid completion_claims keys (unknown=zenodo_upload_authorized)",
+      "result": "REJECTED_AS_EXPECTED",
+      "test_id": "EMBEDDED_UPLOAD_FALSE"
+    },
+    {
+      "error": "invalid completion_claims keys (unknown=zenodo_upload_authorized)",
+      "result": "REJECTED_AS_EXPECTED",
+      "test_id": "EMBEDDED_UPLOAD_TRUE"
+    },
+    {
+      "error": "Zenodo upload fileset differs from the exact proof-bearing set: missing=docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/MACHINE_PROOF_BUNDLE.json",
+      "result": "REJECTED_AS_EXPECTED",
+      "test_id": "OMITTED_PROOF"
+    },
+    {
+      "error": "Zenodo upload fileset differs from the exact proof-bearing set: extra=docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/ZENODO_FILESET.json",
+      "result": "REJECTED_AS_EXPECTED",
+      "test_id": "EXTRA_UPLOAD"
+    },
+    {
+      "error": "Zenodo upload fileset contains duplicate repository paths",
+      "result": "REJECTED_AS_EXPECTED",
+      "test_id": "DUPLICATE_UPLOAD"
+    }
+  ],
+  "original_review_archive_files_verified": 36,
+  "original_three_page_proof_return_pdf_unchanged": "PASS",
+  "original_zip_sha256": "ed6a224db353c7bacb3b24f2231feb2eb4ea992affa10d397937a0ff074246b4",
+  "owner_decision_error": "manifest.owner_authorization must be an object",
+  "pdf_sha256": "c82e9182dc2b6068b2d7a70edbd4c3696557813aa8859e92c72a865a46256cce",
+  "production_gate": "HOLD",
+  "proof_hash_stable_across_all_denied_probes": true,
+  "proof_sha256": "c1f0ca91ce694ec05fcbf014d894856b50f682418f68a122dba67311f8b3c0c9",
+  "publication_id": "qikvrt-effective-continuity-synthesis-20261003-review-v1",
+  "return_receipt_v2_semantic_contract": "PASS",
+  "schema": "qikvrt_gesamtausgabe_boundary_test_report_v1",
+  "technical_v3_proof_contract": "PASS",
+  "upload_authorized": false,
+  "v2_default_rejects_v3": "unsupported machine proof bundle schema",
+  "validation_scope": "Repository-native frozen schema/policy and semantic validation; no general JSON Schema interpreter executed. Major claim groups are dispositioned, not all natural-language semantics certified. Execution HEAD/TREE are separately validated outside this immutable report; predecessor gates do not transfer.",
+  "zenodo_calls": 0
+}

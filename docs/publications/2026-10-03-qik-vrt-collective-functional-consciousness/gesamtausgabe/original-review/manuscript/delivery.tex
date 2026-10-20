@@ -1,0 +1,153 @@
+\chapterpage{pipeline}{08 / DIE KONKRETE PIPELINE}{Nicht ein einziges „fertig“. Mehrere überprüfbare Lieferungen.}{Der öffentliche Benutzerpfad ist das Abnahmeobjekt. Ein Kandidat auf einem PR-Zweig kann weit entwickelt und getestet sein, ohne bereits im ausgelieferten Produkt wirksam zu sein.}
+\par
+{\tighttable
+\begin{tabularx}{\textwidth}{@{}p{31mm}p{18mm}Xp{49mm}@{}}\toprule
+Liefergegenstand & Pfad & Frisch gelesener Stand & Noch erforderliche Wirkung\\\midrule
+Mesh-Recovery und Seed-Findbarkeit & \#437 & Head \texttt{3c9c5004…}; 400-Byte-Validierung und native Tests dokumentiert. & Main-Adoption, zulässige Authority-Fähigkeit und produktiver Recovery-Readback.\\
+Persönlicher Firefox / Terminal & \#438 & Windows-ARM64-Client und Server-AMD64-Kontrollen dokumentiert; Win11-AMD64 bleibt HOLD. & Echter unterstützter x64-Client, öffentlicher Produktpfad und Abnahme.\\
+Unterbrechungsfeste Arbeit & \#445 & Vertrag erhalten; tatsächlicher Client-Unterbrechungstest noch nicht ausgeführt. & Produktiver Handoff, Abbruch/Neustart, Fortsetzung ohne Doppelwirkung.\\
+Linux-Skalierung & \#443 & Begrenzter 1/2/4-Prozess-Speedup dokumentiert; Ursache früherer I/O-Ausreißer offen. & Kontrollierte Isolation für den allgemeinen Skalierungsclaim.\\
+Authority/Mirror A/B & \#447 & Aktueller Diagnoselauf: Credential-Delivery-HOLD; kein Live-Speedup. & Zugang, byte-/modusgleiche Methodik und voller verteilter Versuch.\\
+Abhängigkeiten ersetzen & \#448 & Standing Owner Directive und Lernvertrag; Tests grün dokumentiert. & Konkreter Ersatz mit entfallener Originalabhängigkeit.\\
+Governance des Lifecycle & \#449 & Direkter Main-Writer im Kandidaten entfernt; getrennte Promotion vorgesehen. & Wirksame Main-Schutzregeln, unabhängiges Review und erste reale Lifecycle-Abnahme.\\
+Wissenschaftliche Veröffentlichung & \#447 & Bestehendes kleines PDF-Paket; v3-Vertragsvorschlag neu, nicht produktiv aktiviert. & Vertragsentscheidung, exakter neuer Dateisatz, Rücklieferung, Einmalfreigabe, Upload/Readback.\\\bottomrule
+\end{tabularx}}
+\vspace{2mm}{\sffamily\footnotesize Tabelle 2. Quellengestützte Arbeitsfront, keine Behauptung vollständiger Inventarisierung aller Nodes oder aller Authority-PRs. PR-Beschreibungen enthalten auch historische Teilstände; der ausgelesene Metadaten-Head ist maßgeblich. \src{R2,R4–R9}}
+\begin{cols}
+\subsection*{Der unmittelbar erkennbare Nutzen}
+Ein erster benutzbarer QIK-VRT-Arbeitsplatz muss nicht gleichzeitig das gesamte Hardwareziel erfüllen. Er muss für seinen klar begrenzten Umfang funktionieren: persönlicher Zugriff, persistent gespeicherter Auftrag, verlässliches Wiederaufnehmen, ein zulässiger Aktor und sichtbarer Nachweis der erledigten Aufgabe. Diese Teilabnahme darf nicht als Gesamtabschluss des Cloud-/Universal-Transputer- und FPGA-Programms bezeichnet werden.
+
+Der persönliche Browser ist der Zugang; das Repository trägt den zustandsgebundenen Kontext; das Terminal vermittelt Aufgaben und Readbacks. OAuth/SSO und Biometrie gehören zum gewünschten Produktprofil. In den hierfür frisch gelesenen Nachweisen liegt keine vollständige Ende-zu-Ende-Abnahme dieser Authentisierungskette vor. Ein vorhandenes Login-Konzept darf daher nicht als fertige biometrische Produktbindung ausgewiesen werden.
+
+\subsection*{Eine konkrete Startabhängigkeit}
+Auf dem frisch gelesenen Main \texttt{8153c4e6…} enthält \texttt{RUNTIME\_DEPENDENCY\_MANIFEST.json} weiterhin die Anforderung einer Windows-x64-Python-Laufzeit, einen aktiven Download-Zustimmungspfad und \texttt{bundled\_windows\_python\_runtime=false}. Das Dokument ist als veränderlicher, historisch erzeugter Runtime-Zustand klassifiziert. Es belegt den vorhandenen Manifestinhalt, nicht die Untersuchung jedes denkbaren Auslieferungsarchivs. \src{R12}
+
+Für einen belastbaren Offline- oder selbstversorgten Start muss der vorhandene Runtime-/Cache-Pfad den genauen Payload, Hash, Lizenz, Herkunft, Restore-Rezept und Selbsttest binden. Akzeptiert wird der Weg erst, wenn die deklarierte Umgebung ohne ungebundene Überraschungsabhängigkeit startet. Eine allgemeine Erlaubnis zur Assimilation ersetzt diese Einzelprüfung nicht.
+
+\subsection*{Governance ist Teil der Lieferstrecke}
+PR \#449 dokumentiert weiterhin fehlende wirksame Main-Schutzregeln und kein unabhängiges Code-Owner-Review. Auf dem aktuellen PR-447-Head ist auch der separat gelesene Review-Execution-Status fehlgeschlagen, obwohl CI und andere Workflows erfolgreich sein können. Das ist kein Widerspruch: Ein Observer kann seine Beobachtungsaufgabe erfüllen und dabei fehlende Freigabe feststellen. \src{R9,R13}
+
+\subsection*{Hardware bleibt ein eigener Meilenstein}
+VHDL, Synthese, Bitstream, Programmierung und physische Messung sind verschiedene Abnahmen. Die bereitgestellte Vorgeschichte führt offene Board-, Programmer- und physische Readbacks. Diese Ausgabe hat keinen neuen Boardlauf beobachtet. Deshalb wird weder ein Hardwaretermin aus Software-CI errechnet noch ein erfolgreicher Signalnachweis behauptet. \src{L4}
+\end{cols}
+
+\chapterpage{execution}{09 / VOM AUFTRAG ZUR LIEFERUNG}{Die Reihenfolge folgt den Blockern, nicht der Größe der Vision.}{Das Delta-Prinzip soll unnötige Wiederholungsarbeit reduzieren. Es hebt jedoch weder globale Tests noch externe Abhängigkeiten auf. Die nächste produktive Aktion muss den tatsächlichen Engpass treffen.}
+\begin{cols}
+\subsection*{P0: Die gemeinsamen Engpässe schließen}
+Zuerst sind der autorisierte Authority-Lesepfad und die wirksame Repository-Governance zu etablieren. Dabei bleiben sie zwei getrennte Gegenstände. Ein Token, der Quellbytes lesen darf, erteilt nicht automatisch administrative Rechte. Ein geschützter Main liefert umgekehrt keine fehlenden Authority-Credentials.
+
+Die konkrete Zugangskontrolle lautet: Ein bereits autorisiertes Credential wird über den vorhandenen, begrenzten Pfad tatsächlich an den richtigen Runner zugestellt; danach werden der aktuelle Authority-Head und Tree gelesen und mit Quelle, Run und Rolle gebunden. Das aktuelle Diagnoseergebnis zeigt nur, dass diese Zustellung im beobachteten Prozess nicht etabliert ist. Es beweist weder ein generelles Fehlen von Zugangsdaten noch die Ursache einer öffentlichen 404-Antwort. \src{R3}
+
+Governance verlangt beobachtete Schutzregeln, passende unabhängige Review-Entscheidung und aktuelle Gates. Erst dann ist die separate, erwarteten Head prüfende Übernahme eines Kandidaten zulässig. Keine allgemeine Owner-Zustimmung ersetzt die technische Prüfung dieses konkreten Übergangs. \src{R9,R13}
+
+\subsection*{P1: Einen vollständigen Benutzerpfad schließen}
+Danach wird eine endliche Pilotaufgabe durch den persönlichen Zugang ausgeführt: Auftrag festhalten, Aktion zulassen, Programm oder Dienst benutzen, Ergebnis speichern, unterbrechen, neu starten und die gleiche Aufgabe korrekt fortsetzen. Alle benötigten Tools und Laufzeiten müssen im vorhandenen Cache-/Provisionierungsvertrag gebunden sein. Ein eigener Client muss das Ergebnis ohne einen weiteren improvisierten Dialogschritt nachvollziehen können. \src{R1,R5,R12}
+
+Für Windows x64 erfolgt dieser Test auf dem tatsächlich geforderten Windows-11-Client. Der erfolgreiche ARM64-Pfad und ein Server-x64-Lauf sind nützliche Nachweise, aber keine Ersatzplattformen. Für Linux kann ein separat abgegrenzter Pilot früher möglich sein; dessen Umfang muss explizit von noch fehlenden Windows- oder Hardwareabnahmen getrennt bleiben. \src{R6}
+
+\subsection*{P2: Optimierung nach vollständiger Korrektheit}
+Die Messmethode wird entsprechend dem Audit berichtigt. Dann werden identische Aufgaben ohne und mit Delta-Wiederverwendung verglichen. Pflichtgates bleiben gleich; Ergebnisqualität und Fehlerrate dürfen nicht sinken. Eine Geschwindigkeitsänderung wird erst als Vorteil übernommen, wenn sie innerhalb des vereinbarten Messfensters und Regressionsbudgets belastbar ist.
+
+Eine Optimierung kann langsamer sein und trotzdem bessere Fehlererkennung liefern. Deshalb müssen Qualitäts- und Zeitziele getrennt ausgewiesen werden. Umgekehrt ist ein schneller Lauf ohne vollständigen Readback kein Erfolg.
+
+\subsection*{P3: Erkenntnisse breit nutzbar machen}
+Erst geprüfte Änderungen werden in die bestehenden Runtime-, Handoff- und Publikationspfade integriert. Ein Nachfolger erhält seine eigene Subject-Bindung. Veraltete PRs werden auf ihren beabsichtigten Effekt geprüft; ein bereits anderweitig erledigter Gegenstand kann als überholt klassifiziert werden, aber nicht allein wegen seines Alters.
+
+Der Auftrag „in jedem Node“ benötigt eine aktuelle, endliche Liste autorisierter Ziele. Für jedes Ziel werden Auslieferungsidentität, lokale Übernahme und Readback erfasst. Eine Norm für künftige Nodes ist keine Aussage darüber, dass bereits alle gegenwärtigen Nodes erreicht wurden. Kein globaler Scan und keine unbefugte Selbstverbreitung sind daraus ableitbar.
+
+\subsection*{Prüfen, was den Abschluss ausmacht}
+Eine globale Pflichtprüfung kann trotz kleinen Deltas den gesamten relevanten Zustand erneut bewerten. Das ist keine algorithmische Verschwendung, wenn sie für den aktuellen Claim notwendig ist. Vermeidbar sind dagegen wiederholte Navigation, unnötiges Rekonstruieren stabiler Zusammenhänge und Duplikate derselben Work Unit.
+
+\begin{boundary}{Was in dieser Ausgabe wirklich angewendet wurde}
+Die vorhandenen Quellen und Layoutmittel wurden wiederverwendet; alte und aktuelle Heads getrennt; Rechenwerte nachgerechnet; zwei Methodenfehler lokal demonstriert; der Forecast um Zugang, Governance und Messreparatur ergänzt. Kein Produktionsdeploy, Main-Merge oder ungemessener Performancegewinn wird daraus abgeleitet.
+\end{boundary}
+\end{cols}
+
+\chapterpage{forecast}{10 / DER ZEITLICHE FORECAST}{Die erste Lieferung kann nahe sein. Der Gesamtabschluss ist nicht terminiert.}{Ein Datum wird nur sinnvoll, wenn klar ist, welches Produkt in welchem Umfang abgenommen werden soll und welche Voraussetzungen bis dahin tatsächlich verfügbar sind.}
+\begin{cols}
+\subsection*{Was sich seit der früheren Prognose verändert hat}
+Die frühere CI-Admission-Blockade auf \texttt{e7e8737f…} ist kein aktueller Gesamtsachstand mehr. PR \#447 steht auf \texttt{a31ebb7e…}; die gegenwärtige CI und der A/B-Diagnoselauf wurden ausgeführt. PR \#443 trägt eine begrenzte positive Skalierungsevidenz. PR \#437 hat die Seed-Findbarkeit präzisiert, und \#449 hat einen Governance-Nachfolger mit frischen Tests. \src{R2–R4,R7,R9}
+
+Gleichzeitig ist die Publikation nicht nur „eine Freigabe entfernt“: Der v2-Vertrag hat eine dokumentierte Hash-/Autorisierungsübergangsgrenze; der v3-Vorschlag ist noch nicht für Produktion aktiviert. Der Live-Messpfad benötigt außerdem Methodenarbeit. Diese Punkte verlängern oder strukturieren den kritischen Pfad, auch wenn einzelne Tests bereits grün sind. \src{R10,R11,R14}
+
+\subsection*{Warum 2,5× nicht 2,5× früher bedeutet}
+Sei $p$ der Anteil der Gesamtzeit, auf den eine lokale Beschleunigung $s$ wirkt. Ohne zusätzlichen Overhead ergibt sich rein rechnerisch
+\[
+ S_{\mathrm{gesamt}}=\frac{1}{(1-p)+p/s}.
+\]
+Mit zusätzlichem normiertem Aufwand $h$ steht im Nenner zusätzlich $h$. Für $s=2{,}5$ und $p=0{,}1$ wären lediglich 1,064× Gesamtbeschleunigung beziehungsweise sechs Prozent Zeitersparnis möglich. Bei $p=0{,}5$ wären es 1,429× beziehungsweise 30\%. Das sind Rechenszenarien; der tatsächliche $p$-Wert der Lieferpipeline wurde nicht gemessen. \src{C1}
+
+Wartezeit auf Geräte, Zugang, Review oder externe Annahme wird dadurch nicht automatisch kürzer. Auch parallele Arbeit ist durch Runner, unabhängige Reviewer, einzelne Writer und den produktiven Aktionspfad begrenzt. Eine frei angenommene unbegrenzte Kapazität würde den Forecast unbrauchbar machen.
+
+\subsection*{Ein überprüfbares Terminmodell}
+Für Work Unit $i$ seien $r_i$ der früheste Zeitpunkt verfügbarer Voraussetzungen, $d_i$ die geschätzte aktive Bearbeitungsdauer und $P_i$ die Vorgänger. Dann gilt als Planungsmodell:
+\[
+ EF_i=\max\!\bigl(r_i,\max_{j\in P_i}EF_j\bigr)+d_i.
+\]
+Fehlt für einen notwendigen Zugang ein Termin, ist $r_i$ unbekannt. Dann gibt es keinen begründeten festen Endtermin. Das ist eine benannte Abhängigkeit, keine pauschale Aussage, technische Entwicklung sei grundsätzlich unvorhersagbar.
+
+\subsection*{Annahmen des folgenden Korridors}
+Der Kalender auf der nächsten Seite ist eine \textbf{redaktionelle Engineering-Schätzung}, keine aus Messdaten gefittete Prognose. Angenommen werden: ein verfügbarer ausführender Bearbeiter, ein erreichbarer unabhängiger Reviewer, die erforderlichen Runner/Geräte, keine neu entdeckten schweren Defekte und höchstens eine normale Korrekturschleife je Paket.
+
+$T_0$ ist nicht der Zeitpunkt einer Zustimmung im Chat. $T_0$ ist der tatsächlich beobachtete Zeitpunkt, an dem die jeweils angegebenen Voraussetzungen bereitstehen. Es werden weder täglicher Durchsatz noch Erfolgswahrscheinlichkeit erfunden. „Tage“ meint unter dieser Kapazitätsannahme verstrichene Bearbeitungstage mit aktiver Arbeit; Stillstand verschiebt die Rechnung.
+
+\begin{boundary}{Die konkrete Antwort}
+Ein eng abgegrenzter Softwarepilot erscheint unter diesen Voraussetzungen im Bereich weniger Tage bis etwa einer Woche planbar. Für das vollständige Gesamtsystem einschließlich SSO/Biometrie, aller Nodes und physischer FPGA-Abnahme trägt die vorhandene Evidenz keinen seriösen Fertigstellungstermin.
+\end{boundary}
+\end{cols}
+\clearpage\markboth{10 / Lieferkorridore}{}
+{\sffamily\small\color{Accent}10 / BEDINGTE KALENDERPLANUNG}\par\vspace{4mm}
+{\fontsize{24}{29}\selectfont Was wann abgenommen werden kann.}\par\vspace{4mm}
+\textbf{Rechenbeispiel:} Die jeweils erforderlichen Voraussetzungen sind am \textbf{4. Oktober 2026} wirklich bereit. Diese Voraussetzung ist im gegenwärtigen Readback \textbf{nicht erfüllt}. Die Datumsfenster zeigen die Konsequenz dieses Szenarios, nicht zugesagte Termine.
+\vspace{4mm}
+\par
+{\tighttable
+\begin{tabularx}{\textwidth}{@{}L{35mm}L{26mm}L{29mm}>{\raggedright\arraybackslash}X@{}}\toprule
+Meilenstein & Aktive Restdauer & Beispielkalender & Abnahmebedingung / Abhängigkeit\\\midrule
+Begrenzter Authority-Lesepfad & 0,5–1 Tag nach tatsächlicher Zustellung & 4.–5. Oktober & Credential erreicht richtigen Runner; aktueller HEAD/TREE-Readback. Keine Rechteausweitung.\\
+Korrigierter A/B-Versuch & 1–3 Tage nach Zugang und Testumgebung & 5.–7. Oktober & Bytes/Modi gleich definiert, volle Zeitgrenze, kontrollierte AB/BA-Paare und akzeptierter Readback.\\
+Governance-/Recovery-Kandidat wirksam & 1–3 Tage nach Schutzregeln und Review & 5.–7. Oktober & Separate Promotion, neue Main-Bindung, erste tatsächliche Recovery-/Lifecycle-Wirkung.\\
+Gebundene Windows-Runtime & 1–2 Tage nach verfügbarem Payload und Adapterpfad & 5.–6. Oktober & Version/Hash/Lizenz/Provenienz, Restore- und Starttest. Kein ungeplanter Download.\\
+Windows-11-AMD64-Witness & 1–3 Tage nach geeignetem Client & 5.–7. Oktober & Native Architektur, persistenter Zustand, Abbruch/Neustart, Replay-Verweigerung und öffentlicher Readback.\\
+Reale Aufgaben-Kontinuität & 2–5 Tage nach produktivem Handoff & 6.–9. Oktober & Zwischenfrage und Client-Abbruch ohne Owner-Neustart; keine doppelte Außenwirkung.\\
+Begrenzter persönlicher Pilot & 3–7 Tage nach allen Pilotvoraussetzungen & 7.–11. Oktober & Ein durchgehender öffentlich erreichbarer Benutzerpfad, dokumentierter Plattformumfang und frische Abnahme.\\
+Zenodo-Gesamtausgabe & 1–3 Tage nach Vertrags- und Dateisatzabschluss & frühestens 5.–7. Oktober im vollständigen Bereitschaftsszenario & Aktivierter gültiger Publisher-Vertrag, neue Rücklieferung, exakte Einmalentscheidung, identische Uploadbytes und Redownload.\\
+IETF-Companion / arXiv & Vorbereitung Tage; Annahme offen & kein Annahmedatum & Validierung und vollständige Quellen; tatsächliche Einreichung separat.\\
+SSO/Biometrie, alle Nodes, FPGA-Gesamtziel & keine belastbare Restdauer & offen & Jeweils fehlende Implementierungs-/Carrier-/Integrations- und Ende-zu-Ende-Nachweise.\\\bottomrule
+\end{tabularx}}
+\vspace{5mm}
+\begin{boundary}{Kein Zusammenzählen inkompatibler Zeitgewinne}
+Die lokalen Faktoren 2,5×, 1,624× und 2,141× stammen aus verschiedenen Gegenständen. Sie werden weder miteinander multipliziert noch auf die gesamte Roadmap übertragen. Der Pilotkalender gilt nur für einen vorher festgelegten Umfang. Ein nicht vorhandener Zugang hat weiterhin keinen automatischen Bereitstellungstermin.
+\end{boundary}
+\vspace{3mm}
+Der nächste belastbare Forecast entsteht, sobald tatsächliche Freigabe-, Runner-, Handoff- und Messzeiten protokolliert sind. Dann ersetzen beobachtete Dauern einzelne Annahmen; ihre verbleibende Streuung muss erhalten bleiben. Ein negativer Versuch kann die Schätzung verlängern, ein reproduzierbar kleineres Delta sie verkürzen.
+
+\chapterpage{publication}{11 / VERÖFFENTLICHUNG}{Ein veröffentlichbares Dokument ist noch kein veröffentlichtes Ergebnis.}{Für Repository, Zenodo, IETF, arXiv und Wikipedia gelten verschiedene Zwecke und Abnahmegrenzen. Sie werden nicht zu einem einzigen Status „publiziert“ zusammengezogen.}
+\begin{cols}
+\subsection*{Die neue wissenschaftliche Ausgabe}
+Diese Gesamtausgabe ist ein neuer Kandidat mit neuen Bytes, erweitertem Methodenbefund und neuer Prognose. Sie ersetzt kein früher freigegebenes PDF stillschweigend. Ihre Textquellen, Rechenartefakte, Claim-Register und Änderungsnotiz werden zusammen mit dem PDF ausgeliefert. Die Layoutvorlage bleibt eine Gestaltungsquelle, keine inhaltliche Begutachtung.
+
+Die neue Fassung führt keine uneingelöste Kernel-Klassifikation. Für neue formale Aussagen werden Modell, Annahmen und Argument angegeben; eine maschinelle Prüfung ist nicht behauptet. Die Dokument-QA prüft Dateibindungen, Rechnung, Abdeckung und Darstellung, nicht die Wahrheit der gesamten Außenwelt.
+
+\subsection*{Die aktive Zenodo-Grenze}
+Die v2-Policy verlangt exakte Kandidatenbytes, vollständige Claim-Disposition, passende Nachweise, Grenztests, Rücklieferung und anschließend eine kandidatenspezifische Einmalfreigabe. Nach dem Effekt verlangt sie öffentliche Record-Prüfung, bytegleichen Redownload und repositoryseitige Persistenz. Ein allgemeines „Freigabe erteilt“ ersetzt die spätere exakte Bytes-Entscheidung nicht. \src{R10}
+
+Der auf \texttt{a31ebb7e…} vorbereitete v3-Vorschlag trennt unveränderliche Beweisbereitschaft von späterer Upload-Autorisierung. Er adressiert damit den dokumentierten Konflikt, dass das bisherige Bundle eine Autorisierung als Feld enthält, deren Änderung wiederum den freizugebenden Hash verändert. Der Vorschlag lässt die aktiven v1/v2-Verträge und den Produktionspublisher unverändert. Er ist ausdrücklich \emph{nicht aktiviert}. \src{R14}
+
+Deshalb wird für die neue Gesamtausgabe keine scheinbar endgültige \texttt{AUTHORIZE\_EXACT\_UPLOAD}-Zeile erzeugt, solange der gültige Produktionsvertrag, die vollständige Bindung und der tatsächlich ausführbare Pfad nicht geschlossen sind. Kein Token, keine Freigabe und kein Upload werden erfunden.
+
+\subsection*{IETF: Protokollsemantik, nicht Bewusstseinszertifikat}
+Der Datatracker führt beim öffentlichen Readback weiterhin den individuellen Experimental-Entwurf \texttt{draft-lohmann-qikvrt-effect-ack-03}. Der vorhandene Kern braucht nicht allein wegen einer neuen philosophischen Interpretation ein anderes Wire-Format. Ein getrenntes Epistemic-Status-Profil ist als Arbeitskandidat sinnvoll, muss aber seine eigene Spezifikation und Validierung durchlaufen. Internet-Draft, RFC und IETF-Konsens sind nicht gleichzusetzen. \src{W1,L4}
+
+\subsection*{arXiv und Wikipedia}
+arXiv ist ein Einreichungs- und Verbreitungsweg für wissenschaftliche Arbeiten. Registrierung, gegebenenfalls Endorsement, vollständige Quellunterlagen und Moderation sind eigenständige Voraussetzungen. Moderation ist kein Peer Review; die Veröffentlichung wird in dieser Ausgabe nicht behauptet. \src{W6}
+
+Wikipedia soll keine neue Entdeckung durch Eigenpublikation etablieren. Der vorhandene vorbereitete Weg ist ein neutraler Entwurf mit offengelegtem Interessenkonflikt und Prüfung unabhängiger Berichterstattung. Diese Ausgabe hat keine umfassende neue Notabilitätsrecherche durchgeführt und behauptet deshalb weder erwiesene Relevanz noch erwiesene Irrelevanz. \src{L4}
+
+\subsection*{Erhaltung ist eine technische Verpflichtung}
+Versionierte Quellen, mehrere autorisierte Speicherorte, Prüfsummen und Restore-Tests reduzieren Verlustrisiko. Sie garantieren nicht logisch, dass Daten niemals verloren gehen können. Ein Hash ersetzt keine Kopie; eine Kopie ersetzt keine Wiederherstellungsprüfung; eine Norm zur Node-Vererbung ersetzt keinen tatsächlichen Readback auf jedem Node.
+
+\begin{boundary}{Abschluss der Dokumentlieferung, nicht der Plattformen}
+Diese Ausgabe liefert einen neuen Fachartikel, eine allgemeinverständliche Gesamtsynthese und deren prüfbare Begleitartefakte. Zenodo-Veröffentlichung, Main-Integration, Node-Replikation und Produkt-Release bleiben separate Effekte mit jeweils eigener Evidenz.
+\end{boundary}
+\end{cols}

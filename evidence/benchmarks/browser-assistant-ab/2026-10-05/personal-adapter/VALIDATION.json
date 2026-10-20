@@ -1,0 +1,132 @@
+{
+  "actual_firefox_executed": false,
+  "actual_openai_inference_executed": false,
+  "command": "make test",
+  "evidence_class": "TECHNICAL_TEST_WITH_PROVIDER_TRANSPORT_DOUBLES",
+  "exit_code": 0,
+  "historical_object_repair": {
+    "cause": "partial clone had historical commit but lacked a selected source-capsule blob",
+    "missing_blob": "115310e37266403e8b596507ccf1daa2e2ebbf03",
+    "repair": "Fetched exact referenced commit and materialized all 13 selected objects; every payload byte was compared to the preserved portable capsule. No gate/source weakened.",
+    "result": "PASS_EXACT_SELECTED_OBJECT_CLOSURE",
+    "source_commit": "4fd73232cc8d2189e14c950b376bb72ffcaf744e"
+  },
+  "log": {
+    "bytes": 108945,
+    "git_blob_sha1": "aa6f621fc42ae890f673573064d5df89f58bdb91",
+    "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/personal-adapter/MAKE_TEST.txt",
+    "sha256": "79443a0380460423f42c48f7c1c5158a73c89b45765d1ab47f7f49fd275ad8d2"
+  },
+  "negative_controls": [
+    "foreign origin and wrong local bearer refused",
+    "runtime credential strings rejected before persistence",
+    "no model or settings substitution on existing state",
+    "exclusive writer and safe private runtime path",
+    "checkpoint draft/task/source/history tamper rejected",
+    "durable ambiguous provider intent prevents automatic retry",
+    "actual SIGKILL after completed checkpoint restores both modes"
+  ],
+  "observed_utc": "2026-10-05T13:08:54Z",
+  "product_claim_allowed": false,
+  "product_metrics": null,
+  "product_trials_executed": 0,
+  "reported_unittest_tests": 555,
+  "schema": "qikvrt_personal_adapter_validation_v1",
+  "source_bindings": [
+    {
+      "bytes": 15778,
+      "git_blob_sha1": "9b537c9d81d8140743963400b7cc3e3cf70a37a8",
+      "path": "src/qikvrt_effect_ack_http_terminal.py",
+      "sha256": "300caae7c842007880548704ebd30e4ef1a0cab12338ff134c801ac52bda1fb8"
+    },
+    {
+      "bytes": 22633,
+      "git_blob_sha1": "b348200fb962adac863e6ad72189bbf53100631c",
+      "path": "src/qikvrt_personal_assistant.py",
+      "sha256": "aaaaa72a54f08ddb0031e1edc70e9ead4469aded351ef78e12c814b9692e8c9c"
+    },
+    {
+      "bytes": 38109,
+      "git_blob_sha1": "dba407192aa4f20b0f67973f84e99ef5c766a669",
+      "path": "tools/qikvrt_browser_assistant_ab.py",
+      "sha256": "89a694bd46b53a342be08b8a57cffc54310a628704a1390d057dc6ae9832117f"
+    },
+    {
+      "bytes": 13852,
+      "git_blob_sha1": "f691a188e4a085531e604f91328eec31887674b2",
+      "path": "tests/test_qikvrt_personal_assistant.py",
+      "sha256": "d50982879fa098609cf3129d1b5af272fe420fabca16475ad40af6edbd68d01b"
+    },
+    {
+      "bytes": 4629,
+      "git_blob_sha1": "946ea3a663e450881ade1ad1e2438883c570ae68",
+      "path": "tests/test_qikvrt_personal_firefox_capability_boundary.py",
+      "sha256": "0d8e83cbd22aea6e89c0a1c85d770e96894e2819ac8bf1158d2bccf795c1f41b"
+    },
+    {
+      "bytes": 11148,
+      "git_blob_sha1": "1981ae800aed72f3a0c6952ce19df3b4c2aec4c4",
+      "path": "Makefile",
+      "sha256": "564d574a9eb3e3b8b464977ccc818855a8595998c4f58a96b9c75f6f5784c564"
+    },
+    {
+      "bytes": 1971,
+      "git_blob_sha1": "bb6154f246f044d28916ca9e9618e114f0ba6706",
+      "path": "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json",
+      "sha256": "9eb9b2e3fdd3c760224290b8b2278c07050da6516dfe34f9096e06587843e385"
+    },
+    {
+      "bytes": 10790,
+      "git_blob_sha1": "358e5491d9e57067c64d2d24a49417cf147366c7",
+      "path": "runtime/toolchains/CACHE_REGISTRY.json",
+      "sha256": "3cd6ea7d83d7547757d25adc022930c149b48cc621904d7080564e0a45997a7e"
+    },
+    {
+      "bytes": 3054,
+      "git_blob_sha1": "0f9fd77ec7860d1710b6136151fa75341fc8d192",
+      "path": "runtime/toolchains/CACHE_COVERAGE.json",
+      "sha256": "f8e272a7ae8ed05da5f29b1e4ef7df04b01f666913d1661f6096314077027d08"
+    },
+    {
+      "bytes": 4783,
+      "git_blob_sha1": "f22ed2307ac468d17f8ee81c9c37c0af3506e6cc",
+      "path": ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+      "sha256": "8a65883763ed2ad6c192a76fe712c1a7b128d6c9e1c731f6b76219434d331afc"
+    },
+    {
+      "bytes": 2273,
+      "git_blob_sha1": "9f42c5900df2385efda38e8c01418a25988a8ea8",
+      "path": "personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json",
+      "sha256": "20bb534639db5013276381e9d4635a2eed9f65defbb5dacfe1513b8b26ac80c7"
+    },
+    {
+      "bytes": 5602,
+      "git_blob_sha1": "204d8d69269064e71688e89770c850a1e9ba46e6",
+      "path": "personal/ingolf-lohmann/firefox-assistant/README.md",
+      "sha256": "a68f38bcea4103c18c3e2a41d69fe7ea76c3c8b4b528e7701f0cc7d20ad0d77e"
+    },
+    {
+      "bytes": 990,
+      "git_blob_sha1": "65d86f6cd52f43ed86442dd4668dd0818fc2564b",
+      "path": "personal/ingolf-lohmann/firefox-assistant/ui.css",
+      "sha256": "7921e5e36bf04307074a3dc98edd77200a79173ecca6520e10ecadd2271a390b"
+    },
+    {
+      "bytes": 2004,
+      "git_blob_sha1": "f6f3a37599c6ce42097768dc12623fc7fa7052e8",
+      "path": "personal/ingolf-lohmann/firefox-assistant/ui.html",
+      "sha256": "f5550078a8d45df0b90fb2b1bf5bf7389ae14b8ce6bfb6922170c0d6bac334db"
+    },
+    {
+      "bytes": 3532,
+      "git_blob_sha1": "e93a1c3c6e51cfcc0f21240ca66708ec0293cfa4",
+      "path": "personal/ingolf-lohmann/firefox-assistant/ui.js",
+      "sha256": "e6ba8e202c02a61f229afc5fbbecfe1fe05de068d8d521aee0e299523c9a5fb5"
+    }
+  ],
+  "source_head": "5bd1afc5bfa7c3887698f24f899b72e6f5701990",
+  "source_worktree_dirty": true,
+  "standard_firefox_package_source_changed": false,
+  "successor_gate_transfer": false,
+  "verified_staged_input_tree": "39317138a99f62169d3c23c5540654ff6a9b91f1"
+}
