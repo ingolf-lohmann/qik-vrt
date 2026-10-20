@@ -1528,8 +1528,8 @@ jobs:
 
   container_deploy:
     name: Existing admitted Linux host via mutual TLS REST
-    needs: [container, container_publish]
-    if: github.ref == 'refs/heads/main' && vars.QIKVRT_CONTAINER_DEPLOY_ENABLED == 'true'
+    needs: [test, container, container_publish]
+    if: always() && github.ref == 'refs/heads/main' && needs.test.result == 'success' && vars.QIKVRT_CONTAINER_DEPLOY_ENABLED == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 8
     environment: qikvrt-production
@@ -1544,10 +1544,31 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          ref: ${{ needs.container.outputs.head }}
+          ref: ${{ github.sha }}
           fetch-depth: 1
           persist-credentials: false
+      - name: Read existing protected host before image deployment admission
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          QIKVRT_HOST_BINDING: ${{ vars.QIKVRT_LINUX_HOST_BINDING_JSON }}
+          QIKVRT_HOST_BINDING_SHA256: ${{ vars.QIKVRT_LINUX_HOST_BINDING_SHA256 }}
+          QIKVRT_HOST_CA: ${{ secrets.QIKVRT_LINUX_HOST_CA }}
+          QIKVRT_HOST_CERT: ${{ secrets.QIKVRT_LINUX_HOST_CERT }}
+          QIKVRT_HOST_KEY: ${{ secrets.QIKVRT_LINUX_HOST_KEY }}
+        run: |
+          python3 -B tools/qikvrt_self_host.py container-host-preflight \
+            --expected-head "$GITHUB_SHA" --expected-tree "$(git rev-parse 'HEAD^{tree}')" \
+            --receipt "$RUNNER_TEMP/host-preflight.json"
+          python3 -B - <<'PY'
+          import json,os
+          from pathlib import Path
+          result=json.loads((Path(os.environ['RUNNER_TEMP'])/'host-preflight.json').read_bytes())
+          print('HOST_PREFLIGHT_STATE=' + result['state'])
+          print('HOST_PREFLIGHT_BOUNDARY=' + (result['first_boundary'] or 'NONE'))
+          raise SystemExit(0 if result['authenticated_daemon_readback'] else 2)
+          PY
       - name: Execute exact host deployment or unchanged container recovery
+        if: needs.container.result == 'success' && needs.container_publish.result == 'success'
         env:
           GITHUB_TOKEN: ${{ github.token }}
           QIKVRT_HOST_BINDING: ${{ vars.QIKVRT_LINUX_HOST_BINDING_JSON }}
@@ -1579,15 +1600,18 @@ jobs:
             --ca-file "$private/ca.pem" --cert-file "$private/cert.pem" --key-file "$private/key.pem" \
             --image "$EXPECTED_IMAGE" --receipt "$RUNNER_TEMP/host-start.json"
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        if: always()
         with:
-          name: qikvrt-s1-host-start-${{ needs.container.outputs.head }}
-          path: ${{ runner.temp }}/host-start.json
+          name: qikvrt-s1-host-start-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/host-preflight.json
+            ${{ runner.temp }}/host-start.json
           if-no-files-found: error
           retention-days: 30
 
   container_public_readback:
     name: Independent exact-domain TLS and terminal acceptance
-    needs: [container, container_deploy]
+    needs: [container, container_publish, container_deploy]
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     permissions:

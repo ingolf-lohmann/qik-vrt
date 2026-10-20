@@ -39,6 +39,19 @@ analogy governed by the existing evidence/adaptation policy.
 
 ## Existing S1 host and stopped-container recovery
 
+The same protected `container_deploy` job now preserves a read-only host
+preflight when image/signing production fails after the full source test.
+It reuses `container-host-preflight`, the original binding validator,
+production governance and mutually authenticated Engine. It records credential
+presence and the first admission boundary without credential or private origin
+values; an admitted host receives exactly one `GET /v1.45/info`. The daemon ID
+must match the independently pinned binding. No image, container, DNS, key or
+volume is changed. Missing admission is persisted as HOLD, not deployment.
+The job retains its existing enable flag and protected production environment.
+The deployment step still requires successful container and publication jobs;
+public acceptance also requires successful publication. Read-only diagnosis
+does not waive signing, exact-source, review, protection or deployment gates.
+
 The existing `container-deploy` consumer in `qikvrt_ci.yml` supports initial
 create-only delivery and recovery of the exact same stopped S1 container. It
 continues to require protected exact Main, independent merged-PR review, the
