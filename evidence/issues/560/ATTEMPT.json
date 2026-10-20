@@ -1,0 +1,38 @@
+{
+  "EFFECT_ACK_DONE": false,
+  "artifacts": {
+    "ANSWER.md": "f22be6ad8eb51d59d3dda4d0a1e9997d5720873314b5488acc7eb48e040d83b0",
+    "CONTEXT.md": "00b31ac18ecb2e28f29219e895a4cb5b9aacee995e40f3eb058c3a535122a54a",
+    "REQUEST.json": "ae77bc91b370def9509760d3dbeff63678c2e9bbf532a98206432b6347eed436",
+    "REQUEST.sha256": "771b6920c79aabb41adecaed98b57bffb9198e6258d0cbc0dcfe208ed5580fad",
+    "STATUS.json": "bf62599427c23953a3ed8f9372ac219619e2013a2a3c073aaaebfbff0902ddd5"
+  },
+  "automatic_issue_close": false,
+  "automatic_merge": false,
+  "execute": true,
+  "fingerprint": "65a89e9bb042d5a3884904f62b91f8c46e403e79675cc154231d5456c9a270f4",
+  "inputs": {
+    "context_sha256": "00b31ac18ecb2e28f29219e895a4cb5b9aacee995e40f3eb058c3a535122a54a",
+    "processor_blobs": {
+      ".github/workflows/issue-agent-backlog-resume.yml": "f45ac3b13f8059f51030c50a454d5af78d9b9bda08e9cd0769132fc243fef333",
+      ".github/workflows/issue-autonomous-processing.yml": "bd86991d0347159d79169ad8ccb7273579b584360d859a1147774979d967174c",
+      "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json": "b60b45ad729fae85f1b18faf0e924125b644a0bc4b11049a309bc18f3957c1cc",
+      "scripts/issue_agent/compile.py": "5ced441f5e1f309e1ccf42e7749ffc275709a5c6b75f197bc4572a20d79dc6fd",
+      "scripts/issue_agent/finalize.py": "d3165683c6441f5c13ae97da3168bc5e3e5768e8e54ce564a425a28aae66b13a",
+      "scripts/issue_agent/handoff.py": "b22b8300a4bec1d60e6de8292e41e97c25bfe63372f5d851304eedfd909d0920",
+      "scripts/issue_agent/materialize.py": "59bf9c5794470a2ae64cb6583ee226c3d1395332b1ca46ac96b126781e689a63",
+      "scripts/issue_agent/promote.py": "a17a69a57ca7cd22f846978d2849f4d3b2aafebc98c6018155ee92d2bed4dbaf",
+      "scripts/issue_agent/validate.py": "612d4f2cd89874166a2cd0c22565d2abd1db609ab93b8fc47ba85193b55c6359",
+      "tools/qikvrt_integrity.py": "5ff3a5e0944d96a28189f378ae59c8793c11eb7e7c7766b8c1bb12301fb8f65a",
+      "tools/qikvrt_subprocess.py": "8344349b8e5c1827764e595b3ae56b8bdd720acb7feaaaee4abb1ca5656d5807"
+    },
+    "request_sha256": "762089b70e29590985f4e8437c86de82f983a3dbf4bcebfb4bbeb733edf0ceda"
+  },
+  "issue_number": 560,
+  "previous_branch_head": null,
+  "processing_status": "BLOCK",
+  "reason": "NEW_CAUSAL_INPUT",
+  "recorded": true,
+  "repository": "ingolf-lohmann/qik-vrt",
+  "schema": "qikvrt_issue_causal_attempt_v1"
+}

@@ -1,0 +1,10 @@
+{
+  "author": "ingolf-lohmann",
+  "body": "@claude Lies AI, AI_CONTEXT.json und CLAUDE.md. Fuehre `python3 -B tools/qikvrt_integrity.py verify` auf `main` aus. Es meldet BLOCK, weil das Manifest nach PR #559 nicht neu erzeugt wurde. Erzeuge es mit `python3 -B tools/qikvrt_integrity.py generate` neu, pruefe mit `verify` auf PASS und oeffne dafuer einen PR gegen `main`. Kein Merge, kein ACCEPT, kein EFFECT_ACK_DONE.",
+  "created_at": "2026-10-20T23:08:17Z",
+  "html_url": "https://github.com/ingolf-lohmann/qik-vrt/issues/560",
+  "issue_number": 560,
+  "repository": "ingolf-lohmann/qik-vrt",
+  "title": "Claude Mirror: erster Lauf",
+  "updated_at": "2026-10-20T23:08:17Z"
+}
