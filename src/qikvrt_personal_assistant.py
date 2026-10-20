@@ -56,7 +56,8 @@ def subject() -> dict[str, Any]:
         except (OSError, subprocess.SubprocessError):
             return None
     paths = ["src/qikvrt_personal_assistant.py", "src/qikvrt_effect_ack_http_terminal.py",
-             "src/qikvrt_personal_auth.py",
+             "src/qikvrt_personal_auth.py", "src/qikvrt_personal_retrieval.py",
+             "runtime/models/pplx-embed-v2-late-0.6b.lock.json",
              *[str(p.relative_to(ROOT)) for p in sorted(UI.iterdir()) if p.is_file()]]
     return {"repository": "ingolf-lohmann/qik-vrt", "head": git("rev-parse", "HEAD"),
             "tree": git("rev-parse", "HEAD^{tree}"), "worktree_dirty": bool(git("status", "--porcelain")),
@@ -159,7 +160,7 @@ class GeminiTransport(OpenAITransport):
 
 
 class PersonalRuntime:
-    def __init__(self, state_dir: str | Path, model: str, credential: str, local_token: str, *, transport=None, provider="openai"):
+    def __init__(self, state_dir: str | Path, model: str, credential: str, local_token: str, *, transport=None, provider="openai", retrieval_engine=None):
         if provider not in {"openai", "gemini"}:
             raise CapabilityBlock("PROVIDER_NOT_ALLOWLISTED")
         if not isinstance(model, str) or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,128}", model):
@@ -168,6 +169,7 @@ class PersonalRuntime:
             raise CapabilityBlock("LOCAL_PAIRING_SECRET_REQUIRED_32_TO_256_CHARACTERS")
         self.model, self.credential, self.local_token = model, credential, local_token
         self.provider = provider
+        self.retrieval_engine = retrieval_engine
         if provider == "gemini" and model != "gemini-4-argon":
             raise CapabilityBlock("GEMINI_ARGON_EXPLICIT_MODEL_REQUIRED")
         self.transport = transport if transport is not None else (GeminiTransport(credential) if provider == "gemini" else OpenAITransport(credential))
@@ -380,6 +382,18 @@ class PersonalRuntime:
                 "live_identity_observed": self.personal_auth.status()["live_authentication_observed_this_process"],
                 "firefox_activation_verified": False, "public_delivery_verified": False}
 
+    def search_sources(self, query, sources, limit=3):
+        if self.retrieval_engine is None:
+            raise CapabilityBlock("LOCAL_RETRIEVAL_NOT_CONFIGURED")
+        self._nonsecret({"query": query, "sources": sources})
+        try:
+            with self.lock:
+                result = self.retrieval_engine.search(query, sources, limit)
+        except (ValueError, OSError):
+            raise CapabilityBlock("LOCAL_RETRIEVAL_REJECTED") from None
+        self._nonsecret(result)
+        return result
+
     def _nonsecret(self, value: Any):
         raw = canonical(value)
         protected = self.personal_auth.sensitive_values() if self.personal_auth else []
@@ -522,6 +536,7 @@ class PersonalRuntime:
             auth = self.auth_receipt
             fresh = bool(auth and time.monotonic() - auth["observed_monotonic"] < 300 and auth["subject"] == subject())
             return {"manifest": manifest, "subject": self.subject, "binding": self.binding,
+                    "local_retrieval_enabled": self.retrieval_engine is not None,
                     "personal_identity_session": self.personal_auth.status() if self.personal_auth else {"state": "LEGACY_MEMORY_PAIRING_ONLY"},
                     "local_client_authentication_required": True, "authenticated_runtime_readback": fresh,
                     "runtime_evidence": auth if fresh else None,
@@ -677,6 +692,14 @@ def personal_handler(base_handler, runtime: PersonalRuntime):
                         else:
                             auth.authenticate(self.headers.get("Authorization", "").removeprefix("Bearer "), renew=True)
                             result = auth.status()
+                elif self.path == "/personal/search":
+                    if set(body) != {"query", "sources", "limit", "confirmed"}:
+                        raise CapabilityBlock("SEARCH_FIELDS_INVALID")
+                    if self.headers.get("Origin") != "http://" + self.headers.get("Host", ""):
+                        raise CapabilityBlock("EXPLICIT_SAME_ORIGIN_SEARCH_REQUIRED")
+                    if runtime.native_terminal:
+                        runtime.read_terminal_transition(self.headers.get("Authorization", "").removeprefix("Bearer "))
+                    result = runtime.search_sources(body["query"], body["sources"], body["limit"])
                 elif self.path == "/personal/create":
                     if runtime.native_terminal:
                         runtime.read_terminal_transition(self.headers.get("Authorization", "").removeprefix("Bearer "))
