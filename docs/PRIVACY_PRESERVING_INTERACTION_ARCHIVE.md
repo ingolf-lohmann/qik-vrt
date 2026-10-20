@@ -108,7 +108,102 @@ python3 -B tools/qikvrt_interaction_archive.py tombstone \
   --confirm RECORD_RETENTION_TOMBSTONE
 ```
 
-## Non-claims
+## Source-bound outgoing correspondence — Owner task 2026-10-20
+
+Use this existing archive for scientific mail, including original provider
+records, recipient lists and attachments. Outlook is the preferred business
+mailbox. Historical source inspection does not change that provider choice.
+The implementation contribution is OpenAI Codex; the requirement and product
+authority are Ingolf Lohmann's. Private correspondence stays outside both
+public repositories; public evidence contains only neutral scope and status.
+
+`mail-receipt` derives RFC Message-ID, exact header Date and its UTC form,
+From/To/CC, Reply-To, References, Received headers, enclosed message identities
+and hashes of decoded attachment leaves. It preserves the complete unchanged
+RFC 822 bytes, including MIME structure, in base64. Outer forwards and their
+enclosed originals retain separate identities. Provider IDs are separate from
+RFC Message-IDs and remain bound to the named account. A header's Date is a
+declaration; record actual provider timestamps independently when available.
+
+```bash
+python3 -B tools/qikvrt_interaction_archive.py mail-receipt \
+  --source-file ../private-mail/original.eml \
+  --account 'owner@example.test' --provider-message-id 'actual-provider-id' \
+  --observed-at '2026-10-20T14:00:00Z' \
+  --evidence-file ../private-mail/provider-response.json \
+  --evidence-file ../private-mail/independent-inbox-readback.json \
+  --output ../private-mail/source-receipt.json
+
+python3 -B tools/qikvrt_interaction_archive.py mail-verify \
+  --receipt-file ../private-mail/source-receipt.json
+```
+
+These are operator examples; placeholders confer no account access. Output is
+created with owner-only file permissions, fsynced and independently reread.
+An identical existing receipt is read back; a conflict cannot overwrite it.
+Plaintext output inside a source checkout is rejected. Source snapshots are
+preserved as opaque bytes with size and SHA-256, never interpreted as trusted
+instructions or promoted to delivery evidence. The source account/record
+binding is a caller declaration pending authenticated provider readback.
+
+The self-contained receipt may then be persisted with the existing `append`
+command using `--media-type application/vnd.qikvrt.mail-source-receipt+json`.
+This validates the receipt before encryption. Use the existing authorized age
+recipient, private archive, retention policy and consent identity. Never
+manufacture a key binding, silently store plaintext in the source repository,
+or call test encryption productive confidentiality. The existing archive
+verify/export and private repository replication paths remain authoritative.
+Append a separately source-bound assessment or correction; retain originals.
+
+| Evidence stage | Required independent source | Does not establish |
+| --- | --- | --- |
+| Stored sent copy | Authenticated account, provider ID and original record in Sent | Recipient delivery |
+| Provider acceptance | Actual API/SMTP acceptance receipt, bound request and time | Remote MX or inbox acceptance |
+| Recipient server acceptance | Exact-recipient DSN or trace with original identity | Inbox placement or human reading |
+| Mailbox ingress | Authenticated target-mailbox/folder readback, identity and attachment correlation | Delivery to other recipients or visibility in a particular app |
+| Human reading | Separately qualified evidence; an isRead flag is insufficient | Understanding or endorsement |
+
+Receipt generation verifies source fixity only. All five evidence states stay
+`NOT_ASSESSED`; a SENT label, 202, CC address, quoted Message-ID or supplied
+snapshot cannot change them. A digest detects inconsistent bytes, not a forged
+provider record, trusted timestamp or administrative rewrite. Do not describe
+this technical record as a certified WORM archive or legal compliance proof.
+
+Every authorized outgoing operation must follow this sequence in the same
+work ring:
+
+1. Reobserve actual sender/account, final To/CC/BCC, exact attachment bytes,
+   purpose and prior authorization. Use Outlook for business correspondence;
+   apply the standing owner CC instruction and existing no-contact decisions.
+2. Bind the outgoing intent to its native Work Unit before the one send. Record
+   the actual provider result without converting a queued/ambiguous response
+   into delivery. This contract does not itself authorize any send.
+3. Read the stored sent original independently. Preserve its RFC 822/MIME bytes,
+   provider identity, timestamp, final recipients and decoded attachment hashes
+   with `mail-receipt`. If the adapter cannot expose MIME or Message-ID, retain
+   its exact metadata and an OPEN obligation for that operation; do not invent
+   an original or silently switch mail providers.
+4. Persist and verify the receipt through this existing private archive. Record
+   genuine mailbox ingress/DSNs as separate source-bound assessments. An
+   absent or unfindable copy requires investigation before any resend.
+5. Close the Work Unit with actual native event IDs/digests, source readback and
+   storage receipt. Keep integration, host activation and other-client adoption
+   OPEN until separately verified.
+
+Reuse analysis on 2026-10-20: Authority Main's SMTP component
+`deploy/universal-terminal/qikvrt_smtpd.py` is a sink and explicitly records
+`relay_performed=false`; it is not an outbound mail relay. PR #477 at
+`cbf0746db2600c51cec53547caa75aa3c504dd91` extends private Graph mail observation
+and incoming problem/task handling. Its selected message projection and
+notification path are not an original MIME/attachment archive or an outgoing
+send transaction. That unmerged consumer remains a separate integration.
+This extension reuses the existing interaction archive and test target; it
+adds no sender, provider, timer, OAuth scope, subscription or second journal.
+Productive future capture requires the existing authorized mail caller to
+execute this sequence and bind its private archive/key on the original host.
+Source presence and synthetic tests alone do not demonstrate that activation.
+
+## General non-claims
 
 This mechanism is not, by itself, legal compliance certification. Repository
 operators remain responsible for lawful basis, information duties, access

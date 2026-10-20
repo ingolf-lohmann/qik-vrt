@@ -5,6 +5,19 @@ Copyright (c) 2026 Ingolf Lohmann.
 
 # Repository agent protocol
 
+## Outgoing scientific correspondence — Owner task 2026-10-20
+
+Apply the source-bound outgoing correspondence sequence in
+`docs/PRIVACY_PRESERVING_INTERACTION_ARCHIVE.md`. Reuse the existing private
+archive and `tools/qikvrt_interaction_archive.py mail-receipt` / `mail-verify`.
+Preserve exact originals, RFC and provider identities, UTC/header timestamps,
+To/CC and attachment hashes. Prefer Outlook for business mail. Bind the single
+authorized send and its original independent readback to the native Work Unit;
+separate SENT, provider acceptance, recipient delivery and actual mailbox ingress.
+Keep incomplete identity/MIME/archive access OPEN and investigate before any
+resend. Keep all private mail bytes/recipients outside public source. This rule
+adds no send authority, timer, provider or proof of another client's adoption.
+
 MANDATORY MIRROR OUTBOX — OWNER 2026-10-19
 
 Read and apply `docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md#mandatory-mirror-outbox-and-delivery-evidence-owner-2026-10-19`

@@ -5,6 +5,11 @@
 from __future__ import annotations
 
 import argparse
+import base64
+from datetime import datetime, timezone
+from email import policy as email_policy
+from email.parser import BytesParser
+from email.utils import getaddresses, parsedate_to_datetime
 import hashlib
 import json
 import os
@@ -21,6 +26,9 @@ CONFIRM_EXPORT = "EXPORT_AUTHORIZED_INTERACTIONS"
 CONFIRM_TOMBSTONE = "RECORD_RETENTION_TOMBSTONE"
 ROLE_VALUES = {"user", "assistant", "tool", "system"}
 HEX64 = re.compile(r"[0-9a-f]{64}\Z")
+MAIL_SCHEMA = "qikvrt_mail_source_receipt_v1"
+MAIL_MEDIA_TYPE = "application/vnd.qikvrt.mail-source-receipt+json"
+MAIL_MAX_BYTES = 16 * 1024 * 1024
 
 
 class ArchiveError(RuntimeError):
@@ -159,6 +167,8 @@ def append(args: argparse.Namespace) -> dict[str, object]:
     raw = source.read_bytes()
     if not raw or len(raw) > args.max_bytes:
         raise ArchiveError("BLOCK: plaintext payload is empty or exceeds the configured bound")
+    if args.media_type == MAIL_MEDIA_TYPE:
+        verify_mail_receipt(json.loads(raw))
     root = secure_root(Path(args.archive_root))
     state = verify(root)
     event_id = args.event_id or uuid.uuid4().hex
@@ -264,9 +274,154 @@ def tombstone(args: argparse.Namespace) -> dict[str, object]:
     return {"state": "TOMBSTONE_RECORDED", "event_id": event_id, "target_event_id": args.event_id}
 
 
+def mail_identity(raw: bytes) -> dict[str, object]:
+    """Derive identity from preserved RFC 822 bytes, never delivery from headers."""
+    if not raw or len(raw) > MAIL_MAX_BYTES:
+        raise ArchiveError("BLOCK: bounded original RFC 822 bytes required")
+    message = BytesParser(policy=email_policy.default).parsebytes(raw)
+    for name in ("Message-ID", "Date", "From"):
+        if len(message.get_all(name, [])) != 1:
+            raise ArchiveError("BLOCK: one original Message-ID, Date and From required")
+    message_id = str(message["Message-ID"])
+    if not re.fullmatch(r"<[^<>\s]+@[^<>\s]+>", message_id):
+        raise ArchiveError("BLOCK: original Message-ID malformed")
+    date = parsedate_to_datetime(str(message["Date"]))
+    if date.tzinfo is None:
+        raise ArchiveError("BLOCK: original Date timezone required")
+    def addresses(name):
+        return [{"name": display, "address": address} for display, address in
+                getaddresses([str(v) for v in message.get_all(name, [])])]
+    if not addresses("From") or not addresses("To"):
+        raise ArchiveError("BLOCK: original sender and recipients required")
+    attachments, enclosed = [], []
+    for number, part in enumerate(message.walk()):
+        if part is not message and part.get("Message-ID"):
+            enclosed.append({"mime_walk_index": number, "message_id": str(part["Message-ID"])})
+        if not part.is_multipart() and (part.get_filename() or part.get_content_disposition() == "attachment"):
+            payload = part.get_payload(decode=True)
+            if not isinstance(payload, bytes):
+                raise ArchiveError("BLOCK: attachment decoding failed")
+            attachments.append({"mime_walk_index": number, "filename": part.get_filename(),
+                "media_type": part.get_content_type(), "decoded_bytes": len(payload),
+                "decoded_sha256": sha256(payload)})
+        if part.defects:
+            raise ArchiveError("BLOCK: malformed original MIME; retain bytes for separate investigation")
+    return {"message_id": message_id, "subject": str(message.get("Subject", "")),
+        "date_header": str(message["Date"]), "date_header_utc": date.astimezone(timezone.utc).isoformat(),
+        "date_semantics": "HEADER_DECLARATION_NOT_SUBMISSION_OR_DELIVERY_TIME",
+        "from": addresses("From"), "to": addresses("To"), "cc": addresses("Cc"),
+        "bcc_header": addresses("Bcc"), "envelope_recipients": "UNKNOWN",
+        "reply_to": addresses("Reply-To"),
+        "in_reply_to": [str(v) for v in message.get_all("In-Reply-To", [])],
+        "references": [str(v) for v in message.get_all("References", [])],
+        "received_headers": [str(v) for v in message.get_all("Received", [])],
+        "attachments": attachments, "enclosed_message_ids": enclosed}
+
+
+def build_mail_receipt(raw: bytes, *, account: str, provider_message_id: str,
+                       observed_at: str, evidence: list[tuple[str, bytes]]) -> dict[str, object]:
+    for value in (account, provider_message_id):
+        if not isinstance(value, str) or not value.strip() or len(value) > 512 or any(ord(c) < 32 for c in value):
+            raise ArchiveError("BLOCK: bounded source account and provider message identity required")
+    if not isinstance(observed_at, str) or datetime.fromisoformat(observed_at.replace("Z", "+00:00")).tzinfo is None:
+        raise ArchiveError("BLOCK: observation time with timezone required")
+    if len(evidence) > 16 or sum(len(data) for _, data in evidence) + len(raw) > MAIL_MAX_BYTES:
+        raise ArchiveError("BLOCK: mail evidence exceeds bound")
+    names, snapshots = set(), []
+    for name, data in evidence:
+        if not name or name != Path(name).name or name in names:
+            raise ArchiveError("BLOCK: distinct evidence basenames required")
+        names.add(name)
+        snapshots.append({"name": name, "bytes": len(data), "sha256": sha256(data),
+            "base64": base64.b64encode(data).decode("ascii"), "interpretation": "OPAQUE_SOURCE_BYTES"})
+    value = {"schema": MAIL_SCHEMA, "observed_at": observed_at,
+        "source": {"account": account, "provider_message_id": provider_message_id,
+                   "binding_semantics": "CALLER_DECLARATION_REQUIRES_AUTHENTICATED_PROVIDER_READBACK"},
+        "original": {"bytes": len(raw), "sha256": sha256(raw),
+                     "base64": base64.b64encode(raw).decode("ascii")},
+        "identity": mail_identity(raw), "source_snapshots": snapshots,
+        "evidence_states": {name: "NOT_ASSESSED" for name in
+            ("sent_copy", "provider_acceptance", "recipient_delivery", "mailbox_ingress", "human_reading")},
+        "scope": "ORIGINAL_BYTES_IDENTITY_AND_SOURCE_FIXITY_ONLY",
+        "resend_performed": False, "global_effect_ack_done": False}
+    value["receipt_sha256"] = sha256(canonical(value))
+    return value
+
+
+def verify_mail_receipt(value: object) -> dict[str, object]:
+    if not isinstance(value, dict) or value.get("schema") != MAIL_SCHEMA:
+        raise ArchiveError("BLOCK: mail source receipt schema required")
+    try:
+        raw = base64.b64decode(value["original"]["base64"], validate=True)
+        evidence = [(item["name"], base64.b64decode(item["base64"], validate=True))
+                    for item in value["source_snapshots"]]
+        expected = build_mail_receipt(raw, account=value["source"]["account"],
+            provider_message_id=value["source"]["provider_message_id"],
+            observed_at=value["observed_at"], evidence=evidence)
+    except (KeyError, TypeError, ValueError) as error:
+        raise ArchiveError("BLOCK: malformed mail source receipt") from error
+    if canonical(expected) != canonical(value):
+        raise ArchiveError("BLOCK: changed mail source bytes, identity, evidence or unsupported delivery claim")
+    return {"state": "VERIFIED_MAIL_SOURCE_FIXITY", "receipt_sha256": value["receipt_sha256"],
+            "rfc822_sha256": value["original"]["sha256"], "global_effect_ack_done": False}
+
+
+def mail_receipt(args: argparse.Namespace) -> dict[str, object]:
+    source = Path(args.source_file).expanduser()
+    require_regular(source, "original RFC 822 message")
+    if source.stat().st_size > MAIL_MAX_BYTES:
+        raise ArchiveError("BLOCK: original RFC 822 message exceeds bound")
+    evidence = []
+    for name in args.evidence_file:
+        path = Path(name).expanduser()
+        require_regular(path, "mail source snapshot")
+        if path.stat().st_size > MAIL_MAX_BYTES:
+            raise ArchiveError("BLOCK: source snapshot exceeds bound")
+        evidence.append((path.name, path.read_bytes()))
+    value = build_mail_receipt(source.read_bytes(), account=args.account,
+        provider_message_id=args.provider_message_id, observed_at=args.observed_at, evidence=evidence)
+    target = Path(args.output).expanduser().absolute()
+    output = target.parent.resolve() / target.name
+    if any((parent / ".git").exists() for parent in output.parents):
+        raise ArchiveError("BLOCK: plaintext mail receipt must remain outside source repositories")
+    output.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
+    encoded = canonical(value) + b"\n"
+    try:
+        fd = os.open(output, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
+    except FileExistsError:
+        require_regular(output, "existing mail receipt")
+        if output.read_bytes() != encoded:
+            raise ArchiveError("BLOCK: conflicting mail receipt; retain original and append a successor")
+    else:
+        with os.fdopen(fd, "wb") as stream:
+            stream.write(encoded)
+            stream.flush()
+            os.fsync(stream.fileno())
+        directory = os.open(output.parent, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+        try:
+            os.fsync(directory)
+        finally:
+            os.close(directory)
+    require_regular(output, "persisted mail receipt")
+    if output.stat().st_mode & 0o077:
+        raise ArchiveError("BLOCK: mail receipt requires owner-only file permissions")
+    if output.read_bytes() != encoded:
+        raise ArchiveError("BLOCK: independent mail receipt readback mismatch")
+    return verify_mail_receipt(read_json(output))
+
+
 def parser() -> argparse.ArgumentParser:
     value = argparse.ArgumentParser(description=__doc__)
     sub = value.add_subparsers(dest="command", required=True)
+    mail = sub.add_parser("mail-receipt", help="Preserve original mail and source snapshots; never sends mail")
+    mail.add_argument("--source-file", required=True)
+    mail.add_argument("--account", required=True)
+    mail.add_argument("--provider-message-id", required=True)
+    mail.add_argument("--observed-at", required=True)
+    mail.add_argument("--evidence-file", action="append", default=[])
+    mail.add_argument("--output", required=True)
+    mail_verify = sub.add_parser("mail-verify")
+    mail_verify.add_argument("--receipt-file", required=True)
     verify_parser = sub.add_parser("verify")
     verify_parser.add_argument("--archive-root", required=True)
     append_parser = sub.add_parser("append")
@@ -311,6 +466,10 @@ def main(argv: list[str] | None = None) -> int:
             result = append(args)
         elif args.command == "export":
             result = export(args)
+        elif args.command == "mail-receipt":
+            result = mail_receipt(args)
+        elif args.command == "mail-verify":
+            result = verify_mail_receipt(read_json(Path(args.receipt_file)))
         else:
             result = tombstone(args)
     except (ArchiveError, OSError, ValueError, json.JSONDecodeError, subprocess.SubprocessError) as error:
