@@ -345,3 +345,7 @@ QIK-Ableitung nicht liefern. Der volle R1-Nachweis bleibt offen.
   Herleitung; volle Quantenmitgliedschaft, empirische Prüfung und allgemeine
   Reproduktion der Quantenstatistik sind durch diesen Kontrollvergleich
   nicht erledigt.
+
+## Quellengebundener wissenschaftlicher Nachtrag und aktuelle Integration
+
+Der [eigenständige R1-Nachtrag](publications/2026-10-20-qik-r1-chsh-addendum/QIK_R1_Nachtrag_20261020.md) ergänzt die methodengenaue Testabdeckung, den Zustands-/Kompositions-/Messvertrag und 15 getrennte Akzeptanzbedingungen. Die historische Quellenbindung oben bleibt erhalten. Für die inzwischen fortgeschriebene Status-README bindet [INTEGRATION_BINDINGS_20261020.json](../evidence/chsh-reference/INTEGRATION_BINDINGS_20261020.json) deren historische Archivkopie und aktuellen Nachfolger getrennt. Das Originalmanuskript und die Referenzwahrscheinlichkeitsregel bleiben unverändert. Zwei zusätzliche Methoden prüfen diese Reparatur; acht ergänzende Diagnosekontrollen laufen im gleichen Makefile-Ziel. Universelle R1-Abnahme und eine QIK-interne Ableitung bleiben offen.

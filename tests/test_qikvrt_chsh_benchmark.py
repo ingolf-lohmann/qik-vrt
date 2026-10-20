@@ -19,6 +19,17 @@ def relabel_alice(box, setting=None):
                      for a, b in ch.OUTCOMES} for (x, y), row in box.items()}
 
 
+ORIGINAL_PUBLICATION_README = "docs/publications/2026-09-23-qik-scientific-revision/README.md"
+ARCHIVED_PUBLICATION_README = "docs/publications/2026-09-23-qik-scientific-revision/evidence/zenodo-readback-20261019/files/README.md"
+
+
+def validate_original_package_locations(locations):
+    """Only the already archived historical README may relocate; never a manuscript."""
+    if locations != {ORIGINAL_PUBLICATION_README: ARCHIVED_PUBLICATION_README}:
+        raise ValueError("EXACT_HISTORICAL_README_RELOCATION_REQUIRED")
+    return locations
+
+
 class CHSHReferenceTests(unittest.TestCase):
     def test_shared_bit_joint_table_and_correlations(self):
         box = ch.classical_reference()
@@ -148,12 +159,37 @@ class CHSHReferenceTests(unittest.TestCase):
 
     def test_original_publication_package_is_byte_unchanged(self):
         root = Path(__file__).resolve().parents[1]
-        binding = json.loads((root / "evidence/chsh-reference/SOURCE_BINDINGS.json").read_text())
+        binding_raw = (root / "evidence/chsh-reference/SOURCE_BINDINGS.json").read_bytes()
+        binding = json.loads(binding_raw)
+        integration = json.loads((root / "evidence/chsh-reference/INTEGRATION_BINDINGS_20261020.json").read_text())
+        self.assertEqual(hashlib.sha256(binding_raw).hexdigest(), integration["historical_source_binding_sha256"])
+        locations = validate_original_package_locations(integration["historical_source_locations"])
         for item in binding["unchanged_original_files"]:
-            raw = (root / item["path"]).read_bytes()
+            raw = (root / locations.get(item["path"], item["path"])).read_bytes()
+            self.assertEqual(len(raw), item["bytes"], item["path"])
             self.assertEqual(hashlib.sha256(raw).hexdigest(), item["sha256"], item["path"])
             self.assertEqual(hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest(),
                              item["git_blob_sha1"], item["path"])
+
+    def test_current_readme_is_an_exact_bound_status_successor(self):
+        root = Path(__file__).resolve().parents[1]
+        integration = json.loads((root / "evidence/chsh-reference/INTEGRATION_BINDINGS_20261020.json").read_text())
+        item = integration["current_status_readme"]
+        self.assertEqual(item["path"], ORIGINAL_PUBLICATION_README)
+        raw = (root / item["path"]).read_bytes()
+        self.assertEqual(hashlib.sha256(raw).hexdigest(), item["sha256"])
+        self.assertEqual(hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest(), item["git_blob_sha1"])
+        self.assertNotEqual(raw, (root / ARCHIVED_PUBLICATION_README).read_bytes())
+
+    def test_original_package_relocation_cannot_hide_manuscript_changes(self):
+        expected = {ORIGINAL_PUBLICATION_README: ARCHIVED_PUBLICATION_README}
+        self.assertEqual(validate_original_package_locations(expected), expected)
+        manuscript = ORIGINAL_PUBLICATION_README.rsplit("/", 1)[0] + "/QIK_Publikationsfassung_revidiert.md"
+        for invalid in ({}, {**expected, manuscript: ARCHIVED_PUBLICATION_README},
+                        {ORIGINAL_PUBLICATION_README: "../README.md"},
+                        {ORIGINAL_PUBLICATION_README: "unbound-copy.md"}):
+            with self.subTest(locations=invalid), self.assertRaisesRegex(ValueError, "HISTORICAL_README"):
+                validate_original_package_locations(invalid)
 
     def test_deterministic_json_cli_and_committed_result(self):
         root = Path(__file__).resolve().parents[1]

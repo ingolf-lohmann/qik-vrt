@@ -132,6 +132,7 @@ personal-firefox-boundary-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_firefox_capability_boundary
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_assistant
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_auth
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_terminal_transition
 	node tests/test_qikvrt_personal_auth_ui.cjs
 
 test: personal-firefox-boundary-test
@@ -234,9 +235,17 @@ live-authority-mirror-ab-contract:
 
 test: live-authority-mirror-ab-contract
 
+.PHONY: personal-retrieval-test
+personal-retrieval-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_retrieval
+	node tests/test_qikvrt_personal_retrieval_ui.cjs
+
+test: personal-retrieval-test
+
 .PHONY: chsh-reference-test
 chsh-reference-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_chsh_benchmark
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 QIK_R1_BENCHMARK_ROOT="$(CURDIR)" $(PYTHON) -B -m unittest discover -s docs/publications/2026-10-20-qik-r1-chsh-addendum -p test_scope_audit.py -v
 	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m py_compile src/qikvrt_chsh_benchmark.py
 
 test: chsh-reference-test

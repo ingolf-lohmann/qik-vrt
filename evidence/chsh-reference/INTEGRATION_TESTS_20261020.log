@@ -1,0 +1,53 @@
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_qikvrt_chsh_benchmark
+test_bad_local_responses (tests.test_qikvrt_chsh_benchmark.CHSHNegativeControls.test_bad_local_responses) ... ok
+test_bad_normalization (tests.test_qikvrt_chsh_benchmark.CHSHNegativeControls.test_bad_normalization) ... ok
+test_bad_probabilities (tests.test_qikvrt_chsh_benchmark.CHSHNegativeControls.test_bad_probabilities) ... ok
+test_bad_quantum_settings (tests.test_qikvrt_chsh_benchmark.CHSHNegativeControls.test_bad_quantum_settings) ... ok
+test_boolean_and_float_setting_aliases (tests.test_qikvrt_chsh_benchmark.CHSHNegativeControls.test_boolean_and_float_setting_aliases) ... ok
+test_candidate_cli_rejects_invalid_table (tests.test_qikvrt_chsh_benchmark.CHSHNegativeControls.test_candidate_cli_rejects_invalid_table) ... ok
+test_extra_outcome (tests.test_qikvrt_chsh_benchmark.CHSHNegativeControls.test_extra_outcome) ... ok
+test_invalid_candidate_records (tests.test_qikvrt_chsh_benchmark.CHSHNegativeControls.test_invalid_candidate_records) ... ok
+test_invalid_ceilings (tests.test_qikvrt_chsh_benchmark.CHSHNegativeControls.test_invalid_ceilings) ... ok
+test_missing_settings (tests.test_qikvrt_chsh_benchmark.CHSHNegativeControls.test_missing_settings) ... ok
+test_missing_zero_is_not_silently_imputed (tests.test_qikvrt_chsh_benchmark.CHSHNegativeControls.test_missing_zero_is_not_silently_imputed) ... ok
+test_signalling_in_both_directions_rejected_below_chsh_ceiling (tests.test_qikvrt_chsh_benchmark.CHSHNegativeControls.test_signalling_in_both_directions_rejected_below_chsh_ceiling) ... ok
+test_all_sixteen_local_vertices (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_all_sixteen_local_vertices) ... ok
+test_all_three_are_normalized_unbiased_and_no_signalling (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_all_three_are_normalized_unbiased_and_no_signalling) ... ok
+test_born_coincident_settings_have_nonnegative_probabilities (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_born_coincident_settings_have_nonnegative_probabilities) ... ok
+test_born_joint_table_against_analytic_formula (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_born_joint_table_against_analytic_formula) ... ok
+test_born_nonoptimal_settings_not_hardcoded_maximum (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_born_nonoptimal_settings_not_hardcoded_maximum) ... ok
+test_candidate_cli_reports_pr_violation_without_claiming_membership (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_candidate_cli_reports_pr_violation_without_claiming_membership) ... ok
+test_candidate_records_roundtrip (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_candidate_records_roundtrip) ... ok
+test_chsh_ceiling_pass_does_not_certify_quantum_membership (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_chsh_ceiling_pass_does_not_certify_quantum_membership) ... ok
+test_current_readme_is_an_exact_bound_status_successor (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_current_readme_is_an_exact_bound_status_successor) ... ok
+test_deterministic_json_cli_and_committed_result (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_deterministic_json_cli_and_committed_result) ... ok
+test_negative_signed_quantum_value_uses_absolute_bound (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_negative_signed_quantum_value_uses_absolute_bound) ... ok
+test_nonuniform_local_convex_mixture_stays_local (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_nonuniform_local_convex_mixture_stays_local) ... ok
+test_original_package_relocation_cannot_hide_manuscript_changes (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_original_package_relocation_cannot_hide_manuscript_changes) ... ok
+test_original_publication_package_is_byte_unchanged (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_original_publication_package_is_byte_unchanged) ... ok
+test_positive_ceiling_controls (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_positive_ceiling_controls) ... ok
+test_pr_parity_and_algebraic_maximum (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_pr_parity_and_algebraic_maximum) ... ok
+test_pr_rejected_by_quantum_control_despite_no_signalling (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_pr_rejected_by_quantum_control_despite_no_signalling) ... ok
+test_quantum_rejected_by_classical_control (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_quantum_rejected_by_classical_control) ... ok
+test_shared_bit_joint_table_and_correlations (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_shared_bit_joint_table_and_correlations) ... ok
+test_single_oriented_chsh_can_miss_pr_violation (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_single_oriented_chsh_can_miss_pr_violation) ... ok
+
+----------------------------------------------------------------------
+Ran 32 tests in 0.215s
+
+OK
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 QIK_R1_BENCHMARK_ROOT="/workspace/scratch/0592f71e8d2d/integration/candidate" python3 -B -m unittest discover -s docs/publications/2026-10-20-qik-r1-chsh-addendum -p test_scope_audit.py -v
+test_biased_table_is_not_certified_from_correlators (test_scope_audit.ScopeAuditTests.test_biased_table_is_not_certified_from_correlators) ... ok
+test_born_reference_numeric_arcsine_control (test_scope_audit.ScopeAuditTests.test_born_reference_numeric_arcsine_control) ... ok
+test_counterexample_passes_chsh_but_violates_arcsine_by_pi_over_three (test_scope_audit.ScopeAuditTests.test_counterexample_passes_chsh_but_violates_arcsine_by_pi_over_three) ... ok
+test_local_reference_is_on_arcsine_boundary (test_scope_audit.ScopeAuditTests.test_local_reference_is_on_arcsine_boundary) ... ok
+test_no_silent_clipping_at_tolerance_boundary (test_scope_audit.ScopeAuditTests.test_no_silent_clipping_at_tolerance_boundary) ... ok
+test_pr_box_violates_arcsine_by_pi (test_scope_audit.ScopeAuditTests.test_pr_box_violates_arcsine_by_pi) ... ok
+test_reference_or_external_table_cannot_close_model_obligations (test_scope_audit.ScopeAuditTests.test_reference_or_external_table_cannot_close_model_obligations) ... ok
+test_signalling_table_has_cli_exit_zero_without_acceptance (test_scope_audit.ScopeAuditTests.test_signalling_table_has_cli_exit_zero_without_acceptance) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.060s
+
+OK
+PYTHONDONTWRITEBYTECODE=1 python3 -m py_compile src/qikvrt_chsh_benchmark.py

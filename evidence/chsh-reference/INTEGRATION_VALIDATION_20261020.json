@@ -1,0 +1,23 @@
+{
+  "CHSH_and_source_test_methods": 32,
+  "QIK_internal_derivation": "OPEN",
+  "addendum_controls": 8,
+  "base_main": "a38455c739f7f475b2a93447de1db4ea87e4200c",
+  "command": "make chsh-reference-test",
+  "effect_ack_done": false,
+  "empirical_measurement": false,
+  "focused_result": "PASS",
+  "formal_kernel_proof": false,
+  "full_R1": "OPEN",
+  "full_current_Main_make_test_locally_executed": false,
+  "historical_SOURCE_BINDINGS_unchanged": true,
+  "local_source_scope": "selected exact source subset for focused tests; full repository gate requires the existing native CI checkout",
+  "main_integration": false,
+  "native_CI_result": "PENDING_EXACT_PUBLISHED_HEAD",
+  "observed_at": "2026-10-20T15:55:54.529979+00:00",
+  "predecessor_PR552": "71540655811c8725bb510be506f9308971d50aae",
+  "schema": "qik-r1-integration-validation/1",
+  "scientific_original_manuscript_changed": false,
+  "source_preservation": "historical package hashes checked at original paths except exact allowlisted existing historical README archive; current status README independently bound",
+  "test_log_sha256": "08297f14d172cd55fcee4136640e84d52d9403bc458d22327815c72aade0db97"
+}

@@ -58,7 +58,9 @@ class EffectAckHttpTerminalContractTests(unittest.TestCase):
         content = (ROOT / "browser/firefox/qikvrt-terminal/content.js").read_text(encoding="utf-8")
         manifest = (ROOT / "browser/firefox/qikvrt-terminal/manifest.json").read_text(encoding="utf-8")
         self.assertIn("browser.alarms", background)
-        self.assertIn("WATCHDOG_PERIOD_MINUTES = 5", background)
+        self.assertNotIn("browser.alarms.create", background)
+        self.assertNotIn("browser.alarms.onAlarm", background)
+        self.assertIn("browser.alarms.clear(WATCHDOG_ALARM)", background)
         self.assertIn("validated DONE prepare result required", background)
         self.assertIn("record_validated", background)
         self.assertIn("compact/full record hash mismatch", background)
@@ -179,7 +181,16 @@ class FirefoxAuthorityRegressionTests(unittest.TestCase):
         self.assertFalse(manifest.get("optional_host_permissions"))
         self.assertEqual(manifest["browser_specific_settings"]["gecko"]["strict_min_version"], "158.0")
 
-    def run_adapter(self, assertions: str) -> None:
+    def run_adapter(self, assertions: str, *, clear_failure: bool = False) -> None:
+        native_input = {"schema": "qikvrt_terminal_input_v1", "text": "test",
+                        "page": "https://github.com/Goldkelch/qik-vrt/blob/main/AI"}
+        state = terminal.State()
+        digest, record = state.record(state="EFFECT_ACK_DONE",
+            input_hash=terminal.sha256(terminal.canonical_json(native_input)),
+            ordinary_release=True, reason="loopback terminal input satisfies bounded local policy")
+        successor_digest, successor = state.record(state="EFFECT_ACK_DONE",
+            input_hash=terminal.sha256(terminal.canonical_json(native_input)),
+            ordinary_release=True, reason="single-use exact-bound loopback commit executed")
         harness = r"""
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -190,15 +201,26 @@ const calls = [];
 let listener;
 let response = async () => { throw new Error('unexpected fetch'); };
 const stored = {qikvrtAuthority: policy.mirror.repository};
+const fixture = __NATIVE_FIXTURE__;
+let openClient;
+const opened = [];
+const clearedAlarms = [];
+const lifecycle = {};
+let clearFailure = __CLEAR_FAILURE__;
 const sandbox = {
-  console, URL, Uint8Array, atob, btoa,
+  console, URL, Uint8Array, atob, btoa, TextEncoder, crypto: require('node:crypto').webcrypto,
   location: {href: `https://github.com/${policy.mirror.repository}/blob/main/AI`},
   fetch: async (url, init) => { calls.push({url, init}); return response(url, init); },
   browser: {
+    action: {onClicked: {addListener(value) { openClient = value; }}},
+    tabs: {create: async value => { opened.push(value); }},
     storage: {local: {get: async () => stored, set: async value => Object.assign(stored, value)}},
-    // Leave automatic startup pending; only explicitly requested operations run.
-    alarms: {get: () => new Promise(() => {}), create: async () => {}, onAlarm: {addListener() {}}},
-    runtime: {onInstalled: {addListener() {}}, onStartup: {addListener() {}},
+    // Timer APIs are forbidden; the finite migration must clear the old alarm.
+    alarms: {clear: async name => { clearedAlarms.push(name); if (clearFailure) throw Error("clear refused"); return true; },
+      create() { throw Error("client timer forbidden"); },
+      onAlarm: {addListener() { throw Error("alarm continuation forbidden"); }}},
+    runtime: {getURL: path => 'moz-extension://qikvrt-test/' + path,
+      onInstalled: {addListener(fn) { lifecycle.installed = fn; }}, onStartup: {addListener(fn) { lifecycle.startup = fn; }},
       onMessage: {addListener(value) { listener = value; }}},
   },
 };
@@ -209,14 +231,14 @@ function http(body, ack = null, status = 200) {
     headers: {get: name => name === 'Effect-Ack' ? ack : name === 'content-type' ? 'application/json' : null},
     json: async () => body};
 }
-const digest = 'ab'.repeat(32);
+const digest = fixture.digest;
 const token = 'exact-bound-single-use-token';
 function ack(state = 'done', hash = digest, commitToken = token) {
   return `v=1, state=${state}, hash=:${Buffer.from(hash, 'hex').toString('base64')}:, token=:${Buffer.from(commitToken).toString('base64')}:`;
 }
-const input = {schema: 'qikvrt_terminal_input_v1', text: 'test', page: sandbox.location.href};
+const input = fixture.input;
 const preparedBody = {record_hash: digest, commit_token: token, record_url: '/effect-ack/records/' + digest};
-const fullRecord = {state: 'EFFECT_ACK_DONE', ordinary_release: true, record_hash: 'sha256:' + digest};
+const fullRecord = fixture.record;
 async function prepare({prepareAck = ack(), body = preparedBody, record = fullRecord} = {}) {
   calls.length = 0;
   response = async url => {
@@ -228,11 +250,55 @@ async function prepare({prepareAck = ack(), body = preparedBody, record = fullRe
   return listener({kind: 'PREPARE_EFFECT', payload: input});
 }
 """
+        harness = harness.replace("__CLEAR_FAILURE__", json.dumps(clear_failure))
+        harness = harness.replace("__NATIVE_FIXTURE__", json.dumps({
+            "input": native_input, "digest": digest, "record": record,
+            "successor_digest": successor_digest, "successor": successor}))
         result = subprocess.run(
             ["node", "-e", harness + "\n(async () => {\n" + assertions + "\n})().catch(error => { console.error(error); process.exitCode = 1; });"],
             cwd=ROOT, text=True, capture_output=True, timeout=15, check=False,
         )
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_personal_navigation_is_explicit_packaged_tab_only_and_has_no_data_exchange(self):
+        self.run_adapter(r'''
+sandbox.browser.runtime.id = 'qikvrt-test';
+const sender = {id:'qikvrt-test', url:sandbox.browser.runtime.getURL('client.html')};
+for (const [payload, origin] of [[null,sender], [{confirmed:false},sender], [{confirmed:true},{}],
+  [{confirmed:true},{id:'other',url:sender.url}], [{confirmed:true},{id:sender.id,url:'https://github.com/ingolf-lohmann/qik-vrt/blob/main/AI'}]]) {
+  const result = await listener({kind:'OPEN_PERSONAL',payload}, origin);
+  assert.equal(result.ok, false);
+}
+assert.equal(opened.length, 0);
+const result = await listener({kind:'OPEN_PERSONAL',payload:{confirmed:true}}, sender);
+assert.equal(opened.length, 1);
+assert.equal(opened[0].url, 'http://127.0.0.1:8771/personal/#terminal');
+assert.equal(Object.keys(opened[0]).length, 1);
+assert.equal(result.state, 'EFFECT_ACK_CONTINUE');
+assert.equal(result.ordinary_release, false);
+assert.equal(calls.length, 0, 'navigation must not fetch protected data');
+assert.equal(JSON.stringify(stored).includes('token'), false);
+''')
+
+    def test_event_only_startup_clears_legacy_alarm_without_network_poll(self) -> None:
+        self.run_adapter(r"""
+await Promise.resolve();
+assert.deepEqual(clearedAlarms, ['qikvrt-repository-watchdog']);
+assert.equal(calls.length, 0);
+assert.equal(typeof lifecycle.installed, 'function');
+assert.equal(typeof lifecycle.startup, 'function');
+""")
+
+    def test_failed_alarm_cleanup_holds_before_any_network_or_commit(self) -> None:
+        self.run_adapter(r"""
+// The initial finite migration fails before any user request.
+for (const kind of ['OBSERVE_AUTHORITY', 'PREPARE_EFFECT', 'COMMIT_EFFECT']) {
+  const result = await listener({kind, payload: fixture.input});
+  assert.equal(result.ok, false);
+  assert.equal(result.reason, 'legacy client alarm cleanup failed');
+}
+assert.equal(calls.length, 0);
+""", clear_failure=True)
 
     def test_observation_uses_authority_even_from_mirror_entrypoint(self) -> None:
         self.run_adapter(r"""
@@ -322,12 +388,15 @@ for (const [header, body, released] of [
   [null, {ordinary_release: true}, false],
   [ack('continue'), {ordinary_release: true}, false],
   [ack('done'), {ordinary_release: false}, false],
-  [ack('done'), {ordinary_release: true}, true],
+  [ack('done', fixture.successor_digest), {ordinary_release: true}, false],
 ]) {
-  calls.length = 0; response = async () => http(body, header);
+  calls.length = 0;
+  response = async url => url.endsWith('/effect-ack/records/' + digest)
+    ? http(fullRecord, ack()) : http(body, header);
   const result = await listener({kind: 'COMMIT_EFFECT', payload: {confirmed: true, prepared, request: input}});
-  assert.equal(result.ordinary_release, released); assert.equal(calls.length, 1);
-  const call = calls[0];
+  assert.equal(result.ordinary_release, released);
+  const call = calls.find(item => item.url.endsWith('/terminal/commit'));
+  assert.ok(call);
   assert.equal(call.url, 'http://127.0.0.1:8771/terminal/commit');
   assert.equal(call.init.method, 'POST');
   assert.equal(call.init.headers['Effect-Ack-Request'],
@@ -336,6 +405,79 @@ for (const [header, body, released] of [
   assert.equal(call.init.headers['X-QIKVRT-Record-Hash'], undefined);
   assert.deepEqual(JSON.parse(call.init.body), input);
 }
+""")
+
+    def test_standalone_action_opens_packaged_client_without_page_or_network(self) -> None:
+        manifest = json.loads((ROOT / "browser/firefox/qikvrt-terminal/manifest.json").read_text())
+        self.assertEqual(manifest["action"]["default_title"], "Universales Raumzeit-Terminal")
+        html = (ROOT / "browser/firefox/qikvrt-terminal/client.html").read_text()
+        self.assertIn('src="content.js"', html)
+        self.assertIn('href="terminal.css"', html)
+        self.assertNotIn("<iframe", html)
+        self.assertNotIn("https://", html)
+        self.run_adapter(r"""
+openClient();
+assert.equal(opened.length, 1);
+assert.equal(opened[0].url, 'moz-extension://qikvrt-test/client.html');
+assert.equal(calls.length, 0);
+""")
+
+    def test_prepare_rejects_record_tampering_wrong_input_and_record_route(self) -> None:
+        self.run_adapter(r"""
+for (const options of [
+  {record: {...fullRecord, reason: 'tampered content'}},
+  {record: {...fullRecord, input_hash: 'sha256:' + '01'.repeat(32)}},
+  {body: {...preparedBody, record_url: '/effect-ack/records/../terminal/commit'}},
+  {body: {...preparedBody, record_url: preparedBody.record_url + '?redirect=other'}},
+]) {
+  const result = await prepare(options);
+  assert.notEqual(result.record_validated, true);
+  assert.equal(result.ordinary_release, false);
+}
+""")
+
+    def test_commit_requires_successor_and_exact_independent_event_with_no_retry(self) -> None:
+        self.run_adapter(r"""
+const event = {event_id: 1, kind: 'TERMINAL_INPUT_ACCEPTED',
+  record_hash: digest, input_hash: fullRecord.input_hash.slice(7),
+  text: input.text, audio_present: false, video_present: false,
+  observed_at: '2026-10-19T09:00:00Z', external_effect: 'NONE'};
+const prepared = await prepare();
+for (const fault of ['none', 'record', 'event', 'missing', 'lost', 'prepare-as-effect', 'unavailable']) {
+  calls.length = 0;
+  response = async url => {
+    if (url.endsWith('/effect-ack/records/' + digest)) return http(fullRecord, ack());
+    if (url.endsWith('/terminal/commit')) {
+      if (fault === 'lost') throw new Error('reply lost');
+      return http({ordinary_release: true, post_effect: event},
+        ack('done', fault === 'prepare-as-effect' ? digest : fixture.successor_digest));
+    }
+    if (url.endsWith('/effect-ack/records/' + fixture.successor_digest)) {
+      return http(fault === 'record' ? {...fixture.successor, reason: 'tampered'} : fixture.successor,
+        ack('done', fixture.successor_digest), fault === 'unavailable' ? 503 : 200);
+    }
+    if (url.endsWith('/terminal/state')) return http({
+      last_event: fault === 'missing' ? null : fault === 'event' ? {...event, text: 'different'} : event});
+    throw new Error('unexpected route');
+  };
+  const result = await listener({kind: 'COMMIT_EFFECT', payload: {confirmed: true, prepared, request: input}});
+  assert.equal(result.ordinary_release, fault === 'none', fault);
+  assert.equal(result.readback_verified === true, fault === 'none', fault);
+  assert.equal(result.retry_allowed, false);
+  assert.equal(calls.filter(call => call.url.endsWith('/terminal/commit')).length, 1);
+  assert.ok(calls.every(call => call.init.redirect === 'error'));
+  if (fault === 'none') {
+    assert.equal(result.effect_scope, 'LOOPBACK_TERMINAL_INPUT_ONLY');
+    assert.equal(result.productive_effect_verified, false);
+    assert.equal(calls.length, 4);
+  }
+}
+calls.length = 0;
+response = async url => { assert.ok(url.includes('/effect-ack/records/')); return http(fullRecord, ack()); };
+const changed = await listener({kind: 'COMMIT_EFFECT', payload: {
+  confirmed: true, prepared, request: {...input, text: 'changed after prepare'}}});
+assert.equal(changed.ordinary_release, false);
+assert.equal(calls.filter(call => call.url.endsWith('/terminal/commit')).length, 0);
 """)
 
     def test_backend_allowlist_and_unrecognized_messages_remain_closed(self) -> None:
@@ -352,6 +494,96 @@ for (const message of [null, {}, {kind: 'OBSERVE_MIRROR'}, {kind: 'UNKNOWN', ord
   assert.equal(result.state, 'HOLD'); assert.equal(result.ordinary_release, false);
   assert.equal(calls.length, 0);
 }
+""")
+
+
+class FirefoxClientInteractionTests(unittest.TestCase):
+    """UI state-machine checks; DOM fixture is not Firefox installation proof."""
+
+    def run_ui(self, assertions: str) -> None:
+        harness = r"""
+const assert = require('node:assert/strict'), fs = require('node:fs'), vm = require('node:vm');
+function node() {
+  return {listeners: {}, dataset: {}, style: {setProperty() {}}, disabled: false, value: '',
+    textContent: '', setAttribute() {}, classList: {toggle() {}},
+    addEventListener(name, action) { this.listeners[name] = action; }};
+}
+const host = node(), output = node(), status = node(), command = node(), commit = node(), personal = node();
+const elements = {'[data-role=output]': output, '[data-role=status]': status,
+  '[data-role=command]': command, '[data-role=video]': node(),
+  '[data-role=media-state]': node(), '[data-act=commit]': commit, '[data-act=snapshot]': node(), '[data-act=personal]': personal};
+host.querySelector = selector => elements[selector] || node();
+const calls = [];
+let answer = async () => ({ok: true});
+const sandbox = {console, location: {href: 'moz-extension://fixture/client.html'},
+  document: {getElementById: () => null, createElement: () => host, body: {appendChild() {}}},
+  browser: {storage: {local: {get: async () => ({})}},
+    runtime: {getURL: path => 'moz-extension://fixture/' + path,
+      sendMessage: async message => { calls.push(message); return answer(message); }, openOptionsPage() {}}}};
+vm.createContext(sandbox);
+vm.runInContext(fs.readFileSync('browser/firefox/qikvrt-terminal/content.js', 'utf8'), sandbox);
+const tick = () => new Promise(resolve => setImmediate(resolve));
+const click = act => host.listeners.click({target: {closest: () => ({dataset: {act}})}});
+const prepared = {record_validated: true, effect_ack: {state: 'EFFECT_ACK_DONE'}};
+"""
+        result = subprocess.run(["node", "-e", harness + "\n(async () => {\nawait tick();\n" +
+            assertions + "\n})().catch(error => { console.error(error); process.exitCode = 1; });"],
+            cwd=ROOT, capture_output=True, text=True, timeout=15)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_personal_button_requires_trusted_explicit_action_and_only_requests_navigation(self):
+        self.run_ui(r'''
+calls.length = 0;
+assert.equal(personal.hidden, false);
+await personal.listeners.click({isTrusted:false});
+assert.equal(calls.length, 0);
+let stopped = false;
+await personal.listeners.click({isTrusted:true,stopPropagation(){stopped=true;}});
+assert.equal(stopped, true);
+assert.equal(calls.length, 1);
+assert.equal(calls[0].kind, 'OPEN_PERSONAL');
+assert.equal(calls[0].payload.confirmed, true);
+assert.equal(Object.keys(calls[0].payload).length, 1);
+assert.equal(status.dataset.state, 'EFFECT_ACK_CONTINUE');
+''')
+
+    def test_edit_during_prepare_and_double_click_cannot_release_stale_input(self):
+        self.run_ui(r"""
+command.value = 'original';
+let resolve;
+answer = message => message.kind === 'PREPARE_EFFECT' ? new Promise(r => { resolve = r; }) : {ok: true};
+const pending = click('prepare');
+await tick();
+await click('prepare');
+assert.equal(calls.filter(c => c.kind === 'PREPARE_EFFECT').length, 1);
+command.value = 'edited';
+command.listeners.input();
+resolve(prepared);
+await pending;
+assert.equal(commit.disabled, true);
+assert.equal(status.dataset.state, 'HOLD');
+await click('commit');
+assert.equal(calls.filter(c => c.kind === 'COMMIT_EFFECT').length, 0);
+""")
+
+    def test_prepare_requires_full_validation_and_commit_preserves_actual_readback(self):
+        self.run_ui(r"""
+answer = async () => ({effect_ack: {state: 'EFFECT_ACK_DONE'}, record_validated: false});
+await click('prepare'); assert.equal(commit.disabled, true);
+answer = async message => message.kind === 'PREPARE_EFFECT' ? prepared
+  : {ordinary_release: true, readback_verified: true, effect_scope: 'LOOPBACK_TERMINAL_INPUT_ONLY'};
+await click('prepare'); assert.equal(commit.disabled, false);
+calls.length = 0;
+await click('commit');
+assert.equal(status.dataset.state, 'EFFECT_ACK_DONE');
+assert.match(status.textContent, /local terminal input only/);
+assert.match(output.textContent, /readback_verified/);
+assert.equal(calls.filter(c => c.kind === 'OBSERVE_AUTHORITY').length, 0);
+await click('commit');
+assert.equal(calls.filter(c => c.kind === 'COMMIT_EFFECT').length, 1);
+answer = async message => message.kind === 'PREPARE_EFFECT' ? prepared : {ordinary_release: true};
+await click('prepare'); await click('commit');
+assert.equal(status.dataset.state, 'HOLD');
 """)
 
 

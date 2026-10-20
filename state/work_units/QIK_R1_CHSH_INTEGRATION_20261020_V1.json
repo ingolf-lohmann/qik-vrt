@@ -1,0 +1,20 @@
+{
+  "artificial_cognitive": "OpenAI Codex",
+  "base_main": "a38455c739f7f475b2a93447de1db4ea87e4200c",
+  "effect_ack_done": false,
+  "full_R1": "OPEN",
+  "historical_source_bindings_modified": false,
+  "human": "Ingolf Lohmann",
+  "input": {
+    "human": "Ingolf Lohmann",
+    "scope": "bounded continuation and reviewable repository candidate; no unqualified physical proof, publication or unconditional Main merge",
+    "source": "2026-10-20T18:47:40+03:00: Ja, following delivered addendum and stated README integration prerequisite"
+  },
+  "ordinary_release": false,
+  "original_scientific_manuscript_modified": false,
+  "physics_derivation": false,
+  "predecessor_PR552": "71540655811c8725bb510be506f9308971d50aae",
+  "review_status": "DRAFT_REVIEW_CANDIDATE",
+  "schema": "qik-r1-chsh-integration-work-unit/1",
+  "scope": "preserve all current Main sources; add historical PR552 work and separate scientific addendum; reconcile only the explicit README preservation binding"
+}

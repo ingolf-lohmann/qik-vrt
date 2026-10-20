@@ -154,13 +154,18 @@
       "primary_article_path": "docs/publications/2026-09-23-qik-scientific-revision/QIK_Publikationsfassung_revidiert.md",
       "revision_report_path": "docs/publications/2026-09-23-qik-scientific-revision/QIK_Wissenschaftlicher_Revisionsbericht.md",
       "version": "2026-09-23",
-      "state": "repository_candidate_zenodo_authorized_pending_live_deposition",
+      "state": "zenodo_published_exact_original_docx_verified",
       "boundary": "Scientifically revised conceptual framework; no claim of peer review, independent empirical confirmation, scientific consensus, completed quantum gravity, or proven fundamental discreteness.",
       "archive_reconstruct_path": "docs/publications/2026-09-23-qik-scientific-revision/ARCHIVE_RECONSTRUCT.md",
       "archive_sha256_path": "docs/publications/2026-09-23-qik-scientific-revision/ARCHIVE_SHA256SUMS",
       "zenodo_metadata_path": "docs/publications/2026-09-23-qik-scientific-revision/ZENODO_METADATA.json",
       "zenodo_publish_request_path": "docs/publications/2026-09-23-qik-scientific-revision/ZENODO_PUBLISH_REQUEST.json",
-      "exact_archive_sha256": "a83d7b10db2065735ac033d39092f13d8f38ab311d6e1a3080236e473b51f02a"
+      "exact_archive_sha256": "a83d7b10db2065735ac033d39092f13d8f38ab311d6e1a3080236e473b51f02a",
+      "doi": "10.5281/zenodo.22907018",
+      "record_id": 22907018,
+      "record_url": "https://zenodo.org/records/22907018",
+      "public_readback_path": "docs/publications/2026-09-23-qik-scientific-revision/PUBLICATION_READBACK_20261019.json",
+      "mailed_pdf_in_record": false
     },
     {
       "id": "2026-10-15-alles-s1-s12-r1",
@@ -857,7 +862,10 @@
       "publication_date": "2026-09-23",
       "native_title": "Quantität–Information–Kausalität (QIK): Ein operationales Rahmenmodell für Ereignisstruktur, Kausalordnung und emergente Raumzeit",
       "record_url": "https://zenodo.org/records/22907018",
-      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json",
+      "public_readback_path": "docs/publications/2026-09-23-qik-scientific-revision/PUBLICATION_READBACK_20261019.json",
+      "public_original_docx_sha256_verified": true,
+      "public_file_count": 8
     },
     {
       "id": "zenodo-record-22941556",

@@ -480,6 +480,22 @@ class PersonalAuth:
                     raise
             return True
 
+    def resume(self):
+        """Verify the existing grant inside the admitted native desktop process.
+
+        No browser endpoint may use this as an unauthenticated bearer dispenser.
+        A fresh refresh and protected-store readback must succeed; return only
+        non-secret status. Expiry, logout and pending-effect guards remain those
+        of authenticate(); a process restart never extends the twelve-hour limit.
+        """
+        with self.lock:
+            require_crypto_runtime()
+            if self.pending and self.clock() < self.pending["until"]:
+                raise AuthBlock("OIDC_AUTHORIZATION_ALREADY_PENDING")
+            token = self._state().get("local_token")
+            self.authenticate(token, renew=True)
+            return self.status()
+
     def _retire(self, auth, replacement=None):
         auth = dict(auth)
         auth.update(binding=self.binding, state="REVOCATION_PENDING", local_token="")
@@ -540,3 +556,19 @@ class PersonalAuth:
                     "live_authentication_observed_this_process": bool(self.observed and type(self.store) is OSSecretStore and type(self.transport) is OIDCTransport),
                     "evidence_class": self.transport.evidence_class, "biometric_verification": "DELEGATED_TO_IDP_NOT_ATTESTED",
                     "chatgpt_session_transfer": False}
+
+
+def verify_existing_session(state_dir, config_path, origin, provider):
+    """Native commissioning readback, with no model key or HTTP listener.
+
+    Token renewal is an external effect. The existing lifetime writer lock and
+    protected pending journal must cover it; an active PersonalRuntime blocks a
+    competing CLI. No browser/connector cookie or credential is imported.
+    """
+    config = load_config(config_path, origin)
+    store = OSSecretStore(state_dir, provider)
+    with store.provision_lock(state_dir):
+        auth = PersonalAuth(store, config)
+        return {"schema": "qikvrt_native_sso_readback_v1", "identity": auth.resume(),
+                "model_request_executed": False, "browser_session_transfer": False,
+                "onenote_access_verified": False, "effect_ack_done": False}

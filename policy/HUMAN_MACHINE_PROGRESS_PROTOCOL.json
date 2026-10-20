@@ -223,6 +223,153 @@
         "semantic_or_epistemic_promotion": false,
         "predecessor_pass_transfer": false
       }
+    },
+    "native_session_use": {
+      "owner": "Ingolf Lohmann",
+      "instruction_local": "2026-10-19T10:56:49+03:00",
+      "scope": [
+        "ALL_CURRENT_SESSIONS",
+        "ALL_FUTURE_SESSIONS",
+        "AUTHORITY",
+        "MIRROR",
+        "MESH_CLIENT"
+      ],
+      "components": {
+        "terminal": "src/qikvrt_effect_ack_http_terminal.py",
+        "transputer": "src/qikvrt_temdd_event_ledger.py"
+      },
+      "required_sequence": [
+        "LOAD_EXACT_PREDECESSOR",
+        "BIND_ACTUAL_SOURCE_TASK_IDENTITY_AND_WRITER",
+        "TERMINAL_BOUNDED_INPUT",
+        "ADMITTED_NATIVE_EXECUTION_AND_EVENT_WRITE",
+        "INDEPENDENT_TERMINAL_READBACK",
+        "CONTINUE_SYNCHRONOUSLY"
+      ],
+      "retain_original_journals_and_open_work": true,
+      "require_actual_native_event_ids_and_digests": true,
+      "copied_or_unfenced_originals": "READ_ONLY_UNTIL_EXISTING_ADMISSION_SUCCEEDS",
+      "admitted_in_process_api_is_valid": true,
+      "unavailable_socket_is_not_permission_to_mock_or_weaken_admission": true,
+      "client_timer_as_continuation": false,
+      "request_same_owner_authorization_again": false,
+      "peer_request_and_reply_must_be_actually_verified": true,
+      "proposal_ingress_is_execution": false,
+      "source_rule_presence_is_client_adoption_or_runtime_acceptance": false,
+      "node_communication": {
+        "owner_instruction_local": "2026-10-19T11:50:07+03:00",
+        "scope": "EVERY_CURRENT_AND_FUTURE_QIK_VRT_NODE",
+        "directions": [
+          "RECEIVE_FROM_CLAUDE_AND_EVERY_OTHER_NODE",
+          "SEND_TO_CLAUDE_AND_EVERY_OTHER_NODE"
+        ],
+        "transport": "EXISTING_UNIVERSAL_TRANSPUTER_AND_UNIVERSAL_TERMINAL",
+        "reuse_existing_registry_and_peer_protocol": true,
+        "preserve_original_bytes_and_message_work_unit_request_identity": true,
+        "require_native_event_epoch_and_digests": true,
+        "require_authenticated_peer_binding_and_independent_ack_reply_readback": true,
+        "unavailable_nodes_remain_in_coverage": true,
+        "human_carried_export_is_live_bus": false,
+        "proposal_receipt_is_execution": false,
+        "public_peer_secret_permitted": false,
+        "client_timer_as_continuation": false,
+        "saved_rule_is_verified_node_adoption": false,
+        "owner_confirmation_instruction_local": "2026-10-19T12:00:52+03:00",
+        "implementation_means": [
+          "QIK-VRT",
+          "Effect Acknowledgement Protocol"
+        ],
+        "owner_as_packet_relay": "FORBIDDEN_AS_OPERATIONAL_CONTINUATION",
+        "automatic_peer_request_ack_application_reply_required": true,
+        "peer_ack_must_bind": [
+          "exact_request_id",
+          "canonical_request_sha256",
+          "rule_sha256",
+          "authenticated_peer_identity",
+          "native_event_id",
+          "native_event_digest",
+          "applied_rule_readback"
+        ],
+        "archived_peer_declaration_is_current_request_ack": false,
+        "repair_missing_channel_through_existing_authorized_qikvrt_path": true,
+        "require_actual_per_node_acceptance_before_adoption_claim": true
+      },
+      "mirror_outbox": {
+        "owner": "Ingolf Lohmann",
+        "owner_instruction_local": "2026-10-19T21:34:51+03:00",
+        "human_contract": "docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md#mandatory-mirror-outbox-and-delivery-evidence-owner-2026-10-19",
+        "tool": "node-tools/qikvrt_mirror_emit.py",
+        "inspect_existing_contract_before_use": true,
+        "status_command": "python3 -B node-tools/qikvrt_mirror_emit.py status",
+        "assessment_operations": [
+          "assess",
+          "adopt"
+        ],
+        "require_original_effect_ack_sync": true,
+        "require_original_verify_protocol": true,
+        "require_own_admitted_transputer_effect_event": true,
+        "require_outbox_not_sent_record": true,
+        "assessment_outside_original_tool": "FORBIDDEN",
+        "unavailable_tool": "RECOVER_ORIGINAL_SOURCE_AND_BINDING_OR_RETAIN_NAMED_CARRIER_HOLD",
+        "replacement_implementation_or_invented_cli": "FORBIDDEN",
+        "original_journal_access": "mode=ro&immutable=1",
+        "package_every_unsent_record_in_same_work_ring": true,
+        "require_verified_ed25519_signed_export": true,
+        "package_or_signature_is_delivery": false,
+        "transfer_paths": [
+          "EXISTING_MESH_WORK_BATCH",
+          "SIGNED_ORIGINAL_JOURNAL_EXPORT"
+        ],
+        "sent_requires": [
+          "ACTUAL_TRANSFER",
+          "CHANNEL",
+          "RECIPIENT",
+          "CANONICAL_SHA256_OF_TRANSFERRED_BYTES"
+        ],
+        "receipt_requires": "FOUND_INGRESS_EVIDENCE_AT_NAMED_NODE",
+        "node_claim_command": "claim --record <hash> --node <node>",
+        "preserve_exact_claim_subject_and_output": true,
+        "no_send_proof": "NICHT_ZUGESTELLT",
+        "missing_ingress_without_send": "SENDER_GAP",
+        "receiver_nack_without_tool_claim": "FORBIDDEN",
+        "search_recent_branches_and_incoming_attachments_for_own_package_hashes_and_commits": true,
+        "verify_exact_version_receipt_adoption_and_actual_effect_separately": true,
+        "principal_return_proves": "SOMEWHERE_ARRIVAL_AND_PRINCIPAL_RETURN_ONLY",
+        "principal_as_operating_bus": "FORBIDDEN",
+        "assess_continue_through_outbox_before_reporting": true,
+        "broadcast_coverage": [
+          "registry/NODEMESH_INDEX.json",
+          "Codex",
+          "Goldkelch Mirror",
+          "Originalhost",
+          "Mesh-Monitor"
+        ],
+        "unavailable_members_remain_in_coverage": true,
+        "delivery_or_adoption_inferred": false,
+        "done_requires": [
+          "ACTUAL_APPLICATION",
+          "INDEPENDENT_READBACK"
+        ],
+        "source_tests_packaging_sending_skill_save_or_unverified_peer_report_is_done": false,
+        "owner_supplied_reports": "OWNER_ASSERTED",
+        "supersedes_assessment_outside_outbox_and_nack_from_missing_evidence": true
+      }
+    },
+    "optimization_backlog_gate": {
+      "owner": "Ingolf Lohmann",
+      "instruction_date": "2026-10-08",
+      "reaffirmed_date": "2026-10-19",
+      "before_every_optimization_unit": true,
+      "fresh_complete_paginated_authority_inventory_required": true,
+      "bind_inventory_to_current_main": true,
+      "all_scoped_pull_requests_actually_merged_into_main_required": true,
+      "no_open_issues_required": true,
+      "verify_current_main_ancestry_and_merge_effects": true,
+      "draft_blocked_unapproved_and_unmerged_work_remains_in_backlog": true,
+      "unmerged_pr_closure_issue_deletion_or_scope_narrowing_satisfies_gate": false,
+      "stale_incomplete_or_inaccessible_inventory": "HOLD",
+      "new_open_work_priority": "COMPLETION",
+      "unattended_execution_claim_requires_observed_authorized_persistent_executor": true
     }
   },
   "continuation_semantics": {
