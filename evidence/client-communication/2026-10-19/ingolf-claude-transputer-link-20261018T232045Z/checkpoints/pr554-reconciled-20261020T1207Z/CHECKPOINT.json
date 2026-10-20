@@ -1,0 +1,83 @@
+{
+  "authenticated_claude_ingress_claimed": false,
+  "documentary_checkpoint_only": true,
+  "epoch": "5289c15c26da4044a6ffd78a27561c90",
+  "events": [
+    {
+      "id": "5289c15c26da4044a6ffd78a27561c90:1",
+      "ledger_digest": "9de4dc3dc53e5098a1f5d5cf490bbf6216dfacc490e05bcee48e8db93e8c6eaf"
+    },
+    {
+      "id": "5289c15c26da4044a6ffd78a27561c90:2",
+      "ledger_digest": "9aa68b5951d72c1936a6238c9a460fe3fa01b8409956918fdc8189a97117fa93"
+    },
+    {
+      "id": "5289c15c26da4044a6ffd78a27561c90:3",
+      "ledger_digest": "62eac564e3abc1ebea1e2f2a36d1339f431cf2c362731550168ffcac1df20ebc"
+    },
+    {
+      "id": "5289c15c26da4044a6ffd78a27561c90:4",
+      "ledger_digest": "25ca45954c03ed8e32d220d0b9acdb7f2fe00e41491309b2cabf642714bcb6db"
+    }
+  ],
+  "global_effect_ack_done": false,
+  "host_preflight_executed": false,
+  "host_requests": 0,
+  "local_container_tests": 49,
+  "local_full_make_test_exit_code": 0,
+  "main_head": "a38455c739f7f475b2a93447de1db4ea87e4200c",
+  "main_tree": "b733ce6cc611dc59c426df531d9128efc0d000b9",
+  "native_snapshot_sha256": "b3bb04ae491b1fb269b32c4ae5d54581151d49f9cfcc0bc2f93af5bd18e0f7c3",
+  "native_source_jobs": [
+    118614048206,
+    118614028282
+  ],
+  "native_source_runs": [
+    39418721467,
+    39418715755
+  ],
+  "native_source_tests_state": "in_progress at checkpoint; original callbacks required",
+  "open_tasks": [
+    "REST_DRAFT_READY_OPERATION_NOT_EXPOSED",
+    "FRESH_EXACT_HEAD_SOURCE_CI",
+    "PROTECTED_EXACT_MAIN_REQUIRED",
+    "EXISTING_PRIVATE_HOST_BINDING_VPS_DAEMON_MTLS_READBACK",
+    "SIGNED_FIREFOX_AND_EXACT_PUBLIC_DOMAIN_ACCEPTANCE",
+    "ORIGINAL_MIRROR_EMITTER_PRIVATE_PEER_BINDING"
+  ],
+  "open_tasks_carrier": "Existing PR554, original native CI callbacks, existing QIKVRT continuation archive libfile_8ff514ee33a08191a6573ae98c5acb5a; original grants retained",
+  "principal_gate": "success",
+  "principal_review": 5584666633,
+  "review_state": "COMMENTED",
+  "schema": "qikvrt-durable-native-checkpoint/v1",
+  "signed_peer_export": false,
+  "source_draft": true,
+  "source_files": [
+    {
+      "bytes": 2886,
+      "path": "host-admission.event.json",
+      "sha256": "b953dd5e80d509937ed5cc687a5ff397f2dbb4efe1f3f353895c86dc8b5ace6b"
+    },
+    {
+      "bytes": 1845,
+      "path": "input.event.json",
+      "sha256": "8aace76734c7b4b848088d4931f2d0612b11bccd71aa9235f85dc48067334ef1"
+    },
+    {
+      "bytes": 1427,
+      "path": "reconcile.event.json",
+      "sha256": "d15771e52c3e7f42407e88d2ec0cc247b289d983c54833afe687c87a3ef70d14"
+    },
+    {
+      "bytes": 908,
+      "path": "source-readback.event.json",
+      "sha256": "f34f2baa04ff356e8778c31650d555b6b60e7afd82d47aee74e85d3683fcbd4b"
+    }
+  ],
+  "source_head": "a3965be64cd18dd30bd2b5f9b360e0f1dc6c8d43",
+  "source_integrated": false,
+  "source_mergeable": true,
+  "source_route_correction": "Read-only remote Git transport was mistakenly used for initial source acquisition; no Git write occurred. All repository mutations used REST and subsequent remote routing is REST only.",
+  "source_tree": "371432de7265a5f63258347a23cdb4f8679d9821",
+  "task": "PR554 source reconciliation and protected IONOS host-preflight admission"
+}
