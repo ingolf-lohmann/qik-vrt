@@ -3,6 +3,9 @@
 from __future__ import annotations
 
 import json
+import base64
+from email.message import EmailMessage
+from email import policy
 from pathlib import Path
 import stat
 import tempfile
@@ -129,6 +132,115 @@ class InteractionArchiveTests(unittest.TestCase):
         result = archive.tombstone(args)
         self.assertEqual(result["state"], "TOMBSTONE_RECORDED")
         self.assertEqual(archive.verify(self.archive_root)["event_count"], 2)
+
+
+class MailSourceReceiptTests(unittest.TestCase):
+    """Synthetic messages only; fake age tests transport, never cryptography."""
+    setUp = InteractionArchiveTests.setUp
+    tearDown = InteractionArchiveTests.tearDown
+    append_args = InteractionArchiveTests.append_args
+    def original(self, *, nested=False):
+        message = EmailMessage()
+        message["Message-ID"] = "<original-001@example.test>"
+        message["Date"] = "Sat, 17 Oct 2026 10:53:54 +0000"
+        message["From"] = "Author <author@example.test>"
+        message["To"] = "Reviewer <reviewer@example.test>"
+        message["Cc"] = "Owner <owner@example.test>"
+        message["Subject"] = "Scientific correspondence"
+        message.set_content("Please assess this manuscript.")
+        message.add_attachment(b"exact PDF source bytes", maintype="application", subtype="pdf", filename="Manuscript.pdf")
+        if nested:
+            outer = EmailMessage()
+            for key in ("Date", "From", "To", "Cc"):
+                outer[key] = str(message[key])
+            outer["Message-ID"] = "<forward-001@example.test>"
+            outer["In-Reply-To"] = str(message["Message-ID"])
+            outer.set_content("Original attached.")
+            outer.add_attachment(message)
+            message = outer
+        return message.as_bytes(policy=policy.SMTP)
+
+    def receipt(self, raw=None):
+        return archive.build_mail_receipt(raw or self.original(), account="author@example.test",
+            provider_message_id="provider-001", observed_at="2026-10-20T14:00:00Z",
+            evidence=[("provider.json", b'{"labels":["SENT"],"status":202}')])
+
+    def test_exact_original_and_cc_are_reconstructible(self):
+        raw = self.original()
+        value = self.receipt(raw)
+        self.assertEqual(base64.b64decode(value["original"]["base64"]), raw)
+        self.assertEqual(value["identity"]["cc"][0]["address"], "owner@example.test")
+        self.assertEqual(value["identity"]["attachments"][0]["decoded_sha256"], archive.sha256(b"exact PDF source bytes"))
+        self.assertEqual(archive.verify_mail_receipt(value)["state"], "VERIFIED_MAIL_SOURCE_FIXITY")
+
+    def test_sent_label_202_cc_and_headers_do_not_promote_delivery(self):
+        value = self.receipt()
+        self.assertEqual(set(value["evidence_states"].values()), {"NOT_ASSESSED"})
+        self.assertEqual(value["identity"]["envelope_recipients"], "UNKNOWN")
+        self.assertFalse(value["global_effect_ack_done"])
+        self.assertFalse(value["resend_performed"])
+
+    def test_forward_preserves_outer_inner_identity_and_pdf_bytes(self):
+        value = self.receipt(self.original(nested=True))
+        self.assertEqual(value["identity"]["message_id"], "<forward-001@example.test>")
+        self.assertEqual(value["identity"]["enclosed_message_ids"][0]["message_id"], "<original-001@example.test>")
+        self.assertEqual(value["identity"]["attachments"][0]["decoded_sha256"], archive.sha256(b"exact PDF source bytes"))
+
+    def test_changed_raw_evidence_identity_and_inflated_claim_fail(self):
+        for field in ("original", "source_snapshots", "identity", "evidence_states"):
+            with self.subTest(field=field):
+                value = self.receipt()
+                if field == "original": value[field]["base64"] = base64.b64encode(self.original()+b"changed").decode()
+                elif field == "source_snapshots": value[field][0]["base64"] = base64.b64encode(b"changed").decode()
+                elif field == "identity": value[field]["cc"] = []
+                else: value[field]["recipient_delivery"] = "DELIVERED"
+                # Even rehashing the changed receipt cannot bless inconsistent derivation.
+                value["receipt_sha256"] = archive.sha256(archive.canonical({k:v for k,v in value.items() if k != "receipt_sha256"}))
+                with self.assertRaises(archive.ArchiveError): archive.verify_mail_receipt(value)
+
+    def test_missing_duplicate_identity_or_timezone_fail(self):
+        raw = self.original()
+        for altered in [raw.replace(b"Message-ID:", b"X-Message-ID:", 1),
+                        b"Message-ID: <duplicate@example.test>\r\n"+raw,
+                        raw.replace(b" +0000", b" -0000", 1)]:
+            with self.assertRaises((archive.ArchiveError, ValueError)):
+                self.receipt(altered)
+
+    def test_receipt_is_create_only_and_independently_read_back(self):
+        source = self.root/"original.eml"; source.write_bytes(self.original())
+        output = self.root/"private-mail"/"receipt.json"
+        args = type("Args", (), {"source_file":str(source), "output":str(output), "account":"author@example.test",
+            "provider_message_id":"provider-001", "observed_at":"2026-10-20T14:00:00Z", "evidence_file":[]})()
+        first = archive.mail_receipt(args)
+        self.assertEqual(archive.mail_receipt(args), first)
+        self.assertEqual(output.stat().st_mode & 0o777, 0o600)
+        before = output.read_bytes()
+        args.provider_message_id = "other-provider-record"
+        with self.assertRaises(archive.ArchiveError): archive.mail_receipt(args)
+        self.assertEqual(output.read_bytes(), before)
+
+    def test_plaintext_source_repository_and_symlink_output_rejected(self):
+        raw = self.original()
+        source = self.root/"original.eml"; source.write_bytes(raw)
+        repo = self.root/"source-repo"; repo.mkdir(); (repo/".git").write_text("gitdir: anywhere")
+        link = self.root/"link.json"; link.symlink_to(source)
+        for target in (repo/"receipt.json", link):
+            args = type("Args", (), {"source_file":str(source), "output":str(target), "account":"a@example.test",
+                "provider_message_id":"provider-001", "observed_at":"2026-10-20T14:00:00Z", "evidence_file":[]})()
+            with self.assertRaises(archive.ArchiveError): archive.mail_receipt(args)
+        self.assertEqual(source.read_bytes(), raw)
+
+    def test_existing_encrypted_append_validates_mail_before_encrypting(self):
+        content = self.root/"receipt.json"; value = self.receipt()
+        content.write_bytes(archive.canonical(value))
+        args = self.append_args(content, "tool", "mail-event-0001")
+        args.media_type = archive.MAIL_MEDIA_TYPE; args.max_bytes = 100000
+        archive.append(args)
+        self.assertNotIn(b"author@example.test", b"".join(p.read_bytes() for p in self.archive_root.rglob("*") if p.is_file()))
+        value["evidence_states"]["mailbox_ingress"] = "CONFIRMED"
+        content.write_bytes(archive.canonical(value)); args.event_id = "mail-event-0002"
+        with self.assertRaises(archive.ArchiveError): archive.append(args)
+        self.assertEqual(archive.verify(self.archive_root)["event_count"], 1)
 
 
 if __name__ == "__main__":

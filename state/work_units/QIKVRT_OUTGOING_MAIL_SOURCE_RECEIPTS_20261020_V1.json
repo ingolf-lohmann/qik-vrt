@@ -1,0 +1,41 @@
+{
+  "schema": "qikvrt_outgoing_mail_source_receipts_work_unit_v1",
+  "id": "mail-source-receipts-20261020",
+  "responsibility_owner": "Ingolf Lohmann",
+  "authorization": "Direct Owner task 2026-10-20: reconstruct the original scientific correspondence, preserve identity without resend, and extend permanent source-bound outgoing documentation within technical and organizational access.",
+  "base": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "a38455c739f7f475b2a93447de1db4ea87e4200c",
+    "tree": "b733ce6cc611dc59c426df531d9128efc0d000b9"
+  },
+  "contributions": {
+    "human": "Requirement, provider choice, authorization and product responsibility: Ingolf Lohmann",
+    "artificial": "Source analysis, implementation, synthetic regression controls and documentation: OpenAI Codex",
+    "joint": "Owner-directed, source-bound implementation candidate; no independent scientific or recipient endorsement claimed"
+  },
+  "reuse": {
+    "extended": ["tools/qikvrt_interaction_archive.py", "tests/test_interaction_archive.py", "docs/PRIVACY_PRESERVING_INTERACTION_ARCHIVE.md"],
+    "separate_incoming_candidate": {"pr": 477, "head": "cbf0746db2600c51cec53547caa75aa3c504dd91", "integrated": false},
+    "smtp_sink_is_outbound_relay": false,
+    "new_sender_or_scheduler": false
+  },
+  "private_audit": {
+    "original_messages": 3,
+    "independent_outlook_inbox_copies_observed": 3,
+    "decoded_pdf_identity_matches": true,
+    "raw_messages_and_private_recipient_lists_in_public_repository": false,
+    "external_delivery_to_all_recipients_established": false,
+    "full_smtp_relay_chain_established": false,
+    "ios_app_visibility_cause_established": false,
+    "resend_performed": false
+  },
+  "boundaries": {
+    "receipt_effect_scope": "ORIGINAL_BYTES_IDENTITY_AND_SOURCE_FIXITY_ONLY",
+    "source_snapshot_authenticity_inferred_from_hash": false,
+    "evidence_states_automatically_promoted": false,
+    "encrypted_host_archive_activation": "OPEN_EXISTING_PRIVATE_KEY_AND_CALLER_BINDING_REQUIRED",
+    "original_mirror_emitter_and_authenticated_peer_readback": "OPEN_PREDECESSOR_OBLIGATION",
+    "main_integration": "REVIEW_REQUIRED",
+    "global_effect_ack_done": false
+  }
+}
