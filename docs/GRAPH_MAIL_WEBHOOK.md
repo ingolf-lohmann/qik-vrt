@@ -416,3 +416,29 @@ message readback or private notification delivery is established by this
 source change. The existing private day-plan attention lane still expresses
 notification intent; it does not perform or claim delivery. Test fixtures
 remain synthetic and cannot establish productive monitoring.
+
+## Standing native continuation grant — 20 October 2026
+
+The direct Owner reply at 15:28:32 Europe/Istanbul is preserved in
+`state/authorization/delegations/OWNER_NATIVE_SUPPORT_CONTINUATION_V1.json` and is loaded through the required
+read order. It authorizes the original Universal Terminal/Transputer path
+for such cases without another generic permission request or Owner relay.
+The Support portal exception is bounded to this continuation; repository
+operations retain REST_API_ONLY and all existing governance and credential
+boundaries.
+
+Actual original in-process intake and cold Terminal readback are recorded in
+`evidence/mail-problem-watch/20261020/NATIVE_CONTINUATION_RECEIPT.json`.
+The current client has no signed-in Support session. The official contact
+path without login accepts the contact-email verification request but then
+requires an email verification code. The available secure sign-in mechanism
+requires user participation; no unattended secure authentication bridge was
+provided. No code was entered, no Support body was submitted, and no ticket
+was obtained. Keep that operation-specific HOLD without another Owner request,
+unchanged SMTP send, credential substitution or claim of productive execution.
+
+Both original native source-test jobs and both browser engines succeeded on
+predecessor d54e632e055858df8169639977addf378a274969/tree
+604ebc5ace64a34698853c7fad36cc4b5a82661e. Their source acceptance does not
+establish production Firefox activation, protected host/Graph admission or
+private notification delivery, and does not transfer to this documentary successor.

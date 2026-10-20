@@ -19,7 +19,10 @@
     "cause_of_repository_404": "UNKNOWN",
     "paused_client_mail_watch": true,
     "native_pr_477_merged": false,
-    "productive_graph_binding": "NOT_ESTABLISHED"
+    "productive_graph_binding": "NOT_ESTABLISHED",
+    "support_portal_authentication": "NO_AVAILABLE_UNATTENDED_SECURE_AUTHENTICATION_BRIDGE",
+    "support_portal_body_submitted": false,
+    "owner_authentication_requested": false
   },
   "repair": {
     "source_of_mandate": "personal/ingolf-lohmann/reminders/MAIL_PROBLEM_WATCH_V1.json",
@@ -53,9 +56,28 @@
       "log_sha256": "29df13c6cab5a63f72b3b16111acd0ed3ad0e7471535e70a6c270bb940e47558",
       "log_path": "evidence/mail-problem-watch/20261020/REST_MCP_TESTS.log"
     },
-    "full_make_test": "PENDING_NATIVE_CI_ON_EXACT_SUCCESSOR",
+    "full_make_test": "PREDECESSOR_EXACT_SOURCE_NATIVE_JOBS_SUCCESS; DOCUMENTARY_SUCCESSOR_REQUIRES_OWN_CI",
     "integrity_generation": "FRESH_MAIN_MANIFEST_PLUS_EXACT_CHANGED_BYTES; FULL_TREE_VERIFICATION_REQUIRES_NATIVE_CHECKOUT",
-    "rest_mcp_log_path": "evidence/mail-problem-watch/20261020/REST_MCP_TESTS.log"
+    "rest_mcp_log_path": "evidence/mail-problem-watch/20261020/REST_MCP_TESTS.log",
+    "predecessor_native_source_ci": {
+      "head": "d54e632e055858df8169639977addf378a274969",
+      "tree": "604ebc5ace64a34698853c7fad36cc4b5a82661e",
+      "push": {
+        "run_id": 39420772732,
+        "source_test_job": 118620865156,
+        "result": "SUCCESS"
+      },
+      "pull_request": {
+        "run_id": 39420779762,
+        "source_test_job": 118620888898,
+        "result": "SUCCESS"
+      },
+      "browser_engines": [
+        "CHROMIUM_SUCCESS",
+        "WEBKIT_SUCCESS"
+      ],
+      "productive_firefox_or_host_acceptance_inferred": false
+    }
   },
   "open_work": [
     {
@@ -76,7 +98,7 @@
     {
       "id": "SUPPORT_TICKET_ACCEPTANCE",
       "state": "OPEN",
-      "next": "Submit the already approved exact support request through an exposed authorized Support portal operation; standing REST-only route admits no browser fallback without explicit Owner exception."
+      "next": "Reuse the existing original native route under the standing 2026-10-20T15:28:32+03:00 grant when an admitted unattended secure authentication binding is actually available. Both official portal routes require sign-in/email verification in this client. Do not ask the Owner again, extract or publish credentials, resend SMTP unchanged, or count an email-verification request as a Support ticket."
     },
     {
       "id": "EXACT_DOMAIN_DELIVERY",
@@ -99,5 +121,8 @@
   "native_activation_verified": false,
   "notification_sent": false,
   "effect_ack_done": false,
-  "predecessor_evidence_transfer": false
+  "predecessor_evidence_transfer": false,
+  "native_continuation_authorization": "state/authorization/delegations/OWNER_NATIVE_SUPPORT_CONTINUATION_V1.json",
+  "native_receipt": "evidence/mail-problem-watch/20261020/NATIVE_CONTINUATION_RECEIPT.json",
+  "continuation_not_complete": true
 }

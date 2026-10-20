@@ -1,0 +1,46 @@
+{
+  "schema": "qikvrt_owner_native_support_continuation_v1",
+  "principal": "Ingolf Lohmann",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "instruction_at": "2026-10-20T15:28:32+03:00",
+  "source": "DIRECT_OWNER_REPLY_TO_FAILED_SUPPORT_DELIVERY_AND_REPOSITORY_MAIL_WATCH_TASK",
+  "instruction": "Ja, für solche Fälle darfst du grundsätzlich den dafür vorgesehenen universalen Terminalweg mit dem universalen Transputer verwenden. Allerdings ohne dass ich dabei benötigt werde.",
+  "instruction_utf8_sha256": "83dca210c539a11461a128ef9e2e6629cce549ec6ac16235110b444bd72887ab",
+  "scope": [
+    "EXISTING_ORIGINAL_UNIVERSAL_TERMINAL_AND_TRANSPUTER",
+    "FAILED_SUPPORT_DELIVERY_RECOVERY",
+    "REPOSITORY_NATIVE_OUTLOOK_PROBLEM_ATTENTION"
+  ],
+  "authorization": {
+    "standing_for_such_cases": true,
+    "repeat_generic_permission_required": false,
+    "owner_packet_relay_required": false,
+    "owner_interaction_as_execution_carrier": false,
+    "continue_safe_available_successors_in_same_ring": true,
+    "new_scheduler_or_replacement_executor": false
+  },
+  "routing": {
+    "primary": "EXISTING_ORIGINAL_NATIVE_COMPONENTS_AND_ADMITTED_ADAPTERS",
+    "github_repository_operations": "REST_API_ONLY",
+    "support_portal_exception": "OFFICIAL_SUPPORT_CONTACT_ONLY_WITHIN_OWNER_AUTHORIZED_NATIVE_CONTINUATION",
+    "general_github_browser_route_change": false,
+    "reuse_existing_protected_authentication": true,
+    "copy_connector_credentials": false,
+    "invent_credential_or_peer_admission": false,
+    "authentication_barrier": "PRESERVE_OPERATION_SPECIFIC_HOLD_WITHOUT_REPEATED_OWNER_REQUEST_OR_UNCHANGED_ATTEMPT"
+  },
+  "required_readback": [
+    "ORIGINAL_NATIVE_EVENT_ID_EPOCH_AND_DIGEST",
+    "EXACT_SOURCE_TASK_PRINCIPAL_AND_WRITER_BINDING",
+    "ACTUAL_SUPPORT_TICKET_OR_INGRESS_RECEIPT",
+    "ACTUAL_PRIVATE_MAIL_PROBLEM_NOTIFICATION_DELIVERY"
+  ],
+  "effect_boundaries": {
+    "authorization_proves_authentication": false,
+    "native_local_event_proves_remote_execution": false,
+    "sent_items_proves_support_acceptance": false,
+    "source_saved_proves_live_monitoring": false,
+    "governance_and_private_credential_boundaries_preserved": true
+  },
+  "source_of_monitoring_mandate": "personal/ingolf-lohmann/reminders/MAIL_PROBLEM_WATCH_V1.json"
+}

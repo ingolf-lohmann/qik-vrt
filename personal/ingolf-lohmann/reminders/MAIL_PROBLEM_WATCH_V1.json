@@ -56,7 +56,13 @@
     "next_route": "https://support.github.com/contact",
     "portal_submission": "NOT_ESTABLISHED",
     "standing_github_route": "REST_API_ONLY",
-    "browser_exception": "REQUIRES_EXPLICIT_OWNER_ROUTE_CHANGE"
+    "browser_exception": "OFFICIAL_SUPPORT_PORTAL_ONLY_WITHIN_ORIGINAL_NATIVE_CONTINUATION; OWNER_20261020T152832+0300",
+    "general_repository_route_replaced": false,
+    "observed_portal_route": "https://help.github.com/request/landing",
+    "unauthenticated_contact_route": "https://help.github.com/contact/cannot_sign_in",
+    "unattended_authentication_binding": "NOT_AVAILABLE_IN_THIS_CLIENT",
+    "observed_gate": "GITHUB_SIGN_IN_OR_EMAIL_VERIFICATION_CODE",
+    "owner_login_or_code_requested": false
   },
   "activation_requires": [
     "GOVERNED_MAIN_INTEGRATION",
@@ -68,5 +74,6 @@
   ],
   "activation_observed": false,
   "notification_sent": false,
-  "effect_ack_done": false
+  "effect_ack_done": false,
+  "native_continuation_authorization": "state/authorization/delegations/OWNER_NATIVE_SUPPORT_CONTINUATION_V1.json"
 }

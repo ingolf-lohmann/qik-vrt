@@ -403,3 +403,11 @@ failure reports as ordinary bulk mail. Private attention is not a sent alert;
 verify actual notification delivery separately. Keep original mail and private
 state out of the public repository. Never reactivate the rejected client timer
 as an activation workaround. Sent Items is not recipient acceptance.
+
+OWNER NATIVE SUPPORT CONTINUATION — 2026-10-20T15:28:32+03:00
+Read state/authorization/delegations/OWNER_NATIVE_SUPPORT_CONTINUATION_V1.json. The existing original Universal Terminal/Transputer
+path is authorized for cases such as failed Support delivery without renewed
+generic permission or Owner packet relay. Reuse admitted protected adapters;
+GitHub repository operations remain REST_API_ONLY. Preserve an unavailable
+unattended authentication binding as a concrete HOLD, never as a permission
+request, invented credential, completed ticket or active mailbox watch.

@@ -1,0 +1,104 @@
+{
+  "schema": "qikvrt_native_mail_support_continuation_receipt_v1",
+  "source_binding": {
+    "schema": "qikvrt-original-native-source-and-predecessor/1",
+    "head": "a38455c739f7f475b2a93447de1db4ea87e4200c",
+    "tree": "b733ce6cc611dc59c426df531d9128efc0d000b9",
+    "verified_tree_objects": 613,
+    "modules": [
+      {
+        "path": "src/qikvrt_temdd_event_ledger.py",
+        "git_blob": "372701f5071146d5583dc78c69399f3a6d008d88",
+        "sha256": "f090abf4684907965ea2fe611ea4c3da3968660c19c1b881f925a144f15ad2a5"
+      },
+      {
+        "path": "src/qikvrt_effect_ack_http_terminal.py",
+        "git_blob": "60da8998201333ea1b3ba235893258f9374252b5",
+        "sha256": "213fe3f2b62666df45bd799ee814bd3e74bfc7d70f5e6e3a304e343e5d319c90"
+      },
+      {
+        "path": "tools/qikvrt_self_host.py",
+        "git_blob": "2358e533bc3db6124e2976d0947ca64864523687",
+        "sha256": "8795014d2bf2eb5d2ccfb035f0b2968b1f09b178e288a4582a5cec9d0af46c3e"
+      }
+    ],
+    "source_scope": "EXACT_SPARSE_SOURCE_NOT_FULL_CHECKOUT_OR_PRODUCTIVE_HOST",
+    "predecessor_archive_sha256": "5519f54a8accdbb1e01b5ea8fb49c6734c01093474253bdacd1745060e4d1ee6",
+    "predecessor_continuation_sha256": "527d29ca7ad775c7d01c14d4626b7b5a9defaddc8c0db2b5b97866f95f81bee5",
+    "predecessor_state": "BLOCK",
+    "predecessor_records": {
+      "work": {
+        "count": 321,
+        "sha256": "fae04cfb2b55cc22b7b61cf3ac4c2bbc4e603f328911966640c9439dcd9bfd7b"
+      },
+      "knowledge": {
+        "count": 365,
+        "sha256": "94687ef7e3ed3ca4f19ca761b8d7c7ba4f19ff853c49335d54a56dbf3e878427"
+      }
+    },
+    "predecessor_original_journals": 61,
+    "copied_journals_modified": false,
+    "writer_admission_transferred": false,
+    "all_predecessor_obligations_retained": true,
+    "predecessor_execution_id": "QIKVRT_PR554_RECONCILED_ADMISSION_20261020_V44"
+  },
+  "native_events": [
+    {
+      "key": "owner-input",
+      "epoch": "26cc3796bb95462bb7b68bad849835d0",
+      "id": "26cc3796bb95462bb7b68bad849835d0:1",
+      "ledger_digest": "cc93fb598245c0e78cb838334a362c8d3c9b9b7a192830be188a46ab9a7f5d2a",
+      "subject": {
+        "head": "a38455c739f7f475b2a93447de1db4ea87e4200c",
+        "pr": 477,
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "b733ce6cc611dc59c426df531d9128efc0d000b9"
+      },
+      "independent_original_terminal_readback": true
+    },
+    {
+      "key": "predecessor-consumed",
+      "epoch": "26cc3796bb95462bb7b68bad849835d0",
+      "id": "26cc3796bb95462bb7b68bad849835d0:2",
+      "ledger_digest": "ae27869e89423ecb7a85577bbbf3ce002bdf091e3098073085a74457f07505dc",
+      "subject": {
+        "head": "a38455c739f7f475b2a93447de1db4ea87e4200c",
+        "pr": 477,
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "b733ce6cc611dc59c426df531d9128efc0d000b9"
+      },
+      "independent_original_terminal_readback": true
+    },
+    {
+      "key": "support-auth-boundary",
+      "epoch": "26cc3796bb95462bb7b68bad849835d0",
+      "id": "26cc3796bb95462bb7b68bad849835d0:3",
+      "ledger_digest": "25eeef6b56c32efcfc43a6e83a086647041a673c0be3117ee3baa7052b072938",
+      "subject": {
+        "head": "a38455c739f7f475b2a93447de1db4ea87e4200c",
+        "pr": 477,
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "b733ce6cc611dc59c426df531d9128efc0d000b9"
+      },
+      "independent_original_terminal_readback": true
+    }
+  ],
+  "local_native_scope": "OWN_ORIGINAL_IN_PROCESS_API; NO_PRODUCTIVE_HOST_OR_PEER_ADMISSION",
+  "support_observations": {
+    "official_portal": "https://help.github.com/request/landing",
+    "signed_in_session_observed": false,
+    "official_contact_without_login": "https://help.github.com/contact/cannot_sign_in",
+    "contact_reason": "OTHER; NO_ACCOUNT_LOCK_OR_SUSPENSION_ASSERTED",
+    "contact_email_verification_requested_once": true,
+    "email_verification_page": "https://help.github.com/contact/email_verification",
+    "one_time_code_entered": false,
+    "owner_code_or_login_requested": false,
+    "support_request_body_submitted": false,
+    "ticket_or_ingress_receipt_observed": false,
+    "failure_scope": "NO_AVAILABLE_UNATTENDED_SECURE_AUTHENTICATION_BRIDGE",
+    "unchanged_smtp_resend": false
+  },
+  "productive_mail_monitoring_verified": false,
+  "private_alert_sent": false,
+  "effect_ack_done": false
+}
