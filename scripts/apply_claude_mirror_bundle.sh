@@ -23,8 +23,10 @@ HEAD_EXP=dae356e4df1b3892e58768047b1a5edd1e68c52e
 REF=communication/claude/mirror-20261020T1827Z
 TMP_REF="refs/qikvrt/verify/claude-mirror-$$"
 WT=""
+VERIFY_LOG=""
 cleanup() {
   if [[ -n "$WT" && -d "$WT" ]]; then git worktree remove --force "$WT" >/dev/null 2>&1 || true; fi
+  if [[ -n "$VERIFY_LOG" ]]; then rm -f "$VERIFY_LOG"; fi
   git update-ref -d "$TMP_REF" >/dev/null 2>&1 || true
 }
 trap cleanup EXIT
@@ -50,13 +52,14 @@ git fetch -q "$BUNDLE" "$REF:$TMP_REF"
 git merge-base --is-ancestor "$BASE" "$TMP_REF" || { echo "HOLD not ff from base"; exit 1; }
 
 WT=$(mktemp -d)
+VERIFY_LOG=$(mktemp)
 git worktree add -q --detach "$WT" "$TMP_REF"
 (
   cd "$WT"
   set -o pipefail
-  python3 -B tools/qikvrt_integrity.py verify | tee "$WT/.qikvrt-integrity-output"
+  python3 -B tools/qikvrt_integrity.py verify | tee "$VERIFY_LOG"
 ) || { echo "HOLD integrity command failed"; exit 1; }
-grep -q '^PASS' "$WT/.qikvrt-integrity-output" || { echo "HOLD integrity"; exit 1; }
+grep -q '^PASS' "$VERIFY_LOG" || { echo "HOLD integrity"; exit 1; }
 git worktree remove --force "$WT"
 WT=""
 
