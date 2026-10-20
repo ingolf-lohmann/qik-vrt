@@ -234,3 +234,10 @@ live-authority-mirror-ab-contract:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_live_authority_mirror_ab
 
 test: live-authority-mirror-ab-contract
+
+.PHONY: personal-retrieval-test
+personal-retrieval-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_retrieval
+	node tests/test_qikvrt_personal_retrieval_ui.cjs
+
+test: personal-retrieval-test

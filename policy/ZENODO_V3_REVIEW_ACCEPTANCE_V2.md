@@ -49,7 +49,9 @@ block. The latest dedicated status must succeed after the selected review and
 before the merge. Its target must resolve to the actual completed successful
 Main run of `.github/workflows/qikvrt_required_review_gate.yml`, with Authority
 repository/source binding and exact preserved gate/policy/Owner/workflow blobs.
-The PR and complete review inventory are reobserved before leaving the gate.
+The PR, complete review inventory, selected ruleset and complete status inventory
+are reobserved before leaving the gate. A changed observation blocks admission;
+the bounded check does not make later administrative changes impossible.
 For v2, ruleset targets must explicitly include Main or all branches; an
 unresolved `~DEFAULT_BRANCH` alias alone cannot establish Main enforcement.
 

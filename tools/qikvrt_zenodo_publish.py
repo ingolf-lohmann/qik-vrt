@@ -1846,6 +1846,16 @@ def _verify_v3_contract_review_v2(
     _status, current_pr = _github_api_request("GET", pr_path, token)
     if current_pr != pr or _github_review_inventory(pr_path + "/reviews", token) != reviews:
         _fail("v3 review acceptance v2 native subject or decisions changed during verification")
+    # Keep the final admission bound to the same control-plane observations.
+    # A stable PR/review pair does not freeze ruleset administration or statuses.
+    _status, current_ruleset = _github_api_request(
+        "GET", f"{prefix}/rulesets/{review['ruleset_id']}", token
+    )
+    current_statuses = _github_review_inventory(
+        f"{prefix}/commits/{review['head_sha']}/statuses", token
+    )
+    if current_ruleset != ruleset or current_statuses != statuses:
+        _fail("v3 review acceptance v2 native governance or statuses changed during verification")
 
 
 def _github_ref_path(ref: str) -> str:

@@ -5273,6 +5273,29 @@ class V3ReviewAcceptanceV2Tests(unittest.TestCase):
                 with self.assertRaises(zenodo.ZenodoError): self.verify(root, manifest, github)
                 self.assertFalse(github.refs)
 
+    def test_governance_and_status_drift_during_verification_blocks_before_effects(self):
+        class ChangesAfterTrustedRun(FakeV3ReviewAcceptanceV2):
+            def __call__(self, method, path, token, **kwargs):
+                value = super().__call__(method, path, token, **kwargs)
+                if method == "GET" and path.endswith("/actions/runs/987"):
+                    if self.drift == "rules_disabled":
+                        self.ruleset["enforcement"] = "disabled"
+                    else:
+                        latest = copy.deepcopy(self.status)
+                        latest.update(id=901, created_at="2026-10-19T09:30:26Z", state="pending")
+                        self.statuses.append(latest)
+                return value
+
+        for drift in ("rules_disabled", "status_pending"):
+            with self.subTest(drift=drift), tempfile.TemporaryDirectory() as tmp:
+                root = pathlib.Path(tmp)
+                _, _, manifest = self.fixture(root)
+                github = ChangesAfterTrustedRun(manifest)
+                github.drift = drift
+                with self.assertRaisesRegex(zenodo.ZenodoError, "governance.*changed during verification"):
+                    self.verify(root, manifest, github)
+                self.assertFalse(github.refs)
+
     def test_v2_activation_requires_version_policy_exact_statement_and_new_contracts(self):
         for defect in ("unknown_version", "missing_policy", "changed_policy", "wrong_statement", "missing_contract", "unknown_basis"):
             with self.subTest(defect=defect), tempfile.TemporaryDirectory() as tmp:
