@@ -844,6 +844,97 @@ class ArtifactTransportControls(unittest.TestCase):
         self.assertFalse(self.parts.exists())
 
 
+class HostPreflightControls(unittest.TestCase):
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.output = Path(temporary.name) / 'receipt.json'
+        self.value = declaration()
+        raw = json.dumps(self.value)
+        self.env = {'GITHUB_SHA': HEAD, 'GITHUB_REPOSITORY': c.REPOSITORY,
+                    'GITHUB_REF': 'refs/heads/main', 'QIKVRT_HOST_BINDING': raw,
+                    'QIKVRT_HOST_BINDING_SHA256': c.sha(raw.encode()),
+                    'QIKVRT_HOST_CA': 'private-ca-fixture',
+                    'QIKVRT_HOST_CERT': 'private-client-certificate-fixture',
+                    'QIKVRT_HOST_KEY': 'private-client-key-fixture'}
+
+    def observe(self):
+        return c.host_preflight(HEAD, TREE, self.output, self.env)
+
+    def test_missing_protected_binding_is_durable_and_never_contacts_host(self):
+        del self.env['QIKVRT_HOST_KEY']
+        with patch.object(c, 'production_gate') as gate, patch.object(c, 'Engine') as engine:
+            receipt = self.observe()
+        gate.assert_not_called(); engine.assert_not_called()
+        self.assertEqual(receipt['first_boundary'], 'HOST_PREFLIGHT_BINDINGS_UNAVAILABLE')
+        self.assertFalse(receipt['binding_present']['QIKVRT_HOST_KEY'])
+        self.assertEqual(json.loads(self.output.read_bytes()), receipt)
+        for value in self.env.values():
+            if value.startswith('private-'): self.assertNotIn(value, self.output.read_text())
+
+    def test_untrusted_ref_and_exact_source_drift_are_rejected_before_host(self):
+        for field, value in [('GITHUB_REF', 'refs/pull/1/merge'), ('GITHUB_SHA', 'f' * 40),
+                             ('GITHUB_REPOSITORY', 'other/repository')]:
+            with self.subTest(field=field), patch.dict(self.env, {field: value}), patch.object(c, 'Engine') as engine:
+                receipt = self.observe()
+                self.assertEqual(receipt['first_boundary'], 'HOST_PREFLIGHT_EXACT_SOURCE_REQUIRED')
+                engine.assert_not_called()
+
+    def test_binding_pin_and_bound_source_are_not_relaxed_for_diagnostics(self):
+        for mode in ['pin', 'source']:
+            with self.subTest(mode=mode), patch.dict(self.env), patch.object(c, 'Engine') as engine:
+                if mode == 'pin': self.env['QIKVRT_HOST_BINDING_SHA256'] = 'f' * 64
+                else:
+                    changed = dict(self.value, source_tree='f' * 40)
+                    raw = json.dumps(changed)
+                    self.env.update(QIKVRT_HOST_BINDING=raw, QIKVRT_HOST_BINDING_SHA256=c.sha(raw.encode()))
+                receipt = self.observe()
+                self.assertEqual(receipt['first_boundary'], 'INDEPENDENT_DEPLOYMENT_BINDING_PIN_REQUIRED'
+                                 if mode == 'pin' else 'HOST_PREFLIGHT_EXACT_SOURCE_REQUIRED')
+                engine.assert_not_called()
+
+    def test_original_production_governance_blocks_host_traffic(self):
+        with (patch.object(c, 'production_gate', side_effect=ValueError('PROTECTED_EXACT_MAIN_REQUIRED')) as gate,
+              patch.object(c, 'Engine') as engine):
+            receipt = self.observe()
+        gate.assert_called_once_with(HEAD); engine.assert_not_called()
+        self.assertEqual(receipt['first_boundary'], 'PROTECTED_EXACT_MAIN_REQUIRED')
+
+    def test_only_one_get_and_exact_daemon_readback_without_deployment(self):
+        with patch.object(c, 'production_gate'), patch.object(c, 'Engine') as engine:
+            engine.return_value.call.return_value = {'OSType': 'linux', 'ID': self.value['daemon_id']}
+            receipt = self.observe()
+        engine.return_value.call.assert_called_once_with('GET', '/v1.45/info')
+        self.assertTrue(receipt['authenticated_daemon_readback'])
+        self.assertEqual(receipt['host_requests'], 1)
+        self.assertFalse(receipt['deployment_performed'])
+        self.assertFalse(receipt['effect_ack_done'])
+        self.assertFalse(receipt['public_production_verified'])
+        self.assertNotIn(self.value['docker_api'], self.output.read_text())
+
+    def test_wrong_daemon_and_private_exception_are_not_accepted_or_exported(self):
+        for mode in ['daemon', 'transport']:
+            with self.subTest(mode=mode), patch.object(c, 'production_gate'), patch.object(c, 'Engine') as engine:
+                if mode == 'daemon': engine.return_value.call.return_value = {'OSType': 'linux', 'ID': 'other-daemon'}
+                else: engine.return_value.call.side_effect = OSError('private-client-key-fixture')
+                receipt = self.observe()
+                self.assertFalse(receipt['authenticated_daemon_readback'])
+                self.assertEqual(receipt['host_requests'], 1)
+                self.assertNotIn('private-client-key-fixture', self.output.read_text())
+
+    def test_ci_observes_host_after_failed_image_but_preserves_deployment_needs(self):
+        workflow = (Path(__file__).resolve().parents[1] / '.github/workflows/qikvrt_ci.yml').read_text()
+        job = workflow.split('  container_deploy:\n', 1)[1].split('  container_public_readback:\n', 1)[0]
+        self.assertIn('needs: [test, container, container_publish]', job)
+        self.assertIn("if: always() && github.ref == 'refs/heads/main' && needs.test.result == 'success'", job)
+        self.assertIn('environment: qikvrt-production', job)
+        self.assertIn('container-host-preflight', job)
+        self.assertIn("if: needs.container.result == 'success' && needs.container_publish.result == 'success'", job)
+        self.assertIn('host-preflight.json', job)
+        public = workflow.split('  container_public_readback:\n', 1)[1]
+        self.assertIn('needs: [container, container_publish, container_deploy]', public)
+
+
 if __name__ == "__main__":
     unittest.main()
 

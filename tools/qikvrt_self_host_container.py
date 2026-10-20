@@ -718,6 +718,69 @@ class Engine:
             connection.close()
 
 
+def host_preflight(head, tree, output, environment=None):
+    """Observe the existing protected host independently of image production.
+
+    Reuse the exact production admission, binding and mTLS Engine. This is one
+    GET /info only: no image pull, container creation/start, DNS or key change.
+    Public metadata identifies the first boundary without exposing private
+    connection values or treating the observation as deployment acceptance.
+    """
+    env = os.environ if environment is None else environment
+    names = ("QIKVRT_HOST_BINDING", "QIKVRT_HOST_BINDING_SHA256",
+             "QIKVRT_HOST_CA", "QIKVRT_HOST_CERT", "QIKVRT_HOST_KEY")
+    receipt = {"schema": "qikvrt-s1-host-preflight/v1", "state": "HOLD",
+               "subject": {"repository": REPOSITORY, "head": head, "tree": tree},
+               "binding_present": {name: bool(env.get(name)) for name in names},
+               "first_boundary": None, "authenticated_daemon_readback": False,
+               "host_requests": 0, "deployment_performed": False,
+               "public_production_verified": False, "effect_ack_done": False}
+    safe_errors = {"TRUSTED_MAIN_PRODUCTION_REQUIRED", "PROTECTED_EXACT_MAIN_REQUIRED",
+        "INDEPENDENT_PROTECTED_PRODUCTION_ENVIRONMENT_REQUIRED", "EXISTING_REQUIRED_CHECKS_NOT_ENFORCED",
+        "EXACT_MERGED_PR_OWNER_REVIEW_REQUIRED", "OTHER_APPLICABLE_EXACT_HEAD_WORKFLOW_NOT_GREEN",
+        "OWNING_EXACT_HEAD_CI_NOT_OBSERVED", "MAIN_DRIFT_AFTER_ADMISSION",
+        "HOST_PREFLIGHT_EXACT_SOURCE_REQUIRED", "HOST_PREFLIGHT_BINDINGS_UNAVAILABLE",
+        "INDEPENDENT_DEPLOYMENT_BINDING_PIN_REQUIRED", "EXACT_OWNER_HOST_BINDING_REQUIRED",
+        "MUTUAL_TLS_REST_ORIGIN_REQUIRED", "EXACT_VERSIONED_IMAGE_REQUIRED", "EXACT_SOURCE_REQUIRED",
+        "EXACT_RUNTIME_PINS_REQUIRED", "BOUNDED_HOST_IDENTITY_REQUIRED",
+        "EXISTING_PRIVATE_HOST_CONFIGURATION_REQUIRED", "LOOPBACK_ROUTING_PORT_REQUIRED",
+        "EXACT_ADMITTED_DAEMON_REQUIRED", "OWNER_ONLY_MTLS_FILES_REQUIRED"}
+    try:
+        require(re.fullmatch(r"[a-f0-9]{40}", head or "") and
+                re.fullmatch(r"[a-f0-9]{40}", tree or "") and env.get("GITHUB_SHA") == head and
+                env.get("GITHUB_REPOSITORY") == REPOSITORY and env.get("GITHUB_REF") == "refs/heads/main",
+                "HOST_PREFLIGHT_EXACT_SOURCE_REQUIRED")
+        require(all(receipt["binding_present"].values()), "HOST_PREFLIGHT_BINDINGS_UNAVAILABLE")
+        raw = env["QIKVRT_HOST_BINDING"].encode("utf-8")
+        value = json.loads(raw)
+        image = IMAGE + "@" + value["image_digest"]
+        value = binding(raw, env["QIKVRT_HOST_BINDING_SHA256"], image)
+        require(value["source_head"] == head and value["source_tree"] == tree,
+                "HOST_PREFLIGHT_EXACT_SOURCE_REQUIRED")
+        production_gate(head)  # Preserve every original protected-host guard.
+        with tempfile.TemporaryDirectory(prefix="qikvrt-host-preflight-") as temporary:
+            private = Path(temporary)
+            paths = []
+            for name in ("QIKVRT_HOST_CA", "QIKVRT_HOST_CERT", "QIKVRT_HOST_KEY"):
+                path = private / name
+                descriptor = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+                with os.fdopen(descriptor, "w") as stream:
+                    stream.write(env[name])
+                paths.append(path)
+            engine = Engine(value["docker_api"], *paths)
+            receipt["host_requests"] = 1
+            info = engine.call("GET", "/v1.45/info")
+            require(isinstance(info, dict) and info.get("OSType") == "linux" and
+                    info.get("ID") == value["daemon_id"], "EXACT_ADMITTED_DAEMON_REQUIRED")
+            receipt.update(state="AUTHENTICATED_EXISTING_DAEMON_OBSERVED",
+                           authenticated_daemon_readback=True,
+                           binding_sha256=sha(raw), daemon_readback_sha256=sha(json.dumps(info, sort_keys=True).encode()))
+    except (OSError, ValueError, KeyError, TypeError, http.client.HTTPException) as error:
+        code = str(error)
+        receipt["first_boundary"] = code if code in safe_errors else "HOST_PREFLIGHT_VALIDATION_OR_TRANSPORT_FAILED"
+    return write_receipt(output, receipt)
+
+
 def container_request(value, image):
     """One admitted specification for initial creation and unchanged recovery."""
     return {"Image": image, "User": "10001:10001",
@@ -1061,6 +1124,8 @@ def execute(args):
         result = smoke(args.image, args.output)
     elif operation == "production-gate":
         result = production_gate(args.expected_head)
+    elif operation == "host-preflight":
+        return host_preflight(args.expected_head, args.expected_tree, args.receipt)
     elif operation == "deploy":
         value = binding(args.production_binding.read_bytes(), args.binding_sha256, args.image)
         production_gate(value["source_head"])
