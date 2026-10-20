@@ -1,9 +1,10 @@
 name: claude
 on:
-  push:
-    branches: [main]
   schedule:
     - cron: '17 * * * *'
+  workflow_dispatch:
+  repository_dispatch:
+    types: [claude]
   issue_comment:
     types: [created]
   issues:
@@ -22,4 +23,4 @@ jobs:
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ github.token }}
-          prompt: ${{ (github.event_name == 'push' || github.event_name == 'schedule') && 'Bearbeite jedes offene Issue, dessen Text oder Kommentar @claude enthaelt und noch keine Antwort von dir hat, nach seinem Text. Ist nichts offen, beende sofort.' || '' }}
+          prompt: ${{ !startsWith(github.event_name, 'issue') && 'Bearbeite jedes offene Issue, dessen Text oder Kommentar @claude enthaelt und noch keine Antwort von dir hat, nach seinem Text. Ist nichts offen, beende sofort.' || '' }}
