@@ -1,0 +1,157 @@
+{
+  "base_head": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+  "base_tree": "15eb1a7bdd2c1880405df1026b14756f0fe72714",
+  "contributions": {
+    "artificial_cognitive": "Codex: new benchmark, tests, companion documentation and computed reference output",
+    "human": "Ingolf Lohmann: original QIK framework and current task/acceptance requirements",
+    "original_human_sources_modified": false
+  },
+  "reuse_search": {
+    "existing_chsh_implementation_found": false,
+    "reuse": "existing Python standard library, src/tests layout, unittest, make test, integrity generator; original Terminal/Transputer unchanged",
+    "scope": "complete Main tree, src/tools/tests text, open and historical CHSH PR search"
+  },
+  "schema": "qikvrt-chsh-source-bindings/1",
+  "scientific_status": {
+    "empirical_experiment": false,
+    "full_R1": "OPEN",
+    "kernel_proof": false,
+    "qik_derivation": false,
+    "reference_results": "ESTABLISHED_QM_AND_LOCAL_AND_NO_SIGNALLING_REFERENCE_MODELS"
+  },
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "unchanged_original_files": [
+    {
+      "bytes": 1056,
+      "git_blob_sha1": "78df44f31bd5614f0c6d970ecef6e4ad2ace3c29",
+      "path": "docs/publications/2026-09-23-qik-scientific-revision/ARCHIVE_RECONSTRUCT.md",
+      "sha256": "0ba347c4ff9ae997cd39ca1d602b435b0ae1f77d4fe1b7c2b92aa0ca2fa02d91"
+    },
+    {
+      "bytes": 110,
+      "git_blob_sha1": "a3c2ef4d97cb7fafbd857561995bc2ac6652a291",
+      "path": "docs/publications/2026-09-23-qik-scientific-revision/ARCHIVE_SHA256SUMS",
+      "sha256": "e3e6396919882eaa42564ac0af1cf1c44d56382e42b3026aeb07a5b2a11eb5b7"
+    },
+    {
+      "bytes": 2108,
+      "git_blob_sha1": "08daeb49d1c1bbe5c26ae3ca76cb47a11141df2d",
+      "path": "docs/publications/2026-09-23-qik-scientific-revision/PROVENANCE.json",
+      "sha256": "c92508af3fa97d6ae9cebda116e30f74da9d844fb300d6d72ad1825b6079c1b2"
+    },
+    {
+      "bytes": 27556,
+      "git_blob_sha1": "a2dd078527593151abd2e73f23495bfe2a39073c",
+      "path": "docs/publications/2026-09-23-qik-scientific-revision/QIK_Publikationsfassung_revidiert.md",
+      "sha256": "6b38b48148a9498c599fa9e0d677be71dd55de77243c950cf4714dc5a5e8747d"
+    },
+    {
+      "bytes": 24363,
+      "git_blob_sha1": "bff248aaa7056beb8bc30d0cd6226271c840cc66",
+      "path": "docs/publications/2026-09-23-qik-scientific-revision/QIK_Wissenschaftlicher_Revisionsbericht.md",
+      "sha256": "ea44734760880500e03cba70d88bb7bfd6c7ae1acc366045fea647ecd868311c"
+    },
+    {
+      "bytes": 3061,
+      "git_blob_sha1": "981711fc163a55b5af7b6433fe23534dd5cd4bbc",
+      "path": "docs/publications/2026-09-23-qik-scientific-revision/README.md",
+      "sha256": "7e68114928a9411675e8c027776534a0125d5d60acad617f99cc5aa54f230e0c"
+    },
+    {
+      "bytes": 216,
+      "git_blob_sha1": "ba77177682ed0310199d2c5f48c188c12482c978",
+      "path": "docs/publications/2026-09-23-qik-scientific-revision/SHA256SUMS",
+      "sha256": "8cc1a4da1be3df64cc4d6b14f805ed9ed5dfd7174b7c9946339c9ae63c191d62"
+    },
+    {
+      "bytes": 1817,
+      "git_blob_sha1": "a160373d38dc2ea262f0cb2a35e69c7e1727bb8a",
+      "path": "docs/publications/2026-09-23-qik-scientific-revision/ZENODO_METADATA.json",
+      "sha256": "1778b0e39d2a887d0efb9f57705e7f530ad253ba52f21e53ffeaf516cba5705b"
+    },
+    {
+      "bytes": 1722,
+      "git_blob_sha1": "67dae78d6bf51e5b1253ee7385c4947c562a9ca3",
+      "path": "docs/publications/2026-09-23-qik-scientific-revision/ZENODO_PUBLISH_REQUEST.json",
+      "sha256": "0c9e3b706b37b2e19b92c5050c17d6a13b8369d0903ef286d10dcc91cedf6beb"
+    },
+    {
+      "bytes": 10000,
+      "git_blob_sha1": "035463ba8d80a91a97216dee1dbf903ca5d24e87",
+      "path": "docs/publications/2026-09-23-qik-scientific-revision/archive/QIK_scientific_revision_exact_artifacts.zip.b64.part-00",
+      "sha256": "75c8899ca14c1a337f0feb1dacbcaa217d1e4e37cac68d639928236b555cffa2"
+    },
+    {
+      "bytes": 10000,
+      "git_blob_sha1": "1c36c2692a470a331874ad85d7f6f75d2ff5aae7",
+      "path": "docs/publications/2026-09-23-qik-scientific-revision/archive/QIK_scientific_revision_exact_artifacts.zip.b64.part-01",
+      "sha256": "4fc5808162d01b20ed51459db6350d069b780ebf8f9393a7628067becd71806b"
+    },
+    {
+      "bytes": 10000,
+      "git_blob_sha1": "2737f4b1460a8489272b0fd4833efc5c868ec58d",
+      "path": "docs/publications/2026-09-23-qik-scientific-revision/archive/QIK_scientific_revision_exact_artifacts.zip.b64.part-02",
+      "sha256": "3d348d345f40d263a2d70ba5c5874ddae096467ef60c857147872eef253f2cd3"
+    },
+    {
+      "bytes": 10000,
+      "git_blob_sha1": "afbf3fe4576b9909e0c5f9526d203d3595b5b25c",
+      "path": "docs/publications/2026-09-23-qik-scientific-revision/archive/QIK_scientific_revision_exact_artifacts.zip.b64.part-03",
+      "sha256": "6e91e2ede1e2255e13253e7aaa45a4aa4004601c0c9440966fda871049f4fb1a"
+    },
+    {
+      "bytes": 10000,
+      "git_blob_sha1": "c8ab98e2c27132b09d6eb8901c2523101a91bd59",
+      "path": "docs/publications/2026-09-23-qik-scientific-revision/archive/QIK_scientific_revision_exact_artifacts.zip.b64.part-04",
+      "sha256": "de5288931ead0c5ff3c1ea9e7b00f9ae5a8a85718e5fca57ce60f5e35e2f55da"
+    },
+    {
+      "bytes": 10000,
+      "git_blob_sha1": "1263781fb6284914920f5d17237eb0c5c918792b",
+      "path": "docs/publications/2026-09-23-qik-scientific-revision/archive/QIK_scientific_revision_exact_artifacts.zip.b64.part-05",
+      "sha256": "27b85df2d33df92977bd00528706e04f348ec7b7f317d695404525724439e9c1"
+    },
+    {
+      "bytes": 10000,
+      "git_blob_sha1": "52694fc1a69885b95c42ede9ceb1929f223b157c",
+      "path": "docs/publications/2026-09-23-qik-scientific-revision/archive/QIK_scientific_revision_exact_artifacts.zip.b64.part-06",
+      "sha256": "dd82c73647452bc5f99f7e24afc78c1337b28c264d1c0f64682ea83482ee2645"
+    },
+    {
+      "bytes": 10000,
+      "git_blob_sha1": "0ee1a32c315f75d2fd0ee19be5e3f40b77f46287",
+      "path": "docs/publications/2026-09-23-qik-scientific-revision/archive/QIK_scientific_revision_exact_artifacts.zip.b64.part-07",
+      "sha256": "b3bbf2d31ae44270f98b6de37f1676c63348df46414edda437a967c0ad09e22c"
+    },
+    {
+      "bytes": 10000,
+      "git_blob_sha1": "78a08c0f5a82b4867ed0ccfb2468090fe9786304",
+      "path": "docs/publications/2026-09-23-qik-scientific-revision/archive/QIK_scientific_revision_exact_artifacts.zip.b64.part-08",
+      "sha256": "88d79207cd4d9bee5dbf46c0d87a704a98fd154a718f040630cfe2bd71e95827"
+    },
+    {
+      "bytes": 10000,
+      "git_blob_sha1": "eeebf2af2d250ee91570a7921195a5f204c3cd2c",
+      "path": "docs/publications/2026-09-23-qik-scientific-revision/archive/QIK_scientific_revision_exact_artifacts.zip.b64.part-09",
+      "sha256": "21c5d838499a2d0dfef5d7315a1a827ef3a67ff8c0aacdf18fdc18c3b74342cc"
+    },
+    {
+      "bytes": 10000,
+      "git_blob_sha1": "35d678b908026e31cc711d447a92cc4613015b37",
+      "path": "docs/publications/2026-09-23-qik-scientific-revision/archive/QIK_scientific_revision_exact_artifacts.zip.b64.part-10",
+      "sha256": "183c59e53090658af33ff29530bbad05d5f25116acfad4c2b584c1570a685b90"
+    },
+    {
+      "bytes": 10000,
+      "git_blob_sha1": "bc504a36af245466278ab5cd2af58a6343faf720",
+      "path": "docs/publications/2026-09-23-qik-scientific-revision/archive/QIK_scientific_revision_exact_artifacts.zip.b64.part-11",
+      "sha256": "8d883e0e90d16549a6e049772c7fdbb48ecfc4b52034e02de902e3792bbf39cf"
+    },
+    {
+      "bytes": 4164,
+      "git_blob_sha1": "7b408cc0cc94148477b2c8cd96d12c26d386199f",
+      "path": "docs/publications/2026-09-23-qik-scientific-revision/archive/QIK_scientific_revision_exact_artifacts.zip.b64.part-12",
+      "sha256": "d883939465483cb83332ab48ceb17fdedd998073d82027919e74d106ecc2b580"
+    }
+  ]
+}

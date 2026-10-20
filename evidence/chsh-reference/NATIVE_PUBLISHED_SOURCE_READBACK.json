@@ -1,0 +1,149 @@
+{
+  "claims_do_not_transfer_to_successor_head": true,
+  "formal_effect_ack_assessment_created": false,
+  "method": "Original Terminal bounded-input validation and Structured Field byte roundtrip; admitted original Runtime.append; independent Terminal read-only SQLite readback; no socket mock",
+  "own_session_epoch": "6cade19f62a34f1aa3f0b0b9b691c50e",
+  "peer_delivery_verified": false,
+  "predecessor_local_source": {
+    "head": "704d6f2a60306ce74d2c71c18836a797d4c48559",
+    "native_event_ids": [
+      "eb45aecb20ea40eab5202fd3dbfb7e1f:1",
+      "eb45aecb20ea40eab5202fd3dbfb7e1f:2"
+    ],
+    "scope": "Local candidate only; superseded by fresh remote-source binding for this work unit",
+    "tree": "e475c8ffc98601f8c702e25402f77bc572c188ff"
+  },
+  "qik_derivation": false,
+  "records": [
+    {
+      "independent_readback": {
+        "dod": false,
+        "evidence_transfer": "DENY",
+        "id": "6cade19f62a34f1aa3f0b0b9b691c50e:1",
+        "kind": "OBSERVE",
+        "ledger_digest": "ee1a85e6ac8ae798fc3aa371f6b99bfff5f41c8e2d674bf7960d3e5649640297",
+        "message": "Original bounded Terminal input: bind the REST-persisted PR552 carrier",
+        "observed_at": "2026-10-19T16:34:58.836221Z",
+        "payload": {
+          "input_sha256": "9230b363e3aed4cd1f5aaddb4a0d60460897ba1cedda5388cd768bfef7fd4568",
+          "terminal_input": {
+            "schema": "qikvrt_terminal_input_v1",
+            "text": "Originaler Owner-Auftrag: reproduzierbarer CHSH-Minimalbenchmark fuer QIK R1 mit unveraendertem Originalmanuskript. Fortsetzung nach exakter REST-Commit-Rekonstruktion: den tatsaechlich in Draft-PR 552 gespeicherten Source-Carrier frisch binden. Der vorherige lokale Readback gilt ausschliesslich fuer lokalen Commit 704d6f2a60306ce74d2c71c18836a797d4c48559 bei identischem Tree; daraus wird keine Remote-Head-Annahme uebertragen. Referenzrechnung, QIK-Ableitung, physikalische Messung und Peer-Wirkung bleiben getrennt."
+          },
+          "work_unit_id": "QIK_R1_CHSH_MINIMALBENCHMARK_20261019_V1"
+        },
+        "payload_digest": "bae3e1a37fba838a0350d0aa126f4be9db7b57182e7460cc41cf7c5d8f1ff586",
+        "provenance": {
+          "native_event_id": "chsh:b95c1a09025a4d75aa19b525d9d37657",
+          "source": "transputer"
+        },
+        "recorded_at": "2026-10-19T16:34:58.851064Z",
+        "schema": "qikvrt_temdd_event_v1",
+        "subject": {
+          "head": "ae2e3283bae67a2e0e0abe4af96540100fcbca68",
+          "pr": 552,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "e475c8ffc98601f8c702e25402f77bc572c188ff"
+        }
+      },
+      "original_event": {
+        "kind": "OBSERVE",
+        "message": "Original bounded Terminal input: bind the REST-persisted PR552 carrier",
+        "observed_at": "2026-10-19T16:34:58.836221Z",
+        "payload": {
+          "input_sha256": "9230b363e3aed4cd1f5aaddb4a0d60460897ba1cedda5388cd768bfef7fd4568",
+          "terminal_input": {
+            "schema": "qikvrt_terminal_input_v1",
+            "text": "Originaler Owner-Auftrag: reproduzierbarer CHSH-Minimalbenchmark fuer QIK R1 mit unveraendertem Originalmanuskript. Fortsetzung nach exakter REST-Commit-Rekonstruktion: den tatsaechlich in Draft-PR 552 gespeicherten Source-Carrier frisch binden. Der vorherige lokale Readback gilt ausschliesslich fuer lokalen Commit 704d6f2a60306ce74d2c71c18836a797d4c48559 bei identischem Tree; daraus wird keine Remote-Head-Annahme uebertragen. Referenzrechnung, QIK-Ableitung, physikalische Messung und Peer-Wirkung bleiben getrennt."
+          },
+          "work_unit_id": "QIK_R1_CHSH_MINIMALBENCHMARK_20261019_V1"
+        },
+        "provenance": {
+          "native_event_id": "chsh:b95c1a09025a4d75aa19b525d9d37657",
+          "source": "transputer"
+        },
+        "schema": "qikvrt_temdd_native_event_v1",
+        "subject": {
+          "head": "ae2e3283bae67a2e0e0abe4af96540100fcbca68",
+          "pr": 552,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "e475c8ffc98601f8c702e25402f77bc572c188ff"
+        }
+      }
+    },
+    {
+      "independent_readback": {
+        "dod": false,
+        "evidence_transfer": "DENY",
+        "id": "6cade19f62a34f1aa3f0b0b9b691c50e:2",
+        "kind": "READBACK",
+        "ledger_digest": "9a99b5f66e3927bb6fe47bbdca7df3a992b6a9f62000f9968edd7a82b089af04",
+        "message": "Fresh native readback for exact PR552 source and CHSH results",
+        "observed_at": "2026-10-19T16:34:58.852773Z",
+        "payload": {
+          "S": {
+            "local_shared_bit": 2.0,
+            "no_signalling_pr_box": 4.0,
+            "quantum_born_phi_plus": 2.8284271247461894
+          },
+          "corrects": "Local predecessor was bound to 704d6f2a, not the remote PR head; no evidence transferred",
+          "focused_tests": 30,
+          "full_R1": "OPEN",
+          "full_make_unittest_executions": 1693,
+          "qik_derivation": false,
+          "reference_results_sha256": "331ab05aabe0cc4b6a26a92cad66250c877509167225974ecf8261043c4fb3e1"
+        },
+        "payload_digest": "d184c874c1232d86a3188d324ed85ae4b98ded777dc0c83bd5a751dbfdbca6cf",
+        "provenance": {
+          "native_event_id": "chsh:8201679fddef4f4a8c5f3cf73e068b6a",
+          "source": "transputer"
+        },
+        "recorded_at": "2026-10-19T16:34:58.871777Z",
+        "schema": "qikvrt_temdd_event_v1",
+        "subject": {
+          "head": "ae2e3283bae67a2e0e0abe4af96540100fcbca68",
+          "pr": 552,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "e475c8ffc98601f8c702e25402f77bc572c188ff"
+        }
+      },
+      "original_event": {
+        "kind": "READBACK",
+        "message": "Fresh native readback for exact PR552 source and CHSH results",
+        "observed_at": "2026-10-19T16:34:58.852773Z",
+        "payload": {
+          "S": {
+            "local_shared_bit": 2.0,
+            "no_signalling_pr_box": 4.0,
+            "quantum_born_phi_plus": 2.8284271247461894
+          },
+          "corrects": "Local predecessor was bound to 704d6f2a, not the remote PR head; no evidence transferred",
+          "focused_tests": 30,
+          "full_R1": "OPEN",
+          "full_make_unittest_executions": 1693,
+          "qik_derivation": false,
+          "reference_results_sha256": "331ab05aabe0cc4b6a26a92cad66250c877509167225974ecf8261043c4fb3e1"
+        },
+        "provenance": {
+          "native_event_id": "chsh:8201679fddef4f4a8c5f3cf73e068b6a",
+          "source": "transputer"
+        },
+        "schema": "qikvrt_temdd_native_event_v1",
+        "subject": {
+          "head": "ae2e3283bae67a2e0e0abe4af96540100fcbca68",
+          "pr": 552,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "e475c8ffc98601f8c702e25402f77bc572c188ff"
+        }
+      }
+    }
+  ],
+  "schema": "qikvrt-chsh-native-in-process-readback/1",
+  "socket_transport_verified": false,
+  "subject": {
+    "head": "ae2e3283bae67a2e0e0abe4af96540100fcbca68",
+    "pr": 552,
+    "repository": "ingolf-lohmann/qik-vrt",
+    "tree": "e475c8ffc98601f8c702e25402f77bc572c188ff"
+  }
+}

@@ -1,0 +1,428 @@
+{
+  "cases": [
+    {
+      "S": 2.0,
+      "abs_S": 2.0,
+      "correlations": {
+        "E00": 1.0,
+        "E01": 1.0,
+        "E10": 1.0,
+        "E11": 1.0
+      },
+      "evidence_class": "DETERMINISTIC_REFERENCE_CALCULATION",
+      "expected_abs_S": 2.0,
+      "max_abs_CHSH_facet": 2.0,
+      "name": "local_shared_bit",
+      "no_signalling": true,
+      "no_signalling_residuals": {
+        "alice": 0.0,
+        "bob": 0.0
+      },
+      "probabilities": [
+        {
+          "a": -1,
+          "b": -1,
+          "p": 0.5,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "a": -1,
+          "b": 1,
+          "p": 0.0,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "a": 1,
+          "b": -1,
+          "p": 0.0,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "a": 1,
+          "b": 1,
+          "p": 0.5,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "a": -1,
+          "b": -1,
+          "p": 0.5,
+          "x": 0,
+          "y": 1
+        },
+        {
+          "a": -1,
+          "b": 1,
+          "p": 0.0,
+          "x": 0,
+          "y": 1
+        },
+        {
+          "a": 1,
+          "b": -1,
+          "p": 0.0,
+          "x": 0,
+          "y": 1
+        },
+        {
+          "a": 1,
+          "b": 1,
+          "p": 0.5,
+          "x": 0,
+          "y": 1
+        },
+        {
+          "a": -1,
+          "b": -1,
+          "p": 0.5,
+          "x": 1,
+          "y": 0
+        },
+        {
+          "a": -1,
+          "b": 1,
+          "p": 0.0,
+          "x": 1,
+          "y": 0
+        },
+        {
+          "a": 1,
+          "b": -1,
+          "p": 0.0,
+          "x": 1,
+          "y": 0
+        },
+        {
+          "a": 1,
+          "b": 1,
+          "p": 0.5,
+          "x": 1,
+          "y": 0
+        },
+        {
+          "a": -1,
+          "b": -1,
+          "p": 0.5,
+          "x": 1,
+          "y": 1
+        },
+        {
+          "a": -1,
+          "b": 1,
+          "p": 0.0,
+          "x": 1,
+          "y": 1
+        },
+        {
+          "a": 1,
+          "b": -1,
+          "p": 0.0,
+          "x": 1,
+          "y": 1
+        },
+        {
+          "a": 1,
+          "b": 1,
+          "p": 0.5,
+          "x": 1,
+          "y": 1
+        }
+      ],
+      "qik_derivation": false,
+      "quantum_membership_certified_by_ceiling": false,
+      "reference_error": 0.0,
+      "within_local_CHSH_ceiling": true,
+      "within_quantum_CHSH_ceiling": true
+    },
+    {
+      "S": 2.8284271247461894,
+      "abs_S": 2.8284271247461894,
+      "correlations": {
+        "E00": 0.7071067811865476,
+        "E01": 0.7071067811865476,
+        "E10": 0.7071067811865472,
+        "E11": -0.7071067811865471
+      },
+      "evidence_class": "DETERMINISTIC_REFERENCE_CALCULATION",
+      "expected_abs_S": 2.8284271247461903,
+      "max_abs_CHSH_facet": 2.8284271247461894,
+      "name": "quantum_born_phi_plus",
+      "no_signalling": true,
+      "no_signalling_residuals": {
+        "alice": 5.551115123125783e-17,
+        "bob": 1.1102230246251565e-16
+      },
+      "probabilities": [
+        {
+          "a": -1,
+          "b": -1,
+          "p": 0.42677669529663687,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "a": -1,
+          "b": 1,
+          "p": 0.07322330470336308,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "a": 1,
+          "b": -1,
+          "p": 0.07322330470336308,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "a": 1,
+          "b": 1,
+          "p": 0.42677669529663687,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "a": -1,
+          "b": -1,
+          "p": 0.42677669529663687,
+          "x": 0,
+          "y": 1
+        },
+        {
+          "a": -1,
+          "b": 1,
+          "p": 0.07322330470336308,
+          "x": 0,
+          "y": 1
+        },
+        {
+          "a": 1,
+          "b": -1,
+          "p": 0.07322330470336308,
+          "x": 0,
+          "y": 1
+        },
+        {
+          "a": 1,
+          "b": 1,
+          "p": 0.42677669529663687,
+          "x": 0,
+          "y": 1
+        },
+        {
+          "a": -1,
+          "b": -1,
+          "p": 0.42677669529663675,
+          "x": 1,
+          "y": 0
+        },
+        {
+          "a": -1,
+          "b": 1,
+          "p": 0.0732233047033631,
+          "x": 1,
+          "y": 0
+        },
+        {
+          "a": 1,
+          "b": -1,
+          "p": 0.0732233047033631,
+          "x": 1,
+          "y": 0
+        },
+        {
+          "a": 1,
+          "b": 1,
+          "p": 0.42677669529663675,
+          "x": 1,
+          "y": 0
+        },
+        {
+          "a": -1,
+          "b": -1,
+          "p": 0.07322330470336313,
+          "x": 1,
+          "y": 1
+        },
+        {
+          "a": -1,
+          "b": 1,
+          "p": 0.4267766952966367,
+          "x": 1,
+          "y": 1
+        },
+        {
+          "a": 1,
+          "b": -1,
+          "p": 0.4267766952966367,
+          "x": 1,
+          "y": 1
+        },
+        {
+          "a": 1,
+          "b": 1,
+          "p": 0.07322330470336313,
+          "x": 1,
+          "y": 1
+        }
+      ],
+      "qik_derivation": false,
+      "quantum_membership_certified_by_ceiling": false,
+      "reference_error": 8.881784197001252e-16,
+      "within_local_CHSH_ceiling": false,
+      "within_quantum_CHSH_ceiling": true
+    },
+    {
+      "S": 4.0,
+      "abs_S": 4.0,
+      "correlations": {
+        "E00": 1.0,
+        "E01": 1.0,
+        "E10": 1.0,
+        "E11": -1.0
+      },
+      "evidence_class": "DETERMINISTIC_REFERENCE_CALCULATION",
+      "expected_abs_S": 4.0,
+      "max_abs_CHSH_facet": 4.0,
+      "name": "no_signalling_pr_box",
+      "no_signalling": true,
+      "no_signalling_residuals": {
+        "alice": 0.0,
+        "bob": 0.0
+      },
+      "probabilities": [
+        {
+          "a": -1,
+          "b": -1,
+          "p": 0.5,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "a": -1,
+          "b": 1,
+          "p": 0.0,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "a": 1,
+          "b": -1,
+          "p": 0.0,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "a": 1,
+          "b": 1,
+          "p": 0.5,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "a": -1,
+          "b": -1,
+          "p": 0.5,
+          "x": 0,
+          "y": 1
+        },
+        {
+          "a": -1,
+          "b": 1,
+          "p": 0.0,
+          "x": 0,
+          "y": 1
+        },
+        {
+          "a": 1,
+          "b": -1,
+          "p": 0.0,
+          "x": 0,
+          "y": 1
+        },
+        {
+          "a": 1,
+          "b": 1,
+          "p": 0.5,
+          "x": 0,
+          "y": 1
+        },
+        {
+          "a": -1,
+          "b": -1,
+          "p": 0.5,
+          "x": 1,
+          "y": 0
+        },
+        {
+          "a": -1,
+          "b": 1,
+          "p": 0.0,
+          "x": 1,
+          "y": 0
+        },
+        {
+          "a": 1,
+          "b": -1,
+          "p": 0.0,
+          "x": 1,
+          "y": 0
+        },
+        {
+          "a": 1,
+          "b": 1,
+          "p": 0.5,
+          "x": 1,
+          "y": 0
+        },
+        {
+          "a": -1,
+          "b": -1,
+          "p": 0.0,
+          "x": 1,
+          "y": 1
+        },
+        {
+          "a": -1,
+          "b": 1,
+          "p": 0.5,
+          "x": 1,
+          "y": 1
+        },
+        {
+          "a": 1,
+          "b": -1,
+          "p": 0.5,
+          "x": 1,
+          "y": 1
+        },
+        {
+          "a": 1,
+          "b": 1,
+          "p": 0.0,
+          "x": 1,
+          "y": 1
+        }
+      ],
+      "qik_derivation": false,
+      "quantum_membership_certified_by_ceiling": false,
+      "reference_error": 0.0,
+      "within_local_CHSH_ceiling": false,
+      "within_quantum_CHSH_ceiling": false
+    }
+  ],
+  "empirical_measurement": false,
+  "formal_kernel_proof": false,
+  "formula": "S=E00+E01+E10-E11; E_xy=sum_ab(a*b*P(a,b|x,y))",
+  "local_vertex_max_abs_CHSH": 2.0,
+  "local_vertices_enumerated": 16,
+  "method": "complete conditional probability tables; no random sampling",
+  "qik_R1_status": "REFERENCE_BENCHMARK_ONLY_QIK_CORRELATION_LAW_OPEN",
+  "schema": "qikvrt-chsh-reference/1",
+  "setting_distribution_for_future_trials": "independent uniform P(x,y)=1/4",
+  "tolerance": 1e-12
+}

@@ -1,0 +1,259 @@
+{
+  "acceptance_levels": {
+    "CONDITIONAL_R1_IN_DECLARED_SCOPE": "AC10 AND AC11 with exact target and declared premises; imported QM visible",
+    "GENERAL_R1": "AC14 scope plus soundness/completeness over that entire scope",
+    "INDEPENDENT_QIK_DERIVATION": "additional checked derivation of required structures from explicitly stated QIK principles; not inferred from conditional QM embedding",
+    "NUMERIC_QIK_222_FAMILY": "AC01..AC04 supplied + finite AC05..AC09 controls passed for candidate family",
+    "REFERENCE_REPRODUCED": "only tested reference properties; no QIK-model inference"
+  },
+  "assumption_origin_classes": [
+    "ESTABLISHED_BACKGROUND",
+    "IMPORTED_MATHEMATICAL_ASSUMPTION",
+    "NEW_QIK_POSTULATE",
+    "QIK_INTERNAL_DERIVED_RESULT",
+    "OPEN_MODEL_OBLIGATION"
+  ],
+  "candidate_interface": {
+    "cell_key_unique": [
+      "x",
+      "y",
+      "a",
+      "b"
+    ],
+    "existing_consumer": "src.qikvrt_chsh_benchmark.box_from_records and candidate_report",
+    "frozen_manifest_required_fields": [
+      "law_source_sha256",
+      "law_parameters_sha256",
+      "domain_definition_sha256",
+      "state_rules_sha256",
+      "composition_rules_sha256",
+      "measurement_rules_sha256",
+      "assumptions_sha256",
+      "execution_environment_sha256"
+    ],
+    "metadata_location": "separate sidecar, never extra record keys",
+    "one_shot_call": "probabilities(preparation_AB,composition,measurement_A[x],measurement_B[y]) -> records",
+    "record_count": 16,
+    "record_exact_keys": [
+      "x",
+      "y",
+      "a",
+      "b",
+      "p"
+    ],
+    "same_preparation_hash_across_all_setting_pairs": true,
+    "sequential_protocol_instrument_required": "ONLY_IF_SEQUENTIAL_PROTOCOLS_CLAIMED",
+    "trace_required": "state+composition+effect evaluation -> each p cell; no target-table copy or CHSH cutoff"
+  },
+  "current_conclusion": {
+    "QIK_derivation": "OPEN",
+    "QIK_law": "NOT_SUPPLIED",
+    "empirical_confirmation": "NOT_ESTABLISHED",
+    "full_R1": "OPEN",
+    "reference_software": "PASS_SCOPED",
+    "repository_integration": "NOT_PERFORMED_BY_THIS_AUDIT"
+  },
+  "date": "2026-10-20",
+  "future_quantum_family_controls": {
+    "current_implemented_reference": "Phi+ with real XZ projectors and checked settings",
+    "finite_family_success_is_universal_completeness": false,
+    "further_declared_coverage": [
+      "all local deterministic preparations",
+      "product and classically mixed states",
+      "partially entangled states with biased marginals",
+      "complex-phase settings",
+      "nonprojective binary POVMs"
+    ],
+    "status": "SPECIFIED_NOT_IMPLEMENTED_FOR_QIK"
+  },
+  "minimum_negative_controls": [
+    "PR_BOX: NS_PASS,CHSH_FAIL",
+    "E_111_half: NS_PASS,CHSH_PASS,QUANTUM_CORRELATOR_EXCLUSION",
+    "RELABELLED_PR: oriented_S_zero,all_facets_FAIL",
+    "SIGNALLING_BOX: schema_PASS,NS_FAIL",
+    "MALFORMED_OR_NEGATIVE_P: input_FAIL"
+  ],
+  "normative_source": "QIK original sections 4.4-4.5,5/R1,7.1-7.2",
+  "numeric_policy": {
+    "absolute_tolerance": 1e-12,
+    "floating_point_success_is_exact_proof": false,
+    "negative_probability_allowance": 0,
+    "postselection": false,
+    "renormalize": false,
+    "silent_asin_clipping": false
+  },
+  "obligations": [
+    {
+      "acceptance_predicate": "original manuscript byte and blob equality; preserve historical README separately",
+      "candidate_status": "OPEN",
+      "current_status": "PASS",
+      "id": "AC00",
+      "name": "source_preservation",
+      "observed_scope": "sources",
+      "verification_kind": "FILE_IDENTITY"
+    },
+    {
+      "acceptance_predicate": "frozen source/parameters/domain/assumptions; no reference-target lookup",
+      "candidate_status": "OPEN",
+      "current_status": "OPEN",
+      "id": "AC01",
+      "name": "frozen_law",
+      "observed_scope": "candidate",
+      "verification_kind": "MANIFEST_AND_EXECUTION"
+    },
+    {
+      "acceptance_predicate": "positive normalized state/effect pairing; affine operational mixtures",
+      "candidate_status": "OPEN",
+      "current_status": "OPEN",
+      "id": "AC02",
+      "name": "states",
+      "observed_scope": "candidate",
+      "verification_kind": "UNIVERSAL_STRUCTURAL_PROOF"
+    },
+    {
+      "acceptance_predicate": "product preparations factorize; joint state space and consistent marginals defined; multi-system associativity if claimed",
+      "candidate_status": "OPEN",
+      "current_status": "OPEN",
+      "id": "AC03",
+      "name": "composition",
+      "observed_scope": "candidate",
+      "verification_kind": "UNIVERSAL_STRUCTURAL_PROOF"
+    },
+    {
+      "acceptance_predicate": "every output probability traced to candidate preparation, composition and local measurement rules",
+      "candidate_status": "OPEN",
+      "current_status": "OPEN",
+      "id": "AC04",
+      "name": "measurement_probability_rule",
+      "observed_scope": "candidate",
+      "verification_kind": "EXECUTION_TRACE_AND_DERIVATION"
+    },
+    {
+      "acceptance_predicate": "box_from_records: exactly 16 unique cells; finite real 0<=p<=1; per-setting abs(sum(p)-1)<=1e-12",
+      "candidate_status": "OPEN",
+      "current_status": "PASS",
+      "id": "AC05",
+      "name": "probability_table",
+      "observed_scope": "reference",
+      "verification_kind": "EXECUTABLE_NUMERIC_CHECK"
+    },
+    {
+      "acceptance_predicate": "max both directional marginal residuals<=1e-12; proof for every admitted model state and setting",
+      "candidate_status": "OPEN",
+      "current_status": "OPEN",
+      "id": "AC06",
+      "name": "no_signalling",
+      "observed_scope": "candidate",
+      "verification_kind": "NUMERIC_CHECK_PLUS_UNIVERSAL_PROOF"
+    },
+    {
+      "acceptance_predicate": "max_{prod(signs)=-1} abs(sum(sign_xy*E_xy))<=2*sqrt(2)+1e-12; proof for entire admitted domain",
+      "candidate_status": "OPEN",
+      "current_status": "OPEN",
+      "id": "AC07",
+      "name": "all_chsh_facets",
+      "observed_scope": "candidate",
+      "verification_kind": "NUMERIC_CHECK_PLUS_UNIVERSAL_PROOF"
+    },
+    {
+      "acceptance_predicate": "full-cell agreement for declared target families, optimal/nonoptimal settings; not merely S agreement",
+      "candidate_status": "OPEN",
+      "current_status": "OPEN",
+      "id": "AC08",
+      "name": "quantum_coverage_controls",
+      "observed_scope": "candidate",
+      "verification_kind": "EXECUTABLE_FAMILY_COMPARISON"
+    },
+    {
+      "acceptance_predicate": "correlator arcsine condition only in applicable projection; complete state/effect witness or qualified exclusion for full table",
+      "candidate_status": "OPEN",
+      "current_status": "OPEN",
+      "id": "AC09",
+      "name": "membership_beyond_chsh",
+      "observed_scope": "candidate",
+      "verification_kind": "CERTIFICATE_WITH_DECLARED_SCOPE"
+    },
+    {
+      "acceptance_predicate": "forall omega,M_A,M_B admitted by QIK: p_QIK belongs to declared Q_target(Gamma)",
+      "candidate_status": "OPEN",
+      "current_status": "OPEN",
+      "id": "AC10",
+      "name": "soundness",
+      "observed_scope": "candidate",
+      "verification_kind": "UNIVERSAL_PROOF"
+    },
+    {
+      "acceptance_predicate": "forall q in declared Q_target(Gamma): exists admitted QIK realization producing q",
+      "candidate_status": "OPEN",
+      "current_status": "OPEN",
+      "id": "AC11",
+      "name": "completeness",
+      "observed_scope": "candidate",
+      "verification_kind": "UNIVERSAL_PROOF"
+    },
+    {
+      "acceptance_predicate": "every premise classified; imported Hilbert/tensor/Born assumptions never relabelled QIK-derived",
+      "candidate_status": "OPEN",
+      "current_status": "OPEN",
+      "id": "AC12",
+      "name": "assumption_origin",
+      "observed_scope": "candidate",
+      "verification_kind": "DEPENDENCY_AUDIT"
+    },
+    {
+      "acceptance_predicate": "software/reference/proof/empirical/source-identity/integration statuses remain separate",
+      "candidate_status": "OPEN",
+      "current_status": "PASS",
+      "id": "AC13",
+      "name": "evidence_classes",
+      "observed_scope": "addendum",
+      "verification_kind": "STATUS_SEPARATION"
+    },
+    {
+      "acceptance_predicate": "all scenarios, outcome sets, dimensions, closure and tensor/commuting conventions fixed in theorem",
+      "candidate_status": "OPEN",
+      "current_status": "OPEN",
+      "id": "AC14",
+      "name": "general_r1_scope",
+      "observed_scope": "candidate",
+      "verification_kind": "EXPLICIT_TARGET_AND_UNIVERSAL_PROOF"
+    }
+  ],
+  "proof_certificate_policy": {
+    "artifact_presence_or_hash_is_theorem_verification": false,
+    "finite_numeric_tests_discharge_universal_obligations": false,
+    "missing_or_unchecked_certificate_status": "OPEN",
+    "required_bindings": [
+      "exact_theorem_statement_sha256",
+      "scope_and_quantifiers",
+      "all_assumptions",
+      "proof_artifact_sha256",
+      "checker_identity_and_version",
+      "reproducible_checker_command",
+      "actual_checker_result_bound_to_theorem_and_artifact"
+    ],
+    "unchecked_axiom_asserting_target_theorem_allowed": false,
+    "universal_QIK_checker_available_here": false
+  },
+  "schema": "qik-r1-acceptance-contract/1",
+  "status": "REVIEW_CANDIDATE",
+  "statuses": [
+    "PASS",
+    "FAIL",
+    "OPEN"
+  ],
+  "working_scope": {
+    "full_R1_from_222_only": false,
+    "general_original_R1_scope": "NOT_FULLY_SPECIFIED_IN_SOURCE_REQUIRES_AC14",
+    "outcomes_per_party": [
+      -1,
+      1
+    ],
+    "scenario": "bipartite 222",
+    "settings_per_party": [
+      0,
+      1
+    ],
+    "target": "finite-dimensional tensor-product quantum behaviors"
+  }
+}

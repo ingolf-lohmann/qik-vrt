@@ -1,0 +1,131 @@
+QIK R1 CHSH validation, 2026-10-19
+
+make test: exit 0
+35 unittest suites; 1693 unittest test executions; shell/C/Node gates additionally executed by make.
+
+Suite summaries from the complete successful log:
+Ran 11 tests in 0.241s
+OK
+PASS verified 4987 classified entries and 4976 immutable digests
+PASS: EFFECT_ACK scientific proof, optimized-mode guard and bundle SHA-256 index
+PASS: collective adaptive runtime contract and negative controls
+Ran 15 tests in 0.033s
+OK
+PASS: 34/34 declared tools have cache strategies (100%)
+PASS: 34/34 declared tools have cache strategies (100%)
+Ran 104 tests in 2.942s
+OK
+Ran 4 tests in 0.193s
+OK
+Ran 222 tests in 10.407s
+OK
+Ran 16 tests in 0.047s
+OK
+Ran 35 tests in 10.147s
+OK
+Ran 197 tests in 12.736s
+OK
+Ran 14 tests in 0.369s
+OK
+Ran 243 tests in 15.112s
+OK
+Ran 7 tests in 0.104s
+OK
+Ran 15 tests in 0.137s
+OK
+Ran 41 tests in 0.016s
+OK
+Ran 6 tests in 0.132s
+OK
+Ran 161 tests in 5.362s
+OK
+Ran 5 tests in 0.003s
+OK
+Ran 70 tests in 14.370s
+OK
+Ran 2 tests in 0.328s
+OK
+Ran 16 tests in 0.003s
+OK
+Ran 48 tests in 11.011s
+OK
+Ran 63 tests in 25.481s
+OK
+Ran 7 tests in 0.001s
+OK
+Ran 13 tests in 1.139s
+OK
+Ran 44 tests in 1.903s
+OK
+PASS: 2 Personal logout controller scenarios; simulated DOM/fetch, no actual browser or authenticated session.
+Ran 18 tests in 1.594s
+OK
+Ran 4 tests in 0.001s
+OK
+Ran 24 tests in 0.379s
+OK
+Ran 61 tests in 1.660s
+OK
+Ran 103 tests in 1.195s
+OK
+Ran 3 tests in 0.000s
+OK
+Ran 13 tests in 5.134s
+OK
+Ran 10 tests in 1.653s
+OK
+Ran 42 tests in 0.540s
+OK
+Ran 26 tests in 2.849s
+OK
+Ran 30 tests in 0.148s
+OK
+PASS verified 4987 classified entries and 4976 immutable digests
+
+Focused CHSH gate (30 tests):
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_qikvrt_chsh_benchmark
+test_bad_local_responses (tests.test_qikvrt_chsh_benchmark.CHSHNegativeControls.test_bad_local_responses) ... ok
+test_bad_normalization (tests.test_qikvrt_chsh_benchmark.CHSHNegativeControls.test_bad_normalization) ... ok
+test_bad_probabilities (tests.test_qikvrt_chsh_benchmark.CHSHNegativeControls.test_bad_probabilities) ... ok
+test_bad_quantum_settings (tests.test_qikvrt_chsh_benchmark.CHSHNegativeControls.test_bad_quantum_settings) ... ok
+test_boolean_and_float_setting_aliases (tests.test_qikvrt_chsh_benchmark.CHSHNegativeControls.test_boolean_and_float_setting_aliases) ... ok
+test_candidate_cli_rejects_invalid_table (tests.test_qikvrt_chsh_benchmark.CHSHNegativeControls.test_candidate_cli_rejects_invalid_table) ... ok
+test_extra_outcome (tests.test_qikvrt_chsh_benchmark.CHSHNegativeControls.test_extra_outcome) ... ok
+test_invalid_candidate_records (tests.test_qikvrt_chsh_benchmark.CHSHNegativeControls.test_invalid_candidate_records) ... ok
+test_invalid_ceilings (tests.test_qikvrt_chsh_benchmark.CHSHNegativeControls.test_invalid_ceilings) ... ok
+test_missing_settings (tests.test_qikvrt_chsh_benchmark.CHSHNegativeControls.test_missing_settings) ... ok
+test_missing_zero_is_not_silently_imputed (tests.test_qikvrt_chsh_benchmark.CHSHNegativeControls.test_missing_zero_is_not_silently_imputed) ... ok
+test_signalling_in_both_directions_rejected_below_chsh_ceiling (tests.test_qikvrt_chsh_benchmark.CHSHNegativeControls.test_signalling_in_both_directions_rejected_below_chsh_ceiling) ... ok
+test_all_sixteen_local_vertices (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_all_sixteen_local_vertices) ... ok
+test_all_three_are_normalized_unbiased_and_no_signalling (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_all_three_are_normalized_unbiased_and_no_signalling) ... ok
+test_born_coincident_settings_have_nonnegative_probabilities (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_born_coincident_settings_have_nonnegative_probabilities) ... ok
+test_born_joint_table_against_analytic_formula (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_born_joint_table_against_analytic_formula) ... ok
+test_born_nonoptimal_settings_not_hardcoded_maximum (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_born_nonoptimal_settings_not_hardcoded_maximum) ... ok
+test_candidate_cli_reports_pr_violation_without_claiming_membership (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_candidate_cli_reports_pr_violation_without_claiming_membership) ... ok
+test_candidate_records_roundtrip (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_candidate_records_roundtrip) ... ok
+test_chsh_ceiling_pass_does_not_certify_quantum_membership (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_chsh_ceiling_pass_does_not_certify_quantum_membership) ... ok
+test_deterministic_json_cli_and_committed_result (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_deterministic_json_cli_and_committed_result) ... ok
+test_negative_signed_quantum_value_uses_absolute_bound (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_negative_signed_quantum_value_uses_absolute_bound) ... ok
+test_nonuniform_local_convex_mixture_stays_local (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_nonuniform_local_convex_mixture_stays_local) ... ok
+test_original_publication_package_is_byte_unchanged (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_original_publication_package_is_byte_unchanged) ... ok
+test_positive_ceiling_controls (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_positive_ceiling_controls) ... ok
+test_pr_parity_and_algebraic_maximum (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_pr_parity_and_algebraic_maximum) ... ok
+test_pr_rejected_by_quantum_control_despite_no_signalling (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_pr_rejected_by_quantum_control_despite_no_signalling) ... ok
+test_quantum_rejected_by_classical_control (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_quantum_rejected_by_classical_control) ... ok
+test_shared_bit_joint_table_and_correlations (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_shared_bit_joint_table_and_correlations) ... ok
+test_single_oriented_chsh_can_miss_pr_violation (tests.test_qikvrt_chsh_benchmark.CHSHReferenceTests.test_single_oriented_chsh_can_miss_pr_violation) ... ok
+
+----------------------------------------------------------------------
+Ran 30 tests in 0.166s
+
+OK
+PYTHONDONTWRITEBYTECODE=1 python3 -m py_compile src/qikvrt_chsh_benchmark.py
+
+Additional native regression scope, separate from make test:
+96 tests attempted: 63 pass, 33 errors from denied local sockets (PermissionError errno 1); not a native transport PASS.
+14 non-socket WriterContinuityTests/ServerFixtureLifecycleTests pass.
+Original source package: 22 files retain their bound SHA-256 and Git blob identities.
+Local Git snapshot: original commit and root tree recomputed exactly; history declared shallow at original Main, not a full historical backup.
+A first local run exposed the missing-history checkpoint declaration; the eight affected historical publication controls pass after the declaration.
+An intermediate candidate run passed its tests but ended with a stale manifest after a concurrent test edit. Manifest regenerated; the complete stable run above then exited 0.
+Repository evidence files are added after this run; tested source/test/Makefile hashes are bound below. Final integrity is regenerated and checked after evidence insertion.

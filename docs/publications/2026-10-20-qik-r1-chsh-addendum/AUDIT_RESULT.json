@@ -1,0 +1,176 @@
+{
+  "QIK_internal_derivation": "OPEN",
+  "candidate_law_supplied": false,
+  "candidate_numeric_acceptance": "OPEN",
+  "empirical_experiment": false,
+  "full_R1": "OPEN",
+  "reference_cases": [
+    {
+      "arcsine": {
+        "biased_full_table_requires_additional_constraints": false,
+        "certified_error_interval_available": false,
+        "evidence_class": "FINITE_NUMERICAL_DIAGNOSTIC",
+        "exact_membership_proof": false,
+        "excess_over_pi": 0.0,
+        "full_probability_table_certified": false,
+        "limit_pi": 3.141592653589793,
+        "max_abs_arcsine_facet": 3.141592653589793,
+        "no_signalling": true,
+        "qik_derivation_certified": false,
+        "status": "NUMERICAL_CORRELATOR_CHECK_ONLY",
+        "target": "BIPARTITE_222_CORRELATOR_PROJECTION",
+        "tolerance": 1e-12,
+        "unbiased_within_tolerance": true,
+        "within_correlator_bound_numeric": true
+      },
+      "benchmark": {
+        "S": 2.0,
+        "correlations": {
+          "E00": 1.0,
+          "E01": 1.0,
+          "E10": 1.0,
+          "E11": 1.0
+        },
+        "empirical_measurement": false,
+        "max_abs_CHSH_facet": 2.0,
+        "no_signalling": true,
+        "no_signalling_residuals": {
+          "alice": 0.0,
+          "bob": 0.0
+        },
+        "qik_derivation": false,
+        "quantum_membership": "NOT_DECIDED_BY_THIS_BENCHMARK",
+        "schema": "qikvrt-chsh-candidate/1",
+        "within_local_CHSH_ceiling": true,
+        "within_quantum_CHSH_ceiling": true
+      },
+      "name": "local_shared_bit"
+    },
+    {
+      "arcsine": {
+        "biased_full_table_requires_additional_constraints": false,
+        "certified_error_interval_available": false,
+        "evidence_class": "FINITE_NUMERICAL_DIAGNOSTIC",
+        "exact_membership_proof": false,
+        "excess_over_pi": -8.881784197001252e-16,
+        "full_probability_table_certified": false,
+        "limit_pi": 3.141592653589793,
+        "max_abs_arcsine_facet": 3.1415926535897922,
+        "no_signalling": true,
+        "qik_derivation_certified": false,
+        "status": "NUMERICAL_CORRELATOR_CHECK_ONLY",
+        "target": "BIPARTITE_222_CORRELATOR_PROJECTION",
+        "tolerance": 1e-12,
+        "unbiased_within_tolerance": true,
+        "within_correlator_bound_numeric": true
+      },
+      "benchmark": {
+        "S": 2.8284271247461894,
+        "correlations": {
+          "E00": 0.7071067811865476,
+          "E01": 0.7071067811865476,
+          "E10": 0.7071067811865472,
+          "E11": -0.7071067811865471
+        },
+        "empirical_measurement": false,
+        "max_abs_CHSH_facet": 2.8284271247461894,
+        "no_signalling": true,
+        "no_signalling_residuals": {
+          "alice": 5.551115123125783e-17,
+          "bob": 1.1102230246251565e-16
+        },
+        "qik_derivation": false,
+        "quantum_membership": "NOT_DECIDED_BY_THIS_BENCHMARK",
+        "schema": "qikvrt-chsh-candidate/1",
+        "within_local_CHSH_ceiling": false,
+        "within_quantum_CHSH_ceiling": true
+      },
+      "name": "imported_born_phi_plus"
+    },
+    {
+      "arcsine": {
+        "biased_full_table_requires_additional_constraints": false,
+        "certified_error_interval_available": false,
+        "evidence_class": "FINITE_NUMERICAL_DIAGNOSTIC",
+        "exact_membership_proof": false,
+        "excess_over_pi": 3.141592653589793,
+        "full_probability_table_certified": false,
+        "limit_pi": 3.141592653589793,
+        "max_abs_arcsine_facet": 6.283185307179586,
+        "no_signalling": true,
+        "qik_derivation_certified": false,
+        "status": "NUMERICAL_CORRELATOR_CHECK_ONLY",
+        "target": "BIPARTITE_222_CORRELATOR_PROJECTION",
+        "tolerance": 1e-12,
+        "unbiased_within_tolerance": true,
+        "within_correlator_bound_numeric": false
+      },
+      "benchmark": {
+        "S": 4.0,
+        "correlations": {
+          "E00": 1.0,
+          "E01": 1.0,
+          "E10": 1.0,
+          "E11": -1.0
+        },
+        "empirical_measurement": false,
+        "max_abs_CHSH_facet": 4.0,
+        "no_signalling": true,
+        "no_signalling_residuals": {
+          "alice": 0.0,
+          "bob": 0.0
+        },
+        "qik_derivation": false,
+        "quantum_membership": "NOT_DECIDED_BY_THIS_BENCHMARK",
+        "schema": "qikvrt-chsh-candidate/1",
+        "within_local_CHSH_ceiling": false,
+        "within_quantum_CHSH_ceiling": false
+      },
+      "name": "pr_box"
+    },
+    {
+      "arcsine": {
+        "biased_full_table_requires_additional_constraints": false,
+        "certified_error_interval_available": false,
+        "evidence_class": "FINITE_NUMERICAL_DIAGNOSTIC",
+        "exact_membership_proof": false,
+        "excess_over_pi": 1.0471975511965974,
+        "full_probability_table_certified": false,
+        "limit_pi": 3.141592653589793,
+        "max_abs_arcsine_facet": 4.1887902047863905,
+        "no_signalling": true,
+        "qik_derivation_certified": false,
+        "status": "NUMERICAL_CORRELATOR_CHECK_ONLY",
+        "target": "BIPARTITE_222_CORRELATOR_PROJECTION",
+        "tolerance": 1e-12,
+        "unbiased_within_tolerance": true,
+        "within_correlator_bound_numeric": false
+      },
+      "benchmark": {
+        "S": 2.5,
+        "correlations": {
+          "E00": 1.0,
+          "E01": 1.0,
+          "E10": 1.0,
+          "E11": 0.5
+        },
+        "empirical_measurement": false,
+        "max_abs_CHSH_facet": 2.5,
+        "no_signalling": true,
+        "no_signalling_residuals": {
+          "alice": 0.0,
+          "bob": 0.0
+        },
+        "qik_derivation": false,
+        "quantum_membership": "NOT_DECIDED_BY_THIS_BENCHMARK",
+        "schema": "qikvrt-chsh-candidate/1",
+        "within_local_CHSH_ceiling": false,
+        "within_quantum_CHSH_ceiling": true
+      },
+      "name": "chsh_ceiling_counterexample"
+    }
+  ],
+  "repository_integration_established": false,
+  "schema": "qik-r1-reference-scope-audit/1",
+  "universal_QIK_proof_checker_implemented": false
+}

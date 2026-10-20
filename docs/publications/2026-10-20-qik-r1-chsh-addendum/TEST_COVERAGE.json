@@ -1,0 +1,241 @@
+{
+  "current_main_readme_overlay": "historical test failure repaired by an exact allowlisted relocation; manuscript relocation remains forbidden",
+  "fresh_result": "30/30 PASS on original PR552 source and its 22 historical original files",
+  "full_current_repository_suite_reexecuted": false,
+  "group_counts": {
+    "born_reference": 3,
+    "bounds_and_counterexamples": 6,
+    "historical_source_preservation": 1,
+    "interface_and_reproducibility": 3,
+    "invalid_inputs_and_signalling": 12,
+    "local_reference": 3,
+    "pr_and_common_consistency": 2
+  },
+  "historical_audit_method_count": 30,
+  "integration_focused_result": "32 CHSH/source-preservation methods plus 8 addendum controls PASS",
+  "integration_repair_methods": [
+    {
+      "evidence_class": "FINITE_SOURCE_PRESERVATION_REGRESSION",
+      "id": "CHSHReferenceTests.test_current_readme_is_an_exact_bound_status_successor",
+      "observed_result": "PASS"
+    },
+    {
+      "evidence_class": "FINITE_SOURCE_PRESERVATION_REGRESSION",
+      "id": "CHSHReferenceTests.test_original_package_relocation_cannot_hide_manuscript_changes",
+      "observed_result": "PASS"
+    }
+  ],
+  "methods": [
+    {
+      "evidence_class": "FINITE_SOFTWARE_REGRESSION",
+      "group": "local_reference",
+      "id": "CHSHReferenceTests.test_shared_bit_joint_table_and_correlations",
+      "observed_result": "PASS",
+      "universal_model_proof": false
+    },
+    {
+      "evidence_class": "FINITE_SOFTWARE_REGRESSION",
+      "group": "born_reference",
+      "id": "CHSHReferenceTests.test_born_joint_table_against_analytic_formula",
+      "observed_result": "PASS",
+      "universal_model_proof": false
+    },
+    {
+      "evidence_class": "FINITE_SOFTWARE_REGRESSION",
+      "group": "born_reference",
+      "id": "CHSHReferenceTests.test_born_nonoptimal_settings_not_hardcoded_maximum",
+      "observed_result": "PASS",
+      "universal_model_proof": false
+    },
+    {
+      "evidence_class": "FINITE_SOFTWARE_REGRESSION",
+      "group": "born_reference",
+      "id": "CHSHReferenceTests.test_born_coincident_settings_have_nonnegative_probabilities",
+      "observed_result": "PASS",
+      "universal_model_proof": false
+    },
+    {
+      "evidence_class": "FINITE_SOFTWARE_REGRESSION",
+      "group": "pr_and_common_consistency",
+      "id": "CHSHReferenceTests.test_pr_parity_and_algebraic_maximum",
+      "observed_result": "PASS",
+      "universal_model_proof": false
+    },
+    {
+      "evidence_class": "FINITE_SOFTWARE_REGRESSION",
+      "group": "pr_and_common_consistency",
+      "id": "CHSHReferenceTests.test_all_three_are_normalized_unbiased_and_no_signalling",
+      "observed_result": "PASS",
+      "universal_model_proof": false
+    },
+    {
+      "evidence_class": "FINITE_SOFTWARE_REGRESSION",
+      "group": "local_reference",
+      "id": "CHSHReferenceTests.test_all_sixteen_local_vertices",
+      "observed_result": "PASS",
+      "universal_model_proof": false
+    },
+    {
+      "evidence_class": "FINITE_SOFTWARE_REGRESSION",
+      "group": "local_reference",
+      "id": "CHSHReferenceTests.test_nonuniform_local_convex_mixture_stays_local",
+      "observed_result": "PASS",
+      "universal_model_proof": false
+    },
+    {
+      "evidence_class": "FINITE_SOFTWARE_REGRESSION",
+      "group": "bounds_and_counterexamples",
+      "id": "CHSHReferenceTests.test_positive_ceiling_controls",
+      "observed_result": "PASS",
+      "universal_model_proof": false
+    },
+    {
+      "evidence_class": "FINITE_SOFTWARE_REGRESSION",
+      "group": "bounds_and_counterexamples",
+      "id": "CHSHReferenceTests.test_quantum_rejected_by_classical_control",
+      "observed_result": "PASS",
+      "universal_model_proof": false
+    },
+    {
+      "evidence_class": "FINITE_SOFTWARE_REGRESSION",
+      "group": "bounds_and_counterexamples",
+      "id": "CHSHReferenceTests.test_pr_rejected_by_quantum_control_despite_no_signalling",
+      "observed_result": "PASS",
+      "universal_model_proof": false
+    },
+    {
+      "evidence_class": "FINITE_SOFTWARE_REGRESSION",
+      "group": "bounds_and_counterexamples",
+      "id": "CHSHReferenceTests.test_negative_signed_quantum_value_uses_absolute_bound",
+      "observed_result": "PASS",
+      "universal_model_proof": false
+    },
+    {
+      "evidence_class": "FINITE_SOFTWARE_REGRESSION",
+      "group": "bounds_and_counterexamples",
+      "id": "CHSHReferenceTests.test_single_oriented_chsh_can_miss_pr_violation",
+      "observed_result": "PASS",
+      "universal_model_proof": false
+    },
+    {
+      "evidence_class": "FINITE_SOFTWARE_REGRESSION",
+      "group": "bounds_and_counterexamples",
+      "id": "CHSHReferenceTests.test_chsh_ceiling_pass_does_not_certify_quantum_membership",
+      "observed_result": "PASS",
+      "universal_model_proof": false
+    },
+    {
+      "evidence_class": "FINITE_SOFTWARE_REGRESSION",
+      "group": "interface_and_reproducibility",
+      "id": "CHSHReferenceTests.test_candidate_records_roundtrip",
+      "observed_result": "PASS",
+      "universal_model_proof": false
+    },
+    {
+      "evidence_class": "FINITE_SOFTWARE_REGRESSION",
+      "group": "interface_and_reproducibility",
+      "id": "CHSHReferenceTests.test_candidate_cli_reports_pr_violation_without_claiming_membership",
+      "observed_result": "PASS",
+      "universal_model_proof": false
+    },
+    {
+      "evidence_class": "FINITE_SOFTWARE_REGRESSION",
+      "group": "historical_source_preservation",
+      "id": "CHSHReferenceTests.test_original_publication_package_is_byte_unchanged",
+      "observed_result": "PASS",
+      "universal_model_proof": false
+    },
+    {
+      "evidence_class": "FINITE_SOFTWARE_REGRESSION",
+      "group": "interface_and_reproducibility",
+      "id": "CHSHReferenceTests.test_deterministic_json_cli_and_committed_result",
+      "observed_result": "PASS",
+      "universal_model_proof": false
+    },
+    {
+      "evidence_class": "FINITE_SOFTWARE_REGRESSION",
+      "group": "invalid_inputs_and_signalling",
+      "id": "CHSHNegativeControls.test_bad_probabilities",
+      "observed_result": "PASS",
+      "universal_model_proof": false
+    },
+    {
+      "evidence_class": "FINITE_SOFTWARE_REGRESSION",
+      "group": "invalid_inputs_and_signalling",
+      "id": "CHSHNegativeControls.test_bad_normalization",
+      "observed_result": "PASS",
+      "universal_model_proof": false
+    },
+    {
+      "evidence_class": "FINITE_SOFTWARE_REGRESSION",
+      "group": "invalid_inputs_and_signalling",
+      "id": "CHSHNegativeControls.test_missing_settings",
+      "observed_result": "PASS",
+      "universal_model_proof": false
+    },
+    {
+      "evidence_class": "FINITE_SOFTWARE_REGRESSION",
+      "group": "invalid_inputs_and_signalling",
+      "id": "CHSHNegativeControls.test_missing_zero_is_not_silently_imputed",
+      "observed_result": "PASS",
+      "universal_model_proof": false
+    },
+    {
+      "evidence_class": "FINITE_SOFTWARE_REGRESSION",
+      "group": "invalid_inputs_and_signalling",
+      "id": "CHSHNegativeControls.test_extra_outcome",
+      "observed_result": "PASS",
+      "universal_model_proof": false
+    },
+    {
+      "evidence_class": "FINITE_SOFTWARE_REGRESSION",
+      "group": "invalid_inputs_and_signalling",
+      "id": "CHSHNegativeControls.test_boolean_and_float_setting_aliases",
+      "observed_result": "PASS",
+      "universal_model_proof": false
+    },
+    {
+      "evidence_class": "FINITE_SOFTWARE_REGRESSION",
+      "group": "invalid_inputs_and_signalling",
+      "id": "CHSHNegativeControls.test_signalling_in_both_directions_rejected_below_chsh_ceiling",
+      "observed_result": "PASS",
+      "universal_model_proof": false
+    },
+    {
+      "evidence_class": "FINITE_SOFTWARE_REGRESSION",
+      "group": "invalid_inputs_and_signalling",
+      "id": "CHSHNegativeControls.test_invalid_ceilings",
+      "observed_result": "PASS",
+      "universal_model_proof": false
+    },
+    {
+      "evidence_class": "FINITE_SOFTWARE_REGRESSION",
+      "group": "invalid_inputs_and_signalling",
+      "id": "CHSHNegativeControls.test_bad_local_responses",
+      "observed_result": "PASS",
+      "universal_model_proof": false
+    },
+    {
+      "evidence_class": "FINITE_SOFTWARE_REGRESSION",
+      "group": "invalid_inputs_and_signalling",
+      "id": "CHSHNegativeControls.test_bad_quantum_settings",
+      "observed_result": "PASS",
+      "universal_model_proof": false
+    },
+    {
+      "evidence_class": "FINITE_SOFTWARE_REGRESSION",
+      "group": "invalid_inputs_and_signalling",
+      "id": "CHSHNegativeControls.test_invalid_candidate_records",
+      "observed_result": "PASS",
+      "universal_model_proof": false
+    },
+    {
+      "evidence_class": "FINITE_SOFTWARE_REGRESSION",
+      "group": "invalid_inputs_and_signalling",
+      "id": "CHSHNegativeControls.test_candidate_cli_rejects_invalid_table",
+      "observed_result": "PASS",
+      "universal_model_proof": false
+    }
+  ],
+  "schema": "qik-r1-test-coverage/1"
+}

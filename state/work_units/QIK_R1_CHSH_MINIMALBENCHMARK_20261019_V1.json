@@ -1,0 +1,106 @@
+{
+  "authorization": {
+    "principal": "Ingolf Lohmann",
+    "requested_again": false,
+    "scope": "Reviewable repository research candidate; original manuscript unchanged",
+    "source": "Direct current instruction to develop, implement, test and document the R1 minimal benchmark"
+  },
+  "base_head": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+  "base_tree": "15eb1a7bdd2c1880405df1026b14756f0fe72714",
+  "branch": "research/qik-r1-chsh-20261019",
+  "evidence": [
+    "docs/QIK_R1_CHSH_MINIMALBENCHMARK.md",
+    "evidence/chsh-reference/REFERENCE_RESULTS.json",
+    "evidence/chsh-reference/SOURCE_BINDINGS.json",
+    "evidence/chsh-reference/VALIDATION.txt",
+    "evidence/chsh-reference/NATIVE_LOCAL_SOURCE_READBACK.json",
+    "evidence/chsh-reference/NATIVE_PUBLISHED_SOURCE_READBACK.json"
+  ],
+  "open_research": {
+    "id": "QIK_R1_CORRELATION_LAW",
+    "needs_owner_reauthorization": false,
+    "next_action": "Specify a QIK-internal state/composition/measurement/record probability law, derive its quantum bounds without fitting these reference tables, exclude both PR and E=(1,1,1,1/2), reproduce Born probabilities across further settings"
+  },
+  "operational_boundaries": {
+    "additional_domain_query": "Automatic approval review rejected as outside CHSH scope; not pursued, no domain-delivery claim",
+    "carrier": "research/qik-r1-chsh-20261019 review candidate",
+    "merge_or_publication": false,
+    "mesh_native_execution_verified": false,
+    "mirror_outbox_tool": "node-tools/qikvrt_mirror_emit.py absent from current Main tree and v23 carrier; no formal assessment, sent, receipt, NACK or peer adoption claim created",
+    "native_in_process": {
+      "exact_published_source_head": "ae2e3283bae67a2e0e0abe4af96540100fcbca68",
+      "exact_tree": "e475c8ffc98601f8c702e25402f77bc572c188ff",
+      "method": "Original bounded Terminal API, admitted Runtime.append, fresh independent Terminal SQLite readback",
+      "pr": 552,
+      "readback": "evidence/chsh-reference/NATIVE_PUBLISHED_SOURCE_READBACK.json",
+      "scope": "Own local journal of the exact published source; no remote Mesh execution or peer adoption",
+      "verified": true
+    },
+    "native_transport": "Local socket permission denied; original admitted in-process Runtime/Terminal use remains separately bound"
+  },
+  "predecessor_context": {
+    "copied_journals_written": false,
+    "filename": "QIKVRT_Autostart_20261019_v23.zip",
+    "library_file_id": "libfile_8ff514ee33a08191a6573ae98c5acb5a",
+    "prior_unrelated_obligations_closed_by_this_task": false,
+    "sha256": "6a104eba51b56751385140f348b988b8ff3fe19c060ced2dcde249f061701eca",
+    "version": 23
+  },
+  "provenance": {
+    "artificial_cognitive": "Codex: implementation, tests, calculations, companion documentation",
+    "human": "Ingolf Lohmann: original QIK concepts, manuscript and task requirements",
+    "human_acceptance_of_generated_result_inferred": false
+  },
+  "repository": "ingolf-lohmann/qik-vrt",
+  "results": {
+    "PR_S": 4,
+    "empirical_experiment": false,
+    "formal_kernel_proof": false,
+    "full_R1_complete": false,
+    "local_S": 2,
+    "no_signalling_all_references": true,
+    "qik_derivation": false,
+    "quantum_S": 2.8284271247461894
+  },
+  "schema": "qikvrt-work-unit/v1",
+  "tested_file_sha256": {
+    "Makefile": "48ea66379458df97d78cf42f27ab513a64f575eea3d1b4a2747e432631880671",
+    "docs/QIK_R1_CHSH_MINIMALBENCHMARK.md": "50108deb9b55e4a0617bc18dbbff221f76955168d412f603fde24792f099fd77",
+    "evidence/chsh-reference/REFERENCE_RESULTS.json": "331ab05aabe0cc4b6a26a92cad66250c877509167225974ecf8261043c4fb3e1",
+    "evidence/chsh-reference/SOURCE_BINDINGS.json": "4fb8a7c6258d9a7284bbad05ad48f8e703d1a74accc503da2d85a004c7fa3cbb",
+    "src/qikvrt_chsh_benchmark.py": "4e7e8ba77c2fd70b2209b4d1ee0e2400f67a04df86ad1185dfe71cf266eca3f7",
+    "tests/test_qikvrt_chsh_benchmark.py": "05856249c46329ef07ce868fc5812173f0ae7b45e2d90b1300f93d21228ef0d3"
+  },
+  "validation": {
+    "ai_handoff_source": "VALID",
+    "chsh_gate": {
+      "command": "make chsh-reference-test",
+      "exit_code": 0,
+      "tests": 30
+    },
+    "full_repository_gate": {
+      "command": "make test",
+      "exit_code": 0,
+      "scope": "Frozen tested code and preceding generated integrity; final documentary evidence inserted afterwards and integrity regenerated separately",
+      "unittest_suites": 35,
+      "unittest_test_executions": 1693
+    },
+    "native_additional_regressions": {
+      "attempted": 96,
+      "cause": "PermissionError errno 1 on local sockets; no mocked transport acceptance",
+      "errors": 33,
+      "non_socket_subset": {
+        "exit_code": 0,
+        "tests": 14
+      },
+      "passed": 63
+    },
+    "original_publication_files_unchanged": 22,
+    "tool_cache": {
+      "covered": 34,
+      "declared": 34,
+      "verified": true
+    }
+  },
+  "work_unit_id": "QIK_R1_CHSH_MINIMALBENCHMARK_20261019_V1"
+}
