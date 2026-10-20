@@ -2,6 +2,8 @@ name: claude-mirror
 on:
   issue_comment:
     types: [created]
+  issues:
+    types: [opened, edited, reopened]
 permissions:
   contents: write
   pull-requests: write
@@ -9,7 +11,7 @@ permissions:
   id-token: write
 jobs:
   mirror:
-    if: contains(github.event.comment.body, '@claude')
+    if: contains(github.event.comment.body || github.event.issue.body, '@claude')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
