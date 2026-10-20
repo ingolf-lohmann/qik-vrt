@@ -1194,3 +1194,86 @@ actually succeed. Native Main governance and review remain separate gates.
 No provider purchase, DNS write, second website, new controller or automatic
 Main promotion is included.
 
+## Native peer rule receipt and activation
+
+`mesh-cache-send`/`mesh-cache-check` keep their proposal-only contract. A work
+batch or its receipt never activates a rule. The original native Terminal has
+an additional, separately admitted rule path on its existing loopback listener:
+
+| Operation | Evidence / effect |
+| --- | --- |
+| `POST /api/mesh-work/rule/receive` | Original `OBSERVE` event; receipt only |
+| `POST /api/mesh-work/rule/apply` | Install the exact native writer guard and append a separate original `EFFECT` event |
+| `GET /api/mesh-work/rule/readback/<request_id>/<32-hex-challenge>` | Fresh read-only SQLite connections verify request, both events and active guard |
+
+Use the existing `mesh_work_peers` private keys and HMAC method/path/body
+contract. The sender pins the peer identity and source HEAD/TREE. Configure
+its peer `url` to the **existing native Terminal** listener, reached through
+the admitted host transport; the monitor proposal listener remains unchanged.
+No new listener, service, credential provider or message relay is added.
+The native listener remains loopback-only and refuses browser-origin requests.
+Original native and copied-journal writer fences still apply.
+
+The receiver additionally requires `mesh_rule_grants` in its existing private,
+source/volume-bound S1 configuration. Each entry has exactly these fields:
+`peer_node_id` (authenticated sender), `request_id`, canonical `request_sha256`,
+`rule_sha256`, `rule_path` (a sealed `policy/` JSON file), and `rule_pointer`
+(an array of JSON object keys selecting the approved rule). Hash references
+use `sha256:<64 lowercase hex>`. There is no default grant. Incoming rule bytes
+must equal the already reviewed local rule; a message cannot change the rule
+file or authorize itself. Grant/configuration changes require the existing
+configuration/volume admission procedure.
+
+The bounded canonical JSON request uses schema `qikvrt-peer-rule-request/v1`
+and exactly `request_id`, `work_unit_id`, `sender_node_id`, `sender_repository`,
+`peer_node_id`, `subject` (`repository`, positive `pr`, `head`, `tree`),
+`rule_id`, `rule` (the selected JSON object), and `rule_sha256`. The request
+digest covers the complete canonical request; the rule digest covers canonical
+rule bytes. Receiver receipts bind both hashes, sender/recipient, Work Unit,
+exact subject, original native provenance, event ID/epoch, native digest,
+payload digest and ledger-body digest. Every read also revalidates the local
+rule bytes, grant and sealed source. Original request bytes and frozen native
+event plans live in the original ledger's `meta` table, not a second journal.
+
+Activation means **native peer rule admission guard installation**. S1 consumes
+that binding before every subsequent native append. A removed/corrupt active
+guard, revoked grant or changed source holds unrelated native writes. A crash
+between guard installation and event append allows only the original exact
+application event to finish the activation. This is not a general policy
+interpreter: receipt/activation does not execute prose, arbitrary instructions,
+repository proposals or a model session. It cannot prove future Claude
+behaviour, other-node adoption, or a safety/physical effect.
+
+The existing S1 CLI performs one finite synchronous exchange:
+
+```sh
+python3 -B tools/qikvrt_self_host.py mesh-rule-confirm \
+  --mesh-cache /private/existing-node-cache \
+  --work-request /private/exact-rule-request.json \
+  --peer /private/existing-terminal-peer.json --apply-rule
+```
+
+Omit `--apply-rule` for receipt only. The sender retains its request and
+authenticated receipts in the existing cache. It performs fresh challenged
+GET before any POST and after every native effect. Lost responses are resolved
+by readback; an unavailable read never admits a retry, and an acknowledged
+receipt disappearing holds the exchange. Receipt/event identities cannot be
+replaced after restart. The existing EAP engine may return nested
+`rule_effect.state = EFFECT_ACK_DONE` only for verified native guard activation.
+The outer `effect_ack_done` and `all_peer_adoption_verified` remain false.
+No global completion, public-host delivery or actual Claude ACK is inferred.
+
+Reproduce the real loopback/native-journal conformance tests with:
+
+```sh
+python3 -B -m unittest -v tests.test_self_host_temdd.NativePeerRuleTests
+make test repository-monitor-test self-host-test
+```
+
+The fixtures use synthetic peer identities and private test keys. They exercise
+receipt/application separation, original writer-guard enforcement, full binding
+substitution controls, HMAC/challenge replay rejection, restart, lost ACK,
+revocation, native identity replacement and refusal without independent readback.
+Productive acceptance still needs the actual admitted peer's private channel,
+its original writable Transputer and independently challenged Terminal readback.
+

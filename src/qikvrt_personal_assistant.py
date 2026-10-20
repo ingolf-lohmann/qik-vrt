@@ -56,7 +56,8 @@ def subject() -> dict[str, Any]:
         except (OSError, subprocess.SubprocessError):
             return None
     paths = ["src/qikvrt_personal_assistant.py", "src/qikvrt_effect_ack_http_terminal.py",
-             "src/qikvrt_personal_auth.py",
+             "src/qikvrt_personal_auth.py", "src/qikvrt_personal_retrieval.py",
+             "runtime/models/pplx-embed-v2-late-0.6b.lock.json",
              *[str(p.relative_to(ROOT)) for p in sorted(UI.iterdir()) if p.is_file()]]
     return {"repository": "ingolf-lohmann/qik-vrt", "head": git("rev-parse", "HEAD"),
             "tree": git("rev-parse", "HEAD^{tree}"), "worktree_dirty": bool(git("status", "--porcelain")),
@@ -159,7 +160,7 @@ class GeminiTransport(OpenAITransport):
 
 
 class PersonalRuntime:
-    def __init__(self, state_dir: str | Path, model: str, credential: str, local_token: str, *, transport=None, provider="openai"):
+    def __init__(self, state_dir: str | Path, model: str, credential: str, local_token: str, *, transport=None, provider="openai", retrieval_engine=None):
         if provider not in {"openai", "gemini"}:
             raise CapabilityBlock("PROVIDER_NOT_ALLOWLISTED")
         if not isinstance(model, str) or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,128}", model):
@@ -168,6 +169,7 @@ class PersonalRuntime:
             raise CapabilityBlock("LOCAL_PAIRING_SECRET_REQUIRED_32_TO_256_CHARACTERS")
         self.model, self.credential, self.local_token = model, credential, local_token
         self.provider = provider
+        self.retrieval_engine = retrieval_engine
         if provider == "gemini" and model != "gemini-4-argon":
             raise CapabilityBlock("GEMINI_ARGON_EXPLICIT_MODEL_REQUIRED")
         self.transport = transport if transport is not None else (GeminiTransport(credential) if provider == "gemini" else OpenAITransport(credential))
@@ -225,6 +227,9 @@ class PersonalRuntime:
         self.subject = subject()
         self.auth_receipt = None  # Runtime proof is never inherited from a prior process.
         self.personal_auth = None
+        self.native_terminal = None
+        self.terminal_prepared = None
+        self.terminal_binding = None
 
     @classmethod
     def from_secret_store(cls, state_dir, model, provider, config_path, origin):
@@ -257,8 +262,137 @@ class PersonalRuntime:
                    os.environ.get("QIKVRT_PERSONAL_LOCAL_TOKEN", ""), provider=provider)
 
     def close(self):
+        if self.native_terminal:
+            self.native_terminal.ledger.close()
         self.db.close()
         self.writer.close()
+
+    def _terminal_context(self, bearer, *, renew=False):
+        if not self.personal_auth or not self.native_terminal:
+            raise CapabilityBlock("PROTECTED_SSO_AND_ADMITTED_NATIVE_TERMINAL_REQUIRED")
+        exact = self.native_terminal.ensure_subject()
+        current = subject()
+        if (current["worktree_dirty"] or current["head"] != exact["head"] or
+                current["tree"] != exact["tree"] or current != self.subject):
+            raise CapabilityBlock("FRESH_PERSONAL_SOURCE_BINDING_REQUIRED")
+        with self.personal_auth.lock:
+            pending = self.personal_auth.pending
+            if pending and self.personal_auth.clock() < pending["until"]:
+                raise CapabilityBlock("OIDC_AUTHORIZATION_ALREADY_PENDING")
+            self.personal_auth.authenticate(bearer, renew=renew)
+        return {"subject": exact, "identity_binding": "sha256:" + self.personal_auth.binding}
+
+    def prepare_terminal_transition(self, bearer):
+        """One bounded preparation in the authenticated Personal origin only."""
+        with self.lock:
+            if self.terminal_prepared is not None:
+                raise CapabilityBlock("PRIOR_TERMINAL_TRANSITION_REQUIRES_READBACK_OR_RESTART")
+            # Force provider validation; a cached/connector/legacy token is insufficient.
+            context = self._terminal_context(bearer, renew=True)
+            plan = {"schema": "qikvrt_personal_terminal_transition_v1", **context,
+                    "request_id": secrets.token_hex(24), "from": "standard", "to": "personal",
+                    "effect_scope": "AUTHENTICATED_NATIVE_PERSONAL_BINDING_ONLY"}
+            record_hash = digest(canonical(plan))
+            token = secrets.token_urlsafe(32)
+            self.terminal_prepared = {"plan": plan, "hash": record_hash, "token": token,
+                "bearer_hash": digest(bearer.encode()), "until": time.monotonic() + 120, "attempted": False}
+            return {"state": "EFFECT_ACK_CONTINUE", "ordinary_release": False,
+                    "plan": plan, "record_hash": record_hash, "commit_token": token}
+
+    def commit_terminal_transition(self, bearer, binding):
+        with self.lock:
+            context = self._terminal_context(bearer)
+            prepared = self.terminal_prepared
+            if (not prepared or prepared["attempted"] or time.monotonic() >= prepared["until"] or
+                    binding != {"v": 1, "mode": "commit", "token": prepared["token"], "hash": prepared["hash"]} or
+                    not hmac.compare_digest(digest(bearer.encode()), prepared["bearer_hash"]) or
+                    any(prepared["plan"][key] != value for key, value in context.items())):
+                raise CapabilityBlock("EXACT_FRESH_SINGLE_USE_TERMINAL_PREPARATION_REQUIRED")
+            prepared["attempted"] = True  # Lost reply/readback never admits an automatic retry.
+            try:
+                from . import qikvrt_effect_ack_http_terminal as terminal
+                from . import qikvrt_temdd_event_ledger as native
+            except ImportError:
+                import qikvrt_effect_ack_http_terminal as terminal
+                import qikvrt_temdd_event_ledger as native
+            body = terminal._durable_input({"schema": "qikvrt_terminal_input_v1",
+                "text": "Explicit authenticated Standard-to-Personal transition", "audio": None, "video": None})
+            event = {"schema": native.SCHEMA, "kind": "ACTION", "subject": context["subject"],
+                "provenance": {"source": "transputer", "native_event_id": "personal-transition:" + prepared["plan"]["request_id"]},
+                "observed_at": native.utc(), "message": "Explicit authenticated Personal terminal binding",
+                "payload": {"terminal_input": body, "input_hash": "sha256:" + digest(canonical(body)),
+                    "transition": prepared["plan"], "plan_hash": "sha256:" + prepared["hash"],
+                    "auth_evidence_class": self.personal_auth.status()["evidence_class"],
+                    "product_acceptance": False}}
+            self._nonsecret(event)
+            prepared["event"] = event
+            receipt = self.native_terminal.append(event)
+            self.terminal_binding = {"context": context, "bearer_hash": prepared["bearer_hash"],
+                                     "event": event, "receipt": receipt}
+            state = str(self.native_terminal.ledger.directory.parent)
+            _, readback = terminal._durable_read(state, event)
+            if receipt != readback:
+                raise CapabilityBlock("NATIVE_TRANSITION_READBACK_MISMATCH")
+            self.terminal_prepared = None
+            return self.read_terminal_transition(bearer)
+
+    def read_terminal_transition(self, bearer):
+        with self.lock:
+            context = self._terminal_context(bearer)
+            try:
+                from . import qikvrt_effect_ack_http_terminal as terminal
+                from .qikvrt_effect_ack import EffectAckRequest, effect_ack_sync, ConnectionDecision, RiskLevel
+            except ImportError:
+                import qikvrt_effect_ack_http_terminal as terminal
+                from qikvrt_effect_ack import EffectAckRequest, effect_ack_sync, ConnectionDecision, RiskLevel
+            pending = self.terminal_prepared
+            if (pending and pending["attempted"] and pending.get("event") and
+                    hmac.compare_digest(digest(bearer.encode()), pending["bearer_hash"]) and
+                    all(pending["plan"][key] == value for key, value in context.items())):
+                _, observed = terminal._durable_read(str(self.native_terminal.ledger.directory.parent), pending["event"])
+                if observed is None:
+                    raise CapabilityBlock("AMBIGUOUS_NATIVE_TRANSITION_NOT_OBSERVED_NO_RETRY")
+                self.terminal_binding = {"context": context, "bearer_hash": pending["bearer_hash"],
+                                         "event": pending["event"], "receipt": observed}
+                self.terminal_prepared = None
+            bound = self.terminal_binding
+            if (not bound or context != bound["context"] or
+                    not hmac.compare_digest(digest(bearer.encode()), bound["bearer_hash"])):
+                raise CapabilityBlock("FRESH_AUTHENTICATED_TERMINAL_TRANSITION_REQUIRED")
+            _, readback = terminal._durable_read(str(self.native_terminal.ledger.directory.parent), bound["event"])
+            if readback != bound["receipt"]:
+                raise CapabilityBlock("NATIVE_TRANSITION_READBACK_MISMATCH")
+            evidence = "sha256:" + readback["ledger_digest"]
+            result = effect_ack_sync(EffectAckRequest(protocol_root_id="personal-terminal:" + readback["id"],
+                input_id=bound["event"]["provenance"]["native_event_id"], payload=canonical(bound["event"]),
+                transport_ack=True, origin_checked=True, context_checked=True, semantics_reconstructed=True,
+                effect_anticipated=True, risk_classified=True, risk_level=RiskLevel.LOW,
+                responsibility_assigned=True, responsibility_owner="LOCAL_AUTHENTICATED_USER",
+                connection_decision=ConnectionDecision.RELEASE, policy_allows_release=True,
+                evidence_refs=(evidence,), required_evidence_refs=(evidence,),
+                reasons=("Independent native binding readback only; no Firefox, model, SSO production or delivery acceptance",)),
+                previous_protocol=bound.get("protocol"))
+            bound["protocol"] = result.protocol
+            return {"state": result.state.value, "ordinary_release": result.ordinary_release,
+                "effect_scope": "AUTHENTICATED_NATIVE_PERSONAL_BINDING_ONLY", "subject": context["subject"],
+                "event_id": readback["id"], "ledger_digest": evidence,
+                "native_event": readback,
+                "protocol": result.protocol.to_dict(), "readback_verified": True,
+                "productive_sso_verified": False,
+                "live_identity_observed": self.personal_auth.status()["live_authentication_observed_this_process"],
+                "firefox_activation_verified": False, "public_delivery_verified": False}
+
+    def search_sources(self, query, sources, limit=3):
+        if self.retrieval_engine is None:
+            raise CapabilityBlock("LOCAL_RETRIEVAL_NOT_CONFIGURED")
+        self._nonsecret({"query": query, "sources": sources})
+        try:
+            with self.lock:
+                result = self.retrieval_engine.search(query, sources, limit)
+        except (ValueError, OSError):
+            raise CapabilityBlock("LOCAL_RETRIEVAL_REJECTED") from None
+        self._nonsecret(result)
+        return result
 
     def _nonsecret(self, value: Any):
         raw = canonical(value)
@@ -402,6 +536,7 @@ class PersonalRuntime:
             auth = self.auth_receipt
             fresh = bool(auth and time.monotonic() - auth["observed_monotonic"] < 300 and auth["subject"] == subject())
             return {"manifest": manifest, "subject": self.subject, "binding": self.binding,
+                    "local_retrieval_enabled": self.retrieval_engine is not None,
                     "personal_identity_session": self.personal_auth.status() if self.personal_auth else {"state": "LEGACY_MEMORY_PAIRING_ONLY"},
                     "local_client_authentication_required": True, "authenticated_runtime_readback": fresh,
                     "runtime_evidence": auth if fresh else None,
@@ -423,6 +558,19 @@ def personal_handler(base_handler, runtime: PersonalRuntime):
             self.send_header("Cache-Control", "no-store")
             self.send_header("X-Content-Type-Options", "nosniff")
             self.send_header("Referrer-Policy", "no-referrer")
+            if isinstance(body, dict) and (body.get("effect_scope") == "AUTHENTICATED_NATIVE_PERSONAL_BINDING_ONLY" or
+                    body.get("plan", {}).get("schema") == "qikvrt_personal_terminal_transition_v1"):
+                try:
+                    from .qikvrt_effect_ack_http_terminal import sf_bytes
+                except ImportError:
+                    from qikvrt_effect_ack_http_terminal import sf_bytes
+                hash_value = body.get("record_hash") or body["protocol"]["protocol_hash"].removeprefix("sha256:")
+                state = "done" if body["state"] == "EFFECT_ACK_DONE" else "continue"
+                header = f"v=1, state={state}, hash={sf_bytes(bytes.fromhex(hash_value))}"
+                if body.get("commit_token"):
+                    header += ", token=" + sf_bytes(body["commit_token"].encode("ascii"))
+                self.send_header("Effect-Ack", header)
+                self.send_header("Link", '</personal/terminal/readback>; rel="effect-ack"; type="application/json"')
             scripts = "'nonce-" + nonce + "'" if nonce else "'self'"
             self.send_header("Content-Security-Policy", "default-src 'none'; script-src " + scripts + "; style-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'")
             self.end_headers()
@@ -453,6 +601,7 @@ def personal_handler(base_handler, runtime: PersonalRuntime):
                 self._personal_guard(public=self.path in assets or self.path == "/personal/auth/info")
                 if self.path == "/personal/auth/info":
                     return self._personal_response(200, {"oidc_enabled": runtime.personal_auth is not None,
+                        "native_terminal_enabled": runtime.native_terminal is not None,
                         "issuer": runtime.personal_auth.config["issuer"] if runtime.personal_auth else None,
                         "passkey": "PROVIDER_DEVICE_CAPABILITY_NOT_ATTESTED"})
                 if self.path in assets:
@@ -461,9 +610,15 @@ def personal_handler(base_handler, runtime: PersonalRuntime):
                 if self.path == "/personal/capabilities":
                     return self._personal_response(200, dict(runtime.capabilities(), local_client_authenticated=True))
                 if self.path == "/personal/sessions":
+                    if runtime.native_terminal:
+                        runtime.read_terminal_transition(self.headers.get("Authorization", "").removeprefix("Bearer "))
                     return self._personal_response(200, {"sessions": runtime.sessions()})
+                if self.path == "/personal/terminal/readback":
+                    return self._personal_response(200, runtime.read_terminal_transition(self.headers.get("Authorization", "").removeprefix("Bearer ")))
                 prefix = "/personal/session/"
                 if self.path.startswith(prefix):
+                    if runtime.native_terminal:
+                        runtime.read_terminal_transition(self.headers.get("Authorization", "").removeprefix("Bearer "))
                     with runtime.lock:
                         return self._personal_response(200, runtime.readback(runtime.load(self.path[len(prefix):])))
                 self._personal_response(404, {"state": "HOLD"})
@@ -507,11 +662,27 @@ def personal_handler(base_handler, runtime: PersonalRuntime):
                 # validating the confirmation body and taking the runtime lock.
                 # The normal guard could otherwise refresh an expired token
                 # before the renew route immediately exchanges it again.
-                self._personal_guard(public=bool(auth and self.path == "/personal/auth/renew"))
+                transition = self.path in {"/personal/terminal/prepare", "/personal/terminal/commit"}
+                self._personal_guard(public=transition or bool(auth and self.path == "/personal/auth/renew"))
                 body = self._read_body()
                 if body.get("confirmed") is not True:
                     raise CapabilityBlock("EXPLICIT_MODEL_REQUEST_CONFIRMATION_REQUIRED")
-                if auth and self.path in {"/personal/auth/renew", "/personal/auth/logout"}:
+                if transition:
+                    if self.headers.get("Origin") != "http://" + self.headers.get("Host", "") or body != {"confirmed": True}:
+                        raise CapabilityBlock("EXPLICIT_SAME_ORIGIN_TERMINAL_TRANSITION_REQUIRED")
+                    try:
+                        from .qikvrt_effect_ack_http_terminal import parse_effect_ack_request
+                    except ImportError:
+                        from qikvrt_effect_ack_http_terminal import parse_effect_ack_request
+                    binding = parse_effect_ack_request(self.headers.get("Effect-Ack-Request"))
+                    bearer = self.headers.get("Authorization", "").removeprefix("Bearer ")
+                    if self.path.endswith("/prepare"):
+                        if binding["mode"] != "prepare":
+                            raise CapabilityBlock("PREPARE_MODE_REQUIRED")
+                        result = runtime.prepare_terminal_transition(bearer)
+                    else:
+                        result = runtime.commit_terminal_transition(bearer, binding)
+                elif auth and self.path in {"/personal/auth/renew", "/personal/auth/logout"}:
                     if set(body) != {"confirmed"}:
                         raise CapabilityBlock("OIDC_AUTH_OPERATION_FIELDS_INVALID")
                     with runtime.lock:
@@ -521,11 +692,23 @@ def personal_handler(base_handler, runtime: PersonalRuntime):
                         else:
                             auth.authenticate(self.headers.get("Authorization", "").removeprefix("Bearer "), renew=True)
                             result = auth.status()
+                elif self.path == "/personal/search":
+                    if set(body) != {"query", "sources", "limit", "confirmed"}:
+                        raise CapabilityBlock("SEARCH_FIELDS_INVALID")
+                    if self.headers.get("Origin") != "http://" + self.headers.get("Host", ""):
+                        raise CapabilityBlock("EXPLICIT_SAME_ORIGIN_SEARCH_REQUIRED")
+                    if runtime.native_terminal:
+                        runtime.read_terminal_transition(self.headers.get("Authorization", "").removeprefix("Bearer "))
+                    result = runtime.search_sources(body["query"], body["sources"], body["limit"])
                 elif self.path == "/personal/create":
+                    if runtime.native_terminal:
+                        runtime.read_terminal_transition(self.headers.get("Authorization", "").removeprefix("Bearer "))
                     if set(body) != {"mode", "task", "sources", "confirmed"}:
                         raise CapabilityBlock("CREATE_FIELDS_INVALID")
                     result = runtime.create(body["mode"], body["task"], body["sources"])
                 elif self.path in {"/personal/turn", "/personal/resume"}:
+                    if runtime.native_terminal:
+                        runtime.read_terminal_transition(self.headers.get("Authorization", "").removeprefix("Bearer "))
                     if set(body) != {"session_id", "text", "confirmed"}:
                         raise CapabilityBlock("TURN_FIELDS_INVALID")
                     result = runtime.turn(body["session_id"], body["text"], resume=self.path.endswith("/resume"))

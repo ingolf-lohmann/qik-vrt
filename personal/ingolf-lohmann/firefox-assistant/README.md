@@ -3,6 +3,54 @@
 
 # Universales Raumzeit-Terminal
 
+## Native SSO-Produktivprüfung, 19.10.2026
+
+Der vorhandene Terminal-Einstieg kann eine bereits erteilte, geschützte
+SSO-Sitzung jetzt unabhängig von Modell-Key und HTTP-Listener zurücklesen:
+
+```bash
+python3 -B src/qikvrt_effect_ack_http_terminal.py personal-auth-readback \
+  --personal-state-dir /private/runtime/qikvrt-personal \
+  --personal-auth-config /private/runtime/registered-oidc.json
+```
+
+Dies ist eine **aktive Token-Erneuerung** beim genau gebundenen Anbieter,
+keine rein lokale Statusabfrage. Sie verwendet dieselbe private Konfiguration,
+denselben OS Secret Service, dieselbe profilgebundene Schreibsperre und das
+vorhandene Refresh-Pending-Journal. Ein laufender PersonalRuntime blockiert den
+konkurrierenden CLI-Schreiber. Ausgegeben werden ausschließlich Status und
+Nachweisgrenzen, keine lokalen Bearer, Access- oder Refresh-Tokens. Die
+Wiederaufnahme verlängert die bestehende zwölfstündige Sitzungsgrenze nicht.
+Bei ungeklärter Erneuerung gibt es keinen automatischen weiteren Versuch.
+Die Operation startet keinen Passwortdialog und legt keine Ersatzablage an.
+
+Der Aufruf ist für den zugelassenen nativen Desktop-Benutzer bestimmt. Es gibt
+keinen unauthentifizierten HTTP-Endpunkt, der einen gespeicherten Bearer an
+eine neu geöffnete Browserseite ausgibt. Der bestehende Firefox-Anmeldepfad und
+seine Origin-/PKCE-/State-/Nonce-Prüfungen bleiben erhalten. Eine fremde
+Cloud-Browser-Sitzung wird durch diese Funktion nicht angemeldet.
+
+Produktivabnahme verlangt weiterhin die bestehende registrierte Public-Client-
+und Owner-Subject-Bindung sowie einen tatsächlich verfügbaren, geschützten
+OS-Speicher unter dem angemeldeten Benutzer. Ein Test mit simuliertem IdP oder
+Speicher ist kein produktiver SSO-Nachweis. Die lokalen Unit-Tests prüfen
+Neustart, Ablauf, Logout-/Pending-Zustände, konkurrierenden Schreiber,
+verlorene Refresh-Antwort und geheimnisfreie Ausgabe.
+
+Für die bereits autorisierte OneNote-Arbeit gilt zusätzlich: Der bestehende
+Identity-Pfad fordert nur `openid offline_access` an. Das ist keine delegierte
+Microsoft-Graph-Berechtigung für OneNote. Der genaue native Adapter benötigt
+eine zum registrierten Client gehörende, autorisierte Notes-Berechtigung und
+einen eigenen Seiten-Readback. Eine vorhandene Outlook-/OneDrive-Verbindung
+liefert diesem Runtime keine exportierbaren Tokens. Der neue Readback fordert
+keine zusätzlichen Scopes an und behauptet keinen OneNote-Effekt.
+
+Primärquellen zur getrennten API-Berechtigung:
+
+- https://learn.microsoft.com/en-us/graph/api/resources/onenote-api-overview?view=graph-rest-1.0
+- https://learn.microsoft.com/en-us/graph/permissions-reference#notesreadwrite
+- https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-auth-code-flow
+
 ## Geschützter Personal-Anmeldepfad, 16.10.2026
 
 Der vorhandene Personal-Adapter hat jetzt einen ausführbaren, ausdrücklich
@@ -363,3 +411,88 @@ API-Vertrag, am 2026-10-05 gelesen:
 
 Die externen API-Spezifikationen sind nicht mitvendort. Ihre Verfügbarkeit
 belegt keine Authentifizierung dieses Benutzers oder dieses Versuchshosts.
+# Frische Bindung beim Übergang aus dem unabhängigen Firefox-Tab
+
+„Personal öffnen“ navigiert ohne Daten oder Credentials nach `/personal/#terminal`.
+Nach der bestehenden OIDC-Anmeldung aktiviert der Benutzer „Personal-Modus
+aktivieren“. Der gleiche vorhandene Terminal-Prozess erneuert den gebundenen
+SSO-Grant einmal, bereitet die genaue Quell-/Identitätsbindung vor und nimmt
+einen einmaligen, 120 Sekunden gültigen EFFECT_ACK-Commit entgegen.
+Der Original-Transputer schreibt ein begrenztes Ereignis; das Original-Terminal
+prüft es über eine frische lesende SQLite-Verbindung. Die Oberfläche prüft
+anschließend einen gesonderten authentifizierten GET und den Ereignishash.
+„Übergang prüfen“ liest nach verlorener Antwort, ohne den Commit zu wiederholen.
+
+Dieser Pfad nutzt das bereits vorhandene In-Process-API und denselben HTTP-
+Listener. Er eröffnet keinen ungeschützten nativen HTTP-Writer. Native
+Schreiberbindung, Originaljournal, Eigentümerrechte und exakte Quelle bleiben
+verbindlich. Bei explizit aktiviertem nativen Pfad bleiben Gespräche und
+Modellanfragen bis zur Bindung gesperrt. Der bisherige Entwicklungspfad kann
+diesen Übergang nicht bestätigen.
+
+Zum vorhandenen geschützten Start werden die bereits unterstützten Argumente
+`--root`, `--repository`, `--pr`, `--expected-head`, `--expected-tree` und
+`--state-dir` mit den tatsächlich zugelassenen Werten gesetzt. `--state-dir`
+bezeichnet den originalen, zugelassenen lokalen TEMDD-Speicher; Kopien übertragen
+keine Schreiberzulassung. Modellargumente und private SSO-Konfiguration bleiben
+diejenigen des vorhandenen Personal-Starts. Fehlende oder veränderte Bindungen
+halten geschlossen, ohne Token-Fallback oder neuen Dienst.
+
+`EFFECT_ACK_DONE` dieses Pfads gilt ausschließlich für
+`AUTHENTICATED_NATIVE_PERSONAL_BINDING_ONLY`. Produktives Microsoft-SSO,
+dauerhafte signierte Firefox-Aktivierung, Modellbetrieb und öffentliche
+Auslieferung benötigen jeweils eigene Nachweise. Die Regressionen nutzen
+ausdrücklich simulierte Identitätsanbieter und Vaults, jedoch Original-
+Transputer, Journal, Terminal und einen zusätzlichen Prozess für den Readback.
+## Optional local source ranking (Owner-authorized candidate, 2026-10-20)
+
+The existing Personal HTTP terminal accepts the additive startup option
+`--personal-retrieval-model-dir /absolute/private/model-directory`. This option
+requires the existing `--personal-state-dir` and its normal authentication and
+model configuration. It does not create another server, executor, scheduler,
+credential store or Firefox permission. The feature is disabled by default.
+Existing OIDC, bearer, same-origin and configured native transition checks apply.
+Search does not call the conversation model or write a conversation session.
+The surrounding Personal assistant still has its existing provider configuration;
+this feature alone does not make the whole assistant an offline product.
+
+Prepare an isolated optional Python 3.12 environment using the exact versions in
+`runtime/toolchains/requirements-personal-retrieval.txt`; run `python -m pip check`
+and retain the resolved distribution inventory. The lock reproduces the tested
+Linux environment, including Torch's packaged CUDA dependencies; inference is CPU.
+This is a version lock, not a cryptographic wheel lock or an approved redistribution
+bundle. Do not install it into the standard browser extension or productive host
+automatically. Cache verified packages under the existing tool-cache policy.
+
+Separately provision the 15 files from official model
+`https://huggingface.co/perplexity-ai/pplx-embed-v2-late-0.6b/tree/8fc2de24534aa3610d85fa59c463313a5f096455`
+to the explicit external directory. The repository's model lock binds exact paths,
+sizes and SHA-256 values. Startup checks the complete file set and refuses symlinks,
+missing, extra or changed files before loading. Model loading uses
+`trust_remote_code=False`, `local_files_only=True` and CPU; no implicit download,
+model substitution or cloud fallback. An invalid directory blocks startup.
+Retain the pinned directory as read-only for the lifetime of the process.
+For recovery, remove the optional startup argument; preserve private assistant
+state and the original model files rather than resetting either.
+
+In the existing sources input, provide 1–32 explicit `{id,text}` excerpts, each
+at most 512 Unicode characters. A trusted click on the local search control
+hashes the text, submits the bounded question, and previews up to three ranked
+excerpts. Backend source hashes and request binding are checked again in the UI;
+source text is rendered with `textContent`. Treat a digest as integrity binding,
+not as proof of document authenticity or permission to disclose its contents.
+Only submit excerpts the signed-in user is authorized to read. No file system,
+Mesh corpus enumeration, OCR, field extraction, automatic form insertion or
+submission is implemented by this candidate. Source instructions remain data.
+
+The model's MIT license does not change QIK-VRT's PolyForm Noncommercial license.
+Optional runtime distributions retain their own licenses. Integration authorization
+is not a commercial grant, license-strategy change, dependency redistribution
+approval, authenticated Firefox test, private Mesh integration or productive
+EFFECT_ACK acceptance. Those obligations remain separate.
+
+Run `make personal-retrieval-test` for deterministic Python/HTTP and simulated
+DOM controls. An actual offline-model probe must exercise
+`LocalRetrieval.from_directory` and `search`; predecessor model-only measurements
+do not accept this adapter. No comparative quality claim follows from smoke tests.
+

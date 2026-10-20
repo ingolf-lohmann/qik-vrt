@@ -352,6 +352,27 @@
       ],
       "version": "cryptography50.0.2+cffi2.1.1+pycparser3.0"
     },
+    "personal-retrieval": {
+      "authority_files": [
+        "runtime/toolchains/requirements-personal-retrieval.txt",
+        "runtime/models/pplx-embed-v2-late-0.6b.lock.json",
+        "personal/ingolf-lohmann/firefox-assistant/README.md"
+      ],
+      "cache_class": "ecosystem-cache",
+      "cache_locations": [
+        "pip version-keyed wheel cache; explicit external model directory bound by SHA-256 lock"
+      ],
+      "profiles": [
+        "personal-retrieval-opt-in"
+      ],
+      "provider": "Official PyPI distributions and pinned perplexity-ai Hugging Face model revision; optional isolated environment only",
+      "trusted_save": false,
+      "verification": [
+        "pinned dependency versions via pip check/freeze; model file-set, size and SHA-256 verification",
+        "make personal-retrieval-test; optional real offline model smoke probe"
+      ],
+      "version": "sentence-transformers6.0.0+transformers5.4.0+torch2.14.1"
+    },
     "playwright-offline-tests": {
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",

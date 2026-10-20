@@ -1,0 +1,36 @@
+{
+  "artificial_cognitive_actor": {
+    "contribution": "Exact Main/PR/evidence review, history-preserving integration preparation, original-byte preservation and fresh verification.",
+    "family": "OpenAI Codex",
+    "model_build": "UNAVAILABLE"
+  },
+  "authority": "ingolf-lohmann/qik-vrt",
+  "current_main": "a38455c739f7f475b2a93447de1db4ea87e4200c",
+  "current_main_tree": "b733ce6cc611dc59c426df531d9128efc0d000b9",
+  "human": {
+    "contribution": "Selected direct task authorizes PR545 restoration and Main integration only under actual safety and governance conditions.",
+    "instruction_sha256": "fb22f61d807802de4f6f098a79fd220318af8edf73ddd37d6e14fb379750170f",
+    "name": "Ingolf Lohmann"
+  },
+  "original_candidate": "37e1da4178960bd65595d2d334319837ed2b134b",
+  "original_provenance": "state/work_units/QIKVRT_SIEMENS_REFERENCE_RESTORE_20261019_V1.json",
+  "pr": 545,
+  "reconciliation": {
+    "Makefile": "three-way merge preserves current Main and the original digital-twin-rest-test target",
+    "force_push": false,
+    "integrity": "regenerate only the existing three generated integrity files for the new union tree",
+    "model_blob": "816d55781e53e0801390a96e8032c9fa2b327ae2",
+    "preserve_both_parents": true,
+    "rest_and_sso_implementation_unchanged": true,
+    "unchanged_original_evidence": true
+  },
+  "schema": "qikvrt-pr545-main-reconciliation/v1",
+  "scope": {
+    "global_effect_ack_done": false,
+    "main_integrated": "NOT_YET_OBSERVED",
+    "physical_effect": false,
+    "productive_siemens": false,
+    "simulation_reference_only": true
+  },
+  "verification": "Fresh exact-tree tests and current-head native/Principal governance must be independently read back; predecessor evidence does not transfer."
+}

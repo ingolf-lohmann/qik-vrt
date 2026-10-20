@@ -278,5 +278,13 @@
     ],
     "historical_original_daemon_preserved": true,
     "predecessor_pass_transferred": false
+  },
+  "native_peer_rule_20261019": {
+    "basis_head": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+    "predecessor_receipt_path": "evidence/self_host/SOURCE_RECOVERY_SUCCESSOR_20261019_PRE_PEER_RULE.json",
+    "predecessor_receipt_sha256": "abdc7cfc949e252e9e30624c3562fa7be776586180368aead2e7d1916919a480",
+    "predecessor_pass_transferred": false,
+    "production_peer_confirmation_verified": false,
+    "native_scope": "NATIVE_PEER_RULE_ACTIVATION_ONLY"
   }
 }

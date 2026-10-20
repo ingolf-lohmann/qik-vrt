@@ -9,6 +9,8 @@
 <button id="sign-in" disabled>Mit Identitätsanbieter anmelden</button>
 <button id="renew" disabled>Sitzung erneuern</button>
 <button id="sign-out" disabled>Lokal abmelden</button>
+<button id="terminal-bind" disabled>Personal-Modus aktivieren</button>
+<button id="terminal-readback" disabled>Übergang prüfen</button>
 <p id="provider-sign-out"></p>
 <p>Passkeys und biometrische Bestätigung erfolgen beim gewählten Identitätsanbieter und auf deinem Gerät.</p>
 <label>Lokaler Sitzungsschlüssel <input id="token" type="password" autocomplete="off" spellcheck="false"></label>
@@ -24,6 +26,11 @@
 <label>Nachricht <textarea id="message" rows="3"></textarea></label>
 <button id="send">Nachricht senden</button><button id="resume">Arbeit wiederaufnehmen</button>
 <p>Beide Modi behalten ihre normale Gesprächshistorie. Wiederaufnahme ergänzt im QIK-VRT-Modus den gespeicherten Checkpoint.</p></section>
+<section><h2>Lokale Quellensuche</h2>
+<p>Durchsuche die oben angegebenen kurzen Quellenauszüge auf diesem Rechner. Die Suche sendet keine Modellanfrage an einen Cloudanbieter und fügt keine Formularwerte ein.</p>
+<label>Suchfrage <textarea id="search-query" rows="2" maxlength="512"></textarea></label>
+<button id="search-local">Quellen lokal suchen</button>
+<ol id="search-results" aria-live="polite"></ol></section>
 <section><h2>Gesprächsverlauf</h2><div id="history" aria-live="polite"></div></section>
 <p>Jeder Sende-Klick löst eine authentifizierte Modellanfrage aus. Zugangsdaten bleiben im Backend beziehungsweise im Arbeitsspeicher dieser Seite. Keine Produktmessung oder Nutzenbehauptung.</p>
 </main><script src="ui.js"></script></body></html>

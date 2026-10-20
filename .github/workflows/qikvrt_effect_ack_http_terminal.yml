@@ -327,7 +327,7 @@ jobs:
         env:
           PYTHONDONTWRITEBYTECODE: "1"
           PYTHONNOUSERSITE: "1"
-        run: python3 -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal
+        run: python3 -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal tests.test_qikvrt_personal_terminal_transition
 
       - name: Freeze and verify exact-head standalone package
         shell: bash
@@ -364,7 +364,7 @@ jobs:
           (
             cd browser/firefox/qikvrt-terminal
             zip -X -9 /tmp/qikvrt-firefox-package/qikvrt-ai-terminal.xpi \
-              manifest.json background.js content.js terminal.css options.html options.js README.md
+              manifest.json background.js content.js terminal.css options.html options.js client.html README.md
           )
           sha256sum /tmp/qikvrt-firefox-package/qikvrt-ai-terminal.xpi \
             > /tmp/qikvrt-firefox-package/qikvrt-ai-terminal.xpi.sha256
