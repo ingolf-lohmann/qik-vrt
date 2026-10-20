@@ -1,16 +1,15 @@
-name: claude-mirror
+name: claude
 on:
   issue_comment:
     types: [created]
   issues:
-    types: [opened, edited, reopened]
+    types: [opened, reopened]
 permissions:
   contents: write
   pull-requests: write
   issues: write
-  id-token: write
 jobs:
-  mirror:
+  m:
     if: contains(github.event.comment.body || github.event.issue.body, '@claude')
     runs-on: ubuntu-latest
     steps:
@@ -18,3 +17,4 @@ jobs:
       - uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ github.token }}
