@@ -17,6 +17,7 @@ The repository specification `spec/firefox/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BO
 The preliminary result is **MORE_FACTS_REQUIRED**. The system boundary and classification memorandum now record these facts, limits, and closure requirements:
 - [System boundary and intended-purpose record](docs/regulatory/system-boundary.md)
 - [AI Act classification memorandum](docs/regulatory/classification-memorandum.md)
+- [Requirement-to-control and evidence register](docs/regulatory/AI_ACT_REQUIREMENTS_CONTROL_EVIDENCE_REGISTER.md)
 
 The current node index generated on 2026-10-18 records one node as `STALE`, with health, acknowledgement, and renewal evidence unavailable. Node rollout remains unverified; no remote-node persistence is claimed.
 
@@ -25,7 +26,7 @@ The current node index generated on 2026-10-18 records one node as `STALE`, with
 1. Use [the EN 18286 readiness assessment](docs/regulatory/EN_18286_2026_QMS_READINESS.md) to record the intended purpose, system boundary, role allocation, classification rationale, and Article 17 QMS gap assessment.
 2. Use [the node rollout and evidence procedure](docs/regulatory/NODE_ROLLOUT_CHECKLIST.md) for any authorized node-level adoption. A repository commit does not prove that a connected node has received, read, or implemented the documents.
 3. Record every claim against an artifact, version, owner, verification method, and result. Unknowns remain OPEN; do not convert missing evidence into PASS.
-4. Obtain review from a qualified EU AI Act legal/compliance specialist and the responsible product owner before making a classification or conformity claim.
+4. Product Owner approval was communicated on 2026-10-21; durable signed approval and release binding remain to be recorded. Obtain qualified EU AI Act legal/compliance review before making a classification or conformity claim. The requirement register currently remains HOLD with implementation, test and operational evidence gaps.
 
 ## Regulatory references
 
