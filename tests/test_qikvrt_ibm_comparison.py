@@ -91,7 +91,7 @@ class IBMTransportTests(unittest.TestCase):
         with patch.object(t, "_send", return_value=(response(True), {"evidence_class": "TECHNICAL_TEST_DOUBLE"})) as send:
             t.post("/responses", request())
         req = send.call_args.args[0]; body = json.loads(req.data)
-        self.assertEqual(req.full_url, CLOUD["endpoint"] + "/ml/v1/text/chat?version=2026-03-05")
+        self.assertEqual(req.full_url, CLOUD["endpoint"] + "/ml/v1/chat/completions?version=2026-03-05")
         self.assertEqual(body["model_id"], MODEL)
         self.assertEqual(body["project_id"], CLOUD["project_id"])
         self.assertNotIn("model", body)
