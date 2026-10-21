@@ -10,6 +10,16 @@ Providing Single Sign-On (SSO) or an authentication method does **not by itself*
 
 QIK-VRT must therefore document what it itself provides and controls, versus an operating-system authenticator, identity provider, browser, OAuth/OIDC service, or other external component. No conclusion is made here that QIK-VRT is or is not high-risk.
 
+## Current evidence-based classification result
+
+The repository specification `spec/firefox/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.md` describes OIDC authentication as separate from model/API entitlement and says passkeys/WebAuthn and biometric verification are delegated to the registered device/identity provider, with no biometric templates or modality assertions collected by the described integration. These are documented design claims, not independent proof of every runtime configuration.
+
+The preliminary result is **MORE_FACTS_REQUIRED**. The system boundary and classification memorandum now record these facts, limits, and closure requirements:
+- [System boundary and intended-purpose record](docs/regulatory/system-boundary.md)
+- [AI Act classification memorandum](docs/regulatory/classification-memorandum.md)
+
+The current node index generated on 2026-10-18 records one node as `STALE`, with health, acknowledgement, and renewal evidence unavailable. Node rollout remains unverified; no remote-node persistence is claimed.
+
 ## Immediate repository actions
 
 1. Use [the EN 18286 readiness assessment](docs/regulatory/EN_18286_2026_QMS_READINESS.md) to record the intended purpose, system boundary, role allocation, classification rationale, and Article 17 QMS gap assessment.
