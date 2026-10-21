@@ -8,6 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
+  administration: write
   contents: read
 
 concurrency:
@@ -25,6 +26,7 @@ jobs:
       RULESET_ADMIN_TOKEN: ${{ secrets.QIKVRT_RULESET_ADMIN_TOKEN }}
       ADMIN_TOKEN: ${{ secrets.QIKVRT_GITHUB_ADMIN_TOKEN }}
       MESH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN }}
+      GITHUB_TOKEN: ${{ github.token }}
       RULESET_APP_ID: ${{ vars.QIKVRT_RULESET_APP_ID }}
       RULESET_APP_PRIVATE_KEY: ${{ secrets.QIKVRT_RULESET_APP_PRIVATE_KEY }}
 
@@ -58,7 +60,7 @@ jobs:
           if [ -n "${RULESET_APP_ID:-}" ] && [ -n "${RULESET_APP_PRIVATE_KEY:-}" ]; then
             app=true
             route=app
-          elif [ -n "${RULESET_ADMIN_TOKEN:-}${ADMIN_TOKEN:-}${MESH_TOKEN:-}" ]; then
+          elif [ -n "${RULESET_ADMIN_TOKEN:-}${ADMIN_TOKEN:-}${MESH_TOKEN:-}${GITHUB_TOKEN:-}" ]; then
             direct=true
             route=direct
           fi
@@ -103,7 +105,8 @@ jobs:
           elif route == "direct":
               token = (os.environ.get("RULESET_ADMIN_TOKEN", "") or
                        os.environ.get("ADMIN_TOKEN", "") or
-                       os.environ.get("MESH_TOKEN", ""))
+                       os.environ.get("MESH_TOKEN", "") or
+                       os.environ.get("GITHUB_TOKEN", ""))
           else:
               raise SystemExit("authority route not admitted")
           if not token:
