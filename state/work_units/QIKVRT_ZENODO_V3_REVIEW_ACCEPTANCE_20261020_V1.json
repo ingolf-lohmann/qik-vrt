@@ -118,5 +118,15 @@
     "native_full_test": "PENDING_EXISTING_CI",
     "actual_zenodo_publication": "NOT_EXECUTED"
   },
-  "next_action": "Existing same-repository PR CI regenerates integrity through its original tested-fixpoint writer, runs the full test gate and exposes exact tested HEAD/TREE. Reobserve native governance before any integration. Do not mint either detached Owner decision."
+  "next_action": "Existing same-repository PR CI regenerates integrity through its original tested-fixpoint writer, runs the full test gate and exposes exact tested HEAD/TREE. Reobserve native governance before any integration. Do not mint either detached Owner decision.",
+  "successor_20261021": {
+    "main_head": "d2539661ac70f11812485f8dc8f8725327915a72",
+    "main_tree": "67f60830a0a74ab8ccaa79aa36a17a9a96c4fcab",
+    "owner_task_authorization_retained": true,
+    "same_authorization_requested_again": false,
+    "backlog_readback": "evidence/zenodo-review-acceptance-v2/BACKLOG_READBACK_20261021.json",
+    "actual_first_causal_gate": "Protected authority credential was not delivered to ruleset job119115830707; initial dispatch has actually happened.",
+    "publisher_code_reconciled_without_semantic_change": true,
+    "publication_complete": false
+  }
 }

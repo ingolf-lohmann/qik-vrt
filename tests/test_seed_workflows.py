@@ -46,6 +46,11 @@ REQUEST_URL = (
 )
 NOW = dt.datetime(2026, 7, 20, 12, 0, 0, tzinfo=dt.timezone.utc)
 
+# This existing REST-only carrier dispatches the seed consumer without checking
+# out or running its implementation. Unknown seed workflows retain all consumer
+# requirements; only this named bridge has the separate checks below.
+SEED_DISPATCH_BRIDGE = "qikvrt_seed_registry_acceptance_dispatch_bridge.yml"
+
 
 def active_lifecycle_reference(source: str, suffix: str) -> bool:
     """Keep Python comments/docstrings out of the active-source allowlist."""
@@ -323,6 +328,8 @@ class SeedWorkflowTests(unittest.TestCase):
         with self.assertRaises(SeedError):
             validate_local_handshake(self.root, source)
         for workflow in repository.joinpath(".github/workflows").glob("qikvrt_seed_*.yml"):
+            if workflow.name == SEED_DISPATCH_BRIDGE:
+                continue
             self.assertIn("QIKVRT_SEED_REPOSITORY: ${{ github.repository }}", workflow.read_text())
 
     def tearDown(self) -> None:
@@ -560,6 +567,8 @@ class SeedWorkflowTests(unittest.TestCase):
     def test_seed_workflows_are_pinned_read_only_and_do_not_push(self) -> None:
         repository = Path(__file__).resolve().parents[1]
         for workflow in sorted((repository / ".github/workflows").glob("qikvrt_seed_*.yml")):
+            if workflow.name == SEED_DISPATCH_BRIDGE:
+                continue
             text = workflow.read_text(encoding="utf-8")
             self.assertIn("contents: read", text, workflow.name)
             if workflow.name == "qikvrt_seed_registry_acceptance.yml":
@@ -570,6 +579,21 @@ class SeedWorkflowTests(unittest.TestCase):
             self.assertIn("persist-credentials: false", text, workflow.name)
             self.assertNotRegex(text, r"actions/(?:checkout|upload-artifact)@v\d")
             self.assertNotRegex(text, r"\bgit (?:push|pull|commit)\b")
+
+    def test_existing_seed_dispatch_bridge_is_repository_scoped_without_checkout(self) -> None:
+        repository = Path(__file__).resolve().parents[1]
+        text = (repository / ".github/workflows" / SEED_DISPATCH_BRIDGE).read_text(encoding="utf-8")
+        self.assertIn("contents: read", text)
+        self.assertIn("actions: write", text)
+        self.assertNotIn("contents: write", text)
+        self.assertNotIn("secrets.", text)
+        self.assertNotIn("actions/checkout@", text)
+        self.assertIn("GITHUB_REPOSITORY: ${{ github.repository }}", text)
+        self.assertIn("GH_TOKEN: ${{ github.token }}", text)
+        self.assertIn('WORKFLOW="qikvrt_seed_registry_acceptance.yml"', text)
+        self.assertIn('"$API/repos/$GITHUB_REPOSITORY/actions/workflows/$WORKFLOW/dispatches"', text)
+        self.assertNotRegex(text, r"\bgit (?:push|pull|commit)\b")
+        self.assertNotIn("tools/qikvrt_mirror_node_lifecycle.sh", text)
 
 
 
