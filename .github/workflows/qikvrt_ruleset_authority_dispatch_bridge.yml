@@ -6,6 +6,7 @@ on:
       - .github/workflows/qikvrt_ruleset_authority_dispatch_bridge.yml
 permissions:
   actions: write
+  administration: read
   contents: read
 concurrency:
   group: qikvrt-ruleset-authority-dispatch-bridge
@@ -15,7 +16,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
-      - name: Dispatch ruleset reconciliation, then PR governance check; verify actual runs
+      - name: Dispatch authority effect, independently read back rulesets, then check PR governance
         env:
           GH_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
@@ -61,7 +62,7 @@ jobs:
                 printf 'RUN_STATE workflow=%s id=%s status=%s conclusion=%s url=%s\n' "$workflow" "$run_id" "$status_now" "$conclusion" "$run_url" >&2
                 if [[ "$status_now" == "completed" ]]; then
                   curl --silent --show-error --fail-with-body "${headers[@]}" "$API/repos/$GITHUB_REPOSITORY/actions/runs/$run_id/jobs?per_page=100" > "$TMP"
-                  jq -r '.jobs[] | "JOB workflow='"'$workflow'"' id=\(.id) name=\(.name) status=\(.status) conclusion=\(.conclusion // "null")"' "$TMP" >&2
+                  jq -r --arg workflow "$workflow" '.jobs[] | "JOB workflow=\($workflow) id=\(.id) name=\(.name) status=\(.status) conclusion=\(.conclusion // "null")"' "$TMP" >&2
                   [[ "$conclusion" == "success" ]] || return 1
                   printf '%s\n' "$run_id"
                   return 0
@@ -73,7 +74,27 @@ jobs:
             return 3
           }
 
-          authority_id="$(dispatch_and_wait "qikvrt_goldkelch_ruleset_authority_effect.yml" "$(jq -cn --arg ref "$REF" '{ref:$ref}')")"
-          printf 'AUTHORITY_RUN_ID=%s\n' "$authority_id"
+          authority_ok=false
+          if authority_id="$(dispatch_and_wait "qikvrt_goldkelch_ruleset_authority_effect.yml" "$(jq -cn --arg ref "$REF" '{ref:$ref}')")"; then
+            authority_ok=true
+            printf 'AUTHORITY_RUN_ID=%s\n' "$authority_id"
+          else
+            authority_rc=$?
+            printf 'AUTHORITY_EFFECT_HOLD exit_code=%s; continuing to independent read-back and governance check\n' "$authority_rc"
+          fi
+
+          readback_status="$(curl --silent --show-error --output "$TMP" --write-out '%{http_code}' "${headers[@]}" "$API/repos/$GITHUB_REPOSITORY/rulesets?per_page=100")"
+          printf 'RULESET_READBACK_HTTP=%s\n' "$readback_status"
+          if [[ "$readback_status" == "200" ]]; then
+            jq -c '.' "$TMP"
+            ruleset_count="$(jq '[.[] | select(.name == "QIK-VRT main protection")] | length' "$TMP")"
+            printf 'RULESET_MATCHING_COUNT=%s\n' "$ruleset_count"
+            [[ "$ruleset_count" == "1" ]] || authority_ok=false
+          else
+            cat "$TMP"
+            authority_ok=false
+          fi
+
           gate_id="$(dispatch_and_wait "qikvrt_required_review_gate.yml" "$(jq -cn --arg ref "$REF" '{ref:$ref, inputs:{pr:"568"}}')")"
           printf 'GOVERNANCE_RUN_ID=%s\n' "$gate_id"
+          [[ "$authority_ok" == true ]] || { echo "FINAL_HOLD: authority effect or independent ruleset read-back did not verify" >&2; exit 1; }
