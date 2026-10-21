@@ -1,9 +1,9 @@
 # QIK-VRT system boundary and intended-purpose record
 
-**Assessment status:** FACTS PARTIALLY RECORDED · APPROVAL OPEN  
+**Assessment status:** PRODUCT OWNER APPROVAL COMMUNICATED · LEGAL/TECHNICAL VALIDATION OPEN  
 **As-of date:** 2026-10-21  
 **Product/version scope:** QIK-VRT repository state referenced by PR #567; branch and release identity must be bound at approval  
-**Owner / approver:** OPEN — must be assigned by the legal product/provider entity
+**Owner / approver:** Product Owner approval communicated by user on 2026-10-21; legal entity, signed durable approval record, and exact release binding remain OPEN
 
 ## 1. Evidence basis
 
@@ -65,7 +65,7 @@ No classification conclusion is made in this file. The presence of SSO, OAuth/OI
 
 ## 6. Approval checklist
 
-- [ ] Product owner confirms intended-purpose statement and covered edition/release.
+- [x] Product Owner approval communicated in project conversation on 2026-10-21; durable signed approval and exact edition/release binding remain OPEN.
 - [ ] Architecture owner maps all executable components and AI-enabled functions.
 - [ ] Security owner verifies identity, token, secret-store, and model-entitlement boundaries.
 - [ ] Privacy/data-protection reviewer verifies data categories, recipients, retention, and lawful basis where applicable.
