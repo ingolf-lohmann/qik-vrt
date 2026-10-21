@@ -3,7 +3,7 @@
 **Status:** DRAFT — NO LEGAL CLASSIFICATION CONCLUSION  
 **Assessment date:** 2026-10-21  
 **Product scope:** QIK-VRT core and the opt-in Personal Firefox / OIDC integration described in repository artifacts  
-**Decision owner:** OPEN  
+**Product Owner approval:** Communicated in project conversation on 2026-10-21; durable signed approval record not established  
 **Qualified legal reviewer:** OPEN  
 **Evidence cut-off:** Repository files inspected for PR #567; live node state not verified
 
@@ -80,7 +80,7 @@ Annex III point 1(a) includes biometric identification uses and excludes biometr
 ## 6. Outcome fields — intentionally unsigned
 
 - Product scope and release: OPEN
-- Intended purpose approved by product owner: OPEN
+- Intended purpose approved by product owner: approval communicated; exact release binding and durable signed record OPEN
 - Provider legal entity and role: OPEN
 - Deployer role(s): OPEN
 - Article 3(1) conclusion: OPEN
@@ -90,6 +90,6 @@ Annex III point 1(a) includes biometric identification uses and excludes biometr
 - Article 17 applicability: OPEN
 - EN 18286 gap assessment: NOT STARTED
 - Qualified legal reviewer: OPEN
-- Approval date and signature/traceable approval record: OPEN
+- Product Owner approval date: 2026-10-21 (conversation instruction); signature/traceable approval record: OPEN
 
 **Do not change the result from MORE_FACTS_REQUIRED until the evidence above is complete and the accountable owner and qualified reviewer have approved the decision.**
