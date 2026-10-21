@@ -19,7 +19,7 @@ jobs:
       - name: Dispatch target workflow and verify terminal result via GitHub REST API
         env:
           GH_TOKEN: ${{ github.token }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
+          QIKVRT_SEED_REPOSITORY: ${{ github.repository }}
           POLL_TIMEOUT_SECONDS: "1200"
         shell: bash
         run: |
@@ -31,7 +31,7 @@ jobs:
           TMP="$(mktemp)"
           trap 'rm -f "$TMP"' EXIT
           headers=(-H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${GH_TOKEN}" -H "X-GitHub-Api-Version: 2022-11-28")
-          STATUS="$(curl --silent --show-error --output "$TMP" --write-out '%{http_code}' -X POST "${headers[@]}" -H "Content-Type: application/json" --data "$(jq -cn --arg ref "$REF" '{ref:$ref}')" "$API/repos/$GITHUB_REPOSITORY/actions/workflows/$WORKFLOW/dispatches")"
+          STATUS="$(curl --silent --show-error --output "$TMP" --write-out '%{http_code}' -X POST "${headers[@]}" -H "Content-Type: application/json" --data "$(jq -cn --arg ref "$REF" '{ref:$ref}')" "$API/repos/$QIKVRT_SEED_REPOSITORY/actions/workflows/$WORKFLOW/dispatches")"
           if [[ "$STATUS" != "204" ]]; then
             printf 'DISPATCH_FAILED http_status=%s workflow=%s ref=%s\n' "$STATUS" "$WORKFLOW" "$REF" >&2
             [[ ! -s "$TMP" ]] || cat "$TMP" >&2
@@ -41,7 +41,7 @@ jobs:
           DEADLINE=$(( $(date +%s) + POLL_TIMEOUT_SECONDS ))
           RUN_ID=""
           while (( $(date +%s) < DEADLINE )); do
-            if curl --silent --show-error --fail-with-body "${headers[@]}" "$API/repos/$GITHUB_REPOSITORY/actions/workflows/$WORKFLOW/runs?event=workflow_dispatch&branch=$REF&per_page=50" > "$TMP"; then
+            if curl --silent --show-error --fail-with-body "${headers[@]}" "$API/repos/$QIKVRT_SEED_REPOSITORY/actions/workflows/$WORKFLOW/runs?event=workflow_dispatch&branch=$REF&per_page=50" > "$TMP"; then
               RUN_ID="$(jq -r --arg started "$STARTED_AT" --arg ref "$REF" '[.workflow_runs[] | select(.event == "workflow_dispatch" and .head_branch == $ref and .created_at >= $started)] | sort_by(.created_at, .id) | last | .id // empty' "$TMP")"
               [[ -z "$RUN_ID" ]] || break
             fi
@@ -53,15 +53,15 @@ jobs:
           fi
           printf 'RUN_OBSERVED id=%s\n' "$RUN_ID"
           while (( $(date +%s) < DEADLINE )); do
-            if curl --silent --show-error --fail-with-body "${headers[@]}" "$API/repos/$GITHUB_REPOSITORY/actions/runs/$RUN_ID" > "$TMP"; then
+            if curl --silent --show-error --fail-with-body "${headers[@]}" "$API/repos/$QIKVRT_SEED_REPOSITORY/actions/runs/$RUN_ID" > "$TMP"; then
               STATUS_NOW="$(jq -r '.status // "unknown"' "$TMP")"
               CONCLUSION="$(jq -r '.conclusion // "null"' "$TMP")"
               RUN_URL="$(jq -r '.html_url // ""' "$TMP")"
               printf 'RUN_STATE id=%s status=%s conclusion=%s url=%s\n' "$RUN_ID" "$STATUS_NOW" "$CONCLUSION" "$RUN_URL"
               if [[ "$STATUS_NOW" == "completed" ]]; then
-                curl --silent --show-error --fail-with-body "${headers[@]}" "$API/repos/$GITHUB_REPOSITORY/actions/runs/$RUN_ID/jobs?per_page=100" > "$TMP"
+                curl --silent --show-error --fail-with-body "${headers[@]}" "$API/repos/$QIKVRT_SEED_REPOSITORY/actions/runs/$RUN_ID/jobs?per_page=100" > "$TMP"
                 jq -r '.jobs[] | "JOB id=\(.id) name=\(.name) status=\(.status) conclusion=\(.conclusion // "null")"' "$TMP"
-                curl --silent --show-error --fail-with-body "${headers[@]}" "$API/repos/$GITHUB_REPOSITORY/actions/runs/$RUN_ID/artifacts?per_page=100" > "$TMP"
+                curl --silent --show-error --fail-with-body "${headers[@]}" "$API/repos/$QIKVRT_SEED_REPOSITORY/actions/runs/$RUN_ID/artifacts?per_page=100" > "$TMP"
                 jq -r '"ARTIFACT_COUNT=\(.total_count // 0)", (.artifacts[]? | "ARTIFACT id=\(.id) name=\(.name) expired=\(.expired) size_in_bytes=\(.size_in_bytes)")' "$TMP"
                 [[ "$CONCLUSION" == "success" ]] || exit 1
                 exit 0
