@@ -236,7 +236,7 @@ class IBMChatTransport(OpenAITransport):
         if self.provider == "watsonx":
             body.pop("model")
             body.update(model_id=self.model, project_id=self.config["project_id"])
-            route = "/ml/v1/text/chat?version=" + self.config["api_version"]
+            route = "/ml/v1/chat/completions?version=" + self.config["api_version"]
         raw = canonical(body)
         if len(raw) > MAX_BYTES or (self.credential and self.credential.encode() in raw):
             raise CapabilityBlock("IBM_REQUEST_TOO_LARGE_OR_CONTAINS_SECRET")
