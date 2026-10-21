@@ -1,0 +1,79 @@
+name: QIKVRT Ruleset Authority REST Dispatch Bridge
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/qikvrt_ruleset_authority_dispatch_bridge.yml
+permissions:
+  actions: write
+  contents: read
+concurrency:
+  group: qikvrt-ruleset-authority-dispatch-bridge
+  cancel-in-progress: false
+jobs:
+  dispatch-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Dispatch ruleset reconciliation, then PR governance check; verify actual runs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          POLL_TIMEOUT_SECONDS: "1200"
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          API="https://api.github.com"
+          REF="main"
+          TMP="$(mktemp)"
+          trap 'rm -f "$TMP"' EXIT
+          headers=(-H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${GH_TOKEN}" -H "X-GitHub-Api-Version: 2022-11-28")
+
+          dispatch_and_wait() {
+            local workflow="$1" payload="$2" started status deadline run_id status_now conclusion run_url
+            started="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            status="$(curl --silent --show-error --output "$TMP" --write-out '%{http_code}' -X POST "${headers[@]}" -H "Content-Type: application/json" --data "$payload" "$API/repos/$GITHUB_REPOSITORY/actions/workflows/$workflow/dispatches")"
+            if [[ "$status" != "204" ]]; then
+              printf 'DISPATCH_FAILED workflow=%s http_status=%s\n' "$workflow" "$status" >&2
+              [[ ! -s "$TMP" ]] || cat "$TMP" >&2
+              return 1
+            fi
+            printf 'DISPATCH_ACCEPTED workflow=%s http_status=204 ref=%s started_at=%s\n' "$workflow" "$REF" "$started" >&2
+            deadline=$(( $(date +%s) + POLL_TIMEOUT_SECONDS ))
+            run_id=""
+            while (( $(date +%s) < deadline )); do
+              if curl --silent --show-error --fail-with-body "${headers[@]}" "$API/repos/$GITHUB_REPOSITORY/actions/workflows/$workflow/runs?event=workflow_dispatch&branch=$REF&per_page=50" > "$TMP"; then
+                run_id="$(jq -r --arg started "$started" --arg ref "$REF" '[.workflow_runs[] | select(.event == "workflow_dispatch" and .head_branch == $ref and .created_at >= $started)] | sort_by(.created_at, .id) | last | .id // empty' "$TMP")"
+                [[ -z "$run_id" ]] || break
+              fi
+              sleep 3
+            done
+            if [[ -z "$run_id" ]]; then
+              printf 'RUN_NOT_OBSERVED workflow=%s timeout_seconds=%s started_at=%s\n' "$workflow" "$POLL_TIMEOUT_SECONDS" "$started" >&2
+              return 2
+            fi
+            printf 'RUN_OBSERVED workflow=%s id=%s\n' "$workflow" "$run_id" >&2
+            while (( $(date +%s) < deadline )); do
+              if curl --silent --show-error --fail-with-body "${headers[@]}" "$API/repos/$GITHUB_REPOSITORY/actions/runs/$run_id" > "$TMP"; then
+                status_now="$(jq -r '.status // "unknown"' "$TMP")"
+                conclusion="$(jq -r '.conclusion // "null"' "$TMP")"
+                run_url="$(jq -r '.html_url // ""' "$TMP")"
+                printf 'RUN_STATE workflow=%s id=%s status=%s conclusion=%s url=%s\n' "$workflow" "$run_id" "$status_now" "$conclusion" "$run_url" >&2
+                if [[ "$status_now" == "completed" ]]; then
+                  curl --silent --show-error --fail-with-body "${headers[@]}" "$API/repos/$GITHUB_REPOSITORY/actions/runs/$run_id/jobs?per_page=100" > "$TMP"
+                  jq -r '.jobs[] | "JOB workflow='"'$workflow'"' id=\(.id) name=\(.name) status=\(.status) conclusion=\(.conclusion // "null")"' "$TMP" >&2
+                  [[ "$conclusion" == "success" ]] || return 1
+                  printf '%s\n' "$run_id"
+                  return 0
+                fi
+              fi
+              sleep 5
+            done
+            printf 'RUN_COMPLETION_TIMEOUT workflow=%s timeout_seconds=%s run_id=%s\n' "$workflow" "$POLL_TIMEOUT_SECONDS" "$run_id" >&2
+            return 3
+          }
+
+          authority_id="$(dispatch_and_wait "qikvrt_goldkelch_ruleset_authority_effect.yml" "$(jq -cn --arg ref "$REF" '{ref:$ref}')")"
+          printf 'AUTHORITY_RUN_ID=%s\n' "$authority_id"
+          gate_id="$(dispatch_and_wait "qikvrt_required_review_gate.yml" "$(jq -cn --arg ref "$REF" '{ref:$ref, inputs:{pr:"568"}}')")"
+          printf 'GOVERNANCE_RUN_ID=%s\n' "$gate_id"
