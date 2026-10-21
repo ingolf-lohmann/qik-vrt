@@ -5,6 +5,7 @@ on:
       - main
     paths:
       - .github/workflows/qikvrt_seed_registry_acceptance_dispatch_bridge.yml
+# REST-only bridge: no checkout is used, so persist-credentials: false is structurally unnecessary.
 permissions:
   actions: write
   contents: read
