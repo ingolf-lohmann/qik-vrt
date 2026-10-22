@@ -53,4 +53,24 @@ EN 18286:2026 is a voluntary harmonised route to a presumption of conformity onl
 | Node rollout and persistence | NOT VERIFIED | Node-specific receipt plus read-back and hash verification for every explicitly authorized node |
 | Independent review / conformity assessment | OPEN | Review outcome and any applicable conformity-assessment records |
 
+## Controlled gap-closure candidate — 2026-10-22
+
+The Principal instructed implementation of the remaining gaps and continuity
+across internal and external change. The existing evidence gate now supports
+typed source/context bindings, rejects changed bytes, mismatched assessment
+contexts, expired/future receipts and unsupported N/A dispositions, and retains
+unresolved original artifacts as OPEN. Its captured context is a baseline, not
+live model/host discovery. A successful audit process does not close its OPEN
+findings or establish conformity.
+
+- [Controlled risk, data, oversight, retention and change procedure](docs/regulatory/CONTROLLED_ASSESSMENT_PROCEDURE.md)
+- [Initial exact-subject evidence and risk inventory](docs/regulatory/AI_ACT_EVIDENCE_BUNDLE.json)
+- [Captured assessment context](docs/regulatory/ASSESSMENT_CONTEXT.json)
+
+Documentation and binding validation are implemented candidate contributions.
+The actual model/data/deployment inventory, original HTML versions, accountable
+classification and role decisions, control-effectiveness and operational
+acceptance remain OPEN. No signed acceptance, live native execution, statutory
+QMS acceptance or conformity assessment is inferred from these additions.
+
 **No compliance PASS is claimed by this file or by the existence of these templates.**

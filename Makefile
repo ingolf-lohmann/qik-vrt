@@ -127,6 +127,7 @@ test: mcp-conformance-test
 eu-ai-act-evidence-gate-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_eu_ai_act_evidence_gate
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_eu_ai_act_evidence_gate.py --json
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_eu_ai_act_evidence_gate.py --json --bundle docs/regulatory/AI_ACT_EVIDENCE_BUNDLE.json --subject docs/regulatory/ASSESSMENT_CONTEXT.json
 
 test: eu-ai-act-evidence-gate-test
 
