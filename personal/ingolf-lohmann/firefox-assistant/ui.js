@@ -188,3 +188,46 @@ for (const [button, route] of [["send", "turn"], ["resume", "resume"]]) {
     el("status").textContent = "Modellentwurf gespeichert; fachliche Prüfung offen.";
   }));
 }
+
+async function textHash(value) {
+  return Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value))),
+    b => b.toString(16).padStart(2, "0")).join("");
+}
+el("search-local").addEventListener("click", event => {
+  if (!event.isTrusted || !token || busy) return;
+  return action(async () => {
+    el("search-results").replaceChildren();
+    const query = el("search-query").value;
+    const original = JSON.parse(el("sources").value);
+    if (!Array.isArray(original) || !original.length || original.length > 32) throw new Error("Bitte 1 bis 32 Quellenauszüge angeben");
+    const sources = [];
+    for (const row of original) {
+      if (typeof row.id !== "string" || typeof row.text !== "string" || !row.text.trim() || row.text.length > 512) {
+        throw new Error("Jeder Quellenauszug benötigt eine ID und höchstens 512 Zeichen Text");
+      }
+      sources.push({id: row.id, text: row.text, sha256: await textHash(row.text)});
+    }
+    const ordered = sources.slice().sort((a,b) => a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
+    const body = {query, sources, limit: 3};
+    const result = await request("search", body);
+    if (result.schema !== "qikvrt_local_source_ranking_v1" ||
+        result.model !== "perplexity-ai/pplx-embed-v2-late-0.6b" ||
+        result.model_revision !== "8fc2de24534aa3610d85fa59c463313a5f096455" ||
+        result.evidence_class !== "LOCAL_MODEL_INFERENCE" ||
+        result.scope !== "LOCAL_SOURCE_RANKING_ONLY" || result.productive_acceptance !== false ||
+        result.field_values_extracted !== false || result.request_sha256 !== await hash({...body, sources: ordered}) ||
+        !Array.isArray(result.results) || result.results.length > 3) throw new Error("Suchergebnis ist nicht an diese Anfrage gebunden");
+    const verified = [], seen = new Set();
+    for (const hit of result.results) {
+      const source = sources.find(row => row.id === hit.source_id && row.sha256 === hit.source_sha256);
+      if (!source || seen.has(source.id) || typeof hit.score !== "number" || !Number.isFinite(hit.score)) throw new Error("Quellenbindung stimmt nicht überein");
+      seen.add(source.id); verified.push(source);
+    }
+    for (const source of verified) {
+      const item = document.createElement("li");
+      item.textContent = `${source.id}: ${source.text}`;
+      el("search-results").append(item);
+    }
+    el("status").textContent = "Lokale Quellenvorschläge geladen. Herkunft und Inhalt vor Verwendung prüfen.";
+  });
+});
