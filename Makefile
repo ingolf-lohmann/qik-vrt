@@ -248,3 +248,9 @@ personal-retrieval-test:
 	node tests/test_qikvrt_personal_retrieval_ui.cjs
 
 test: personal-retrieval-test
+
+.PHONY: morse-transport-test
+morse-transport-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_morse_transport
+
+test: morse-transport-test
