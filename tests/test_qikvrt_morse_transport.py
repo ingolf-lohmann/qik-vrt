@@ -1,4 +1,8 @@
+import subprocess
+import sys
+import tempfile
 import unittest
+from pathlib import Path
 from tools.qikvrt_morse_transport import TransportError, decode, encode
 
 
@@ -37,6 +41,32 @@ class MorseTransportTests(unittest.TestCase):
     def test_missing_terminator_rejected(self):
         with self.assertRaises(TransportError):
             decode(encode(b"proof").rstrip("\n"))
+
+    def test_cli_preserves_existing_destination_for_both_operations(self):
+        script = Path(__file__).resolve().parents[1] / "tools/qikvrt_morse_transport.py"
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source, destination = root / "source", root / "destination"
+            for operation in ("encode", "decode"):
+                with self.subTest(operation=operation):
+                    source.write_bytes(b"mesh" if operation == "encode" else encode(b"mesh").encode("ascii"))
+                    destination.write_bytes(b"original destination")
+                    result = subprocess.run([sys.executable, str(script), operation, str(source), str(destination)],
+                                            capture_output=True, check=False, timeout=10)
+                    self.assertNotEqual(result.returncode, 0)
+                    self.assertEqual(destination.read_bytes(), b"original destination")
+
+    def test_cli_roundtrip_writes_exact_binary_bytes(self):
+        script = Path(__file__).resolve().parents[1] / "tools/qikvrt_morse_transport.py"
+        payload = bytes(range(256)) + b"\x00\xffmesh\n"
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source, wire, restored = root / "source", root / "wire", root / "restored"
+            source.write_bytes(payload)
+            for operation, incoming, outgoing in (("encode", source, wire), ("decode", wire, restored)):
+                subprocess.run([sys.executable, str(script), operation, str(incoming), str(outgoing)],
+                               capture_output=True, check=True, timeout=10)
+            self.assertEqual(restored.read_bytes(), payload)
 
 
 if __name__ == "__main__":

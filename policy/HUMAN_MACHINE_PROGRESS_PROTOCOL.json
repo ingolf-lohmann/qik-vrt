@@ -370,6 +370,14 @@
       "stale_incomplete_or_inaccessible_inventory": "HOLD",
       "new_open_work_priority": "COMPLETION",
       "unattended_execution_claim_requires_observed_authorized_persistent_executor": true
+    },
+    "repository_goal_authorization": {
+      "path": "state/authorization/delegations/OWNER_REPOSITORY_GOALS_AND_RULESET_AUTHORIZATION_V1.json",
+      "sha256": "feacc531af8ffc3f54907c0a86b8421863a92a9fbc4ef1c22a64b85be28fb646",
+      "scope": "ALL_GOALS_RECORDED_IN_QIKVRT_REPOSITORY",
+      "necessary_ruleset_changes_authorized": true,
+      "request_same_permission_again": false,
+      "authorization_is_execution_capability_or_effect_proof": false
     }
   },
   "continuation_semantics": {

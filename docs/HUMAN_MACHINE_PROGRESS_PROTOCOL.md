@@ -179,6 +179,25 @@ repository, connector, CLI and Mesh routes before declaring execution absent;
 retain operation, HTTP method, target/account binding and exact denial evidence.
 A locally absent CLI or empty project filter alone is insufficient.
 
+On 2026-10-22 Ingolf Lohmann clarified that his standing Principal approval
+applies to all goals recorded in the QIKVRT repository and to the Ruleset changes
+necessary to achieve them. Read the original instruction in
+`state/authorization/delegations/OWNER_REPOSITORY_GOALS_AND_RULESET_AUTHORIZATION_V1.json`,
+bound by `client_continuation.repository_goal_authorization`. Apply it across
+goals, sessions and conforming clients without asking for the same permission
+again. Preserve existing goal records, grants and exact artifact bindings.
+This supplies authorization; authenticated account rights, credentials available
+to a workflow, a callable administrative operation, admission and independent
+effect readback each require their own evidence. Execute every available
+authorized successor and retain causal NOOP where capability has not changed.
+
+The Owner also supplied Gemini's public manifest feedback. Its observed scope
+and the independent Authority result are retained in
+`evidence/receipts/gemini-manifest-feedback-20261022.json`. Carry shared feedback
+through the existing repository/native paths with source attribution. The
+shared page establishes documentary ingress; live peer request, ACK and
+application reply remain separately observed states.
+
 Continue each safe, deterministic, authorized successor, including useful
 preparation and persistence while an external effect is blocked. Keep GitHub
 and IONOS REST-only routing, secure credentials and protected governance. Never create a

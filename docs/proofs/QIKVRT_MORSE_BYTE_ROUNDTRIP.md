@@ -7,3 +7,8 @@ For a finite byte string x, the target invariant is `decode(encode(x)) == x`. Fr
 A successful local round-trip proves only that the tested reference implementation reconstructed those bytes. It does not prove physical-channel timing tolerance, external delivery, semantic equivalence, or downstream effects. `TRANSPORT_ACK != EFFECT_ACK`.
 
 For repository-scale transfer, bind each artifact's path, mode, byte length, SHA-256, source commit/tree and chronology to an independently checked manifest. Morse is a low-throughput demonstration alphabet, not an appropriate bulk transport for a 438 MB repository.
+
+Run `make morse-transport-test` for the codec and actual CLI tests. The ordinary
+`make test` target includes this gate; adding the test module alone does not
+establish CI execution. The CLI controls also verify exact binary round-trip
+and refusal to overwrite an existing destination for either operation.
