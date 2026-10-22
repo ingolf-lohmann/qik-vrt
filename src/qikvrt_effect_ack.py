@@ -38,6 +38,7 @@ from typing import Any, Callable, Iterable, Mapping, Sequence
 
 SHA256_RE = re.compile(r"^(?:sha256:)?([0-9a-fA-F]{64})$")
 PROTOCOL_SCHEMA = "qikvrt_responsibility_protocol_v1"
+CANONICAL_RECORD_PROFILE = "QIKVRT_CANONICAL_RECORD_V1"
 DEFAULT_MAX_PAYLOAD_BYTES = 16 * 1024 * 1024
 DEFAULT_TIMEOUT_MS = 100
 MAX_IDENTIFIER_CHARS = 256
@@ -135,9 +136,13 @@ def _normalize_json(value: Any) -> Any:
     """Normalize a JSON value for deterministic UTF-8 canonicalization."""
 
     if isinstance(value, Enum):
-        return value.value
+        return _normalize_json(value.value)
     if isinstance(value, str):
-        return unicodedata.normalize("NFC", value)
+        normalized = unicodedata.normalize("NFC", value)
+        # Reject lone surrogates here, before a caller can hash/sign an
+        # escaped surrogate that has no valid UTF-8 representation.
+        normalized.encode("utf-8", errors="strict")
+        return normalized
     if value is None or isinstance(value, (bool, int)):
         return value
     if isinstance(value, float):
@@ -145,7 +150,9 @@ def _normalize_json(value: Any) -> Any:
     if isinstance(value, Mapping):
         result: dict[str, Any] = {}
         for key, item in value.items():
-            normalized_key = unicodedata.normalize("NFC", str(key))
+            if not isinstance(key, str):
+                raise TypeError("canonical QIK-VRT JSON requires string object keys")
+            normalized_key = _normalize_json(key)
             if normalized_key in result:
                 raise ValueError("duplicate key after Unicode NFC normalization")
             result[normalized_key] = _normalize_json(item)
@@ -156,7 +163,12 @@ def _normalize_json(value: Any) -> Any:
 
 
 def canonical_json(value: Any) -> str:
-    """Serialize deterministic JSON: UTF-8/NFC, sorted keys, no excess space."""
+    """Serialize NFC JSON with Unicode-code-point key order and no excess space.
+
+    Values and keys normalize recursively; arrays retain their order. Floats,
+    non-string keys, NFC key collisions and invalid UTF-8 strings fail closed.
+    This existing integer-only profile is not RFC 8785/JCS.
+    """
 
     return json.dumps(
         _normalize_json(value),
@@ -167,8 +179,26 @@ def canonical_json(value: Any) -> str:
     )
 
 
+def canonical_json_bytes(value: Any) -> bytes:
+    """Return the exact UTF-8 octets of the existing canonical JSON profile."""
+
+    return canonical_json(value).encode("utf-8")
+
+
 def sha256_identifier(payload: bytes) -> str:
     return "sha256:" + hashlib.sha256(payload).hexdigest()
+
+
+def compute_record_hash(record: Mapping[str, Any]) -> str:
+    """Hash the full supplied record under QIKVRT_CANONICAL_RECORD_V1.
+
+    Returns ``sha256:<lowercase hex>``. No fields are implicitly removed;
+    signature envelopes and protocol-specific projections remain explicit.
+    """
+
+    if not isinstance(record, Mapping):
+        raise TypeError("canonical record must be an object")
+    return sha256_identifier(canonical_json_bytes(record))
 
 
 def normalize_sha256(value: str | None) -> str | None:
@@ -405,8 +435,7 @@ def protocol_hash_projection(protocol: ResponsibilityProtocol) -> dict[str, Any]
 
 
 def compute_protocol_hash(protocol: ResponsibilityProtocol) -> str:
-    encoded = canonical_json(protocol_hash_projection(protocol)).encode("utf-8")
-    return "sha256:" + hashlib.sha256(encoded).hexdigest()
+    return compute_record_hash(protocol_hash_projection(protocol))
 
 
 def verify_protocol(protocol: ResponsibilityProtocol) -> None:
@@ -1007,6 +1036,7 @@ def ordinary_release(result: EffectAckResult) -> bool:
 
 
 __all__ = [
+    "CANONICAL_RECORD_PROFILE",
     "ConnectionDecision",
     "DEFAULT_MAX_PAYLOAD_BYTES",
     "DEFAULT_TIMEOUT_MS",
@@ -1024,7 +1054,9 @@ __all__ = [
     "ResponsibilityProtocol",
     "RiskLevel",
     "canonical_json",
+    "canonical_json_bytes",
     "compute_protocol_hash",
+    "compute_record_hash",
     "effect_ack_sync",
     "normalize_sha256",
     "ordinary_release",

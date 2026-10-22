@@ -1,0 +1,36 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "PolyForm-Noncommercial-1.0.0"
+  },
+  "profile": "QIKVRT_CANONICAL_RECORD_V1",
+  "implementation": "src/qikvrt_effect_ack.py",
+  "current_runtime_proof": "evidence/receipts/effect-ack-runtime-proof-20261022.json",
+  "encoding": "UTF-8, strict, no BOM",
+  "unicode": "NFC recursively for string values and object keys",
+  "object_keys": "Strings only; sort normalized keys lexicographically by Unicode code point; reject NFC collisions",
+  "arrays": "Preserve element order and normalize recursively",
+  "numbers": "Integers only; reject all floats, including NaN and infinities; do not coerce booleans to integers",
+  "whitespace": "No insignificant whitespace; separators comma and colon",
+  "python_adapters": "Tuples serialize as arrays; Enum values re-enter the same recursive validation",
+  "record_hash": {
+    "entrypoint": "compute_record_hash",
+    "input": "Full supplied object, without implicit field omissions",
+    "derivation": "sha256: followed by lowercase hex SHA-256 of canonical_json_bytes(record)",
+    "protocol_hash_projection": "Existing ResponsibilityProtocol projection remains explicit; created_utc and protocol_hash remain excluded there only"
+  },
+  "VERIFY_CANONICALIZATION": {
+    "required": true,
+    "command": ["make", "canonicalization-test"],
+    "tests": "tests.test_effect_ack_conformance.CanonicalizationTests",
+    "assertions": [
+      "unicode_nfc_normalization",
+      "nested_object_determinism",
+      "key_order_independence",
+      "array_order_preservation",
+      "reproducible_hash_derivation"
+    ]
+  },
+  "scope": "Python reference profile; not RFC 8785/JCS or proof of cross-language conformance, signature identity, external delivery or EFFECT_ACK_DONE",
+  "historical_hashes": "No rewrite or implicit migration of native journals, terminal wire hashes, knowledge receipts or existing signed artifacts; each retains its own versioned encoding contract"
+}
