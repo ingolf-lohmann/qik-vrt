@@ -79,6 +79,41 @@ A test PASS is bounded to the tested code/configuration and does not prove deplo
 
 ## 6. Current disposition
 
+### Typed evidence and adaptive reassessment candidate — 2026-10-22
+
+`CONTROLLED_ASSESSMENT_PROCEDURE.md` now documents the risk method and acceptance
+rules, data/supplier inventory procedure, human intervention/training procedure,
+logging/retention/incident workflow and QMS/change-control responsibilities.
+`AI_ACT_EVIDENCE_BUNDLE.json` records eight identified risks without inventing
+severity, likelihood, residual-risk approval or completed effectiveness tests.
+Documentation gaps are partially addressed; these records do not establish
+implementation of every control or an accepted QMS.
+
+The existing gate can validate source bytes and a separately supplied current
+context. It invalidates predecessor bindings on source/purpose/model/data/
+deployment/law changes, validates typed/date-bound evidence references and
+requires a reasoned, attributable, artifact-bound applicability decision before
+an APPLIES/NOT_APPLICABLE disposition can be structurally accepted. Structural
+acceptance does not authenticate the reviewer or validate the legal reasoning.
+All original gates G-01–G-07 remain OPEN until their actual evidence closes them.
+
+Run `make eu-ai-act-evidence-gate-test`; inspect the typed result and each OPEN
+or BLOCK item in addition to the process exit code. The stored context describes
+the unchanged baseline implementation and must not be treated as live discovery
+or as the source identity of the newly modified assessment tool itself. Supply
+a fresh independently observed context when circumstances change.
+
+The selected bundle covers the 11 articles supplied in the architecture review;
+the broader requirement rows above remain in force and must not be dropped.
+
+The candidate now links `evidence/regulatory/native-control-reference-20261022.json`
+to the selected Art. 12/14/15 rows. It records 47 explicitly selected passing
+reference cases for the original ledger/terminal/subject-binding sources.
+The original 58-case run remains recorded as failed with 10 socket-permission
+errors; selecting supported cases does not convert that full run to PASS.
+The linked receipt bounds test scope and source digests, not production log
+coverage, statutory retention, operator competence or legal acceptance.
+
 **Overall: HOLD — NO FULL CONFORMITY CLAIM.**  
 **Classification: MORE_FACTS_REQUIRED.**  
 **Implementation evidence: incomplete. Test evidence: not linked comprehensively to requirement IDs. Operational evidence: not established fleet-wide.**  

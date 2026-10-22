@@ -1,0 +1,303 @@
+{
+  "schema": "qikvrt_ai_act_evidence_bundle_v1",
+  "subject": {
+    "system_id": "QIK-VRT/core-and-Personal-integration",
+    "source_commit": "a8017ab67824f01ec4d215cf7af83b8b0779283c",
+    "source_tree": "94317a4da76fac49b63bb129badcbbd21471c092",
+    "purpose_sha256": "4ba9c8c396ebd7b902f66ac9abf7b2e655c14c650804ac52543eae7a6d8e8ed5",
+    "model_configuration": null,
+    "data_configuration": null,
+    "deployment_configuration": null,
+    "law_version": "Regulation (EU) 2024/1689; consolidated 2026-07-27; applicability OPEN"
+  },
+  "artifacts": [
+    {
+      "id": "docs/regulatory/system-boundary.md",
+      "state": "BOUND",
+      "path": "docs/regulatory/system-boundary.md",
+      "sha256": "4ba9c8c396ebd7b902f66ac9abf7b2e655c14c650804ac52543eae7a6d8e8ed5"
+    },
+    {
+      "id": "docs/regulatory/classification-memorandum.md",
+      "state": "BOUND",
+      "path": "docs/regulatory/classification-memorandum.md",
+      "sha256": "e234881c2f32e830d14d667140aa0bcc687cbc3480eb30d79236c30b3a70a3e2"
+    },
+    {
+      "id": "src/qikvrt_temdd_event_ledger.py",
+      "state": "BOUND",
+      "path": "src/qikvrt_temdd_event_ledger.py",
+      "sha256": "f090abf4684907965ea2fe611ea4c3da3968660c19c1b881f925a144f15ad2a5"
+    },
+    {
+      "id": "src/qikvrt_effect_ack_http_terminal.py",
+      "state": "BOUND",
+      "path": "src/qikvrt_effect_ack_http_terminal.py",
+      "sha256": "213fe3f2b62666df45bd799ee814bd3e74bfc7d70f5e6e3a304e343e5d319c90"
+    },
+    {
+      "id": "original-review:React Artifact.html",
+      "state": "UNRESOLVED",
+      "reason": "Exact original reviewed bytes are not resolved. A same-named unrelated file is not a substitute."
+    },
+    {
+      "id": "original-review:AI_Onboarding_State_Graph.html",
+      "state": "UNRESOLVED",
+      "reason": "Exact original reviewed bytes are not resolved. A same-named unrelated file is not a substitute."
+    }
+  ],
+  "controls": [
+    {
+      "requirement_id": "ART_9",
+      "applicability": "OPEN",
+      "evidence_status": "PARTIAL",
+      "evidence": [],
+      "closure": "Accountable applicability decision plus exact implementation/test/operational evidence for the selected control."
+    },
+    {
+      "requirement_id": "ART_10",
+      "applicability": "OPEN",
+      "evidence_status": "NOT_EVIDENCED",
+      "evidence": [],
+      "closure": "Accountable applicability decision plus exact implementation/test/operational evidence for the selected control."
+    },
+    {
+      "requirement_id": "ART_11",
+      "applicability": "OPEN",
+      "evidence_status": "PARTIAL",
+      "evidence": [],
+      "closure": "Accountable applicability decision plus exact implementation/test/operational evidence for the selected control."
+    },
+    {
+      "requirement_id": "ART_12",
+      "applicability": "OPEN",
+      "evidence_status": "PARTIAL",
+      "evidence": [
+        {
+          "kind": "TEST",
+          "subject": {
+            "system_id": "QIK-VRT/core-and-Personal-integration",
+            "source_commit": "a8017ab67824f01ec4d215cf7af83b8b0779283c",
+            "source_tree": "94317a4da76fac49b63bb129badcbbd21471c092",
+            "purpose_sha256": "4ba9c8c396ebd7b902f66ac9abf7b2e655c14c650804ac52543eae7a6d8e8ed5",
+            "model_configuration": null,
+            "data_configuration": null,
+            "deployment_configuration": null,
+            "law_version": "Regulation (EU) 2024/1689; consolidated 2026-07-27; applicability OPEN"
+          },
+          "observed_at": "2026-10-22T16:30:07.537144+00:00",
+          "valid_until": "2026-10-23T16:30:07.537144+00:00",
+          "command": "python3 -B -m unittest -v tests.test_temdd_event_ledger.ProducerTests.test_browser_ide_is_local_editable_and_effect_free tests.test_temdd_event_ledger.ProducerTests.test_browser_ide_parser_matches_reference_example_shape tests.test_temdd_event_ledger.ProducerTests.test_cli_serve_missing_subject_never_creates_state tests.test_temdd_event_ledger.ProducerTests.test_commit_before_notification_failure_is_replayable tests.test_temdd_event_ledger.ProducerTests.test_concurrent_native_deliveries_have_distinct_monotonic_ids tests.test_temdd_event_ledger.ProducerTests.test_consumer_validation_and_reconnect_state_machine tests.test_temdd_event_ledger.ProducerTests.test_copied_checkout_ignores_stat_cache_drift_but_not_byte_changes tests.test_temdd_event_ledger.ProducerTests.test_dirty_checkout_is_unobservable tests.test_temdd_event_ledger.ProducerTests.test_durable_restart_and_monotonic_ids tests.test_temdd_event_ledger.ProducerTests.test_idempotent_delivery_and_conflicting_native_id tests.test_temdd_event_ledger.ProducerTests.test_malformed_and_oversized_ingress_rejected tests.test_temdd_event_ledger.ProducerTests.test_repository_entrypoint_and_test_admission tests.test_temdd_event_ledger.ProducerTests.test_runtime_head_mutation_invalidates_observers tests.test_temdd_event_ledger.ProducerTests.test_storage_failure_never_publishes tests.test_temdd_event_ledger.ProducerTests.test_subject_correction_preserves_predecessor_bytes_without_relabeling tests.test_temdd_event_ledger.ProducerTests.test_successor_never_replays_predecessor_evidence tests.test_temdd_event_ledger.ProducerTests.test_tampered_readback_holds tests.test_temdd_event_ledger.ProducerTests.test_unknown_foreign_and_future_cursors_hold tests.test_temdd_event_ledger.ProducerTests.test_wrong_head_tree_repository_and_pr_rejected tests.test_temdd_event_ledger.ServerFixtureLifecycleTests.test_ingress_construction_failure_closes_unstarted_http_without_shutdown tests.test_temdd_event_ledger.WriterContinuityTests.test_active_source_and_a_copy_impersonating_source_cannot_transfer tests.test_temdd_event_ledger.WriterContinuityTests.test_cli_handoff_accepts_private_source_directory_and_revokes_original tests.test_temdd_event_ledger.WriterContinuityTests.test_cli_handoff_rejects_changed_config_bytes_without_revoking_original tests.test_temdd_event_ledger.WriterContinuityTests.test_cli_handoff_rejects_public_directory_without_revoking_original tests.test_temdd_event_ledger.WriterContinuityTests.test_cli_handoff_rejects_regular_file_without_revoking_original tests.test_temdd_event_ledger.WriterContinuityTests.test_copied_store_cannot_acquire_original_writer_identity tests.test_temdd_event_ledger.WriterContinuityTests.test_explicit_local_handoff_revokes_source_before_target_can_append tests.test_temdd_event_ledger.WriterContinuityTests.test_interrupted_transfer_admits_neither_copy tests.test_temdd_event_ledger.WriterContinuityTests.test_legacy_store_remains_readable_but_is_never_automatically_admitted tests.test_temdd_event_ledger.WriterContinuityTests.test_replacing_owner_lock_fences_live_writer_and_its_successor tests.test_temdd_event_ledger.WriterContinuityTests.test_same_physical_store_restart_preserves_deduplication tests.test_temdd_event_ledger.WriterContinuityTests.test_stale_copy_and_wrong_pin_leave_source_writer_unchanged tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_exact_deployment_requires_explicit_repository tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_exact_head_requires_explicit_pr tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_exact_subject_uses_configured_pr_not_legacy_default tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_exact_tree_requires_explicit_pr tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_explicit_pr_is_passed_as_two_arguments tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_explicit_repository_does_not_assume_authority_or_mirror tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_guard_precedes_runtime_side_effects tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_invalid_pr_cannot_start_ledger tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_invalid_repository_cannot_start_ledger tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_unsealed_launch_requires_both_explicit_subject_fields tests.test_temdd_runtime_subject_binding.TerminalHealthBrowserBindingTests.test_browser_override_does_not_weaken_effect_boundary tests.test_temdd_runtime_subject_binding.TerminalHealthBrowserBindingTests.test_browser_override_still_requires_each_runtime_dependency tests.test_temdd_runtime_subject_binding.TerminalHealthBrowserBindingTests.test_default_and_release_cannot_accept_each_others_metadata tests.test_temdd_runtime_subject_binding.TerminalHealthBrowserBindingTests.test_default_browser_matches_default_terminal_start tests.test_temdd_runtime_subject_binding.TerminalHealthBrowserBindingTests.test_release_override_matches_terminal_runtime_metadata",
+          "environment": "Local Linux reference execution with temporary test-owned state; socket creation denied by execution environment.",
+          "exit_code": 0,
+          "artifact": {
+            "state": "BOUND",
+            "path": "evidence/regulatory/native-control-reference-20261022.json",
+            "sha256": "609277e361bec76da98ac3fd05af3ffd75b24b9650bcbf9d29b7537179727e59"
+          },
+          "limitations": "Only the explicitly selected reference cases; not the complete suite, an authenticated productive node, retention acceptance, operator training or legal conformity."
+        }
+      ],
+      "closure": "Accountable applicability decision plus exact implementation/test/operational evidence for the selected control."
+    },
+    {
+      "requirement_id": "ART_13",
+      "applicability": "OPEN",
+      "evidence_status": "PARTIAL",
+      "evidence": [],
+      "closure": "Accountable applicability decision plus exact implementation/test/operational evidence for the selected control."
+    },
+    {
+      "requirement_id": "ART_14",
+      "applicability": "OPEN",
+      "evidence_status": "PARTIAL",
+      "evidence": [
+        {
+          "kind": "TEST",
+          "subject": {
+            "system_id": "QIK-VRT/core-and-Personal-integration",
+            "source_commit": "a8017ab67824f01ec4d215cf7af83b8b0779283c",
+            "source_tree": "94317a4da76fac49b63bb129badcbbd21471c092",
+            "purpose_sha256": "4ba9c8c396ebd7b902f66ac9abf7b2e655c14c650804ac52543eae7a6d8e8ed5",
+            "model_configuration": null,
+            "data_configuration": null,
+            "deployment_configuration": null,
+            "law_version": "Regulation (EU) 2024/1689; consolidated 2026-07-27; applicability OPEN"
+          },
+          "observed_at": "2026-10-22T16:30:07.537144+00:00",
+          "valid_until": "2026-10-23T16:30:07.537144+00:00",
+          "command": "python3 -B -m unittest -v tests.test_temdd_event_ledger.ProducerTests.test_browser_ide_is_local_editable_and_effect_free tests.test_temdd_event_ledger.ProducerTests.test_browser_ide_parser_matches_reference_example_shape tests.test_temdd_event_ledger.ProducerTests.test_cli_serve_missing_subject_never_creates_state tests.test_temdd_event_ledger.ProducerTests.test_commit_before_notification_failure_is_replayable tests.test_temdd_event_ledger.ProducerTests.test_concurrent_native_deliveries_have_distinct_monotonic_ids tests.test_temdd_event_ledger.ProducerTests.test_consumer_validation_and_reconnect_state_machine tests.test_temdd_event_ledger.ProducerTests.test_copied_checkout_ignores_stat_cache_drift_but_not_byte_changes tests.test_temdd_event_ledger.ProducerTests.test_dirty_checkout_is_unobservable tests.test_temdd_event_ledger.ProducerTests.test_durable_restart_and_monotonic_ids tests.test_temdd_event_ledger.ProducerTests.test_idempotent_delivery_and_conflicting_native_id tests.test_temdd_event_ledger.ProducerTests.test_malformed_and_oversized_ingress_rejected tests.test_temdd_event_ledger.ProducerTests.test_repository_entrypoint_and_test_admission tests.test_temdd_event_ledger.ProducerTests.test_runtime_head_mutation_invalidates_observers tests.test_temdd_event_ledger.ProducerTests.test_storage_failure_never_publishes tests.test_temdd_event_ledger.ProducerTests.test_subject_correction_preserves_predecessor_bytes_without_relabeling tests.test_temdd_event_ledger.ProducerTests.test_successor_never_replays_predecessor_evidence tests.test_temdd_event_ledger.ProducerTests.test_tampered_readback_holds tests.test_temdd_event_ledger.ProducerTests.test_unknown_foreign_and_future_cursors_hold tests.test_temdd_event_ledger.ProducerTests.test_wrong_head_tree_repository_and_pr_rejected tests.test_temdd_event_ledger.ServerFixtureLifecycleTests.test_ingress_construction_failure_closes_unstarted_http_without_shutdown tests.test_temdd_event_ledger.WriterContinuityTests.test_active_source_and_a_copy_impersonating_source_cannot_transfer tests.test_temdd_event_ledger.WriterContinuityTests.test_cli_handoff_accepts_private_source_directory_and_revokes_original tests.test_temdd_event_ledger.WriterContinuityTests.test_cli_handoff_rejects_changed_config_bytes_without_revoking_original tests.test_temdd_event_ledger.WriterContinuityTests.test_cli_handoff_rejects_public_directory_without_revoking_original tests.test_temdd_event_ledger.WriterContinuityTests.test_cli_handoff_rejects_regular_file_without_revoking_original tests.test_temdd_event_ledger.WriterContinuityTests.test_copied_store_cannot_acquire_original_writer_identity tests.test_temdd_event_ledger.WriterContinuityTests.test_explicit_local_handoff_revokes_source_before_target_can_append tests.test_temdd_event_ledger.WriterContinuityTests.test_interrupted_transfer_admits_neither_copy tests.test_temdd_event_ledger.WriterContinuityTests.test_legacy_store_remains_readable_but_is_never_automatically_admitted tests.test_temdd_event_ledger.WriterContinuityTests.test_replacing_owner_lock_fences_live_writer_and_its_successor tests.test_temdd_event_ledger.WriterContinuityTests.test_same_physical_store_restart_preserves_deduplication tests.test_temdd_event_ledger.WriterContinuityTests.test_stale_copy_and_wrong_pin_leave_source_writer_unchanged tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_exact_deployment_requires_explicit_repository tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_exact_head_requires_explicit_pr tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_exact_subject_uses_configured_pr_not_legacy_default tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_exact_tree_requires_explicit_pr tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_explicit_pr_is_passed_as_two_arguments tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_explicit_repository_does_not_assume_authority_or_mirror tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_guard_precedes_runtime_side_effects tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_invalid_pr_cannot_start_ledger tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_invalid_repository_cannot_start_ledger tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_unsealed_launch_requires_both_explicit_subject_fields tests.test_temdd_runtime_subject_binding.TerminalHealthBrowserBindingTests.test_browser_override_does_not_weaken_effect_boundary tests.test_temdd_runtime_subject_binding.TerminalHealthBrowserBindingTests.test_browser_override_still_requires_each_runtime_dependency tests.test_temdd_runtime_subject_binding.TerminalHealthBrowserBindingTests.test_default_and_release_cannot_accept_each_others_metadata tests.test_temdd_runtime_subject_binding.TerminalHealthBrowserBindingTests.test_default_browser_matches_default_terminal_start tests.test_temdd_runtime_subject_binding.TerminalHealthBrowserBindingTests.test_release_override_matches_terminal_runtime_metadata",
+          "environment": "Local Linux reference execution with temporary test-owned state; socket creation denied by execution environment.",
+          "exit_code": 0,
+          "artifact": {
+            "state": "BOUND",
+            "path": "evidence/regulatory/native-control-reference-20261022.json",
+            "sha256": "609277e361bec76da98ac3fd05af3ffd75b24b9650bcbf9d29b7537179727e59"
+          },
+          "limitations": "Only the explicitly selected reference cases; not the complete suite, an authenticated productive node, retention acceptance, operator training or legal conformity."
+        }
+      ],
+      "closure": "Accountable applicability decision plus exact implementation/test/operational evidence for the selected control."
+    },
+    {
+      "requirement_id": "ART_15",
+      "applicability": "OPEN",
+      "evidence_status": "PARTIAL",
+      "evidence": [
+        {
+          "kind": "TEST",
+          "subject": {
+            "system_id": "QIK-VRT/core-and-Personal-integration",
+            "source_commit": "a8017ab67824f01ec4d215cf7af83b8b0779283c",
+            "source_tree": "94317a4da76fac49b63bb129badcbbd21471c092",
+            "purpose_sha256": "4ba9c8c396ebd7b902f66ac9abf7b2e655c14c650804ac52543eae7a6d8e8ed5",
+            "model_configuration": null,
+            "data_configuration": null,
+            "deployment_configuration": null,
+            "law_version": "Regulation (EU) 2024/1689; consolidated 2026-07-27; applicability OPEN"
+          },
+          "observed_at": "2026-10-22T16:30:07.537144+00:00",
+          "valid_until": "2026-10-23T16:30:07.537144+00:00",
+          "command": "python3 -B -m unittest -v tests.test_temdd_event_ledger.ProducerTests.test_browser_ide_is_local_editable_and_effect_free tests.test_temdd_event_ledger.ProducerTests.test_browser_ide_parser_matches_reference_example_shape tests.test_temdd_event_ledger.ProducerTests.test_cli_serve_missing_subject_never_creates_state tests.test_temdd_event_ledger.ProducerTests.test_commit_before_notification_failure_is_replayable tests.test_temdd_event_ledger.ProducerTests.test_concurrent_native_deliveries_have_distinct_monotonic_ids tests.test_temdd_event_ledger.ProducerTests.test_consumer_validation_and_reconnect_state_machine tests.test_temdd_event_ledger.ProducerTests.test_copied_checkout_ignores_stat_cache_drift_but_not_byte_changes tests.test_temdd_event_ledger.ProducerTests.test_dirty_checkout_is_unobservable tests.test_temdd_event_ledger.ProducerTests.test_durable_restart_and_monotonic_ids tests.test_temdd_event_ledger.ProducerTests.test_idempotent_delivery_and_conflicting_native_id tests.test_temdd_event_ledger.ProducerTests.test_malformed_and_oversized_ingress_rejected tests.test_temdd_event_ledger.ProducerTests.test_repository_entrypoint_and_test_admission tests.test_temdd_event_ledger.ProducerTests.test_runtime_head_mutation_invalidates_observers tests.test_temdd_event_ledger.ProducerTests.test_storage_failure_never_publishes tests.test_temdd_event_ledger.ProducerTests.test_subject_correction_preserves_predecessor_bytes_without_relabeling tests.test_temdd_event_ledger.ProducerTests.test_successor_never_replays_predecessor_evidence tests.test_temdd_event_ledger.ProducerTests.test_tampered_readback_holds tests.test_temdd_event_ledger.ProducerTests.test_unknown_foreign_and_future_cursors_hold tests.test_temdd_event_ledger.ProducerTests.test_wrong_head_tree_repository_and_pr_rejected tests.test_temdd_event_ledger.ServerFixtureLifecycleTests.test_ingress_construction_failure_closes_unstarted_http_without_shutdown tests.test_temdd_event_ledger.WriterContinuityTests.test_active_source_and_a_copy_impersonating_source_cannot_transfer tests.test_temdd_event_ledger.WriterContinuityTests.test_cli_handoff_accepts_private_source_directory_and_revokes_original tests.test_temdd_event_ledger.WriterContinuityTests.test_cli_handoff_rejects_changed_config_bytes_without_revoking_original tests.test_temdd_event_ledger.WriterContinuityTests.test_cli_handoff_rejects_public_directory_without_revoking_original tests.test_temdd_event_ledger.WriterContinuityTests.test_cli_handoff_rejects_regular_file_without_revoking_original tests.test_temdd_event_ledger.WriterContinuityTests.test_copied_store_cannot_acquire_original_writer_identity tests.test_temdd_event_ledger.WriterContinuityTests.test_explicit_local_handoff_revokes_source_before_target_can_append tests.test_temdd_event_ledger.WriterContinuityTests.test_interrupted_transfer_admits_neither_copy tests.test_temdd_event_ledger.WriterContinuityTests.test_legacy_store_remains_readable_but_is_never_automatically_admitted tests.test_temdd_event_ledger.WriterContinuityTests.test_replacing_owner_lock_fences_live_writer_and_its_successor tests.test_temdd_event_ledger.WriterContinuityTests.test_same_physical_store_restart_preserves_deduplication tests.test_temdd_event_ledger.WriterContinuityTests.test_stale_copy_and_wrong_pin_leave_source_writer_unchanged tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_exact_deployment_requires_explicit_repository tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_exact_head_requires_explicit_pr tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_exact_subject_uses_configured_pr_not_legacy_default tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_exact_tree_requires_explicit_pr tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_explicit_pr_is_passed_as_two_arguments tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_explicit_repository_does_not_assume_authority_or_mirror tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_guard_precedes_runtime_side_effects tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_invalid_pr_cannot_start_ledger tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_invalid_repository_cannot_start_ledger tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_unsealed_launch_requires_both_explicit_subject_fields tests.test_temdd_runtime_subject_binding.TerminalHealthBrowserBindingTests.test_browser_override_does_not_weaken_effect_boundary tests.test_temdd_runtime_subject_binding.TerminalHealthBrowserBindingTests.test_browser_override_still_requires_each_runtime_dependency tests.test_temdd_runtime_subject_binding.TerminalHealthBrowserBindingTests.test_default_and_release_cannot_accept_each_others_metadata tests.test_temdd_runtime_subject_binding.TerminalHealthBrowserBindingTests.test_default_browser_matches_default_terminal_start tests.test_temdd_runtime_subject_binding.TerminalHealthBrowserBindingTests.test_release_override_matches_terminal_runtime_metadata",
+          "environment": "Local Linux reference execution with temporary test-owned state; socket creation denied by execution environment.",
+          "exit_code": 0,
+          "artifact": {
+            "state": "BOUND",
+            "path": "evidence/regulatory/native-control-reference-20261022.json",
+            "sha256": "609277e361bec76da98ac3fd05af3ffd75b24b9650bcbf9d29b7537179727e59"
+          },
+          "limitations": "Only the explicitly selected reference cases; not the complete suite, an authenticated productive node, retention acceptance, operator training or legal conformity."
+        }
+      ],
+      "closure": "Accountable applicability decision plus exact implementation/test/operational evidence for the selected control."
+    },
+    {
+      "requirement_id": "ART_17",
+      "applicability": "OPEN",
+      "evidence_status": "PARTIAL",
+      "evidence": [],
+      "closure": "Accountable applicability decision plus exact implementation/test/operational evidence for the selected control."
+    },
+    {
+      "requirement_id": "ART_19",
+      "applicability": "OPEN",
+      "evidence_status": "PARTIAL",
+      "evidence": [],
+      "closure": "Accountable applicability decision plus exact implementation/test/operational evidence for the selected control."
+    },
+    {
+      "requirement_id": "ART_43",
+      "applicability": "OPEN",
+      "evidence_status": "NOT_EVIDENCED",
+      "evidence": [],
+      "closure": "Accountable applicability decision plus exact implementation/test/operational evidence for the selected control."
+    },
+    {
+      "requirement_id": "ART_50",
+      "applicability": "OPEN",
+      "evidence_status": "NOT_EVIDENCED",
+      "evidence": [],
+      "closure": "Accountable applicability decision plus exact implementation/test/operational evidence for the selected control."
+    }
+  ],
+  "scope_limit": "Selected original-register articles and the unchanged core/Personal baseline; not a complete AI Act obligations inventory.",
+  "risk_method": "docs/regulatory/CONTROLLED_ASSESSMENT_PROCEDURE.md#3-risk-methodology-and-acceptance",
+  "risks": [
+    {
+      "id": "R-01",
+      "hazard": "Wrong original artifact or version",
+      "mitigation": "Bind original bytes; reject substitution and changed digest.",
+      "owner": "Principal assigns accountable control owner before operational acceptance",
+      "severity": null,
+      "likelihood": null,
+      "affected_groups": "OPEN",
+      "risk_acceptance": "OPEN",
+      "effectiveness_evidence": []
+    },
+    {
+      "id": "R-02",
+      "hazard": "Unfounded legal classification or green conformity claim",
+      "mitigation": "Keep role/purpose/applicability OPEN; obtain accountable review.",
+      "owner": "Principal assigns accountable control owner before operational acceptance",
+      "severity": null,
+      "likelihood": null,
+      "affected_groups": "OPEN",
+      "risk_acceptance": "OPEN",
+      "effectiveness_evidence": []
+    },
+    {
+      "id": "R-03",
+      "hazard": "Stale model, data, deployment or legal context",
+      "mitigation": "Reobserve dependencies; invalidate predecessor evidence on a change.",
+      "owner": "Principal assigns accountable control owner before operational acceptance",
+      "severity": null,
+      "likelihood": null,
+      "affected_groups": "OPEN",
+      "risk_acceptance": "OPEN",
+      "effectiveness_evidence": []
+    },
+    {
+      "id": "R-04",
+      "hazard": "Credential or unnecessary personal-data disclosure",
+      "mitigation": "Minimise logs; use protected credential channels and authorised destinations.",
+      "owner": "Principal assigns accountable control owner before operational acceptance",
+      "severity": null,
+      "likelihood": null,
+      "affected_groups": "OPEN",
+      "risk_acceptance": "OPEN",
+      "effectiveness_evidence": []
+    },
+    {
+      "id": "R-05",
+      "hazard": "Lost, corrupted or unavailable audit events",
+      "mitigation": "Verify original ledger durability, access, tamper detection, retrieval and retention on the actual host.",
+      "owner": "Principal assigns accountable control owner before operational acceptance",
+      "severity": null,
+      "likelihood": null,
+      "affected_groups": "OPEN",
+      "risk_acceptance": "OPEN",
+      "effectiveness_evidence": []
+    },
+    {
+      "id": "R-06",
+      "hazard": "Uncontrolled effect after revocation or ambiguous ACK",
+      "mitigation": "Exercise stop/revocation and independently reconcile residual effects before retry.",
+      "owner": "Principal assigns accountable control owner before operational acceptance",
+      "severity": null,
+      "likelihood": null,
+      "affected_groups": "OPEN",
+      "risk_acceptance": "OPEN",
+      "effectiveness_evidence": []
+    },
+    {
+      "id": "R-07",
+      "hazard": "Automation bias or inaccessible oversight",
+      "mitigation": "Show uncertainty and provenance; train operators and exercise accessible intervention.",
+      "owner": "Principal assigns accountable control owner before operational acceptance",
+      "severity": null,
+      "likelihood": null,
+      "affected_groups": "OPEN",
+      "risk_acceptance": "OPEN",
+      "effectiveness_evidence": []
+    },
+    {
+      "id": "R-08",
+      "hazard": "Unrepresentative data or supplier change",
+      "mitigation": "Inventory actual data/models/rights/affected groups; test quality/bias and contract boundaries.",
+      "owner": "Principal assigns accountable control owner before operational acceptance",
+      "severity": null,
+      "likelihood": null,
+      "affected_groups": "OPEN",
+      "risk_acceptance": "OPEN",
+      "effectiveness_evidence": []
+    }
+  ],
+  "owner_authorization": {
+    "attributed_to": "Ingolf Lohmann",
+    "received_on": "2026-10-22",
+    "scope": "Close identified gaps and maintain continuity across internal and external changes",
+    "form": "Direct conversational instruction; no cryptographic signature claimed"
+  },
+  "legal_conformity": "NOT_ASSESSED",
+  "operational_acceptance": "NOT_ESTABLISHED"
+}
