@@ -1,0 +1,81 @@
+{
+  "model": "perplexity-ai/pplx-embed-v2-late-0.6b",
+  "revision": "8fc2de24534aa3610d85fa59c463313a5f096455",
+  "files": [
+    {
+      "file": "1_Dense/config.json",
+      "bytes": 238,
+      "sha256": "b2edb3cf8fbbd76ed3b41ed1e41bcb49c2fb4863a600914a70e30ba5dc5cef02"
+    },
+    {
+      "file": "1_Dense/model.safetensors",
+      "bytes": 524376,
+      "sha256": "ea18dae8901decaf9533aaeda9123a52770c8b65680f17e37d15ff6fce085172"
+    },
+    {
+      "file": "2_MultiVectorMask/config.json",
+      "bytes": 391,
+      "sha256": "98a33321fed690efcf10dff2db3b4e17a435adf8ac3fda67f675633c03b41d2a"
+    },
+    {
+      "file": "3_Normalize/config.json",
+      "bytes": 89,
+      "sha256": "51f74e99b3040bed9ddee1f39b0ca2aad0f28f605e932803517e5f574aac7eb4"
+    },
+    {
+      "file": "README.md",
+      "bytes": 3258,
+      "sha256": "c47db7d49bb32b4ba82c76a1148ec42bfb1e9967eb55b16b4482b58a5172bd51"
+    },
+    {
+      "file": "chat_template.jinja",
+      "bytes": 479,
+      "sha256": "00a123eb8e945cf6bf0246abed96fcc0ff577f9c12f3af1aac246f3d32b5c4cf"
+    },
+    {
+      "file": "config.json",
+      "bytes": 2305,
+      "sha256": "c8f7eb8533d309e19fd62390779432c57c9f47dc3dc0e262bc2fadf46513210f"
+    },
+    {
+      "file": "config_sentence_transformers.json",
+      "bytes": 264,
+      "sha256": "1c1abaf5dfd78bba1d3dce93704ce8d9877687e54eaed6f4a441cf4efa3a3078"
+    },
+    {
+      "file": "model.safetensors",
+      "bytes": 2377321184,
+      "sha256": "107eaae48d026ea20458b30dd755a0f1475b34fcf5a1895123ad67a2385b9d6b"
+    },
+    {
+      "file": "modules.json",
+      "bytes": 535,
+      "sha256": "35d6f7421d1df0148c58255c1d7a61e16abc8eb929c37ca898308a963eb693a6"
+    },
+    {
+      "file": "processor_config.json",
+      "bytes": 1351,
+      "sha256": "9bfa7f59801e8680077ebd09a1308cf89125538c5e19b901328ba0066750c504"
+    },
+    {
+      "file": "requirements.txt",
+      "bytes": 63,
+      "sha256": "b92fbd9b613248745c1f6805e027d3da68fb2e328e3eda94e9be1eba30f21d91"
+    },
+    {
+      "file": "sentence_bert_config.json",
+      "bytes": 664,
+      "sha256": "002ad0a38c521862a54a2ab61a08b66f5d139a791200a38bbb9f256118d53ba4"
+    },
+    {
+      "file": "tokenizer.json",
+      "bytes": 19989705,
+      "sha256": "a171436d73b1d30b9ba99ff6b7f15efcf45cf428b6ff908842286a8057030b1c"
+    },
+    {
+      "file": "tokenizer_config.json",
+      "bytes": 1195,
+      "sha256": "85d5045a11205796e6ec9615f104437813b9d1810debb2669219fe32901eb922"
+    }
+  ]
+}

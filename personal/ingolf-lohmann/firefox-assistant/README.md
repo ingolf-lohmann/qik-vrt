@@ -444,3 +444,55 @@ dauerhafte signierte Firefox-Aktivierung, Modellbetrieb und öffentliche
 Auslieferung benötigen jeweils eigene Nachweise. Die Regressionen nutzen
 ausdrücklich simulierte Identitätsanbieter und Vaults, jedoch Original-
 Transputer, Journal, Terminal und einen zusätzlichen Prozess für den Readback.
+## Optional local source ranking (Owner-authorized candidate, 2026-10-20)
+
+The existing Personal HTTP terminal accepts the additive startup option
+`--personal-retrieval-model-dir /absolute/private/model-directory`. This option
+requires the existing `--personal-state-dir` and its normal authentication and
+model configuration. It does not create another server, executor, scheduler,
+credential store or Firefox permission. The feature is disabled by default.
+Existing OIDC, bearer, same-origin and configured native transition checks apply.
+Search does not call the conversation model or write a conversation session.
+The surrounding Personal assistant still has its existing provider configuration;
+this feature alone does not make the whole assistant an offline product.
+
+Prepare an isolated optional Python 3.12 environment using the exact versions in
+`runtime/toolchains/requirements-personal-retrieval.txt`; run `python -m pip check`
+and retain the resolved distribution inventory. The lock reproduces the tested
+Linux environment, including Torch's packaged CUDA dependencies; inference is CPU.
+This is a version lock, not a cryptographic wheel lock or an approved redistribution
+bundle. Do not install it into the standard browser extension or productive host
+automatically. Cache verified packages under the existing tool-cache policy.
+
+Separately provision the 15 files from official model
+`https://huggingface.co/perplexity-ai/pplx-embed-v2-late-0.6b/tree/8fc2de24534aa3610d85fa59c463313a5f096455`
+to the explicit external directory. The repository's model lock binds exact paths,
+sizes and SHA-256 values. Startup checks the complete file set and refuses symlinks,
+missing, extra or changed files before loading. Model loading uses
+`trust_remote_code=False`, `local_files_only=True` and CPU; no implicit download,
+model substitution or cloud fallback. An invalid directory blocks startup.
+Retain the pinned directory as read-only for the lifetime of the process.
+For recovery, remove the optional startup argument; preserve private assistant
+state and the original model files rather than resetting either.
+
+In the existing sources input, provide 1–32 explicit `{id,text}` excerpts, each
+at most 512 Unicode characters. A trusted click on the local search control
+hashes the text, submits the bounded question, and previews up to three ranked
+excerpts. Backend source hashes and request binding are checked again in the UI;
+source text is rendered with `textContent`. Treat a digest as integrity binding,
+not as proof of document authenticity or permission to disclose its contents.
+Only submit excerpts the signed-in user is authorized to read. No file system,
+Mesh corpus enumeration, OCR, field extraction, automatic form insertion or
+submission is implemented by this candidate. Source instructions remain data.
+
+The model's MIT license does not change QIK-VRT's PolyForm Noncommercial license.
+Optional runtime distributions retain their own licenses. Integration authorization
+is not a commercial grant, license-strategy change, dependency redistribution
+approval, authenticated Firefox test, private Mesh integration or productive
+EFFECT_ACK acceptance. Those obligations remain separate.
+
+Run `make personal-retrieval-test` for deterministic Python/HTTP and simulated
+DOM controls. An actual offline-model probe must exercise
+`LocalRetrieval.from_directory` and `search`; predecessor model-only measurements
+do not accept this adapter. No comparative quality claim follows from smoke tests.
+
