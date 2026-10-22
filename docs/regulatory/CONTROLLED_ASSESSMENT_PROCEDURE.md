@@ -177,6 +177,12 @@ The captured context is the baseline, not live discovery. Supply a freshly
 observed context to detect external/model/configuration changes. An unchanged
 captured JSON cannot prove that the live system is unchanged.
 
+`make eu-ai-act-evidence-readiness` uses the same tool with `--require-complete`.
+It must fail while any selected binding, applicability or evidence item is OPEN.
+This is an explicit readiness checkpoint, not an automatic deployment hook or
+legal classifier. Even consistent complete bindings require separate accountable
+legal and operational acceptance; no tool exit code grants that acceptance.
+
 Initial machine status: classification OPEN; implementation/control coverage
 PARTIAL; original HTML bindings OPEN; model/data/deployment inventory OPEN;
 operational and legal acceptance NOT ESTABLISHED. Preserve these duties until

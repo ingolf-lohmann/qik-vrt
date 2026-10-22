@@ -10,6 +10,8 @@ import hashlib
 import json
 from pathlib import Path
 import tempfile
+import subprocess
+import sys
 
 from tools.qikvrt_eu_ai_act_evidence_gate import ARTICLE_IDS, SUBJECT_FIELDS, audit_bundle, audit_text, strict_json
 
@@ -192,6 +194,27 @@ class EvidenceBindingTests(unittest.TestCase):
         for text in ('{"status":"OPEN","status":"PASS"}', '{"value":NaN}', '{"value":Infinity}'):
             with self.assertRaises(ValueError):
                 strict_json(text)
+
+    def cli(self, *flags):
+        (self.root / "status.md").write_text(GOOD_STATUS)
+        (self.root / "register.md").write_text(GOOD_REGISTER)
+        (self.root / "bundle.json").write_text(json.dumps(self.bundle))
+        (self.root / "subject.json").write_text(json.dumps(self.subject))
+        script = Path(__file__).resolve().parents[1] / "tools/qikvrt_eu_ai_act_evidence_gate.py"
+        return subprocess.run([sys.executable, "-B", str(script), "--status", str(self.root / "status.md"),
+                               "--register", str(self.root / "register.md"), "--root", str(self.root),
+                               "--bundle", str(self.root / "bundle.json"), "--subject", str(self.root / "subject.json"),
+                               "--json", *flags], capture_output=True, text=True)
+
+    def test_documentary_mode_reports_open_gaps_without_claiming_readiness(self):
+        run = self.cli()
+        self.assertEqual(run.returncode, 0)
+        self.assertEqual(json.loads(run.stdout)["evidence_bindings"]["result"], "BINDINGS_INCOMPLETE")
+
+    def test_strict_readiness_cli_blocks_open_gaps(self):
+        run = self.cli("--require-complete")
+        self.assertEqual(run.returncode, 2)
+        self.assertEqual(json.loads(run.stdout)["evidence_bindings"]["result"], "BINDINGS_INCOMPLETE")
 
     def test_malformed_shapes_are_invalid_without_crashing(self):
         for value in (None, [], {}, {"schema": "wrong"}, {"schema": "qikvrt_ai_act_evidence_bundle_v1",

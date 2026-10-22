@@ -301,7 +301,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--bundle", type=pathlib.Path, help="optional typed evidence bundle")
     parser.add_argument("--subject", type=pathlib.Path, help="independently observed assessment context")
     parser.add_argument("--root", type=pathlib.Path, default=pathlib.Path("."))
+    parser.add_argument("--require-complete", action="store_true",
+                        help="fail on OPEN evidence bindings; still no legal conformity conclusion")
     args = parser.parse_args(argv)
+    if args.require_complete and not (args.bundle and args.subject):
+        parser.error("--require-complete requires --bundle and --subject")
     result = audit_files(args.status, args.register)
     output = result.as_dict()
     binding_result = None
@@ -324,7 +328,8 @@ def main(argv: list[str] | None = None) -> int:
         if binding_result:
             print(binding_result["result"] + ": COMPLIANCE_NOT_ESTABLISHED")
     return 0 if (result.result == "DOCUMENTARY_GUARDS_PASS" and
-                 (binding_result is None or binding_result["result"] != "BINDINGS_INVALID")) else 2
+                 (binding_result is None or binding_result["result"] != "BINDINGS_INVALID") and
+                 (not args.require_complete or binding_result["result"] == "BINDINGS_VALID")) else 2
 
 
 if __name__ == "__main__":
