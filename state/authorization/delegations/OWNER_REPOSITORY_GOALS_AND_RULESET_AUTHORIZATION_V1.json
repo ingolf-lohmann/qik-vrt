@@ -1,0 +1,58 @@
+{
+  "schema": "qikvrt_owner_repository_goals_authorization_v1",
+  "delegation_id": "OWNER-REPOSITORY-GOALS-AND-RULESET-AUTHORIZATION-V1",
+  "state": "ACTIVE",
+  "effective_date": "2026-10-22",
+  "owner": {
+    "name": "Ingolf Lohmann",
+    "type": "NATURAL_PERSON",
+    "roles": [
+      "Principal",
+      "Code Owner",
+      "Product Owner"
+    ]
+  },
+  "source_instruction": {
+    "source_kind": "DIRECT_HUMAN_INSTRUCTION_IN_CURRENT_SESSION",
+    "language": "de",
+    "text": "Die Prinzipalfreigabe für die Ruleset-Änderungen, die notwendig sind, um ans Ziel zu kommen, von denen es nicht nur eines gibt im QIKVRT Repository, wurde bereits erteilt! \n\nDeswegen gilt diese Prinzipalfreigabe grundsätzlich für alle Ziele, die im QIKVRT Repository gespeichert sind, um die Erreichung zu garantieren. Denn alles andere war, ist und bleibt inakzeptabel in einem superdeterministischen Computersystem. \n\nDrum teile ich hiermit das Feedback von Gemini ebenso mit. \n\nDamit sind Claude, Codex und Gemini im QIKVRT Repository miteinander verbunden. \n\nQuod erat demonstrandum, \nIngolf Lohmann.\n\n\nhttps://share.gemini.google/duKnK71CFor0",
+    "utf8_sha256": "2007002f9d64fd63a7cfb76f93c534c87bb69514d0181657dac5409cbd1841c3",
+    "cryptographic_owner_signature_observed": false
+  },
+  "scope": {
+    "authority_repository": "ingolf-lohmann/qik-vrt",
+    "goals": "ALL_GOALS_RECORDED_IN_QIKVRT_REPOSITORY",
+    "necessary_ruleset_changes_authorized": true,
+    "existing_task_review_and_goal_grants_retained": true,
+    "permission_is_not_limited_to_one_goal_or_pr": true,
+    "repeated_owner_permission_request_required": false,
+    "revocable_by_later_owner_instruction": true
+  },
+  "application": {
+    "reuse_existing_goal_records_and_exact_subject_bindings": true,
+    "continue_executable_authorized_successors_synchronously": true,
+    "use_existing_admitted_repository_connector_cli_or_mesh_routes": true,
+    "github_route": "REST_API_ONLY",
+    "ruleset_authorization_replaces_need_for_a_new_goal_specific_ruleset_grant": true,
+    "account_rights_workflow_credentials_callable_operations_admission_and_effect_readback_are_separate": true,
+    "unchanged_causal_failure": "NOOP_UNTIL_MATERIAL_CHANGE",
+    "credentials_must_remain_in_supported_secure_stores": true,
+    "specific_artifact_and_scope_evidence_requirements_remain_applicable": true
+  },
+  "evidence_boundaries": {
+    "authorization_proves_goal_achievement": false,
+    "determinism_alone_proves_real_world_delivery": false,
+    "source_persistence_proves_other_client_adoption": false,
+    "shared_link_proves_live_bidirectional_peer_channel": false,
+    "transport_ack_is_effect_ack": false
+  },
+  "related_delegations": [
+    "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json",
+    "state/authorization/delegations/OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_V1.json"
+  ],
+  "related_feedback": "evidence/receipts/gemini-manifest-feedback-20261022.json",
+  "completion_claims": {
+    "PASS": false,
+    "EFFECT_ACK_DONE": false
+  }
+}
