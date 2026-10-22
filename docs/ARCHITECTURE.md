@@ -34,6 +34,36 @@ curl http://127.0.0.1:8766/health
 make test
 ```
 
+### Canonical record profile
+
+`policy/QIKVRT_CANONICAL_RECORD_V1.json` binds the existing Python Effect-ACK
+serializer to recursive NFC for string values and object keys, strict UTF-8,
+Unicode-code-point key ordering, compact JSON and significant array order.
+Object keys must be strings; normalization collisions, lone surrogates and all
+floating-point values fail closed. The existing tuple/Enum adapters use those
+same rules. This integer-only profile is not RFC 8785/JCS.
+
+`canonical_json` retains its string return type. `canonical_json_bytes` exposes
+the exact UTF-8 bytes; `compute_record_hash` returns `sha256:<lowercase hex>`
+over the complete supplied object. No signature, timestamp or hash field is
+implicitly removed. The existing ResponsibilityProtocol hash uses its explicit
+projection, which still excludes `created_utc` and `protocol_hash`.
+
+The required `VERIFY_CANONICALIZATION` gate runs with `make canonicalization-test`
+and is included in `make test`. Fixed byte/hash vectors, recursive Unicode,
+key-order permutations, array order and invalid inputs are tested. These are
+reference-implementation tests, not a general proof of semantic equivalence or
+cross-language conformance. NFC does not make arbitrary logically equivalent
+records identical. Existing native journals, wire hashes, knowledge receipts
+and signed artifacts retain their own encoding contracts. This gate alone
+establishes neither signature authenticity nor external Effect-Ack acceptance.
+
+The existing scientific-bundle gate also reproduces the current runtime report
+against `evidence/receipts/effect-ack-runtime-proof-20261022.json`. The published
+bundle, historical report and release manifests remain unchanged. The successor
+updates only the runtime byte count and source digest; its existing
+`CONTINUE_PARTIAL_CORE_ONLY` boundary remains in force.
+
 ## GitHub REST API enablement
 
 After upload to GitHub, the repository can be triggered through GitHub REST:
