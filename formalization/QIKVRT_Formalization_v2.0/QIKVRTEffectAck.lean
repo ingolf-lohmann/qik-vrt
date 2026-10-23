@@ -5,6 +5,7 @@ import QIKVRTEffectAck.InformationBoundary
 import QIKVRTEffectAck.Claims
 import QIKVRTEffectAck.QuantumClassicalRuntime
 import QIKVRTEffectAck.CanonicalTemporalMemory
+import QIKVRTEffectAck.UniversalTransviator
 
 /-!
 # QIK-VRT EFFECT_ACK Draft-01 and quantum-classical runtime formalization
@@ -22,6 +23,12 @@ The canonical-temporal-memory article additionally proves that a validated
 future-indexed effect boundary is counterfactually relevant to present release
 while the past projection remains unchanged, and that reciprocal closure
 requires both a bound cause and an observed effect.
+
+The Universal Transviator module proves a bounded reconnect contract: a
+lossless codec plus matching independently recomputed and stored digests yields
+the original payload after readback. It does not prove physical availability,
+delivery, domain activation or native runtime acceptance.
+
 Wire parsing, JCS/SHA-256 implementations, authentication, concrete QPU
 adapters, quantum mechanics, hardware noise, calibration, error correction,
 fresh-record discovery, complete deployment mediation and physical safety
