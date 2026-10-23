@@ -4,7 +4,7 @@ name: QIKVRT requested review executor
 
 on:
   pull_request:
-    types: [review_requested, synchronize, ready_for_review, reopened]
+    types: [opened, review_requested, synchronize, ready_for_review, reopened]
   workflow_run:
     workflows:
       - "QIKVRT CI"
@@ -59,6 +59,10 @@ jobs:
           if test -f tools/qikvrt_requested_review_executor.py && python3 -B - <<'PY'
           import os, sys
           from tools import qikvrt_required_review_gate as gate
+          from tools import qikvrt_requested_review_executor as review_core
+          if not callable(getattr(review_core, 'native_review_candidate', None)):
+              print('BOOTSTRAP_NOOP: native review routing is not yet promoted to trusted main.')
+              sys.exit(2)
           resolver = getattr(gate, 'resolve_required_code_owner', None)
           if not callable(resolver):
               print('BOOTSTRAP_NOOP: current Mesh Authority binding is not yet promoted.')
@@ -94,6 +98,8 @@ jobs:
           set -euo pipefail
           python3 -B - <<'PY' > /tmp/qikvrt-review-selection.json
           import json, os, subprocess
+          from pathlib import Path
+          from tools.qikvrt_requested_review_executor import native_review_candidate
           from tools.qikvrt_required_review_gate import resolve_required_code_owner
           resolve_required_code_owner(os.environ['REPOSITORY'])
           repo=os.environ['REPOSITORY']; requested=os.environ.get('REQUESTED_PR','').strip(); event_pr=os.environ.get('EVENT_PR','').strip(); event_head=os.environ.get('EVENT_HEAD','').strip()
@@ -107,11 +113,12 @@ jobs:
           else:
               prs=pages(f'repos/{repo}/pulls?state=open&base=main&per_page=100')
               if event_head: prs=[pr for pr in prs if (pr.get('head') or {}).get('sha')==event_head]
+          policy=json.loads(Path('policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json').read_text())
           marker=os.environ['REVIEW_MARKER']; candidates=[]
           for pr in prs:
               if pr.get('state')!='open' or pr.get('base',{}).get('ref')!='main': continue
               people=[x.get('login') for x in pr.get('requested_reviewers',[]) if x.get('login')]; teams=[x.get('slug') for x in pr.get('requested_teams',[]) if x.get('slug')]
-              if not people and not teams: continue
+              if not people and not teams and not native_review_candidate(pr,policy,repo): continue
               head=pr['head']['sha']; reviews=pages(f"repos/{repo}/pulls/{pr['number']}/reviews?per_page=100")
               if any(f'<!-- {marker} head={head} ' in (review.get('body') or '') for review in reviews): continue
               candidates.append(pr)
@@ -134,6 +141,8 @@ jobs:
           set -euo pipefail
           python3 -B - <<'PY' > /tmp/qikvrt-review-snapshot.json
           import json, os, subprocess
+          from pathlib import Path
+          from tools.qikvrt_requested_review_executor import native_review_candidate
           repo=os.environ['REPOSITORY']; n=int(os.environ['PR_NUMBER']); required=json.loads(os.environ['REQUIRED_GATES_JSON'])
           def one(path): return json.loads(subprocess.check_output(['gh','api',path],text=True))
           def pages(path):
@@ -143,8 +152,10 @@ jobs:
                   else: out.extend(page if isinstance(page,list) else [page])
               return out
           pr=one(f'repos/{repo}/pulls/{n}'); main=one(f'repos/{repo}/commits/main')['sha']; head=pr['head']['sha']; observed=one(f'repos/{repo}/pulls/{n}')['head']['sha']; tree=one(f'repos/{repo}/git/commits/{head}')['tree']['sha']; files=pages(f'repos/{repo}/pulls/{n}/files?per_page=100'); runs=pages(f'repos/{repo}/actions/runs?head_sha={head}&event=pull_request&per_page=100')
-          owner,name=repo.split('/',1); query='''query($owner:String!,$name:String!,$number:Int!){repository(owner:$owner,name:$name){pullRequest(number:$number){reviewThreads(first:100){nodes{isResolved}}}}}'''; graph=json.loads(subprocess.check_output(['gh','api','graphql','-f',f'query={query}','-F',f'owner={owner}','-F',f'name={name}','-F',f'number={n}'],text=True)); nodes=graph['data']['repository']['pullRequest']['reviewThreads']['nodes']
-          print(json.dumps({'repository':repo,'pr_number':n,'current_main_sha':main,'base_sha':pr['base']['sha'],'head_sha':head,'observed_head_sha':observed,'tree_sha':tree,'draft':bool(pr.get('draft')),'requested_reviewers':[x.get('login') for x in pr.get('requested_reviewers',[]) if x.get('login')],'requested_team_reviewers':[x.get('slug') for x in pr.get('requested_teams',[]) if x.get('slug')],'changed_paths':sorted(x['filename'] for x in files),'unresolved_review_threads':sum(1 for x in nodes if not x.get('isResolved')),'required_gates':required,'workflow_runs':[{'name':r.get('name'),'status':r.get('status'),'conclusion':r.get('conclusion'),'run_number':r.get('run_number')} for r in runs]},sort_keys=True))
+          inline_comments=pages(f'repos/{repo}/pulls/{n}/comments?per_page=100')
+          policy=json.loads(Path('policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json').read_text())
+          native=native_review_candidate(pr,policy,repo)
+          print(json.dumps({'repository':repo,'pr_number':n,'current_main_sha':main,'base_sha':pr['base']['sha'],'head_sha':head,'observed_head_sha':observed,'tree_sha':tree,'draft':bool(pr.get('draft')),'requested_reviewers':[x.get('login') for x in pr.get('requested_reviewers',[]) if x.get('login')],'requested_team_reviewers':[x.get('slug') for x in pr.get('requested_teams',[]) if x.get('slug')],'changed_paths':sorted(x['filename'] for x in files),'review_route':'QIKVRT_NATIVE' if native else 'REQUESTED_REVIEW','review_threads_complete':not bool(inline_comments),'unresolved_review_threads':0,'required_gates':required,'workflow_runs':[{'name':r.get('name'),'status':r.get('status'),'conclusion':r.get('conclusion'),'run_number':r.get('run_number')} for r in runs]},sort_keys=True))
           PY
           set +e
           python3 -B tools/qikvrt_requested_review_executor.py evaluate --input /tmp/qikvrt-review-snapshot.json > /tmp/qikvrt-review-decision.json
@@ -183,7 +194,8 @@ jobs:
           marker="<!-- ${REVIEW_MARKER} head=${EXPECTED_HEAD} disposition=${DISPOSITION} -->"
           cat > /tmp/qikvrt-review-body.md <<EOF
           ${marker}
-          QIKVRT autonomous requested-review execution.
+          QIKVRT repository technical review execution.
+          This evaluates observed gates; semantic AI code inspection requires an attributable cognitive client. No Copilot subscription is required.
 
           - exact head: \`${EXPECTED_HEAD}\`
           - exact tree: \`${EXPECTED_TREE}\`

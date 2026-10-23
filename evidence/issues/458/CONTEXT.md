@@ -2104,6 +2104,74 @@ Eine Referenz in dieser Architektur ist keine automatische Abhängigkeit und kei
 
 Die optimale Mensch–Maschine-Schnittstelle maximiert nicht die Anzahl der Antworten, sondern die Zahl belastbarer Erkenntnisfortschritte pro menschlichem Eingriff. Geschwindigkeit darf niemals durch Weglassen von Provenienz, Unsicherheit, Pflichtprüfungen oder menschlicher Autorität bei externen Effekten erkauft werden.
 
+## Verbindliche HMI-Unabhängigkeit — Owner-Entscheidung vom 23. Oktober 2026
+
+**QIKVRT definiert, welche Eigenschaften eine geeignete HMI-Instanz erfüllen muss.
+Jede HMI-Instanz ist austauschbar. QIKVRTs Identität, dauerhafter Zustand,
+Aufträge, Autorisierung, Scheduling und Fortsetzung hängen von keiner bestimmten
+HMI-Instanz ab.**
+
+Diese Festlegung gilt für gegenwärtige und künftige HMI-Adapter. Eine spätere
+ausdrückliche Owner-Entscheidung kann sie versioniert fortschreiben; ein
+Clientwechsel oder eine technische Einschränkung setzt sie nicht außer Kraft.
+Der maschinenlesbare Vertrag steht in
+`policy/HUMAN_MACHINE_INTERFACE_ADAPTATION_V1.json#/hmi_independence`
+und ist über `AI_CONTEXT.json` auffindbar.
+
+### Verantwortungsgrenze
+
+QIKVRT hält die maßgeblichen Arbeitszustände und Belege repository-nativ sowie
+in seiner bestehenden, zugriffsgeschützten privaten Laufzeitpersistenz.
+Die HMI übernimmt ausgehandelte Eingabe, Transport und Darstellung. Ihre
+Sitzung, ihr Kontext, ihre Dateiablage und ihre Scheduled Tasks sind keine
+Voraussetzung für den Fortbestand oder die native Fortsetzung angenommener
+Arbeit. Der äußere Taktgeber bedient den jeweiligen Kommunikationskanal;
+QIKVRTs innere Taktung und Auftragsplanung bleiben davon unabhängig.
+
+QIKVRT gibt den versionierten Schnittstellenvertrag vor. Ein Adapter meldet
+seine Fähigkeiten, Modalitäten, Größen- und Ratenlimits, Identitätsbindung
+und Zustellsemantik. Fehlende Fähigkeiten werden kenntlich gemacht.
+Ein Adapter kann über einen geeigneten autorisierten Transport angeschlossen
+werden; seine Fähigkeitserklärung ist noch kein Abnahmebeleg.
+
+### Verlustfreie Zuordnung und Fortsetzung
+
+Eingänge tragen stabile Nachrichten- und Auftragsidentitäten, Herkunft,
+Kausalbezug, Idempotenzschlüssel und eine prüfbare Nutzlastbindung.
+Konkurrierende Änderungen werden im betroffenen nativen Zustandsbereich
+geordnet; unabhängige Arbeit darf parallel bleiben. Kapazitätsgrenzen
+führen zu explizitem Rückstau oder Zurückweisung. Eine ungespeicherte
+Nachricht darf nicht als dauerhaft angenommen bestätigt werden.
+
+Ergebnisse bleiben mit Auftrag, Inhaltsversion, Lauf, Softwaregegenstand,
+Wirkungsstatus, Belegen, offenen Pflichten und Fortsetzungsposition verbunden.
+Transportbestätigung, dauerhafte Annahme, Ausführung, verifizierte Wirkung,
+Benachrichtigungszustellung und menschliche Kenntnisnahme sind getrennte
+Zustände. Die Anzeige fasst sie als Auftrag, tatsächliches Ergebnis, Beleg,
+offene Punkte und nächsten Schritt verständlich zusammen.
+
+Eine neue HMI rekonstruiert den Auftrag aus QIKVRT unter eigener verifizierter
+Identitäts- und Berechtigungsbindung. Sie benötigt weder den alten Chat noch
+dessen lokale Dateien. Ein Clientwechsel überträgt keine Zugangsdaten und
+erweitert keine Rechte. Frühere gültige Owner-Freigaben bleiben ihrem
+ursprünglichen Gegenstand zugeordnet.
+
+### Abnahme
+
+Der reale Austauschtest muss einen Auftrag über HMI A annehmen, A beenden,
+native Fortsetzung nachweisen und über die unabhängig zugelassene HMI B
+denselben Zustand samt Ergebnis und Belegen zurücklesen. Hinzu kommen
+Wiederanlauf, konkurrierender Eingang, Wiederholung, vertauschte Zustellung,
+begrenzte Kapazität und fehlende Client-Dateiablage bzw. Client-Timer.
+Bereits angenommene Eingänge dürfen nicht verloren gehen; logische Effekte
+dürfen durch Wiederholungen nicht doppelt entstehen.
+
+Wechselzeit und Wiederherstellungsvollständigkeit werden gemessen; eine
+konkrete Latenzgrenze benötigt ein ausdrücklich festgelegtes Messbudget.
+Die Speicherung dieses Vertrags belegt seine Dokumentation. Native
+HMI-Unabhängigkeit, Implementierung und produktiver Austausch bleiben bis
+zu ihren jeweiligen frischen Nachweisen offen.
+
 
 ## `docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md`
 
@@ -3438,67 +3506,6 @@ Nicht-DONE-Wirkungen. Ein Repository-Abgleich oder CI-Erfolg ersetzt weder
 die reale Installationserprobung noch eine vorgeschriebene Konformitätsbewertung.
 
 
-## `docs/QIKVRT_THREAT_MODEL.md`
-
-# QIK-VRT Threat Model Summary
-
-Primary risks:
-
-- leaked tokens
-- unauthorized workflow mutation
-- stale node heartbeat
-- false PASS claims from stale evidence
-- unauthorized expansion beyond known nodes
-
-Controls:
-
-- hidden local token prompt
-- no embedded token
-- run-id scoped evidence waits
-- known-node registry only
-- no global scanning
-- seed and node self-write boundaries
-
-
-## Safety/Security deployment assurance — Owner authorization, 19 October 2026
-
-QIKVRT and the Effect Acknowledgement Protocol are intended for Safety and
-Security applications as well. The requirements and source/applicability
-register is [QIKVRT_SAFETY_SECURITY_IMPACT_20261019_V1](../state/work_units/QIKVRT_SAFETY_SECURITY_IMPACT_20261019_V1.json).
-These are engineering requirements with open deployment acceptance, not
-certification, legal conformity or a verified physical installation.
-
-The existing five-state protocol and DONE-only ordinary-release rule remain
-the effect boundary. A received command, a transport ACK and a physical
-condition are separate claims. A physical adapter must bind the exact actuator,
-authorized transition, configuration and fresh observation evidence; it cannot
-claim a door is secured merely because a command or relay output was accepted.
-
-| Threat or dependency | Required assurance and acceptance |
-| --- | --- |
-| Cloud, identity, licensing or supplier outage | Declare an isolation interval; test local decisions, revocation/freshness rules, emergency access and vendor-independent recovery. |
-| Egress or alarm blocked by a remote gate | Bind a site-specific hazard analysis; retain separately admitted local safety paths and test fire, power loss and network loss together. No universal fail-open/fail-closed assumption. |
-| Forged, stale or conflicting physical feedback | Bind source, effect ID, policy and observation window; test replay, sensor conflict, stuck actuators and ambiguous responses. |
-| Reader bus or credential compromise | Test authenticated links, commissioning, key lifecycle and exact controller/reader/credential/firmware interoperability. |
-| Compromised or unsupported firmware | Require authenticated update provenance and compatibility; test isolated interrupted-update recovery and a verified forward-repair path. |
-| Partition, crash, takeover or full audit store | Reuse native durable journals/fencing; declare RTO and storage limits; prove the claimed workload's acknowledgement/replay and local audit behavior. |
-| Supplier assurance or legal scope overstated | Separate primary evidence, manufacturer claims and engineering derivation; retain exact scope, applicability and open evidence duties. |
-
-ASD's OT guidance is a useful assurance input, not EU legislation. Its
-publication does not establish QIKVRT compliance. The Gallagher T30 announcement
-is an unverified manufacturer approval claim and supplies a procurement
-evidence request, not a new QIKVRT dependency. IEC/SIA product/profile evidence
-does not establish the interoperability or safety of a whole installation.
-For EU CRA reporting, first determine the actual product and operator role;
-record the applicable awareness-based deadlines and responsible route without
-automatically sending a live notification.
-
-Every new material source change follows the register's change-intake process.
-Preserve older source identities and open tests; only bound acceptance evidence
-can close the corresponding deployment obligation. No additional executor,
-client timer or implicit IETF/Zenodo publication is introduced.
-
-
 ## `docs/README_DEPLOY_GITHUB_PAGES_DE.md`
 
 # QIK-VRT Homepage Deployment
@@ -3547,13 +3554,4 @@ Wer diese Unterscheidung zurückbringt, schützt Wahrheit und Zukunft.
 
 q.e.d.  
 Ingolf Lohmann
-
-
-## `docs/publications/2026-08-06-qce-superdeterminism-boundary/VERIFICATION_TRIGGER.md`
-
-# Exact-head verification trigger
-
-This file intentionally triggers the branch-bound exact-head verification workflow after the workflow definition itself has been materialized.
-
-It carries no scientific claim and no external effect.
 

@@ -1,0 +1,85 @@
+{
+  "schema": "qikvrt_copilot_replacement_work_unit_v1",
+  "principal": "Ingolf Lohmann",
+  "owner_instruction_date": "2026-10-23",
+  "owner_authorization": true,
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "base_head": "13df5eac62b64eeb338f11516e9bc32a996f3b63",
+  "base_tree": "c57176fd22952112871b03bb0a59e639cca2dd1d",
+  "contributions": {
+    "human": "Replace Copilot dependency with existing QIK-VRT cognition and cancel paid Copilot use. Authorization granted.",
+    "artificial_cognitive": "OpenAI Codex: inspect existing selection and implement provider-independent review routing and regression controls."
+  },
+  "implementation": {
+    "existing_workflow": ".github/workflows/qikvrt_requested_review_executor.yml",
+    "existing_decision_core": "tools/qikvrt_requested_review_executor.py",
+    "route": "QIKVRT_NATIVE",
+    "requires_external_requested_reviewer": false,
+    "semantic_review_is_separate": true,
+    "trust_source": "Reviewed Main policy and original authority resolver",
+    "rest_only": true,
+    "unresolved_thread_state": "BLOCK when REST inline comments exist; do not invent resolution",
+    "new_paid_provider": false,
+    "native_runtime_replacement_created": false
+  },
+  "acceptance": {
+    "source_tests": "VERIFIED_LOCAL_FULL_MAKE_TEST",
+    "main_integration": "PENDING",
+    "hosted_execution": "NOT_PROVEN",
+    "unattended_semantic_cognition": "NOT_PROVEN"
+  },
+  "cancellation": {
+    "requested": true,
+    "provider": "GitHub",
+    "product": "Paid GitHub Copilot subscription",
+    "state": "BLOCKED_NO_SUPPORTED_AUTHENTICATED_BILLING_OPERATION",
+    "provider_confirmation_received": false,
+    "paid_subscription_cancelled": false,
+    "billing_or_payment_methods_changed": false,
+    "inspected_routes": [
+      "Connected GitHub repository tools: no personal subscription cancellation operation",
+      "Plugin capability discovery: no suitable GitHub billing operation found",
+      "GitHub documented cancellation: personal Billing & licensing / Manage subscription / Cancel subscription"
+    ],
+    "rest_only_preserved": true,
+    "source": "https://docs.github.com/en/copilot/how-tos/manage-your-account/view-and-change-your-copilot-plan",
+    "next_action": "Cancel through the billed personal account supported billing control and independently verify provider confirmation; preserve current authorization."
+  },
+  "completion_claims": {
+    "full_copilot_replacement": false,
+    "EFFECT_ACK_DONE": false
+  },
+  "validation": {
+    "full_make_test": true,
+    "unittest_groups": 37,
+    "unittest_executions": 1708,
+    "log_sha256": "10736aac3618b5746f17e07ac6a6053f3550c65ae2892b1bd45daf2f2ead02bd",
+    "targeted_review_governance_tests": 129,
+    "semantic_review": {
+      "pr": 586,
+      "head": "3a28bee48969a2d86be2568126e01ef4fb4dbe05",
+      "review_id": 5626931281,
+      "platform_state": "COMMENTED",
+      "independent_readback": true,
+      "cognitive_client": "OpenAI Codex"
+    },
+    "candidate_route_actual_snapshot": {
+      "pr": 586,
+      "head": "3a28bee48969a2d86be2568126e01ef4fb4dbe05",
+      "tree": "4f3623946cd3b7fc8e0cb412b914d236e02038db",
+      "state": "WAIT",
+      "reason": "REQUIRED_GATE_NOT_TERMINAL",
+      "no_external_reviewer_required": true,
+      "productive_native_execution": false
+    },
+    "full_suite_subject": "Implementation before the later trusted-Main bootstrap compatibility guard; full-suite evidence is retained for its actual subject.",
+    "trusted_main_transition_fix": {
+      "predecessor_job": 120365363234,
+      "failure": "ImportError: selector absent from trusted Main",
+      "fix": "Detect native selector capability before activating candidate workflow",
+      "tests": 130,
+      "test_log_sha256": "991bc867754ac7a8d95e4efbe03e5d15edd4fb6444172c5247fba01a1eabb73b",
+      "productive_activation": "NOT_PROVEN"
+    }
+  }
+}
