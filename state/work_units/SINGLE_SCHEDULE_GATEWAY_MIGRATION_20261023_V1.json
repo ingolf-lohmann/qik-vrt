@@ -1,0 +1,461 @@
+{
+  "schema": "qikvrt_single_schedule_gateway_migration_v1",
+  "status": "PREPARED_NOT_ACTIVATED",
+  "documentation_only": true,
+  "owner": "Ingolf Lohmann",
+  "owner_instruction_date": "2026-10-23",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_head": "a8017ab67824f01ec4d215cf7af83b8b0779283c",
+  "source_root_tree_from_commit_api": "94317a4da76fac49b63bb129badcbbd21471c092",
+  "external_gateway": {
+    "target_active_count": 1,
+    "reuse_existing_task": true,
+    "candidate_task_id": "Automation_2777278810c081918cd54695689cfbe4",
+    "purpose": "route repository-selected due work and return attributed results",
+    "new_external_task_created": false
+  },
+  "reuse": {
+    "scheduling_pr": 426,
+    "head": "b284dd0946c5147a0d3f4a38a2361df339c1738e",
+    "implementation": "src/qikvrt_digital_twin_scheduling.py",
+    "main_integrated": false,
+    "candidate_local_dispatch_authorized": false,
+    "productive_registry_verified": false,
+    "atomic_provider_cas_verified": false,
+    "native_terminal_transputer_session_verified": false
+  },
+  "inventory": {
+    "returned_count": 25,
+    "returned_enabled_count": 17,
+    "reported_paused_count": 140,
+    "response_cursor": null,
+    "historical_inventory_complete": false,
+    "explanation": "The returned records are a bounded observation; reported paused count exceeds returned paused records. Event trigger definitions are not included in this response.",
+    "private_prompts_preserved_in_original_tasks": true,
+    "additional_private_archive_saved": false,
+    "archive_failure": "library_storage_limit_exceeded"
+  },
+  "hmi": {
+    "required_result_fields": [
+      "task_id",
+      "instruction_version_sha256",
+      "scheduled_for",
+      "run_id",
+      "parent_gateway_run_id",
+      "repository_head",
+      "repository_tree",
+      "state",
+      "actual_change",
+      "verification_evidence",
+      "open_obligation",
+      "next_action"
+    ],
+    "states": [
+      "ACCEPTED",
+      "DUE",
+      "RUNNING",
+      "VERIFIED",
+      "HOLD",
+      "FAILED",
+      "CANCELLED"
+    ],
+    "completion_rule": "VERIFIED requires independent exact-subject effect evidence; invocation or transport acknowledgement is insufficient",
+    "human_summary": [
+      "Auftrag",
+      "Tatsaechliches Ergebnis",
+      "Beleg",
+      "Offen",
+      "Naechster Schritt"
+    ]
+  },
+  "cutover_requirements": [
+    "Reobserve complete scoped task inventory including event triggers and private instruction hashes.",
+    "Repair four demonstrated parser incompatibilities without changing original timing or identities.",
+    "Integrate and verify the existing native scheduling registry and authenticated executor binding.",
+    "Bind every scheduled slot to a durable claim and separate work/result/notification receipts; ambiguous attempts remain HOLD.",
+    "Prove due selection, ordering, restart, duplicate suppression, timezone/DST, one-time deadlines and bounded backlog continuation.",
+    "Read back at least one real routed result through the original Terminal/Transputer.",
+    "Only then pause superseded external timers with readback and confirm exactly one external gateway remains.",
+    "Keep paused definitions, predecessor receipts and rollback mappings. Do not reactivate previously disabled tasks."
+  ],
+  "automation_changes_performed": false,
+  "productive_cutover_verified": false,
+  "effect_ack_done": false,
+  "tasks": [
+    {
+      "task_id": "Automation_2777278810c081918cd54695689cfbe4",
+      "requested_enabled": true,
+      "source_updated_at": "2026-10-23T08:12:31.385740+00:00",
+      "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Paris:20261005T230000\nRRULE:FREQ=HOURLY;BYMINUTE=0;BYSECOND=0\nEND:VEVENT",
+      "timezone": "Europe/Paris",
+      "timing_mode": "exact_schedule",
+      "prompt_sha256": "26434286ebc3fb5e41167b9353495d34094bdcf5c6dcf5c875735cad6c119ced",
+      "private_instruction_reference": {
+        "provider": "existing_automation",
+        "id": "Automation_2777278810c081918cd54695689cfbe4"
+      },
+      "candidate_parser_findings": [
+        "INVALID_EXECUTOR_TASK_ID",
+        "HOURLY_USES_DTSTART_PHASE_ONLY"
+      ]
+    },
+    {
+      "task_id": "6ad4cde74ae081919f5f60f790674e09",
+      "requested_enabled": true,
+      "source_updated_at": "2026-10-21T14:00:13.931176+00:00",
+      "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Istanbul:20261101T165802\nRRULE:FREQ=DAILY;COUNT=1\nEND:VEVENT",
+      "timezone": "Europe/Istanbul",
+      "timing_mode": "condition_watch",
+      "prompt_sha256": "6f545d1821387758c18cf5717d6eaa87e7f3076db6db439663dac4cef2d1b43f",
+      "private_instruction_reference": {
+        "provider": "existing_automation",
+        "id": "6ad4cde74ae081919f5f60f790674e09"
+      },
+      "candidate_parser_findings": [
+        "UNSUPPORTED_RRULE_FIELD"
+      ]
+    },
+    {
+      "task_id": "6ad488d356688191994b93a67e8f917e",
+      "requested_enabled": true,
+      "source_updated_at": "2026-10-23T06:06:53.568702+00:00",
+      "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Istanbul:20261019T085800\nRRULE:FREQ=DAILY;BYHOUR=8;BYMINUTE=58;BYSECOND=0\nEND:VEVENT",
+      "timezone": "Europe/Istanbul",
+      "timing_mode": "exact_schedule",
+      "prompt_sha256": "34c4c1b663d48a0f5518880fa18e316200b92484cef23a6a95e291475931a2e6",
+      "private_instruction_reference": {
+        "provider": "existing_automation",
+        "id": "6ad488d356688191994b93a67e8f917e"
+      },
+      "candidate_parser_findings": []
+    },
+    {
+      "task_id": "6a941eccefb8819188e6082bd3cd3586",
+      "requested_enabled": true,
+      "source_updated_at": "2026-10-23T06:50:01.059041+00:00",
+      "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Paris:20260925T080000\nRRULE:FREQ=WEEKLY;BYDAY=FR,SA\nEND:VEVENT",
+      "timezone": "Europe/Paris",
+      "timing_mode": "flexible_schedule",
+      "prompt_sha256": "88e6f8c7058ef3a3b0f5321b068b6235460acdcce5f09c116d508726f0432741",
+      "private_instruction_reference": {
+        "provider": "existing_automation",
+        "id": "6a941eccefb8819188e6082bd3cd3586"
+      },
+      "candidate_parser_findings": []
+    },
+    {
+      "task_id": "6ac0da43212881919a673ab49a95dd00",
+      "requested_enabled": true,
+      "source_updated_at": "2026-10-23T08:45:07.255619+00:00",
+      "schedule": "BEGIN:VEVENT\nDTSTART:20261003T103543Z\nRRULE:FREQ=HOURLY\nEND:VEVENT",
+      "timezone": "Europe/Paris",
+      "timing_mode": "condition_watch",
+      "prompt_sha256": "48173499d231b2d1ad166e0548d72eacfe05dd561d75da2c3f5aade10323109c",
+      "private_instruction_reference": {
+        "provider": "existing_automation",
+        "id": "6ac0da43212881919a673ab49a95dd00"
+      },
+      "candidate_parser_findings": []
+    },
+    {
+      "task_id": "6a88d1fc61048191af0d5a3a68ff2f88",
+      "requested_enabled": true,
+      "source_updated_at": "2026-10-23T08:25:14.702148+00:00",
+      "schedule": "BEGIN:VEVENT\nDTSTART:20260821T223328\nRRULE:FREQ=HOURLY\nEND:VEVENT",
+      "timezone": "Europe/Paris",
+      "timing_mode": "condition_watch",
+      "prompt_sha256": "8752ffe7bbedccd94a8444c13f34845b02645f65eb6e110a23317e33c72da7b1",
+      "private_instruction_reference": {
+        "provider": "existing_automation",
+        "id": "6a88d1fc61048191af0d5a3a68ff2f88"
+      },
+      "candidate_parser_findings": [
+        "EXPLICIT_MATCHING_TIMEZONE_REQUIRED"
+      ]
+    },
+    {
+      "task_id": "6a94224dc0b081918005469fc5e16961",
+      "requested_enabled": true,
+      "source_updated_at": "2026-10-23T06:18:02.268853+00:00",
+      "schedule": "BEGIN:VEVENT\nDTSTART:20260904T080000\nRRULE:FREQ=WEEKLY;BYDAY=FR\nEND:VEVENT",
+      "timezone": "Europe/Paris",
+      "timing_mode": "flexible_schedule",
+      "prompt_sha256": "c01ddec0e40c661272caeec722069990b4a0143e11c83cdd2cc2df30364bb99d",
+      "private_instruction_reference": {
+        "provider": "existing_automation",
+        "id": "6a94224dc0b081918005469fc5e16961"
+      },
+      "candidate_parser_findings": [
+        "EXPLICIT_MATCHING_TIMEZONE_REQUIRED"
+      ]
+    },
+    {
+      "task_id": "6ac2992730308191a305a2ebaa3bd6ae",
+      "requested_enabled": true,
+      "source_updated_at": "2026-10-23T07:13:31.522829+00:00",
+      "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Paris:20261005T090000\nRRULE:FREQ=DAILY;BYHOUR=9;BYMINUTE=0;BYSECOND=0\nEND:VEVENT",
+      "timezone": "Europe/Paris",
+      "timing_mode": "condition_watch",
+      "prompt_sha256": "09a7ba0c521cb1127ce1453c1e15ca805afc33faef87c934dd82d4c908b335e6",
+      "private_instruction_reference": {
+        "provider": "existing_automation",
+        "id": "6ac2992730308191a305a2ebaa3bd6ae"
+      },
+      "candidate_parser_findings": []
+    },
+    {
+      "task_id": "6abd863ec994819185407353eaf1b661",
+      "requested_enabled": true,
+      "source_updated_at": "2026-10-23T06:01:07.522685+00:00",
+      "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Paris:20261002T080000\nRRULE:FREQ=WEEKLY;BYDAY=FR;BYHOUR=8;BYMINUTE=0;BYSECOND=0\nEND:VEVENT",
+      "timezone": "Europe/Paris",
+      "timing_mode": "exact_schedule",
+      "prompt_sha256": "bf993d90fe4842988f3ed63e2b0c8731f765b8a70695bcf48617a4df841932e5",
+      "private_instruction_reference": {
+        "provider": "existing_automation",
+        "id": "6abd863ec994819185407353eaf1b661"
+      },
+      "candidate_parser_findings": []
+    },
+    {
+      "task_id": "6abe3d7a68c88191aee2117043e08cde",
+      "requested_enabled": true,
+      "source_updated_at": "2026-10-23T06:13:40.526905+00:00",
+      "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Paris:20261002T080000\nRRULE:FREQ=DAILY;BYHOUR=8;BYMINUTE=0;BYSECOND=0\nEND:VEVENT",
+      "timezone": "Europe/Paris",
+      "timing_mode": "condition_watch",
+      "prompt_sha256": "8c797090f3100bb427e03ffc21a85a88c128d026ced6f8a9ababa094db3e0ff6",
+      "private_instruction_reference": {
+        "provider": "existing_automation",
+        "id": "6abe3d7a68c88191aee2117043e08cde"
+      },
+      "candidate_parser_findings": []
+    },
+    {
+      "task_id": "6abd1f0d8d288191b5f3202de44af7a7",
+      "requested_enabled": true,
+      "source_updated_at": "2026-10-22T07:33:53.749232+00:00",
+      "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Paris:20261005T090000\nRRULE:FREQ=WEEKLY;BYDAY=MO\nEND:VEVENT",
+      "timezone": "Europe/Paris",
+      "timing_mode": "flexible_schedule",
+      "prompt_sha256": "bb7b90caed50df70b6e3becd1bdc27a895b78422d13fb8700d419ed3b4631170",
+      "private_instruction_reference": {
+        "provider": "existing_automation",
+        "id": "6abd1f0d8d288191b5f3202de44af7a7"
+      },
+      "candidate_parser_findings": []
+    },
+    {
+      "task_id": "6abd1eeeeb108191babd75b7b400be30",
+      "requested_enabled": true,
+      "source_updated_at": "2026-10-22T08:19:09.452408+00:00",
+      "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Paris:20261005T090000\nRRULE:FREQ=WEEKLY;BYDAY=MO;BYHOUR=9;BYMINUTE=0;BYSECOND=0\nEND:VEVENT",
+      "timezone": "Europe/Paris",
+      "timing_mode": "flexible_schedule",
+      "prompt_sha256": "8cb3c87929ef4b3938cce2d64fb412c29e6654fb924c006ae8e2c67d9418ee98",
+      "private_instruction_reference": {
+        "provider": "existing_automation",
+        "id": "6abd1eeeeb108191babd75b7b400be30"
+      },
+      "candidate_parser_findings": []
+    },
+    {
+      "task_id": "6ab27c263f38819193672ce75f1d1b6f",
+      "requested_enabled": true,
+      "source_updated_at": "2026-10-23T06:29:01.114557+00:00",
+      "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Paris:20260925T080000\nRRULE:FREQ=WEEKLY;BYDAY=FR\nEND:VEVENT",
+      "timezone": "Europe/Paris",
+      "timing_mode": "flexible_schedule",
+      "prompt_sha256": "7e28fa38588c937bf3ca142a159ca0ac841fd12743280d7045149ce4e14ccfda",
+      "private_instruction_reference": {
+        "provider": "existing_automation",
+        "id": "6ab27c263f38819193672ce75f1d1b6f"
+      },
+      "candidate_parser_findings": []
+    },
+    {
+      "task_id": "6aac0c425f248191a6152dad75cc94e7",
+      "requested_enabled": true,
+      "source_updated_at": "2026-10-23T06:47:19.872407+00:00",
+      "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Paris:20260925T080000\nRRULE:FREQ=WEEKLY;BYDAY=FR\nEND:VEVENT",
+      "timezone": "Europe/Paris",
+      "timing_mode": "flexible_schedule",
+      "prompt_sha256": "ecf1b2ae3c01e9a766db62c22c2aacdccb1ea2c168d856d8bd058c50c13c1928",
+      "private_instruction_reference": {
+        "provider": "existing_automation",
+        "id": "6aac0c425f248191a6152dad75cc94e7"
+      },
+      "candidate_parser_findings": []
+    },
+    {
+      "task_id": "6ab1fd2ead888191a4ed8dcccaec576f",
+      "requested_enabled": true,
+      "source_updated_at": "2026-10-23T08:49:31.326497+00:00",
+      "schedule": "BEGIN:VEVENT\nDTSTART:20260922T040042Z\nRRULE:FREQ=HOURLY\nEND:VEVENT",
+      "timezone": "Europe/Paris",
+      "timing_mode": "condition_watch",
+      "prompt_sha256": "9dfc7a40caa3c8a7e166b1d1b5749c37fe584282142262276c2040d1412990ce",
+      "private_instruction_reference": {
+        "provider": "existing_automation",
+        "id": "6ab1fd2ead888191a4ed8dcccaec576f"
+      },
+      "candidate_parser_findings": []
+    },
+    {
+      "task_id": "6aaaa95a47f08191baceb0d864a150fe",
+      "requested_enabled": true,
+      "source_updated_at": "2026-10-23T06:23:21.290914+00:00",
+      "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Paris:20260925T080000\nRRULE:FREQ=WEEKLY;BYDAY=FR\nEND:VEVENT",
+      "timezone": "Europe/Paris",
+      "timing_mode": "condition_watch",
+      "prompt_sha256": "0aa06b836bd7b86d1477f9c498e10a6a9b1e7812b898586596b4c026135677ac",
+      "private_instruction_reference": {
+        "provider": "existing_automation",
+        "id": "6aaaa95a47f08191baceb0d864a150fe"
+      },
+      "candidate_parser_findings": []
+    },
+    {
+      "task_id": "6a96f39640a88191bfb4ed92e9537fe1",
+      "requested_enabled": true,
+      "source_updated_at": "2026-10-22T16:13:06.701563+00:00",
+      "schedule": "BEGIN:VEVENT\nDTSTART:20260901T154834Z\nRRULE:FREQ=WEEKLY;BYDAY=MO\nEND:VEVENT",
+      "timezone": "Europe/Paris",
+      "timing_mode": "condition_watch",
+      "prompt_sha256": "be90285a4b708f3645b2c2f0c1aeb63d550b3c6a1eeff3e4dfec65df6f16cbce",
+      "private_instruction_reference": {
+        "provider": "existing_automation",
+        "id": "6a96f39640a88191bfb4ed92e9537fe1"
+      },
+      "candidate_parser_findings": []
+    },
+    {
+      "task_id": "6ac2ae0d414881918dd2343c0256f032",
+      "requested_enabled": false,
+      "source_updated_at": "2026-10-22T06:29:16.831880+00:00",
+      "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Paris:20261005T080000\nRRULE:FREQ=DAILY;BYHOUR=8;BYMINUTE=0;BYSECOND=0\nEND:VEVENT",
+      "timezone": "Europe/Paris",
+      "timing_mode": "condition_watch",
+      "prompt_sha256": "a52fc0c292a74eea283a581b81ddb17c757dd50f0f1a70507d6435a1359e1ad8",
+      "private_instruction_reference": {
+        "provider": "existing_automation",
+        "id": "6ac2ae0d414881918dd2343c0256f032"
+      },
+      "candidate_parser_findings": [
+        "NOT_CHECKED_INACTIVE"
+      ]
+    },
+    {
+      "task_id": "6aac758327d08191b171891f6704156a",
+      "requested_enabled": false,
+      "source_updated_at": "2026-10-21T12:26:12.602594+00:00",
+      "schedule": "BEGIN:VEVENT\nDTSTART:20260922T121839Z\nRRULE:FREQ=HOURLY\nEND:VEVENT",
+      "timezone": "Europe/Paris",
+      "timing_mode": "condition_watch",
+      "prompt_sha256": "af18476fbf3e2cbd172c80d51c6d6ed26779e2bf24b02c48b4a344671386de10",
+      "private_instruction_reference": {
+        "provider": "existing_automation",
+        "id": "6aac758327d08191b171891f6704156a"
+      },
+      "candidate_parser_findings": [
+        "NOT_CHECKED_INACTIVE"
+      ]
+    },
+    {
+      "task_id": "6ac1fddaf65c819189a81ecb358d84fa",
+      "requested_enabled": false,
+      "source_updated_at": "2026-10-20T12:53:22.396236+00:00",
+      "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Paris:20261004T100000\nRRULE:FREQ=HOURLY;BYMINUTE=0;BYSECOND=0\nEND:VEVENT",
+      "timezone": "Europe/Paris",
+      "timing_mode": "flexible_schedule",
+      "prompt_sha256": "a2b92bce2a491089e613380852286ccb9e59e12d47b65458f18ae73857e7ce38",
+      "private_instruction_reference": {
+        "provider": "existing_automation",
+        "id": "6ac1fddaf65c819189a81ecb358d84fa"
+      },
+      "candidate_parser_findings": [
+        "NOT_CHECKED_INACTIVE"
+      ]
+    },
+    {
+      "task_id": "6a93dbe866c48191b55cb55be91f61df",
+      "requested_enabled": false,
+      "source_updated_at": "2026-10-19T07:41:25.879679+00:00",
+      "schedule": "BEGIN:VEVENT\nDTSTART:20261019T073403Z\nRRULE:FREQ=HOURLY\nEND:VEVENT",
+      "timezone": "Europe/Istanbul",
+      "timing_mode": "condition_watch",
+      "prompt_sha256": "7e1978cf0f44ce410020c55370af60fb1725208c09ec26590cdf5b0aaa804132",
+      "private_instruction_reference": {
+        "provider": "existing_automation",
+        "id": "6a93dbe866c48191b55cb55be91f61df"
+      },
+      "candidate_parser_findings": [
+        "NOT_CHECKED_INACTIVE"
+      ]
+    },
+    {
+      "task_id": "6ad1deb33ccc81918f61ff29f7b95900",
+      "requested_enabled": false,
+      "source_updated_at": "2026-10-16T09:33:05.357715+00:00",
+      "schedule": "BEGIN:VEVENT\nDTSTART:20261016T082311Z\nRRULE:FREQ=HOURLY\nEND:VEVENT",
+      "timezone": "Europe/Istanbul",
+      "timing_mode": "condition_watch",
+      "prompt_sha256": "ee9008fc45cd1abb8a34302c4b56a217f25c0716b1696ed21cb1425fcbcd1309",
+      "private_instruction_reference": {
+        "provider": "existing_automation",
+        "id": "6ad1deb33ccc81918f61ff29f7b95900"
+      },
+      "candidate_parser_findings": [
+        "NOT_CHECKED_INACTIVE"
+      ]
+    },
+    {
+      "task_id": "6ac1fddd660c81918373414ed9ed1ce5",
+      "requested_enabled": false,
+      "source_updated_at": "2026-10-06T06:25:43.540010+00:00",
+      "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Paris:20261006T080000\nEND:VEVENT",
+      "timezone": "Europe/Paris",
+      "timing_mode": "flexible_schedule",
+      "prompt_sha256": "1b8c78689c1ca1ea2356976ec588274f9f06c8360c56e38eee0b8dd932245408",
+      "private_instruction_reference": {
+        "provider": "existing_automation",
+        "id": "6ac1fddd660c81918373414ed9ed1ce5"
+      },
+      "candidate_parser_findings": [
+        "NOT_CHECKED_INACTIVE"
+      ]
+    },
+    {
+      "task_id": "6ac3aea8e6288191a9ea85aaf6a1321a",
+      "requested_enabled": false,
+      "source_updated_at": "2026-10-05T15:30:55.982633+00:00",
+      "schedule": "BEGIN:VEVENT\nDTSTART:20261005T150528Z\nEND:VEVENT",
+      "timezone": "Europe/Paris",
+      "timing_mode": "exact_schedule",
+      "prompt_sha256": "7d89409667735ad3f04ccaa127418b131082106ed1b3a5fb2115a85be150f2df",
+      "private_instruction_reference": {
+        "provider": "existing_automation",
+        "id": "6ac3aea8e6288191a9ea85aaf6a1321a"
+      },
+      "candidate_parser_findings": [
+        "NOT_CHECKED_INACTIVE"
+      ]
+    },
+    {
+      "task_id": "6abe4a8578ec8191bf78b475768b9b0c",
+      "requested_enabled": false,
+      "source_updated_at": "2026-10-04T18:22:21.820389+00:00",
+      "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Paris:20261005T090000\nRRULE:FREQ=WEEKLY;BYDAY=MO;BYHOUR=9;BYMINUTE=0;BYSECOND=0\nEND:VEVENT",
+      "timezone": "Europe/Paris",
+      "timing_mode": "flexible_schedule",
+      "prompt_sha256": "ac7047c544dc9a4d3fa8d6dd5e5b9f1d5a88995912468e61ebe6a6e7c3f446c0",
+      "private_instruction_reference": {
+        "provider": "existing_automation",
+        "id": "6abe4a8578ec8191bf78b475768b9b0c"
+      },
+      "candidate_parser_findings": [
+        "NOT_CHECKED_INACTIVE"
+      ]
+    }
+  ]
+}
