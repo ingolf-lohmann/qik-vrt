@@ -60,7 +60,30 @@
       "Hand control to the separately authorized task executor.",
       "Verify task effects and persist reviewed runtime improvements."
     ],
-    "effect_boundary": "Boot readiness or adaptive routing is not task execution, installation, commit, merge, release, deployment, publication, legal proof, scientific proof, or EFFECT_ACK_DONE."
+    "effect_boundary": "Boot readiness or adaptive routing is not task execution, installation, commit, merge, release, deployment, publication, legal proof, scientific proof, or EFFECT_ACK_DONE.",
+    "bootstrap_prerequisites": {
+      "minimum_orchestration_python": "3.10",
+      "host_tools": [
+        "git",
+        "POSIX sh"
+      ],
+      "profile_requirements": "tools/bootstrap-runtime.sh",
+      "version_authorities": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/toolchains/CACHE_REGISTRY.json"
+      ],
+      "trust_roots": [
+        "reviewed exact-commit checkout",
+        "integrity verifier",
+        "trusted host executables and Python import environment"
+      ]
+    },
+    "task_authorization": {
+      "boot_readiness_grants_authority": false,
+      "task_label_is_authorization": false,
+      "receipt_consistency_is_authentication": false,
+      "separately_admitted_executor_required": true
+    }
   },
   "personal_working_memory_origin": {
     "human_contract": "docs/AI_PERSONAL_WORKING_MEMORY_ORIGIN_AND_ATTRIBUTION.md",

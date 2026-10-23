@@ -11,6 +11,7 @@ import contextlib
 import io
 import os
 import pathlib
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -18,6 +19,79 @@ import unittest
 from unittest.mock import patch
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+
+
+class BootstrapExecutionOrderTests(unittest.TestCase):
+    """Exercise real child processes; fixture readiness grants no task authority."""
+
+    def run_fixture(self, root: pathlib.Path) -> tuple[int, dict]:
+        from tools import ai_runtime_bootloader as boot
+
+        output = io.StringIO()
+        with patch.multiple(
+            boot,
+            ROOT=root,
+            CORPUS_PATH=root / "policy/AI_BOOTSTRAP_KNOWLEDGE_CORPUS_V1.json",
+            ADAPTATION_POLICY_PATH=root / "policy/HUMAN_MACHINE_INTERFACE_ADAPTATION_V1.json",
+            ADAPTATION_MATRIX_PATH=root / "state/interface_adaptation/EVALUATION_MATRIX.json",
+        ), patch.object(sys, "argv", ["bootloader", "--profile", "all", "--json"]), contextlib.redirect_stdout(output):
+            status = boot.main()
+        return status, json.loads(output.getvalue())
+
+    def fixture(self, root: pathlib.Path, marker: pathlib.Path) -> None:
+        from tools import qikvrt_integrity as integrity
+
+        subprocess.run(["git", "init", "-q", str(root)], check=True)
+        subprocess.run(["git", "-C", str(root), "config", "remote.origin.url",
+                        "https://example.invalid/fixture/repository.git"], check=True)
+        for relative in (
+            "LEGACY_INTEGRITY_INVENTORIES.md",
+            "AI_CONTEXT.json",
+            "policy/AI_BOOTSTRAP_KNOWLEDGE_CORPUS_V1.json",
+            "policy/HUMAN_MACHINE_INTERFACE_ADAPTATION_V1.json",
+            "state/interface_adaptation/EVALUATION_MATRIX.json",
+            "tools/qikvrt_integrity.py",
+            "tools/qikvrt_subprocess.py",
+        ):
+            destination = root / relative
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(ROOT / relative, destination)
+        (root / "tools/ai_handoff.py").write_text(
+            "from pathlib import Path\nPath(" + repr(str(marker)) + ").write_text('executed')\n",
+            encoding="utf-8",
+        )
+        (root / "tools/qikvrt_tool_cache.py").write_text("print('fixture cache verified')\n", encoding="utf-8")
+        (root / "tools/bootstrap-runtime.sh").write_text("#!/bin/sh\nexit 20\n", encoding="utf-8")
+        self.assertTrue(integrity.generate(root).ok)
+        subprocess.run(["git", "-C", str(root), "add", "."], check=True)
+        subprocess.run(["git", "-C", str(root), "-c", "user.name=Fixture",
+                        "-c", "user.email=fixture@example.invalid", "commit", "-qm", "fixture"], check=True)
+
+    def test_tampered_handoff_is_not_executed_before_integrity(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            parent = pathlib.Path(directory)
+            root, marker = parent / "repository", parent / "executed.txt"
+            self.fixture(root, marker)
+            with (root / "tools/ai_handoff.py").open("a", encoding="utf-8") as stream:
+                stream.write("# changed after the integrity snapshot\n")
+            status, report = self.run_fixture(root)
+            self.assertEqual(status, 2)
+            self.assertEqual(report["state"], "BLOCK")
+            self.assertIn("repository integrity", report["blocker"])
+            self.assertFalse(marker.exists(), "unverified handoff code was executed")
+
+    def test_verified_handoff_runs_and_missing_profile_remains_continue(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            parent = pathlib.Path(directory)
+            root, marker = parent / "repository", parent / "executed.txt"
+            self.fixture(root, marker)
+            status, report = self.run_fixture(root)
+            self.assertEqual(status, 0)
+            self.assertEqual(report["state"], "CONTINUE")
+            self.assertEqual(marker.read_text(), "executed")
+            gates = [gate["name"] for gate in report["gates"]]
+            self.assertLess(gates.index("repository integrity"), gates.index("AI handoff"))
+            self.assertEqual(report["gates"][-1]["exit_code"], 20)
 
 
 class AIRuntimeBootloaderContractTests(unittest.TestCase):
