@@ -30,10 +30,15 @@
     "batch_002_evidence_head": "e594ce89c4a4efb7b2d8eeff82eb9ef40ec03328",
     "transactional_trigger_head": "6b81d3947fd6c5d6bb006cfff0d126c7f5fb8b68",
     "publication_overview": {
-      "canonical_url": "https://goldkelch.github.io/qik-vrt/publications/",
+      "canonical_url": "https://raumzeitterminal.de/publications/",
       "human_index_path": "docs/publications/index.html",
       "machine_index_path": "docs/publications/index.json",
-      "maintenance_test": "python3 -B -m unittest -v tests.test_qikvrt_self_disclosure"
+      "maintenance_test": "python3 -B -m unittest -v tests.test_qikvrt_self_disclosure",
+      "historical_canonical_url": "https://goldkelch.github.io/qik-vrt/publications/",
+      "available_read_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications.html",
+      "authority_repository": "ingolf-lohmann/qik-vrt",
+      "mirror_repository": "Goldkelch/qik-vrt",
+      "correction_notice_path": "docs/publications/2026-10-23-repository-authority-correction/README.md"
     },
     "public_delivery": {
       "provider": "ChatGPT Sites / Cloudflare Worker",

@@ -9,6 +9,12 @@ QIK-VRT contains an active reference implementation and a substantial
 historical research and delivery archive. This map identifies the shortest
 path to the current operational authority.
 
+Current repository Authority: `ingolf-lohmann/qik-vrt`; Mirror and historical
+reference: `Goldkelch/qik-vrt`. The normative source is
+`policy/CANONICAL_UPSTREAM_REMOTE_V1.json`. The [dated correction](publications/2026-10-23-repository-authority-correction/README.md)
+qualifies earlier roles and public locators. Repository identity does not prove
+live failover, writer fencing, runtime activation or present availability.
+
 ## Active runtime
 
 - `src/qikvrt_effect_ack.py` — five-state synchronous reference gate
@@ -50,9 +56,9 @@ path to the current operational authority.
   synthesis, including the universal ontology of difference and the distinct
   proof and correspondence levels used by the work
 
-## Release anchor
+## Historical release anchor
 
-The current public release is the annotated tag
+The recorded public release anchor is the annotated tag
 `v2026.07.22-effect-ack-universality-1.0.0` in both repositories. The working
 paper is archived as `10.5281/zenodo.21498773`; the deterministic tagged source
 export is archived as `10.5281/zenodo.21498774`. Exact repository-specific

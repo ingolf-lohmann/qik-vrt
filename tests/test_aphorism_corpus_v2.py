@@ -9,6 +9,7 @@ import pathlib
 import subprocess
 import sys
 import tarfile
+import tempfile
 import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -49,6 +50,22 @@ class AphorismCorpusV2Tests(unittest.TestCase):
                 for name in names
             )
         )
+
+    def test_current_navigation_uses_authority_policy_without_changing_payload(self) -> None:
+        original_payload = self.tool.payload_bytes()
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            (root / "policy").mkdir()
+            policy = root / "policy/CANONICAL_UPSTREAM_REMOTE_V1.json"
+            policy.write_text(json.dumps({"canonical_upstream": {"repository": "ingolf-lohmann/qik-vrt"}}))
+            predecessor, row = self.tool.current_navigation_rows(root)
+            self.assertIn("https://github.com/ingolf-lohmann/qik-vrt/blob/main/", predecessor)
+            self.assertIn("https://github.com/ingolf-lohmann/qik-vrt/blob/main/", row)
+            self.assertNotIn("https://github.com/Goldkelch/", row)
+            policy.write_text(json.dumps({"canonical_upstream": {"repository": "invalid"}}))
+            with self.assertRaisesRegex(SystemExit, "invalid current publication navigation"):
+                self.tool.current_navigation_rows(root)
+        self.assertEqual(self.tool.payload_bytes(), original_payload)
 
     def test_declared_boundaries_remain_fail_closed(self) -> None:
         files = self.tool.payload_files()

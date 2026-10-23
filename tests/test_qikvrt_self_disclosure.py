@@ -19,7 +19,7 @@ DISCLOSURE = ROOT / '.well-known' / 'qik-vrt-self-disclosure.json'
 TOOL = ROOT / 'tools' / 'qikvrt_self_disclosure.py'
 OVERVIEW_HTML = ROOT / 'docs' / 'publications' / 'index.html'
 OVERVIEW_JSON = ROOT / 'docs' / 'publications' / 'index.json'
-CANONICAL_URL = 'https://goldkelch.github.io/qik-vrt/publications/'
+CANONICAL_URL = 'https://raumzeitterminal.de/publications/'
 
 
 def read_json(path):

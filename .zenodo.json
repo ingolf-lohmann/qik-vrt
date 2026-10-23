@@ -62,7 +62,12 @@
       "relation": "references",
       "scheme": "url",
       "resource_type": "publication-workingpaper"
+    },
+    {
+      "identifier": "https://github.com/ingolf-lohmann/qik-vrt",
+      "relation": "references",
+      "scheme": "url"
     }
   ],
-  "notes": "Reserved software DOI: 10.5281/zenodo.21498774. The record continues credential-owned QIK-VRT concept 10.5281/zenodo.21488115 and retains QIKVRT V8.33 record 10.5281/zenodo.20712301 as a historical reference. The deterministic tag-tree export is mixed licensed; file-level PolyForm Noncommercial, CC BY-NC-ND, historical Apache-2.0, IETF Trust, and third-party notices remain controlling. No GitHub Release object and no IETF Datatracker submission are created."
+  "notes": "Reserved software DOI: 10.5281/zenodo.21498774. The record continues credential-owned QIK-VRT concept 10.5281/zenodo.21488115 and retains QIKVRT V8.33 record 10.5281/zenodo.20712301 as a historical reference. The deterministic tag-tree export is mixed licensed; file-level PolyForm Noncommercial, CC BY-NC-ND, historical Apache-2.0, IETF Trust, and third-party notices remain controlling. No GitHub Release object and no IETF Datatracker submission are created. Repository-role correction, 2026-10-23: current Authority is ingolf-lohmann/qik-vrt; Goldkelch/qik-vrt is the Mirror and historical source. Earlier pinned identifiers retain their historical scope. Current correction: https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/2026-10-23-repository-authority-correction/README.md"
 }

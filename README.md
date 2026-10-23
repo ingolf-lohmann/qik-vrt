@@ -16,8 +16,10 @@ or `EFFECT_ACK_DONE`.
 
 <!-- /qikvrt-machine-verifiable-science-charter-binding:v1 -->
 
-[![QIKVRT CI](https://github.com/Goldkelch/qik-vrt/actions/workflows/qikvrt_ci.yml/badge.svg?branch=main)](https://github.com/Goldkelch/qik-vrt/actions/workflows/qikvrt_ci.yml)
-[![Release](https://img.shields.io/badge/release-v2026.07.22--effect--ack--universality--1.0.0-1f6feb)](https://github.com/Goldkelch/qik-vrt/tree/v2026.07.22-effect-ack-universality-1.0.0)
+Current Authority: [`ingolf-lohmann/qik-vrt`](https://github.com/ingolf-lohmann/qik-vrt). Mirror: `Goldkelch/qik-vrt`. This corrects superseded current-role labels; historical snapshots retain their own dates and byte identities. See the [23 October 2026 correction](docs/publications/2026-10-23-repository-authority-correction/README.md).
+
+[![QIKVRT CI](https://github.com/ingolf-lohmann/qik-vrt/actions/workflows/qikvrt_ci.yml/badge.svg?branch=main)](https://github.com/ingolf-lohmann/qik-vrt/actions/workflows/qikvrt_ci.yml)
+[![Release](https://img.shields.io/badge/release-v2026.07.22--effect--ack--universality--1.0.0-1f6feb)](https://github.com/ingolf-lohmann/qik-vrt/tree/v2026.07.22-effect-ack-universality-1.0.0)
 [![License: source--available](https://img.shields.io/badge/code-PolyForm%20Noncommercial-orange)](LICENSE)
 
 ![QIK-VRT — five-state auditable effect release](docs/assets/qikvrt-social-preview.png)
@@ -77,17 +79,19 @@ open checks, controlled isolation, responsible blocking, and a fully bound
 - [Competition and evaluator entry point](docs/competition/README.md)
 - [Evidence matrix](docs/competition/EVIDENCE.md)
 - [Current authority map](docs/CURRENT_AUTHORITY.md)
-- [Project site](https://goldkelch.github.io/qik-vrt/)
-- [Canonical publication and reference overview](https://goldkelch.github.io/qik-vrt/publications/)
+- [Project site](https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/)
+- [Available publication and reference overview](https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications.html)
+- [Intended canonical publication route](https://raumzeitterminal.de/publications/) (domain delivery acceptance remains open)
+- [Dated repository-role correction](docs/publications/2026-10-23-repository-authority-correction/README.md)
 - [Machine-readable publication index](docs/publications/index.json)
 - [Gesamtdarstellung, 20 Meilensteine und Roundtrip](docs/publications/2026-10-15-trust-mesh-roundtrip/README.md) (15.10.2026; korrigierter Publikationskandidat mit Quellen- und Nachweisgrenzen, noch kein neuer Zenodo-Record)
 
-### Current release and synchronized snapshot evidence
+### Historical release and synchronized snapshot evidence
 
 | Item | Verified value |
 |---|---|
-| Scientific release | [`v2026.07.22-effect-ack-universality-1.0.0`](https://github.com/Goldkelch/qik-vrt/tree/v2026.07.22-effect-ack-universality-1.0.0) in both repositories |
-| Repository mesh snapshot | [`v2026.07.24-repository-mesh-sync-1.0.0`](https://github.com/Goldkelch/qik-vrt/tree/v2026.07.24-repository-mesh-sync-1.0.0) in [Authority](https://github.com/Goldkelch/qik-vrt) and [Mirror](https://github.com/ingolf-lohmann/qik-vrt); identical content tree with repository-specific commits |
+| Scientific release | [`v2026.07.22-effect-ack-universality-1.0.0`](https://github.com/ingolf-lohmann/qik-vrt/tree/v2026.07.22-effect-ack-universality-1.0.0) in both repositories |
+| Repository mesh snapshot | [`v2026.07.24-repository-mesh-sync-1.0.0`](https://github.com/ingolf-lohmann/qik-vrt/tree/v2026.07.24-repository-mesh-sync-1.0.0) in both repositories at the stated 2026-07-24 snapshot; identical historical content tree with repository-specific commits; current roles follow the dated correction |
 | Working paper | [DOI 10.5281/zenodo.21498773](https://doi.org/10.5281/zenodo.21498773) |
 | Software snapshot | [DOI 10.5281/zenodo.21498774](https://doi.org/10.5281/zenodo.21498774) |
 | Official status clarification | [DOI 10.5281/zenodo.21500322](https://doi.org/10.5281/zenodo.21500322) |

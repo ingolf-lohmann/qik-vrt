@@ -213,6 +213,15 @@ def normalized_manifest(transport: MetadataEditTransport) -> dict[str, object]:
 
 
 class ZenodoMetadataEditTests(unittest.TestCase):
+    def test_public_schema_matches_current_production_authority(self):
+        path = ROOT / "policy/qikvrt-zenodo-published-metadata-edit-manifest-v1.schema.json"
+        schema = json.loads(path.read_text())
+        policy = json.loads((ROOT / "policy/CANONICAL_UPSTREAM_REMOTE_V1.json").read_text())
+        authority = policy["canonical_upstream"]["repository"]
+        self.assertEqual(schema["properties"]["repository"]["const"], authority)
+        self.assertEqual(edit.PRODUCTION_REPOSITORY, authority)
+        self.assertTrue(schema["$id"].startswith("https://github.com/" + authority + "/"))
+
     def client(self, transport: MetadataEditTransport) -> zenodo.ZenodoClient:
         return zenodo.ZenodoClient(
             TOKEN,

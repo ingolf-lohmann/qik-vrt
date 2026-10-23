@@ -62,6 +62,68 @@ class PublicationOverviewTests(unittest.TestCase):
         (historical / "README.md").write_text("# Historical\n", encoding="utf-8")
         return root
 
+    def correction_fixture(self, directory: str) -> pathlib.Path:
+        root = self.fixture(directory)
+        (root / "policy").mkdir()
+        (root / "policy/CANONICAL_UPSTREAM_REMOTE_V1.json").write_text(json.dumps({
+            "canonical_upstream": {"repository": "ingolf-lohmann/qik-vrt"},
+            "mirror": {"repository": "Goldkelch/qik-vrt"},
+        }))
+        (root / "notice.md").write_text("# Dated correction\n")
+        path = root / "docs/publications/index.json"
+        index = json.loads(path.read_text())
+        index.update(repository="ingolf-lohmann/qik-vrt", authority_repository="ingolf-lohmann/qik-vrt",
+                     authority_correction={"notice_path": "notice.md"})
+        path.write_text(json.dumps(index))
+        return root
+
+    def test_current_links_corrected_without_rewriting_historical_binding(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = self.correction_fixture(directory)
+            path = "docs/publications/2026-01-01-historical/README.md"
+            floating = "https://github.com/Goldkelch/qik-vrt/blob/main/" + path
+            pinned = "https://github.com/Goldkelch/qik-vrt/blob/" + "a" * 40 + "/" + path
+            original_entry = json.loads((root / "docs/publications/index.json").read_text())["publication_bundles"][0]
+            page = root / "docs/publications/index.html"
+            page.write_text(page.read_text().replace("https://example.invalid/historical", floating)
+                            + '<a href="' + pinned + '">Historical exact source</a>\n')
+            MODULE.execute(root, materialize=True)
+            self.assertIn(floating.replace("Goldkelch", "ingolf-lohmann"), page.read_text())
+            self.assertIn(pinned, page.read_text())
+            index = json.loads((root / "docs/publications/index.json").read_text())
+            self.assertEqual(index["publication_bundles"][0]["url"], "https://example.invalid/historical")
+            self.assertEqual(index["publication_bundles"][0], original_entry)
+            self.assertEqual(index["authority_correction"]["current_sources"][0]["url"],
+                             floating.replace("Goldkelch", "ingolf-lohmann"))
+            self.assertEqual(MODULE.execute(root, materialize=False)["state"], "CURRENT")
+            self.assertEqual(page.read_text().count('id="authority-correction"'), 1)
+
+    def test_correction_rejects_policy_role_drift(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = self.correction_fixture(directory)
+            path = root / "docs/publications/index.json"
+            index = json.loads(path.read_text()); index["repository"] = "Goldkelch/qik-vrt"
+            path.write_text(json.dumps(index))
+            with self.assertRaisesRegex(MODULE.PublicationOverviewBlock, "current Authority policy"):
+                MODULE.execute(root, materialize=False)
+
+    def test_correction_rejects_missing_notice(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = self.correction_fixture(directory)
+            (root / "notice.md").unlink()
+            with self.assertRaisesRegex(MODULE.PublicationOverviewBlock, "notice is absent"):
+                MODULE.execute(root, materialize=False)
+
+    def test_correction_rejects_source_path_escape(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = self.correction_fixture(directory)
+            path = root / "docs/publications/index.json"
+            index = json.loads(path.read_text())
+            index["publication_bundles"][0]["path"] = "../outside.md"
+            path.write_text(json.dumps(index))
+            with self.assertRaisesRegex(MODULE.PublicationOverviewBlock, "escaped the repository"):
+                MODULE.execute(root, materialize=False)
+
     def test_missing_bundle_materializes_both_indexes_idempotently(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = self.fixture(directory)

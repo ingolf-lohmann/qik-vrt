@@ -1,7 +1,7 @@
 {
   "schema": "qikvrt_publication_overview_v1",
   "title": "QIK-VRT Publikationen und Referenzen",
-  "canonical_url": "https://goldkelch.github.io/qik-vrt/publications/",
+  "canonical_url": "https://raumzeitterminal.de/publications/",
   "repository": "ingolf-lohmann/qik-vrt",
   "human_index_path": "docs/publications/index.html",
   "machine_index_path": "docs/publications/index.json",
@@ -201,6 +201,12 @@
       "path": "docs/publications/2026-10-16-wirkungsnachweis/index.html",
       "state": "unchanged_author_review_candidate_distributed_zenodo_open",
       "publication_status_path": "docs/publications/2026-10-16-wirkungsnachweis/PUBLICATION_STATUS.json"
+    },
+    {
+      "id": "repository-authority-correction-20261023",
+      "title": "Korrektur der Repository-Rollen und öffentlichen Einstiegspunkte",
+      "path": "docs/publications/2026-10-23-repository-authority-correction/README.md",
+      "state": "repository_documentary_correction"
     }
   ],
   "featured_artifacts": [
@@ -1142,5 +1148,192 @@
     "metadata_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/zenodo_inventory_confirmed.json",
     "readback_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/PUBLIC_CORPUS_RECONCILIATION.json"
   },
-  "authority_repository": "ingolf-lohmann/qik-vrt"
+  "authority_repository": "ingolf-lohmann/qik-vrt",
+  "historical_canonical_url": "https://goldkelch.github.io/qik-vrt/publications/",
+  "available_read_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications.html",
+  "authority_correction": {
+    "date": "2026-10-23",
+    "policy_path": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+    "notice_path": "docs/publications/2026-10-23-repository-authority-correction/README.md",
+    "register_path": "docs/publications/2026-10-23-repository-authority-correction/CORRECTION_REGISTER.json",
+    "historical_source_bytes_rewritten": false,
+    "external_publication_updates_complete": false,
+    "current_sources": [
+      {
+        "path": "docs/publications/2026-07-21-mandelbrot-retrocausality/README.md",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/2026-07-21-mandelbrot-retrocausality/README.md",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "docs/publications/2026-07-22-effect-ack-universal-effect-control/README.md",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/2026-07-22-effect-ack-universal-effect-control/README.md",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "docs/publications/2026-07-22-machine-verifiable-proof-status/README.md",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/2026-07-22-machine-verifiable-proof-status/README.md",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "docs/publications/2026-07-22-qik-vrt-status-clarification/README.md",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/2026-07-22-qik-vrt-status-clarification/README.md",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "docs/publications/2026-07-23-effect-ack-lean-status/README.md",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/2026-07-23-effect-ack-lean-status/README.md",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "docs/publications/2026-07-28-canonical-closing-statement-historical-context/README.md",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/2026-07-28-canonical-closing-statement-historical-context/README.md",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "docs/publications/2026-07-28-verantwortungsgebundener-erkenntnisprozess-quantenklassische-wirkungsmaschine/README.md",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/2026-07-28-verantwortungsgebundener-erkenntnisprozess-quantenklassische-wirkungsmaschine/README.md",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "docs/publications/2026-07-30-canonical-temporal-memory-effect-ack/README.md",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/2026-07-30-canonical-temporal-memory-effect-ack/README.md",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/README.md",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/2026-07-31-survival-anschlussfaehigsten/README.md",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "docs/publications/2026-08-02-causality-is-relation-vrtcore/README.md",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/2026-08-02-causality-is-relation-vrtcore/README.md",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "docs/publications/2026-08-02-vrtcore-smg-h5/README.md",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/2026-08-02-vrtcore-smg-h5/README.md",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "docs/publications/2026-08-02-vrtcore-virtual-sphere-h6/README.md",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/2026-08-02-vrtcore-virtual-sphere-h6/README.md",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "docs/publications/2026-08-03-virtual-past-reception/README.md",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/2026-08-03-virtual-past-reception/README.md",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "docs/publications/2026-08-04-aphorism-corpus-scientific-assessment/README.md",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/2026-08-04-aphorism-corpus-scientific-assessment/README.md",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "docs/publications/2026-08-04-pre-spacetime-ontology/README.md",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/2026-08-04-pre-spacetime-ontology/README.md",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "docs/publications/2026-08-05-qik-vrt-quantum-causal-emergence/README.md",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/2026-08-05-qik-vrt-quantum-causal-emergence/README.md",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "docs/publications/2026-08-06-delayed-choice-hardware-witness/README.md",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/2026-08-06-delayed-choice-hardware-witness/README.md",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "docs/publications/2026-08-06-qce-superdeterminism-boundary/README.md",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/2026-08-06-qce-superdeterminism-boundary/README.md",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "docs/publications/2026-08-06-self-healing-repository-collective-intelligence/README.md",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/2026-08-06-self-healing-repository-collective-intelligence/README.md",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "docs/publications/2026-08-07-universum-als-round-trip/README.md",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/2026-08-07-universum-als-round-trip/README.md",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "docs/publications/2026-08-12-observer-relative-retrocausality/README.md",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/2026-08-12-observer-relative-retrocausality/README.md",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "docs/publications/2026-09-23-qik-scientific-revision/README.md",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/2026-09-23-qik-scientific-revision/README.md",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "docs/publications/2026-10-15-alles-s1-s12-r1/README.md",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/2026-10-15-alles-s1-s12-r1/README.md",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/README.md",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/2026-10-15-trust-mesh-roundtrip/README.md",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "docs/publications/2026-10-16-wirkungsnachweis/index.html",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/2026-10-16-wirkungsnachweis/index.html",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "docs/publications/2026-10-23-repository-authority-correction/README.md",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/2026-10-23-repository-authority-correction/README.md",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "release/authority-mirror-equality-2026-07-27/zenodo-publication.json",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/release/authority-mirror-equality-2026-07-27/zenodo-publication.json",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "release/canonical-closing-status-article-2026-07-28/zenodo-publication.json",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/release/canonical-closing-status-article-2026-07-28/zenodo-publication.json",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "release/canonical-temporal-memory-effect-ack-2026-07-31/zenodo-publication.json",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/release/canonical-temporal-memory-effect-ack-2026-07-31/zenodo-publication.json",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "release/formalization-v2-alpha3/zenodo-publication.json",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/release/formalization-v2-alpha3/zenodo-publication.json",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "release/machine-verifiable-science/zenodo-publication.json",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/release/machine-verifiable-science/zenodo-publication.json",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "release/observer-relative-retrocausality-current-synthesis-zenodo-v2/zenodo-publication.json",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/release/observer-relative-retrocausality-current-synthesis-zenodo-v2/zenodo-publication.json",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "release/quantum-classical-runtime-article-2026-07-28/zenodo-publication.json",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/release/quantum-classical-runtime-article-2026-07-28/zenodo-publication.json",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "release/round-trip-canonical-publication-zenodo-authorization-v2/zenodo-publication.json",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/release/round-trip-canonical-publication-zenodo-authorization-v2/zenodo-publication.json",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      },
+      {
+        "path": "release/survival-anschlussfaehigsten-2026-07-31/zenodo-publication.json",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/release/survival-anschlussfaehigsten-2026-07-31/zenodo-publication.json",
+        "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+      }
+    ]
+  }
 }
