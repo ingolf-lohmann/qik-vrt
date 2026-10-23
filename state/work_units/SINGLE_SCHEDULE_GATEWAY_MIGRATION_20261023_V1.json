@@ -480,5 +480,76 @@
       "corrected_assistant_error": "Optional client Library storage failure was incorrectly presented as a persistence obstacle.",
       "effect": "Client file quota excluded from repository persistence and scheduling acceptance; repository-native private payload migration remains explicitly unverified."
     }
-  ]
+  ],
+  "owner_acceptance_20261023": {
+    "owner_instruction": {
+      "date": "2026-10-23",
+      "authority": "Ingolf Lohmann",
+      "text": "Dann führe das jetzt auf Main, integriere es, merge es, pushe es, nehme es in Betrieb und als erster zu bestehender Test ist zu beweisen, dass jegliche Aktivität und alles, was in ChatGPT zu der ganzen Thematik gespeichert ist, vollumfänglich im QIK VRT Repository auffindbar ist. Und der zweite Test wird dann sein, dass QIK VRT nachweist, alle anstehenden inneren Aufgaben selbstständig ohne HMI weiterführen zu können. Freigabe erteilt.",
+      "authorization": "INTEGRATE_MERGE_PUBLISH_SOURCE_AND_COMMISSION_WITH_EVIDENCE"
+    },
+    "tests": [
+      {
+        "id": "CHATGPT_THEMATIC_CORPUS_REPOSITORY_COMPLETENESS",
+        "status": "NOT_PROVEN",
+        "file_metadata_inventory": {
+          "pages": 64,
+          "returned": 12667,
+          "unique": 12667,
+          "reached_end": true,
+          "scope": "OWNED_LIBRARY_FILE_METADATA_WITH_GENERATED_ITEMS",
+          "atomic_snapshot_verified": false,
+          "content_bytes_transferred_and_compared": false,
+          "canonical_metadata_sha256": "7bd94456e6f3e8431cf41c79bd32d12bfde51273be67ecf56c662810f389de68"
+        },
+        "automation_inventory": {
+          "returned": 25,
+          "enabled": 17,
+          "historical_complete": false
+        },
+        "chat_history_inventory": {
+          "complete": false,
+          "reason": "No complete conversation-history export/list operation is exposed among the inspected tools. Personal-context search is selective retrieval, not a complete export."
+        },
+        "saved_context_inventory": {
+          "complete": false,
+          "reason": "The context supplied to this session is not an exhaustive account-memory inventory."
+        },
+        "pass_requires": [
+          "Bound complete thematic source inventory with explicit coverage and cutoff",
+          "Exact source byte hashes and private native persistence binding where applicable",
+          "Independently read back and compare every mapped repository-native object",
+          "No unresolved source omissions or ambiguous scope"
+        ],
+        "next_action": "Bind a complete authorized source export and the existing QIKVRT private native ingest; retain all source identities and verify exact bytes."
+      },
+      {
+        "id": "ALL_PENDING_NATIVE_WORK_CONTINUES_WITHOUT_HMI",
+        "status": "NOT_PROVEN",
+        "runtime_observation": {
+          "snapshot_id": "e5ebe546-4943-48a4-99a0-bde4cd144d66",
+          "snapshot_sha256": "fbfdfdac2946e884ffeb9fa351103d56731fabd77631e10803d72a660ab8181e",
+          "observed_at": "2026-10-23T09:26:45.785Z",
+          "native_available": false,
+          "operator_binding_configured": false,
+          "operator_session_verified": false,
+          "open_gates": [
+            "ADMITTED_MESH_RUNTIME_ENDPOINT",
+            "SITE_LOCAL_OPERATOR_ID_BINDING"
+          ]
+        },
+        "all_pending_work_inventory_complete": false,
+        "pass_requires": [
+          "Fresh complete native admitted-work inventory and existing authorization bindings",
+          "Admitted original Runtime/Transputer with durable state and fenced writer",
+          "Disconnect HMI A, observe actual native successors and exact event/effect readbacks",
+          "Reconnect independent HMI B and recover the same tasks, grants, results and open obligations",
+          "Account for every pending task as executed with evidence, correctly waiting on its condition, or explicitly blocked"
+        ],
+        "next_action": "Bind the existing authorized owner-hosted native runtime endpoint and operator identity, then perform the disconnect/reconnect acceptance against the complete work inventory."
+      }
+    ],
+    "deployment_verified": false,
+    "effect_ack_done": false
+  }
 }
