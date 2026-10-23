@@ -1,0 +1,30 @@
+{
+  "schema": "qikvrt-local-llm-lock-v1",
+  "model_id": "qikvrt-smollm3-3b-q4-k-m",
+  "model": {
+    "repository": "ggml-org/SmolLM3-3B-GGUF",
+    "revision": "4965cb60b150737b68a0408c36aeefb65078f894",
+    "file": "SmolLM3-Q4_K_M.gguf",
+    "bytes": 1915305312,
+    "sha256": "8334b850b7bd46238c16b0c550df2138f0889bf433809008cc17a8b05761863e",
+    "license": "Apache-2.0",
+    "contains": ["quantized weights", "tokenizer", "chat template"],
+    "source": "https://huggingface.co/ggml-org/SmolLM3-3B-GGUF/resolve/4965cb60b150737b68a0408c36aeefb65078f894/SmolLM3-Q4_K_M.gguf"
+  },
+  "runtime": {
+    "repository": "ggml-org/llama.cpp",
+    "release": "b11836",
+    "file": "llama-b11836-bin-ubuntu-x64.tar.gz",
+    "bytes": 22350511,
+    "sha256": "42bd9edc1845ade56750ba838dce13a245543cbbbf454e8a0b9de98545f9cf31",
+    "executable": "llama-b11836/llama-server",
+    "platform": "linux-x86_64",
+    "license": "MIT and bundled third-party notices",
+    "source": "https://github.com/ggml-org/llama.cpp/releases/download/b11836/llama-b11836-bin-ubuntu-x64.tar.gz"
+  },
+  "automatic_download": false,
+  "external_provider_required": false,
+  "proprietary_chatgpt_runtime_exported": false,
+  "model_output_is_independent_verification": false,
+  "production_host_acceptance": "OPEN"
+}

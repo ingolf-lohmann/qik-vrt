@@ -1,6 +1,6 @@
 {
   "schema": "qikvrt_personal_assistant_capabilities_v1",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "product_name": "Universales Raumzeit-Terminal",
   "product_descriptor": "Persönlicher Browserassistent für quellgebundene Recherche, Dokumentation und Fortsetzung",
   "license": "PolyForm-Noncommercial-1.0.0",
@@ -19,7 +19,8 @@
     "rotate_refresh_token",
     "local_sign_out",
     "provider_token_revocation_when_supported",
-    "optional_local_source_ranking"
+    "optional_local_source_ranking",
+    "optional_local_generative_inference"
   ],
   "provider": {
     "authority": "https://api.openai.com/v1",
@@ -73,6 +74,23 @@
       "history": "FULL_LOCAL_TRANSCRIPT_RESUBMITTED_AS_LABELLED_DATA",
       "live_runtime_verified": false,
       "use_and_entitlement_review": "OPEN_FOR_LIVE_USE"
+    },
+    "local": {
+      "model": "qikvrt-smollm3-3b-q4-k-m",
+      "implementation": "src/qikvrt_local_llm.py",
+      "lock": "runtime/models/smollm3-3b-q4-k-m.lock.json",
+      "api": "EXISTING_PERSONAL_REST_ADAPTER_WITH_LOCAL_CHAT_COMPLETIONS_BACKEND",
+      "activation": "--personal-provider local --personal-local-model-dir EXPLICIT_VERIFIED_BUNDLE",
+      "automatic_download": false,
+      "cloud_fallback": false,
+      "provider_credential_required": false,
+      "model_bytes_in_git": false,
+      "model_output_independently_verified": false,
+      "production_host_verified": false,
+      "autonomous_execution_authority": "EXISTING_NATIVE_TERMINAL_AND_TRANSPUTER_ONLY",
+      "private_history": "EXISTING_SQLITE_FULL_TRANSCRIPT_AND_OBSERVED_CHECKPOINTS",
+      "owner_authorization": "state/authorization/delegations/OWNER_AUTONOMOUS_LOCAL_AI_OPERATION_20261023_V1.json",
+      "acceptance_work_unit": "state/work_units/QIKVRT_LOCAL_LLM_OPERATION_20261023_V1.json"
     }
   },
   "identity_authentication": {

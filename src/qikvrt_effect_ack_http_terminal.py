@@ -851,11 +851,16 @@ def main() -> int:
     parser.add_argument("--personal-state-dir", help="Opt-in Personal adapter: private runtime data directory")
     parser.add_argument("--personal-model", help="Explicit model identifier; no implicit model substitution")
     parser.add_argument("--personal-retrieval-model-dir", type=Path, help="Optional verified local embedding model directory; no download or cloud fallback")
-    parser.add_argument("--personal-provider", choices=("openai", "gemini"), default="openai")
+    parser.add_argument("--personal-provider", choices=("openai", "gemini", "local"), default="openai")
+    parser.add_argument("--personal-local-model-dir", type=Path, help="Explicit pinned offline model and runtime bundle; no download or cloud fallback")
     parser.add_argument("--personal-auth-config", type=Path, help="Private registered OIDC public-client configuration; enables OS Secret Service mode")
     parser.add_argument("--personal-legacy-memory-pairing", action="store_true", help="Explicit legacy test/development mode; no durable SSO or release acceptance")
     parser.add_argument("--personal-store-model-credential", action="store_true", help="Provision the selected model key to OS Secret Service from a terminal prompt, then exit")
     args = parser.parse_args()
+    if args.personal_local_model_dir and args.personal_provider != "local":
+        raise SystemExit("BLOCK: local model bundle requires --personal-provider local")
+    if args.personal_store_model_credential and args.personal_provider == "local":
+        raise SystemExit("BLOCK: local inference requires no external model credential")
     if args.operation == "personal-auth-readback":
         from qikvrt_personal_auth import AuthBlock, verify_existing_session
         try:
@@ -935,9 +940,9 @@ def main() -> int:
                 if args.personal_legacy_memory_pairing:
                     raise ValueError("PERSONAL_AUTH_MODES_ARE_MUTUALLY_EXCLUSIVE")
                 runtime = PersonalRuntime.from_secret_store(args.personal_state_dir, args.personal_model, args.personal_provider,
-                    args.personal_auth_config, f"http://127.0.0.1:{args.port}")
+                    args.personal_auth_config, f"http://127.0.0.1:{args.port}", local_model_dir=args.personal_local_model_dir)
             elif args.personal_legacy_memory_pairing:
-                runtime = PersonalRuntime.from_environment(args.personal_state_dir, args.personal_model, args.personal_provider)
+                runtime = PersonalRuntime.from_environment(args.personal_state_dir, args.personal_model, args.personal_provider, local_model_dir=args.personal_local_model_dir)
             else:
                 raise ValueError("PROTECTED_PERSONAL_AUTH_CONFIGURATION_REQUIRED")
             if any((args.repository, args.pr, args.expected_head, args.expected_tree)):
@@ -961,13 +966,13 @@ def main() -> int:
             if runtime:
                 runtime.close()
             raise SystemExit("BLOCK: " + str(exc)) from None
-    elif args.personal_model or args.personal_auth_config or args.personal_legacy_memory_pairing or args.personal_retrieval_model_dir:
+    elif args.personal_model or args.personal_auth_config or args.personal_legacy_memory_pairing or args.personal_retrieval_model_dir or args.personal_local_model_dir:
         raise SystemExit("BLOCK: Personal arguments require --personal-state-dir")
     server = ThreadingHTTPServer((args.host, args.port), handler)
     print(json.dumps({"state": "READY", "host": args.host, "port": args.port,
                       "personal_adapter_enabled": runtime is not None,
                       "local_retrieval_enabled": runtime is not None and runtime.retrieval_engine is not None,
-                      "external_effects": "AUTHENTICATED_MODEL_REQUESTS_ONLY" if runtime else "NONE"}, sort_keys=True), flush=True)
+                      "external_effects": ("NONE_LOCAL_CPU_MODEL_ONLY" if runtime.provider == "local" else "AUTHENTICATED_MODEL_REQUESTS_ONLY") if runtime else "NONE"}, sort_keys=True), flush=True)
     try:
         server.serve_forever()
     finally:
