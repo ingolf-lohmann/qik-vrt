@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import copy
+import base64
+from concurrent.futures import ThreadPoolExecutor
 import contextlib
 import hashlib
 import http.client
@@ -23,6 +25,107 @@ from unittest import mock
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'src'))
 import qikvrt_temdd_event_ledger as m
+
+
+class BidirectionalHMITests(unittest.TestCase):
+    """Actual fixture SQLite commits; no production-host acceptance claim."""
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.subject = {'repository': 'ingolf-lohmann/qik-vrt', 'pr': 1,
+                        'head': 'a' * 40, 'tree': 'b' * 40}
+        self.ledger = m.Ledger(self.temp.name, self.subject)
+        self.addCleanup(lambda: self.ledger.close() if self.ledger else None)
+
+    def envelope(self, number=1, direction='INBOUND', raw=b'\x00\xfforiginal\r\n'):
+        return {'schema': 'qikvrt_hmi_envelope_v1', 'message_id': str(number),
+                'direction': direction, 'adapter': 'chatgpt', 'principal': 'owner',
+                'received_at': '2026-10-23T09:00:00Z', 'content_type': 'application/octet-stream',
+                'payload_base64': base64.b64encode(raw).decode(),
+                'payload_sha256': hashlib.sha256(raw).hexdigest()}
+
+    def pending(self, consumer='repository', **kwargs):
+        return self.ledger.hmi_pending('INBOUND', 'chatgpt', 'owner', consumer, **kwargs)
+
+    def test_parallel_inputs_commit_once_without_loss(self):
+        envelopes = [self.envelope(i) for i in range(64)]
+        with ThreadPoolExecutor(max_workers=16) as workers:
+            rows = list(workers.map(self.ledger.hmi_enqueue, envelopes + envelopes))
+        ids = {r['id'] for r in rows}
+        self.assertEqual(len(ids), 64)
+        messages = []
+        while batch := self.pending(limit=128):
+            messages.extend(batch)
+            for record in batch:
+                key = record['payload']['message_key']
+                claim = self.ledger.hmi_claim(key, 'repository', '2026-10-23T09:01:00Z')
+                receipt = {'kind': 'TRANSPORT_READBACK', 'receipt_id': 'fixture:' + key,
+                           'payload_sha256': record['payload']['envelope']['payload_sha256']}
+                self.ledger.hmi_acknowledge(key, 'repository', claim['ledger_digest'], receipt, '2026-10-23T09:02:00Z')
+        self.assertEqual(len(messages), 64)
+        self.assertEqual([int(r['id'].split(':')[1]) for r in messages], list(range(1, 65)))
+        self.assertEqual({r['payload']['envelope']['message_id'] for r in messages}, {str(i) for i in range(64)})
+        self.assertTrue(all(base64.b64decode(r['payload']['envelope']['payload_base64']) == b'\x00\xfforiginal\r\n' for r in messages))
+
+    def test_same_identity_different_payload_cannot_overwrite(self):
+        self.ledger.hmi_enqueue(self.envelope())
+        with self.assertRaisesRegex(m.Hold, 'NATIVE_EVENT_ID_CONFLICT'):
+            self.ledger.hmi_enqueue(self.envelope(raw=b'changed'))
+        self.assertEqual(len(self.pending()), 1)
+
+    def test_bad_digest_or_encoding_has_no_acceptance(self):
+        for field, value in [('payload_sha256', '0' * 64), ('payload_base64', '%%%'), ('received_at', 'no timestamp')]:
+            envelope = self.envelope()
+            envelope[field] = value
+            with self.assertRaises(m.Hold):
+                self.ledger.hmi_enqueue(envelope)
+        self.assertEqual(self.pending(), [])
+
+    def test_fetch_does_not_consume_and_byte_budget_never_truncates(self):
+        self.ledger.hmi_enqueue(self.envelope())
+        self.assertEqual(self.pending(), self.pending())
+        with self.assertRaisesRegex(m.Hold, 'NO_DATA_DROPPED'):
+            self.pending(max_bytes=256)
+        self.assertEqual(len(self.pending()), 1)
+
+    def test_fifo_and_claim_survive_restart_without_blind_retry(self):
+        first = self.ledger.hmi_enqueue(self.envelope(1))['payload']['message_key']
+        second = self.ledger.hmi_enqueue(self.envelope(2))['payload']['message_key']
+        with self.assertRaisesRegex(m.Hold, 'PREDECESSOR'):
+            self.ledger.hmi_claim(second, 'repository', '2026-10-23T09:01:00Z')
+        self.ledger.hmi_claim(first, 'repository', '2026-10-23T09:01:00Z')
+        self.ledger.close()
+        self.ledger = None
+        self.ledger = m.Ledger(self.temp.name, self.subject)
+        self.assertEqual(self.pending()[0]['delivery_state'], 'CLAIMED_READBACK_REQUIRED')
+        with self.assertRaisesRegex(m.Hold, 'READBACK_BEFORE_RETRY'):
+            self.ledger.hmi_claim(first, 'repository', '2026-10-23T10:01:00Z')
+        self.assertEqual(len(self.pending()), 2)
+
+    def test_ack_requires_exact_readback_and_only_advances_own_consumer(self):
+        message = self.ledger.hmi_enqueue(self.envelope())
+        key = message['payload']['message_key']
+        claim = self.ledger.hmi_claim(key, 'repository', '2026-10-23T09:01:00Z')
+        readback = {'kind': 'TRANSPORT_READBACK', 'receipt_id': 'fixture:recipient-readback',
+                    'payload_sha256': '0' * 64}
+        with self.assertRaisesRegex(m.Hold, 'EXACT_HMI_DELIVERY'):
+            self.ledger.hmi_acknowledge(key, 'repository', claim['ledger_digest'], readback, '2026-10-23T09:02:00Z')
+        readback['payload_sha256'] = self.envelope()['payload_sha256']
+        ack = self.ledger.hmi_acknowledge(key, 'repository', claim['ledger_digest'], readback, '2026-10-23T09:02:00Z')
+        self.assertEqual(self.pending(), [])
+        self.assertEqual(len(self.pending('independent-consumer')), 1)
+        self.assertEqual(ack['payload']['task_completion'], 'NOT_PROVEN')
+        self.assertFalse(ack['dod'])
+
+    def test_output_routes_are_independent_and_unread_results_remain(self):
+        a = self.envelope(1, 'OUTBOUND')
+        b = dict(a, adapter='another-hmi')
+        self.ledger.hmi_enqueue(a)
+        self.ledger.hmi_enqueue(b)
+        for adapter in ('chatgpt', 'another-hmi'):
+            rows = self.ledger.hmi_pending('OUTBOUND', adapter, 'owner', 'display')
+            self.assertEqual(len(rows), 1)
+            self.assertEqual(rows[0]['payload']['envelope']['adapter'], adapter)
 
 
 class WriterContinuityTests(unittest.TestCase):
@@ -362,6 +465,39 @@ class ProducerTests(unittest.TestCase):
         self.assertFalse(first['dod'])
         self.assertEqual(first['evidence_transfer'], 'DENY')
         self.assertEqual(first['payload_digest'], m.digest(self.event()['payload']))
+
+    def test_hmi_uses_original_private_ingress_and_durable_readback(self):
+        self.start_servers()
+        raw = b'actual fixture socket bytes'
+        envelope = {'schema': 'qikvrt_hmi_envelope_v1', 'message_id': 'socket:1',
+            'direction': 'INBOUND', 'adapter': 'test-hmi', 'principal': 'fixture',
+            'received_at': '2026-10-23T09:00:00Z', 'content_type': 'text/plain',
+            'payload_base64': base64.b64encode(raw).decode(), 'payload_sha256': hashlib.sha256(raw).hexdigest()}
+        accepted = m.submit(self.state, {'schema': 'qikvrt_hmi_request_v1', 'operation': 'enqueue',
+                                        'arguments': {'envelope': envelope}})
+        self.assertEqual(accepted['state'], 'PERSISTED')
+        request = {'schema': 'qikvrt_hmi_request_v1', 'operation': 'pending', 'arguments': {
+            'direction': 'INBOUND', 'adapter': 'test-hmi', 'principal': 'fixture', 'consumer': 'repository'}}
+        observed = m.submit(self.state, request)
+        self.assertEqual(observed['state'], 'READ_BACK')
+        self.assertEqual(observed['event'][0]['payload']['envelope'], envelope)
+        self.assertEqual(m.submit(self.state, request), observed)
+        self.assertFalse(observed['dod'])
+
+    def test_hmi_original_in_process_runtime_observes_subject_and_exact_bytes(self):
+        envelope = {'schema': 'qikvrt_hmi_envelope_v1', 'message_id': 'native:1',
+            'direction': 'OUTBOUND', 'adapter': 'chatgpt', 'principal': 'fixture',
+            'received_at': '2026-10-23T09:00:00Z', 'content_type': 'text/plain',
+            'payload_base64': 'aGVsbG8=', 'payload_sha256': hashlib.sha256(b'hello').hexdigest()}
+        accepted = self.runtime.hmi('enqueue', {'envelope': envelope})
+        read = self.runtime.hmi('pending', {'direction': 'OUTBOUND', 'adapter': 'chatgpt',
+                                          'principal': 'fixture', 'consumer': 'display'})
+        self.assertEqual(read[0]['id'], accepted['id'])
+        self.assertEqual(read[0]['payload']['envelope'], envelope)
+        self.git('commit', '--allow-empty', '-qm', 'successor')
+        with self.assertRaisesRegex(m.Hold, 'EXACT_SUBJECT_CHANGED'):
+            self.runtime.hmi('pending', {'direction': 'OUTBOUND', 'adapter': 'chatgpt',
+                                        'principal': 'fixture', 'consumer': 'display'})
 
     def test_idempotent_delivery_and_conflicting_native_id(self):
         first = self.runtime.append(self.event())
@@ -738,3 +874,4 @@ class ServerFixtureLifecycleTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
+

@@ -9,6 +9,7 @@ webhook authenticator. A successful append means durable ledger readback only.
 from __future__ import annotations
 
 import argparse
+import base64
 import contextlib
 from datetime import datetime, timezone
 import fcntl
@@ -324,6 +325,138 @@ class Ledger:
             self._notify()
             return readback
 
+    def _hmi_records(self):
+        # The existing journal remains the only source of truth. No second
+        # database, destructive dequeue or independently advanced cursor.
+        rows = self.db.execute(
+            "SELECT seq,binding,body,body_digest FROM events WHERE binding=? "
+            "AND source='transputer' AND native_id LIKE 'hmi:%' ORDER BY seq",
+            (self.binding,)).fetchall()
+        return [self._decode(row) for row in rows]
+
+    def _hmi_append(self, operation, identity, payload, observed_at):
+        return self.append({'schema': SCHEMA, 'kind': 'READBACK' if operation == 'ack' else 'ACTION',
+            'subject': self.subject,
+            'provenance': {'source': 'transputer', 'native_event_id': f'hmi:{operation}:{identity}'},
+            'observed_at': observed_at, 'message': f'HMI {operation}: durable transport only',
+            'payload': dict(payload, schema='qikvrt_hmi_journal_v1', operation=operation)})
+
+    def hmi_enqueue(self, envelope):
+        """Trusted local producer ingress; principal is attribution, not authentication.
+
+        An outer adapter MUST authenticate and authorize before invoking this
+        owner-only interface. Payload bytes are opaque, never executable text.
+        Retry the identical envelope after an ambiguous append, not a new ID.
+        """
+        envelope = json.loads(canonical(envelope))
+        if len(canonical(envelope)) > MAX_EVENT:
+            raise Hold('HMI_MESSAGE_TOO_LARGE_NO_ACCEPTANCE')
+        required = {'schema', 'message_id', 'direction', 'adapter', 'principal',
+                    'received_at', 'content_type', 'payload_base64', 'payload_sha256'}
+        if not isinstance(envelope, dict) or set(envelope) != required or envelope['schema'] != 'qikvrt_hmi_envelope_v1':
+            raise Hold('INVALID_HMI_ENVELOPE')
+        for key in ('message_id', 'adapter', 'principal'):
+            if not isinstance(envelope[key], str) or not re.fullmatch(r'[A-Za-z0-9_.:@/-]{1,128}', envelope[key]):
+                raise Hold('INVALID_HMI_IDENTITY')
+        if envelope['direction'] not in ('INBOUND', 'OUTBOUND'):
+            raise Hold('INVALID_HMI_DIRECTION')
+        if not isinstance(envelope['content_type'], str) or not re.fullmatch(r'[A-Za-z0-9!#$&^_.+/-]{1,128}', envelope['content_type']):
+            raise Hold('INVALID_HMI_CONTENT_TYPE')
+        try:
+            raw = base64.b64decode(envelope['payload_base64'], validate=True)
+        except (ValueError, TypeError) as exc:
+            raise Hold('INVALID_HMI_PAYLOAD_ENCODING') from exc
+        if base64.b64encode(raw).decode('ascii') != envelope['payload_base64']:
+            raise Hold('NONCANONICAL_HMI_BASE64')
+        if hashlib.sha256(raw).hexdigest() != envelope['payload_sha256']:
+            raise Hold('HMI_PAYLOAD_DIGEST_MISMATCH')
+        key = digest({name: envelope[name] for name in ('message_id', 'direction', 'adapter', 'principal')})
+        return self._hmi_append('enqueue', key, {'message_key': key, 'envelope': envelope}, envelope['received_at'])
+
+    def hmi_pending(self, direction, adapter, principal, consumer, *, limit=32, max_bytes=MAX_EVENT):
+        """Non-destructive FIFO projection; fetching never acknowledges delivery.
+
+        Order means local committed acceptance, not physical causality. Every
+        consumer has its own delivery readback; one HMI cannot drain another.
+        """
+        if (direction not in ('INBOUND', 'OUTBOUND') or not isinstance(consumer, str)
+                or not re.fullmatch(r'[A-Za-z0-9_.:@/-]{1,128}', consumer)
+                or type(limit) is not int or not 1 <= limit <= 128
+                or type(max_bytes) is not int or not 256 <= max_bytes <= MAX_EVENT):
+            raise Hold('INVALID_HMI_READ_BOUND')
+        with self.condition:
+            records = self._hmi_records()
+            acked = {r['payload']['message_key'] for r in records
+                     if r['payload'].get('operation') == 'ack' and r['payload'].get('consumer') == consumer}
+            claimed = {r['payload']['message_key'] for r in records
+                       if r['payload'].get('operation') == 'claim' and r['payload'].get('consumer') == consumer}
+            result, size = [], 2
+            for record in records:
+                payload = record['payload']
+                if payload.get('operation') != 'enqueue' or payload['message_key'] in acked:
+                    continue
+                envelope = payload['envelope']
+                if (envelope['direction'], envelope['adapter'], envelope['principal']) != (direction, adapter, principal):
+                    continue
+                item = dict(record, delivery_state='CLAIMED_READBACK_REQUIRED' if payload['message_key'] in claimed else 'PENDING')
+                cost = len(canonical(item)) + 1
+                if size + cost > max_bytes:
+                    if not result:
+                        raise Hold('HMI_ARTIFACT_OR_LARGER_FRAME_REQUIRED_NO_DATA_DROPPED')
+                    break
+                result.append(item)
+                size += cost
+                if len(result) >= limit:
+                    break
+            return result
+
+    def hmi_claim(self, message_key, consumer, observed_at):
+        """One admitted attempt; ambiguous/crashed delivery requires readback.
+
+        No expiring lease automatically replays a potentially external effect.
+        The pending projection retains every unresolved claim after restart.
+        """
+        if not isinstance(consumer, str) or not re.fullmatch(r'[A-Za-z0-9_.:@/-]{1,128}', consumer):
+            raise Hold('INVALID_HMI_CONSUMER')
+        with self.condition:
+            records = self._hmi_records()
+            if not any(r['payload'].get('operation') == 'enqueue' and r['payload'].get('message_key') == message_key for r in records):
+                raise Hold('UNKNOWN_HMI_MESSAGE')
+            if any(r['payload'].get('operation') == 'claim' and r['payload'].get('message_key') == message_key
+                   and r['payload'].get('consumer') == consumer for r in records):
+                raise Hold('HMI_CLAIM_EXISTS_READBACK_BEFORE_RETRY')
+            message = next(r for r in records if r['payload'].get('operation') == 'enqueue'
+                           and r['payload'].get('message_key') == message_key)
+            envelope = message['payload']['envelope']
+            pending = self.hmi_pending(envelope['direction'], envelope['adapter'], envelope['principal'], consumer, limit=1)
+            if not pending or pending[0]['payload']['message_key'] != message_key:
+                raise Hold('HMI_STREAM_PREDECESSOR_NOT_ACKNOWLEDGED')
+            return self._hmi_append('claim', digest([message_key, consumer]),
+                {'message_key': message_key, 'consumer': consumer}, observed_at)
+
+    def hmi_acknowledge(self, message_key, consumer, claim_digest, readback, observed_at):
+        """Persist adapter-verified exact-byte delivery; never task completion.
+
+        The receipt itself does not authenticate a remote peer. The admitted
+        adapter must first obtain and verify the actual recipient readback.
+        """
+        with self.condition:
+            records = self._hmi_records()
+            message = next((r for r in records if r['payload'].get('operation') == 'enqueue'
+                            and r['payload'].get('message_key') == message_key), None)
+            claim = next((r for r in records if r['payload'].get('operation') == 'claim'
+                          and r['payload'].get('message_key') == message_key and r['payload'].get('consumer') == consumer), None)
+            if message is None or claim is None or claim['ledger_digest'] != claim_digest:
+                raise Hold('EXACT_HMI_MESSAGE_AND_CLAIM_REQUIRED')
+            if (not isinstance(readback, dict) or set(readback) != {'kind', 'receipt_id', 'payload_sha256'}
+                    or readback['kind'] != 'TRANSPORT_READBACK'
+                    or not isinstance(readback['receipt_id'], str) or not 1 <= len(readback['receipt_id']) <= 256
+                    or readback['payload_sha256'] != message['payload']['envelope']['payload_sha256']):
+                raise Hold('EXACT_HMI_DELIVERY_READBACK_REQUIRED')
+            return self._hmi_append('ack', digest([message_key, consumer]),
+                {'message_key': message_key, 'consumer': consumer, 'claim_digest': claim_digest,
+                 'readback': readback, 'task_completion': 'NOT_PROVEN'}, observed_at)
+
     def cursor(self, value):
         if not value:
             return 0
@@ -404,6 +537,14 @@ class Runtime:
     def append(self, event):
         self.ensure_subject()
         return self.ledger.append(event)
+
+    def hmi(self, operation, arguments):
+        # Reuse the exact-subject and writer admission of the native Runtime.
+        # This in-process entry adds no HTTP writer, timer or replacement host.
+        self.ensure_subject()
+        if operation not in ('enqueue', 'pending', 'claim', 'acknowledge'):
+            raise Hold('UNKNOWN_HMI_OPERATION')
+        return getattr(self.ledger, 'hmi_' + operation)(**arguments)
 
 
 def make_handler(runtime):
@@ -510,9 +651,18 @@ def make_ingress(runtime):
                 raw = self.rfile.readline(MAX_EVENT + 2)
                 if len(raw) > MAX_EVENT + 1 or not raw.endswith(b'\n'):
                     raise Hold('BOUNDED_EVENT_LINE_REQUIRED')
-                event = runtime.append(json.loads(raw))
-                result = {'state': 'PERSISTED', 'event': event, 'authority_effect': False, 'dod': False}
-            except (OSError, ValueError, sqlite3.Error, RecursionError) as exc:
+                body = json.loads(raw)
+                state = 'PERSISTED'
+                if isinstance(body, dict) and body.get('schema') == 'qikvrt_hmi_request_v1':
+                    if set(body) != {'schema', 'operation', 'arguments'} or not isinstance(body['arguments'], dict):
+                        raise Hold('INVALID_HMI_REQUEST')
+                    event = runtime.hmi(body['operation'], body['arguments'])
+                    if body['operation'] == 'pending':
+                        state = 'READ_BACK'
+                else:
+                    event = runtime.append(body)
+                result = {'state': state, 'event': event, 'authority_effect': False, 'dod': False}
+            except (OSError, ValueError, TypeError, sqlite3.Error, RecursionError) as exc:
                 result = {'state': 'HOLD', 'reason': str(exc), 'dod': False}
             with contextlib.suppress(OSError):
                 self.wfile.write(canonical(result) + b'\n')
@@ -536,7 +686,7 @@ def submit(state_dir, event):
         client.sendall(raw + b'\n')
         with client.makefile('rb') as response:
             result = json.loads(response.readline(MAX_EVENT * 2))
-    if result.get('state') != 'PERSISTED':
+    if result.get('state') not in ('PERSISTED', 'READ_BACK'):
         raise Hold(result.get('reason', 'LEDGER_READBACK_UNAVAILABLE'))
     return result
 
@@ -587,3 +737,4 @@ def main():
 
 if __name__ == '__main__':
     raise SystemExit(main())
+
