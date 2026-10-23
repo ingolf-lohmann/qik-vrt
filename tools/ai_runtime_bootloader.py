@@ -168,13 +168,18 @@ def main() -> int:
         choices=("core", "ietf", "formal", "audio", "publication", "all", "self-host", "self-host-firefox", "self-host-systemd"),
         help="runtime profile checked without installation",
     )
-    parser.add_argument("--task", default="", help="task label recorded in the boot report")
+    parser.add_argument("--task", default="", help="report label only; does not authorize or execute a task")
     args = parser.parse_args()
 
     report: dict[str, Any] = {
         "schema": "qikvrt-ai-runtime-boot/1.2",
         "repository_root": str(ROOT),
         "task": args.task,
+        "task_authorization": {
+            "evaluated": False,
+            "boot_readiness_grants_authority": False,
+            "task_executor_required": True,
+        },
         "state": "RUNNING",
         "gates": [],
         "lifecycle": [
@@ -242,14 +247,17 @@ def main() -> int:
                 "state": "PASS",
             }
         )
-        report["gates"].append(
-            run_gate("AI handoff", [sys.executable, "-B", "tools/ai_handoff.py"])
-        )
+        # Check the reviewed checkout before executing its dependent handoff
+        # and profile tools. The verifier and host toolchain remain trust roots;
+        # a self-consistent manifest does not authenticate their origin.
         report["gates"].append(
             run_gate(
                 "repository integrity",
                 [sys.executable, "-B", "tools/qikvrt_integrity.py", "verify"],
             )
+        )
+        report["gates"].append(
+            run_gate("AI handoff", [sys.executable, "-B", "tools/ai_handoff.py"])
         )
 
         cache_verifier = ROOT / "tools/qikvrt_tool_cache.py"

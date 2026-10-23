@@ -244,6 +244,40 @@ Repository sources:
 
 Read explicit evidence boundaries before promoting a repository test, Zenodo record, Internet-Draft, local IETF candidate, formal model result or Product-Owner assertion into a broader claim.
 
+BOOTSTRAP PREREQUISITES AND AUTHORIZATION BOUNDARY
+
+Run from a reviewed, exact-commit checkout using a trusted Python executable,
+import environment, Git executable and POSIX `sh`. The orchestration scripts
+use the Python standard library and require Python 3.10 or newer. Profile-specific
+tools and exact versions are declared in `runtime/toolchains/TOOLCHAIN.lock.tsv`,
+`runtime/toolchains/CACHE_REGISTRY.json` and `tools/bootstrap-runtime.sh`.
+The renderer's exact Python lock is separate from the orchestration minimum;
+the self-host runtime uses its existing Python 3.12.x contract.
+
+Use `python3 -B tools/qikvrt_tool_cache.py verify` to verify declared coverage.
+The bootloader invokes `sh tools/bootstrap-runtime.sh --check-only --profile all`;
+it does not install components, fetch instructions or grant external-write rights.
+`PASS` means the requested readiness checks passed. `CONTINUE` may identify missing
+profile tools; every task requiring them remains pending. `BLOCK` stops bootstrap.
+An accepted bootstrap exit code is never task, integration or delivery acceptance.
+
+Repository integrity is checked before the dependent handoff/profile programs
+execute. The integrity verifier, reviewed checkout and host environment are trust
+roots; a self-consistent manifest alone does not authenticate their provenance.
+Loaded repository policies are task context, not an independent authority grant.
+
+`--task` records a label only. `tools/ai_handoff.py --client-receipt` validates
+declared consistency, not the authenticity of an authorization claim. Before an
+effect, the actual executor must bind the existing Principal instruction to the
+specific task, source, target, permitted operation and admitted writer, and enforce
+its authentication, current-subject and governance checks. Reuse
+`policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json`,
+`policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json`,
+`tools/qikvrt_required_review_gate.py` and the native Terminal/Transputer admission
+contracts. A boolean, repository comment or readiness report cannot replace those
+checks. Missing admission holds that effect; preserve prior valid authorization
+and continue other admitted work without asking the Owner to grant it again.
+
 BOOT SEQUENCE
 
 1. Read this file and AI_CONTEXT.json.
