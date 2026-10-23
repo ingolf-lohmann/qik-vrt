@@ -222,6 +222,41 @@
         "automatic_encoding_fallback": false,
         "semantic_or_epistemic_promotion": false,
         "predecessor_pass_transfer": false
+      },
+      "recognized_correction_persistence": {
+        "rule_id": "QIKVRT_RECOGNIZED_CORRECTION_PERSISTENCE_20261023",
+        "owner": "Ingolf Lohmann",
+        "instruction_date": "2026-10-23",
+        "owner_adopted_wording": "Verpflichtungen erhalten, Ungewissheiten bewahren, Wirkungen unabhängig prüfen und nach jedem Kontextwechsel auf dem belegten Zustand weiterarbeiten.",
+        "source_work_unit": "state/work_units/QIKVRT_CONTEXT_CORRECTION_PERSISTENCE_20261023_V1.json",
+        "required_destinations": [
+          "EXISTING_CLIENT_SKILL",
+          "EXISTING_QIKVRT_CONTINUATION_CONTRACTS"
+        ],
+        "required_sequence": [
+          "PRESERVE_OBSERVED_FINDING_AND_EVIDENCE",
+          "DERIVE_BOUNDED_CORRECTION",
+          "EXECUTE_AUTHORIZED_SAVE",
+          "INDEPENDENT_READBACK",
+          "CARRY_REMAINING_OPEN_WORK"
+        ],
+        "reuse_existing_knowledge_work_and_pinned_predecessor": true,
+        "repeated_assent_is_persistence": false,
+        "future_proof_promise_replaces_observed_finding": false,
+        "failed_destination_remains_open": true,
+        "unchanged_failed_save_retry": "NOOP",
+        "evidence_scopes": [
+          "SKILL_SAVE",
+          "REPOSITORY_CANDIDATE",
+          "MAIN_INTEGRATION",
+          "ACTUAL_NATIVE_APPLICATION",
+          "NAMED_NODE_ADOPTION",
+          "EXACT_HOST_DELIVERY"
+        ],
+        "source_rule_is_global_adoption": false,
+        "new_executor_or_memory_store": false,
+        "observed_output_drift_proves_hidden_model_state": false,
+        "quantum_superdeterminism_equivalence": false
       }
     },
     "native_session_use": {

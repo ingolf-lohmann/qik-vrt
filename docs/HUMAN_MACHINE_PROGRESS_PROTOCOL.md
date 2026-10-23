@@ -65,6 +65,43 @@ Its normative source is the existing recursive policy's
 
 ## Binding client continuation procedure
 
+### Recognized correction persistence — Owner correction of 2026-10-23
+
+Owner-adopted working rule:
+
+> Verpflichtungen erhalten, Ungewissheiten bewahren, Wirkungen unabhängig prüfen und nach jedem Kontextwechsel auf dem belegten Zustand weiterarbeiten.
+
+An observed defect supplies the bounded finding from which the corrective
+requirement follows. Preserve that finding and its actual evidence first.
+Do not replace it with repeated assent or move its acknowledgment into a
+future proof promise. The Owner explicitly requires durable application in
+both the existing client skill and the QIK-VRT context. Execute every callable,
+authorized persistence step in the current work ring, with independent
+readback. Record a failed destination and its causal retry condition without
+dropping the task or repeating an unchanged failure.
+
+Reuse the existing `knowledge`, append-only `supersedes`, pinned predecessor,
+`work` and `tools/ai_handoff.py --client-receipt` contracts below. Carry the
+original goal, grants, established knowledge, corrections, unresolved outcomes
+and open duties into each continuation. Read back an ambiguous effect before
+another effectful attempt. Deterministic computation alone does not establish
+correct task context or a reliable continuation.
+
+Keep separate evidence for skill save, repository candidate, Main integration,
+actual native application, adoption by each named node and exact-host delivery.
+A stored rule or a local consistency test proves only its declared scope.
+Preserve the human instruction and the artificial-cognitive contribution
+separately; human adoption does not rewrite the origin of generated wording.
+The observed conversation does not expose hidden model states. Keep “virtual
+entropy” as the attributed metaphor unless a measurement is explicitly defined,
+and do not equate this operational rule with quantum-physical superdeterminism.
+
+The bounded source and remaining duties are retained in
+`state/work_units/QIKVRT_CONTEXT_CORRECTION_PERSISTENCE_20261023_V1.json`.
+The machine binding extends the existing policy's
+`client_continuation.knowledge_continuity.recognized_correction_persistence`;
+it introduces no replacement executor, timer or memory store.
+
 ### Knowledge and correction continuity — Owner correction of 2026-10-16
 
 Knowledge loss itself is the defect, regardless of when a handoff happens.

@@ -1,0 +1,159 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "work_unit_provenance"
+  },
+  "schema": "qikvrt_ai_work_unit_v1",
+  "work_unit_id": "QIKVRT_CONTEXT_CORRECTION_PERSISTENCE_20261023_V1",
+  "execution_id": "QIKVRT_CONTEXT_CORRECTION_PERSISTENCE_20261023_V1",
+  "created_at_utc": "2026-10-23T16:21:11.534505+00:00",
+  "human_actor": {
+    "class": "HUMAN",
+    "attribution_id": "Ingolf Lohmann"
+  },
+  "artificial_cognitive_actor": {
+    "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "system_family": "OpenAI Codex",
+    "model_build": "UNAVAILABLE"
+  },
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_commit": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+  "source_tree": "1a8003f1815b75fe534b21f242e8b782d4352796",
+  "owner_adopted_wording": "Verpflichtungen erhalten, Ungewissheiten bewahren, Wirkungen unabhängig prüfen und nach jedem Kontextwechsel auf dem belegten Zustand weiterarbeiten.",
+  "owner_persistence_instruction": "Du musst es nicht nur erkennen, du musst es auch persistieren. Und zwar nicht nur bei dir, sondern im QIKVRT-Kontext.",
+  "source": {
+    "carrier": "Direct Owner messages in the current conversation",
+    "message_timestamp": "NOT_EXPOSED",
+    "classification": "NORMATIVE_OWNER_REQUIREMENT"
+  },
+  "finding": {
+    "classification": "BOUNDED_DOCUMENTARY_OBSERVATION",
+    "statement": "Successive assistant replies restated the adopted rule and shifted the original finding into future proof language. No correction-persistence effect was established by those replies.",
+    "scope": "Visible conversation only; underlying hidden cognitive state is not observed."
+  },
+  "provenance": {
+    "human_contribution": "Original problem framing, adoption of the quoted working rule and explicit dual-persistence authorization.",
+    "artificial_cognitive_contribution": "Wording of the adopted rule, diagnosis, contract edits and validation.",
+    "joint_component": "The human repeated and adopted assistant-generated wording; adoption does not change its origin.",
+    "unresolved": "No hidden-model-state inference or universal physical theorem is established."
+  },
+  "reuse": {
+    "entrypoint": "AI",
+    "agent_contract": "AGENTS.md",
+    "policy": "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json#/client_continuation/knowledge_continuity/recognized_correction_persistence",
+    "human_contract": "docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md#recognized-correction-persistence-owner-correction-of-2026-10-23",
+    "validator": "tools/ai_handoff.py --client-receipt",
+    "regression_gate": "make ai-runtime-contract",
+    "new_executor": false,
+    "new_memory_store": false,
+    "new_timer": false
+  },
+  "knowledge": [
+    {
+      "id": "owner-context-continuity-rule-20261023",
+      "epistemic_class": "NORMATIVE_OWNER_REQUIREMENT",
+      "subject": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "ref": "main",
+        "head": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+        "tree": "1a8003f1815b75fe534b21f242e8b782d4352796"
+      },
+      "scope": "Owner correction and bounded conversational observation; no runtime/global-adoption claim",
+      "statement": "Verpflichtungen erhalten, Ungewissheiten bewahren, Wirkungen unabhängig prüfen und nach jedem Kontextwechsel auf dem belegten Zustand weiterarbeiten.",
+      "evidence": [
+        "state/work_units/QIKVRT_CONTEXT_CORRECTION_PERSISTENCE_20261023_V1.json#/owner_adopted_wording"
+      ],
+      "record_sha256": "a3002f5156bee41a19edec06bb0f1f45505b41353124ff604db0afeb71a2c6c9"
+    },
+    {
+      "id": "owner-dual-persistence-mandate-20261023",
+      "epistemic_class": "NORMATIVE_OWNER_REQUIREMENT",
+      "subject": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "ref": "main",
+        "head": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+        "tree": "1a8003f1815b75fe534b21f242e8b782d4352796"
+      },
+      "scope": "Owner correction and bounded conversational observation; no runtime/global-adoption claim",
+      "statement": "Persist the recognized correction in both the existing client skill and the QIK-VRT context, with independent readback.",
+      "evidence": [
+        "state/work_units/QIKVRT_CONTEXT_CORRECTION_PERSISTENCE_20261023_V1.json#/owner_persistence_instruction"
+      ],
+      "record_sha256": "8595f05411a5d5fa6990859eb3c4288dd6219e91618d3ca51fecc2cdca67c96c"
+    },
+    {
+      "id": "bounded-conversation-drift-20261023",
+      "epistemic_class": "DOCUMENTARY_OBSERVATION",
+      "subject": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "ref": "main",
+        "head": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+        "tree": "1a8003f1815b75fe534b21f242e8b782d4352796"
+      },
+      "scope": "Owner correction and bounded conversational observation; no runtime/global-adoption claim",
+      "statement": "The visible replies repeatedly restated the rule and deferred its evidentiary application; this describes outputs, not hidden cognition.",
+      "evidence": [
+        "state/work_units/QIKVRT_CONTEXT_CORRECTION_PERSISTENCE_20261023_V1.json#/finding"
+      ],
+      "record_sha256": "a32778884554a28d8af068629e541e05903926b9a368e9c37e374f504151b9ad"
+    },
+    {
+      "id": "skill-save-http422-20261023",
+      "epistemic_class": "DOCUMENTARY_OBSERVATION",
+      "subject": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "ref": "main",
+        "head": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+        "tree": "1a8003f1815b75fe534b21f242e8b782d4352796"
+      },
+      "scope": "Owner correction and bounded conversational observation; no runtime/global-adoption claim",
+      "statement": "The existing Skills push returned HTTP422. Readback retained remote master d382372e8a0c637b25c661eb530d6f04f5faa7f5; local correction commit e4c09bbe37fe438f3ee8003abdc0c185829d373a is not a verified durable save.",
+      "evidence": [
+        "state/work_units/QIKVRT_CONTEXT_CORRECTION_PERSISTENCE_20261023_V1.json#/persistence_boundary"
+      ],
+      "record_sha256": "25eccd4174f939cbf91dd7c9c7dd7b8c6d6e760e6f9f90b1e4536c6040a517f2"
+    }
+  ],
+  "persistence_boundary": {
+    "existing_skill": "qikvrt-continuous-completion",
+    "local_validation": "PASS",
+    "durable_skill_save": "BLOCK_HTTP_422",
+    "remote_readback": "UNCHANGED",
+    "repository_rule_candidate": "TO_BE_BOUND_BY_ACTUAL_WRITE_AND_READBACK",
+    "main_integration": "NOT_ESTABLISHED",
+    "native_application": "NOT_ESTABLISHED",
+    "all_node_adoption": "NOT_ESTABLISHED",
+    "domain_delivery": "NOT_ESTABLISHED"
+  },
+  "work": [
+    {
+      "id": "context-correction-authority-persistence",
+      "state": "OPEN",
+      "next_action": "Write the tested exact candidate through the existing GitHub REST path, read it back, and integrate only under applicable exact-head gates."
+    },
+    {
+      "id": "context-correction-existing-skill-save",
+      "state": "OPEN",
+      "next_action": "Preserve the validated local change and HTTP422 evidence; repair only on a material change in the existing supported save path. Do not repeat the unchanged push."
+    },
+    {
+      "id": "context-correction-native-application",
+      "state": "OPEN",
+      "next_action": "Bind the actual candidate and task to an admitted original Terminal/Transputer operation and independently read its native events."
+    },
+    {
+      "id": "context-correction-named-node-adoption",
+      "state": "OPEN",
+      "next_action": "Use the original authenticated per-node path and keep every unobserved member OPEN."
+    }
+  ],
+  "completion_claims": {
+    "REQUIREMENT_RECORDED": true,
+    "REMOTE_PERSISTENCE_VERIFIED": false,
+    "MAIN_INTEGRATED": false,
+    "GLOBAL_CLIENT_ADOPTION": false,
+    "EFFECT_ACK_DONE": false
+  }
+}

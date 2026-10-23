@@ -27,6 +27,23 @@ must not be inferred from presence, transport, analysis or authority alone.
 
 QIK-VRT AI RUNTIME ENTRYPOINT
 
+RECOGNIZED CORRECTIONS MUST BE PERSISTED — OWNER 2026-10-23
+
+Apply the Owner-adopted rule:
+„Verpflichtungen erhalten, Ungewissheiten bewahren, Wirkungen unabhängig prüfen und nach jedem Kontextwechsel auf dem belegten Zustand weiterarbeiten.“
+
+Read `docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md#recognized-correction-persistence-owner-correction-of-2026-10-23`
+and `policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json#/client_continuation/knowledge_continuity/recognized_correction_persistence`.
+Recognizing, agreeing with or rephrasing an observed defect does not persist
+its correction. Preserve the observed finding and its evidence, then perform
+the authorized save and independent readback in the existing client skill and
+QIK-VRT contracts in the same work ring. Keep each failed destination open.
+Skill save, repository candidate, Main integration, actual native application,
+named-peer adoption and exact-host delivery require separate evidence.
+Use the existing knowledge/work receipt and validator; create no parallel
+memory service or executor. The source and provenance are recorded in
+`state/work_units/QIKVRT_CONTEXT_CORRECTION_PERSISTENCE_20261023_V1.json`.
+
 MANDATORY MIRROR OUTBOX — OWNER 2026-10-19
 
 Read and apply `docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md#mandatory-mirror-outbox-and-delivery-evidence-owner-2026-10-19`

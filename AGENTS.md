@@ -65,6 +65,24 @@ texts.
 
 ## Binding client continuation procedure
 
+Apply the Owner correction of 2026-10-23 in
+`docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md#recognized-correction-persistence-owner-correction-of-2026-10-23`
+and the existing policy's
+`client_continuation.knowledge_continuity.recognized_correction_persistence`.
+Preserve the Owner-adopted formulation:
+
+> Verpflichtungen erhalten, Ungewissheiten bewahren, Wirkungen unabhängig prüfen und nach jedem Kontextwechsel auf dem belegten Zustand weiterarbeiten.
+
+Recognition and repeated assent MUST lead to the already authorized durable
+correction and independent readback in both the existing client skill and
+QIK-VRT context. Do not displace an observed finding into a future proof
+promise. Record an unavailable destination as OPEN with its causal next action;
+continue the other callable persistence steps. Preserve the original evidence,
+uncertainties and open work through the existing receipt and validator.
+Treat source saving, Main integration and each named node's actual application
+as separately evidenced effects. Do not claim hidden cognitive states or a
+universal physical theorem from an observed conversational deviation.
+
 Ingolf Lohmann is Principal, Code Owner and Product Owner. His considered
 explicit approval is also his review, including on his own PR (18 October
 2026). Apply the exact Owner decision in the existing review policy and gate;
