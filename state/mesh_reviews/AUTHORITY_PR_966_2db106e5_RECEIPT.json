@@ -1,0 +1,26 @@
+{
+  "schema": "qikvrt_cross_repository_review_receipt_v1",
+  "reviewer_repository": "ingolf-lohmann/qik-vrt",
+  "subject_repository": "Goldkelch/qik-vrt",
+  "subject_pull_request": 966,
+  "subject_head_sha": "2db106e5b505ab9e91b74b3ed0a71579aa62bf48",
+  "subject_base_sha": "03759aebbd983602b3ddfe7bf751a79535559a6f",
+  "observed_at": "2026-09-03T11:51:52Z",
+  "checks": {
+    "lean_lake": "NOT_CONFIGURED",
+    "repository_tests": "VERIFIED",
+    "universal_terminal_dod_contract": "VERIFIED"
+  },
+  "disposition": "APPROVE_WITHIN_SCOPE",
+  "independent_repository_role": true,
+  "github_account_review_equivalence": false,
+  "predecessor_evidence_transferred": false,
+  "boundaries": {
+    "merge_implied": false,
+    "publication_implied": false,
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "empirical_confirmation": false
+  }
+}
