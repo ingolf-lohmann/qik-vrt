@@ -855,7 +855,20 @@ def main() -> int:
     parser.add_argument("--personal-auth-config", type=Path, help="Private registered OIDC public-client configuration; enables OS Secret Service mode")
     parser.add_argument("--personal-legacy-memory-pairing", action="store_true", help="Explicit legacy test/development mode; no durable SSO or release acceptance")
     parser.add_argument("--personal-store-model-credential", action="store_true", help="Provision the selected model key to OS Secret Service from a terminal prompt, then exit")
+    parser.add_argument("--personal-store-consumption-config", type=Path, help="Validate a private operator entitlement/budget file, store it in the existing OS Secret Service profile, then exit; no paid request")
     args = parser.parse_args()
+    if args.personal_store_consumption_config:
+        if (args.operation != "serve" or not args.personal_state_dir or not args.personal_auth_config or not args.personal_model or
+                args.personal_legacy_memory_pairing or args.personal_store_model_credential or args.host != "127.0.0.1"):
+            raise SystemExit("BLOCK: explicit protected Personal consumption profile required")
+        from qikvrt_personal_auth import provision_consumption
+        try:
+            result = provision_consumption(args.personal_state_dir, args.personal_provider, args.personal_model,
+                args.personal_auth_config, f"http://127.0.0.1:{args.port}", args.personal_store_consumption_config)
+            print(json.dumps(result, sort_keys=True))
+            return 0
+        except (ValueError, TypeError, KeyError, OSError):
+            raise SystemExit("BLOCK: protected consumption configuration unavailable or unbound") from None
     if args.operation == "personal-auth-readback":
         from qikvrt_personal_auth import AuthBlock, verify_existing_session
         try:

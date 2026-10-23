@@ -1,0 +1,150 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "work_unit_provenance_and_scope"
+  },
+  "schema": "qikvrt_ai_work_unit_v1",
+  "work_unit_id": "QIKVRT_COPILOT_ENTITLEMENTS_580_20261023_V1",
+  "created_at": "2026-10-23T08:56:41.158949Z",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "main",
+  "source_commit": "a8017ab67824f01ec4d215cf7af83b8b0779283c",
+  "source_tree": "94317a4da76fac49b63bb129badcbbd21471c092",
+  "human_actor": {
+    "name": "Ingolf Lohmann",
+    "role": "Principal / Product Owner / Code Owner"
+  },
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "UNAVAILABLE",
+    "session_or_run_id": "workspace-1bad5b1acd12",
+    "tools_and_adapters": [
+      "GitHub REST connector",
+      "original Universal Terminal / Transputer source",
+      "Python / SQLite"
+    ],
+    "identity_and_observation_limits": "Tool-bound session; no remote-host or natural-person cryptographic attestation inferred"
+  },
+  "human_contributions": [
+    "Accepted architecture recorded in issue #580",
+    "Implementation and productive acceptance instruction: Implementierung und produktive Abnahme! Freigabe erteilt."
+  ],
+  "artificial_cognitive_contributions": [
+    "Reuse and extend original #506 budget ledger",
+    "Implement separate offer/right/cost admission in existing protected Personal runtime",
+    "Tests, integration and evidence-bound acceptance preparation"
+  ],
+  "joint_components": "JOINT_WITH_SEPARABLE_COMPONENTS",
+  "unresolved_origin": [],
+  "inputs": [
+    {
+      "kind": "ACCEPTED_OWNER_REQUIREMENT",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/issues/580"
+    },
+    {
+      "kind": "REUSED_SOURCE",
+      "pr": 506,
+      "head": "e31ca36c2e64d86a03696525a85865c7332a6377",
+      "path": "src/qikvrt_personal_budget.py"
+    },
+    {
+      "kind": "DOCUMENTARY_MARKET_SOURCE",
+      "url": "https://learn.microsoft.com/en-us/partner-center/announcements/2026-october",
+      "is_license_grant": false
+    }
+  ],
+  "outputs": [
+    {
+      "path": "src/qikvrt_personal_budget.py",
+      "sha256": "1fd563f213d674ee8075f301481d079f1994347dcce49567f2a2f23a59f4e7e4"
+    },
+    {
+      "path": "src/qikvrt_personal_assistant.py",
+      "sha256": "4e825fc61fa6232a5778fb53f5c9cd87e23ed5dd0167143a70431a432d2b3817"
+    },
+    {
+      "path": "src/qikvrt_personal_auth.py",
+      "sha256": "c988640fe56601a41c2228ff44ceeb8080d134059b2e7dfcf81ae589542e3f24"
+    },
+    {
+      "path": "src/qikvrt_effect_ack_http_terminal.py",
+      "sha256": "7bbdb67d7faffb20373a010131ca3c43c3d7610fa365c7ea171b47355851c3fe"
+    },
+    {
+      "path": "tests/test_qikvrt_personal_budget.py",
+      "sha256": "14065918752aa5535890b98eeeaaa4fdeb1a0002f941d3149445f883f8f19240"
+    },
+    {
+      "path": "tests/test_qikvrt_consumption_guard.py",
+      "sha256": "78b8289645b71f0f47bd59657175ac6e38baeea2528f0569d434a00a3c7fea52"
+    },
+    {
+      "path": "spec/firefox/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.md",
+      "sha256": "ff9da545206b80bd619bec3dec8a6412e9232e956e5c4bbc37e9a48ad1a0fe1c"
+    },
+    {
+      "path": "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json",
+      "sha256": "b686549116dd574200c8ac6e6233b4ae66b0282dc01d97e6790a661de02dd75c"
+    },
+    {
+      "path": "Makefile",
+      "sha256": "b04335a375d191408bdd1fcfcde88a30f353630b7ad2ecd0d70ad08d535936db"
+    },
+    {
+      "path": ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+      "sha256": "83141a865f96a1e525f6617d8874d92774c2ceb8bfbe1426294794ab677b74f8"
+    }
+  ],
+  "git_history": {
+    "method": "REST_API_ONLY",
+    "force_push": false,
+    "candidate_readback_required": true
+  },
+  "verification": {
+    "source_tests": "tests.test_qikvrt_consumption_guard and tests.test_qikvrt_personal_budget; full make test required",
+    "source_test_result": "SEE_EXACT_CANDIDATE_TEST_RECEIPT",
+    "provider_doubles_are_live_execution": false,
+    "vendor_entitlement": "OPEN",
+    "productive_host": "OPEN",
+    "exact_domain": "OPEN"
+  },
+  "human_decision": {
+    "status": "IMPLEMENTATION_AND_PRODUCTIVE_ACCEPTANCE_AUTHORIZED",
+    "source": "Direct Owner instruction in this session",
+    "additional_spending_or_subscription_authorized": false
+  },
+  "external_effects": {
+    "repository_candidate": "AUTHORIZED",
+    "production_acceptance_attempt": "AUTHORIZED_WITH_EXISTING_CREDENTIAL_AND_ADMISSION_BOUNDARIES",
+    "purchases": false,
+    "new_provider": false
+  },
+  "release_claims": {
+    "productive_acceptance": false,
+    "EFFECT_ACK_DONE": false
+  },
+  "open_obligations": [
+    "Actual registered protected OIDC/operator/consumption binding and vendor rights",
+    "Current code-owner/platform exact-head admission",
+    "Signed Firefox activation and actual original-host execution",
+    "Exact raumzeitterminal.de delivery readback",
+    "Original node-tools/qikvrt_mirror_emit.py source/writer and authenticated peer binding; no replacement executor"
+  ],
+  "issue_agent_predecessor": {
+    "branch": "issue-agent/580",
+    "head": "86c97fccab596c6e4494bd14db0d8572c6852988",
+    "tree": "bae67f2426f83806feb0d4aff8bc70ad8a2a2ef0",
+    "run_id": 39923427238,
+    "preserved_original_blob_bindings": {
+      "evidence/issues/580/REQUEST.json": "ad9ede5fd6f986b7a2bfd5e7bfe6b6c3b6386b7e",
+      "evidence/issues/580/REQUEST.sha256": "9ffea111247baee4ee784bdde2c24a0c27b5e610",
+      "evidence/issues/580/CONTEXT.md": "5b866b95f278e3bdf65ba5041345756977c6ba15",
+      "evidence/issues/580/ANSWER.md": "b985def76688b41a29517a496dff4c8a9d48702a",
+      "evidence/issues/580/STATUS.json": "fac24f3de9f832703c1279be8d4c512cc50c54f6",
+      "evidence/issues/580/ATTEMPT.json": "cbc6cecb6e303fee4398ce6b0652256d4c6bf5d3"
+    },
+    "continuation": "Reuse original bound branch and solve PR creation through the current authorized REST connector; no previous BLOCK record overwritten."
+  }
+}

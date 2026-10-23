@@ -1,6 +1,6 @@
 {
   "schema": "qikvrt_personal_firefox_capability_boundary_v1",
-  "version": "1.3",
+  "version": "1.4",
   "source_subject": {
     "repository_roles_source": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
     "standard_repository": "ingolf-lohmann/qik-vrt",
@@ -77,5 +77,39 @@
       "personal_release_effect_ack_done": false,
       "state": "HOLD"
     }
+  },
+  "protected_consumption_admission": {
+    "owner_issue": 580,
+    "implementation": "src/qikvrt_personal_budget.py",
+    "protected_factory_requires_independent_grant": true,
+    "sso_grants_consumption": false,
+    "catalog_key": [
+      "provider",
+      "product_id",
+      "sku_id",
+      "service_id",
+      "region",
+      "channel",
+      "effective_interval"
+    ],
+    "independent_rights": [
+      "provider",
+      "seat_when_offer_requires",
+      "service",
+      "consumption_bound_to_budget_digest",
+      "base_subscription_when_offer_requires"
+    ],
+    "unknown_or_stale_evidence": "DENY",
+    "currency": "USD",
+    "money_representation": "INTEGER_MICRO_USD",
+    "unit_quote_requires_explicit_conversion": true,
+    "concurrency": "EXISTING_BEGIN_IMMEDIATE_BUDGET_RESERVATIONS",
+    "ambiguous_result": "HOLD_FULL_RESERVATION_AND_FREEZE_UNTIL_RECONCILIATION",
+    "configuration": "EXISTING_OS_SECRET_SERVICE_PROFILE",
+    "provisioning_flag": "--personal-store-consumption-config",
+    "authenticated_readback": "/personal/consumption",
+    "vendor_live_entitlement_verified": false,
+    "copilot_execution_adapter_added": false,
+    "productive_acceptance": "OPEN"
   }
 }

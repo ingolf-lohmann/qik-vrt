@@ -23,6 +23,11 @@ from pathlib import Path
 from typing import Any
 from urllib.error import HTTPError, URLError
 from urllib.request import HTTPRedirectHandler, Request, build_opener
+
+try:
+    from .qikvrt_personal_budget import BudgetLedger, CapabilityBlock, ConsumptionGuard
+except ImportError:
+    from qikvrt_personal_budget import BudgetLedger, CapabilityBlock, ConsumptionGuard
 from urllib.parse import parse_qs, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -55,17 +60,13 @@ def subject() -> dict[str, Any]:
             return subprocess.check_output(["git", *args], cwd=ROOT, text=True, stderr=subprocess.DEVNULL, timeout=5).strip()
         except (OSError, subprocess.SubprocessError):
             return None
-    paths = ["src/qikvrt_personal_assistant.py", "src/qikvrt_effect_ack_http_terminal.py",
+    paths = ["src/qikvrt_personal_assistant.py", "src/qikvrt_personal_budget.py", "src/qikvrt_effect_ack_http_terminal.py",
              "src/qikvrt_personal_auth.py", "src/qikvrt_personal_retrieval.py",
              "runtime/models/pplx-embed-v2-late-0.6b.lock.json",
              *[str(p.relative_to(ROOT)) for p in sorted(UI.iterdir()) if p.is_file()]]
     return {"repository": "ingolf-lohmann/qik-vrt", "head": git("rev-parse", "HEAD"),
             "tree": git("rev-parse", "HEAD^{tree}"), "worktree_dirty": bool(git("status", "--porcelain")),
             "sources": {p: {"bytes": (ROOT / p).stat().st_size, "sha256": digest((ROOT / p).read_bytes())} for p in paths}}
-
-
-class CapabilityBlock(ValueError):
-    pass
 
 
 class NoRedirect(HTTPRedirectHandler):
@@ -82,11 +83,14 @@ class OpenAITransport:
         self.opener = build_opener(NoRedirect())
 
     def post(self, path: str, payload: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
-        if path not in {"/conversations", "/responses"}:
+        if path not in {"/conversations", "/responses", "/responses/input_tokens"}:
             raise CapabilityBlock("PROVIDER_OPERATION_NOT_ALLOWED")
         request = Request("https://api.openai.com/v1" + path, data=canonical(payload), method="POST",
                           headers={"Authorization": "Bearer " + self.credential,
                                    "Content-Type": "application/json", "X-Client-Request-Id": str(uuid.uuid4())})
+        if getattr(self, "organization_id", None):
+            request.add_header("OpenAI-Organization", self.organization_id)
+            request.add_header("OpenAI-Project", self.workspace_id)
         return self._send(request)
 
     def _send(self, request):
@@ -160,7 +164,8 @@ class GeminiTransport(OpenAITransport):
 
 
 class PersonalRuntime:
-    def __init__(self, state_dir: str | Path, model: str, credential: str, local_token: str, *, transport=None, provider="openai", retrieval_engine=None):
+    def __init__(self, state_dir: str | Path, model: str, credential: str, local_token: str, *, transport=None, provider="openai", retrieval_engine=None,
+                 require_consumption=False, consumption_config=None, principal_id=None, clock=time.time):
         if provider not in {"openai", "gemini"}:
             raise CapabilityBlock("PROVIDER_NOT_ALLOWLISTED")
         if not isinstance(model, str) or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,128}", model):
@@ -170,6 +175,10 @@ class PersonalRuntime:
         self.model, self.credential, self.local_token = model, credential, local_token
         self.provider = provider
         self.retrieval_engine = retrieval_engine
+        self.require_consumption = require_consumption or consumption_config is not None
+        self.consumption = None
+        self.consumption_binding_check = None
+        self.personal_auth = None
         if provider == "gemini" and model != "gemini-4-argon":
             raise CapabilityBlock("GEMINI_ARGON_EXPLICIT_MODEL_REQUIRED")
         self.transport = transport if transport is not None else (GeminiTransport(credential) if provider == "gemini" else OpenAITransport(credential))
@@ -216,6 +225,12 @@ class PersonalRuntime:
             if not row:
                 with self.db:
                     self.db.execute("INSERT INTO config VALUES ('binding',?)", (canonical(self.binding).decode(),))
+            if self.require_consumption:
+                ledger = BudgetLedger(self.db, lock=self.lock, clock=clock)
+                if consumption_config is not None:
+                    self._nonsecret(consumption_config)
+                    self.consumption = ConsumptionGuard(ledger, consumption_config, provider=provider,
+                                                        principal_id=principal_id, service_id=model)
         except Exception:
             if hasattr(self, "db"):
                 self.db.close()
@@ -245,11 +260,17 @@ class PersonalRuntime:
             raise CapabilityBlock("PROTECTED_MODEL_CREDENTIAL_REQUIRED")
         # A bootstrap secret is never returned to the browser. Secure mode only
         # accepts the session bearer issued after a validated OIDC callback.
-        runtime = cls(state_dir, model, credential, secrets.token_urlsafe(48), provider=provider)
+        runtime = cls(state_dir, model, credential, secrets.token_urlsafe(48), provider=provider,
+                      require_consumption=True, consumption_config=bundle.get("consumption"), principal_id=config["subject"])
         try:
             if store.read().get("provider_keys", {}).get(provider) != credential:
                 raise CapabilityBlock("MODEL_CREDENTIAL_CHANGED_DURING_STARTUP")
             runtime.personal_auth = PersonalAuth(store, config)
+            expected = digest(canonical(bundle.get("consumption")))
+            def current_consumption_binding():
+                if digest(canonical(store.read().get("consumption"))) != expected:
+                    raise CapabilityBlock("PROTECTED_CONSUMPTION_CONFIG_CHANGED_RESTART_REQUIRED")
+            runtime.consumption_binding_check = current_consumption_binding
         except Exception:
             runtime.close()
             raise
@@ -424,7 +445,7 @@ class PersonalRuntime:
             return [{"id": s["id"], "mode": s["mode"], "status": s["status"], "turns": len(s["history"])}
                     for (raw,) in self.db.execute("SELECT body FROM sessions ORDER BY id") for s in [json.loads(raw)]]
 
-    def _create(self, mode: str, task: str, sources: list[dict[str, str]]) -> dict[str, Any]:
+    def _validate_create(self, mode, task, sources):
         if mode not in {"baseline", "qikvrt"} or not isinstance(task, str) or not task.strip() or len(task) > 100000:
             raise CapabilityBlock("MODE_OR_TASK_INVALID")
         if not isinstance(sources, list) or len(sources) > 100:
@@ -436,6 +457,9 @@ class PersonalRuntime:
             if not ID.fullmatch(source["id"]) or source["id"] in ids:
                 raise CapabilityBlock("SOURCE_ID_INVALID_OR_DUPLICATE")
             ids.add(source["id"])
+
+    def _create(self, mode: str, task: str, sources: list[dict[str, str]]) -> dict[str, Any]:
+        self._validate_create(mode, task, sources)
         session = {"id": uuid.uuid4().hex, "mode": mode, "task": task, "sources": sources,
                    "source_hashes": {s["id"]: digest(canonical(s)) for s in sources},
                    "conversation_id": None, "history": [], "checkpoint": None,
@@ -452,19 +476,61 @@ class PersonalRuntime:
         self.save(session)
         return session
 
-    def create(self, mode: str, task: str, sources: list[dict[str, str]]) -> dict[str, Any]:
+    def _metered_request(self, data, request_id, run):
+        self._nonsecret(data)
+        if self.consumption is None:
+            raise CapabilityBlock("PROTECTED_CONSUMPTION_CONFIG_REQUIRED")
+        if self.consumption_binding_check:
+            self.consumption_binding_check()
+        fingerprint = digest(canonical(data))
+        key = request_id if request_id is not None else "auto_" + fingerprint
+        self._nonsecret(key)
+        reservation = self.consumption.reserve(key, fingerprint)
+        if reservation["state"] == "COMPLETED":
+            return reservation["result"]
+        try:
+            if reservation["pricing"].get("kind") == "units":
+                raise CapabilityBlock("MODEL_ADAPTER_REQUIRES_TOKEN_PRICE_CONTRACT")
+            if self.provider != "openai":
+                raise CapabilityBlock("MODEL_ADAPTER_CONSUMPTION_INPUT_BOUND_UNVERIFIED")
+            self.consumption.before_dispatch(reservation)
+            if type(self.transport) is OpenAITransport:
+                self.transport.organization_id = reservation["organization_id"]
+                self.transport.workspace_id = reservation["workspace_id"]
+            result, usage = run(reservation)
+        except BaseException:
+            # A lost result never releases a reservation or admits a retry.
+            try:
+                self.consumption.ledger.finish(self.provider, key, None, {})
+            except CapabilityBlock:
+                pass
+            raise
+        self.consumption.ledger.finish(self.provider, key, usage, result)
+        return result
+
+    def create(self, mode: str, task: str, sources: list[dict[str, str]], *, request_id=None) -> dict[str, Any]:
         with self.lock:
+            self._validate_create(mode, task, sources)
+            if self.require_consumption:
+                def run(reservation):
+                    session = self._create(mode, task, sources)
+                    text = canonical({"task": task, "sources": sources, "source_hashes": session["source_hashes"]}).decode()
+                    return self.turn(session["id"], text, _reservation=reservation)
+                return self._metered_request({"operation": "create", "mode": mode, "task": task, "sources": sources}, request_id, run)
             session = self._create(mode, task, sources)
             text = canonical({"task": task, "sources": sources, "source_hashes": session["source_hashes"]}).decode()
             return self.turn(session["id"], text)
 
-    def turn(self, session_id: str, text: str, *, resume: bool = False) -> dict[str, Any]:
+    def turn(self, session_id: str, text: str, *, resume: bool = False, request_id=None, _reservation=None) -> dict[str, Any]:
         if not isinstance(text, str) or not text.strip() or len(text) > 100000:
             raise CapabilityBlock("TURN_TEXT_INVALID")
         with self.lock:
             session = self.load(session_id)
             if session["status"] != "READY":
                 raise CapabilityBlock("PRIOR_PROVIDER_RESULT_UNRESOLVED_READBACK_REQUIRED_NO_RETRY")
+            if self.require_consumption and _reservation is None:
+                return self._metered_request({"operation": "turn", "session_id": session_id, "text": text, "resume": resume}, request_id,
+                    lambda reservation: self.turn(session_id, text, resume=resume, _reservation=reservation))
             automatic = None
             if resume and session["mode"] == "qikvrt":
                 checkpoint = session["checkpoint"]
@@ -490,13 +556,30 @@ class PersonalRuntime:
                            "input": canonical({"kind": "LOCAL_CONVERSATION_DATA",
                                "history": [{"input": h["intent"]["input"], "draft": h["text"]} for h in session["history"]],
                                "current_user_input": text}).decode()}
+            if _reservation is not None and self.provider == "openai":
+                payload["max_output_tokens"] = _reservation["pricing"]["max_output_tokens"]
             intent = {"id": uuid.uuid4().hex, "input": text, "request_sha256": digest(canonical(payload)),
                       "created_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
             session.update(status="TURN_PENDING", pending=intent)
             self.save(session)
+            if _reservation is not None:
+                count_payload = {k: payload[k] for k in ("model", "conversation", "instructions", "input")}
+                count, count_receipt = self.transport.post("/responses/input_tokens", count_payload)
+                if (count.get("object") != "response.input_tokens" or type(count.get("input_tokens")) is not int or
+                        not 0 <= count["input_tokens"] <= _reservation["pricing"]["input_token_ceiling"]):
+                    raise CapabilityBlock("CONSUMPTION_INPUT_COUNT_UNBOUND_OR_EXCEEDS_LIMIT")
+                self._nonsecret(count_receipt)
+                intent.update(input_token_count=count["input_tokens"], input_count_request_sha256=digest(canonical(count_payload)),
+                              input_count_receipt=count_receipt)
+                self.save(session)
+                if self.consumption_binding_check:
+                    self.consumption_binding_check()
+                self.consumption.before_dispatch(_reservation)
             value, receipt = self.transport.post("/responses", payload)
             self._nonsecret(value)
             response_id, resolved = value.get("id"), value.get("model")
+            if _reservation is not None and resolved != self.model:
+                raise CapabilityBlock("CONSUMPTION_RESPONSE_MODEL_PRICE_BINDING_MISMATCH")
             if value.get("status") != "completed" or not isinstance(response_id, str) or not ID.fullmatch(response_id) or not isinstance(resolved, str):
                 raise CapabilityBlock("PROVIDER_RESPONSE_NOT_COMPLETED_OR_UNBOUND")
             output_items = value.get("output")
@@ -528,7 +611,26 @@ class PersonalRuntime:
                                      "resolved_model": resolved, "receipt": receipt}
             result = self.readback(self.load(session_id))
             result["automatic_context"] = automatic
+            if _reservation is not None:
+                usage = value.get("usage")
+                recognized = {"input_tokens", "output_tokens", "input_tokens_details", "output_tokens_details", "total_tokens"}
+                if isinstance(usage, dict) and {"input_tokens", "output_tokens"} <= set(usage) and not set(usage) - recognized:
+                    usage = {k: usage[k] for k in ("input_tokens", "output_tokens")}
+                    if usage["input_tokens"] != intent["input_token_count"]:
+                        usage = None
+                else:
+                    usage = None
+                return result, usage
             return result
+
+    def consumption_status(self):
+        if self.consumption is None:
+            return {"state": "BLOCK" if self.require_consumption else "LEGACY_DEVELOPMENT_ONLY",
+                    "reason": "PROTECTED_CONSUMPTION_CONFIG_REQUIRED", "vendor_live_entitlement_verified": False}
+        result = self.consumption.status()
+        if self.provider != "openai" or self.consumption.config["budget"]["pricing"].get("kind") == "units":
+            result.update(state="BLOCK", reason="MODEL_ADAPTER_CONSUMPTION_INPUT_BOUND_UNVERIFIED")
+        return result
 
     def capabilities(self) -> dict[str, Any]:
         with self.lock:
@@ -539,6 +641,7 @@ class PersonalRuntime:
                     "local_retrieval_enabled": self.retrieval_engine is not None,
                     "personal_identity_session": self.personal_auth.status() if self.personal_auth else {"state": "LEGACY_MEMORY_PAIRING_ONLY"},
                     "local_client_authentication_required": True, "authenticated_runtime_readback": fresh,
+                    "consumption": self.consumption_status(),
                     "runtime_evidence": auth if fresh else None,
                     "normal_retention": self.binding["normal_retention"],
                     "baseline_local_sessions_observed": any(s["mode"] == "baseline" and s["turns"] for s in self.sessions()),
@@ -609,6 +712,8 @@ def personal_handler(base_handler, runtime: PersonalRuntime):
                     return self._personal_response(200, (UI / path).read_bytes(), media)
                 if self.path == "/personal/capabilities":
                     return self._personal_response(200, dict(runtime.capabilities(), local_client_authenticated=True))
+                if self.path == "/personal/consumption":
+                    return self._personal_response(200, runtime.consumption_status())
                 if self.path == "/personal/sessions":
                     if runtime.native_terminal:
                         runtime.read_terminal_transition(self.headers.get("Authorization", "").removeprefix("Bearer "))
@@ -703,15 +808,15 @@ def personal_handler(base_handler, runtime: PersonalRuntime):
                 elif self.path == "/personal/create":
                     if runtime.native_terminal:
                         runtime.read_terminal_transition(self.headers.get("Authorization", "").removeprefix("Bearer "))
-                    if set(body) != {"mode", "task", "sources", "confirmed"}:
+                    if set(body) - {"mode", "task", "sources", "confirmed", "request_id"} or not {"mode", "task", "sources", "confirmed"} <= set(body):
                         raise CapabilityBlock("CREATE_FIELDS_INVALID")
-                    result = runtime.create(body["mode"], body["task"], body["sources"])
+                    result = runtime.create(body["mode"], body["task"], body["sources"], request_id=body.get("request_id"))
                 elif self.path in {"/personal/turn", "/personal/resume"}:
                     if runtime.native_terminal:
                         runtime.read_terminal_transition(self.headers.get("Authorization", "").removeprefix("Bearer "))
-                    if set(body) != {"session_id", "text", "confirmed"}:
+                    if set(body) - {"session_id", "text", "confirmed", "request_id"} or not {"session_id", "text", "confirmed"} <= set(body):
                         raise CapabilityBlock("TURN_FIELDS_INVALID")
-                    result = runtime.turn(body["session_id"], body["text"], resume=self.path.endswith("/resume"))
+                    result = runtime.turn(body["session_id"], body["text"], resume=self.path.endswith("/resume"), request_id=body.get("request_id"))
                 else:
                     return self._personal_response(404, {"state": "HOLD"})
                 self._personal_response(200, result)
