@@ -1,0 +1,30 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0 -->
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QIK-VRT · Bytes über Morse</title><link rel="stylesheet" href="style.css">
+<script defer src="codec.js"></script><script defer src="ui.js"></script></head>
+<body><main><header><span class="mark">QIK</span><span>UNIVERSAL TRANSPUTER <small>BYTE TRANSPORT V1</small></span></header>
+<p class="eyebrow">Speichern · Übertragen · Unverändert zurücklesen</p>
+<h1>Jedes Byte.<br><em>Auch nach Morse.</em></h1>
+<p class="intro">Text oder Datei einpacken, als Morse übertragen und unverändert zurückholen. Großschreibung, Satzzeichen und binäre Daten bleiben erhalten. Bis 16 KiB pro Frame.</p>
+<section aria-labelledby="input-title"><h2 id="input-title">1. Ausgangsdaten</h2>
+<label for="text">Text (UTF-8)</label><textarea id="text" spellcheck="false">Alles q.e.d.
+Grüße – Ingolf ♾️</textarea>
+<label for="file">Oder eine Datei — erhält auch ihre originalen Zeilenenden</label><input id="file" type="file">
+<div class="actions"><button id="encode">In Morse einpacken</button><button id="clear-file" class="secondary">Dateiauswahl aufheben</button></div></section>
+<section aria-labelledby="morse-title"><h2 id="morse-title">2. Morse-Frame</h2>
+<label for="morse">QIKM1: Punkte und Striche mit Längen- und Integritätsprüfung</label><textarea id="morse" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea>
+<div class="actions"><button id="decode">Prüfen und auspacken</button><label class="file-label">Frame öffnen <input id="frame-file" type="file" accept=".morse,.txt,text/plain"></label></div></section>
+<section aria-labelledby="result-title"><h2 id="result-title">3. Ergebnis und echte Downloads</h2>
+<p id="status" role="status" aria-live="polite">Bereit. Alle Umwandlungen laufen lokal.</p>
+<dl><dt>Bytes</dt><dd id="length">—</dd><dt>SHA-256 der Daten</dt><dd id="hash">—</dd></dl>
+<pre id="preview" aria-label="UTF-8 Vorschau"></pre><div id="downloads" class="actions"></div>
+<details><summary>Im lokalen Terminal-Journal speichern</summary>
+<p>Bei Verbindung zum vorhandenen S1-Terminal: dieselben Daten dauerhaft speichern und die Server-Quittung unabhängig zurücklesen. Die Zugangsdaten bleiben in dieser geöffneten Seite.</p>
+<label for="principal">Zugelassene Terminal-Kennung</label><input id="principal" autocomplete="off" spellcheck="false">
+<label for="token">Terminal-Zugangsschlüssel</label><input id="token" type="password" autocomplete="off">
+<button id="persist" disabled>Speichern und zurücklesen</button><button id="recover" disabled class="secondary">Quittung erneut lesen</button>
+<pre id="receipt" aria-label="Dauerhafte Server-Quittung"></pre></details></section>
+<footer>Ingolf Lohmann · QIK-VRT · Implementierung: OpenAI Codex<br>
+Originalbytes bleiben unverändert. SHA-256 erkennt Beschädigung; Absenderauthentifizierung und öffentliche Host-Abnahme sind eigene Nachweise. Ein lokaler Prüferfolg ist kein Zeitstempel- oder Universalitätsbeweis.</footer>
+</main></body></html>

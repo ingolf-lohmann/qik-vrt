@@ -2501,6 +2501,8 @@ def native_carrier(package, pin, config, config_path, binding, token):
         terminal = sys.modules["qikvrt_effect_ack_http_terminal"]
         grants = owner_rest_grants(config, token)
         rest = OwnerREST(runtime_instance, terminal, config["state_dir"])
+        morse = load_source(package, "qikvrt_morse_transport")
+        morse_transfer = morse.Transfer(runtime_instance, terminal, rest)
         rules = terminal.NativePeerRules(runtime_instance, config["node_id"], config["state_dir"], config.get("mesh_rule_grants", []))
         runtime_instance.peer_rules = rules
 
@@ -2589,6 +2591,7 @@ def native_carrier(package, pin, config, config_path, binding, token):
                 return grant
 
             def do_GET(self):
+                if morse.serve_get(self, morse_transfer, package): return
                 if self.path.startswith("/api/mesh-work/rule/"): return self.peer_rule_http()
                 route = urlsplit(self.path)
                 prefix = "/api/owner/receipts/"
@@ -2609,7 +2612,9 @@ def native_carrier(package, pin, config, config_path, binding, token):
             def do_POST(self):
                 if self.path.startswith("/api/mesh-work/rule/"): return self.peer_rule_http()
                 route = urlsplit(self.path)
-                operation = {"/api/owner/prepare": "prepare", "/api/owner/commit": "commit"}.get(route.path)
+                morse_operation = route.path in ("/api/owner/morse/prepare", "/api/owner/morse/commit")
+                operation = {"/api/owner/prepare": "prepare", "/api/owner/commit": "commit",
+                             "/api/owner/morse/prepare": "prepare", "/api/owner/morse/commit": "commit"}.get(route.path)
                 if operation is None:
                     self.close_connection = True
                     return self._hold("OWNER_REST_ROUTE_REQUIRED_LOCAL_UNIX_ADAPTER_SEPARATE", 405)
@@ -2619,12 +2624,14 @@ def native_carrier(package, pin, config, config_path, binding, token):
                     if route.query or any(len(self.headers.get_all(h, [])) != 1 for h in
                             ("Content-Length", "Content-Type", "Effect-Ack-Request")):
                         raise ValueError("BOUNDED_OWNER_REST_HTTP_HEADERS_REQUIRED")
-                    if not 1 <= int(self.headers["Content-Length"]) <= terminal.MAX_NATIVE_EVENT // 2:
+                    maximum = morse.MAX_REQUEST if morse_operation else terminal.MAX_NATIVE_EVENT // 2
+                    if not 1 <= int(self.headers["Content-Length"]) <= maximum:
                         raise ValueError("BOUNDED_OWNER_REST_BODY_REQUIRED")
                     effect = terminal.parse_effect_ack_request(self.headers["Effect-Ack-Request"])
                     if effect["mode"] != operation: raise ValueError("OWNER_REST_EFFECT_ACK_MODE_MISMATCH")
                     value = self._read_body()
-                    result = rest.prepare(grant, value) if operation == "prepare" else rest.commit(grant, value, effect)
+                    adapter = morse_transfer if morse_operation else rest
+                    result = adapter.prepare(grant, value) if operation == "prepare" else adapter.commit(grant, value, effect)
                     self._json(200, result, state="EFFECT_ACK_CONTINUE", record_hash=result.get("record_hash", result["prepare_hash"][7:]),
                         commit_token=result.get("commit_token"))
                 except (ValueError, KeyError, TypeError, RecursionError) as exc:
