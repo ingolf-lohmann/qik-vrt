@@ -1,0 +1,44 @@
+{
+  "schema": "qikvrt-owner-autonomous-local-ai-authorization-v1",
+  "principal": "Ingolf Lohmann",
+  "roles": [
+    "Prinzipal",
+    "Code Owner",
+    "Product Owner"
+  ],
+  "source": "EXPLICIT_OWNER_DIRECTIVE_CURRENT_CONVERSATION_2026-10-23",
+  "original_authorization": "Freigabe und dauerhafte Aufnahme des vollständig autonomen KI-Betriebs!",
+  "attributed_signature": "Prinzipal, Code Owner, Product Owner Ingolf Lohmann, quod erat demonstrandum.",
+  "authorization_active": true,
+  "repeat_owner_prompt_required": false,
+  "objective": "Repository-controlled persistent general language-model capability, available through the existing REST API to replaceable human and machine HMIs; continued implementation of specified features through existing TEMDD, clean coding and review/regression processes.",
+  "scope": [
+    "Persist reproducible local generative model and runtime bindings, licenses and owner-controlled artifact copies",
+    "Extend existing REST Personal adapter; reuse original Terminal/Transputer for admitted execution",
+    "Continue existing authorized internal work through tests, normal review, Main integration and independent effect readback"
+  ],
+  "constraints_preserved": [
+    "Existing native admission, exact-subject effect checks and private credentials",
+    "Owner-controlled runtime; no new paid managed service or provider dependency",
+    "GitHub REST_API_ONLY",
+    "Preserve original journals, grants, licenses and open obligations"
+  ],
+  "authorization_is_runtime_evidence": false,
+  "absolute_integrity_theorem_claimed": false,
+  "proprietary_chatgpt_internal_capabilities_exported": false,
+  "work_unit": "state/work_units/QIKVRT_LOCAL_LLM_OPERATION_20261023_V1.json",
+  "additional_private_backup_authorization": {
+    "principal": "Ingolf Lohmann",
+    "source": "EXPLICIT_NEW_OWNER_DIRECTIVE_CURRENT_CONVERSATION_2026-10-23",
+    "original_introduction": "Ich, Ingolf Lohmann, erteile hiermit die Freigabe für weitere Aspekte:",
+    "original_scopes": [
+      "OneDrive Sicherung des privaten Laufzeitzustands",
+      "sowohl öffentliche, als auch private Host- und Writer-Bindungen"
+    ],
+    "destination": "OWNER_CONTROLLED_ONEDRIVE",
+    "active": true,
+    "private_bindings_must_remain_private": true,
+    "raw_credentials_in_public_repository": false,
+    "writer_admission_transfer_implied": false
+  }
+}

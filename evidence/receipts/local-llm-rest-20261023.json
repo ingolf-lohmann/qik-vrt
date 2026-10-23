@@ -1,0 +1,610 @@
+{
+  "schema": "qikvrt-real-local-llm-proof-v1",
+  "observed_utc": "2026-10-23T11:50:23Z",
+  "evidence_class": "ACTUAL_LOCAL_CPU_INFERENCE",
+  "test_double": false,
+  "source": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+    "tree": "1a8003f1815b75fe534b21f242e8b782d4352796",
+    "worktree_dirty": true,
+    "sources": {
+      "src/qikvrt_personal_assistant.py": {
+        "bytes": 49475,
+        "sha256": "a57b27e93faa4413633393754a28f49b5f61d9c9f3d5aa88ef6b4d49029e5c14"
+      },
+      "src/qikvrt_effect_ack_http_terminal.py": {
+        "bytes": 54844,
+        "sha256": "5070d61c2e5c7a21abb084b7c3be73f4c0f5901b587cd1b2196505d44db34751"
+      },
+      "src/qikvrt_personal_auth.py": {
+        "bytes": 31503,
+        "sha256": "6b37b8db560bd3f72bf9a1549815e6a799edbb6aef351ba60b51982bf20cf030"
+      },
+      "src/qikvrt_personal_retrieval.py": {
+        "bytes": 6158,
+        "sha256": "eab234d8d80a403d8b595bac6a95142eb55f10d2104191bfd3278e122cf681cd"
+      },
+      "runtime/models/pplx-embed-v2-late-0.6b.lock.json": {
+        "bytes": 2450,
+        "sha256": "ba6a234906622eccafa91831c582501bacd54f61ed5ed37229e1911df7785f9f"
+      },
+      "src/qikvrt_local_llm.py": {
+        "bytes": 10573,
+        "sha256": "87a1be00b522e64c9d420684452e799d9e876c9224a2b089ac098538e074ede4"
+      },
+      "runtime/models/smollm3-3b-q4-k-m.lock.json": {
+        "bytes": 1281,
+        "sha256": "bf6fef272e18880e604eab51b93ac3eb84f27ff5d6d7a9b83f9ab499fbe7fc2f"
+      },
+      "personal/ingolf-lohmann/firefox-assistant/ARGON_REVIEW.md": {
+        "bytes": 4338,
+        "sha256": "11dd1c3f74897a6aa6c2b719214d001c69178cd63c62e2e2434ef3b23b275f8a"
+      },
+      "personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json": {
+        "bytes": 6487,
+        "sha256": "eea73e5d500bb73225af94cbec81065979d21f854eedfb13e541cd34ee820c48"
+      },
+      "personal/ingolf-lohmann/firefox-assistant/README.md": {
+        "bytes": 29760,
+        "sha256": "74df9f61881101da11289505e722f69f77fa363a7a6d907795355aa3de0e0b84"
+      },
+      "personal/ingolf-lohmann/firefox-assistant/ui.css": {
+        "bytes": 990,
+        "sha256": "7921e5e36bf04307074a3dc98edd77200a79173ecca6520e10ecadd2271a390b"
+      },
+      "personal/ingolf-lohmann/firefox-assistant/ui.html": {
+        "bytes": 2951,
+        "sha256": "befab454f8fe69a159641306e12cda9e57fa356ff8c8d2d3a0e87f84ae32df9d"
+      },
+      "personal/ingolf-lohmann/firefox-assistant/ui.js": {
+        "bytes": 13291,
+        "sha256": "1ef3458240a05cdf713a3499fced90d4f9593603a364a58fbac9f41904cb018a"
+      }
+    }
+  },
+  "model_binding": {
+    "provider": "LOCAL_OFFLINE_CPU_LLAMA_CPP",
+    "model": "qikvrt-smollm3-3b-q4-k-m",
+    "instructions_sha256": "4a1f6c3e5dda9952b31f89aafe72d33b1646a28570ad579de7e263a338fceb01",
+    "tools": [],
+    "parameters": {
+      "temperature": 0,
+      "seed": 1,
+      "max_tokens": 512,
+      "stream": false
+    },
+    "normal_retention": "FULL_PRIVATE_LOCAL_TRANSCRIPT_NO_EXTERNAL_PROVIDER",
+    "artifacts": {
+      "model": {
+        "file": "SmolLM3-Q4_K_M.gguf",
+        "bytes": 1915305312,
+        "sha256": "8334b850b7bd46238c16b0c550df2138f0889bf433809008cc17a8b05761863e"
+      },
+      "runtime": {
+        "file": "llama-b11836-bin-ubuntu-x64.tar.gz",
+        "bytes": 22350511,
+        "sha256": "42bd9edc1845ade56750ba838dce13a245543cbbbf454e8a0b9de98545f9cf31"
+      }
+    },
+    "context_tokens": 4096,
+    "threads": 2
+  },
+  "model_restored_from_independently_downloaded_owner_backup": true,
+  "elapsed_seconds": 57.925,
+  "records": [
+    {
+      "step": "SOURCE_EXTRACTION_VIA_EXISTING_REST",
+      "response": {
+        "automatic_context": null,
+        "binding": {
+          "artifacts": {
+            "model": {
+              "bytes": 1915305312,
+              "file": "SmolLM3-Q4_K_M.gguf",
+              "sha256": "8334b850b7bd46238c16b0c550df2138f0889bf433809008cc17a8b05761863e"
+            },
+            "runtime": {
+              "bytes": 22350511,
+              "file": "llama-b11836-bin-ubuntu-x64.tar.gz",
+              "sha256": "42bd9edc1845ade56750ba838dce13a245543cbbbf454e8a0b9de98545f9cf31"
+            }
+          },
+          "context_tokens": 4096,
+          "instructions_sha256": "4a1f6c3e5dda9952b31f89aafe72d33b1646a28570ad579de7e263a338fceb01",
+          "model": "qikvrt-smollm3-3b-q4-k-m",
+          "normal_retention": "FULL_PRIVATE_LOCAL_TRANSCRIPT_NO_EXTERNAL_PROVIDER",
+          "parameters": {
+            "max_tokens": 512,
+            "seed": 1,
+            "stream": false,
+            "temperature": 0
+          },
+          "provider": "LOCAL_OFFLINE_CPU_LLAMA_CPP",
+          "threads": 2,
+          "tools": []
+        },
+        "model_output_independently_verified": false,
+        "ordinary_release": false,
+        "product_claim_allowed": false,
+        "session": {
+          "checkpoint": {
+            "draft": "\nThe verification code stated in source sample-a is ORBIT-731.",
+            "evidence": "ACTUAL_PROVIDER_OUTPUT_UNVERIFIED",
+            "history_sha256": "b88df6dbce6cc948b73669999edf065b1f448173c6e7a4208ae942a6773c886b",
+            "independent_acceptance": false,
+            "response_id": "chatcmpl-mGG0BWs1aZwT8S11RCQ8bvkRhtwovuCC",
+            "revision": 1,
+            "sources": {
+              "sample-a": "97d07e510b3f667229adfb681571e00c68ebaf4915d85b7881f9d988a4a44257"
+            },
+            "task_sha256": "8f590b5903acce9cb98515ab8c4cd695488e40296efe7d872ed83e7084207b6f"
+          },
+          "conversation_id": null,
+          "conversation_receipt": {
+            "evidence_class": "LOCAL_TRANSCRIPT_ONLY"
+          },
+          "created_subject": {
+            "head": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+            "repository": "ingolf-lohmann/qik-vrt",
+            "sources": {
+              "personal/ingolf-lohmann/firefox-assistant/ARGON_REVIEW.md": {
+                "bytes": 4338,
+                "sha256": "11dd1c3f74897a6aa6c2b719214d001c69178cd63c62e2e2434ef3b23b275f8a"
+              },
+              "personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json": {
+                "bytes": 6487,
+                "sha256": "eea73e5d500bb73225af94cbec81065979d21f854eedfb13e541cd34ee820c48"
+              },
+              "personal/ingolf-lohmann/firefox-assistant/README.md": {
+                "bytes": 29760,
+                "sha256": "74df9f61881101da11289505e722f69f77fa363a7a6d907795355aa3de0e0b84"
+              },
+              "personal/ingolf-lohmann/firefox-assistant/ui.css": {
+                "bytes": 990,
+                "sha256": "7921e5e36bf04307074a3dc98edd77200a79173ecca6520e10ecadd2271a390b"
+              },
+              "personal/ingolf-lohmann/firefox-assistant/ui.html": {
+                "bytes": 2951,
+                "sha256": "befab454f8fe69a159641306e12cda9e57fa356ff8c8d2d3a0e87f84ae32df9d"
+              },
+              "personal/ingolf-lohmann/firefox-assistant/ui.js": {
+                "bytes": 13291,
+                "sha256": "1ef3458240a05cdf713a3499fced90d4f9593603a364a58fbac9f41904cb018a"
+              },
+              "runtime/models/pplx-embed-v2-late-0.6b.lock.json": {
+                "bytes": 2450,
+                "sha256": "ba6a234906622eccafa91831c582501bacd54f61ed5ed37229e1911df7785f9f"
+              },
+              "runtime/models/smollm3-3b-q4-k-m.lock.json": {
+                "bytes": 1281,
+                "sha256": "bf6fef272e18880e604eab51b93ac3eb84f27ff5d6d7a9b83f9ab499fbe7fc2f"
+              },
+              "src/qikvrt_effect_ack_http_terminal.py": {
+                "bytes": 54844,
+                "sha256": "5070d61c2e5c7a21abb084b7c3be73f4c0f5901b587cd1b2196505d44db34751"
+              },
+              "src/qikvrt_local_llm.py": {
+                "bytes": 10573,
+                "sha256": "87a1be00b522e64c9d420684452e799d9e876c9224a2b089ac098538e074ede4"
+              },
+              "src/qikvrt_personal_assistant.py": {
+                "bytes": 49475,
+                "sha256": "a57b27e93faa4413633393754a28f49b5f61d9c9f3d5aa88ef6b4d49029e5c14"
+              },
+              "src/qikvrt_personal_auth.py": {
+                "bytes": 31503,
+                "sha256": "6b37b8db560bd3f72bf9a1549815e6a799edbb6aef351ba60b51982bf20cf030"
+              },
+              "src/qikvrt_personal_retrieval.py": {
+                "bytes": 6158,
+                "sha256": "eab234d8d80a403d8b595bac6a95142eb55f10d2104191bfd3278e122cf681cd"
+              }
+            },
+            "tree": "1a8003f1815b75fe534b21f242e8b782d4352796",
+            "worktree_dirty": true
+          },
+          "history": [
+            {
+              "intent": {
+                "created_utc": "2026-10-23T11:49:33Z",
+                "id": "4fb0b8e185954815ac14c1899619bfa1",
+                "input": "{\"source_hashes\":{\"sample-a\":\"97d07e510b3f667229adfb681571e00c68ebaf4915d85b7881f9d988a4a44257\"},\"sources\":[{\"id\":\"sample-a\",\"revision\":\"1\",\"text\":\"The verification code is ORBIT-731.\"}],\"task\":\"Answer in one short sentence: what verification code is stated in source sample-a?\"}",
+                "request_sha256": "b4a8698120df29cf12192abac8a7f453725bec9a004931e4f14aad6289305475"
+              },
+              "output": [
+                {
+                  "content": [
+                    {
+                      "text": "\nThe verification code stated in source sample-a is ORBIT-731.",
+                      "type": "output_text"
+                    }
+                  ],
+                  "role": "assistant",
+                  "type": "message"
+                }
+              ],
+              "receipt": {
+                "evidence_class": "LOCAL_CPU_MODEL_HTTP_RESPONSE",
+                "http_status": 200,
+                "response_sha256": "43ad4e026be4f26068bc38629742dafe411dcd234b464f622e3aad03250b0a86"
+              },
+              "resolved_model": "qikvrt-smollm3-3b-q4-k-m",
+              "response_id": "chatcmpl-mGG0BWs1aZwT8S11RCQ8bvkRhtwovuCC",
+              "text": "\nThe verification code stated in source sample-a is ORBIT-731."
+            }
+          ],
+          "id": "2eb33869bd3548ed9568d4500eca4b89",
+          "mode": "qikvrt",
+          "source_hashes": {
+            "sample-a": "97d07e510b3f667229adfb681571e00c68ebaf4915d85b7881f9d988a4a44257"
+          },
+          "sources": [
+            {
+              "id": "sample-a",
+              "revision": "1",
+              "text": "The verification code is ORBIT-731."
+            }
+          ],
+          "status": "READY",
+          "task": "Answer in one short sentence: what verification code is stated in source sample-a?"
+        },
+        "session_sha256": "855b45062d4218aacc72793df0c4554d6d1b8c95fd8c26834125f4a468ed717b",
+        "state": "STORED_LOCAL"
+      },
+      "readback_equal": true
+    },
+    {
+      "step": "NEW_PROCESS_RESTORED_AND_CONTINUED_VIA_REST",
+      "response": {
+        "automatic_context": "{\"checkpoint\":{\"draft\":\"\\nThe verification code stated in source sample-a is ORBIT-731.\",\"evidence\":\"ACTUAL_PROVIDER_OUTPUT_UNVERIFIED\",\"history_sha256\":\"b88df6dbce6cc948b73669999edf065b1f448173c6e7a4208ae942a6773c886b\",\"independent_acceptance\":false,\"response_id\":\"chatcmpl-mGG0BWs1aZwT8S11RCQ8bvkRhtwovuCC\",\"revision\":1,\"sources\":{\"sample-a\":\"97d07e510b3f667229adfb681571e00c68ebaf4915d85b7881f9d988a4a44257\"},\"task_sha256\":\"8f590b5903acce9cb98515ab8c4cd695488e40296efe7d872ed83e7084207b6f\"},\"kind\":\"QIKVRT_OBSERVED_CHECKPOINT\",\"sources\":[{\"id\":\"sample-a\",\"revision\":\"1\",\"text\":\"The verification code is ORBIT-731.\"}],\"task\":\"Answer in one short sentence: what verification code is stated in source sample-a?\"}",
+        "binding": {
+          "artifacts": {
+            "model": {
+              "bytes": 1915305312,
+              "file": "SmolLM3-Q4_K_M.gguf",
+              "sha256": "8334b850b7bd46238c16b0c550df2138f0889bf433809008cc17a8b05761863e"
+            },
+            "runtime": {
+              "bytes": 22350511,
+              "file": "llama-b11836-bin-ubuntu-x64.tar.gz",
+              "sha256": "42bd9edc1845ade56750ba838dce13a245543cbbbf454e8a0b9de98545f9cf31"
+            }
+          },
+          "context_tokens": 4096,
+          "instructions_sha256": "4a1f6c3e5dda9952b31f89aafe72d33b1646a28570ad579de7e263a338fceb01",
+          "model": "qikvrt-smollm3-3b-q4-k-m",
+          "normal_retention": "FULL_PRIVATE_LOCAL_TRANSCRIPT_NO_EXTERNAL_PROVIDER",
+          "parameters": {
+            "max_tokens": 512,
+            "seed": 1,
+            "stream": false,
+            "temperature": 0
+          },
+          "provider": "LOCAL_OFFLINE_CPU_LLAMA_CPP",
+          "threads": 2,
+          "tools": []
+        },
+        "model_output_independently_verified": false,
+        "ordinary_release": false,
+        "product_claim_allowed": false,
+        "session": {
+          "checkpoint": {
+            "draft": "\nORBIT-731",
+            "evidence": "ACTUAL_PROVIDER_OUTPUT_UNVERIFIED",
+            "history_sha256": "1a9aa7846f5006770a7c37e3e69078f1550e432b6804fe982135f21873a64498",
+            "independent_acceptance": false,
+            "response_id": "chatcmpl-FoaEEbQl11ep9fLL3KZlMfz3vyDSVjo1",
+            "revision": 2,
+            "sources": {
+              "sample-a": "97d07e510b3f667229adfb681571e00c68ebaf4915d85b7881f9d988a4a44257"
+            },
+            "task_sha256": "8f590b5903acce9cb98515ab8c4cd695488e40296efe7d872ed83e7084207b6f"
+          },
+          "conversation_id": null,
+          "conversation_receipt": {
+            "evidence_class": "LOCAL_TRANSCRIPT_ONLY"
+          },
+          "created_subject": {
+            "head": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+            "repository": "ingolf-lohmann/qik-vrt",
+            "sources": {
+              "personal/ingolf-lohmann/firefox-assistant/ARGON_REVIEW.md": {
+                "bytes": 4338,
+                "sha256": "11dd1c3f74897a6aa6c2b719214d001c69178cd63c62e2e2434ef3b23b275f8a"
+              },
+              "personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json": {
+                "bytes": 6487,
+                "sha256": "eea73e5d500bb73225af94cbec81065979d21f854eedfb13e541cd34ee820c48"
+              },
+              "personal/ingolf-lohmann/firefox-assistant/README.md": {
+                "bytes": 29760,
+                "sha256": "74df9f61881101da11289505e722f69f77fa363a7a6d907795355aa3de0e0b84"
+              },
+              "personal/ingolf-lohmann/firefox-assistant/ui.css": {
+                "bytes": 990,
+                "sha256": "7921e5e36bf04307074a3dc98edd77200a79173ecca6520e10ecadd2271a390b"
+              },
+              "personal/ingolf-lohmann/firefox-assistant/ui.html": {
+                "bytes": 2951,
+                "sha256": "befab454f8fe69a159641306e12cda9e57fa356ff8c8d2d3a0e87f84ae32df9d"
+              },
+              "personal/ingolf-lohmann/firefox-assistant/ui.js": {
+                "bytes": 13291,
+                "sha256": "1ef3458240a05cdf713a3499fced90d4f9593603a364a58fbac9f41904cb018a"
+              },
+              "runtime/models/pplx-embed-v2-late-0.6b.lock.json": {
+                "bytes": 2450,
+                "sha256": "ba6a234906622eccafa91831c582501bacd54f61ed5ed37229e1911df7785f9f"
+              },
+              "runtime/models/smollm3-3b-q4-k-m.lock.json": {
+                "bytes": 1281,
+                "sha256": "bf6fef272e18880e604eab51b93ac3eb84f27ff5d6d7a9b83f9ab499fbe7fc2f"
+              },
+              "src/qikvrt_effect_ack_http_terminal.py": {
+                "bytes": 54844,
+                "sha256": "5070d61c2e5c7a21abb084b7c3be73f4c0f5901b587cd1b2196505d44db34751"
+              },
+              "src/qikvrt_local_llm.py": {
+                "bytes": 10573,
+                "sha256": "87a1be00b522e64c9d420684452e799d9e876c9224a2b089ac098538e074ede4"
+              },
+              "src/qikvrt_personal_assistant.py": {
+                "bytes": 49475,
+                "sha256": "a57b27e93faa4413633393754a28f49b5f61d9c9f3d5aa88ef6b4d49029e5c14"
+              },
+              "src/qikvrt_personal_auth.py": {
+                "bytes": 31503,
+                "sha256": "6b37b8db560bd3f72bf9a1549815e6a799edbb6aef351ba60b51982bf20cf030"
+              },
+              "src/qikvrt_personal_retrieval.py": {
+                "bytes": 6158,
+                "sha256": "eab234d8d80a403d8b595bac6a95142eb55f10d2104191bfd3278e122cf681cd"
+              }
+            },
+            "tree": "1a8003f1815b75fe534b21f242e8b782d4352796",
+            "worktree_dirty": true
+          },
+          "history": [
+            {
+              "intent": {
+                "created_utc": "2026-10-23T11:49:33Z",
+                "id": "4fb0b8e185954815ac14c1899619bfa1",
+                "input": "{\"source_hashes\":{\"sample-a\":\"97d07e510b3f667229adfb681571e00c68ebaf4915d85b7881f9d988a4a44257\"},\"sources\":[{\"id\":\"sample-a\",\"revision\":\"1\",\"text\":\"The verification code is ORBIT-731.\"}],\"task\":\"Answer in one short sentence: what verification code is stated in source sample-a?\"}",
+                "request_sha256": "b4a8698120df29cf12192abac8a7f453725bec9a004931e4f14aad6289305475"
+              },
+              "output": [
+                {
+                  "content": [
+                    {
+                      "text": "\nThe verification code stated in source sample-a is ORBIT-731.",
+                      "type": "output_text"
+                    }
+                  ],
+                  "role": "assistant",
+                  "type": "message"
+                }
+              ],
+              "receipt": {
+                "evidence_class": "LOCAL_CPU_MODEL_HTTP_RESPONSE",
+                "http_status": 200,
+                "response_sha256": "43ad4e026be4f26068bc38629742dafe411dcd234b464f622e3aad03250b0a86"
+              },
+              "resolved_model": "qikvrt-smollm3-3b-q4-k-m",
+              "response_id": "chatcmpl-mGG0BWs1aZwT8S11RCQ8bvkRhtwovuCC",
+              "text": "\nThe verification code stated in source sample-a is ORBIT-731."
+            },
+            {
+              "intent": {
+                "created_utc": "2026-10-23T11:49:46Z",
+                "id": "fe9685e12aba4340837d8f848cb88b33",
+                "input": "{\"checkpoint\":{\"draft\":\"\\nThe verification code stated in source sample-a is ORBIT-731.\",\"evidence\":\"ACTUAL_PROVIDER_OUTPUT_UNVERIFIED\",\"history_sha256\":\"b88df6dbce6cc948b73669999edf065b1f448173c6e7a4208ae942a6773c886b\",\"independent_acceptance\":false,\"response_id\":\"chatcmpl-mGG0BWs1aZwT8S11RCQ8bvkRhtwovuCC\",\"revision\":1,\"sources\":{\"sample-a\":\"97d07e510b3f667229adfb681571e00c68ebaf4915d85b7881f9d988a4a44257\"},\"task_sha256\":\"8f590b5903acce9cb98515ab8c4cd695488e40296efe7d872ed83e7084207b6f\"},\"kind\":\"QIKVRT_OBSERVED_CHECKPOINT\",\"sources\":[{\"id\":\"sample-a\",\"revision\":\"1\",\"text\":\"The verification code is ORBIT-731.\"}],\"task\":\"Answer in one short sentence: what verification code is stated in source sample-a?\"}\nRepeat the previously stated verification code only.",
+                "request_sha256": "1b9becdd1ee55cedd9a6d219a32a76441d2557df5b249ed14d149593f60fcfae"
+              },
+              "output": [
+                {
+                  "content": [
+                    {
+                      "text": "\nORBIT-731",
+                      "type": "output_text"
+                    }
+                  ],
+                  "role": "assistant",
+                  "type": "message"
+                }
+              ],
+              "receipt": {
+                "evidence_class": "LOCAL_CPU_MODEL_HTTP_RESPONSE",
+                "http_status": 200,
+                "response_sha256": "f81b3d6591a172db3e68d5bd98544234ca49c8a56659d68655c0301b0341998e"
+              },
+              "resolved_model": "qikvrt-smollm3-3b-q4-k-m",
+              "response_id": "chatcmpl-FoaEEbQl11ep9fLL3KZlMfz3vyDSVjo1",
+              "text": "\nORBIT-731"
+            }
+          ],
+          "id": "2eb33869bd3548ed9568d4500eca4b89",
+          "mode": "qikvrt",
+          "source_hashes": {
+            "sample-a": "97d07e510b3f667229adfb681571e00c68ebaf4915d85b7881f9d988a4a44257"
+          },
+          "sources": [
+            {
+              "id": "sample-a",
+              "revision": "1",
+              "text": "The verification code is ORBIT-731."
+            }
+          ],
+          "status": "READY",
+          "task": "Answer in one short sentence: what verification code is stated in source sample-a?"
+        },
+        "session_sha256": "15b3a54128b25d6f22f6cd81c00e13b843b7f367f275ea3ef7263ae09dae858b",
+        "state": "STORED_LOCAL"
+      },
+      "restored_session_equal": true
+    },
+    {
+      "step": "LOCAL_MODEL_CODE_REVIEW_DRAFT_VIA_EXISTING_REST",
+      "response": {
+        "automatic_context": null,
+        "binding": {
+          "artifacts": {
+            "model": {
+              "bytes": 1915305312,
+              "file": "SmolLM3-Q4_K_M.gguf",
+              "sha256": "8334b850b7bd46238c16b0c550df2138f0889bf433809008cc17a8b05761863e"
+            },
+            "runtime": {
+              "bytes": 22350511,
+              "file": "llama-b11836-bin-ubuntu-x64.tar.gz",
+              "sha256": "42bd9edc1845ade56750ba838dce13a245543cbbbf454e8a0b9de98545f9cf31"
+            }
+          },
+          "context_tokens": 4096,
+          "instructions_sha256": "4a1f6c3e5dda9952b31f89aafe72d33b1646a28570ad579de7e263a338fceb01",
+          "model": "qikvrt-smollm3-3b-q4-k-m",
+          "normal_retention": "FULL_PRIVATE_LOCAL_TRANSCRIPT_NO_EXTERNAL_PROVIDER",
+          "parameters": {
+            "max_tokens": 512,
+            "seed": 1,
+            "stream": false,
+            "temperature": 0
+          },
+          "provider": "LOCAL_OFFLINE_CPU_LLAMA_CPP",
+          "threads": 2,
+          "tools": []
+        },
+        "model_output_independently_verified": false,
+        "ordinary_release": false,
+        "product_claim_allowed": false,
+        "session": {
+          "checkpoint": null,
+          "conversation_id": null,
+          "conversation_receipt": {
+            "evidence_class": "LOCAL_TRANSCRIPT_ONLY"
+          },
+          "created_subject": {
+            "head": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+            "repository": "ingolf-lohmann/qik-vrt",
+            "sources": {
+              "personal/ingolf-lohmann/firefox-assistant/ARGON_REVIEW.md": {
+                "bytes": 4338,
+                "sha256": "11dd1c3f74897a6aa6c2b719214d001c69178cd63c62e2e2434ef3b23b275f8a"
+              },
+              "personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json": {
+                "bytes": 6487,
+                "sha256": "eea73e5d500bb73225af94cbec81065979d21f854eedfb13e541cd34ee820c48"
+              },
+              "personal/ingolf-lohmann/firefox-assistant/README.md": {
+                "bytes": 29760,
+                "sha256": "74df9f61881101da11289505e722f69f77fa363a7a6d907795355aa3de0e0b84"
+              },
+              "personal/ingolf-lohmann/firefox-assistant/ui.css": {
+                "bytes": 990,
+                "sha256": "7921e5e36bf04307074a3dc98edd77200a79173ecca6520e10ecadd2271a390b"
+              },
+              "personal/ingolf-lohmann/firefox-assistant/ui.html": {
+                "bytes": 2951,
+                "sha256": "befab454f8fe69a159641306e12cda9e57fa356ff8c8d2d3a0e87f84ae32df9d"
+              },
+              "personal/ingolf-lohmann/firefox-assistant/ui.js": {
+                "bytes": 13291,
+                "sha256": "1ef3458240a05cdf713a3499fced90d4f9593603a364a58fbac9f41904cb018a"
+              },
+              "runtime/models/pplx-embed-v2-late-0.6b.lock.json": {
+                "bytes": 2450,
+                "sha256": "ba6a234906622eccafa91831c582501bacd54f61ed5ed37229e1911df7785f9f"
+              },
+              "runtime/models/smollm3-3b-q4-k-m.lock.json": {
+                "bytes": 1281,
+                "sha256": "bf6fef272e18880e604eab51b93ac3eb84f27ff5d6d7a9b83f9ab499fbe7fc2f"
+              },
+              "src/qikvrt_effect_ack_http_terminal.py": {
+                "bytes": 54844,
+                "sha256": "5070d61c2e5c7a21abb084b7c3be73f4c0f5901b587cd1b2196505d44db34751"
+              },
+              "src/qikvrt_local_llm.py": {
+                "bytes": 10573,
+                "sha256": "87a1be00b522e64c9d420684452e799d9e876c9224a2b089ac098538e074ede4"
+              },
+              "src/qikvrt_personal_assistant.py": {
+                "bytes": 49475,
+                "sha256": "a57b27e93faa4413633393754a28f49b5f61d9c9f3d5aa88ef6b4d49029e5c14"
+              },
+              "src/qikvrt_personal_auth.py": {
+                "bytes": 31503,
+                "sha256": "6b37b8db560bd3f72bf9a1549815e6a799edbb6aef351ba60b51982bf20cf030"
+              },
+              "src/qikvrt_personal_retrieval.py": {
+                "bytes": 6158,
+                "sha256": "eab234d8d80a403d8b595bac6a95142eb55f10d2104191bfd3278e122cf681cd"
+              }
+            },
+            "tree": "1a8003f1815b75fe534b21f242e8b782d4352796",
+            "worktree_dirty": true
+          },
+          "history": [
+            {
+              "intent": {
+                "created_utc": "2026-10-23T11:50:00Z",
+                "id": "efb6f9516bea4d59a317348362df3fa0",
+                "input": "{\"source_hashes\":{\"post-excerpt\":\"c07d3bb8ff74f5c520e9cf0a6a912d39965634ae6b33237b04a1479bd64fff29\"},\"sources\":[{\"id\":\"post-excerpt\",\"revision\":\"9ffde4e74f04c029d6100949397de5fa6b7e0e11c4a82f972441ca35166ef652\",\"text\":\"def post(self, path, payload):\\n        if not self.alive():\\n            raise CapabilityBlock(\\\"LOCAL_MODEL_PROCESS_NOT_RUNNING_NO_RETRY\\\")\\n        if (path != \\\"/responses\\\" or set(payload) != {\\\"model\\\", \\\"messages\\\", *PARAMETERS} or\\n                payload.get(\\\"model\\\") != MODEL_ID or any(payload.get(k) != v for k, v in PARAMETERS.items())):\\n            raise CapabilityBlock(\\\"LOCAL_MODEL_REQUEST_OUTSIDE_BOUND_CONTRACT\\\")\\n        value, receipt = self._request(\\\"/v1/chat/completions\\\", payload)\\n        choices = value.get(\\\"choices\\\")\\n        if (value.get(\\\"model\\\") != MODEL_ID or not isinstance(choices, list) or len(choices) != 1 or\\n                not isinstance(choices[0], dict) or choices[0].get(\\\"finish_reason\\\") != \\\"stop\\\"):\\n            raise CapabilityBlock(\\\"LOCAL_MODEL_RESULT_INCOMPLETE_OR_MODEL_MISMATCH\\\")\\n        message = choices[0].get(\\\"message\\\")\\n        if not isinstance(message, dict) or message.get(\\\"tool_calls\\\") or not isinstance(message.get(\\\"content\\\"), str):\\n            raise CapabilityBlock(\\\"LOCAL_MODEL_TEXT_ONLY_RESPONSE_REQUIRED\\\")\\n        return {\\\"id\\\": value.get(\\\"id\\\"), \\\"model\\\": MODEL_ID, \\\"status\\\": \\\"completed\\\",\\n                \\\"output\\\": [{\\\"type\\\": \\\"message\\\", \\\"role\\\": \\\"assistant\\\", \\\"content\\\": [\\n                    {\\\"type\\\": \\\"output_text\\\", \\\"text\\\": message[\\\"content\\\"]}]}], \\\"usage\\\": value.get(\\\"usage\\\")}, receipt\\n\"}],\"task\":\"Review only the supplied Python post() excerpt. In at most three short bullets, identify concrete issues or say none is established. Distinguish assumptions about unshown functions. This is an unverified review draft, not approval.\"}",
+                "request_sha256": "ca7bf372014c98e2e96a9b6000bb61edde38170f79fd2e892f70f63bac3be045"
+              },
+              "output": [
+                {
+                  "content": [
+                    {
+                      "text": "\n- The function `post` checks if the model is alive before proceeding.\n- It verifies that the request path and payload match the expected format and parameters.\n- The function sends a request to the chatbot API and checks the response for specific conditions, including the model ID and response type.\n- The function validates the response to ensure it meets the expected criteria, including the presence of a message with only text content.\n- The function returns a response object containing the chatbot's output and usage information.",
+                      "type": "output_text"
+                    }
+                  ],
+                  "role": "assistant",
+                  "type": "message"
+                }
+              ],
+              "receipt": {
+                "evidence_class": "LOCAL_CPU_MODEL_HTTP_RESPONSE",
+                "http_status": 200,
+                "response_sha256": "8a03416c1e2b4e544db9d19bddb9b91acbfb9ec0e1f6f68b427e33dd41a0c7d2"
+              },
+              "resolved_model": "qikvrt-smollm3-3b-q4-k-m",
+              "response_id": "chatcmpl-ijsswLX0G4G2xVLXN9mntcLQNDPpl5hd",
+              "text": "\n- The function `post` checks if the model is alive before proceeding.\n- It verifies that the request path and payload match the expected format and parameters.\n- The function sends a request to the chatbot API and checks the response for specific conditions, including the model ID and response type.\n- The function validates the response to ensure it meets the expected criteria, including the presence of a message with only text content.\n- The function returns a response object containing the chatbot's output and usage information."
+            }
+          ],
+          "id": "6bd937607cc74c8090106404aaadcae0",
+          "mode": "baseline",
+          "source_hashes": {
+            "post-excerpt": "c07d3bb8ff74f5c520e9cf0a6a912d39965634ae6b33237b04a1479bd64fff29"
+          },
+          "sources": [
+            {
+              "id": "post-excerpt",
+              "revision": "9ffde4e74f04c029d6100949397de5fa6b7e0e11c4a82f972441ca35166ef652",
+              "text": "def post(self, path, payload):\n        if not self.alive():\n            raise CapabilityBlock(\"LOCAL_MODEL_PROCESS_NOT_RUNNING_NO_RETRY\")\n        if (path != \"/responses\" or set(payload) != {\"model\", \"messages\", *PARAMETERS} or\n                payload.get(\"model\") != MODEL_ID or any(payload.get(k) != v for k, v in PARAMETERS.items())):\n            raise CapabilityBlock(\"LOCAL_MODEL_REQUEST_OUTSIDE_BOUND_CONTRACT\")\n        value, receipt = self._request(\"/v1/chat/completions\", payload)\n        choices = value.get(\"choices\")\n        if (value.get(\"model\") != MODEL_ID or not isinstance(choices, list) or len(choices) != 1 or\n                not isinstance(choices[0], dict) or choices[0].get(\"finish_reason\") != \"stop\"):\n            raise CapabilityBlock(\"LOCAL_MODEL_RESULT_INCOMPLETE_OR_MODEL_MISMATCH\")\n        message = choices[0].get(\"message\")\n        if not isinstance(message, dict) or message.get(\"tool_calls\") or not isinstance(message.get(\"content\"), str):\n            raise CapabilityBlock(\"LOCAL_MODEL_TEXT_ONLY_RESPONSE_REQUIRED\")\n        return {\"id\": value.get(\"id\"), \"model\": MODEL_ID, \"status\": \"completed\",\n                \"output\": [{\"type\": \"message\", \"role\": \"assistant\", \"content\": [\n                    {\"type\": \"output_text\", \"text\": message[\"content\"]}]}], \"usage\": value.get(\"usage\")}, receipt\n"
+            }
+          ],
+          "status": "READY",
+          "task": "Review only the supplied Python post() excerpt. In at most three short bullets, identify concrete issues or say none is established. Distinguish assumptions about unshown functions. This is an unverified review draft, not approval."
+        },
+        "session_sha256": "992640fa0aa53c77a530020552c7875406c89a5b3acd2ff3a38f4a98af90cf1c",
+        "state": "STORED_LOCAL"
+      },
+      "independent_approval": false
+    }
+  ],
+  "private_state_outside_repository": true,
+  "client_authentication": "EXPLICIT_DEVELOPMENT_MEMORY_BEARER",
+  "productive_owner_host_verified": false,
+  "hmi_disconnected_autonomous_continuation_verified": false,
+  "effect_ack_done": false,
+  "review_assessment": {
+    "status": "UNVERIFIED_DESCRIPTIVE_DRAFT",
+    "requested_bullet_limit": 3,
+    "observed_bullets": 5,
+    "format_compliance": false,
+    "used_as_release_approval": false,
+    "scope": "Actual model text describes the supplied function; it establishes no independent code correctness or approval."
+  }
+}

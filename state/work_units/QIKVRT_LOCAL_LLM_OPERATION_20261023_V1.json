@@ -1,0 +1,46 @@
+{
+  "schema": "qikvrt-local-llm-work-unit-v1",
+  "id": "QIKVRT_LOCAL_LLM_OPERATION_20261023_V1",
+  "owner_authorization": "state/authorization/delegations/OWNER_AUTONOMOUS_LOCAL_AI_OPERATION_20261023_V1.json",
+  "source_predecessor": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+    "tree": "1a8003f1815b75fe534b21f242e8b782d4352796"
+  },
+  "implementation": "src/qikvrt_local_llm.py",
+  "existing_adapter": "src/qikvrt_personal_assistant.py",
+  "existing_terminal": "src/qikvrt_effect_ack_http_terminal.py",
+  "model_lock": "runtime/models/smollm3-3b-q4-k-m.lock.json",
+  "restoration": "tools/qikvrt_restore_local_llm.py",
+  "actual_inference_receipt": "evidence/receipts/local-llm-rest-20261023.json",
+  "native_session_receipt": "evidence/receipts/local-llm-native-20261023.json",
+  "model_artifact_receipt": "evidence/receipts/local-llm-artifacts-20261023.json",
+  "regression_suite": "tests/test_qikvrt_local_llm.py",
+  "scope": "LOCAL_GENERATIVE_CAPABILITY_AND_NORMAL_SOURCE_INTEGRATION",
+  "open_work": [
+    {
+      "id": "complete-chatgpt-corpus-equality",
+      "next_action": "Obtain actual complete source export through a supported operation and verify every payload against repository carriers; prior metadata enumeration is insufficient."
+    },
+    {
+      "id": "autonomous-semantic-host",
+      "next_action": "Use the original protected S1 host/operator binding to start the admitted native consumer with the verified local model, retain original state, disconnect the HMI and independently verify all admitted pending work and effects."
+    },
+    {
+      "id": "exact-domain-delivery",
+      "next_action": "Repair through the original admitted Owner-host/DNS/TLS route and read back raumzeitterminal.de; unchanged HTTP525 is NOOP for repeated deployment."
+    },
+    {
+      "id": "mesh-peer-ack-and-outbox",
+      "next_action": "Recover the original bound node-tools/qikvrt_mirror_emit.py and actual peer ACK/reply channels; do not introduce a replacement or infer delivery."
+    },
+    {
+      "id": "copilot-paid-subscription-cancellation",
+      "next_action": "Retain previous authorization and cancellation-only browser exception; use an actually authenticated billing operation when available. No renewed credential-entry prompt or unchanged login attempt."
+    }
+  ],
+  "productive_host_verified": false,
+  "both_overall_acceptance_tests_passed": false,
+  "model_output_independently_verified": false,
+  "effect_ack_done": false
+}

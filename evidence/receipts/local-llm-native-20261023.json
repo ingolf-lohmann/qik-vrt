@@ -1,0 +1,174 @@
+{
+  "subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pr": 587,
+    "head": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+    "tree": "1a8003f1815b75fe534b21f242e8b782d4352796"
+  },
+  "epoch": "b2a10321386946d4b5d557d59e158391",
+  "events": [
+    {
+      "dod": false,
+      "evidence_transfer": "DENY",
+      "kind": "OBSERVE",
+      "message": "Model and runtime bytes independently hash-checked against immutable upstream pins",
+      "observed_at": "2026-10-23T11:29:35.211589Z",
+      "payload": {
+        "model_sha256": "8334b850b7bd46238c16b0c550df2138f0889bf433809008cc17a8b05761863e",
+        "runtime_sha256": "42bd9edc1845ade56750ba838dce13a245543cbbbf454e8a0b9de98545f9cf31",
+        "source_role": "MAIN_PREDECESSOR",
+        "test_double": false,
+        "work_unit": "QIKVRT_LOCAL_LLM_20261023_V1"
+      },
+      "payload_digest": "141b71d8f9eaea5c7c6b018324a95bd7cacd435832b7921c53d5d2e4c1e80ed5",
+      "provenance": {
+        "native_event_id": "local-llm-20261023:1",
+        "source": "transputer"
+      },
+      "recorded_at": "2026-10-23T11:29:35.234443Z",
+      "schema": "qikvrt_temdd_event_v1",
+      "subject": {
+        "head": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+        "pr": 587,
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "1a8003f1815b75fe534b21f242e8b782d4352796"
+      },
+      "id": "b2a10321386946d4b5d557d59e158391:1",
+      "ledger_digest": "b1d84f541f4eaf609756cee458098c0f5b5f6b3a7b23026808401ef04f548b9c"
+    },
+    {
+      "dod": false,
+      "evidence_transfer": "DENY",
+      "kind": "ACTION",
+      "message": "Owner-authorized local inference and durable model binding work admitted in this own native epoch",
+      "observed_at": "2026-10-23T11:29:35.235399Z",
+      "payload": {
+        "grant": "Freigabe und dauerhafte Aufnahme des vollständig autonomen KI-Betriebs",
+        "principal": "Ingolf Lohmann",
+        "scope": "LOCAL_MODEL_ADAPTER_AND_ACCEPTANCE; productive host remains separately admitted",
+        "work_unit": "QIKVRT_LOCAL_LLM_20261023_V1"
+      },
+      "payload_digest": "46e592dd858e3286a9151a12b4fec6b64b266fe60f7df42e126719bd9544a45c",
+      "provenance": {
+        "native_event_id": "local-llm-20261023:2",
+        "source": "transputer"
+      },
+      "recorded_at": "2026-10-23T11:29:35.266022Z",
+      "schema": "qikvrt_temdd_event_v1",
+      "subject": {
+        "head": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+        "pr": 587,
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "1a8003f1815b75fe534b21f242e8b782d4352796"
+      },
+      "id": "b2a10321386946d4b5d557d59e158391:2",
+      "ledger_digest": "51d28113186b1f3f95934e926b9bbc8e37e3d1298adbafd4d9aeafa46c2df2ba"
+    },
+    {
+      "dod": false,
+      "evidence_transfer": "DENY",
+      "kind": "READBACK",
+      "message": "Actual owner-backup model restored, SHA256 verified and exercised through existing REST with process restart",
+      "observed_at": "2026-10-23T11:51:44.849541Z",
+      "payload": {
+        "model_output_is_independent_approval": false,
+        "production_host_verified": false,
+        "real_model_responses": 3,
+        "receipt_sha256": "89c4f0308e1f595e8c37aceaaea680ee2db9e48ba65c02fcc0f3d2483b11cf0e",
+        "work_unit": "QIKVRT_LOCAL_LLM_OPERATION_20261023_V1"
+      },
+      "payload_digest": "1c74515701315244637fe7f7ae091594ab4cef95fed131b6d297395325e08684",
+      "provenance": {
+        "native_event_id": "local-llm-20261023:3",
+        "source": "transputer"
+      },
+      "recorded_at": "2026-10-23T11:51:44.873286Z",
+      "schema": "qikvrt_temdd_event_v1",
+      "subject": {
+        "head": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+        "pr": 587,
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "1a8003f1815b75fe534b21f242e8b782d4352796"
+      },
+      "id": "b2a10321386946d4b5d557d59e158391:3",
+      "ledger_digest": "1d88be0adb0a69da0a74d89fe4409faba17631a53e80d882682867fb2edd31c3"
+    },
+    {
+      "dod": false,
+      "evidence_transfer": "DENY",
+      "kind": "SUCCESSOR",
+      "message": "Continue normal source integration and preserve original productive-host and complete-corpus acceptance obligations",
+      "observed_at": "2026-10-23T11:51:44.875019Z",
+      "payload": {
+        "complete_chatgpt_corpus_equality": "OPEN",
+        "effect_ack_done": false,
+        "full_autonomous_host_acceptance": "OPEN",
+        "next_action": "RUN_REQUIRED_SOURCE_TESTS_AND_NORMAL_EXACT_HEAD_MAIN_MERGE",
+        "previous_source_role": "MAIN_PREDECESSOR"
+      },
+      "payload_digest": "7b530c74b0d4fbaf5379bdf149a1a60eec3b65e00dd2fd38f70ccb34f296972c",
+      "provenance": {
+        "native_event_id": "local-llm-20261023:4",
+        "source": "transputer"
+      },
+      "recorded_at": "2026-10-23T11:51:44.899294Z",
+      "schema": "qikvrt_temdd_event_v1",
+      "subject": {
+        "head": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+        "pr": 587,
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "1a8003f1815b75fe534b21f242e8b782d4352796"
+      },
+      "id": "b2a10321386946d4b5d557d59e158391:4",
+      "ledger_digest": "8ac7b0aef301e78e3380c6bce32017d86c984cc014bbf510954e299f8e4e1cb5"
+    }
+  ],
+  "writer": "OWN_ADMITTED_SESSION",
+  "original_predecessor_events_retained": true,
+  "independently_readback": true,
+  "productive_host_verified": false,
+  "effect_ack_done": false,
+  "original_task_inputs": [
+    {
+      "original_canonical_utf8": "{\"kind\":\"OBSERVE\",\"message\":\"Model and runtime bytes independently hash-checked against immutable upstream pins\",\"observed_at\":\"2026-10-23T11:29:35.211589Z\",\"payload\":{\"model_sha256\":\"8334b850b7bd46238c16b0c550df2138f0889bf433809008cc17a8b05761863e\",\"runtime_sha256\":\"42bd9edc1845ade56750ba838dce13a245543cbbbf454e8a0b9de98545f9cf31\",\"source_role\":\"MAIN_PREDECESSOR\",\"test_double\":false,\"work_unit\":\"QIKVRT_LOCAL_LLM_20261023_V1\"},\"provenance\":{\"native_event_id\":\"local-llm-20261023:1\",\"source\":\"transputer\"},\"schema\":\"qikvrt_temdd_native_event_v1\",\"subject\":{\"head\":\"8273ef8127edccf4b357fdacdd17a1e6b0f3f87f\",\"pr\":587,\"repository\":\"ingolf-lohmann/qik-vrt\",\"tree\":\"1a8003f1815b75fe534b21f242e8b782d4352796\"}}",
+      "sha256": "5bf50c1afd17caf81bc1a4b30d1250af7158bf80dfcd19459588e5c10e2a7731"
+    },
+    {
+      "original_canonical_utf8": "{\"kind\":\"ACTION\",\"message\":\"Owner-authorized local inference and durable model binding work admitted in this own native epoch\",\"observed_at\":\"2026-10-23T11:29:35.235399Z\",\"payload\":{\"grant\":\"Freigabe und dauerhafte Aufnahme des vollständig autonomen KI-Betriebs\",\"principal\":\"Ingolf Lohmann\",\"scope\":\"LOCAL_MODEL_ADAPTER_AND_ACCEPTANCE; productive host remains separately admitted\",\"work_unit\":\"QIKVRT_LOCAL_LLM_20261023_V1\"},\"provenance\":{\"native_event_id\":\"local-llm-20261023:2\",\"source\":\"transputer\"},\"schema\":\"qikvrt_temdd_native_event_v1\",\"subject\":{\"head\":\"8273ef8127edccf4b357fdacdd17a1e6b0f3f87f\",\"pr\":587,\"repository\":\"ingolf-lohmann/qik-vrt\",\"tree\":\"1a8003f1815b75fe534b21f242e8b782d4352796\"}}",
+      "sha256": "641a57d9e86ed18f53f3e9c7d8631d48ea540997556fddac3b04c4068ac50dc5"
+    },
+    {
+      "original_canonical_utf8": "{\"kind\":\"READBACK\",\"message\":\"Actual owner-backup model restored, SHA256 verified and exercised through existing REST with process restart\",\"observed_at\":\"2026-10-23T11:51:44.849541Z\",\"payload\":{\"model_output_is_independent_approval\":false,\"production_host_verified\":false,\"real_model_responses\":3,\"receipt_sha256\":\"89c4f0308e1f595e8c37aceaaea680ee2db9e48ba65c02fcc0f3d2483b11cf0e\",\"work_unit\":\"QIKVRT_LOCAL_LLM_OPERATION_20261023_V1\"},\"provenance\":{\"native_event_id\":\"local-llm-20261023:3\",\"source\":\"transputer\"},\"schema\":\"qikvrt_temdd_native_event_v1\",\"subject\":{\"head\":\"8273ef8127edccf4b357fdacdd17a1e6b0f3f87f\",\"pr\":587,\"repository\":\"ingolf-lohmann/qik-vrt\",\"tree\":\"1a8003f1815b75fe534b21f242e8b782d4352796\"}}",
+      "sha256": "9da92bb55ff36a64bd39f0adccf71bcf741246d2681660e3388134b4425a8eba"
+    },
+    {
+      "original_canonical_utf8": "{\"kind\":\"SUCCESSOR\",\"message\":\"Continue normal source integration and preserve original productive-host and complete-corpus acceptance obligations\",\"observed_at\":\"2026-10-23T11:51:44.875019Z\",\"payload\":{\"complete_chatgpt_corpus_equality\":\"OPEN\",\"effect_ack_done\":false,\"full_autonomous_host_acceptance\":\"OPEN\",\"next_action\":\"RUN_REQUIRED_SOURCE_TESTS_AND_NORMAL_EXACT_HEAD_MAIN_MERGE\",\"previous_source_role\":\"MAIN_PREDECESSOR\"},\"provenance\":{\"native_event_id\":\"local-llm-20261023:4\",\"source\":\"transputer\"},\"schema\":\"qikvrt_temdd_native_event_v1\",\"subject\":{\"head\":\"8273ef8127edccf4b357fdacdd17a1e6b0f3f87f\",\"pr\":587,\"repository\":\"ingolf-lohmann/qik-vrt\",\"tree\":\"1a8003f1815b75fe534b21f242e8b782d4352796\"}}",
+      "sha256": "194e2c02042872ba18b834d50f4c5a876025060f9ac7ef9eefc03891e7a1be06"
+    }
+  ],
+  "private_writer_and_host_binding_exported": true,
+  "private_state_archive_backup": {
+    "state": "ONEDRIVE_BACKUP_RAW_BYTES_VERIFIED",
+    "authorization": "state/authorization/delegations/OWNER_AUTONOMOUS_LOCAL_AI_OPERATION_20261023_V1.json#/additional_private_backup_authorization",
+    "file": "local-llm-native-journal-20261023.zip",
+    "folder": "QIKVRT_Local_LLM_20261023",
+    "archive_bytes": 5214,
+    "archive_sha256": "d3636b9677165d4c586f97da19e74c08ec55fd066d3bb5d09dc9fe8e04ff2230",
+    "fresh_item_metadata_readback": true,
+    "independent_raw_download_sha256_verified": true,
+    "native_sqlite_byte_equal": true,
+    "contents": "Own admitted native journal, original host/writer binding metadata and exact source subject; private copy only",
+    "public_binding_values_exposed": false,
+    "private_binding_values_exposed": false,
+    "production_host_binding_backed_up": false,
+    "production_host_binding_reason": "No productive protected host/operator binding is exposed to this client; none has been invented.",
+    "writer_admission_transferred": false,
+    "restoration_requires_original_fenced_writer_admission": true,
+    "prior_attempt": {
+      "state": "NOT_UPLOADED_AUTO_REVIEW_REJECTED",
+      "reason": "Explicit authorization naming OneDrive as the destination for private native state was not present. Public task inputs are retained separately without private SQLite metadata, writer seals or host identities."
+    },
+    "causal_change": "Owner explicitly named OneDrive, private runtime state, public and private host/writer bindings before the admitted successor upload."
+  },
+  "private_writer_and_host_binding_destination": "PRIVATE_OWNER_ONEDRIVE_ONLY"
+}

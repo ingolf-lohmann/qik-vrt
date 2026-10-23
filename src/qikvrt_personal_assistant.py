@@ -58,6 +58,7 @@ def subject() -> dict[str, Any]:
     paths = ["src/qikvrt_personal_assistant.py", "src/qikvrt_effect_ack_http_terminal.py",
              "src/qikvrt_personal_auth.py", "src/qikvrt_personal_retrieval.py",
              "runtime/models/pplx-embed-v2-late-0.6b.lock.json",
+             "src/qikvrt_local_llm.py", "runtime/models/smollm3-3b-q4-k-m.lock.json",
              *[str(p.relative_to(ROOT)) for p in sorted(UI.iterdir()) if p.is_file()]]
     return {"repository": "ingolf-lohmann/qik-vrt", "head": git("rev-parse", "HEAD"),
             "tree": git("rev-parse", "HEAD^{tree}"), "worktree_dirty": bool(git("status", "--porcelain")),
@@ -160,8 +161,8 @@ class GeminiTransport(OpenAITransport):
 
 
 class PersonalRuntime:
-    def __init__(self, state_dir: str | Path, model: str, credential: str, local_token: str, *, transport=None, provider="openai", retrieval_engine=None):
-        if provider not in {"openai", "gemini"}:
+    def __init__(self, state_dir: str | Path, model: str, credential: str, local_token: str, *, transport=None, provider="openai", retrieval_engine=None, local_model_dir=None):
+        if provider not in {"openai", "gemini", "local"}:
             raise CapabilityBlock("PROVIDER_NOT_ALLOWLISTED")
         if not isinstance(model, str) or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,128}", model):
             raise CapabilityBlock("EXPLICIT_MODEL_BINDING_REQUIRED")
@@ -172,7 +173,7 @@ class PersonalRuntime:
         self.retrieval_engine = retrieval_engine
         if provider == "gemini" and model != "gemini-4-argon":
             raise CapabilityBlock("GEMINI_ARGON_EXPLICIT_MODEL_REQUIRED")
-        self.transport = transport if transport is not None else (GeminiTransport(credential) if provider == "gemini" else OpenAITransport(credential))
+        self.transport = transport
         requested_root = Path(state_dir).expanduser().absolute()
         if any(p.is_symlink() for p in [requested_root, *requested_root.parents]):
             raise CapabilityBlock("PRIVATE_STATE_DIRECTORY_UNSAFE")
@@ -203,6 +204,15 @@ class PersonalRuntime:
             self.db.execute("PRAGMA synchronous=FULL")
             self.db.execute("CREATE TABLE IF NOT EXISTS sessions (id TEXT PRIMARY KEY, body TEXT NOT NULL)")
             self.db.execute("CREATE TABLE IF NOT EXISTS config (key TEXT PRIMARY KEY, body TEXT NOT NULL)")
+            if self.transport is None:
+                if provider == "local":
+                    try:
+                        from .qikvrt_local_llm import LocalModelTransport
+                    except ImportError:
+                        from qikvrt_local_llm import LocalModelTransport
+                    self.transport = LocalModelTransport(local_model_dir)
+                else:
+                    self.transport = GeminiTransport(credential) if provider == "gemini" else OpenAITransport(credential)
             self.binding = {"provider": "https://api.openai.com/v1", "model": model,
                             "instructions_sha256": digest(INSTRUCTIONS.encode()), "tools": [],
                             "parameters": {"store": True}, "normal_retention": "PROVIDER_CONVERSATION_AND_FULL_LOCAL_TRANSCRIPT"}
@@ -210,6 +220,11 @@ class PersonalRuntime:
                 self.binding.update(provider="https://generativelanguage.googleapis.com/v1beta",
                                     parameters={"store": False, "background": False, "max_output_tokens": 4096},
                                     normal_retention="FULL_LOCAL_TRANSCRIPT_NO_STORED_PROVIDER_INTERACTION")
+            elif provider == "local":
+                if model != self.transport.binding["model"]:
+                    raise CapabilityBlock("LOCAL_MODEL_EXPLICIT_BINDING_MISMATCH")
+                self.binding.update(self.transport.binding)
+                self.credential = self.transport.credential
             row = self.db.execute("SELECT body FROM config WHERE key='binding'").fetchone()
             if row and json.loads(row[0]) != self.binding:
                 raise CapabilityBlock("EXISTING_STATE_MODEL_OR_SETTINGS_MISMATCH")
@@ -217,6 +232,8 @@ class PersonalRuntime:
                 with self.db:
                     self.db.execute("INSERT INTO config VALUES ('binding',?)", (canonical(self.binding).decode(),))
         except Exception:
+            if provider == "local" and self.transport is not None:
+                self.transport.close()
             if hasattr(self, "db"):
                 self.db.close()
             self.writer.close()
@@ -226,13 +243,14 @@ class PersonalRuntime:
                 p.chmod(0o600)
         self.subject = subject()
         self.auth_receipt = None  # Runtime proof is never inherited from a prior process.
+        self.local_model_receipt = None
         self.personal_auth = None
         self.native_terminal = None
         self.terminal_prepared = None
         self.terminal_binding = None
 
     @classmethod
-    def from_secret_store(cls, state_dir, model, provider, config_path, origin):
+    def from_secret_store(cls, state_dir, model, provider, config_path, origin, *, local_model_dir=None):
         try:
             from .qikvrt_personal_auth import OSSecretStore, PersonalAuth, load_config
         except ImportError:
@@ -241,13 +259,13 @@ class PersonalRuntime:
         store = OSSecretStore(state_dir, provider)
         bundle = store.read()
         credential = bundle.get("provider_keys", {}).get(provider)
-        if not isinstance(credential, str) or not credential:
+        if provider != "local" and (not isinstance(credential, str) or not credential):
             raise CapabilityBlock("PROTECTED_MODEL_CREDENTIAL_REQUIRED")
         # A bootstrap secret is never returned to the browser. Secure mode only
         # accepts the session bearer issued after a validated OIDC callback.
-        runtime = cls(state_dir, model, credential, secrets.token_urlsafe(48), provider=provider)
+        runtime = cls(state_dir, model, credential or "", secrets.token_urlsafe(48), provider=provider, local_model_dir=local_model_dir)
         try:
-            if store.read().get("provider_keys", {}).get(provider) != credential:
+            if provider != "local" and store.read().get("provider_keys", {}).get(provider) != credential:
                 raise CapabilityBlock("MODEL_CREDENTIAL_CHANGED_DURING_STARTUP")
             runtime.personal_auth = PersonalAuth(store, config)
         except Exception:
@@ -256,12 +274,14 @@ class PersonalRuntime:
         return runtime
 
     @classmethod
-    def from_environment(cls, state_dir: str, model: str | None, provider="openai"):
+    def from_environment(cls, state_dir: str, model: str | None, provider="openai", *, local_model_dir=None):
         key = "GEMINI_API_KEY" if provider == "gemini" else "OPENAI_API_KEY"
-        return cls(state_dir, model, os.environ.get(key, ""),
-                   os.environ.get("QIKVRT_PERSONAL_LOCAL_TOKEN", ""), provider=provider)
+        return cls(state_dir, model, "" if provider == "local" else os.environ.get(key, ""),
+                   os.environ.get("QIKVRT_PERSONAL_LOCAL_TOKEN", ""), provider=provider, local_model_dir=local_model_dir)
 
     def close(self):
+        if self.provider == "local" and self.transport is not None:
+            self.transport.close()
         if self.native_terminal:
             self.native_terminal.ledger.close()
         self.db.close()
@@ -441,7 +461,7 @@ class PersonalRuntime:
                    "conversation_id": None, "history": [], "checkpoint": None,
                    "status": "CREATE_PENDING", "created_subject": self.subject}
         self.save(session)  # Durable intent before any external request.
-        if self.provider == "gemini":
+        if self.provider in {"gemini", "local"}:
             session.update(status="READY", conversation_receipt={"evidence_class": "LOCAL_TRANSCRIPT_ONLY"})
             self.save(session)
             return session
@@ -490,6 +510,17 @@ class PersonalRuntime:
                            "input": canonical({"kind": "LOCAL_CONVERSATION_DATA",
                                "history": [{"input": h["intent"]["input"], "draft": h["text"]} for h in session["history"]],
                                "current_user_input": text}).decode()}
+            elif self.provider == "local":
+                try:
+                    from .qikvrt_local_llm import PARAMETERS
+                except ImportError:
+                    from qikvrt_local_llm import PARAMETERS
+                messages = [{"role": "system", "content": INSTRUCTIONS}]
+                for previous in session["history"]:
+                    messages.extend([{"role": "user", "content": previous["intent"]["input"]},
+                                     {"role": "assistant", "content": previous["text"]}])
+                messages.append({"role": "user", "content": text})
+                payload = {"model": self.model, "messages": messages, **PARAMETERS}
             intent = {"id": uuid.uuid4().hex, "input": text, "request_sha256": digest(canonical(payload)),
                       "created_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
             session.update(status="TURN_PENDING", pending=intent)
@@ -526,6 +557,14 @@ class PersonalRuntime:
                 self.auth_receipt = {"subject": self.subject, "binding": self.binding,
                                      "observed_monotonic": time.monotonic(), "response_id": response_id,
                                      "resolved_model": resolved, "receipt": receipt}
+            if self.provider == "local":
+                try:
+                    from .qikvrt_local_llm import LocalModelTransport
+                except ImportError:
+                    from qikvrt_local_llm import LocalModelTransport
+                if type(self.transport) is LocalModelTransport and receipt.get("evidence_class") == "LOCAL_CPU_MODEL_HTTP_RESPONSE":
+                    self.local_model_receipt = {"subject": self.subject, "binding": self.binding,
+                        "observed_monotonic": time.monotonic(), "response_id": response_id, "receipt": receipt}
             result = self.readback(self.load(session_id))
             result["automatic_context"] = automatic
             return result
@@ -535,11 +574,16 @@ class PersonalRuntime:
             manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
             auth = self.auth_receipt
             fresh = bool(auth and time.monotonic() - auth["observed_monotonic"] < 300 and auth["subject"] == subject())
+            local = self.local_model_receipt
+            local_fresh = bool(local and time.monotonic() - local["observed_monotonic"] < 300 and
+                               local["subject"] == subject() and self.transport.alive())
             return {"manifest": manifest, "subject": self.subject, "binding": self.binding,
                     "local_retrieval_enabled": self.retrieval_engine is not None,
                     "personal_identity_session": self.personal_auth.status() if self.personal_auth else {"state": "LEGACY_MEMORY_PAIRING_ONLY"},
                     "local_client_authentication_required": True, "authenticated_runtime_readback": fresh,
                     "runtime_evidence": auth if fresh else None,
+                    "local_model_runtime_readback": local_fresh,
+                    "local_model_evidence": local if local_fresh else None,
                     "normal_retention": self.binding["normal_retention"],
                     "baseline_local_sessions_observed": any(s["mode"] == "baseline" and s["turns"] for s in self.sessions()),
                     "baseline_provider_retention_readback": False,
