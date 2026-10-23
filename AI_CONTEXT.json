@@ -120,7 +120,13 @@
     "minimum_comparable_observations_before_preference": 3,
     "quality_regression_allowed": false,
     "mandatory_gate_reduction_allowed": false,
-    "rule": "Repeated use should become faster and clearer through exact-key caching, incremental processing, stable preference reuse, comparable evaluation matrices and reviewed optimization, never by weakening evidence, provenance, authorization or scientific boundaries."
+    "rule": "Repeated use should become faster and clearer through exact-key caching, incremental processing, stable preference reuse, comparable evaluation matrices and reviewed optimization, never by weakening evidence, provenance, authorization or scientific boundaries.",
+    "binding_hmi_contract": {
+      "policy": "policy/HUMAN_MACHINE_INTERFACE_ADAPTATION_V1.json#/hmi_independence",
+      "owner_decision_date": "2026-10-23",
+      "requirement": "QIKVRT defines the HMI contract and retains durable state, identity, scheduling and continuation authority independently of every replaceable HMI instance.",
+      "runtime_acceptance": "REQUIRES_FRESH_NATIVE_CONTINUATION_AND_CROSS_HMI_REPLACEMENT_EVIDENCE"
+    }
   },
   "project": {
     "name": "QIK-VRT",
