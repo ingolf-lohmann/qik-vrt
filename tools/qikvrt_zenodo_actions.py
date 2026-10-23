@@ -401,13 +401,22 @@ def _load_json_file(path: pathlib.Path, token: str = "") -> tuple[dict[str, Any]
     return value, raw
 
 
-def _metadata_identity(metadata: Mapping[str, Any], where: str) -> dict[str, Any]:
+def _metadata_identity(
+    metadata: Mapping[str, Any], where: str, *, require_version: bool = True
+) -> dict[str, Any]:
+    """Validate identity; published metadata edits may preserve no version.
+
+    New-record publication keeps the strict default. An optional version, when
+    present, must still be valid; this helper never adds or changes metadata.
+    """
     title = metadata.get("title")
     version = metadata.get("version")
     creators = metadata.get("creators")
     if not isinstance(title, str) or not title.strip():
         raise ZenodoError(f"{where}.metadata.title must be a non-empty string")
-    if not isinstance(version, str) or not version.strip():
+    if (require_version or "version" in metadata) and (
+        not isinstance(version, str) or not version.strip()
+    ):
         raise ZenodoError(f"{where}.metadata.version must be a non-empty string")
     if not isinstance(creators, list) or not creators:
         raise ZenodoError(f"{where}.metadata.creators must be a non-empty list")
