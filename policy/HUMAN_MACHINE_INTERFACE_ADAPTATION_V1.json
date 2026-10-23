@@ -173,9 +173,35 @@
     "personal_data_minimization": true,
     "cache_entries_must_be_eviction_safe": true
   },
+  "bidirectional_serialization": {
+    "contract": "docs/operations/HMI_SERIALIZATION_AND_TIMING.md",
+    "implementation": "src/qikvrt_temdd_event_ledger.py",
+    "ingress": "EXISTING_ADMITTED_NATIVE_RUNTIME_OR_OWNER_ONLY_UNIX_INGRESS",
+    "original_bytes_preserved": true,
+    "order": "LOCAL_DURABLE_ACCEPTANCE_NOT_PHYSICAL_CAUSALITY",
+    "fetch_is_acknowledgement": false,
+    "consumer_specific_claim_and_readback": true,
+    "ambiguous_attempt": "HOLD_READBACK_BEFORE_RETRY",
+    "repository_clock_independent_of_hmi": true,
+    "reminder_implementation": "tools/qikvrt_owner_reminders.py",
+    "timing_budgets": "EXPLICIT_SOURCE_BOUND_ASSUMPTIONS_NOT_GUARANTEES",
+    "hmi_profiles": {
+      "chatgpt": {
+        "mode": "POLL",
+        "minimum_poll_interval_seconds": 3600,
+        "delivery_latency_guaranteed": false
+      },
+      "other_hmi": {
+        "mode": "CAPABILITY_NEGOTIATED",
+        "inherits_chatgpt_poll_limit": false
+      }
+    },
+    "activation": "EXACT_HEAD_GATES_AND_NATIVE_HOST_ADMISSION_AND_READBACK_REQUIRED"
+  },
   "release_claims": {
     "PASS": false,
     "FINAL_PASS": false,
     "EFFECT_ACK_DONE": false
   }
 }
+

@@ -170,5 +170,62 @@ class OwnerReminderTests(unittest.TestCase):
         self.assertFalse(api.posts)
 
 
+class LeadTimeTests(unittest.TestCase):
+    def row(self):
+        row = copy.deepcopy(CONFIG['reminders'][0])
+        row['due'] = '2026-10-26T12:00:00+01:00'
+        row['timing'] = {'preparation_seconds': 7200, 'reaction_seconds': 1800,
+                         'safety_seconds': 900, 'hmi_delay_budget_seconds': 3600}
+        return row
+
+    def test_backward_plan_keeps_internal_preparation_independent_of_hmi(self):
+        row = self.row()
+        plan = module.timing_plan(row)
+        self.assertEqual(plan['prepare_by'], module.instant('2026-10-26T08:45:00Z'))
+        self.assertEqual(plan['notify_by'], module.instant('2026-10-26T08:15:00Z'))
+        self.assertEqual(plan['publish_by'], module.instant('2026-10-26T07:15:00Z'))
+        row['timing']['hmi_delay_budget_seconds'] = 0
+        other = module.timing_plan(row)
+        self.assertEqual(other['prepare_by'], plan['prepare_by'])
+        self.assertEqual(other['notify_by'], plan['notify_by'])
+        self.assertNotEqual(other['publish_by'], plan['publish_by'])
+
+    def test_existing_due_only_contract_and_identity_stay_unchanged(self):
+        row = copy.deepcopy(CONFIG['reminders'][0])
+        old_hash = module.identity(row)
+        self.assertEqual(module.timing_plan(row)['publish_by'], module.instant(row['due']))
+        self.assertEqual(module.identity(row), old_hash)
+
+    def test_preparation_crosses_paris_clock_change_in_real_elapsed_time(self):
+        row = self.row()
+        row['due'] = '2026-10-25T03:30:00+01:00'
+        row['timing'].update(reaction_seconds=0, safety_seconds=0, hmi_delay_budget_seconds=0)
+        self.assertEqual(module.timing_plan(row)['prepare_by'], module.instant('2026-10-25T00:30:00Z'))
+
+    def test_early_publish_threshold_and_late_preparation_are_visible(self):
+        config = copy.deepcopy(CONFIG)
+        config['reminders'] = [self.row()]
+        config['reminders'][0].pop('expires', None)
+        before = module.execute(config, module.instant('2026-10-26T07:14:59Z'))['receipts'][0]
+        on_time = module.execute(config, module.instant('2026-10-26T07:15:00Z'))['receipts'][0]
+        late = module.execute(config, module.instant('2026-10-26T08:45:01Z'))['receipts'][0]
+        self.assertEqual(before['notification'], 'NOT_DUE')
+        self.assertEqual(on_time['notification'], 'DUE_NO_EFFECT_PREVIEW')
+        self.assertEqual(late['timing_status'], 'PREPARATION_START_MISSED')
+        self.assertEqual(late['task_completion'], 'NOT_PROVEN')
+
+    def test_negative_boolean_missing_or_unbounded_budgets_fail_closed(self):
+        for value in (-1, True, 31_536_001, '3600'):
+            row = self.row()
+            row['timing']['reaction_seconds'] = value
+            with self.assertRaises(module.ReminderError):
+                module.timing_plan(row)
+        row = self.row()
+        del row['timing']['safety_seconds']
+        with self.assertRaises(module.ReminderError):
+            module.timing_plan(row)
+
+
 if __name__ == "__main__":
     unittest.main()
+

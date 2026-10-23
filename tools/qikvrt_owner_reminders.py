@@ -46,6 +46,26 @@ def instant(value: str) -> dt.datetime:
     return parsed.astimezone(dt.timezone.utc)
 
 
+def timing_plan(row: dict) -> dict:
+    """Backward plan from the real deadline, independently of HMI cadence.
+
+    Budgets are explicit assumptions, not measured execution guarantees.
+    Missing timing preserves the historical due-only notification contract.
+    """
+    due = instant(row['due'])
+    timing = row.get('timing')
+    if timing is None:
+        return {'prepare_by': due, 'notify_by': due, 'publish_by': due}
+    fields = {'preparation_seconds', 'reaction_seconds', 'safety_seconds', 'hmi_delay_budget_seconds'}
+    if (not isinstance(timing, dict) or set(timing) != fields
+            or any(type(timing[k]) is not int or not 0 <= timing[k] <= 31_536_000 for k in fields)):
+        raise ReminderError('explicit nonnegative bounded timing budgets required')
+    prepare = due - dt.timedelta(seconds=timing['preparation_seconds'] + timing['safety_seconds'])
+    notify = prepare - dt.timedelta(seconds=timing['reaction_seconds'])
+    return {'prepare_by': prepare, 'notify_by': notify,
+            'publish_by': notify - dt.timedelta(seconds=timing['hmi_delay_budget_seconds'])}
+
+
 def validate(config: dict) -> list[dict]:
     if set(config) != {"schema", "repository", "owner", "reminders"}:
         raise ReminderError("unknown or missing configuration field")
@@ -63,7 +83,7 @@ def validate(config: dict) -> list[dict]:
             "title", "private_artifacts", "acceptance"
         }
         if (not isinstance(row, dict) or not required <= set(row)
-                or set(row) - required - {"expires"}):
+                or set(row) - required - {"expires", "timing"}):
             raise ReminderError("unknown or missing reminder field")
         if not re.fullmatch(r"[a-z0-9-]{1,80}", row["id"]) or row["id"] in seen:
             raise ReminderError("invalid or duplicate reminder ID")
@@ -83,6 +103,7 @@ def validate(config: dict) -> list[dict]:
                     or expires.utcoffset() != expires.astimezone(ZoneInfo(row["timezone"])).utcoffset()
                     or instant(row["expires"]) <= instant(row["due"])):
                 raise ReminderError("expiry must follow due and match named timezone")
+        timing_plan(row)
         if row["title"] not in {"Vorbereitete Zahlung prüfen und persönlich freigeben", "Persönlichen Tagesplan prüfen"}:
             raise ReminderError("public reminder title must use a neutral approved label")
         if row["acceptance"] != "OWNER_CONFIRMS_TASK_COMPLETION_WITH_EVIDENCE":
@@ -114,9 +135,13 @@ def body(row: dict, key: str) -> str:
         f"- [{a['label']}](https://chatgpt.com/api/library/files/{a['library_file_id']}/download)"
         for a in row["private_artifacts"]
     )
+    plan = timing_plan(row)
+    lead = (f"Vorbereitung spätestens: {plan['prepare_by'].isoformat()}. "
+            f"Reaktion bis: {plan['notify_by'].isoformat()}.\n\n"
+            if 'timing' in row else '')
     return (f"<!-- qikvrt-owner-reminder:{key} -->\n"
             f"@{OWNER} **{row['title']}**\n\n"
-            f"Fällig: {row['due']} ({row['timezone']}).\n\n{links}\n\n"
+            f"Fällig: {row['due']} ({row['timezone']}).\n\n{lead}{links}\n\n"
             "Bitte zuerst den tatsächlichen Stand prüfen. Eine bereits erledigte Aufgabe "
             "nicht erneut ausführen. Die Erinnerung führt keine Zahlung aus.\n")
 
@@ -171,10 +196,16 @@ def execute(config, now, api=None, head=None):
     receipts = []
     for row in rows:
         key = identity(row)
+        plan = timing_plan(row)
         receipt = {"id": row["id"], "version": row["version"], "content_sha256": key,
                    "task_completion": "NOT_PROVEN", "head_sha": head}
+        if 'timing' in row:
+            receipt['timing_plan'] = {k: v.isoformat() for k, v in plan.items()}
+            receipt['timing_status'] = ('PREPARATION_START_MISSED' if now > plan['prepare_by']
+                                       else 'PUBLICATION_BUDGET_MISSED' if now > plan['publish_by']
+                                       else 'WITHIN_DECLARED_BUDGET')
         receipts.append(receipt)
-        if row["state"] != "OPEN" or now < instant(row["due"]):
+        if row["state"] != "OPEN" or now < plan['publish_by']:
             receipt["notification"] = "NOT_DUE" if row["state"] == "OPEN" else row["state"]
             continue
         if "expires" in row and now >= instant(row["expires"]):
@@ -252,3 +283,4 @@ if __name__ == "__main__":
     except (ReminderError, OSError, ValueError, KeyError, TypeError) as exc:
         print(f"BLOCK owner reminder: {type(exc).__name__}: {exc}")
         raise SystemExit(2)
+
