@@ -127,7 +127,14 @@
     "tools/qikvrt_self_host_container.py",
     "tools/qikvrt_self_host_migration.py",
     "tools/qikvrt_self_host_provider.py",
-    "tools/qikvrt_subprocess.py"
+    "tools/qikvrt_subprocess.py",
+    "src/qikvrt_morse_transport.py",
+    "docs/terminal/MORSE_BYTE_TRANSPORT_V1.md",
+    "docs/terminal/morse/index.html",
+    "docs/terminal/morse/codec.js",
+    "docs/terminal/morse/ui.js",
+    "docs/terminal/morse/style.css",
+    "tools/qikvrt_morse_start.py"
   ],
   "monolithic_store": "SQLITE_CARRIER_AND_EXISTING_NATIVE_LEDGER",
   "native_terminal_daemon_included": true,
@@ -148,5 +155,5 @@
   "schema": "qikvrt-self-host-definition/v1",
   "source_repository": "ingolf-lohmann/qik-vrt",
   "start": "python3 tools/qikvrt_self_host.py run",
-  "version": "1.12.0"
+  "version": "1.13.0"
 }
