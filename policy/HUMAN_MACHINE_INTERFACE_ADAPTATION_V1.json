@@ -7,7 +7,7 @@
   },
   "schema": "qikvrt_human_machine_interface_adaptation_v1",
   "policy_id": "HUMAN-MACHINE-INTERFACE-ADAPTATION-V1",
-  "version": "1.0",
+  "version": "1.1",
   "purpose": "Make repeated human-machine interaction progressively faster, clearer and more accurate without weakening provenance, scientific, legal, security or effect boundaries.",
   "reuse_before_create": true,
   "authorities": [
@@ -47,26 +47,48 @@
     {
       "id": "L0_SESSION",
       "scope": "current_run",
-      "examples": ["parsed repository files", "resolved refs", "tool capability probes", "derived matrices"],
+      "examples": [
+        "parsed repository files",
+        "resolved refs",
+        "tool capability probes",
+        "derived matrices"
+      ],
       "authority": false
     },
     {
       "id": "L1_PERSONAL_WORKING_MEMORY",
       "scope": "personal_origin_or_local_copy",
-      "examples": ["stable user choices", "approved terminology", "validated work-unit summaries", "artifact digests", "transcript bindings"],
+      "examples": [
+        "stable user choices",
+        "approved terminology",
+        "validated work-unit summaries",
+        "artifact digests",
+        "transcript bindings"
+      ],
       "authority": "repository_evidence_only"
     },
     {
       "id": "L2_RUNTIME_TOOLCHAIN",
       "scope": "content_addressed_runtime_cache",
-      "examples": ["locked tools", "verified archives", "wheelhouses", "derived environments"],
+      "examples": [
+        "locked tools",
+        "verified archives",
+        "wheelhouses",
+        "derived environments"
+      ],
       "authority": false,
       "policy": "runtime/CACHE_POLICY.md"
     },
     {
       "id": "L3_DERIVED_KNOWLEDGE",
       "scope": "hash_bound_recomputable_derivatives",
-      "examples": ["semantic indexes", "artifact summaries", "claim-to-source matrices", "audio feature indexes", "transcription chunks when verified"],
+      "examples": [
+        "semantic indexes",
+        "artifact summaries",
+        "claim-to-source matrices",
+        "audio feature indexes",
+        "transcription chunks when verified"
+      ],
       "authority": false
     }
   ],
@@ -177,5 +199,90 @@
     "PASS": false,
     "FINAL_PASS": false,
     "EFFECT_ACK_DONE": false
+  },
+  "hmi_independence": {
+    "decision": {
+      "owner": "Ingolf Lohmann",
+      "date": "2026-10-23",
+      "status": "BINDING_OWNER_REQUIREMENT",
+      "scope": "ALL_HMI_INSTANCES_AND_ADAPTERS",
+      "change_rule": "Only an explicit subsequent Owner decision may supersede this requirement; preserve versioned history."
+    },
+    "principle": "QIKVRT defines the versioned HMI conformance contract. HMI instances are replaceable interface and transport adapters; QIKVRT state and operation are independent of any particular HMI instance.",
+    "authority": {
+      "identity": "QIKVRT_PRINCIPAL_AND_EXISTING_AUTHORIZATION_BINDINGS",
+      "durable_state": "QIKVRT_REPOSITORY_AND_ITS_GOVERNED_PRIVATE_RUNTIME_PERSISTENCE",
+      "instructions": "VERSIONED_REPOSITORY_NATIVE_WORK_UNITS",
+      "scheduling": "QIKVRT_NATIVE_RUNTIME",
+      "continuation": "EXISTING_ADMITTED_QIKVRT_EXECUTOR",
+      "hmi": "NEGOTIATED_INPUT_OUTPUT_TRANSPORT_AND_PRESENTATION"
+    },
+    "invariants": [
+      "HMI closure, replacement, logout, context truncation, rate limits, storage quotas or missing client timers must not delete or redefine admitted QIKVRT work, grants, evidence or open obligations.",
+      "No particular HMI provider, account, conversation, client memory, client Library or client scheduler may be the sole durable authority or sole required carrier of native QIKVRT continuation.",
+      "HMI polling cadence constrains that adapter's observations and delivery only; native processing and scheduling use their own declared clock and execution admission.",
+      "QIKVRT owns a versioned capability contract; adapters declare transport, modalities, payload bounds, authentication binding, rate limits and delivery semantics before admission.",
+      "A replacement adapter reconstructs the admitted task state from QIKVRT through its own verified authorization, without requiring the prior HMI's session, transcript or local files.",
+      "Interchangeability does not transfer credentials or widen authority; unavailable capabilities are explicit and cannot be reported as an executed effect.",
+      "Human Owner authority and prior scoped grants survive a client change; the new client must verify the applicable identity and grant, without requesting already granted generic permission again."
+    ],
+    "ingress": {
+      "required_attributes": [
+        "contract_version",
+        "message_id",
+        "principal_binding",
+        "origin_hmi_id",
+        "task_id_or_new_task_intent",
+        "causation_id",
+        "idempotency_key",
+        "payload_type",
+        "payload_sha256",
+        "payload_or_authorized_reference"
+      ],
+      "acceptance": "Acknowledge durable acceptance only after admitted native persistence and independent readback. Otherwise return an explicit rejection or unconfirmed transport state.",
+      "concurrency": "Preserve all admitted inputs and causal relations. Serialize conflicting state changes in their native authority scope using existing admission/version checks; keep independent work parallel where allowed.",
+      "capacity": "Use explicit bounded backpressure and resumable transfer. Never silently drop, truncate, overwrite or acknowledge an unpersisted request as accepted."
+    },
+    "egress": {
+      "required_attributes": [
+        "contract_version",
+        "task_id",
+        "instruction_version_sha256",
+        "run_id",
+        "causation_id",
+        "result_id",
+        "repository_subject",
+        "state",
+        "effect_scope",
+        "evidence_references",
+        "open_obligations",
+        "continuation_cursor"
+      ],
+      "separation": [
+        "TRANSPORT_ACK",
+        "DURABLE_ACCEPTANCE",
+        "EXECUTION_STATE",
+        "VERIFIED_EFFECT",
+        "NOTIFICATION_DELIVERY",
+        "HUMAN_ACKNOWLEDGEMENT"
+      ],
+      "delivery": "Persist results and delivery position in QIKVRT. Resume through a replacement HMI from the verified cursor; suppress duplicate logical effects and identify replayed results.",
+      "presentation": "Render to negotiated HMI capabilities with source-bound text or structured fallback. Preserve meaning, uncertainty, provenance and effect status."
+    },
+    "replacement_acceptance": [
+      "Admit an exact task through HMI A, close A, and prove native continuation and durable state without A.",
+      "Bind independently authorized HMI B, reconstruct the same task and grants from QIKVRT, then read the exact persisted result and its evidence.",
+      "Prove no lost admitted inputs, duplicate logical effects or silent overwrites under concurrent HMI input, disconnect, retry and reordered delivery.",
+      "Prove native scheduling and execution progress while the HMI has no storage and no client schedule.",
+      "Prove explicit failure for unsupported capability, unverified principal, stale state, insufficient capacity and ambiguous acknowledgement.",
+      "Measure replacement latency and recovery completeness against an explicitly declared acceptance budget; do not invent a latency guarantee."
+    ],
+    "evidence_boundary": {
+      "documentary_requirement_recorded": true,
+      "implementation_verified": false,
+      "live_hmi_replacement_verified": false,
+      "unattended_runtime_independence_verified": false,
+      "effect_ack_done": false
+    }
   }
 }
