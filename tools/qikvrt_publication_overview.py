@@ -386,8 +386,14 @@ def _project_authority_correction(root: pathlib.Path, index: dict[str, Any], tex
     notice = (root / notice_path).resolve()
     if not notice.is_relative_to(root.resolve()) or not notice.is_file():
         raise PublicationOverviewBlock("authority correction notice is absent or unsafe")
+    current_sources: dict[str, dict[str, str]] = {}
     for group in ("publication_bundles", "featured_artifacts", "zenodo_records"):
         for item in index.get(group, []):
+            # Older publication materializers own exact entry dictionaries.
+            # Keep navigation supplements in this controller's own namespace.
+            if item.get("current_source_boundary") == "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY":
+                item.pop("current_source_url", None)
+                item.pop("current_source_boundary", None)
             relative = item.get("path") or item.get("receipt_path")
             if not isinstance(relative, str):
                 continue
@@ -395,8 +401,12 @@ def _project_authority_correction(root: pathlib.Path, index: dict[str, Any], tex
             if not source.is_relative_to(root.resolve()):
                 raise PublicationOverviewBlock("current source path escaped the repository")
             if source.is_file():
-                item["current_source_url"] = f"https://github.com/{authority}/blob/main/{relative}"
-                item["current_source_boundary"] = "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+                current_sources[relative] = {
+                    "path": relative,
+                    "url": f"https://github.com/{authority}/blob/main/{relative}",
+                    "boundary": "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY",
+                }
+    correction["current_sources"] = [current_sources[path] for path in sorted(current_sources)]
     # Only floating navigation is retargeted. Commit-pinned URLs and receipts
     # remain unchanged; a missing current path is never presented as recovered.
     pattern = re.compile(r"https://github\.com/" + re.escape(mirror) + r"/(blob|tree|raw)/main/([^\s\"'<>]+)")

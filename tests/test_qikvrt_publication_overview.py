@@ -83,6 +83,7 @@ class PublicationOverviewTests(unittest.TestCase):
             path = "docs/publications/2026-01-01-historical/README.md"
             floating = "https://github.com/Goldkelch/qik-vrt/blob/main/" + path
             pinned = "https://github.com/Goldkelch/qik-vrt/blob/" + "a" * 40 + "/" + path
+            original_entry = json.loads((root / "docs/publications/index.json").read_text())["publication_bundles"][0]
             page = root / "docs/publications/index.html"
             page.write_text(page.read_text().replace("https://example.invalid/historical", floating)
                             + '<a href="' + pinned + '">Historical exact source</a>\n')
@@ -91,7 +92,8 @@ class PublicationOverviewTests(unittest.TestCase):
             self.assertIn(pinned, page.read_text())
             index = json.loads((root / "docs/publications/index.json").read_text())
             self.assertEqual(index["publication_bundles"][0]["url"], "https://example.invalid/historical")
-            self.assertEqual(index["publication_bundles"][0]["current_source_url"],
+            self.assertEqual(index["publication_bundles"][0], original_entry)
+            self.assertEqual(index["authority_correction"]["current_sources"][0]["url"],
                              floating.replace("Goldkelch", "ingolf-lohmann"))
             self.assertEqual(MODULE.execute(root, materialize=False)["state"], "CURRENT")
             self.assertEqual(page.read_text().count('id="authority-correction"'), 1)

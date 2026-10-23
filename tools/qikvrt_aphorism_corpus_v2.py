@@ -9,9 +9,9 @@ import zlib
 from pathlib import Path
 
 _IMPL_PATH = Path(__file__).resolve().with_name("qikvrt_aphorism_corpus_v2_impl") / "impl.py.zlib"
-_IMPL_COMPRESSED_BYTES = 5603
-_IMPL_COMPRESSED_SHA256 = "b4091daaa7679d73a444ed424613d966d6039ee00b5d7f3ae38f4c01e5656ea0"
-_IMPL_SOURCE_SHA256 = "38b899767f000e459cee15182b3f7b5fa5d2974f75426f5a1c07b079fb714aba"
+_IMPL_COMPRESSED_BYTES = 5915
+_IMPL_COMPRESSED_SHA256 = "7beb72e0b0210b2998ce1fa90e7255854aa7416535b45b16c5c27e0e14bd09e4"
+_IMPL_SOURCE_SHA256 = "24d2a4e9c58e14e161dea0a2122c67c6f90093c8e6d408e2ce17253340509a41"
 
 def _load_verified_source() -> bytes:
     if not _IMPL_PATH.is_file() or _IMPL_PATH.is_symlink():
