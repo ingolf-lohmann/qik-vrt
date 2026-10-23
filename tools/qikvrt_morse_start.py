@@ -15,6 +15,9 @@ from pathlib import Path
 import secrets
 import sys
 
+# The package is sealed: importing its carrier must not create new files.
+sys.dont_write_bytecode = True
+
 
 def configure(root, directory, port, terminal_port):
     import qikvrt_self_host as host
