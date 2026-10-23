@@ -1,0 +1,98 @@
+{
+  "schema": "qikvrt-m68000-proof-poc-lock/v1",
+  "profile": "emulated-prediction",
+  "package_index_url": "https://archive.ubuntu.com/ubuntu/dists/noble/universe/binary-amd64/Packages.xz",
+  "packages": [
+    {
+      "Package": "binutils-m68k-linux-gnu",
+      "Version": "2.42-4ubuntu2",
+      "Filename": "pool/universe/b/binutils/binutils-m68k-linux-gnu_2.42-4ubuntu2_amd64.deb",
+      "SHA256": "696d79baab58d533e18be19758a8866772872dcbc59e421220c2426dd3f57eab",
+      "Size": "1304208",
+      "Depends": "binutils-common (= 2.42-4ubuntu2), libc6 (>= 2.38), libjansson4 (>= 2.14), libsframe1 (>= 2.41), libzstd1 (>= 1.5.5), zlib1g (>= 1:1.1.4)",
+      "url": "https://archive.ubuntu.com/ubuntu/pool/universe/b/binutils/binutils-m68k-linux-gnu_2.42-4ubuntu2_amd64.deb"
+    },
+    {
+      "Package": "cpp-13-m68k-linux-gnu",
+      "Version": "13.2.0-23ubuntu4cross1",
+      "Filename": "pool/universe/g/gcc-13-cross-ports/cpp-13-m68k-linux-gnu_13.2.0-23ubuntu4cross1_amd64.deb",
+      "SHA256": "d99e0e176c3d6007881fdc8c18f30c308ff0629f7c08ca9db13590e1531c7320",
+      "Size": "8634136",
+      "Depends": "gcc-13-m68k-linux-gnu-base (= 13.2.0-23ubuntu4cross1), libc6 (>= 2.38), libgmp10 (>= 2:6.3.0+dfsg), libisl23 (>= 0.15), libmpc3 (>= 1.1.0), libmpfr6 (>= 3.1.3), libzstd1 (>= 1.5.5), zlib1g (>= 1:1.1.4)",
+      "url": "https://archive.ubuntu.com/ubuntu/pool/universe/g/gcc-13-cross-ports/cpp-13-m68k-linux-gnu_13.2.0-23ubuntu4cross1_amd64.deb"
+    },
+    {
+      "Package": "gcc-13-m68k-linux-gnu",
+      "Version": "13.2.0-23ubuntu4cross1",
+      "Filename": "pool/universe/g/gcc-13-cross-ports/gcc-13-m68k-linux-gnu_13.2.0-23ubuntu4cross1_amd64.deb",
+      "SHA256": "c8c90ab9b4dfa04c4f93e84abdb05470ee3bbddce512a25c83fab32b34fa0f50",
+      "Size": "16511632",
+      "Depends": "cpp-13-m68k-linux-gnu (= 13.2.0-23ubuntu4cross1), gcc-13-m68k-linux-gnu-base (= 13.2.0-23ubuntu4cross1), libcc1-0 (>= 13), binutils-m68k-linux-gnu (>= 2.42), libgcc-13-dev-m68k-cross (>= 13.2.0-23ubuntu4cross1), libc6 (>= 2.38), libgcc-s1 (>= 3.0), libgmp10 (>= 2:6.3.0+dfsg), libisl23 (>= 0.15), libmpc3 (>= 1.1.0), libmpfr6 (>= 3.1.3), libstdc++6 (>= 5), libzstd1 (>= 1.5.5), zlib1g (>= 1:1.1.4)",
+      "url": "https://archive.ubuntu.com/ubuntu/pool/universe/g/gcc-13-cross-ports/gcc-13-m68k-linux-gnu_13.2.0-23ubuntu4cross1_amd64.deb"
+    },
+    {
+      "Package": "libgcc-13-dev-m68k-cross",
+      "Version": "13.2.0-23ubuntu4cross1",
+      "Filename": "pool/universe/g/gcc-13-cross-ports/libgcc-13-dev-m68k-cross_13.2.0-23ubuntu4cross1_all.deb",
+      "SHA256": "9bd5abf0997d603b43d91bd8afc72765afbf45994f6349c51b6cd40b2167249c",
+      "Size": "187734",
+      "Depends": "gcc-13-cross-base-ports (= 13.2.0-23ubuntu4cross1), libgcc-s2-m68k-cross (>= 13.2.0-23ubuntu4cross1), libgomp1-m68k-cross (>= 13.2.0-23ubuntu4cross1), libatomic1-m68k-cross (>= 13.2.0-23ubuntu4cross1)",
+      "url": "https://archive.ubuntu.com/ubuntu/pool/universe/g/gcc-13-cross-ports/libgcc-13-dev-m68k-cross_13.2.0-23ubuntu4cross1_all.deb"
+    },
+    {
+      "Package": "qemu-user-static",
+      "Version": "1:8.2.2+ds-0ubuntu1",
+      "Filename": "pool/universe/q/qemu/qemu-user-static_8.2.2+ds-0ubuntu1_amd64.deb",
+      "SHA256": "83ad62bfe0e28a5645cb6a40d8b99e7a629fdac9e1a9cea9949d1c59a01322c7",
+      "Size": "14696804",
+      "Depends": null,
+      "url": "https://archive.ubuntu.com/ubuntu/pool/universe/q/qemu/qemu-user-static_8.2.2+ds-0ubuntu1_amd64.deb"
+    }
+  ],
+  "lean": {
+    "version": "4.19.0",
+    "url": "https://github.com/leanprover/lean4/releases/download/v4.19.0/lean-4.19.0-linux.tar.zst",
+    "sha256": "6fe3ce97a58f44e2b3567d455b994eacec5bfe9ae7774f2a573444480ba813fe",
+    "sha256_origin": "OBSERVED_UPSTREAM_HTTPS_DOWNLOAD_PIN; not an independent signature"
+  },
+  "guest": {
+    "cpu": "m68000",
+    "abi": "Linux m68k syscall ABI; no guest libc",
+    "compiler_flags": [
+      "-m68000",
+      "-msoft-float",
+      "-ffreestanding",
+      "-fno-builtin",
+      "-fno-stack-protector",
+      "-fno-pie",
+      "-nostdlib",
+      "-static"
+    ],
+    "full_atari_emulation_claimed": false,
+    "linux_kernel_module_claimed": false
+  },
+  "verification": "Package bytes match the recorded package-index SHA-256 before extraction. Bind actual compiler/emulator/binary and Lean proof hashes in each run. Failed extraction/build/run/kernel proof is BLOCK; no automatic download from a test.",
+  "rollback": "Provision only a separate content-bound tool prefix; delete or replace only that prefix after a failed self-test.",
+  "executables": {
+    "compiler": {
+      "file": "m68k-linux-gnu-gcc-13",
+      "sha256": "70c166afb7b09af77c626b34923df28dac08ab46fcae001b2e9d45c4a9579fa5"
+    },
+    "m68000_emulator": {
+      "file": "qemu-m68k-static",
+      "sha256": "de92f49d2e9525551f5814fa24a5d03d9584fd947e804f6e4a3c5a06319b9c45"
+    },
+    "lean_runner": {
+      "file": "qemu-x86_64-static",
+      "sha256": "e97e09826bca911f176cef02cb51e5839778af147d54d5c14632678ba883fd50"
+    },
+    "lean": {
+      "file": "lean",
+      "sha256": "92c3d35b5bfaa5e0fea413a775d504cf46cd95e1345df61c2274f76779e7e023"
+    },
+    "lake": {
+      "file": "lake",
+      "sha256": "5111aee5c9434ab05d4265606475ef22e8bda69aaf3a0657b61a7eec6e550bed"
+    }
+  }
+}

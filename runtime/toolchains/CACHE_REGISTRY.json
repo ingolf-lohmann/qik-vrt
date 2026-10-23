@@ -35,7 +35,8 @@
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
         "Makefile",
-        "tests/test_effect_ack_core.sh"
+        "tests/test_effect_ack_core.sh",
+        "runtime/toolchains/M68000_PROOF_POC_LOCK.json"
       ],
       "cache_class": "runner-image-layer",
       "cache_locations": [
@@ -43,13 +44,15 @@
       ],
       "profiles": [
         "core",
-        "all"
+        "all",
+        "emulated-prediction"
       ],
       "provider": "pinned GitHub-hosted runner image",
       "trusted_save": false,
       "verification": [
         "strict ANSI-C90 compile contract",
-        "core execution tests"
+        "core execution tests",
+        "Emulated prediction profile: exact pinned archive/package, actual build identity and finite observation/Lean kernel checks"
       ],
       "version": "ansi-c90"
     },
@@ -255,7 +258,8 @@
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
         "tools/bootstrap-runtime.sh",
-        ".github/workflows/qikvrt_formalization_and_audio.yml"
+        ".github/workflows/qikvrt_formalization_and_audio.yml",
+        "runtime/toolchains/M68000_PROOF_POC_LOCK.json"
       ],
       "cache_class": "build-cache",
       "cache_locations": [
@@ -265,7 +269,8 @@
       ],
       "profiles": [
         "formal",
-        "all"
+        "all",
+        "emulated-prediction"
       ],
       "provider": "leanprover/lean-action+actions/cache",
       "trusted_save": true,
@@ -273,7 +278,8 @@
         "lean-toolchain contract",
         "lake manifest digest",
         "lake build",
-        "kernel proof checks"
+        "kernel proof checks",
+        "Emulated prediction profile: exact pinned archive/package, actual build identity and finite observation/Lean kernel checks"
       ],
       "version": "4.19.0"
     },
@@ -578,6 +584,30 @@
         "Official Mozilla AMO unlisted REST v4, Python stdlib HS256 JWT with 60-second expiry, exact six committed Standard source files, private fsynced one-shot journal, SHA256/source-bound original-byte readback and credential-free hostile HTTP controls; a mocked API or signature metadata is not Mozilla/browser acceptance"
       ],
       "version": "3.12.x"
+    },
+    "qemu-m68k": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/toolchains/M68000_PROOF_POC_LOCK.json",
+        "tests/effect_ack_prediction_m68000.S",
+        "tests/test_effect_ack_prediction.py"
+      ],
+      "cache_class": "build-cache",
+      "cache_locations": [
+        ".qikvrt/toolchains/m68000-proof-poc exact pinned extracted package prefix"
+      ],
+      "profiles": [
+        "emulated-prediction"
+      ],
+      "provider": "Ubuntu noble qemu-user-static package; public upstream QEMU",
+      "trusted_save": false,
+      "verification": [
+        "Package-index SHA-256 matches downloaded bytes before extraction",
+        "qemu-m68k-static --version and -cpu help; require m68000",
+        "Execute the actual -m68000 freestanding ELF on -cpu m68000; compare every emitted state with the frozen profile and Lean model",
+        "The same pinned qemu-user-static package may run the unmodified x86_64 Lean/Lake executables with standard guest executable-path handling when native app-path discovery is unavailable; retain that emulator binding in the kernel receipt."
+      ],
+      "version": "8.2.2"
     },
     "react-browser": {
       "authority_files": [
