@@ -11,6 +11,9 @@ import sys
 import tempfile
 import textwrap
 import unittest
+from unittest.mock import patch
+from contextlib import redirect_stdout
+from io import StringIO
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location(
@@ -106,6 +109,57 @@ class RequestedReviewExecutorTests(unittest.TestCase):
         result = MODULE.evaluate(self.snapshot(requested_reviewers=[]))
         self.assertEqual(result["state"], "WAIT")
         self.assertEqual(result["first_blocker"], "NO_ACTIVE_REVIEW_REQUEST")
+
+    def test_native_route_reviews_without_copilot_or_requested_reviewers(self):
+        result = MODULE.evaluate(self.snapshot(requested_reviewers=[], review_route="QIKVRT_NATIVE"))
+        self.assertEqual(result["state"], "APPROVE")
+        self.assertFalse(result["semantic_ai_review_performed"])
+        self.assertFalse(result["completion_claims"]["INDEPENDENT_CODE_OWNER_APPROVAL"])
+        self.assertFalse(result["completion_claims"]["EFFECT_ACK_DONE"])
+
+    def test_native_route_preserves_required_checks_and_thread_unknown(self):
+        snap = self.snapshot(requested_reviewers=[], review_route="QIKVRT_NATIVE")
+        snap["workflow_runs"][0]["conclusion"] = "failure"
+        self.assertEqual(MODULE.evaluate(snap)["first_blocker"], "REQUIRED_GATE_FAILED")
+        snap["review_threads_complete"] = False
+        self.assertEqual(MODULE.evaluate(snap)["first_blocker"], "REVIEW_THREAD_STATE_UNAVAILABLE")
+        snap["draft"] = True
+        self.assertEqual(MODULE.evaluate(snap)["first_blocker"], "DRAFT")
+
+    def test_candidate_workflow_does_not_import_unpromoted_selector(self):
+        from tools import qikvrt_requested_review_executor as core
+        workflow = (ROOT / ".github/workflows/qikvrt_requested_review_executor.yml").read_text()
+        step = workflow.split("      - name: Detect trusted-main activation", 1)[1].split("      - name:", 1)[0]
+        source = textwrap.dedent(step.split("python3 -B - <<'PY'\n", 1)[1].split("          PY", 1)[0])
+        with patch.object(core, "native_review_candidate", None), self.assertRaises(SystemExit) as result:
+            exec(compile(source, "trusted-main-before-routing-promotion", "exec"), {})
+        self.assertEqual(result.exception.code, 2)
+
+    def test_actual_selection_admits_native_pr_without_review_request(self):
+        workflow = (ROOT / ".github/workflows/qikvrt_requested_review_executor.yml").read_text()
+        step = workflow.split("      - name: Select one requested review", 1)[1].split("      - name:", 1)[0]
+        source = textwrap.dedent(step.split("          python3 -B - <<'PY' > /tmp/qikvrt-review-selection.json\n", 1)[1].split("          PY", 1)[0])
+        pr = {"number": 586, "state": "open", "draft": False, "base": {"ref": "main"},
+              "head": {"sha": "b" * 40}, "requested_reviewers": [], "requested_teams": []}
+        calls = []
+        def read(command, **kwargs):
+            calls.append(command)
+            path = command[-1]
+            if "/pulls?" in path: return json.dumps([[pr]])
+            if "/reviews?" in path: return "[[]]"
+            self.fail(str(command))
+        env = {"REPOSITORY": "ingolf-lohmann/qik-vrt", "REQUESTED_PR": "", "EVENT_PR": "", "EVENT_HEAD": "", "REVIEW_MARKER": "fixture-only"}
+        output = StringIO()
+        with patch.dict(os.environ, env), patch("subprocess.check_output", side_effect=read), redirect_stdout(output):
+            exec(compile(source, "actual-native-review-selection", "exec"), {})
+        self.assertEqual(json.loads(output.getvalue())["pr_number"], 586)
+        self.assertFalse(any("graphql" in arg for command in calls for arg in command))
+        policy = json.loads((ROOT / "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json").read_text())
+        self.assertFalse(MODULE.native_review_candidate(pr, policy, "foreign/qik-vrt"))
+        for override in ({"draft": True}, {"state": "closed"}, {"base": {"ref": "other"}}):
+            self.assertFalse(MODULE.native_review_candidate({**pr, **override}, policy, env["REPOSITORY"]))
+        policy["review_executor"]["provider_routing"]["enabled"] = False
+        self.assertFalse(MODULE.native_review_candidate(pr, policy, env["REPOSITORY"]))
 
     def test_actual_automated_approve_disposition_is_comment_in_separate_context(self):
         workflow = (ROOT / ".github/workflows/qikvrt_requested_review_executor.yml").read_text()

@@ -2,21 +2,21 @@
   "EFFECT_ACK_DONE": false,
   "artifacts": {
     "ANSWER.md": "28bba5b8db1e3be813f9f528171228cba676f83c8ec1cd28bbd03217e46d9280",
-    "CONTEXT.md": "f8423370cfba84d9cd8f3280da9a3b223083e9e1f837ebf8d9def06f0c6b4c9c",
-    "REQUEST.json": "27a5f50d046d59bba2fd8216ec8a9e2ebce7e5adee5ccf6ade302c47d759bfb6",
-    "REQUEST.sha256": "c144191bfa9c323948fa216e5768f2341ffafdf6c01b31bccea9867b27ca4d84",
-    "STATUS.json": "7abac9363e31354fc438d86e19e708b9ee22ab200c6e9fdf02f86d60bd6a0572"
+    "CONTEXT.md": "48a9e93ae7c01d945fa1b1e066f30f0efd614607e38c2963cc9e8983c4dffd20",
+    "REQUEST.json": "7211fecc04109fad5bc4a87f70e3bbf198df359149edda9cdd6391df1cf09d22",
+    "REQUEST.sha256": "7b6822e3f71109a1a5642621e27c98f8c078362094f07a8002c4375e0a8758fd",
+    "STATUS.json": "dd53aac3b67942a6134332df156b9c7e01308c95cd19aebe1bcd248c56df0e72"
   },
   "automatic_issue_close": false,
   "automatic_merge": false,
   "execute": true,
-  "fingerprint": "2698dbe6cae4fc0e8d8e7b057d508fd4ebbf4a198a2b526634e0b99bbf9a4adc",
+  "fingerprint": "01c3c637b3712dfedfb3c5c6feaafc6f53506ff2b5600fac6d2ecf7f5d897a30",
   "inputs": {
-    "context_sha256": "f8423370cfba84d9cd8f3280da9a3b223083e9e1f837ebf8d9def06f0c6b4c9c",
+    "context_sha256": "48a9e93ae7c01d945fa1b1e066f30f0efd614607e38c2963cc9e8983c4dffd20",
     "processor_blobs": {
       ".github/workflows/issue-agent-backlog-resume.yml": "f45ac3b13f8059f51030c50a454d5af78d9b9bda08e9cd0769132fc243fef333",
       ".github/workflows/issue-autonomous-processing.yml": "bd86991d0347159d79169ad8ccb7273579b584360d859a1147774979d967174c",
-      "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json": "b60b45ad729fae85f1b18faf0e924125b644a0bc4b11049a309bc18f3957c1cc",
+      "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json": "657dbd3f9fd60bc00fa5d3805460aa01fb61382166d034b20307341db7a581bc",
       "scripts/issue_agent/compile.py": "5ced441f5e1f309e1ccf42e7749ffc275709a5c6b75f197bc4572a20d79dc6fd",
       "scripts/issue_agent/finalize.py": "d3165683c6441f5c13ae97da3168bc5e3e5768e8e54ce564a425a28aae66b13a",
       "scripts/issue_agent/handoff.py": "b22b8300a4bec1d60e6de8292e41e97c25bfe63372f5d851304eedfd909d0920",
@@ -29,7 +29,7 @@
     "request_sha256": "9472fbce07875107263fa465fa0e8de6c5283c9045129132928abf571339c677"
   },
   "issue_number": 503,
-  "previous_branch_head": "9be9d6be27d4e187ae103b157356ce81528f5536",
+  "previous_branch_head": "385619d53757c792b0afcb3bc5128ccb4e116a5e",
   "processing_status": "BLOCK",
   "reason": "NEW_CAUSAL_INPUT",
   "recorded": true,
