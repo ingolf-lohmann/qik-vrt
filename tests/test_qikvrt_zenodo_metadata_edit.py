@@ -223,6 +223,37 @@ class ZenodoMetadataEditTests(unittest.TestCase):
             sleeper=lambda _seconds: None,
         )
 
+    def test_metadata_edit_preserves_absent_published_version(self) -> None:
+        before = metadata_before()
+        del before["version"]
+        after = copy.deepcopy(before)
+        after["notes"] = "Current Authority: ingolf-lohmann/qik-vrt"
+        observed_before, observed_after, changed = edit._validate_metadata_transition(before, after)
+        self.assertNotIn("version", observed_before)
+        self.assertNotIn("version", observed_after)
+        self.assertEqual(changed, ["notes"])
+        self.assertEqual(before, observed_before)
+
+    def test_metadata_edit_cannot_add_or_remove_a_version(self) -> None:
+        before = metadata_before()
+        without = copy.deepcopy(before)
+        del without["version"]
+        for left, right in ((before, without), (without, before)):
+            with self.subTest(before_version=left.get("version")):
+                with self.assertRaises(zenodo.ZenodoError):
+                    edit._validate_metadata_transition(left, right)
+
+    def test_new_publication_still_requires_version_and_invalid_optional_fails(self) -> None:
+        metadata = metadata_before()
+        del metadata["version"]
+        with self.assertRaises(zenodo.ZenodoError):
+            zenodo._metadata_identity(metadata, "new-publication")
+        for invalid in (None, "", " ", 1):
+            with self.subTest(version=invalid):
+                metadata["version"] = invalid
+                with self.assertRaises(zenodo.ZenodoError):
+                    edit._validate_edit_metadata(metadata, "published-record")
+
     def test_metadata_transition_is_narrow_and_preserves_title(self) -> None:
         before, after, changed = edit._validate_metadata_transition(
             metadata_before(),
@@ -656,6 +687,10 @@ class ZenodoMetadataEditTests(unittest.TestCase):
             ).read_text(encoding="utf-8")
         )
         self.assertEqual(schema["properties"]["schema"]["const"], edit.SCHEMA)
+        self.assertEqual(
+            schema["properties"]["repository"]["const"], publication.PRODUCTION_REPOSITORY
+        )
+        self.assertIn(publication.PRODUCTION_REPOSITORY, schema["$id"])
         self.assertEqual(schema["properties"]["confirm"]["const"], edit.CONFIRM)
         self.assertEqual(capability["implementation"], "tools/qikvrt_zenodo_metadata_edit.py")
         self.assertEqual(

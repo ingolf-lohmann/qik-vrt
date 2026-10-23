@@ -158,7 +158,9 @@ def _canonical_metadata_hash(metadata: Mapping[str, Any]) -> str:
 def _validate_edit_metadata(value: Any, where: str) -> dict[str, Any]:
     if not isinstance(value, dict) or not zenodo._is_json_value(value):
         _fail(f"{where} must be a JSON object")
-    missing = publication.REQUIRED_METADATA - set(value)
+    # A published record may legitimately have no version label. Preserve that
+    # absence instead of inventing one during an unrelated metadata correction.
+    missing = (publication.REQUIRED_METADATA - {"version"}) - set(value)
     unknown = set(value) - publication.ALLOWED_METADATA
     if missing or unknown:
         details: list[str] = []
@@ -171,7 +173,7 @@ def _validate_edit_metadata(value: Any, where: str) -> dict[str, Any]:
         _fail(
             f"{where}.prereserve_doi is forbidden when editing an existing DOI"
         )
-    zenodo._metadata_identity(value, where)
+    zenodo._metadata_identity(value, where, require_version=False)
     if value["access_right"] != "open":
         _fail(f"{where}.access_right must equal open")
     if not isinstance(value["description"], str) or not value["description"].strip():

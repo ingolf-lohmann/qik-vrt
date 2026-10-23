@@ -1,5 +1,5 @@
 {
-  "$id": "https://github.com/Goldkelch/qik-vrt/blob/main/policy/qikvrt-zenodo-published-metadata-edit-manifest-v1.schema.json",
+  "$id": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/policy/qikvrt-zenodo-published-metadata-edit-manifest-v1.schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "additionalProperties": false,
   "properties": {
@@ -13,7 +13,7 @@
       "const": "EDIT_PUBLISHED_ZENODO_METADATA_ONLY"
     },
     "repository": {
-      "const": "Goldkelch/qik-vrt"
+      "const": "ingolf-lohmann/qik-vrt"
     },
     "source_head": {
       "$ref": "#/$defs/gitBlob"
