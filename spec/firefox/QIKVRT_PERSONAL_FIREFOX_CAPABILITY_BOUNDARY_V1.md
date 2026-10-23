@@ -107,6 +107,85 @@ account/tenant token revocation remain distinct operations and evidence states.
 Neither the selected provider nor its public consumer tenant identifies the
 Owner's actual registered client or establishes an authenticated session.
 
+## Independent entitlement and bounded consumption — Owner #580
+
+The protected Personal factory requires a separate operator-supplied
+`consumption` record in the existing OS Secret Service profile before any
+provider call. SSO remains identity evidence only. The existing explicit legacy
+memory-pairing development path is not productive consumption acceptance.
+
+`src/qikvrt_personal_budget.py` reuses the original #506 SQLite budget ledger.
+Its `ConsumptionGuard` separately checks provider access, seat assignment when
+the selected offer requires it, concrete service rights, and a consumption
+decision bound to the exact budget digest. A base-subscription entitlement is
+required only when the selected offer actually declares that prerequisite.
+Catalog lookup binds provider/product/SKU IDs, service, region, channel and
+effective interval. Display names cannot grant access. Unknown or stale
+evidence blocks the call. Each right retains its own kind, exact-subject digest,
+documentary-source digest and observation/expiry interval.
+
+The private record describes operator-confirmed documentary evidence; its
+validation is not a live vendor entitlement or balance query. A market report,
+an SSO token, the presence of an API key, or a provider's default limit cannot
+create a consumption grant. No real new Microsoft product/SKU IDs are supplied
+by this source change. Microsoft prerequisites must be read from the actual
+applicable offer, not inferred from a marketing name or a future launch date.
+
+The October 2026 Microsoft Partner Center announcement distinguishes the
+01 December purchase change from licensed app/service capabilities. Its
+initial default-billing rollout excludes France. Accordingly an operator
+catalog can permit an explicitly configured service in France while excluding
+France from `default_billing_regions`; it cannot infer that default activation
+from the announcement. Source:
+https://learn.microsoft.com/en-us/partner-center/announcements/2026-october
+
+Budgets use integer micro-USD and explicit period/local/organization/workspace
+limits. V1 token quotes remain readable. V2 requires `currency: USD` and also
+supports a bounded unit quote with an explicit unit price and maximum units;
+unknown currencies are denied. Quotes must bound all charges for the declared
+request. Unit conversion is supplied by the pinned private quote, never a
+hard-coded Copilot Credit price. The existing model adapter accepts token quotes
+only: unit-metered Copilot accounting is not a new Microsoft execution adapter.
+No Copilot API entitlement or endpoint is inferred from a subscription SKU.
+V2 `billing_mode: bounded_usage` supports invoiced usage through a separately
+authorized, expiring spend allowance. It does not pretend that an invoice
+subscription has a prepaid balance. The allowance, its period and every limit
+remain bound to the explicit consumption decision; no default allowance or
+calendar rollover can create spend authority. V1 prepaid semantics are retained.
+
+The original `BEGIN IMMEDIATE` reservation precedes external activity.
+Independent connections share the same remaining pool and limits. A request ID
+and its input/configuration digest bind the reservation. Completed repeats read
+the cached result; unresolved outcomes hold the maximum reservation and freeze
+new consumption pending reconciliation. Expired/changed grants are checked
+again before dispatch. A changed protected operator record requires restart.
+Current provider usage and exact resolved model must match the price contract
+before settlement; unknown/malformed usage cannot release a hold.
+The protected OpenAI path also calls the documented
+`POST /responses/input_tokens` with the exact model, conversation, instructions
+and input before generation. A count above the reserved input ceiling blocks
+generation; output is bounded with `max_output_tokens`. Post-response input
+usage must agree with that preflight count. The budget is rechecked after the
+count, so a slow preflight cannot cross an expiry boundary into generation.
+Other model transports remain unaccepted for protected consumption until their
+own enforceable input-bound path is established. The existing legacy development
+path is unchanged. API source:
+https://developers.openai.com/api/docs/guides/token-counting
+
+The existing terminal can provision a private, mode-0600 record outside any
+repository with `--personal-store-consumption-config PATH`, together with the
+existing Personal state/model/provider/auth-config arguments. Provisioning uses
+the existing writer lock, validates reconciliation against the actual quiescent
+budget revision, and independently reads back the protected store. No grant is
+installed through browser input. `GET /personal/consumption` requires the
+existing Personal authentication and exposes the bounded admission readback.
+Tests use explicitly synthetic product IDs and provider doubles, real SQLite
+connections/restarts and the actual authenticated HTTP handler.
+
+Source tests, provisioning and a local HTTP readback do not establish productive
+SSO, vendor rights, signed Firefox activation, host deployment or delivery at
+`raumzeitterminal.de`. Those require their own exact-subject runtime receipts.
+
 No real IdP registration/binding, native protected-login-collection witness,
 productive personal authentication or actual Firefox SSO run is attested by
 these source components and simulations. Windows/macOS secret backends remain

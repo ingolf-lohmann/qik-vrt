@@ -137,7 +137,7 @@ clean:
 .PHONY: personal-firefox-boundary-test
 personal-firefox-boundary-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_firefox_capability_boundary
-	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_assistant
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_assistant tests.test_qikvrt_personal_budget tests.test_qikvrt_consumption_guard
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_auth
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_terminal_transition
 	node tests/test_qikvrt_personal_auth_ui.cjs

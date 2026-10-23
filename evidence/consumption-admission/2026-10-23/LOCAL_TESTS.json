@@ -1,0 +1,64 @@
+{
+  "schema": "qikvrt_source_test_receipt_v1",
+  "scope": "LOCAL_CANDIDATE_WORKTREE_SOURCE_TESTS_NOT_PRODUCTIVE_ACCEPTANCE",
+  "parent_head": "a8017ab67824f01ec4d215cf7af83b8b0779283c",
+  "parent_tree": "94317a4da76fac49b63bb129badcbbd21471c092",
+  "source_bindings": [
+    {
+      "path": "src/qikvrt_personal_budget.py",
+      "sha256": "1fd563f213d674ee8075f301481d079f1994347dcce49567f2a2f23a59f4e7e4"
+    },
+    {
+      "path": "src/qikvrt_personal_assistant.py",
+      "sha256": "4e825fc61fa6232a5778fb53f5c9cd87e23ed5dd0167143a70431a432d2b3817"
+    },
+    {
+      "path": "src/qikvrt_personal_auth.py",
+      "sha256": "c988640fe56601a41c2228ff44ceeb8080d134059b2e7dfcf81ae589542e3f24"
+    },
+    {
+      "path": "src/qikvrt_effect_ack_http_terminal.py",
+      "sha256": "7bbdb67d7faffb20373a010131ca3c43c3d7610fa365c7ea171b47355851c3fe"
+    },
+    {
+      "path": "tests/test_qikvrt_personal_budget.py",
+      "sha256": "14065918752aa5535890b98eeeaaa4fdeb1a0002f941d3149445f883f8f19240"
+    },
+    {
+      "path": "tests/test_qikvrt_consumption_guard.py",
+      "sha256": "78b8289645b71f0f47bd59657175ac6e38baeea2528f0569d434a00a3c7fea52"
+    },
+    {
+      "path": "spec/firefox/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.md",
+      "sha256": "ff9da545206b80bd619bec3dec8a6412e9232e956e5c4bbc37e9a48ad1a0fe1c"
+    },
+    {
+      "path": "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json",
+      "sha256": "b686549116dd574200c8ac6e6233b4ae66b0282dc01d97e6790a661de02dd75c"
+    },
+    {
+      "path": "Makefile",
+      "sha256": "b04335a375d191408bdd1fcfcde88a30f353630b7ad2ecd0d70ad08d535936db"
+    },
+    {
+      "path": ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+      "sha256": "83141a865f96a1e525f6617d8874d92774c2ceb8bfbe1426294794ab677b74f8"
+    }
+  ],
+  "command": "make test",
+  "exit_code": 0,
+  "unittest_executions": 1749,
+  "unittest_invocations": 37,
+  "new_and_existing_budget_personal_selected_tests": 57,
+  "log_sha256": "7bf3460dcc5243bb861635dfcf0c00d14065feb29b7a932073a1dc1ddc3c3528",
+  "log_path": "evidence/consumption-admission/2026-10-23/MAKE_TEST.txt",
+  "code_changed_after_test": false,
+  "provider_requests": "TEST_DOUBLES_ONLY",
+  "vendor_live_entitlement_verified": false,
+  "productive_host_acceptance": false,
+  "domain_acceptance": false,
+  "metadata_added_after_test": [
+    "Original issue-agent evidence with verified unchanged blob identities",
+    "Provenance linkage, test receipt and integrity regeneration"
+  ]
+}

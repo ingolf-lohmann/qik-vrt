@@ -169,16 +169,80 @@ class OSSecretStore:
 
 
 def load_config(path, origin):
+    return validate_config(load_private_json(path), origin)
+
+
+def load_private_json(path, prefix="OIDC_CONFIG"):
     requested = Path(path).expanduser().absolute()
     if requested == ROOT or ROOT in requested.parents or requested.is_symlink() or any(p.is_symlink() or (p / ".git/config").is_file() or (p / ".git").is_file() for p in requested.parents):
-        raise AuthBlock("OIDC_CONFIG_MUST_BE_PRIVATE_OUTSIDE_REPOSITORY")
+        raise AuthBlock(prefix + "_MUST_BE_PRIVATE_OUTSIDE_REPOSITORY")
     try:
         info = requested.stat()
         if not stat.S_ISREG(info.st_mode) or info.st_size > LIMIT or info.st_mode & 0o077:
-            raise AuthBlock("OIDC_CONFIG_REQUIRES_PRIVATE_REGULAR_FILE")
-        return validate_config(object_json(requested.read_bytes()), origin)
+            raise AuthBlock(prefix + "_REQUIRES_PRIVATE_REGULAR_FILE")
+        return object_json(requested.read_bytes())
     except OSError:
-        raise AuthBlock("OIDC_REGISTERED_CLIENT_CONFIG_UNAVAILABLE") from None
+        raise AuthBlock("OIDC_REGISTERED_CLIENT_CONFIG_UNAVAILABLE" if prefix == "OIDC_CONFIG" else prefix + "_UNAVAILABLE") from None
+
+
+def provision_consumption(state_dir, provider, model, config_path, origin, consumption_path):
+    """Install an explicit operator grant using the existing protected writer lock.
+
+    No HTTP installation route, vendor calls, license purchases or local secret
+    fallback. OSSecretStore.write independently reads back the protected bytes.
+    """
+    import sqlite3
+    try:
+        from .qikvrt_personal_budget import BudgetLedger, ConsumptionGuard
+    except ImportError:
+        from qikvrt_personal_budget import BudgetLedger, ConsumptionGuard
+    registered = load_config(config_path, origin)
+    config = load_private_json(consumption_path, "CONSUMPTION_CONFIG")
+    store = OSSecretStore(state_dir, provider)
+    with store.provision_lock(state_dir):
+        bundle = store.read()
+        # Never turn a private operator file into a second credential store.
+        values = list(bundle.get("provider_keys", {}).values())
+        def collect(value):
+            if isinstance(value, dict):
+                for key, item in value.items():
+                    if key in {"access_token", "refresh_token", "local_token", "nonce"} and isinstance(item, str):
+                        values.append(item)
+                    elif isinstance(item, dict): collect(item)
+        collect(bundle)
+        raw = encoded(config)
+        if any(isinstance(value, str) and value and (value.encode() in raw or encoded(value)[1:-1] in raw) for value in values):
+            raise AuthBlock("CONSUMPTION_CONFIG_CONTAINS_PROTECTED_SECRET")
+        db = sqlite3.connect(":memory:")
+        try:
+            ledger = BudgetLedger(db)
+            state = Path(state_dir).expanduser().absolute() / "sessions.sqlite3"
+            if state.is_symlink():
+                raise AuthBlock("PRIVATE_STATE_FILE_UNSAFE")
+            if state.exists():
+                if not state.is_file() or state.stat().st_mode & 0o077:
+                    raise AuthBlock("PRIVATE_STATE_FILE_UNSAFE")
+                # Validate reconciliation against the actual quiescent revision,
+                # never reset an existing account to a fresh in-memory balance.
+                prior = sqlite3.connect(state.as_uri() + "?mode=ro", uri=True)
+                try:
+                    for table in ("personal_budgets", "personal_requests"):
+                        if prior.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name=?", (table,)).fetchone():
+                            rows = prior.execute("SELECT * FROM " + table).fetchall()
+                            if rows:
+                                db.executemany("INSERT INTO " + table + " VALUES (" + ",".join("?" for _ in rows[0]) + ")", rows)
+                    db.commit()
+                finally:
+                    prior.close()
+            guard = ConsumptionGuard(ledger, config, provider=provider, principal_id=registered["subject"], service_id=model)
+            guard.check()
+            config_sha256 = guard.config_sha256
+        finally:
+            db.close()
+        bundle["consumption"] = config
+        store.write(bundle)
+    return {"state": "PROTECTED_CONSUMPTION_CONFIG_READBACK_VERIFIED", "config_sha256": config_sha256,
+            "vendor_live_entitlement_verified": False, "paid_requests": 0}
 
 
 def validate_config(config, origin):
