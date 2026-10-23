@@ -71,6 +71,15 @@
       "reason": "REQUIRED_GATE_NOT_TERMINAL",
       "no_external_reviewer_required": true,
       "productive_native_execution": false
+    },
+    "full_suite_subject": "Implementation before the later trusted-Main bootstrap compatibility guard; full-suite evidence is retained for its actual subject.",
+    "trusted_main_transition_fix": {
+      "predecessor_job": 120365363234,
+      "failure": "ImportError: selector absent from trusted Main",
+      "fix": "Detect native selector capability before activating candidate workflow",
+      "tests": 130,
+      "test_log_sha256": "991bc867754ac7a8d95e4efbe03e5d15edd4fb6444172c5247fba01a1eabb73b",
+      "productive_activation": "NOT_PROVEN"
     }
   }
 }

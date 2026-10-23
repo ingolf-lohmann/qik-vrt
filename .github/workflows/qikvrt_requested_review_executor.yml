@@ -59,6 +59,10 @@ jobs:
           if test -f tools/qikvrt_requested_review_executor.py && python3 -B - <<'PY'
           import os, sys
           from tools import qikvrt_required_review_gate as gate
+          from tools import qikvrt_requested_review_executor as review_core
+          if not callable(getattr(review_core, 'native_review_candidate', None)):
+              print('BOOTSTRAP_NOOP: native review routing is not yet promoted to trusted main.')
+              sys.exit(2)
           resolver = getattr(gate, 'resolve_required_code_owner', None)
           if not callable(resolver):
               print('BOOTSTRAP_NOOP: current Mesh Authority binding is not yet promoted.')

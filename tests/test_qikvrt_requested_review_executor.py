@@ -126,6 +126,15 @@ class RequestedReviewExecutorTests(unittest.TestCase):
         snap["draft"] = True
         self.assertEqual(MODULE.evaluate(snap)["first_blocker"], "DRAFT")
 
+    def test_candidate_workflow_does_not_import_unpromoted_selector(self):
+        from tools import qikvrt_requested_review_executor as core
+        workflow = (ROOT / ".github/workflows/qikvrt_requested_review_executor.yml").read_text()
+        step = workflow.split("      - name: Detect trusted-main activation", 1)[1].split("      - name:", 1)[0]
+        source = textwrap.dedent(step.split("python3 -B - <<'PY'\n", 1)[1].split("          PY", 1)[0])
+        with patch.object(core, "native_review_candidate", None), self.assertRaises(SystemExit) as result:
+            exec(compile(source, "trusted-main-before-routing-promotion", "exec"), {})
+        self.assertEqual(result.exception.code, 2)
+
     def test_actual_selection_admits_native_pr_without_review_request(self):
         workflow = (ROOT / ".github/workflows/qikvrt_requested_review_executor.yml").read_text()
         step = workflow.split("      - name: Select one requested review", 1)[1].split("      - name:", 1)[0]
