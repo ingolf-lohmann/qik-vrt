@@ -121,7 +121,10 @@
     "repository_roles": {
       "source_of_truth": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
       "projections_must_agree": true,
-      "activation": "FRESH_NATIVE_EXECUTION_AND_INDEPENDENT_MAIN_READBACK_REQUIRED"
+      "activation": "FRESH_NATIVE_EXECUTION_AND_INDEPENDENT_MAIN_READBACK_REQUIRED",
+      "authority_repository": "ingolf-lohmann/qik-vrt",
+      "mirror_repository": "Goldkelch/qik-vrt",
+      "correction_notice_path": "docs/publications/2026-10-23-repository-authority-correction/README.md"
     },
     "publication_identity": {
       "identity_id": "QIKVRT-ZENODO-21888130-ORIGINAL-V1",

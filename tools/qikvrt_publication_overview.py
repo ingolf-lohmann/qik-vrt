@@ -10,6 +10,7 @@ import json
 import pathlib
 import re
 import sys
+from urllib.parse import unquote
 from typing import Any, Sequence
 
 DEFAULT_ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -368,6 +369,68 @@ def _project_editorial_publications(root: pathlib.Path, index: dict[str, Any], t
     raise PublicationOverviewBlock("human index lacks an editorial insertion anchor")
 
 
+def _project_authority_correction(root: pathlib.Path, index: dict[str, Any], text: str) -> str:
+    """Correct current navigation while retaining exact historical source identities."""
+    correction = index.get("authority_correction")
+    if correction is None:
+        return text
+    if not isinstance(correction, dict):
+        raise PublicationOverviewBlock("authority_correction must be an object")
+    policy_path = root / "policy/CANONICAL_UPSTREAM_REMOTE_V1.json"
+    policy = json.loads(_read_text(policy_path))
+    authority = policy["canonical_upstream"]["repository"]
+    mirror = policy["mirror"]["repository"]
+    if index.get("repository") != authority or index.get("authority_repository") != authority:
+        raise PublicationOverviewBlock("publication repository differs from current Authority policy")
+    notice_path = correction.get("notice_path", "")
+    notice = (root / notice_path).resolve()
+    if not notice.is_relative_to(root.resolve()) or not notice.is_file():
+        raise PublicationOverviewBlock("authority correction notice is absent or unsafe")
+    for group in ("publication_bundles", "featured_artifacts", "zenodo_records"):
+        for item in index.get(group, []):
+            relative = item.get("path") or item.get("receipt_path")
+            if not isinstance(relative, str):
+                continue
+            source = (root / relative).resolve()
+            if not source.is_relative_to(root.resolve()):
+                raise PublicationOverviewBlock("current source path escaped the repository")
+            if source.is_file():
+                item["current_source_url"] = f"https://github.com/{authority}/blob/main/{relative}"
+                item["current_source_boundary"] = "CURRENT_SOURCE_LOCATION_NOT_HISTORICAL_BYTE_EQUALITY"
+    # Only floating navigation is retargeted. Commit-pinned URLs and receipts
+    # remain unchanged; a missing current path is never presented as recovered.
+    pattern = re.compile(r"https://github\.com/" + re.escape(mirror) + r"/(blob|tree|raw)/main/([^\s\"'<>]+)")
+    def current(match: re.Match[str]) -> str:
+        source = (root / unquote(html.unescape(match[2]))).resolve()
+        if source.is_relative_to(root.resolve()) and source.exists():
+            return match[0].replace("https://github.com/" + mirror + "/", "https://github.com/" + authority + "/", 1)
+        return match[0]
+    text = pattern.sub(current, text)
+    esc = html.escape
+    notice_url = f"https://github.com/{authority}/blob/main/{notice_path}"
+    begin, end = "<!-- QIKVRT_AUTHORITY_CORRECTION_BEGIN -->", "<!-- QIKVRT_AUTHORITY_CORRECTION_END -->"
+    section = (begin + '\n<section class="section" id="authority-correction"><div class="wrap">'
+               '<h2>Korrektur vom 23. Oktober 2026</h2><p>Aktuelle Authority: '
+               + esc(authority) + '; Mirror und historischer Referenzbestand: ' + esc(mirror)
+               + '. Frühere Rollenangaben und eingefrorene Quellen gelten für ihren damaligen Gegenstand. '
+               'Eine Repository-Rolle belegt weder Erreichbarkeit noch eine native Übernahme.</p><p><a href="'
+               + esc(notice_url, quote=True) + '">Datierter Nachtrag und offene externe Korrekturen</a></p>'
+               '</div></section>\n' + end)
+    if begin in text or end in text:
+        if text.count(begin) != 1 or text.count(end) != 1:
+            raise PublicationOverviewBlock("ambiguous authority correction projection")
+        return re.sub(re.escape(begin) + r".*?" + re.escape(end), lambda _: section, text, flags=re.DOTALL)
+    anchor = '<div class="collection-list">'
+    if anchor not in text:
+        raise PublicationOverviewBlock("authority correction lacks a visible insertion anchor")
+    # Put the correction before the collection's containing section, not inside
+    # a link or a frozen original-text block.
+    position = text.rfind('<section', 0, text.index(anchor))
+    if position < 0:
+        position = text.index(anchor)
+    return text[:position] + section + "\n" + text[position:]
+
+
 def build_outputs(root: pathlib.Path) -> tuple[bytes, str, dict[str, Any]]:
     machine_path = root / MACHINE_INDEX
     human_path = root / HUMAN_INDEX
@@ -426,6 +489,7 @@ def build_outputs(root: pathlib.Path) -> tuple[bytes, str, dict[str, Any]]:
 
     html_text = _project_public_corpus(root, index, html_text)
     html_text = _project_editorial_publications(root, index, html_text)
+    html_text = _project_authority_correction(root, index, html_text)
     machine_bytes = (
         json.dumps(index, ensure_ascii=False, indent=2, sort_keys=False) + "\n"
     ).encode("utf-8")

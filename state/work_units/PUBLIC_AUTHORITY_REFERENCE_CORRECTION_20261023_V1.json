@@ -1,0 +1,28 @@
+{
+  "schema": "qikvrt_owner_authorized_correction_work_unit_v1",
+  "owner": "Ingolf Lohmann",
+  "authorization_source": "Direct user instruction in this session, 2026-10-23; Freigabe erteilt.",
+  "scope": "PUBLIC_QIKVRT_AUTHORITY_ROLE_AND_ENTRYPOINT_CORRECTION",
+  "source_subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+    "tree": "1a8003f1815b75fe534b21f242e8b782d4352796"
+  },
+  "notice_path": "docs/publications/2026-10-23-repository-authority-correction/README.md",
+  "register_path": "docs/publications/2026-10-23-repository-authority-correction/CORRECTION_REGISTER.json",
+  "tests": {
+    "make_test_exit_code": 0,
+    "python_tests_reported": 1709,
+    "publication_regressions": 21
+  },
+  "principle": "Correct and supplement prior published statements when new source-bound knowledge establishes an error or a limitation; preserve dated original evidence and record a visible superseding notice.",
+  "open_effects": [
+    "AUTHORITY_MAIN_INTEGRATION",
+    "ADMITTED_ZENODO_METADATA_EDIT",
+    "GOLDKELCH_ACCESS_RECOVERY",
+    "EXACT_DOMAIN_DELIVERY",
+    "EXTERNAL_COPY_DISCOVERY"
+  ],
+  "all_public_copies_corrected": false,
+  "effect_ack_done": false
+}
