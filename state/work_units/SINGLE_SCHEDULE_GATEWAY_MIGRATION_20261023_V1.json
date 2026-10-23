@@ -33,7 +33,9 @@
     "explanation": "The returned records are a bounded observation; reported paused count exceeds returned paused records. Event trigger definitions are not included in this response.",
     "private_prompts_preserved_in_original_tasks": true,
     "additional_private_archive_saved": false,
-    "archive_failure": "library_storage_limit_exceeded"
+    "archive_failure": "library_storage_limit_exceeded",
+    "archive_failure_scope": "Historical optional client-file copy only; not a QIKVRT repository storage error or cutover prerequisite.",
+    "repository_native_private_payload_import_verified": false
   },
   "hmi": {
     "required_result_fields": [
@@ -456,6 +458,27 @@
       "candidate_parser_findings": [
         "NOT_CHECKED_INACTIVE"
       ]
+    }
+  ],
+  "storage_authority": {
+    "system": "QIKVRT",
+    "authority_repository": "ingolf-lohmann/qik-vrt",
+    "chatgpt_client_role": "HMI_TRANSPORT_ONLY",
+    "durable_work_state": "REPOSITORY_NATIVE",
+    "scheduling_authority": "REPOSITORY_NATIVE",
+    "client_file_storage_required": false,
+    "client_storage_failure_blocks_work": false,
+    "private_payload_rule": "Use existing QIKVRT governed private persistence and authenticated references; do not publish private task content into public Git.",
+    "legacy_automation_references": "Migration source references only; not the intended durable authority",
+    "client_independent_recovery_required": true
+  },
+  "corrections": [
+    {
+      "date": "2026-10-23",
+      "by": "Ingolf Lohmann",
+      "instruction": "Die Speicherinstanz ist das QIKVRT Repository. Der ChatGPT-Client ist nichts weiter als eine HMI-Instanz.",
+      "corrected_assistant_error": "Optional client Library storage failure was incorrectly presented as a persistence obstacle.",
+      "effect": "Client file quota excluded from repository persistence and scheduling acceptance; repository-native private payload migration remains explicitly unverified."
     }
   ]
 }
