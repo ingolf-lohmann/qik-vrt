@@ -166,6 +166,24 @@ not alter branch protection.
 
 ## External boundaries
 
+### Lost Git-tree publication reply — 2026-10-24
+
+The original continuation run `40069884460` for PR #459 completed its test and
+integrity steps, then stopped at `REST POST git/trees: 502`. That response does
+not reveal whether the immutable tree was already stored. The existing REST
+exporter now performs one GET of the independently computed tree identity after
+a 5xx or transport timeout and reconstructs the raw Git tree bytes to verify it.
+A verified tree lets the same admitted export continue without a second POST.
+A missing, incomplete, corrupt or unreadable tree retains HOLD and the expected
+identity. Permission or validation denials remain denials. Ref, competing-writer,
+review, signing and promotion checks retain their existing boundaries.
+
+This repair covers that lost-response transition. It does not fix the provider's
+502 cause, resolve unrelated merge conflicts, activate an unattended host, or
+establish HMI-independent productive operation. That acceptance still requires
+the admitted native runtime to continue the same Work Unit after HMI A closes,
+followed by an independently authorized HMI B reading the persisted result.
+
 The following gates cannot be manufactured by repository automation:
 
 - an identified independent Human Physics Review when the candidate requires
