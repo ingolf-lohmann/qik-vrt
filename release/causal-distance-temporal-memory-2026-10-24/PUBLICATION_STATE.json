@@ -11,5 +11,13 @@
   "relation": "isSupplementTo",
   "effect_ack_done": false,
   "publisher_execution_admitted": false,
-  "next_required_decision": "Detached canonical exact upload decision after this return; preserve original policy and credentials."
+  "next_required_decision": "Freeze and return a successor publication candidate incorporating the Lean companion; require its later canonical exact upload decision and admitted original publisher. The previous exact request binds only the old 20-file candidate.",
+  "current_work_scope": "qikvrt-causal-distance-lean-20261024",
+  "original_20_upload_files_materialized": true,
+  "original_return_control_files_restored": true,
+  "original_15_claim_machine_proof_validated_after_materialization": true,
+  "lean_kernel_theorem_count": 36,
+  "lean_native_receipt_sha256": "3734147def87e97610308abbd75a65989e8dfec1d2b421a72c59cdc181286b17",
+  "lean_package_sha256": "939b7da32b31972ea596b4a1ffdb8a9c1baafe3d8eb02d99f659ac005e813636",
+  "extended_publication_candidate_frozen_and_returned": false
 }
