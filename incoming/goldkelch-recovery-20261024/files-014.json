@@ -33,7 +33,10 @@
       "bytes": 31557,
       "source_blob": "9e7bf3d16450d962f3e094e998f57db10b05afa5",
       "original_path": "publication-staging/arxiv-effective-continuity-en-20261004-v2/arxiv-source.tar.gz",
-      "disposition": "BINARY_OR_LARGE_PAYLOAD_REVIEW_HOLD"
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED",
+      "object_path": "objects/9e7bf3d16450d962f3e094e998f57db10b05afa5",
+      "sha256": "551d7a720851bb35d73c5854e3b7d68da3ed36fe1caa2062ae79a0595eb05266",
+      "payload_review": "payload-review-20261024.json"
     },
     {
       "mode": "100644",
@@ -91,7 +94,10 @@
       "bytes": 578695,
       "source_blob": "30bc34a785f041a4dde271aac9450ecf9f6e3fe6",
       "original_path": "publication-staging/arxiv-effective-continuity-en-20261004-v2/main.pdf",
-      "disposition": "BINARY_OR_LARGE_PAYLOAD_REVIEW_HOLD"
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED",
+      "object_path": "objects/30bc34a785f041a4dde271aac9450ecf9f6e3fe6",
+      "sha256": "6151ac53206b965258b16c4986ca108f138837d31505c47d6e5bbdf0b9c5c310",
+      "payload_review": "payload-review-20261024.json"
     },
     {
       "mode": "100644",

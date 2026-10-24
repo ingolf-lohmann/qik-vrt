@@ -421,7 +421,10 @@
       "bytes": 400,
       "source_blob": "9b06a2b407fb99d99d2bda5a3decc80ab68a092b",
       "original_path": "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin",
-      "disposition": "BINARY_OR_LARGE_PAYLOAD_REVIEW_HOLD"
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED",
+      "object_path": "objects/9b06a2b407fb99d99d2bda5a3decc80ab68a092b",
+      "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
+      "payload_review": "payload-review-20261024.json"
     },
     {
       "mode": "100644",

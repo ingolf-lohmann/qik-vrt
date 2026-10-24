@@ -138,6 +138,7 @@ def load_recovered_sources(context: dict[str, Any]) -> dict[str, Any]:
             "ALL_GOLDKELCH_LIVE_DATA_RECOVERED", "ALL_ARCHIVED_FEATURES_ACTIVE", "EFFECT_ACK_DONE")):
         raise BootBlock("recovered source cannot claim unobserved completeness or effects")
     objects: dict[str, int] = {}
+    reviewed_objects: set[str] = set()
     versions = 0
     for page in index.get("file_pages", []):
         if not isinstance(page, str) or not re.fullmatch(r"files-[0-9]{3}\.json", page):
@@ -162,6 +163,31 @@ def load_recovered_sources(context: dict[str, Any]) -> dict[str, Any]:
                     or len(data) != item.get("bytes")):
                 raise BootBlock("recovered source original bytes changed")
             objects[blob] = len(data)
+            if item.get("payload_review"):
+                if item["payload_review"] != "payload-review-20261024.json":
+                    raise BootBlock("unsafe recovered payload review")
+                reviewed_objects.add(blob)
+    if reviewed_objects:
+        review_binding = index.get("payload_retention_review", {})
+        review_path = root / "payload-review-20261024.json"
+        if (review_binding.get("path") != review_path.name or review_path.is_symlink()
+                or not review_path.is_file()
+                or hashlib.sha256(review_path.read_bytes()).hexdigest() != review_binding.get("sha256")):
+            raise BootBlock("recovered payload review identity changed")
+        review = load_json_object(review_path, review_path.name)
+        if (review.get("source_archive_sha256") != binding.get("source_archive_sha256")
+                or review.get("archived_programs_executed") is not False
+                or review.get("historical_workflows_activated") is not False
+                or review.get("live_completeness_claimed") is not False
+                or review.get("effect_ack_done") is not False
+                or review_binding.get("execution_admitted") is not False):
+            raise BootBlock("recovered payload review cannot grant execution authority")
+        payloads = review.get("payloads", [])
+        if (not isinstance(payloads, list)
+                or {p.get("source_blob") for p in payloads} != reviewed_objects
+                or len(payloads) != len(reviewed_objects)
+                or review_binding.get("retained_as_inactive_originals") != len(reviewed_objects)):
+            raise BootBlock("recovered payload review coverage changed")
     comparison = index.get("comparison", {})
     if (versions != comparison.get("absent_path_versions")
             or len(objects) != comparison.get("inactive_original_blobs_preserved")

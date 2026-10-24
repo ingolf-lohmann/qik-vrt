@@ -131,7 +131,7 @@ class RecoveredSourceIntakeTests(unittest.TestCase):
 
     def test_all_preserved_original_bytes_are_independently_verified(self):
         result = self.load_with()
-        self.assertEqual(result['inactive_objects_byte_verified'], 1618)
+        self.assertEqual(result['inactive_objects_byte_verified'], 1637)
         self.assertEqual(result['historical_refs_bound'], 1028)
         self.assertFalse(result['archived_source_executed'])
 
@@ -140,6 +140,32 @@ class RecoveredSourceIntakeTests(unittest.TestCase):
         index['activation_contract']['activate_historical_workflows'] = True
         with self.assertRaisesRegex(boot.BootBlock, 'execution authority'):
             self.load_with(index=index)
+
+    def test_binary_review_digest_cannot_drift(self):
+        index = copy.deepcopy(self.index)
+        index['payload_retention_review']['sha256'] = '0' * 64
+        with self.assertRaisesRegex(boot.BootBlock, 'review identity changed'):
+            self.load_with(index=index)
+
+    def test_binary_review_cannot_grant_execution(self):
+        def loader(path, label):
+            value = self.original_loader(path, label)
+            if path.name == 'payload-review-20261024.json':
+                value['archived_programs_executed'] = True
+            return value
+        with patch.object(boot, 'load_json_object', side_effect=loader):
+            with self.assertRaisesRegex(boot.BootBlock, 'cannot grant execution authority'):
+                boot.load_recovered_sources(self.context)
+
+    def test_binary_review_cannot_drop_a_payload(self):
+        def loader(path, label):
+            value = self.original_loader(path, label)
+            if path.name == 'payload-review-20261024.json':
+                value['payloads'] = value['payloads'][1:]
+            return value
+        with patch.object(boot, 'load_json_object', side_effect=loader):
+            with self.assertRaisesRegex(boot.BootBlock, 'review coverage changed'):
+                boot.load_recovered_sources(self.context)
 
     def test_bounded_archive_cannot_claim_live_completeness(self):
         index = copy.deepcopy(self.index)

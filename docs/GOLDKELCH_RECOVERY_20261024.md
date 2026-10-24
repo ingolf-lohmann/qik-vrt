@@ -52,7 +52,7 @@ Quell-Commit, Originalpfad, Modus, Blob-Identität und ihre begründete Disposit
 Die Rohinhalte erhalten kurze, nicht ausführbare Objektpfade. Ein kryptischer
 Originalpfad muss deshalb weder als lokaler Dateiname noch als Anweisung wirken.
 
-- 1.660 Pfadversionen sind als inaktive Originalquellen erhalten: 1.618
+- 1.679 Pfadversionen sind als inaktive Originalquellen erhalten: 1.637
   unterschiedliche bytegleiche UTF-8-Blobs mit insgesamt 17.437.746 Bytes.
 - 274 Versionen besitzen bereits identische Inhalte an Authority-Pfaden;
   deren vorhandene Orte werden referenziert.
@@ -60,8 +60,11 @@ Originalpfad muss deshalb weder als lokaler Dateiname noch als Anweisung wirken.
   ausgewählter Auswerter ist als begründeter, getesteter Nachfolger repariert.
 - Zwei alte globale Integritätsprojektionen werden nicht reaktiviert;
   die Authority erzeugt ihre eigenen aktuellen Integritätsdateien.
-- 19 binäre oder große Versionen bleiben zur gesonderten Payload-Prüfung
-  gebunden offen. Der originale geschützte Sicherungsträger bleibt ihre Quelle.
+- Die zunächst zurückgestellten 19 binären Versionen sind nach begrenzter
+  Format-, Archiv- und Sichtprüfung ebenfalls als exakte inaktive Quellen
+  erhalten. `payload-review-20261024.json` bindet die Prüfung einschließlich
+  eingebetteter PDF-Daten. Das ersetzt weder ein vollständiges Sicherheitsaudit
+  noch wissenschaftliche Prüfung, Signaturvertrauen oder Ausführungsfreigabe.
 
 **Inaktive Quellen sind keine aktiven Funktionen.** Alte CI-Workflows werden
 nicht durch bloßes Wiederfinden gestartet, alte Rollen werden nicht aktiviert,

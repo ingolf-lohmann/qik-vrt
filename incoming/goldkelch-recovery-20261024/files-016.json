@@ -393,7 +393,10 @@
       "bytes": 288879,
       "source_blob": "f3c185c202edaa7f2bd09493264baa40edd4bb89",
       "original_path": "release/artifacts/qv2134_node.zip",
-      "disposition": "BINARY_OR_LARGE_PAYLOAD_REVIEW_HOLD"
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED",
+      "object_path": "objects/f3c185c202edaa7f2bd09493264baa40edd4bb89",
+      "sha256": "fb50b526976fae31d21b82e54b4f8187f70ff8d9113554fb4db45329cb284574",
+      "payload_review": "payload-review-20261024.json"
     },
     {
       "mode": "100644",

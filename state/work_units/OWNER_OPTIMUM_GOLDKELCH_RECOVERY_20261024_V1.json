@@ -43,12 +43,6 @@
       "next": "Recover exact original bytes or record a separately authorized successor; preserve missing-original status."
     },
     {
-      "id": "HELD_BINARY_PAYLOADS",
-      "state": "OPEN",
-      "versions": 19,
-      "next": "Inspect original carrier payloads with rights, format and integrity evidence before public or active import."
-    },
-    {
       "id": "HISTORICAL_SOURCE_ACTIVE_PORTS",
       "state": "OPEN",
       "next": "Use the indexed inactive originals for scoped dependency-complete ports with fresh tests."
@@ -65,5 +59,14 @@
     "MAIN_INTEGRATION_INFERRED": false,
     "LIVE_MESH_ACCEPTED": false,
     "EFFECT_ACK_DONE": false
-  }
+  },
+  "resolved_source_obligations": [
+    {
+      "id": "HELD_BINARY_PAYLOADS",
+      "state": "VERIFIED_FOR_INACTIVE_SOURCE_RETENTION",
+      "versions": 19,
+      "evidence": "incoming/goldkelch-recovery-20261024/payload-review-20261024.json",
+      "active_execution_admitted": false
+    }
+  ]
 }

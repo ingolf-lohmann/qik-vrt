@@ -753,7 +753,10 @@
       "bytes": 1280860,
       "source_blob": "d7ea77d0bc2db17c5cb012203d90d989aca47a3f",
       "original_path": "evidence/linux-ring/20261002/LOCAL_COMPARABLE_PHASE_TIMINGS_RAW.zip",
-      "disposition": "BINARY_OR_LARGE_PAYLOAD_REVIEW_HOLD"
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED",
+      "object_path": "objects/d7ea77d0bc2db17c5cb012203d90d989aca47a3f",
+      "sha256": "e25e8ed94e013629f650bfaf24c27189763bbbaa09d6b94b5c4b3487d769596d",
+      "payload_review": "payload-review-20261024.json"
     },
     {
       "mode": "100644",
@@ -847,7 +850,10 @@
       "bytes": 1671,
       "source_blob": "a195169d1b66276a56c8f1b1eaf8577a12afa9f9",
       "original_path": "evidence/monitor_deploy/NATIVE_DEPLOY_HOLD_37214947185.zip",
-      "disposition": "BINARY_OR_LARGE_PAYLOAD_REVIEW_HOLD"
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED",
+      "object_path": "objects/a195169d1b66276a56c8f1b1eaf8577a12afa9f9",
+      "sha256": "2da290b112b0fde289ffa399ae2bec8b554818677251253fe52e13910426c439",
+      "payload_review": "payload-review-20261024.json"
     },
     {
       "mode": "100644",

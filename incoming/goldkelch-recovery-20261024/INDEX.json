@@ -23,15 +23,14 @@
     "absent_paths": 1817,
     "absent_path_versions": 1959,
     "dispositions": {
-      "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED": 1660,
+      "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED": 1679,
       "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH": 274,
-      "BINARY_OR_LARGE_PAYLOAD_REVIEW_HOLD": 19,
-      "ACTIVE_SOURCE_RECOVERY": 3,
+      "ACTIVE_REPAIRED_SUCCESSOR": 1,
       "SUPERSEDED_GENERATED_PROJECTION_NOT_REACTIVATED": 2,
-      "ACTIVE_REPAIRED_SUCCESSOR": 1
+      "ACTIVE_SOURCE_RECOVERY": 3
     },
-    "inactive_original_blobs_preserved": 1618,
-    "inactive_original_bytes": 17437746
+    "inactive_original_blobs_preserved": 1637,
+    "inactive_original_bytes": 23821379
   },
   "file_pages": [
     "files-001.json",
@@ -93,5 +92,12 @@
     "ALL_ARCHIVED_FEATURES_ACTIVE": false,
     "CREDENTIAL_VALUES_RECOVERED": false,
     "EFFECT_ACK_DONE": false
+  },
+  "payload_retention_review": {
+    "path": "payload-review-20261024.json",
+    "sha256": "4ddbcb66c017fe47bf935d5fefa4789a73d66639364531b538f70c085452e636",
+    "originally_held_versions": 19,
+    "retained_as_inactive_originals": 19,
+    "execution_admitted": false
   }
 }
