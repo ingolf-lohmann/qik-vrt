@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import importlib.util
+import hashlib
 import io
 import json
 import pathlib
@@ -63,6 +64,44 @@ class AphorismCorpusV2Tests(unittest.TestCase):
         self.assertTrue(
             all(item["verbatim_status"] == "NOT_VERIFIED" for item in ledger["items"])
         )
+
+    def test_reading_copy_corrects_names_and_preserves_original_asr_bytes(self) -> None:
+        with tarfile.open(fileobj=io.BytesIO(self.tool.payload_bytes()), mode="r:xz") as archive:
+            originals = {m.name: archive.extractfile(m).read() for m in archive.getmembers() if m.isfile()}
+        files = self.tool.payload_files()
+        tex_name = "QIK-VRT_Aphorism_Corpus_Scientific_Assessment_2026-08-04.tex"
+        original = originals[tex_name].decode()
+        corrected = files[tex_name][0].decode()
+        self.assertTrue(any(name in original for name in self.tool.AUTHOR_NAME_CORRECTIONS))
+        self.assertTrue(all(name not in corrected for name in self.tool.AUTHOR_NAME_CORRECTIONS))
+        self.assertIn("Ingolf Lohmann", corrected)
+        self.assertIn("Redaktionelle Namenskorrektur", corrected)
+        receipt = json.loads(files["AUTHOR_NAME_CORRECTION.json"][0])
+        self.assertEqual(sum(x["count"] for x in receipt["replacements_in_article"]), 24)
+        self.assertEqual(len(receipt["replacements_in_article"]), 10)
+        self.assertNotIn("unveränderte Modellausgaben", corrected)
+        for item in receipt["original_asr_files_unchanged"]:
+            self.assertEqual(originals[item["path"]], files[item["path"]][0])
+            self.assertEqual(item["sha256"], hashlib.sha256(originals[item["path"]]).hexdigest())
+        for name, (raw, _mode) in files.items():
+            if name.startswith("transcripts/editorial/"):
+                self.assertFalse(any(w.encode() in raw for w in self.tool.AUTHOR_NAME_CORRECTIONS))
+        self.assertIs(receipt["scientific_claims_changed"], False)
+        self.assertIs(receipt["human_acoustic_verbatim_certification"], False)
+
+    def test_unrecognized_correction_predecessor_is_rejected(self) -> None:
+        with self.assertRaisesRegex(SystemExit, "predecessor differs"):
+            self.tool.corrected_author_names({
+                "QIK-VRT_Aphorism_Corpus_Scientific_Assessment_2026-08-04.tex": (b"Ingolf Lohmann", 0o644),
+            })
+
+    def test_pdf_reading_check_rejects_original_misspellings_and_missing_notice(self) -> None:
+        self.assertFalse(self.tool.author_name_reading_check("Ingolf Lohmann"))
+        prefix = "Ingolf Lohmann Redaktionelle Namenskorrektur "
+        self.assertTrue(self.tool.author_name_reading_check(prefix))
+        for wrong in self.tool.AUTHOR_NAME_CORRECTIONS:
+            with self.subTest(wrong=wrong):
+                self.assertFalse(self.tool.author_name_reading_check(prefix + wrong))
 
     def test_repository_writer_provisions_publication_runtime_before_use(self) -> None:
         workflow = WORKFLOW.read_text(encoding="utf-8")
@@ -147,6 +186,9 @@ class AphorismCorpusV2Tests(unittest.TestCase):
             '"state": "SOURCE_AND_GENERATED_BYTES_VERIFIED"',
             completed.stdout,
         )
+        receipt = json.loads((DEST / "PDF_RENDER_RECEIPT.json").read_text())
+        self.assertIs(receipt["render"]["cross_references_stable"], True)
+        self.assertGreaterEqual(receipt["render"]["latex_passes"], 2)
 
 
 if __name__ == "__main__":

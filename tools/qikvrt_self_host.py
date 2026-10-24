@@ -666,6 +666,17 @@ def mesh_contract(root, definition=None):
     roles = deployment_roles(root, {})
     return {"schema": "qikvrt-node-bus-contract-check/v1", "state": "SOURCE_OBLIGATIONS_BOUND",
             "authority_repository": roles["authority_repository"], "automatic_authority_failback_allowed": False,
+            "entry_contract": {
+                "github_push_required_for_native_mesh": False,
+                "github_write_identity_scope": "GITHUB_REPOSITORY_MUTATIONS_ONLY",
+                "native_adapter_without_github": "none",
+                "proposal_ingress": "/api/mesh-work/batch",
+                "proposal_readback": "/api/mesh-work/readback/<batch_id>/<challenge>",
+                "proposal_admission": "PRIVATE_PEER_KEY_AND_EXACT_SOURCE_PINS",
+                "owner_input_adapter": "OwnerREST",
+                "live_endpoint": "UNKNOWN", "peer_admission": "UNKNOWN",
+                "native_execution": "NOT_ESTABLISHED",
+            },
             "contract_sha256": digest(raw), "source_component_sha256": component_hashes,
             "required_fault_cases": list(MESH_FAULT_CASES), "native_runtime_executed": False,
             "all_node_runtime_verified": False, "write_failover_verified": False,

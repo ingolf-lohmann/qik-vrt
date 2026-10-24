@@ -189,6 +189,30 @@ This operational candidate is not a new archived scientific publication.
 
 ## Local repository copy, cache and stable-idle work batch
 
+### Native Mesh entry and GitHub identity
+
+GitHub credentials authorize GitHub operations only. They are not the identity
+or admission requirement of the native Trusted Mesh. The existing launcher
+accepts `adapter: "none"`; `mesh_work_peers`, `mesh_rule_grants` and
+`owner_rest_grants` carry distinct protected native capabilities. No peer is
+admitted merely by reading `/AI`, possessing a GitHub account or having push
+rights. A failed client `add_repo` request diagnoses that client's repository
+adapter, not the independent native Mesh path.
+
+Run `python3 -B tools/qikvrt_self_host.py mesh-contract` for the source-bound
+entry contract. It reports live endpoint and peer admission as UNKNOWN; this
+read-only gate does not inspect private production configuration or establish
+runtime readiness. Resolve the already authorized original host endpoint,
+node identity, exact source pins and private key binding through the existing
+protected host configuration. Keep a missing endpoint or private peer binding
+OPEN; do not substitute a browser login, new managed executor or Principal relay.
+
+Once that route is admitted, use the existing stage/idle/send/check operations
+below. Their receipt proves authenticated proposal arrival only. Execute an
+accepted task through the original Transputer and independently read its native
+events through the Terminal before claiming an execution or effect. A source
+test, a GitHub commit and a missing sender credential cannot supply those proofs.
+
 Every node has the same local cache obligations in
 `MESH_ACTIVATION.json#/required_node_runtime/local_repository_cache`.
 The existing launcher now provides a content-addressed private copy of explicitly

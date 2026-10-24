@@ -677,6 +677,15 @@ class MeshContractTests(unittest.TestCase):
                       "application_transparency_verified", "effect_ack_done"):
             self.assertIs(result[field], False)
 
+    def test_native_mesh_entry_does_not_require_a_github_writer_or_claim_live_admission(self):
+        entry = host.mesh_contract(self.root)["entry_contract"]
+        self.assertIs(entry["github_push_required_for_native_mesh"], False)
+        self.assertEqual(entry["native_adapter_without_github"], "none")
+        self.assertEqual(entry["live_endpoint"], "UNKNOWN")
+        self.assertEqual(entry["peer_admission"], "UNKNOWN")
+        self.assertEqual(entry["native_execution"], "NOT_ESTABLISHED")
+        self.assertEqual(entry["proposal_admission"], "PRIVATE_PEER_KEY_AND_EXACT_SOURCE_PINS")
+
     def test_missing_authority_succession_binding_refuses_package_admission(self):
         del self.activation["required_node_runtime"]["authority_succession_policy"]
         self.refuse("MESH_IRREVERSIBLE_AUTHORITY_SUCCESSION_REQUIRED")

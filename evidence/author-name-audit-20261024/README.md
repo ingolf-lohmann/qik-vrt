@@ -1,0 +1,17 @@
+# Namensprüfung und Mesh Zugang am 24. Oktober 2026
+
+Die korrekte Namensschreibweise ist **Ingolf Lohmann**. Bibliographisch sind **Lohmann, Ingolf** und die Initialform **I. Lohmann** richtig. Technische Kontokennungen bleiben eigene Kennungen.
+
+Geprüft wurden 44 öffentlich indexierte Zenodo-Versionen in 32 Familien mit sämtlichen 479 Dateien (332.450.927 Bytes), ihre lesbaren Archivbestandteile und fünf im Repository als veröffentlicht geführte IETF-Fassungen. Jeder bezogene Zenodo-Dateiinhalt stimmt mit Größe und MD5 der frisch gelesenen Publikationsmetadaten überein; zusätzlich ist SHA-256 festgehalten. Öffentliche Textsuche wurde um Namensvarianten sowie OCR und Sichtprüfung der Bild- und Scanseiten ergänzt. Es wurde dort kein Namensfehler gefunden. Zwei historische Software-Datensätze nennen den gültigen technischen Autorenhandle `ingolf-lohmann`. Verborgene oder nicht indexierte Publikationen sind von dieser Vollständigkeitsangabe ausgenommen.
+
+Im aktuellen Authority-Quellstand wurden zehn verstümmelte ASR-Namensformen gefunden. Die redaktionelle Lesefassung des Aphorismenartikels berichtigt 24 Namensstellen. Vierzehn Lesetranskripte, die LaTeX-Datei, PDF und maschinenlesbare Namenskorrektur sind durch den bestehenden Materialisierer reproduzierbar verbunden. Die ursprünglichen ASR-Ausgaben bleiben bytegleich als Prüfevidenz erhalten. Eine sichtbare Notiz erläutert die Korrektur. Die fachlichen Aussagen und die offene akustische Wortlautprüfung werden dadurch nicht verändert. Der Materialisierer prüft auch den tatsächlich aus der PDF extrahierten Namenstext, um eine veraltete PDF zurückzuweisen.
+
+Claudes Bericht benennt seine fehlende GitHub-Schreibidentität. Diese Identität authentifiziert nicht automatisch den nativen Mesh-Zugang. Der vorhandene S1-Code unterstützt bereits `adapter: "none"` und separat zugelassene Peer-Schlüssel, Quellenpins und OwnerREST-Eingaben. Der gemeinsame AI-Einstieg, die Claude-Anweisung, die S1-Hilfe und der bestehende `mesh-contract`-Befund erläutern diesen Unterschied jetzt ausdrücklich. Eine GitHub-Anmeldung wird nicht als Ersatz für die native Zulassung vorgeschlagen.
+
+Der reale offene Anschluss bleibt `ADMITTED_MESH_RUNTIME_ENDPOINT`: Der vorhandene Sitzungsanschluss meldet einen autorisierten Operator, aber keinen konfigurierten öffentlichen Mesh-Transputer-Endpunkt. Ohne diesen zugelassenen Endpunkt und die private Peer-Bindung ist kein produktiver Beitritt bewiesen. Die von Claude genannten Commit-Kürzel liefern im Authority-Readback HTTP 422 mit „No commit found“. Das widerlegt seine lokalen Commits nicht und bestätigt weder deren Inhalt noch einen Push. Eine Anmeldung für ein anderes Claude-Konto lässt sich aus dieser Sitzung nicht herstellen.
+
+Der Korrekturkandidat ist von seiner Übernahme nach Main getrennt. Auch die produktive Laufzeit und die Domain bleiben eigene Nachweise. Keine Zenodo-Datei wurde verändert, da die geprüften veröffentlichten Dateien keine Namenskorrektur erforderten.
+
+Originalantworten, Abfragen, Dateiidentitäten und der genaue Prüfungsumfang stehen in `PUBLICATION_NAME_AUDIT.json`, `PUBLIC_FILE_IDENTITIES.json`, `IETF_READBACK.json` und `original-readbacks/`. Die vollständigen Prüfartefakte einschließlich OCR-Protokollen werden im begleitenden Prüfpaket erhalten.
+
+Quellen: https://zenodo.org/records/21888130 ; https://github.com/ingolf-lohmann/qik-vrt ; https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/mesh/terminal/native ; https://raumzeitterminal.de/ . Die genauen IETF- und Zenodo-Datei-URLs stehen in den Nachweisen.
