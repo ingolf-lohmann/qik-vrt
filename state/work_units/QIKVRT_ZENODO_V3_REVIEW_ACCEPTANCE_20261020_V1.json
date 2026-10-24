@@ -128,5 +128,19 @@
     "actual_first_causal_gate": "Protected authority credential was not delivered to ruleset job119115830707; initial dispatch has actually happened.",
     "publisher_code_reconciled_without_semantic_change": true,
     "publication_complete": false
+  },
+  "successor_20261024": {
+    "source_head": "3691b92ffd2634986734cbc8f16616dc7a489de7",
+    "main_head": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+    "main_tree": "1a8003f1815b75fe534b21f242e8b782d4352796",
+    "reconciliation": "evidence/zenodo-review-acceptance-v2/CURRENT_MAIN_RECONCILIATION_20261024.json",
+    "conflict_scope": "THREE_GENERATED_INTEGRITY_FILES_ONLY",
+    "publisher_policy_schema_and_test_semantics_unchanged": true,
+    "current_main_publication_git_blobs_identical": 1440,
+    "owner_authorization_retained": true,
+    "same_authorization_requested_again": false,
+    "productive_gates_retained": true,
+    "publication_complete": false,
+    "integration_regression_repaired": "Unused checkout in existing REST dispatch bridge removed; existing no-checkout test fails before and passes after. No trigger, permissions, target or publisher change."
   }
 }

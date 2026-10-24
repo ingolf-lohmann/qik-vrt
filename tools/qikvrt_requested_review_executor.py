@@ -68,6 +68,8 @@ def _result(snapshot: Mapping[str, Any], state: str, blocker: str | None, detail
         "tree_sha": snapshot.get("tree_sha"),
         "reviewed_scope": snapshot.get("changed_paths", []),
         "status_scope": "TECHNICAL_DISPOSITION_ONLY",
+        "review_route": snapshot.get("review_route", "REQUESTED_REVIEW"),
+        "semantic_ai_review_performed": False,
         "native_approval_mutation": "FORBIDDEN_FOR_AUTOMATED_EXECUTOR",
         "completion_claims": {
             "PASS": False,
@@ -77,6 +79,22 @@ def _result(snapshot: Mapping[str, Any], state: str, blocker: str | None, detail
             "NATIVE_RULE_ENFORCEMENT": False,
         },
     }
+
+
+def native_review_enabled(policy: Mapping[str, Any], repository: str) -> bool:
+    """Resolve routing from trusted Main policy; this is not an authority grant."""
+    route = policy.get("review_executor", {}).get("provider_routing", {})
+    return (repository in policy.get("repositories", [])
+            and route.get("enabled") is True
+            and route.get("default") == "QIKVRT_NATIVE"
+            and route.get("scope") == "OPEN_NON_DRAFT_MAIN_PULL_REQUESTS"
+            and route.get("copilot_required") is False)
+
+
+def native_review_candidate(pr: Mapping[str, Any], policy: Mapping[str, Any], repository: str) -> bool:
+    return (native_review_enabled(policy, repository)
+            and pr.get("state") == "open" and pr.get("draft") is False
+            and pr.get("base", {}).get("ref") == "main")
 
 
 def evaluate(snapshot: Mapping[str, Any]) -> dict[str, Any]:
@@ -100,7 +118,7 @@ def evaluate(snapshot: Mapping[str, Any]) -> dict[str, Any]:
     requested_teams = snapshot.get("requested_team_reviewers", [])
     if not isinstance(requested, list) or not isinstance(requested_teams, list):
         raise ReviewSnapshotError("requested reviewer collections must be lists")
-    if not requested and not requested_teams:
+    if not requested and not requested_teams and snapshot.get("review_route") != "QIKVRT_NATIVE":
         return _result(snapshot, "WAIT", "NO_ACTIVE_REVIEW_REQUEST", "no requested reviewer remains")
 
     changed_paths = snapshot.get("changed_paths")
@@ -108,6 +126,10 @@ def evaluate(snapshot: Mapping[str, Any]) -> dict[str, Any]:
         raise ReviewSnapshotError("changed_paths must be a list of non-empty strings")
     if not changed_paths:
         return _result(snapshot, "COMMENT_WITH_BLOCKER", "EMPTY_SCOPE", "requested review has no changed paths")
+
+    if snapshot.get("review_threads_complete") is False:
+        return _result(snapshot, "COMMENT_WITH_BLOCKER", "REVIEW_THREAD_STATE_UNAVAILABLE",
+                       "REST inline comments exist; thread resolution is not established")
 
     unresolved = snapshot.get("unresolved_review_threads", 0)
     if isinstance(unresolved, bool) or not isinstance(unresolved, int) or unresolved < 0:
@@ -140,7 +162,7 @@ def evaluate(snapshot: Mapping[str, Any]) -> dict[str, Any]:
         if run.get("conclusion") not in NON_ADVERSE:
             return _result(snapshot, "REQUEST_CHANGES", "APPLICABLE_GATE_FAILED", f"applicable exact-head gate is adverse: {name}={run.get('conclusion')}")
 
-    return _result(snapshot, "APPROVE", None, "exact-head scope inspected; all observed applicable gates are terminal non-adverse and no unresolved review thread remains")
+    return _result(snapshot, "APPROVE", None, "all observed applicable gates are terminal non-adverse and no unresolved review thread is reported; semantic inspection is separate")
 
 
 def _load(path: str) -> Mapping[str, Any]:
