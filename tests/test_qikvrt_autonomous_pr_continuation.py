@@ -603,13 +603,14 @@ class GitDataREST(MemoryREST):
             return commit_metadata(self.root, path.split('/')[-1])
         if method == 'GET' and path.startswith('git/trees/'):
             sha = path.split('/')[-1].split('?')[0]
-            records = git_bytes(self.root, 'ls-tree', '-r', '-t', '-z', sha).split(b'\0')
+            options = ('-r', '-t') if '?recursive=1' in path else ()
+            records = git_bytes(self.root, 'ls-tree', *options, '-z', sha).split(b'\0')
             entries = []
             for record in records:
                 if not record: continue
                 info, name = record.split(b'\t', 1); mode, kind, identity = info.decode().split()
                 entries.append({'path': name.decode(), 'mode': mode, 'type': kind, 'sha': identity})
-            return {'tree': entries, 'truncated': False}
+            return {'sha': sha, 'tree': entries, 'truncated': False}
         if method == 'GET' and path.startswith('git/blobs/'):
             raw = git_bytes(self.root, 'cat-file', 'blob', path.split('/')[-1])
             return {'content': base64.b64encode(raw).decode(), 'encoding': 'base64'}
@@ -765,6 +766,69 @@ class RESTTransportRegressionTests(unittest.TestCase):
             controller.export_rest_successor(api, self.root, plan, candidate)
         self.assertEqual(api.prs[0]['head']['sha'], self.initial)
         self.assertFalse(any(method == 'PATCH' for method, _, _ in api.posts))
+
+    def ambiguous_tree_export(self, readback='matching', failure='502'):
+        git_bytes(self.root, 'reset', '--hard', self.initial)
+        (self.root / 'file.cmd').write_text('candidate\n')
+        candidate = self.commit('candidate')
+        api = GitDataREST(self.root, self.initial, self.initial)
+        plan = self.plan(api)
+        original = api.call
+        reads = []
+        def call(method, path, payload=None):
+            if method == 'POST' and path == 'git/trees':
+                original(method, path, payload)
+                if failure == 'timeout':
+                    raise subprocess.TimeoutExpired(['gh', 'api'], 120)
+                raise controller.SelfHealBlock(f'REST POST git/trees: {failure}; no automatic retry')
+            if method == 'GET' and path.startswith('git/trees/'):
+                reads.append(path)
+                if readback == 'missing':
+                    raise controller.SelfHealBlock('REST GET ' + path + ': 404; no automatic retry')
+                result = original(method, path, payload)
+                if readback == 'corrupt':
+                    result['tree'][0]['sha'] = 'f' * 40
+                elif readback == 'truncated':
+                    result['truncated'] = True
+                return result
+            return original(method, path, payload)
+        api.call = call
+        return api, plan, candidate, reads
+
+    def test_accepted_tree_with_lost_502_response_continues_after_exact_readback(self):
+        api, plan, candidate, reads = self.ambiguous_tree_export()
+        controller.export_rest_successor(api, self.root, plan, candidate)
+        self.assertEqual(api.prs[0]['head']['sha'], candidate)
+        tree = git_bytes(self.root, 'rev-parse', candidate + '^{tree}').decode().strip()
+        self.assertEqual(reads, ['git/trees/' + tree])
+        self.assertEqual(sum(path == 'git/trees' for _, path, _ in api.posts), 1)
+        self.assertEqual(sum(method == 'PATCH' for method, _, _ in api.posts), 1)
+
+    def test_tree_transport_timeout_uses_one_readback_without_another_post(self):
+        api, plan, candidate, reads = self.ambiguous_tree_export(failure='timeout')
+        controller.export_rest_successor(api, self.root, plan, candidate)
+        self.assertEqual(api.prs[0]['head']['sha'], candidate)
+        self.assertEqual(len(reads), 1)
+        self.assertEqual(sum(path == 'git/trees' for _, path, _ in api.posts), 1)
+
+    def test_unresolved_tree_response_preserves_head_and_never_reposts(self):
+        for response in ('missing', 'corrupt', 'truncated'):
+            with self.subTest(response=response):
+                api, plan, candidate, reads = self.ambiguous_tree_export(readback=response)
+                with self.assertRaisesRegex(controller.SelfHealBlock, 'tree creation unresolved'):
+                    controller.export_rest_successor(api, self.root, plan, candidate)
+                self.assertEqual(api.prs[0]['head']['sha'], self.initial)
+                self.assertEqual(len(reads), 1)
+                self.assertEqual(sum(path == 'git/trees' for _, path, _ in api.posts), 1)
+                self.assertFalse(any(path == 'git/commits' or method == 'PATCH'
+                                     for method, path, _ in api.posts))
+
+    def test_tree_permission_denial_is_not_reclassified_as_an_ambiguous_ack(self):
+        api, plan, candidate, reads = self.ambiguous_tree_export(failure='403')
+        with self.assertRaisesRegex(controller.SelfHealBlock, ': 403;'):
+            controller.export_rest_successor(api, self.root, plan, candidate)
+        self.assertEqual(reads, [])
+        self.assertEqual(api.prs[0]['head']['sha'], self.initial)
 
 
 if __name__ == "__main__":

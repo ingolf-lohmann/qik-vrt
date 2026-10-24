@@ -1,0 +1,135 @@
+{
+  "authorization": {
+    "repeated_permission_required": false,
+    "source": "DIRECT_OWNER_INSTRUCTION_IN_CURRENT_SESSION",
+    "text": "Das scheint wieder so zu sein, dass seit ein paar Stunden Stillstand herrscht im Repository. Nämlich genau seit dem Zeitpunkt, wo ich nicht mehr interagiere. Das ist natürlich völlig inakzeptabel. Und der Grund für diese Inaktivität ist ein für alle Mal aus der Welt zu räumen."
+  },
+  "causal_scope": {
+    "all_inactivity_caused_by_hmi_disconnect": "NOT_ESTABLISHED",
+    "demonstrated_defect": "The exporter abandons an immutable-tree creation after a 502/lost reply without checking whether the expected object exists. Its successful local work therefore need not reach the successor ref.",
+    "other_worker_failures_closed": false,
+    "provider_502_cause": "UNKNOWN",
+    "source_fix": "Reuse the existing exporter; one GET after an ambiguous 5xx/transport reply, recompute exact raw Git tree bytes, continue only on matching identity. Never repeat the tree POST."
+  },
+  "completion_claims": {
+    "EFFECT_ACK_DONE": false,
+    "main_integration_verified": false,
+    "source_repair_tested": true,
+    "unattended_runtime_independence_verified": false
+  },
+  "evidence_files": [
+    {
+      "bytes": 9051,
+      "path": "evidence/receipts/continuation-tree-readback-20261024/continuation-tests.log",
+      "sha256": "7194bad30809223c0ed3cbb7dec45e118cf7119428d23b99c006bb0d4c97780d"
+    },
+    {
+      "bytes": 1689,
+      "path": "evidence/receipts/continuation-tree-readback-20261024/regression-before.log",
+      "sha256": "9cd6d77d0fd2bf897c34a40ddf79008eefe5883ca199daa0fa3bdc01fec7add7"
+    },
+    {
+      "bytes": 429891,
+      "path": "evidence/receipts/continuation-tree-readback-20261024/run-40069884460-job-120800833983.log",
+      "sha256": "5f0a91d865cf150776581c21dc38acf1a1fc05c98913fb8ba3c077dfceb95587"
+    }
+  ],
+  "observations": [
+    {
+      "failure_at_utc": "2026-10-24T06:40:58.5798768Z",
+      "full_test_and_integrity_steps_completed_before_failure": true,
+      "job_id": 120800833983,
+      "last_integrity_result": "PASS verified 5031 classified entries and 5020 immutable digests",
+      "original_failure": "REST POST git/trees: 502; no automatic retry",
+      "pr": 459,
+      "run_id": 40069884460,
+      "state": "failure"
+    },
+    {
+      "original_failure": "immutable continuation receipt readback mismatch",
+      "run_id": 40047660773,
+      "scope": "SEPARATE_UNRESOLVED_SELECTION_RECEIPT",
+      "state": "failure"
+    },
+    {
+      "original_failure": "BLOCK: non-allowlisted merge conflicts",
+      "run_id": 40034283066,
+      "scope": "SEPARATE_UNRESOLVED_CANDIDATE_CONFLICTS",
+      "state": "failure"
+    },
+    {
+      "receipt_state": "PREEMPTIVE_HOLD_EXECUTED_GATE_FAILURE",
+      "run_id": 40071818169,
+      "scope": "OBSERVER_EXECUTED_NO_REPAIR_IMPLIED",
+      "state": "success"
+    },
+    {
+      "native_available": false,
+      "open_gates": [
+        "ADMITTED_MESH_RUNTIME_ENDPOINT"
+      ],
+      "operation": "qikvrt_native_connection",
+      "operator_authorized": true,
+      "scope": "NO_PRIVATE_CALLER_IDENTITY_PERSISTED"
+    }
+  ],
+  "observed_at_utc": "2026-10-24T08:22:06.483930+00:00",
+  "open_work": [
+    {
+      "id": "trusted-main-integration",
+      "next_action": "Pass fresh candidate-bound gates and integrate through the existing admitted repository route.",
+      "state": "OPEN"
+    },
+    {
+      "id": "unattended-original-worker-effect",
+      "next_action": "Obtain a real successor ref/readback from the admitted original worker; fixture success is not its effect.",
+      "state": "OPEN"
+    },
+    {
+      "id": "other-worker-errors",
+      "next_action": "Reconcile original receipt mismatch and non-allowlisted conflicts without weakening selection, source or writer admission.",
+      "state": "OPEN"
+    },
+    {
+      "id": "productive-hmi-independent-continuation",
+      "next_action": "Activate the admitted existing persistent native runtime, close HMI A after an admitted Work Unit and read continued execution and exact result through independently authorized HMI B.",
+      "state": "OPEN"
+    },
+    {
+      "id": "mirror-outbox-peer-application",
+      "next_action": "Recover original node-tools/qikvrt_mirror_emit.py and own admitted binding, then package/send/claim through the admitted native path; no delivery inferred.",
+      "state": "OPEN"
+    },
+    {
+      "id": "exact-domain-delivery",
+      "next_action": "Fresh exact raumzeitterminal.de readback and productive-host acceptance through the original authorized host path.",
+      "state": "OPEN"
+    }
+  ],
+  "owner": "Ingolf Lohmann",
+  "predecessor": {
+    "all_previous_open_obligations_retained": true,
+    "archive_sha256": "bb11f25da1db86582730522897554cd2ebfff86ece41b6ac216e4704c5a845c1",
+    "library_file_id": "libfile_8ff514ee33a08191a6573ae98c5acb5a",
+    "original_journals": "READ_ONLY_IMMUTABLE",
+    "version_filename": "QIKVRT_Autostart_20261020_v48.zip"
+  },
+  "schema": "qikvrt_repository_stall_repair_v1",
+  "source": {
+    "main": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "tree": "1a8003f1815b75fe534b21f242e8b782d4352796"
+  },
+  "verification": {
+    "continuation_tests": 43,
+    "native_scope": "OWN_LOCAL_DIAGNOSTIC_SESSION_NOT_PRODUCTIVE_MESH",
+    "original_components_used": [
+      "src/qikvrt_temdd_event_ledger.py",
+      "src/qikvrt_effect_ack_http_terminal.py",
+      "tools/qikvrt_self_host.py#OwnerREST"
+    ],
+    "original_failure_regression": "REPRODUCED_BEFORE_REPAIR",
+    "own_diagnostic_digest": "a3aeb7f9e5978735b11cdd4150f2afc714ce3309ad62781d320acccb03c2c776",
+    "own_diagnostic_event": "6c1f80997352487292d15ddd75e06e83:1"
+  }
+}
