@@ -1,0 +1,99 @@
+{
+  "account_reinstated": false,
+  "ai_contribution": "OpenAI Codex: diagnosis, extension of the existing S1 builder, tests and recovery package",
+  "authorization_date": "2026-10-05",
+  "authorization_scope": "Diagnose account lockout; preserve authorized sources; prepare and validate provider-independent recovery and replacement",
+  "base_head": "4718e0ac162548f5285fb4a92e0f805f8c959965",
+  "base_tree": "43d028a4d33dc2b41be59e85783aab5a29093782",
+  "effect_ack_done": false,
+  "human_contribution": "Incident screenshot, outage report, requirement and explicit authorization to remove provider dependency",
+  "human_principal": "Ingolf Lohmann",
+  "id": "PROVIDER_ACCOUNT_SUSPENSION_RECOVERY_20261005",
+  "observations": {
+    "connected_principal": "ingolf-lohmann",
+    "fresh_main_head": "86d7062f25f174039da0a5df8a856127553036f1",
+    "goldkelch_repository": {
+      "deleted_proven": false,
+      "http_status": 404
+    },
+    "ingolf_repository": {
+      "actual_write_test_performed": false,
+      "id": 1273784147,
+      "read_succeeded": true,
+      "reported_admin": true,
+      "reported_push": true
+    },
+    "partial_clone_hydration": "Missing historical objects were obtained through the remaining authorized read path before offline verification",
+    "provider_suspension_root_cause": "UNKNOWN; only GitHub can identify the triggering enforcement decision",
+    "screenshot": {
+      "affected_login_visible": false,
+      "bytes": 489919,
+      "name": "IMG_1229.png",
+      "sha256": "a32d7c12c3dce01f65eef988ea3674a358b0666cf9de8b353c27fc61d1290389",
+      "specific_violation_disclosed": false,
+      "visible_error": "Access to your account has been suspended due to a violation of our Terms of Service. Please contact support for more information."
+    },
+    "source_partial_clone": "remote.origin.promisor=true; blob:none"
+  },
+  "ordinary_release": false,
+  "public_service_readback": false,
+  "remaining": [
+    "GitHub human appeal/reinstatement decision and concrete enforcement reason",
+    "Actually callable independently admitted own host with persistent storage and authorized HTTPS routing",
+    "Native terminal/systemd validation in an environment admitting AF_UNIX",
+    "Installation and verification of the event-driven backup hook and a second independent copy",
+    "Fresh public runtime readback and ordinary governance review"
+  ],
+  "repair": {
+    "backup_graph_scope": "All named local refs plus the selected worktree HEAD; detached heads in other worktrees are archived only via separately bound recovery refs",
+    "credential_or_hook_configuration_exported": false,
+    "hook_installed_on_own_host": false,
+    "hosted_workflows_replaced": false,
+    "network_protocols": "Only local file protocol admitted",
+    "operations": [
+      "backup",
+      "verify-backup",
+      "restore",
+      "checkpoint"
+    ],
+    "overwrite_or_retention_deletion": false,
+    "trigger_model": "One checkpoint per accepted ref-change event; repeated events restore and reverify the prior immutable snapshot"
+  },
+  "reuse": {
+    "carrier": "tools/qikvrt_self_host.py",
+    "existing_provider_coupling": "deploy/universal-terminal/mirror-bootstrap.sh requires GitHub clone/fetch and ls-remote before serving",
+    "existing_source_capsule_limit": "Bound source-file verification does not export complete reachable Git history and refs",
+    "historical_originals_modified": false,
+    "new_parallel_executor": false
+  },
+  "schema": "qikvrt-provider-account-recovery/v1",
+  "validation": {
+    "baseline_head": "4718e0ac162548f5285fb4a92e0f805f8c959965",
+    "broader_s1_tests": {
+      "complete_pass": false,
+      "failed": 5,
+      "passed": 62,
+      "total": 67
+    },
+    "multiple_worktree_regression": "Detached heads from other tasks cannot silently enlarge the selected recovery graph",
+    "native_baseline_failure_reproduced": true,
+    "native_failure": "AF_UNIX socket creation denied with EPERM in this execution environment",
+    "real_history_probe": {
+      "exact_empty_repository_readback": true,
+      "provider_credentials_used": false,
+      "reachable_git_objects": 31397,
+      "refs": 1027
+    },
+    "receipt": "evidence/self_host/PROVIDER_ACCOUNT_RECOVERY_LOCAL_20261005.json",
+    "recovery_tests": {
+      "passed": 12,
+      "total": 12
+    },
+    "strict_history_finding": {
+      "finding": "largePathname",
+      "repository_quality_accepted": false,
+      "status": "OPEN_PRESERVED_WITH_IDENTICAL_READBACK",
+      "tree": "16e30fc27bc1d2741f5c317fc66cc96395666134"
+    }
+  }
+}

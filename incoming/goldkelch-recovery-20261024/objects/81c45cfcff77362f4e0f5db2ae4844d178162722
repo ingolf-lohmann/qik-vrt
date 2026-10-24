@@ -1,0 +1,15 @@
+{
+  "archive_redownload_digest_match": true,
+  "artifact_bytes": 39557,
+  "artifact_id": 11295554056,
+  "artifact_sha256": "8343dfa9242b1df1febe065b3ec74df3c8deac7a4cb7a855c3674c647bed9134",
+  "bound_by": "KERNEL_RECEIPT.json and exact archived files",
+  "executed_git_subject": "bbe8d194740b2d9c5cdf136965a2de1e8d3273c8",
+  "job_id": 111380568144,
+  "run_head": "ab3d12bca016b9303caa69595edba891445ed21a",
+  "run_id": 37183487075,
+  "schema": "qikvrt_labyrinth_kernel_artifact_binding_v1",
+  "source_and_compiled_and_log_digest_match": true,
+  "source_sha256": "e2db44a40e1c43c2a1e13b6b7a5078b42eaaf53f8fe91499671883ccb76f31b0",
+  "successor_whole_repository_checks": "REQUIRE_FRESH_SUCCESSOR_HEAD_EVIDENCE"
+}

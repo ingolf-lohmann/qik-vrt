@@ -1,0 +1,25 @@
+{
+  "_license": {
+    "classification": "repository_mesh_sync_trigger_json",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_exact_authority_tree_sync_trigger_v1",
+  "action": "CONSTRUCT_EXACT_AUTHORITY_TREE_MIRROR_CANDIDATE",
+  "authority_repository": "Goldkelch/qik-vrt",
+  "authority_commit": "3a186cb54077e959f9072b78bd24eb85a61b5c3d",
+  "mirror_repository": "ingolf-lohmann/qik-vrt",
+  "frozen_mirror_parent": "dc217c8cb19bc113401a1f91dae27bf1733b5b5e",
+  "target_branch": "sync/quantum-runtime-article-zenodo-3a186cb5-v1",
+  "zenodo_doi": "10.5281/zenodo.21640173",
+  "zenodo_concept_doi": "10.5281/zenodo.21640172",
+  "receipt_sha256": "75e4dca716a41d48b2e8ff35f1b9789d6ae24df58f5f192527349e60fce9a8c7",
+  "real_qpu_integration": "IMPLEMENTATION_OPEN",
+  "claims": {
+    "pass": false,
+    "final_pass": false,
+    "effect_ack_done": false
+  }
+}

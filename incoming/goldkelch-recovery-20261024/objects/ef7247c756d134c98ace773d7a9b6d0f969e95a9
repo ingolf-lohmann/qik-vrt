@@ -1,0 +1,23 @@
+{
+  "version": "2.13.4",
+  "manifest": "REPOSITORY_SETUP_RUNTIME_CONFIGURATION_MANIFEST",
+  "role": "node",
+  "guid_path": "qikvrt/runtime/REPOSITORY_GUID.txt",
+  "target_config": "qikvrt/config/REPOSITORY_TARGET.json",
+  "onboarding_config": "qikvrt/config/ONBOARDING.json",
+  "setup_scripts": [
+    "QIKVRT.cmd",
+    "QIKVRT.sh",
+    "tools/setup_repository.ps1",
+    "tools/setup_repository.sh"
+  ],
+  "registration_scripts": [
+    "QIKVRT.cmd",
+    "QIKVRT.sh",
+    "tools/register_with_seed.ps1",
+    "tools/register_with_seed.sh"
+  ],
+  "no_prompt_after_setup": true,
+  "author": "Ingolf Lohmann",
+  "rights_holder": "Ingolf Lohmann or a legal entity designated by him"
+}

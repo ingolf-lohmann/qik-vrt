@@ -1,0 +1,8 @@
+{
+  "gate": "QIKVRT_REST_API_CONTRACT",
+  "version": "2.11.9",
+  "required": true,
+  "endpoints": ["/qikvrt/status", "/qikvrt/selftest", "/qikvrt/watchdog/heartbeat", "/qikvrt/onboarding", "/qikvrt/seed-manifest"],
+  "required_response_fields": ["guid", "version", "gate_status", "evidence_class", "audit_reference"],
+  "blocked_behaviors": ["REMOTE_MUTATION_WITHOUT_AUTHORIZATION", "SECRET_EXPOSURE", "UNAUTHORIZED_PROBING"]
+}

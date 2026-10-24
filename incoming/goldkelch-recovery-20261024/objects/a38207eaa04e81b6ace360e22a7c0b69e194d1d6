@@ -1,0 +1,143 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright (c) 2026 Ingolf Lohmann.
+
+name: QIK-VRT Mirror aphorism final executor syntax repair
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/qikvrt_mirror_aphorism_final_executor_syntax_repair.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: qikvrt-repository-evidence-${{ github.event_name }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.head_ref == 'repair/mirror-aphorism-final-boundary-v3' &&
+      github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      TARGET_REF: repair/mirror-aphorism-final-boundary-v3
+      TARGET_PATH: .github/workflows/qikvrt_mirror_aphorism_final_target_executor.yml
+      REPAIR_PATH: .github/workflows/qikvrt_mirror_aphorism_final_executor_syntax_repair.yml
+      EXPECTED_TARGET_BLOB: 160c73346a0b15b1401e39a337456aefe1d15294
+    steps:
+      - name: Check out exact repair carrier with bounded credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.TARGET_REF }}
+          fetch-depth: 0
+
+      - name: Repair exactly one missing parenthesis and validate all embedded Python
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f "$TARGET_PATH"
+          test -f "$REPAIR_PATH"
+          test ! -L "$TARGET_PATH"
+          test ! -L "$REPAIR_PATH"
+          test "$(git hash-object "$TARGET_PATH")" = "$EXPECTED_TARGET_BLOB"
+          python3 -B - <<'PY'
+          from __future__ import annotations
+
+          import ast
+          import textwrap
+          from pathlib import Path
+
+          path = Path('.github/workflows/qikvrt_mirror_aphorism_final_target_executor.yml')
+          text = path.read_text(encoding='utf-8')
+          broken = (
+              '          raw = subprocess.check_output(\n'
+              '              ["git", "status", "--porcelain=v1", "-z", "--untracked-files=all"]\n'
+              '          entries = [entry for entry in raw.split(b"\\0") if entry]\n'
+          )
+          fixed = (
+              '          raw = subprocess.check_output(\n'
+              '              ["git", "status", "--porcelain=v1", "-z", "--untracked-files=all"]\n'
+              '          )\n'
+              '          entries = [entry for entry in raw.split(b"\\0") if entry]\n'
+          )
+          count = text.count(broken)
+          if count != 1:
+              raise SystemExit(
+                  f'BLOCK: missing-parenthesis anchor count is {count}, expected 1'
+              )
+          text = text.replace(broken, fixed, 1)
+          if broken in text or text.count(fixed) != 1:
+              raise SystemExit('BLOCK: syntax repair did not produce the exact expected text')
+          path.write_text(text, encoding='utf-8', newline='\n')
+
+          lines = text.splitlines()
+          snippets: list[tuple[int, str]] = []
+          index = 0
+          while index < len(lines):
+              if lines[index].strip().endswith("<<'PY'"):
+                  start = index + 1
+                  index = start
+                  body: list[str] = []
+                  while index < len(lines) and lines[index].strip() != 'PY':
+                      body.append(lines[index])
+                      index += 1
+                  if index >= len(lines):
+                      raise SystemExit(f'BLOCK: unterminated Python heredoc at line {start}')
+                  snippets.append((start + 1, textwrap.dedent('\n'.join(body)) + '\n'))
+              index += 1
+          if len(snippets) != 3:
+              raise SystemExit(
+                  f'BLOCK: embedded Python snippet count is {len(snippets)}, expected 3'
+              )
+          for line_number, source in snippets:
+              try:
+                  ast.parse(source)
+              except SyntaxError as exc:
+                  raise SystemExit(
+                      f'BLOCK: embedded Python beginning at line {line_number} is invalid: {exc}'
+                  ) from exc
+          print(f'PASS: validated {len(snippets)} embedded Python snippets')
+          PY
+
+      - name: Remove one-shot repair carrier and regenerate integrity
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm "$REPAIR_PATH"
+          python3 -B tools/qikvrt_integrity.py generate
+          python3 -B tools/qikvrt_integrity.py verify
+          git diff --check
+
+      - name: Persist exact syntax repair without external effect
+        shell: bash
+        run: |
+          set -euo pipefail
+          source_head="$(git rev-parse --verify HEAD^{commit})"
+          remote_head="$(
+            git ls-remote --heads origin "refs/heads/$TARGET_REF" |
+              awk 'NR == 1 { print $1 }'
+          )"
+          test "$remote_head" = "$source_head"
+          git config user.name "github-actions[bot]"
+          git config user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            "$TARGET_PATH" \
+            REPOSITORY_FILE_MANIFEST.json \
+            REPOSITORY_FILE_MANIFEST.json.sha256 \
+            SHA256SUMS.txt
+          git add -u "$REPAIR_PATH"
+          git commit -m "ci: repair Mirror target executor embedded Python syntax"
+          test "$(
+            git ls-remote --heads origin "refs/heads/$TARGET_REF" |
+              awk 'NR == 1 { print $1 }'
+          )" = "$source_head"
+          printf 'REPAIR_COMMIT=%s\n' "$(git rev-parse --verify HEAD^{commit})"
+          printf 'REPAIR_TREE=%s\n' "$(git rev-parse --verify HEAD^{tree})"
+          git push origin "HEAD:$TARGET_REF"

@@ -1,0 +1,177 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "TEMDD_LIVENESS_HOLD_REPAIR_20261001",
+  "created_at": "2026-10-01T02:03:13.635838+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "research/temdd-liveness-convergence-v1",
+  "source_pr": 421,
+  "source_commit": "9d134bedb0c0e12ad3c57eed4c902875cc96116d",
+  "source_tree": "f057cf02f2d9516e5e655f1af8442311b1131f5b",
+  "original_base_commit": "b427618e8b1eb3b8e3e3b0dcdb5261477d0e38e0",
+  "integrated_main_commit": "9a0853b9cfc1017ade0bbb627a02274d66c704bd",
+  "integrated_main_tree": "22dc82dba1a8d037b4eaaa55e00197e267ed60bb",
+  "human_actor": "Ingolf Lohmann",
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6",
+    "session_or_run_id": "252bbeae041d",
+    "tools_and_adapters": [
+      "Git",
+      "Python standard library unittest",
+      "GitHub connector"
+    ],
+    "identity_and_observation_limits": "Platform and commit identities do not prove a natural person or model identity."
+  },
+  "human_contributions": [
+    "Requested the bounded PR #421 repair, Main integration, executable regression, integrity regeneration and fresh exact-head readback",
+    "Identified the absorbing External HOLD counterexample to the original GoalReachability implication"
+  ],
+  "artificial_cognitive_contributions": [
+    "Separated diagnostic response from ProductiveLiveness and made eventual ExternalHoldRelease an explicit premise",
+    "Added non-increase on every non-goal transition to prevent external rank reset between productive decreases",
+    "Added seven JSON-driven finite-lasso regressions in a dedicated module and extended the existing Makefile conformance gate; preserved the byte-bound published Effect Ack conformance source.",
+    "Integrated current Mirror Main without rewriting history or transferring predecessor tests, reviews or effect evidence"
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "inputs": {
+    "research/temdd/TEMDD_LIVENESS_CONVERGENCE_CONTRACT_V1.md": {
+      "bytes": 5092,
+      "sha256": "55d15427b4139db67dbec951edc9d463754cdbb199d4e735877f95b676329bac",
+      "git_blob_sha1": "4c8d7554b6ecfc78439ecdbf26420a267100c6e5"
+    },
+    "research/temdd/WHY_TEMDD_LIVENESS_MATTERS.md": {
+      "bytes": 3057,
+      "sha256": "032a4be639da256f257c2e4b33d791851d988cc9887a541bd5ce3e17fb2b0224",
+      "git_blob_sha1": "d1b77683b8d76228188dd888e5894ab53a300c96"
+    },
+    "state/autonomy/TEMDD_LIVENESS_CONVERGENCE_CONTRACT_V1.json": {
+      "bytes": 1629,
+      "sha256": "964ec4f49deed8b3b8af5ad949e90a10efa271a7e4c211723870ff2ce862a1d7",
+      "git_blob_sha1": "505be9bc698694a67b52812db7e0c038aac1f23d"
+    },
+    "tests/test_effect_ack_conformance.py": {
+      "bytes": 24760,
+      "sha256": "56675ca61d7a88b977f90e2cdd2de6b46f9fa779afab0dbe3e8cc3022faf9e36",
+      "git_blob_sha1": "571befea58c539918a148f088030f503008a2f8d"
+    },
+    "Makefile_at_integrated_main": {
+      "source_commit": "9a0853b9cfc1017ade0bbb627a02274d66c704bd",
+      "bytes": 10829,
+      "sha256": "e76507673925e15282607c04547c554d6398cd43f21633318e8b7aaec4b419eb",
+      "git_blob_sha1": "e7966150eae0e42c8e6c3cc0dde0a91e6568ab2c"
+    }
+  },
+  "outputs": {
+    "Makefile": {
+      "bytes": 10867,
+      "sha256": "e33ac3707bba3d3cda5a657617253b267066e217f0ae7ce5e5a7dcb0e56552ed",
+      "git_blob_sha1": "a689c64e07229504605ea3768de78361dd7c06d7"
+    },
+    "research/temdd/TEMDD_LIVENESS_CONVERGENCE_CONTRACT_V1.md": {
+      "bytes": 9186,
+      "sha256": "8e0027636cd89be832dd8ba3afe46653b0bdfe87ec8936e95264b841c5b867bf",
+      "git_blob_sha1": "e8e2ee745475825cb2c139b6099c153f398b9c12"
+    },
+    "research/temdd/WHY_TEMDD_LIVENESS_MATTERS.md": {
+      "bytes": 4824,
+      "sha256": "c7ce098d2d8e41b7457eaf6371b431864863f2453136e6d2beff58810427a9e3",
+      "git_blob_sha1": "a40a101d311ff37e612fc52333acad39ab3ce0bf"
+    },
+    "state/autonomy/TEMDD_LIVENESS_CONVERGENCE_CONTRACT_V1.json": {
+      "bytes": 4645,
+      "sha256": "104d6fdc469951dc96fc0a13eacf6a7f6c69c69eb15f83256c86edd26a4fdfcf",
+      "git_blob_sha1": "d6d3515418853f9d2ec75451656ece4375022092"
+    },
+    "tests/test_temdd_liveness_convergence.py": {
+      "bytes": 8542,
+      "sha256": "97d983ca17fe281db16b389202c6df77bddfbf062a6a443ac228c29bf782c8b7",
+      "git_blob_sha1": "8982a8ec01473d9fc0e7c887faee0060cc715b47"
+    }
+  },
+  "reuse_evidence": {
+    "searched": [
+      "tests/",
+      "tools/",
+      "research/temdd/",
+      "Makefile"
+    ],
+    "reused_test_gate": "Existing Makefile conformance target includes tests.test_temdd_liveness_convergence alongside unchanged tests.test_effect_ack_conformance",
+    "reused_integrity_generator": "tools/qikvrt_integrity.py generate",
+    "new_runtime_or_workflow_created": false,
+    "reason_dedicated_test_module_is_required": {
+      "gate": "test_source_bindings_are_bidirectional_and_citations_are_exact",
+      "bound_id": "REPOSITORY-EFFECT-ACK-CONFORMANCE",
+      "required_source_bytes": 24760,
+      "failure_subject": "c4856f48a4ad2ff1433f6367ca4ac39e1a7b544f",
+      "failure_tree": "75279c1c1cb3f41d768a05e23f70c24fea7153dc",
+      "repair": "Restore the published source bytes and extend its existing gate with a dedicated liveness test module; do not rewrite source bindings or weaken tests."
+    }
+  },
+  "git_history": {
+    "ordered_successor_parents": [
+      "9d134bedb0c0e12ad3c57eed4c902875cc96116d",
+      "9a0853b9cfc1017ade0bbb627a02274d66c704bd"
+    ],
+    "force_push": false,
+    "history_rewrite": false,
+    "main_effect": "INTEGRATE_IN_EXISTING_PR_BRANCH_ONLY",
+    "integrity_conflicts": "Regenerate all three outputs from the complete successor tree"
+  },
+  "verification": {
+    "finite_lasso_regressions": {
+      "tests": 7,
+      "result": "PASS",
+      "evidence_class": "TEST_NOT_KERNEL_PROOF",
+      "scope": "Absorbing HOLD, legacy counterexample, finite deadlock, progress then HOLD, release then goal, rank-reset cycle and contract consistency",
+      "source": "tests/test_temdd_liveness_convergence.py"
+    },
+    "negative_control": {
+      "result": "PASS",
+      "method": "Restore HOLD-inclusive diagnostic disjunction as productive liveness; permanent-HOLD regression must fail with AssertionError"
+    },
+    "required_successor_checks": [
+      "python3 -B tools/qikvrt_integrity.py generate",
+      "python3 -B tools/qikvrt_integrity.py verify",
+      "make test",
+      "Fresh remote PR head, tree, ordered parents, Main ancestry, changed-path and workflow readback"
+    ],
+    "fresh_remote_successor_readback": "REQUIRED_AFTER_BRANCH_UPDATE_NOT_PREDECESSOR_EVIDENCE",
+    "prewrite_candidate_failure": {
+      "head": "c4856f48a4ad2ff1433f6367ca4ac39e1a7b544f",
+      "tree": "75279c1c1cb3f41d768a05e23f70c24fea7153dc",
+      "command": "make test",
+      "exit_code": 2,
+      "failure": "Published source binding expects 24760 bytes; extending that source produced 32946 bytes.",
+      "was_remote_pr_head": false,
+      "log_sha256": "0406ac79ea26c6d1af225dd8ac22829cb8abcd242999bc56fe71bf730ce98742",
+      "evidence_transfer_to_final_successor": false
+    }
+  },
+  "human_decision": {
+    "bounded_repair_and_pr_branch_update": "AUTHORIZED_BY_CURRENT_REQUEST",
+    "acceptance_of_generated_successor": "PENDING",
+    "native_review": "NOT_INFERRED"
+  },
+  "external_effects": {
+    "release": false,
+    "deployment": false,
+    "publication": false,
+    "protected_main_merge": false,
+    "ruleset_change": false
+  },
+  "predecessor_evidence_transfer": false,
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "AUTHORITY_MIRROR_EQUALITY": false
+  },
+  "theorem_status": "UNPROVED",
+  "retained_frontiers": [
+    "Discharge concrete subsystem ranking, productive liveness, external-release and environment premises",
+    "Supply kernel proof and independent fresh public acceptance evidence",
+    "Native exact-head workflow admission and review remain separately observed conditions"
+  ]
+}

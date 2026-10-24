@@ -1,0 +1,33 @@
+{
+  "schema": "qikvrt.manifest.v2.3",
+  "name": "QIKVRT_VERFASSUNG_DER_NACHVOLLZIEHBARKEIT_V2_3_ANSI_C_POSIX_CONSTITUTIONAL_GOVERNANCE_REPOSITORY",
+  "version": "2.9",
+  "inherits": [
+    "V2.1_FULL_DEPTH_MINIMALREGRESSION",
+    "V2.2_MULTICAST_ONTOLOGY"
+  ],
+  "purpose": "Implement constitution upward into procedural governance while preserving multicast and ontology gates.",
+  "external_release_policy": "MAIN_ZIP_ONLY",
+  "boundary": "not official legal act; not surveillance instrument; not specific third-party accusation tool",
+  "core_modules": [
+    "constitution",
+    "requirements",
+    "traceability",
+    "formal model",
+    "multicast protocol",
+    "ontology of difference",
+    "constitutional governance",
+    "case lifecycle",
+    "assertion classes",
+    "privacy/proportionality/emergency",
+    "ANSI-C verifier",
+    "POSIX acceptance suite"
+  ],
+  "profile": "ANSI_C_POSIX_AUTHORIZED_ACTIVE_LAYER",
+  "active_layer": "authorized_opt_in_only",
+  "forbidden": "unauthorized_scanning_self_propagation_surveillance",
+  "tcpip_autonomy_sanity": true,
+  "damage_containment": true,
+  "remote_mutation_allowed": false,
+  "unauthorized_scanning_allowed": false
+}

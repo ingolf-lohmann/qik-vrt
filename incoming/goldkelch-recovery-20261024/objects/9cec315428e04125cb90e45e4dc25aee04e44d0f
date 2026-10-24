@@ -1,0 +1,132 @@
+{
+  "schema": "qikvrt_self_heal_materialization_repair_work_unit_v1",
+  "work_unit_id": "QIKVRT_SELF_HEAL_PR_POSTCONDITION_REPAIR_20261004_V1",
+  "state": "IMPLEMENTED_LOCAL_TESTED_PENDING_EXACT_HEAD_REPOSITORY_VALIDATION",
+  "source": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "ref": "main",
+    "head": "93be182a277f29fcb1ffb5d4ace0483f6c29dc58",
+    "tree": "25e36016536b45701abdc699c586394f53c69aa6",
+    "workflow_blob": "3bc666cd2164cf24828d195eed89c1d6e1fefcd3",
+    "contract_blob": "28e88e103545685c48f8c92041130e34eb05188b",
+    "unchanged_existing_test_blob": "8c9293de1e22a6b99f371d530051cb138f1a5bd2"
+  },
+  "target": {
+    "branch": "fix/self-heal-pr-postcondition-20261004-93be182a",
+    "history": "SINGLE_PARENT_REVIEW_SUCCESSOR_NO_MAIN_WRITE",
+    "exact_head_tree": "RESOLVE_FROM_CONTAINING_COMMIT_AND_NATIVE_PR_READBACK"
+  },
+  "human_contribution": {
+    "class": "HUMAN",
+    "actor": "Ingolf Lohmann",
+    "role": "Product Owner",
+    "contribution": "Explicit instruction to implement the diagnosed self-heal correction and remove its cause. Implementation authorization is not final candidate acceptance."
+  },
+  "artificial_cognitive_contribution": {
+    "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "provider": "OpenAI",
+    "component": "ChatGPT within QIK-VRT",
+    "runtime_build_identity": "UNAVAILABLE",
+    "contribution": [
+      "Read exact repository sources and existing authorization boundaries",
+      "Extract and repair the existing workflow materialization step",
+      "Implement and execute partial-failure regressions",
+      "Persist the review candidate through GitHub REST-native connector"
+    ]
+  },
+  "reuse_before_create": {
+    "reused": [
+      "Existing autonomous self-heal workflow and triggers",
+      "Existing controller contract, delegation, allowlist, semantic fingerprint and candidate identity",
+      "Existing QIKVRT_MESH_TOKEN PR-writer route demonstrated in .github/workflows/issue-agent-autofinish.yml",
+      "Existing GitHub CLI, Python standard library and Git toolchain"
+    ],
+    "new_helper_justification": "Extract the formerly inline branch/PR transaction into testable code; no additional scheduler, repair authority, permission mutation or automatic approval."
+  },
+  "root_cause": {
+    "class": "INTERMEDIATE_ARTIFACT_EXISTENCE_USED_AS_COMPLETION_CHECKPOINT",
+    "mechanism": "Successful branch creation followed by failed PR creation leaves a branch. The old branch-exists exit 0 prevents every later attempt from reaching PR creation. Candidate-byte deduplication was incorrectly applied to an unfinished transaction.",
+    "coverage_gap": "Existing tests checked workflow text and boundaries, but not restart after a partially completed remote operation.",
+    "trigger_separate_from_logic": "GITHUB_TOKEN PR creation was denied. Existing configured MESH_TOKEN is now selected for the narrowly scoped writer when available; secret availability and permissions are not inferred from a workflow reference."
+  },
+  "correction": [
+    "No branch-exists success shortcut; exact candidate and PR postcondition reconciliation",
+    "REST create-only refs; never update or force-push a racing ref",
+    "At most one PR POST per invocation, followed by fresh readback even after timeout or conflict",
+    "Missing, duplicate, closed, foreign, drifted and unreadable state fail closed",
+    "Distinct candidate-byte semantic_fingerprint and notification transition_fingerprint",
+    "Postcondition/failure receipt survives the materialization step",
+    "Allowlisted repair paths and all review/promotion conditions remain unchanged"
+  ],
+  "outputs": [
+    {
+      "path": "tools/qikvrt_self_heal_pr_materializer.py",
+      "bytes": 14732,
+      "sha256": "eec52f138d2b1c51b416cda3f88f121b2a9445991300acbb904778437391892f",
+      "git_blob_sha1": "12925a2da64f8598a39d2b6469dcded705df73af"
+    },
+    {
+      "path": "tests/test_qikvrt_self_heal_pr_materializer.py",
+      "bytes": 24292,
+      "sha256": "df305d4801de20d750e381381a29c0130aab82e559d93eeae46e6ac0f9a83e8c",
+      "git_blob_sha1": "5f37a48eb6fe735f9251c6b000aadea1e5e2272a"
+    },
+    {
+      "path": ".github/workflows/qikvrt_autonomous_self_heal.yml",
+      "bytes": 7262,
+      "sha256": "79b7267df037bcc6df6196f927e2ed0e1821b435aacfe1e49a846c71db60c159",
+      "git_blob_sha1": "2e54a28a5adf45215701ee835de4c312510d4979"
+    },
+    {
+      "path": "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json",
+      "bytes": 7923,
+      "sha256": "d0dcc3fa457d7d9d1cccc6e61f88a1925327e0374d82c7dd3dd1df368ae866b9",
+      "git_blob_sha1": "5036d6ed667474949cce2a897cd2f1e9b1b7642b"
+    }
+  ],
+  "verification": {
+    "scope": "Focused partial workspace, not a full repository checkout",
+    "python": "3.13.5",
+    "commands": [
+      {
+        "command": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests -v",
+        "tests": 41,
+        "outcome": "SUCCESS"
+      },
+      {
+        "command": "PYTHONDONTWRITEBYTECODE=1 python3 -B -O -m unittest discover -s tests -v",
+        "tests": 41,
+        "outcome": "SUCCESS"
+      }
+    ],
+    "unique_tests": 41,
+    "new_tests": 35,
+    "existing_tests_unchanged": 6,
+    "yaml_parse": "SUCCESS",
+    "bash_syntax_checked_run_blocks": 6,
+    "historical_negative_control": "Original branch-exists guard returns 0 without reaching PR creation",
+    "fault_injection": "Branch create succeeds, PR POST receives 403, next invocation creates exactly one PR on unchanged HEAD, third invocation performs reads only",
+    "test_boundaries": "Remote calls use deterministic failure-injection fakes; preparation tests use real temporary Git repositories with the existing controller interface stubbed. These are not live GitHub credential or full-repository proofs."
+  },
+  "remaining_acceptance": [
+    "Materialize and verify the repository integrity projections on the actual candidate",
+    "Fresh complete applicable exact-head CI/evidence results",
+    "Independent exact-head Code-Owner review and enforced native governance",
+    "Reviewed integration before the changed main-only operational job can run",
+    "Fresh live materialization/readback using the configured writer route"
+  ],
+  "out_of_scope": [
+    "Independent QCE verifier failure on PR #437",
+    "Authority readback HTTP 404",
+    "Automatic administration or branch-protection changes",
+    "Release, deployment, publication or any external acceptance claim"
+  ],
+  "completion_claims": {
+    "PREDECESSOR_EVIDENCE_TRANSFER": false,
+    "EFFECT_ACK_DONE": false,
+    "repository_wide_PASS": false,
+    "merged": false,
+    "live_permission_recovery_verified": false,
+    "transport_ack_is_effect_ack": false
+  }
+}

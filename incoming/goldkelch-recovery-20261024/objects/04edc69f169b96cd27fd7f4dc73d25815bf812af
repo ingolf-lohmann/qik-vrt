@@ -1,0 +1,90 @@
+{
+  "schema": "qikvrt-monitor-native-deployment-observation/v1",
+  "observed_at": "2026-10-04T16:03:24.577124+00:00",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "executor_head": "af44ec730bbc533b8fc4141251c604a71312a08b",
+  "executor_tree": "49c69c60c3fa4c74e1dea587dfce202ae3629701",
+  "executor_ref": "candidate/mesh-monitor-mirror-20261004-29a55ae4",
+  "run_id": 37214947185,
+  "run_attempt": 1,
+  "run_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37214947185",
+  "run_conclusion": "failure",
+  "jobs": {
+    "validate": "success",
+    "existing-service": "failure; capability HOLD terminally preserved"
+  },
+  "artifact": {
+    "id": 11307639385,
+    "path": "evidence/monitor_deploy/NATIVE_DEPLOY_HOLD_37214947185.zip",
+    "bytes": 1671,
+    "sha256": "2da290b112b0fde289ffa399ae2bec8b554818677251253fe52e13910426c439",
+    "members": [
+      {
+        "path": "AI_PROGRESS.json",
+        "bytes": 665,
+        "sha256": "048d2c2b9333fcc3444bef3184d63cbdd49af5cbe7e4b8d4feede459ad075eb9"
+      },
+      {
+        "path": "AI_STATUS.md",
+        "bytes": 716,
+        "sha256": "2c840cbb6a5d41f91fc5c04f15066dba9988a3155569edddb3855c16e153cf7e"
+      },
+      {
+        "path": "receipt.json",
+        "bytes": 630,
+        "sha256": "fec807b0b029809123c3f311063807b175775d3f78efa5fab79e26c1c8dfba68"
+      }
+    ],
+    "verification": "Independently downloaded the native artifact, verified its published ZIP SHA-256 and exact receipt subject, and retained its original bytes."
+  },
+  "receipt": {
+    "PREDECESSOR_EVIDENCE_TRANSFER": false,
+    "effect_ack_done": false,
+    "executor_head": "af44ec730bbc533b8fc4141251c604a71312a08b",
+    "executor_ref": "candidate/mesh-monitor-mirror-20261004-29a55ae4",
+    "mutation_count": 0,
+    "public_url": "https://mesh-monitor-production.up.railway.app",
+    "schema": "qikvrt-monitor-deployment-receipt/v1",
+    "service_id": "dc3773e0-d057-4779-b9c1-9ca0f2074f69",
+    "source_head": "674aa35ec0659119a19cda66b88f32050e34f105",
+    "source_repository": "ingolf-lohmann/qik-vrt",
+    "source_tree": "5100b66a299ded9ecb64622d2d36a5a77ef1f85d",
+    "state": "HOLD_RAILWAY_SERVER_CREDENTIAL_UNAVAILABLE"
+  },
+  "railway_after_native_run": {
+    "project_id": "a2440de5-6250-4d02-8845-c166aeaa3d0d",
+    "environment_id": "1286f33e-9f11-43d9-b86c-be5df57718a0",
+    "service": {
+      "id": "dc3773e0-d057-4779-b9c1-9ca0f2074f69",
+      "name": "mesh-monitor",
+      "state": "live-with-staged-changes"
+    },
+    "staged": {
+      "patchId": "9d4860c4-5003-48ef-a07f-d383f303b539",
+      "status": "STAGED",
+      "changeCount": 21,
+      "message": null,
+      "createdAt": "2026-09-17T11:23:18.024Z",
+      "updatedAt": "2026-10-04T14:18:26.061Z"
+    },
+    "latestDeployment": {
+      "id": "278211b2-3d12-4bc6-8d56-ffdfb7590a7a",
+      "status": "SUCCESS",
+      "createdAt": "2026-09-19T05:14:47.567Z",
+      "url": null
+    },
+    "volumes": [
+      {
+        "id": "e802140e-b6a9-476c-a937-dde322253539",
+        "name": "mirror-monitor-events",
+        "mountPath": "/var/lib/qikvrt/monitor",
+        "sizeMB": 500,
+        "region": "iad",
+        "state": "staged-create"
+      }
+    ]
+  },
+  "scope": "Missing credential is observed only for this exact runner execution, not asserted for all future runners or every secret store. No native approval/merge effect or Railway mutation was substituted. Metadata-only successor requires its own native head checks.",
+  "credential_values_in_evidence": false,
+  "effect_ack_done": false
+}

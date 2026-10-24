@@ -1,0 +1,257 @@
+name: QIK-VRT finalize Mirror PR228 after repaired materializer
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/qikvrt_finalize_mirror_pr228_after_repair.yml
+
+permissions:
+  actions: read
+  contents: read
+  issues: write
+  pull-requests: write
+  statuses: read
+
+concurrency:
+  group: qikvrt-finalize-mirror-pr228-after-repair
+  cancel-in-progress: false
+
+jobs:
+  finalize:
+    if: github.repository == 'ingolf-lohmann/qik-vrt' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      CANDIDATE_PR: '228'
+      PROXY_PR: '230'
+      CANDIDATE_HEAD: 2c2a8e2b75cfd5f6fac487474c56bf05b04c7f49
+      ORIGINAL_BASE: 17f66b5ae7a2b1121141c6a0775da361415d58ff
+      EXPECTED_CANDIDATE_TREE: 1d95baceba12b42e73c4be112ed9c4c66adb4660
+    steps:
+      - name: Wait for repaired materializer attestation
+        shell: bash
+        env:
+          GH_API_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 -B - <<'PY'
+          import json
+          import os
+          import time
+          import urllib.request
+
+          repository = os.environ['GITHUB_REPOSITORY']
+          candidate = os.environ['CANDIDATE_HEAD']
+          headers = {
+              'Accept': 'application/vnd.github+json',
+              'Authorization': 'Bearer ' + os.environ['GH_API_TOKEN'],
+              'X-GitHub-Api-Version': '2022-11-28',
+              'User-Agent': 'qik-vrt-pr228-repair-finalizer',
+          }
+
+          def get(path):
+              request = urllib.request.Request(
+                  'https://api.github.com/repos/' + repository + path,
+                  headers=headers,
+              )
+              with urllib.request.urlopen(request, timeout=30) as response:
+                  return json.load(response)
+
+          for attempt in range(180):
+              status = get('/commits/' + candidate + '/status')
+              contexts = {
+                  item.get('context'): item.get('state')
+                  for item in status.get('statuses', [])
+              }
+              if (
+                  contexts.get('QIKVRT repository evidence materialization') == 'success'
+                  and contexts.get('materialize') == 'success'
+              ):
+                  print('REPAIRED_MATERIALIZER_ATTESTATION=SUCCESS')
+                  break
+              if attempt == 179:
+                  raise SystemExit('BLOCK: repaired materializer attestation did not become terminal success')
+              time.sleep(30)
+          PY
+
+      - name: Promote if still open or verify exact historical promotion
+        id: resolve
+        shell: bash
+        env:
+          GH_API_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 -B - <<'PY'
+          import json
+          import os
+          import urllib.error
+          import urllib.request
+
+          repository = os.environ['GITHUB_REPOSITORY']
+          token = os.environ['GH_API_TOKEN']
+          pr_number = os.environ['CANDIDATE_PR']
+          candidate = os.environ['CANDIDATE_HEAD']
+          base = os.environ['ORIGINAL_BASE']
+          expected_tree = os.environ['EXPECTED_CANDIDATE_TREE']
+          headers = {
+              'Accept': 'application/vnd.github+json',
+              'Authorization': 'Bearer ' + token,
+              'Content-Type': 'application/json',
+              'X-GitHub-Api-Version': '2022-11-28',
+              'User-Agent': 'qik-vrt-pr228-repair-finalizer',
+          }
+
+          def call(method, path, payload=None):
+              data = None if payload is None else json.dumps(payload).encode('utf-8')
+              request = urllib.request.Request(
+                  'https://api.github.com/repos/' + repository + path,
+                  data=data,
+                  method=method,
+                  headers=headers,
+              )
+              with urllib.request.urlopen(request, timeout=60) as response:
+                  return json.load(response)
+
+          pull = call('GET', '/pulls/' + pr_number)
+          if pull['head']['sha'] != candidate or pull['base']['sha'] != base:
+              raise SystemExit('BLOCK: PR228 historical head/base binding mismatch')
+
+          resolution = None
+          if pull['state'] == 'open':
+              main_before = call('GET', '/git/ref/heads/main')['object']['sha']
+              if main_before != base:
+                  raise SystemExit('BLOCK: Mirror main moved while PR228 remained open')
+              result = call(
+                  'PUT',
+                  '/pulls/' + pr_number + '/merge',
+                  {
+                      'sha': candidate,
+                      'merge_method': 'merge',
+                      'commit_title': 'Promote scoped pre-spacetime Zenodo Effect-ACK to Mirror',
+                      'commit_message': (
+                          'Promote exact Mirror PR228 after repaired materializer attestation. '
+                          'No new Zenodo, IETF, release or deployment effect; no repository-wide '
+                          'PASS, FINAL_PASS or EFFECT_ACK_DONE claim.'
+                      ),
+                  },
+              )
+              if not result.get('merged'):
+                  raise SystemExit('BLOCK: exact-head PR228 promotion was refused')
+              merge_sha = result['sha']
+              resolution = 'PROMOTED_AFTER_REPAIR_ATTESTATION'
+          elif pull.get('merged'):
+              merge_sha = pull.get('merge_commit_sha')
+              if not merge_sha:
+                  raise SystemExit('BLOCK: merged PR228 has no merge commit binding')
+              resolution = 'HISTORICAL_PROMOTION_REOBSERVED_AFTER_REPAIR_ATTESTATION'
+          else:
+              raise SystemExit('BLOCK: PR228 closed without merge')
+
+          merge_commit = call('GET', '/git/commits/' + merge_sha)
+          candidate_commit = call('GET', '/git/commits/' + candidate)
+          parents = [item['sha'] for item in merge_commit.get('parents', [])]
+          if parents != [base, candidate]:
+              raise SystemExit('BLOCK: PR228 merge parent binding mismatch')
+          if candidate_commit['tree']['sha'] != expected_tree:
+              raise SystemExit('BLOCK: candidate tree differs from fixed expected tree')
+          if merge_commit['tree']['sha'] != expected_tree:
+              raise SystemExit('BLOCK: candidate-to-merge tree drift detected')
+
+          main_now = call('GET', '/git/ref/heads/main')['object']['sha']
+          compare = call('GET', '/compare/' + merge_sha + '...' + main_now)
+          if compare.get('status') not in {'identical', 'ahead'} or compare.get('behind_by') != 0:
+              raise SystemExit('BLOCK: PR228 merge is not preserved in current Mirror main')
+
+          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as output:
+              output.write('resolution=' + resolution + '\n')
+              output.write('merge_sha=' + merge_sha + '\n')
+              output.write('main_now=' + main_now + '\n')
+          print('PR228_RESOLUTION=' + resolution)
+          print('PR228_MERGE_COMMIT=' + merge_sha)
+          print('MIRROR_CURRENT_MAIN=' + main_now)
+          PY
+
+      - name: Persist bounded owner-visible verification comment
+        shell: bash
+        env:
+          GH_API_TOKEN: ${{ github.token }}
+          RESOLUTION: ${{ steps.resolve.outputs.resolution }}
+          MERGE_SHA: ${{ steps.resolve.outputs.merge_sha }}
+          MAIN_NOW: ${{ steps.resolve.outputs.main_now }}
+        run: |
+          set -euo pipefail
+          python3 -B - <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          repository = os.environ['GITHUB_REPOSITORY']
+          body = '\n'.join([
+              'Trusted PR228 repair/finalization receipt',
+              '',
+              f"RESOLUTION = {os.environ['RESOLUTION']}",
+              f"EXACT_HEAD = {os.environ['CANDIDATE_HEAD']}",
+              f"MERGE_COMMIT = {os.environ['MERGE_SHA']}",
+              f"MIRROR_CURRENT_MAIN = {os.environ['MAIN_NOW']}",
+              'REPAIRED_MATERIALIZER_ATTESTATION = success',
+              'CANDIDATE_TO_MERGE_TREE_DRIFT = none',
+              'ZENODO_MUTATION = none',
+              'IETF_MUTATION = none',
+              'PASS = not claimed',
+              'FINAL_PASS = not claimed',
+              'REPOSITORY_WIDE_EFFECT_ACK_DONE = not claimed',
+          ])
+          payload = json.dumps({'body': body}).encode('utf-8')
+          request = urllib.request.Request(
+              'https://api.github.com/repos/' + repository + '/issues/' + os.environ['CANDIDATE_PR'] + '/comments',
+              data=payload,
+              method='POST',
+              headers={
+                  'Accept': 'application/vnd.github+json',
+                  'Authorization': 'Bearer ' + os.environ['GH_API_TOKEN'],
+                  'Content-Type': 'application/json',
+                  'X-GitHub-Api-Version': '2022-11-28',
+                  'User-Agent': 'qik-vrt-pr228-repair-finalizer',
+              },
+          )
+          with urllib.request.urlopen(request, timeout=30) as response:
+              result = json.load(response)
+          if not result.get('id'):
+              raise SystemExit('BLOCK: PR228 verification comment was not persisted')
+          PY
+
+      - name: Close execution-only repair proxy without merge
+        shell: bash
+        env:
+          GH_API_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 -B - <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          repository = os.environ['GITHUB_REPOSITORY']
+          proxy = os.environ['PROXY_PR']
+          payload = json.dumps({
+              'state': 'closed',
+              'title': '[EXECUTED; CLOSED WITHOUT MERGE] Repair and finalize Mirror PR228',
+          }).encode('utf-8')
+          request = urllib.request.Request(
+              'https://api.github.com/repos/' + repository + '/pulls/' + proxy,
+              data=payload,
+              method='PATCH',
+              headers={
+                  'Accept': 'application/vnd.github+json',
+                  'Authorization': 'Bearer ' + os.environ['GH_API_TOKEN'],
+                  'Content-Type': 'application/json',
+                  'X-GitHub-Api-Version': '2022-11-28',
+                  'User-Agent': 'qik-vrt-pr228-repair-finalizer',
+              },
+          )
+          with urllib.request.urlopen(request, timeout=30) as response:
+              result = json.load(response)
+          if result.get('state') != 'closed' or result.get('merged'):
+              raise SystemExit('BLOCK: repair proxy did not close cleanly without merge')
+          PY

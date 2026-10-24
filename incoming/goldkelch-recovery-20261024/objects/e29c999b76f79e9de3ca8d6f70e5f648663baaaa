@@ -1,0 +1,68 @@
+{
+  "_license": {
+    "classification": "machine_readable_work_unit",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_materialize_dedicated_mirror_node_state_ref_v1",
+  "work_unit_id": "MATERIALIZE-DEDICATED-MIRROR-NODE-STATE-REF-20260901-V1",
+  "created_at": "2026-09-01T07:27:09Z",
+  "human_actor": {
+    "actor_class": "HUMAN",
+    "attribution_id": "Ingolf Lohmann",
+    "role": "Product Owner and Code Owner",
+    "directive": "Create the jointly scoped Authority/Mirror release and perform every repository-safe prerequisite.",
+    "identity_proof_boundary": "The connected account and repository records attribute the directive; no biometric or universal identity claim is made."
+  },
+  "artificial_cognitive_actor": {
+    "actor_class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-5 family; exact build unavailable",
+    "tools_and_adapters": [
+      "GitHub connector",
+      "local Git",
+      "QIK-VRT integrity generator"
+    ]
+  },
+  "repository": "ingolf-lohmann/qik-vrt",
+  "source_main": "25c4df4caf063d0545621f9958941c3cd0dfd5fa",
+  "source_tree": "bd421a2624d20804c74eef77647fc52fcdb1feec",
+  "state_ref": "refs/heads/state/mirror-node-a84f157a-v1",
+  "node_guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe",
+  "observed_authority_main": "6c20c80c24fecf7adfa241cdcb1da92a98f74ddf",
+  "outputs": {
+    "role_local_paths": [
+      "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+      "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+      "qikvrt/runtime/onboarding/SEED_ACCEPTANCE_STATUS.json"
+    ],
+    "heartbeat_utc": "2026-09-01T07:27:09Z",
+    "health_expires_utc": "2026-09-02T08:27:09Z",
+    "renewal_due_utc": "2026-09-02T07:27:09Z"
+  },
+  "causal_purpose": "Keep mutable Mirror identity and liveness outside a future shared release carrier so whole-tree or scoped convergence cannot erase role-local state.",
+  "verification": {
+    "repository_native_integrity": "PENDING_DETERMINISTIC_REGENERATION",
+    "remote_ref_readback": "PENDING",
+    "remote_raw_record_readback": "PENDING"
+  },
+  "effect_boundary": {
+    "main_change": false,
+    "merge": false,
+    "tag": false,
+    "release": false,
+    "publication": false,
+    "deployment": false,
+    "physical_atari_execution": false,
+    "general_effect_ack_done": false
+  },
+  "completion_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "AUTHORITY_MIRROR_SYNCHRONIZED": false
+  },
+  "candidate_state": "DEDICATED_ROLE_LOCAL_STATE_REF_PENDING_INTEGRITY_AND_REMOTE_READBACK"
+}

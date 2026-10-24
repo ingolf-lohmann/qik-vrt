@@ -1,0 +1,172 @@
+# Temporary bootstrap workflow; the exact authority-tree merge removes it again.
+name: QIKVRT mirror verified authority tree
+
+on:
+  push:
+    branches:
+      - automation/mirror-manuscript-formalization-v2
+    paths:
+      - .github/workflows/qikvrt_mirror_authority_main.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/qikvrt_mirror_authority_main.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: qikvrt-mirror-manuscript-formalization-v2-${{ github.event_name }}
+  cancel-in-progress: false
+
+jobs:
+  repair-integrity:
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.head_ref == 'automation/mirror-manuscript-formalization-v2'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+      - name: Regenerate and verify temporary mirror-runtime integrity
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/qikvrt_integrity.py generate
+          python3 tools/qikvrt_integrity.py verify
+      - name: Persist temporary integrity authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add REPOSITORY_FILE_MANIFEST.json REPOSITORY_FILE_MANIFEST.json.sha256 SHA256SUMS.txt
+          if git diff --cached --quiet; then
+            echo "Temporary mirror-runtime integrity is already current."
+            exit 0
+          fi
+          git commit -m "ci: materialize temporary mirror-runtime integrity"
+          git push origin "HEAD:${{ github.head_ref }}"
+
+  mirror:
+    if: >-
+      github.event_name == 'push' &&
+      github.ref_name == 'automation/mirror-manuscript-formalization-v2'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
+      - name: Materialize exact verified authority tree as a mirror merge commit
+        shell: bash
+        env:
+          AUTHORITY_URL: https://github.com/Goldkelch/qik-vrt.git
+          AUTHORITY_COMMIT: 3d640b05e815ff8644fe7640ddd7dcf89d4094c4
+          EXPECTED_MIRROR_BASE_COMMIT: ac05aeff4835aeab049a22f3b6271c3224856dc2
+          TARGET_BRANCH: mirror/manuscript-formalization-v2-completion
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if git remote get-url authority >/dev/null 2>&1; then
+            git remote set-url authority "$AUTHORITY_URL"
+          else
+            git remote add authority "$AUTHORITY_URL"
+          fi
+
+          git fetch --no-tags --prune authority \
+            +refs/heads/main:refs/remotes/authority/main
+          git fetch --no-tags --prune origin \
+            +refs/heads/main:refs/remotes/origin/main
+
+          git cat-file -e "$AUTHORITY_COMMIT^{commit}"
+          git merge-base --is-ancestor "$AUTHORITY_COMMIT" refs/remotes/authority/main
+          git cat-file -e "$EXPECTED_MIRROR_BASE_COMMIT^{commit}"
+
+          mirror_parent="$(git rev-parse refs/remotes/origin/main)"
+          authority_tree="$(git rev-parse "$AUTHORITY_COMMIT^{tree}")"
+
+          if [ "$mirror_parent" = "$EXPECTED_MIRROR_BASE_COMMIT" ]; then
+            echo "Mirror main is still the verified common base."
+          else
+            first_parent="$(git rev-parse "$mirror_parent^1")"
+            if [ "$first_parent" != "$EXPECTED_MIRROR_BASE_COMMIT" ]; then
+              printf 'BLOCK: temporary bootstrap main does not preserve expected first parent %s\n' \
+                "$EXPECTED_MIRROR_BASE_COMMIT" >&2
+              exit 1
+            fi
+
+            unexpected=0
+            while IFS= read -r path; do
+              case "$path" in
+                .github/workflows/qikvrt_batch04_integrity.yml|\
+                .github/workflows/qikvrt_mirror_authority_main.yml|\
+                .qikvrt/evidence/mirror-bootstrap-final-retrigger.json|\
+                REPOSITORY_FILE_MANIFEST.json|\
+                REPOSITORY_FILE_MANIFEST.json.sha256|\
+                SHA256SUMS.txt)
+                  ;;
+                *)
+                  printf 'BLOCK: unexpected bootstrap-main path: %s\n' "$path" >&2
+                  unexpected=1
+                  ;;
+              esac
+            done < <(git diff --name-only "$EXPECTED_MIRROR_BASE_COMMIT" "$mirror_parent")
+            if [ "$unexpected" -ne 0 ]; then
+              exit 1
+            fi
+          fi
+
+          export GIT_AUTHOR_DATE="$(git show -s --format=%aI "$AUTHORITY_COMMIT")"
+          export GIT_COMMITTER_DATE="$(git show -s --format=%cI "$AUTHORITY_COMMIT")"
+
+          message="Mirror completed 62-page manuscript formalization
+
+Authority commit: $AUTHORITY_COMMIT
+Authority tree: $authority_tree
+Mirror parent: $mirror_parent
+
+The resulting commit uses the exact verified authority tree while preserving the mirror mainline as first parent and the authority commit as second parent."
+
+          mirror_commit="$(printf '%s\n' "$message" | \
+            git commit-tree "$authority_tree" \
+              -p "$mirror_parent" \
+              -p "$AUTHORITY_COMMIT")"
+
+          git push --force-with-lease origin \
+            "$mirror_commit:refs/heads/$TARGET_BRANCH"
+
+          remote_commit="$(git ls-remote origin "refs/heads/$TARGET_BRANCH" | awk '{print $1}')"
+          if [ "$remote_commit" != "$mirror_commit" ]; then
+            printf 'BLOCK: remote mirror branch mismatch: expected %s, got %s\n' \
+              "$mirror_commit" "$remote_commit" >&2
+            exit 1
+          fi
+
+          remote_tree="$(git rev-parse "$remote_commit^{tree}")"
+          if [ "$remote_tree" != "$authority_tree" ]; then
+            printf 'BLOCK: remote mirror tree mismatch: expected %s, got %s\n' \
+              "$authority_tree" "$remote_tree" >&2
+            exit 1
+          fi
+
+          {
+            echo '## QIK-VRT mirror materialization'
+            echo
+            echo "- Authority commit: \`$AUTHORITY_COMMIT\`"
+            echo "- Authority tree: \`$authority_tree\`"
+            echo "- Mirror parent: \`$mirror_parent\`"
+            echo "- Mirror commit: \`$mirror_commit\`"
+            echo "- Target branch: \`$TARGET_BRANCH\`"
+            echo
+            echo 'Result: exact authority tree persisted as a two-parent mirror commit.'
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -1,0 +1,979 @@
+{
+  "schema": "qikvrt_recovered_source_page_v1",
+  "entries": [
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/pr/29",
+      "source_commit": "a19b50ac7228c8feb03d8899c3ae822b414bb1cd",
+      "ref_count": 1,
+      "bytes": 369,
+      "source_blob": "1367e7b6f5732d34933d1308c121d0508ca91463",
+      "original_path": ".qikvrt/evidence/mirror-bootstrap-final-retrigger.json",
+      "object_path": "objects/1367e7b6f5732d34933d1308c121d0508ca91463",
+      "sha256": "1fe3327ec4c56baec91d69972eecb235788b9e18e542c3cdbc5df8b142eaf040",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/automation/mirror-manuscript-formalization-v2",
+      "source_commit": "e044daa3e7dda47a73cdc0074eb1bb10b9f36a9d",
+      "ref_count": 2,
+      "bytes": 346,
+      "source_blob": "3761474612cc8f4fbdac6f5fc162c146a5347a18",
+      "original_path": ".qikvrt/evidence/mirror-bootstrap-final-retrigger.json",
+      "object_path": "objects/3761474612cc8f4fbdac6f5fc162c146a5347a18",
+      "sha256": "347316343080c59d85159cfb3e47de7f732bfa8e5a1a30a5806ab44294c7785c",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/pr/30",
+      "source_commit": "24ad939d752fb7054100bcbf679f14f03c569419",
+      "ref_count": 1,
+      "bytes": 359,
+      "source_blob": "60e504f5dd743e6daa81856ee48c69e17ffc878d",
+      "original_path": ".qikvrt/evidence/mirror-bootstrap-final-retrigger.json",
+      "object_path": "objects/60e504f5dd743e6daa81856ee48c69e17ffc878d",
+      "sha256": "3c222b0b4db087d9bdce777b65f826c59760dacd83b7ef737de551cfe1f68163",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/pr/28",
+      "source_commit": "07201f5ea14db51ee9227f55bc8a2c2898f20f5f",
+      "ref_count": 1,
+      "bytes": 345,
+      "source_blob": "9fb0b0928d118455f6a51e5aecf910383dc5ac44",
+      "original_path": ".qikvrt/evidence/mirror-bootstrap-final-retrigger.json",
+      "object_path": "objects/9fb0b0928d118455f6a51e5aecf910383dc5ac44",
+      "sha256": "54e8e78e9450fbd0860af8e889bf6f196e191eeca9feabb3fa220ff108e06bf8",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/pr/26",
+      "source_commit": "decb36a28c7951e47a4551bdbc222429f5813856",
+      "ref_count": 4,
+      "bytes": 356,
+      "source_blob": "f08fb808a8ea2ef25409c67af5e2637ee61b8d02",
+      "original_path": ".qikvrt/evidence/mirror-bootstrap-final-retrigger.json",
+      "object_path": "objects/f08fb808a8ea2ef25409c67af5e2637ee61b8d02",
+      "sha256": "8b89281ba852783bcac95b56abfc4afeee1779848164ae00c4e57cc4118c11a2",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/agent/complete-runtime-tool-cache",
+      "source_commit": "134f948ccd1b84e6e7e7eea68717d5cd30155890",
+      "ref_count": 13,
+      "bytes": 99,
+      "source_blob": "061bfd2f2f877ceccfa2db6854e25b931a353999",
+      "original_path": ".qikvrt/integrity-trigger-progress-protocol.txt",
+      "object_path": "objects/061bfd2f2f877ceccfa2db6854e25b931a353999",
+      "sha256": "56b08d51c981e89b9739ff335a553dfc658bfc0cb409adeaf40c463f7bfce648",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/qikvrt-v13.164-22247-6631",
+      "source_commit": "d081a47caf02d915836354480d1fa49e34feba4b",
+      "ref_count": 7,
+      "bytes": 941,
+      "source_blob": "791b90cae435e17d7b363910e5fee5f5652d666d",
+      "original_path": ".qikvrt/zenodo_status.json",
+      "object_path": "objects/791b90cae435e17d7b363910e5fee5f5652d666d",
+      "sha256": "49bc3c89aec39076758b6ccf878a966064b7bf020a059b7b90bac5a603244524",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 1075,
+      "source_blob": "a3691d8a93ee3c23f3b69c52b0c4180a131c46c8",
+      "original_path": ".well-known/qik-vrt-delivery-contract.json",
+      "object_path": "objects/a3691d8a93ee3c23f3b69c52b0c4180a131c46c8",
+      "sha256": "734d785941c27a6a12f6dbcdd9fdc6f3c35ba004a6b89d485245255c7dea72e8",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/candidate/document-delivery-canonical-pair-binding-v1",
+      "source_commit": "2dff886a4ae42de297914ca239897d2c18026edd",
+      "ref_count": 8,
+      "bytes": 1228,
+      "source_blob": "4a3cd89e59a3ed99696bf016ef3d206ea64a641b",
+      "original_path": "DELIVERY/CURRENT/DELIVERIES.json",
+      "object_path": "objects/4a3cd89e59a3ed99696bf016ef3d206ea64a641b",
+      "sha256": "2cc2a93f33ee6474a775300a42897f4195083a5649605c744e4e788d4f882772",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/candidate/document-delivery-canonical-pair-binding-v1",
+      "source_commit": "2dff886a4ae42de297914ca239897d2c18026edd",
+      "ref_count": 8,
+      "bytes": 1673,
+      "source_blob": "ed25755c2e832582aed27b62ad7667a42aaf7f74",
+      "original_path": "DELIVERY/CURRENT/OWNER_STATUS.md",
+      "object_path": "objects/ed25755c2e832582aed27b62ad7667a42aaf7f74",
+      "sha256": "7eee16446cca34228b01638db7ef9d38e27535e4d672b03d473d6ce905608515",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/qikvrt-node/v2.13.4-node",
+      "source_commit": "b51014fc188b69a85f252d861b4b2ae542c45037",
+      "ref_count": 2,
+      "bytes": 5626,
+      "source_blob": "5d6e052dc5adc5b79fd3596d63e64351ed5bc0a4",
+      "original_path": "QIKVRT.cmd",
+      "object_path": "objects/5d6e052dc5adc5b79fd3596d63e64351ed5bc0a4",
+      "sha256": "06970fedda0a1dea5685c5e23bbd28ecce26731b75abe217dc86162c30220b50",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/qikvrt-node/v2.13.4-node-r",
+      "source_commit": "5c775fb2f20f6f17ac771d183cc7c72ffa33b186",
+      "ref_count": 2,
+      "bytes": 5626,
+      "source_blob": "9ede096cfee30b73ef525caa57162c8c6181d278",
+      "original_path": "QIKVRT.cmd",
+      "object_path": "objects/9ede096cfee30b73ef525caa57162c8c6181d278",
+      "sha256": "265d01db19b7fd711a85063c3723e81ace3da3d620905530422c899247a44d2d",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/qikvrt-node/v2.13.4-node",
+      "source_commit": "b51014fc188b69a85f252d861b4b2ae542c45037",
+      "ref_count": 4,
+      "bytes": 1842,
+      "source_blob": "16e9a66b330e2b55b120ce3a6ad9900fc600eea3",
+      "original_path": "QIKVRT.sh",
+      "object_path": "objects/16e9a66b330e2b55b120ce3a6ad9900fc600eea3",
+      "sha256": "558eb4fa1a25b80c34f2384c04033164eff0201f93e30de421a7bb2164b3476f",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/temdd/executable-runtime-20260923-v1",
+      "source_commit": "74db1c61a8cedeb6d8702e7acb1fe18aa45e7ebc",
+      "ref_count": 2,
+      "bytes": 2389,
+      "source_blob": "080e5bfdef9b3637e7ec3b8e4a8901e851e334ab",
+      "original_path": "TEMDD.md",
+      "object_path": "objects/080e5bfdef9b3637e7ec3b8e4a8901e851e334ab",
+      "sha256": "729ce0465fedc7c03f1d905395403535d637fd1138bbf548a8ebfe93d81bb876",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 1,
+      "bytes": 205,
+      "source_blob": "27dce60447887ed576179658ea2364d599efd76d",
+      "original_path": "audit/QIKVRT_NODE_SELF_AUDIT.md",
+      "object_path": "objects/27dce60447887ed576179658ea2364d599efd76d",
+      "sha256": "e2251aaad5c07395bc94ef97dd9efe8c8dbe8990cfa0b2e3a33a0cc7bf2e8640",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4av1-node-open-multi-node",
+      "source_commit": "1b756684f4adf9d6f250d4e05d344f7a239bb846",
+      "ref_count": 1,
+      "bytes": 206,
+      "source_blob": "443cfb73a54a3ee33a7383acd0a5158cacb1e205",
+      "original_path": "audit/QIKVRT_NODE_SELF_AUDIT.md",
+      "object_path": "objects/443cfb73a54a3ee33a7383acd0a5158cacb1e205",
+      "sha256": "3248eff6394f6ddcb2b4a0239d188fbca3ac146cb4c030a06ad7ac50a6483c70",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 3955,
+      "source_blob": "6e3d44df2928052e4239c6cd53163455d23453a4",
+      "original_path": "browser/firefox/qikvrt-terminal/_locales/ar/messages.json",
+      "authority_locations": [
+        "runtime/self-host/original-firefox/_locales/ar/messages.json"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 3670,
+      "source_blob": "11fd70240efd73878f652ab3c212bfe8dcf910f5",
+      "original_path": "browser/firefox/qikvrt-terminal/_locales/de/messages.json",
+      "authority_locations": [
+        "runtime/self-host/original-firefox/_locales/de/messages.json"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 3411,
+      "source_blob": "50b8040e5ec48b17ddfa702c4aab61da23086b32",
+      "original_path": "browser/firefox/qikvrt-terminal/_locales/en/messages.json",
+      "authority_locations": [
+        "runtime/self-host/original-firefox/_locales/en/messages.json"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 3639,
+      "source_blob": "d3e32c91067f40a7a66e1e1bbf22293d54f6fb7f",
+      "original_path": "browser/firefox/qikvrt-terminal/_locales/es/messages.json",
+      "authority_locations": [
+        "runtime/self-host/original-firefox/_locales/es/messages.json"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 3765,
+      "source_blob": "de4d3108fea6ae9a9f4a843e9795dd594a9be0e3",
+      "original_path": "browser/firefox/qikvrt-terminal/_locales/fr/messages.json",
+      "authority_locations": [
+        "runtime/self-host/original-firefox/_locales/fr/messages.json"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 5834,
+      "source_blob": "34baa5c2a8312e3a5f47d08f1190ec9246c970d9",
+      "original_path": "browser/firefox/qikvrt-terminal/_locales/hi/messages.json",
+      "authority_locations": [
+        "runtime/self-host/original-firefox/_locales/hi/messages.json"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 3542,
+      "source_blob": "ad54ebfde1856ddd1bddd6507b1edddd55e633b8",
+      "original_path": "browser/firefox/qikvrt-terminal/_locales/id/messages.json",
+      "authority_locations": [
+        "runtime/self-host/original-firefox/_locales/id/messages.json"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 3716,
+      "source_blob": "18ddf3373a94b8562778cecea654d113a6d3ce28",
+      "original_path": "browser/firefox/qikvrt-terminal/_locales/it/messages.json",
+      "authority_locations": [
+        "runtime/self-host/original-firefox/_locales/it/messages.json"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 4021,
+      "source_blob": "11bce6bf298aaa2e4a5ed95392ea3b5afb721ef0",
+      "original_path": "browser/firefox/qikvrt-terminal/_locales/ja/messages.json",
+      "authority_locations": [
+        "runtime/self-host/original-firefox/_locales/ja/messages.json"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 3787,
+      "source_blob": "f6b1d88576b2ccdc8d44bb21f27fd5d35b7acd1f",
+      "original_path": "browser/firefox/qikvrt-terminal/_locales/ko/messages.json",
+      "authority_locations": [
+        "runtime/self-host/original-firefox/_locales/ko/messages.json"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 3629,
+      "source_blob": "2d5d1c499251a3f75346b8b2b649e3d88df929ab",
+      "original_path": "browser/firefox/qikvrt-terminal/_locales/pt_BR/messages.json",
+      "authority_locations": [
+        "runtime/self-host/original-firefox/_locales/pt_BR/messages.json"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 4706,
+      "source_blob": "7aee4bec673294353d2276d77723767611a5a587",
+      "original_path": "browser/firefox/qikvrt-terminal/_locales/ru/messages.json",
+      "authority_locations": [
+        "runtime/self-host/original-firefox/_locales/ru/messages.json"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 3513,
+      "source_blob": "d72d5265e778cb265bf266c06e3816085ab86c59",
+      "original_path": "browser/firefox/qikvrt-terminal/_locales/tr/messages.json",
+      "authority_locations": [
+        "runtime/self-host/original-firefox/_locales/tr/messages.json"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 3350,
+      "source_blob": "602cb0c77a192d8de51f8cba8161209516295eaa",
+      "original_path": "browser/firefox/qikvrt-terminal/_locales/zh_CN/messages.json",
+      "authority_locations": [
+        "runtime/self-host/original-firefox/_locales/zh_CN/messages.json"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/fix/openai-subscription-effect-v1",
+      "source_commit": "e9753c1e1162cd4f2761ba2df8b8ff93c557300b",
+      "ref_count": 1,
+      "bytes": 16952,
+      "source_blob": "5f06e6bbce23691b2af84975af79ae8d2a69565c",
+      "original_path": "browser/firefox/qikvrt-terminal/authenticated_delivery.js",
+      "object_path": "objects/5f06e6bbce23691b2af84975af79ae8d2a69565c",
+      "sha256": "b99285116e3a8bd4ca7ad780b46ece11bc1174644904942177cab09e2cc6772c",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 15796,
+      "source_blob": "7900e7c9f89a870772471dcd5be22aef171cbc75",
+      "original_path": "browser/firefox/qikvrt-terminal/authenticated_delivery.js",
+      "authority_locations": [
+        "runtime/self-host/original-firefox/authenticated_delivery.js"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 5377,
+      "source_blob": "03da429fe609603783f4829bb952ffd3c21dce6a",
+      "original_path": "browser/firefox/qikvrt-terminal/review_effect.js",
+      "authority_locations": [
+        "runtime/self-host/original-firefox/review_effect.js"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/api-acceptance-rest-repair-20261001",
+      "source_commit": "a73e5fe2fdfd192b022d89d00499f9ceb7ebc673",
+      "ref_count": 16,
+      "bytes": 400,
+      "source_blob": "9b06a2b407fb99d99d2bda5a3decc80ab68a092b",
+      "original_path": "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin",
+      "disposition": "BINARY_OR_LARGE_PAYLOAD_REVIEW_HOLD"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 9632,
+      "source_blob": "c1f700a2a1242a647686f566573b10c64deb14e6",
+      "original_path": "conformance/temdd/runner.py",
+      "object_path": "objects/c1f700a2a1242a647686f566573b10c64deb14e6",
+      "sha256": "e20d97c6cd657ef27a2e23bf3174db0950ccd2bc9be1bb3c01d6f87874a1f513",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 2342,
+      "source_blob": "3bdcd8fb170b95ce8f90a9fbe37e337b9d3a9d05",
+      "original_path": "conformance/temdd/vectors-v1.json",
+      "object_path": "objects/3bdcd8fb170b95ce8f90a9fbe37e337b9d3a9d05",
+      "sha256": "f5809bbc98a662eb94aeb467ee57adf6eadf5cd313350014ea6b83de315cdc6f",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 7398,
+      "source_blob": "2ec05a71203387ed369e74cf4b2cef5518710e16",
+      "original_path": "deploy/mesh-monitor/server.py",
+      "object_path": "objects/2ec05a71203387ed369e74cf4b2cef5518710e16",
+      "sha256": "d41844b0e1a480f1d2411bbc0787b3822bf25c8d3fbc53dc425b20bbfbb37406",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100755",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 61,
+      "source_blob": "2ad8158ce22f3d6ea988bfe9e6c036b19d404ec3",
+      "original_path": "deploy/mesh-monitor/start.sh",
+      "object_path": "objects/2ad8158ce22f3d6ea988bfe9e6c036b19d404ec3",
+      "sha256": "3f803dc6b9e067599ff8e4aa10b1b74f1c1ce494278f0b40660fa62d6439868c",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 4220,
+      "source_blob": "716a99514eeabf91438ce8c69610968a671d0dfe",
+      "original_path": "deploy/siemens-horizon/QIKVRT_SIEMENS_HORIZON_ADAPTER_V1.md",
+      "object_path": "objects/716a99514eeabf91438ce8c69610968a671d0dfe",
+      "sha256": "b73e5546dedf567adcf7af44fdb2fdd4d0f5cd2ea08fdbede57fc83b0d276c67",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 1618,
+      "source_blob": "275c3cc576c217b2e2306e6361c3c2e0ef95aa99",
+      "original_path": "deploy/siemens-horizon/REFERENCE_INTEGRATION_V1.md",
+      "object_path": "objects/275c3cc576c217b2e2306e6361c3c2e0ef95aa99",
+      "sha256": "bb8a8183d3b63bca01cb18afab830432d459e095c7f1aea94453999d8279b47e",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 138,
+      "source_blob": "ef5a6f2eedd71aa9d1c16de2f3d9979776589a29",
+      "original_path": "deploy/siemens-horizon/reference-twin-state.json",
+      "object_path": "objects/ef5a6f2eedd71aa9d1c16de2f3d9979776589a29",
+      "sha256": "a9caa49fbd132cba44669d3ab5a33cf6b0e61567298e4990e15bac9d98aae542",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 2016,
+      "source_blob": "fc16a6c0fb2f8a6c95acef76b608547ee928e80f",
+      "original_path": "deploy/vercel-monitor/api/state.js",
+      "object_path": "objects/fc16a6c0fb2f8a6c95acef76b608547ee928e80f",
+      "sha256": "c69ffb087400dbef8a24010bb59f53f9885b598953da5673e15fd49b2ff765b7",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 4755,
+      "source_blob": "8f9fe0360caae516203d1894e0870282b4fca183",
+      "original_path": "deploy/vercel-monitor/index.html",
+      "object_path": "objects/8f9fe0360caae516203d1894e0870282b4fca183",
+      "sha256": "414046add7b7d6b3896e3c80dab2a9482d6733289c76e3e8567237975f0d55d4",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 352,
+      "source_blob": "e3799c95bf69561a9922f3d762647b9dd5cc87b7",
+      "original_path": "deploy/vercel-monitor/vercel.json",
+      "object_path": "objects/e3799c95bf69561a9922f3d762647b9dd5cc87b7",
+      "sha256": "1f07ddb8a407574a24fab8d58a178b2873c40ec2ddf13915884e037e4cbe9b99",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 10355,
+      "source_blob": "f05d67d87a817137dfa0df267d6ba9b0743ce172",
+      "original_path": "distribution/qikvrt-megast/README.md",
+      "object_path": "objects/f05d67d87a817137dfa0df267d6ba9b0743ce172",
+      "sha256": "db26daacead1440dce3a66680bd24bb14fa87dac81102b957c0e8d617bcf0818",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 34630,
+      "source_blob": "3cd4581d5a660f2097cf48206a478128a250459d",
+      "original_path": "distribution/qikvrt-megast/boot.py",
+      "object_path": "objects/3cd4581d5a660f2097cf48206a478128a250459d",
+      "sha256": "7e351f45c7837f1b202eaf5a12d2fe06c887891c7b58e3594e663f814237e95b",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100755",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 13300,
+      "source_blob": "f0635251e09745246c9a3a1e4f3977bc8d7c7e8f",
+      "original_path": "distribution/qikvrt-megast/build.sh",
+      "object_path": "objects/f0635251e09745246c9a3a1e4f3977bc8d7c7e8f",
+      "sha256": "2bf19971fc9dc8cbf404a942429705809917159e779ec3ea852c75aba5c6634f",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100755",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 3127,
+      "source_blob": "68f0edfdcc0da8ad9c3610d20c670e0ee6a15113",
+      "original_path": "distribution/qikvrt-megast/qikvrt-megast-session.sh",
+      "object_path": "objects/68f0edfdcc0da8ad9c3610d20c670e0ee6a15113",
+      "sha256": "0e279a366295a7c2969032db4741156aae292ac145d1632334a11ff6ad0add5a",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100755",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 9238,
+      "source_blob": "7ee50f2128a1d34c1a218f095eb69eb9390f58fd",
+      "original_path": "distribution/qikvrt-megast/runtime-witness.py",
+      "object_path": "objects/7ee50f2128a1d34c1a218f095eb69eb9390f58fd",
+      "sha256": "179ca25c0c02df4b29b24dc0244752fff29f31945af9d6a1fdc276070d208e9b",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/qikvrt-node/v2.13.4-node",
+      "source_commit": "b51014fc188b69a85f252d861b4b2ae542c45037",
+      "ref_count": 4,
+      "bytes": 3824,
+      "source_blob": "a03830719969447eef01ea873ca146ce76757adb",
+      "original_path": "docs/ACTIVE_LAYER.md",
+      "object_path": "objects/a03830719969447eef01ea873ca146ce76757adb",
+      "sha256": "b4214b5c6fdb90d15d2055648c522b9c8640620d0d0ddb86fa90604c62b4fafe",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/qikvrt-node/v2.13.4-node",
+      "source_commit": "b51014fc188b69a85f252d861b4b2ae542c45037",
+      "ref_count": 4,
+      "bytes": 2966,
+      "source_blob": "030730d6972cc252958d24d15ecce2fb001a7415",
+      "original_path": "docs/ACTIVE_OPERATION_SPEC.md",
+      "object_path": "objects/030730d6972cc252958d24d15ecce2fb001a7415",
+      "sha256": "71ac98bb8f9ceb53c74c10cd10e4e817ed107179e554b4b515a73cc133c4a63f",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/qikvrt-node/v2.13.4-node",
+      "source_commit": "b51014fc188b69a85f252d861b4b2ae542c45037",
+      "ref_count": 4,
+      "bytes": 3539,
+      "source_blob": "cb4b9cd4cf1215be61821d828366c87d902373ac",
+      "original_path": "docs/ARTICLE_IMPLEMENTATION_MATRIX.md",
+      "object_path": "objects/cb4b9cd4cf1215be61821d828366c87d902373ac",
+      "sha256": "a5e1dd692566897165531f5b96db585cad48eec521fc9c9f04d9ec62632daddf",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/qikvrt-node/v2.13.4-node",
+      "source_commit": "b51014fc188b69a85f252d861b4b2ae542c45037",
+      "ref_count": 4,
+      "bytes": 3781,
+      "source_blob": "f9b5d834c05a8a8a68c5cfedcb2f0ef085f6afaf",
+      "original_path": "docs/AUTONOMOUS_INTERNET_DISCOVERY.md",
+      "object_path": "objects/f9b5d834c05a8a8a68c5cfedcb2f0ef085f6afaf",
+      "sha256": "6d8dceab314502d6571f84e9c4e9fe7267f380547ca8dbcece8ef65ffed1eccb",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/qikvrt-node/v2.13.4-node",
+      "source_commit": "b51014fc188b69a85f252d861b4b2ae542c45037",
+      "ref_count": 4,
+      "bytes": 2138,
+      "source_blob": "7c065e314fa9714fc70ac582dc15f26627a96813",
+      "original_path": "docs/BI.md",
+      "object_path": "objects/7c065e314fa9714fc70ac582dc15f26627a96813",
+      "sha256": "c0d066332611c865551cd5d96bcfbe8cec245085cf3aebc6cf26d6bb6970650b",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/qikvrt-node/v2.13.4-node",
+      "source_commit": "b51014fc188b69a85f252d861b4b2ae542c45037",
+      "ref_count": 4,
+      "bytes": 2960,
+      "source_blob": "554e742f10bb1b99790ad310976ff7780cde3a99",
+      "original_path": "docs/BOOTSTRAPPER_GUID.md",
+      "object_path": "objects/554e742f10bb1b99790ad310976ff7780cde3a99",
+      "sha256": "fff2d2cbdc031af53e9612521653c595be5d826245021b2b6e9ea0b196f95077",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 4317,
+      "source_blob": "752443c5db316f24c346c96d1fa59c0dd307ad38",
+      "original_path": "docs/C89_TURBO_PASCAL_DELPHI_AD_DA_BRIDGE_V1.md",
+      "object_path": "objects/752443c5db316f24c346c96d1fa59c0dd307ad38",
+      "sha256": "6910d9fe318d008abef68209a7172b39b4f1df3b055249f7d8f01f01035f6901",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/qikvrt-node/v2.13.4-node",
+      "source_commit": "b51014fc188b69a85f252d861b4b2ae542c45037",
+      "ref_count": 4,
+      "bytes": 2277,
+      "source_blob": "e059d0165ae313c40fc4031650741a940204704c",
+      "original_path": "docs/CASE_LIFECYCLE.md",
+      "object_path": "objects/e059d0165ae313c40fc4031650741a940204704c",
+      "sha256": "0e8a355a4c8fed2c23e1b1b59f638d2b9acaa1d04b0157c5ca35b6b6f9d03836",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/repair/governance-enforcement-successor-20260923-v1",
+      "source_commit": "f6247bb055ac7064a9081c92a9533a5c7b6a11fd",
+      "ref_count": 2,
+      "bytes": 514,
+      "source_blob": "8107fa389808b2c9222766e64ee66682bd30e12c",
+      "original_path": "docs/CAUSE_CAPABILITY_EFFECT_READBACK.md",
+      "object_path": "objects/8107fa389808b2c9222766e64ee66682bd30e12c",
+      "sha256": "f1af2edc0318debb85cb691f3fd0b44eee2ade3def4e9844d22c76f5c9a4cafa",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/qikvrt-node/v2.13.4-node",
+      "source_commit": "b51014fc188b69a85f252d861b4b2ae542c45037",
+      "ref_count": 4,
+      "bytes": 1178,
+      "source_blob": "aab6ab71a3683aa9dc437bc319d2eff54bc66b7b",
+      "original_path": "docs/CB.md",
+      "object_path": "objects/aab6ab71a3683aa9dc437bc319d2eff54bc66b7b",
+      "sha256": "d9261cd0117ae504e351efcbe4af72e610c5294d37b844d6512b3dde9e5b3a91",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 5290,
+      "source_blob": "c3a8d28270d8003986fd573f41749118e52d5fe6",
+      "original_path": "docs/CIRCULAR_SPARK_ARCHITECTURE_V2.md",
+      "object_path": "objects/c3a8d28270d8003986fd573f41749118e52d5fe6",
+      "sha256": "46d0d635417b84dfcd8c2e44b1dd8b140ea4d7871bf06590cdd96ec3cc1acaac",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/claim-audit-20261001-469a95ac",
+      "source_commit": "638397fc1b86ab44eac9f06f0c9754d3b5803a2b",
+      "ref_count": 2,
+      "bytes": 9909,
+      "source_blob": "439f02b8da4202233599030903c3917963c3062a",
+      "original_path": "docs/CLAIM_AND_INVARIANT_AUDIT_V1.md",
+      "object_path": "objects/439f02b8da4202233599030903c3917963c3062a",
+      "sha256": "2845594d48dfc72d12342e5e63671831fba61e27a0abbc8764e256f76bc58c97",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/qikvrt-node/v2.13.4-node",
+      "source_commit": "b51014fc188b69a85f252d861b4b2ae542c45037",
+      "ref_count": 4,
+      "bytes": 3160,
+      "source_blob": "038863cd7c3d01efa5a15f7a85ee103c458c426b",
+      "original_path": "docs/CM.md",
+      "object_path": "objects/038863cd7c3d01efa5a15f7a85ee103c458c426b",
+      "sha256": "50131dfe7cc5c3c72def7e986da67d162e1cfcc21ee9b435bd50a5378f4ca44c",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/qikvrt-node/v2.13.4-node",
+      "source_commit": "b51014fc188b69a85f252d861b4b2ae542c45037",
+      "ref_count": 4,
+      "bytes": 2684,
+      "source_blob": "756df51d3f0e7bd7a7f35b7dcfd0547def6e43cc",
+      "original_path": "docs/COGNITIVE_IMPROVEMENT.md",
+      "object_path": "objects/756df51d3f0e7bd7a7f35b7dcfd0547def6e43cc",
+      "sha256": "79aa77d7c713f0fafa6cc8ee391c7485dd42d3afd4db6157f17389892c622a9a",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/qikvrt-node/v2.13.4-node",
+      "source_commit": "b51014fc188b69a85f252d861b4b2ae542c45037",
+      "ref_count": 4,
+      "bytes": 2708,
+      "source_blob": "570edf3f3d56b723bbeeedcd14b028b71f7b5fc5",
+      "original_path": "docs/COPYRIGHT_AND_LICENSE.md",
+      "object_path": "objects/570edf3f3d56b723bbeeedcd14b028b71f7b5fc5",
+      "sha256": "e98ec614c2d2e32a7da884f11592c4d60aae46fc4c8f370b32fc4d9b1dbf603d",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/qikvrt-node/v2.13.4-node",
+      "source_commit": "b51014fc188b69a85f252d861b4b2ae542c45037",
+      "ref_count": 4,
+      "bytes": 2490,
+      "source_blob": "ef915181059d418e5741b8a2d57d9215f3ddd300",
+      "original_path": "docs/DAMAGE_CONTAINMENT.md",
+      "object_path": "objects/ef915181059d418e5741b8a2d57d9215f3ddd300",
+      "sha256": "b8b857bdbc17d4bf4dc966efe2f5b54e035cd86c9410e427c6d1bb0ebf1063b5",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 5645,
+      "source_blob": "8df4c4dba68c8d0b48dfde60892c7019a6a4b6c2",
+      "original_path": "docs/DELEGATED_NATIVE_ACCOUNT_REVIEW_AUTOMATION.md",
+      "object_path": "objects/8df4c4dba68c8d0b48dfde60892c7019a6a4b6c2",
+      "sha256": "ee60439736d376137a230869ed292d3d4b48ff553b9f5a65fd86f600d1a1650a",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/qikvrt-node/v2.13.4-node",
+      "source_commit": "b51014fc188b69a85f252d861b4b2ae542c45037",
+      "ref_count": 4,
+      "bytes": 2794,
+      "source_blob": "c5b6e64d1fa8618dd3da93509bbf7351586d50b6",
+      "original_path": "docs/DISCOVERY_AUTHORIZATION.md",
+      "object_path": "objects/c5b6e64d1fa8618dd3da93509bbf7351586d50b6",
+      "sha256": "1e66ee8a6f47078a4b7f701864fa5ab38369a9e6c4a5c4a0ea134d72ed56b060",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/qikvrt-node/v2.13.4-node",
+      "source_commit": "b51014fc188b69a85f252d861b4b2ae542c45037",
+      "ref_count": 4,
+      "bytes": 2461,
+      "source_blob": "373d820bdae3d39150c8f5d704c66960560a5a2c",
+      "original_path": "docs/EVIDENCE_AND_ASSERTION_CLASSES.md",
+      "object_path": "objects/373d820bdae3d39150c8f5d704c66960560a5a2c",
+      "sha256": "1cf0af454d24080dfba1ba081e8fefd0a8032eaed2eb629f37cb6480003df2b0",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/qikvrt-node/v2.13.4-node",
+      "source_commit": "b51014fc188b69a85f252d861b4b2ae542c45037",
+      "ref_count": 4,
+      "bytes": 2719,
+      "source_blob": "29e8597e962237bc9d5fcdcefcdfad9ee81d1656",
+      "original_path": "docs/EVOLUTION_POLICY.md",
+      "object_path": "objects/29e8597e962237bc9d5fcdcefcdfad9ee81d1656",
+      "sha256": "99daf7538b6b502287c5f7f2df0720b2cf7cfcfc1b19019a9373404b45e79ff9",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 3910,
+      "source_blob": "f2e81b5bacd39d7f45eff3b2fae0d5380bb1c54d",
+      "original_path": "docs/EXECUTABLE_ABSTRACTION_COMPLETION_V1.md",
+      "object_path": "objects/f2e81b5bacd39d7f45eff3b2fae0d5380bb1c54d",
+      "sha256": "462f796dfe17e48f2e3017e452fe005891830df7742dc8df539369609ae13b49",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 1180,
+      "source_blob": "0fbeb29a2bbe58888d6bc06675591e6ff41193ce",
+      "original_path": "docs/EXPLICIT_HOLD_CONTRACT_V1.md",
+      "object_path": "objects/0fbeb29a2bbe58888d6bc06675591e6ff41193ce",
+      "sha256": "3e933b751ef4093020b4ff3c5b8e9d1901b4add0d78c9335c1e9187176a515f8",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 2599,
+      "source_blob": "8dfdaa26622e2330e75d823bd51fcdb6f6f610cb",
+      "original_path": "docs/FIXPOINT_D3_8BIT_INFINITY.md",
+      "object_path": "objects/8dfdaa26622e2330e75d823bd51fcdb6f6f610cb",
+      "sha256": "5112aa12652794029e93940e625e2ef8151342a2523aadb1547a7aa123bf3a0e",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/qikvrt-node/v2.13.4-node",
+      "source_commit": "b51014fc188b69a85f252d861b4b2ae542c45037",
+      "ref_count": 4,
+      "bytes": 4314,
+      "source_blob": "e3eed4bb3b8638fd9590ac94feba195b5ba2da4d",
+      "original_path": "docs/FORMAL_MODEL.md",
+      "object_path": "objects/e3eed4bb3b8638fd9590ac94feba195b5ba2da4d",
+      "sha256": "0013e7a155630ac425284b8b8247b785aec40210fdae20f8f4abf277c6626017",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/qikvrt-node/v2.13.4-node",
+      "source_commit": "b51014fc188b69a85f252d861b4b2ae542c45037",
+      "ref_count": 4,
+      "bytes": 3460,
+      "source_blob": "57ed15e76b211c13d84960b1339dab53f03ad94d",
+      "original_path": "docs/FT.md",
+      "object_path": "objects/57ed15e76b211c13d84960b1339dab53f03ad94d",
+      "sha256": "8ebb20df093e96c85ef69d09bed20a24c83beda75ab13cc985930108da4358e1",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/qikvrt-node/v2.13.4-node",
+      "source_commit": "b51014fc188b69a85f252d861b4b2ae542c45037",
+      "ref_count": 4,
+      "bytes": 3763,
+      "source_blob": "a91ea29c0582c392ea86736f548453170b19a4a5",
+      "original_path": "docs/GD.md",
+      "object_path": "objects/a91ea29c0582c392ea86736f548453170b19a4a5",
+      "sha256": "c6780b03f25ce37fe397880c975a9d3e20467349426726c25f22649b18c4da90",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/qikvrt-node/v2.13.4-node",
+      "source_commit": "b51014fc188b69a85f252d861b4b2ae542c45037",
+      "ref_count": 4,
+      "bytes": 5007,
+      "source_blob": "27fc0312297b9a134fb40d0f722d5772fc7f768a",
+      "original_path": "docs/GITHUB_SEED_DISCOVERY.md",
+      "object_path": "objects/27fc0312297b9a134fb40d0f722d5772fc7f768a",
+      "sha256": "a7fdc2dabb798048fed5c423b550d8188e97b031e778fcd9e74bb3d91401f16e",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/qikvrt-node/v2.13.4-node",
+      "source_commit": "b51014fc188b69a85f252d861b4b2ae542c45037",
+      "ref_count": 4,
+      "bytes": 4466,
+      "source_blob": "e2b064b2c42f075bd0d8bc6f11a351e39406b780",
+      "original_path": "docs/GOVERNANCE_PROCESS.md",
+      "object_path": "objects/e2b064b2c42f075bd0d8bc6f11a351e39406b780",
+      "sha256": "6dc9e3f7b8ae649e20dd92fedef836676b427c276490dac349b51916f0429ba5",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/qikvrt-node/v2.13.4-node",
+      "source_commit": "b51014fc188b69a85f252d861b4b2ae542c45037",
+      "ref_count": 4,
+      "bytes": 816,
+      "source_blob": "4c6d4f7cde8585444835e5cf81edb6e72566bec7",
+      "original_path": "docs/GT.md",
+      "object_path": "objects/4c6d4f7cde8585444835e5cf81edb6e72566bec7",
+      "sha256": "628df66c8d69c7bffb3426508646717bdbeb8b915300611fa0328e7e54c92bee",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/qikvrt-node/v2.13.4-node",
+      "source_commit": "b51014fc188b69a85f252d861b4b2ae542c45037",
+      "ref_count": 4,
+      "bytes": 2931,
+      "source_blob": "87523b1c405751c88d71ec4a49a3f763b365357a",
+      "original_path": "docs/LE.md",
+      "object_path": "objects/87523b1c405751c88d71ec4a49a3f763b365357a",
+      "sha256": "11a9e3e08f8e6a55f0edd3d28710d5821a0ebefc2c2fb87f5138c797c4d09499",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 6000,
+      "source_blob": "bc699e5d6f0b9127b281279db0c6e674d1d93fef",
+      "original_path": "docs/LEAN_LAKE_PROOF_STATUS.md",
+      "object_path": "objects/bc699e5d6f0b9127b281279db0c6e674d1d93fef",
+      "sha256": "b573d43e2df67d96f6ab8f6b9164fe39058034eecc2d07bd461ba378e74820bc",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    }
+  ]
+}

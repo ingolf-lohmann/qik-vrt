@@ -1,0 +1,1809 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_FIREFOX_WINDOWS_SCOPE_20261001",
+  "base_head": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+  "base_tree": "68a3f30885a403a7edaa4d2dbb8576ace9cc866e",
+  "scope_source": "https://github.com/ingolf-lohmann/qik-vrt/pull/430#issuecomment-5935054969",
+  "human_contribution": {
+    "identifier": "Ingolf Lohmann",
+    "role": "Product Owner",
+    "contribution": "Browser MVP requires supported Windows execution and fresh functional/effect readback; hardware R&D is separate."
+  },
+  "artificial_cognitive_contribution": {
+    "identifier": "OpenAI Codex",
+    "contribution": "Windows acceptance contract, real WebDriver witness, tests, workflow/cache integration and evidence boundaries. Canonical public HTTP/Firefox readback before extension injection and exact Authority Pages capability HOLD."
+  },
+  "reuse": {
+    "workflow": ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+    "backend": "src/qikvrt_effect_ack_http_terminal.py",
+    "extension": "browser/firefox/qikvrt-terminal",
+    "new_adapter_reason": "Existing boundary path only packages/tests source on Ubuntu; no existing browser automation adapter can install this Firefox extension and witness its Windows UI and real terminal event."
+  },
+  "windows_scope": "Windows 11 25H2 client; architecture-specific; native identity required",
+  "runner_candidate": "windows-11-arm",
+  "runner_documentary_source": "https://github.com/actions/runner-images/blob/main/images/windows/Windows11-Arm64-Readme.md",
+  "support_source": "https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information",
+  "driver_release_source": "https://github.com/mozilla/geckodriver/releases/tag/v0.37.1",
+  "state": "HOLD",
+  "windows_execution_observed": false,
+  "authenticated_runtime_readback": false,
+  "personal_release_effect_ack_done": false,
+  "hardware_holds_block_browser": false,
+  "predecessor_evidence_transfer": false,
+  "remaining_acceptance": [
+    "Fresh exact-head Windows client run with native OS identity and terminal readback",
+    "Personal capability manifest and authenticated runtime readback",
+    "Signed persistent release installation and public URL readback",
+    "Responsible Owner acceptance"
+  ],
+  "local_validation": {
+    "boundary_and_loopback_tests": 16,
+    "result": "PASS",
+    "tool_cache_components": 17,
+    "coverage_percent": 100,
+    "full_make_test_required_for_candidate": true
+  },
+  "integrity_note": "Regenerated canonical integrity trio also binds existing main lifecycle entries omitted by the previous inventory; no lifecycle payload changed.",
+  "observations": [
+    {
+      "head": "d85a4b731c76e0f69bd5bc33a65b1c656074b8ef",
+      "run_id": 36921147157,
+      "job_id": 110567221506,
+      "state": "FAIL_PREFLIGHT",
+      "observed_error": "cache registry lock_authority does not identify TOOLCHAIN.lock.tsv",
+      "causal_fix": "Use repository POSIX paths for lock/coverage identity on Windows; preserve preflight HOLD receipt",
+      "windows_browser_execution_observed": false
+    },
+    {
+      "head": "83dfa0abae0ce0415eca071e3aee69f51e2aa66e",
+      "tree": "5404eec01ffa6d4592dd496b1f50f40f482a40b9",
+      "run_id": 36921684489,
+      "job_id": 110569023526,
+      "artifact_id": 11192920257,
+      "artifact_sha256": "60b75357ae85e17dcb8d44e9a4c2fb0cf0aa4d19f2481fe399baf04c60c245f7",
+      "os": {
+        "architecture": "ARM64",
+        "build": 26200,
+        "display_version": "25H2",
+        "edition": "Enterprise",
+        "platform": "Windows-11-10.0.26200-SP0",
+        "product_type": 1,
+        "ubr": 9457
+      },
+      "firefox_version": "156.0.1",
+      "extension_loaded": true,
+      "terminal_functional_readback": true,
+      "local_effect_readback": false,
+      "error": "RuntimeError: BROWSER_FUNCTIONAL_TIMEOUT",
+      "evidence_scope": "HISTORICAL_EXACT_SUBJECT_ONLY; no transfer to successor",
+      "next_action": "Capture actual terminal HOLD output and screenshot before causal repair"
+    },
+    {
+      "head": "2489c09ae1fd6284103d8a0268ad0951a1a4d508",
+      "tree": "011edfce5cc3935bad1ea816f9c6984c8764be71",
+      "run_id": 36923951172,
+      "artifact_id": 11193245780,
+      "artifact_sha256": "bb30e157a4a5017f9b8b72716f1b5638d2c7e62874872bed339adafca45ff660",
+      "windows_witness_test": "PASS",
+      "public_url_accepted": false,
+      "evidence_scope": "HISTORICAL_EXACT_SUBJECT_ONLY; downloaded archive digest and receipt independently verified; no transfer to successor",
+      "personal_release_effect_ack_done": false
+    },
+    {
+      "head": "3d196d4c670d64755d2a24d525851c8f564434d9",
+      "tree": "b0d0247ad95f7c043036a40707f43ba2da6cc247",
+      "run_id": 36940012614,
+      "artifact_id": 11199633289,
+      "artifact_sha256": "f2387995d49df8fe536cd8ee90752df3a73d33002c120f55debd4b5be93ca210",
+      "windows_witness_test": "PASS",
+      "public_http_status": 404,
+      "browser_navigation_response_status": 404,
+      "public_url_fresh_readback": false,
+      "readback_time": "2026-10-01T23:18:31.104603+00:00",
+      "independent_byte_readback": "Archive, receipt, HTTP body, browser screenshot, XPI, policy, observer and candidate docs root hashes verified",
+      "evidence_scope": "HISTORICAL_EXACT_SUBJECT_ONLY; no transfer to successor",
+      "personal_release_effect_ack_done": false
+    }
+  ],
+  "public_pages_continuation": {
+    "schema": "qikvrt_authority_pages_capability_hold_v1",
+    "state": "HOLD_AUTHORITY_PAGES_CAPABILITY_UNAVAILABLE",
+    "observed_at": "2026-10-01T23:10:26.087603+00:00",
+    "observed_subject": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "pull_request": 438,
+      "head": "2489c09ae1fd6284103d8a0268ad0951a1a4d508",
+      "tree": "011edfce5cc3935bad1ea816f9c6984c8764be71"
+    },
+    "human_task_source": "PR #438 continuation requested by Product Owner Ingolf Lohmann: repair canonical public 404 if Authority capability exists, otherwise materialize exact external capability HOLD.",
+    "canonical_url": "https://goldkelch.github.io/qik-vrt/",
+    "documented_publishing_source": {
+      "repository": "Goldkelch/qik-vrt",
+      "branch": "main",
+      "path": "/docs",
+      "entry": "docs/index.html",
+      "authority": "docs/README_DEPLOY_GITHUB_PAGES_DE.md"
+    },
+    "personal_candidate_site": {
+      "entry_exists": true,
+      "entry_sha256": "a3d5d7b17ac551e301be97e73d0d6a4f81ba26e3b3e54b625889ac8e94ead90e",
+      "publisher_workflow": ".github/workflows/qikvrt_seed_dashboard_publish.yml",
+      "publisher_effect": "LOCAL_BUILD_AND_ACTION_ARTIFACT_ONLY",
+      "pages_deploy_workflow_observed": false,
+      "authority_site_bytes_verified": false
+    },
+    "http_observation": {
+      "method": "GET",
+      "requested_url": "https://goldkelch.github.io/qik-vrt/",
+      "status": 404,
+      "response_date": "2026-10-01T22:59:53Z",
+      "body_bytes": 9115,
+      "body_sha256": "70d613e3acfba24fd2876fcbacaf639e1e111ef4d54baf70761c47673f37d6a3",
+      "request_id": "1EE0:302C3C:438598:4FFE04:6ABEE5E8",
+      "evidence_class": "EMPIRICAL_HTTP_OBSERVATION"
+    },
+    "browser_observation": {
+      "observed_at": "2026-10-01T23:01:18.858Z",
+      "observer": "ChatGPT cloud Chrome via cua_repl",
+      "url": "https://goldkelch.github.io/qik-vrt/",
+      "title": "Site not found \u00b7 GitHub Pages",
+      "heading": "404",
+      "visible_text": "There isn't a GitHub Pages site here.",
+      "scope": "DIAGNOSTIC_ONLY; not Windows successor evidence"
+    },
+    "capability_observations": [
+      {
+        "operation": "authenticated connector get_repo",
+        "target": "Goldkelch/qik-vrt",
+        "result": "HTTP_404_NOT_FOUND",
+        "meaning": "Authority access not established; absence and access denial not distinguishable"
+      },
+      {
+        "operation": "connector fetch GET /repos/Goldkelch/qik-vrt/pages",
+        "result": "CONNECTOR_ENDPOINT_NOT_ALLOWED",
+        "error_code": "INVALID_ARGUMENT",
+        "meaning": "No Authority Pages configuration response was obtained through this operation"
+      },
+      {
+        "operation": "anonymous HTTP GET /repos/Goldkelch/qik-vrt/pages",
+        "status": 404,
+        "response_date": "2026-10-01T23:01:43Z",
+        "request_id": "42BC:8F14D:1A22288:54F7C91:6ABEE656",
+        "body_sha256": "70a10211879470b15788a65caa3ed22eba0a776a4fc51baed42d989ba8cee8a4",
+        "meaning": "Anonymous Pages settings read not established; does not prove Pages disabled"
+      },
+      {
+        "operation": "available connector operation inventory",
+        "pages_read_method_available": false,
+        "pages_mutation_method_available": false,
+        "authenticated_pages_writer_established": false
+      }
+    ],
+    "actual_publishing_source": null,
+    "latest_authority_pages_build": null,
+    "authority_configuration_verified": false,
+    "configuration_root_cause_established": false,
+    "authority_pages_mutated": false,
+    "alternate_host_used": false,
+    "public_url_fresh_readback": false,
+    "personal_release_effect_ack_done": false,
+    "predecessor_evidence_transfer": false,
+    "candidate_readback_route": {
+      "workflow": ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+      "job": "windows-witness",
+      "tool": "tools/qikvrt_firefox_windows_witness.py",
+      "receipt": "PUBLIC_URL_READBACK.json",
+      "binding": "Fresh current candidate checkout HEAD/TREE and run/attempt/job; raw HTTP body plus pre-install Firefox DOM/screenshot; never copied from this diagnostic snapshot"
+    },
+    "required_external_capability": {
+      "target_repository": "Goldkelch/qik-vrt",
+      "read": [
+        "repository main exact HEAD/TREE and docs bytes",
+        "GET /repos/Goldkelch/qik-vrt/pages",
+        "latest Pages build/deployment provenance"
+      ],
+      "write": [
+        "conditional create/update Pages source after actual configuration readback",
+        "trigger established publisher if needed"
+      ],
+      "permission_source": "https://docs.github.com/en/rest/pages/pages?apiVersion=2022-11-28",
+      "binding_rule": "Authority Pages capability is independent of Personal repository contents/admin metadata"
+    },
+    "retry_condition": "Authenticated Authority Pages configuration read and scoped mutation operation become callable; reobserve current Authority main/docs and exact Personal candidate before any repair.",
+    "smallest_next_action": "Read Authority Settings > Pages or GET /repos/Goldkelch/qik-vrt/pages; compare actual source/build with existing main:/docs. Only then repair the established cause and collect fresh canonical HTTP/Firefox readback on the same candidate.",
+    "remaining_separate_gates": [
+      "release_signed_persistent_installation",
+      "personal_capability_manifest",
+      "authenticated_runtime_readback",
+      "credential_non_persistence",
+      "responsible_owner_acceptance"
+    ],
+    "technical_gate_binding_repair": {
+      "observed_candidate": "3d196d4c670d64755d2a24d525851c8f564434d9",
+      "observed_synthetic_merge": "76b18b9c7b42528e8f30bdfe778f5ca233ce7950",
+      "failed_runs": [
+        36940012607,
+        36940012637
+      ],
+      "error": "BLOCK repository manifest differs from deterministic regeneration",
+      "verified_cause": "Both workflows defaulted to refs/pull/438/merge while exact-candidate CI and Windows witness passed. Their mandatory suite observed a different subject.",
+      "repair": "Reuse explicit PR head SHA checkout and verify actual HEAD before existing unchanged gates.",
+      "scope": "Candidate checks only; merge integration acceptance and Authority Pages remain separate."
+    },
+    "continuation_20261002": {
+      "schema": "qikvrt_authority_pages_route_continuation_v1",
+      "observed_at": "2026-10-02T01:50:20.120796+00:00",
+      "observed_candidate": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "ref": "work/firefox-windows-witness-20261001",
+        "head": "091448318a4f9543ab3ca4fdd9b8632cb7692f72",
+        "tree": "6d031db4aabe2268e8b74a408243e9d7b26b726d"
+      },
+      "human_contribution": {
+        "identifier": "Ingolf Lohmann",
+        "contribution": "Continue PR #438; use existing Authority credential or narrowly scoped executor, read actual Pages and live/version publisher first, repair only verified mismatch; otherwise persist exact capability HOLD. Canonical target remains Goldkelch/qik-vrt main:/docs."
+      },
+      "artificial_cognitive_contribution": {
+        "identifier": "OpenAI Codex",
+        "contribution": "Independently verify original REST/Windows archives, inspect current routes, extend the existing inline GET-only observer with the already-declared App binding, source commit/tree and public version reads, add bounded negative controls."
+      },
+      "evidence_retention": "METADATA_ONLY",
+      "verified_original_receipts": [
+        {
+          "run_id": 36943828109,
+          "artifact_id": 11201063415,
+          "archive_sha256": "7ce2229ce03e6516768f8a67f822b362497bb0ce35b96d983b992f7e8553b618",
+          "receipt_sha256": "b0af6f42edd48b1656495a3bd8f4e7a5ae4c630efa26909dcda6ebca2fa0e95c",
+          "state": "HOLD_AUTHORITY_PAGES_READ_UNAVAILABLE",
+          "direct_credential_binding_present": {
+            "QIKVRT_RULESET_ADMIN_TOKEN": false,
+            "QIKVRT_GITHUB_ADMIN_TOKEN": false,
+            "QIKVRT_MESH_TOKEN": false
+          },
+          "scope": "Exact observed candidate and run only; no successor evidence transfer"
+        },
+        {
+          "run_id": 36943833720,
+          "artifact_id": 11200534597,
+          "archive_sha256": "fefe0aa819dc867d14099dddb19d4619d708c581ac5f113e3b8b94831e3e7fe3",
+          "public_readback_receipt_sha256": "b839ee2c6c0a57cf17befa7285e15853eb0992f45660befb9571c18d1b42fe7a",
+          "observed_at": "2026-10-02T00:02:03.332457+00:00",
+          "http_status": 404,
+          "browser_navigation_status": 404,
+          "windows_functional_witness": "PASS_LOCAL_LOOPBACK_ONLY",
+          "scope": "Exact observed candidate and run only; no successor evidence transfer"
+        }
+      ],
+      "native_runtime_binding_presence": {
+        "QIKVRT_RULESET_ADMIN_TOKEN": false,
+        "QIKVRT_GITHUB_ADMIN_TOKEN": false,
+        "QIKVRT_MESH_TOKEN": false
+      },
+      "authenticated_connector_authority_repository_read": "404; inaccessible and absent are not distinguished",
+      "fresh_native_reads": [
+        {
+          "url": "https://api.github.com/repos/Goldkelch/qik-vrt/pages",
+          "observed_at": "2026-10-02T01:49:16.897606+00:00",
+          "authenticated": false,
+          "redirects_followed": false,
+          "status": 404,
+          "body_bytes": 89,
+          "body_sha256": "3a32eab6ffbfd1cf2684b1a409bf40db46e46c5eaff44de656e499df05d92730",
+          "headers": {
+            "Date": "Fri, 02 Oct 2026 01:49:25 GMT",
+            "X-GitHub-Request-Id": "4277:2FD95D:26D0714:7FCD153:6ABF0DA4",
+            "Location": null,
+            "ETag": null,
+            "Last-Modified": null,
+            "X-Cache": null
+          }
+        },
+        {
+          "url": "https://api.github.com/repos/Goldkelch/qik-vrt/branches/main",
+          "observed_at": "2026-10-02T01:49:25.104733+00:00",
+          "authenticated": false,
+          "redirects_followed": false,
+          "status": 404,
+          "body_bytes": 89,
+          "body_sha256": "3a32eab6ffbfd1cf2684b1a409bf40db46e46c5eaff44de656e499df05d92730",
+          "headers": {
+            "Date": "Fri, 02 Oct 2026 01:49:30 GMT",
+            "X-GitHub-Request-Id": "432E:302839:26BC821:7FCA5B3:6ABF0DAA",
+            "Location": null,
+            "ETag": null,
+            "Last-Modified": null,
+            "X-Cache": null
+          }
+        },
+        {
+          "url": "https://goldkelch.github.io/qik-vrt/",
+          "observed_at": "2026-10-02T01:49:30.875254+00:00",
+          "authenticated": false,
+          "redirects_followed": false,
+          "status": 404,
+          "body_bytes": 9115,
+          "body_sha256": "70d613e3acfba24fd2876fcbacaf639e1e111ef4d54baf70761c47673f37d6a3",
+          "headers": {
+            "Date": "Fri, 02 Oct 2026 01:49:36 GMT",
+            "X-GitHub-Request-Id": "9070:8C2D3:100343:11299D:6ABF0DB0",
+            "Location": null,
+            "ETag": "\"6abcf5c5-239b\"",
+            "Last-Modified": null,
+            "X-Cache": "MISS"
+          }
+        },
+        {
+          "url": "https://goldkelch.github.io/qik-vrt/mesh/live/",
+          "observed_at": "2026-10-02T01:49:36.986923+00:00",
+          "authenticated": false,
+          "redirects_followed": false,
+          "status": 404,
+          "body_bytes": 9115,
+          "body_sha256": "70d613e3acfba24fd2876fcbacaf639e1e111ef4d54baf70761c47673f37d6a3",
+          "headers": {
+            "Date": "Fri, 02 Oct 2026 01:49:45 GMT",
+            "X-GitHub-Request-Id": "21A4:23275E:F1952:1040D3:6ABF0DB7",
+            "Location": null,
+            "ETag": "\"6abcf5c5-239b\"",
+            "Last-Modified": null,
+            "X-Cache": "MISS"
+          }
+        },
+        {
+          "url": "https://goldkelch.github.io/qik-vrt/mesh/live/version.json",
+          "observed_at": "2026-10-02T01:49:45.272560+00:00",
+          "authenticated": false,
+          "redirects_followed": false,
+          "status": 404,
+          "body_bytes": 9115,
+          "body_sha256": "70d613e3acfba24fd2876fcbacaf639e1e111ef4d54baf70761c47673f37d6a3",
+          "headers": {
+            "Date": "Fri, 02 Oct 2026 01:49:52 GMT",
+            "X-GitHub-Request-Id": "1D00:FDD01:8AD62:9D0FA:6ABF0DBE",
+            "Location": null,
+            "ETag": "\"6abcf5c5-239b\"",
+            "Last-Modified": null,
+            "X-Cache": "MISS"
+          }
+        }
+      ],
+      "existing_app_route": {
+        "declared_by": ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml",
+        "app_id_binding": "vars.QIKVRT_RULESET_APP_ID",
+        "private_key_binding": "secrets.QIKVRT_RULESET_APP_PRIVATE_KEY",
+        "executor": ".github/workflows/qikvrt_mesh_authority_edge.yml#jobs.pages-readback",
+        "target_repository": "Goldkelch/qik-vrt",
+        "requested_permissions": {
+          "pages": "read",
+          "contents": "read"
+        },
+        "binding_presence": "UNOBSERVED_UNTIL_EXACT_SUCCESSOR_RUN",
+        "token_mint_result": "UNOBSERVED_UNTIL_EXACT_SUCCESSOR_RUN",
+        "secret_values_persisted": false
+      },
+      "blocking_predicate": "PRODUCTIVE_AUTHORITY_PAGES_CAPABILITY_NOT_ESTABLISHED",
+      "missing_binding": "One accessible direct Authority token, or the complete existing App ID/private-key binding plus an installed target-scoped token with Authority Pages/source access",
+      "required_exact_successor_readback": {
+        "workflow": ".github/workflows/qikvrt_mesh_authority_edge.yml",
+        "artifact": "qikvrt-authority-pages-rest-readback",
+        "receipt": "PAGES_REST_READBACK.json",
+        "binding_fields": [
+          "candidate_repository",
+          "candidate_head",
+          "candidate_tree",
+          "run_id",
+          "run_attempt",
+          "credential_route_probes"
+        ],
+        "retention": "Exact execution artifact and PR #438 acceptance receipt; do not promote this preparation to execution"
+      },
+      "actual_authority_pages_configuration": null,
+      "authority_source_head": null,
+      "authority_source_tree": null,
+      "live_version_publisher": null,
+      "published_head": null,
+      "published_tree": null,
+      "published_at": null,
+      "publishing_deviation_established": false,
+      "authority_publication_mutated": false,
+      "public_url_fresh_readback": false,
+      "persistent_signed_installation_verified": false,
+      "authenticated_runtime_readback": false,
+      "personal_release_effect_ack_done": false,
+      "predecessor_evidence_transfer": false,
+      "validation": {
+        "bounded_observer_and_personal_boundary_tests": 18,
+        "result": "PASS",
+        "full_exact_successor_repository_gates": "REQUIRED"
+      },
+      "next_action": "Execute the updated existing fixed GET-only observer on its exact successor. If a productive route exists, inspect Pages configuration and current live/version publisher and source HEAD/TREE before any conditional repair. If no route exists, retain its exact credential/App-binding HOLD and keep public release flags false."
+    }
+  },
+  "linux_seed_ring": {
+    "schema": "qikvrt_linux_seed_ring_work_unit_v1",
+    "parent_head": "dfdab89cacf6261364c8aec59c4e83be89368a9b",
+    "parent_tree": "4106cb04e8d36904f9c16d42bb6dbfe6cb114ede",
+    "human_contribution": "Ingolf Lohmann authorized Linux HTTP Firefox Effect-Acknowledgement seed ring and measured scaling, 2026-10-02",
+    "artificial_cognitive_contribution": "OpenAI Codex reused and generalized the existing Firefox witness; implemented seed gate, controls, cache profile and native Linux job",
+    "local_validation": {
+      "tests": 34,
+      "result": "PASS",
+      "actual_http_fanout": [
+        1,
+        2,
+        4,
+        8
+      ],
+      "shared_token_race": {
+        "clients": 8,
+        "accepted_effects": 1,
+        "rejected": 7
+      },
+      "unique_control_events": 17,
+      "tool_cache_coverage_percent": 100,
+      "local_firefox_available": false
+    },
+    "observed_gap": "Linux HTTP test never started Firefox; the HTTP bridge never checked the canonical seed",
+    "established_cause_scope": "Absence of seed validation and real Linux Firefox invocation in the inspected exact source; origin of that design remains unestablished",
+    "repair": "Seed checks before admission and commit; seed fields in hashed records/events/readback; native Firefox job with compatible declared host tools",
+    "current_acceptance": "LOCAL_TRANSPORT_FAULT_AND_RETRY_VERIFIED_NATIVE_EXACT_HEAD_WITNESS_REQUIRED",
+    "open_scopes": [
+      "Actual exact-head Linux Firefox receipt",
+      "Complete retained Linux runtime closure and actual Authority-on-Mirror OS construction",
+      "Live Authority/Mirror role transitions and ring replication",
+      "Restart persistence and lossless node consolidation",
+      "General scaling outside the finite measured HTTP levels",
+      "Independent native Main admission and any public release"
+    ],
+    "software_downgrade": "FORBIDDEN",
+    "effect_ack_done": false,
+    "historical_native_execution": {
+      "archive_sha256": "aa3ade4aac16ce6925a0ee6475fa8efaa72a1a6e5c10dcc347c0a053e0581a4b",
+      "receipt_sha256": "872a5567224dfe86621ffc898b8aa9ef0accb93b7dec03fbeec503c0de003172",
+      "xpi_sha256": "def194c9408919ce389d76f67ff262557889f0a4fdbd8247458a99c3944f6ec0",
+      "seed_sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
+      "events": 18,
+      "snapshot_sha256": "5cc36929391edc72aab785cd9e0f3e2100e4cecdf28003cd3889fa4379cb126f",
+      "os": "Ubuntu 24.04.5 LTS",
+      "browser": "156.0",
+      "head": "08e8d89b3c89332986dae8b3bc354128f910fee8",
+      "tree": "695ca3c632cc90e3561b2409b16d0c26aa2512b7",
+      "run": 36958364700,
+      "job": 110686315889,
+      "artifact": 11206488920,
+      "fanout": [
+        {
+          "accepted_events": 1,
+          "elapsed_seconds": 0.0015136889999922687,
+          "parallel_clients": 1,
+          "transport": "HTTP_CLIENTS_NOT_FIREFOX_FANOUT"
+        },
+        {
+          "accepted_events": 2,
+          "elapsed_seconds": 0.0031830310000060535,
+          "parallel_clients": 2,
+          "transport": "HTTP_CLIENTS_NOT_FIREFOX_FANOUT"
+        },
+        {
+          "accepted_events": 4,
+          "elapsed_seconds": 0.005930784000000244,
+          "parallel_clients": 4,
+          "transport": "HTTP_CLIENTS_NOT_FIREFOX_FANOUT"
+        },
+        {
+          "accepted_events": 8,
+          "elapsed_seconds": 0.01065581000000293,
+          "parallel_clients": 8,
+          "transport": "HTTP_CLIENTS_NOT_FIREFOX_FANOUT"
+        }
+      ],
+      "scope": "REAL_FIREFOX_AND_LOCAL_SEED_GATED_HTTP_TERMINAL_ON_EXISTING_LINUX",
+      "full_mesh_os_construction": false,
+      "predecessor_checks_transfer": false
+    },
+    "receipt_refinement": "Retain actual prepared request and full record for independent Firefox event digest verification; use Linux-specific receipt and HOLD labels",
+    "ui_observer_race": {
+      "failed_head": "3ce155a545ea72d49fb6443231b41d8c42bf7d5a",
+      "failed_tree": "41226fd6a263ec98363d66b1a58fed5e12c66202",
+      "run": 36958928279,
+      "job": 110688041789,
+      "artifact": 11207277538,
+      "archive_sha256": "a2d4a74ad266ed7742d2c744a8f5a98ae5c711ccf656c35265efb573b9f26527",
+      "observed_error": "PREPARE_BINDING_OR_NO_EFFECT_FAILED; Commit enabled but output replaced by late github 404 observation",
+      "exact_predecessor_content_blob": "61658f2fd7ceb62b25a13ef8486ba3a7b8a5c563",
+      "established_cause": "Initial async observe and prepare wrote the same output/status without ordering or channel separation",
+      "causal_regression": "Execute actual content.js in Node with observation deferred until after Prepare; predecessor fails exactly by replacing prepared tag, repaired successor preserves PREPARED_DONE and full prepared record",
+      "repair": "Separate read-only observer display from effect state; latest observation revision prevents stale observer readback; observer exceptions remain in observer channel",
+      "design_origin": "UNESTABLISHED",
+      "native_successor_validation": "REQUIRED"
+    },
+    "durable_persistence": {
+      "ack_boundary": "atomic replace + file fsync + parent directory fsync before positive response",
+      "artificial_cognitive_contribution": "OpenAI Codex implemented and tested the atomic terminal snapshot using existing API persistence, bounded process supervision and exact readback",
+      "atomic_unit": [
+        "records",
+        "events",
+        "prepared tokens and consumed flags",
+        "token MAC key",
+        "unchanged seed binding"
+      ],
+      "authority_mirror_live_nodes_tested": false,
+      "boundary": "Bounded local POSIX filesystem honoring atomic rename and fsync; no productive Mesh replication or release claim",
+      "capacity": {
+        "MAX_EVENTS": 4096,
+        "event_eviction": false,
+        "maximum_state_bytes": 67108864
+      },
+      "durable_state": ".qikvrt/api/terminal.json",
+      "human_contribution": "Ingolf Lohmann authorized crash/restart-safe Record/Event persistence and negative controls on PR #438, 2026-10-02",
+      "local_focused_tests": {
+        "command": "make test: terminal, handler-security and Personal boundary components",
+        "result": "PASS",
+        "scope": "focused candidate bytes; final full suite and native exact-head readback remain separate",
+        "tests": 71
+      },
+      "local_fresh_process_restart": {
+        "schema": "qikvrt_terminal_durable_restart_readback_v1",
+        "observed_at": "2026-10-02T08:03:30.810859+00:00",
+        "first_process_pid": 40,
+        "restarted_process_pid": 48,
+        "termination": "SIGKILL_WITHOUT_SHUTDOWN_HOOK",
+        "actual_process_restart": true,
+        "event_snapshot_before": {
+          "event_count": 1,
+          "events": [
+            {
+              "audio_present": false,
+              "commit_token_sha256": "338600eb6f88bab3a0d5355850e295db2f09cc6a3e3a56345824eafc03bbab4e",
+              "effect_record_hash": "0a99398ae2ca363e7e6fe51f6040fccce34174de3c24c8252172492e1d7f8b35",
+              "event_id": 1,
+              "external_effect": "NONE",
+              "input_hash": "b1038ab8b835185c1ccdec89471226040636d68546180356d17b6f397eb1ac11",
+              "kind": "TERMINAL_INPUT_ACCEPTED",
+              "observed_at": "2026-10-02T08:03:30Z",
+              "record_hash": "e84bfc585671990c92c23c497ab08323063c88a88d7ee15f8232f0e28c52186c",
+              "seed_binding": {
+                "bytes": 400,
+                "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+                "seed_alone_builds_operating_system": false,
+                "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+              },
+              "text": "restart-a90e1cdb201075d5e14035b3105e9323",
+              "video_present": false
+            }
+          ],
+          "events_sha256": "512c635e5236df246b5b62029662f94aa95697f1fb60c054edd0c8282ebeb2f2",
+          "persistence_scope": "FSYNCED_ATOMIC_SNAPSHOT_RESTART_SAFE",
+          "schema": "qikvrt_terminal_event_snapshot_v1",
+          "seed_binding": {
+            "bytes": 400,
+            "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+            "seed_alone_builds_operating_system": false,
+            "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+          }
+        },
+        "event_snapshot_after": {
+          "event_count": 1,
+          "events": [
+            {
+              "audio_present": false,
+              "commit_token_sha256": "338600eb6f88bab3a0d5355850e295db2f09cc6a3e3a56345824eafc03bbab4e",
+              "effect_record_hash": "0a99398ae2ca363e7e6fe51f6040fccce34174de3c24c8252172492e1d7f8b35",
+              "event_id": 1,
+              "external_effect": "NONE",
+              "input_hash": "b1038ab8b835185c1ccdec89471226040636d68546180356d17b6f397eb1ac11",
+              "kind": "TERMINAL_INPUT_ACCEPTED",
+              "observed_at": "2026-10-02T08:03:30Z",
+              "record_hash": "e84bfc585671990c92c23c497ab08323063c88a88d7ee15f8232f0e28c52186c",
+              "seed_binding": {
+                "bytes": 400,
+                "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+                "seed_alone_builds_operating_system": false,
+                "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+              },
+              "text": "restart-a90e1cdb201075d5e14035b3105e9323",
+              "video_present": false
+            }
+          ],
+          "events_sha256": "512c635e5236df246b5b62029662f94aa95697f1fb60c054edd0c8282ebeb2f2",
+          "persistence_scope": "FSYNCED_ATOMIC_SNAPSHOT_RESTART_SAFE",
+          "schema": "qikvrt_terminal_event_snapshot_v1",
+          "seed_binding": {
+            "bytes": 400,
+            "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+            "seed_alone_builds_operating_system": false,
+            "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+          }
+        },
+        "effect_records_before": {
+          "/effect-ack/records/0a99398ae2ca363e7e6fe51f6040fccce34174de3c24c8252172492e1d7f8b35": {
+            "created_utc": "2026-10-02T08:03:30Z",
+            "external_effect": "NONE",
+            "input_hash": "sha256:b1038ab8b835185c1ccdec89471226040636d68546180356d17b6f397eb1ac11",
+            "message_type": "effect-ack-record",
+            "ordinary_release": true,
+            "policy_allows_release": true,
+            "policy_id": "QIKVRT_LOOPBACK_TERMINAL_V1",
+            "policy_version": 1,
+            "reason": "single-use exact-bound loopback commit executed",
+            "record_hash": "sha256:0a99398ae2ca363e7e6fe51f6040fccce34174de3c24c8252172492e1d7f8b35",
+            "responsibility_owner": "LOCAL_INTERACTIVE_USER",
+            "schema": "qikvrt_effect_ack_http_terminal_record_v1",
+            "seed_binding": {
+              "bytes": 400,
+              "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+              "seed_alone_builds_operating_system": false,
+              "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+            },
+            "state": "EFFECT_ACK_DONE",
+            "wire_version": 1
+          },
+          "/effect-ack/records/e84bfc585671990c92c23c497ab08323063c88a88d7ee15f8232f0e28c52186c": {
+            "created_utc": "2026-10-02T08:03:30Z",
+            "external_effect": "NONE",
+            "input_hash": "sha256:b1038ab8b835185c1ccdec89471226040636d68546180356d17b6f397eb1ac11",
+            "message_type": "effect-ack-record",
+            "ordinary_release": true,
+            "policy_allows_release": true,
+            "policy_id": "QIKVRT_LOOPBACK_TERMINAL_V1",
+            "policy_version": 1,
+            "reason": "loopback terminal input satisfies bounded local policy",
+            "record_hash": "sha256:e84bfc585671990c92c23c497ab08323063c88a88d7ee15f8232f0e28c52186c",
+            "responsibility_owner": "LOCAL_INTERACTIVE_USER",
+            "schema": "qikvrt_effect_ack_http_terminal_record_v1",
+            "seed_binding": {
+              "bytes": 400,
+              "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+              "seed_alone_builds_operating_system": false,
+              "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+            },
+            "state": "EFFECT_ACK_DONE",
+            "wire_version": 1
+          }
+        },
+        "effect_records_after": {
+          "/effect-ack/records/0a99398ae2ca363e7e6fe51f6040fccce34174de3c24c8252172492e1d7f8b35": {
+            "created_utc": "2026-10-02T08:03:30Z",
+            "external_effect": "NONE",
+            "input_hash": "sha256:b1038ab8b835185c1ccdec89471226040636d68546180356d17b6f397eb1ac11",
+            "message_type": "effect-ack-record",
+            "ordinary_release": true,
+            "policy_allows_release": true,
+            "policy_id": "QIKVRT_LOOPBACK_TERMINAL_V1",
+            "policy_version": 1,
+            "reason": "single-use exact-bound loopback commit executed",
+            "record_hash": "sha256:0a99398ae2ca363e7e6fe51f6040fccce34174de3c24c8252172492e1d7f8b35",
+            "responsibility_owner": "LOCAL_INTERACTIVE_USER",
+            "schema": "qikvrt_effect_ack_http_terminal_record_v1",
+            "seed_binding": {
+              "bytes": 400,
+              "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+              "seed_alone_builds_operating_system": false,
+              "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+            },
+            "state": "EFFECT_ACK_DONE",
+            "wire_version": 1
+          },
+          "/effect-ack/records/e84bfc585671990c92c23c497ab08323063c88a88d7ee15f8232f0e28c52186c": {
+            "created_utc": "2026-10-02T08:03:30Z",
+            "external_effect": "NONE",
+            "input_hash": "sha256:b1038ab8b835185c1ccdec89471226040636d68546180356d17b6f397eb1ac11",
+            "message_type": "effect-ack-record",
+            "ordinary_release": true,
+            "policy_allows_release": true,
+            "policy_id": "QIKVRT_LOOPBACK_TERMINAL_V1",
+            "policy_version": 1,
+            "reason": "loopback terminal input satisfies bounded local policy",
+            "record_hash": "sha256:e84bfc585671990c92c23c497ab08323063c88a88d7ee15f8232f0e28c52186c",
+            "responsibility_owner": "LOCAL_INTERACTIVE_USER",
+            "schema": "qikvrt_effect_ack_http_terminal_record_v1",
+            "seed_binding": {
+              "bytes": 400,
+              "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+              "seed_alone_builds_operating_system": false,
+              "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+            },
+            "state": "EFFECT_ACK_DONE",
+            "wire_version": 1
+          }
+        },
+        "prior_ring_event_count": 0,
+        "replay_http_status": 409,
+        "replay_http_statuses": [
+          409
+        ],
+        "replay_event_snapshot": {
+          "event_count": 1,
+          "events": [
+            {
+              "audio_present": false,
+              "commit_token_sha256": "338600eb6f88bab3a0d5355850e295db2f09cc6a3e3a56345824eafc03bbab4e",
+              "effect_record_hash": "0a99398ae2ca363e7e6fe51f6040fccce34174de3c24c8252172492e1d7f8b35",
+              "event_id": 1,
+              "external_effect": "NONE",
+              "input_hash": "b1038ab8b835185c1ccdec89471226040636d68546180356d17b6f397eb1ac11",
+              "kind": "TERMINAL_INPUT_ACCEPTED",
+              "observed_at": "2026-10-02T08:03:30Z",
+              "record_hash": "e84bfc585671990c92c23c497ab08323063c88a88d7ee15f8232f0e28c52186c",
+              "seed_binding": {
+                "bytes": 400,
+                "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+                "seed_alone_builds_operating_system": false,
+                "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+              },
+              "text": "restart-a90e1cdb201075d5e14035b3105e9323",
+              "video_present": false
+            }
+          ],
+          "events_sha256": "512c635e5236df246b5b62029662f94aa95697f1fb60c054edd0c8282ebeb2f2",
+          "persistence_scope": "FSYNCED_ATOMIC_SNAPSHOT_RESTART_SAFE",
+          "schema": "qikvrt_terminal_event_snapshot_v1",
+          "seed_binding": {
+            "bytes": 400,
+            "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+            "seed_alone_builds_operating_system": false,
+            "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+          }
+        },
+        "confirmed_events_and_records_unchanged": true,
+        "replay_second_effects": 0,
+        "persistence_scope": "FSYNCED_ATOMIC_SNAPSHOT_RESTART_SAFE",
+        "lossless_scope": "BOUNDED_LOCAL_FSYNCED_SNAPSHOT_ACROSS_PROCESS_RESTART",
+        "authority_mirror_live_nodes_tested": false,
+        "network_loss_injected": false,
+        "unbounded_scalability_proved": false,
+        "external_effect": "NONE"
+      },
+      "local_readback_subject": "candidate source SHA-256 bindings above; local checkout still names the parent HEAD. No predecessor check transfer.",
+      "local_regressions": [
+        "corrupt/empty/truncated/duplicate/reordered snapshot",
+        "missing initialized snapshot",
+        "restart seed mismatch and unseeded substitution",
+        "crash after fsync before response",
+        "parallel commits and eight-client single-token race",
+        "prepare/expiry/payload binding across restart",
+        "capacity across restart",
+        "competing real process and symlink refusal",
+        "failed or ambiguous persistence poisons admission and readback"
+      ],
+      "media_failure_tested": false,
+      "native_successor_validation": "REQUIRED via existing linux-seed-ring job; artifact readback must bind the new HEAD/TREE",
+      "network_loss_injected": false,
+      "observed_cause": "State.records, State.events and single-use token consumption existed only in process memory on the bound parent source",
+      "parent_head": "fbf72251784c72addac2493781b0d330a7d7089b",
+      "parent_tree": "c07b0be0d15cbac87fbf8b7fb1e1b57e6779f2f5",
+      "personal_release_effect_ack_done": false,
+      "power_removal_tested": false,
+      "predecessor_evidence_transfer": false,
+      "productive_node_consolidation_verified": false,
+      "reuse": [
+        "qikvrt_api_handler.dirs",
+        "qikvrt_api_handler.process_lock",
+        "qikvrt_api_handler.atomic_write_bytes",
+        "qikvrt_api_handler.secure_read_bytes",
+        "qikvrt_api_handler._strict_json_loads",
+        "qikvrt_firefox_windows_witness"
+      ],
+      "schema": "qikvrt_terminal_durable_persistence_work_unit_v1",
+      "source_sha256": {
+        "src/qikvrt_api_handler.py": "b31038728504dd8278c1111367fe051a1f6258606bd5a1e1b36019f909ae5b8a",
+        "src/qikvrt_effect_ack_http_terminal.py": "8d60d0dda20a2442bd101ed327f5e2ed94bc838ccb94c34d2f7d379a779ab16c",
+        "tests/test_qikvrt_effect_ack_http_terminal.py": "ed18723a8045aaaa20afdf2628ec54e392de86e4f969b531ad399f6857768463",
+        "tools/qikvrt_firefox_windows_witness.py": "fe2d0dbb29a0722d1c35c3c56d5a09f81204aeefe39d2b7d82c466ff58a24c8a"
+      },
+      "unbounded_scalability_proved": false,
+      "local_full_repository_validation": {
+        "command": "make test",
+        "result": "PASS",
+        "integrity_before_and_after": "PASS",
+        "local_python": "3.12.14",
+        "terminal_tests": 36,
+        "historical_object_recovery": {
+          "source_head": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+          "action": "fetched exact object required by existing real-worktree regression; no test or source substitution"
+        },
+        "native_exact_head_workflows": "SEPARATE_REQUIRED_READBACK"
+      },
+      "original_requested_subject": {
+        "head": "924d66b3cb087adcbbe5da65b9fd282663a71909",
+        "tree": "ab96e2f3009f25323900171bd6fbbf9320eb7bde"
+      },
+      "concurrent_work_preserved": {
+        "implementation_subject": "21ffecc7e85c828277cb40810953b1affedadd33",
+        "integrity_subject": "fbf72251784c72addac2493781b0d330a7d7089b",
+        "regressions_preserved": 6,
+        "explicit_state_file_interface_preserved": true
+      },
+      "local_terminal_tests": {
+        "command": "python3 -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal",
+        "tests": 36,
+        "result": "PASS"
+      }
+    },
+    "network_loss_evidence": {
+      "schema": "qikvrt_terminal_network_loss_work_unit_v1",
+      "parent_head": "77c5270a48910a0423937e2cb9e7da48a85df363",
+      "parent_tree": "d5afe14f10818f21bde84244da13a8c89118be19",
+      "historical_native_run": 36982379228,
+      "historical_native_job": 110759558430,
+      "historical_network_loss_injected": false,
+      "observed_gap": "The restart receipt explicitly left network_loss_injected=false; discarding a received HTTP reply and crashing the process after fsync do not constitute this separate socket fault experiment.",
+      "human_contribution": {
+        "identifier": "Ingolf Lohmann",
+        "contribution": "Require a distinct real post-persistence transport fault, fresh event/Effect-Record readbacks, same-token and bounded concurrent retries, unchanged snapshot and independent governance/release gates."
+      },
+      "artificial_cognitive_contribution": {
+        "identifier": "OpenAI Codex",
+        "contribution": "Extend the existing native Firefox witness and TerminalProcess harness with one-shot real TCP reset and truncated-body forwarding, synchronized retries, source fingerprints, regressions and exact native artifact verification."
+      },
+      "reuse": [
+        "TerminalProcess",
+        "durable_restart_controls",
+        "qikvrt_api_handler.dirs",
+        "unchanged src/qikvrt_effect_ack_http_terminal.py",
+        "existing linux-seed-ring PR job"
+      ],
+      "runtime_source_changed": false,
+      "software_downgrade": false,
+      "source_sha256": {
+        "tools/qikvrt_firefox_windows_witness.py": "15f99c9630c16b22b592586b6a7c867484dc38f484daefd9c06cc6b36359eea8",
+        "tests/test_qikvrt_effect_ack_http_terminal.py": "ba797531fce2342e8c25ef1fec25f0b0e566e840d6b31857a0d583df02c63a43",
+        "src/qikvrt_effect_ack_http_terminal.py": "8d60d0dda20a2442bd101ed327f5e2ed94bc838ccb94c34d2f7d379a779ab16c",
+        "src/qikvrt_api_handler.py": "b31038728504dd8278c1111367fe051a1f6258606bd5a1e1b36019f909ae5b8a",
+        "docs/terminal/FIREFOX_EFFECT_ACK_TERMINAL_PROXY_V1.md": "1bbcb05d96a9c481bcbe8fd12e5c4a6ce54538eb6467d899db3858ebfa12bcf5",
+        ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml": "c8f1a65b88ec83c22a1c799b6606c38b27e12a50e95f377addb875197244cc09"
+      },
+      "local_verification": {
+        "subject": "Candidate source fingerprints above; local HEAD still names the parent. Native successor receipt is separately required.",
+        "python": "3.12.14",
+        "command": "python3 -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal tests.test_qikvrt_personal_firefox_capability_boundary",
+        "tests": 56,
+        "terminal_tests": 38,
+        "result": "PASS",
+        "network_readback": {
+          "actual_process_restart": true,
+          "authority_mirror_live_nodes_tested": false,
+          "concurrent_retry": {
+            "clients": 4,
+            "http_statuses": [
+              409,
+              409,
+              409,
+              409
+            ],
+            "refusals": 4,
+            "second_effects": 0
+          },
+          "effect_records_after_fault": {
+            "/effect-ack/records/3823c0f9169007d27ccca07d3de7f84bda7fdbcccbc0c9e5c93b761f2040619a": {
+              "created_utc": "2026-10-02T09:18:15Z",
+              "external_effect": "NONE",
+              "input_hash": "sha256:4dd0f970499cc10bf7c2b7f550df1173a32dd7711aa73d983e0917a9d06ac52d",
+              "message_type": "effect-ack-record",
+              "ordinary_release": true,
+              "policy_allows_release": true,
+              "policy_id": "QIKVRT_LOOPBACK_TERMINAL_V1",
+              "policy_version": 1,
+              "reason": "loopback terminal input satisfies bounded local policy",
+              "record_hash": "sha256:3823c0f9169007d27ccca07d3de7f84bda7fdbcccbc0c9e5c93b761f2040619a",
+              "responsibility_owner": "LOCAL_INTERACTIVE_USER",
+              "schema": "qikvrt_effect_ack_http_terminal_record_v1",
+              "seed_binding": {
+                "bytes": 400,
+                "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+                "seed_alone_builds_operating_system": false,
+                "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+              },
+              "state": "EFFECT_ACK_DONE",
+              "wire_version": 1
+            },
+            "/effect-ack/records/dda42f0c39484f546bcb946918b1f3804ef6ca39e174a914816f29f297a9a62a": {
+              "created_utc": "2026-10-02T09:18:15Z",
+              "external_effect": "NONE",
+              "input_hash": "sha256:4dd0f970499cc10bf7c2b7f550df1173a32dd7711aa73d983e0917a9d06ac52d",
+              "message_type": "effect-ack-record",
+              "ordinary_release": true,
+              "policy_allows_release": true,
+              "policy_id": "QIKVRT_LOOPBACK_TERMINAL_V1",
+              "policy_version": 1,
+              "reason": "single-use exact-bound loopback commit executed",
+              "record_hash": "sha256:dda42f0c39484f546bcb946918b1f3804ef6ca39e174a914816f29f297a9a62a",
+              "responsibility_owner": "LOCAL_INTERACTIVE_USER",
+              "schema": "qikvrt_effect_ack_http_terminal_record_v1",
+              "seed_binding": {
+                "bytes": 400,
+                "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+                "seed_alone_builds_operating_system": false,
+                "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+              },
+              "state": "EFFECT_ACK_DONE",
+              "wire_version": 1
+            }
+          },
+          "effect_records_after_restart": {
+            "/effect-ack/records/3823c0f9169007d27ccca07d3de7f84bda7fdbcccbc0c9e5c93b761f2040619a": {
+              "created_utc": "2026-10-02T09:18:15Z",
+              "external_effect": "NONE",
+              "input_hash": "sha256:4dd0f970499cc10bf7c2b7f550df1173a32dd7711aa73d983e0917a9d06ac52d",
+              "message_type": "effect-ack-record",
+              "ordinary_release": true,
+              "policy_allows_release": true,
+              "policy_id": "QIKVRT_LOOPBACK_TERMINAL_V1",
+              "policy_version": 1,
+              "reason": "loopback terminal input satisfies bounded local policy",
+              "record_hash": "sha256:3823c0f9169007d27ccca07d3de7f84bda7fdbcccbc0c9e5c93b761f2040619a",
+              "responsibility_owner": "LOCAL_INTERACTIVE_USER",
+              "schema": "qikvrt_effect_ack_http_terminal_record_v1",
+              "seed_binding": {
+                "bytes": 400,
+                "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+                "seed_alone_builds_operating_system": false,
+                "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+              },
+              "state": "EFFECT_ACK_DONE",
+              "wire_version": 1
+            },
+            "/effect-ack/records/dda42f0c39484f546bcb946918b1f3804ef6ca39e174a914816f29f297a9a62a": {
+              "created_utc": "2026-10-02T09:18:15Z",
+              "external_effect": "NONE",
+              "input_hash": "sha256:4dd0f970499cc10bf7c2b7f550df1173a32dd7711aa73d983e0917a9d06ac52d",
+              "message_type": "effect-ack-record",
+              "ordinary_release": true,
+              "policy_allows_release": true,
+              "policy_id": "QIKVRT_LOOPBACK_TERMINAL_V1",
+              "policy_version": 1,
+              "reason": "single-use exact-bound loopback commit executed",
+              "record_hash": "sha256:dda42f0c39484f546bcb946918b1f3804ef6ca39e174a914816f29f297a9a62a",
+              "responsibility_owner": "LOCAL_INTERACTIVE_USER",
+              "schema": "qikvrt_effect_ack_http_terminal_record_v1",
+              "seed_binding": {
+                "bytes": 400,
+                "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+                "seed_alone_builds_operating_system": false,
+                "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+              },
+              "state": "EFFECT_ACK_DONE",
+              "wire_version": 1
+            }
+          },
+          "effect_records_after_retry": {
+            "/effect-ack/records/3823c0f9169007d27ccca07d3de7f84bda7fdbcccbc0c9e5c93b761f2040619a": {
+              "created_utc": "2026-10-02T09:18:15Z",
+              "external_effect": "NONE",
+              "input_hash": "sha256:4dd0f970499cc10bf7c2b7f550df1173a32dd7711aa73d983e0917a9d06ac52d",
+              "message_type": "effect-ack-record",
+              "ordinary_release": true,
+              "policy_allows_release": true,
+              "policy_id": "QIKVRT_LOOPBACK_TERMINAL_V1",
+              "policy_version": 1,
+              "reason": "loopback terminal input satisfies bounded local policy",
+              "record_hash": "sha256:3823c0f9169007d27ccca07d3de7f84bda7fdbcccbc0c9e5c93b761f2040619a",
+              "responsibility_owner": "LOCAL_INTERACTIVE_USER",
+              "schema": "qikvrt_effect_ack_http_terminal_record_v1",
+              "seed_binding": {
+                "bytes": 400,
+                "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+                "seed_alone_builds_operating_system": false,
+                "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+              },
+              "state": "EFFECT_ACK_DONE",
+              "wire_version": 1
+            },
+            "/effect-ack/records/dda42f0c39484f546bcb946918b1f3804ef6ca39e174a914816f29f297a9a62a": {
+              "created_utc": "2026-10-02T09:18:15Z",
+              "external_effect": "NONE",
+              "input_hash": "sha256:4dd0f970499cc10bf7c2b7f550df1173a32dd7711aa73d983e0917a9d06ac52d",
+              "message_type": "effect-ack-record",
+              "ordinary_release": true,
+              "policy_allows_release": true,
+              "policy_id": "QIKVRT_LOOPBACK_TERMINAL_V1",
+              "policy_version": 1,
+              "reason": "single-use exact-bound loopback commit executed",
+              "record_hash": "sha256:dda42f0c39484f546bcb946918b1f3804ef6ca39e174a914816f29f297a9a62a",
+              "responsibility_owner": "LOCAL_INTERACTIVE_USER",
+              "schema": "qikvrt_effect_ack_http_terminal_record_v1",
+              "seed_binding": {
+                "bytes": 400,
+                "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+                "seed_alone_builds_operating_system": false,
+                "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+              },
+              "state": "EFFECT_ACK_DONE",
+              "wire_version": 1
+            }
+          },
+          "event_snapshot_after_fault": {
+            "event_count": 1,
+            "events": [
+              {
+                "audio_present": false,
+                "commit_token_sha256": "125d1702683c30537fa4163620cfd69a62b1ef1aec89fcf57d8a70144b361eea",
+                "effect_record_hash": "dda42f0c39484f546bcb946918b1f3804ef6ca39e174a914816f29f297a9a62a",
+                "event_id": 1,
+                "external_effect": "NONE",
+                "input_hash": "4dd0f970499cc10bf7c2b7f550df1173a32dd7711aa73d983e0917a9d06ac52d",
+                "kind": "TERMINAL_INPUT_ACCEPTED",
+                "observed_at": "2026-10-02T09:18:15Z",
+                "record_hash": "3823c0f9169007d27ccca07d3de7f84bda7fdbcccbc0c9e5c93b761f2040619a",
+                "seed_binding": {
+                  "bytes": 400,
+                  "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+                  "seed_alone_builds_operating_system": false,
+                  "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+                },
+                "text": "network-loss-bdec4dfb6253eb2f2b418ea1373cf6be",
+                "video_present": false
+              }
+            ],
+            "events_sha256": "e24dffe5086e8b4a9fe5ebb714694643ab30fae623052eb65b928fa4e97904eb",
+            "persistence_scope": "FSYNCED_ATOMIC_SNAPSHOT_RESTART_SAFE",
+            "schema": "qikvrt_terminal_event_snapshot_v1",
+            "seed_binding": {
+              "bytes": 400,
+              "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+              "seed_alone_builds_operating_system": false,
+              "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+            }
+          },
+          "event_snapshot_after_restart": {
+            "event_count": 1,
+            "events": [
+              {
+                "audio_present": false,
+                "commit_token_sha256": "125d1702683c30537fa4163620cfd69a62b1ef1aec89fcf57d8a70144b361eea",
+                "effect_record_hash": "dda42f0c39484f546bcb946918b1f3804ef6ca39e174a914816f29f297a9a62a",
+                "event_id": 1,
+                "external_effect": "NONE",
+                "input_hash": "4dd0f970499cc10bf7c2b7f550df1173a32dd7711aa73d983e0917a9d06ac52d",
+                "kind": "TERMINAL_INPUT_ACCEPTED",
+                "observed_at": "2026-10-02T09:18:15Z",
+                "record_hash": "3823c0f9169007d27ccca07d3de7f84bda7fdbcccbc0c9e5c93b761f2040619a",
+                "seed_binding": {
+                  "bytes": 400,
+                  "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+                  "seed_alone_builds_operating_system": false,
+                  "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+                },
+                "text": "network-loss-bdec4dfb6253eb2f2b418ea1373cf6be",
+                "video_present": false
+              }
+            ],
+            "events_sha256": "e24dffe5086e8b4a9fe5ebb714694643ab30fae623052eb65b928fa4e97904eb",
+            "persistence_scope": "FSYNCED_ATOMIC_SNAPSHOT_RESTART_SAFE",
+            "schema": "qikvrt_terminal_event_snapshot_v1",
+            "seed_binding": {
+              "bytes": 400,
+              "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+              "seed_alone_builds_operating_system": false,
+              "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+            }
+          },
+          "event_snapshot_after_retry": {
+            "event_count": 1,
+            "events": [
+              {
+                "audio_present": false,
+                "commit_token_sha256": "125d1702683c30537fa4163620cfd69a62b1ef1aec89fcf57d8a70144b361eea",
+                "effect_record_hash": "dda42f0c39484f546bcb946918b1f3804ef6ca39e174a914816f29f297a9a62a",
+                "event_id": 1,
+                "external_effect": "NONE",
+                "input_hash": "4dd0f970499cc10bf7c2b7f550df1173a32dd7711aa73d983e0917a9d06ac52d",
+                "kind": "TERMINAL_INPUT_ACCEPTED",
+                "observed_at": "2026-10-02T09:18:15Z",
+                "record_hash": "3823c0f9169007d27ccca07d3de7f84bda7fdbcccbc0c9e5c93b761f2040619a",
+                "seed_binding": {
+                  "bytes": 400,
+                  "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+                  "seed_alone_builds_operating_system": false,
+                  "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+                },
+                "text": "network-loss-bdec4dfb6253eb2f2b418ea1373cf6be",
+                "video_present": false
+              }
+            ],
+            "events_sha256": "e24dffe5086e8b4a9fe5ebb714694643ab30fae623052eb65b928fa4e97904eb",
+            "persistence_scope": "FSYNCED_ATOMIC_SNAPSHOT_RESTART_SAFE",
+            "schema": "qikvrt_terminal_event_snapshot_v1",
+            "seed_binding": {
+              "bytes": 400,
+              "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+              "seed_alone_builds_operating_system": false,
+              "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+            }
+          },
+          "external_effect": "NONE",
+          "fault_scope": "BOUNDED_LOOPBACK_TCP_COMMIT_RESPONSE_AND_READBACK_INTERRUPTION",
+          "first_process_pid": 7,
+          "network_loss_injected": true,
+          "observed_at": "2026-10-02T09:18:15.950245+00:00",
+          "persisted_snapshot_bytes": 3475,
+          "persisted_snapshot_sha256": "598904691aa69acf18b3785065418ef6c857d013254667c26f6a2de14e2fa425",
+          "persisted_snapshot_unchanged": true,
+          "persistence_scope": "FSYNCED_ATOMIC_SNAPSHOT_RESTART_SAFE",
+          "personal_release_effect_ack_done": false,
+          "predecessor_evidence_transfer": false,
+          "prior_event_count": 0,
+          "private_state_uploaded": false,
+          "probe_commit_token_sha256": "125d1702683c30537fa4163620cfd69a62b1ef1aec89fcf57d8a70144b361eea",
+          "probe_effect_record_path": "/effect-ack/records/dda42f0c39484f546bcb946918b1f3804ef6ca39e174a914816f29f297a9a62a",
+          "probe_effects": 1,
+          "probe_input_hash": "4dd0f970499cc10bf7c2b7f550df1173a32dd7711aa73d983e0917a9d06ac52d",
+          "replay_http_status": 409,
+          "replay_second_effects": 0,
+          "restart_replay_http_status": 409,
+          "restarted_process_pid": 32,
+          "schema": "qikvrt_terminal_network_loss_readback_v1",
+          "server_alive_after_faults": true,
+          "transport_faults": [
+            {
+              "client_complete_response": false,
+              "client_errno": 104,
+              "client_error": "ConnectionResetError",
+              "downstream_body_bytes_sent": 0,
+              "method": "POST",
+              "mode": "TCP_RST_BEFORE_RESPONSE",
+              "network_loss_injected": true,
+              "observed_at": "2026-10-02T09:18:15.838634+00:00",
+              "path": "/terminal/commit",
+              "persisted_snapshot_sha256_before_cut": "598904691aa69acf18b3785065418ef6c857d013254667c26f6a2de14e2fa425",
+              "upstream_body_bytes": 1881,
+              "upstream_body_sha256": "60a512a2f5032747338a1e0a781f0e9981a02c8c6a6b43c69e8986d46e9022c3",
+              "upstream_http_status": 200,
+              "upstream_response_observed_at": "2026-10-02T09:18:15.838443+00:00"
+            },
+            {
+              "client_complete_response": false,
+              "client_errno": null,
+              "client_error": "IncompleteRead",
+              "client_http_status": 200,
+              "client_missing_bytes": 685,
+              "client_partial_bytes": 685,
+              "downstream_body_bytes_sent": 685,
+              "method": "GET",
+              "mode": "TRUNCATED_HTTP_BODY",
+              "network_loss_injected": true,
+              "observed_at": "2026-10-02T09:18:15.842919+00:00",
+              "path": "/terminal/events",
+              "persisted_snapshot_sha256_before_cut": "598904691aa69acf18b3785065418ef6c857d013254667c26f6a2de14e2fa425",
+              "upstream_body_bytes": 1370,
+              "upstream_body_sha256": "7a2c869debac77a85af31b1b77a1d4870167eead79c1c0f793b224d26e2ed051",
+              "upstream_http_status": 200,
+              "upstream_response_observed_at": "2026-10-02T09:18:15.842641+00:00"
+            },
+            {
+              "client_complete_response": false,
+              "client_errno": null,
+              "client_error": "IncompleteRead",
+              "client_http_status": 200,
+              "client_missing_bytes": 439,
+              "client_partial_bytes": 439,
+              "downstream_body_bytes_sent": 439,
+              "method": "GET",
+              "mode": "TRUNCATED_HTTP_BODY",
+              "network_loss_injected": true,
+              "observed_at": "2026-10-02T09:18:15.844463+00:00",
+              "path": "/effect-ack/records/dda42f0c39484f546bcb946918b1f3804ef6ca39e174a914816f29f297a9a62a",
+              "persisted_snapshot_sha256_before_cut": "598904691aa69acf18b3785065418ef6c857d013254667c26f6a2de14e2fa425",
+              "upstream_body_bytes": 878,
+              "upstream_body_sha256": "ec003b707f843d122e18f5fcaeb556f75d7e833d53aefd4b8a746b785d0344d5",
+              "upstream_http_status": 200,
+              "upstream_response_observed_at": "2026-10-02T09:18:15.844200+00:00"
+            }
+          ],
+          "unbounded_scalability_proved": false
+        }
+      },
+      "native_successor_validation": "REQUIRED: existing linux-seed-ring job on the actual new HEAD/TREE; bind fresh Run, numeric Job ID, artifact and receipt digest. No predecessor evidence transfer.",
+      "network_fault_scope": "BOUNDED_LOOPBACK_TCP_COMMIT_RESPONSE_AND_READBACK_INTERRUPTION",
+      "retry_bound": {
+        "single_retry": 1,
+        "concurrent_clients": 4,
+        "post_restart_retry": 1
+      },
+      "private_snapshot_upload": false,
+      "authority_mirror_live_nodes_tested": false,
+      "unbounded_scalability_proved": false,
+      "predecessor_evidence_transfer": false,
+      "governance_acceptance": "SEPARATE_EXACT_HEAD_GATE",
+      "personal_release_effect_ack_done": false,
+      "public_release_acceptance": "SEPARATE_PUBLIC_URL_AND_FRESH_READBACK_GATE"
+    }
+  },
+  "windows_seed_durable_continuation": {
+    "schema": "qikvrt_windows_seed_durable_continuation_v1",
+    "created_at": "2026-10-02T09:25:18.695409+00:00",
+    "source_repository": "ingolf-lohmann/qik-vrt",
+    "pull_request": 438,
+    "source_ref": "work/firefox-windows-witness-20261001",
+    "source_head": "e0fcea2a140b2e1e76868a1d83f9ea8ed7fe7b99",
+    "source_tree": "7d901f6781a11db35c794787fd9f499f48b2fffa",
+    "source_semantics": "REPAIR_INPUT_ONLY; predecessor execution evidence is not successor proof",
+    "human_actor": "Ingolf Lohmann",
+    "human_contribution": "Authorized the exact Windows canonical-seed/durable-state repair, actual restart/replay/negative controls, native supported Windows 11 witness when executable; preserved architecture and governance gates.",
+    "artificial_cognitive_actor": "OpenAI Codex",
+    "artificial_cognitive_contribution": "Diagnosed both Linux-only seed/state assignment and the POSIX-only persistence backend; extended existing State/witness, acceptance policy, documentation and native regressions.",
+    "causal_defects": [
+      "Windows witness selected seed=None and state_root=None",
+      "State refused non-POSIX persistence and reused a module with an unconditional fcntl import"
+    ],
+    "reuse": [
+      "State snapshot schema, MAC/record/event validation and commit serialization",
+      "TerminalProcess and durable_restart_controls",
+      "POSIX API atomic-write/strict-reader/process-lock path remains the POSIX adapter",
+      "Existing Windows-11-ARM64 PR-triggered capability-boundary workflow"
+    ],
+    "new_io_adapter_reason": "POSIX fcntl and directory-fsync operations are unavailable on Windows; only platform I/O is replaced, with no second snapshot/ledger/admission implementation.",
+    "windows_io_primary_sources": [
+      "https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilew",
+      "https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefileexw",
+      "https://learn.microsoft.com/en-us/windows/win32/secauthz/sid-strings"
+    ],
+    "outputs": [
+      {
+        "path": "src/qikvrt_effect_ack_http_terminal.py",
+        "bytes": 35198,
+        "sha256": "64286a7d7f80e7e32d1a39b61782a48f92b8ecc8b2619fac78403132d914b91f"
+      },
+      {
+        "path": "tools/qikvrt_firefox_windows_witness.py",
+        "bytes": 64150,
+        "sha256": "9f4c3c78246184e0ba047449fdcc394b8e8b9856d79502e608554b26ecc25235"
+      },
+      {
+        "path": "tests/test_qikvrt_effect_ack_http_terminal.py",
+        "bytes": 49488,
+        "sha256": "64fd8427b4232343fd3ccc908ff01bb081eb3b068e8fd9ef4041302b1fc93d8d"
+      },
+      {
+        "path": "tests/test_qikvrt_personal_firefox_capability_boundary.py",
+        "bytes": 23141,
+        "sha256": "3815880afbd907c9093e744ad5e55da92d739a0d9579903c2175dc7d0b1ff856"
+      },
+      {
+        "path": "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json",
+        "bytes": 10397,
+        "sha256": "37f0dfa770f3f8b630a440613b0d5be8491d1d35ecc0fc12bb2805512d6b21ea"
+      },
+      {
+        "path": "spec/firefox/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.md",
+        "bytes": 15109,
+        "sha256": "4d5a8692ea6d5539fc7bce452f7b637f23027567319645464aa44df34ab18faf"
+      },
+      {
+        "path": "docs/terminal/FIREFOX_EFFECT_ACK_TERMINAL_PROXY_V1.md",
+        "bytes": 9468,
+        "sha256": "02818c322aa42b54a52cf6a2f18583c6cc4e440f7e0aa479de8b9e48ca5f5e69"
+      },
+      {
+        "path": ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+        "bytes": 9379,
+        "sha256": "bfb9364b536db4a2816f2705615abbcbd616cccbae41e74d7838e85137e22723"
+      }
+    ],
+    "verification": {
+      "scope": "LOCAL_CANDIDATE_BYTES_THEN_FRESH_REMOTE_EXACT_HEAD",
+      "required_commands": [
+        "python3 -B -m unittest -v tests.test_qikvrt_personal_firefox_capability_boundary tests.test_qikvrt_effect_ack_http_terminal",
+        "python3 -B tools/qikvrt_tool_cache.py verify",
+        "make test"
+      ],
+      "remote_readback": "REQUIRED_ON_SUCCESSOR; native receipt binds HEAD/TREE, run/attempt/job, OS, architecture, binaries, browser event, restart snapshots/records and 10 refusal controls",
+      "local_candidate_tests": {
+        "tests": 60,
+        "result": "PASS",
+        "scope": "Integrated source bytes before commit; remote exact-head witness remains required"
+      }
+    },
+    "execution_route": {
+      "trigger": "pull_request synchronize from fast-forward API update",
+      "workflow": ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+      "runner": "windows-11-arm",
+      "readback_artifacts": "RECEIPT.json and public URL evidence; never terminal-state",
+      "initial_workflow_dispatch_capability_exposed": false
+    },
+    "architecture_evidence_transfer": false,
+    "predecessor_evidence_transfer": false,
+    "governance_gate": {
+      "context": "QIKVRT requested review execution",
+      "independent": true,
+      "source_head_status": "failure: CODE_OWNER_RULE_NOT_ENFORCED",
+      "successor_status_requires_fresh_readback": true,
+      "policy_weakened": false
+    },
+    "external_effect": "REVIEW_BRANCH_SUCCESSOR_ONLY; no release/merge/deployment",
+    "release_claims": {
+      "PASS": false,
+      "FINAL_PASS": false,
+      "EFFECT_ACK_DONE": false,
+      "AMD64_ACCEPTED": false,
+      "ARM64_ACCEPTED": false,
+      "POWER_LOSS_PROVED": false
+    },
+    "requested_start_head": "77c5270a48910a0423937e2cb9e7da48a85df363",
+    "requested_start_tree": "d5afe14f10818f21bde84244da13a8c89118be19",
+    "concurrent_work_preserved": "All post-commit socket-fault/retry controls and both regressions from e0fcea2a are retained; Windows native I/O path and linger layout also permit the shared regressions on Windows.",
+    "native_preflight_observations": [
+      {
+        "head": "0ee7376a998b70e9bc6fb5722cffc9500540fb63",
+        "tree": "074873d2c292cb4f6e7aad1de71c30e66cf8ebd3",
+        "run_id": 36991181879,
+        "job_id": 110787517601,
+        "os": "Windows 11 25H2 Enterprise build 26200",
+        "architecture": "ARM64",
+        "state": "FAIL_PREFLIGHT",
+        "windows_browser_execution_observed": false,
+        "tests": 41,
+        "errors": 3,
+        "observed_error": "WinError 32 during TemporaryDirectory cleanup: three tests retained exclusive native State lock handles until later unittest tearDown",
+        "causal_fix": "Register State.close with an inner ExitStack so every success/failure path releases the native lock before temporary-directory deletion",
+        "functional_assertions_weakened": false,
+        "evidence_scope": "HISTORICAL_EXACT_SUBJECT_ONLY; successor requires fresh native execution"
+      }
+    ]
+  },
+  "windows_amd64_native_continuation": {
+    "schema": "qikvrt_windows_amd64_native_continuation_v1",
+    "source_repository": "ingolf-lohmann/qik-vrt",
+    "pull_request": 438,
+    "source_ref": "work/firefox-windows-witness-20261001",
+    "source_head": "5258c00c049a62898ee5f783f50987ac65b78d3d",
+    "source_tree": "673e26f0918e718d909f79990be0d972c038ac2d",
+    "observed_main_head": "ba3509a49d2e1b99af325b9cd77aab65a2975497",
+    "source_semantics": "REPAIR_INPUT_ONLY; no predecessor or architecture evidence transfer",
+    "human_actor": "Ingolf Lohmann",
+    "human_contribution": "Authorized PR438 continuation with the smallest second native hosted Windows x64 witness, identical seed/persistent-state/terminate-restart/record/replay-409/negative controls and fresh provenance; release and architecture boundaries preserved.",
+    "artificial_cognitive_actor": "OpenAI Codex",
+    "artificial_cognitive_contribution": "Parameterized the existing Windows job into two architecture-bound lanes, selected the documented current windows-2025 x64 carrier, extended existing witness receipts and cache contract and tested cross-architecture/emulation/client-scope refusal.",
+    "reuse": {
+      "workflow": ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+      "observer": "tools/qikvrt_firefox_windows_witness.py",
+      "state": "src/qikvrt_effect_ack_http_terminal.py",
+      "new_parallel_workflow": false,
+      "native_controls_implementation_changed": false
+    },
+    "runner_source": "https://docs.github.com/en/actions/reference/runners/github-hosted-runners",
+    "runner_image_source": "https://github.com/actions/runner-images/blob/main/images/windows/Windows2025-Readme.md",
+    "runner_lanes": {
+      "ARM64": "windows-11-arm",
+      "AMD64": "windows-2025"
+    },
+    "os_scope": "AMD64 Server compatibility; Windows 11 AMD64 client acceptance remains independent and unverified",
+    "state": "HOLD_FRESH_NATIVE_SUCCESSOR_EXECUTION_REQUIRED",
+    "windows_amd64_execution_observed": false,
+    "windows_11_amd64_client_execution_observed": false,
+    "predecessor_evidence_transfer": false,
+    "architecture_evidence_transfer": false,
+    "personal_release_effect_ack_done": false,
+    "private_state_uploaded": false,
+    "power_loss_proved": false,
+    "governance_gate_independent": true,
+    "next_action": "Publish the history-preserving successor, observe actual native jobs, download each architecture-qualified artifact and verify its exact-subject/source/runtime/controls binding. A green job alone does not accept the witness or release.",
+    "local_validation": {
+      "focused_tests": 62,
+      "result": "PASS",
+      "full_make_test": "PASS",
+      "full_make_test_runtime": "CPython 3.12.13 on Linux; candidate-tree verification, not Windows execution",
+      "cache_coverage_percent": 100,
+      "controls_source_changed": false,
+      "historical_fixture_recovery": "Existing local Git bundle supplies 56127a6f historical worktree fixture; exact missing parent trees reconstructed by verified REST tree-object hashes. No test/source substitution."
+    },
+    "changed_inputs": [
+      {
+        "path": ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+        "bytes": 10660,
+        "sha256": "fbd756b34e50e931ecbeb54ee2aa38c46f77921d73e6178ea5e153a55685b888"
+      },
+      {
+        "path": "tools/qikvrt_firefox_windows_witness.py",
+        "bytes": 66614,
+        "sha256": "5248998d33fff8bbdad196e1c7932cb67692e0faef3f4707af184b5826b3aa24"
+      },
+      {
+        "path": "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json",
+        "bytes": 12063,
+        "sha256": "1e857bd56bc2b4f325fb1f5e081593effdc33b5e397594e9c262cc392c15bd57"
+      },
+      {
+        "path": "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "bytes": 3335,
+        "sha256": "b0622c56e8fe7ff42e92a854a64422920fd1821bec54486ab5797d648b67a7c8"
+      },
+      {
+        "path": "runtime/toolchains/CACHE_REGISTRY.json",
+        "bytes": 15167,
+        "sha256": "d1b12bbcc96fd5fc4874218790b340e83c87c9663edbdabe86b0492e728ffe9b"
+      },
+      {
+        "path": "runtime/toolchains/CACHE_COVERAGE.json",
+        "bytes": 4114,
+        "sha256": "4259f001b4cb4e030533b36b2a58784077e48077a4fdc991276fca73c87b1a72"
+      },
+      {
+        "path": "tests/test_qikvrt_personal_firefox_capability_boundary.py",
+        "bytes": 25128,
+        "sha256": "9a697f948270b2cef3f0c89a1d5a78690243fb05ebef92e355e3b6e2fd46f0a3"
+      },
+      {
+        "path": "spec/firefox/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.md",
+        "bytes": 16213,
+        "sha256": "a3b592efa9a61535e8de4a7ecf0f94100ed8bfc5142cec27711a68b205034ed9"
+      }
+    ]
+  },
+  "windows11_amd64_carrier_continuation": {
+    "schema": "qikvrt_windows11_amd64_carrier_continuation_v1",
+    "observed_at": "2026-10-02T23:51:01.961092+00:00",
+    "source_repository": "ingolf-lohmann/qik-vrt",
+    "pull_request": 438,
+    "source_ref": "work/firefox-windows-witness-20261001",
+    "source_head": "2d1176f5790d7c345799f2232ac317a1d306d93a",
+    "source_tree": "e5bf9a11a2f58c5f09c8bbd29a689d4137fb174d",
+    "source_semantics": "DISCOVERY_AND_REPAIR_INPUT_ONLY; predecessor and architecture execution evidence is not accepted for a successor",
+    "observed_main_head": "6fb101b2815744b353f67e3fe88ba8458d3c36d5",
+    "observed_main_tree": "0aa53d2bb775cbf9534d5a6b9a47e4b6f8637d75",
+    "human_actor": "Ingolf Lohmann",
+    "human_contribution": "Authorized smallest available native Windows 11 AMD64 carrier discovery and same-controls execution; if unavailable, precise capability boundary and reproducible measurement contract. No architecture or predecessor evidence transfer.",
+    "artificial_cognitive_actor": "OpenAI Codex",
+    "artificial_cognitive_contribution": "Fresh REST subject, source tree, installed repository and job reads; exact-blob workflow inventory; documented runner capability comparison; existing witness strict product-target admission and contract extension; local regression verification.",
+    "discovery": {
+      "repository_inventory_scope": "Currently exposed GitHub connector repositories only; not a global private or runner inventory",
+      "repositories": [
+        {
+          "name": "ingolf-lohmann/qik-vrt",
+          "visibility": "public"
+        },
+        {
+          "name": "Goldkelch/qik-vrt",
+          "visibility": "public"
+        }
+      ],
+      "private_repository_carrier_exposed": false,
+      "default_branch_searches": {
+        "self-hosted": "NO_MATCHES",
+        "windows-11": "NO_MATCHES",
+        "scope": "Default branch only; supplemented by exact main workflow blob inventory"
+      },
+      "main_workflow_inventory": {
+        "count": 77,
+        "recursive_tree_truncated": false,
+        "workflows": {
+          ".github/workflows/issue-agent-autofinish.yml": "2f99e47c1bc2e6bf77720c27a5185b142bb73afc",
+          ".github/workflows/issue-agent-backlog-resume.yml": "42401bdbe53c5fee13f75beced87c7e56196966e",
+          ".github/workflows/issue-autonomous-processing.yml": "0bc763dc2ededa7eb7a37ebb46ad8b29f76b524b",
+          ".github/workflows/publish_ontology_difference_article_zenodo_v3.yml": "1afe5856639ed62c7f174013a614997229ab67fc",
+          ".github/workflows/qikvrt_adaptive_runtime.yml": "c3fce059f331c2987ada61b505992aef39dde4bd",
+          ".github/workflows/qikvrt_audio_request.yml": "e1ec4b7a757f6ece42c379909ee5cc56b58a3d66",
+          ".github/workflows/qikvrt_autonomous_exact_head_verify.yml": "99056f8a4cec9a7fce688e95379b5c6c38df65b0",
+          ".github/workflows/qikvrt_autonomous_pr_continuation.yml": "b138d57fb249f8352c8d4e856e9fc7634a5b81c4",
+          ".github/workflows/qikvrt_autonomous_self_heal.yml": "3bc666cd2164cf24828d195eed89c1d6e1fefcd3",
+          ".github/workflows/qikvrt_batch003_remaining_archive_probe.yml": "0a2cc7322fdcb5220a9ce05987d695d006a4a7d3",
+          ".github/workflows/qikvrt_batch003_remaining_disposition.yml": "701a8d2800ac2773a4b159bee76b07f1ae64864d",
+          ".github/workflows/qikvrt_batch003_subject_172dd_public_probe.yml": "3ee1ff79348e62cf860ef6b649090485fbd8198a",
+          ".github/workflows/qikvrt_batch04_integrity.yml": "1d7cf69a661e17bf41a51d110770dbe9cee5cab4",
+          ".github/workflows/qikvrt_canonical_temporal_memory_zenodo_publish.yml": "e4c66aa0d71c09873c0e902aba10783edf967c5b",
+          ".github/workflows/qikvrt_ci.yml": "61d990bf550bb659cc8165e72ac14e2090db89a0",
+          ".github/workflows/qikvrt_code_owner_review_observer.yml": "5e9c283fb44d6adff58c4f252627482e83252c8d",
+          ".github/workflows/qikvrt_collective_review.yml": "48fd528d890850c9c5e2bb7b78c11a7842c91826",
+          ".github/workflows/qikvrt_combined_batch_002_promotion_head.yml": "350403b2d0190a6761e3d5946d0b77c089f6973f",
+          ".github/workflows/qikvrt_corpus_closure_overlay.yml": "c7ebf0b00920115f80450a7338dd7d4d537848a8",
+          ".github/workflows/qikvrt_corpus_status_temporal_precedence.yml": "b254b7fd4378298e15751b38ed3c46e434bdbd34",
+          ".github/workflows/qikvrt_effect_ack_finalize.yml": "3ebd8a512ecc85c662cb7e33fa1371efb1afc1f3",
+          ".github/workflows/qikvrt_effect_ack_http_terminal.yml": "815e32524401aac59fa79aa4f2fb1e37b2f49fdc",
+          ".github/workflows/qikvrt_escape_stages_integrity.yml": "c8fd85d4c59085e9c09161c3f71e7c240c58207a",
+          ".github/workflows/qikvrt_expected_head_promotion.yml": "5e3110e18d08bbb503d41bc0a6746127efc0e5e6",
+          ".github/workflows/qikvrt_formalization_and_audio.yml": "96f07c5b784561fadae29b0a502872cc15f130be",
+          ".github/workflows/qikvrt_formalization_v2_alpha3_publish.yml": "61559dd8b9e0f82967fd2e36f58f0344ce26e157",
+          ".github/workflows/qikvrt_formalization_v2_inspect.yml": "442f9ef19a346ba2a00ff818c1e3c41914eb1652",
+          ".github/workflows/qikvrt_formalization_v2_inventory.yml": "a1a30e1b00c7858d4d3870e5b828e437d78c618c",
+          ".github/workflows/qikvrt_formalization_v2_zenodo.yml": "778dcfc8faf63c7b1a62fa9a26ae318a0c2934c2",
+          ".github/workflows/qikvrt_formalization_v2_zenodo_finalize.yml": "8f43ecbe25c33fc5e3aed4630c5b16f2fbdddd0c",
+          ".github/workflows/qikvrt_global_completion.yml": "a8a03ba7ac496a51fb17004a5103103a1e78ac34",
+          ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml": "1202d24c2f23eb8fa52ab7c562a583e79f9e8444",
+          ".github/workflows/qikvrt_live_status_watch.yml": "81406e0165f391634c0d28bfb3ab60e2a310e779",
+          ".github/workflows/qikvrt_mandelbrot_42_proof_reproduction.yml": "644b613b5069635384c05c06849d84a34580d073",
+          ".github/workflows/qikvrt_manuscript_proof.yml": "b74eecbc791318685286758d01df0c16803c4dcc",
+          ".github/workflows/qikvrt_measurement_derived_dimensions.yml": "9f19bbb609ce9275496e30eea8700e5437664de0",
+          ".github/workflows/qikvrt_measurement_independence_formalization.yml": "37eddbe54fe8e3fd8604bbdacc34d7d14dc8f1a1",
+          ".github/workflows/qikvrt_mesh_api.yml": "7b38260082e98046b0f8da5009104b25ce255e31",
+          ".github/workflows/qikvrt_mesh_authority_edge.yml": "406f4204e0402acaed16af3ce235ff7837ca5eae",
+          ".github/workflows/qikvrt_mirror_node_lifecycle.yml": "e1a9e3865d7136080cbc1212be011fd0bd2c71ad",
+          ".github/workflows/qikvrt_observer_relative_retrocausality_zenodo_publish.yml": "7eb73d96035101810e2f78cabd02cf99dad04773",
+          ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml": "efcee53cf1b2ff59ca8b06f924f5be806d4b75c0",
+          ".github/workflows/qikvrt_physics_bridge_integrity.yml": "776f821cfbb182aebb46415b4d89557a9ffe9004",
+          ".github/workflows/qikvrt_pr18_integrity_repair.yml": "ef191995ff628bbfa86e5074f9948ca27bac3912",
+          ".github/workflows/qikvrt_pre_spacetime_zenodo_scoped_effect_ack.yml": "024d6dd0f0d827b5c686b1f567045c569c4983ac",
+          ".github/workflows/qikvrt_proof_persistence_integrity.yml": "4052c2acd95cdb032a2ccd109e3143665520887f",
+          ".github/workflows/qikvrt_publication_router.yml": "7c8d6ee6d1f9fe8c7826fe4d177e9c051c64c25e",
+          ".github/workflows/qikvrt_qce_c_measurement_binding.yml": "4038f005fdc842efda149a3118fbfcc4ede4ffea",
+          ".github/workflows/qikvrt_qce_candidate.yml": "cc6698a105b726db7b0b58ccb3b98abb24e4024b",
+          ".github/workflows/qikvrt_qce_causal_axis_bridge.yml": "984fd6d0af66f07a840cd3cc025ea3ec4b61e21a",
+          ".github/workflows/qikvrt_qce_causal_axis_selection.yml": "f4f4aa859ed619465c305ad6334164c9ac3964ba",
+          ".github/workflows/qikvrt_qce_now_serialization.yml": "b5d7a72f01ef94b38e5c07bb9f1ffc9c810eb2de",
+          ".github/workflows/qikvrt_qce_null_calibration_ratio.yml": "7fe9feef36535e1a2c85749145b4ef9c2d3c6ebf",
+          ".github/workflows/qikvrt_reflexive_repository_watchdog.yml": "c3e51de650574e6a67127bedddb533ecf7bed298",
+          ".github/workflows/qikvrt_repository_mesh_sync_tag.yml": "0cf466f8c461aa0293b9ba4c98231fe2f2357ef9",
+          ".github/workflows/qikvrt_requested_review_contract.yml": "7cb6844c19f1eb38be82f475a25acce46ee039d2",
+          ".github/workflows/qikvrt_requested_review_executor.yml": "484fe5c98f333f3fd921789a456571d281e06353",
+          ".github/workflows/qikvrt_required_review_gate.yml": "6882d8071f319749e4eeec9d467cf7bcb6c9ed75",
+          ".github/workflows/qikvrt_round_trip_final_byte_freeze.yml": "ea49531e4e413f5b7314206e93e0153c77f3669c",
+          ".github/workflows/qikvrt_round_trip_prepublication_return.yml": "d5d6a352cfd72a53f2ccb59132012e75bbcdc1db",
+          ".github/workflows/qikvrt_round_trip_zenodo_bundle_freeze.yml": "527dd8a8514452409d777a985abf68ff897088ad",
+          ".github/workflows/qikvrt_round_trip_zenodo_publish.yml": "42388fda524f56286cb145c295ba5d5aa48d441a",
+          ".github/workflows/qikvrt_seed_dashboard_publish.yml": "0121c8eba6470f77c04ded990d147d81b4ee8009",
+          ".github/workflows/qikvrt_seed_mesh_audit_export.yml": "5cb837e66086a8af12a88d930438f84bf1c06be6",
+          ".github/workflows/qikvrt_seed_mesh_maintenance.yml": "10e77c142c0f457c979f01089263aa5af87de9ba",
+          ".github/workflows/qikvrt_seed_node_revalidation.yml": "9fa0fa652d8bc67887e6df0f2733860a3af91573",
+          ".github/workflows/qikvrt_seed_registry_acceptance.yml": "1d98f87c715d4c1e570ab30b961f243428821d60",
+          ".github/workflows/qikvrt_status_report_finalize.yml": "6d92901ac442878d6b02cce7dbe77eaa9c00861b",
+          ".github/workflows/qikvrt_status_report_reserve.yml": "9696b17d1b83345d89e1f534c7812a70df2281a3",
+          ".github/workflows/qikvrt_survival_connectability_zenodo_publish.yml": "ecd668bea4522ebd40aff589b341651fec0d448d",
+          ".github/workflows/qikvrt_universal_ontology_formalization.yml": "3d114676ad85994308a416534ffa67cab74e1dcb",
+          ".github/workflows/qikvrt_universal_ontology_shell_fallback.yml": "1906dd22d7b0a5c11f476dd6befedac26e900454",
+          ".github/workflows/qikvrt_versioned_corrected_candidates.yml": "eddcb4931aaf57818eb02508d2da0e694b4835d6",
+          ".github/workflows/qikvrt_vrtcore_h3_e1_recovery.yml": "9b318e1f0c0949f39d7dc82aaa9e4857e9678c86",
+          ".github/workflows/qikvrt_workflow_executor.yml": "db7c43f50f862300348d4e12dff1fbac531b3be9",
+          ".github/workflows/qikvrt_workflow_executor_watchdog.yml": "f42391f3acbe3f3276df2f2cccd47ddc88fcb6b6",
+          ".github/workflows/qikvrt_zenodo_reserve.yml": "3e0827ea9bd2c0276ade7af2502d687552cfb9c1"
+        },
+        "selector_match_counts": {
+          "self_hosted": 0,
+          "windows11_amd64": 0
+        },
+        "method": "Fresh recursive REST main tree; every workflow payload read from its Git-hash-verified blob, including matrix selectors. No selector discovery grants carrier availability."
+      },
+      "candidate_workflow_blob": "baae360ad6a73e61874e9319fa6302e2956a9f2e",
+      "fresh_existing_run_readback": {
+        "head": "2d1176f5790d7c345799f2232ac317a1d306d93a",
+        "run_id": 37067987420,
+        "native_windows_jobs": [
+          {
+            "job_id": 111040448529,
+            "labels": [
+              "windows-2025"
+            ],
+            "conclusion": "success",
+            "scope": "SERVER_COMPATIBILITY_ONLY"
+          },
+          {
+            "job_id": 111040448584,
+            "labels": [
+              "windows-11-arm"
+            ],
+            "conclusion": "success",
+            "scope": "WINDOWS_11_ARM64_ONLY"
+          }
+        ],
+        "accepted_as_successor_or_AMD64_client_evidence": false
+      },
+      "runner_inventory_request": {
+        "method": "GET",
+        "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/actions/runners?per_page=100",
+        "outcome": "CONNECTOR_ENDPOINT_NOT_ALLOWED",
+        "observed_error": {
+          "error": "HTTPError: 400: GitHub Fetch URL is not an allowed public GitHub repository or search endpoint. (Response: None)",
+          "error_code": "INVALID_ARGUMENT"
+        },
+        "empty_runner_inventory_proved": false
+      },
+      "callable_tool_surface": {
+        "runner_inventory": [],
+        "workflow_dispatch": []
+      },
+      "authority_content_request": {
+        "method": "GET",
+        "url": "https://api.github.com/repos/Goldkelch/qik-vrt/git/ref/heads/main",
+        "http_status": 404,
+        "scope": "GENERIC_CONTENT_ROUTE; not proof of Authority absence or an unlisted private runner"
+      },
+      "hosted_runner_documentation": {
+        "standard_source": "https://docs.github.com/en/actions/reference/runners/github-hosted-runners",
+        "standard_windows11_amd64_label_documented": false,
+        "larger_source": "https://docs.github.com/en/actions/reference/runners/larger-runners",
+        "base_windows11_desktop_candidate_documented": true,
+        "candidate_provisioned_or_callable_here_verified": false
+      }
+    },
+    "first_blocker": "NATIVE_WINDOWS_11_AMD64_CARRIER_NOT_EXPOSED",
+    "state": "HOLD_NATIVE_WINDOWS_11_AMD64_CARRIER_NOT_EXPOSED",
+    "runner_inventory_complete": false,
+    "carrier_existence_globally_disproved": false,
+    "native_windows11_amd64_dispatch_count": 0,
+    "windows_11_amd64_client_execution_observed": false,
+    "product_target_verified": false,
+    "windows_witness_test": "HOLD",
+    "predecessor_evidence_transfer": false,
+    "architecture_evidence_transfer": false,
+    "personal_release_effect_ack_done": false,
+    "private_state_uploaded": false,
+    "power_loss_proved": false,
+    "governance_gate_independent": true,
+    "reuse": {
+      "observer": "tools/qikvrt_firefox_windows_witness.py",
+      "workflow": ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+      "backend": "src/qikvrt_effect_ack_http_terminal.py",
+      "new_parallel_workflow": false,
+      "seed_state_restart_record_replay_negative_implementation_changed": false
+    },
+    "next_action": "Expose an already authorized supported Windows 11 AMD64 runner/private carrier and callable operation with fresh repository binding; execute the strict existing observer on freshly read exact HEAD/TREE, then independently read job/artifact and every control. No invented label or blind queued job.",
+    "local_validation": {
+      "focused_tests": 66,
+      "focused_result": "PASS",
+      "full_make_test": "PASS",
+      "scope": "CPython 3.12.13 on Linux; candidate-tree and mocked OS admission tests only, not Windows execution",
+      "cache_coverage_percent": 100,
+      "controls_source_changed": false,
+      "historical_fixture_recovery": {
+        "commit": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+        "tree": "10bceed0af444e5704e4c2946402355c0c957e0d",
+        "verification": "Exact REST commit/tree matches locally restored Git objects; tests and source contracts unchanged",
+        "scope": "Local historical fixture only; not current Windows/product evidence"
+      },
+      "full_make_test_exit_code": 0,
+      "full_make_test_log_sha256": "56e9ecce78807140d712df1571c17641059b0b262d0a7c9c3bf853b9ead2ffda",
+      "integrity_before_and_after_full_tests": "PASS",
+      "strict_admission_controls": "Server, unsupported client, ARM64 carrier, missing/mismatched TREE refuse before provisioning or effects; supported AMD64 target reaches only the deliberately stopped provisioning boundary in local simulations",
+      "independent_governance_source_observation": {
+        "head": "2d1176f5790d7c345799f2232ac317a1d306d93a",
+        "context": "QIKVRT requested review execution",
+        "state": "failure",
+        "description": "CODE_OWNER_RULE_NOT_ENFORCED",
+        "run_id": 37077448082,
+        "accepted_as_successor_gate": false
+      }
+    },
+    "modified_payloads": [
+      {
+        "path": "tools/qikvrt_firefox_windows_witness.py",
+        "bytes": 68429,
+        "sha256": "d7d2a76401951dd124b0d0f7375dca271f9be5c6f1ad9e6dc16db889c7c95e0d",
+        "git_blob": "1c9d2f7e65f121138bb9c0a996d752befc4f509d"
+      },
+      {
+        "path": "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json",
+        "bytes": 15835,
+        "sha256": "4a84d4f751638e8861c751a6df75d0104f12e632a17adb97796caabddf7aff52",
+        "git_blob": "b591907bc37f6b9b0a21c6ffd56a0329c655c72a"
+      },
+      {
+        "path": "spec/firefox/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.md",
+        "bytes": 20953,
+        "sha256": "c263fe147f8a9d610987ba7460e5d40dd4c8d16aa72de84afe8aea52de7c5071",
+        "git_blob": "50a565644c891bec65f8f02bb869c628cfebb42b"
+      },
+      {
+        "path": "tests/test_qikvrt_personal_firefox_capability_boundary.py",
+        "bytes": 29673,
+        "sha256": "41ab5d783e176d962c81194cb78e0ba575c0d7963fdc02ee653db00c439dc392",
+        "git_blob": "eeb4e8aae53b7cd5fee515d13c2751428f0301e3"
+      }
+    ]
+  },
+  "windows11_amd64_workflow_attachment_20261003": {
+    "schema": "qikvrt_windows11_amd64_workflow_attachment_v1",
+    "observed_at": "2026-10-03T10:15:25.003205+00:00",
+    "human_actor": "Ingolf Lohmann",
+    "human_contribution": "Authorized history-preserving Main integration and smallest runner/product binding; expressly excluded unauthorized paid provisioning.",
+    "artificial_cognitive_actor": "OpenAI Codex",
+    "artificial_cognitive_contribution": "Fresh API subject/metadata/inventory-boundary reads, conflict-free Main integration, explicit optional dispatch binding, provisioning requirements and admission regression.",
+    "source_head": "1a5787a6c2720e69b96ca3ac58ecfa3f319fe7aa",
+    "source_tree": "d3567f58322006ddc9bec9f1119e6f9b074830f3",
+    "integrated_main": "8704969da54ed9c0ad08d4540ea89aee15d85ae2",
+    "history_preserving_merge_head": "c73f4e4a475f3cbd50a20b3868d9931d9b81571c",
+    "history_preserving_merge_tree": "37ef4ac9f81c771eb173714576fba4c5dea0df5d",
+    "discovery": {
+      "runner_inventory_request": "GET /repos/ingolf-lohmann/qik-vrt/actions/runners",
+      "runner_inventory_result": "CONNECTOR_ENDPOINT_NOT_ALLOWED",
+      "runner_inventory_complete": false,
+      "global_runner_absence_proved": false,
+      "repository_owner_type": "User",
+      "workflow_inventory": {
+        ".github/workflows/issue-agent-autofinish.yml": "2f99e47c1bc2e6bf77720c27a5185b142bb73afc",
+        ".github/workflows/issue-agent-backlog-resume.yml": "42401bdbe53c5fee13f75beced87c7e56196966e",
+        ".github/workflows/issue-autonomous-processing.yml": "0bc763dc2ededa7eb7a37ebb46ad8b29f76b524b",
+        ".github/workflows/publish_ontology_difference_article_zenodo_v3.yml": "1afe5856639ed62c7f174013a614997229ab67fc",
+        ".github/workflows/qikvrt_adaptive_runtime.yml": "c3fce059f331c2987ada61b505992aef39dde4bd",
+        ".github/workflows/qikvrt_audio_request.yml": "e1ec4b7a757f6ece42c379909ee5cc56b58a3d66",
+        ".github/workflows/qikvrt_autonomous_exact_head_verify.yml": "99056f8a4cec9a7fce688e95379b5c6c38df65b0",
+        ".github/workflows/qikvrt_autonomous_pr_continuation.yml": "b138d57fb249f8352c8d4e856e9fc7634a5b81c4",
+        ".github/workflows/qikvrt_autonomous_self_heal.yml": "3bc666cd2164cf24828d195eed89c1d6e1fefcd3",
+        ".github/workflows/qikvrt_batch003_remaining_archive_probe.yml": "0a2cc7322fdcb5220a9ce05987d695d006a4a7d3",
+        ".github/workflows/qikvrt_batch003_remaining_disposition.yml": "701a8d2800ac2773a4b159bee76b07f1ae64864d",
+        ".github/workflows/qikvrt_batch003_subject_172dd_public_probe.yml": "3ee1ff79348e62cf860ef6b649090485fbd8198a",
+        ".github/workflows/qikvrt_batch04_integrity.yml": "1d7cf69a661e17bf41a51d110770dbe9cee5cab4",
+        ".github/workflows/qikvrt_canonical_temporal_memory_zenodo_publish.yml": "e4c66aa0d71c09873c0e902aba10783edf967c5b",
+        ".github/workflows/qikvrt_ci.yml": "61d990bf550bb659cc8165e72ac14e2090db89a0",
+        ".github/workflows/qikvrt_code_owner_review_observer.yml": "5e9c283fb44d6adff58c4f252627482e83252c8d",
+        ".github/workflows/qikvrt_collective_review.yml": "4de3604eb91fefe3fb45dafcacf2d0899b881173",
+        ".github/workflows/qikvrt_combined_batch_002_promotion_head.yml": "350403b2d0190a6761e3d5946d0b77c089f6973f",
+        ".github/workflows/qikvrt_corpus_closure_overlay.yml": "c7ebf0b00920115f80450a7338dd7d4d537848a8",
+        ".github/workflows/qikvrt_corpus_status_temporal_precedence.yml": "b254b7fd4378298e15751b38ed3c46e434bdbd34",
+        ".github/workflows/qikvrt_effect_ack_finalize.yml": "3ebd8a512ecc85c662cb7e33fa1371efb1afc1f3",
+        ".github/workflows/qikvrt_effect_ack_http_terminal.yml": "950389f0622a0d5d4356edcbb6cfdaf59376ada7",
+        ".github/workflows/qikvrt_escape_stages_integrity.yml": "c8fd85d4c59085e9c09161c3f71e7c240c58207a",
+        ".github/workflows/qikvrt_expected_head_promotion.yml": "5e3110e18d08bbb503d41bc0a6746127efc0e5e6",
+        ".github/workflows/qikvrt_formalization_and_audio.yml": "96f07c5b784561fadae29b0a502872cc15f130be",
+        ".github/workflows/qikvrt_formalization_v2_alpha3_publish.yml": "61559dd8b9e0f82967fd2e36f58f0344ce26e157",
+        ".github/workflows/qikvrt_formalization_v2_inspect.yml": "442f9ef19a346ba2a00ff818c1e3c41914eb1652",
+        ".github/workflows/qikvrt_formalization_v2_inventory.yml": "a1a30e1b00c7858d4d3870e5b828e437d78c618c",
+        ".github/workflows/qikvrt_formalization_v2_zenodo.yml": "778dcfc8faf63c7b1a62fa9a26ae318a0c2934c2",
+        ".github/workflows/qikvrt_formalization_v2_zenodo_finalize.yml": "8f43ecbe25c33fc5e3aed4630c5b16f2fbdddd0c",
+        ".github/workflows/qikvrt_global_completion.yml": "9bfaebea499866893da199ef1bc9094485c10fb3",
+        ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml": "1202d24c2f23eb8fa52ab7c562a583e79f9e8444",
+        ".github/workflows/qikvrt_live_status_watch.yml": "81406e0165f391634c0d28bfb3ab60e2a310e779",
+        ".github/workflows/qikvrt_mandelbrot_42_proof_reproduction.yml": "644b613b5069635384c05c06849d84a34580d073",
+        ".github/workflows/qikvrt_manuscript_proof.yml": "b74eecbc791318685286758d01df0c16803c4dcc",
+        ".github/workflows/qikvrt_measurement_derived_dimensions.yml": "9f19bbb609ce9275496e30eea8700e5437664de0",
+        ".github/workflows/qikvrt_measurement_independence_formalization.yml": "37eddbe54fe8e3fd8604bbdacc34d7d14dc8f1a1",
+        ".github/workflows/qikvrt_mesh_api.yml": "7b38260082e98046b0f8da5009104b25ce255e31",
+        ".github/workflows/qikvrt_mesh_authority_edge.yml": "89d9d495809cf43d728b14f0563837243dad20fe",
+        ".github/workflows/qikvrt_mirror_node_lifecycle.yml": "e1a9e3865d7136080cbc1212be011fd0bd2c71ad",
+        ".github/workflows/qikvrt_observer_relative_retrocausality_zenodo_publish.yml": "7eb73d96035101810e2f78cabd02cf99dad04773",
+        ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml": "baae360ad6a73e61874e9319fa6302e2956a9f2e",
+        ".github/workflows/qikvrt_physics_bridge_integrity.yml": "776f821cfbb182aebb46415b4d89557a9ffe9004",
+        ".github/workflows/qikvrt_pr18_integrity_repair.yml": "ef191995ff628bbfa86e5074f9948ca27bac3912",
+        ".github/workflows/qikvrt_pre_spacetime_zenodo_scoped_effect_ack.yml": "024d6dd0f0d827b5c686b1f567045c569c4983ac",
+        ".github/workflows/qikvrt_proof_persistence_integrity.yml": "4052c2acd95cdb032a2ccd109e3143665520887f",
+        ".github/workflows/qikvrt_publication_router.yml": "7c8d6ee6d1f9fe8c7826fe4d177e9c051c64c25e",
+        ".github/workflows/qikvrt_qce_c_measurement_binding.yml": "4038f005fdc842efda149a3118fbfcc4ede4ffea",
+        ".github/workflows/qikvrt_qce_candidate.yml": "cc6698a105b726db7b0b58ccb3b98abb24e4024b",
+        ".github/workflows/qikvrt_qce_causal_axis_bridge.yml": "984fd6d0af66f07a840cd3cc025ea3ec4b61e21a",
+        ".github/workflows/qikvrt_qce_causal_axis_selection.yml": "f4f4aa859ed619465c305ad6334164c9ac3964ba",
+        ".github/workflows/qikvrt_qce_now_serialization.yml": "b5d7a72f01ef94b38e5c07bb9f1ffc9c810eb2de",
+        ".github/workflows/qikvrt_qce_null_calibration_ratio.yml": "7fe9feef36535e1a2c85749145b4ef9c2d3c6ebf",
+        ".github/workflows/qikvrt_reflexive_repository_watchdog.yml": "c3e51de650574e6a67127bedddb533ecf7bed298",
+        ".github/workflows/qikvrt_repository_mesh_sync_tag.yml": "0cf466f8c461aa0293b9ba4c98231fe2f2357ef9",
+        ".github/workflows/qikvrt_requested_review_contract.yml": "7cb6844c19f1eb38be82f475a25acce46ee039d2",
+        ".github/workflows/qikvrt_requested_review_executor.yml": "484fe5c98f333f3fd921789a456571d281e06353",
+        ".github/workflows/qikvrt_required_review_gate.yml": "6882d8071f319749e4eeec9d467cf7bcb6c9ed75",
+        ".github/workflows/qikvrt_round_trip_final_byte_freeze.yml": "ea49531e4e413f5b7314206e93e0153c77f3669c",
+        ".github/workflows/qikvrt_round_trip_prepublication_return.yml": "d5d6a352cfd72a53f2ccb59132012e75bbcdc1db",
+        ".github/workflows/qikvrt_round_trip_zenodo_bundle_freeze.yml": "527dd8a8514452409d777a985abf68ff897088ad",
+        ".github/workflows/qikvrt_round_trip_zenodo_publish.yml": "42388fda524f56286cb145c295ba5d5aa48d441a",
+        ".github/workflows/qikvrt_seed_dashboard_publish.yml": "0121c8eba6470f77c04ded990d147d81b4ee8009",
+        ".github/workflows/qikvrt_seed_mesh_audit_export.yml": "5cb837e66086a8af12a88d930438f84bf1c06be6",
+        ".github/workflows/qikvrt_seed_mesh_maintenance.yml": "10e77c142c0f457c979f01089263aa5af87de9ba",
+        ".github/workflows/qikvrt_seed_node_revalidation.yml": "9fa0fa652d8bc67887e6df0f2733860a3af91573",
+        ".github/workflows/qikvrt_seed_registry_acceptance.yml": "1d98f87c715d4c1e570ab30b961f243428821d60",
+        ".github/workflows/qikvrt_status_report_finalize.yml": "6d92901ac442878d6b02cce7dbe77eaa9c00861b",
+        ".github/workflows/qikvrt_status_report_reserve.yml": "9696b17d1b83345d89e1f534c7812a70df2281a3",
+        ".github/workflows/qikvrt_survival_connectability_zenodo_publish.yml": "ecd668bea4522ebd40aff589b341651fec0d448d",
+        ".github/workflows/qikvrt_universal_ontology_formalization.yml": "3d114676ad85994308a416534ffa67cab74e1dcb",
+        ".github/workflows/qikvrt_universal_ontology_shell_fallback.yml": "1906dd22d7b0a5c11f476dd6befedac26e900454",
+        ".github/workflows/qikvrt_versioned_corrected_candidates.yml": "eddcb4931aaf57818eb02508d2da0e694b4835d6",
+        ".github/workflows/qikvrt_vrtcore_h3_e1_recovery.yml": "9b318e1f0c0949f39d7dc82aaa9e4857e9678c86",
+        ".github/workflows/qikvrt_workflow_executor.yml": "db7c43f50f862300348d4e12dff1fbac531b3be9",
+        ".github/workflows/qikvrt_workflow_executor_watchdog.yml": "f42391f3acbe3f3276df2f2cccd47ddc88fcb6b6",
+        ".github/workflows/qikvrt_zenodo_reserve.yml": "3e0827ea9bd2c0276ade7af2502d687552cfb9c1"
+      },
+      "inventory_scope": "Merged exact candidate workflow blobs; no newly exposed dedicated Windows11 AMD64 or self-hosted selector before this attachment. Full private runner inventory unavailable.",
+      "callable_runner_inventory_tool_exposed": false,
+      "callable_workflow_dispatch_tool_exposed": false
+    },
+    "first_blocker": "NATIVE_WINDOWS_11_AMD64_CARRIER_NOT_EXPOSED",
+    "state": "HOLD_NATIVE_WINDOWS_11_AMD64_CARRIER_NOT_EXPOSED",
+    "workflow_binding_ref": "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json#/windows_acceptance/windows11_amd64_client_measurement/workflow_binding",
+    "provisioning_requirements_ref": "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json#/windows_acceptance/windows11_amd64_client_measurement/provisioning_requirements",
+    "native_client_dispatch_count": 0,
+    "runner_provisioned": false,
+    "billing_effect_authorized": false,
+    "windows_11_amd64_client_execution_observed": false,
+    "product_target_verified": false,
+    "architecture_evidence_transfer": false,
+    "predecessor_evidence_transfer": false,
+    "personal_release_effect_ack_done": false,
+    "controls_implementation_changed": false,
+    "next_action": "Expose and independently verify an existing authorized repository-accessible Windows11 AMD64 runner and callable dispatch; freshly read successor HEAD/TREE and dispatch the existing strict AMD64 lane once, then verify its own job/artifact readback.",
+    "local_validation": {
+      "focused_tests": 67,
+      "focused_result": "PASS",
+      "runtime": "CPython 3.12.14 / Linux",
+      "scope": "Admission and existing regressions; no native Windows execution",
+      "cache_coverage_percent": 100,
+      "full_make_test": "PASS",
+      "full_make_test_exit_code": 0,
+      "full_make_test_log_sha256": "f75b6f2ff69732087f97703907450306b9c9cce4841c87b86cc13c42bc4aad1e",
+      "focused_log_sha256": "ce8c570d7988d88a555aabda323728480e1b495467977082d0c2df9fc2b4b74e",
+      "integrity_before_tests": "PASS"
+    }
+  }
+}

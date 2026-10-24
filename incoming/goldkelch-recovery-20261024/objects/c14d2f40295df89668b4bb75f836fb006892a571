@@ -1,0 +1,80 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "PR415_LOSSLESS_MAIN_INTEGRATION_20261001",
+  "created_at": "2026-10-01T10:04:15Z",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_pr": 415,
+  "source_commit": "bbe594188e4e1b2011409c8464023f54703deb62",
+  "source_tree": "3f6ac444111b5a41fb8aa411af5234209a2668b4",
+  "main_commit": "df1ad4cff32fe62ce54e123c6769f039604b2707",
+  "main_tree": "ccca359ae9d2dd6e9f6e622d1a8384c0ec462a1e",
+  "human_actor": "Ingolf Lohmann",
+  "human_contributions": [
+    "Standing authorization for bounded evidence-based repair and lossless integration"
+  ],
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6",
+    "session_or_run_id": "UNAVAILABLE"
+  },
+  "artificial_cognitive_contributions": [
+    "Reobserved the exact non-mergeable PR head and exact current Main",
+    "Losslessly merged current role-local Main into the existing PR #415 branch",
+    "Preserved all four non-generated PR contribution paths byte-identically",
+    "Regenerated only the three conflicting integrity projections",
+    "Ran fresh complete and focused validation on the merged candidate"
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "inputs": {
+    "old_main": "c3fb7f570c55e4494a88cceae89ed0e42d989191",
+    "conflicts": [
+      "REPOSITORY_FILE_MANIFEST.json",
+      "REPOSITORY_FILE_MANIFEST.json.sha256",
+      "SHA256SUMS.txt"
+    ]
+  },
+  "outputs": [
+    "Containing commit/tree preserves both exact parents",
+    "state/work_units/PR415_LOSSLESS_MAIN_INTEGRATION_20261001.json"
+  ],
+  "git_history": {
+    "force_push": false,
+    "history_rewrite": false,
+    "strategy": "Merge existing PR head with current Main; preserve roadmap policy, protocol, AI entrypoint and work-unit bytes"
+  },
+  "verification": {
+    "integrity": {
+      "result": "PASS",
+      "classified_entries": 3914,
+      "immutable_digests": 3905
+    },
+    "focused_tests": {
+      "result": "PASS",
+      "count": 26,
+      "scope": "HMI adaptation, terminal disposition and AI runtime bootloader"
+    },
+    "make_test": {
+      "result": "PASS",
+      "scope": "Local complete Makefile target on merged working tree"
+    },
+    "hosted_exact_head_tests": "PENDING",
+    "independent_authority_readback": "HTTP_404_HOLD_UNVERIFIED"
+  },
+  "human_decision": {
+    "repair_commit_push_merge": "AUTHORIZED",
+    "native_review": "NOT_INFERRED"
+  },
+  "external_effects": {
+    "release": false,
+    "deployment": false,
+    "publication": false
+  },
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false
+  },
+  "predecessor_evidence_transfer": false
+}

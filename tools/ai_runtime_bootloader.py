@@ -11,6 +11,7 @@ files. Runtime installation and task effects remain separate, explicit actions.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import subprocess
@@ -74,6 +75,112 @@ def load_json_object(path: Path, label: str) -> dict[str, Any]:
 
 def load_context() -> dict[str, Any]:
     return load_json_object(ROOT / "AI_CONTEXT.json", "AI_CONTEXT.json")
+
+
+def load_personal_optimum(context: dict[str, Any]) -> dict[str, Any]:
+    """Bind the Owner's longstanding goal without inventing its inception date."""
+    binding = context.get("owner_personal_optimum", {})
+    policy_name = "policy/OWNER_PERSONAL_OPTIMUM_V1.json"
+    human_name = "docs/OWNER_PERSONAL_OPTIMUM.md"
+    if binding.get("policy") != policy_name or binding.get("human_contract") != human_name:
+        raise BootBlock("personal optimum context binding missing or changed")
+    required = context.get("required_read_order", [])
+    if not {policy_name, human_name, "policy/PERFECT_OPTIMUM_V1.json"} <= set(required):
+        raise BootBlock("personal optimum is disconnected from /AI read order")
+    policy = load_json_object(ROOT / policy_name, policy_name)
+    if (policy.get("schema") != "qikvrt_owner_personal_optimum_v1"
+            or policy.get("owner") != "Ingolf Lohmann"
+            or policy.get("epistemic_class") != "PERSONAL_NORMATIVE_GOAL"):
+        raise BootBlock("personal optimum owner or evidence class changed")
+    statement = policy.get("original_statement", {})
+    text = statement.get("text")
+    if not isinstance(text, str) or not text:
+        raise BootBlock("personal optimum original statement missing")
+    digest = hashlib.sha256(text.encode("utf-8")).hexdigest()
+    if digest != statement.get("utf8_sha256") or digest != binding.get("original_statement_sha256"):
+        raise BootBlock("personal optimum original statement identity changed")
+    chronology = policy.get("chronology", {})
+    if (chronology.get("longstanding_personal_optimum") is not True
+            or chronology.get("recording_date_is_inception_date") is not False
+            or chronology.get("inception_date") is not None):
+        raise BootBlock("personal optimum recording date must not invent its origin")
+    if policy.get("connection", {}).get("canonical_entrypoint") != "AI":
+        raise BootBlock("personal optimum must bind canonical /AI")
+    human = ROOT / human_name
+    if not human.is_file() or text not in human.read_text(encoding="utf-8"):
+        raise BootBlock("personal optimum human original statement missing")
+    claims = policy.get("completion_claims", {})
+    if any(claims.get(k) is not False for k in (
+            "ALL_CLIENTS_ADOPTED", "PERSONAL_OPTIMUM_ACHIEVED", "EFFECT_ACK_DONE")):
+        raise BootBlock("personal optimum source must not claim unobserved effects")
+    return policy
+
+
+def load_recovered_sources(context: dict[str, Any]) -> dict[str, Any]:
+    """Verify an inactive source catalog without executing any archived source."""
+    name = "incoming/goldkelch-recovery-20261024/INDEX.json"
+    binding = context.get("recovered_goldkelch_sources", {})
+    if binding.get("index") != name or name not in context.get("required_read_order", []):
+        raise BootBlock("recovered source catalog disconnected from /AI")
+    root = ROOT / Path(name).parent
+    index = load_json_object(root / "INDEX.json", name)
+    if index.get("schema") != "qikvrt_recovered_source_catalog_v1":
+        raise BootBlock("recovered source catalog schema changed")
+    if index.get("source", {}).get("archive_sha256") != binding.get("source_archive_sha256"):
+        raise BootBlock("recovered source archive identity changed")
+    activation = index.get("activation_contract", {})
+    if (activation.get("catalog_is_not_execution_authority") is not True
+            or any(activation.get(k) is not False for k in (
+                "run_archived_source_automatically", "activate_historical_workflows",
+                "overwrite_current_authority_files", "claim_live_mesh_from_source_presence"))):
+        raise BootBlock("recovered source cannot grant historical execution authority")
+    if any(index.get("completion_claims", {}).get(k) is not False for k in (
+            "ALL_GOLDKELCH_LIVE_DATA_RECOVERED", "ALL_ARCHIVED_FEATURES_ACTIVE", "EFFECT_ACK_DONE")):
+        raise BootBlock("recovered source cannot claim unobserved completeness or effects")
+    objects: dict[str, int] = {}
+    versions = 0
+    for page in index.get("file_pages", []):
+        if not isinstance(page, str) or not re.fullmatch(r"files-[0-9]{3}\.json", page):
+            raise BootBlock("unsafe recovered source page")
+        entries = load_json_object(root / page, page).get("entries", [])
+        if not isinstance(entries, list):
+            raise BootBlock("malformed recovered source page")
+        versions += len(entries)
+        for item in entries:
+            if item.get("disposition") != "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED":
+                continue
+            blob = item.get("source_blob", "")
+            if (not re.fullmatch(r"[0-9a-f]{40}", blob)
+                    or item.get("object_path") != "objects/" + blob):
+                raise BootBlock("unsafe recovered source object binding")
+            path = root / "objects" / blob
+            if path.is_symlink() or not path.is_file():
+                raise BootBlock("recovered source object missing or symlinked")
+            data = path.read_bytes()
+            observed = hashlib.sha1(b"blob " + str(len(data)).encode() + b"\0" + data).hexdigest()
+            if (observed != blob or hashlib.sha256(data).hexdigest() != item.get("sha256")
+                    or len(data) != item.get("bytes")):
+                raise BootBlock("recovered source original bytes changed")
+            objects[blob] = len(data)
+    comparison = index.get("comparison", {})
+    if (versions != comparison.get("absent_path_versions")
+            or len(objects) != comparison.get("inactive_original_blobs_preserved")
+            or sum(objects.values()) != comparison.get("inactive_original_bytes")):
+        raise BootBlock("recovered source coverage changed")
+    refs = {}
+    for page in index.get("ref_pages", []):
+        if not isinstance(page, str) or not re.fullmatch(r"refs-[0-9]{3}\.json", page):
+            raise BootBlock("unsafe recovered ref page")
+        for item in load_json_object(root / page, page).get("refs", []):
+            ref, oid = item.get("ref", ""), item.get("object", "")
+            if not ref.startswith("refs/") or not re.fullmatch(r"[0-9a-f]{40}", oid) or ref in refs:
+                raise BootBlock("malformed or duplicate recovered ref binding")
+            refs[ref] = oid
+    if len(refs) != index.get("source", {}).get("refs"):
+        raise BootBlock("recovered ref coverage changed")
+    return {"index": name, "inactive_objects_byte_verified": len(objects),
+            "inactive_bytes_verified": sum(objects.values()), "historical_refs_bound": len(refs),
+            "archived_source_executed": False, "live_completeness_inferred": False}
 
 
 def load_bootstrap_corpus() -> dict[str, Any]:
@@ -195,11 +302,22 @@ def main() -> int:
 
     try:
         context = load_context()
+        personal_optimum = load_personal_optimum(context)
+        recovered_sources = load_recovered_sources(context)
         corpus = load_bootstrap_corpus()
         adaptation_policy, adaptation_matrix = load_interface_adaptation()
         artifacts = corpus["source_artifacts"]
         untranscribed = [item for item in artifacts if item.get("content_status") == "UNTRANSCRIBED"]
         report["context_id"] = context.get("context_id", "unknown")
+        report["recovered_sources"] = recovered_sources
+        report["owner_personal_optimum"] = {
+            "owner": personal_optimum["owner"],
+            "original_statement": personal_optimum["original_statement"],
+            "chronology": personal_optimum["chronology"],
+            "epistemic_class": personal_optimum["epistemic_class"],
+            "source_binding_verified": True,
+            "peer_adoption_inferred": False,
+        }
         report["knowledge_corpus"] = {
             "corpus_id": corpus.get("corpus_id"),
             "artifact_count": len(artifacts),

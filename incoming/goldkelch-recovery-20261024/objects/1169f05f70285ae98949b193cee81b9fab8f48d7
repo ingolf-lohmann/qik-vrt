@@ -1,0 +1,23 @@
+{
+  "authors": [
+    "Kim Morrison"
+  ],
+  "component": "lean4checker replay routine",
+  "copyright": "Copyright (c) 2023 Kim Morrison. All rights reserved.",
+  "effect_ack_done": false,
+  "external_effect": false,
+  "license": "Apache-2.0",
+  "license_text_ref": "LICENSES/Apache-2.0.txt",
+  "modifications": [
+    "Added SPDX-License-Identifier: Apache-2.0 comment; implementation bytes unchanged."
+  ],
+  "reuse_reason": "The existing SHA-bound object verifier explicitly does not kernel-check objects. Reuse upstream native-kernel declaration replay instead of implementing another typechecker; execute through the already locked Lean component.",
+  "schema": "qikvrt_third_party_source_provenance_v1",
+  "source_commit": "91a7f0e8e9dffe927089f5a6edcfeeb8a0e07709",
+  "source_path": "Lean4Checker/Replay.lean",
+  "source_repository": "https://github.com/leanprover/lean4checker",
+  "source_sha256": "7decb4f442215ffa9866d0801fc4eb8d21ba584334b5d662829bc595a848e60c",
+  "vendored_path": "third_party/lean4checker/Replay.lean",
+  "vendored_sha256": "e1b78fb254146408edfb2048893f2b051f359290765039596125b4aefd2c7086",
+  "verification": "Fresh compile with locked Lean 4.19.0; replay safe project declarations into separately loaded Std at trust level zero; compiler-only unsafe/partial auxiliaries cannot bind as proof/statement/registry constants; reject nonallowlisted proof axioms."
+}

@@ -1,0 +1,68 @@
+{
+  "schema": "qikvrt-monitor-server-deployment-capability/v1",
+  "recorded_at": "2026-10-04T15:36:31.884Z",
+  "state": "HOLD_RAILWAY_SERVER_CREDENTIAL_UNAVAILABLE",
+  "subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "source_head": "674aa35ec0659119a19cda66b88f32050e34f105",
+    "source_tree": "5100b66a299ded9ecb64622d2d36a5a77ef1f85d",
+    "service_id": "dc3773e0-d057-4779-b9c1-9ca0f2074f69"
+  },
+  "current_execution_environment": {
+    "RAILWAY_TOKEN": "ABSENT",
+    "RAILWAY_API_TOKEN": "ABSENT",
+    "known_default_railway_credential_files": "ABSENT",
+    "server_credential_used": false,
+    "authenticated_railway_api_permission": "NOT_ESTABLISHED"
+  },
+  "github_actions_secret_availability": "NOT_INSPECTABLE_WITH_AVAILABLE_CONNECTOR; workflow references only named, already authorized server secrets",
+  "connector_route": {
+    "read_capability": "OBSERVED",
+    "deployment_route": "INTERACTIVE_CLIENT_ADMISSION; NOT_A_SERVER_CREDENTIAL",
+    "prior_accept_deploy_result": "Cancelled \u2014 the user did not approve this action. No changes were made.",
+    "prior_result_source": "Fresh PR456 body at parent exact head; this session did not repeat accept-deploy."
+  },
+  "remaining_effects": {
+    "railway_dispatches_this_session": 0,
+    "staged_patch_id": "9d4860c4-5003-48ef-a07f-d383f303b539",
+    "patch_status": "STAGED",
+    "latest_service_deployment_id": "278211b2-3d12-4bc6-8d56-ffdfb7590a7a",
+    "latest_service_deployment_created_at": "2026-09-19T05:14:47.567Z",
+    "volume_state": "STAGED_CREATE_NOT_YET_PROVISIONED",
+    "public_exact_source_verified": false,
+    "independent_public_client_readback_verified": false,
+    "main_workflow_integration": "NOT_PERFORMED_NO_MERGE_AUTHORIZED"
+  },
+  "public_probe": {
+    "health": {
+      "http_status": 200,
+      "response_bytes": 0,
+      "response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "json_binding": "NOT_AVAILABLE"
+    },
+    "api_node": {
+      "state": "READBACK_NOT_ESTABLISHED",
+      "failure_class": "HTTP_ERROR_NO_SOURCE_BINDING"
+    },
+    "scope": "Anonymous bounded HTTP read; an empty health response is not candidate acceptance."
+  },
+  "causal_blocker": "No server-side Railway bearer/project credential is accessible to this executor. A read-capable connector session and the owner's deployment instruction do not supply that credential.",
+  "retry_condition": "The existing runner receives exactly one already authorized Railway credential with access to this environment and patch/deploy operation; its GitHub token permits the create-only claim. Preserve all repository governance.",
+  "next_action": "Run the fixed repository-native controller on the existing service with that server capability; use the same one-shot claim and fresh independent readback. Without it, retain this HOLD.",
+  "credential_values_in_evidence": false,
+  "merge_performed": false,
+  "governance_weakened": false,
+  "PREDECESSOR_EVIDENCE_TRANSFER": false,
+  "effect_ack_done": false,
+  "native_runner_observation": {
+    "state": "HOLD_RAILWAY_SERVER_CREDENTIAL_UNAVAILABLE",
+    "executor_head": "af44ec730bbc533b8fc4141251c604a71312a08b",
+    "source_head": "674aa35ec0659119a19cda66b88f32050e34f105",
+    "run_id": 37214947185,
+    "artifact_id": 11307639385,
+    "mutation_count": 0,
+    "receipt_record": "evidence/monitor_deploy/NATIVE_DEPLOY_HOLD_37214947185.json",
+    "scope": "Neither named Railway credential is available to this exact GitHub execution; future secret availability is not inferred."
+  },
+  "recorded_native_readback_at": "2026-10-04T16:03:24.577124+00:00"
+}

@@ -1,0 +1,47 @@
+{
+  "$id": "qikvrt_invariant_audit_v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "class": {
+      "enum": [
+        "FORMAL",
+        "STRUCTURAL",
+        "STATE",
+        "TEMPORAL",
+        "SECURITY",
+        "EPISTEMIC",
+        "RUNTIME",
+        null
+      ]
+    },
+    "invariant_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "schema": {
+      "const": "qikvrt_invariant_audit_v1"
+    },
+    "statement": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "status": {
+      "enum": [
+        "PASS",
+        "HOLD",
+        "FAIL"
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "invariant_id",
+    "statement",
+    "status"
+  ],
+  "type": "object"
+}

@@ -1,0 +1,23 @@
+{
+  "version": "2.9",
+  "network_mode": "authorized_opt_in_tcpip",
+  "loopback_reference": "127.0.0.1:ephemeral",
+  "peer_request": "QIKVRT_SELFTEST_SANITY",
+  "authorization_required": true,
+  "remote_mutation_allowed": false,
+  "scanning_allowed": false,
+  "peers": [
+    {
+      "id": "repo-alpha",
+      "guid": "12345678-1234-4abc-8def-123456789abc",
+      "opt_in": true,
+      "authorized": true
+    },
+    {
+      "id": "repo-beta",
+      "guid": "87654321-4321-4abc-8def-abcdef123456",
+      "opt_in": true,
+      "authorized": true
+    }
+  ]
+}

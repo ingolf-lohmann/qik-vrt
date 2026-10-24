@@ -1,0 +1,171 @@
+{
+  "schema": "qikvrt_publication_staging_return_receipt_v1",
+  "candidate_id": "arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1",
+  "source_head": "a2dbd3ac25c2935a022ea8ef54d95912e34035f7",
+  "source_tree": "377df23cdc2816629332dc5f8e95834ad79687d0",
+  "returned_artifacts": [
+    {
+      "path": ".gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "git_blob_sha1": "fa1385d99a319b43c06f5309d1aae9fdd3adea46"
+    },
+    {
+      "path": "BUILD_VALIDATION.json",
+      "bytes": 8286,
+      "sha256": "43ed345af01a00256640b3babc4dc38f392592109d5f94d7565a40874823827a",
+      "git_blob_sha1": "b28bd7eaf94b11f4211dde2c11b59647d5a7faf1"
+    },
+    {
+      "path": "CHANGE_NOTICE.md",
+      "bytes": 1293,
+      "sha256": "3998dcb0f6422435e8ae06f55e69ea37893eb0c6cd14d9f09ebecec3c636f46f",
+      "git_blob_sha1": "0a931bcddb959888778b2679f7fadaa91343c5e1"
+    },
+    {
+      "path": "CLAIM_MATRIX.json",
+      "bytes": 19350,
+      "sha256": "c740097bc00b22826428446b26fbd9996dbb5b728efbe0c006661904956f7f8f",
+      "git_blob_sha1": "6b20dcdedd577f790baa03822c254e5ace12be9e"
+    },
+    {
+      "path": "METHOD_CLAIM_BOUNDARIES.md",
+      "bytes": 4775,
+      "sha256": "53b7adcd602ba8fe47de8abc08593246a8170a56aea1196670bfd6c6e2b791fb",
+      "git_blob_sha1": "57445d1e042823e1b31e4c038a4392c42f8581c5"
+    },
+    {
+      "path": "PDF_RENDER_VALIDATION.json",
+      "bytes": 1571,
+      "sha256": "f3ee7eef86447c0f8b5202813134aa1bbef640b16ad40ca61c69f99851f64c73",
+      "git_blob_sha1": "d26bf86f9ee36ae64cb1bf24572d134714cdff13"
+    },
+    {
+      "path": "SOURCE_GIT_CAPSULE.json",
+      "bytes": 219179,
+      "sha256": "c0a11130a090fb4fccc342aff70c6b10f74c7a87e3e97c7630eed441e9783f65",
+      "git_blob_sha1": "f94a758555f068920637e41cf76ca207fe7c5a07"
+    },
+    {
+      "path": "SOURCE_PROVENANCE.json",
+      "bytes": 8096,
+      "sha256": "86f5ef8c36c5d53d4e92c9b68db2af79690dc3f2e469505d883d7d2dba7f5a00",
+      "git_blob_sha1": "9b8b7d5ee8abfbbe9f113dbcdea13eb451ba17ef"
+    },
+    {
+      "path": "STAGING_README.md",
+      "bytes": 1739,
+      "sha256": "dbaf3213b1393224ee4aed6e1c136133eb75b44505f06417cb90aa5f9f64cb17",
+      "git_blob_sha1": "edcf1f06edb9bfe63a14677267b51c3df504e498"
+    },
+    {
+      "path": "XELATEX_BUILD_LOG.txt",
+      "bytes": 58469,
+      "sha256": "8451c251d988339f5dd09ecd7e74b135df3040417bfdbd1729bd93cf9d965a82",
+      "git_blob_sha1": "c02d5f732664e988db2c8e08bc43678327a0c81b"
+    },
+    {
+      "path": "appendix.tex",
+      "bytes": 18024,
+      "sha256": "ef2a9c3228e261695f997df0d0ce934d11a0470efebba4c740acc127aca8ab75",
+      "git_blob_sha1": "72bf011c6b0150a9a8c46969d9cc7ad218a74b6b"
+    },
+    {
+      "path": "arxiv-source.tar.gz",
+      "bytes": 34338,
+      "sha256": "52a6f8418c4e08d1139ae064f85c51ceae2bf2d96d21fe7209a1faf1a6fea562",
+      "git_blob_sha1": "93814a49678b680337e7a00923e9c96096991449"
+    },
+    {
+      "path": "arxiv_submission_manifest.json",
+      "bytes": 10423,
+      "sha256": "b5d16052e64a983c0d070b796312ea1dff13801e4d40fc11b399f0b1a18e65dd",
+      "git_blob_sha1": "d256ba4e871455a89c3c8aa7d799d701a97f615f"
+    },
+    {
+      "path": "build.py",
+      "bytes": 10252,
+      "sha256": "3c97559ea0c0a7b5f0f457b8eab0b8582908466c9d98835037b9b49428857f26",
+      "git_blob_sha1": "708e1fe3f7c61371ab6fb594879a9204ab589e24"
+    },
+    {
+      "path": "claim-scope.tex",
+      "bytes": 8989,
+      "sha256": "c261339c14798727c4ebaedce71fcbadedf496484d2788ca5bfeb0aab293ac53",
+      "git_blob_sha1": "08e44a584d8b0972ca1d891030c9191644cc3aa0"
+    },
+    {
+      "path": "delivery.tex",
+      "bytes": 21214,
+      "sha256": "e6116879d193b65490e2a2d667b7c05ab1d42dec321277c7d0660eb2ffb7a7a3",
+      "git_blob_sha1": "a38d67c8985f3f45800a9468da45870705b28c95"
+    },
+    {
+      "path": "main.pdf",
+      "bytes": 596934,
+      "sha256": "7e386094ffee003edc095ab6fb4258690fbb60813cb2e05dcdc60961a468613c",
+      "git_blob_sha1": "45e4ffae62c4e3f6911ddd557b783a553d99b99d"
+    },
+    {
+      "path": "main.tex",
+      "bytes": 5383,
+      "sha256": "0fc02baf62c8b657780325ee2f0dcb5ef285bcb0b0960ba06a077bfea79609c3",
+      "git_blob_sha1": "cd41a3687cf3db39497e97bc75a145a8780007d9"
+    },
+    {
+      "path": "measurements.tex",
+      "bytes": 10258,
+      "sha256": "268091f9667059b71d6dea6c96d8f7cd15e154324dafc5a4c3d3c40d3bad6529",
+      "git_blob_sha1": "a6cef01487e903f3a8cb0a7a712779082f867703"
+    },
+    {
+      "path": "orientation.tex",
+      "bytes": 5032,
+      "sha256": "18b21bbddcd1d3ab08d822183f9725ac8a44f9cc90ddcf592d381372920cc085",
+      "git_blob_sha1": "79b568e4f6157f7e92357e389586552ecc90c744"
+    },
+    {
+      "path": "theory.tex",
+      "bytes": 23473,
+      "sha256": "70915330b7ffeab6ea534b02bb368f8c34bd96773e666edb4e20c38dbfb1f861",
+      "git_blob_sha1": "8f68433c6a63faa0578a61528f05e45ac1c5ca23"
+    },
+    {
+      "path": "verify_staging.py",
+      "bytes": 4853,
+      "sha256": "abc831877d9d96199ed2140ff25caf131ce7268c4cf382197ad7e842748fb801",
+      "git_blob_sha1": "706a7ad19a3d08d4ee46b5c45b88ad8b1208bce5"
+    }
+  ],
+  "source_capsule_verification": {
+    "path": "SOURCE_GIT_CAPSULE.json",
+    "bytes": 219179,
+    "sha256": "c0a11130a090fb4fccc342aff70c6b10f74c7a87e3e97c7630eed441e9783f65",
+    "git_blob_sha1": "f94a758555f068920637e41cf76ca207fe7c5a07",
+    "native_validator": "tools/qikvrt_integrity.py:load_portable_git_source_capsule + cross_check_portable_git_source_capsule",
+    "selected_paths": 9,
+    "objects": 18,
+    "result": "PASS_SELECTED_SOURCE_CLOSURE_ONLY"
+  },
+  "protected_original_artifacts": [
+    {
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/QIK-VRT_Die_wirksame_Kontinuitaet_Gesamtausgabe_2026-10-03.pdf",
+      "bytes": 189440,
+      "sha256": "c82e9182dc2b6068b2d7a70edbd4c3696557813aa8859e92c72a865a46256cce",
+      "git_blob_sha1": "053259060c1d495d3e6a99537342dfb1888eebc5"
+    },
+    {
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/QIK-VRT_Gesamtausgabe_Quellen_Pruefpaket_2026-10-03.zip",
+      "bytes": 1416550,
+      "sha256": "ed6a224db353c7bacb3b24f2231feb2eb4ea992affa10d397937a0ff074246b4",
+      "git_blob_sha1": "e0338b71a415c8a1165f4ccc894acf27ae084e62"
+    }
+  ],
+  "human_review_status": "PENDING_FOR_NEW_CANDIDATE",
+  "publication": "NOT_SUBMITTED",
+  "owner_authorization_for_original_pdf_zip_transferred": false,
+  "action_time_upload_authorization": "ABSENT",
+  "zenodo_authorization_consumed": false,
+  "effect_ack_done": false,
+  "scope": "review staging return only; not the Zenodo v2/v3 production return/activation/upload contract"
+}

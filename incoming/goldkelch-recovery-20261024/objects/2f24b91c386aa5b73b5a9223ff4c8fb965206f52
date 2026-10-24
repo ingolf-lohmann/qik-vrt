@@ -1,0 +1,309 @@
+{
+  "_license": {
+    "classification": "machine_readable_proof_bundle",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "artifacts": [
+    {
+      "git_blob_sha1": "0331573a007acdceeac87134ab8eab523ab6fd57",
+      "kind": "SOURCE",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/ARCHIVE_MANIFEST.json",
+      "sha256": "770e898745ddabec84d8beefdca38571949082a75200db074bdc36136f46aa59"
+    },
+    {
+      "git_blob_sha1": "8e829703a0939b037a44ebd0784a944263df649b",
+      "kind": "OTHER",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/CLAIM_MATRIX.json",
+      "sha256": "d4d4fd470d7dd9426a79b52b9ebd07eae05abf6feccfce43a9acfe83bc59e0ed"
+    },
+    {
+      "git_blob_sha1": "228ab9c84f33ed3af528b09eba65ed4845598c2c",
+      "kind": "CLAIM_MATRIX",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/CLAIM_MATRIX_V2.json",
+      "sha256": "fb9fe18be03c23eaa58bc5747bc3617d574bf75f9e3b186da600a05d48df1b6c"
+    },
+    {
+      "git_blob_sha1": "302fa52150b29a2e562200986f5a10e9bee82255",
+      "kind": "EVIDENCE",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/SOURCE_EVIDENCE_BINDINGS.json",
+      "sha256": "4677c2abf16af461f9f404ebad3293bfff4e3334c3e387f861ca2a4e86ed6e6e"
+    },
+    {
+      "git_blob_sha1": "7ceb083429e5e5cbd72aba0711e3547c050cf036",
+      "kind": "SOURCE",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/ORIGIN_AND_PUBLICATION_STATUS.json",
+      "sha256": "90974089852b2b810244e8acd9f2e4bacd02eaf62f88729e87e1557170c86b10"
+    },
+    {
+      "git_blob_sha1": "b2673a73053333eba99606f376ab772af9bbd3f2",
+      "kind": "OTHER",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/FROZEN_UPLOAD_CANDIDATE.json",
+      "sha256": "ccaeebe732f181fe479855fa2cf71ee74495e2735522d58398140ddaf83b6572"
+    },
+    {
+      "git_blob_sha1": "5c087314f31c16a537af8e1a1d24f0adb3b94cad",
+      "kind": "OTHER",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/RETURN_TO_OWNER.md",
+      "sha256": "5e643801fcb280e72350509b3dfbbd94e3a213f308eda3e4b083f876c9400ad6"
+    },
+    {
+      "git_blob_sha1": "c37c491043d6784683f7b925071b30f970fc6aa0",
+      "kind": "BOUNDARY_TEST",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/BOUNDARY_TEST_REPORT.json",
+      "sha256": "747f5082b4337c831b3b06f7caa50d1910a72434a7958a56a071fea5a002abdb"
+    },
+    {
+      "git_blob_sha1": "02f4a1f89eaa4f4203c1727b6d2ad6507fb7a1f5",
+      "kind": "RETURN_RECEIPT",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/PREPUBLICATION_RETURN_RECEIPT.json",
+      "sha256": "4f7a05f4deb082949e8bc5ac01d13db1f8bea0643b80ebabf2d38601ce6b60b5"
+    }
+  ],
+  "candidate": {
+    "files": [
+      {
+        "bytes": 5030,
+        "git_blob_sha1": "49e2748ba0aee1cbf58220cdf1fc85c04de25a67",
+        "name": "README.md",
+        "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/README.md",
+        "role": "PRIMARY",
+        "sha256": "e984d34ec6509c78016988349e5ea82b92eab99786f3583113fe1a4980619b2e"
+      },
+      {
+        "bytes": 537515,
+        "git_blob_sha1": "516996dbfc79375f8a7f0954d99a6b462156cfdc",
+        "name": "IMG_1096.jpeg",
+        "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/originals/IMG_1096.jpeg",
+        "role": "SUPPLEMENT",
+        "sha256": "fb8e50dddbdcb44fff569060c6942b03ab5a8a329fc836c18b9951e6c2cd6f02"
+      },
+      {
+        "bytes": 415168,
+        "git_blob_sha1": "49e32ac369cfab3194bcafe6e65b50c217cbaf69",
+        "name": "IMG_1097.jpeg",
+        "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/originals/IMG_1097.jpeg",
+        "role": "SUPPLEMENT",
+        "sha256": "156c7029b7a4e2388f47a3cf1707dbbc7c79a98041eb224b8374ae35f7cb25fb"
+      },
+      {
+        "bytes": 347424,
+        "git_blob_sha1": "a20622e70b8574f1ebdd5826f2184605931c2703",
+        "name": "IMG_1098.jpeg",
+        "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/originals/IMG_1098.jpeg",
+        "role": "SUPPLEMENT",
+        "sha256": "a060f5895f3c2cfd2170c0f9d23d45267ee865fcfc93de828adaa42f4300345c"
+      },
+      {
+        "bytes": 387781,
+        "git_blob_sha1": "10464666e58aebcbc26df9f386bea9fc802b3696",
+        "name": "IMG_1099.jpeg",
+        "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/originals/IMG_1099.jpeg",
+        "role": "SUPPLEMENT",
+        "sha256": "c59575a5f55bf6113e8e1139615c7c734e69de661f8e57d9b5eb6c1586ee12d1"
+      },
+      {
+        "bytes": 412525,
+        "git_blob_sha1": "feebe67861403377caf3148f1914c18ebc43c5d3",
+        "name": "IMG_1100.jpeg",
+        "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/originals/IMG_1100.jpeg",
+        "role": "SUPPLEMENT",
+        "sha256": "a7e9dd934e5e94c543899cfec90c0b357c10e2ac2f9a1f99731e902ceb9d7609"
+      },
+      {
+        "bytes": 388429,
+        "git_blob_sha1": "7d3c351cd302316706110d6bb98a79d90ec3f0fd",
+        "name": "IMG_1101.jpeg",
+        "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/originals/IMG_1101.jpeg",
+        "role": "SUPPLEMENT",
+        "sha256": "1bf3df251bbdb14218dcfb1cabec6c77d87ea771b195e9c75ac64e0ea2a2e8a9"
+      },
+      {
+        "bytes": 1657,
+        "git_blob_sha1": "692343116070ccbcbd09c5055d99727474c6b45e",
+        "name": "ZENODO_METADATA_V2.json",
+        "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/ZENODO_METADATA_V2.json",
+        "role": "SUPPLEMENT",
+        "sha256": "e2379c87bb8fde78a1fa239a53a50eb916a052f3413f9bcf33a947cfa54e2819"
+      }
+    ],
+    "primary_document_path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/README.md"
+  },
+  "claims": [
+    {
+      "claim_id": "QIKVRT-ORIGINAL-01",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Sichtbarer Inhalt genau der Datei IMG_1096.jpeg; keine zusätzliche physikalische oder formale Beweisbehauptung.",
+      "source_refs": [
+        "docs/publications/2026-10-02-qik-vrt-originalskizzen/SOURCE_EVIDENCE_BINDINGS.json#SOURCE-QIKVRT-ORIGINAL-01"
+      ],
+      "statement": "Kopfprofil mit Pfeilen zwischen „Alles“, „Einbildung“ und „Wahrheit“; ergänzende Notizen zu Zeit und Information.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "QIKVRT-ORIGINAL-02",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Sichtbarer Inhalt genau der Datei IMG_1097.jpeg; keine zusätzliche physikalische oder formale Beweisbehauptung.",
+      "source_refs": [
+        "docs/publications/2026-10-02-qik-vrt-originalskizzen/SOURCE_EVIDENCE_BINDINGS.json#SOURCE-QIKVRT-ORIGINAL-02"
+      ],
+      "statement": "Zeit-/Takt-Skizze mit „Information ↔ Wissen ↔ Macht“, I-Indizes und unterschiedlich angeordneten Zahlenmengen.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "QIKVRT-ORIGINAL-03",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Sichtbarer Inhalt genau der Datei IMG_1098.jpeg; keine zusätzliche physikalische oder formale Beweisbehauptung.",
+      "source_refs": [
+        "docs/publications/2026-10-02-qik-vrt-originalskizzen/SOURCE_EVIDENCE_BINDINGS.json#SOURCE-QIKVRT-ORIGINAL-03"
+      ],
+      "statement": "Gegenläufige Pfeile bündeln sich auf eine zentrale Verbindung zwischen den binären Mengen {0,1} und {1,0}.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "QIKVRT-ORIGINAL-04",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Sichtbarer Inhalt genau der Datei IMG_1099.jpeg; keine zusätzliche physikalische oder formale Beweisbehauptung.",
+      "source_refs": [
+        "docs/publications/2026-10-02-qik-vrt-originalskizzen/SOURCE_EVIDENCE_BINDINGS.json#SOURCE-QIKVRT-ORIGINAL-04"
+      ],
+      "statement": "Rückkopplungsskizze mit „AD/DA“, „CFO“, „DevOps“, binären Angaben, „400“ sowie Euro- und Dollarzeichen.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "QIKVRT-ORIGINAL-05",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Sichtbarer Inhalt genau der Datei IMG_1100.jpeg; keine zusätzliche physikalische oder formale Beweisbehauptung.",
+      "source_refs": [
+        "docs/publications/2026-10-02-qik-vrt-originalskizzen/SOURCE_EVIDENCE_BINDINGS.json#SOURCE-QIKVRT-ORIGINAL-05"
+      ],
+      "statement": "Doppelhelix, Mensch und Sonne mit Informationspfeilen; Beschriftungen zu Raumzeit, Leben, reflexiver Relation und SQL.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "QIKVRT-ORIGINAL-06",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Sichtbarer Inhalt genau der Datei IMG_1101.jpeg; keine zusätzliche physikalische oder formale Beweisbehauptung.",
+      "source_refs": [
+        "docs/publications/2026-10-02-qik-vrt-originalskizzen/SOURCE_EVIDENCE_BINDINGS.json#SOURCE-QIKVRT-ORIGINAL-06"
+      ],
+      "statement": "Kopfprofil mit Schleife und Spirale; Notizen zu Realität, Mathematik (∞, 0) sowie Physik und Heisenberg.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "QIKVRT-ORIGINAL-CREATOR",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Selbstzuordnung des Urhebers in seinem Archivierungs- und Veröffentlichungsauftrag; kein eigenständiger biometrischer Identitätsnachweis.",
+      "source_refs": [
+        "docs/publications/2026-10-02-qik-vrt-originalskizzen/SOURCE_EVIDENCE_BINDINGS.json#SOURCE-QIKVRT-ORIGINAL-CREATOR"
+      ],
+      "statement": "Ingolf Lohmann ordnet die sechs Skizzen ausdrücklich seiner eigenen Handschrift und Urheberschaft zu.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "QIKVRT-ORIGINAL-PURPOSE",
+      "classification": "NORMATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "NORMATIVE_DECLARATION",
+      "scope": "Vom Urheber angegebener gemeinsamer Dokumentationszweck.",
+      "source_refs": [
+        "docs/publications/2026-10-02-qik-vrt-originalskizzen/SOURCE_EVIDENCE_BINDINGS.json#SOURCE-QIKVRT-ORIGINAL-PURPOSE"
+      ],
+      "statement": "Die Wirkungsweise von QIK VRT universal anschlussfähig zu erläutern.",
+      "status": "DECLARED"
+    },
+    {
+      "claim_id": "QIKVRT-ORIGINAL-READING",
+      "classification": "INTERPRETATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "INTERPRETATIVE_DECLARATION",
+      "scope": "Dokumentarische und konzeptionelle Lesart der sechs Blätter; fachliche Bestätigung einzelner Modelle wird durch dieses Archiv nicht abgeleitet.",
+      "source_refs": [
+        "docs/publications/2026-10-02-qik-vrt-originalskizzen/SOURCE_EVIDENCE_BINDINGS.json#SOURCE-QIKVRT-ORIGINAL-READING"
+      ],
+      "statement": "Die begrifflichen und graphischen Zusammenhänge der Originalskizzen werden als Erläuterungen des Urhebers archiviert.",
+      "status": "DECLARED"
+    },
+    {
+      "claim_id": "QIKVRT-ORIGINAL-BYTES",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [
+        "docs/publications/2026-10-02-qik-vrt-originalskizzen/SOURCE_EVIDENCE_BINDINGS.json#READBACK-SIX-ORIGINALS"
+      ],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Sechs Originaldateien dieses Dokumentationssatzes.",
+      "source_refs": [
+        "docs/publications/2026-10-02-qik-vrt-originalskizzen/SOURCE_EVIDENCE_BINDINGS.json#SOURCE-QIKVRT-ORIGINAL-BYTES"
+      ],
+      "statement": "Alle sechs archivierten Originaldateien stimmen bytegenau mit den materialisierten aktuellen Quellen und den archivierten SHA-256-Digests überein.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "QIKVRT-ORIGINAL-CAPTURE-DATE",
+      "classification": "OPEN",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "EXPLICITLY_OPEN",
+      "scope": "Unterscheidung zwischen Archivdatum, Uploaddatum und tatsächlicher Anfertigung beziehungsweise Aufnahme.",
+      "source_refs": [
+        "docs/publications/2026-10-02-qik-vrt-originalskizzen/SOURCE_EVIDENCE_BINDINGS.json#SOURCE-QIKVRT-ORIGINAL-CAPTURE-DATE"
+      ],
+      "statement": "Anfertigungs- und Aufnahmezeitpunkte der handschriftlichen Skizzen sind für diesen Dokumentationssatz noch nicht nachgewiesen.",
+      "status": "OPEN"
+    }
+  ],
+  "completion_claims": {
+    "machine_proof_complete": true,
+    "zenodo_upload_authorized": true
+  },
+  "gates": {
+    "all_claims_dispositioned": true,
+    "all_references_resolve": true,
+    "candidate_frozen": true,
+    "formal_claims_have_kernel_receipts": true,
+    "open_claims_not_worded_as_facts": true,
+    "proof_bundle_in_upload_fileset": true,
+    "returned_bytes_equal_upload_bytes": true
+  },
+  "policy": {
+    "git_blob_sha1": "e9578d30d22f845e7df684128dcd9332641c00be",
+    "id": "qikvrt-zenodo-machine-proof-before-publication-v2",
+    "path": "policy/zenodo-machine-proof-policy-v2.json",
+    "sha256": "933d6322a1e294848c6385d1384ab0ec3862c8675ebe35ec2fc4cad3e0baec47",
+    "version": "2.0.0"
+  },
+  "prepublication_return": {
+    "candidate_returned_to_owner": true,
+    "change_notice_path": null,
+    "content_changed": false,
+    "receipt_path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/PREPUBLICATION_RETURN_RECEIPT.json"
+  },
+  "publication_id": "qikvrt-original-sketches-20261002-v1",
+  "schema": "qikvrt_zenodo_machine_proof_bundle_v2"
+}

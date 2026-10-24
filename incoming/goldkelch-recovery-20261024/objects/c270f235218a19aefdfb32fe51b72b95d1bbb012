@@ -1,0 +1,189 @@
+name: Finalize exact mirror of formalization v2.0.0 publication
+
+"on":
+  push:
+    branches:
+      - bootstrap/finalize-formalization-v2-publication-mirror-20260724
+  workflow_dispatch: {}
+
+permissions:
+  actions: write
+  checks: read
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: qikvrt-finalize-formalization-v2-publication-mirror
+  cancel-in-progress: false
+
+jobs:
+  mirror:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 100
+    env:
+      GH_TOKEN: ${{ secrets.QIKVRT_GITHUB_TOKEN != '' && secrets.QIKVRT_GITHUB_TOKEN || github.token }}
+      AUTHORITY_REPOSITORY: Goldkelch/qik-vrt
+      MIRROR_BRANCH: mirror/formalization-v2-completion-publication
+      STATE_PATH: release/formalization-v2-completion-zenodo.json
+    steps:
+      - name: Check out mirror mainline
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          ref: main
+
+      - name: Wait for published authority state and construct exact-tree mirror
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git remote add authority "https://github.com/${AUTHORITY_REPOSITORY}.git"
+
+          ready=0
+          for _ in $(seq 1 240); do
+            git fetch --no-tags authority main
+            if git show "authority/main:${STATE_PATH}" > /tmp/zenodo-state.json 2>/dev/null; then
+              if python3 - <<'PY'
+          from __future__ import annotations
+          import json
+          import urllib.request
+
+          try:
+              state = json.load(open('/tmp/zenodo-state.json', encoding='utf-8'))
+              record_id = (
+                  state.get('record_id')
+                  or state.get('recordId')
+                  or state.get('record')
+                  or state.get('deposition_id')
+                  or state.get('depositionId')
+              )
+              if not record_id:
+                  raise RuntimeError('record id absent')
+              with urllib.request.urlopen(
+                  f'https://zenodo.org/api/records/{record_id}', timeout=30
+              ) as response:
+                  record = json.load(response)
+              if record.get('metadata', {}).get('version') != '2.0.0':
+                  raise RuntimeError('public version not yet 2.0.0')
+              if not (record.get('doi') or record.get('metadata', {}).get('doi')):
+                  raise RuntimeError('DOI absent')
+          except Exception as exc:
+              print(f'CONTINUE: {exc}')
+              raise SystemExit(1)
+          print('PASS: authority Zenodo v2.0.0 publication is public')
+          PY
+              then
+                ready=1
+                break
+              fi
+            fi
+            sleep 15
+          done
+          test "$ready" -eq 1
+
+          git fetch --no-tags origin main
+          git checkout -B "$MIRROR_BRANCH" origin/main
+          git merge --no-commit --no-ff authority/main || true
+          git read-tree --reset -u authority/main
+          authority_commit="$(git rev-parse authority/main)"
+          authority_tree="$(git rev-parse 'authority/main^{tree}')"
+          mirror_parent="$(git rev-parse origin/main)"
+          git commit -m "Mirror completed formalization v2.0.0 publication
+
+Authority repository: ${AUTHORITY_REPOSITORY}
+Authority commit: ${authority_commit}
+Authority tree: ${authority_tree}
+Mirror parent: ${mirror_parent}
+
+This merge commit uses the exact authority tree and preserves the mirror mainline as first parent."
+          test "$(git rev-parse 'HEAD^{tree}')" = "$authority_tree"
+
+          make test
+          python3 formalization/QIKVRT_Formalization_v2.0/scripts/verify_source_lock.py
+          python3 formalization/QIKVRT_Formalization_v2.0/scripts/materialize_completion.py --check
+          python3 formalization/QIKVRT_Formalization_v2.0/scripts/render_completion_proof_map.py --check
+          python3 formalization/QIKVRT_Formalization_v2.0/scripts/render_completion_verification_report.py --check
+          python3 formalization/QIKVRT_Formalization_v2.0/scripts/validate_completion_claim_graph.py
+          python3 tools/qikvrt_integrity.py verify
+
+          git push --force-with-lease origin "HEAD:refs/heads/${MIRROR_BRANCH}"
+
+      - name: Open, verify, and merge exact-tree mirror pull request
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          wait_for_run() {
+            workflow="$1"
+            branch="$2"
+            gh workflow run "$workflow" --ref "$branch"
+            run_id=""
+            for _ in $(seq 1 60); do
+              run_id="$(gh run list \
+                --workflow "$workflow" \
+                --branch "$branch" \
+                --event workflow_dispatch \
+                --limit 1 \
+                --json databaseId \
+                --jq '.[0].databaseId // empty')"
+              if [ -n "$run_id" ]; then break; fi
+              sleep 5
+            done
+            test -n "$run_id"
+            gh run watch "$run_id" --exit-status
+          }
+
+          pr="$(gh pr list \
+            --head "$MIRROR_BRANCH" \
+            --base main \
+            --state open \
+            --limit 1 \
+            --json number \
+            --jq '.[0].number // empty')"
+          if [ -z "$pr" ]; then
+            authority_commit="$(git rev-parse authority/main)"
+            authority_tree="$(git rev-parse 'authority/main^{tree}')"
+            pr_url="$(gh pr create \
+              --head "$MIRROR_BRANCH" \
+              --base main \
+              --title "Mirror completed formalization v2.0.0 publication" \
+              --body "Exact-tree mirror of authority commit \`${authority_commit}\` and Git tree \`${authority_tree}\`, including the published Zenodo v2.0.0 evidence. All formal and repository verification gates were executed before push.")"
+            pr="${pr_url##*/}"
+          fi
+
+          wait_for_run qikvrt_ci.yml "$MIRROR_BRANCH"
+          wait_for_run qikvrt_manuscript_proof.yml "$MIRROR_BRANCH"
+          wait_for_run qikvrt_collective_review.yml "$MIRROR_BRANCH"
+
+          if ! gh pr merge "$pr" --merge --delete-branch=false; then
+            gh pr merge "$pr" --merge --admin --delete-branch=false
+          fi
+
+          git fetch --no-tags origin main
+          git fetch --no-tags authority main
+          test "$(git rev-parse 'origin/main^{tree}')" = "$(git rev-parse 'authority/main^{tree}')"
+          python3 - <<'PY'
+          import json
+          import subprocess
+          authority_commit = subprocess.check_output(
+              ['git', 'rev-parse', 'authority/main'], text=True
+          ).strip()
+          authority_tree = subprocess.check_output(
+              ['git', 'rev-parse', 'authority/main^{tree}'], text=True
+          ).strip()
+          mirror_commit = subprocess.check_output(
+              ['git', 'rev-parse', 'origin/main'], text=True
+          ).strip()
+          mirror_tree = subprocess.check_output(
+              ['git', 'rev-parse', 'origin/main^{tree}'], text=True
+          ).strip()
+          print(json.dumps({
+              'status': 'PASS',
+              'authority_commit': authority_commit,
+              'authority_tree': authority_tree,
+              'mirror_commit': mirror_commit,
+              'mirror_tree': mirror_tree,
+              'trees_equal': authority_tree == mirror_tree,
+          }, sort_keys=True))
+          PY

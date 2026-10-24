@@ -1,0 +1,8 @@
+{
+  "manifest": "LIVE_EVIDENCE_CLOSURE_MANIFEST",
+  "version": "2.11.1",
+  "seed_repository": "https://github.com/Goldkelch/qik-vrt",
+  "raw_manifest": "https://raw.githubusercontent.com/Goldkelch/qik-vrt/main/MANIFEST.json",
+  "rest_tcpip_manifest": "https://raw.githubusercontent.com/Goldkelch/qik-vrt/main/QIKVRT_SELF_CONTAINED_GITHUB_REPOSITORY_WITH_REST_TCPIP_API_V1_MANIFEST.json",
+  "boundary": "external C/POSIX live runner required for full live acceptance"
+}

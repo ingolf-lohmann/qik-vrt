@@ -1,0 +1,117 @@
+{
+  "schema": "qikvrt_autonomous_optimal_goal_contract_v1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "authority_repository": "Goldkelch/qik-vrt",
+  "mode": "CONTINUOUS_REPOSITORY_NATIVE_GOAL_PURSUIT",
+  "objective": "Advance the repository along the best currently evidence-supported admissible successor path until every declared goal has fresh bound acceptance evidence.",
+  "state_progression": [
+    "OBSERVE",
+    "READBACK",
+    "BIND",
+    "CLASSIFY",
+    "SELECT_ADMISSIBLE_SUCCESSOR",
+    "EXECUTE",
+    "TEST",
+    "OBSERVE"
+  ],
+  "invariants": {
+    "observed_successor_becomes_next_bound_input": true,
+    "predecessor_evidence_transfer": false,
+    "transport_ack_is_effect_ack": false,
+    "effect_ack_done_is_transition_local": true,
+    "fresh_identity_and_provenance_binding_required": true,
+    "no_silent_blockade": true,
+    "no_unverified_done_claim": true,
+    "no_force_push": true,
+    "personal_to_standard": "DENY_BY_DEFAULT",
+    "personal_capability_leak_to_standard": "DENY",
+    "personal_state_leak_to_standard": "DENY",
+    "personal_credentials_in_repository": "DENY"
+  },
+  "operational_states": [
+    "BLOCKADE",
+    "IDLE",
+    "WORK"
+  ],
+  "policy": {
+    "BLOCKADE": "Materialize a fail-closed receipt, identify the first causal blocker, and execute only an authorized deterministic repair or reobservation path.",
+    "IDLE": "Reobserve declared goals and select the highest-priority unmet admissible goal; IDLE is not DONE while any goal remains unmet.",
+    "WORK": "Continue the exact bound work unit until it reaches a terminal observed state, then bind that successor as the next input."
+  },
+  "goals": [
+    {
+      "id": "PERSONAL_FIREFOX_BOUNDARY",
+      "priority": 10,
+      "acceptance": [
+        "Personal Firefox capability boundary is merged into the personal repository",
+        "Fresh standard-build test proves absence of personal payload",
+        "Fresh personal-build test proves expected personal capability manifest"
+      ],
+      "current_carrier": "PR #412"
+    },
+    {
+      "id": "PERSONAL_FIREFOX_RUNTIME",
+      "priority": 20,
+      "acceptance": [
+        "Personal Firefox edition is buildable",
+        "Authenticated ChatGPT/OpenAI runtime integration is available without repository-stored credentials",
+        "Profile restart/readback preserves authorized personal configuration"
+      ]
+    },
+    {
+      "id": "STANDARD_FIREFOX_NONPERSONAL",
+      "priority": 30,
+      "acceptance": [
+        "Goldkelch standard download contains no Ingolf-specific capability/state/credential payload",
+        "Standard edition remains independently installable and usable"
+      ]
+    },
+    {
+      "id": "TEMDD_CONTINUOUS_BINDING",
+      "priority": 40,
+      "acceptance": [
+        "Every productive successor is freshly HEAD/TREE or equivalent identity/provenance bound",
+        "No predecessor evidence is promoted to a mutated successor"
+      ]
+    },
+    {
+      "id": "REPOSITORY_AUTONOMY",
+      "priority": 50,
+      "acceptance": [
+        "BLOCKADE/IDLE/WORK classification is continuously observable",
+        "Authorized deterministic blockers are repaired repository-natively",
+        "Unresolved external/human gates remain explicit HOLD rather than synthesized success"
+      ]
+    },
+    {
+      "id": "PUBLIC_PRODUCT_EFFECT",
+      "priority": 60,
+      "acceptance": [
+        "Build",
+        "Test",
+        "Publicly reachable product/download",
+        "Fresh external readback",
+        "Effect acknowledgement for the exact released subject"
+      ]
+    }
+  ],
+  "successor_selection": {
+    "order": [
+      "safety_and_provenance_invariants",
+      "remove_current_causal_blocker",
+      "finish_current_exact_subject",
+      "highest_priority_unmet_goal",
+      "smallest_general_repair"
+    ],
+    "mutation_rule": "Do not mutate merely to refresh evidence; reobserve first. Any mutation invalidates predecessor subject-bound evidence."
+  },
+  "external_effect_boundary": {
+    "repository_internal_repairs": "AUTHORIZED_WITHIN_EXISTING_REPOSITORY_RULES",
+    "merge": "ONLY_WHEN_EXISTING_REPOSITORY_GATES_AUTHORIZE",
+    "release": "REQUIRES_EXISTING_RELEASE_AUTHORIZATION",
+    "deployment": "REQUIRES_EXISTING_DEPLOYMENT_AUTHORIZATION",
+    "publication": "REQUIRES_EXACT_SINGLE_USE_PUBLICATION_AUTHORIZATION"
+  },
+  "halt_rule": "Halt only at an evidence-bound transition point. If goals remain unmet, the observed successor is the next bound input rather than global termination.",
+  "effect_ack_done": false
+}

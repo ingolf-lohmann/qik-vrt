@@ -1,0 +1,18 @@
+make: Entering directory '/workspace/scratch/04d40e51d38f/gate-study/next/core'
+mkdir -p /workspace/scratch/04d40e51d38f/study-evidence/c90
+cc -std=c90 -pedantic-errors -Wall -Wextra -Werror -Iinclude -I../../include -Os -c src/qikvrt_kernel.c -o /workspace/scratch/04d40e51d38f/study-evidence/c90/qikvrt_kernel.o
+cc -std=c90 -pedantic-errors -Wall -Wextra -Werror -Iinclude -I../../include -Os -c src/qikvrt_wire_v1.c -o /workspace/scratch/04d40e51d38f/study-evidence/c90/qikvrt_wire_v1.o
+cc -std=c90 -pedantic-errors -Wall -Wextra -Werror -Iinclude -I../../include -Os -c src/qikvrt_sha256_v1.c -o /workspace/scratch/04d40e51d38f/study-evidence/c90/qikvrt_sha256_v1.o
+cc -std=c90 -pedantic-errors -Wall -Wextra -Werror -Iinclude -I../../include -Os -c src/qikvrt_exchange.c -o /workspace/scratch/04d40e51d38f/study-evidence/c90/qikvrt_exchange.o
+cc -std=c90 -pedantic-errors -Wall -Wextra -Werror -Iinclude -I../../include -Os -c src/qikvrt_bus.c -o /workspace/scratch/04d40e51d38f/study-evidence/c90/qikvrt_bus.o
+cc -std=c90 -pedantic-errors -Wall -Wextra -Werror -Iinclude -I../../include -Os -c ../../src/effect_ack_core.c -o /workspace/scratch/04d40e51d38f/study-evidence/c90/effect_ack_core.o
+ar rcs /workspace/scratch/04d40e51d38f/study-evidence/c90/libqikvrt_transputer.a /workspace/scratch/04d40e51d38f/study-evidence/c90/qikvrt_kernel.o /workspace/scratch/04d40e51d38f/study-evidence/c90/qikvrt_wire_v1.o /workspace/scratch/04d40e51d38f/study-evidence/c90/qikvrt_sha256_v1.o /workspace/scratch/04d40e51d38f/study-evidence/c90/qikvrt_exchange.o /workspace/scratch/04d40e51d38f/study-evidence/c90/qikvrt_bus.o /workspace/scratch/04d40e51d38f/study-evidence/c90/effect_ack_core.o
+cc -std=c90 -pedantic-errors -Wall -Wextra -Werror -Iinclude -I../../include -Os src/qikvrt_kernel.c src/qikvrt_wire_v1.c src/qikvrt_sha256_v1.c src/qikvrt_exchange.c src/qikvrt_bus.c ../../src/effect_ack_core.c adapters/stdio.c -o /workspace/scratch/04d40e51d38f/study-evidence/c90/qikvrt-c90
+cc -std=c90 -pedantic-errors -Wall -Wextra -Werror -Iinclude -I../../include -Os src/qikvrt_kernel.c src/qikvrt_wire_v1.c src/qikvrt_sha256_v1.c src/qikvrt_exchange.c src/qikvrt_bus.c ../../src/effect_ack_core.c tests/test_core.c -o /workspace/scratch/04d40e51d38f/study-evidence/c90/test-core
+/workspace/scratch/04d40e51d38f/study-evidence/c90/test-core
+PASS C90: LUT/guards, SHA/FNV, state mapping, 16 chunks, reorder/replay, forged chunk, binding, backpressure
+cc -std=c90 -pedantic-errors -Wall -Wextra -Werror -Iinclude -I../../include -Os -S src/qikvrt_kernel.c -o /workspace/scratch/04d40e51d38f/study-evidence/c90/qikvrt_kernel.s
+cc -std=c90 -pedantic-errors -Wall -Wextra -Werror -Iinclude -I../../include -Os /workspace/scratch/04d40e51d38f/study-evidence/c90/qikvrt_kernel.s src/qikvrt_wire_v1.c src/qikvrt_sha256_v1.c src/qikvrt_exchange.c src/qikvrt_bus.c ../../src/effect_ack_core.c tests/test_core.c -o /workspace/scratch/04d40e51d38f/study-evidence/c90/test-assembly
+/workspace/scratch/04d40e51d38f/study-evidence/c90/test-assembly
+PASS C90: LUT/guards, SHA/FNV, state mapping, 16 chunks, reorder/replay, forged chunk, binding, backpressure
+make: Leaving directory '/workspace/scratch/04d40e51d38f/gate-study/next/core'

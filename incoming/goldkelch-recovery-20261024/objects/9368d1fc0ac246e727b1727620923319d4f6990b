@@ -1,0 +1,139 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Ingolf Lohmann.
+name: QIK-VRT construct post-acceptance status Mirror candidate once
+
+on:
+  push:
+    branches:
+      - execution/sync-post-acceptance-status-191bee0e-from-c0bbf858-v1
+    paths:
+      - work-units/CONSTRUCT_HISTORY_PRESERVING_MIRROR_CANDIDATE_191BEE0E_READY.json
+
+permissions:
+  contents: write
+
+concurrency:
+  group: qikvrt-construct-post-acceptance-status-mirror-191bee0e-v1
+  cancel-in-progress: false
+
+jobs:
+  construct-and-persist:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      AUTHORITY_URL: https://github.com/Goldkelch/qik-vrt.git
+      AUTHORITY_MAIN: 191bee0e50cc0cbb1f71423289224c1de8cba7f2
+      MIRROR_PARENT: c0bbf85881c996cca5fff32be91847b7e537a493
+      EXECUTION_BRANCH: execution/sync-post-acceptance-status-191bee0e-from-c0bbf858-v1
+      TARGET_BRANCH: sync/post-acceptance-status-authority-191bee0e-from-c0bbf858-v1
+      MARKER_PATH: work-units/CONSTRUCT_HISTORY_PRESERVING_MIRROR_CANDIDATE_191BEE0E_READY.json
+      EXPECTED_MANIFEST_BLOB: 12ed56aa50364f5266a3b6eb5cd206cbb809da2f
+      EXPECTED_MANIFEST_SHA256: 8056ff1e363d3aab3eed613131fe494d5515dffcbb1408c71f77d0fd2d547ab7
+      EXPECTED_CONTENT_DIGEST: 7462c248059aeb5766caf3bc31a59446566ceb376bc5818c63a3b234fc375d93
+      EXPECTED_FILE_COUNT: "2946"
+      EXPECTED_IMMUTABLE_FILE_COUNT: "2937"
+    steps:
+      - name: Check out immutable trigger event
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Verify frozen transaction and remote leases
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 - <<'PY'
+          import json, os, pathlib
+          marker = json.loads(pathlib.Path(os.environ['MARKER_PATH']).read_text(encoding='utf-8'))
+          assert marker['schema'] == 'qikvrt_history_preserving_mirror_candidate_request_v1'
+          assert marker['state'] == 'READY'
+          assert marker['operation'] == 'REFRESH_CONTENT_DISPOSITION_STATUS_PROJECTION_AFTER_BATCH002_ACCEPTANCE'
+          assert marker['authority_repository'] == 'Goldkelch/qik-vrt'
+          assert marker['authority_main'] == os.environ['AUTHORITY_MAIN']
+          assert marker['mirror_repository'] == 'ingolf-lohmann/qik-vrt'
+          assert marker['mirror_parent'] == os.environ['MIRROR_PARENT']
+          assert marker['execution_branch'] == os.environ['EXECUTION_BRANCH']
+          assert marker['target_branch'] == os.environ['TARGET_BRANCH']
+          assert marker['next_deterministic_effect_after_sync'] == 'REOBSERVE_AND_PERSIST_RECIPROCAL_EQUALITY_RECEIPT_FOR_POST_ACCEPTANCE_STATUS'
+          assert marker['completion_claims'] == {
+              'candidate_created': False,
+              'mirror_promoted': False,
+              'reciprocal_equality_refreshed': False,
+              'batch_003_executed': False,
+              'zenodo_mutation_authorized': False,
+              'pass': False,
+              'final_pass': False,
+              'effect_ack_done': False,
+          }
+          PY
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$MIRROR_PARENT"
+          test "$(git ls-remote origin refs/heads/$TARGET_BRANCH | cut -f1)" = "$MIRROR_PARENT"
+          test "$(git ls-remote "$AUTHORITY_URL" refs/heads/main | cut -f1)" = "$AUTHORITY_MAIN"
+
+      - name: Fetch and verify exact Authority tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags "$AUTHORITY_URL" "refs/heads/main:refs/remotes/authority/main"
+          test "$(git rev-parse refs/remotes/authority/main)" = "$AUTHORITY_MAIN"
+          test "$(git rev-parse "$AUTHORITY_MAIN:REPOSITORY_FILE_MANIFEST.json")" = "$EXPECTED_MANIFEST_BLOB"
+          python3 - <<'PY'
+          import hashlib, json, os, subprocess
+          raw = subprocess.check_output(
+              ['git', 'show', os.environ['AUTHORITY_MAIN'] + ':REPOSITORY_FILE_MANIFEST.json']
+          )
+          manifest = json.loads(raw)
+          assert hashlib.sha256(raw).hexdigest() == os.environ['EXPECTED_MANIFEST_SHA256']
+          assert manifest['repository_content_tree_sha256'] == os.environ['EXPECTED_CONTENT_DIGEST']
+          assert manifest['file_count'] == int(os.environ['EXPECTED_FILE_COUNT'])
+          assert manifest['immutable_file_count'] == int(os.environ['EXPECTED_IMMUTABLE_FILE_COUNT'])
+          detached = subprocess.check_output(
+              ['git', 'show', os.environ['AUTHORITY_MAIN'] + ':REPOSITORY_FILE_MANIFEST.json.sha256'],
+              text=True,
+          ).strip()
+          assert detached == os.environ['EXPECTED_MANIFEST_SHA256'] + '  REPOSITORY_FILE_MANIFEST.json'
+          PY
+
+      - name: Construct exact history-preserving candidate and publish under lease
+        shell: bash
+        run: |
+          set -euo pipefail
+          authority_tree="$(git rev-parse "$AUTHORITY_MAIN^{tree}")"
+          git config user.name 'QIK-VRT Mirror Synchronizer'
+          git config user.email 'ingolf.lohmann@live.com'
+          candidate="$(cat <<EOF | git commit-tree "$authority_tree" -p "$MIRROR_PARENT"
+          Synchronize post-acceptance content-disposition status from Authority 191bee0e
+
+          Authority repository: Goldkelch/qik-vrt
+          Authority main: $AUTHORITY_MAIN
+          Mirror parent: $MIRROR_PARENT
+          Authority tree: $authority_tree
+          Repository manifest SHA-256: $EXPECTED_MANIFEST_SHA256
+          Repository content-tree SHA-256: $EXPECTED_CONTENT_DIGEST
+          Operation: REFRESH_CONTENT_DISPOSITION_STATUS_PROJECTION_AFTER_BATCH002_ACCEPTANCE
+          Next effect: EXECUTE_CONTENT_DISPOSITION_BATCH_003
+          Preserved corpus: 19 subjects, 12 dispositioned, 7 open
+
+          The sole parent is the frozen Mirror main and the complete Git tree is the exact Authority tree. This candidate does not execute Batch 003, authorize Zenodo mutation, complete the corpus, publish the proof corpus, or claim repository-wide PASS, FINAL_PASS, or EFFECT_ACK_DONE.
+          EOF
+          )"
+          test "$(git rev-parse "$candidate^")" = "$MIRROR_PARENT"
+          test "$(git rev-parse "$candidate^{tree}")" = "$authority_tree"
+          git diff --quiet "$AUTHORITY_MAIN^{tree}" "$candidate^{tree}"
+          git push origin \
+            --force-with-lease="refs/heads/$TARGET_BRANCH:$MIRROR_PARENT" \
+            "$candidate:refs/heads/$TARGET_BRANCH"
+          persisted="$(git ls-remote origin refs/heads/$TARGET_BRANCH | cut -f1)"
+          test "$persisted" = "$candidate"
+          {
+            echo "CANDIDATE_HEAD=$candidate"
+            echo "AUTHORITY_TREE=$authority_tree"
+            echo "MIRROR_PARENT=$MIRROR_PARENT"
+            echo "AUTHORITY_MAIN=$AUTHORITY_MAIN"
+            echo "REPOSITORY_MANIFEST_SHA256=$EXPECTED_MANIFEST_SHA256"
+            echo "REPOSITORY_CONTENT_TREE_SHA256=$EXPECTED_CONTENT_DIGEST"
+            echo "NEXT_EFFECT=EXECUTE_CONTENT_DISPOSITION_BATCH_003"
+            echo "PASS=false FINAL_PASS=false EFFECT_ACK_DONE=false"
+          } | tee -a "$GITHUB_STEP_SUMMARY"

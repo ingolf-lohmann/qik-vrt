@@ -1,0 +1,24 @@
+{
+    "component":  "python-embed-windows",
+    "version":  "3.12.10",
+    "license_sha256":  "e502c6b880ff58d614901495a9009c136539cd0b1e2a2abb8fc00b934c203419",
+    "observed_utc":  "2026-10-03T14:01:32.0395032Z",
+    "upstream_download_performed":  false,
+    "effect_ack_done":  false,
+    "self_test":  {
+                      "version":  "3.12.10",
+                      "pointer_bits":  64,
+                      "isolated":  true,
+                      "sqlite_readback":  true,
+                      "executable":  "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\qikvrt-win-offline-c78da0e7e39044eab3b50c95f635c9ed\\QIK VRT offline carrier\\python-embed\\3.12.10\\windows-amd64\\sha256\\4acbed6dd1c744b0376e3b1cf57ce906f9dc9e95e68824584c8099a63025a3c3\\runtime\\python.exe",
+                      "ssl":  "OpenSSL 3.0.16 11 Feb 2025"
+                  },
+    "schema":  "qikvrt-windows-python-cache-receipt/1.0",
+    "manifest_sha256":  "0119f95dcece5191342049380b5274e5ecfe51e2fca81682e162e16cd6b3acfd",
+    "source":  "existing_cache",
+    "native_offline_launcher_witness":  false,
+    "platform":  "windows-amd64",
+    "archive_sha256":  "4acbed6dd1c744b0376e3b1cf57ce906f9dc9e95e68824584c8099a63025a3c3",
+    "dependency_closed":  false,
+    "powershell_version":  "5.1.20348.5622"
+}

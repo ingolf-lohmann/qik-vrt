@@ -1,0 +1,15 @@
+{
+  "gate": "QIKVRT_MUTABLE_STATE_INTEGRITY_GATE",
+  "version": "2.13.4",
+  "role": "node",
+  "mutable_state_not_in_sha256sums": true,
+  "license_acceptance_persisted_before_activity": true,
+  "repository_guid_persisted_before_dependency_bootstrap": true,
+  "target_config_persisted_but_not_immutable": true,
+  "required_blocks": [
+    "MUTABLE_RUNTIME_STATE_IN_SHA256SUMS",
+    "SETUP_MUTATES_IMMUTABLE_HASHED_FILE",
+    "FINAL_PASS_WITH_MUTABLE_HASH_DRIFT"
+  ],
+  "mutable_license_runtime_acceptance_ledger_excluded_from_sha256sums": true
+}

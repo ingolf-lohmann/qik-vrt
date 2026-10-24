@@ -1,0 +1,175 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "publication_staging_manifest"
+  },
+  "schema": "qikvrt_publication_staging_source_provenance_v1",
+  "candidate_id": "arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1",
+  "source": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pr": 447,
+    "head": "a2dbd3ac25c2935a022ea8ef54d95912e34035f7",
+    "tree": "377df23cdc2816629332dc5f8e95834ad79687d0",
+    "ref": "work/collective-functional-consciousness-20261003",
+    "immutable_url": "https://github.com/ingolf-lohmann/qik-vrt/tree/a2dbd3ac25c2935a022ea8ef54d95912e34035f7",
+    "scope": "frozen source only; not a current-main or Authority/Mirror equality claim"
+  },
+  "inputs": [
+    {
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/original-review/manuscript/appendix.tex",
+      "bytes": 18024,
+      "sha256": "ef2a9c3228e261695f997df0d0ce934d11a0470efebba4c740acc127aca8ab75",
+      "git_blob_sha1": "72bf011c6b0150a9a8c46969d9cc7ad218a74b6b"
+    },
+    {
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/original-review/manuscript/delivery.tex",
+      "bytes": 21214,
+      "sha256": "e6116879d193b65490e2a2d667b7c05ab1d42dec321277c7d0660eb2ffb7a7a3",
+      "git_blob_sha1": "a38d67c8985f3f45800a9468da45870705b28c95"
+    },
+    {
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/original-review/manuscript/main.tex",
+      "bytes": 5138,
+      "sha256": "f787f6c398c234c052fe9092dc6c0790b167680681ba3b41e8d4a4e2b5400c81",
+      "git_blob_sha1": "d8c45eaee8cdd06aee150037eeb0476f513d00d5"
+    },
+    {
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/original-review/manuscript/measurements.tex",
+      "bytes": 10258,
+      "sha256": "268091f9667059b71d6dea6c96d8f7cd15e154324dafc5a4c3d3c40d3bad6529",
+      "git_blob_sha1": "a6cef01487e903f3a8cb0a7a712779082f867703"
+    },
+    {
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/original-review/manuscript/orientation.tex",
+      "bytes": 5032,
+      "sha256": "18b21bbddcd1d3ab08d822183f9725ac8a44f9cc90ddcf592d381372920cc085",
+      "git_blob_sha1": "79b568e4f6157f7e92357e389586552ecc90c744"
+    },
+    {
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/original-review/manuscript/theory.tex",
+      "bytes": 23473,
+      "sha256": "70915330b7ffeab6ea534b02bb368f8c34bd96773e666edb4e20c38dbfb1f861",
+      "git_blob_sha1": "8f68433c6a63faa0578a61528f05e45ac1c5ca23"
+    },
+    {
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/CLAIM_MATRIX.json",
+      "bytes": 19350,
+      "sha256": "c740097bc00b22826428446b26fbd9996dbb5b728efbe0c006661904956f7f8f",
+      "git_blob_sha1": "6b20dcdedd577f790baa03822c254e5ace12be9e"
+    },
+    {
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/METHOD_CLAIM_BOUNDARIES.md",
+      "bytes": 4775,
+      "sha256": "53b7adcd602ba8fe47de8abc08593246a8170a56aea1196670bfd6c6e2b791fb",
+      "git_blob_sha1": "57445d1e042823e1b31e4c038a4392c42f8581c5"
+    }
+  ],
+  "protected_original_artifacts": [
+    {
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/QIK-VRT_Die_wirksame_Kontinuitaet_Gesamtausgabe_2026-10-03.pdf",
+      "bytes": 189440,
+      "sha256": "c82e9182dc2b6068b2d7a70edbd4c3696557813aa8859e92c72a865a46256cce",
+      "git_blob_sha1": "053259060c1d495d3e6a99537342dfb1888eebc5"
+    },
+    {
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/QIK-VRT_Gesamtausgabe_Quellen_Pruefpaket_2026-10-03.zip",
+      "bytes": 1416550,
+      "sha256": "ed6a224db353c7bacb3b24f2231feb2eb4ea992affa10d397937a0ff074246b4",
+      "git_blob_sha1": "e0338b71a415c8a1165f4ccc894acf27ae084e62"
+    }
+  ],
+  "transformations": [
+    {
+      "from": "\\setmainfont{Noto Serif}",
+      "to": "\\setmainfont{lmroman10-regular.otf}[BoldFont=lmroman10-bold.otf,ItalicFont=lmroman10-italic.otf,BoldItalicFont=lmroman10-bolditalic.otf]"
+    },
+    {
+      "from": "\\setsansfont{Inter}",
+      "to": "\\setsansfont{lmsans10-regular.otf}[BoldFont=lmsans10-bold.otf,ItalicFont=lmsans10-oblique.otf,BoldItalicFont=lmsans10-boldoblique.otf]"
+    },
+    {
+      "from": "\\setmonofont[Scale=0.79]{DejaVu Sans Mono}",
+      "to": "\\setmonofont[Scale=0.79]{lmmono10-regular.otf}"
+    },
+    {
+      "from": "\\setmathfont[Path=/usr/share/texmf/fonts/opentype/public/lm-math/]{latinmodern-math.otf}",
+      "to": "\\setmathfont{latinmodern-math.otf}"
+    },
+    {
+      "from": "VOLLSTÄNDIGE GESAMTAUSGABE · VORPUBLIKATIONSFASSUNG",
+      "to": "ARXIV-STAGING · SATZABLEITUNG · NICHT EINGEREICHT"
+    },
+    {
+      "from": "\\newcommand{\\code}[1]{{\\ttfamily\\small\\detokenize{#1}}}",
+      "to": "\\newcommand{\\code}[1]{{\\ttfamily\\small\\nolinkurl{#1}}}"
+    },
+    {
+      "from": "\\fontsize{11.1}{16}\\selectfont #4",
+      "to": "\\raggedright\\fontsize{11.1}{16}\\selectfont #4"
+    },
+    {
+      "from": "\\selectfont #4}\\par",
+      "to": "\\selectfont #4\\par}"
+    },
+    {
+      "from": "\\titleformat{\\subsection}{\\sffamily",
+      "to": "\\titleformat{\\subsection}{\\raggedright\\sffamily"
+    },
+    {
+      "from": "\\newenvironment{cols}{\\begin{multicols}{2}\\fontsize{9.5}{13.3}\\selectfont}",
+      "to": "\\newenvironment{cols}{\\begin{multicols}{2}\\fontsize{9.5}{13.3}\\selectfont\\raggedright}"
+    },
+    {
+      "from": "\\input{appendix.tex}",
+      "to": "\\input{appendix.tex}\n\\clearpage\n\\input{claim-scope.tex}"
+    }
+  ],
+  "claim_matrix_transferred_as_documentary_disposition_only": true,
+  "scientific_proof_or_test_status_transferred": false,
+  "contributions": {
+    "human_actor": "Ingolf Lohmann",
+    "human_contributions": [
+      "research programme and frozen source authorship as attributed in the source",
+      "selected staging task, exact source, preservation and no-submission constraints"
+    ],
+    "artificial_cognitive_actor": "OpenAI Codex GPT-6",
+    "artificial_cognitive_contributions": [
+      "source verification",
+      "mechanical staging transformations",
+      "build recipes, manifests and validation",
+      "separate review-branch preparation"
+    ],
+    "human_acceptance_of_new_artifacts": "PENDING",
+    "evidence_retention": "METADATA_ONLY"
+  },
+  "effects": {
+    "arxiv_submission": false,
+    "datatracker_submission": false,
+    "zenodo_mutation": false,
+    "upload_authorization_consumed": false,
+    "production_contract_activation": false,
+    "pr447_head_changed": false,
+    "ordinary_release": false,
+    "effect_ack_done": false
+  },
+  "reuse": {
+    "arxiv_manifest_pattern": "docs/publications/2026-08-12-observer-relative-retrocausality/arxiv-en-candidate/arxiv_submission_manifest.json",
+    "archive_build_pattern": "tools/materialize_arxiv_current_synthesis_v2.py",
+    "reused_primitives": [
+      "identity"
+    ],
+    "technical_insufficiency": "Legacy helper fixes a single-file pdfLaTeX source, historic candidate path and eight-page output. This frozen manuscript has six XeLaTeX files, system-font dependencies and an additional required claim-scope appendix. A candidate-local recipe extends the deterministic archive/extract/rebuild pattern without a parallel deployment or submission pipeline."
+  },
+  "portable_source_binding": {
+    "path": "SOURCE_GIT_CAPSULE.json",
+    "bytes": 219179,
+    "sha256": "c0a11130a090fb4fccc342aff70c6b10f74c7a87e3e97c7630eed441e9783f65",
+    "git_blob_sha1": "f94a758555f068920637e41cf76ca207fe7c5a07",
+    "native_validator": "tools/qikvrt_integrity.py:load_portable_git_source_capsule + cross_check_portable_git_source_capsule",
+    "selected_paths": 9,
+    "objects": 18,
+    "result": "PASS_SELECTED_SOURCE_CLOSURE_ONLY"
+  }
+}

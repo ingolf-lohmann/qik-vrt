@@ -1,0 +1,155 @@
+{
+  "schema": "qikvrt_publication_successor_content_validation_v1",
+  "candidate_id": "arxiv-effective-continuity-en-20261004-v2",
+  "state": "PASS_CANDIDATE_CONTENT_CHECKS_WITH_RECORDED_EDITORIAL_LIMITS",
+  "observed_utc": "2026-10-04T05:44:21.669508+00:00",
+  "observer": "OpenAI Codex / GPT-6 family",
+  "exact_model_build": "UNAVAILABLE",
+  "predecessor_head": "63cd570956d6b55ce30186f4d1824209a4a0e236",
+  "predecessor_evidence_transfer": false,
+  "automated_checks": {
+    "complete_partition_blocks": 94,
+    "tex_inputs": 7,
+    "claims": 30,
+    "classifications": {
+      "NORMATIVE": 4,
+      "SOURCE_BOUND": 10,
+      "INTERPRETATIVE": 9,
+      "OPEN": 5,
+      "EMPIRICALLY_EVIDENCED": 2
+    },
+    "numeric_median_table_rows_preserved": 9,
+    "source_reference_order_preserved": true,
+    "historical_identifiers_preserved": true,
+    "title_and_abstract_bound": true,
+    "formal_proved_claims": 0,
+    "natural_language_semantic_equivalence_formally_proved": false
+  },
+  "editorial_review": {
+    "complete_english_manuscript": true,
+    "all_30_source_boundaries_translated_and_bound": true,
+    "historical_state_notice_in_orientation_and_final_scope": true,
+    "C15_arithmetic_not_trial_replication": true,
+    "C17_1_2_4_source_report_not_trial_replication": true,
+    "C20_two_isolated_method_controls_only": true,
+    "C27_implementation_distinct_from_activation": true,
+    "no_universal_speedup_truthfulness_consciousness_all_node_SSO_biometrics_FPGA_claim": true,
+    "license_categories_and_upload_decision_remain_author_proposals": true
+  },
+  "checked_artifacts": {
+    "main.tex": {
+      "path": "main.tex",
+      "bytes": 5490,
+      "sha256": "c141be12709714022fc3e0001ec4b5df04c37b42dd8d4c50517571e1547e57db",
+      "git_blob_sha1": "e2d096f3dedd6104f746a130ad4f29f523a618fe"
+    },
+    "orientation.tex": {
+      "path": "orientation.tex",
+      "bytes": 5264,
+      "sha256": "a2a1bddcd6d4cddae020d3a3eb2299e21aaffabd7dfe842ee0f3f72da1496727",
+      "git_blob_sha1": "3f813d69cf2bab69226590548ef91cb18bdbfd4e"
+    },
+    "theory.tex": {
+      "path": "theory.tex",
+      "bytes": 20464,
+      "sha256": "22608089253b29a5dd42e57d552f624d3921493f46483915aba9502b4c741260",
+      "git_blob_sha1": "f4c3aea18052c3d0de2aa1df433ea329b15e786d"
+    },
+    "measurements.tex": {
+      "path": "measurements.tex",
+      "bytes": 9235,
+      "sha256": "b155f04f0ad51456e298663217e6b384eafe5e7fefec9eca5f864b821878f0d9",
+      "git_blob_sha1": "d235014fe68325f6613e986475ba3fa6741b2749"
+    },
+    "delivery.tex": {
+      "path": "delivery.tex",
+      "bytes": 19436,
+      "sha256": "5a11a96203c6fd2616fec4dbffa7b73c2b0e8d5daa784e9b406f524b659a0061",
+      "git_blob_sha1": "a441da59ba5957cba80e811e4766aaffd71485bb"
+    },
+    "appendix.tex": {
+      "path": "appendix.tex",
+      "bytes": 17762,
+      "sha256": "ce5fa76a98614fabdce9b9c8349520c5220261f99cb1677ebbe0742e22693ab4",
+      "git_blob_sha1": "b3e5c956a05049132ea48baf7c5356dc90f9a167"
+    },
+    "claim-scope.tex": {
+      "path": "claim-scope.tex",
+      "bytes": 11626,
+      "sha256": "93becd2a499a0aedf376c8ecafbceaab04371e118f01496c818ec11b0d41518e",
+      "git_blob_sha1": "f23978626af1e83b8e26698e820db829ba896827"
+    },
+    "main.pdf": {
+      "path": "main.pdf",
+      "bytes": 578695,
+      "sha256": "6151ac53206b965258b16c4986ca108f138837d31505c47d6e5bbdf0b9c5c310",
+      "git_blob_sha1": "30bc34a785f041a4dde271aac9450ecf9f6e3fe6"
+    },
+    "arxiv-source.tar.gz": {
+      "path": "arxiv-source.tar.gz",
+      "bytes": 31557,
+      "sha256": "551d7a720851bb35d73c5854e3b7d68da3ed36fe1caa2062ae79a0595eb05266",
+      "git_blob_sha1": "9e7bf3d16450d962f3e094e998f57db10b05afa5"
+    },
+    "CLAIM_MATRIX.json": {
+      "path": "CLAIM_MATRIX.json",
+      "bytes": 19350,
+      "sha256": "c740097bc00b22826428446b26fbd9996dbb5b728efbe0c006661904956f7f8f",
+      "git_blob_sha1": "6b20dcdedd577f790baa03822c254e5ace12be9e"
+    },
+    "METHOD_CLAIM_BOUNDARIES.md": {
+      "path": "METHOD_CLAIM_BOUNDARIES.md",
+      "bytes": 4775,
+      "sha256": "53b7adcd602ba8fe47de8abc08593246a8170a56aea1196670bfd6c6e2b791fb",
+      "git_blob_sha1": "57445d1e042823e1b31e4c038a4392c42f8581c5"
+    },
+    "TRANSLATION_MAP.json": {
+      "path": "TRANSLATION_MAP.json",
+      "bytes": 38140,
+      "sha256": "de9cdd4fc9ccab69e44360dfece84452e32169358ebdffe47368b656e918fde4",
+      "git_blob_sha1": "3aaffa247e8588aef92048dc9c4924102815e480"
+    },
+    "CLAIM_CORRESPONDENCE_EN.json": {
+      "path": "CLAIM_CORRESPONDENCE_EN.json",
+      "bytes": 39812,
+      "sha256": "8e177fe98f54e8eb642e1ccdc9927bbf0ba96182fd333754d2e0be5c43ad1601",
+      "git_blob_sha1": "1e39940113c12ece394ff441eb2195de884619fc"
+    },
+    "BUILD_VALIDATION.json": {
+      "path": "BUILD_VALIDATION.json",
+      "bytes": 9656,
+      "sha256": "c933b6dc88da900e01b9efb21909df85f78e0a143f850d062026bf4ec9e43850",
+      "git_blob_sha1": "00fc27697143667c18c154afdca0689a28ca1f40"
+    },
+    "PDF_RENDER_VALIDATION.json": {
+      "path": "PDF_RENDER_VALIDATION.json",
+      "bytes": 6709,
+      "sha256": "032205f2624c9d0598cd5d2f2070ebba43044caffb94bc942d3aa6d597d236a2",
+      "git_blob_sha1": "5f1fd650a8a454581b982bf65b4494a0d2c894e6"
+    },
+    "SOURCE_PROVENANCE.json": {
+      "path": "SOURCE_PROVENANCE.json",
+      "bytes": 9619,
+      "sha256": "d4514a76c6baf23d8b4952f1a0d7475f5fd060296a4e1f1c0858a1adffb2a5fd",
+      "git_blob_sha1": "87c9a6d610fb5b1ec09509288a67fee8045e9cfa"
+    },
+    "verify_staging.py": {
+      "path": "verify_staging.py",
+      "bytes": 11796,
+      "sha256": "a09bf9eb95a25e38f6d5eb14ec9e610f0b3955a1a502dd9c4a397a73538f9a62",
+      "git_blob_sha1": "08dca4021da49f612c3bfd404589089202077a7d"
+    }
+  },
+  "limitations": [
+    "Human author acceptance of new bytes is PENDING.",
+    "Natural-language semantic equivalence is editorially reviewed, not formally proved.",
+    "Rendering/fixity does not establish scientific confirmation or deployment interoperability.",
+    "Fresh full exact-head repository checks are recorded in detached PR/native-CI evidence after commit creation."
+  ],
+  "effects": {
+    "submission": false,
+    "merge": false,
+    "upload_authorization_created": false,
+    "upload_authorization_consumed": false
+  }
+}

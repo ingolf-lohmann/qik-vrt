@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "qikvrt-linux-scale-isolation-attestation-v1",
+  "title": "Externally verified exact-host isolated scale measurement admission",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "issuer", "valid_until", "claims", "evidence", "pinned_environment"],
+  "properties": {
+    "schema": {"const": "qikvrt_linux_scale_external_isolation_attestation_v1"},
+    "issuer": {
+      "type": "object", "additionalProperties": false,
+      "required": ["verifier", "verification_method", "runner_self_report"],
+      "properties": {"verifier": {"type": "string", "minLength": 1}, "verification_method": {"type": "string", "minLength": 1}, "runner_self_report": {"const": false}}
+    },
+    "valid_until": {"type": "string", "format": "date-time"},
+    "claims": {
+      "type": "object", "additionalProperties": false,
+      "required": ["dedicated_host", "dedicated_local_volume", "no_cotenants", "no_other_io_producers", "no_hidden_cpu_quota"],
+      "properties": {"dedicated_host": {"const": true}, "dedicated_local_volume": {"const": true}, "no_cotenants": {"const": true}, "no_other_io_producers": {"const": true}, "no_hidden_cpu_quota": {"const": true}}
+    },
+    "evidence": {
+      "type": "array", "minItems": 2, "maxItems": 16,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["kind", "path", "bytes", "sha256"],
+        "properties": {
+          "kind": {"type": "string", "minLength": 1},
+          "path": {"type": "string", "minLength": 1, "description": "Relative to external attestation directory; traversal, symlinks and absolute paths are rejected by the carrier."},
+          "bytes": {"type": "integer", "minimum": 1, "maximum": 16777216},
+          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+        }
+      },
+      "allOf": [
+        {"contains": {"properties": {"kind": {"const": "host_isolation"}}}},
+        {"contains": {"properties": {"kind": {"const": "volume_isolation"}}}}
+      ]
+    },
+    "pinned_environment": {
+      "type": "object", "additionalProperties": false,
+      "required": ["host", "python", "subject", "source_sha256", "affinity_cpus", "cpu_policy", "storage", "queue_path", "queue_policy", "cgroup_policy", "cgroup_namespace_identity", "cache_policy", "durability_policy"],
+      "properties": {
+        "host": {"type": "object"}, "python": {"type": "object"},
+        "subject": {"type": "object", "additionalProperties": false, "required": ["head", "tree"], "properties": {"head": {"type": "string", "pattern": "^[0-9a-f]{40}$"}, "tree": {"type": "string", "pattern": "^[0-9a-f]{40}$"}}},
+        "source_sha256": {"type": "object", "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}},
+        "affinity_cpus": {"type": "array", "minItems": 4, "maxItems": 4, "uniqueItems": true, "items": {"type": "integer", "minimum": 0}},
+        "cpu_policy": {"type": "object"}, "storage": {"type": "object"}, "queue_path": {"type": "string"}, "queue_policy": {"type": "object"},
+        "cgroup_policy": {"type": "object"}, "cgroup_namespace_identity": {"type": "object"},
+        "cache_policy": {"const": "WARM_SNAPSHOT_COPY_AND_FULL_ADMISSION_READBACK_NO_DROPS_NO_EXCLUDED_WARMUP"},
+        "durability_policy": {"const": "ORIGINAL_ATOMIC_WRITER_FILE_FSYNC_REPLACE_DIRECTORY_FSYNC"}
+      },
+      "description": "Must equal every current inventory field byte-for-byte after JSON parsing. The runtime implements stronger subject, environment, source and telemetry checks than this structural schema."
+    }
+  }
+}

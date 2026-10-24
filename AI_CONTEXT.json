@@ -145,6 +145,11 @@
     "AI_ADAPTERS.json",
     "AGENTS.md",
     "state/authorization/delegations/OWNER_REPOSITORY_GOALS_AND_RULESET_AUTHORIZATION_V1.json",
+    "policy/OWNER_PERSONAL_OPTIMUM_V1.json",
+    "docs/OWNER_PERSONAL_OPTIMUM.md",
+    "policy/PERFECT_OPTIMUM_V1.json",
+    "incoming/goldkelch-recovery-20261024/INDEX.json",
+    "docs/GOLDKELCH_RECOVERY_20261024.md",
     "evidence/receipts/gemini-manifest-feedback-20261022.json",
     "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
     "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
@@ -297,5 +302,21 @@
     ],
     "requires_actual_use": true,
     "client_timer_as_continuation": false
+  },
+  "owner_personal_optimum": {
+    "policy": "policy/OWNER_PERSONAL_OPTIMUM_V1.json",
+    "human_contract": "docs/OWNER_PERSONAL_OPTIMUM.md",
+    "owner": "Ingolf Lohmann",
+    "original_statement_sha256": "5f472fda6b63d4a182bba7ab8349e3ad374b9e93df212d5dd159aaa3b644a970",
+    "longstanding_personal_optimum": true,
+    "recording_date_is_inception_date": false,
+    "historical_technical_policy": "policy/PERFECT_OPTIMUM_V1.json"
+  },
+  "recovered_goldkelch_sources": {
+    "index": "incoming/goldkelch-recovery-20261024/INDEX.json",
+    "state": "PROVENANCE_BOUND_INACTIVE_SOURCE_CATALOG",
+    "human_contract": "docs/GOLDKELCH_RECOVERY_20261024.md",
+    "source_presence_is_execution_or_peer_adoption": false,
+    "source_archive_sha256": "2412131c8d20ff0d64b4daec45b36aa82bd009dbe744fd10ae232b656a37293c"
   }
 }

@@ -1,0 +1,143 @@
+{
+  "_license": {
+    "classification": "publication_claim_matrix",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "claim_count": 11,
+  "claims": [
+    {
+      "boundary": "Sichtbarer Inhalt genau der Datei IMG_1096.jpeg; keine zusätzliche physikalische oder formale Beweisbehauptung.",
+      "claim_id": "QIKVRT-ORIGINAL-01",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "SOURCE-QIKVRT-ORIGINAL-01"
+      ],
+      "statement": "Kopfprofil mit Pfeilen zwischen „Alles“, „Einbildung“ und „Wahrheit“; ergänzende Notizen zu Zeit und Information.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Sichtbarer Inhalt genau der Datei IMG_1097.jpeg; keine zusätzliche physikalische oder formale Beweisbehauptung.",
+      "claim_id": "QIKVRT-ORIGINAL-02",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "SOURCE-QIKVRT-ORIGINAL-02"
+      ],
+      "statement": "Zeit-/Takt-Skizze mit „Information ↔ Wissen ↔ Macht“, I-Indizes und unterschiedlich angeordneten Zahlenmengen.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Sichtbarer Inhalt genau der Datei IMG_1098.jpeg; keine zusätzliche physikalische oder formale Beweisbehauptung.",
+      "claim_id": "QIKVRT-ORIGINAL-03",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "SOURCE-QIKVRT-ORIGINAL-03"
+      ],
+      "statement": "Gegenläufige Pfeile bündeln sich auf eine zentrale Verbindung zwischen den binären Mengen {0,1} und {1,0}.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Sichtbarer Inhalt genau der Datei IMG_1099.jpeg; keine zusätzliche physikalische oder formale Beweisbehauptung.",
+      "claim_id": "QIKVRT-ORIGINAL-04",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "SOURCE-QIKVRT-ORIGINAL-04"
+      ],
+      "statement": "Rückkopplungsskizze mit „AD/DA“, „CFO“, „DevOps“, binären Angaben, „400“ sowie Euro- und Dollarzeichen.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Sichtbarer Inhalt genau der Datei IMG_1100.jpeg; keine zusätzliche physikalische oder formale Beweisbehauptung.",
+      "claim_id": "QIKVRT-ORIGINAL-05",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "SOURCE-QIKVRT-ORIGINAL-05"
+      ],
+      "statement": "Doppelhelix, Mensch und Sonne mit Informationspfeilen; Beschriftungen zu Raumzeit, Leben, reflexiver Relation und SQL.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Sichtbarer Inhalt genau der Datei IMG_1101.jpeg; keine zusätzliche physikalische oder formale Beweisbehauptung.",
+      "claim_id": "QIKVRT-ORIGINAL-06",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "SOURCE-QIKVRT-ORIGINAL-06"
+      ],
+      "statement": "Kopfprofil mit Schleife und Spirale; Notizen zu Realität, Mathematik (∞, 0) sowie Physik und Heisenberg.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Selbstzuordnung des Urhebers in seinem Archivierungs- und Veröffentlichungsauftrag; kein eigenständiger biometrischer Identitätsnachweis.",
+      "claim_id": "QIKVRT-ORIGINAL-CREATOR",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "SOURCE-QIKVRT-ORIGINAL-CREATOR"
+      ],
+      "statement": "Ingolf Lohmann ordnet die sechs Skizzen ausdrücklich seiner eigenen Handschrift und Urheberschaft zu.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Vom Urheber angegebener gemeinsamer Dokumentationszweck.",
+      "claim_id": "QIKVRT-ORIGINAL-PURPOSE",
+      "classification": "NORMATIVE",
+      "proof_refs": [],
+      "sources": [
+        "SOURCE-QIKVRT-ORIGINAL-PURPOSE"
+      ],
+      "statement": "Die Wirkungsweise von QIK VRT universal anschlussfähig zu erläutern.",
+      "status": "DECLARED"
+    },
+    {
+      "boundary": "Dokumentarische und konzeptionelle Lesart der sechs Blätter; fachliche Bestätigung einzelner Modelle wird durch dieses Archiv nicht abgeleitet.",
+      "claim_id": "QIKVRT-ORIGINAL-READING",
+      "classification": "INTERPRETATIVE",
+      "proof_refs": [],
+      "sources": [
+        "SOURCE-QIKVRT-ORIGINAL-READING"
+      ],
+      "statement": "Die begrifflichen und graphischen Zusammenhänge der Originalskizzen werden als Erläuterungen des Urhebers archiviert.",
+      "status": "DECLARED"
+    },
+    {
+      "boundary": "Sechs Originaldateien dieses Dokumentationssatzes.",
+      "claim_id": "QIKVRT-ORIGINAL-BYTES",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "READBACK-SIX-ORIGINALS",
+        "SOURCE-QIKVRT-ORIGINAL-BYTES"
+      ],
+      "statement": "Alle sechs archivierten Originaldateien stimmen bytegenau mit den materialisierten aktuellen Quellen und den archivierten SHA-256-Digests überein.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Unterscheidung zwischen Archivdatum, Uploaddatum und tatsächlicher Anfertigung beziehungsweise Aufnahme.",
+      "claim_id": "QIKVRT-ORIGINAL-CAPTURE-DATE",
+      "classification": "OPEN",
+      "proof_refs": [],
+      "sources": [
+        "SOURCE-QIKVRT-ORIGINAL-CAPTURE-DATE"
+      ],
+      "statement": "Anfertigungs- und Aufnahmezeitpunkte der handschriftlichen Skizzen sind für diesen Dokumentationssatz noch nicht nachgewiesen.",
+      "status": "OPEN"
+    }
+  ],
+  "historical_matrix": {
+    "bytes": 8349,
+    "git_blob_sha1": "8e829703a0939b037a44ebd0784a944263df649b",
+    "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/CLAIM_MATRIX.json",
+    "sha256": "d4d4fd470d7dd9426a79b52b9ebd07eae05abf6feccfce43a9acfe83bc59e0ed"
+  },
+  "publication_id": "qikvrt-original-sketches-20261002-v1",
+  "schema": "qikvrt_original_sketch_claim_matrix_v2",
+  "scientific_status_change": false
+}

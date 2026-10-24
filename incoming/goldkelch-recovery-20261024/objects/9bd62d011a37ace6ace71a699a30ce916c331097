@@ -1,0 +1,21 @@
+{
+  "admission_job": "SKIPPED",
+  "artifact_id": 11260896259,
+  "digest_matches_native_metadata": true,
+  "entry": "readback.json",
+  "entry_bytes": 2725,
+  "entry_sha256": "ac00d3ec9e3d04faf79b559ae47963e388494d9d43879257bf9b5f9695060fc4",
+  "executor_subject_verified": true,
+  "head": "7ed957669a8f6f0e03c62cff7787a45cfaceab12",
+  "job_id": 111098520251,
+  "predecessor_evidence_transfer": false,
+  "protected_mutation_count": 0,
+  "repository": "ingolf-lohmann/qik-vrt",
+  "run_attempt": 1,
+  "run_id": 37086743407,
+  "schema": "qikvrt_native_artifact_receipt_v1",
+  "tree": "507870ae80f0a07906198c94aba0f06119f08f13",
+  "workflow_bytes_verified": true,
+  "zip_bytes": 1228,
+  "zip_sha256": "ceca9dbe4aab5ca429f3d4a160911f9015c1780b1a6f9a4294da1f99c646cc53"
+}

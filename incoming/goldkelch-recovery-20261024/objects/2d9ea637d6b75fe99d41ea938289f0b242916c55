@@ -1,0 +1,15 @@
+{
+  "manifest": "GT",
+  "version": "2.13.4",
+  "role": "node",
+  "files": [
+    "tools/gh_deploy.ps1",
+    "tools/gh_deploy.sh",
+    "tests/test_gd.sh"
+  ],
+  "gate": "GT",
+  "token_capture_in_deploy_process": true,
+  "cmd_for_f_token_capture_removed": true,
+  "token_persisted": false,
+  "empty_token_blocks_remote_mutation": true
+}

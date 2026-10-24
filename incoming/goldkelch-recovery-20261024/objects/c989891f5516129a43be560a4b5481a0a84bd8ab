@@ -1,0 +1,82 @@
+{
+  "schema": "qikvrt_external_support_effect_carrier_v1",
+  "carrier_id": "MICROSOFT_SUPPORT_BROWSER_EFFECT_V1",
+  "purpose": "Submit an explicitly authorized Microsoft support case through an authenticated browser session and verify the resulting Microsoft receipt without treating navigation or form fill as completion.",
+  "provider": "Microsoft",
+  "effect_type": "SUPPORT_CASE_SUBMISSION",
+  "state": "REVIEW_CANDIDATE",
+  "authorization": {
+    "natural_person": "Ingolf Lohmann",
+    "source_instruction": "Dann reiche diesen Support-Fall jetzt bei Microsoft ein und beobachte im Anschluss, was passiert.",
+    "scope": "Submit the already prepared QIK-VRT Outlook AS(4810) support case to Microsoft and observe its receipt and subsequent material responses.",
+    "credential_delegation": false,
+    "secret_persistence": false
+  },
+  "input_contract": {
+    "case_subject": "Outlook.com/live.com: 550 5.7.520 AS(4810) bei QIK-VRT-Weiterleitung; Selbsttest ohne Anlage zugestellt — Bitte um technische False-Positive-Prüfung",
+    "diagnostic_code": "550 5.7.520 / AS(4810)",
+    "message_id": "<BESP194MB282982DD8FE4AD326497C495EF842@BESP194MB2829.EURP194.PROD.OUTLOOK.COM>",
+    "filtering_correlation_id": "77b08a2c-3e5c-4ee6-a757-08df18239a82",
+    "prepared_artifact": "Microsoft_Support_QIKVRT_AS4810_2026-09-22.txt"
+  },
+  "browser_contract": {
+    "authentication": "Use the browser/platform authenticated Microsoft session or browser-native credential manager. Never persist credentials in QIK-VRT.",
+    "navigation": "Open the official Microsoft support entry surface appropriate to the signed-in account and Outlook.com delivery issue.",
+    "prepare": [
+      "Resolve the actual Microsoft support form and signed-in account context.",
+      "Populate only the authorized support-case fields from the frozen input contract.",
+      "Before submission, re-read the rendered case summary and bind provider, account context, subject, diagnostic identifiers and case-body hash."
+    ],
+    "commit": [
+      "Submit exactly once after the prepared form remains bound to the authorized case.",
+      "Do not duplicate submission after timeout or ambiguous navigation.",
+      "Treat MFA, CAPTCHA, consent or account recovery as HUMAN_INTERACTION_REQUIRED rather than bypassing it."
+    ],
+    "readback": [
+      "Require a Microsoft-originated case/ticket identifier or equivalent durable receipt.",
+      "Reobserve the support portal and Outlook inbox for the same case identity.",
+      "Persist only non-secret receipt metadata and timestamps.",
+      "Do not claim EFFECT_ACK_DONE from HTTP success, page navigation, form disappearance or sent-mail state."
+    ]
+  },
+  "effect_ack": {
+    "prepare_state": "EFFECT_ACK_CONTINUE",
+    "done_requires": [
+      "MICROSOFT_RECEIPT_OBSERVED",
+      "CASE_ID_BOUND",
+      "CASE_SUBJECT_BOUND",
+      "DIAGNOSTIC_IDENTIFIERS_BOUND",
+      "NO_DUPLICATE_SUBMISSION"
+    ],
+    "ambiguous_result": "EFFECT_ACK_CONTINUE",
+    "human_interaction_result": "EFFECT_ACK_CONTINUE",
+    "terminal_success": "EFFECT_ACK_DONE"
+  },
+  "observation_policy": {
+    "mode": "EVENT_AND_WORKLOAD_SENSITIVE",
+    "material_events": [
+      "MICROSOFT_RECEIPT_CREATED",
+      "CASE_STATUS_CHANGED",
+      "MICROSOFT_RESPONSE_RECEIVED",
+      "REQUEST_FOR_ADDITIONAL_INFORMATION",
+      "CASE_RESOLVED_OR_CLOSED"
+    ],
+    "deduplicate_unchanged_state": true,
+    "observation_is_not_snapshot_when_follow_up_exists": true,
+    "follow_up_remains_same_roundtrip": true
+  },
+  "safety_boundary": {
+    "allowed": [
+      "authorized support case submission",
+      "readback of the submitted case",
+      "observation of subsequent Microsoft case responses"
+    ],
+    "forbidden": [
+      "credential extraction or persistence",
+      "MFA or CAPTCHA bypass",
+      "unrelated Microsoft account changes",
+      "duplicate case creation after ambiguous outcome",
+      "claiming submission without Microsoft receipt"
+    ]
+  }
+}

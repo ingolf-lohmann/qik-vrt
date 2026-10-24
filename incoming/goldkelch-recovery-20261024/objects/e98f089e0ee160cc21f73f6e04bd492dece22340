@@ -1,0 +1,23 @@
+{
+  "schema": "qikvrt_governance_enforcement_repair_carrier_v1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "created_from_main": "1fc857881937ad357a6f5aadd127739c969e953e",
+  "observed_blocker": "CODE_OWNER_RULE_NOT_ENFORCED",
+  "observed_native_rulesets": 0,
+  "scope": {
+    "native_rule_enforcement": true,
+    "review_status_separation": true,
+    "charter_bytes_mutation": false,
+    "postmerge_evidence_mutation": false,
+    "predecessor_evidence_transfer": false
+  },
+  "status_contexts": {
+    "technical_review": "QIKVRT requested review execution",
+    "native_governance_review": "QIKVRT required code-owner review",
+    "must_be_distinct": true
+  },
+  "desired_policy": "policy/GITHUB_MAIN_RULESET_V1.json",
+  "effect_workflow": ".github/workflows/qikvrt_mirror_ruleset_effect.yml",
+  "state": "REQUEST_AUTHORITY",
+  "next_action": "CREATE_OR_RECONCILE_NATIVE_MAIN_RULESET_AND_READ_BACK"
+}

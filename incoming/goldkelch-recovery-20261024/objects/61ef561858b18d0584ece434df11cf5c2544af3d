@@ -1,0 +1,49 @@
+{
+  "counts": {
+    "connected_cases": 119018,
+    "counts_by_vertices": {
+      "1": {
+        "cases": 2,
+        "graphs": 1
+      },
+      "2": {
+        "cases": 16,
+        "graphs": 2
+      },
+      "3": {
+        "cases": 192,
+        "graphs": 8
+      },
+      "4": {
+        "cases": 4096,
+        "graphs": 64
+      },
+      "5": {
+        "cases": 163840,
+        "graphs": 1024
+      }
+    },
+    "disconnected_cases": 49128,
+    "graph_partition_start_cases": 168146,
+    "graphs": 1099,
+    "negative_checks": 19
+  },
+  "production_qikvrt_conformance_proved": false,
+  "proof_assistant_kernel_verified": false,
+  "runtime": {
+    "implementation": "CPython",
+    "python": "3.12.14"
+  },
+  "schema": "qikvrt_labyrinth_exhaustive_check_v1",
+  "scope": {
+    "includes_disconnected_graphs": true,
+    "max_vertices": 5,
+    "model": "all labelled simple undirected graphs, all Boolean partitions, every start"
+  },
+  "source_sha256": {
+    "check_labyrinth.py": "4c83438840504f0a9358ab45c72987037f956ea20ffea37d2cec0a1efc19f3c1",
+    "labyrinth.py": "a1a279c5be29aaa42466c1a038bb1ffea66781185338186f8e5bd38996e9c72f"
+  },
+  "status": "PASS_WITHIN_DECLARED_FINITE_TEST_SCOPE",
+  "tests_are_not_an_unbounded_theorem_proof": true
+}

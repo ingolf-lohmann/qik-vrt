@@ -1,0 +1,47 @@
+{
+  "publications": [
+    {
+      "bundle_sha256": "7497e6339361fd1dd3519323e098694b07285ed1d82ace38a4cba584f40f5069",
+      "candidates": [
+        {
+          "bytes": 89993,
+          "git_blob_sha1": "88b0701a256c699116d04ab466c522ee3c0c5bf6",
+          "path": "docs/publications/2026-09-28-quality-gates/QIKVRT_Quality_Gates_Universal_Transputer_2026-09-28.pdf",
+          "sha256": "4c8afded8a3b46008605b5abed8b048765ab35973465c5659f2a32109ece6598"
+        },
+        {
+          "bytes": 23416,
+          "git_blob_sha1": "8030bf962335fd54ef72c6a078f656bb3c356145",
+          "path": "docs/publications/2026-09-28-quality-gates/QIKVRT_Quality_Gates_Vorlesefassung_2026-09-28.txt",
+          "sha256": "0d6e82942f4359622f588fe240afa3593f8f794e67e0f37d595a6087631a4952"
+        }
+      ],
+      "publication_id": "qikvrt-quality-gates-20260928-v1",
+      "release_path": "release/qikvrt-quality-gates-20260928-v1",
+      "statement": "AUTHORIZE_EXACT_UPLOAD authorization_id=quality-gates-20260928-auth-01 publication_id=qikvrt-quality-gates-20260928-v1 return_sha256=3de512821d5767ba85f53a9aaf00a029e3a9dd0056f2d9d5ab53bc630540b374 metadata_sha256=457b54f9022e727a91dae9bb86c65277b51702ac6ce55b27dd0fa60a0a626b31 machine_proof_sha256=7497e6339361fd1dd3519323e098694b07285ed1d82ace38a4cba584f40f5069"
+    },
+    {
+      "bundle_sha256": "485b98d2033d54f1e35008dde3d4425d1a2bad178f5e79dd3839cb88e38f17ec",
+      "candidates": [
+        {
+          "bytes": 160673,
+          "git_blob_sha1": "4d309f060c7661b21a3d97678bf29e07a212ced8",
+          "path": "docs/publications/2026-09-15-closure-archive/QIKVRT_Abgeschlossen_und_anschlussfaehig_2026-09-15.pdf",
+          "sha256": "d767a3423099acf70ce6fd509bc332c93835725071d8f57cb4d8e9fd70752ba4"
+        },
+        {
+          "bytes": 27862,
+          "git_blob_sha1": "f13fdfc614f8e28a74c1c1bc8e74def2729a1dc6",
+          "path": "docs/publications/2026-09-15-closure-archive/VORLESEFASSUNG.txt",
+          "sha256": "2f0b9a6caa5dda0eecfc81157c068c7a4b8380b4a2ab82b222cca6cc38eb0f7e"
+        }
+      ],
+      "publication_id": "qikvrt-closure-archive-20260915-v1",
+      "release_path": "release/qikvrt-closure-archive-20260915-v1",
+      "statement": "AUTHORIZE_EXACT_UPLOAD authorization_id=closure-archive-20260928-auth-01 publication_id=qikvrt-closure-archive-20260915-v1 return_sha256=8101f1d86abd91b3eae720443831740ef9278456fd0ae79afdc713301ea1e5a4 metadata_sha256=af74fa824f55322359c765eb3dbca58ea705df03831a95e672dfecd1a04136e1 machine_proof_sha256=485b98d2033d54f1e35008dde3d4425d1a2bad178f5e79dd3839cb88e38f17ec"
+    }
+  ],
+  "schema": "qikvrt-dual-article-preparation-v1",
+  "state": "EXACT_OWNER_AUTHORIZATION_PENDING",
+  "zenodo_published": false
+}

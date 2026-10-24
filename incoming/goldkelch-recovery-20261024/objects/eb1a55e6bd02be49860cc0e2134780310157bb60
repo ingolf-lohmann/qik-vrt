@@ -1,0 +1,13 @@
+{
+  "gate": "QIKVRT_UNIFIED_NODE_CORE",
+  "version": "2.12.1",
+  "required": [
+    "identical_inner_build",
+    "same_rest_api",
+    "same_testbed_core",
+    "runtime_role_config",
+    "no_api_fork",
+    "no_seed_node_code_split",
+    "github_openapi_aligned"
+  ]
+}

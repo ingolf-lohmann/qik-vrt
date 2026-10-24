@@ -1,0 +1,13 @@
+{
+  "version": "2.9",
+  "mode": "authorized-autonomous-discovery",
+  "local_operation_no_third_party_service_required": true,
+  "internet_mode_requires_authorized_seed_or_declared_endpoint": true,
+  "local_multicast_allowed_when_policy_permits": true,
+  "global_address_scanning": false,
+  "unauthorized_probing": false,
+  "self_propagation": false,
+  "watchdog_enabled": true,
+  "sanity_selftest_requestable": true,
+  "audit_append_only": true
+}

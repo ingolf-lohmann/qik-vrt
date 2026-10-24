@@ -1,0 +1,64 @@
+{
+  "schema": "qikvrt_node_liveness_execution_receipt_v1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "repair_pr": 378,
+  "predecessor_head": "6572dae891440bd9c0360ff7d13c4486f34e45c0",
+  "mirror_main_before": "2c4f53d63e2012fcabd9925a23cb5b761a82b77e",
+  "mirror_tree_before": "6ec9924a3b6b25fd42f5f5fb897c917e8b0c3a7c",
+  "authority_main_observed": "a86054139b49c13c5cd344753b248b46b5daf66f",
+  "run_id": "qikvrt-node-runtime-20260918T132655Z",
+  "executed_at_utc": "2026-09-18T13:26:55Z",
+  "seed_checked_at_utc": "2026-09-18T13:29:23Z",
+  "actual_node_execution": true,
+  "runtime_source": {
+    "payload_root": "incoming/qikvrt_payloads/20260708T174539Z/payload/QIKVRT_V2_13_4AV1_OPEN_MULTI_NODE_REGISTRY_REVALIDATION_ONE_COMMAND_INSTALLER/roles/node",
+    "config": {
+      "path": "incoming/qikvrt_payloads/20260708T174539Z/payload/QIKVRT_V2_13_4AV1_OPEN_MULTI_NODE_REGISTRY_REVALIDATION_ONE_COMMAND_INSTALLER/roles/node/qikvrt/runtime/onboarding/NODE_HANDSHAKE_CONFIG.tsv",
+      "git_blob_sha1": "86a4f2b3179d29227d3726d29a867c581b5c9303",
+      "sha256": "eb2a452936b4299b69d38c18be85e66b36d0954eff5f94d4803c6bce1c4bfce1"
+    },
+    "health_script": {
+      "path": "incoming/qikvrt_payloads/20260708T174539Z/payload/QIKVRT_V2_13_4AV1_OPEN_MULTI_NODE_REGISTRY_REVALIDATION_ONE_COMMAND_INSTALLER/roles/node/tools/qikvrt_node_health_publish.sh",
+      "git_blob_sha1": "0ca2ae13d0d0ad4dd7838a25fc1f2bc53a1938a6",
+      "sha256": "4c07a10db627bfdcf71c09ee5132ac795cd1f9ef23f2de444c43a72d256d166c"
+    },
+    "renewal_script": {
+      "path": "incoming/qikvrt_payloads/20260708T174539Z/payload/QIKVRT_V2_13_4AV1_OPEN_MULTI_NODE_REGISTRY_REVALIDATION_ONE_COMMAND_INSTALLER/roles/node/tools/qikvrt_node_renew_registration.sh",
+      "git_blob_sha1": "704f6caa3371270465da1e1944d16ce1a396e347",
+      "sha256": "ca7ed85027220b942a4cadf30c6f30712f76c1d2cfefb102458bea053c4f66ae"
+    }
+  },
+  "execution_outputs": {
+    "raw_health_evidence_sha256": "61e8ded9ba1cfee2fe5eee0ed84d429e17d0856dba27e47fefc86a4dd8bba5ca",
+    "raw_renewal_evidence_sha256": "6ed83d2232493264be45bf926b97f77dc9079be8be79a6737294de930d8f683a",
+    "canonical_health_sha256": "10604aef5c9b8326040b738f5d25ea5057d5824e5a12f8d70c306750db5b0ecd",
+    "canonical_renewal_sha256": "b67759774d69efadb8cee7822863373e548c7b8cc310938fae0f469b229e6bf8"
+  },
+  "seed_readback": {
+    "authority_main": "a86054139b49c13c5cd344753b248b46b5daf66f",
+    "seed_index_sha256": "2b82f68672663441711881687983655394b9b15019682adf222e310c03862215",
+    "seed_node_entry_sha256": "e2a33ed2fd0bf3231c3c47ae9bf08aea98e12ef77cdc319cd0788bd296ef3ce5",
+    "registry_status": "ACCEPTED",
+    "policy_status": "ACTIVE",
+    "observed_status": "ACCEPTED"
+  },
+  "canonical_outputs": {
+    "qikvrt/runtime/onboarding/NODE_HEALTH.json": "10604aef5c9b8326040b738f5d25ea5057d5824e5a12f8d70c306750db5b0ecd",
+    "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json": "b67759774d69efadb8cee7822863373e548c7b8cc310938fae0f469b229e6bf8",
+    "qikvrt/runtime/onboarding/SEED_ACCEPTANCE_STATUS.json": "f6fe321437a1259d72f00f6ebf27a02eecc64d673e4943d30091cb4cb0804c55",
+    "evidence/node_health/qikvrt-node-runtime-20260918T132655Z.json": "61e8ded9ba1cfee2fe5eee0ed84d429e17d0856dba27e47fefc86a4dd8bba5ca",
+    "evidence/node_registration_renewal/qikvrt-node-runtime-20260918T132655Z.json": "6ed83d2232493264be45bf926b97f77dc9079be8be79a6737294de930d8f683a",
+    "evidence/node_seed_link/runs/qikvrt-node-runtime-20260918T132655Z.json": "4e2ea5548e9fa9a2785d477afbc7052c9547d91c82b0b97e825ef2981d9f7b00"
+  },
+  "boundaries": {
+    "predecessor_evidence_transfer": false,
+    "raw_4av1_events_are_execution_evidence_not_current_root_schema": true,
+    "canonical_root_records_are_parser_compatible_projections_of_same_run": true,
+    "force_push": false,
+    "release": false,
+    "deployment": false,
+    "pass": false,
+    "final_pass": false,
+    "effect_ack_done": false
+  }
+}

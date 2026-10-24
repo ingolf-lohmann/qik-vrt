@@ -1,0 +1,204 @@
+{
+  "bindings": [
+    {
+      "artifacts": [
+        {
+          "bytes": 1654,
+          "git_blob_sha1": "515fc6192a1e43a7b119fe982a37995871abab27",
+          "path": "docs/publications/2026-09-15-closure-archive/PROVENANCE.json",
+          "sha256": "14351278015bf59b3202c4b3be8a5c797e47766874fa29a18cfef83d6780e6be"
+        }
+      ],
+      "context": "Das Primär-PDF ist die unveränderte 160673-Byte-Fassung vom 15. September 2026 mit SHA-256 d767a3423099acf70ce6fd509bc332c93835725071d8f57cb4d8e9fd70752ba4.",
+      "id": "A01",
+      "repository_subject": {
+        "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "repository": "Goldkelch/qik-vrt"
+      },
+      "scope": "Historische unbegutachtete Arbeitsfassung; Archivdatum ist kein rückdatierter Publikationszeitpunkt."
+    },
+    {
+      "artifacts": [
+        {
+          "bytes": 1654,
+          "git_blob_sha1": "515fc6192a1e43a7b119fe982a37995871abab27",
+          "path": "docs/publications/2026-09-15-closure-archive/PROVENANCE.json",
+          "sha256": "14351278015bf59b3202c4b3be8a5c797e47766874fa29a18cfef83d6780e6be"
+        }
+      ],
+      "context": "Zwei Katalogeinträge derselben Primär-PDF-Bytes sind auf den 15. und 27. September datiert.",
+      "id": "A02",
+      "repository_subject": {
+        "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "repository": "Goldkelch/qik-vrt"
+      },
+      "scope": "Belegt Dateiprovenienz, nicht erste Nutzersichtbarkeit, Vorhersage oder Retrokausalität."
+    },
+    {
+      "artifacts": [],
+      "context": "Der historische Text definiert zulässige endliche Spuren und eine Erreichbarkeitsschließung und argumentiert bedingt für Extensivität, Monotonie und Idempotenz.",
+      "historical_primary": {
+        "bytes": 160673,
+        "git_blob_sha1": "4d309f060c7661b21a3d97678bf29e07a212ced8",
+        "path": "docs/publications/2026-09-15-closure-archive/QIKVRT_Abgeschlossen_und_anschlussfaehig_2026-09-15.pdf",
+        "sha256": "d767a3423099acf70ce6fd509bc332c93835725071d8f57cb4d8e9fd70752ba4"
+      },
+      "id": "A03",
+      "repository_subject": {
+        "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "repository": "Goldkelch/qik-vrt"
+      },
+      "scope": "Quellengebundene Wiedergabe der handschriftlichen Argumentation und Definitionen; kein neu kernelgeprüfter Satz."
+    },
+    {
+      "artifacts": [],
+      "context": "Der historische Text trennt Abgeschlossenheit von Maximalität und echte Erweiterung durch einen neuen zulässigen Ausgangspunkt außerhalb der bisherigen Schließung.",
+      "historical_primary": {
+        "bytes": 160673,
+        "git_blob_sha1": "4d309f060c7661b21a3d97678bf29e07a212ced8",
+        "path": "docs/publications/2026-09-15-closure-archive/QIKVRT_Abgeschlossen_und_anschlussfaehig_2026-09-15.pdf",
+        "sha256": "d767a3423099acf70ce6fd509bc332c93835725071d8f57cb4d8e9fd70752ba4"
+      },
+      "id": "A04",
+      "repository_subject": {
+        "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "repository": "Goldkelch/qik-vrt"
+      },
+      "scope": "Existenz dieses neuen Punktes ist Voraussetzung, keine Folge von Abgeschlossenheit; kein weltumfassender Abschluss."
+    },
+    {
+      "artifacts": [],
+      "context": "Der Text argumentiert endliche Fortsetzbarkeit unter Nachfolgerexistenz und nennt einen zulässigen Zustand ohne Übergang als Gegenmodell.",
+      "historical_primary": {
+        "bytes": 160673,
+        "git_blob_sha1": "4d309f060c7661b21a3d97678bf29e07a212ced8",
+        "path": "docs/publications/2026-09-15-closure-archive/QIKVRT_Abgeschlossen_und_anschlussfaehig_2026-09-15.pdf",
+        "sha256": "d767a3423099acf70ce6fd509bc332c93835725071d8f57cb4d8e9fd70752ba4"
+      },
+      "id": "A05",
+      "repository_subject": {
+        "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "repository": "Goldkelch/qik-vrt"
+      },
+      "scope": "Keine unendliche reale Laufzeit oder unbegrenzte Ressourcen; bedingte Modellargumentation."
+    },
+    {
+      "artifacts": [],
+      "context": "Der Text bindet Receipts an Artefakt, Revision und Policy und trennt Transportbestätigung von Wirkungsbestätigung.",
+      "historical_primary": {
+        "bytes": 160673,
+        "git_blob_sha1": "4d309f060c7661b21a3d97678bf29e07a212ced8",
+        "path": "docs/publications/2026-09-15-closure-archive/QIKVRT_Abgeschlossen_und_anschlussfaehig_2026-09-15.pdf",
+        "sha256": "d767a3423099acf70ce6fd509bc332c93835725071d8f57cb4d8e9fd70752ba4"
+      },
+      "id": "A06",
+      "repository_subject": {
+        "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "repository": "Goldkelch/qik-vrt"
+      },
+      "scope": "Anwendungsbezogene Kausalität, Referenz und Messfehler bleiben gesondert zu prüfen."
+    },
+    {
+      "artifacts": [
+        {
+          "bytes": 1654,
+          "git_blob_sha1": "515fc6192a1e43a7b119fe982a37995871abab27",
+          "path": "docs/publications/2026-09-15-closure-archive/PROVENANCE.json",
+          "sha256": "14351278015bf59b3202c4b3be8a5c797e47766874fa29a18cfef83d6780e6be"
+        }
+      ],
+      "context": "Das originale ZIP enthält EvidenceClosure.lean, Audit.lean, zwei wiederverwendete Module, drei Negativdateien und den Lean-4.19.0-Prüfharness.",
+      "id": "A07",
+      "repository_subject": {
+        "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "repository": "Goldkelch/qik-vrt"
+      },
+      "scope": "Dateiinventar; die im Artikel genannten 14 neuen Theoreme und 17 Auditkonstanten sind vorbereiteter Umfang, keine 17 erfolgreichen Prüfungen."
+    },
+    {
+      "artifacts": [
+        {
+          "bytes": 1654,
+          "git_blob_sha1": "515fc6192a1e43a7b119fe982a37995871abab27",
+          "path": "docs/publications/2026-09-15-closure-archive/PROVENANCE.json",
+          "sha256": "14351278015bf59b3202c4b3be8a5c797e47766874fa29a18cfef83d6780e6be"
+        }
+      ],
+      "context": "Der neue Lean-Kernelnachweis einschließlich Axiom-Audit und semantischer Negativkontrollen ist für diesen historischen Artikel weiterhin offen.",
+      "id": "A08",
+      "repository_subject": {
+        "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "repository": "Goldkelch/qik-vrt"
+      },
+      "scope": "Das Paket dokumentiert damalige Laufzeitfehler vor Quellprüfung; kein neuer Lean-Lauf in diesem Archivauftrag."
+    },
+    {
+      "artifacts": [],
+      "context": "Hardware-/SoC-Realisierung, physische Korrespondenz und tatsächliche externe Wirkung folgen nicht aus dem historischen Modell.",
+      "historical_primary": {
+        "bytes": 160673,
+        "git_blob_sha1": "4d309f060c7661b21a3d97678bf29e07a212ced8",
+        "path": "docs/publications/2026-09-15-closure-archive/QIKVRT_Abgeschlossen_und_anschlussfaehig_2026-09-15.pdf",
+        "sha256": "d767a3423099acf70ce6fd509bc332c93835725071d8f57cb4d8e9fd70752ba4"
+      },
+      "id": "A09",
+      "repository_subject": {
+        "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "repository": "Goldkelch/qik-vrt"
+      },
+      "scope": "Fehlende Implementierungs-, Synthese-, Boot- und Wirkungsnachweise bleiben ausdrücklich offen."
+    },
+    {
+      "artifacts": [
+        {
+          "bytes": 1654,
+          "git_blob_sha1": "515fc6192a1e43a7b119fe982a37995871abab27",
+          "path": "docs/publications/2026-09-15-closure-archive/PROVENANCE.json",
+          "sha256": "14351278015bf59b3202c4b3be8a5c797e47766874fa29a18cfef83d6780e6be"
+        }
+      ],
+      "context": "Das unveränderte ZIP enthält eine andere PDF-Bytefassung (135698 Byte); ihr extrahierter Seitentext stimmt mit dem separat gelieferten Primär-PDF überein.",
+      "id": "A10",
+      "repository_subject": {
+        "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "repository": "Goldkelch/qik-vrt"
+      },
+      "scope": "Keine Behauptung binärer oder visueller Identität der beiden PDF-Varianten; beide Hashes bleiben getrennt."
+    },
+    {
+      "artifacts": [],
+      "context": "Die Vorlesefassung ist eine sachliche sprachliche Bearbeitung des historischen Artikels und bewahrt seine Vorbehalte.",
+      "historical_primary": {
+        "bytes": 160673,
+        "git_blob_sha1": "4d309f060c7661b21a3d97678bf29e07a212ced8",
+        "path": "docs/publications/2026-09-15-closure-archive/QIKVRT_Abgeschlossen_und_anschlussfaehig_2026-09-15.pdf",
+        "sha256": "d767a3423099acf70ce6fd509bc332c93835725071d8f57cb4d8e9fd70752ba4"
+      },
+      "id": "A11",
+      "repository_subject": {
+        "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "repository": "Goldkelch/qik-vrt"
+      },
+      "scope": "Redaktionelle Fassung, keine neue formale oder technische Zertifizierung."
+    },
+    {
+      "artifacts": [
+        {
+          "bytes": 1654,
+          "git_blob_sha1": "515fc6192a1e43a7b119fe982a37995871abab27",
+          "path": "docs/publications/2026-09-15-closure-archive/PROVENANCE.json",
+          "sha256": "14351278015bf59b3202c4b3be8a5c797e47766874fa29a18cfef83d6780e6be"
+        }
+      ],
+      "context": "Die Provenienz weist Ingolf Lohmann die Konzeption und Ausgangsfrage und OpenAI Codex die neue Ausarbeitung zu; wiederverwendete Lean-Dateien behalten Apache-2.0-Hinweise.",
+      "id": "A12",
+      "repository_subject": {
+        "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "repository": "Goldkelch/qik-vrt"
+      },
+      "scope": "Herkunfts- und Lizenzhinweis, kein Nachweis weltweiter Priorität oder Patentanspruchs."
+    }
+  ],
+  "publication_id": "qikvrt-closure-archive-20260915-v1",
+  "schema": "qikvrt-publication-source-bindings-v1"
+}

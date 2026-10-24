@@ -45,6 +45,8 @@ runtime-contract: tool-cache-contract
 	PYTHON="$(PYTHON)" sh tests/test_runtime_bootstrap.sh
 
 ai-runtime-contract:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_perfect_optimum tests.test_owner_personal_optimum
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_perfect_optimum.py --self-check >/dev/null
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_ai_runtime_bootloader
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/ai_runtime_bootloader.py --help >/dev/null
 

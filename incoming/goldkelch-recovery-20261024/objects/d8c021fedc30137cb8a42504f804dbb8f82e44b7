@@ -1,0 +1,33 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "artificial_cognitive_actor": {
+    "exact_build": "UNAVAILABLE",
+    "family": "GPT-6",
+    "provider": "OpenAI",
+    "system": "Codex"
+  },
+  "audio_retention": "Private input; metadata-only public attribution; no raw audio or transcript upload",
+  "authority_access": "Connector HTTP 404; absence/nonexistence not established",
+  "created_at": "2026-10-04T06:37:48.255216+00:00",
+  "human_actor": "Ingolf Lohmann",
+  "kernel_local_block": "Lean startup requires /proc/<pid>/exe; errno 13; no permission boundary bypassed.",
+  "new_candidate_human_acceptance": "PENDING",
+  "repository_subject": {
+    "head": "93be182a277f29fcb1ffb5d4ace0483f6c29dc58",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "tree": "25e36016536b45701abdc699c586394f53c69aa6"
+  },
+  "runtime_subject": {
+    "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+    "repository": "Goldkelch/qik-vrt",
+    "tree": "956c16b291c05243437b1f018321936e4438949a"
+  },
+  "schema": "qikvrt_labyrinth_source_bindings_v1",
+  "scope_of_prior_human_acceptance": "Earlier summary only",
+  "subjects_equal": false
+}

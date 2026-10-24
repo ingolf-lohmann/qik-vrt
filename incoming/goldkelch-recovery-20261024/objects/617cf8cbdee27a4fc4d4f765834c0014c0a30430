@@ -1,0 +1,103 @@
+{
+    "schema":  "qikvrt-windows-python-offline-start-receipt/1.0",
+    "observed_utc":  "2026-10-03T14:01:42.8663454Z",
+    "source_head":  "1f2441dd443bd9ad58574ed1626e66e18172e66a",
+    "source_tree":  "e4fe8bb0471c1ce1f1f9308a8d874e22953304ac",
+    "run_id":  "37128130457",
+    "run_attempt":  "1",
+    "job":  "windows-offline-start",
+    "runner_os":  "Windows",
+    "runner_arch":  "X64",
+    "windows_caption":  "Microsoft Windows Server 2022 Datacenter",
+    "windows_version":  "10.0.20348",
+    "windows_build":  "20348",
+    "windows_11_client_claimed":  false,
+    "powershell_version":  "5.1.20348.5622",
+    "archive_sha256":  "4acbed6dd1c744b0376e3b1cf57ce906f9dc9e95e68824584c8099a63025a3c3",
+    "archive_bytes":  11133606,
+    "license_sha256":  "e502c6b880ff58d614901495a9009c136539cd0b1e2a2abb8fc00b934c203419",
+    "payload_manifest_sha256":  "0119f95dcece5191342049380b5274e5ecfe51e2fca81682e162e16cd6b3acfd",
+    "bootstrap_sha256":  "a4876dc31f76ee874b04b0fb4e6909a01af59c1dc94c58ca2ef8382a2db17d87",
+    "cmd_launcher_sha256":  "e84b0cc32881e387668736f0a9412e9fb8d2dfa27dbf2772011da65eccec1c9b",
+    "ps_launcher_sha256":  "d8851571f416083084589384fd8555635365b2ae6adddcdafa9a778a8c4e18a9",
+    "native_windows_x64":  true,
+    "system_python_candidates_exposed":  false,
+    "os_egress_denied":  true,
+    "upstream_connection_negative_control":  "PASS",
+    "upstream_download_during_offline_start":  false,
+    "cold_offline_restore":  "PASS",
+    "fresh_qikvrt_cmd_start":  "PASS",
+    "warm_offline_start":  "PASS",
+    "runtime_self_test":  {
+                              "version":  "3.12.10",
+                              "pointer_bits":  64,
+                              "isolated":  true,
+                              "sqlite_readback":  true,
+                              "executable":  "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\qikvrt-win-offline-c78da0e7e39044eab3b50c95f635c9ed\\QIK VRT offline carrier\\python-embed\\3.12.10\\windows-amd64\\sha256\\4acbed6dd1c744b0376e3b1cf57ce906f9dc9e95e68824584c8099a63025a3c3\\runtime\\python.exe",
+                              "ssl":  "OpenSSL 3.0.16 11 Feb 2025"
+                          },
+    "negative_controls":  {
+                              "native-log-contract":  {
+                                                          "alias_rejected":  true,
+                                                          "result":  "PASS",
+                                                          "complete_records":  16,
+                                                          "concurrent_writers":  2
+                                                      },
+                              "missing-cache":  {
+                                                    "result":  "PASS",
+                                                    "launcher_executed":  false,
+                                                    "exit_code":  1
+                                                },
+                              "tampered-archive":  {
+                                                       "result":  "PASS",
+                                                       "launcher_executed":  false,
+                                                       "exit_code":  1
+                                                   },
+                              "missing-archive":  {
+                                                      "result":  "PASS",
+                                                      "launcher_executed":  false,
+                                                      "exit_code":  1
+                                                  },
+                              "tampered-executable":  {
+                                                          "result":  "PASS",
+                                                          "launcher_executed":  false,
+                                                          "exit_code":  1
+                                                      },
+                              "missing-stdlib":  {
+                                                     "result":  "PASS",
+                                                     "launcher_executed":  false,
+                                                     "exit_code":  1
+                                                 },
+                              "unexpected-module":  {
+                                                        "result":  "PASS",
+                                                        "launcher_executed":  false,
+                                                        "exit_code":  1
+                                                    },
+                              "reparse-cache":  {
+                                                    "result":  "PASS",
+                                                    "launcher_executed":  false,
+                                                    "exit_code":  1
+                                                },
+                              "reconstruction-consent-required":  {
+                                                                      "exit_code":  1,
+                                                                      "result":  "PASS"
+                                                                  },
+                              "final-verification-rollback":  {
+                                                                  "result":  "PASS",
+                                                                  "rollback_verified":  true,
+                                                                  "exit_code":  1
+                                                              },
+                              "native-log-owner-dacl":  {
+                                                            "result":  "PASS",
+                                                            "owner_rights_sid":  "S-1-3-4",
+                                                            "protected":  true
+                                                        }
+                          },
+    "launcher_log_readback_sha256":  "c52896811232ed55f1bcf9597e41ca140135ef72a93ebfb033a13cd6817efcb5",
+    "effect_acceptance_retained":  true,
+    "dependency_closed_for_materialized_carrier":  true,
+    "ordinary_release":  false,
+    "main_activation_verified":  false,
+    "predecessor_evidence_transfer":  false,
+    "effect_ack_done":  false
+}

@@ -1,0 +1,53 @@
+﻿timestamp_utc`tgate`tstatus`tdetail
+2026-07-07T15:47:17Z	WINDOWS_ACCEPTANCE_RUNNER	PASS	PowerShell 5.1 compatible runner started
+2026-07-07T15:47:17Z	REPO_ROOT	PASS	%QIKVRT_NODE_ROOT%
+2026-07-07T15:47:17Z	PS_VERSION	PASS	5.1.26100.8737
+2026-07-07T15:47:17Z	FILE_README.md	PASS	present
+2026-07-07T15:47:17Z	FILE_LICENSE.md	PASS	present
+2026-07-07T15:47:17Z	FILE_Makefile	PASS	present
+2026-07-07T15:47:17Z	FILE_SHA256SUMS.txt	PASS	present
+2026-07-07T15:47:17Z	FILE_RUN_WINDOWS_ACCEPTANCE.cmd	PASS	present
+2026-07-07T15:47:17Z	FILE_tools\win_acceptance.ps1	PASS	present
+2026-07-07T15:47:17Z	FILE_src\main.c	PASS	present
+2026-07-07T15:47:17Z	FILE_src\qikvrt.c	PASS	present
+2026-07-07T15:47:17Z	FILE_include\qikvrt.h	PASS	present
+2026-07-07T15:47:17Z	FILE_qikvrt\manifests\LE.json	PASS	present
+2026-07-07T15:47:17Z	FILE_qikvrt\evidence\GH_WEB_REF.json	PASS	present
+2026-07-07T15:47:17Z	MAX_RELATIVE_PATH_LENGTH	PASS	max=65
+2026-07-07T15:47:17Z	SHA256SUMS	PASS	ok=120
+2026-07-07T15:47:17Z	JSON_PARSE_ALL	PASS	ok=33
+2026-07-07T15:47:17Z	JSONL_PARSE_ALL	PASS	ok=18
+2026-07-07T15:47:18Z	LIVE_FETCH_MANIFEST	PASS	http=200 bytes=15168 sha256=8d4946c2dd632a345dd4a345542d15d11802c5552cdb6a309056af35d7e103e2 url=https://raw.githubusercontent.com/Goldkelch/qik-vrt/main/MANIFEST.json
+2026-07-07T15:47:18Z	LIVE_FETCH_REST_TCPIP_MANIFEST	PASS	http=200 bytes=1052 sha256=154c505660431dc41fe6072809ab69702202a2f417129083deb0a35a16abe7b1 url=https://raw.githubusercontent.com/Goldkelch/qik-vrt/main/QIKVRT_SELF_CONTAINED_GITHUB_REPOSITORY_WITH_REST_TCPIP_API_V1_MANIFEST.json
+2026-07-07T15:47:18Z	DEPENDENCY_BOOTSTRAP_EXISTING_COMPILER	PASS	clang:C:\Program Files\LLVM\bin\clang.exe
+2026-07-07T15:47:18Z	DEPENDENCY_BOOTSTRAP	PASS	compiler candidate already present
+2026-07-07T15:47:18Z	C_COMPILER_CANDIDATES	PASS	clang:C:\Program Files\LLVM\bin\clang.exe
+2026-07-07T15:47:19Z	C_BUILD_ATTEMPT	BLOCK	clang exit=1 path=C:\Program Files\LLVM\bin\clang.exe stdout=%QIKVRT_NODE_ROOT%\qikvrt\runtime\win_acceptance\build_clang.out.txt stderr=%QIKVRT_NODE_ROOT%\qikvrt\runtime\win_acceptance\build_clang.err.txt err_sample=src\main.c:1:10: fatal error: 'stdio.h' file not found     1 | #include <stdio.h>       |          ^~~~~~~~~ 1 error generated. src\qikvrt.c:1:10: fatal error: 'stdio.h' file not found     1 | #include <stdio.h>       |          ^~~~~~~~~ 1 error generated. 
+2026-07-07T15:47:19Z	C_BUILD_PRIMARY_CANDIDATES	BLOCK	no existing/LLVM/choco compiler candidate produced build\qikvrt_verify.exe
+2026-07-07T15:47:19Z	DEPENDENCY_BOOTSTRAP_WINGET_ZIG	PASS	winget install attempt: zig.zig
+2026-07-07T15:49:42Z	PATH_REFRESH	PASS	Machine/User PATH reloaded into current PowerShell process
+2026-07-07T15:49:42Z	DEPENDENCY_BOOTSTRAP_WINGET_ZIG_EXIT	PASS	exit=0
+2026-07-07T15:49:42Z	PATH_REFRESH	PASS	Machine/User PATH reloaded into current PowerShell process
+2026-07-07T15:49:42Z	C_COMPILER_CANDIDATES	PASS	clang:C:\Program Files\LLVM\bin\clang.exe | zigcc:%LOCALAPPDATA%\Microsoft\WinGet\Packages\zig.zig_Microsoft.Winget.Source_8wekyb3d8bbwe\zig-x86_64-windows-0.16.0\zig.exe
+2026-07-07T15:49:43Z	C_BUILD_ATTEMPT	BLOCK	clang exit=1 path=C:\Program Files\LLVM\bin\clang.exe stdout=%QIKVRT_NODE_ROOT%\qikvrt\runtime\win_acceptance\build_clang.out.txt stderr=%QIKVRT_NODE_ROOT%\qikvrt\runtime\win_acceptance\build_clang.err.txt err_sample=src\main.c:1:10: fatal error: 'stdio.h' file not found     1 | #include <stdio.h>       |          ^~~~~~~~~ 1 error generated. src\qikvrt.c:1:10: fatal error: 'stdio.h' file not found     1 | #include <stdio.h>       |          ^~~~~~~~~ 1 error generated. 
+2026-07-07T15:50:14Z	C_BUILD	PASS	zigcc %LOCALAPPDATA%\Microsoft\WinGet\Packages\zig.zig_Microsoft.Winget.Source_8wekyb3d8bbwe\zig-x86_64-windows-0.16.0\zig.exe
+2026-07-07T15:50:16Z	VERIFY_REPO	PASS	PASS QIKVRT repository GitHub seed discovery verification v2.11.1 checks=510 failures=0 articles=44
+2026-07-07T15:50:17Z	VALIDATE_ROOT_LAYOUT	PASS	PASS QIKVRT repository root layout validation v2.11.1 checks=9 failures=0 articles=0
+2026-07-07T15:50:18Z	VALIDATE_LIVE_GITHUB_SEED_MANIFEST	PASS	PASS QIKVRT GitHub seed manifest validation v2.11.1 checks=8 failures=0 articles=0
+2026-07-07T15:50:19Z	VALIDATE_STATIC_LIVE_EVIDENCE	PASS	PASS QIKVRT live evidence file validation v2.11.1 checks=10 failures=0 articles=0
+2026-07-07T15:50:20Z	C_SELFTEST_MULTICAST	PASS	PASS QIKVRT multicast selftest v2.11.1 checks=19 failures=0 articles=0
+2026-07-07T15:50:21Z	C_SELFTEST_ONTOLOGY	PASS	PASS QIKVRT ontology selftest v2.11.1 checks=5 failures=0 articles=0
+2026-07-07T15:50:22Z	C_SELFTEST_GOVERNANCE	PASS	PASS QIKVRT constitutional governance selftest v2.11.1 checks=15 failures=0 articles=0
+2026-07-07T15:50:23Z	C_SELFTEST_ACTIVE	PASS	PASS QIKVRT authorized active layer selftest v2.11.1 checks=14 failures=0 articles=0
+2026-07-07T15:50:24Z	C_SELFTEST_WATCHDOG	PASS	PASS QIKVRT watchdog keepalive selftest v2.11.1 checks=26 failures=0 articles=0
+2026-07-07T15:50:25Z	C_SELFTEST_BOOTSTRAP	PASS	PASS QIKVRT bootstrapper GUID selftest v2.11.1 checks=16 failures=0 articles=0
+2026-07-07T15:50:26Z	C_SELFTEST_TCPIP_AUTONOMY	PASS	PASS QIKVRT TCP/IP autonomy sanity selftest v2.11.1 checks=21 failures=0 articles=0
+2026-07-07T15:50:27Z	C_SELFTEST_DAMAGE_CONTAINMENT	PASS	PASS QIKVRT damage containment selftest v2.11.1 checks=9 failures=0 articles=0
+2026-07-07T15:50:28Z	C_SELFTEST_AUTONOMOUS_DISCOVERY	PASS	PASS QIKVRT autonomous discovery operation selftest v2.11.1 checks=12 failures=0 articles=0
+2026-07-07T15:50:29Z	C_SELFTEST_GITHUB_SEED_DISCOVERY	PASS	PASS QIKVRT GitHub seed discovery selftest v2.11.1 checks=17 failures=0 articles=0
+2026-07-07T15:50:30Z	C_SELFTEST_REAL_GITHUB_SEED_INTEGRATION	PASS	PASS QIKVRT real GitHub seed integration selftest v2.11.1 checks=21 failures=0 articles=0
+2026-07-07T15:50:31Z	C_SELFTEST_ZIP_LAYOUT	PASS	PASS QIKVRT ZIP layout compatibility selftest v2.11.1 checks=12 failures=0 articles=0
+2026-07-07T15:50:32Z	C_SELFTEST_WINDOWS_SHELL_ZIP	PASS	PASS QIKVRT Windows Shell ZIP compatibility selftest v2.11.1 checks=12 failures=0 articles=0
+2026-07-07T15:50:33Z	C_SELFTEST_SHORT_PATH	PASS	PASS QIKVRT short path package selftest v2.11.1 checks=12 failures=0 articles=0
+2026-07-07T15:50:34Z	C_SELFTEST_LIVE_EVIDENCE	PASS	PASS QIKVRT live evidence closure selftest v2.11.1 checks=12 failures=0 articles=0
+2026-07-07T15:50:35Z	C_SELFTEST_CLAIM_MATRIX	PASS	PASS QIKVRT article claim matrix selftest v2.11.1 checks=10 failures=0 articles=0

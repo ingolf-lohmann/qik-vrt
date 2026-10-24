@@ -1,0 +1,34 @@
+{
+  "_license": {
+    "classification": "machine_readable_work_unit",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "authority_file_count": 2946,
+  "authority_immutable_file_count": 2937,
+  "authority_main": "191bee0e50cc0cbb1f71423289224c1de8cba7f2",
+  "authority_manifest_git_blob_sha1": "12ed56aa50364f5266a3b6eb5cd206cbb809da2f",
+  "authority_manifest_sha256": "8056ff1e363d3aab3eed613131fe494d5515dffcbb1408c71f77d0fd2d547ab7",
+  "authority_repository": "Goldkelch/qik-vrt",
+  "completion_claims": {
+    "batch_003_executed": false,
+    "candidate_created": false,
+    "effect_ack_done": false,
+    "final_pass": false,
+    "mirror_promoted": false,
+    "pass": false,
+    "reciprocal_equality_refreshed": false,
+    "zenodo_mutation_authorized": false
+  },
+  "execution_branch": "execution/history-preserving-mirror-sync-191bee0e-from-a6b45c22-v1",
+  "mirror_parent": "a6b45c22eae2fb3fa3c8168062cadfdf5f902cbd",
+  "mirror_repository": "ingolf-lohmann/qik-vrt",
+  "next_deterministic_effect_after_sync": "REOBSERVE_AND_PERSIST_RECIPROCAL_EQUALITY_RECEIPT_FOR_POST_ACCEPTANCE_STATUS",
+  "operation": "REFRESH_CONTENT_DISPOSITION_STATUS_PROJECTION_AFTER_BATCH002_ACCEPTANCE",
+  "projected_next_effect": "EXECUTE_CONTENT_DISPOSITION_BATCH_003",
+  "repository_content_tree_sha256": "7462c248059aeb5766caf3bc31a59446566ceb376bc5818c63a3b234fc375d93",
+  "schema": "qikvrt_history_preserving_mirror_candidate_request_v2",
+  "state": "READY",
+  "target_branch": "sync/post-acceptance-status-191bee0e-from-a6b45c22-v1"
+}

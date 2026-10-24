@@ -1,0 +1,142 @@
+{
+  "artificial_cognitive_actor": {
+    "identity_limit": "Platform disclosure; no natural-person or cryptographic model authentication is inferred.",
+    "model_or_build": "GPT-6",
+    "provider": "OpenAI",
+    "session_or_run_id": "98633de5ddb6",
+    "system_family": "Codex"
+  },
+  "artificial_cognitive_contributions": [
+    "Implementation in existing global-completion controller, native replay adapter, schema/policy update, workflow integration, executable positive and negative controls.",
+    "Reused pinned Apache-2.0 replay routine with separate attribution and exact source digest."
+  ],
+  "created_at": "2026-10-01T23:29:22.284481Z",
+  "external_effects": {
+    "external_publication": false,
+    "runtime_network_effect": false,
+    "scope": "AUTHORIZED_PR_BRANCH_SUCCESSOR_ONLY"
+  },
+  "git_history": {
+    "candidate_head_and_tree": "Resolve the Git commit containing this record; do not transfer predecessor evidence.",
+    "method": "FAST_FORWARD_SUCCESSOR_OF_SOURCE_COMMIT",
+    "review_pr": 439
+  },
+  "human_actor": "Ingolf Lohmann",
+  "human_contributions": [
+    "Authorized first narrow independent FORMAL-only Lean-kernel verifier on PR #439.",
+    "Specified exact candidate/source/proof/object/axiom/receipt bindings, negative controls and unchanged epistemic/effect boundaries."
+  ],
+  "human_decision": {
+    "candidate_acceptance": "PENDING",
+    "implementation_request": "AUTHORIZED",
+    "merge_release_publication": "NOT_GRANTED_BY_THIS_WORK_UNIT"
+  },
+  "inputs": [
+    {
+      "bytes": 147339,
+      "path": "GLOBAL_CLAIM_INVENTORY.json",
+      "sha256": "6539355b6f5644662197d36f1f7cb24704a88f163afa65b91e9a5d06a805cee5"
+    },
+    {
+      "bytes": 74860,
+      "path": "GLOBAL_EXACT_TAG_KERNEL_RECEIPTS.json",
+      "sha256": "ca5cca53dcb7810757501db0ac2c0553f916b37df5b34201a0eb48ec01c7261e"
+    }
+  ],
+  "joint_components": [],
+  "outputs": [
+    {
+      "bytes": 75770,
+      "path": "tools/qikvrt_global_completion.py",
+      "sha256": "833a8ac27b06477a4c52aec97661c3ffa9dbcd7ec6100a2d801e1d89256948e5"
+    },
+    {
+      "bytes": 3631,
+      "path": "tools/lean/ClaimKernel.lean",
+      "sha256": "d00140c3fce2a7992d2bcf8161b28fb00d0fdcdd0407ad8300ebf9906bf4bd6b"
+    },
+    {
+      "bytes": 7811,
+      "path": "third_party/lean4checker/Replay.lean",
+      "sha256": "e1b78fb254146408edfb2048893f2b051f359290765039596125b4aefd2c7086"
+    },
+    {
+      "bytes": 1389,
+      "path": "third_party/lean4checker/PROVENANCE.json",
+      "sha256": "0aba618cca8c4dc787fba07fa2763e9e7f57186df07d3b294ac740dd078c4a89"
+    },
+    {
+      "bytes": 26683,
+      "path": "tests/test_global_completion.py",
+      "sha256": "9a0bded314be5c1cd5390211a64309a2caaa74b2e6b21d361d5cbf34fe00d896"
+    },
+    {
+      "bytes": 5240,
+      "path": "policy/QIKVRT_CLAIM_AUDIT_V1.json",
+      "sha256": "1c98c94a795208488608a9dd393ca99f818ff11e3d1cb000e02c11b3e2fd6ec4"
+    },
+    {
+      "bytes": 8223,
+      "path": "docs/CLAIM_AND_INVARIANT_AUDIT_V1.md",
+      "sha256": "bc54187ad865f9533edb854dafdf48be7da2201890d74a4589627cb8c1d5c9ea"
+    },
+    {
+      "bytes": 11978,
+      "path": ".github/workflows/qikvrt_global_completion.yml",
+      "sha256": "501cd0a78d26ab5f4aa03086b456c7e684d3efa2dc583640a504a24073d6e5e6"
+    },
+    {
+      "bytes": 10905,
+      "path": "runtime/toolchains/CACHE_REGISTRY.json",
+      "sha256": "827d77a2c072a64e7ff24b6e26bf388702ce95a649b2d773598f717f0db4542f"
+    },
+    {
+      "bytes": 3054,
+      "path": "runtime/toolchains/CACHE_COVERAGE.json",
+      "sha256": "89427b67cad05664b8e90f51faffa8d7cdf2a7065eb2c072e2554f7fe32f193c"
+    },
+    {
+      "bytes": 4331,
+      "path": "schemas/qikvrt_claim_audit_input_v1.schema.json",
+      "sha256": "59d2867d6f4e5b23d2174c3b18efe9f2ecb12f26a837897793794e15d012f231"
+    },
+    {
+      "bytes": 1457,
+      "path": "schemas/qikvrt_claim_audit_report_v1.schema.json",
+      "sha256": "7735b15a9a3b50f6127024ce9e50e1fdde55f8401f85e09a5c206de0761f47de"
+    },
+    {
+      "bytes": 3339,
+      "path": "schemas/qikvrt_claim_audit_v1.schema.json",
+      "sha256": "15a46309e82e0bdefad6ae17ec8f70c7091e71eeb18675fea383ff1e0d71ba80"
+    }
+  ],
+  "release_claims": {
+    "audit_pass_is_claim_truth": false,
+    "effect_ack_done": false,
+    "external_effect": false,
+    "peer_reviewed": false,
+    "reproduced": false
+  },
+  "schema": "qikvrt_work_unit_v1",
+  "source_commit": "240388c0533a77aa105fb8b0cb49d6386515f7a6",
+  "source_ref": "work/claim-audit-20261001-469a95ac",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "cdb00e49f860981b57572fb6d813396be91ee41a",
+  "unresolved_origin": [],
+  "verification": {
+    "candidate_gate_commands": [
+      "python3 -B tools/qikvrt_tool_cache.py verify",
+      "python3 -B tools/qikvrt_integrity.py verify",
+      "make test",
+      "python3 -B tools/qikvrt_global_completion.py audit --formal-verifier lean-kernel --expected-head <candidate-head> --expected-tree <candidate-tree> --execution-id <executor-invocation>",
+      "python3 -B tools/qikvrt_global_completion.py verify-audit --formal-verifier lean-kernel --expected-head <candidate-head> --expected-tree <candidate-tree> --execution-id <executor-invocation> --report <audit-report>"
+    ],
+    "candidate_results": "Fresh exact-head local/CI evidence is required; this work-unit record does not predeclare successful candidate gates.",
+    "executed_fixture_gate": "33 positive/negative global-completion tests, including real Lean compilation, native-kernel replay and fresh meta-audit; passed before workflow cache provisioning was explicitly disabled.",
+    "execution_boundaries": "Twelve historical null compiled-object fields are retained. Fresh runtime receipts require actual compiled source modules and native module-origin checks; null metadata never grants formal verification.",
+    "local_compatibility": "Reused existing lean_selfexe_compat.c for the workspace-specific self-executable lookup restriction; no Lean version change.",
+    "native_runtime": "Lean 4.19.0, kernel commit 6caaee842e9495688c1567e78c0e68dbb96942aa; exact Linux x64 executable/library digests in policy."
+  },
+  "work_unit_id": "pr439-independent-lean-kernel-20261002"
+}

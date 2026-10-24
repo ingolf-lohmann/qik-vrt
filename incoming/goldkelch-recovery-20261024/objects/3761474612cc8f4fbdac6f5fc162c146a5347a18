@@ -1,0 +1,8 @@
+{
+  "schema": "qikvrt_transient_check_retrigger_v1",
+  "scope": "authority-tree-mirror-bootstrap",
+  "source_head": "8ad55a0e5acf6cda55bac5df03e7d28b05651a7a",
+  "purpose": "Trigger diagnostic exact authority-tree materialization from current main.",
+  "integrity_classification": "TRANSIENT_EXCLUDED",
+  "effect_status": "EFFECT_ACK_CONTINUE"
+}

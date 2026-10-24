@@ -1,0 +1,26 @@
+{
+  "schema": "qikvrt.constitutional_governance_gates.v2.3",
+  "version": "2.3",
+  "baseline": "V2.2 multicast ontology plus upward constitutional governance",
+  "mandatory_gates": [
+    "ASSERTION_CLASS_PRESENT",
+    "EVIDENCE_CLASS_PRESENT",
+    "COUNTER_EVIDENCE_CHECKED",
+    "ROLES_ASSIGNED",
+    "MULTICAST_RESPONSIBLE_GROUP_DELIVERED",
+    "FEEDBACK_RECEIVED_FROM_RESPONSIBLE_GROUP",
+    "TRACEABILITY_PRESENT",
+    "PRIVACY_GATE_PASS",
+    "PROPORTIONALITY_GATE_PASS",
+    "EMERGENCY_ACTION_REVIEWABLE_IF_USED",
+    "CORRECTION_PATH_PRESENT",
+    "NONREGRESSION_ANCHOR_PRESENT",
+    "NO_FINAL_PASS_WITHOUT_ALL_GATES"
+  ],
+  "forbidden_uses": [
+    "surveillance_instrument",
+    "specific_third_party_accusation_tool",
+    "public_humiliation_system",
+    "final_pass_without_traceability"
+  ]
+}

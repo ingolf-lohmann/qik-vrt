@@ -1,0 +1,11 @@
+{
+  "gate": "NONREGRESSION_ANCHOR",
+  "rule": "A once-cleanly-separated difference must not later be blurred again.",
+  "anchors": [
+    "FACT_VS_HYPOTHESIS",
+    "EVENT_VS_DISPLAY",
+    "PROOF_VS_INTERPRETATION",
+    "RESPONSIBILITY_VS_NETWORK_EVAPORATION",
+    "PRIVACY_VS_TRACEABILITY"
+  ]
+}

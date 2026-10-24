@@ -1,0 +1,133 @@
+{
+  "averaged_score": null,
+  "counts_by_level": {
+    "0": 1,
+    "1": 2,
+    "2": 7,
+    "3": 0,
+    "4": 0
+  },
+  "evidence_vector": [
+    2,
+    1,
+    2,
+    2,
+    2,
+    2,
+    2,
+    1,
+    0,
+    2
+  ],
+  "gates": [
+    {
+      "closure_criterion": "Ein gemeinsames eingefrorenes Manifest mit ISO-Hash, OCI-Digest, Distribution, ISA, Paket- und Toolversionen für beide Profile.",
+      "evidence": "Source bindings; 104-test selection; subject drift rejection",
+      "id": "QG-01",
+      "level": 2,
+      "name": "Exakte Produktidentität",
+      "observed": "HEAD und TREE sowie Build-/Subject-Bindungen sind implementiert.",
+      "release_gate_satisfied": false
+    },
+    {
+      "closure_criterion": "Zwei saubere Builds je Profil mit fixierten Inputs; identische Digests oder vorab begründete, separat gebundene Normalisierung.",
+      "evidence": "Dockerfile at exact HEAD",
+      "id": "QG-02",
+      "level": 1,
+      "name": "Reproduzierbare Builds",
+      "observed": "Buildpfade existieren; Docker nutzt bookworm-slim und nicht vollständig versionierte apt-Pakete.",
+      "release_gate_satisfied": false
+    },
+    {
+      "closure_criterion": "Frischer BIOS-/gegebenenfalls UEFI-Boot des veröffentlichten ISO sowie OCI-Start auf jeder zugesagten ISA; keine übersprungenen Pflichtchecks.",
+      "evidence": "distribution source; container workflow",
+      "id": "QG-03",
+      "level": 2,
+      "name": "Boot und Containerstart",
+      "observed": "ISO-Boot-, Container- und Health-Prüfpfade sind vorhanden.",
+      "release_gate_satisfied": false
+    },
+    {
+      "closure_criterion": "Derselbe Konformanzkorpus für C90, Smalltalk und MC68000, Hin- und Rückweg, beschädigte und falsch adressierte Nachrichten; exakte Zielartefakte.",
+      "evidence": "c90.log; no new Smalltalk or MC68000 execution",
+      "id": "QG-04",
+      "level": 2,
+      "name": "Transputer-Konformität",
+      "observed": "C90 und Assembly bestehen frisch; LUT, Guards, Bindungen, Replay und Backpressure werden ausgeführt.",
+      "release_gate_satisfied": false
+    },
+    {
+      "closure_criterion": "Sichtbares frisches Firefox-Fenster, echte Eingabe, gebundene Ausführung und beobachtetes Ergebnis im ausgelieferten Profil.",
+      "evidence": "focused-tests.log; runtime-health.sh",
+      "id": "QG-05",
+      "level": 2,
+      "name": "Interaktives Terminal",
+      "observed": "HTTP-Terminal samt Prepare/Commit/Readback wird lokal getestet. Firefox-/Fensterprüfung ist implementiert.",
+      "release_gate_satisfied": false
+    },
+    {
+      "closure_criterion": "Mindestens zwei getrennte Hosts/Runtimes: authentifizierte Adressierung, Versionsbehandlung, Abbruch, Wiederanschluss und frischer Ergebnis-Readback.",
+      "evidence": "mesh-receipt.json; LOOPBACK_TCP_ONLY",
+      "id": "QG-06",
+      "level": 2,
+      "name": "Cloud-Mesh",
+      "observed": "Vier lokale Prozesse und zwei Paare kommunizieren frisch über TCP; begrenzte Receipts liegen vor.",
+      "release_gate_satisfied": false
+    },
+    {
+      "closure_criterion": "Neuer Container und anderer Host erhalten Identität, Store und Historie; anschließender frischer End-to-End-Roundtrip aus dem übertragenen Zustand.",
+      "evidence": "next/README.md; mesh restart_replay",
+      "id": "QG-07",
+      "level": 2,
+      "name": "Persistenz und Wiederherstellung",
+      "observed": "Store-/Quellen-Recovery und Container-Profile sind implementiert; lokales Mesh-Replay nach Neustart wird beobachtet.",
+      "release_gate_satisfied": false
+    },
+    {
+      "closure_criterion": "Rate-Limit-, Permission- und andere 403 getrennt; sichere Reset-/Request-Metadaten, Subject bleibt erhalten, keine Blind-Retries, keinerlei Review/PASS/EFFECT_ACK aus 403; Isolation und Secrets.",
+      "evidence": "Main executor; separately bound repair PR 1265",
+      "id": "QG-08",
+      "level": 1,
+      "name": "Fehler und Autorität",
+      "observed": "Mehrere Negativpfade bestehen; der bekannte Installation-403-Fehler ist auf diesem Main nicht als vollständig reparierter Produktpfad belegt.",
+      "release_gate_satisfied": false
+    },
+    {
+      "closure_criterion": "Vor der Messung CPU/RAM/Startzeit/p95/p99/Durchsatz sowie Last und Hostprofil festlegen; Überlast bleibt begrenzt und fail-closed.",
+      "evidence": "MEASUREMENTS.json; code size is not a performance budget",
+      "id": "QG-09",
+      "level": 0,
+      "name": "Ressourcen und Last",
+      "observed": "Codegrößen sind gemessen. Vorab eingefrorene Leistungsbudgets für den gesamten zugesagten Betrieb sind hier nicht nachgewiesen.",
+      "release_gate_satisfied": false
+    },
+    {
+      "closure_criterion": "Unabhängiger Client lädt ISO und Container per festem Digest und wiederholt Terminal-/Transputer-Pfad; öffentliche Referenz und vollständige Receipts.",
+      "evidence": "distribution readback tests; no fresh public boot in this study",
+      "id": "QG-10",
+      "level": 2,
+      "name": "Öffentliche Auslieferung",
+      "observed": "Download-, Hash- und Boot-Readback sind im Repository vorgesehen und getestet.",
+      "release_gate_satisfied": false
+    }
+  ],
+  "minimum_level": 0,
+  "product_release_supported": false,
+  "rating_boundary": "Conservative evidence stage for each complete gate in this bounded audit, not an assertion about all historical executions or percent completion. Higher stages require lower stages. Partial tests never elevate the full gate.",
+  "release_rule": "AND of all ten complete gates at the required delivered-target scope",
+  "scale": {
+    "0": "not operationalized in the audited evidence",
+    "1": "specified, full implementation not established",
+    "2": "implementation path present, complete execution evidence missing",
+    "3": "complete scoped gate tested on bound subject",
+    "4": "complete gate freshly confirmed at delivered target"
+  },
+  "scale_origin": "Operational proposal in this conversation; no earlier agreed numerical scale was recovered.",
+  "schema": "qikvrt-quality-gate-assessment-v1",
+  "subject": {
+    "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+    "repository": "Goldkelch/qik-vrt",
+    "tree": "956c16b291c05243437b1f018321936e4438949a"
+  },
+  "target_confirmed_gate_count": 0
+}

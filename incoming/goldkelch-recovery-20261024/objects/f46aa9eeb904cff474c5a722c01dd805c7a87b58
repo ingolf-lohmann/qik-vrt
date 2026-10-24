@@ -1,0 +1,613 @@
+{
+  "schema": "qikvrt_pipeline_kpi_tree_v1",
+  "status": "SPECIFICATION_CANDIDATE",
+  "owner": "Ingolf Lohmann",
+  "directive_date": "2026-09-30",
+  "supersedes": "MTBF-only ranking in the preceding owner directive; existing safety and evidence constraints remain",
+  "root": {
+    "id": "verified_service",
+    "label": "Zuverlässige, fristgerechte und nachgewiesene Auftragserfüllung",
+    "aggregation": "NON_COMPENSATORY_VECTOR",
+    "children": [
+      "effect",
+      "reliability",
+      "recovery",
+      "flow",
+      "quality",
+      "evidence",
+      "mesh"
+    ]
+  },
+  "groups": [
+    {
+      "id": "effect",
+      "parent": "verified_service",
+      "label": "Nachgewiesene Auftragserfüllung",
+      "children": [
+        "on_time_effect_rate",
+        "effect_throughput",
+        "end_to_end_latency",
+        "overdue_rate"
+      ]
+    },
+    {
+      "id": "reliability",
+      "parent": "verified_service",
+      "label": "Verfügbarkeit und Stillstand",
+      "children": [
+        "availability",
+        "mtbf",
+        "failure_rate",
+        "downtime",
+        "open_incident_age",
+        "recurrence_rate"
+      ]
+    },
+    {
+      "id": "recovery",
+      "parent": "verified_service",
+      "label": "Erkennung und Wiederherstellung",
+      "children": [
+        "mttd",
+        "mttr",
+        "recovery_p95",
+        "autonomous_recovery_rate",
+        "replay_integrity"
+      ]
+    },
+    {
+      "id": "flow",
+      "parent": "verified_service",
+      "label": "Fluss und Kapazität",
+      "children": [
+        "admission_latency",
+        "backlog",
+        "oldest_work_age",
+        "retry_amplification",
+        "capacity_utilization",
+        "scaling_efficiency"
+      ]
+    },
+    {
+      "id": "quality",
+      "parent": "verified_service",
+      "label": "Korrektheit und Änderungssicherheit",
+      "children": [
+        "lost_effect_count",
+        "duplicate_effect_count",
+        "escaped_defect_rate",
+        "change_failure_rate",
+        "gate_compliance",
+        "forbidden_effect_count"
+      ]
+    },
+    {
+      "id": "evidence",
+      "parent": "verified_service",
+      "label": "Messqualität und Selbstbeobachtung",
+      "children": [
+        "observation_coverage",
+        "evidence_binding_rate",
+        "telemetry_freshness",
+        "observer_availability",
+        "persistence_success_rate"
+      ]
+    },
+    {
+      "id": "mesh",
+      "parent": "verified_service",
+      "label": "Mesh-Zusammenarbeit",
+      "children": [
+        "node_adoption_coverage",
+        "handoff_success_rate",
+        "handoff_latency",
+        "convergence_latency",
+        "failure_isolation_rate"
+      ]
+    }
+  ],
+  "metrics": [
+    {
+      "id": "on_time_effect_rate",
+      "parent": "effect",
+      "label": "Fristgerechte Effekte",
+      "unit": "ratio",
+      "direction": "maximize",
+      "definition": "verified_on_time_effects / all_due_obligations",
+      "source": "Obligationsledger + same-scope effect readback",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "effect_throughput",
+      "parent": "effect",
+      "label": "Verifizierter Durchsatz",
+      "unit": "effects/hour",
+      "direction": "maximize",
+      "definition": "verified_unique_effects / window_hours",
+      "source": "Effect receipts; deduplicate by obligation/effect ID",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "end_to_end_latency",
+      "parent": "effect",
+      "label": "Ende-zu-Ende-Latenz",
+      "unit": "seconds",
+      "direction": "minimize",
+      "definition": "p50,p95,p99(effect_verified_at - accepted_at)",
+      "source": "Acceptance and effect timestamps; report open ages separately",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "overdue_rate",
+      "parent": "effect",
+      "label": "Überfällige Aufträge",
+      "unit": "ratio",
+      "direction": "minimize",
+      "definition": "overdue_unfulfilled_obligations / all_due_obligations",
+      "source": "Immutable obligations/deadline ledger",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "availability",
+      "parent": "reliability",
+      "label": "Beobachtete Verfügbarkeit",
+      "unit": "ratio",
+      "direction": "maximize",
+      "definition": "known_available_seconds / (known_available_seconds + known_unavailable_seconds)",
+      "source": "Service predicate timeline; unknown seconds separately",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "mtbf",
+      "parent": "reliability",
+      "label": "Mittlere Betriebszeit zwischen Ausfällen",
+      "unit": "seconds",
+      "direction": "maximize",
+      "definition": "operating_seconds / new_pipeline_failures",
+      "source": "Incident transitions + service exposure",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "failure_rate",
+      "parent": "reliability",
+      "label": "Ausfallhäufigkeit",
+      "unit": "failures/hour",
+      "direction": "minimize",
+      "definition": "new_pipeline_failures / operating_hours",
+      "source": "Same incident/exposure population as MTBF",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "downtime",
+      "parent": "reliability",
+      "label": "Stillstandsdauer",
+      "unit": "seconds",
+      "direction": "minimize",
+      "definition": "duration(union(failed_service_intervals intersect window))",
+      "source": "Include unresolved incidents through window end",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "open_incident_age",
+      "parent": "reliability",
+      "label": "Alter offener Störungen",
+      "unit": "seconds",
+      "direction": "minimize",
+      "definition": "per_incident(window_end - observed_onset); max and bounds",
+      "source": "Open incident ledger, onset uncertainty retained",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "recurrence_rate",
+      "parent": "reliability",
+      "label": "Wiederholungsfehler",
+      "unit": "ratio",
+      "direction": "minimize",
+      "definition": "incidents_with_previously_verified_cause / incidents_with_verified_cause",
+      "source": "Causal proof links, not similar messages",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "mttd",
+      "parent": "recovery",
+      "label": "Erkennungszeit",
+      "unit": "seconds",
+      "direction": "minimize",
+      "definition": "mean(detected_at - failure_onset)",
+      "source": "Fully observed onset/detection pairs",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "mttr",
+      "parent": "recovery",
+      "label": "Wiederherstellungszeit",
+      "unit": "seconds",
+      "direction": "minimize",
+      "definition": "mean(verified_recovery_at - failure_onset)",
+      "source": "Fully observed closed incidents; separate open/censored cases",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "recovery_p95",
+      "parent": "recovery",
+      "label": "Lange Wiederherstellungen",
+      "unit": "seconds",
+      "direction": "minimize",
+      "definition": "p95(verified_recovery_at - failure_onset)",
+      "source": "Same closed-incident cohort as MTTR",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "autonomous_recovery_rate",
+      "parent": "recovery",
+      "label": "Autonome Wiederherstellung",
+      "unit": "ratio",
+      "direction": "maximize",
+      "definition": "eligible_incidents_recovered_without_human_action / all_eligible_incidents",
+      "source": "Recovery receipts + attributable human-action ledger; include unresolved eligible cases",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "replay_integrity",
+      "parent": "recovery",
+      "label": "Verlustfreie Wiederaufnahme",
+      "unit": "ratio",
+      "direction": "maximize",
+      "definition": "replays_with_exact_ledger_and_no_lost_or_duplicate_effect / all_due_replay_trials",
+      "source": "Independent post-restart ledger comparison",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "admission_latency",
+      "parent": "flow",
+      "label": "Wartezeit bis Ausführung",
+      "unit": "seconds",
+      "direction": "minimize",
+      "definition": "p50,p95,p99(execution_admitted_at - accepted_at)",
+      "source": "Run/job admission, not queued status; open queue ages separately",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "backlog",
+      "parent": "flow",
+      "label": "Offene Arbeit",
+      "unit": "obligations",
+      "direction": "diagnostic",
+      "definition": "count(accepted_unfulfilled_obligations_at_window_end)",
+      "source": "Obligation ledger including blocked work",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "oldest_work_age",
+      "parent": "flow",
+      "label": "Ältester offener Auftrag",
+      "unit": "seconds",
+      "direction": "minimize",
+      "definition": "max(window_end - accepted_at) for unfulfilled obligations",
+      "source": "Open obligation ledger; empty population distinct from unknown",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "retry_amplification",
+      "parent": "flow",
+      "label": "Wiederholungsaufwand",
+      "unit": "attempts/effect",
+      "direction": "minimize",
+      "definition": "all_execution_attempts / verified_unique_effects",
+      "source": "Attempts incl failures; zero effects means undefined plus raw counts",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "capacity_utilization",
+      "parent": "flow",
+      "label": "Ressourcenauslastung",
+      "unit": "ratio",
+      "direction": "diagnostic",
+      "definition": "busy_resource_seconds / provisioned_resource_seconds",
+      "source": "Per resource type and node; never optimize to 100% by default",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "scaling_efficiency",
+      "parent": "flow",
+      "label": "Skalierungseffizienz",
+      "unit": "ratio",
+      "direction": "maximize",
+      "definition": "throughput_n / (n * throughput_1)",
+      "source": "Same workload and service quality; node/process count explicitly bound",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "lost_effect_count",
+      "parent": "quality",
+      "label": "Verlorene Effekte",
+      "unit": "effects",
+      "direction": "zero_required",
+      "definition": "count(proven_missing_effects_after_reconciliation)",
+      "source": "Obligation/effect ledger reconciliation",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "duplicate_effect_count",
+      "parent": "quality",
+      "label": "Doppelte Effekte",
+      "unit": "effects",
+      "direction": "zero_required",
+      "definition": "count(proven_unintended_duplicate_effects)",
+      "source": "Idempotency IDs and external effect readback",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "escaped_defect_rate",
+      "parent": "quality",
+      "label": "Fehler nach Freigabe",
+      "unit": "ratio",
+      "direction": "minimize",
+      "definition": "released_changes_with_verified_production_defect / observed_released_changes",
+      "source": "Fixed follow-up cohort; incomplete follow-up disclosed",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "change_failure_rate",
+      "parent": "quality",
+      "label": "Änderungsbedingte Ausfälle",
+      "unit": "ratio",
+      "direction": "minimize",
+      "definition": "activated_changes_causally_linked_to_service_failure / observed_activated_changes",
+      "source": "Causal evidence required; temporal proximity insufficient",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "gate_compliance",
+      "parent": "quality",
+      "label": "Einhaltung verbindlicher Gates",
+      "unit": "ratio",
+      "direction": "one_required",
+      "definition": "authorized_transitions_with_all_required_bound_gates / all_effectful_transitions",
+      "source": "Exact-head authorization/gate/effect receipts",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "forbidden_effect_count",
+      "parent": "quality",
+      "label": "Unzulässige Wirkungen",
+      "unit": "effects",
+      "direction": "zero_required",
+      "definition": "count(proven_effects_outside_authorized_scope)",
+      "source": "Authorization and effect ledger",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "observation_coverage",
+      "parent": "evidence",
+      "label": "Beobachtungsabdeckung",
+      "unit": "ratio",
+      "direction": "maximize",
+      "definition": "known_service_seconds / eligible_service_seconds",
+      "source": "Independent observer coverage timeline",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "evidence_binding_rate",
+      "parent": "evidence",
+      "label": "Vollständige Evidenzbindung",
+      "unit": "ratio",
+      "direction": "one_required",
+      "definition": "records_with_valid_subject_and_source_bindings / all_required_records",
+      "source": "Repository/HEAD/TREE/evaluator/source validation",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "telemetry_freshness",
+      "parent": "evidence",
+      "label": "Alter der Telemetrie",
+      "unit": "seconds",
+      "direction": "minimize",
+      "definition": "readback_time - newest_valid_source_event_time",
+      "source": "Independent clock and source watermark; clock errors invalid",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "observer_availability",
+      "parent": "evidence",
+      "label": "Verfügbarkeit des Beobachters",
+      "unit": "ratio",
+      "direction": "maximize",
+      "definition": "independently_verified_observer_available_seconds / observer_obligation_seconds",
+      "source": "Separate observer health evidence; no self-certified uptime",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "persistence_success_rate",
+      "parent": "evidence",
+      "label": "Dauerhafte Messwertspeicherung",
+      "unit": "ratio",
+      "direction": "one_required",
+      "definition": "durably_read_back_expected_records / all_expected_records",
+      "source": "Independent ledger readback; missing records remain missing",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "node_adoption_coverage",
+      "parent": "mesh",
+      "label": "Aktive Metrik auf allen Nodes",
+      "unit": "ratio",
+      "direction": "one_required",
+      "definition": "nodes_with_current_exact_bound_adoption_and_telemetry / all_required_registered_nodes",
+      "source": "Versioned node registry and individual receipts",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "handoff_success_rate",
+      "parent": "mesh",
+      "label": "Verifizierte Übergaben",
+      "unit": "ratio",
+      "direction": "maximize",
+      "definition": "due_handoffs_with_receiver_effect_ack / all_due_handoffs",
+      "source": "Sender/receiver obligation IDs; transport ack insufficient",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "handoff_latency",
+      "parent": "mesh",
+      "label": "Übergabezeit bis Wirkung",
+      "unit": "seconds",
+      "direction": "minimize",
+      "definition": "p50,p95,p99(receiver_effect_ack_at - sender_accepted_at)",
+      "source": "Bound clocks and paired receipts; censor open transfers",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "convergence_latency",
+      "parent": "mesh",
+      "label": "Konsolidierungszeit",
+      "unit": "seconds",
+      "direction": "minimize",
+      "definition": "p95(verified_convergence_at - declared_update_at)",
+      "source": "Declared replicated scope; independent content comparison",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    },
+    {
+      "id": "failure_isolation_rate",
+      "parent": "mesh",
+      "label": "Fehlerisolation",
+      "unit": "ratio",
+      "direction": "one_required",
+      "definition": "fault_trials_preserving_unaffected_service_obligations / all_due_fault_trials",
+      "source": "Fault injection and independently observed other-node effects",
+      "target": null,
+      "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT"
+    }
+  ],
+  "record_contract": {
+    "required": [
+      "metric_id",
+      "node_id",
+      "repository",
+      "subject_head",
+      "subject_tree",
+      "evaluator_commit",
+      "evaluator_tree",
+      "scope",
+      "workload_id",
+      "policy_hash",
+      "window_start_utc",
+      "window_end_utc",
+      "raw_numerator",
+      "raw_denominator_or_sample_count",
+      "value",
+      "unit",
+      "status",
+      "source_refs",
+      "observed_at_utc",
+      "coverage",
+      "censored_count",
+      "measurement_method"
+    ],
+    "status_enum": [
+      "MEASURED",
+      "UNKNOWN",
+      "INCOMPLETE",
+      "INVALID",
+      "NOT_APPLICABLE",
+      "NO_FAILURE_OBSERVED",
+      "NO_EXPOSURE"
+    ],
+    "null_is_not_zero": true,
+    "zero_denominator": "value=null with explicit status and raw counts",
+    "zero_failures": "MTBF=null, NO_FAILURE_OBSERVED, preserve exposure",
+    "percentiles": "Nearest-rank on sorted complete samples, k=ceil(p*n), with sample count and open/censored cases; empty samples=null",
+    "missing_evidence": "UNKNOWN; cannot produce PASS"
+  },
+  "population_rules": [
+    "Fix workload, obligations, deadlines, node roster and observation window before comparison",
+    "Rejected work and cancellations remain in the original due-obligation denominator unless the owner withdraws the obligation explicitly; disclose every exclusion",
+    "Count unique effects, not attempts, commits or heartbeats",
+    "Do not pool different workloads or policy versions; stratify before comparing",
+    "Do not infer causal edges from this diagnostic hierarchy"
+  ],
+  "aggregation_rules": [
+    "Mesh availability and MTBF require directly observed Mesh service predicate",
+    "Never average node MTBFs or latency percentiles",
+    "Pool compatible raw event populations for percentiles; sum eligible numerators/denominators only for disjoint compatible populations",
+    "Use union durations for overlapping outages at the same service scope",
+    "Retain node breakdowns, weakest scope, unknown coverage and incident bounds"
+  ],
+  "decision_policy": {
+    "order": [
+      "Validate identity, coverage, workload comparability and clocks",
+      "Enforce correctness, losslessness, authorization and required gates",
+      "Restore breached end-to-end service obligations; prioritize user-visible incident impact and age",
+      "Compare feasible candidates by service-SLO vector, including availability, overdue rate and latency",
+      "Prefer Pareto improvements; unresolved tradeoffs require explicit versioned owner-approved budgets"
+    ],
+    "weighted_average": "FORBIDDEN_WITHOUT_EXPLICIT_VERSIONED_WEIGHTS; cannot compensate a hard-gate violation",
+    "unknown_target": "SLO verdict UNKNOWN until target is specified; descriptive measurements remain usable",
+    "mtbf_role": "Reliability branch indicator, no longer sole optimization objective",
+    "error_budget": "Only after service SLO and eligibility window are declared; unavailable/unknown intervals may not be hidden",
+    "automatic_mutation_authority": false
+  },
+  "implementation": {
+    "reuse": "Existing repository stall/watchdog and durable ledger path",
+    "instrumentation_verified": false,
+    "node_rollout_verified": false,
+    "activation_requires": [
+      "Executable measurement and schema validation",
+      "Boundary and adversarial tests",
+      "Integrity materialization",
+      "Fresh exact-head gates",
+      "Independent adoption and telemetry receipts for every declared node"
+    ]
+  },
+  "acceptance_cases": [
+    "Zero exposure and zero failures remain distinct",
+    "Open and left/right-censored incidents remain visible",
+    "Repeated retries cannot reset stalls or inflate throughput",
+    "Unknown/404/incomplete pagination never mean idle or available",
+    "Reject duplicate IDs, invalid timestamps and contradictory event sequences",
+    "Keep historical incident continuity across HEAD mutation without candidate evidence transfer",
+    "No aggregation across incompatible scopes or double-counted outages",
+    "No percentile-of-percentiles aggregation",
+    "Cancelled or rejected obligations cannot silently disappear",
+    "Poor coverage or missing nodes cannot improve a score",
+    "A safety-gate violation cannot be offset by higher throughput",
+    "Killing observer and pipeline independently produces distinguishable durable evidence"
+  ],
+  "PREDECESSOR_EVIDENCE_TRANSFER": false
+}

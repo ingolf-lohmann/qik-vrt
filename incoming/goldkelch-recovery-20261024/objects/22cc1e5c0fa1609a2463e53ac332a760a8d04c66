@@ -1,0 +1,171 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright (c) 2026 Ingolf Lohmann.
+
+name: QIK-VRT Mirror aphorism boundary target repair
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/qikvrt_mirror_aphorism_boundary_target_repair.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: qikvrt-mirror-aphorism-boundary-target-repair-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  repair-target:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.head_ref == 'repair/mirror-aphorism-boundary-v2' &&
+      github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      MIRROR_PARENT: 3568e24a31764ad0b3704d15645b1b2dbd3d2ec4
+      TARGET_REF: agent/aphorism-corpus-scientific-assessment-mirror-v2
+      CARRIER_PATH: .github/workflows/qikvrt_mirror_aphorism_corpus_port_carrier.yml
+      STALE_REPAIR_PATH: .github/workflows/qikvrt_mirror_aphorism_carrier_boundary_repair.yml
+      EXPECTED_CARRIER_BLOB: 59663bb774dabe74c834fdbb8a1c6677c0678b1f
+    steps:
+      - name: Check out exact target branch with bounded write credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.TARGET_REF }}
+          fetch-depth: 0
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.12"
+
+      - name: Verify bounded target state
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor "$MIRROR_PARENT" HEAD
+          test -f "$CARRIER_PATH"
+          test -f "$STALE_REPAIR_PATH"
+          test ! -L "$CARRIER_PATH"
+          test ! -L "$STALE_REPAIR_PATH"
+          test "$(git hash-object "$CARRIER_PATH")" = "$EXPECTED_CARRIER_BLOB"
+          while IFS= read -r path; do
+            case "$path" in
+              "$CARRIER_PATH"|"$STALE_REPAIR_PATH"|REPOSITORY_FILE_MANIFEST.json|REPOSITORY_FILE_MANIFEST.json.sha256|SHA256SUMS.txt)
+                ;;
+              *)
+                printf 'BLOCK: unexpected target path before repair: %s\n' "$path" >&2
+                exit 2
+                ;;
+            esac
+          done < <(git diff --name-only "$MIRROR_PARENT" HEAD --)
+          printf 'TARGET_SOURCE_HEAD=%s\n' "$(git rev-parse --verify HEAD^{commit})"
+
+      - name: Patch only the expected carrier-deletion status rule
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B - <<'PY'
+          from __future__ import annotations
+
+          from pathlib import Path
+
+          path = Path('.github/workflows/qikvrt_mirror_aphorism_corpus_port_carrier.yml')
+          text = path.read_text(encoding='utf-8')
+
+          import_anchor = (
+              '          from pathlib import Path\n'
+              '          import subprocess\n'
+              '          import sys\n'
+          )
+          import_replacement = (
+              '          from pathlib import Path\n'
+              '          import os\n'
+              '          import subprocess\n'
+              '          import sys\n'
+          )
+          status_anchor = (
+              '              status = entry[:2].decode("ascii")\n'
+              '              path = entry[3:].decode("utf-8")\n'
+              '              if status.startswith("R") or status.startswith("C"):\n'
+          )
+          status_replacement = (
+              '              status = entry[:2].decode("ascii")\n'
+              '              path = entry[3:].decode("utf-8")\n'
+              '              if path == os.environ["CARRIER_PATH"]:\n'
+              '                  if status != " D":\n'
+              '                      raise SystemExit(\n'
+              '                          f"BLOCK: carrier status is not the expected deletion: {status!r}"\n'
+              '                      )\n'
+              '                  continue\n'
+              '              if status.startswith("R") or status.startswith("C"):\n'
+          )
+
+          for old, new, label in (
+              (import_anchor, import_replacement, 'os import'),
+              (status_anchor, status_replacement, 'exact carrier deletion rule'),
+          ):
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(
+                      f'BLOCK: {label} anchor count is {count}, expected 1'
+                  )
+              text = text.replace(old, new, 1)
+
+          path.write_text(text, encoding='utf-8', newline='\n')
+          PY
+          test "$(git hash-object "$CARRIER_PATH")" != "$EXPECTED_CARRIER_BLOB"
+          grep -F 'if path == os.environ["CARRIER_PATH"]:' "$CARRIER_PATH"
+          grep -F 'if status != " D":' "$CARRIER_PATH"
+
+      - name: Remove stale in-target repair carrier and regenerate integrity
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm "$STALE_REPAIR_PATH"
+          python3 -B tools/qikvrt_integrity.py generate
+          python3 -B tools/qikvrt_integrity.py verify
+
+      - name: Run complete target repository gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          make test
+          python3 -B tools/qikvrt_integrity.py verify
+
+      - name: Persist exact target repair without external effect
+        shell: bash
+        run: |
+          set -euo pipefail
+          source_head="$(git rev-parse --verify HEAD^{commit})"
+          remote_head="$(
+            git ls-remote --heads origin "refs/heads/$TARGET_REF" |
+              awk 'NR == 1 { print $1 }'
+          )"
+          test "$remote_head" = "$source_head"
+
+          git config user.name "github-actions[bot]"
+          git config user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            "$CARRIER_PATH" \
+            REPOSITORY_FILE_MANIFEST.json \
+            REPOSITORY_FILE_MANIFEST.json.sha256 \
+            SHA256SUMS.txt
+          git add -u "$STALE_REPAIR_PATH"
+          git commit -m "ci: permit only expected Mirror carrier deletion"
+
+          remote_head_after_commit="$(
+            git ls-remote --heads origin "refs/heads/$TARGET_REF" |
+              awk 'NR == 1 { print $1 }'
+          )"
+          test "$remote_head_after_commit" = "$source_head"
+          final_commit="$(git rev-parse --verify HEAD^{commit})"
+          final_tree="$(git rev-parse --verify HEAD^{tree})"
+          printf 'TARGET_REPAIR_COMMIT=%s\n' "$final_commit"
+          printf 'TARGET_REPAIR_TREE=%s\n' "$final_tree"
+          git push origin "HEAD:$TARGET_REF"

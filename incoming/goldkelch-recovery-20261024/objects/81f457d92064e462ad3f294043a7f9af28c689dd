@@ -1,0 +1,20 @@
+{
+  "manifest": "QIKVRT_NODE_ONBOARDING_TESTBED_MANIFEST",
+  "version": "2.11.9",
+  "profile": "generic-qikvrt-node",
+  "seed": "https://github.com/Goldkelch/qik-vrt",
+  "rest_api_contract": "QIKVRT REST API onboarding contract",
+  "endpoints": [
+    "/qikvrt/status",
+    "/qikvrt/selftest",
+    "/qikvrt/watchdog/heartbeat",
+    "/qikvrt/onboarding"
+  ],
+  "evidence": {
+    "ontology": "IMPLEMENTED_AND_LOCAL_TESTED",
+    "constitution": "IMPLEMENTED_AND_LOCAL_TESTED",
+    "windows_live_acceptance": "EXTERNALLY_REPRODUCED",
+    "github_seed_fetch": "LIVE_TESTED",
+    "rest_api": "CONTRACT_AND_SELFTESTED"
+  }
+}

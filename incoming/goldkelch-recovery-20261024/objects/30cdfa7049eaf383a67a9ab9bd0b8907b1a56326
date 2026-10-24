@@ -1,0 +1,230 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "classification": "work_unit_provenance_record"
+  },
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_EXTERNAL_DEPENDENCY_ASSIMILATION_20261003_V1",
+  "created_at": "2026-10-03T12:14:04Z",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "main",
+  "source_commit": "8153c4e69a6245aadf67f0741fb50d9707c19e34",
+  "source_tree": "034bbaf55c9c31364b6d160c553cd507fb7c04c5",
+  "human_actor": {
+    "name": "Ingolf Lohmann",
+    "type": "NATURAL_PERSON",
+    "role": "Product Owner"
+  },
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6",
+    "session_or_run_id": "UNAVAILABLE",
+    "tools_and_adapters": [
+      "GitHub REST API native connector",
+      "Python standard library"
+    ],
+    "identity_and_observation_limits": "Runtime-reported identity; not a cryptographic model or natural-person attestation."
+  },
+  "human_contributions": [
+    "Purpose: replace problematic external dependencies through suitable reverse engineering and assimilation",
+    "Standing Product-Owner authorization",
+    "Requirement: use QIK-VRT capabilities and learn persistently"
+  ],
+  "artificial_cognitive_contributions": [
+    "Fresh main/tree and reuse inventory",
+    "Compatible extension of existing contract, entrypoint and learning ledgers",
+    "Evidence, access, rights and effect-scope separation",
+    "Candidate preparation and verification"
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "inputs": [
+    {
+      "path": "AI",
+      "bytes": 18241,
+      "sha256": "3c969855b144090529a5e12496f9ec2389fd7b17919dbf8c8a75a7853d98b1fe",
+      "git_blob_sha1": "702a1e006a1aeed035b504d3a19416d6740844c2"
+    },
+    {
+      "path": "AI_CONTEXT.json",
+      "bytes": 11787,
+      "sha256": "7e9b8f6e831a1061bf570c1c57b175f10f05fb918e1d4f8831e210724be42991",
+      "git_blob_sha1": "c69587b566beeb13a4302ee9950962a3cc227583"
+    },
+    {
+      "path": "canonical/GENERAL_DEPENDENCY_RESOLUTION_CONTRACT.json",
+      "bytes": 1582,
+      "sha256": "5711571cbfdc41dd8a1050684427ac1943578ca107d4f54e2c2837637238729f",
+      "git_blob_sha1": "d3279b36895e559e7d268297dd7bb60ae03b4169"
+    },
+    {
+      "path": "LEARN.md",
+      "bytes": 9487,
+      "sha256": "1018339adbc8f6ce5b0f0f49447dc62e357649327b6076a5a3b294add699ed74",
+      "git_blob_sha1": "da9ff9407075d24c467bcb579c92704e47d8d53d"
+    },
+    {
+      "path": "LEARN.json",
+      "bytes": 29896,
+      "sha256": "8a1c8a574364dd080441f7f35976b76e6580eb24c0a3cf8affb40441652203f6",
+      "git_blob_sha1": "7a482d3829aa961c0ea83aaa293b0a7eac1fd0f1"
+    },
+    {
+      "path": "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json",
+      "bytes": 5317,
+      "sha256": "714ed70ae2d9f292092c710a8703ce272a5e9f5d7cfa35d3bde69211b4a2da22",
+      "git_blob_sha1": "315269d0574e91723e43254f7126d29fbec7cb89"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "AI",
+      "bytes": 20378,
+      "sha256": "a72bb8f65fd6ff1ead51a157b949dca087cddf63b1b7c9546e66bd13e84f01c0",
+      "git_blob_sha1": "73a3d5d970ea319b45cebe2ddbced76ba62e1c51"
+    },
+    {
+      "path": "AI_CONTEXT.json",
+      "bytes": 12922,
+      "sha256": "bd5368657b4422c40bb45964c6d5df2ddece528fc766699f94a1b4977b355e92",
+      "git_blob_sha1": "61c21f3a141a573024441ed2acf2af2018540754"
+    },
+    {
+      "path": "canonical/GENERAL_DEPENDENCY_RESOLUTION_CONTRACT.json",
+      "bytes": 4410,
+      "sha256": "9005f501434f4020c6eccfa97c0251c8a93b97527cb1e9954e2bc50d1e6ed909",
+      "git_blob_sha1": "9e608664467ccb97e9671adbe17a62c6f65c646f"
+    },
+    {
+      "path": "state/authorization/delegations/OWNER_EXTERNAL_DEPENDENCY_ASSIMILATION_V1.json",
+      "bytes": 5170,
+      "sha256": "4796ff3040c4ac33b193459d9f701ffcce90cfdde3f88f521fb83e345624d05c",
+      "git_blob_sha1": "5377d7a9a0793468115ebb0a43f18006cbc455e1"
+    },
+    {
+      "path": "LEARN.json",
+      "bytes": 34063,
+      "sha256": "039b4cd0fe3f445043fc2798030575d58a52b4f83012a09515666d4d129734ad",
+      "git_blob_sha1": "32498a1ae3a6952ed3d18d0e717a4f6f39b21ae2"
+    },
+    {
+      "path": "LEARN.md",
+      "bytes": 11363,
+      "sha256": "ceeb65fb8427afe81816a387527dd7697650408798606ab8a4b2a6691b899c6d",
+      "git_blob_sha1": "904a9e3a34c3b00393f6b6f424285c1839009088"
+    }
+  ],
+  "git_history": {
+    "sole_parent": "8153c4e69a6245aadf67f0741fb50d9707c19e34",
+    "history_preserving": true,
+    "candidate_commit": "Resolve the commit containing this record; no self-referential commit identity is embedded.",
+    "changed_source_paths": [
+      "AI",
+      "AI_CONTEXT.json",
+      "canonical/GENERAL_DEPENDENCY_RESOLUTION_CONTRACT.json",
+      "state/authorization/delegations/OWNER_EXTERNAL_DEPENDENCY_ASSIMILATION_V1.json",
+      "LEARN.json",
+      "LEARN.md",
+      "state/work_units/QIKVRT_EXTERNAL_DEPENDENCY_ASSIMILATION_20261003_V1.json"
+    ],
+    "integrity_outputs": [
+      "REPOSITORY_FILE_MANIFEST.json",
+      "SHA256SUMS.txt",
+      "REPOSITORY_FILE_MANIFEST.json.sha256"
+    ]
+  },
+  "verification": {
+    "predecessor_evidence_transfer": false,
+    "prepared_checks": [
+      "existing entrypoint optimization tests",
+      "existing declared-tool cache verifier",
+      "JSON and mandatory-read path resolution",
+      "exact source blob and manifest/detached/index binding",
+      "incremental integrity projection using the existing generator functions",
+      "fresh remote ref commit tree and changed-byte readback"
+    ],
+    "inherited_integrity_repair": {
+      "last_manifest_writing_commit": "25aa815551ce27c82070f44c93492061b2398d72",
+      "fresh_current_main": "8153c4e69a6245aadf67f0741fb50d9707c19e34",
+      "exactly_read_changed_paths": [
+        ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml",
+        "evidence/node_health/36821646859-1.json",
+        "evidence/node_health/36866747092-1.json",
+        "evidence/node_health/36936407695-1.json",
+        "evidence/node_health/36969534310-1.json",
+        "evidence/node_health/37007190339-1.json",
+        "evidence/node_health/37071181171-1.json",
+        "evidence/node_health/37099282397-1.json",
+        "evidence/node_health/37120239456-1.json",
+        "evidence/node_health/LATEST.json",
+        "evidence/node_registration_renewal/36821646859-1.json",
+        "evidence/node_registration_renewal/36866747092-1.json",
+        "evidence/node_registration_renewal/36936407695-1.json",
+        "evidence/node_registration_renewal/36969534310-1.json",
+        "evidence/node_registration_renewal/37007190339-1.json",
+        "evidence/node_registration_renewal/37071181171-1.json",
+        "evidence/node_registration_renewal/37099282397-1.json",
+        "evidence/node_registration_renewal/37120239456-1.json",
+        "evidence/node_registration_renewal/LATEST.json",
+        "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+        "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+        "tests/test_ruleset_authority_token_route.py"
+      ],
+      "new_missing_receipts": [
+        "evidence/node_health/36821646859-1.json",
+        "evidence/node_health/36866747092-1.json",
+        "evidence/node_health/36936407695-1.json",
+        "evidence/node_health/36969534310-1.json",
+        "evidence/node_health/37007190339-1.json",
+        "evidence/node_health/37071181171-1.json",
+        "evidence/node_health/37099282397-1.json",
+        "evidence/node_health/37120239456-1.json",
+        "evidence/node_registration_renewal/36821646859-1.json",
+        "evidence/node_registration_renewal/36866747092-1.json",
+        "evidence/node_registration_renewal/36936407695-1.json",
+        "evidence/node_registration_renewal/36969534310-1.json",
+        "evidence/node_registration_renewal/37007190339-1.json",
+        "evidence/node_registration_renewal/37071181171-1.json",
+        "evidence/node_registration_renewal/37099282397-1.json",
+        "evidence/node_registration_renewal/37120239456-1.json"
+      ],
+      "original_source_bytes_changed": false,
+      "gitattributes_worktree_line_endings_preserved": true
+    },
+    "full_repository_suite": "NOT_EXECUTED_IN_PARTIAL_API_MATERIALIZATION; HOSTED_EXACT_HEAD_REQUIRED",
+    "bootloader_all_profile": "NOT_ESTABLISHED_IN_PARTIAL_API_MATERIALIZATION",
+    "unchanged_manifest_entries": "Reused as exact-base integrity input, not as fresh gate or runtime evidence."
+  },
+  "human_decision": {
+    "standing_internal_scope": "AUTHORIZED",
+    "source": "state/authorization/delegations/OWNER_EXTERNAL_DEPENDENCY_ASSIMILATION_V1.json",
+    "candidate_review_and_exact_head_gates": "REQUIRED"
+  },
+  "external_effects": {
+    "scope": "Repository-internal isolated review candidate",
+    "third_party_runtime_mutation": false,
+    "release_deployment_publication": false,
+    "unattended_executor_activated": false,
+    "authority_mutation": false
+  },
+  "first_observed_external_blocker": {
+    "repository": "Goldkelch/qik-vrt",
+    "operation": "READ_AI",
+    "http_status": 404,
+    "causal_status": "UNDETERMINED",
+    "retry_condition": "An authorized API capability can resolve the Authority entrypoint",
+    "next_action": "Use the accessible personal repository for a labelled review candidate; preserve the unresolved Authority access record."
+  },
+  "next_action": "Obtain fresh candidate readback, applicable terminal exact-head gates and native code-owner review before promotion; apply the dependency contract to the first evidenced real user-path blocker.",
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "ALL_DEPENDENCIES_REPLACED": false,
+    "AUTHORITY_MIRROR_EQUALITY": false
+  }
+}

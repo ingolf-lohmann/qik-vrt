@@ -1,0 +1,34 @@
+{
+  "access_right": "open",
+  "creators": [
+    {
+      "name": "Lohmann, Ingolf"
+    }
+  ],
+  "description": "Technischer Bericht über zehn konservativ bewertete Quality Gates am exakt gebundenen QIK-VRT-Main. Enthält frische lokale C90-, Assembly-, Terminal- und Loopback-Mesh-Nachweise, gemessene Kerngrößen, Invarianten der Zustandsübertragung und ausdrücklich offene Auslieferungs- und Hardwareprüfungen.",
+  "keywords": [
+    "QIK-VRT",
+    "Universal Transputer",
+    "Universal Terminal",
+    "Quality Gates",
+    "serialization",
+    "evidence",
+    "fail-closed"
+  ],
+  "language": "deu",
+  "license": "cc-by-nc-nd-4.0",
+  "notes": "Konzeption und Verantwortung: Ingolf Lohmann. KI-assistierte Ausarbeitung: OpenAI Codex. Kein Produktrelease, kein neuer Lean-Kernelnachweis, kein Hardware- oder Patentnachweis. Konservative Evidenzbewertung eines exakt gebundenen Quellstands; offene Gates ausdrücklich dokumentiert.",
+  "prereserve_doi": true,
+  "publication_date": "2026-09-28",
+  "publication_type": "technicalnote",
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/Goldkelch/qik-vrt/tree/f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+      "relation": "isDocumentedBy",
+      "scheme": "url"
+    }
+  ],
+  "title": "Spur halten: Quality Gates für einen portablen Universal Transputer",
+  "upload_type": "publication",
+  "version": "0.1-20260928"
+}

@@ -1,0 +1,10 @@
+{
+  "author": "ingolf-lohmann",
+  "body": "Role-local Mirror receipt for Authority issue Goldkelch/qik-vrt#752.\n\nFor every QIK-VRT-related interaction, preserve the synchronous repository-first terminal contract:\n\n`INPUT -> QIK-VRT MESH REPOSITORY -> REPOSITORY OUTPUT / EVIDENCE -> OUTPUT`\n\nThe terminal is not an independent semantic authority. It must not replace repository-native processing with an independently invented interpretation or delayed automation. No scheduler, reminder, background watch, delayed delivery, or polling automation belongs to this contract unless explicitly requested by the Product Owner.\n\nMirror preserves role-local identity and must not claim Authority execution or whole-tree convergence. Existing fail-closed boundaries remain unchanged.",
+  "created_at": "2026-08-20T14:15:23Z",
+  "html_url": "https://github.com/ingolf-lohmann/qik-vrt/issues/362",
+  "issue_number": 362,
+  "repository": "ingolf-lohmann/qik-vrt",
+  "title": "Mirror receipt: repository-first reflection invariant",
+  "updated_at": "2026-08-20T14:35:48Z"
+}

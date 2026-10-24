@@ -1,0 +1,87 @@
+# Temporary diagnostic; the exact authority-tree merge removes this file.
+name: QIKVRT diagnose Alpha 3 exact-tree mirror transport
+
+"on":
+  pull_request:
+    branches: ["main"]
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: qikvrt-diagnose-alpha3-mirror-transport
+  cancel-in-progress: false
+
+jobs:
+  diagnose:
+    if: github.head_ref == 'automation/diagnose-alpha3-mirror-push'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout diagnostic candidate
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          show-progress: false
+
+      - name: Persist rejection in PR description
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          AUTHORITY_URL: https://github.com/Goldkelch/qik-vrt.git
+          AUTHORITY_COMMIT: 37a91599b6d9454a5d1e032fa921f4d56cddb9b0
+          EXPECTED_MIRROR_BASE_COMMIT: 5698d7d3c3360db1bcba538b7c06e135e1936e02
+          TARGET_BRANCH: mirror/formalization-v2-alpha3-publication
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          git remote remove authority 2>/dev/null || true
+          git remote add authority "$AUTHORITY_URL"
+          git fetch --quiet --no-tags --prune authority \
+            "+refs/heads/main:refs/remotes/authority/main"
+          git fetch --quiet --no-tags --prune origin \
+            "+refs/heads/main:refs/remotes/origin/main"
+          git cat-file -e "$AUTHORITY_COMMIT^{commit}"
+          git merge-base --is-ancestor "$AUTHORITY_COMMIT" refs/remotes/authority/main
+          git merge-base --is-ancestor "$EXPECTED_MIRROR_BASE_COMMIT" refs/remotes/origin/main
+          unexpected="$(git diff --name-only "$EXPECTED_MIRROR_BASE_COMMIT" refs/remotes/origin/main | grep -vFx '.github/workflows/qikvrt_mirror_authority_main.yml' || true)"
+          test -z "$unexpected"
+
+          mirror_parent="$(git rev-parse refs/remotes/origin/main)"
+          authority_tree="$(git show -s --format=%T "$AUTHORITY_COMMIT")"
+          export GIT_AUTHOR_DATE="$(git show -s --format=%aI "$AUTHORITY_COMMIT")"
+          export GIT_COMMITTER_DATE="$(git show -s --format=%cI "$AUTHORITY_COMMIT")"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mirror_commit="$(printf '%s\n' "Mirror published QIK-VRT Formalization 2.0.0-alpha.3
+
+          Authority commit: $AUTHORITY_COMMIT
+          Authority tree: $authority_tree
+          Mirror parent: $mirror_parent
+          DOI: 10.5281/zenodo.21529081
+
+          This two-parent commit preserves the mirror mainline while using the exact verified authority tree." | git commit-tree "$authority_tree" -p "$mirror_parent" -p "$AUTHORITY_COMMIT")"
+
+          test -z "$(git ls-remote origin "refs/heads/$TARGET_BRANCH" | awk '{print $1}')"
+          set +e
+          push_output="$(git push --porcelain origin "$mirror_commit:refs/heads/$TARGET_BRANCH" 2>&1)"
+          push_status=$?
+          set -e
+          concise="$(printf '%s\n' "$push_output" | grep -Ei 'remote:|rejected|refusing|error:|fatal:|denied|GH[0-9]{3}|!.*refs/heads' || printf '%s\n' "$push_output")"
+          body="## Exact-tree mirror transport diagnostic
+
+          Authority tree: \`$authority_tree\`
+          Mirror parent: \`$mirror_parent\`
+          Candidate commit: \`$mirror_commit\`
+          Target: \`$TARGET_BRANCH\`
+          Exit status: \`$push_status\`
+
+          \`\`\`text
+          $concise
+          \`\`\`"
+          gh api --method PATCH \
+            "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" \
+            -f body="$body" >/dev/null
+          exit "$push_status"

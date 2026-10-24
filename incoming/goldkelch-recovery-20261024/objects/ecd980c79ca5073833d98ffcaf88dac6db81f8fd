@@ -1,0 +1,127 @@
+{
+  "schema": "qikvrt_publication_successor_content_validation_v1",
+  "candidate_id": "ietf-epistemic-status-00-corrected-20261004-v2",
+  "state": "PASS_CANDIDATE_CONTENT_CHECKS_WITH_RECORDED_EDITORIAL_LIMITS",
+  "observed_utc": "2026-10-04T05:44:21.669508+00:00",
+  "observer": "OpenAI Codex / GPT-6 family",
+  "exact_model_build": "UNAVAILABLE",
+  "predecessor_head": "e30df3e8bb5c7757bc126000c51d2e9d23b64dae",
+  "predecessor_evidence_transfer": false,
+  "automated_checks": {
+    "seven_statuses": [
+      "FORMAL_PROVED",
+      "EMPIRICALLY_EVIDENCED",
+      "SOURCE_BOUND",
+      "INTERPRETATIVE",
+      "NORMATIVE",
+      "PREDICTED",
+      "OPEN"
+    ],
+    "derivation_operations": 13,
+    "exact_proposition_scope_proof_model_assumptions_checker_bound": true,
+    "refinement_retains_parent_conditions": true,
+    "rfc_xrefs_resolve": true,
+    "effect_ack_03_reference_informative": true,
+    "effect_ack_v1_wire_unchanged": true,
+    "non_goals_and_security_text_preserved": true,
+    "html_fragment_links_resolved": 100,
+    "rendered_paragraphs_checked": 48,
+    "warning_count_per_mode": 0,
+    "semantic_negative_controls": [
+      "formal-status-alias-rejected",
+      "missing-scope-binding-rejected"
+    ],
+    "interoperability_or_deployment_conformance_proved": false
+  },
+  "editorial_review": {
+    "all_documented_normative_corrections_present": true,
+    "no_PROVED_or_OBSERVED_status_alias": true,
+    "checked_proof_not_generic_evidence_required": true,
+    "scope_required_in_tuple_and_proposition": true,
+    "refinement_cannot_relax_parent": true,
+    "evidence_classes_not_total_ranking": true,
+    "reference_warning_causes_corrected_without_suppression": true,
+    "informative_effect_ack_reference_creates_no_new_wire_enum_or_protocol_dependency": true,
+    "security_non_goals_and_no_IANA_actions_preserved": true
+  },
+  "checked_artifacts": {
+    "draft-lohmann-qikvrt-epistemic-status-00.xml": {
+      "path": "draft-lohmann-qikvrt-epistemic-status-00.xml",
+      "bytes": 10692,
+      "sha256": "dd200d495f46f85ddd43810718998d414ce328201fdaba8d0e6577e0b00dcf6c",
+      "git_blob_sha1": "66d09958de567ab13a9922b3a909b15c3b355950"
+    },
+    "draft-lohmann-qikvrt-epistemic-status-00.txt": {
+      "path": "draft-lohmann-qikvrt-epistemic-status-00.txt",
+      "bytes": 12452,
+      "sha256": "ea181a3beef6f2913db5d82236b0677b109d96aa221b26430d300845c819f3f5",
+      "git_blob_sha1": "964f3447db6f0fe9fb3279e1fc3bfa127957dc23"
+    },
+    "draft-lohmann-qikvrt-epistemic-status-00.html": {
+      "path": "draft-lohmann-qikvrt-epistemic-status-00.html",
+      "bytes": 53126,
+      "sha256": "7dcfd998a33e3afdf94a403036cd19e5e002ecac54c56bb3c4f2b4c6c388c517",
+      "git_blob_sha1": "4b311887203c62d5de49de7f41d6ab3c0adce03d"
+    },
+    "DERIVATION_MAP.json": {
+      "path": "DERIVATION_MAP.json",
+      "bytes": 6567,
+      "sha256": "e6ff6efd454b6156903275e0e0a3b385dcc5b0209762199e7eb46a8cbbef0c35",
+      "git_blob_sha1": "e1e32aa810d349bdfe8f84afc3b2e85a4ab314ea"
+    },
+    "RENDER_VALIDATION.json": {
+      "path": "RENDER_VALIDATION.json",
+      "bytes": 4190,
+      "sha256": "7a4175b724d91edc78d2d3b51d86c73d63a8383bb2407c8cf9ce24d28538b06c",
+      "git_blob_sha1": "0d84ef7743e971b8166e62bf41bd8680ebf2e568"
+    },
+    "XML2RFC_TEXT_LOG.txt": {
+      "path": "XML2RFC_TEXT_LOG.txt",
+      "bytes": 555,
+      "sha256": "358e6293da944493166c31186e550c31b411253afae3030e7edba4fa4e57b40b",
+      "git_blob_sha1": "e1dff31721a4014b87f4a35c4210a9886e82532e"
+    },
+    "XML2RFC_HTML_LOG.txt": {
+      "path": "XML2RFC_HTML_LOG.txt",
+      "bytes": 556,
+      "sha256": "dfcf91ca62d6bde5775205ee3a0698535d8305b9faef51383c991dd1a93a6a94",
+      "git_blob_sha1": "e5a7bfbdf45cbf82ee20b9e17cf04131a6313d90"
+    },
+    "SOURCE_PROVENANCE.json": {
+      "path": "SOURCE_PROVENANCE.json",
+      "bytes": 6539,
+      "sha256": "fa99e18d015d149bbe0364cf52987857a6f3d53c261b009254232b02e0d22082",
+      "git_blob_sha1": "a9c19d837dd54593bf951d2d0e3434f3a3cea02e"
+    },
+    "verify_staging.py": {
+      "path": "verify_staging.py",
+      "bytes": 14591,
+      "sha256": "81161989cf3408c519f751c30cca2f6b95b7faad92a9e69ee85a1b085569f471",
+      "git_blob_sha1": "05e7458a82be6c19ed3aa19685797aa87022e482"
+    },
+    "bibxml/reference.RFC.2119.xml": {
+      "path": "bibxml/reference.RFC.2119.xml",
+      "bytes": 910,
+      "sha256": "cb34e7076add659b8dd3b8e52343bb15e1e7884ecdd5c7b0d3e73c6bfa418552",
+      "git_blob_sha1": "c46cbba9132f399b71a5f905f287f942b060f111"
+    },
+    "bibxml/reference.RFC.8174.xml": {
+      "path": "bibxml/reference.RFC.8174.xml",
+      "bytes": 751,
+      "sha256": "8e88897ab525a8415b7df924da5b26481d0599eaa8e74b8f70c11b6820bdf1bc",
+      "git_blob_sha1": "fc8ae744afaa4808c7711540a3615774d6d9f66b"
+    }
+  },
+  "limitations": [
+    "Human author acceptance of new bytes is PENDING.",
+    "Natural-language semantic equivalence is editorially reviewed, not formally proved.",
+    "Rendering/fixity does not establish scientific confirmation or deployment interoperability.",
+    "Fresh full exact-head repository checks are recorded in detached PR/native-CI evidence after commit creation."
+  ],
+  "effects": {
+    "submission": false,
+    "merge": false,
+    "upload_authorization_created": false,
+    "upload_authorization_consumed": false
+  }
+}

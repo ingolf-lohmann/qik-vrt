@@ -1,0 +1,22 @@
+{
+  "schema": "qikvrt_github_api_budget_v1",
+  "version": 1,
+  "classification": "EXTERNAL_TRANSPORT_EXECUTION_CHANNEL_CONSTRAINT",
+  "laws": [
+    "RATE_LIMIT != CANDIDATE_REJECTION",
+    "RATE_LIMIT != AUTHORITY_DECISION",
+    "TRANSPORT_ACK != EFFECT_ACK",
+    "NO_DIRECT_MAIN_OR_FORCE_PUSH_BYPASS"
+  ],
+  "strategy": [
+    "event_payload_and_local_git_first",
+    "deduplicate_bound_observations",
+    "conditional_requests",
+    "webhooks_over_polling",
+    "graphql_consolidation",
+    "serialized_observers",
+    "header_driven_backoff",
+    "fresh_exact_identity_rebind_after_recovery"
+  ],
+  "product_dod_on_rate_limit": false
+}

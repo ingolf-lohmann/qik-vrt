@@ -1,0 +1,46 @@
+name: Sync ontology publication from authority
+
+on:
+  push:
+    branches: [publication/ontology-difference-reverse-engineering]
+    paths: [release/ontology-difference-mirror-sync-request.json]
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 2
+      - name: Validate request and copy exact authority bytes
+        shell: bash
+        env:
+          AUTHORITY_COMMIT: 36cd62f6dd2181ae4b7aeb3b1ff38065cfa9056f
+          TARGET_DIR: publications/ontology-des-unterschieds-reverse-engineering
+        run: |
+          set -euo pipefail
+          python3 -B - <<'PY'
+          import json, pathlib, subprocess, urllib.request
+          marker=pathlib.Path('release/ontology-difference-mirror-sync-request.json')
+          value=json.loads(marker.read_text(encoding='utf-8'))
+          expected={'schema':'qikvrt_publication_mirror_sync_v1','action':'sync','confirm':'SYNC_PINNED_AUTHORITY_PUBLICATION','authority_repository':'Goldkelch/qik-vrt','authority_commit':'36cd62f6dd2181ae4b7aeb3b1ff38065cfa9056f'}
+          for k,v in expected.items():
+              if value.get(k)!=v: raise SystemExit('BLOCK: mirror marker mismatch '+k)
+          changed=subprocess.check_output(['git','diff-tree','--no-commit-id','--name-only','-r','HEAD^','HEAD'],text=True).splitlines()
+          if changed!=[str(marker)]: raise SystemExit('BLOCK: mirror authorization commit changed more than marker')
+          target=pathlib.Path('publications/ontology-des-unterschieds-reverse-engineering'); target.mkdir(parents=True,exist_ok=True)
+          base='https://raw.githubusercontent.com/Goldkelch/qik-vrt/36cd62f6dd2181ae4b7aeb3b1ff38065cfa9056f/publications/ontology-des-unterschieds-reverse-engineering/'
+          for name in ['ORIGINAL_ARTICLE.md','META_REVIEW.md','PUBLICATION.json','README.md']:
+              with urllib.request.urlopen(base+name,timeout=60) as response:
+                  data=response.read()
+              if not data: raise SystemExit('BLOCK: empty authority file '+name)
+              (target/name).write_bytes(data)
+          PY
+          git config user.name 'qik-vrt-publication-sync[bot]'
+          git config user.email 'qik-vrt-publication-sync[bot]@users.noreply.github.com'
+          git add "$TARGET_DIR"
+          git commit -m 'sync: ontology difference publication from authority'
+          git push origin HEAD:publication/ontology-difference-reverse-engineering

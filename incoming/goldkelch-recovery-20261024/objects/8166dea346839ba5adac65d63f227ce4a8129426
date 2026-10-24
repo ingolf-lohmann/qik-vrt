@@ -1,0 +1,3811 @@
+{
+  "active_broker_count": 1,
+  "base_main": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+  "broker_materialization_client_job_count": 2,
+  "candidate_subject_binding": "EXACT_FILE_DIGESTS_PLUS_SEPARATE_FINAL_HEAD_TREE_READBACK",
+  "disabled_workflow_job_count": 37,
+  "effect_ack_done": false,
+  "historical_inventories": [
+    "state/work_units/QIKVRT_PR428_WRITER_INVENTORY_20261001_V1.json",
+    "state/work_units/QIKVRT_PR428_WRITER_INVENTORY_20261001_V2.json"
+  ],
+  "observed_at_utc": "2026-10-01T20:00:55.287703+00:00",
+  "parent_head": "cdfb35e221af131593ec02095f00f306e9dd3619",
+  "parent_tree": "636a7a3deace7c2530acc547e45a0cde70c64251",
+  "predecessor_evidence_transfer": false,
+  "production_bypass_capabilities_revoked": false,
+  "provider_authority_fencing_verified": false,
+  "records": [
+    {
+      "bytes": 7476,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "finish",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/issue-agent-autofinish.yml",
+      "sha256": "2c77ebfed10c7667fe01ea4600a59130e547be3b2c54b3bc55b921f3641503c4",
+      "writer_signal_lines": [
+        31,
+        62,
+        69,
+        73,
+        79,
+        90,
+        94,
+        105,
+        109,
+        116,
+        117,
+        118,
+        119
+      ]
+    },
+    {
+      "bytes": 3510,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "resume",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/issue-agent-backlog-resume.yml",
+      "sha256": "273cf83cbd496fc4a913679ef0211fc3de28b8ea459726f5104421c9fac26c12",
+      "writer_signal_lines": [
+        92
+      ]
+    },
+    {
+      "bytes": 4881,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "process",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/issue-autonomous-processing.yml",
+      "sha256": "f85b612a2c391810d0e3fc0c0d0a19a9f4c5eb35c8d827591177b9daa913463c",
+      "writer_signal_lines": [
+        109,
+        114,
+        123
+      ]
+    },
+    {
+      "bytes": 6726,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "publish",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/publish_ontology_difference_article_zenodo_v3.yml",
+      "sha256": "58efc46f46fbc79223415d509210ad54ced04c0d9d46243091fb991f3c88b9f9",
+      "writer_signal_lines": [
+        87
+      ]
+    },
+    {
+      "bytes": 25145,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "contract",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        },
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "warm-cache",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_adaptive_runtime.yml",
+      "sha256": "d86d3fa92a7558d5ab94e1996bc6d03c54d07b0894e9c3fc070ff2736eb6cff3",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 9822,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "validate-interface",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        },
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "transcribe",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_audio_request.yml",
+      "sha256": "e9fd50cb7c71c66d7ffcdc5a8df535b6fa684a0ec1406265192ff01ec3f450f5",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 5261,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "verify",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_autonomous_exact_head_verify.yml",
+      "sha256": "14c853999af5920f2e65f5640768d9d97397a362d6a98bc2df33602888bb788a",
+      "writer_signal_lines": [
+        98,
+        109,
+        118
+      ]
+    },
+    {
+      "bytes": 10299,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "continue-one-opted-in-draft",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_autonomous_pr_continuation.yml",
+      "sha256": "9a1d6fb9134cf451be906d774f80e473d0597b6279086eaa9c3016e6baee6dcb",
+      "writer_signal_lines": [
+        189,
+        191,
+        211,
+        231
+      ]
+    },
+    {
+      "bytes": 9723,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "validate-continuous-opportunity-contract",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        },
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "observe-repair-propose",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_autonomous_self_heal.yml",
+      "sha256": "d9b1e5d75d6377685fcdc1fba55d8dbfccc299b761fb8f89060c1e8f225408b3",
+      "writer_signal_lines": [
+        190,
+        218
+      ]
+    },
+    {
+      "bytes": 2238,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "probe",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_batch003_remaining_archive_probe.yml",
+      "sha256": "d107a9808ce2a47f0b45f91299532097194162ea78bf7a4576073185bbfbd669",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 4782,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "materialize",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_batch003_remaining_disposition.yml",
+      "sha256": "875efb9e5ed0f8f60c343ad96b9be107b763f976597732a1c3d84d94ff2c8536",
+      "writer_signal_lines": [
+        99
+      ]
+    },
+    {
+      "bytes": 3076,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "probe",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_batch003_subject_172dd_public_probe.yml",
+      "sha256": "18a6ac9eb72ae6a74442f870b54df81f4d4322d481a85bcb17a70e5721037800",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 16637,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "EXISTING_AUTHORITY_BROKER_REQUIRED",
+          "job": "materialize",
+          "native_permissions": "READ_ONLY",
+          "profile": "repository_evidence",
+          "provider_effect": "NATIVE_EXPECTED_HEAD_CAS_AND_DURABLE_READBACK"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_batch04_integrity.yml",
+      "sha256": "1d8b2525e3ff6033cb4517190e222324f9a855f9eeaf30da4c7e4a3409424693",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 8493,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "publish",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_canonical_temporal_memory_zenodo_publish.yml",
+      "sha256": "56ee74667c1400032d154674306d5c28f593ebd7b1fe617859d06b16743acb5f",
+      "writer_signal_lines": [
+        213
+      ]
+    },
+    {
+      "bytes": 8022,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "EXISTING_AUTHORITY_BROKER_REQUIRED",
+          "job": "test",
+          "native_permissions": "READ_ONLY",
+          "profile": "ci_integrity",
+          "provider_effect": "NATIVE_EXPECTED_HEAD_CAS_AND_DURABLE_READBACK"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_ci.yml",
+      "sha256": "69c55eae3d4fc00477cebda43986bc15fd2e0128776766b3132b73f356c4d2cf",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 1183,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "signal",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_code_owner_review_observer.yml",
+      "sha256": "13c903baf017326046a2de756ca224847ce9988b851a7442090a37148bf99998",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 10577,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "collective-review",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_collective_review.yml",
+      "sha256": "46b3854ac3d2d0e7491e76206b822d34365db90d9154c90c3cba52f1a8d8e812",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 2608,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "verify-combined-head",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_combined_batch_002_promotion_head.yml",
+      "sha256": "f1d3ccd7250f746a35e9bb7d093adfdf3da4ec78c3241b018449f43837f24a5a",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 1172,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "verify",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_corpus_closure_overlay.yml",
+      "sha256": "25cb956636f690f235d8d53cc3814d81a5206bcaeac37f2a7828566631c785ea",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 1250,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "verify",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_corpus_status_temporal_precedence.yml",
+      "sha256": "ba8edb0a29d942054cfbb5e0477f595a5e7620ddb1116db89979e3c3ad79e71a",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 47069,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "validate",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        },
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "tag",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        },
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "zenodo-finalize",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_effect_ack_finalize.yml",
+      "sha256": "7fd0479de974d12744e5024125cfed271862640c98b9844f363a0a2213b2e275",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 4447,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "contract-and-e2e",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+      "sha256": "fa1e3bbc32492a87d3a1b0c1f7bfa0e6a0d7cd6dd4c3cdb30335f47e438cf089",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 1409,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "materialize",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_escape_stages_integrity.yml",
+      "sha256": "7f509a0eab0b1164cee6bf60bbc1f67acace52146e45b61e9e5d17e952747a28",
+      "writer_signal_lines": [
+        44
+      ]
+    },
+    {
+      "bytes": 12305,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "evaluate-and-promote",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_expected_head_promotion.yml",
+      "sha256": "b2ea1e57398334115f78190c16511d7ccb216e9374b5034d7a355d955b9c5b56",
+      "writer_signal_lines": [
+        238,
+        244
+      ]
+    },
+    {
+      "bytes": 3847,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "formal-verification",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        },
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "audio-tool-tests",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_formalization_and_audio.yml",
+      "sha256": "ea609420404ad0d21667ad8d95de0562c65ff722485695087a21503a710e5266",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 12022,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "publish",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_formalization_v2_alpha3_publish.yml",
+      "sha256": "6facb95638d002b5e4817a19542ac5aa07073911c3f3847e6de92978df33fe9e",
+      "writer_signal_lines": [
+        98,
+        135,
+        237
+      ]
+    },
+    {
+      "bytes": 14977,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "inspect",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_formalization_v2_inspect.yml",
+      "sha256": "9b55027b2b0fe472592b5dec60267b6d8fb70364e64f6e5d0fd2f3b8acc95c63",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 16820,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "inspect",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_formalization_v2_inventory.yml",
+      "sha256": "f6c4f394d1a29ab9e70c7405ab0d20639adc6adfb5908e2f2709b1129b11c121",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 25043,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "validate",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        },
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "reserve",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_formalization_v2_zenodo.yml",
+      "sha256": "e0ee10342677c910e31aa74767e37e9ae94b88e90b15f5255cc3454e49a78afd",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 34462,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "validate",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        },
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "finalize",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_formalization_v2_zenodo_finalize.yml",
+      "sha256": "da6efe4d2406ad7fce9e161fc7ecd77157ce86ee469b696846f8daecd0829764",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 8740,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "materialize",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        },
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "verify-global-completion",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_global_completion.yml",
+      "sha256": "4b306b6b7b43a1c66f80467701473d262c9778fd790914f593be4ed798e0a445",
+      "writer_signal_lines": [
+        102
+      ]
+    },
+    {
+      "bytes": 11343,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "reconcile",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml",
+      "sha256": "e3ee61568b320df7fc0416f9c8f5e5e3f3ab06b131a2cde3a3a46ac13ef6d2de",
+      "writer_signal_lines": [
+        27,
+        28,
+        29,
+        31,
+        57,
+        60
+      ]
+    },
+    {
+      "bytes": 6808,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "watch",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_live_status_watch.yml",
+      "sha256": "624cf67a76e69c4b894f54ee10eb4ba56a9de58c5aea4c1a09abd15a3de364b4",
+      "writer_signal_lines": [
+        72,
+        76
+      ]
+    },
+    {
+      "bytes": 7718,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "exact-head-42-loop-reproduction",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_mandelbrot_42_proof_reproduction.yml",
+      "sha256": "dd6373a0280788d1a96b688b2be5f38b809751c5973e2a8a09ba997f7530f698",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 19668,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "source-claim-and-kernel-gates",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_manuscript_proof.yml",
+      "sha256": "1dcb813f040d123f77e566518b971c0c08cad80d268a59e1f47b37b6703a52d5",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 8181,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "exact-head-measurement-derived-dimensions",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_measurement_derived_dimensions.yml",
+      "sha256": "75273287527a761bcefa957f6e771058f54974f418d214e154b48944501fb073",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 5002,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "exact-head-proof",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_measurement_independence_formalization.yml",
+      "sha256": "dcfef2893b14b01699c38121769cb7f4a20d1ceb05667e56b69204d6dc9da4b2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 4941,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "qikvrt-mesh-api",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_mesh_api.yml",
+      "sha256": "f6f25d5cd94912781846099a5771022c800d615e8735cf220c084f3b6959c06f",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 3565,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "admit",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_mesh_authority_edge.yml",
+      "sha256": "d26c91a4e0531b97b3dcb156c9a56a593e2f5dbc55a9dab2b6589a81abb1cf67",
+      "writer_signal_lines": [
+        31,
+        65
+      ]
+    },
+    {
+      "bytes": 2425,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "renew",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_mirror_node_lifecycle.yml",
+      "sha256": "64de4cbbd310ef73f2009c7f4bae73c495b1f86f18400b5f7a9edbeccd8b0a47",
+      "writer_signal_lines": [
+        63
+      ]
+    },
+    {
+      "bytes": 11170,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "publish",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_observer_relative_retrocausality_zenodo_publish.yml",
+      "sha256": "d9733f3ab4ee3d01dd2182e8c2d3775228b07b4afd644f2e0c3eb091d9120709",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 4233,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "boundary",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+      "sha256": "dd80f55bb6f790f263f0fe636cf210ce6ac7a80bf6571bc0381de64eeb05626c",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 1440,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "materialize",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_physics_bridge_integrity.yml",
+      "sha256": "0f8ac5c7fb03f3316430a159be07fe5e49e87141ef41311ad5b4659fb7057fdc",
+      "writer_signal_lines": [
+        44
+      ]
+    },
+    {
+      "bytes": 1587,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "repair",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_pr18_integrity_repair.yml",
+      "sha256": "d55f74faeba90e35ab0455d3a5891e5a56e972860f50ecd8afbe764c21358664",
+      "writer_signal_lines": [
+        48
+      ]
+    },
+    {
+      "bytes": 1657,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "verify",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_pre_spacetime_zenodo_scoped_effect_ack.yml",
+      "sha256": "f9a6ece73561873733fa1866d9ade820015106804e838c55a6edc37c8e49e819",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 1330,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "materialize",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_proof_persistence_integrity.yml",
+      "sha256": "b7e3de9b52efdcd21abe975b62bf5e84e321513fe5c0b92d71a3c05e4f461111",
+      "writer_signal_lines": [
+        40
+      ]
+    },
+    {
+      "bytes": 937,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "route",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_publication_router.yml",
+      "sha256": "4458f8ed112d5b78907031dc4107a5b72ffd50db5c3a5a443ab5a510d480f041",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 11618,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "exact-head-qce-c-measurement-binding",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_qce_c_measurement_binding.yml",
+      "sha256": "156cc47c740f7055402474621372c1a5974e87505b02541e167365c739d9d390",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 3928,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "qce-formal-candidate",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_qce_candidate.yml",
+      "sha256": "d8ce3c07a8e968af181966900572b6b2ef9d9e78c1129d7a5559dc82879e377d",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 10582,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "exact-head-qce-causal-axis-bridge",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_qce_causal_axis_bridge.yml",
+      "sha256": "9a65b1ab17d20d4b33742af541a8714caab1cfe166e79da5cd4ce7182f928e83",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 12639,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "exact-head-qce-causal-axis-selection",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_qce_causal_axis_selection.yml",
+      "sha256": "2eef88baff1f1b09be783b9c4eae4108c0c02648ff569a58273c68d7d7cd588b",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 9662,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "exact-head-qce-now-serialization",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_qce_now_serialization.yml",
+      "sha256": "abc7239e18b31abf2708d6934aecfd74e6b7cdd783416683b58f135340d12b37",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 11101,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "exact-head-qce-null-calibration-ratio",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_qce_null_calibration_ratio.yml",
+      "sha256": "8329af093913f646e88b1badcd4734ada085b98d4b507402cd9a44bd551a2191",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 10970,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "pre-deadlock-observation",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
+      "sha256": "4960e837a93fc8b3e5d2ffd285a72238e0a75ffc206e07c548360fd093089672",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 12586,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "validate-and-tag",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_repository_mesh_sync_tag.yml",
+      "sha256": "cc6c47146c69887b6f069b062bc04a407d13ce2bde129cd1789f7cca54a2f450",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 3241,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "contract",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_requested_review_contract.yml",
+      "sha256": "b46f6e22546111c1a7c4cc2589c8c3bc5982562cc222770be9558e894d79df76",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 11928,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "review-one",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_requested_review_executor.yml",
+      "sha256": "9a892b3ef92c1518e74b83cca1a02ba4bee9a848016a086a617e595bcf0dfb18",
+      "writer_signal_lines": [
+        154,
+        186,
+        191,
+        195
+      ]
+    },
+    {
+      "bytes": 3932,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "publish",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_required_review_gate.yml",
+      "sha256": "8e80d1b2d9cdfe645d7fccbe94af8c0874eceefd4bc1654642c42382d2d5b65c",
+      "writer_signal_lines": [
+        95
+      ]
+    },
+    {
+      "bytes": 3797,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "exact-head-round-trip-final-byte-freeze",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_round_trip_final_byte_freeze.yml",
+      "sha256": "cdcef87b35d27e05ea62fdd9fd552c6de53d2cf9b3436604c13e37be3c7e12d0",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 7124,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "exact-head-round-trip-prepublication-return",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_round_trip_prepublication_return.yml",
+      "sha256": "ce17906eaf8879538d6ea43442e7e9d902c71395b28f0c9e82f2b9897cf1bc5a",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 3743,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "exact-head-round-trip-zenodo-bundle-freeze",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_round_trip_zenodo_bundle_freeze.yml",
+      "sha256": "3b6890403f964c0d9c53ffb244249ba397e797bf5aa5ee49d25777678e00787f",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 17898,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "reconcile",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_round_trip_zenodo_publish.yml",
+      "sha256": "953af0ad54dedf4a4615fd74b4cde98a556a52a00beffff980a1108ecfd53b83",
+      "writer_signal_lines": [
+        445
+      ]
+    },
+    {
+      "bytes": 3535,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "run",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_seed_dashboard_publish.yml",
+      "sha256": "6db7d9ae58123d96b25af0fe3ed7e24ea6983e0a5778a03837f1dfabde9f655b",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 2220,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "run",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_seed_mesh_audit_export.yml",
+      "sha256": "e0dcdaf0e358c0e379fa037ccee03016b12f72f56513c3e679daa3d89d3a65aa",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 1904,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "run",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_seed_mesh_maintenance.yml",
+      "sha256": "29a395363bc2f3bfd6915fe4d5c51e75d21c6d6643aabfafd5054694f7ce0d66",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 1921,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "run",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_seed_node_revalidation.yml",
+      "sha256": "9bc7a94e348991363cd5abd6cceb1f8356c2ab0a3addfefd665d12a0855117c4",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 2181,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "run",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_seed_registry_acceptance.yml",
+      "sha256": "c0e6ffb1bfea984df41e95731807b381b20cc94f045945a84973c2bed51e6857",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 39015,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "validate",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        },
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "tag",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        },
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "zenodo",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_status_report_finalize.yml",
+      "sha256": "0dfae0e0bf5a4987db3d0e8345f6e96039a8a8d0d7467c1e7243edf65fb420be",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 35340,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "validate",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        },
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "reserve",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_status_report_reserve.yml",
+      "sha256": "d58a432d9041806c5d9d2a883a64edb32565f17d5d650fae79954bc33964a06f",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 8407,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "publish",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_survival_connectability_zenodo_publish.yml",
+      "sha256": "e0d5c33379f8f8eeb02923d826e9371ace9fb0771e69344e3c7f26f636478334",
+      "writer_signal_lines": [
+        213
+      ]
+    },
+    {
+      "bytes": 7153,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "exact-head-finite-model",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_universal_ontology_formalization.yml",
+      "sha256": "aedb87486a2a584bd0ebcb818045dadf82a814deef048467deaf402e9d4787c7",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 6381,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "exact-head-shell-verification",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_universal_ontology_shell_fallback.yml",
+      "sha256": "59f57aa460cdf2c86b7056fe635168ba1a4e5ab50b637f98ac75069024f52628",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 4635,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "materialize",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_versioned_corrected_candidates.yml",
+      "sha256": "c9f8064e3c0eed835380ba278eb4c80a4dcf6e3cee55723fc6a74ab5701e73c5",
+      "writer_signal_lines": [
+        101
+      ]
+    },
+    {
+      "bytes": 7745,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "recover",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_vrtcore_h3_e1_recovery.yml",
+      "sha256": "149028b092d386c705079d336c7b54f49db2d268a039a65e8afaeb1c5837ecfb",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 6395,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "observe-plan-and-dispatch-one-safe-watchdog",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_workflow_executor.yml",
+      "sha256": "35100fde0feff47a6a22b585c4720fedc14179f4c4d4973da2394d883adcfb55",
+      "writer_signal_lines": [
+        112
+      ]
+    },
+    {
+      "bytes": 3479,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "exact-head-watchdog",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_workflow_executor_watchdog.yml",
+      "sha256": "4cfa4604371cc655409d721ecefdaedfc9bbc6bb76d369321b5e22109310130a",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 27716,
+      "classification": "WORKFLOW_EXPLICIT_SOURCE_ADMISSION",
+      "execution_units": [
+        {
+          "admission": "READ_ONLY_OR_LOCAL",
+          "job": "validate",
+          "native_permissions": "READ_ONLY",
+          "profile": null,
+          "provider_effect": "NONE_ADMITTED"
+        },
+        {
+          "admission": "LITERAL_FALSE",
+          "job": "reserve",
+          "native_permissions": "EMPTY",
+          "provider_effect": "DENIED_UNTIL_BROKER_SUCCESSOR"
+        }
+      ],
+      "path": ".github/workflows/qikvrt_zenodo_reserve.yml",
+      "sha256": "a52436721850d7eaf9dcaca8e7fd3cb94439e78b968e6cc719c3af07c8944cad",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 197,
+      "classification": "INDIRECT_DRY_OR_BLOCKED_PREFLIGHT_ENTRYPOINT",
+      "execution_units": [],
+      "path": "GITHUB_AUTH_PREFLIGHT_ONLY.cmd",
+      "sha256": "7f3505a3d39f124b2e9a9734ff31aac9bbce33c822d06c69688531dfdf0a431e",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 187,
+      "classification": "INDIRECT_DRY_OR_BLOCKED_PREFLIGHT_ENTRYPOINT",
+      "execution_units": [],
+      "path": "GITHUB_DRY_RUN_VERIFY_ONLY.cmd",
+      "sha256": "a6a699f249367bbe9428a72aa265aaf5b1cc8ca36de4505057fc770f7f46edec",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 201,
+      "classification": "DISABLED_ENTRYPOINT",
+      "execution_units": [],
+      "path": "GITHUB_ZENODO_UPLOAD_AND_PUBLISH.cmd",
+      "sha256": "7bc0758dbed0bada0a3002c197737c342cc421a63552cadc36926dd060d1c482",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 11399,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "Makefile",
+      "sha256": "a63b1406a1e299a3baa9afd3159f6f100de46ac36d0a8178d6b9c0c653234c0a",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 201,
+      "classification": "DISABLED_ENTRYPOINT",
+      "execution_units": [],
+      "path": "QIKVRT_V45_11_REAL_GITHUB_RELEASE.cmd",
+      "sha256": "7bc0758dbed0bada0a3002c197737c342cc421a63552cadc36926dd060d1c482",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 201,
+      "classification": "DISABLED_ENTRYPOINT",
+      "execution_units": [],
+      "path": "QIKVRT_V45_12_REAL_GITHUB_RELEASE.cmd",
+      "sha256": "7bc0758dbed0bada0a3002c197737c342cc421a63552cadc36926dd060d1c482",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 8535,
+      "classification": "INTEROPERABILITY_SPEC_NOT_EXECUTABLE",
+      "execution_units": [],
+      "path": "api/qikvrt_github_api.openapi.yaml",
+      "sha256": "0db8c1a3a6ccb426b90db4192c4886d81b2c120f634770fb57537c34c6b50591",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 10470,
+      "classification": "GET_ONLY_PUBLIC_GITHUB_AND_PINNED_LOCAL_TERMINAL",
+      "execution_units": [],
+      "path": "browser/firefox/qikvrt-terminal/background.js",
+      "sha256": "d6ac437244b24f05542460df7e89614fb77b6c495c8c112b373a6049a5bfe610",
+      "writer_signal_lines": [
+        195,
+        213
+      ]
+    },
+    {
+      "bytes": 21956,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "docs/assets/js/qikvrt-repository-terminal.js",
+      "sha256": "3a3e65b172fbc169a769af0a63c1bd8d8b11c5f99264ce75d539d7c28eb84f74",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 6825,
+      "classification": "DOCUMENTARY_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "docs/publications/2026-08-05-qik-vrt-quantum-causal-emergence/make_qce_kernel_receipt.py",
+      "sha256": "7784279ac801bbdae222f22526b4d422b6eed4ef773e6e62ccda47dc8f8f7392",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 13641,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "formalization/QIKVRT_Formalization_v2.0/scripts/verify_universal_ontology.py",
+      "sha256": "32d1a0fe26edbd3aebed35a1028d9c8dd2495dde3856b01df92cd942cea68d36",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 4201,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0061_persist_acceptance_change_to_github_cd0060868b2b.py",
+      "sha256": "89a6aa09b157a832f136555485eb5afcb4c6cc6333821afabe9aec64aa27457d",
+      "writer_signal_lines": [
+        102
+      ]
+    },
+    {
+      "bytes": 3237,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0062_persist_acceptance_coverage_to_github_d8ebe5a13f36.py",
+      "sha256": "f1ebc02eba9579802f48e209b3e38fd83c734c781100b6190e9c67a3249406bb",
+      "writer_signal_lines": [
+        56
+      ]
+    },
+    {
+      "bytes": 2693,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0063_persist_license_compliance_to_github_283150ee70ed.py",
+      "sha256": "40081ded671977f0f5e5bcad17a8d40f7507c5f052ec38c4be9b3f4278d445b9",
+      "writer_signal_lines": [
+        49
+      ]
+    },
+    {
+      "bytes": 3815,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0064_persist_monthly_content_acceptance_failure_to_github_35d45898db68.py",
+      "sha256": "5d42a167b1404356661f72f2a9ef9cbd37d7acc86c203b8771074bbb9e546fba",
+      "writer_signal_lines": [
+        97
+      ]
+    },
+    {
+      "bytes": 3811,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0065_persist_zenodo_fourth_layer_to_github_eb30bf8e354a.py",
+      "sha256": "b3acbe2cee6fcf83f7a193870a1e1d1178cffd7eb8f81555b1bed6cf043f5f42",
+      "writer_signal_lines": [
+        95
+      ]
+    },
+    {
+      "bytes": 4182,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0068_qikvrt_update_github_70934d8a0e5a.py",
+      "sha256": "5b1524a9f80887ad5ad4acbf451ffefd8ba4ffbc514630cd44706be71238693f",
+      "writer_signal_lines": [
+        31
+      ]
+    },
+    {
+      "bytes": 5309,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0069_qikvrt_update_zenodo_scientific_pdfs_59e4523d2c22.py",
+      "sha256": "b2930e26b5c8a7c76bd820873055844bc37acaba35bb9d7dd811f94fdd3cefcb",
+      "writer_signal_lines": [
+        22
+      ]
+    },
+    {
+      "bytes": 4182,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0099_qikvrt_update_github_70934d8a0e5a.py",
+      "sha256": "5b1524a9f80887ad5ad4acbf451ffefd8ba4ffbc514630cd44706be71238693f",
+      "writer_signal_lines": [
+        31
+      ]
+    },
+    {
+      "bytes": 5097,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0100_qikvrt_update_zenodo_scientific_pdfs_50c8e4fed22c.py",
+      "sha256": "f08e13dac7c590028bd9eaf50687078a0cbe49d0a62feab1c14301dac5995212",
+      "writer_signal_lines": [
+        18
+      ]
+    },
+    {
+      "bytes": 4182,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0120_qikvrt_update_github_70934d8a0e5a.py",
+      "sha256": "5b1524a9f80887ad5ad4acbf451ffefd8ba4ffbc514630cd44706be71238693f",
+      "writer_signal_lines": [
+        31
+      ]
+    },
+    {
+      "bytes": 5097,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0121_qikvrt_update_zenodo_scientific_pdfs_50c8e4fed22c.py",
+      "sha256": "f08e13dac7c590028bd9eaf50687078a0cbe49d0a62feab1c14301dac5995212",
+      "writer_signal_lines": [
+        18
+      ]
+    },
+    {
+      "bytes": 4201,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0144_persist_acceptance_change_to_github_cd0060868b2b.py",
+      "sha256": "89a6aa09b157a832f136555485eb5afcb4c6cc6333821afabe9aec64aa27457d",
+      "writer_signal_lines": [
+        102
+      ]
+    },
+    {
+      "bytes": 4182,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0145_qikvrt_update_github_70934d8a0e5a.py",
+      "sha256": "5b1524a9f80887ad5ad4acbf451ffefd8ba4ffbc514630cd44706be71238693f",
+      "writer_signal_lines": [
+        31
+      ]
+    },
+    {
+      "bytes": 5097,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0146_qikvrt_update_zenodo_scientific_pdfs_50c8e4fed22c.py",
+      "sha256": "f08e13dac7c590028bd9eaf50687078a0cbe49d0a62feab1c14301dac5995212",
+      "writer_signal_lines": [
+        18
+      ]
+    },
+    {
+      "bytes": 4201,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0173_persist_acceptance_change_to_github_cd0060868b2b.py",
+      "sha256": "89a6aa09b157a832f136555485eb5afcb4c6cc6333821afabe9aec64aa27457d",
+      "writer_signal_lines": [
+        102
+      ]
+    },
+    {
+      "bytes": 3815,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0174_persist_monthly_content_acceptance_failure_to_github_35d45898db68.py",
+      "sha256": "5d42a167b1404356661f72f2a9ef9cbd37d7acc86c203b8771074bbb9e546fba",
+      "writer_signal_lines": [
+        97
+      ]
+    },
+    {
+      "bytes": 4182,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0175_qikvrt_update_github_70934d8a0e5a.py",
+      "sha256": "5b1524a9f80887ad5ad4acbf451ffefd8ba4ffbc514630cd44706be71238693f",
+      "writer_signal_lines": [
+        31
+      ]
+    },
+    {
+      "bytes": 5097,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0176_qikvrt_update_zenodo_scientific_pdfs_50c8e4fed22c.py",
+      "sha256": "f08e13dac7c590028bd9eaf50687078a0cbe49d0a62feab1c14301dac5995212",
+      "writer_signal_lines": [
+        18
+      ]
+    },
+    {
+      "bytes": 4201,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0208_persist_acceptance_change_to_github_cd0060868b2b.py",
+      "sha256": "89a6aa09b157a832f136555485eb5afcb4c6cc6333821afabe9aec64aa27457d",
+      "writer_signal_lines": [
+        102
+      ]
+    },
+    {
+      "bytes": 3815,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0209_persist_monthly_content_acceptance_failure_to_github_35d45898db68.py",
+      "sha256": "5d42a167b1404356661f72f2a9ef9cbd37d7acc86c203b8771074bbb9e546fba",
+      "writer_signal_lines": [
+        97
+      ]
+    },
+    {
+      "bytes": 3811,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0210_persist_zenodo_fourth_layer_to_github_eb30bf8e354a.py",
+      "sha256": "b3acbe2cee6fcf83f7a193870a1e1d1178cffd7eb8f81555b1bed6cf043f5f42",
+      "writer_signal_lines": [
+        95
+      ]
+    },
+    {
+      "bytes": 4182,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0212_qikvrt_update_github_70934d8a0e5a.py",
+      "sha256": "5b1524a9f80887ad5ad4acbf451ffefd8ba4ffbc514630cd44706be71238693f",
+      "writer_signal_lines": [
+        31
+      ]
+    },
+    {
+      "bytes": 5097,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0213_qikvrt_update_zenodo_scientific_pdfs_50c8e4fed22c.py",
+      "sha256": "f08e13dac7c590028bd9eaf50687078a0cbe49d0a62feab1c14301dac5995212",
+      "writer_signal_lines": [
+        18
+      ]
+    },
+    {
+      "bytes": 4201,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0254_persist_acceptance_change_to_github_cd0060868b2b.py",
+      "sha256": "89a6aa09b157a832f136555485eb5afcb4c6cc6333821afabe9aec64aa27457d",
+      "writer_signal_lines": [
+        102
+      ]
+    },
+    {
+      "bytes": 3815,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0255_persist_monthly_content_acceptance_failure_to_github_35d45898db68.py",
+      "sha256": "5d42a167b1404356661f72f2a9ef9cbd37d7acc86c203b8771074bbb9e546fba",
+      "writer_signal_lines": [
+        97
+      ]
+    },
+    {
+      "bytes": 3811,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0256_persist_zenodo_fourth_layer_to_github_eb30bf8e354a.py",
+      "sha256": "b3acbe2cee6fcf83f7a193870a1e1d1178cffd7eb8f81555b1bed6cf043f5f42",
+      "writer_signal_lines": [
+        95
+      ]
+    },
+    {
+      "bytes": 4182,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0258_qikvrt_update_github_70934d8a0e5a.py",
+      "sha256": "5b1524a9f80887ad5ad4acbf451ffefd8ba4ffbc514630cd44706be71238693f",
+      "writer_signal_lines": [
+        31
+      ]
+    },
+    {
+      "bytes": 5097,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0259_qikvrt_update_zenodo_scientific_pdfs_50c8e4fed22c.py",
+      "sha256": "f08e13dac7c590028bd9eaf50687078a0cbe49d0a62feab1c14301dac5995212",
+      "writer_signal_lines": [
+        18
+      ]
+    },
+    {
+      "bytes": 4201,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0307_persist_acceptance_change_to_github_cd0060868b2b.py",
+      "sha256": "89a6aa09b157a832f136555485eb5afcb4c6cc6333821afabe9aec64aa27457d",
+      "writer_signal_lines": [
+        102
+      ]
+    },
+    {
+      "bytes": 2693,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0308_persist_license_compliance_to_github_283150ee70ed.py",
+      "sha256": "40081ded671977f0f5e5bcad17a8d40f7507c5f052ec38c4be9b3f4278d445b9",
+      "writer_signal_lines": [
+        49
+      ]
+    },
+    {
+      "bytes": 3815,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0309_persist_monthly_content_acceptance_failure_to_github_35d45898db68.py",
+      "sha256": "5d42a167b1404356661f72f2a9ef9cbd37d7acc86c203b8771074bbb9e546fba",
+      "writer_signal_lines": [
+        97
+      ]
+    },
+    {
+      "bytes": 3811,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0310_persist_zenodo_fourth_layer_to_github_eb30bf8e354a.py",
+      "sha256": "b3acbe2cee6fcf83f7a193870a1e1d1178cffd7eb8f81555b1bed6cf043f5f42",
+      "writer_signal_lines": [
+        95
+      ]
+    },
+    {
+      "bytes": 4182,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0312_qikvrt_update_github_70934d8a0e5a.py",
+      "sha256": "5b1524a9f80887ad5ad4acbf451ffefd8ba4ffbc514630cd44706be71238693f",
+      "writer_signal_lines": [
+        31
+      ]
+    },
+    {
+      "bytes": 5309,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0313_qikvrt_update_zenodo_scientific_pdfs_59e4523d2c22.py",
+      "sha256": "b2930e26b5c8a7c76bd820873055844bc37acaba35bb9d7dd811f94fdd3cefcb",
+      "writer_signal_lines": [
+        22
+      ]
+    },
+    {
+      "bytes": 4201,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0377_persist_acceptance_change_to_github_cd0060868b2b.py",
+      "sha256": "89a6aa09b157a832f136555485eb5afcb4c6cc6333821afabe9aec64aa27457d",
+      "writer_signal_lines": [
+        102
+      ]
+    },
+    {
+      "bytes": 3237,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0378_persist_acceptance_coverage_to_github_d8ebe5a13f36.py",
+      "sha256": "f1ebc02eba9579802f48e209b3e38fd83c734c781100b6190e9c67a3249406bb",
+      "writer_signal_lines": [
+        56
+      ]
+    },
+    {
+      "bytes": 2693,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0379_persist_license_compliance_to_github_283150ee70ed.py",
+      "sha256": "40081ded671977f0f5e5bcad17a8d40f7507c5f052ec38c4be9b3f4278d445b9",
+      "writer_signal_lines": [
+        49
+      ]
+    },
+    {
+      "bytes": 3815,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0380_persist_monthly_content_acceptance_failure_to_github_35d45898db68.py",
+      "sha256": "5d42a167b1404356661f72f2a9ef9cbd37d7acc86c203b8771074bbb9e546fba",
+      "writer_signal_lines": [
+        97
+      ]
+    },
+    {
+      "bytes": 3811,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0381_persist_zenodo_fourth_layer_to_github_eb30bf8e354a.py",
+      "sha256": "b3acbe2cee6fcf83f7a193870a1e1d1178cffd7eb8f81555b1bed6cf043f5f42",
+      "writer_signal_lines": [
+        95
+      ]
+    },
+    {
+      "bytes": 4182,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0383_qikvrt_update_github_70934d8a0e5a.py",
+      "sha256": "5b1524a9f80887ad5ad4acbf451ffefd8ba4ffbc514630cd44706be71238693f",
+      "writer_signal_lines": [
+        31
+      ]
+    },
+    {
+      "bytes": 5309,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0384_qikvrt_update_zenodo_scientific_pdfs_59e4523d2c22.py",
+      "sha256": "b2930e26b5c8a7c76bd820873055844bc37acaba35bb9d7dd811f94fdd3cefcb",
+      "writer_signal_lines": [
+        22
+      ]
+    },
+    {
+      "bytes": 4201,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0453_persist_acceptance_change_to_github_cd0060868b2b.py",
+      "sha256": "89a6aa09b157a832f136555485eb5afcb4c6cc6333821afabe9aec64aa27457d",
+      "writer_signal_lines": [
+        102
+      ]
+    },
+    {
+      "bytes": 3237,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0454_persist_acceptance_coverage_to_github_d8ebe5a13f36.py",
+      "sha256": "f1ebc02eba9579802f48e209b3e38fd83c734c781100b6190e9c67a3249406bb",
+      "writer_signal_lines": [
+        56
+      ]
+    },
+    {
+      "bytes": 2693,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0455_persist_license_compliance_to_github_283150ee70ed.py",
+      "sha256": "40081ded671977f0f5e5bcad17a8d40f7507c5f052ec38c4be9b3f4278d445b9",
+      "writer_signal_lines": [
+        49
+      ]
+    },
+    {
+      "bytes": 3815,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0456_persist_monthly_content_acceptance_failure_to_github_35d45898db68.py",
+      "sha256": "5d42a167b1404356661f72f2a9ef9cbd37d7acc86c203b8771074bbb9e546fba",
+      "writer_signal_lines": [
+        97
+      ]
+    },
+    {
+      "bytes": 3811,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0457_persist_zenodo_fourth_layer_to_github_eb30bf8e354a.py",
+      "sha256": "b3acbe2cee6fcf83f7a193870a1e1d1178cffd7eb8f81555b1bed6cf043f5f42",
+      "writer_signal_lines": [
+        95
+      ]
+    },
+    {
+      "bytes": 4182,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0460_qikvrt_update_github_70934d8a0e5a.py",
+      "sha256": "5b1524a9f80887ad5ad4acbf451ffefd8ba4ffbc514630cd44706be71238693f",
+      "writer_signal_lines": [
+        31
+      ]
+    },
+    {
+      "bytes": 5309,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0461_qikvrt_update_zenodo_scientific_pdfs_59e4523d2c22.py",
+      "sha256": "b2930e26b5c8a7c76bd820873055844bc37acaba35bb9d7dd811f94fdd3cefcb",
+      "writer_signal_lines": [
+        22
+      ]
+    },
+    {
+      "bytes": 4201,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0567_persist_acceptance_change_to_github_cd0060868b2b.py",
+      "sha256": "89a6aa09b157a832f136555485eb5afcb4c6cc6333821afabe9aec64aa27457d",
+      "writer_signal_lines": [
+        102
+      ]
+    },
+    {
+      "bytes": 3237,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0568_persist_acceptance_coverage_to_github_d8ebe5a13f36.py",
+      "sha256": "f1ebc02eba9579802f48e209b3e38fd83c734c781100b6190e9c67a3249406bb",
+      "writer_signal_lines": [
+        56
+      ]
+    },
+    {
+      "bytes": 2693,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0569_persist_license_compliance_to_github_283150ee70ed.py",
+      "sha256": "40081ded671977f0f5e5bcad17a8d40f7507c5f052ec38c4be9b3f4278d445b9",
+      "writer_signal_lines": [
+        49
+      ]
+    },
+    {
+      "bytes": 3815,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0570_persist_monthly_content_acceptance_failure_to_github_35d45898db68.py",
+      "sha256": "5d42a167b1404356661f72f2a9ef9cbd37d7acc86c203b8771074bbb9e546fba",
+      "writer_signal_lines": [
+        97
+      ]
+    },
+    {
+      "bytes": 3811,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0571_persist_zenodo_fourth_layer_to_github_eb30bf8e354a.py",
+      "sha256": "b3acbe2cee6fcf83f7a193870a1e1d1178cffd7eb8f81555b1bed6cf043f5f42",
+      "writer_signal_lines": [
+        95
+      ]
+    },
+    {
+      "bytes": 4182,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0574_qikvrt_update_github_70934d8a0e5a.py",
+      "sha256": "5b1524a9f80887ad5ad4acbf451ffefd8ba4ffbc514630cd44706be71238693f",
+      "writer_signal_lines": [
+        31
+      ]
+    },
+    {
+      "bytes": 5309,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0575_qikvrt_update_zenodo_scientific_pdfs_59e4523d2c22.py",
+      "sha256": "b2930e26b5c8a7c76bd820873055844bc37acaba35bb9d7dd811f94fdd3cefcb",
+      "writer_signal_lines": [
+        22
+      ]
+    },
+    {
+      "bytes": 4182,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0604_qikvrt_update_github_70934d8a0e5a.py",
+      "sha256": "5b1524a9f80887ad5ad4acbf451ffefd8ba4ffbc514630cd44706be71238693f",
+      "writer_signal_lines": [
+        31
+      ]
+    },
+    {
+      "bytes": 5097,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/no_bypass_20261001_monthly_writers/0605_qikvrt_update_zenodo_scientific_pdfs_50c8e4fed22c.py",
+      "sha256": "f08e13dac7c590028bd9eaf50687078a0cbe49d0a62feab1c14301dac5995212",
+      "writer_signal_lines": [
+        18
+      ]
+    },
+    {
+      "bytes": 983,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T152348Z/payload/QIKVRT_V2_13_4AO_GENERIC_PAYLOAD_UPLOAD_KIT_WSH_NO_PS_NO_GIT/tests/test_4ao_contract.sh",
+      "sha256": "4b5b2cadda94f9f9980a28a8af9888f2c0aa61e5558af203ff8cbc7d4b822245",
+      "writer_signal_lines": [
+        10
+      ]
+    },
+    {
+      "bytes": 13751,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T152348Z/payload/QIKVRT_V2_13_4AO_GENERIC_PAYLOAD_UPLOAD_KIT_WSH_NO_PS_NO_GIT/tools/qikvrt_upload_wsh.js",
+      "sha256": "c4d1b5141fdd22faa61f2abe9490e711eb0c3cd635e11abd89db9a81bafc4a95",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 849,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/node/.github/workflows/qikvrt_node_health_publish.yml",
+      "sha256": "64bfd5e00ee8fabe061475fc57b77c5fe6db28f7d813999177b54392b9fdce7e",
+      "writer_signal_lines": [
+        9,
+        32
+      ]
+    },
+    {
+      "bytes": 879,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/node/.github/workflows/qikvrt_node_seed_status_watch.yml",
+      "sha256": "3a82f680faebdc60a44c0ce62932557be4b02605bc0c128dd7b4e64ebe4f82b6",
+      "writer_signal_lines": [
+        9,
+        32
+      ]
+    },
+    {
+      "bytes": 873,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/seed/.github/workflows/qikvrt_seed_mesh_maintenance.yml",
+      "sha256": "b3b2fa6fc0e1db299b7e7c21a3bd4afc14e5161563e0146b7590e6adb8bd2987",
+      "writer_signal_lines": [
+        9,
+        32
+      ]
+    },
+    {
+      "bytes": 883,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/seed/.github/workflows/qikvrt_seed_registry_acceptance.yml",
+      "sha256": "56399a9c3699cc59255c711ae3798c8a4cab2a1f9f091af7a0ee33d7dfa6750b",
+      "writer_signal_lines": [
+        9,
+        32
+      ]
+    },
+    {
+      "bytes": 3349,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/tests/run_all_posix.sh",
+      "sha256": "3e2b194c0baf808b78ac999ec7e261a064670d50f7167144ded114484262b10a",
+      "writer_signal_lines": [
+        10
+      ]
+    },
+    {
+      "bytes": 14693,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/tools/qikvrt_4at_installer.js",
+      "sha256": "5ed11e3746af838c5be32bad3ee57c75a1261a1fd935eb82a8be5399e2eff795",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 1418,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/.github/workflows/qikvrt_node_health_publish.yml",
+      "sha256": "1520e73d6973af3aa26aef40241ba32c6b03e99f8d5ec1aa1655176cf79aaf6b",
+      "writer_signal_lines": [
+        12,
+        38
+      ]
+    },
+    {
+      "bytes": 1430,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/.github/workflows/qikvrt_node_renew_registration.yml",
+      "sha256": "f492826ff2c66ee6125fe19e1de2844b5670e9b1766a4fc777791102e9e24d81",
+      "writer_signal_lines": [
+        12,
+        38
+      ]
+    },
+    {
+      "bytes": 1428,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/.github/workflows/qikvrt_node_seed_status_watch.yml",
+      "sha256": "6866a5e0b6fdc99bfdbff05e7f21a3c81354fe6d68601a4f1398ffe4151eebdf",
+      "writer_signal_lines": [
+        12,
+        38
+      ]
+    },
+    {
+      "bytes": 1391,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/.github/workflows/qikvrt_node_self_audit.yml",
+      "sha256": "dcc1279994de83085b4d1cb2aa91a845c6d376b7117ea0957d4f3d72b4c916c7",
+      "writer_signal_lines": [
+        12,
+        38
+      ]
+    },
+    {
+      "bytes": 1417,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/.github/workflows/qikvrt_seed_dashboard_publish.yml",
+      "sha256": "4ccf6ecc8b348edddbca0e3eaa133c69addd878b46c251ecdcc2e373a48aab72",
+      "writer_signal_lines": [
+        12,
+        38
+      ]
+    },
+    {
+      "bytes": 1424,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/.github/workflows/qikvrt_seed_mesh_audit_export.yml",
+      "sha256": "4b1f8446e62ee237136f5d79f9610a4013839837dbb3bef38781a42b4e72278e",
+      "writer_signal_lines": [
+        12,
+        38
+      ]
+    },
+    {
+      "bytes": 1418,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/.github/workflows/qikvrt_seed_mesh_maintenance.yml",
+      "sha256": "cbeb5ea0deaf11f2acfc5ca9a54cc92e8acc3d0bbcf884798863fda48f409039",
+      "writer_signal_lines": [
+        12,
+        38
+      ]
+    },
+    {
+      "bytes": 1437,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/.github/workflows/qikvrt_seed_registry_acceptance.yml",
+      "sha256": "61feb8dd5b1cfbf011fdec1bd5c81cec4152815baaa65dd6e0e9936caaa83650",
+      "writer_signal_lines": [
+        12,
+        38
+      ]
+    },
+    {
+      "bytes": 17079,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/tools/qikvrt_4au_installer.js",
+      "sha256": "961aa98c08e63ceae4d08abd5b428349257ec9ada294538c0919f3323b45636a",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 1712,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T172711Z/payload/QIKVRT_V2_13_4AU2_PRODUCTIZATION_RELEASE_FREEZE_ONE_COMMAND_INSTALLER/tests/run_all_posix.sh",
+      "sha256": "436268327ae9c3876531758157c3163a7d1af6a92318c3f0b21ebc0134e96f72",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 18796,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T172711Z/payload/QIKVRT_V2_13_4AU2_PRODUCTIZATION_RELEASE_FREEZE_ONE_COMMAND_INSTALLER/tools/qikvrt_4au2_release_freeze_installer.js",
+      "sha256": "b56813fdec7cdd6ecf01b3fbc0929e7ce2fe6edf23c5ce1513413bb438eee915",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 1418,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T174539Z/payload/QIKVRT_V2_13_4AV1_OPEN_MULTI_NODE_REGISTRY_REVALIDATION_ONE_COMMAND_INSTALLER/roles/node/.github/workflows/qikvrt_node_health_publish.yml",
+      "sha256": "88f3e6efea94a98c4815e0a60259c50e919dd66adbe29b178829c612cc230aff",
+      "writer_signal_lines": [
+        12,
+        38
+      ]
+    },
+    {
+      "bytes": 1430,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T174539Z/payload/QIKVRT_V2_13_4AV1_OPEN_MULTI_NODE_REGISTRY_REVALIDATION_ONE_COMMAND_INSTALLER/roles/node/.github/workflows/qikvrt_node_renew_registration.yml",
+      "sha256": "8a2a42cf9f735c73e5b232f8da2428e78e2b653e3748c92d192ea4eae9d20c89",
+      "writer_signal_lines": [
+        12,
+        38
+      ]
+    },
+    {
+      "bytes": 1428,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T174539Z/payload/QIKVRT_V2_13_4AV1_OPEN_MULTI_NODE_REGISTRY_REVALIDATION_ONE_COMMAND_INSTALLER/roles/node/.github/workflows/qikvrt_node_seed_status_watch.yml",
+      "sha256": "a39d18b38e48348a349776cebaa798a28705a5c8fe2335ac33054e8b64b86f9d",
+      "writer_signal_lines": [
+        12,
+        38
+      ]
+    },
+    {
+      "bytes": 1391,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T174539Z/payload/QIKVRT_V2_13_4AV1_OPEN_MULTI_NODE_REGISTRY_REVALIDATION_ONE_COMMAND_INSTALLER/roles/node/.github/workflows/qikvrt_node_self_audit.yml",
+      "sha256": "78fe789a027f04ad96f8f6d63b89c8c3c9ec6733d0ee8610889e014b8162e03a",
+      "writer_signal_lines": [
+        12,
+        38
+      ]
+    },
+    {
+      "bytes": 1417,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T174539Z/payload/QIKVRT_V2_13_4AV1_OPEN_MULTI_NODE_REGISTRY_REVALIDATION_ONE_COMMAND_INSTALLER/roles/seed/.github/workflows/qikvrt_seed_dashboard_publish.yml",
+      "sha256": "6169a363ed4f67928db23e61d6489994f892cf77f3b897a61e80df0c01134dee",
+      "writer_signal_lines": [
+        12,
+        38
+      ]
+    },
+    {
+      "bytes": 1424,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T174539Z/payload/QIKVRT_V2_13_4AV1_OPEN_MULTI_NODE_REGISTRY_REVALIDATION_ONE_COMMAND_INSTALLER/roles/seed/.github/workflows/qikvrt_seed_mesh_audit_export.yml",
+      "sha256": "c16e17d340392874f454174c9b3385a0099cf8c508a98777c6bf154e2c9b8245",
+      "writer_signal_lines": [
+        12,
+        38
+      ]
+    },
+    {
+      "bytes": 1418,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T174539Z/payload/QIKVRT_V2_13_4AV1_OPEN_MULTI_NODE_REGISTRY_REVALIDATION_ONE_COMMAND_INSTALLER/roles/seed/.github/workflows/qikvrt_seed_mesh_maintenance.yml",
+      "sha256": "be29e5c4754b34b8b9086446230bd130b83af5b67786b36dfad94324752f85d8",
+      "writer_signal_lines": [
+        12,
+        38
+      ]
+    },
+    {
+      "bytes": 1422,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T174539Z/payload/QIKVRT_V2_13_4AV1_OPEN_MULTI_NODE_REGISTRY_REVALIDATION_ONE_COMMAND_INSTALLER/roles/seed/.github/workflows/qikvrt_seed_node_revalidation.yml",
+      "sha256": "79557b1591e07065bf3b4fa0d7417198daf8ccb235bdddd714cde4d4f22ce636",
+      "writer_signal_lines": [
+        12,
+        38
+      ]
+    },
+    {
+      "bytes": 1437,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T174539Z/payload/QIKVRT_V2_13_4AV1_OPEN_MULTI_NODE_REGISTRY_REVALIDATION_ONE_COMMAND_INSTALLER/roles/seed/.github/workflows/qikvrt_seed_registry_acceptance.yml",
+      "sha256": "3dcf9c8b743250ad1a7481e0bfa394973b45785798a649bf1d5f71445efbfb31",
+      "writer_signal_lines": [
+        12,
+        38
+      ]
+    },
+    {
+      "bytes": 6893,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T174539Z/payload/QIKVRT_V2_13_4AV1_OPEN_MULTI_NODE_REGISTRY_REVALIDATION_ONE_COMMAND_INSTALLER/roles/seed/tools/qikvrt_seed_mesh_maintenance.sh",
+      "sha256": "4f1d50df9d735330efd81ba41cf9381580aac912f3e6057cae85f749c41fd3bc",
+      "writer_signal_lines": [
+        36
+      ]
+    },
+    {
+      "bytes": 20627,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T174539Z/payload/QIKVRT_V2_13_4AV1_OPEN_MULTI_NODE_REGISTRY_REVALIDATION_ONE_COMMAND_INSTALLER/tools/qikvrt_4av1_installer.js",
+      "sha256": "e615f7aeec20e95b6b926acb00a7ec693a04ed0e11933c9b831d3290bee99514",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 1112,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T180204Z/payload/QIKVRT_V2_13_4AV2A_OPEN_MULTI_NODE_RELEASE_FREEZE_HTA_TOKEN_FIX_ONE_COMMAND_INSTALLER/qv2134av2a_work/tests/run_all_posix.sh",
+      "sha256": "e97dd27c655f6f01b271cfa02ff58f8b9300afd15fe8833ded7e22642bd4e888",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 17168,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T180204Z/payload/QIKVRT_V2_13_4AV2A_OPEN_MULTI_NODE_RELEASE_FREEZE_HTA_TOKEN_FIX_ONE_COMMAND_INSTALLER/qv2134av2a_work/tools/qikvrt_release_freeze_wsh.js",
+      "sha256": "5ef92cc812edbc961e9bcc358f28de0957d489440c9211f3f22bfc9f36b55535",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 1762,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T182401Z/payload/QIKVRT_V2_13_4AW_COMMERCIAL_READINESS_PACK_ONE_COMMAND_INSTALLER/qv2134aw_work/tests/run_all_posix.sh",
+      "sha256": "f27965e1e4113d32dac6eeb912261e394b3fc3a236606feeb35e3e3c06aa4d84",
+      "writer_signal_lines": [
+        16
+      ]
+    },
+    {
+      "bytes": 10649,
+      "classification": "HISTORICAL_INCOMING_NOT_ADMITTED",
+      "execution_units": [],
+      "path": "incoming/qikvrt_payloads/20260708T182401Z/payload/QIKVRT_V2_13_4AW_COMMERCIAL_READINESS_PACK_ONE_COMMAND_INSTALLER/qv2134aw_work/tools/qikvrt_4aw_uploader.js",
+      "sha256": "866b2433e5ae4d73f7d84e43ad13de7d8f96100a723b5f53badbec746b4cc498",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 4819,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0060.bin",
+      "sha256": "08d6a0e0f7b634c55f470bc41c2e47bb0acdbc3e42e24da1622c4399d8b85509",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0061.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0062.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0063.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0064.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0065.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 8135,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0067.bin",
+      "sha256": "8ce7c9b256dcb9a9f3ce8783c3f6ea6b182a8380eff40ea4c83ac4b732e5b650",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0068.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0069.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 3467,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0074.bin",
+      "sha256": "29482a175a66136d51c67496a7ea692707a0e1f7de2c7b2fa8cfbe12755f921f",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 4819,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0098.bin",
+      "sha256": "08d6a0e0f7b634c55f470bc41c2e47bb0acdbc3e42e24da1622c4399d8b85509",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0099.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0100.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 3467,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0101.bin",
+      "sha256": "29482a175a66136d51c67496a7ea692707a0e1f7de2c7b2fa8cfbe12755f921f",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 4819,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0119.bin",
+      "sha256": "08d6a0e0f7b634c55f470bc41c2e47bb0acdbc3e42e24da1622c4399d8b85509",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0120.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0121.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 3467,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0122.bin",
+      "sha256": "29482a175a66136d51c67496a7ea692707a0e1f7de2c7b2fa8cfbe12755f921f",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 4819,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0143.bin",
+      "sha256": "08d6a0e0f7b634c55f470bc41c2e47bb0acdbc3e42e24da1622c4399d8b85509",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0144.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0145.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0146.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 3467,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0147.bin",
+      "sha256": "29482a175a66136d51c67496a7ea692707a0e1f7de2c7b2fa8cfbe12755f921f",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 4819,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0172.bin",
+      "sha256": "08d6a0e0f7b634c55f470bc41c2e47bb0acdbc3e42e24da1622c4399d8b85509",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0173.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0174.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0175.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0176.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 3467,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0178.bin",
+      "sha256": "29482a175a66136d51c67496a7ea692707a0e1f7de2c7b2fa8cfbe12755f921f",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 4819,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0207.bin",
+      "sha256": "08d6a0e0f7b634c55f470bc41c2e47bb0acdbc3e42e24da1622c4399d8b85509",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0208.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0209.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0210.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0212.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0213.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 3467,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0215.bin",
+      "sha256": "29482a175a66136d51c67496a7ea692707a0e1f7de2c7b2fa8cfbe12755f921f",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 4819,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0253.bin",
+      "sha256": "08d6a0e0f7b634c55f470bc41c2e47bb0acdbc3e42e24da1622c4399d8b85509",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0254.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0255.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0256.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0258.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0259.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 3723,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0260.bin",
+      "sha256": "2dfefccbf0d31f4533bcb44b08bb2771fad431265b65b0aa72f6d2c7bda88f25",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 3467,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0262.bin",
+      "sha256": "29482a175a66136d51c67496a7ea692707a0e1f7de2c7b2fa8cfbe12755f921f",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 4819,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0306.bin",
+      "sha256": "08d6a0e0f7b634c55f470bc41c2e47bb0acdbc3e42e24da1622c4399d8b85509",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0307.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0308.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0309.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0310.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0312.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0313.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 3723,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0314.bin",
+      "sha256": "2dfefccbf0d31f4533bcb44b08bb2771fad431265b65b0aa72f6d2c7bda88f25",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 3467,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0317.bin",
+      "sha256": "29482a175a66136d51c67496a7ea692707a0e1f7de2c7b2fa8cfbe12755f921f",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 4819,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0376.bin",
+      "sha256": "08d6a0e0f7b634c55f470bc41c2e47bb0acdbc3e42e24da1622c4399d8b85509",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0377.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0378.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0379.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0380.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0381.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0383.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0384.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 5035,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0385.bin",
+      "sha256": "5d0cd7776b94307c2cb91349d08d3e3c565e31ac983f7673267ea122c43634dc",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 3723,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0386.bin",
+      "sha256": "2dfefccbf0d31f4533bcb44b08bb2771fad431265b65b0aa72f6d2c7bda88f25",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 3467,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0389.bin",
+      "sha256": "29482a175a66136d51c67496a7ea692707a0e1f7de2c7b2fa8cfbe12755f921f",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 4819,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0452.bin",
+      "sha256": "08d6a0e0f7b634c55f470bc41c2e47bb0acdbc3e42e24da1622c4399d8b85509",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0453.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0454.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0455.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0456.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0457.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 8135,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0459.bin",
+      "sha256": "8ce7c9b256dcb9a9f3ce8783c3f6ea6b182a8380eff40ea4c83ac4b732e5b650",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0460.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0461.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 3467,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0466.bin",
+      "sha256": "29482a175a66136d51c67496a7ea692707a0e1f7de2c7b2fa8cfbe12755f921f",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 4819,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0566.bin",
+      "sha256": "08d6a0e0f7b634c55f470bc41c2e47bb0acdbc3e42e24da1622c4399d8b85509",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0567.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0568.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0569.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0570.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0571.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 9396,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0573.bin",
+      "sha256": "b0618ea0fc51d9c581b9fedd8ff3a1503eea555d7a38366b064dbc8bd6f582e5",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0574.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0575.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 3467,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0580.bin",
+      "sha256": "29482a175a66136d51c67496a7ea692707a0e1f7de2c7b2fa8cfbe12755f921f",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 4819,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0603.bin",
+      "sha256": "08d6a0e0f7b634c55f470bc41c2e47bb0acdbc3e42e24da1622c4399d8b85509",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0604.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 218,
+      "classification": "DISABLED_PACKAGED_WRITER_ENTRYPOINT",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0605.bin",
+      "sha256": "24ebf8b15fc01e5222d623d790c7dc28652b2e93b3e2672f9a301391697bbec2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 3467,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "payload/monthly_content/a0606.bin",
+      "sha256": "29482a175a66136d51c67496a7ea692707a0e1f7de2c7b2fa8cfbe12755f921f",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 61017,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "release/observer-relative-retrocausality-current-synthesis-zenodo-v2/assemble_successor_package.py",
+      "sha256": "965fea955468dc7fd9750787eb4345f245400169128b40213c2e5194eb8a61b6",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 20985,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "release/observer-relative-retrocausality-current-synthesis-zenodo-v2/finalize_authorized_controls.py",
+      "sha256": "48bae7027a5dbba033ea264d090c4f0134ff8d9b9196f96557de7ec9dc67b78f",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 3789,
+      "classification": "OTHER_PROVIDER_NOT_GITHUB_REPOSITORY_WRITE",
+      "execution_units": [],
+      "path": "scripts/issue_agent/infer.py",
+      "sha256": "de3876f3961f375119bb3bb4006b51562aae8c07ce3c2e59bdf452cbde520a0e",
+      "writer_signal_lines": [
+        60
+      ]
+    },
+    {
+      "bytes": 2362,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "scripts/issue_agent/materialize.py",
+      "sha256": "59bf9c5794470a2ae64cb6583ee226c3d1395332b1ca46ac96b126781e689a63",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 8214,
+      "classification": "LOOPBACK_LOCAL_SHIM_ONLY",
+      "execution_units": [],
+      "path": "scripts/qikvrt_api_client.py",
+      "sha256": "8985f3eb99740f3e62647539943f04e6593a45ec2e9e18adf417154f0a4b353d",
+      "writer_signal_lines": [
+        165
+      ]
+    },
+    {
+      "bytes": 273,
+      "classification": "DISABLED_ENTRYPOINT",
+      "execution_units": [],
+      "path": "scripts/qikvrt_github_api_client.sh",
+      "sha256": "7e504cce31bdb311e318459a1cc4811a9cc2cb858f5d4f3c6bf1f5817325af71",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 14765,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "src/qikvrt_effect_ack_http_terminal.py",
+      "sha256": "79f014cbba32499138c492969d55309f00aacd915d2620049480334275bbb63a",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 55755,
+      "classification": "EXISTING_AUTHORITY_BROKER",
+      "execution_units": [],
+      "path": "src/qikvrt_github_api_shim.py",
+      "sha256": "d2a7d40913f3f2f331547f403a1496ca50defd2a642358765ddad633af486e4c",
+      "writer_signal_lines": [
+        139,
+        140
+      ]
+    },
+    {
+      "bytes": 13734,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_adaptive_runtime.sh",
+      "sha256": "154e66d303aa99591f177049bb1f99566037cd6524c2899248100af71d42de94",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 7419,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_ai_personal_working_memory_origin_and_attribution.py",
+      "sha256": "3bd5389cd4ffd3229ed4b00bd116bf02e2544baaabbe60fcb0fe6d0b1fb33766",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 5739,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_aphorism_corpus_v2.py",
+      "sha256": "63afadf09844455112eec332e4523cccebd6959efd60c7239b33e55e8c217318",
+      "writer_signal_lines": [
+        126
+      ]
+    },
+    {
+      "bytes": 42738,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_canonical_temporal_memory_publication.py",
+      "sha256": "cec219ad2fc76ed49752f48f55b7699bccbd19ba7f9902ad28a095803c75b6c0",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 27117,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_effect_ack_release_workflows.py",
+      "sha256": "82a0c0d31d7b5541cf7541dd973f1cd3d1e1b07cbf3e79d4a33e6f59e81a103d",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 15804,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_integrity.py",
+      "sha256": "0f3d60b074f09b73f8e2bf81316dbc8d46c6fe662ac0b6798e065cf870d8d410",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 21899,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_launcher_runtime.py",
+      "sha256": "64add95b04f62b427ff478911afd7522bb91bd276c1caa9d38179d103af5a083",
+      "writer_signal_lines": [
+        318,
+        338
+      ]
+    },
+    {
+      "bytes": 6526,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_license_transition.py",
+      "sha256": "02eae506da1be58193620e3a9504b68aca0c00c9b9e39c439e2b8d89bf2d0541",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 12100,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_observer_relative_retrocausality_zenodo_finalizer.py",
+      "sha256": "c65bcb07b2bc505dcfac147c1b62199362acba2b3c477fd0f875b8c40e3edfa9",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 7537,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_pre_spacetime_ontology_zenodo_effect_ack.py",
+      "sha256": "1639c8bc7061cbd916ecc16c17c511c0713209ee65fd116e09779bfca15efe02",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 19059,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_qikvrt_authority_transition.py",
+      "sha256": "bd15fd2ce1717ad66df0e181671ccf3fdc014a95cde5d1245900e5a1bcd75e48",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 4371,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_qikvrt_autonomous_pr_continuation.py",
+      "sha256": "9384f730b5507150ec6327ef4bb5e3c4e7c657c44f7c624f2349f86a8560ed70",
+      "writer_signal_lines": [
+        39,
+        40,
+        41,
+        81
+      ]
+    },
+    {
+      "bytes": 8357,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_qikvrt_autonomous_pre_effect_controller.py",
+      "sha256": "8102963bfadffebcfbec001c1942fe6fed9f4b73d0c5c0c99cf76684d159b216",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 3468,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_qikvrt_continuous_auto_repair.py",
+      "sha256": "8fbb82b63373d02906e9a5619cecb92793852685710f9e624cc4ff7e024e2fbb",
+      "writer_signal_lines": [
+        52,
+        53,
+        83,
+        85
+      ]
+    },
+    {
+      "bytes": 10250,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_qikvrt_effect_ack_http_terminal.py",
+      "sha256": "daf4fd052cc5ee5ce923ea3915c33b0c3817911bff2d6d1a6bf4977362fc4e7d",
+      "writer_signal_lines": [
+        128,
+        168,
+        174,
+        182,
+        204,
+        211,
+        216
+      ]
+    },
+    {
+      "bytes": 58795,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_qikvrt_github_authority_provider.py",
+      "sha256": "f00ba2de2dcb538d502618053f892a01de5bedc6391d9fcfb299130483a1db4e",
+      "writer_signal_lines": [
+        442,
+        443,
+        457,
+        463,
+        476,
+        477,
+        650,
+        651,
+        757,
+        758,
+        766,
+        878,
+        879,
+        880,
+        881,
+        882,
+        883,
+        884,
+        886,
+        887,
+        888,
+        889,
+        901,
+        902,
+        926,
+        931,
+        938,
+        944,
+        946,
+        952,
+        954,
+        988
+      ]
+    },
+    {
+      "bytes": 27108,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_qikvrt_mesh_recovery.py",
+      "sha256": "07f6c2af3753a403f04742db4547d71d6d0b9c79acd1593ba3d9fd778f22e43b",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 23610,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_qikvrt_reflexive_repository_watchdog.py",
+      "sha256": "30ba8cfc3b5cffdca723b9f802f7b52c052055fcbb1ad630ebefc090960263a3",
+      "writer_signal_lines": [
+        459
+      ]
+    },
+    {
+      "bytes": 3746,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_qikvrt_repository_terminal.py",
+      "sha256": "f5c7a9db7cde4030c0f32ceed59c3d93c305bb36dabce6abbaf3867a29827726",
+      "writer_signal_lines": [
+        73,
+        74,
+        75,
+        76
+      ]
+    },
+    {
+      "bytes": 10455,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_qikvrt_workflow_executor_mesh_contract.py",
+      "sha256": "c7010c4dc0547f60daf91b122b62edf79dc3fb479afad5177f3b8dfec046585d",
+      "writer_signal_lines": [
+        192,
+        199
+      ]
+    },
+    {
+      "bytes": 8936,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_r11_read_only_observation_dispatch_contract.py",
+      "sha256": "4781d30ded8216a909628bcc9de41f41eee1aaca7b0185ffe1d1b1b72187830d",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 9900,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_r11_read_only_observation_dispatch_contract_v2.py",
+      "sha256": "7ac8d21f483037f7d6d62822e6efb33ed43519cab85fac27f0d15ee9ee025cff",
+      "writer_signal_lines": [
+        139
+      ]
+    },
+    {
+      "bytes": 3800,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_round_trip_final_byte_freeze.py",
+      "sha256": "dc953ff9012ad9094eec68086356fdafe220f166a9e5dfde57c48489b604ab59",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 2381,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_ruleset_authority_token_route.py",
+      "sha256": "23120192cadb8bfa7ea57ef92754923820fa4e1a7a0a968a215cc0b5011597e9",
+      "writer_signal_lines": [
+        45
+      ]
+    },
+    {
+      "bytes": 3800,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_runtime_bootstrap.sh",
+      "sha256": "c5fb9cc982c15a8d9f17f268facecfa55c7bb76a8401f38dce766975b4812ef3",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 15897,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_seed_workflows.py",
+      "sha256": "3cd9358be06701639e6b46c24d0ac663e283ae7a720bc5a1e585c5e749e0cb12",
+      "writer_signal_lines": [
+        366
+      ]
+    },
+    {
+      "bytes": 11875,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_status_release_workflows.py",
+      "sha256": "d27182c6f4e88e1a875b673fa04e9e77749e16e74aefb0b25d8a918b31d934b1",
+      "writer_signal_lines": [
+        195
+      ]
+    },
+    {
+      "bytes": 17958,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_tcpip_e2e.py",
+      "sha256": "3fe0b4c49a9e58c7f51a742eaf52bea864442bc6ab8bf0d41f9604e421d39249",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 14979,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_universal_ontology_claim_closure.py",
+      "sha256": "5281f4ec183c2f00cee294c34c643bf1899b1f92a027760874a33b1eead222c6",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 79125,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_vrtcore_h3_e1_recovery.py",
+      "sha256": "c98c9b9bead6e13156ae3e53903d6cfe4ae1023bd75aba25fa4079edc8769bbc",
+      "writer_signal_lines": [
+        405
+      ]
+    },
+    {
+      "bytes": 167836,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_zenodo_machine_proof_policy.py",
+      "sha256": "e9c2bbe0e955fe523c2ea82f02c74e0e2b897ca5c16ddcbb5c13782394540e83",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 6627,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_zenodo_manifest_builder.py",
+      "sha256": "b0c2e4ef90a856c9258561f76f9fc28c2bc99869d5518fed2a439d77252fa70a",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 17755,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "tools/ai_handoff.py",
+      "sha256": "8ee73f4c1eebd24e46163ae03cfb39f5611850df758b62000f096ace25601237",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 14855,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "tools/ai_runtime_bootloader.py",
+      "sha256": "054a4268d356e41c653433a439f0760f96ade851df418894d0e6cc9eb0c50e72",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 11664,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "tools/bootstrap-gh.ps1",
+      "sha256": "acdf3154bb89c62e0da46eb9165090e3f907963c812188f06d031d63b8a9d7ba",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 10311,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "tools/bootstrap-gh.sh",
+      "sha256": "8799969478f4ba5bcd72757f5cd15d005a0d34523f362abd101336c0a72f7908",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 22193,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "tools/bootstrap-runtime.ps1",
+      "sha256": "d07a0f67e71d6b9393d00c1056659eda265674670fcd826a4b03ef687b709f95",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 16502,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "tools/bootstrap-runtime.sh",
+      "sha256": "7a90c64fc773b51c3bc431e9b55f662476f429ecbe42fec084951cca5803406d",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 269,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "tools/git_invocation_selftest.ps1",
+      "sha256": "6de5365e5017ea7cf22a30436d87ba57cdeffccc22d522705731d931d079df65",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 13488,
+      "classification": "DRY_RUN_LOCAL_SELFTEST_ONLY_PRODUCTIVE_BRANCH_REMOVED",
+      "execution_units": [],
+      "path": "tools/github_zenodo_release_publish.ps1",
+      "sha256": "85097af735e6b928e6de4a106eb96a6f0dd9558a2c7def68abebc38592e3cd87",
+      "writer_signal_lines": [
+        26
+      ]
+    },
+    {
+      "bytes": 4289,
+      "classification": "GET_ONLY_BLOB_MATERIALIZER",
+      "execution_units": [],
+      "path": "tools/offline-audio-transcription/src/materialize-request.cjs",
+      "sha256": "9dc72012aec756dc35a8394dec994131ce6f775f91d05a84f53d6ab010a31510",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 6090,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "tools/offline-audio-transcription/src/request.cjs",
+      "sha256": "184f2d3be58f783a2be8191076daefe7975af2675cd19fb00e26f67eda3e45a2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 2854,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tools/offline-audio-transcription/tests/request.test.cjs",
+      "sha256": "fa4e322fd9eb808e5a9b4d8e1bca1724a75c6259478a087ab4831d021dfdeaa2",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 1558,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "tools/powershell_parse_check.ps1",
+      "sha256": "712cae5fefde539f8438e6daefb6bfac983db62db989c5e603305f540f3fe5a7",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 28156,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "tools/qikvrt_adaptive_runtime.sh",
+      "sha256": "bbebdc3d19098b47964093ce2be650891927cc6864855973fbc5602ad2c05e1b",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 23936,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "tools/qikvrt_anticipation.py",
+      "sha256": "26a329627679464f44df9f4f7dcbf8bb64577fb115cfcde640e8433b28848029",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 55253,
+      "classification": "EXISTING_CONTROL_PLANE_AND_SOURCE_AUDITOR",
+      "execution_units": [],
+      "path": "tools/qikvrt_authority_transition.py",
+      "sha256": "e6b9f915b71dbea5d32c0bc380de75e837f41664de3b9be4583ce06329dc9cae",
+      "writer_signal_lines": [
+        442,
+        444,
+        453,
+        455,
+        456,
+        644,
+        697,
+        799
+      ]
+    },
+    {
+      "bytes": 9842,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "tools/qikvrt_autonomous_pre_effect_controller.py",
+      "sha256": "0afc94e1cd48d52295e2c747e39dbb716b00ffa7c381e57f4f8db0a88ef50020",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 13349,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "tools/qikvrt_autonomous_self_heal.py",
+      "sha256": "2a69ca9db3545a9412f6142010f52a1c494eb3c586938b2720a04691ee60a2cd",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 13300,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "tools/qikvrt_batch003_remaining_archive_probe.py",
+      "sha256": "68d3d93a1b264ec063adf673863d21036bb95f02ae2adcbb91adb16720032d12",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 17224,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "tools/qikvrt_build_zenodo_manifest.py",
+      "sha256": "04e674df4f8d8dc3a3c898055787635e2149b0348d526d41d0a54729b7fc5fc6",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 34095,
+      "classification": "PLAN_ONLY_GITHUB_EXECUTION_DENIED",
+      "execution_units": [],
+      "path": "tools/qikvrt_cicd_publish.py",
+      "sha256": "63364f8817efbb5910e21453f7ea3e6bf43a2c96cfa6465d78e80252ae3aa920",
+      "writer_signal_lines": [
+        135,
+        208,
+        405
+      ]
+    },
+    {
+      "bytes": 41570,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "tools/qikvrt_global_completion.py",
+      "sha256": "8161bd29e420f9214fff02700c13f3586ec3c45cbe82576ac6c9bf14e01f51d8",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 20257,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "tools/qikvrt_initial_acceptance_gate.py",
+      "sha256": "152d27182395c92a7b7e9171de1c51ae9831019f2574a6e3408f51693694bc10",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 44118,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "tools/qikvrt_integrity.py",
+      "sha256": "6c091c90a993e85356b2f663a40230fdea2ec3546ca3712a77f8c83dd9cc416e",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 13269,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "tools/qikvrt_master_acceptance_gate.py",
+      "sha256": "fedd67380997a8865f37c43c05c10f07f4c0f5c497829777bafc8e8b296dc116",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 34602,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "tools/qikvrt_mesh_recovery.py",
+      "sha256": "65ce6d27036b849393e43436e55320380ed260f7cccff4b2ea8158498bfd52e9",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 19789,
+      "classification": "GET_ONLY_OBSERVER",
+      "execution_units": [],
+      "path": "tools/qikvrt_r11_read_only_observation_dispatch_v2.py",
+      "sha256": "cbb8a89ad9075e20068d3f9000837c2ccc819eff895661160bd8a9f1564e23aa",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 45844,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "tools/qikvrt_round_trip_zenodo_bundle_freeze.py",
+      "sha256": "fc9d787a121c7d2fe49d50d9f2f7661b9e28e2dd375c24231e380a333c7e64d6",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 28922,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "tools/qikvrt_survival_connectability_kernel_evidence.py",
+      "sha256": "afac13e6179000bfe014e47ad99592d9ed0306a7c5b00b32bc94d983eab8c93e",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 10543,
+      "classification": "GET_ONLY_OBSERVER",
+      "execution_units": [],
+      "path": "tools/qikvrt_validate_state_run.py",
+      "sha256": "981966296018900bced04a131c256a480571ee8684a5dfa604107182dc4c6b94",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 77834,
+      "classification": "GET_ONLY_GITHUB_TRANSPORT",
+      "execution_units": [],
+      "path": "tools/qikvrt_vrtcore_h3_e1_recovery.py",
+      "sha256": "10cc431820e88d1eebe1017018c05fb001c474322433d00ccd97521890e84d5c",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 13244,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "tools/qikvrt_vrtcore_zenodo_publication_controls.py",
+      "sha256": "0d2412d374afda17a09be5aecb8c43cd6ef8b3edc02a11b81528e2ff95ed70cc",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 26255,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "tools/qikvrt_workflow_executor.py",
+      "sha256": "614c1c56a1d1217db88164f140e285549a072e225af87dc1537f4e6c0b6feecd",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 29914,
+      "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
+      "execution_units": [],
+      "path": "tools/qikvrt_zenodo_corpus_proof.py",
+      "sha256": "a4e95b68b50edc8a4057c879c6a1d645b406743682de97f1d29f0412792a7fec",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 54159,
+      "classification": "INDIRECT_CALLER_OF_DENIED_GITHUB_CONSUMPTION_LOCK",
+      "execution_units": [],
+      "path": "tools/qikvrt_zenodo_metadata_edit.py",
+      "sha256": "bb17a26af7eddd67c1ceae08489c0b0932e114f83dc18b8b25b4ff7a3eb5aba1",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 92126,
+      "classification": "GET_ONLY_GITHUB_TRANSPORT",
+      "execution_units": [],
+      "path": "tools/qikvrt_zenodo_publish.py",
+      "sha256": "78148be5cc541d9ac1afc27a3618adaaec54161a84033294d4bbcae27a8af832",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 6123,
+      "classification": "STATIC_SOURCE_VERIFIER_NOT_EXECUTOR",
+      "execution_units": [],
+      "path": "tools/verify.py",
+      "sha256": "2bd03e383a35505db43a3f5c331c2037255348554a997d649f4399eea2118fec",
+      "writer_signal_lines": [
+        71
+      ]
+    }
+  ],
+  "schema": "qikvrt_repository_writer_inventory_v1",
+  "scope": "CURRENT_CANDIDATE_SOURCE_GITHUB_REPOSITORY_WRITERS_ONLY",
+  "state": "PASS",
+  "violations": []
+}

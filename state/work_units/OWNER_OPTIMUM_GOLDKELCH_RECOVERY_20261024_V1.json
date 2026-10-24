@@ -1,0 +1,69 @@
+{
+  "schema": "qikvrt_owner_optimum_source_recovery_work_unit_v1",
+  "id": "OWNER_OPTIMUM_GOLDKELCH_RECOVERY_20261024_V1",
+  "owner": "Ingolf Lohmann",
+  "human_contribution": [
+    "Longstanding personal optimum and original statement",
+    "Public-use, AI connection and source-integration authorization",
+    "Chronology correction: today is not inception"
+  ],
+  "machine_contribution": [
+    "OpenAI Codex: source reconstruction, inventory, binding, guarded recovery and tests"
+  ],
+  "authority_base": {
+    "head": "a1a2204f429bcab7a184afaf51a57b7de03d4ee7",
+    "tree": "184adc9c40b27cce1be4995d2eae895d3fbbd2ee"
+  },
+  "personal_optimum": "policy/OWNER_PERSONAL_OPTIMUM_V1.json",
+  "historical_original_policy_blob": "b9019a5abeb1e8a56c118128d3fdd91da54af37c",
+  "source_catalog": "incoming/goldkelch-recovery-20261024/INDEX.json",
+  "native_route": {
+    "original_terminal": "src/qikvrt_effect_ack_http_terminal.py",
+    "original_transputer": "src/qikvrt_temdd_event_ledger.py",
+    "productive_mesh_execution_verified": false,
+    "original_outbox_source_available": false,
+    "missing_original_outbox_is_hold_not_replacement": true
+  },
+  "open_obligations": [
+    {
+      "id": "CURRENT_GOLDKELCH_FULL_READ",
+      "state": "OPEN",
+      "next": "Resolve an existing authenticated current source route; distinguish it from the verified historical carrier."
+    },
+    {
+      "id": "PROTECTED_RECOVERED_CREDENTIAL_CONSUMER",
+      "state": "OPEN",
+      "owner_report": "Usable values recovered",
+      "older_readback": "usable_values_recovered=false; static_reference_names=15",
+      "next": "Locate and verify the newer protected consumer without exposing values."
+    },
+    {
+      "id": "THREE_HISTORICAL_POLICY_BINDINGS",
+      "state": "OPEN",
+      "next": "Recover exact original bytes or record a separately authorized successor; preserve missing-original status."
+    },
+    {
+      "id": "HELD_BINARY_PAYLOADS",
+      "state": "OPEN",
+      "versions": 19,
+      "next": "Inspect original carrier payloads with rights, format and integrity evidence before public or active import."
+    },
+    {
+      "id": "HISTORICAL_SOURCE_ACTIVE_PORTS",
+      "state": "OPEN",
+      "next": "Use the indexed inactive originals for scoped dependency-complete ports with fresh tests."
+    },
+    {
+      "id": "NATIVE_PEER_AND_DOMAIN_ACCEPTANCE",
+      "state": "OPEN",
+      "next": "Use original admitted runtime/outbox and independently read actual peer and exact-domain effects."
+    }
+  ],
+  "scope": "Source recovery and Owner-goal integration candidate; not a claim that every historical feature is active or the live Mesh is accepted.",
+  "completion_claims": {
+    "WORKING_SOURCE_CANDIDATE": true,
+    "MAIN_INTEGRATION_INFERRED": false,
+    "LIVE_MESH_ACCEPTED": false,
+    "EFFECT_ACK_DONE": false
+  }
+}

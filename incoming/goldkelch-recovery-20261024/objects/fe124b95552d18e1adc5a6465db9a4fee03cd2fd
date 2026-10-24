@@ -1,0 +1,64 @@
+{
+  "schema": "qikvrt_node_output_carrier_registry_v1",
+  "registry_id": "QIKVRT-NODE-OUTPUT-CARRIER-REGISTRY-V1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "policy_id": "QIKVRT-UNIVERSAL-PROOF-THOUGHT-SCHEMA-V1",
+  "canonical_article": {
+    "path": "docs/QIKVRT_UNIVERSAL_PROOF_AND_THOUGHT_SCHEMA_DE.md",
+    "bytes": 21501,
+    "sha256": "3179af0c1a7c16bf63208a1c91e23213b7746f61f6a0d60ed100728c6064d392"
+  },
+  "coverage_complete_for_declared_current_carriers": true,
+  "future_carriers_require_registration_before_admission": true,
+  "unregistered_future_carrier_disposition": "BLOCK",
+  "carriers": [
+    {
+      "id": "FUTURE_MESH_NODE_CONTINUITY_RECEIPT",
+      "producer": "tools/qikvrt_mesh_node_receipt.py",
+      "outputs": [
+        "continuity_receipt",
+        "continuity_validation_receipt"
+      ],
+      "enforcement": "FAIL_CLOSED",
+      "validator": "tools/qikvrt_output_contract.py",
+      "admission_gate": "tools/qikvrt_seed_common.py",
+      "article_binding_required": true,
+      "policy_id": "QIKVRT-UNIVERSAL-PROOF-THOUGHT-SCHEMA-V1"
+    },
+    {
+      "id": "AI_AGENT_NODE_EXPLANATORY_OUTPUT",
+      "producer": "AI",
+      "bootstrap": "AI_CONTEXT.json",
+      "outputs": [
+        "human_readable_explanation",
+        "agent_repository_response"
+      ],
+      "enforcement": "FAIL_CLOSED",
+      "validator": "policy/QIKVRT_UNIVERSAL_PROOF_THOUGHT_SCHEMA_V1.json",
+      "article_binding_required": true,
+      "policy_id": "QIKVRT-UNIVERSAL-PROOF-THOUGHT-SCHEMA-V1"
+    }
+  ],
+  "absent_runtime_carriers": [
+    {
+      "id": "REAL_MESH_NODE_OUTPUT",
+      "status": "NOT_PRESENT",
+      "predecessor_evidence_transfer": false
+    },
+    {
+      "id": "REAL_MESH_SYSTEM_VERIFICATION_OUTPUT",
+      "status": "NOT_PRESENT",
+      "predecessor_evidence_transfer": false
+    },
+    {
+      "id": "AUTHORITY_MIRROR_TERMINAL_PROJECTION",
+      "status": "NOT_PRESENT",
+      "predecessor_evidence_transfer": false
+    }
+  ],
+  "admission_invariant": {
+    "current_carrier_must_be_registered": true,
+    "future_carrier_must_be_registered": true,
+    "predecessor_evidence_transfer": false
+  }
+}

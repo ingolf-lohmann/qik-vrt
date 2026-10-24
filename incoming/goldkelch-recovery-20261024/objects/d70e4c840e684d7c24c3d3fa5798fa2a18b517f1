@@ -1,0 +1,563 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:qikvrt:schedule-events:v1",
+  "description": "Structural contract. The executable validator additionally checks canonical bytes, time/TZif binding, CAS, replay, sorted order, freshness and contradictory evidence. JSON numbers are lexically integers; Python bool/int equality must not replace canonical byte comparisons.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/operation"
+    },
+    {
+      "$ref": "#/$defs/event"
+    },
+    {
+      "$ref": "#/$defs/receipt"
+    },
+    {
+      "$ref": "#/$defs/snapshot"
+    }
+  ],
+  "$defs": {
+    "subject": {
+      "type": "object",
+      "properties": {
+        "repository": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]{1,100}/[A-Za-z0-9_.-]{1,100}$"
+        },
+        "role": {
+          "enum": [
+            "AUTHORITY",
+            "MIRROR"
+          ]
+        },
+        "head": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "tree": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        }
+      },
+      "required": [
+        "repository",
+        "role",
+        "head",
+        "tree"
+      ],
+      "additionalProperties": false
+    },
+    "data": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "integer",
+          "minimum": -9223372036854775808,
+          "maximum": 9223372036854775807
+        },
+        {
+          "type": "string",
+          "maxLength": 131072
+        },
+        {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/data"
+          }
+        },
+        {
+          "type": "object",
+          "maxProperties": 10000,
+          "propertyNames": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/data"
+          }
+        }
+      ]
+    },
+    "start": {
+      "type": "object",
+      "properties": {
+        "local": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}$"
+        },
+        "timezone": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "fold": {
+          "type": "integer",
+          "enum": [
+            0,
+            1
+          ]
+        },
+        "utc": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        },
+        "tzif_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "local",
+        "timezone",
+        "fold",
+        "utc",
+        "tzif_sha256"
+      ],
+      "additionalProperties": false
+    },
+    "recurrence": {
+      "type": "object",
+      "properties": {
+        "frequency": {
+          "enum": [
+            "HOURLY",
+            "DAILY",
+            "WEEKLY"
+          ]
+        },
+        "interval": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 366
+        },
+        "weekdays": {
+          "type": "array",
+          "maxItems": 7,
+          "uniqueItems": true,
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 6
+          }
+        },
+        "gap_policy": {
+          "const": "SKIP"
+        },
+        "fold_policy": {
+          "enum": [
+            "FIRST",
+            "SECOND"
+          ]
+        }
+      },
+      "required": [
+        "frequency",
+        "interval",
+        "weekdays",
+        "gap_policy",
+        "fold_policy"
+      ],
+      "additionalProperties": false
+    },
+    "value": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "payload": {
+          "$ref": "#/$defs/data"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "start": {
+          "$ref": "#/$defs/start"
+        },
+        "recurrence": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/recurrence"
+            }
+          ]
+        }
+      },
+      "required": [
+        "title",
+        "payload",
+        "enabled",
+        "start",
+        "recurrence"
+      ],
+      "additionalProperties": false
+    },
+    "operation": {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "const": "qikvrt_schedule_operation_v1"
+        },
+        "operation_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "event_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "kind": {
+          "enum": [
+            "create",
+            "update",
+            "delete"
+          ]
+        },
+        "expected_version": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9223372036854775806
+        },
+        "value": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/value"
+            }
+          ]
+        }
+      },
+      "required": [
+        "schema",
+        "operation_id",
+        "event_id",
+        "kind",
+        "expected_version",
+        "value"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "delete"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "value": {
+                "$ref": "#/$defs/value"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "event": {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "const": "qikvrt_digital_twin_schedule_events_v1"
+        },
+        "event_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9223372036854775807
+        },
+        "deleted": {
+          "type": "boolean"
+        },
+        "value": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/value"
+            }
+          ]
+        },
+        "last_operation_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "last_subject": {
+          "$ref": "#/$defs/subject"
+        },
+        "modified_at_utc": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        }
+      },
+      "required": [
+        "schema",
+        "event_id",
+        "version",
+        "deleted",
+        "value",
+        "last_operation_id",
+        "last_subject",
+        "modified_at_utc"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "deleted": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "value": {
+                "$ref": "#/$defs/value"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "target": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "connector"
+            },
+            "connector_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "resource_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            }
+          },
+          "required": [
+            "kind",
+            "connector_id",
+            "resource_id"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "repository"
+            },
+            "subject": {
+              "$ref": "#/$defs/subject"
+            }
+          },
+          "required": [
+            "kind",
+            "subject"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "observation": {
+      "type": "object",
+      "properties": {
+        "observed_at_utc": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        },
+        "target_revision": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "readback": {
+          "$ref": "#/$defs/event"
+        }
+      },
+      "required": [
+        "observed_at_utc",
+        "target_revision",
+        "readback"
+      ],
+      "additionalProperties": false
+    },
+    "receipt": {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "const": "qikvrt_schedule_sync_receipt_v1"
+        },
+        "receipt_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "source_subject": {
+          "$ref": "#/$defs/subject"
+        },
+        "target": {
+          "$ref": "#/$defs/target"
+        },
+        "event_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "event_version": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9223372036854776000
+        },
+        "event_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "transport_ack": {
+          "type": "boolean"
+        },
+        "observation": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/observation"
+            }
+          ]
+        }
+      },
+      "required": [
+        "schema",
+        "receipt_id",
+        "source_subject",
+        "target",
+        "event_id",
+        "event_version",
+        "event_sha256",
+        "transport_ack",
+        "observation"
+      ],
+      "additionalProperties": false
+    },
+    "ledger": {
+      "type": "object",
+      "properties": {
+        "sequence": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9223372036854775807
+        },
+        "subject": {
+          "$ref": "#/$defs/subject"
+        },
+        "request": {
+          "$ref": "#/$defs/operation"
+        },
+        "before_sha256": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "event": {
+          "$ref": "#/$defs/event"
+        },
+        "committed_at_utc": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        }
+      },
+      "required": [
+        "sequence",
+        "subject",
+        "request",
+        "before_sha256",
+        "event",
+        "committed_at_utc"
+      ],
+      "additionalProperties": false
+    },
+    "snapshot": {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "const": "qikvrt_schedule_snapshot_v1"
+        },
+        "subject": {
+          "$ref": "#/$defs/subject"
+        },
+        "events": {
+          "type": "array",
+          "maxItems": 1000,
+          "items": {
+            "$ref": "#/$defs/event"
+          }
+        },
+        "operations": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/ledger"
+          }
+        },
+        "sync_receipts": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/receipt"
+          }
+        }
+      },
+      "required": [
+        "schema",
+        "subject",
+        "events",
+        "operations",
+        "sync_receipts"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$comment": "SPDX-License-Identifier: CC-BY-NC-ND-4.0; Copyright 2026 Ingolf Lohmann. Payload nesting at most 12; full JSON envelope depth at most 20. Semantic validator is normative."
+}
