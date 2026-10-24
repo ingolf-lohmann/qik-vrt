@@ -93,5 +93,13 @@
     "log": "FULL_REPOSITORY_REGRESSIONS.log",
     "log_sha256": "4911af9bb8e5bc346379a72bf977a787040c1fdc304a2aeb4ffc8d2da5813803",
     "post_test_delta": "ONLY_PUBLISHED_TEST_LOGS_THIS_RECEIPT_AND_REGENERATED_INTEGRITY_METADATA; FUNCTIONAL_COMPONENTS_UNCHANGED"
+  },
+  "post_regression_test_adapter_delta": {
+    "path": "tests/test_self_host_temdd.py",
+    "prior_sha256": "b5cb0d6fcb4407525fe216ce022da38fbc6039f103a2ab72a8bd704c7c67dcdb",
+    "new_sha256": "aef69d55ec5240758f45b19d4d1c1d0a8eab982c5e858c0a69804ed381dcf370",
+    "change": "Existing Unix-ingress SSE readback case now supplies the separately admitted read-only terminal bearer; every content, identity and persistence assertion is retained. This case is outside the selected 67 HTTP/peer/gateway regressions. Its local Unix prerequisite remains unavailable.",
+    "production_component_changed": false,
+    "remote_exact_head_ci_required": true
   }
 }

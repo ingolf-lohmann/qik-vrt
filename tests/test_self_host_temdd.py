@@ -350,7 +350,7 @@ class NativeStandaloneTests(unittest.TestCase):
         self.assertFalse(event['dod'])
         c = http.client.HTTPConnection('127.0.0.1', self.config['terminal_port'], timeout=5)
         try:
-            c.request('GET', '/api/temdd/events')
+            c.request('GET', '/api/temdd/events', headers={'Authorization': 'Bearer '+self.token_file.read_text()})
             response = c.getresponse(); self.assertEqual(response.status, 200)
             frames = []
             for _ in range(2):
