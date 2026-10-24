@@ -962,21 +962,18 @@ def firefox_amo_operation(args, token):
     return result if closure["valid"] else 1
 
 
-def github_json_get(repository: str, path: str, *, token: str = "", opener=None) -> dict:
-    """Bounded GET-only readback; reuse this client's no-redirect transport.
-
-    Paths are supplied by trusted adapters, never an arbitrary client URL.
-    The digest binds the exact received UTF-8 bytes, not reserialized JSON.
-    """
+def _github_readback(repository: str, path: str, *, token: str, opener,
+                     accept: str, max_bytes: int) -> tuple[str, str]:
+    """One bounded GET through the existing no-redirect read transport."""
     if len(repository.split("/")) != 2 or not all(
         SAFE_REPOSITORY_COMPONENT.fullmatch(part) and part not in (".", "..") for part in repository.split("/")
     ):
         raise ValueError("unsafe repository scope")
-    if not re.fullmatch(r"(?:commits/[A-Za-z0-9_.-]+|git/(?:trees|blobs)/[0-9a-f]{40})(?:\?recursive=1)?", path):
+    if not re.fullmatch(r"(?:commits/[A-Za-z0-9_.-]+|git/(?:trees|blobs|commits)/[0-9a-f]{40})(?:\?recursive=1)?", path):
         raise ValueError("readback path outside the bounded GitHub GET contract")
     if path.startswith("commits/") and ".." in path:
         raise ValueError("unsafe commit ref")
-    headers = {"Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"}
+    headers = {"Accept": accept, "X-GitHub-Api-Version": "2022-11-28"}
     if token:
         headers["Authorization"] = f"Bearer {token}"
     url = f"https://api.github.com/repos/{repository}/{path}"
@@ -984,7 +981,17 @@ def github_json_get(repository: str, path: str, *, token: str = "", opener=None)
     with (opener or urllib.request.build_opener(NoRedirectHandler())).open(request, timeout=10) as response:
         if response.status != 200:
             raise ValueError("readback requires HTTP 200")
-        raw = read_response(response)
+        data = response.read(max_bytes + 1)
+        if len(data) > max_bytes:
+            raise ValueError("API readback exceeds its bounded response limit")
+        raw = data.decode("utf-8")
+    return raw, url
+
+
+def github_json_get(repository: str, path: str, *, token: str = "", opener=None) -> dict:
+    """Bounded GET-only JSON readback, with exact received-byte provenance."""
+    raw, url = _github_readback(repository, path, token=token, opener=opener,
+                                accept="application/vnd.github+json", max_bytes=MAX_RESPONSE_BYTES)
     def unique(pairs):
         result = {}
         for key, value in pairs:
@@ -998,6 +1005,27 @@ def github_json_get(repository: str, path: str, *, token: str = "", opener=None)
     if not isinstance(document, dict):
         raise ValueError("readback must be a JSON object")
     return {"document": document, "url": url, "response_sha256": hashlib.sha256(raw.encode("utf-8")).hexdigest()}
+
+
+def github_commit_identity_get(repository: str, ref: str, *, token: str = "", opener=None) -> dict:
+    """Resolve a ref without downloading diffs, then read its immutable tree.
+
+    Both original response digests are retained. Ref resolution is not a review,
+    effect grant or proof of a running consumer. No full-diff fallback is used.
+    """
+    raw, url = _github_readback(repository, "commits/" + ref, token=token, opener=opener,
+                                accept="application/vnd.github.sha", max_bytes=41)
+    head = raw.removesuffix("\n")
+    if not SHA1_HEX.fullmatch(head):
+        raise ValueError("invalid commit identity response")
+    source = github_json_get(repository, "git/commits/" + head, token=token, opener=opener)
+    doc = source["document"]
+    tree = doc.get("tree", {}).get("sha") if isinstance(doc.get("tree"), dict) else None
+    if doc.get("sha") != head or not isinstance(tree, str) or not SHA1_HEX.fullmatch(tree):
+        raise ValueError("immutable commit/tree identity mismatch")
+    return {**source, "document": {"sha": head, "commit": {"tree": {"sha": tree}}},
+            "ref_resolution": {"source_url": url, "head": head,
+                               "response_sha256": hashlib.sha256(raw.encode("utf-8")).hexdigest()}}
 
 def main() -> int:
     ap = argparse.ArgumentParser()

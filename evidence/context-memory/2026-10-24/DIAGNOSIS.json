@@ -1,0 +1,47 @@
+{
+  "schema": "qikvrt_context_memory_repair_diagnosis_v1",
+  "artifact_class": "OPERATIONAL_DIAGNOSTIC_NOT_SCIENTIFIC_PUBLICATION",
+  "owner": "Ingolf Lohmann",
+  "base_main": "aa024fd7c0c72a55cbb7e37bfe269bcccfd74bfb",
+  "base_tree": "08a10a209468d42e3b1ab9e9fd03e7b17ed757d5",
+  "observed_causes": [
+    {
+      "component": "src/qikvrt_mcp_adapter.py:_head via scripts/qikvrt_api_client.py",
+      "observation": "The HEAD/TREE-only read requested a full commit JSON including 68 file diffs; the observed Main response was 561856 bytes.",
+      "replacement": "Existing GET-only no-redirect adapter requests the 40-byte ref SHA, then the immutable 3295-byte Git commit object; preserve both raw-response digests.",
+      "measured_response_reduction_percent": 99.40643154117781,
+      "scope": "Same observed a1a2204f commit/tree; payload bytes, not a universal throughput claim."
+    },
+    {
+      "component": "src/qikvrt_temdd_event_ledger.py:history_frontier and transfer_local_writer",
+      "observation": "Whole-history fetchall plus full canonical JSON created Python allocations proportional to all journal rows.",
+      "replacement": "Stream validation and the ORIGINAL canonical frontier digest through a SQLite cursor; compare handoff rows one at a time. No event truncation, schema migration, reset or writer-seal change.",
+      "measured_peak_at_1024_events": {
+        "baseline_python_bytes": 20876228,
+        "candidate_python_bytes": 32927
+      },
+      "scope": "Fresh private fixture, three matched repetitions per arm at 64 and 1024 events. Python traced allocations only."
+    }
+  ],
+  "tests": {
+    "targeted_non_socket_tests": 20,
+    "api_client_regressions": 132,
+    "all_passed": true,
+    "full_native_ci": "REQUIRED_ON_NEW_EXACT_HEAD",
+    "local_socket_baseline": "10 of 58 baseline tests errored because AF_INET/AF_UNIX creation was denied by this environment; unchanged restriction, no mocked claim of wire acceptance."
+  },
+  "reconstruction": {
+    "authority": "Original SQLite event history and governed repository work units",
+    "legacy_frontiers_unchanged": true,
+    "current_replay_cursor_contract_retained": true,
+    "lossless_from_hash_alone": false,
+    "claim": "Reconstruction requires retained source bytes or sufficient valid redundancy and verified bindings; an incomplete HMI context is not the authoritative state."
+  },
+  "limits": [
+    "No proof of the cause of a productive-host OOM or a provider account quota",
+    "No removal of the external model context-window limit",
+    "No automatic admission of arbitrary received React or other executable code",
+    "No productive runtime or exact-domain delivery inferred from source tests"
+  ],
+  "effect_ack_done": false
+}
