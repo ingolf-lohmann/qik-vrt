@@ -101,5 +101,16 @@
     "change": "Existing Unix-ingress SSE readback case now supplies the separately admitted read-only terminal bearer; every content, identity and persistence assertion is retained. This case is outside the selected 67 HTTP/peer/gateway regressions. Its local Unix prerequisite remains unavailable.",
     "production_component_changed": false,
     "remote_exact_head_ci_required": true
+  },
+  "post_regression_main_metadata_merge": {
+    "head": "080c05f1cba7b1638477da78613b87252ffe1a12",
+    "scope": "Four exact published authorization/request/work-unit JSON files only; no native production implementation change",
+    "file_git_blobs": {
+      "release/causal-distance-lean-2026-10-24/OWNER_ZENODO_AUTHORIZATION.json": "f2b10b654895cd425d69ed8a30cd4c604ca919a1",
+      "release/causal-distance-lean-2026-10-24/publish-request.json": "62d6758845d74900419d8af794957d59c4028083",
+      "state/publication_requests/qikvrt-causal-distance-lean-20261024.json": "9cc05579ed4c48a647f14f5fe85c3895ae350e06",
+      "state/work_units/QIKVRT_EXACT_UPLOAD_AND_INDEPENDENT_OPTIMA_20261024_V1.json": "0b91c472101636e856ffe47d6cf701c627e21fe6"
+    },
+    "purpose": "Preserve concurrent Main work and resolve the derived integrity manifest merge without overwriting authorization"
   }
 }
