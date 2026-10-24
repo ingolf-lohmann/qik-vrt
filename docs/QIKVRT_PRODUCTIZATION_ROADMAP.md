@@ -235,3 +235,22 @@ Repository-Integrität belegt Byteidentität. Festkommarechnung verlangt zusätz
 eine bestimmte Skalierung, Wortbreite, Rundung und Überlaufsemantik sowie den
 gebundenen Gleichheitsnachweis zum Referenzmodell. Der M68000-Kandidat PR593
 bleibt von Main-Integration und tatsächlichem Hostbetrieb getrennt.
+
+
+### Anschließende Leerlaufphase: inneres Aufräumen
+
+Ingolf Lohmann ergänzt den Auftrag am 24. Oktober 2026: Nach dem nachweislichen
+Erreichen dieses Zielzustands folgt das innere Aufräumen während der
+Leerlaufphase. Die Originalformulierung („Eitelphase“) und ihre hier verwendete
+Lesart „Idlephase/Leerlaufphase“ bleiben im bestehenden Work-Unit getrennt
+festgehalten. P4 folgt der Abnahme von Publikation, IONOS/DevOps und Firefox-MVP.
+
+Für optimierende Aufräumarbeiten gilt weiterhin das bestehende Backlog-Gate:
+Alle PRs im autorisierten Umfang müssen tatsächlich auf dem aktuellen Main
+gemergt sein und es dürfen keine offenen Issues verbleiben; die vollständigen
+Inventare sind frisch zurückzulesen. Ein blockierter oder untätiger Client
+erfüllt diese Voraussetzung nicht. Vorhandene native Ausführungswege, originale
+Journale, Wissen, Ungewissheiten und offene Verpflichtungen bleiben erhalten.
+Jeder begrenzte Aufräumschritt benötigt eigene Prüfung und Wirkungs-Readback;
+neu anstehende Fertigstellungsarbeit erhält wieder Vorrang. Die Aufräumphase
+wird durch diesen Quellenauftrag noch nicht gestartet.

@@ -26,7 +26,7 @@
     "canonical_candidate_upload_event_created": false
   },
   "provenance": {
-    "human_contribution": "Ingolf Lohmann: order of work, product requirement and authorization.",
+    "human_contribution": "Ingolf Lohmann: order of work, product requirement and authorization. Follow-up: internal cleanup begins during the idle phase after reaching the target state.",
     "artificial_cognitive_contribution": "OpenAI Codex: independent retrieval, exact-source reconstruction, publication/precondition checks, operational specification and local native intake.",
     "joint_or_unresolved": "No human authorship of generated verification text or independent scientific agreement is inferred."
   },
@@ -157,6 +157,29 @@
       ],
       "acceptance_run_ids": [],
       "accepted": false
+    },
+    {
+      "id": "P4_INTERNAL_CLEANUP_DURING_IDLE",
+      "state": "WAITING_FOR_TARGET_ACCEPTANCE",
+      "production_after": [
+        "P1_ZENODO_BACKLOG",
+        "P2_IONOS_DEVOPS",
+        "P3_FIREFOX_MVP"
+      ],
+      "scope": "Internal cleanup of the existing QIK-VRT system, guided by evidenced findings and existing work units.",
+      "entry_conditions": [
+        "Independently verified completion of the preceding publication, owner-host/DevOps and standard Firefox MVP acceptance obligations.",
+        "Fresh complete paginated Authority backlog: every scoped PR processed and actually merged into current Main, no open scoped issues; inaccessible or incomplete inventory does not satisfy this gate."
+      ],
+      "execution": "Reuse the existing admitted native executor and completion/optimization contracts; choose one bounded evidence-based cleanup and independently verify its exact-subject effect.",
+      "invariants": [
+        "Preserve original journals, publication identities, knowledge, uncertainty, authorizations and unresolved duties.",
+        "Preserve working-software acceptance, source integrity, rights and protected effect boundaries.",
+        "An idle or blocked client does not establish target completion or admit optimization; new backlog restores completion priority."
+      ],
+      "acceptance_evidence": [],
+      "started": false,
+      "accepted": false
     }
   ],
   "devops_backlog_rule": {
@@ -197,6 +220,22 @@
     "ionos_production_started": false,
     "devops_productive": false,
     "firefox_mvp_accepted": false,
-    "effect_ack_done": false
+    "effect_ack_done": false,
+    "internal_cleanup_started": false
+  },
+  "owner_followup_instruction": {
+    "date": "2026-10-24",
+    "timezone": "Europe/Paris",
+    "author": "Ingolf Lohmann",
+    "verbatim": "Dann hätten wir den Zielzustand zunächst erreicht und können dann während dieser Eitelphase mit dem inneren Aufräumen beginnen. Denn da gibt es auch noch viel aufzuräumen. Quod erat demonstrandum, Ingolf Lohmann.",
+    "interpretation": "Eitelphase is interpreted in this operational context as Idlephase/Leerlaufphase; internal cleanup follows verified target acceptance.",
+    "instruction_sha256": "fadcf09cd9dc3f6c059f141649cc6076f581677626e3450d983151eb732dce41",
+    "evidence": "evidence/publication-queue/20261024/IDLE_CLEANUP_INTAKE.json",
+    "predecessor": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "pr": 594,
+      "head": "564b29b5404de91d6a2834aca38968c3a9fe8730",
+      "tree": "b01484fb879d095e614382c5e1c957428e77ad79"
+    }
   }
 }
