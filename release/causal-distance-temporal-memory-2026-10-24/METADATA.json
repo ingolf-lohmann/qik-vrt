@@ -1,0 +1,39 @@
+{
+  "title": "Kausale Distanz im doppelkanonischen QIKVRT-Speicher: Fachartikel und Prosabegleiter",
+  "upload_type": "publication",
+  "publication_type": "workingpaper",
+  "description": "<p>Eigenständige Anschlussarbeit zu DOI 10.5281/zenodo.21711193. Enthält Fachartikel, ausführlichen Prosabegleiter und reine Vorlesefassung, eine evidenzgebundene gerichtete Distanz und symmetrische Pfadmetrik sowie reproduzierbare lokale Software- und Framework-Auswertungen.</p><p>61 Tests des ursprünglichen lokalen Pakets und sechs zusätzliche Tests der lesenden Framework-Erweiterung. Der historische Kataloggraph und statische Importgraph werden getrennt von beobachteter produktiver Kausalität ausgewiesen. Keine Behauptung physischer Retrokausalität, biologischer Kognition oder eines vollständig produktiv abgenommenen persönlichen Digital Twin.</p>",
+  "creators": [
+    {
+      "name": "Lohmann, Ingolf",
+      "affiliation": "Independent Researcher; QIKVRT"
+    }
+  ],
+  "version": "1.0.0",
+  "publication_date": "2026-10-24",
+  "access_right": "open",
+  "license": "cc-by-nc-nd-4.0",
+  "language": "deu",
+  "prereserve_doi": true,
+  "keywords": [
+    "QIKVRT",
+    "causal distance",
+    "canonical temporal memory",
+    "Effect Acknowledgement",
+    "provenance",
+    "personal digital twin"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "10.5281/zenodo.21711193",
+      "relation": "isSupplementTo",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "10.5281/zenodo.21888130",
+      "relation": "references",
+      "scheme": "doi"
+    }
+  ],
+  "notes": "Neue Anschlussarbeit; die historische Speicherveröffentlichung bleibt unverändert. Architektur und wissenschaftliche Verantwortung: Ingolf Lohmann. Textausarbeitung und technische Prüfungen mit ChatGPT im autorisierten Auftrag. Keine unabhängige Begutachtung behauptet."
+}

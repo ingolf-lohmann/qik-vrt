@@ -1,0 +1,26 @@
+{
+  "schema": "QIKVRT_CAUSAL_DISTANCE_REPOSITORY_PERSISTENCE_V1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "branch": "work/causal-distance-evidence-20261024",
+  "source_base": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+  "package": {
+    "commit": "3579e34272521375dc2801f215547478b8c5f8eb",
+    "path": "evidence/causal-distance/2026-10-24/REPRODUCIBLE_PACKAGE.json",
+    "git_blob": "dfcbb7044b91c3adea882fc2f8261b9df6bee209",
+    "byte_exact_remote_readback": true,
+    "artifact_sha256": "d070ae7e9c15feeadedddf55b3bf77072a3b74289dad60bb3adce4aee7089f91",
+    "artifact_size_bytes": 262030
+  },
+  "metric": {
+    "commit": "87eb628ad480ae7c172044514a0305305368e86f",
+    "path": "evidence/causal-distance/2026-10-24/qikvrt_causal_distance.py",
+    "git_blob": "125ea0fefc03462a10e22d8445b9a7cadf1e5cf5",
+    "byte_exact_remote_readback": true
+  },
+  "scope": "REPOSITORY_PERSISTENCE_OF_REVIEW_CANDIDATE",
+  "main_integrated": false,
+  "productive_runtime_accepted": false,
+  "effect_ack_done": false,
+  "human_authorization": "Ingolf Lohmann: QIKVRT Trusted Mesh Repository selbst ist die Stelle, wo das alles zu persistieren ist.",
+  "correction": "The prior client file-storage quota is not a blocker for the now verified Authority repository persistence."
+}
