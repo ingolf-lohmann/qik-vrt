@@ -1,0 +1,69 @@
+{
+  "schema": "qikvrt_publication_catalog_metadata_refresh_v1",
+  "pages": [
+    {
+      "url": "size25-first-page",
+      "count": 25,
+      "total": 42
+    },
+    {
+      "url": "https://zenodo.org/api/records?q=creators.name%3A%22Lohmann%2C+Ingolf%22&size=25&page=2&sort=mostrecent&all_versions=true",
+      "count": 17,
+      "total": 42
+    },
+    {
+      "url": "https://zenodo.org/api/records?q=creators.name%3A%22ingolf-lohmann%22&size=25&sort=mostrecent&all_versions=true",
+      "count": 2,
+      "total": 2
+    }
+  ],
+  "unique_record_ids": [
+    "20712301",
+    "21244412",
+    "21245282",
+    "21245951",
+    "21247297",
+    "21247388",
+    "21252415",
+    "21252649",
+    "21266670",
+    "21267021",
+    "21482023",
+    "21488116",
+    "21498773",
+    "21498774",
+    "21500322",
+    "21501365",
+    "21515074",
+    "21518464",
+    "21529081",
+    "21582781",
+    "21633411",
+    "21636774",
+    "21640160",
+    "21640173",
+    "21711193",
+    "21721918",
+    "21731492",
+    "21748371",
+    "21804399",
+    "21888130",
+    "21947141",
+    "21983644",
+    "22216916",
+    "22283396",
+    "22527889",
+    "22813431",
+    "22840633",
+    "22845516",
+    "22847245",
+    "22907018",
+    "22941556",
+    "22955727",
+    "23008330",
+    "23008704"
+  ],
+  "metadata_records": 44,
+  "baseline_selected_file_evidence_retained": true,
+  "all_files_freshly_downloaded": false
+}
