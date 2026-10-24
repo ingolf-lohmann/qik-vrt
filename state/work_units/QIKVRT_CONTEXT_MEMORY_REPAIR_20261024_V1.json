@@ -40,7 +40,12 @@
       "evidence/context-memory/2026-10-24/REPRODUCE_MEMORY_COMPARISON.py",
       "evidence/context-memory/2026-10-24/REST_RESPONSE_OBSERVATIONS.json",
       "evidence/context-memory/2026-10-24/DIAGNOSIS.json",
-      "evidence/context-memory/2026-10-24/API_CLIENT_REGRESSION.log"
+      "evidence/context-memory/2026-10-24/API_CLIENT_REGRESSION.log",
+      "evidence/self_host/SOURCE_RECOVERY_SUCCESSOR_20261013.json",
+      "evidence/self_host/original-recovered/SOURCE_RECOVERY_SUCCESSOR_before_CONTEXT_MEMORY_20261024.json",
+      "tests/test_self_host_temdd.py",
+      "evidence/context-memory/2026-10-24/NATIVE_FAILURE_AND_REPAIR.json",
+      "evidence/context-memory/2026-10-24/RECOVERY_CHAIN_REPAIR_TESTS.log"
     ],
     "selection_basis": "Fix observed oversized identity reads and reproduced whole-journal memory growth; reuse original storage, transport, cursor, hashes, locks and CI rather than replace the whole platform."
   },
@@ -87,5 +92,15 @@
     }
   ],
   "state": "PREPARED_FOR_EXISTING_NATIVE_CI",
-  "effect_ack_done": false
+  "effect_ack_done": false,
+  "native_feedback": [
+    {
+      "head": "a30019a30e22d8bf3ffc8100defcd81102de82db",
+      "run": 40099230528,
+      "job": 120887755073,
+      "result": "FAIL_SOURCE_RECOVERY_SUCCESSOR_BINDING",
+      "evidence": "evidence/context-memory/2026-10-24/NATIVE_FAILURE_AND_REPAIR.json",
+      "repair": "Preserve prior receipt byte-for-byte and advance the two changed successor bindings; original failing gate and a predecessor-preservation regression both pass locally. Complete native gates remain required on this successor."
+    }
+  ]
 }

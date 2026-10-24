@@ -28,7 +28,9 @@
     "api_client_regressions": 132,
     "all_passed": true,
     "full_native_ci": "REQUIRED_ON_NEW_EXACT_HEAD",
-    "local_socket_baseline": "10 of 58 baseline tests errored because AF_INET/AF_UNIX creation was denied by this environment; unchanged restriction, no mocked claim of wire acceptance."
+    "local_socket_baseline": "10 of 58 baseline tests errored because AF_INET/AF_UNIX creation was denied by this environment; unchanged restriction, no mocked claim of wire acceptance.",
+    "source_recovery_chain_checks": 2,
+    "native_initial_failure_and_repair": "NATIVE_FAILURE_AND_REPAIR.json; original failing test and new predecessor-preservation regression pass. Full native revalidation on corrected exact head remains required."
   },
   "reconstruction": {
     "authority": "Original SQLite event history and governed repository work units",
