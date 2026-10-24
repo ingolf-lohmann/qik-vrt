@@ -1,0 +1,6 @@
+/workspace/scratch/0dbf51213559/proof-pr593-dbed9072/RejectedObservation.lean:7:75: error: tactic 'rfl' failed, the left-hand side
+  observed0
+is not definitionally equal to the right-hand side
+  expectedBatchCodes ⟨0, ⋯⟩
+⊢ observed0 = expectedBatchCodes ⟨0, ⋯⟩
+'QIKVRTPredictionNegative.agreesBatch0' depends on axioms: [sorryAx]

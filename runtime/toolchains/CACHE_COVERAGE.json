@@ -133,6 +133,12 @@
       "version": "3.12.x"
     },
     {
+      "cache_class": "build-cache",
+      "component": "qemu-m68k",
+      "provider": "Ubuntu noble qemu-user-static package; public upstream QEMU",
+      "version": "8.2.2"
+    },
+    {
       "cache_class": "repo-managed-archive",
       "component": "react-browser",
       "provider": "Pinned React 19.2.6, React DOM 19.2.6 and Scheduler 0.27.0 production CommonJS source bytes; MIT",
@@ -213,10 +219,10 @@
   ],
   "coverage_basis": "unique components in runtime/toolchains/TOOLCHAIN.lock.tsv",
   "coverage_percent": 100,
-  "covered_components": 35,
-  "declared_components": 35,
-  "lock_sha256": "383f48815128c036de06ef1039291f56923632533399bf11bbe7f67dc3142dd6",
-  "registry_sha256": "4bf7a4673a8169dea42ae627489ca91af2e64397ed0e2554b920b432d0fb6225",
+  "covered_components": 36,
+  "declared_components": 36,
+  "lock_sha256": "6e839a5f4ef40cd684f461402987da5dd7ebf55083a37e0f921284d6dc67c86f",
+  "registry_sha256": "123052b83fe29722a462ac6ba294e8cc26822e89e2a55a59be3c6b965a3c9baf",
   "rules": {
     "all_declared_tools_have_cache_strategy": true,
     "cache_never_replaces_required_checks": true,

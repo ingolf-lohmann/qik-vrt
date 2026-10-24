@@ -1,0 +1,31 @@
+{
+  "schema": "qikvrt_bounded_source_validation_v1",
+  "subject": {
+    "head": "dbed9072d41727fc4e45abd0cedee4cf3c61c790",
+    "pr": 593,
+    "repository": "ingolf-lohmann/qik-vrt",
+    "tree": "b6b32d8ba0c3de25c1cd8d4d69210c482ad0ca3e"
+  },
+  "make_test": {
+    "exit_code": 0,
+    "unittest_suites": 38,
+    "unittest_count": 1720,
+    "emulated_suite_in_portable_target": "SKIPPED_EXPLICITLY; separately executed in bound profile",
+    "log": "make-test-source.log",
+    "sha256": "98898049b8f4624ce80eaddb29e6d3c4c0584cc619bd64684276c608282220b3"
+  },
+  "bound_emulated_profile": {
+    "status": "PASS_BOUNDED_DETERMINISTIC_PREDICTION",
+    "case_count": 10248,
+    "matches": 10248,
+    "report_sha256": "c65b4ee0b987cb08491a5e150c7db5e7f3ee20207d45f26b60be1f565de27392",
+    "actual_m68000_output_sha256": "ccf64a7685f4227b60b4ae72fab387a8a101d30ca5483948fd078271870fa7b4",
+    "kernel_batch_theorems": 257,
+    "observation_axioms": [],
+    "negative_control_rejected": true
+  },
+  "artifact_copy_audit": "PASS",
+  "evidence_transfer_to_successor": "DENY; source validation binds dbed9072 only",
+  "native_http_headers": "NOT_AVAILABLE_FROM_CONNECTOR; no invented transport metadata",
+  "global_effect_ack_done": false
+}

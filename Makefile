@@ -91,6 +91,11 @@ unit:
 
 conformance:
 	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m unittest -v tests.test_effect_ack_conformance
+	CC="$(CC)" PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m unittest -v tests.test_effect_ack_prediction
+
+.PHONY: emulated-prediction-contract
+emulated-prediction-contract: tool-cache-contract
+	CC="$(CC)" QIKVRT_EMULATED_PROOF=1 PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -B -m unittest -v tests.test_effect_ack_prediction.EmulatedPredictionTests
 
 security:
 	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -B -m unittest -v tests.test_handler_security tests.test_api_client tests.test_qikvrt_ionos_dns
