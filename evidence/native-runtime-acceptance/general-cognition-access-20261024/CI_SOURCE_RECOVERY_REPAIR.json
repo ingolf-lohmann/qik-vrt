@@ -1,0 +1,22 @@
+{
+  "schema": "qikvrt-general-access-source-recovery-repair/v1",
+  "observed_failing_head": "12fda531319330556156f8e1c9dd9ce730a428f1",
+  "source_job_id": 120907449887,
+  "source_job_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/40105916594/job/120907449887",
+  "raw_log_sha256": "11f17ea0af6d3e4daa32e375669541208d913c01c611d7ed8607a3ac630ef45b",
+  "observed_failure": "Two modified recovered files absent from changed_originals successor receipt",
+  "changed_paths": [
+    "deploy/universal-terminal/nginx.conf",
+    "tests/test_qikvrt_temdd_public_proxy.py"
+  ],
+  "repair": "Preserve exact immutable originals and previous receipt; append actual successor byte identities; keep all original conformance checks",
+  "runtime_implementation_changed": false,
+  "tests_weakened": false,
+  "effect_ack_done": false,
+  "local_original_source_recovery_regressions": {
+    "exit_code": 0,
+    "test_executions": 5,
+    "log": "SOURCE_RECOVERY_SUCCESSOR_REGRESSIONS.log",
+    "log_sha256": "88f6ff9b9f58cd40f788677cd0e3a7f03aea8a788278e7c8a6e2e96bd9968035"
+  }
+}

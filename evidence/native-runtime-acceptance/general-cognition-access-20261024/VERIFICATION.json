@@ -112,5 +112,14 @@
       "state/work_units/QIKVRT_EXACT_UPLOAD_AND_INDEPENDENT_OPTIMA_20261024_V1.json": "0b91c472101636e856ffe47d6cf701c627e21fe6"
     },
     "purpose": "Preserve concurrent Main work and resolve the derived integrity manifest merge without overwriting authorization"
+  },
+  "ci_recovery_successor_correction": {
+    "proof": "CI_SOURCE_RECOVERY_REPAIR.json",
+    "original_logs_retained": true,
+    "two_original_files_archived_byte_exactly": true,
+    "previous_successor_receipt_archived_byte_exactly": true,
+    "production_implementation_changed": false,
+    "original_source_checks_weakened": false,
+    "remote_exact_head_ci_required": true
   }
 }

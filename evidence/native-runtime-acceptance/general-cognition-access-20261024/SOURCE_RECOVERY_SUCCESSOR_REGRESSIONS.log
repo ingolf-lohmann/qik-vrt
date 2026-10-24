@@ -1,0 +1,10 @@
+test_consolidation_preserves_both_predecessor_recovery_receipts (tests.test_self_host_temdd.SourceRecoveryTests.test_consolidation_preserves_both_predecessor_recovery_receipts) ... ok
+test_every_recovered_source_keeps_its_original_blob_identity (tests.test_self_host_temdd.SourceRecoveryTests.test_every_recovered_source_keeps_its_original_blob_identity) ... ok
+test_native_kernel_is_in_the_export_and_no_provider_is_required (tests.test_self_host_temdd.SourceRecoveryTests.test_native_kernel_is_in_the_export_and_no_provider_is_required) ... ok
+test_novnc_startup_reads_actual_loopback_bytes_under_a_dead_inherited_proxy (tests.test_self_host_temdd.SourceRecoveryTests.test_novnc_startup_reads_actual_loopback_bytes_under_a_dead_inherited_proxy) ... ok
+test_streaming_repair_preserves_original_recovery_and_prior_bindings (tests.test_self_host_temdd.SourceRecoveryTests.test_streaming_repair_preserves_original_recovery_and_prior_bindings) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.517s
+
+OK

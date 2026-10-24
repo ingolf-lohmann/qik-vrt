@@ -67,6 +67,22 @@
       "historical_sha256": "94908e6a50ce107a79965055f3ecabae10e7589d96f7a26496d2a4956b068b13",
       "successor_sha256": "f70e328ae438c6464a051d0aaa247ad7e281812304e3461e1b28f0b9795ba75c",
       "successor_git_blob": "941ff7626cfed58905ce890db0a55f581abd9c0a"
+    },
+    {
+      "restored_path": "deploy/universal-terminal/nginx.conf",
+      "historical_archive_path": "evidence/self_host/original-recovered/deploy/universal-terminal/nginx.conf",
+      "historical_git_blob": "4e13a623d72896cae563d57b710766af3744a27a",
+      "historical_sha256": "583491a285112a900cedb5b1e4dc001ddc1df1efd90d13f1f234127f0758489b",
+      "successor_git_blob": "a5534a5b980dc0d8ad9fcbf5bb66fd1649463544",
+      "successor_sha256": "fc1226df5c5166aee0b19500360cd4dcbed96cab61f59eff2dcdbb84b2b1f014"
+    },
+    {
+      "restored_path": "tests/test_qikvrt_temdd_public_proxy.py",
+      "historical_archive_path": "evidence/self_host/original-recovered/tests/test_qikvrt_temdd_public_proxy.py",
+      "historical_git_blob": "1891b1e2edcdbb2b0c5ebeb73c787e3d7ab15564",
+      "historical_sha256": "505d1608109f75caac698e2af97278a58431b7a2235f8f2ce03ed98cb3a962ee",
+      "successor_git_blob": "413478ddf09b620082ee7a8d4c5f25fe72a41247",
+      "successor_sha256": "393c6c45d76e127ce5b8db48db3210c048c71a2c3d03998e8bd0582cadc496f3"
     }
   ],
   "scope": "Preserved historical original bytes plus current role, existing-lane test and Owner Firefox-158 forward corrections; not historical PASS transfer",
@@ -315,5 +331,97 @@
     "predecessor_pass_transferred": false,
     "historical_original_daemon_preserved": true,
     "production_host_admitted": false
+  },
+  "general_cognition_access_20261024": {
+    "previous_receipt_path": "evidence/self_host/original-recovered/SOURCE_RECOVERY_SUCCESSOR_before_GENERAL_ACCESS_20261024.json",
+    "previous_receipt_sha256": "7b988ea791d078f3c8fa1434e28020cd4bc80d1451827c9d771372816cbae8c9",
+    "preserved_previous_successor_bindings": [
+      {
+        "restored_path": "deploy/universal-terminal/compose.yaml",
+        "historical_archive_path": "evidence/self_host/original-recovered/deploy/universal-terminal/compose.yaml",
+        "historical_git_blob": "f807391adabc9046fa37ba847f572acbd1709e46",
+        "historical_sha256": "4c2ca8207b24fcf0a88d55ddb46eac31117e636aaafb5a74cfbd91b078cfbaa1",
+        "successor_git_blob": "f7141f1114ad0879395b72a99c19d21670894f4e",
+        "successor_sha256": "98d0138a1ca31de488bd36d7d04405fcc57009c5e6c132b4071a9fd091957cba"
+      },
+      {
+        "restored_path": "deploy/universal-terminal/mirror-bootstrap.sh",
+        "historical_archive_path": "evidence/self_host/original-recovered/deploy/universal-terminal/mirror-bootstrap.sh",
+        "historical_git_blob": "1a778891a805825bb82d7e475c97d9b02c3e6a6e",
+        "historical_sha256": "f6889cda54e74b6fa3bc2faf9f73fbe9aca48c394d461769d1f91e5a24202edc",
+        "successor_git_blob": "1d3e5f65ad4b7cc7fab66e776759daff5d628173",
+        "successor_sha256": "044b5d25358fdb3347ae516cf1a37a1dd975ded62d918b95dd76c6f1212527bd"
+      },
+      {
+        "restored_path": "tests/test_temdd_event_ledger.py",
+        "historical_archive_path": "evidence/self_host/original-recovered/tests/test_temdd_event_ledger.py",
+        "historical_git_blob": "187230e0bab7512811c0e9d71c4f6498be5f06ef",
+        "historical_sha256": "662d41da4b1e15237ee73ce73347d090c32e6fa7dcaaea208e95938cf20b3966",
+        "successor_git_blob": "19f219453143326e2c43dc039fda93cfca397daa",
+        "successor_sha256": "50e933f382965e4f5a08ef27a70171734a6fb8b998534920e95e9ba98621b6d1"
+      },
+      {
+        "restored_path": "deploy/universal-terminal/Dockerfile",
+        "historical_archive_path": "evidence/self_host/original-recovered/deploy/universal-terminal/Dockerfile",
+        "historical_git_blob": "b793a5ba0cb966520f681399d8f2a61ceb5fe883",
+        "historical_sha256": "97a03ff7b88218050b4f4295bcf6369ba03a402388364666cca32a0673d4b4f7",
+        "successor_git_blob": "1e9818c551cb6cb30d418fd598ddc4f522004486",
+        "successor_sha256": "04b548338fdfb80a57a6de03636ad3a0fadee3dcde61c84da4d81719c44fccb9"
+      },
+      {
+        "restored_path": "deploy/universal-terminal/entrypoint.sh",
+        "historical_archive_path": "evidence/self_host/original-recovered/deploy/universal-terminal/entrypoint.sh",
+        "historical_git_blob": "3db27a8487e67b2beac596e1f576afe1cf95b21e",
+        "historical_sha256": "c0bae910a3220b79d283943294b0ace65b8787c8f95b275a75ffc73d65fb139b",
+        "successor_git_blob": "ba610deae48577bf899b7c59bd6abf74fc92e39b",
+        "successor_sha256": "4b217944d062fd7b888bd6ea94af7351915a612bb6f56a097ed64623a1b966e4"
+      },
+      {
+        "restored_path": "deploy/universal-terminal/runtime-health.sh",
+        "historical_archive_path": "evidence/self_host/original-recovered/deploy/universal-terminal/runtime-health.sh",
+        "historical_git_blob": "3bec1909edc484bb15116a0a23c27f5b4e20a3e9",
+        "historical_sha256": "731d9e2adddf83999623424f9a306a6dd1ff2b142ec6a179cfd2c9ae12f13bf3",
+        "successor_git_blob": "3082119a1cc63df29516db4afb36a85d0ee2c38a",
+        "successor_sha256": "6144300e578aa452b12d838c2787fa08c5310e729b56ba50b09098ba0657a24d"
+      },
+      {
+        "restored_path": "tests/test_temdd_runtime_subject_binding.py",
+        "historical_archive_path": "evidence/self_host/original-recovered/tests/test_temdd_runtime_subject_binding.py",
+        "historical_git_blob": "58f5af0d026dfa9319f99b3beb8dcd6e30aec18d",
+        "historical_sha256": "e6c1c98665c50fdf2c5de1ac29f17f5ccf78aefdcdbd9abb4e700aeb5ac6bc4a",
+        "successor_git_blob": "529b3c50f3717a690d7d6726193ade9df235943e",
+        "successor_sha256": "14f8733ec1fd5255fe375246d77618434c68e9ddec9ed3b1e78e3738ff05e303"
+      },
+      {
+        "restored_path": "src/qikvrt_temdd_event_ledger.py",
+        "historical_archive_path": "evidence/self_host/original-recovered/src/qikvrt_temdd_event_ledger.py",
+        "historical_git_blob": "6322bd45edb9de7d2aa07dee6fbc12307148475c",
+        "historical_sha256": "94908e6a50ce107a79965055f3ecabae10e7589d96f7a26496d2a4956b068b13",
+        "successor_sha256": "f70e328ae438c6464a051d0aaa247ad7e281812304e3461e1b28f0b9795ba75c",
+        "successor_git_blob": "941ff7626cfed58905ce890db0a55f581abd9c0a"
+      }
+    ],
+    "changed_originals": [
+      {
+        "restored_path": "deploy/universal-terminal/nginx.conf",
+        "historical_archive_path": "evidence/self_host/original-recovered/deploy/universal-terminal/nginx.conf",
+        "historical_git_blob": "4e13a623d72896cae563d57b710766af3744a27a",
+        "historical_sha256": "583491a285112a900cedb5b1e4dc001ddc1df1efd90d13f1f234127f0758489b",
+        "successor_git_blob": "a5534a5b980dc0d8ad9fcbf5bb66fd1649463544",
+        "successor_sha256": "fc1226df5c5166aee0b19500360cd4dcbed96cab61f59eff2dcdbb84b2b1f014"
+      },
+      {
+        "restored_path": "tests/test_qikvrt_temdd_public_proxy.py",
+        "historical_archive_path": "evidence/self_host/original-recovered/tests/test_qikvrt_temdd_public_proxy.py",
+        "historical_git_blob": "1891b1e2edcdbb2b0c5ebeb73c787e3d7ab15564",
+        "historical_sha256": "505d1608109f75caac698e2af97278a58431b7a2235f8f2ce03ed98cb3a962ee",
+        "successor_git_blob": "413478ddf09b620082ee7a8d4c5f25fe72a41247",
+        "successor_sha256": "393c6c45d76e127ce5b8db48db3210c048c71a2c3d03998e8bd0582cadc496f3"
+      }
+    ],
+    "scope": "Exact historical nginx and proxy-test bytes retained; active generic native access and private journal reader successor separately bound",
+    "original_historical_receipt_rewritten": false,
+    "predecessor_pass_transferred": false,
+    "effect_ack_done": false
   }
 }
