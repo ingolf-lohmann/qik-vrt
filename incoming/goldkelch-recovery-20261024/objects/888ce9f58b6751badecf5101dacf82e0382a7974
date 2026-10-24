@@ -1,0 +1,294 @@
+{
+  "bindings": [
+    {
+      "artifacts": [
+        {
+          "bytes": 10301,
+          "git_blob_sha1": "eb2d7456eb21469a1d68dd291f9f09250c4fb9f1",
+          "path": "docs/publications/2026-09-28-quality-gates/MEASUREMENTS.json",
+          "sha256": "50a52ce9db0f2bc27d65b2d149eb70ab46a7c83f808351057f3be0cbaa6cb664"
+        }
+      ],
+      "context": "Der Bericht untersucht Goldkelch/qik-vrt am exakt genannten HEAD und TREE; Quellen sind dateigenau gebunden.",
+      "id": "Q01",
+      "repository_subject": {
+        "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "repository": "Goldkelch/qik-vrt"
+      },
+      "scope": "Messsubject f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c; ein späterer Publikationscommit ist ein anderes Subject."
+    },
+    {
+      "artifacts": [
+        {
+          "bytes": 10301,
+          "git_blob_sha1": "eb2d7456eb21469a1d68dd291f9f09250c4fb9f1",
+          "path": "docs/publications/2026-09-28-quality-gates/MEASUREMENTS.json",
+          "sha256": "50a52ce9db0f2bc27d65b2d149eb70ab46a7c83f808351057f3be0cbaa6cb664"
+        },
+        {
+          "bytes": 18586,
+          "git_blob_sha1": "8597196d72cdcbc202f07ef51cd71081ab59a51c",
+          "path": "docs/publications/2026-09-28-quality-gates/focused-tests.log",
+          "sha256": "c81d367696d82d6531d0fc4620bf2bd9492dcc285a65e80b9fb29910d5356566"
+        }
+      ],
+      "context": "104 ausgewählte unittest-Fälle wurden entdeckt: 103 bestanden, einer wegen fehlendem nginx/runuser übersprungen; Laufzeit 3,822 Sekunden.",
+      "id": "Q02",
+      "repository_subject": {
+        "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "repository": "Goldkelch/qik-vrt"
+      },
+      "scope": "Lokale Auswahl; kein vollständiger ISO-, Container- oder Hardwaretest. Ein vorheriger pytest-Aufruf war nicht ausführbar."
+    },
+    {
+      "artifacts": [
+        {
+          "bytes": 10301,
+          "git_blob_sha1": "eb2d7456eb21469a1d68dd291f9f09250c4fb9f1",
+          "path": "docs/publications/2026-09-28-quality-gates/MEASUREMENTS.json",
+          "sha256": "50a52ce9db0f2bc27d65b2d149eb70ab46a7c83f808351057f3be0cbaa6cb664"
+        },
+        {
+          "bytes": 3218,
+          "git_blob_sha1": "4b0f0552c4adeaa08a892fbe59e32c70ed565ddd",
+          "path": "docs/publications/2026-09-28-quality-gates/c90.log",
+          "sha256": "881b59df7e9270b0f91e70a9924cd6c7028c3e2b55c420176f913646896a2c5f"
+        },
+        {
+          "bytes": 2871,
+          "git_blob_sha1": "7e76319a7bdf0b5365eac04ffb544d10d99f4479",
+          "path": "docs/publications/2026-09-28-quality-gates/size.log",
+          "sha256": "8aa20431f46c399172cbcf20ef938bdadbb510a133b7282774a844bee6bd5867"
+        }
+      ],
+      "context": "C90 und Assembly bestehen ihre Tests. Gemessen wurden 86 Byte LUT-.text, 394 Byte Kern-Code/RO-Daten, 7174 Byte Code/RO-Daten in sechs Objekten, 26792 Byte Adapterdatei und 80512 Byte text/data/bss.",
+      "id": "Q03",
+      "repository_subject": {
+        "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "repository": "Goldkelch/qik-vrt"
+      },
+      "scope": "GCC 13.3.0, x86-64, -Os; keine Minimalitäts-, RAM-Gesamt-, Linux-Kernel- oder Transistorzahlbehauptung."
+    },
+    {
+      "artifacts": [
+        {
+          "bytes": 10301,
+          "git_blob_sha1": "eb2d7456eb21469a1d68dd291f9f09250c4fb9f1",
+          "path": "docs/publications/2026-09-28-quality-gates/MEASUREMENTS.json",
+          "sha256": "50a52ce9db0f2bc27d65b2d149eb70ab46a7c83f808351057f3be0cbaa6cb664"
+        },
+        {
+          "bytes": 14498,
+          "git_blob_sha1": "951f3dd34095ca656954540fefa049a84109cf0a",
+          "path": "docs/publications/2026-09-28-quality-gates/mesh-receipt.json",
+          "sha256": "820095f4b67beb4802089bd6c66fd4a7310c55a4153b7ceb4746589cedbe4f5c"
+        }
+      ],
+      "context": "Vier lokale Prozesse führen zwei TCP-Mesh-Paare mit begrenzter Ergebnisbeobachtung und Neustart-Replay aus.",
+      "id": "Q04",
+      "repository_subject": {
+        "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "repository": "Goldkelch/qik-vrt"
+      },
+      "scope": "LOOPBACK_TCP_ONLY, ein Host; keine Live-Authority/Mirror-Synchronisation, keine allgemeine Wirkungsfreigabe."
+    },
+    {
+      "artifacts": [
+        {
+          "bytes": 10301,
+          "git_blob_sha1": "eb2d7456eb21469a1d68dd291f9f09250c4fb9f1",
+          "path": "docs/publications/2026-09-28-quality-gates/MEASUREMENTS.json",
+          "sha256": "50a52ce9db0f2bc27d65b2d149eb70ab46a7c83f808351057f3be0cbaa6cb664"
+        },
+        {
+          "bytes": 69841,
+          "git_blob_sha1": "66bf3295ff414b5dccd38c99c76dfd01e4346800",
+          "path": "docs/publications/2026-09-28-quality-gates/ci-diagnostics.log",
+          "sha256": "35b60043150e3dda0ee660604b50147d334dab7a4508d959889f0037bda8198b"
+        }
+      ],
+      "context": "Der CI-Diagnose-Readback von Run 36346727864 am Messsubject meldet MAKE_TEST_EXIT=0 und unveränderten Worktree; der heruntergeladene ZIP-Digest wurde geprüft.",
+      "id": "Q05",
+      "repository_subject": {
+        "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "repository": "Goldkelch/qik-vrt"
+      },
+      "scope": "CI-Audit 10940821417; weder öffentlicher ISO-Boot noch physischer Chipnachweis."
+    },
+    {
+      "artifacts": [
+        {
+          "bytes": 10301,
+          "git_blob_sha1": "eb2d7456eb21469a1d68dd291f9f09250c4fb9f1",
+          "path": "docs/publications/2026-09-28-quality-gates/MEASUREMENTS.json",
+          "sha256": "50a52ce9db0f2bc27d65b2d149eb70ab46a7c83f808351057f3be0cbaa6cb664"
+        }
+      ],
+      "context": "Der vollständige aktuelle Zielnachweis für Distribution, Container, Browser, getrennte Hosts und gesamten Recovery-Pfad ist in diesem begrenzten Audit offen.",
+      "id": "Q06",
+      "repository_subject": {
+        "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "repository": "Goldkelch/qik-vrt"
+      },
+      "scope": "Keine Behauptung, dass es nie historische Ausführungen gab. Docker/QEMU/Cargo/GHDL lokal nicht verfügbar; Suchumfang begrenzt."
+    },
+    {
+      "artifacts": [],
+      "context": "Die vorgeschlagene Skala 0 bis 4 bewertet Evidenzstufen; die Gesamtfreigabe verlangt die Konjunktion aller vollständig erfüllten Ziel-Gates.",
+      "id": "Q07",
+      "repository_subject": {
+        "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "repository": "Goldkelch/qik-vrt"
+      },
+      "scope": "Operationalisierung dieses Berichts, keine wiedergefundene frühere Zahlenskala; ordinal, keine Prozent- oder Durchschnittsfreigabe."
+    },
+    {
+      "artifacts": [
+        {
+          "bytes": 6261,
+          "git_blob_sha1": "0d6e6a905d974668c007ce035a62a1b19dbd4247",
+          "path": "docs/publications/2026-09-28-quality-gates/QUALITY_GATES.json",
+          "sha256": "d6eec9879e301d74bb35bb1033c5deac2cede874c6151db38547648e9525a3fc"
+        }
+      ],
+      "context": "Der dokumentierte Auditvektor ist (2,1,2,2,2,2,2,1,0,2); die Stufenzahlen sind 1/2/7/0/0, Minimum 0 und null vollständige Zielbestätigungen von zehn.",
+      "id": "Q08",
+      "repository_subject": {
+        "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "repository": "Goldkelch/qik-vrt"
+      },
+      "scope": "Berechnung aus konservativen expliziten Bewertungsentscheidungen; kein allumfassendes Produkt-Ranking."
+    },
+    {
+      "artifacts": [
+        {
+          "bytes": 10301,
+          "git_blob_sha1": "eb2d7456eb21469a1d68dd291f9f09250c4fb9f1",
+          "path": "docs/publications/2026-09-28-quality-gates/MEASUREMENTS.json",
+          "sha256": "50a52ce9db0f2bc27d65b2d149eb70ab46a7c83f808351057f3be0cbaa6cb664"
+        }
+      ],
+      "context": "Der C90-Kernvertrag beschreibt einen 14-Byte-Eingang und 6-Byte-Ausgang ohne OS-, Netzwerk- oder Heap-Abhängigkeit im inneren Kern.",
+      "id": "Q09",
+      "repository_subject": {
+        "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "repository": "Goldkelch/qik-vrt"
+      },
+      "scope": "Quellvertrag mit 8-Bit-Byte- und exakter 32-Bit-Typannahme; die gesamte Laufzeit ist größer."
+    },
+    {
+      "artifacts": [],
+      "context": "Docker-Container teilen den Hostkernel; portabler Bytecode legt nicht automatisch Host-APIs fest; Verifikationsresultate besitzen Annahmen.",
+      "id": "Q10",
+      "repository_subject": {
+        "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "repository": "Goldkelch/qik-vrt"
+      },
+      "scope": "Allgemeine technische Referenzen Docker, WebAssembly und seL4; keine seL4-Beweisübertragung auf QIK-VRT.",
+      "urls": [
+        "https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/",
+        "https://webassembly.org/docs/portability/",
+        "https://sel4.systems/Verification/assumptions.html"
+      ]
+    },
+    {
+      "artifacts": [
+        {
+          "bytes": 10301,
+          "git_blob_sha1": "eb2d7456eb21469a1d68dd291f9f09250c4fb9f1",
+          "path": "docs/publications/2026-09-28-quality-gates/MEASUREMENTS.json",
+          "sha256": "50a52ce9db0f2bc27d65b2d149eb70ab46a7c83f808351057f3be0cbaa6cb664"
+        }
+      ],
+      "context": "Der vorhandene Transputer spezifiziert explizite Store-/Quell-Recovery, HMAC-Authentisierung, gebundene Nachrichten und begrenzte Replay-Semantik.",
+      "id": "Q11",
+      "repository_subject": {
+        "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "repository": "Goldkelch/qik-vrt"
+      },
+      "scope": "Kein universeller OS-Prozessdump, keine HMAC-Verschlüsselung, kein globales Exactly-once und kein Personenidentitätsbeweis."
+    },
+    {
+      "artifacts": [],
+      "context": "Zustandsübertragung verlangt beobachtungsäquivalente Decodierung und erhaltene Invarianten; Hardware benötigt eine passende Zustands- und Übergangsrelation.",
+      "id": "Q12",
+      "repository_subject": {
+        "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "repository": "Goldkelch/qik-vrt"
+      },
+      "scope": "Verifikationsanforderungen, keine hier ausgeführte universelle Refinementprüfung."
+    },
+    {
+      "artifacts": [],
+      "context": "Die konkrete Meta-Transistor-Realisierung, physische Timing-/Ressourcenschließung und behauptete vollständige Ungefährlichkeit sind nicht nachgewiesen.",
+      "id": "Q13",
+      "repository_subject": {
+        "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "repository": "Goldkelch/qik-vrt"
+      },
+      "scope": "Vorhandene Software und ethisches Credo ersetzen keine physische oder Sicherheitsverifikation; keine Patentierbarkeitsfeststellung."
+    },
+    {
+      "artifacts": [],
+      "candidate_head": "1b50aab45e44f87058730605ed850c1f7fa10020",
+      "context": "Die separate Requested-Review-Reparatur liegt in PR 1265 am Kandidaten 1b50aab45e44f87058730605ed850c1f7fa10020; dieser Kandidat ist nicht der untersuchte Main.",
+      "id": "Q14",
+      "repository_subject": {
+        "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "repository": "Goldkelch/qik-vrt"
+      },
+      "scope": "Geforderte fail-closed Semantik: kein 403 als Erfolg; Rate-Limit-/Permission-/sonstige Fehler trennen und gebundene Metadaten erhalten. Keine Main-Integration aus dem PR abgeleitet.",
+      "urls": [
+        "https://github.com/Goldkelch/qik-vrt/pull/1265"
+      ]
+    },
+    {
+      "artifacts": [],
+      "context": "Eine belastbare Software- oder Hardware-Lieferfrist ist aus diesen Messungen allein nicht ableitbar.",
+      "id": "Q15",
+      "repository_subject": {
+        "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "repository": "Goldkelch/qik-vrt"
+      },
+      "scope": "Nächste Prüfschritte sind beschrieben; Testdauer ist keine Release-Dauer. Zielprofil, verfügbare Ressourcen und Integrationsresultate fehlen für eine verbindliche Terminierung."
+    },
+    {
+      "artifacts": [],
+      "context": "Die illustrative Beschleunigungsrechnung S=1/((1-p)+p/s) ergibt für s=100 und p=0,1 etwa 1,11 sowie für p=0,9 etwa 9,17.",
+      "id": "Q16",
+      "repository_subject": {
+        "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "repository": "Goldkelch/qik-vrt"
+      },
+      "scope": "Modell ohne zusätzliche Übergabekosten; weder QIK-VRT-Benchmark noch Zusage eines Hardwaregewinns."
+    },
+    {
+      "artifacts": [],
+      "context": "Ingolf Lohmann benennt den kategorischen Imperativ als ethisches Credo, äußert Hardware-Patentabsicht und verwendet die 15/30/60-Sekunden-Roadmap als Suchheuristik.",
+      "id": "Q17",
+      "repository_subject": {
+        "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "repository": "Goldkelch/qik-vrt"
+      },
+      "scope": "Verantwortungserklärung und Arbeitsregel, keine Ungefährlichkeits-, Patent-, Zeitleistungs- oder Main-Aktivierungsbehauptung; Roadmap-PR 415 ist separater Kandidat."
+    },
+    {
+      "artifacts": [],
+      "context": "Die historischen PDF-Katalogeinträge vom 15. und 27. September enthalten bytegleiche 160673-Byte-Dateien; ihr damaliger Status FORMAL_PENDING_KERNEL bleibt offen.",
+      "historical_provenance": {
+        "bytes": 1654,
+        "git_blob_sha1": "515fc6192a1e43a7b119fe982a37995871abab27",
+        "path": "docs/publications/2026-09-15-closure-archive/PROVENANCE.json",
+        "sha256": "14351278015bf59b3202c4b3be8a5c797e47766874fa29a18cfef83d6780e6be"
+      },
+      "id": "Q18",
+      "repository_subject": {
+        "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "repository": "Goldkelch/qik-vrt"
+      },
+      "scope": "Zeitabstand der Einträge, nicht unabhängig gemessene erste Nutzersichtbarkeit, keine physikalische Zeitverschiebung; Archivpublikation und Produktrelease bleiben verschiedene Entscheidungen."
+    }
+  ],
+  "publication_id": "qikvrt-quality-gates-20260928-v1",
+  "schema": "qikvrt-publication-source-bindings-v1"
+}

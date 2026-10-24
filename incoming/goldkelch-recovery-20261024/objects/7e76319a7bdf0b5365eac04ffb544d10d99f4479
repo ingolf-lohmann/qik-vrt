@@ -1,0 +1,86 @@
+/workspace/scratch/04d40e51d38f/study-evidence/c90/effect_ack_core.o  :
+section              size   addr
+.text                 350      0
+.data                   0      0
+.bss                    0      0
+.rodata.str1.1        109      0
+.rodata                20      0
+.comment               44      0
+.note.GNU-stack         0      0
+.note.gnu.property     32      0
+.eh_frame             128      0
+Total                 683
+
+
+/workspace/scratch/04d40e51d38f/study-evidence/c90/qikvrt_bus.o  :
+section              size   addr
+.text                1717      0
+.data                   0      0
+.bss                    0      0
+.rodata.str1.1          5      0
+.comment               44      0
+.note.GNU-stack         0      0
+.note.gnu.property     32      0
+.eh_frame             248      0
+Total                2046
+
+
+/workspace/scratch/04d40e51d38f/study-evidence/c90/qikvrt_exchange.o  :
+section              size   addr
+.text                1989      0
+.data                   0      0
+.bss                    0      0
+.rodata.str1.1          5      0
+.comment               44      0
+.note.GNU-stack         0      0
+.note.gnu.property     32      0
+.eh_frame             384      0
+Total                2454
+
+
+/workspace/scratch/04d40e51d38f/study-evidence/c90/qikvrt_kernel.o  :
+section              size   addr
+.text                 384      0
+.data                   0      0
+.bss                    0      0
+.rodata                10      0
+.comment               44      0
+.note.GNU-stack         0      0
+.note.gnu.property     32      0
+.eh_frame             168      0
+Total                 638
+
+
+/workspace/scratch/04d40e51d38f/study-evidence/c90/qikvrt_sha256_v1.o  :
+section              size   addr
+.text                 838      0
+.data                   0      0
+.bss                    0      0
+.rodata               256      0
+.comment               44      0
+.note.GNU-stack         0      0
+.note.gnu.property     32      0
+.eh_frame             176      0
+Total                1346
+
+
+/workspace/scratch/04d40e51d38f/study-evidence/c90/qikvrt_wire_v1.o  :
+section              size   addr
+.text                1486      0
+.data                   0      0
+.bss                    0      0
+.rodata.str1.1          5      0
+.comment               44      0
+.note.GNU-stack         0      0
+.note.gnu.property     32      0
+.eh_frame             432      0
+Total                1999
+0000000000000000 0000000000000005 r map.0
+0000000000000005 0000000000000005 r map.1
+0000000000000000 0000000000000009 T qikvrt_get32
+0000000000000009 0000000000000009 T qikvrt_put32
+0000000000000158 0000000000000028 T qikvrt_effect_from_wire
+0000000000000130 0000000000000028 T qikvrt_effect_to_wire
+00000000000000db 0000000000000055 T qikvrt_evaluate_bytes
+0000000000000012 0000000000000056 T qikvrt_boolean_lut
+0000000000000068 0000000000000073 T qikvrt_evaluate

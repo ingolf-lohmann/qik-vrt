@@ -1,0 +1,10 @@
+{
+  "gate": "SEED_NODE_SPLIT_DELIVERY_GATE",
+  "version": "2.13.4",
+  "seed_zip": "seed/qv2134_seed.zip",
+  "node_zip": "node/qv2134_node.zip",
+  "independent_zips_required": true,
+  "same_inner_architecture_required": true,
+  "api_fork_forbidden": true,
+  "code_fork_forbidden": true
+}

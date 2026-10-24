@@ -1,0 +1,124 @@
+# Temporary read-only verification transport; never merge this workflow.
+# Final verification rerun after Mirror PR #47 merge; this branch will be reset.
+name: QIKVRT verify final audio-runtime repository equivalence
+
+on:
+  push:
+    branches:
+      - automation/import-audio-runtime-authority-20260725
+    paths:
+      - .github/workflows/qikvrt_import_audio_runtime_authority.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: qikvrt-verify-audio-runtime-equivalence-20260725
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      AUTHORITY_URL: https://github.com/Goldkelch/qik-vrt.git
+      MIRROR_URL: https://github.com/ingolf-lohmann/qik-vrt.git
+      EXPECTED_AUTHORITY_COMMIT: e0f6c92b3cf16373188f14deba224086c8767b48
+      EXPECTED_MIRROR_COMMIT: cc25549cc4895c6b52f4278b4dfad73e85f39675
+      EXPECTED_SHARED_TREE: 2be63ecb9571816c282fe38328ca773fd383ead9
+      EXPECTED_CONTENT_DIGEST: 914da212cca7d7966192059b0e2f39931f83c79660f826bc4fa7fa6201c90b3c
+    steps:
+      - name: Check out temporary verifier without persisted credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Fetch both public mainlines and prove exact equivalence
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/qikvrt-final-repository-equivalence"
+          mkdir -p "$root"
+          git init -q "$root/repository"
+          cd "$root/repository"
+          git remote add authority "$AUTHORITY_URL"
+          git remote add mirror "$MIRROR_URL"
+          git fetch --no-tags --depth=2 authority \
+            "+refs/heads/main:refs/remotes/authority/main"
+          git fetch --no-tags --depth=2 mirror \
+            "+refs/heads/main:refs/remotes/mirror/main"
+          authority="$(git rev-parse refs/remotes/authority/main)"
+          mirror="$(git rev-parse refs/remotes/mirror/main)"
+          authority_tree="$(git show -s --format=%T "$authority")"
+          mirror_tree="$(git show -s --format=%T "$mirror")"
+          test "$authority" = "$EXPECTED_AUTHORITY_COMMIT"
+          test "$mirror" = "$EXPECTED_MIRROR_COMMIT"
+          test "$authority_tree" = "$EXPECTED_SHARED_TREE"
+          test "$mirror_tree" = "$EXPECTED_SHARED_TREE"
+          git diff --exit-code --no-ext-diff "$authority" "$mirror" --
+          python3 -B - "$authority" "$mirror" "$authority_tree" "$root/FINAL_REPOSITORY_EQUIVALENCE.json" <<'PY'
+          from __future__ import annotations
+          import hashlib, json, os, subprocess, sys
+          from pathlib import Path
+
+          authority, mirror, shared_tree, output_path = sys.argv[1:]
+          expected_digest = os.environ["EXPECTED_CONTENT_DIGEST"]
+          manifests = {}
+          for role, commit in (("authority", authority), ("mirror", mirror)):
+              raw = subprocess.check_output(
+                  ["git", "show", f"{commit}:REPOSITORY_FILE_MANIFEST.json"],
+              )
+              manifest = json.loads(raw)
+              digest = manifest.get("repository_content_tree_sha256")
+              if digest != expected_digest:
+                  raise SystemExit(
+                      f"BLOCK: {role} content digest differs: {digest} != {expected_digest}"
+                  )
+              manifests[role] = {
+                  "commit": commit,
+                  "manifest_blob_sha1": subprocess.check_output(
+                      ["git", "rev-parse", f"{commit}:REPOSITORY_FILE_MANIFEST.json"],
+                      text=True,
+                  ).strip(),
+                  "manifest_sha256": hashlib.sha256(raw).hexdigest(),
+                  "content_tree_sha256": digest,
+              }
+          report = {
+              "schema": "qikvrt_final_audio_runtime_repository_equivalence_v1",
+              "repositories": {
+                  "authority": "Goldkelch/qik-vrt",
+                  "mirror": "ingolf-lohmann/qik-vrt",
+              },
+              "shared_git_tree": shared_tree,
+              "expected_content_tree_sha256": expected_digest,
+              "manifests": manifests,
+              "file_diff_count": 0,
+              "verification": [
+                  "public main refs resolved",
+                  "expected commits matched",
+                  "Git trees matched",
+                  "git diff returned empty",
+                  "repository content-tree digests matched",
+                  "manifest blobs and bytes matched",
+              ],
+              "status": "PASS",
+          }
+          if manifests["authority"]["manifest_blob_sha1"] != manifests["mirror"]["manifest_blob_sha1"]:
+              raise SystemExit("BLOCK: manifest blob identities differ")
+          if manifests["authority"]["manifest_sha256"] != manifests["mirror"]["manifest_sha256"]:
+              raise SystemExit("BLOCK: manifest byte digests differ")
+          Path(output_path).write_text(
+              json.dumps(report, indent=2, sort_keys=True) + "\n",
+              encoding="utf-8",
+          )
+          print(json.dumps(report, sort_keys=True))
+          PY
+
+      - name: Upload final cross-repository equivalence evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qikvrt-final-audio-runtime-repository-equivalence
+          retention-days: 30
+          path: ${{ runner.temp }}/qikvrt-final-repository-equivalence/FINAL_REPOSITORY_EQUIVALENCE.json
+          if-no-files-found: error

@@ -1,0 +1,84 @@
+{
+  "app_credential_names_present": {
+    "QIKVRT_RULESET_APP_ID": false,
+    "QIKVRT_RULESET_APP_PRIVATE_KEY": false
+  },
+  "app_token_issuance_outcome": "skipped",
+  "credential_names_present": {
+    "GITHUB_TOKEN": true,
+    "QIKVRT_AUTHORITY_APP_TOKEN": false,
+    "QIKVRT_GITHUB_ADMIN_TOKEN": false,
+    "QIKVRT_MESH_TOKEN": false,
+    "QIKVRT_RULESET_ADMIN_TOKEN": false
+  },
+  "credential_source": "GITHUB_TOKEN",
+  "effect_ack_done": false,
+  "executor": {
+    "actor": "ingolf-lohmann",
+    "attempt": "1",
+    "event": "push",
+    "head": "7ed957669a8f6f0e03c62cff7787a45cfaceab12",
+    "ref": "refs/heads/work/authority-url-probe-20261003-6fb101b",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "run_id": "37086743407",
+    "tree": "507870ae80f0a07906198c94aba0f06119f08f13",
+    "workflow_path": ".github/workflows/qikvrt_mesh_authority_edge.yml",
+    "workflow_sha256": "a27c46c5108519d64eb55464528aef9c91153b3792b380de2d11b7a248391729"
+  },
+  "first_blocker": "AUTHORITY_CREDENTIAL_DELIVERY_NOT_ESTABLISHED",
+  "mutation_count": 0,
+  "observations": [
+    {
+      "bytes": 10923,
+      "label": "mirror_control",
+      "method": "GET",
+      "observed_at": "2026-10-03T01:36:52.926598+00:00",
+      "path": "/repos/ingolf-lohmann/qik-vrt",
+      "sha256": "ce82cce5b5e75601ee5f95bcbbd4a132b83c0979e2c398b2a3fbfda40bd59847",
+      "status": 200
+    },
+    {
+      "bytes": 157,
+      "label": "credential_principal",
+      "method": "GET",
+      "observed_at": "2026-10-03T01:36:53.083879+00:00",
+      "path": "/user",
+      "sha256": "6581f2c6b24b64eb42c2bac624ccb63ca50892d7035512bc89e38714b394f22f",
+      "status": 403
+    },
+    {
+      "bytes": 89,
+      "label": "authority_by_name",
+      "method": "GET",
+      "observed_at": "2026-10-03T01:36:53.243595+00:00",
+      "path": "/repos/Goldkelch/qik-vrt",
+      "sha256": "3a32eab6ffbfd1cf2684b1a409bf40db46e46c5eaff44de656e499df05d92730",
+      "status": 404
+    },
+    {
+      "bytes": 89,
+      "label": "authority_by_id",
+      "method": "GET",
+      "observed_at": "2026-10-03T01:36:53.382076+00:00",
+      "path": "/repositories/1271407206",
+      "sha256": "3a32eab6ffbfd1cf2684b1a409bf40db46e46c5eaff44de656e499df05d92730",
+      "status": 404
+    }
+  ],
+  "observed_at": "2026-10-03T01:36:52.645918+00:00",
+  "predecessor_evidence_transfer": false,
+  "principal": {
+    "identity_verified": false,
+    "status": 403
+  },
+  "public_url_effect_verified": false,
+  "schema": "qikvrt_authority_url_probe_v1",
+  "source_read_verified": false,
+  "state": "BLOCK",
+  "target": {
+    "owner_id": 293941403,
+    "qr_url": "https://github.com/Goldkelch/qik-vrt/blob/main/AI",
+    "repository": "Goldkelch/qik-vrt",
+    "repository_id": 1271407206
+  }
+}

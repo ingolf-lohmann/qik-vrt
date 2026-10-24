@@ -1,0 +1,347 @@
+{
+  "completion_claims": {
+    "FINAL_PASS": false,
+    "PASS": false,
+    "acknowledgement_return_path_observed": true,
+    "append_only_restart_persistence_observed": true,
+    "authority_mirror_equality_claimed": false,
+    "authority_mirror_synchronization": false,
+    "bounded_loopback_effect_ack_done": true,
+    "general_effect_ack_done": false,
+    "general_internet_reachability": false,
+    "independent_tcp_node_processes_observed": true,
+    "merge": false,
+    "multi_hop_delivery_reobserved": true,
+    "physical_hardware_execution": false,
+    "production_deployment": false,
+    "real_multi_pair_mesh_runtime_executed": true
+  },
+  "effect_ack_scope": "BOUNDED_LOOPBACK_MULTI_PAIR_MESSAGE_DELIVERY_ONLY",
+  "event_model": "SOCKET_EVENT_DRIVEN_NO_DOMAIN_POLLING",
+  "external_effect": "NONE",
+  "mesh_id": "QIKVRT_REAL_MULTI_PAIR_MESH_V1",
+  "network_scope": "LOOPBACK_TCP_ONLY",
+  "node_process_count": 4,
+  "pair_count": 2,
+  "pair_states": [
+    {
+      "authority_tree": "956c16b291c05243437b1f018321936e4438949a",
+      "mirror_tree": "bd421a2624d20804c74eef77647fc52fcdb1feec",
+      "pair_id": "pair-a",
+      "state": "DIVERGED",
+      "synchronization_authorized": false
+    },
+    {
+      "authority_tree": "956c16b291c05243437b1f018321936e4438949a",
+      "mirror_tree": "bd421a2624d20804c74eef77647fc52fcdb1feec",
+      "pair_id": "pair-b",
+      "state": "DIVERGED",
+      "synchronization_authorized": false
+    }
+  ],
+  "receipt_created_utc": "2026-09-27T23:57:02.278687Z",
+  "receipt_sha256": "sha256:8611a0c80833a46e27130ca7cc0ad6a62f6d3bec942231f233dd4069d235ed6f",
+  "redundant_path_observed": true,
+  "restart_replay": {
+    "ledger_record_count_unchanged": true,
+    "node_id": "pair-a-authority",
+    "observed": true,
+    "same_terminal_receipt": true
+  },
+  "routes": [
+    {
+      "bounded_effect_ack": {
+        "ordinary_release": true,
+        "responsibility_protocol": {
+          "connection_decided": true,
+          "connection_decision": "RELEASE",
+          "context_checked": true,
+          "created_utc": "2026-09-27T23:57:02.163162Z",
+          "effect_anticipated": true,
+          "evidence_refs": [
+            "sha256:1fe8c320d72e82518820b88b6b83cd660707a24f9ba5f296526da2c5472c81ea",
+            "sha256:afe3032480c65bc5f7357c07a55f35e453f0d7c46bbd2171ac827c10dbcda2ac",
+            "sha256:b9cb1d40290d60a0330e3ce20e5a3a1a9a1db5e223952938b9b44f6d405aced3",
+            "sha256:e8656a2c5bef04453a70dd7d31be9f75257038f7f905898be4a316db8d180609"
+          ],
+          "input_hash": "sha256:a36071789a0173856a584f1d5d44174ffd5e50914776f2578328853f615d1ac7",
+          "input_id": "real-mesh-route-a-0001",
+          "next_required_checks": [],
+          "open_questions": [],
+          "ordinary_release": true,
+          "origin_checked": true,
+          "policy_allows_release": true,
+          "previous_protocol_hash": null,
+          "previous_protocol_id": null,
+          "protocol_hash": "sha256:b279abf0bbdb8ad4bfcb7f80c4e4f379f3ecec21a93899296d07f17da210cd22",
+          "protocol_id": "qikvrt:real-mesh:real-mesh-route-a-0001:v1",
+          "protocol_root_id": "qikvrt:real-mesh:real-mesh-route-a-0001",
+          "protocol_version": 1,
+          "reasons": [
+            "ALL_RELEASE_GATES_SATISFIED",
+            "BOUNDED_LOOPBACK_MULTI_PAIR_DELIVERY_REOBSERVED"
+          ],
+          "required_evidence_refs": [
+            "sha256:1fe8c320d72e82518820b88b6b83cd660707a24f9ba5f296526da2c5472c81ea",
+            "sha256:afe3032480c65bc5f7357c07a55f35e453f0d7c46bbd2171ac827c10dbcda2ac",
+            "sha256:b9cb1d40290d60a0330e3ce20e5a3a1a9a1db5e223952938b9b44f6d405aced3",
+            "sha256:e8656a2c5bef04453a70dd7d31be9f75257038f7f905898be4a316db8d180609"
+          ],
+          "responsibility_assigned": true,
+          "responsibility_owner": "QIKVRT_REAL_MULTI_PAIR_MESH_V1",
+          "risk_classified": true,
+          "risk_level": "LOW",
+          "schema": "qikvrt_responsibility_protocol_v1",
+          "semantics_reconstructed": true,
+          "state": "EFFECT_ACK_DONE",
+          "transport_ack": true
+        },
+        "state": "EFFECT_ACK_DONE"
+      },
+      "observation": {
+        "complete_route_reobserved": true,
+        "hop_receipt_sha256s": [
+          "sha256:b9cb1d40290d60a0330e3ce20e5a3a1a9a1db5e223952938b9b44f6d405aced3",
+          "sha256:e8656a2c5bef04453a70dd7d31be9f75257038f7f905898be4a316db8d180609",
+          "sha256:1fe8c320d72e82518820b88b6b83cd660707a24f9ba5f296526da2c5472c81ea",
+          "sha256:afe3032480c65bc5f7357c07a55f35e453f0d7c46bbd2171ac827c10dbcda2ac"
+        ],
+        "message_id": "real-mesh-route-a-0001",
+        "node_observations": [
+          {
+            "accepted_and_completed_reobserved": true,
+            "hop_receipt_sha256": "sha256:b9cb1d40290d60a0330e3ce20e5a3a1a9a1db5e223952938b9b44f6d405aced3",
+            "ledger_record_count": 2,
+            "ledger_tip_sha256": "sha256:6b7668c9890fe2845c4510888c102697e3c1d56a4ceee3e9236663781d1c1e1b",
+            "node_id": "pair-a-authority",
+            "pair_id": "pair-a",
+            "role": "AUTHORITY",
+            "root_tree_sha": "956c16b291c05243437b1f018321936e4438949a"
+          },
+          {
+            "accepted_and_completed_reobserved": true,
+            "hop_receipt_sha256": "sha256:e8656a2c5bef04453a70dd7d31be9f75257038f7f905898be4a316db8d180609",
+            "ledger_record_count": 2,
+            "ledger_tip_sha256": "sha256:f0797e0e36d9064b7731d0eb960032cb038f9b9ff5c643c531a3fb62a28d82e1",
+            "node_id": "pair-a-mirror",
+            "pair_id": "pair-a",
+            "role": "MIRROR",
+            "root_tree_sha": "bd421a2624d20804c74eef77647fc52fcdb1feec"
+          },
+          {
+            "accepted_and_completed_reobserved": true,
+            "hop_receipt_sha256": "sha256:1fe8c320d72e82518820b88b6b83cd660707a24f9ba5f296526da2c5472c81ea",
+            "ledger_record_count": 2,
+            "ledger_tip_sha256": "sha256:21d17a2140d96e4640077b1285e559662417cc93ef8fa904b0725c749aad91a3",
+            "node_id": "pair-b-mirror",
+            "pair_id": "pair-b",
+            "role": "MIRROR",
+            "root_tree_sha": "bd421a2624d20804c74eef77647fc52fcdb1feec"
+          },
+          {
+            "accepted_and_completed_reobserved": true,
+            "hop_receipt_sha256": "sha256:afe3032480c65bc5f7357c07a55f35e453f0d7c46bbd2171ac827c10dbcda2ac",
+            "ledger_record_count": 2,
+            "ledger_tip_sha256": "sha256:07b092b09076d3cbf751ea0fd245cfe4eb0ae4fbcf23e1e61b7bf2300c918ad7",
+            "node_id": "pair-b-authority",
+            "pair_id": "pair-b",
+            "role": "AUTHORITY",
+            "root_tree_sha": "956c16b291c05243437b1f018321936e4438949a"
+          }
+        ],
+        "path": [
+          "pair-a-authority",
+          "pair-a-mirror",
+          "pair-b-mirror",
+          "pair-b-authority"
+        ],
+        "payload_sha256": "sha256:a36071789a0173856a584f1d5d44174ffd5e50914776f2578328853f615d1ac7",
+        "route_id": "sha256:d0cd191b28b5a653c7993bc58be2e89c66be7552bdc0ba2fc42d600d5ac06352"
+      }
+    },
+    {
+      "bounded_effect_ack": {
+        "ordinary_release": true,
+        "responsibility_protocol": {
+          "connection_decided": true,
+          "connection_decision": "RELEASE",
+          "context_checked": true,
+          "created_utc": "2026-09-27T23:57:02.278137Z",
+          "effect_anticipated": true,
+          "evidence_refs": [
+            "sha256:3034afc90ec4288a594c06c856c6075ca8069b62b2c9df0710b5567c99224740",
+            "sha256:4008e3a899120a0a52840d7493155da688f15b4424de398a792f78f434710b85",
+            "sha256:433f1c09a36d1a04b035965e49ceecbfcb6c2ba57ecaec8c13061a99e0f40e3c",
+            "sha256:76e6116d6393b2ff97999a3d42f26015ed3eae35452658efa36fbea7d22cb034"
+          ],
+          "input_hash": "sha256:8b9605ad55a081e1c57ff8d3156f2e4a2e1fcfddc9b285f59e7895469598085e",
+          "input_id": "real-mesh-route-b-0001",
+          "next_required_checks": [],
+          "open_questions": [],
+          "ordinary_release": true,
+          "origin_checked": true,
+          "policy_allows_release": true,
+          "previous_protocol_hash": null,
+          "previous_protocol_id": null,
+          "protocol_hash": "sha256:3b06dfca0f1b088c5a982c6f2231f1946adfd3d75b1b46e3d9d9997410593d09",
+          "protocol_id": "qikvrt:real-mesh:real-mesh-route-b-0001:v1",
+          "protocol_root_id": "qikvrt:real-mesh:real-mesh-route-b-0001",
+          "protocol_version": 1,
+          "reasons": [
+            "ALL_RELEASE_GATES_SATISFIED",
+            "BOUNDED_LOOPBACK_MULTI_PAIR_DELIVERY_REOBSERVED"
+          ],
+          "required_evidence_refs": [
+            "sha256:3034afc90ec4288a594c06c856c6075ca8069b62b2c9df0710b5567c99224740",
+            "sha256:4008e3a899120a0a52840d7493155da688f15b4424de398a792f78f434710b85",
+            "sha256:433f1c09a36d1a04b035965e49ceecbfcb6c2ba57ecaec8c13061a99e0f40e3c",
+            "sha256:76e6116d6393b2ff97999a3d42f26015ed3eae35452658efa36fbea7d22cb034"
+          ],
+          "responsibility_assigned": true,
+          "responsibility_owner": "QIKVRT_REAL_MULTI_PAIR_MESH_V1",
+          "risk_classified": true,
+          "risk_level": "LOW",
+          "schema": "qikvrt_responsibility_protocol_v1",
+          "semantics_reconstructed": true,
+          "state": "EFFECT_ACK_DONE",
+          "transport_ack": true
+        },
+        "state": "EFFECT_ACK_DONE"
+      },
+      "observation": {
+        "complete_route_reobserved": true,
+        "hop_receipt_sha256s": [
+          "sha256:433f1c09a36d1a04b035965e49ceecbfcb6c2ba57ecaec8c13061a99e0f40e3c",
+          "sha256:3034afc90ec4288a594c06c856c6075ca8069b62b2c9df0710b5567c99224740",
+          "sha256:76e6116d6393b2ff97999a3d42f26015ed3eae35452658efa36fbea7d22cb034",
+          "sha256:4008e3a899120a0a52840d7493155da688f15b4424de398a792f78f434710b85"
+        ],
+        "message_id": "real-mesh-route-b-0001",
+        "node_observations": [
+          {
+            "accepted_and_completed_reobserved": true,
+            "hop_receipt_sha256": "sha256:433f1c09a36d1a04b035965e49ceecbfcb6c2ba57ecaec8c13061a99e0f40e3c",
+            "ledger_record_count": 4,
+            "ledger_tip_sha256": "sha256:58744b0ca4a83d81afddfda0e7c73910a153b31eaf894f162e8028e2a86c1cb2",
+            "node_id": "pair-a-authority",
+            "pair_id": "pair-a",
+            "role": "AUTHORITY",
+            "root_tree_sha": "956c16b291c05243437b1f018321936e4438949a"
+          },
+          {
+            "accepted_and_completed_reobserved": true,
+            "hop_receipt_sha256": "sha256:3034afc90ec4288a594c06c856c6075ca8069b62b2c9df0710b5567c99224740",
+            "ledger_record_count": 4,
+            "ledger_tip_sha256": "sha256:6fd3332b0b4b3b7e9c8ab6b0bfeb4e7582fc3858909e713cb7972d71a1235aa4",
+            "node_id": "pair-b-authority",
+            "pair_id": "pair-b",
+            "role": "AUTHORITY",
+            "root_tree_sha": "956c16b291c05243437b1f018321936e4438949a"
+          },
+          {
+            "accepted_and_completed_reobserved": true,
+            "hop_receipt_sha256": "sha256:76e6116d6393b2ff97999a3d42f26015ed3eae35452658efa36fbea7d22cb034",
+            "ledger_record_count": 4,
+            "ledger_tip_sha256": "sha256:3986b4dc95e4ca945d831c408d839c7e46373da982f30757268e1393e415f7ba",
+            "node_id": "pair-b-mirror",
+            "pair_id": "pair-b",
+            "role": "MIRROR",
+            "root_tree_sha": "bd421a2624d20804c74eef77647fc52fcdb1feec"
+          },
+          {
+            "accepted_and_completed_reobserved": true,
+            "hop_receipt_sha256": "sha256:4008e3a899120a0a52840d7493155da688f15b4424de398a792f78f434710b85",
+            "ledger_record_count": 4,
+            "ledger_tip_sha256": "sha256:03d061f5cf229465a57780bad7340172c73eab0b428f93d406dc7d789d5ee6d2",
+            "node_id": "pair-a-mirror",
+            "pair_id": "pair-a",
+            "role": "MIRROR",
+            "root_tree_sha": "bd421a2624d20804c74eef77647fc52fcdb1feec"
+          }
+        ],
+        "path": [
+          "pair-a-authority",
+          "pair-b-authority",
+          "pair-b-mirror",
+          "pair-a-mirror"
+        ],
+        "payload_sha256": "sha256:8b9605ad55a081e1c57ff8d3156f2e4a2e1fcfddc9b285f59e7895469598085e",
+        "route_id": "sha256:b534cdd5b14f291508ca2cfe66ff4879d52e76ee35ee4adae9fda4f2d0c9c34a"
+      }
+    }
+  ],
+  "schema": "qikvrt_real_mesh_execution_receipt_v1",
+  "source_head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+  "source_tree": "956c16b291c05243437b1f018321936e4438949a",
+  "topology": {
+    "links": [
+      [
+        "pair-a-authority",
+        "pair-a-mirror"
+      ],
+      [
+        "pair-a-authority",
+        "pair-b-authority"
+      ],
+      [
+        "pair-a-mirror",
+        "pair-b-authority"
+      ],
+      [
+        "pair-a-mirror",
+        "pair-b-mirror"
+      ],
+      [
+        "pair-b-authority",
+        "pair-b-mirror"
+      ]
+    ],
+    "mesh_id": "QIKVRT_REAL_MULTI_PAIR_MESH_V1",
+    "network_scope": "LOOPBACK_TCP_ONLY",
+    "nodes": [
+      {
+        "host": "127.0.0.1",
+        "instance_id": "authority-instance-a",
+        "node_id": "pair-a-authority",
+        "pair_id": "pair-a",
+        "port": 42783,
+        "repository": "Goldkelch/qik-vrt",
+        "role": "AUTHORITY",
+        "root_tree_sha": "956c16b291c05243437b1f018321936e4438949a"
+      },
+      {
+        "host": "127.0.0.1",
+        "instance_id": "mirror-instance-a",
+        "node_id": "pair-a-mirror",
+        "pair_id": "pair-a",
+        "port": 39119,
+        "repository": "ingolf-lohmann/qik-vrt",
+        "role": "MIRROR",
+        "root_tree_sha": "bd421a2624d20804c74eef77647fc52fcdb1feec"
+      },
+      {
+        "host": "127.0.0.1",
+        "instance_id": "authority-instance-b",
+        "node_id": "pair-b-authority",
+        "pair_id": "pair-b",
+        "port": 38849,
+        "repository": "Goldkelch/qik-vrt",
+        "role": "AUTHORITY",
+        "root_tree_sha": "956c16b291c05243437b1f018321936e4438949a"
+      },
+      {
+        "host": "127.0.0.1",
+        "instance_id": "mirror-instance-b",
+        "node_id": "pair-b-mirror",
+        "pair_id": "pair-b",
+        "port": 46257,
+        "repository": "ingolf-lohmann/qik-vrt",
+        "role": "MIRROR",
+        "root_tree_sha": "bd421a2624d20804c74eef77647fc52fcdb1feec"
+      }
+    ],
+    "schema": "qikvrt_real_mesh_topology_v1"
+  },
+  "topology_sha256": "sha256:bf267a353d1135cdf6321cdfff97f9e2584386b43911692c0703202996380886",
+  "transport": "TCP"
+}

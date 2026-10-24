@@ -1,0 +1,204 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright (c) 2026 Ingolf Lohmann.
+
+name: QIK-VRT Mirror aphorism candidate bytes transport v2
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/qikvrt_mirror_aphorism_candidate_bytes_transport_v2.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: qikvrt-mirror-aphorism-candidate-bytes-v2-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  materialize:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.head_ref == 'transport/mirror-aphorism-candidate-bytes-20260804-v1'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      MIRROR_PARENT: 3568e24a31764ad0b3704d15645b1b2dbd3d2ec4
+      AUTHORITY_BASE: bad1a0558b88b9bc13a6b47fe621ac27d8bfaa62
+      AUTHORITY_HEAD: 770ac0c1e192aba7134020d972f42e50c27889ca
+      CARRIER_V1: .github/workflows/qikvrt_mirror_aphorism_candidate_bytes_transport.yml
+      CARRIER_V2: .github/workflows/qikvrt_mirror_aphorism_candidate_bytes_transport_v2.yml
+      MIRROR_MAKEFILE_BLOB: 469bd4fa9a3af1f3a1f3bcff140f4ca41f4f53f3
+      OUTPUT_DIR: ${{ runner.temp }}/qikvrt-mirror-aphorism-candidate
+    steps:
+      - name: Check out exact transport head without persisted credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.12"
+
+      - name: Verify two-path transport delta and predecessor
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor "$MIRROR_PARENT" HEAD
+          expected="$(printf '%s\n' "$CARRIER_V1" "$CARRIER_V2")"
+          observed="$(git diff --name-only --no-renames "$MIRROR_PARENT" HEAD --)"
+          test "$observed" = "$expected"
+          test "$(git rev-parse "$MIRROR_PARENT:Makefile")" = "$MIRROR_MAKEFILE_BLOB"
+
+      - name: Fetch Authority and copy exactly 72 portable paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          git remote add authority https://github.com/Goldkelch/qik-vrt.git
+          git fetch --no-tags authority "$AUTHORITY_BASE" "$AUTHORITY_HEAD"
+          git merge-base --is-ancestor "$AUTHORITY_BASE" "$AUTHORITY_HEAD"
+          mapfile -t all_paths < <(git diff --name-only --no-renames "$AUTHORITY_BASE" "$AUTHORITY_HEAD" --)
+          test "${#all_paths[@]}" -eq 76
+          : > "$RUNNER_TEMP/portable_paths.txt"
+          for path in "${all_paths[@]}"; do
+            case "$path" in
+              Makefile|REPOSITORY_FILE_MANIFEST.json|REPOSITORY_FILE_MANIFEST.json.sha256|SHA256SUMS.txt)
+                continue
+                ;;
+            esac
+            status="$(git diff --name-status --no-renames "$AUTHORITY_BASE" "$AUTHORITY_HEAD" -- "$path" | awk 'NR==1 {print $1}')"
+            case "$status" in A|M) ;; *) exit 2 ;; esac
+            git checkout "$AUTHORITY_HEAD" -- "$path"
+            test "$(git hash-object "$path")" = "$(git rev-parse "$AUTHORITY_HEAD:$path")"
+            printf '%s\n' "$path" >> "$RUNNER_TEMP/portable_paths.txt"
+          done
+          test "$(wc -l < "$RUNNER_TEMP/portable_paths.txt")" -eq 72
+
+      - name: Adapt only Mirror Makefile registration
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git hash-object Makefile)" = "$MIRROR_MAKEFILE_BLOB"
+          python3 -B - <<'PY'
+          from pathlib import Path
+          path = Path('Makefile')
+          text = path.read_text(encoding='utf-8')
+          pairs = (
+              (
+                  'tests/test_virtual_past_reception.py tests/test_quantum_classical_runtime_article.py',
+                  'tests/test_virtual_past_reception.py tests/test_aphorism_corpus_v2.py tests/test_quantum_classical_runtime_article.py',
+              ),
+              (
+                  'tests.test_virtual_past_reception tests.test_quantum_classical_runtime_article',
+                  'tests.test_virtual_past_reception tests.test_aphorism_corpus_v2 tests.test_quantum_classical_runtime_article',
+              ),
+          )
+          for old, new in pairs:
+              if text.count(old) != 1:
+                  raise SystemExit('BLOCK: Mirror Makefile registration anchor is not unique')
+              text = text.replace(old, new, 1)
+          path.write_text(text, encoding='utf-8', newline='\n')
+          PY
+
+      - name: Provision XeLaTeX and Poppler
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! command -v xelatex >/dev/null 2>&1 || ! command -v pdffonts >/dev/null 2>&1; then
+            sudo apt-get update -o Acquire::Retries=3
+            sudo env DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
+              texlive-xetex texlive-latex-extra texlive-lang-german \
+              texlive-fonts-recommended fonts-lmodern poppler-utils
+          fi
+          for command in xelatex pdfinfo pdftotext pdftoppm pdffonts; do
+            command -v "$command"
+          done
+
+      - name: Materialize and verify scientific bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_aphorism_corpus_v2.py --materialize --json
+          python3 -B tools/qikvrt_aphorism_corpus_v2.py --check --json
+          python3 -B -m unittest -v tests.test_aphorism_corpus_v2
+          while IFS= read -r path; do
+            test "$(git hash-object "$path")" = "$(git rev-parse "$AUTHORITY_HEAD:$path")"
+          done < "$RUNNER_TEMP/portable_paths.txt"
+
+      - name: Remove carriers and regenerate Mirror integrity
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm "$CARRIER_V1" "$CARRIER_V2"
+          python3 -B tools/qikvrt_integrity.py generate
+          python3 -B tools/qikvrt_integrity.py verify
+
+      - name: Run complete Mirror gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          make test
+          python3 -B tools/qikvrt_integrity.py verify
+
+      - name: Stage and verify exact candidate boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add -A
+          mapfile -t final_paths < <(git diff --cached --name-only --no-renames "$MIRROR_PARENT" --)
+          test "${#final_paths[@]}" -eq 76
+          cp "$RUNNER_TEMP/portable_paths.txt" "$RUNNER_TEMP/allowed_paths.txt"
+          printf '%s\n' Makefile REPOSITORY_FILE_MANIFEST.json REPOSITORY_FILE_MANIFEST.json.sha256 SHA256SUMS.txt >> "$RUNNER_TEMP/allowed_paths.txt"
+          sort -u "$RUNNER_TEMP/allowed_paths.txt" -o "$RUNNER_TEMP/allowed_paths.txt"
+          test "$(wc -l < "$RUNNER_TEMP/allowed_paths.txt")" -eq 76
+          for path in "${final_paths[@]}"; do
+            grep -Fqx "$path" "$RUNNER_TEMP/allowed_paths.txt"
+          done
+          test ! -e "$CARRIER_V1"
+          test ! -e "$CARRIER_V2"
+
+      - name: Emit candidate map and Mirror-native bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUTPUT_DIR"
+          cp Makefile REPOSITORY_FILE_MANIFEST.json REPOSITORY_FILE_MANIFEST.json.sha256 SHA256SUMS.txt "$OUTPUT_DIR/"
+          : > "$OUTPUT_DIR/CANDIDATE_MAP.tsv"
+          while IFS= read -r path; do
+            mode="$(git ls-tree "$AUTHORITY_HEAD" -- "$path" | awk '{print $1}')"
+            blob="$(git rev-parse "$AUTHORITY_HEAD:$path")"
+            bytes="$(wc -c < "$path")"
+            digest="$(sha256sum "$path" | awk '{print $1}')"
+            printf '%s\t%s\tblob\t%s\t%s\t%s\tauthority_portable\n' "$path" "$mode" "$blob" "$bytes" "$digest" >> "$OUTPUT_DIR/CANDIDATE_MAP.tsv"
+          done < "$RUNNER_TEMP/portable_paths.txt"
+          for path in Makefile REPOSITORY_FILE_MANIFEST.json REPOSITORY_FILE_MANIFEST.json.sha256 SHA256SUMS.txt; do
+            blob="$(git hash-object "$path")"
+            bytes="$(wc -c < "$path")"
+            digest="$(sha256sum "$path" | awk '{print $1}')"
+            printf '%s\t100644\tblob\t%s\t%s\t%s\tmirror_native\n' "$path" "$blob" "$bytes" "$digest" >> "$OUTPUT_DIR/CANDIDATE_MAP.tsv"
+          done
+          test "$(wc -l < "$OUTPUT_DIR/CANDIDATE_MAP.tsv")" -eq 76
+          pdf="docs/publications/2026-08-04-aphorism-corpus-scientific-assessment/QIK-VRT_Aphorism_Corpus_Scientific_Assessment_2026-08-04.pdf"
+          {
+            printf 'MIRROR_PARENT=%s\n' "$MIRROR_PARENT"
+            printf 'AUTHORITY_HEAD=%s\n' "$AUTHORITY_HEAD"
+            printf 'PORTABLE_PATH_COUNT=72\n'
+            printf 'FINAL_CHANGED_PATH_COUNT=76\n'
+            printf 'PDF_BYTES=%s\n' "$(wc -c < "$pdf")"
+            printf 'PDF_SHA256=%s\n' "$(sha256sum "$pdf" | awk '{print $1}')"
+            printf 'PDF_GIT_BLOB=%s\n' "$(git hash-object "$pdf")"
+            printf 'PASS=false\nFINAL_PASS=false\nEFFECT_ACK_DONE=false\n'
+          } > "$OUTPUT_DIR/RECEIPT.txt"
+
+      - name: Upload exact bounded candidate data
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qikvrt-mirror-aphorism-candidate-v2-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 1
+          if-no-files-found: error
+          path: ${{ runner.temp }}/qikvrt-mirror-aphorism-candidate/**

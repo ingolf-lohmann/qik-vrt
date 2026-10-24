@@ -1,0 +1,251 @@
+{
+  "canonical_sha256": "b518152fb0f13cd4dd92dd92f05c634927d8553a12dbfa9aa38a0ee2288d9fe0",
+  "expected_message_repr": "'QIK-VRT synchronized repository mesh snapshot 1.0.0\\n\\nCommon annotated tag for the byte-identical Authority and Mirror content tree after dependency-security maintenance, authenticated repository-native audio requests, Zenodo inventory refresh, and status documentation synchronization. No GitHub Release object and no new Zenodo publication are created.'",
+  "expected_tagger": {
+    "date": "2026-07-24T17:30:00Z",
+    "email": "ingolf.lohmann@live.com",
+    "name": "Ingolf Lohmann"
+  },
+  "repositories": [
+    {
+      "actual_message_repr": "'QIK-VRT synchronized repository mesh snapshot 1.0.0\\n\\nCommon annotated tag for the byte-identical Authority and Mirror content tree after dependency-security maintenance, authenticated repository-native audio requests, Zenodo inventory refresh, and status documentation synchronization. No GitHub Release object and no new Zenodo publication are created.'",
+      "actual_tagger": {
+        "date": "2026-07-24T17:30:00Z",
+        "email": "ingolf.lohmann@live.com",
+        "name": "Ingolf Lohmann"
+      },
+      "checks": {
+        "commit_response_ok": true,
+        "main_commit_matches": true,
+        "main_response_ok": true,
+        "tag_message_matches": true,
+        "tag_message_matches_rstrip": true,
+        "tag_name_matches": true,
+        "tag_object_response_ok": true,
+        "tag_ref_is_annotated": true,
+        "tag_ref_response_ok": true,
+        "tag_target_commit_matches": true,
+        "tag_target_type_commit": true,
+        "tagger_matches": true,
+        "target_tree_matches": true
+      },
+      "commit_response": {
+        "ok": true,
+        "value": {
+          "author": {
+            "date": "2026-07-24T18:14:42Z",
+            "email": "ingolf.lohmann@web.de",
+            "name": "ingolf-lohmann"
+          },
+          "committer": {
+            "date": "2026-07-24T18:14:42Z",
+            "email": "noreply@github.com",
+            "name": "GitHub"
+          },
+          "html_url": "https://github.com/Goldkelch/qik-vrt/commit/187113e970f810db54697db5681a6c8d77c26e98",
+          "message": "Synchronize repository mesh snapshot (#64)\n\nCreate the durable Authority snapshot for v2026.07.24-repository-mesh-sync-1.0.0.\n\n- refresh README, STATUS and CHANGELOG with the current Zenodo inventory;\n- install the inert fail-closed common-tag contract;\n- preserve regenerated repository integrity for 2,669 classified entries and 2,660 immutable digests;\n- exclude all temporary materialization and diagnostic workflows from the final tree.\n\nThe exact head passed QIKVRT CI, repository evidence materialization and Collective Proposal Review. No GitHub Release object or new Zenodo publication is created.",
+          "node_id": "C_kwDOS8giZtoAKDE4NzExM2U5NzBmODEwZGI1NDY5N2RiNTY4MWE2YzhkNzdjMjZlOTg",
+          "parents": [
+            {
+              "html_url": "https://github.com/Goldkelch/qik-vrt/commit/ae04e07c72f2e2631d65678305822a6da809000a",
+              "sha": "ae04e07c72f2e2631d65678305822a6da809000a",
+              "url": "https://api.github.com/repos/Goldkelch/qik-vrt/git/commits/ae04e07c72f2e2631d65678305822a6da809000a"
+            }
+          ],
+          "sha": "187113e970f810db54697db5681a6c8d77c26e98",
+          "tree": {
+            "sha": "cd91a4961934610b95464dea8a5b912cdc4683a7",
+            "url": "https://api.github.com/repos/Goldkelch/qik-vrt/git/trees/cd91a4961934610b95464dea8a5b912cdc4683a7"
+          },
+          "url": "https://api.github.com/repos/Goldkelch/qik-vrt/git/commits/187113e970f810db54697db5681a6c8d77c26e98",
+          "verification": {
+            "payload": "tree cd91a4961934610b95464dea8a5b912cdc4683a7\nparent ae04e07c72f2e2631d65678305822a6da809000a\nauthor ingolf-lohmann <ingolf.lohmann@web.de> 1784916882 +0200\ncommitter GitHub <noreply@github.com> 1784916882 +0200\n\nSynchronize repository mesh snapshot (#64)\n\nCreate the durable Authority snapshot for v2026.07.24-repository-mesh-sync-1.0.0.\n\n- refresh README, STATUS and CHANGELOG with the current Zenodo inventory;\n- install the inert fail-closed common-tag contract;\n- preserve regenerated repository integrity for 2,669 classified entries and 2,660 immutable digests;\n- exclude all temporary materialization and diagnostic workflows from the final tree.\n\nThe exact head passed QIKVRT CI, repository evidence materialization and Collective Proposal Review. No GitHub Release object or new Zenodo publication is created.",
+            "reason": "valid",
+            "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJqY6uSCRC1aQ7uu5UhlAAAK+4QAAXgX0lGjZy79EBKjNOQExIM\nlQXvE2gx7zixwqnHG1H2TSpjH8xfMkWGnOMVsurFdLoS3N296pwWVeLg7DcdMfx0\nMPhaK873Y+8Z2nZh/p3ajPQQ7m/pjZSHcMSoMIFawtJggBLS4hEG8JLaY71DGObz\n7skyAz87jxpxOuk7cpIQa2XIs9gsuwU5UU5vTnIMYitk92VBE15Fpr0UOT3E/vO5\nIzRwSpFA3O26RBE8WjRw5FWjNYqZKaZYTAF42yWNU1BogvTUGLayprDCA4F+5fm7\nk1n8UWNFW3iisIypF3G6fKPJTn81AJCbfoAPR6TlM8YAwfjKiquM3LTjlfOq73QX\ndsyEspRET8OZMAtCDGpE/qXVBZcNo8UPWZ+tx2AZZpz2khEQ5TAYf3qOX6a0/h6T\nRNuA21Gg1ksOU/N3bzjguzISrJOOAfUFjm9RFaKZEh/d+i81NNdOcbUE8soURkKl\n89ZX61VRUv4BYis9UtIhEvGlOyMLIdQiEqx13QcaMRwdpyYm+7Gh6d21vSWHHik7\na4msYQDaxKec6vRUkfsY5wUTwXxpdireCdG9ynFHYHMLzLactHtUtU5trC+ZeFc2\nPEEcvofIsZH+jLaXpGLojXsZxTj8UEMer9iXOEUjvYjAYeiAaePGqFw74ki2nqeC\nPO5b7IBB6R/fuCsIb4s7\n=80wp\n-----END PGP SIGNATURE-----\n",
+            "verified": true,
+            "verified_at": "2026-07-24T18:14:43Z"
+          }
+        }
+      },
+      "expected_commit": "187113e970f810db54697db5681a6c8d77c26e98",
+      "main_response": {
+        "ok": true,
+        "value": {
+          "node_id": "REF_kwDOS8giZq9yZWZzL2hlYWRzL21haW4",
+          "object": {
+            "sha": "187113e970f810db54697db5681a6c8d77c26e98",
+            "type": "commit",
+            "url": "https://api.github.com/repos/Goldkelch/qik-vrt/git/commits/187113e970f810db54697db5681a6c8d77c26e98"
+          },
+          "ref": "refs/heads/main",
+          "url": "https://api.github.com/repos/Goldkelch/qik-vrt/git/refs/heads/main"
+        }
+      },
+      "pass": true,
+      "repository": "Goldkelch/qik-vrt",
+      "tag_object_response": {
+        "ok": true,
+        "value": {
+          "message": "QIK-VRT synchronized repository mesh snapshot 1.0.0\n\nCommon annotated tag for the byte-identical Authority and Mirror content tree after dependency-security maintenance, authenticated repository-native audio requests, Zenodo inventory refresh, and status documentation synchronization. No GitHub Release object and no new Zenodo publication are created.",
+          "node_id": "TA_kwDOS8giZtoAKDQyOTAzZWMxZjYzNDI2MWY2ODJiMjJjNTA5OGEwMmE0MWIwM2Q3NDk",
+          "object": {
+            "sha": "187113e970f810db54697db5681a6c8d77c26e98",
+            "type": "commit",
+            "url": "https://api.github.com/repos/Goldkelch/qik-vrt/git/commits/187113e970f810db54697db5681a6c8d77c26e98"
+          },
+          "sha": "42903ec1f634261f682b22c5098a02a41b03d749",
+          "tag": "v2026.07.24-repository-mesh-sync-1.0.0",
+          "tagger": {
+            "date": "2026-07-24T17:30:00Z",
+            "email": "ingolf.lohmann@live.com",
+            "name": "Ingolf Lohmann"
+          },
+          "url": "https://api.github.com/repos/Goldkelch/qik-vrt/git/tags/42903ec1f634261f682b22c5098a02a41b03d749",
+          "verification": {
+            "payload": null,
+            "reason": "unsigned",
+            "signature": null,
+            "verified": false,
+            "verified_at": null
+          }
+        }
+      },
+      "tag_object_sha": "42903ec1f634261f682b22c5098a02a41b03d749",
+      "tag_ref_response": {
+        "ok": true,
+        "value": {
+          "node_id": "REF_kwDOS8giZtoAMHJlZnMvdGFncy92MjAyNi4wNy4yNC1yZXBvc2l0b3J5LW1lc2gtc3luYy0xLjAuMA",
+          "object": {
+            "sha": "42903ec1f634261f682b22c5098a02a41b03d749",
+            "type": "tag",
+            "url": "https://api.github.com/repos/Goldkelch/qik-vrt/git/tags/42903ec1f634261f682b22c5098a02a41b03d749"
+          },
+          "ref": "refs/tags/v2026.07.24-repository-mesh-sync-1.0.0",
+          "url": "https://api.github.com/repos/Goldkelch/qik-vrt/git/refs/tags/v2026.07.24-repository-mesh-sync-1.0.0"
+        }
+      }
+    },
+    {
+      "actual_message_repr": "'QIK-VRT synchronized repository mesh snapshot 1.0.0\\n\\nCommon annotated tag for the byte-identical Authority and Mirror content tree after dependency-security maintenance, authenticated repository-native audio requests, Zenodo inventory refresh, and status documentation synchronization. No GitHub Release object and no new Zenodo publication are created.'",
+      "actual_tagger": {
+        "date": "2026-07-24T17:30:00Z",
+        "email": "ingolf.lohmann@live.com",
+        "name": "Ingolf Lohmann"
+      },
+      "checks": {
+        "commit_response_ok": true,
+        "main_commit_matches": false,
+        "main_response_ok": true,
+        "tag_message_matches": true,
+        "tag_message_matches_rstrip": true,
+        "tag_name_matches": true,
+        "tag_object_response_ok": true,
+        "tag_ref_is_annotated": true,
+        "tag_ref_response_ok": true,
+        "tag_target_commit_matches": true,
+        "tag_target_type_commit": true,
+        "tagger_matches": true,
+        "target_tree_matches": true
+      },
+      "commit_response": {
+        "ok": true,
+        "value": {
+          "author": {
+            "date": "2026-07-24T18:20:18Z",
+            "email": "ingolf.lohmann@web.de",
+            "name": "ingolf-lohmann"
+          },
+          "committer": {
+            "date": "2026-07-24T18:20:18Z",
+            "email": "noreply@github.com",
+            "name": "GitHub"
+          },
+          "html_url": "https://github.com/ingolf-lohmann/qik-vrt/commit/5266ae8625a20508a7c1af1c3a6aa4d0b104f170",
+          "message": "Mirror synchronized repository mesh snapshot (#44)\n\nImport the exact Authority tree cd91a4961934610b95464dea8a5b912cdc4683a7 after the authenticated-audio update, Zenodo inventory refresh, integrity regeneration, and inert common-tag contract.\n\nAuthority commit: 187113e970f810db54697db5681a6c8d77c26e98\nMirror parent: 9c4ac1fc95875b09dee291b1a3ef284804e7a56b\nRepository content-tree SHA-256: 71916ac07dcb9d0cf8f51b41b3c3d00f4b9d14037e5bc1819ec223d0773dd3ae\n\nNo transport workflow is included in this commit.",
+          "node_id": "C_kwDOS-xnU9oAKDUyNjZhZTg2MjVhMjA1MDhhN2MxYWYxYzNhNmFhNGQwYjEwNGYxNzA",
+          "parents": [
+            {
+              "html_url": "https://github.com/ingolf-lohmann/qik-vrt/commit/9c4ac1fc95875b09dee291b1a3ef284804e7a56b",
+              "sha": "9c4ac1fc95875b09dee291b1a3ef284804e7a56b",
+              "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/commits/9c4ac1fc95875b09dee291b1a3ef284804e7a56b"
+            }
+          ],
+          "sha": "5266ae8625a20508a7c1af1c3a6aa4d0b104f170",
+          "tree": {
+            "sha": "cd91a4961934610b95464dea8a5b912cdc4683a7",
+            "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/trees/cd91a4961934610b95464dea8a5b912cdc4683a7"
+          },
+          "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/commits/5266ae8625a20508a7c1af1c3a6aa4d0b104f170",
+          "verification": {
+            "payload": "tree cd91a4961934610b95464dea8a5b912cdc4683a7\nparent 9c4ac1fc95875b09dee291b1a3ef284804e7a56b\nauthor ingolf-lohmann <ingolf.lohmann@web.de> 1784917218 +0200\ncommitter GitHub <noreply@github.com> 1784917218 +0200\n\nMirror synchronized repository mesh snapshot (#44)\n\nImport the exact Authority tree cd91a4961934610b95464dea8a5b912cdc4683a7 after the authenticated-audio update, Zenodo inventory refresh, integrity regeneration, and inert common-tag contract.\n\nAuthority commit: 187113e970f810db54697db5681a6c8d77c26e98\nMirror parent: 9c4ac1fc95875b09dee291b1a3ef284804e7a56b\nRepository content-tree SHA-256: 71916ac07dcb9d0cf8f51b41b3c3d00f4b9d14037e5bc1819ec223d0773dd3ae\n\nNo transport workflow is included in this commit.",
+            "reason": "valid",
+            "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJqY6ziCRC1aQ7uu5UhlAAARmcQAEZO00HnIt5YfrW6ZeDxFL/s\nJM6BIjEdYwt3pM8Techx1Ce1ySRFO8a/iLJfPEn4pO3HwsOCNCx4DhB9Mj+RCE5U\n47m2SAGD3+ALAXH40zzGcd7Pzb7KothIbFT9ZoIG6dIsrH63MhnQH1CiKV6iwWKq\nP+2ZfRHSIf81B9EQ2CHJQz5kgEQbSrnymmQNWIqMBu+mWXhDOqK2veuLCyIK43mO\nx4UHjmV9+C/yWqhZuP0QDAXZtAqZ0MZf4DIzMndiXZkqwMhH/y/mXWlwWT1NtPms\npfv9JFTTlzkV/L+inyQTGuBRl3VyQcG4ho4zs6rYTYdCvuK8p+4g8Y98r0QVf29c\njaVMpl1NN1nex0gkAIt9d2Apgh5Os5ZBcJcSXS+eCNW7BsQGokVz7pGMXQ708jBx\nAmsKb1URWuGPGu44tj/ZIJuSZUkt4qFrQtAY8U9OtJW4lCP+CrHZsWuveF4e7k8i\nmQoFWZakqgYFnqL7wwIUYdMIOTImK6JWIfsgM1cTD24qYX1cPMey8BLLRmU6R0fc\nK7djoDSPDzj/ffPPuRj8CaD0/a7ALU4MtrVCY0EiReEGuZeK1v0Ksan651Y0LGEk\n6b5yG/NhxvNiyxs1uAyZh7e+xWbq7VdEH+hfzMIRCM993EwpLFzkRHqYsm9LwQrq\nWFD/cQkUrsuIgU0SDjzS\n=6YIy\n-----END PGP SIGNATURE-----\n",
+            "verified": true,
+            "verified_at": "2026-07-24T18:20:18Z"
+          }
+        }
+      },
+      "expected_commit": "5266ae8625a20508a7c1af1c3a6aa4d0b104f170",
+      "main_response": {
+        "ok": true,
+        "value": {
+          "node_id": "REF_kwDOS-xnU69yZWZzL2hlYWRzL21haW4",
+          "object": {
+            "sha": "b704319243aa79595eb0d1af06f164a06eb4e411",
+            "type": "commit",
+            "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/commits/b704319243aa79595eb0d1af06f164a06eb4e411"
+          },
+          "ref": "refs/heads/main",
+          "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/refs/heads/main"
+        }
+      },
+      "pass": false,
+      "repository": "ingolf-lohmann/qik-vrt",
+      "tag_object_response": {
+        "ok": true,
+        "value": {
+          "message": "QIK-VRT synchronized repository mesh snapshot 1.0.0\n\nCommon annotated tag for the byte-identical Authority and Mirror content tree after dependency-security maintenance, authenticated repository-native audio requests, Zenodo inventory refresh, and status documentation synchronization. No GitHub Release object and no new Zenodo publication are created.",
+          "node_id": "TA_kwDOS-xnU9oAKDdhYTQ1MjU2MGY3ODMwNzc5NDg3N2FmMjMwNjQ3MzkwMDIyN2IxYzg",
+          "object": {
+            "sha": "5266ae8625a20508a7c1af1c3a6aa4d0b104f170",
+            "type": "commit",
+            "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/commits/5266ae8625a20508a7c1af1c3a6aa4d0b104f170"
+          },
+          "sha": "7aa452560f78307794877af2306473900227b1c8",
+          "tag": "v2026.07.24-repository-mesh-sync-1.0.0",
+          "tagger": {
+            "date": "2026-07-24T17:30:00Z",
+            "email": "ingolf.lohmann@live.com",
+            "name": "Ingolf Lohmann"
+          },
+          "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/tags/7aa452560f78307794877af2306473900227b1c8",
+          "verification": {
+            "payload": null,
+            "reason": "unsigned",
+            "signature": null,
+            "verified": false,
+            "verified_at": null
+          }
+        }
+      },
+      "tag_object_sha": "7aa452560f78307794877af2306473900227b1c8",
+      "tag_ref_response": {
+        "ok": true,
+        "value": {
+          "node_id": "REF_kwDOS-xnU9oAMHJlZnMvdGFncy92MjAyNi4wNy4yNC1yZXBvc2l0b3J5LW1lc2gtc3luYy0xLjAuMA",
+          "object": {
+            "sha": "7aa452560f78307794877af2306473900227b1c8",
+            "type": "tag",
+            "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/tags/7aa452560f78307794877af2306473900227b1c8"
+          },
+          "ref": "refs/tags/v2026.07.24-repository-mesh-sync-1.0.0",
+          "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/refs/tags/v2026.07.24-repository-mesh-sync-1.0.0"
+        }
+      }
+    }
+  ],
+  "schema": "qikvrt_common_repository_mesh_tag_diagnostic_v1",
+  "shared_tree": "cd91a4961934610b95464dea8a5b912cdc4683a7",
+  "status": "DIAGNOSTIC_RECORDED_WITH_DIFFERENCES",
+  "tag": "v2026.07.24-repository-mesh-sync-1.0.0"
+}

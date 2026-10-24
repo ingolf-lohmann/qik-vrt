@@ -1,0 +1,1168 @@
+{
+  "schema": "qikvrt_recovered_source_page_v1",
+  "entries": [
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 4182,
+      "source_blob": "4a1b2ee8904f7978d3d93c3f2649679645377c32",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0258_qikvrt_update_github_70934d8a0e5a.py",
+      "authority_locations": [
+        "payload/monthly_content/a0068.bin",
+        "payload/monthly_content/a0099.bin",
+        "payload/monthly_content/a0120.bin",
+        "payload/monthly_content/a0145.bin",
+        "payload/monthly_content/a0175.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 5097,
+      "source_blob": "9a4c060377723352676dc71778ebe6156e170723",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0259_qikvrt_update_zenodo_scientific_pdfs_50c8e4fed22c.py",
+      "authority_locations": [
+        "payload/monthly_content/a0100.bin",
+        "payload/monthly_content/a0121.bin",
+        "payload/monthly_content/a0146.bin",
+        "payload/monthly_content/a0176.bin",
+        "payload/monthly_content/a0213.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 4201,
+      "source_blob": "209a744f00925b3871bc277cc54181c2050c1bd1",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0307_persist_acceptance_change_to_github_cd0060868b2b.py",
+      "authority_locations": [
+        "payload/monthly_content/a0061.bin",
+        "payload/monthly_content/a0144.bin",
+        "payload/monthly_content/a0173.bin",
+        "payload/monthly_content/a0208.bin",
+        "payload/monthly_content/a0254.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 2693,
+      "source_blob": "7b885583b467a4669a19889d091f2234dd24ec15",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0308_persist_license_compliance_to_github_283150ee70ed.py",
+      "authority_locations": [
+        "payload/monthly_content/a0063.bin",
+        "payload/monthly_content/a0308.bin",
+        "payload/monthly_content/a0379.bin",
+        "payload/monthly_content/a0455.bin",
+        "payload/monthly_content/a0569.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 3815,
+      "source_blob": "b3d348761939ebafff5ceab55928f412972fabfe",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0309_persist_monthly_content_acceptance_failure_to_github_35d45898db68.py",
+      "authority_locations": [
+        "payload/monthly_content/a0064.bin",
+        "payload/monthly_content/a0174.bin",
+        "payload/monthly_content/a0209.bin",
+        "payload/monthly_content/a0255.bin",
+        "payload/monthly_content/a0309.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 3811,
+      "source_blob": "8e2800fc0ab43c021dcd536f93acddada2606f06",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0310_persist_zenodo_fourth_layer_to_github_eb30bf8e354a.py",
+      "authority_locations": [
+        "payload/monthly_content/a0065.bin",
+        "payload/monthly_content/a0210.bin",
+        "payload/monthly_content/a0256.bin",
+        "payload/monthly_content/a0310.bin",
+        "payload/monthly_content/a0381.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 4182,
+      "source_blob": "4a1b2ee8904f7978d3d93c3f2649679645377c32",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0312_qikvrt_update_github_70934d8a0e5a.py",
+      "authority_locations": [
+        "payload/monthly_content/a0068.bin",
+        "payload/monthly_content/a0099.bin",
+        "payload/monthly_content/a0120.bin",
+        "payload/monthly_content/a0145.bin",
+        "payload/monthly_content/a0175.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 5309,
+      "source_blob": "1fba150ad6f0a07909f7464fea9f70f8f9c21758",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0313_qikvrt_update_zenodo_scientific_pdfs_59e4523d2c22.py",
+      "authority_locations": [
+        "payload/monthly_content/a0069.bin",
+        "payload/monthly_content/a0313.bin",
+        "payload/monthly_content/a0384.bin",
+        "payload/monthly_content/a0461.bin",
+        "payload/monthly_content/a0575.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 4201,
+      "source_blob": "209a744f00925b3871bc277cc54181c2050c1bd1",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0377_persist_acceptance_change_to_github_cd0060868b2b.py",
+      "authority_locations": [
+        "payload/monthly_content/a0061.bin",
+        "payload/monthly_content/a0144.bin",
+        "payload/monthly_content/a0173.bin",
+        "payload/monthly_content/a0208.bin",
+        "payload/monthly_content/a0254.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 3237,
+      "source_blob": "ff45c90c5dded9f36c467763245e0a3a7ed78d2e",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0378_persist_acceptance_coverage_to_github_d8ebe5a13f36.py",
+      "authority_locations": [
+        "payload/monthly_content/a0062.bin",
+        "payload/monthly_content/a0378.bin",
+        "payload/monthly_content/a0454.bin",
+        "payload/monthly_content/a0568.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 2693,
+      "source_blob": "7b885583b467a4669a19889d091f2234dd24ec15",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0379_persist_license_compliance_to_github_283150ee70ed.py",
+      "authority_locations": [
+        "payload/monthly_content/a0063.bin",
+        "payload/monthly_content/a0308.bin",
+        "payload/monthly_content/a0379.bin",
+        "payload/monthly_content/a0455.bin",
+        "payload/monthly_content/a0569.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 3815,
+      "source_blob": "b3d348761939ebafff5ceab55928f412972fabfe",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0380_persist_monthly_content_acceptance_failure_to_github_35d45898db68.py",
+      "authority_locations": [
+        "payload/monthly_content/a0064.bin",
+        "payload/monthly_content/a0174.bin",
+        "payload/monthly_content/a0209.bin",
+        "payload/monthly_content/a0255.bin",
+        "payload/monthly_content/a0309.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 3811,
+      "source_blob": "8e2800fc0ab43c021dcd536f93acddada2606f06",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0381_persist_zenodo_fourth_layer_to_github_eb30bf8e354a.py",
+      "authority_locations": [
+        "payload/monthly_content/a0065.bin",
+        "payload/monthly_content/a0210.bin",
+        "payload/monthly_content/a0256.bin",
+        "payload/monthly_content/a0310.bin",
+        "payload/monthly_content/a0381.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 4182,
+      "source_blob": "4a1b2ee8904f7978d3d93c3f2649679645377c32",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0383_qikvrt_update_github_70934d8a0e5a.py",
+      "authority_locations": [
+        "payload/monthly_content/a0068.bin",
+        "payload/monthly_content/a0099.bin",
+        "payload/monthly_content/a0120.bin",
+        "payload/monthly_content/a0145.bin",
+        "payload/monthly_content/a0175.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 5309,
+      "source_blob": "1fba150ad6f0a07909f7464fea9f70f8f9c21758",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0384_qikvrt_update_zenodo_scientific_pdfs_59e4523d2c22.py",
+      "authority_locations": [
+        "payload/monthly_content/a0069.bin",
+        "payload/monthly_content/a0313.bin",
+        "payload/monthly_content/a0384.bin",
+        "payload/monthly_content/a0461.bin",
+        "payload/monthly_content/a0575.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 4201,
+      "source_blob": "209a744f00925b3871bc277cc54181c2050c1bd1",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0453_persist_acceptance_change_to_github_cd0060868b2b.py",
+      "authority_locations": [
+        "payload/monthly_content/a0061.bin",
+        "payload/monthly_content/a0144.bin",
+        "payload/monthly_content/a0173.bin",
+        "payload/monthly_content/a0208.bin",
+        "payload/monthly_content/a0254.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 3237,
+      "source_blob": "ff45c90c5dded9f36c467763245e0a3a7ed78d2e",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0454_persist_acceptance_coverage_to_github_d8ebe5a13f36.py",
+      "authority_locations": [
+        "payload/monthly_content/a0062.bin",
+        "payload/monthly_content/a0378.bin",
+        "payload/monthly_content/a0454.bin",
+        "payload/monthly_content/a0568.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 2693,
+      "source_blob": "7b885583b467a4669a19889d091f2234dd24ec15",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0455_persist_license_compliance_to_github_283150ee70ed.py",
+      "authority_locations": [
+        "payload/monthly_content/a0063.bin",
+        "payload/monthly_content/a0308.bin",
+        "payload/monthly_content/a0379.bin",
+        "payload/monthly_content/a0455.bin",
+        "payload/monthly_content/a0569.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 3815,
+      "source_blob": "b3d348761939ebafff5ceab55928f412972fabfe",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0456_persist_monthly_content_acceptance_failure_to_github_35d45898db68.py",
+      "authority_locations": [
+        "payload/monthly_content/a0064.bin",
+        "payload/monthly_content/a0174.bin",
+        "payload/monthly_content/a0209.bin",
+        "payload/monthly_content/a0255.bin",
+        "payload/monthly_content/a0309.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 3811,
+      "source_blob": "8e2800fc0ab43c021dcd536f93acddada2606f06",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0457_persist_zenodo_fourth_layer_to_github_eb30bf8e354a.py",
+      "authority_locations": [
+        "payload/monthly_content/a0065.bin",
+        "payload/monthly_content/a0210.bin",
+        "payload/monthly_content/a0256.bin",
+        "payload/monthly_content/a0310.bin",
+        "payload/monthly_content/a0381.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 4182,
+      "source_blob": "4a1b2ee8904f7978d3d93c3f2649679645377c32",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0460_qikvrt_update_github_70934d8a0e5a.py",
+      "authority_locations": [
+        "payload/monthly_content/a0068.bin",
+        "payload/monthly_content/a0099.bin",
+        "payload/monthly_content/a0120.bin",
+        "payload/monthly_content/a0145.bin",
+        "payload/monthly_content/a0175.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 5309,
+      "source_blob": "1fba150ad6f0a07909f7464fea9f70f8f9c21758",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0461_qikvrt_update_zenodo_scientific_pdfs_59e4523d2c22.py",
+      "authority_locations": [
+        "payload/monthly_content/a0069.bin",
+        "payload/monthly_content/a0313.bin",
+        "payload/monthly_content/a0384.bin",
+        "payload/monthly_content/a0461.bin",
+        "payload/monthly_content/a0575.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 4201,
+      "source_blob": "209a744f00925b3871bc277cc54181c2050c1bd1",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0567_persist_acceptance_change_to_github_cd0060868b2b.py",
+      "authority_locations": [
+        "payload/monthly_content/a0061.bin",
+        "payload/monthly_content/a0144.bin",
+        "payload/monthly_content/a0173.bin",
+        "payload/monthly_content/a0208.bin",
+        "payload/monthly_content/a0254.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 3237,
+      "source_blob": "ff45c90c5dded9f36c467763245e0a3a7ed78d2e",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0568_persist_acceptance_coverage_to_github_d8ebe5a13f36.py",
+      "authority_locations": [
+        "payload/monthly_content/a0062.bin",
+        "payload/monthly_content/a0378.bin",
+        "payload/monthly_content/a0454.bin",
+        "payload/monthly_content/a0568.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 2693,
+      "source_blob": "7b885583b467a4669a19889d091f2234dd24ec15",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0569_persist_license_compliance_to_github_283150ee70ed.py",
+      "authority_locations": [
+        "payload/monthly_content/a0063.bin",
+        "payload/monthly_content/a0308.bin",
+        "payload/monthly_content/a0379.bin",
+        "payload/monthly_content/a0455.bin",
+        "payload/monthly_content/a0569.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 3815,
+      "source_blob": "b3d348761939ebafff5ceab55928f412972fabfe",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0570_persist_monthly_content_acceptance_failure_to_github_35d45898db68.py",
+      "authority_locations": [
+        "payload/monthly_content/a0064.bin",
+        "payload/monthly_content/a0174.bin",
+        "payload/monthly_content/a0209.bin",
+        "payload/monthly_content/a0255.bin",
+        "payload/monthly_content/a0309.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 3811,
+      "source_blob": "8e2800fc0ab43c021dcd536f93acddada2606f06",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0571_persist_zenodo_fourth_layer_to_github_eb30bf8e354a.py",
+      "authority_locations": [
+        "payload/monthly_content/a0065.bin",
+        "payload/monthly_content/a0210.bin",
+        "payload/monthly_content/a0256.bin",
+        "payload/monthly_content/a0310.bin",
+        "payload/monthly_content/a0381.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 4182,
+      "source_blob": "4a1b2ee8904f7978d3d93c3f2649679645377c32",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0574_qikvrt_update_github_70934d8a0e5a.py",
+      "authority_locations": [
+        "payload/monthly_content/a0068.bin",
+        "payload/monthly_content/a0099.bin",
+        "payload/monthly_content/a0120.bin",
+        "payload/monthly_content/a0145.bin",
+        "payload/monthly_content/a0175.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 5309,
+      "source_blob": "1fba150ad6f0a07909f7464fea9f70f8f9c21758",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0575_qikvrt_update_zenodo_scientific_pdfs_59e4523d2c22.py",
+      "authority_locations": [
+        "payload/monthly_content/a0069.bin",
+        "payload/monthly_content/a0313.bin",
+        "payload/monthly_content/a0384.bin",
+        "payload/monthly_content/a0461.bin",
+        "payload/monthly_content/a0575.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 4182,
+      "source_blob": "4a1b2ee8904f7978d3d93c3f2649679645377c32",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0604_qikvrt_update_github_70934d8a0e5a.py",
+      "authority_locations": [
+        "payload/monthly_content/a0068.bin",
+        "payload/monthly_content/a0099.bin",
+        "payload/monthly_content/a0120.bin",
+        "payload/monthly_content/a0145.bin",
+        "payload/monthly_content/a0175.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 5097,
+      "source_blob": "9a4c060377723352676dc71778ebe6156e170723",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0605_qikvrt_update_zenodo_scientific_pdfs_50c8e4fed22c.py",
+      "authority_locations": [
+        "payload/monthly_content/a0100.bin",
+        "payload/monthly_content/a0121.bin",
+        "payload/monthly_content/a0146.bin",
+        "payload/monthly_content/a0176.bin",
+        "payload/monthly_content/a0213.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 292,
+      "source_blob": "f829cfb07c4234821e6d50d59fefd93775892623",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/evidence/QIKVRT_UPLOAD_EVIDENCE.json",
+      "object_path": "objects/f829cfb07c4234821e6d50d59fefd93775892623",
+      "sha256": "a5543c940344628544f2219008d5ac2b3fe93cf2d564d0bd0b50ce7201f29c51",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 185,
+      "source_blob": "dcb3ea2956da687f05f95536184f550e7eba8c4d",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/evidence/QIKVRT_UPLOAD_EVIDENCE.md",
+      "object_path": "objects/dcb3ea2956da687f05f95536184f550e7eba8c4d",
+      "sha256": "57d5aa9de70aecd65d74f7076824f4f3613f0b26c3ff1a8af8500bdac6ecbd36",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 308498,
+      "source_blob": "8c0c0a0576ba5923790c0d60d5f98fcb3ebf34ee",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Beweis und Anwendung der Ontologie des Unterschieds! q.e.d. Ingolf Lohmann.pdf",
+      "authority_locations": [
+        "assets/pdf/odu_proof.pdf",
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Beweis und Anwendung der Ontologie des Unterschieds! q.e.d. Ingolf Lohmann.pdf"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 7243498,
+      "source_blob": "7b907a1b0598a9d389008337334a6486b46dbdbc",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Das QIK-VRT Netzwerk! q.e.d. Ingolf Lohmann.m4a",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Das QIK-VRT Netzwerk! q.e.d. Ingolf Lohmann.m4a"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 31739,
+      "source_blob": "5f2fed1b32d13adb859002b6c5254e93c61e928c",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Das QIK-VRT Netzwerk! q.e.d. Ingolf Lohmann.txt",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Das QIK-VRT Netzwerk! q.e.d. Ingolf Lohmann.txt"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 3835651,
+      "source_blob": "08c74da4379cd2dbef602dc05cfb180772deceee",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Die Enigma unserer Zeit ist das Netzwerk! q.e.d. Ingolf Lohmann.m4a",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Die Enigma unserer Zeit ist das Netzwerk! q.e.d. Ingolf Lohmann.m4a"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 15921,
+      "source_blob": "6eac53cdd53f2f093941345ef7ab8a3a9e7eab9b",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Die Enigma unserer Zeit ist das Netzwerk! q.e.d. Ingolf Lohmann.txt",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Die Enigma unserer Zeit ist das Netzwerk! q.e.d. Ingolf Lohmann.txt"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 3705363,
+      "source_blob": "8409fb2be4cac520dab10b896bc8984c94952ed9",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Die Realit\u00e4t der virtuellen Realit\u00e4t jagt der Realit\u00e4t hinterher! q.e.d. Ingolf Lohmann.m4a",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Die Realit\u00e4t der virtuellen Realit\u00e4t jagt der Realit\u00e4t hinterher! q.e.d. Ingolf Lohmann.m4a"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 15576,
+      "source_blob": "021af53e45a023c77c174436b32053595bfce866",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Die Realit\u00e4t der virtuellen Realit\u00e4t jagt der Realit\u00e4t hinterher! q.e.d. Ingolf Lohmann.txt",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Die Realit\u00e4t der virtuellen Realit\u00e4t jagt der Realit\u00e4t hinterher! q.e.d. Ingolf Lohmann.txt"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 1534566,
+      "source_blob": "de253b430be50eea54c0c3ad0b048b1020334044",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Die Restunsch\u00e4rfe! q.e.d. Ingolf Lohmann.m4a",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Die Restunsch\u00e4rfe! q.e.d. Ingolf Lohmann.m4a"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 1466414,
+      "source_blob": "54b27feabac0aacea1e2e2fa60d84c6b36198add",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Die Sch\u00f6pfung gewinnt immer! q.e.d. Ingolf Lohmann.m4a",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Die Sch\u00f6pfung gewinnt immer! q.e.d. Ingolf Lohmann.m4a"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 6290,
+      "source_blob": "9fa4ec8c435cf685862353b319261ba129fa0ed8",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Die Sch\u00f6pfung gewinnt immer! q.e.d. Ingolf Lohmann.txt",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Die Sch\u00f6pfung gewinnt immer! q.e.d. Ingolf Lohmann.txt"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 2662974,
+      "source_blob": "d5b694bae448e03896338fb5ca9252f652d28432",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Die Wirklichkeit jagt uns davon! q.e.d. Ingolf Lohmann.m4a",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Die Wirklichkeit jagt uns davon! q.e.d. Ingolf Lohmann.m4a"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 11415,
+      "source_blob": "06be3121cad68249b05ddd32c035498a91a0ee48",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Die Wirklichkeit jagt uns davon! q.e.d. Ingolf Lohmann.txt",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Die Wirklichkeit jagt uns davon! q.e.d. Ingolf Lohmann.txt"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 2517779,
+      "source_blob": "56fc59ab68c795b636727b57632bba736ec3004b",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Gewonnen! q.e.d. Ingolf Lohmann.PNG",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Gewonnen! q.e.d. Ingolf Lohmann.PNG"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 7254311,
+      "source_blob": "618d81007ff83ab06cf8cf7dcf8c9b28b6928340",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Gewonnen! q.e.d. Ingolf Lohmann.m4a",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Gewonnen! q.e.d. Ingolf Lohmann.m4a"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 30409,
+      "source_blob": "b0b6eb20d8719a259f94302049500ec87fc70622",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Gewonnen! q.e.d. Ingolf Lohmann.txt",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Gewonnen! q.e.d. Ingolf Lohmann.txt"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 4210724,
+      "source_blob": "99fdb3d905d621ae90a7e2f662f788a6fe0bc7b6",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Jackpot, Everything Bagel und transzendierende Information q.e.d. Ingolf Lohmann.m4a",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Jackpot, Everything Bagel und transzendierende Information q.e.d. Ingolf Lohmann.m4a"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 17516,
+      "source_blob": "290d18274ad877097fc9c2ed723f85ee6e439d4d",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Jackpot, Everything Bagel und transzendierende Information q.e.d. Ingolf Lohmann.txt",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Jackpot, Everything Bagel und transzendierende Information q.e.d. Ingolf Lohmann.txt"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 2911809,
+      "source_blob": "fa37fc95c0efd3bb4e8d6baa2bd2b052d48416af",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Meine Sch\u00f6pfung! q.e.d. Ingolf Lohmann.PNG",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Meine Sch\u00f6pfung! q.e.d. Ingolf Lohmann.PNG"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 206020,
+      "source_blob": "ab7cb5fb5cf92fb54f1cf699fc6cef1735d52b69",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Meine Sch\u00f6pfung! q.e.d. Ingolf Lohmann.m4a",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Meine Sch\u00f6pfung! q.e.d. Ingolf Lohmann.m4a"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 147,
+      "source_blob": "0c4f21c5920d55f1ba664371efcd0061c2424cae",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Meine Sch\u00f6pfung! q.e.d. Ingolf Lohmann.txt",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Meine Sch\u00f6pfung! q.e.d. Ingolf Lohmann.txt"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 1727664,
+      "source_blob": "e34f329aba04112e99a77c89ac998aff55a4592f",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Mesh-Architecture! q.e.d. Ingolf Lohmann.PNG",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Mesh-Architecture! q.e.d. Ingolf Lohmann.PNG"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 1647103,
+      "source_blob": "7b0518c5f15fa7bac1ad5c19a651dd3e8fc8ebc4",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Nicht unsichtbar, sondern selbstgeordnet auffindbar! q.e.d.  Ingolf Lohmann.m4a",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Nicht unsichtbar, sondern selbstgeordnet auffindbar! q.e.d.  Ingolf Lohmann.m4a"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 7048,
+      "source_blob": "945269c860e2c064942e4fb54215c92528055e0f",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Nicht unsichtbar, sondern selbstgeordnet auffindbar! q.e.d.  Ingolf Lohmann.txt",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Nicht unsichtbar, sondern selbstgeordnet auffindbar! q.e.d.  Ingolf Lohmann.txt"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 7939531,
+      "source_blob": "eae76dafd77eae383b576203d193a9960176223f",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/QIK-VRT-Repositories als nachvollziehbares Vertrauensnetzwerk q.e.d. Ingolf Lohmann.m4a",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/QIK-VRT-Repositories als nachvollziehbares Vertrauensnetzwerk q.e.d. Ingolf Lohmann.m4a"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 33001,
+      "source_blob": "9ae6fe080dfbfe6c32b59250f3341d57a56bdc91",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/QIK-VRT-Repositories als nachvollziehbares Vertrauensnetzwerk q.e.d. Ingolf Lohmann.txt",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/QIK-VRT-Repositories als nachvollziehbares Vertrauensnetzwerk q.e.d. Ingolf Lohmann.txt"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 240385,
+      "source_blob": "c4c7cd8d8106cee0b5509b16398cbf71e04f32b5",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/QIKVRT_Fixpunktbeweis_final.pdf",
+      "authority_locations": [
+        "documents/qikvrt_quantengravitation/QIKVRT_Fixpunktbeweis_final.pdf",
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/QIKVRT_Fixpunktbeweis_final.pdf"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 135423,
+      "source_blob": "53bd3e5b60acd3f4b50d56c2b568b8915112b215",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/QIKVRT_Quantenkausalitaet_Quantengravitation_Vorlesung_Semester1.pdf",
+      "authority_locations": [
+        "documents/qikvrt_quantengravitation/QIKVRT_Quantenkausalitaet_Quantengravitation_Vorlesung_Semester1.pdf",
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/QIKVRT_Quantenkausalitaet_Quantengravitation_Vorlesung_Semester1.pdf"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 3203437,
+      "source_blob": "097fc3e3f8836c663e202ce732b5f6091394793d",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Quod erat demonstrandum. Ingolf Lohmann  _.m4a",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Quod erat demonstrandum. Ingolf Lohmann  _.m4a"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 13213,
+      "source_blob": "f29cac3c53bb2b8af1c9ed8b862867dd485514ee",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Quod erat demonstrandum. Ingolf Lohmann  _.txt",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Quod erat demonstrandum. Ingolf Lohmann  _.txt"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 3281669,
+      "source_blob": "00923cdbef8221d61ffe981671b53a9191025d24",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Unmissverst\u00e4ndlich f\u00fcr die Allgemeinheit   q.e.d. Ingolf Lohmann.m4a",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Unmissverst\u00e4ndlich f\u00fcr die Allgemeinheit   q.e.d. Ingolf Lohmann.m4a"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 12492,
+      "source_blob": "8f5f2a5308d75315201abfe486a311bda71f16a5",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Unmissverst\u00e4ndlich f\u00fcr die Allgemeinheit   q.e.d. Ingolf Lohmann.txt",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Unmissverst\u00e4ndlich f\u00fcr die Allgemeinheit   q.e.d. Ingolf Lohmann.txt"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 5722189,
+      "source_blob": "91e58aaf8d368c75d56b1ee1a50cc5738bdf976b",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Verfassung der Nachvollziehbarkeit gez. Ingolf Lohmann.m4a",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Verfassung der Nachvollziehbarkeit gez. Ingolf Lohmann.m4a"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 24848,
+      "source_blob": "6c3b1249c7d367673a7ea4d800c9d5151c020238",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Verfassung der Nachvollziehbarkeit gez. Ingolf Lohmann.txt",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Verfassung der Nachvollziehbarkeit gez. Ingolf Lohmann.txt"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 2959771,
+      "source_blob": "5842fa30cf2c2c6eeca58f0a3b41793e7920dd85",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Was wirkt, ist nicht immer sichtbar! q.e.d. Ingolf Lohmann.m4a",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Was wirkt, ist nicht immer sichtbar! q.e.d. Ingolf Lohmann.m4a"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 12455,
+      "source_blob": "cd74111e2c8d1eb9c2f86e6759c2884678035b55",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Was wirkt, ist nicht immer sichtbar! q.e.d. Ingolf Lohmann.txt",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Was wirkt, ist nicht immer sichtbar! q.e.d. Ingolf Lohmann.txt"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 5123598,
+      "source_blob": "ec8602b6023b5fa8a464f08ceb471c987acebec2",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Wer die Wiederholung kontrolliert, kontrolliert den Wirkraum! q.e.d. Ingolf Lohmann.m4a",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Wer die Wiederholung kontrolliert, kontrolliert den Wirkraum! q.e.d. Ingolf Lohmann.m4a"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 22048,
+      "source_blob": "89edb7913e773e6f852488b4987c7cce32ce6b73",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/Wer die Wiederholung kontrolliert, kontrolliert den Wirkraum! q.e.d. Ingolf Lohmann.txt",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/Wer die Wiederholung kontrolliert, kontrolliert den Wirkraum! q.e.d. Ingolf Lohmann.txt"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 2394361,
+      "source_blob": "8bb589002cd2bf3029490d3478d1c5268341c26a",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/die_wahrheit_in_der_unterscheidung.png",
+      "authority_locations": [
+        "assets/img/truth_future.png",
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/die_wahrheit_in_der_unterscheidung.png"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 1931812,
+      "source_blob": "c6f03156d5b1eac5ed006c650c5a6e65b4ee15c7",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/kuenstlich_kognitive_zukunftsinformation_qikvrt_rahmen.png",
+      "authority_locations": [
+        "assets/img/future_info_frame.png",
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/kuenstlich_kognitive_zukunftsinformation_qikvrt_rahmen.png"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 143664,
+      "source_blob": "1ef56629602b19ebb1820edb0405bbf8e5ff0a97",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/quantengravitation_bekannte_mathematik_physik_semester2_v5.pdf",
+      "authority_locations": [
+        "documents/qikvrt_quantengravitation/quantengravitation_bekannte_mathematik_physik_semester2_v5.pdf",
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/quantengravitation_bekannte_mathematik_physik_semester2_v5.pdf"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 141774,
+      "source_blob": "850cb18fa5a82dd3d547bcd74847fc750899e3b2",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/quantengravitation_semester3_abschluss_beweis_v3.pdf",
+      "authority_locations": [
+        "documents/qikvrt_quantengravitation/quantengravitation_semester3_abschluss_beweis_v3.pdf",
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/quantengravitation_semester3_abschluss_beweis_v3.pdf"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 2468972,
+      "source_blob": "89c5f475afe7292e7d7312aa17f13302031064a4",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/payload/Evidences/raumreise_und_informationsverstaendnis.png",
+      "authority_locations": [
+        "assets/img/info_travel.png",
+        "incoming/qikvrt_payloads/20260708T150741Z/payload/Evidences/raumreise_und_informationsverstaendnis.png"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 22262,
+      "source_blob": "8ff1129f02eb341697d44d146976b9fa80608300",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/registry/QIKVRT_PAYLOAD_MANIFEST.json",
+      "object_path": "objects/8ff1129f02eb341697d44d146976b9fa80608300",
+      "sha256": "44587cea270732924cb315141c6bf3d0fc14542b9281740a10db3a262280449b",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 6509,
+      "source_blob": "21ff194513f7e87f3610321720046cc1211cb34c",
+      "original_path": "incoming/qikvrt_payloads/20260708T151335Z/registry/QIKVRT_PAYLOAD_MANIFEST.md",
+      "object_path": "objects/21ff194513f7e87f3610321720046cc1211cb34c",
+      "sha256": "a0b3c9d2a9505d69c183bcdc8e8f5498e3abc9b86cd2bc2a535492e90161653c",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 291,
+      "source_blob": "71c9fa9931170f88d710c682d0689f0a3b91aab6",
+      "original_path": "incoming/qikvrt_payloads/20260708T151736Z/evidence/QIKVRT_UPLOAD_EVIDENCE.json",
+      "object_path": "objects/71c9fa9931170f88d710c682d0689f0a3b91aab6",
+      "sha256": "27bf35ae75660894b42b20a093fa7d83cbaab2a4f745beffd03f78dd93f9c09a",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 184,
+      "source_blob": "60af1292b2ad42f69dcfec955bf7b19e2dc46e86",
+      "original_path": "incoming/qikvrt_payloads/20260708T151736Z/evidence/QIKVRT_UPLOAD_EVIDENCE.md",
+      "object_path": "objects/60af1292b2ad42f69dcfec955bf7b19e2dc46e86",
+      "sha256": "13fee7642e9045422a873e9cb05de36c420443ec237fbcecbef9c784fee3593f",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 652,
+      "source_blob": "733fe77d834fca570dc924f0d233988b103ce4be",
+      "original_path": "incoming/qikvrt_payloads/20260708T151736Z/payload/QIKVRT_V2_13_4AO_GENERIC_PAYLOAD_UPLOAD_KIT_WSH_NO_PS_NO_GIT/COPYRIGHT_AND_LICENSE_ACCEPTANCE.md",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T152348Z/payload/QIKVRT_V2_13_4AO_GENERIC_PAYLOAD_UPLOAD_KIT_WSH_NO_PS_NO_GIT/COPYRIGHT_AND_LICENSE_ACCEPTANCE.md"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    }
+  ]
+}

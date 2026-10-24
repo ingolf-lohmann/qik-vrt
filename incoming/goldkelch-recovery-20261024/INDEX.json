@@ -1,0 +1,103 @@
+{
+  "schema": "qikvrt_recovered_source_catalog_v1",
+  "status": "PROVENANCE_BOUND_INACTIVE_SOURCE_CATALOG",
+  "authority_base": "a1a2204f429bcab7a184afaf51a57b7de03d4ee7",
+  "source": {
+    "repository": "NOT_ASSERTED_FROM_ARCHIVE_METADATA",
+    "historical_project_scope": "QIK-VRT Goldkelch and Mirror recovery material",
+    "carrier": "QIKVRT_Wiederanlaufpaket_2026-10-05.zip",
+    "archive_sha256": "2412131c8d20ff0d64b4daec45b36aa82bd009dbe744fd10ae232b656a37293c",
+    "bundle_sha256": "0990e66a6eea8bd9b754414d0629a04a57db3e881546b1e1b283271b2ac0b8af",
+    "head": "8362f71168aa031001fcfdc5ba95729197a9d54e",
+    "tree": "2a646a3eb243f951a921833ea19b27e627f362d8",
+    "refs": 1028,
+    "objects": 31470,
+    "object_closure_sha256": "ffdb543e5e1e7485f799b9c12780eff1de8c94ee529effe504344d7672036129",
+    "object_closure_readback_verified": true,
+    "strict_quality_status": "HOLD_KNOWN_HISTORICAL_LARGEPATHNAME",
+    "current_live_repository_completeness": false
+  },
+  "comparison": {
+    "all_source_ref_trees_read": true,
+    "unique_path_blob_versions": 8818,
+    "absent_paths": 1817,
+    "absent_path_versions": 1959,
+    "dispositions": {
+      "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED": 1679,
+      "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH": 274,
+      "ACTIVE_REPAIRED_SUCCESSOR": 1,
+      "SUPERSEDED_GENERATED_PROJECTION_NOT_REACTIVATED": 2,
+      "ACTIVE_SOURCE_RECOVERY": 3
+    },
+    "inactive_original_blobs_preserved": 1637,
+    "inactive_original_bytes": 23821379
+  },
+  "file_pages": [
+    "files-001.json",
+    "files-002.json",
+    "files-003.json",
+    "files-004.json",
+    "files-005.json",
+    "files-006.json",
+    "files-007.json",
+    "files-008.json",
+    "files-009.json",
+    "files-010.json",
+    "files-011.json",
+    "files-012.json",
+    "files-013.json",
+    "files-014.json",
+    "files-015.json",
+    "files-016.json",
+    "files-017.json",
+    "files-018.json",
+    "files-019.json",
+    "files-020.json",
+    "files-021.json",
+    "files-022.json",
+    "files-023.json",
+    "files-024.json",
+    "files-025.json"
+  ],
+  "ref_pages": [
+    "refs-001.json",
+    "refs-002.json",
+    "refs-003.json",
+    "refs-004.json",
+    "refs-005.json",
+    "refs-006.json",
+    "refs-007.json",
+    "refs-008.json",
+    "refs-009.json"
+  ],
+  "activation_contract": {
+    "catalog_is_not_execution_authority": true,
+    "run_archived_source_automatically": false,
+    "activate_historical_workflows": false,
+    "overwrite_current_authority_files": false,
+    "retain_original_per_file_rights": true,
+    "require_scoped_review_and_fresh_tests_for_active_ports": true,
+    "claim_live_mesh_from_source_presence": false
+  },
+  "read_order": [
+    "../../AI",
+    "../../AI_CONTEXT.json",
+    "INDEX.json",
+    "file_pages",
+    "ref_pages"
+  ],
+  "completion_claims": {
+    "BOUNDED_ARCHIVE_READ_AND_CLASSIFICATION": true,
+    "ALL_GOLDKELCH_LIVE_DATA_RECOVERED": false,
+    "ALL_ARCHIVED_FEATURES_ACTIVE": false,
+    "CREDENTIAL_VALUES_RECOVERED": false,
+    "EFFECT_ACK_DONE": false
+  },
+  "payload_retention_review": {
+    "path": "payload-review-20261024.json",
+    "sha256": "4ddbcb66c017fe47bf935d5fefa4789a73d66639364531b538f70c085452e636",
+    "originally_held_versions": 19,
+    "retained_as_inactive_originals": 19,
+    "execution_admitted": false
+  }
+}

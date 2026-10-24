@@ -1,0 +1,19 @@
+{
+  "blocker": "Declared Lean 4.19.0 compiler cannot be verified",
+  "github_context": {
+    "GITHUB_REPOSITORY": null,
+    "GITHUB_RUN_ATTEMPT": null,
+    "GITHUB_RUN_ID": null,
+    "GITHUB_SHA": null
+  },
+  "kernel_verified": false,
+  "lean_version_exit": 1,
+  "lean_version_stderr": "error: failed to locate application\n",
+  "lean_version_stdout": "",
+  "schema": "qikvrt_labyrinth_kernel_evidence_v1",
+  "scope": "Ten abstract model lemmas only; no Python refinement, stochastic theorem, or production conformance.",
+  "source_bytes": 4295,
+  "source_git_blob_sha1": "f836be6b17838b0d7b4020c04d6d46d91fa1c139",
+  "source_sha256": "e2db44a40e1c43c2a1e13b6b7a5078b42eaaf53f8fe91499671883ccb76f31b0",
+  "status": "BLOCKED"
+}

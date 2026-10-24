@@ -1,0 +1,34 @@
+{
+  "version": "2.10.3",
+  "gate": "ZIP_LAYOUT_COMPATIBILITY_GATE",
+  "status": "REQUIRED",
+  "reported_defect": "FEHLER_ENTPACKT_ABER_LEER",
+  "required_root_files": [
+    "README.md",
+    "Makefile",
+    "SHA256SUMS.txt"
+  ],
+  "required_root_dirs": [
+    "docs",
+    "include",
+    "src",
+    "tests",
+    "qikvrt",
+    "release"
+  ],
+  "forbidden": [
+    "WRAPPER_ONLY_EXTRACTION",
+    "WINDOWS_TAR_EMPTY_TARGET_FALSE_PASS",
+    "ACCEPTANCE_WITHOUT_ROOT_FILES"
+  ],
+  "checks": [
+    "SELFTEST_ZIP_LAYOUT",
+    "VALIDATE_ROOT_LAYOUT",
+    "FLAT_ZIP_EXTERNAL_PACKAGING_REFERENCE"
+  ],
+  "boundary": [
+    "NO_SCAN_CHANGE",
+    "NO_REMOTE_MUTATION",
+    "NO_SELF_PROPAGATION"
+  ]
+}

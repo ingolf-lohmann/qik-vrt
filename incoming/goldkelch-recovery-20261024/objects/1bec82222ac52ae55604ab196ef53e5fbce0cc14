@@ -1,0 +1,60 @@
+{
+  "artificial_cognitive_contribution": {
+    "actor": "OpenAI Codex",
+    "scope": "Fresh branch/Main inspection, reuse of the existing repair, negative control, regression execution and exact-branch persistence."
+  },
+  "carrier_pr": 416,
+  "failure_evidence": {
+    "event": "push",
+    "fixpoint_outcome": "skipped",
+    "full_test_exit": 0,
+    "head": "d36e0b62d0fd4c895378dea0526ac00eada865d9",
+    "job_id": 108823788820,
+    "run_id": 36390087585,
+    "terminal_exit": 1,
+    "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/36390087585/job/108823788820"
+  },
+  "human_contribution": {
+    "actor": "Ingolf Lohmann",
+    "scope": "Requested resolution of the open push-CI terminal failure in the publication branch."
+  },
+  "parent_head": "d36e0b62d0fd4c895378dea0526ac00eada865d9",
+  "parent_tree": "e2be5c428cb6e930a94bc19f8df81f708a174256",
+  "predecessor_evidence_transfer": false,
+  "publication_bytes_changed": false,
+  "repair": {
+    "new_workflow_or_runtime_dependency": false,
+    "non_writer_event": "Requires skipped fixpoint and raw full_test success.",
+    "same_repository_pr": "Requires fixpoint success on the fully retested successor.",
+    "unknown_failed_cancelled_or_skipped_tests": "Fail closed."
+  },
+  "repository": "ingolf-lohmann/qik-vrt",
+  "reused_files": [
+    {
+      "git_blob_sha": "61d990bf550bb659cc8165e72ac14e2090db89a0",
+      "path": ".github/workflows/qikvrt_ci.yml",
+      "sha256": "c9c65f62eccc27f447dff205cf549218b5aa12af548a0767440bfecb22246300"
+    },
+    {
+      "git_blob_sha": "f1804591e427050600daf2f0da8aeb7e46ef85be",
+      "path": "tests/test_effect_ack_release_workflows.py",
+      "sha256": "82a0c0d31d7b5541cf7541dd973f1cd3d1e1b07cbf3e79d4a33e6f59e81a103d"
+    }
+  ],
+  "schema": "qikvrt_ci_event_disposition_backport_v1",
+  "separable_joint_component": "Human repair direction; AI diagnosis and application of repository code are separately attributed.",
+  "source_main": "f44bc930523431d8349e8815582bac051d3f26d4",
+  "source_work_unit": {
+    "git_blob_sha": "050ee06a4a27345016016ec700fc77cdfacc3f52",
+    "path": "state/work_units/CI_EVENT_DISPOSITION_REPAIR_20260928_V1.json",
+    "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/f44bc930523431d8349e8815582bac051d3f26d4/state/work_units/CI_EVENT_DISPOSITION_REPAIR_20260928_V1.json"
+  },
+  "unresolved_origin": [],
+  "verification": {
+    "fresh_local_regression_tests_passed": 8,
+    "native_successor_ci": "Must be freshly executed and read back after this commit; no predecessor run is transferred.",
+    "original_workflow_non_writer_failures_reproduced": 3,
+    "real_failing_make_remains_blocked": true
+  },
+  "work_unit_id": "CI_EVENT_DISPOSITION_BACKPORT_PR416_20260928_V1"
+}

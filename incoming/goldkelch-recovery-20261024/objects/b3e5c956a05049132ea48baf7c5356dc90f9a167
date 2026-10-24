@@ -1,0 +1,145 @@
+\chapterpage{claims}{APPENDIX A / CLAIM REGISTER}{A claim remains separate from its verification.}{This register classifies the principal statements of the complete synthesis. It is an editorial disposition, not an already production-validated machine-proof bundle or upload authorization.}
+\begin{boundary}{Historical register and binding disposition}
+This table translates the original editorial register, including its open question formulations and historical use of ``current''. The final staging appendix retains the later binding disposition of all 30 claims and clarifies C18/C19/C21/C24/C27/C28/C30. An OPEN row is not an affirmative finding. Neither table transfers predecessor tests or acceptance to this successor.
+\end{boundary}
+\par
+{\tighttable
+\begin{longtable}{@{}p{11mm}p{66mm}p{25mm}p{52mm}@{}}\toprule
+ID & Statement and scope & Class & Binding / open evidence\\\midrule\endfirsthead\toprule ID & Statement and scope & Class & Binding / open evidence\\\midrule\endhead
+C01 & QIK-VRT is described as a complete system, not a single model. & NORMATIVE & R1; system boundary used here.\\
+C02 & Purpose, reuse and continuous improvement are documented in the entrypoint. & SOURCE\_BOUND & R1; document presence is no overall execution proof.\\
+C03 & Means may change while a contract core should remain preserved. & NORMATIVE & R1; concrete transition invariants needed.\\
+C04 & Inductive invariant preservation holds under initial and transition premises. & INTERPRETATIVE & Theoretical derivation; kernel check open.\\
+C05 & Universal error-free truthfulness enforcement is not established. & OPEN & Full path control and semantic validators lack aggregate evidence.\\
+C06 & EFFECT\_ACK-DONE in the I-D permits release before an effect; it is not automatic execution. & SOURCE\_BOUND & W1; product completion separate.\\
+C07 & Hash binding is neither authentication nor proof of the source. & INTERPRETATIVE & Technical interpretation under cryptographic assumptions.\\
+C08 & Earlier evidence must not silently accept successors. & NORMATIVE & R1, R10.\\
+C09 & A wrapper exists under given computable adapters and checkers. & INTERPRETATIVE & Construction; machine verification open.\\
+C10 & Complete observability and arbitrary reachability do not follow. & INTERPRETATIVE & Model counterexample arguments.\\
+C11 & Black-box integration does not guarantee complete identification. & INTERPRETATIVE & Finite observation remains bounded.\\
+C12 & Functional consciousness is a defined target profile. & NORMATIVE & Definition, not empirical satisfaction.\\
+C13 & Complete satisfaction / phenomenal experience of QIK-VRT. & OPEN & Separate assessment required.\\
+C14 & Two nodes do not establish methodological independence. & INTERPRETATIVE & Analysis of roles and dependencies.\\
+C15 & Nine microbenchmark medians are reproducible from existing raw numbers. & EMPIRICALLY\_\newline EVIDENCED & L3, C1; data/arithmetic check, not timing replication.\\
+C16 & Historical structural ratio: 3,928/20 = 196.4. & SOURCE\_BOUND & L4 and C1; no new runtime measurement.\\
+C17 & Bounded 1/2/4-process speedup is documented. & SOURCE\_BOUND & R4; original trial archives not fully rechecked here.\\
+C18 & A/B diagnostic at the source time has credential-delivery HOLD. & SOURCE\_BOUND & R3; actual job log at a31ebb7e.\\
+C19 & Measurement code at the source time starts timers after retrieval. & SOURCE\_BOUND & R11; static methodological finding.\\
+C20 & Text decoding/binary data and mode comparison are not equivalent. & EMPIRICALLY\_\newline EVIDENCED & C1; two isolated local controls.\\
+C21 & Full distributed speedup is measured. & OPEN & No admissible positive claim.\\
+C22 & PRs \#437/\#448/\#449 have new candidates with documented tests. & SOURCE\_BOUND & R7--R9; no Main adoption.\\
+C23 & Windows 11 AMD64 acceptance and actual interruption remain open. & SOURCE\_BOUND & R5, R6.\\
+C24 & Main runtime manifest reports no bundled Windows Python runtime. & SOURCE\_BOUND & R12; source-time file content, not full release audit.\\
+C25 & Time model and calendar windows. & INTERPRETATIVE & Conditional editorial engineering estimate, not statistical forecast.\\
+C26 & A 2.5 local factor is not 2.5 times overall duration. & INTERPRETATIVE & C1; explicit proportion calculation.\\
+C27 & The v3 publication contract is a proposal not activated for production. & SOURCE\_BOUND & R14; active production remains v2.\\
+C28 & This new PDF is already published on Zenodo / all nodes. & OPEN & Not asserted; no corresponding effect executed.\\
+C29 & Historical significance of the discovery. & INTERPRETATIVE & Originator assessment, not measured fact.\\
+C30 & ``Never lose it again'' is guaranteed. & OPEN & No absolute guarantee; replication and restore tests needed.\\\bottomrule
+\end{longtable}}
+\vspace{3mm}
+The complete machine-readable companion also contains source paths, scope limits and mapping to accessible prose. This register claims no already executed production v2/v3 validation. New \code{FORMAL_PROVED} claims without kernel receipts were expressly avoided.
+
+\chapterpage{changes}{APPENDIX B / VISIBLE CLARIFICATIONS}{History is preserved. Status is corrected.}{These changes belong to the return delivery. Historical files are not rewritten or reused as present results.}
+\begin{cols}
+\subsection*{1. Contract and execution proof}
+Earlier versions used ``proved'' and ``enforced'' for the general truthfulness invariant. Correctly: the rule is formulated and materialized in the project as an objective or contract. The evidence does not demonstrate universal bypass-free enforcement of all free-form statements. C04/C05 therefore distinguish model argument, normative objective and implementation evidence.
+
+\subsection*{2. Meaning of EFFECT\_ACK}
+The original prose often uses effect acknowledgement as final confirmation after the effect. The public I-D instead describes an authorization boundary before a downstream effect. Both can be useful in a larger chain but require different names and checks. This edition separates Gate-DONE and Task-DONE.
+
+\subsection*{3. Integration theorem}
+The wrapper construction states explicit assumptions. It establishes neither complete internal state preservation under lossy observation nor guaranteed arbitrary reachability. The old \code{FORMAL_PROVED} label is not adopted as current evidence without a kernel receipt.
+
+\subsection*{4. Comparison count, time and knowledge}
+99\% fewer key comparisons do not mean 99\% less total runtime. 196.4:1 is a structural ratio of historical files and selected deltas. The actual microbenchmark includes initialization and sorting. ``Provenance-bound memory'' there interprets the delta idea rather than independently measuring complete provenance validation.
+
+\subsection*{5. Live experiment}
+The earlier assertion that only one carrier remained is supplemented by the methodological finding. Existing code measures locally after download. Binary data, Git modes and the complete time boundary require correction for the stronger claim. Isolated controls document reproducible counterexamples.
+
+\subsection*{6. The actual new parallel measurement}
+PR-443 documentation at the source time contains positive 1/2/4-process results within the stated host/load scope. The earlier blanket description ``scaling open'' was incomplete for that trial. Causal explanation of earlier variation and generalization across runners remain open.
+
+\subsection*{7. Dates and roadmap}
+Earlier windows such as ``hours to one day'' are not carried forward as measurements. Access, governance, measurement correction and final fileset are explicit prerequisites. Local speedup is not transferred to physical, administrative or editorial waiting times.
+
+\subsection*{8. Capabilities and undecidability}
+The task is not represented as ``solve every solvable problem reliably and without limits''. A problem may be computable yet exceed available time, resources, observation or permissions. A universal control wrapper does not imply general semantic decidability of arbitrary programs; classical undecidability results remain relevant. \src{W7}
+
+\begin{boundary}{Preservation without epistemic inflation}
+The supplied original texts, historical microbenchmark file and layout source remain byte-identical in their source archive. The new synthesis preserves their themes while stating the source-time evidence status and clarifications. ``Every bit'' also means not quietly treating an old assertion as a present proof. English translation preserves that boundary.
+\end{boundary}
+\end{cols}
+
+\chapterpage{sources}{APPENDIX C / SOURCES AND PROVENANCE}{What supports this edition.}{Local inputs, repository sources freshly read for the source report, checked job outputs, external primary literature and calculations are separate source classes. All repository reads listed here occurred on 3 October 2026. This English translation does not repeat those historical observations.}
+\begin{cols}
+\subsection*{Supplied sources}
+\textbf{L1.} \emph{QIKVRT\_SINN\_UND\_ZWECK(4).pdf}, 26 pages. Used as layout and epistemic reference. SHA-256: \nolinkurl{6a15c71919a6c703cfeabfa3e1e13d9d1928c2a9accdfc333aef807c267f31ca}. Complete file in the original local source archive.
+
+\textbf{L2.} \emph{Das unterscheidet QIK-VRT!.txt}. Source prose about intention, execution, effect, observation, acceptance, bit binding, self-reference and limits.
+
+\textbf{L3.} \nolinkurl{qikvrt_collective_cognition_ab_microbenchmark_20261003.json}. Original nine configurations with seven raw values per arm. SHA-256: \nolinkurl{e07cd0673e72f6f84becb234c015ea00989e5ee283ec7ba32e59a982da047eb3}. Declared host: Python 3.13.5, Linux, five reported CPUs; no independent confirmation of original measurement time.
+
+\textbf{L4.} Earlier supplied synthesis \nolinkurl{QIK-VRT_Prosa_Kognition_Speicher_Bewusstsein_Forecast_2026-10-03.txt}, PDF \emph{Die universelle Hülle}, other historical PDF editions listed in the source archive and dialogue. Historical statements are not present remote evidence.
+
+\subsection*{Repository sources read for the source report}
+\textbf{R1.} \texttt{AI} on Main \texttt{8153c4e6...}, blob \nolinkurl{702a1e006a1aeed035b504d3a19416d6740844c2}. \href{https://github.com/ingolf-lohmann/qik-vrt/blob/8153c4e69a6245aadf67f0741fb50d9707c19e34/AI}{Entrypoint and work contract}.
+
+\textbf{R2.} \href{https://github.com/ingolf-lohmann/qik-vrt/pull/447}{PR \#447}, head observed for that report \nolinkurl{a31ebb7eb810334c4f00ebadd4604fa5cf45abea}. Its body also contains predecessor \texttt{a4faf605...}; those tests are not automatically transferred.
+
+\textbf{R3.} \href{https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37128318275/job/111218106133}{A/B run 37128318275, job 111218106133}. Read log: head \texttt{a31ebb7e...}, tree \nolinkurl{8d9e02da17284a9a9bca95e373cee5a513570295}, six boundary tests, credential HOLD. Artifact ID 11276355127; ZIP SHA-256 declared in log: \nolinkurl{91a9d085b78ed856aa818e390e1c39888a78d826c94c07cb6b23c92c9e3ee393}. The log was read; that report did not separately redownload-verify the archive.
+
+\textbf{R4.} \href{https://github.com/ingolf-lohmann/qik-vrt/pull/443}{PR \#443}; head \nolinkurl{a1d35df440eada9bfae24df335f08da67dd5a875}. Documented native measurement run 37045385898, job 110965420593, artifact 11243968481. Numbers are PR-source-bound; no new execution.
+
+\textbf{R5.} \href{https://github.com/ingolf-lohmann/qik-vrt/pull/445}{PR \#445}; documented head \nolinkurl{d4abb49133dc509233acff1df8dc202af65d6475}. Actual client continuity explicitly not executed.
+
+\textbf{R6.} \href{https://github.com/ingolf-lohmann/qik-vrt/pull/438}{PR \#438}; documented head \nolinkurl{b0e3828c9f02fb7772dc094afd9182d937c86f93}. Windows 11 AMD64 HOLD, separate ARM64/server evidence.
+
+\textbf{R7.} \href{https://github.com/ingolf-lohmann/qik-vrt/pull/437}{PR \#437}; head \nolinkurl{3c9c5004fc9afe4cefcf1d4f4964a71ae8911fd3}. Seed discovery, recovery and remaining governance/Authority boundaries.
+
+\textbf{R8.} \href{https://github.com/ingolf-lohmann/qik-vrt/pull/448}{PR \#448}; head \nolinkurl{ce344c122f363aa00d18f935735126947f2b8454}. Dependency assimilation as a bound task, not a fully completed effect.
+
+\textbf{R9.} \href{https://github.com/ingolf-lohmann/qik-vrt/pull/449}{PR \#449}; head \nolinkurl{1dd9691939f038e5e48693db77446e56196a2194}. Lifecycle-writer migration as an unadopted candidate; Main adoption open.
+
+\textbf{R10.} \href{https://github.com/ingolf-lohmann/qik-vrt/blob/8153c4e69a6245aadf67f0741fb50d9707c19e34/policy/ZENODO_MACHINE_PROOF_BEFORE_PUBLICATION.md}{Active v2 prepublication policy}; blob \nolinkurl{477a02fbb21954da7099831b72b71b51169952ec}.
+
+\textbf{R11.} \href{https://github.com/ingolf-lohmann/qik-vrt/blob/a31ebb7eb810334c4f00ebadd4604fa5cf45abea/tools/qikvrt_live_authority_mirror_ab.py}{A/B code at the source time}; blob \nolinkurl{acafd1ae37dcb9ffcab371fa79e3e874cfe83b91}. Static audit of timing and byte/mode semantics.
+
+\textbf{R12.} \href{https://github.com/ingolf-lohmann/qik-vrt/blob/8153c4e69a6245aadf67f0741fb50d9707c19e34/runtime/RUNTIME_DEPENDENCY_MANIFEST.json}{Runtime manifest on historical Main}; blob \nolinkurl{bd2b893176d93814f38d024b5a095b770eee2aa3}.
+
+\textbf{R13.} Combined commit status at \texttt{a31ebb7e...}: context \texttt{QIKVRT requested review execution}, state \texttt{failure}, \href{https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37128331601}{producer run 37128331601}. Read separately from workflow SUCCESS.
+
+\textbf{R14.} \href{https://github.com/ingolf-lohmann/qik-vrt/commit/a31ebb7eb810334c4f00ebadd4604fa5cf45abea}{Commit of the v3 proposal}. Message: \emph{Prepare immutable v3 proof readiness without activating publication}. No production activation claimed.
+
+\textbf{R15.} REST Main ref: \nolinkurl{8153c4e69a6245aadf67f0741fb50d9707c19e34}. Every later successor requires a new current-subject binding.
+
+\subsection*{External primary sources}
+\textbf{W1.} I. Lohmann: \emph{QIK-VRT Effect Acknowledgement: Separating Receipt from Authorization for Downstream Effect}, \href{https://datatracker.ietf.org/doc/draft-lohmann-qikvrt-effect-ack/}{Internet-Draft -03}, 2 August 2026. Individual Experimental working draft; not an RFC.
+
+\textbf{W2.} J. H. Saltzer, D. P. Reed, D. D. Clark (1984): \emph{End-to-End Arguments in System Design}. ACM TOCS 2(4), 277--288. \href{https://web.mit.edu/saltzer/www/publications/pubs.html}{Author bibliography at MIT}.
+
+\textbf{W3.} H. Birkholz et al. (2023): \href{https://www.rfc-editor.org/rfc/rfc9334}{RFC 9334, Remote ATtestation procedureS (RATS) Architecture}. Evidence, appraisal and decision are different roles; used as related architecture, not QIK-VRT validation.
+
+\textbf{W4.} P. Butlin et al. (2023): \href{https://arxiv.org/abs/2308.08708}{Consciousness in Artificial Intelligence: Insights from the Science of Consciousness}. arXiv:2308.08708v3.
+
+\textbf{W5.} P. Butlin et al.: \emph{Identifying indicators of consciousness in AI systems}, Trends in Cognitive Sciences. \href{https://doi.org/10.1016/j.tics.2025.10.011}{doi:10.1016/j.tics.2025.10.011}. Theory-guided indicators, not a QIK-VRT-specific trial.
+
+\textbf{W6.} arXiv: \href{https://info.arxiv.org/help/submit/index.html}{Submission Guidelines} and \href{https://info.arxiv.org/help/moderation/index.html}{Moderation}. Official documentation read through arXiv documentation sources for the source report. Successor correction also uses the \href{https://info.arxiv.org/help/faq/multilang.html}{English-version requirement} and \href{https://info.arxiv.org/help/prep.html}{metadata rules}, observed on 4 October 2026.
+
+\textbf{W7.} H. G. Rice (1953): \href{https://www.ams.org/journals/tran/1953-074-02/S0002-9947-1953-0053041-6/S0002-9947-1953-0053041-6.pdf}{Classes of Recursively Enumerable Sets and Their Decision Problems}. Transactions of the AMS 74, 358--366.
+
+\subsection*{Calculations of the source edition}
+\textbf{C1.} \code{RECALCULATIONS_AND_METHOD_CONTROLS.json} and \texttt{calculate.py}: nine recalculated median pairs, ratios of documented Linux medians, four proportion scenarios and two isolated methodological counterexamples. No remote mutation or general formal proof. These are historical source-edition computations, not new translation-time trials.
+
+\subsection*{Glossary}
+\textbf{Claim:} a bounded statement with explicit status. \textbf{Readback:} reobservation of relevant state. \textbf{Provenance:} traceable origin and state attribution. \textbf{Exact Head/Tree:} a particular Git commit or content tree. \textbf{Carrier:} an actually available executor or callable access path. \textbf{HOLD:} an unmet prerequisite, not invented success. \textbf{TCB:} the trusted implementation base on whose correct operation a safety claim depends. \textbf{$T_0$:} observed availability of the respective planning prerequisites, not merely authorization wording.
+
+\subsection*{Verification notice and scope}
+Technical formulas are conditional derivations; statement groups are classified; raw numbers were recalculated in the source edition. Layout QA and file hashes are recorded for the finished successor PDF in separate manifests. No self-reference to this PDF's own file hash is invented inside it.
+
+The design follows the existing \emph{Sinn und Zweck} template: dark editorial cover, serif/sans hierarchy, two-column text, colored evidence boundaries, glossary and sources. The portable staging edition uses Latin Modern filename-based fonts. Font binaries are not in the source package.
+
+\begin{boundary}{Closing principle}
+QIK-VRT should grow through preserved knowledge and actually completed tasks. The invariant core gains practical value where a human can inspect the effect.
+\end{boundary}
+\end{cols}

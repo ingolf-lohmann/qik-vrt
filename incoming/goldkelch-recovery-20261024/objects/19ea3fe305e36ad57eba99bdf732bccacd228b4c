@@ -1,0 +1,100 @@
+{
+  "confirm": "PUBLISH_TO_PRODUCTION_ZENODO",
+  "evidence_path": "release/qikvrt-closure-archive-20260915-v1/zenodo-publication.json",
+  "files": [
+    {
+      "git_blob_sha": "4d309f060c7661b21a3d97678bf29e07a212ced8",
+      "name": "QIKVRT_Abgeschlossen_und_anschlussfaehig_2026-09-15.pdf",
+      "path": "docs/publications/2026-09-15-closure-archive/QIKVRT_Abgeschlossen_und_anschlussfaehig_2026-09-15.pdf"
+    },
+    {
+      "git_blob_sha": "f13fdfc614f8e28a74c1c1bc8e74def2729a1dc6",
+      "name": "VORLESEFASSUNG.txt",
+      "path": "docs/publications/2026-09-15-closure-archive/VORLESEFASSUNG.txt"
+    },
+    {
+      "git_blob_sha": "335caaf0746498bbb597d207c3e8bb42f148362d",
+      "name": "CLAIM_MATRIX.json",
+      "path": "release/qikvrt-closure-archive-20260915-v1/CLAIM_MATRIX.json"
+    },
+    {
+      "git_blob_sha": "d5c389fd42da87ef7157b8a19decb5fcdbdbb08c",
+      "name": "SOURCE_EVIDENCE_BINDINGS.json",
+      "path": "release/qikvrt-closure-archive-20260915-v1/SOURCE_EVIDENCE_BINDINGS.json"
+    },
+    {
+      "git_blob_sha": "49466fdf5510b79909b1b5c6c08d9d4f52673ffc",
+      "name": "PREPUBLICATION_RETURN_RECEIPT.json",
+      "path": "release/qikvrt-closure-archive-20260915-v1/PREPUBLICATION_RETURN_RECEIPT.json"
+    },
+    {
+      "git_blob_sha": "515fc6192a1e43a7b119fe982a37995871abab27",
+      "name": "PROVENANCE.json",
+      "path": "docs/publications/2026-09-15-closure-archive/PROVENANCE.json"
+    },
+    {
+      "git_blob_sha": "e59ee5ebb4ecb1573410850da3a2de35a5cc7fc5",
+      "name": "ARCHIVE_NOTE.md",
+      "path": "docs/publications/2026-09-15-closure-archive/ARCHIVE_NOTE.md"
+    },
+    {
+      "git_blob_sha": "b0105f50afee791f9dab7d59fbcc9ed0ada8c4d1",
+      "name": "QIKVRT_Lean_Lake_Pruefpaket_2026-09-15.zip",
+      "path": "docs/publications/2026-09-15-closure-archive/QIKVRT_Lean_Lake_Pruefpaket_2026-09-15.zip"
+    },
+    {
+      "git_blob_sha": "4a1c37f1f51f16f3707302807c224bbc90a42297",
+      "name": "MACHINE_PROOF_BUNDLE.json",
+      "path": "release/qikvrt-closure-archive-20260915-v1/MACHINE_PROOF_BUNDLE.json"
+    }
+  ],
+  "machine_proof": {
+    "git_blob_sha": "4a1c37f1f51f16f3707302807c224bbc90a42297",
+    "path": "release/qikvrt-closure-archive-20260915-v1/MACHINE_PROOF_BUNDLE.json",
+    "policy_id": "qikvrt-zenodo-machine-proof-before-publication-v2"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "name": "Lohmann, Ingolf"
+      }
+    ],
+    "description": "Unveränderte historische Arbeitsfassung vom 15. September 2026 mit Vorlesetext, originalem Lean/Lake-Prüfpaket und aktueller Provenienzeinordnung. Der neue Kernelstatus bleibt ausdrücklich FORMAL_PENDING_KERNEL. Archivierung begründet weder einen neuen Beweis noch einen Hardware- oder Produktabschluss.",
+    "keywords": [
+      "QIK-VRT",
+      "Universal Transputer",
+      "Universal Terminal",
+      "Quality Gates",
+      "serialization",
+      "evidence",
+      "fail-closed"
+    ],
+    "language": "deu",
+    "license": "cc-by-nc-nd-4.0",
+    "notes": "Konzeption und Verantwortung: Ingolf Lohmann. KI-assistierte Ausarbeitung: OpenAI Codex. Kein Produktrelease, kein neuer Lean-Kernelnachweis, kein Hardware- oder Patentnachweis. Historischer Artikel vom 15.09.2026 und originales Prüfpaket unverändert; PDF-Bytevarianten separat gebunden.",
+    "prereserve_doi": true,
+    "publication_date": "2026-09-28",
+    "publication_type": "technicalnote",
+    "related_identifiers": [
+      {
+        "identifier": "https://github.com/Goldkelch/qik-vrt/tree/f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "relation": "isDocumentedBy",
+        "scheme": "url"
+      }
+    ],
+    "title": "Abgeschlossen und anschlussfähig: bedingte Formalisierung evidenzgebundener Zustandsarchitekturen",
+    "upload_type": "publication",
+    "version": "0.1-archive-20260928"
+  },
+  "owner_authorization": {
+    "bytes": 5586,
+    "git_blob_sha": "c9169882b7d970cc9d4151c9f34001a756fd64f0",
+    "path": "release/qikvrt-closure-archive-20260915-v1/OWNER_ZENODO_AUTHORIZATION.json",
+    "sha256": "995a0bb08c21aab226ab78e235669138b5a5074afbc1fc19b6897978ef1551d1"
+  },
+  "repository": "Goldkelch/qik-vrt",
+  "schema": "qikvrt_zenodo_publication_manifest_v2",
+  "source_head": "5895ef4a18627244d24f6fd93d4cb63c97df4746",
+  "state": "publish"
+}

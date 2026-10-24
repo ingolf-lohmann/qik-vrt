@@ -1,0 +1,84 @@
+{
+  "artificial_cognitive_actor": {
+    "model_build": "UNAVAILABLE",
+    "provider": "OpenAI",
+    "session": "7a167dca30f0",
+    "system_family": "Codex / GPT-6"
+  },
+  "artificial_cognitive_contributions": [
+    "Native expectedHeadOid CAS extension of existing provider",
+    "Same control-plane journal and target watermark",
+    "Existing Authority CLI -> authenticated loopback shim client",
+    "Two workflow ports and exact native tree/blob byte readbacks",
+    "Negative tests and end-to-end persistent provider fixture",
+    "Updated policy, documentation and digest-bound inventory"
+  ],
+  "base_main": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+  "created_at_utc": "2026-10-01T19:44:37.885505+00:00",
+  "effect_ack_done": false,
+  "external_effects": {
+    "merge": false,
+    "production_broker_effect": false,
+    "production_takeover": false,
+    "publication": false,
+    "scope": "Existing authorized draft review branch and description; connected review writer is outside candidate productive broker"
+  },
+  "full_make_test": "Required before upload; final exact-subject results recorded in PR readback; no predecessor test transfer",
+  "history_rewrite": false,
+  "human_acceptance_of_generated_successor": "PENDING_INDEPENDENT_REVIEW",
+  "human_actor": "Ingolf Lohmann",
+  "human_contributions": [
+    "Exact bounded two-effect restoration task",
+    "No-Bypass constraints and negative acceptance cases",
+    "Authorization to continue existing draft review candidate"
+  ],
+  "joint_components": {
+    "artificial": "implementation, tests and evidence",
+    "human": "scope, constraints, authorization"
+  },
+  "limitations": [
+    "Review branches only; main promotion blocked",
+    "128 normal file additions/updates, 512 KiB decoded bytes; deletions and file-mode changes blocked",
+    "Legacy generated Python source edit is outside minimal evidence profile",
+    "No historical credential revocation or trusted-Main activation established"
+  ],
+  "negative_test_classes": [
+    "missing_client_and_provider_capability",
+    "ambient_workflow_token_rejected",
+    "every_stale_permit_binding",
+    "concurrent_writer_native_cas",
+    "ambiguous_before_or_after_transport",
+    "replay_and_binding_conflict",
+    "native_commit_parent_tree_message_and_exact_byte_mismatch",
+    "separate_durable_ledger_readback_mismatch",
+    "source_path_or_capacity_outside_profile"
+  ],
+  "new_permit_issuer": false,
+  "new_writer_infrastructure": false,
+  "parent_head": "2e90c2a4ded011cce37acfc8d6947bf4dba3a10f",
+  "parent_tree": "ea4ef7e0ca82369284639fdc770ba7e5f98eb06f",
+  "pr_number": 428,
+  "predecessor_evidence_transfer": false,
+  "production_blocker": "No owner-provisioned existing authenticated private broker client capability files are available in this execution context",
+  "production_observation": {
+    "effect_ack_done": false,
+    "productive_provider_effect": false,
+    "reason": "BROKER_CAPABILITY_NOT_PROVISIONED",
+    "state": "HOLD"
+  },
+  "productive_provider_effect_verified": false,
+  "provider_authority_fencing_verified": false,
+  "repository": "ingolf-lohmann/qik-vrt",
+  "retry_condition": "Provision the existing shim with its independently surviving private control plane and short-lived broker-only provider credential; give the admitted client private API/writer/permit files, then execute one exact-bound operation and read back its native effect and durable ledger",
+  "schema": "qikvrt_work_unit_v1",
+  "source_admission": {
+    "broker_client_jobs": 2,
+    "inventory": "state/work_units/QIKVRT_PR428_WRITER_INVENTORY_20261001_V2.json",
+    "relevant_paths": 343,
+    "still_disabled_writer_jobs": 37,
+    "violations": [],
+    "workflow_jobs": 90
+  },
+  "test_evidence_boundary": "Persistent bare Git fixture, actual HTTP client/shim, exact staged binary bytes and private SQLite are test evidence; no live GitHub broker effect inferred",
+  "work_unit_id": "QIKVRT_PR428_BROKER_MATERIALIZATION_20261001_V1"
+}

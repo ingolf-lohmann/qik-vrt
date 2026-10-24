@@ -1,0 +1,25 @@
+{
+  "gate": "GITHUB_SEED_DISCOVERY_GATES",
+  "version": "2.9",
+  "seed_repository": "https://github.com/Goldkelch/qik-vrt",
+  "required": [
+    "single_initial_seed",
+    "authorized_seed_manifest",
+    "repository_guid",
+    "peer_manifest",
+    "graph_reachability",
+    "peer_requestable_sanity",
+    "watchdog_keepalive",
+    "persistent_operation",
+    "audit_log"
+  ],
+  "forbidden": [
+    "global_address_scanning",
+    "unauthorized_probing",
+    "self_propagation",
+    "surveillance_instrument",
+    "remote_mutation_without_authorization",
+    "claim_all_internet_repos_discoverable_without_seed_graph"
+  ],
+  "final_pass_rule": "No final pass without GitHub seed discovery gates."
+}

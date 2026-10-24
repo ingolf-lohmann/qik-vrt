@@ -1,0 +1,203 @@
+{
+  "_license": {
+    "classification": "machine_readable_claim_matrix",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "claim_count": 18,
+  "claims": [
+    {
+      "boundary": "Messsubject f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c; ein späterer Publikationscommit ist ein anderes Subject.",
+      "claim_id": "Q01",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "Q01"
+      ],
+      "statement": "Der Bericht untersucht Goldkelch/qik-vrt am exakt genannten HEAD und TREE; Quellen sind dateigenau gebunden.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Lokale Auswahl; kein vollständiger ISO-, Container- oder Hardwaretest. Ein vorheriger pytest-Aufruf war nicht ausführbar.",
+      "claim_id": "Q02",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "proof_refs": [],
+      "sources": [
+        "Q02"
+      ],
+      "statement": "104 ausgewählte unittest-Fälle wurden entdeckt: 103 bestanden, einer wegen fehlendem nginx/runuser übersprungen; Laufzeit 3,822 Sekunden.",
+      "status": "EVIDENCED"
+    },
+    {
+      "boundary": "GCC 13.3.0, x86-64, -Os; keine Minimalitäts-, RAM-Gesamt-, Linux-Kernel- oder Transistorzahlbehauptung.",
+      "claim_id": "Q03",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "proof_refs": [],
+      "sources": [
+        "Q03"
+      ],
+      "statement": "C90 und Assembly bestehen ihre Tests. Gemessen wurden 86 Byte LUT-.text, 394 Byte Kern-Code/RO-Daten, 7174 Byte Code/RO-Daten in sechs Objekten, 26792 Byte Adapterdatei und 80512 Byte text/data/bss.",
+      "status": "EVIDENCED"
+    },
+    {
+      "boundary": "LOOPBACK_TCP_ONLY, ein Host; keine Live-Authority/Mirror-Synchronisation, keine allgemeine Wirkungsfreigabe.",
+      "claim_id": "Q04",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "proof_refs": [],
+      "sources": [
+        "Q04"
+      ],
+      "statement": "Vier lokale Prozesse führen zwei TCP-Mesh-Paare mit begrenzter Ergebnisbeobachtung und Neustart-Replay aus.",
+      "status": "EVIDENCED"
+    },
+    {
+      "boundary": "CI-Audit 10940821417; weder öffentlicher ISO-Boot noch physischer Chipnachweis.",
+      "claim_id": "Q05",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "Q05"
+      ],
+      "statement": "Der CI-Diagnose-Readback von Run 36346727864 am Messsubject meldet MAKE_TEST_EXIT=0 und unveränderten Worktree; der heruntergeladene ZIP-Digest wurde geprüft.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Keine Behauptung, dass es nie historische Ausführungen gab. Docker/QEMU/Cargo/GHDL lokal nicht verfügbar; Suchumfang begrenzt.",
+      "claim_id": "Q06",
+      "classification": "OPEN",
+      "proof_refs": [],
+      "sources": [],
+      "statement": "Der vollständige aktuelle Zielnachweis für Distribution, Container, Browser, getrennte Hosts und gesamten Recovery-Pfad ist in diesem begrenzten Audit offen.",
+      "status": "OPEN"
+    },
+    {
+      "boundary": "Operationalisierung dieses Berichts, keine wiedergefundene frühere Zahlenskala; ordinal, keine Prozent- oder Durchschnittsfreigabe.",
+      "claim_id": "Q07",
+      "classification": "NORMATIVE",
+      "proof_refs": [],
+      "sources": [],
+      "statement": "Die vorgeschlagene Skala 0 bis 4 bewertet Evidenzstufen; die Gesamtfreigabe verlangt die Konjunktion aller vollständig erfüllten Ziel-Gates.",
+      "status": "DECLARED"
+    },
+    {
+      "boundary": "Berechnung aus konservativen expliziten Bewertungsentscheidungen; kein allumfassendes Produkt-Ranking.",
+      "claim_id": "Q08",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "proof_refs": [],
+      "sources": [
+        "Q08"
+      ],
+      "statement": "Der dokumentierte Auditvektor ist (2,1,2,2,2,2,2,1,0,2); die Stufenzahlen sind 1/2/7/0/0, Minimum 0 und null vollständige Zielbestätigungen von zehn.",
+      "status": "EVIDENCED"
+    },
+    {
+      "boundary": "Quellvertrag mit 8-Bit-Byte- und exakter 32-Bit-Typannahme; die gesamte Laufzeit ist größer.",
+      "claim_id": "Q09",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "Q09"
+      ],
+      "statement": "Der C90-Kernvertrag beschreibt einen 14-Byte-Eingang und 6-Byte-Ausgang ohne OS-, Netzwerk- oder Heap-Abhängigkeit im inneren Kern.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Allgemeine technische Referenzen Docker, WebAssembly und seL4; keine seL4-Beweisübertragung auf QIK-VRT.",
+      "claim_id": "Q10",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "Q10"
+      ],
+      "statement": "Docker-Container teilen den Hostkernel; portabler Bytecode legt nicht automatisch Host-APIs fest; Verifikationsresultate besitzen Annahmen.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Kein universeller OS-Prozessdump, keine HMAC-Verschlüsselung, kein globales Exactly-once und kein Personenidentitätsbeweis.",
+      "claim_id": "Q11",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "Q11"
+      ],
+      "statement": "Der vorhandene Transputer spezifiziert explizite Store-/Quell-Recovery, HMAC-Authentisierung, gebundene Nachrichten und begrenzte Replay-Semantik.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Verifikationsanforderungen, keine hier ausgeführte universelle Refinementprüfung.",
+      "claim_id": "Q12",
+      "classification": "NORMATIVE",
+      "proof_refs": [],
+      "sources": [],
+      "statement": "Zustandsübertragung verlangt beobachtungsäquivalente Decodierung und erhaltene Invarianten; Hardware benötigt eine passende Zustands- und Übergangsrelation.",
+      "status": "DECLARED"
+    },
+    {
+      "boundary": "Vorhandene Software und ethisches Credo ersetzen keine physische oder Sicherheitsverifikation; keine Patentierbarkeitsfeststellung.",
+      "claim_id": "Q13",
+      "classification": "OPEN",
+      "proof_refs": [],
+      "sources": [],
+      "statement": "Die konkrete Meta-Transistor-Realisierung, physische Timing-/Ressourcenschließung und behauptete vollständige Ungefährlichkeit sind nicht nachgewiesen.",
+      "status": "OPEN"
+    },
+    {
+      "boundary": "Geforderte fail-closed Semantik: kein 403 als Erfolg; Rate-Limit-/Permission-/sonstige Fehler trennen und gebundene Metadaten erhalten. Keine Main-Integration aus dem PR abgeleitet.",
+      "claim_id": "Q14",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "Q14"
+      ],
+      "statement": "Die separate Requested-Review-Reparatur liegt in PR 1265 am Kandidaten 1b50aab45e44f87058730605ed850c1f7fa10020; dieser Kandidat ist nicht der untersuchte Main.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Nächste Prüfschritte sind beschrieben; Testdauer ist keine Release-Dauer. Zielprofil, verfügbare Ressourcen und Integrationsresultate fehlen für eine verbindliche Terminierung.",
+      "claim_id": "Q15",
+      "classification": "OPEN",
+      "proof_refs": [],
+      "sources": [],
+      "statement": "Eine belastbare Software- oder Hardware-Lieferfrist ist aus diesen Messungen allein nicht ableitbar.",
+      "status": "OPEN"
+    },
+    {
+      "boundary": "Modell ohne zusätzliche Übergabekosten; weder QIK-VRT-Benchmark noch Zusage eines Hardwaregewinns.",
+      "claim_id": "Q16",
+      "classification": "INTERPRETATIVE",
+      "proof_refs": [],
+      "sources": [],
+      "statement": "Die illustrative Beschleunigungsrechnung S=1/((1-p)+p/s) ergibt für s=100 und p=0,1 etwa 1,11 sowie für p=0,9 etwa 9,17.",
+      "status": "DECLARED"
+    },
+    {
+      "boundary": "Verantwortungserklärung und Arbeitsregel, keine Ungefährlichkeits-, Patent-, Zeitleistungs- oder Main-Aktivierungsbehauptung; Roadmap-PR 415 ist separater Kandidat.",
+      "claim_id": "Q17",
+      "classification": "NORMATIVE",
+      "proof_refs": [],
+      "sources": [],
+      "statement": "Ingolf Lohmann benennt den kategorischen Imperativ als ethisches Credo, äußert Hardware-Patentabsicht und verwendet die 15/30/60-Sekunden-Roadmap als Suchheuristik.",
+      "status": "DECLARED"
+    },
+    {
+      "boundary": "Zeitabstand der Einträge, nicht unabhängig gemessene erste Nutzersichtbarkeit, keine physikalische Zeitverschiebung; Archivpublikation und Produktrelease bleiben verschiedene Entscheidungen.",
+      "claim_id": "Q18",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "Q18"
+      ],
+      "statement": "Die historischen PDF-Katalogeinträge vom 15. und 27. September enthalten bytegleiche 160673-Byte-Dateien; ihr damaliger Status FORMAL_PENDING_KERNEL bleibt offen.",
+      "status": "BOUND"
+    }
+  ],
+  "completion_claims": {
+    "effect_ack_done": false,
+    "formal_kernel_verified": false,
+    "ordinary_release": false,
+    "public_zenodo_record_verified": false
+  },
+  "publication_id": "qikvrt-quality-gates-20260928-v1"
+}

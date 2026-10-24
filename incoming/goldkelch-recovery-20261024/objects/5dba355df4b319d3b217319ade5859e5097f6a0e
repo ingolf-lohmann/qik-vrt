@@ -1,0 +1,54 @@
+{
+  "_license": {
+    "classification": "machine_readable_work_unit",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "ANSWER_SEARCH_ROADMAP_20260928_V1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "repository_role": "MIRROR_PERSONAL_MESH_WORKING_MEMORY",
+  "base_head": "fedcf9caf904b6062dd3e4020054f94ef6646506",
+  "base_tree": "00330d74f088757832d00223409b5a5df87ae5c5",
+  "branch": "policy/answer-search-roadmap-20260928",
+  "owner_instruction_at": "2026-09-28T01:19:51+02:00",
+  "owner_instruction_excerpt": "das soll auch nur als eine Roadmap bei der Suche nach Antworten verwendet werden. Bitte melde das von nun an an und persistiere auch diese neue Regel geeignet in Mesh Repository",
+  "authorization_scope": "Persist the declared answer-search and communication rule through an isolated, reviewable repository successor.",
+  "reuse": {
+    "policy": "policy/HUMAN_MACHINE_INTERFACE_ADAPTATION_V1.json",
+    "human_contract": "docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md",
+    "entrypoint": "AI",
+    "new_parallel_policy_or_timer": false
+  },
+  "provenance": {
+    "human": "Ingolf Lohmann supplied the 15/30/60-second orientation, announcement requirement, scope correction and persistence instruction.",
+    "artificial_cognitive": "OpenAI Codex expressed the rule in the existing policy, entrypoint and progress contract, regenerated integrity metadata and checked the candidate.",
+    "joint": "The persisted wording operationalizes the supplied requirement; it does not convert generated wording into human authorship.",
+    "unresolved": "No runtime latency measurement or node-wide propagation is inferred."
+  },
+  "base_observation": {
+    "integrity": "BLOCK: repository manifest differs from deterministic regeneration",
+    "repair": "Regenerate the existing integrity trio for this complete successor; preserve all unrelated source bytes.",
+    "entrypoint_test": "Existing test_context_and_entrypoint_bind_corpus requires UNTRANSCRIBED, absent from base AI; clarify the existing BOUND_PENDING_ASR paragraph without changing recording status."
+  },
+  "acceptance": [
+    "15-second useful-result check, output target 30 seconds, one 30-second extension and constructive stop target 60 seconds are represented",
+    "announcement is required and timing is explicitly orientation-only",
+    "unproductive search returns a precise gap, refined question and concrete answerable variant",
+    "mandatory gates, authorized productive continuation and effect boundaries remain intact",
+    "existing HMI checks, bootstrap and integrity verification are run",
+    "the remote candidate commit, tree and changed blobs are read back"
+  ],
+  "activation_boundary": "Candidate persistence is distinct from reviewed main adoption and observation on other Mesh nodes.",
+  "completion_claims": {
+    "runtime_timer_installed": false,
+    "main_adoption": false,
+    "mesh_wide_propagation": false,
+    "release": false,
+    "zenodo_publication": false,
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false
+  }
+}

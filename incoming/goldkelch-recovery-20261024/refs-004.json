@@ -1,0 +1,517 @@
+{
+  "schema": "qikvrt_recovered_ref_page_v1",
+  "refs": [
+    {
+      "ref": "refs/remotes/origin/sync/content-disposition-batch-001-98194f45-v2",
+      "object": "e97360391996b0f78e95903ad96cd02506d5c982"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/content-disposition-batch-002-3ba298e0-v1",
+      "object": "044408d165bf3054af0e0b38c72df7d58f52c986"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/content-disposition-batch-002-terminal-5d52adc8-from-30efd108-v1",
+      "object": "9307d6e7b27b96a3822f833dfb96411e4ac44385"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/current-batch003-db60a080-from-518677ee-v1",
+      "object": "952ec0ae89b05935ba884ec566a51d638dd51ea3"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/global-completion-599866-v2",
+      "object": "9f7bd91cb86bda0be9b6dafb5ba3b1f6f3c959a3"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/global-finalization-b771-v1",
+      "object": "e6b3f1a7e0be975c9346637cda4a4ef6a910d24f"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/global-system-closure-authority-844643be-from-ff8bdd5f-v1",
+      "object": "41393e7180a8dd3c9779f7edc5d66f7aee8e235b"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/goldkelch-main-2e8192d",
+      "object": "e2b197eadf6e20efb1e31475f040ff7419b1fb92"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/post-acceptance-status-191bee0e-from-a6b45c22-v1",
+      "object": "a8300da6e897534077629dce50a4426aba8c672e"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/post-acceptance-status-authority-191bee0e-from-a6b45c22-v3",
+      "object": "a6b45c22eae2fb3fa3c8168062cadfdf5f902cbd"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/post-acceptance-status-authority-191bee0e-from-a6b45c22-v4",
+      "object": "a4aba5f511434e5924ce843429234c234e755e82"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/post-acceptance-status-authority-191bee0e-from-acb45bd6-v2",
+      "object": "acb45bd6897465bd96db9d3e2912388531252cc1"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/post-acceptance-status-authority-191bee0e-from-c0bbf858-v1",
+      "object": "c0bbf85881c996cca5fff32be91847b7e537a493"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/pr273-authority-b5452d9e-from-0bc051d5-v1",
+      "object": "4a5574f4dd091995fd5d33867d7c374641b2f970"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/projector-repair-authority-1f559a19-from-465b46fd-v1",
+      "object": "118c9d219e21c4a5ea552b36a6662c17ec8ff348"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/quantum-classical-runtime-article-3a186-v1",
+      "object": "30fb5afd1bc0e5eadae5156b091a5b3637993c0c"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/quantum-runtime-article-zenodo-3a186cb5-v1",
+      "object": "dc217c8cb19bc113401a1f91dae27bf1733b5b5e"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/runtime-article-authority-tree-3a186-from-0698e-v1",
+      "object": "e22fa5a8617365c782679e7c986ee4a916f453bf"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/six-corrected-candidates-authority-7d87a600-from-afcd0255-v1",
+      "object": "b0a7f35c9536c9df72592b204cb8ff1256048c1c"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/six-corrected-candidates-authority-7d87a600-from-c2a6e75-v1",
+      "object": "97717350a23435497da14a1929a86a4275850bd4"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/six-corrected-candidates-authority-7d87a600-from-c2a6e75e-v1",
+      "object": "97717350a23435497da14a1929a86a4275850bd4"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/survival-postpublication-authority-3e6981a5-from-cd5ea13e-v1",
+      "object": "1fb4a50d32007988b0702ade804adb441686d7bc"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/survival-postpublication-authority-pr286-v1",
+      "object": "2cb1d231eb050e0eaddea15e85367e0568781c63"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/whole-tree-authority-2071b2946ef5-from-c8bb2dfaad51-v1",
+      "object": "59e93dd15009320a3b1df68aa049a8bf896544d9"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/whole-tree-authority-d18af01d2b56-from-c8bb2dfaad51-v1",
+      "object": "157c28fe2fff76ea7882f00da3ca0ed450468d02"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/whole-tree-receipt-pr634-pr344-mirror-v1",
+      "object": "6ce50474b0235fa4f003e99a7635af200341ad7e"
+    },
+    {
+      "ref": "refs/remotes/origin/temdd/executable-runtime-20260923-v1",
+      "object": "74db1c61a8cedeb6d8702e7acb1fe18aa45e7ebc"
+    },
+    {
+      "ref": "refs/remotes/origin/tmp-do-not-use",
+      "object": "6a5868097c580772aa80f763743d4326559bc919"
+    },
+    {
+      "ref": "refs/remotes/origin/tmp/b0a7-tree-probe",
+      "object": "b0a7f35c9536c9df72592b204cb8ff1256048c1c"
+    },
+    {
+      "ref": "refs/remotes/origin/tmp/probe-base-tree-465b",
+      "object": "465b46fd69f9311ff02f80a31790691b59affe9e"
+    },
+    {
+      "ref": "refs/remotes/origin/transport/mirror-aphorism-candidate-bytes-20260804-v1",
+      "object": "502f9942ec91af7766695f7a2dfd09c583ca2c77"
+    },
+    {
+      "ref": "refs/remotes/origin/transport/r11-v2-mirror-materializer-once",
+      "object": "bbcaeb88116960cc89e6ee2238fd7a194aae92d0"
+    },
+    {
+      "ref": "refs/remotes/origin/trigger/quantum-runtime-article-sync-3a186cb5-v1",
+      "object": "9072c4277929d9b386c29ee291b6c8ed3ecc6cf7"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/dispatch-pr334-exact-901943d6-v2",
+      "object": "432b5efffbcaf6603039505cca6b472a0aecae2f"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/execute-runtime-article-sync-c8af0bdb",
+      "object": "c8af0bdb6d3ac931d8263b79a0982caaae74aa07"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/materialize-mirror-authority-0ab86d6f-20260729-v1",
+      "object": "ce875e832a097c1c679ab7bd742cedcdf1d7c310"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/materialize-node-liveness-test-maintenance-repair-0a792620-v1",
+      "object": "77aeb60a2825ef8494a19af0aed8bdf8095941f5"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/materialize-scoped-zenodo-effect-ack-equality-mirror-v1",
+      "object": "2222294d611e371d317809fe86a71638a9f01848"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/post-pr382-pr217-anticipation-refresh-v1",
+      "object": "0ce287aa3e2ef73d5cc3d40553ef9be821843b5b"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr101-equality-27d6d48f",
+      "object": "27d6d48f647fae73d7b3b261848930db4dd601c3"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr103-history-preserving-sync-v2-8653eb9f",
+      "object": "8653eb9fd04c7956daa2e6729421dd4e9f5115b1"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr103-history-sync-v2-8653eb9f",
+      "object": "8653eb9fd04c7956daa2e6729421dd4e9f5115b1"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr106-sync-pr-trigger-30564d93",
+      "object": "30564d933dd2168bf41fb6463326235c163b6bc3"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr112-post-acceptance-equality-e390f7eb",
+      "object": "e390f7ebf3665b6afe888091906af274d9b2c7f4"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr118-batch003-equality-b7e770be",
+      "object": "b7e770be31647126ccf766db8591fadea88c5909"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr121-mirror-sync-v4-b6cf8a55",
+      "object": "b6cf8a5585775951ba74a76e22ef4875c8cebf15"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr124-constructor-hook-5595daad",
+      "object": "5595daad88e7bb76a63d439b8d7c09c61579c47f"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr124-constructor-hook-ae2ee510",
+      "object": "ae2ee5100e15a73242d43c1c01d2ca4a44a43677"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr129-first-subject-equality-070e061e",
+      "object": "070e061ebac75e2cab0af450b138ce0d9e126f35"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr134-constructor-exact-bytes-f9731ac3",
+      "object": "f9731ac315381871c957b66a3cbe71a67cf5b500"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr134-constructor-infrastructure-f9731ac3",
+      "object": "e3e4f328900eccad645ca5319468eea4777f1090"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr134-exact-tree-retrigger-f973-v1",
+      "object": "2cd4c0d19bb8109743e84a3b1db80462e12567fa"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr134-infrastructure-6d9dde77",
+      "object": "6d9dde7793816028fd95335306df8157e39a25bf"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr148-six-corrected-equality-66868dec",
+      "object": "66868decd767b58a1b087f730eb175b5c8f0225c"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr149-reciprocal-equality-73c0d8cb",
+      "object": "73c0d8cbff5f7bfe3c20f33e6c34c62ed6f7f50c"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr152-pr145-receipt-61563962",
+      "object": "6156396279fe646bcdcfb3ecdd8d128214f0654c"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr152-pr145-receipt-exact-head-61563962",
+      "object": "6156396279fe646bcdcfb3ecdd8d128214f0654c"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr156-reciprocal-equality-5efd79a2",
+      "object": "5efd79a2b46eeecb5a3d09b8db4cd0c632ea7e75"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr158-global-closure-41393e71",
+      "object": "41393e7180a8dd3c9779f7edc5d66f7aee8e235b"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr158-global-closure-exact-head-41393e71",
+      "object": "41393e7180a8dd3c9779f7edc5d66f7aee8e235b"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr161-reciprocal-equality-609becdd",
+      "object": "609becdd628f1572d754123831359566c8baf82b"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr168-reciprocal-equality-1d8737f6",
+      "object": "1d8737f6fffcfadea63c6e55fa85196aeb577ac3"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr192-vrtcore-h3-port-executor-e1c7ae2b",
+      "object": "f8d62259dc5a770eac318e38e45468d5af7de317"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr245-zero-job-retrigger-e1941ce7-v2",
+      "object": "e1941ce7760902c24651acd23217148cb56ff63e"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr248-exact-head-verification-4d66d0c-v1",
+      "object": "4d66d0cca787261daa6d15c29a3fecd40477f6ce"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr249-mirror-constructor-current-main-c2a6-v1",
+      "object": "2370c7be17e467e6aaadb4f3a283a423ea1c07ed"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr249-mirror-constructor-trigger-current-v2-temp",
+      "object": "12d684e33314134466d4c6a6a5c0f20ba55d3df1"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr249-mirror-constructor-trigger-main-v1",
+      "object": "fefc0b2c884b6372405ffab0a4ab1fb01a6ee6ad"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr249-mirror-constructor-trigger-v1",
+      "object": "8adbeea66d324933831aa1f36ba1731a3c9e3bb5"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr250-exact-head-verification-5f9fe419-v1",
+      "object": "5f9fe4193ba54d834129a5a0d24bddd15044a798"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr252-exact-head-df5b95fb-v1",
+      "object": "df5b95fba59a347ae93ce60bf74ab91af0aeb00a"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr254-exact-head-e7c43170-v1",
+      "object": "e7c43170578b6925941fba0e03b25e01938c83a3"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr256-exact-head-91b11e53-v1",
+      "object": "91b11e5315c689e26575e9bbc67db8c9957bc4a1"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr262-eea0d0da-exact-head-v1",
+      "object": "eea0d0da5430a8c516440e742d309f7e96435985"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr262-exact-head-verification-eea0d0da-v1",
+      "object": "eea0d0da5430a8c516440e742d309f7e96435985"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr265-2b3a5b0c-exact-head-v1",
+      "object": "2b3a5b0c6cfa58ee02d31b8d3802eb81201df880"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr268-exact-head-fb32431d-v1",
+      "object": "fb32431d0a152849d41290fc7ae3f243bbbf565e"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr272-literal-exact-head-6f694a8a-v1",
+      "object": "6f694a8af9d4fb410fb95b2af99ee20a79e3d350"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr323-h5-h6-port-executor-4ce9c07b",
+      "object": "a10cf9683412819d56938c357d1a27ad2a2119e8"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr323-pr197-receipt-executor-mirror-v1",
+      "object": "b311b6fb1791ca15b039f6c6d3ddd395e945e7a8"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr356-pr204-receipt-executor-mirror-v1",
+      "object": "5684ebb6d75cb16f5d42186dcba9b11212264257"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr356-pr204-receipt-executor-mirror-v2",
+      "object": "fa1cdee80a95d971ff7202d2b14788e36118ac9d"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr356-pr204-receipt-executor-mirror-v3",
+      "object": "091b26de82d6092e1014520725779a837f5865f8"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr356-pr204-receipt-executor-mirror-v4",
+      "object": "3041a3381309a8e5e1bcdcd6f385c674e23e9269"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr368-mirror-current-main-port-v1",
+      "object": "0f592a75a8f309b23a311f7fa10df0667364a61c"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr368-pr214-reciprocal-equality-mirror-v1",
+      "object": "485fe4cb74daec5451358ee8000bfe2a14dce2d3"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr384-mirror-request-port-v1",
+      "object": "0f26e3a3e0b8ccf96b375bd2261e45b53765c0bb"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr55-materialized-8b951ef0",
+      "object": "8b951ef0ab3293e5c134a0f0ef2c39ad2cc288c0"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr57-materialized-c3abe8ae",
+      "object": "c3abe8ae41b76d65d6282f3b084439c113d31850"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr59-zenodo-evidence-materialized-90636489",
+      "object": "90636489e29ed8dc5e38c1188bb3f140124a7e89"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr61-global-completion-9f7bd91c",
+      "object": "9f7bd91cb86bda0be9b6dafb5ba3b1f6f3c959a3"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr62-authority-tree-sync-2fda06e1",
+      "object": "2fda06e13f1e2a8e9b8305596d01f83219d72d3c"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr62-global-completion-exact-2d5f255d",
+      "object": "2d5f255d0307de2e4574a13ec82a8f818e01c74d"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr66-finalization-sync-95c0e036",
+      "object": "95c0e03614cc067301ee9e044aaca2501fc7603d"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr66-global-finalization-e6b3f1a7",
+      "object": "e6b3f1a7e0be975c9346637cda4a4ef6a910d24f"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr69-persist-authority-tree-56a70fd0",
+      "object": "979b104632c3f1331d3b19ce4f3e74a3f3b87e85"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr69-status-article-b47d-exact-c3931554",
+      "object": "c3931554f2f4bf0e12d0c21ae317eeab968e86ff"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr73-runtime-sync-c5439e6d",
+      "object": "c5439e6d3d2fcbdcdc745de3905e68c405f9b428"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr74-mirror-sync-5b783984",
+      "object": "5b783984177299cd4010402c97d1a16a9ea5ce64"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr74-mirror-sync-a857059b",
+      "object": "a857059b9650dad67c1abf025778694be9a36608"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr77-sync-controller-b1436bd0",
+      "object": "b1436bd02e3cde70f06ea3916cffb60e7dd9d393"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr78-controller-b1436bd0-v2",
+      "object": "b1436bd02e3cde70f06ea3916cffb60e7dd9d393"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr94-pair-receipt-24cb703a",
+      "object": "24cb703ad545a44b119590847926c4f796f5c038"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr96-mirror-9307d6e7",
+      "object": "9307d6e7b27b96a3822f833dfb96411e4ac44385"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pr98-equality-7d9cf83a",
+      "object": "7d9cf83a180e5ec6bb2e638f7116fc28edb1932e"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/pre-spacetime-zenodo-receipt-equality-mirror-v1",
+      "object": "e433f7df2cd0aec09aebd0beaccd93cf8afb4ef1"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/recover-pr309-exact-verifier-dispatch-126f-v1",
+      "object": "526cd11d6dbe0ea99e81fc8121bb8213aaf4daf7"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/recover-pr313-exact-verifier-dispatch-9dcc-v1",
+      "object": "dbb808a63281f791731d3f02086ac2b9eea46f9b"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/repair-mirror-pr228-materializer-timeout-v1",
+      "object": "69fb7767e2a8fd830cbe82f3d7be2ba4075f7312"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/trigger-canonical-zenodo-union-sync-4892e744-v1",
+      "object": "f0a87c1784d78ceee250053e4b5fba713e93e305"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/trigger-canonical-zenodo-union-sync-4892e744-v2",
+      "object": "c8ff1e8f51a3d75300a3cec11a44c6c5ae5d508b"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/trigger-construct-mirror-pr249-7d87a600-v1",
+      "object": "afcd0255aab6bc5ad18275a2d91516688a41e302"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/trigger-construct-mirror-pr249-clean-v1",
+      "object": "afcd0255aab6bc5ad18275a2d91516688a41e302"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/trigger-content-disposition-batch-001-sync-98194f45-v1",
+      "object": "2eedf312a0806fa92d258815e3fde6256d9f6373"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/trigger-content-disposition-batch-001-sync-98194f45-v2",
+      "object": "26d4a5ce71af32b05c9a3af961764ee19f55d3a9"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/trigger-content-disposition-batch-002-sync-3ba298e0-v1",
+      "object": "33eb2e5152b7eae8138df1f856714bf69fcc7cba"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/trigger-quantum-runtime-article-sync-3a186cb5",
+      "object": "c5439e6d3d2fcbdcdc745de3905e68c405f9b428"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/verify-mirror-pre-spacetime-zenodo-effect-ack-098ef9f-v1",
+      "object": "63452d7066e180a4fad9e94329be65ca2612f64c"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/verify-pr174-materialized-db15d2fe-v1",
+      "object": "db15d2fe2f041894d45b96c64b731d8b71d0423d"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/verify-pr177-materialized-9c36a403-v1",
+      "object": "9c36a4030a9a15011b57e64adfc16a661ca8dd8b"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/verify-pr179-materialized-3c5cf7f0-v1",
+      "object": "3c5cf7f03d617e623c3fc79a5f60e843f04b1528"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/verify-pr288-468a388-zero-tree-v1",
+      "object": "468a388361d6ae85114288e1f682d5acd4391e76"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/verify-pr293-exact-1df3a832-v1",
+      "object": "1df3a83282fff289b57ea5b1e0bf29fd74b8f233"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/verify-pr295-c4083452-zero-tree-v1",
+      "object": "7b6a3bd2cbbdf155f0184f1fad480ddc99e2e399"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/verify-pr299-1b9bef85-zero-tree-v1",
+      "object": "ef550b1c4c1c8b7e0a67ce289d932f7d98f7589b"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/verify-pr301-2e1b6df-zero-tree-v1",
+      "object": "9ef7b3a6ce8b54096f5f938fa9a4bb74aa48e66b"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/verify-pr304-653ce31f-zero-tree-v1",
+      "object": "a4b490e79f839f6b52430a66410d84c47b32e60a"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/verify-pr306-413e180b-zero-tree-v1",
+      "object": "297f5c50094db8c7fbaf014294678fdc20d0d229"
+    }
+  ]
+}

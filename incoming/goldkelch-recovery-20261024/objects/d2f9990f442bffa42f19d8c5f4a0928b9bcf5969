@@ -1,0 +1,168 @@
+{
+  "_license": {
+    "classification": "work_unit_json",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "artificial_cognitive_actor": {
+    "identity_and_observation_limits": "Platform and commit identities do not authenticate a natural person or independent reviewer.",
+    "model_or_build": "GPT-6",
+    "provider": "OpenAI",
+    "session_or_run_id": "3179ffe5f8cb",
+    "system_family": "Codex"
+  },
+  "artificial_cognitive_contributions": [
+    "Verified current heads and main; preserved both input histories.",
+    "Combined strict JSON loader, evaluate, evaluate-closure and verify-readback without losing any source function.",
+    "Reused hardened promotion admission in the Closure-Step controller; native protection, checks/statuses and one-effect journal remain additional mandatory predicates.",
+    "Added integrated eight-class negative, executed-job/attempt/step, review-revocation and positive one-effect controls."
+  ],
+  "created_at": "2026-10-01T15:40:22.260467+00:00",
+  "external_effects": {
+    "closure_step_live_dispatch": false,
+    "deployment": false,
+    "main_merge": false,
+    "prepared": "REVIEWABLE_SUCCESSOR",
+    "publication": false,
+    "release": false,
+    "ruleset_mutation": false
+  },
+  "git_history": {
+    "history_rewrite": false,
+    "old_prs_closed": false,
+    "ordered_parents": [
+      "4d33d78bee91cfa639abde0aceae95371ad8f55c",
+      "854e1f835d2f5d5a45de2a96759bbd077e5118a4"
+    ],
+    "own_containing_commit_hash_claimed": false,
+    "promotion_marker_added": false,
+    "target_branch": "work/closure-promotion-consolidation-20261001"
+  },
+  "human_actor": {
+    "attribution_id": "Ingolf Lohmann"
+  },
+  "human_contributions": [
+    "Authorized semantic consolidation of PR #433 and #434, regression tests and fresh exact-head gates; no governance or Effect-ACK weakening."
+  ],
+  "human_decision": {
+    "candidate_native_independent_review": "PENDING",
+    "task_authorization": "GRANTED"
+  },
+  "inputs": {
+    "4d33d78bee91cfa639abde0aceae95371ad8f55c": {
+      "pr": 433,
+      "tree": "550071787b121ed21601b7e90fdc4b7973e829d7"
+    },
+    "854e1f835d2f5d5a45de2a96759bbd077e5118a4": {
+      "pr": 434,
+      "tree": "cfe2e191c3a245eb37667bc32f2a7bc8eb125300"
+    }
+  },
+  "joint_components": [],
+  "next_action": "Persist successor with both parents; verify remote tree and payloads; observe new exact-head CI and native review/protection.",
+  "open_boundaries": [
+    "Native independent review and native governance must be freshly established on the successor.",
+    "Technical gate success is not native independent approval, Main merge, reciprocal closure or EFFECT_ACK_DONE.",
+    "Existing PR evidence and work units are historical source-specific records, not transferred successor acceptance."
+  ],
+  "outputs": {
+    ".github/workflows/qikvrt_expected_head_promotion.yml": {
+      "bytes": 15169,
+      "git_blob_sha1": "b1a4ab1c36286880f0692bdc36c3213aeb1f5532",
+      "sha256": "8581ee544f548c81dcf93b3b0c3189c42ec74fb84384933dddd6ff433681ce06"
+    },
+    ".github/workflows/qikvrt_requested_review_contract.yml": {
+      "bytes": 3554,
+      "git_blob_sha1": "0e56dbca0b59ad75afb8da93bf74231227522367",
+      "sha256": "e1e6f8728d82b464a069f1753d2525227e9e3a3aa5754d221c50413985288e57"
+    },
+    "docs/architecture/RECIPROCAL_DEVOPS_CLOSURE_EXECUTION_V1.md": {
+      "bytes": 5364,
+      "git_blob_sha1": "563f38df8535bbbfe76d8d3c365309f3ccd69a27",
+      "sha256": "447f0f1ee9241c47190fcf6b123924abeaca0823a67b578e5c23f1b47ba1f8cf"
+    },
+    "docs/operations/AUTONOMOUS_PR_CONTINUATION.md": {
+      "bytes": 5571,
+      "git_blob_sha1": "e7740fdbb2e9ff3a748eae911acf45428bae7f41",
+      "sha256": "43463484ad4e93ed76809ac9ef59ecf0b33e662d692bcc0fd0ccaec2a7f6a788"
+    },
+    "tests/test_qikvrt_expected_head_promotion.py": {
+      "bytes": 17536,
+      "git_blob_sha1": "a583fe8495216c4461e3e1ab8b1cad93ca9e89b9",
+      "sha256": "6395bdd51d223f03ab5da8ade9090190f39c214f09e2aff099b8b1a96bc2eeb4"
+    },
+    "tests/test_reciprocal_closure_step.py": {
+      "bytes": 22403,
+      "git_blob_sha1": "ce0f0adb615ba98be6d5cba71504452a5a528022",
+      "sha256": "8f79344214953cd69a15503c1b853f16dc4dd3f18e05494a6f62be40910c2bf7"
+    },
+    "tests/test_reciprocal_devops_closure.py": {
+      "bytes": 10192,
+      "git_blob_sha1": "28aacf72a4ede3f41ab5c8a9676cb0f2f494d1d9",
+      "sha256": "40fd1e31df6d57b74fadd65c9c1a05b617bdef8cfc2fc811201d2b2fc7d16d9f"
+    },
+    "tools/qikvrt_expected_head_promotion.py": {
+      "bytes": 25189,
+      "git_blob_sha1": "a4bcecee84ab809dcc0d4e38846ea784b0ca1960",
+      "sha256": "7a84beaaa0e4b99b3d453adaadabe74233c281c4016cf31b138510faf72a9d04"
+    },
+    "tools/qikvrt_pr_closure_engine.py": {
+      "bytes": 42962,
+      "git_blob_sha1": "887fd6dcdee330dcf25418ef15ad6df3bb8baa2b",
+      "sha256": "2f29674af11833053628312d38e0cd16c1faf82955de25bcb9632b57b2c66ea0"
+    }
+  },
+  "release_claims": {
+    "AUTHORITY_MIRROR_EQUALITY": false,
+    "EFFECT_ACK_DONE": false,
+    "FINAL_PASS": false,
+    "PASS": false,
+    "TARGET_REACHED": false
+  },
+  "schema": "qikvrt_work_unit_v1",
+  "semantic_preservation": {
+    "433_evaluate_closure_ast_equal": true,
+    "433_strict_loader_ast_equal": true,
+    "all_434_functions_except_loader_and_main_ast_equal": true,
+    "main_dispatch": "evaluate | evaluate-closure | verify-readback",
+    "projections_regenerated_after_semantic_consolidation": true
+  },
+  "source_commit": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+  "source_ref": "main",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "68a3f30885a403a7edaa4d2dbb8576ace9cc866e",
+  "unresolved_origin": [],
+  "verification": {
+    "bootstrap": "CONTINUE: optional all-profile tools absent; current Python/C/shell paths available",
+    "evidence_class": "BOUNDED_EXECUTABLE_TESTS_NOT_FORMAL_KERNEL_PROOF",
+    "false_acceptance_classes": [
+      "FOREIGN_REPOSITORY",
+      "FOREIGN_PR",
+      "FOREIGN_HEAD",
+      "ZERO_JOBS",
+      "SELF_APPROVAL",
+      "UNENFORCED_RULE",
+      "STALE_REVIEW",
+      "LEGACY_UNBOUND"
+    ],
+    "full_local_make_test": {
+      "initial_environment_blocker": "Historical Git commit 56127a6fd7dadea331fea98ed6cba19b4b96c6b2 absent in shallow checkout; exact read-only fetch repaired the environment without modifying or weakening its worktree test.",
+      "log_sha256": "0ab89c8dd956e76039f37eef6eff271d7ad4627d42221dc3ac0ccb8004b0fb2c",
+      "result": "PASS",
+      "scope": "Complete regenerated semantic candidate before final work-unit metadata update; exact successor native gates remain pending."
+    },
+    "native_exact_head_gates": "PENDING_SUCCESSOR_HEAD",
+    "predecessor_evidence_transfer": false,
+    "targeted": {
+      "command": "python3 -B -m unittest tests.test_qikvrt_expected_head_promotion tests.test_qikvrt_expected_head_promotion_contract tests.test_qikvrt_required_review_gate tests.test_reciprocal_devops_closure tests.test_qikvrt_pr_closure_engine tests.test_reciprocal_closure_step tests.test_qikvrt_autonomous_pr_continuation tests.test_qikvrt_requested_review_executor",
+      "errors": 0,
+      "failures": 0,
+      "finite_boundary_combinations": 1024,
+      "log_sha256": "b9ec6a87166453ad94deb47cd9fd39538e4a841654412d070a5b9e92151c6006",
+      "tests": 107
+    },
+    "tool_cache": "14/14 strategy coverage verified"
+  },
+  "work_unit_id": "PR433_PR434_SEMANTIC_CONSOLIDATION_20261001_V1"
+}

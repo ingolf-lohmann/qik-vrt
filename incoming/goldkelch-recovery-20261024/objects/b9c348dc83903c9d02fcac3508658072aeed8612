@@ -1,0 +1,109 @@
+{
+  "blocker": "repository integrity: exit 1: BLOCK repository manifest differs from deterministic regeneration",
+  "context_id": "qik-vrt-cross-ai-handoff-2026-07-23",
+  "gates": [
+    {
+      "command": [
+        "internal",
+        "policy/AI_BOOTSTRAP_KNOWLEDGE_CORPUS_V1.json"
+      ],
+      "exit_code": 0,
+      "name": "bootstrap knowledge corpus",
+      "state": "PASS",
+      "stderr": "",
+      "stdout": "artifacts=20 untranscribed_audio=6"
+    },
+    {
+      "command": [
+        "internal",
+        "policy/HUMAN_MACHINE_INTERFACE_ADAPTATION_V1.json"
+      ],
+      "exit_code": 0,
+      "name": "human machine interface adaptation",
+      "state": "PASS",
+      "stderr": "",
+      "stdout": "mode=MEASURE_CACHE_RANK_PROPOSE_REVIEW matrix_rows=0"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "tools/ai_handoff.py"
+      ],
+      "exit_code": 0,
+      "name": "AI handoff",
+      "state": "PASS",
+      "stderr": "",
+      "stdout": "AI_HANDOFF_STATUS=VALID\nPROJECT=QIK-VRT\nCONTEXT_ID=qik-vrt-cross-ai-handoff-2026-07-23\nGIT_REF=main\nGIT_COMMIT=93be182a277f29fcb1ffb5d4ace0483f6c29dc58\nCANONICAL_MODE=symmetric-canonical\nCANONICAL_REPOSITORIES=Goldkelch/qik-vrt,ingolf-lohmann/qik-vrt\nREAD_ORDER=AI -> AI_CONTEXT.json -> docs/CHARTA_MASCHINENPRUEFBARE_WISSENSCHAFT.md -> policy/QIKVRT_MACHINE_VERIFIABLE_SCIENCE_CHARTER_V1.json -> state/charter/CHARTER_ADOPTION_V1.json -> AI_ADAPTERS.json -> AGENTS.md -> docs/AI_PERSONAL_WORKING_MEMORY_ORIGIN_AND_ATTRIBUTION.md -> policy/AI_PERSONAL_WORKING_MEMORY_ORIGIN_AND_ATTRIBUTION_V1.json -> docs/AI_BOOTSTRAP_KNOWLEDGE_CORPUS.md -> policy/AI_BOOTSTRAP_KNOWLEDGE_CORPUS_V1.json -> policy/HUMAN_MACHINE_INTERFACE_ADAPTATION_V1.json -> state/interface_adaptation/EVALUATION_MATRIX.json -> docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md -> docs/HUMAN_MACHINE_PROGRESS_STANDARD.md -> policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json -> schemas/human_machine_progress.schema.json -> AI_PROGRESS.json -> AI_STATUS.md -> runtime/CACHE_POLICY.md -> runtime/toolchains/TOOLCHAIN.lock.tsv -> runtime/toolchains/CACHE_REGISTRY.json -> runtime/toolchains/CACHE_COVERAGE.json -> README.md -> STATUS.md -> docs/CURRENT_AUTHORITY.md -> docs/COLLECTIVE_ADAPTIVE_COGNITION.md -> policy/COLLECTIVE_ADAPTIVE_COGNITION.json\nAI_ADAPTER_REGISTRY=AI_ADAPTERS.json\nAI_ADAPTER_COUNT=14\nAI_PROGRESS_CHECK=python3 -B tools/qikvrt_content_disposition_batch_003_remaining_archives.py --check\nARCHITECTURE_POLICY=freely available specification and interoperability layer\nIMPLEMENTATION_POLICY=commercially protectable and not automatically open source\nNEXT_ACTION=Read required files, inspect task-relevant verified state, then continue without relying on chat memory."
+    }
+  ],
+  "git_commit": "93be182a277f29fcb1ffb5d4ace0483f6c29dc58",
+  "git_ref": "main",
+  "interface_adaptation": {
+    "cache_layers": [
+      "L0_SESSION",
+      "L1_PERSONAL_WORKING_MEMORY",
+      "L2_RUNTIME_TOOLCHAIN",
+      "L3_DERIVED_KNOWLEDGE"
+    ],
+    "default_state": "OBSERVE_ONLY",
+    "matrix_rows": 0,
+    "matrix_state": "BASELINE_NOT_YET_MEASURED",
+    "minimum_observations_before_preference": 3,
+    "mode": "MEASURE_CACHE_RANK_PROPOSE_REVIEW",
+    "routing": "FASTEST_VERIFIED_PATH"
+  },
+  "knowledge_corpus": {
+    "artifact_count": 20,
+    "corpus_id": "AI-BOOTSTRAP-KNOWLEDGE-CORPUS-2026-08-07-V1",
+    "epistemic_partition": [
+      "WAHRHAFTIGKEIT",
+      "UNSICHERHEIT",
+      "REST_ODER_NOCH_NICHT_ANGEMESSEN_MODELLIERT"
+    ],
+    "round_trip": [
+      "WIRKLICHKEIT",
+      "UNTERSCHIED",
+      "INFORMATION",
+      "RELATION",
+      "KAUSALORDNUNG",
+      "MODELL",
+      "FORMALISIERUNG",
+      "BEWEIS",
+      "VORHERSAGE",
+      "MESSUNG",
+      "WIRKLICHKEITSABGLEICH",
+      "NEUER_UNTERSCHIED"
+    ],
+    "scientific_boundaries": {
+      "executable_world_formula_architecture_claim_equals_scientifically_established_nature_description": false,
+      "lean_derivability_equals_physical_truth": false,
+      "panpsychism_proved_by_process_model": false,
+      "religious_or_esoteric_doctrine_confirmed_by_process_model": false,
+      "retroactive_change_of_past_event": false,
+      "symbolic_similarity_equals_empirical_confirmation": false
+    },
+    "untranscribed_audio_count": 6,
+    "untranscribed_audio_semantic_claims_allowed": false
+  },
+  "lifecycle": [
+    "read AI and AI_CONTEXT.json",
+    "load personal-origin and contribution-attribution contract",
+    "load supplied bootstrap knowledge corpus with epistemic boundaries",
+    "load adaptive human-machine interface cache and evaluation contracts",
+    "verify repository identity and Git ref",
+    "verify handoff and required repository evidence",
+    "verify integrity authorities",
+    "verify declared tool/cache contracts",
+    "check runtime profile without hidden installation",
+    "hand control to the authorized task executor using fastest verified reusable path",
+    "measure reusable interaction and runtime evidence",
+    "persist reviewed improvements through repository changes"
+  ],
+  "next_action": "Repair the named repository gate and rerun the bootloader.",
+  "repository": "https://github.com/ingolf-lohmann/qik-vrt.git",
+  "repository_root": "/workspace/scratch/a0ee3748aa4c/qikvrt_checkout",
+  "schema": "qikvrt-ai-runtime-boot/1.2",
+  "state": "BLOCK",
+  "task": "LABYRINTH_PROOF_20261004_V1"
+}

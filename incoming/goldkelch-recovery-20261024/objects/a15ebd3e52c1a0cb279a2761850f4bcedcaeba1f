@@ -1,0 +1,11 @@
+{
+  "manifest": "QIKVRT_UNIFIED_NODE_CORE_MANIFEST",
+  "version": "2.12.1",
+  "api": "api/qikvrt_github_api.openapi.yaml",
+  "roles": [
+    "normal",
+    "seed"
+  ],
+  "role_config": "qikvrt/config/ROLE.json",
+  "same_api_for_all_roles": true
+}

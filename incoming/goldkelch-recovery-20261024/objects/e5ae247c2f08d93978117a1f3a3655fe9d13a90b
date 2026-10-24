@@ -1,0 +1,18 @@
+{
+  "gate": "FULL_REUSABLE_TEST_ENVIRONMENT_GATE",
+  "version": "2.13.4",
+  "layers": [
+    "ontology",
+    "requirements",
+    "unit",
+    "integration",
+    "acceptance",
+    "performance",
+    "security",
+    "runtime_rest_api"
+  ],
+  "same_core_for_seed_and_node": true,
+  "same_api_for_seed_and_node": true,
+  "role_config_only": true,
+  "blocks_final_pass_if_missing": true
+}

@@ -1,0 +1,117 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Ingolf Lohmann.
+
+name: QIK-VRT exact-tree Batch-001 Mirror sync 98194f45 v2
+
+on:
+  push:
+    branches:
+      - trusted/trigger-content-disposition-batch-001-sync-98194f45-v2
+    paths:
+      - .github/workflows/qikvrt_sync_content_disposition_batch_001_98194f45_v2_once.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: qikvrt-sync-content-disposition-batch-001-98194f45-v2
+  cancel-in-progress: false
+
+jobs:
+  construct-exact-authority-tree:
+    if: github.repository == 'ingolf-lohmann/qik-vrt'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      AUTHORITY_REPOSITORY: Goldkelch/qik-vrt
+      EXPECTED_AUTHORITY_MAIN: 98194f453cee0ddf4dd0a44b1d12b1d9f20a9709
+      EXPECTED_MIRROR_MAIN: f17aa8eca00b0e5e75d5bd44f1b5fb96d760cc0d
+      TRIGGER_BRANCH: trusted/trigger-content-disposition-batch-001-sync-98194f45-v2
+      WORKFLOW_PATH: .github/workflows/qikvrt_sync_content_disposition_batch_001_98194f45_v2_once.yml
+      TARGET_BRANCH: sync/content-disposition-batch-001-98194f45-v2
+      FIXED_GIT_DATE: '2026-07-28T18:30:00+02:00'
+
+    steps:
+      - name: Check out exact Mirror trigger branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: trusted/trigger-content-disposition-batch-001-sync-98194f45-v2
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Construct, verify and persist exact Authority tree
+        shell: bash
+        env:
+          PUSH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          [ "$GITHUB_REPOSITORY" = 'ingolf-lohmann/qik-vrt' ]
+          [ "$GITHUB_REF_NAME" = "$TRIGGER_BRANCH" ]
+          [ "$(git rev-parse HEAD)" = "$GITHUB_SHA" ]
+          [ "$(git ls-remote origin refs/heads/$TRIGGER_BRANCH | cut -f1)" = "$GITHUB_SHA" ]
+          [ "$(git ls-remote origin refs/heads/main | cut -f1)" = "$EXPECTED_MIRROR_MAIN" ]
+          [ "$(git ls-remote origin refs/heads/$TARGET_BRANCH | cut -f1)" = "$EXPECTED_MIRROR_MAIN" ]
+          mapfile -t changed < <(git diff --name-only "$EXPECTED_MIRROR_MAIN" HEAD -- | LC_ALL=C sort)
+          [ "${#changed[@]}" -eq 1 ]
+          [ "${changed[0]}" = "$WORKFLOW_PATH" ]
+          [ -n "$PUSH_TOKEN" ]
+
+          git remote remove authority 2>/dev/null || true
+          git remote add authority "https://github.com/${AUTHORITY_REPOSITORY}.git"
+          observed_authority="$(git ls-remote authority refs/heads/main | cut -f1)"
+          [ "$observed_authority" = "$EXPECTED_AUTHORITY_MAIN" ]
+          git fetch --no-tags authority "$EXPECTED_AUTHORITY_MAIN"
+
+          authority_tree="$(git rev-parse "$EXPECTED_AUTHORITY_MAIN^{tree}")"
+          message_file="$RUNNER_TEMP/qikvrt-sync-message.txt"
+          cat > "$message_file" <<EOF
+          Synchronize content-disposition Batch 001 from Authority 98194f45
+
+          Authority repository: $AUTHORITY_REPOSITORY
+          Authority commit: $EXPECTED_AUTHORITY_MAIN
+          Authority tree: $authority_tree
+          Previous Mirror main: $EXPECTED_MIRROR_MAIN
+          Semantics: preserve Mirror history as sole parent while replacing the complete content tree with the exact verified Authority tree.
+          Batch: CONTENT-DISPOSITION-BATCH-001.
+          Six subjects dispositioned; thirteen subjects remain.
+          No PASS, FINAL_PASS or EFFECT_ACK_DONE is claimed.
+          EOF
+          sed -i 's/^          //' "$message_file"
+
+          sync_commit="$(env \
+            GIT_AUTHOR_NAME='QIK-VRT Repository Mesh' \
+            GIT_AUTHOR_EMAIL='ingolf.lohmann@live.com' \
+            GIT_AUTHOR_DATE="$FIXED_GIT_DATE" \
+            GIT_COMMITTER_NAME='QIK-VRT Repository Mesh' \
+            GIT_COMMITTER_EMAIL='ingolf.lohmann@live.com' \
+            GIT_COMMITTER_DATE="$FIXED_GIT_DATE" \
+            git commit-tree "$authority_tree" -p "$EXPECTED_MIRROR_MAIN" < "$message_file")"
+
+          [ "$(git rev-parse "$sync_commit^{tree}")" = "$authority_tree" ]
+          [ "$(git show -s --format=%P "$sync_commit")" = "$EXPECTED_MIRROR_MAIN" ]
+          git diff --exit-code "$EXPECTED_AUTHORITY_MAIN" "$sync_commit" --
+
+          verify_root="$RUNNER_TEMP/qikvrt-content-disposition-batch-001-mirror-sync"
+          git worktree add --detach "$verify_root" "$sync_commit"
+          PYTHONDONTWRITEBYTECODE=1 python3 -B "$verify_root/tools/qikvrt_integrity.py" verify
+          PYTHONDONTWRITEBYTECODE=1 python3 -B "$verify_root/tests/test_content_disposition_batch_001.py"
+          python3 -B -c "import json,pathlib; r=json.loads(pathlib.Path('$verify_root/release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-001/CONTENT_DISPOSITION_BATCH_001_RECEIPT.json').read_text()); assert r['state']=='BATCH_001_DISPOSITIONED_NO_CONTENT_CHANGE'; assert r['subject_count']==6; assert r['next_deterministic_effect']=='EXECUTE_CONTENT_DISPOSITION_BATCH_002'; assert not r['completion_claims']['all_content_claims_dispositioned']; assert not r['completion_claims']['pass']; assert not r['completion_claims']['final_pass']; assert not r['completion_claims']['effect_ack_done']"
+
+          push_url="https://x-access-token:${PUSH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git push "$push_url" \
+            --force-with-lease="refs/heads/$TARGET_BRANCH:$EXPECTED_MIRROR_MAIN" \
+            "$sync_commit:refs/heads/$TARGET_BRANCH"
+          persisted="$(git ls-remote "$push_url" refs/heads/$TARGET_BRANCH | cut -f1)"
+          [ "$persisted" = "$sync_commit" ]
+          [ "$(git rev-parse "$persisted^{tree}")" = "$authority_tree" ]
+
+          printf '%s\n' \
+            '## Exact Authority-tree Mirror synchronization candidate' \
+            '' \
+            "- Authority commit: \`$EXPECTED_AUTHORITY_MAIN\`" \
+            "- Authority tree: \`$authority_tree\`" \
+            "- Previous Mirror main: \`$EXPECTED_MIRROR_MAIN\`" \
+            "- Mirror candidate: \`$persisted\`" \
+            '- Complete Authority-to-candidate file delta: empty' \
+            '- Repository integrity: verified' \
+            '- Batch-001 receipt and tests: verified' >> "$GITHUB_STEP_SUMMARY"

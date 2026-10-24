@@ -1,0 +1,41 @@
+{
+  "schema": "qikvrt.requirements.v2.3",
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "text": "Repository contains 44-article constitution."
+    },
+    {
+      "id": "REQ-M001",
+      "text": "Multicast protocol is implemented as sender-payload-responsible-group-delivery-feedback-trace."
+    },
+    {
+      "id": "REQ-O001",
+      "text": "Ontology of difference is implemented as Difference -> Information -> Causality -> Responsibility -> Verification -> Feedback -> Traceability."
+    },
+    {
+      "id": "REQ-G001",
+      "text": "Constitutional governance process is implemented upward from all regulated necessities."
+    },
+    {
+      "id": "REQ-G002",
+      "text": "Assertion and evidence classes are mandatory for significant claims."
+    },
+    {
+      "id": "REQ-G003",
+      "text": "Privacy, proportionality, emergency, correction, sanctions, revision and misuse-prevention gates are present."
+    },
+    {
+      "id": "REQ-T001",
+      "text": "ANSI-C/POSIX build passes."
+    },
+    {
+      "id": "REQ-T002",
+      "text": "POSIX acceptance suite passes."
+    },
+    {
+      "id": "REQ-T003",
+      "text": "No final pass without multicast, ontology, governance and traceability gates."
+    }
+  ]
+}

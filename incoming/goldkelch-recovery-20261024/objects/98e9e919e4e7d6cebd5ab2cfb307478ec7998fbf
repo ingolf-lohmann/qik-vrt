@@ -1,0 +1,17 @@
+{
+  "schema": "qikvrt-native-recipes/v1",
+  "platforms": ["Linux"],
+  "flags": ["-std=c90", "-pedantic", "-Wall", "-Wextra", "-Werror", "-O2", "-static"],
+  "policy": {"min_hot_calls": 50, "compile_budget_ms": 2000, "max_compilations": 1, "trial_cost_ms": 1000},
+  "recipes": {
+    "effect-ack-core-conformance": {
+      "kind": "core",
+      "inputs": ["src/effect_ack_core.c", "include/qikvrt/effect_ack.h", "tests/test_effect_ack_core.c"],
+      "sources": ["src/effect_ack_core.c", "tests/test_effect_ack_core.c"],
+      "self_test_args": [],
+      "self_test_marker": "EFFECT_ACK C90 core: PASS (",
+      "license": "PolyForm-Noncommercial-1.0.0",
+      "scope": "Existing Effect-Ack core conformance executable; not the complete Universal Transputer"
+    }
+  }
+}

@@ -1,0 +1,1100 @@
+{
+  "schema": "qikvrt_recovered_source_page_v1",
+  "entries": [
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4av1-node-open-multi-node",
+      "source_commit": "1b756684f4adf9d6f250d4e05d344f7a239bb846",
+      "ref_count": 1,
+      "bytes": 311,
+      "source_blob": "27049f9376dcac1912fa7238a52d56513d96c664",
+      "original_path": "evidence/node_registration_renewal/4AV1_20260708T174034Z_709544.json",
+      "object_path": "objects/27049f9376dcac1912fa7238a52d56513d96c664",
+      "sha256": "a1aa4ec520ae0bf9ae56371fc97620a8abc6fe12f0f5257dbc77c36dfa05f455",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/repair/renew-mirror-node-liveness-20260911-v1",
+      "source_commit": "b43238cf651d74783f4d6ead97d633d962860f66",
+      "ref_count": 2,
+      "bytes": 319,
+      "source_blob": "62237f3f4d8d72612688e8faeff88cd1c8ac8650",
+      "original_path": "evidence/node_registration_renewal/qikvrt-node-runtime-20260918T132655Z.json",
+      "object_path": "objects/62237f3f4d8d72612688e8faeff88cd1c8ac8650",
+      "sha256": "6ed83d2232493264be45bf926b97f77dc9079be8be79a6737294de930d8f683a",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4av1-node-open-multi-node",
+      "source_commit": "1b756684f4adf9d6f250d4e05d344f7a239bb846",
+      "ref_count": 1,
+      "bytes": 293,
+      "source_blob": "3051c950fce8b91a1ce5933a9150e73173d4168f",
+      "original_path": "evidence/node_seed_link/LATEST.json",
+      "object_path": "objects/3051c950fce8b91a1ce5933a9150e73173d4168f",
+      "sha256": "01c0aca48956f9c657cac7e28c44a2c2b37fcc1a0ce212ca3badf9bc5a075605",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 1,
+      "bytes": 291,
+      "source_blob": "b0500ee069e678301b508174059e9edf6ab61a07",
+      "original_path": "evidence/node_seed_link/LATEST.json",
+      "object_path": "objects/b0500ee069e678301b508174059e9edf6ab61a07",
+      "sha256": "8965609b1902c7cd75790e6e4494ed4853fc6d860f6219eada283fda1a892b10",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 291,
+      "source_blob": "6bb1a33b609ab213c37d04a1e6e00ad7580af235",
+      "original_path": "evidence/node_seed_link/runs/4AU_20260708T165620Z_806549.json",
+      "object_path": "objects/6bb1a33b609ab213c37d04a1e6e00ad7580af235",
+      "sha256": "650b128ef944fc789fb590c7d43b8af13849f75a224208cad25e8cab7190b405",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 291,
+      "source_blob": "b0500ee069e678301b508174059e9edf6ab61a07",
+      "original_path": "evidence/node_seed_link/runs/4AU_20260708T170628Z_362577.json",
+      "object_path": "objects/b0500ee069e678301b508174059e9edf6ab61a07",
+      "sha256": "8965609b1902c7cd75790e6e4494ed4853fc6d860f6219eada283fda1a892b10",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4av1-node-open-multi-node",
+      "source_commit": "1b756684f4adf9d6f250d4e05d344f7a239bb846",
+      "ref_count": 1,
+      "bytes": 293,
+      "source_blob": "3051c950fce8b91a1ce5933a9150e73173d4168f",
+      "original_path": "evidence/node_seed_link/runs/4AV1_20260708T174034Z_709544.json",
+      "object_path": "objects/3051c950fce8b91a1ce5933a9150e73173d4168f",
+      "sha256": "01c0aca48956f9c657cac7e28c44a2c2b37fcc1a0ce212ca3badf9bc5a075605",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/repair/renew-mirror-node-liveness-20260911-v1",
+      "source_commit": "b43238cf651d74783f4d6ead97d633d962860f66",
+      "ref_count": 2,
+      "bytes": 899,
+      "source_blob": "6d095b6ed23824e8e447606afc436d83a1490844",
+      "original_path": "evidence/node_seed_link/runs/qikvrt-node-runtime-20260918T132655Z.json",
+      "object_path": "objects/6d095b6ed23824e8e447606afc436d83a1490844",
+      "sha256": "4e2ea5548e9fa9a2785d477afbc7052c9547d91c82b0b97e825ef2981d9f7b00",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4av1-node-open-multi-node",
+      "source_commit": "1b756684f4adf9d6f250d4e05d344f7a239bb846",
+      "ref_count": 1,
+      "bytes": 293,
+      "source_blob": "3051c950fce8b91a1ce5933a9150e73173d4168f",
+      "original_path": "evidence/node_seed_link_status.json",
+      "object_path": "objects/3051c950fce8b91a1ce5933a9150e73173d4168f",
+      "sha256": "01c0aca48956f9c657cac7e28c44a2c2b37fcc1a0ce212ca3badf9bc5a075605",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 1,
+      "bytes": 291,
+      "source_blob": "b0500ee069e678301b508174059e9edf6ab61a07",
+      "original_path": "evidence/node_seed_link_status.json",
+      "object_path": "objects/b0500ee069e678301b508174059e9edf6ab61a07",
+      "sha256": "8965609b1902c7cd75790e6e4494ed4853fc6d860f6219eada283fda1a892b10",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 436,
+      "source_blob": "70fc5f053d950d45116c0af3acbdda293b5482dc",
+      "original_path": "evidence/node_self_audit/4AU_20260708T170628Z_362577.json",
+      "object_path": "objects/70fc5f053d950d45116c0af3acbdda293b5482dc",
+      "sha256": "1523a3d7815b8132b6435e0c382e146ed2e7bca46ec816e642a71591f814c370",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4av1-node-open-multi-node",
+      "source_commit": "1b756684f4adf9d6f250d4e05d344f7a239bb846",
+      "ref_count": 1,
+      "bytes": 438,
+      "source_blob": "0bf5e234ba591ce9907a6eda8f9bacba500f1ba2",
+      "original_path": "evidence/node_self_audit/4AV1_20260708T174034Z_709544.json",
+      "object_path": "objects/0bf5e234ba591ce9907a6eda8f9bacba500f1ba2",
+      "sha256": "43d5c0baa20fac51c55976108d322935efdb6ed1dfea23c6e2e4bd44280e3541",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4av1-node-open-multi-node",
+      "source_commit": "1b756684f4adf9d6f250d4e05d344f7a239bb846",
+      "ref_count": 1,
+      "bytes": 438,
+      "source_blob": "0bf5e234ba591ce9907a6eda8f9bacba500f1ba2",
+      "original_path": "evidence/node_self_audit/LATEST.json",
+      "object_path": "objects/0bf5e234ba591ce9907a6eda8f9bacba500f1ba2",
+      "sha256": "43d5c0baa20fac51c55976108d322935efdb6ed1dfea23c6e2e4bd44280e3541",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 1,
+      "bytes": 436,
+      "source_blob": "70fc5f053d950d45116c0af3acbdda293b5482dc",
+      "original_path": "evidence/node_self_audit/LATEST.json",
+      "object_path": "objects/70fc5f053d950d45116c0af3acbdda293b5482dc",
+      "sha256": "1523a3d7815b8132b6435e0c382e146ed2e7bca46ec816e642a71591f814c370",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/evidence/batch003-second-subject-projector-equality-pr240-pr132-v1",
+      "source_commit": "0cedbe6a8e28b2e4b5801ec7b4bbb93be1025f81",
+      "ref_count": 1,
+      "bytes": 9199,
+      "source_blob": "82bc813e95eeeea73f6036b35d56982cebbfc49d",
+      "original_path": "evidence/receipts/authority-mirror-equality-2026-07-30-batch003-second-subject-projector-pr240-pr132.json",
+      "object_path": "objects/82bc813e95eeeea73f6036b35d56982cebbfc49d",
+      "sha256": "51b46af505aab2520e6ed67ae99b3f9a4abc5a0edfc73db554b17bf5a714eaee",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/evidence/reciprocal-equality-pr249-pr147-v1",
+      "source_commit": "73c0d8cbff5f7bfe3c20f33e6c34c62ed6f7f50c",
+      "ref_count": 4,
+      "bytes": 9969,
+      "source_blob": "0b59a3ebdef3354c98ba474a9dae60adb759ec7c",
+      "original_path": "evidence/receipts/authority-mirror-equality-2026-07-30-batch003-six-corrected-candidates-pr249-pr147.json",
+      "object_path": "objects/0b59a3ebdef3354c98ba474a9dae60adb759ec7c",
+      "sha256": "77b72bcc6104e534fd37cc211edc26e60191393c1c1b9f27af3aa23d10c4f4ae",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/evidence/batch003-subject-2581811-equality-pr225-pr128-v1",
+      "source_commit": "e35611ec84163440228efbbf62ec012e9e36deba",
+      "ref_count": 1,
+      "bytes": 5339,
+      "source_blob": "68f9d7c26e725deacd451a057f2bf054fc364bfb",
+      "original_path": "evidence/receipts/authority-mirror-equality-2026-07-30-batch003-subject-2581811b342e505d-pr225-pr128.json",
+      "object_path": "objects/68f9d7c26e725deacd451a057f2bf054fc364bfb",
+      "sha256": "1e808635436192c411f94d53ff9df90fa72ea668693326557778a8d469ef62ee",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/evidence/projector-repair-equality-pr240-pr132-v1",
+      "source_commit": "ad0c89b9a87eaf687cdc008d5393ac20f4cf65b9",
+      "ref_count": 1,
+      "bytes": 8683,
+      "source_blob": "4ef1c14a28b82bdcc4b917735b0f98c33352f0cc",
+      "original_path": "evidence/receipts/authority-mirror-equality-2026-07-30-projector-repair-pr240-pr132.json",
+      "object_path": "objects/4ef1c14a28b82bdcc4b917735b0f98c33352f0cc",
+      "sha256": "18f28d5bac814f31dce31d470548f1bbd6ebc444e85e25b9256d5567296d13fd",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/authority-recovery-acceptance-20261002",
+      "source_commit": "37e9aaccbb4f7046ce3d0ed536c8c205a71a13d2",
+      "ref_count": 2,
+      "bytes": 92067,
+      "source_blob": "7f423872e22f48d069ade198c3d8873cfb087e51",
+      "original_path": "evidence/receipts/authority-recovery-20261002/ACCEPTANCE.json",
+      "object_path": "objects/7f423872e22f48d069ade198c3d8873cfb087e51",
+      "sha256": "2e2acfd52320f5d94fd0a83f15726351b441b479178657c60eaf473cade0a970",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/authority-recovery-acceptance-20261002",
+      "source_commit": "37e9aaccbb4f7046ce3d0ed536c8c205a71a13d2",
+      "ref_count": 2,
+      "bytes": 1337824,
+      "source_blob": "98fe4c0e96286eaa9e640ec7090f8bbfecf2caf8",
+      "original_path": "evidence/receipts/authority-recovery-20261002/RETAINED_GIT_TREES.json",
+      "object_path": "objects/98fe4c0e96286eaa9e640ec7090f8bbfecf2caf8",
+      "sha256": "ba30332b5c63d67d3d0b68f2df6e5b06f8bd7c604d69238f2db62efb33ee9106",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/authority-url-probe-20261003-6fb101b",
+      "source_commit": "3e8530f2beb158cdfebd3fa74d25498e7ac2aa4a",
+      "ref_count": 2,
+      "bytes": 876,
+      "source_blob": "96f222ec5df10bb07b3c024b6f2fff925a0a87d1",
+      "original_path": "evidence/receipts/authority-url-execution-route-20261003/CI_7ed957_RECEIPT.json",
+      "object_path": "objects/96f222ec5df10bb07b3c024b6f2fff925a0a87d1",
+      "sha256": "bce783ebffcf41e6f38367d7899900710c0db55ecbf04305880cd1d395f7a092",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/authority-url-probe-20261003-6fb101b",
+      "source_commit": "3e8530f2beb158cdfebd3fa74d25498e7ac2aa4a",
+      "ref_count": 2,
+      "bytes": 1334,
+      "source_blob": "f77bdba15bcc9c95ba9e91bf94dd4459393b6707",
+      "original_path": "evidence/receipts/authority-url-execution-route-20261003/ORIGINAL_URL_READBACK.json",
+      "object_path": "objects/f77bdba15bcc9c95ba9e91bf94dd4459393b6707",
+      "sha256": "6cc76069fa430267f58483f3b789ef44113fbc36474341cfd64b7940e053fc6b",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/authority-url-probe-20261003-6fb101b",
+      "source_commit": "3e8530f2beb158cdfebd3fa74d25498e7ac2aa4a",
+      "ref_count": 2,
+      "bytes": 745,
+      "source_blob": "5b756e9203eac5155b3989cd5de8c1c37a3ebdc6",
+      "original_path": "evidence/receipts/authority-url-execution-route-20261003/PROBE_1603acf_ARTIFACT_RECEIPT.json",
+      "object_path": "objects/5b756e9203eac5155b3989cd5de8c1c37a3ebdc6",
+      "sha256": "d2c9b937e4e65e3ebc0b624afac32dd81d5a5542dcbfde78d2bc005e72951169",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/authority-url-probe-20261003-6fb101b",
+      "source_commit": "3e8530f2beb158cdfebd3fa74d25498e7ac2aa4a",
+      "ref_count": 2,
+      "bytes": 2520,
+      "source_blob": "31b04d5647fe683eef986eba6b7e231a4491172d",
+      "original_path": "evidence/receipts/authority-url-execution-route-20261003/PROBE_1603acf_READBACK.json",
+      "object_path": "objects/31b04d5647fe683eef986eba6b7e231a4491172d",
+      "sha256": "ed1a30ee9a86deccbb4b9150d93d135821ab7df222e0e2747a6786da5dfcf821",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/authority-url-probe-20261003-6fb101b",
+      "source_commit": "3e8530f2beb158cdfebd3fa74d25498e7ac2aa4a",
+      "ref_count": 2,
+      "bytes": 764,
+      "source_blob": "9bd62d011a37ace6ace71a699a30ce916c331097",
+      "original_path": "evidence/receipts/authority-url-execution-route-20261003/PROBE_7ed957_ARTIFACT_RECEIPT.json",
+      "object_path": "objects/9bd62d011a37ace6ace71a699a30ce916c331097",
+      "sha256": "92d0950004c7acd60aa274b0a8a0257d6a5f2a88db8c383954ef860095f4c4f6",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/authority-url-probe-20261003-6fb101b",
+      "source_commit": "3e8530f2beb158cdfebd3fa74d25498e7ac2aa4a",
+      "ref_count": 2,
+      "bytes": 2725,
+      "source_blob": "d1cd5fa10fcb525d83e1bfa34f8c9ce36cc74670",
+      "original_path": "evidence/receipts/authority-url-execution-route-20261003/PROBE_7ed957_READBACK.json",
+      "object_path": "objects/d1cd5fa10fcb525d83e1bfa34f8c9ce36cc74670",
+      "sha256": "ac00d3ec9e3d04faf79b559ae47963e388494d9d43879257bf9b5f9695060fc4",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/authority-url-probe-20261003-6fb101b",
+      "source_commit": "3e8530f2beb158cdfebd3fa74d25498e7ac2aa4a",
+      "ref_count": 2,
+      "bytes": 2684,
+      "source_blob": "ab1aadd9257eff5721b7d0e8110e5a2709bf7d4d",
+      "original_path": "evidence/receipts/authority-url-execution-route-20261003/RETURN_BOUNDARY.json",
+      "object_path": "objects/ab1aadd9257eff5721b7d0e8110e5a2709bf7d4d",
+      "sha256": "94037349d2d7fd4b5a59e2e56665232880f84d741519b032fe6768abeaefc8b8",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/agent/recursive-haltpoint-v1",
+      "source_commit": "86de509a78bc2a46587d3f5074a5a8ed3868f903",
+      "ref_count": 2,
+      "bytes": 6600,
+      "source_blob": "4276be79f1406ea0d549029482a5d6ea49032d72",
+      "original_path": "evidence/receipts/capability-path-learning-20261004/local-tests.log",
+      "object_path": "objects/4276be79f1406ea0d549029482a5d6ea49032d72",
+      "sha256": "1ce4004d87124fd903cf26a274ba6802ba2ec5307e5466d8a4dafbf97c57c164",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/api-acceptance-rest-repair-20261001",
+      "source_commit": "a73e5fe2fdfd192b022d89d00499f9ceb7ebc673",
+      "ref_count": 8,
+      "bytes": 753640,
+      "source_blob": "15b49a68d42d3de80ffc3ff0eb9229845ef5c0bc",
+      "original_path": "evidence/reciprocal_devops/pr433/HOST_EFFECT_OBSERVATIONS_20261001.json",
+      "object_path": "objects/15b49a68d42d3de80ffc3ff0eb9229845ef5c0bc",
+      "sha256": "4819281408e32380f5579d2bd3f6c1cecf30a9d3cc47f23605223921641246a3",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/api-acceptance-rest-repair-20261001",
+      "source_commit": "a73e5fe2fdfd192b022d89d00499f9ceb7ebc673",
+      "ref_count": 8,
+      "bytes": 205895,
+      "source_blob": "6bc349aad4f6e636296d61dd8ecbd08606c46abd",
+      "original_path": "evidence/reciprocal_devops/pr433/STEP_BLOCK_RECEIPT_20261001.json",
+      "object_path": "objects/6bc349aad4f6e636296d61dd8ecbd08606c46abd",
+      "sha256": "5ce3dc4e551f71c71a9390d3f8ed1821e1dd2831fb3ed46a2ab4f0c92d30c70a",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 614,
+      "source_blob": "bf0e92043a3251f5ce486b32ec8d5f05632fc831",
+      "original_path": "evidence/release_freeze/runs/4AU2_20260708T172509Z_992956_node.json",
+      "object_path": "objects/bf0e92043a3251f5ce486b32ec8d5f05632fc831",
+      "sha256": "5654bc601860ee1abe20555ea3e06c9609926491afe9360e490a794e49067da7",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/evidence/requirements-carrier-readback-20260923",
+      "source_commit": "191edacb816bc944bc8bfa15abf7907b6d42f034",
+      "ref_count": 2,
+      "bytes": 1573,
+      "source_blob": "01535cd7252e7bf27cfcb88bc08a275cb203f6b4",
+      "original_path": "evidence/requirements/NDR_DSN_ACCEPTANCE_DELTA_V1.identity-status.json",
+      "object_path": "objects/01535cd7252e7bf27cfcb88bc08a275cb203f6b4",
+      "sha256": "ae21fe8f28e9e7e077ea0d1a77b161274c1bd8b88e50d599fce316732eb992f7",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/heads/recovery/provider-independence-20261005",
+      "source_commit": "8362f71168aa031001fcfdc5ba95729197a9d54e",
+      "ref_count": 1,
+      "bytes": 102871,
+      "source_blob": "37344c7b7efe99d6e7d8c98ede439ba6ce916cf8",
+      "original_path": "evidence/self_host/PROVIDER_ACCOUNT_RECOVERY_LOCAL_20261005.json",
+      "object_path": "objects/37344c7b7efe99d6e7d8c98ede439ba6ce916cf8",
+      "sha256": "15fe0d8eacd0b1291d441a2f68a73ecf0d2da4f7d31cad9da32f90ca7980f303",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 477,
+      "source_blob": "da48c8812b3227758c09d1c0a2d2bedcd7b27242",
+      "original_path": "examples/temdd/qikvrt_convergence_v0_1.temdd",
+      "object_path": "objects/da48c8812b3227758c09d1c0a2d2bedcd7b27242",
+      "sha256": "19fb4f09b79f6977f6630c0c527d8f24e776545c4d5b2dabdc4be7b3a362bb3a",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/evidence/requirements-carrier-readback-20260923",
+      "source_commit": "191edacb816bc944bc8bfa15abf7907b6d42f034",
+      "ref_count": 2,
+      "bytes": 6241,
+      "source_blob": "09d890390518defa7495441cff4c08ed9f8b2046",
+      "original_path": "external/ietf/IETF_NEXT_SUBMISSION_SCOPE_2026-09-23.md",
+      "object_path": "objects/09d890390518defa7495441cff4c08ed9f8b2046",
+      "sha256": "07768ac1d2620f2c38bc910b436545f33ea5800d4a85c968b9e0667034248128",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 2106,
+      "source_blob": "10f2bb189ab54b1d8335f8e8fe094094dbc3e039",
+      "original_path": "formalization/QIKVRT_Formalization_v1.0/QIKVRTFormalization/M68000Kernel.lean",
+      "object_path": "objects/10f2bb189ab54b1d8335f8e8fe094094dbc3e039",
+      "sha256": "54e35a8060d9c91f9f34c8d08f78dddb82c93f6ccb2a8915948dbd4966eae72f",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 3822,
+      "source_blob": "f0deddfe9233571f9399edcdb1f450ba72ac6aea",
+      "original_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Hardware/D3FixedPoint.lean",
+      "object_path": "objects/f0deddfe9233571f9399edcdb1f450ba72ac6aea",
+      "sha256": "9e564f3f6f5a7d361c50122e6feaec044733d5b391f83054414fc40dcb096a95",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 765,
+      "source_blob": "c250ccfb13256de9a820af985bbed4f606958069",
+      "original_path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Hardware/D3FixedPointAxiomAudit.lean",
+      "object_path": "objects/c250ccfb13256de9a820af985bbed4f606958069",
+      "sha256": "3ad2104dba0c9c0033380691262b18659d90f953883f813b52ca9cd8e9416a72",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 3655,
+      "source_blob": "4c2bee6efd8b2334cae54bcf990a4f143b309b06",
+      "original_path": "formalization/QIKVRT_Spark_v1/QIKVRTSpark.lean",
+      "object_path": "objects/4c2bee6efd8b2334cae54bcf990a4f143b309b06",
+      "sha256": "458c5bf00a476ca038dcbd8de7bd4eb4d58cc93bc350db7f8389a1bce5fdba50",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 117,
+      "source_blob": "877f2d80fa7666f5882db5ed7cb59a16108578ba",
+      "original_path": "formalization/QIKVRT_Spark_v1/lake-manifest.json",
+      "object_path": "objects/877f2d80fa7666f5882db5ed7cb59a16108578ba",
+      "sha256": "c18f0a99b5a66b4280278492343da0d22f18e917d7e270a36f5480f57a598640",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 107,
+      "source_blob": "c06226a45e956c9a75296b6096f3a55f049d455e",
+      "original_path": "formalization/QIKVRT_Spark_v1/lakefile.toml",
+      "object_path": "objects/c06226a45e956c9a75296b6096f3a55f049d455e",
+      "sha256": "e38f27bb1a2f8fe4a02dad5ef30be6079c905775ae827b60f53b7ae281bf4997",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 25,
+      "source_blob": "7aca1d8a939cc24c413eddd793671cdce7070b74",
+      "original_path": "formalization/QIKVRT_Spark_v1/lean-toolchain",
+      "authority_locations": [
+        "docs/publications/2026-08-05-qik-vrt-quantum-causal-emergence/lean-toolchain",
+        "docs/publications/2026-08-07-measurement-derived-dimensions/lean-toolchain",
+        "formalization/QIKVRT_Formalization_v1.0/lean-toolchain"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 6997,
+      "source_blob": "35f76366d140632d34c6f350177c2397f1960816",
+      "original_path": "formalization/QIKVRT_Spark_v2/QIKVRTSparkV2.lean",
+      "object_path": "objects/35f76366d140632d34c6f350177c2397f1960816",
+      "sha256": "561c6b958aedc1d226bef47671223af46058744a9115e7d566d8ba76f2fa0d04",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 119,
+      "source_blob": "c027e5f18c91653ee5c4fd29e1236e1360e314d1",
+      "original_path": "formalization/QIKVRT_Spark_v2/lake-manifest.json",
+      "object_path": "objects/c027e5f18c91653ee5c4fd29e1236e1360e314d1",
+      "sha256": "42f1d7971e688362124db02717f7562457547b716733fe9e05b78d770804173d",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 113,
+      "source_blob": "6c3708f40c869c73e87cbd60c9d3ad74eac253d4",
+      "original_path": "formalization/QIKVRT_Spark_v2/lakefile.toml",
+      "object_path": "objects/6c3708f40c869c73e87cbd60c9d3ad74eac253d4",
+      "sha256": "03fce63116f645e117a3bcd6cd7d11e2b89ce3d98488d6322374839fd6d9ef4f",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 25,
+      "source_blob": "7aca1d8a939cc24c413eddd793671cdce7070b74",
+      "original_path": "formalization/QIKVRT_Spark_v2/lean-toolchain",
+      "authority_locations": [
+        "docs/publications/2026-08-05-qik-vrt-quantum-causal-emergence/lean-toolchain",
+        "docs/publications/2026-08-07-measurement-derived-dimensions/lean-toolchain",
+        "formalization/QIKVRT_Formalization_v1.0/lean-toolchain"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 2553,
+      "source_blob": "c99e85bcc8cf6e6bf95218151753eb76df4735f4",
+      "original_path": "formalization/TEMDDCore.lean",
+      "object_path": "objects/c99e85bcc8cf6e6bf95218151753eb76df4735f4",
+      "sha256": "33d7e28599898d63cdaa43e05c84307ebe31040748c24678b6c995de79c2c6d1",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/processor-clock-core-20261001",
+      "source_commit": "c801b81c4928c344ccd41c3f4b1f5fb0601184a7",
+      "ref_count": 2,
+      "bytes": 24667,
+      "source_blob": "1cfcf061a86cdf010a775729d2b2b871b69b125b",
+      "original_path": "hardware/boards/lattice_ice40up5k_b_evn_rev_a.json",
+      "object_path": "objects/1cfcf061a86cdf010a775729d2b2b871b69b125b",
+      "sha256": "973ae7eb7c41932e55732e949960a4bf513feb181056b6c7eb364be39bd74ce2",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 1647,
+      "source_blob": "ee6303ebe6a3df90303ca8a568d427ea5bd41f78",
+      "original_path": "hardware/vhdl/qikvrt_metatransistor.vhd",
+      "object_path": "objects/ee6303ebe6a3df90303ca8a568d427ea5bd41f78",
+      "sha256": "dc5c6f40dea9d70bf21fa320dbc5f775756d681f80cf7c4e68adf5133fd2e886",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 1619,
+      "source_blob": "ef8de1403696a6343bef2c36e53e02568854681d",
+      "original_path": "hardware/vhdl/qikvrt_metatransistor_pkg.vhd",
+      "object_path": "objects/ef8de1403696a6343bef2c36e53e02568854681d",
+      "sha256": "d4abe16e65600c4b4a54b6dbaab9412ad03b1df231da1e44a4e4ccfd98e5cb49",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 2591,
+      "source_blob": "21a5c6dd5760e4109b5f9c648589d294afc138e7",
+      "original_path": "hardware/vhdl/qikvrt_neutron_star_mesh.vhd",
+      "object_path": "objects/21a5c6dd5760e4109b5f9c648589d294afc138e7",
+      "sha256": "5d0e9e31154ca48adb1532001a454301a6c7b56a370f6f35a1adfa76e3bb2342",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 4987,
+      "source_blob": "7d068532b9c0a59ff736d415b704117e67d48733",
+      "original_path": "hardware/vhdl/tb_qikvrt_metatransistor.vhd",
+      "object_path": "objects/7d068532b9c0a59ff736d415b704117e67d48733",
+      "sha256": "ba92c7cf916598be8303382cd37abf2dff2ad76d5aba77db480e1030406df3c9",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/qikvrt-node/v2.13.4-node",
+      "source_commit": "b51014fc188b69a85f252d861b4b2ae542c45037",
+      "ref_count": 4,
+      "bytes": 17924,
+      "source_blob": "6f868fb367c74556607440bbf9dcc45cdb307705",
+      "original_path": "include/qikvrt.h",
+      "object_path": "objects/6f868fb367c74556607440bbf9dcc45cdb307705",
+      "sha256": "498ff122d3dcf0e2f0ec7dc2ea13eed263e539331a47c515f93f9d1ce307fbc9",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/architecture/universal-transputer-c90-v1",
+      "source_commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref_count": 1,
+      "bytes": 374,
+      "source_blob": "79efe5deadd70206ce313b2d0e138d72087e350a",
+      "original_path": "include/temdd_core.h",
+      "object_path": "objects/79efe5deadd70206ce313b2d0e138d72087e350a",
+      "sha256": "77baed66758807f8caf42fb5506ad371d0719790f092d476492351cef92a4bf9",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 4201,
+      "source_blob": "209a744f00925b3871bc277cc54181c2050c1bd1",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0061_persist_acceptance_change_to_github_cd0060868b2b.py",
+      "authority_locations": [
+        "payload/monthly_content/a0061.bin",
+        "payload/monthly_content/a0144.bin",
+        "payload/monthly_content/a0173.bin",
+        "payload/monthly_content/a0208.bin",
+        "payload/monthly_content/a0254.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 3237,
+      "source_blob": "ff45c90c5dded9f36c467763245e0a3a7ed78d2e",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0062_persist_acceptance_coverage_to_github_d8ebe5a13f36.py",
+      "authority_locations": [
+        "payload/monthly_content/a0062.bin",
+        "payload/monthly_content/a0378.bin",
+        "payload/monthly_content/a0454.bin",
+        "payload/monthly_content/a0568.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 2693,
+      "source_blob": "7b885583b467a4669a19889d091f2234dd24ec15",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0063_persist_license_compliance_to_github_283150ee70ed.py",
+      "authority_locations": [
+        "payload/monthly_content/a0063.bin",
+        "payload/monthly_content/a0308.bin",
+        "payload/monthly_content/a0379.bin",
+        "payload/monthly_content/a0455.bin",
+        "payload/monthly_content/a0569.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 3815,
+      "source_blob": "b3d348761939ebafff5ceab55928f412972fabfe",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0064_persist_monthly_content_acceptance_failure_to_github_35d45898db68.py",
+      "authority_locations": [
+        "payload/monthly_content/a0064.bin",
+        "payload/monthly_content/a0174.bin",
+        "payload/monthly_content/a0209.bin",
+        "payload/monthly_content/a0255.bin",
+        "payload/monthly_content/a0309.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 3811,
+      "source_blob": "8e2800fc0ab43c021dcd536f93acddada2606f06",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0065_persist_zenodo_fourth_layer_to_github_eb30bf8e354a.py",
+      "authority_locations": [
+        "payload/monthly_content/a0065.bin",
+        "payload/monthly_content/a0210.bin",
+        "payload/monthly_content/a0256.bin",
+        "payload/monthly_content/a0310.bin",
+        "payload/monthly_content/a0381.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 4182,
+      "source_blob": "4a1b2ee8904f7978d3d93c3f2649679645377c32",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0068_qikvrt_update_github_70934d8a0e5a.py",
+      "authority_locations": [
+        "payload/monthly_content/a0068.bin",
+        "payload/monthly_content/a0099.bin",
+        "payload/monthly_content/a0120.bin",
+        "payload/monthly_content/a0145.bin",
+        "payload/monthly_content/a0175.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 5309,
+      "source_blob": "1fba150ad6f0a07909f7464fea9f70f8f9c21758",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0069_qikvrt_update_zenodo_scientific_pdfs_59e4523d2c22.py",
+      "authority_locations": [
+        "payload/monthly_content/a0069.bin",
+        "payload/monthly_content/a0313.bin",
+        "payload/monthly_content/a0384.bin",
+        "payload/monthly_content/a0461.bin",
+        "payload/monthly_content/a0575.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 4182,
+      "source_blob": "4a1b2ee8904f7978d3d93c3f2649679645377c32",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0099_qikvrt_update_github_70934d8a0e5a.py",
+      "authority_locations": [
+        "payload/monthly_content/a0068.bin",
+        "payload/monthly_content/a0099.bin",
+        "payload/monthly_content/a0120.bin",
+        "payload/monthly_content/a0145.bin",
+        "payload/monthly_content/a0175.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 5097,
+      "source_blob": "9a4c060377723352676dc71778ebe6156e170723",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0100_qikvrt_update_zenodo_scientific_pdfs_50c8e4fed22c.py",
+      "authority_locations": [
+        "payload/monthly_content/a0100.bin",
+        "payload/monthly_content/a0121.bin",
+        "payload/monthly_content/a0146.bin",
+        "payload/monthly_content/a0176.bin",
+        "payload/monthly_content/a0213.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 4182,
+      "source_blob": "4a1b2ee8904f7978d3d93c3f2649679645377c32",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0120_qikvrt_update_github_70934d8a0e5a.py",
+      "authority_locations": [
+        "payload/monthly_content/a0068.bin",
+        "payload/monthly_content/a0099.bin",
+        "payload/monthly_content/a0120.bin",
+        "payload/monthly_content/a0145.bin",
+        "payload/monthly_content/a0175.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 5097,
+      "source_blob": "9a4c060377723352676dc71778ebe6156e170723",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0121_qikvrt_update_zenodo_scientific_pdfs_50c8e4fed22c.py",
+      "authority_locations": [
+        "payload/monthly_content/a0100.bin",
+        "payload/monthly_content/a0121.bin",
+        "payload/monthly_content/a0146.bin",
+        "payload/monthly_content/a0176.bin",
+        "payload/monthly_content/a0213.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 4201,
+      "source_blob": "209a744f00925b3871bc277cc54181c2050c1bd1",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0144_persist_acceptance_change_to_github_cd0060868b2b.py",
+      "authority_locations": [
+        "payload/monthly_content/a0061.bin",
+        "payload/monthly_content/a0144.bin",
+        "payload/monthly_content/a0173.bin",
+        "payload/monthly_content/a0208.bin",
+        "payload/monthly_content/a0254.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 4182,
+      "source_blob": "4a1b2ee8904f7978d3d93c3f2649679645377c32",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0145_qikvrt_update_github_70934d8a0e5a.py",
+      "authority_locations": [
+        "payload/monthly_content/a0068.bin",
+        "payload/monthly_content/a0099.bin",
+        "payload/monthly_content/a0120.bin",
+        "payload/monthly_content/a0145.bin",
+        "payload/monthly_content/a0175.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 5097,
+      "source_blob": "9a4c060377723352676dc71778ebe6156e170723",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0146_qikvrt_update_zenodo_scientific_pdfs_50c8e4fed22c.py",
+      "authority_locations": [
+        "payload/monthly_content/a0100.bin",
+        "payload/monthly_content/a0121.bin",
+        "payload/monthly_content/a0146.bin",
+        "payload/monthly_content/a0176.bin",
+        "payload/monthly_content/a0213.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 4201,
+      "source_blob": "209a744f00925b3871bc277cc54181c2050c1bd1",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0173_persist_acceptance_change_to_github_cd0060868b2b.py",
+      "authority_locations": [
+        "payload/monthly_content/a0061.bin",
+        "payload/monthly_content/a0144.bin",
+        "payload/monthly_content/a0173.bin",
+        "payload/monthly_content/a0208.bin",
+        "payload/monthly_content/a0254.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 3815,
+      "source_blob": "b3d348761939ebafff5ceab55928f412972fabfe",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0174_persist_monthly_content_acceptance_failure_to_github_35d45898db68.py",
+      "authority_locations": [
+        "payload/monthly_content/a0064.bin",
+        "payload/monthly_content/a0174.bin",
+        "payload/monthly_content/a0209.bin",
+        "payload/monthly_content/a0255.bin",
+        "payload/monthly_content/a0309.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 4182,
+      "source_blob": "4a1b2ee8904f7978d3d93c3f2649679645377c32",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0175_qikvrt_update_github_70934d8a0e5a.py",
+      "authority_locations": [
+        "payload/monthly_content/a0068.bin",
+        "payload/monthly_content/a0099.bin",
+        "payload/monthly_content/a0120.bin",
+        "payload/monthly_content/a0145.bin",
+        "payload/monthly_content/a0175.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 5097,
+      "source_blob": "9a4c060377723352676dc71778ebe6156e170723",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0176_qikvrt_update_zenodo_scientific_pdfs_50c8e4fed22c.py",
+      "authority_locations": [
+        "payload/monthly_content/a0100.bin",
+        "payload/monthly_content/a0121.bin",
+        "payload/monthly_content/a0146.bin",
+        "payload/monthly_content/a0176.bin",
+        "payload/monthly_content/a0213.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 4201,
+      "source_blob": "209a744f00925b3871bc277cc54181c2050c1bd1",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0208_persist_acceptance_change_to_github_cd0060868b2b.py",
+      "authority_locations": [
+        "payload/monthly_content/a0061.bin",
+        "payload/monthly_content/a0144.bin",
+        "payload/monthly_content/a0173.bin",
+        "payload/monthly_content/a0208.bin",
+        "payload/monthly_content/a0254.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 3815,
+      "source_blob": "b3d348761939ebafff5ceab55928f412972fabfe",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0209_persist_monthly_content_acceptance_failure_to_github_35d45898db68.py",
+      "authority_locations": [
+        "payload/monthly_content/a0064.bin",
+        "payload/monthly_content/a0174.bin",
+        "payload/monthly_content/a0209.bin",
+        "payload/monthly_content/a0255.bin",
+        "payload/monthly_content/a0309.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 3811,
+      "source_blob": "8e2800fc0ab43c021dcd536f93acddada2606f06",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0210_persist_zenodo_fourth_layer_to_github_eb30bf8e354a.py",
+      "authority_locations": [
+        "payload/monthly_content/a0065.bin",
+        "payload/monthly_content/a0210.bin",
+        "payload/monthly_content/a0256.bin",
+        "payload/monthly_content/a0310.bin",
+        "payload/monthly_content/a0381.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 4182,
+      "source_blob": "4a1b2ee8904f7978d3d93c3f2649679645377c32",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0212_qikvrt_update_github_70934d8a0e5a.py",
+      "authority_locations": [
+        "payload/monthly_content/a0068.bin",
+        "payload/monthly_content/a0099.bin",
+        "payload/monthly_content/a0120.bin",
+        "payload/monthly_content/a0145.bin",
+        "payload/monthly_content/a0175.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 5097,
+      "source_blob": "9a4c060377723352676dc71778ebe6156e170723",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0213_qikvrt_update_zenodo_scientific_pdfs_50c8e4fed22c.py",
+      "authority_locations": [
+        "payload/monthly_content/a0100.bin",
+        "payload/monthly_content/a0121.bin",
+        "payload/monthly_content/a0146.bin",
+        "payload/monthly_content/a0176.bin",
+        "payload/monthly_content/a0213.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 4201,
+      "source_blob": "209a744f00925b3871bc277cc54181c2050c1bd1",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0254_persist_acceptance_change_to_github_cd0060868b2b.py",
+      "authority_locations": [
+        "payload/monthly_content/a0061.bin",
+        "payload/monthly_content/a0144.bin",
+        "payload/monthly_content/a0173.bin",
+        "payload/monthly_content/a0208.bin",
+        "payload/monthly_content/a0254.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 3815,
+      "source_blob": "b3d348761939ebafff5ceab55928f412972fabfe",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0255_persist_monthly_content_acceptance_failure_to_github_35d45898db68.py",
+      "authority_locations": [
+        "payload/monthly_content/a0064.bin",
+        "payload/monthly_content/a0174.bin",
+        "payload/monthly_content/a0209.bin",
+        "payload/monthly_content/a0255.bin",
+        "payload/monthly_content/a0309.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "source_commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref_count": 2,
+      "bytes": 3811,
+      "source_blob": "8e2800fc0ab43c021dcd536f93acddada2606f06",
+      "original_path": "incoming/no_bypass_20261001_monthly_writers/0256_persist_zenodo_fourth_layer_to_github_eb30bf8e354a.py",
+      "authority_locations": [
+        "payload/monthly_content/a0065.bin",
+        "payload/monthly_content/a0210.bin",
+        "payload/monthly_content/a0256.bin",
+        "payload/monthly_content/a0310.bin",
+        "payload/monthly_content/a0381.bin"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+[
+  {
+    "url": "https://universal-terminal-production.up.railway.app/api/temdd/subject",
+    "observed_at": "2026-10-04T07:33:51.959207+00:00",
+    "method": "PUBLIC_GET_ONLY",
+    "http_status": 200,
+    "bytes": 316,
+    "sha256": "83d7ecab41a6f8d3961fc025f9f5b2522ec10bb17c9c48381b772905c40518de",
+    "body": {
+      "dod": false,
+      "evidence_transfer": "DENY",
+      "ledger_id": "b06bce4b3a624e1092697b4869fa3b2b",
+      "state": "HOLD_UNVERIFIED",
+      "subject": {
+        "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "pr": 1236,
+        "repository": "Goldkelch/qik-vrt",
+        "tree": "956c16b291c05243437b1f018321936e4438949a"
+      }
+    }
+  },
+  {
+    "url": "https://universal-terminal-production.up.railway.app/qik-vrt/mesh/v1/effect-ack/terminal/state",
+    "observed_at": "2026-10-04T07:33:58.973310+00:00",
+    "method": "PUBLIC_GET_ONLY",
+    "http_status": 200,
+    "bytes": 1797,
+    "sha256": "5fc950a922b256d4e2930778c8b5b2fda355fcc1b3b955d15ef9666f5d9e15c0",
+    "body": {
+      "events": 1,
+      "external_effects": "NONE",
+      "last_event": {
+        "audio_present": false,
+        "event_id": 1,
+        "external_effect": "NONE",
+        "input_hash": "b73bfe07c6b5d3f618cfaa4610b8eebbb22c38ffeba03ef207f47f20cca5038e",
+        "kind": "TERMINAL_INPUT_ACCEPTED",
+        "observed_at": "2026-10-04T06:48:00Z",
+        "record_hash": "9bf3f860239ea3fbe2c6a0a935f3c7b7a3df4932450528c6bad74be32e209d78",
+        "text": "QIK-VRT Arbeitsnachweis LABYRINTH_PROOF_20261004_V1.\nIdee, Ziel und Auftrag: Ingolf Lohmann. Ausarbeitung und Prüfung: OpenAI Codex.\nErgebnis: Auf einem endlichen statischen zusammenhängenden ungerichteten Graphen findet der einfache gleichverteilte Zufallslauf alle Durchgänge mit Wahrscheinlichkeit eins. Ein garantiert erkennbarer endlicher Abschluss folgt daraus allein nicht. Mit vollständiger lokaler Nachbarerfassung, stabilen Identitäten, Gedächtnis und offener Arbeitsliste terminiert die Erkundung und bestimmt exakt die Durchgänge der erreichbaren Komponente. Globaler Abschluss braucht vollständige globale Abdeckung.\nPrüfung: 168146 Graph/Partition/Start-Fälle über alle Graphen bis fünf Knoten und 19 Grenzprüfungen bestanden. Lean 4.19.0 prüfte zehn abstrakte Modelllemmas; falsche Kontrolle zurückgewiesen. Kernel-Lauf 37183487075. Kein Beweis der gesamten Produktimplementierung und keine Authority/Mirror-Gleichheit.\nReview: https://github.com/ingolf-lohmann/qik-vrt/pull/454\nPROOF.md SHA256 444c357aa444a03002c461fdb1aa50a735e94b7c5af34f7b290939c9262f1132\nPDF SHA256 86cff8cf7d5a65a2464231a78bcaa3bd3bdc284dcb8f634de50738e840c811ec\n",
+        "video_present": false
+      },
+      "repository_head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+      "repository_tree": "956c16b291c05243437b1f018321936e4438949a",
+      "schema": "qikvrt_terminal_backend_state_v1"
+    }
+  }
+]

@@ -1,0 +1,42 @@
+{
+  "schema": "qikvrt_owner_unix_terminal_hosted_test_receipt_v1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "subject": {
+    "head": "2c7304f67e79fae1f233fb53c3c5700842e04b94",
+    "tree": "2df27eae4b3b6a8439996c09c748e4dbb6e02bfe"
+  },
+  "run_id": 37186422009,
+  "run_attempt": 1,
+  "event": "pull_request",
+  "job_id": 111389188524,
+  "conclusion": "success",
+  "tests": 29,
+  "unix_sqlite_fixture_executed": true,
+  "test_command": "python3 -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal",
+  "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37186422009",
+  "log_excerpt": "state/work_units/labyrinth-durable-terminal-20261004/HOSTED_TEST_2c7304f6.txt",
+  "tested_files": [
+    {
+      "path": "src/qikvrt_effect_ack_http_terminal.py",
+      "bytes": 29093,
+      "sha256": "5bc6188f9608ceb5f0d1dccda1b79eb1c21a7831efd2987134a86354c64f2c4d",
+      "git_blob_sha1": "7bcfb2fc1ad2f76939b0e17062085224484bd935"
+    },
+    {
+      "path": "tests/test_qikvrt_effect_ack_http_terminal.py",
+      "bytes": 26069,
+      "sha256": "67856c45dfa7d6f52ef550d9c1b796dcc048b4448b6aada59deac6be21dc2bfd",
+      "git_blob_sha1": "f8005277249e6b131835aabf1452cdc5b3e11a3e"
+    }
+  ],
+  "scope": "Independent native Unix/SQLite WAL+FULL contract fixture; not the deployed daemon or productive public SSE",
+  "successor_requirement": "A later code/receipt successor must run fresh exact-head tests; two additional JSON-shape controls are not covered by this predecessor receipt.",
+  "predecessor_evidence_transfer": false,
+  "production_deployment": false,
+  "production_event_submitted": false,
+  "release_claims": {
+    "EFFECT_ACK_DONE": false,
+    "FINAL_PASS": false,
+    "PASS": false
+  }
+}

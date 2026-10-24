@@ -1,0 +1,137 @@
+# Temporary read-only verification transport; never merge this workflow. Verification only.
+name: QIKVRT verify common repository mesh tag objects
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+    paths:
+      - .github/workflows/qikvrt_import_final_repository_mesh_authority.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: qikvrt-verify-common-repository-mesh-tag-objects
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.head_ref == 'automation/import-final-repository-mesh-authority-20260724'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Verify both public annotated tag objects and target trees
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .qikvrt/tag-verification
+          python3 -B - <<'PY'
+          from __future__ import annotations
+
+          import json
+          from pathlib import Path
+          import urllib.parse
+          import urllib.request
+
+          TAG = 'v2026.07.24-repository-mesh-sync-1.0.0'
+          SHARED_TREE = 'cd91a4961934610b95464dea8a5b912cdc4683a7'
+          TAGGER = {
+              'name': 'Ingolf Lohmann',
+              'email': 'ingolf.lohmann@live.com',
+              'date': '2026-07-24T17:30:00Z',
+          }
+          MESSAGE = (
+              'QIK-VRT synchronized repository mesh snapshot 1.0.0\n\n'
+              'Common annotated tag for the byte-identical Authority and Mirror '
+              'content tree after dependency-security maintenance, authenticated '
+              'repository-native audio requests, Zenodo inventory refresh, and '
+              'status documentation synchronization. No GitHub Release object and '
+              'no new Zenodo publication are created.'
+          )
+          EXPECTED = {
+              'Goldkelch/qik-vrt': '187113e970f810db54697db5681a6c8d77c26e98',
+              'ingolf-lohmann/qik-vrt': '5266ae8625a20508a7c1af1c3a6aa4d0b104f170',
+          }
+
+          def get(repository: str, path: str) -> dict:
+              request = urllib.request.Request(
+                  f'https://api.github.com/repos/{repository}{path}',
+                  headers={
+                      'Accept': 'application/vnd.github+json',
+                      'X-GitHub-Api-Version': '2022-11-28',
+                      'User-Agent': 'qikvrt-public-common-tag-verifier',
+                  },
+              )
+              with urllib.request.urlopen(request, timeout=30) as response:
+                  return json.load(response)
+
+          results = []
+          encoded_tag = urllib.parse.quote(TAG, safe='')
+          for repository, expected_commit in EXPECTED.items():
+              ref = get(repository, '/git/ref/tags/' + encoded_tag)
+              ref_object = ref.get('object', {})
+              if ref.get('ref') != 'refs/tags/' + TAG or ref_object.get('type') != 'tag':
+                  raise SystemExit(f'BLOCK: {repository} tag ref is not annotated')
+              tag_object_sha = ref_object.get('sha')
+              if not isinstance(tag_object_sha, str) or len(tag_object_sha) != 40:
+                  raise SystemExit(f'BLOCK: {repository} annotated tag object SHA is invalid')
+              tag_object = get(repository, '/git/tags/' + tag_object_sha)
+              target = tag_object.get('object', {})
+              tagger = tag_object.get('tagger', {})
+              if (
+                  tag_object.get('tag') != TAG
+                  or tag_object.get('message') != MESSAGE
+                  or target.get('type') != 'commit'
+                  or target.get('sha') != expected_commit
+                  or {key: tagger.get(key) for key in TAGGER} != TAGGER
+              ):
+                  raise SystemExit(f'BLOCK: {repository} annotated tag contract differs')
+              commit = get(repository, '/git/commits/' + expected_commit)
+              if commit.get('tree', {}).get('sha') != SHARED_TREE:
+                  raise SystemExit(f'BLOCK: {repository} tagged commit tree differs')
+              main_ref = get(repository, '/git/ref/heads/main')
+              main_commit = main_ref.get('object', {}).get('sha')
+              main = get(repository, '/git/commits/' + str(main_commit))
+              if main.get('tree', {}).get('sha') != SHARED_TREE:
+                  raise SystemExit(f'BLOCK: {repository} current main tree differs')
+              results.append({
+                  'repository': repository,
+                  'tag': TAG,
+                  'tag_ref_type': ref_object.get('type'),
+                  'tag_object_sha': tag_object_sha,
+                  'target_commit': expected_commit,
+                  'target_tree': SHARED_TREE,
+                  'current_main_commit': main_commit,
+                  'current_main_tree': main.get('tree', {}).get('sha'),
+                  'tagger': TAGGER,
+                  'message_verified': True,
+                  'status': 'ANNOTATED_TAG_VERIFIED',
+              })
+
+          evidence = {
+              'schema': 'qikvrt_common_repository_mesh_tag_public_verification_v1',
+              'anonymous': True,
+              'tag': TAG,
+              'shared_tree': SHARED_TREE,
+              'results': results,
+              'status': 'PASS',
+          }
+          path = Path('.qikvrt/tag-verification/COMMON_TAG_PUBLIC_VERIFICATION.json')
+          path.write_text(json.dumps(evidence, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          print(json.dumps(evidence, sort_keys=True))
+          PY
+
+      - name: Upload public common-tag verification evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qikvrt-common-repository-mesh-tag-public-verification-${{ github.sha }}
+          path: .qikvrt/tag-verification/COMMON_TAG_PUBLIC_VERIFICATION.json
+          if-no-files-found: error
+          retention-days: 30

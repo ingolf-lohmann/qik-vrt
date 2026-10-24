@@ -1,0 +1,447 @@
+{
+  "schema": "qikvrt_recursive_haltpoint_work_unit_v1",
+  "work_unit_id": "RECURSIVE-HALTPOINT-V1",
+  "state": "IMPLEMENTED_PENDING_EXACT_HEAD_GATES",
+  "rule": "A blocker recursively remains work until FINAL_IDLE or the first productive edge provably requires a currently unavailable external capability or unavailable exact human authorization.",
+  "cycle": [
+    "OBSERVE",
+    "CLASSIFY",
+    "DERIVE_FIRST_PRODUCTIVE_EDGE",
+    "REPAIR_OR_EXECUTE_EDGE_WHEN_AUTHORIZED_AND_CALLABLE",
+    "REOBSERVE_EXACT_SUBJECT",
+    "CONTINUE",
+    "REPEAT"
+  ],
+  "continuous_carriers": [
+    "QIK-VRT autonomous bounded self-heal",
+    "QIKVRT reflexive repository watchdog"
+  ],
+  "reference_blocker": {
+    "first_blocker": "AUTHORITY_INSTALLATION_CONTENT_ROUTING_CARRIER_UNAVAILABLE",
+    "productive_edge": "EXPOSE_AND_USE_INSTALLATION_147849532_BOUND_AUTHORITY_CONTENT_READ",
+    "classification": "BLOCKADE",
+    "halt": true,
+    "reason": "REQUIRED_EXTERNAL_CAPABILITY_UNAVAILABLE",
+    "effect_ack_done": false,
+    "authority_capability_evidence": {
+      "classification": "INSTALLATION_LISTED_AUTHORITY_WITH_CONTENT_ROUTING_CARRIER_BOUNDARY",
+      "source": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "pr_number": 444,
+        "head": "380fb965a184ee6137bc98ea58868eb8b59ecbce",
+        "tree": "6724c1efeb6242b37aab48c9e6e836f849c773df",
+        "path": "evidence/receipts/authority-recovery-20261002/ACCEPTANCE.json",
+        "git_blob_sha1": "5ed3569c24a1171cc8988bfd3e7f006b05e06a2b",
+        "sha256": "962328c1c3726840332ea5f016e0172652b6307e7255ca217f73e56c400b2705",
+        "observed_at": "2026-10-02T14:21:02.950217+00:00",
+        "scope": "CAPABILITY_DIAGNOSIS_ONLY_NOT_PR441_GATE_EVIDENCE"
+      },
+      "installation": {
+        "installation_id": 147849532,
+        "account_login": "Goldkelch",
+        "repository_selection": "all",
+        "repository": "Goldkelch/qik-vrt",
+        "repository_id": 1271407206,
+        "listed": true,
+        "permissions_as_reported": {
+          "admin": false,
+          "maintain": false,
+          "pull": true,
+          "push": true,
+          "triage": true
+        }
+      },
+      "generic_read_http_status": {
+        "repository": 404,
+        "main_ref": 404,
+        "required_refs": 404,
+        "content": 404
+      },
+      "installation_bound_content_read_exposed": false,
+      "authority_global_failure_inferred": false,
+      "repository_global_absence_inferred": false,
+      "routing_root_cause_established": false,
+      "diagnostic_scope": "Installation-aware listing succeeds while generic name, stable-ID, Main-ref, ref-inventory and content reads fail in this execution. No cause inside the connector, credential router or remote platform is established.",
+      "retry_condition": "An authorized content-read carrier explicitly bound to installation 147849532 and Goldkelch/qik-vrt must be callable. Freshly bind Main, HEAD, TREE, all required refs/referenced objects and source closure, then compare with the retained historical tree and reobserved Mirror. Do not transfer predecessor evidence."
+    }
+  },
+  "boundaries": {
+    "predecessor_evidence_transfer": false,
+    "transport_ack_is_effect_ack": false,
+    "effect_ack_done": false
+  },
+  "capability_synchronization": {
+    "observed_at": "2026-10-02T20:50:10.559Z",
+    "input_subject": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "pr_number": 441,
+      "ref": "agent/recursive-haltpoint-v1",
+      "head": "2ec9c4816666f285eac5ecf45ad126952aacb3bb",
+      "tree": "dd9f0cd2c628a7002f05de0ab2705847161f0ec6",
+      "scope": "INPUT_PREDECESSOR_NOT_CONTAINING_SUCCESSOR"
+    },
+    "source_pr_gates_transferred": false,
+    "successor_gates": "REQUIRE_FRESH_CONTAINING_HEAD_TREE_VALIDATION",
+    "fresh_observations": {
+      "installation": {
+        "operation": "list_installations",
+        "request_started_at": "2026-10-02T20:47:46.073Z",
+        "installation_id": 147849532,
+        "repository_selection": "all"
+      },
+      "repository_inventory": {
+        "operation": "list_repositories_by_installation",
+        "request_started_at": "2026-10-02T20:47:46.073Z",
+        "arguments": {
+          "installation_id": 147849532,
+          "page_offset": 0,
+          "page_size": 100
+        },
+        "repository": "Goldkelch/qik-vrt",
+        "repository_id": 1271407206,
+        "permissions_as_reported": {
+          "admin": false,
+          "maintain": false,
+          "pull": true,
+          "push": true,
+          "triage": true
+        }
+      },
+      "generic_reads": [
+        {
+          "operation": "get_repo",
+          "request_started_at": "2026-10-02T20:47:46.073Z",
+          "arguments": {
+            "repository_full_name": "Goldkelch/qik-vrt"
+          },
+          "error_code": "NOT_FOUND",
+          "response": {
+            "message": "Not Found",
+            "documentation_url": "https://docs.github.com/rest",
+            "status": "404"
+          },
+          "semantic_classification": "CURRENT_CONNECTION_ROUTING_OR_CARRIER_BOUNDARY"
+        },
+        {
+          "operation": "fetch",
+          "request_started_at": "2026-10-02T20:47:46.073Z",
+          "arguments": {
+            "url": "https://api.github.com/repos/Goldkelch/qik-vrt/git/ref/heads/main"
+          },
+          "error_code": "NOT_FOUND",
+          "response": {
+            "message": "Not Found",
+            "documentation_url": "https://docs.github.com/rest",
+            "status": "404"
+          },
+          "semantic_classification": "CURRENT_CONNECTION_ROUTING_OR_CARRIER_BOUNDARY"
+        },
+        {
+          "operation": "fetch",
+          "request_started_at": "2026-10-02T20:47:46.073Z",
+          "arguments": {
+            "url": "https://api.github.com/repos/Goldkelch/qik-vrt/git/matching-refs/"
+          },
+          "error_code": "NOT_FOUND",
+          "response": {
+            "message": "Not Found",
+            "documentation_url": "https://docs.github.com/rest",
+            "status": "404"
+          },
+          "semantic_classification": "CURRENT_CONNECTION_ROUTING_OR_CARRIER_BOUNDARY"
+        },
+        {
+          "operation": "fetch_file",
+          "request_started_at": "2026-10-02T20:47:46.073Z",
+          "arguments": {
+            "repository_full_name": "Goldkelch/qik-vrt",
+            "path": "AI",
+            "ref": "main"
+          },
+          "error_code": "NOT_FOUND",
+          "response": {
+            "message": "Not Found",
+            "documentation_url": "https://docs.github.com/rest/repos/contents#get-repository-content",
+            "status": "404"
+          },
+          "semantic_classification": "CURRENT_CONNECTION_ROUTING_OR_CARRIER_BOUNDARY"
+        }
+      ],
+      "installation_bound_content_read_exposed": false,
+      "installation_bound_content_read_attempted": false,
+      "unavailable_carrier_scope": "CURRENT_EXECUTION_EXPOSED_API_OPERATIONS",
+      "local_authenticated_rest_carrier_established": false,
+      "authority_global_failure_inferred": false,
+      "repository_global_absence_inferred": false
+    },
+    "live_haltpoint_comment_correction": {
+      "comment_id": 5943971095,
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/pull/441#issuecomment-5943971095",
+      "content_carrier_boundary_is_not_workflow_approval_evidence": true,
+      "workflow_admission_requires_its_own_exact_run_and_callable_approval_carrier_readback": true,
+      "action_required_or_zero_jobs_alone_imply_halt": false,
+      "global_connection_scope_unavailability_inferred": false
+    }
+  },
+  "contribution_provenance": {
+    "human_actor": "Ingolf Lohmann",
+    "human_contributions": [
+      "Requested synchronization with PR 444 capability evidence",
+      "Required a history-preserving successor and fresh HEAD/TREE binding",
+      "Required PREDECESSOR_EVIDENCE_TRANSFER=false",
+      "Requested fresh Main readback and history-preserving integration into PR 441",
+      "Required only the resulting new Exact Head as gate/admission subject; no stale-head approval, predecessor evidence transfer or bypass"
+    ],
+    "artificial_cognitive_actor": {
+      "provider": "OpenAI",
+      "system_family": "Codex",
+      "model_or_build": "GPT-6",
+      "session_or_run_id": "UNAVAILABLE",
+      "identity_limits": "System identity is not independent attestation of model build or natural-person identity."
+    },
+    "artificial_cognitive_contributions": [
+      "Fresh API readbacks",
+      "Bound capability-diagnosis correction",
+      "Policy and work-unit synchronization",
+      "Regression tests and reviewable successor preparation",
+      "Fresh current PR/Main/merge-base/tree readback; preserved intervening PR 444 capability correction",
+      "Conflict-free Main lifecycle integration with ordered merge parents and canonical integrity projection regeneration",
+      "Fresh scoped fixture controls; native new-head admission capability and gate readback"
+    ],
+    "human_acceptance_of_generated_content": "PENDING"
+  },
+  "verification": {
+    "scope": "FRESH_MERGE_CANDIDATE_API_BLOB_FIXTURE_NOT_COMPLETE_CHECKOUT_OR_NATIVE_GATE",
+    "tests": [
+      {
+        "module": "tests/test_qikvrt_recursive_haltpoint.py",
+        "count": 15,
+        "result": "PASS"
+      },
+      {
+        "module": "tests/test_qikvrt_autonomous_pre_effect_controller.py",
+        "count": 16,
+        "result": "PASS"
+      },
+      {
+        "module": "tests/test_qikvrt_reflexive_repository_watchdog.py",
+        "count": 19,
+        "result": "PASS"
+      },
+      {
+        "module": "tests/test_qikvrt_workflow_executor_mesh_contract.py",
+        "count": 7,
+        "result": "PASS"
+      }
+    ],
+    "fixture_git_subject": {
+      "head": "098ec35d8c67c41473acb2e04fa613d2ee755801",
+      "tree": "c1ec71510245d22b66634aa6a3125ecb687e3ddc",
+      "exact_commit_and_tree_objects_recomputed": true,
+      "complete_blob_or_parent_history_closure": false
+    },
+    "fixture_scope": "Changed candidate bytes and fetched exact blobs; API-reconstructed exact workflow tree. These controls are not native containing-successor gates.",
+    "full_checkout_successor_validation_required": true,
+    "predecessor_evidence_transfer": false,
+    "source_pr_gates_transferred": false,
+    "native_successor_gates": [],
+    "boot_scope": "Partial API worktree; full bootstrap/integrity and mandatory repository suite require fresh native full-checkout successor execution."
+  },
+  "exact_subject_observer_repair": {
+    "diagnostic_subject": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "head": "43386d81bc8adf9ce1281e9d6ccac9224a247542",
+      "tree": "0cad4b657f28561a2366a8a910c7a77032fe6c7b",
+      "scope": "PREDECESSOR_DIAGNOSTIC_ONLY_NOT_SUCCESSOR_GATE"
+    },
+    "observed_merge_checkout": "ddf6716dbfe155850590b3f2560da89f8d039bfe",
+    "failures": [
+      {
+        "run_id": 37064054978,
+        "job_id": 111027359500,
+        "workflow": ".github/workflows/qikvrt_collective_review.yml",
+        "observed_failure": "Repository manifest differs from deterministic regeneration after checkout of the synthetic merge subject"
+      },
+      {
+        "run_id": 37064054962,
+        "job_id": 111027359698,
+        "workflow": ".github/workflows/qikvrt_global_completion.yml",
+        "observed_failure": "Repository manifest differs from deterministic regeneration after checkout of the synthetic merge subject"
+      }
+    ],
+    "repair": "Reuse the exact-candidate checkout and HEAD/TREE guard already present in PR 444; keep every integrity and mandatory-suite gate.",
+    "reused_source": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "head": "380fb965a184ee6137bc98ea58868eb8b59ecbce",
+      "tree": "6724c1efeb6242b37aab48c9e6e836f849c773df"
+    },
+    "candidate_workflow_blobs": [
+      {
+        "path": ".github/workflows/qikvrt_collective_review.yml",
+        "sha256": "08e01023b979e70f8475d628ef720f74b2be3df24981c304466a1de710a8cdc3",
+        "git_blob_sha1": "4de3604eb91fefe3fb45dafcacf2d0899b881173"
+      },
+      {
+        "path": ".github/workflows/qikvrt_global_completion.yml",
+        "sha256": "4d59f33413603afa4bbe2908d4d1faee32d4de76c3889dc9b281c1bc7daf453f",
+        "git_blob_sha1": "9bfaebea499866893da199ef1bc9094485c10fb3"
+      }
+    ],
+    "predecessor_evidence_transfer": false,
+    "source_pr_gates_transferred": false,
+    "full_checkout_successor_validation_required": true,
+    "native_authority_api_readback_failure": {
+      "diagnostic_subject": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "head": "c11e35bef25f7e8e7e433b59e89ea58bc2602ba3",
+        "tree": "63c2a4df16720a0925b56212a41fdfa5e7964b00",
+        "scope": "PREDECESSOR_DIAGNOSTIC_ONLY_NOT_CONTAINING_SUCCESSOR_GATE"
+      },
+      "run_id": 37064690772,
+      "job_id": 111029443058,
+      "artifact_id": 11251921757,
+      "artifact_bytes": 3051,
+      "artifact_sha256": "68c84f9fad34150ba9b411bf8490e753c87a9ef94918f4a0a7d84913381c2304",
+      "receipt_path": "reflexive-watchdog-receipt.json",
+      "receipt_schema": "qikvrt_reflexive_observation_failure_receipt_v1",
+      "scope": "NATIVE_JOB_AUTHORITY_MAIN_REST_READBACK_WITH_MIRROR_GITHUB_TOKEN",
+      "failed_request": "repos/Goldkelch/qik-vrt/git/ref/heads/main",
+      "stage": "AUTHORITY_READBACK",
+      "exit_code": 1,
+      "transport_http_status": 404,
+      "expected_head_matches_checkout": true,
+      "live_subject_reobserved": false,
+      "receipt_first_blocker": "REPOSITORY_REOBSERVATION_FAILED",
+      "receipt_retry_condition": "FAILED_READ_PATH_RECOVERED_AND_EXACT_SUBJECT_REOBSERVED",
+      "receipt_recursive_haltpoint": {
+        "classification": "WORK",
+        "first_blocker": "REPOSITORY_REOBSERVATION_FAILED",
+        "halt": false,
+        "next_action": "REBIND_EXACT_HEAD_TREE",
+        "predecessor_evidence_transfer": false,
+        "productive_edge": "RESTORE_FAILED_READ_PATH_THEN_REOBSERVE_EXISTING_WORK_UNIT",
+        "reason": "EXACT_SUBJECT_REBIND_REQUIRED",
+        "recursive_continuation": true,
+        "schema": "qikvrt_recursive_haltpoint_result_v1",
+        "transport_ack_is_effect_ack": false
+      },
+      "local_connector_mirror_pr_readback_available": true,
+      "mirror_pr_readback_failure_inferred": false,
+      "routing_root_cause_established": false,
+      "authority_global_failure_inferred": false,
+      "repository_global_absence_inferred": false,
+      "next_action": "EXPOSE_AND_USE_INSTALLATION_147849532_BOUND_AUTHORITY_CONTENT_READ",
+      "predecessor_evidence_transfer": false
+    }
+  },
+  "main_integration": {
+    "requested_scope": "PR441_CURRENT_MAIN_HISTORY_PRESERVING_INTEGRATION_THEN_NEW_EXACT_HEAD_ADMISSION_AND_GATES",
+    "state": "PREPARED_PENDING_NON_FORCE_REF_UPDATE_AND_FRESH_CONTAINING_SUCCESSOR_READBACK",
+    "observed_at": "2026-10-02T21:33:12.839Z",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pr_number": 441,
+    "branch": "agent/recursive-haltpoint-v1",
+    "requested_historical_head": "2ec9c4816666f285eac5ecf45ad126952aacb3bb",
+    "actual_pre_integration_head": "098ec35d8c67c41473acb2e04fa613d2ee755801",
+    "actual_pre_integration_tree": "c1ec71510245d22b66634aa6a3125ecb687e3ddc",
+    "freshly_read_main": "ba3509a49d2e1b99af325b9cd77aab65a2975497",
+    "main_tree": "007ceaef554f275ff6f53383f8572505b4ec52be",
+    "merge_base": "6e085ab1e2b68e0cdf8e014c8400824f0502f11c",
+    "ordered_merge_parents": [
+      "098ec35d8c67c41473acb2e04fa613d2ee755801",
+      "ba3509a49d2e1b99af325b9cd77aab65a2975497"
+    ],
+    "observed_divergence": {
+      "main_unique_commits": 2,
+      "pr_unique_commits": 21
+    },
+    "main_changed_paths": [
+      {
+        "path": "evidence/node_health/36969534310-1.json",
+        "before": null,
+        "after": "fad45df78662afefc848cc4eb8fc332a78fefd41",
+        "mode": "100644"
+      },
+      {
+        "path": "evidence/node_health/37007190339-1.json",
+        "before": null,
+        "after": "bd72ccfa14afbb427f71f9d3acf2d21584e81cd7",
+        "mode": "100644"
+      },
+      {
+        "path": "evidence/node_health/LATEST.json",
+        "before": "d26500d7384c462526ad735c175f1abb160a1c27",
+        "after": "bd72ccfa14afbb427f71f9d3acf2d21584e81cd7",
+        "mode": "100644"
+      },
+      {
+        "path": "evidence/node_registration_renewal/36969534310-1.json",
+        "before": null,
+        "after": "9fcc7df51adfab1584a613282eb2b566bc71c87d",
+        "mode": "100644"
+      },
+      {
+        "path": "evidence/node_registration_renewal/37007190339-1.json",
+        "before": null,
+        "after": "bbacb5e6ecb73188a7125b4a18189066f8a08a86",
+        "mode": "100644"
+      },
+      {
+        "path": "evidence/node_registration_renewal/LATEST.json",
+        "before": "75d7d2be072addf441eb9a8a672b5ea82ffeebcc",
+        "after": "bbacb5e6ecb73188a7125b4a18189066f8a08a86",
+        "mode": "100644"
+      },
+      {
+        "path": "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+        "before": "258ed7cbf2402c8a884aeb7756436064fadfe6fb",
+        "after": "ef9c9cfdda552a8d561001a8045f010e7963cdd9",
+        "mode": "100644"
+      },
+      {
+        "path": "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+        "before": "afa194152aa04edca1cfd119f4d98458686227a1",
+        "after": "3e834011ccdac7e349cf37b0293711ff57062150",
+        "mode": "100644"
+      }
+    ],
+    "pr_semantic_paths_preserved_without_change": [
+      "policy/QIKVRT_RECURSIVE_HALTPOINT_V1.json",
+      "tools/qikvrt_recursive_haltpoint.py",
+      "tools/qikvrt_autonomous_pre_effect_controller.py",
+      "tools/qikvrt_reflexive_repository_watchdog.py",
+      "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
+      "tests/test_qikvrt_recursive_haltpoint.py",
+      "tests/test_qikvrt_autonomous_pre_effect_controller.py",
+      "tests/test_qikvrt_reflexive_repository_watchdog.py",
+      "tests/test_qikvrt_workflow_executor_mesh_contract.py"
+    ],
+    "conflict_resolution": "NO_OVERLAP_BETWEEN_MAIN_LIFECYCLE_DELTA_AND_PR_SEMANTIC_DELTA",
+    "integrity_projection": {
+      "method": "CONTENT_ADDRESSED_INCREMENTAL_CANONICAL_GENERATOR_PROJECTION",
+      "generator": "tools/qikvrt_integrity.py",
+      "generator_git_blob_sha1": "bd69412866bc8bed020246ef60e3ece6a8222b07",
+      "unchanged_digest_records_are_build_inputs_only": true,
+      "changed_paths_rehashed_from_exact_api_blob_bytes": true,
+      "existing_gitattributes_checkout_byte_semantics_preserved": true,
+      "full_native_deterministic_regeneration_and_verification_required": true
+    },
+    "admission": {
+      "order": "ONLY_AFTER_NEW_HEAD_AND_TREE_FRESHLY_READ_BACK",
+      "stale_head_admission_or_approval_performed": false,
+      "exposed_native_workflow_approve_operation": false,
+      "exposed_native_workflow_dispatch_operation": false,
+      "native_event_execution_must_be_observed_separately": true,
+      "rerun_as_admission_substitute_allowed": false,
+      "browser_dependency_allowed": false,
+      "next_action": "REOBSERVE_NEW_EXACT_HEAD_RUNS_AND_JOB_EVIDENCE_THEN_USE_A_NATIVE_ADMISSION_CARRIER_ONLY_IF_REQUIRED_AND_CALLABLE"
+    },
+    "predecessor_evidence_transfer": false,
+    "old_head_gate_success_transferred": false,
+    "main_promotion_authorized_by_this_integration": false,
+    "bypass": false,
+    "effect_ack_done": false,
+    "gate_subject": "ONLY_CONTAINING_SUCCESSOR_EXACT_HEAD_AND_TREE_FRESHLY_REBOUND_FROM_GITHUB",
+    "next_action": "VERIFY_NON_FORCE_REF_READBACK_THEN_FRESH_NATIVE_SUCCESSOR_GATES"
+  }
+}

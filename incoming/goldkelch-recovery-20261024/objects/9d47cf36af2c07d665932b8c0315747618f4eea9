@@ -1,0 +1,204 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "provenance_bound_work_unit"
+  },
+  "schema": "qikvrt_github_authority_provider_fence_work_unit_v1",
+  "work_unit_id": "QIKVRT-PR428-GITHUB-PROVIDER-FENCE-20261001-V1",
+  "created_at": "2026-10-01T14:54:02.319858+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_pull_request": 428,
+  "source_ref": "refs/heads/work/full-node-recovery-20261001-c621b863",
+  "source_commit": "0c7be800edeae9fc411974afeacad2f17a828778",
+  "source_tree": "277fd97f88effe0c741cd2337124e814ffef9fbd",
+  "main_already_integrated": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+  "human_actor": {
+    "name": "Ingolf Lohmann",
+    "roles": [
+      "Creator",
+      "Product Owner",
+      "Code Owner"
+    ]
+  },
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6; exact runtime build UNAVAILABLE",
+    "session_or_run_id": "scratch-session-4af1ef9b9ff7",
+    "tools_and_adapters": [
+      "GitHub connector",
+      "Git CLI",
+      "Python standard library"
+    ]
+  },
+  "human_contributions": [
+    {
+      "class": "HUMAN",
+      "contribution": "Authorize the next bounded provider-fencing successor on PR 428, lossless current Main integration, fresh Epoch/Fence/Node admission, native provider CAS, durable idempotency and true readback; no unproved Goldkelch capability or EFFECT_ACK_DONE."
+    }
+  ],
+  "artificial_cognitive_contributions": [
+    {
+      "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+      "contribution": "Reuse AuthorityControlPlane and authenticated API shim, add one native create-only ref operation, persistent crash-safe intent/journal, locked fresh mutation admission, real ref/commit/tree and durable receipt readback, fail-closed denied operations, tests and evidence."
+    }
+  ],
+  "joint_components": [
+    {
+      "class": "JOINT_WITH_SEPARABLE_COMPONENTS",
+      "human_part": "Scope and invariants",
+      "artificial_part": "Implementation and exact-byte test evidence"
+    }
+  ],
+  "unresolved_origin": [],
+  "reuse_inventory": [
+    {
+      "path": "src/qikvrt_github_api_shim.py",
+      "reuse": "Existing bearer authentication, credential scope, strict JSON, rate limits and TLS service; extension instead of second writer service"
+    },
+    {
+      "path": "tools/qikvrt_authority_transition.py",
+      "reuse": "Private durable control-plane transactions, grant/permit validation, takeover and role/rejoin contract; additive provider journal"
+    },
+    {
+      "path": "scripts/qikvrt_api_client.py",
+      "reuse": "NoRedirectHandler and bounded-response contract"
+    },
+    {
+      "path": "tools/qikvrt_seed_common.py",
+      "reuse": "Strict canonical JSON and duplicate-key parser"
+    },
+    {
+      "path": "tools/qikvrt_zenodo_publish.py",
+      "inspection": "Existing real GitHub transport pins Goldkelch and publication authority; not widened or misused for this mirror task"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "Makefile",
+      "bytes": 11112,
+      "sha256": "ae3a132dcedaad12976bbe8744c4e523dac6b9e15a21bb2dbe84c398fbad0ea9",
+      "git_blob_sha1": "8b53201a091afa68553e2aaf1479ddd28230073c"
+    },
+    {
+      "path": "api/qikvrt_github_api.openapi.yaml",
+      "bytes": 8535,
+      "sha256": "0db8c1a3a6ccb426b90db4192c4886d81b2c120f634770fb57537c34c6b50591",
+      "git_blob_sha1": "6ddb58b8cf5bdd9ea7e3aafd18792e4139ef1e4e"
+    },
+    {
+      "path": "docs/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION.md",
+      "bytes": 21303,
+      "sha256": "c12e8c0e6c24c21a94d2d324df38beae18dbc172cde4ace4901280aae526970d",
+      "git_blob_sha1": "96d6d7227d2068ffd3ccf3d57347fc236b622023"
+    },
+    {
+      "path": "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json",
+      "bytes": 11459,
+      "sha256": "dd3b010c0c737e26caf666ce053f6d70b7fe00f0a668ce28f65dc9535a7c0870",
+      "git_blob_sha1": "275197d48e0709b9256f8d8407d70a9243160f64"
+    },
+    {
+      "path": "runtime/toolchains/CACHE_REGISTRY.json",
+      "bytes": 13660,
+      "sha256": "850c67375b1b0dce4dd53b25f66e7ca20832e3d871ed39a1fd3864daaa799dae",
+      "git_blob_sha1": "a74685c51dfd0b6cfe2a86d8ed5eff2c9c04e994"
+    },
+    {
+      "path": "runtime/toolchains/CACHE_COVERAGE.json",
+      "bytes": 3269,
+      "sha256": "feab7b93429dac44d136766e2d0e688c02d304e8deaff7843b6f6e72ff5150f8",
+      "git_blob_sha1": "cbb36f9d5a925b4676fd189cf7006d91698dca1b"
+    },
+    {
+      "path": "src/qikvrt_github_api_shim.py",
+      "bytes": 31855,
+      "sha256": "7e7ae03a54f6410c451fd8a39ab55e171e4c39a7b7f599d48194818c44600e6c",
+      "git_blob_sha1": "7ec8c24e8821024e028fbe2f6ea7d0a239080e52"
+    },
+    {
+      "path": "tools/qikvrt_authority_transition.py",
+      "bytes": 27436,
+      "sha256": "0e60c68e3e38abdea12863eb2e30ebf97d1d8ce0590db3ef08ce42d1445bed62",
+      "git_blob_sha1": "52093dae6104878b18c06cff41359f680157bb8e"
+    },
+    {
+      "path": "tests/test_qikvrt_github_authority_provider.py",
+      "bytes": 23580,
+      "sha256": "c6e89d4829bd8274df78f0b202b2246691d888b7a584bd72aeb73df3d576bd4e",
+      "git_blob_sha1": "ae000828f2360bf12dfd931814c180ea33fe3265"
+    }
+  ],
+  "integrity_projections": [
+    "REPOSITORY_FILE_MANIFEST.json",
+    "REPOSITORY_FILE_MANIFEST.json.sha256",
+    "SHA256SUMS.txt"
+  ],
+  "verification": {
+    "state": "FOCUSED_TESTS_PASS_FULL_GATE_REQUIRED_ON_ENCLOSING_HEAD",
+    "command": "python3 -B -m unittest -v tests.test_qikvrt_github_authority_provider",
+    "tests": 21,
+    "exit_code": 0,
+    "local_log_bytes": 4364,
+    "local_log_sha256": "2f2aa6f86356c26313cbc7b9e92c76f0df3d7a6f3c90deea4e35e83021c32afc",
+    "scope": "Real local independent bare Git CAS/ref/tree effects, existing HTTP shim and bound production HTTPS transport responses; no live GitHub Authority effect",
+    "python": "3.12.14",
+    "sqlite": "3.53.1",
+    "full_gate": "make test required fresh on enclosing HEAD; exact-head CI/readback recorded in PR description",
+    "predecessor_evidence_transfer": false
+  },
+  "git_history": {
+    "parent": "0c7be800edeae9fc411974afeacad2f17a828778",
+    "force_push": false,
+    "enclosing_commit_and_tree_are_final_subject_binding": true
+  },
+  "credentials_observed_in_this_runtime": {
+    "GITHUB_TOKEN_available": false,
+    "GH_TOKEN_available": false,
+    "private_authority_control_plane_available": false,
+    "provider_token_expiry_binding_available": false,
+    "connected_github_scope": "ingolf-lohmann/qik-vrt only"
+  },
+  "scope": {
+    "provider_adapter_implemented": "BROKER_MEDIATED_CREATE_ONLY_GITHUB_REF",
+    "allowed_mutations": [
+      "create_ref"
+    ],
+    "all_other_provider_mutations": "DENY",
+    "bypass_credentials_revoked": false,
+    "all_repository_writers_routed_through_broker": false,
+    "provider_authority_fencing_verified": false,
+    "goldkelch_capability_verified": false,
+    "live_provider_effect_verified": false,
+    "effect_ack_done": false
+  },
+  "production_preconditions": [
+    "Owner-provisioned independently surviving nonrollbackable private control plane",
+    "Actually usable short-lived mirror Contents-scoped GITHUB_TOKEN inside existing HTTPS broker",
+    "All relevant repository writer paths routed through broker and independently usable bypass credentials revoked",
+    "Fresh real bound mirror-provider effect and explicit Authority acceptance readback"
+  ],
+  "external_effects": {
+    "authority_promotion": false,
+    "source_main_changed": false,
+    "Goldkelch_mutation": false,
+    "production_provider_ref_created": false,
+    "merge_release_publication": false
+  },
+  "human_decision": {
+    "implementation_scope": "AUTHORIZED_BY_CURRENT_TASK",
+    "independent_review": "PENDING",
+    "acceptance_changes_origin_classification": false
+  },
+  "next_action": "Review exact-head adapter; provision existing control plane and scoped broker capability, prove no bypass writers, then execute and read back a separately bound mirror provider effect. Do not infer production fencing from local tests.",
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "FULL_NODE_ADMITTED": false,
+    "AUTHORITY_RECOVERED": false,
+    "EFFECT_ACK_DONE": false,
+    "PREDECESSOR_EVIDENCE_TRANSFER": false
+  }
+}

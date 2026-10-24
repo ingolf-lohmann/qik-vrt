@@ -1,0 +1,24 @@
+{
+  "qikvrt_event": "NODE_SEED_LINK_CONFIRMED",
+  "guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "seed_repository": "Goldkelch/qik-vrt",
+  "status": "PASS",
+  "checked_utc": "2026-09-18T13:29:23Z",
+  "run_id": "qikvrt-node-runtime-20260918T132655Z",
+  "observed_authority_commit": "a86054139b49c13c5cd344753b248b46b5daf66f",
+  "seed_index": {
+    "path": "registry/NODEMESH_INDEX.json",
+    "sha256": "2b82f68672663441711881687983655394b9b15019682adf222e310c03862215",
+    "registry_status": "ACCEPTED",
+    "policy_status": "ACTIVE",
+    "effective_status": "ACTIVE"
+  },
+  "seed_node_entry": {
+    "path": "registry/nodes/a84f157a-cef2-4c47-bca9-8f407085bdbe.json",
+    "sha256": "e2a33ed2fd0bf3231c3c47ae9bf08aea98e12ef77cdc319cd0788bd296ef3ce5",
+    "status": "ACCEPTED",
+    "policy_status": "ACTIVE"
+  },
+  "predecessor_evidence_transfer": false
+}

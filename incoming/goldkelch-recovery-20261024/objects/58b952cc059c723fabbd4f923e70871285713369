@@ -1,0 +1,215 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "pipeline-mtbf-20260930",
+  "created_at": "2026-09-30T17:28:36.272Z",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "main",
+  "source_commit": "c3fb7f570c55e4494a88cceae89ed0e42d989191",
+  "source_tree": "b48329215641dd59b90dfdc382f6292c881f3cce",
+  "human_actor": "Ingolf Lohmann",
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "UNAVAILABLE"
+  },
+  "human_contributions": [
+    "Require each repository node to measure pipeline stall frequency and duration",
+    "Set MTBF as the sole optimization objective"
+  ],
+  "artificial_cognitive_contributions": [
+    "Operational definition and statistical boundaries",
+    "Draft extension of existing stall policy",
+    "Read-only source inspection and review-branch persistence"
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "inputs": [
+    {
+      "path": "policy/repository-status-stall-detection-v1.md",
+      "blob": "5b94165df5ada61f07df0397202da2e0e633c371"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "policy/repository-status-stall-detection-v1.md",
+      "blob": "d4ac17af73bbfc0a1f9f1347e88c5054b3d85775"
+    }
+  ],
+  "git_history": {
+    "branch": "work/pipeline-mtbf-20260930",
+    "policy_commit": "311316c3692110b65f63fc98b705b3870455b025"
+  },
+  "verification": {
+    "status": "SPECIFICATION_CANDIDATE",
+    "runtime_tests": "NOT_RUN",
+    "integrity_materialization": "PENDING",
+    "instrumentation": "NOT_IMPLEMENTED_BY_THIS_CHANGE",
+    "authority_read": "HTTP_404",
+    "authority_adoption": "UNKNOWN",
+    "other_node_adoption": "UNKNOWN",
+    "required_next_step": "Extend existing repository-native watchdog/ledger with executable measurement and acceptance tests; verify exact-head gates and per-node receipts"
+  },
+  "human_decision": "OWNER_OBJECTIVE_RECEIVED; GENERATED_SPEC_REVIEW_PENDING",
+  "external_effects": [
+    "Created isolated Mirror review branch",
+    "Persisted specification candidate; no main merge, dispatch or deployment"
+  ],
+  "release_claims": {
+    "PASS": false,
+    "DONE": false,
+    "EFFECT_ACK_DONE": false
+  },
+  "PREDECESSOR_EVIDENCE_TRANSFER": false,
+  "extensions": [
+    {
+      "at": "2026-09-30T17:32:58.993Z",
+      "human_contribution": "Ingolf Lohmann authorized a complete KPI tree in place of the sole MTBF optimization objective",
+      "ai_contribution": "Defined 7 diagnostic branches and 37 metrics, operational definitions, evidence/aggregation contract, non-compensatory decision policy and acceptance cases",
+      "source_head": "3f4d5fa58c6a92a385286d44a77b655caed9290e",
+      "source_tree": "9c3af85fec990b376591c61212faf5e2ccaf73c1",
+      "paths": [
+        "policy/PIPELINE_KPI_TREE_V1.json",
+        "policy/repository-status-stall-detection-v1.md"
+      ],
+      "verification": {
+        "json_serialization": "VALID",
+        "unique_ids": true,
+        "hierarchy_edges": "VALID",
+        "runtime_instrumentation": "NOT_IMPLEMENTED",
+        "runtime_tests": "NOT_RUN",
+        "targets": "EXPLICITLY_UNSET",
+        "mesh_rollout": "NOT_VERIFIED"
+      },
+      "supersedes": "Earlier MTBF-only objective; historical provenance retained"
+    },
+    {
+      "at": "2026-10-01T11:07:58.103728Z",
+      "human_contribution": "Ingolf Lohmann authorized lossless current-main integration without force push and the smallest read-only exact-subject telemetry_freshness collector, adverse-case and roundtrip/schema tests, unchanged SLO targets and fresh exact-head gates.",
+      "ai_contribution": "Reused the existing local collector candidate in the repository-native watchdog; added UTF-8/nesting adverse controls, record-contract and canonical roundtrip assertions on every observation, and preserved standalone watchdog fallback behavior.",
+      "artificial_cognitive_actor": {
+        "provider": "OpenAI",
+        "system_family": "Codex",
+        "model_or_build": "GPT-6"
+      },
+      "source_repository": "ingolf-lohmann/qik-vrt",
+      "source_ref": "work/pipeline-mtbf-20260930",
+      "source_head": "d7a822ded91de78170522fddaf31b4adafaed787",
+      "source_tree": "73c18b9cab611b851d4b543c8a2a65ff439a566e",
+      "main_integration": {
+        "main_head": "c621b863945adab208d4ed72f6197c7220b1dbb4",
+        "main_tree": "39fb41dd5d46c6affffa9bd812398880a347c533",
+        "merge_head": "eb547989cdc8ca45a9e17b5960fded978ade8103",
+        "merge_tree": "b38f3ee1a8bae16b796720e9172b562e567dd072",
+        "parents": [
+          "d7a822ded91de78170522fddaf31b4adafaed787",
+          "c621b863945adab208d4ed72f6197c7220b1dbb4"
+        ],
+        "conflicts": [
+          "REPOSITORY_FILE_MANIFEST.json",
+          "REPOSITORY_FILE_MANIFEST.json.sha256",
+          "SHA256SUMS.txt"
+        ],
+        "resolution": "Regenerated derived integrity projections; preserved main changes and KPI specification; no history rewrite.",
+        "prepared_local_merge_head": "da5e770073c2dc0c4d7f8041facecacc4474ee67"
+      },
+      "reuse": {
+        "historical_local_candidate_head": "809b05f3703e3b314fef6f9fb72fa205749b4723",
+        "historical_local_candidate_tree": "82ab5d92dcfa516a35f2005a1c5347ddc890352e",
+        "historical_candidate_is_current_evidence": false
+      },
+      "inputs": [
+        {
+          "path": "policy/PIPELINE_KPI_TREE_V1.json",
+          "bytes": 22462,
+          "sha256": "4f9f68eef74845e8b78db8385753ec6ac21a51ed7a1181e9b41f14f60f1fc978",
+          "git_blob_sha1": "f46aa9eeb904cff474c5a722c01dd805c7a87b58"
+        },
+        {
+          "path": "tools/qikvrt_mirror_node_lifecycle.sh",
+          "bytes": 2589,
+          "sha256": "5d8caaf882d1fe33df20b25486cf839fd4f281a1524c85bf8b83b47304314bce",
+          "git_blob_sha1": "f4dc5fb44bba4686e1d8cda4a39a78fe85d7ee44"
+        },
+        {
+          "path": "evidence/node_health/LATEST.json",
+          "bytes": 241,
+          "sha256": "5fb78b9e2d0a3680cef2ee8100d005505498246d72033a708748b9a3a9eaeceb",
+          "git_blob_sha1": "2c7ceb96a164210d38d376b869e52cd655f8aece"
+        },
+        {
+          "path": "evidence/node_health/36821646859-1.json",
+          "bytes": 241,
+          "sha256": "5fb78b9e2d0a3680cef2ee8100d005505498246d72033a708748b9a3a9eaeceb",
+          "git_blob_sha1": "2c7ceb96a164210d38d376b869e52cd655f8aece"
+        }
+      ],
+      "outputs": [
+        {
+          "path": "tools/qikvrt_reflexive_repository_watchdog.py",
+          "bytes": 57377,
+          "sha256": "ea2434df966d1b22e11ce888a375bfbd33906a213529727b22f8ac7d1817e473",
+          "git_blob_sha1": "c80767febe47ebf86f0d6a9fb385d969e4c7d6a7"
+        },
+        {
+          "path": "tests/test_qikvrt_telemetry_freshness.py",
+          "bytes": 19525,
+          "sha256": "bf48d3aacb31cc3952612117d1a9107df8bf318d60f9024d816715a72316d504",
+          "git_blob_sha1": "a32d89adbccd5c05a57f5ab6a633f4d1a4b37455"
+        },
+        {
+          "path": "Makefile",
+          "bytes": 10867,
+          "sha256": "4e94855e85494630ded9dfe3485cccdcb7bdf8ec61a38d14c60e28530b5d78c8",
+          "git_blob_sha1": "e89961185b8e5ef2803d649ca70155abc18723f2"
+        },
+        {
+          "path": ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
+          "bytes": 11124,
+          "sha256": "364e9bdbea7a6050b45ca69c1f3ac23d68959204d1a5d6cde915b9c41ee672f6",
+          "git_blob_sha1": "9bdd45fb4b652985979cbc9bc7fdcfe3dbf984a2"
+        },
+        {
+          "path": "policy/repository-status-stall-detection-v1.md",
+          "bytes": 17197,
+          "sha256": "c86acf3d545681f3c74422ed09ee7a9723e11471085dda29633b96d0fe4fada8",
+          "git_blob_sha1": "a1e3a2dfd83fbef288086d10be895b95140cf816"
+        }
+      ],
+      "measurement_semantics": {
+        "age": "readback - heartbeat_utc",
+        "fresh": "heartbeat_utc <= readback < expires_utc",
+        "stale": "readback >= expires_utc after valid clocks and identity",
+        "missing": "UNKNOWN; value=null",
+        "invalid": "INVALID measurement; UNKNOWN freshness; value=null",
+        "scope": "EXACT_SUBJECT_NODE_HEALTH_RECEIPT_ONLY",
+        "independent_clock_accuracy_verified": false,
+        "target": null,
+        "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT",
+        "slo_verdict": "UNKNOWN"
+      },
+      "verification": {
+        "candidate_tests": {
+          "command": "make workflow-executor-mesh-contract",
+          "passed": 62,
+          "collector_tests": 21,
+          "schema_roundtrip": "Existing KPI record_contract checked on all cases; canonical JSON decode/reencode byte equality.",
+          "full_make_test": {
+            "exit_code": 0,
+            "executed_test_cases": 548,
+            "unique_test_count_claimed": false,
+            "prepared_head": "ecbf3b6f2c965017b48392b2ec983c99cb6d730d",
+            "prepared_tree": "d0a0df99544e0bac3364a0164890696d26072801"
+          }
+        },
+        "candidate_identity": "OUTPUT_DIGESTS_ABOVE; exact published-head revalidation required after Git Data API commit",
+        "integrity": "REQUIRES_FINAL_MATERIALIZATION",
+        "remote_gates": "REQUIRES_POST_PUSH_EXACT_HEAD_READBACK"
+      },
+      "human_decision": "IMPLEMENTATION_SCOPE_AUTHORIZED; GENERATED_CODE_REVIEW_PENDING",
+      "external_effects": "PR branch fast-forward push and metadata update authorized; no PR merge, deployment, publication or rollout.",
+      "effect_boundary": "ONE_READ_ONLY_COLLECTOR; other 36 KPIs, node adoption and SLO attainment unverified.",
+      "PREDECESSOR_EVIDENCE_TRANSFER": false,
+      "publication_route": "Connected GitHub Git Data API; final branch update requires force=false and fresh predecessor readback."
+    }
+  ]
+}

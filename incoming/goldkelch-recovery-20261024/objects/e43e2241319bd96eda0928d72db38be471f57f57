@@ -1,0 +1,200 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0"
+  },
+  "schema": "qikvrt_digital_twin_schedule_events_contract_v1",
+  "version": 1,
+  "base_path": "/api/digital-twin/v1/schedule-events",
+  "implementation": "src/qikvrt_digital_twin_schedule_events.py",
+  "structural_schema": "schemas/qikvrt_schedule_events_v1.schema.json",
+  "executable_validator": "src.qikvrt_digital_twin_schedule_events.validate_snapshot",
+  "reused_components": [
+    "src/qikvrt_digital_twin_scheduling.py: private SQLite store and canonical hashing",
+    "src/qikvrt_github_api_shim.py: authenticated, principal/repository-scoped bounded HTTP transport"
+  ],
+  "reuse_limit": "The existing automations projection has executor-bound IDs, fixed fold=0, no native create/delete/tombstone or replay ledger, and no connector-neutral role-bound receipts. Native semantics extend its storage rather than creating another executing scheduler.",
+  "resources": {
+    "contract": {
+      "method": "GET",
+      "suffix": "/contract"
+    },
+    "state": {
+      "method": "GET",
+      "suffix": ""
+    },
+    "event": {
+      "method": "GET",
+      "suffix": "/<event_id>"
+    },
+    "operation": {
+      "method": "POST",
+      "suffix": "/operations",
+      "schema": "qikvrt_schedule_operation_v1"
+    },
+    "sync_receipt": {
+      "method": "POST",
+      "suffix": "/sync-receipts",
+      "schema": "qikvrt_schedule_sync_receipt_v1"
+    },
+    "snapshot": {
+      "method": "GET",
+      "suffix": "/snapshot",
+      "response": "canonical UTF-8 snapshot string"
+    },
+    "replay": {
+      "method": "POST",
+      "suffix": "/replay",
+      "request": [
+        "snapshot"
+      ]
+    },
+    "plan": {
+      "method": "POST",
+      "suffix": "/plan",
+      "request": [
+        "after_utc"
+      ]
+    }
+  },
+  "identity": {
+    "encoding": "lowercase SHA-256 hex, 64 characters",
+    "generation": "SHA-256 of canonical {schema:qikvrt_schedule_identity_v1,kind,namespace,key}",
+    "domain_separated_kinds": [
+      "event",
+      "operation",
+      "receipt"
+    ],
+    "stable_across_configuration_changes": true,
+    "reuse_after_tombstone": false,
+    "collision_or_changed_content_under_same_operation_id": "FAIL_CLOSED"
+  },
+  "time": {
+    "precision": "whole seconds",
+    "instant": "YYYY-MM-DDTHH:MM:SSZ; UTC offsets, subseconds and naive timestamps rejected",
+    "civil": "YYYY-MM-DDTHH:MM:SS + exact IANA key + explicit fold 0/1",
+    "timezone_data": "SHA-256 of the exact system TZif bytes used by ZoneInfo.from_file; cache not trusted",
+    "timezone_key": "UTC or normalized Area/Location key; aliases retain their supplied identity and are not silently equated",
+    "initial_gap": "REJECT",
+    "initial_nonambiguous_fold": "0 only",
+    "recurrence": {
+      "frequency": [
+        "HOURLY",
+        "DAILY",
+        "WEEKLY"
+      ],
+      "interval": [
+        1,
+        366
+      ],
+      "weekdays": "WEEKLY only; sorted unique ISO weekdays 0=Monday ... 6=Sunday, nonempty",
+      "daily_weekly": "civil clock anchored by start, week begins Monday",
+      "hourly": "elapsed UTC intervals anchored by start",
+      "gap_policy": "SKIP",
+      "fold_policy": [
+        "FIRST",
+        "SECOND"
+      ],
+      "unsupported": "REJECT; never approximate",
+      "planning_horizon_days": 2570
+    },
+    "tzif_drift": "FAIL_CLOSED; provide the exact reviewed original TZif data or create a separately versioned update; no silent reinterpretation"
+  },
+  "serialization": {
+    "schema": "qikvrt_schedule_snapshot_v1",
+    "encoding": "UTF-8 without BOM or terminal newline",
+    "canonical_json": "Unicode keys sorted by codepoint; compact separators; non-ASCII unescaped; no floats, duplicate keys, nonfinite numbers or surrogate bytes",
+    "json_integer_range": "signed 64-bit; booleans not integers",
+    "json_max_depth": 20,
+    "value_payload_max_utf8_bytes": 131072,
+    "event_order": "live events: (start.utc,event_id); then tombstones: event_id",
+    "plan_order": "(next_slot_utc,event_id)",
+    "ledger_order": "contiguous sequence beginning at 1",
+    "receipt_order": "receipt_id",
+    "limits": {
+      "events": 1000,
+      "operations": 10000,
+      "sync_receipts": 10000,
+      "snapshot_bytes": 4194304
+    },
+    "capacity_overflow": "transaction rollback before commit; stored histories remain exportable",
+    "payload_max_depth": 12
+  },
+  "mutation": {
+    "expected_version": "exact integer; absent event=0",
+    "create": "only previously unused identity, expected_version=0",
+    "update": "complete replacement value of a live event at exact version",
+    "delete": "exact live version, value=null; durable versioned tombstone; no ID resurrection",
+    "version": "each accepted new operation creates version+1",
+    "transaction": "SQLite BEGIN IMMEDIATE, CAS and append-only ledger atomically committed",
+    "idempotency": "Same operation ID + identical canonical request returns history and fresh current readback. Replays always leave local_post_effect_readback_verified=false; current_readback_matches_original is a separate observation. Changed request bytes collide.",
+    "post_effect_readback": "independent post-commit read must match exact successor; competing write fails closed; ambiguous committed write is retried by identical operation ID",
+    "evidence_reset": "active sync receipts require current event version/hash and current subject; successor changes do not transfer old evidence"
+  },
+  "sync": {
+    "target_kinds": [
+      "connector",
+      "repository"
+    ],
+    "source_subject": [
+      "repository",
+      "role",
+      "head",
+      "tree"
+    ],
+    "roles": [
+      "AUTHORITY",
+      "MIRROR"
+    ],
+    "target_repository_subject": "independently bound; distinct from source; no inferred equality",
+    "observation": [
+      "observed_at_utc",
+      "target_revision",
+      "readback"
+    ],
+    "freshness_seconds": 300,
+    "future_tolerance_seconds": 30,
+    "contradictions": "reject mismatched versions/hashes/roles/subjects/readback, receipt ID collisions or changed bytes under an immutable target revision",
+    "transport_only": "recordable, never effect evidence",
+    "provided_readback": "consistency of caller-provided observation and current repository event only",
+    "authentication_boundary": "authenticated API caller owns source/connector authenticity; imported metadata does not authenticate an external endpoint",
+    "external_calendar_success_claimed": false,
+    "external_effect_verified": false,
+    "connector_observation_authenticity_verified": false,
+    "effect_ack_done": false
+  },
+  "replay": {
+    "destination": "empty native store; exact snapshot subject required",
+    "validation": "reconstruct every CAS successor, predecessor hash, sequence, stable IDs, tombstone and receipt binding before write",
+    "history": "older exact heads within the same repository/role remain historical; active evidence is filtered to current subject",
+    "post_write_readback": "canonical snapshot byte identity required",
+    "dispatch_or_external_effect": false,
+    "authority_mirror_receipt_transfer": false
+  },
+  "runtime": {
+    "private_state": ".qikvrt/api/schedules/<repository-principal-native-role-sha256>.sqlite3",
+    "scope": "repository + authenticated principal + explicit role",
+    "subject_environment": [
+      "QIKVRT_SCHEDULE_ROLE",
+      "QIKVRT_SCHEDULE_HEAD",
+      "QIKVRT_SCHEDULE_TREE"
+    ],
+    "subject_binding_is_cryptographic_attestation": false,
+    "network_or_polling_or_dispatch_loop": false,
+    "ordinary_http_request_max_bytes": 1048576,
+    "replay_http_request_max_bytes": 16778240
+  },
+  "invariants": {
+    "transport_ack_is_effect_ack": false,
+    "predecessor_evidence_transfer": false,
+    "authority_and_mirror_are_distinct_evidence_identities": true,
+    "physical_effect": false,
+    "pole_equality_claim": false,
+    "main_integration_implied": false,
+    "deployment_implied": false,
+    "effect_ack_done": false
+  },
+  "pr422_scope": "Excluded: src/qikvrt_siemens_reference_integration.py, tests/test_qikvrt_digital_twin_rest.py, tests/test_qikvrt_expected_head_promotion_contract.py, tests/test_ruleset_authority_token_route.py. Shared integrity projections are regenerated for this candidate only.",
+  "regression_entrypoint": "make digital-twin-schedule-events-test"
+}

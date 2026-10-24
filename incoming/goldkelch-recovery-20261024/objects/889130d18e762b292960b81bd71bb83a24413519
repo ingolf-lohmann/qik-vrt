@@ -1,0 +1,191 @@
+name: QIKVRT Admin admit PR1173 exact head
+
+on:
+  push:
+    branches:
+      - admin/admit-pr1173-24c4a886
+
+permissions:
+  contents: read
+
+jobs:
+  admit:
+    if: github.repository == 'ingolf-lohmann/qik-vrt'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      TARGET_REPOSITORY: Goldkelch/qik-vrt
+      EXPECTED_HEAD: 24c4a886ed4f4dd86b2884a58ac48ab812303950
+      RUN_IDS: >-
+        35844877868
+        35844877870
+        35844877858
+        35844877806
+        35844877874
+        35844877801
+        35844877861
+        35844877927
+        35844877839
+        35844877855
+        35844877813
+        35844877811
+        35844877817
+        35844877851
+        35844877850
+        35844877938
+      ADMIN_TOKEN: ${{ secrets.QIKVRT_GITHUB_ADMIN_TOKEN }}
+      MESH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN }}
+      RULESET_APP_ID: ${{ vars.QIKVRT_RULESET_APP_ID }}
+      RULESET_APP_PRIVATE_KEY: ${{ secrets.QIKVRT_RULESET_APP_PRIVATE_KEY }}
+
+    steps:
+      - name: Resolve authority routes
+        id: authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          direct=false
+          app=false
+          if [ -n "${ADMIN_TOKEN:-}${MESH_TOKEN:-}" ]; then
+            direct=true
+          fi
+          if [ -n "${RULESET_APP_ID:-}" ] && [ -n "${RULESET_APP_PRIVATE_KEY:-}" ]; then
+            app=true
+          fi
+          echo "direct=$direct" >> "$GITHUB_OUTPUT"
+          echo "app=$app" >> "$GITHUB_OUTPUT"
+          if [ "$direct" != true ] && [ "$app" != true ]; then
+            echo "BLOCK: no repository-provided authority credential route is configured" >&2
+            exit 2
+          fi
+
+      - name: Mint target-scoped GitHub App Actions token
+        id: app-token
+        if: steps.authority.outputs.app == 'true'
+        continue-on-error: true
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349
+        with:
+          app-id: ${{ vars.QIKVRT_RULESET_APP_ID }}
+          private-key: ${{ secrets.QIKVRT_RULESET_APP_PRIVATE_KEY }}
+          owner: Goldkelch
+          repositories: qik-vrt
+          permission-actions: write
+
+      - name: Bind and approve exact workflow executions
+        env:
+          APP_TOKEN: ${{ steps.app-token.outputs.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$TARGET_REPOSITORY" = "Goldkelch/qik-vrt"
+          test "$EXPECTED_HEAD" = "24c4a886ed4f4dd86b2884a58ac48ab812303950"
+
+          tokens=()
+          [ -n "${ADMIN_TOKEN:-}" ] && tokens+=("$ADMIN_TOKEN")
+          [ -n "${MESH_TOKEN:-}" ] && tokens+=("$MESH_TOKEN")
+          [ -n "${APP_TOKEN:-}" ] && tokens+=("$APP_TOKEN")
+          if [ "${#tokens[@]}" -eq 0 ]; then
+            echo "BLOCK: no usable authority token materialized" >&2
+            exit 2
+          fi
+
+          get_receipt() {
+            local run_id="$1" token code tmp
+            tmp="$RUNNER_TEMP/run-$run_id.json"
+            for token in "${tokens[@]}"; do
+              code="$(curl --silent --show-error -o "$tmp" -w '%{http_code}' \
+                -H "Authorization: Bearer $token" \
+                -H "Accept: application/vnd.github+json" \
+                -H "X-GitHub-Api-Version: 2022-11-28" \
+                "https://api.github.com/repos/$TARGET_REPOSITORY/actions/runs/$run_id")"
+              if [ "$code" = "200" ]; then
+                cat "$tmp"
+                return 0
+              fi
+            done
+            echo "BLOCK: no authority route can read run $run_id" >&2
+            return 1
+          }
+
+          approve_run() {
+            local run_id="$1" token code tmp
+            tmp="$RUNNER_TEMP/approve-$run_id.json"
+            for token in "${tokens[@]}"; do
+              code="$(curl --silent --show-error -o "$tmp" -w '%{http_code}' \
+                -X POST \
+                -H "Authorization: Bearer $token" \
+                -H "Accept: application/vnd.github+json" \
+                -H "X-GitHub-Api-Version: 2022-11-28" \
+                "https://api.github.com/repos/$TARGET_REPOSITORY/actions/runs/$run_id/approve")"
+              case "$code" in
+                2??)
+                  echo "approved run_id=$run_id"
+                  return 0
+                  ;;
+              esac
+            done
+            echo "BLOCK: no authority route can approve run $run_id" >&2
+            cat "$tmp" >&2 || true
+            return 1
+          }
+
+          for run_id in $RUN_IDS; do
+            receipt="$(get_receipt "$run_id")"
+            test "$(jq -r '.id' <<<"$receipt")" = "$run_id"
+            test "$(jq -r '.head_sha' <<<"$receipt")" = "$EXPECTED_HEAD"
+            conclusion="$(jq -r '.conclusion // ""' <<<"$receipt")"
+            if [ "$conclusion" = "action_required" ]; then
+              approve_run "$run_id"
+            else
+              echo "already admitted run_id=$run_id conclusion=$conclusion"
+            fi
+          done
+
+      - name: Effect readback
+        env:
+          APP_TOKEN: ${{ steps.app-token.outputs.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          tokens=()
+          [ -n "${ADMIN_TOKEN:-}" ] && tokens+=("$ADMIN_TOKEN")
+          [ -n "${MESH_TOKEN:-}" ] && tokens+=("$MESH_TOKEN")
+          [ -n "${APP_TOKEN:-}" ] && tokens+=("$APP_TOKEN")
+          test "${#tokens[@]}" -gt 0
+
+          get_receipt() {
+            local run_id="$1" token code tmp
+            tmp="$RUNNER_TEMP/readback-$run_id.json"
+            for token in "${tokens[@]}"; do
+              code="$(curl --silent --show-error -o "$tmp" -w '%{http_code}' \
+                -H "Authorization: Bearer $token" \
+                -H "Accept: application/vnd.github+json" \
+                -H "X-GitHub-Api-Version: 2022-11-28" \
+                "https://api.github.com/repos/$TARGET_REPOSITORY/actions/runs/$run_id")"
+              if [ "$code" = "200" ]; then
+                cat "$tmp"
+                return 0
+              fi
+            done
+            return 1
+          }
+
+          for attempt in $(seq 1 20); do
+            remaining=0
+            for run_id in $RUN_IDS; do
+              receipt="$(get_receipt "$run_id")"
+              test "$(jq -r '.id' <<<"$receipt")" = "$run_id"
+              test "$(jq -r '.head_sha' <<<"$receipt")" = "$EXPECTED_HEAD"
+              conclusion="$(jq -r '.conclusion // ""' <<<"$receipt")"
+              if [ "$conclusion" = "action_required" ]; then
+                remaining=1
+              fi
+            done
+            if [ "$remaining" -eq 0 ]; then
+              echo "All exact-head workflow admissions left action_required."
+              exit 0
+            fi
+            sleep 3
+          done
+          echo "BLOCK: at least one exact-head run remains action_required after approval requests" >&2
+          exit 1

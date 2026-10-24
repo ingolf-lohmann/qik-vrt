@@ -1,0 +1,109 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Ingolf Lohmann.
+
+name: QIK-VRT exact-tree canonical Zenodo union Mirror sync v2
+
+on:
+  push:
+    branches:
+      - trusted/trigger-canonical-zenodo-union-sync-4892e744-v2
+    paths:
+      - .github/workflows/qikvrt_sync_canonical_zenodo_union_4892e744_v2_once.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: qikvrt-sync-canonical-zenodo-union-4892e744-v2
+  cancel-in-progress: false
+
+jobs:
+  construct-exact-authority-tree:
+    if: github.repository == 'ingolf-lohmann/qik-vrt'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      GH_TOKEN: ${{ github.token }}
+      AUTHORITY_REPOSITORY: Goldkelch/qik-vrt
+      EXPECTED_AUTHORITY_MAIN: 4892e74458f15762c7b873344bc85b238e3739b1
+      EXPECTED_MIRROR_MAIN: ea5fa7da0b4f7119bc9c2f5dc73bbce1f6dfe476
+      TRIGGER_BRANCH: trusted/trigger-canonical-zenodo-union-sync-4892e744-v2
+      WORKFLOW_PATH: .github/workflows/qikvrt_sync_canonical_zenodo_union_4892e744_v2_once.yml
+      TARGET_BRANCH: sync/canonical-zenodo-union-4892e744-v2
+      FIXED_GIT_DATE: '2026-07-28T16:50:00+02:00'
+
+    steps:
+      - name: Check out exact Mirror trigger branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: trusted/trigger-canonical-zenodo-union-sync-4892e744-v2
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Construct, verify and persist exact Authority tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          [ "$GITHUB_REPOSITORY" = 'ingolf-lohmann/qik-vrt' ]
+          [ "$GITHUB_REF_NAME" = "$TRIGGER_BRANCH" ]
+          [ "$(git rev-parse HEAD)" = "$GITHUB_SHA" ]
+          [ "$(git ls-remote origin refs/heads/main | cut -f1)" = "$EXPECTED_MIRROR_MAIN" ]
+          [ "$(git ls-remote origin refs/heads/$TARGET_BRANCH | cut -f1)" = "$EXPECTED_MIRROR_MAIN" ]
+          mapfile -t changed < <(git diff --name-only "$EXPECTED_MIRROR_MAIN" HEAD -- | LC_ALL=C sort)
+          [ "${#changed[@]}" -eq 1 ]
+          [ "${changed[0]}" = "$WORKFLOW_PATH" ]
+
+          git remote remove authority 2>/dev/null || true
+          git remote add authority "https://github.com/${AUTHORITY_REPOSITORY}.git"
+          observed_authority="$(git ls-remote authority refs/heads/main | cut -f1)"
+          [ "$observed_authority" = "$EXPECTED_AUTHORITY_MAIN" ]
+          git fetch --no-tags authority "$EXPECTED_AUTHORITY_MAIN"
+
+          authority_tree="$(git rev-parse "$EXPECTED_AUTHORITY_MAIN^{tree}")"
+          message="$(printf '%s\n\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n' \
+            'Synchronize canonical Zenodo union and content-disposition start from Authority 4892e744' \
+            "Authority repository: $AUTHORITY_REPOSITORY" \
+            "Authority commit: $EXPECTED_AUTHORITY_MAIN" \
+            "Authority tree: $authority_tree" \
+            "Previous Mirror main: $EXPECTED_MIRROR_MAIN" \
+            'Semantics: preserve Mirror history as sole parent while replacing the complete content tree with the exact verified Authority tree.' \
+            'Canonical union: 24 records; content disposition STARTED; batch 001 selected.' \
+            'No PASS, FINAL_PASS or EFFECT_ACK_DONE is claimed.')"
+
+          sync_commit="$(printf '%s\n' "$message" | env \
+            GIT_AUTHOR_NAME='QIK-VRT Repository Mesh' \
+            GIT_AUTHOR_EMAIL='ingolf.lohmann@live.com' \
+            GIT_AUTHOR_DATE="$FIXED_GIT_DATE" \
+            GIT_COMMITTER_NAME='QIK-VRT Repository Mesh' \
+            GIT_COMMITTER_EMAIL='ingolf.lohmann@live.com' \
+            GIT_COMMITTER_DATE="$FIXED_GIT_DATE" \
+            git commit-tree "$authority_tree" -p "$EXPECTED_MIRROR_MAIN")"
+
+          [ "$(git rev-parse "$sync_commit^{tree}")" = "$authority_tree" ]
+          [ "$(git show -s --format=%P "$sync_commit")" = "$EXPECTED_MIRROR_MAIN" ]
+          git diff --exit-code "$EXPECTED_AUTHORITY_MAIN" "$sync_commit" --
+
+          verify_root="$RUNNER_TEMP/qikvrt-canonical-union-mirror-sync"
+          git worktree add --detach "$verify_root" "$sync_commit"
+          PYTHONDONTWRITEBYTECODE=1 python3 -B "$verify_root/tools/qikvrt_integrity.py" verify
+          PYTHONDONTWRITEBYTECODE=1 python3 -B "$verify_root/tests/test_zenodo_union_disposition.py"
+
+          push_url="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git push "$push_url" \
+            --force-with-lease="refs/heads/$TARGET_BRANCH:$EXPECTED_MIRROR_MAIN" \
+            "$sync_commit:refs/heads/$TARGET_BRANCH"
+          persisted="$(git ls-remote "$push_url" refs/heads/$TARGET_BRANCH | cut -f1)"
+          [ "$persisted" = "$sync_commit" ]
+          [ "$(git rev-parse "$persisted^{tree}")" = "$authority_tree" ]
+
+          {
+            echo '## Exact Authority-tree Mirror synchronization candidate'
+            echo
+            echo "- Authority commit: \`$EXPECTED_AUTHORITY_MAIN\`"
+            echo "- Authority tree: \`$authority_tree\`"
+            echo "- Previous Mirror main: \`$EXPECTED_MIRROR_MAIN\`"
+            echo "- Mirror candidate: \`$persisted\`"
+            echo '- Complete file delta Authority↔candidate: empty'
+            echo '- Repository integrity: verified'
+            echo '- Canonical union/disposition contract: verified'
+          } >> "$GITHUB_STEP_SUMMARY"

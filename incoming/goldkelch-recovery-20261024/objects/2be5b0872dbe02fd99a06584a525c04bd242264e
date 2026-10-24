@@ -1,0 +1,38 @@
+{
+  "_license": {
+    "classification": "machine_readable_prepublication_return_receipt",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "candidate_files": [
+    {
+      "bytes": 89993,
+      "git_blob_sha1": "88b0701a256c699116d04ab466c522ee3c0c5bf6",
+      "path": "docs/publications/2026-09-28-quality-gates/QIKVRT_Quality_Gates_Universal_Transputer_2026-09-28.pdf",
+      "sha256": "4c8afded8a3b46008605b5abed8b048765ab35973465c5659f2a32109ece6598"
+    },
+    {
+      "bytes": 23416,
+      "git_blob_sha1": "8030bf962335fd54ef72c6a078f656bb3c356145",
+      "path": "docs/publications/2026-09-28-quality-gates/QIKVRT_Quality_Gates_Vorlesefassung_2026-09-28.txt",
+      "sha256": "0d6e82942f4359622f588fe240afa3593f8f794e67e0f37d595a6087631a4952"
+    }
+  ],
+  "change_notice_path": null,
+  "change_reasons": [],
+  "changed_claim_ids": [],
+  "content_changed": false,
+  "original_files": [],
+  "publication_id": "qikvrt-quality-gates-20260928-v1",
+  "return": {
+    "candidate_returned_to_owner": true,
+    "owner_name": "Ingolf Lohmann",
+    "owner_type": "NATURAL_PERSON",
+    "return_channel": "ChatGPT Work conversation: linked exact PDFs and read-aloud texts before packaging; publication candidates are unchanged first return / unchanged historical archive.",
+    "returned_at": "2026-09-28T00:12:03Z",
+    "visible_change_notice_returned": false
+  },
+  "schema": "qikvrt_prepublication_return_receipt_v2"
+}

@@ -1,0 +1,49 @@
+{
+  "schema": "qikvrt_external_delivery_request_v1",
+  "id": "OPENAI_CHATGPT_WORK_CANCELLATION_V1",
+  "platform": "openai_chatgpt",
+  "authority": {
+    "product_owner": "Ingolf Lohmann",
+    "authorization": "AUTHORIZED_EXTERNAL_WEB_EFFECT",
+    "explicit_instruction": "Cancel the user's ChatGPT Work subscription."
+  },
+  "preconditions": {
+    "exact_main_reobservation_required": true,
+    "predecessor_evidence_transfer": false,
+    "authenticated_user_session_required": true,
+    "mfa_captcha_bypass_forbidden": true
+  },
+  "operation": {
+    "type": "AUTHENTICATED_OPENAI_SUBSCRIPTION_CANCELLATION",
+    "adapter": "QIKVRT_FIREFOX_TERMINAL_PROXY_V1",
+    "target": "ChatGPT Work subscription",
+    "account_deletion": false,
+    "unrelated_subscription_changes": false,
+    "unrelated_billing_changes": false,
+    "commit_semantics": "Cancel only the bound ChatGPT Work subscription after exact prepared-form revalidation."
+  },
+  "effect_ack": {
+    "required": true,
+    "readback_required": true,
+    "fields": [
+      "provider",
+      "subscription",
+      "cancellation_state",
+      "effective_end_or_termination_date",
+      "provider_receipt_or_account_readback",
+      "observed_at"
+    ],
+    "done_requires": [
+      "provider_is_openai_or_authorized_billing_provider",
+      "target_subscription_is_chatgpt_work",
+      "provider_originated_cancellation_state_observed",
+      "no_account_deletion",
+      "no_unrelated_billing_mutation"
+    ]
+  },
+  "completion_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false
+  }
+}

@@ -1,0 +1,131 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Ingolf Lohmann.
+
+name: QIKVRT Authority Mirror Equality Receipt 49850f 7ebe2b
+
+on:
+  push:
+    branches:
+      - automation/equality-receipt-49850f-7ebe2b
+    paths:
+      - .github/workflows/qikvrt_equality_receipt_49850f_7ebe2b.yml
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: qikvrt-equality-receipt-49850f-7ebe2b
+  cancel-in-progress: false
+
+jobs:
+  verify-equality:
+    if: github.repository == 'ingolf-lohmann/qik-vrt'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      AUTHORITY_REPOSITORY: Goldkelch/qik-vrt
+      AUTHORITY_MAIN: 49850f6492831cf6421889498e4f9d71b1efb132
+      AUTHORITY_GREEN_HEAD: 1c9469e7825bcc75157f601a575d82690180a36e
+      MIRROR_REPOSITORY: ingolf-lohmann/qik-vrt
+      MIRROR_PREVIOUS_MAIN: 650b3bd17d32a297f492eb9765a5d4fd2d6672ce
+      MIRROR_SYNC_HEAD: 13bc34c8981502b352191a8b178c851e35ef84fb
+      MIRROR_MAIN: 7ebe2b9bb895e55439f6f6d1e9952b6b04cf167a
+      EXPECTED_SHARED_TREE: bec0eea87bf55a73993b1111ee13d83069d2cd11
+      EXPECTED_CONTENT_DIGEST: b132e3c39a45a5c5771ab2eec102d58a89e998815d915217b5563d49ebf07a07
+      MIRROR_LEDGER_ISSUE: '52'
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Check out verifier branch with complete object graph
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Verify exact refs, trees, manifests, integrity, and emit receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          fail() {
+            gh api -X POST "repos/${MIRROR_REPOSITORY}/issues/${MIRROR_LEDGER_ISSUE}/comments" -f body="Equality verifier run \`${GITHUB_RUN_ID}\` failed closed at \`${STAGE:-UNSET}\`. No equality receipt, PASS, FINAL_PASS, or EFFECT_ACK_DONE was emitted." >/dev/null || true
+            echo "::error::stage=${STAGE:-UNSET}: $*"
+            exit 1
+          }
+
+          STAGE=REF_BINDING
+          git fetch --force origin main:refs/remotes/origin/main
+          mirror_ref="$(git rev-parse refs/remotes/origin/main)"
+          [ "$mirror_ref" = "$MIRROR_MAIN" ] || fail "Mirror main moved to $mirror_ref"
+          git remote remove authority 2>/dev/null || true
+          git remote add authority "https://github.com/${AUTHORITY_REPOSITORY}.git"
+          authority_ref="$(git ls-remote authority refs/heads/main | awk '{print $1}')"
+          [ "$authority_ref" = "$AUTHORITY_MAIN" ] || fail "Authority main moved to $authority_ref"
+          git fetch --no-tags authority main
+
+          STAGE=TREE_EQUALITY
+          authority_tree="$(git rev-parse "$AUTHORITY_MAIN^{tree}")"
+          authority_green_tree="$(git rev-parse "$AUTHORITY_GREEN_HEAD^{tree}")"
+          mirror_sync_tree="$(git rev-parse "$MIRROR_SYNC_HEAD^{tree}")"
+          mirror_main_tree="$(git rev-parse "$MIRROR_MAIN^{tree}")"
+          [ "$authority_tree" = "$EXPECTED_SHARED_TREE" ] || fail "Authority tree differs: $authority_tree"
+          [ "$authority_green_tree" = "$EXPECTED_SHARED_TREE" ] || fail "Authority green-head tree differs: $authority_green_tree"
+          [ "$mirror_sync_tree" = "$EXPECTED_SHARED_TREE" ] || fail "Mirror sync tree differs: $mirror_sync_tree"
+          [ "$mirror_main_tree" = "$EXPECTED_SHARED_TREE" ] || fail "Mirror main tree differs: $mirror_main_tree"
+          git diff --quiet "$AUTHORITY_MAIN" "$MIRROR_MAIN" || fail 'Authority and Mirror trees have a file delta'
+
+          STAGE=WORKTREE_MATERIALIZATION
+          authority_root="$RUNNER_TEMP/qikvrt-authority-receipt"
+          mirror_root="$RUNNER_TEMP/qikvrt-mirror-receipt"
+          rm -rf "$authority_root" "$mirror_root"
+          git worktree add --detach "$authority_root" "$AUTHORITY_MAIN"
+          git worktree add --detach "$mirror_root" "$MIRROR_MAIN"
+
+          STAGE=INTEGRITY_VALIDATION
+          (cd "$authority_root" && python3 -B tools/qikvrt_integrity.py verify)
+          (cd "$mirror_root" && python3 -B tools/qikvrt_integrity.py verify)
+
+          STAGE=MANIFEST_EQUALITY
+          cmp -s "$authority_root/REPOSITORY_FILE_MANIFEST.json" "$mirror_root/REPOSITORY_FILE_MANIFEST.json" || fail 'REPOSITORY_FILE_MANIFEST.json differs'
+          cmp -s "$authority_root/REPOSITORY_FILE_MANIFEST.json.sha256" "$mirror_root/REPOSITORY_FILE_MANIFEST.json.sha256" || fail 'detached manifest digest differs'
+          cmp -s "$authority_root/SHA256SUMS.txt" "$mirror_root/SHA256SUMS.txt" || fail 'SHA256SUMS.txt differs'
+          manifest_blob_sha="$(git -C "$authority_root" hash-object REPOSITORY_FILE_MANIFEST.json)"
+          mirror_manifest_blob_sha="$(git -C "$mirror_root" hash-object REPOSITORY_FILE_MANIFEST.json)"
+          [ "$manifest_blob_sha" = "$mirror_manifest_blob_sha" ] || fail 'manifest Git blob differs'
+          manifest_file_sha256="$(sha256sum "$authority_root/REPOSITORY_FILE_MANIFEST.json" | awk '{print $1}')"
+          content_digest="$(jq -r '.repository_content_tree_sha256' "$authority_root/REPOSITORY_FILE_MANIFEST.json")"
+          [ "$content_digest" = "$EXPECTED_CONTENT_DIGEST" ] || fail "content digest differs: $content_digest"
+
+          STAGE=RECEIPT_CONSTRUCTION
+          authority_runs='[{"name":"QIKVRT CI","id":30300229840,"run_number":1528,"status":"completed","conclusion":"success"},{"name":"QIKVRT repository evidence materialization","id":30300229828,"run_number":223,"status":"completed","conclusion":"success"},{"name":"QIKVRT Collective Proposal Review","id":30300229985,"run_number":380,"status":"completed","conclusion":"success"},{"name":"QIKVRT live status watch","id":30300229863,"run_number":534,"status":"completed","conclusion":"success"},{"name":"QIKVRT PR18 integrity repair","id":30300229976,"run_number":349,"status":"completed","conclusion":"skipped"}]'
+          mirror_runs='[{"name":"QIKVRT CI","id":30305027742,"run_number":744,"status":"completed","conclusion":"success"},{"name":"QIKVRT repository evidence materialization","id":30305027731,"run_number":90,"status":"completed","conclusion":"success"},{"name":"QIKVRT Collective Proposal Review","id":30305027720,"run_number":105,"status":"completed","conclusion":"success"},{"name":"QIKVRT live status watch","id":30305027752,"run_number":130,"status":"completed","conclusion":"success"},{"name":"QIKVRT PR18 integrity repair","id":30305027761,"run_number":62,"status":"completed","conclusion":"skipped"}]'
+          payload="$(jq -S -c -n \
+            --arg schema 'qikvrt_authority_mirror_equality_receipt_v1' \
+            --arg state 'AUTHORITY_MIRROR_CONTENT_TREE_EQUALITY_VERIFIED' \
+            --arg verifier_repository "$GITHUB_REPOSITORY" \
+            --arg verifier_run_id "$GITHUB_RUN_ID" \
+            --arg authority_repository "$AUTHORITY_REPOSITORY" \
+            --arg authority_main "$AUTHORITY_MAIN" \
+            --arg authority_green_head "$AUTHORITY_GREEN_HEAD" \
+            --arg mirror_repository "$MIRROR_REPOSITORY" \
+            --arg mirror_previous_main "$MIRROR_PREVIOUS_MAIN" \
+            --arg mirror_sync_head "$MIRROR_SYNC_HEAD" \
+            --arg mirror_main "$MIRROR_MAIN" \
+            --arg shared_tree "$EXPECTED_SHARED_TREE" \
+            --arg manifest_blob_sha "$manifest_blob_sha" \
+            --arg manifest_file_sha256 "$manifest_file_sha256" \
+            --arg content_digest "$content_digest" \
+            --argjson authority_runs "$authority_runs" \
+            --argjson mirror_runs "$mirror_runs" \
+            '{schema:$schema,state:$state,verifier:{repository:$verifier_repository,run_id:$verifier_run_id},authority:{repository:$authority_repository,main:$authority_main,exact_green_head:$authority_green_head,required_workflows:$authority_runs},mirror:{repository:$mirror_repository,previous_main:$mirror_previous_main,sync_head:$mirror_sync_head,main:$mirror_main,required_workflows:$mirror_runs},equality:{commit_sha_equal:false,git_tree_sha_equal:true,shared_git_tree:$shared_tree,git_diff_empty:true,repository_manifest_byte_equal:true,repository_manifest_git_blob_sha1:$manifest_blob_sha,repository_manifest_sha256:$manifest_file_sha256,repository_content_tree_sha256:$content_digest,detached_manifest_digest_equal:true,sha256_index_byte_equal:true,authority_integrity_verify:true,mirror_integrity_verify:true,authority_main_ref_bound:true,mirror_main_ref_bound:true},claims:{pass:false,final_pass:false,effect_ack_done:false}}')"
+          payload_sha256="$(printf '%s' "$payload" | sha256sum | awk '{print $1}')"
+          receipt="$(printf '%s' "$payload" | jq --arg payload_sha256 "$payload_sha256" '. + {canonical_payload_sha256:$payload_sha256}')"
+          body="$(printf '%s\n\n%s\n\n%s\n%s\n%s\n\n%s' \
+            '## Authority/Mirror Equality Receipt' \
+            'Exact ref binding, shared Git-tree identity, empty cross-repository file delta, byte-identical manifests and SHA-256 index, and independent repository-integrity verification were all established.' \
+            '\`\`\`json' \
+            "$(printf '%s' "$receipt" | jq '.')" \
+            '\`\`\`' \
+            'This receipt claims no \`PASS\`, \`FINAL_PASS\`, or \`EFFECT_ACK_DONE\`.')"
+          gh api -X POST "repos/${MIRROR_REPOSITORY}/issues/${MIRROR_LEDGER_ISSUE}/comments" -f body="$body" >/dev/null
+          printf '%s\n' "$receipt" | jq '.'

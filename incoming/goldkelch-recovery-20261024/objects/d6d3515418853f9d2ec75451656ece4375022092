@@ -1,0 +1,157 @@
+{
+  "schema": "qikvrt_temdd_liveness_convergence_contract_v1",
+  "status": "THEOREM_OBLIGATION_UNPROVED",
+  "subject_repository": "ingolf-lohmann/qik-vrt",
+  "predecessor_evidence_transfer": false,
+  "axioms_or_assumptions": [
+    "FAIR_EXECUTION",
+    "STABLE_REQUIRED_ENVIRONMENT_ASSUMPTIONS",
+    "FRESH_IDENTITY_AND_PROVENANCE_BINDING",
+    "EVENTUAL_EXTERNAL_HOLD_RELEASE",
+    "FIXED_GOAL_SUBJECT_AND_RANKING"
+  ],
+  "safety": {
+    "required": true,
+    "transport_ack_is_effect_ack": false,
+    "effect_ack_done_is_global_done": false
+  },
+  "liveness": {
+    "required": true,
+    "non_goal_requires": [
+      "PRODUCTIVE_SUCCESSOR_EVENTUALLY_OR_GOAL"
+    ],
+    "formula": {
+      "G": {
+        "implies": [
+          {
+            "not": "Goal"
+          },
+          {
+            "F": {
+              "or": [
+                "Goal",
+                "ProductiveStep"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "progress": {
+    "ranking_function_required": true,
+    "codomain_must_be_well_founded": true,
+    "internal_productive_step_requires_strict_decrease": true,
+    "semantic_noop_is_progress": false,
+    "evidence_churn_is_progress": false,
+    "all_non_goal_transitions_require_nonincrease": true,
+    "nonincrease_relation": "EQUALITY_OR_THE_DECLARED_STRICT_ORDER",
+    "external_release_may_reset_rank": false
+  },
+  "counterexamples": [
+    "DEADLOCK",
+    "LIVELOCK",
+    "CYCLE",
+    "EVIDENCE_CHURN",
+    "EXTERNAL_DEPENDENCY",
+    "MOVING_ENVIRONMENT",
+    "SUCCESSOR_MUTATION",
+    "PERMANENT_EXTERNAL_HOLD",
+    "RELEASED_HOLD_WITH_RANK_RESET"
+  ],
+  "theorem": {
+    "name": "CONDITIONAL_GOAL_REACHABILITY",
+    "claim": "Safety AND ProductiveLiveness AND ExternalHoldRelease AND WellFounded(V) AND NonIncreaseOnEveryNonGoalStep(V) AND StrictDecreaseOnEveryInternalProductiveStep(V) AND FairExecution AND StableRequiredEnvironmentAssumptions IMPLIES GoalReachability",
+    "proved": false,
+    "premises": [
+      "Safety",
+      "ProductiveLiveness",
+      "ExternalHoldRelease",
+      "WellFounded(V)",
+      "NonIncreaseOnEveryNonGoalStep(V)",
+      "StrictDecreaseOnEveryInternalProductiveStep(V)",
+      "FairExecution",
+      "StableRequiredEnvironmentAssumptions"
+    ],
+    "conclusion": "GoalReachability"
+  },
+  "acceptance": {
+    "machine_readable_contract": true,
+    "executable_counterexample_tests": false,
+    "concrete_ranking_function": false,
+    "ranking_transition_checks": false,
+    "environment_assumptions_explicit": true,
+    "independent_fresh_public_readback": false,
+    "effect_ack_done": false,
+    "permanent_hold_and_rank_reset_regressions": true
+  },
+  "TEMDD_LIVENESS_CONVERGENCE_THEOREM": "UNPROVED",
+  "temporal_semantics": {
+    "execution_domain": "ALL_MAXIMAL_ADMISSIBLE_EXECUTIONS_UNDER_DECLARED_ENVIRONMENT_ASSUMPTIONS",
+    "finite_stopped_execution_completion": "STUTTER_AT_FINAL_STATE",
+    "G": "ALWAYS_ON_THE_EXECUTION",
+    "F": "EVENTUALLY_ON_THE_EXECUTION",
+    "ProductiveStep": "EXECUTED_ADMISSIBLE_FRESHLY_BOUND_INTERNAL_PRODUCTIVE_TRANSITION",
+    "GoalReachability": "F_GOAL_ON_EVERY_DECLARED_EXECUTION",
+    "uniform_deadline_claimed": false,
+    "bounded_hold_observation_future": "UNKNOWN"
+  },
+  "diagnostic_response": {
+    "required": true,
+    "goal_reachability_premise": false,
+    "formula": {
+      "G": {
+        "implies": [
+          {
+            "not": "Goal"
+          },
+          {
+            "F": {
+              "or": [
+                "Goal",
+                "ProductiveStep",
+                "ExplicitExternalHold"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "external_hold": {
+    "counts_as_goal": false,
+    "counts_as_productive_step": false,
+    "eventual_release_required_for_goal_reachability": true,
+    "scheduler_fairness_implies_environment_release": false,
+    "release_formula": {
+      "G": {
+        "implies": [
+          {
+            "and": [
+              {
+                "not": "Goal"
+              },
+              "ExplicitExternalHold"
+            ]
+          },
+          {
+            "F": {
+              "or": [
+                "Goal",
+                {
+                  "not": "ExplicitExternalHold"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "permanent_non_goal_hold_disposition": "THEOREM_PREMISES_NOT_SATISFIED"
+  },
+  "regression": {
+    "command": "python3 -B -m unittest -v tests.test_temdd_liveness_convergence.TemddLivenessConvergenceTests",
+    "evidence_class": "FINITE_LASSO_REGRESSION_TEST_NOT_FORMAL_PROOF",
+    "global_theorem_or_concrete_subsystem_convergence_proved": false
+  }
+}

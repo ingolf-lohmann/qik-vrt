@@ -1,0 +1,193 @@
+# Temporary verification transport; never merge this workflow.
+name: QIKVRT diagnose common repository mesh tag
+
+on:
+  push:
+    branches:
+      - automation/import-dependency-authority-20260724
+    paths:
+      - .github/workflows/qikvrt_diagnose_common_repository_mesh_tag.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Persist complete public tag diagnostics
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TRANSPORT_BRANCH: automation/import-dependency-authority-20260724
+        run: |
+          set -euo pipefail
+          python3 -B - <<'PY'
+          import base64
+          import hashlib
+          import json
+          import os
+          import urllib.error
+          import urllib.parse
+          import urllib.request
+
+          tag = 'v2026.07.24-repository-mesh-sync-1.0.0'
+          shared_tree = 'cd91a4961934610b95464dea8a5b912cdc4683a7'
+          expected = {
+              'Goldkelch/qik-vrt': '187113e970f810db54697db5681a6c8d77c26e98',
+              'ingolf-lohmann/qik-vrt': '5266ae8625a20508a7c1af1c3a6aa4d0b104f170',
+          }
+          expected_message = (
+              'QIK-VRT synchronized repository mesh snapshot 1.0.0\n\n'
+              'Common annotated tag for the byte-identical Authority and Mirror '
+              'content tree after dependency-security maintenance, authenticated '
+              'repository-native audio requests, Zenodo inventory refresh, and '
+              'status documentation synchronization. No GitHub Release object and '
+              'no new Zenodo publication are created.'
+          )
+          expected_tagger = {
+              'name': 'Ingolf Lohmann',
+              'email': 'ingolf.lohmann@live.com',
+              'date': '2026-07-24T17:30:00Z',
+          }
+
+          def get(repository, path):
+              request = urllib.request.Request(
+                  f'https://api.github.com/repos/{repository}/{path}',
+                  headers={
+                      'Accept': 'application/vnd.github+json',
+                      'X-GitHub-Api-Version': '2022-11-28',
+                      'User-Agent': 'qikvrt-common-tag-diagnostic',
+                  },
+              )
+              try:
+                  with urllib.request.urlopen(request, timeout=30) as response:
+                      return {'ok': True, 'value': json.load(response)}
+              except Exception as error:
+                  detail = ''
+                  if isinstance(error, urllib.error.HTTPError):
+                      detail = error.read().decode('utf-8', errors='replace')
+                  return {'ok': False, 'error': repr(error), 'detail': detail}
+
+          rows = []
+          all_pass = True
+          encoded_tag = urllib.parse.quote(tag, safe='')
+          for repository, commit_sha in expected.items():
+              row = {'repository': repository, 'expected_commit': commit_sha}
+              main_result = get(repository, 'git/ref/heads/main')
+              ref_result = get(repository, 'git/ref/tags/' + encoded_tag)
+              row['main_response'] = main_result
+              row['tag_ref_response'] = ref_result
+              checks = {}
+              checks['main_response_ok'] = main_result['ok']
+              checks['tag_ref_response_ok'] = ref_result['ok']
+              if main_result['ok']:
+                  checks['main_commit_matches'] = (
+                      main_result['value'].get('object', {}).get('sha') == commit_sha
+                  )
+              if ref_result['ok']:
+                  ref_object = ref_result['value'].get('object', {})
+                  checks['tag_ref_is_annotated'] = ref_object.get('type') == 'tag'
+                  tag_object_sha = ref_object.get('sha')
+                  row['tag_object_sha'] = tag_object_sha
+                  if tag_object_sha:
+                      object_result = get(repository, 'git/tags/' + tag_object_sha)
+                      row['tag_object_response'] = object_result
+                      checks['tag_object_response_ok'] = object_result['ok']
+                      if object_result['ok']:
+                          value = object_result['value']
+                          target = value.get('object', {})
+                          tagger = value.get('tagger', {})
+                          row['actual_message_repr'] = repr(value.get('message'))
+                          row['actual_tagger'] = tagger
+                          checks['tag_name_matches'] = value.get('tag') == tag
+                          checks['tag_message_matches'] = value.get('message') == expected_message
+                          checks['tag_message_matches_rstrip'] = (
+                              (value.get('message') or '').rstrip('\n') == expected_message
+                          )
+                          checks['tag_target_type_commit'] = target.get('type') == 'commit'
+                          checks['tag_target_commit_matches'] = target.get('sha') == commit_sha
+                          checks['tagger_matches'] = {
+                              key: tagger.get(key) for key in expected_tagger
+                          } == expected_tagger
+              commit_result = get(repository, 'git/commits/' + commit_sha)
+              row['commit_response'] = commit_result
+              checks['commit_response_ok'] = commit_result['ok']
+              if commit_result['ok']:
+                  checks['target_tree_matches'] = (
+                      commit_result['value'].get('tree', {}).get('sha') == shared_tree
+                  )
+              row['checks'] = checks
+              row['pass'] = all(checks.values())
+              all_pass = all_pass and row['pass']
+              rows.append(row)
+
+          evidence = {
+              'schema': 'qikvrt_common_repository_mesh_tag_diagnostic_v1',
+              'tag': tag,
+              'shared_tree': shared_tree,
+              'expected_message_repr': repr(expected_message),
+              'expected_tagger': expected_tagger,
+              'repositories': rows,
+              'status': 'PASS' if all_pass else 'DIAGNOSTIC_RECORDED_WITH_DIFFERENCES',
+          }
+          canonical = json.dumps(
+              evidence, ensure_ascii=False, sort_keys=True, separators=(',', ':')
+          ).encode('utf-8')
+          evidence['canonical_sha256'] = hashlib.sha256(canonical).hexdigest()
+          raw = (json.dumps(
+              evidence, ensure_ascii=False, indent=2, sort_keys=True
+          ) + '\n').encode('utf-8')
+
+          repository = os.environ['GITHUB_REPOSITORY']
+          token = os.environ['GH_TOKEN']
+          branch = os.environ['TRANSPORT_BRANCH']
+          path = 'release/common-repository-mesh-tag-diagnostic.json'
+          encoded_path = urllib.parse.quote(path, safe='/')
+          headers = {
+              'Accept': 'application/vnd.github+json',
+              'Authorization': f'Bearer {token}',
+              'X-GitHub-Api-Version': '2022-11-28',
+              'Content-Type': 'application/json',
+              'User-Agent': 'qikvrt-common-tag-diagnostic-writer',
+          }
+
+          def request(method, suffix, payload=None, missing=False):
+              data = None if payload is None else json.dumps(
+                  payload, separators=(',', ':')
+              ).encode('utf-8')
+              req = urllib.request.Request(
+                  f'https://api.github.com/repos/{repository}/{suffix}',
+                  data=data,
+                  method=method,
+                  headers=headers,
+              )
+              try:
+                  with urllib.request.urlopen(req, timeout=30) as response:
+                      return json.load(response)
+              except urllib.error.HTTPError as error:
+                  if missing and error.code == 404:
+                      return None
+                  raise
+
+          existing = request(
+              'GET',
+              f'contents/{encoded_path}?ref={urllib.parse.quote(branch, safe="")}',
+              missing=True,
+          )
+          payload = {
+              'message': 'Record common repository mesh tag diagnostics',
+              'content': base64.b64encode(raw).decode('ascii'),
+              'branch': branch,
+          }
+          if existing is not None:
+              payload['sha'] = existing['sha']
+          result = request('PUT', f'contents/{encoded_path}', payload)
+          print(json.dumps({
+              'status': evidence['status'],
+              'canonical_sha256': evidence['canonical_sha256'],
+              'evidence_commit': result['commit']['sha'],
+          }, sort_keys=True))
+          PY

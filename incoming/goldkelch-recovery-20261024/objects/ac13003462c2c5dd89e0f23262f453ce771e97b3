@@ -1,0 +1,12 @@
+gate	status	detail
+WINDOWS_ACCEPTANCE_RUNNER	PASS	PowerShell 5.1 compatible runner started
+LIVE_FETCH_MANIFEST	PASS	http=200 bytes=15168 sha256=8d4946c2dd632a345dd4a345542d15d11802c5552cdb6a309056af35d7e103e2
+LIVE_FETCH_REST_TCPIP_MANIFEST	PASS	http=200 bytes=1052 sha256=154c505660431dc41fe6072809ab69702202a2f417129083deb0a35a16abe7b1
+DEPENDENCY_BOOTSTRAP_WINGET	PASS	winget.exe found; attempting LLVM.LLVM install
+PATH_REFRESH	PASS	Machine/User PATH reloaded into current PowerShell process
+DEPENDENCY_BOOTSTRAP_WINGET	BLOCK	winget exit 0 but compiler not on PATH after refresh
+DEPENDENCY_BOOTSTRAP_CHOCO	BLOCK	choco.exe not found
+DEPENDENCY_BOOTSTRAP	BLOCK	no compiler available after winget/choco bootstrap attempts; install permissions or package manager missing
+C_COMPILER_FOUND	BLOCK	no compiler available after dependency bootstrap
+C_SELFTESTS	BLOCK	not executed because build\\qikvrt_verify.exe is missing
+WINDOWS_ACCEPTANCE_RESULT	BLOCK	BLOCK_OR_FAIL

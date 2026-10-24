@@ -1,0 +1,227 @@
+{
+  "authority_commit": "187113e970f810db54697db5681a6c8d77c26e98",
+  "authority_content_tree_sha256": "71916ac07dcb9d0cf8f51b41b3c3d00f4b9d14037e5bc1819ec223d0773dd3ae",
+  "authority_tree": "cd91a4961934610b95464dea8a5b912cdc4683a7",
+  "canonical_sha256": "77fa39bfdc8a4c19e74d6497214d61cde23b7b1aaad78fe7c7cdbfbe26a725ca",
+  "changed_path_count": 15,
+  "imported": [
+    {
+      "bytes": 9261,
+      "mode": "100644",
+      "path": ".github/workflows/qikvrt_audio_request.yml",
+      "sha": "5d086106f8feb3dfa082e4ab207abc40f73c3510",
+      "sha256": "686cba59a609350ca837bf928cf64ef6c9be5bd891da95096330a604f59564d8",
+      "status": "imported"
+    },
+    {
+      "bytes": 12474,
+      "mode": "100644",
+      "path": ".github/workflows/qikvrt_repository_mesh_sync_tag.yml",
+      "sha": "0cf466f8c461aa0293b9ba4c98231fe2f2357ef9",
+      "sha256": "84c34a4ec0984079a31d130ade9aaf119fc8bbd43dd3745196d41bc1070ffeda",
+      "status": "imported"
+    },
+    {
+      "bytes": 3740,
+      "mode": "100644",
+      "path": "CHANGELOG.md",
+      "sha": "2ab11fc43e7670267712175aa6355e0ee9f237e9",
+      "sha256": "0934572fe700f7578166239018be818c189ff2b578fafdf029cccb9dfea88d1e",
+      "status": "imported"
+    },
+    {
+      "bytes": 18567,
+      "mode": "100644",
+      "path": "README.md",
+      "sha": "5c9096a59ebe177a7ab97c3e386744279ac85146",
+      "sha256": "8e863b68cfe1ea3f778514c611e0fb004690c85790685f8836ce2fa0ea7b2a82",
+      "status": "imported"
+    },
+    {
+      "bytes": 882490,
+      "mode": "100644",
+      "path": "REPOSITORY_FILE_MANIFEST.json",
+      "sha": "f7214aaf757c982c56ba3b6e81b370f27cd7f1b6",
+      "sha256": "8349be980e83afee044f197df7133638b7690874b3afe4b38f2c7de650279008",
+      "status": "imported"
+    },
+    {
+      "bytes": 96,
+      "mode": "100644",
+      "path": "REPOSITORY_FILE_MANIFEST.json.sha256",
+      "sha": "f766db303833f5bd33c44349c5deef8c2ae33012",
+      "sha256": "7d9a5fd90c6d0b7b8468dd7874800357308667f91fe8da840a876dff46958329",
+      "status": "imported"
+    },
+    {
+      "bytes": 321364,
+      "mode": "100644",
+      "path": "SHA256SUMS.txt",
+      "sha": "d5056e6e3fa8710457543014004b1e8cd2cc8fd8",
+      "sha256": "79c85d916cdda6c553aa5acc3286dd921f8363bb640fc0857dfc6c4c9b3887d4",
+      "status": "imported"
+    },
+    {
+      "bytes": 9066,
+      "mode": "100644",
+      "path": "STATUS.md",
+      "sha": "28f3147d04d21b3b13591f61444a036e471d1dac",
+      "sha256": "482de28f47a758eb6dc0b3004a3f38ed9d9eb71b4309c7cbe4faad482c66930c",
+      "status": "imported"
+    },
+    {
+      "bytes": 2296,
+      "mode": "100644",
+      "path": "docs/OFFLINE_AUDIO_TRANSCRIPTION_DE.md",
+      "sha": "97972e589ee3fc7dc6c6a2174519cbd188e58395",
+      "sha256": "3e003c987b746c347a572b63868a9f7c36127ca65858ba94031b87cf41ad04b6",
+      "status": "imported"
+    },
+    {
+      "bytes": 1287,
+      "mode": "100644",
+      "path": "policy/qikvrt-repository-mesh-sync-request.schema.json",
+      "sha": "40ae01d91421df7cd604ae5050bd9ca82fc0b642",
+      "sha256": "6ef48d22fd42186e909af6afe590291e0dadad4ae1d423add858349c167341c3",
+      "status": "imported"
+    },
+    {
+      "bytes": 1691,
+      "mode": "100644",
+      "path": "release/repository-mesh-sync-request.json",
+      "sha": "9e307596584baf04ba383b69792d880f67d6961d",
+      "sha256": "43ff5d548162f009e778f630888e67a6e317a5b5c9f2a2aa61b3baed9c160f2d",
+      "status": "imported"
+    },
+    {
+      "bytes": 3380,
+      "mode": "100644",
+      "path": "tools/offline-audio-transcription/README.md",
+      "sha": "6404e6ad5b6a6712767856aeb556368b1c577963",
+      "sha256": "0221ddec05cf53ef8c5d47a4562b097ea0a27b971b2f337bde0a06435dcedc4b",
+      "status": "imported"
+    },
+    {
+      "bytes": 4289,
+      "mode": "100644",
+      "path": "tools/offline-audio-transcription/src/materialize-request.cjs",
+      "sha": "efae384c0b51ce6efd379aa654ddffc8d1dc3e7d",
+      "sha256": "9dc72012aec756dc35a8394dec994131ce6f775f91d05a84f53d6ab010a31510",
+      "status": "imported"
+    },
+    {
+      "bytes": 6090,
+      "mode": "100644",
+      "path": "tools/offline-audio-transcription/src/request.cjs",
+      "sha": "ac11e245065b109bc9d580ef56347c45154ef436",
+      "sha256": "184f2d3be58f783a2be8191076daefe7975af2675cd19fb00e26f67eda3e45a2",
+      "status": "imported"
+    },
+    {
+      "bytes": 2854,
+      "mode": "100644",
+      "path": "tools/offline-audio-transcription/tests/request.test.cjs",
+      "sha": "8a19802c19a7903c85bde4fbb0056183b207141d",
+      "sha256": "fa4e322fd9eb808e5a9b4d8e1bca1724a75c6259478a087ab4831d021dfdeaa2",
+      "status": "imported"
+    }
+  ],
+  "mirror_base_tree": "fdf526598bdba3b5e16d61e08a4472c0ba22e575",
+  "mirror_parent": "9c4ac1fc95875b09dee291b1a3ef284804e7a56b",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "schema": "qikvrt_final_repository_mesh_authority_object_import_v1",
+  "status": "BLOBS_IMPORTED_AND_EXACT_TREE_PLAN_READY",
+  "tag": "v2026.07.24-repository-mesh-sync-1.0.0",
+  "tree_entries": [
+    {
+      "mode": "100644",
+      "path": ".github/workflows/qikvrt_audio_request.yml",
+      "sha": "5d086106f8feb3dfa082e4ab207abc40f73c3510",
+      "type": "blob"
+    },
+    {
+      "mode": "100644",
+      "path": ".github/workflows/qikvrt_repository_mesh_sync_tag.yml",
+      "sha": "0cf466f8c461aa0293b9ba4c98231fe2f2357ef9",
+      "type": "blob"
+    },
+    {
+      "mode": "100644",
+      "path": "CHANGELOG.md",
+      "sha": "2ab11fc43e7670267712175aa6355e0ee9f237e9",
+      "type": "blob"
+    },
+    {
+      "mode": "100644",
+      "path": "README.md",
+      "sha": "5c9096a59ebe177a7ab97c3e386744279ac85146",
+      "type": "blob"
+    },
+    {
+      "mode": "100644",
+      "path": "REPOSITORY_FILE_MANIFEST.json",
+      "sha": "f7214aaf757c982c56ba3b6e81b370f27cd7f1b6",
+      "type": "blob"
+    },
+    {
+      "mode": "100644",
+      "path": "REPOSITORY_FILE_MANIFEST.json.sha256",
+      "sha": "f766db303833f5bd33c44349c5deef8c2ae33012",
+      "type": "blob"
+    },
+    {
+      "mode": "100644",
+      "path": "SHA256SUMS.txt",
+      "sha": "d5056e6e3fa8710457543014004b1e8cd2cc8fd8",
+      "type": "blob"
+    },
+    {
+      "mode": "100644",
+      "path": "STATUS.md",
+      "sha": "28f3147d04d21b3b13591f61444a036e471d1dac",
+      "type": "blob"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/OFFLINE_AUDIO_TRANSCRIPTION_DE.md",
+      "sha": "97972e589ee3fc7dc6c6a2174519cbd188e58395",
+      "type": "blob"
+    },
+    {
+      "mode": "100644",
+      "path": "policy/qikvrt-repository-mesh-sync-request.schema.json",
+      "sha": "40ae01d91421df7cd604ae5050bd9ca82fc0b642",
+      "type": "blob"
+    },
+    {
+      "mode": "100644",
+      "path": "release/repository-mesh-sync-request.json",
+      "sha": "9e307596584baf04ba383b69792d880f67d6961d",
+      "type": "blob"
+    },
+    {
+      "mode": "100644",
+      "path": "tools/offline-audio-transcription/README.md",
+      "sha": "6404e6ad5b6a6712767856aeb556368b1c577963",
+      "type": "blob"
+    },
+    {
+      "mode": "100644",
+      "path": "tools/offline-audio-transcription/src/materialize-request.cjs",
+      "sha": "efae384c0b51ce6efd379aa654ddffc8d1dc3e7d",
+      "type": "blob"
+    },
+    {
+      "mode": "100644",
+      "path": "tools/offline-audio-transcription/src/request.cjs",
+      "sha": "ac11e245065b109bc9d580ef56347c45154ef436",
+      "type": "blob"
+    },
+    {
+      "mode": "100644",
+      "path": "tools/offline-audio-transcription/tests/request.test.cjs",
+      "sha": "8a19802c19a7903c85bde4fbb0056183b207141d",
+      "type": "blob"
+    }
+  ]
+}

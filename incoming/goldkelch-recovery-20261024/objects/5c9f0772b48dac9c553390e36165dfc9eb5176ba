@@ -1,0 +1,15 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+name: QIKVRT bootstrap Authority 041fb501 objects
+
+# Obsolete after successful object materialization into the Mirror object database.
+# Retained only as bootstrap provenance; no further transfer action is permitted.
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  noop:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: echo 'Bootstrap provenance retained; object materialization already completed.'

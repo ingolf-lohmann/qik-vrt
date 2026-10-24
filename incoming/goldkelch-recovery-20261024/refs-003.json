@@ -1,0 +1,517 @@
+{
+  "schema": "qikvrt_recovered_ref_page_v1",
+  "refs": [
+    {
+      "ref": "refs/remotes/origin/fix/autonomous-pr-closure-engine-20260923",
+      "object": "1819da9bf08478a7052312d24819a8c25c1533a3"
+    },
+    {
+      "ref": "refs/remotes/origin/fix/github-api-rate-budget-v1-20260928",
+      "object": "27e75695757338c60e634ed9ebd36c325f020c74"
+    },
+    {
+      "ref": "refs/remotes/origin/fix/global-noop-exclusion",
+      "object": "c026b6448e43b4db91217b2d1ac8d3a4fae09f0b"
+    },
+    {
+      "ref": "refs/remotes/origin/fix/global-noop-exclusion-v1",
+      "object": "11a7f34dcac9676d03951be525df4c17883a4953"
+    },
+    {
+      "ref": "refs/remotes/origin/fix/microsoft-support-effect-carrier-v1",
+      "object": "ed61024b379b33f5657741b1c8bc2276ea3a3315"
+    },
+    {
+      "ref": "refs/remotes/origin/fix/openai-subscription-effect-v1",
+      "object": "e9753c1e1162cd4f2761ba2df8b8ff93c557300b"
+    },
+    {
+      "ref": "refs/remotes/origin/fix/ruleset-canonical-token-route-20260927",
+      "object": "69f0610f56f4984a1599f2b09bff159a74403f32"
+    },
+    {
+      "ref": "refs/remotes/origin/fix/self-heal-pr-postcondition-20261004-93be182a",
+      "object": "050be9cf4ac983819b516907ef35a8670c94cafc"
+    },
+    {
+      "ref": "refs/remotes/origin/governance/machine-verifiable-science-charter-v1",
+      "object": "19165f34e18cebe151077f96e53eb2ff7dee725d"
+    },
+    {
+      "ref": "refs/remotes/origin/governance/machine-verifiable-science-charter-v1-postmerge",
+      "object": "1b2138e39914375ed45a75b64b708fe3c4174c27"
+    },
+    {
+      "ref": "refs/remotes/origin/infrastructure/history-preserving-mirror-sync-pr225-materializer-hook-v1",
+      "object": "5595daad88e7bb76a63d439b8d7c09c61579c47f"
+    },
+    {
+      "ref": "refs/remotes/origin/infrastructure/history-preserving-mirror-sync-pr225-v1",
+      "object": "b6cf8a5585775951ba74a76e22ef4875c8cebf15"
+    },
+    {
+      "ref": "refs/remotes/origin/infrastructure/history-preserving-mirror-sync-v2",
+      "object": "8653eb9fd04c7956daa2e6729421dd4e9f5115b1"
+    },
+    {
+      "ref": "refs/remotes/origin/infrastructure/history-preserving-mirror-sync-v2-pr-trigger",
+      "object": "30564d933dd2168bf41fb6463326235c163b6bc3"
+    },
+    {
+      "ref": "refs/remotes/origin/integration/ontology-difference-publication",
+      "object": "fcafb4d9c5f34e14e386b68b377215cf79612959"
+    },
+    {
+      "ref": "refs/remotes/origin/issue-agent/362",
+      "object": "25ef0baf39c0f33c06543295ac6b444991c9c37c"
+    },
+    {
+      "ref": "refs/remotes/origin/issue-agent/363",
+      "object": "28ffb2e1b3083ebe2d800d96e026388a5104cda1"
+    },
+    {
+      "ref": "refs/remotes/origin/issue-agent/368",
+      "object": "4d1cf46c2ec7ba4570285a813c528a2b1fbb7df3"
+    },
+    {
+      "ref": "refs/remotes/origin/issue-agent/374",
+      "object": "d15b9781433e64d8c0385834ce257ea145d0d7d6"
+    },
+    {
+      "ref": "refs/remotes/origin/issue-agent/376",
+      "object": "a739ee7bea21e6b6e1bfca1f3d13aae7b38b2c71"
+    },
+    {
+      "ref": "refs/remotes/origin/issue-agent/380",
+      "object": "8761f8f1331a5a4ea4f60705e31192e622228406"
+    },
+    {
+      "ref": "refs/remotes/origin/main",
+      "object": "0a44160d16c3937dc5888652791f4bd1a7136af7"
+    },
+    {
+      "ref": "refs/remotes/origin/mesh/recursive-authority-906-admission-v1",
+      "object": "d38a0a764804aec3852beb4e6a242c3f3b2ff63c"
+    },
+    {
+      "ref": "refs/remotes/origin/mesh/review-authority-966-2db106e5-v1",
+      "object": "afff4fa651948c244b2ceea7736ca6ca6eb1e48c"
+    },
+    {
+      "ref": "refs/remotes/origin/mirror/audio-runtime-final-20260725",
+      "object": "cc25549cc4895c6b52f4278b4dfad73e85f39675"
+    },
+    {
+      "ref": "refs/remotes/origin/mirror/charter-publication",
+      "object": "83c65cbe19d668861fd49d3fb3d9148b6b38e7f7"
+    },
+    {
+      "ref": "refs/remotes/origin/mirror/corpus-closure-effective-current-v1",
+      "object": "e4f99d8ede5c2e2fa5bdefa7292952e6be6ee1aa"
+    },
+    {
+      "ref": "refs/remotes/origin/mirror/dependency-security-final",
+      "object": "6c629708516b5196f4430d6cdbbcab0b40cb9c62"
+    },
+    {
+      "ref": "refs/remotes/origin/mirror/formalization-v2-alpha3-publication",
+      "object": "e5ed805e57f58635a9addc97143c15bfa02d40ed"
+    },
+    {
+      "ref": "refs/remotes/origin/mirror/manuscript-formalization-v2-completion",
+      "object": "447c6cee03b302553c1d2124dc4e1e4ced9eb0a3"
+    },
+    {
+      "ref": "refs/remotes/origin/mirror/port-authority-pr568-workflow-executor-mesh-v1",
+      "object": "3d420f0027334c68064f2fb9bbadb3e602e6beaa"
+    },
+    {
+      "ref": "refs/remotes/origin/mirror/port-authority-pr582-reflexive-watchdog-v1",
+      "object": "c4083452918ebf8516fdb162ab93bcdc0f9049d6"
+    },
+    {
+      "ref": "refs/remotes/origin/mirror/repository-mesh-sync-20260724",
+      "object": "6f9c599cf36b5c4bb72dd9dd476124472e437dfd"
+    },
+    {
+      "ref": "refs/remotes/origin/mirror/repository-mesh-sync-final",
+      "object": "58cdec0f77a7c1d7f96e9de38bf5bc7ad46c574f"
+    },
+    {
+      "ref": "refs/remotes/origin/mirror/round-trip-prepublication-return-v1",
+      "object": "fb32431d0a152849d41290fc7ae3f243bbbf565e"
+    },
+    {
+      "ref": "refs/remotes/origin/ops/ruleset-admin-bridge-20260915",
+      "object": "c81f5b9703d61f03beb9e6c27aca23c267a3be52"
+    },
+    {
+      "ref": "refs/remotes/origin/orchestration/history-preserving-mirror-sync-pr217-v1",
+      "object": "7b1fbd43c568d7303039926aae8bef231357734a"
+    },
+    {
+      "ref": "refs/remotes/origin/orchestration/history-preserving-mirror-sync-pr225-v1",
+      "object": "01d978310ae26f67388dd4d06572028bbe1dd814"
+    },
+    {
+      "ref": "refs/remotes/origin/owner/qikvrt-evolutionary-automation-delegation-v1",
+      "object": "4d66d0cca787261daa6d15c29a3fecd40477f6ce"
+    },
+    {
+      "ref": "refs/remotes/origin/personal/autonomous-optimal-goal-contract-20260927",
+      "object": "a6ff28b7443e99ca7524f314c6b83b469506ba64"
+    },
+    {
+      "ref": "refs/remotes/origin/personal/autonomous-optimal-goal-contract-rebased-5418499-20260927",
+      "object": "482dc6b84f73d912b3a3a5feada16f3b0fc4d8aa"
+    },
+    {
+      "ref": "refs/remotes/origin/personal/firefox-capability-boundary-20260927",
+      "object": "cc6acb8b981cfd0d200f388d94adccd68c6236a8"
+    },
+    {
+      "ref": "refs/remotes/origin/policy/answer-search-roadmap-20260928",
+      "object": "60f5051a33259c7654e9ee3f1e5bce0af61629fb"
+    },
+    {
+      "ref": "refs/remotes/origin/policy/owner-no-reinteraction-standing-delegation-v1",
+      "object": "e1c7ae2b8f1a80a6125c31da5598a779724bfe77"
+    },
+    {
+      "ref": "refs/remotes/origin/policy/qikvrt-note-inheritance-v1",
+      "object": "fa1e9b15185594bd1e6771a49791b4c860c84309"
+    },
+    {
+      "ref": "refs/remotes/origin/policy/qikvrt-notes-inheritance-v1",
+      "object": "b3ebd1ae77c8bb8cb9a8527af35851d92d67ee19"
+    },
+    {
+      "ref": "refs/remotes/origin/policy/universal-proof-thought-schema-v1",
+      "object": "6c4c8bb3664cd6fb6400a5e8261045e51090c06c"
+    },
+    {
+      "ref": "refs/remotes/origin/port/authority-pr297-current-main-v1",
+      "object": "db15d2fe2f041894d45b96c64b731d8b71d0423d"
+    },
+    {
+      "ref": "refs/remotes/origin/port/authority-pr562-round-trip-freeze-v1",
+      "object": "8fa6a5e414fbe49680b5906c6c034c0194dbc4d4"
+    },
+    {
+      "ref": "refs/remotes/origin/port/continuous-auto-repair-authority-8de77d3a-v1",
+      "object": "1b9bef853a3c0a5ece79038bfa1133b401becdd5"
+    },
+    {
+      "ref": "refs/remotes/origin/port/pr489-ai-entrypoint-continuous-optimization-v1",
+      "object": "91b11e5315c689e26575e9bbc67db8c9957bc4a1"
+    },
+    {
+      "ref": "refs/remotes/origin/port/pr516-ordered-qce-stack-v1",
+      "object": "20260bde24c851cc8d1ad2133fd5ebcc821aaffd"
+    },
+    {
+      "ref": "refs/remotes/origin/port/pr516-ordered-qce-stack-v2",
+      "object": "62c4f5876ca3a0c9ff4266851173624b16e9d99c"
+    },
+    {
+      "ref": "refs/remotes/origin/port/pr516-ordered-qce-stack-v2-current-main",
+      "object": "ec26a6b6265f5073d81e30b8e91d7d6c240d8e91"
+    },
+    {
+      "ref": "refs/remotes/origin/port/round-trip-final-byte-freeze-authority-f907-v1",
+      "object": "0d314dace15effb80c1fff0fe8ff3dfa99cd696e"
+    },
+    {
+      "ref": "refs/remotes/origin/port/round-trip-final-byte-freeze-v1",
+      "object": "2b3a5b0c6cfa58ee02d31b8d3802eb81201df880"
+    },
+    {
+      "ref": "refs/remotes/origin/port/round-trip-publication-corpus-precedence-v1",
+      "object": "eea0d0da5430a8c516440e742d309f7e96435985"
+    },
+    {
+      "ref": "refs/remotes/origin/publication/leibniz-qikvrt-persistence-v1",
+      "object": "6287a639f2386ffb195212875298cb77a48f926d"
+    },
+    {
+      "ref": "refs/remotes/origin/publication/nash-kognition-20260923-v1",
+      "object": "c3efa495f2195970f3aa6187170e29e6518a6d31"
+    },
+    {
+      "ref": "refs/remotes/origin/publication/ontology-difference-reverse-engineering",
+      "object": "606f4ae39143e4f7098537d5da57e2c7db4a9d9c"
+    },
+    {
+      "ref": "refs/remotes/origin/publication/original-sketches-20261002-v1",
+      "object": "f7ca844939ba70c2629e2e0f7ac910c66d87ca82"
+    },
+    {
+      "ref": "refs/remotes/origin/publication/pr1128-dossier-v2",
+      "object": "4f739f4b2d075b338bf217c152fc9cd1234e01b6"
+    },
+    {
+      "ref": "refs/remotes/origin/publication/qik-scientific-revision-20260923",
+      "object": "58c0b81a7234308dc903208ed99df97b8ce8b04c"
+    },
+    {
+      "ref": "refs/remotes/origin/publication/roundtrip-unified-20260920",
+      "object": "bc454ca91c93cb964f56501caee87bdd4caa97ed"
+    },
+    {
+      "ref": "refs/remotes/origin/publication/survival-anschlussfaehig-v1",
+      "object": "935c4b980fbf8551177b68c9f7dac8493bb950f7"
+    },
+    {
+      "ref": "refs/remotes/origin/qikvrt-node/v2.13.4-node",
+      "object": "b51014fc188b69a85f252d861b4b2ae542c45037"
+    },
+    {
+      "ref": "refs/remotes/origin/qikvrt-node/v2.13.4-node-r",
+      "object": "5c775fb2f20f6f17ac771d183cc7c72ffa33b186"
+    },
+    {
+      "ref": "refs/remotes/origin/qikvrt/retained-authority/20260816-d18af01d",
+      "object": "029f805ceb00bc20f217089877761db2263889c5"
+    },
+    {
+      "ref": "refs/remotes/origin/qikvrt/zenodo-state",
+      "object": "1119abe18b4fe4169c120fbcbe2006c7c93e31ff"
+    },
+    {
+      "ref": "refs/remotes/origin/release/effect-ack-universality-20260722",
+      "object": "1a6a46be99a02ba553ceca8d5b644251a9e3f545"
+    },
+    {
+      "ref": "refs/remotes/origin/repair/activate-observation-hold-20261001",
+      "object": "25aa815551ce27c82070f44c93492061b2398d72"
+    },
+    {
+      "ref": "refs/remotes/origin/repair/continuation-noop-verifier-dispatch-v1",
+      "object": "05bdb4959ef42e7547631d7e62cde95f1c20b72e"
+    },
+    {
+      "ref": "refs/remotes/origin/repair/continuation-pr-head-origin-main-binding-v1",
+      "object": "a6ec86731991283c2acf03a78218e551c3be5c57"
+    },
+    {
+      "ref": "refs/remotes/origin/repair/continuous-mirror-liveness-gatewatch-0d1b-v1",
+      "object": "b865e129f235ddc81a8cf205aebb466b1e8e8b1b"
+    },
+    {
+      "ref": "refs/remotes/origin/repair/exact-pr-head-admission-carrier-v1",
+      "object": "849dd5cd0535db591ff01444c0d04a4a9af18ac2"
+    },
+    {
+      "ref": "refs/remotes/origin/repair/exact-verifier-base-checkout-126f-v1",
+      "object": "ac42f7486cc33c0f09c72e7373967102e68a1afb"
+    },
+    {
+      "ref": "refs/remotes/origin/repair/governance-enforcement-successor-20260923-v1",
+      "object": "f6247bb055ac7064a9081c92a9533a5c7b6a11fd"
+    },
+    {
+      "ref": "refs/remotes/origin/repair/ietf-revision03-archival-warning-v1",
+      "object": "3987d56a77ecf1938a607f5ea142bdd6f1215f73"
+    },
+    {
+      "ref": "refs/remotes/origin/repair/main-test-gaps-20261001",
+      "object": "630fd695791da71185077fb442e0f090a8fbcb13"
+    },
+    {
+      "ref": "refs/remotes/origin/repair/mesh-role-local-completion-v1",
+      "object": "695bb4202a883a70893a50dd101bdc588f696e68"
+    },
+    {
+      "ref": "refs/remotes/origin/repair/mirror-aphorism-boundary-v2",
+      "object": "e8d96ad6926a3acb48281185719c6af25c1960ec"
+    },
+    {
+      "ref": "refs/remotes/origin/repair/mirror-aphorism-final-boundary-v3",
+      "object": "c4bf2716e83b9d2039031378e363fe812f8a5cbc"
+    },
+    {
+      "ref": "refs/remotes/origin/repair/mirror-reflexive-watchdog-all-observed-jobs-c54a0fba-v1",
+      "object": "653ce31f18233b14a37f071f3d1596f0524e6da0"
+    },
+    {
+      "ref": "refs/remotes/origin/repair/mirror-role-local-pre-effect-cas-20260918-v1",
+      "object": "1b332614987b646fb5af452091b9ebe5c0437765"
+    },
+    {
+      "ref": "refs/remotes/origin/repair/node-liveness-test-disable-auto-maintenance-0a792-v1",
+      "object": "6e6e541a977a7ff0d2206f116fbaa018f64677f1"
+    },
+    {
+      "ref": "refs/remotes/origin/repair/node-liveness-test-disable-auto-maintenance-0a792620-v1",
+      "object": "8434c54126ba4629c9834d1617aec2f8de64aafa"
+    },
+    {
+      "ref": "refs/remotes/origin/repair/permanent-mirror-liveness-current-main-v1",
+      "object": "174b979427517275ac33f15d53b2b2c41c85de41"
+    },
+    {
+      "ref": "refs/remotes/origin/repair/pr1214-seed-revalidation-stale-heartbeat-v1",
+      "object": "1f35dcb539f7da2479d7f3b847abbc94c24e5ff9"
+    },
+    {
+      "ref": "refs/remotes/origin/repair/pr295-isolated-materializer-v1",
+      "object": "57adf1bc6740054b24f7e0a3f1598c43f8ed08ce"
+    },
+    {
+      "ref": "refs/remotes/origin/repair/pr353-pr355-materialized-trusted-successor-v1",
+      "object": "d71b58449fb36e835c1185ccda3d7a101fddb884"
+    },
+    {
+      "ref": "refs/remotes/origin/repair/pr353-watchdog-liveness-fixture-isolation-v1",
+      "object": "1077ea0c8b7b06efb2fba25ae7f0801eb6aad537"
+    },
+    {
+      "ref": "refs/remotes/origin/repair/pre-effect-origin-parser-da3d771c-v1",
+      "object": "413e180b90574471c0a1776a62d43e1aea32ad7b"
+    },
+    {
+      "ref": "refs/remotes/origin/repair/publication-overview-dependency-677fdef-v1",
+      "object": "468a388361d6ae85114288e1f682d5acd4391e76"
+    },
+    {
+      "ref": "refs/remotes/origin/repair/qik-scientific-revision-governance-20260923",
+      "object": "9038911d7769130504b0741b4713b9fc09167ef7"
+    },
+    {
+      "ref": "refs/remotes/origin/repair/renew-mirror-node-liveness-20260911-v1",
+      "object": "b43238cf651d74783f4d6ead97d633d962860f66"
+    },
+    {
+      "ref": "refs/remotes/origin/repair/renew-mirror-node-liveness-after-main-restoration-20260819-v1",
+      "object": "bd48eb96a17afada8e31a6d25b04987a3fd364bd"
+    },
+    {
+      "ref": "refs/remotes/origin/repair/restore-role-local-node-state-20260818",
+      "object": "2280eaebd7b781bc11c98943b4ad40bcf9c4caa2"
+    },
+    {
+      "ref": "refs/remotes/origin/repair/role-local-pre-effect-main-20261001",
+      "object": "e4c5c63d70536ff4cdbdc77aea74b69152924790"
+    },
+    {
+      "ref": "refs/remotes/origin/repair/scaling-lossless-worker-v1",
+      "object": "45ed173e2599683c1b7fcda4681c1fbbc48bc63e"
+    },
+    {
+      "ref": "refs/remotes/origin/repair/seed-acceptance-probe-json-1e1bf6af-v1",
+      "object": "ff6e258e296a14cae860016c0be785e5e0e836b4"
+    },
+    {
+      "ref": "refs/remotes/origin/repair/windows-python-offline-cache-20261003",
+      "object": "7b2d703c433995d650880a275d2a9cf9469ee6fe"
+    },
+    {
+      "ref": "refs/remotes/origin/research/temdd-liveness-convergence-v1",
+      "object": "3d644eb951b1d65ab60dc207f9e90d4c146de788"
+    },
+    {
+      "ref": "refs/remotes/origin/seed/batch003-authority-objects-6f4a57dd",
+      "object": "9766774c58615819b98aa5f610f79dc64df5e061"
+    },
+    {
+      "ref": "refs/remotes/origin/seed/batch003-current-authority-db60a080",
+      "object": "b3a1f4fab616c51e43b966cd759e2e2d8cbc4309"
+    },
+    {
+      "ref": "refs/remotes/origin/staging/ai-handoff-clean",
+      "object": "1a89702d6656056bbfc15314935b3e670b4fc7c2"
+    },
+    {
+      "ref": "refs/remotes/origin/staging/arxiv-kontinuitaet-a2dbd3ac-v1",
+      "object": "9d34e99aafa3abb9ed4bba37c16aea4c9bfdc9f5"
+    },
+    {
+      "ref": "refs/remotes/origin/staging/cumulative-tool-cache-registry",
+      "object": "a167e9ba6957177a399964902936fd6004c15ae6"
+    },
+    {
+      "ref": "refs/remotes/origin/staging/cumulative-tool-cache-registry-v2",
+      "object": "f5b0bc77ce362cb68c587b897df651f45b66ea14"
+    },
+    {
+      "ref": "refs/remotes/origin/staging/ietf-epistemic-status-00-a2dbd3ac-v1",
+      "object": "17a86ca2e51da454d26fa16d454c6d32e338f024"
+    },
+    {
+      "ref": "refs/remotes/origin/state/mirror-node-a84f157a-v1",
+      "object": "98621a7bda587345294b230117861b3cf5c204b8"
+    },
+    {
+      "ref": "refs/remotes/origin/successor/pr286-requested-review-lifecycle-9cccdb0-v1",
+      "object": "1df3a83282fff289b57ea5b1e0bf29fd74b8f233"
+    },
+    {
+      "ref": "refs/remotes/origin/successor/pr295-reflexive-watchdog-85eed663-v1",
+      "object": "37730553d9c6eff3684783946a95418f8ee60a92"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/accepted-corrected-batch002-authority-524fabd5-from-daf42fd3-v1",
+      "object": "7ec95c58b5e40b97a41a9e8ab75dcee3b712c429"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/authority-42389236-zenodo-evidence",
+      "object": "90636489e29ed8dc5e38c1188bb3f140124a7e89"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/authority-49850f649283",
+      "object": "13bc34c8981502b352191a8b178c851e35ef84fb"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/authority-599866-global-completion",
+      "object": "2d5f255d0307de2e4574a13ec82a8f818e01c74d"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/authority-5c0a60dac2da",
+      "object": "8b951ef0ab3293e5c134a0f0ef2c39ad2cc288c0"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/authority-b64e4c782634",
+      "object": "c3abe8ae41b76d65d6282f3b084439c113d31850"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/authority-pr307-current-main-v1",
+      "object": "3c5cf7f03d617e623c3fc79a5f60e843f04b1528"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/batch003-dispatch-authority-6f4a57dd-from-3c8a6816-v1",
+      "object": "cfcee6b59b931f1f0e492440e5edc6700931290c"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/batch003-first-subject-authority-0fea97ca-from-11a20a81-v1",
+      "object": "11a20a81b1f90d79e684df6513a49cd2244616ff"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/batch003-first-subject-authority-0fea97ca-from-1ac57c68-v1",
+      "object": "14b64aefad02e8335fab502486b314bef4911118"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/batch003-first-subject-authority-0fea97ca-from-c9fe9826-v1",
+      "object": "c9fe98267924433f9e6c8d02f185ad5e2d6804ac"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/canonical-status-article-b47d-v1",
+      "object": "c3931554f2f4bf0e12d0c21ae317eeab968e86ff"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/canonical-temporal-memory-authority-944438bd-from-a7520583-v1",
+      "object": "b0ae9775c4735cfa2332ca8bfc6cc901ef3ba12e"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/canonical-zenodo-union-4892e744-v2",
+      "object": "63c56dc0e3f134dbb3af82b13d8c8429e3ca2489"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/construction-base-authority-7d87a600-from-afcd0255-v1",
+      "object": "afcd0255aab6bc5ad18275a2d91516688a41e302"
+    },
+    {
+      "ref": "refs/remotes/origin/sync/content-disposition-batch-001-98194f45-v1",
+      "object": "f17aa8eca00b0e5e75d5bd44f1b5fb96d760cc0d"
+    }
+  ]
+}

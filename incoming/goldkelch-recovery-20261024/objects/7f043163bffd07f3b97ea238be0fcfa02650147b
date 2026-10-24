@@ -1,0 +1,128 @@
+{
+  "_license": {
+    "classification": "machine_readable_work_unit",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_restore_mirror_node_liveness_work_unit_v1",
+  "work_unit_id": "RESTORE-MIRROR-NODE-LIVENESS-AFTER-AUTHORITY-PR559-V1",
+  "created_at": "2026-08-08T19:11:03Z",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "refs/heads/main",
+  "source_commit": "c52b324914978dc5d6d80251260ce55f396909f7",
+  "source_tree": "5d62aadb3f973aeed7cd6d911fb0b05a5faa42cb",
+  "human_actor": {
+    "actor_class": "HUMAN",
+    "attribution_id": "Ingolf Lohmann",
+    "role": "Product Owner",
+    "identity_proof_boundary": "Repository and platform records attribute the instruction to the named account context; they are not biometric identity proof."
+  },
+  "artificial_cognitive_actor": {
+    "actor_class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-5",
+    "session_or_run_id": "codex-liveness-repair-20260808T191103Z",
+    "tools_and_adapters": [
+      "GitHub connector",
+      "local Git",
+      "QIK-VRT /AI bootstrap"
+    ],
+    "identity_and_observation_limits": "The system identity is the active runtime declaration; no claim is made about hidden implementation internals, legal personhood, or independent human identity."
+  },
+  "human_contributions": [
+    {
+      "type": "AUTHORIZATION_AND_DIRECTION",
+      "description": "Product Owner approval to execute the current canonical continuation fully and automatically under the repository rules."
+    }
+  ],
+  "artificial_cognitive_contributions": [
+    {
+      "type": "LIVE_REOBSERVATION",
+      "description": "Reobserved Authority main 50cefe332ad8663432c5bcff6b09e3ab3e838086, Mirror main c52b324914978dc5d6d80251260ce55f396909f7, Seed Dashboard run 31272383382, job 93140412285, and preserved artifact 9025996187."
+    },
+    {
+      "type": "ROOT_CAUSE_ANALYSIS",
+      "description": "Bound the first deterministic blocker to three HTTP 404 responses for the Mirror main node-health, seed-acceptance, and renewal records; no post-PR559 runtime regression was inferred."
+    },
+    {
+      "type": "REPOSITORY_MUTATION",
+      "description": "Restored parser-compatible current Liveness records on a history-preserving current-Mirror-main review branch without Authority, Zenodo, IETF, release, deployment, or physical effect."
+    }
+  ],
+  "joint_components": [
+    {
+      "component": "Mirror node-liveness repair",
+      "human_part": "scope authorization and Product Owner decision",
+      "artificial_cognitive_part": "live diagnosis, record materialization, integrity regeneration, verification, and GitHub execution",
+      "separable": true
+    }
+  ],
+  "unresolved_origin": [],
+  "inputs": {
+    "retention_mode": "METADATA_ONLY",
+    "human_directive_transport": "CURRENT_CHAT_SESSION",
+    "raw_transcript_persisted": false,
+    "authority_main": "50cefe332ad8663432c5bcff6b09e3ab3e838086",
+    "mirror_main": "c52b324914978dc5d6d80251260ce55f396909f7",
+    "failed_dashboard_run_id": 31272383382,
+    "failed_dashboard_job_id": 93140412285,
+    "failed_dashboard_artifact_id": 9025996187,
+    "node_guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe",
+    "authority_registry_blob": "bf29b0026cd6b01f0954f7f143ffe02b950ac8bd"
+  },
+  "outputs": {
+    "paths": [
+      "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+      "qikvrt/runtime/onboarding/SEED_ACCEPTANCE_STATUS.json",
+      "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+      "state/work_units/RESTORE_MIRROR_NODE_LIVENESS_AFTER_AUTHORITY_PR559_V1.json",
+      "REPOSITORY_FILE_MANIFEST.json",
+      "REPOSITORY_FILE_MANIFEST.json.sha256",
+      "SHA256SUMS.txt"
+    ],
+    "sha256_binding": "BOUND_BY_FINAL_REPOSITORY_NATIVE_INTEGRITY_TRIO",
+    "self_binding_rule": "The containing Git commit and tree bind the exact work-unit bytes; no impossible in-file self-hash is claimed."
+  },
+  "git_history": {
+    "branch": "agent/restore-mirror-node-liveness-v1",
+    "base_commit": "c52b324914978dc5d6d80251260ce55f396909f7",
+    "content_commit": "BOUND_BY_CONTAINING_GIT_COMMIT",
+    "force_push": false,
+    "history_rewrite": false,
+    "merge": "NOT_EXECUTED"
+  },
+  "verification": {
+    "record_parser_contract": "PASS_FRESH_HEALTH_ACK_AND_RENEWAL_AT_2026_08_08T19_12_00Z",
+    "focused_seed_tests": "PASS_12_OF_12",
+    "complete_local_repository_gate": "PASS_MAKE_TEST",
+    "repository_native_integrity": "PASS_AFTER_FINAL_REGENERATION",
+    "exact_head_ci": "PENDING",
+    "post_promotion_seed_dashboard": "PENDING",
+    "first_current_blocker": "TRUSTED_EXACT_HEAD_VERIFICATION_NOT_YET_EXECUTED"
+  },
+  "human_decision": {
+    "directive": "RECEIVED",
+    "candidate_review": "AUTHORIZED_FOR_AUTOMATED_CONTINUATION_UNDER_REPOSITORY_RULES",
+    "acceptance": "SCOPE_AUTHORIZATION_RECORDED",
+    "rejection": "NOT_RECORDED",
+    "manual_modification": "NOT_RECORDED"
+  },
+  "external_effects": {
+    "review_branch_creation": "PENDING",
+    "repository_file_commits": "PENDING",
+    "pull_request": "PENDING",
+    "merge": "NOT_EXECUTED",
+    "release": "NOT_EXECUTED",
+    "deployment": "NOT_EXECUTED",
+    "zenodo": "NOT_EXECUTED",
+    "ietf": "NOT_EXECUTED"
+  },
+  "candidate_state": "LOCAL_VERIFIED_PENDING_GITHUB_BRANCH_COMMIT_PR_AND_TRUSTED_EXACT_HEAD_CI",
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false
+  }
+}

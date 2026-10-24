@@ -1,0 +1,38 @@
+{
+  "schema": "qikvrt_current_main_reconciliation_work_unit_v1",
+  "work_unit_id": "MIRROR-PORT-AUTONOMOUS-PRE-EFFECT-CONTROLLER-V1",
+  "state": "MATERIALIZED_PENDING_REPOSITORY_NATIVE_INTEGRITY_AND_EXACT_HEAD_GATES",
+  "source": {
+    "repository": "Goldkelch/qik-vrt",
+    "main": "16c970000d1362699d7c586faff254d321faf8d5",
+    "promotion_pr": 443,
+    "candidate_head": "98a559ab860e630688583b294c87ff1754c9d052"
+  },
+  "target": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "base_main": "846645b2fc41880e59af5c1e8c55d30779cc6416",
+    "branch": "automation/product-owner-effect-boundary-current-main-v1"
+  },
+  "portable_paths": [
+    "state/autonomy/AUTONOMOUS_PRE_EFFECT_POLICY_V1.json",
+    "tools/qikvrt_autonomous_pre_effect_controller.py",
+    "tests/test_qikvrt_autonomous_pre_effect_controller.py"
+  ],
+  "repository_adapted_paths": [
+    ".github/workflows/qikvrt_autonomous_self_heal.yml"
+  ],
+  "required_generated_paths": [
+    "REPOSITORY_FILE_MANIFEST.json",
+    "REPOSITORY_FILE_MANIFEST.json.sha256",
+    "SHA256SUMS.txt"
+  ],
+  "external_authorization_bytes_copied": false,
+  "zenodo_mutation": false,
+  "ietf_mutation": false,
+  "physical_correspondence": false,
+  "completion_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false
+  }
+}

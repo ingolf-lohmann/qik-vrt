@@ -1,0 +1,94 @@
+{
+  "actual_input_fixture": "All three actual integrity files traverse staged client -> HTTP existing shim -> persistent Git CAS provider -> byte and durable ledger readbacks; replay produces no second mutation",
+  "artificial_cognitive_actor": {
+    "model_build": "UNAVAILABLE",
+    "provider": "OpenAI",
+    "session": "7a167dca30f0",
+    "system_family": "Codex / GPT-6"
+  },
+  "artificial_contributions": [
+    "Observed actual input byte sizes against first-port capacity",
+    "Causal correction preserving native 2 MiB response budget",
+    "Full staged-index HTTP shim/provider/CAS/ledger test using actual three files",
+    "Removed accidental shell terminator from parsed allowlist",
+    "Current-source V3 inventory with V1/V2 retained historical"
+  ],
+  "authority_observation_boundary": {
+    "authority_loss_inferred": false,
+    "failed_stage": "AUTHORITY_READBACK",
+    "first_port_watchdog_run": 36917237095,
+    "observed_error": "HTTP 404"
+  },
+  "bounded_repair": {
+    "authority_request_bytes": 6291456,
+    "decoded_total_bytes": 4194304,
+    "max_files": 128,
+    "scope_specific_durable_intent_decoder_bytes": 6291456,
+    "scope_specific_native_json_decoder_bytes": 2097152,
+    "single_file_bytes": 1400000,
+    "unchanged_native_response_bytes": 2097152,
+    "unchanged_other_request_bytes": 1048576
+  },
+  "causal_defect": {
+    "actual_required_files": [
+      {
+        "bytes": 1099855,
+        "path": "REPOSITORY_FILE_MANIFEST.json"
+      },
+      {
+        "bytes": 96,
+        "path": "REPOSITORY_FILE_MANIFEST.json.sha256"
+      },
+      {
+        "bytes": 524961,
+        "path": "SHA256SUMS.txt"
+      }
+    ],
+    "actual_required_total_bytes": 1624912,
+    "consequence": "Configured broker would reject every necessary current integrity successor before native effect",
+    "defect_is_repaired_by_predecessor_ci_success": false,
+    "first_port_limit_bytes": 524288,
+    "latent_large_json_replay_and_native_response_limit": "Generic seed parse_json_bytes has a 1 MiB limit; the actual encoded intent and native manifest-blob JSON exceed it. Scope-specific strict decoders now retain canonical durable intents and duplicate/nonfinite rejection without changing seed/helper limits."
+  },
+  "created_at_utc": "2026-10-01T20:00:55.289914+00:00",
+  "current_live_broker_observation": {
+    "effect_ack_done": false,
+    "productive_provider_effect": false,
+    "reason": "BROKER_CAPABILITY_NOT_PROVISIONED",
+    "state": "HOLD"
+  },
+  "effect_ack_done": false,
+  "external_scope": "Existing authorized draft review branch; connector updates are outside productive broker and do not establish its acceptance",
+  "first_port_runs_historical_only": {
+    "ci_conclusion": "success",
+    "ci_run": 36917237243,
+    "effect_semantics": "clean/no-change carriers do not establish productive provider effect",
+    "evidence_conclusion": "success",
+    "evidence_run": 36917237192
+  },
+  "force_push": false,
+  "history_rewrite": false,
+  "human_acceptance_of_generated_successor": "PENDING_INDEPENDENT_REVIEW",
+  "human_actor": "Ingolf Lohmann",
+  "human_contribution": "Original two-effect bounded port requirements and explicit no-bypass constraints",
+  "large_historical_evidence_capacity_or_source_edits": "BLOCK_REQUIRES_SEPARATE_VERSIONED_CONTRACT_NO_PERMISSION_FALLBACK",
+  "new_permit_issuer": false,
+  "new_writer_infrastructure": false,
+  "parent_head": "cdfb35e221af131593ec02095f00f306e9dd3619",
+  "parent_tree": "636a7a3deace7c2530acc547e45a0cde70c64251",
+  "pr_number": 428,
+  "predecessor_evidence_transfer": false,
+  "productive_provider_effect_verified": false,
+  "provider_authority_fencing_verified": false,
+  "repository": "ingolf-lohmann/qik-vrt",
+  "schema": "qikvrt_work_unit_v1",
+  "source_admission": {
+    "active_brokers": 1,
+    "broker_client_jobs": 2,
+    "disabled_writer_jobs": 37,
+    "jobs": 90,
+    "paths": 343,
+    "violations": []
+  },
+  "work_unit_id": "QIKVRT_PR428_MATERIALIZATION_CAPACITY_SUCCESSOR_20261001_V1"
+}

@@ -1,5 +1,19 @@
 # QIK-VRT
 
+<!-- qikvrt-owner-personal-optimum:v1 -->
+## Persönliches Optimum von Ingolf Lohmann
+
+> Je mehr Schritte du automatisiert durchführen kannst, die sinngemäß, sachgemäß passen, desto besser. Denn es geht um Automatisierung und um Abnehmen von Arbeit und um Hilfestellung ganz allgemein und um Schadensminimierung. Das ist mein persönliches Optimum.
+
+**Seit langem seine persönliche Zielsetzung; am 24. Oktober 2026 dokumentiert
+und bekräftigt. Das Aufzeichnungsdatum ist kein Entstehungsdatum.**
+
+[Originalaussage und Anschluss](docs/OWNER_PERSONAL_OPTIMUM.md) ·
+[Maschinenlesbare Zielvorgabe](policy/OWNER_PERSONAL_OPTIMUM_V1.json) ·
+[Einstieg für künstliche Kognition: `/AI`](AI)
+
+<!-- /qikvrt-owner-personal-optimum:v1 -->
+
 <!-- qikvrt-machine-verifiable-science-charter-binding:v1 -->
 ## Charta einer maschinenprüfbaren Wissenschaft
 

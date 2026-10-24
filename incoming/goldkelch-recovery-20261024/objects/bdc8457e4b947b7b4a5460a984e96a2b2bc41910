@@ -1,0 +1,191 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann. Implementation contribution: OpenAI Codex.
+"""Loss recovery from real Git objects with no provider login or network protocol."""
+import hashlib
+import importlib.util
+import json
+import os
+import subprocess
+import tempfile
+import unittest
+from pathlib import Path
+from unittest.mock import patch
+
+ROOT = Path(__file__).resolve().parents[1]
+spec = importlib.util.spec_from_file_location("recovery_host", ROOT / "tools/qikvrt_self_host.py")
+host = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(host)
+
+
+class OfflineGitRecoveryTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory(prefix="qikvrt-history-loss-")
+        self.addCleanup(self.temp.cleanup)
+        self.work = Path(self.temp.name)
+        self.source = self.work / "source"
+        self.source.mkdir()
+        self.git("init", "-q", "-b", "main")
+        self.git("config", "user.name", "QIKVRT recovery fixture")
+        self.git("config", "user.email", "fixture@example.invalid")
+        (self.source / "history.txt").write_text("first accepted state\n")
+        self.git("add", ".")
+        self.git("commit", "-qm", "first")
+        self.first = self.git("rev-parse", "HEAD").decode()
+        self.git("tag", "-a", "first-state", "-m", "signed-scope fixture, no signature claim")
+        (self.source / "history.txt").write_text("second accepted state\n")
+        self.git("commit", "-am", "second", "-q")
+        self.head = self.git("rev-parse", "HEAD").decode()
+        self.tree = self.git("rev-parse", "HEAD^{tree}").decode()
+        self.git("update-ref", "refs/recovery/owner-bound-state", self.first)
+        self.backup = self.work / "backup"
+
+    def git(self, *args):
+        return subprocess.check_output(["git", "-C", str(self.source), *args], stderr=subprocess.DEVNULL).strip()
+
+    def export(self):
+        return host.backup_repository(self.source, self.backup, self.head, self.tree)
+
+    def test_exact_restore_survives_source_loss_and_has_no_provider_remote(self):
+        receipt = self.export()
+        expected = host.recovery_snapshot(self.source)
+        self.source.rename(self.work / "unavailable-source")
+        target = self.work / "recovered.git"
+        result = host.restore_repository(self.backup, receipt["manifest_sha256"], target)
+        self.assertEqual(host.recovery_snapshot(target), expected)
+        self.assertEqual(host.recovery_git(target, "show", self.first + ":history.txt"), b"first accepted state")
+        self.assertEqual(host.recovery_git(target, "remote"), b"")
+        self.assertFalse(result["effect_ack_done"])
+
+    def test_detached_head_retained_with_original_branches_and_tag(self):
+        self.git("checkout", "--detach", "-q", self.first)
+        receipt = host.backup_repository(self.source, self.backup)
+        target = self.work / "detached.git"
+        result = host.restore_repository(self.backup, receipt["manifest_sha256"], target)
+        self.assertEqual(result["source_head"], self.first)
+        self.assertIsNone(result["symbolic_head"])
+        self.assertEqual(result["refs"]["refs/heads/main"], self.head)
+
+    def test_bundle_corruption_and_wrong_manifest_pin_do_not_create_target(self):
+        receipt = self.export()
+        target = self.work / "failed.git"
+        with self.assertRaisesRegex(ValueError, "PIN_MISMATCH"):
+            host.restore_repository(self.backup, "0" * 64, target)
+        bundle = self.backup / "history.bundle"
+        raw = bundle.read_bytes(); bundle.write_bytes(raw[:-1] + bytes([raw[-1] ^ 1]))
+        with self.assertRaisesRegex(ValueError, "BUNDLE_MISMATCH"):
+            host.restore_repository(self.backup, receipt["manifest_sha256"], target)
+        self.assertFalse(target.exists())
+
+    def test_incremental_bundle_is_rejected_by_empty_repository(self):
+        self.export()
+        bundle = self.backup / "history.bundle"
+        bundle.unlink()
+        self.git("bundle", "create", str(bundle), self.first + "..main")
+        manifest = self.backup / "RECOVERY.json"
+        value = json.loads(manifest.read_bytes())
+        value["bundle"].update(bytes=bundle.stat().st_size, sha256=host.recovery_hash_file(bundle))
+        manifest.write_bytes(host.raw_json(value))
+        target = self.work / "incremental.git"
+        with self.assertRaises(subprocess.CalledProcessError):
+            host.restore_repository(self.backup, host.recovery_hash_file(manifest), target)
+        self.assertFalse(target.exists())
+
+    def test_changed_source_refs_reject_the_backup(self):
+        real_git = host.recovery_git
+        def racing_git(root, *args):
+            result = real_git(root, *args)
+            if args[:2] == ("bundle", "create"):
+                real_git(root, "update-ref", "refs/heads/concurrent", self.first)
+            return result
+        with patch.object(host, "recovery_git", side_effect=racing_git):
+            with self.assertRaisesRegex(ValueError, "REFS_CHANGED"):
+                self.export()
+        self.assertFalse(self.backup.exists())
+
+    def test_other_detached_worktree_does_not_change_selected_head_and_ref_scope(self):
+        other = self.git("commit-tree", self.tree, "-p", self.first, "-m", "independent worktree fixture").decode()
+        side = self.work / "other-task"
+        self.git("worktree", "add", "--detach", "-q", str(side), other)
+        receipt = self.export()
+        result = host.restore_repository(self.backup, receipt["manifest_sha256"], self.work / "scope.git")
+        self.assertEqual(result["source_head"], self.head)
+        self.assertEqual(result["reachable_object_ids_sha256"], receipt["reachable_object_ids_sha256"])
+        self.assertNotIn(other, "\n".join(result["refs"].values()))
+
+    def test_existing_output_is_never_overwritten(self):
+        self.export()
+        old = (self.backup / "history.bundle").read_bytes()
+        with self.assertRaises(FileExistsError):
+            self.export()
+        self.assertEqual((self.backup / "history.bundle").read_bytes(), old)
+
+    def test_shallow_clone_is_rejected(self):
+        shallow = self.work / "shallow"
+        subprocess.run(["git", "clone", "-q", "--depth=1", self.source.as_uri(), str(shallow)], check=True)
+        with self.assertRaisesRegex(ValueError, "COMPLETE_LOCAL_HISTORY"):
+            host.backup_repository(shallow, self.backup)
+        self.assertFalse(self.backup.exists())
+
+    def test_historical_strict_finding_is_preserved_as_hold_not_accepted_as_clean(self):
+        blob = self.git("rev-parse", "HEAD:history.txt").decode()
+        raw = b"100644 blob " + blob.encode() + b"\t" + b"x" * 5000 + b"\0"
+        tree = subprocess.check_output(["git", "-C", str(self.source), "mktree", "-z"], input=raw).strip().decode()
+        commit = self.git("commit-tree", tree, "-m", "historical path limit fixture").decode()
+        self.git("update-ref", "refs/heads/historical-format-fixture", commit)
+        receipt = self.export()
+        result = host.restore_repository(self.backup, receipt["manifest_sha256"], self.work / "history.git")
+        self.assertTrue(result["object_closure_readback_verified"])
+        self.assertFalse(result["source_consistency"]["strict_passed"])
+        self.assertFalse(result["repository_quality_accepted"])
+        self.assertTrue(result["state"].startswith("HOLD_"))
+        self.assertIn("largePathname", "\n".join(result["source_consistency"]["strict_findings"]))
+        manifest = self.backup / "RECOVERY.json"
+        forged = json.loads(manifest.read_bytes())
+        forged["source_consistency"] = {"strict_passed": True, "strict_findings": [], "strict_exit_code": 0}
+        manifest.write_bytes(host.raw_json(forged))
+        with self.assertRaisesRegex(ValueError, "CONSISTENCY_FINDINGS_CHANGED"):
+            host.restore_repository(self.backup, host.recovery_hash_file(manifest), self.work / "forged-clean.git")
+        self.assertFalse((self.work / "forged-clean.git").exists())
+
+    def test_missing_promised_blob_cannot_be_lazily_fetched_over_https(self):
+        blob = self.git("rev-parse", "HEAD:history.txt").decode()
+        path = self.source / ".git/objects" / blob[:2] / blob[2:]
+        path.unlink()
+        self.git("config", "remote.origin.promisor", "true")
+        self.git("config", "remote.origin.partialclonefilter", "blob:none")
+        self.git("config", "remote.origin.url", "https://github.com/suspended/fixture.git")
+        with self.assertRaises(subprocess.CalledProcessError):
+            self.export()
+        self.assertFalse(self.backup.exists())
+
+    def test_checkpoint_preserves_previous_snapshot_and_rechecks_repeated_trigger(self):
+        store = self.work / "snapshots"
+        first = host.checkpoint_repository(self.source, store)
+        repeated = host.checkpoint_repository(self.source, store)
+        self.assertTrue(first["changed"]); self.assertFalse(repeated["changed"])
+        self.assertEqual(first["checkpoint_id"], repeated["checkpoint_id"])
+        (self.source / "history.txt").write_text("third accepted state\n")
+        self.git("commit", "-am", "third", "-q")
+        later = host.checkpoint_repository(self.source, store)
+        self.assertNotEqual(first["checkpoint_id"], later["checkpoint_id"])
+        self.assertEqual(len(list(store.iterdir())), 2)
+        host.verify_repository_backup(store / first["checkpoint_id"], first["manifest_sha256"])
+        bundle = store / later["checkpoint_id"] / "history.bundle"
+        bundle.write_bytes(b"damaged snapshot")
+        with self.assertRaisesRegex(ValueError, "BUNDLE_MISMATCH"):
+            host.checkpoint_repository(self.source, store)
+
+    def test_local_hooks_and_credential_helper_are_not_executed(self):
+        marker = self.work / "unexpected-execution"
+        hook = self.source / ".git/hooks/reference-transaction"
+        hook.write_text("#!/bin/sh\ntouch '" + str(marker) + "'\n"); hook.chmod(0o700)
+        self.git("config", "credential.helper", "!touch '" + str(marker) + "'")
+        self.git("config", "remote.origin.url", "https://github.com/suspended/fixture.git")
+        receipt = self.export()
+        host.verify_repository_backup(self.backup, receipt["manifest_sha256"])
+        self.assertFalse(marker.exists())
+        self.assertNotIn("credential", (self.backup / "RECOVERY.json").read_text().split('"refs":')[1].split('"scope":')[0])
+
+
+if __name__ == "__main__":
+    unittest.main()

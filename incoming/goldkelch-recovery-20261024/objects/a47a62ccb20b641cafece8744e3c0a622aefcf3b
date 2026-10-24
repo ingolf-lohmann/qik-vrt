@@ -1,0 +1,121 @@
+{
+  "_license": {
+    "classification": "work_unit_json",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "artificial_cognitive_actor": {
+    "identity_limits": "Platform and Git identities do not attest a natural person or native independent reviewer.",
+    "model_or_build": "GPT-6",
+    "provider": "OpenAI",
+    "system_family": "Codex"
+  },
+  "artificial_cognitive_contributions": [
+    "Reproduced missing Digital Twin REST import on exact PR #435 source; reused existing PR #422 repair without a duplicate reference model.",
+    "Preserved both source histories in an ordered-parent successor and retained the #435 controller/promotion implementation unchanged.",
+    "Extended existing E2E and reciprocal-closure Make targets to run existing Digital Twin, Effect-Ack HTTP and semantic guard tests."
+  ],
+  "created_at": "2026-10-01T16:43:34.906732+00:00",
+  "external_effects": {
+    "deployment": false,
+    "live_mesh_dispatch": false,
+    "main_merge": false,
+    "publication": false,
+    "release": false,
+    "ruleset_mutation": false
+  },
+  "failure": {
+    "cause_scope": "The contract-bound reference-model file is absent from the tested tree; no account-suspension or remote access cause inferred.",
+    "command": "python3 -B -m unittest -v tests.test_tcpip_e2e tests.test_handler_security tests.test_qikvrt_effect_ack_http_terminal tests.test_qikvrt_digital_twin_rest",
+    "log_sha256": "cee5be8dece19e94ed782f950aad4df01e3ed709ba2730a6663771af93eef51c",
+    "result": "25 successful tests; Digital Twin import failed: ModuleNotFoundError: src.qikvrt_siemens_reference_integration",
+    "subject": "3cfe025d0e85caba2ddcefdf2c131977bfe4f89c"
+  },
+  "git_history": {
+    "history_rewrite": false,
+    "old_prs_closed": false,
+    "ordered_parents": [
+      "3cfe025d0e85caba2ddcefdf2c131977bfe4f89c",
+      "630fd695791da71185077fb442e0f090a8fbcb13"
+    ],
+    "own_containing_commit_hash_claimed": false,
+    "target_branch": "work/api-acceptance-rest-repair-20261001"
+  },
+  "human_actor": {
+    "attribution_id": "Ingolf Lohmann"
+  },
+  "human_contributions": [
+    "Authorized continued API-layer product-acceptance testing and completion of necessary repairs under the existing lossless DevOps scope."
+  ],
+  "human_decision": {
+    "candidate_native_independent_review": "PENDING",
+    "task_authorization": "GRANTED"
+  },
+  "inputs": {
+    "3cfe025d0e85caba2ddcefdf2c131977bfe4f89c": {
+      "pr": 435,
+      "tree": "79e5a174eb4d923b5813c95bd52a46f0dff88bff"
+    },
+    "630fd695791da71185077fb442e0f090a8fbcb13": {
+      "pr": 422,
+      "tree": "7eb5641eb98b5e486aa3305f6b7de358d0aa9707"
+    }
+  },
+  "next_action": "Run focused and full required tests, verify integrity and source preservation, persist the exact successor for independent review, and read back its remote tree and fresh exact-head gates.",
+  "open_boundaries": [
+    "Native enforced protection and independent exact-head review.",
+    "Actual Authority API access and both reciprocal post-effect readbacks.",
+    "Browser/Windows product-runtime acceptance evidence and frozen public publication evidence."
+  ],
+  "outputs": {
+    "Makefile": {
+      "bytes": 11394,
+      "git_blob_sha1": "666d8bae91874662e8cf4397bea2bb625365c8fa",
+      "sha256": "d5625634d5d4ae97747d49cf9557d8d6a982632c5167d52e3b62b63280905e86"
+    },
+    "src/qikvrt_siemens_reference_integration.py": {
+      "bytes": 3082,
+      "git_blob_sha1": "816d55781e53e0801390a96e8032c9fa2b327ae2",
+      "sha256": "fb6595a2221fac4f0acb3100fbf5167a36c619583974a3f487b56ccbf73290c5"
+    },
+    "tests/test_qikvrt_digital_twin_rest.py": {
+      "bytes": 2846,
+      "git_blob_sha1": "feed8edbd89b9295139d508fc916381ddb5c9aa5",
+      "sha256": "9c43822bf13b91ffa9cfe4b77b4de275fcaf9796d8980589828644f82af77ae1"
+    },
+    "tests/test_qikvrt_expected_head_promotion_contract.py": {
+      "bytes": 4881,
+      "git_blob_sha1": "c5e53f7235a1d1486e2580af2a232751c402643b",
+      "sha256": "93d117d12da90ff6ee5cc0cebb403944fc2bd9165e6706060fbe80ac8f958311"
+    },
+    "tests/test_ruleset_authority_token_route.py": {
+      "bytes": 2384,
+      "git_blob_sha1": "d513b23168bc52db09944bbd626572cb1ed03691",
+      "sha256": "47dc1a5500cf777993139b6dd34c1b431181fd862a44d8c4c0c75f9c39358942"
+    }
+  },
+  "release_claims": {
+    "AUTHORITY_MIRROR_EQUALITY": false,
+    "EFFECT_ACK_DONE": false,
+    "PRODUCT_ACCEPTANCE_COMPLETED": false,
+    "TARGET_REACHED": false
+  },
+  "reuse": {
+    "fresh_source_tests_required": true,
+    "predecessor_evidence_transfer": false,
+    "repair_source": "ingolf-lohmann/qik-vrt#422",
+    "second_executor": false,
+    "source_paths": [
+      "src/qikvrt_siemens_reference_integration.py",
+      "tests/test_qikvrt_digital_twin_rest.py",
+      "tests/test_qikvrt_expected_head_promotion_contract.py",
+      "tests/test_ruleset_authority_token_route.py"
+    ]
+  },
+  "schema": "qikvrt_work_unit_v1",
+  "unresolved_origin": [
+    "Reused PR #422 source has exact Git provenance; original natural-person/artificial-cognitive authorship is not independently established by this work unit."
+  ],
+  "work_unit_id": "API_PRODUCT_ACCEPTANCE_REST_REPAIR_PR435_PR422_20261001_V1"
+}

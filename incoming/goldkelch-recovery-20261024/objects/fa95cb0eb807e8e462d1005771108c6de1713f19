@@ -1,0 +1,244 @@
+{
+  "artificial_cognitive_actor": {
+    "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "identity_and_observation_limits": [
+      "Session declaration is not cryptographic model/person authentication",
+      "No Main merge or deployment is established by candidate tests"
+    ],
+    "model_or_build": "GPT-6",
+    "provider": "OpenAI",
+    "session_or_run_id": "cdfad64b36c8",
+    "system_family": "Codex",
+    "tools_and_adapters": [
+      "GitHub connector",
+      "git",
+      "exec_command",
+      "apply_patch",
+      "Python standard library"
+    ]
+  },
+  "artificial_cognitive_contributions": [
+    "Fresh readback found PR #425 already at 70221ce8 with one reused snapshot format; continued that work",
+    "Single normative codec contract embeds the unchanged standpoint/element/snapshot semantics",
+    "Previous standpoint policy is an exact nonnormative compatibility projection checked for drift",
+    "All new byte/stream containers default to the fixed standpoint and reject foreign seeds before output",
+    "Historical generic-seed transport decoding remains explicit, externally bound, decode-only and separately classified",
+    "Preserved all 51 current tests and added six consolidation regressions; updated two existing foreign-seed regression paths",
+    "Reused the unchanged benchmark tool and kept both prior benchmark files untouched",
+    "Forward successor on existing PR #425 branch; intended combined review carrier against Main"
+  ],
+  "created_at": "2026-10-01T12:22:21.644143+00:00",
+  "evidence_retention": "METADATA_ONLY",
+  "external_effects": {
+    "authorized_scope": "Bounded review-candidate consolidation in ingolf-lohmann/qik-vrt; update existing PR #425 and classify superseded #424",
+    "deployment": false,
+    "merge": false,
+    "physical_actuation": false,
+    "release": false,
+    "remote_head_post_write": "REQUIRES_FRESH_READBACK",
+    "zenodo": false
+  },
+  "git_history": {
+    "base_commit": "c621b863945adab208d4ed72f6197c7220b1dbb4",
+    "branch": "work/qikvrt-codec-v1-20261001",
+    "candidate_head": "BOUND_BY_CONTAINING_COMMIT",
+    "candidate_tree": "BOUND_BY_CONTAINING_COMMIT",
+    "correction_method": "NEW_FORWARD_COMMIT_NO_FORCE_PUSH",
+    "intended_review_base_branch": "main",
+    "intended_review_base_head": "c621b863945adab208d4ed72f6197c7220b1dbb4",
+    "parent_commit": "70221ce86e45b4d0e0293222076986fb92206312",
+    "pull_request": 425,
+    "retained_ancestor_heads": {
+      "pr424": "def7a93e7ae36426bebaf7b82519b670025f8f42",
+      "pr425_initial": "64d026cc79e27c366fa8b5c1971841f7ec0a7214",
+      "pr425_prior_successor": "70221ce86e45b4d0e0293222076986fb92206312"
+    }
+  },
+  "human_actor": {
+    "attribution_id": "Ingolf Lohmann",
+    "class": "HUMAN",
+    "role": "Product Owner and creator"
+  },
+  "human_contributions": [
+    "Consolidate PR #424 and #425 into one canonical V1 contract",
+    "Preserve the fixed 400-byte standpoint with SHA256 27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
+    "Reuse compression and streaming only compatibly; remove duplicate snapshot wire formats",
+    "Preserve fail-closed validation, deterministic roundtrip, limits, provenance and existing tests",
+    "Isolate any materially nonequivalent owner decision instead of inventing it"
+  ],
+  "human_decision": {
+    "generated_exact_candidate_review": "PENDING_RESPONSIBLE_REVIEW",
+    "implementation_authorization": "ACCEPTED_FROM_CURRENT_TASK"
+  },
+  "inputs": [
+    {
+      "bytes": 12302,
+      "path": "AI_CONTEXT.json",
+      "sha256": "10a6e5f78abdda8c22309269b4768b4da4a820c385fd76376cebbe9016f2130b",
+      "source_head": "70221ce86e45b4d0e0293222076986fb92206312"
+    },
+    {
+      "bytes": 8932,
+      "path": "docs/QIKVRT_CODEC_V1.md",
+      "sha256": "e72b9d5a6deb89d0a36f49980a3185c2ebec50b739bdabe0919a41e6f9f6bbfc",
+      "source_head": "70221ce86e45b4d0e0293222076986fb92206312"
+    },
+    {
+      "bytes": 8081,
+      "path": "policy/QIKVRT_CODEC_CONTRACT_V1.json",
+      "sha256": "697708c8a17467968f0bb3d894d0a1fa90658dea56ff3bc07391ab19f131fa3e",
+      "source_head": "70221ce86e45b4d0e0293222076986fb92206312"
+    },
+    {
+      "bytes": 8490,
+      "path": "policy/QIKVRT_STANDPOINT_CODEX_V1.json",
+      "sha256": "f1d5ad65ccebbe131919ab349fb2a8493e0ac0b7c0881e6132ef4850aa12368a",
+      "source_head": "70221ce86e45b4d0e0293222076986fb92206312"
+    },
+    {
+      "bytes": 8378,
+      "path": "spec/QIKVRT_STANDPOINT_CODEX_V1.md",
+      "sha256": "d49c5d1d4549b0c3b51fa400b2eafef170d322369321cf0024ebdfada440102d",
+      "source_head": "70221ce86e45b4d0e0293222076986fb92206312"
+    },
+    {
+      "bytes": 12522,
+      "path": "src/qikvrt_codec.py",
+      "sha256": "4bba55c3736bbfc542d45510f31bc4e9c0bf693f6e0f6d8f61e3106c31281e27",
+      "source_head": "70221ce86e45b4d0e0293222076986fb92206312"
+    },
+    {
+      "bytes": 14928,
+      "path": "tests/test_qikvrt_codec.py",
+      "sha256": "5d6ef4a4ed520070a80b8197a6b758c760fe602ed26cf0f51555b793ce7fa088",
+      "source_head": "70221ce86e45b4d0e0293222076986fb92206312"
+    },
+    {
+      "bytes": 10549,
+      "path": "src/qikvrt_standpoint_codex.py",
+      "sha256": "aedf27f794c3c3092d1bdeddbf4b9e18e6f9d359574af9c3b68a7364cde7a2a2",
+      "source_head": "70221ce86e45b4d0e0293222076986fb92206312"
+    },
+    {
+      "bytes": 400,
+      "path": "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin",
+      "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
+      "source_head": "70221ce86e45b4d0e0293222076986fb92206312"
+    },
+    {
+      "bytes": 11829,
+      "path": "state/work_units/QIKVRT_CODEC_V1_20261001.json",
+      "sha256": "ea9916ed2c13159ee675b93e4783271685d6772e71c14d195e1c102ca99dd934",
+      "source_head": "70221ce86e45b4d0e0293222076986fb92206312"
+    },
+    {
+      "bytes": 8701,
+      "path": "state/work_units/QIKVRT_STANDPOINT_CODEX_V1.json",
+      "sha256": "33a032c355448177ff7b3661b46f6a6655e53a8d74657207ccc97c1eea4b4d42",
+      "source_head": "70221ce86e45b4d0e0293222076986fb92206312"
+    }
+  ],
+  "joint_components": [
+    {
+      "artificial_cognitive": "Contract consolidation, compatibility implementation and tests",
+      "class": "JOINT_WITH_SEPARABLE_COMPONENTS",
+      "human": "Normative fixed-standpoint and lossless-consolidation requirements"
+    }
+  ],
+  "next_action": "Run full make test on containing exact head, publish forward successor to PR #425, retarget combined carrier to current Main, freshly observe checks and reviews; classify PR #424 as consolidated without merging.",
+  "nonequivalent_owner_decisions_required": [],
+  "outputs": [
+    {
+      "bytes": 12346,
+      "path": "AI_CONTEXT.json",
+      "sha256": "cf5a739a6f72558601265cf4b81d8c73b8d00f8da2e63df5991137c601c47580"
+    },
+    {
+      "bytes": 10071,
+      "path": "docs/QIKVRT_CODEC_V1.md",
+      "sha256": "891213ede8cb834787ce33d558743a553557e97a6450852d3140a9dfa2b3c0c7"
+    },
+    {
+      "bytes": 18321,
+      "path": "policy/QIKVRT_CODEC_CONTRACT_V1.json",
+      "sha256": "2259f021d99b8ec4dccde7629cb48d814219df58e1f08f162af9e831ff2b0427"
+    },
+    {
+      "bytes": 8577,
+      "path": "policy/QIKVRT_STANDPOINT_CODEX_V1.json",
+      "sha256": "3048430991fb1725f1c50ad5e581dcc6d2972cffe3469c41aba68c0c0940047d"
+    },
+    {
+      "bytes": 9042,
+      "path": "spec/QIKVRT_STANDPOINT_CODEX_V1.md",
+      "sha256": "311075cffa0746c1873257809ef82554fde80bee0f4e0d3be1f519b583a4eb0a"
+    },
+    {
+      "bytes": 14283,
+      "path": "src/qikvrt_codec.py",
+      "sha256": "e5570267249a9e8a06caec21cbd3830a38ad59e62b4da4f7b0e158ebbea15e9e"
+    },
+    {
+      "bytes": 22751,
+      "path": "tests/test_qikvrt_codec.py",
+      "sha256": "3648d34ace11bcb1ddd4913e7a2d31e6406b2daec107eb6e048598cb6cd01822"
+    },
+    {
+      "bytes": 35378,
+      "path": "evidence/codec/20261001_CANONICAL_CODEC_CONSOLIDATION_BENCHMARK_V1.json",
+      "sha256": "d5e8cf4e3f2a80b44d56dd909c25e7bf4467138c0a4cdd34ce4974d039626592"
+    }
+  ],
+  "release_claims": {
+    "EFFECT_ACK_DONE": false,
+    "FINAL_PASS": false,
+    "main_adoption": false
+  },
+  "schema": "qikvrt_ai_work_unit_provenance_v1",
+  "source_commit": "70221ce86e45b4d0e0293222076986fb92206312",
+  "source_ref": "work/qikvrt-codec-v1-20261001",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "73f5533adf921acfa9921e3914e9892ce1e34bbd",
+  "unresolved_origin": [],
+  "verification": {
+    "autonomous_optimization_check": "HOLD; no competing-writer-free main-bound optimization apply performed",
+    "benchmark": {
+      "bytes": 35378,
+      "path": "evidence/codec/20261001_CANONICAL_CODEC_CONSOLIDATION_BENCHMARK_V1.json",
+      "sha256": "d5e8cf4e3f2a80b44d56dd909c25e7bf4467138c0a4cdd34ce4974d039626592"
+    },
+    "benchmark_conditions": "7 interleaved trials on Linux / CPython 3.12.14 / zlib 1.3.2; every decode verified; source and dependency hashes in evidence",
+    "bootstrap_result": "CONTINUE; integrity and declared-tool coverage PASS; missing optional runtimes not installed",
+    "full_repository_command": "make test",
+    "full_repository_result": "REQUIRES_FRESH_EXACT_HEAD_RESULT_AFTER_COMMIT; later PR/readback must bind this containing commit",
+    "historical_benchmarks_unchanged": true,
+    "hosted_checks_and_native_reviews": "REOBSERVE_FOR_CONTAINING_COMMIT; no predecessor approval or CI transfer",
+    "integrity_command": "python3 -B tools/qikvrt_integrity.py generate; python3 -B tools/qikvrt_integrity.py verify",
+    "integrity_scope": "ONLY_EXISTING_INTEGRITY_TRIO_REGENERATED",
+    "optimized_tests": {
+      "command": "python3 -B -O -m unittest -v tests.test_qikvrt_codec tests.test_qikvrt_standpoint_codex",
+      "errors": 0,
+      "failures": 0,
+      "log": {
+        "bytes": 9616,
+        "sha256": "9790ef4168ca463a6ab5a7dd598117ede7bca9f7975343546b4cb080a9ca27b0"
+      },
+      "scope": "PRECOMMIT_SOURCE_BOUND_WORKTREE",
+      "tests": 57
+    },
+    "predecessor_evidence_transfer": false,
+    "signature_and_codex_source_unchanged": true,
+    "targeted_tests": {
+      "command": "python3 -B -m unittest -v tests.test_qikvrt_codec tests.test_qikvrt_standpoint_codex",
+      "errors": 0,
+      "failures": 0,
+      "log": {
+        "bytes": 9616,
+        "sha256": "1115723fdd88fa7078ce971ff80ae036020698a944f3f595119a485e7060d276"
+      },
+      "scope": "PRECOMMIT_SOURCE_BOUND_WORKTREE",
+      "tests": 57
+    }
+  },
+  "work_unit_id": "QIKVRT_CODEC_V1_CONSOLIDATION_20261001"
+}

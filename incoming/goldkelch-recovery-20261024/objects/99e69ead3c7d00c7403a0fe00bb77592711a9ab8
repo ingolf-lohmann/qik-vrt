@@ -1,0 +1,314 @@
+﻿[
+    {
+        "timestamp_utc":  "2026-07-07T15:47:17Z",
+        "gate":  "WINDOWS_ACCEPTANCE_RUNNER",
+        "detail":  "PowerShell 5.1 compatible runner started",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:47:17Z",
+        "gate":  "REPO_ROOT",
+        "detail":  "%QIKVRT_NODE_ROOT%",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:47:17Z",
+        "gate":  "PS_VERSION",
+        "detail":  "5.1.26100.8737",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:47:17Z",
+        "gate":  "FILE_README.md",
+        "detail":  "present",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:47:17Z",
+        "gate":  "FILE_LICENSE.md",
+        "detail":  "present",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:47:17Z",
+        "gate":  "FILE_Makefile",
+        "detail":  "present",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:47:17Z",
+        "gate":  "FILE_SHA256SUMS.txt",
+        "detail":  "present",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:47:17Z",
+        "gate":  "FILE_RUN_WINDOWS_ACCEPTANCE.cmd",
+        "detail":  "present",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:47:17Z",
+        "gate":  "FILE_tools\\win_acceptance.ps1",
+        "detail":  "present",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:47:17Z",
+        "gate":  "FILE_src\\main.c",
+        "detail":  "present",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:47:17Z",
+        "gate":  "FILE_src\\qikvrt.c",
+        "detail":  "present",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:47:17Z",
+        "gate":  "FILE_include\\qikvrt.h",
+        "detail":  "present",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:47:17Z",
+        "gate":  "FILE_qikvrt\\manifests\\LE.json",
+        "detail":  "present",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:47:17Z",
+        "gate":  "FILE_qikvrt\\evidence\\GH_WEB_REF.json",
+        "detail":  "present",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:47:17Z",
+        "gate":  "MAX_RELATIVE_PATH_LENGTH",
+        "detail":  "max=65",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:47:17Z",
+        "gate":  "SHA256SUMS",
+        "detail":  "ok=120",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:47:17Z",
+        "gate":  "JSON_PARSE_ALL",
+        "detail":  "ok=33",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:47:17Z",
+        "gate":  "JSONL_PARSE_ALL",
+        "detail":  "ok=18",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:47:18Z",
+        "gate":  "LIVE_FETCH_MANIFEST",
+        "detail":  "http=200 bytes=15168 sha256=8d4946c2dd632a345dd4a345542d15d11802c5552cdb6a309056af35d7e103e2 url=https://raw.githubusercontent.com/Goldkelch/qik-vrt/main/MANIFEST.json",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:47:18Z",
+        "gate":  "LIVE_FETCH_REST_TCPIP_MANIFEST",
+        "detail":  "http=200 bytes=1052 sha256=154c505660431dc41fe6072809ab69702202a2f417129083deb0a35a16abe7b1 url=https://raw.githubusercontent.com/Goldkelch/qik-vrt/main/QIKVRT_SELF_CONTAINED_GITHUB_REPOSITORY_WITH_REST_TCPIP_API_V1_MANIFEST.json",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:47:18Z",
+        "gate":  "DEPENDENCY_BOOTSTRAP_EXISTING_COMPILER",
+        "detail":  "clang:C:\\Program Files\\LLVM\\bin\\clang.exe",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:47:18Z",
+        "gate":  "DEPENDENCY_BOOTSTRAP",
+        "detail":  "compiler candidate already present",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:47:18Z",
+        "gate":  "C_COMPILER_CANDIDATES",
+        "detail":  "clang:C:\\Program Files\\LLVM\\bin\\clang.exe",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:47:19Z",
+        "gate":  "C_BUILD_ATTEMPT",
+        "detail":  "clang exit=1 path=C:\\Program Files\\LLVM\\bin\\clang.exe stdout=%QIKVRT_NODE_ROOT%\\qikvrt\\runtime\\win_acceptance\\build_clang.out.txt stderr=%QIKVRT_NODE_ROOT%\\qikvrt\\runtime\\win_acceptance\\build_clang.err.txt err_sample=src\\main.c:1:10: fatal error: \u0027stdio.h\u0027 file not found     1 | #include \u003cstdio.h\u003e       |          ^~~~~~~~~ 1 error generated. src\\qikvrt.c:1:10: fatal error: \u0027stdio.h\u0027 file not found     1 | #include \u003cstdio.h\u003e       |          ^~~~~~~~~ 1 error generated. ",
+        "status":  "BLOCK"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:47:19Z",
+        "gate":  "C_BUILD_PRIMARY_CANDIDATES",
+        "detail":  "no existing/LLVM/choco compiler candidate produced build\\qikvrt_verify.exe",
+        "status":  "BLOCK"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:47:19Z",
+        "gate":  "DEPENDENCY_BOOTSTRAP_WINGET_ZIG",
+        "detail":  "winget install attempt: zig.zig",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:49:42Z",
+        "gate":  "PATH_REFRESH",
+        "detail":  "Machine/User PATH reloaded into current PowerShell process",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:49:42Z",
+        "gate":  "DEPENDENCY_BOOTSTRAP_WINGET_ZIG_EXIT",
+        "detail":  "exit=0",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:49:42Z",
+        "gate":  "PATH_REFRESH",
+        "detail":  "Machine/User PATH reloaded into current PowerShell process",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:49:42Z",
+        "gate":  "C_COMPILER_CANDIDATES",
+        "detail":  "clang:C:\\Program Files\\LLVM\\bin\\clang.exe | zigcc:%LOCALAPPDATA%\\Microsoft\\WinGet\\Packages\\zig.zig_Microsoft.Winget.Source_8wekyb3d8bbwe\\zig-x86_64-windows-0.16.0\\zig.exe",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:49:43Z",
+        "gate":  "C_BUILD_ATTEMPT",
+        "detail":  "clang exit=1 path=C:\\Program Files\\LLVM\\bin\\clang.exe stdout=%QIKVRT_NODE_ROOT%\\qikvrt\\runtime\\win_acceptance\\build_clang.out.txt stderr=%QIKVRT_NODE_ROOT%\\qikvrt\\runtime\\win_acceptance\\build_clang.err.txt err_sample=src\\main.c:1:10: fatal error: \u0027stdio.h\u0027 file not found     1 | #include \u003cstdio.h\u003e       |          ^~~~~~~~~ 1 error generated. src\\qikvrt.c:1:10: fatal error: \u0027stdio.h\u0027 file not found     1 | #include \u003cstdio.h\u003e       |          ^~~~~~~~~ 1 error generated. ",
+        "status":  "BLOCK"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:50:14Z",
+        "gate":  "C_BUILD",
+        "detail":  "zigcc %LOCALAPPDATA%\\Microsoft\\WinGet\\Packages\\zig.zig_Microsoft.Winget.Source_8wekyb3d8bbwe\\zig-x86_64-windows-0.16.0\\zig.exe",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:50:16Z",
+        "gate":  "VERIFY_REPO",
+        "detail":  "PASS QIKVRT repository GitHub seed discovery verification v2.11.1\r\nchecks=510 failures=0 articles=44",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:50:17Z",
+        "gate":  "VALIDATE_ROOT_LAYOUT",
+        "detail":  "PASS QIKVRT repository root layout validation v2.11.1\r\nchecks=9 failures=0 articles=0",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:50:18Z",
+        "gate":  "VALIDATE_LIVE_GITHUB_SEED_MANIFEST",
+        "detail":  "PASS QIKVRT GitHub seed manifest validation v2.11.1\r\nchecks=8 failures=0 articles=0",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:50:19Z",
+        "gate":  "VALIDATE_STATIC_LIVE_EVIDENCE",
+        "detail":  "PASS QIKVRT live evidence file validation v2.11.1\r\nchecks=10 failures=0 articles=0",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:50:20Z",
+        "gate":  "C_SELFTEST_MULTICAST",
+        "detail":  "PASS QIKVRT multicast selftest v2.11.1\r\nchecks=19 failures=0 articles=0",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:50:21Z",
+        "gate":  "C_SELFTEST_ONTOLOGY",
+        "detail":  "PASS QIKVRT ontology selftest v2.11.1\r\nchecks=5 failures=0 articles=0",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:50:22Z",
+        "gate":  "C_SELFTEST_GOVERNANCE",
+        "detail":  "PASS QIKVRT constitutional governance selftest v2.11.1\r\nchecks=15 failures=0 articles=0",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:50:23Z",
+        "gate":  "C_SELFTEST_ACTIVE",
+        "detail":  "PASS QIKVRT authorized active layer selftest v2.11.1\r\nchecks=14 failures=0 articles=0",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:50:24Z",
+        "gate":  "C_SELFTEST_WATCHDOG",
+        "detail":  "PASS QIKVRT watchdog keepalive selftest v2.11.1\r\nchecks=26 failures=0 articles=0",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:50:25Z",
+        "gate":  "C_SELFTEST_BOOTSTRAP",
+        "detail":  "PASS QIKVRT bootstrapper GUID selftest v2.11.1\r\nchecks=16 failures=0 articles=0",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:50:26Z",
+        "gate":  "C_SELFTEST_TCPIP_AUTONOMY",
+        "detail":  "PASS QIKVRT TCP/IP autonomy sanity selftest v2.11.1\r\nchecks=21 failures=0 articles=0",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:50:27Z",
+        "gate":  "C_SELFTEST_DAMAGE_CONTAINMENT",
+        "detail":  "PASS QIKVRT damage containment selftest v2.11.1\r\nchecks=9 failures=0 articles=0",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:50:28Z",
+        "gate":  "C_SELFTEST_AUTONOMOUS_DISCOVERY",
+        "detail":  "PASS QIKVRT autonomous discovery operation selftest v2.11.1\r\nchecks=12 failures=0 articles=0",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:50:29Z",
+        "gate":  "C_SELFTEST_GITHUB_SEED_DISCOVERY",
+        "detail":  "PASS QIKVRT GitHub seed discovery selftest v2.11.1\r\nchecks=17 failures=0 articles=0",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:50:30Z",
+        "gate":  "C_SELFTEST_REAL_GITHUB_SEED_INTEGRATION",
+        "detail":  "PASS QIKVRT real GitHub seed integration selftest v2.11.1\r\nchecks=21 failures=0 articles=0",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:50:31Z",
+        "gate":  "C_SELFTEST_ZIP_LAYOUT",
+        "detail":  "PASS QIKVRT ZIP layout compatibility selftest v2.11.1\r\nchecks=12 failures=0 articles=0",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:50:32Z",
+        "gate":  "C_SELFTEST_WINDOWS_SHELL_ZIP",
+        "detail":  "PASS QIKVRT Windows Shell ZIP compatibility selftest v2.11.1\r\nchecks=12 failures=0 articles=0",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:50:33Z",
+        "gate":  "C_SELFTEST_SHORT_PATH",
+        "detail":  "PASS QIKVRT short path package selftest v2.11.1\r\nchecks=12 failures=0 articles=0",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:50:34Z",
+        "gate":  "C_SELFTEST_LIVE_EVIDENCE",
+        "detail":  "PASS QIKVRT live evidence closure selftest v2.11.1\r\nchecks=12 failures=0 articles=0",
+        "status":  "PASS"
+    },
+    {
+        "timestamp_utc":  "2026-07-07T15:50:35Z",
+        "gate":  "C_SELFTEST_CLAIM_MATRIX",
+        "detail":  "PASS QIKVRT article claim matrix selftest v2.11.1\r\nchecks=10 failures=0 articles=0",
+        "status":  "PASS"
+    }
+]

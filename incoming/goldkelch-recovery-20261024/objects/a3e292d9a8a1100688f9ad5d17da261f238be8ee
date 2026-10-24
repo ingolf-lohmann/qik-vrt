@@ -1,0 +1,8 @@
+{
+  "manifest": "QIKVRT_REST_API_CONTRACT_MANIFEST",
+  "version": "2.11.9",
+  "api": "QIKVRT REST API contract",
+  "request_response": "JSON",
+  "traceability": "REQUIRED",
+  "authorization": "REQUIRED_FOR_MUTATING_CALLS"
+}

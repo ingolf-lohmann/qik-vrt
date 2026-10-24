@@ -1,0 +1,1063 @@
+{
+  "schema": "qikvrt_recovered_source_page_v1",
+  "entries": [
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 662,
+      "source_blob": "3d2fa2b418bd61b8322b74cbf828536b2938c4b4",
+      "original_path": "incoming/qikvrt_payloads/20260708T151736Z/payload/QIKVRT_V2_13_4AO_GENERIC_PAYLOAD_UPLOAD_KIT_WSH_NO_PS_NO_GIT/README.md",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T152348Z/payload/QIKVRT_V2_13_4AO_GENERIC_PAYLOAD_UPLOAD_KIT_WSH_NO_PS_NO_GIT/README.md"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 642,
+      "source_blob": "040587bda7fad14d429e72ce8a66a1f9e2af84d5",
+      "original_path": "incoming/qikvrt_payloads/20260708T151736Z/payload/QIKVRT_V2_13_4AO_GENERIC_PAYLOAD_UPLOAD_KIT_WSH_NO_PS_NO_GIT/README_DE.md",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T152348Z/payload/QIKVRT_V2_13_4AO_GENERIC_PAYLOAD_UPLOAD_KIT_WSH_NO_PS_NO_GIT/README_DE.md"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 595,
+      "source_blob": "a5bf12555e745ea67069235a3723c4ca59b4551b",
+      "original_path": "incoming/qikvrt_payloads/20260708T151736Z/payload/QIKVRT_V2_13_4AO_GENERIC_PAYLOAD_UPLOAD_KIT_WSH_NO_PS_NO_GIT/README_EN.md",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T152348Z/payload/QIKVRT_V2_13_4AO_GENERIC_PAYLOAD_UPLOAD_KIT_WSH_NO_PS_NO_GIT/README_EN.md"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 737,
+      "source_blob": "e94f888c8a44badb6d36885c4be69c47b48b08c3",
+      "original_path": "incoming/qikvrt_payloads/20260708T151736Z/payload/QIKVRT_V2_13_4AO_GENERIC_PAYLOAD_UPLOAD_KIT_WSH_NO_PS_NO_GIT/SHA256SUMS.txt",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T152348Z/payload/QIKVRT_V2_13_4AO_GENERIC_PAYLOAD_UPLOAD_KIT_WSH_NO_PS_NO_GIT/SHA256SUMS.txt"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 840,
+      "source_blob": "c934763dbf740305f21ccf2aec7c4c1c3cfb8596",
+      "original_path": "incoming/qikvrt_payloads/20260708T151736Z/payload/QIKVRT_V2_13_4AO_GENERIC_PAYLOAD_UPLOAD_KIT_WSH_NO_PS_NO_GIT/START_HIER_QIKVRT_UPLOAD.cmd",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T152348Z/payload/QIKVRT_V2_13_4AO_GENERIC_PAYLOAD_UPLOAD_KIT_WSH_NO_PS_NO_GIT/START_HIER_QIKVRT_UPLOAD.cmd"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 162,
+      "source_blob": "e5c301bef78c1d68e5c641b6fa67b11b458af10d",
+      "original_path": "incoming/qikvrt_payloads/20260708T151736Z/payload/QIKVRT_V2_13_4AO_GENERIC_PAYLOAD_UPLOAD_KIT_WSH_NO_PS_NO_GIT/payload/PUT_FILES_OR_FOLDERS_HERE.txt",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T152348Z/payload/QIKVRT_V2_13_4AO_GENERIC_PAYLOAD_UPLOAD_KIT_WSH_NO_PS_NO_GIT/payload/PUT_FILES_OR_FOLDERS_HERE.txt"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 983,
+      "source_blob": "d97fe0c7ca6159ba8d213b138d28be34864ba8a7",
+      "original_path": "incoming/qikvrt_payloads/20260708T151736Z/payload/QIKVRT_V2_13_4AO_GENERIC_PAYLOAD_UPLOAD_KIT_WSH_NO_PS_NO_GIT/tests/test_4ao_contract.sh",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T152348Z/payload/QIKVRT_V2_13_4AO_GENERIC_PAYLOAD_UPLOAD_KIT_WSH_NO_PS_NO_GIT/tests/test_4ao_contract.sh"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 13751,
+      "source_blob": "23e4036787b42517f6ba0b1d03f790568a20b8f9",
+      "original_path": "incoming/qikvrt_payloads/20260708T151736Z/payload/QIKVRT_V2_13_4AO_GENERIC_PAYLOAD_UPLOAD_KIT_WSH_NO_PS_NO_GIT/tools/qikvrt_upload_wsh.js",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T152348Z/payload/QIKVRT_V2_13_4AO_GENERIC_PAYLOAD_UPLOAD_KIT_WSH_NO_PS_NO_GIT/tools/qikvrt_upload_wsh.js"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 5471,
+      "source_blob": "ef2d117ece18f367dbb3ebef8650709a3307d33c",
+      "original_path": "incoming/qikvrt_payloads/20260708T151736Z/registry/QIKVRT_PAYLOAD_MANIFEST.json",
+      "object_path": "objects/ef2d117ece18f367dbb3ebef8650709a3307d33c",
+      "sha256": "66db372e577ed75396395461d01eb81be7086b0a73e4f34b349caf08aa709195",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 1690,
+      "source_blob": "2967d269e9666a05dec82f5bd40601902e15e10e",
+      "original_path": "incoming/qikvrt_payloads/20260708T151736Z/registry/QIKVRT_PAYLOAD_MANIFEST.md",
+      "object_path": "objects/2967d269e9666a05dec82f5bd40601902e15e10e",
+      "sha256": "20e8125d2c052c8780a0d54db0645c085bfde61bcf9bb97d556e8cc7eecd8714",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 292,
+      "source_blob": "6b2fe2eae4547859f185c319f0c61ed7f3bf08cd",
+      "original_path": "incoming/qikvrt_payloads/20260708T164229Z/evidence/QIKVRT_UPLOAD_EVIDENCE.json",
+      "object_path": "objects/6b2fe2eae4547859f185c319f0c61ed7f3bf08cd",
+      "sha256": "e60ba641923cef21d3f90bd106aa70b0579f19634e5020a108bb01ad677b8bfa",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 185,
+      "source_blob": "3a1b4f06b1539993a696dd24d5aa76666df6c506",
+      "original_path": "incoming/qikvrt_payloads/20260708T164229Z/evidence/QIKVRT_UPLOAD_EVIDENCE.md",
+      "object_path": "objects/3a1b4f06b1539993a696dd24d5aa76666df6c506",
+      "sha256": "e698bc18aa8e074d6d652f770bdb0b9319ccfa9f8c19d7f1845ee8180ee7f296",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 681,
+      "source_blob": "ae6df947d8de6b943e9fe95ef83ac8e9f1b9f13a",
+      "original_path": "incoming/qikvrt_payloads/20260708T164229Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/CONTRACT_STATUS.md",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/CONTRACT_STATUS.md"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 540,
+      "source_blob": "d96543b1714f592548fa4ed4b75d52855b61b755",
+      "original_path": "incoming/qikvrt_payloads/20260708T164229Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/COPYRIGHT_AND_LICENSE_ACCEPTANCE.md",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/COPYRIGHT_AND_LICENSE_ACCEPTANCE.md"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 1201,
+      "source_blob": "1b1b970e6cdadd2956a7469bd78ed3a9c85e82c2",
+      "original_path": "incoming/qikvrt_payloads/20260708T164229Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/README.md",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/README.md",
+        "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/README_DE.md"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 1201,
+      "source_blob": "1b1b970e6cdadd2956a7469bd78ed3a9c85e82c2",
+      "original_path": "incoming/qikvrt_payloads/20260708T164229Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/README_DE.md",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/README.md",
+        "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/README_DE.md"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 1031,
+      "source_blob": "488b554d67a65a733a729ce6b7c201f1eac78d51",
+      "original_path": "incoming/qikvrt_payloads/20260708T164229Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/README_EN.md",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/README_EN.md"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 2422,
+      "source_blob": "d838b9ad1037e44e714274b38cf8f0dd88b264e6",
+      "original_path": "incoming/qikvrt_payloads/20260708T164229Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/SHA256SUMS.txt",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/SHA256SUMS.txt"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 796,
+      "source_blob": "5a16a3b50a245777d896551df55ad248acae94da",
+      "original_path": "incoming/qikvrt_payloads/20260708T164229Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/START_HIER_AUTONOMOUS_MESH_INSTALL.cmd",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/START_HIER_AUTONOMOUS_MESH_INSTALL.cmd"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 849,
+      "source_blob": "7767911c9cc0cf6cf6960553b40784d784ea29ae",
+      "original_path": "incoming/qikvrt_payloads/20260708T164229Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/node/.github/workflows/qikvrt_node_health_publish.yml",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/node/.github/workflows/qikvrt_node_health_publish.yml"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 879,
+      "source_blob": "4bbf008b853ce3f1436b1b924fabccb6c77cc052",
+      "original_path": "incoming/qikvrt_payloads/20260708T164229Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/node/.github/workflows/qikvrt_node_seed_status_watch.yml",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/node/.github/workflows/qikvrt_node_seed_status_watch.yml"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 604,
+      "source_blob": "8a9a6643ff87b85e1b9272e8a02a20ea177b6be8",
+      "original_path": "incoming/qikvrt_payloads/20260708T164229Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/node/docs/QIKVRT_AUTONOMOUS_MESH_OPERATIONS.md",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/node/docs/QIKVRT_AUTONOMOUS_MESH_OPERATIONS.md"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 283,
+      "source_blob": "a6d70891c44b57db5dadd42b063c0e309bb03c62",
+      "original_path": "incoming/qikvrt_payloads/20260708T164229Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/node/qikvrt/runtime/onboarding/NODE_HANDSHAKE_CONFIG.tsv",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/node/qikvrt/runtime/onboarding/NODE_HANDSHAKE_CONFIG.tsv"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 417,
+      "source_blob": "df4672c19ae663a2013b4e9b076cf1f130eb4535",
+      "original_path": "incoming/qikvrt_payloads/20260708T164229Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/node/tools/qikvrt_handshake_core.c",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/node/tools/qikvrt_handshake_core.c",
+        "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/seed/tools/qikvrt_handshake_core.c"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 1319,
+      "source_blob": "10e2df2c035f0982b9e78669950cbe9ef85984b4",
+      "original_path": "incoming/qikvrt_payloads/20260708T164229Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/node/tools/qikvrt_node_health_publish.sh",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/node/tools/qikvrt_node_health_publish.sh"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 1997,
+      "source_blob": "31a3b8613d871cf6134531ef474f1e5e7569919a",
+      "original_path": "incoming/qikvrt_payloads/20260708T164229Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/node/tools/qikvrt_node_seed_status_watch.sh",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/node/tools/qikvrt_node_seed_status_watch.sh"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 873,
+      "source_blob": "34485198e7ff85b618f34e05a95c02b414f69462",
+      "original_path": "incoming/qikvrt_payloads/20260708T164229Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/seed/.github/workflows/qikvrt_seed_mesh_maintenance.yml",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/seed/.github/workflows/qikvrt_seed_mesh_maintenance.yml"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 883,
+      "source_blob": "35a7a42bb2eeb0eaa6ed6ea678c8685bd976094f",
+      "original_path": "incoming/qikvrt_payloads/20260708T164229Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/seed/.github/workflows/qikvrt_seed_registry_acceptance.yml",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/seed/.github/workflows/qikvrt_seed_registry_acceptance.yml"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 634,
+      "source_blob": "a4cb91573d9ccce924622bdfe2f3554ee4899b69",
+      "original_path": "incoming/qikvrt_payloads/20260708T164229Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/seed/docs/QIKVRT_AUTONOMOUS_MESH_OPERATIONS.md",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/seed/docs/QIKVRT_AUTONOMOUS_MESH_OPERATIONS.md"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 224,
+      "source_blob": "f68e2fe4ec7c9b7d119e8c7b00c81b10d6c228fb",
+      "original_path": "incoming/qikvrt_payloads/20260708T164229Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/seed/registry/KNOWN_NODE_REQUESTS.tsv",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/seed/registry/KNOWN_NODE_REQUESTS.tsv"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 417,
+      "source_blob": "df4672c19ae663a2013b4e9b076cf1f130eb4535",
+      "original_path": "incoming/qikvrt_payloads/20260708T164229Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/seed/tools/qikvrt_handshake_core.c",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/node/tools/qikvrt_handshake_core.c",
+        "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/seed/tools/qikvrt_handshake_core.c"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 3127,
+      "source_blob": "96af635aa7a373624510abc7412b7fc213ad6d26",
+      "original_path": "incoming/qikvrt_payloads/20260708T164229Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/seed/tools/qikvrt_seed_mesh_maintenance.sh",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/seed/tools/qikvrt_seed_mesh_maintenance.sh"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 2741,
+      "source_blob": "cb2c987f778bd3ad7a2ae4d9de58d55aceed8faa",
+      "original_path": "incoming/qikvrt_payloads/20260708T164229Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/seed/tools/qikvrt_seed_registry_acceptance.sh",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/seed/tools/qikvrt_seed_registry_acceptance.sh"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 3349,
+      "source_blob": "6d49db17837eeaac20ba185e419415a47378a240",
+      "original_path": "incoming/qikvrt_payloads/20260708T164229Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/tests/run_all_posix.sh",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/tests/run_all_posix.sh"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 14693,
+      "source_blob": "a4dcf228af24da143af8a3ba32cde35a1df20ead",
+      "original_path": "incoming/qikvrt_payloads/20260708T164229Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/tools/qikvrt_4at_installer.js",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/tools/qikvrt_4at_installer.js"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 14985,
+      "source_blob": "ef547faa916063b26b889dc3f446ea52b853ea80",
+      "original_path": "incoming/qikvrt_payloads/20260708T164229Z/registry/QIKVRT_PAYLOAD_MANIFEST.json",
+      "object_path": "objects/ef547faa916063b26b889dc3f446ea52b853ea80",
+      "sha256": "514e73ce405baee2c9623c5d005321dd3ad1afb32ba435ddda36ea1148967522",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 4530,
+      "source_blob": "9530c114d510622538de7ad79907c1d1e70dc8f0",
+      "original_path": "incoming/qikvrt_payloads/20260708T164229Z/registry/QIKVRT_PAYLOAD_MANIFEST.md",
+      "object_path": "objects/9530c114d510622538de7ad79907c1d1e70dc8f0",
+      "sha256": "6929caa19e2a652fe81118d3703a994d4ae25986e81f0d89fae9c49900e9cf0e",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 292,
+      "source_blob": "5b83100d2f75aeb2a34e7653fa5fd8e4297dcf1c",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/evidence/QIKVRT_UPLOAD_EVIDENCE.json",
+      "object_path": "objects/5b83100d2f75aeb2a34e7653fa5fd8e4297dcf1c",
+      "sha256": "5ae724de4199e99f5f8b222604c4bebd43574b576fc54badc0ea5f5b9c7236ce",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 185,
+      "source_blob": "b142e3ada0e93a4b1de7efa91453d5dc96775bc4",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/evidence/QIKVRT_UPLOAD_EVIDENCE.md",
+      "object_path": "objects/b142e3ada0e93a4b1de7efa91453d5dc96775bc4",
+      "sha256": "b05b8c22b3863d37af224f2a0252c5a8fccb9f2410db24dee3b4a3710788c952",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 546,
+      "source_blob": "205fbc7a012fcd5796c7707e1e58c244eb1fc3ce",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/CONTRACT_STATUS.md",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/CONTRACT_STATUS.md"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 380,
+      "source_blob": "f4272bac1e733713d41a5da8caea6ece0b4b8b0f",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/COPYRIGHT_AND_LICENSE_ACCEPTANCE.md",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/COPYRIGHT_AND_LICENSE_ACCEPTANCE.md"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 747,
+      "source_blob": "252fe3062cf082e183a406ab47dd632edc0c2a3d",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/README.md",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/README.md",
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/README_DE.md",
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/README_EN.md"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 747,
+      "source_blob": "252fe3062cf082e183a406ab47dd632edc0c2a3d",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/README_DE.md",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/README.md",
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/README_DE.md",
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/README_EN.md"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 747,
+      "source_blob": "252fe3062cf082e183a406ab47dd632edc0c2a3d",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/README_EN.md",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/README.md",
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/README_DE.md",
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/README_EN.md"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 4361,
+      "source_blob": "5e1e531a1f1db19626f372de7c4ea77a03ea1996",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/SHA256SUMS.txt",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/SHA256SUMS.txt"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 787,
+      "source_blob": "09329c099c5c3ded967d3756d309d9cf6c6163dd",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/START_HIER_PRODUCTIZATION_HARDENING_INSTALL.cmd",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/START_HIER_PRODUCTIZATION_HARDENING_INSTALL.cmd"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 1418,
+      "source_blob": "c36ee829d894c013bb16da62bad3f0370f9212a5",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/.github/workflows/qikvrt_node_health_publish.yml",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/.github/workflows/qikvrt_node_health_publish.yml"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 1430,
+      "source_blob": "5ad3ef128d0e33eec83c7f500feff4cc3395f740",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/.github/workflows/qikvrt_node_renew_registration.yml",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/.github/workflows/qikvrt_node_renew_registration.yml"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 1428,
+      "source_blob": "aba843049b31604b57885b81d8874a3baffe0039",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/.github/workflows/qikvrt_node_seed_status_watch.yml",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/.github/workflows/qikvrt_node_seed_status_watch.yml"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 1391,
+      "source_blob": "4e9528b20ed6c417642e49a3ca0dc9c3e10fa3c2",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/.github/workflows/qikvrt_node_self_audit.yml",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/.github/workflows/qikvrt_node_self_audit.yml"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 320,
+      "source_blob": "22f7f14335d0c0c01b90be645c3af598df36ee13",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/docs/QIKVRT_AUTONOMOUS_MESH_OPERATIONS.md",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/docs/QIKVRT_AUTONOMOUS_MESH_OPERATIONS.md",
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/docs/QIKVRT_AUTONOMOUS_MESH_OPERATIONS.md"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 270,
+      "source_blob": "ebc364f41e5609639ab255264cf57702170a612f",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/docs/QIKVRT_COMMERCIAL_OFFERING.md",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/docs/QIKVRT_COMMERCIAL_OFFERING.md",
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/docs/QIKVRT_COMMERCIAL_OFFERING.md"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 468,
+      "source_blob": "ff0919524ef955626856a68420b9e6e1654b28d1",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/docs/QIKVRT_GITHUB_APP_TARGET_BLUEPRINT.md",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/docs/QIKVRT_GITHUB_APP_TARGET_BLUEPRINT.md",
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/docs/QIKVRT_GITHUB_APP_TARGET_BLUEPRINT.md"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 392,
+      "source_blob": "5520691b4b129b1223c82df6f72a118e4605681f",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/docs/QIKVRT_PRODUCTIZATION_ROADMAP.md",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/docs/QIKVRT_PRODUCTIZATION_ROADMAP.md",
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/docs/QIKVRT_PRODUCTIZATION_ROADMAP.md"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 381,
+      "source_blob": "409e8d4d9679cd992b909e8a1e84de8aae06c115",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/docs/QIKVRT_THREAT_MODEL.md",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/docs/QIKVRT_THREAT_MODEL.md",
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/docs/QIKVRT_THREAT_MODEL.md",
+        "incoming/qikvrt_payloads/20260708T174539Z/payload/QIKVRT_V2_13_4AV1_OPEN_MULTI_NODE_REGISTRY_REVALIDATION_ONE_COMMAND_INSTALLER/roles/node/docs/QIKVRT_THREAT_MODEL.md",
+        "incoming/qikvrt_payloads/20260708T174539Z/payload/QIKVRT_V2_13_4AV1_OPEN_MULTI_NODE_REGISTRY_REVALIDATION_ONE_COMMAND_INSTALLER/roles/seed/docs/QIKVRT_THREAT_MODEL.md"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 386,
+      "source_blob": "86a4f2b3179d29227d3726d29a867c581b5c9303",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/qikvrt/runtime/onboarding/NODE_HANDSHAKE_CONFIG.tsv",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/qikvrt/runtime/onboarding/NODE_HANDSHAKE_CONFIG.tsv",
+        "incoming/qikvrt_payloads/20260708T174539Z/payload/QIKVRT_V2_13_4AV1_OPEN_MULTI_NODE_REGISTRY_REVALIDATION_ONE_COMMAND_INSTALLER/roles/node/qikvrt/runtime/onboarding/NODE_HANDSHAKE_CONFIG.tsv"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 90,
+      "source_blob": "d6d7c57f33cc43ccf4be2779a9e86f1fef74a9f6",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/tools/qikvrt_handshake_core.c",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/tools/qikvrt_handshake_core.c",
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/tools/qikvrt_handshake_core.c"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 1688,
+      "source_blob": "ecf0eb9178cacc8665d77b872babb94d25db23c0",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/tools/qikvrt_node_health_publish.sh",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/tools/qikvrt_node_health_publish.sh"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 1666,
+      "source_blob": "2807ddfad868e824b6d283ccc1cb63bd6470e1b1",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/tools/qikvrt_node_renew_registration.sh",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/tools/qikvrt_node_renew_registration.sh"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 2329,
+      "source_blob": "a360a1c7332d1f3e977c8a8f3db56ee2f2828c8e",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/tools/qikvrt_node_seed_status_watch.sh",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/tools/qikvrt_node_seed_status_watch.sh"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 1435,
+      "source_blob": "5364659d5471511bd6635b610944332ba8d003d8",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/tools/qikvrt_node_self_audit.sh",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/tools/qikvrt_node_self_audit.sh"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 1417,
+      "source_blob": "63b248f1536e6a1726da47b5836c47c8cee9aa2a",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/.github/workflows/qikvrt_seed_dashboard_publish.yml",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/.github/workflows/qikvrt_seed_dashboard_publish.yml"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 1424,
+      "source_blob": "95b1595ccc8667dff17a15fddc40956987cac6f8",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/.github/workflows/qikvrt_seed_mesh_audit_export.yml",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/.github/workflows/qikvrt_seed_mesh_audit_export.yml"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 1418,
+      "source_blob": "84a181f812d302f5cbbb986d0ba7e8755477f383",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/.github/workflows/qikvrt_seed_mesh_maintenance.yml",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/.github/workflows/qikvrt_seed_mesh_maintenance.yml"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 1437,
+      "source_blob": "5c75020e5b99946f418927cb8e62d3c1757565b1",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/.github/workflows/qikvrt_seed_registry_acceptance.yml",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/.github/workflows/qikvrt_seed_registry_acceptance.yml"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 320,
+      "source_blob": "22f7f14335d0c0c01b90be645c3af598df36ee13",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/docs/QIKVRT_AUTONOMOUS_MESH_OPERATIONS.md",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/docs/QIKVRT_AUTONOMOUS_MESH_OPERATIONS.md",
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/docs/QIKVRT_AUTONOMOUS_MESH_OPERATIONS.md"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 270,
+      "source_blob": "ebc364f41e5609639ab255264cf57702170a612f",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/docs/QIKVRT_COMMERCIAL_OFFERING.md",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/docs/QIKVRT_COMMERCIAL_OFFERING.md",
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/docs/QIKVRT_COMMERCIAL_OFFERING.md"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 468,
+      "source_blob": "ff0919524ef955626856a68420b9e6e1654b28d1",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/docs/QIKVRT_GITHUB_APP_TARGET_BLUEPRINT.md",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/docs/QIKVRT_GITHUB_APP_TARGET_BLUEPRINT.md",
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/docs/QIKVRT_GITHUB_APP_TARGET_BLUEPRINT.md"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 392,
+      "source_blob": "5520691b4b129b1223c82df6f72a118e4605681f",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/docs/QIKVRT_PRODUCTIZATION_ROADMAP.md",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/docs/QIKVRT_PRODUCTIZATION_ROADMAP.md",
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/docs/QIKVRT_PRODUCTIZATION_ROADMAP.md"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 381,
+      "source_blob": "409e8d4d9679cd992b909e8a1e84de8aae06c115",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/docs/QIKVRT_THREAT_MODEL.md",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/docs/QIKVRT_THREAT_MODEL.md",
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/docs/QIKVRT_THREAT_MODEL.md",
+        "incoming/qikvrt_payloads/20260708T174539Z/payload/QIKVRT_V2_13_4AV1_OPEN_MULTI_NODE_REGISTRY_REVALIDATION_ONE_COMMAND_INSTALLER/roles/node/docs/QIKVRT_THREAT_MODEL.md",
+        "incoming/qikvrt_payloads/20260708T174539Z/payload/QIKVRT_V2_13_4AV1_OPEN_MULTI_NODE_REGISTRY_REVALIDATION_ONE_COMMAND_INSTALLER/roles/seed/docs/QIKVRT_THREAT_MODEL.md"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 328,
+      "source_blob": "2c57c818d81c66164f2c7cebb52ec7e4f27f1a70",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/registry/KNOWN_NODE_REQUESTS.tsv",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/registry/KNOWN_NODE_REQUESTS.tsv"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 102,
+      "source_blob": "1da1bfe4097d774db5e48b0f07ab3fa20529d954",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/registry/NODE_POLICY.tsv",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/registry/NODE_POLICY.tsv"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 90,
+      "source_blob": "d6d7c57f33cc43ccf4be2779a9e86f1fef74a9f6",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/tools/qikvrt_handshake_core.c",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/node/tools/qikvrt_handshake_core.c",
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/tools/qikvrt_handshake_core.c"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 2591,
+      "source_blob": "be78c416542c7bdbdd451349d6f919002ec9e455",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/tools/qikvrt_seed_dashboard_publish.sh",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/tools/qikvrt_seed_dashboard_publish.sh"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 2135,
+      "source_blob": "603c14bab3d531d53e0a49a9e01e8a08650f60c3",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/tools/qikvrt_seed_mesh_audit_export.sh",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/tools/qikvrt_seed_mesh_audit_export.sh"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 6064,
+      "source_blob": "1d78b4f3e1e505b3b43c1c92184522e81d33f12a",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/tools/qikvrt_seed_mesh_maintenance.sh",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/tools/qikvrt_seed_mesh_maintenance.sh"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 3897,
+      "source_blob": "cf7a12d7a072a97dfbcc3c7311286af591285429",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/tools/qikvrt_seed_registry_acceptance.sh",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/roles/seed/tools/qikvrt_seed_registry_acceptance.sh"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 2095,
+      "source_blob": "6f3ca06b19935864f8c0124d1cfda6ae5f8a602b",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/tests/run_all_posix.sh",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/tests/run_all_posix.sh"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 17079,
+      "source_blob": "c0350c6a2acdecdf0c2e5ae58658e4c8d6fbee10",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/tools/qikvrt_4au_installer.js",
+      "authority_locations": [
+        "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/tools/qikvrt_4au_installer.js"
+      ],
+      "disposition": "CONTENT_ALREADY_PRESENT_AT_AUTHORITY_PATH"
+    },
+    {
+      "mode": "100644",
+      "first_source_ref": "refs/tags/v2.13.4au1-node-productization",
+      "source_commit": "a3ca788666f46e0c8254cbdbf6ab23a8fcc5b50a",
+      "ref_count": 2,
+      "bytes": 27535,
+      "source_blob": "e56e4af4dd60a089d380a35e7fbcb3b4debedef6",
+      "original_path": "incoming/qikvrt_payloads/20260708T171327Z/registry/QIKVRT_PAYLOAD_MANIFEST.json",
+      "object_path": "objects/e56e4af4dd60a089d380a35e7fbcb3b4debedef6",
+      "sha256": "d73426f594b9f93d40e0a40f619dc3b035650ced04541354a6df9c30c626a40f",
+      "disposition": "PRESERVED_INACTIVE_SOURCE_NOT_EXECUTED"
+    }
+  ]
+}

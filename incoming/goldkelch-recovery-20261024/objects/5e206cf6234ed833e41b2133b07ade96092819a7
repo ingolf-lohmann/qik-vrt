@@ -1,0 +1,201 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Ingolf Lohmann.
+name: QIKVRT construct Mirror candidate Authority 7d87 from afcd
+
+on:
+  push:
+    branches:
+      - execution/history-preserving-mirror-sync-authority-7d87-from-afcd-v1
+
+permissions:
+  contents: write
+
+concurrency:
+  group: qikvrt-construct-mirror-authority-7d87-from-afcd-v1
+  cancel-in-progress: false
+
+jobs:
+  construct:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      AUTHORITY_REPOSITORY: Goldkelch/qik-vrt
+      AUTHORITY_MAIN: 7d87a6003135a6e3efbca34b2d898967d7f66018
+      MIRROR_PARENT: afcd0255aab6bc5ad18275a2d91516688a41e302
+      EXECUTION_BRANCH: execution/history-preserving-mirror-sync-authority-7d87-from-afcd-v1
+      TARGET_BRANCH: sync/accepted-six-candidates-authority-7d87-from-afcd-v1
+      EXECUTOR_PATH: .github/workflows/qikvrt_construct_mirror_authority_7d87_from_afcd.yml
+      RECEIPT_PATH: evidence/runtime/HISTORY_PRESERVING_MIRROR_CANDIDATE_7D87_FROM_AFCD.json
+      CANDIDATE_TIMESTAMP: '2026-07-30T08:05:00Z'
+    steps:
+      - name: Check out exact trigger head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Verify frozen transport and both main leases
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git merge-base --is-ancestor "$MIRROR_PARENT" HEAD
+          observed="$(git diff --name-only "$MIRROR_PARENT" HEAD | sort)"
+          expected="$(printf '%s\n' \
+            "$EXECUTOR_PATH" \
+            REPOSITORY_FILE_MANIFEST.json \
+            REPOSITORY_FILE_MANIFEST.json.sha256 \
+            SHA256SUMS.txt | sort)"
+          test "$observed" = "$expected"
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$MIRROR_PARENT"
+          test "$(git ls-remote https://github.com/${AUTHORITY_REPOSITORY}.git refs/heads/main | cut -f1)" = "$AUTHORITY_MAIN"
+
+      - name: Construct exact one-parent candidate and seed Mirror object store
+        id: construct
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p mirror-candidate-output
+
+          authority_url="https://github.com/${AUTHORITY_REPOSITORY}.git"
+          git fetch --no-tags --force "$authority_url" "$AUTHORITY_MAIN"
+          test "$(git rev-parse FETCH_HEAD)" = "$AUTHORITY_MAIN"
+
+          authority_tree="$(git rev-parse "${AUTHORITY_MAIN}^{tree}")"
+          mirror_parent_tree="$(git rev-parse "${MIRROR_PARENT}^{tree}")"
+          export GIT_AUTHOR_NAME='qik-vrt mirror synchronizer'
+          export GIT_AUTHOR_EMAIL='41898282+github-actions[bot]@users.noreply.github.com'
+          export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
+          export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
+          export GIT_AUTHOR_DATE="$CANDIDATE_TIMESTAMP"
+          export GIT_COMMITTER_DATE="$CANDIDATE_TIMESTAMP"
+
+          candidate="$(printf '%s\n\n%s\n%s\n%s\n\n%s\n' \
+            'Synchronize owner-accepted six corrected corpus candidates from Authority' \
+            "Authority main: ${AUTHORITY_MAIN}" \
+            "Mirror parent: ${MIRROR_PARENT}" \
+            "Authority tree: ${authority_tree}" \
+            'History-preserving candidate only. No Mirror promotion, reciprocal equality, Zenodo mutation, repository-wide PASS, FINAL_PASS, or EFFECT_ACK_DONE is claimed.' \
+            | git commit-tree "$authority_tree" -p "$MIRROR_PARENT")"
+
+          test "$(git rev-parse "${candidate}^{tree}")" = "$authority_tree"
+          test "$(git show -s --format=%P "$candidate")" = "$MIRROR_PARENT"
+          git diff --exit-code --no-renames "$AUTHORITY_MAIN" "$candidate"
+
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$MIRROR_PARENT"
+          test "$(git ls-remote "$authority_url" refs/heads/main | cut -f1)" = "$AUTHORITY_MAIN"
+
+          existing="$(git ls-remote origin "refs/heads/${TARGET_BRANCH}" | cut -f1)"
+          attached=false
+          push_status=0
+          push_output=''
+          state='CANDIDATE_OBJECT_CONSTRUCTED_REF_ATTACHMENT_PENDING'
+
+          if [ -n "$existing" ]; then
+            test "$existing" = "$candidate"
+            attached=true
+            state='EXACT_CANDIDATE_ALREADY_ATTACHED'
+          else
+            set +e
+            push_output="$(git push origin "${candidate}:refs/heads/${TARGET_BRANCH}" 2>&1)"
+            push_status=$?
+            set -e
+            printf '%s\n' "$push_output"
+            remote_after="$(git ls-remote origin "refs/heads/${TARGET_BRANCH}" | cut -f1)"
+            if [ "$remote_after" = "$candidate" ]; then
+              attached=true
+              state='CANDIDATE_CONSTRUCTED_NOT_PROMOTED'
+              push_status=0
+            elif [ -n "$remote_after" ]; then
+              echo "BLOCK: unexpected target branch value $remote_after" >&2
+              exit 2
+            fi
+          fi
+
+          printf 'AUTHORITY_TREE=%s\n' "$authority_tree"
+          printf 'MIRROR_PARENT_TREE=%s\n' "$mirror_parent_tree"
+          printf 'CANDIDATE_SHA=%s\n' "$candidate"
+          printf 'CANDIDATE_BRANCH_ATTACHED=%s\n' "$attached"
+          printf 'TARGET_PUSH_STATUS=%s\n' "$push_status"
+          git show -s --format='CANDIDATE_OBJECT tree=%T parents=%P commit=%H' "$candidate"
+
+          export AUTHORITY_TREE="$authority_tree"
+          export MIRROR_PARENT_TREE="$mirror_parent_tree"
+          export CANDIDATE_SHA="$candidate"
+          export CANDIDATE_BRANCH_ATTACHED="$attached"
+          export TARGET_PUSH_STATUS="$push_status"
+          export TARGET_PUSH_OUTPUT="$push_output"
+          export RECEIPT_STATE="$state"
+          python3 -B - <<'PY'
+          import datetime as dt
+          import json
+          import os
+          import pathlib
+
+          receipt = {
+              "schema": "qikvrt_history_preserving_mirror_candidate_receipt_v1",
+              "state": os.environ["RECEIPT_STATE"],
+              "authority_repository": os.environ["AUTHORITY_REPOSITORY"],
+              "authority_main": os.environ["AUTHORITY_MAIN"],
+              "authority_tree": os.environ["AUTHORITY_TREE"],
+              "mirror_parent": os.environ["MIRROR_PARENT"],
+              "mirror_parent_tree": os.environ["MIRROR_PARENT_TREE"],
+              "candidate_sha": os.environ["CANDIDATE_SHA"],
+              "candidate_tree": os.environ["AUTHORITY_TREE"],
+              "candidate_parents": [os.environ["MIRROR_PARENT"]],
+              "target_branch": os.environ["TARGET_BRANCH"],
+              "candidate_timestamp": os.environ["CANDIDATE_TIMESTAMP"],
+              "complete_authority_to_candidate_diff_empty": True,
+              "authority_tree_equality": True,
+              "sole_parent_verified": True,
+              "authority_main_lease_unchanged": True,
+              "mirror_main_lease_unchanged": True,
+              "branch_attached": os.environ["CANDIDATE_BRANCH_ATTACHED"] == "true",
+              "target_push_status": int(os.environ["TARGET_PUSH_STATUS"]),
+              "target_push_output": os.environ["TARGET_PUSH_OUTPUT"],
+              "constructed_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+              "mirror_promoted": False,
+              "reciprocal_equality_receipt_complete": False,
+              "zenodo_mutation_authorized": False,
+              "proof_corpus_published_on_zenodo": False,
+              "pass": False,
+              "final_pass": False,
+              "effect_ack_done": False,
+          }
+          path = pathlib.Path("mirror-candidate-output/HISTORY_PRESERVING_MIRROR_CANDIDATE_RECEIPT.json")
+          path.write_text(
+              json.dumps(receipt, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+              encoding="utf-8",
+          )
+          print(json.dumps(receipt, ensure_ascii=False, sort_keys=True))
+          PY
+
+      - name: Persist constructor receipt on execution branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp mirror-candidate-output/HISTORY_PRESERVING_MIRROR_CANDIDATE_RECEIPT.json /tmp/qikvrt-mirror-candidate-receipt.json
+          git fetch --no-tags origin "refs/heads/${EXECUTION_BRANCH}"
+          git checkout -B receipt-persist FETCH_HEAD
+          mkdir -p "$(dirname "$RECEIPT_PATH")" mirror-candidate-output
+          cp /tmp/qikvrt-mirror-candidate-receipt.json "$RECEIPT_PATH"
+          cp /tmp/qikvrt-mirror-candidate-receipt.json mirror-candidate-output/HISTORY_PRESERVING_MIRROR_CANDIDATE_RECEIPT.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- "$RECEIPT_PATH"
+          if git diff --cached --quiet; then
+            echo 'Constructor receipt is already byte-current.'
+          else
+            git commit -m 'evidence: persist exact Mirror candidate constructor receipt'
+            git push origin "HEAD:${EXECUTION_BRANCH}"
+          fi
+
+      - name: Upload immutable constructor receipt
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qikvrt-history-preserving-mirror-candidate-7d87-from-afcd
+          retention-days: 30
+          if-no-files-found: error
+          path: mirror-candidate-output/**

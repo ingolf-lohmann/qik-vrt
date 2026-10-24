@@ -1,0 +1,65 @@
+name: QIKVRT Node Git Tag Release
+
+on:
+  push:
+    tags:
+      - 'v2.13.4-node'
+      - 'v2.13.4-node-*'
+      - 'qikvrt-node-*'
+
+permissions:
+  contents: write
+
+jobs:
+  qikvrt-node-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout tagged node repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate node role and required release files
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f qikvrt/config/ROLE.json
+          grep -q '"role"[[:space:]]*:[[:space:]]*"node"' qikvrt/config/ROLE.json
+          test -f SHA256SUMS.txt
+          test -f .gitattributes
+          test -f tools/gh_deploy.ps1
+          test -f tools/gh_deploy.sh
+
+      - name: Create deterministic Git archive asset
+        shell: bash
+        run: |
+          set -euo pipefail
+          ASSET=qv2134_node.zip
+          git archive --format=zip --output="$ASSET" HEAD
+          sha256sum "$ASSET" | tee "$ASSET.sha256"
+          {
+            echo "QIKVRT node release created by target-repository GitHub Actions."
+            echo ""
+            echo "Tag: ${GITHUB_REF_NAME}"
+            echo "Commit: ${GITHUB_SHA}"
+            echo "Asset: ${ASSET}"
+            echo "SHA256: $(awk '{print $1}' "$ASSET.sha256")"
+            echo ""
+            echo "Local direct GitHub Release REST create/upload is intentionally disabled in 2.13.4P."
+          } > RELEASE_NOTES.md
+
+      - name: Create or update GitHub Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TAG="${GITHUB_REF_NAME}"
+          TITLE="QIKVRT V2.13.4 node repository"
+          ASSET=qv2134_node.zip
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$ASSET" "$ASSET.sha256" --clobber
+            gh release edit "$TAG" --title "$TITLE" --notes-file RELEASE_NOTES.md
+          else
+            gh release create "$TAG" "$ASSET" "$ASSET.sha256" --title "$TITLE" --notes-file RELEASE_NOTES.md
+          fi

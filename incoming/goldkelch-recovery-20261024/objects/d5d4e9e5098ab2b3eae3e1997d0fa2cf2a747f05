@@ -1,0 +1,106 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt"
+  },
+  "schema": "qikvrt_new_mirror_bootstrap_contract_v1",
+  "contract_id": "new-mirror-bootstrap-20261004-v1",
+  "succession_epoch": "authority-succession-20261004-v1",
+  "authority_repository": "ingolf-lohmann/qik-vrt",
+  "owner_directive": "state/authorization/delegations/OWNER_AUTHORITY_SUCCESSION_AND_NEW_MIRROR_20261004_V1.json",
+  "state": "HOLD_NEW_MIRROR_IDENTITY_AND_API_CREATION_CAPABILITY",
+  "target": {
+    "repository": null,
+    "owner_or_git_node": null,
+    "url": null,
+    "visibility": null,
+    "owner_target_verified": false
+  },
+  "execution_capability": {
+    "observed_at": "2026-10-04T17:27:33Z",
+    "executing_client": "OpenAI Codex / GitHub connector",
+    "api_repository_creation_callable": false,
+    "creation_operation": null,
+    "target_permission_verified": false,
+    "available_api_native_git_writes": [
+      "create_blob",
+      "create_tree",
+      "create_commit",
+      "create_branch",
+      "update_ref"
+    ],
+    "observation_is_not_a_platform_wide_capability_claim": true,
+    "fresh_capability_and_permission_reobservation_required": true
+  },
+  "source_observation": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "default_branch": "main",
+    "observed_main_head": "223d9cd851ab2b3753b40468b540b2fcc776f5b0",
+    "candidate_predecessor_head": "410dbaba6098074f05e2a5b4da7ca94d7edb90a3",
+    "candidate_predecessor_tree": "99da5a0de002c8fb1cf20e23a638e42ffc15eda0",
+    "source_is_not_frozen_bootstrap_authority": true,
+    "fresh_source_head_tree_and_governance_required": true
+  },
+  "reuse": {
+    "executor": "tools/qikvrt_workflow_executor.py",
+    "seed_registry": "tools/qikvrt_seed_common.py",
+    "registration_policy": "registry/NODE_DISCOVERY_POLICY.json",
+    "registration_queue": "registry/node_request_queue",
+    "replication_model": "SOURCE_OBJECT_HISTORY_PLUS_ROLE_LOCAL_SUCCESSORS",
+    "single_writer_order": [
+      "AUTHORITY",
+      "MIRROR",
+      "MESH_NODE"
+    ],
+    "continuity_receipt_path_contract": "state/autonomy/WORKFLOW_EXECUTOR_MESH_NODE_RECEIPT_V1.json",
+    "continuity_receipt_schema": "qikvrt_workflow_executor_mesh_node_receipt_v1"
+  },
+  "connection_order": [
+    "RESOLVE_OWNER_TARGET",
+    "VERIFY_API_CREATION_CAPABILITY_AND_TARGET_PERMISSION",
+    "REOBSERVE_ACCEPTED_AUTHORITY_HEAD_TREE_AND_GOVERNANCE",
+    "CREATE_ONCE_OR_VERIFY_EXISTING_TARGET",
+    "REPLICATE_EXACT_SOURCE_OBJECTS_AND_ANCESTRY_API_NATIVELY",
+    "BIND_FRESH_NODE_IDENTITY_AND_SUCCESSION_EPOCH",
+    "INITIALIZE_NEW_EPOCH_REGISTRY_AND_ROLE_LOCAL_ONBOARDING",
+    "BIND_CURRENT_AUTHORITY_CONTINUITY_RECEIPT",
+    "SEED_STRUCTURAL_ACCEPTANCE",
+    "EXECUTE_FRESH_EXACT_HEAD_GATES",
+    "READBACK_MIRROR_HEAD_TREE_HISTORY_AND_ENDPOINT",
+    "PERSIST_RECIPROCAL_SCOPED_REPLICATION_RECEIPT"
+  ],
+  "replication_acceptance": {
+    "source_and_target_refs_freshly_reobserved": true,
+    "source_commit_and_parent_history_preserved": true,
+    "no_root_commit_or_source_history_flattening": true,
+    "historical_urls_receipts_and_role_identities_unchanged": true,
+    "former_mirror_guid_cannot_be_reused_for_a_new_node": true,
+    "source_registration_or_liveness_cannot_be_transferred": true,
+    "role_local_state_is_a_separate_successor": true,
+    "scoped_equality_requires_independent_readback": true,
+    "same_account_or_host_is_not_an_independent_failure_domain": true,
+    "required_tests": [
+      "tests/test_qikvrt_workflow_executor_mesh_contract.py",
+      "tests/test_seed_workflows.py",
+      "tests/test_qikvrt_authority_cutover.py"
+    ]
+  },
+  "retry_condition": "OWNER_TARGET_IDENTITY_BOUND_AND_API_NATIVE_CREATION_WITH_VERIFIED_TARGET_PERMISSION_AVAILABLE",
+  "next_action": "Bind the owner-designated Mirror identity and a callable native creation route; freshly observe Authority and target before one guarded bootstrap.",
+  "boundaries": {
+    "browser_fallback": false,
+    "invented_target": false,
+    "repository_creation_effect_count": 0,
+    "mirror_created": false,
+    "force_push": false,
+    "history_rewrite": false,
+    "merge": false,
+    "self_approval": false,
+    "governance_weakening": false,
+    "publication_or_deployment": false,
+    "PREDECESSOR_EVIDENCE_TRANSFER": false,
+    "EFFECT_ACK_DONE": false
+  }
+}

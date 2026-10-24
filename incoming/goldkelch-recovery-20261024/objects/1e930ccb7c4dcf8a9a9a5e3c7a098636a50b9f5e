@@ -1,0 +1,27 @@
+{
+  "gate_set": "ACTIVE_LAYER_GATES",
+  "version": "2.6",
+  "required": [
+    "AUTHORIZED_DISCOVERY_OK",
+    "OPT_IN_OK",
+    "NO_UNAUTHORIZED_SCANNING_OK",
+    "NO_SELF_PROPAGATION_OK",
+    "NO_SURVEILLANCE_INSTRUMENT_OK",
+    "TRACEABILITY_OK",
+    "MULTICAST_OK",
+    "ONTOLOGY_OK",
+    "GOVERNANCE_REVIEW_OK",
+    "NONREGRESSION_OK",
+    "AUDIT_LOG_OK"
+  ],
+  "forbidden": [
+    "UNAUTHORIZED_INTERNET_SCANNING",
+    "SELF_PROPAGATION",
+    "REMOTE_MODIFICATION_WITHOUT_AUTHORIZATION",
+    "PRIVATE_PERSON_DISCOVERY",
+    "CREDENTIAL_GUESSING",
+    "BOUNDARY_WEAKENING",
+    "SILENT_SELF_MUTATION"
+  ],
+  "final_rule": "No ACTIVE FINAL PASS without authorization, traceability, multicast, ontology, governance, privacy, proportionality and nonregression gates."
+}

@@ -1,0 +1,517 @@
+{
+  "schema": "qikvrt_recovered_ref_page_v1",
+  "refs": [
+    {
+      "ref": "refs/remotes/origin/trusted/verify-pr311-ac42f748-zero-tree-v1",
+      "object": "dcb3af38e3774ae0a657a301504391e6cbe1c03d"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/verify-pr315-6e6e541a-zero-tree-v1",
+      "object": "343d63cd37dfc6211e5898d4ba80b6c80ccf839d"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/verify-pr321-exact-112d57fb-v1",
+      "object": "112d57fb3a9ad6324a67c5062d6ce54475a82723"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/verify-pr324-exact-4913f738-v1",
+      "object": "4913f738e06ddda89e71985ad95c83ace53fb282"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/verify-pr329-exact-05bdb495-v1",
+      "object": "05bdb4959ef42e7547631d7e62cde95f1c20b72e"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/verify-pr332-exact-a6ec8673-v1",
+      "object": "a6ec86731991283c2acf03a78218e551c3be5c57"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/verify-pr334-dispatch-901943d6-v1",
+      "object": "901943d61d618f4ce09e206083655ee76e5d52a9"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/verify-reciprocal-equality-survival-pr284-pr286-pr167-mirror-v1",
+      "object": "8bfb9d0f48e31666fbd5ce23a0fed622c6bfffd6"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/verify-runtime-article-mirror-30fb5afd",
+      "object": "30fb5afd1bc0e5eadae5156b091a5b3637993c0c"
+    },
+    {
+      "ref": "refs/remotes/origin/trusted/verify-runtime-article-mirror-e22fa5a8",
+      "object": "e22fa5a8617365c782679e7c986ee4a916f453bf"
+    },
+    {
+      "ref": "refs/remotes/origin/verification/pr277-exact-head-de57e847",
+      "object": "de57e8478c59c1724bce87c7aac8c0528454d717"
+    },
+    {
+      "ref": "refs/remotes/origin/verify/pr183-exact-head-694d002",
+      "object": "694d002b738ef994f0d7d970227469d9f2be53f9"
+    },
+    {
+      "ref": "refs/remotes/origin/verify/pr185-exact-head-a4f7c49",
+      "object": "a4f7c4995b4ede9415f8ef9592fe70d6f0ac4ad3"
+    },
+    {
+      "ref": "refs/remotes/origin/verify/pr270-exact-head-v1",
+      "object": "a1b87e249289f363aba15dc5ef2bb8248c49621e"
+    },
+    {
+      "ref": "refs/remotes/origin/verify/pr279-exact-92872b0",
+      "object": "92872b0f3da3c716e7f22f2856801592e04b6bd0"
+    },
+    {
+      "ref": "refs/remotes/origin/verify/pr281-exact-11e2483-zero-tree-v1",
+      "object": "11e2483d71f259f1a5c77b01209ad745d07705f3"
+    },
+    {
+      "ref": "refs/remotes/origin/verify/pr283-self-heal-receipt-78f18f2-zero-tree-v1",
+      "object": "a401413500dbb6617ab17f7657c805c30964ddf0"
+    },
+    {
+      "ref": "refs/remotes/origin/verify/pr286-exact-3f242d1-zero-tree-v1",
+      "object": "776b5c09a221ec0e8531b2b0521fea6c4d63a330"
+    },
+    {
+      "ref": "refs/remotes/origin/verify/pr286-exact-e6a57f8-zero-tree-v2",
+      "object": "dadfa64311fe6c879a921a5992eac658876418c5"
+    },
+    {
+      "ref": "refs/remotes/origin/verify/pr288-publication-overview-468a388-zero-tree-v1",
+      "object": "ece80db2f9d63dccd3356f551b29ab5840464726"
+    },
+    {
+      "ref": "refs/remotes/origin/verify/pr353-exact-head-2280eaeb-20260818",
+      "object": "2280eaebd7b781bc11c98943b4ad40bcf9c4caa2"
+    },
+    {
+      "ref": "refs/remotes/origin/verify/pr357-integrity-isolated-4d320b6f-v1",
+      "object": "217491dc72687a0f6a9b7ed9b21f1a18032b4ba1"
+    },
+    {
+      "ref": "refs/remotes/origin/work/20260815-ai-bootstrap",
+      "object": "83d7a38e38f32f9cd28a52b887a5bcb3cdf6ff76"
+    },
+    {
+      "ref": "refs/remotes/origin/work/20260906-author-positioning-roundtrip",
+      "object": "15bad08883288f686bb7ce7567f092bbbdd5f08b"
+    },
+    {
+      "ref": "refs/remotes/origin/work/api-acceptance-rest-repair-20261001",
+      "object": "a73e5fe2fdfd192b022d89d00499f9ceb7ebc673"
+    },
+    {
+      "ref": "refs/remotes/origin/work/authority-recovery-acceptance-20261002",
+      "object": "37e9aaccbb4f7046ce3d0ed536c8c205a71a13d2"
+    },
+    {
+      "ref": "refs/remotes/origin/work/authority-url-probe-20261003-6fb101b",
+      "object": "3e8530f2beb158cdfebd3fa74d25498e7ac2aa4a"
+    },
+    {
+      "ref": "refs/remotes/origin/work/chat-interruption-continuity-20261002",
+      "object": "d4abb49133dc509233acff1df8dc202af65d6475"
+    },
+    {
+      "ref": "refs/remotes/origin/work/claim-audit-20261001-469a95ac",
+      "object": "638397fc1b86ab44eac9f06f0c9754d3b5803a2b"
+    },
+    {
+      "ref": "refs/remotes/origin/work/closure-promotion-consolidation-20261001",
+      "object": "f53b386544542e180bdae84c98d86c6afcdacdff"
+    },
+    {
+      "ref": "refs/remotes/origin/work/collective-functional-consciousness-20261003",
+      "object": "6aaac98a545b3855c3b7af2fdb5debc80b4ded66"
+    },
+    {
+      "ref": "refs/remotes/origin/work/delegation-bootstrap-20261001",
+      "object": "5254836e0865970cf79da2f012f74bcd04941857"
+    },
+    {
+      "ref": "refs/remotes/origin/work/firefox-windows-witness-20261001",
+      "object": "b0e3828c9f02fb7772dc094afd9182d937c86f93"
+    },
+    {
+      "ref": "refs/remotes/origin/work/full-node-recovery-20261001-c621b863",
+      "object": "522cbc91179535bf941185415b4a434c24fbee61"
+    },
+    {
+      "ref": "refs/remotes/origin/work/linux-ring-scale-consolidation-20261002",
+      "object": "8eeece5571c3235941e6ac10afd45e4cfbaaf623"
+    },
+    {
+      "ref": "refs/remotes/origin/work/meta-transistor-feedback-20261001-7e5a588d",
+      "object": "f9cb73172157951fbab81a0843a8a6e8657dcfa5"
+    },
+    {
+      "ref": "refs/remotes/origin/work/mirror-lifecycle-governance-20261003-8153c4e6",
+      "object": "6e6848b1f2da4e4b7e57b40d6e275a5d03eda275"
+    },
+    {
+      "ref": "refs/remotes/origin/work/node-genesis-recovery-c621b863-20261001",
+      "object": "96f5cc19f8fd3c69d28b8c2e3e1a0c6707ac7be3"
+    },
+    {
+      "ref": "refs/remotes/origin/work/owner-dependency-assimilation-20261003-8153c4e6-4796ff30",
+      "object": "ce344c122f363aa00d18f935735126947f2b8454"
+    },
+    {
+      "ref": "refs/remotes/origin/work/owner-hotpath-current-criteria-20261004-8658b113",
+      "object": "b8f5050587f7df637e5d1c792796e8a23e5a8ce7"
+    },
+    {
+      "ref": "refs/remotes/origin/work/pipeline-mtbf-20260930",
+      "object": "d5aacbc7961346a0cc14c155b1955560aab2e5ca"
+    },
+    {
+      "ref": "refs/remotes/origin/work/processor-clock-core-20261001",
+      "object": "c801b81c4928c344ccd41c3f4b1f5fb0601184a7"
+    },
+    {
+      "ref": "refs/remotes/origin/work/qikvrt-codec-v1-20261001",
+      "object": "be2ce383af1b884ce86b891ac0208990f0e474ad"
+    },
+    {
+      "ref": "refs/remotes/origin/work/qikvrt-standpoint-codex-v1-20261001",
+      "object": "def7a93e7ae36426bebaf7b82519b670025f8f42"
+    },
+    {
+      "ref": "refs/remotes/origin/work/reciprocal-devops-dod-20261001",
+      "object": "4d33d78bee91cfa639abde0aceae95371ad8f55c"
+    },
+    {
+      "ref": "refs/remotes/origin/work/software-independent-promotion-proof-20261001-469a95ac",
+      "object": "854e1f835d2f5d5a45de2a96759bbd077e5118a4"
+    },
+    {
+      "ref": "refs/remotes/pr/1",
+      "object": "9421859ed3452200a4453c6d111e6f74c1dc4475"
+    },
+    {
+      "ref": "refs/remotes/pr/10",
+      "object": "c2b9cbfb639ef11eb7c82028742d92e07ef191d6"
+    },
+    {
+      "ref": "refs/remotes/pr/100",
+      "object": "7ec95c58b5e40b97a41a9e8ab75dcee3b712c429"
+    },
+    {
+      "ref": "refs/remotes/pr/101",
+      "object": "27d6d48f647fae73d7b3b261848930db4dd601c3"
+    },
+    {
+      "ref": "refs/remotes/pr/102",
+      "object": "27d6d48f647fae73d7b3b261848930db4dd601c3"
+    },
+    {
+      "ref": "refs/remotes/pr/103",
+      "object": "8653eb9fd04c7956daa2e6729421dd4e9f5115b1"
+    },
+    {
+      "ref": "refs/remotes/pr/104",
+      "object": "8653eb9fd04c7956daa2e6729421dd4e9f5115b1"
+    },
+    {
+      "ref": "refs/remotes/pr/105",
+      "object": "8653eb9fd04c7956daa2e6729421dd4e9f5115b1"
+    },
+    {
+      "ref": "refs/remotes/pr/106",
+      "object": "30564d933dd2168bf41fb6463326235c163b6bc3"
+    },
+    {
+      "ref": "refs/remotes/pr/107",
+      "object": "30564d933dd2168bf41fb6463326235c163b6bc3"
+    },
+    {
+      "ref": "refs/remotes/pr/108",
+      "object": "9757e707aeefae5b577d1d67be4c98c5d4236531"
+    },
+    {
+      "ref": "refs/remotes/pr/109",
+      "object": "7e0cc334fcbbf43e523fa1cb64ded2333d83bd5c"
+    },
+    {
+      "ref": "refs/remotes/pr/11",
+      "object": "49d9347901d7015ee429078f352105cb35f2535c"
+    },
+    {
+      "ref": "refs/remotes/pr/110",
+      "object": "a8300da6e897534077629dce50a4426aba8c672e"
+    },
+    {
+      "ref": "refs/remotes/pr/111",
+      "object": "a4aba5f511434e5924ce843429234c234e755e82"
+    },
+    {
+      "ref": "refs/remotes/pr/112",
+      "object": "e390f7ebf3665b6afe888091906af274d9b2c7f4"
+    },
+    {
+      "ref": "refs/remotes/pr/113",
+      "object": "6b12b7f4217948dd4f594c16e1cee1785ff9a0d2"
+    },
+    {
+      "ref": "refs/remotes/pr/114",
+      "object": "f9c2e05100028ab6b98a3e663f44bb2d5e56f1ba"
+    },
+    {
+      "ref": "refs/remotes/pr/115",
+      "object": "e390f7ebf3665b6afe888091906af274d9b2c7f4"
+    },
+    {
+      "ref": "refs/remotes/pr/116",
+      "object": "cfcee6b59b931f1f0e492440e5edc6700931290c"
+    },
+    {
+      "ref": "refs/remotes/pr/117",
+      "object": "952ec0ae89b05935ba884ec566a51d638dd51ea3"
+    },
+    {
+      "ref": "refs/remotes/pr/118",
+      "object": "b7e770be31647126ccf766db8591fadea88c5909"
+    },
+    {
+      "ref": "refs/remotes/pr/119",
+      "object": "b7e770be31647126ccf766db8591fadea88c5909"
+    },
+    {
+      "ref": "refs/remotes/pr/12",
+      "object": "db9132cf31c918ca7b284f5f1ab9e21ebf1be972"
+    },
+    {
+      "ref": "refs/remotes/pr/120",
+      "object": "5ddc21a62608e14a5834ac4f07b3ef61649b089b"
+    },
+    {
+      "ref": "refs/remotes/pr/121",
+      "object": "b6cf8a5585775951ba74a76e22ef4875c8cebf15"
+    },
+    {
+      "ref": "refs/remotes/pr/122",
+      "object": "b6cf8a5585775951ba74a76e22ef4875c8cebf15"
+    },
+    {
+      "ref": "refs/remotes/pr/123",
+      "object": "226a9921578eed4cd52a169231da914532a22372"
+    },
+    {
+      "ref": "refs/remotes/pr/124",
+      "object": "5595daad88e7bb76a63d439b8d7c09c61579c47f"
+    },
+    {
+      "ref": "refs/remotes/pr/125",
+      "object": "ae2ee5100e15a73242d43c1c01d2ca4a44a43677"
+    },
+    {
+      "ref": "refs/remotes/pr/126",
+      "object": "5595daad88e7bb76a63d439b8d7c09c61579c47f"
+    },
+    {
+      "ref": "refs/remotes/pr/127",
+      "object": "b3678a68fbd88eb32c81c18ad6c4ba2489cfdcf6"
+    },
+    {
+      "ref": "refs/remotes/pr/128",
+      "object": "14b64aefad02e8335fab502486b314bef4911118"
+    },
+    {
+      "ref": "refs/remotes/pr/129",
+      "object": "070e061ebac75e2cab0af450b138ce0d9e126f35"
+    },
+    {
+      "ref": "refs/remotes/pr/13",
+      "object": "db9132cf31c918ca7b284f5f1ab9e21ebf1be972"
+    },
+    {
+      "ref": "refs/remotes/pr/130",
+      "object": "070e061ebac75e2cab0af450b138ce0d9e126f35"
+    },
+    {
+      "ref": "refs/remotes/pr/131",
+      "object": "43f3918b603b7bc5673165bb29838e7f314aa198"
+    },
+    {
+      "ref": "refs/remotes/pr/132",
+      "object": "118c9d219e21c4a5ea552b36a6662c17ec8ff348"
+    },
+    {
+      "ref": "refs/remotes/pr/133",
+      "object": "d852bec306f5e81231e1f168424670075a2fe9f7"
+    },
+    {
+      "ref": "refs/remotes/pr/134",
+      "object": "e3e4f328900eccad645ca5319468eea4777f1090"
+    },
+    {
+      "ref": "refs/remotes/pr/135",
+      "object": "9c09abf0de2b3ac9b2adf1a6cf989438f76a9f8b"
+    },
+    {
+      "ref": "refs/remotes/pr/136",
+      "object": "8adbeea66d324933831aa1f36ba1731a3c9e3bb5"
+    },
+    {
+      "ref": "refs/remotes/pr/137",
+      "object": "8a6a4cd1530965c090e8d68a21a208cf829eaeaf"
+    },
+    {
+      "ref": "refs/remotes/pr/138",
+      "object": "7553d4047d4166a2e9b494c172049175103a975e"
+    },
+    {
+      "ref": "refs/remotes/pr/139",
+      "object": "741a88ff89029d585bf31578236c0f085f785ed3"
+    },
+    {
+      "ref": "refs/remotes/pr/14",
+      "object": "1a89702d6656056bbfc15314935b3e670b4fc7c2"
+    },
+    {
+      "ref": "refs/remotes/pr/140",
+      "object": "d71f6b3804145c5a39ebdc182a94465949c40eac"
+    },
+    {
+      "ref": "refs/remotes/pr/141",
+      "object": "f9731ac315381871c957b66a3cbe71a67cf5b500"
+    },
+    {
+      "ref": "refs/remotes/pr/142",
+      "object": "e3e4f328900eccad645ca5319468eea4777f1090"
+    },
+    {
+      "ref": "refs/remotes/pr/143",
+      "object": "b0a7f35c9536c9df72592b204cb8ff1256048c1c"
+    },
+    {
+      "ref": "refs/remotes/pr/144",
+      "object": "2370c7be17e467e6aaadb4f3a283a423ea1c07ed"
+    },
+    {
+      "ref": "refs/remotes/pr/145",
+      "object": "97717350a23435497da14a1929a86a4275850bd4"
+    },
+    {
+      "ref": "refs/remotes/pr/146",
+      "object": "fefc0b2c884b6372405ffab0a4ab1fb01a6ee6ad"
+    },
+    {
+      "ref": "refs/remotes/pr/147",
+      "object": "97717350a23435497da14a1929a86a4275850bd4"
+    },
+    {
+      "ref": "refs/remotes/pr/148",
+      "object": "66868decd767b58a1b087f730eb175b5c8f0225c"
+    },
+    {
+      "ref": "refs/remotes/pr/149",
+      "object": "73c0d8cbff5f7bfe3c20f33e6c34c62ed6f7f50c"
+    },
+    {
+      "ref": "refs/remotes/pr/15",
+      "object": "7affcf7a71d618158140ae17bf1321d1ad246f3a"
+    },
+    {
+      "ref": "refs/remotes/pr/150",
+      "object": "66868decd767b58a1b087f730eb175b5c8f0225c"
+    },
+    {
+      "ref": "refs/remotes/pr/151",
+      "object": "73c0d8cbff5f7bfe3c20f33e6c34c62ed6f7f50c"
+    },
+    {
+      "ref": "refs/remotes/pr/152",
+      "object": "6156396279fe646bcdcfb3ecdd8d128214f0654c"
+    },
+    {
+      "ref": "refs/remotes/pr/153",
+      "object": "6156396279fe646bcdcfb3ecdd8d128214f0654c"
+    },
+    {
+      "ref": "refs/remotes/pr/154",
+      "object": "6156396279fe646bcdcfb3ecdd8d128214f0654c"
+    },
+    {
+      "ref": "refs/remotes/pr/155",
+      "object": "4a5574f4dd091995fd5d33867d7c374641b2f970"
+    },
+    {
+      "ref": "refs/remotes/pr/156",
+      "object": "5efd79a2b46eeecb5a3d09b8db4cd0c632ea7e75"
+    },
+    {
+      "ref": "refs/remotes/pr/157",
+      "object": "5efd79a2b46eeecb5a3d09b8db4cd0c632ea7e75"
+    },
+    {
+      "ref": "refs/remotes/pr/158",
+      "object": "41393e7180a8dd3c9779f7edc5d66f7aee8e235b"
+    },
+    {
+      "ref": "refs/remotes/pr/159",
+      "object": "41393e7180a8dd3c9779f7edc5d66f7aee8e235b"
+    },
+    {
+      "ref": "refs/remotes/pr/16",
+      "object": "f666a9e788ef9f6817a499bfeb7707a12422ac62"
+    },
+    {
+      "ref": "refs/remotes/pr/160",
+      "object": "41393e7180a8dd3c9779f7edc5d66f7aee8e235b"
+    },
+    {
+      "ref": "refs/remotes/pr/161",
+      "object": "609becdd628f1572d754123831359566c8baf82b"
+    },
+    {
+      "ref": "refs/remotes/pr/162",
+      "object": "609becdd628f1572d754123831359566c8baf82b"
+    },
+    {
+      "ref": "refs/remotes/pr/163",
+      "object": "b0ae9775c4735cfa2332ca8bfc6cc901ef3ba12e"
+    },
+    {
+      "ref": "refs/remotes/pr/164",
+      "object": "ce1b49f72be45a4e14cf338a638b6a23eaa62c7d"
+    },
+    {
+      "ref": "refs/remotes/pr/165",
+      "object": "935c4b980fbf8551177b68c9f7dac8493bb950f7"
+    },
+    {
+      "ref": "refs/remotes/pr/166",
+      "object": "2cb1d231eb050e0eaddea15e85367e0568781c63"
+    },
+    {
+      "ref": "refs/remotes/pr/167",
+      "object": "1fb4a50d32007988b0702ade804adb441686d7bc"
+    },
+    {
+      "ref": "refs/remotes/pr/168",
+      "object": "8bfb9d0f48e31666fbd5ce23a0fed622c6bfffd6"
+    },
+    {
+      "ref": "refs/remotes/pr/169",
+      "object": "1d8737f6fffcfadea63c6e55fa85196aeb577ac3"
+    },
+    {
+      "ref": "refs/remotes/pr/17",
+      "object": "8bdc173cfb453f137945be1058a64c9f391f776a"
+    },
+    {
+      "ref": "refs/remotes/pr/170",
+      "object": "8bfb9d0f48e31666fbd5ce23a0fed622c6bfffd6"
+    },
+    {
+      "ref": "refs/remotes/pr/171",
+      "object": "9c8dba839b7dbfbaf07050c23ed5c83d0095b486"
+    },
+    {
+      "ref": "refs/remotes/pr/172",
+      "object": "f815f2a541eb6940ee3861401a5384b1904b9b8c"
+    }
+  ]
+}

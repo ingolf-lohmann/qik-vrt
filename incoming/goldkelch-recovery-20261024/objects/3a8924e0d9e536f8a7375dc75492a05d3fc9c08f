@@ -1,0 +1,22 @@
+{
+  "schema": "qikvrt_role_local_mirror_receipt_v1",
+  "status": "ROLE_LOCAL_RECEIPT_CANDIDATE",
+  "authority_repository": "Goldkelch/qik-vrt",
+  "authority_issue": 752,
+  "authority_pr": 754,
+  "authority_candidate_head": "6aa14f7dd1a3a7353f5be12203b06245ff780200",
+  "mirror_repository": "ingolf-lohmann/qik-vrt",
+  "mirror_issue": 362,
+  "mirror_base_main": "25c4df4caf063d0545621f9958941c3cd0dfd5fa",
+  "canonical_statement": "INPUT -> QIK-VRT MESH REPOSITORY -> REPOSITORY OUTPUT / EVIDENCE -> OUTPUT",
+  "synchronous": true,
+  "repository_first": true,
+  "terminal_independent_semantic_authority": false,
+  "delayed_automation_without_explicit_request": false,
+  "authority_execution_inherited": false,
+  "whole_tree_convergence_required": false,
+  "semantic_change_rule": "EXPLICIT_PRODUCT_OWNER_AUTHORIZED_SUCCESSOR_ONLY",
+  "pass": false,
+  "final_pass": false,
+  "effect_ack_done": false
+}

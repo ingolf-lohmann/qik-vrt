@@ -1,0 +1,54 @@
+{
+  "schema": "qikvrt_original_source_recovery_bindings_v1",
+  "recovery_date": "2026-10-24",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_historical_candidate": "600debd54278b5d5ec2b182b79a2b755a9e31c2b",
+  "historical_source_must_not_be_relabelled_as_main": true,
+  "files": [
+    {
+      "path": "policy/PERFECT_OPTIMUM_V1.json",
+      "source_commit": "600debd54278b5d5ec2b182b79a2b755a9e31c2b",
+      "source_blob": "b9019a5abeb1e8a56c118128d3fdd91da54af37c",
+      "sha256": "cee84cbf1721f2927c3c7351ed32361b22a8e415cd1e77bd3fd400e635501346",
+      "bytes": 3517,
+      "candidate_sha256": "cee84cbf1721f2927c3c7351ed32361b22a8e415cd1e77bd3fd400e635501346",
+      "byte_identical_restore": true,
+      "disposition": "BYTE_IDENTICAL_RESTORE"
+    },
+    {
+      "path": "docs/PERFECT_OPTIMUM_V1.md",
+      "source_commit": "600debd54278b5d5ec2b182b79a2b755a9e31c2b",
+      "source_blob": "55fceadc95074959ef39cfb222731606e53f54cd",
+      "sha256": "8bb0263ff80d8a89aea2b949570704102589cb1037d7b8d90fac5f1d6eadd569",
+      "bytes": 2850,
+      "candidate_sha256": "8bb0263ff80d8a89aea2b949570704102589cb1037d7b8d90fac5f1d6eadd569",
+      "byte_identical_restore": true,
+      "disposition": "BYTE_IDENTICAL_RESTORE"
+    },
+    {
+      "path": "tools/qikvrt_perfect_optimum.py",
+      "source_commit": "600debd54278b5d5ec2b182b79a2b755a9e31c2b",
+      "source_blob": "44a64b2d01490b4685d81b7ef7068147c63fee90",
+      "sha256": "fdb08e254a89249f969941a0d652cb22b2226c307cf65c722cd6cd8384a4351b",
+      "bytes": 4526,
+      "candidate_sha256": "20496483403aea8348d2a872724d1c693a1461f007356fee45902815329b0764",
+      "byte_identical_restore": false,
+      "disposition": "REPAIRED_SUCCESSOR_EMPTY_INVARIANTS_AND_NONFINITE_METRICS_REJECTED"
+    },
+    {
+      "path": "tests/test_qikvrt_perfect_optimum.py",
+      "source_commit": "600debd54278b5d5ec2b182b79a2b755a9e31c2b",
+      "source_blob": "d30175843ac7a9d803efbd03b52152ce886fbd68",
+      "sha256": "0bc6c3f5322cb186b13b86d763182b3b8431d3588b65800e3da27d73ba44b603",
+      "bytes": 3164,
+      "candidate_sha256": "0bc6c3f5322cb186b13b86d763182b3b8431d3588b65800e3da27d73ba44b603",
+      "byte_identical_restore": true,
+      "disposition": "BYTE_IDENTICAL_RESTORE"
+    }
+  ],
+  "source_carrier": {
+    "archive": "QIKVRT_Wiederanlaufpaket_2026-10-05.zip",
+    "archive_sha256": "2412131c8d20ff0d64b4daec45b36aa82bd009dbe744fd10ae232b656a37293c",
+    "object_closure_verified": true
+  }
+}

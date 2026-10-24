@@ -1,0 +1,13 @@
+{
+  "version": "2.13.4R",
+  "role": "node",
+  "node_core": "unified-qikvrt-node-core",
+  "api": "api/qikvrt_github_api.openapi.yaml",
+  "same_api_for_all_roles": true,
+  "role_config_only": true,
+  "author": "Ingolf Lohmann",
+  "rights_holder": "Ingolf Lohmann or a legal entity designated by him",
+  "software_license": "Apache-2.0",
+  "non_software_license": "CC-BY-NC-ND-4.0",
+  "patch": "2.13.4R-node-forward-only-tag-branch-conflict-repair"
+}

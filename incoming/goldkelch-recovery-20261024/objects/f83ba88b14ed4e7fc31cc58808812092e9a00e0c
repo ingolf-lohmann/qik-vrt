@@ -1,0 +1,450 @@
+<!--
+SPDX-License-Identifier: CC-BY-NC-ND-4.0
+Copyright (c) 2026 Ingolf Lohmann.
+-->
+
+# Prozessortakt und menschliche Berichtstaktung
+
+Ingolf Lohmann verlangt die maschinelle Prüfung mit jedem Prozessortakt.
+Die wöchentliche Ausgabe eines Briefings an Menschen ist eine eigene
+Produktentscheidung. Sie darf die maschinelle Prüffrequenz nicht bestimmen.
+Diese Anforderung gehört zur Repository-Architektur; ein Chat-Zeitplan ist
+kein Nachweis ihrer Erfüllung. Der maschinenlesbare Vertrag steht in
+`policy/QIKVRT_PROCESSOR_CLOCK_CONTRACT_V1.json`.
+
+## Ausführbarer Referenzpfad
+
+Die Erweiterung verwendet den vorhandenen synchronen ANSI-C90-Kern
+`src/effect_ack_core.c` und dessen fünf EFFECT_ACK-Zustände. Es gibt keinen
+zusätzlichen Scheduler und keine zweite Ausführung des Wochenbriefings.
+
+Ein einzelner Treiber besitzt einen `qikvrt_effect_ack_clock`-Kontext und
+initialisiert ihn mit `QIKVRT_EFFECT_ACK_CLOCK_INITIALIZER`. Nach überprüfter
+Zulassung seiner Taktdomäne bindet er mit `qikvrt_effect_ack_clock_init`
+eine von null verschiedene Epoche und den ersten Zyklus. Die Zulassung ist
+eine Integrationspflicht; die C-Funktion authentifiziert den Treiber nicht.
+
+Für jeden Zyklus ruft dieser Treiber `qikvrt_effect_ack_clock_tick` genau
+einmal mit der gebundenen Epoche, der aktuellen Zyklusnummer und einem
+aktuellen, überprüften Entscheidungssnapshot auf. Jede akzeptierte Flanke
+bewertet den vollständigen bestehenden Kern neu. Es gibt keinen Teiler,
+Timer, Cache-Hit oder übersprungenen Zyklus. Gleich gebliebene Eingangswerte
+dürfen dasselbe Ergebnis erzeugen; ein früheres DONE wird nicht übernommen.
+
+| Eingang oder Übergang | Wirkung des Referenzkerns |
+| --- | --- |
+| Erwartete nächste Zyklusnummer und aktuelle Eingaben | Neue Kernbewertung; Zähler steigt genau einmal |
+| Fehlender Snapshot | BLOCK für diesen Zyklus; kein Wiederverwenden alter Eingaben |
+| Lücke, Replay, falsche Epoche oder erschöpfter Zähler | Dauerhaftes Takt-BLOCK; bisherige Abdeckung bleibt ablesbar |
+| Erneute Initialisierung desselben Kontextes | Takt-BLOCK; keine Löschung der Fehlergeschichte |
+| Freigabeabfrage für andere Epoche oder anderen Zyklus | Keine Freigabe |
+
+Der Treiber muss die aktuelle Flanke selbst beobachten und ausschließlich
+`qikvrt_effect_ack_clock_ordinary_release` mit deren Epoche und Zyklusnummer
+abfragen. Diese Funktion gibt nur das DONE der zuletzt akzeptierten Flanke
+frei. Sie führt selbst keinen Effekt aus. Die bisherigen zustandslosen APIs
+bleiben kompatibel; ihre Nutzung beweist keine Taktabdeckung.
+
+Ein Taktfehler kann im selben Kontext nicht durch verspätetes Nachholen oder
+Reset repariert werden. Eine neue Epoche erfordert eine separat zugelassene
+Taktdomäne mit neuem Kontext sowie die Erhaltung des alten Fehlernachweises.
+Parallelzugriffe, uninitialisierter Speicher und Manipulation des Kontextes
+gehören nicht zum unterstützten C-Aufrufvertrag.
+
+## Synthesizierbarer Clock-Carrier
+
+`rtl/effect_ack_clock_carrier.vhd` stellt einen echten synchronen RTL-Pfad
+bereit. Im frisch untersuchten Mirror-Branch und Main gab es keinen geeigneten
+Hardware-Carrier; die Wiederverwendung der C-Funktion allein reicht wegen ihrer
+mehreren Maschineninstruktionen nicht für eine Auswertung pro Hardwareflanke.
+Die fünf Zustände und die Feldreihenfolge werden übernommen und gegen das
+bereits vorhandene, unabhängig formulierte C-Orakel vollständig geprüft.
+
+Der autorisierte Admission-Controller legt eine von null verschiedene Epoche
+einmalig an. Die Admission-Flanke wird nicht als Auswertungsflanke gezählt.
+An jeder folgenden steigenden `clk`-Flanke wird das gesamte `clock_input_t`
+in einem Ereignis abgetastet und `evaluate` genau einmal ausgeführt. Der
+Zykluszähler entsteht in Hardware. Snapshot-Epoche und Snapshot-Zyklus müssen
+zur gebundenen Epoche und zum Hardwarezähler passen. Lücke, Replay, erneute
+Admission, Soft-Reset und Zählererschöpfung verriegeln die Freigabe. Die
+Auswertung läuft nach einem Fehler weiter; sie kann den Fehler nicht löschen.
+
+`present` und `verified` sind pro Zyklus erforderlich. Sie authentifizieren
+selbst keine Daten: Der vorgeschaltete, autorisierte Verifier muss Fakten,
+Effekt-Payload und Kennungen gemeinsam an diese Taktdomäne liefern. Alle
+Eingänge einschließlich Admission und Readback müssen die Setup-/Hold-Zeiten
+einhalten. Ein asynchroner Bus darf nicht durch einzelne Bit-Synchronizer
+angebunden werden; ein geprüfter gebündelter CDC-Adapter wäre ein eigener
+Integrationsschritt. Unbekannte Simulationswerte blockieren den Effekt.
+
+Der einzige geschützte Ausgang ist ein registrierter 32-Bit-Payload mit
+`effect_commit`. Die Freigabe entsteht ausschließlich aus dem Snapshot dieser
+Flanke. `sink_ready` reserviert die bedingungslose Übernahme im folgenden
+Ausgangsintervall. Das Interface ist ein Strobe mit vorheriger Reservierung;
+ein AXI-Ready/Valid-Empfänger braucht einen eigenen Adapter. Fehlende Reservierung
+blockiert den aktuellen Effekt. Es gibt weder Nachholen noch Wiederholen eines
+alten DONE. Vollständige Vermittlung aller Firefox-/Systemeffekte ist damit
+noch nicht belegt.
+
+`rtl/effect_ack_coverage_witness.vhd` zählt Flanken in einem separaten
+sequentiellen Prozess, unabhängig vom Auswertungspuls. An der nächsten Flanke
+vergleicht er den vorherigen Auswertungspuls und Zähler mit seiner eigenen
+Abdeckung. Auslassung, doppelte Meldung und Replay verriegeln seinen Fehler.
+Die Unabhängigkeit betrifft Implementierungslogik, nicht Oszillator oder
+Stromversorgung. Wenn die ganze Taktdomäne stehen bleibt, braucht es weiterhin
+einen externen Zeit-/Oszillator-Witness.
+
+Ein `readback_request` mit frischer Challenge in `readback_nonce` übernimmt
+Epoche, beide Zähler, Fehler, Zustand und letzten Snapshot als einen stabilen
+Registerblock. Er beschreibt die unmittelbar vorher vollständig abgeschlossene
+Flanke: Bei `evaluated=N` muss `snapshot.cycle=N-1` gelten. `readback_valid`
+gilt einen Zyklus; der Registerblock bleibt bis zum nächsten Request unverändert.
+Auch dieser Bus braucht außerhalb der Domäne einen gebündelten Transfer.
+
+`tools/qikvrt_effect_ack_clock_readback.py` verlangt vom Leser erwartete
+Challenge, Epoche und Fensterende; es lehnt fehlende, widersprüchliche,
+zurückgesetzte oder nichtkanonische Telemetrie ab. Selbst kohärente DONE-
+Telemetrie ergibt in V1 Exit 20 / `HOLD_PHYSICAL_BINDING_OPEN`,
+`ordinary_release=false` und `effect_ack_done=false`. Frei gesetzte
+`board_verified`-Felder werden nicht als Beleg akzeptiert.
+
+Power-Reset löscht volatile Register. Vor neuer Admission müssen frühere
+Epochen und Fehler extern erhalten und Epochenwiederholung verhindert werden.
+Eine reine RTL-Testfixture, die Reset setzt, beweist diese Persistenz nicht.
+
+### Fail-closed Board-Abnahmeschnittstelle
+
+`rtl/effect_ack_board_top.vhd` bindet denselben Carrier ohne Taktteiler,
+zweiten Executor oder Änderung seiner fünf Zustände. Die generische statische
+Bindung `BOARD_BINDING_VALIDATED` ist standardmäßig `false`: keine Admission,
+kein Commit, Payload null, BLOCK-Zustand, kein gültiger Readback. Ein externer
+reviewter Build-Adapter darf diese Bindung erst nach Prüfung des exakten
+Boardprofils aktivieren. Der Schalter ist eine Integrationsvoraussetzung und
+keine kryptographische Sperre gegen einen privilegierten Build-Veränderer.
+
+Die frühere, von der KI erzeugte Grenze mit 804 externen Signalbits war ein
+Integrationsfehler. `effect_ack_parallel_core` bewahrt diese Busse als interne
+FPGA-Verbindungen. Der physische Top-Level `effect_ack_board_top` besitzt jetzt
+**10 skalare Signale**: `clk`, `power_reset_n`, `frame_start`, `frame_shift`,
+`frame_latch`, `serial_in`, `response_shift`, `serial_out`, `response_valid` und
+`transport_fault`. Das Pinprofil bindet genau diese Signale. Die Pinanzahl
+beweist weder Platzierung/Routing noch Ressourcen- oder Boardkompatibilität.
+Alle Eingangsbündel sind synchron zu `clk`; asynchrones Assert des Power-Resets
+bleibt zulässig, seine Freigabe muss Recovery/Removal erfüllen.
+
+Ein synchroner Request besteht aus 317 Bits, MSB zuerst. `frame_start` verwirft
+ein unvollständiges Bündel; `frame_shift` übernimmt je Flanke ein Bit.
+`frame_latch` muss auf einer separaten Flanke nach genau 317 Bits erfolgen.
+Trunkierung, Überlänge, nichtbinäre Steuerung/Daten, gleichzeitiges Shift/Latch
+oder Latch bei ungelesener Antwort verriegeln `transport_fault` bis zum
+Power-Reset und sperren weitere Admission. Es gibt keinen zweiten seriellen
+Takt, Taktteiler oder Clock-Enable für den Carrier.
+
+| Request-Bits | Feld |
+| --- | --- |
+| 316 / 315 | Admission / Resetanforderung |
+| 314:251 | Admission-Epoche |
+| 250:65 | `current_input_bits` im folgenden Layout |
+| 64 / 63:0 | Readback-Anforderung / Nonce |
+
+Nur die Latch-Flanke eines vollständigen Requests liefert einen frischen
+Eingangssnapshot. Auf allen anderen Flanken übernimmt der weiterhin laufende
+Carrier seine eigenen, nur lesbaren Epoch-/Zyklustags sowie `present=0` und
+`verified=0`. Deshalb bleiben Transferlücken BLOCK; alte Fakten werden nicht
+fortgeschrieben oder als frisch gekennzeichnet. Ein Request mit falschen
+Epoch-/Zykluswerten verriegelt den unveränderten Carrier-Fence. Dies ist ein
+spärlicher Transport, keine kontinuierlich authentisierte Datenquelle und kein
+Beleg für vollständige produktive Wirkungskontrolle auf jeder Flanke.
+
+| `current_input_bits` | Feld |
+| --- | --- |
+| 185:122 | Epoche |
+| 121:58 | Zyklus |
+| 57 / 56 | present / verified |
+| 55:37 / 36:34 | Fakten / Entscheidung |
+| 33 / 32 / 31:0 | Effektanforderung / Sink-Reservierung / Payload |
+
+`readback_bits` packt von oben nach unten Nonce (447:384), Epoche (383:320),
+Auswertungen (319:256), Witness-Zähler (255:192), Fault (191), Witness-Fault
+(190), Reset (189), Zustand (188:186) und Snapshot im obigen Layout (185:0).
+Die 485-Bit-Antwort wird auf der Folgeflanke atomar aus dem abgeschlossenen
+Carrier-Ergebnis übernommen: Bit 484 = Readback gültig, 483:36 = `readback_bits`,
+35:33 = Zustand, 32 = Commit-Ereignis, 31:0 = Payload. `response_valid` bleibt
+bis zum letzten Bit gesetzt; `response_shift` verbraucht je Flanke ein Bit,
+beginnend mit Bit 484. Die Übertragung wiederholt keinen Commit. Commit/State
+im Paket beschreiben das vorausgegangene interne Ergebnis; sie erteilen keine
+spätere physische Ausführungserlaubnis. Ein vertrauenswürdiger physischer
+Sink-Adapter bleibt offen. `transport_fault` bezeichnet den Link-Fault; der
+Carrier-Fault steht gesondert im Readback.
+
+Die bestehenden C-Orakel-/Flanken-/Fault-Kontrollen vergleichen den internen
+Parallel-Core mit dem Carrier. Derselbe Testpfad simuliert den seriellen Top
+vor und nach Synthese, prüft kontinuierliche Zähler trotz Transferlücken,
+einmalige Frische, Replay, Fehlframes, Backpressure und die gesperrte Variante.
+Die tatsächlich synthetisierte äußere Schnittstelle wird auf zehn Skalare
+gegen den Profile-Validator geprüft.
+
+Die erreichbare Mirror-Historie wurde über 519 Remote-Refs und historische
+Board-/Constraint-Pfade geprüft. Der historische `hardware`-Tree
+`998129f68277b1025d433099e4fb4bef84a7e632` enthält ausschließlich vier
+`vhdl/`-Dateien des Meta-Transistors/Neutron-Star-Mesh und keinen
+Board-/Part-/Pin-/Timing-Vertrag. Am ursprünglichen Vorgänger-HEAD
+`a63bbd6f3c941eb5ca0e0f00afdff1c524b7a025` gab es kein belegtes Profil.
+Die Aussage einer rekonstruierten M1-Pinbelegung bleibt zurückgezogen.
+Der folgende Kandidat verwendet neu gelesene externe Primärdokumente. Die synthetischen `TEST_ONLY_*`-Daten der Negativtests sind keine
+Boarddaten und kein physischer Nachweis.
+
+Der bestehende Readback-Verifier stellt zwei neue, effektfreie CLI-Aktionen
+bereit. Beide verlangen einen sauberen Checkout des ausdrücklich erwarteten
+HEAD/TREE und eine separat frisch erzeugte, von null verschiedene Challenge:
+
+```sh
+python3 -B tools/qikvrt_effect_ack_clock_readback.py prepare-board \
+  --expect-head "$EXPECTED_HEAD" --expect-tree "$EXPECTED_TREE" --nonce "$FRESH_NONCE"
+
+python3 -B tools/qikvrt_effect_ack_clock_readback.py prepare-board \
+  --profile board-profile.json \
+  --expect-head "$EXPECTED_HEAD" --expect-tree "$EXPECTED_TREE" --nonce "$FRESH_NONCE"
+
+python3 -B tools/qikvrt_effect_ack_clock_readback.py verify-board \
+  --profile board-profile.json --report board-run.json --artifacts-root board-artifacts \
+  --expect-head "$EXPECTED_HEAD" --expect-tree "$EXPECTED_TREE" --nonce "$FRESH_NONCE" \
+  --epoch "$ADMITTED_EPOCH" --expected-count "$OBSERVED_COUNT"
+```
+
+Ohne Profil entsteht Exit 20 / `BOARD_BINDING_REQUIRED`, ohne Buildplan.
+Ein fehlerhaftes Profil oder ein stale/inkonsistenter Nachweis ergibt Exit 1 /
+`BLOCK_BOARD_EVIDENCE`. Das vollständige Schema und die Pflichtfelder liegen
+unter `board_acceptance` im bestehenden Maschinenvertrag. Es verlangt Board-ID,
+Revision, Seriennummer und Quelldigest, FPGA-Vendor/Part/IDCODE, Clockquelle und
+Periode, jeden Portbit-Pin mit IO-Standard, Min-/Max-IO-Timing und Unsicherheit,
+Toolversion/-bytes/-Provenienz sowie die offen bleibenden Integrationspflichten.
+Es gibt keine Defaults für physische Eingaben.
+
+Ein strukturell gültiges Profil liefert Exit 20 / `BUILD_INPUTS_READY` und ein
+kanonisch gehashtes Buildmanifest mit geordneten, exakt gehashten RTL-Quellen,
+Part/Top/Generic-Bindung und Constraintbytes. Für AMD/Xilinx-Vivado wird XDC
+ausgegeben; für Intel-Quartus QSF plus SDC. Alle Pins/IO-Standards, Clock,
+Min-/Max-Delays und Clock-Uncertainty werden explizit gebunden; es entstehen
+keine False-Path-Ausnahmen. Das Interface startet kein Vendorwerkzeug und
+keinen Programmer. Ein tatsächlicher Adapter muss zuerst den bestehenden
+Runtime-Lock-/Cache-Vertrag für seine ausgewählte Toolchain erweitern.
+
+Das aus früherer Gesprächsevidenz berichtete Ziel iCE40UP5K-B-EVN / SG48 ist
+kein wiederhergestelltes aktuelles M1-Profil und keine physische Beobachtung.
+Der physische V1-Vendor-Validator unterstützt weiterhin AMD/Xilinx und Intel.
+Die folgende dokumentarische V2-Erweiterung erzeugt Lattice-Build-Eingaben,
+aber führt keinen Vendor-/Programmerlauf aus und authentisiert kein Board. Die
+behauptete Rekonstruktion von M1-Pins wird ausdrücklich zurückgenommen.
+
+Der Runvertrag bindet Repository/PR/HEAD/TREE, Profil/Build-Digest, Run-ID,
+Challenge, Zeitfenster, Board-Serial und FPGA-IDCODE. Er verlangt getrennte,
+frisch rückgelesene Placement-/Route-, STA-, Bitstream-, Programmer-Log-,
+normalisierte Konfigurationsimage- und Konfigurationsreadback-Artefakte mit
+exakten Bytehashes. Das normalisierte Image und der Programmer-Readback müssen
+bytegleich sein. Der noch fehlende Vendoradapter muss die Normalisierung und
+Zuordnung zum Bitstream selbst beweisen. STA verlangt denselben Part und
+Clock, vollständiges Routing, null unbeschränkte Pfade sowie nichtnegative,
+endliche Setup-/Hold-/Recovery-/Removal-Slacks. Die ursprüngliche kohärente
+Clock-Telemetrieprüfung wird unverändert wiederverwendet.
+
+Frischegrenzen sind 24 Stunden für das exact-subject Boardinventar, sechs
+Stunden für den Runbeginn und fünf Minuten für den beobachteten Runabschluss;
+zukünftige Zeitangaben und widersprüchliche Reihenfolgen blockieren. Ein neuer
+HEAD/TREE, geänderte Quelle/Constraintbytes oder eine andere Challenge verwerfen
+alte Nachweise unabhängig vom Alter.
+
+Selbst ein konsistentes Datenpaket bleibt Exit 20 /
+`HOLD_AUTHENTICATED_BOARD_RUN_REQUIRED`. Freie JSON-Felder und Bytehashes
+authentifizieren keinen Laborlauf. Ein vertrauenswürdiger Board-/Lab-Adapter,
+authentisierte Eingänge, CDC, persistierte Epoch-/Fault-Geschichte,
+systemweite Effektvermittlung und unabhängiger physischer Clock-Witness bleiben
+OPEN. `physical_clock_verified`, `bitstream_programmed`,
+`programmer_readback_observed` und `EFFECT_ACK_DONE` bleiben in diesem Interface
+stets false. Ein tatsächlicher Boardlauf mit frischem authentisiertem Readback
+ist ein eigener, noch ausstehender Abnahmeschritt.
+
+### Dokumentarischer iCE40UP5K-B-EVN-Kandidat (01.10.2026)
+
+`hardware/boards/lattice_ice40up5k_b_evn_rev_a.json` bindet die dokumentierte
+Board-/Schematic-Revision A aus den Titelblöcken des offiziellen
+[FPGA-UG-02001 v1.2](https://www.latticesemi.com/view_document?document_id=51987).
+Abschnitt 2 und Figure A.3 zeigen iCE40UP5K im 48-Pin-QFN; die aktuellen
+[UP5K-Pinout](https://www.latticesemi.com/view_document?document_id=51971)- und
+[SG48-Migrationstabellen](https://www.latticesemi.com/view_document?document_id=51133)
+stimmen bei allen 48 nummerierten Package-Pins überein.
+Das [Datenblatt FPGA-DS-02008 v2.4](https://www.latticesemi.com/view_document?document_id=51968)
+führt in Tabelle 5.4 `iCE40UP5K-SG48I` als 5280-LUT-Buildziel. Dieses gewählte
+Industrial-Ziel belegt keine beobachtete Temperaturklasse oder Chipmarkierung.
+Boardrevision, Seriennummer, IDCODE und bestückte Header sind physisch OPEN.
+
+Die vollständige Tabelle klassifiziert 31 GPIO-Header-Pads, vier gemeinsam
+genutzte Konfigurations-SPI-Pins, den Oscillatoreingang, CRESET/CDONE, drei
+spezielle RGB-Stromsenken und sämtliche Versorgungspins. Der Masse-Paddle ist
+zusätzlich reserviert. Die GPIO-Pads 23/25/34/43 teilen sich Netze mit Tastern;
+SPI, RGB, Clock und Versorgung sind keine frei austauschbaren Datenanschlüsse.
+J2/J3/J52 sowie PMOD sind in der Zeichnung DNI. Die Existenz eines Lötpads ist
+kein Nachweis eines bestückten oder freien Steckkontakts.
+Die dokumentierten IO-Bänke 0/1/2 liegen bei 3,3 V, VCC/VCCPLL bei 1,2 V.
+LVCMOS33 ist nach Abschnitt 3.1.9 / Tabellen 3.9 und 3.10 des Datenblatts für Ein-/Ausgänge passend.
+Die tatsächlichen Spannungen und Lasten müssen noch gemessen werden.
+
+X1 ist laut Figure A.2 ein 12-MHz-SiTime-Oscillator. J51 verbindet dessen
+Netz ICE_CLK mit Pin 35/G0 in Figure A.3. Der Adapter nutzt diese Leitung
+ausschließlich als Eingang und reicht `clk` direkt an den vorhandenen Carrier
+weiter. Kein Transport-Enable, Taktteiler oder PLL steuert dessen Auswertung.
+
+| Adapterport | SG48-Pin | Headerpad | Richtung |
+| --- | --- | --- | --- |
+| clk | 35 | J2.17 / J51 | Eingang |
+| power_reset_n | 4 | J3.1 | Eingang |
+| frame_start | 3 | J3.3 | Eingang |
+| frame_shift | 48 | J3.5 | Eingang |
+| frame_latch | 45 | J3.7 | Eingang |
+| serial_in | 47 | J3.9 | Eingang |
+| response_shift | 2 | J3.11 | Eingang |
+| serial_out | 44 | J3.13 | Ausgang |
+| response_valid | 46 | J3.15 | Ausgang |
+| transport_fault | 6 | J3.20 | Ausgang |
+
+Der neu beobachtete PR-Nachfolger `996831cdfdd3e87b655708ef2b7bc36b287be2ff`
+stellte während dieser Quellenarbeit bereits den oben beschriebenen
+Zehn-Port-Adapter bereit. Dieses Profil verwendet ihn unverändert, statt einen
+zweiten Transport zu erzeugen. Die 804-Bit-Grenze bleibt intern. Seine
+317-Bit-Requests und 485-Bit-Responses sowie Latch-/Busy-/Fault-Semantik gelten
+weiterhin. Jede zugelassene Carrier-Flanke wird genau einmal ausgewertet,
+auch während Idle, serieller Transfers oder eines gelatchten Fehlers.
+Ein vollständiger Request liefert ausschließlich auf seiner Latch-Flanke
+einen neuen Snapshot. Source und unabhängig spezialisierte Netlist werden mit
+denselben bestehenden Flanken-/Freshness-/Fault-Orakeln geprüft.
+
+Ein Controller muss seine sechs Dateneingänge synchron zur Board-Clock
+bereitstellen und deren Setup/Hold einhalten. Der FTDI-Programmierpfad stellt
+diesen Datencontroller nicht bereit. Async-USB/SPI, CDC und Eingangs-
+Authentisierung bleiben OPEN. Die Default-Bindung bleibt gesperrt. Ein
+`true`-Generic im generischen Testbuild authentisiert kein physisches Board.
+Die seriell beobachtete Commit-/Payload-Antwort gehört zur abgeschlossenen
+Latch-Flanke. Sie ist keine spätere aktuelle Aktuatorfreigabe; die vollständige
+physische Effektvermittlung bleibt OPEN.
+
+Der Readback-Verifier verwendet für dieses Profil den bestehenden
+`prepare-board`-Pfad mit zusätzlichem explizitem `--timing interface-budget.json`:
+
+```sh
+python3 -B tools/qikvrt_effect_ack_clock_readback.py prepare-board \
+  --profile hardware/boards/lattice_ice40up5k_b_evn_rev_a.json \
+  --timing interface-budget.json \
+  --expect-head "$EXPECTED_HEAD" --expect-tree "$EXPECTED_TREE" --nonce "$FRESH_NONCE"
+```
+
+Ohne Budget folgt Exit 20 / `HOLD_INTERFACE_TIMING_BUDGET_REQUIRED`. Mit einem
+expliziten Budget entsteht ein gehashter, exact-subject Reviewplan mit Radiant-
+PDC für alle zehn Pins, IO-Standard und Versorgungswerte sowie SDC für 12 MHz,
+Uncertainty und alle Min-/Max-IO-Delays einschließlich Reset. Er setzt keine
+False-/Multicycle-Ausnahmen. Ein angegebenes Budget ist weiterhin ungemessen;
+die synthetischen Testwerte sind keine zulässige Lab-Messung.
+
+Der Buildplan senkt die vier geordneten VHDL-2008-Quellen zunächst mit dem
+bereits gesperrten/verifizierten GHDL 6.0.0 zu `up5k_synth.v` ab. Danach
+verwendet `build_radiant.tcl` die offiziellen Project-Kommandos aus
+[Radiant TCL 2026.1](https://www.latticesemi.com/view_document?document_id=55212),
+[FPGA-AN-02113](https://www.latticesemi.com/view_document?document_id=55284) und dem
+[Radiant User Guide 2026.1](https://www.latticesemi.com/view_document?document_id=55202)
+für `iCE40UP5K-SG48I`, Synthesis/Map/PAR; Fehler stoppen den Plan.
+Er hält vor Bitstream/Programmer an. Radiant ist hier nicht installiert oder
+authentisiert; sein Lock/Cache/Provenienzvertrag muss vor Ausführung ergänzt
+werden. GHDL-Synthese belegt keine UP5K-Ressourcenpassung, kein Routing und
+keine STA. Vollständige Ressourcen- und Setup/Hold/Recovery/Removal-Prüfungen
+gegen gemessene Controller-Timingdaten bleiben erforderlich.
+
+Für den Programmer dokumentiert der Boardguide Abschnitt 8 Diamond Programmer
+ab 3.9 über den FT2232H/USB-Mini-B: iCE40 UltraPlus/iCE40UP5K, Micron
+N25Q032A-Flash, Erase/Program/Verify; alternativ CRAM/Fast Program.
+Flash nutzt J6 1-3/2-4 und J7 shunted; SRAM nutzt J6 1-2/3-4 und entfernt J7.
+Dateigröße/Endadresse und Kabel müssen aus dem tatsächlichen Image/Board
+ermittelt werden. D11 besitzt zwei BOM-Versionen; die dokumentierte
+Versorgungssequenz erlaubt keinen NVCM-Boot. Der Plan sperrt NVCM.
+[FPGA-TN-02001 v3.5](https://www.latticesemi.com/view_document?document_id=46502)
+beschreibt die Konfigurationsmodi. Flash-Byte-Verify authentisiert kein
+aktives FPGA-SRAM-Image; dessen Zuordnung bleibt eine separate Verpflichtung.
+
+Acht gelesene Primärdokumente sind im Profil mit URL, Version, Bytezahl und
+SHA-256 gebunden. Die offiziellen Default-Design-/Layout-/Schematic-Source-ZIPs
+(IDs 51990/51989/51988) lieferten am 01.10.2026 eine Lattice-Anmeldeseite statt
+ZIP-Bytes. Diese HTML-Antwort wurde nicht als Quellarchiv akzeptiert. Der
+Buildplan bleibt deshalb Exit 20 / `HOLD_PRIMARY_ARCHIVE_CROSSCHECK_REQUIRED`.
+Der Abgleich der Originalarchive ist OPEN. `verify-board` weist dieses
+dokumentarische Profil zurück, bis ein authentisierter targetspezifischer
+Adapter vorliegt. `physical_authentication`, `physical_clock_verified`,
+`bitstream_programmed`, `programmer_readback_observed` und `EFFECT_ACK_DONE`
+bleiben false.
+
+`make effect-ack-board-contract-test` erhält die bestehenden 2.621.440
+C-Orakelvektoren je Source-/Carrier-Netlist-Simulation und die Source- sowie
+separat spezialisierten Serial-Top-Kontrollen. Es ergänzt negative Profil-,
+Constraint-, Timing- und Substitutionstests. Die zusätzliche Verilog-Absenkung
+prüft für beide statischen Varianten genau die zehn dokumentierten skalaren
+Ports; ein breiter Package-Top wird verworfen. Keine Oracle- oder physische
+Abnahmebedingung wird abgeschwächt.
+
+### Reproduzierbare Prüfung
+
+```sh
+sh tools/bootstrap-runtime.sh --profile clock --install --accept-third-party
+make effect-ack-clock-carrier-test
+```
+
+Der bestehende Bootstrap-/Cache-Pfad wird um das SHA-256-gebundene GHDL 6.0.0
+für Ubuntu 24.04 x86_64 erweitert. Jede Nutzung vergleicht alle installierten
+Dateien mit dem verifizierten Archiv. Installation erfolgt gestuft und wird
+bei fehlgeschlagener Endprüfung zurückgenommen. Fehlendes GHDL ist im Boot-
+Check CONTINUE, im verpflichtenden Carrier-Test BLOCK. Im ausdrücklich
+deklarierten GitHub-Actions-Kontext provisioniert der gemeinsame Make-Testpfad
+GHDL mit Lizenzannahme; außerhalb von CI bleibt Installation eine explizite
+Bootstrap-Aktion. Der primäre CI-Job provisioniert zusätzlich vor dem gesamten
+Testlauf. Ein fehlender Simulator überspringt keinen Test.
+GHDL-Synthese liefert eine generische Netzliste; sie ersetzt keinen Board-
+Timing-Nachweis. Primärquelle: https://ghdl.github.io/ghdl/using/Synthesis.html
+
+## Noch offene physische Bindung
+
+Die C-Erweiterung ist ein ausführbares Modell aufeinanderfolgender Flanken.
+Ihre Ausführung auf einer CPU benötigt mehrere Maschineninstruktionen.
+Numerische Zykluslabels oder erfolgreiche Softwaretests beweisen deshalb
+keine Prüfung an jeder physischen CPU-Flanke. Ein Timer, Betriebssystemtask,
+Browser-Event-Loop, GitHub-Workflow oder ChatGPT-Zeitplan erfüllt die
+Prozessortaktanforderung nicht durch eine höhere Abruffrequenz.
+
+Für eine produktive Bindung sind weiterhin erforderlich:
+
+1. Identität, Zulassung, Reset- und Epochenregeln der tatsächlichen Taktdomäne.
+2. Ein an jede relevante Hardwareflanke gebundener Prüfpfad mit
+   Timing-Nachweis; der RTL-Pfad stellt die Logik bereit, aber noch keine
+   physisch authentisierte Board-/Pin-Bindung, Platzierung, STA oder
+   Programmer-Rücklesung. Das UP5K-Profil liefert dokumentarische Build-Eingaben.
+3. Atomar aktuelle, authentifizierte Eingaben und vollständige Vermittlung
+   jedes geschützten Effekts durch die aktuelle Freigabe.
+4. Ein unabhängiger Abdeckungsnachweis für das beanspruchte Zyklusfenster,
+   der auch ausbleibende Aufrufe, Taktverlust und Neustarts erkennt.
+
+Diese Bindung ist für den Firefox-MVP in diesem Kandidaten OPEN. Der
+Referenzkern kann eine erst beim nächsten Aufruf sichtbare Lücke erkennen;
+ohne unabhängigen Treiber kann er einen vollständig ausbleibenden Aufruf
+nicht beobachten. Weder die gesamte MVP-Laufzeit noch ein physischer
+Prozessortakt wird hier als DONE ausgegeben.
+
+## Prüfung und Herkunft
+
+`make effect-ack-core-test` kompiliert unter strict ANSI-C90 und prüft alle
+19 booleschen Eingangsfelder mit allen fünf Entscheidungen gegen den
+vorhandenen unabhängigen Zustandsorakel. Dabei wird ein zusammenhängendes,
+synthetisches Fenster von 2.621.440 Zyklen durchlaufen. Zusätzliche Fälle
+prüfen neue Eingaben, fehlende Eingaben, Replay, Lücken, Epoche und Überlauf.
+`tests.test_effect_ack_conformance` schützt die bestehende Referenzsemantik.
+Der konkrete Quellstand und die Ergebnisse sind in
+`state/work_units/QIKVRT_PROCESSOR_CLOCK_CORE_V1.json` gebunden.
+
+Der Kalender-/Digital-Twin-Pfad aus Mirror-PR #426 ist ein separater
+Ausgabepfad. Dieser Kandidat setzt ihn nicht voraus und verändert ihn nicht.
+Er entstand auf dem überprüften Mirror-Quellstand; er behauptet weder
+Authority-Promotion noch Gleichheit zwischen Authority und Mirror.

@@ -1,0 +1,12 @@
+{
+  "schema": "qikvrt_execution_trigger_v1",
+  "operation": "EXECUTE_HISTORY_PRESERVING_MIRROR_SYNC_PR249",
+  "source_execution_branch": "execution/history-preserving-mirror-sync-pr249-v1",
+  "exact_authority_main": "7d87a6003135a6e3efbca34b2d898967d7f66018",
+  "exact_mirror_parent": "afcd0255aab6bc5ad18275a2d91516688a41e302",
+  "merge_this_trigger": false,
+  "zenodo_mutation_authorized": false,
+  "pass": false,
+  "final_pass": false,
+  "effect_ack_done": false
+}

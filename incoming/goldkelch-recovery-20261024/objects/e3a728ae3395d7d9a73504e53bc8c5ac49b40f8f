@@ -1,0 +1,37 @@
+{
+  "schema": "qikvrt_lossless_review_scaling_mirror_work_unit_v1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "baseline_head": "a9097186f8f570b6f1c9d339b73c22f18785ecb4",
+  "baseline_tree": "c4d66d700318f797144b8ab570c8cf1fb5dbde84",
+  "requested_by": "Ingolf Lohmann",
+  "implementation_by": "Codex AI assistance",
+  "source_request": "Implement scaling and lossless consolidation synchronously, preserve existing capabilities, continue authorized work after actual admission",
+  "authority_pr": 1240,
+  "preserved": "Existing local Mirror review core, gates and event selection",
+  "added": [
+    "Conditional REST observations",
+    "Read-only worker mode in the existing executor",
+    "Fresh source-Main/run verification before isolated evaluator checkout",
+    "Exact input/output digests and own worker HEAD/TREE/run binding"
+  ],
+  "required_live_acceptance": [
+    "Both candidate integrations",
+    "Provisioned Mesh credential",
+    "Admitted worker run and source consolidation",
+    "Fresh pre-effect Authority reobservation"
+  ],
+  "completion_claims": {
+    "MAIN_PROMOTED": false,
+    "MESH_EXECUTED": false,
+    "GLOBAL_ADOPTION": false,
+    "EFFECT_ACK_DONE": false
+  },
+  "implementation_repair": {
+    "run": 36237487868,
+    "job": 108391809898,
+    "failure": "ModuleNotFoundError before new transport existed on trusted Main",
+    "repair": "Select installed transport before requests; retain existing gh reads on the predecessor Main",
+    "targeted_local_tests": 26,
+    "successor_ci_required": true
+  }
+}

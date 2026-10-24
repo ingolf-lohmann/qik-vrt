@@ -1,0 +1,188 @@
+{
+  "_license": {
+    "classification": "machine_readable_lossless_main_integration",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0"
+  },
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "PR421_LOSSLESS_MAIN_INTEGRATION_20261001",
+  "created_at": "2026-10-01T09:09:54.010330+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "research/temdd-liveness-convergence-v1",
+  "source_pr": 421,
+  "source_commit": "92ad5f3c75fb0bf68ffa13152e529788135a0820",
+  "source_tree": "ffc3375c7f989966d3b1fff987f21194609905f6",
+  "main_commit": "df1ad4cff32fe62ce54e123c6769f039604b2707",
+  "main_tree": "ccca359ae9d2dd6e9f6e622d1a8384c0ec462a1e",
+  "merge_base": "9a0853b9cfc1017ade0bbb627a02274d66c704bd",
+  "human_actor": "Ingolf Lohmann",
+  "human_contributions": [
+    "Authorized the smallest lossless integration of exact Mirror Main df1ad4cff32fe62ce54e123c6769f039604b2707 without force push, liveness or download semantic changes.",
+    "Required freshly bound HEAD/TREE, CI, archive, liveness and repository-evidence gates; preserved UNPROVED and false predecessor/effect boundaries."
+  ],
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6",
+    "session_or_run_id": "a55c20b3182f",
+    "tools_and_adapters": [
+      "GitHub connector",
+      "Git",
+      "Python standard library",
+      "repository Makefile"
+    ],
+    "identity_and_observation_limits": "Platform account or commit identity does not authenticate a natural person or model identity."
+  },
+  "artificial_cognitive_contributions": [
+    "Freshly read PR/Main refs, compare and lifecycle commit scope.",
+    "Performed conflict-free no-ff two-parent merge and regenerated existing integrity projection.",
+    "Compared every preserved PR-scope file and imported lifecycle file with its exact source bytes.",
+    "Prepared fresh existing Makefile, conformance, archive and hosted CI/repository-evidence execution with no predecessor evidence transfer."
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "evidence_retention": "METADATA_ONLY",
+  "inputs": {
+    "main_only_lifecycle_paths": {
+      "evidence/node_health/36821646859-1.json": {
+        "bytes": 241,
+        "sha256": "5fb78b9e2d0a3680cef2ee8100d005505498246d72033a708748b9a3a9eaeceb",
+        "git_blob_sha1": "2c7ceb96a164210d38d376b869e52cd655f8aece"
+      },
+      "evidence/node_health/LATEST.json": {
+        "bytes": 241,
+        "sha256": "5fb78b9e2d0a3680cef2ee8100d005505498246d72033a708748b9a3a9eaeceb",
+        "git_blob_sha1": "2c7ceb96a164210d38d376b869e52cd655f8aece"
+      },
+      "evidence/node_registration_renewal/36821646859-1.json": {
+        "bytes": 262,
+        "sha256": "0d52c54d62d7b32c79310003497ae561f9a4ef94bc80eb423b5e3e7a30e5b29f",
+        "git_blob_sha1": "c351743dccdffa3a18b62904046da7ff8b54a2ad"
+      },
+      "evidence/node_registration_renewal/LATEST.json": {
+        "bytes": 262,
+        "sha256": "0d52c54d62d7b32c79310003497ae561f9a4ef94bc80eb423b5e3e7a30e5b29f",
+        "git_blob_sha1": "c351743dccdffa3a18b62904046da7ff8b54a2ad"
+      },
+      "qikvrt/runtime/onboarding/NODE_HEALTH.json": {
+        "bytes": 563,
+        "sha256": "cea886032cc7d04351682c746e249843f4ca81d19ed386b4d2c2e59fc272dbbc",
+        "git_blob_sha1": "6bc9538a616fad31217d11e41c9fc8156bcca121"
+      },
+      "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json": {
+        "bytes": 542,
+        "sha256": "6721be0932382cc713df3b9f1911670667831e2e2a3e24d06751e31092305d9e",
+        "git_blob_sha1": "d41ac7538d9de263b82738ccd5676f9eb7dee0fd"
+      }
+    },
+    "preserved_pr_scope_paths": {
+      "Makefile": {
+        "bytes": 10867,
+        "sha256": "e33ac3707bba3d3cda5a657617253b267066e217f0ae7ce5e5a7dcb0e56552ed",
+        "git_blob_sha1": "a689c64e07229504605ea3768de78361dd7c06d7"
+      },
+      "research/temdd/TEMDD_LIVENESS_CONVERGENCE_CONTRACT_V1.md": {
+        "bytes": 9186,
+        "sha256": "8e0027636cd89be832dd8ba3afe46653b0bdfe87ec8936e95264b841c5b867bf",
+        "git_blob_sha1": "e8e2ee745475825cb2c139b6099c153f398b9c12"
+      },
+      "research/temdd/WHY_TEMDD_LIVENESS_MATTERS.md": {
+        "bytes": 4824,
+        "sha256": "c7ce098d2d8e41b7457eaf6371b431864863f2453136e6d2beff58810427a9e3",
+        "git_blob_sha1": "a40a101d311ff37e612fc52333acad39ab3ce0bf"
+      },
+      "state/autonomy/TEMDD_LIVENESS_CONVERGENCE_CONTRACT_V1.json": {
+        "bytes": 4645,
+        "sha256": "104d6fdc469951dc96fc0a13eacf6a7f6c69c69eb15f83256c86edd26a4fdfcf",
+        "git_blob_sha1": "d6d3515418853f9d2ec75451656ece4375022092"
+      },
+      "state/work_units/PR421_ZENODO_DOWNLOAD_COMPLETENESS_REPAIR_20261001.json": {
+        "bytes": 12225,
+        "sha256": "ae9f302a3df1106b0b746c369f6b0d7c68277aefc5d3e470d597e350f3173dc9",
+        "git_blob_sha1": "cc3deea88c950b3f0809f513530874ba28392b2c"
+      },
+      "state/work_units/TEMDD_LIVENESS_HOLD_REPAIR_20261001.json": {
+        "bytes": 8018,
+        "sha256": "330cda3d400458d117af288de2c6ad9c557407c1f377a4594c1b5e885393a481",
+        "git_blob_sha1": "8f872c23969f4e865c4b5c01ce477eec8d7d6275"
+      },
+      "tests/test_content_disposition_batch_003_dispatch.py": {
+        "bytes": 16090,
+        "sha256": "e7e4c33c4bf9e2014315e576067e202d2aa5ff1a909db17a4f633d83e7c9b49f",
+        "git_blob_sha1": "4e074e79f2e3791e6261639c1f73a5ed5481d9fb"
+      },
+      "tests/test_temdd_liveness_convergence.py": {
+        "bytes": 8542,
+        "sha256": "97d983ca17fe281db16b389202c6df77bddfbf062a6a443ac228c29bf782c8b7",
+        "git_blob_sha1": "8982a8ec01473d9fc0e7c887faee0060cc715b47"
+      },
+      "tools/qikvrt_batch003_remaining_archive_probe.py": {
+        "bytes": 14051,
+        "sha256": "dd22e07f562c491069ce3ed3bcebb1baf7e6d3514f8b2879c48932015130c5f8",
+        "git_blob_sha1": "577c01f0cf09e72bf0cdfee6e87e2d04d90c81e4"
+      }
+    }
+  },
+  "outputs": {
+    "integration": "Containing merge commit/tree; exact post-effect binding belongs in PR #421 description and freshly read native run/job evidence.",
+    "integrity_paths": [
+      "REPOSITORY_FILE_MANIFEST.json",
+      "REPOSITORY_FILE_MANIFEST.json.sha256",
+      "SHA256SUMS.txt"
+    ],
+    "contribution_record": "state/work_units/PR421_LOSSLESS_MAIN_INTEGRATION_20261001.json"
+  },
+  "git_history": {
+    "ordered_parents": [
+      "92ad5f3c75fb0bf68ffa13152e529788135a0820",
+      "df1ad4cff32fe62ce54e123c6769f039604b2707"
+    ],
+    "strategy": "Conflict-free two-parent merge; preserve all non-integrity PR bytes and import exactly the six Main lifecycle paths.",
+    "force_push": false,
+    "history_rewrite": false,
+    "main_updated_by_this_work_unit": false
+  },
+  "verification": {
+    "imported_lifecycle_bytes_match_exact_main": true,
+    "all_non_integrity_pr_scope_bytes_match_source": true,
+    "focused_candidate_tests": {
+      "command": "python3 -B -m unittest -v tests.test_temdd_liveness_convergence tests.test_content_disposition_batch_003_dispatch",
+      "count": 25,
+      "result": "PASS",
+      "scope": "Merged candidate before contribution-record addition; not hosted exact-head evidence."
+    },
+    "containing_successor_gates": [
+      "make test",
+      "python3 -B tools/qikvrt_integrity.py verify",
+      "python3 -B -m unittest -v tests.test_effect_ack_conformance tests.test_temdd_liveness_convergence tests.test_content_disposition_batch_003_dispatch",
+      "python3 -B -m tools.qikvrt_content_disposition_batch_003_remaining_archives --check --json",
+      "python3 -B tools/qikvrt_content_disposition_batch_003_dispatch.py --check-status-projection --json"
+    ],
+    "hosted_exact_head_ci": "PENDING_FRESH_EXECUTION",
+    "hosted_exact_head_repository_evidence": "PENDING_FRESH_EXECUTION",
+    "native_approval": "NOT_INFERRED",
+    "predecessor_runs_and_reviews": "HISTORICAL_ONLY"
+  },
+  "human_decision": {
+    "integration_and_non_force_push": "AUTHORIZED",
+    "native_review": "NOT_INFERRED",
+    "merge_into_main": "NOT_REQUESTED_BY_THIS_TASK"
+  },
+  "external_effects": {
+    "pr_head_fast_forward": "AUTHORIZED_PENDING_EXACT_READBACK",
+    "zenodo_mutation": false,
+    "release": false,
+    "deployment": false,
+    "publication": false
+  },
+  "TEMDD_LIVENESS_CONVERGENCE_THEOREM": "UNPROVED",
+  "PREDECESSOR_EVIDENCE_TRANSFER": false,
+  "predecessor_evidence_transfer": false,
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false
+  },
+  "EFFECT_ACK_DONE": false
+}

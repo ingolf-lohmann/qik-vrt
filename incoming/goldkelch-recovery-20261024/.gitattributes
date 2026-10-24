@@ -1,0 +1,2 @@
+# Preserve original Git blob bytes, including CRLF.
+objects/* -text

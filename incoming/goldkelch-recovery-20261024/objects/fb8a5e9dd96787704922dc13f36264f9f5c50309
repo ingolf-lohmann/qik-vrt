@@ -1,0 +1,13 @@
+{
+  "id": "BI",
+  "version": "2.13.4",
+  "de": "Zweisprachigkeit für Dokumentation und Nicht-Source-Code-Artefakte",
+  "en": "Bilingual accessibility for documentation and non-source-code artifacts",
+  "required": [
+    "QIKVRT-DE-EN-DOC-HEADER",
+    "QIKVRT-DE-EN-DOC-FOOTER",
+    "Deutsch",
+    "English",
+    "license visibility"
+  ]
+}
