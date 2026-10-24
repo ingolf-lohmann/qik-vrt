@@ -1,0 +1,148 @@
+{
+  "schema": "qikvrt_zenodo_v3_review_completion_regression_v1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "pr": 553,
+  "predecessor_head": "2d8e793ac6ec0458da050ba500452852bf761cae",
+  "reconciliation_base": "a38455c739f7f475b2a93447de1db4ea87e4200c",
+  "files": [
+    {
+      "path": "tools/qikvrt_zenodo_publish.py",
+      "bytes": 122663,
+      "sha256": "b3cf8630285ec78bef3ebb23f7494bb7844932f1826caad8713cc5325702ea95",
+      "git_blob_sha": "e02a1c22df7a8970c0c10e6f6f6096ea73050f4d"
+    },
+    {
+      "path": "tests/test_zenodo_machine_proof_policy.py",
+      "bytes": 242538,
+      "sha256": "75a4683cb7f118217308f3024e7cb62ec869a4268f24ec9c27208b6de7272b38",
+      "git_blob_sha": "e386c8a29df01c9828f455cd6b34cd3c210eedea"
+    },
+    {
+      "path": "policy/ZENODO_V3_REVIEW_ACCEPTANCE_V2.md",
+      "bytes": 5320,
+      "sha256": "9a226340160b53697a13a5fe8a891c3122de906810a1a8093583f88d96e5cb37",
+      "git_blob_sha": "a4cf2a9e426dd5b45a43c3ee320c60fed0ad16a8"
+    }
+  ],
+  "causal_reproduction": {
+    "ruleset_disabled_during_verification": "ACCEPTED_BEFORE_REPAIR",
+    "later_pending_status_during_verification": "ACCEPTED_BEFORE_REPAIR",
+    "repaired_behavior": "BOTH_FAIL_CLOSED_BEFORE_LOCK_OR_ZENODO",
+    "scope": "deterministic simulated GitHub REST fixtures"
+  },
+  "regression": {
+    "publisher_fixtures": 100,
+    "transport": 17,
+    "total": 117,
+    "success": true,
+    "errors": 0,
+    "failures": 0,
+    "withheld_original_fileset_cases": [
+      "tests.test_zenodo_machine_proof_policy.MachineProofBeforeZenodoTests.test_pr447_gesamtausgabe_actual_bytes_and_denied_effect_boundaries",
+      "tests.test_zenodo_machine_proof_policy.MachineProofBeforeZenodoTests.test_pr447_historical_source_proof_does_not_attest_changed_current_ai",
+      "tests.test_zenodo_machine_proof_policy.MachineProofBeforeZenodoTests.test_pr447_migrated_v3_candidate_has_exact_proof_fileset_and_return_bindings",
+      "tests.test_zenodo_machine_proof_policy.MaximalityPublicationBindingTests.test_current_authority_also_owns_the_consumption_ref_path",
+      "tests.test_zenodo_machine_proof_policy.MaximalityPublicationBindingTests.test_existing_publisher_accepts_metadata_and_file_plan_but_blocks_unapproved_draft",
+      "tests.test_zenodo_machine_proof_policy.MaximalityPublicationBindingTests.test_historical_manifest_is_readable_but_cannot_start_a_new_mirror_effect",
+      "tests.test_zenodo_machine_proof_policy.MaximalityPublicationBindingTests.test_native_receipt_binds_exact_original_sources_and_theorems",
+      "tests.test_zenodo_machine_proof_policy.MaximalityPublicationBindingTests.test_pdf_and_historical_scientific_boundaries_are_preserved",
+      "tests.test_zenodo_machine_proof_policy.MaximalityPublicationBindingTests.test_real_draft_reaches_the_exact_upload_authority_boundary",
+      "tests.test_zenodo_machine_proof_policy.MaximalityPublicationBindingTests.test_source_archive_preserves_every_bound_original_member"
+    ],
+    "original_review_gate_tests": 52,
+    "original_review_gate_tests_success": true,
+    "acceptance_v2_tests": 13,
+    "acceptance_v2_success": true
+  },
+  "logs": {
+    "governance-drift-before-fix.log": {
+      "bytes": 2548,
+      "sha256": "da58463740fa49656693562406efb49f9960eb6cb5fde48b012d05d49492eaf0"
+    },
+    "acceptance-v2-after-fix.log": {
+      "bytes": 2921,
+      "sha256": "b9770b28eb963cd00828fd657ab32d7ddedaacd3d78cd1eaae444aacdb760a72"
+    },
+    "publisher-fixture-and-transport-regressions.log": {
+      "bytes": 23105,
+      "sha256": "0655585f3631b3db8d580146efe4a9ef502ac249dc146b4117b369d614650fc9"
+    },
+    "review-gate-regressions-complete.log": {
+      "bytes": 14199,
+      "sha256": "d406aa9838d9d4d94815bf572d9e4344ace1f3f38fa0746cec470a05479df5d6"
+    }
+  },
+  "historical_controls_unchanged": [
+    {
+      "path": "policy/zenodo-machine-proof-policy-v2.json",
+      "bytes": 4992,
+      "sha256": "933d6322a1e294848c6385d1384ab0ec3862c8675ebe35ec2fc4cad3e0baec47",
+      "git_blob_sha1": "e9578d30d22f845e7df684128dcd9332641c00be",
+      "unchanged_against_main": true
+    },
+    {
+      "path": "policy/zenodo-machine-proof-policy-v3.json",
+      "bytes": 5608,
+      "sha256": "e8163b42acdc26ede6c996f695c4e5362edd580085717264bbf20f5782093f78",
+      "git_blob_sha1": "35ecc7887e486491278f63e0a61102d1be06e5ef",
+      "unchanged_against_main": true
+    },
+    {
+      "path": "policy/zenodo-machine-proof-policy-v1.json",
+      "bytes": 2985,
+      "sha256": "039fe8617a39aaf2b20e99fc30d344f5d879ec26aedbd263647f3308dc19dc60",
+      "git_blob_sha1": "d931a50d42d6e1302afffbcfcd434861e590ab46",
+      "unchanged_against_main": true
+    },
+    {
+      "path": "policy/qikvrt-zenodo-machine-proof-bundle-v2.schema.json",
+      "bytes": 6311,
+      "sha256": "f9ad097a797c5fbe1b794f75930de4fdefc0356bac407012010b30eef87ae73e",
+      "git_blob_sha1": "22cc6f4008b4823e8a7cf5e3057d058df6c0961a",
+      "unchanged_against_main": true
+    },
+    {
+      "path": "policy/qikvrt-zenodo-machine-proof-bundle-v3.schema.json",
+      "bytes": 8118,
+      "sha256": "59ea0d0df65a5a6861493a2b999f2e5ceca22391e62f506a59f9ae2363728912",
+      "git_blob_sha1": "85f0fe61b9e565241a56f27f4a96cb3944ab6388",
+      "unchanged_against_main": true
+    },
+    {
+      "path": "policy/qikvrt-prepublication-return-receipt-v2.schema.json",
+      "bytes": 3806,
+      "sha256": "6390285529eb91f8d52a032d957a5457ebb1419e56c091f961f8d0695d2923c9",
+      "git_blob_sha1": "ddf7e306940d256b51971ea153c33b6e493ffde4",
+      "unchanged_against_main": true
+    },
+    {
+      "path": "policy/qikvrt-zenodo-machine-proof-bundle-v1.schema.json",
+      "bytes": 6143,
+      "sha256": "b027b4b9071ae4c8d7b31d22ea94ad4ef647a6be9155152b5468f09bf7010504",
+      "git_blob_sha1": "b79b2b8148c75374d660b4c7b43927bfca80995a",
+      "unchanged_against_main": true
+    },
+    {
+      "path": "policy/qikvrt-prepublication-return-receipt-v1.schema.json",
+      "bytes": 2864,
+      "sha256": "3eefc4213d44c0fee8619e05527649595c3cbe030a7742845a0980ab1e51224a",
+      "git_blob_sha1": "cca4c690c25df82955e9060abef1a98c4f0c4a43",
+      "unchanged_against_main": true
+    }
+  ],
+  "native_predecessor_source_test": {
+    "job_id": 118355482388,
+    "run_id": 39338971432,
+    "tested_head": "2d8e793ac6ec0458da050ba500452852bf761cae",
+    "tested_tree": "8ccba03be092cf845d6103a08a130378744f6ba0",
+    "conclusion": "success",
+    "success_transferred_to_new_candidate": false
+  },
+  "full_local_make_test": "NOT_CLAIMED_PARTIAL_ORIGINAL_FILESET",
+  "new_native_full_suite_required": true,
+  "main_integration": false,
+  "governance_enforcement": "NOT_ESTABLISHED",
+  "detached_v3_activation_created": false,
+  "exact_upload_authorization_created": false,
+  "zenodo_effects": 0
+}

@@ -1,0 +1,48 @@
+[
+  {
+    "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/MACHINE_PROOF_BUNDLE.json",
+    "technical_validation": "BLOCK",
+    "error": "SHA-256 mismatch for AI",
+    "exception": "ProofGateError"
+  },
+  {
+    "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/MACHINE_PROOF_BUNDLE.json",
+    "technical_validation": "PASS",
+    "result": {
+      "schema": "qikvrt_zenodo_machine_proof_bundle_v3",
+      "publication_id": "qikvrt-effective-continuity-synthesis-20261003-review-v1",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/MACHINE_PROOF_BUNDLE.json",
+      "bytes": 30503,
+      "sha256": "c1f0ca91ce694ec05fcbf014d894856b50f682418f68a122dba67311f8b3c0c9",
+      "git_blob_sha1": "017ac43ceabb77e42e2e6703218dabe2bc025e55",
+      "policy": {
+        "id": "qikvrt-zenodo-machine-proof-before-publication-v3",
+        "path": "policy/zenodo-machine-proof-policy-v3.json",
+        "version": "3.0.0",
+        "sha256": "e8163b42acdc26ede6c996f695c4e5362edd580085717264bbf20f5782093f78",
+        "git_blob_sha1": "35ecc7887e486491278f63e0a61102d1be06e5ef",
+        "schema_contracts": {
+          "machine_proof_bundle": {
+            "path": "policy/qikvrt-zenodo-machine-proof-bundle-v3.schema.json",
+            "sha256": "59ea0d0df65a5a6861493a2b999f2e5ceca22391e62f506a59f9ae2363728912",
+            "git_blob_sha1": "85f0fe61b9e565241a56f27f4a96cb3944ab6388"
+          },
+          "prepublication_return_receipt": {
+            "path": "policy/qikvrt-prepublication-return-receipt-v2.schema.json",
+            "sha256": "6390285529eb91f8d52a032d957a5457ebb1419e56c091f961f8d0695d2923c9",
+            "git_blob_sha1": "ddf7e306940d256b51971ea153c33b6e493ffde4"
+          }
+        },
+        "review_state": "REVIEW_REQUIRED",
+        "production_mutation_authorized": false
+      },
+      "claim_count": 30,
+      "candidate_file_count": 4,
+      "artifact_count": 14,
+      "machine_proof_complete": true,
+      "zenodo_upload_authorized": false,
+      "review_state": "REVIEW_REQUIRED",
+      "production_mutation_authorized": false
+    }
+  }
+]

@@ -1,0 +1,116 @@
+{
+  "schema": "qikvrt_zenodo_review_acceptance_local_regression_v1",
+  "observed_at": "2026-10-19T22:58:28.297036+00:00",
+  "base_head": "b226770c064a167ee3a9cc70996f05db1b3bc6d1",
+  "tested_source_files": [
+    {
+      "path": "tools/qikvrt_zenodo_publish.py",
+      "bytes": 121577,
+      "sha256": "da7d5d41681361d673fef9150fb3fda1a3a7f736394c256ed52b0fbc95fb8daa",
+      "git_blob_sha": "c6167f0eb6c468e569968fc0f1c367db6721f421"
+    },
+    {
+      "path": "tests/test_zenodo_machine_proof_policy.py",
+      "bytes": 240301,
+      "sha256": "2a37f6b9fc5c0ebdf91dc658a517b5c4a7fcaefcf97258cabc2ad5031ffe0f44",
+      "git_blob_sha": "16fe073249d51e8baa634290c285e36a1f3ac07a"
+    },
+    {
+      "path": "policy/zenodo-v3-review-acceptance-v2.json",
+      "bytes": 1863,
+      "sha256": "a666dc7fb03e94ac08f01246d499406d8335e2aae2d31f87147697c1f6ffb18d",
+      "git_blob_sha": "a9579fb33aa8b88554f075a95d19d1806d74e0fa"
+    },
+    {
+      "path": "policy/ZENODO_V3_REVIEW_ACCEPTANCE_V2.md",
+      "bytes": 4946,
+      "sha256": "6deaf23b777dd1614dcfb6892df8efa0546a1b8a2f16411152da026d032aa459",
+      "git_blob_sha": "71b63a18b1bfa0eaee5d290eaf2a279ad92629e5"
+    }
+  ],
+  "tests": [
+    {
+      "command": "python3 -S -B -m unittest -v tests.test_zenodo_machine_proof_policy.V3ReviewAcceptanceV2Tests tests.test_zenodo_machine_proof_policy.MachineProofBeforeZenodoTests.test_v3_live_review_and_ruleset_fail_closed_before_consumption tests.test_zenodo_machine_proof_policy.MachineProofBeforeZenodoTests.test_v3_complete_simulated_publication_and_recovery_preserve_immutable_proof tests.test_zenodo_actions",
+      "result": "PASS",
+      "test_count": 30,
+      "log_sha256": "dd5142d89c4f7811e36b6c61a09ba0b687a0ec165bc2b4f88a995fc97fec273c"
+    },
+    {
+      "command": "python3 -S -B -m unittest -v tests.test_qikvrt_required_review_gate",
+      "result": "PASS",
+      "test_count": 52,
+      "log_sha256": "03635676f976edea5c236e0f05ad800c3b6b13428e6ec2061f6098553bbbe1a7"
+    }
+  ],
+  "limits": [
+    "Native full make test is required: local source carrier is sparse; full local command stopped at absent original C sources.",
+    "Native socket tests require a capable runner: this local runtime rejects socket binding with EPERM. Original in-process use and independent native event readback are separately recorded.",
+    "Existing historical original-file suites remain mandatory; inaccessible original binary data is not replaced or regenerated.",
+    "Publication/recovery tests use fake transports and prove no external Zenodo mutation."
+  ],
+  "unchanged_contracts": [
+    {
+      "path": "policy/zenodo-machine-proof-policy-v1.json",
+      "git_blob_sha": "d931a50d42d6e1302afffbcfcd434861e590ab46",
+      "sha256": "039fe8617a39aaf2b20e99fc30d344f5d879ec26aedbd263647f3308dc19dc60",
+      "bytes": 2985,
+      "unchanged": true
+    },
+    {
+      "path": "policy/qikvrt-zenodo-machine-proof-bundle-v1.schema.json",
+      "git_blob_sha": "b79b2b8148c75374d660b4c7b43927bfca80995a",
+      "sha256": "b027b4b9071ae4c8d7b31d22ea94ad4ef647a6be9155152b5468f09bf7010504",
+      "bytes": 6143,
+      "unchanged": true
+    },
+    {
+      "path": "policy/qikvrt-prepublication-return-receipt-v1.schema.json",
+      "git_blob_sha": "cca4c690c25df82955e9060abef1a98c4f0c4a43",
+      "sha256": "3eefc4213d44c0fee8619e05527649595c3cbe030a7742845a0980ab1e51224a",
+      "bytes": 2864,
+      "unchanged": true
+    },
+    {
+      "path": "policy/zenodo-machine-proof-policy-v2.json",
+      "git_blob_sha": "e9578d30d22f845e7df684128dcd9332641c00be",
+      "sha256": "933d6322a1e294848c6385d1384ab0ec3862c8675ebe35ec2fc4cad3e0baec47",
+      "bytes": 4992,
+      "unchanged": true
+    },
+    {
+      "path": "policy/qikvrt-zenodo-machine-proof-bundle-v2.schema.json",
+      "git_blob_sha": "22cc6f4008b4823e8a7cf5e3057d058df6c0961a",
+      "sha256": "f9ad097a797c5fbe1b794f75930de4fdefc0356bac407012010b30eef87ae73e",
+      "bytes": 6311,
+      "unchanged": true
+    },
+    {
+      "path": "policy/qikvrt-prepublication-return-receipt-v2.schema.json",
+      "git_blob_sha": "ddf7e306940d256b51971ea153c33b6e493ffde4",
+      "sha256": "6390285529eb91f8d52a032d957a5457ebb1419e56c091f961f8d0695d2923c9",
+      "bytes": 3806,
+      "unchanged": true
+    },
+    {
+      "path": "policy/zenodo-machine-proof-policy-v3.json",
+      "git_blob_sha": "35ecc7887e486491278f63e0a61102d1be06e5ef",
+      "sha256": "e8163b42acdc26ede6c996f695c4e5362edd580085717264bbf20f5782093f78",
+      "bytes": 5608,
+      "unchanged": true
+    },
+    {
+      "path": "policy/qikvrt-zenodo-machine-proof-bundle-v3.schema.json",
+      "git_blob_sha": "85f0fe61b9e565241a56f27f4a96cb3944ab6388",
+      "sha256": "59ea0d0df65a5a6861493a2b999f2e5ceca22391e62f506a59f9ae2363728912",
+      "bytes": 8118,
+      "unchanged": true
+    },
+    {
+      "path": "policy/ZENODO_MACHINE_PROOF_V3_PRODUCTION.md",
+      "git_blob_sha": "fbfe4dcfcb8ce386ae8775676636c4d99c87c625",
+      "sha256": "a963896ccbe6b71879b1b392bc490129a643954ea4eee216d195eeaca085cb58",
+      "bytes": 4899,
+      "unchanged": true
+    }
+  ]
+}

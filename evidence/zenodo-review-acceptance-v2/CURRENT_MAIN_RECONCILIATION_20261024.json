@@ -1,0 +1,105 @@
+{
+  "schema": "qikvrt_zenodo_existing_pr_main_reconciliation_v1",
+  "observed_at": "2026-10-24T03:15:06.021887+00:00",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "pr": 553,
+  "source": {
+    "head": "3691b92ffd2634986734cbc8f16616dc7a489de7",
+    "tree": "fa639480baebf85dcda10b04b6d76584bd7afc31"
+  },
+  "main": {
+    "head": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+    "tree": "1a8003f1815b75fe534b21f242e8b782d4352796"
+  },
+  "owner_authorization": {
+    "renewed_verbatim": "Freigabe erteilt.",
+    "date": "2026-10-24",
+    "timezone": "Europe/Paris",
+    "continuation_package_sha256": "71955bb0dc9ea3fffceb62832035abe7494304e6322708b94b1a46fbafa75759",
+    "same_authorization_requested_again": false,
+    "candidate_specific_publication_decision_created": false
+  },
+  "predecessor": {
+    "receipt_sha256": "1e6684a1f99d28731cd317198e41637ebdeeba9d9383b3d61c47308b045fcf49",
+    "work_records_retained": 357,
+    "knowledge_records_retained": 383,
+    "location": "Owner-supplied continuation package; its original bytes and journals retained privately, not republished"
+  },
+  "original_merge_command": [
+    "git",
+    "merge-tree",
+    "--write-tree",
+    "--merge-base=d2539661ac70f11812485f8dc8f8725327915a72",
+    "3691b92ffd2634986734cbc8f16616dc7a489de7",
+    "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f"
+  ],
+  "original_merge_exit_code": 1,
+  "original_merge_stdout": "98b106a137e2105d3d5a5d907e07f6688e6b560e\n100644 7b44d7719dc732553c6becd842d78fc6ca6b3f22 1\tREPOSITORY_FILE_MANIFEST.json\n100644 398ababacd586df18ab605b8cf0981f58e429241 2\tREPOSITORY_FILE_MANIFEST.json\n100644 926e0353145ba01b79566e94910609e027271b3b 3\tREPOSITORY_FILE_MANIFEST.json\n100644 450841d4fa69caa1edfaca5bff5fc10c5ab2d728 1\tREPOSITORY_FILE_MANIFEST.json.sha256\n100644 0a9755171e71bd0f72e4ef2d2477b2b32147d7a1 2\tREPOSITORY_FILE_MANIFEST.json.sha256\n100644 092e4fbe785d676ac1a7c0742ded30ab7e1090f5 3\tREPOSITORY_FILE_MANIFEST.json.sha256\n100644 a502174d7257e1795d99d76dcf72c5a09abea563 1\tSHA256SUMS.txt\n100644 26fe7c749923f1cafa39647af55e59eeeca33e49 2\tSHA256SUMS.txt\n100644 b64172c4f8ff8b1c6cdac82936e127e4ea34a8ca 3\tSHA256SUMS.txt\n\nAuto-merging REPOSITORY_FILE_MANIFEST.json\nCONFLICT (content): Merge conflict in REPOSITORY_FILE_MANIFEST.json\nAuto-merging REPOSITORY_FILE_MANIFEST.json.sha256\nCONFLICT (content): Merge conflict in REPOSITORY_FILE_MANIFEST.json.sha256\nAuto-merging SHA256SUMS.txt\nCONFLICT (content): Merge conflict in SHA256SUMS.txt\n",
+  "conflicts_only": [
+    "REPOSITORY_FILE_MANIFEST.json",
+    "REPOSITORY_FILE_MANIFEST.json.sha256",
+    "SHA256SUMS.txt"
+  ],
+  "resolution": "Merge current Main into the existing PR553; regenerate the three generated integrity files. The complete integration test additionally reproduces the dispatch bridge checkout regression: remove only its unused checkout to preserve the existing dedicated no-checkout admission contract. Trigger, scope, REST target, permissions, publisher and publication bytes are unchanged.",
+  "preservation": {
+    "all_current_main_paths_retained": true,
+    "current_main_publication_paths": 1440,
+    "current_main_publication_git_blobs_identical": 1440,
+    "existing_publisher_tests_review_policy_git_blobs_unchanged_from_pr553": [
+      "tools/qikvrt_zenodo_publish.py",
+      "tests/test_zenodo_machine_proof_policy.py",
+      "tests/test_seed_workflows.py",
+      "policy/zenodo-v3-review-acceptance-v2.json",
+      "policy/ZENODO_V3_REVIEW_ACCEPTANCE_V2.md"
+    ],
+    "historical_proof_policy_schema_controls_unchanged": 9
+  },
+  "local_native_input": {
+    "id": "7b7783587bd54109913006500d49d3ed:1",
+    "ledger_digest": "85ba74c155bf12cfe5b54e15fc5952aad7900f44ac396bbdbecd372eb5e26683",
+    "independent_cold_readback": true,
+    "scope": "Own original local Runtime/Terminal; no authenticated productive Mesh or peer effect",
+    "original_emitter_source_recovered": false,
+    "formal_mirror_assessment_created": false
+  },
+  "open_productive_gates": [
+    "Actual protected Main ruleset credential delivery and enforced readback; current rulesets=[]",
+    "Current-head native CI, actual review and qualified Main integration",
+    "Detached reviewed-contract activation and exact-fileset canonical upload decision through the existing publisher",
+    "Protected Zenodo credential delivery and one-use publication, independently verified anonymous bytes",
+    "Owner IONOS/DevOps, signed standard Firefox MVP and exact raumzeitterminal.de delivery remain separate"
+  ],
+  "completion_claims": {
+    "main_merged": false,
+    "zenodo_publication": false,
+    "credential_use": false,
+    "ionos_started": false,
+    "firefox_mvp_accepted": false,
+    "internal_cleanup_started": false,
+    "effect_ack_done": false
+  },
+  "integration_regression": {
+    "failure_test": "tests.test_seed_workflows.SeedWorkflowTests.test_existing_seed_dispatch_bridge_is_repository_scoped_without_checkout",
+    "before": {
+      "full_suite_exit_code": 2,
+      "log_sha256": "73920564ef08200f3f72ddb3cdcb2ed24c5ff71df7b9b2cb6ba6b1edad582926",
+      "failure": "AssertionError: actions/checkout@ unexpectedly found in the REST-only seed acceptance dispatch bridge"
+    },
+    "after": {
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "tests.test_seed_workflows.SeedWorkflowTests.test_existing_seed_dispatch_bridge_is_repository_scoped_without_checkout"
+      ],
+      "exit_code": 0,
+      "log_sha256": "c8ccb6ff88fcc4481b4ae20c0c0bef0f321d675d8b3f41f289c7b48839b922f0"
+    },
+    "affected_path": ".github/workflows/qikvrt_seed_registry_acceptance_dispatch_bridge.yml",
+    "causal_repair": "Remove four unused checkout/with/persist-credentials/fetch-depth lines; preserve the existing REST-only bridge guard instead of weakening its regression test. The bridge run body does not consume checked-out files.",
+    "trigger_permissions_dispatch_target_and_polling_unchanged": true,
+    "existing_publisher_tests_and_review_contract_unchanged": true
+  }
+}

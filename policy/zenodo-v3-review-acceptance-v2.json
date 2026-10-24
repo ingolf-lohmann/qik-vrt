@@ -1,0 +1,41 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_zenodo_v3_review_acceptance_v2",
+  "version": "2.0.0",
+  "activation_schema": "qikvrt_zenodo_v3_contract_activation_v2",
+  "historical_activation_schema": "qikvrt_zenodo_v3_contract_activation_v1",
+  "historical_activation_semantics_unchanged": true,
+  "accepted_review_bases": [
+    "OWNER_PRINCIPAL_REVIEW",
+    "INDEPENDENT_NATIVE_APPROVAL"
+  ],
+  "principal_gate": "tools/qikvrt_required_review_gate.py",
+  "principal_policy": "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+  "principal_record": "state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+  "principal_platform_state": "COMMENTED",
+  "principal_author_review_allowed_only_by_bound_owner_decision": true,
+  "independent_platform_state": "APPROVED",
+  "independent_author_self_approval_allowed": false,
+  "trusted_status": {
+    "context": "QIKVRT required code-owner review",
+    "integration_id": 15368,
+    "workflow_path": ".github/workflows/qikvrt_required_review_gate.yml",
+    "branch": "main",
+    "strict_required_status_checks_policy": true
+  },
+  "merged_exact_head_tree_and_base_required": true,
+  "complete_current_review_inventory_required": true,
+  "later_revocation_changes_or_dismissal_blocks": true,
+  "active_main_ruleset_without_bypass_or_exclusions_required": true,
+  "detached_contract_activation_required": true,
+  "later_exact_upload_authorization_required": true,
+  "machine_proof_contract_version": "3.0.0",
+  "historical_policy_schema_and_proof_bytes_may_change": false,
+  "global_consumption_key_or_scope_may_change": false,
+  "technical_pass_or_principal_review_is_upload_authorization": false,
+  "activation_or_upload_authorization_created_by_this_policy": false
+}

@@ -1,0 +1,238 @@
+﻿2026-10-21T08:18:35.3635815Z Current runner version: '2.338.0'
+2026-10-21T08:18:35.3672554Z ##[group]Runner Image Provisioner
+2026-10-21T08:18:35.3674141Z Hosted Compute Agent
+2026-10-21T08:18:35.3675229Z Version: 20261015.610
+2026-10-21T08:18:35.3676870Z Commit: 267fdb4e8bbec4ab5ea31367f3a00d5c480c7656
+2026-10-21T08:18:35.3678264Z Build Date: 2026-10-14T17:06:54Z
+2026-10-21T08:18:35.3679644Z Worker ID: {22d111af-1222-4b6f-979d-b37144eba855}
+2026-10-21T08:18:35.3681051Z Region: eastus
+2026-10-21T08:18:35.3682039Z Cloud: Azure
+2026-10-21T08:18:35.3683134Z ##[endgroup]
+2026-10-21T08:18:35.3685835Z ##[group]Operating System
+2026-10-21T08:18:35.3687071Z Ubuntu
+2026-10-21T08:18:35.3687959Z 24.04.5
+2026-10-21T08:18:35.3688798Z LTS
+2026-10-21T08:18:35.3689866Z ##[endgroup]
+2026-10-21T08:18:35.3690904Z ##[group]Runner Image
+2026-10-21T08:18:35.3692159Z Image: ubuntu-24.04
+2026-10-21T08:18:35.3693229Z Version: 20261018.339.1
+2026-10-21T08:18:35.3695896Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261018.339/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-21T08:18:35.3698812Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261018.339
+2026-10-21T08:18:35.3700812Z ##[endgroup]
+2026-10-21T08:18:35.3702976Z ##[group]GITHUB_TOKEN Permissions
+2026-10-21T08:18:35.3706113Z Contents: read
+2026-10-21T08:18:35.3707188Z Metadata: read
+2026-10-21T08:18:35.3708360Z ##[endgroup]
+2026-10-21T08:18:35.3711587Z Secret source: Actions
+2026-10-21T08:18:35.3713337Z Cache mode: write
+2026-10-21T08:18:35.3714563Z Prepare workflow directory
+2026-10-21T08:18:35.4496766Z Prepare all required actions
+2026-10-21T08:18:35.4576213Z Getting action download info
+2026-10-21T08:18:35.6284174Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-10-21T08:18:35.7226470Z Download action repository 'actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349' (SHA:fee1f7d63c2ff003460e3d139729b119787bc349)
+2026-10-21T08:18:35.9610993Z Complete job name: reconcile
+2026-10-21T08:18:36.0321193Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-10-21T08:18:36.0322261Z with:
+2026-10-21T08:18:36.0322676Z   ref: main
+2026-10-21T08:18:36.0323090Z   fetch-depth: 1
+2026-10-21T08:18:36.0323543Z   persist-credentials: false
+2026-10-21T08:18:36.0324069Z   repository: ingolf-lohmann/qik-vrt
+2026-10-21T08:18:36.0327906Z   token: ***
+2026-10-21T08:18:36.0328345Z   ssh-strict: true
+2026-10-21T08:18:36.0328818Z   ssh-user: git
+2026-10-21T08:18:36.0329229Z   clean: true
+2026-10-21T08:18:36.0329667Z   sparse-checkout-cone-mode: true
+2026-10-21T08:18:36.0330193Z   fetch-tags: false
+2026-10-21T08:18:36.0330629Z   show-progress: true
+2026-10-21T08:18:36.0331066Z   lfs: false
+2026-10-21T08:18:36.0331465Z   submodules: false
+2026-10-21T08:18:36.0331908Z   set-safe-directory: true
+2026-10-21T08:18:36.0332411Z   allow-unsafe-pr-checkout: false
+2026-10-21T08:18:36.0333175Z env:
+2026-10-21T08:18:36.0333620Z   TARGET_REPOSITORY: ingolf-lohmann/qik-vrt
+2026-10-21T08:18:36.0334269Z   RULESET_NAME: QIK-VRT main protection
+2026-10-21T08:18:36.0335094Z   EXPECTED_POST_SHA256: 59b80123aee14fd0f82a0af8a7e3265a2a5782f786785cf09be35f251b9c6999
+2026-10-21T08:18:36.0336103Z   RULESET_ADMIN_TOKEN: 
+2026-10-21T08:18:36.0336552Z   ADMIN_TOKEN: 
+2026-10-21T08:18:36.0336954Z   MESH_TOKEN: 
+2026-10-21T08:18:36.0337368Z   RULESET_APP_ID: 
+2026-10-21T08:18:36.0337814Z   RULESET_APP_PRIVATE_KEY: 
+2026-10-21T08:18:36.0338285Z ##[endgroup]
+2026-10-21T08:18:36.1391578Z Syncing repository: ingolf-lohmann/qik-vrt
+2026-10-21T08:18:36.1394060Z ##[group]Getting Git version info
+2026-10-21T08:18:36.1395222Z Working directory is '/home/runner/work/qik-vrt/qik-vrt'
+2026-10-21T08:18:36.1402787Z [command]/usr/bin/git version
+2026-10-21T08:18:36.1471968Z git version 2.55.0
+2026-10-21T08:18:36.1495126Z ##[endgroup]
+2026-10-21T08:18:36.1520097Z Temporarily overriding HOME='/home/runner/work/_temp/589e9e42-410e-4711-bfed-5f7559a96dda' before making global git config changes
+2026-10-21T08:18:36.1526989Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-21T08:18:36.1536788Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/qik-vrt/qik-vrt
+2026-10-21T08:18:36.1576831Z Deleting the contents of '/home/runner/work/qik-vrt/qik-vrt'
+2026-10-21T08:18:36.1580512Z ##[group]Determining repository object format
+2026-10-21T08:18:36.3339995Z ##[endgroup]
+2026-10-21T08:18:36.3340963Z ##[group]Initializing the repository
+2026-10-21T08:18:36.3351714Z [command]/usr/bin/git init /home/runner/work/qik-vrt/qik-vrt
+2026-10-21T08:18:36.3490985Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-21T08:18:36.3493124Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-21T08:18:36.3495217Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-21T08:18:36.3497117Z hint: call:
+2026-10-21T08:18:36.3498066Z hint:
+2026-10-21T08:18:36.3499143Z hint: 	git config --global init.defaultBranch <name>
+2026-10-21T08:18:36.3500511Z hint:
+2026-10-21T08:18:36.3501851Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-21T08:18:36.3504075Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-21T08:18:36.3506038Z hint:
+2026-10-21T08:18:36.3506995Z hint: 	git branch -m <name>
+2026-10-21T08:18:36.3507986Z hint:
+2026-10-21T08:18:36.3509234Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-21T08:18:36.3511392Z Initialized empty Git repository in /home/runner/work/qik-vrt/qik-vrt/.git/
+2026-10-21T08:18:36.3518932Z [command]/usr/bin/git remote add origin https://github.com/ingolf-lohmann/qik-vrt
+2026-10-21T08:18:36.3596621Z ##[endgroup]
+2026-10-21T08:18:36.3598514Z ##[group]Disabling automatic garbage collection
+2026-10-21T08:18:36.3602309Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-21T08:18:36.3658499Z ##[endgroup]
+2026-10-21T08:18:36.3660440Z ##[group]Setting up auth
+2026-10-21T08:18:36.3662470Z Removing SSH command configuration
+2026-10-21T08:18:36.3665864Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-21T08:18:36.3723493Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-21T08:18:36.4158060Z Removing HTTP extra header
+2026-10-21T08:18:36.4163531Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-21T08:18:36.4223012Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-21T08:18:36.4490432Z Removing includeIf entries pointing to credentials config files
+2026-10-21T08:18:36.4498742Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-21T08:18:36.4555990Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-21T08:18:36.4814693Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-b886ded2-a9e0-4083-a694-57cdc8115701.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-21T08:18:36.4868451Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git.path /home/runner/work/_temp/git-credentials-b886ded2-a9e0-4083-a694-57cdc8115701.config
+2026-10-21T08:18:36.4916159Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-b886ded2-a9e0-4083-a694-57cdc8115701.config
+2026-10-21T08:18:36.4969274Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-b886ded2-a9e0-4083-a694-57cdc8115701.config
+2026-10-21T08:18:36.5017202Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-b886ded2-a9e0-4083-a694-57cdc8115701.config
+2026-10-21T08:18:36.5060437Z ##[endgroup]
+2026-10-21T08:18:36.5061786Z ##[group]Fetching the repository
+2026-10-21T08:18:36.5067047Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +refs/heads/main*:refs/remotes/origin/main* +refs/tags/main*:refs/tags/main*
+2026-10-21T08:18:40.9644138Z From https://github.com/ingolf-lohmann/qik-vrt
+2026-10-21T08:18:40.9646641Z  * [new branch]      main       -> origin/main
+2026-10-21T08:18:40.9650986Z ##[endgroup]
+2026-10-21T08:18:40.9652123Z ##[group]Determining the checkout info
+2026-10-21T08:18:40.9655780Z [command]/usr/bin/git branch --list --remote origin/main
+2026-10-21T08:18:40.9698990Z   origin/main
+2026-10-21T08:18:40.9704742Z ##[endgroup]
+2026-10-21T08:18:40.9709114Z [command]/usr/bin/git sparse-checkout disable
+2026-10-21T08:18:40.9777916Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-21T08:18:40.9824782Z ##[group]Checking out the ref
+2026-10-21T08:18:40.9828578Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-10-21T08:18:42.2521969Z Updating files:  88% (4575/5171)
+2026-10-21T08:18:42.2550137Z Updating files:  89% (4603/5171)
+2026-10-21T08:18:42.2589609Z Updating files:  90% (4654/5171)
+2026-10-21T08:18:42.2635278Z Updating files:  91% (4706/5171)
+2026-10-21T08:18:42.2682954Z Updating files:  92% (4758/5171)
+2026-10-21T08:18:42.2732003Z Updating files:  93% (4810/5171)
+2026-10-21T08:18:42.2775745Z Updating files:  94% (4861/5171)
+2026-10-21T08:18:42.2818834Z Updating files:  95% (4913/5171)
+2026-10-21T08:18:42.2877018Z Updating files:  96% (4965/5171)
+2026-10-21T08:18:42.2924915Z Updating files:  97% (5016/5171)
+2026-10-21T08:18:42.2982970Z Updating files:  98% (5068/5171)
+2026-10-21T08:18:42.3046898Z Updating files:  99% (5120/5171)
+2026-10-21T08:18:42.3048276Z Updating files: 100% (5171/5171)
+2026-10-21T08:18:42.3048772Z Updating files: 100% (5171/5171), done.
+2026-10-21T08:18:42.3116088Z Switched to a new branch 'main'
+2026-10-21T08:18:42.3122187Z branch 'main' set up to track 'origin/main'.
+2026-10-21T08:18:42.3254224Z ##[endgroup]
+2026-10-21T08:18:42.3319267Z [command]/usr/bin/git log -1 --format=%H
+2026-10-21T08:18:42.3361034Z d2539661ac70f11812485f8dc8f8725327915a72
+2026-10-21T08:18:42.3376047Z ##[group]Removing auth
+2026-10-21T08:18:42.3376580Z Removing SSH command configuration
+2026-10-21T08:18:42.3377392Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-21T08:18:42.3426205Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-21T08:18:42.3682338Z Removing HTTP extra header
+2026-10-21T08:18:42.3687609Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-21T08:18:42.3738803Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-21T08:18:42.3992726Z Removing includeIf entries pointing to credentials config files
+2026-10-21T08:18:42.3993672Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-21T08:18:42.4038173Z includeif.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git.path
+2026-10-21T08:18:42.4039036Z includeif.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git/worktrees/*.path
+2026-10-21T08:18:42.4039756Z includeif.gitdir:/github/workspace/.git.path
+2026-10-21T08:18:42.4040368Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-21T08:18:42.4048666Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git.path
+2026-10-21T08:18:42.4088138Z /home/runner/work/_temp/git-credentials-b886ded2-a9e0-4083-a694-57cdc8115701.config
+2026-10-21T08:18:42.4098081Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-b886ded2\-a9e0\-4083\-a694\-57cdc8115701\.config
+2026-10-21T08:18:42.4154188Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git/worktrees/*.path
+2026-10-21T08:18:42.4197429Z /home/runner/work/_temp/git-credentials-b886ded2-a9e0-4083-a694-57cdc8115701.config
+2026-10-21T08:18:42.4206829Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-b886ded2\-a9e0\-4083\-a694\-57cdc8115701\.config
+2026-10-21T08:18:42.4254525Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-21T08:18:42.4292301Z /github/runner_temp/git-credentials-b886ded2-a9e0-4083-a694-57cdc8115701.config
+2026-10-21T08:18:42.4300624Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-b886ded2\-a9e0\-4083\-a694\-57cdc8115701\.config
+2026-10-21T08:18:42.4349004Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-21T08:18:42.4386441Z /github/runner_temp/git-credentials-b886ded2-a9e0-4083-a694-57cdc8115701.config
+2026-10-21T08:18:42.4396438Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-b886ded2\-a9e0\-4083\-a694\-57cdc8115701\.config
+2026-10-21T08:18:42.4448972Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-21T08:18:42.4704909Z Removing credentials config '/home/runner/work/_temp/git-credentials-b886ded2-a9e0-4083-a694-57cdc8115701.config'
+2026-10-21T08:18:42.4713880Z ##[endgroup]
+2026-10-21T08:18:42.5017949Z ##[group]Run set -euo pipefail
+2026-10-21T08:18:42.5018370Z [36;1mset -euo pipefail[0m
+2026-10-21T08:18:42.5018642Z [36;1mpython3 -B - <<'PY'[0m
+2026-10-21T08:18:42.5018887Z [36;1mimport os[0m
+2026-10-21T08:18:42.5019286Z [36;1mfrom tools.qikvrt_required_review_gate import resolve_required_code_owner[0m
+2026-10-21T08:18:42.5019846Z [36;1mowner = resolve_required_code_owner(os.environ['TARGET_REPOSITORY'])[0m
+2026-10-21T08:18:42.5020406Z [36;1mprint(f'MESH_AUTHORITY_BOUND: human={owner}; administration effect NOT_EXECUTED')[0m
+2026-10-21T08:18:42.5020829Z [36;1mPY[0m
+2026-10-21T08:18:42.5199794Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-21T08:18:42.5200207Z env:
+2026-10-21T08:18:42.5200460Z   TARGET_REPOSITORY: ingolf-lohmann/qik-vrt
+2026-10-21T08:18:42.5200815Z   RULESET_NAME: QIK-VRT main protection
+2026-10-21T08:18:42.5201306Z   EXPECTED_POST_SHA256: 59b80123aee14fd0f82a0af8a7e3265a2a5782f786785cf09be35f251b9c6999
+2026-10-21T08:18:42.5201859Z   RULESET_ADMIN_TOKEN: 
+2026-10-21T08:18:42.5202106Z   ADMIN_TOKEN: 
+2026-10-21T08:18:42.5202319Z   MESH_TOKEN: 
+2026-10-21T08:18:42.5202541Z   RULESET_APP_ID: 
+2026-10-21T08:18:42.5202778Z   RULESET_APP_PRIVATE_KEY: 
+2026-10-21T08:18:42.5203033Z ##[endgroup]
+2026-10-21T08:18:42.5971776Z MESH_AUTHORITY_BOUND: human=ingolf-lohmann; administration effect NOT_EXECUTED
+2026-10-21T08:18:42.6083810Z ##[group]Run set -euo pipefail
+2026-10-21T08:18:42.6084177Z [36;1mset -euo pipefail[0m
+2026-10-21T08:18:42.6084448Z [36;1mdirect=false[0m
+2026-10-21T08:18:42.6084676Z [36;1mapp=false[0m
+2026-10-21T08:18:42.6084897Z [36;1mroute=none[0m
+2026-10-21T08:18:42.6085248Z [36;1mif [ -n "${RULESET_APP_ID:-}" ] && [ -n "${RULESET_APP_PRIVATE_KEY:-}" ]; then[0m
+2026-10-21T08:18:42.6086036Z [36;1m  app=true[0m
+2026-10-21T08:18:42.6086261Z [36;1m  route=app[0m
+2026-10-21T08:18:42.6086607Z [36;1melif [ -n "${RULESET_ADMIN_TOKEN:-}${ADMIN_TOKEN:-}${MESH_TOKEN:-}" ]; then[0m
+2026-10-21T08:18:42.6087007Z [36;1m  direct=true[0m
+2026-10-21T08:18:42.6087453Z [36;1m  route=direct[0m
+2026-10-21T08:18:42.6087686Z [36;1mfi[0m
+2026-10-21T08:18:42.6087923Z [36;1mecho "direct=$direct" >> "$GITHUB_OUTPUT"[0m
+2026-10-21T08:18:42.6088254Z [36;1mecho "app=$app" >> "$GITHUB_OUTPUT"[0m
+2026-10-21T08:18:42.6088574Z [36;1mecho "route=$route" >> "$GITHUB_OUTPUT"[0m
+2026-10-21T08:18:42.6088964Z [36;1mif [ "$direct" != true ] && [ "$app" != true ]; then[0m
+2026-10-21T08:18:42.6089444Z [36;1m  echo "No repository-provided authority credential route is configured." >&2[0m
+2026-10-21T08:18:42.6089873Z [36;1m  exit 2[0m
+2026-10-21T08:18:42.6090080Z [36;1mfi[0m
+2026-10-21T08:18:42.6144095Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-21T08:18:42.6144469Z env:
+2026-10-21T08:18:42.6144707Z   TARGET_REPOSITORY: ingolf-lohmann/qik-vrt
+2026-10-21T08:18:42.6145030Z   RULESET_NAME: QIK-VRT main protection
+2026-10-21T08:18:42.6145764Z   EXPECTED_POST_SHA256: 59b80123aee14fd0f82a0af8a7e3265a2a5782f786785cf09be35f251b9c6999
+2026-10-21T08:18:42.6146258Z   RULESET_ADMIN_TOKEN: 
+2026-10-21T08:18:42.6146486Z   ADMIN_TOKEN: 
+2026-10-21T08:18:42.6146688Z   MESH_TOKEN: 
+2026-10-21T08:18:42.6146894Z   RULESET_APP_ID: 
+2026-10-21T08:18:42.6147117Z   RULESET_APP_PRIVATE_KEY: 
+2026-10-21T08:18:42.6147360Z ##[endgroup]
+2026-10-21T08:18:42.6222604Z No repository-provided authority credential route is configured.
+2026-10-21T08:18:42.6234326Z ##[error]Process completed with exit code 2.
+2026-10-21T08:18:42.6509239Z Post job cleanup.
+2026-10-21T08:18:42.7513643Z [command]/usr/bin/git version
+2026-10-21T08:18:42.7570891Z git version 2.55.0
+2026-10-21T08:18:42.7613297Z Temporarily overriding HOME='/home/runner/work/_temp/181979f7-3704-4730-848b-4872781b0671' before making global git config changes
+2026-10-21T08:18:42.7614401Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-21T08:18:42.7619332Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/qik-vrt/qik-vrt
+2026-10-21T08:18:42.7657089Z Removing SSH command configuration
+2026-10-21T08:18:42.7664169Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-21T08:18:42.7703744Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-21T08:18:42.8023625Z Removing HTTP extra header
+2026-10-21T08:18:42.8038375Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-21T08:18:42.8118897Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-21T08:18:42.8502057Z Removing includeIf entries pointing to credentials config files
+2026-10-21T08:18:42.8511661Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-21T08:18:42.8582337Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-21T08:18:42.9083731Z Cleaning up orphan processes
+

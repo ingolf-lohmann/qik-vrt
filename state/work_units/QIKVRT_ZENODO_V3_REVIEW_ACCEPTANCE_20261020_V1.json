@@ -1,0 +1,146 @@
+{
+  "schema": "qikvrt_zenodo_v3_review_acceptance_repair_v1",
+  "work_unit": "QIKVRT_ZENODO_V3_REVIEW_ACCEPTANCE_20261020_V1",
+  "observed_at": "2026-10-19T22:58:28.297036+00:00",
+  "authority": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "b226770c064a167ee3a9cc70996f05db1b3bc6d1",
+    "tree": "4200dfe141fc30557f0e0d9abb5eec4176f9df25"
+  },
+  "scope": "Versioned review acceptance in the existing publisher; no publication grant or production mutation",
+  "historical_contracts_preserved": [
+    {
+      "path": "policy/zenodo-machine-proof-policy-v1.json",
+      "git_blob_sha": "d931a50d42d6e1302afffbcfcd434861e590ab46",
+      "sha256": "039fe8617a39aaf2b20e99fc30d344f5d879ec26aedbd263647f3308dc19dc60",
+      "bytes": 2985,
+      "unchanged": true
+    },
+    {
+      "path": "policy/qikvrt-zenodo-machine-proof-bundle-v1.schema.json",
+      "git_blob_sha": "b79b2b8148c75374d660b4c7b43927bfca80995a",
+      "sha256": "b027b4b9071ae4c8d7b31d22ea94ad4ef647a6be9155152b5468f09bf7010504",
+      "bytes": 6143,
+      "unchanged": true
+    },
+    {
+      "path": "policy/qikvrt-prepublication-return-receipt-v1.schema.json",
+      "git_blob_sha": "cca4c690c25df82955e9060abef1a98c4f0c4a43",
+      "sha256": "3eefc4213d44c0fee8619e05527649595c3cbe030a7742845a0980ab1e51224a",
+      "bytes": 2864,
+      "unchanged": true
+    },
+    {
+      "path": "policy/zenodo-machine-proof-policy-v2.json",
+      "git_blob_sha": "e9578d30d22f845e7df684128dcd9332641c00be",
+      "sha256": "933d6322a1e294848c6385d1384ab0ec3862c8675ebe35ec2fc4cad3e0baec47",
+      "bytes": 4992,
+      "unchanged": true
+    },
+    {
+      "path": "policy/qikvrt-zenodo-machine-proof-bundle-v2.schema.json",
+      "git_blob_sha": "22cc6f4008b4823e8a7cf5e3057d058df6c0961a",
+      "sha256": "f9ad097a797c5fbe1b794f75930de4fdefc0356bac407012010b30eef87ae73e",
+      "bytes": 6311,
+      "unchanged": true
+    },
+    {
+      "path": "policy/qikvrt-prepublication-return-receipt-v2.schema.json",
+      "git_blob_sha": "ddf7e306940d256b51971ea153c33b6e493ffde4",
+      "sha256": "6390285529eb91f8d52a032d957a5457ebb1419e56c091f961f8d0695d2923c9",
+      "bytes": 3806,
+      "unchanged": true
+    },
+    {
+      "path": "policy/zenodo-machine-proof-policy-v3.json",
+      "git_blob_sha": "35ecc7887e486491278f63e0a61102d1be06e5ef",
+      "sha256": "e8163b42acdc26ede6c996f695c4e5362edd580085717264bbf20f5782093f78",
+      "bytes": 5608,
+      "unchanged": true
+    },
+    {
+      "path": "policy/qikvrt-zenodo-machine-proof-bundle-v3.schema.json",
+      "git_blob_sha": "85f0fe61b9e565241a56f27f4a96cb3944ab6388",
+      "sha256": "59ea0d0df65a5a6861493a2b999f2e5ceca22391e62f506a59f9ae2363728912",
+      "bytes": 8118,
+      "unchanged": true
+    },
+    {
+      "path": "policy/ZENODO_MACHINE_PROOF_V3_PRODUCTION.md",
+      "git_blob_sha": "fbfe4dcfcb8ce386ae8775676636c4d99c87c625",
+      "sha256": "a963896ccbe6b71879b1b392bc490129a643954ea4eee216d195eeaca085cb58",
+      "bytes": 4899,
+      "unchanged": true
+    }
+  ],
+  "affected_preparations": [
+    {
+      "publication_id": "qikvrt-collective-functional-consciousness-20261003-v1",
+      "proof": {
+        "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/MACHINE_PROOF_BUNDLE.json",
+        "bytes": 21459,
+        "sha256": "23f87519cf6e905b8978884f1384ebdcc94408316a9f6af45f93aa55629f7ebb",
+        "git_blob_sha": "1d6a809adc936b1c3e55266c55ccf575d2b2fe17"
+      },
+      "state": "PREPARED_NOT_A_LIVE_V3_PUBLISH_REQUEST"
+    },
+    {
+      "publication_id": "qikvrt-effective-continuity-synthesis-20261003-review-v1",
+      "proof": {
+        "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/MACHINE_PROOF_BUNDLE.json",
+        "bytes": 30503,
+        "sha256": "c1f0ca91ce694ec05fcbf014d894856b50f682418f68a122dba67311f8b3c0c9",
+        "git_blob_sha": "017ac43ceabb77e42e2e6703218dabe2bc025e55"
+      },
+      "state": "PREPARED_NOT_A_LIVE_V3_PUBLISH_REQUEST"
+    }
+  ],
+  "current_v3_publication_manifest_count_in_inspected_main_requests": 0,
+  "detached_v3_contract_activations_found_in_main_tree": 0,
+  "native_rulesets_observed": [],
+  "legacy_ontology_v3_request_is_a_different_schema_and_workflow": true,
+  "pr551_historical_original_file_readback_is_a_separate_effect": true,
+  "new_activation_schema": "qikvrt_zenodo_v3_contract_activation_v2",
+  "activation_created": false,
+  "exact_upload_authorization_created": false,
+  "zenodo_calls_issued": 0,
+  "consumption_refs_created": 0,
+  "external_zenodo_public_readback": "UNAVAILABLE: native Zenodo public URLs inaccessible to the current public reader; no publication inferred",
+  "original_outbox_tool": "HOLD: source/writer not recovered in predecessor or complete current Main tree",
+  "native_session": {
+    "epoch": "8da9bf81ec7c430eb576b756ecc4951b",
+    "source_pr": 447,
+    "scope": "Own admitted owner-local in-process original Runtime/Terminal; no originalhost or peer impersonation"
+  },
+  "completion_boundaries": {
+    "source_integration": "PENDING_NATIVE_GOVERNANCE_AND_EXACT_HEAD_TESTS",
+    "local_targeted_tests": "VERIFIED",
+    "native_full_test": "PENDING_EXISTING_CI",
+    "actual_zenodo_publication": "NOT_EXECUTED"
+  },
+  "next_action": "Existing same-repository PR CI regenerates integrity through its original tested-fixpoint writer, runs the full test gate and exposes exact tested HEAD/TREE. Reobserve native governance before any integration. Do not mint either detached Owner decision.",
+  "successor_20261021": {
+    "main_head": "d2539661ac70f11812485f8dc8f8725327915a72",
+    "main_tree": "67f60830a0a74ab8ccaa79aa36a17a9a96c4fcab",
+    "owner_task_authorization_retained": true,
+    "same_authorization_requested_again": false,
+    "backlog_readback": "evidence/zenodo-review-acceptance-v2/BACKLOG_READBACK_20261021.json",
+    "actual_first_causal_gate": "Protected authority credential was not delivered to ruleset job119115830707; initial dispatch has actually happened.",
+    "publisher_code_reconciled_without_semantic_change": true,
+    "publication_complete": false
+  },
+  "successor_20261024": {
+    "source_head": "3691b92ffd2634986734cbc8f16616dc7a489de7",
+    "main_head": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+    "main_tree": "1a8003f1815b75fe534b21f242e8b782d4352796",
+    "reconciliation": "evidence/zenodo-review-acceptance-v2/CURRENT_MAIN_RECONCILIATION_20261024.json",
+    "conflict_scope": "THREE_GENERATED_INTEGRITY_FILES_ONLY",
+    "publisher_policy_schema_and_test_semantics_unchanged": true,
+    "current_main_publication_git_blobs_identical": 1440,
+    "owner_authorization_retained": true,
+    "same_authorization_requested_again": false,
+    "productive_gates_retained": true,
+    "publication_complete": false,
+    "integration_regression_repaired": "Unused checkout in existing REST dispatch bridge removed; existing no-checkout test fails before and passes after. No trigger, permissions, target or publisher change."
+  }
+}
