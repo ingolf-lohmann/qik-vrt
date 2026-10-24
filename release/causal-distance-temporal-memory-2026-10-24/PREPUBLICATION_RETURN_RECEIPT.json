@@ -1,0 +1,117 @@
+{
+  "_license": {
+    "classification": "machine_readable_prepublication_return_receipt",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_prepublication_return_receipt_v2",
+  "publication_id": "qikvrt-causal-distance-20261024",
+  "content_changed": true,
+  "original_files": [
+    {
+      "path": "predecessor/Prosaartikel.txt",
+      "bytes": 22745,
+      "sha256": "4ed4ae00082ea19ca97024686d7f42a05424c3128395b318c7f3e4a3bbc3aefe",
+      "git_blob_sha1": "786cf73a1907d681a5540c5b4cad68d742b8237e"
+    },
+    {
+      "path": "predecessor/QIKVRT_Kausale_Distanz_Fachartikel.pdf",
+      "bytes": 139913,
+      "sha256": "d3d1d807ad87816922364cac55c71f2cb5aa178566c7bae2e1cb0bebf830efbd",
+      "git_blob_sha1": "b9f328e34051ac3bfb58692477f4f2951f7e66c1"
+    },
+    {
+      "path": "predecessor/Fachartikel.md",
+      "bytes": 27491,
+      "sha256": "5a840892cd3936f8f5592acf0525aba01e87414a650d5c48460b8e602ac444f4",
+      "git_blob_sha1": "9cf3c1c34f77c821ed899b6b23ea1a660e349827"
+    },
+    {
+      "path": "predecessor/QIKVRT_Wie_weit_ist_eine_Wirkung_Prosa.pdf",
+      "bytes": 115207,
+      "sha256": "ca056b9597191471b76227d69ab1d53ccbb75af974d9daad29da5905c13247a1",
+      "git_blob_sha1": "6e88039fc8c47dc878934134866b38b49e08f9c1"
+    }
+  ],
+  "candidate_files": [
+    {
+      "path": "release/causal-distance-temporal-memory-2026-10-24/QIKVRT_Kausale_Distanz_Fachartikel.pdf",
+      "bytes": 144095,
+      "sha256": "cc54bf812966a7f0d2e89f2a04208e855e5a66b24822fa4dbf0eab13beb33e36",
+      "git_blob_sha1": "95e4c34c4dbe5d7af105ce946b709cb482a39681"
+    },
+    {
+      "path": "release/causal-distance-temporal-memory-2026-10-24/QIKVRT_Wie_weit_ist_eine_Wirkung_Prosa.pdf",
+      "bytes": 118624,
+      "sha256": "530c47f95261b0abd48321e1f66e73c51b21f2e873bca5150da7865b8986d2e3",
+      "git_blob_sha1": "6e827ad67d9ced188ad4355bc5f179f6e16e990c"
+    },
+    {
+      "path": "release/causal-distance-temporal-memory-2026-10-24/Fachartikel.md",
+      "bytes": 31909,
+      "sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "git_blob_sha1": "d4bb226e00aa44b144ded7cce39e88685e54f5a8"
+    },
+    {
+      "path": "release/causal-distance-temporal-memory-2026-10-24/Prosaartikel.txt",
+      "bytes": 26052,
+      "sha256": "d6b83f1ef8923788662c85673901822b1ba320dc9436ca177d9875c0dec59171",
+      "git_blob_sha1": "8ce4713cb5d44d5eeed96d72c7d08dd3db1a28ea"
+    },
+    {
+      "path": "release/causal-distance-temporal-memory-2026-10-24/QIKVRT_Prosa_Vorlesetext.txt",
+      "bytes": 22652,
+      "sha256": "3c0d71501d6151e7746ce4b6d0063cd898a4ed2e1399cbed1d810e6f8f9e5ebd",
+      "git_blob_sha1": "cd75018d03b77ad609cfa57a452995a73a477d9b"
+    },
+    {
+      "path": "release/causal-distance-temporal-memory-2026-10-24/QIKVRT_Causal_Distance_20261024.zip",
+      "bytes": 262030,
+      "sha256": "d070ae7e9c15feeadedddf55b3bf77072a3b74289dad60bb3adce4aee7089f91",
+      "git_blob_sha1": "87d485faf527dab24a1bc98dd28cd7ab532a764a"
+    },
+    {
+      "path": "release/causal-distance-temporal-memory-2026-10-24/QIKVRT_Framework_Selbstvermessung_20261024.zip",
+      "bytes": 201027,
+      "sha256": "01d874f116d68119c3278345bc09fb72fcd1917e88dd27e51b726ef950b3e542",
+      "git_blob_sha1": "9d604052aab7807bdfd394467efe2b5dc62bad65"
+    },
+    {
+      "path": "release/causal-distance-temporal-memory-2026-10-24/LESEPFAD_NACH_INTERESSE.md",
+      "bytes": 7588,
+      "sha256": "becc9ff671680db7fbe1a6f7869b7aba5df0916a0be50f339abe23ce57e43024",
+      "git_blob_sha1": "9e9a2c23436f43d5866e48c1534c5dae00ce3aa3"
+    }
+  ],
+  "changed_claim_ids": [
+    "CD-013",
+    "CD-014"
+  ],
+  "change_reasons": [
+    {
+      "claim_id": "CD-013",
+      "reason": "Ergänzung der tatsächlich ausgeführten, getrennt typisierten Selbstvermessung des historischen Kataloggraphs und des statischen Importgraphs; keine Umdeutung in beobachtete produktive Kausalität.",
+      "original_sha256": "5a840892cd3936f8f5592acf0525aba01e87414a650d5c48460b8e602ac444f4",
+      "corrected_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "exact_candidate_path": "release/causal-distance-temporal-memory-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CD-014",
+      "reason": "Ergänzung der tatsächlich ausgeführten lesenden Profil- und Leseroutenfunktion mit sechs zusätzlichen Tests; keine Behauptung eines vollständigen produktiven persönlichen Digital Twin und keine Identitäts- oder Handlungsvollmacht.",
+      "original_sha256": "4ed4ae00082ea19ca97024686d7f42a05424c3128395b318c7f3e4a3bbc3aefe",
+      "corrected_sha256": "d6b83f1ef8923788662c85673901822b1ba320dc9436ca177d9875c0dec59171",
+      "exact_candidate_path": "release/causal-distance-temporal-memory-2026-10-24/Prosaartikel.txt"
+    }
+  ],
+  "change_notice_path": "release/causal-distance-temporal-memory-2026-10-24/CHANGE_NOTICE.md",
+  "return": {
+    "candidate_returned_to_owner": true,
+    "owner_name": "Ingolf Lohmann",
+    "owner_type": "NATURAL_PERSON",
+    "return_channel": "CURRENT_CHAT_COMMENTARY_VERIFIED_SANDBOX_ARTICLE_TEXT_GUIDE_AND_CHANGE_NOTICE_LINKS",
+    "returned_at": "2026-10-24T09:14:34.697393+00:00",
+    "visible_change_notice_returned": true
+  }
+}
