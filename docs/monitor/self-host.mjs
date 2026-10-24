@@ -78,7 +78,77 @@ const binding = () => ({schema: 'qikvrt-self-host-runtime/v1', package_version: 
   deployment_object:process.env.QIKVRT_MONOLITH_MODE === 'SQLITE_CARRIER_V1' ? 'NATIVE_SQLITE_CARRIER_AND_LEDGER' : 'SEALED_DIRECTORY',
   mobile_runtime_verified:false,
   public_routing_verified: false, effect_ack_done: false});
+async function nativeAccess(request, response, url) {
+  // A fixed loopback transport of the original native service, never an executor.
+  // Provider blocking stays in force; no caller URL or credential is substituted.
+  const path = url.pathname;
+  const discovery = path === '/.well-known/qik-vrt';
+  const owner = path.startsWith('/api/owner/');
+  const peer = path.startsWith('/api/mesh-work/rule/');
+  if (!discovery && !owner && !peer) return false;
+  const fail = (code, reason) => {
+    if (!response.headersSent && !response.destroyed) reply(response, code, {state:'HOLD', reason, effect_ack_done:false});
+    return true;
+  };
+  if (request.url !== path || url.search) return fail(400, 'EXACT_NATIVE_ACCESS_ROUTE_REQUIRED');
+  const write = /^\/api\/owner\/(prepare|commit)$/.test(path) || /^\/api\/mesh-work\/rule\/(receive|apply)$/.test(path);
+  const read = discovery || /^\/api\/owner\/receipts\/[A-Za-z0-9_.:-]{1,100}$/.test(path) ||
+    /^\/api\/mesh-work\/rule\/readback\/[A-Za-z0-9_.:-]{1,100}\/[a-f0-9]{32}$/.test(path);
+  if (!write && !read) return fail(404, 'NATIVE_ACCESS_ROUTE_NOT_FOUND');
+  if (request.method !== (write ? 'POST' : 'GET')) return fail(405, 'NATIVE_ACCESS_METHOD_REQUIRED');
+  if (!['temdd','firefox'].includes(config.terminal_profile)) return fail(503, 'NATIVE_PROFILE_REQUIRED');
+  const counts = new Map();
+  for (let i=0; i<request.rawHeaders.length; i+=2) {
+    const name=request.rawHeaders[i].toLowerCase(); counts.set(name, (counts.get(name)||0)+1);
+  }
+  const boundHeaders = ['host','origin','authorization','qikvrt-owner','qikvrt-subject','effect-ack-request',
+    'content-length','content-type','x-qikvrt-mesh-node','x-qikvrt-replication-signature'];
+  if (counts.get('host') !== 1 || boundHeaders.some(name => (counts.get(name)||0)>1))
+    return fail(400, 'UNIQUE_NATIVE_ACCESS_HEADERS_REQUIRED');
+  const origin = request.headers.origin;
+  if (origin !== undefined && (peer || !['http://'+request.headers.host, 'https://'+request.headers.host].includes(origin)))
+    return fail(403, 'NATIVE_ACCESS_SAME_ORIGIN_REQUIRED');
+  if (request.headers['transfer-encoding'] !== undefined) return fail(400, 'BOUNDED_NATIVE_ACCESS_BODY_REQUIRED');
+  const length = request.headers['content-length'];
+  if (write && (length === undefined || !/^[1-9][0-9]*$/.test(length))) return fail(411, 'NATIVE_ACCESS_CONTENT_LENGTH_REQUIRED');
+  if (write && Number(length)>32768) return fail(413, 'NATIVE_ACCESS_BODY_TOO_LARGE');
+  if (!write && length !== undefined && length !== '0') return fail(400, 'NATIVE_ACCESS_GET_BODY_FORBIDDEN');
+  const headers = {};
+  const forward = owner ? ['authorization','qikvrt-owner','qikvrt-subject','effect-ack-request','content-type'] :
+    peer ? ['x-qikvrt-mesh-node','x-qikvrt-replication-signature','content-type'] : [];
+  for (const name of forward) if (request.headers[name] !== undefined) headers[name]=request.headers[name];
+  try {
+    let body;
+    if (write) {
+      const chunks=[]; let size=0;
+      request.setTimeout(5000, () => request.destroy());
+      for await (const chunk of request) {
+        size+=chunk.length;
+        if (size>32768) return fail(413, 'NATIVE_ACCESS_BODY_TOO_LARGE');
+        chunks.push(chunk);
+      }
+      if (size!==Number(length)) return fail(400, 'COMPLETE_NATIVE_ACCESS_BODY_REQUIRED');
+      body=Buffer.concat(chunks); // Preserve the exact peer-HMAC bytes.
+    }
+    const observed=await realFetch('http://127.0.0.1:'+config.terminal_port+path,
+      {method:request.method,headers,body,redirect:'error',signal:AbortSignal.timeout(5000)});
+    const bytes=Buffer.from(await observed.arrayBuffer());
+    if (bytes.length>262144) return fail(502, 'BOUNDED_NATIVE_ACCESS_REPLY_REQUIRED');
+    response.writeHead(observed.status, {
+      'content-type':'application/json; charset=utf-8','content-length':String(bytes.length),
+      'cache-control':'no-store','x-content-type-options':'nosniff',
+      'link':'</.well-known/qik-vrt>; rel="service-desc"; type="application/json"',
+      ...Object.fromEntries(['effect-ack','x-qikvrt-replication-signature'].filter(name=>observed.headers.has(name))
+        .map(name=>[name,observed.headers.get(name)]))});
+    response.end(bytes);
+  } catch {
+    // No retry after an ambiguous mutation. Recover using the same receipt ID.
+    return fail(503, 'NATIVE_ACCESS_OUTCOME_UNCONFIRMED_READBACK_REQUIRED');
+  }
+  return true;
+}
 async function routes(request, response, url) {
+  if (await nativeAccess(request, response, url)) return true;
   if (url.pathname === '/api/webhooks/github' && config.adapter === 'none') {
     reply(response, 409, {error:'GITHUB_ADAPTER_NOT_SELECTED', effect_ack_done:false}); return true;
   }

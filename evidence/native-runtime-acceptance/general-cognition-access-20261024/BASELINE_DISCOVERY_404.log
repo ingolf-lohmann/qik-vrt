@@ -1,0 +1,14 @@
+test_generic_client_discovers_and_uses_original_rest_through_public_monitor (tests.test_self_host_temdd.OwnerRESTMonolithTests.test_generic_client_discovers_and_uses_original_rest_through_public_monitor) ... FAIL
+
+======================================================================
+FAIL: test_generic_client_discovers_and_uses_original_rest_through_public_monitor (tests.test_self_host_temdd.OwnerRESTMonolithTests.test_generic_client_discovers_and_uses_original_rest_through_public_monitor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/3a47ab8e4d17/qik-vrt-access/tests/test_self_host_temdd.py", line 944, in test_generic_client_discovers_and_uses_original_rest_through_public_monitor
+    self.assertEqual(code, 200, access)
+AssertionError: 404 != 200 : Not found
+
+----------------------------------------------------------------------
+Ran 1 test in 2.448s
+
+FAILED (failures=1)

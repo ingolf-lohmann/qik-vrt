@@ -1,0 +1,14 @@
+test_anonymous_event_stream_cannot_disclose_private_rest_input (tests.test_self_host_temdd.OwnerRESTMonolithTests.test_anonymous_event_stream_cannot_disclose_private_rest_input) ... FAIL
+
+======================================================================
+FAIL: test_anonymous_event_stream_cannot_disclose_private_rest_input (tests.test_self_host_temdd.OwnerRESTMonolithTests.test_anonymous_event_stream_cannot_disclose_private_rest_input)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/3a47ab8e4d17/qik-vrt-access/tests/test_self_host_temdd.py", line 1036, in test_anonymous_event_stream_cannot_disclose_private_rest_input
+    self.assertEqual(response.status, 401, 'Anonymous access must not expose the original private native journal')
+AssertionError: 200 != 401 : Anonymous access must not expose the original private native journal
+
+----------------------------------------------------------------------
+Ran 1 test in 3.989s
+
+FAILED (failures=1)

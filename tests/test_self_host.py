@@ -650,7 +650,8 @@ class MeshContractTests(unittest.TestCase):
         self.definition = json.loads((ROOT / host.DEFINITION).read_bytes())
         self.activation = json.loads((ROOT / host.MESH_CONTRACT).read_bytes())
         required = {host.DEFINITION, host.MESH_CONTRACT, "tools/qikvrt_self_host.py",
-                    "docs/monitor/self-host.mjs", "runtime/self-host/MESH_FILE.md", *host.MESH_PORTABLE_FILES}
+                    "docs/monitor/self-host.mjs", "runtime/self-host/MESH_FILE.md",
+                    "runtime/self-host/AI_ACCESS.json", *host.MESH_PORTABLE_FILES}
         required.update(path for paths in host.MESH_COMPONENT_FILES.values() for path in paths)
         required.update(host.MESH_CACHE_SOURCE_FILES)
         required.update(host.MESH_ROLE_POLICIES)
@@ -681,10 +682,20 @@ class MeshContractTests(unittest.TestCase):
         entry = host.mesh_contract(self.root)["entry_contract"]
         self.assertIs(entry["github_push_required_for_native_mesh"], False)
         self.assertEqual(entry["native_adapter_without_github"], "none")
+        self.assertEqual(entry["runtime_discovery"], "/.well-known/qik-vrt")
         self.assertEqual(entry["live_endpoint"], "UNKNOWN")
         self.assertEqual(entry["peer_admission"], "UNKNOWN")
         self.assertEqual(entry["native_execution"], "NOT_ESTABLISHED")
         self.assertEqual(entry["proposal_admission"], "PRIVATE_PEER_KEY_AND_EXACT_SOURCE_PINS")
+
+    def test_access_contract_cannot_require_provider_login_or_advertise_anonymous_writes(self):
+        path = self.root / 'runtime/self-host/AI_ACCESS.json'
+        original = json.loads(path.read_bytes())
+        for name in ('github_write_identity', 'browser_login', 'anonymous_writes_allowed'):
+            value = json.loads(json.dumps(original)); value['requirements'][name] = True
+            path.write_bytes(host.raw_json(value))
+            with self.subTest(requirement=name), self.assertRaisesRegex(ValueError, 'PROVIDER_INDEPENDENT_SCOPED_NATIVE_ACCESS_REQUIRED'):
+                host.mesh_contract(self.root)
 
     def test_missing_authority_succession_binding_refuses_package_admission(self):
         del self.activation["required_node_runtime"]["authority_succession_policy"]

@@ -5,8 +5,10 @@ fixture makes the proxy's Host/Origin, route and read-only boundary observable;
 actual ledger/runtime acceptance remains a separately executed image test.
 """
 import http.client
+import contextlib
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
+import os
 from pathlib import Path
 import shutil
 import socket
@@ -18,6 +20,47 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 PREFIX = '/qik-vrt/mesh/v1/effect-ack'
+
+
+@contextlib.contextmanager
+def native_gateway(upstream_port, directory):
+    """The unchanged production nginx file, with isolated ports and disk paths."""
+    binary = shutil.which('nginx')
+    if binary is None:
+        raise unittest.SkipTest('nginx integration dependency absent')
+    work = Path(directory); work.mkdir()
+    with socket.socket() as reservation:
+        reservation.bind(('127.0.0.1', 0)); port = reservation.getsockname()[1]
+    text = (ROOT / 'deploy/universal-terminal/nginx.conf').read_text()
+    if os.geteuid() == 0:
+        text = 'user root;\n' + text  # A single-UID test namespace cannot chown to nobody.
+    text = text.replace('listen 8080;', f'listen 127.0.0.1:{port};')
+    text = text.replace('127.0.0.1:8771', f'127.0.0.1:{upstream_port}')
+    text = text.replace('/opt/qikvrt/deploy/universal-terminal', str(work))
+    text = text.replace('/tmp/nginx', str(work / 'nginx'))
+    text = text.replace('/etc/nginx/mime.types', os.environ.get('QIKVRT_NGINX_MIME_TYPES', '/etc/nginx/mime.types'))
+    for name in ('client-body', 'proxy', 'fastcgi', 'uwsgi', 'scgi'):
+        (work / ('nginx-' + name)).mkdir()
+    config = work / 'nginx.conf'; config.write_text(text)
+    checked = subprocess.run([binary, '-t', '-c', str(config)], capture_output=True, text=True, timeout=10)
+    if checked.returncode: raise AssertionError(checked.stderr)
+    with (work / 'nginx.log').open('w+') as log:
+        process = subprocess.Popen([binary, '-c', str(config), '-g', 'daemon off;'], stdout=log, stderr=log)
+        try:
+            for _ in range(100):
+                try:
+                    with socket.create_connection(('127.0.0.1', port), timeout=.1): break
+                except OSError:
+                    if process.poll() is not None: break
+                    time.sleep(.02)
+            else: raise AssertionError('nginx did not listen')
+            if process.poll() is not None:
+                log.seek(0); raise AssertionError(log.read())
+            yield port
+        finally:
+            if process.poll() is None: process.terminate()
+            try: process.wait(timeout=5)
+            except subprocess.TimeoutExpired: process.kill(); process.wait(timeout=5)
 
 
 class GuardFixture(BaseHTTPRequestHandler):
@@ -68,6 +111,9 @@ class TEMDDPublicProxyTests(unittest.TestCase):
             cls.port = reservation.getsockname()[1]
         source = ROOT / 'deploy/universal-terminal/nginx.conf'
         text = source.read_text()
+        if os.geteuid() == 0:
+            text = 'user root;\n' + text
+        text = text.replace('/etc/nginx/mime.types', os.environ.get('QIKVRT_NGINX_MIME_TYPES', '/etc/nginx/mime.types'))
         text = text.replace('listen 8080;', f'listen 127.0.0.1:{cls.port};')
         text = text.replace('127.0.0.1:8771', '127.0.0.1:' + str(cls.backend.server_port))
         text = text.replace('/opt/qikvrt/deploy/universal-terminal', str(cls.work))
@@ -166,6 +212,15 @@ class TEMDDPublicProxyTests(unittest.TestCase):
         headers = json.loads(body)['headers']
         self.assertNotIn('Authorization', headers)
         self.assertNotIn('Cookie', headers)
+
+    def test_only_private_event_stream_forwards_its_explicit_reader_bearer(self):
+        for prefix in ('', PREFIX):
+            code, _, _ = self.request(prefix + '/api/temdd/events', headers={
+                'Authorization': 'Bearer synthetic-read-only-reader', 'Cookie': 'session=synthetic-fixture'})
+            self.assertEqual(code, 200)
+            headers = self.backend.observations[-1]['headers']
+            self.assertEqual(headers['Authorization'], 'Bearer synthetic-read-only-reader')
+            self.assertNotIn('Cookie', headers)
 
     def test_unknown_paths_get_no_loopback_translation(self):
         for path in ('/api/temdd/append', '/api/temdd/subject/extra', PREFIX + '/api/temdd/append'):

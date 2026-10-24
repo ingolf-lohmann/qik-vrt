@@ -18,5 +18,6 @@
     {"system":"JetBrains Junie","path":".junie/guidelines.md","mode":"native"},
     {"system":"Kiro","path":".kiro/steering/qikvrt-ai-entry.md","mode":"native"}
   ],
+  "provider_independent_native_access": {"source_contract":"runtime/self-host/AI_ACCESS.json","runtime_discovery":"/.well-known/qik-vrt","github_write_identity_required":false,"anonymous_writes_allowed":false},
   "rule": "Adapter files are compatibility shims only. AI, AI_CONTEXT.json, and AGENTS.md remain authoritative."
 }

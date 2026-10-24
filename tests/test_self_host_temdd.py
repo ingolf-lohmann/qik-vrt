@@ -50,6 +50,26 @@ def recovery_evidence(instance, name, snapshot_receipt, native_events, monitor_e
 
 
 class SourceRecoveryTests(unittest.TestCase):
+    def test_streaming_repair_preserves_original_recovery_and_prior_bindings(self):
+        current = json.loads((ROOT/'evidence/self_host/SOURCE_RECOVERY_SUCCESSOR_20261013.json').read_bytes())
+        transition = current['context_memory_streaming_20261024']
+        previous_raw = (ROOT/transition['previous_receipt_path']).read_bytes()
+        self.assertEqual(hashlib.sha256(previous_raw).hexdigest(), transition['previous_receipt_sha256'])
+        self.assertEqual(hashlib.sha1(b'blob '+str(len(previous_raw)).encode()+b'\0'+previous_raw).hexdigest(),
+                         transition['previous_receipt_git_blob'])
+        previous = json.loads(previous_raw)
+        self.assertEqual(previous['historical_receipt_sha256'], current['historical_receipt_sha256'])
+        self.assertFalse(transition['predecessor_pass_transferred'])
+        self.assertFalse(transition['production_host_admitted'])
+        prior = {e['restored_path']: e for e in previous['changed_originals']}
+        selected = transition['preserved_previous_successor_bindings']
+        self.assertEqual({e['restored_path'] for e in selected},
+                         {'src/qikvrt_temdd_event_ledger.py', 'tests/test_temdd_event_ledger.py'})
+        for entry in selected:
+            self.assertEqual(entry, prior[entry['restored_path']])
+        # The old source and prior recovery transitions remain independently readable.
+        self.assertEqual(previous['temdd_explicit_subject_20261018'], current['temdd_explicit_subject_20261018'])
+
     def test_novnc_startup_reads_actual_loopback_bytes_under_a_dead_inherited_proxy(self):
         raw = b'<!doctype html><title>actual local noVNC asset fixture</title>'
         class Handler(BaseHTTPRequestHandler):
@@ -677,6 +697,32 @@ class NativePeerRuleTests(unittest.TestCase):
         self.assertEqual(self.sql('SELECT COUNT(*) FROM events'),[(2,)])
         self.assertEqual(len([c for c in self.calls if c[0]=='POST']),2)
 
+    def test_generic_peer_roundtrip_uses_existing_public_monitor_and_original_hmac_bytes(self):
+        self.start()
+        self.peer['url'] = self.url
+        received = self.confirm(apply=False)
+        self.assertIsNone(received['readback']['applied'])
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'), [(1,)])
+        applied = self.confirm()
+        self.assertEqual(applied['scope'], 'NATIVE_PEER_RULE_ACTIVATION_ONLY')
+        self.assertEqual(applied['rule_effect']['state'], 'EFFECT_ACK_DONE')
+        self.assertFalse(applied['effect_ack_done'])
+        original = applied['readback']['applied']['native_event']
+        persisted = self.sql("SELECT body,body_digest FROM events WHERE native_id='" + original['provenance']['native_event_id'] + "'")
+        self.assertEqual(json.loads(persisted[0][0])['payload'], original['payload'])
+        self.assertEqual(persisted[0][1], original['ledger_digest'])
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'), [(2,)])
+        self.assertTrue(all(url.startswith(self.url+'/api/mesh-work/rule/') for _,url in self.calls))
+        self.assertEqual(len([c for c in self.calls if c[0]=='POST']), 2)
+        self.assertEqual(self.confirm()['readback']['applied'], applied['readback']['applied'])
+
+    def test_public_peer_bridge_does_not_accept_wrong_key_or_unadmitted_sender(self):
+        self.start(); self.peer['url'] = self.url
+        wrong = self.work/'unadmitted.key'; wrong.write_text('synthetic-wrong-peer-key-with-enough-bytes'); wrong.chmod(0o600)
+        self.peer['secret_file'] = str(wrong)
+        with self.assertRaises(ValueError): self.confirm()
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'), [(0,)])
+
     def test_repeat_restart_and_lost_application_ack_do_not_reexecute_or_replace_native_identity(self):
         self.start(); self.confirm(apply=False)
         def lose(url,method,raw,headers):
@@ -905,7 +951,7 @@ class OwnerRESTMonolithTests(unittest.TestCase):
             'subject':{'repository':'ingolf-lohmann/qik-vrt','pr':457,'head':self.head,'tree':self.tree},
             'input':{'schema':'qikvrt_terminal_input_v1','text':'synthetic private REST input: Grüße Ω'}}
 
-    def rest(self, operation, body=None, prepared=None, token=None, principal='owner:fixture', extra=None):
+    def rest(self, operation, body=None, prepared=None, token=None, principal='owner:fixture', extra=None, port=None, prefix=''):
         headers = {'Authorization':'Bearer '+(token or self.owner_token.read_text()),'QIKVRT-Owner':principal}
         if operation == 'readback':
             method='GET'; path='/api/owner/receipts/'+self.request['request_id']
@@ -922,9 +968,9 @@ class OwnerRESTMonolithTests(unittest.TestCase):
             for k,v in extra.items():
                 if v is None: headers.pop(k,None)
                 else: headers[k]=v
-        conn=http.client.HTTPConnection('127.0.0.1',self.config['terminal_port'],timeout=6)
+        conn=http.client.HTTPConnection('127.0.0.1',port or self.config['terminal_port'],timeout=6)
         try:
-            conn.request(method,path,body=raw,headers=headers)
+            conn.request(method,prefix+path,body=raw,headers=headers)
             reply=conn.getresponse(); payload=reply.read()
             self.assertNotIn('state=done',reply.getheader('Effect-Ack',''))
             return reply.status,json.loads(payload)
@@ -937,6 +983,89 @@ class OwnerRESTMonolithTests(unittest.TestCase):
         self.assertEqual(self.sql('SELECT COUNT(*) FROM events'),[(0,)])
         self.assertEqual(self.rest('prepare'),(200,prepared))
         return prepared
+
+    def test_generic_client_discovers_and_uses_original_rest_through_public_monitor(self):
+        self.start()
+        code, access = self.get('/.well-known/qik-vrt')
+        self.assertEqual(code, 200, access)
+        self.assertEqual(access['subject'], self.request['subject'])
+        self.assertEqual(access['schema'], 'qikvrt-native-access/v1')
+        self.assertFalse(access['github_write_identity_required'])
+        self.assertFalse(access['browser_login_required'])
+        self.assertFalse(access['anonymous_writes_allowed'])
+        self.assertFalse(access['anonymous_journal_reads_allowed'])
+        self.assertEqual(access['adapters']['owner_input']['prepare'], '/api/owner/prepare')
+        self.assertNotIn(self.owner_token.read_text(), json.dumps(access))
+        self.assertNotIn(str(self.work), json.dumps(access))
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'), [(0,)])
+        port = self.config['port']
+        code, prepared = self.rest('prepare', port=port)
+        self.assertEqual(code, 200, prepared)
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'), [(0,)])
+        code, receipt = self.rest('commit', prepared=prepared, port=port)
+        self.assertEqual(code, 200, receipt)
+        event = receipt['durable_readback']
+        self.assertEqual(self.rest('readback', port=port)[1]['durable_readback'], event)
+        self.assertEqual(self.rest('readback')[1]['durable_readback'], event)
+        self.assertEqual(self.rest('commit', prepared=prepared, port=port)[1]['durable_readback'], event)
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'), [(1,)])
+        self.assertFalse(receipt['EFFECT_ACK_DONE'])
+
+    def test_public_rest_bridge_preserves_authentication_origin_and_subject_guards(self):
+        self.start()
+        port = self.config['port']
+        for token, code in [('invalid-synthetic-key', 401), (self.reader_token.read_text(), 403)]:
+            principal = 'reader:fixture' if code == 403 else 'owner:fixture'
+            self.assertEqual(self.rest('prepare', port=port, token=token, principal=principal)[0], code)
+        self.assertEqual(self.rest('prepare', port=port, extra={'Authorization': None})[0], 401)
+        self.assertEqual(self.rest('prepare', port=port, extra={'Origin': 'https://untrusted.invalid'})[0], 403)
+        self.assertEqual(self.rest('prepare', port=port, extra={'QIKVRT-Owner': 'wrong:identity'})[0], 403)
+        wrong = json.loads(json.dumps(self.request)); wrong['subject']['head'] = '0' * 40
+        self.assertEqual(self.rest('prepare', port=port, body=wrong)[0], 409)
+        self.assertEqual(self.get('/api/owner/prepare')[0], 405)
+        self.assertEqual(self.get('/api/owner/not-a-route')[0], 404)
+        self.assertEqual(self.get('/.well-known/qik-vrt?ignored=1')[0], 400)
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'), [(0,)])
+
+    def test_anonymous_event_stream_cannot_disclose_private_rest_input(self):
+        self.start(); prepared = self.prepared()
+        self.assertEqual(self.rest('commit', prepared=prepared)[0], 200)
+        connection = http.client.HTTPConnection('127.0.0.1', self.config['terminal_port'], timeout=4)
+        try:
+            connection.request('GET', '/api/temdd/events')
+            response = connection.getresponse()
+            self.assertEqual(response.status, 401, 'Anonymous access must not expose the original private native journal')
+        finally:
+            connection.close()
+        self.assertEqual(self.get('/api/terminal')[0], 200)
+        self.assertEqual(self.rest('readback')[1]['durable_readback']['payload']['terminal_input'], self.request['input'])
+        connection = http.client.HTTPConnection('127.0.0.1', self.config['terminal_port'], timeout=4)
+        try:
+            connection.request('GET', '/api/temdd/events', headers={'Authorization': 'Bearer '+self.token_file.read_text()})
+            response = connection.getresponse(); self.assertEqual(response.status, 200)
+            found = False
+            for _ in range(12):
+                line = response.fp.readline()
+                if self.request['input']['text'].encode() in line:
+                    found = True; break
+            self.assertTrue(found, 'The separately authorized original event stream remains available')
+        finally:
+            connection.close()
+
+    def test_actual_original_rest_crosses_nginx_without_outer_host_or_github_identity(self):
+        from tests.test_qikvrt_temdd_public_proxy import native_gateway
+        self.start()
+        with native_gateway(self.config['terminal_port'], self.work / 'gateway') as port:
+            prefix = '/qik-vrt/mesh/v1/effect-ack'
+            code, prepared = self.rest('prepare', port=port, prefix=prefix, extra={'Host': 'mesh.example.invalid'})
+            self.assertEqual(code, 200, prepared)
+            code, receipt = self.rest('commit', port=port, prefix=prefix, prepared=prepared, extra={'Host': 'mesh.example.invalid'})
+            self.assertEqual(code, 200, receipt)
+            event = receipt['durable_readback']
+            self.assertEqual(self.rest('readback', port=port, prefix=prefix, extra={'Host': 'mesh.example.invalid'})[1]['durable_readback'], event)
+            self.assertEqual(self.rest('readback')[1]['durable_readback'], event)
+            self.assertEqual(self.sql('SELECT COUNT(*) FROM events'), [(1,)])
+            self.assertFalse(receipt['EFFECT_ACK_DONE'])
 
     def assert_refusal(self, status, reason, operation, **kwargs):
         before=self.sql('SELECT seq,body FROM events')

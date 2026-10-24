@@ -1,0 +1,32 @@
+{
+  "schema": "qikvrt_zenodo_machine_proof_bundle_v2",
+  "publication_id": "qikvrt-causal-distance-lean-20261024",
+  "path": "release/causal-distance-lean-2026-10-24/MACHINE_PROOF_BUNDLE.json",
+  "bytes": 45621,
+  "sha256": "8adce48052a5ca641912e2a7735d170fd2df277c228afc100898a8539bf0b9c3",
+  "git_blob_sha1": "e40748a90ff945f80b9940707ecbfc06241fc586",
+  "policy": {
+    "id": "qikvrt-zenodo-machine-proof-before-publication-v2",
+    "path": "policy/zenodo-machine-proof-policy-v2.json",
+    "version": "2.0.0",
+    "sha256": "933d6322a1e294848c6385d1384ab0ec3862c8675ebe35ec2fc4cad3e0baec47",
+    "git_blob_sha1": "e9578d30d22f845e7df684128dcd9332641c00be",
+    "schema_contracts": {
+      "machine_proof_bundle": {
+        "path": "policy/qikvrt-zenodo-machine-proof-bundle-v2.schema.json",
+        "sha256": "f9ad097a797c5fbe1b794f75930de4fdefc0356bac407012010b30eef87ae73e",
+        "git_blob_sha1": "22cc6f4008b4823e8a7cf5e3057d058df6c0961a"
+      },
+      "prepublication_return_receipt": {
+        "path": "policy/qikvrt-prepublication-return-receipt-v2.schema.json",
+        "sha256": "6390285529eb91f8d52a032d957a5457ebb1419e56c091f961f8d0695d2923c9",
+        "git_blob_sha1": "ddf7e306940d256b51971ea153c33b6e493ffde4"
+      }
+    }
+  },
+  "claim_count": 56,
+  "candidate_file_count": 10,
+  "artifact_count": 17,
+  "machine_proof_complete": true,
+  "zenodo_upload_authorized": true
+}

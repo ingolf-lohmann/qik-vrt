@@ -1,0 +1,14 @@
+test_actual_original_rest_crosses_nginx_without_outer_host_or_github_identity (tests.test_self_host_temdd.OwnerRESTMonolithTests.test_actual_original_rest_crosses_nginx_without_outer_host_or_github_identity) ... FAIL
+
+======================================================================
+FAIL: test_actual_original_rest_crosses_nginx_without_outer_host_or_github_identity (tests.test_self_host_temdd.OwnerRESTMonolithTests.test_actual_original_rest_crosses_nginx_without_outer_host_or_github_identity)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/3a47ab8e4d17/qik-vrt-access/tests/test_self_host_temdd.py", line 989, in test_actual_original_rest_crosses_nginx_without_outer_host_or_github_identity
+    self.assertEqual(code, 200, prepared)
+AssertionError: 403 != 200 : {'dod': False, 'evidence_transfer': 'DENY', 'ordinary_release': False, 'reason': 'OWNER_REST_SAME_ORIGIN_LOOPBACK_REQUIRED', 'state': 'HOLD'}
+
+----------------------------------------------------------------------
+Ran 1 test in 2.525s
+
+FAILED (failures=1)
