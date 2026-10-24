@@ -1,0 +1,134 @@
+[
+  {
+    "path": "Makefile",
+    "bytes": 17872,
+    "sha256": "08e535af0e728dc8e69d875ce991ccf25501ca1ffe00eb53f9a1f8bded287c27",
+    "byte_exact": true
+  },
+  {
+    "path": ".github/workflows/qikvrt_manuscript_proof.yml",
+    "bytes": 20829,
+    "sha256": "65985e10a0581cb638bceca656124fac8045f572153bcd4dd1ad83df6d3a906c",
+    "byte_exact": true
+  },
+  {
+    "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck.lean",
+    "bytes": 1618,
+    "sha256": "7061aaa0d9959f6a5397531062276393580909385e52e82f02ce64fa234a1043",
+    "byte_exact": true
+  },
+  {
+    "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CausalDistance.lean",
+    "bytes": 8257,
+    "sha256": "0a72170f07a101a31b757c215b8af84ea5ad33175ace8d13b30e7ef9fb3f6b97",
+    "byte_exact": true
+  },
+  {
+    "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CausalDistanceTemporalBridge.lean",
+    "bytes": 5637,
+    "sha256": "d4c3b08c7004be9fa1a5eec6cb9f71501aaf952e936d241aa7980ed57f326fe5",
+    "byte_exact": true
+  },
+  {
+    "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CausalDistanceBoundaryChecks.lean",
+    "bytes": 3792,
+    "sha256": "ca2b503f6d6df1412b54dfab176caae81e1970a6ddf95d0e8db1ebe19ed55994",
+    "byte_exact": true
+  },
+  {
+    "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CausalDistanceAxiomAudit.lean",
+    "bytes": 2677,
+    "sha256": "42bea7cc176eff9692f463e213dfaea2e99587ef5870f9d70e932dce0f78b4ca",
+    "byte_exact": true
+  },
+  {
+    "path": "tools/qikvrt_causal_distance_kernel_evidence.py",
+    "bytes": 6306,
+    "sha256": "74cd560c14855f562ab8a8a1c6e99897a0901a87ae55ef63e14eee620d913891",
+    "byte_exact": true
+  },
+  {
+    "path": "tests/test_causal_distance_kernel_evidence.py",
+    "bytes": 3068,
+    "sha256": "bdf38d5d502c30e714873c5e6b0a0dab87afb565182c11ae239cf51fb33fed42",
+    "byte_exact": true
+  },
+  {
+    "path": "docs/publications/2026-10-24-causal-distance-temporal-memory/CLAIM_MATRIX.json",
+    "bytes": 16062,
+    "sha256": "b77d4a81d0550a5cc91ad99f80140e942e340c23995e547dace67f489484e225",
+    "byte_exact": true
+  },
+  {
+    "path": "docs/publications/2026-10-24-causal-distance-temporal-memory/KERNEL_PROOF_PLAN.json",
+    "bytes": 10074,
+    "sha256": "af600d85f5408d6fb7d454f7e2fa259b9e94f47da06e65097d4d80af9ece4a13",
+    "byte_exact": true
+  },
+  {
+    "path": "docs/publications/2026-10-24-causal-distance-temporal-memory/LEAN_ANBINDUNG.md",
+    "bytes": 9725,
+    "sha256": "932c62d376008e2e1e53765658ef3a443578be04bf4bd4a333db1885d04492e9",
+    "byte_exact": true
+  },
+  {
+    "path": "docs/publications/2026-10-24-causal-distance-temporal-memory/LOCAL_ENVIRONMENT.json",
+    "bytes": 842,
+    "sha256": "7f4bbc9227ec7933b43cb44f32d618ec1dea962111dbf110b1307bc5167bb5f8",
+    "byte_exact": true
+  },
+  {
+    "path": "docs/publications/2026-10-24-causal-distance-temporal-memory/LOCAL_FULL_LAKE_BUILD.log",
+    "bytes": 13850,
+    "sha256": "eaeac0433f1e87bec608fa06e3859311925b54c7bccf4ce3e22f59c4b0c8a1d0",
+    "byte_exact": true
+  },
+  {
+    "path": "docs/publications/2026-10-24-causal-distance-temporal-memory/LOCAL_KERNEL_RECEIPT.json",
+    "bytes": 14021,
+    "sha256": "1d90f206f6f9d098763cee9f30f22dbdd9d415bdec60811cce2c970c88865625",
+    "byte_exact": true
+  },
+  {
+    "path": "docs/publications/2026-10-24-causal-distance-temporal-memory/LOCAL_MUTATION_TESTS.log",
+    "bytes": 790,
+    "sha256": "993a59774a87d26ff955e8aeae88bd7c2cb58f5bf49fff21a3eccd02be6eca6c",
+    "byte_exact": true
+  },
+  {
+    "path": "docs/publications/2026-10-24-causal-distance-temporal-memory/LOCAL_PROOF_ESCAPE_AUDIT.log",
+    "bytes": 70,
+    "sha256": "6709f42d5f1a8605d31bfc5b6ce7ff2539eda46f92ac2521c8bc89ab35295496",
+    "byte_exact": true
+  },
+  {
+    "path": "docs/publications/2026-10-24-causal-distance-temporal-memory/negative/FalseDirectedSymmetry.lean",
+    "bytes": 256,
+    "sha256": "446e207a9bf475edfee403a52e406e4f2081ea21cae2abe20cc66dbb7d24cec5",
+    "byte_exact": true
+  },
+  {
+    "path": "docs/publications/2026-10-24-causal-distance-temporal-memory/negative/FalseFutureAdmission.lean",
+    "bytes": 148,
+    "sha256": "e215031ddf49eaeb87a4236ade99bf858050151a693c42cdd08c9a7fe2275b25",
+    "byte_exact": true
+  },
+  {
+    "path": "docs/publications/2026-10-24-causal-distance-temporal-memory/negative/FalseUnownedAdmission.lean",
+    "bytes": 270,
+    "sha256": "d024b857eb94052e6f51ed79088998949390d13fa4c856c2c7ece8b1d05ca7ac",
+    "byte_exact": true
+  },
+  {
+    "path": "docs/publications/2026-10-24-causal-distance-temporal-memory/negative/FalseZeroEdge.lean",
+    "bytes": 170,
+    "sha256": "bf9181782600bb257313de7685e8cbdd2a8f66f9881dd51a4bcbad15776f1b1e",
+    "byte_exact": true
+  },
+  {
+    "path": "docs/publications/2026-10-24-causal-distance-temporal-memory/proc_self_compat.c",
+    "bytes": 728,
+    "sha256": "522eec0ce74508a910e582ee38d822011bcf5323be4cabbd1631276cc91b2226",
+    "byte_exact": true
+  }
+]

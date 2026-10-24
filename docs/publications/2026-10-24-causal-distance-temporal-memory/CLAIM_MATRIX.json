@@ -425,5 +425,12 @@
     }
   ],
   "published": false,
-  "new_doi": null
+  "new_doi": null,
+  "native_receipt": {
+    "path": "NATIVE_KERNEL_RECEIPT.json",
+    "sha256": "3734147def87e97610308abbd75a65989e8dfec1d2b421a72c59cdc181286b17",
+    "workflow_run_id": 40088317986,
+    "tested_commit": "727388a57ed232eb9f4194d0dcd9e0817d1d146c",
+    "tested_tree": "f1f28e92600a616883134165c7266d19b77a8491"
+  }
 }
