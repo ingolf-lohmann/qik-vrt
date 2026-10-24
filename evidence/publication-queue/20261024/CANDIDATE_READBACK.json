@@ -1,0 +1,171 @@
+{
+  "schema": "qikvrt_zenodo_backlog_observation_v1",
+  "observed_at": "2026-10-24T02:02:52.144018+00:00",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "main_head": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+  "main_tree": "1a8003f1815b75fe534b21f242e8b782d4352796",
+  "predecessor": {
+    "pr": 553,
+    "head": "3691b92ffd2634986734cbc8f16616dc7a489de7",
+    "path": "evidence/zenodo-review-acceptance-v2/BACKLOG_READBACK_20261021.json",
+    "sha256": "ab9a4227e40dc1ec7a8dc1bdfe76921936fc1d73303422108b2e248f6c2f64fc"
+  },
+  "public_metadata_inventory": {
+    "record_versions": 44,
+    "families": 32,
+    "advertised_files": 479,
+    "queries": [
+      {
+        "path": "creator-handle-1.json",
+        "bytes": 9150,
+        "sha256": "22c5aa2910c59748bf139621cb3130a540937c7871514c8d1034d2c989aab35d",
+        "http_status": 200,
+        "hits": 2,
+        "total": 2,
+        "next": null
+      },
+      {
+        "path": "creator-name-1.json",
+        "bytes": 199834,
+        "sha256": "cfd85734d227ee52185fbd97cb898410d5de5f7240b49dd9ed588764e28ebbee",
+        "http_status": 200,
+        "hits": 25,
+        "total": 42,
+        "next": "https://zenodo.org/api/records?allversions=True&page=2&q=creators.name:(Ingolf+AND+Lohmann)&size=25&sort=bestmatch"
+      },
+      {
+        "path": "creator-name-2.json",
+        "bytes": 150234,
+        "sha256": "7e61fb0f47165f1707614231f4fd4746b0bef6c1bb3eae061d2a9f7a75b893f3",
+        "http_status": 200,
+        "hits": 17,
+        "total": 42,
+        "next": null
+      }
+    ],
+    "all_public_file_bodies_redownloaded": false,
+    "scope": "Complete pages for creator-name AND query and creator handle; public metadata only; no private draft completeness."
+  },
+  "priority_candidates": [
+    {
+      "title": "Die wirksame Kontinuität",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/QIK-VRT_Die_wirksame_Kontinuitaet_Gesamtausgabe_2026-10-03.pdf",
+      "bytes": 189440,
+      "sha256": "c82e9182dc2b6068b2d7a70edbd4c3696557813aa8859e92c72a865a46256cce",
+      "git_blob_sha1": "053259060c1d495d3e6a99537342dfb1888eebc5",
+      "matching_known_public_file_checksums": [],
+      "current_boundary": "V3 proof validates: 30 claim dispositions; detached activation, canonical exact-upload decision and executable production manifest remain absent.",
+      "matches_in_fresh_public_file_metadata": [],
+      "public_absence_scope": "No matching advertised checksum is not proof about private, unindexed or differently attributed deposits."
+    },
+    {
+      "title": "Kollektives Funktionales Bewusstsein",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/QIK-VRT_Kollektives_Funktionales_Bewusstsein_2026-10-03.pdf",
+      "bytes": 52913,
+      "sha256": "7132552a69813d34448c41c58100ebd30572a17a505b4405303e5601c14171a6",
+      "git_blob_sha1": "f9d17b76f2f2fc758b13ae3fcb6f45480d086638",
+      "matching_known_public_file_checksums": [],
+      "current_boundary": "Current proof fails SHA-256 mismatch for AI; preserve returned original and bind an explicit successor instead of silently changing frozen proof bytes.",
+      "matches_in_fresh_public_file_metadata": [],
+      "public_absence_scope": "No matching advertised checksum is not proof about private, unindexed or differently attributed deposits."
+    },
+    {
+      "title": "QIK-VRT ALLES — S1/S12 R1",
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/QIKVRT_ALLES_2026-10-15_S1_S12.pdf",
+      "bytes": 1289349,
+      "sha256": "68b59b146904aae567bf302268b1e795d9ffd8506921aa282817aab4c0d41f1e",
+      "git_blob_sha1": "100834979354759ed4d5846d84d28d1f11720d05",
+      "matching_known_public_file_checksums": [],
+      "current_boundary": "Existing editorial draft has archival/readiness gates; not a production publication manifest.",
+      "matches_in_fresh_public_file_metadata": [],
+      "public_absence_scope": "No matching advertised checksum is not proof about private, unindexed or differently attributed deposits."
+    },
+    {
+      "title": "Gesamtdarstellung und kritische Würdigung",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/QIKVRT_Gesamtdarstellung_neu_2026-10-15.md",
+      "bytes": 61037,
+      "sha256": "84e37878f497208bdf6b2db04c8a4f83ee642559ad6db794d408e159c4c94c2c",
+      "git_blob_sha1": "2cc98ab526e76c8d48737e596d6da2c61d941019",
+      "matching_known_public_file_checksums": [],
+      "current_boundary": "Exact editorial author approval retained; proof package and production-fileset authorization remain separate.",
+      "matches_in_fresh_public_file_metadata": [],
+      "public_absence_scope": "No matching advertised checksum is not proof about private, unindexed or differently attributed deposits."
+    },
+    {
+      "title": "Der entscheidende Unterschied — wissenschaftlicher Wirkungsnachweis",
+      "path": "docs/publications/2026-10-16-wirkungsnachweis/QIKVRT_Wirkungsnachweis_Wissenschaft_20261016.pdf",
+      "bytes": 155074,
+      "sha256": "f0546d0228dea325c9c89a14f0893d33d30ea95c89ee3716a6103820a5116965",
+      "git_blob_sha1": "950166ddc09c8969a8a90bd60c5bd88bd9cde5c6",
+      "matching_known_public_file_checksums": [],
+      "current_boundary": "Frozen research/distribution package exists; no executable generic publisher manifest in this directory.",
+      "matches_in_fresh_public_file_metadata": [],
+      "public_absence_scope": "No matching advertised checksum is not proof about private, unindexed or differently attributed deposits."
+    },
+    {
+      "title": "Gesamtbetrachtung / größte Anschlussfähigkeit",
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/GESAMTBETRACHTUNG_DE.pdf",
+      "bytes": 103905,
+      "sha256": "926cceff006063d91797feaa3616cca0a6ff2c2c30d2e7f53f501ba5f3da97f6",
+      "git_blob_sha1": "c53348766fb6c1f372629a295dac48d4937fb948",
+      "matching_known_public_file_checksums": [],
+      "current_boundary": "Existing PUBLISH_REQUEST_DRAFT is explicitly draft with confirm=null; no canonical new exact-upload decision.",
+      "matches_in_fresh_public_file_metadata": [],
+      "public_absence_scope": "No matching advertised checksum is not proof about private, unindexed or differently attributed deposits."
+    }
+  ],
+  "current_proof_checks": [
+    {
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/MACHINE_PROOF_BUNDLE.json",
+      "state": "HOLD",
+      "exception": "ProofGateError",
+      "reason": "SHA-256 mismatch for AI"
+    },
+    {
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/MACHINE_PROOF_BUNDLE.json",
+      "state": "VALIDATED_WITHOUT_UPLOAD_AUTHORITY",
+      "result": {
+        "schema": "qikvrt_zenodo_machine_proof_bundle_v3",
+        "publication_id": "qikvrt-effective-continuity-synthesis-20261003-review-v1",
+        "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/MACHINE_PROOF_BUNDLE.json",
+        "bytes": 30503,
+        "sha256": "c1f0ca91ce694ec05fcbf014d894856b50f682418f68a122dba67311f8b3c0c9",
+        "git_blob_sha1": "017ac43ceabb77e42e2e6703218dabe2bc025e55",
+        "policy": {
+          "id": "qikvrt-zenodo-machine-proof-before-publication-v3",
+          "path": "policy/zenodo-machine-proof-policy-v3.json",
+          "version": "3.0.0",
+          "sha256": "e8163b42acdc26ede6c996f695c4e5362edd580085717264bbf20f5782093f78",
+          "git_blob_sha1": "35ecc7887e486491278f63e0a61102d1be06e5ef",
+          "schema_contracts": {
+            "machine_proof_bundle": {
+              "path": "policy/qikvrt-zenodo-machine-proof-bundle-v3.schema.json",
+              "sha256": "59ea0d0df65a5a6861493a2b999f2e5ceca22391e62f506a59f9ae2363728912",
+              "git_blob_sha1": "85f0fe61b9e565241a56f27f4a96cb3944ab6388"
+            },
+            "prepublication_return_receipt": {
+              "path": "policy/qikvrt-prepublication-return-receipt-v2.schema.json",
+              "sha256": "6390285529eb91f8d52a032d957a5457ebb1419e56c091f961f8d0695d2923c9",
+              "git_blob_sha1": "ddf7e306940d256b51971ea153c33b6e493ffde4"
+            }
+          },
+          "review_state": "REVIEW_REQUIRED",
+          "production_mutation_authorized": false
+        },
+        "claim_count": 30,
+        "candidate_file_count": 4,
+        "artifact_count": 14,
+        "machine_proof_complete": true,
+        "zenodo_upload_authorized": false,
+        "review_state": "REVIEW_REQUIRED",
+        "production_mutation_authorized": false
+      }
+    }
+  ],
+  "production_effects": {
+    "new_zenodo_records": 0,
+    "uploads": 0,
+    "token_use_confirmed": false,
+    "effect_ack_done": false
+  }
+}

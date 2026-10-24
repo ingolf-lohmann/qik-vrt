@@ -1,0 +1,241 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_work_unit_v1",
+  "id": "QIKVRT_ZENODO_IONOS_FIREFOX_MVP_20261024_V1",
+  "status": "SOURCE_PREPARED_PRODUCTION_ADMISSION_OPEN",
+  "recorded_at": "2026-10-24T02:04:17.382411+00:00",
+  "owner": "Ingolf Lohmann",
+  "authority": "ingolf-lohmann/qik-vrt",
+  "mirror": "Goldkelch/qik-vrt",
+  "source_subject": {
+    "ref": "main",
+    "head": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+    "tree": "1a8003f1815b75fe534b21f242e8b782d4352796",
+    "git_blob_entries_verified": 5177,
+    "parent_history_complete": false
+  },
+  "authorization": {
+    "granted": true,
+    "source": "Direct Owner instruction in current conversation, 2026-10-24 Europe/Paris",
+    "scope": "Publish existing document backlog, then commission owner IONOS host and existing DevOps pipeline; first product deliverable standard Firefox extension connected to QIK VRT Trusted Mesh Repository through Effect Acknowledgement.",
+    "permission_requested_again": false,
+    "canonical_candidate_upload_event_created": false
+  },
+  "provenance": {
+    "human_contribution": "Ingolf Lohmann: order of work, product requirement and authorization. Follow-up: internal cleanup begins during the idle phase after reaching the target state.",
+    "artificial_cognitive_contribution": "OpenAI Codex: independent retrieval, exact-source reconstruction, publication/precondition checks, operational specification and local native intake.",
+    "joint_or_unresolved": "No human authorship of generated verification text or independent scientific agreement is inferred."
+  },
+  "semantic_boundaries": {
+    "repository_integrity": "Exact Git object/tree and canonical repository integrity checks establish byte identity within their scope.",
+    "fixed_point_arithmetic": "Integrity does not prove arithmetic semantics. Every fixed-point kernel needs explicit scale, width, signedness, rounding, overflow and canonical serialization; equivalence must bind actual inputs, reference model and machine code.",
+    "m68000_candidate": {
+      "pr": 593,
+      "head": "48ee2c7adc95ece54057a252b24c97e7316963e5",
+      "status": "OPEN_DRAFT_AT_READBACK",
+      "evidence_class": "PR-reported bounded Linux-user emulation and Lean checks; not independently reexecuted here, merged Main or Linux-kernel integration."
+    },
+    "credential_recovery": {
+      "owner_report": "OWNER_ASSERTED_AVAILABLE_IN_NEW_AUTHORITY",
+      "native_protected_consumer_use": "NOT_CONFIRMED_IN_THIS_RUN",
+      "source_binding": "runtime/capabilities/ZENODO_PUBLICATION_CAPABILITY.json",
+      "credential_reference": "secrets.ZENODO_ACCESS_TOKEN",
+      "raw_values_read_or_persisted": false,
+      "missing_local_environment_implies_missing_host_secret": false
+    },
+    "protocol": "Published individual IETF Internet-Draft is not RFC status or IETF consensus. Preserve the existing EAP wire contract."
+  },
+  "ordered_completion": [
+    {
+      "id": "P1_ZENODO_BACKLOG",
+      "state": "OPEN",
+      "production_before": "P2_IONOS_DEVOPS",
+      "reuse": [
+        "tools/qikvrt_publication_router.py",
+        "tools/qikvrt_zenodo_publish.py",
+        "tools/qikvrt_verify_zenodo_public_manifest.py",
+        "state/publication_requests/README.md"
+      ],
+      "existing_carriers": [
+        553,
+        591,
+        518,
+        520,
+        549
+      ],
+      "readback": "evidence/publication-queue/20261024/CANDIDATE_READBACK.json",
+      "initial_candidate_count": 6,
+      "inventory_complete_for_all_private_drafts": false,
+      "first_candidate": "Die wirksame Kontinuität",
+      "first_missing_prerequisites": [
+        "Active Main ruleset required by existing publisher (fresh REST rulesets=[]).",
+        "Admitted integration of existing PR553 review contract; current Main retains the earlier contract.",
+        "Detached reviewed-contract activation and canonical exact-fileset upload event; working protected credential delivery and actual workflow admission."
+      ],
+      "acceptance": [
+        "Preserve returned candidate bytes, proof/claim matrix, rights and author attribution.",
+        "Reconcile existing deposits and one-use reservations before any mutation.",
+        "Use existing protected publisher with exact HEAD/TREE and manifest.",
+        "Verify native published metadata, version DOI and every uploaded file by independent anonymous redownload.",
+        "Persist exact receipts; keep Authority/Mirror propagation separately evidenced."
+      ],
+      "authority_metadata_corrections": "Resume existing PR591 and prepared metadata-only migration; preserve published DOI/version identity and immutable original bytes."
+    },
+    {
+      "id": "P2_IONOS_DEVOPS",
+      "state": "OPEN",
+      "production_after": "P1_ZENODO_BACKLOG",
+      "reuse": [
+        "tools/qikvrt_self_host.py",
+        "runtime/self-host/MESH_ACTIVATION.json",
+        "runtime/self-host/README.md",
+        ".github/workflows/qikvrt_workflow_executor.yml",
+        ".github/workflows/qikvrt_ci.yml"
+      ],
+      "existing_carrier": 554,
+      "provider": "IONOS",
+      "monthly_budget_eur_max": 150,
+      "paid_order_or_resource_state": "REQUIRES_FRESH_PROVIDER_READBACK; conflicting historical reports are not resolved by this source record.",
+      "first_next_action": "Use the existing protected IONOS inventory/preflight consumer to identify the actual server, resource/account and admitted host writer before deployment.",
+      "acceptance": [
+        "Fresh provider resource and cost/contract binding within the authorized budget.",
+        "Verified source/package, persistent volumes, secret references and fenced native writer on owner host.",
+        "Original Terminal/Transputer endpoint and authenticated request/result readback.",
+        "Existing pipeline processes one bounded admitted repository work unit through tests, review/promotion and durable result; no lost acknowledged or duplicate irreversible effect across restart.",
+        "Actual DNS, TLS and useful application readback on https://raumzeitterminal.de/."
+      ]
+    },
+    {
+      "id": "P3_FIREFOX_MVP",
+      "state": "OPEN",
+      "product_priority": "FIRST_PRODUCT_DELIVERABLE",
+      "reuse": [
+        "browser/firefox/qikvrt-terminal",
+        "src/qikvrt_effect_ack_http_terminal.py",
+        "src/qikvrt_temdd_event_ledger.py",
+        ".github/workflows/qikvrt_ci.yml"
+      ],
+      "definition": "Installable signed extension for the supported standard Firefox Release, connecting its user to the authorized QIK VRT Trusted Mesh Repository and original EAP/native readback.",
+      "first_product_gate": "Actual signed-XPI activation in standard Firefox; unsigned-XPI error -5 from predecessor CI is not repaired by source tests.",
+      "acceptance_cases": [
+        {
+          "id": "F1_SIGNED_INSTALL",
+          "expected": "Public exact-byte XPI, verified Mozilla signature, correct extension ID/version and successful normal standard-Firefox activation; no unsigned bypass or downgrade."
+        },
+        {
+          "id": "F2_AUTHENTICATED_MESH",
+          "expected": "Verify endpoint/node/repository role and source binding; preserve selected SSO/native authorization, least permissions and protected credential storage."
+        },
+        {
+          "id": "F3_PROTOCOL",
+          "expected": "Send exact request identity and existing EAP structured-field bytes. Separately demonstrate NACK, CONTINUE, ISOLATE, BLOCK and DONE for controlled authorized cases; transport receipt alone never grants an effect."
+        },
+        {
+          "id": "F4_INDEPENDENT_READBACK",
+          "expected": "Bind request/work-unit, native epoch/event/digest, effect result and separate fresh original Terminal readback to the same subject."
+        },
+        {
+          "id": "F5_RECONNECT_RESTART",
+          "expected": "Browser and server restart/reconnect preserve original event identity, pending work and confirmed results; replay causes zero duplicate irreversible effects."
+        },
+        {
+          "id": "F6_FAILURE",
+          "expected": "Unknown/offline/revoked or conflicting node, tampered bytes and missing writer admission stay explicit; preserve confirmed reads and withhold unauthorized effects."
+        },
+        {
+          "id": "F7_UPDATE",
+          "expected": "An accepted signed update preserves grants, pending requests, schema/source provenance and independent readback; no silent trust or permission expansion."
+        },
+        {
+          "id": "F8_USER_TASK",
+          "expected": "A real authorized useful task completes on the actual owner host from ordinary Firefox, with reachable public URL and independent productive effect readback."
+        }
+      ],
+      "acceptance_run_ids": [],
+      "accepted": false
+    },
+    {
+      "id": "P4_INTERNAL_CLEANUP_DURING_IDLE",
+      "state": "WAITING_FOR_TARGET_ACCEPTANCE",
+      "production_after": [
+        "P1_ZENODO_BACKLOG",
+        "P2_IONOS_DEVOPS",
+        "P3_FIREFOX_MVP"
+      ],
+      "scope": "Internal cleanup of the existing QIK-VRT system, guided by evidenced findings and existing work units.",
+      "entry_conditions": [
+        "Independently verified completion of the preceding publication, owner-host/DevOps and standard Firefox MVP acceptance obligations.",
+        "Fresh complete paginated Authority backlog: every scoped PR processed and actually merged into current Main, no open scoped issues; inaccessible or incomplete inventory does not satisfy this gate."
+      ],
+      "execution": "Reuse the existing admitted native executor and completion/optimization contracts; choose one bounded evidence-based cleanup and independently verify its exact-subject effect.",
+      "invariants": [
+        "Preserve original journals, publication identities, knowledge, uncertainty, authorizations and unresolved duties.",
+        "Preserve working-software acceptance, source integrity, rights and protected effect boundaries.",
+        "An idle or blocked client does not establish target completion or admit optimization; new backlog restores completion priority."
+      ],
+      "acceptance_evidence": [],
+      "started": false,
+      "accepted": false
+    }
+  ],
+  "devops_backlog_rule": {
+    "scope": "Existing well specified open features and defect obligations; dependency and causal blocker order.",
+    "execution": "Existing admitted native executor; retain Work Unit, source/task/principal/writer, exact checks, qualified review and fresh effect readback.",
+    "performance": "Measure baseline and scalability under declared equivalent workloads; do not assert unmeasured throughput or optimal scaling. Retain existing completion-before-optimization rule.",
+    "client_timers_or_substitute_executors": false,
+    "unconditional_merge_or_repeated_failed_dispatch": false
+  },
+  "observations": {
+    "public_zenodo_versions": 44,
+    "public_zenodo_families": 32,
+    "public_advertised_files": 479,
+    "all_public_file_bodies_redownloaded": false,
+    "current_main_rulesets": [],
+    "domain_http_status": 525,
+    "mesh_native_endpoint": "NOT_CONFIGURED_AT_CURRENT_CONNECTION_CHECK",
+    "local_native_intake": "evidence/publication-queue/20261024/LOCAL_NATIVE_INTAKE.json",
+    "mesh_snapshot_id": "b287628c-9870-4e62-98e0-05c0e86f1cde",
+    "mesh_snapshot_sha256": "2e87f0f18d9f4113fdec93bc6bb5f8c9a5cfed68bc17eb26fa4907ddb8a703dc"
+  },
+  "retained_open_obligations": [
+    "Original backlog and publication branches including every duty in PR553 predecessor; six candidates are not the entire corpus.",
+    "Original mirror emitter node-tools/qikvrt_mirror_emit.py, writer/peer binding and authenticated ACK/application remain unavailable in checked Main/archive; no formal Mirror assessment is manufactured.",
+    "Retain all predecessor knowledge, corrections and open duties in continuation archive libfile_8ff514ee33a08191a6573ae98c5acb5a version48; copied journals remain read-only.",
+    "Active native Mesh/peer runtime, domain delivery, private host restoration and publication authority migration remain independently open."
+  ],
+  "first_external_blocker": {
+    "operation": "Initial admitted REST start/integration of the existing protected governance and publication paths",
+    "evidence": "Current rulesets=[]; no initial workflow_dispatch or administration write operation exposed in this client; original native endpoint unavailable.",
+    "retry_condition": "Materially new actual protected executor/initial REST operation and active Main rules; reobserve exact candidate before effect.",
+    "next_action": "Use the already existing ruleset-authority executor, independently verify enforced Main and current PR553 admission, then its detached activation and exact-file publisher; preserve authorization without another blanket permission request."
+  },
+  "completion_claims": {
+    "zenodo_new_publication": false,
+    "token_usable_verified": false,
+    "main_merged": false,
+    "ionos_production_started": false,
+    "devops_productive": false,
+    "firefox_mvp_accepted": false,
+    "effect_ack_done": false,
+    "internal_cleanup_started": false
+  },
+  "owner_followup_instruction": {
+    "date": "2026-10-24",
+    "timezone": "Europe/Paris",
+    "author": "Ingolf Lohmann",
+    "verbatim": "Dann hätten wir den Zielzustand zunächst erreicht und können dann während dieser Eitelphase mit dem inneren Aufräumen beginnen. Denn da gibt es auch noch viel aufzuräumen. Quod erat demonstrandum, Ingolf Lohmann.",
+    "interpretation": "Eitelphase is interpreted in this operational context as Idlephase/Leerlaufphase; internal cleanup follows verified target acceptance.",
+    "instruction_sha256": "fadcf09cd9dc3f6c059f141649cc6076f581677626e3450d983151eb732dce41",
+    "evidence": "evidence/publication-queue/20261024/IDLE_CLEANUP_INTAKE.json",
+    "predecessor": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "pr": 594,
+      "head": "564b29b5404de91d6a2834aca38968c3a9fe8730",
+      "tree": "b01484fb879d095e614382c5e1c957428e77ad79"
+    }
+  }
+}

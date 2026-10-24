@@ -211,3 +211,46 @@ Die lokale Schutzfunktion benötigt eine eigene zugelassene, gefahrenbezogene
 Entscheidung und Prüfung; sie ist keine allgemeine Freigabe gewöhnlicher
 Nicht-DONE-Wirkungen. Ein Repository-Abgleich oder CI-Erfolg ersetzt weder
 die reale Installationserprobung noch eine vorgeschriebene Konformitätsbewertung.
+
+## Owner-Auftrag vom 24. Oktober 2026: Publikation, Eigenbetrieb, Firefox-MVP
+
+Der verbindlich autorisierte Arbeitsauftrag ist unter
+`state/work_units/QIKVRT_ZENODO_IONOS_FIREFOX_MVP_20261024_V1.json`
+mit Quellenstand, vorhandenen Ausführungspfaden, Abnahmefällen und offenen
+Pflichten gebunden. Zuerst wird der Zenodo-Dokumentenrückstand über den
+bestehenden Publisher abgearbeitet. Danach folgen der tatsächliche IONOS-Host
+und die vorhandene DevOps-Pipeline. Erstes Produktziel ist das signierte
+Zusatzmodul für den Standard-Firefox mit authentifiziertem Trusted-Mesh-Anschluss,
+Effect-Acknowledgement und unabhängigem produktivem Wirkungs-Readback.
+
+Der frische öffentliche Metadatenabgleich umfasst 44 Versionen in 32 DOI-Familien.
+Sechs priorisierte Kandidaten wurden erneut bytegebunden geprüft; diese Auswahl
+ist keine vollständige Privatentwurfsinventur. Die Originalantworten und die
+Prüfgrenzen liegen unter `evidence/publication-queue/20261024/`. Der Auftrag
+behauptet keine erfolgte Veröffentlichung, Tokenrettung, Serverinbetriebnahme
+oder MVP-Abnahme. Die gemeldete Credential-Verfügbarkeit bleibt eine
+Owner-Angabe bis zur Bestätigung durch den geschützten nativen Verbraucher.
+
+Repository-Integrität belegt Byteidentität. Festkommarechnung verlangt zusätzlich
+eine bestimmte Skalierung, Wortbreite, Rundung und Überlaufsemantik sowie den
+gebundenen Gleichheitsnachweis zum Referenzmodell. Der M68000-Kandidat PR593
+bleibt von Main-Integration und tatsächlichem Hostbetrieb getrennt.
+
+
+### Anschließende Leerlaufphase: inneres Aufräumen
+
+Ingolf Lohmann ergänzt den Auftrag am 24. Oktober 2026: Nach dem nachweislichen
+Erreichen dieses Zielzustands folgt das innere Aufräumen während der
+Leerlaufphase. Die Originalformulierung („Eitelphase“) und ihre hier verwendete
+Lesart „Idlephase/Leerlaufphase“ bleiben im bestehenden Work-Unit getrennt
+festgehalten. P4 folgt der Abnahme von Publikation, IONOS/DevOps und Firefox-MVP.
+
+Für optimierende Aufräumarbeiten gilt weiterhin das bestehende Backlog-Gate:
+Alle PRs im autorisierten Umfang müssen tatsächlich auf dem aktuellen Main
+gemergt sein und es dürfen keine offenen Issues verbleiben; die vollständigen
+Inventare sind frisch zurückzulesen. Ein blockierter oder untätiger Client
+erfüllt diese Voraussetzung nicht. Vorhandene native Ausführungswege, originale
+Journale, Wissen, Ungewissheiten und offene Verpflichtungen bleiben erhalten.
+Jeder begrenzte Aufräumschritt benötigt eigene Prüfung und Wirkungs-Readback;
+neu anstehende Fertigstellungsarbeit erhält wieder Vorrang. Die Aufräumphase
+wird durch diesen Quellenauftrag noch nicht gestartet.
