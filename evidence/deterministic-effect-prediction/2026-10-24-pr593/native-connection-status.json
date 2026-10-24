@@ -1,0 +1,15 @@
+{
+  "schema": "qikvrt_native_terminal_connection_v1",
+  "adapter_version": "20261023.1",
+  "mesh_id": "qik-vrt",
+  "scope": "NONIDENTIFYING_FLAGS_ONLY; caller_identity excluded",
+  "native_available": false,
+  "operator_configured": true,
+  "operator_authorized": true,
+  "ready": false,
+  "open_gates": [
+    "ADMITTED_MESH_RUNTIME_ENDPOINT"
+  ],
+  "reason": "Kein öffentlicher Mesh-Transputer-Endpunkt konfiguriert.",
+  "effect_ack_done": false
+}

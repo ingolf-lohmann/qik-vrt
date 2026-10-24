@@ -1,0 +1,197 @@
+{
+  "schema": "qikvrt_ci_observation_summary_v1",
+  "source_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/actions/runs?head_sha=dbed9072d41727fc4e45abd0cedee4cf3c61c790&per_page=100",
+  "scope": "DERIVED_FIELDS_FROM_CONNECTOR_RESPONSE_NOT_RAW_HTTP",
+  "workflow_runs": [
+    {
+      "id": 40043260101,
+      "name": "QIKVRT Batch-003 remaining archive probe",
+      "head_sha": "dbed9072d41727fc4e45abd0cedee4cf3c61c790",
+      "status": "completed",
+      "conclusion": "skipped",
+      "event": "pull_request",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/40043260101",
+      "updated_at": "2026-10-24T00:06:05Z"
+    },
+    {
+      "id": 40043260231,
+      "name": "QIKVRT Batch-003 subject 172dd public archive probe",
+      "head_sha": "dbed9072d41727fc4e45abd0cedee4cf3c61c790",
+      "status": "completed",
+      "conclusion": "skipped",
+      "event": "pull_request",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/40043260231",
+      "updated_at": "2026-10-24T00:06:06Z"
+    },
+    {
+      "id": 40043260269,
+      "name": "QIKVRT PR18 integrity repair",
+      "head_sha": "dbed9072d41727fc4e45abd0cedee4cf3c61c790",
+      "status": "completed",
+      "conclusion": "skipped",
+      "event": "pull_request",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/40043260269",
+      "updated_at": "2026-10-24T00:06:06Z"
+    },
+    {
+      "id": 40043260221,
+      "name": "QIKVRT code-owner review observer",
+      "head_sha": "dbed9072d41727fc4e45abd0cedee4cf3c61c790",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "pull_request",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/40043260221",
+      "updated_at": "2026-10-24T00:06:10Z"
+    },
+    {
+      "id": 40043260282,
+      "name": "QIKVRT CI",
+      "head_sha": "dbed9072d41727fc4e45abd0cedee4cf3c61c790",
+      "status": "in_progress",
+      "conclusion": null,
+      "event": "pull_request",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/40043260282",
+      "updated_at": "2026-10-24T00:06:08Z"
+    },
+    {
+      "id": 40043260203,
+      "name": "QIKVRT repository evidence materialization",
+      "head_sha": "dbed9072d41727fc4e45abd0cedee4cf3c61c790",
+      "status": "in_progress",
+      "conclusion": null,
+      "event": "pull_request",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/40043260203",
+      "updated_at": "2026-10-24T00:06:08Z"
+    },
+    {
+      "id": 40043260153,
+      "name": "QIKVRT requested review executor",
+      "head_sha": "dbed9072d41727fc4e45abd0cedee4cf3c61c790",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "pull_request",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/40043260153",
+      "updated_at": "2026-10-24T00:06:21Z"
+    },
+    {
+      "id": 40043260367,
+      "name": "QIKVRT live Authority Mirror A-B benchmark",
+      "head_sha": "dbed9072d41727fc4e45abd0cedee4cf3c61c790",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "pull_request",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/40043260367",
+      "updated_at": "2026-10-24T00:06:20Z"
+    },
+    {
+      "id": 40043260095,
+      "name": "QIKVRT workflow executor watchdog",
+      "head_sha": "dbed9072d41727fc4e45abd0cedee4cf3c61c790",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "pull_request",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/40043260095",
+      "updated_at": "2026-10-24T00:06:36Z"
+    },
+    {
+      "id": 40043260427,
+      "name": "QIKVRT adaptive runtime",
+      "head_sha": "dbed9072d41727fc4e45abd0cedee4cf3c61c790",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "pull_request",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/40043260427",
+      "updated_at": "2026-10-24T00:07:49Z"
+    },
+    {
+      "id": 40043260340,
+      "name": "QIKVRT Personal Firefox capability boundary",
+      "head_sha": "dbed9072d41727fc4e45abd0cedee4cf3c61c790",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "pull_request",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/40043260340",
+      "updated_at": "2026-10-24T00:08:47Z"
+    },
+    {
+      "id": 40043260245,
+      "name": "QIKVRT live status watch",
+      "head_sha": "dbed9072d41727fc4e45abd0cedee4cf3c61c790",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "pull_request",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/40043260245",
+      "updated_at": "2026-10-24T00:09:06Z"
+    },
+    {
+      "id": 40043260329,
+      "name": "QIKVRT productive TEMDD S1 carrier",
+      "head_sha": "dbed9072d41727fc4e45abd0cedee4cf3c61c790",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "pull_request",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/40043260329",
+      "updated_at": "2026-10-24T00:10:52Z"
+    },
+    {
+      "id": 40043260387,
+      "name": "QIK-VRT global claim completion",
+      "head_sha": "dbed9072d41727fc4e45abd0cedee4cf3c61c790",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "pull_request",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/40043260387",
+      "updated_at": "2026-10-24T00:11:44Z"
+    },
+    {
+      "id": 40043260361,
+      "name": "QIKVRT Collective Proposal Review",
+      "head_sha": "dbed9072d41727fc4e45abd0cedee4cf3c61c790",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "pull_request",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/40043260361",
+      "updated_at": "2026-10-24T00:11:39Z"
+    },
+    {
+      "id": 40043260274,
+      "name": "QIKVRT Batch-003 remaining subject disposition",
+      "head_sha": "dbed9072d41727fc4e45abd0cedee4cf3c61c790",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "pull_request",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/40043260274",
+      "updated_at": "2026-10-24T00:13:54Z"
+    },
+    {
+      "id": 40043255545,
+      "name": "QIK-VRT universal ontology finite-model verification",
+      "head_sha": "dbed9072d41727fc4e45abd0cedee4cf3c61c790",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "push",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/40043255545",
+      "updated_at": "2026-10-24T00:06:35Z"
+    },
+    {
+      "id": 40043255425,
+      "name": "QIK-VRT manuscript proof coverage",
+      "head_sha": "dbed9072d41727fc4e45abd0cedee4cf3c61c790",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "push",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/40043255425",
+      "updated_at": "2026-10-24T00:07:12Z"
+    },
+    {
+      "id": 40043255495,
+      "name": "QIKVRT CI",
+      "head_sha": "dbed9072d41727fc4e45abd0cedee4cf3c61c790",
+      "status": "in_progress",
+      "conclusion": null,
+      "event": "push",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/40043255495",
+      "updated_at": "2026-10-24T00:12:28Z"
+    }
+  ]
+}

@@ -154,11 +154,14 @@ physische 68000-Maschine werden dadurch nicht formal bewiesen.
 
 ## Aussagegrenzen und nächste reale Gates
 
-Ein erfolgreicher Vergleich belegt genau die beobachtete Übereinstimmung der
-beiden Implementierungen im angegebenen endlichen Profil. Er ist ein
-Softwaretest, kein Lean-Kernelbeweis und kein Beweis über beliebige Programme,
-alle möglichen Eingaben oder reale physische Folgewirkungen. C-Vorausberechnung
-ist selbst eine Ausführung des Modells und garantiert keinen Zeitgewinn.
+Der portable Vergleich belegt die beobachtete Übereinstimmung der
+Implementierungen im angegebenen endlichen Profil durch einen Softwaretest.
+Der gesondert ausgeführte Lean-Pfad beweist zusätzlich die Gleichheit der
+beobachteten Zustandsbytes mit dem abstrakten Modell für diese Fälle.
+Beide Aussagen bleiben auf dieses Profil begrenzt; sie beweisen keine
+Aussage über beliebige Programme, alle möglichen Eingaben oder reale
+physische Folgewirkungen. C-Vorausberechnung ist selbst eine Ausführung
+des Modells und garantiert keinen Zeitgewinn.
 
 Die beiden Implementierungen sowie Ledger und Prüfer laufen auf einem
 gemeinsamen Host. Die getrennte Terminal-Verbindung beseitigt die Abhängigkeit
@@ -172,6 +175,21 @@ produktiver Terminal-/Transputer-Betrieb, Main-Integration und frischer
 Nutzpfad auf `https://raumzeitterminal.de/`. Diese Gates werden durch einen
 Test-PASS weder geschlossen noch umgangen. `effect_ack_done` bleibt im
 Kontrollbericht ausdrücklich `false`.
+
+## Abgenommener begrenzter Lauf
+
+Der [Bericht zu PR #593](../evidence/deterministic-effect-prediction/2026-10-24-pr593/README.md)
+bindet den tatsächlich ausgeführten Quellstand
+`dbed9072d41727fc4e45abd0cedee4cf3c61c790` und dessen Tree
+`b6b32d8ba0c3de25c1cd8d4d69210c482ad0ca3e`. Alle 10.248 Entscheidungen
+stimmten zwischen C90-Vorausberechnung, optimiertem nativem C, Python und
+68000-Ausführung überein. Der Lean-Kernel prüfte 257 Beobachtungssätze mit
+leerem Axiom-Audit; die veränderte Beobachtung wurde verworfen.
+`make test` beendete auf genau diesem Quellstand 38 Python-Testsuiten mit
+1.720 Tests sowie die weiteren Make-Prüfungen erfolgreich. Das darin
+nicht ausgewählte Emulatorprofil ist ausdrücklich übersprungen; der
+gebundene Emulator-/Kernel-Lauf liegt separat vor. Nachfolgende Evidenz-
+oder Metadaten-Commits übernehmen diese exakte HEAD/TREE-Abnahme nicht.
 
 Anforderung, Formulierung und Arbeitsfreigabe: Ingolf Lohmann. Implementierung
 des zusätzlichen Kontrollpfads und technische Prüfung: OpenAI Codex.

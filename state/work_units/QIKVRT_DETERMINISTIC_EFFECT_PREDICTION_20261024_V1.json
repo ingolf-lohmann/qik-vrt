@@ -36,10 +36,10 @@
     ],
     "observed_local_target": "x86_64-linux-gnu",
     "m68000_compiler_or_runtime_observed": true,
-    "m68000_execution_verified": false,
+    "m68000_execution_verified": true,
     "m68000_smoke_execution_observed": true,
     "m68000_smoke_output_bytes": 10248,
-    "m68000_full_bound_proof_receipt": "PENDING",
+    "m68000_full_bound_proof_receipt": "evidence/deterministic-effect-prediction/2026-10-24-pr593/report.json",
     "speedup_claimed_without_comparable_benchmark": false
   },
   "emulated_proof_steering": {
@@ -49,7 +49,11 @@
     "formal_profile": "formalization/prediction-control/QIKVRTEffectAck/PredictionProfile.lean",
     "tool_inputs": "runtime/toolchains/M68000_PROOF_POC_LOCK.json",
     "formal_scope": "All actual emitted states equal the existing abstract model in 257 finite batches",
-    "compiler_or_emulator_correctness_formally_proved": false
+    "compiler_or_emulator_correctness_formally_proved": false,
+    "kernel_receipt": "evidence/deterministic-effect-prediction/2026-10-24-pr593/report.json#kernel_receipt",
+    "observed_batch_theorem_count": 257,
+    "observation_theorem_axioms": [],
+    "changed_observation_rejected": true
   },
   "case_count": 10248,
   "historical_random_controls": "PRESERVED_UNCHANGED; not failures to optimize to 100 percent",
@@ -70,12 +74,20 @@
   "work": [
     {
       "id": "bounded-prediction-control",
-      "state": "IMPLEMENTED_PENDING_COMPLETE_VALIDATION",
+      "state": "VERIFIED_BOUNDED_SOFTWARE_PROFILE",
       "evidence": [
-        "tests/test_effect_ack_prediction.py",
-        "tests/effect_ack_prediction_oracle.c"
+        "evidence/deterministic-effect-prediction/2026-10-24-pr593/validation.json",
+        "evidence/deterministic-effect-prediction/2026-10-24-pr593/report.json",
+        "evidence/deterministic-effect-prediction/2026-10-24-pr593/ARTIFACT_MANIFEST.json",
+        "evidence/deterministic-effect-prediction/2026-10-24-pr593/make-test-source.log"
       ],
-      "next_action": "Run native conformance, complete required checks, persist candidate and exact-source evidence."
+      "next_action": "Maintain the existing control and obtain independent-host reproduction; successor admission requires its own exact-head checks.",
+      "validated_subject": {
+        "head": "dbed9072d41727fc4e45abd0cedee4cf3c61c790",
+        "pr": 593,
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "b6b32d8ba0c3de25c1cd8d4d69210c482ad0ca3e"
+      }
     },
     {
       "id": "independent-trust-domain",
@@ -105,5 +117,30 @@
   ],
   "effect_ack_done": false,
   "physical_effect_verified": false,
-  "unknown_future_random_input_prediction_claimed": false
+  "unknown_future_random_input_prediction_claimed": false,
+  "validated_source_subject": {
+    "head": "dbed9072d41727fc4e45abd0cedee4cf3c61c790",
+    "pr": 593,
+    "repository": "ingolf-lohmann/qik-vrt",
+    "tree": "b6b32d8ba0c3de25c1cd8d4d69210c482ad0ca3e"
+  },
+  "validation_scope": {
+    "effect": "FINITE_SOFTWARE_DECISION_ONLY",
+    "source_validation_transfer_to_successor": "DENY",
+    "emulator_execution": true,
+    "lean_kernel_checked_finite_equality": true,
+    "compiler_or_emulator_correctness_proved": false,
+    "independent_host_or_external_time_witness": false,
+    "performance_speedup_proved": false
+  },
+  "delivery_observation": {
+    "evidence": "evidence/deterministic-effect-prediction/2026-10-24-pr593/delivery-snapshot.json",
+    "readback": "evidence/deterministic-effect-prediction/2026-10-24-pr593/delivery-readback.json",
+    "snapshot_id": "d9ecefb6-e16f-470f-a1aa-1ce3b2df45eb",
+    "sha256": "80753360c0a92546bd0af8d2314710003cfc953f52ccff4b0509ba1c21b45a59",
+    "exact_domain_http_status": 525,
+    "runtime_state": "UNKNOWN",
+    "operator_authorization_repeated": false,
+    "unchanged_failed_write_retry": "NOOP"
+  }
 }
