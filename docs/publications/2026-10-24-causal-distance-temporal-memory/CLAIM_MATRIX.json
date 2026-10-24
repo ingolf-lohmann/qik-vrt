@@ -1,0 +1,429 @@
+{
+  "schema": "qikvrt_causal_distance_lean_claim_matrix_v1",
+  "source_base_commit": "51f516368ae33d1d788e50b0301929d0252187e5",
+  "predecessor_article_package_sha256": "a8f808ac97932575215297a346696fb727a39d4eb620b72398578ed67d356336",
+  "formal_claims": 36,
+  "claims": [
+    {
+      "claim_id": "CDL-001",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.V1.path_append",
+      "axioms": [],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-002",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.V1.zero_path_endpoints",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-003",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.V1.exists_least_cost",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-004",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.V1.minimum_spec",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-005",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.V1.distance_some_iff",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-006",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.V1.distance_none_iff",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-007",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.V1.distance_zero_iff",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-008",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.V1.distance_le_path",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-009",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.V1.triangle",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-010",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.V1.reverse_path",
+      "axioms": [],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-011",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.V1.reverse_path_iff",
+      "axioms": [],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-012",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.V1.distance_ext",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-013",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.V1.reverse_distance",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-014",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.V1.undirected_path_symm",
+      "axioms": [],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-015",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.V1.undirected_distance_symmetric",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-016",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.V1.selected_edges_only",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-017",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.V1.path_inclusion",
+      "axioms": [],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-018",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.V1.edge_addition_cannot_increase_distance",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-019",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.V1.weak_component_distance_finite",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-020",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.V1.certificate_exact",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-021",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.TemporalBridge.V1.confirmed_requires_original_authorization",
+      "axioms": [
+        "propext"
+      ],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-022",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.TemporalBridge.V1.confirmed_requires_recomputed_done",
+      "axioms": [
+        "propext"
+      ],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-023",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.TemporalBridge.V1.confirmed_requires_responsible_owner",
+      "axioms": [
+        "propext"
+      ],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-024",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.TemporalBridge.V1.confirmed_requires_past_future_and_observation",
+      "axioms": [
+        "Quot.sound",
+        "propext"
+      ],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-025",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.TemporalBridge.V1.selected_confirmation_is_one_step",
+      "axioms": [],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-026",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.TemporalBridge.V1.distinct_selected_confirmation_distance",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-027",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.TemporalBridge.V1.retrospective_confirmation_distance",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-028",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.TemporalBridge.V1.future_representation_preserves_original_past",
+      "axioms": [],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-029",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.BoundaryChecks.V1.forward_distance_two",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-030",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.BoundaryChecks.V1.backward_distance_infinite",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-031",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.BoundaryChecks.V1.directed_distance_can_be_asymmetric",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-032",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.BoundaryChecks.V1.undirected_projection_can_shorten_reverse_distance",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-033",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.BoundaryChecks.V1.finite_distance_does_not_certify_release",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-034",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.BoundaryChecks.V1.observed_is_not_an_anticipated_boundary",
+      "axioms": [],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-035",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.BoundaryChecks.V1.inhabited_bridge_distance_one",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-036",
+      "classification": "FORMAL_PROVED",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_ref": "QIKVRT.CausalDistance.BoundaryChecks.V1.missing_responsibility_never_authorized",
+      "axioms": [],
+      "receipt": "LOCAL_KERNEL_RECEIPT.json"
+    },
+    {
+      "claim_id": "CDL-OPEN-01",
+      "classification": "OPEN",
+      "statement": "Python shortest-path implementation/serializer refinement",
+      "proof_ref": null
+    },
+    {
+      "claim_id": "CDL-OPEN-02",
+      "classification": "OPEN",
+      "statement": "Independent real-source, identity and observation binding",
+      "proof_ref": null
+    },
+    {
+      "claim_id": "CDL-OPEN-03",
+      "classification": "OPEN",
+      "statement": "Productive personal Digital Twin and human transfer evaluation",
+      "proof_ref": null
+    },
+    {
+      "claim_id": "CDL-OPEN-04",
+      "classification": "OPEN",
+      "statement": "Physical retrocausality or universal biology claim",
+      "proof_ref": null
+    },
+    {
+      "claim_id": "CDL-OPEN-05",
+      "classification": "OPEN",
+      "statement": "Native Mesh runtime admission and Zenodo publication",
+      "proof_ref": null
+    }
+  ],
+  "published": false,
+  "new_doi": null
+}
