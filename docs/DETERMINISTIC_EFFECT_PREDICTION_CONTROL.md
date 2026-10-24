@@ -111,7 +111,9 @@ Commitment gebunden. Alle Zustände werden mit der vorher fixierten Erwartung
 verglichen. Der PoC verwendet die Linux-Nutzerraum-ABI; er lädt kein Modul in
 einen laufenden Linux-Kernel und emuliert keinen vollständigen Atari.
 
-`QIKVRTEffectAck/PredictionProfile.lean` verwendet das unveränderte formale
+`formalization/prediction-control/QIKVRTEffectAck/PredictionProfile.lean`
+liegt außerhalb des eingefrorenen Alpha-2-Releasebaums und verwendet über
+denselben Lake-Pfad das unveränderte formale
 Modell `QIKVRTEffectAck.Model`. 256 Batches mit je 40 Fällen und ein Batch mit
 acht Fehlerfällen begrenzen die Rekursion. Aus den tatsächlich empfangenen
 Emulatorbytes entstehen die Dateien `Observation-*.lean`. Unter `lake env lean` prüft der

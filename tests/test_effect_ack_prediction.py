@@ -41,7 +41,7 @@ SOURCES = ("src/effect_ack_core.c", "include/qikvrt/effect_ack.h",
            "src/qikvrt_effect_ack_http_terminal.py",
            "tests/effect_ack_prediction_oracle.c", "tests/test_effect_ack_prediction.py",
            "tests/effect_ack_prediction_m68000.S",
-           "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/PredictionProfile.lean",
+           "formalization/prediction-control/QIKVRTEffectAck/PredictionProfile.lean",
            "runtime/toolchains/M68000_PROOF_POC_LOCK.json")
 STATE_NAMES = ("EFFECT_NACK", "EFFECT_ACK_CONTINUE", "EFFECT_ACK_DONE", "EFFECT_ACK_ISOLATE", "EFFECT_ACK_BLOCK")
 CONDITIONS = {
@@ -209,7 +209,9 @@ def check_lean_observation(output, observed, tools):
             raise ValueError("LEAN_KERNEL_CHECK_FAILED: " + raw.decode(errors="replace")[-3000:])
         return raw
     check(["-o", str(build / "Model.olean"), "QIKVRTEffectAck/Model.lean"], "lean-model.log")
-    check(["-o", str(build / "PredictionProfile.olean"), "QIKVRTEffectAck/PredictionProfile.lean"], "lean-profile.log")
+    extension = ROOT / "formalization/prediction-control"
+    check(["--root=" + str(extension), "-o", str(build / "PredictionProfile.olean"),
+           str(extension / "QIKVRTEffectAck/PredictionProfile.lean")], "lean-profile.log")
     def source(values, namespace, first_batch=0):
         batches = [values[start:start + 40] for start in range(0, len(values), 40)]
         return ("import QIKVRTEffectAck.PredictionProfile\n"

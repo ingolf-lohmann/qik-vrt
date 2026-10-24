@@ -27,7 +27,13 @@
   "native_target_steering": {
     "source": "Current conversation: Owner suggests Motorola 68000 or another machine-language target instead of Python for performance.",
     "implemented_control": "C90 -O0 prediction, then C90 -O2 native execution and Python reference comparison on identical cases",
-    "required_build_binding": ["compiler_version", "target_triple", "ABI", "optimization_flags", "binary_sha256"],
+    "required_build_binding": [
+      "compiler_version",
+      "target_triple",
+      "ABI",
+      "optimization_flags",
+      "binary_sha256"
+    ],
     "observed_local_target": "x86_64-linux-gnu",
     "m68000_compiler_or_runtime_observed": true,
     "m68000_execution_verified": false,
@@ -40,20 +46,62 @@
     "source": "Owner requests emulator-based Motorola 68000/Atari feasibility and continuous Linux/Lean-Lake proof integration in the current conversation.",
     "interpretation": "Linux host/user ABI plus Lean kernel through Lake; not insertion of a Linux kernel module",
     "runtime_gate": "make emulated-prediction-contract",
-    "formal_profile": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/PredictionProfile.lean",
+    "formal_profile": "formalization/prediction-control/QIKVRTEffectAck/PredictionProfile.lean",
     "tool_inputs": "runtime/toolchains/M68000_PROOF_POC_LOCK.json",
     "formal_scope": "All actual emitted states equal the existing abstract model in 257 finite batches",
     "compiler_or_emulator_correctness_formally_proved": false
   },
   "case_count": 10248,
   "historical_random_controls": "PRESERVED_UNCHANGED; not failures to optimize to 100 percent",
+  "corrections": [
+    {
+      "predecessor_candidate": "c73b08f7d8e64488669daa901aa0da894eebb161",
+      "finding": "Full release regression detected that the new Lean module entered the historical Alpha-2 package path set.",
+      "repair": "Move only the additive prediction module outside the frozen Alpha-2 subtree; keep the original model, package builder and published archive bytes unchanged and reuse the same Lake environment.",
+      "verification": "test_package_is_reproducible_and_has_exact_provenance passed after relocation; complete successor verification remains separately required."
+    },
+    {
+      "predecessor_candidate": "c73b08f7d8e64488669daa901aa0da894eebb161",
+      "finding": "Native job 120716514635 in run 40042479788 rejected the integrity manifest. Local inventory had included an untracked intermediate absent from a clean checkout.",
+      "repair": "Quarantine the own intermediate, preserve its digest and regenerate the existing manifest trio from the intentional tracked candidate. No integrity predicate or exclusion rule is weakened.",
+      "intermediate_sha256": "b54298fdf99e5a632211959304a6f017c7fbd96dca33379a3b10839ca863a1be"
+    }
+  ],
   "work": [
-    {"id": "bounded-prediction-control", "state": "IMPLEMENTED_PENDING_COMPLETE_VALIDATION", "evidence": ["tests/test_effect_ack_prediction.py", "tests/effect_ack_prediction_oracle.c"], "next_action": "Run native conformance, complete required checks, persist candidate and exact-source evidence."},
-    {"id": "independent-trust-domain", "state": "OPEN", "next_action": "Obtain admitted independent-host reproduction and independently retained pre-execution commitment/time evidence; shared-host results do not close this gate."},
-    {"id": "main-integration", "state": "OPEN", "next_action": "Use reviewed current-head candidate and existing governed promotion after applicable checks."},
-    {"id": "productive-native-execution", "state": "OPEN", "next_action": "Bind an actually admitted original host and verify native Terminal/Transputer effects independently."},
-    {"id": "exact-host-delivery", "state": "OPEN", "next_action": "Repair the existing DNS/TLS/origin path through an authenticated, authorized IONOS REST route, then verify the exact-domain application. Unchanged HTTP 525 alone does not admit another unchanged write retry."},
-    {"id": "original-mirror-outbox-carrier", "state": "HOLD", "next_action": "Recover the original node-tools/qikvrt_mirror_emit.py source and named admitted carrier; no substitute outbox implementation or peer adoption claim."}
+    {
+      "id": "bounded-prediction-control",
+      "state": "IMPLEMENTED_PENDING_COMPLETE_VALIDATION",
+      "evidence": [
+        "tests/test_effect_ack_prediction.py",
+        "tests/effect_ack_prediction_oracle.c"
+      ],
+      "next_action": "Run native conformance, complete required checks, persist candidate and exact-source evidence."
+    },
+    {
+      "id": "independent-trust-domain",
+      "state": "OPEN",
+      "next_action": "Obtain admitted independent-host reproduction and independently retained pre-execution commitment/time evidence; shared-host results do not close this gate."
+    },
+    {
+      "id": "main-integration",
+      "state": "OPEN",
+      "next_action": "Use reviewed current-head candidate and existing governed promotion after applicable checks."
+    },
+    {
+      "id": "productive-native-execution",
+      "state": "OPEN",
+      "next_action": "Bind an actually admitted original host and verify native Terminal/Transputer effects independently."
+    },
+    {
+      "id": "exact-host-delivery",
+      "state": "OPEN",
+      "next_action": "Repair the existing DNS/TLS/origin path through an authenticated, authorized IONOS REST route, then verify the exact-domain application. Unchanged HTTP 525 alone does not admit another unchanged write retry."
+    },
+    {
+      "id": "original-mirror-outbox-carrier",
+      "state": "HOLD",
+      "next_action": "Recover the original node-tools/qikvrt_mirror_emit.py source and named admitted carrier; no substitute outbox implementation or peer adoption claim."
+    }
   ],
   "effect_ack_done": false,
   "physical_effect_verified": false,
