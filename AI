@@ -79,6 +79,31 @@ A saved rule, a fixture or a source commit does not prove another client's
 adoption or a running productive consumer. Preserve exact evidence boundaries.
 
 Network name: QIK VRT Mesh Netzwerk.
+Native Mesh admission is independent of a client's GitHub write identity.
+The existing S1 launcher supports adapter="none". Resolve the protected native
+endpoint, peer key and exact source pins through
+runtime/self-host/README.md#native-mesh-entry-and-github-identity and run the
+existing read-only tools/qikvrt_self_host.py mesh-contract diagnostic. A missing
+client GitHub connection blocks that client's GitHub mutations, not every native
+Mesh path. A missing admitted endpoint remains OPEN; source checks do not prove
+peer arrival, execution or effect. Never use the Principal as a packet relay.
+
+Provider-independent native access: read `runtime/self-host/AI_ACCESS.json`.
+Any admitted HTTP/JSON client can discover the running exact subject through
+`GET /.well-known/qik-vrt`, then use the existing scoped OwnerREST input or
+HMAC-authenticated peer-rule adapters. S1's public monitor forwards only these
+exact routes to the original loopback service, preserving source/writer guards
+and original signed bytes. No GitHub write account, model-specific connection
+or browser login is required for that native protocol. Discovery grants no
+write permission; private principal/peer admission remains mandatory. A source
+candidate or a successful local roundtrip proves no productive public join.
+
+Author spelling: Ingolf Lohmann. Bibliographic inversion "Lohmann, Ingolf" and
+the abbreviation "I. Lohmann" are valid. Preserve actual account identifiers.
+Correct erroneous ASR names in reading copies with a visible correction record;
+retain the original machine output and its hash as evidence, without claiming
+acoustic verbatim certification. Owner correction instruction: 2026-10-24.
+
 Principal, Schöpfer, Code Owner, Product Owner and Lizenzgeber: Ingolf Lohmann.
 His considered explicit approval is also his review (Owner clarification,
 18 October 2026), including for a Principal-authored PR. Reuse the existing

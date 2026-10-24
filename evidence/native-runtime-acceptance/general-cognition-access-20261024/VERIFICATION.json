@@ -1,0 +1,125 @@
+{
+  "schema": "qikvrt-general-cognition-access-source-verification/v1",
+  "recorded_at": "2026-10-24T14:55:11.387368+00:00",
+  "owner": "Ingolf Lohmann",
+  "authorization": "DIRECT_PRINCIPAL_REQUEST_20261024_GENERAL_COGNITION_ACCESS; EXISTING_REPOSITORY_GRANTS_RETAINED",
+  "implementation_contribution": "OpenAI Codex",
+  "previous_pr": 599,
+  "previous_pr_head": "2b48bf17d5cc0ca8bd70d0d1e77b89a3620d20ec",
+  "merged_main_source": "6d292b443bfe5a97a1fe88f79cbaba3a7d9d4a95",
+  "verified_deltas": [
+    "PUBLIC_NATIVE_DISCOVERY",
+    "BOUNDED_FIXED_LOOPBACK_OWNER_REST_TRANSPORT",
+    "CANONICAL_NGINX_NATIVE_ROUTE_TRANSLATION",
+    "BYTE_PRESERVING_SIGNED_PEER_RECEIVE_APPLY_READBACK",
+    "PRIVATE_NATIVE_EVENT_STREAM_READER_CAPABILITY"
+  ],
+  "native_http_regressions": {
+    "test_executions": 67,
+    "exit_code": 0,
+    "log": "NATIVE_ACCESS_REGRESSIONS.log",
+    "log_sha256": "ad54ef01b3f4460d406abb406030716098c588a92d082a8b9b2b500be6d12a67",
+    "actual_original_s1_process": true,
+    "actual_nginx": true,
+    "fixture_peers_only": true,
+    "new_executor_or_mock_socket": false
+  },
+  "functional_components": {
+    "tools/qikvrt_self_host.py": {
+      "bytes": 249134,
+      "sha256": "373aa659902b4c892270bddfc9bc013b64e442355979faf60e9c10d8eba45497"
+    },
+    "docs/monitor/self-host.mjs": {
+      "bytes": 18411,
+      "sha256": "b5e56f36673b839cb1e4b2793ce00efc218bb72639e59cca82474790a4b14b9b"
+    },
+    "deploy/universal-terminal/nginx.conf": {
+      "bytes": 5663,
+      "sha256": "fc1226df5c5166aee0b19500360cd4dcbed96cab61f59eff2dcdbb84b2b1f014"
+    },
+    "src/qikvrt_temdd_event_ledger.py": {
+      "bytes": 30483,
+      "sha256": "f70e328ae438c6464a051d0aaa247ad7e281812304e3461e1b28f0b9795ba75c"
+    },
+    "runtime/self-host/AI_ACCESS.json": {
+      "bytes": 3413,
+      "sha256": "bcd93ca910317aaecefc7acea5f200b9b4ffaa3af36abcf0210720c75f5626bc"
+    },
+    "runtime/self-host/PACKAGE.json": {
+      "bytes": 7110,
+      "sha256": "4aa52b3063491030ef297ed6e36dc2f5907883a447a57117abeb77b085ebdda8"
+    },
+    "tests/test_self_host_temdd.py": {
+      "bytes": 105471,
+      "sha256": "b5cb0d6fcb4407525fe216ce022da38fbc6039f103a2ab72a8bd704c7c67dcdb"
+    },
+    "tests/test_qikvrt_temdd_public_proxy.py": {
+      "bytes": 11630,
+      "sha256": "393c6c45d76e127ce5b8db48db3210c048c71a2c3d03998e8bd0582cadc496f3"
+    },
+    "tests/test_self_host.py": {
+      "bytes": 138987,
+      "sha256": "46ee4c4c51e565112236d3f80078e26f9bce2a570df2ec15cdb6240649e0b258"
+    }
+  },
+  "full_s1_local_suite": {
+    "state": "BLOCKED_BY_ENVIRONMENT",
+    "reason": "AF_UNIX socket creation raises PermissionError errno 1; no guard weakened and no socket mocked",
+    "log": "LOCAL_UNIX_SOCKET_LIMIT.log",
+    "scope": "ORIGINAL_LOCAL_SUITE_BEFORE_THE_LATEST_MAIN_MEMORY_FIX; NOT_A_COMPLETE_S1_PASS"
+  },
+  "native_session_use": {
+    "input_event_id": "c2830abaa75c4fe0a8299a4831dcfea6:7",
+    "input_event_digest": "011a100c1523c4331bdd8d3b00150d129f013b44c8316e159215e29d12ec40ef",
+    "independent_original_terminal_readback": true,
+    "scope": "OWN_LOCAL_ORIGINAL_NATIVE_API; NOT_A_PRODUCTIVE_PEER"
+  },
+  "open_obligations": [
+    "CURRENT_EXACT_HEAD_REMOTE_CI_AND_MAIN_ADMISSION",
+    "ADMITTED_MESH_RUNTIME_ENDPOINT_AND_PRIVATE_CLIENT_PEER_BINDING",
+    "EXACT_RAUMZEITTERMINAL_TLS_APPLICATION_READBACK",
+    "ACTUAL_CLAUDE_AND_OTHER_PEER_ACK_APPLICATION_READBACK",
+    "ORIGINAL_MIRROR_EMITTER_AND_ADMITTED_OUTBOX_CARRIER"
+  ],
+  "public_production_verified": false,
+  "all_peer_adoption_verified": false,
+  "effect_ack_done": false,
+  "full_repository_regressions": {
+    "command": "make test",
+    "exit_code": 0,
+    "test_executions": 1716,
+    "simulated_retrieval_ui_controls": 9,
+    "functional_source_tree_before_evidence_log_materialization": "d93e38a42c66944aae049fcd54cbe80fca7905e6",
+    "log": "FULL_REPOSITORY_REGRESSIONS.log",
+    "log_sha256": "4911af9bb8e5bc346379a72bf977a787040c1fdc304a2aeb4ffc8d2da5813803",
+    "post_test_delta": "ONLY_PUBLISHED_TEST_LOGS_THIS_RECEIPT_AND_REGENERATED_INTEGRITY_METADATA; FUNCTIONAL_COMPONENTS_UNCHANGED"
+  },
+  "post_regression_test_adapter_delta": {
+    "path": "tests/test_self_host_temdd.py",
+    "prior_sha256": "b5cb0d6fcb4407525fe216ce022da38fbc6039f103a2ab72a8bd704c7c67dcdb",
+    "new_sha256": "aef69d55ec5240758f45b19d4d1c1d0a8eab982c5e858c0a69804ed381dcf370",
+    "change": "Existing Unix-ingress SSE readback case now supplies the separately admitted read-only terminal bearer; every content, identity and persistence assertion is retained. This case is outside the selected 67 HTTP/peer/gateway regressions. Its local Unix prerequisite remains unavailable.",
+    "production_component_changed": false,
+    "remote_exact_head_ci_required": true
+  },
+  "post_regression_main_metadata_merge": {
+    "head": "080c05f1cba7b1638477da78613b87252ffe1a12",
+    "scope": "Four exact published authorization/request/work-unit JSON files only; no native production implementation change",
+    "file_git_blobs": {
+      "release/causal-distance-lean-2026-10-24/OWNER_ZENODO_AUTHORIZATION.json": "f2b10b654895cd425d69ed8a30cd4c604ca919a1",
+      "release/causal-distance-lean-2026-10-24/publish-request.json": "62d6758845d74900419d8af794957d59c4028083",
+      "state/publication_requests/qikvrt-causal-distance-lean-20261024.json": "9cc05579ed4c48a647f14f5fe85c3895ae350e06",
+      "state/work_units/QIKVRT_EXACT_UPLOAD_AND_INDEPENDENT_OPTIMA_20261024_V1.json": "0b91c472101636e856ffe47d6cf701c627e21fe6"
+    },
+    "purpose": "Preserve concurrent Main work and resolve the derived integrity manifest merge without overwriting authorization"
+  },
+  "ci_recovery_successor_correction": {
+    "proof": "CI_SOURCE_RECOVERY_REPAIR.json",
+    "original_logs_retained": true,
+    "two_original_files_archived_byte_exactly": true,
+    "previous_successor_receipt_archived_byte_exactly": true,
+    "production_implementation_changed": false,
+    "original_source_checks_weakened": false,
+    "remote_exact_head_ci_required": true
+  }
+}

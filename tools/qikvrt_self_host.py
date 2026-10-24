@@ -655,17 +655,42 @@ def mesh_contract(root, definition=None):
             or deployment.get("app_store_required") is not False
             or deployment.get("git_required_at_runtime") is not False):
         raise ValueError("NODE_CLIENT_MONOLITHIC_PASSIVE_DEPLOYMENT_CONTRACT_REQUIRED")
+    access_path = "runtime/self-host/AI_ACCESS.json"
+    required.add(access_path)
     component_hashes = {}
     for name in sorted(required):
         path = root / name
         if path.is_symlink() or any(p.is_symlink() for p in path.parents) or not path.is_file():
             raise ValueError("MESH_REGULAR_SOURCE_COMPONENT_REQUIRED")
         component_hashes[name] = digest(path.read_bytes())
+    access = json.loads((root / access_path).read_bytes())
+    if (access.get("schema") != "qikvrt-native-access-source/v1"
+            or access.get("discovery", {}).get("path") != "/.well-known/qik-vrt"
+            or any(access.get("requirements", {}).get(k) is not False for k in
+                   ("github_write_identity", "browser_login", "anonymous_writes_allowed"))
+            or access.get("requirements", {}).get("private_scoped_native_capability") is not True
+            or access.get("runtime", {}).get("ledger") != "src/qikvrt_temdd_event_ledger.py"
+            or access_path not in definition.get("files", [])):
+        raise ValueError("PROVIDER_INDEPENDENT_SCOPED_NATIVE_ACCESS_REQUIRED")
     if contract.get("authority_succession_policy") != MESH_ROLE_POLICIES[0] + "#/authority_succession":
         raise ValueError("MESH_IRREVERSIBLE_AUTHORITY_SUCCESSION_REQUIRED")
     roles = deployment_roles(root, {})
     return {"schema": "qikvrt-node-bus-contract-check/v1", "state": "SOURCE_OBLIGATIONS_BOUND",
             "authority_repository": roles["authority_repository"], "automatic_authority_failback_allowed": False,
+            "entry_contract": {
+                "github_push_required_for_native_mesh": False,
+                "github_write_identity_scope": "GITHUB_REPOSITORY_MUTATIONS_ONLY",
+                "native_adapter_without_github": "none",
+                "proposal_ingress": "/api/mesh-work/batch",
+                "proposal_readback": "/api/mesh-work/readback/<batch_id>/<challenge>",
+                "proposal_admission": "PRIVATE_PEER_KEY_AND_EXACT_SOURCE_PINS",
+                "owner_input_adapter": "OwnerREST",
+                "runtime_discovery": access["discovery"]["path"],
+                "source_access_contract": access_path,
+                "public_native_transport": "EXISTING_S1_FIXED_LOOPBACK_BRIDGE",
+                "live_endpoint": "UNKNOWN", "peer_admission": "UNKNOWN",
+                "native_execution": "NOT_ESTABLISHED",
+            },
             "contract_sha256": digest(raw), "source_component_sha256": component_hashes,
             "required_fault_cases": list(MESH_FAULT_CASES), "native_runtime_executed": False,
             "all_node_runtime_verified": False, "write_failover_verified": False,
@@ -2505,6 +2530,42 @@ def native_carrier(package, pin, config, config_path, binding, token):
         runtime_instance.peer_rules = rules
 
         class OwnerHTTP(original_handler):
+            def access_discovery(self):
+                host = self.headers.get("Host", "")
+                if (self.path != "/.well-known/qik-vrt"
+                        or len(self.headers.get_all("Host", [])) != 1
+                        or len(self.headers.get_all("Origin", [])) > 1
+                        or host not in {f"127.0.0.1:{self.server.server_port}", f"localhost:{self.server.server_port}"}
+                        or self.headers.get("Origin") not in (None, "http://" + host)):
+                    return self._hold("NATIVE_DISCOVERY_EXACT_LOOPBACK_ROUTE_REQUIRED", 403)
+                try:
+                    exact = runtime_instance.ensure_subject()
+                    live_grants = owner_rest_grants(config, token)
+                    self._json(200, {
+                        "schema": "qikvrt-native-access/v1", "subject": exact,
+                        "client_scope": "ANY_HTTP_JSON_CLIENT_WITH_A_SEPARATELY_ADMITTED_CAPABILITY",
+                        "github_write_identity_required": False, "browser_login_required": False,
+                        "anonymous_writes_allowed": False,
+                        "anonymous_journal_reads_allowed": False,
+                        "adapters": {
+                            "owner_input": {
+                                "configured": any({"prepare", "commit", "readback"}.issubset(g["permissions"]) for g in live_grants),
+                                "authentication": "PRIVATE_SCOPED_BEARER_AND_QIKVRT_OWNER",
+                                "prepare": "/api/owner/prepare", "commit": "/api/owner/commit",
+                                "readback": "/api/owner/receipts/{request_id}",
+                                "request_schema": "qikvrt_owner_rest_input_v1",
+                                "max_input_characters": 4096, "max_body_bytes": terminal.MAX_NATIVE_EVENT // 2,
+                                "effect": "ORIGINAL_LEDGER_INPUT_PERSISTENCE_ONLY"},
+                            "peer_rule": {
+                                "configured": bool(config.get("mesh_work_peers") and config.get("mesh_rule_grants")),
+                                "authentication": "EXISTING_ADMITTED_PEER_HMAC_AND_EXACT_REQUEST_RULE_SOURCE_BINDING",
+                                "receive": "/api/mesh-work/rule/receive", "apply": "/api/mesh-work/rule/apply",
+                                "readback": "/api/mesh-work/rule/readback/{request_id}/{challenge}"}},
+                        "public_routing_verified": False, "peer_join_verified": False,
+                        "ordinary_release": False, "effect_ack_done": False})
+                except (ValueError, OSError, sqlite3.Error) as exc:
+                    self._hold(str(exc) if isinstance(exc, ValueError) else "NATIVE_DISCOVERY_BINDING_UNAVAILABLE", 503)
+
             def peer_rule_http(self):
                 """Existing peer HMAC, listener, source fences and native ledger."""
                 self.close_connection = True
@@ -2589,6 +2650,11 @@ def native_carrier(package, pin, config, config_path, binding, token):
                 return grant
 
             def do_GET(self):
+                if self.path == "/.well-known/qik-vrt": return self.access_discovery()
+                # Original native events may contain private OwnerREST/Unix input.
+                # The read-only terminal capability, never public discovery or an
+                # unrelated OwnerREST principal, authorizes the complete stream.
+                if urlsplit(self.path).path == "/api/temdd/events" and not self._authenticated(): return
                 if self.path.startswith("/api/mesh-work/rule/"): return self.peer_rule_http()
                 route = urlsplit(self.path)
                 prefix = "/api/owner/receipts/"

@@ -277,6 +277,30 @@
       ],
       "version": "4.19.0"
     },
+    "nginx": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "deploy/universal-terminal/Dockerfile",
+        "deploy/universal-terminal/nginx.conf",
+        "tests/test_qikvrt_temdd_public_proxy.py",
+        ".github/workflows/qikvrt_effect_ack_http_terminal.yml"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "existing Universal Terminal image or distribution package on the CI runner"
+      ],
+      "profiles": [
+        "self-host-gateway-test"
+      ],
+      "provider": "Existing host distribution package; no browser/runtime downgrade",
+      "trusted_save": false,
+      "verification": [
+        "actual nginx syntax and HTTP routing",
+        "original S1 OwnerREST prepare/commit and independent native readback through gateway",
+        "unchanged authentication/source checks and no automatic mutation retry"
+      ],
+      "version": "distribution-reported-version"
+    },
     "node": {
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",

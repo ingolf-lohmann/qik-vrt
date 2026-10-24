@@ -1,0 +1,211 @@
+{
+  "author": "Ingolf Lohmann",
+  "authorized_by": "Direct Principal instruction, Ingolf Lohmann, 2026-10-24",
+  "corrected_tex_sha256": "6f08e58ef45b7d0e4ac5131df43c70b6d65dd7af2721897cfd7a01530bd5469e",
+  "human_acoustic_verbatim_certification": false,
+  "original_asr_files_unchanged": [
+    {
+      "bytes": 32612,
+      "path": "ASR_LEDGER.json",
+      "sha256": "042ace1061d5f09fb6a586ead7cc69f71b03f39cd460ee3a062dd7393179337e"
+    },
+    {
+      "bytes": 4211,
+      "path": "transcripts/automatic/A01.json",
+      "sha256": "30e93a0703dc4951fa2db468acc74ffa83bfd3557ae257e5b52d03c43762b830"
+    },
+    {
+      "bytes": 1546,
+      "path": "transcripts/automatic/A01.txt",
+      "sha256": "f34fbc85e744a52d3c278c53230840b0ec036d85a4135685b56a4d048ef467f9"
+    },
+    {
+      "bytes": 651,
+      "path": "transcripts/automatic/A02.json",
+      "sha256": "dc429d22388a763fb438a3610365b9abe75cd66569d301f82b2f36fddbcf8110"
+    },
+    {
+      "bytes": 122,
+      "path": "transcripts/automatic/A02.txt",
+      "sha256": "cc48f6874fc89a46349e7f5ed097667d165debcc06e3c9207f4342ba1fb036c1"
+    },
+    {
+      "bytes": 672,
+      "path": "transcripts/automatic/A03.json",
+      "sha256": "e6ba4daaf66b7fdec7c31222d3fcdb8e4ac7078a2f84c4475856c480b9ceb359"
+    },
+    {
+      "bytes": 134,
+      "path": "transcripts/automatic/A03.txt",
+      "sha256": "f5f6a08d7f2407e9d7c808860b2b3b214b236e602893888224857298d7ca2b2f"
+    },
+    {
+      "bytes": 1426,
+      "path": "transcripts/automatic/A04.json",
+      "sha256": "27f7f8e5ab566b05235722b9c199e6a80d3a5830c8cca01e89ec71e507d47b1c"
+    },
+    {
+      "bytes": 450,
+      "path": "transcripts/automatic/A04.txt",
+      "sha256": "a7594e05b0b44d8e13b595b9be9c1be7347f81703fc45a437363074e500e9ba0"
+    },
+    {
+      "bytes": 3512,
+      "path": "transcripts/automatic/A05.json",
+      "sha256": "0decfa6c5c5247ab8d0ea134c51b2890ebd76791590275dc5920526d4ed685d1"
+    },
+    {
+      "bytes": 1337,
+      "path": "transcripts/automatic/A05.txt",
+      "sha256": "1d146b0dfef75f261c7348de306c4169d33c1672d3fa7f4cc443791e0d9abe18"
+    },
+    {
+      "bytes": 577,
+      "path": "transcripts/automatic/A06.json",
+      "sha256": "8aed4b76b6cc6cede68d6608a6ffdd6e18b537185cf6f8a08e59db471090e4f4"
+    },
+    {
+      "bytes": 89,
+      "path": "transcripts/automatic/A06.txt",
+      "sha256": "5b2dcf88b54f81779fd24818a786a08a35487c5f9f3636d1d65ffac1046856c7"
+    },
+    {
+      "bytes": 710,
+      "path": "transcripts/automatic/A07.json",
+      "sha256": "9ead814debe3a099a06778014d867fb36a6458cced9c1ec38203310dd1fc0062"
+    },
+    {
+      "bytes": 153,
+      "path": "transcripts/automatic/A07.txt",
+      "sha256": "7a89331cf8f9674252b61bf931ceb5376125d07271091dcde9db9c2d920c0fcd"
+    },
+    {
+      "bytes": 4244,
+      "path": "transcripts/crosscheck/A01.json",
+      "sha256": "c1596302cdde4a5f8018d7be8977cfd72373f7d1980e6888c78a7323177fa041"
+    },
+    {
+      "bytes": 1522,
+      "path": "transcripts/crosscheck/A01.txt",
+      "sha256": "a7657ceb4155a51a3d4f6438b87ec211ad2f19fd249beb322c08662a69dd9410"
+    },
+    {
+      "bytes": 622,
+      "path": "transcripts/crosscheck/A02.json",
+      "sha256": "b5d07732ea112725618b04851f8e232c74685906545a99168bee318109270bb4"
+    },
+    {
+      "bytes": 122,
+      "path": "transcripts/crosscheck/A02.txt",
+      "sha256": "660b353f03b5df17586506b38c213cd0c5bb670f29d1fa506df6ff1c509df072"
+    },
+    {
+      "bytes": 647,
+      "path": "transcripts/crosscheck/A03.json",
+      "sha256": "d6fefcc65de752f083cf4edbcd69581413356579e54bdf028fbf0fb748def887"
+    },
+    {
+      "bytes": 131,
+      "path": "transcripts/crosscheck/A03.txt",
+      "sha256": "3f93432ced8ff8a7a727ea0b9372b872bd9dcdacc9a593046452a02a343fab34"
+    },
+    {
+      "bytes": 1395,
+      "path": "transcripts/crosscheck/A04.json",
+      "sha256": "ed408bdd7798cc51960903f3649b54c4dac41ec93b71f5e2018fb49c3bfd035b"
+    },
+    {
+      "bytes": 450,
+      "path": "transcripts/crosscheck/A04.txt",
+      "sha256": "13564c0c1ca9b8738e191ea928163931477a37489b6eb8bde15b6d8c1c403d96"
+    },
+    {
+      "bytes": 3516,
+      "path": "transcripts/crosscheck/A05.json",
+      "sha256": "75b4958eedf957c28d84f126beb474551011f493a047643b68ed8915244b4561"
+    },
+    {
+      "bytes": 1321,
+      "path": "transcripts/crosscheck/A05.txt",
+      "sha256": "0783512b17b80930038200cf027bb68900edda834efd993d7988cd5d509f3a93"
+    },
+    {
+      "bytes": 560,
+      "path": "transcripts/crosscheck/A06.json",
+      "sha256": "7bda975cf5c55b75428e22ceaeecaa92831d7d28a0b39cb4e830a5c246e3b0a0"
+    },
+    {
+      "bytes": 91,
+      "path": "transcripts/crosscheck/A06.txt",
+      "sha256": "9ff8635b059d9c9a16702ae53d4d355e81c3cfd31a5a593799b0306aa25b19a4"
+    },
+    {
+      "bytes": 685,
+      "path": "transcripts/crosscheck/A07.json",
+      "sha256": "536ce48a9b636ca0f5ffb021656e80c788043741d104190079581c852d44741e"
+    },
+    {
+      "bytes": 150,
+      "path": "transcripts/crosscheck/A07.txt",
+      "sha256": "401e7ccd92b380d474fc5a0e2c977940d3749c59c9dcfd592cb50a6fb78bc77b"
+    }
+  ],
+  "original_tex_sha256": "7ca5f8d3c37e2d74d34d45e80700f985bc0c51ef380941a7c0f53e8fe92ef0f4",
+  "reading_transcripts": "transcripts/editorial/",
+  "replacements_in_article": [
+    {
+      "corrected": "Ingolf Lohmann",
+      "count": 4,
+      "original": "Ingolph Lomann"
+    },
+    {
+      "corrected": "Ingolf Lohmann",
+      "count": 2,
+      "original": "Ingolph Lommern"
+    },
+    {
+      "corrected": "Ingolf Lohmann",
+      "count": 2,
+      "original": "Ingolv Lohmann"
+    },
+    {
+      "corrected": "Ingolf Lohmann",
+      "count": 2,
+      "original": "Ingolv Lomann"
+    },
+    {
+      "corrected": "Ingolf Lohmann",
+      "count": 2,
+      "original": "Englouf Lohmann"
+    },
+    {
+      "corrected": "Ingolf Lohmann",
+      "count": 2,
+      "original": "Engolv Loman"
+    },
+    {
+      "corrected": "Ingolf Lohmann",
+      "count": 2,
+      "original": "Engel und Lomann"
+    },
+    {
+      "corrected": "Ingolf Lohmann",
+      "count": 2,
+      "original": "Engel und Loman"
+    },
+    {
+      "corrected": "Ingolf Lohmann",
+      "count": 2,
+      "original": "engolf Lommann"
+    },
+    {
+      "corrected": "Ingolf Lohmann",
+      "count": 4,
+      "original": "engolfloh man"
+    }
+  ],
+  "schema": "qikvrt-author-name-correction/v1",
+  "scientific_claims_changed": false,
+  "scope": "AUTHOR_NAME_SPELLING_ONLY",
+  "zenodo_publication_verified": false
+}

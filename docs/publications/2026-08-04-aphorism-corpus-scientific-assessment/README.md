@@ -36,3 +36,7 @@ Die Originalaudios werden nicht als gewöhnliche Repository-Dateien veröffentli
 ## Repository-Materialisierung
 
 Das Bündel wird deterministisch durch `tools/qikvrt_aphorism_corpus_v2.py` erzeugt. Das Poster selbst wird nicht als neues Binärartefakt dupliziert; seine exakte lokale SHA-256-Bindung und die wissenschaftliche Begleitcaption bleiben in `POSTER_ALIGNMENT_DE.md` und `SOURCE_AUDIO_INDEX.json` erhalten. Die repository-native PDF-Fassung verwendet an dieser Stelle ein textuelles Schema.
+
+## Namenskorrektur vom 24. Oktober 2026
+
+Der Autor heißt **Ingolf Lohmann**. Artikel und redaktionelle Lesetranskripte verwenden diese Schreibweise. `AUTHOR_NAME_CORRECTION.json` dokumentiert die Namenskorrekturen und die unveränderten ASR-Originale; `transcripts/editorial/` enthält die korrigierten Lesefassungen. Die Korrektur bestätigt weder den übrigen erkannten Wortlaut noch eine Zenodo-Veröffentlichung.

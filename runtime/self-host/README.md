@@ -189,6 +189,30 @@ This operational candidate is not a new archived scientific publication.
 
 ## Local repository copy, cache and stable-idle work batch
 
+### Native Mesh entry and GitHub identity
+
+GitHub credentials authorize GitHub operations only. They are not the identity
+or admission requirement of the native Trusted Mesh. The existing launcher
+accepts `adapter: "none"`; `mesh_work_peers`, `mesh_rule_grants` and
+`owner_rest_grants` carry distinct protected native capabilities. No peer is
+admitted merely by reading `/AI`, possessing a GitHub account or having push
+rights. A failed client `add_repo` request diagnoses that client's repository
+adapter, not the independent native Mesh path.
+
+Run `python3 -B tools/qikvrt_self_host.py mesh-contract` for the source-bound
+entry contract. It reports live endpoint and peer admission as UNKNOWN; this
+read-only gate does not inspect private production configuration or establish
+runtime readiness. Resolve the already authorized original host endpoint,
+node identity, exact source pins and private key binding through the existing
+protected host configuration. Keep a missing endpoint or private peer binding
+OPEN; do not substitute a browser login, new managed executor or Principal relay.
+
+Once that route is admitted, use the existing stage/idle/send/check operations
+below. Their receipt proves authenticated proposal arrival only. Execute an
+accepted task through the original Transputer and independently read its native
+events through the Terminal before claiming an execution or effect. A source
+test, a GitHub commit and a missing sender credential cannot supply those proofs.
+
 Every node has the same local cache obligations in
 `MESH_ACTIVATION.json#/required_node_runtime/local_repository_cache`.
 The existing launcher now provides a content-addressed private copy of explicitly
@@ -401,6 +425,46 @@ The existing signing, governance, private host and exact-domain gates remain.
 
 ## Authenticated Owner REST input
 
+### Provider-independent machine access
+
+The public S1 monitor exposes `GET /.well-known/qik-vrt`. The response binds the
+running repository, PR, HEAD and TREE and describes only the original OwnerREST
+and NativePeerRules routes. `AI_ACCESS.json` is the packaged source contract.
+Any HTTP/JSON client can use it; GitHub write access, a particular model provider,
+a browser session and a Firefox extension are unnecessary for the `temdd`
+profile. No model account is silently assumed or impersonated.
+
+The monitor forwards the allowlisted native routes to the configured loopback
+terminal, preserving the exact request and signed response bytes. It does not
+execute the submitted text. Existing bearer principal/permission checks, peer
+HMAC, exact rule/request/source grants and physical writer fencing still decide
+admission. Public discovery contains no keys, private paths, principal inventory
+or personal event bodies. Provisioning a private scoped capability remains an
+authenticated operator action through the existing configuration contract.
+Give each cognitive client its own native principal or peer-node identifier;
+the Owner's identity or a different provider account is never substituted.
+The complete native event stream requires the separate read-only terminal
+bearer, since its original events may contain private input. Anonymous discovery
+and subject reads never grant journal access; an OwnerREST principal can recover
+its own receipts without acquiring another principal's event stream.
+
+The existing nginx carrier exposes the same root paths and their
+`/qik-vrt/mesh/v1/effect-ack` aliases. Only exact native paths translate the outer
+Host to the loopback Host. Its programmatic input adapter refuses browser Origin
+headers; same-origin browser REST uses the S1 monitor. Unknown routes get no
+translation. The legacy reference daemon does not gain OwnerREST by proxying it.
+
+Prepare/Commit and receipt readback use the envelope and headers below. On an
+ambiguous commit response, read the same request ID; neither adapter retries a
+mutation automatically. The peer-rule receive/apply/challenged-readback protocol
+uses its existing private HMAC and exact grant. Receipt, application and final
+product acceptance remain separate.
+
+`https://raumzeitterminal.de/.well-known/qik-vrt` is the exact deployment target.
+This source contract does not establish TLS delivery, a configured live endpoint
+or another node's arrival. Keep `ADMITTED_MESH_RUNTIME_ENDPOINT` and every
+unreachable peer open until their actual acceptance is independently observed.
+
 The native `temdd` and `firefox` profiles now provide direct HTTP input through
 the original TEMDD ledger, including when `unix_ingress` is `false`. No Unix
 socket, browser proxy, remote desktop, Git installation or provider credential
@@ -425,7 +489,8 @@ immediately. A changed configuration/source/volume binding holds the runtime;
 it never widens a live grant. Principal authentication is a provisioned capability
 binding, not biometric proof of a natural person. TLS/public ingress and mobile
 acceptance require their own deployment evidence. The existing terminal-port
-listener stays at `127.0.0.1`; the public monitor exposes no owner input route.
+listener stays at `127.0.0.1`; the public monitor exposes only the fixed,
+authenticated native adapter routes described above.
 
 Send `Authorization: Bearer <private-key>` and `QIKVRT-Owner: <principal>`.
 Write requests use `Content-Type: application/json` and this exact envelope:

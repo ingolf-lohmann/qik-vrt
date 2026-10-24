@@ -13,6 +13,7 @@ on:
       - "src/qikvrt_temdd_event_ledger.py"
       - "deploy/universal-terminal/**"
       - "tests/test_self_host_temdd.py"
+      - "tests/test_qikvrt_temdd_public_proxy.py"
       - "tests/test_self_host_firefox.py"
       - "tests/test_self_host_systemd.py"
       - "tests/test_self_host_migration.py"
@@ -36,6 +37,7 @@ on:
       - "src/qikvrt_temdd_event_ledger.py"
       - "deploy/universal-terminal/**"
       - "tests/test_self_host_temdd.py"
+      - "tests/test_qikvrt_temdd_public_proxy.py"
       - "tests/test_self_host_firefox.py"
       - "tests/test_self_host_systemd.py"
       - "tests/test_self_host_migration.py"
@@ -80,6 +82,14 @@ jobs:
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24'
+
+      - name: Ensure the existing native HTTP gateway is exercised
+        run: |
+          if ! command -v nginx >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y --no-install-recommends nginx
+          fi
+          nginx -v
 
       - name: Run standalone package, negative and crash-restart controls
         id: standalone-runtime

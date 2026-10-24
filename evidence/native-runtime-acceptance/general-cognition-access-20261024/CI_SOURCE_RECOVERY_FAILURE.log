@@ -1,0 +1,706 @@
+﻿2026-10-24T15:12:33.8900254Z Current runner version: '2.338.0'
+2026-10-24T15:12:33.8914409Z ##[group]Runner Image Provisioner
+2026-10-24T15:12:33.8914967Z Hosted Compute Agent
+2026-10-24T15:12:33.8915303Z Version: 20261012.601
+2026-10-24T15:12:33.8915656Z Commit: f3dc54e1fb89da6852db922499a0233137369e1d
+2026-10-24T15:12:33.8916144Z Build Date: 2026-10-12T17:48:21Z
+2026-10-24T15:12:33.8916525Z Worker ID: {32928a43-c5c2-41b4-a244-5132a9bcb7b9}
+2026-10-24T15:12:33.8916940Z Region: centralus
+2026-10-24T15:12:33.8917269Z Cloud: Azure
+2026-10-24T15:12:33.8917595Z ##[endgroup]
+2026-10-24T15:12:33.8918359Z ##[group]Operating System
+2026-10-24T15:12:33.8918698Z Ubuntu
+2026-10-24T15:12:33.8919026Z 24.04.5
+2026-10-24T15:12:33.8919330Z LTS
+2026-10-24T15:12:33.8919632Z ##[endgroup]
+2026-10-24T15:12:33.8920006Z ##[group]Runner Image
+2026-10-24T15:12:33.8920348Z Image: ubuntu-24.04
+2026-10-24T15:12:33.8920662Z Version: 20261012.334.1
+2026-10-24T15:12:33.8921419Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-24T15:12:33.8922297Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-24T15:12:33.8922825Z ##[endgroup]
+2026-10-24T15:12:33.8923520Z ##[group]GITHUB_TOKEN Permissions
+2026-10-24T15:12:33.8924713Z Actions: read
+2026-10-24T15:12:33.8925142Z Contents: read
+2026-10-24T15:12:33.8925475Z Metadata: read
+2026-10-24T15:12:33.8925790Z ##[endgroup]
+2026-10-24T15:12:33.8927225Z Secret source: Actions
+2026-10-24T15:12:33.8927730Z Cache mode: write
+2026-10-24T15:12:33.8928203Z Prepare workflow directory
+2026-10-24T15:12:33.9143287Z Prepare all required actions
+2026-10-24T15:12:33.9171877Z Getting action download info
+2026-10-24T15:12:34.1362046Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-10-24T15:12:34.3403848Z Download action repository 'actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-10-24T15:12:34.5868130Z Download action repository 'actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2026-10-24T15:12:34.8051797Z Download action repository 'actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a' (SHA:043fb46d1a93c77aae656e7c1c64a875d1fc6a0a)
+2026-10-24T15:12:35.2732483Z Complete job name: contract-and-e2e
+2026-10-24T15:12:35.3481265Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-10-24T15:12:35.3482166Z with:
+2026-10-24T15:12:35.3482679Z   ref: 12fda531319330556156f8e1c9dd9ce730a428f1
+2026-10-24T15:12:35.3483326Z   fetch-depth: 1
+2026-10-24T15:12:35.3483841Z   persist-credentials: false
+2026-10-24T15:12:35.3484609Z   repository: ingolf-lohmann/qik-vrt
+2026-10-24T15:12:35.3489935Z   token: ***
+2026-10-24T15:12:35.3490421Z   ssh-strict: true
+2026-10-24T15:12:35.3490911Z   ssh-user: git
+2026-10-24T15:12:35.3491379Z   clean: true
+2026-10-24T15:12:35.3491892Z   sparse-checkout-cone-mode: true
+2026-10-24T15:12:35.3492502Z   fetch-tags: false
+2026-10-24T15:12:35.3492994Z   show-progress: true
+2026-10-24T15:12:35.3493482Z   lfs: false
+2026-10-24T15:12:35.3493943Z   submodules: false
+2026-10-24T15:12:35.3494527Z   set-safe-directory: true
+2026-10-24T15:12:35.3495105Z   allow-unsafe-pr-checkout: false
+2026-10-24T15:12:35.3496122Z ##[endgroup]
+2026-10-24T15:12:35.4151975Z Syncing repository: ingolf-lohmann/qik-vrt
+2026-10-24T15:12:35.4154177Z ##[group]Getting Git version info
+2026-10-24T15:12:35.4155071Z Working directory is '/home/runner/work/qik-vrt/qik-vrt'
+2026-10-24T15:12:35.4156198Z [command]/usr/bin/git version
+2026-10-24T15:12:35.4193918Z git version 2.55.0
+2026-10-24T15:12:35.4209622Z ##[endgroup]
+2026-10-24T15:12:35.4218513Z Temporarily overriding HOME='/home/runner/work/_temp/b7c7f10d-1923-45e3-ac6b-fab794f0598d' before making global git config changes
+2026-10-24T15:12:35.4221375Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-24T15:12:35.4225229Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/qik-vrt/qik-vrt
+2026-10-24T15:12:35.4496166Z Deleting the contents of '/home/runner/work/qik-vrt/qik-vrt'
+2026-10-24T15:12:35.4498604Z ##[group]Determining repository object format
+2026-10-24T15:12:35.4500065Z ##[endgroup]
+2026-10-24T15:12:35.4501264Z ##[group]Initializing the repository
+2026-10-24T15:12:35.4502417Z [command]/usr/bin/git init /home/runner/work/qik-vrt/qik-vrt
+2026-10-24T15:12:35.4688030Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-24T15:12:35.4689647Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-24T15:12:35.4691044Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-24T15:12:35.4692322Z hint: call:
+2026-10-24T15:12:35.4692977Z hint:
+2026-10-24T15:12:35.4693830Z hint: 	git config --global init.defaultBranch <name>
+2026-10-24T15:12:35.4695001Z hint:
+2026-10-24T15:12:35.4695952Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-24T15:12:35.4697536Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-24T15:12:35.4698782Z hint:
+2026-10-24T15:12:35.4699469Z hint: 	git branch -m <name>
+2026-10-24T15:12:35.4700226Z hint:
+2026-10-24T15:12:35.4701241Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-24T15:12:35.4702865Z Initialized empty Git repository in /home/runner/work/qik-vrt/qik-vrt/.git/
+2026-10-24T15:12:35.4705895Z [command]/usr/bin/git remote add origin https://github.com/ingolf-lohmann/qik-vrt
+2026-10-24T15:12:35.4815133Z ##[endgroup]
+2026-10-24T15:12:35.4816402Z ##[group]Disabling automatic garbage collection
+2026-10-24T15:12:35.4817525Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-24T15:12:35.5182390Z ##[endgroup]
+2026-10-24T15:12:35.5183311Z ##[group]Setting up auth
+2026-10-24T15:12:35.5183903Z Removing SSH command configuration
+2026-10-24T15:12:35.5186500Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-24T15:12:35.5214236Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-24T15:12:35.5485610Z Removing HTTP extra header
+2026-10-24T15:12:35.5489742Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-24T15:12:35.5515924Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-24T15:12:35.5682474Z Removing includeIf entries pointing to credentials config files
+2026-10-24T15:12:35.5685967Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-24T15:12:35.5713096Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-24T15:12:35.5883666Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-339021ed-e8ac-48c9-b517-9c2a95009ff1.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-24T15:12:35.6066586Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git.path /home/runner/work/_temp/git-credentials-339021ed-e8ac-48c9-b517-9c2a95009ff1.config
+2026-10-24T15:12:35.6168162Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-339021ed-e8ac-48c9-b517-9c2a95009ff1.config
+2026-10-24T15:12:35.6266206Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-339021ed-e8ac-48c9-b517-9c2a95009ff1.config
+2026-10-24T15:12:35.6369268Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-339021ed-e8ac-48c9-b517-9c2a95009ff1.config
+2026-10-24T15:12:35.6668214Z ##[endgroup]
+2026-10-24T15:12:35.6673431Z ##[group]Fetching the repository
+2026-10-24T15:12:35.6674923Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin 12fda531319330556156f8e1c9dd9ce730a428f1
+2026-10-24T15:12:40.3242323Z From https://github.com/ingolf-lohmann/qik-vrt
+2026-10-24T15:12:40.3242892Z  * branch            12fda531319330556156f8e1c9dd9ce730a428f1 -> FETCH_HEAD
+2026-10-24T15:12:40.3250184Z [command]/usr/bin/git rev-parse --verify --quiet 12fda531319330556156f8e1c9dd9ce730a428f1^{object}
+2026-10-24T15:12:40.3275024Z 12fda531319330556156f8e1c9dd9ce730a428f1
+2026-10-24T15:12:40.3278159Z ##[endgroup]
+2026-10-24T15:12:40.3278615Z ##[group]Determining the checkout info
+2026-10-24T15:12:40.3279048Z ##[endgroup]
+2026-10-24T15:12:40.3281623Z [command]/usr/bin/git sparse-checkout disable
+2026-10-24T15:12:40.3325498Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-24T15:12:40.3352755Z ##[group]Checking out the ref
+2026-10-24T15:12:40.3355779Z [command]/usr/bin/git checkout --progress --force 12fda531319330556156f8e1c9dd9ce730a428f1
+2026-10-24T15:12:41.2377336Z Note: switching to '12fda531319330556156f8e1c9dd9ce730a428f1'.
+2026-10-24T15:12:41.2406616Z 
+2026-10-24T15:12:41.2406915Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-24T15:12:41.2407360Z changes and commit them, and you can discard any commits you make in this
+2026-10-24T15:12:41.2407816Z state without impacting any branches by switching back to a branch.
+2026-10-24T15:12:41.2408050Z 
+2026-10-24T15:12:41.2408210Z If you want to create a new branch to retain commits you create, you may
+2026-10-24T15:12:41.2408585Z do so (now or later) by using -c with the switch command. Example:
+2026-10-24T15:12:41.2408819Z 
+2026-10-24T15:12:41.2408920Z   git switch -c <new-branch-name>
+2026-10-24T15:12:41.2409112Z 
+2026-10-24T15:12:41.2409272Z Or undo this operation with:
+2026-10-24T15:12:41.2409428Z 
+2026-10-24T15:12:41.2409506Z   git switch -
+2026-10-24T15:12:41.2409629Z 
+2026-10-24T15:12:41.2409805Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-24T15:12:41.2410066Z 
+2026-10-24T15:12:41.2410336Z HEAD is now at 12fda53 Preserve concurrent Main publication authorization in the native-access candidate
+2026-10-24T15:12:41.2447421Z ##[endgroup]
+2026-10-24T15:12:41.2488053Z [command]/usr/bin/git log -1 --format=%H
+2026-10-24T15:12:41.2511979Z 12fda531319330556156f8e1c9dd9ce730a428f1
+2026-10-24T15:12:41.2518639Z ##[group]Removing auth
+2026-10-24T15:12:41.2518896Z Removing SSH command configuration
+2026-10-24T15:12:41.2521440Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-24T15:12:41.2549462Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-24T15:12:41.2719469Z Removing HTTP extra header
+2026-10-24T15:12:41.2722119Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-24T15:12:41.2748957Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-24T15:12:41.2916721Z Removing includeIf entries pointing to credentials config files
+2026-10-24T15:12:41.2919079Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-24T15:12:41.2942913Z includeif.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git.path
+2026-10-24T15:12:41.2943176Z includeif.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git/worktrees/*.path
+2026-10-24T15:12:41.2943518Z includeif.gitdir:/github/workspace/.git.path
+2026-10-24T15:12:41.2943811Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-24T15:12:41.2950579Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git.path
+2026-10-24T15:12:41.2974354Z /home/runner/work/_temp/git-credentials-339021ed-e8ac-48c9-b517-9c2a95009ff1.config
+2026-10-24T15:12:41.2981322Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-339021ed\-e8ac\-48c9\-b517\-9c2a95009ff1\.config
+2026-10-24T15:12:41.3011057Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git/worktrees/*.path
+2026-10-24T15:12:41.3031283Z /home/runner/work/_temp/git-credentials-339021ed-e8ac-48c9-b517-9c2a95009ff1.config
+2026-10-24T15:12:41.3037028Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-339021ed\-e8ac\-48c9\-b517\-9c2a95009ff1\.config
+2026-10-24T15:12:41.3065418Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-24T15:12:41.3090321Z /github/runner_temp/git-credentials-339021ed-e8ac-48c9-b517-9c2a95009ff1.config
+2026-10-24T15:12:41.3094874Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-339021ed\-e8ac\-48c9\-b517\-9c2a95009ff1\.config
+2026-10-24T15:12:41.3122919Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-24T15:12:41.3143632Z /github/runner_temp/git-credentials-339021ed-e8ac-48c9-b517-9c2a95009ff1.config
+2026-10-24T15:12:41.3147978Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-339021ed\-e8ac\-48c9\-b517\-9c2a95009ff1\.config
+2026-10-24T15:12:41.3191625Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-24T15:12:41.3357961Z Removing credentials config '/home/runner/work/_temp/git-credentials-339021ed-e8ac-48c9-b517-9c2a95009ff1.config'
+2026-10-24T15:12:41.3364213Z ##[endgroup]
+2026-10-24T15:12:41.3537514Z ##[group]Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+2026-10-24T15:12:41.3537734Z with:
+2026-10-24T15:12:41.3537864Z   python-version: 3.12
+2026-10-24T15:12:41.3537989Z   check-latest: false
+2026-10-24T15:12:41.3539299Z   token: ***
+2026-10-24T15:12:41.3539412Z   update-environment: true
+2026-10-24T15:12:41.3539545Z   allow-prereleases: false
+2026-10-24T15:12:41.3539677Z   freethreaded: false
+2026-10-24T15:12:41.3539796Z ##[endgroup]
+2026-10-24T15:12:41.4314695Z ##[group]Installed versions
+2026-10-24T15:12:41.4515933Z (node:2171) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-24T15:12:41.4516470Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-24T15:12:41.4516792Z Successfully set up CPython (3.12.15)
+2026-10-24T15:12:41.4546354Z ##[endgroup]
+2026-10-24T15:12:41.4692876Z ##[group]Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+2026-10-24T15:12:41.4693204Z with:
+2026-10-24T15:12:41.4693375Z   node-version: 24
+2026-10-24T15:12:41.4693550Z   always-auth: false
+2026-10-24T15:12:41.4693722Z   check-latest: false
+2026-10-24T15:12:41.4696895Z   token: ***
+2026-10-24T15:12:41.4697118Z env:
+2026-10-24T15:12:41.4697378Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T15:12:41.4697827Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-24T15:12:41.4698193Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T15:12:41.4698527Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T15:12:41.4698855Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T15:12:41.4699191Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-24T15:12:41.4699476Z ##[endgroup]
+2026-10-24T15:12:41.5610250Z Found in cache @ /opt/hostedtoolcache/node/24.21.0/x64
+2026-10-24T15:12:41.5612666Z (node:2180) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-24T15:12:41.5613081Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-24T15:12:41.5615160Z ##[group]Environment details
+2026-10-24T15:12:41.8647474Z node: v24.21.0
+2026-10-24T15:12:41.8647827Z npm: 11.19.0
+2026-10-24T15:12:41.8648063Z yarn: 1.22.22
+2026-10-24T15:12:41.8648645Z ##[endgroup]
+2026-10-24T15:12:41.8754873Z ##[group]Run if ! command -v nginx >/dev/null; then
+2026-10-24T15:12:41.8755141Z [36;1mif ! command -v nginx >/dev/null; then[0m
+2026-10-24T15:12:41.8755311Z [36;1m  sudo apt-get update[0m
+2026-10-24T15:12:41.8755495Z [36;1m  sudo apt-get install -y --no-install-recommends nginx[0m
+2026-10-24T15:12:41.8755674Z [36;1mfi[0m
+2026-10-24T15:12:41.8755782Z [36;1mnginx -v[0m
+2026-10-24T15:12:41.8972843Z shell: /usr/bin/bash -e {0}
+2026-10-24T15:12:41.8973007Z env:
+2026-10-24T15:12:41.8973156Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T15:12:41.8973390Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-24T15:12:41.8973606Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T15:12:41.8973807Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T15:12:41.8974151Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T15:12:41.8974379Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-24T15:12:41.8974552Z ##[endgroup]
+2026-10-24T15:12:41.9470643Z nginx version: nginx/1.24.0 (Ubuntu)
+2026-10-24T15:12:41.9513605Z ##[group]Run make self-host-test
+2026-10-24T15:12:41.9513777Z [36;1mmake self-host-test[0m
+2026-10-24T15:12:41.9566392Z shell: /usr/bin/bash -e {0}
+2026-10-24T15:12:41.9566535Z env:
+2026-10-24T15:12:41.9566690Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T15:12:41.9566923Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-24T15:12:41.9567160Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T15:12:41.9567361Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T15:12:41.9567564Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T15:12:41.9567767Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-24T15:12:41.9568027Z   QIKVRT_STATE_RECOVERY_TEST_EVIDENCE: /home/runner/work/_temp/qikvrt-state-recovery-readback
+2026-10-24T15:12:41.9568332Z   QIKVRT_MESH_WORK_TEST_EVIDENCE: /home/runner/work/_temp/qikvrt-state-recovery-readback
+2026-10-24T15:12:41.9568577Z ##[endgroup]
+2026-10-24T15:12:41.9660242Z PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tools/qikvrt_tool_cache.py verify
+2026-10-24T15:12:42.0315015Z PASS: 36/36 declared tools have cache strategies (100%)
+2026-10-24T15:12:42.0354359Z PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests/test_temdd_event_ledger.py tests/test_temdd_runtime_subject_binding.py
+2026-10-24T15:12:43.3431458Z test_ai_surface_and_subject_are_served (tests.test_temdd_event_ledger.ProducerTests.test_ai_surface_and_subject_are_served) ... ok
+2026-10-24T15:12:43.3728391Z test_browser_ide_is_local_editable_and_effect_free (tests.test_temdd_event_ledger.ProducerTests.test_browser_ide_is_local_editable_and_effect_free) ... ok
+2026-10-24T15:12:43.3938993Z test_browser_ide_parser_matches_reference_example_shape (tests.test_temdd_event_ledger.ProducerTests.test_browser_ide_parser_matches_reference_example_shape) ... ok
+2026-10-24T15:12:44.0571144Z test_cli_append_is_finite_and_returns_durable_readback (tests.test_temdd_event_ledger.ProducerTests.test_cli_append_is_finite_and_returns_durable_readback) ... ok
+2026-10-24T15:12:44.2718600Z test_cli_serve_missing_subject_never_creates_state (tests.test_temdd_event_ledger.ProducerTests.test_cli_serve_missing_subject_never_creates_state) ... ok
+2026-10-24T15:12:44.4114426Z test_cli_serve_reads_back_explicit_subject (tests.test_temdd_event_ledger.ProducerTests.test_cli_serve_reads_back_explicit_subject) ... ok
+2026-10-24T15:12:44.4565488Z test_commit_before_notification_failure_is_replayable (tests.test_temdd_event_ledger.ProducerTests.test_commit_before_notification_failure_is_replayable) ... ok
+2026-10-24T15:12:44.6060108Z test_concurrent_native_deliveries_have_distinct_monotonic_ids (tests.test_temdd_event_ledger.ProducerTests.test_concurrent_native_deliveries_have_distinct_monotonic_ids) ... ok
+2026-10-24T15:12:44.6511220Z test_consumer_validation_and_reconnect_state_machine (tests.test_temdd_event_ledger.ProducerTests.test_consumer_validation_and_reconnect_state_machine) ... ok
+2026-10-24T15:12:44.6842041Z test_copied_checkout_ignores_stat_cache_drift_but_not_byte_changes (tests.test_temdd_event_ledger.ProducerTests.test_copied_checkout_ignores_stat_cache_drift_but_not_byte_changes) ... ok
+2026-10-24T15:12:44.7182000Z test_dirty_checkout_is_unobservable (tests.test_temdd_event_ledger.ProducerTests.test_dirty_checkout_is_unobservable) ... ok
+2026-10-24T15:12:45.7402029Z test_disconnect_releases_observer_without_a_new_event (tests.test_temdd_event_ledger.ProducerTests.test_disconnect_releases_observer_without_a_new_event) ... ok
+2026-10-24T15:12:45.7899705Z test_durable_restart_and_monotonic_ids (tests.test_temdd_event_ledger.ProducerTests.test_durable_restart_and_monotonic_ids) ... ok
+2026-10-24T15:12:46.8125415Z test_foreign_origin_and_rebinding_host_are_rejected (tests.test_temdd_event_ledger.ProducerTests.test_foreign_origin_and_rebinding_host_are_rejected) ... ok
+2026-10-24T15:12:46.8646706Z test_idempotent_delivery_and_conflicting_native_id (tests.test_temdd_event_ledger.ProducerTests.test_idempotent_delivery_and_conflicting_native_id) ... ok
+2026-10-24T15:12:47.8893095Z test_invalid_http_cursor_and_browser_writes_fail_closed (tests.test_temdd_event_ledger.ProducerTests.test_invalid_http_cursor_and_browser_writes_fail_closed) ... ok
+2026-10-24T15:12:48.9249287Z test_legacy_effect_ack_remains_exact_bound_and_single_use (tests.test_temdd_event_ledger.ProducerTests.test_legacy_effect_ack_remains_exact_bound_and_single_use) ... ok
+2026-10-24T15:12:48.9839939Z test_malformed_and_oversized_ingress_rejected (tests.test_temdd_event_ledger.ProducerTests.test_malformed_and_oversized_ingress_rejected) ... ok
+2026-10-24T15:12:50.6451696Z test_real_socket_restart_preserves_replay (tests.test_temdd_event_ledger.ProducerTests.test_real_socket_restart_preserves_replay) ... ok
+2026-10-24T15:12:52.6972137Z test_real_socket_sse_disconnect_replay_and_header_precedence (tests.test_temdd_event_ledger.ProducerTests.test_real_socket_sse_disconnect_replay_and_header_precedence) ... ok
+2026-10-24T15:12:52.7199693Z test_repository_entrypoint_and_test_admission (tests.test_temdd_event_ledger.ProducerTests.test_repository_entrypoint_and_test_admission) ... ok
+2026-10-24T15:12:52.7503241Z test_runtime_head_mutation_invalidates_observers (tests.test_temdd_event_ledger.ProducerTests.test_runtime_head_mutation_invalidates_observers) ... ok
+2026-10-24T15:12:52.7754998Z test_storage_failure_never_publishes (tests.test_temdd_event_ledger.ProducerTests.test_storage_failure_never_publishes) ... ok
+2026-10-24T15:12:53.7979043Z test_store_has_exclusive_owner_and_private_ingress (tests.test_temdd_event_ledger.ProducerTests.test_store_has_exclusive_owner_and_private_ingress) ... ok
+2026-10-24T15:12:53.8298070Z test_subject_correction_preserves_predecessor_bytes_without_relabeling (tests.test_temdd_event_ledger.ProducerTests.test_subject_correction_preserves_predecessor_bytes_without_relabeling) ... ok
+2026-10-24T15:12:53.8768737Z test_successor_never_replays_predecessor_evidence (tests.test_temdd_event_ledger.ProducerTests.test_successor_never_replays_predecessor_evidence) ... ok
+2026-10-24T15:12:53.9028237Z test_tampered_readback_holds (tests.test_temdd_event_ledger.ProducerTests.test_tampered_readback_holds) ... ok
+2026-10-24T15:12:53.9279554Z test_unknown_foreign_and_future_cursors_hold (tests.test_temdd_event_ledger.ProducerTests.test_unknown_foreign_and_future_cursors_hold) ... ok
+2026-10-24T15:12:53.9661687Z test_wrong_head_tree_repository_and_pr_rejected (tests.test_temdd_event_ledger.ProducerTests.test_wrong_head_tree_repository_and_pr_rejected) ... ok
+2026-10-24T15:12:53.9667733Z test_ingress_construction_failure_closes_unstarted_http_without_shutdown (tests.test_temdd_event_ledger.ServerFixtureLifecycleTests.test_ingress_construction_failure_closes_unstarted_http_without_shutdown) ... ok
+2026-10-24T15:12:53.9743745Z test_active_source_and_a_copy_impersonating_source_cannot_transfer (tests.test_temdd_event_ledger.WriterContinuityTests.test_active_source_and_a_copy_impersonating_source_cannot_transfer) ... ok
+2026-10-24T15:12:54.0522097Z test_cli_handoff_accepts_private_source_directory_and_revokes_original (tests.test_temdd_event_ledger.WriterContinuityTests.test_cli_handoff_accepts_private_source_directory_and_revokes_original) ... ok
+2026-10-24T15:12:54.0586269Z test_cli_handoff_rejects_changed_config_bytes_without_revoking_original (tests.test_temdd_event_ledger.WriterContinuityTests.test_cli_handoff_rejects_changed_config_bytes_without_revoking_original) ... ok
+2026-10-24T15:12:54.0650603Z test_cli_handoff_rejects_public_directory_without_revoking_original (tests.test_temdd_event_ledger.WriterContinuityTests.test_cli_handoff_rejects_public_directory_without_revoking_original) ... ok
+2026-10-24T15:12:54.0718546Z test_cli_handoff_rejects_regular_file_without_revoking_original (tests.test_temdd_event_ledger.WriterContinuityTests.test_cli_handoff_rejects_regular_file_without_revoking_original) ... ok
+2026-10-24T15:12:54.0781125Z test_copied_store_cannot_acquire_original_writer_identity (tests.test_temdd_event_ledger.WriterContinuityTests.test_copied_store_cannot_acquire_original_writer_identity) ... ok
+2026-10-24T15:12:54.0879183Z test_explicit_local_handoff_revokes_source_before_target_can_append (tests.test_temdd_event_ledger.WriterContinuityTests.test_explicit_local_handoff_revokes_source_before_target_can_append) ... ok
+2026-10-24T15:12:54.0944822Z test_frontier_validates_original_subject_partitions (tests.test_temdd_event_ledger.WriterContinuityTests.test_frontier_validates_original_subject_partitions) ... ok
+2026-10-24T15:12:54.0985595Z test_historical_fork_after_23_preserves_both_original_suffixes_and_receipts (tests.test_temdd_event_ledger.WriterContinuityTests.test_historical_fork_after_23_preserves_both_original_suffixes_and_receipts) ... /home/runner/work/qik-vrt/qik-vrt/evidence/self_host/original-recovered/src/qikvrt_temdd_event_ledger.py:33: ImportWarning: can't resolve package from __spec__ or __package__, falling back on __name__ and __path__
+2026-10-24T15:12:54.0986462Z   from . import qikvrt_effect_ack_http_terminal as terminal
+2026-10-24T15:12:54.1289734Z ok
+2026-10-24T15:12:54.1374525Z test_interrupted_transfer_admits_neither_copy (tests.test_temdd_event_ledger.WriterContinuityTests.test_interrupted_transfer_admits_neither_copy) ... ok
+2026-10-24T15:12:54.4180081Z test_large_complete_history_has_bounded_peak_and_legacy_frontier (tests.test_temdd_event_ledger.WriterContinuityTests.test_large_complete_history_has_bounded_peak_and_legacy_frontier) ... ok
+2026-10-24T15:12:54.4244389Z test_legacy_store_remains_readable_but_is_never_automatically_admitted (tests.test_temdd_event_ledger.WriterContinuityTests.test_legacy_store_remains_readable_but_is_never_automatically_admitted) ... ok
+2026-10-24T15:12:54.4305860Z test_replacing_owner_lock_fences_live_writer_and_its_successor (tests.test_temdd_event_ledger.WriterContinuityTests.test_replacing_owner_lock_fences_live_writer_and_its_successor) ... ok
+2026-10-24T15:12:54.4371664Z test_same_physical_store_restart_preserves_deduplication (tests.test_temdd_event_ledger.WriterContinuityTests.test_same_physical_store_restart_preserves_deduplication) ... ok
+2026-10-24T15:12:54.4465189Z test_stale_copy_and_wrong_pin_leave_source_writer_unchanged (tests.test_temdd_event_ledger.WriterContinuityTests.test_stale_copy_and_wrong_pin_leave_source_writer_unchanged) ... ok
+2026-10-24T15:12:54.4483629Z test_exact_deployment_requires_explicit_repository (tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_exact_deployment_requires_explicit_repository) ... ok
+2026-10-24T15:12:54.4490490Z test_exact_head_requires_explicit_pr (tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_exact_head_requires_explicit_pr) ... ok
+2026-10-24T15:12:54.4498284Z test_exact_subject_uses_configured_pr_not_legacy_default (tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_exact_subject_uses_configured_pr_not_legacy_default) ... ok
+2026-10-24T15:12:54.4505903Z test_exact_tree_requires_explicit_pr (tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_exact_tree_requires_explicit_pr) ... ok
+2026-10-24T15:12:54.4514452Z test_explicit_pr_is_passed_as_two_arguments (tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_explicit_pr_is_passed_as_two_arguments) ... ok
+2026-10-24T15:12:54.4529615Z test_explicit_repository_does_not_assume_authority_or_mirror (tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_explicit_repository_does_not_assume_authority_or_mirror) ... ok
+2026-10-24T15:12:54.4536301Z test_guard_precedes_runtime_side_effects (tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_guard_precedes_runtime_side_effects) ... ok
+2026-10-24T15:12:54.4587707Z test_invalid_pr_cannot_start_ledger (tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_invalid_pr_cannot_start_ledger) ... ok
+2026-10-24T15:12:54.4644109Z test_invalid_repository_cannot_start_ledger (tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_invalid_repository_cannot_start_ledger) ... ok
+2026-10-24T15:12:54.4663630Z test_unsealed_launch_requires_both_explicit_subject_fields (tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_unsealed_launch_requires_both_explicit_subject_fields) ... ok
+2026-10-24T15:12:54.5351042Z test_browser_override_does_not_weaken_effect_boundary (tests.test_temdd_runtime_subject_binding.TerminalHealthBrowserBindingTests.test_browser_override_does_not_weaken_effect_boundary) ... ok
+2026-10-24T15:12:54.5444935Z test_browser_override_still_requires_each_runtime_dependency (tests.test_temdd_runtime_subject_binding.TerminalHealthBrowserBindingTests.test_browser_override_still_requires_each_runtime_dependency) ... ok
+2026-10-24T15:12:54.5789887Z test_default_and_release_cannot_accept_each_others_metadata (tests.test_temdd_runtime_subject_binding.TerminalHealthBrowserBindingTests.test_default_and_release_cannot_accept_each_others_metadata) ... ok
+2026-10-24T15:12:54.5967066Z test_default_browser_matches_default_terminal_start (tests.test_temdd_runtime_subject_binding.TerminalHealthBrowserBindingTests.test_default_browser_matches_default_terminal_start) ... ok
+2026-10-24T15:12:54.6146689Z test_release_override_matches_terminal_runtime_metadata (tests.test_temdd_runtime_subject_binding.TerminalHealthBrowserBindingTests.test_release_override_matches_terminal_runtime_metadata) ... ok
+2026-10-24T15:12:54.6147430Z 
+2026-10-24T15:12:54.6147654Z ----------------------------------------------------------------------
+2026-10-24T15:12:54.6147990Z Ran 60 tests in 12.339s
+2026-10-24T15:12:54.6148111Z 
+2026-10-24T15:12:54.6148195Z OK
+2026-10-24T15:12:54.6340844Z node --test docs/monitor/mesh-file.test.mjs
+2026-10-24T15:12:54.7631581Z ✔ single-file binary contents, revisions, long/case-sensitive virtual names and >1MiB chunks round trip (53.509544ms)
+2026-10-24T15:12:54.7655063Z ✔ corrupt payload, chain, magic, truncation and invented chunk reference are refused (3.009443ms)
+2026-10-24T15:12:54.7718423Z ✔ a confirmed checkpoint cannot be rolled back or transferred to another repository (6.276374ms)
+2026-10-24T15:12:54.7792491Z ✔ lost append acknowledgement is read back without a second record or overwritten identity (7.396429ms)
+2026-10-24T15:12:54.7848880Z ✔ two cooperating writers admit one competing append and retain the other as a conflict (5.432949ms)
+2026-10-24T15:12:54.7878813Z ✔ filesystem capacity and symlinks block writes without creating a replacement repository (3.036363ms)
+2026-10-24T15:12:54.7946603Z ✔ partial write and failed fsync preserve all bytes and quarantine further writes (6.786556ms)
+2026-10-24T15:12:54.8388334Z ✔ SIGKILL after durable receipt reopens one monolithic file without duplicate records (43.648197ms)
+2026-10-24T15:12:54.8651386Z ✔ browser opens and extracts derived SQLite but cannot create, append or directly write a product format (26.265641ms)
+2026-10-24T15:12:54.9511096Z ✔ actual REST transport enforces bearer and CORS, compares exports and rejects every POST without a second ledger (85.489139ms)
+2026-10-24T15:12:54.9842643Z ✔ direct file selection grants no write operation or mutable QIKMESH product state (33.26534ms)
+2026-10-24T15:12:54.9844126Z ✔ metric window ages out actual operations and exposes unknown latency instead of a fabricated measurement (0.3571ms)
+2026-10-24T15:12:55.0093489Z ✔ a bound export refuses appended revisions even when the frame chain is coherent (25.031455ms)
+2026-10-24T15:12:55.0198728Z ℹ tests 13
+2026-10-24T15:12:55.0198890Z ℹ suites 0
+2026-10-24T15:12:55.0199007Z ℹ pass 13
+2026-10-24T15:12:55.0199126Z ℹ fail 0
+2026-10-24T15:12:55.0199408Z ℹ cancelled 0
+2026-10-24T15:12:55.0199612Z ℹ skipped 0
+2026-10-24T15:12:55.0199896Z ℹ todo 0
+2026-10-24T15:12:55.0200100Z ℹ duration_ms 361.849129
+2026-10-24T15:12:55.0247498Z PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_self_host_provider
+2026-10-24T15:12:55.6671208Z test_cli_returns_first_unbound_control_plane_without_accessing_credentials (tests.test_self_host_provider.AdmissionTests.test_cli_returns_first_unbound_control_plane_without_accessing_credentials) ... ok
+2026-10-24T15:12:55.6787752Z test_competing_cooperating_writer_is_fenced_without_a_second_create (tests.test_self_host_provider.AdmissionTests.test_competing_cooperating_writer_is_fenced_without_a_second_create) ... ok
+2026-10-24T15:12:55.6898101Z test_conflicting_empty_account_blocks_before_quote_key_or_any_create (tests.test_self_host_provider.AdmissionTests.test_conflicting_empty_account_blocks_before_quote_key_or_any_create) ... ok
+2026-10-24T15:12:55.7049503Z test_crash_after_intent_before_send_holds_even_when_inventory_is_empty (tests.test_self_host_provider.AdmissionTests.test_crash_after_intent_before_send_holds_even_when_inventory_is_empty) ... ok
+2026-10-24T15:12:55.7158465Z test_current_region_size_price_and_existing_key_are_bound (tests.test_self_host_provider.AdmissionTests.test_current_region_size_price_and_existing_key_are_bound) ... ok
+2026-10-24T15:12:55.7310097Z test_existing_resource_reused_explicitly_unknown_resources_retained_without_delete (tests.test_self_host_provider.AdmissionTests.test_existing_resource_reused_explicitly_unknown_resources_retained_without_delete) ... ok
+2026-10-24T15:12:55.7684171Z test_hetzner_quotes_primary_ipv4_and_uses_locations_not_removed_datacenters (tests.test_self_host_provider.AdmissionTests.test_hetzner_quotes_primary_ipv4_and_uses_locations_not_removed_datacenters) ... ok
+2026-10-24T15:12:55.7816228Z test_independent_verifier_is_reused_with_ipv4_pin_and_without_provider_environment (tests.test_self_host_provider.AdmissionTests.test_independent_verifier_is_reused_with_ipv4_pin_and_without_provider_environment) ... ok
+2026-10-24T15:12:55.7965483Z test_intent_is_fsynced_and_restart_reuses_readback_without_duplicate_create (tests.test_self_host_provider.AdmissionTests.test_intent_is_fsynced_and_restart_reuses_readback_without_duplicate_create) ... ok
+2026-10-24T15:12:55.8214388Z test_ionos_keeps_exact_cloud_contract_spec_public_lan_quote_and_existing_key (tests.test_self_host_provider.AdmissionTests.test_ionos_keeps_exact_cloud_contract_spec_public_lan_quote_and_existing_key) ... ok
+2026-10-24T15:12:55.8325534Z test_key_selection_uses_wire_identity_ignoring_comment_and_reported_fingerprint (tests.test_self_host_provider.AdmissionTests.test_key_selection_uses_wire_identity_ignoring_comment_and_reported_fingerprint) ... ok
+2026-10-24T15:12:55.8473474Z test_lost_ack_is_resolved_by_actual_resource_get_never_repeated_post (tests.test_self_host_provider.AdmissionTests.test_lost_ack_is_resolved_by_actual_resource_get_never_repeated_post) ... ok
+2026-10-24T15:12:55.8589357Z test_missing_price_budget_bad_currency_or_over_budget_never_admits (tests.test_self_host_provider.AdmissionTests.test_missing_price_budget_bad_currency_or_over_budget_never_admits) ... ok
+2026-10-24T15:12:55.8879534Z test_no_grant_wrong_terms_payment_or_expired_grant_never_sends (tests.test_self_host_provider.AdmissionTests.test_no_grant_wrong_terms_payment_or_expired_grant_never_sends) ... ok
+2026-10-24T15:12:55.9003111Z test_price_or_inventory_change_invalidates_prior_create_authorization (tests.test_self_host_provider.AdmissionTests.test_price_or_inventory_change_invalidates_prior_create_authorization) ... ok
+2026-10-24T15:12:55.9196721Z test_rejected_payment_preserves_exact_status_and_does_not_retry (tests.test_self_host_provider.AdmissionTests.test_rejected_payment_preserves_exact_status_and_does_not_retry) ... ok
+2026-10-24T15:12:55.9307373Z test_stale_snapshot_conflicting_key_and_invalid_origin_refused (tests.test_self_host_provider.AdmissionTests.test_stale_snapshot_conflicting_key_and_invalid_origin_refused) ... ok
+2026-10-24T15:12:55.9420449Z test_unknown_or_incomplete_inventory_is_not_an_empty_admission (tests.test_self_host_provider.AdmissionTests.test_unknown_or_incomplete_inventory_is_not_an_empty_admission) ... ok
+2026-10-24T15:12:55.9532111Z test_warning_full_limit_bad_principal_and_duplicate_inventory_fail_closed (tests.test_self_host_provider.AdmissionTests.test_warning_full_limit_bad_principal_and_duplicate_inventory_fail_closed) ... ok
+2026-10-24T15:12:55.9585071Z test_both_operations_fresh_readback_and_receipt_exclude_private_provider_bytes (tests.test_self_host_provider.RepositoryIONOSReadonlyTests.test_both_operations_fresh_readback_and_receipt_exclude_private_provider_bytes) ... ok
+2026-10-24T15:12:55.9632799Z test_http_failure_or_arbitrary_exception_never_leaks_provider_body_or_retries (tests.test_self_host_provider.RepositoryIONOSReadonlyTests.test_http_failure_or_arbitrary_exception_never_leaks_provider_body_or_retries) ... ok
+2026-10-24T15:12:55.9675242Z test_inventory_changed_after_classification_refuses_fresh_readback_and_cleans_private_bytes (tests.test_self_host_provider.RepositoryIONOSReadonlyTests.test_inventory_changed_after_classification_refuses_fresh_readback_and_cleans_private_bytes) ... ok
+2026-10-24T15:12:55.9691306Z test_missing_deliveries_name_every_binding_without_any_network (tests.test_self_host_provider.RepositoryIONOSReadonlyTests.test_missing_deliveries_name_every_binding_without_any_network) ... ok
+2026-10-24T15:12:55.9800708Z test_readonly_capability_rejects_create_and_noninventory_paths_before_transport (tests.test_self_host_provider.RepositoryIONOSReadonlyTests.test_readonly_capability_rejects_create_and_noninventory_paths_before_transport) ... ok
+2026-10-24T15:12:56.0043433Z test_real_contract_and_original_independent_pin_are_required_before_network (tests.test_self_host_provider.RepositoryIONOSReadonlyTests.test_real_contract_and_original_independent_pin_are_required_before_network) ... ok
+2026-10-24T15:12:56.0049196Z test_workflow_binds_existing_secret_only_after_trusted_main_preflight (tests.test_self_host_provider.RepositoryIONOSReadonlyTests.test_workflow_binds_existing_secret_only_after_trusted_main_preflight) ... ok
+2026-10-24T15:12:56.0085420Z test_workflow_preflight_rejects_changed_main_before_provider_delivery (tests.test_self_host_provider.RepositoryIONOSReadonlyTests.test_workflow_preflight_rejects_changed_main_before_provider_delivery) ... ok
+2026-10-24T15:12:56.0185104Z test_wrong_duplicate_or_missing_provider_contract_never_admits (tests.test_self_host_provider.RepositoryIONOSReadonlyTests.test_wrong_duplicate_or_missing_provider_contract_never_admits) ... ok
+2026-10-24T15:12:56.0200487Z test_wrong_source_or_branch_does_not_deliver_any_provider_request (tests.test_self_host_provider.RepositoryIONOSReadonlyTests.test_wrong_source_or_branch_does_not_deliver_any_provider_request) ... ok
+2026-10-24T15:12:56.0201889Z test_duplicate_json_and_nonfinite_values_refused (tests.test_self_host_provider.TransportTests.test_duplicate_json_and_nonfinite_values_refused) ... ok
+2026-10-24T15:12:56.0204917Z test_fixed_origin_no_delete_no_redirect_no_credential_in_error (tests.test_self_host_provider.TransportTests.test_fixed_origin_no_delete_no_redirect_no_credential_in_error) ... ok
+2026-10-24T15:12:56.0320141Z test_ipv4_pinned_tls_preserves_sni_and_requires_fresh_exact_source_health (tests.test_self_host_provider.TransportTests.test_ipv4_pinned_tls_preserves_sni_and_requires_fresh_exact_source_health) ... ok
+2026-10-24T15:12:56.0321397Z test_no_fake_legacy_ionos_or_missing_product_is_admitted (tests.test_self_host_provider.TransportTests.test_no_fake_legacy_ionos_or_missing_product_is_admitted) ... ok
+2026-10-24T15:12:56.0323137Z test_pagination_covers_all_pages_and_refuses_duplicates_incomplete_metadata_and_limits (tests.test_self_host_provider.TransportTests.test_pagination_covers_all_pages_and_refuses_duplicates_incomplete_metadata_and_limits) ... ok
+2026-10-24T15:12:56.0431373Z test_public_ipv4_and_https_dns_health_source_fail_closed (tests.test_self_host_provider.TransportTests.test_public_ipv4_and_https_dns_health_source_fail_closed) ... ok
+2026-10-24T15:12:56.0431928Z 
+2026-10-24T15:12:56.0432137Z ----------------------------------------------------------------------
+2026-10-24T15:12:56.0432438Z Ran 35 tests in 0.825s
+2026-10-24T15:12:56.0432560Z 
+2026-10-24T15:12:56.0432631Z OK
+2026-10-24T15:12:56.0608834Z PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_self_host
+2026-10-24T15:12:56.2574343Z test_concurrent_takeover_persistent_votes_intersect (tests.test_self_host.AuthoritySuccessionModelTests.test_concurrent_takeover_persistent_votes_intersect) ... ok
+2026-10-24T15:12:56.2625716Z test_contact_loss_revocation (tests.test_self_host.AuthoritySuccessionModelTests.test_contact_loss_revocation) ... ok
+2026-10-24T15:12:56.2720392Z test_fenced_mirror_takeover_preserves_originals_and_lost_ack (tests.test_self_host.AuthoritySuccessionModelTests.test_fenced_mirror_takeover_preserves_originals_and_lost_ack) ... ok
+2026-10-24T15:12:56.2806203Z test_former_authority_rejoin_without_failback (tests.test_self_host.AuthoritySuccessionModelTests.test_former_authority_rejoin_without_failback) ... ok
+2026-10-24T15:12:56.2849694Z test_independent_uncoordinated_sinks_are_a_split_brain_counterexample (tests.test_self_host.AuthoritySuccessionModelTests.test_independent_uncoordinated_sinks_are_a_split_brain_counterexample) ... ok
+2026-10-24T15:12:56.2893821Z test_lease_renewal_requires_majority_before_expiry (tests.test_self_host.AuthoritySuccessionModelTests.test_lease_renewal_requires_majority_before_expiry) ... ok
+2026-10-24T15:12:56.2956531Z test_no_quorum_hold_preserves_confirmed_reads (tests.test_self_host.AuthoritySuccessionModelTests.test_no_quorum_hold_preserves_confirmed_reads) ... ok
+2026-10-24T15:12:56.3133579Z test_restart_preserves_fence_and_uncommitted_sql_is_rolled_back (tests.test_self_host.AuthoritySuccessionModelTests.test_restart_preserves_fence_and_uncommitted_sql_is_rolled_back) ... ok
+2026-10-24T15:12:56.3250001Z test_retired_authority_repromotion_rejected_at_every_new_epoch (tests.test_self_host.AuthoritySuccessionModelTests.test_retired_authority_repromotion_rejected_at_every_new_epoch) ... ok
+2026-10-24T15:12:56.3524113Z test_stale_journal_cannot_vote_or_activate (tests.test_self_host.AuthoritySuccessionModelTests.test_stale_journal_cannot_vote_or_activate) ... ok
+2026-10-24T15:12:56.3656790Z test_successor_contact_loss_applies_same_rule (tests.test_self_host.AuthoritySuccessionModelTests.test_successor_contact_loss_applies_same_rule) ... ok
+2026-10-24T15:12:56.3706057Z test_two_nodes_cannot_continue_writes_after_one_voter_is_lost (tests.test_self_host.AuthoritySuccessionModelTests.test_two_nodes_cannot_continue_writes_after_one_voter_is_lost) ... ok
+2026-10-24T15:12:56.4887641Z test_two_real_processes_share_one_atomic_fencing_point (tests.test_self_host.AuthoritySuccessionModelTests.test_two_real_processes_share_one_atomic_fencing_point) ... ok
+2026-10-24T15:12:56.4943896Z test_unverified_revocation_duplicate_votes_and_unknown_nodes_are_rejected (tests.test_self_host.AuthoritySuccessionModelTests.test_unverified_revocation_duplicate_votes_and_unknown_nodes_are_rejected) ... ok
+2026-10-24T15:12:56.4960936Z test_actual_browser_child_exit_still_holds_and_reaps_children (tests.test_self_host.BrowserStartupTests.test_actual_browser_child_exit_still_holds_and_reaps_children) ... ok
+2026-10-24T15:12:56.4976018Z test_last_readiness_client_disconnect_does_not_reset_display (tests.test_self_host.BrowserStartupTests.test_last_readiness_client_disconnect_does_not_reset_display) ... ok
+2026-10-24T15:12:56.4990667Z test_both_role_projections_cannot_reinstate_the_retired_authority (tests.test_self_host.DeploymentRoleTests.test_both_role_projections_cannot_reinstate_the_retired_authority) ... ok
+2026-10-24T15:12:56.4993357Z test_compose_and_mirror_defaults_match_the_same_current_contract (tests.test_self_host.DeploymentRoleTests.test_compose_and_mirror_defaults_match_the_same_current_contract) ... ok
+2026-10-24T15:12:56.5005423Z test_contact_loss_and_rejoin_cannot_restore_or_refence_the_old_authority (tests.test_self_host.DeploymentRoleTests.test_contact_loss_and_rejoin_cannot_restore_or_refence_the_old_authority) ... ok
+2026-10-24T15:12:56.5008285Z test_original_reversed_defaults_and_overrides_are_refused (tests.test_self_host.DeploymentRoleTests.test_original_reversed_defaults_and_overrides_are_refused) ... ok
+2026-10-24T15:12:56.5019369Z test_owner_projection_drift_is_rejected_without_network_or_effect (tests.test_self_host.DeploymentRoleTests.test_owner_projection_drift_is_rejected_without_network_or_effect) ... ok
+2026-10-24T15:12:56.5020560Z test_predecessor_contract_without_irreversible_succession_is_refused (tests.test_self_host.DeploymentRoleTests.test_predecessor_contract_without_irreversible_succession_is_refused) ... ok
+2026-10-24T15:12:56.5021656Z test_roles_come_from_current_policy_and_owner_projection (tests.test_self_host.DeploymentRoleTests.test_roles_come_from_current_policy_and_owner_projection) ... ok
+2026-10-24T15:12:56.5065790Z test_declared_owner_and_peer_keys_are_read_only_mounts (tests.test_self_host.DockerAdmissionTests.test_declared_owner_and_peer_keys_are_read_only_mounts) ... ok
+2026-10-24T15:12:56.5104964Z test_different_domain_or_unadmitted_execution_is_refused (tests.test_self_host.DockerAdmissionTests.test_different_domain_or_unadmitted_execution_is_refused) ... ok
+2026-10-24T15:12:56.5118199Z test_failed_in_container_runtime_verification_is_not_replaced_by_host_validation (tests.test_self_host.DockerAdmissionTests.test_failed_in_container_runtime_verification_is_not_replaced_by_host_validation) ... ok
+2026-10-24T15:12:56.5142482Z test_invalid_port_or_unsafe_mount_never_reaches_container_start (tests.test_self_host.DockerAdmissionTests.test_invalid_port_or_unsafe_mount_never_reaches_container_start) ... ok
+2026-10-24T15:12:56.5159574Z test_one_existing_supervisor_and_separate_persistent_volume_without_public_claim (tests.test_self_host.DockerAdmissionTests.test_one_existing_supervisor_and_separate_persistent_volume_without_public_claim) ... ok
+2026-10-24T15:12:56.5175248Z test_remote_docker_override_is_not_an_admitted_local_host (tests.test_self_host.DockerAdmissionTests.test_remote_docker_override_is_not_an_admitted_local_host) ... ok
+2026-10-24T15:12:56.5176575Z test_container_start_health_persistent_profile_and_native_event_after_restart (tests.test_self_host.DockerDeliveryCycleTests.test_container_start_health_persistent_profile_and_native_event_after_restart) ... skipped 'existing Docker delivery lane required'
+2026-10-24T15:12:56.5239113Z test_access_contract_cannot_require_provider_login_or_advertise_anonymous_writes (tests.test_self_host.MeshContractTests.test_access_contract_cannot_require_provider_login_or_advertise_anonymous_writes) ... ok
+2026-10-24T15:12:56.5269976Z test_available_partition_cannot_allow_unsafe_writes (tests.test_self_host.MeshContractTests.test_available_partition_cannot_allow_unsafe_writes) ... ok
+2026-10-24T15:12:56.6182582Z test_cli_is_read_only_and_does_not_infer_effect_ack (tests.test_self_host.MeshContractTests.test_cli_is_read_only_and_does_not_infer_effect_ack) ... ok
+2026-10-24T15:12:56.6215141Z test_current_nodes_only_scope_refused (tests.test_self_host.MeshContractTests.test_current_nodes_only_scope_refused) ... ok
+2026-10-24T15:12:56.6256799Z test_declared_live_success_is_not_trusted_as_a_runtime_receipt (tests.test_self_host.MeshContractTests.test_declared_live_success_is_not_trusted_as_a_runtime_receipt) ... ok
+2026-10-24T15:12:56.6288566Z test_duplicate_fault_case_cannot_supply_missing_coverage (tests.test_self_host.MeshContractTests.test_duplicate_fault_case_cannot_supply_missing_coverage) ... ok
+2026-10-24T15:12:56.6319672Z test_duplicate_package_carrier_refused (tests.test_self_host.MeshContractTests.test_duplicate_package_carrier_refused) ... ok
+2026-10-24T15:12:56.6354917Z test_each_role_requires_both_components_without_runtime_success_inference (tests.test_self_host.MeshContractTests.test_each_role_requires_both_components_without_runtime_success_inference) ... ok
+2026-10-24T15:12:56.6408755Z test_effect_loss_duplication_and_parallel_writers_refused (tests.test_self_host.MeshContractTests.test_effect_loss_duplication_and_parallel_writers_refused) ... ok
+2026-10-24T15:12:56.6506112Z test_every_effect_continuity_invariant_is_required (tests.test_self_host.MeshContractTests.test_every_effect_continuity_invariant_is_required) ... ok
+2026-10-24T15:12:56.6586236Z test_every_fault_case_is_required_including_provider_loss_and_rejoin (tests.test_self_host.MeshContractTests.test_every_fault_case_is_required_including_provider_loss_and_rejoin) ... ok
+2026-10-24T15:12:56.6625199Z test_missing_authority_succession_binding_refuses_package_admission (tests.test_self_host.MeshContractTests.test_missing_authority_succession_binding_refuses_package_admission) ... ok
+2026-10-24T15:12:56.6800822Z test_missing_local_cache_or_weakened_idle_contract_refuses_package_admission (tests.test_self_host.MeshContractTests.test_missing_local_cache_or_weakened_idle_contract_refuses_package_admission) ... ok
+2026-10-24T15:12:56.6829694Z test_missing_node_runtime_contract_refused (tests.test_self_host.MeshContractTests.test_missing_node_runtime_contract_refused) ... ok
+2026-10-24T15:12:56.6886783Z test_missing_or_invalid_workload_limits_refused (tests.test_self_host.MeshContractTests.test_missing_or_invalid_workload_limits_refused) ... ok
+2026-10-24T15:12:56.6912074Z test_missing_source_refused_without_replacing_node_with_central_link (tests.test_self_host.MeshContractTests.test_missing_source_refused_without_replacing_node_with_central_link) ... ok
+2026-10-24T15:12:56.7064657Z test_native_effect_replication_cannot_be_delayed_or_received_proposals_auto_executed (tests.test_self_host.MeshContractTests.test_native_effect_replication_cannot_be_delayed_or_received_proposals_auto_executed) ... ok
+2026-10-24T15:12:56.7098575Z test_native_mesh_entry_does_not_require_a_github_writer_or_claim_live_admission (tests.test_self_host.MeshContractTests.test_native_mesh_entry_does_not_require_a_github_writer_or_claim_live_admission) ... ok
+2026-10-24T15:12:56.7177087Z test_node_client_deployment_cannot_exempt_a_role_or_launch_an_active_terminal (tests.test_self_host.MeshContractTests.test_node_client_deployment_cannot_exempt_a_role_or_launch_an_active_terminal) ... ok
+2026-10-24T15:12:56.7213657Z test_package_admission_checks_the_same_retired_authority_policy (tests.test_self_host.MeshContractTests.test_package_admission_checks_the_same_retired_authority_policy) ... ok
+2026-10-24T15:12:56.7271370Z test_portable_file_obligations_cannot_be_removed_or_replaced_by_git_at_runtime (tests.test_self_host.MeshContractTests.test_portable_file_obligations_cannot_be_removed_or_replaced_by_git_at_runtime) ... ok
+2026-10-24T15:12:56.7301168Z test_reference_only_package_refused (tests.test_self_host.MeshContractTests.test_reference_only_package_refused) ... ok
+2026-10-24T15:12:56.7412659Z test_removed_terminal_or_transputer_carrier_refused (tests.test_self_host.MeshContractTests.test_removed_terminal_or_transputer_carrier_refused) ... ok
+2026-10-24T15:12:56.7449404Z test_role_exemption_refused_for_authority_and_mirror (tests.test_self_host.MeshContractTests.test_role_exemption_refused_for_authority_and_mirror) ... ok
+2026-10-24T15:12:56.7511194Z test_second_canonical_format_or_transport_writer_or_predecessor_evidence_is_refused (tests.test_self_host.MeshContractTests.test_second_canonical_format_or_transport_writer_or_predecessor_evidence_is_refused) ... ok
+2026-10-24T15:12:56.7540563Z test_source_presence_cannot_replace_live_acceptance (tests.test_self_host.MeshContractTests.test_source_presence_cannot_replace_live_acceptance) ... ok
+2026-10-24T15:12:56.7570561Z test_symlinked_carrier_refused (tests.test_self_host.MeshContractTests.test_symlinked_carrier_refused) ... ok
+2026-10-24T15:12:56.7604071Z test_unknown_slo_preserved_and_never_promoted_to_transparent_recovery (tests.test_self_host.MeshContractTests.test_unknown_slo_preserved_and_never_promoted_to_transparent_recovery) ... ok
+2026-10-24T15:12:56.9366142Z test_wrong_json_shapes_refuse_through_the_structured_cli (tests.test_self_host.MeshContractTests.test_wrong_json_shapes_refuse_through_the_structured_cli) ... ok
+2026-10-24T15:13:01.7103894Z test_32_local_changes_use_one_payload_after_real_validation_and_less_measured_traffic (tests.test_self_host.MeshWorkCacheTests.test_32_local_changes_use_one_payload_after_real_validation_and_less_measured_traffic) ... ok
+2026-10-24T15:13:01.9823731Z test_acknowledged_content_is_not_retransmitted_in_successor_batch (tests.test_self_host.MeshWorkCacheTests.test_acknowledged_content_is_not_retransmitted_in_successor_batch) ... ok
+2026-10-24T15:13:02.1727248Z test_already_delivered_batch_can_be_read_back_after_local_work_advances (tests.test_self_host.MeshWorkCacheTests.test_already_delivered_batch_can_be_read_back_after_local_work_advances) ... ok
+2026-10-24T15:13:02.3476070Z test_authenticated_bad_receipt_digest_holds_outbox_before_a_single_recovery_read (tests.test_self_host.MeshWorkCacheTests.test_authenticated_bad_receipt_digest_holds_outbox_before_a_single_recovery_read) ... ok
+2026-10-24T15:13:02.5081747Z test_bad_authenticated_response_keeps_outbox_then_reads_real_receipt (tests.test_self_host.MeshWorkCacheTests.test_bad_authenticated_response_keeps_outbox_then_reads_real_receipt) ... ok
+2026-10-24T15:13:02.7185678Z test_bad_peer_digest_idle_or_object_cannot_mutate_the_cloud (tests.test_self_host.MeshWorkCacheTests.test_bad_peer_digest_idle_or_object_cannot_mutate_the_cloud) ... ok
+2026-10-24T15:13:02.9907958Z test_check_cli_recovers_operating_evidence_without_original_source_checkout (tests.test_self_host.MeshWorkCacheTests.test_check_cli_recovers_operating_evidence_without_original_source_checkout) ... ok
+2026-10-24T15:13:03.2263198Z test_cli_uses_private_explicit_request_and_has_no_implicit_cloud_transfer (tests.test_self_host.MeshWorkCacheTests.test_cli_uses_private_explicit_request_and_has_no_implicit_cloud_transfer) ... ok
+2026-10-24T15:13:03.4915200Z test_cloud_restart_rejects_corrupted_original_object_or_receipt (tests.test_self_host.MeshWorkCacheTests.test_cloud_restart_rejects_corrupted_original_object_or_receipt) ... ok
+2026-10-24T15:13:03.5217867Z test_corrupt_cached_original_bytes_are_not_trusted_on_a_warm_path (tests.test_self_host.MeshWorkCacheTests.test_corrupt_cached_original_bytes_are_not_trusted_on_a_warm_path) ... ok
+2026-10-24T15:13:03.5764090Z test_corrupt_outbox_and_state_refuse_before_transport (tests.test_self_host.MeshWorkCacheTests.test_corrupt_outbox_and_state_refuse_before_transport) ... ok
+2026-10-24T15:13:03.6388211Z test_gate_that_changes_exact_bytes_cannot_produce_idle (tests.test_self_host.MeshWorkCacheTests.test_gate_that_changes_exact_bytes_cannot_produce_idle) ... ok
+2026-10-24T15:13:03.8245684Z test_legacy_ack_is_live_checkable_without_inventing_retained_sender_bytes (tests.test_self_host.MeshWorkCacheTests.test_legacy_ack_is_live_checkable_without_inventing_retained_sender_bytes) ... ok
+2026-10-24T15:13:04.0913504Z test_live_check_holds_on_cold_receiver_inbox_loss_without_reposting (tests.test_self_host.MeshWorkCacheTests.test_live_check_holds_on_cold_receiver_inbox_loss_without_reposting) ... ok
+2026-10-24T15:13:04.3396789Z test_lost_response_is_resolved_by_readback_after_both_process_restarts_without_repost (tests.test_self_host.MeshWorkCacheTests.test_lost_response_is_resolved_by_readback_after_both_process_restarts_without_repost) ... ok
+2026-10-24T15:13:04.5212187Z test_network_outage_keeps_pending_then_reads_before_retrying_same_bytes (tests.test_self_host.MeshWorkCacheTests.test_network_outage_keeps_pending_then_reads_before_retrying_same_bytes) ... ok
+2026-10-24T15:13:04.5921980Z test_new_commit_invalidates_idle_before_any_transport (tests.test_self_host.MeshWorkCacheTests.test_new_commit_invalidates_idle_before_any_transport) ... ok
+2026-10-24T15:13:04.6307072Z test_no_transfer_before_validated_idle_and_no_request_from_failed_gate (tests.test_self_host.MeshWorkCacheTests.test_no_transfer_before_validated_idle_and_no_request_from_failed_gate) ... ok
+2026-10-24T15:13:04.8086587Z test_numeric_file_names_preserve_cross_language_canonical_digests (tests.test_self_host.MeshWorkCacheTests.test_numeric_file_names_preserve_cross_language_canonical_digests) ... ok
+2026-10-24T15:13:04.9833137Z test_operating_check_requires_received_batch_and_no_peer_is_ready_by_default (tests.test_self_host.MeshWorkCacheTests.test_operating_check_requires_received_batch_and_no_peer_is_ready_by_default) ... ok
+2026-10-24T15:13:05.0579425Z test_pending_batch_blocks_new_work_without_dropping_original (tests.test_self_host.MeshWorkCacheTests.test_pending_batch_blocks_new_work_without_dropping_original) ... ok
+2026-10-24T15:13:05.2552843Z test_previous_authenticated_live_reply_cannot_answer_a_fresh_challenge (tests.test_self_host.MeshWorkCacheTests.test_previous_authenticated_live_reply_cannot_answer_a_fresh_challenge) ... ok
+2026-10-24T15:13:05.5438159Z test_public_peer_gate_rejects_missing_admission_and_missing_batch_then_accepts_durable_batch (tests.test_self_host.MeshWorkCacheTests.test_public_peer_gate_rejects_missing_admission_and_missing_batch_then_accepts_durable_batch) ... ok
+2026-10-24T15:13:05.7635674Z test_receiver_source_upgrade_invalidates_current_commissioning_but_preserves_history (tests.test_self_host.MeshWorkCacheTests.test_receiver_source_upgrade_invalidates_current_commissioning_but_preserves_history) ... ok
+2026-10-24T15:13:06.0097401Z test_receiver_storage_failure_holds_original_batch_until_recovery (tests.test_self_host.MeshWorkCacheTests.test_receiver_storage_failure_holds_original_batch_until_recovery) ... ok
+2026-10-24T15:13:06.0211100Z test_reserved_object_names_cannot_drop_a_work_unit_in_the_node_receiver (tests.test_self_host.MeshWorkCacheTests.test_reserved_object_names_cannot_drop_a_work_unit_in_the_node_receiver) ... ok
+2026-10-24T15:13:06.1929130Z test_retained_sender_witness_corruption_is_not_accepted_as_operating_evidence (tests.test_self_host.MeshWorkCacheTests.test_retained_sender_witness_corruption_is_not_accepted_as_operating_evidence) ... ok
+2026-10-24T15:13:06.4211894Z test_revoked_peer_fails_authenticated_readback_and_never_posts (tests.test_self_host.MeshWorkCacheTests.test_revoked_peer_fails_authenticated_readback_and_never_posts) ... ok
+2026-10-24T15:13:06.6123826Z test_running_receiver_cannot_prove_durability_after_disk_loss (tests.test_self_host.MeshWorkCacheTests.test_running_receiver_cannot_prove_durability_after_disk_loss) ... ok
+2026-10-24T15:13:06.6502275Z test_same_unit_retry_is_noop_and_changed_content_conflicts (tests.test_self_host.MeshWorkCacheTests.test_same_unit_retry_is_noop_and_changed_content_conflicts) ... ok
+2026-10-24T15:13:06.6767503Z test_second_cache_writer_cannot_stage_or_validate_under_existing_os_lock (tests.test_self_host.MeshWorkCacheTests.test_second_cache_writer_cannot_stage_or_validate_under_existing_os_lock) ... ok
+2026-10-24T15:13:06.9095831Z test_signed_sender_receipt_and_live_check_survive_both_process_restarts (tests.test_self_host.MeshWorkCacheTests.test_signed_sender_receipt_and_live_check_survive_both_process_restarts) ... ok
+2026-10-24T15:13:07.1388929Z test_stale_concurrent_local_copy_cannot_overwrite_the_confirmed_cloud_prefix (tests.test_self_host.MeshWorkCacheTests.test_stale_concurrent_local_copy_cannot_overwrite_the_confirmed_cloud_prefix) ... ok
+2026-10-24T15:13:07.1706546Z test_symlinks_dirty_worktree_and_untracked_files_do_not_enter_the_cache (tests.test_self_host.MeshWorkCacheTests.test_symlinks_dirty_worktree_and_untracked_files_do_not_enter_the_cache) ... ok
+2026-10-24T15:13:07.2292138Z test_warm_objects_and_original_instruction_bytes_survive_restart (tests.test_self_host.MeshWorkCacheTests.test_warm_objects_and_original_instruction_bytes_survive_restart) ... ok
+2026-10-24T15:13:07.4015334Z test_wrong_server_source_pins_cannot_confirm_the_local_batch (tests.test_self_host.MeshWorkCacheTests.test_wrong_server_source_pins_cannot_confirm_the_local_batch) ... ok
+2026-10-24T15:13:07.4046713Z test_full_byte_binding_does_not_claim_runtime_or_public_delivery (tests.test_self_host.RuntimeDeliveryTests.test_full_byte_binding_does_not_claim_runtime_or_public_delivery) ... ok
+2026-10-24T15:13:07.4083949Z test_missing_actual_engine_connection_stays_a_specific_hold (tests.test_self_host.RuntimeDeliveryTests.test_missing_actual_engine_connection_stays_a_specific_hold) ... ok
+2026-10-24T15:13:07.4118352Z test_relabelled_source_or_image_is_rejected (tests.test_self_host.RuntimeDeliveryTests.test_relabelled_source_or_image_is_rejected) ... ok
+2026-10-24T15:13:07.4145492Z test_tampered_image_or_package_refused_before_docker_load (tests.test_self_host.RuntimeDeliveryTests.test_tampered_image_or_package_refused_before_docker_load) ... ok
+2026-10-24T15:13:07.4168274Z test_unsafe_package_archive_is_rejected (tests.test_self_host.RuntimeDeliveryTests.test_unsafe_package_archive_is_rejected) ... ok
+2026-10-24T15:13:07.4179791Z test_wrong_independent_delivery_pin_is_rejected (tests.test_self_host.RuntimeDeliveryTests.test_wrong_independent_delivery_pin_is_rejected) ... ok
+2026-10-24T15:13:08.8353751Z test_admission_binds_original_launcher_without_any_external_effect (tests.test_self_host.StandaloneTests.test_admission_binds_original_launcher_without_any_external_effect) ... ok
+2026-10-24T15:13:09.0152634Z test_admission_missing_does_not_start_or_claim_completion (tests.test_self_host.StandaloneTests.test_admission_missing_does_not_start_or_claim_completion) ... ok
+2026-10-24T15:13:09.7403296Z test_admission_rejects_pin_subject_route_identity_and_mount_drift (tests.test_self_host.StandaloneTests.test_admission_rejects_pin_subject_route_identity_and_mount_drift) ... ok
+2026-10-24T15:13:10.5718203Z test_authenticated_reference_terminal_and_public_read_only_boundary (tests.test_self_host.StandaloneTests.test_authenticated_reference_terminal_and_public_read_only_boundary) ... ok
+2026-10-24T15:13:11.9263742Z test_cold_start_has_durable_snapshot_before_first_independent_readback (tests.test_self_host.StandaloneTests.test_cold_start_has_durable_snapshot_before_first_independent_readback) ... ok
+2026-10-24T15:13:11.9275741Z test_ephemeral_mount_cannot_be_host_persistence_evidence (tests.test_self_host.StandaloneTests.test_ephemeral_mount_cannot_be_host_persistence_evidence) ... ok
+2026-10-24T15:13:12.1088763Z test_equal_monitor_and_terminal_ports_are_rejected_before_listener (tests.test_self_host.StandaloneTests.test_equal_monitor_and_terminal_ports_are_rejected_before_listener) ... ok
+2026-10-24T15:13:12.6116880Z test_export_is_deterministic_and_contains_only_committed_public_bytes (tests.test_self_host.StandaloneTests.test_export_is_deterministic_and_contains_only_committed_public_bytes) ... ok
+2026-10-24T15:13:12.6797279Z test_fixture_selects_distinct_ports_when_kernel_reuses_released_port (tests.test_self_host.StandaloneTests.test_fixture_selects_distinct_ports_when_kernel_reuses_released_port) ... ok
+2026-10-24T15:13:12.7081768Z test_frozen_manifest_binds_mesh_contract_and_rejects_digest_substitution (tests.test_self_host.StandaloneTests.test_frozen_manifest_binds_mesh_contract_and_rejects_digest_substitution) ... ok
+2026-10-24T15:13:13.9650615Z test_full_tree_preserves_original_eol_unicode_modes_and_symlink_bytes_and_rejects_changes (tests.test_self_host.StandaloneTests.test_full_tree_preserves_original_eol_unicode_modes_and_symlink_bytes_and_rejects_changes) ... ok
+2026-10-24T15:13:14.3307864Z {"admission_sha256": "902caf8d4ee42409cf61f958f1b3585c783470fdbf689f0441076eb1217db69b", "admission_tool_sha256": "373aa659902b4c892270bddfc9bc013b64e442355979faf60e9c10d8eba45497", "config_sha256": "01cf27001d397ef51ef027ce56b68dd0b6c6f4651ed6e28458d477f235451732", "effect_ack_done": false, "existing_supervisor_pid_binding_match": true, "manifest_sha256": "6bf48232d432f654bf9bd17cea170a41e4c08a0a142d7c0d49a1a8a32325062b", "public_readback_verified": false, "source_head": "9b33a37cd35b0e6fcda073444ed6ff45e7b05b60", "source_tree": "406e3996a826b90a8ed758504c82c0d71ad27e82", "state": "HOST_GUARD_VERIFIED_STARTING_EXISTING_LAUNCHER", "systemd_invocation_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}
+2026-10-24T15:13:14.3310450Z test_guard_independently_verifies_then_execs_original_export (tests.test_self_host.StandaloneTests.test_guard_independently_verifies_then_execs_original_export) ... ok
+2026-10-24T15:13:14.6934876Z test_guard_pin_drift_and_wrong_persisted_identity_cannot_execute (tests.test_self_host.StandaloneTests.test_guard_pin_drift_and_wrong_persisted_identity_cannot_execute) ... ok
+2026-10-24T15:13:15.6292561Z test_missing_gh_is_optional_only_for_the_standalone_none_adapter (tests.test_self_host.StandaloneTests.test_missing_gh_is_optional_only_for_the_standalone_none_adapter) ... ok
+2026-10-24T15:13:17.3115163Z test_optional_mesh_file_is_authenticated_read_only_derived_sqlite_transport (tests.test_self_host.StandaloneTests.test_optional_mesh_file_is_authenticated_read_only_derived_sqlite_transport) ... ok
+2026-10-24T15:13:17.7166802Z test_portable_complete_history_bundle_restores_into_empty_repository_without_network (tests.test_self_host.StandaloneTests.test_portable_complete_history_bundle_restores_into_empty_repository_without_network) ... /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/pathlib.py:1167: ResourceWarning: unclosed <socket.socket [closed] fd=4, family=2, type=1, proto=6>
+2026-10-24T15:13:17.7167611Z   return object.__new__(cls)
+2026-10-24T15:13:17.7167865Z ResourceWarning: Enable tracemalloc to get the object allocation traceback
+2026-10-24T15:13:18.3501337Z ok
+2026-10-24T15:13:19.8049673Z test_portable_export_contains_one_canonical_sqlite_full_tree_and_derived_transport (tests.test_self_host.StandaloneTests.test_portable_export_contains_one_canonical_sqlite_full_tree_and_derived_transport) ... ok
+2026-10-24T15:13:19.8440096Z test_portable_history_refuses_shallow_or_missing_objects_without_fetching (tests.test_self_host.StandaloneTests.test_portable_history_refuses_shallow_or_missing_objects_without_fetching) ... ok
+2026-10-24T15:13:20.9523483Z test_portable_restore_needs_only_python_and_checks_independent_pins_and_absent_target (tests.test_self_host.StandaloneTests.test_portable_restore_needs_only_python_and_checks_independent_pins_and_absent_target) ... ok
+2026-10-24T15:13:21.4894296Z test_private_config_and_secret_symlink_fail_before_listener (tests.test_self_host.StandaloneTests.test_private_config_and_secret_symlink_fail_before_listener) ... ok
+2026-10-24T15:13:22.2264120Z test_railway_denial_happens_before_transport_with_or_without_github (tests.test_self_host.StandaloneTests.test_railway_denial_happens_before_transport_with_or_without_github) ... ok
+2026-10-24T15:13:23.6504445Z test_reviewed_publication_assets_survive_sealing_and_actual_http_without_control_exposure (tests.test_self_host.StandaloneTests.test_reviewed_publication_assets_survive_sealing_and_actual_http_without_control_exposure) ... ok
+2026-10-24T15:13:24.3479720Z test_second_writer_is_rejected_by_kernel_lock (tests.test_self_host.StandaloneTests.test_second_writer_is_rejected_by_kernel_lock) ... ok
+2026-10-24T15:13:25.6501866Z test_sigkill_restart_preserves_acknowledged_original_bytes_and_independent_readback (tests.test_self_host.StandaloneTests.test_sigkill_restart_preserves_acknowledged_original_bytes_and_independent_readback) ... ok
+2026-10-24T15:13:25.6507418Z test_standard_firefox_entry_survives_the_real_frozen_package_export (tests.test_self_host.StandaloneTests.test_standard_firefox_entry_survives_the_real_frozen_package_export) ... ok
+2026-10-24T15:13:26.3499619Z test_static_react_export_serves_each_scope_and_preserves_original_bytes (tests.test_self_host.StandaloneTests.test_static_react_export_serves_each_scope_and_preserves_original_bytes) ... ok
+2026-10-24T15:13:26.3651574Z test_static_react_source_and_license_drift_refuse_before_export (tests.test_self_host.StandaloneTests.test_static_react_source_and_license_drift_refuse_before_export) ... ok
+2026-10-24T15:13:26.3668569Z test_supervisor_invocation_requires_actual_manager_mainpid_and_id (tests.test_self_host.StandaloneTests.test_supervisor_invocation_requires_actual_manager_mainpid_and_id) ... ok
+2026-10-24T15:13:26.4609312Z test_supervisor_is_create_only_and_preserves_admission_on_every_start (tests.test_self_host.StandaloneTests.test_supervisor_is_create_only_and_preserves_admission_on_every_start) ... ok
+2026-10-24T15:13:27.7679402Z test_surviving_monitor_retains_lock_after_launcher_only_sigkill (tests.test_self_host.StandaloneTests.test_surviving_monitor_retains_lock_after_launcher_only_sigkill) ... ok
+2026-10-24T15:13:27.9725913Z test_tampered_artifact_and_extra_file_are_not_admitted (tests.test_self_host.StandaloneTests.test_tampered_artifact_and_extra_file_are_not_admitted) ... ok
+2026-10-24T15:13:28.2751629Z test_wrong_manifest_pin_and_runtime_executable_binding_fail_closed (tests.test_self_host.StandaloneTests.test_wrong_manifest_pin_and_runtime_executable_binding_fail_closed) ... ok
+2026-10-24T15:13:28.7279944Z test_wrong_node_versions_fail_preflight_and_export_without_artifacts (tests.test_self_host.StandaloneTests.test_wrong_node_versions_fail_preflight_and_export_without_artifacts) ... ok
+2026-10-24T15:13:28.7336972Z test_wrong_source_and_unreviewed_worktree_fail_export (tests.test_self_host.StandaloneTests.test_wrong_source_and_unreviewed_worktree_fail_export) ... ok
+2026-10-24T15:13:28.9139899Z test_wrong_source_binding_does_not_start (tests.test_self_host.StandaloneTests.test_wrong_source_binding_does_not_start) ... ok
+2026-10-24T15:13:29.8682298Z test_wrong_volume_identity_preserves_confirmed_data (tests.test_self_host.StandaloneTests.test_wrong_volume_identity_preserves_confirmed_data) ... ok
+2026-10-24T15:13:29.8774656Z test_batch003_requires_s1_runtime_and_tests_before_persistence (tests.test_self_host.WorkflowRuntimeTests.test_batch003_requires_s1_runtime_and_tests_before_persistence) ... ok
+2026-10-24T15:13:29.8777610Z test_general_ci_provisions_declared_s1_runtimes_before_complete_tests (tests.test_self_host.WorkflowRuntimeTests.test_general_ci_provisions_declared_s1_runtimes_before_complete_tests) ... ok
+2026-10-24T15:13:29.8778975Z test_terminal_lane_requires_real_supervisor_recovery_without_host_acceptance_inference (tests.test_self_host.WorkflowRuntimeTests.test_terminal_lane_requires_real_supervisor_recovery_without_host_acceptance_inference) ... ok
+2026-10-24T15:13:29.8779656Z 
+2026-10-24T15:13:29.8779863Z ----------------------------------------------------------------------
+2026-10-24T15:13:29.8780164Z Ran 140 tests in 33.630s
+2026-10-24T15:13:29.8780255Z 
+2026-10-24T15:13:29.8780310Z OK (skipped=1)
+2026-10-24T15:13:29.9012363Z PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_self_host_temdd
+2026-10-24T15:13:33.6257963Z test_actual_input_and_restart_preserve_original_readback_in_the_carrier_database (tests.test_self_host_temdd.MonolithicStoreTests.test_actual_input_and_restart_preserve_original_readback_in_the_carrier_database) ... ok
+2026-10-24T15:13:33.8237033Z test_browser_profile_cannot_silently_open_a_terminal_from_monolith_run (tests.test_self_host_temdd.MonolithicStoreTests.test_browser_profile_cannot_silently_open_a_terminal_from_monolith_run) ... ok
+2026-10-24T15:13:37.4354475Z test_checkpoint_blocks_live_writer_then_single_file_relocation_restores_state (tests.test_self_host_temdd.MonolithicStoreTests.test_checkpoint_blocks_live_writer_then_single_file_relocation_restores_state) ... ok
+2026-10-24T15:13:37.6635664Z test_original_sqlite_kernel_appends_replays_and_closes_with_carrier_bytes_intact (tests.test_self_host_temdd.MonolithicStoreTests.test_original_sqlite_kernel_appends_replays_and_closes_with_carrier_bytes_intact) ... ok
+2026-10-24T15:13:37.8624395Z test_pack_is_create_only_and_symlinked_or_public_objects_are_refused (tests.test_self_host_temdd.MonolithicStoreTests.test_pack_is_create_only_and_symlinked_or_public_objects_are_refused) ... ok
+2026-10-24T15:13:39.3684778Z test_same_native_store_serves_both_roles_without_opening_or_inserting_input (tests.test_self_host_temdd.MonolithicStoreTests.test_same_native_store_serves_both_roles_without_opening_or_inserting_input) ... ok
+2026-10-24T15:13:39.5183710Z test_wrong_pin_embedded_bytes_and_schema_refuse_without_a_listener (tests.test_self_host_temdd.MonolithicStoreTests.test_wrong_pin_embedded_bytes_and_schema_refuse_without_a_listener) ... ok
+2026-10-24T15:13:44.9173244Z test_imported_history_new_subject_owner_commit_and_actual_restart (tests.test_self_host_temdd.NativeMigrationTests.test_imported_history_new_subject_owner_commit_and_actual_restart) ... ok
+2026-10-24T15:13:46.5816400Z test_absent_local_grant_and_wrong_private_key_cannot_create_a_receipt (tests.test_self_host_temdd.NativePeerRuleTests.test_absent_local_grant_and_wrong_private_key_cannot_create_a_receipt) ... ok
+2026-10-24T15:13:49.2873456Z test_acknowledged_request_cannot_silently_disappear_and_be_reapplied (tests.test_self_host_temdd.NativePeerRuleTests.test_acknowledged_request_cannot_silently_disappear_and_be_reapplied) ... ok
+2026-10-24T15:13:52.4282991Z test_activation_is_enforced_on_subsequent_original_native_writes (tests.test_self_host_temdd.NativePeerRuleTests.test_activation_is_enforced_on_subsequent_original_native_writes) ... ok
+2026-10-24T15:13:55.1484096Z test_active_binding_corruption_and_deletion_of_acknowledged_event_fail_closed (tests.test_self_host_temdd.NativePeerRuleTests.test_active_binding_corruption_and_deletion_of_acknowledged_event_fail_closed) ... ok
+2026-10-24T15:13:57.0965355Z test_applied_peer_grant_revocation_blocks_fresh_confirmation (tests.test_self_host_temdd.NativePeerRuleTests.test_applied_peer_grant_revocation_blocks_fresh_confirmation) ... ok
+2026-10-24T15:13:58.0340568Z test_apply_before_receive_is_refused_and_no_event_or_activation_appears (tests.test_self_host_temdd.NativePeerRuleTests.test_apply_before_receive_is_refused_and_no_event_or_activation_appears) ... ok
+2026-10-24T15:13:59.8677893Z test_cli_uses_the_same_existing_cache_and_native_adapter (tests.test_self_host_temdd.NativePeerRuleTests.test_cli_uses_the_same_existing_cache_and_native_adapter) ... ok
+2026-10-24T15:14:01.1435236Z test_each_request_identity_rule_and_subject_mutation_is_rejected_without_event (tests.test_self_host_temdd.NativePeerRuleTests.test_each_request_identity_rule_and_subject_mutation_is_rejected_without_event) ... ok
+2026-10-24T15:14:01.2246357Z test_fault_after_guard_commit_recovers_only_the_original_application_event (tests.test_self_host_temdd.NativePeerRuleTests.test_fault_after_guard_commit_recovers_only_the_original_application_event) ... ok
+2026-10-24T15:14:05.2686219Z test_full_receipt_binding_survives_even_authentic_envelope_field_substitution (tests.test_self_host_temdd.NativePeerRuleTests.test_full_receipt_binding_survives_even_authentic_envelope_field_substitution) ... ok
+2026-10-24T15:14:07.2936101Z test_generic_peer_roundtrip_uses_existing_public_monitor_and_original_hmac_bytes (tests.test_self_host_temdd.NativePeerRuleTests.test_generic_peer_roundtrip_uses_existing_public_monitor_and_original_hmac_bytes) ... ok
+2026-10-24T15:14:08.5657872Z test_lost_receive_ack_is_resolved_by_challenged_readback_before_any_post (tests.test_self_host_temdd.NativePeerRuleTests.test_lost_receive_ack_is_resolved_by_challenged_readback_before_any_post) ... ok
+2026-10-24T15:14:11.1596520Z test_native_event_id_epoch_digest_provenance_payload_and_source_are_required (tests.test_self_host_temdd.NativePeerRuleTests.test_native_event_id_epoch_digest_provenance_payload_and_source_are_required) ... ok
+2026-10-24T15:14:12.1199742Z test_public_peer_bridge_does_not_accept_wrong_key_or_unadmitted_sender (tests.test_self_host_temdd.NativePeerRuleTests.test_public_peer_bridge_does_not_accept_wrong_key_or_unadmitted_sender) ... ok
+2026-10-24T15:14:12.9223848Z test_readback_unavailable_does_not_trigger_another_effectful_attempt (tests.test_self_host_temdd.NativePeerRuleTests.test_readback_unavailable_does_not_trigger_another_effectful_attempt) ... ok
+2026-10-24T15:14:14.7832371Z test_receipt_and_application_are_separate_original_events_and_scoped_effect_ack (tests.test_self_host_temdd.NativePeerRuleTests.test_receipt_and_application_are_separate_original_events_and_scoped_effect_ack) ... ok
+2026-10-24T15:14:17.2004107Z test_repeat_restart_and_lost_application_ack_do_not_reexecute_or_replace_native_identity (tests.test_self_host_temdd.NativePeerRuleTests.test_repeat_restart_and_lost_application_ack_do_not_reexecute_or_replace_native_identity) ... ok
+2026-10-24T15:14:19.0654673Z test_signed_replaced_epoch_is_rejected_against_retained_original_receipt (tests.test_self_host_temdd.NativePeerRuleTests.test_signed_replaced_epoch_is_rejected_against_retained_original_receipt) ... ok
+2026-10-24T15:14:21.1642567Z test_untrusted_or_replayed_challenge_and_request_hash_cannot_complete (tests.test_self_host_temdd.NativePeerRuleTests.test_untrusted_or_replayed_challenge_and_request_hash_cannot_complete) ... ok
+2026-10-24T15:14:23.5930548Z test_actual_daemon_owner_commit_and_fresh_sqlite_sse_readback (tests.test_self_host_temdd.NativeStandaloneTests.test_actual_daemon_owner_commit_and_fresh_sqlite_sse_readback) ... ok
+2026-10-24T15:14:24.8936210Z test_export_drift_holds_original_daemon_before_another_append (tests.test_self_host_temdd.NativeStandaloneTests.test_export_drift_holds_original_daemon_before_another_append) ... ok
+2026-10-24T15:14:26.2987081Z test_native_prepare_commit_and_readback_need_neither_git_nor_gh (tests.test_self_host_temdd.NativeStandaloneTests.test_native_prepare_commit_and_readback_need_neither_git_nor_gh) ... ok
+2026-10-24T15:14:26.4805706Z test_native_subject_is_explicit_and_wrong_bindings_never_start (tests.test_self_host_temdd.NativeStandaloneTests.test_native_subject_is_explicit_and_wrong_bindings_never_start) ... ok
+2026-10-24T15:14:29.3358746Z test_private_snapshot_restore_keeps_actual_native_and_journal_acknowledgments (tests.test_self_host_temdd.NativeStandaloneTests.test_private_snapshot_restore_keeps_actual_native_and_journal_acknowledgments) ... ok
+2026-10-24T15:14:32.8076699Z test_private_state_recovery_executes_without_git_gh_or_provider_transport (tests.test_self_host_temdd.NativeStandaloneTests.test_private_state_recovery_executes_without_git_gh_or_provider_transport) ... ok
+2026-10-24T15:14:34.7051016Z test_public_monitor_has_no_private_event_body_or_durable_http_writer (tests.test_self_host_temdd.NativeStandaloneTests.test_public_monitor_has_no_private_event_body_or_durable_http_writer) ... ok
+2026-10-24T15:14:37.2675214Z test_recovery_is_create_only_and_rejects_wrong_pins_config_and_tampering (tests.test_self_host_temdd.NativeStandaloneTests.test_recovery_is_create_only_and_rejects_wrong_pins_config_and_tampering) ... ok
+2026-10-24T15:14:39.5747245Z test_sigkill_restart_keeps_epoch_native_id_and_original_event_bytes (tests.test_self_host_temdd.NativeStandaloneTests.test_sigkill_restart_keeps_epoch_native_id_and_original_event_bytes) ... ok
+2026-10-24T15:14:41.1845799Z test_snapshot_blocks_active_native_or_monitor_writers_without_creating_output (tests.test_self_host_temdd.NativeStandaloneTests.test_snapshot_blocks_active_native_or_monitor_writers_without_creating_output) ... ok
+2026-10-24T15:14:43.4049898Z test_snapshot_rejects_symlinks_extra_files_and_public_modes (tests.test_self_host_temdd.NativeStandaloneTests.test_snapshot_rejects_symlinks_extra_files_and_public_modes) ... ok
+2026-10-24T15:14:44.3526400Z test_export_binds_original_identity_and_excludes_private_store_and_credentials (tests.test_self_host_temdd.OriginExportTests.test_export_binds_original_identity_and_excludes_private_store_and_credentials) ... ok
+2026-10-24T15:14:45.6860052Z test_full_tree_extension_uses_the_same_original_sqlite_origin_reader (tests.test_self_host_temdd.OriginExportTests.test_full_tree_extension_uses_the_same_original_sqlite_origin_reader) ... ok
+2026-10-24T15:14:45.9095973Z test_locked_sqlite_dependency_corruption_fails_before_shell_creation (tests.test_self_host_temdd.OriginExportTests.test_locked_sqlite_dependency_corruption_fails_before_shell_creation) ... ok
+2026-10-24T15:14:47.8583271Z test_absent_grant_and_public_secret_mode_never_enable_a_writer (tests.test_self_host_temdd.OwnerRESTMonolithTests.test_absent_grant_and_public_secret_mode_never_enable_a_writer) ... ok
+2026-10-24T15:14:49.6987830Z test_actual_original_rest_crosses_nginx_without_outer_host_or_github_identity (tests.test_self_host_temdd.OwnerRESTMonolithTests.test_actual_original_rest_crosses_nginx_without_outer_host_or_github_identity) ... ok
+2026-10-24T15:14:51.7816039Z test_anonymous_event_stream_cannot_disclose_private_rest_input (tests.test_self_host_temdd.OwnerRESTMonolithTests.test_anonymous_event_stream_cannot_disclose_private_rest_input) ... ok
+2026-10-24T15:14:53.8366301Z test_generic_client_discovers_and_uses_original_rest_through_public_monitor (tests.test_self_host_temdd.OwnerRESTMonolithTests.test_generic_client_discovers_and_uses_original_rest_through_public_monitor) ... ok
+2026-10-24T15:14:58.2139899Z test_identity_subject_conflict_and_authorization_fail_closed_without_effect (tests.test_self_host_temdd.OwnerRESTMonolithTests.test_identity_subject_conflict_and_authorization_fail_closed_without_effect) ... ok
+2026-10-24T15:15:00.5593429Z test_lost_commit_response_recovers_by_get_without_resubmitting (tests.test_self_host_temdd.OwnerRESTMonolithTests.test_lost_commit_response_recovers_by_get_without_resubmitting) ... ok
+2026-10-24T15:15:03.9170737Z test_prepare_and_permission_survive_restart_concurrent_commits_append_once (tests.test_self_host_temdd.OwnerRESTMonolithTests.test_prepare_and_permission_survive_restart_concurrent_commits_append_once) ... ok
+2026-10-24T15:15:05.0859310Z test_public_rest_bridge_preserves_authentication_origin_and_subject_guards (tests.test_self_host_temdd.OwnerRESTMonolithTests.test_public_rest_bridge_preserves_authentication_origin_and_subject_guards) ... ok
+2026-10-24T15:15:09.9317616Z test_rest_persists_in_same_monolith_and_independent_readback_replays_after_sigkill (tests.test_self_host_temdd.OwnerRESTMonolithTests.test_rest_persists_in_same_monolith_and_independent_readback_replays_after_sigkill) ... ok
+2026-10-24T15:15:09.9404139Z test_consolidation_preserves_both_predecessor_recovery_receipts (tests.test_self_host_temdd.SourceRecoveryTests.test_consolidation_preserves_both_predecessor_recovery_receipts) ... ok
+2026-10-24T15:15:09.9420957Z test_every_recovered_source_keeps_its_original_blob_identity (tests.test_self_host_temdd.SourceRecoveryTests.test_every_recovered_source_keeps_its_original_blob_identity) ... FAIL
+2026-10-24T15:15:09.9421993Z test_native_kernel_is_in_the_export_and_no_provider_is_required (tests.test_self_host_temdd.SourceRecoveryTests.test_native_kernel_is_in_the_export_and_no_provider_is_required) ... ok
+2026-10-24T15:15:10.4786824Z test_novnc_startup_reads_actual_loopback_bytes_under_a_dead_inherited_proxy (tests.test_self_host_temdd.SourceRecoveryTests.test_novnc_startup_reads_actual_loopback_bytes_under_a_dead_inherited_proxy) ... ok
+2026-10-24T15:15:10.4789803Z test_streaming_repair_preserves_original_recovery_and_prior_bindings (tests.test_self_host_temdd.SourceRecoveryTests.test_streaming_repair_preserves_original_recovery_and_prior_bindings) ... ok
+2026-10-24T15:15:11.0722043Z test_admission_binds_original_launcher_without_any_external_effect (tests.test_self_host.StandaloneTests.test_admission_binds_original_launcher_without_any_external_effect) ... ok
+2026-10-24T15:15:11.2570783Z test_admission_missing_does_not_start_or_claim_completion (tests.test_self_host.StandaloneTests.test_admission_missing_does_not_start_or_claim_completion) ... ok
+2026-10-24T15:15:11.9780892Z test_admission_rejects_pin_subject_route_identity_and_mount_drift (tests.test_self_host.StandaloneTests.test_admission_rejects_pin_subject_route_identity_and_mount_drift) ... ok
+2026-10-24T15:15:12.8348834Z test_authenticated_reference_terminal_and_public_read_only_boundary (tests.test_self_host.StandaloneTests.test_authenticated_reference_terminal_and_public_read_only_boundary) ... ok
+2026-10-24T15:15:14.1769639Z test_cold_start_has_durable_snapshot_before_first_independent_readback (tests.test_self_host.StandaloneTests.test_cold_start_has_durable_snapshot_before_first_independent_readback) ... ok
+2026-10-24T15:15:14.1781742Z test_ephemeral_mount_cannot_be_host_persistence_evidence (tests.test_self_host.StandaloneTests.test_ephemeral_mount_cannot_be_host_persistence_evidence) ... ok
+2026-10-24T15:15:14.3689178Z test_equal_monitor_and_terminal_ports_are_rejected_before_listener (tests.test_self_host.StandaloneTests.test_equal_monitor_and_terminal_ports_are_rejected_before_listener) ... ok
+2026-10-24T15:15:14.8860285Z test_export_is_deterministic_and_contains_only_committed_public_bytes (tests.test_self_host.StandaloneTests.test_export_is_deterministic_and_contains_only_committed_public_bytes) ... ok
+2026-10-24T15:15:14.9015729Z test_fixture_selects_distinct_ports_when_kernel_reuses_released_port (tests.test_self_host.StandaloneTests.test_fixture_selects_distinct_ports_when_kernel_reuses_released_port) ... ok
+2026-10-24T15:15:14.9322295Z test_frozen_manifest_binds_mesh_contract_and_rejects_digest_substitution (tests.test_self_host.StandaloneTests.test_frozen_manifest_binds_mesh_contract_and_rejects_digest_substitution) ... ok
+2026-10-24T15:15:16.2525532Z test_full_tree_preserves_original_eol_unicode_modes_and_symlink_bytes_and_rejects_changes (tests.test_self_host.StandaloneTests.test_full_tree_preserves_original_eol_unicode_modes_and_symlink_bytes_and_rejects_changes) ... ok
+2026-10-24T15:15:16.6165683Z {"admission_sha256": "ae6ac1b89afcb968f6c69b72072304f4850c3d7363d7109bda0b9368a2191207", "admission_tool_sha256": "373aa659902b4c892270bddfc9bc013b64e442355979faf60e9c10d8eba45497", "config_sha256": "6394e73afd8810abb59ff7cac6e3db1ed9104eab0e14a394fbfb8acc93891d0a", "effect_ack_done": false, "existing_supervisor_pid_binding_match": true, "manifest_sha256": "33df9a5a31a62dbe7ae0882131f6d6b6100e64f631beb59077d2a934a6d6e7e1", "public_readback_verified": false, "source_head": "29ba09cecfa3d8ee25fb26f04b2d07299f0b98a3", "source_tree": "406e3996a826b90a8ed758504c82c0d71ad27e82", "state": "HOST_GUARD_VERIFIED_STARTING_EXISTING_LAUNCHER", "systemd_invocation_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}
+2026-10-24T15:15:16.6168529Z test_guard_independently_verifies_then_execs_original_export (tests.test_self_host.StandaloneTests.test_guard_independently_verifies_then_execs_original_export) ... ok
+2026-10-24T15:15:16.9934417Z test_guard_pin_drift_and_wrong_persisted_identity_cannot_execute (tests.test_self_host.StandaloneTests.test_guard_pin_drift_and_wrong_persisted_identity_cannot_execute) ... ok
+2026-10-24T15:15:17.9496241Z test_missing_gh_is_optional_only_for_the_standalone_none_adapter (tests.test_self_host.StandaloneTests.test_missing_gh_is_optional_only_for_the_standalone_none_adapter) ... ok
+2026-10-24T15:15:19.6280063Z test_optional_mesh_file_is_authenticated_read_only_derived_sqlite_transport (tests.test_self_host.StandaloneTests.test_optional_mesh_file_is_authenticated_read_only_derived_sqlite_transport) ... ok
+2026-10-24T15:15:20.0332868Z test_portable_complete_history_bundle_restores_into_empty_repository_without_network (tests.test_self_host.StandaloneTests.test_portable_complete_history_bundle_restores_into_empty_repository_without_network) ... /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/pathlib.py:369: ResourceWarning: unclosed <socket.socket [closed] fd=5, family=2, type=1, proto=6>
+2026-10-24T15:15:20.0333879Z   path = os.fspath(arg)
+2026-10-24T15:15:20.0334289Z ResourceWarning: Enable tracemalloc to get the object allocation traceback
+2026-10-24T15:15:20.6833282Z ok
+2026-10-24T15:15:22.2442996Z test_portable_export_contains_one_canonical_sqlite_full_tree_and_derived_transport (tests.test_self_host.StandaloneTests.test_portable_export_contains_one_canonical_sqlite_full_tree_and_derived_transport) ... ok
+2026-10-24T15:15:22.2833097Z test_portable_history_refuses_shallow_or_missing_objects_without_fetching (tests.test_self_host.StandaloneTests.test_portable_history_refuses_shallow_or_missing_objects_without_fetching) ... ok
+2026-10-24T15:15:23.4396481Z test_portable_restore_needs_only_python_and_checks_independent_pins_and_absent_target (tests.test_self_host.StandaloneTests.test_portable_restore_needs_only_python_and_checks_independent_pins_and_absent_target) ... ok
+2026-10-24T15:15:23.9952005Z test_private_config_and_secret_symlink_fail_before_listener (tests.test_self_host.StandaloneTests.test_private_config_and_secret_symlink_fail_before_listener) ... ok
+2026-10-24T15:15:24.7706965Z test_railway_denial_happens_before_transport_with_or_without_github (tests.test_self_host.StandaloneTests.test_railway_denial_happens_before_transport_with_or_without_github) ... ok
+2026-10-24T15:15:26.0590522Z test_reviewed_publication_assets_survive_sealing_and_actual_http_without_control_exposure (tests.test_self_host.StandaloneTests.test_reviewed_publication_assets_survive_sealing_and_actual_http_without_control_exposure) ... ok
+2026-10-24T15:15:26.7633214Z test_second_writer_is_rejected_by_kernel_lock (tests.test_self_host.StandaloneTests.test_second_writer_is_rejected_by_kernel_lock) ... ok
+2026-10-24T15:15:28.0706289Z test_sigkill_restart_preserves_acknowledged_original_bytes_and_independent_readback (tests.test_self_host.StandaloneTests.test_sigkill_restart_preserves_acknowledged_original_bytes_and_independent_readback) ... ok
+2026-10-24T15:15:28.0712086Z test_standard_firefox_entry_survives_the_real_frozen_package_export (tests.test_self_host.StandaloneTests.test_standard_firefox_entry_survives_the_real_frozen_package_export) ... ok
+2026-10-24T15:15:28.7782172Z test_static_react_export_serves_each_scope_and_preserves_original_bytes (tests.test_self_host.StandaloneTests.test_static_react_export_serves_each_scope_and_preserves_original_bytes) ... ok
+2026-10-24T15:15:28.7936565Z test_static_react_source_and_license_drift_refuse_before_export (tests.test_self_host.StandaloneTests.test_static_react_source_and_license_drift_refuse_before_export) ... ok
+2026-10-24T15:15:28.7953756Z test_supervisor_invocation_requires_actual_manager_mainpid_and_id (tests.test_self_host.StandaloneTests.test_supervisor_invocation_requires_actual_manager_mainpid_and_id) ... ok
+2026-10-24T15:15:28.8898600Z test_supervisor_is_create_only_and_preserves_admission_on_every_start (tests.test_self_host.StandaloneTests.test_supervisor_is_create_only_and_preserves_admission_on_every_start) ... ok
+2026-10-24T15:15:30.1893307Z test_surviving_monitor_retains_lock_after_launcher_only_sigkill (tests.test_self_host.StandaloneTests.test_surviving_monitor_retains_lock_after_launcher_only_sigkill) ... ok
+2026-10-24T15:15:30.4053068Z test_tampered_artifact_and_extra_file_are_not_admitted (tests.test_self_host.StandaloneTests.test_tampered_artifact_and_extra_file_are_not_admitted) ... ok
+2026-10-24T15:15:30.7019163Z test_wrong_manifest_pin_and_runtime_executable_binding_fail_closed (tests.test_self_host.StandaloneTests.test_wrong_manifest_pin_and_runtime_executable_binding_fail_closed) ... ok
+2026-10-24T15:15:31.1741353Z test_wrong_node_versions_fail_preflight_and_export_without_artifacts (tests.test_self_host.StandaloneTests.test_wrong_node_versions_fail_preflight_and_export_without_artifacts) ... ok
+2026-10-24T15:15:31.1805653Z test_wrong_source_and_unreviewed_worktree_fail_export (tests.test_self_host.StandaloneTests.test_wrong_source_and_unreviewed_worktree_fail_export) ... ok
+2026-10-24T15:15:31.3691441Z test_wrong_source_binding_does_not_start (tests.test_self_host.StandaloneTests.test_wrong_source_binding_does_not_start) ... ok
+2026-10-24T15:15:32.3245541Z test_wrong_volume_identity_preserves_confirmed_data (tests.test_self_host.StandaloneTests.test_wrong_volume_identity_preserves_confirmed_data) ... ok
+2026-10-24T15:15:34.2164143Z test_create_only_restore_rejects_wrong_pin_binding_and_corruption (tests.test_self_host_temdd.StateSnapshotBackendTests.test_create_only_restore_rejects_wrong_pin_binding_and_corruption) ... ok
+2026-10-24T15:15:34.8744066Z test_each_original_os_writer_lock_blocks_before_snapshot_creation (tests.test_self_host_temdd.StateSnapshotBackendTests.test_each_original_os_writer_lock_blocks_before_snapshot_creation) ... ok
+2026-10-24T15:15:35.6419571Z test_real_acknowledged_wal_and_journal_survive_exact_private_restore (tests.test_self_host_temdd.StateSnapshotBackendTests.test_real_acknowledged_wal_and_journal_survive_exact_private_restore) ... ok
+2026-10-24T15:15:36.3045676Z test_snapshot_and_restore_have_no_git_gh_or_remote_transport_requirement (tests.test_self_host_temdd.StateSnapshotBackendTests.test_snapshot_and_restore_have_no_git_gh_or_remote_transport_requirement) ... ok
+2026-10-24T15:15:37.3202844Z test_symlinks_unlisted_files_and_public_snapshot_modes_are_refused (tests.test_self_host_temdd.StateSnapshotBackendTests.test_symlinks_unlisted_files_and_public_snapshot_modes_are_refused) ... ok
+2026-10-24T15:15:39.4085213Z test_export_refuses_both_running_writer_locks_and_never_copies_a_live_main_file (tests.test_self_host_temdd.StorageTransportTests.test_export_refuses_both_running_writer_locks_and_never_copies_a_live_main_file) ... ok
+2026-10-24T15:15:42.1561170Z test_forged_transport_hashes_do_not_admit_corrupt_ledger_schema_or_replay_sequence (tests.test_self_host_temdd.StorageTransportTests.test_forged_transport_hashes_do_not_admit_corrupt_ledger_schema_or_replay_sequence) ... ok
+2026-10-24T15:15:46.6206505Z test_rest_pending_prepare_committed_effect_and_replay_survive_byte_exact_roundtrip_and_restart (tests.test_self_host_temdd.StorageTransportTests.test_rest_pending_prepare_committed_effect_and_replay_survive_byte_exact_roundtrip_and_restart) ... ok
+2026-10-24T15:15:48.6417511Z test_wrong_pins_truncation_corruption_legacy_transport_and_existing_target_never_install (tests.test_self_host_temdd.StorageTransportTests.test_wrong_pins_truncation_corruption_legacy_transport_and_existing_target_never_install) ... file:///home/runner/work/qik-vrt/qik-vrt/docs/monitor/mesh-file-codec.js:9
+2026-10-24T15:15:48.6418221Z   const fail = message => {throw Error(message);};
+2026-10-24T15:15:48.6418434Z                                  ^
+2026-10-24T15:15:48.6418529Z 
+2026-10-24T15:15:48.6418616Z Error: PACKAGE_MANIFEST_PIN_MISMATCH
+2026-10-24T15:15:48.6418875Z     at fail (file:///home/runner/work/qik-vrt/qik-vrt/docs/monitor/mesh-file-codec.js:9:34)
+2026-10-24T15:15:48.6419248Z     at Object.transportImage (file:///home/runner/work/qik-vrt/qik-vrt/docs/monitor/mesh-file-codec.js:140:71)
+2026-10-24T15:15:48.6419598Z     at file:///home/runner/work/qik-vrt/qik-vrt/docs/monitor/mesh-file-store.mjs:224:76
+2026-10-24T15:15:48.6419766Z 
+2026-10-24T15:15:48.6419814Z Node.js v24.21.0
+2026-10-24T15:15:48.6797320Z file:///home/runner/work/qik-vrt/qik-vrt/docs/monitor/mesh-file-codec.js:9
+2026-10-24T15:15:48.6797786Z   const fail = message => {throw Error(message);};
+2026-10-24T15:15:48.6798151Z                                  ^
+2026-10-24T15:15:48.6798314Z 
+2026-10-24T15:15:48.6798466Z Error: CANONICAL_IMAGE_PIN_MISMATCH
+2026-10-24T15:15:48.6798930Z     at fail (file:///home/runner/work/qik-vrt/qik-vrt/docs/monitor/mesh-file-codec.js:9:34)
+2026-10-24T15:15:48.6799505Z     at Object.transportImage (file:///home/runner/work/qik-vrt/qik-vrt/docs/monitor/mesh-file-codec.js:139:64)
+2026-10-24T15:15:48.6800069Z     at file:///home/runner/work/qik-vrt/qik-vrt/docs/monitor/mesh-file-store.mjs:224:76
+2026-10-24T15:15:48.6800339Z 
+2026-10-24T15:15:48.6800418Z Node.js v24.21.0
+2026-10-24T15:15:48.7229771Z file:///home/runner/work/qik-vrt/qik-vrt/docs/monitor/mesh-file-codec.js:9
+2026-10-24T15:15:48.7230081Z   const fail = message => {throw Error(message);};
+2026-10-24T15:15:48.7230267Z                                  ^
+2026-10-24T15:15:48.7230360Z 
+2026-10-24T15:15:48.7230433Z Error: TRUNCATED_FRAME
+2026-10-24T15:15:48.7230674Z     at fail (file:///home/runner/work/qik-vrt/qik-vrt/docs/monitor/mesh-file-codec.js:9:34)
+2026-10-24T15:15:48.7231013Z     at Object.scan (file:///home/runner/work/qik-vrt/qik-vrt/docs/monitor/mesh-file-codec.js:56:36)
+2026-10-24T15:15:48.7231380Z     at async file:///home/runner/work/qik-vrt/qik-vrt/docs/monitor/mesh-file-store.mjs:224:41
+2026-10-24T15:15:48.7231554Z 
+2026-10-24T15:15:48.7231605Z Node.js v24.21.0
+2026-10-24T15:15:48.7575751Z node:internal/encoding:494
+2026-10-24T15:15:48.7576163Z         if (!chunk) return decodeUTF8(input, ignoreBom, this[kFatal]);
+2026-10-24T15:15:48.7576569Z                            ^
+2026-10-24T15:15:48.7576700Z 
+2026-10-24T15:15:48.7576960Z TypeError: The encoded data was not valid for encoding utf-8
+2026-10-24T15:15:48.7577391Z     at TextDecoder.decode (node:internal/encoding:494:28)
+2026-10-24T15:15:48.7577719Z     at parse (file:///home/runner/work/qik-vrt/qik-vrt/docs/monitor/mesh-file-codec.js:20:56)
+2026-10-24T15:15:48.7578059Z     at Object.scan (file:///home/runner/work/qik-vrt/qik-vrt/docs/monitor/mesh-file-codec.js:57:45)
+2026-10-24T15:15:48.7578399Z     at async file:///home/runner/work/qik-vrt/qik-vrt/docs/monitor/mesh-file-store.mjs:224:41 {
+2026-10-24T15:15:48.7578650Z   code: 'ERR_ENCODING_INVALID_ENCODED_DATA'
+2026-10-24T15:15:48.7578799Z }
+2026-10-24T15:15:48.7579220Z 
+2026-10-24T15:15:48.7579270Z Node.js v24.21.0
+2026-10-24T15:15:48.8079209Z file:///home/runner/work/qik-vrt/qik-vrt/docs/monitor/mesh-file-codec.js:9
+2026-10-24T15:15:48.8079634Z   const fail = message => {throw Error(message);};
+2026-10-24T15:15:48.8080376Z                                  ^
+2026-10-24T15:15:48.8080699Z 
+2026-10-24T15:15:48.8081054Z Error: DERIVED_SQLITE_TRANSPORT_REQUIRED; LEGACY_SOURCE_ONLY_QIKMESH_NOT_A_PRODUCT_STORE
+2026-10-24T15:15:48.8081457Z     at fail (file:///home/runner/work/qik-vrt/qik-vrt/docs/monitor/mesh-file-codec.js:9:34)
+2026-10-24T15:15:48.8081831Z     at Object.transportImage (file:///home/runner/work/qik-vrt/qik-vrt/docs/monitor/mesh-file-codec.js:138:7)
+2026-10-24T15:15:48.8082177Z     at file:///home/runner/work/qik-vrt/qik-vrt/docs/monitor/mesh-file-store.mjs:224:76
+2026-10-24T15:15:48.8082344Z 
+2026-10-24T15:15:48.8082399Z Node.js v24.21.0
+2026-10-24T15:15:48.8139840Z ok
+2026-10-24T15:15:48.8224441Z 
+2026-10-24T15:15:48.8224752Z ======================================================================
+2026-10-24T15:15:48.8227375Z FAIL: test_every_recovered_source_keeps_its_original_blob_identity (tests.test_self_host_temdd.SourceRecoveryTests.test_every_recovered_source_keeps_its_original_blob_identity)
+2026-10-24T15:15:48.8228149Z ----------------------------------------------------------------------
+2026-10-24T15:15:48.8228497Z Traceback (most recent call last):
+2026-10-24T15:15:48.8229122Z   File "/home/runner/work/qik-vrt/qik-vrt/tests/test_self_host_temdd.py", line 111, in test_every_recovered_source_keeps_its_original_blob_identity
+2026-10-24T15:15:48.8229786Z     self.assertEqual(set(changed), {f['restored_path'] for f in r['files'] if
+2026-10-24T15:15:48.8230210Z AssertionError: Items in the second set but not the first:
+2026-10-24T15:15:48.8230541Z 'deploy/universal-terminal/nginx.conf'
+2026-10-24T15:15:48.8230827Z 'tests/test_qikvrt_temdd_public_proxy.py'
+2026-10-24T15:15:48.8230988Z 
+2026-10-24T15:15:48.8231187Z ----------------------------------------------------------------------
+2026-10-24T15:15:48.8231481Z Ran 100 tests in 138.682s
+2026-10-24T15:15:48.8231599Z 
+2026-10-24T15:15:48.8231685Z FAILED (failures=1)
+2026-10-24T15:15:48.8457602Z make: *** [Makefile:220: self-host-test] Error 1
+2026-10-24T15:15:48.8471694Z ##[error]Process completed with exit code 2.
+2026-10-24T15:15:48.8645519Z Post job cleanup.
+2026-10-24T15:15:48.9194977Z [command]/usr/bin/git version
+2026-10-24T15:15:48.9224791Z git version 2.55.0
+2026-10-24T15:15:48.9248543Z Temporarily overriding HOME='/home/runner/work/_temp/37464e5e-7ae2-401a-b686-f2cd76f232a3' before making global git config changes
+2026-10-24T15:15:48.9249277Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-24T15:15:48.9251951Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/qik-vrt/qik-vrt
+2026-10-24T15:15:48.9279783Z Removing SSH command configuration
+2026-10-24T15:15:48.9284313Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-24T15:15:48.9311823Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-24T15:15:48.9522008Z Removing HTTP extra header
+2026-10-24T15:15:48.9527499Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-24T15:15:48.9558328Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-24T15:15:48.9752723Z Removing includeIf entries pointing to credentials config files
+2026-10-24T15:15:48.9758526Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-24T15:15:48.9789205Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-24T15:15:49.0084812Z Cleaning up orphan processes
+2026-10-24T15:15:49.0312592Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020, actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+

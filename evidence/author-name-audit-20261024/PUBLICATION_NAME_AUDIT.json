@@ -1,0 +1,218 @@
+{
+  "schema": "qikvrt-author-name-audit/v1",
+  "author": "Ingolf Lohmann",
+  "observed_at_utc": "2026-10-24T12:52:01.623398+00:00",
+  "scope": "Publicly indexed Zenodo all-version creator inventories; all files in those records; known published IETF revisions in the current publication index; current Authority source and repository archives.",
+  "baseline": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "a1a2204f429bcab7a184afaf51a57b7de03d4ee7",
+    "tree": "184adc9c40b27cce1be4995d2eae895d3fbbd2ee",
+    "tracked_blobs": 5242
+  },
+  "zenodo": {
+    "record_versions": 44,
+    "record_families": 32,
+    "files": 479,
+    "verified_files": 479,
+    "total_bytes": 332450927,
+    "retrieval_methods": {
+      "PUBLIC_HTTP_GET": 196,
+      "EXACT_PUBLIC_CHECKSUM_CACHE": 283
+    },
+    "record_ids": [
+      20712301,
+      21244412,
+      21245282,
+      21245951,
+      21247297,
+      21247388,
+      21252415,
+      21252649,
+      21266670,
+      21267021,
+      21482023,
+      21488116,
+      21498773,
+      21498774,
+      21500322,
+      21501365,
+      21515074,
+      21518464,
+      21529081,
+      21582781,
+      21633411,
+      21636774,
+      21640160,
+      21640173,
+      21711193,
+      21721918,
+      21731492,
+      21748371,
+      21804399,
+      21888130,
+      21947141,
+      21983644,
+      22216916,
+      22283396,
+      22527889,
+      22813431,
+      22840633,
+      22845516,
+      22847245,
+      22907018,
+      22941556,
+      22955727,
+      23008330,
+      23008704
+    ],
+    "queries": [
+      {
+        "url": "https://zenodo.org/api/records?q=creators.name%3A%22Lohmann%2C+Ingolf%22&size=25&sort=mostrecent&all_versions=true",
+        "status": 200,
+        "bytes": 235216,
+        "count": 25,
+        "total": 42
+      },
+      {
+        "url": "https://zenodo.org/api/records?allversions=True&page=2&q=creators.name:%22Lohmann,+Ingolf%22&size=25&sort=mostrecent",
+        "status": 200,
+        "bytes": 114862,
+        "count": 17,
+        "total": 42
+      },
+      {
+        "url": "https://zenodo.org/api/records?q=creators.name%3A%28Ingolf+AND+Lohmann%29&size=25&sort=mostrecent&all_versions=true",
+        "status": 200,
+        "bytes": 235214,
+        "count": 25,
+        "total": 42
+      },
+      {
+        "url": "https://zenodo.org/api/records?allversions=True&page=2&q=creators.name:(Ingolf+AND+Lohmann)&size=25&sort=mostrecent",
+        "status": 200,
+        "bytes": 114860,
+        "count": 17,
+        "total": 42
+      },
+      {
+        "url": "https://zenodo.org/api/records?q=creators.name%3A%22ingolf-lohmann%22&size=25&sort=mostrecent&all_versions=true",
+        "status": 200,
+        "bytes": 9157,
+        "count": 2,
+        "total": 2
+      },
+      {
+        "url": "https://zenodo.org/api/records?q=creators.name%3A%28Ingolf+AND+Lohman%29&size=25&sort=mostrecent&all_versions=true",
+        "status": 200,
+        "bytes": 477,
+        "count": 0,
+        "total": 0
+      }
+    ],
+    "raw_query_files": [
+      {
+        "path": "original-readbacks/query-01.json",
+        "bytes": 235216,
+        "sha256": "03e3f944b1b5bb1cd2cddb5cd33455e083ea4a2d682bddd64920b4c443faea7e"
+      },
+      {
+        "path": "original-readbacks/query-02.json",
+        "bytes": 114862,
+        "sha256": "7f2d18a461681d232d7a2a76577caac73f69ece9c0efb7650d2d94ed19727e9b"
+      },
+      {
+        "path": "original-readbacks/query-03.json",
+        "bytes": 235214,
+        "sha256": "d013e28af60b4c420ede960fb86b0d4661cc183c7e8a3f6d0aac344626f0005f"
+      },
+      {
+        "path": "original-readbacks/query-04.json",
+        "bytes": 114860,
+        "sha256": "6f0c50b7a3ee16b85f1dc7e95e3b1dc7f8ffadaa20af5d542dca98841b2f5874"
+      },
+      {
+        "path": "original-readbacks/query-05.json",
+        "bytes": 9157,
+        "sha256": "8830ad8ef0a80d0a55222855899ae83392d11d35177eac9d76af1d34fef1651a"
+      },
+      {
+        "path": "original-readbacks/query-06.json",
+        "bytes": 477,
+        "sha256": "49746aef0ccbfbff09d74fbc632674c01ab6c46bd1b74dfdd1d62d76839e3075"
+      }
+    ],
+    "content_scan": {
+      "unique_units": 3526,
+      "text_units": 4187,
+      "pdf_files": 34,
+      "pdf_pages": 790,
+      "duplicate_units": 3631,
+      "zip_or_office_files": 49,
+      "raster_images_requiring_visual_check": 10,
+      "non_text_units": 99,
+      "tar_files": 1
+    },
+    "known_typo_findings": [],
+    "extended_typo_findings": [],
+    "supplemental_ocr_units": 38,
+    "supplemental_ocr_possible_name_errors": [],
+    "public_name_correction_required": false,
+    "metadata_creator_names": {
+      "Lohmann, Ingolf": 42,
+      "ingolf-lohmann": 2
+    },
+    "handle_records_retained": [
+      21252649,
+      21252415
+    ],
+    "handle_boundary": "ingolf-lohmann is the valid technical creator handle on two software records; it is not treated as a misspelled natural-person name or rewritten as a repository identifier.",
+    "external_mutation_count": 0
+  },
+  "ietf": {
+    "known_published_revisions_checked": 5,
+    "all_observed_author_names_correct": true,
+    "inventory_source": "docs/publications/index.json; current Datatracker person-inventory request returned HTTP 403, so no wider newly-discovered-author completeness claim."
+  },
+  "repository_correction": {
+    "wrong_forms": 10,
+    "article_replacements": 24,
+    "canonical_name": "Ingolf Lohmann",
+    "reading_transcripts": 14,
+    "original_asr_evidence_preserved": true,
+    "old_git_objects_and_frozen_payload_preserved": true,
+    "scientific_claims_changed": false,
+    "publication": "docs/publications/2026-08-04-aphorism-corpus-scientific-assessment/",
+    "status": "CORRECTION_CANDIDATE_MAIN_INTEGRATION_NOT_ESTABLISHED"
+  },
+  "mesh": {
+    "claude_report": "OWNER_SUPPLIED_THIRD_PARTY_REPORT_NOT_AUTHENTICATED_PEER_RECEIPT",
+    "reported_commit_prefixes": [
+      "ba30707",
+      "66627da"
+    ],
+    "authority_lookup_results": {
+      "ba30707": "422 No commit found for SHA: ba30707",
+      "66627da": "422 No commit found for SHA: 66627da"
+    },
+    "current_connection": {
+      "operator_authorized": true,
+      "native_available": false,
+      "open_gates": [
+        "ADMITTED_MESH_RUNTIME_ENDPOINT"
+      ]
+    },
+    "native_source_allows_adapter_none": true,
+    "github_write_identity_required_for_native_mesh": false,
+    "source_fix": "Existing mesh-contract diagnostic and AI/CLAUDE/S1 entry instructions clarify separate GitHub and native admission gates.",
+    "live_peer_exchange_verified": false,
+    "outbox_tool_available": false,
+    "productive_runtime_repair_complete": false
+  },
+  "limits": [
+    "No private or unindexed publication completeness claim.",
+    "OCR and visual inspection are fallible checks.",
+    "Original ASR errors remain in byte-bound source evidence, with corrected reading copies and an explicit mapping.",
+    "No Zenodo file rewrite, IETF submission, Main integration, public runtime admission or Claude authentication is inferred."
+  ],
+  "effect_ack_done": false
+}

@@ -3,17 +3,17 @@
   "generated_at": "2026-08-04T00:00:00+02:00",
   "pdf": {
     "author": "Ingolf Lohmann",
-    "bytes": 161891,
+    "bytes": 152168,
     "page_size": "595.28 x 841.89 pts (A4)",
     "pages": 20,
     "path": "QIK-VRT_Aphorism_Corpus_Scientific_Assessment_2026-08-04.pdf",
-    "sha256": "15d7c2c9d9781db7e2b0f13bdf93a44d1a8b0340db28fa65fe1b485fac1381ea",
+    "sha256": "7dafbe81ad5d71558687ec81422901f4154230acca288050608779e8c15ba56c",
     "title": "Aphorismen-Audiokorpus: wissenschaftliche Einordnung Version 2"
   },
   "preflight": {
     "all_fonts_embedded": true,
     "encrypted": true,
-    "font_count": 11,
+    "font_count": 10,
     "ok_open": true
   },
   "release_claims": {
@@ -22,103 +22,105 @@
     "PASS": false
   },
   "render": {
+    "cross_references_stable": true,
     "dpi": 120,
     "ephemeral_page_renders": true,
+    "latex_passes": 2,
     "pages": [
       {
-        "bytes": 230144,
+        "bytes": 255522,
         "page": 1,
-        "sha256": "baf0a04551934a9c7ceedfbbf4c332a5ffe601807459955658f2a7e3bd0ab837"
+        "sha256": "dcb2b613e793e1f7c46750e96966647eaff74c335c88afef3293ed61724f3033"
       },
       {
-        "bytes": 118064,
+        "bytes": 138113,
         "page": 2,
-        "sha256": "768f2c99a9beb60dd99f4c2b92ec7256fd8d176f214f30619023d2ea4531cfdc"
+        "sha256": "e5373a2ace5b7382172fef87cf7b2d6e207860a507caa67e3d215fbb988ab93d"
       },
       {
-        "bytes": 242432,
+        "bytes": 247802,
         "page": 3,
-        "sha256": "a619643fca2639c63663722717a1331a23273d13b55e3f89a7e4416a595ca6b4"
+        "sha256": "0f536aca06beed25a83dd68f4c5ce4c84bfac42969b089e0a34902f525bf0820"
       },
       {
-        "bytes": 322244,
+        "bytes": 312051,
         "page": 4,
-        "sha256": "dcaa1d216f90e88ad549009540a0cd4a03bfec2491f7fec44913a7165dc47c85"
+        "sha256": "f757d888714181a2e959e8ef901f2c72d215a21d8376ae9343ad1761d7a1637c"
       },
       {
-        "bytes": 259451,
+        "bytes": 267763,
         "page": 5,
-        "sha256": "36728f4ddb344cf40a992a81231f009e5c6be366b3612396643cf582170fc710"
+        "sha256": "3a42cc2f65ef6e22b6dfe3d2a5202f383bbdd2c8d4a235a180507e0fab68651b"
       },
       {
-        "bytes": 247042,
+        "bytes": 244815,
         "page": 6,
-        "sha256": "27f7a68e75e7202c0fe670731ef7a5049bbbc0a7ed2126f29dce4e0dbeabc640"
+        "sha256": "859da2add0e0388e47df1a18103ca679bf59be9c7b812552094ff62b57650cbc"
       },
       {
-        "bytes": 258565,
+        "bytes": 254876,
         "page": 7,
-        "sha256": "095f96e9ddf6f579c4d5aea2245bf3e04ba56907c3246445a03fdb5b4aa2a717"
+        "sha256": "2c4c10544be0e03ca5025830478e14fd6c93bfbc6467f5f5c36c9331ac263d96"
       },
       {
-        "bytes": 343964,
+        "bytes": 343204,
         "page": 8,
-        "sha256": "2041483e83f6ae75dc226b44925ddb399aa05f7edcc13fc1962c4dc47b3a2c8f"
+        "sha256": "e7a64c8a40d48f75693c3aaba3fc03b086d0d169526084781d9c30a91ffc65de"
       },
       {
-        "bytes": 195058,
+        "bytes": 195273,
         "page": 9,
-        "sha256": "c1fcc9505f1b6ccdb46f093a483d49e1d097044645a27baaacb3684988a8fe92"
+        "sha256": "e34b9c48cb87404d4a07211a51327eb96581e0f025571fb1f071d17f9c593e49"
       },
       {
-        "bytes": 327356,
+        "bytes": 310433,
         "page": 10,
-        "sha256": "0adf36778de1468cf0f01854a9f56a5ba8a20f399a6168b2d57a0f45a81ce4f6"
+        "sha256": "76afb67c0594140dccd70a17777137fb6b26750f39e0e9b14ff90148cf2d01c9"
       },
       {
-        "bytes": 305528,
+        "bytes": 307584,
         "page": 11,
-        "sha256": "6977d72fac51ccf3d2850f1eae7774c8bc278bec962872471ac3beb4f3b830ee"
+        "sha256": "384e32a719204de0fe1a9e4eeba22599b4a0cfaffa6b2340e7e41d40e51143a4"
       },
       {
-        "bytes": 252491,
+        "bytes": 253547,
         "page": 12,
-        "sha256": "57fec54d90c0277353aefad0b2a5c51b873658837d7dc4f4788f3b01834d641f"
+        "sha256": "e7428cce2fa76cecccdc591bd06fb5273a0270f936e17cab73519a96e632b4e4"
       },
       {
-        "bytes": 251724,
+        "bytes": 255863,
         "page": 13,
-        "sha256": "2979c95319f8896adfaeeb544747c54710a9e996502da272561206d2d1f80c95"
+        "sha256": "ed652b15143e2781d07ab4559bdc66efc008bc2d3e40698621b97fb685962094"
       },
       {
-        "bytes": 348479,
+        "bytes": 347894,
         "page": 14,
-        "sha256": "13aaeff108e4a2e256b21ef919100ad337ab1a2c78ec7c04f148b04d8728a66f"
+        "sha256": "b29a01082e4f679a03c0110459db328f6faac0db4e1857b638b8298c0d201483"
       },
       {
-        "bytes": 224697,
+        "bytes": 223631,
         "page": 15,
-        "sha256": "ead735074ed53920fac59c9d6b28bc3acf2870100e84ef70a1720edeec164812"
+        "sha256": "8d0d5c6c1c4c5510f027adda9d69a9027341fe64b2510c734eb9fd8920cd31a1"
       },
       {
-        "bytes": 263141,
+        "bytes": 259837,
         "page": 16,
-        "sha256": "969cf90936b390a7fb152ede12f9a04b8135dfa73b4ae4089984a3c56521dce6"
+        "sha256": "2b547dfb0eaa1beb1acea5ec4842a73686c277dc338ebfd67197a6d8877bcc06"
       },
       {
-        "bytes": 290503,
+        "bytes": 288521,
         "page": 17,
-        "sha256": "98a81b7cfa0c2a8a713c2192bee868df2e68aa3edff9740e871e09da99e93507"
+        "sha256": "bf5b585bd988e1802029c414536f92fd415038015e9c4600390bcafc30e1c129"
       },
       {
-        "bytes": 268316,
+        "bytes": 267120,
         "page": 18,
-        "sha256": "cd23e56bbca2cf59dc3d73a7b57773d0945c6696c9f9c02959d3fe1f82ee650d"
+        "sha256": "d28a975bd43989f8da587f417587f4617891eb72e5025046da253eed9c2e3334"
       },
       {
-        "bytes": 236512,
+        "bytes": 236979,
         "page": 19,
-        "sha256": "50942efdba99ee19016002a166c1ea29743ad642f8594273766727b4e88ea527"
+        "sha256": "c5926f793025f5b67b86e437ae38a49404628a32eb16016efa8ab47cfdd406b4"
       },
       {
         "bytes": 86388,
@@ -126,7 +128,7 @@
         "sha256": "df7d7da48ea68f551c7f14e1a078a0b6772d930cdeb3dcf2747b9718697321e6"
       }
     ],
-    "renderer": "pdftoppm version 24.02.0",
+    "renderer": "pdftoppm version 26.05.0",
     "status": "AUTOMATED_RENDER_VERIFIED"
   },
   "schema": "qikvrt-pdf-render-receipt/1.0",
@@ -134,13 +136,15 @@
     "a03_actual_content": true,
     "a04_persistence_boundary": true,
     "a06_steuer_wordplay": true,
+    "author_name_reading_copy": true,
+    "canonical_pdf_author": true,
     "ietf_protocol_change_not_required": true,
     "physical_retrocausality_not_established": true,
     "verbatim_boundary_visible": true
   },
   "toolchain": {
-    "pdfinfo": "pdfinfo version 24.02.0",
-    "pdftoppm": "pdftoppm version 24.02.0",
+    "pdfinfo": "pdfinfo version 26.05.0",
+    "pdftoppm": "pdftoppm version 26.05.0",
     "xelatex": "XeTeX 3.141592653-2.6-0.999995 (TeX Live 2023/Debian)"
   },
   "visual_inspection": {

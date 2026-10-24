@@ -1,0 +1,95 @@
+{
+  "schema": "qikvrt-native-access-source/v1",
+  "owner": "Ingolf Lohmann",
+  "entrypoint": "AI",
+  "client_scope": "ANY_HTTP_JSON_CLIENT_WITH_A_SEPARATELY_ADMITTED_CAPABILITY",
+  "discovery": {
+    "method": "GET",
+    "path": "/.well-known/qik-vrt",
+    "response_schema": "qikvrt-native-access/v1",
+    "subject_binding": "RUNNING_PACKAGE_REPOSITORY_PR_HEAD_TREE",
+    "public_target": "https://raumzeitterminal.de/.well-known/qik-vrt",
+    "public_target_acceptance": "NOT_ESTABLISHED_BY_THIS_SOURCE"
+  },
+  "requirements": {
+    "github_write_identity": false,
+    "browser_login": false,
+    "provider_account_for_native_runtime": false,
+    "firefox_extension_for_temdd_profile": false,
+    "private_scoped_native_capability": true,
+    "anonymous_writes_allowed": false,
+    "anonymous_journal_reads_allowed": false
+  },
+  "runtime": {
+    "launcher": "tools/qikvrt_self_host.py",
+    "adapter": "none",
+    "terminal_profile": "temdd",
+    "ledger": "src/qikvrt_temdd_event_ledger.py",
+    "input_adapter": "OwnerREST",
+    "peer_adapter": "NativePeerRules",
+    "public_transport": "docs/monitor/self-host.mjs:fixed-loopback-nativeAccess",
+    "gateway": "deploy/universal-terminal/nginx.conf:exact-native-routes"
+  },
+  "operations": [
+    {
+      "method": "POST",
+      "path": "/api/owner/prepare",
+      "authentication": "PRIVATE_BEARER_PLUS_QIKVRT_OWNER",
+      "effect": "PREPARATION_ONLY"
+    },
+    {
+      "method": "POST",
+      "path": "/api/owner/commit",
+      "authentication": "SAME_PRINCIPAL_PLUS_EXACT_PREPARATION_HASH_AND_COMMIT_TOKEN",
+      "effect": "ORIGINAL_NATIVE_LEDGER_INPUT_PERSISTENCE"
+    },
+    {
+      "method": "GET",
+      "path": "/api/owner/receipts/{request_id}",
+      "authentication": "PRIVATE_BEARER_PLUS_QIKVRT_OWNER_AND_EXACT_QIKVRT_SUBJECT",
+      "effect": "INDEPENDENT_READBACK"
+    },
+    {
+      "method": "POST",
+      "path": "/api/mesh-work/rule/receive",
+      "authentication": "EXISTING_PEER_HMAC_AND_EXACT_REQUEST_RULE_SOURCE_GRANT",
+      "effect": "RECEIPT_ONLY"
+    },
+    {
+      "method": "POST",
+      "path": "/api/mesh-work/rule/apply",
+      "authentication": "SAME_ADMITTED_PEER_AND_EXACT_RECEIVED_RULE",
+      "effect": "EXISTING_SCOPED_NATIVE_RULE_ACTIVATION"
+    },
+    {
+      "method": "GET",
+      "path": "/api/mesh-work/rule/readback/{request_id}/{challenge}",
+      "authentication": "EXISTING_PEER_HMAC_AND_FRESH_CHALLENGE",
+      "effect": "AUTHENTICATED_ORIGINAL_RECEIPT_READBACK"
+    }
+  ],
+  "bounds": {
+    "input_characters": 4096,
+    "request_bytes": 32768,
+    "automatic_mutation_retries": 0,
+    "credentials_in_source_or_public_discovery": false
+  },
+  "continuation": {
+    "ambiguous_commit": "GET_THE_SAME_REQUEST_RECEIPT_BEFORE_ANY_RETRY",
+    "missing_endpoint": "ADMITTED_MESH_RUNTIME_ENDPOINT",
+    "missing_peer": "RETAIN_NAMED_PEER_AND_EXACT_ADMISSION_BINDING_AS_OPEN",
+    "principal_as_packet_relay": false
+  },
+  "acceptance": {
+    "source_contract_is_productive_join": false,
+    "all_peer_adoption_verified": false,
+    "effect_ack_done": false
+  },
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann.",
+    "license": "PolyForm-Noncommercial-1.0.0",
+    "classification": "native_machine_access_contract",
+    "implementation_contribution": "OpenAI Codex"
+  },
+  "principal_identity_rule": "OWN_DISTINCT_ADMITTED_NATIVE_PRINCIPAL_OR_PEER; NO_OWNER_OR_PROVIDER_ACCOUNT_IMPERSONATION"
+}
