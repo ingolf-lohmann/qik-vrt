@@ -1,0 +1,50 @@
+{
+  "schema": "QIKVRT_LOCAL_VISIBLE_SOURCE_CHECK_V1",
+  "checker": "validate_article_sources.py; referenced skill script not available",
+  "files": [
+    {
+      "artifact": "QIKVRT_Kausale_Distanz_Fachartikel.pdf",
+      "bytes": 149762,
+      "sha256": "7e50bc80d4017b6e43c495fdc7c19a2a322e51a2cd7e2fd9edb1072cf389caf5",
+      "visible_sources_passed": true,
+      "missing": [],
+      "replacement_glyph_detected": false,
+      "out_of_page_text": [],
+      "clickable_pdf_sources_checked": true
+    },
+    {
+      "artifact": "QIKVRT_Wie_weit_ist_eine_Wirkung_Prosa.pdf",
+      "bytes": 121544,
+      "sha256": "feaa7c803c0f556b8c0c52ad33b47d606399da2b6701f0a26d90be87952afd8f",
+      "visible_sources_passed": true,
+      "missing": [],
+      "replacement_glyph_detected": false,
+      "out_of_page_text": [],
+      "clickable_pdf_sources_checked": true
+    },
+    {
+      "artifact": "Fachartikel.md",
+      "bytes": 37142,
+      "sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "visible_sources_passed": true,
+      "missing": [],
+      "replacement_glyph_detected": false,
+      "out_of_page_text": [],
+      "clickable_pdf_sources_checked": false
+    },
+    {
+      "artifact": "Prosaartikel.txt",
+      "bytes": 28752,
+      "sha256": "ad6623349bfa59326677dfd2fa2774698e6678ca0822d8fe6a0d956826991191",
+      "visible_sources_passed": true,
+      "missing": [],
+      "replacement_glyph_detected": false,
+      "out_of_page_text": [],
+      "clickable_pdf_sources_checked": false
+    }
+  ],
+  "negative_controls_passed": true,
+  "visual_review": "All final PDF pages rendered and visually checked; final reference pages separately checked.",
+  "new_evidence_zenodo_archive_status": "PENDING_NEW_PUBLICATION",
+  "publication_complete": false
+}
