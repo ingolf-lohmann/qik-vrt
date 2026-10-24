@@ -1,0 +1,67 @@
+.section {
+  box-sizing: border-box;
+  border: 1px solid var(--border-soft, #34475e);
+  border-radius: 14px;
+  background: #0b1226;
+  padding: 24px;
+  margin: 0 0 25px;
+  color: #e4eaf1;
+  scroll-margin-top: 24px;
+}
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  border-bottom: 1px solid var(--border-soft, #34475e);
+  padding-bottom: 16px;
+}
+.section .eyebrow {
+  margin: 0 0 7px;
+  color: var(--amber-soft, #ffce88);
+  font: 11px/1.6 ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+}
+.section .title { margin: 0; color: #fff; font-size: 24px; line-height: 1.25; font-weight: 400; }
+.section a { text-decoration: none; transition: background-color .15s, border-color .15s; }
+.section a:focus-visible { outline: 3px solid #ffcf7d; outline-offset: 5px; }
+.section .open {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 15px;
+  border-radius: 5px;
+  background: var(--amber, #f0be70);
+  color: #101626;
+  font: 600 12px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace;
+  text-transform: uppercase;
+}
+.section .open:hover { background: var(--amber-soft, #ffce88); color: #101626; }
+.section .description { margin: 17px 0; color: var(--text-faint, #c5d0dd); font-size: 14px; line-height: 1.75; }
+.downloads { display: flex; flex-wrap: wrap; gap: 12px; }
+.section .download {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid var(--border-soft, #34475e);
+  border-radius: 5px;
+  background: #080e1f;
+  color: #fff;
+  font: 12px/1.6 ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+.section .download:hover { border-color: var(--amber, #f0be70); color: #fff; }
+.section .offline { margin: 14px 0 0; color: #b2c0d0; font-size: 12px; line-height: 1.7; }
+@media (max-width: 600px) {
+  .section { padding: 21px; }
+  .section .title { font-size: 22px; }
+}
+@media (max-width: 380px) {
+  .section .download { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { .section a { transition: none; } }
