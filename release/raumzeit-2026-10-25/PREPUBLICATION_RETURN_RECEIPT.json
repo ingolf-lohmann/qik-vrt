@@ -1,0 +1,38 @@
+{
+  "_license": {
+    "classification": "machine_readable_prepublication_return_receipt",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_prepublication_return_receipt_v2",
+  "publication_id": "raumzeit-rekonstruierbare-virtualitaet-20261025",
+  "content_changed": false,
+  "original_files": [],
+  "candidate_files": [
+    {
+      "path": "release/raumzeit-2026-10-25/Raumzeit_Fachartikel_ueberarbeitet_20261025.pdf",
+      "bytes": 171499,
+      "sha256": "1d1ce7013d0df84314af2d5a24d960b89b38d72b6c37c6a30290955cb541711d",
+      "git_blob_sha1": "4b52c6007c43b926afa5ebdbcf79c9422d81a795"
+    },
+    {
+      "path": "release/raumzeit-2026-10-25/Raumzeit_Prosa_ueberarbeitet_20261025.txt",
+      "bytes": 31318,
+      "sha256": "b644874acb65d1757af177c33843b79667dcd8d1950873d7a37679a25eb4c4cf",
+      "git_blob_sha1": "ec2b192a8fa786de3e967cf23724c7aef8df3c70"
+    }
+  ],
+  "changed_claim_ids": [],
+  "change_reasons": [],
+  "change_notice_path": null,
+  "return": {
+    "candidate_returned_to_owner": true,
+    "owner_name": "Ingolf Lohmann",
+    "owner_type": "NATURAL_PERSON",
+    "return_channel": "Original revised article pair delivered to the Owner on 2026-10-25; unchanged files then returned in this conversation through the privately persisted publication package. The recorded timestamp is the earlier article delivery retained in the prior source-bound handoff.",
+    "returned_at": "2026-10-25T11:01:24Z",
+    "visible_change_notice_returned": false
+  }
+}

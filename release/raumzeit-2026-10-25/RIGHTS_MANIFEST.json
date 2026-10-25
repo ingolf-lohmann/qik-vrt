@@ -1,0 +1,45 @@
+{
+  "_license": {
+    "classification": "machine_readable_artifact_rights_binding",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "publication_id": "raumzeit-rekonstruierbare-virtualitaet-20261025",
+  "authority_source": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "source_commit": "080c05f1cba7b1638477da78613b87252ffe1a12",
+    "path": "LICENSE",
+    "bytes": 3279,
+    "sha256": "b72bb73f40c5b63f77e4efa80a408d52b64c98ae4f0cb4cc99b86072285258f6",
+    "git_blob_sha1": "f8f1b350467a1a670adf4b6375d2d49cb5da4001"
+  },
+  "owner_basis": "Existing Owner documentation/source distinction and instruction that resulting materials retain the established rights; current express publication authorization for this unchanged article pair.",
+  "files": [
+    {
+      "path": "release/raumzeit-2026-10-25/Raumzeit_Fachartikel_ueberarbeitet_20261025.pdf",
+      "bytes": 171499,
+      "sha256": "1d1ce7013d0df84314af2d5a24d960b89b38d72b6c37c6a30290955cb541711d",
+      "git_blob_sha1": "4b52c6007c43b926afa5ebdbcf79c9422d81a795",
+      "classification": "DOCUMENTATION",
+      "rights_holder": "Ingolf Lohmann",
+      "license_spdx": "CC-BY-NC-ND-4.0",
+      "notice_path": "release/raumzeit-2026-10-25/PUBLICATION_NOTICE.md",
+      "original_file_bytes_changed": false
+    },
+    {
+      "path": "release/raumzeit-2026-10-25/Raumzeit_Prosa_ueberarbeitet_20261025.txt",
+      "bytes": 31318,
+      "sha256": "b644874acb65d1757af177c33843b79667dcd8d1950873d7a37679a25eb4c4cf",
+      "git_blob_sha1": "ec2b192a8fa786de3e967cf23724c7aef8df3c70",
+      "classification": "DOCUMENTATION",
+      "rights_holder": "Ingolf Lohmann",
+      "license_spdx": "CC-BY-NC-ND-4.0",
+      "notice_path": "release/raumzeit-2026-10-25/PUBLICATION_NOTICE.md",
+      "original_file_bytes_changed": false
+    }
+  ],
+  "third_party_material": "Cited works and any separately protected third-party material retain their own rights; this mapping grants no rights beyond the Owner-controlled materials.",
+  "software_relicensed": false
+}

@@ -1,0 +1,43 @@
+{
+  "title": "Emergente Raumzeit, rekonstruierbare Virtualität und physische Zeit — mit begleitender Prosa",
+  "upload_type": "publication",
+  "publication_type": "article",
+  "description": "<p>Deutschsprachiger Fach- und Diskussionsartikel mit allgemein verständlicher Begleitprosa. Die quellenkritisch überarbeitete Fassung vom 25. Oktober 2026 behandelt rekonstruierbare digitale Zustände, Informationsentropie, Quantenmechanik und emergente Raumzeit. Formale Modellüberlegungen, Interpretation und empirische Nachweise werden in ihrem jeweiligen Geltungsbereich unterschieden.</p><p>Die beiden Originaldateien werden unverändert erhalten. Konzeption und Leitfragen: Ingolf Lohmann. Recherche, mathematische Ausarbeitung und Textbeiträge: ChatGPT, entsprechend den Angaben in den Originaldateien. Eine Zenodo-Archivierung stellt keine wissenschaftliche Begutachtung dar.</p>",
+  "creators": [
+    {
+      "name": "Lohmann, Ingolf"
+    }
+  ],
+  "version": "2026-10-25",
+  "publication_date": "2026-10-25",
+  "access_right": "open",
+  "license": "cc-by-nc-nd-4.0",
+  "language": "deu",
+  "keywords": [
+    "Raumzeit",
+    "Information",
+    "Entropie",
+    "Quantenmechanik",
+    "QIK-VRT",
+    "Wissenschaftskommunikation"
+  ],
+  "notes": "Unveränderte quellenkritische Fassung vom 25. Oktober 2026. Historische Aussagen zum Publikationsstand im Manuskript beziehen sich auf die Zeit vor dieser Archivierung. Begleitende Aussagenmatrix unterscheidet quellengebundene mathematische Darstellungen, Literaturbezüge, Interpretationen und weiterführende Prüfaufgaben. Keine neue Lean-Kernelprüfung, physische Retrokausalität oder empirische Raumzeitrekonstruktion wird als Ergebnis dieser Veröffentlichung behauptet.",
+  "prereserve_doi": true,
+  "related_identifiers": [
+    {
+      "identifier": "10.5281/zenodo.21888130",
+      "relation": "references",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "10.5281/zenodo.21711193",
+      "relation": "references",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "https://datatracker.ietf.org/doc/html/draft-lohmann-qikvrt-effect-ack-03",
+      "relation": "references",
+      "scheme": "url"
+    }
+  ]
+}
