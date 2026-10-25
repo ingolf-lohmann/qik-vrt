@@ -1,0 +1,119 @@
+{
+  "schema": "qikvrt_zenodo_publication_manifest_v2",
+  "state": "publish",
+  "confirm": "PUBLISH_TO_PRODUCTION_ZENODO",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "source_head": "8a81105e335290db6cab9217193e344ccbebbdc1",
+  "metadata": {
+    "title": "Emergente Raumzeit, rekonstruierbare Virtualität und physische Zeit — mit begleitender Prosa",
+    "upload_type": "publication",
+    "publication_type": "article",
+    "description": "<p>Deutschsprachiger Fach- und Diskussionsartikel mit allgemein verständlicher Begleitprosa. Die quellenkritisch überarbeitete Fassung vom 25. Oktober 2026 behandelt rekonstruierbare digitale Zustände, Informationsentropie, Quantenmechanik und emergente Raumzeit. Formale Modellüberlegungen, Interpretation und empirische Nachweise werden in ihrem jeweiligen Geltungsbereich unterschieden.</p><p>Die beiden Originaldateien werden unverändert erhalten. Konzeption und Leitfragen: Ingolf Lohmann. Recherche, mathematische Ausarbeitung und Textbeiträge: ChatGPT, entsprechend den Angaben in den Originaldateien. Eine Zenodo-Archivierung stellt keine wissenschaftliche Begutachtung dar.</p>",
+    "creators": [
+      {
+        "name": "Lohmann, Ingolf"
+      }
+    ],
+    "version": "2026-10-25",
+    "publication_date": "2026-10-25",
+    "access_right": "open",
+    "license": "cc-by-nc-nd-4.0",
+    "language": "deu",
+    "keywords": [
+      "Raumzeit",
+      "Information",
+      "Entropie",
+      "Quantenmechanik",
+      "QIK-VRT",
+      "Wissenschaftskommunikation"
+    ],
+    "notes": "Unveränderte quellenkritische Fassung vom 25. Oktober 2026. Historische Aussagen zum Publikationsstand im Manuskript beziehen sich auf die Zeit vor dieser Archivierung. Begleitende Aussagenmatrix unterscheidet quellengebundene mathematische Darstellungen, Literaturbezüge, Interpretationen und weiterführende Prüfaufgaben. Keine neue Lean-Kernelprüfung, physische Retrokausalität oder empirische Raumzeitrekonstruktion wird als Ergebnis dieser Veröffentlichung behauptet.",
+    "prereserve_doi": true,
+    "related_identifiers": [
+      {
+        "identifier": "10.5281/zenodo.21888130",
+        "relation": "references",
+        "scheme": "doi"
+      },
+      {
+        "identifier": "10.5281/zenodo.21711193",
+        "relation": "references",
+        "scheme": "doi"
+      },
+      {
+        "identifier": "https://datatracker.ietf.org/doc/html/draft-lohmann-qikvrt-effect-ack-03",
+        "relation": "references",
+        "scheme": "url"
+      }
+    ]
+  },
+  "files": [
+    {
+      "path": "release/raumzeit-2026-10-25/Raumzeit_Fachartikel_ueberarbeitet_20261025.pdf",
+      "name": "Raumzeit_Fachartikel_ueberarbeitet_20261025.pdf",
+      "git_blob_sha": "4b52c6007c43b926afa5ebdbcf79c9422d81a795"
+    },
+    {
+      "path": "release/raumzeit-2026-10-25/Raumzeit_Prosa_ueberarbeitet_20261025.txt",
+      "name": "Raumzeit_Prosa_ueberarbeitet_20261025.txt",
+      "git_blob_sha": "ec2b192a8fa786de3e967cf23724c7aef8df3c70"
+    },
+    {
+      "path": "release/raumzeit-2026-10-25/CLAIM_MATRIX.json",
+      "name": "CLAIM_MATRIX.json",
+      "git_blob_sha": "825eab04e334304896d74ef9bc3741c8ebd59cd6"
+    },
+    {
+      "path": "release/raumzeit-2026-10-25/SOURCE_EVIDENCE_BINDINGS.json",
+      "name": "SOURCE_EVIDENCE_BINDINGS.json",
+      "git_blob_sha": "24453ea2bcf27b87bfaa916f18fb0dc5dae1e473"
+    },
+    {
+      "path": "release/raumzeit-2026-10-25/RIGHTS_MANIFEST.json",
+      "name": "RIGHTS_MANIFEST.json",
+      "git_blob_sha": "0989723f1f68bd8a11d9333b665d74ea612fa9cc"
+    },
+    {
+      "path": "release/raumzeit-2026-10-25/CC-BY-NC-ND-4.0.txt",
+      "name": "CC-BY-NC-ND-4.0.txt",
+      "git_blob_sha": "cfe676c541842bd2b766787b1f6983e063a1eee2"
+    },
+    {
+      "path": "release/raumzeit-2026-10-25/SOURCE_VISIBILITY_REPORT.json",
+      "name": "SOURCE_VISIBILITY_REPORT.json",
+      "git_blob_sha": "31f43ad2bf1a45cbb1645f2998229d3c62454274"
+    },
+    {
+      "path": "release/raumzeit-2026-10-25/PUBLICATION_NOTICE.md",
+      "name": "PUBLICATION_NOTICE.md",
+      "git_blob_sha": "9ae65da41d804a9eca278deb7a55e738107661fb"
+    },
+    {
+      "path": "release/raumzeit-2026-10-25/PREPUBLICATION_RETURN_RECEIPT.json",
+      "name": "PREPUBLICATION_RETURN_RECEIPT.json",
+      "git_blob_sha": "7d35f615cbb516109eb9d6f2b29ecc4b73fed332"
+    },
+    {
+      "path": "release/raumzeit-2026-10-25/ZENODO_METADATA.json",
+      "name": "ZENODO_METADATA.json",
+      "git_blob_sha": "6c435be00f6801e50a47c776002a3ec69a0a5ecc"
+    },
+    {
+      "path": "release/raumzeit-2026-10-25/MACHINE_PROOF_BUNDLE.json",
+      "name": "MACHINE_PROOF_BUNDLE.json",
+      "git_blob_sha": "80f109b92a30f8e23b5033bbe8b6e1ff7d27e555"
+    }
+  ],
+  "evidence_path": "release/raumzeit-2026-10-25/zenodo-publication.json",
+  "machine_proof": {
+    "path": "release/raumzeit-2026-10-25/MACHINE_PROOF_BUNDLE.json",
+    "git_blob_sha": "80f109b92a30f8e23b5033bbe8b6e1ff7d27e555",
+    "policy_id": "qikvrt-zenodo-machine-proof-before-publication-v2"
+  },
+  "owner_authorization": {
+    "path": "release/raumzeit-2026-10-25/OWNER_ZENODO_AUTHORIZATION.json",
+    "bytes": 6097,
+    "sha256": "526f93b281340d2183a08e9f007502277e9fcb0b1c17289af632ff4576d5491a",
+    "git_blob_sha": "f513f6d8739adcd5cd263b01f19c8328cd62f395"
+  }
+}

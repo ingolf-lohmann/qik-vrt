@@ -1,0 +1,134 @@
+{
+  "_license": {
+    "classification": "owner_effect_authorization",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_zenodo_owner_authorization_v1",
+  "authorization_id": "raumzeit-20261025-publication-01",
+  "nonce": "fd77a251eb86891e5f5dbf95fa2dc487dc5b7848f7a95d8636bfed1356ee3168",
+  "single_use": true,
+  "single_use_scope": "AUTHORITY_REPOSITORY_GLOBAL_FAIL_CLOSED",
+  "principal": {
+    "name": "Ingolf Lohmann",
+    "type": "NATURAL_PERSON"
+  },
+  "publication_id": "raumzeit-rekonstruierbare-virtualitaet-20261025",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "source_head": "8a81105e335290db6cab9217193e344ccbebbdc1",
+  "candidate_return_receipt": {
+    "path": "release/raumzeit-2026-10-25/PREPUBLICATION_RETURN_RECEIPT.json",
+    "bytes": 1626,
+    "sha256": "74ab5e38f9f8e37c5ea03ed8b323235652c702b7d515189998a4658c172254c1",
+    "git_blob_sha": "7d35f615cbb516109eb9d6f2b29ecc4b73fed332"
+  },
+  "canonical_metadata_sha256": "dc13609c4b7a69643803fa036a371e5b1fadc7b1c828f5c7188b52e4e5ab8706",
+  "uploads": [
+    {
+      "path": "release/raumzeit-2026-10-25/Raumzeit_Fachartikel_ueberarbeitet_20261025.pdf",
+      "bytes": 171499,
+      "sha256": "1d1ce7013d0df84314af2d5a24d960b89b38d72b6c37c6a30290955cb541711d",
+      "git_blob_sha": "4b52c6007c43b926afa5ebdbcf79c9422d81a795",
+      "name": "Raumzeit_Fachartikel_ueberarbeitet_20261025.pdf"
+    },
+    {
+      "path": "release/raumzeit-2026-10-25/Raumzeit_Prosa_ueberarbeitet_20261025.txt",
+      "bytes": 31318,
+      "sha256": "b644874acb65d1757af177c33843b79667dcd8d1950873d7a37679a25eb4c4cf",
+      "git_blob_sha": "ec2b192a8fa786de3e967cf23724c7aef8df3c70",
+      "name": "Raumzeit_Prosa_ueberarbeitet_20261025.txt"
+    },
+    {
+      "path": "release/raumzeit-2026-10-25/CLAIM_MATRIX.json",
+      "bytes": 21837,
+      "sha256": "96ab3a6f1773e32dabf9ce49ae2a29cdc72d630354e27f503b11591c14ad0472",
+      "git_blob_sha": "825eab04e334304896d74ef9bc3741c8ebd59cd6",
+      "name": "CLAIM_MATRIX.json"
+    },
+    {
+      "path": "release/raumzeit-2026-10-25/SOURCE_EVIDENCE_BINDINGS.json",
+      "bytes": 15403,
+      "sha256": "e6fbb2c83115c87c223b4ff78f1cb9f5dfdccf450965ca2918486e76d359036b",
+      "git_blob_sha": "24453ea2bcf27b87bfaa916f18fb0dc5dae1e473",
+      "name": "SOURCE_EVIDENCE_BINDINGS.json"
+    },
+    {
+      "path": "release/raumzeit-2026-10-25/RIGHTS_MANIFEST.json",
+      "bytes": 2147,
+      "sha256": "2f56b65fa41bca40e4fa51b31078c49b2e862983e7b436ef176e22e7d53386d6",
+      "git_blob_sha": "0989723f1f68bd8a11d9333b665d74ea612fa9cc",
+      "name": "RIGHTS_MANIFEST.json"
+    },
+    {
+      "path": "release/raumzeit-2026-10-25/CC-BY-NC-ND-4.0.txt",
+      "bytes": 19127,
+      "sha256": "38762e3777f4ec00a6f769062a7c3f704fb78ce08303ecff88558da4c49cf9ea",
+      "git_blob_sha": "cfe676c541842bd2b766787b1f6983e063a1eee2",
+      "name": "CC-BY-NC-ND-4.0.txt"
+    },
+    {
+      "path": "release/raumzeit-2026-10-25/SOURCE_VISIBILITY_REPORT.json",
+      "bytes": 18337,
+      "sha256": "66ceda4afab2eee553e3194e3d2f0e740579a217b0bb4307e87f0046229e4fb1",
+      "git_blob_sha": "31f43ad2bf1a45cbb1645f2998229d3c62454274",
+      "name": "SOURCE_VISIBILITY_REPORT.json"
+    },
+    {
+      "path": "release/raumzeit-2026-10-25/PUBLICATION_NOTICE.md",
+      "bytes": 1853,
+      "sha256": "88fbdc4a40b3131b79e52959d937ad01063586fcbfade48215c5bcfc97892e2c",
+      "git_blob_sha": "9ae65da41d804a9eca278deb7a55e738107661fb",
+      "name": "PUBLICATION_NOTICE.md"
+    },
+    {
+      "path": "release/raumzeit-2026-10-25/PREPUBLICATION_RETURN_RECEIPT.json",
+      "bytes": 1626,
+      "sha256": "74ab5e38f9f8e37c5ea03ed8b323235652c702b7d515189998a4658c172254c1",
+      "git_blob_sha": "7d35f615cbb516109eb9d6f2b29ecc4b73fed332",
+      "name": "PREPUBLICATION_RETURN_RECEIPT.json"
+    },
+    {
+      "path": "release/raumzeit-2026-10-25/ZENODO_METADATA.json",
+      "bytes": 2182,
+      "sha256": "db29782be7a049c8a97f78e04f1c22fd48f9970d61fb43af0e48abab720193b4",
+      "git_blob_sha": "6c435be00f6801e50a47c776002a3ec69a0a5ecc",
+      "name": "ZENODO_METADATA.json"
+    },
+    {
+      "path": "release/raumzeit-2026-10-25/MACHINE_PROOF_BUNDLE.json",
+      "bytes": 33365,
+      "sha256": "417302527decdd5a6fb1a9b378f727558476c7ecd28580376fcc64ee4ea6af9d",
+      "git_blob_sha": "80f109b92a30f8e23b5033bbe8b6e1ff7d27e555",
+      "name": "MACHINE_PROOF_BUNDLE.json"
+    }
+  ],
+  "machine_proof": {
+    "path": "release/raumzeit-2026-10-25/MACHINE_PROOF_BUNDLE.json",
+    "bytes": 33365,
+    "sha256": "417302527decdd5a6fb1a9b378f727558476c7ecd28580376fcc64ee4ea6af9d",
+    "git_blob_sha": "80f109b92a30f8e23b5033bbe8b6e1ff7d27e555"
+  },
+  "authorized_effects": [
+    "ACQUIRE_REPOSITORY_REMOTE_CONSUMPTION_LOCK",
+    "CREATE_PRODUCTION_ZENODO_RECORD",
+    "UPLOAD_EXACT_AUTHORIZED_FILES",
+    "PUBLISH_PRODUCTION_ZENODO_RECORD",
+    "VERIFY_PUBLIC_BYTE_EXACT_REDOWNLOAD",
+    "PERSIST_PUBLICATION_EVIDENCE"
+  ],
+  "publication_evidence_path": "release/raumzeit-2026-10-25/zenodo-publication.json",
+  "authorization_event": {
+    "channel": "CHAT_OWNER_ACK_NORMALIZED;OWNER_DECISION_PROVENANCE.json#sha256=2cfaed995dd22ea5daed34758f44ea5eb0d0c075778a3d8d7c1d734af05ca655",
+    "authorized_at": "2026-10-25T12:41:07.336Z",
+    "decision": "AUTHORIZE_EXACT_UPLOAD",
+    "exact_statement": "AUTHORIZE_EXACT_UPLOAD authorization_id=raumzeit-20261025-publication-01 publication_id=raumzeit-rekonstruierbare-virtualitaet-20261025 return_sha256=74ab5e38f9f8e37c5ea03ed8b323235652c702b7d515189998a4658c172254c1 metadata_sha256=dc13609c4b7a69643803fa036a371e5b1fadc7b1c828f5c7188b52e4e5ab8706 machine_proof_sha256=417302527decdd5a6fb1a9b378f727558476c7ecd28580376fcc64ee4ea6af9d",
+    "statement_sha256": "bf288a995b0e8dc17215f524951b36e952623062a71df7bde04f7ad592e8a5b8",
+    "principal": {
+      "name": "Ingolf Lohmann",
+      "type": "NATURAL_PERSON"
+    },
+    "candidate_return_receipt_sha256": "74ab5e38f9f8e37c5ea03ed8b323235652c702b7d515189998a4658c172254c1"
+  }
+}
