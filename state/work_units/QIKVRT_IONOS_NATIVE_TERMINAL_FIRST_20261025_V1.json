@@ -157,6 +157,18 @@
     "productive_deployment_proven": false,
     "ruleset_rest_is_not_draft_ready_or_target_ref_cas": true,
     "all_predecessor_obligations_preserved": true,
-    "original_owner_instruction": "Einverstanden. Den Punkt hast du gut rausgearbeitet, aber wir haben ja ein Verfahren definiert, wie dann zu verfahren ist. Nämlich, dass du den Konnektor nimmst, um ans Repository zu gehen, und in dem Fall würde ich sogar noch mal bis GitHub zurückgehen, um es als letzten Durchstich bis zum ursprünglich manifestierten Quell-Repository zu kommen, um dann die Schleife um das Paket zu machen. indem du dann diese fehlende Restfunktion vollumfänglich implementierst und auch nicht mehr vergisst, wie das funktioniert. Weil, dass ich dir das jetzt sagen muss, ist schon wieder ein Beweis dafür, dass du das schon wieder vergessen hast. Freigabe erteilt."
+    "original_owner_instruction": "Einverstanden. Den Punkt hast du gut rausgearbeitet, aber wir haben ja ein Verfahren definiert, wie dann zu verfahren ist. Nämlich, dass du den Konnektor nimmst, um ans Repository zu gehen, und in dem Fall würde ich sogar noch mal bis GitHub zurückgehen, um es als letzten Durchstich bis zum ursprünglich manifestierten Quell-Repository zu kommen, um dann die Schleife um das Paket zu machen. indem du dann diese fehlende Restfunktion vollumfänglich implementierst und auch nicht mehr vergisst, wie das funktioniert. Weil, dass ich dir das jetzt sagen muss, ist schon wieder ein Beweis dafür, dass du das schon wieder vergessen hast. Freigabe erteilt.",
+    "packaged_bootstrap_successor": {
+      "owner_instruction_verbatim": "Jetzt fang endlich an, es richtig zu machen. Das ist völlig nervtötend, deine leere Bestätigung.",
+      "inherited_grant_retained": true,
+      "prior_omission": "The fixed REST controller was tested from the full checkout but absent from the sealed S1 package.",
+      "repair": "Reuse the existing S1 package and REST server; include original Python import closure, OpenAPI and byte-bound Owner/governance records; require the same package gate during freeze and verify.",
+      "regression_scope": "Cold sealed export, Python -S without Git/site-packages/checkout/provider credentials; real loopback HTTP and unchanged caller/provider guards.",
+      "upstream_provider": "NOT_CALLED",
+      "actual_original_host_execution_verified": false,
+      "all_prior_tasks_and_knowledge_preserved": true,
+      "human_contribution": "Owner instruction and standing authorization, quoted verbatim.",
+      "artificial_cognitive_contribution": "OpenAI Codex package diagnosis, source integration and tests."
+    }
   }
 }

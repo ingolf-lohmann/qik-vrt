@@ -56,6 +56,19 @@ MESH_COMPONENT_FILES = {
     "universal_terminal": ["src/qikvrt_temdd_event_ledger.py", "src/qikvrt_effect_ack_http_terminal.py",
                            "docs/terminal/temdd/index.html", "docs/monitor/client-replica.js"],
 }
+REST_BOOTSTRAP_FILES = (
+    '.github/CODEOWNERS', 'api/qikvrt_github_api.openapi.yaml',
+    'scripts/qikvrt_api_client.py', 'src/qikvrt_api_handler.py',
+    'src/qikvrt_effect_ack.py', 'src/qikvrt_github_api_shim.py',
+    'src/qikvrt_mcp_adapter.py', 'tools/ai_handoff.py',
+    'tools/qikvrt_authority_credentials.py', 'tools/qikvrt_integrity.py',
+    'tools/qikvrt_required_review_gate.py', 'tools/qikvrt_subprocess.py',
+    'tools/qikvrt_workflow_executor.py', 'policy/CANONICAL_UPSTREAM_REMOTE_V1.json',
+    'policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json',
+    'policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json',
+    'state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json',
+    'state/authorization/delegations/OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_V1.json',
+)
 MESH_FAULT_CASES = ("PROCESS_CRASH", "NODE_LOSS", "NETWORK_PARTITION", "PROVIDER_LOSS",
                     "LOST_EFFECT_ACK", "CONCURRENT_TAKEOVER", "STALE_WRITER", "NODE_REJOIN")
 MESH_INVARIANTS = ("same_work_unit_after_failover", "preserve_confirmed_effects",
@@ -614,6 +627,14 @@ def mesh_contract(root, definition=None):
             or len(files) != len(set(files)) or not required <= set(files)
             or definition.get("native_terminal_daemon_included") is not True):
         raise ValueError("MESH_NATIVE_COMPONENT_PACKAGE_REQUIRED")
+    rest = definition.get('rest_bootstrap', {})
+    if (not isinstance(rest, dict) or not set(REST_BOOTSTRAP_FILES) <= set(files)
+            or rest.get('schema') != 'qikvrt-packaged-rest-bootstrap/v1'
+            or rest.get('entrypoint') != ['python3', '-B', '-S', 'src/qikvrt_github_api_shim.py']
+            or any(rest.get(key) is not False for key in (
+                'automatic_start', 'runtime_admission_default',
+                'requires_running_native_runtime', 'contains_credentials'))):
+        raise ValueError('REST_BOOTSTRAP_PACKAGE_REQUIRED')
     invariants = contract.get("invariants", {})
     if not isinstance(invariants, dict) or any(invariants.get(key) is not True for key in MESH_INVARIANTS):
         raise ValueError("MESH_CONTINUITY_INVARIANTS_REQUIRED")

@@ -39,6 +39,37 @@ analogy governed by the existing evidence/adaptation policy.
 
 ## Existing S1 host and stopped-container recovery
 
+### Original REST bootstrap from the sealed package
+
+The existing `pack` and `verify` operations include the original REST server,
+client, OpenAPI, Python import closure and exact Owner/governance records in
+the same immutable S1 package. Missing carriers or a changed bootstrap contract
+fail with `REST_BOOTSTRAP_PACKAGE_REQUIRED`. A full-checkout HTTP test alone
+does not establish that this exported package can start.
+
+From the independently verified package root, the existing API entrypoint is:
+
+```sh
+python3 -B -S src/qikvrt_github_api_shim.py
+```
+
+This is the original `make run-api` server, directly callable without Make,
+Git, site-packages or an already running native service. It defaults to
+loopback port 8766 and validates the existing expiring API credential, exact
+repository and principal before listening. The Ruleset route remains disabled
+until `QIKVRT_RULESET_AUTHORITY_ENABLED=1`; its bound Owner and separately
+protected Authority credential are still required. The existing resolver
+excludes generic `GITHUB_TOKEN` from that operation. No credential is bundled.
+Keep the original protected configuration, supervisor and host-admission path.
+Bind its existing private API state directories outside the immutable package;
+retain the original attempt journals and resolve ambiguous calls by readback.
+
+Cold-package regressions start a separate Python process with `-S`, exercise
+real loopback HTTP, and retain the missing-caller and missing-provider
+haltpoints. They perform no upstream administration. Package availability,
+actual service installation, protected Main and exact-domain acceptance remain
+separately evidenced; this package does not automatically start or admit the API.
+
 ### Native terminal first — Owner priority of 25 October 2026
 
 The first production scope is the existing native `temdd` terminal and

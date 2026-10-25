@@ -104,6 +104,14 @@ Authorization, callable operations, admission and fresh readback remain required
 
 REST CAPABILITY REPAIR — OWNER 2026-10-25
 
+Verify the actual sealed S1 export, including the original REST server/client,
+OpenAPI, Python import closure and exact Owner/governance source records.
+The existing package freeze/verify gate rejects missing REST bootstrap carriers.
+Cold-start the exported original entrypoint with Python -S and retain its
+caller/provider credential guards. A checkout-only HTTP test is insufficient.
+Package availability does not establish installation, runtime admission,
+protected Main or exact-host delivery; retain those separate open duties.
+
 When an existing REST operation is missing or insufficient, use the admitted
 connector to read the exact original repository implementation and API contract;
 the final source fallback is the original Authority on GitHub. Repair the
