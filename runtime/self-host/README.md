@@ -39,11 +39,34 @@ analogy governed by the existing evidence/adaptation policy.
 
 ## Existing S1 host and stopped-container recovery
 
+### Native terminal first — Owner priority of 25 October 2026
+
+The first production scope is the existing native `temdd` terminal and
+`https://raumzeitterminal.de/` on the existing IONOS host. Firefox/noVNC and
+extension signing remain a later, separate acceptance scope. The `container`
+job uses the existing frozen S1 dependency carrier and `production-terminal`
+Docker target with `QIKVRT_TERMINAL_PROFILE=temdd`. Its package has the original
+Terminal and Transputer without a browser payload. The same independent OCI
+rebuild, unprivileged smoke, native readback and durable restart gates apply.
+
+The exact image must declare `de.qikvrt.terminal-profile=temdd` and the pinned
+private host configuration must select the same profile. The launcher never
+rewrites that configuration or infers host admission from a missing AMO secret.
+The later `production` Docker target and the default Firefox smoke scope still
+require the original signed XPI and actual activation/restart proof. Native
+terminal delivery establishes no Firefox or multi-node Mesh acceptance.
+
+Production still needs protected exact Main, the reviewed production environment,
+the existing mTLS host/storage/configuration binding and independent HTTPS
+readback at the exact domain. A desktop PC is not part of this production path.
+Source tests, an available VPS contract and a prepared workflow prove neither
+host binding nor delivery. No replacement executor or synthetic trigger is used.
+
 The existing `container-deploy` consumer in `qikvrt_ci.yml` supports initial
 create-only delivery and recovery of the exact same stopped S1 container. It
 continues to require protected exact Main, independent merged-PR review, the
-protected `qikvrt-production` environment and the admitted signed Firefox
-image. A source test or a Railway service inventory establishes none of those
+protected `qikvrt-production` environment and the admitted image with its
+exact declared terminal profile. A source test or a service inventory establishes none of those
 production predicates.
 
 The private connection is `vars.QIKVRT_LINUX_HOST_BINDING_JSON`, independently

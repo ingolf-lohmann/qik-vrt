@@ -3654,6 +3654,8 @@ def main():
     parser.add_argument("--admission-tool-sha256", help="independently reviewed guard pin; required for supervisor operations")
     parser.add_argument("--browser-assets-root", type=Path, help="explicit provisioned noVNC source tree; freeze a Firefox-capable variant")
     parser.add_argument("--image", help="local smoke tag or exact versioned production digest")
+    parser.add_argument("--terminal-profile", choices=("temdd", "firefox"), default="firefox",
+                        help="explicit container smoke scope; Firefox still requires signed activation")
     parser.add_argument("--receipt", type=Path, help="non-secret container evidence output")
     parser.add_argument("--oci-archive", type=Path)
     parser.add_argument("--second-oci-archive", type=Path)

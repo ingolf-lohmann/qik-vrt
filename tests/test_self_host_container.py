@@ -141,6 +141,25 @@ class ExistingContainerRecovery(unittest.TestCase):
         self.assertEqual(c.deploy(host.value, host.image, host)['state'], 'EXACT_EXISTING_CONTAINER_NOOP')
         self.assertTrue(all(method == 'GET' for method, _ in host.calls))
 
+    def test_native_image_requires_the_same_explicit_profile_in_pinned_private_config(self):
+        for image_profile, config_profile in (("temdd", "temdd"), ("temdd", "firefox"),
+                                               ("firefox", "temdd"), ("reference", "temdd")):
+            with self.subTest(image=image_profile, config=config_profile):
+                host = self.Host()
+                host.image_metadata['Config']['Labels']['de.qikvrt.terminal-profile'] = image_profile
+                host.config['terminal_profile'] = config_profile
+                host.config_raw = json.dumps(host.config).encode()
+                host.value['config_sha256'] = c.sha(host.config_raw)
+                host.live['Config']['Labels']['de.qikvrt.binding-sha256'] = c.sha(
+                    json.dumps(host.value, sort_keys=True).encode())
+                if image_profile == config_profile == 'temdd':
+                    result = c.deploy(host.value, host.image, host)
+                    self.assertEqual(result['terminal_profile'], 'temdd')
+                    self.assertEqual([method for method, _ in host.calls if method != 'GET'], ['POST'])
+                else:
+                    with self.assertRaises(ValueError): c.deploy(host.value, host.image, host)
+                    self.assertTrue(all(method == 'GET' for method, _ in host.calls))
+
     def test_concurrent_start_becomes_noop_before_second_effect(self):
         host = self.Host(); host.concurrent_start = True
         self.assertEqual(c.deploy(host.value, host.image, host)['state'], 'EXACT_EXISTING_CONTAINER_NOOP')
@@ -278,12 +297,14 @@ class ContainerControls(unittest.TestCase):
     def test_smoke_keeps_unprivileged_start_and_requires_independent_persistent_restart(self):
         # Exercise the launcher contract; actual Docker/Firefox remains required
         # by the existing native CI lane, never inferred from these fixtures.
-        for variant in ('valid', 'changed-ledger', 'failed-readback'):
-            with self.subTest(variant=variant), tempfile.TemporaryDirectory() as tmp:
+        for profile, variant in ((p, v) for p in ('firefox', 'temdd')
+                                 for v in ('valid', 'changed-ledger', 'failed-readback')):
+            with self.subTest(profile=profile, variant=variant), tempfile.TemporaryDirectory() as tmp:
                 calls, phase = [], {'restart': False}
                 name = 'qikvrt-s1-smoke-' + '1' * 16
                 network = name + '-net'
-                manifest = json.dumps({'source_head': HEAD, 'source_tree': TREE}).encode()
+                manifest = json.dumps({'source_head': HEAD, 'source_tree': TREE,
+                                       'native_terminal_daemon_included': True}).encode()
                 client = json.dumps({'state': 'CLIENT_BYTE_READBACK_VERIFIED',
                                      'source_head': HEAD, 'source_tree': TREE, 'effect_ack_done': False}).encode()
                 failed = b'{"state":"HOLD_PUBLIC_OR_INDEPENDENT_CLIENT_READBACK","cause":"HOLD_PUBLIC_NODE_HEALTH_CONTRACT","effect_ack_done":false}\n'
@@ -293,6 +314,8 @@ class ContainerControls(unittest.TestCase):
                         if variant == 'failed-readback':
                             raise subprocess.CalledProcessError(20, list(argv), output=failed)
                         return client
+                    if argv[:3] == ('docker', 'image', 'inspect'):
+                        return json.dumps({'de.qikvrt.terminal-profile': 'temdd'}).encode()
                     if argv[1] == 'inspect':
                         return json.dumps([{'State': {'Running': True}, 'HostConfig': {'NetworkMode': network},
                             'NetworkSettings': {'Ports': {}, 'Networks': {network: {'IPAddress': '172.20.0.2'}}}}]).encode()
@@ -306,21 +329,26 @@ class ContainerControls(unittest.TestCase):
                     return json.dumps({'state': 'NATIVE_TEMDD_READY', 'ledger_id': ledger}).encode()
                 with patch.object(c, 'command', side_effect=command), patch.object(c, 'get', side_effect=get), \
                      patch.object(c.uuid, 'uuid4', return_value=SimpleNamespace(hex='1' * 32)), \
-                     patch.object(c, 'firefox_image_admission'), \
+                     patch.object(c, 'firefox_image_admission') as firefox, \
                      patch.object(c.subprocess, 'run', return_value=SimpleNamespace(stdout=b'', stderr=b'')), \
                      patch('builtins.print'):
                     if variant == 'valid':
-                        result = c.smoke('fixture-image', tmp)
+                        result = c.smoke('fixture-image', tmp, profile)
                         self.assertEqual(result['state'], 'CONTAINER_SMOKE_AND_RESTART_VERIFIED')
                         self.assertTrue(result['ledger_identity_preserved'])
                         self.assertFalse(result['public_production_verified'])
+                        self.assertEqual(result['terminal_profile'], profile)
+                        self.assertEqual(result['firefox_acceptance_in_scope'], profile == 'firefox')
                     elif variant == 'changed-ledger':
                         with self.assertRaisesRegex(ValueError, 'DURABLE_LEDGER_ID_RESTART_MISMATCH'):
-                            c.smoke('fixture-image', tmp)
+                            c.smoke('fixture-image', tmp, profile)
                     else:
-                        with self.assertRaises(subprocess.CalledProcessError): c.smoke('fixture-image', tmp)
+                        with self.assertRaises(subprocess.CalledProcessError): c.smoke('fixture-image', tmp, profile)
                         self.assertEqual((Path(tmp)/'smoke-readback-before-restart.stdout').read_bytes(), failed)
                         self.assertFalse(phase['restart'])
+                    self.assertEqual(firefox.call_count, int(profile == 'firefox'))
+                setup = next(argv[-1] for argv in calls if '-c' in argv)
+                self.assertEqual('browser.password' in setup, profile == 'firefox')
                 start = next(argv for argv in calls if argv[:3] == ('docker', 'run', '-d'))
                 self.assertEqual(start[start.index('--user') + 1], '10001:10001')
                 self.assertIn('--read-only', start)
@@ -531,6 +559,33 @@ class ContainerControls(unittest.TestCase):
                 c.public_readback(value, "/unused")
             get.assert_not_called()
 
+    def test_public_reader_binds_the_delivered_profile_without_claiming_firefox_for_temdd(self):
+        for profile, observed_profile in (("temdd", "temdd"), ("firefox", "firefox"),
+                                          ("temdd", "firefox")):
+            with self.subTest(profile=profile, observed=observed_profile):
+                value = dict(declaration(), terminal_profile=profile)
+                def read(url):
+                    if url.endswith('/api/runtime'):
+                        runtime = {k: value[k] for k in ('source_head', 'source_tree',
+                                   'manifest_sha256', 'config_sha256', 'node_id')}
+                        return json.dumps(dict(runtime, terminal_profile=observed_profile)).encode()
+                    if url.endswith('/api/terminal'):
+                        return json.dumps({'state': 'NATIVE_TEMDD_READY',
+                                           'manifest_sha256': value['manifest_sha256']}).encode()
+                    return b'public-response-fixture'
+                with patch.object(c, 'get', side_effect=read), \
+                     patch.object(c, 'command', return_value=b'independent-reader-fixture') as reader:
+                    if profile == observed_profile:
+                        result = c.public_readback(value, '/fixture')
+                        self.assertEqual(result['terminal_profile'], profile)
+                        self.assertEqual(result['firefox_acceptance_in_scope'], profile == 'firefox')
+                        self.assertFalse(result['native_multi_node_acceptance'])
+                        reader.assert_called_once()
+                    else:
+                        with self.assertRaisesRegex(ValueError, 'PUBLIC_TERMINAL_PROFILE_MISMATCH'):
+                            c.public_readback(value, '/fixture')
+                        reader.assert_not_called()
+
     def test_independent_reader_reports_only_typed_guard_codes(self):
         script = """
 import {verifyClient, readbackFailure} from './tools/qikvrt_mesh_monitor_readback.mjs';
@@ -593,17 +648,48 @@ console.log(JSON.stringify({guarded,
                 self.assertIn('--read-only',invocation)
                 self.assertEqual(invocation[invocation.index('--firefox-package')+1],'firefox')
 
-    def test_no_registry_publication_without_the_current_signed_firefox_job(self):
+    def test_native_production_is_independent_of_firefox_but_keeps_host_and_public_gates(self):
         text=(Path(__file__).resolve().parents[1]/'.github/workflows/qikvrt_ci.yml').read_text()
         container=text.split('  container:\n',1)[1].split('  container_publish:\n',1)[0]
         publication=text.split('  container_publish:\n',1)[1].split('  container_deploy:\n',1)[0]
-        self.assertIn('needs: [test, s1_firefox_extension]',container)
-        self.assertIn('needs: [test, container, s1_firefox_extension]',publication)
+        self.assertIn('needs: test',container)
+        self.assertNotIn('s1_firefox_extension',container+publication)
+        self.assertIn('--target production-terminal',container)
+        self.assertIn('QIKVRT_TERMINAL_PROFILE=temdd',container)
+        self.assertIn('--terminal-profile temdd',container)
+        self.assertNotIn('qikvrt-signed-extension',container)
+        self.assertIn('needs: [test, container]',publication)
         self.assertIn("github.ref == 'refs/heads/main'",publication)
         self.assertIn('environment: qikvrt-production',publication)
         self.assertIn('container-production-gate',publication)
         self.assertIn('container-carrier-archive-check',publication)
         self.assertIn('carrier-registry-readback.json',publication)
+        deployment=text.split('  container_deploy:\n',1)[1].split('  container_public_readback:\n',1)[0]
+        self.assertIn('needs: [container, container_publish]',deployment)
+        self.assertIn('secrets.QIKVRT_LINUX_HOST_KEY',deployment)
+        self.assertIn('container-deploy',deployment)
+        self.assertIn('container-readback',text.split('  container_public_readback:\n',1)[1])
+
+    def test_native_scope_cannot_silently_fall_back_to_an_unsigned_browser_image(self):
+        for variant in ('browser-package', 'missing-native', 'wrong-label'):
+            with self.subTest(variant=variant), tempfile.TemporaryDirectory() as tmp:
+                manifest = {'native_terminal_daemon_included': variant != 'missing-native'}
+                if variant == 'browser-package': manifest['browser_runtime'] = {}
+                def command(*args):
+                    if args[:3] == ('docker', 'image', 'inspect'):
+                        return json.dumps({'de.qikvrt.terminal-profile':
+                                           'firefox' if variant == 'wrong-label' else 'temdd'}).encode()
+                    self.assertIn('cat', args)
+                    return json.dumps(manifest).encode()
+                with patch.object(c, 'command', side_effect=command), \
+                     patch.object(c, 'firefox_image_admission') as firefox:
+                    with self.assertRaisesRegex(ValueError, 'EXACT_NATIVE_ONLY_IMAGE_REQUIRED'):
+                        c.smoke('fixture-image', tmp, 'temdd')
+                    firefox.assert_not_called()
+        with patch.object(c, 'command') as command:
+            with tempfile.TemporaryDirectory() as tmp, self.assertRaises(ValueError):
+                c.smoke('fixture-image', tmp, 'reference')
+            command.assert_not_called()
 
 
 class ArtifactTransportControls(unittest.TestCase):

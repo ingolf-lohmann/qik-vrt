@@ -787,6 +787,11 @@ def deploy(value, image, engine):
     labels = observed.get("Config", {}).get("Labels", {})
     require(labels.get("org.opencontainers.image.revision") == value["source_head"] and
             labels.get("de.qikvrt.source-tree") == value["source_tree"], "REMOTE_SOURCE_BINDING_MISMATCH")
+    # Historical images have the Firefox-only contract. Native delivery must
+    # declare its profile on the exact admitted image, never infer it from a
+    # missing signing credential or silently change the private host config.
+    profile = labels.get("de.qikvrt.terminal-profile", "firefox")
+    require(profile in ("temdd", "firefox"), "DECLARED_IMAGE_TERMINAL_PROFILE_REQUIRED")
     if not existing:
         try:
             created = engine.call("POST", "/v1.45/containers/create?name=" + value["container_name"], request)
@@ -814,7 +819,7 @@ def deploy(value, image, engine):
     require(all(config.get(key) == value[key] for key in ("source_head", "source_tree", "node_id")) and
             config.get("source_repository") == REPOSITORY and config.get("host") == "0.0.0.0" and
             config.get("port") == 8080 and config.get("state_dir") == "/var/lib/qikvrt/node" and
-            config.get("adapter") == "none" and config.get("terminal_profile") == "firefox",
+            config.get("adapter") == "none" and config.get("terminal_profile") == profile,
             "HOST_NATIVE_CONFIGURATION_MISMATCH")
     package_archive = engine.call("GET", "/v1.45/containers/" + identifier +
                                   "/archive?path=/opt/qikvrt/MANIFEST.json", binary=True)
@@ -828,7 +833,8 @@ def deploy(value, image, engine):
         live = engine.call("GET", "/v1.45/containers/" + identifier + "/json")
         existing_container(live, identifier, value, request)
         if live["State"]["Running"] is True:
-            return {"state": "EXACT_EXISTING_CONTAINER_NOOP", "container_id": identifier, **value}
+            return {"state": "EXACT_EXISTING_CONTAINER_NOOP", "container_id": identifier,
+                    **value, "terminal_profile": profile}
     try:
         engine.call("POST", "/v1.45/containers/" + identifier + "/start")
     except Exception:
@@ -850,7 +856,7 @@ def deploy(value, image, engine):
     else:
         raise ValueError("DEPLOYED_CONTAINER_HEALTH_NOT_OBSERVED")
     result = "EXACT_EXISTING_CONTAINER_RESUMED_PENDING_PUBLIC_ACCEPTANCE" if existing else "CONTAINER_STARTED_PENDING_PUBLIC_ACCEPTANCE"
-    return {"state": result, "container_id": identifier, **value}
+    return {"state": result, "container_id": identifier, **value, "terminal_profile": profile}
 
 
 def public_readback(value, package):
@@ -865,6 +871,8 @@ def public_readback(value, package):
             require(all(runtime.get(key) == value[key] for key in
                         ("source_head", "source_tree", "manifest_sha256", "config_sha256", "node_id")),
                     "PUBLIC_RUNTIME_BINDING_MISMATCH")
+            require(runtime.get("terminal_profile") == value.get("terminal_profile", "firefox"),
+                    "PUBLIC_TERMINAL_PROFILE_MISMATCH")
         if path == "/api/terminal":
             terminal = json.loads(raw)
             require(terminal.get("state") == "NATIVE_TEMDD_READY" and
@@ -876,7 +884,9 @@ def public_readback(value, package):
             "source_tree": value["source_tree"], "image_digest": value["image_digest"],
             "origin": ORIGIN, "tls_hostname_validation": True, "http_readbacks": observed,
             "original_independent_readback_sha256": sha(original), "physical_iphone_verified": False,
-            "native_multi_node_acceptance": False}
+            "native_multi_node_acceptance": False,
+            "terminal_profile": value.get("terminal_profile", "firefox"),
+            "firefox_acceptance_in_scope": value.get("terminal_profile", "firefox") == "firefox"}
 
 
 def smoke_origin(inspected, network):
@@ -921,28 +931,37 @@ def firefox_image_admission(image, output):
     require(sha(raw)==result.get('xpi_sha256'),'FINAL_IMAGE_SIGNED_XPI_READBACK_MISMATCH')
     return result
 
-def smoke(image, output):
+def smoke(image, output, terminal_profile="firefox"):
     """Real unprivileged container, independent S1 readback and durable restart."""
     output = Path(output).absolute()
     output.mkdir(parents=True, exist_ok=True)
-    firefox_image_admission(image, output)
+    require(terminal_profile in ("temdd", "firefox"), "NATIVE_CONTAINER_PROFILE_REQUIRED")
+    if terminal_profile == "firefox":
+        firefox_image_admission(image, output)
     name = "qikvrt-s1-smoke-" + uuid.uuid4().hex[:16]
     config_volume, state_volume, network = name + "-config", name + "-state", name + "-net"
     manifest = json.loads(command("docker", "run", "--rm", "--network", "none", "--entrypoint", "cat", image,
                                   "/opt/qikvrt/MANIFEST.json"))
     pin = sha(command("docker", "run", "--rm", "--network", "none", "--entrypoint", "cat", image,
                       "/opt/qikvrt/MANIFEST.json"))
+    if terminal_profile == "temdd":
+        labels = json.loads(command("docker", "image", "inspect", "--format", "{{json .Config.Labels}}", image))
+        require(labels.get("de.qikvrt.terminal-profile") == "temdd" and
+                manifest.get("native_terminal_daemon_included") is True and
+                "browser_runtime" not in manifest, "EXACT_NATIVE_ONLY_IMAGE_REQUIRED")
     config = {"schema": "qikvrt-self-host-config/v1", "node_id": "ci:s1-container", "adapter": "none",
               "source_head": manifest["source_head"], "source_tree": manifest["source_tree"],
               "source_repository": REPOSITORY, "state_dir": "/var/lib/qikvrt/node", "host": "0.0.0.0",
-              "port": 8080, "terminal_port": 8771, "terminal_profile": "firefox", "subject_pr": 523,
-              "terminal_token_file": "/run/qikvrt/terminal.token", "browser_password_file": "/run/qikvrt/browser.password",
-              "novnc_port": 6080, "vnc_port": 5900, "display": ":99"}
+              "port": 8080, "terminal_port": 8771, "terminal_profile": terminal_profile, "subject_pr": 523,
+              "terminal_token_file": "/run/qikvrt/terminal.token"}
+    if terminal_profile == "firefox":
+        config.update(browser_password_file="/run/qikvrt/browser.password",
+                      novnc_port=6080, vnc_port=5900, display=":99")
     config_raw = json.dumps(config, sort_keys=True).encode()
     setup = ("import os,pathlib,secrets; p=pathlib.Path('/conf'); "
              "(p/'config.json').write_bytes(" + repr(config_raw) + "); "
-             "(p/'terminal.token').write_text(secrets.token_hex(32)); "
-             "(p/'browser.password').write_text(secrets.token_hex(4)); "
+             "(p/'terminal.token').write_text(secrets.token_hex(32)); " +
+             ("(p/'browser.password').write_text(secrets.token_hex(4)); " if terminal_profile == "firefox" else "") +
              "[(os.chown(str(f),10001,10001),f.chmod(0o600)) for f in p.iterdir()]; "
              "os.chown('/state',10001,10001); os.chmod('/state',0o700)")
     try:
@@ -1009,6 +1028,7 @@ def smoke(image, output):
                 "source_tree": manifest["source_tree"], "manifest_sha256": pin, "image": image,
                 "before_readback_sha256": sha(first), "after_readback_sha256": sha(second),
                 "ledger_identity_preserved": True, "existing_native_event_restart_tests_required": True,
+                "terminal_profile": terminal_profile, "firefox_acceptance_in_scope": terminal_profile == "firefox",
                 "public_production_verified": False}
     except Exception:
         # Synthetic CI fixture only; no production logs/state are captured.
@@ -1058,7 +1078,7 @@ def execute(args):
                 write_receipt(args.receipt, result)
                 raise ValueError("INDEPENDENT_OCI_REBUILD_DIGEST_MISMATCH")
     elif operation == "smoke":
-        result = smoke(args.image, args.output)
+        result = smoke(args.image, args.output, getattr(args, "terminal_profile", "firefox"))
     elif operation == "production-gate":
         result = production_gate(args.expected_head)
     elif operation == "deploy":

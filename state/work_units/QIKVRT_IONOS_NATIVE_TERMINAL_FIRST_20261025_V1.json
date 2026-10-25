@@ -1,0 +1,79 @@
+{
+  "artificial_cognitive_contribution": {
+    "scope": "Reuse native S1 temdd profile, parameterize original container consumer, preserve exact-source/profile/host/storage/HTTPS gates and browser signing scope.",
+    "system": "OpenAI Codex"
+  },
+  "authority_repository": "ingolf-lohmann/qik-vrt",
+  "base_head": "080c05f1cba7b1638477da78613b87252ffe1a12",
+  "base_tree": "93d33349ef03983ebdb36432d70f80da68569ade",
+  "effect_ack_done": false,
+  "evidence_retention": "METADATA_ONLY; no credential values or raw conversation transcript",
+  "firefox_acceptance_verified": false,
+  "host_binding_verified": false,
+  "human_contribution": {
+    "decision": "Prioritize existing IONOS production and https://raumzeitterminal.de/; defer Firefox; no desktop-PC prerequisite.",
+    "principal": "Ingolf Lohmann"
+  },
+  "initial_work_unit_state": "REVIEWABLE_SOURCE_REPAIR_PENDING_NATIVE_CI_AND_HOST_EFFECT",
+  "open_work": [
+    {
+      "id": "NATIVE_CONTAINER_CI",
+      "next_action": "Run the changed native-only image through the original independent OCI and smoke lane.",
+      "state": "OPEN"
+    },
+    {
+      "id": "PROTECTED_MAIN_INTEGRATION",
+      "next_action": "Integrate only the exact reviewed and tested candidate through original governance.",
+      "state": "OPEN"
+    },
+    {
+      "id": "IONOS_ORIGINAL_HOST_BINDING",
+      "next_action": "Deliver the existing protected mTLS daemon, storage, private temdd configuration and image pins to the original production consumer; do not invent values or replace the executor.",
+      "state": "OPEN"
+    },
+    {
+      "id": "EXACT_DOMAIN_ACCEPTANCE",
+      "next_action": "Verify DNS, TLS, fresh runtime pins and original native terminal behavior at https://raumzeitterminal.de/ after actual host execution.",
+      "state": "OPEN"
+    },
+    {
+      "id": "FIREFOX_ADMISSION",
+      "next_action": "Retain protected AMO credential delivery, exact signed XPI, Firefox >=158 activation and restart acceptance as a later independent scope.",
+      "state": "OPEN_DEFERRED"
+    },
+    {
+      "id": "NATIVE_PEER_AND_OUTBOX_ACCEPTANCE",
+      "next_action": "Retain original writer admission, peer request/ACK/reply and outbox obligations; this source repair proves no productive Mesh or peer effect.",
+      "state": "OPEN_UNCHANGED"
+    }
+  ],
+  "other_predecessor_obligations": "Preserved; no publication, peer, recovery, fault-tolerance or global completion status is promoted by this work unit.",
+  "predecessor": {
+    "amo_issuer_delivered_to_that_job": false,
+    "amo_secret_delivered_to_that_job": false,
+    "firefox_admission_job_id": 120907174017,
+    "firefox_error": -5,
+    "run_id": 40105209879,
+    "sign_requested": false,
+    "signing_job_id": 120907116935
+  },
+  "public_production_verified": false,
+  "reuse": {
+    "build_target": "runtime/self-host/Dockerfile#production-terminal",
+    "container_adapter": "tools/qikvrt_self_host_container.py",
+    "launcher": "tools/qikvrt_self_host.py",
+    "terminal_profile": "temdd",
+    "workflow": ".github/workflows/qikvrt_ci.yml"
+  },
+  "schema": "qikvrt-ionos-native-terminal-first-work-unit/v1",
+  "validation_required": [
+    "make test",
+    "make self-host-test",
+    "native CI independent OCI rebuild and smoke/restart",
+    "exact remote HEAD/TREE and changed-blob readback",
+    "protected Main and production-environment admission",
+    "existing admitted IONOS mTLS daemon/storage/configuration execution",
+    "independent HTTPS and original native terminal readback at exact domain"
+  ],
+  "work_unit_id": "QIKVRT_IONOS_NATIVE_TERMINAL_FIRST_20261025_V1"
+}
