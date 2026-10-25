@@ -2,6 +2,7 @@
 # Copyright 2026 Ingolf Lohmann. Implementation contribution: OpenAI Codex.
 """Negative integrity/admission controls; fixture hosts are not deployments."""
 import hashlib
+import ast
 import io
 import json
 import os
@@ -690,6 +691,92 @@ console.log(JSON.stringify({guarded,
             with tempfile.TemporaryDirectory() as tmp, self.assertRaises(ValueError):
                 c.smoke('fixture-image', tmp, 'reference')
             command.assert_not_called()
+
+    def firefox_gate_selected(self, profile, *, event='pull_request', sign=False,
+                              readback=False, signed_binding=''):
+        workflow = (Path(__file__).resolve().parents[1] / '.github/workflows/qikvrt_ci.yml').read_text()
+        job = workflow.split('  s1_firefox_extension:\n', 1)[1].split('\n  container:', 1)[0]
+        expression = next(x.strip()[4:] for x in job.splitlines() if x.strip().startswith('if: '))
+        expression = expression.removeprefix('${{').removesuffix('}}').strip()
+        expression = expression.replace('always()', 'True').replace('&&', ' and ').replace('||', ' or ')
+        parsed = ast.parse(expression, mode='eval')
+        allowed = (ast.Expression, ast.BoolOp, ast.And, ast.Or, ast.Compare, ast.Eq,
+                   ast.NotEq, ast.Attribute, ast.Name, ast.Load, ast.Constant)
+        self.assertTrue(all(isinstance(x, allowed) for x in ast.walk(parsed)))
+        self.assertTrue(all(not x.attr.startswith('_') for x in ast.walk(parsed)
+                            if isinstance(x, ast.Attribute)))
+        scope = {'needs': SimpleNamespace(container=SimpleNamespace(outputs=SimpleNamespace(
+                    terminal_profile=profile)), amo_unlisted=SimpleNamespace(
+                    outputs=SimpleNamespace(signed_binding=signed_binding))),
+                 'github': SimpleNamespace(event_name=event),
+                 'inputs': SimpleNamespace(amo_sign_unlisted=sign, amo_readback_only=readback)}
+        return eval(compile(parsed, '<existing-firefox-job-scope>', 'eval'),
+                    {'__builtins__': {}}, scope)
+
+    def test_native_only_ci_does_not_require_deferred_firefox_admission(self):
+        for event in ('push', 'pull_request', 'workflow_dispatch'):
+            with self.subTest(event=event):
+                self.assertFalse(self.firefox_gate_selected('temdd', event=event))
+        self.assertFalse(self.firefox_gate_selected('temdd', event='push', sign=True))
+
+    def test_browser_and_existing_explicit_signing_paths_keep_firefox_admission(self):
+        self.assertTrue(self.firefox_gate_selected('firefox'))
+        self.assertTrue(self.firefox_gate_selected('temdd', event='workflow_dispatch', sign=True))
+        self.assertTrue(self.firefox_gate_selected('temdd', event='workflow_dispatch', readback=True))
+        self.assertTrue(self.firefox_gate_selected('temdd', signed_binding='original-bound-package'))
+
+    def image_receipt(self, smoke, output, *, expect_failure=False):
+        workflow = (Path(__file__).resolve().parents[1] / '.github/workflows/qikvrt_ci.yml').read_text()
+        step = workflow.split('      - name: Bind exact image/package and CI execution identities\n', 1)[1]
+        code = textwrap.dedent(step.split("<<'PY'\n", 1)[1].split('\n          PY', 1)[0])
+        oci = {'source_head': HEAD, 'source_tree': TREE, 'independent_rebuild_digest_equal': True,
+               'image_digest': 'sha256:' + 'c' * 64}
+        (output / 'oci.json').write_text(json.dumps(oci))
+        (output / 'smoke.json').write_text(json.dumps(smoke))
+        result = output / 'github-output'
+        def git(command, **_kwargs):
+            return HEAD if command[1] == 'rev-parse' else ''
+        with patch.dict(os.environ, {'EVIDENCE': str(output), 'GITHUB_OUTPUT': str(result),
+                'GITHUB_REPOSITORY': c.REPOSITORY, 'GITHUB_RUN_ID': '1', 'GITHUB_RUN_ATTEMPT': '1'}), \
+             patch.object(subprocess, 'check_output', side_effect=git), \
+             patch('sys.stdout', new=io.StringIO()):
+            if expect_failure:
+                with self.assertRaises(AssertionError): exec(code, {})
+                self.assertFalse(result.exists())
+                return
+            exec(code, {})
+        return json.loads((output / 'ci.json').read_bytes()), dict(
+            line.split('=', 1) for line in result.read_text().splitlines())
+
+    def test_ci_receipt_exports_verified_smoke_profile(self):
+        for profile in ('temdd', 'firefox'):
+            with self.subTest(profile=profile), tempfile.TemporaryDirectory() as temporary:
+                smoke = {'source_head': HEAD, 'source_tree': TREE, 'manifest_sha256': 'd' * 64,
+                         'state': 'CONTAINER_SMOKE_AND_RESTART_VERIFIED', 'terminal_profile': profile,
+                         'firefox_acceptance_in_scope': profile == 'firefox'}
+                receipt, outputs = self.image_receipt(smoke, Path(temporary))
+                self.assertEqual(receipt['terminal_profile'], profile)
+                self.assertEqual(outputs.get('terminal_profile'), profile)
+                self.assertFalse(receipt['public_production_verified'])
+
+    def test_ci_profile_export_requires_accepted_typed_smoke_scope(self):
+        for variant in ('unknown-profile', 'mismatched-scope', 'untyped-scope', 'unaccepted-smoke'):
+            with self.subTest(variant=variant), tempfile.TemporaryDirectory() as temporary:
+                smoke = {'source_head': HEAD, 'source_tree': TREE, 'manifest_sha256': 'd' * 64,
+                         'state': 'CONTAINER_SMOKE_AND_RESTART_VERIFIED', 'terminal_profile': 'temdd',
+                         'firefox_acceptance_in_scope': False}
+                if variant == 'unknown-profile': smoke['terminal_profile'] = 'reference'
+                if variant == 'mismatched-scope': smoke['firefox_acceptance_in_scope'] = True
+                if variant == 'untyped-scope': smoke['firefox_acceptance_in_scope'] = 'false'
+                if variant == 'unaccepted-smoke': smoke['state'] = 'STARTING'
+                self.image_receipt(smoke, Path(temporary), expect_failure=True)
+
+    def test_firefox_scope_reads_the_required_container_output(self):
+        workflow = (Path(__file__).resolve().parents[1] / '.github/workflows/qikvrt_ci.yml').read_text()
+        job = workflow.split('  s1_firefox_extension:\n', 1)[1].split('\n  container:', 1)[0]
+        self.assertIn('needs: [amo_unlisted, container]', job)
+        container = workflow.split('  container:\n', 1)[1].split('\n  container_publish:', 1)[0]
+        self.assertIn('terminal_profile: ${{ steps.receipt.outputs.terminal_profile }}', container)
 
 
 class ArtifactTransportControls(unittest.TestCase):

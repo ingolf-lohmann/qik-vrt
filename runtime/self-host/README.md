@@ -1300,3 +1300,24 @@ revocation, native identity replacement and refusal without independent readback
 Productive acceptance still needs the actual admitted peer's private channel,
 its original writable Transputer and independently challenged Terminal readback.
 
+
+### Match the CI Firefox gate to the verified package scope — 2026-10-25
+
+The native-only `temdd` image passed real OCI load, smoke and persistent restart
+on b6329979, but the same CI still ran the separate Firefox installation gate
+unconditionally. Its unsigned-XPI failure made the complete workflow adverse,
+which the existing exact-head promotion gate correctly refused.
+
+The existing container receipt now exports the profile from its accepted smoke
+result after checking its state, allowed profile and typed scope consistency.
+The original Firefox job consumes that output. A native-only package with no
+signing request defers this separate acceptance scope. A Firefox package,
+explicit official signing/readback request or actual signed-binding output
+still selects the original signing/activation/restart gate. Failed or unknown
+smoke metadata cannot publish a profile output. All Firefox source and negative
+admission tests still run in the full test job.
+
+This repairs scope selection; it grants no Main, production environment, host,
+mTLS, storage or exact-domain admission. Protected production and independent
+public readback remain required. A successful native-only CI never proves a
+signed Firefox installation or a running IONOS host.

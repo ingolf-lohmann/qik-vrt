@@ -530,8 +530,10 @@ jobs:
     outputs:
       signed_binding: ${{ steps.effect-admission.outputs.signed_binding }}
     name: Reused S1 + Mozilla Release - Firefox 158 XPI admission
-    needs: amo_unlisted
-    if: always()
+    needs: [amo_unlisted, container]
+    # The native-only package has no Firefox installation to admit. Keep the
+    # existing browser gate for a browser package or an explicit signing path.
+    if: ${{ always() && (needs.container.outputs.terminal_profile == 'firefox' || (github.event_name == 'workflow_dispatch' && (inputs.amo_sign_unlisted || inputs.amo_readback_only)) || needs.amo_unlisted.outputs.signed_binding != '') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     permissions:
@@ -1154,6 +1156,7 @@ jobs:
       tree: ${{ steps.receipt.outputs.tree }}
       digest: ${{ steps.receipt.outputs.digest }}
       manifest: ${{ steps.receipt.outputs.manifest }}
+      terminal_profile: ${{ steps.receipt.outputs.terminal_profile }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -1284,17 +1287,22 @@ jobs:
           o=json.loads((p/'oci.json').read_bytes()); s=json.loads((p/'smoke.json').read_bytes())
           assert (o['source_head'],o['source_tree']) == (s['source_head'],s['source_tree'])
           assert o['independent_rebuild_digest_equal'] is True
+          assert s['state'] == 'CONTAINER_SMOKE_AND_RESTART_VERIFIED'
+          profile=s['terminal_profile']
+          assert profile in {'temdd','firefox'}
+          assert type(s['firefox_acceptance_in_scope']) is bool
+          assert s['firefox_acceptance_in_scope'] == (profile == 'firefox')
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip() == o['source_head']
           assert not subprocess.check_output(['git','status','--porcelain','--untracked-files=no'])
           r={'repository':os.environ['GITHUB_REPOSITORY'],'run_id':os.environ['GITHUB_RUN_ID'],
              'run_attempt':os.environ['GITHUB_RUN_ATTEMPT'],'source_head':o['source_head'],
              'source_tree':o['source_tree'],'image_digest':o['image_digest'],
              'manifest_sha256':s['manifest_sha256'],'container_production_verified':True,
-             'terminal_profile':'temdd','firefox_acceptance_in_scope':False,
+             'terminal_profile':profile,'firefox_acceptance_in_scope':s['firefox_acceptance_in_scope'],
              'registry_publication_verified':False,'public_production_verified':False,'effect_ack_done':False}
           (p/'ci.json').write_text(json.dumps(r,sort_keys=True,indent=2)+'\n')
           with open(os.environ['GITHUB_OUTPUT'],'a') as out:
-              for k,v in [('head',o['source_head']),('tree',o['source_tree']),('digest',o['image_digest']),('manifest',s['manifest_sha256'])]:
+              for k,v in [('head',o['source_head']),('tree',o['source_tree']),('digest',o['image_digest']),('manifest',s['manifest_sha256']),('terminal_profile',profile)]:
                   out.write(k+'='+v+'\n')
           print(json.dumps(r,sort_keys=True))
           PY

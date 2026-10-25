@@ -114,5 +114,22 @@
     "live_runtime_accepted": false,
     "main_protected_last_read": false,
     "effect_ack_done": false
+  },
+  "ci_scope_repair": {
+    "observed_source_head": "b6329979eadd151c440d28e7c3f5e5dd795a008e",
+    "observed_source_tree": "4445ae8329d2afcac8e236f999fb46371f5120fb",
+    "observed_run": 40201202452,
+    "native_container_job": 121197856779,
+    "native_container_result": "CONTAINER_SMOKE_AND_RESTART_VERIFIED",
+    "full_test_job": 121192560774,
+    "full_test_result": "success",
+    "adverse_firefox_job": 121197921956,
+    "observed_pipeline_conclusion": "failure",
+    "blocking_contract": "tools/qikvrt_expected_head_promotion.py: REQUIRED_EXACT_HEAD_GATE_NOT_GREEN / APPLICABLE_EXACT_HEAD_GATE_NOT_GREEN",
+    "repair": "Existing Firefox job selects the accepted package profile or existing explicit signing/readback path; no signing or activation guard is waived.",
+    "profile_authority": "Accepted source-bound smoke receipt; allowed profile and typed scope are verified before output.",
+    "negative_controls": "Unknown profile, scope type/mismatch and unaccepted smoke reject output.",
+    "productive_host_accepted": false,
+    "effect_ack_done": false
   }
 }
