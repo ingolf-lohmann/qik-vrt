@@ -1,0 +1,424 @@
+{
+  "_license": {
+    "classification": "machine_readable_source_visibility_evidence",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "publication_id": "raumzeit-rekonstruierbare-virtualitaet-20261025",
+  "original_gate": {
+    "git_commit": "366327f8e98d520ec503a92848d82935681ea3fb",
+    "source_path": "skill-6ac348c7f798819193d2081ecc9e7602/scripts/check_sources.py",
+    "sha256": "63d92f9f85883bfa56adff465369f5e9f0d5d6e0c63c74504771279c4a6d935b"
+  },
+  "receipts": [
+    {
+      "schema": "QIKVRT_VISIBLE_SOURCES_CHECK_V1",
+      "status": "PASS",
+      "source_count": 22,
+      "manifest_sha256": "49ae214b54a0744865cbaf88dd2cb951fd1f58375d6e5f779f697a180c3547a6",
+      "network_reachability_checked": false,
+      "claim_support_checked_automatically": false,
+      "errors": [],
+      "artifacts": [
+        {
+          "path": "/workspace/scratch/9f51c869ac04/output/Raumzeit_Fachartikel_ueberarbeitet_20261025.pdf",
+          "sha256": "1d1ce7013d0df84314af2d5a24d960b89b38d72b6c37c6a30290955cb541711d",
+          "pages": 13,
+          "status": "PASS",
+          "errors": []
+        }
+      ]
+    },
+    {
+      "schema": "QIKVRT_VISIBLE_SOURCES_CHECK_V1",
+      "status": "PASS",
+      "source_count": 22,
+      "manifest_sha256": "a6b660ad7c4a2c1732351af844bcbf06b88800cbfe5f5fd7592b44ef8cb92d04",
+      "network_reachability_checked": false,
+      "claim_support_checked_automatically": false,
+      "errors": [],
+      "artifacts": [
+        {
+          "path": "/workspace/scratch/9f51c869ac04/output/Raumzeit_Prosa_ueberarbeitet_20261025.txt",
+          "sha256": "b644874acb65d1757af177c33843b79667dcd8d1950873d7a37679a25eb4c4cf",
+          "pages": null,
+          "status": "PASS",
+          "errors": []
+        }
+      ]
+    }
+  ],
+  "source_manifests": [
+    {
+      "artifact": "Raumzeit_Fachartikel_ueberarbeitet_20261025.pdf",
+      "manifest": {
+        "schema": "QIKVRT_VISIBLE_SOURCES_V1",
+        "sources": [
+          {
+            "id": "1",
+            "title": "Albert Einstein Die Grundlage der allgemeinen Relativitätstheorie. Annalen der Physik 354, 769-822 (1916).",
+            "urls": [
+              "https://doi.org/10.1002/andp.19163540702"
+            ],
+            "doi": "10.1002/andp.19163540702"
+          },
+          {
+            "id": "2",
+            "title": "Werner Heisenberg Über den anschaulichen Inhalt der quantentheoretischen Kinematik und Mechanik. Zeitschrift für Physik 43, 172-198 (1927).",
+            "urls": [
+              "https://doi.org/10.1007/BF01397280"
+            ],
+            "doi": "10.1007/BF01397280"
+          },
+          {
+            "id": "3",
+            "title": "H. P. Robertson The Uncertainty Principle. Physical Review 34, 163-164 (1929).",
+            "urls": [
+              "https://doi.org/10.1103/PhysRev.34.163"
+            ],
+            "doi": "10.1103/PhysRev.34.163"
+          },
+          {
+            "id": "4",
+            "title": "Erwin Schrödinger Die gegenwärtige Situation in der Quantenmechanik. Die Naturwissenschaften 23, 807-812 (1935), erster Teil, insbesondere Abschnitt 5.",
+            "urls": [
+              "https://doi.org/10.1007/BF01491891"
+            ],
+            "doi": "10.1007/BF01491891"
+          },
+          {
+            "id": "5",
+            "title": "Wojciech H. Zurek Decoherence, einselection, and the quantum origins of the classical. Reviews of Modern Physics 75, 715-775 (2003), arXiv-Fassung v3.",
+            "urls": [
+              "https://arxiv.org/abs/quant-ph/0105127v3"
+            ],
+            "doi": "10.1103/RevModPhys.75.715"
+          },
+          {
+            "id": "6",
+            "title": "Charles H. Bennett Logical Reversibility of Computation. IBM Journal of Research and Development 17, 525-532 (1973).",
+            "urls": [
+              "https://doi.org/10.1147/rd.176.0525"
+            ],
+            "doi": "10.1147/rd.176.0525"
+          },
+          {
+            "id": "7",
+            "title": "Ming Li und Paul Vitányi Reversibility and Adiabatic Computation: Trading Time and Space for Energy. arXiv:quant-ph/9703022 (1997).",
+            "urls": [
+              "https://arxiv.org/abs/quant-ph/9703022"
+            ],
+            "doi": "10.48550/arXiv.quant-ph/9703022"
+          },
+          {
+            "id": "8",
+            "title": "Claude E. Shannon A Mathematical Theory of Communication. Bell System Technical Journal 27, 379-423 (1948), erster Teil.",
+            "urls": [
+              "https://doi.org/10.1002/j.1538-7305.1948.tb01338.x"
+            ],
+            "doi": "10.1002/j.1538-7305.1948.tb01338.x"
+          },
+          {
+            "id": "9",
+            "title": "Rolf Landauer Irreversibility and Heat Generation in the Computing Process. IBM Journal of Research and Development 5, 183-191 (1961).",
+            "urls": [
+              "https://doi.org/10.1147/rd.53.0183"
+            ],
+            "doi": "10.1147/rd.53.0183"
+          },
+          {
+            "id": "10",
+            "title": "Sabine Hossenfelder und Tim Palmer Rethinking Superdeterminism. Frontiers in Physics 8, Artikel 139 (2020), insbesondere Abschnitte 3-4.",
+            "urls": [
+              "https://www.frontiersin.org/journals/physics/articles/10.3389/fphy.2020.00139/full"
+            ],
+            "doi": "10.3389/fphy.2020.00139"
+          },
+          {
+            "id": "11",
+            "title": "B. Hensen und Mitautoren Experimental loophole-free violation of a Bell inequality using entangled electron spins separated by 1.3 km. Nature 526, 682-686 (2015), arXiv:1508.05949v1.",
+            "urls": [
+              "https://arxiv.org/abs/1508.05949v1"
+            ]
+          },
+          {
+            "id": "12",
+            "title": "Shinsei Ryu und Tadashi Takayanagi Holographic Derivation of Entanglement Entropy from AdS/CFT. Physical Review Letters 96, 181602 (2006), arXiv-Fassung v2.",
+            "urls": [
+              "https://arxiv.org/abs/hep-th/0603001v2"
+            ],
+            "doi": "10.1103/PhysRevLett.96.181602"
+          },
+          {
+            "id": "13",
+            "title": "Mark Van Raamsdonk Building up spacetime with quantum entanglement. General Relativity and Gravitation 42, 2323-2329 (2010), ausdrücklich ursprüngliche arXiv-Fassung v1.",
+            "urls": [
+              "https://arxiv.org/abs/1005.3035v1"
+            ],
+            "doi": "10.1007/s10714-010-1034-0"
+          },
+          {
+            "id": "14",
+            "title": "Luca Bombelli, Joohan Lee, David Meyer und Rafael D. Sorkin Space-time as a causal set. Physical Review Letters 59, 521-524 (1987).",
+            "urls": [
+              "https://doi.org/10.1103/PhysRevLett.59.521"
+            ],
+            "doi": "10.1103/PhysRevLett.59.521"
+          },
+          {
+            "id": "15",
+            "title": "K. B. Wharton und N. Argaman Bell's Theorem and Locally-Mediated Reformulations of Quantum Mechanics. Reviews of Modern Physics 92, 021002 (2020), arXiv-Fassung v3.",
+            "urls": [
+              "https://arxiv.org/abs/1906.04313v3"
+            ],
+            "doi": "10.1103/RevModPhys.92.021002"
+          },
+          {
+            "id": "16",
+            "title": "Maximilian Schlosshauer Decoherence, the measurement problem, and interpretations of quantum mechanics. Reviews of Modern Physics 76, 1267-1305 (2004), endgültige arXiv-Fassung v4 von 2005, insbesondere Abschnitte II-III.",
+            "urls": [
+              "https://arxiv.org/abs/quant-ph/0312059v4"
+            ],
+            "doi": "10.1103/RevModPhys.76.1267"
+          },
+          {
+            "id": "17",
+            "title": "Joel L. Lebowitz Boltzmann's Entropy and Time's Arrow. Physics Today 46(9), 32-38 (1993).",
+            "urls": [
+              "https://physicstoday.aip.org/features/boltzmanns-entropy-and-times-arrow"
+            ],
+            "doi": "10.1063/1.881363"
+          },
+          {
+            "id": "18",
+            "title": "Charles H. Bennett Notes on Landauer's principle, reversible computation, and Maxwell's Demon. Studies in History and Philosophy of Modern Physics 34, 501-510 (2003), arXiv:physics/0210005v2.",
+            "urls": [
+              "https://arxiv.org/abs/physics/0210005v2"
+            ],
+            "doi": "10.1016/S1355-2198(03)00039-X"
+          },
+          {
+            "id": "19",
+            "title": "Sandu Popescu und Daniel Rohrlich Quantum nonlocality as an axiom. Foundations of Physics 24, 379-385 (1994).",
+            "urls": [
+              "https://doi.org/10.1007/BF02058098"
+            ],
+            "doi": "10.1007/BF02058098"
+          },
+          {
+            "id": "Q1",
+            "title": "Ingolf Lohmann Von Softwarearchitektur zur Weltformel - DAS UNIVERSUM ALS ROUND TRIP. Version 1.0.0-candidate.1 (2026), insbesondere Abschnitte 1, 3, 4 und 6.",
+            "urls": [
+              "https://zenodo.org/records/21888130"
+            ],
+            "doi": "10.5281/zenodo.21888130"
+          },
+          {
+            "id": "Q2",
+            "title": "Ingolf Lohmann: QIK-VRT und das Effect-Acknowledgement-Protokoll: Kanonischer Speicher zwischen Vergangenheit und Zukunft. 31. Juli 2026.",
+            "urls": [
+              "https://doi.org/10.5281/zenodo.21711193"
+            ],
+            "doi": "10.5281/zenodo.21711193"
+          },
+          {
+            "id": "Q3",
+            "title": "Ingolf Lohmann: QIK-VRT Effect Acknowledgement: Separating Receipt from Authorization for Downstream Effect. draft-lohmann-qikvrt-effect-ack-03, 2. August 2026. Individueller Internet-Draft, work in progress; beabsichtigter Status Experimental, kein RFC und keine IETF-Billigung. Besonders Abstract, Abschnitte 1, 10.1–10.2 und 17.",
+            "urls": [
+              "https://datatracker.ietf.org/doc/html/draft-lohmann-qikvrt-effect-ack-03"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "artifact": "Raumzeit_Prosa_ueberarbeitet_20261025.txt",
+      "manifest": {
+        "schema": "QIKVRT_VISIBLE_SOURCES_V1",
+        "sources": [
+          {
+            "id": "1",
+            "title": "Charles H. Bennett: Logical Reversibility of Computation. IBM Journal of Research and Development 17, 525–532 (1973).",
+            "urls": [
+              "https://doi.org/10.1147/rd.176.0525"
+            ],
+            "doi": "10.1147/rd.176.0525"
+          },
+          {
+            "id": "2",
+            "title": "Ming Li und Paul Vitányi: Reversibility and Adiabatic Computation: Trading Time and Space for Energy. arXiv:quant-ph/9703022 (1997).",
+            "urls": [
+              "https://arxiv.org/abs/quant-ph/9703022"
+            ]
+          },
+          {
+            "id": "3",
+            "title": "Claude E. Shannon: A Mathematical Theory of Communication. Bell System Technical Journal 27, 379–423 (1948), erster Teil.",
+            "urls": [
+              "https://doi.org/10.1002/j.1538-7305.1948.tb01338.x"
+            ],
+            "doi": "10.1002/j.1538-7305.1948.tb01338.x"
+          },
+          {
+            "id": "4",
+            "title": "Rolf Landauer: Irreversibility and Heat Generation in the Computing Process. IBM Journal of Research and Development 5, 183–191 (1961).",
+            "urls": [
+              "https://doi.org/10.1147/rd.53.0183"
+            ],
+            "doi": "10.1147/rd.53.0183"
+          },
+          {
+            "id": "5",
+            "title": "Charles H. Bennett: Notes on Landauer's principle, Reversible Computation and Maxwell's Demon. Studies in History and Philosophy of Modern Physics 34, 501–510 (2003).",
+            "urls": [
+              "https://arxiv.org/abs/physics/0210005v2"
+            ],
+            "doi": "10.1016/S1355-2198(03)00039-X"
+          },
+          {
+            "id": "6",
+            "title": "Joel L. Lebowitz: Boltzmann's Entropy and Time's Arrow. Physics Today 46(9), 32–38 (1993).",
+            "urls": [
+              "https://doi.org/10.1063/1.881363"
+            ],
+            "doi": "10.1063/1.881363"
+          },
+          {
+            "id": "7",
+            "title": "Maximilian Schlosshauer: Decoherence, the measurement problem, and interpretations of quantum mechanics. Reviews of Modern Physics 76, 1267–1305 (2004); endgültige arXiv-Fassung v4 (2005), insbesondere Abschnitte II–III.",
+            "urls": [
+              "https://arxiv.org/abs/quant-ph/0312059v4"
+            ],
+            "doi": "10.1103/RevModPhys.76.1267"
+          },
+          {
+            "id": "8",
+            "title": "Werner Heisenberg: Über den anschaulichen Inhalt der quantentheoretischen Kinematik und Mechanik. Zeitschrift für Physik 43, 172–198 (1927).",
+            "urls": [
+              "https://doi.org/10.1007/BF01397280"
+            ],
+            "doi": "10.1007/BF01397280"
+          },
+          {
+            "id": "9",
+            "title": "H. P. Robertson: The Uncertainty Principle. Physical Review 34, 163–164 (1929).",
+            "urls": [
+              "https://doi.org/10.1103/PhysRev.34.163"
+            ],
+            "doi": "10.1103/PhysRev.34.163"
+          },
+          {
+            "id": "10",
+            "title": "Albert Einstein: Die Grundlage der allgemeinen Relativitätstheorie. Annalen der Physik 354, 769–822 (1916).",
+            "urls": [
+              "https://doi.org/10.1002/andp.19163540702"
+            ],
+            "doi": "10.1002/andp.19163540702"
+          },
+          {
+            "id": "11",
+            "title": "Luca Bombelli, Joohan Lee, David Meyer und Rafael D. Sorkin: Space-time as a causal set. Physical Review Letters 59, 521–524 (1987).",
+            "urls": [
+              "https://doi.org/10.1103/PhysRevLett.59.521"
+            ],
+            "doi": "10.1103/PhysRevLett.59.521"
+          },
+          {
+            "id": "12",
+            "title": "Shinsei Ryu und Tadashi Takayanagi: Holographic Derivation of Entanglement Entropy from AdS/CFT. Physical Review Letters 96, 181602 (2006).",
+            "urls": [
+              "https://arxiv.org/abs/hep-th/0603001v2"
+            ],
+            "doi": "10.1103/PhysRevLett.96.181602"
+          },
+          {
+            "id": "13",
+            "title": "Mark Van Raamsdonk: Building up spacetime with quantum entanglement. General Relativity and Gravitation 42, 2323–2329 (2010).",
+            "urls": [
+              "https://arxiv.org/abs/1005.3035v1"
+            ],
+            "doi": "10.1007/s10714-010-1034-0"
+          },
+          {
+            "id": "14",
+            "title": "Sandu Popescu und Daniel Rohrlich: Quantum nonlocality as an axiom. Foundations of Physics 24, 379–385 (1994).",
+            "urls": [
+              "https://doi.org/10.1007/BF02058098"
+            ],
+            "doi": "10.1007/BF02058098"
+          },
+          {
+            "id": "15",
+            "title": "Erwin Schrödinger: Die gegenwärtige Situation in der Quantenmechanik. Die Naturwissenschaften 23, 807–812 (1935), erster Teil, besonders Abschnitt 5.",
+            "urls": [
+              "https://doi.org/10.1007/BF01491891"
+            ],
+            "doi": "10.1007/BF01491891"
+          },
+          {
+            "id": "16",
+            "title": "Wojciech H. Zurek: Decoherence, einselection, and the quantum origins of the classical. Reviews of Modern Physics 75, 715–775 (2003).",
+            "urls": [
+              "https://arxiv.org/abs/quant-ph/0105127v3"
+            ],
+            "doi": "10.1103/RevModPhys.75.715"
+          },
+          {
+            "id": "17",
+            "title": "K. B. Wharton und N. Argaman: Colloquium: Bell's Theorem and Locally Mediated Reformulations of Quantum Mechanics. Reviews of Modern Physics 92, 021002 (2020).",
+            "urls": [
+              "https://arxiv.org/abs/1906.04313v3"
+            ],
+            "doi": "10.1103/RevModPhys.92.021002"
+          },
+          {
+            "id": "18",
+            "title": "Sabine Hossenfelder und Tim Palmer: Rethinking Superdeterminism. Frontiers in Physics 8, Artikel 139 (2020).",
+            "urls": [
+              "https://www.frontiersin.org/journals/physics/articles/10.3389/fphy.2020.00139/full"
+            ],
+            "doi": "10.3389/fphy.2020.00139"
+          },
+          {
+            "id": "19",
+            "title": "B. Hensen und Mitautoren: Experimental loophole-free violation of a Bell inequality using entangled electron spins separated by 1.3 km. Nature 526, 682–686 (2015).",
+            "urls": [
+              "https://arxiv.org/abs/1508.05949v1"
+            ],
+            "doi": "10.1038/nature15759"
+          },
+          {
+            "id": "Q1",
+            "title": "Ingolf Lohmann: Von Softwarearchitektur zur Weltformel – DAS UNIVERSUM ALS ROUND TRIP. Version 1.0.0-candidate.1 (2026). In der Ausgangs-PDF angegeben: insbesondere Abschnitte 1, 3, 4 und 6.",
+            "urls": [
+              "https://zenodo.org/records/21888130"
+            ],
+            "doi": "10.5281/zenodo.21888130"
+          },
+          {
+            "id": "Q2",
+            "title": "Ingolf Lohmann: QIK-VRT und das Effect-Acknowledgement-Protokoll: Kanonischer Speicher zwischen Vergangenheit und Zukunft. 31. Juli 2026.",
+            "urls": [
+              "https://doi.org/10.5281/zenodo.21711193"
+            ],
+            "doi": "10.5281/zenodo.21711193"
+          },
+          {
+            "id": "Q3",
+            "title": "Ingolf Lohmann: QIK-VRT Effect Acknowledgement: Separating Receipt from Authorization for Downstream Effect. draft-lohmann-qikvrt-effect-ack-03, 2. August 2026. Individueller Internet-Draft, work in progress; beabsichtigter Status Experimental, kein RFC und keine IETF-Billigung. Besonders Abstract, Abschnitte 1, 10.1–10.2 und 17.",
+            "urls": [
+              "https://datatracker.ietf.org/doc/html/draft-lohmann-qikvrt-effect-ack-03"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "scope": "Original source-visibility gate PASS for each unchanged file, 22 sources per format. This is neither a complete external full-text review nor proof of physical claims.",
+  "rendered_reference_pages_inspected": [
+    11,
+    13
+  ]
+}

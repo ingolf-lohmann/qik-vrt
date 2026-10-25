@@ -1,0 +1,14 @@
+{
+  "schema": "qikvrt_editorial_publication_request_v1",
+  "publication_id": "raumzeit-rekonstruierbare-virtualitaet-20261025",
+  "manifest_path": "release/raumzeit-2026-10-25/publish-request.json",
+  "manifest_sha256": "81112c54456ddcd3217f3ef33d2f574729f1a0bd993996a1888c6221dfa8b5e4",
+  "manuscript_paths": [
+    "release/raumzeit-2026-10-25/Raumzeit_Fachartikel_ueberarbeitet_20261025.pdf",
+    "release/raumzeit-2026-10-25/Raumzeit_Prosa_ueberarbeitet_20261025.txt"
+  ],
+  "website": {
+    "origin": "https://raumzeitterminal.de",
+    "path": "/publications/raumzeit-rekonstruierbare-virtualitaet-20261025/"
+  }
+}

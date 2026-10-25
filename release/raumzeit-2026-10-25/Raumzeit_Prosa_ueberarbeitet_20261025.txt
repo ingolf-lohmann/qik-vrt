@@ -1,0 +1,185 @@
+DIE GESPEICHERTE WELT UND DER PFEIL DER ZEIT
+Was Computer, Quantenphysik und emergente Raumzeit miteinander verbindet
+
+Allgemein verständliche, quellenkritisch überarbeitete Prosafassung
+Grundlage: „Emergente Raumzeit, rekonstruierbare Virtualität und physische Zeit“, 20. Oktober 2026.
+Konzeption und Leitfragen: Ingolf Lohmann. Überarbeitung und Quellenrecherche: ChatGPT, 25. Oktober 2026.
+
+Redaktioneller Status: Quellenkritischer wissenschaftlicher Diskussionsbeitrag. Die Aussagen der Ausgangsfassung werden nicht wegen eines gescheiterten Quellenabrufs als unbewiesen eingestuft. Nicht erneut geprüft wurden in dieser Bearbeitung allein die Originaldateien und exakten Aussagezuordnungen der unten genannten Zenodo-Arbeiten [Q1] und [Q2]. Dies ist eine Grenze dieser Recherche, kein Befund fehlender Beweise in diesen Arbeiten. Die weiter unten konkret benannten zusätzlichen Prüfaufgaben betreffen ausschließlich stärkere physikalische oder biologische Folgerungen, falls diese aus dem Modell abgeleitet werden sollen.
+
+Wer einen gespeicherten Spielstand lädt, erlebt etwas Vertrautes und zugleich Erstaunliches: Eine Welt kehrt an einen früheren Punkt ihrer Geschichte zurück. Figuren stehen wieder an ihren alten Orten. Eine Entscheidung kann anders ausfallen. Ein verlorenes Spiel lässt sich erneut beginnen. Doch der Rechner vollzieht diese Rückkehr in der Gegenwart. Seine Uhr läuft weiter, der Strom ist verbraucht, und der Mensch vor dem Bildschirm ist inzwischen älter geworden. Was innerhalb der dargestellten Welt als Rückkehr erscheint, ist außerhalb dieser Welt eine neue Handlung.
+
+An diesem Unterschied setzt Ingolf Lohmanns Leitfrage an: Was unterscheidet eine rekonstruierbare virtuelle Geschichte von der physischen Geschichte, in der wir leben? Die Frage verbindet Informatik mit Physik, weil auch ein Computer zur physischen Welt gehört. Seine gespeicherten Zustände sind materielle Zustände. Seine Modelle können andere Zeitordnungen darstellen, ohne dadurch die Zeit ihrer eigenen Ausführung zurückzudrehen. Die Verbindung ist wissenschaftlich fruchtbar, wenn jeder Übergang zwischen Beschreibung und Wirklichkeit ausdrücklich begründet wird.
+
+Eine digitale Welt lässt sich unter bestimmten Voraussetzungen zuverlässig wiederholen. Dafür genügt es nicht, nur ihr Programm aufzubewahren. Auch der Anfangszustand, die Eingaben, die verwendeten Regeln und alle für das Ergebnis entscheidenden Ausführungsbedingungen müssen bekannt sein. Bei einem Zufallszahlengenerator gehört sein interner Zustand dazu. Bei einem verteilten Programm können externe Antworten und die Reihenfolge gleichzeitiger Vorgänge entscheidend sein. Sind diese Bedingungen vollständig festgelegt und ist die Entwicklung deterministisch, ergibt sich derselbe Ablauf. Das ist eine Aussage über ein definiertes Modell und seine Ausführung, nicht über die vollständige Vorhersagbarkeit des Universums.
+
+Wiederholen und Umkehren sind verschiedene Fähigkeiten. Ein Programm, das ein Bit auf null setzt, arbeitet vollkommen deterministisch. Dennoch verrät die resultierende Null nicht, ob zuvor eine Null oder eine Eins gespeichert war. Zwei Vorgeschichten führen zum selben Ergebnis. Eine eindeutige Rückrechnung ist aus diesem Ergebnis allein unmöglich. Mathematisch benötigt sie eine Abbildung, bei der verschiedene Ausgangszustände verschiedene Ergebnisse haben. Diese Eigenschaft heißt Injektivität.
+
+Zusätzliche Aufzeichnungen können das Problem verändern. Wenn neben dem neuen Zustand auch der alte erhalten bleibt, lässt er sich später wiederherstellen. Der Informationsverlust wird dadurch im erweiterten System vermieden. Charles Bennett hat die logische Umkehrbarkeit von Berechnungen grundlegend untersucht [1]. Historie kostet allerdings Speicher; ihre Bereinigung und die benötigte Rechenzeit führen zu eigenen Ressourcenfragen [2]. Die elementare Einsicht lautet: Eine rekonstruierbare Vergangenheit muss auf erhaltenen Unterschieden beruhen. Sie entsteht nicht allein dadurch, dass ein Programm deterministisch ist.
+
+Auch die Rückübersetzung von Maschinenkode zeigt diese Grenze. Eine passende Assemblersicht kann die ausgeführten Maschinenbefehle wieder sichtbar machen. Ursprüngliche Kommentare, entfernte Symbolnamen und Entwurfsabsichten werden dadurch nicht automatisch zurückgewonnen. Eine äquivalente Darstellung ist nicht notwendig das verlorene Original. Ebenso ist eine erneut berechnete Modellgeschichte nicht die Rücknahme ihrer früheren physischen Ausführung.
+
+Damit wird verständlich, weshalb Information und Entropie in die Diskussion gehören. In der Informationstheorie misst Entropie Unsicherheit innerhalb einer angegebenen Wahrscheinlichkeitsbeschreibung. Claude Shannon entwickelte hierfür die mathematische Grundlage [3]. Entscheidend ist, welche Möglichkeiten betrachtet werden und welche Informationen vorliegen. Wer den Zustand eines verborgenen Generators nicht kennt, kann über dessen nächste Ausgabe unsicher sein, obwohl der Generator deterministisch arbeitet. Eindeutige Entwicklung und begrenztes Wissen widersprechen einander nicht.
+
+Für virtuelle Systeme kann man deshalb eine beobachterbezogene Größe definieren: Wie viel Unsicherheit über den Systemzustand bleibt angesichts des verfügbaren Gedächtnisses? Der Fachtext nennt eine skalierte bedingte Shannon-Entropie „virtuelle Entropie“. Das ist eine ausdrücklich eingeführte Modellgröße. Ihr Zahlenwert setzt einen Zustandsraum, eine Wahrscheinlichkeitsverteilung und eine genaue Abgrenzung des verfügbaren Wissens voraus. Ohne diese Angaben bleibt das Wort eine Metapher. Die gewählte Skalierung macht daraus noch keine thermodynamische Entropie.
+
+Künstliche Intelligenz kann diese Unsicherheit verändern. Ein Agent kann beobachten, lernen und zuvor unbekannte Unterschiede erschließen. Er kann zugleich Informationen verwerfen, Details zusammenfassen oder seinen internen Zustand anderen verbergen. Lernen kann Unsicherheit verringern; Vergessen kann sie erhöhen. Unter festgehaltener gemeinsamer Verteilung kann zusätzliche zugängliche Information die bedingte Shannon-Entropie im Mittel nicht erhöhen. Wenn jedoch das System selbst weiterläuft, sich seine Verteilung ändert oder Gedächtnis verloren geht, folgt daraus kein allgemeiner monotoner Verlauf über die Zeit. Auch wächst die Unsicherheit nicht schon deshalb, weil mehr Wörter produziert werden.
+
+Eine lernende Maschine hebt Determinismus nicht durch Lernen allein auf. Sind ihre Parameter, ihre Daten, ihre Eingaben und ihre relevanten Ausführungsbedingungen vollständig festgelegt, kann auch ihre Veränderung zum deterministischen Modell gehören. Ob eine physische Zufallsquelle grundsätzlich unvorhersagbare Ergebnisse liefert, ist eine zusätzliche physikalische Frage. Überraschung für einen Beobachter genügt als Antwort nicht.
+
+Der physische Rechner unterliegt außerdem der Thermodynamik. Landauers Prinzip verbindet logische Informationslöschung mit den Bedingungen ihres materiellen Vollzugs [4, 5]. Im üblichen idealisierten Fall der isothermen Rücksetzung eines unbekannten, gleichwahrscheinlichen Bits ohne nutzbare Seiteninformation beträgt die minimale Wärmeabgabe an ein Reservoir k_B T ln 2. Das ist keine pauschale Energiekostenangabe für jeden Rechenschritt. Logische Operation, Speichervorgang und irreversible Löschung müssen auseinandergehalten werden. Eine Anwendung kann ihre Daten ordnen, während ihr Rechner Wärme an die Umgebung abgibt.
+
+Warum lässt sich die physische Welt dann nicht wie ein Spielstand zurücksetzen? Ein wesentlicher Unterschied liegt im Zugriff. Bei alltäglichen Vorgängen verteilen sich Informationen über Wärme, Strahlung und zahllose Wechselwirkungen auf die Umgebung. Ein Foto, ein Text oder ein Messprotokoll bewahrt ausgewählte Unterschiede. Es enthält nicht sämtliche Zustände, die zur vollständigen Umkehr eines realen Vorgangs kontrolliert werden müssten. Aus dieser begrenzten Zugänglichkeit folgt jedoch nicht, dass die zugrunde liegende Dynamik notwendig undeterministisch wäre.
+
+Der thermodynamische Zeitpfeil verlangt eine statistische Erklärung. Makrozustände, etwa eine Temperaturverteilung, fassen sehr viele Mikrozustände zusammen. Zustände mit gleichmäßig verteilter Energie können unter geeigneten Bedingungen viel zahlreicher sein als stark geordnete Zustände. Damit daraus eine Entwicklungsaussage wird, benötigt man zusätzlich Dynamik und Randbedingungen. Insbesondere ist die ungewöhnlich niedrige Entropie der Vergangenheit erklärungsbedürftig. Lebowitz erläutert, wie makroskopische Irreversibilität mit reversibler Mikrodynamik vereinbar ist [6]. Die bloße Zahl möglicher Zustände erklärt den Zeitpfeil noch nicht vollständig.
+
+In der üblichen Quantentheorie ist die unitäre Entwicklung eines abgeschlossenen Systems ebenfalls mathematisch umkehrbar. Seine feinkörnige von-Neumann-Entropie bleibt dabei erhalten. Betrachtet man nur einen Teil des Systems, können Wechselwirkungen und Verschränkung dessen reduzierte Beschreibung verändern. Die Entropie eines Teilsystems kann steigen; sie muss unter beliebigen Bedingungen nicht immer steigen. Die Unterscheidung zwischen Gesamtzustand und zugänglichem Ausschnitt ist deshalb grundlegend [7].
+
+Die Quantenmechanik setzt dem klassischen Bild gleichzeitig scharfer Eigenschaften weitere Grenzen. Die Unschärferelation für Ort und Impuls betrifft die Streuungen ihrer Messwertverteilungen im selben Quantenzustand. Sie ist nicht bloß eine Folge unzureichender Geräte. Heisenbergs Arbeit und Robertsons präzise Streuungsrelation bilden hier die historischen Anschlussstellen [8, 9]. Aus dieser Beziehung folgt aber weder eine Theorie des Bewusstseins noch eine neue Gravitationstheorie. Jede solche Verbindung benötigt zusätzliche Begriffe und überprüfbare Herleitungen.
+
+Ebenso sorgfältig ist mit dem Lichtkegel umzugehen. In der Relativitätstheorie beschreibt er lokal, welche Richtungen lichtartig, zeitartig oder raumartig sind. Die allgemeine Relativitätstheorie verbindet die Geometrie mit der Verteilung von Materie und Energie [10]. Wer an einen früher besuchten Ort zurückkehrt, erreicht gewöhnlich ein späteres Ereignis seiner Weltlinie. Derselbe Ort ist nicht dasselbe Raumzeitereignis. Ein Rückweg im Raum nimmt die inzwischen vergangenen Vorgänge nicht zurück.
+
+Ein Lichtkegel ist zugleich keine vollständige Weltbeschreibung. Er enthält nicht schon alle Materiefelder, Quantenzustände oder Erinnerungen. Das ist eine Grenze seines Beschreibungszwecks und kein experimenteller Gegenbeweis zur relativistischen Kausalstruktur. Auch Quantenverschränkung stellt für sich keinen frei steuerbaren Nachrichtenkanal außerhalb des Lichtkegels bereit. Wenn eine umfassendere Theorie die Geometrie selbst quantisiert oder aus anderen Strukturen ableitet, muss sie erläutern, unter welchen Bedingungen die bewährte relativistische Beschreibung wieder entsteht.
+
+Hier beginnt das Forschungsfeld emergenter Raumzeit. „Emergent“ bedeutet, dass eine Beschreibung auf einer bestimmten Ebene aus grundlegenderen Beziehungen hervorgeht. Die Raumzeit wäre dann nicht notwendig die unterste Beschreibungsebene. Das Wort bezeichnet zunächst eine Forschungsfrage, keine abgeschlossene Erklärung unserer Welt.
+
+In der Kausalmengenforschung bildet eine lokal endliche Ordnung von Ereignissen den Ausgangspunkt [11]. In holographischen Ansätzen werden unter besonderen theoretischen Voraussetzungen Beziehungen zwischen Verschränkungsentropie und geometrischen Flächen hergestellt [12]. Van Raamsdonk untersucht den Zusammenhang von Verschränkung und räumlicher Verbundenheit [13]. Diese Programme haben unterschiedliche Ausgangspunkte. Ihr gemeinsames Interesse an Beziehungen berechtigt nicht dazu, jede beliebige Informationsstruktur mit physischer Raumzeit gleichzusetzen.
+
+Eine konkrete Rekonstruktion muss mehr leisten als eine anschauliche Grafik. Sie muss erklären, wie räumliche Dimension, relativistisches Verhalten, Dynamik und geeignete klassische Grenzfälle entstehen. Eine Erklärung der Quantenphysik muss außerdem ihre Wahrscheinlichkeiten und Korrelationsgrenzen reproduzieren. Das Verbot steuerbarer Fernkommunikation allein genügt dafür nicht. Popescu und Rohrlich zeigten, dass theoretische Korrelationen dieses Verbot einhalten und dennoch stärker als quantenmechanische Korrelationen sein können [14]. Diese Lücke ist eine konkrete Prüfaufgabe für jeden weiterführenden Ansatz.
+
+Auch der Ausdruck „vor der Raumzeit“ braucht eine eindeutige Bedeutung. Er kann eine logische oder erklärende Voraussetzung bezeichnen. Ein zeitliches Früher setzt bereits einen definierten Zeitbegriff voraus. Entsprechend ist ein Rechenschritt zunächst ein Rechenschritt. Erst eine begründete Zuordnung macht aus einem Zähler im Modell eine Aussage über gemessene physische Zeit.
+
+Schrödingers Katze führt zu einer weiteren Grenze zwischen Beschreibung und Erfahrung [15]. Das Gedankenexperiment verbindet einen mikroskopischen Auslöser mit einer makroskopischen Folge. Die Frage lautet, wie aus einer quantenmechanischen Beschreibung die verlässliche Aufzeichnung eines beobachteten Ergebnisses verständlich wird. Dekohärenz erklärt wichtige Teile dieses Übergangs: Umweltwechselwirkungen unterdrücken lokal zugängliche Interferenz zwischen bestimmten Alternativen und begünstigen robuste Aufzeichnungen [7, 16]. Welche zusätzliche Erklärung für ein einzelnes erfahrenes Ergebnis nötig ist, hängt von der Interpretation ab. Dekohärenz allein entscheidet diese Interpretationsfrage nicht.
+
+Die Verbindung zu Erinnerung und Leben ist damit eine ernsthafte Anschlussfrage. Eine Aufzeichnung über ein Lebewesen bewahrt bestimmte Informationen. Ob daraus ein biologisch funktionsfähiger Organismus rekonstruiert werden könnte, wäre gesondert nachzuweisen. Ob eine solche Rekonstruktion die Kontinuität eines erlebenden Subjekts erhalten würde, ist nochmals eine andere Frage. Eine Dateikopie oder eine Prüfsumme entscheidet sie nicht.
+
+Besonders leicht geraten Rückrechnung und Retrokausalität durcheinander. Aus einer heutigen Spur kann auf eine frühere Ursache geschlossen werden. Eine Bewegungsgleichung kann unter geeigneten Bedingungen rückwärts gelöst werden. Eine gegenwärtige Vorstellung eines künftigen Ziels kann heutiges Handeln steuern. Keiner dieser Vorgänge ist bereits eine Nachricht an die eigene physische Vergangenheit. Retrokausale Modelle in der Quantenfundamentalforschung untersuchen andere Möglichkeiten, etwa die Abhängigkeit modellinterner Größen von späteren Messbedingungen [17]. Ihre wissenschaftliche Prüfung betrifft jeweils konkrete Modelle und deren Vorhersagen.
+
+Ähnliche Genauigkeit benötigt der Begriff Superdeterminismus. In der Bell-Debatte betrifft er insbesondere die Aufgabe der statistischen Unabhängigkeit verborgener Zustandsgrößen von den gewählten Messeinstellungen [18]. Eine deterministische Simulation ist nicht allein wegen ihrer festen Regeln superdeterministisch in diesem fachlichen Sinn. Lohmanns Gedanke vollständig gebundener virtueller Abläufe ist deshalb unter diesem eigenen Namen leichter anschlussfähig. Seine philosophische Ablehnung einer vollständig vorbestimmten realen Welt bleibt davon unterscheidbar.
+
+Bell-Experimente schränken bestimmte Kombinationen von Modellannahmen ein. Hensens Experiment mit räumlich getrennten Elektronenspins ist ein wichtiger empirischer Bezugspunkt [19]. Die Verletzung einer Bell-Ungleichung lässt sich jedoch nicht als allgemeiner Beweis menschlicher Willensfreiheit oder als Ausschluss sämtlicher deterministischer Weltmodelle lesen. Umgekehrt macht die Diskussion alternativer Modelle deren Annahmen nicht automatisch empirisch richtig. Entscheidend bleiben berechenbare Vorhersagen und unterscheidende Beobachtungen.
+
+QIK-VRT lässt sich an dieser Stelle als methodisches und informatisches Forschungsprogramm verorten. Lohmanns Round-Trip-Gedanke fragt nach einem nachvollziehbaren Weg von einer Unterscheidung über ihre Darstellung und Verarbeitung bis zur überprüften Wirkung [Q1]. Die allgemein anschlussfähige Forderung lautet: Ein Ergebnis soll auf seine Voraussetzungen zurückgeführt und seine beanspruchte Wirkung am betroffenen Gegenstand geprüft werden können. Der persönliche Effect-Acknowledgement-Entwurf unterscheidet dazu technischen Empfang und die an Bedingungen gebundene Freigabe einer nachfolgenden Wirkung [Q3]. Das ist zunächst ein Protokoll- und Architekturthema. Die Übertragung auf physikalische Zeit braucht eine zusätzliche Zuordnung und eigenständige Nachweise.
+
+Ein mathematischer Beweis kann zeigen, was aus bestimmten Definitionen und Voraussetzungen folgt. Ein Softwaretest prüft bestimmte Ausführungen. Eine archivierte Datei macht einen bestimmten Text auffindbar. Eine Messung liefert unter kontrollierten Bedingungen Daten über ein physisches System. Diese Leistungen können einander ergänzen. Keine übernimmt automatisch die Beweiskraft der anderen. Deshalb wird hier weder aus einer formalen Aussage über gespeicherte Zustände ein kosmologischer Beweis noch aus einem Protokollzustand die tatsächliche Erfüllung eines beliebigen äußeren Vorgangs abgeleitet.
+
+Der nächste wissenschaftliche Schritt besteht in solchen genau bezeichneten Übergängen. Eine digitale Demonstration kann Wiederholung, Rückrechnung und Wiederherstellung getrennt zeigen. Ein Modell virtueller Entropie kann dieselben Abläufe bei verschiedenem Beobachterwissen vergleichen. Eine Raumzeitrekonstruktion muss quantitative Grenzfälle liefern. Ein Experiment zu physischer Rückwärtswirkung müsste Speicherzugriff, Postselektion, verzögerten Empfang, gemeinsame Ursachen und Fehler der Zeitzuordnung als Erklärungen kontrollieren. Aussagen über Leben oder subjektive Kontinuität benötigen passende zusätzliche Kriterien. Diese Prüfungen sind kein einheitliches Experiment, sondern unterschiedliche Aufgaben.
+
+Für den menschlichen Alltag bleibt eine nüchterne Einsicht: Die Möglichkeit, Beschreibungen zu bewahren, vergrößert unseren Handlungsspielraum. Sie gibt uns nicht automatisch die Verfügung über die Vergangenheit. Endlichkeit und Verantwortung lassen sich daran philosophisch anschließen. Verantwortung ist dabei eine normative Deutung unserer Handlungsmöglichkeiten, kein weiterer Satz der Quantenmechanik. Gerade die Unterscheidung macht das Gespräch zwischen Naturwissenschaft, Informatik und Lebensfragen tragfähig.
+
+Die leitende Frage lautet damit: Welche Unterschiede sind erhalten, welche sind zugänglich, und welche überprüfbare Wirkung folgt aus ihnen? In virtuellen Systemen können diese Bedingungen ausdrücklich gestaltet werden. In der Physik müssen sie an Naturbeobachtung gebunden bleiben. In einer möglichen Theorie emergenter Raumzeit müssen die Beziehungen zwischen beiden Beschreibungsebenen erst hergeleitet werden. Lohmanns Ansatz gewinnt Anschlussfähigkeit dort, wo er diese Übergänge konkret macht und eine Behauptung so formuliert, dass auch andere sie prüfen können.
+
+
+PRÄZISIERUNG DER PRÜFAUFGABEN
+
+Die Ausgangsfassung behauptet weder einen nachgewiesenen Nachrichtenkanal in die physische Vergangenheit noch die experimentell bestätigte Entstehung unserer Raumzeit aus QIK-VRT. Die folgenden Punkte sind daher keine festgestellten Mängel bereits beanspruchter Resultate. Es sind Bedingungen für mögliche weiterführende Aussagen.
+
+Erstens: Die Sätze A bis C der Fachfassung sind elementare Folgerungen der angegebenen Definitionen. Für ihre argumentative Gültigkeit fehlt hier kein Experiment. Eine maschinelle Prüfung wurde in der Ausgangsfassung nicht beansprucht und ist für diese Begründungen keine nachträglich eingeführte Pflicht.
+
+Zweitens: Falls eine QIK-VRT-Struktur als Modell unserer physischen Raumzeit gelten soll, benötigt diese zusätzliche Aussage eine konkrete Zuordnung der Modellgrößen zu messbaren Größen sowie quantitative Herleitungen von Dimension, relativistischen Grenzfällen, Dynamik und Quantenstatistik. Der vorliegende Artikel formuliert dies als Forschungsprogramm; er dokumentiert keinen Gegenbeweis gegen bereits anderweitig publizierte Ergebnisse. Ob persönliche Arbeiten entsprechende Teile schon erfüllen, muss anhand ihrer exakten Aussagen geprüft werden.
+
+Drittens: Falls physische Kommunikation in die eigene kausale Vergangenheit behauptet werden soll, ist eine kontrolliert veränderbare Eingabe mit einer entsprechend früher registrierten Wirkung nachzuweisen. Speicherrekonstruktion, gemeinsame Ursachen, Postselektion und Fehler der Zeitzuordnung müssen dabei als Erklärungen kontrolliert werden. Dieser Nachweis ist für digitalen Rückgriff und protokollinterne Zukunftsbedingungen nicht erforderlich.
+
+Viertens: Falls sämtliche superdeterministischen Modelle ausgeschlossen werden sollen, muss eine genau definierte Modellklasse angegeben und deren Unvereinbarkeit mit Annahmen oder Messdaten gezeigt werden. Begrenztes Beobachterwissen, makroskopische Irreversibilität und die hier zitierte Bell-Verletzung allein leisten diesen universellen Ausschluss nicht. Der Artikel behandelt die stärkere Position ausdrücklich als philosophische Leitthese.
+
+Fünftens: Falls aus erhaltener Information auf die Wiederherstellung eines Lebewesens oder auf subjektive Kontinuität geschlossen werden soll, sind ein biologisches Wiederherstellungsverfahren und ein eigenständiges Identitätskriterium erforderlich. Der Artikel behauptet weder die Durchführung noch das Ergebnis eines solchen Verfahrens.
+
+Davon vollständig getrennt ist die konkrete Recherchegrenze: Für [Q1] und [Q2] gelang hier kein erneuter direkter Abruf der Zenodo-Originaldateien. Daher wurde auch kein neuer Abgleich ihrer genauen Definitionen, Beweise oder archivierten Prüfquittungen durchgeführt. Daraus folgt ausdrücklich nicht, dass diese Belege nicht existieren. Für [Q3] wurde dagegen die öffentlich zugängliche Fassung eingesehen. Eine neue Zenodo-Veröffentlichung dieser Überarbeitung wurde nicht vorgenommen und ist kein wissenschaftlicher Beweis für ihre Aussagen.
+
+QUELLENNACHWEISE ZUR BESTEHENDEN WISSENSCHAFT
+
+Die Nummern beziehen sich auf die entsprechenden Absätze. Historische Primärarbeiten, theoretische Forschungsbeiträge und Übersichtsarbeiten sind als solche zu lesen. Eine Quelle belegt nur den jeweils angegebenen Anschluss, nicht automatisch das gesamte Forschungsprogramm. Die bibliographischen Angaben der Ausgangsfassung wurden übernommen und thematisch neu geordnet; ausgewählte zentrale Beiträge wurden am 25.10.2026 zusätzlich über Verlags- beziehungsweise arXiv-Seiten kontrolliert. Eine erneute vollständige Volltextprüfung aller historischen Quellen wird nicht behauptet.
+
+[1] Charles H. Bennett: Logical Reversibility of Computation. IBM Journal of Research and Development 17, 525–532 (1973). DOI: 10.1147/rd.176.0525.
+https://doi.org/10.1147/rd.176.0525
+Anschluss: logische Reversibilität und Erhaltung von Berechnungshistorie.
+
+[2] Ming Li und Paul Vitányi: Reversibility and Adiabatic Computation: Trading Time and Space for Energy. arXiv:quant-ph/9703022 (1997).
+https://arxiv.org/abs/quant-ph/9703022
+Anschluss: Ressourcenabwägungen reversibler Simulation.
+
+[3] Claude E. Shannon: A Mathematical Theory of Communication. Bell System Technical Journal 27, 379–423 (1948), erster Teil. DOI: 10.1002/j.1538-7305.1948.tb01338.x.
+https://doi.org/10.1002/j.1538-7305.1948.tb01338.x
+Anschluss: Informationsentropie; die Bezeichnung „virtuelle Entropie“ ist die Modellwahl des vorliegenden Beitrags.
+
+[4] Rolf Landauer: Irreversibility and Heat Generation in the Computing Process. IBM Journal of Research and Development 5, 183–191 (1961). DOI: 10.1147/rd.53.0183.
+https://doi.org/10.1147/rd.53.0183
+Anschluss: thermodynamische Bedingungen logischer Irreversibilität.
+
+[5] Charles H. Bennett: Notes on Landauer's principle, Reversible Computation and Maxwell's Demon. Studies in History and Philosophy of Modern Physics 34, 501–510 (2003). DOI: 10.1016/S1355-2198(03)00039-X. arXiv-Fassung v2.
+https://arxiv.org/abs/physics/0210005v2
+Anschluss: Reichweite des Landauer-Prinzips und Abgrenzung logischer und physischer Reversibilität.
+
+[6] Joel L. Lebowitz: Boltzmann's Entropy and Time's Arrow. Physics Today 46(9), 32–38 (1993). DOI: 10.1063/1.881363.
+https://doi.org/10.1063/1.881363
+Anschluss: statistischer Zeitpfeil und reversible Mikrodynamik.
+
+[7] Maximilian Schlosshauer: Decoherence, the measurement problem, and interpretations of quantum mechanics. Reviews of Modern Physics 76, 1267–1305 (2004); endgültige arXiv-Fassung v4 (2005), insbesondere Abschnitte II–III. DOI: 10.1103/RevModPhys.76.1267.
+https://arxiv.org/abs/quant-ph/0312059v4
+Anschluss: reduzierte Zustände, Dekohärenz und Interpretationsgrenzen.
+
+[8] Werner Heisenberg: Über den anschaulichen Inhalt der quantentheoretischen Kinematik und Mechanik. Zeitschrift für Physik 43, 172–198 (1927). DOI: 10.1007/BF01397280.
+https://doi.org/10.1007/BF01397280
+Anschluss: historische Quantenunschärfe.
+
+[9] H. P. Robertson: The Uncertainty Principle. Physical Review 34, 163–164 (1929). DOI: 10.1103/PhysRev.34.163.
+https://doi.org/10.1103/PhysRev.34.163
+Anschluss: Streuungsrelation nichtkommutierender Observablen.
+
+[10] Albert Einstein: Die Grundlage der allgemeinen Relativitätstheorie. Annalen der Physik 354, 769–822 (1916). DOI: 10.1002/andp.19163540702.
+https://doi.org/10.1002/andp.19163540702
+Anschluss: dynamische Raumzeitgeometrie; kein Nachweis emergenter Raumzeit.
+
+[11] Luca Bombelli, Joohan Lee, David Meyer und Rafael D. Sorkin: Space-time as a causal set. Physical Review Letters 59, 521–524 (1987). DOI: 10.1103/PhysRevLett.59.521.
+https://doi.org/10.1103/PhysRevLett.59.521
+Anschluss: lokal endliche Ereignisordnung als theoretischer Ausgangspunkt.
+
+[12] Shinsei Ryu und Tadashi Takayanagi: Holographic Derivation of Entanglement Entropy from AdS/CFT. Physical Review Letters 96, 181602 (2006). DOI: 10.1103/PhysRevLett.96.181602. arXiv-Fassung v2.
+https://arxiv.org/abs/hep-th/0603001v2
+Anschluss: Verschränkungsentropie und minimale Flächen im speziellen holographischen Rahmen.
+
+[13] Mark Van Raamsdonk: Building up spacetime with quantum entanglement. General Relativity and Gravitation 42, 2323–2329 (2010). DOI: 10.1007/s10714-010-1034-0. Hier ausdrücklich ursprüngliche arXiv-Fassung v1; die inzwischen verfügbare v2 wird nicht stillschweigend gleichgesetzt.
+https://arxiv.org/abs/1005.3035v1
+Anschluss: räumliche Verbundenheit und Verschränkung als Forschungszusammenhang.
+
+[14] Sandu Popescu und Daniel Rohrlich: Quantum nonlocality as an axiom. Foundations of Physics 24, 379–385 (1994). DOI: 10.1007/BF02058098.
+https://doi.org/10.1007/BF02058098
+Anschluss: stärkere als quantenmechanische Korrelationen trotz No-Signalling; ergänzt gegenüber der Ausgangsfassung.
+
+[15] Erwin Schrödinger: Die gegenwärtige Situation in der Quantenmechanik. Die Naturwissenschaften 23, 807–812 (1935), erster Teil, besonders Abschnitt 5. DOI: 10.1007/BF01491891.
+https://doi.org/10.1007/BF01491891
+Anschluss: ursprüngliches Katzen-Gedankenexperiment.
+
+[16] Wojciech H. Zurek: Decoherence, einselection, and the quantum origins of the classical. Reviews of Modern Physics 75, 715–775 (2003). DOI: 10.1103/RevModPhys.75.715. arXiv-Fassung v3.
+https://arxiv.org/abs/quant-ph/0105127v3
+Anschluss: Umweltwechselwirkungen und robuste klassische Aufzeichnungen.
+
+[17] K. B. Wharton und N. Argaman: Colloquium: Bell's Theorem and Locally Mediated Reformulations of Quantum Mechanics. Reviews of Modern Physics 92, 021002 (2020). DOI: 10.1103/RevModPhys.92.021002. arXiv-Fassung v3 mit leicht abweichendem Titel.
+https://arxiv.org/abs/1906.04313v3
+Anschluss: spätere Randbedingungen in retrokausalen Modellansätzen; kein Nachweis steuerbarer Vergangenheitskommunikation.
+
+[18] Sabine Hossenfelder und Tim Palmer: Rethinking Superdeterminism. Frontiers in Physics 8, Artikel 139 (2020). DOI: 10.3389/fphy.2020.00139.
+https://www.frontiersin.org/journals/physics/articles/10.3389/fphy.2020.00139/full
+Anschluss: statistische Unabhängigkeit und fachliche Bedeutung von Superdeterminismus; keine pauschale Übernahme der Position der Autoren.
+
+[19] B. Hensen und Mitautoren: Experimental loophole-free violation of a Bell inequality using entangled electron spins separated by 1.3 km. Nature 526, 682–686 (2015). DOI: 10.1038/nature15759.
+https://arxiv.org/abs/1508.05949v1
+Anschluss: empirischer Bell-Test unter seinen angegebenen Bedingungen; kein allgemeiner Nachweis freien Willens.
+
+
+PERSÖNLICHE ARBEITEN VON INGOLF LOHMANN
+
+Diese Quellen stehen bewusst am Ende. Sie dokumentieren die Herkunft des eigenen Programms und sind von den unabhängigen wissenschaftlichen Anschlussquellen getrennt. Ein öffentliches Archiv oder ein Internet-Draft ist keine wissenschaftliche Begutachtung. Die noch offene direkte Zenodo-Prüfung wird nicht durch vermutete Inhalte ersetzt.
+
+[Q1] Ingolf Lohmann: Von Softwarearchitektur zur Weltformel – DAS UNIVERSUM ALS ROUND TRIP. Version 1.0.0-candidate.1 (2026). In der Ausgangs-PDF angegeben: insbesondere Abschnitte 1, 3, 4 und 6. DOI: 10.5281/zenodo.21888130.
+https://zenodo.org/records/21888130
+https://doi.org/10.5281/zenodo.21888130
+Verwendung: konzeptioneller Ausgangspunkt des Round-Trip-Programms. Titel, Version und Abschnittszuordnung stammen aus der bereitgestellten Ausgangsfassung. Der aktuelle öffentliche Datensatz und seine Originaldateien waren in dieser Recherche nicht abrufbar. Daher kein neuer Volltext-, Publikations- oder Beweisreadback; genaue weiterführende wissenschaftliche Ableitungen bleiben offen.
+
+[Q2] Ingolf Lohmann: QIK-VRT und das Effect-Acknowledgement-Protokoll: Kanonischer Speicher zwischen Vergangenheit und Zukunft. 31. Juli 2026. DOI: 10.5281/zenodo.21711193.
+https://doi.org/10.5281/zenodo.21711193
+Verwendung: weiterführender persönlicher Literaturhinweis zu zeitindizierten Aufzeichnungen und Wirkungsbedingungen. Bibliographisch in Abschnitt 17 von [Q3] nachgewiesen; der Zenodo-Originalinhalt wurde hier nicht direkt geprüft. Deshalb werden weder konkrete formale Resultate noch physikalische Schlussfolgerungen aus dieser Arbeit als erneut verifiziert ausgegeben.
+
+[Q3] Ingolf Lohmann: QIK-VRT Effect Acknowledgement: Separating Receipt from Authorization for Downstream Effect. draft-lohmann-qikvrt-effect-ack-03, 2. August 2026. Individueller Internet-Draft, work in progress; beabsichtigter Status Experimental, kein RFC und keine IETF-Billigung. Besonders Abstract, Abschnitte 1, 10.1–10.2 und 17.
+https://datatracker.ietf.org/doc/html/draft-lohmann-qikvrt-effect-ack-03
+Verwendung: überprüfbarer persönlicher Anschluss an die Unterscheidung von Empfang, bedingter Wirkungsfreigabe und Belegbindung. Die Fassung wurde am 25.10.2026 öffentlich eingesehen. Sie weist Grenzen formaler Modellresultate und die fehlende Gleichsetzung von Protokoll-Retrokausalität und physischer Rückwärtskommunikation ausdrücklich aus. Sie ersetzt weder die noch offene direkte Zenodo-Prüfung von [Q1] und [Q2] noch die Archivierung dieser neuen Prosafassung.

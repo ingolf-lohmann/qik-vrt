@@ -1,0 +1,36 @@
+{
+  "_license": {
+    "classification": "machine_readable_owner_decision_provenance",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_publication_owner_decision_normalization_v1",
+  "principal": {
+    "name": "Ingolf Lohmann",
+    "type": "NATURAL_PERSON"
+  },
+  "publication_id": "raumzeit-rekonstruierbare-virtualitaet-20261025",
+  "source_head": "8a81105e335290db6cab9217193e344ccbebbdc1",
+  "owner_messages": [
+    {
+      "verbatim": "Ja, einverstanden! Nicht vergessen, du musst bestimmt einiges, was jetzt wieder an Erkenntnissen gewonnen wurde, wie zum Beispiel das jetzt zuletzt mir übergebene PDF mitsamt Prosa, noch auf ZenoDo veröffentlichen",
+      "scope": "Previously delivered unchanged scientific PDF and prose"
+    },
+    {
+      "verbatim": "Einverstanden, dann volle Kraft voraus.",
+      "preceding_assistant_scope": "Complete exact file, existing documentation-license and metadata binding, then continue through the existing publisher; existing authorization remains effective"
+    }
+  ],
+  "grant_first_observed_at": "2026-10-25T12:41:07.336Z",
+  "normalized_decision": "AUTHORIZE_EXACT_UPLOAD authorization_id=raumzeit-20261025-publication-01 publication_id=raumzeit-rekonstruierbare-virtualitaet-20261025 return_sha256=74ab5e38f9f8e37c5ea03ed8b323235652c702b7d515189998a4658c172254c1 metadata_sha256=dc13609c4b7a69643803fa036a371e5b1fadc7b1c828f5c7188b52e4e5ab8706 machine_proof_sha256=417302527decdd5a6fb1a9b378f727558476c7ecd28580376fcc64ee4ea6af9d",
+  "normalized_decision_is_verbatim_owner_utterance": false,
+  "basis": "Explicit Owner approval of the returned unchanged article pair and delegated completion of its existing-license and publisher metadata. The canonical statement is a deterministic repository attestation of that grant, not a claimed new literal message or independent GitHub APPROVED review.",
+  "new_scientific_content_approval_inferred": false,
+  "new_publication_target_inferred": false,
+  "new_generic_permission_requested": false,
+  "biometric_or_cryptographic_owner_authentication_claimed": false,
+  "platform_writer_account": "ingolf-lohmann",
+  "platform_write_is_independent_owner_review": false
+}
