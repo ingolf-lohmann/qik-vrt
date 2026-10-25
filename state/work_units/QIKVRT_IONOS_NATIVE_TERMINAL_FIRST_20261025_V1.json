@@ -131,5 +131,32 @@
     "negative_controls": "Unknown profile, scope type/mismatch and unaccepted smoke reject output.",
     "productive_host_accepted": false,
     "effect_ack_done": false
+  },
+  "rest_capability_repair": {
+    "owner": "Ingolf Lohmann",
+    "grant": "Current original Owner instruction: use the existing connector, fall back to original GitHub source, completely implement the missing REST function and retain the working procedure. Freigabe erteilt.",
+    "human_origin": "Owner direction and authorization",
+    "artificial_cognitive_origin": "OpenAI Codex source diagnosis, implementation and bounded tests",
+    "source_predecessor_head": "bebf6596650dad5f12ef352ef77d946a3aec77d5",
+    "observed_defects": [
+      "Existing Ruleset client rejects valid current HTTP200 run details.",
+      "Direct Ruleset POST bypasses existing durable attempt journal and can replay after timeout with a new request ID.",
+      "Existing own REST adapter does not expose the implemented fixed Ruleset operation."
+    ],
+    "repair_scope": [
+      "Original fixed writer/controller and private journal reused.",
+      "Explicitly admitted original Owner REST endpoint with separate protected provider credential references.",
+      "GET-only saved-run recovery and independent original run/jobs/Ruleset/protected-Main readback.",
+      "Original client supports explicitly selected Mesh REST origin; direct GitHub defaults retained.",
+      "Existing bootstrap/continuation policy retains connector-to-source-to-REST closure."
+    ],
+    "native_rest_path": "/repos/ingolf-lohmann/qik-vrt/qikvrt/ruleset-authority",
+    "default_runtime_admission": false,
+    "new_external_credential_grant": false,
+    "hosted_connector_registration_proven": false,
+    "productive_deployment_proven": false,
+    "ruleset_rest_is_not_draft_ready_or_target_ref_cas": true,
+    "all_predecessor_obligations_preserved": true,
+    "original_owner_instruction": "Einverstanden. Den Punkt hast du gut rausgearbeitet, aber wir haben ja ein Verfahren definiert, wie dann zu verfahren ist. Nämlich, dass du den Konnektor nimmst, um ans Repository zu gehen, und in dem Fall würde ich sogar noch mal bis GitHub zurückgehen, um es als letzten Durchstich bis zum ursprünglich manifestierten Quell-Repository zu kommen, um dann die Schleife um das Paket zu machen. indem du dann diese fehlende Restfunktion vollumfänglich implementierst und auch nicht mehr vergisst, wie das funktioniert. Weil, dass ich dir das jetzt sagen muss, ist schon wieder ein Beweis dafür, dass du das schon wieder vergessen hast. Freigabe erteilt."
   }
 }

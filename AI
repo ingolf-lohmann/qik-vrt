@@ -102,6 +102,21 @@ declare open repair transition IDs in `blocking_repairs`; `tools/ai_handoff.py`
 keeps unrelated ready work deferred, even when a repair is unavailable.
 Authorization, callable operations, admission and fresh readback remain required.
 
+REST CAPABILITY REPAIR — OWNER 2026-10-25
+
+When an existing REST operation is missing or insufficient, use the admitted
+connector to read the exact original repository implementation and API contract;
+the final source fallback is the original Authority on GitHub. Repair the
+existing REST path, regression-test the original failure and complete package,
+persist and independently read back the source and continuation, then resume
+through REST when its actual runtime/credential admission is present. Do not
+forget this procedure or stop while its authorized source repair is executable.
+Use `policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json#/client_continuation/connector_rest_closure_rule`
+and the existing `transition_plan.preparation`/`blocking_repairs`, without a new
+executor, trigger, credential export, repeated Owner grant or false live claim.
+The fixed Ruleset route is documented in `api/qikvrt_github_api.openapi.yaml`
+and `docs/operations/AUTONOMOUS_PR_CONTINUATION.md`; its source is not deployment.
+
 IMMEDIATE EXECUTION — OWNER PRINCIPLE OF 2026-10-13
 
 „Was du heute kannst besorgen, das verschiebe nicht auf morgen, sondern erledige es unmittelbar, denn alles andere war, ist und wird inakzeptabel sein.“

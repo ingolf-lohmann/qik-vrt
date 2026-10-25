@@ -393,6 +393,34 @@
       "historical_plans_without_field": "REMAIN_READABLE",
       "authority_and_admission_unchanged": true,
       "new_executor_or_client_timer": false
+    },
+    "connector_rest_closure_rule": {
+      "owner": "Ingolf Lohmann",
+      "date": "2026-10-25",
+      "state": "ACTIVE",
+      "priority": "BLOCKING_REPAIR",
+      "route": "REST_PRIMARY_EXISTING_CONNECTOR_SOURCE_REPAIR_LAST_ORIGINAL_GITHUB_SOURCE",
+      "required_sequence": [
+        "INSPECT_EXACT_EXISTING_REST_OPERATION_AND_ADMISSION",
+        "USE_EXISTING_AUTHENTICATED_CONNECTOR_TO_READ_ORIGINAL_SOURCE_WHEN_NEEDED",
+        "REPAIR_OR_EXTEND_EXISTING_REST_HANDLER_CLIENT_AND_CONTRACT",
+        "REPRODUCE_ORIGINAL_FAILURE_AND_VERIFY_COMPLETE_PACKAGE",
+        "PERSIST_SOURCE_PROVENANCE_AND_CONTINUATION_WITH_INDEPENDENT_READBACK",
+        "RESUME_REST_WHEN_ACTUAL_RUNTIME_AND_CREDENTIAL_BINDING_IS_ADMITTED"
+      ],
+      "repair_preparation_carrier": "transition_plan.preparation",
+      "priority_carrier": "transition_plan.blocking_repairs",
+      "existing_client_gate": "tools/ai_handoff.py --client-receipt",
+      "original_authority_repository": "ingolf-lohmann/qik-vrt",
+      "ruleset_api_contract": "api/qikvrt_github_api.openapi.yaml",
+      "ruleset_client": "scripts/qikvrt_api_client.py",
+      "ruleset_rest_handler": "src/qikvrt_github_api_shim.py",
+      "source_change_registers_hosted_connector": false,
+      "source_change_proves_runtime_deployment": false,
+      "repeat_existing_owner_permission": false,
+      "credential_export": false,
+      "new_parallel_executor_or_synthetic_trigger": false,
+      "all_original_journals_and_obligations_retained": true
     }
   },
   "continuation_semantics": {

@@ -11,14 +11,90 @@ info:
     when requested; callers must
     subsequently inspect the workflow run and its qikvrt-api-state artifact.
     Technical dispatch acceptance is never ordinary effect permission.
-    The fixed Ruleset-writer dispatch is GitHub-only; the local adapter retains
-    its existing Mesh routes and cannot execute repository-administration effects.
+    The existing fixed Ruleset writer is also reachable through an explicitly
+    enabled Owner-bound local REST route. It reuses the original controller,
+    protected Authority credential resolver and durable dispatch journal.
+    No arbitrary workflow, review, merge or credential forwarding is exposed.
 servers:
   - url: http://127.0.0.1:8766
     description: Loopback-only synchronous test/development adapter
   - url: https://api.github.com
     description: GitHub asynchronous REST dispatch API
 paths:
+  /repos/{owner}/{repo}/qikvrt/ruleset-authority:
+    servers:
+      - url: http://127.0.0.1:8766
+        description: Existing QIK-VRT REST service; deployment/admission must be independently verified.
+    parameters:
+      - { name: owner, in: path, required: true, schema: { type: string, enum: [ingolf-lohmann] } }
+      - { name: repo, in: path, required: true, schema: { type: string, enum: [qik-vrt] } }
+    post:
+      operationId: meshRulesetAuthorityDispatch
+      summary: Invoke the existing exact-Main Ruleset writer through admitted Mesh REST.
+      description: >
+        Disabled unless QIKVRT_RULESET_AUTHORITY_ENABLED=1. Requires the existing
+        expiring REST bearer, exact Authority repository and configured natural
+        Owner login. A separately protected existing Authority credential is
+        resolved on the server; the caller token and generic GITHUB_TOKEN are
+        never used as provider credentials. The original controller verifies
+        immutable Main/writer bytes and the current run inventory, persists
+        intent before its single GitHub POST and retains HTTP200 run identity or
+        legacy empty HTTP204 acceptance. Pending/ambiguous attempts cannot be
+        replayed by changing request ID, Main or writer version. This route
+        belongs to QIK-VRT, not api.github.com; deployment is a separate effect.
+      security: [{ bearerToken: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [schema, request_id, expected_main_sha, writer_version, effect_accepted]
+              properties:
+                schema: { type: string, enum: [qikvrt-ruleset-authority-rest/v1] }
+                request_id: { type: string, pattern: '^[A-Za-z0-9_.=-]{1,128}$' }
+                expected_main_sha: { type: string, pattern: '^[0-9a-f]{40}$' }
+                writer_version: { type: string, enum: [legacy-v1, lifecycle-v2, app-renewal-v3, principal-review-v4] }
+                effect_accepted: { type: boolean, enum: [true] }
+      responses:
+        '202': { description: Original dispatch retained; inspect handler_result. Execution, protection, merge and delivery remain unverified. }
+        '400': { description: Invalid exact subject, writer or literal scoped acceptance. }
+        '401': { description: Missing or expired REST credential; MCP-read credentials confer no authority. }
+        '403': { description: Foreign repository or unbound Owner principal. }
+        '404': { description: Server-side Ruleset REST admission disabled. }
+        '409': { description: Original controller blocked or unresolved dispatch; use readback, never repeat POST. }
+        '429': { description: Existing rate limit; no automatic retry. }
+        '503': { description: Protected Authority binding or trusted implementation unavailable. }
+    get:
+      operationId: meshRulesetAuthorityReadback
+      summary: GET-only recovery and independent original Ruleset postcondition readback.
+      description: >
+        Uses the same authenticated Owner admission. Supply the independently
+        identified original run ID, or omit it to recover the saved run ID from
+        the exact original request's existing private journal. A request/source
+        mismatch fails closed. If the original provider outcome contains no run
+        ID, the response retains the original intent and remains unresolved;
+        it never dispatches again. Original run/event/ref/head/jobs, canonical
+        Ruleset digest and protected Main are independently read before an
+        effect is reported. No journal rewrite, native review, merge or global
+        EFFECT_ACK_DONE follows from this scoped postcondition.
+      security: [{ bearerToken: [] }]
+      parameters:
+        - { name: request_id, in: query, required: true, schema: { type: string, pattern: '^[A-Za-z0-9_.=-]{1,128}$' } }
+        - { name: expected_main_sha, in: query, required: true, schema: { type: string, pattern: '^[0-9a-f]{40}$' } }
+        - { name: writer_version, in: query, required: true, schema: { type: string, enum: [legacy-v1, lifecycle-v2, app-renewal-v3, principal-review-v4] } }
+        - { name: run_id, in: query, required: false, schema: { type: string, pattern: '^[1-9][0-9]{0,31}$' } }
+      responses:
+        '200': { description: Scoped Ruleset postcondition verified; mutation attribution, native review, merge and release remain separate. }
+        '202': { description: Readback remains unverified or original run ID unresolved; no POST performed. }
+        '400': { description: Duplicate/invalid parameters or original request/source mismatch. }
+        '401': { description: Missing or expired REST credential. }
+        '403': { description: Foreign repository or principal. }
+        '404': { description: Route disabled or exact original attempt unavailable. }
+        '409': { description: Original source/run readback rejected. }
+        '429': { description: Rate limited. }
+        '503': { description: Protected original Authority binding unavailable. }
   /mcp:
     servers:
       - url: http://127.0.0.1:8766
@@ -202,7 +278,8 @@ paths:
                 ref: { type: string, enum: [main] }
             example: { ref: main }
       responses:
-        '204': { description: Empty transport acceptance only; independently read the actual run and Ruleset effect. }
+        '200': { description: Original workflow_run_id, run_url and html_url; transport acceptance only, independently verify the exact run and Ruleset effect. }
+        '204': { description: Legacy empty transport acceptance only; independently read the actual run and Ruleset effect. }
         '401': { description: Authentication denied; no retry or credential echo. }
         '403': { description: Actions-write permission or workflow admission denied; no bypass or automatic retry. }
         '404': { description: Repository or fixed workflow unavailable to the authenticated principal. }
