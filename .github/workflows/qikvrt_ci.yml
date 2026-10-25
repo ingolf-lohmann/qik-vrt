@@ -1230,10 +1230,13 @@ jobs:
         run: |
           set -euo pipefail
           head="$(git rev-parse HEAD)"
-          loader="quay.io/skopeo/stable@sha256:97772f3c64fd2fba720b2bafaf37239dc44d8b1c625c8383c64044832efe9ed9"
+          loader="quay.io/skopeo/stable@sha256:309ce24d7a87ca4eb35fc6dd9d91af7c4750d7f24578f633c6effd75c81f315d"
           load_dir="$(mktemp -d "$RUNNER_TEMP/qikvrt-smoke-load.XXXXXX")"
           trap 'rm -rf "$load_dir"' EXIT
           docker pull "$loader"
+          docker run --rm --network none --read-only --cap-drop ALL \
+            --security-opt no-new-privileges:true "$loader" --version \
+            | tee "$RUNNER_TEMP/container-evidence/skopeo-version.txt"
           docker run --rm --read-only --network none --user "$(id -u):$(id -g)" --cap-drop ALL --security-opt no-new-privileges:true \
             --tmpfs /tmp:rw,nosuid,size=128m,mode=1777 --tmpfs /var/tmp:rw,nosuid,size=2g,mode=1777 \
             --mount "type=bind,source=$RUNNER_TEMP/container-evidence/image.oci.tar,target=/input.oci.tar,readonly" \
@@ -1375,7 +1378,7 @@ jobs:
             --oci-archive "$RUNNER_TEMP/container-evidence/image.oci.tar" \
             --expected-head "$head" --expected-tree "$(git rev-parse HEAD^{tree})" \
             --receipt "$RUNNER_TEMP/publish-oci-check.json"
-          publisher="quay.io/skopeo/stable@sha256:97772f3c64fd2fba720b2bafaf37239dc44d8b1c625c8383c64044832efe9ed9"
+          publisher="quay.io/skopeo/stable@sha256:309ce24d7a87ca4eb35fc6dd9d91af7c4750d7f24578f633c6effd75c81f315d"
           docker run --rm "$publisher" --version > "$RUNNER_TEMP/publisher-version.txt"
           for tag in "sha-$head" "s1-1.12.0-$head"; do
             if docker buildx imagetools inspect "$image:$tag" --raw > "$RUNNER_TEMP/registry.json" 2> "$RUNNER_TEMP/registry-error"; then

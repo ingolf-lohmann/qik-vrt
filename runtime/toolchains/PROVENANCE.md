@@ -334,3 +334,17 @@ Primary component and protocol authorities:
 - https://www.rfc-editor.org/rfc/rfc8252
 - https://www.rfc-editor.org/rfc/rfc9700
 - https://www.rfc-editor.org/rfc/rfc7009
+
+## Skopeo carrier repair — 25 October 2026
+
+The previous exact carrier digest returned `manifest unknown` in native CI run
+40172405691, job 121107295223, after the independent native OCI builds passed.
+The existing Skopeo import/publish path is retained. Its Linux/amd64 image is
+now pinned to `sha256:309ce24d7a87ca4eb35fc6dd9d91af7c4750d7f24578f633c6effd75c81f315d`. Original public index and platform-manifest
+bytes, their SHA-256 digests and the independently hashed configuration binding
+are in `evidence/self_host/SKOPEO_CARRIER_READBACK_20261025.json`. The official
+carrier labels identify Skopeo 1.22.3, built 23 October 2026. The native job records
+`--version`; OCI config, ordered filesystem layers, source pins and preserved
+registry digests are still checked before runtime or publication acceptance.
+No mutable tag is used for execution, no installed runtime is downgraded, and
+manifest availability alone proves neither executable-tool behavior nor delivery.

@@ -15,6 +15,15 @@
     "principal": "Ingolf Lohmann"
   },
   "initial_work_unit_state": "REVIEWABLE_SOURCE_REPAIR_PENDING_NATIVE_CI_AND_HOST_EFFECT",
+  "loader_dependency_correction": {
+    "error": "manifest unknown for original Skopeo carrier",
+    "failed_job": 121107295223,
+    "failed_run": 40172405691,
+    "native_successor_execution_required": true,
+    "readback": "evidence/self_host/SKOPEO_CARRIER_READBACK_20261025.json",
+    "replacement_platform_digest": "sha256:309ce24d7a87ca4eb35fc6dd9d91af7c4750d7f24578f633c6effd75c81f315d",
+    "same_copy_preserve_digests_contract": true
+  },
   "open_work": [
     {
       "id": "NATIVE_CONTAINER_CI",
@@ -58,6 +67,15 @@
     "signing_job_id": 120907116935
   },
   "public_production_verified": false,
+  "qualified_predecessor_native_ci": {
+    "acceptance_transferred_to_successor": false,
+    "conclusion": "success",
+    "head": "ded5ddea107f29742e2e90d319dba8b2238ddb7f",
+    "job_id": 121106024934,
+    "run_id": 40172466779,
+    "scope": "ORIGINAL_NATIVE_AND_PORTABLE_CONTROLS; NO_DEPLOYMENT",
+    "tree": "9e3d26d75555d92019a9c82e7370a4da446e135b"
+  },
   "reuse": {
     "build_target": "runtime/self-host/Dockerfile#production-terminal",
     "container_adapter": "tools/qikvrt_self_host_container.py",

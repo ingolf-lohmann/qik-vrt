@@ -656,7 +656,8 @@
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
         ".github/workflows/qikvrt_ci.yml",
         "tests/test_self_host_container.py",
-        "runtime/toolchains/PROVENANCE.md"
+        "runtime/toolchains/PROVENANCE.md",
+        "evidence/self_host/SKOPEO_CARRIER_READBACK_20261025.json"
       ],
       "cache_class": "runner-image-layer",
       "cache_locations": [
