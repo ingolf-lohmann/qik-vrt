@@ -345,3 +345,26 @@ Missing credential delivery keeps `submit=false` and reports
 secret-store absence nor Mozilla authentication. Original native receipts and
 the signed XPI, followed by actual default-policy Firefox activation and
 persistent restart, remain required before effect completion.
+
+## Exclusive blocking-repair priority — Owner 2026-10-25
+
+Ingolf Lohmann authorized the errors that prevent further work to take highest
+and exclusive priority. This is completion/repair work; it does not wait for
+idle or the optimization backlog gate. Defer unrelated work, performance and
+throughput tuning until the blocking defects have their own verified repair.
+
+Reuse the current client transition plan: `blocking_repairs` names its open
+repair transition IDs. Every reference must resolve exactly once. The planner
+retains unrelated ready actions under `deferred` and exposes only admitted
+repair preparation/execution as `ready`. A flat `next_actions` entry cannot
+bypass that scope. An unavailable repair stays open with its exact capability
+or authority prerequisite; unrelated executable work does not replace it.
+Remove a repaired transition from this list only after exact-subject effect
+readback. An empty list restores the preserved ordinary work. Historical plans
+without this field retain their reader contract. This gate validates declared
+consistency, not the truth of a repair classification or actual execution.
+
+The existing native-only IONOS S1 path remains first. Firefox signing and its
+activation/restart acceptance remain separate. Main protection, native review,
+protected host/storage/configuration, mTLS and exact-domain acceptance remain
+required; a ready plan grants none of them and creates no timer or executor.

@@ -197,8 +197,26 @@ def client_transition_plan(receipt: dict[str, Any]) -> dict[str, Any] | None:
         else:
             waiting.append({"transition_id": identifier, "activation": missing,
                             "action_admitted": admitted, "evidence": evidence})
-    return {"input_sha256": input_digest, "ready": ready, "waiting": waiting,
-            "scope": "PLANNING_ONLY_NOT_EXECUTION_OR_EFFECT_PROOF"}
+    result = {"input_sha256": input_digest, "ready": ready, "waiting": waiting,
+              "scope": "PLANNING_ONLY_NOT_EXECUTION_OR_EFFECT_PROOF"}
+    if "blocking_repairs" in plan:
+        repairs = plan["blocking_repairs"]
+        if (not isinstance(repairs, list)
+            or any(not isinstance(x, str) or not x.strip() for x in repairs)
+            or len(set(repairs)) != len(repairs)):
+            fail("CLIENT_BLOCKING_REPAIR_LIST_INVALID")
+        if not set(repairs) <= identifiers:
+            fail("CLIENT_BLOCKING_REPAIR_TRANSITION_MISSING")
+        result["blocking_repairs"] = repairs
+        result["deferred"] = []
+        if repairs:
+            # An unavailable repair remains the priority. Do not silently
+            # substitute optimization or unrelated work, and retain its plan.
+            result["deferred"] = [item for item in ready
+                                  if item["transition_id"] not in repairs]
+            result["ready"] = [item for item in ready
+                               if item["transition_id"] in repairs]
+    return result
 
 
 def client_end_of_action_domain() -> str:
@@ -595,10 +613,16 @@ def validate_client_receipt(receipt: dict[str, Any]) -> str:
                 fail("CLIENT_CLOSING_ACTION_REUSED")
             closed_actions.add(action_id)
     actions = require(receipt, "next_actions", list)
+    transition_plan = client_transition_plan(receipt)
+    repairs = transition_plan.get("blocking_repairs", []) if transition_plan else []
+    repair_actions = ([item["action"] for item in transition_plan["ready"]]
+                      if repairs else [])
     executable = False
     for action in actions:
-        executable |= validate_client_action(action, subject)
-    transition_plan = client_transition_plan(receipt)
+        admitted = validate_client_action(action, subject)
+        if admitted and repairs and action not in repair_actions:
+            fail("CLIENT_ACTION_OUTSIDE_BLOCKING_REPAIR_SCOPE")
+        executable |= admitted
     if transition_plan is not None:
         executable |= bool(transition_plan["ready"])
     readback = receipt.get("readback")

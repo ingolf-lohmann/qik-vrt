@@ -94,6 +94,14 @@ native acceptance to their own fresh evidence. Preserve the existing licenses.
 
 Repository evidence is canonical. Chat and model memory are non-authoritative transport context.
 
+BLOCKING REPAIR PRIORITY — OWNER 2026-10-25
+Failures that prevent further admitted work have the highest and exclusive
+priority. Defer all unrelated work and optimization until their verified repair.
+Reuse the existing native repair paths. In the existing client transition plan,
+declare open repair transition IDs in `blocking_repairs`; `tools/ai_handoff.py`
+keeps unrelated ready work deferred, even when a repair is unavailable.
+Authorization, callable operations, admission and fresh readback remain required.
+
 IMMEDIATE EXECUTION — OWNER PRINCIPLE OF 2026-10-13
 
 „Was du heute kannst besorgen, das verschiebe nicht auf morgen, sondern erledige es unmittelbar, denn alles andere war, ist und wird inakzeptabel sein.“

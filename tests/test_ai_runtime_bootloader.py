@@ -603,6 +603,83 @@ class ClientContinuationRegressionTests(unittest.TestCase):
         self.assertEqual(plan["waiting"][0]["activation"], ["credential-delivery"])
         self.assertEqual(plan["scope"], "PLANNING_ONLY_NOT_EXECUTION_OR_EFFECT_PROOF")
 
+    def blocking_repair_plan(self, *, preparation=True):
+        repair = self.anticipated_transition()
+        if not preparation:
+            repair["preparation"] = []
+        other = copy.deepcopy(repair)
+        other["id"] = "throughput-optimization"
+        other["activation"][0]["satisfied"] = True
+        other["preparation"] = []
+        other["action"].update(authenticated=True, operation="measure-throughput",
+                               observed_operation="measure-throughput")
+        plan = self.receipt["transition_plan"]
+        plan["transitions"].insert(0, other)
+        plan["blocking_repairs"] = [repair["id"]]
+        return repair, other
+
+    def test_blocking_repair_defers_ready_optimization(self):
+        self.blocking_repair_plan()
+        plan = self.handoff.client_transition_plan(self.receipt)
+        self.assertEqual([x["transition_id"] for x in plan["ready"]], ["signed-xpi"])
+        self.assertEqual([x["transition_id"] for x in plan["deferred"]],
+                         ["throughput-optimization"])
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_unavailable_repair_does_not_admit_unrelated_work(self):
+        self.blocking_repair_plan(preparation=False)
+        self.receipt.update(state="BLOCK", blocker={
+            "operation": "sign-xpi", "reason": "credential delivery missing",
+            "evidence": "fixture:credential-presence-readback",
+            "retry_condition": "credential delivered", "next_action": "bind existing credential",
+        })
+        self.assertEqual(self.handoff.client_transition_plan(self.receipt)["ready"], [])
+        self.assertEqual(self.check(), "BLOCK")
+
+    def test_repair_preparation_still_requires_immediate_continuation(self):
+        self.blocking_repair_plan()
+        self.receipt["state"] = "BLOCK"
+        self.rejected("CLIENT_PREMATURE_RETURN_WITH_EXECUTABLE_SUCCESSOR")
+
+    def test_flat_next_action_cannot_bypass_repair_priority(self):
+        _repair, other = self.blocking_repair_plan()
+        self.receipt["next_actions"] = [other["action"]]
+        self.rejected("CLIENT_ACTION_OUTSIDE_BLOCKING_REPAIR_SCOPE")
+
+    def test_flat_repair_cannot_bypass_transition_activation(self):
+        repair, _other = self.blocking_repair_plan(preparation=False)
+        repair["action"]["authenticated"] = True
+        self.receipt["next_actions"] = [repair["action"]]
+        self.rejected("CLIENT_ACTION_OUTSIDE_BLOCKING_REPAIR_SCOPE")
+
+    def test_repair_priority_preserves_admission_and_unchanged_retry_guards(self):
+        repair, _other = self.blocking_repair_plan(preparation=False)
+        repair["activation"][0]["satisfied"] = True
+        repair["action"]["authenticated"] = True
+        repair["action"]["admitted"] = False
+        self.assertEqual(self.handoff.client_transition_plan(self.receipt)["ready"], [])
+        repair["action"]["admitted"] = True
+        causal = {key: str(i) * 64 for i, key in enumerate(
+            ("subject", "error", "cause", "capability"), 1)}
+        repair["action"]["retry"] = {"previous": causal, "current": dict(causal)}
+        self.assertEqual(self.handoff.client_transition_plan(self.receipt)["ready"], [])
+
+    def test_invalid_repair_references_fail_closed(self):
+        original = copy.deepcopy(self.receipt)
+        for value in ("signed-xpi", ["missing"], ["signed-xpi", "signed-xpi"], [None]):
+            with self.subTest(value=value):
+                self.receipt = copy.deepcopy(original)
+                self.blocking_repair_plan()
+                self.receipt["transition_plan"]["blocking_repairs"] = value
+                self.rejected("CLIENT_BLOCKING_REPAIR_")
+
+    def test_cleared_repair_priority_restores_preserved_other_work(self):
+        self.blocking_repair_plan(preparation=False)
+        self.receipt["transition_plan"]["blocking_repairs"] = []
+        plan = self.handoff.client_transition_plan(self.receipt)
+        self.assertEqual([x["transition_id"] for x in plan["ready"]],
+                         ["throughput-optimization"])
+
     def test_transition_activation_does_not_supply_credentials_or_admission(self) -> None:
         transition = self.anticipated_transition()
         transition["preparation"] = []

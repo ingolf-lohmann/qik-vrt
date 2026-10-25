@@ -93,5 +93,26 @@
     "existing admitted IONOS mTLS daemon/storage/configuration execution",
     "independent HTTPS and original native terminal readback at exact domain"
   ],
-  "work_unit_id": "QIKVRT_IONOS_NATIVE_TERMINAL_FIRST_20261025_V1"
+  "work_unit_id": "QIKVRT_IONOS_NATIVE_TERMINAL_FIRST_20261025_V1",
+  "blocking_repair_priority_successor": {
+    "owner_instruction": "Wenn solche Situationen entstehen, dann sind diese Fehler und Probleme, die die weitere Abarbeitung blockieren, mit allerhöchster und einziger Priorität abzuarbeiten und alles andere hinten anzustellen.",
+    "owner": "Ingolf Lohmann",
+    "authorization": "Freigabe erteilt.",
+    "implementation": "Existing tools/ai_handoff.py client transition planner and gate; no new executor.",
+    "regression_observation": {
+      "source_head": "39e6fb13a2383f0592104ccafbd9c23a7525aaf4",
+      "original_ready_order": [
+        "throughput-optimization",
+        "signed-xpi"
+      ],
+      "original_flat_next_action_bypass": "ACCEPTED",
+      "negative_tests_before_repair": 2
+    },
+    "native_source_run": 40173758457,
+    "native_container_ci_job": 121114212832,
+    "native_source_result": "success",
+    "live_runtime_accepted": false,
+    "main_protected_last_read": false,
+    "effect_ack_done": false
+  }
 }
