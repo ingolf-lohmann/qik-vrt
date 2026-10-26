@@ -170,5 +170,33 @@
       "human_contribution": "Owner instruction and standing authorization, quoted verbatim.",
       "artificial_cognitive_contribution": "OpenAI Codex package diagnosis, source integration and tests."
     }
+  },
+  "domain_routing_successor_20261026": {
+    "owner": "Ingolf Lohmann",
+    "owner_instruction": "Raumzeitterminal.de-Problem zuerst lösen; einen den Anforderungen genügenden Client dort veröffentlichen; vollständiges autonomes Fortfahren. Freigabe erteilt.",
+    "reviewed_document": {
+      "version": "1.2",
+      "artifact": "QIKVRT_Die_Sachebene_Review_20261026_v1_2.zip",
+      "sha256": "302331c5f8b1a99f9611322282ee362c62f294801efefc0c9d4a66855581bf51",
+      "owner_review_accepted": true,
+      "new_source_independent_human_review_claimed": false
+    },
+    "observation": "evidence/native-runtime-acceptance/raumzeitterminal-dns-20261026.json",
+    "live_routes": {
+      "A": "217.160.0.52",
+      "AAAA": "2001:8d8:100f:f000::205"
+    },
+    "source_predecessor_head": "77ac57968cf043dd8801aa44cfa837976511f934",
+    "repair": "Extend the existing fixed IONOS writer and manual trusted-Main workflow with explicit disable_apex_aaaa=false-by-default; preserve a bound single AAAA disabled after scoped IPv4 cutover. Reobserve the complete routing set before and after every existing-record PUT; retain partial and ambiguous outcomes and never retry a write automatically.",
+    "local_regression": "The added explicit cutover case fails on the predecessor; 25 DNS tests pass after the repair, including 13 added cutover cases. The full local make test succeeds; native exact-head CI remains separately required.",
+    "credential_delivery": "IONOS_DNS_API_KEY is not delivered to this process; remote existence is not inferred absent.",
+    "original_operation": "GET DNS readback then bounded PUT through qikvrt_ionos_dns.yml on trusted Main; current connector exposes no initial workflow dispatch.",
+    "provider_effect_performed": false,
+    "public_client_delivered_at_exact_domain": false,
+    "native_runtime_accepted": false,
+    "effect_ack_done": false,
+    "all_predecessor_obligations_preserved": true,
+    "human_contribution": "Owner review acceptance and priority/production authorization.",
+    "artificial_cognitive_contribution": "OpenAI Codex: public DNS/origin diagnosis, original writer extension, regression tests and exact-source verification."
   }
 }

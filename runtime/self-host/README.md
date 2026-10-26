@@ -70,6 +70,40 @@ haltpoints. They perform no upstream administration. Package availability,
 actual service installation, protected Main and exact-domain acceptance remain
 separately evidenced; this package does not automatically start or admit the API.
 
+### Explicit apex IPv4 cutover with an existing AAAA record
+
+The 26 October DNS observation is retained at
+`evidence/native-runtime-acceptance/raumzeitterminal-dns-20261026.json`.
+The product apex still publishes both the shared-hosting A address and an
+AAAA address. The existing `qikvrt_ionos_dns.yml` workflow remains manual,
+Authority-Main-only and bound to `secrets.IONOS_DNS_API_KEY`; the Cloud
+inventory token is not silently substituted for that DNS credential.
+
+After authenticating a fresh provider `readback`, an operator can explicitly
+select `disable_apex_aaaa=true` for a verified IPv4-only TLS origin. The
+existing command is:
+
+```sh
+python3 -B tools/qikvrt_ionos_dns.py apply --zone raumzeitterminal.de \
+  --target-ipv4 <verified-origin-ipv4> \
+  --expected-records-sha256 <independent-provider-readback-digest> \
+  --disable-apex-aaaa
+```
+
+This permits at most two PUTs to existing records: update the single apex A,
+then retain the single apex AAAA disabled. No record or zone is created or
+deleted. Default `apply` still refuses active AAAA/CNAME routing. A fresh full
+routing-set comparison precedes and follows each PUT; drift, an unavailable
+readback or an unapplied timeout stops the remaining work and preserves the
+partial receipt. An applied timeout is resolved only by readback, without a
+repeated PUT. The provider is not assumed to supply an atomic compare-and-swap.
+
+The target must be independently bound to the intended TLS origin. Provider
+DNS readback `DONE` describes the stored routing set only. Public propagation,
+TLS, the actual client and admitted native execution require their own fresh
+checks at `https://raumzeitterminal.de/`. No DNS write or public acceptance is
+implied by these source tests.
+
 ### Native terminal first — Owner priority of 25 October 2026
 
 The first production scope is the existing native `temdd` terminal and
