@@ -3510,7 +3510,15 @@ owner authorization, repeating observer, or missing active runner does not
 establish recovery or productive delivery. No new controller, credential,
 permission expansion or automatic productive-writer cancellation is involved.
 
-The watchdog observes the workflows that create and verify repository state, while its own executions are classified as observers rather than productive writers. Observer executions use a coalescing concurrency group so newer observations replace obsolete observations without consuming the repository write lease. A scheduled observation prevents unchanged heads from becoming permanently invisible merely because no new event occurs.
+The watchdog observes the workflows that create and verify repository state,
+while its own executions are classified as observers rather than productive
+writers. Main's 26 October delivery repair uses completion notifications and
+`cancel-in-progress: false` so a new lifecycle notification does not cancel
+the active observation. The existing five-minute schedule remains, including
+readback of unfinished runs and unchanged heads. The analyzer still evaluates
+every returned run and its jobs; no liveness, missing-evidence or stale-progress
+criterion is removed. This source configuration change does not establish a
+completed public-host observation or global deadlock freedom.
 
 ## Database comparison boundary
 
@@ -3559,24 +3567,4 @@ Canonical failure class: `NON_ATOMIC_MULTI_COMMIT_WORKFLOW_TRIGGER_ORDERING_RACE
 Repository transactions are assembled as payload writes, exact manifest/hash binding, and one final JSON ready-marker write. Workflows watch only the ready marker and invoke `tools/qikvrt_transactional_workflow_trigger.py verify` before any effect. Missing or malformed markers, missing or unexpected changed paths, absent files, hash divergence and false completion claims block execution.
 
 A verified trigger proves only transaction completeness. It does not prove task completion, merge, publication, Authority/Mirror equality, `PASS`, `FINAL_PASS` or `EFFECT_ACK_DONE`.
-
-
-## `docs/publications/2026-08-06-qce-superdeterminism-boundary/VERIFICATION_TRIGGER.md`
-
-# Exact-head verification trigger
-
-This file intentionally triggers the branch-bound exact-head verification workflow after the workflow definition itself has been materialized.
-
-It carries no scientific claim and no external effect.
-
-
-## `docs/qikvrt_trust_mesh/QIKVRT_4AW_ROLE_MARKER.md`
-
-# QIKVRT 4AW Role Marker
-
-Role: seed
-
-Commercial readiness package for QIK-VRT Trust Mesh.
-
-Reference run: 4AV1_20260708T174034Z_709544
 

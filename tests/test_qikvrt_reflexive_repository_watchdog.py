@@ -457,8 +457,13 @@ class ReflexiveRepositoryWatchdogTests(unittest.TestCase):
         workflow = WORKFLOW.read_text(encoding="utf-8")
         self.assertIn('cron: "*/5 * * * *"', workflow)
         self.assertIn("workflow_run:", workflow)
-        self.assertIn("types: [requested, in_progress, completed]", workflow)
-        self.assertIn("cancel-in-progress: true", workflow)
+        # Main #610 serializes observations instead of cancelling the active
+        # read on each lifecycle notification. The existing schedule still
+        # observes unfinished runs; the analyzer's liveness controls remain.
+        self.assertIn("types: [completed]", workflow)
+        self.assertNotIn("types: [requested, in_progress, completed]", workflow)
+        self.assertIn("cancel-in-progress: false", workflow)
+        self.assertNotIn("cancel-in-progress: true", workflow)
         self.assertIn("actions: read", workflow)
         self.assertIn("contents: read", workflow)
         self.assertIn("qikvrt_reflexive_repository_watchdog.py", workflow)
