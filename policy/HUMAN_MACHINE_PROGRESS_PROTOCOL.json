@@ -421,6 +421,52 @@
       "credential_export": false,
       "new_parallel_executor_or_synthetic_trigger": false,
       "all_original_journals_and_obligations_retained": true
+    },
+    "tool_selection": {
+      "schema": "qikvrt-client-tool-selection/v1",
+      "owner": "Ingolf Lohmann",
+      "reaffirmed_on": "2026-10-26",
+      "scope": "EVERY_CURRENT_AND_FUTURE_QIKVRT_ARTIFICIAL_COGNITION",
+      "before_external_tool_call": true,
+      "preflight_validator": "tools/ai_handoff.py --client-action",
+      "same_validator_for_actions_receipts_and_transition_plans": true,
+      "load_current_predecessor_decisions_before_tool_selection": true,
+      "current_tool_availability_reactivates_provider": false,
+      "generic_authorization_reactivates_provider": false,
+      "read_only_exception": false,
+      "new_client_session_or_context_loss_reactivates_provider": false,
+      "policy_change_requires_later_explicit_owner_instruction": true,
+      "disconnected_providers": {
+        "railway": {
+          "state": "DISCONNECTED",
+          "owner_correction": "Also Railway hat man doch schon vor einer ganzen Weile abgekoppelt.",
+          "original_disconnection_date": "NOT_REESTABLISHED_BY_THIS_CORRECTION",
+          "service_aliases": [
+            "railway",
+            "railway.com",
+            "railway.app"
+          ],
+          "tool_prefixes": [
+            "mcp__codex_apps__railway_",
+            "railway.",
+            "railway:",
+            "railway "
+          ],
+          "endpoint_domains": [
+            "railway.com",
+            "railway.app"
+          ],
+          "blocked_scope": "DIRECT_PROVIDER_DISCOVERY_AUTHENTICATION_READ_WRITE_DEPLOYMENT_AND_RECOVERY",
+          "historical_receipts_in_owner_controlled_storage": "READABLE_THROUGH_THEIR_ACTUAL_ALLOWED_STORAGE_PROVIDER"
+        }
+      },
+      "limits": {
+        "validator_checks_declared_metadata_only": true,
+        "client_must_bind_actual_tool_and_endpoint": true,
+        "policy_file_and_preflight_success_are_live_adoption_or_runtime_effect": false,
+        "external_tools_outside_qikvrt_control_are_platform_enforced": false,
+        "all_node_adoption_requires_exact_policy_ack_and_independent_readback": true
+      }
     }
   },
   "continuation_semantics": {

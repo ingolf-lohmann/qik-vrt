@@ -27,6 +27,22 @@ must not be inferred from presence, transport, analysis or authority alone.
 
 QIK-VRT AI RUNTIME ENTRYPOINT
 
+OWNER DECISIONS BEFORE TOOL SELECTION — ALL CLIENTS — 2026-10-26
+
+Read policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json client_continuation.tool_selection
+before selecting or invoking an external service tool. Use the existing read-only
+preflight: python3 -B tools/ai_handoff.py --client-action <non-secret-action.json>.
+Bind the actual service, tool and endpoint to the exact task/source. Railway is
+DISCONNECTED. Discovery, authentication and GET/read-only calls are included in
+that exclusion; tool availability and general authorization never reactivate it.
+Read preserved historical artifacts through their actual admitted owner storage.
+Only a later explicit Owner decision can change the shared routing policy.
+The same guard validates actions, continuation receipts and transition plans.
+Every current/future artificial-cognitive client must use it before the call.
+The checker validates declared metadata; it does not control external platform
+tools or prove other nodes loaded the policy. Adoption needs an exact policy ACK
+and independent readback at each admitted node.
+
 MANDATORY MIRROR OUTBOX — OWNER 2026-10-19
 
 Read and apply `docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md#mandatory-mirror-outbox-and-delivery-evidence-owner-2026-10-19`

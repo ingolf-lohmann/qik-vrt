@@ -5,6 +5,25 @@ Copyright (c) 2026 Ingolf Lohmann.
 
 # Repository agent protocol
 
+## Owner decisions before external tool selection
+
+Every current and future QIK-VRT artificial-cognitive client MUST load
+policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json client_continuation.tool_selection
+before selecting or invoking an external service. Run the existing read-only
+preflight `python3 -B tools/ai_handoff.py --client-action <non-secret-action.json>`
+with the actual service, tool, endpoint and exact task/source binding. Keep its
+policy SHA-256 with the action. A disconnected provider is rejected before
+capability, login or transport checks, including discovery and GET/read-only.
+Railway is DISCONNECTED. A newly available plugin, a new session, missing access
+elsewhere or general authorization does not supersede this Owner decision.
+Historical artifacts remain readable through their actual admitted owner store;
+that is not permission to query the former provider. Change the shared policy
+only under a later explicit Owner instruction. Apply the same guard to receipts
+and proposed transition actions, including recorded zero-effect reads.
+The preflight validates declared metadata only. Native admission, actual effects
+and each node's exact-policy ACK/readback remain separately required; do not claim
+platform-wide enforcement or adoption by every client from a saved rule.
+
 MANDATORY MIRROR OUTBOX — OWNER 2026-10-19
 
 Read and apply `docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md#mandatory-mirror-outbox-and-delivery-evidence-owner-2026-10-19`

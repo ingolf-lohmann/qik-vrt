@@ -220,6 +220,101 @@ class ClientContinuationRegressionTests(unittest.TestCase):
                                  "next_action": "fixture:causal-repair:" + task}
                                 for task in ("failure", "omission", "gap")]
 
+    def test_disconnected_provider_read_is_rejected_before_callable_check(self) -> None:
+        action = self.receipt["next_actions"][0]
+        action.update(service="Railway", method="GET", observed_method="GET",
+                      operation="list-projects", observed_operation="list-projects",
+                      callable=False, authenticated=False)
+        self.rejected("CLIENT_DISCONNECTED_PROVIDER_ROUTE_FORBIDDEN:railway")
+
+    def test_tool_selection_policy_pin_must_remain_current(self) -> None:
+        self.receipt["next_actions"][0]["route_policy_sha256"] = "0" * 64
+        self.rejected("CLIENT_TOOL_SELECTION_POLICY_CHANGED")
+
+    def test_missing_tool_selection_policy_fails_closed(self) -> None:
+        policy = json.loads((ROOT / "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json").read_text())
+        policy["client_continuation"].pop("tool_selection")
+        with patch.object(self.handoff, "load_json", return_value=policy):
+            self.rejected("CLIENT_TOOL_SELECTION_POLICY_INVALID")
+
+    def test_every_registered_client_resolves_same_tool_selection_contract(self) -> None:
+        for path in ("AI", "AGENTS.md", "docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md"):
+            with self.subTest(path=path):
+                text = (ROOT / path).read_text()
+                self.assertIn("client_continuation.tool_selection", text)
+                self.assertIn("--client-action", text)
+                self.assertIn("DISCONNECTED", text)
+
+    def test_general_authorization_cannot_reactivate_disconnected_provider(self) -> None:
+        action = self.receipt["next_actions"][0]
+        action.update(service="railway", method="GET", observed_method="GET",
+                      operation="read-existing-configuration",
+                      observed_operation="read-existing-configuration",
+                      owner_override=True, read_only=True, tool_available=True)
+        self.rejected("CLIENT_DISCONNECTED_PROVIDER_ROUTE_FORBIDDEN:railway")
+
+    def test_actual_tool_name_cannot_hide_disconnected_provider(self) -> None:
+        action = self.receipt["next_actions"][0]
+        action.update(service="cloud", tool="mcp__codex_apps__railway_list_projects")
+        self.rejected("CLIENT_DISCONNECTED_PROVIDER_ROUTE_FORBIDDEN:railway")
+
+    def test_disconnected_provider_endpoint_and_subdomains_are_rejected(self) -> None:
+        for url in ("https://mcp.railway.com", "https://api.railway.app/graphql/v2",
+                    "https://old-runtime.up.railway.app/health", "mcp.railway.com:443"):
+            with self.subTest(url=url):
+                action = self.receipt["next_actions"][0]
+                action.update(service="mesh", endpoint=url)
+                self.rejected("CLIENT_DISCONNECTED_PROVIDER_ROUTE_FORBIDDEN:railway")
+
+    def test_owner_archive_read_is_not_a_retired_provider_operation(self) -> None:
+        action = self.receipt["next_actions"][0]
+        action.update(service="onedrive", method="GET", observed_method="GET",
+                      operation="read-archived-railway-migration-receipt",
+                      observed_operation="read-archived-railway-migration-receipt",
+                      endpoint="https://graph.microsoft.com/v1.0/drives/owner/items/archive")
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_similar_non_provider_hostname_is_not_blocked(self) -> None:
+        action = self.receipt["next_actions"][0]
+        action.update(service="mesh", endpoint="https://railway.com.owner.example/readback")
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_zero_effect_read_attempt_still_obeys_disconnection(self) -> None:
+        action = copy.deepcopy(self.receipt["next_actions"][0])
+        action.update(service="railway", method="GET", observed_method="GET")
+        self.receipt["attempts"] = [{
+            "effect_count": 0, "ambiguous_effect": False, "readback_before_effect": False,
+            "current": {key: str(i) * 64 for i, key in enumerate(
+                ("subject", "error", "cause", "capability"), 1)}, "action": action,
+        }]
+        self.rejected("CLIENT_DISCONNECTED_PROVIDER_ROUTE_FORBIDDEN:railway")
+
+    def test_client_action_cli_rejects_disconnected_read_without_execution(self) -> None:
+        action = copy.deepcopy(self.receipt["next_actions"][0])
+        action.update(service="railway", method="GET", observed_method="GET")
+        with tempfile.TemporaryDirectory() as temporary:
+            path = pathlib.Path(temporary) / "action.json"
+            path.write_text(json.dumps(action), encoding="utf-8")
+            completed = subprocess.run(
+                [sys.executable, "-B", "tools/ai_handoff.py", "--client-action", str(path)],
+                cwd=ROOT, capture_output=True, text=True, timeout=10,
+            )
+        self.assertEqual(completed.returncode, 2)
+        self.assertIn("CLIENT_DISCONNECTED_PROVIDER_ROUTE_FORBIDDEN:railway", completed.stderr)
+        self.assertNotIn("CLIENT_DECLARED_ACTION=READY", completed.stdout)
+
+    def test_client_action_cli_checks_allowed_route_without_executing_it(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            path = pathlib.Path(temporary) / "action.json"
+            path.write_text(json.dumps(self.receipt["next_actions"][0]), encoding="utf-8")
+            completed = subprocess.run(
+                [sys.executable, "-B", "tools/ai_handoff.py", "--client-action", str(path)],
+                cwd=ROOT, capture_output=True, text=True, timeout=10,
+            )
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        self.assertIn("CLIENT_DECLARED_ACTION=READY", completed.stdout)
+        self.assertIn("LIVE_EFFECT_VERIFICATION=NOT_PERFORMED", completed.stdout)
+
     def test_failures_omissions_and_gaps_are_accepted_as_successor_work(self) -> None:
         self.inherited_work()
         self.assertEqual(self.check(), "CONTINUE")

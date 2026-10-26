@@ -92,9 +92,61 @@ def client_causal_key(value: dict[str, Any]) -> str:
     return hashlib.sha256(json.dumps(parts, sort_keys=True).encode()).hexdigest()
 
 
+def validate_client_tool_selection(action: dict[str, Any]) -> str:
+    """Check current Owner decisions before capability or transport selection.
+
+    This checks declared routing metadata, not the truth of a client's claims.
+    It performs no service discovery, authentication or external operation.
+    """
+    path = ROOT / "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json"
+    policy = load_json(path)
+    continuation = policy.get("client_continuation")
+    if not isinstance(continuation, dict):
+        fail("CLIENT_TOOL_SELECTION_POLICY_INVALID")
+    selection = continuation.get("tool_selection")
+    if (not isinstance(selection, dict)
+            or selection.get("schema") != "qikvrt-client-tool-selection/v1"
+            or selection.get("before_external_tool_call") is not True
+            or not isinstance(selection.get("disconnected_providers"), dict)):
+        fail("CLIENT_TOOL_SELECTION_POLICY_INVALID")
+    pin = hashlib.sha256(path.read_bytes()).hexdigest()
+    if "route_policy_sha256" in action and action["route_policy_sha256"] != pin:
+        fail("CLIENT_TOOL_SELECTION_POLICY_CHANGED")
+    for provider, rule in selection["disconnected_providers"].items():
+        if (not isinstance(provider, str) or not re.fullmatch(r"[a-z0-9_-]+", provider)
+                or not isinstance(rule, dict) or rule.get("state") != "DISCONNECTED"
+                or any(not isinstance(rule.get(key), list) or not rule[key]
+                       or any(not isinstance(value, str) or not value for value in rule[key])
+                       for key in ("service_aliases", "tool_prefixes", "endpoint_domains"))):
+            fail("CLIENT_TOOL_SELECTION_POLICY_INVALID")
+        services = {str(action.get(key, "")).strip().casefold()
+                    for key in ("service", "provider")}
+        tool = str(action.get("tool", "")).strip().casefold()
+        matches = bool(services.intersection(value.casefold() for value in rule["service_aliases"]))
+        matches |= any(tool.startswith(value.casefold()) for value in rule["tool_prefixes"])
+        for key in ("url", "endpoint", "base_url", "target"):
+            value = action.get(key)
+            if not isinstance(value, str) or not value:
+                continue
+            try:
+                address = value if "://" in value else "//" + value
+                hostname = (urlsplit(address).hostname or "").casefold().rstrip(".")
+            except ValueError:
+                fail("CLIENT_ACTION_ENDPOINT_INVALID")
+            matches |= any(hostname == domain.casefold()
+                           or hostname.endswith("." + domain.casefold())
+                           for domain in rule["endpoint_domains"])
+        if matches:
+            # GET/read-only, current tool availability and generic authorization
+            # cannot supersede the Owner's disconnected-provider decision.
+            fail("CLIENT_DISCONNECTED_PROVIDER_ROUTE_FORBIDDEN:" + provider)
+    return pin
+
+
 def validate_client_action(action: dict[str, Any], subject: dict[str, Any]) -> bool:
     if not isinstance(action, dict) or action.get("subject") != subject:
         fail("CLIENT_ACTION_SUBJECT_DRIFT")
+    validate_client_tool_selection(action)
     if action.get("route") not in ("connector", "cli", "mesh"):
         fail("CLIENT_ACTION_ROUTE_INVALID")
     if action.get("method") not in ("GET", "POST", "PUT", "PATCH", "DELETE"):
@@ -601,6 +653,8 @@ def validate_client_receipt(receipt: dict[str, Any]) -> str:
         if attempt.get("ambiguous_effect") is not False:
             if attempt.get("readback_before_effect") is not True and count:
                 fail("CLIENT_AMBIGUOUS_EFFECT_RETRIED_WITHOUT_READBACK")
+        if not count and "action" in attempt:
+            validate_client_action(require(attempt, "action", dict), subject)
         if count:
             if not validate_client_action(require(attempt, "action", dict), subject):
                 fail("CLIENT_EFFECT_WITHOUT_ADMISSION")
@@ -958,9 +1012,26 @@ def validate_adapters(context: dict[str, Any]) -> tuple[str, int]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--client-receipt", type=Path,
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--client-receipt", type=Path,
                         help="Validate a non-secret client continuation receipt; no live-effect proof")
+    mode.add_argument("--client-action", type=Path,
+                      help="Check one declared action against current Owner routing decisions before any external call")
     args = parser.parse_args()
+    if args.client_action is not None:
+        action = load_json(args.client_action)
+        subject = require(action, "subject", dict)
+        if (not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", str(subject.get("repository", "")))
+                or any(not re.fullmatch(r"[0-9a-f]{40}", str(subject.get(key, "")))
+                       for key in ("head", "tree"))
+                or not isinstance(subject.get("ref"), str) or not subject["ref"].strip()):
+            fail("CLIENT_SUBJECT_INVALID")
+        ready = validate_client_action(action, subject)
+        print("CLIENT_ACTION_CONSISTENCY=VALID")
+        print("CLIENT_ROUTE_POLICY_SHA256=" + validate_client_tool_selection(action))
+        print("CLIENT_DECLARED_ACTION=" + ("READY" if ready else "HOLD"))
+        print("LIVE_EFFECT_VERIFICATION=NOT_PERFORMED")
+        return 0 if ready else 2
     if args.client_receipt is not None:
         receipt = load_json(args.client_receipt)
         state = validate_client_receipt(receipt)
