@@ -1,0 +1,945 @@
+{
+  "_license": {
+    "classification": "machine_readable_proof_bundle",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_zenodo_machine_proof_bundle_v2",
+  "policy": {
+    "id": "qikvrt-zenodo-machine-proof-before-publication-v2",
+    "path": "policy/zenodo-machine-proof-policy-v2.json",
+    "version": "2.0.0",
+    "sha256": "933d6322a1e294848c6385d1384ab0ec3862c8675ebe35ec2fc4cad3e0baec47",
+    "git_blob_sha1": "e9578d30d22f845e7df684128dcd9332641c00be"
+  },
+  "publication_id": "qikvrt-causal-distance-lean-20261024",
+  "candidate": {
+    "files": [
+      {
+        "path": "release/causal-distance-lean-2026-10-24/QIKVRT_Kausale_Distanz_Fachartikel.pdf",
+        "bytes": 149762,
+        "sha256": "7e50bc80d4017b6e43c495fdc7c19a2a322e51a2cd7e2fd9edb1072cf389caf5",
+        "git_blob_sha1": "a23b5e1081037d2614b9cd2219eb4f429423b549",
+        "name": "QIKVRT_Kausale_Distanz_Fachartikel.pdf",
+        "role": "PRIMARY"
+      },
+      {
+        "path": "release/causal-distance-lean-2026-10-24/QIKVRT_Wie_weit_ist_eine_Wirkung_Prosa.pdf",
+        "bytes": 121544,
+        "sha256": "feaa7c803c0f556b8c0c52ad33b47d606399da2b6701f0a26d90be87952afd8f",
+        "git_blob_sha1": "0f00df3cd8b3808716b603b50203a3dda091d897",
+        "name": "QIKVRT_Wie_weit_ist_eine_Wirkung_Prosa.pdf",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "release/causal-distance-lean-2026-10-24/Fachartikel.md",
+        "bytes": 37142,
+        "sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+        "git_blob_sha1": "6f0c7ff7ac59376c77b6c5e448df7c53310e66b6",
+        "name": "Fachartikel.md",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "release/causal-distance-lean-2026-10-24/Prosaartikel.txt",
+        "bytes": 28752,
+        "sha256": "ad6623349bfa59326677dfd2fa2774698e6678ca0822d8fe6a0d956826991191",
+        "git_blob_sha1": "2895785d4f1cb737d1140587e2f7cdc6a0c7b70c",
+        "name": "Prosaartikel.txt",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "release/causal-distance-lean-2026-10-24/QIKVRT_Prosa_Vorlesetext.txt",
+        "bytes": 24863,
+        "sha256": "1fbeaec8006b4180405b07c45444f3dc8010236d742a62a43fd2b556d5f50b57",
+        "git_blob_sha1": "9a28b62c912ff174aa59d6848f44d315e1db0a69",
+        "name": "QIKVRT_Prosa_Vorlesetext.txt",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "release/causal-distance-lean-2026-10-24/QIKVRT_Causal_Distance_20261024.zip",
+        "bytes": 262030,
+        "sha256": "d070ae7e9c15feeadedddf55b3bf77072a3b74289dad60bb3adce4aee7089f91",
+        "git_blob_sha1": "87d485faf527dab24a1bc98dd28cd7ab532a764a",
+        "name": "QIKVRT_Causal_Distance_20261024.zip",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "release/causal-distance-lean-2026-10-24/QIKVRT_Framework_Selbstvermessung_20261024.zip",
+        "bytes": 201027,
+        "sha256": "01d874f116d68119c3278345bc09fb72fcd1917e88dd27e51b726ef950b3e542",
+        "git_blob_sha1": "9d604052aab7807bdfd394467efe2b5dc62bad65",
+        "name": "QIKVRT_Framework_Selbstvermessung_20261024.zip",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "release/causal-distance-lean-2026-10-24/LESEPFAD_NACH_INTERESSE.md",
+        "bytes": 7588,
+        "sha256": "becc9ff671680db7fbe1a6f7869b7aba5df0916a0be50f339abe23ce57e43024",
+        "git_blob_sha1": "9e9a2c23436f43d5866e48c1534c5dae00ce3aa3",
+        "name": "LESEPFAD_NACH_INTERESSE.md",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "release/causal-distance-lean-2026-10-24/QIKVRT_Lean_Anschluss_20261024.zip",
+        "bytes": 167096,
+        "sha256": "939b7da32b31972ea596b4a1ffdb8a9c1baafe3d8eb02d99f659ac005e813636",
+        "git_blob_sha1": "f5dd753352370e665d89625cb0d4e2270b407ff3",
+        "name": "QIKVRT_Lean_Anschluss_20261024.zip",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "release/causal-distance-lean-2026-10-24/LEAN_ANBINDUNG.md",
+        "bytes": 10937,
+        "sha256": "210047901873f28d110f837f284f4ce3a76e76acd6c62e35bbe88884b1174dae",
+        "git_blob_sha1": "3b5b918c1b1b16f9a83ca3426288df7a9de97eda",
+        "name": "LEAN_ANBINDUNG.md",
+        "role": "SUPPLEMENT"
+      }
+    ],
+    "primary_document_path": "release/causal-distance-lean-2026-10-24/QIKVRT_Kausale_Distanz_Fachartikel.pdf"
+  },
+  "claims": [
+    {
+      "claim_id": "CD-001",
+      "statement": "Die Vorarbeit trennt OBSERVED und ANTICIPATED und definiert eine enge operationale Protokoll-Retrokausalität.",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Archivierter Scope von DOI 21711193.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "release/causal-distance-lean-2026-10-24/SOURCE_BINDINGS.json#S1"
+      ]
+    },
+    {
+      "claim_id": "CD-002",
+      "statement": "Der Messgraph bindet Gegenstand, Ereignisauflösung, Relationstyp und positive ganzzahlige Kantengewichte.",
+      "classification": "NORMATIVE",
+      "status": "DECLARED",
+      "publication_wording": "NORMATIVE_DECLARATION",
+      "scope": "Definition dieses endlichen Modellobjekts.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CD-003",
+      "statement": "Gerichtete Distanz ist der kürzeste gewichtete Abhängigkeitspfad; die symmetrische Projektion hat einen anderen Interpretationsbereich.",
+      "classification": "NORMATIVE",
+      "status": "DECLARED",
+      "publication_wording": "NORMATIVE_DECLARATION",
+      "scope": "Definierte Messvorschrift; keine universelle Naturmetrik.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CD-004",
+      "statement": "Die analytische Herleitung ergibt eine erweiterte Quasimetrik und eine Metrik je schwacher Komponente der Projektion.",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Angegebene endliche positive Graphdefinition; keine neue Lean-Ausführung.",
+      "proof_refs": [],
+      "evidence_refs": [
+        "release/causal-distance-lean-2026-10-24/EVIDENCE_INDEX.json#MATH"
+      ],
+      "source_refs": [
+        "release/causal-distance-lean-2026-10-24/SOURCE_BINDINGS.json#S3"
+      ]
+    },
+    {
+      "claim_id": "CD-005",
+      "statement": "Vier kontrollierte Fälle unterscheiden die freigegebene Dateiänderung 2 nach 3 von drei verweigerten Änderungen.",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "status": "EVIDENCED",
+      "publication_wording": "EMPIRICALLY_SUPPORTED",
+      "scope": "Isolierter lokaler Programmlauf.",
+      "proof_refs": [],
+      "evidence_refs": [
+        "release/causal-distance-lean-2026-10-24/EVIDENCE_INDEX.json#FOUR_CASES"
+      ],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CD-006",
+      "statement": "Elf native Testjournalereignisse wurden über den originalen Terminal-Leser nach erneutem Öffnen bestätigt.",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "status": "EVIDENCED",
+      "publication_wording": "EMPIRICALLY_SUPPORTED",
+      "scope": "Frisches lokales Testjournal; keine produktive Mesh-Replikation.",
+      "proof_refs": [],
+      "evidence_refs": [
+        "release/causal-distance-lean-2026-10-24/EVIDENCE_INDEX.json#JOURNAL"
+      ],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CD-007",
+      "statement": "Die dokumentierten ursprünglichen Tests bestehen aus 16 neuen, 41 originalen EAP- und vier ausgewählten originalen Ledger-Tests.",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "status": "EVIDENCED",
+      "publication_wording": "EMPIRICALLY_SUPPORTED",
+      "scope": "61 Tests am eingefrorenen ursprünglichen Kandidaten.",
+      "proof_refs": [],
+      "evidence_refs": [
+        "release/causal-distance-lean-2026-10-24/EVIDENCE_INDEX.json#CORE_TESTS"
+      ],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CD-008",
+      "statement": "Alle 4096 gerichteten Graphen auf vier Knoten werden gegen eine unabhängige Floyd-Warshall-Auswertung geprüft.",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "status": "EVIDENCED",
+      "publication_wording": "EMPIRICALLY_SUPPORTED",
+      "scope": "Endliche Implementierungsprüfung; kein Ersatz des allgemeinen analytischen Arguments.",
+      "proof_refs": [],
+      "evidence_refs": [
+        "release/causal-distance-lean-2026-10-24/EVIDENCE_INDEX.json#GRAPH_TESTS"
+      ],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CD-009",
+      "statement": "Ereignisordnung, Provenienz und kausale Intervention sind unterschiedliche wissenschaftliche Begriffe.",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Geltungsbereiche der benannten Primärquellen.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "release/causal-distance-lean-2026-10-24/SOURCE_BINDINGS.json#S4",
+        "release/causal-distance-lean-2026-10-24/SOURCE_BINDINGS.json#S5",
+        "release/causal-distance-lean-2026-10-24/SOURCE_BINDINGS.json#S6"
+      ]
+    },
+    {
+      "claim_id": "CD-010",
+      "statement": "Physische Future-Input-Abhängigkeit ist von heutiger Zielrepräsentation und Retrodiktion zu unterscheiden.",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Modellbegriff der benannten quantenphysikalischen Primärquelle und Vorarbeit.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "release/causal-distance-lean-2026-10-24/SOURCE_BINDINGS.json#S1",
+        "release/causal-distance-lean-2026-10-24/SOURCE_BINDINGS.json#S7"
+      ]
+    },
+    {
+      "claim_id": "CD-011",
+      "statement": "Unabhängige externe Reproduktion, vollständig formale Verifikation des Python-Messprogramms und physische Verallgemeinerung bleiben offen.",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "scope": "Die neue Lean-Modellprüfung ist gesondert unter CDL-001 bis CDL-036 belegt; keine pauschale Übertragung auf reale Systeme.",
+      "proof_refs": [],
+      "evidence_refs": [
+        "release/causal-distance-lean-2026-10-24/EVIDENCE_INDEX.json#LIMITS"
+      ],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CD-012",
+      "statement": "Ein vollständiger produktiver persönlicher Digital Twin und eine universelle physische Anschlussfähigkeit sind nicht abgenommen.",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "scope": "Separate Identitäts-, Rechte-, Runtime- und empirische Nachweise nötig.",
+      "proof_refs": [],
+      "evidence_refs": [
+        "release/causal-distance-lean-2026-10-24/EVIDENCE_INDEX.json#CURRENT_COMPLETION"
+      ],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CD-013",
+      "statement": "Der historische Kataloggraph hat 32 Knoten und 19 Empfehlungsrelationen; die ausgewählten zehn Python-Module haben 15 interne statische Importrelationen.",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "status": "EVIDENCED",
+      "publication_wording": "EMPIRICALLY_SUPPORTED",
+      "scope": "Katalogstand 11.10.2026 und explizite statische Quellauswahl; keine beobachtete produktive Wirkungskette.",
+      "proof_refs": [],
+      "evidence_refs": [
+        "release/causal-distance-lean-2026-10-24/EVIDENCE_INDEX.json#FRAMEWORK"
+      ],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CD-014",
+      "statement": "Ein lesendes Personenprofil erzeugt sieben Quellenrouten; sechs zusätzliche Tests prüfen Wiederverwendung und Begrenzung.",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "status": "EVIDENCED",
+      "publication_wording": "EMPIRICALLY_SUPPORTED",
+      "scope": "Parameterisierte Wissensansicht; keine Authentisierung und keine Handlungsvollmacht.",
+      "proof_refs": [],
+      "evidence_refs": [
+        "release/causal-distance-lean-2026-10-24/EVIDENCE_INDEX.json#PROFILE"
+      ],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CD-015",
+      "statement": "Die gekoppelte Speicher-, Prüf- und Navigationsarchitektur kann als Baustein künstlicher Handlungs- und Wissensfähigkeit dienen.",
+      "classification": "INTERPRETATIVE",
+      "status": "DECLARED",
+      "publication_wording": "INTERPRETATIVE_DECLARATION",
+      "scope": "Architekturinterpretation; keine biologische oder phänomenologische Hinlänglichkeit.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-001",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.V1.path_append unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.V1.path_append"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-002",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.V1.zero_path_endpoints unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.V1.zero_path_endpoints"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-003",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.V1.exists_least_cost unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.V1.exists_least_cost"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-004",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.V1.minimum_spec unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.V1.minimum_spec"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-005",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.V1.distance_some_iff unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.V1.distance_some_iff"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-006",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.V1.distance_none_iff unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.V1.distance_none_iff"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-007",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.V1.distance_zero_iff unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.V1.distance_zero_iff"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-008",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.V1.distance_le_path unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.V1.distance_le_path"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-009",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.V1.triangle unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.V1.triangle"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-010",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.V1.reverse_path unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.V1.reverse_path"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-011",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.V1.reverse_path_iff unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.V1.reverse_path_iff"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-012",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.V1.distance_ext unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.V1.distance_ext"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-013",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.V1.reverse_distance unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.V1.reverse_distance"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-014",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.V1.undirected_path_symm unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.V1.undirected_path_symm"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-015",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.V1.undirected_distance_symmetric unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.V1.undirected_distance_symmetric"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-016",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.V1.selected_edges_only unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.V1.selected_edges_only"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-017",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.V1.path_inclusion unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.V1.path_inclusion"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-018",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.V1.edge_addition_cannot_increase_distance unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.V1.edge_addition_cannot_increase_distance"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-019",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.V1.weak_component_distance_finite unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.V1.weak_component_distance_finite"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-020",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.V1.certificate_exact unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.V1.certificate_exact"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-021",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.TemporalBridge.V1.confirmed_requires_original_authorization unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.TemporalBridge.V1.confirmed_requires_original_authorization"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-022",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.TemporalBridge.V1.confirmed_requires_recomputed_done unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.TemporalBridge.V1.confirmed_requires_recomputed_done"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-023",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.TemporalBridge.V1.confirmed_requires_responsible_owner unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.TemporalBridge.V1.confirmed_requires_responsible_owner"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-024",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.TemporalBridge.V1.confirmed_requires_past_future_and_observation unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.TemporalBridge.V1.confirmed_requires_past_future_and_observation"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-025",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.TemporalBridge.V1.selected_confirmation_is_one_step unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.TemporalBridge.V1.selected_confirmation_is_one_step"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-026",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.TemporalBridge.V1.distinct_selected_confirmation_distance unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.TemporalBridge.V1.distinct_selected_confirmation_distance"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-027",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.TemporalBridge.V1.retrospective_confirmation_distance unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.TemporalBridge.V1.retrospective_confirmation_distance"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-028",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.TemporalBridge.V1.future_representation_preserves_original_past unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.TemporalBridge.V1.future_representation_preserves_original_past"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-029",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.BoundaryChecks.V1.forward_distance_two unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.BoundaryChecks.V1.forward_distance_two"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-030",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.BoundaryChecks.V1.backward_distance_infinite unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.BoundaryChecks.V1.backward_distance_infinite"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-031",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.BoundaryChecks.V1.directed_distance_can_be_asymmetric unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.BoundaryChecks.V1.directed_distance_can_be_asymmetric"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-032",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.BoundaryChecks.V1.undirected_projection_can_shorten_reverse_distance unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.BoundaryChecks.V1.undirected_projection_can_shorten_reverse_distance"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-033",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.BoundaryChecks.V1.finite_distance_does_not_certify_release unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.BoundaryChecks.V1.finite_distance_does_not_certify_release"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-034",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.BoundaryChecks.V1.observed_is_not_an_anticipated_boundary unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.BoundaryChecks.V1.observed_is_not_an_anticipated_boundary"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-035",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.BoundaryChecks.V1.inhabited_bridge_distance_one unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.BoundaryChecks.V1.inhabited_bridge_distance_one"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-036",
+      "statement": "Für das deklarierte Modell gilt der Lean-Satz QIKVRT.CausalDistance.BoundaryChecks.V1.missing_responsibility_never_authorized unter den im Quelltext ausgewiesenen Voraussetzungen.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Positive-natural-cost selected graph / original EAP and canonical temporal-memory model; see exact constant type.",
+      "proof_refs": [
+        "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.BoundaryChecks.V1.missing_responsibility_never_authorized"
+      ],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-OPEN-01",
+      "statement": "Python shortest-path implementation/serializer refinement",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "scope": "Ausdrücklich nicht als abgeschlossenes Ergebnis der formalen Graph- und Protokollbeweise ausgegeben.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-OPEN-02",
+      "statement": "Independent real-source, identity and observation binding",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "scope": "Ausdrücklich nicht als abgeschlossenes Ergebnis der formalen Graph- und Protokollbeweise ausgegeben.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-OPEN-03",
+      "statement": "Productive personal Digital Twin and human transfer evaluation",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "scope": "Ausdrücklich nicht als abgeschlossenes Ergebnis der formalen Graph- und Protokollbeweise ausgegeben.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-OPEN-04",
+      "statement": "Physical retrocausality or universal biology claim",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "scope": "Ausdrücklich nicht als abgeschlossenes Ergebnis der formalen Graph- und Protokollbeweise ausgegeben.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CDL-OPEN-05",
+      "statement": "Native Mesh runtime admission and Zenodo publication",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "scope": "Ausdrücklich nicht als abgeschlossenes Ergebnis der formalen Graph- und Protokollbeweise ausgegeben.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": []
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "release/causal-distance-lean-2026-10-24/CLAIM_MATRIX.json",
+      "sha256": "f22908c3a6ef3e6501d252313d19913d0db38be30e03d55b79cfd28d687f4e6d",
+      "git_blob_sha1": "c7c81bcb3805a8cdba07a97a0998f511821e3301",
+      "kind": "CLAIM_MATRIX"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/SOURCES.json",
+      "sha256": "07806b1245c25e752d721f9bf78121b255b5be96363bf38c73fec2911a3334f1",
+      "git_blob_sha1": "6607411ddba0793eabde401a95b3cedd2c86de2c",
+      "kind": "SOURCE"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/SOURCE_BINDINGS.json",
+      "sha256": "e7506ee177b6c4457b83df00daa63ebe12d55b1d1c2c3e1172236a8a4024ccdc",
+      "git_blob_sha1": "c7db93aa497855151a367b1fb3439a2d2c237fa1",
+      "kind": "SOURCE"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/EVIDENCE_INDEX.json",
+      "sha256": "3b866862fca3d1b8ca2522da7bc84e23875f98dc5e154f64c11f1f30452a59b1",
+      "git_blob_sha1": "a3b95c6ef169f843d4049fd267ee40627c30abc7",
+      "kind": "EVIDENCE"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/BOUNDARY_TESTS.json",
+      "sha256": "fe7aca7c0238ab80736ca5c4480786d2a80449afc22f3809f8aaa6c94fde2d10",
+      "git_blob_sha1": "6d8d0b77f95b212c9c1e22c04d35d9262c534ec9",
+      "kind": "BOUNDARY_TEST"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/CHANGE_NOTICE.md",
+      "sha256": "096761fc01f89e273cefe51f911f340e538f89dadfe273296ff008a62a1d0f20",
+      "git_blob_sha1": "b9545e6b5e73e3a8f48ea4971774bd0450943e8c",
+      "kind": "CHANGE_NOTICE"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/PREPUBLICATION_RETURN_RECEIPT.json",
+      "sha256": "a056e0b4e1ea74261c24ab9aab799cd024ea55a8403ad26169551705e20a7628",
+      "git_blob_sha1": "fde9eb085489f6f4a5ecd99ea9792ac34193fab0",
+      "kind": "RETURN_RECEIPT"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/METADATA.json",
+      "sha256": "f8ee369fd8546294efbad9ce22b49851880db7cd73e928f3ea952d496d5d2e41",
+      "git_blob_sha1": "14478ed4a4b3b019c586f18b1de01c48acb6c085",
+      "kind": "OTHER"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/MAIN_INTEGRATION.json",
+      "sha256": "33a656247f85a1e2aa29d6a541510d99e83178fd053b30db315d87a0c7660c8b",
+      "git_blob_sha1": "f251276b4f0a60ad6503d5e31811a416622a676e",
+      "kind": "EVIDENCE"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/validate_article_sources.py",
+      "sha256": "87e3f687b0995a1120c9b03ec50c1743e1ed9c8db5f9dfb8077a2654e764b67f",
+      "git_blob_sha1": "71c105e61f1d68d323aff304e8c47bc75d6072ba",
+      "kind": "OTHER"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/build_pdfs.py",
+      "sha256": "a728df54df3540c6e5772b9f8ac66478ce35618e165ee497fb8ce49c66227d11",
+      "git_blob_sha1": "dc2a049e002a057b754672d16416050f21339174",
+      "kind": "OTHER"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/NATIVE_KERNEL_RECEIPT.json",
+      "sha256": "3734147def87e97610308abbd75a65989e8dfec1d2b421a72c59cdc181286b17",
+      "git_blob_sha1": "9b191748a18c7962befd49bd717058a1dd5d3bc5",
+      "kind": "EVIDENCE"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json",
+      "sha256": "d49c8c2361d1113d6929fba4d1b30ae31059d646a6af9405a9c1e2f5fc11406f",
+      "git_blob_sha1": "652f2f09791b6e31f96a288c467b6e7c31d188d1",
+      "kind": "KERNEL_RECEIPT"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/KERNEL_PROOF_PLAN.json",
+      "sha256": "af600d85f5408d6fb7d454f7e2fa259b9e94f47da06e65097d4d80af9ece4a13",
+      "git_blob_sha1": "8897c20d94dbc0e3948d502cb75af7fe68972296",
+      "kind": "SOURCE"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/CATALOG_METADATA_REFRESH.json",
+      "sha256": "b66e540ae2fb16398fb743c070fe9c53cbd20defa90bbd2f638fe4d96a0207d9",
+      "git_blob_sha1": "bd2d03d6afd05d8c99c15a9f70ba514b9199b54d",
+      "kind": "SOURCE"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/SOURCE_METADATA_OBSERVATION.json",
+      "sha256": "c20365f65e83194ea0a221950e79d579779cfc80ffb03e1549205a46e05b0651",
+      "git_blob_sha1": "028f8a1599870bce81981bb56a65e4af9f01a27a",
+      "kind": "SOURCE"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/VISIBLE_SOURCE_AND_LAYOUT_CHECK.json",
+      "sha256": "a56bccf544a5e0a4f76874142e9d3b16e21563dfd6ef0a2e65ef057fc10bfceb",
+      "git_blob_sha1": "d662138459961e83810aeaf17825c14981badb47",
+      "kind": "BOUNDARY_TEST"
+    }
+  ],
+  "prepublication_return": {
+    "content_changed": true,
+    "candidate_returned_to_owner": true,
+    "receipt_path": "release/causal-distance-lean-2026-10-24/PREPUBLICATION_RETURN_RECEIPT.json",
+    "change_notice_path": "release/causal-distance-lean-2026-10-24/CHANGE_NOTICE.md"
+  },
+  "gates": {
+    "all_claims_dispositioned": true,
+    "all_references_resolve": true,
+    "candidate_frozen": true,
+    "formal_claims_have_kernel_receipts": true,
+    "open_claims_not_worded_as_facts": true,
+    "proof_bundle_in_upload_fileset": true,
+    "returned_bytes_equal_upload_bytes": true
+  },
+  "completion_claims": {
+    "machine_proof_complete": true,
+    "zenodo_upload_authorized": true
+  }
+}

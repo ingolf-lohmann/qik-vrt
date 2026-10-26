@@ -2,6 +2,7 @@
 # Copyright 2026 Ingolf Lohmann. Implementation contribution: OpenAI Codex.
 """Negative integrity/admission controls; fixture hosts are not deployments."""
 import hashlib
+import ast
 import io
 import json
 import os
@@ -18,6 +19,169 @@ from types import SimpleNamespace
 from tools import qikvrt_self_host_container as c
 
 HEAD, TREE = "a" * 40, "b" * 40
+
+
+class VerifiedToolCache(unittest.TestCase):
+    """Exercise the original failure boundary and the untrusted cache path."""
+
+    def fixture(self, path, *, corrupt_config=False, corrupt_layer=False, compressed=False, extra=None):
+        import gzip
+        layer = b"original uncompressed tool filesystem bytes"
+        config = json.dumps({"os": "linux", "architecture": "amd64", "rootfs": {
+            "type": "layers", "diff_ids": ["sha256:" + c.sha(layer)]}}, sort_keys=True).encode()
+        pin = {"repository": "quay.io/skopeo/stable", "resolved_platform_digest": "sha256:" + "c" * 64,
+               "config_sha256": "sha256:" + c.sha(config), "version": "1.22.3"}
+        members = {"manifest.json": json.dumps([{"Config": "config.json", "Layers": ["layer.tar"],
+            "RepoTags": ["untrusted.example/do-not-import:latest"]}]).encode(),
+            "config.json": config + (b" " if corrupt_config else b""),
+            "layer.tar": gzip.compress(layer) if compressed else layer + (b"tampered" if corrupt_layer else b""),
+            "unreferenced-metadata": b"must not reach the Docker importer"}
+        if extra: members[extra] = b"bad path"
+        with tarfile.open(path, "w") as archive:
+            for name, raw in members.items():
+                entry = tarfile.TarInfo(name); entry.size = len(raw)
+                archive.addfile(entry, io.BytesIO(raw))
+        return pin
+
+    def test_canonical_graph_removes_untrusted_tags_and_extra_metadata(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); source = root / "source.tar"; canonical = root / "canonical.tar"
+            pin = self.fixture(source)
+            result = c.tool_archive(source, pin, canonical)
+            self.assertTrue(result["ordered_diff_ids_verified"])
+            self.assertFalse(result["public_production_verified"])
+            self.assertEqual(c.tool_archive(canonical, pin), result)
+            with tarfile.open(canonical) as archive:
+                self.assertEqual(set(archive.getnames()), {"manifest.json", pin["config_sha256"][7:] + ".json", "layer-00000.tar"})
+                self.assertIsNone(json.load(archive.extractfile("manifest.json"))[0]["RepoTags"])
+
+    def test_compressed_docker_export_is_normalized_without_changing_diff_id(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); source = root / "source.tar"; canonical = root / "canonical.tar"
+            pin = self.fixture(source, compressed=True)
+            c.tool_archive(source, pin, canonical)
+            self.assertTrue(c.tool_archive(canonical, pin)["ordered_diff_ids_verified"])
+
+    def test_config_and_layer_corruption_are_rejected_and_new_output_removed(self):
+        for key, reason in (("corrupt_config", "TOOL_CONFIG_DIGEST_MISMATCH"), ("corrupt_layer", "TOOL_LAYER_DIGEST_MISMATCH")):
+            with self.subTest(key=key), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory); source = root / "source.tar"; canonical = root / "canonical.tar"
+                pin = self.fixture(source, **{key: True})
+                with self.assertRaisesRegex(ValueError, reason): c.tool_archive(source, pin, canonical)
+                self.assertFalse(canonical.exists())
+
+    def test_archive_path_traversal_is_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); source = root / "source.tar"
+            pin = self.fixture(source, extra="../daemon-metadata")
+            with self.assertRaisesRegex(ValueError, "TOOL_ARCHIVE_MEMBER_INVALID"):
+                c.tool_archive(source, pin, root / "new.tar")
+
+    def test_noncanonical_transport_cannot_be_trusted_as_existing_cache(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / "source.tar"; pin = self.fixture(source)
+            with self.assertRaisesRegex(ValueError, "TOOL_CANONICAL_ARCHIVE_REQUIRED"): c.tool_archive(source, pin)
+
+    def test_existing_output_is_never_replaced_or_deleted(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); source = root / "source.tar"; pin = self.fixture(source)
+            target = root / "existing.tar"; target.write_bytes(b"existing evidence")
+            with self.assertRaises(FileExistsError): c.tool_archive(source, pin, target)
+            self.assertEqual(target.read_bytes(), b"existing evidence")
+
+    def prepare_case(self, directory, *, cache=True, corrupt=False, api_error=False, version="1.22.3"):
+        import zipfile
+        root = Path(directory); original = root / "original.tar"; canonical = root / "canonical.tar"
+        pin = self.fixture(original); graph = c.tool_archive(original, pin, canonical)
+        if corrupt: canonical.write_bytes(b"corrupt artifact")
+        zipped = root / "artifact.zip"
+        with zipfile.ZipFile(zipped, "w") as output: output.write(canonical, canonical.name.replace("canonical.tar", "skopeo-loader.docker.tar"))
+        commands = []
+        def engine(*args, **kwargs):
+            commands.append(args)
+            if args[1] == "save": Path(args[3]).write_bytes(original.read_bytes())
+            if args[1:3] == ("image", "inspect"):
+                return json.dumps([{"Id": pin["config_sha256"], "Os": "linux", "Architecture": "amd64",
+                    "RootFS": {"Layers": graph["diff_ids"]}}]).encode()
+            if args[1] == "run": return ("skopeo version " + version + "\n").encode()
+            return b""
+        def download(artifact_id, size, path, token):
+            self.assertEqual((artifact_id, size, token), (42, zipped.stat().st_size, "fixture-token"))
+            path.write_bytes(zipped.read_bytes())
+        listing = {"artifacts": [{"id": 42, "name": "qikvrt-skopeo-" + "c" * 64,
+            "expired": False, "size_in_bytes": zipped.stat().st_size}] if cache else []}
+        with patch.object(c, "tool_pin", return_value=pin), patch.object(c, "command", side_effect=engine), \
+             patch.object(c, "get", side_effect=OSError("fixture REST unavailable") if api_error else None,
+                          return_value=json.dumps(listing).encode()), \
+             patch.object(c, "actions_archive_download", side_effect=download), \
+             patch.dict(os.environ, {"GITHUB_TOKEN": "fixture-token", "GITHUB_REPOSITORY": c.REPOSITORY}):
+            try:
+                result = c.tool_prepare(root, root / "ready")
+            except Exception:
+                self.assertEqual(commands, []) if (corrupt or api_error) else None
+                raise
+        return result, commands
+
+    def test_verified_cache_hit_does_not_pull_or_save_or_use_registry_tags(self):
+        with tempfile.TemporaryDirectory() as directory:
+            result, commands = self.prepare_case(directory)
+            self.assertEqual(result["origin"], "VERIFIED_REPOSITORY_ARTIFACT")
+            self.assertEqual([a[1] for a in commands], ["load", "image", "run"])
+            self.assertIn("--pull=never", commands[-1])
+            self.assertFalse(result["runtime_smoke_verified"])
+
+    def test_true_cache_miss_pulls_only_exact_official_digest_then_verifies(self):
+        with tempfile.TemporaryDirectory() as directory:
+            result, commands = self.prepare_case(directory, cache=False)
+            self.assertEqual(result["origin"], "EXACT_OFFICIAL_PIN_CACHE_MISS")
+            self.assertEqual(commands[0], ("docker", "pull", "quay.io/skopeo/stable@sha256:" + "c" * 64))
+            self.assertEqual([a[1] for a in commands], ["pull", "save", "load", "image", "run"])
+
+    def test_corrupt_cache_fails_before_docker_and_has_no_pull_fallback(self):
+        with tempfile.TemporaryDirectory() as directory, self.assertRaises(tarfile.ReadError):
+            self.prepare_case(directory, corrupt=True)
+
+    def test_api_failure_is_not_a_cache_miss(self):
+        with tempfile.TemporaryDirectory() as directory, self.assertRaisesRegex(OSError, "REST unavailable"):
+            self.prepare_case(directory, api_error=True)
+
+    def test_loaded_executable_version_must_match_reviewed_tool(self):
+        with tempfile.TemporaryDirectory() as directory, self.assertRaisesRegex(ValueError, "TOOL_EXECUTABLE_VERSION_MISMATCH"):
+            self.prepare_case(directory, version="0.0.0")
+
+    def test_upstream_commit_metadata_keeps_exact_release_and_cache_guards(self):
+        commit = "0123456789abcdef" * 2 + "01234567"
+        version = "1.22.3 commit: " + commit
+        for cache in (True, False):
+            with self.subTest(cache=cache), tempfile.TemporaryDirectory() as directory:
+                result, commands = self.prepare_case(directory, cache=cache, version=version)
+                self.assertEqual(result["version"], "skopeo version " + version)
+                self.assertEqual(result["executable_commit"], commit)
+                receipt = json.loads((Path(directory) / "ready/version-check.json").read_bytes())
+                self.assertTrue(receipt["version_matches_reviewed_release"])
+                self.assertEqual(receipt["tool_image_id"], result["tool_image_id"])
+                self.assertFalse(receipt["effect_ack_done"])
+                self.assertEqual(any(a[1] == "pull" for a in commands), not cache)
+
+    def test_wrong_release_and_malformed_version_metadata_leave_a_hold_receipt(self):
+        commit = "a" * 40
+        for version in ("1.22.30", "1.22.3-dev", "0.0.0 commit: " + commit,
+                        "1.22.3 commit: " + "a" * 39, "1.22.3 commit: " + "g" * 40,
+                        "1.22.3 commit: " + commit + "-dirty", "1.22.3 unexpected",
+                        "1.22.3\nskopeo version 0.0.0", "1.22.3 commit: " + commit + " extra"):
+            with self.subTest(version=version), tempfile.TemporaryDirectory() as directory:
+                with self.assertRaisesRegex(ValueError, "TOOL_EXECUTABLE_VERSION_MISMATCH"):
+                    self.prepare_case(directory, version=version)
+                receipt = json.loads((Path(directory) / "ready/version-check.json").read_bytes())
+                self.assertEqual(receipt["state"], "HOLD_TOOL_EXECUTABLE_VERSION_MISMATCH")
+                self.assertFalse(receipt["version_matches_reviewed_release"])
+                self.assertFalse(receipt["effect_ack_done"])
+                self.assertEqual(receipt["observed_version"], "skopeo version " + version)
+
+    def test_official_readback_graph_and_toolchain_lock_are_bound(self):
+        pin = c.tool_pin(Path(__file__).resolve().parents[1])
+        self.assertEqual(pin["version"], "1.22.3")
+        self.assertEqual(pin["resolved_platform_digest"], "sha256:d506b4167696eb5d3bd624b3619480bddeabdca291b2e795e9c20ed862e11ae4")
 
 
 def declaration():
@@ -140,6 +304,25 @@ class ExistingContainerRecovery(unittest.TestCase):
         host = self.Host(running=True)
         self.assertEqual(c.deploy(host.value, host.image, host)['state'], 'EXACT_EXISTING_CONTAINER_NOOP')
         self.assertTrue(all(method == 'GET' for method, _ in host.calls))
+
+    def test_native_image_requires_the_same_explicit_profile_in_pinned_private_config(self):
+        for image_profile, config_profile in (("temdd", "temdd"), ("temdd", "firefox"),
+                                               ("firefox", "temdd"), ("reference", "temdd")):
+            with self.subTest(image=image_profile, config=config_profile):
+                host = self.Host()
+                host.image_metadata['Config']['Labels']['de.qikvrt.terminal-profile'] = image_profile
+                host.config['terminal_profile'] = config_profile
+                host.config_raw = json.dumps(host.config).encode()
+                host.value['config_sha256'] = c.sha(host.config_raw)
+                host.live['Config']['Labels']['de.qikvrt.binding-sha256'] = c.sha(
+                    json.dumps(host.value, sort_keys=True).encode())
+                if image_profile == config_profile == 'temdd':
+                    result = c.deploy(host.value, host.image, host)
+                    self.assertEqual(result['terminal_profile'], 'temdd')
+                    self.assertEqual([method for method, _ in host.calls if method != 'GET'], ['POST'])
+                else:
+                    with self.assertRaises(ValueError): c.deploy(host.value, host.image, host)
+                    self.assertTrue(all(method == 'GET' for method, _ in host.calls))
 
     def test_concurrent_start_becomes_noop_before_second_effect(self):
         host = self.Host(); host.concurrent_start = True
@@ -278,12 +461,14 @@ class ContainerControls(unittest.TestCase):
     def test_smoke_keeps_unprivileged_start_and_requires_independent_persistent_restart(self):
         # Exercise the launcher contract; actual Docker/Firefox remains required
         # by the existing native CI lane, never inferred from these fixtures.
-        for variant in ('valid', 'changed-ledger', 'failed-readback'):
-            with self.subTest(variant=variant), tempfile.TemporaryDirectory() as tmp:
+        for profile, variant in ((p, v) for p in ('firefox', 'temdd')
+                                 for v in ('valid', 'changed-ledger', 'failed-readback')):
+            with self.subTest(profile=profile, variant=variant), tempfile.TemporaryDirectory() as tmp:
                 calls, phase = [], {'restart': False}
                 name = 'qikvrt-s1-smoke-' + '1' * 16
                 network = name + '-net'
-                manifest = json.dumps({'source_head': HEAD, 'source_tree': TREE}).encode()
+                manifest = json.dumps({'source_head': HEAD, 'source_tree': TREE,
+                                       'native_terminal_daemon_included': True}).encode()
                 client = json.dumps({'state': 'CLIENT_BYTE_READBACK_VERIFIED',
                                      'source_head': HEAD, 'source_tree': TREE, 'effect_ack_done': False}).encode()
                 failed = b'{"state":"HOLD_PUBLIC_OR_INDEPENDENT_CLIENT_READBACK","cause":"HOLD_PUBLIC_NODE_HEALTH_CONTRACT","effect_ack_done":false}\n'
@@ -293,6 +478,8 @@ class ContainerControls(unittest.TestCase):
                         if variant == 'failed-readback':
                             raise subprocess.CalledProcessError(20, list(argv), output=failed)
                         return client
+                    if argv[:3] == ('docker', 'image', 'inspect'):
+                        return json.dumps({'de.qikvrt.terminal-profile': 'temdd'}).encode()
                     if argv[1] == 'inspect':
                         return json.dumps([{'State': {'Running': True}, 'HostConfig': {'NetworkMode': network},
                             'NetworkSettings': {'Ports': {}, 'Networks': {network: {'IPAddress': '172.20.0.2'}}}}]).encode()
@@ -306,21 +493,26 @@ class ContainerControls(unittest.TestCase):
                     return json.dumps({'state': 'NATIVE_TEMDD_READY', 'ledger_id': ledger}).encode()
                 with patch.object(c, 'command', side_effect=command), patch.object(c, 'get', side_effect=get), \
                      patch.object(c.uuid, 'uuid4', return_value=SimpleNamespace(hex='1' * 32)), \
-                     patch.object(c, 'firefox_image_admission'), \
+                     patch.object(c, 'firefox_image_admission') as firefox, \
                      patch.object(c.subprocess, 'run', return_value=SimpleNamespace(stdout=b'', stderr=b'')), \
                      patch('builtins.print'):
                     if variant == 'valid':
-                        result = c.smoke('fixture-image', tmp)
+                        result = c.smoke('fixture-image', tmp, profile)
                         self.assertEqual(result['state'], 'CONTAINER_SMOKE_AND_RESTART_VERIFIED')
                         self.assertTrue(result['ledger_identity_preserved'])
                         self.assertFalse(result['public_production_verified'])
+                        self.assertEqual(result['terminal_profile'], profile)
+                        self.assertEqual(result['firefox_acceptance_in_scope'], profile == 'firefox')
                     elif variant == 'changed-ledger':
                         with self.assertRaisesRegex(ValueError, 'DURABLE_LEDGER_ID_RESTART_MISMATCH'):
-                            c.smoke('fixture-image', tmp)
+                            c.smoke('fixture-image', tmp, profile)
                     else:
-                        with self.assertRaises(subprocess.CalledProcessError): c.smoke('fixture-image', tmp)
+                        with self.assertRaises(subprocess.CalledProcessError): c.smoke('fixture-image', tmp, profile)
                         self.assertEqual((Path(tmp)/'smoke-readback-before-restart.stdout').read_bytes(), failed)
                         self.assertFalse(phase['restart'])
+                    self.assertEqual(firefox.call_count, int(profile == 'firefox'))
+                setup = next(argv[-1] for argv in calls if '-c' in argv)
+                self.assertEqual('browser.password' in setup, profile == 'firefox')
                 start = next(argv for argv in calls if argv[:3] == ('docker', 'run', '-d'))
                 self.assertEqual(start[start.index('--user') + 1], '10001:10001')
                 self.assertIn('--read-only', start)
@@ -531,6 +723,33 @@ class ContainerControls(unittest.TestCase):
                 c.public_readback(value, "/unused")
             get.assert_not_called()
 
+    def test_public_reader_binds_the_delivered_profile_without_claiming_firefox_for_temdd(self):
+        for profile, observed_profile in (("temdd", "temdd"), ("firefox", "firefox"),
+                                          ("temdd", "firefox")):
+            with self.subTest(profile=profile, observed=observed_profile):
+                value = dict(declaration(), terminal_profile=profile)
+                def read(url):
+                    if url.endswith('/api/runtime'):
+                        runtime = {k: value[k] for k in ('source_head', 'source_tree',
+                                   'manifest_sha256', 'config_sha256', 'node_id')}
+                        return json.dumps(dict(runtime, terminal_profile=observed_profile)).encode()
+                    if url.endswith('/api/terminal'):
+                        return json.dumps({'state': 'NATIVE_TEMDD_READY',
+                                           'manifest_sha256': value['manifest_sha256']}).encode()
+                    return b'public-response-fixture'
+                with patch.object(c, 'get', side_effect=read), \
+                     patch.object(c, 'command', return_value=b'independent-reader-fixture') as reader:
+                    if profile == observed_profile:
+                        result = c.public_readback(value, '/fixture')
+                        self.assertEqual(result['terminal_profile'], profile)
+                        self.assertEqual(result['firefox_acceptance_in_scope'], profile == 'firefox')
+                        self.assertFalse(result['native_multi_node_acceptance'])
+                        reader.assert_called_once()
+                    else:
+                        with self.assertRaisesRegex(ValueError, 'PUBLIC_TERMINAL_PROFILE_MISMATCH'):
+                            c.public_readback(value, '/fixture')
+                        reader.assert_not_called()
+
     def test_independent_reader_reports_only_typed_guard_codes(self):
         script = """
 import {verifyClient, readbackFailure} from './tools/qikvrt_mesh_monitor_readback.mjs';
@@ -593,17 +812,134 @@ console.log(JSON.stringify({guarded,
                 self.assertIn('--read-only',invocation)
                 self.assertEqual(invocation[invocation.index('--firefox-package')+1],'firefox')
 
-    def test_no_registry_publication_without_the_current_signed_firefox_job(self):
+    def test_native_production_is_independent_of_firefox_but_keeps_host_and_public_gates(self):
         text=(Path(__file__).resolve().parents[1]/'.github/workflows/qikvrt_ci.yml').read_text()
         container=text.split('  container:\n',1)[1].split('  container_publish:\n',1)[0]
         publication=text.split('  container_publish:\n',1)[1].split('  container_deploy:\n',1)[0]
-        self.assertIn('needs: [test, s1_firefox_extension]',container)
-        self.assertIn('needs: [test, container, s1_firefox_extension]',publication)
+        self.assertIn('needs: test',container)
+        self.assertNotIn('s1_firefox_extension',container+publication)
+        self.assertIn('--target production-terminal',container)
+        self.assertIn('QIKVRT_TERMINAL_PROFILE=temdd',container)
+        self.assertIn('--terminal-profile temdd',container)
+        self.assertNotIn('qikvrt-signed-extension',container)
+        self.assertIn('needs: [test, container]',publication)
         self.assertIn("github.ref == 'refs/heads/main'",publication)
         self.assertIn('environment: qikvrt-production',publication)
         self.assertIn('container-production-gate',publication)
         self.assertIn('container-carrier-archive-check',publication)
         self.assertIn('carrier-registry-readback.json',publication)
+        deployment=text.split('  container_deploy:\n',1)[1].split('  container_public_readback:\n',1)[0]
+        self.assertIn('needs: [container, container_publish]',deployment)
+        self.assertIn('secrets.QIKVRT_LINUX_HOST_KEY',deployment)
+        self.assertIn('container-deploy',deployment)
+        self.assertIn('container-readback',text.split('  container_public_readback:\n',1)[1])
+
+    def test_native_scope_cannot_silently_fall_back_to_an_unsigned_browser_image(self):
+        for variant in ('browser-package', 'missing-native', 'wrong-label'):
+            with self.subTest(variant=variant), tempfile.TemporaryDirectory() as tmp:
+                manifest = {'native_terminal_daemon_included': variant != 'missing-native'}
+                if variant == 'browser-package': manifest['browser_runtime'] = {}
+                def command(*args):
+                    if args[:3] == ('docker', 'image', 'inspect'):
+                        return json.dumps({'de.qikvrt.terminal-profile':
+                                           'firefox' if variant == 'wrong-label' else 'temdd'}).encode()
+                    self.assertIn('cat', args)
+                    return json.dumps(manifest).encode()
+                with patch.object(c, 'command', side_effect=command), \
+                     patch.object(c, 'firefox_image_admission') as firefox:
+                    with self.assertRaisesRegex(ValueError, 'EXACT_NATIVE_ONLY_IMAGE_REQUIRED'):
+                        c.smoke('fixture-image', tmp, 'temdd')
+                    firefox.assert_not_called()
+        with patch.object(c, 'command') as command:
+            with tempfile.TemporaryDirectory() as tmp, self.assertRaises(ValueError):
+                c.smoke('fixture-image', tmp, 'reference')
+            command.assert_not_called()
+
+    def firefox_gate_selected(self, profile, *, event='pull_request', sign=False,
+                              readback=False, signed_binding=''):
+        workflow = (Path(__file__).resolve().parents[1] / '.github/workflows/qikvrt_ci.yml').read_text()
+        job = workflow.split('  s1_firefox_extension:\n', 1)[1].split('\n  container:', 1)[0]
+        expression = next(x.strip()[4:] for x in job.splitlines() if x.strip().startswith('if: '))
+        expression = expression.removeprefix('${{').removesuffix('}}').strip()
+        expression = expression.replace('always()', 'True').replace('&&', ' and ').replace('||', ' or ')
+        parsed = ast.parse(expression, mode='eval')
+        allowed = (ast.Expression, ast.BoolOp, ast.And, ast.Or, ast.Compare, ast.Eq,
+                   ast.NotEq, ast.Attribute, ast.Name, ast.Load, ast.Constant)
+        self.assertTrue(all(isinstance(x, allowed) for x in ast.walk(parsed)))
+        self.assertTrue(all(not x.attr.startswith('_') for x in ast.walk(parsed)
+                            if isinstance(x, ast.Attribute)))
+        scope = {'needs': SimpleNamespace(container=SimpleNamespace(outputs=SimpleNamespace(
+                    terminal_profile=profile)), amo_unlisted=SimpleNamespace(
+                    outputs=SimpleNamespace(signed_binding=signed_binding))),
+                 'github': SimpleNamespace(event_name=event),
+                 'inputs': SimpleNamespace(amo_sign_unlisted=sign, amo_readback_only=readback)}
+        return eval(compile(parsed, '<existing-firefox-job-scope>', 'eval'),
+                    {'__builtins__': {}}, scope)
+
+    def test_native_only_ci_does_not_require_deferred_firefox_admission(self):
+        for event in ('push', 'pull_request', 'workflow_dispatch'):
+            with self.subTest(event=event):
+                self.assertFalse(self.firefox_gate_selected('temdd', event=event))
+        self.assertFalse(self.firefox_gate_selected('temdd', event='push', sign=True))
+
+    def test_browser_and_existing_explicit_signing_paths_keep_firefox_admission(self):
+        self.assertTrue(self.firefox_gate_selected('firefox'))
+        self.assertTrue(self.firefox_gate_selected('temdd', event='workflow_dispatch', sign=True))
+        self.assertTrue(self.firefox_gate_selected('temdd', event='workflow_dispatch', readback=True))
+        self.assertTrue(self.firefox_gate_selected('temdd', signed_binding='original-bound-package'))
+
+    def image_receipt(self, smoke, output, *, expect_failure=False):
+        workflow = (Path(__file__).resolve().parents[1] / '.github/workflows/qikvrt_ci.yml').read_text()
+        step = workflow.split('      - name: Bind exact image/package and CI execution identities\n', 1)[1]
+        code = textwrap.dedent(step.split("<<'PY'\n", 1)[1].split('\n          PY', 1)[0])
+        oci = {'source_head': HEAD, 'source_tree': TREE, 'independent_rebuild_digest_equal': True,
+               'image_digest': 'sha256:' + 'c' * 64}
+        (output / 'oci.json').write_text(json.dumps(oci))
+        (output / 'smoke.json').write_text(json.dumps(smoke))
+        result = output / 'github-output'
+        def git(command, **_kwargs):
+            return HEAD if command[1] == 'rev-parse' else ''
+        with patch.dict(os.environ, {'EVIDENCE': str(output), 'GITHUB_OUTPUT': str(result),
+                'GITHUB_REPOSITORY': c.REPOSITORY, 'GITHUB_RUN_ID': '1', 'GITHUB_RUN_ATTEMPT': '1'}), \
+             patch.object(subprocess, 'check_output', side_effect=git), \
+             patch('sys.stdout', new=io.StringIO()):
+            if expect_failure:
+                with self.assertRaises(AssertionError): exec(code, {})
+                self.assertFalse(result.exists())
+                return
+            exec(code, {})
+        return json.loads((output / 'ci.json').read_bytes()), dict(
+            line.split('=', 1) for line in result.read_text().splitlines())
+
+    def test_ci_receipt_exports_verified_smoke_profile(self):
+        for profile in ('temdd', 'firefox'):
+            with self.subTest(profile=profile), tempfile.TemporaryDirectory() as temporary:
+                smoke = {'source_head': HEAD, 'source_tree': TREE, 'manifest_sha256': 'd' * 64,
+                         'state': 'CONTAINER_SMOKE_AND_RESTART_VERIFIED', 'terminal_profile': profile,
+                         'firefox_acceptance_in_scope': profile == 'firefox'}
+                receipt, outputs = self.image_receipt(smoke, Path(temporary))
+                self.assertEqual(receipt['terminal_profile'], profile)
+                self.assertEqual(outputs.get('terminal_profile'), profile)
+                self.assertFalse(receipt['public_production_verified'])
+
+    def test_ci_profile_export_requires_accepted_typed_smoke_scope(self):
+        for variant in ('unknown-profile', 'mismatched-scope', 'untyped-scope', 'unaccepted-smoke'):
+            with self.subTest(variant=variant), tempfile.TemporaryDirectory() as temporary:
+                smoke = {'source_head': HEAD, 'source_tree': TREE, 'manifest_sha256': 'd' * 64,
+                         'state': 'CONTAINER_SMOKE_AND_RESTART_VERIFIED', 'terminal_profile': 'temdd',
+                         'firefox_acceptance_in_scope': False}
+                if variant == 'unknown-profile': smoke['terminal_profile'] = 'reference'
+                if variant == 'mismatched-scope': smoke['firefox_acceptance_in_scope'] = True
+                if variant == 'untyped-scope': smoke['firefox_acceptance_in_scope'] = 'false'
+                if variant == 'unaccepted-smoke': smoke['state'] = 'STARTING'
+                self.image_receipt(smoke, Path(temporary), expect_failure=True)
+
+    def test_firefox_scope_reads_the_required_container_output(self):
+        workflow = (Path(__file__).resolve().parents[1] / '.github/workflows/qikvrt_ci.yml').read_text()
+        job = workflow.split('  s1_firefox_extension:\n', 1)[1].split('\n  container:', 1)[0]
+        self.assertIn('needs: [amo_unlisted, container]', job)
+        container = workflow.split('  container:\n', 1)[1].split('\n  container_publish:', 1)[0]
+        self.assertIn('terminal_profile: ${{ steps.receipt.outputs.terminal_profile }}', container)
 
 
 class ArtifactTransportControls(unittest.TestCase):
@@ -846,5 +1182,6 @@ class ArtifactTransportControls(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
 
 

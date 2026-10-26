@@ -1,6 +1,7 @@
 {
   "canonical_storage_contract": "runtime/self-host/MESH_ACTIVATION.json#/storage_contract",
   "files": [
+    ".github/CODEOWNERS",
     ".well-known/qik-vrt-self-disclosure.json",
     "AI",
     "LICENSE",
@@ -9,6 +10,7 @@
     "LICENSE_TRANSITION.md",
     "README.md",
     "STATUS.md",
+    "api/qikvrt_github_api.openapi.yaml",
     "browser/firefox/qikvrt-terminal/background.js",
     "browser/firefox/qikvrt-terminal/client.html",
     "browser/firefox/qikvrt-terminal/content.js",
@@ -73,6 +75,7 @@
     "docs/terminal/temdd/index.html",
     "evidence/self_host/SOURCE_RECOVERY_20261005.json",
     "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+    "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json",
     "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
     "runtime/self-host/CAPTURE.md",
     "runtime/self-host/CAPTURE_REQUEST.example.json",
@@ -118,16 +121,26 @@
     "runtime/self-host/original-firefox/review_effect.js",
     "runtime/self-host/original-firefox/terminal.css",
     "runtime/self-host/original-workflows/qikvrt_temdd.yml",
-    "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json",
+    "scripts/qikvrt_api_client.py",
+    "src/qikvrt_api_handler.py",
     "src/qikvrt_effect_ack.py",
     "src/qikvrt_effect_ack_http_terminal.py",
+    "src/qikvrt_github_api_shim.py",
+    "src/qikvrt_mcp_adapter.py",
     "src/qikvrt_temdd_event_ledger.py",
+    "state/authorization/delegations/OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_V1.json",
+    "state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+    "tools/ai_handoff.py",
+    "tools/qikvrt_authority_credentials.py",
+    "tools/qikvrt_integrity.py",
     "tools/qikvrt_mesh_monitor_readback.mjs",
+    "tools/qikvrt_required_review_gate.py",
     "tools/qikvrt_self_host.py",
     "tools/qikvrt_self_host_container.py",
     "tools/qikvrt_self_host_migration.py",
     "tools/qikvrt_self_host_provider.py",
-    "tools/qikvrt_subprocess.py"
+    "tools/qikvrt_subprocess.py",
+    "tools/qikvrt_workflow_executor.py"
   ],
   "monolithic_store": "SQLITE_CARRIER_AND_EXISTING_NATIVE_LEDGER",
   "native_terminal_daemon_included": true,
@@ -148,5 +161,18 @@
   "schema": "qikvrt-self-host-definition/v1",
   "source_repository": "ingolf-lohmann/qik-vrt",
   "start": "python3 tools/qikvrt_self_host.py run",
-  "version": "1.12.0"
+  "version": "1.12.0",
+  "rest_bootstrap": {
+    "schema": "qikvrt-packaged-rest-bootstrap/v1",
+    "entrypoint": [
+      "python3",
+      "-B",
+      "-S",
+      "src/qikvrt_github_api_shim.py"
+    ],
+    "automatic_start": false,
+    "runtime_admission_default": false,
+    "requires_running_native_runtime": false,
+    "contains_credentials": false
+  }
 }
