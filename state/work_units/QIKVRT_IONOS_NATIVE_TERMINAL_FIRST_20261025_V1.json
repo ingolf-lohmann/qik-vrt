@@ -197,6 +197,22 @@
     "effect_ack_done": false,
     "all_predecessor_obligations_preserved": true,
     "human_contribution": "Owner review acceptance and priority/production authorization.",
-    "artificial_cognitive_contribution": "OpenAI Codex: public DNS/origin diagnosis, original writer extension, regression tests and exact-source verification."
+    "artificial_cognitive_contribution": "OpenAI Codex: public DNS/origin diagnosis, original writer extension, regression tests and exact-source verification.",
+    "integrated_main_successor": {
+      "observed_main_head": "217a29c04f1ddc68428b053861bd43a17833a335",
+      "observed_main_tree": "ef17e840d74a92f7ae30d8dcff58eeb6c57f90e6",
+      "pr604_merged_externally": true,
+      "pr606_and_pr607_add_existing_bootstrap": true,
+      "main_ci_failure_run": 40332830573,
+      "verified_cause": "Repository manifest differs from deterministic regeneration after the added workflow; current exact Main tree reproduced locally before repair.",
+      "dns_bootstrap_run": 40332830646,
+      "inventory_artifact_sha256": "aaf76f5ecf8469774ad88d190e9a8b445fed58115286f13526e6388bde5698f5",
+      "inventory_readback_state": "HOLD_IONOS_DNS_API_KEY_UNAVAILABLE",
+      "credential_scope_boundary": "That receipt proves no key was delivered to the repository-only job, not absence from the existing ionos-production environment. The successor binds the read-only inventory to the same existing environment as the write job.",
+      "write_job_failure": "Push event supplied no expected_main_head; exact binding stopped the job before DNS writes. The successor admits that job only for workflow_dispatch and retains independent source/target/record pins.",
+      "explicit_ipv6_input": "Connect the already tested false-by-default IPv6 opt-in to the existing bootstrap writer as well.",
+      "canonical_repair": "Regenerate the existing integrity trio after these semantic workflow and work-unit changes.",
+      "effect_ack_done": false
+    }
   }
 }

@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
 # Copyright 2026 Ingolf Lohmann.
+# Integration repair contribution: OpenAI Codex, 2026-10-26.
 name: QIKVRT IONOS exact DNS bootstrap
 on:
   push:
@@ -20,12 +21,17 @@ on:
         description: Independently admitted TLS-capable original-host IPv4
         required: true
         type: string
+      disable_apex_aaaa:
+        description: Explicitly disable the bound single apex AAAA during IPv4 cutover
+        type: boolean
+        default: false
 permissions:
   contents: read
 jobs:
   apex-inventory:
     if: github.repository == 'ingolf-lohmann/qik-vrt' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
+    environment: ionos-production
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -49,7 +55,7 @@ jobs:
           if-no-files-found: ignore
           retention-days: 30
   exact-apex-update:
-    if: github.repository == 'ingolf-lohmann/qik-vrt' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'workflow_dispatch' && github.repository == 'ingolf-lohmann/qik-vrt' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
     environment: ionos-production
     concurrency:
@@ -73,10 +79,15 @@ jobs:
           IONOS_DNS_API_KEY: ${{ secrets.IONOS_DNS_API_KEY }}
           EXPECTED_APEX: ${{ inputs.expected_apex_sha256 }}
           TARGET_IPV4: ${{ inputs.target_ipv4 }}
+          DISABLE_APEX_AAAA: ${{ inputs.disable_apex_aaaa }}
         run: |
           set -euo pipefail
           test -n "$IONOS_DNS_API_KEY" || { echo HOLD_IONOS_DNS_API_KEY_REQUIRED; exit 2; }
-          python3 -B tools/qikvrt_ionos_dns.py apply --zone raumzeitterminal.de --target-ipv4 "$TARGET_IPV4" --expected-records-sha256 "$EXPECTED_APEX" > ionos-dns-receipt.json
+          apply_args=(--zone raumzeitterminal.de --target-ipv4 "$TARGET_IPV4" --expected-records-sha256 "$EXPECTED_APEX")
+          if [ "$DISABLE_APEX_AAAA" = true ]; then
+            apply_args+=(--disable-apex-aaaa)
+          fi
+          python3 -B tools/qikvrt_ionos_dns.py apply "${apply_args[@]}" > ionos-dns-receipt.json
           python3 - <<'PY'
           import json
           r=json.load(open("ionos-dns-receipt.json"))
