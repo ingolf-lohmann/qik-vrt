@@ -212,7 +212,17 @@
       "write_job_failure": "Push event supplied no expected_main_head; exact binding stopped the job before DNS writes. The successor admits that job only for workflow_dispatch and retains independent source/target/record pins.",
       "explicit_ipv6_input": "Connect the already tested false-by-default IPv6 opt-in to the existing bootstrap writer as well.",
       "canonical_repair": "Regenerate the existing integrity trio after these semantic workflow and work-unit changes.",
-      "effect_ack_done": false
+      "effect_ack_done": false,
+      "later_main_observation": {
+        "head": "8edae48f6e13315ad338c86fe2b7f4eff72b6f4a",
+        "tree": "a5e66dd052b8db2324c559c3f7602cbe0510d560",
+        "merge": "PR610 Watchdog completion-only/cancel-in-progress=false; retain its exact original bytes",
+        "main_ci_run": 40336865059,
+        "integration": "Create a real two-parent merge from candidate cdb30eb5c41241568e980ed67adf243fa223e6e2 and latest Main8edae48f6e13315ad338c86fe2b7f4eff72b6f4a. Regenerate integrity only after this shared semantic tree. Earlier candidate passes remain source-bound history, not transferred acceptance.",
+        "owner_authorization_preserved": true,
+        "effect_ack_done": false,
+        "configuration_regression": "The integrated full suite exposed one static watchdog assertion still requiring requested/in_progress notifications and cancel-in-progress=true. Update that existing assertion to reject the old cancellation configuration and require the adopted Main completion-only/non-cancelling configuration. Retain every analyzer liveness, incomplete-job, lease and failure test and the existing five-minute unfinished-run observation; align the original documentation."
+      }
     }
   }
 }
