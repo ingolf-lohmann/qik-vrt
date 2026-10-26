@@ -81,7 +81,15 @@ owner authorization, repeating observer, or missing active runner does not
 establish recovery or productive delivery. No new controller, credential,
 permission expansion or automatic productive-writer cancellation is involved.
 
-The watchdog observes the workflows that create and verify repository state, while its own executions are classified as observers rather than productive writers. Observer executions use a coalescing concurrency group so newer observations replace obsolete observations without consuming the repository write lease. A scheduled observation prevents unchanged heads from becoming permanently invisible merely because no new event occurs.
+The watchdog observes the workflows that create and verify repository state,
+while its own executions are classified as observers rather than productive
+writers. Main's 26 October delivery repair uses completion notifications and
+`cancel-in-progress: false` so a new lifecycle notification does not cancel
+the active observation. The existing five-minute schedule remains, including
+readback of unfinished runs and unchanged heads. The analyzer still evaluates
+every returned run and its jobs; no liveness, missing-evidence or stale-progress
+criterion is removed. This source configuration change does not establish a
+completed public-host observation or global deadlock freedom.
 
 ## Database comparison boundary
 

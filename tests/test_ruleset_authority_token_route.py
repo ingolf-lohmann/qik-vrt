@@ -404,6 +404,7 @@ class RequiredReviewContextContractTests(unittest.TestCase):
             self.assertIn('-f context="$STATUS_CONTEXT"', block)
 
     def test_executor_generates_canonical_waiting_and_disposition_status(self):
+        from tools.qikvrt_requested_review_executor import technical_update_plan
         source = self.executor.read_text()
         for step, disposition, expected_state in [
             ('Persist precise waiting state', 'WAIT', 'pending'),
@@ -413,7 +414,24 @@ class RequiredReviewContextContractTests(unittest.TestCase):
             with self.subTest(disposition=disposition), tempfile.TemporaryDirectory() as directory:
                 root = Path(directory)
                 decision = root / 'qikvrt-review-decision.json'
-                decision.write_text(json.dumps({'detail': 'fixture-only', 'reviewed_scope': ['fixture.txt']}))
+                snapshot = {
+                    'repository': self.repository, 'pr_number': 641,
+                    'current_main_sha': 'a' * 40,
+                    'base_sha': ('d' if disposition == 'COMMENT_WITH_BLOCKER' else 'a') * 40,
+                    'head_sha': self.head, 'observed_head_sha': self.head,
+                    'tree_sha': 'c' * 40, 'draft': False,
+                    'requested_reviewers': [], 'requested_team_reviewers': [],
+                    'review_route': 'QIKVRT_NATIVE', 'changed_paths': ['fixture.txt'],
+                    'required_gates': ['fixture-gate'], 'workflow_runs': [{
+                        'name': 'fixture-gate', 'run_number': 1,
+                        'status': 'in_progress' if disposition == 'WAIT' else 'completed',
+                        'conclusion': None if disposition == 'WAIT' else 'success',
+                    }],
+                }
+                plan = technical_update_plan(snapshot, [], [], 'fixture-only')
+                self.assertEqual(plan['decision']['state'], disposition)
+                decision.write_text(json.dumps(plan['decision']))
+                (root / 'qikvrt-review-plan.json').write_text(json.dumps(plan))
                 gh = root / 'gh'
                 gh.write_text(
                     f'#!{sys.executable}\n'
@@ -451,6 +469,7 @@ class RequiredReviewContextContractTests(unittest.TestCase):
                     self.assertEqual(len(review_calls), 1)
                     self.assertIn('event=COMMENT', review_calls[0])
                 self.assertIn(f'state={expected_state}', statuses[0])
+                self.assertIn('description=' + plan['status_description'], statuses[0])
 
     def test_policy_and_exact_head_contract_bind_every_consumer(self):
         policy = json.loads(POLICY.read_text())['review_executor']
