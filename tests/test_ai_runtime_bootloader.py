@@ -731,6 +731,16 @@ class ClientContinuationRegressionTests(unittest.TestCase):
         self.assertEqual(self.handoff.client_transition_plan(self.receipt)["ready"], [])
         self.assertEqual(self.check(), "BLOCK")
 
+    def test_known_error_authorization_reuses_existing_admitted_repair_plan(self):
+        policy = json.loads((ROOT / "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json").read_text())
+        rule = policy["client_continuation"]["blocking_repair_priority"]["known_error_authorization"]
+        self.assertTrue(rule["execute_existing_admitted_deterministic_repair_without_reprompt"])
+        self.assertFalse(rule["notification_before_routine_known_repair_required"])
+        self.assertTrue(rule["authority_credentials_admission_and_effect_proof_remain_separate"])
+        self.assertFalse(rule["unchanged_failed_effect_retry"])
+        self.blocking_repair_plan()
+        self.assertEqual(self.check(), "CONTINUE")
+
     def test_repair_preparation_still_requires_immediate_continuation(self):
         self.blocking_repair_plan()
         self.receipt["state"] = "BLOCK"

@@ -348,3 +348,45 @@ carrier labels identify Skopeo 1.22.3, built 23 October 2026. The native job rec
 registry digests are still checked before runtime or publication acceptance.
 No mutable tag is used for execution, no installed runtime is downgraded, and
 manifest availability alone proves neither executable-tool behavior nor delivery.
+
+
+## Skopeo verified cache repair — 26 October 2026
+
+The 25 October pin returned `manifest unknown` in both full Linux workflows at
+source 5c7055c3bd5c5992d6c4881ef01348a77a8002fb: runs 40302026752 and
+40302029683, jobs 121504698465 and 121509381560. Their independent native
+OCI builds and repository tests passed before the tool-image import failed.
+The original logs distinguish tool-carrier availability from application failure.
+
+The official current Linux/amd64 manifest is
+`sha256:d506b4167696eb5d3bd624b3619480bddeabdca291b2e795e9c20ed862e11ae4`,
+config `sha256:4e58ecdbdffe153073ff7ee38ffc19d7c61ede7d5d37e1096d624dfc58244d8c`.
+The read-only resolution of the official index, platform manifest and config
+verified the original bytes against SHA-256 and descriptor lengths. The labels
+identify Skopeo 1.22.3, built 26 October 2026; this is no version downgrade.
+The exact original metadata and preceding failed-run identities are retained in
+`evidence/self_host/SKOPEO_CARRIER_READBACK_20261026.json`. The former dated
+record remains historical. Mutable tags are never execution fallbacks.
+
+The existing S1 container helper now restores the deterministic, digest-named
+repository Actions tool artifact before attempting the exact official source.
+Only a genuine cache miss permits that pull; API/authentication failures and
+corrupt cache data fail closed. Before Docker import, it verifies the pinned
+config and every ordered uncompressed rootfs diff_id, exports only their minimal
+Docker graph, and removes all archive-supplied tags and extra daemon metadata.
+It then checks the loaded image ID, platform, layers and offline executable
+version. The original OCI conversion and `--preserve-digests` publication keep
+their existing independent gates. The same helper handles smoke and publication.
+
+The pinned existing upload-artifact action retains the verified tool immediately
+before runtime builds, for 90 days. A nonexpired repository artifact survives
+upstream manifest removal; this does not promise permanent archival. The cache
+contains public tool bytes only, never registry credentials or runtime state.
+Local fixture tests prove verification and fail-closed behavior, not an actual
+Docker import, complete Linux CI success or production activation. Those results
+require fresh exact-head original CI and host readback.
+
+Primary sources: https://quay.io/v2/skopeo/stable/manifests/sha256:d506b4167696eb5d3bd624b3619480bddeabdca291b2e795e9c20ed862e11ae4 ,
+https://github.com/podman-container-tools/image_build/actions/runs/40265021526 ,
+https://github.com/actions/upload-artifact/tree/043fb46d1a93c77aae656e7c1c64a875d1fc6a0a ,
+https://docs.github.com/en/rest/actions/artifacts .

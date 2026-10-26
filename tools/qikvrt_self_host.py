@@ -3161,7 +3161,7 @@ def firefox_amo_runtime_fingerprint(source):
             and item.value.args and isinstance(item.value.args[0], ast.Constant)
             and (str(item.value.args[0].value).startswith("--amo-") or
                  item.value.args[0].value in {"--image", "--receipt", "--oci-archive", "--second-oci-archive",
-                    "--carrier-archive", "--carrier-oci-archive", "--production-binding", "--binding-sha256",
+                    "--carrier-archive", "--carrier-oci-archive", "--tool-archive", "--production-binding", "--binding-sha256",
                     "--ca-file", "--cert-file", "--key-file"}))]
         for item in ast.walk(node):
             if isinstance(item, ast.keyword) and item.arg == "choices" and isinstance(item.value, ast.Tuple):
@@ -3641,7 +3641,7 @@ def firefox_extension_probe(xpi, output, package="firefox-esr"):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("operation", choices=("firefox-amo-unlisted", "firefox-release-provision", "firefox-extension-check", "deployment-roles", "runtime-delivery-verify", "runtime-delivery-load", "docker-admit", "pack", "portable", "portable-restore", "verify", "monolith-pack", "monolith-verify", "monolith-run", "monolith-checkpoint", "monolith-origin-export", "monolith-transport-export", "monolith-transport-import", "mesh-contract", "mesh-cache-stage", "mesh-cache-idle", "mesh-cache-send", "mesh-cache-check", "mesh-rule-confirm", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state", "transfer-local-writer",
-        "container-context", "container-carrier", "container-carrier-archive-check", "container-artifact-split", "container-artifact-join", "container-oci-check", "container-smoke", "container-production-gate", "container-deploy", "container-readback",
+        "container-tool-prepare", "container-context", "container-carrier", "container-carrier-archive-check", "container-artifact-split", "container-artifact-join", "container-oci-check", "container-smoke", "container-production-gate", "container-deploy", "container-readback",
         "migration-inventory", "migration-verify-source", "migration-export", "migration-verify-export", "migration-import",
         "migration-verify-import", "migration-rollback", "migration-capture-supervisor", "migration-capture-arm", "migration-capture",
         "provider-inventory", "provider-classify", "provider-plan", "provider-apply", "provider-reconcile", "provider-readback"))
@@ -3681,6 +3681,7 @@ def main():
     parser.add_argument("--oci-archive", type=Path)
     parser.add_argument("--second-oci-archive", type=Path)
     parser.add_argument("--carrier-archive", type=Path, help="existing pinned GitHub delivery ZIP; otherwise download through original Actions REST")
+    parser.add_argument("--tool-archive", type=Path, help="existing untrusted Skopeo cache; verify config and ordered layers before Docker load")
     parser.add_argument("--carrier-oci-archive", type=Path, help="create-only OCI transport preserving the verified original ZIP for the existing publisher")
     parser.add_argument("--production-binding", type=Path, help="existing protected Linux host binding; never credentials")
     parser.add_argument("--binding-sha256", help="independently pinned protected host binding")
@@ -3853,5 +3854,6 @@ def main():
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
 
 

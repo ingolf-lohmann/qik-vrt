@@ -106,6 +106,12 @@ repository's existing authorized executor is unavailable.
 
 Execute each safe deterministic authorized successor and complete useful
 authorized preparation and persistence while other effects are blocked.
+The Owner's grant of 2026-10-26 requires known errors with existing admitted
+deterministic repairs to be corrected autonomously, without another prompt or
+a required preliminary notification. Repair the causal prerequisite, then verify
+the affected exact-subject path. Use the existing preparation/blocking-repair
+plan and journal. Preserve capability and admission checks; do not retry an
+unchanged failed effect or turn an unknown cause into a claimed known repair.
 Preserve `GITHUB_ROUTE=REST_API_ONLY`, credentials, Authority/Mirror roles and
 protected governance. Do not create proxy executors, synthetic triggers or
 new permission scopes to replace a missing operation. Preserve original

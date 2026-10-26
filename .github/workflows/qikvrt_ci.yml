@@ -1185,6 +1185,30 @@ jobs:
         with:
           version: v0.38.0
           driver-opts: image=moby/buildkit@sha256:b059f8d7226d0b326bc871af489a5dddf65e36af4d20d14251b072974d9ee87c
+      - name: Prepare exact Skopeo tool from verified cache or pinned official source
+        id: tool-loader
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_self_host.py container-tool-prepare \
+            --output "$RUNNER_TEMP/skopeo-loader" --receipt "$RUNNER_TEMP/skopeo-loader/receipt.json"
+          python3 -B - <<'PYTOOL'
+          import json,os
+          from pathlib import Path
+          r=json.loads((Path(os.environ['RUNNER_TEMP'])/'skopeo-loader/receipt.json').read_bytes())
+          assert r['state']=='VERIFIED_TOOL_IMAGE_READY'
+          with open(os.environ['GITHUB_OUTPUT'],'a') as out:
+              out.write('image='+r['tool_image_id']+'\n')
+              out.write('artifact='+r['cache_name']+'\n')
+          PYTOOL
+      - name: Retain verified exact tool before runtime build and smoke
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: ${{ steps.tool-loader.outputs.artifact }}
+          path: ${{ runner.temp }}/skopeo-loader/skopeo-loader.docker.tar
+          if-no-files-found: error
+          retention-days: 90
       - name: Export credential-free committed build context
         run: |
           set -euo pipefail
@@ -1233,14 +1257,13 @@ jobs:
         run: |
           set -euo pipefail
           head="$(git rev-parse HEAD)"
-          loader="quay.io/skopeo/stable@sha256:309ce24d7a87ca4eb35fc6dd9d91af7c4750d7f24578f633c6effd75c81f315d"
+          loader="${{ steps.tool-loader.outputs.image }}"
           load_dir="$(mktemp -d "$RUNNER_TEMP/qikvrt-smoke-load.XXXXXX")"
           trap 'rm -rf "$load_dir"' EXIT
-          docker pull "$loader"
-          docker run --rm --network none --read-only --cap-drop ALL \
+          docker run --rm --pull=never --network none --read-only --cap-drop ALL \
             --security-opt no-new-privileges:true "$loader" --version \
             | tee "$RUNNER_TEMP/container-evidence/skopeo-version.txt"
-          docker run --rm --read-only --network none --user "$(id -u):$(id -g)" --cap-drop ALL --security-opt no-new-privileges:true \
+          docker run --rm --pull=never --read-only --network none --user "$(id -u):$(id -g)" --cap-drop ALL --security-opt no-new-privileges:true \
             --tmpfs /tmp:rw,nosuid,size=128m,mode=1777 --tmpfs /var/tmp:rw,nosuid,size=2g,mode=1777 \
             --mount "type=bind,source=$RUNNER_TEMP/container-evidence/image.oci.tar,target=/input.oci.tar,readonly" \
             --mount "type=bind,source=$load_dir,target=/output" \
@@ -1386,14 +1409,17 @@ jobs:
             --oci-archive "$RUNNER_TEMP/container-evidence/image.oci.tar" \
             --expected-head "$head" --expected-tree "$(git rev-parse HEAD^{tree})" \
             --receipt "$RUNNER_TEMP/publish-oci-check.json"
-          publisher="quay.io/skopeo/stable@sha256:309ce24d7a87ca4eb35fc6dd9d91af7c4750d7f24578f633c6effd75c81f315d"
-          docker run --rm "$publisher" --version > "$RUNNER_TEMP/publisher-version.txt"
+          python3 -B tools/qikvrt_self_host.py container-tool-prepare \
+            --output "$RUNNER_TEMP/skopeo-publisher" --receipt "$RUNNER_TEMP/skopeo-publisher/receipt.json"
+          publisher="$(python3 -B -c 'import json,os,pathlib; print(json.loads((pathlib.Path(os.environ["RUNNER_TEMP"])/"skopeo-publisher/receipt.json").read_bytes())["tool_image_id"])')"
+          docker run --rm --pull=never --network none --read-only --cap-drop ALL \
+            --security-opt no-new-privileges:true "$publisher" --version > "$RUNNER_TEMP/publisher-version.txt"
           for tag in "sha-$head" "s1-1.12.0-$head"; do
             if docker buildx imagetools inspect "$image:$tag" --raw > "$RUNNER_TEMP/registry.json" 2> "$RUNNER_TEMP/registry-error"; then
               : # An existing immutable version is verified below, never overwritten.
             else
               python3 -c 'import pathlib,re,os; assert re.search("not found|manifest unknown",pathlib.Path(os.environ["RUNNER_TEMP"]+"/registry-error").read_text(),re.I), "registry transport/authentication unavailable"'
-              docker run --rm --read-only --cap-drop ALL --security-opt no-new-privileges:true \
+              docker run --rm --pull=never --read-only --cap-drop ALL --security-opt no-new-privileges:true \
                 --user "$(id -u):$(id -g)" --env HOME=/tmp \
                 --tmpfs /tmp:rw,nosuid,size=128m,mode=1777 --tmpfs /var/tmp:rw,nosuid,size=2g,mode=1777 \
                 --mount "type=bind,source=$DOCKER_CONFIG,target=/auth,readonly" \
@@ -1425,7 +1451,7 @@ jobs:
             : # Verify an existing version; never replace it.
           else
             python3 -c 'import pathlib,re,os; assert re.search("not found|manifest unknown",pathlib.Path(os.environ["RUNNER_TEMP"]+"/carrier-registry-error").read_text(),re.I), "registry transport/authentication unavailable"'
-            docker run --rm --read-only --cap-drop ALL --security-opt no-new-privileges:true \
+            docker run --rm --pull=never --read-only --cap-drop ALL --security-opt no-new-privileges:true \
               --user "$(id -u):$(id -g)" --env HOME=/tmp \
               --tmpfs /tmp:rw,nosuid,size=128m,mode=1777 --tmpfs /var/tmp:rw,nosuid,size=2g,mode=1777 \
               --mount "type=bind,source=$DOCKER_CONFIG,target=/auth,readonly" \
@@ -1443,7 +1469,7 @@ jobs:
           assert 'sha256:'+hashlib.sha256(raw).hexdigest()==os.environ['CARRIER_DIGEST'], 'immutable original archive registry digest differs'
           PYCARRIERDIGEST
           mkdir "$RUNNER_TEMP/carrier-registry-readback"
-          docker run --rm --read-only --cap-drop ALL --security-opt no-new-privileges:true \
+          docker run --rm --pull=never --read-only --cap-drop ALL --security-opt no-new-privileges:true \
             --user "$(id -u):$(id -g)" --env HOME=/tmp \
             --tmpfs /tmp:rw,nosuid,size=128m,mode=1777 --tmpfs /var/tmp:rw,nosuid,size=2g,mode=1777 \
             --mount "type=bind,source=$DOCKER_CONFIG,target=/auth,readonly" \
@@ -1566,5 +1592,6 @@ jobs:
           path: ${{ runner.temp }}/public-delivery.json
           if-no-files-found: error
           retention-days: 30
+
 
 

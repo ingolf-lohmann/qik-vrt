@@ -38,6 +38,16 @@ remain immutable; current evaluation never transfers their former route grant.
 
 ## Purpose
 
+The Owner's authorization of 26 October 2026 requires every client to execute
+known, admitted deterministic repairs autonomously without asking the same
+permission or requiring a preliminary notification. The existing
+`client_continuation.blocking_repair_priority.known_error_authorization` rule
+uses the original transition preparation and blocking-repair journal. Correct
+the causal prerequisite, verify the affected exact-subject path, and report
+the verified result. Missing capability or an unknown cause remains a concrete
+prerequisite to recover. Authorization never substitutes for credential binding,
+admission or effect readback, and never permits an unchanged failed retry.
+
 During repository, build, verification, publication, deployment, or GitHub Actions work, every artificial-cognitive client MUST behave like a visible engineering client rather than a conversational black box.
 
 ## Mandatory live format

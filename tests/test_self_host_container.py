@@ -21,6 +21,140 @@ from tools import qikvrt_self_host_container as c
 HEAD, TREE = "a" * 40, "b" * 40
 
 
+class VerifiedToolCache(unittest.TestCase):
+    """Exercise the original failure boundary and the untrusted cache path."""
+
+    def fixture(self, path, *, corrupt_config=False, corrupt_layer=False, compressed=False, extra=None):
+        import gzip
+        layer = b"original uncompressed tool filesystem bytes"
+        config = json.dumps({"os": "linux", "architecture": "amd64", "rootfs": {
+            "type": "layers", "diff_ids": ["sha256:" + c.sha(layer)]}}, sort_keys=True).encode()
+        pin = {"repository": "quay.io/skopeo/stable", "resolved_platform_digest": "sha256:" + "c" * 64,
+               "config_sha256": "sha256:" + c.sha(config), "version": "1.22.3"}
+        members = {"manifest.json": json.dumps([{"Config": "config.json", "Layers": ["layer.tar"],
+            "RepoTags": ["untrusted.example/do-not-import:latest"]}]).encode(),
+            "config.json": config + (b" " if corrupt_config else b""),
+            "layer.tar": gzip.compress(layer) if compressed else layer + (b"tampered" if corrupt_layer else b""),
+            "unreferenced-metadata": b"must not reach the Docker importer"}
+        if extra: members[extra] = b"bad path"
+        with tarfile.open(path, "w") as archive:
+            for name, raw in members.items():
+                entry = tarfile.TarInfo(name); entry.size = len(raw)
+                archive.addfile(entry, io.BytesIO(raw))
+        return pin
+
+    def test_canonical_graph_removes_untrusted_tags_and_extra_metadata(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); source = root / "source.tar"; canonical = root / "canonical.tar"
+            pin = self.fixture(source)
+            result = c.tool_archive(source, pin, canonical)
+            self.assertTrue(result["ordered_diff_ids_verified"])
+            self.assertFalse(result["public_production_verified"])
+            self.assertEqual(c.tool_archive(canonical, pin), result)
+            with tarfile.open(canonical) as archive:
+                self.assertEqual(set(archive.getnames()), {"manifest.json", pin["config_sha256"][7:] + ".json", "layer-00000.tar"})
+                self.assertIsNone(json.load(archive.extractfile("manifest.json"))[0]["RepoTags"])
+
+    def test_compressed_docker_export_is_normalized_without_changing_diff_id(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); source = root / "source.tar"; canonical = root / "canonical.tar"
+            pin = self.fixture(source, compressed=True)
+            c.tool_archive(source, pin, canonical)
+            self.assertTrue(c.tool_archive(canonical, pin)["ordered_diff_ids_verified"])
+
+    def test_config_and_layer_corruption_are_rejected_and_new_output_removed(self):
+        for key, reason in (("corrupt_config", "TOOL_CONFIG_DIGEST_MISMATCH"), ("corrupt_layer", "TOOL_LAYER_DIGEST_MISMATCH")):
+            with self.subTest(key=key), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory); source = root / "source.tar"; canonical = root / "canonical.tar"
+                pin = self.fixture(source, **{key: True})
+                with self.assertRaisesRegex(ValueError, reason): c.tool_archive(source, pin, canonical)
+                self.assertFalse(canonical.exists())
+
+    def test_archive_path_traversal_is_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); source = root / "source.tar"
+            pin = self.fixture(source, extra="../daemon-metadata")
+            with self.assertRaisesRegex(ValueError, "TOOL_ARCHIVE_MEMBER_INVALID"):
+                c.tool_archive(source, pin, root / "new.tar")
+
+    def test_noncanonical_transport_cannot_be_trusted_as_existing_cache(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / "source.tar"; pin = self.fixture(source)
+            with self.assertRaisesRegex(ValueError, "TOOL_CANONICAL_ARCHIVE_REQUIRED"): c.tool_archive(source, pin)
+
+    def test_existing_output_is_never_replaced_or_deleted(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); source = root / "source.tar"; pin = self.fixture(source)
+            target = root / "existing.tar"; target.write_bytes(b"existing evidence")
+            with self.assertRaises(FileExistsError): c.tool_archive(source, pin, target)
+            self.assertEqual(target.read_bytes(), b"existing evidence")
+
+    def prepare_case(self, directory, *, cache=True, corrupt=False, api_error=False, version="1.22.3"):
+        import zipfile
+        root = Path(directory); original = root / "original.tar"; canonical = root / "canonical.tar"
+        pin = self.fixture(original); graph = c.tool_archive(original, pin, canonical)
+        if corrupt: canonical.write_bytes(b"corrupt artifact")
+        zipped = root / "artifact.zip"
+        with zipfile.ZipFile(zipped, "w") as output: output.write(canonical, canonical.name.replace("canonical.tar", "skopeo-loader.docker.tar"))
+        commands = []
+        def engine(*args, **kwargs):
+            commands.append(args)
+            if args[1] == "save": Path(args[3]).write_bytes(original.read_bytes())
+            if args[1:3] == ("image", "inspect"):
+                return json.dumps([{"Id": pin["config_sha256"], "Os": "linux", "Architecture": "amd64",
+                    "RootFS": {"Layers": graph["diff_ids"]}}]).encode()
+            if args[1] == "run": return ("skopeo version " + version + "\n").encode()
+            return b""
+        def download(artifact_id, size, path, token):
+            self.assertEqual((artifact_id, size, token), (42, zipped.stat().st_size, "fixture-token"))
+            path.write_bytes(zipped.read_bytes())
+        listing = {"artifacts": [{"id": 42, "name": "qikvrt-skopeo-" + "c" * 64,
+            "expired": False, "size_in_bytes": zipped.stat().st_size}] if cache else []}
+        with patch.object(c, "tool_pin", return_value=pin), patch.object(c, "command", side_effect=engine), \
+             patch.object(c, "get", side_effect=OSError("fixture REST unavailable") if api_error else None,
+                          return_value=json.dumps(listing).encode()), \
+             patch.object(c, "actions_archive_download", side_effect=download), \
+             patch.dict(os.environ, {"GITHUB_TOKEN": "fixture-token", "GITHUB_REPOSITORY": c.REPOSITORY}):
+            try:
+                result = c.tool_prepare(root, root / "ready")
+            except Exception:
+                self.assertEqual(commands, []) if (corrupt or api_error) else None
+                raise
+        return result, commands
+
+    def test_verified_cache_hit_does_not_pull_or_save_or_use_registry_tags(self):
+        with tempfile.TemporaryDirectory() as directory:
+            result, commands = self.prepare_case(directory)
+            self.assertEqual(result["origin"], "VERIFIED_REPOSITORY_ARTIFACT")
+            self.assertEqual([a[1] for a in commands], ["load", "image", "run"])
+            self.assertIn("--pull=never", commands[-1])
+            self.assertFalse(result["runtime_smoke_verified"])
+
+    def test_true_cache_miss_pulls_only_exact_official_digest_then_verifies(self):
+        with tempfile.TemporaryDirectory() as directory:
+            result, commands = self.prepare_case(directory, cache=False)
+            self.assertEqual(result["origin"], "EXACT_OFFICIAL_PIN_CACHE_MISS")
+            self.assertEqual(commands[0], ("docker", "pull", "quay.io/skopeo/stable@sha256:" + "c" * 64))
+            self.assertEqual([a[1] for a in commands], ["pull", "save", "load", "image", "run"])
+
+    def test_corrupt_cache_fails_before_docker_and_has_no_pull_fallback(self):
+        with tempfile.TemporaryDirectory() as directory, self.assertRaises(tarfile.ReadError):
+            self.prepare_case(directory, corrupt=True)
+
+    def test_api_failure_is_not_a_cache_miss(self):
+        with tempfile.TemporaryDirectory() as directory, self.assertRaisesRegex(OSError, "REST unavailable"):
+            self.prepare_case(directory, api_error=True)
+
+    def test_loaded_executable_version_must_match_reviewed_tool(self):
+        with tempfile.TemporaryDirectory() as directory, self.assertRaisesRegex(ValueError, "TOOL_EXECUTABLE_VERSION_MISMATCH"):
+            self.prepare_case(directory, version="0.0.0")
+
+    def test_official_readback_graph_and_toolchain_lock_are_bound(self):
+        pin = c.tool_pin(Path(__file__).resolve().parents[1])
+        self.assertEqual(pin["version"], "1.22.3")
+        self.assertEqual(pin["resolved_platform_digest"], "sha256:d506b4167696eb5d3bd624b3619480bddeabdca291b2e795e9c20ed862e11ae4")
+
+
 def declaration():
     return {"schema": "qikvrt-s1-linux-host-binding/v1", "repository": c.REPOSITORY,
         "origin": c.ORIGIN, "docker_api": "https://existing-owner-host.example:2376",
@@ -1019,5 +1153,6 @@ class ArtifactTransportControls(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
 
 

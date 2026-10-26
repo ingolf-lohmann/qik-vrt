@@ -10,6 +10,7 @@ no DNS, registrar, credential-store, purchase or destructive cutover operations.
 from __future__ import annotations
 
 import hashlib
+import gzip
 import base64
 import http.client
 import json
@@ -222,6 +223,167 @@ def command(*argv, input=None):
                                    stderr=subprocess.PIPE)
 
 
+def tool_pin(root):
+    """Bind the cached helper to reviewed official bytes, never a moving tag."""
+    pin = json.loads((root / "evidence/self_host/SKOPEO_CARRIER_READBACK_20261026.json").read_bytes())
+    index = pin["index_original_utf8"].encode()
+    manifest = pin["platform_manifest_original_utf8"].encode()
+    config = pin["config_original_utf8"].encode()
+    require(pin["repository"] == "quay.io/skopeo/stable" and
+            pin["resolved_index_digest"] == "sha256:" + sha(index) and
+            pin["resolved_platform_digest"] == "sha256:" + sha(manifest) and
+            pin["config_sha256"] == "sha256:" + sha(config), "TOOL_SOURCE_PIN_MISMATCH")
+    selected = [m for m in json.loads(index)["manifests"]
+                if m.get("platform") == {"os": "linux", "architecture": "amd64"}]
+    require(len(selected) == 1 and selected[0]["digest"] == pin["resolved_platform_digest"] and
+            selected[0]["size"] == len(manifest), "TOOL_PLATFORM_PIN_MISMATCH")
+    require(json.loads(manifest)["config"] == {"mediaType": "application/vnd.oci.image.config.v1+json",
+            "digest": pin["config_sha256"], "size": len(config)}, "TOOL_CONFIG_PIN_MISMATCH")
+    cfg = json.loads(config)
+    require(cfg["os"] == "linux" and cfg["architecture"] == "amd64" and
+            cfg["config"]["Entrypoint"] == ["/usr/bin/skopeo"] and
+            cfg["config"]["Labels"]["org.opencontainers.image.version"] == pin["version"],
+            "TOOL_IDENTITY_MISMATCH")
+    rows = [line.split("\t") for line in (root / "runtime/toolchains/TOOLCHAIN.lock.tsv").read_text().splitlines()
+            if line.startswith("skopeo\t")]
+    require(len(rows) == 1 and rows[0][3:5] == [pin["repository"], pin["resolved_platform_digest"][7:]],
+            "TOOL_LOCK_PIN_MISMATCH")
+    return pin
+
+
+def tool_archive(path, pin, output=None):
+    """Check config and ordered uncompressed layer hashes before Docker import.
+
+    A cache is an untrusted transport. Export only its verified minimal Docker
+    graph, with no archive-supplied tags, paths, links or extra daemon metadata.
+    The official config digest commits to every ordered rootfs diff_id.
+    """
+    stream, info = _artifact_open(path)
+    created = False
+    destination = None
+    try:
+        require(0 < info.st_size <= ARTIFACT_MAX_BYTES, "TOOL_ARCHIVE_SIZE_INVALID")
+        with stream, tarfile.open(fileobj=stream, mode="r:") as source:
+            members = source.getmembers()
+            names = [m.name for m in members]
+            require(len(members) <= 4096 and len(set(names)) == len(names) and all(
+                (m.isfile() or m.isdir()) and not m.name.startswith("/") and
+                all(p not in ("", ".", "..") for p in m.name.rstrip("/").split("/")) and
+                not any(ord(ch) < 32 for ch in m.name) for m in members), "TOOL_ARCHIVE_MEMBER_INVALID")
+            by_name = {m.name: m for m in members}
+            def read_small(name):
+                require(isinstance(name, str) and name in by_name and by_name[name].isfile() and
+                        by_name[name].size <= 1024**2, "TOOL_METADATA_INVALID")
+                return source.extractfile(by_name[name]).read()
+            manifest = json.loads(read_small("manifest.json"))
+            require(isinstance(manifest, list) and len(manifest) == 1, "TOOL_SINGLE_IMAGE_REQUIRED")
+            config = read_small(manifest[0]["Config"])
+            require("sha256:" + sha(config) == pin["config_sha256"], "TOOL_CONFIG_DIGEST_MISMATCH")
+            cfg = json.loads(config)
+            layers = manifest[0]["Layers"]
+            diff_ids = cfg["rootfs"]["diff_ids"]
+            require(cfg["rootfs"]["type"] == "layers" and isinstance(layers, list) and
+                    0 < len(layers) == len(diff_ids) <= 128 and len(set(layers)) == len(layers) and
+                    all(isinstance(d, str) and re.fullmatch(r"sha256:[a-f0-9]{64}", d) for d in diff_ids),
+                    "TOOL_LAYER_GRAPH_INVALID")
+            canonical_config = pin["config_sha256"][7:] + ".json"
+            canonical_layers = [f"layer-{i:05d}.tar" for i in range(len(layers))]
+            canonical_manifest = [{"Config": canonical_config, "RepoTags": None, "Layers": canonical_layers}]
+            if output is None:
+                require(set(names) == {"manifest.json", canonical_config, *canonical_layers} and
+                        manifest == canonical_manifest, "TOOL_CANONICAL_ARCHIVE_REQUIRED")
+            else:
+                destination = Path(output).open("xb")
+                created = True
+            with tarfile.open(fileobj=destination, mode="w", format=tarfile.USTAR_FORMAT) if destination else tempfile.TemporaryFile() as target:
+                def add(name, data, size):
+                    if destination:
+                        member = tarfile.TarInfo(name)
+                        member.size, member.mode = size, 0o644
+                        target.addfile(member, data)
+                raw_manifest = json.dumps(canonical_manifest, sort_keys=True, separators=(",", ":")).encode()
+                add("manifest.json", io.BytesIO(raw_manifest), len(raw_manifest))
+                add(canonical_config, io.BytesIO(config), len(config))
+                total = 0
+                for name, canonical, diff_id in zip(layers, canonical_layers, diff_ids):
+                    require(isinstance(name, str) and name in by_name and by_name[name].isfile(),
+                            "TOOL_LAYER_MEMBER_INVALID")
+                    with source.extractfile(by_name[name]) as layer, tempfile.TemporaryFile() as spool:
+                        compressed = layer.read(2) == b"\x1f\x8b"
+                        layer.seek(0)
+                        reader = gzip.GzipFile(fileobj=layer) if compressed else layer
+                        digest = hashlib.sha256()
+                        size = 0
+                        for block in iter(lambda: reader.read(1024**2), b""):
+                            total += len(block); size += len(block)
+                            require(total <= ARTIFACT_MAX_BYTES, "TOOL_LAYER_SIZE_LIMIT")
+                            digest.update(block)
+                            if destination: spool.write(block)
+                        require("sha256:" + digest.hexdigest() == diff_id, "TOOL_LAYER_DIGEST_MISMATCH")
+                        spool.seek(0)
+                        add(canonical, spool, size)
+            if destination:
+                destination.close()
+                destination = None
+                require(Path(output).stat().st_size <= ARTIFACT_MAX_BYTES, "TOOL_ARCHIVE_SIZE_INVALID")
+        return {"tool_image_id": pin["config_sha256"], "ordered_diff_ids_verified": True,
+                "diff_ids": diff_ids, "public_production_verified": False}
+    except BaseException:
+        if destination: destination.close()
+        if created: Path(output).unlink()
+        raise
+
+
+def tool_prepare(root, output, archive=None):
+    """Restore verified repo cache first; pull the exact official pin only on miss."""
+    pin = tool_pin(root)
+    cache_name = "qikvrt-skopeo-" + pin["resolved_platform_digest"][7:]
+    output.mkdir(mode=0o700)  # create only; never replace an earlier receipt
+    canonical = output / "skopeo-loader.docker.tar"
+    origin = "EXPLICIT_VERIFIED_ARCHIVE"
+    with tempfile.TemporaryDirectory() as temporary:
+        source = Path(temporary) / "source.docker.tar"
+        if archive is not None:
+            tool_archive(archive, pin)
+            source = archive
+        else:
+            token = os.environ.get("GITHUB_TOKEN")
+            require(bool(token) and os.environ.get("GITHUB_REPOSITORY") == REPOSITORY,
+                    "TOOL_CACHE_REPOSITORY_BINDING_REQUIRED")
+            collection = json.loads(get("https://api.github.com/repos/" + REPOSITORY +
+                "/actions/artifacts?name=" + cache_name + "&per_page=100", token))
+            candidates = [a for a in collection["artifacts"] if a["name"] == cache_name and not a["expired"]]
+            if candidates:
+                selected = max(candidates, key=lambda a: a["id"])
+                zipped = Path(temporary) / "tool.zip"
+                require(0 < selected["size_in_bytes"] <= ARTIFACT_MAX_BYTES, "TOOL_CACHE_SIZE_INVALID")
+                actions_archive_download(selected["id"], selected["size_in_bytes"], zipped, token)
+                with zipfile.ZipFile(zipped) as package:
+                    require(package.namelist() == [canonical.name], "TOOL_CACHE_ZIP_MEMBER_INVALID")
+                    entry = package.getinfo(canonical.name)
+                    require(0 < entry.file_size <= ARTIFACT_MAX_BYTES, "TOOL_CACHE_SIZE_INVALID")
+                    with package.open(entry) as incoming, source.open("xb") as outgoing:
+                        shutil.copyfileobj(incoming, outgoing, 1024**2)
+                tool_archive(source, pin)  # a corrupt cache is a failure, never a pull fallback
+                origin = "VERIFIED_REPOSITORY_ARTIFACT"
+            else:
+                command("docker", "pull", pin["repository"] + "@" + pin["resolved_platform_digest"])
+                command("docker", "save", "--output", str(source), pin["repository"] + "@" + pin["resolved_platform_digest"])
+                origin = "EXACT_OFFICIAL_PIN_CACHE_MISS"
+        result = tool_archive(source, pin, canonical)
+    command("docker", "load", "--input", str(canonical))
+    inspected = json.loads(command("docker", "image", "inspect", pin["config_sha256"]))[0]
+    require(inspected["Id"] == pin["config_sha256"] and inspected["Os"] == "linux" and
+            inspected["Architecture"] == "amd64" and inspected["RootFS"]["Layers"] == result["diff_ids"],
+            "TOOL_LOADED_IMAGE_MISMATCH")
+    version = command("docker", "run", "--rm", "--pull=never", "--network", "none", "--read-only",
+        "--cap-drop", "ALL", "--security-opt", "no-new-privileges:true", pin["config_sha256"], "--version").decode().strip()
+    require(version == "skopeo version " + pin["version"], "TOOL_EXECUTABLE_VERSION_MISMATCH")
+    return {**result, "state": "VERIFIED_TOOL_IMAGE_READY", "cache_name": cache_name,
+            "origin": origin, "version": version, "official_manifest": pin["resolved_platform_digest"],
+            "runtime_smoke_verified": False}
+
+
 def context(root, output):
     """Export tracked source and credential-free Git objects into a new context."""
     root, output = Path(root).resolve(), Path(output).absolute()
@@ -319,6 +481,15 @@ def carrier_download(expected, path):
             metadata.get("workflow_run", {}).get("id") == expected["run_id"] and
             metadata.get("workflow_run", {}).get("head_sha") == expected["source_head"],
             "ORIGINAL_CARRIER_ARTIFACT_BINDING_MISMATCH_OR_EXPIRED")
+    actions_archive_download(expected["artifact_id"], expected["archive_bytes"], path, token)
+
+
+def actions_archive_download(artifact_id, archive_bytes, path, token):
+    """Original Actions transport; signed blob GET never receives API auth."""
+    require(isinstance(artifact_id, int) and artifact_id > 0 and
+            isinstance(archive_bytes, int) and 0 < archive_bytes <= ARTIFACT_MAX_BYTES,
+            "BOUNDED_ACTIONS_ARCHIVE_REQUIRED")
+    base = "https://api.github.com/repos/" + REPOSITORY + "/actions/artifacts/" + str(artifact_id)
     class CaptureRedirect(urllib.request.HTTPRedirectHandler):
         def redirect_request(self, *args, **kwargs):
             return None
@@ -339,7 +510,7 @@ def carrier_download(expected, path):
                 "ORIGINAL_ACTIONS_BLOB_ORIGIN_REQUIRED")
         # Signed location stays in memory. No Authorization header on this GET.
         with urllib.request.build_opener(NoRedirect()).open(location, timeout=90) as response, Path(path).open("xb") as output:
-            remaining = expected["archive_bytes"]
+            remaining = archive_bytes
             while remaining:
                 raw = response.read(min(1024**2, remaining))
                 require(bool(raw), "CARRIER_ARCHIVE_TRUNCATED")
@@ -1044,7 +1215,9 @@ def smoke(image, output, terminal_profile="firefox"):
 
 def execute(args):
     operation = args.operation.removeprefix("container-")
-    if operation == "artifact-split":
+    if operation == "tool-prepare":
+        result = tool_prepare(args.root, args.output, args.tool_archive)
+    elif operation == "artifact-split":
         result = artifact_split(args.carrier_archive, args.output, args.transport_sha256)
     elif operation == "artifact-join":
         result = artifact_join(args.root, args.output, args.manifest_sha256, args.transport_sha256)
@@ -1090,4 +1263,5 @@ def execute(args):
     else:
         raise ValueError("UNKNOWN_CONTAINER_OPERATION")
     return write_receipt(args.receipt, result)
+
 

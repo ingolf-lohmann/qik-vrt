@@ -392,7 +392,19 @@
       "clear_only_after": "FRESH_EXACT_SUBJECT_EFFECT_READBACK",
       "historical_plans_without_field": "REMAIN_READABLE",
       "authority_and_admission_unchanged": true,
-      "new_executor_or_client_timer": false
+      "new_executor_or_client_timer": false,
+      "known_error_authorization": {
+        "owner": "Ingolf Lohmann",
+        "date": "2026-10-26",
+        "owner_statement": "Das sind letztlich bekannte Fehler und von daher ist auch wohl bekannt, wie man mit diesen Fehlern umzugehen hat. Und für wohlbekannte Fehler, von denen man weiß, wie man mit denen umzugehen hat, erwarte ich ab sofort, dass du sie selbstständig entfernst, ohne mich vorher damit zu nerven. Sonst werden wir nie fertig. Freigabe erteilt.",
+        "execute_existing_admitted_deterministic_repair_without_reprompt": true,
+        "notification_before_routine_known_repair_required": false,
+        "verification": "REPRODUCE_KNOWN_FAILURE; REPAIR_CAUSAL_PREREQUISITE; VERIFY_AFFECTED_EXACT_SUBJECT_PATH",
+        "unknown_cause_or_missing_capability": "RECOVER_ORIGINAL_EVIDENCE_AND_BINDING; PRESERVE_EXACT_OPEN_PREREQUISITE",
+        "unchanged_failed_effect_retry": false,
+        "authority_credentials_admission_and_effect_proof_remain_separate": true,
+        "existing_plan_and_native_repair_paths_only": true
+      }
     },
     "connector_rest_closure_rule": {
       "owner": "Ingolf Lohmann",
