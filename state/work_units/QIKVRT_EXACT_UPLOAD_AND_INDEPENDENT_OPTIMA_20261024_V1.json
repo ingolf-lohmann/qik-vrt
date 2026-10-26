@@ -1,0 +1,23 @@
+{
+  "schema": "qikvrt_owner_exact_upload_ack_and_optimization_goals_v1",
+  "principal": {
+    "name": "Ingolf Lohmann",
+    "type": "NATURAL_PERSON"
+  },
+  "received_statement_verbatim": "AUTHORIZE_EXACT_UPLOAD\n\nAußerdem:\nDas aus softwaretechnischer Sicht zu verfolgende Optimum von Effizienz, Durchsatz und Performance ist stets zugleich ein zu verfolgendes Optimum, unabhängig von den anderen!",
+  "approved_statement_by_reference": "AUTHORIZE_EXACT_UPLOAD authorization_id=causal-distance-lean-20261024-01 publication_id=qikvrt-causal-distance-lean-20261024 return_sha256=a056e0b4e1ea74261c24ab9aab799cd024ea55a8403ad26169551705e20a7628 metadata_sha256=bbe918613cdf3e882c1ce61d252fa2266389a5d43ea2c994f9f6935b7f8a0a92 machine_proof_sha256=8adce48052a5ca641912e2a7735d170fd2df277c228afc100898a8539bf0b9c3",
+  "interpretation": "The Owner explicitly acknowledged the immediately preceding canonical statement with AUTHORIZE_EXACT_UPLOAD. The canonical representation is bound to that sole returned candidate. No claim is made that the Owner retyped the hash suffix.",
+  "candidate_return_sha256": "a056e0b4e1ea74261c24ab9aab799cd024ea55a8403ad26169551705e20a7628",
+  "metadata_sha256": "bbe918613cdf3e882c1ce61d252fa2266389a5d43ea2c994f9f6935b7f8a0a92",
+  "machine_proof_sha256": "8adce48052a5ca641912e2a7735d170fd2df277c228afc100898a8539bf0b9c3",
+  "independent_software_optimization_goals": {
+    "efficiency": "Independently assess useful output relative to declared resources.",
+    "throughput": "Independently assess completed accepted work per declared time interval.",
+    "performance": "Independently assess declared workload latency and other specified runtime objectives.",
+    "independence": "Each remains an optimization objective in its own right; report each separately. Improvements in one are not a substitute for measuring the others.",
+    "tradeoffs": "Do not assert that all objectives have a simultaneous common maximum. Preserve correctness, authority and independently verified effects."
+  },
+  "publication_bytes_changed": false,
+  "received_at": "2026-10-24T14:41:42.229857+00:00",
+  "publication_published": false
+}

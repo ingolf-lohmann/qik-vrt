@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
-# Copyright 2026 Ingolf Lohmann. Implementation contribution: Claude (Anthropic).
+# Copyright 2026 Ingolf Lohmann. Implementation contribution: Claude (Anthropic); OpenAI Codex (IPv4 cutover, 2026-10-26).
 #
 # Manual, main-only IONOS DNS operation for the product zone.
 #   readback: GET-only; prints and archives the apex record digest.
@@ -25,6 +25,10 @@ on:
         description: Verified public IPv4 of the owned TLS origin (apply only)
         type: string
         default: ""
+      disable_apex_aaaa:
+        description: Explicitly disable the bound single apex AAAA during the IPv4 cutover
+        type: boolean
+        default: false
       expected_records_sha256:
         description: apex_records_sha256 from a preceding readback (apply only)
         type: string
@@ -59,13 +63,17 @@ jobs:
           ZONE: ${{ inputs.zone }}
           TARGET_IPV4: ${{ inputs.target_ipv4 }}
           EXPECTED_SHA256: ${{ inputs.expected_records_sha256 }}
+          DISABLE_APEX_AAAA: ${{ inputs.disable_apex_aaaa }}
         run: |
           set -o pipefail
           mkdir -p "$RUNNER_TEMP/qikvrt-ionos-dns"
           receipt="$RUNNER_TEMP/qikvrt-ionos-dns/receipt.json"
           if [ "$OPERATION" = apply ]; then
-            python3 -B tools/qikvrt_ionos_dns.py apply --zone "$ZONE" \
-              --target-ipv4 "$TARGET_IPV4" --expected-records-sha256 "$EXPECTED_SHA256" | tee "$receipt"
+            apply_args=(--zone "$ZONE" --target-ipv4 "$TARGET_IPV4" --expected-records-sha256 "$EXPECTED_SHA256")
+            if [ "$DISABLE_APEX_AAAA" = true ]; then
+              apply_args+=(--disable-apex-aaaa)
+            fi
+            python3 -B tools/qikvrt_ionos_dns.py apply "${apply_args[@]}" | tee "$receipt"
           else
             python3 -B tools/qikvrt_ionos_dns.py readback --zone "$ZONE" | tee "$receipt"
           fi

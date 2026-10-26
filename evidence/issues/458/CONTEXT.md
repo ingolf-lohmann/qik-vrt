@@ -2177,7 +2177,53 @@ zu ihren jeweiligen frischen Nachweisen offen.
 
 # QIK-VRT Human–Machine Progress Protocol
 
+## Owner decisions before tool selection — 26 October 2026
+
+All current and future QIK-VRT artificial-cognitive clients load the shared
+`policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json` contract at
+`client_continuation.tool_selection` before selecting or invoking an external
+service. The existing handoff validator also checks one proposed action:
+
+```sh
+python3 -B tools/ai_handoff.py --client-action <non-secret-action.json>
+```
+
+Use the same non-secret action shape as `next_actions`: exact `subject`, `route`,
+`service`, `operation`, `method`, actual `tool` and `endpoint` when applicable,
+observed operation/repository/method, evidence and the existing authorization,
+safety, determinism, capability, authentication, permission and admission flags.
+The read-only command reports `CLIENT_ROUTE_POLICY_SHA256` and the declared
+READY/HOLD state; it never invokes a provider. Bind that current digest as
+`route_policy_sha256` when carrying the action forward; a supplied stale digest
+is rejected. `--client-action` and `--client-receipt` are mutually exclusive.
+
+Railway is DISCONNECTED under the Owner's reaffirmed decision. The guard rejects
+direct provider discovery, authentication, reads, writes and recovery, including
+GET/read-only and zero-effect recorded reads. It checks the actual declared
+service/provider, tool prefix and endpoint hostname before capability/transport
+selection. Tool availability, a new session, generic authorization or an
+unavailable permitted route does not reactivate a disconnected provider. Only a
+later explicit Owner instruction can revise the shared policy. Preserved old
+artifacts remain readable through their actual admitted owner storage.
+
+The same check covers proposed actions, transition plans and client receipts.
+It checks declared metadata, not the truth of a client assertion. A saved policy
+or a passing fixture does not prove use by another client, native enforcement,
+external platform control or a runtime effect. Require exact-policy ACK and
+independent readback for each node before claiming adoption. Historical records
+remain immutable; current evaluation never transfers their former route grant.
+
 ## Purpose
+
+The Owner's authorization of 26 October 2026 requires every client to execute
+known, admitted deterministic repairs autonomously without asking the same
+permission or requiring a preliminary notification. The existing
+`client_continuation.blocking_repair_priority.known_error_authorization` rule
+uses the original transition preparation and blocking-repair journal. Correct
+the causal prerequisite, verify the affected exact-subject path, and report
+the verified result. Missing capability or an unknown cause remains a concrete
+prerequisite to recover. Authorization never substitutes for credential binding,
+admission or effect readback, and never permits an unchanged failed retry.
 
 During repository, build, verification, publication, deployment, or GitHub Actions work, every artificial-cognitive client MUST behave like a visible engineering client rather than a conversational black box.
 
@@ -3289,221 +3335,65 @@ HTML dashboard: docs/qikvrt_mesh_dashboard.html
 This preserves the QIK-VRT boundary: no global scanning, no self-propagation, no foreign repository write. The Seed revalidates only known or explicitly queued Nodes.
 
 
-## `docs/QIKVRT_PRODUCTIZATION_ROADMAP.md`
+## `docs/QIKVRT_THREAT_MODEL.md`
 
-# QIK-VRT Productization Roadmap
+# QIK-VRT Threat Model Summary
 
-4AV1 turns the proof-of-architecture into a productization candidate by adding lifecycle automation, audit export, dashboard evidence, policy status, renewal, and run-id scoped verification.
+Primary risks:
 
-Still not complete: GitHub App packaging, enterprise signed releases, long-running multi-node field test, customer onboarding collateral, and legal/commercial review.
+- leaked tokens
+- unauthorized workflow mutation
+- stale node heartbeat
+- false PASS claims from stale evidence
+- unauthorized expansion beyond known nodes
 
-## Eigenbetrieb und Unabhängigkeit von Plattformen
+Controls:
 
-Product Owner Ingolf Lohmann hat am 4. Oktober 2026 den Zielzustand präzisiert:
-Das erreichbare Mesh wird weiter genutzt; Railway und GitHub sind
-Zwischenstufen. Das Endsystem trägt Repository, Ausführung, Monitor und
-Universal Terminal auf eigenen Nodes. Die folgende Roadmap ist eine
-Architekturentscheidung und ein Arbeitsplan. Ihre Meilensteine sind offen.
-Der strukturierte Arbeitsauftrag steht in
-`state/work_units/PROVIDER_INDEPENDENT_MESH_ROADMAP_20261004.json`.
-
-### Zielarchitektur
-
-Ein Node betreibt den versionierten Repository-Bestand, die lokale
-Ausführung, persistente Daten und seinen Monitor. Der Mesh-Verbund hält die
-zugelassenen Replikate, Rollen, Wiederherstellungsdaten und gemeinsame
-Evidenz. Clients verbinden sich über die QIK-VRT-Schnittstellen; jedes
-leistungsfähige Produkt und jeder Client trägt sein eigenes Terminal und
-seine verifizierte Monitor-Instanz. Kleine Geräte konsumieren den Datenstrom.
-
-Git bleibt ein mögliches Objekt- und Versionsformat. Eine GitHub-Konto-ID,
-Actions-Run-ID oder Railway-Service-ID wird dabei als Adapter-Provenienz
-geführt. Node-, Repository-, Work-Unit- und Effect-Identitäten sowie Rechte
-werden unabhängig von diesen Plattform-Identitäten aufgelöst. Externe
-Git-/CI-/Hosting-/SSO-/KI-Dienste bleiben anschließbar. Die lokale
-Authentisierung und Rollenprüfung muss auch ohne deren Anmeldung möglich
-sein. Anbieterwechsel und Schlüsselwechsel behalten überprüfbare Herkunft
-und frühere Freigaben; neue Rechte entstehen daraus nicht automatisch.
-
-Der Steuerpfad lautet: Ereignis → gebundener Auftrag → Zulassungsprüfung →
-Ausführung → dauerhafte Evidenz → frischer Readback → Effect-Acknowledgement.
-Ein Node erzeugt lokale Repository-, Job-, Runtime- und Gesundheitsereignisse.
-Webhooks schließen externe Dienste an. Kein ChatGPT-Client, Plattform-Cron
-oder periodisches Quellen-Polling muss diesen Pfad am Leben halten.
-Initiale Beobachtung, angeforderte Beobachtung und Replay bei Wiederverbindung
-sind eigene Operationen. Heartbeats und lokale Altersanzeigen erneuern keine
-Quellen- oder Gesundheitsevidenz. Fristen lösen begrenzte lokale Ereignisse
-aus; ausgebliebene Nachweise werden sichtbar `UNKNOWN` oder `BLOCK`.
-
-### Wiederverwendbare Grundlage und aktuelle Lücken
-
-| Bereich | Vorhandener Anschluss | Noch notwendiger Abschluss |
-| --- | --- | --- |
-| Repository und Integrität | Git-Objekte, lokaler `/AI`-Bootstrap, kanonische Manifest- und Hash-Prüfung | Eigener erreichbarer Repository-Dienst, vollständiger Offline-Bootstrap und Restore auf einem frischen Node |
-| Ausführung | `tools/qikvrt_workflow_executor.py` plant lokal; der Action-Wrapper führt den Plattform-Dispatch aus | Node-lokaler Executor für geprüfte Aufträge, Jobs und Artefakte mit identischer Zulassungs- und Review-Grenze |
-| Runtime und Werkzeuge | `runtime/toolchains/`, geprüfte Cache-/Provision-Verträge | Plattformfreies Runtime-Profil; `tools/bootstrap-runtime.sh` prüft derzeit in jedem Profil GitHub CLI; benötigte Toolchain und Artefakte müssen vom Mesh bezogen werden können |
-| Monitor und Terminal | Kandidat aus PR #456: eigener HTTP/SSE-Server, signierter Ingress, dauerhaftes Journal und Client-Replay; bestehender Firefox-/Effect-Ack-Anschluss | Native Mesh-Ereignisse und tatsächliche lokale Systemgesundheit; Node-/Client-/Produkt-Verteilung und öffentliche Readbacks |
-| Dauerhafte Wirkungen | Lokale Effect-Ack-, CAS-, Replay- und Wiederherstellungsverträge | Replikation, Writer-Fencing und Wiederanlauf mit einem ausdrücklich gebundenen Fehlermodell |
-| Governance | Exact-Head-/Tree-Prüfung, menschliche Rollen, Review- und Rechte-Grenzen | Plattformunabhängige signierte Zulassungs-, Review- und Widerrufsnachweise; GitHub-Prüfungen als Adapterabbildung |
-
-Die Monitor-Grundlage ist an Kandidat
-`674aa35ec0659119a19cda66b88f32050e34f105`, Tree
-`5100b66a299ded9ecb64622d2d36a5a77ef1f85d`, im Mirror gebunden.
-Sie gehört nicht zum Main-Bestand dieser Roadmap-Basis. Ihre Tests belegen
-einen Writer und begrenztes Client-Replay; sie belegen keine verteilte
-Replikation, kein ausgerolltes Gesamt-Mesh und keinen vollständigen C90-Port.
-
-### Ablöseschritte und Abnahme
-
-| Schritt | Ergebnis | Prüfkriterium für den Abschluss |
-| --- | --- | --- |
-| S1: Eigenständiges Node-Paket | Repository-Bestand, persistente Volumes, Monitor, Terminal und versionierte Runtime starten auf einem eigenen Host; Build, Konfiguration und Start folgen vorhandenen Cache-/Rechte-Verträgen | Einen frischen Host aus einem verifizierten Paket booten, Railway-Zugriff sperren, Anwendung benutzen, öffentliche URL und exakte Runtime-Bindung zurücklesen, Prozess/Host neu starten und bestätigte Daten vergleichen |
-| S2: Eigene Ausführung und Repository-Verwaltung | Native Git-/Work-Unit-Ereignisse starten einen begrenzten Node-Executor; Tests, Artefakte, Review und Promotion sind am lokalen Bestand prüfbar | Einen autorisierten Auftrag ohne GitHub Actions oder Chat-Client vom Ereignis bis zum dauerhaften Effect-Readback ausführen; fehlende/abgelaufene Freigabe und konkurrierenden Writer zurückweisen |
-| S3: Ausfallsicherer Mesh-Betrieb | Dauerhaftes Journal, Blobs, Ref-Zustand, Intent und Receipts werden zwischen Nodes repliziert; alle Monitor-Instanzen prüfen Phase und Herkunft | Im definierten Drei-Replica-Profil einen Node ausfallen lassen und bei Verbindungsabbruch, verlorener Antwort und Wiederanlauf alle quittierten Bytes/Effects wiederfinden; keine doppelte Wirkung und kein zweiter zugelassener Writer |
-| S4: Vollständige Plattform-Ablösung | GitHub und Railway funktionieren als austauschbare Adapter; Bootstrap, Identität, Jobs, Review, Updates, Wiederherstellung und Betrieb kommen aus dem Mesh | GitHub und Railway vollständig unerreichbar machen, aus dem Mesh einen frischen Node aufsetzen und einen vollständigen Entwicklungs-/Betriebszyklus einschließlich öffentlicher Anwendung und frischem Readback durchführen |
-
-S1 nutzt den vorhandenen Monitor-Kandidaten und das bestehende Universal
-Terminal. Der nächste Implementierungsauftrag ist, ihren Start-, Runtime-,
-Volume-, Authentisierungs- und Readback-Vertrag zu einem überprüfbaren
-Eigenbetriebspaket zu verbinden und das Runtime-Profil von der allgemeinen
-GitHub-CLI-Prüfung zu entkoppeln. Zielhost, persistente Ressourcen und
-zugelassene Deployment-Identität müssen für einen tatsächlichen Betrieb
-konkret gebunden sein; ein geplanter Host ist keine laufende Instanz.
-
-### Verlustfreiheit und Governance bleiben Abnahmebedingungen
-
-Das anfängliche Zielprofil für S3 hat drei speichernde Replikate und toleriert
-den Ausfall eines Nodes. Eine verteilte positive Quittung benötigt den
-festgelegten dauerhaften Replikationsnachweis; Writer-Epochen/Fencing und
-Wahlregeln müssen getrennte gleichzeitige Writer verhindern. Ohne die dafür
-benötigte Mehrheit wird die geschützte Wirkung `BLOCK`; ihre Eingabe bleibt
-im überprüfbaren Intent-/Replay-Pfad. Verfügbarkeit und bestätigte
-Verlustfreiheit werden getrennt ausgewiesen.
-
-Der Nachweis bindet Originalbytes, Auftrag, Identität, Commit/Tree,
-Effect-ID, Reihenfolge, Journal-Hash, gespeicherte Replikationsbelege und den
-nach Wiederanlauf beobachteten Zustand. Prozessabbruch, Node-Ausfall,
-Netzpartition, verlorene Antwort, volle Platte und korrupte Bytes gehören
-zum Test. Stromausfallfestigkeit erfordert zusätzlich einen tatsächlichen
-Hardware-/Speicher-Nachweis; `fsync` und ein Prozessneustart belegen ihn
-allein nicht. Das Fehlermodell und die Speicherkapazität begrenzen jede
-Verlustfreiheitsbehauptung.
-
-Ein Provider-Ausfall darf keine bereits bestätigte Wirkung löschen, keine
-ungültige Freigabe ersetzen und keinen künstlichen Gesundheitszustand
-erzeugen. Rollen- und Schutzregeln werden bei der Migration erhalten und
-exact-subject geprüft. Gegenwärtige GitHub-Code-Owner-Reviews und geschützte
-Main-Gates bleiben wirksam, bis ein separat zugelassener gleichwertiger
-Governance-Träger übernommen ist. Diese Roadmap verändert keine Schutzregel.
-
-Für jeden Schritt gilt die bestehende Definition of Done:
-**Working Software ∧ öffentliche URL ∧ frischer Readback**. Quittierter
-Transport, eine erfolgreiche CI oder das Schreiben dieser Roadmap ergeben
-kein `EFFECT_ACK_DONE`. Die früher beauftragten C90-, lokale
-Maschinencode-/Static-Link-, Linux-/Docker-, Atari-/Mega-ST-, Digital-Twin-
-und Siemens-Anschlüsse bleiben im Produktumfang und erhalten eigene
-gebundene Abnahmen. `PREDECESSOR_EVIDENCE_TRANSFER=false`.
+- hidden local token prompt
+- no embedded token
+- run-id scoped evidence waits
+- known-node registry only
+- no global scanning
+- seed and node self-write boundaries
 
 
-### S1-Implementierungsnachfolger vom 4. Oktober 2026
+## Safety/Security deployment assurance — Owner authorization, 19 October 2026
 
-Der history-preserving Nachfolger von PR #457 (`4f53f56014584cf8effbbad8cc15d199aaed4608`)
-liegt in `runtime/self-host/`. `self-host` startet mit Adapter `none` ohne
-GitHub CLI; nur der explizite GitHub-Adapter verlangt den unveränderten
-GitHub-Bootstrap. Die bisherigen Profile behalten ihre GitHub-Abhängigkeit.
-Der vorhandene Monitor aus PR #456 und die verfügbaren Terminal-Träger aus
-PR #454 werden selektiv weiterverwendet; kein zweiter Monitor, Executor oder
-produktiver TEMDD-Daemon wird eingeführt.
+QIKVRT and the Effect Acknowledgement Protocol are intended for Safety and
+Security applications as well. The requirements and source/applicability
+register is [QIKVRT_SAFETY_SECURITY_IMPACT_20261019_V1](../state/work_units/QIKVRT_SAFETY_SECURITY_IMPACT_20261019_V1.json).
+These are engineering requirements with open deployment acceptance, not
+certification, legal conformity or a verified physical installation.
 
-Der Paketexport bindet versionierte Linux-Runtime-Executables, exakte
-Git-Blobs/HEAD/Tree, Startkonfiguration und ein getrenntes Volume.
-Authentisierungsgrenzen, Writer-Sperre, Provider-Ablehnung vor dem Transport
-und der bestehende unabhängige Monitor-Readback sind ausführbar geprüft.
-Ein SIGKILL-Neustart erhält die vorher quittierten Original-Journalbytes.
-Diese Nachweise betreffen lokale Prozesse und das konfigurierte Dateisystem.
-Sie ergeben keinen Stromausfall-, eigenen Host- oder öffentlichen Betriebsnachweis.
+The existing five-state protocol and DONE-only ordinary-release rule remain
+the effect boundary. A received command, a transport ACK and a physical
+condition are separate claims. A physical adapter must bind the exact actuator,
+authorized transition, configuration and fresh observation evidence; it cannot
+claim a door is secured merely because a command or relay output was accepted.
 
-S1 bleibt **OPEN**. Die produktiven TEMDD- und Firefox/noVNC-Deployment-Quellen
-sind im zugänglichen Mirror und dem retained Git-Checkpoint nicht vorhanden;
-der bekannte Goldkelch-Quellzugriff antwortet in dieser Verbindung mit 404.
-Das Paket enthält deshalb den vorhandenen HTTP-Referenzträger und Owner-Unix-Client,
-dessen produktiver Daemon weiterhin fehlt. Ein erfundener Ersatz schließt diese Lücke nicht.
+| Threat or dependency | Required assurance and acceptance |
+| --- | --- |
+| Cloud, identity, licensing or supplier outage | Declare an isolation interval; test local decisions, revocation/freshness rules, emergency access and vendor-independent recovery. |
+| Egress or alarm blocked by a remote gate | Bind a site-specific hazard analysis; retain separately admitted local safety paths and test fire, power loss and network loss together. No universal fail-open/fail-closed assumption. |
+| Forged, stale or conflicting physical feedback | Bind source, effect ID, policy and observation window; test replay, sensor conflict, stuck actuators and ambiguous responses. |
+| Reader bus or credential compromise | Test authenticated links, commissioning, key lifecycle and exact controller/reader/credential/firmware interoperability. |
+| Compromised or unsupported firmware | Require authenticated update provenance and compatibility; test isolated interrupted-update recovery and a verified forward-repair path. |
+| Partition, crash, takeover or full audit store | Reuse native durable journals/fencing; declare RTO and storage limits; prove the claimed workload's acknowledgement/replay and local audit behavior. |
+| Supplier assurance or legal scope overstated | Separate primary evidence, manufacturer claims and engineering derivation; retain exact scope, applicability and open evidence duties. |
 
-Der präzise Deployment-HOLD lautet
-`HOLD_OWN_HOST_IDENTITY_STORAGE_ROUTING_UNAVAILABLE`: Für diese Session sind
-keine tatsächlich aufrufbare Eigenhost-Operation, zugelassene Deployment-Identität,
-gebundenes persistentes Speichermedium und öffentliche Route verfügbar.
-Die unabhängige Quelllücke lautet `HOLD_PRODUCTIVE_TERMINAL_SOURCE_UNAVAILABLE`.
-Nächster zulässiger Schritt ist die vollständige Lieferung der vorhandenen
-produktiven Trägerquellen und die konkrete Host-/Storage-/Routing-Zulassung,
-danach exakte Installation, öffentlicher Readback und Deployment-Neustarttest.
-Work Unit: `state/work_units/SELF_HOSTED_NODE_PACKAGE_S1_20261004.json`.
-Weder eine öffentliche URL noch `EFFECT_ACK_DONE` wird aus Paket-/CI-Tests abgeleitet.
+ASD's OT guidance is a useful assurance input, not EU legislation. Its
+publication does not establish QIKVRT compliance. The Gallagher T30 announcement
+is an unverified manufacturer approval claim and supplies a procurement
+evidence request, not a new QIKVRT dependency. IEC/SIA product/profile evidence
+does not establish the interoperability or safety of a whole installation.
+For EU CRA reporting, first determine the actual product and operator role;
+record the applicable awareness-based deadlines and responsible route without
+automatically sending a live notification.
 
-
-### S1-Quellwiedergewinnung vom 5. Oktober 2026
-
-Die vorstehende Quelllücke beschreibt den Vorgängerstand. Eine erweiterte Suche
-über 551 Branch-Refs, 22 Tags, 448 PR-Head-Refs und 4.450 erreichbare Commits hat
-im Branch `architecture/universal-transputer-c90-v1` den verifizierten Snapshot
-`c6a53e200c4835a4f871d8496feb81d953610831` gefunden. Produktiver TEMDD-Ledger,
-Unix-Ingress und Firefox/noVNC-Rezepte werden mit unveränderten Originalblobs
-und vollständiger Pfad-/Hash-Provenienz in S1 1.1.0 übernommen. Der vom Snapshot
-genannte Goldkelch-Ursprungscommit ist nicht direkt wiederabrufbar; Gleichheit
-mit einem späteren produktiven Railway-Build wird nicht behauptet.
-
-Die versiegelte Paket-/Konfigurationsbindung und der portable Browser-Start sind
-neue S1-Adapter. Sie verwenden den originalen Ledger und Unix-Ingress; sie sind
-keine rekonstruierte Originalquelle. Fresh-head Linux-Tests müssen den echten
-nativen Runtime- und Firefox/noVNC-Neustart zurücklesen. Host-Identität,
-persistentes Gerät und authentisiertes öffentliches HTTPS bleiben davon
-getrennt **OPEN**. Keine Installation oder öffentliche Abnahme wird behauptet.
-Work Unit: `state/work_units/S1_PRODUCTIVE_TERMINAL_SOURCE_RECOVERY_20261005.json`.
-
-
-## Safety-/Security-Anschlussfähigkeit — Freigabe vom 19. Oktober 2026
-
-Ingolf Lohmann hat die Einarbeitung relevanter behördlicher Vorgaben und
-Marktentwicklungen für den Einsatz von QIKVRT und des Effect Acknowledgement
-Protocol in Safety und Security freigegeben. Der bestehende Entwicklungsweg
-wird um einen quellengebundenen Anforderungsabgleich ergänzt:
-[`QIKVRT_SAFETY_SECURITY_IMPACT_20261019_V1`](../state/work_units/QIKVRT_SAFETY_SECURITY_IMPACT_20261019_V1.json).
-
-Der Abgleich unterscheidet bindendes Recht, behördliche Leitlinie,
-verabschiedeten Standard, Entwurf, bestätigte produktspezifische Prüfevidenz
-und Herstellerankündigung. Veröffentlichungs-, Ereignis-, Anwendungs- und
-Fristdatum bleiben getrennt; ein unbekanntes Datum bleibt unbekannt.
-Jurisdiktion, konkrete Produktkonfiguration und Rolle des Wirtschaftsakteurs
-müssen zur abgeleiteten Pflicht passen. Ein Zertifikat für einen Leser oder
-ein Kryptomodul ist keine Abnahme der gesamten Installation.
-
-Neue wesentliche Erkenntnisse aus der bestehenden Recherche und Entwicklung
-werden auf betroffene Komponenten, Architekturentscheidungen, Abhängigkeiten
-und Beschaffung abgebildet. Daraus entstehen konkrete Anforderungen mit
-Prüfkriterien und offenen Nachweisen. Vorhandene EAP-, Terminal-, Transputer-,
-Self-Host-, Review- und Integritätswege werden weiterverwendet. Unveränderte
-Meldungen erzeugen keinen neuen Änderungsauftrag. Marktänderungen sind nur
-relevant, wenn sie Unterstützung, Lieferfähigkeit, Produktlebenszyklus,
-Abhängigkeiten oder Beschaffung tatsächlich betreffen.
-
-Die erste Fassung bindet die ASD-OT-Leitlinie vom 15. Oktober, den
-herstellerseitig gemeldeten T30-Prüfstatus vom 16. Oktober sowie ergänzende
-IEC-/SIA- und EU-Kommissionsquellen. Sie konkretisiert isolierten Betrieb,
-lokale Identitäten und Schlüssel, sichere Leserkommunikation und Updates,
-frische physische Rückmeldung, Fencing, Protokollierung, Wiederherstellung
-und den eigenständig abgesicherten Flucht-/Notfallbetrieb. Die CRA-Prüfung
-bleibt rollen- und produktspezifisch; eine tatsächliche Meldepflicht von
-QIKVRT wird aus diesem Register allein nicht behauptet.
-
-**Abnahme:** Die Anforderungen sind spezifiziert; ihre Umsetzung und
-Wirksamkeit sind je Einsatzprofil durch Originalnachweise zu schließen.
-Die bestehenden fünf EAP-Zustände und das Wire-Format werden hier nicht
-geändert. Insbesondere darf ein Ausfall von Fernbestätigung oder Mesh-Quorum
-keine ungeprüfte Abhängigkeit sicherheitskritischer Fluchtfunktionen erzeugen.
-Die lokale Schutzfunktion benötigt eine eigene zugelassene, gefahrenbezogene
-Entscheidung und Prüfung; sie ist keine allgemeine Freigabe gewöhnlicher
-Nicht-DONE-Wirkungen. Ein Repository-Abgleich oder CI-Erfolg ersetzt weder
-die reale Installationserprobung noch eine vorgeschriebene Konformitätsbewertung.
+Every new material source change follows the register's change-intake process.
+Preserve older source identities and open tests; only bound acceptance evidence
+can close the corresponding deployment obligation. No additional executor,
+client timer or implicit IETF/Zenodo publication is introduced.
 
 
 ## `docs/README_DEPLOY_GITHUB_PAGES_DE.md`
@@ -3535,23 +3425,158 @@ Version: `QIKVRT_V2_13_4AX1`
 Referenzlauf: `4AV1_20260708T174034Z_709544`
 
 
-## `docs/articles/a013_truth_future_quote.md`
+## `docs/REFLEXIVE_REPOSITORY_WATCHDOG.md`
 
-# Die Wahrheit in der Unterscheidung
+# Reflexive repository Gatewatch and pre-deadlock admission
 
-## Status
+The adaptive repository monitor is extended by a read-only watchdog that observes its own repository instance every five minutes and at relevant workflow transitions. Its purpose is not to wait for a deadlock and then diagnose it. It models writer leases, runner pressure, exact-head execution evidence, and unchanged progress topology early enough to issue a deterministic `HOLD` before a second writer or replacement writer is admitted.
 
-`ARTICLE_STATUS = IMAGE_QUOTE_CANONICAL_TEXT`  
-`QIKVRT_GATE = DISTINCTION_PROTECTS_FUTURE`
+## Operational model
 
-## Kanonischer Bildsatz
+Each repository instance carries the same contract, controller, workflow, and regression test. The Authority remains the serialized source of the portable contract; Mirror and future mesh nodes must retain their own repository identity and integrity projections while satisfying the same structural acceptance.
 
-Die Katastrophe beginnt nicht, wenn alle lügen.
+The watchdog treats repository activity as a resource-allocation graph:
 
-Sie beginnt, wenn niemand mehr zuverlässig unterscheiden kann, was Fakt, Deutung, Manipulation oder Rauschen ist.
+- `REPOSITORY_WRITE_LEASE` has capacity one;
+- active repository writers hold or request that lease;
+- queued productive workflows request platform runner capacity;
+- a writer without a job/step transition beyond its lease is stale;
+- unchanged active topology beyond the progress lease is an early stall signal;
+- `action_required` and zero-job runs are untrusted execution gaps;
+- no active runner is not interpreted as `PIPELINE_EMPTY`.
 
-Wer diese Unterscheidung zurückbringt, schützt Wahrheit und Zukunft.
+The first deterministic response is admission control, not destructive recovery: keep one expected-head-bound writer, coalesce only superseded observer runs, preserve an exact-head receipt, and stop before another writer is introduced. The watchdog never cancels a productive writer, mutates a ref, merges a pull request, or performs a release, deployment, Zenodo, DOI, or IETF effect.
 
-q.e.d.  
-Ingolf Lohmann
+## Continuous exact-head Gatewatch
+
+Every scheduled or event-driven observation materializes an artifact-only
+`reflexive-watchdog-receipt.json` and the identically bound
+`gatewatch-receipt.json`. Both records contain the literal observed head and
+tree, a trusted-workflow matrix, node-liveness observations, and the prior
+receipt binding. A receipt from another head or tree is discarded rather than
+being used as fresh evidence.
+
+The Gatewatch classifies each declared trusted workflow as `SUCCESS`,
+`FAILED`, `MISSING`, `ACTIVE`, `UNTRUSTED`, `NOT_OBSERVED`, or
+`NOT_APPLICABLE`. A terminal execution failure is a deterministic `HOLD`; a
+required pull-request gate that is missing or lacks executed job evidence is
+also a `HOLD`. The contract distinguishes a pull request against `main` from
+a stacked pull request: only the former requires the evidence-materialization
+workflow, because that workflow is configured to trigger only for `main`-base
+pull requests. A stacked successor therefore still requires exact-head CI but
+never treats an impossible materializer run as proof. Main observations
+distinguish an optional scheduled gate from a missing pull-request gate, so a
+missing main-only run is never silently invented as a successful verification.
+
+For repository nodes that carry the onboarding records, the same observation
+parses all three exact-tree inputs:
+
+- `SEED_ACCEPTANCE_STATUS.json` must bind the currently reobserved Authority
+  `main` head;
+- `NODE_REGISTRATION_RENEWAL.json` must not be overdue;
+- `NODE_HEALTH.json` must not be expired.
+
+An Authority instance without all three node-local records is explicitly
+`NOT_APPLICABLE`; a partial record set, malformed record, stale seed
+acceptance, overdue renewal, or expired health becomes a read-only `HOLD`.
+Records approaching expiry remain visible as `EXPIRING` without a fabricated
+renewal. The observer also detects a missed continuous observation only when a
+previous receipt is bound to the same head and tree and exceeds the declared
+fifteen-minute freshness bound. A burst of cancelled, zero-job observer runs is
+coalesced only when a later exact-head receipt remains within that bound;
+otherwise it is a deterministic observation-cadence `HOLD`, not a claim of
+pipeline quiescence.
+
+The workflow remains five-minute, exact-head-bound, and read-only. It fetches
+the current Authority head only for comparison, materializes Action artifacts
+only, and never writes a repository liveness record, dispatches a productive
+workflow, or treats its own terminality as gate success.
+
+## Reflexivity
+
+### Failure of the observer itself
+
+An API/readback failure before analysis is an observation error. It must leave
+a `qikvrt_reflexive_observation_failure_receipt_v1` in both receipt paths,
+bound to the actual checkout head/tree, expected head, run, attempt, failing
+stage and nonzero exit code. The receipt records `OBSERVATION_FAILED` and
+`HOLD`; live state and pipeline progress remain unknown. The failed workflow
+remains failed even when artifact upload succeeds. This distinct receipt is
+never substituted for a successful observation or a trusted gate.
+
+Recovery requires restoring the failed authorized read path, freshly reading
+the exact subject, and continuing the existing work unit. A prior receipt,
+owner authorization, repeating observer, or missing active runner does not
+establish recovery or productive delivery. No new controller, credential,
+permission expansion or automatic productive-writer cancellation is involved.
+
+The watchdog observes the workflows that create and verify repository state, while its own executions are classified as observers rather than productive writers. Observer executions use a coalescing concurrency group so newer observations replace obsolete observations without consuming the repository write lease. A scheduled observation prevents unchanged heads from becoming permanently invisible merely because no new event occurs.
+
+## Database comparison boundary
+
+Conventional relational database systems already provide transaction deadlock handling techniques such as prevention, detection, ordering, and timeout policies. The QIK-VRT improvement claimed here is narrower and architectural: deadlock-risk admission is bound to versioned repository heads, workflow/job evidence, provenance receipts, Authority-to-node serialization, and external-effect boundaries across independently instantiated repositories. It is not a claim that every relational database lacks deadlock management, nor a benchmark proving universal performance superiority.
+
+## Nonclaims
+
+A successful watchdog run is observation evidence, not gate success. The mechanism does not prove global deadlock freedom, repository completion, Authority–Mirror equality, empirical confirmation, scientific consensus, `PASS`, `FINAL_PASS`, or `EFFECT_ACK_DONE`.
+
+## Canonical roles and independent native readback
+
+The existing `policy/CANONICAL_UPSTREAM_REMOTE_V1.json` is the sole normative
+repository-role source. The executor/liveness contract is a checked projection.
+The shared resolver reused from the authority-repair work rejects missing,
+malformed, overlapping or contradictory Authority/Mirror assignments. A Mirror
+receipt cannot establish Authority continuity even when its commit matches.
+Historical receipts retain their original bytes and repository identity.
+
+The native wrapper uses the mandatory job token and bounded GitHub REST GETs.
+It binds Authority Main to its exact commit and tree, validates the canonical
+role policy, governance policy and CODEOWNERS bytes by Git blob identity, then
+reobserves Main. HTTP 200 without the expected active Main roles remains
+`AUTHORITY_ROLE_BINDING_NOT_ACTIVE`. HTTP 403/404 has no Mirror, anonymous,
+browser or alternate-token fallback. The latest completed observation supplies
+the prior denial receipt, including failed observations. An unchanged causal
+binding suppresses a repeated denied request. Unrelated commits, lifecycle
+progress and timestamps do not admit a retry. Changes to the role policy,
+Authority binding or reviewed token/transport carrier require one new bounded
+observation; external permission repair must be independently evidenced before
+clearing a denial receipt.
+
+A successful role readback still sets `native_activation_verified=false`:
+executed native candidate gates, trusted-Main adoption, native enforcement and
+independent current-head Code Owner approval remain separately required. No
+predecessor test or availability observation substitutes for those effects.
+
+
+## `docs/TRANSACTIONAL_GITHUB_WORKFLOW_TRIGGER_PROTOCOL.md`
+
+<!-- SPDX-License-Identifier: CC-BY-NC-ND-4.0 -->
+<!-- Copyright 2026 Ingolf Lohmann. -->
+# Transactional GitHub workflow trigger protocol
+
+Canonical failure class: `NON_ATOMIC_MULTI_COMMIT_WORKFLOW_TRIGGER_ORDERING_RACE`.
+
+Repository transactions are assembled as payload writes, exact manifest/hash binding, and one final JSON ready-marker write. Workflows watch only the ready marker and invoke `tools/qikvrt_transactional_workflow_trigger.py verify` before any effect. Missing or malformed markers, missing or unexpected changed paths, absent files, hash divergence and false completion claims block execution.
+
+A verified trigger proves only transaction completeness. It does not prove task completion, merge, publication, Authority/Mirror equality, `PASS`, `FINAL_PASS` or `EFFECT_ACK_DONE`.
+
+
+## `docs/publications/2026-08-06-qce-superdeterminism-boundary/VERIFICATION_TRIGGER.md`
+
+# Exact-head verification trigger
+
+This file intentionally triggers the branch-bound exact-head verification workflow after the workflow definition itself has been materialized.
+
+It carries no scientific claim and no external effect.
+
+
+## `docs/qikvrt_trust_mesh/QIKVRT_4AW_ROLE_MARKER.md`
+
+# QIKVRT 4AW Role Marker
+
+Role: seed
+
+Commercial readiness package for QIK-VRT Trust Mesh.
+
+Reference run: 4AV1_20260708T174034Z_709544
 

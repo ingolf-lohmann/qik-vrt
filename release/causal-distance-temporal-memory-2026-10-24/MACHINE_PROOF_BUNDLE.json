@@ -1,0 +1,370 @@
+{
+  "_license": {
+    "classification": "machine_readable_proof_bundle",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_zenodo_machine_proof_bundle_v2",
+  "policy": {
+    "id": "qikvrt-zenodo-machine-proof-before-publication-v2",
+    "path": "policy/zenodo-machine-proof-policy-v2.json",
+    "version": "2.0.0",
+    "sha256": "933d6322a1e294848c6385d1384ab0ec3862c8675ebe35ec2fc4cad3e0baec47",
+    "git_blob_sha1": "e9578d30d22f845e7df684128dcd9332641c00be"
+  },
+  "publication_id": "qikvrt-causal-distance-20261024",
+  "candidate": {
+    "files": [
+      {
+        "path": "release/causal-distance-temporal-memory-2026-10-24/QIKVRT_Kausale_Distanz_Fachartikel.pdf",
+        "bytes": 144095,
+        "sha256": "cc54bf812966a7f0d2e89f2a04208e855e5a66b24822fa4dbf0eab13beb33e36",
+        "git_blob_sha1": "95e4c34c4dbe5d7af105ce946b709cb482a39681",
+        "name": "QIKVRT_Kausale_Distanz_Fachartikel.pdf",
+        "role": "PRIMARY"
+      },
+      {
+        "path": "release/causal-distance-temporal-memory-2026-10-24/QIKVRT_Wie_weit_ist_eine_Wirkung_Prosa.pdf",
+        "bytes": 118624,
+        "sha256": "530c47f95261b0abd48321e1f66e73c51b21f2e873bca5150da7865b8986d2e3",
+        "git_blob_sha1": "6e827ad67d9ced188ad4355bc5f179f6e16e990c",
+        "name": "QIKVRT_Wie_weit_ist_eine_Wirkung_Prosa.pdf",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "release/causal-distance-temporal-memory-2026-10-24/Fachartikel.md",
+        "bytes": 31909,
+        "sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+        "git_blob_sha1": "d4bb226e00aa44b144ded7cce39e88685e54f5a8",
+        "name": "Fachartikel.md",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "release/causal-distance-temporal-memory-2026-10-24/Prosaartikel.txt",
+        "bytes": 26052,
+        "sha256": "d6b83f1ef8923788662c85673901822b1ba320dc9436ca177d9875c0dec59171",
+        "git_blob_sha1": "8ce4713cb5d44d5eeed96d72c7d08dd3db1a28ea",
+        "name": "Prosaartikel.txt",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "release/causal-distance-temporal-memory-2026-10-24/QIKVRT_Prosa_Vorlesetext.txt",
+        "bytes": 22652,
+        "sha256": "3c0d71501d6151e7746ce4b6d0063cd898a4ed2e1399cbed1d810e6f8f9e5ebd",
+        "git_blob_sha1": "cd75018d03b77ad609cfa57a452995a73a477d9b",
+        "name": "QIKVRT_Prosa_Vorlesetext.txt",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "release/causal-distance-temporal-memory-2026-10-24/QIKVRT_Causal_Distance_20261024.zip",
+        "bytes": 262030,
+        "sha256": "d070ae7e9c15feeadedddf55b3bf77072a3b74289dad60bb3adce4aee7089f91",
+        "git_blob_sha1": "87d485faf527dab24a1bc98dd28cd7ab532a764a",
+        "name": "QIKVRT_Causal_Distance_20261024.zip",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "release/causal-distance-temporal-memory-2026-10-24/QIKVRT_Framework_Selbstvermessung_20261024.zip",
+        "bytes": 201027,
+        "sha256": "01d874f116d68119c3278345bc09fb72fcd1917e88dd27e51b726ef950b3e542",
+        "git_blob_sha1": "9d604052aab7807bdfd394467efe2b5dc62bad65",
+        "name": "QIKVRT_Framework_Selbstvermessung_20261024.zip",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "release/causal-distance-temporal-memory-2026-10-24/LESEPFAD_NACH_INTERESSE.md",
+        "bytes": 7588,
+        "sha256": "becc9ff671680db7fbe1a6f7869b7aba5df0916a0be50f339abe23ce57e43024",
+        "git_blob_sha1": "9e9a2c23436f43d5866e48c1534c5dae00ce3aa3",
+        "name": "LESEPFAD_NACH_INTERESSE.md",
+        "role": "SUPPLEMENT"
+      }
+    ],
+    "primary_document_path": "release/causal-distance-temporal-memory-2026-10-24/QIKVRT_Kausale_Distanz_Fachartikel.pdf"
+  },
+  "claims": [
+    {
+      "claim_id": "CD-001",
+      "statement": "Die Vorarbeit trennt OBSERVED und ANTICIPATED und definiert eine enge operationale Protokoll-Retrokausalität.",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Archivierter Scope von DOI 21711193.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "release/causal-distance-temporal-memory-2026-10-24/SOURCE_BINDINGS.json#S1"
+      ]
+    },
+    {
+      "claim_id": "CD-002",
+      "statement": "Der Messgraph bindet Gegenstand, Ereignisauflösung, Relationstyp und positive ganzzahlige Kantengewichte.",
+      "classification": "NORMATIVE",
+      "status": "DECLARED",
+      "publication_wording": "NORMATIVE_DECLARATION",
+      "scope": "Definition dieses endlichen Modellobjekts.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CD-003",
+      "statement": "Gerichtete Distanz ist der kürzeste gewichtete Abhängigkeitspfad; die symmetrische Projektion hat einen anderen Interpretationsbereich.",
+      "classification": "NORMATIVE",
+      "status": "DECLARED",
+      "publication_wording": "NORMATIVE_DECLARATION",
+      "scope": "Definierte Messvorschrift; keine universelle Naturmetrik.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CD-004",
+      "statement": "Die analytische Herleitung ergibt eine erweiterte Quasimetrik und eine Metrik je schwacher Komponente der Projektion.",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Angegebene endliche positive Graphdefinition; keine neue Lean-Ausführung.",
+      "proof_refs": [],
+      "evidence_refs": [
+        "release/causal-distance-temporal-memory-2026-10-24/EVIDENCE_INDEX.json#MATH"
+      ],
+      "source_refs": [
+        "release/causal-distance-temporal-memory-2026-10-24/SOURCE_BINDINGS.json#S3"
+      ]
+    },
+    {
+      "claim_id": "CD-005",
+      "statement": "Vier kontrollierte Fälle unterscheiden die freigegebene Dateiänderung 2 nach 3 von drei verweigerten Änderungen.",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "status": "EVIDENCED",
+      "publication_wording": "EMPIRICALLY_SUPPORTED",
+      "scope": "Isolierter lokaler Programmlauf.",
+      "proof_refs": [],
+      "evidence_refs": [
+        "release/causal-distance-temporal-memory-2026-10-24/EVIDENCE_INDEX.json#FOUR_CASES"
+      ],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CD-006",
+      "statement": "Elf native Testjournalereignisse wurden über den originalen Terminal-Leser nach erneutem Öffnen bestätigt.",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "status": "EVIDENCED",
+      "publication_wording": "EMPIRICALLY_SUPPORTED",
+      "scope": "Frisches lokales Testjournal; keine produktive Mesh-Replikation.",
+      "proof_refs": [],
+      "evidence_refs": [
+        "release/causal-distance-temporal-memory-2026-10-24/EVIDENCE_INDEX.json#JOURNAL"
+      ],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CD-007",
+      "statement": "Die dokumentierten ursprünglichen Tests bestehen aus 16 neuen, 41 originalen EAP- und vier ausgewählten originalen Ledger-Tests.",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "status": "EVIDENCED",
+      "publication_wording": "EMPIRICALLY_SUPPORTED",
+      "scope": "61 Tests am eingefrorenen ursprünglichen Kandidaten.",
+      "proof_refs": [],
+      "evidence_refs": [
+        "release/causal-distance-temporal-memory-2026-10-24/EVIDENCE_INDEX.json#CORE_TESTS"
+      ],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CD-008",
+      "statement": "Alle 4096 gerichteten Graphen auf vier Knoten werden gegen eine unabhängige Floyd-Warshall-Auswertung geprüft.",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "status": "EVIDENCED",
+      "publication_wording": "EMPIRICALLY_SUPPORTED",
+      "scope": "Endliche Implementierungsprüfung; kein Ersatz des allgemeinen analytischen Arguments.",
+      "proof_refs": [],
+      "evidence_refs": [
+        "release/causal-distance-temporal-memory-2026-10-24/EVIDENCE_INDEX.json#GRAPH_TESTS"
+      ],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CD-009",
+      "statement": "Ereignisordnung, Provenienz und kausale Intervention sind unterschiedliche wissenschaftliche Begriffe.",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Geltungsbereiche der benannten Primärquellen.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "release/causal-distance-temporal-memory-2026-10-24/SOURCE_BINDINGS.json#S4",
+        "release/causal-distance-temporal-memory-2026-10-24/SOURCE_BINDINGS.json#S5",
+        "release/causal-distance-temporal-memory-2026-10-24/SOURCE_BINDINGS.json#S6"
+      ]
+    },
+    {
+      "claim_id": "CD-010",
+      "statement": "Physische Future-Input-Abhängigkeit ist von heutiger Zielrepräsentation und Retrodiktion zu unterscheiden.",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Modellbegriff der benannten quantenphysikalischen Primärquelle und Vorarbeit.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "release/causal-distance-temporal-memory-2026-10-24/SOURCE_BINDINGS.json#S1",
+        "release/causal-distance-temporal-memory-2026-10-24/SOURCE_BINDINGS.json#S7"
+      ]
+    },
+    {
+      "claim_id": "CD-011",
+      "statement": "Neue Lean-Kernelprüfung und unabhängige externe Reproduktion der Distanz-Erweiterung bleiben offen.",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "scope": "Keine solche Ausführung oder Fremdreproduktion behauptet.",
+      "proof_refs": [],
+      "evidence_refs": [
+        "release/causal-distance-temporal-memory-2026-10-24/EVIDENCE_INDEX.json#LIMITS"
+      ],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CD-012",
+      "statement": "Ein vollständiger produktiver persönlicher Digital Twin und eine universelle physische Anschlussfähigkeit sind nicht abgenommen.",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "scope": "Separate Identitäts-, Rechte-, Runtime- und empirische Nachweise nötig.",
+      "proof_refs": [],
+      "evidence_refs": [
+        "release/causal-distance-temporal-memory-2026-10-24/EVIDENCE_INDEX.json#CURRENT_COMPLETION"
+      ],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CD-013",
+      "statement": "Der historische Kataloggraph hat 32 Knoten und 19 Empfehlungsrelationen; die ausgewählten zehn Python-Module haben 15 interne statische Importrelationen.",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "status": "EVIDENCED",
+      "publication_wording": "EMPIRICALLY_SUPPORTED",
+      "scope": "Katalogstand 11.10.2026 und explizite statische Quellauswahl; keine beobachtete produktive Wirkungskette.",
+      "proof_refs": [],
+      "evidence_refs": [
+        "release/causal-distance-temporal-memory-2026-10-24/EVIDENCE_INDEX.json#FRAMEWORK"
+      ],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CD-014",
+      "statement": "Ein lesendes Personenprofil erzeugt sieben Quellenrouten; sechs zusätzliche Tests prüfen Wiederverwendung und Begrenzung.",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "status": "EVIDENCED",
+      "publication_wording": "EMPIRICALLY_SUPPORTED",
+      "scope": "Parameterisierte Wissensansicht; keine Authentisierung und keine Handlungsvollmacht.",
+      "proof_refs": [],
+      "evidence_refs": [
+        "release/causal-distance-temporal-memory-2026-10-24/EVIDENCE_INDEX.json#PROFILE"
+      ],
+      "source_refs": []
+    },
+    {
+      "claim_id": "CD-015",
+      "statement": "Die gekoppelte Speicher-, Prüf- und Navigationsarchitektur kann als Baustein künstlicher Handlungs- und Wissensfähigkeit dienen.",
+      "classification": "INTERPRETATIVE",
+      "status": "DECLARED",
+      "publication_wording": "INTERPRETATIVE_DECLARATION",
+      "scope": "Architekturinterpretation; keine biologische oder phänomenologische Hinlänglichkeit.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": []
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "release/causal-distance-temporal-memory-2026-10-24/CLAIM_MATRIX.json",
+      "sha256": "520962b13b35f45b61c22433e02d41192551b5b00b29d39cdaf43c7f80c34b26",
+      "git_blob_sha1": "3d5df3c5d046d0a7aa728a6977720137420a295d",
+      "kind": "CLAIM_MATRIX"
+    },
+    {
+      "path": "release/causal-distance-temporal-memory-2026-10-24/SOURCES.json",
+      "sha256": "07806b1245c25e752d721f9bf78121b255b5be96363bf38c73fec2911a3334f1",
+      "git_blob_sha1": "6607411ddba0793eabde401a95b3cedd2c86de2c",
+      "kind": "SOURCE"
+    },
+    {
+      "path": "release/causal-distance-temporal-memory-2026-10-24/SOURCE_BINDINGS.json",
+      "sha256": "e7506ee177b6c4457b83df00daa63ebe12d55b1d1c2c3e1172236a8a4024ccdc",
+      "git_blob_sha1": "c7db93aa497855151a367b1fb3439a2d2c237fa1",
+      "kind": "SOURCE"
+    },
+    {
+      "path": "release/causal-distance-temporal-memory-2026-10-24/EVIDENCE_INDEX.json",
+      "sha256": "c7694cdfa85786420187843b04d6f481249ed761005d09e450fb25c9815ef401",
+      "git_blob_sha1": "70df512c9e2ae678f5fe69f4b43782f1a82baa71",
+      "kind": "EVIDENCE"
+    },
+    {
+      "path": "release/causal-distance-temporal-memory-2026-10-24/BOUNDARY_TESTS.json",
+      "sha256": "7dc1e37bb41cfcef01cbb826f64c6b5d79cf0d6c4ebf06896c177ea66a07345d",
+      "git_blob_sha1": "29cc0c72aa775fc13217c3fb61b26d7830faf351",
+      "kind": "BOUNDARY_TEST"
+    },
+    {
+      "path": "release/causal-distance-temporal-memory-2026-10-24/CHANGE_NOTICE.md",
+      "sha256": "69a6c811d8b2af915b97051bdf0366ca24b403c29df1e4d2f471538f1c06d320",
+      "git_blob_sha1": "54fcd46e7869e37d87f5f102f1f597c4ecd5d9ca",
+      "kind": "CHANGE_NOTICE"
+    },
+    {
+      "path": "release/causal-distance-temporal-memory-2026-10-24/PREPUBLICATION_RETURN_RECEIPT.json",
+      "sha256": "02407cde576ffc080ba1381dde8e51ce75e2ee50f7f6dc6783063dbb6182c831",
+      "git_blob_sha1": "53364f55556a5a0f9df02bd3fc6d07f1ea4deadd",
+      "kind": "RETURN_RECEIPT"
+    },
+    {
+      "path": "release/causal-distance-temporal-memory-2026-10-24/METADATA.json",
+      "sha256": "31477cc6faad7f796a67a05a18cb5258f7a6a6ad85ed2fc16db49496b51d5e4a",
+      "git_blob_sha1": "f0ecee3b3a8abe67348b835140433c2f224cdf7e",
+      "kind": "OTHER"
+    },
+    {
+      "path": "release/causal-distance-temporal-memory-2026-10-24/MAIN_INTEGRATION.json",
+      "sha256": "25239a3dfbe790a2932e28525e7ea84a8be8df0a1adf6fc4c5ddd247444427c5",
+      "git_blob_sha1": "981fa788c3753d15d53a423827172f5ece8b1693",
+      "kind": "EVIDENCE"
+    },
+    {
+      "path": "release/causal-distance-temporal-memory-2026-10-24/validate_article_sources.py",
+      "sha256": "87e3f687b0995a1120c9b03ec50c1743e1ed9c8db5f9dfb8077a2654e764b67f",
+      "git_blob_sha1": "71c105e61f1d68d323aff304e8c47bc75d6072ba",
+      "kind": "OTHER"
+    },
+    {
+      "path": "release/causal-distance-temporal-memory-2026-10-24/build_pdfs.py",
+      "sha256": "c0f73f5c15956f8a302dd56a2c75812a4802ce2a6abdd9580328f2f229cb7082",
+      "git_blob_sha1": "9e981c648c508936701cbd0c6c97150ea8eaa247",
+      "kind": "OTHER"
+    }
+  ],
+  "prepublication_return": {
+    "content_changed": true,
+    "candidate_returned_to_owner": true,
+    "receipt_path": "release/causal-distance-temporal-memory-2026-10-24/PREPUBLICATION_RETURN_RECEIPT.json",
+    "change_notice_path": "release/causal-distance-temporal-memory-2026-10-24/CHANGE_NOTICE.md"
+  },
+  "gates": {
+    "all_claims_dispositioned": true,
+    "all_references_resolve": true,
+    "candidate_frozen": true,
+    "formal_claims_have_kernel_receipts": true,
+    "open_claims_not_worded_as_facts": true,
+    "proof_bundle_in_upload_fileset": true,
+    "returned_bytes_equal_upload_bytes": true
+  },
+  "completion_claims": {
+    "machine_proof_complete": true,
+    "zenodo_upload_authorized": true
+  }
+}

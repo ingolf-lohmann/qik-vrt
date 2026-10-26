@@ -1,0 +1,93 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann.
+name: QIKVRT IONOS exact DNS bootstrap
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/qikvrt_ionos_dns_bootstrap.yml'
+  workflow_dispatch:
+    inputs:
+      expected_main_head:
+        description: Exact independently observed main commit
+        required: true
+        type: string
+      expected_apex_sha256:
+        description: SHA256 from independent IONOS apex readback
+        required: true
+        type: string
+      target_ipv4:
+        description: Independently admitted TLS-capable original-host IPv4
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  apex-inventory:
+    if: github.repository == 'ingolf-lohmann/qik-vrt' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Read existing IONOS apex routing without writing
+        env:
+          IONOS_DNS_API_KEY: ${{ secrets.IONOS_DNS_API_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "$IONOS_DNS_API_KEY" ]; then
+            echo '{"state":"HOLD_IONOS_DNS_API_KEY_UNAVAILABLE","effect":"NONE"}' > ionos-apex-inventory.json
+            exit 0
+          fi
+          python3 -B tools/qikvrt_ionos_dns.py readback --zone raumzeitterminal.de > ionos-apex-inventory.json
+      - name: Upload independent DNS inventory receipt
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: ionos-apex-inventory-${{ github.run_id }}
+          path: ionos-apex-inventory.json
+          if-no-files-found: ignore
+          retention-days: 30
+  exact-apex-update:
+    if: github.repository == 'ingolf-lohmann/qik-vrt' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    environment: ionos-production
+    concurrency:
+      group: qikvrt-ionos-apex-write
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Bind exact current main before external effect
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_MAIN: ${{ inputs.expected_main_head }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_MAIN"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq '.object.sha')" = "$EXPECTED_MAIN"
+      - name: Apply one CAS-bound apex A update and independent provider readback
+        env:
+          IONOS_DNS_API_KEY: ${{ secrets.IONOS_DNS_API_KEY }}
+          EXPECTED_APEX: ${{ inputs.expected_apex_sha256 }}
+          TARGET_IPV4: ${{ inputs.target_ipv4 }}
+        run: |
+          set -euo pipefail
+          test -n "$IONOS_DNS_API_KEY" || { echo HOLD_IONOS_DNS_API_KEY_REQUIRED; exit 2; }
+          python3 -B tools/qikvrt_ionos_dns.py apply --zone raumzeitterminal.de --target-ipv4 "$TARGET_IPV4" --expected-records-sha256 "$EXPECTED_APEX" > ionos-dns-receipt.json
+          python3 - <<'PY'
+          import json
+          r=json.load(open("ionos-dns-receipt.json"))
+          assert r["state"]=="DONE", r.get("state")
+          print("EXACT_APEX_PROVIDER_READBACK_DONE")
+          PY
+      - name: Preserve effect receipt even on failure
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: ionos-dns-bootstrap-${{ github.run_id }}
+          path: ionos-dns-receipt.json
+          if-no-files-found: ignore
+          retention-days: 90
