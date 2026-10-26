@@ -1,0 +1,57 @@
+{
+  "schema": "qikvrt_consumption_productive_preflight_v1",
+  "observed_at": "2026-10-23T08:59:17.462Z",
+  "authority": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "role": "Authority",
+    "status": 200,
+    "head": "a8017ab67824f01ec4d215cf7af83b8b0779283c",
+    "tree": "94317a4da76fac49b63bb129badcbbd21471c092",
+    "observed_at": "2026-10-23T08:59:16.929Z",
+    "source_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/commits/main",
+    "request_attempted": true,
+    "observation_kind": "LIVE_HTTP"
+  },
+  "domain": {
+    "url": "https://raumzeitterminal.de/",
+    "method": "GET (ohne Redirect)",
+    "status": 525,
+    "observed_at": "2026-10-23T08:59:16.832Z",
+    "latency_ms": 164
+  },
+  "native_connection": {
+    "schema": "qikvrt_public_native_connection_readback_v1",
+    "adapter_version": "20261022.1",
+    "observed_at": "2026-10-23T08:59:17.462Z",
+    "console_url": "/terminal/",
+    "api_url": "/api/mesh/terminal/native",
+    "commands": [
+      "continue",
+      "readback"
+    ],
+    "native_available": false,
+    "operator_binding_configured": false,
+    "operator_session_verified": false,
+    "open_gates": [
+      "ADMITTED_MESH_RUNTIME_ENDPOINT",
+      "SITE_LOCAL_OPERATOR_ID_BINDING"
+    ],
+    "reason": "Kein öffentlicher Mesh-Transputer-Endpunkt konfiguriert.",
+    "scope": "CURRENT_PUBLIC_RUNTIME_DISCOVERY_AND_CONFIGURATION_ONLY",
+    "included_in_snapshot_digest": false,
+    "native_execution_verified": false,
+    "effect_ack_done": false
+  },
+  "persisted_observation": {
+    "id": "05592f2c-b620-4bbd-9d60-b2ded35f1630",
+    "sha256": "678676fcfdeaa569d781fc65ea587b0d03aec1b191e1b52a8ab37a30140aeed9",
+    "byte_readback_verified": true
+  },
+  "first_missing_binding": "ADMITTED_MESH_RUNTIME_ENDPOINT",
+  "retry_condition": "Existing original-host endpoint and operator identity become callable through the authorized protected native route; then install the actual separately evidenced consumption grant and verify the exact deployed source.",
+  "vendor_live_entitlement_verified": false,
+  "productive_acceptance": false,
+  "purchases": 0,
+  "substitute_executor_created": false,
+  "unchanged_failure_retriggered": false
+}
