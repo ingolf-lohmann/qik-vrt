@@ -1353,6 +1353,7 @@ jobs:
           path: |
             ${{ runner.temp }}/container-evidence
             !${{ runner.temp }}/container-evidence/s1-*.oci.tar
+            ${{ runner.temp }}/skopeo-loader/version-check.json
           if-no-files-found: error
           retention-days: 30
 

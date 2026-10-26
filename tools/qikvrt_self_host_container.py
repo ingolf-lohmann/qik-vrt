@@ -378,9 +378,23 @@ def tool_prepare(root, output, archive=None):
             "TOOL_LOADED_IMAGE_MISMATCH")
     version = command("docker", "run", "--rm", "--pull=never", "--network", "none", "--read-only",
         "--cap-drop", "ALL", "--security-opt", "no-new-privileges:true", pin["config_sha256"], "--version").decode().strip()
-    require(version == "skopeo version " + pin["version"], "TOOL_EXECUTABLE_VERSION_MISMATCH")
+    # Upstream createApp appends " commit: <vcs.revision>" for Git builds:
+    # https://github.com/podman-container-tools/skopeo/blob/main/cmd/skopeo/main.go
+    # The reviewed release remains exact; executable identity is still bound
+    # to the verified config and every ordered filesystem layer above.
+    matched = re.fullmatch("skopeo version " + re.escape(pin["version"]) +
+                           r"(?: commit: (?P<commit>[a-f0-9]{40}))?", version)
+    executable_commit = matched.group("commit") if matched else None
+    write_receipt(output / "version-check.json", {
+        "state": "TOOL_EXECUTABLE_VERSION_VERIFIED" if matched else "HOLD_TOOL_EXECUTABLE_VERSION_MISMATCH",
+        "tool_image_id": pin["config_sha256"], "expected_version": pin["version"],
+        "observed_version": version[:256], "observed_version_sha256": sha(version.encode()),
+        "version_matches_reviewed_release": matched is not None,
+        "executable_commit": executable_commit, "ordered_diff_ids_verified": True})
+    require(matched is not None, "TOOL_EXECUTABLE_VERSION_MISMATCH")
     return {**result, "state": "VERIFIED_TOOL_IMAGE_READY", "cache_name": cache_name,
-            "origin": origin, "version": version, "official_manifest": pin["resolved_platform_digest"],
+            "origin": origin, "version": version, "executable_commit": executable_commit,
+            "official_manifest": pin["resolved_platform_digest"],
             "runtime_smoke_verified": False}
 
 

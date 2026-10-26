@@ -149,6 +149,35 @@ class VerifiedToolCache(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory, self.assertRaisesRegex(ValueError, "TOOL_EXECUTABLE_VERSION_MISMATCH"):
             self.prepare_case(directory, version="0.0.0")
 
+    def test_upstream_commit_metadata_keeps_exact_release_and_cache_guards(self):
+        commit = "0123456789abcdef" * 2 + "01234567"
+        version = "1.22.3 commit: " + commit
+        for cache in (True, False):
+            with self.subTest(cache=cache), tempfile.TemporaryDirectory() as directory:
+                result, commands = self.prepare_case(directory, cache=cache, version=version)
+                self.assertEqual(result["version"], "skopeo version " + version)
+                self.assertEqual(result["executable_commit"], commit)
+                receipt = json.loads((Path(directory) / "ready/version-check.json").read_bytes())
+                self.assertTrue(receipt["version_matches_reviewed_release"])
+                self.assertEqual(receipt["tool_image_id"], result["tool_image_id"])
+                self.assertFalse(receipt["effect_ack_done"])
+                self.assertEqual(any(a[1] == "pull" for a in commands), not cache)
+
+    def test_wrong_release_and_malformed_version_metadata_leave_a_hold_receipt(self):
+        commit = "a" * 40
+        for version in ("1.22.30", "1.22.3-dev", "0.0.0 commit: " + commit,
+                        "1.22.3 commit: " + "a" * 39, "1.22.3 commit: " + "g" * 40,
+                        "1.22.3 commit: " + commit + "-dirty", "1.22.3 unexpected",
+                        "1.22.3\nskopeo version 0.0.0", "1.22.3 commit: " + commit + " extra"):
+            with self.subTest(version=version), tempfile.TemporaryDirectory() as directory:
+                with self.assertRaisesRegex(ValueError, "TOOL_EXECUTABLE_VERSION_MISMATCH"):
+                    self.prepare_case(directory, version=version)
+                receipt = json.loads((Path(directory) / "ready/version-check.json").read_bytes())
+                self.assertEqual(receipt["state"], "HOLD_TOOL_EXECUTABLE_VERSION_MISMATCH")
+                self.assertFalse(receipt["version_matches_reviewed_release"])
+                self.assertFalse(receipt["effect_ack_done"])
+                self.assertEqual(receipt["observed_version"], "skopeo version " + version)
+
     def test_official_readback_graph_and_toolchain_lock_are_bound(self):
         pin = c.tool_pin(Path(__file__).resolve().parents[1])
         self.assertEqual(pin["version"], "1.22.3")
