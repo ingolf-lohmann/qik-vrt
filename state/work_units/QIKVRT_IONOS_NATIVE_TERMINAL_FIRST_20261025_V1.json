@@ -223,6 +223,24 @@
         "effect_ack_done": false,
         "configuration_regression": "The integrated full suite exposed one static watchdog assertion still requiring requested/in_progress notifications and cancel-in-progress=true. Update that existing assertion to reject the old cancellation configuration and require the adopted Main completion-only/non-cancelling configuration. Retain every analyzer liveness, incomplete-job, lease and failure test and the existing five-minute unfinished-run observation; align the original documentation."
       }
+    },
+    "technical_review_recovery": {
+      "observed_subject": "6417680fab1d1f4be5dde51e2513ead0288b0f4e",
+      "all_current_workflows": "13 SUCCESS,3 conditional SKIPPED; materializer40339693817 attempt2 SUCCESS15:37:53; original cancelled attempt retained",
+      "stale_disposition": "REQUEST_CHANGES from14:58:50 remained after the underlying gate recovered",
+      "original_checker_reentry": "Job121675211991/run40344728004 completed with selection NOOP15:44:37: any earlier same-head technical review suppressed fresh evaluation",
+      "repair": "Reuse the original snapshot reads and evaluator. Key the technical projection by its actual decision/subject/scope, ignore timestamps and unrelated counters, and refresh only changed technical status. Preserve original reviews without another semantic review or native approval. Fail unavailable/malformed history closed. Resolve a lost review POST only by independent readback, never a second fallback POST.",
+      "governance": "Owner Principal review and native rules remain separate and unchanged; no new scheduler, proxy, scope or initial dispatch substitution",
+      "site_checker_delivery": {
+        "version": 51,
+        "source_commit": "5fba7d0908276047923bbc562d707364d84caa2c",
+        "deployed_at_existing_origin": true,
+        "domain_delivery": false,
+        "resolver_policy": "OWNER_CLOUDFLARE_ONLY_V1",
+        "public_snapshot": "009f78b7-36f6-49c3-a16f-37d499854de8",
+        "sha256": "2f29b75bc8fd799921e8e10e847fb77aef37e3dd100abf6e44b621bd47cc7d4e"
+      },
+      "effect_ack_done": false
     }
   }
 }

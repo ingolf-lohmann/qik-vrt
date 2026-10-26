@@ -77,6 +77,24 @@ cancel a paid subscription. Subscription cancellation requires provider
 confirmation through an authenticated billing operation; no such confirmation
 has been obtained by this change.
 
+## Reobserve recovered technical evidence — 2026-10-26
+
+A prior technical review does not permanently suppress evaluation of its exact
+head. The original selector and evaluator reobserve the applicable gates and
+subject. A changed disposition refreshes only the technical status when the
+original review already exists; the original review and Principal instruction
+remain intact. Identical subject, scope and decision produce NOOP. Clock changes
+and unrelated run counters alone do not create work. Regressed, unavailable or
+drifting evidence cannot retain a stale success.
+
+This refresh performs no new semantic review or native approval and does not
+write the dedicated governance status. Missing or malformed checker history
+blocks the operation. If a review POST loses its response, independent readback
+must find exactly the intended bot review before proceeding; a second fallback
+POST is forbidden. Source tests execute the actual selector and publishing
+branches with bounded intercepted REST. Live adoption and domain delivery
+remain separate effects.
+
 ## Requested reviews
 
 When a review is requested, a conforming repository client or agent must act without deliberate queueing:
