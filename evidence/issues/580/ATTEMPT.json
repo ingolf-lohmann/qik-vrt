@@ -2,17 +2,17 @@
   "EFFECT_ACK_DONE": false,
   "artifacts": {
     "ANSWER.md": "dadc1ff46a4d1dbe5bc264eff9e7d929fbf1e1e68594adeadb155511d5aa7e82",
-    "CONTEXT.md": "48a9e93ae7c01d945fa1b1e066f30f0efd614607e38c2963cc9e8983c4dffd20",
-    "REQUEST.json": "a7f89b71ffd7152ed64dfbc87150a3bddfa1f10102d0fb2339dd97b995310b91",
-    "REQUEST.sha256": "1e923024af08fb43fac4b312aff7d22303217ede74a4d39a85d9e895e6fec029",
-    "STATUS.json": "53ffd944806aa76e9f8bf46ff4b5ecf8849fc2cc028b76ffc83ac340a3ce0d79"
+    "CONTEXT.md": "5cf530a91168e262ba502a098b99b56c595e958269e60ad2330b4912ff9b0b3d",
+    "REQUEST.json": "bf1275c41a3c915b552e26c673c7bc204f02f8bebd4fcd36a49f08d1fbe6d5af",
+    "REQUEST.sha256": "101d15dc08e63f8f603ba578305ac87badcf4147aad547fc52a53e530d286ca3",
+    "STATUS.json": "92efd75d12d6e0e85d46b2d7180cc13e70e8e6298cf0ba7cd3a35aa9267a7713"
   },
   "automatic_issue_close": false,
   "automatic_merge": false,
   "execute": true,
-  "fingerprint": "e7a0b80b5ecc7ef1f669434d076e66b4ca5983a786690522be125736331f1312",
+  "fingerprint": "43a5ad0dd7e69c46dc594fbbd185e470e60a539dab8828ca35ada448cdebd6f2",
   "inputs": {
-    "context_sha256": "48a9e93ae7c01d945fa1b1e066f30f0efd614607e38c2963cc9e8983c4dffd20",
+    "context_sha256": "5cf530a91168e262ba502a098b99b56c595e958269e60ad2330b4912ff9b0b3d",
     "processor_blobs": {
       ".github/workflows/issue-agent-backlog-resume.yml": "f45ac3b13f8059f51030c50a454d5af78d9b9bda08e9cd0769132fc243fef333",
       ".github/workflows/issue-autonomous-processing.yml": "bd86991d0347159d79169ad8ccb7273579b584360d859a1147774979d967174c",
@@ -29,7 +29,7 @@
     "request_sha256": "9641f269e75f4b0450135c51bb35fef77e2394382d31331189e3a04a8f523b97"
   },
   "issue_number": 580,
-  "previous_branch_head": "ad4a5f4a8f75c441fe78be43173ce021ad2722ee",
+  "previous_branch_head": "d605a64b2fee8c52bacd116e05af587e3c4cd2c2",
   "processing_status": "BLOCK",
   "reason": "NEW_CAUSAL_INPUT",
   "recorded": true,

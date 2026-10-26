@@ -530,8 +530,10 @@ jobs:
     outputs:
       signed_binding: ${{ steps.effect-admission.outputs.signed_binding }}
     name: Reused S1 + Mozilla Release - Firefox 158 XPI admission
-    needs: amo_unlisted
-    if: always()
+    needs: [amo_unlisted, container]
+    # The native-only package has no Firefox installation to admit. Keep the
+    # existing browser gate for a browser package or an explicit signing path.
+    if: ${{ always() && (needs.container.outputs.terminal_profile == 'firefox' || (github.event_name == 'workflow_dispatch' && (inputs.amo_sign_unlisted || inputs.amo_readback_only)) || needs.amo_unlisted.outputs.signed_binding != '') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     permissions:
@@ -1142,8 +1144,8 @@ jobs:
           if-no-files-found: warn
 
   container:
-    name: Linux S1 container production and smoke
-    needs: [test, s1_firefox_extension]
+    name: Linux S1 native terminal production and smoke
+    needs: test
     runs-on: ubuntu-24.04
     timeout-minutes: 35
     permissions:
@@ -1154,6 +1156,7 @@ jobs:
       tree: ${{ steps.receipt.outputs.tree }}
       digest: ${{ steps.receipt.outputs.digest }}
       manifest: ${{ steps.receipt.outputs.manifest }}
+      terminal_profile: ${{ steps.receipt.outputs.terminal_profile }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -1182,6 +1185,32 @@ jobs:
         with:
           version: v0.38.0
           driver-opts: image=moby/buildkit@sha256:b059f8d7226d0b326bc871af489a5dddf65e36af4d20d14251b072974d9ee87c
+      - name: Prepare exact Skopeo tool from verified cache or pinned official source
+        id: tool-loader
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/container-evidence"
+          trap 'if test -f "$RUNNER_TEMP/skopeo-loader/version-check.json"; then cp "$RUNNER_TEMP/skopeo-loader/version-check.json" "$RUNNER_TEMP/container-evidence/skopeo-version-check.json"; fi' EXIT
+          python3 -B tools/qikvrt_self_host.py container-tool-prepare \
+            --output "$RUNNER_TEMP/skopeo-loader" --receipt "$RUNNER_TEMP/skopeo-loader/receipt.json"
+          python3 -B - <<'PYTOOL'
+          import json,os
+          from pathlib import Path
+          r=json.loads((Path(os.environ['RUNNER_TEMP'])/'skopeo-loader/receipt.json').read_bytes())
+          assert r['state']=='VERIFIED_TOOL_IMAGE_READY'
+          with open(os.environ['GITHUB_OUTPUT'],'a') as out:
+              out.write('image='+r['tool_image_id']+'\n')
+              out.write('artifact='+r['cache_name']+'\n')
+          PYTOOL
+      - name: Retain verified exact tool before runtime build and smoke
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: ${{ steps.tool-loader.outputs.artifact }}
+          path: ${{ runner.temp }}/skopeo-loader/skopeo-loader.docker.tar
+          if-no-files-found: error
+          retention-days: 90
       - name: Export credential-free committed build context
         run: |
           set -euo pipefail
@@ -1199,89 +1228,20 @@ jobs:
             --output "$RUNNER_TEMP/frozen-carrier" \
             --carrier-oci-archive "$RUNNER_TEMP/container-evidence/carrier-original.oci.tar" \
             --receipt "$RUNNER_TEMP/container-evidence/carrier.json"
-      - name: Resolve the admitted exact Standard signing artifact
-        id: signed-input
-        env:
-          SIGNED_BINDING: ${{ needs.s1_firefox_extension.outputs.signed_binding }}
-        run: |
-          python3 -B - <<'PY'
-          import json,os,re
-          signed=json.loads(os.environ['SIGNED_BINDING'])
-          assert signed['repository']==os.environ['GITHUB_REPOSITORY']=='ingolf-lohmann/qik-vrt'
-          assert type(signed['run_id']) is int and signed['run_id']>0
-          assert re.fullmatch(r'[A-Za-z0-9_.-]{1,160}',signed['artifact_name'])
-          assert re.fullmatch(r'[A-Za-z0-9_.-]+[.]xpi',signed['file_name'])
-          assert re.fullmatch(r'[a-f0-9]{64}',signed['xpi_sha256'])
-          with open(os.environ['GITHUB_OUTPUT'],'a') as out:
-              out.write('run_id='+str(signed['run_id'])+'\nartifact_name='+signed['artifact_name']+'\n')
-          PY
-      - name: Retrieve the exact admitted Mozilla-signed artifact
-        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
-        with:
-          github-token: ${{ github.token }}
-          run-id: ${{ steps.signed-input.outputs.run_id }}
-          name: ${{ steps.signed-input.outputs.artifact_name }}
-          path: ${{ runner.temp }}/signed-standard-input
-      - name: Verify original Standard payload before creating the signed build context
-        env:
-          SIGNED_BINDING: ${{ needs.s1_firefox_extension.outputs.signed_binding }}
-        run: |
-          python3 -B - <<'PY'
-          import json,os,shutil
-          from pathlib import Path
-          from tools import qikvrt_self_host as host
-          signed=json.loads(os.environ['SIGNED_BINDING']);root=Path(os.environ['RUNNER_TEMP'])
-          xpi=root/'signed-standard-input'/signed['file_name']
-          checked=host.firefox_xpi_source_binding(xpi,Path('browser/firefox/qikvrt-terminal'))
-          assert checked['xpi_sha256']==signed['xpi_sha256'] and checked['signature_metadata_present'] is True
-          context=root/'signed-standard-context';context.mkdir()
-          shutil.copyfile(xpi,context/'standard.xpi')
-          (root/'container-evidence/signed-source.json').write_text(json.dumps(checked,sort_keys=True,indent=2)+'\n')
-          PY
-      - name: Freeze the Mozilla Release upgrade on the original dependency layers
-        run: |
-          set -euo pipefail
-          head="$(git rev-parse HEAD)"; tree="$(git rev-parse HEAD^{tree})"
-          epoch="$(git show -s --format=%ct HEAD)"
-          docker buildx build --no-cache --platform linux/amd64 --target production-firefox-runtime \
-            --file "$RUNNER_TEMP/s1-context/runtime/self-host/Dockerfile" --provenance=false --sbom=false \
-            --build-context "qikvrt-frozen-carrier=oci-layout://$RUNNER_TEMP/frozen-carrier@sha256:b2c5d065f9e9253d9f9eb454a86614e94592e6a8a251b8c9b44f26295ffb59b9" \
-            --build-arg RUNTIME_CARRIER=qikvrt-frozen-carrier --build-arg "SOURCE_DATE_EPOCH=$epoch" \
-            --build-arg "QIKVRT_SOURCE_HEAD=$head" --build-arg "QIKVRT_SOURCE_TREE=$tree" \
-            --output "type=oci,dest=$RUNNER_TEMP/container-evidence/firefox158-carrier.oci.tar,rewrite-timestamp=true" \
-            "$RUNNER_TEMP/s1-context"
-          python3 -B tools/qikvrt_self_host.py container-oci-check \
-            --oci-archive "$RUNNER_TEMP/container-evidence/firefox158-carrier.oci.tar" \
-            --expected-head "$head" --expected-tree "$tree" \
-            --receipt "$RUNNER_TEMP/container-evidence/firefox158-carrier.json"
-          python3 -B - <<'PY'
-          import json,os,tarfile
-          from pathlib import Path
-          p=Path(os.environ['RUNNER_TEMP'])
-          original=json.loads((p/'container-evidence/carrier.json').read_bytes())
-          current=json.loads((p/'container-evidence/firefox158-carrier.json').read_bytes())
-          # The original runtime layers remain unchanged and in order.
-          original_config=json.loads((p/'frozen-carrier/blobs/sha256'/original['image_config_digest'].split(':')[1]).read_bytes())
-          prior=original_config['rootfs']['diff_ids']
-          assert current['diff_ids'][:len(prior)]==prior
-          with tarfile.open(p/'container-evidence/firefox158-carrier.oci.tar') as archive:
-              archive.extractall(p/'firefox158-carrier',filter='data')
-          PY
-      - name: Two independent Linux OCI builds from the frozen Firefox 158 carrier
+      - name: Two independent native terminal OCI builds from the original frozen carrier
         id: independent-builds
         run: |
           set -euo pipefail
           head="$(git rev-parse HEAD)"
           tree="$(git rev-parse HEAD^{tree})"
           epoch="$(git show -s --format=%ct HEAD)"
-          carrier_digest="$(python3 -c 'import json,os; print(json.load(open(os.environ["RUNNER_TEMP"]+"/container-evidence/firefox158-carrier.json"))["image_digest"])')"
           for build in 1 2; do
-            docker buildx build --no-cache --platform linux/amd64 --target production \
+            docker buildx build --no-cache --platform linux/amd64 --target production-terminal \
               --file "$RUNNER_TEMP/s1-context/runtime/self-host/Dockerfile" \
               --provenance=false --sbom=false \
-              --build-context "qikvrt-firefox158-carrier=oci-layout://$RUNNER_TEMP/firefox158-carrier@$carrier_digest" \
-              --build-context "qikvrt-signed-extension=$RUNNER_TEMP/signed-standard-context" \
-              --build-arg QIKVRT_PRODUCTION_IMAGE=qikvrt-firefox158-carrier \
+              --build-context "qikvrt-frozen-carrier=oci-layout://$RUNNER_TEMP/frozen-carrier@sha256:b2c5d065f9e9253d9f9eb454a86614e94592e6a8a251b8c9b44f26295ffb59b9" \
+              --build-arg QIKVRT_PRODUCTION_IMAGE=qikvrt-frozen-carrier \
+              --build-arg QIKVRT_TERMINAL_PROFILE=temdd \
               --build-arg "SOURCE_DATE_EPOCH=$epoch" \
               --build-arg "QIKVRT_SOURCE_HEAD=$head" --build-arg "QIKVRT_SOURCE_TREE=$tree" \
               --tag "qikvrt-s1:sha-$head" \
@@ -1295,15 +1255,17 @@ jobs:
             --receipt "$RUNNER_TEMP/container-evidence/oci.json"
           mv "$RUNNER_TEMP/container-evidence/s1-1.oci.tar" "$RUNNER_TEMP/container-evidence/image.oci.tar"
           rm "$RUNNER_TEMP/container-evidence/s1-2.oci.tar"
-      - name: Real unprivileged Firefox/terminal container and durable restart
+      - name: Real unprivileged native terminal container and durable restart
         run: |
           set -euo pipefail
           head="$(git rev-parse HEAD)"
-          loader="quay.io/skopeo/stable@sha256:97772f3c64fd2fba720b2bafaf37239dc44d8b1c625c8383c64044832efe9ed9"
+          loader="${{ steps.tool-loader.outputs.image }}"
           load_dir="$(mktemp -d "$RUNNER_TEMP/qikvrt-smoke-load.XXXXXX")"
           trap 'rm -rf "$load_dir"' EXIT
-          docker pull "$loader"
-          docker run --rm --read-only --network none --user "$(id -u):$(id -g)" --cap-drop ALL --security-opt no-new-privileges:true \
+          docker run --rm --pull=never --network none --read-only --cap-drop ALL \
+            --security-opt no-new-privileges:true "$loader" --version \
+            | tee "$RUNNER_TEMP/container-evidence/skopeo-version.txt"
+          docker run --rm --pull=never --read-only --network none --user "$(id -u):$(id -g)" --cap-drop ALL --security-opt no-new-privileges:true \
             --tmpfs /tmp:rw,nosuid,size=128m,mode=1777 --tmpfs /var/tmp:rw,nosuid,size=2g,mode=1777 \
             --mount "type=bind,source=$RUNNER_TEMP/container-evidence/image.oci.tar,target=/input.oci.tar,readonly" \
             --mount "type=bind,source=$load_dir,target=/output" \
@@ -1335,7 +1297,7 @@ jobs:
           print(json.dumps(r,sort_keys=True))
           PYLOAD
           python3 -B tools/qikvrt_self_host.py container-smoke \
-            --image "qikvrt-s1:sha-$(git rev-parse HEAD)" \
+            --image "qikvrt-s1:sha-$(git rev-parse HEAD)" --terminal-profile temdd \
             --output "$RUNNER_TEMP/container-evidence" \
             --receipt "$RUNNER_TEMP/container-evidence/smoke.json"
       - name: Bind exact image/package and CI execution identities
@@ -1350,16 +1312,22 @@ jobs:
           o=json.loads((p/'oci.json').read_bytes()); s=json.loads((p/'smoke.json').read_bytes())
           assert (o['source_head'],o['source_tree']) == (s['source_head'],s['source_tree'])
           assert o['independent_rebuild_digest_equal'] is True
+          assert s['state'] == 'CONTAINER_SMOKE_AND_RESTART_VERIFIED'
+          profile=s['terminal_profile']
+          assert profile in {'temdd','firefox'}
+          assert type(s['firefox_acceptance_in_scope']) is bool
+          assert s['firefox_acceptance_in_scope'] == (profile == 'firefox')
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip() == o['source_head']
           assert not subprocess.check_output(['git','status','--porcelain','--untracked-files=no'])
           r={'repository':os.environ['GITHUB_REPOSITORY'],'run_id':os.environ['GITHUB_RUN_ID'],
              'run_attempt':os.environ['GITHUB_RUN_ATTEMPT'],'source_head':o['source_head'],
              'source_tree':o['source_tree'],'image_digest':o['image_digest'],
              'manifest_sha256':s['manifest_sha256'],'container_production_verified':True,
+             'terminal_profile':profile,'firefox_acceptance_in_scope':s['firefox_acceptance_in_scope'],
              'registry_publication_verified':False,'public_production_verified':False,'effect_ack_done':False}
           (p/'ci.json').write_text(json.dumps(r,sort_keys=True,indent=2)+'\n')
           with open(os.environ['GITHUB_OUTPUT'],'a') as out:
-              for k,v in [('head',o['source_head']),('tree',o['source_tree']),('digest',o['image_digest']),('manifest',s['manifest_sha256'])]:
+              for k,v in [('head',o['source_head']),('tree',o['source_tree']),('digest',o['image_digest']),('manifest',s['manifest_sha256']),('terminal_profile',profile)]:
                   out.write(k+'='+v+'\n')
           print(json.dumps(r,sort_keys=True))
           PY
@@ -1392,7 +1360,7 @@ jobs:
 
   container_publish:
     name: Reviewed versioned OCI publication
-    needs: [test, container, s1_firefox_extension]
+    needs: [test, container]
     if: github.ref == 'refs/heads/main' && vars.QIKVRT_CONTAINER_PUBLISH_ENABLED == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
@@ -1443,14 +1411,17 @@ jobs:
             --oci-archive "$RUNNER_TEMP/container-evidence/image.oci.tar" \
             --expected-head "$head" --expected-tree "$(git rev-parse HEAD^{tree})" \
             --receipt "$RUNNER_TEMP/publish-oci-check.json"
-          publisher="quay.io/skopeo/stable@sha256:97772f3c64fd2fba720b2bafaf37239dc44d8b1c625c8383c64044832efe9ed9"
-          docker run --rm "$publisher" --version > "$RUNNER_TEMP/publisher-version.txt"
+          python3 -B tools/qikvrt_self_host.py container-tool-prepare \
+            --output "$RUNNER_TEMP/skopeo-publisher" --receipt "$RUNNER_TEMP/skopeo-publisher/receipt.json"
+          publisher="$(python3 -B -c 'import json,os,pathlib; print(json.loads((pathlib.Path(os.environ["RUNNER_TEMP"])/"skopeo-publisher/receipt.json").read_bytes())["tool_image_id"])')"
+          docker run --rm --pull=never --network none --read-only --cap-drop ALL \
+            --security-opt no-new-privileges:true "$publisher" --version > "$RUNNER_TEMP/publisher-version.txt"
           for tag in "sha-$head" "s1-1.12.0-$head"; do
             if docker buildx imagetools inspect "$image:$tag" --raw > "$RUNNER_TEMP/registry.json" 2> "$RUNNER_TEMP/registry-error"; then
               : # An existing immutable version is verified below, never overwritten.
             else
               python3 -c 'import pathlib,re,os; assert re.search("not found|manifest unknown",pathlib.Path(os.environ["RUNNER_TEMP"]+"/registry-error").read_text(),re.I), "registry transport/authentication unavailable"'
-              docker run --rm --read-only --cap-drop ALL --security-opt no-new-privileges:true \
+              docker run --rm --pull=never --read-only --cap-drop ALL --security-opt no-new-privileges:true \
                 --user "$(id -u):$(id -g)" --env HOME=/tmp \
                 --tmpfs /tmp:rw,nosuid,size=128m,mode=1777 --tmpfs /var/tmp:rw,nosuid,size=2g,mode=1777 \
                 --mount "type=bind,source=$DOCKER_CONFIG,target=/auth,readonly" \
@@ -1482,7 +1453,7 @@ jobs:
             : # Verify an existing version; never replace it.
           else
             python3 -c 'import pathlib,re,os; assert re.search("not found|manifest unknown",pathlib.Path(os.environ["RUNNER_TEMP"]+"/carrier-registry-error").read_text(),re.I), "registry transport/authentication unavailable"'
-            docker run --rm --read-only --cap-drop ALL --security-opt no-new-privileges:true \
+            docker run --rm --pull=never --read-only --cap-drop ALL --security-opt no-new-privileges:true \
               --user "$(id -u):$(id -g)" --env HOME=/tmp \
               --tmpfs /tmp:rw,nosuid,size=128m,mode=1777 --tmpfs /var/tmp:rw,nosuid,size=2g,mode=1777 \
               --mount "type=bind,source=$DOCKER_CONFIG,target=/auth,readonly" \
@@ -1500,7 +1471,7 @@ jobs:
           assert 'sha256:'+hashlib.sha256(raw).hexdigest()==os.environ['CARRIER_DIGEST'], 'immutable original archive registry digest differs'
           PYCARRIERDIGEST
           mkdir "$RUNNER_TEMP/carrier-registry-readback"
-          docker run --rm --read-only --cap-drop ALL --security-opt no-new-privileges:true \
+          docker run --rm --pull=never --read-only --cap-drop ALL --security-opt no-new-privileges:true \
             --user "$(id -u):$(id -g)" --env HOME=/tmp \
             --tmpfs /tmp:rw,nosuid,size=128m,mode=1777 --tmpfs /var/tmp:rw,nosuid,size=2g,mode=1777 \
             --mount "type=bind,source=$DOCKER_CONFIG,target=/auth,readonly" \
@@ -1623,5 +1594,6 @@ jobs:
           path: ${{ runner.temp }}/public-delivery.json
           if-no-files-found: error
           retention-days: 30
+
 
 

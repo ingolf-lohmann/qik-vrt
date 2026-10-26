@@ -1,0 +1,202 @@
+{
+  "artificial_cognitive_contribution": {
+    "scope": "Reuse native S1 temdd profile, parameterize original container consumer, preserve exact-source/profile/host/storage/HTTPS gates and browser signing scope.",
+    "system": "OpenAI Codex"
+  },
+  "authority_repository": "ingolf-lohmann/qik-vrt",
+  "base_head": "080c05f1cba7b1638477da78613b87252ffe1a12",
+  "base_tree": "93d33349ef03983ebdb36432d70f80da68569ade",
+  "effect_ack_done": false,
+  "evidence_retention": "METADATA_ONLY; no credential values or raw conversation transcript",
+  "firefox_acceptance_verified": false,
+  "host_binding_verified": false,
+  "human_contribution": {
+    "decision": "Prioritize existing IONOS production and https://raumzeitterminal.de/; defer Firefox; no desktop-PC prerequisite.",
+    "principal": "Ingolf Lohmann"
+  },
+  "initial_work_unit_state": "REVIEWABLE_SOURCE_REPAIR_PENDING_NATIVE_CI_AND_HOST_EFFECT",
+  "loader_dependency_correction": {
+    "error": "manifest unknown for original Skopeo carrier",
+    "failed_job": 121107295223,
+    "failed_run": 40172405691,
+    "native_successor_execution_required": true,
+    "readback": "evidence/self_host/SKOPEO_CARRIER_READBACK_20261025.json",
+    "replacement_platform_digest": "sha256:309ce24d7a87ca4eb35fc6dd9d91af7c4750d7f24578f633c6effd75c81f315d",
+    "same_copy_preserve_digests_contract": true
+  },
+  "open_work": [
+    {
+      "id": "NATIVE_CONTAINER_CI",
+      "next_action": "Run the changed native-only image through the original independent OCI and smoke lane.",
+      "state": "OPEN"
+    },
+    {
+      "id": "PROTECTED_MAIN_INTEGRATION",
+      "next_action": "Integrate only the exact reviewed and tested candidate through original governance.",
+      "state": "OPEN"
+    },
+    {
+      "id": "IONOS_ORIGINAL_HOST_BINDING",
+      "next_action": "Deliver the existing protected mTLS daemon, storage, private temdd configuration and image pins to the original production consumer; do not invent values or replace the executor.",
+      "state": "OPEN"
+    },
+    {
+      "id": "EXACT_DOMAIN_ACCEPTANCE",
+      "next_action": "Verify DNS, TLS, fresh runtime pins and original native terminal behavior at https://raumzeitterminal.de/ after actual host execution.",
+      "state": "OPEN"
+    },
+    {
+      "id": "FIREFOX_ADMISSION",
+      "next_action": "Retain protected AMO credential delivery, exact signed XPI, Firefox >=158 activation and restart acceptance as a later independent scope.",
+      "state": "OPEN_DEFERRED"
+    },
+    {
+      "id": "NATIVE_PEER_AND_OUTBOX_ACCEPTANCE",
+      "next_action": "Retain original writer admission, peer request/ACK/reply and outbox obligations; this source repair proves no productive Mesh or peer effect.",
+      "state": "OPEN_UNCHANGED"
+    }
+  ],
+  "other_predecessor_obligations": "Preserved; no publication, peer, recovery, fault-tolerance or global completion status is promoted by this work unit.",
+  "predecessor": {
+    "amo_issuer_delivered_to_that_job": false,
+    "amo_secret_delivered_to_that_job": false,
+    "firefox_admission_job_id": 120907174017,
+    "firefox_error": -5,
+    "run_id": 40105209879,
+    "sign_requested": false,
+    "signing_job_id": 120907116935
+  },
+  "public_production_verified": false,
+  "qualified_predecessor_native_ci": {
+    "acceptance_transferred_to_successor": false,
+    "conclusion": "success",
+    "head": "ded5ddea107f29742e2e90d319dba8b2238ddb7f",
+    "job_id": 121106024934,
+    "run_id": 40172466779,
+    "scope": "ORIGINAL_NATIVE_AND_PORTABLE_CONTROLS; NO_DEPLOYMENT",
+    "tree": "9e3d26d75555d92019a9c82e7370a4da446e135b"
+  },
+  "reuse": {
+    "build_target": "runtime/self-host/Dockerfile#production-terminal",
+    "container_adapter": "tools/qikvrt_self_host_container.py",
+    "launcher": "tools/qikvrt_self_host.py",
+    "terminal_profile": "temdd",
+    "workflow": ".github/workflows/qikvrt_ci.yml"
+  },
+  "schema": "qikvrt-ionos-native-terminal-first-work-unit/v1",
+  "validation_required": [
+    "make test",
+    "make self-host-test",
+    "native CI independent OCI rebuild and smoke/restart",
+    "exact remote HEAD/TREE and changed-blob readback",
+    "protected Main and production-environment admission",
+    "existing admitted IONOS mTLS daemon/storage/configuration execution",
+    "independent HTTPS and original native terminal readback at exact domain"
+  ],
+  "work_unit_id": "QIKVRT_IONOS_NATIVE_TERMINAL_FIRST_20261025_V1",
+  "blocking_repair_priority_successor": {
+    "owner_instruction": "Wenn solche Situationen entstehen, dann sind diese Fehler und Probleme, die die weitere Abarbeitung blockieren, mit allerhöchster und einziger Priorität abzuarbeiten und alles andere hinten anzustellen.",
+    "owner": "Ingolf Lohmann",
+    "authorization": "Freigabe erteilt.",
+    "implementation": "Existing tools/ai_handoff.py client transition planner and gate; no new executor.",
+    "regression_observation": {
+      "source_head": "39e6fb13a2383f0592104ccafbd9c23a7525aaf4",
+      "original_ready_order": [
+        "throughput-optimization",
+        "signed-xpi"
+      ],
+      "original_flat_next_action_bypass": "ACCEPTED",
+      "negative_tests_before_repair": 2
+    },
+    "native_source_run": 40173758457,
+    "native_container_ci_job": 121114212832,
+    "native_source_result": "success",
+    "live_runtime_accepted": false,
+    "main_protected_last_read": false,
+    "effect_ack_done": false
+  },
+  "ci_scope_repair": {
+    "observed_source_head": "b6329979eadd151c440d28e7c3f5e5dd795a008e",
+    "observed_source_tree": "4445ae8329d2afcac8e236f999fb46371f5120fb",
+    "observed_run": 40201202452,
+    "native_container_job": 121197856779,
+    "native_container_result": "CONTAINER_SMOKE_AND_RESTART_VERIFIED",
+    "full_test_job": 121192560774,
+    "full_test_result": "success",
+    "adverse_firefox_job": 121197921956,
+    "observed_pipeline_conclusion": "failure",
+    "blocking_contract": "tools/qikvrt_expected_head_promotion.py: REQUIRED_EXACT_HEAD_GATE_NOT_GREEN / APPLICABLE_EXACT_HEAD_GATE_NOT_GREEN",
+    "repair": "Existing Firefox job selects the accepted package profile or existing explicit signing/readback path; no signing or activation guard is waived.",
+    "profile_authority": "Accepted source-bound smoke receipt; allowed profile and typed scope are verified before output.",
+    "negative_controls": "Unknown profile, scope type/mismatch and unaccepted smoke reject output.",
+    "productive_host_accepted": false,
+    "effect_ack_done": false
+  },
+  "rest_capability_repair": {
+    "owner": "Ingolf Lohmann",
+    "grant": "Current original Owner instruction: use the existing connector, fall back to original GitHub source, completely implement the missing REST function and retain the working procedure. Freigabe erteilt.",
+    "human_origin": "Owner direction and authorization",
+    "artificial_cognitive_origin": "OpenAI Codex source diagnosis, implementation and bounded tests",
+    "source_predecessor_head": "bebf6596650dad5f12ef352ef77d946a3aec77d5",
+    "observed_defects": [
+      "Existing Ruleset client rejects valid current HTTP200 run details.",
+      "Direct Ruleset POST bypasses existing durable attempt journal and can replay after timeout with a new request ID.",
+      "Existing own REST adapter does not expose the implemented fixed Ruleset operation."
+    ],
+    "repair_scope": [
+      "Original fixed writer/controller and private journal reused.",
+      "Explicitly admitted original Owner REST endpoint with separate protected provider credential references.",
+      "GET-only saved-run recovery and independent original run/jobs/Ruleset/protected-Main readback.",
+      "Original client supports explicitly selected Mesh REST origin; direct GitHub defaults retained.",
+      "Existing bootstrap/continuation policy retains connector-to-source-to-REST closure."
+    ],
+    "native_rest_path": "/repos/ingolf-lohmann/qik-vrt/qikvrt/ruleset-authority",
+    "default_runtime_admission": false,
+    "new_external_credential_grant": false,
+    "hosted_connector_registration_proven": false,
+    "productive_deployment_proven": false,
+    "ruleset_rest_is_not_draft_ready_or_target_ref_cas": true,
+    "all_predecessor_obligations_preserved": true,
+    "original_owner_instruction": "Einverstanden. Den Punkt hast du gut rausgearbeitet, aber wir haben ja ein Verfahren definiert, wie dann zu verfahren ist. Nämlich, dass du den Konnektor nimmst, um ans Repository zu gehen, und in dem Fall würde ich sogar noch mal bis GitHub zurückgehen, um es als letzten Durchstich bis zum ursprünglich manifestierten Quell-Repository zu kommen, um dann die Schleife um das Paket zu machen. indem du dann diese fehlende Restfunktion vollumfänglich implementierst und auch nicht mehr vergisst, wie das funktioniert. Weil, dass ich dir das jetzt sagen muss, ist schon wieder ein Beweis dafür, dass du das schon wieder vergessen hast. Freigabe erteilt.",
+    "packaged_bootstrap_successor": {
+      "owner_instruction_verbatim": "Jetzt fang endlich an, es richtig zu machen. Das ist völlig nervtötend, deine leere Bestätigung.",
+      "inherited_grant_retained": true,
+      "prior_omission": "The fixed REST controller was tested from the full checkout but absent from the sealed S1 package.",
+      "repair": "Reuse the existing S1 package and REST server; include original Python import closure, OpenAPI and byte-bound Owner/governance records; require the same package gate during freeze and verify.",
+      "regression_scope": "Cold sealed export, Python -S without Git/site-packages/checkout/provider credentials; real loopback HTTP and unchanged caller/provider guards.",
+      "upstream_provider": "NOT_CALLED",
+      "actual_original_host_execution_verified": false,
+      "all_prior_tasks_and_knowledge_preserved": true,
+      "human_contribution": "Owner instruction and standing authorization, quoted verbatim.",
+      "artificial_cognitive_contribution": "OpenAI Codex package diagnosis, source integration and tests."
+    }
+  },
+  "domain_routing_successor_20261026": {
+    "owner": "Ingolf Lohmann",
+    "owner_instruction": "Raumzeitterminal.de-Problem zuerst lösen; einen den Anforderungen genügenden Client dort veröffentlichen; vollständiges autonomes Fortfahren. Freigabe erteilt.",
+    "reviewed_document": {
+      "version": "1.2",
+      "artifact": "QIKVRT_Die_Sachebene_Review_20261026_v1_2.zip",
+      "sha256": "302331c5f8b1a99f9611322282ee362c62f294801efefc0c9d4a66855581bf51",
+      "owner_review_accepted": true,
+      "new_source_independent_human_review_claimed": false
+    },
+    "observation": "evidence/native-runtime-acceptance/raumzeitterminal-dns-20261026.json",
+    "live_routes": {
+      "A": "217.160.0.52",
+      "AAAA": "2001:8d8:100f:f000::205"
+    },
+    "source_predecessor_head": "77ac57968cf043dd8801aa44cfa837976511f934",
+    "repair": "Extend the existing fixed IONOS writer and manual trusted-Main workflow with explicit disable_apex_aaaa=false-by-default; preserve a bound single AAAA disabled after scoped IPv4 cutover. Reobserve the complete routing set before and after every existing-record PUT; retain partial and ambiguous outcomes and never retry a write automatically.",
+    "local_regression": "The added explicit cutover case fails on the predecessor; 25 DNS tests pass after the repair, including 13 added cutover cases. The full local make test succeeds; native exact-head CI remains separately required.",
+    "credential_delivery": "IONOS_DNS_API_KEY is not delivered to this process; remote existence is not inferred absent.",
+    "original_operation": "GET DNS readback then bounded PUT through qikvrt_ionos_dns.yml on trusted Main; current connector exposes no initial workflow dispatch.",
+    "provider_effect_performed": false,
+    "public_client_delivered_at_exact_domain": false,
+    "native_runtime_accepted": false,
+    "effect_ack_done": false,
+    "all_predecessor_obligations_preserved": true,
+    "human_contribution": "Owner review acceptance and priority/production authorization.",
+    "artificial_cognitive_contribution": "OpenAI Codex: public DNS/origin diagnosis, original writer extension, regression tests and exact-source verification."
+  }
+}
