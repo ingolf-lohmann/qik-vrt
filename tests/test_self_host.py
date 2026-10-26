@@ -677,6 +677,23 @@ class MeshContractTests(unittest.TestCase):
                       "application_transparency_verified", "effect_ack_done"):
             self.assertIs(result[field], False)
 
+    def test_package_admission_rejects_missing_rest_bootstrap_carriers(self):
+        original = list(self.definition['files'])
+        for name in ('src/qikvrt_github_api_shim.py', 'scripts/qikvrt_api_client.py',
+                     'api/qikvrt_github_api.openapi.yaml', '.github/CODEOWNERS',
+                     'state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json',
+                     'state/authorization/delegations/OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_V1.json'):
+            with self.subTest(carrier=name):
+                self.definition['files'] = [p for p in original if p != name]
+                self.refuse('REST_BOOTSTRAP_PACKAGE_REQUIRED')
+        self.definition['files'] = original
+        bootstrap = self.definition.get('rest_bootstrap')
+        for invalid in (None, [], 'unbound', {}, {**(bootstrap or {}), 'automatic_start': True}):
+            with self.subTest(bootstrap=invalid):
+                self.definition['rest_bootstrap'] = invalid
+                self.refuse('REST_BOOTSTRAP_PACKAGE_REQUIRED')
+        self.definition['rest_bootstrap'] = bootstrap
+
     def test_missing_authority_succession_binding_refuses_package_admission(self):
         del self.activation["required_node_runtime"]["authority_succession_policy"]
         self.refuse("MESH_IRREVERSIBLE_AUTHORITY_SUCCESSION_REQUIRED")
@@ -1226,6 +1243,63 @@ m.server.closeAllConnections();await new Promise(r=>m.server.close(r));
         exported = (self.export / name).read_bytes()
         self.assertEqual(exported, (ROOT / name).read_bytes())
         self.assertEqual(self.manifest["files"][name]["sha256"], host.digest(exported))
+
+    def test_frozen_rest_bootstrap_retains_the_real_credential_haltpoint(self):
+        # Cold exported source, no checkout, Git, site-packages or real secrets.
+        result = subprocess.run([sys.executable, '-B', '-S',
+            str(self.export / 'src/qikvrt_github_api_shim.py')], cwd=self.work,
+            env={}, capture_output=True, text=True, timeout=8)
+        self.assertEqual(result.returncode, 2)
+        self.assertIn('BLOCK', result.stderr)
+        self.assertIn('QIKVRT_API_TOKEN', result.stderr)
+        self.assertNotIn('ModuleNotFoundError', result.stderr)
+
+    def test_frozen_rest_bootstrap_serves_http_and_requires_original_provider_binding(self):
+        with socket.socket() as selected:
+            selected.bind(('127.0.0.1', 0)); port = selected.getsockname()[1]
+        token = 'b64url:' + base64.urlsafe_b64encode(bytes(range(32))).decode().rstrip('=')
+        env = {'PYTHONDONTWRITEBYTECODE': '1', 'QIKVRT_API_HOST': '127.0.0.1',
+            'QIKVRT_API_PORT': str(port), 'QIKVRT_API_TOKEN': token,
+            'QIKVRT_API_TOKEN_EXPIRES_UTC': '2099-01-01T00:00:00Z',
+            'QIKVRT_ALLOWED_REPOSITORY': 'ingolf-lohmann/qik-vrt',
+            'QIKVRT_API_PRINCIPAL': 'ingolf-lohmann', 'QIKVRT_RULESET_AUTHORITY_ENABLED': '1',
+            'HTTP_PROXY': 'http://127.0.0.1:1', 'HTTPS_PROXY': 'http://127.0.0.1:1',
+            'GITHUB_TOKEN': 'synthetic-generic-token-must-not-be-used'}
+        child = subprocess.Popen([sys.executable, '-B', '-S',
+            str(self.export / 'src/qikvrt_github_api_shim.py')], cwd=self.work, env=env,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        path = '/repos/ingolf-lohmann/qik-vrt/qikvrt/ruleset-authority?' + urllib.parse.urlencode({
+            'request_id': 'frozen-package-bootstrap', 'expected_main_sha': '0' * 40,
+            'writer_version': 'principal-review-v4'})
+        opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+        try:
+            deadline = time.monotonic() + 8
+            while True:
+                if child.poll() is not None:
+                    out, err = child.communicate()
+                    self.fail('Frozen REST bootstrap failed: ' + out + err)
+                request = urllib.request.Request('http://127.0.0.1:' + str(port) + path,
+                    headers={'Authorization': 'Bearer ' + token})
+                try:
+                    opener.open(request, timeout=.5)
+                    self.fail('Unbound provider must not be accepted')
+                except urllib.error.HTTPError as error:
+                    with error:
+                        self.assertEqual(error.code, 503, error.read().decode())
+                    break
+                except (urllib.error.URLError, TimeoutError):
+                    if time.monotonic() >= deadline:
+                        self.fail('Frozen REST bootstrap did not listen')
+                    time.sleep(.01)
+            request = urllib.request.Request('http://127.0.0.1:' + str(port) + path)
+            with self.assertRaises(urllib.error.HTTPError) as unauthorized:
+                opener.open(request, timeout=1)
+            self.assertEqual(unauthorized.exception.code, 401)
+            unauthorized.exception.close()
+        finally:
+            if child.poll() is None:
+                child.terminate()
+            child.communicate(timeout=3)
 
     def test_static_react_export_serves_each_scope_and_preserves_original_bytes(self):
         self.start()

@@ -16,7 +16,7 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 from types import MappingProxyType
-from urllib.parse import quote, urlparse
+from urllib.parse import quote, urlencode, urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -392,7 +392,7 @@ def persist_successor_work(root: Path, args, *, subject_key: str, record: dict,
 
 def dispatch_with_journal(opener, request, args, *, subject_key: str, receipt: dict,
                           closure: dict, action_id: str, token: str, domain: str,
-                          before_dispatch=None, intent_metadata=None):
+                          before_dispatch=None, intent_metadata=None, validate_transport=None):
     """Persist intent before POST; unchanged failures survive client restarts."""
     root = Path(args.state_dir).absolute()
     # Reuse the handler's no-symlink target checks and durable private writer,
@@ -496,6 +496,8 @@ def dispatch_with_journal(opener, request, args, *, subject_key: str, receipt: d
                     ref=args.ref, request_id=args.request_id,
                     response_text=raw.decode("utf-8"),
                 )
+                if validate_transport is not None:
+                    validate_transport(transport)
                 receipt.update(transport)
                 if transport.get("schema") == "qikvrt_dispatch_transport_receipt_v1":
                     record["transport_receipt"] = transport
@@ -714,8 +716,13 @@ def ruleset_run_binding(run, run_id, expected_sha):
     ))
 
 
-def ruleset_authority_operation(args, token):
-    """One bounded POST or independent GETs; never retry or grant a review."""
+def ruleset_authority_result(args, token):
+    """Shared fixed-writer controller for CLI and the admitted REST adapter.
+
+    The existing private journal fences the POST before transport, including
+    process loss. Changing request IDs, Main or writer versions cannot replay
+    an unresolved administration request. No credential enters the journal.
+    """
     # The pinned operation carrier cannot assign a second Authority.
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
     from tools.qikvrt_workflow_executor import load_repository_roles
@@ -723,6 +730,9 @@ def ruleset_authority_operation(args, token):
         raise ValueError("Ruleset carrier and canonical Authority policy disagree")
     opener = urllib.request.build_opener(NoRedirectHandler())
     get = lambda path: ruleset_json_get(opener, token, path)
+    domain = client_end_of_action_domain()
+    action_id = "ruleset:" + args.request_id + ":" + utc_now()
+    closure = {}
     body = b'{"ref":"main"}'
     url = f"https://api.github.com/repos/{RULESET_REPOSITORY}/actions/workflows/{RULESET_WORKFLOW}/dispatches"
     writer_version = args.ruleset_writer_version or DEFAULT_RULESET_WRITER_VERSION
@@ -755,31 +765,32 @@ def ruleset_authority_operation(args, token):
                 raise ValueError("active or existing exact-head writer run requires readback")
             # The provider POST accepts a ref, not an atomic expected-SHA lease.
             # Recheck before POST and require the actual run SHA in readback.
-            ruleset_main_readback(get, args.expected_main_sha)
             request = urllib.request.Request(
                 url, data=body, headers={"Content-Type": "application/json",
                 "Authorization": f"Bearer {token}", "Accept": "application/vnd.github+json",
                 "X-GitHub-Api-Version": "2022-11-28"}, method="POST",
             )
-            receipt.update(dispatch_url=url, request_sha256=hashlib.sha256(body).hexdigest(), dispatch_count=1)
-            with opener.open(request, timeout=10) as response:
-                if response.status != 204:
-                    raise ValueError("Ruleset dispatch requires empty HTTP 204")
-                code, transport = interpret_dispatch_response(
-                    response, request=request, repository=RULESET_REPOSITORY,
-                    ref="main", request_id=args.request_id,
-                )
-            receipt.update({key: transport[key] for key in (
-                "transport_acknowledged", "http_status", "workflow_run_id",
-                "run_url", "html_url",
-            )})
+            receipt.update(dispatch_url=url, request_sha256=hashlib.sha256(body).hexdigest())
+            def fresh_source():
+                ruleset_main_readback(get, args.expected_main_sha)
+                verify_ruleset_writer(get(f"contents/{RULESET_WORKFLOW_PATH}?ref={args.expected_main_sha}"), writer_blob)
+            subject_key = digest({"operation": "ruleset_authority_dispatch",
+                "repository": RULESET_REPOSITORY, "ref": "main", "workflow": RULESET_WORKFLOW_PATH})
+            code = dispatch_with_journal(opener, request, args, subject_key=subject_key,
+                receipt=receipt, closure=closure, action_id=action_id, token=token, domain=domain,
+                before_dispatch=fresh_source, intent_metadata={"main_sha": args.expected_main_sha,
+                    "workflow_blob_sha": writer_blob, "expected_ruleset_sha256": post_sha256,
+                    "dispatch_url": url, "request_sha256": hashlib.sha256(body).hexdigest()})
+            if "error_category" in receipt:
+                receipt["failure_class"] = receipt["error_category"]
+            if receipt.get("http_status") in (401, 403) and receipt["dispatch_count"]:
+                receipt["dispatch_outcome"] = "DENIED"
             receipt["next_checks"] = [
                 "IDENTIFY_RUN_BY_REPOSITORY_WORKFLOW_EVENT_REF_AND_EXACT_HEAD",
                 "RUN_RULESET_AUTHORITY_READBACK_WITH_VERIFIED_RUN_ID",
                 "REOBSERVE_CURRENT_HEAD_CODE_OWNER_GATE_AND_NATIVE_REVIEW",
             ]
-            print(json.dumps(receipt, sort_keys=True))
-            return code
+            return code, receipt
 
         run_id = int(args.ruleset_run_id)
         run = get(f"actions/runs/{run_id}")
@@ -799,7 +810,7 @@ def ruleset_authority_operation(args, token):
         matching = [item for item in collection if item.get("name") == "QIK-VRT main protection"]
         if len(matching) > 1:
             raise ValueError("multiple matching Rulesets; refusing effect inference")
-        digest = None
+        observed_digest = None
         ruleset_id = None
         if matching:
             ruleset_id = matching[0].get("id")
@@ -811,24 +822,24 @@ def ruleset_authority_operation(args, token):
                 raise ValueError("Ruleset identity/source mismatch")
             canonical = (json.dumps(normalize_ruleset(observed), ensure_ascii=False,
                                    sort_keys=True, indent=2, allow_nan=False) + "\n").encode("utf-8")
-            digest = hashlib.sha256(canonical).hexdigest()
+            observed_digest = hashlib.sha256(canonical).hexdigest()
         branch = ruleset_main_readback(get, args.expected_main_sha)
         if ruleset_run_binding(get(f"actions/runs/{run_id}"), run_id, args.expected_main_sha) != binding:
             raise ValueError("workflow run drifted during readback")
-        effect = execution and digest == post_sha256 and branch.get("protected") is True
+        effect = execution and observed_digest == post_sha256 and branch.get("protected") is True
         receipt.update(
             workflow_run_id=run_id, run_attempt=run["run_attempt"],
             execution_verified=execution, main_protected=branch.get("protected") is True,
-            ruleset_id=ruleset_id, observed_ruleset_sha256=digest,
+            ruleset_id=ruleset_id, observed_ruleset_sha256=observed_digest,
             expected_ruleset_sha256=post_sha256, ruleset_effect_verified=effect,
             readback_state="RULESET_POSTCONDITION_VERIFIED" if effect else "RULESET_EFFECT_UNVERIFIED",
             mutation_attribution_verified=False, native_review_verified=False,
             verification_scope="RULESET_POSTCONDITION_ONLY_NOT_MERGE_OR_RELEASE",
         )
-        print(json.dumps(receipt, sort_keys=True))
-        return 0 if effect else 20
+        return (0 if effect else 20), receipt
     except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, OSError,
-            ValueError, TypeError, KeyError, AttributeError, RecursionError) as exc:
+            RuntimeError, ValueError, TypeError, KeyError, AttributeError,
+            RecursionError, IntegrityIsolationError) as exc:
         # Never echo provider bodies, URL error reasons or credential-bearing exceptions.
         receipt["failure_class"] = type(exc).__name__
         if isinstance(exc, urllib.error.HTTPError):
@@ -839,9 +850,148 @@ def ruleset_authority_operation(args, token):
             else "UNKNOWN_REQUIRES_AUTHORITATIVE_READBACK" if receipt["dispatch_count"]
             else "NO_POST_ATTEMPTED"
         )
-        print("BLOCK Ruleset operation failed; inspect the non-secret receipt", file=sys.stderr)
-        print(json.dumps(receipt, sort_keys=True), file=sys.stderr)
-        return 1
+        return 1, receipt
+    finally:
+        if not closure:
+            closure.update(closing_readback(opener, args, action_id=action_id,
+                                           completed_at=utc_now(), token=token, domain=domain))
+        receipt["closing_verification"] = closure
+
+
+def ruleset_authority_operation(args, token):
+    """Preserve the original CLI and receipt format over the shared controller."""
+    code, receipt = ruleset_authority_result(args, token)
+    stream = sys.stderr if code == 1 and receipt.get("state") != "NOOP" else sys.stdout
+    if stream is sys.stderr:
+        print("BLOCK Ruleset operation failed; inspect the non-secret receipt", file=stream)
+    print(json.dumps(receipt, sort_keys=True), file=stream)
+    return code
+
+
+def recorded_ruleset_run(args):
+    """Recover only this original intent's run ID, without writes or a POST."""
+    root = Path(args.state_dir).absolute()
+    if any(parent.is_symlink() for parent in (root, *root.parents)):
+        raise OSError("private Ruleset state must not traverse symlinks")
+    key = digest({"operation": "ruleset_authority_dispatch", "repository": RULESET_REPOSITORY,
+                  "ref": "main", "workflow": RULESET_WORKFLOW_PATH})
+    path = root / (key + ".json")
+    _assert_safe_target(path)
+    if path.stat().st_nlink != 1:
+        raise OSError("private Ruleset state must be single-link")
+    record = unique_json(read_regular_file(path, max_bytes=MAX_JOURNAL_BYTES))
+    blob, post = RULESET_WRITER_VERSIONS[args.ruleset_writer_version or DEFAULT_RULESET_WRITER_VERSION]
+    binding = record.get("operation_binding") if isinstance(record, dict) else None
+    if (not isinstance(binding, dict) or record.get("schema") != JOURNAL_SCHEMA
+            or record.get("subject_key") != key or record.get("request_id") != args.request_id
+            or record.get("status") not in {"in_flight", "pending", "ambiguous", "failed", "completed"}
+            or binding.get("main_sha") != args.expected_main_sha or binding.get("workflow_blob_sha") != blob
+            or binding.get("expected_ruleset_sha256") != post):
+        raise ValueError("original Ruleset journal binding mismatch")
+    transport = record.get("transport_receipt", {})
+    run_id = transport.get("workflow_run_id")
+    if type(run_id) is int and run_id > 0:
+        if (transport.get("schema") != "qikvrt_dispatch_transport_receipt_v1"
+                or transport.get("repository") != RULESET_REPOSITORY or transport.get("ref") != "main"
+                or transport.get("request_id") != args.request_id
+                or transport.get("run_url") != f"https://api.github.com/repos/{RULESET_REPOSITORY}/actions/runs/{run_id}"
+                or transport.get("html_url") != f"https://github.com/{RULESET_REPOSITORY}/actions/runs/{run_id}"):
+            raise ValueError("original Ruleset transport identity mismatch")
+        return run_id, None
+    return None, {"schema": "qikvrt_ruleset_authority_client_receipt_v1", "operation": args.operation,
+        "repository": RULESET_REPOSITORY, "ref": "main", "main_sha": args.expected_main_sha,
+        "request_id": args.request_id, "workflow_path": RULESET_WORKFLOW_PATH, "workflow_blob_sha": blob,
+        "expected_ruleset_sha256": post, "writer_bytes_verified": True,
+        "writer_verification_scope": "ORIGINAL_PRE_DISPATCH_IMMUTABLE_BYTES_ONLY",
+        "workflow_run_id": None, "dispatch_count": 0, "journal_status": record["status"],
+        "readback_state": "ORIGINAL_INTENT_RETAINED_RUN_ID_UNRESOLVED",
+        "execution_verified": False, "ruleset_effect_verified": False,
+        "effect_state": "EFFECT_ACK_CONTINUE", "ordinary_release": False,
+        "retry_policy": "AUTHORITATIVE_READBACK_ONLY_NO_POST"}
+
+
+def bound_ruleset_rest_response(value, args):
+    """Bind a remote observation to this request; never infer global release."""
+    result = value.get("handler_result") if isinstance(value, dict) else None
+    version = args.ruleset_writer_version or DEFAULT_RULESET_WRITER_VERSION
+    blob, post = RULESET_WRITER_VERSIONS[version]
+    if (not isinstance(result, dict) or value.get("schema") != "qikvrt-ruleset-authority-rest/v1"
+            or value.get("api_contract_version") != API_CONTRACT_VERSION
+            or value.get("ordinary_release") is not False or value.get("effect_ack_done") is not False
+            or result.get("operation") != args.operation or result.get("repository") != RULESET_REPOSITORY
+            or result.get("request_id") != args.request_id or result.get("ref") != "main"
+            or result.get("main_sha") != args.expected_main_sha
+            or result.get("workflow_path") != RULESET_WORKFLOW_PATH
+            or result.get("workflow_blob_sha") != blob or result.get("expected_ruleset_sha256") != post
+            or result.get("writer_bytes_verified") is not True
+            or result.get("effect_state") != "EFFECT_ACK_CONTINUE" or result.get("ordinary_release") is not False):
+        raise ValueError("remote Ruleset REST response binding mismatch")
+    if (args.operation == "ruleset_authority_readback" and args.ruleset_run_id is not None
+            and result.get("workflow_run_id") != int(args.ruleset_run_id)):
+        raise ValueError("remote Ruleset run binding mismatch")
+    if (type(result.get("execution_verified")) is not bool
+            or type(result.get("ruleset_effect_verified")) is not bool):
+        raise ValueError("remote Ruleset verification predicates invalid")
+    if args.operation == "ruleset_authority_dispatch" and (
+            result["execution_verified"] or result["ruleset_effect_verified"]):
+        raise ValueError("dispatch acceptance cannot establish a Ruleset effect")
+    if result["ruleset_effect_verified"] and (
+            result["execution_verified"] is not True or result.get("main_protected") is not True
+            or result.get("observed_ruleset_sha256") != post
+            or result.get("readback_state") != "RULESET_POSTCONDITION_VERIFIED"
+            or type(result.get("workflow_run_id")) is not int or result["workflow_run_id"] <= 0):
+        raise ValueError("remote Ruleset postcondition evidence incomplete")
+    return result
+
+
+def ruleset_mesh_operation(args, token):
+    """Use the same fixed operation through an explicitly selected Mesh REST origin.
+
+    The caller token is sent only to that origin. The server's protected
+    Authority binding supplies its own GitHub credential and original writer.
+    """
+    opener = urllib.request.build_opener(NoRedirectHandler())
+    url = args.base_url + f"/repos/{RULESET_REPOSITORY}/qikvrt/ruleset-authority"
+    action_id = "ruleset-rest:" + args.request_id + ":" + utc_now()
+    domain, closure = client_end_of_action_domain(), {}
+    receipt, code = {"dispatch_count": 0, "effect_state": "EFFECT_ACK_CONTINUE", "ordinary_release": False}, 1
+    try:
+        fields = {"request_id": args.request_id, "expected_main_sha": args.expected_main_sha,
+                  "writer_version": args.ruleset_writer_version or DEFAULT_RULESET_WRITER_VERSION}
+        headers = {"Authorization": "Bearer " + token, "Content-Type": "application/json"}
+        if args.operation == "ruleset_authority_readback":
+            query = {**fields, **({"run_id": args.ruleset_run_id} if args.ruleset_run_id is not None else {})}
+            request = urllib.request.Request(url + "?" + urlencode(query),
+                                             headers=headers, method="GET")
+            with opener.open(request, timeout=10) as response:
+                if response.status not in (200, 202):
+                    raise ValueError("remote Ruleset readback status invalid")
+                observed = unique_json(read_response_bytes(response))
+                result = bound_ruleset_rest_response(observed, args)
+                receipt["remote_readback"] = observed
+                code = 0 if result.get("ruleset_effect_verified") is True else 20
+        else:
+            body = {**fields, "schema": "qikvrt-ruleset-authority-rest/v1", "effect_accepted": True}
+            request = urllib.request.Request(url, data=json.dumps(body).encode(), headers=headers, method="POST")
+            code = dispatch_with_journal(opener, request, args,
+                subject_key=digest({"url": url, "operation": args.operation, "repository": RULESET_REPOSITORY}),
+                receipt=receipt, closure=closure, action_id=action_id, token=token, domain=domain,
+                validate_transport=lambda value: bound_ruleset_rest_response(value, args),
+                intent_metadata={"main_sha": args.expected_main_sha, "writer_version": fields["writer_version"]})
+    except (urllib.error.URLError, TimeoutError, OSError, ValueError, TypeError,
+            KeyError, RuntimeError, IntegrityIsolationError) as exc:
+        receipt["error_category"] = type(exc).__name__
+        if isinstance(exc, urllib.error.HTTPError):
+            receipt["http_status"] = exc.code
+            exc.close()
+    finally:
+        if not closure:
+            closure.update(closing_readback(opener, args, action_id=action_id,
+                                           completed_at=utc_now(), token=token, domain=domain))
+    print(json.dumps({"schema": "qikvrt-ruleset-rest-client/v1", "result": receipt,
+                      "closing_verification": closure, "effect_state": "EFFECT_ACK_CONTINUE",
+                      "ordinary_release": False}, sort_keys=True))
+    return code
 
 
 def amo_candidate_readback(get, args):
@@ -1047,6 +1197,8 @@ def main() -> int:
     ap.add_argument("--ruleset-run-id", help="Independently identified writer run; GET-only Ruleset readback")
     ap.add_argument("--ruleset-writer-version", choices=sorted(RULESET_WRITER_VERSIONS),
                     help="Exact reviewed writer contract; omitted preserves the 2.2 legacy-v1 pin")
+    ap.add_argument("--ruleset-via-mesh", action="store_true",
+                    help="Use the fixed Ruleset REST route at the explicitly configured Mesh base URL")
     ap.add_argument("--amo-expected-head", help="Exact current PR523 commit for direct Owner signing")
     ap.add_argument("--amo-expected-tree", help="Exact current PR523 tree for direct Owner signing")
     ap.add_argument("--amo-workflow-blob", help="Independently reviewed qikvrt_ci.yml Git blob SHA-1")
@@ -1054,6 +1206,8 @@ def main() -> int:
     ap.add_argument("--state-dir", default=os.environ.get("QIKVRT_API_CLIENT_STATE_DIR", str(Path.home() / ".local/state/qikvrt/api-client")), help="Private persistent non-secret attempt metadata")
     ap.add_argument("--retry-evidence-file", help="New failure-bound subject/error/cause/capability digests; observation clocks do not admit retry")
     args = ap.parse_args()
+    if args.ruleset_via_mesh and args.operation not in RULESET_OPERATIONS:
+        ap.error("--ruleset-via-mesh requires a Ruleset operation")
 
     token = os.environ.get("QIKVRT_API_TOKEN", "")
     if not token:
@@ -1124,7 +1278,9 @@ def main() -> int:
     if args.operation in RULESET_OPERATIONS:
         if len(token) > 4096 or any(ord(char) < 33 or ord(char) > 126 for char in token):
             ap.error("Ruleset credential must be bounded printable ASCII without whitespace")
-        if args.base_url.rstrip("/") != "https://api.github.com":
+        if args.ruleset_via_mesh and args.base_url == "https://api.github.com":
+            ap.error("Mesh REST mode requires its own explicit origin")
+        if not args.ruleset_via_mesh and args.base_url != "https://api.github.com":
             ap.error("Ruleset operations require the canonical GitHub HTTPS endpoint")
         if f"{args.owner}/{args.repo}" != RULESET_REPOSITORY or args.ref != "main":
             ap.error("Ruleset operations allow only ingolf-lohmann/qik-vrt on main")
@@ -1137,11 +1293,11 @@ def main() -> int:
         if args.operation == "ruleset_authority_dispatch":
             if args.dry_run != "false" or not args.accept_effect or args.ruleset_run_id is not None:
                 ap.error("Ruleset dispatch requires --dry-run false --accept-effect and no run ID")
-        elif (args.ruleset_run_id is None
-                or not re.fullmatch(r"[0-9]{1,32}", args.ruleset_run_id)
-                or int(args.ruleset_run_id) <= 0 or args.dry_run != "true" or args.accept_effect):
+        elif ((args.ruleset_run_id is None and not args.ruleset_via_mesh)
+                or (args.ruleset_run_id is not None and (not re.fullmatch(r"[0-9]{1,32}", args.ruleset_run_id)
+                    or int(args.ruleset_run_id) <= 0)) or args.dry_run != "true" or args.accept_effect):
             ap.error("Ruleset readback requires a positive --ruleset-run-id and read-only defaults")
-        return ruleset_authority_operation(args, token)
+        return ruleset_mesh_operation(args, token) if args.ruleset_via_mesh else ruleset_authority_operation(args, token)
     if (args.expected_main_sha is not None or args.ruleset_run_id is not None
             or args.ruleset_writer_version is not None):
         ap.error("Ruleset binding arguments require a Ruleset operation")

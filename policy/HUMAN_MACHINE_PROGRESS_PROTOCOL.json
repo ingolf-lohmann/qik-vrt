@@ -378,6 +378,107 @@
       "necessary_ruleset_changes_authorized": true,
       "request_same_permission_again": false,
       "authorization_is_execution_capability_or_effect_proof": false
+    },
+    "blocking_repair_priority": {
+      "owner": "Ingolf Lohmann",
+      "date": "2026-10-25",
+      "priority": "HIGHEST_AND_EXCLUSIVE",
+      "scope": "FAILURES_PREVENTING_FURTHER_ADMITTED_WORK",
+      "completion_repair_precedes_optimization_backlog_gate": true,
+      "defer_all_unrelated_work": true,
+      "existing_plan_field": "transition_plan.blocking_repairs",
+      "references": "EXISTING_TRANSITION_IDS",
+      "unavailable_repair": "PRESERVE_OPEN_WITH_EXACT_PREREQUISITE; DEFER_UNRELATED_READY_ACTIONS",
+      "clear_only_after": "FRESH_EXACT_SUBJECT_EFFECT_READBACK",
+      "historical_plans_without_field": "REMAIN_READABLE",
+      "authority_and_admission_unchanged": true,
+      "new_executor_or_client_timer": false,
+      "known_error_authorization": {
+        "owner": "Ingolf Lohmann",
+        "date": "2026-10-26",
+        "owner_statement": "Das sind letztlich bekannte Fehler und von daher ist auch wohl bekannt, wie man mit diesen Fehlern umzugehen hat. Und für wohlbekannte Fehler, von denen man weiß, wie man mit denen umzugehen hat, erwarte ich ab sofort, dass du sie selbstständig entfernst, ohne mich vorher damit zu nerven. Sonst werden wir nie fertig. Freigabe erteilt.",
+        "execute_existing_admitted_deterministic_repair_without_reprompt": true,
+        "notification_before_routine_known_repair_required": false,
+        "verification": "REPRODUCE_KNOWN_FAILURE; REPAIR_CAUSAL_PREREQUISITE; VERIFY_AFFECTED_EXACT_SUBJECT_PATH",
+        "unknown_cause_or_missing_capability": "RECOVER_ORIGINAL_EVIDENCE_AND_BINDING; PRESERVE_EXACT_OPEN_PREREQUISITE",
+        "unchanged_failed_effect_retry": false,
+        "authority_credentials_admission_and_effect_proof_remain_separate": true,
+        "existing_plan_and_native_repair_paths_only": true
+      }
+    },
+    "connector_rest_closure_rule": {
+      "owner": "Ingolf Lohmann",
+      "date": "2026-10-25",
+      "state": "ACTIVE",
+      "priority": "BLOCKING_REPAIR",
+      "route": "REST_PRIMARY_EXISTING_CONNECTOR_SOURCE_REPAIR_LAST_ORIGINAL_GITHUB_SOURCE",
+      "required_sequence": [
+        "INSPECT_EXACT_EXISTING_REST_OPERATION_AND_ADMISSION",
+        "USE_EXISTING_AUTHENTICATED_CONNECTOR_TO_READ_ORIGINAL_SOURCE_WHEN_NEEDED",
+        "REPAIR_OR_EXTEND_EXISTING_REST_HANDLER_CLIENT_AND_CONTRACT",
+        "REPRODUCE_ORIGINAL_FAILURE_AND_VERIFY_COMPLETE_PACKAGE",
+        "PERSIST_SOURCE_PROVENANCE_AND_CONTINUATION_WITH_INDEPENDENT_READBACK",
+        "RESUME_REST_WHEN_ACTUAL_RUNTIME_AND_CREDENTIAL_BINDING_IS_ADMITTED"
+      ],
+      "repair_preparation_carrier": "transition_plan.preparation",
+      "priority_carrier": "transition_plan.blocking_repairs",
+      "existing_client_gate": "tools/ai_handoff.py --client-receipt",
+      "original_authority_repository": "ingolf-lohmann/qik-vrt",
+      "ruleset_api_contract": "api/qikvrt_github_api.openapi.yaml",
+      "ruleset_client": "scripts/qikvrt_api_client.py",
+      "ruleset_rest_handler": "src/qikvrt_github_api_shim.py",
+      "source_change_registers_hosted_connector": false,
+      "source_change_proves_runtime_deployment": false,
+      "repeat_existing_owner_permission": false,
+      "credential_export": false,
+      "new_parallel_executor_or_synthetic_trigger": false,
+      "all_original_journals_and_obligations_retained": true
+    },
+    "tool_selection": {
+      "schema": "qikvrt-client-tool-selection/v1",
+      "owner": "Ingolf Lohmann",
+      "reaffirmed_on": "2026-10-26",
+      "scope": "EVERY_CURRENT_AND_FUTURE_QIKVRT_ARTIFICIAL_COGNITION",
+      "before_external_tool_call": true,
+      "preflight_validator": "tools/ai_handoff.py --client-action",
+      "same_validator_for_actions_receipts_and_transition_plans": true,
+      "load_current_predecessor_decisions_before_tool_selection": true,
+      "current_tool_availability_reactivates_provider": false,
+      "generic_authorization_reactivates_provider": false,
+      "read_only_exception": false,
+      "new_client_session_or_context_loss_reactivates_provider": false,
+      "policy_change_requires_later_explicit_owner_instruction": true,
+      "disconnected_providers": {
+        "railway": {
+          "state": "DISCONNECTED",
+          "owner_correction": "Also Railway hat man doch schon vor einer ganzen Weile abgekoppelt.",
+          "original_disconnection_date": "NOT_REESTABLISHED_BY_THIS_CORRECTION",
+          "service_aliases": [
+            "railway",
+            "railway.com",
+            "railway.app"
+          ],
+          "tool_prefixes": [
+            "mcp__codex_apps__railway_",
+            "railway.",
+            "railway:",
+            "railway "
+          ],
+          "endpoint_domains": [
+            "railway.com",
+            "railway.app"
+          ],
+          "blocked_scope": "DIRECT_PROVIDER_DISCOVERY_AUTHENTICATION_READ_WRITE_DEPLOYMENT_AND_RECOVERY",
+          "historical_receipts_in_owner_controlled_storage": "READABLE_THROUGH_THEIR_ACTUAL_ALLOWED_STORAGE_PROVIDER"
+        }
+      },
+      "limits": {
+        "validator_checks_declared_metadata_only": true,
+        "client_must_bind_actual_tool_and_endpoint": true,
+        "policy_file_and_preflight_success_are_live_adoption_or_runtime_effect": false,
+        "external_tools_outside_qikvrt_control_are_platform_enforced": false,
+        "all_node_adoption_requires_exact_policy_ack_and_independent_readback": true
+      }
     }
   },
   "continuation_semantics": {

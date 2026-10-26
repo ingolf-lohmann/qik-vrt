@@ -27,6 +27,22 @@ must not be inferred from presence, transport, analysis or authority alone.
 
 QIK-VRT AI RUNTIME ENTRYPOINT
 
+OWNER DECISIONS BEFORE TOOL SELECTION — ALL CLIENTS — 2026-10-26
+
+Read policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json client_continuation.tool_selection
+before selecting or invoking an external service tool. Use the existing read-only
+preflight: python3 -B tools/ai_handoff.py --client-action <non-secret-action.json>.
+Bind the actual service, tool and endpoint to the exact task/source. Railway is
+DISCONNECTED. Discovery, authentication and GET/read-only calls are included in
+that exclusion; tool availability and general authorization never reactivate it.
+Read preserved historical artifacts through their actual admitted owner storage.
+Only a later explicit Owner decision can change the shared routing policy.
+The same guard validates actions, continuation receipts and transition plans.
+Every current/future artificial-cognitive client must use it before the call.
+The checker validates declared metadata; it does not control external platform
+tools or prove other nodes loaded the policy. Adoption needs an exact policy ACK
+and independent readback at each admitted node.
+
 MANDATORY MIRROR OUTBOX — OWNER 2026-10-19
 
 Read and apply `docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md#mandatory-mirror-outbox-and-delivery-evidence-owner-2026-10-19`
@@ -93,6 +109,47 @@ Execute through the existing authorized production paths; bind delivery and
 native acceptance to their own fresh evidence. Preserve the existing licenses.
 
 Repository evidence is canonical. Chat and model memory are non-authoritative transport context.
+
+BLOCKING REPAIR PRIORITY — OWNER 2026-10-25
+Failures that prevent further admitted work have the highest and exclusive
+priority. Defer all unrelated work and optimization until their verified repair.
+Reuse the existing native repair paths. In the existing client transition plan,
+declare open repair transition IDs in `blocking_repairs`; `tools/ai_handoff.py`
+keeps unrelated ready work deferred, even when a repair is unavailable.
+Authorization, callable operations, admission and fresh readback remain required.
+
+KNOWN ERRORS — OWNER AUTHORIZATION 2026-10-26
+For a known error with an existing admitted deterministic repair, carry out
+that repair without another Owner prompt or a required preliminary notification.
+Correct its causal prerequisite and verify the affected exact-subject path.
+Reuse `transition_plan.preparation` and `blocking_repairs`; preserve the journal.
+An unchanged failed effect is not a retry strategy. Unknown causes or missing
+bindings require source recovery, not an invented capability or widened grant.
+Report the verified result and any concrete remaining prerequisite. This rule
+applies to every QIK-VRT artificial cognition through the common policy.
+
+REST CAPABILITY REPAIR — OWNER 2026-10-25
+
+Verify the actual sealed S1 export, including the original REST server/client,
+OpenAPI, Python import closure and exact Owner/governance source records.
+The existing package freeze/verify gate rejects missing REST bootstrap carriers.
+Cold-start the exported original entrypoint with Python -S and retain its
+caller/provider credential guards. A checkout-only HTTP test is insufficient.
+Package availability does not establish installation, runtime admission,
+protected Main or exact-host delivery; retain those separate open duties.
+
+When an existing REST operation is missing or insufficient, use the admitted
+connector to read the exact original repository implementation and API contract;
+the final source fallback is the original Authority on GitHub. Repair the
+existing REST path, regression-test the original failure and complete package,
+persist and independently read back the source and continuation, then resume
+through REST when its actual runtime/credential admission is present. Do not
+forget this procedure or stop while its authorized source repair is executable.
+Use `policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json#/client_continuation/connector_rest_closure_rule`
+and the existing `transition_plan.preparation`/`blocking_repairs`, without a new
+executor, trigger, credential export, repeated Owner grant or false live claim.
+The fixed Ruleset route is documented in `api/qikvrt_github_api.openapi.yaml`
+and `docs/operations/AUTONOMOUS_PR_CONTINUATION.md`; its source is not deployment.
 
 IMMEDIATE EXECUTION — OWNER PRINCIPLE OF 2026-10-13
 
