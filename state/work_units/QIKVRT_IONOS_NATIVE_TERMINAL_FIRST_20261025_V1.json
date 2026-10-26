@@ -197,6 +197,50 @@
     "effect_ack_done": false,
     "all_predecessor_obligations_preserved": true,
     "human_contribution": "Owner review acceptance and priority/production authorization.",
-    "artificial_cognitive_contribution": "OpenAI Codex: public DNS/origin diagnosis, original writer extension, regression tests and exact-source verification."
+    "artificial_cognitive_contribution": "OpenAI Codex: public DNS/origin diagnosis, original writer extension, regression tests and exact-source verification.",
+    "integrated_main_successor": {
+      "observed_main_head": "217a29c04f1ddc68428b053861bd43a17833a335",
+      "observed_main_tree": "ef17e840d74a92f7ae30d8dcff58eeb6c57f90e6",
+      "pr604_merged_externally": true,
+      "pr606_and_pr607_add_existing_bootstrap": true,
+      "main_ci_failure_run": 40332830573,
+      "verified_cause": "Repository manifest differs from deterministic regeneration after the added workflow; current exact Main tree reproduced locally before repair.",
+      "dns_bootstrap_run": 40332830646,
+      "inventory_artifact_sha256": "aaf76f5ecf8469774ad88d190e9a8b445fed58115286f13526e6388bde5698f5",
+      "inventory_readback_state": "HOLD_IONOS_DNS_API_KEY_UNAVAILABLE",
+      "credential_scope_boundary": "That receipt proves no key was delivered to the repository-only job, not absence from the existing ionos-production environment. The successor binds the read-only inventory to the same existing environment as the write job.",
+      "write_job_failure": "Push event supplied no expected_main_head; exact binding stopped the job before DNS writes. The successor admits that job only for workflow_dispatch and retains independent source/target/record pins.",
+      "explicit_ipv6_input": "Connect the already tested false-by-default IPv6 opt-in to the existing bootstrap writer as well.",
+      "canonical_repair": "Regenerate the existing integrity trio after these semantic workflow and work-unit changes.",
+      "effect_ack_done": false,
+      "later_main_observation": {
+        "head": "8edae48f6e13315ad338c86fe2b7f4eff72b6f4a",
+        "tree": "a5e66dd052b8db2324c559c3f7602cbe0510d560",
+        "merge": "PR610 Watchdog completion-only/cancel-in-progress=false; retain its exact original bytes",
+        "main_ci_run": 40336865059,
+        "integration": "Create a real two-parent merge from candidate cdb30eb5c41241568e980ed67adf243fa223e6e2 and latest Main8edae48f6e13315ad338c86fe2b7f4eff72b6f4a. Regenerate integrity only after this shared semantic tree. Earlier candidate passes remain source-bound history, not transferred acceptance.",
+        "owner_authorization_preserved": true,
+        "effect_ack_done": false,
+        "configuration_regression": "The integrated full suite exposed one static watchdog assertion still requiring requested/in_progress notifications and cancel-in-progress=true. Update that existing assertion to reject the old cancellation configuration and require the adopted Main completion-only/non-cancelling configuration. Retain every analyzer liveness, incomplete-job, lease and failure test and the existing five-minute unfinished-run observation; align the original documentation."
+      }
+    },
+    "technical_review_recovery": {
+      "observed_subject": "6417680fab1d1f4be5dde51e2513ead0288b0f4e",
+      "all_current_workflows": "13 SUCCESS,3 conditional SKIPPED; materializer40339693817 attempt2 SUCCESS15:37:53; original cancelled attempt retained",
+      "stale_disposition": "REQUEST_CHANGES from14:58:50 remained after the underlying gate recovered",
+      "original_checker_reentry": "Job121675211991/run40344728004 completed with selection NOOP15:44:37: any earlier same-head technical review suppressed fresh evaluation",
+      "repair": "Reuse the original snapshot reads and evaluator. Key the technical projection by its actual decision/subject/scope, ignore timestamps and unrelated counters, and refresh only changed technical status. Preserve original reviews without another semantic review or native approval. Fail unavailable/malformed history closed. Resolve a lost review POST only by independent readback, never a second fallback POST.",
+      "governance": "Owner Principal review and native rules remain separate and unchanged; no new scheduler, proxy, scope or initial dispatch substitution",
+      "site_checker_delivery": {
+        "version": 51,
+        "source_commit": "5fba7d0908276047923bbc562d707364d84caa2c",
+        "deployed_at_existing_origin": true,
+        "domain_delivery": false,
+        "resolver_policy": "OWNER_CLOUDFLARE_ONLY_V1",
+        "public_snapshot": "009f78b7-36f6-49c3-a16f-37d499854de8",
+        "sha256": "2f29b75bc8fd799921e8e10e847fb77aef37e3dd100abf6e44b621bd47cc7d4e"
+      },
+      "effect_ack_done": false
+    }
   }
 }

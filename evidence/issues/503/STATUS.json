@@ -6,7 +6,7 @@
   "deterministic_compilation_completed": true,
   "disposition_reason": "UNSUPPORTED_DETERMINISTIC_WORK_UNIT",
   "external_model_used": false,
-  "generated_at": "2026-10-26T15:08:23.444062+00:00",
+  "generated_at": "2026-10-26T20:44:33.966327+00:00",
   "issue_disposition": "BLOCKED_WITH_NEXT_ACTION",
   "issue_materialized": true,
   "mirror_sync_required": false,
@@ -15,13 +15,13 @@
   "no_false_pass": true,
   "processing_carrier": "repository-local-deterministic-compiler",
   "status": "BLOCK",
-  "validated_disposition_at": "2026-10-26T15:08:23.501650+00:00",
+  "validated_disposition_at": "2026-10-26T20:44:34.048321+00:00",
   "work_unit": {
     "answer_sha256": "28bba5b8db1e3be813f9f528171228cba676f83c8ec1cd28bbd03217e46d9280",
     "capability_gap": "NO_REVIEWED_EFFECTING_HANDLER_OR_AUTHORIZED_INFERENCE_CARRIER",
-    "context_sha256": "5cf530a91168e262ba502a098b99b56c595e958269e60ad2330b4912ff9b0b3d",
+    "context_sha256": "d125c16b336192bfcdba23af0f70b7fbf11c702b7023c76642ced6ac1247e82a",
     "effecting_handler": null,
-    "request_sha256": "0d0006761d2f18bc2cb8385707dd45bb9aad32d5a22015e6b9fd4f7692d2031a",
+    "request_sha256": "20c81220d144a271b289aaf4f39d0a9e0de736742872bc29555f98499a11dff2",
     "schema": "qikvrt_issue_deterministic_work_unit_v1"
   }
 }
