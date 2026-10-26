@@ -2,6 +2,10 @@
 # Copyright 2026 Ingolf Lohmann.
 name: QIKVRT IONOS exact DNS bootstrap
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/qikvrt_ionos_dns_bootstrap.yml'
   workflow_dispatch:
     inputs:
       expected_main_head:
@@ -19,6 +23,31 @@ on:
 permissions:
   contents: read
 jobs:
+  apex-inventory:
+    if: github.repository == 'ingolf-lohmann/qik-vrt' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Read existing IONOS apex routing without writing
+        env:
+          IONOS_DNS_API_KEY: ${{ secrets.IONOS_DNS_API_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "$IONOS_DNS_API_KEY" ]; then
+            echo '{"state":"HOLD_IONOS_DNS_API_KEY_UNAVAILABLE","effect":"NONE"}' > ionos-apex-inventory.json
+            exit 0
+          fi
+          python3 -B tools/qikvrt_ionos_dns.py readback --zone raumzeitterminal.de > ionos-apex-inventory.json
+      - name: Upload independent DNS inventory receipt
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: ionos-apex-inventory-${{ github.run_id }}
+          path: ionos-apex-inventory.json
+          if-no-files-found: ignore
+          retention-days: 30
   exact-apex-update:
     if: github.repository == 'ingolf-lohmann/qik-vrt' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
