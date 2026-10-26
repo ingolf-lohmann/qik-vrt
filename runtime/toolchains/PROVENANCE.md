@@ -390,3 +390,28 @@ Primary sources: https://quay.io/v2/skopeo/stable/manifests/sha256:d506b4167696e
 https://github.com/podman-container-tools/image_build/actions/runs/40265021526 ,
 https://github.com/actions/upload-artifact/tree/043fb46d1a93c77aae656e7c1c64a875d1fc6a0a ,
 https://docs.github.com/en/rest/actions/artifacts .
+
+### Exact executable version output
+
+Native job 121530027774 at source 17decbd6412dd2163f0d6c3055d2180f85314be0
+verified, canonicalized and loaded the pinned tool graph, then rejected the
+initial check against a bare release string. The exact official binary SHA-256
+is 5d976d2f5854ab098bc32bfd9791aae4b22f0c62a5953b007b22e581d0d91a34,
+read from the verified compressed layer 008fd0cc15aeb8204052f1f4d0ea2be056ab1d98c628813ecd26dc625f0fdf38.
+Its original runtime libraries were read from the same pinned manifest, without
+changing an installed runtime. The isolated original ELF reports exactly:
+`skopeo version 1.22.3 commit: 92397d5ba399784c6e2f9f229a4244b724743dba`.
+The official v1.22.3 main.go explicitly appends that build commit when available.
+The reviewed readback retains the complete observed executable version line.
+The concurrent Authority successor a39e44ca80b2a68feccea88a6c9640cdafc84997
+already implements the official optional 40-hex commit format while retaining
+the exact release, config and ordered filesystem checks. That exact image graph
+binds the executable bytes and build commit. Wrong releases, dirty or malformed
+suffixes still fail. Its regression fixture reproduces the native failure before
+correction, and CI preserves the non-secret observed/expected version receipt.
+The receipt is copied into the existing container-evidence directory before
+upload, keeping the original OCI archive at the artifact root for publication.
+
+Primary format source: https://github.com/podman-container-tools/skopeo/blob/v1.22.3/cmd/skopeo/main.go#L73 .
+This local ELF/version observation does not establish Docker smoke or deployment;
+the corrected exact-head original CI must independently accept those steps.

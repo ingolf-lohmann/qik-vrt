@@ -1191,6 +1191,8 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/container-evidence"
+          trap 'if test -f "$RUNNER_TEMP/skopeo-loader/version-check.json"; then cp "$RUNNER_TEMP/skopeo-loader/version-check.json" "$RUNNER_TEMP/container-evidence/skopeo-version-check.json"; fi' EXIT
           python3 -B tools/qikvrt_self_host.py container-tool-prepare \
             --output "$RUNNER_TEMP/skopeo-loader" --receipt "$RUNNER_TEMP/skopeo-loader/receipt.json"
           python3 -B - <<'PYTOOL'
@@ -1353,7 +1355,6 @@ jobs:
           path: |
             ${{ runner.temp }}/container-evidence
             !${{ runner.temp }}/container-evidence/s1-*.oci.tar
-            ${{ runner.temp }}/skopeo-loader/version-check.json
           if-no-files-found: error
           retention-days: 30
 

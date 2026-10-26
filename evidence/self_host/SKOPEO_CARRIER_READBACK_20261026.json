@@ -11,6 +11,62 @@
   "config_sha256": "sha256:4e58ecdbdffe153073ff7ee38ffc19d7c61ede7d5d37e1096d624dfc58244d8c",
   "created": "2026-10-26T03:43:23.188803993Z",
   "effect_ack_done": false,
+  "executable_version_observed": "skopeo version 1.22.3 commit: 92397d5ba399784c6e2f9f229a4244b724743dba",
+  "executable_version_readback": {
+    "all_six_compressed_and_uncompressed_layer_hashes_verified": [
+      {
+        "compressed_digest": "sha256:b07077454b630a045041b5d6444937a0d429c478655ede9aa9ba1fc06cba785f",
+        "layer": 0,
+        "uncompressed_digest": "sha256:7caae5ca96776fa5be93d51ae15cf87750826b2a40db843424f515cd4b4709ed",
+        "verified": true
+      },
+      {
+        "compressed_digest": "sha256:dcf08d26ea1c5f9ce09c901780eb672a49465a25bc1f8315a3927742f4f14edd",
+        "layer": 1,
+        "uncompressed_digest": "sha256:d1c0dc4413e50b3be694bd78e5790c39d67abe31a75c059222259798b5a0f595",
+        "verified": true
+      },
+      {
+        "compressed_digest": "sha256:008fd0cc15aeb8204052f1f4d0ea2be056ab1d98c628813ecd26dc625f0fdf38",
+        "layer": 2,
+        "uncompressed_digest": "sha256:c085de97aa45d7a75082146401fafc866f37d027b2302460b9ff3ae1819c5176",
+        "verified": true
+      },
+      {
+        "compressed_digest": "sha256:9190017975ed0ff91d7f76aa1cd99fb38d2ebd2e7bf7e540d23ed2059000e552",
+        "layer": 3,
+        "uncompressed_digest": "sha256:dda438bb0ab456cf48ece2238ebc1b89c97bd95b848c5cbd6b09731ba5df55c3",
+        "verified": true
+      },
+      {
+        "compressed_digest": "sha256:9d3124f3e8233fa294b12b3b6a397794ae096fed5d04f8ecdc744df2e60616cf",
+        "layer": 4,
+        "uncompressed_digest": "sha256:5de92d8c3625718825f8a53b936a51560a3860e59ded9a0565e9d0c204728f8c",
+        "verified": true
+      },
+      {
+        "compressed_digest": "sha256:1c5b6089fd7169c6628dcb595e954c6e53f0509af0a0caff98762162089e74e6",
+        "layer": 5,
+        "uncompressed_digest": "sha256:7992ce19b69424174b71c1dedbda6815b9959f1478f497fad936318647b19e1c",
+        "verified": true
+      }
+    ],
+    "binary_archive_member": "usr/bin/skopeo",
+    "binary_compressed_layer_sha256": "008fd0cc15aeb8204052f1f4d0ea2be056ab1d98c628813ecd26dc625f0fdf38",
+    "binary_sha256": "5d976d2f5854ab098bc32bfd9791aae4b22f0c62a5953b007b22e581d0d91a34",
+    "ci_failure_before_correction": {
+      "cause": "TOOL_EXECUTABLE_VERSION_MISMATCH",
+      "configuration_and_ordered_layers_loaded_and_verified_before_hold": true,
+      "head": "17decbd6412dd2163f0d6c3055d2180f85314be0",
+      "job": 121530027774,
+      "run": 40309419095
+    },
+    "docker_container_acceptance": "requires fresh corrected exact-head CI",
+    "observation": "Read --version from the exact official ELF with its separately verified original runtime libraries in an isolated scratch directory; no installed runtime changed",
+    "official_version_format_source": "https://github.com/podman-container-tools/skopeo/blob/v1.22.3/cmd/skopeo/main.go#L73",
+    "stdout_sha256": "94dd07ee0a14ad462d2352163631618f0bff51eaa801e0d4558b3bd1958c4399",
+    "subsequent_layers_do_not_replace_binary_or_original_libraries": true
+  },
   "index_original_utf8": "{\"schemaVersion\":2,\"mediaType\":\"application/vnd.oci.image.index.v1+json\",\"manifests\":[{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:d506b4167696eb5d3bd624b3619480bddeabdca291b2e795e9c20ed862e11ae4\",\"size\":2371,\"platform\":{\"architecture\":\"amd64\",\"os\":\"linux\"}},{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:f8080b644843715f0316fef1b24114ff0a7376cfad3b8bd3bc7a09cb697ed75d\",\"size\":2291,\"platform\":{\"architecture\":\"s390x\",\"os\":\"linux\"}},{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:56fd00d57f70007dfcabc55a01d55e612d29569cfcdb177d62f18669610b523b\",\"size\":2371,\"platform\":{\"architecture\":\"arm64\",\"os\":\"linux\"}},{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:3170309ca18bcc28f20a5a4d4d8f397e9d6a7f9114fbb694b1944daef92ffc44\",\"size\":2371,\"platform\":{\"architecture\":\"ppc64le\",\"os\":\"linux\"}}]}",
   "metadata_byte_exact": true,
   "observed_at_utc": "2026-10-26T10:18:16Z",
