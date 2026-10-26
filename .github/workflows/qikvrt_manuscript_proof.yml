@@ -8,6 +8,9 @@ on:
     paths:
       - "formalization/QIKVRT_Formalization_v2.0/**"
       - "tools/qikvrt_canonical_temporal_memory_kernel_evidence.py"
+      - "tools/qikvrt_causal_distance_kernel_evidence.py"
+      - "tests/test_causal_distance_kernel_evidence.py"
+      - "docs/publications/2026-10-24-causal-distance-temporal-memory/**"
       - "tools/qikvrt_survival_connectability_kernel_evidence.py"
       - "tests/test_survival_connectability_kernel_evidence_tool.py"
       - "tests/test_survival_connectability_publication.py"
@@ -24,6 +27,9 @@ on:
     paths:
       - "formalization/QIKVRT_Formalization_v2.0/**"
       - "tools/qikvrt_canonical_temporal_memory_kernel_evidence.py"
+      - "tools/qikvrt_causal_distance_kernel_evidence.py"
+      - "tests/test_causal_distance_kernel_evidence.py"
+      - "docs/publications/2026-10-24-causal-distance-temporal-memory/**"
       - "tools/qikvrt_survival_connectability_kernel_evidence.py"
       - "tests/test_survival_connectability_kernel_evidence_tool.py"
       - "tests/test_survival_connectability_publication.py"
@@ -319,6 +325,22 @@ jobs:
           retention-days: 30
           path: >-
             formalization/QIKVRT_Formalization_v2.0/.lake/build/qikvrt-canonical-temporal-memory-kernel-evidence.json
+          if-no-files-found: error
+      - name: Verify causal-distance kernel extension and negative controls
+        env:
+          PYTHONPATH: ../..
+        run: |
+          set -euo pipefail
+          python3 -m unittest -v tests.test_causal_distance_kernel_evidence
+          python3 ../../tools/qikvrt_causal_distance_kernel_evidence.py \
+            | tee .lake/build/qikvrt-causal-distance-kernel-evidence.json
+      - name: Upload causal-distance kernel evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qikvrt-causal-distance-kernel-evidence
+          retention-days: 30
+          path: >-
+            formalization/QIKVRT_Formalization_v2.0/.lake/build/qikvrt-causal-distance-kernel-evidence.json
           if-no-files-found: error
       - name: Verify survival/connectability publication kernel plan
         run: |

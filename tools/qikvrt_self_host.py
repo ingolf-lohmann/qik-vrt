@@ -56,6 +56,19 @@ MESH_COMPONENT_FILES = {
     "universal_terminal": ["src/qikvrt_temdd_event_ledger.py", "src/qikvrt_effect_ack_http_terminal.py",
                            "docs/terminal/temdd/index.html", "docs/monitor/client-replica.js"],
 }
+REST_BOOTSTRAP_FILES = (
+    '.github/CODEOWNERS', 'api/qikvrt_github_api.openapi.yaml',
+    'scripts/qikvrt_api_client.py', 'src/qikvrt_api_handler.py',
+    'src/qikvrt_effect_ack.py', 'src/qikvrt_github_api_shim.py',
+    'src/qikvrt_mcp_adapter.py', 'tools/ai_handoff.py',
+    'tools/qikvrt_authority_credentials.py', 'tools/qikvrt_integrity.py',
+    'tools/qikvrt_required_review_gate.py', 'tools/qikvrt_subprocess.py',
+    'tools/qikvrt_workflow_executor.py', 'policy/CANONICAL_UPSTREAM_REMOTE_V1.json',
+    'policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json',
+    'policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json',
+    'state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json',
+    'state/authorization/delegations/OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_V1.json',
+)
 MESH_FAULT_CASES = ("PROCESS_CRASH", "NODE_LOSS", "NETWORK_PARTITION", "PROVIDER_LOSS",
                     "LOST_EFFECT_ACK", "CONCURRENT_TAKEOVER", "STALE_WRITER", "NODE_REJOIN")
 MESH_INVARIANTS = ("same_work_unit_after_failover", "preserve_confirmed_effects",
@@ -614,6 +627,14 @@ def mesh_contract(root, definition=None):
             or len(files) != len(set(files)) or not required <= set(files)
             or definition.get("native_terminal_daemon_included") is not True):
         raise ValueError("MESH_NATIVE_COMPONENT_PACKAGE_REQUIRED")
+    rest = definition.get('rest_bootstrap', {})
+    if (not isinstance(rest, dict) or not set(REST_BOOTSTRAP_FILES) <= set(files)
+            or rest.get('schema') != 'qikvrt-packaged-rest-bootstrap/v1'
+            or rest.get('entrypoint') != ['python3', '-B', '-S', 'src/qikvrt_github_api_shim.py']
+            or any(rest.get(key) is not False for key in (
+                'automatic_start', 'runtime_admission_default',
+                'requires_running_native_runtime', 'contains_credentials'))):
+        raise ValueError('REST_BOOTSTRAP_PACKAGE_REQUIRED')
     invariants = contract.get("invariants", {})
     if not isinstance(invariants, dict) or any(invariants.get(key) is not True for key in MESH_INVARIANTS):
         raise ValueError("MESH_CONTINUITY_INVARIANTS_REQUIRED")
@@ -3140,7 +3161,7 @@ def firefox_amo_runtime_fingerprint(source):
             and item.value.args and isinstance(item.value.args[0], ast.Constant)
             and (str(item.value.args[0].value).startswith("--amo-") or
                  item.value.args[0].value in {"--image", "--receipt", "--oci-archive", "--second-oci-archive",
-                    "--carrier-archive", "--carrier-oci-archive", "--production-binding", "--binding-sha256",
+                    "--carrier-archive", "--carrier-oci-archive", "--tool-archive", "--production-binding", "--binding-sha256",
                     "--ca-file", "--cert-file", "--key-file"}))]
         for item in ast.walk(node):
             if isinstance(item, ast.keyword) and item.arg == "choices" and isinstance(item.value, ast.Tuple):
@@ -3620,7 +3641,7 @@ def firefox_extension_probe(xpi, output, package="firefox-esr"):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("operation", choices=("firefox-amo-unlisted", "firefox-release-provision", "firefox-extension-check", "deployment-roles", "runtime-delivery-verify", "runtime-delivery-load", "docker-admit", "pack", "portable", "portable-restore", "verify", "monolith-pack", "monolith-verify", "monolith-run", "monolith-checkpoint", "monolith-origin-export", "monolith-transport-export", "monolith-transport-import", "mesh-contract", "mesh-cache-stage", "mesh-cache-idle", "mesh-cache-send", "mesh-cache-check", "mesh-rule-confirm", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state", "transfer-local-writer",
-        "container-context", "container-carrier", "container-carrier-archive-check", "container-artifact-split", "container-artifact-join", "container-oci-check", "container-smoke", "container-production-gate", "container-deploy", "container-readback",
+        "container-tool-prepare", "container-context", "container-carrier", "container-carrier-archive-check", "container-artifact-split", "container-artifact-join", "container-oci-check", "container-smoke", "container-production-gate", "container-deploy", "container-readback",
         "migration-inventory", "migration-verify-source", "migration-export", "migration-verify-export", "migration-import",
         "migration-verify-import", "migration-rollback", "migration-capture-supervisor", "migration-capture-arm", "migration-capture",
         "provider-inventory", "provider-classify", "provider-plan", "provider-apply", "provider-reconcile", "provider-readback"))
@@ -3654,10 +3675,13 @@ def main():
     parser.add_argument("--admission-tool-sha256", help="independently reviewed guard pin; required for supervisor operations")
     parser.add_argument("--browser-assets-root", type=Path, help="explicit provisioned noVNC source tree; freeze a Firefox-capable variant")
     parser.add_argument("--image", help="local smoke tag or exact versioned production digest")
+    parser.add_argument("--terminal-profile", choices=("temdd", "firefox"), default="firefox",
+                        help="explicit container smoke scope; Firefox still requires signed activation")
     parser.add_argument("--receipt", type=Path, help="non-secret container evidence output")
     parser.add_argument("--oci-archive", type=Path)
     parser.add_argument("--second-oci-archive", type=Path)
     parser.add_argument("--carrier-archive", type=Path, help="existing pinned GitHub delivery ZIP; otherwise download through original Actions REST")
+    parser.add_argument("--tool-archive", type=Path, help="existing untrusted Skopeo cache; verify config and ordered layers before Docker load")
     parser.add_argument("--carrier-oci-archive", type=Path, help="create-only OCI transport preserving the verified original ZIP for the existing publisher")
     parser.add_argument("--production-binding", type=Path, help="existing protected Linux host binding; never credentials")
     parser.add_argument("--binding-sha256", help="independently pinned protected host binding")
@@ -3830,5 +3854,6 @@ def main():
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
 
 

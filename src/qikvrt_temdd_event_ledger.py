@@ -185,22 +185,46 @@ class Ledger:
             raise Hold('COPIED_OR_UNADMITTED_LEDGER_WRITER')
 
     def history_frontier(self):
-        rows = self.db.execute('SELECT * FROM events ORDER BY seq').fetchall()
-        for seq, binding, source, native_id, native_digest, text, expected in rows:
-            body = json.loads(text)
-            original = {key: body[key] for key in
-                        ('kind', 'subject', 'provenance', 'observed_at', 'message', 'payload')}
-            original['schema'] = SCHEMA
-            validator = object.__new__(Ledger); validator.subject = body['subject']
-            validator._validate(original)
-            if (digest(body) != expected or digest(body['subject']) != binding
-                    or digest(original) != native_digest
-                    or body['provenance'] != {'source': source, 'native_event_id': native_id}
-                    or body.get('schema') != 'qikvrt_temdd_event_v1'
-                    or body.get('payload_digest') != digest(body['payload'])
-                    or body.get('evidence_transfer') != 'DENY' or body.get('dod') is not False):
-                raise Hold('LEDGER_HISTORY_READBACK_MISMATCH')
-        return digest({'epoch': self.epoch, 'rows': rows})
+        # Preserve the ORIGINAL canonical frontier bytes, including row order,
+        # while retaining at most one bounded native event at a time. The lock
+        # excludes same-connection appends during this finite SQLite snapshot.
+        with self.condition, contextlib.closing(self.db.execute(
+                'SELECT * FROM events ORDER BY seq')) as rows:
+            frontier = hashlib.sha256(b'{"epoch":' + canonical(self.epoch) + b',"rows":[')
+            separator = b''
+            for row in rows:
+                seq, binding, source, native_id, native_digest, text, expected = row
+                body = json.loads(text)
+                original = {key: body[key] for key in
+                            ('kind', 'subject', 'provenance', 'observed_at', 'message', 'payload')}
+                original['schema'] = SCHEMA
+                validator = object.__new__(Ledger); validator.subject = body['subject']
+                validator._validate(original)
+                if (digest(body) != expected or digest(body['subject']) != binding
+                        or digest(original) != native_digest
+                        or body['provenance'] != {'source': source, 'native_event_id': native_id}
+                        or body.get('schema') != 'qikvrt_temdd_event_v1'
+                        or body.get('payload_digest') != digest(body['payload'])
+                        or body.get('evidence_transfer') != 'DENY' or body.get('dod') is not False):
+                    raise Hold('LEDGER_HISTORY_READBACK_MISMATCH')
+                frontier.update(separator)
+                frontier.update(canonical(row))
+                separator = b','
+            frontier.update(b']}')
+            return frontier.hexdigest()
+
+    def _same_history(self, other):
+        """Exact row equality, without materializing either complete journal."""
+        with self.condition, other.condition, contextlib.closing(self.db.execute(
+                'SELECT * FROM events ORDER BY seq')) as left, contextlib.closing(other.db.execute(
+                'SELECT * FROM events ORDER BY seq')) as right:
+            while True:
+                row = left.fetchone()
+                peer = right.fetchone()
+                if row != peer:
+                    return False
+                if row is None:
+                    return True
 
     @classmethod
     def transfer_local_writer(cls, source, target, exact_subject, expected_frontier):
@@ -228,11 +252,10 @@ class Ledger:
             reader.lock_fd = fd
             # ExitStack owns this descriptor, not the read-only reader.
             stack.callback(setattr, reader, 'lock_fd', None)
-            rows = writer.db.execute('SELECT * FROM events ORDER BY seq').fetchall()
             frontier = writer.history_frontier()
             if (frontier != expected_frontier or reader.epoch != writer.epoch
                     or reader.history_frontier() != frontier
-                    or reader.db.execute('SELECT * FROM events ORDER BY seq').fetchall() != rows):
+                    or not writer._same_history(reader)):
                 raise Hold('EXACT_LOCAL_HANDOFF_PREFIX_REQUIRED')
             seal = reader._writer_seal()
             if seal == writer._writer_seal():

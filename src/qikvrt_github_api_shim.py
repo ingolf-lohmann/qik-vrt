@@ -16,6 +16,7 @@ import time
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from types import SimpleNamespace
 from urllib.parse import parse_qs, urlparse
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -24,11 +25,13 @@ from qikvrt_effect_ack import EffectState
 import qikvrt_mcp_adapter as read_mcp
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from qikvrt_api_client import API_CONTRACT_VERSION, read_regular_file
+import qikvrt_api_client as authority_client
 
 REPOSITORY_COMPONENT = r"([A-Za-z0-9_.-]{1,100})"
 DISPATCH_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/actions/workflows/qikvrt_mesh_api\.yml/dispatches$")
 REPO_DISPATCH_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/dispatches$")
 READBACK_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/qikvrt/artifacts/([A-Za-z0-9_.=-]{{1,128}})/readback$")
+RULESET_REST_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/qikvrt/ruleset-authority$")
 MCP_VERSIONS = ("2025-11-25", "2026-07-28")
 MCP_MAX_PAYLOAD_BYTES = 256 * 1024
 MCP_SOURCE_PATHS = ("scripts/qikvrt_api_client.py", "src/qikvrt_api_handler.py",
@@ -255,6 +258,93 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
         if isinstance(raw, str) and raw.lower() in ("true", "false"):
             return raw.lower() == "true"
         raise ValueError(f"{field} must be true or false")
+
+    def _ruleset_rest(self, *, write: bool) -> None:
+        """Reuse the original fixed-writer controller behind explicit admission.
+
+        The caller's REST credential never becomes a GitHub credential. Only
+        the existing protected resolver supplies it; URL/ref/code are fixed.
+        """
+        if os.environ.get("QIKVRT_RULESET_AUTHORITY_ENABLED", "0") != "1":
+            self._send_json(404, {"status": "BLOCK", "reason": "Ruleset REST not admitted"})
+            return
+        if not self._rate_allowed():
+            self._send_json(429, {"status": "BLOCK", "reason": "rate limit exceeded"})
+            return
+        if not self._authorized():
+            self._send_json(401, {"status": "BLOCK", "reason": "unauthorized"})
+            return
+        try:
+            parsed = urlparse(self.path)
+            match = RULESET_REST_RE.fullmatch(parsed.path)
+            repository = "/".join(match.groups()) if match else ""
+            if (repository != authority_client.RULESET_REPOSITORY
+                    or os.environ.get("QIKVRT_ALLOWED_REPOSITORY") != repository):
+                self._send_json(403, {"status": "BLOCK", "reason": "Authority repository required"})
+                return
+            from tools.qikvrt_required_review_gate import resolve_required_code_owner
+            if os.environ.get("QIKVRT_API_PRINCIPAL", "").strip() != resolve_required_code_owner(repository):
+                self._send_json(403, {"status": "BLOCK", "reason": "Bound Owner principal required"})
+                return
+            if parsed.params or parsed.fragment or len(parsed.query) > 4096:
+                raise ValueError("bounded exact REST path required")
+            common = {"request_id", "expected_main_sha", "writer_version"}
+            if write:
+                if parsed.query:
+                    raise ValueError("dispatch query is forbidden")
+                value = self._read_json()
+                if (set(value) != common | {"schema", "effect_accepted"}
+                        or value.get("schema") != "qikvrt-ruleset-authority-rest/v1"
+                        or value.get("effect_accepted") is not True):
+                    raise ValueError("exact scoped Ruleset acceptance required")
+            else:
+                query = parse_qs(parsed.query, keep_blank_values=True, strict_parsing=True)
+                if set(query) not in (common, common | {"run_id"}) or any(len(v) != 1 for v in query.values()):
+                    raise ValueError("exact single-valued readback parameters required")
+                value = {key: values[0] for key, values in query.items()}
+                if "run_id" in value and not re.fullmatch(r"[1-9][0-9]{0,31}", value["run_id"]):
+                    raise ValueError("positive original run ID required")
+            if (not isinstance(value["request_id"], str)
+                    or not authority_client.SAFE_ID.fullmatch(value["request_id"])
+                    or not isinstance(value["expected_main_sha"], str)
+                    or not authority_client.SHA1_HEX.fullmatch(value["expected_main_sha"])
+                    or not isinstance(value["writer_version"], str)
+                    or value["writer_version"] not in authority_client.RULESET_WRITER_VERSIONS):
+                raise ValueError("exact request, Main and reviewed writer bindings required")
+            from tools.qikvrt_authority_credentials import credential
+            protected = {key: os.environ.get(key, "") for key in (
+                "QIKVRT_RULESET_ADMIN_TOKEN", "QIKVRT_GITHUB_ADMIN_TOKEN",
+                "QIKVRT_MESH_TOKEN", "QIKVRT_AUTHORITY_APP_TOKEN")}
+            token, reference, _presence = credential(protected)
+            if (not token or len(token) > 4096
+                    or any(ord(c) < 33 or ord(c) > 126 for c in token)
+                    or hmac.compare_digest(token, os.environ.get("QIKVRT_API_TOKEN", ""))):
+                self._send_json(503, {"status": "BLOCK", "reason": "Protected Authority credential binding unavailable"})
+                return
+            state = Path(os.environ.get("QIKVRT_API_CLIENT_STATE_DIR",
+                str(Path(os.environ.get("QIKVRT_REPO_ROOT", os.getcwd())) / ".qikvrt/api-client")))
+            args = SimpleNamespace(operation="ruleset_authority_dispatch" if write else "ruleset_authority_readback",
+                owner="ingolf-lohmann", repo="qik-vrt", ref="main", base_url="https://api.github.com",
+                artifact_id="qikvrt_artifact", expected_main_sha=value["expected_main_sha"],
+                ruleset_writer_version=value["writer_version"], request_id=value["request_id"],
+                ruleset_run_id=None if write else value.get("run_id"),
+                state_dir=str(state / "ruleset-authority-server"), retry_evidence_file=None)
+            receipt = None
+            if not write and args.ruleset_run_id is None:
+                run_id, receipt = authority_client.recorded_ruleset_run(args)
+                args.ruleset_run_id = str(run_id) if run_id is not None else None
+            code, receipt = authority_client.ruleset_authority_result(args, token) if receipt is None else (20, receipt)
+            receipt["authority_credential_reference"] = reference
+            self._send_json(200 if code == 0 else 202 if code == 20 else 409, {
+                "schema": "qikvrt-ruleset-authority-rest/v1", "api_contract_version": API_CONTRACT_VERSION,
+                "status": "CONTINUE" if code in (0, 20) else "BLOCK", "handler_result": receipt,
+                "ordinary_release": False, "effect_ack_done": False})
+        except FileNotFoundError:
+            self._send_json(404, {"status": "BLOCK", "reason": "Original Ruleset attempt unavailable"})
+        except (ValueError, TypeError, KeyError, UnicodeError):
+            self._send_json(400, {"status": "BLOCK", "reason": "Invalid exact Ruleset REST request"})
+        except Exception:
+            self._send_json(503, {"status": "BLOCK", "reason": "Ruleset REST unavailable; read back before retry"})
 
     def _mcp_guard(self) -> bool:
         if not _mcp_configuration_valid():
@@ -519,6 +609,9 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
             error(200, -32603, "Committed evidence unavailable; reobserve before any mutation")
 
     def do_GET(self):
+        if RULESET_REST_RE.fullmatch(urlparse(self.path).path):
+            self._ruleset_rest(write=False)
+            return
         if self.path == "/mcp" and os.environ.get("QIKVRT_MCP_ENABLED") == "1":
             if self._mcp_guard():
                 self._send_json(405, {"status": "BLOCK", "reason": "MCP uses POST; no SSE stream"})
@@ -555,6 +648,9 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
         self._send_json(404, {"status": "BLOCK", "reason": "not found"})
 
     def do_POST(self):
+        if RULESET_REST_RE.fullmatch(urlparse(self.path).path):
+            self._ruleset_rest(write=True)
+            return
         if self.path == "/mcp":
             if read_mcp.enabled():
                 self._mcp_post()

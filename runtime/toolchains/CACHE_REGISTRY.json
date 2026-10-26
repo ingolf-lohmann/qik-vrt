@@ -656,21 +656,26 @@
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
         ".github/workflows/qikvrt_ci.yml",
         "tests/test_self_host_container.py",
-        "runtime/toolchains/PROVENANCE.md"
+        "runtime/toolchains/PROVENANCE.md",
+        "evidence/self_host/SKOPEO_CARRIER_READBACK_20261026.json",
+        "tools/qikvrt_self_host_container.py"
       ],
       "cache_class": "runner-image-layer",
       "cache_locations": [
-        "Docker daemon content-addressed image layers; no authentication data"
+        "existing repository Actions artifact qikvrt-skopeo-<pinned-platform-digest>/skopeo-loader.docker.tar; retention 90 days",
+        "local Docker image by verified config SHA-256; exact official manifest on cache miss only"
       ],
       "profiles": [
         "self-host-container"
       ],
-      "provider": "containers/skopeo official quay.io/skopeo/stable SHA-256-bound OCI image",
+      "provider": "Official Quay linux/amd64 manifest pin, preserved as a verified repository tool artifact",
       "trusted_save": false,
       "verification": [
-        "skopeo --version recorded; pinned official image",
-        "copy --preserve-digests of the independently verified OCI archive; every version tag read back against the frozen descriptor",
-        "failure refuses deployment; no image rebuild or tag overwrite after test"
+        "verify original official index, platform manifest and config bytes against reviewed digests and TOOLCHAIN.lock.tsv",
+        "canonical Docker archive, exact config digest and every ordered uncompressed rootfs.diff_id before Docker load",
+        "verify loaded image ID, platform, ordered layers and offline skopeo --version",
+        "existing S1 smoke/restart and publication --preserve-digests gates remain mandatory",
+        "fail closed on corrupt cache or API/authentication failure; cache miss alone permits exact-pin source pull; no tag fallback"
       ],
       "version": "exact-OCI-carrier-preserve-digests"
     },

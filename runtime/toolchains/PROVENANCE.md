@@ -334,3 +334,84 @@ Primary component and protocol authorities:
 - https://www.rfc-editor.org/rfc/rfc8252
 - https://www.rfc-editor.org/rfc/rfc9700
 - https://www.rfc-editor.org/rfc/rfc7009
+
+## Skopeo carrier repair — 25 October 2026
+
+The previous exact carrier digest returned `manifest unknown` in native CI run
+40172405691, job 121107295223, after the independent native OCI builds passed.
+The existing Skopeo import/publish path is retained. Its Linux/amd64 image is
+now pinned to `sha256:309ce24d7a87ca4eb35fc6dd9d91af7c4750d7f24578f633c6effd75c81f315d`. Original public index and platform-manifest
+bytes, their SHA-256 digests and the independently hashed configuration binding
+are in `evidence/self_host/SKOPEO_CARRIER_READBACK_20261025.json`. The official
+carrier labels identify Skopeo 1.22.3, built 23 October 2026. The native job records
+`--version`; OCI config, ordered filesystem layers, source pins and preserved
+registry digests are still checked before runtime or publication acceptance.
+No mutable tag is used for execution, no installed runtime is downgraded, and
+manifest availability alone proves neither executable-tool behavior nor delivery.
+
+
+## Skopeo verified cache repair — 26 October 2026
+
+The 25 October pin returned `manifest unknown` in both full Linux workflows at
+source 5c7055c3bd5c5992d6c4881ef01348a77a8002fb: runs 40302026752 and
+40302029683, jobs 121504698465 and 121509381560. Their independent native
+OCI builds and repository tests passed before the tool-image import failed.
+The original logs distinguish tool-carrier availability from application failure.
+
+The official current Linux/amd64 manifest is
+`sha256:d506b4167696eb5d3bd624b3619480bddeabdca291b2e795e9c20ed862e11ae4`,
+config `sha256:4e58ecdbdffe153073ff7ee38ffc19d7c61ede7d5d37e1096d624dfc58244d8c`.
+The read-only resolution of the official index, platform manifest and config
+verified the original bytes against SHA-256 and descriptor lengths. The labels
+identify Skopeo 1.22.3, built 26 October 2026; this is no version downgrade.
+The exact original metadata and preceding failed-run identities are retained in
+`evidence/self_host/SKOPEO_CARRIER_READBACK_20261026.json`. The former dated
+record remains historical. Mutable tags are never execution fallbacks.
+
+The existing S1 container helper now restores the deterministic, digest-named
+repository Actions tool artifact before attempting the exact official source.
+Only a genuine cache miss permits that pull; API/authentication failures and
+corrupt cache data fail closed. Before Docker import, it verifies the pinned
+config and every ordered uncompressed rootfs diff_id, exports only their minimal
+Docker graph, and removes all archive-supplied tags and extra daemon metadata.
+It then checks the loaded image ID, platform, layers and offline executable
+version. The original OCI conversion and `--preserve-digests` publication keep
+their existing independent gates. The same helper handles smoke and publication.
+
+The pinned existing upload-artifact action retains the verified tool immediately
+before runtime builds, for 90 days. A nonexpired repository artifact survives
+upstream manifest removal; this does not promise permanent archival. The cache
+contains public tool bytes only, never registry credentials or runtime state.
+Local fixture tests prove verification and fail-closed behavior, not an actual
+Docker import, complete Linux CI success or production activation. Those results
+require fresh exact-head original CI and host readback.
+
+Primary sources: https://quay.io/v2/skopeo/stable/manifests/sha256:d506b4167696eb5d3bd624b3619480bddeabdca291b2e795e9c20ed862e11ae4 ,
+https://github.com/podman-container-tools/image_build/actions/runs/40265021526 ,
+https://github.com/actions/upload-artifact/tree/043fb46d1a93c77aae656e7c1c64a875d1fc6a0a ,
+https://docs.github.com/en/rest/actions/artifacts .
+
+### Exact executable version output
+
+Native job 121530027774 at source 17decbd6412dd2163f0d6c3055d2180f85314be0
+verified, canonicalized and loaded the pinned tool graph, then rejected the
+initial check against a bare release string. The exact official binary SHA-256
+is 5d976d2f5854ab098bc32bfd9791aae4b22f0c62a5953b007b22e581d0d91a34,
+read from the verified compressed layer 008fd0cc15aeb8204052f1f4d0ea2be056ab1d98c628813ecd26dc625f0fdf38.
+Its original runtime libraries were read from the same pinned manifest, without
+changing an installed runtime. The isolated original ELF reports exactly:
+`skopeo version 1.22.3 commit: 92397d5ba399784c6e2f9f229a4244b724743dba`.
+The official v1.22.3 main.go explicitly appends that build commit when available.
+The reviewed readback retains the complete observed executable version line.
+The concurrent Authority successor a39e44ca80b2a68feccea88a6c9640cdafc84997
+already implements the official optional 40-hex commit format while retaining
+the exact release, config and ordered filesystem checks. That exact image graph
+binds the executable bytes and build commit. Wrong releases, dirty or malformed
+suffixes still fail. Its regression fixture reproduces the native failure before
+correction, and CI preserves the non-secret observed/expected version receipt.
+The receipt is copied into the existing container-evidence directory before
+upload, keeping the original OCI archive at the artifact root for publication.
+
+Primary format source: https://github.com/podman-container-tools/skopeo/blob/v1.22.3/cmd/skopeo/main.go#L73 .
+This local ELF/version observation does not establish Docker smoke or deployment;
+the corrected exact-head original CI must independently accept those steps.

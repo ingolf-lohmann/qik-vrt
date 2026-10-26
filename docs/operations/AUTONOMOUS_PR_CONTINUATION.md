@@ -308,6 +308,88 @@ conditions. A repository commit or fixture PASS cannot close that live gap.
 Independent native approval and effective Main protection remain separate
 merge gates after successful Firefox admission.
 
+## Close a missing REST capability through the original source — Owner 2026-10-25
+
+Use REST first. If an operation is absent or insufficient, inspect the existing
+connector and its actual method/target/principal binding, read the exact original
+repository implementation and extend that existing REST path. The final source
+fallback is the original Authority `ingolf-lohmann/qik-vrt` on GitHub. Reproduce
+the failure, test the corrected component and complete package, persist the exact
+source and continuation and independently read them back. Then use REST when its
+actual runtime and protected credential bindings are admitted. Do not request
+the existing Owner authorization again, create a parallel executor or substitute
+a timer. A callable source repair belongs in the existing transition's
+`preparation` and `blocking_repairs`; it prevents a premature terminal BLOCK.
+
+The original fixed Ruleset controller existed, but its direct POST bypassed the
+existing durable attempt journal and rejected current HTTP200 run details. The
+own REST adapter also did not expose that fixed operation. The shared controller
+now persists exact-source intent before transport and accepts validated HTTP200
+run identity as well as legacy empty HTTP204. Its journal key is independent of
+request ID, Main SHA and writer version, so none can replay an unresolved POST.
+The current provider contract is documented at:
+https://docs.github.com/en/rest/actions/workflows#create-a-workflow-dispatch-event
+
+The existing `src/qikvrt_github_api_shim.py` now offers exactly:
+
+`POST /repos/ingolf-lohmann/qik-vrt/qikvrt/ruleset-authority`
+
+`GET /repos/ingolf-lohmann/qik-vrt/qikvrt/ruleset-authority`
+
+These are QIK-VRT routes, not additional GitHub endpoints. The service is
+disabled for this purpose unless `QIKVRT_RULESET_AUTHORITY_ENABLED=1` is installed
+through its protected configuration. Admission also requires the existing
+expiring REST credential, exact Authority repository and configured Owner login
+`ingolf-lohmann`. The server reuses the protected Authority credential resolver;
+it excludes generic `GITHUB_TOKEN`, rejects reuse of the caller credential and
+never returns a credential value. Enabling source code does not configure a
+credential or grant provider permissions. The evidence-read MCP credential and
+catalog retain their existing scope.
+
+The server needs the original source/policy files, declared Python runtime and
+its protected configuration. It does not need an already running productive S1
+or protected Main to request repair of Main protection. The existing Ruleset
+writer and its exact-source checks still own the actual administration effect.
+No generic URL, workflow, branch, source override, native review, ready transition
+or merge operation is exposed.
+
+POST uses this exact bounded request shape; replace only the explicitly bound
+request identity, fresh Main SHA and selected reviewed writer version:
+
+```json
+{"schema":"qikvrt-ruleset-authority-rest/v1","request_id":"owner-ruleset-20261025","expected_main_sha":"080c05f1cba7b1638477da78613b87252ffe1a12","writer_version":"principal-review-v4","effect_accepted":true}
+```
+
+The existing repository client can select the admitted Mesh origin explicitly
+with `--ruleset-via-mesh --base-url <actual-admitted-Mesh-origin>` and the existing
+`--operation ruleset_authority_dispatch`, `--expected-main-sha`,
+`--ruleset-writer-version`, stable `--request-id`, `--dry-run false` and
+`--accept-effect`. Its `QIKVRT_API_TOKEN` remains the REST caller credential and
+is never forwarded to GitHub. Omitting the Mesh flag preserves the existing
+canonical direct-GitHub default and its separate provider credential requirement.
+The private server and caller reuse the original journal implementation in
+separate owned metadata directories, not another native ledger.
+
+GET requires `request_id`, `expected_main_sha` and `writer_version`, with an
+optional positive `run_id`. An omitted run ID recovers the exact original
+request's saved GitHub run identity without changing its journal. The controller
+then independently verifies the original run/event/ref/head, jobs, canonical
+Ruleset digest and protected Main. If the provider returned no run identity or
+the result remains ambiguous, GET retains the original intent and remains
+unverified; it never retries POST. Wrong original request/source bindings and
+duplicate parameters fail closed. A supplied independently identified run ID
+uses the original GET-only postcondition path. The repository client uses
+`--operation ruleset_authority_readback` with read-only defaults; the same Mesh
+flag permits recovery without `--ruleset-run-id`.
+
+HTTP202 proves transport continuation only. A GET-verified Ruleset postcondition
+still proves neither mutation attribution nor Main integration, original-host
+start, exact-domain delivery or global EFFECT_ACK_DONE. A source commit,
+OpenAPI change or wire fixture does not register a hosted ChatGPT connector or
+deploy this REST service. Preserve those exact activation gaps until observed.
+Do not relabel a provider's unavailable REST ready/CAS operation as implemented
+by this bounded Ruleset route.
+
 ## Direct Owner handoff to the existing Linux CI job — 2026-10-17
 
 Ingolf Lohmann explicitly authorized the Linux CI/CD pipeline to take over
@@ -345,3 +427,26 @@ Missing credential delivery keeps `submit=false` and reports
 secret-store absence nor Mozilla authentication. Original native receipts and
 the signed XPI, followed by actual default-policy Firefox activation and
 persistent restart, remain required before effect completion.
+
+## Exclusive blocking-repair priority — Owner 2026-10-25
+
+Ingolf Lohmann authorized the errors that prevent further work to take highest
+and exclusive priority. This is completion/repair work; it does not wait for
+idle or the optimization backlog gate. Defer unrelated work, performance and
+throughput tuning until the blocking defects have their own verified repair.
+
+Reuse the current client transition plan: `blocking_repairs` names its open
+repair transition IDs. Every reference must resolve exactly once. The planner
+retains unrelated ready actions under `deferred` and exposes only admitted
+repair preparation/execution as `ready`. A flat `next_actions` entry cannot
+bypass that scope. An unavailable repair stays open with its exact capability
+or authority prerequisite; unrelated executable work does not replace it.
+Remove a repaired transition from this list only after exact-subject effect
+readback. An empty list restores the preserved ordinary work. Historical plans
+without this field retain their reader contract. This gate validates declared
+consistency, not the truth of a repair classification or actual execution.
+
+The existing native-only IONOS S1 path remains first. Firefox signing and its
+activation/restart acceptance remain separate. Main protection, native review,
+protected host/storage/configuration, mTLS and exact-domain acceptance remain
+required; a ready plan grants none of them and creates no timer or executor.

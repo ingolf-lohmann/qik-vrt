@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
-# Copyright 2026 Ingolf Lohmann. Implementation contribution: Claude (Anthropic).
+# Copyright 2026 Ingolf Lohmann. Implementation contribution: Claude (Anthropic); OpenAI Codex (IPv4 cutover, 2026-10-26).
 """Bounded IONOS DNS readback and exact-state-bound apex address update.
 
 Purpose: close the configuration gap behind the observed HTTP 525 on the
@@ -17,6 +17,10 @@ Effect boundary:
   traffic elsewhere. It never deletes, never creates zones and never touches
   any other record name.
 - Every apply ends with a fresh readback; only a matching readback is DONE.
+- ``apply --disable-apex-aaaa`` explicitly admits the observed single-A,
+  single-AAAA IPv4 cutover. It preserves the IPv6 record disabled, verifies
+  every step and stops on drift or an unresolved outcome. Default apply
+  retains its strict AAAA/CNAME refusal.
 
 The API key is taken from the environment variable IONOS_DNS_API_KEY in the
 documented ``<prefix>.<secret>`` form and is never written to any receipt.
@@ -158,7 +162,100 @@ def readback(api: API, zone: str) -> dict:
             "apex_records": records, "apex_records_sha256": digest(records), "effect": "NONE"}
 
 
-def apply(api: API, zone: str, target: str, expected_sha256: str) -> dict:
+def _ipv4_cutover(api: API, zone: str, target: str, before: dict) -> dict:
+    """At most two existing-record PUTs; no create, delete or blind resume."""
+    records = before["apex_records"]
+    active = [r for r in records if not r["disabled"]]
+    if any(r["type"] == "CNAME" for r in active):
+        raise DNSHold("HOLD_APEX_CNAME_PRESENT")
+    ipv6 = [r for r in active if r["type"] == "AAAA"]
+    if len(ipv6) > 1:
+        raise DNSHold("HOLD_APEX_AAAA_RECORD_NOT_SINGLE")
+    if ipv6:
+        try:
+            ipaddress.IPv6Address(ipv6[0]["content"])
+        except ValueError:
+            raise DNSHold("HOLD_APEX_AAAA_INVALID") from None
+    # Reuse the original single-A planner after the explicitly selected
+    # IPv6 policy has been checked. No CNAME or multi-A guard is weakened.
+    a_step = plan([r for r in records if r["type"] != "AAAA"], target)
+    steps = []
+    if a_step["action"] == "UPDATE_A":
+        steps.append({"record_id": a_step["record_id"], "type": "A",
+                      "content": target, "ttl": a_step["ttl"], "disabled": False})
+    for record in ipv6:
+        ttl = record["ttl"] if isinstance(record["ttl"], int) and record["ttl"] > 0 else 3600
+        steps.append({"record_id": record["id"], "type": "AAAA",
+                      "content": record["content"], "ttl": ttl, "disabled": True})
+    receipt = {"schema": RECEIPT_SCHEMA, "operation": "apply", "zone": zone,
+               "zone_id": before["zone_id"], "target_ipv4": target,
+               "before_sha256": before["apex_records_sha256"],
+               "disable_apex_aaaa": True,
+               "plan": {"action": "IPV4_CUTOVER", "steps": steps},
+               "writes": [], "effect": "NONE"}
+    expected = [dict(r) for r in records]
+
+    def observe():
+        try:
+            observed = readback(api, zone)
+        except DNSHold as exc:
+            receipt.update(state="HOLD_READBACK_UNAVAILABLE", readback_boundary=str(exc))
+            return None
+        receipt.update(after_records=observed["apex_records"],
+                       after_sha256=observed["apex_records_sha256"])
+        if observed["zone_id"] != before["zone_id"]:
+            receipt["state"] = "HOLD_ROUTING_ZONE_CHANGED"
+            return None
+        return observed
+
+    for step in steps:
+        # A provider-side atomic CAS is not assumed. Reobserve immediately
+        # before each scoped PUT and compare the entire bound routing set.
+        current = observe()
+        if current is None:
+            return receipt
+        if current["apex_records_sha256"] != digest(expected):
+            receipt["state"] = "HOLD_ROUTING_RECORDS_CHANGED"
+            return receipt
+        body = {key: step[key] for key in ("content", "ttl", "disabled")}
+        after_expected = [dict(r) for r in expected]
+        for record in after_expected:
+            if record["id"] == step["record_id"]:
+                record.update(body)
+        after_expected.sort(key=lambda r: (r["type"], r["content"], r["id"]))
+        write = {"record_id": step["record_id"], "type": step["type"],
+                 "before_sha256": current["apex_records_sha256"],
+                 "expected_after_sha256": digest(after_expected), "outcome": "PUT_RETURNED"}
+        receipt["writes"].append(write)
+        path = (f"/zones/{urllib.parse.quote(before['zone_id'], safe='')}/records/"
+                f"{urllib.parse.quote(step['record_id'], safe='')}")
+        try:
+            api.request("PUT", path, body)
+        except DNSHold as exc:
+            write.update(outcome="PUT_OUTCOME_UNKNOWN", transport_boundary=str(exc))
+        receipt["effect"] = ("PUT_OUTCOME_UNKNOWN" if any(
+            w["outcome"] == "PUT_OUTCOME_UNKNOWN" for w in receipt["writes"])
+            else "PUT_APEX_ROUTING_RECORDS")
+        after = observe()
+        if after is None:
+            return receipt
+        write["observed_after_sha256"] = after["apex_records_sha256"]
+        if after["apex_records_sha256"] != digest(after_expected):
+            receipt["state"] = "HOLD_ROUTING_READBACK_MISMATCH"
+            return receipt
+        expected = after_expected
+
+    after = observe()
+    if after is None:
+        return receipt
+    active_after = [r for r in after["apex_records"] if not r["disabled"]]
+    receipt["state"] = "DONE" if (after["apex_records_sha256"] == digest(expected)
+        and len(active_after) == 1 and active_after[0]["type"] == "A"
+        and active_after[0]["content"] == target) else "HOLD_ROUTING_READBACK_MISMATCH"
+    return receipt
+
+
+def apply(api: API, zone: str, target: str, expected_sha256: str, *, disable_apex_aaaa: bool = False) -> dict:
     zone = _zone_name(zone)
     target = public_ipv4(target)
     if not (isinstance(expected_sha256, str) and len(expected_sha256) == 64
@@ -167,6 +264,10 @@ def apply(api: API, zone: str, target: str, expected_sha256: str) -> dict:
     before = readback(api, zone)
     if before["apex_records_sha256"] != expected_sha256:
         raise DNSHold("HOLD_APEX_RECORDS_CHANGED_SINCE_READBACK")
+    if not isinstance(disable_apex_aaaa, bool):
+        raise DNSHold("HOLD_DISABLE_APEX_AAAA_MUST_BE_BOOLEAN")
+    if disable_apex_aaaa:
+        return _ipv4_cutover(api, zone, target, before)
     step = plan(before["apex_records"], target)
     receipt = {"schema": RECEIPT_SCHEMA, "operation": "apply", "zone": zone, "zone_id": before["zone_id"],
                "target_ipv4": target, "before_sha256": before["apex_records_sha256"], "plan": step}
@@ -204,11 +305,14 @@ def main(argv=None, env=None) -> int:
     a.add_argument("--zone", required=True)
     a.add_argument("--target-ipv4", required=True)
     a.add_argument("--expected-records-sha256", required=True)
+    a.add_argument("--disable-apex-aaaa", action="store_true",
+                   help="Explicitly disable the single bound apex AAAA during a verified IPv4 cutover")
     args = parser.parse_args(argv)
     try:
         api = API(env.get(KEY_ENV, ""))
         result = readback(api, args.zone) if args.command == "readback" else apply(
-            api, args.zone, args.target_ipv4, args.expected_records_sha256)
+            api, args.zone, args.target_ipv4, args.expected_records_sha256,
+            disable_apex_aaaa=args.disable_apex_aaaa)
     except DNSHold as exc:
         result = {"schema": RECEIPT_SCHEMA, "operation": args.command, "state": str(exc), "effect": "NONE"}
     result.setdefault("state", "READ" if args.command == "readback" else "HOLD")

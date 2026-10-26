@@ -39,11 +39,99 @@ analogy governed by the existing evidence/adaptation policy.
 
 ## Existing S1 host and stopped-container recovery
 
+### Original REST bootstrap from the sealed package
+
+The existing `pack` and `verify` operations include the original REST server,
+client, OpenAPI, Python import closure and exact Owner/governance records in
+the same immutable S1 package. Missing carriers or a changed bootstrap contract
+fail with `REST_BOOTSTRAP_PACKAGE_REQUIRED`. A full-checkout HTTP test alone
+does not establish that this exported package can start.
+
+From the independently verified package root, the existing API entrypoint is:
+
+```sh
+python3 -B -S src/qikvrt_github_api_shim.py
+```
+
+This is the original `make run-api` server, directly callable without Make,
+Git, site-packages or an already running native service. It defaults to
+loopback port 8766 and validates the existing expiring API credential, exact
+repository and principal before listening. The Ruleset route remains disabled
+until `QIKVRT_RULESET_AUTHORITY_ENABLED=1`; its bound Owner and separately
+protected Authority credential are still required. The existing resolver
+excludes generic `GITHUB_TOKEN` from that operation. No credential is bundled.
+Keep the original protected configuration, supervisor and host-admission path.
+Bind its existing private API state directories outside the immutable package;
+retain the original attempt journals and resolve ambiguous calls by readback.
+
+Cold-package regressions start a separate Python process with `-S`, exercise
+real loopback HTTP, and retain the missing-caller and missing-provider
+haltpoints. They perform no upstream administration. Package availability,
+actual service installation, protected Main and exact-domain acceptance remain
+separately evidenced; this package does not automatically start or admit the API.
+
+### Explicit apex IPv4 cutover with an existing AAAA record
+
+The 26 October DNS observation is retained at
+`evidence/native-runtime-acceptance/raumzeitterminal-dns-20261026.json`.
+The product apex still publishes both the shared-hosting A address and an
+AAAA address. The existing `qikvrt_ionos_dns.yml` workflow remains manual,
+Authority-Main-only and bound to `secrets.IONOS_DNS_API_KEY`; the Cloud
+inventory token is not silently substituted for that DNS credential.
+
+After authenticating a fresh provider `readback`, an operator can explicitly
+select `disable_apex_aaaa=true` for a verified IPv4-only TLS origin. The
+existing command is:
+
+```sh
+python3 -B tools/qikvrt_ionos_dns.py apply --zone raumzeitterminal.de \
+  --target-ipv4 <verified-origin-ipv4> \
+  --expected-records-sha256 <independent-provider-readback-digest> \
+  --disable-apex-aaaa
+```
+
+This permits at most two PUTs to existing records: update the single apex A,
+then retain the single apex AAAA disabled. No record or zone is created or
+deleted. Default `apply` still refuses active AAAA/CNAME routing. A fresh full
+routing-set comparison precedes and follows each PUT; drift, an unavailable
+readback or an unapplied timeout stops the remaining work and preserves the
+partial receipt. An applied timeout is resolved only by readback, without a
+repeated PUT. The provider is not assumed to supply an atomic compare-and-swap.
+
+The target must be independently bound to the intended TLS origin. Provider
+DNS readback `DONE` describes the stored routing set only. Public propagation,
+TLS, the actual client and admitted native execution require their own fresh
+checks at `https://raumzeitterminal.de/`. No DNS write or public acceptance is
+implied by these source tests.
+
+### Native terminal first — Owner priority of 25 October 2026
+
+The first production scope is the existing native `temdd` terminal and
+`https://raumzeitterminal.de/` on the existing IONOS host. Firefox/noVNC and
+extension signing remain a later, separate acceptance scope. The `container`
+job uses the existing frozen S1 dependency carrier and `production-terminal`
+Docker target with `QIKVRT_TERMINAL_PROFILE=temdd`. Its package has the original
+Terminal and Transputer without a browser payload. The same independent OCI
+rebuild, unprivileged smoke, native readback and durable restart gates apply.
+
+The exact image must declare `de.qikvrt.terminal-profile=temdd` and the pinned
+private host configuration must select the same profile. The launcher never
+rewrites that configuration or infers host admission from a missing AMO secret.
+The later `production` Docker target and the default Firefox smoke scope still
+require the original signed XPI and actual activation/restart proof. Native
+terminal delivery establishes no Firefox or multi-node Mesh acceptance.
+
+Production still needs protected exact Main, the reviewed production environment,
+the existing mTLS host/storage/configuration binding and independent HTTPS
+readback at the exact domain. A desktop PC is not part of this production path.
+Source tests, an available VPS contract and a prepared workflow prove neither
+host binding nor delivery. No replacement executor or synthetic trigger is used.
+
 The existing `container-deploy` consumer in `qikvrt_ci.yml` supports initial
 create-only delivery and recovery of the exact same stopped S1 container. It
 continues to require protected exact Main, independent merged-PR review, the
-protected `qikvrt-production` environment and the admitted signed Firefox
-image. A source test or a Railway service inventory establishes none of those
+protected `qikvrt-production` environment and the admitted image with its
+exact declared terminal profile. A source test or a service inventory establishes none of those
 production predicates.
 
 The private connection is `vars.QIKVRT_LINUX_HOST_BINDING_JSON`, independently
@@ -1277,3 +1365,24 @@ revocation, native identity replacement and refusal without independent readback
 Productive acceptance still needs the actual admitted peer's private channel,
 its original writable Transputer and independently challenged Terminal readback.
 
+
+### Match the CI Firefox gate to the verified package scope — 2026-10-25
+
+The native-only `temdd` image passed real OCI load, smoke and persistent restart
+on b6329979, but the same CI still ran the separate Firefox installation gate
+unconditionally. Its unsigned-XPI failure made the complete workflow adverse,
+which the existing exact-head promotion gate correctly refused.
+
+The existing container receipt now exports the profile from its accepted smoke
+result after checking its state, allowed profile and typed scope consistency.
+The original Firefox job consumes that output. A native-only package with no
+signing request defers this separate acceptance scope. A Firefox package,
+explicit official signing/readback request or actual signed-binding output
+still selects the original signing/activation/restart gate. Failed or unknown
+smoke metadata cannot publish a profile output. All Firefox source and negative
+admission tests still run in the full test job.
+
+This repairs scope selection; it grants no Main, production environment, host,
+mTLS, storage or exact-domain admission. Protected production and independent
+public readback remain required. A successful native-only CI never proves a
+signed Firefox installation or a running IONOS host.
