@@ -15,9 +15,10 @@ from __future__ import annotations
 
 import json
 import re
+import subprocess
+import sys
 import unittest
 
-import yaml
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -36,6 +37,99 @@ EXPECTED_SETUP_PYTHON_HISTORICAL = 10
 EXPECTED_SETUP_NODE = 18
 EXPECTED_CACHE_SAVE = 4
 CACHED_SETUP_NODE = 5
+
+
+def job_policies(text: str) -> dict[str, dict[str, str | list[str]]]:
+    """Read this repository's job-level if/needs syntax using only the stdlib.
+
+    This is a bounded workflow-text check, like ``steps`` below, not a YAML
+    loader. Unsupported job declarations or dependencies fail the check.
+    Dependency repair contribution: OpenAI Codex.
+    """
+    start = re.search(r"^jobs:[^\n]*$", text, re.MULTILINE)
+    if start is None:
+        return {}
+    if not re.fullmatch(r"jobs:\s*(?:#.*)?", start.group()):
+        raise ValueError("unsupported jobs declaration")
+    body = text[start.end():]
+    end = re.search(r"^[A-Za-z_][A-Za-z0-9_-]*:", body, re.MULTILINE)
+    if end:
+        body = body[:end.start()]
+    header = re.compile(r"^  ([A-Za-z0-9_-]+):\s*(?:#.*)?$", re.MULTILINE)
+    headers = list(header.finditer(body))
+    for line in body.splitlines():
+        if re.match(r"^  [^\s#]", line) and not header.fullmatch(line):
+            raise ValueError("unsupported job declaration: " + line)
+
+    def scalar(value: str) -> str:
+        quote = ""
+        cursor = 0
+        while cursor < len(value):
+            char = value[cursor]
+            if quote:
+                if quote == '"' and char == "\\":
+                    cursor += 2
+                    continue
+                if char == quote:
+                    if quote == "'" and value[cursor:cursor + 2] == "''":
+                        cursor += 2
+                        continue
+                    quote = ""
+            elif char in ("'", '"'):
+                quote = char
+            elif char == "#" and (cursor == 0 or value[cursor - 1].isspace()):
+                value = value[:cursor]
+                break
+            cursor += 1
+        if quote:
+            raise ValueError("unterminated workflow scalar quote")
+        value = value.strip()
+        if value.startswith('"') and value.endswith('"'):
+            return json.loads(value)
+        if value.startswith("'") and value.endswith("'"):
+            return value[1:-1].replace("''", "'")
+        return value
+
+    jobs: dict[str, dict[str, str | list[str]]] = {}
+    for index, match in enumerate(headers):
+        name = match.group(1)
+        if name in jobs:
+            raise ValueError("duplicate job: " + name)
+        stop = headers[index + 1].start() if index + 1 < len(headers) else len(body)
+        block = body[match.end():stop]
+        policy: dict[str, str | list[str]] = {"if": "", "needs": []}
+        seen = set()
+        for field in re.finditer(r"^    (if|needs):[ \t]*(.*)$", block, re.MULTILINE):
+            key, value = field.group(1), scalar(field.group(2))
+            if key in seen:
+                raise ValueError("duplicate job policy: " + key)
+            seen.add(key)
+            children = []
+            for line in block[field.end():].splitlines():
+                if not line.strip() or line.lstrip().startswith("#"):
+                    continue
+                if not line.startswith("      "):
+                    break
+                children.append(line.strip())
+            if key == "if":
+                policy[key] = (
+                    " ".join(scalar(line) for line in children)
+                    if re.fullmatch(r"[>|][+-]?", value) else value
+                )
+                continue
+            if not value:
+                if any(not line.startswith("- ") for line in children):
+                    raise ValueError("unsupported needs sequence")
+                needs = [scalar(line[2:]) for line in children]
+            elif value.startswith("[") and value.endswith("]"):
+                needs = [scalar(item.strip()) for item in value[1:-1].split(",") if item.strip()]
+            else:
+                needs = [value]
+            if any(not re.fullmatch(r"[A-Za-z0-9_-]+", job) for job in needs):
+                raise ValueError("unsupported needs declaration: " + value)
+            policy[key] = needs
+        jobs[name] = policy
+    return jobs
 
 
 def steps(text: str, needle: str) -> list[tuple[str, dict[str, str]]]:
@@ -106,7 +200,7 @@ class WorkflowActionRuntimePins(unittest.TestCase):
     def test_setup_python_is_node24_wherever_a_job_can_run_on_the_authority(self) -> None:
         active = historical = 0
         for name, text in self.texts.items():
-            jobs = (yaml.safe_load(text) or {}).get("jobs", {})
+            jobs = job_policies(text)
 
             def goldkelch_only(job: str, seen: frozenset = frozenset()) -> bool:
                 spec = jobs[job]
@@ -164,6 +258,44 @@ class WorkflowActionRuntimePins(unittest.TestCase):
             if "uses: actions/setup-node@" in text or "uses: actions/cache/save@" in text:
                 self.assertIn(".github/workflows/" + name, node["authority_files"])
         self.assertIn("tests/test_workflow_action_runtime_pins.py", node["authority_files"])
+
+
+class WorkflowPolicyParsing(unittest.TestCase):
+    def test_pin_checks_run_without_site_packages(self) -> None:
+        result = subprocess.run(
+            [sys.executable, "-S", "-B", "-m", "unittest",
+             "tests.test_workflow_action_runtime_pins.WorkflowActionRuntimePins"],
+            cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+            text=True, timeout=30,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout)
+
+    def test_folded_condition_and_dependency_forms(self) -> None:
+        jobs = job_policies("\n".join([
+            "on:", "  workflow_dispatch:", "jobs:",
+            "  gated:", "    if: >-",
+            "      github.repository == 'Goldkelch/qik-vrt' &&",
+            "      github.event_name == 'workflow_dispatch'",
+            "  chain:", "    needs:", "      - gated",
+            "  consumer:", "    needs: [gated, 'chain'] # prerequisites",
+            "    if: ${{ always() }} # Goldkelch/qik-vrt is only a comment",
+        ]))
+        self.assertEqual(set(jobs), {"gated", "chain", "consumer"})
+        self.assertEqual(jobs["gated"]["if"],
+                         "github.repository == 'Goldkelch/qik-vrt' && github.event_name == 'workflow_dispatch'")
+        self.assertEqual(jobs["chain"]["needs"], ["gated"])
+        self.assertEqual(jobs["consumer"]["needs"], ["gated", "chain"])
+        self.assertEqual(jobs["consumer"]["if"], "${{ always() }}")
+
+    def test_unsupported_needs_expression_fails_closed(self) -> None:
+        with self.assertRaisesRegex(ValueError, "unsupported needs"):
+            job_policies("jobs:\n  test:\n    needs: ${{ fromJSON(inputs.jobs) }}\n")
+
+    def test_quoted_hash_is_preserved_and_unclosed_quote_rejected(self) -> None:
+        jobs = job_policies("jobs:\n  test:\n    if: contains('a # b', 'b') # comment\n")
+        self.assertEqual(jobs["test"]["if"], "contains('a # b', 'b')")
+        with self.assertRaisesRegex(ValueError, "unterminated"):
+            job_policies("jobs:\n  test:\n    if: 'unterminated\n")
 
 
 if __name__ == "__main__":
