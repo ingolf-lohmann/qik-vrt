@@ -617,7 +617,7 @@ class WorkflowRuntimeTests(unittest.TestCase):
         prefix = workflow[:gates]
         self.assertIn("ref: ${{ env.QIKVRT_ARCHIVE_SOURCE_HEAD }}", prefix)
         self.assertIn("QIKVRT_ARCHIVE_SOURCE_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}", prefix)
-        self.assertIn("actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065", prefix)
+        self.assertIn("actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1", prefix)
         self.assertIn("python-version: '3.12'", prefix)
         self.assertIn("actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1", prefix)
         self.assertIn("node-version: '24'", prefix)
@@ -634,7 +634,7 @@ class WorkflowRuntimeTests(unittest.TestCase):
         workflow=(ROOT/'.github/workflows/qikvrt_ci.yml').read_text()
         full=workflow.index('make test repository-monitor-test self-host-test')
         prefix=workflow[:full]
-        self.assertIn('actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065',prefix)
+        self.assertIn('actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1',prefix)
         self.assertIn("python-version: '3.12'",prefix)
         self.assertIn('actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1',prefix)
         self.assertIn("node-version: '24'",prefix)

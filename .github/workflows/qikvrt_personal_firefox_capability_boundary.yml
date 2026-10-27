@@ -154,7 +154,7 @@ jobs:
           ref: bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698
           path: .qikvrt/runtime/temdd-native-source
           persist-credentials: false
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: '3.12.13'
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0

@@ -535,6 +535,13 @@
       "version": "9.1.1"
     },
     "python": {
+      "action_pins": {
+        "actions/setup-python": {
+          "commit": "ece7cb06caefa5fff74198d8649806c4678c61a1",
+          "using": "node24",
+          "version": "v6.3.0"
+        }
+      },
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
         "tools/bootstrap-runtime.sh",
@@ -546,7 +553,8 @@
         "src/qikvrt_personal_assistant.py",
         "src/qikvrt_effect_ack_http_terminal.py",
         "tests/test_qikvrt_personal_assistant.py",
-        "personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json"
+        "personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json",
+        "tests/test_workflow_action_runtime_pins.py"
       ],
       "cache_class": "hosted-toolcache",
       "cache_locations": [
