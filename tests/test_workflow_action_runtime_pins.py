@@ -10,6 +10,7 @@ actions/setup-node v7.1.0 and actions/cache v6.1.0 both declare node24.
 """
 from __future__ import annotations
 
+import json
 import re
 import unittest
 from pathlib import Path
@@ -96,6 +97,22 @@ class WorkflowActionRuntimePins(unittest.TestCase):
     def test_archived_original_workflows_are_not_rewritten(self) -> None:
         original = ROOT / "runtime/self-host/original-workflows/qikvrt_temdd.yml"
         self.assertIn("actions/setup-node@v6", original.read_text(encoding="utf-8"))
+
+    def test_tool_cache_registry_binds_the_same_action_commits_and_runtime(self) -> None:
+        # Register-binding contribution: OpenAI Codex; retain the original tests.
+        registry = json.loads((ROOT / "runtime/toolchains/CACHE_REGISTRY.json").read_text(encoding="utf-8"))
+        node = registry["components"]["node"]
+        for reference in (SETUP_NODE, CACHE_SAVE):
+            action, target = reference.split("@", 1)
+            commit, version = target.split(" # ", 1)
+            with self.subTest(action=action):
+                self.assertEqual(node["action_pins"][action], {
+                    "commit": commit, "using": "node24", "version": version,
+                })
+        for name, text in self.texts.items():
+            if "uses: actions/setup-node@" in text or "uses: actions/cache/save@" in text:
+                self.assertIn(".github/workflows/" + name, node["authority_files"])
+        self.assertIn("tests/test_workflow_action_runtime_pins.py", node["authority_files"])
 
 
 if __name__ == "__main__":
