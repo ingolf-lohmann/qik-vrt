@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS qikvrt_devops.workflow_observations
     attempt UInt32,
     run_head FixedString(40),
     repository_head String COMMENT 'Head at observation; empty means unknown',
+    repository_head_observed_at Nullable(DateTime64(3, 'UTC')) COMMENT 'Separate repository-head readback clock',
     workflow_name String,
     event LowCardinality(String),
     status LowCardinality(String),
@@ -39,7 +40,7 @@ CREATE VIEW IF NOT EXISTS qikvrt_devops.workflow_latest AS
 SELECT repository, run_id, attempt,
     argMax(tuple(run_head, workflow_name, event, status, conclusion,
                  source_updated_at, source_observed_at, started_at, source_url,
-                 repository_head, source_complete),
+                 repository_head, repository_head_observed_at, source_complete),
            tuple(source_updated_at, source_observed_at, projection_sha256)) AS observation
 FROM qikvrt_devops.workflow_observations
 GROUP BY repository, run_id, attempt;

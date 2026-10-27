@@ -15,7 +15,8 @@
     "new_executor": false,
     "new_timer": false,
     "new_workflow": false,
-    "automatic_insertion": false
+    "automatic_insertion": false,
+    "job_binding": "repository + exact head + run_id + attempt; missing attempt rejects job detail reuse"
   },
   "deliverables": [
     "docs/monitor/devops.html",
@@ -48,7 +49,7 @@
     "connector_write_operation": false
   },
   "validation": {
-    "targeted_cases": 13,
+    "targeted_cases": 14,
     "targeted": "PASSED",
     "full_suite": "NOT_COMPLETE: first attempt stopped at missing parent object; original parent recovered and eight affected tests passed; second attempt interrupted while tests.test_zenodo_machine_proof_policy.test_v3_exact_execution_requires_reviewed_head_tree_and_all_committed_controls was pending. Native candidate CI required.",
     "browser_ui_qa": "NOT_RUN_REST_ONLY_OWNER_ROUTE",
