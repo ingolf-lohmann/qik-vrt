@@ -180,6 +180,28 @@ paths:
         '403': { description: Missing readback permission or rejected Origin/Host. }
         '409': { description: Exact bindings, committed provenance or bytes unavailable. }
         '429': { description: Rate limit exceeded. }
+  /.well-known/qik-vrt-self-disclosure.json:
+    servers:
+      - url: http://127.0.0.1:8766
+        description: Existing QIK-VRT adapter; live deployment is independently verified.
+    get:
+      operationId: publicSelfDisclosure
+      summary: Anonymous allowlisted onboarding and unobserved production-status summary.
+      description: >
+        Reads the existing packaged disclosure without provider access, credentials
+        or state writes. Source SHA-256 binds static document bytes only.
+        Production switches and host binding remain UNKNOWN until a separately
+        validated observation contract exists. This is not a GitHub variables
+        endpoint, runtime admission, deployment or EFFECT_ACK_DONE.
+      security: []
+      responses:
+        '200':
+          description: Public source description; no productive-effect claim.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PublicSelfDisclosure' }
+        '429': { description: Existing bounded request rate exceeded. }
+        '503': { description: Public source missing, unsafe or invalid; status remains UNVERIFIED. }
   /health:
     get:
       operationId: health
@@ -399,6 +421,89 @@ components:
       required: true
       schema: { type: string, pattern: '^[A-Za-z0-9_.-]{1,100}$' }
   schemas:
+    PublicSelfDisclosure:
+      type: object
+      additionalProperties: false
+      required: [schema, capabilities, onboarding, production_status, source, completion_claims, ordinary_release]
+      properties:
+        schema: { type: string, enum: [qikvrt_public_self_disclosure_v1] }
+        capabilities:
+          type: array
+          items:
+            type: object
+            additionalProperties: false
+            required: [id, machine_readable]
+            properties:
+              id: { type: string }
+              machine_readable: { type: boolean }
+        onboarding:
+          type: object
+          additionalProperties: false
+          required: [schema, authority_repository, principal, repository_sources, runtime_endpoints, authorization]
+          properties:
+            schema: { type: string, enum: [qikvrt_public_onboarding_v1] }
+            authority_repository: { type: string, enum: ['https://github.com/ingolf-lohmann/qik-vrt'] }
+            principal: { type: string, enum: [Ingolf Lohmann] }
+            repository_sources:
+              type: object
+              additionalProperties: false
+              required: [ai, ai_context, agent_protocol, api_contract]
+              properties:
+                ai: { type: string, format: uri }
+                ai_context: { type: string, format: uri }
+                agent_protocol: { type: string, format: uri }
+                api_contract: { type: string, format: uri }
+            runtime_endpoints:
+              type: object
+              additionalProperties: false
+              required: [self_disclosure, health]
+              properties:
+                self_disclosure: { $ref: '#/components/schemas/PublicReadEndpoint' }
+                health: { $ref: '#/components/schemas/PublicReadEndpoint' }
+            authorization:
+              type: object
+              additionalProperties: false
+              required: [public_read, protected_read, effects]
+              properties:
+                public_read: { type: string, enum: [NONE] }
+                protected_read: { type: string, enum: [SCOPED_AUTHENTICATION_REQUIRED] }
+                effects: { type: string, enum: [AUTHENTICATION_AUTHORIZATION_AND_ADMISSION_REQUIRED] }
+        production_status:
+          type: object
+          additionalProperties: false
+          required: [schema, publish_enabled, deploy_enabled, host_binding, observed_at, evidence]
+          properties:
+            schema: { type: string, enum: [qikvrt_public_production_status_v1] }
+            publish_enabled: { type: string, enum: [UNKNOWN] }
+            deploy_enabled: { type: string, enum: [UNKNOWN] }
+            host_binding: { type: string, enum: [UNKNOWN] }
+            observed_at: { type: string, nullable: true, enum: [null] }
+            evidence: { type: object, nullable: true, enum: [null] }
+        source:
+          type: object
+          additionalProperties: false
+          required: [kind, path, sha256]
+          properties:
+            kind: { type: string, enum: [STATIC_REPOSITORY_DOCUMENT] }
+            path: { type: string, enum: [.well-known/qik-vrt-self-disclosure.json] }
+            sha256: { type: string, pattern: '^[0-9a-f]{64}$' }
+        completion_claims:
+          type: object
+          additionalProperties: false
+          required: [pass, final_pass, effect_ack_done]
+          properties:
+            pass: { type: boolean, enum: [false] }
+            final_pass: { type: boolean, enum: [false] }
+            effect_ack_done: { type: boolean, enum: [false] }
+        ordinary_release: { type: boolean, enum: [false] }
+    PublicReadEndpoint:
+      type: object
+      additionalProperties: false
+      required: [method, path, authentication_required]
+      properties:
+        method: { type: string, enum: [GET] }
+        path: { type: string }
+        authentication_required: { type: boolean, enum: [false] }
     DispatchRunDetails:
       type: object
       required: [workflow_run_id, run_url, html_url]
@@ -444,3 +549,4 @@ components:
       description: Explicitly configured scoped credential with server-side expiry; canonical b64url prefix, unpadded payload, and 32--128 decoded bytes are required by the local adapter.
 security:
   - bearerToken: []
+

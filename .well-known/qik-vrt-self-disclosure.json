@@ -24,6 +24,10 @@
     {
       "id": "publication_overview_discovery",
       "machine_readable": true
+    },
+    {
+      "id": "anonymous_onboarding_read",
+      "machine_readable": true
     }
   ],
   "bindings": {
@@ -70,5 +74,41 @@
     "pass": false,
     "final_pass": false,
     "effect_ack_done": false
+  },
+  "onboarding": {
+    "schema": "qikvrt_public_onboarding_v1",
+    "authority_repository": "https://github.com/ingolf-lohmann/qik-vrt",
+    "principal": "Ingolf Lohmann",
+    "repository_sources": {
+      "ai": "https://raw.githubusercontent.com/ingolf-lohmann/qik-vrt/main/AI",
+      "ai_context": "https://raw.githubusercontent.com/ingolf-lohmann/qik-vrt/main/AI_CONTEXT.json",
+      "agent_protocol": "https://raw.githubusercontent.com/ingolf-lohmann/qik-vrt/main/AGENTS.md",
+      "api_contract": "https://raw.githubusercontent.com/ingolf-lohmann/qik-vrt/main/api/qikvrt_github_api.openapi.yaml"
+    },
+    "runtime_endpoints": {
+      "self_disclosure": {
+        "method": "GET",
+        "path": "/.well-known/qik-vrt-self-disclosure.json",
+        "authentication_required": false
+      },
+      "health": {
+        "method": "GET",
+        "path": "/health",
+        "authentication_required": false
+      }
+    },
+    "authorization": {
+      "public_read": "NONE",
+      "protected_read": "SCOPED_AUTHENTICATION_REQUIRED",
+      "effects": "AUTHENTICATION_AUTHORIZATION_AND_ADMISSION_REQUIRED"
+    }
+  },
+  "production_status": {
+    "schema": "qikvrt_public_production_status_v1",
+    "publish_enabled": "UNKNOWN",
+    "deploy_enabled": "UNKNOWN",
+    "host_binding": "UNKNOWN",
+    "observed_at": null,
+    "evidence": null
   }
 }

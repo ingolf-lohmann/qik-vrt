@@ -679,7 +679,9 @@ class MeshContractTests(unittest.TestCase):
 
     def test_package_admission_rejects_missing_rest_bootstrap_carriers(self):
         original = list(self.definition['files'])
-        for name in ('src/qikvrt_github_api_shim.py', 'scripts/qikvrt_api_client.py',
+        for name in ('.well-known/qik-vrt-self-disclosure.json',
+                     'tools/qikvrt_self_disclosure.py',
+                     'src/qikvrt_github_api_shim.py', 'scripts/qikvrt_api_client.py',
                      'api/qikvrt_github_api.openapi.yaml', '.github/CODEOWNERS',
                      'state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json',
                      'state/authorization/delegations/OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_V1.json'):
@@ -1291,6 +1293,18 @@ m.server.closeAllConnections();await new Promise(r=>m.server.close(r));
                     if time.monotonic() >= deadline:
                         self.fail('Frozen REST bootstrap did not listen')
                     time.sleep(.01)
+            discovery = urllib.request.Request('http://127.0.0.1:' + str(port)
+                + '/.well-known/qik-vrt-self-disclosure.json')
+            with opener.open(discovery, timeout=2) as response:
+                public = json.loads(response.read())
+                self.assertEqual(response.status, 200)
+            for field in ('publish_enabled', 'deploy_enabled', 'host_binding'):
+                self.assertEqual(public['production_status'][field], 'UNKNOWN')
+            self.assertEqual(public['source']['sha256'], host.digest(
+                (self.export / '.well-known/qik-vrt-self-disclosure.json').read_bytes()))
+            self.assertFalse(public['completion_claims']['effect_ack_done'])
+            self.assertNotIn(token, json.dumps(public))
+            self.assertNotIn(env['GITHUB_TOKEN'], json.dumps(public))
             request = urllib.request.Request('http://127.0.0.1:' + str(port) + path)
             with self.assertRaises(urllib.error.HTTPError) as unauthorized:
                 opener.open(request, timeout=1)
