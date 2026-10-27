@@ -619,7 +619,7 @@ class WorkflowRuntimeTests(unittest.TestCase):
         self.assertIn("QIKVRT_ARCHIVE_SOURCE_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}", prefix)
         self.assertIn("actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065", prefix)
         self.assertIn("python-version: '3.12'", prefix)
-        self.assertIn("actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020", prefix)
+        self.assertIn("actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1", prefix)
         self.assertIn("node-version: '24'", prefix)
         preflight = prefix.index("- name: Verify standalone runtime for complete repository gates")
         self.assertLess(prefix.index("node-version: '24'"), preflight)
@@ -636,7 +636,7 @@ class WorkflowRuntimeTests(unittest.TestCase):
         prefix=workflow[:full]
         self.assertIn('actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065',prefix)
         self.assertIn("python-version: '3.12'",prefix)
-        self.assertIn('actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020',prefix)
+        self.assertIn('actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1',prefix)
         self.assertIn("node-version: '24'",prefix)
 
 
