@@ -299,28 +299,107 @@ jobs:
       - name: Install exact package-bound browser (Chromium)
         if: matrix.engine == 'chromium'
         run: runtime/offline/browser-tests/node_modules/.bin/playwright install --with-deps chromium
+      # Reuse already downloaded WebKit system packages and the package-bound
+      # browser binary. APT still verifies every reused .deb against the signed
+      # index; a miss or stale archive falls back to the unchanged download path.
+      - name: Bind WebKit package and browser caches
+        id: webkit_cache_binding
+        if: matrix.engine == 'webkit'
+        shell: bash
+        run: |
+          set -euo pipefail
+          : "${ImageOS:?RUNNER_IMAGE_OS_REQUIRED}"
+          : "${ImageVersion:?RUNNER_IMAGE_VERSION_REQUIRED}"
+          archives="/var/cache/qikvrt-webkit-apt/archives"
+          sudo install -d -m 0755 /var/cache/qikvrt-webkit-apt
+          sudo install -d -o "$(id -un)" -g "$(id -gn)" -m 0755 "$archives"
+          node runtime/offline/browser-tests/webkit-apt-cache.mjs config "$archives" \
+            | sudo tee /etc/apt/apt.conf.d/99qikvrt-webkit-archive-cache >/dev/null
+          # Retain APT's default unprivileged download user. Fail here if the
+          # runner's directory permissions cannot support it; never use root.
+          if [ "$(apt-config shell sandbox_user APT::Sandbox::User)" != "sandbox_user='_apt'" ]; then
+            echo '::error::WEBKIT_APT_SANDBOX_USER_MISMATCH'
+            exit 1
+          fi
+          sudo install -d -o _apt -g root -m 0700 "$archives/partial"
+          sudo -u _apt test -w "$archives/partial"
+          printf 'image=%s-%s\n' "$ImageOS" "$ImageVersion" >> "$GITHUB_OUTPUT"
+      - name: Restore WebKit system package cache
+        id: webkit_apt_cache
+        if: matrix.engine == 'webkit'
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: /var/cache/qikvrt-webkit-apt/archives/*.deb
+          key: qikvrt-webkit-apt-v2-${{ runner.os }}-${{ runner.arch }}-${{ steps.webkit_cache_binding.outputs.image }}-${{ hashFiles('runtime/offline/browser-tests/package-lock.json') }}
+          restore-keys: |
+            qikvrt-webkit-apt-v2-${{ runner.os }}-${{ runner.arch }}-${{ steps.webkit_cache_binding.outputs.image }}-
+      - name: Restore WebKit browser binary cache
+        id: webkit_browser_cache
+        if: matrix.engine == 'webkit'
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.cache/ms-playwright/webkit-*
+          key: qikvrt-webkit-browser-v1-${{ runner.os }}-${{ runner.arch }}-${{ steps.webkit_cache_binding.outputs.image }}-${{ hashFiles('runtime/offline/browser-tests/package-lock.json') }}
       - name: Install WebKit system dependencies (bounded diagnosis)
+        id: webkit_system_deps
         if: matrix.engine == 'webkit'
         shell: bash
         env:
           QIKVRT_OFFLINE_EVIDENCE_DIR: ${{ runner.temp }}/offline-${{ matrix.engine }}
+          APT_CACHE_HIT: ${{ steps.webkit_apt_cache.outputs.cache-hit }}
+          APT_CACHE_MATCHED_KEY: ${{ steps.webkit_apt_cache.outputs.cache-matched-key }}
         run: |
           set -euo pipefail
           mkdir -p "$QIKVRT_OFFLINE_EVIDENCE_DIR"
           receipt="$QIKVRT_OFFLINE_EVIDENCE_DIR/INSTALL_PHASE_SYSTEM_DEPS.txt"
+          archives="/var/cache/qikvrt-webkit-apt/archives"
           started_epoch="$(date -u +%s)"
           printf 'phase=system-deps\nsource_head=%s\nstarted_utc=%s\ntimeout_seconds=720\n' \
             "$(git rev-parse HEAD)" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$receipt"
+          printf 'apt_cache_exact_hit=%s\napt_cache_restored=%s\n' \
+            "${APT_CACHE_HIT:-false}" "$([ -n "${APT_CACHE_MATCHED_KEY:-}" ] && echo true || echo false)" >> "$receipt"
+          node runtime/offline/browser-tests/webkit-apt-cache.mjs summary "$archives" \
+            "$QIKVRT_OFFLINE_EVIDENCE_DIR/APT_CACHE_BEFORE.json" | sed 's/^/before_/' >> "$receipt"
+          apt_log="$RUNNER_TEMP/webkit-install-deps.log"
           set +e
-          timeout --signal=TERM --kill-after=30s 12m runtime/offline/browser-tests/node_modules/.bin/playwright install-deps webkit
-          status=$?
+          timeout --signal=TERM --kill-after=30s 12m runtime/offline/browser-tests/node_modules/.bin/playwright install-deps webkit 2>&1 | tee "$apt_log"
+          status="${PIPESTATUS[0]}"
           set -e
           printf 'ended_utc=%s\nduration_seconds=%s\nexit_status=%s\n' \
             "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$(( $(date -u +%s) - started_epoch ))" "$status" >> "$receipt"
+          node runtime/offline/browser-tests/webkit-apt-cache.mjs fetched "$apt_log" >> "$receipt" \
+            || printf 'apt_archive_bytes_fetched=UNKNOWN\n' >> "$receipt"
+          summary_status=0
+          node runtime/offline/browser-tests/webkit-apt-cache.mjs summary "$archives" \
+            "$QIKVRT_OFFLINE_EVIDENCE_DIR/APT_CACHE_AFTER.json" | sed 's/^/after_/' >> "$receipt" || summary_status=$?
+          printf 'after_summary_exit_status=%s\n' "$summary_status" >> "$receipt"
+          if [ "$summary_status" -ne 0 ] && [ "$status" -eq 0 ]; then
+            echo '::error::WEBKIT_APT_CACHE_EVIDENCE_FAILED'
+            status="$summary_status"
+          fi
           cat "$receipt"
           if [ "$status" -eq 124 ]; then echo '::error::WEBKIT_SYSTEM_DEPENDENCIES_TIMEOUT'; fi
           exit "$status"
+      - name: Save WebKit system package cache
+        if: matrix.engine == 'webkit' && steps.webkit_system_deps.outcome == 'success' && steps.webkit_apt_cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: /var/cache/qikvrt-webkit-apt/archives/*.deb
+          key: ${{ steps.webkit_apt_cache.outputs.cache-primary-key }}
+      - name: Observe root APT limits and same-package HTTP HTTPS transfer
+        id: webkit_apt_diagnosis
+        if: ${{ !cancelled() && matrix.engine == 'webkit' }}
+        timeout-minutes: 2
+        env:
+          QIKVRT_OFFLINE_EVIDENCE_DIR: ${{ runner.temp }}/offline-${{ matrix.engine }}
+          EXPECTED_HEAD: ${{ needs.test.outputs.tested_head }}
+          EXPECTED_TREE: ${{ needs.test.outputs.tested_tree }}
+        run: |
+          # A valid partial record returns 0 with transport state UNVERIFIED.
+          # Source/checker failures remain nonzero; browser gates stay mandatory.
+          node runtime/offline/browser-tests/apt-diagnosis.mjs "$QIKVRT_OFFLINE_EVIDENCE_DIR/APT_DIAGNOSIS.json"
       - name: Install exact package-bound WebKit binary (bounded diagnosis)
+        id: webkit_browser_binary
         if: matrix.engine == 'webkit'
         shell: bash
         env:
@@ -340,6 +419,12 @@ jobs:
           cat "$receipt"
           if [ "$status" -eq 124 ]; then echo '::error::WEBKIT_BROWSER_DOWNLOAD_TIMEOUT'; fi
           exit "$status"
+      - name: Save WebKit browser binary cache
+        if: matrix.engine == 'webkit' && steps.webkit_browser_binary.outcome == 'success' && steps.webkit_browser_cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: ~/.cache/ms-playwright/webkit-*
+          key: ${{ steps.webkit_browser_cache.outputs.cache-primary-key }}
       - name: Fresh offline and full browser-process restart controls
         env:
           QIKVRT_OFFLINE_EVIDENCE_DIR: ${{ runner.temp }}/offline-${{ matrix.engine }}
@@ -360,6 +445,8 @@ jobs:
             ${{ runner.temp }}/offline-${{ matrix.engine }}/SUBJECT*.txt
             ${{ runner.temp }}/offline-${{ matrix.engine }}/TRACKED_STATUS.txt
             ${{ runner.temp }}/offline-${{ matrix.engine }}/INSTALL_PHASE*.txt
+            ${{ runner.temp }}/offline-${{ matrix.engine }}/APT_DIAGNOSIS.json
+            ${{ runner.temp }}/offline-${{ matrix.engine }}/APT_CACHE_*.json
           retention-days: 30
           if-no-files-found: warn
 
