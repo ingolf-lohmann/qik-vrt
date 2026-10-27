@@ -1,0 +1,81 @@
+{
+  "schema": "qikvrt-devops-clickhouse-preparation/v1",
+  "work_unit": "QIKVRT_DEVOPS_CLICKHOUSE_20261027_V1",
+  "principal": "Ingolf Lohmann",
+  "implementation": "OpenAI Codex",
+  "authorization": "Owner requested ClickHouse visualization of DevOps processes and confirmed implementation with ja in this session.",
+  "source": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "9763b2c86695126759665b56a79b37383bbb1663",
+    "tree": "10702217b2ef1ef5cfcbbd604ad839a597ef3217"
+  },
+  "reuse": {
+    "carrier": "docs/monitor/observer.mjs + server.mjs + existing /api/activity",
+    "evidence": "Existing normalizeRun, public REST cache, source/error timestamps and node runtime package are reused. Existing carrier lacks a DevOps per-head projection and ClickHouse export.",
+    "new_executor": false,
+    "new_timer": false,
+    "new_workflow": false,
+    "automatic_insertion": false
+  },
+  "deliverables": [
+    "docs/monitor/devops.html",
+    "docs/monitor/devops.sql",
+    "docs/monitor/devops.test.mjs"
+  ],
+  "source_evidence": {
+    "ci_run": 40480732788,
+    "merged_pr": 612,
+    "github_run_count": 127,
+    "complete_paginated_run_inventory": true,
+    "domain_snapshot": "a5b323a3-e8a7-468f-a83a-11cdf6448187",
+    "domain_snapshot_sha256": "1de4ff982838370545fd38f71d56dc1bf8e2564020f3db7f4b57761f4e83ef1e"
+  },
+  "epistemic_boundaries": {
+    "historical_snapshot": true,
+    "projection_digest_is_wire_attestation": false,
+    "workflow_success_is_product_acceptance": false,
+    "unknown_duration_is_zero": false,
+    "schema_executed": false,
+    "ingestion_executed": false,
+    "sql_query_accepted": false
+  },
+  "clickhouse": {
+    "organization_id": "08583f37-525b-4056-9602-0bb9c3e71d6d",
+    "service_id": "89833617-9d71-4df1-b256-0ab229b797eb",
+    "api_connection": "VERIFIED_READ",
+    "sql_gate": "Forbidden. Service does not allow MCP calls",
+    "credential_values_persisted": false,
+    "connector_write_operation": false
+  },
+  "validation": {
+    "targeted_cases": 13,
+    "targeted": "PASSED",
+    "full_suite": "NOT_COMPLETE: first attempt stopped at missing parent object; original parent recovered and eight affected tests passed; second attempt interrupted while tests.test_zenodo_machine_proof_policy.test_v3_exact_execution_requires_reviewed_head_tree_and_all_committed_controls was pending. Native candidate CI required.",
+    "browser_ui_qa": "NOT_RUN_REST_ONLY_OWNER_ROUTE",
+    "clickhouse_server_schema_validation": "PENDING_ADMITTED_SQL_ACCESS",
+    "observer_regressions": "PASSED",
+    "prepared_jsonl_rows": 127
+  },
+  "native_runtime": {
+    "original_host_gate": "ADMITTED_MESH_RUNTIME_ENDPOINT",
+    "original_host_execution_verified": false,
+    "mirror_outbox_tool": "node-tools/qikvrt_mirror_emit.py",
+    "mirror_outbox_tool_present": false
+  },
+  "open_work": [
+    "Activate service-specific MCP access through an actually admitted provider operation, then discover schema before SQL.",
+    "Use an admitted database ingestion path to validate DDL and insert projection rows; independently read back exact rows and digests.",
+    "Integrate reviewed source, bind deployment to the exact candidate and observe /devops on the original host.",
+    "Retain originalhost admission and exact raumzeitterminal.de DNS/TLS/application acceptance as separate duties.",
+    "Retain unresolved mirror transport cause and runner-image metadata discrepancy from PR612; DevOps projection does not close them."
+  ],
+  "effect_ack_done": false,
+  "ordinary_release": false,
+  "local_environment_repair": {
+    "missing_parent": "26a9bcc26d624eb426ee31a118ff04711acf56f7",
+    "original_rest_metadata_recovered": true,
+    "git_object_hash_verified": true,
+    "affected_tests_passed": 8,
+    "complete_history_attested": false
+  }
+}

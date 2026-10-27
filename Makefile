@@ -206,6 +206,7 @@ test: editorial-navigation-test
 .PHONY: repository-monitor-test self-host-test
 repository-monitor-test:
 	node docs/monitor/observer.test.mjs
+	node --test docs/monitor/devops.test.mjs
 	node --test docs/monitor/monitor.test.mjs
 	node --test docs/monitor/mesh-file.test.mjs
 
