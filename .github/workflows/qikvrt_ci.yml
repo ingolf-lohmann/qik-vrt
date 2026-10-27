@@ -295,8 +295,51 @@ jobs:
           python3 -B tools/qikvrt_integrity.py verify
           npm ci --ignore-scripts --prefix runtime/offline/browser-tests
           node runtime/offline/browser-tests/browser.test.mjs --precheck
-      - name: Install exact package-bound browser
-        run: runtime/offline/browser-tests/node_modules/.bin/playwright install --with-deps ${{ matrix.engine }}
+      # Keep Chromium's proven path unchanged. Diagnose the failing WebKit leg.
+      - name: Install exact package-bound browser (Chromium)
+        if: matrix.engine == 'chromium'
+        run: runtime/offline/browser-tests/node_modules/.bin/playwright install --with-deps chromium
+      - name: Install WebKit system dependencies (bounded diagnosis)
+        if: matrix.engine == 'webkit'
+        shell: bash
+        env:
+          QIKVRT_OFFLINE_EVIDENCE_DIR: ${{ runner.temp }}/offline-${{ matrix.engine }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$QIKVRT_OFFLINE_EVIDENCE_DIR"
+          receipt="$QIKVRT_OFFLINE_EVIDENCE_DIR/INSTALL_PHASE_SYSTEM_DEPS.txt"
+          started_epoch="$(date -u +%s)"
+          printf 'phase=system-deps\nsource_head=%s\nstarted_utc=%s\ntimeout_seconds=720\n' \
+            "$(git rev-parse HEAD)" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$receipt"
+          set +e
+          timeout --signal=TERM --kill-after=30s 12m runtime/offline/browser-tests/node_modules/.bin/playwright install-deps webkit
+          status=$?
+          set -e
+          printf 'ended_utc=%s\nduration_seconds=%s\nexit_status=%s\n' \
+            "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$(( $(date -u +%s) - started_epoch ))" "$status" >> "$receipt"
+          cat "$receipt"
+          if [ "$status" -eq 124 ]; then echo '::error::WEBKIT_SYSTEM_DEPENDENCIES_TIMEOUT'; fi
+          exit "$status"
+      - name: Install exact package-bound WebKit binary (bounded diagnosis)
+        if: matrix.engine == 'webkit'
+        shell: bash
+        env:
+          QIKVRT_OFFLINE_EVIDENCE_DIR: ${{ runner.temp }}/offline-${{ matrix.engine }}
+        run: |
+          set -euo pipefail
+          receipt="$QIKVRT_OFFLINE_EVIDENCE_DIR/INSTALL_PHASE_BROWSER.txt"
+          started_epoch="$(date -u +%s)"
+          printf 'phase=browser-binary\nsource_head=%s\nstarted_utc=%s\ntimeout_seconds=480\n' \
+            "$(git rev-parse HEAD)" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$receipt"
+          set +e
+          timeout --signal=TERM --kill-after=30s 8m runtime/offline/browser-tests/node_modules/.bin/playwright install webkit
+          status=$?
+          set -e
+          printf 'ended_utc=%s\nduration_seconds=%s\nexit_status=%s\n' \
+            "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$(( $(date -u +%s) - started_epoch ))" "$status" >> "$receipt"
+          cat "$receipt"
+          if [ "$status" -eq 124 ]; then echo '::error::WEBKIT_BROWSER_DOWNLOAD_TIMEOUT'; fi
+          exit "$status"
       - name: Fresh offline and full browser-process restart controls
         env:
           QIKVRT_OFFLINE_EVIDENCE_DIR: ${{ runner.temp }}/offline-${{ matrix.engine }}
@@ -316,6 +359,7 @@ jobs:
             ${{ runner.temp }}/offline-${{ matrix.engine }}/failure.json
             ${{ runner.temp }}/offline-${{ matrix.engine }}/SUBJECT*.txt
             ${{ runner.temp }}/offline-${{ matrix.engine }}/TRACKED_STATUS.txt
+            ${{ runner.temp }}/offline-${{ matrix.engine }}/INSTALL_PHASE*.txt
           retention-days: 30
           if-no-files-found: warn
 
