@@ -26,6 +26,8 @@ import qikvrt_mcp_adapter as read_mcp
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from qikvrt_api_client import API_CONTRACT_VERSION, read_regular_file
 import qikvrt_api_client as authority_client
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tools"))
+from qikvrt_self_disclosure import DISCLOSURE_PATH, PUBLIC_MAX_BYTES, public_document
 
 REPOSITORY_COMPONENT = r"([A-Za-z0-9_.-]{1,100})"
 DISPATCH_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/actions/workflows/qikvrt_mesh_api\.yml/dispatches$")
@@ -609,6 +611,20 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
             error(200, -32603, "Committed evidence unavailable; reobserve before any mutation")
 
     def do_GET(self):
+        # Exact public path only: no auth, provider access or state mutation.
+        if self.path == "/" + DISCLOSURE_PATH:
+            if not self._rate_allowed():
+                self._send_json(429, {"status": "BLOCK", "reason": "rate limit exceeded"})
+                return
+            try:
+                source = Path(__file__).resolve().parents[1] / DISCLOSURE_PATH
+                raw = read_regular_file(source, max_bytes=PUBLIC_MAX_BYTES)
+                response = public_document(raw)
+            except (OSError, ValueError, UnicodeError):
+                self._send_json(503, {"status": "UNVERIFIED", "reason": "public disclosure unavailable"})
+                return
+            self._send_json(200, response)
+            return
         if RULESET_REST_RE.fullmatch(urlparse(self.path).path):
             self._ruleset_rest(write=False)
             return

@@ -348,5 +348,66 @@ class SelfDisclosureTests(unittest.TestCase):
                     self.assertIn(artifact['url'], self.html, artifact['path'])
 
 
+class PublicOnboardingTests(unittest.TestCase):
+    def setUp(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("public_disclosure", TOOL)
+        self.module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(self.module)
+        self.raw = DISCLOSURE.read_bytes()
+
+    def test_unknown_remote_configuration_survives_local_environment(self):
+        from unittest import mock
+        with mock.patch.dict("os.environ", {
+                "QIKVRT_CONTAINER_PUBLISH_ENABLED": "true",
+                "QIKVRT_CONTAINER_DEPLOY_ENABLED": "false",
+                "QIKVRT_LINUX_HOST_BINDING_JSON": "private-host-canary",
+                "QIKVRT_API_TOKEN": "private-token-canary"}):
+            result = self.module.public_document(self.raw)
+        self.assertEqual(result["production_status"], self.module.PUBLIC_PRODUCTION_STATUS)
+        self.assertNotIn("private-", json.dumps(result))
+        self.assertEqual(result["source"]["sha256"], hashlib.sha256(self.raw).hexdigest())
+        self.assertFalse(result["completion_claims"]["effect_ack_done"])
+        result["onboarding"]["principal"] = "changed-by-caller"
+        self.assertEqual(self.module.public_document(self.raw)["onboarding"]["principal"],
+                         "Ingolf Lohmann")
+
+    def test_unapproved_document_fields_and_capability_details_are_not_disclosed(self):
+        document = json.loads(self.raw)
+        document["private_configuration"] = {"token": "private-document-canary"}
+        document["bindings"]["private_host"] = "private-host-canary"
+        document["capabilities"][0]["credential"] = "private-capability-canary"
+        result = self.module.public_document(json.dumps(document).encode())
+        self.assertNotIn("private-", json.dumps(result))
+        self.assertIn("anonymous_onboarding_read", {item["id"] for item in result["capabilities"]})
+
+    def test_static_claim_cannot_replace_a_production_read(self):
+        for field, value in (("publish_enabled", "ENABLED"),
+                             ("host_binding", "VERIFIED"),
+                             ("observed_at", "2026-10-27T00:00:00Z")):
+            with self.subTest(field=field):
+                document = json.loads(self.raw)
+                document["production_status"][field] = value
+                with self.assertRaises(ValueError):
+                    self.module.public_document(json.dumps(document).encode())
+
+    def test_missing_oversized_or_duplicate_disclosure_is_rejected(self):
+        for raw in (b"{}", b"[]", b"\xff", b"x" * (self.module.PUBLIC_MAX_BYTES + 1),
+                    b'{"schema":"one","schema":"two"}'):
+            with self.subTest(size=len(raw)):
+                with self.assertRaises((ValueError, UnicodeError)):
+                    self.module.public_document(raw)
+
+    def test_rest_pack_contains_the_public_reader_and_document(self):
+        package = read_json(ROOT / "runtime/self-host/PACKAGE.json")
+        for path in ("tools/qikvrt_self_disclosure.py",
+                     ".well-known/qik-vrt-self-disclosure.json"):
+            self.assertIn(path, package["files"])
+            self.assertIn(path, (ROOT / "tools/qikvrt_self_host.py").read_text())
+        contract = (ROOT / "api/qikvrt_github_api.openapi.yaml").read_text()
+        public_path = contract.split("  /.well-known/qik-vrt-self-disclosure.json:", 1)[1]
+        self.assertIn("security: []", public_path.split("  /health:", 1)[0])
+
+
 if __name__ == '__main__':
     unittest.main()

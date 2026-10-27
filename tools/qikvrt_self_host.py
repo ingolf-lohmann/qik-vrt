@@ -57,6 +57,7 @@ MESH_COMPONENT_FILES = {
                            "docs/terminal/temdd/index.html", "docs/monitor/client-replica.js"],
 }
 REST_BOOTSTRAP_FILES = (
+    '.well-known/qik-vrt-self-disclosure.json', 'tools/qikvrt_self_disclosure.py',
     '.github/CODEOWNERS', 'api/qikvrt_github_api.openapi.yaml',
     'scripts/qikvrt_api_client.py', 'src/qikvrt_api_handler.py',
     'src/qikvrt_effect_ack.py', 'src/qikvrt_github_api_shim.py',
@@ -3854,6 +3855,7 @@ def main():
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
 
 
 

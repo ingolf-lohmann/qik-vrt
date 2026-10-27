@@ -127,6 +127,43 @@ class TcpIpEndToEndTests(unittest.TestCase):
     def workflow(inputs: dict[str, object]) -> dict[str, object]:
         return {"ref": "main", "inputs": inputs}
 
+    def test_anonymous_onboarding_is_source_bound_and_does_not_write(self):
+        before = sorted(path.relative_to(self.state).as_posix()
+                        for path in self.state.rglob("*"))
+        status, response = self.request(
+            "GET", "/.well-known/qik-vrt-self-disclosure.json", token=False)
+        self.assertEqual(status, 200)
+        process = subprocess.run(
+            [sys.executable, "-S", "tools/qikvrt_self_disclosure.py", "public"],
+            cwd=REPOSITORY_ROOT, capture_output=True, text=True, timeout=5)
+        self.assertEqual(process.returncode, 0, process.stderr)
+        self.assertEqual(response, json.loads(process.stdout))
+        raw = (REPOSITORY_ROOT / ".well-known/qik-vrt-self-disclosure.json").read_bytes()
+        self.assertEqual(response["source"]["sha256"], hashlib.sha256(raw).hexdigest())
+        for field in ("publish_enabled", "deploy_enabled", "host_binding"):
+            self.assertEqual(response["production_status"][field], "UNKNOWN")
+        self.assertIsNone(response["production_status"]["observed_at"])
+        self.assertIsNone(response["production_status"]["evidence"])
+        self.assertFalse(response["completion_claims"]["effect_ack_done"])
+        self.assertFalse(response["ordinary_release"])
+        self.assertNotIn(self.token, json.dumps(response))
+        self.assertEqual(before, sorted(path.relative_to(self.state).as_posix()
+                                        for path in self.state.rglob("*")))
+
+    def test_anonymous_discovery_does_not_authorize_other_operations(self):
+        for path in ("/.well-known/qik-vrt-self-disclosure.json?raw=1",
+                     "/.well-known/qik-vrt-self-disclosure.json/",
+                     "/repos/owner/repo/actions/variables"):
+            with self.subTest(path=path):
+                self.assertEqual(self.request("GET", path, token=False)[0], 404)
+        status, _ = self.request("POST",
+            "/repos/owner/repo/actions/workflows/qikvrt_mesh_api.yml/dispatches",
+            self.workflow({"operation": "release_status", "artifact_id": "status",
+                           "dry_run": True, "request_id": "anonymous-denied",
+                           "effect_accepted": False}), token=False)
+        self.assertEqual(status, 401)
+        self.assertFalse((self.state / ".qikvrt").exists())
+
     def test_optional_run_details_preserves_local_synchronous_effect_boundary(self):
         path = "/repos/owner/repo/actions/workflows/qikvrt_mesh_api.yml/dispatches"
         body = self.workflow({
