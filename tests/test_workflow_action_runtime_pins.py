@@ -10,6 +10,11 @@ actions/setup-node v7.1.0 and actions/cache v6.1.0 both declare node24.
 actions/setup-python v6.3.0 (node24) replaced v5.6.0 (node20) on 2026-10-27 in
 every job that can run on the Authority; Goldkelch-only historical release jobs
 (and jobs that need one) keep their original pin and are not rewritten.
+The last node20 actions/checkout sites (four floating @v4, one v4.2.2) moved to
+the repository-wide v7.0.1 pin, and actions/create-github-app-token v2.2.2
+(node20) moved to v3.3.0 (node24) in the live Authority mirror job on
+2026-10-27. Not rewritten: the Goldkelch-only Batch 002 job, and the ruleset
+authority-effect workflow, whose bytes are bound by digest in the API client.
 """
 from __future__ import annotations
 
@@ -28,6 +33,20 @@ CACHE_SAVE = "actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1
 RETIRED = {
     "actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020": "node20",
     "actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830": "node20",
+    "actions/checkout@v4\n": "node20",
+    "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683": "node20",
+}
+CHECKOUT = "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1"
+APP_TOKEN = "actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0"
+APP_TOKEN_RETIRED = "actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349"
+# Retained node20 sites, each with its reason; any other node20 site fails.
+RETAINED_NODE20 = {
+    ("qikvrt_combined_batch_002_promotion_head.yml",
+     "actions/checkout@11d5960a326750d5838078e36cf38b85af677262"): "Goldkelch-only job",
+    ("qikvrt_combined_batch_002_promotion_head.yml",
+     "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"): "Goldkelch-only job",
+    ("qikvrt_goldkelch_ruleset_authority_effect.yml", APP_TOKEN_RETIRED):
+        "workflow bytes bound by digest in scripts/qikvrt_api_client.py",
 }
 SETUP_PYTHON = "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0"
 SETUP_PYTHON_RETIRED = "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065"
@@ -163,6 +182,25 @@ class WorkflowActionRuntimePins(unittest.TestCase):
             for pin, runtime in RETIRED.items():
                 with self.subTest(workflow=name, pin=pin):
                     self.assertNotIn(pin, text, f"{runtime} action pin remains")
+
+    def test_checkout_and_app_token_are_node24_outside_retained_sites(self) -> None:
+        checkout = app_token = 0
+        for name, text in self.texts.items():
+            for line in re.findall(r"uses:\s*(actions/(?:checkout|create-github-app-token|upload-artifact)@[^\s#]+)", text):
+                with self.subTest(workflow=name, uses=line):
+                    if (name, line) in RETAINED_NODE20:
+                        continue
+                    if line.startswith("actions/checkout@"):
+                        checkout += 1
+                        self.assertEqual(line, CHECKOUT)
+                    elif line.startswith("actions/create-github-app-token@"):
+                        app_token += 1
+                        self.assertEqual(line, APP_TOKEN.split(" # ")[0])
+                        self.assertIn("uses: " + APP_TOKEN, text)
+        self.assertEqual((checkout, app_token), (115, 1))
+        for (name, pin) in RETAINED_NODE20:
+            with self.subTest(retained=name):
+                self.assertIn(pin, self.texts[name])
 
     def test_every_setup_node_and_cache_save_uses_the_verified_node24_commit(self) -> None:
         node = save = 0
