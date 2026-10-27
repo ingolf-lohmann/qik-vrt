@@ -9,7 +9,7 @@ import { spawnSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import test from 'node:test';
-import { aptCacheConfig, cacheSummary } from './webkit-apt-cache.mjs';
+import { aptCacheConfig, cacheSummary, fetchedArchives } from './webkit-apt-cache.mjs';
 
 const MODULE = new URL('./webkit-apt-cache.mjs', import.meta.url).pathname;
 const sha = raw => createHash('sha256').update(raw).digest('hex');
@@ -168,4 +168,44 @@ test('caches are keyed to runner image and lockfile, use repository-pinned actio
   assert.match(bind, /sudo -u _apt test -w "\$archives\/partial"/);
   assert.match(step(leg, 'Restore WebKit browser binary cache'), /key: qikvrt-webkit-browser-v1-.*steps\.webkit_cache_binding\.outputs\.image.*hashFiles/);
   assert.match(leg, /APT_CACHE_\*\.json/);
+});
+
+test('fetched-archive evidence is exact only for a single APT "0 B" line and UNKNOWN otherwise', () => {
+  assert.deepEqual(fetchedArchives('Reading package lists...\nNeed to get 0 B/117 MB of archives.\nDone\n'),
+    { bytes_fetched: '0', exact: true, line: 'Need to get 0 B/117 MB of archives.', matches: 1 });
+  assert.equal(fetchedArchives('Need to get 117 MB of archives.\n').bytes_fetched, 'ROUNDED:117 MB');
+  assert.equal(fetchedArchives('Need to get 1,234 kB/117 MB of archives.\n').bytes_fetched, 'ROUNDED:1,234 kB');
+  assert.equal(fetchedArchives('Need to get 117 MB of archives.\n').exact, false);
+  for (const text of ['', 'no apt line here', 'Need to get 0 B of archives.\nNeed to get 0 B of archives.',
+    'Need to get lots of archives.', 'Need to get 0 B/117 MB of archives. extra', undefined]) {
+    const result = fetchedArchives(text);
+    assert.equal(result.bytes_fetched, 'UNKNOWN', JSON.stringify(text));
+    assert.equal(result.exact, false);
+  }
+});
+
+test('the actual install shell records the APT fetch line and keeps the install exit status', () => {
+  const script = shellRun(step(webkitLeg(), 'Install WebKit system dependencies (bounded diagnosis)'));
+  for (const [line, installStatus, expectedField] of [
+    ['Need to get 0 B/117 MB of archives.', 0, 'apt_archive_bytes_fetched=0'],
+    ['Need to get 117 MB of archives.', 0, 'apt_archive_bytes_fetched=ROUNDED:117 MB'],
+    ['', 23, 'apt_archive_bytes_fetched=UNKNOWN']]) {
+    const dir = mkdtempSync(join(tmpdir(), 'qikvrt-webkit-apt-fetched-'));
+    try {
+      const evidence = join(dir, 'evidence'), bin = join(dir, 'bin');
+      mkdirSync(evidence); mkdirSync(bin);
+      writeFileSync(join(bin, 'timeout'),
+        '#!/bin/sh\nprintf \'%s\\n\' "$QIKVRT_TEST_APT_LINE"\nexit "$QIKVRT_TEST_INSTALL_STATUS"\n', { mode: 0o755 });
+      const result = spawnSync('bash', ['-c', script], {
+        cwd: new URL('../../../', import.meta.url), encoding: 'utf8',
+        env: { ...process.env, PATH: bin + ':' + process.env.PATH, HOME: dir, RUNNER_TEMP: dir,
+          QIKVRT_TEST_APT_LINE: line, QIKVRT_TEST_INSTALL_STATUS: String(installStatus),
+          QIKVRT_OFFLINE_EVIDENCE_DIR: evidence },
+      });
+      const receipt = readFileSync(join(evidence, 'INSTALL_PHASE_SYSTEM_DEPS.txt'), 'utf8');
+      assert.match(receipt, new RegExp(`^${expectedField}$`, 'm'), receipt);
+      assert.match(receipt, new RegExp(`^exit_status=${installStatus}$`, 'm'));
+      assert.equal(result.status, installStatus, result.stdout + result.stderr);
+    } finally { rmSync(dir, { recursive: true, force: true }); }
+  }
 });

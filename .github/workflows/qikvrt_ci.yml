@@ -360,12 +360,15 @@ jobs:
             "${APT_CACHE_HIT:-false}" "$([ -n "${APT_CACHE_MATCHED_KEY:-}" ] && echo true || echo false)" >> "$receipt"
           node runtime/offline/browser-tests/webkit-apt-cache.mjs summary "$archives" \
             "$QIKVRT_OFFLINE_EVIDENCE_DIR/APT_CACHE_BEFORE.json" | sed 's/^/before_/' >> "$receipt"
+          apt_log="$RUNNER_TEMP/webkit-install-deps.log"
           set +e
-          timeout --signal=TERM --kill-after=30s 12m runtime/offline/browser-tests/node_modules/.bin/playwright install-deps webkit
-          status=$?
+          timeout --signal=TERM --kill-after=30s 12m runtime/offline/browser-tests/node_modules/.bin/playwright install-deps webkit 2>&1 | tee "$apt_log"
+          status="${PIPESTATUS[0]}"
           set -e
           printf 'ended_utc=%s\nduration_seconds=%s\nexit_status=%s\n' \
             "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$(( $(date -u +%s) - started_epoch ))" "$status" >> "$receipt"
+          node runtime/offline/browser-tests/webkit-apt-cache.mjs fetched "$apt_log" >> "$receipt" \
+            || printf 'apt_archive_bytes_fetched=UNKNOWN\n' >> "$receipt"
           summary_status=0
           node runtime/offline/browser-tests/webkit-apt-cache.mjs summary "$archives" \
             "$QIKVRT_OFFLINE_EVIDENCE_DIR/APT_CACHE_AFTER.json" | sed 's/^/after_/' >> "$receipt" || summary_status=$?

@@ -1,5 +1,6 @@
 // Copyright 2026 Ingolf Lohmann. Implementation contribution: Claude (Anthropic).
 // Sandbox and evidence-error correction: OpenAI Codex.
+// Fetched-archive receipt field: Claude (Anthropic).
 // SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
 //
 // Bounded reuse of already downloaded WebKit system packages.
@@ -31,7 +32,7 @@ export function aptCacheConfig(directory) {
     'Binary::apt-get::APT::Keep-Downloaded-Packages "true";',
     '',
   ].join('\n');
-  if (FORBIDDEN_APT_KEYS.test(text)) throw new Error('APT_AUTHENTICATION_WEAKENED');
+  if (FORBIDDEN_APT_KEYS.test(text)) throw new Error('APT_SECURITY_WEAKENED');
   return text;
 }
 
@@ -59,6 +60,19 @@ export function cacheSummary(directory) {
   };
 }
 
+// APT prints exactly one rounded "Need to get X[/Y] of archives." line per
+// install transaction. Only that line is evidence; zero or several lines, or an
+// unparseable value, stay UNKNOWN. Only "0 B" is an exact byte count.
+const NEED_TO_GET = /^Need to get (\d+(?:[.,]\d+)? [kMGT]?B)(?:\/(\d+(?:[.,]\d+)? [kMGT]?B))? of archives\.\s*$/;
+export function fetchedArchives(logText) {
+  const lines = String(logText ?? '').split(/\r?\n/).filter(line => line.startsWith('Need to get '));
+  if (lines.length !== 1) return { bytes_fetched: 'UNKNOWN', exact: false, line: null, matches: lines.length };
+  const match = NEED_TO_GET.exec(lines[0]);
+  if (!match) return { bytes_fetched: 'UNKNOWN', exact: false, line: lines[0], matches: 1 };
+  const exact = match[1] === '0 B';
+  return { bytes_fetched: exact ? '0' : `ROUNDED:${match[1]}`, exact, line: lines[0], matches: 1 };
+}
+
 export function main(argv) {
   const [command, directory, output] = argv;
   if (command === 'config' && directory) {
@@ -73,7 +87,16 @@ export function main(argv) {
     process.stdout.write(`apt_archive_packages=${summary.package_count}\napt_archive_bytes=${summary.total_bytes}\n`);
     return 0;
   }
-  process.stderr.write('usage: webkit-apt-cache.mjs config <archive-dir> | summary <archive-dir> <new-output.json>\n');
+  if (command === 'fetched' && directory) {
+    let text = '';
+    try { text = readFileSync(directory, 'utf8'); } catch (error) { if (error.code !== 'ENOENT') throw error; }
+    const result = fetchedArchives(text);
+    process.stdout.write(`apt_archive_bytes_fetched=${result.bytes_fetched}\n` +
+      `apt_archive_bytes_fetched_exact=${result.exact}\n` +
+      `apt_archive_fetch_line=${result.line === null ? 'NONE' : JSON.stringify(result.line)}\n`);
+    return 0;
+  }
+  process.stderr.write('usage: webkit-apt-cache.mjs config <archive-dir> | summary <archive-dir> <new-output.json> | fetched <apt-log>\n');
   return 2;
 }
 
