@@ -650,6 +650,9 @@ class RESTTransportRegressionTests(unittest.TestCase):
         self.root = pathlib.Path(self.directory.name) / 'source'; self.root.mkdir()
         git_bytes(self.root, 'init', '-b', 'main')
         git_bytes(self.root, 'config', 'user.name', 'test'); git_bytes(self.root, 'config', 'user.email', 'test@example.invalid')
+        # The REST fixture serves unsigned commit objects; a machine-wide
+        # commit.gpgsign=true would add a gpgsig header it cannot reproduce.
+        git_bytes(self.root, 'config', 'commit.gpgsign', 'false')
         (self.root / 'file.cmd').write_bytes(b'first\nsecond\n')
         (self.root / 'nested').mkdir(); (self.root / 'nested/run.sh').write_text('#!/bin/sh\nexit 0\n')
         (self.root / 'nested/run.sh').chmod(0o755)
