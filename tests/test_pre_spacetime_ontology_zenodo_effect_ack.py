@@ -39,6 +39,24 @@ def git_blob_sha1(raw: bytes) -> str:
     ).hexdigest()
 
 
+def bound_append_only_prefix(index_raw: bytes, bound_blob_sha1: str) -> int | None:
+    """Return the entry count whose prefix reproduces the bound index blob.
+
+    The receipt index is append-only and canonically serialized (indent 2,
+    sorted keys, trailing newline). A later append keeps the earlier bytes
+    reconstructible from the current file; editing or deleting an earlier
+    entry, or changing any other field, makes every prefix differ.
+    """
+    current = json.loads(index_raw.decode("utf-8"))
+    receipts = current["equality_receipts"]
+    for count in range(len(receipts), -1, -1):
+        candidate = dict(current, equality_receipts=receipts[:count])
+        raw = (json.dumps(candidate, indent=2, sort_keys=True, ensure_ascii=False) + "\n").encode("utf-8")
+        if git_blob_sha1(raw) == bound_blob_sha1:
+            return count
+    return None
+
+
 class PreSpacetimeOntologyZenodoEffectAckTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
@@ -115,10 +133,33 @@ class PreSpacetimeOntologyZenodoEffectAckTests(unittest.TestCase):
             ],
             source["reciprocal_receipt"]["binding_payload_sha256"],
         )
-        self.assertEqual(
-            git_blob_sha1(index_raw),
-            source["append_only_receipt_index"]["git_blob_sha1"],
+        # The bound index state of 2026-08-05 must survive unchanged as a prefix
+        # of the append-only index; later appends are allowed (receipt untouched).
+        self.assertIsNotNone(
+            bound_append_only_prefix(index_raw, source["append_only_receipt_index"]["git_blob_sha1"]),
+            "bound append-only receipt index state is no longer reconstructible",
         )
+
+    def test_append_only_index_check_rejects_rewritten_or_removed_history(self) -> None:
+        source = self.value["source_binding"]
+        bound = source["append_only_receipt_index"]["git_blob_sha1"]
+        index = json.loads(RECEIPT_INDEX.read_text(encoding="utf-8"))
+        count = bound_append_only_prefix(RECEIPT_INDEX.read_bytes(), bound)
+        self.assertIsNotNone(count)
+        self.assertGreaterEqual(len(index["equality_receipts"]), count)
+        def encode(value):
+            return (json.dumps(value, indent=2, sort_keys=True, ensure_ascii=False) + "\n").encode("utf-8")
+        edited = json.loads(json.dumps(index))
+        edited["equality_receipts"][0]["file_sha256"] = "0" * 64
+        removed = json.loads(json.dumps(index))
+        del removed["equality_receipts"][0]
+        retimed = dict(index, updated_at="2099-01-01T00:00:00Z")
+        for name, value in (("edited", edited), ("removed", removed), ("retimed", retimed)):
+            with self.subTest(case=name):
+                self.assertIsNone(bound_append_only_prefix(encode(value), bound))
+        appended = json.loads(json.dumps(index))
+        appended["equality_receipts"].append({"fixture": "later append"})
+        self.assertEqual(bound_append_only_prefix(encode(appended), bound), count)
 
     def test_publication_effect_predicates_are_complete(self) -> None:
         publication = json.loads(PUBLICATION_RECEIPT.read_text(encoding="utf-8"))
