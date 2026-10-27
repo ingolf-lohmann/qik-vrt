@@ -114,6 +114,35 @@ export function probe(url, metadata, timeoutMs = TIMEOUT_MS) {
   });
 }
 
+export function persistReport(report, destination) {
+  // Exit status describes collection, never HTTP/HTTPS transport acceptance.
+  // A well-formed timeout observation must not suppress the browser gate.
+  const collected = report.schema === 'qikvrt-webkit-apt-diagnosis/v1'
+    && ['OBSERVED', 'UNVERIFIED'].includes(report.state)
+    && Array.isArray(report.errors) && report.errors.length === 0
+    && /^[a-f0-9]{40}$/.test(report.source_head ?? '')
+    && /^[a-f0-9]{40}$/.test(report.source_tree ?? '')
+    && report.apt && report.package && Number.isInteger(report.package.size) && report.package.size > 0
+    && Array.isArray(report.probes) && report.probes.length === 2
+    && report.probes.every((p, index) => p
+      && p.url === `${['http', 'https'][index]}://${MIRROR}/ubuntu/${report.package.filename}`
+      && ['SAMPLED', 'UNVERIFIED'].includes(p.status)
+      && p.requested_bytes === Math.min(SAMPLE_BYTES, report.package.size)
+      && Number.isInteger(p.received_bytes) && p.received_bytes >= 0 && p.received_bytes <= p.requested_bytes
+      && (p.status !== 'SAMPLED' || p.received_bytes === p.requested_bytes)
+      && Number.isFinite(p.timings_ms?.total) && p.timings_ms.total >= 0
+      && /^[a-f0-9]{64}$/.test(p.sample_sha256 ?? ''))
+    && report.identical_prefix_verified === (report.probes.every(p => p.status === 'SAMPLED')
+      && report.probes[0].sample_sha256 === report.probes[1].sample_sha256)
+    && report.state === (report.identical_prefix_verified ? 'OBSERVED' : 'UNVERIFIED');
+  report.collection_state = collected ? 'RECORDED' : 'FAILED';
+  report.collection_exit_status = collected ? 0 : 1;
+  mkdirSync(dirname(destination), { recursive: true });
+  writeFileSync(destination, JSON.stringify(report, null, 2) + '\n', { flag: 'wx' });
+  console.log(JSON.stringify(report, null, 2));
+  return report.collection_exit_status;
+}
+
 export async function main(destination) {
   const report = { schema: 'qikvrt-webkit-apt-diagnosis/v1', observed_at: new Date().toISOString(),
     state: 'UNVERIFIED', mirror: MIRROR, request_timeout_ms: TIMEOUT_MS,
@@ -144,10 +173,7 @@ export async function main(destination) {
     if (report.identical_prefix_verified && report.errors.length === 0) report.state = 'OBSERVED';
   } catch { report.errors.push('PACKAGE_METADATA_UNAVAILABLE_OR_INVALID'); }
   report.interpretation = 'BOUNDED_DIRECT_TRANSFER_OBSERVATION; NO_THROTTLE_OR_MIRROR_CAUSE_ESTABLISHED; NOT_AN_APT_RETRY';
-  mkdirSync(dirname(destination), { recursive: true });
-  writeFileSync(destination, JSON.stringify(report, null, 2) + '\n', { flag: 'wx' });
-  console.log(JSON.stringify(report, null, 2));
-  return report.state === 'OBSERVED' ? 0 : 1;
+  return persistReport(report, destination);
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

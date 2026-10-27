@@ -75,5 +75,71 @@
     "scope": "Observed adapter binding; no prepare/commit issued"
   },
   "effect_ack_done": false,
-  "domain_delivery_established": false
+  "domain_delivery_established": false,
+  "successor_correction": {
+    "schema": "qikvrt-webkit-diagnostic-collection-correction/v1",
+    "predecessor_head": "d20da6b1d1171c82a60e0bb0d4d39848d503c241",
+    "predecessor_tree": "2a90916c70978ef3d6e63bf27666e3e542d91ab5",
+    "artifact": {
+      "id": 12713263362,
+      "run_id": 40457313121,
+      "job_id": 122035432973,
+      "zip_sha256": "24c7f85295ac808e9c7e5737613abf5ab1c28d06c90831cfb29fe7cd5805ea4b",
+      "zip_sha256_verified": true,
+      "files": [
+        {
+          "path": "evidence/receipts/QIKVRT_WEBKIT_APT_TRANSFER_12713263362/APT_DIAGNOSIS.json",
+          "bytes": 2906,
+          "sha256": "b1d0c23e5a06a3cfd1e9502f03819e1ec5d29f9667c7096a1b3da2a57af7ef75"
+        },
+        {
+          "path": "evidence/receipts/QIKVRT_WEBKIT_APT_TRANSFER_12713263362/INSTALL_PHASE_SYSTEM_DEPS.txt",
+          "bytes": 190,
+          "sha256": "3bd5e52872a3aa7ad3beef4844cd31d3ceade0dceb84b4f6a65cacf401ec5b08"
+        },
+        {
+          "path": "evidence/receipts/QIKVRT_WEBKIT_APT_TRANSFER_12713263362/SUBJECT.txt",
+          "bytes": 82,
+          "sha256": "18c4a74d3e04d178021a1e792cb3d846b21ed1a0dd000b93e910240d4a2d1cbc"
+        }
+      ]
+    },
+    "observations": {
+      "system_dependencies": {
+        "exit_status": 0,
+        "duration_seconds": 618
+      },
+      "apt_download_limit": "NONE_IN_RECORDED_KEYS",
+      "http_sample_received_bytes": 1048576,
+      "https_received_bytes": 0,
+      "https_timeout_ms": 30000,
+      "https_observed_phase": "DNS_ONLY",
+      "tcp_connection_verified": false,
+      "tls_handshake_verified": false,
+      "transport_comparison": "UNVERIFIED",
+      "collection_errors": [],
+      "browser_download_reached": false,
+      "webkit_tests_reached": false,
+      "cause": "NOT_ESTABLISHED"
+    },
+    "proven_flow_defect": "The diagnostic returned 1 solely because the transport comparison was UNVERIFIED, which skipped subsequent browser steps despite successful dependency installation",
+    "repair": "Separate structurally valid record collection from transport comparison; a saved valid partial record returns collection exit 0 and retains UNVERIFIED and original probe evidence. Source/checker/malformed-record errors still return nonzero. Browser download and browser test failures remain blocking",
+    "regression": "Replay original byte-bound report through the actual persistence/exit path under set -e; verify downstream reachability, preserved DNS-only evidence, checker failures and mandatory browser failures",
+    "targeted_tests": 12,
+    "closed_predecessor_work": [
+      {
+        "task": "Execute diagnostic candidate on its bound native WebKit runner and read APT_DIAGNOSIS.json",
+        "evidence": "Byte-exact native diagnostic artifact 12713263362; this closes diagnostic execution/readback for the predecessor only"
+      }
+    ],
+    "current_open_work": [
+      "Run corrected exact-subject native CI and read actual browser download and WebKit test evidence",
+      "Determine the actual transfer cause from current-run evidence",
+      "Verify complete CI on the resulting exact subject",
+      "Enforce native Main governance",
+      "Restore admitted originalhost runtime binding and exact raumzeitterminal.de DNS/TLS/application acceptance"
+    ],
+    "main_integration_established": false,
+    "product_effect_ack_done": false
+  }
 }

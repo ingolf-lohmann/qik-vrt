@@ -321,6 +321,7 @@ jobs:
           if [ "$status" -eq 124 ]; then echo '::error::WEBKIT_SYSTEM_DEPENDENCIES_TIMEOUT'; fi
           exit "$status"
       - name: Observe root APT limits and same-package HTTP HTTPS transfer
+        id: webkit_apt_diagnosis
         if: ${{ !cancelled() && matrix.engine == 'webkit' }}
         timeout-minutes: 2
         env:
@@ -328,6 +329,8 @@ jobs:
           EXPECTED_HEAD: ${{ needs.test.outputs.tested_head }}
           EXPECTED_TREE: ${{ needs.test.outputs.tested_tree }}
         run: |
+          # A valid partial record returns 0 with transport state UNVERIFIED.
+          # Source/checker failures remain nonzero; browser gates stay mandatory.
           node runtime/offline/browser-tests/apt-diagnosis.mjs "$QIKVRT_OFFLINE_EVIDENCE_DIR/APT_DIAGNOSIS.json"
       - name: Install exact package-bound WebKit binary (bounded diagnosis)
         if: matrix.engine == 'webkit'

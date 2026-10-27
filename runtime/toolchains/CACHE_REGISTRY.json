@@ -387,7 +387,7 @@
         "github-actions-cache:npm",
         "package-bound-playwright-browser-cache"
       ],
-      "failure_handling": "No software downgrade; preserve failure.json, restore the exact tested cache response, dispose of fixture processes; fail closed without browser execution",
+      "failure_handling": "No software downgrade; preserve failure.json, restore the exact tested cache response, dispose of fixture processes; browser failures remain blocking. A structurally valid partial APT observation returns collection exit 0 while transport state stays UNVERIFIED; source/checker failures remain nonzero",
       "profiles": [
         "offline-repository"
       ],
