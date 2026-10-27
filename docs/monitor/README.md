@@ -1,5 +1,46 @@
 # Repository-native Mesh monitor
 
+## DevOps projection and ClickHouse preparation — 27 October 2026
+
+`/devops` extends this same read-only monitor; its explicit refresh uses the
+existing `/api/activity` route. It adds no executor, schedule, polling loop or
+credential store. `devops.html` also opens as a self-contained offline file.
+The embedded public snapshot keeps its own source times, per-head scope and
+coverage; a green workflow is never a native runtime or domain acceptance.
+External imported snapshots are data, not authenticated execution instructions.
+
+The view separates exact-head CI, a directly observed merge, runtime admission,
+exact-domain observations and individual job timings. Missing or stale evidence
+is UNKNOWN. Skipped jobs have unknown execution duration. Job details are shown
+only for their bound run and head. The manual refresh does not transplant old
+merge, runtime, domain or job receipts to a new activity response.
+
+The export button produces allowlisted `JSONEachRow` projection records for
+`devops.sql`. `projection_sha256` hashes each canonical exported projection, not
+GitHub network bytes. Unknown start time is explicitly Nullable; millisecond UTC
+times retain evidence chronology. The append-only table preserves observations;
+the latest-state view deduplicates run/attempt observations before aggregation.
+The first filters are repository, exact head and observation time, which define
+the sort key. No retention or partition policy is invented. Small event batches
+use async inserts with `wait_for_async_insert=1` on an admitted ingestion route.
+Bounded SELECT examples include time, scan and result limits.
+
+ClickHouse rules used: `agent-discovery-schema`, `agent-query-safety`,
+`schema-pk-plan-before-creation`, `schema-types-native-types`,
+`schema-types-lowcardinality`, `schema-partition-start-without`,
+`insert-async-small-batches`. Schema discovery, actual DDL/import and independent
+database readback are still pending: the service returned
+`Forbidden. Service does not allow MCP calls`. The available connector is
+read-only. Do not route around that denial, reset a password, grant another role
+or put Cloud API keys into this public client. Enabling MCP and providing an
+admitted ingestion path remain separately observable effects.
+
+Original sources: the exact Main `9763b2c86695126759665b56a79b37383bbb1663`,
+its CI run `40480732788`, merged PR `612`, and the independent domain snapshot
+linked in the embedded data. These remain historical once their freshness
+window expires. Source tests and a draft PR do not establish production delivery
+on `raumzeitterminal.de` or `EFFECT_ACK_DONE`.
+
 The existing `docs/monitor` carrier now owns the public observation UI, Node 24
 server, verified client replicas, signed webhook receiver and durable replay.
 The UI and GitHub observation contract reuse the dashboard implemented for

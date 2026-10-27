@@ -1,5 +1,6 @@
 import {readFileSync} from 'node:fs';
 const PAGE=readFileSync(new URL('./index.html',import.meta.url),'utf8');
+const DEVOPS_PAGE=readFileSync(new URL('./devops.html',import.meta.url),'utf8');
 // Copyright 2026 Ingolf Lohmann. Implemented with OpenAI Codex.
 // Reuses the GitHub REST observation contract of docs/monitor/index.html,
 // source ingolf-lohmann/qik-vrt @ 93be182a277f29fcb1ffb5d4ace0483f6c29dc58.
@@ -180,6 +181,7 @@ export default{async fetch(request,env){
  if(path==='/api/diagnostics')return new Response(request.method==='HEAD'?null:JSON.stringify(DIAGNOSTICS),{headers:{...SECURITY,'content-type':'application/json; charset=utf-8','cache-control':'no-store'}});
  if(path==='/health')return Response.json({status:'ok',version:VERSION},{headers:{...SECURITY,'cache-control':'no-store'}});
  if(path==='/favicon.ico')return new Response(null,{status:204});
+ if(path==='/devops')return new Response(request.method==='HEAD'?null:DEVOPS_PAGE,{headers:{...SECURITY,'content-type':'text/html; charset=utf-8','cache-control':'no-cache'}});
  if(path!=='/')return new Response('Not found',{status:404,headers:SECURITY});
  return new Response(request.method==='HEAD'?null:PAGE,{headers:{...SECURITY,'content-type':'text/html; charset=utf-8','cache-control':'no-cache'}});
 }};
