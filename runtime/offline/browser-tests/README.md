@@ -49,6 +49,20 @@ whole-system network-interface disconnection. Chromium also gets Playwright's
 offline flag; WebKit reuses the existing server-outage test without its known
 failing `setOffline(true)` emulation.
 
+After the original WebKit system-dependency attempt, the same job records
+`APT_DIAGNOSIS.json`, including on installation failure. Root `apt-config`
+output is filtered to numeric limits; proxy values are never retained. One
+`fonts-freefont-ttf` candidate from that runner's APT metadata is sampled over
+HTTP and HTTPS from the affected Azure Ubuntu mirror, with the same filename
+and byte range, up to 1 MiB and 30 seconds per request. The Node standard-library
+probes use direct connections; they do not apply APT or environment proxies.
+The report binds the source HEAD/TREE, package metadata, prefix hashes, timing
+and observed address. Missing configuration, incomplete/mismatched samples or
+unavailable readback remain unverified. A complete metadata hash is verified
+only when the whole package fits inside the sample. This diagnostic changes
+neither APT sources nor the original 720/480-second installation budgets and
+does not establish a throttling cause, installation success or browser acceptance.
+
 Playwright 1.62.1 / playwright-core 1.62.1: Apache-2.0, dependency integrity
 retained in `package-lock.json`. Browser binaries are downloaded by Playwright's
 locked installer and retain their upstream notices. React 19.2.6 / Scheduler

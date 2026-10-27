@@ -587,7 +587,7 @@ class GeneralCITerminalDispositionTests(unittest.TestCase):
         job_metadata, steps = browser.split("    steps:\n", 1)
         self.assertNotRegex(job_metadata, r"\$\{\{\s*runner\.")
         evidence_binding = "QIKVRT_OFFLINE_EVIDENCE_DIR: ${{ runner.temp }}/offline-${{ matrix.engine }}"
-        self.assertEqual(steps.count(evidence_binding), 4)
+        self.assertEqual(steps.count(evidence_binding), 5)
         self.assertIn("if: matrix.engine == 'chromium'", steps)
         self.assertIn("if: matrix.engine == 'webkit'", steps)
         self.assertIn("playwright install --with-deps chromium", steps)
@@ -598,6 +598,8 @@ class GeneralCITerminalDispositionTests(unittest.TestCase):
         self.assertIn("INSTALL_PHASE_SYSTEM_DEPS.txt", steps)
         self.assertIn("INSTALL_PHASE_BROWSER.txt", steps)
         self.assertIn("INSTALL_PHASE*.txt", steps)
+        self.assertIn("APT_DIAGNOSIS.json", steps)
+        self.assertIn("if: ${{ !cancelled() && matrix.engine == 'webkit' }}", steps)
         self.assertIn('exit "$status"', steps)
         self.assertNotIn("continue-on-error:", browser)
 

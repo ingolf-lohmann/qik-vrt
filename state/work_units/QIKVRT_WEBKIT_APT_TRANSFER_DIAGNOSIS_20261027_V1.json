@@ -1,0 +1,79 @@
+{
+  "schema": "qikvrt-webkit-apt-diagnostic-successor/v1",
+  "work_unit": "QIKVRT_WEBKIT_APT_TRANSFER_DIAGNOSIS_20261027_V1",
+  "principal": "Ingolf Lohmann",
+  "implementation_contribution": "OpenAI Codex",
+  "authorization": "Existing Owner authorization for autonomous causal repair and the current source-bound continuation request",
+  "source": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "365914236153710d659c8d1c93bf50249606266d",
+    "tree": "f1eab0b3e4a8cbec71b1bbeafbc68871feaa88a5"
+  },
+  "predecessor": {
+    "snapshot_id": "f89a43b2-4fcd-453c-9343-926eaf728970",
+    "snapshot_sha256": "f9e3015e44d35ddf4b923b6a0de3106b1dac4d1cecfda486855cc8debb11a099",
+    "byte_verified": true,
+    "scope": "Historical HTTP observation; not fresh domain or runtime acceptance"
+  },
+  "original_job": {
+    "run_id": 40427423011,
+    "job_id": 121939434990,
+    "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/40427423011/job/121939434990",
+    "downloaded_log_sha256": "5a8cdf057cbc7bb6dc416f7e8354a9b37d3f2a959a2b4fbf2ec679867330a68b",
+    "system_dependency_exit_status": 124,
+    "timeout_seconds": 720,
+    "browser_download_reached": false,
+    "browser_tests_reached": false
+  },
+  "diagnosis": {
+    "observed": "APT index update reported 11.4 MB/s; intervals between large package messages imply approximately 48-53 kB/s including overhead",
+    "cause": "NOT_ESTABLISHED",
+    "open_hypotheses": [
+      "Effective APT download configuration",
+      "Affected mirror transfer path",
+      "Runner/network routing"
+    ],
+    "unmodified_retry_dispatched": false
+  },
+  "change": {
+    "carrier": ".github/workflows/qikvrt_ci.yml offline_browser (webkit)",
+    "phase": "After original system-dependency attempt, including failure",
+    "read_only": true,
+    "maximum_probe_bytes_per_scheme": 1048576,
+    "maximum_probe_milliseconds_per_scheme": 30000,
+    "diagnostic_step_timeout_minutes": 2,
+    "changes_package_sources": false,
+    "changes_original_installation_budgets": false,
+    "new_workflow_or_executor": false
+  },
+  "validation": {
+    "targeted_command": "node --test runtime/offline/browser-tests/apt-diagnosis.test.mjs",
+    "targeted_tests": 9,
+    "targeted_result": "SUCCESS",
+    "full_gate": "make test repository-monitor-test self-host-test",
+    "full_result": "SEE_EXACT_CANDIDATE_NATIVE_CI_AND_REVIEW_RECEIPTS",
+    "native_runner_probe_executed_by_this_source_record": false
+  },
+  "preparation_findings": {
+    "fresh_source_archive_and_original_commit_object_verified": true,
+    "main_original_immutable_manifest_matches_archive": true,
+    "initial_verifier_failure": "Two untracked temporary recovery files, removed before candidate export",
+    "candidate_integrity_regenerated_through_original_generator": true
+  },
+  "open_work": [
+    "Execute diagnostic candidate on its bound native WebKit runner and read APT_DIAGNOSIS.json",
+    "Determine the actual transfer cause from current-run evidence",
+    "Verify complete CI on the resulting exact subject",
+    "Enforce native Main governance",
+    "Restore admitted originalhost runtime binding and exact raumzeitterminal.de DNS/TLS/application acceptance"
+  ],
+  "native_route": {
+    "ready": false,
+    "open_gates": [
+      "ADMITTED_MESH_RUNTIME_ENDPOINT"
+    ],
+    "scope": "Observed adapter binding; no prepare/commit issued"
+  },
+  "effect_ack_done": false,
+  "domain_delivery_established": false
+}

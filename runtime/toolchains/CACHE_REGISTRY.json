@@ -377,6 +377,8 @@
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
         ".github/workflows/qikvrt_ci.yml",
+        "runtime/offline/browser-tests/apt-diagnosis.mjs",
+        "runtime/offline/browser-tests/apt-diagnosis.test.mjs",
         "runtime/offline/browser-tests/package-lock.json",
         "runtime/offline/BROWSER_LOCK.json"
       ],
@@ -389,7 +391,7 @@
       "profiles": [
         "offline-repository"
       ],
-      "progress": "Stage-bound timeline and exact-byte browser-readback.json",
+      "progress": "Stage-bound timeline and exact-byte browser-readback.json; bounded post-install APT_DIAGNOSIS.json with root numeric limits, private-value redaction and direct same-prefix HTTP/HTTPS timing",
       "provider": "npm integrity-bound package and browser artifacts",
       "self_test": "node runtime/offline/browser-tests/browser.test.mjs",
       "trusted_save": false,
@@ -397,6 +399,7 @@
         "npm ci integrity lock",
         "browser revision and version lock",
         "node runtime/offline/browser-tests/browser.test.mjs",
+        "node --test runtime/offline/browser-tests/apt-diagnosis.test.mjs",
         "browser process exit and same-profile head/tree readback"
       ],
       "version": "1.62.1"

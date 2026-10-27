@@ -34,6 +34,12 @@ tool-cache-contract:
 offline-browser-precheck: tool-cache-contract
 	QIKVRT_OFFLINE_CLIENT_DIR="$(CURDIR)/docs/monitor/offline" node runtime/offline/browser-tests/browser.test.mjs --precheck
 
+.PHONY: offline-browser-install-diagnosis-test
+offline-browser-install-diagnosis-test: tool-cache-contract
+	node --test runtime/offline/browser-tests/apt-diagnosis.test.mjs
+
+test: offline-browser-install-diagnosis-test
+
 offline-browser-test: offline-browser-precheck
 	QIKVRT_OFFLINE_CLIENT_DIR="$(CURDIR)/docs/monitor/offline" node runtime/offline/browser-tests/browser.test.mjs
 
