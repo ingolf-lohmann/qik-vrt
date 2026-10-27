@@ -59,6 +59,48 @@ def embedded_python_for_step(workflow: str, step_name: str) -> str:
 class EffectAckReleaseWorkflowTests(unittest.TestCase):
     maxDiff = None
 
+    def test_repository_node_actions_use_reviewed_node24_pins(self) -> None:
+        pins = {
+            "actions/setup-node": "949feb2413d6458794dcd2491c4babbbce0c15c1",
+            "actions/cache/save": "55cc8345863c7cc4c66a329aec7e433d2d1c52a9",
+        }
+        counts = dict.fromkeys(pins, 0)
+        explicit_caches = 0
+        for path in sorted((ROOT / ".github/workflows").glob("*.y*ml")):
+            lines = path.read_text(encoding="utf-8").splitlines()
+            for index, line in enumerate(lines):
+                match = re.search(r"uses:\s*(actions/(?:setup-node|cache/save))@([^\s#]+)", line)
+                if not match:
+                    continue
+                action, pin = match.groups()
+                self.assertEqual(pin, pins[action], f"{path.name}:{index + 1}")
+                counts[action] += 1
+                if action != "actions/setup-node":
+                    continue
+                indent = len(line) - len(line.lstrip())
+                step_indent = indent if line.lstrip().startswith("- ") else indent - 2
+                end = index + 1
+                while end < len(lines):
+                    next_line = lines[end]
+                    if next_line.strip() and len(next_line) - len(next_line.lstrip()) <= step_indent:
+                        break
+                    end += 1
+                block = "\n".join(lines[index:end])
+                self.assertRegex(block, r"node-version:\s*['\"]24['\"]")
+                if re.search(r"(?m)^\s+cache:", block):
+                    explicit_caches += 1
+                    self.assertIn("cache-dependency-path:", block)
+                    self.assertNotIn("package-manager-cache:", block)
+                else:
+                    self.assertIn("package-manager-cache: false", block)
+        self.assertEqual(counts, {"actions/setup-node": 18, "actions/cache/save": 4})
+        self.assertEqual(explicit_caches, 5)
+        registry = json.loads((ROOT / "runtime/toolchains/CACHE_REGISTRY.json").read_text())
+        for action, pin in pins.items():
+            binding = registry["components"]["node"]["action_pins"][action]
+            self.assertEqual(binding["commit"], pin)
+            self.assertEqual(binding["using"], "node24")
+
     def test_inert_marker_binds_schema_and_canonical_payload(self) -> None:
         marker = json.loads(MARKER.read_text(encoding="utf-8"))
         json.loads(SCHEMA.read_text(encoding="utf-8"))

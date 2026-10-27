@@ -150,7 +150,7 @@ test('caches are keyed to runner image and lockfile, use repository-pinned actio
   assert.doesNotMatch(restoreApt, /qikvrt-webkit-apt-v1-/);
   assert.match(restoreApt, /path: \/var\/cache\/qikvrt-webkit-apt\/archives\/\*\.deb$/m);
   const saveApt = step(leg, 'Save WebKit system package cache');
-  assert.match(saveApt, /actions\/cache\/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4\.3\.0/);
+  assert.match(saveApt, /actions\/cache\/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6\.1\.0/);
   assert.match(saveApt, /steps\.webkit_system_deps\.outcome == 'success'/);
   assert.match(saveApt, /steps\.webkit_apt_cache\.outputs\.cache-hit != 'true'/);
   const saveBrowser = step(leg, 'Save WebKit browser binary cache');

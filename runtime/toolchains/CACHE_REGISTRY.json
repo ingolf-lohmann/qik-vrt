@@ -278,11 +278,36 @@
       "version": "4.19.0"
     },
     "node": {
+      "action_pins": {
+        "actions/cache/save": {
+          "commit": "55cc8345863c7cc4c66a329aec7e433d2d1c52a9",
+          "using": "node24",
+          "version": "v6.1.0"
+        },
+        "actions/setup-node": {
+          "commit": "949feb2413d6458794dcd2491c4babbbce0c15c1",
+          "using": "node24",
+          "version": "v7.1.0"
+        }
+      },
       "authority_files": [
-        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        ".github/workflows/qikvrt_adaptive_runtime.yml",
+        ".github/workflows/qikvrt_audio_request.yml",
+        ".github/workflows/qikvrt_batch003_remaining_disposition.yml",
+        ".github/workflows/qikvrt_batch04_integrity.yml",
+        ".github/workflows/qikvrt_ci.yml",
+        ".github/workflows/qikvrt_collective_review.yml",
+        ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+        ".github/workflows/qikvrt_formalization_and_audio.yml",
+        ".github/workflows/qikvrt_global_completion.yml",
+        ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+        ".github/workflows/qikvrt_publication_router.yml",
+        ".github/workflows/qikvrt_temdd.yml",
         "formalization/QIKVRT_Formalization_v1.0/package-lock.json",
-        "tools/offline-audio-transcription/package-lock.json",
-        ".github/workflows/qikvrt_formalization_and_audio.yml"
+        "runtime/offline/browser-tests/webkit-apt-cache.test.mjs",
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "tests/test_effect_ack_release_workflows.py",
+        "tools/offline-audio-transcription/package-lock.json"
       ],
       "cache_class": "hosted-toolcache",
       "cache_locations": [
