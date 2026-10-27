@@ -6,6 +6,7 @@ import base64
 import copy
 import datetime as dt
 import hashlib
+import io
 import json
 import os
 import subprocess
@@ -268,6 +269,45 @@ class LifecyclePublicationTests(unittest.TestCase):
         live.read_public(self.node, self.api, NOW)
         self.assertTrue(all(m == 'GET' for m,_,_ in self.api.calls))
         self.assertEqual('', live.Rest(REPOSITORY).token)
+
+    def test_missing_snapshot_ref_identifies_first_failed_read_without_fallback(self):
+        api = live.Rest(REPOSITORY)
+        main = {'ref': 'refs/heads/main', 'object': {'type': 'commit', 'sha': SOURCE}}
+        missing = live.urllib.error.HTTPError(
+            'https://api.github.com/hidden', 404, 'private response detail', None, None)
+        with patch.object(api.opener, 'open', side_effect=[
+                io.BytesIO(json.dumps(main).encode()), missing]) as opened:
+            with self.assertRaises(live.ApiError) as caught:
+                live.read_public(self.node, api, NOW)
+        self.assertEqual(
+            'LIFECYCLE_API_404 GET git/ref/heads/' + live.LIVE_BRANCH,
+            str(caught.exception))
+        self.assertEqual(404, caught.exception.status)
+        self.assertEqual(2, opened.call_count)
+        self.assertTrue(all(call.args[0].method == 'GET' for call in opened.call_args_list))
+        self.assertNotIn('contents/', ' '.join(
+            call.args[0].full_url for call in opened.call_args_list))
+
+    def test_failed_rest_reads_expose_operation_but_not_query_credentials_or_body(self):
+        api = live.Rest(REPOSITORY, 'fixture-header-secret')
+        path = 'contents/NODE_HEALTH.json?ref=' + SOURCE + '&token=fixture-query-secret'
+        failures = [
+            (live.urllib.error.HTTPError(
+                'https://private-url', 403, 'fixture-body-secret', None, None), '403'),
+            (live.urllib.error.URLError('fixture-network-secret'), 'UNCERTAIN'),
+        ]
+        for failure, status in failures:
+            with self.subTest(status=status), patch.object(
+                    api.opener, 'open', side_effect=failure) as opened:
+                with self.assertRaises(live.ApiError) as caught:
+                    api('GET', path)
+                self.assertEqual(
+                    'LIFECYCLE_API_' + status + ' GET contents/NODE_HEALTH.json',
+                    str(caught.exception))
+                self.assertNotIn('secret', str(caught.exception))
+                self.assertIsNone(caught.exception.__cause__)
+                self.assertTrue(caught.exception.__suppress_context__)
+                self.assertEqual(1, opened.call_count)
 
     def test_ref_drift_during_read_is_rejected(self):
         self.publish(); original = self.api.respond; count = 0
