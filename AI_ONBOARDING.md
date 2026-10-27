@@ -89,7 +89,10 @@ commit identity cannot be cited as evidence.
 - Every change follows `AGENTS.md`: reuse the existing path, add failure-case
   tests, regenerate integrity
   (`python3 -B tools/qikvrt_integrity.py generate` then `verify`), run the full
-  `make test`, deliver a reviewable branch. No automatic merge.
+  `make test`, deliver a reviewable branch. No unconditional automatic merge:
+  only the expected-head-bound promotion defined in `AI` (*Repository-native
+  autonomous continuation*) may promote, and only while all of its conditions
+  hold. It is not a general automatic-merge authorization.
 - Do not weaken a security default to silence a warning (example: keep the APT
   download sandbox `_apt`; never set `APT::Sandbox::User "root"`).
 

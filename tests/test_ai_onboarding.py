@@ -47,11 +47,16 @@ class AiOnboardingContract(unittest.TestCase):
 
     def test_evidence_boundaries_are_stated_not_weakened(self) -> None:
         for phrase in ("`TRANSPORT_ACK` is not `EFFECT_ACK`", "never inferred", "Not verified here",
-                       "REST_API_ONLY", "Never force", "No automatic merge",
+                       "REST_API_ONLY", "Never force", "No unconditional automatic merge",
+                       "expected-head-bound promotion",
                        'never set `APT::Sandbox::User "root"`'):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, self.text)
         self.assertNotRegex(self.text, r"(?i)\bEFFECT_ACK_DONE\s*[:=]\s*true")
+        self.assertNotRegex(self.text, r"(?<!unconditional )\b[Nn]o automatic merge")
+        authority = (ROOT / "AI").read_text(encoding="utf-8")
+        self.assertIn("Unconditional automatic merge is forbidden.", authority)
+        self.assertIn("Expected-head-bound promotion is allowed", authority)
 
     def test_snapshot_is_dated_and_bound_to_a_commit(self) -> None:
         section = self.text.split("## 8. Snapshot of open work", 1)[1]
