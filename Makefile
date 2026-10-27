@@ -36,7 +36,7 @@ offline-browser-precheck: tool-cache-contract
 
 .PHONY: offline-browser-install-diagnosis-test
 offline-browser-install-diagnosis-test: tool-cache-contract
-	node --test runtime/offline/browser-tests/apt-diagnosis.test.mjs
+	node --test runtime/offline/browser-tests/apt-diagnosis.test.mjs runtime/offline/browser-tests/webkit-apt-cache.test.mjs
 
 test: offline-browser-install-diagnosis-test
 
