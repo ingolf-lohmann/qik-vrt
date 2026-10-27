@@ -31,6 +31,26 @@
   }
   function scalar(a,b){const x=Array.from(a,c=>c.codePointAt(0)),y=Array.from(b,c=>c.codePointAt(0));for(let i=0;i<Math.min(x.length,y.length);i++)if(x[i]!==y[i])return x[i]-y[i];return x.length-y.length;}
   function projection(record){return Object.fromEntries(Object.entries(record).filter(([k])=>!['protocol_hash','created_utc'].includes(k)));}
+  function compact(field,result){
+    if(typeof field!=='string'||field.length>4096)fail('Effect-Ack-Antwortfeld fehlt.');
+    const members=Object.create(null);
+    for(const part of field.split(',')){const pair=/^\s*([a-z][a-z0-9_-]*)\s*=\s*([^\s,]+)\s*$/.exec(part);if(!pair||Object.hasOwn(members,pair[1]))fail('Mehrdeutiges Effect-Ack-Antwortfeld.');members[pair[1]]=pair[2];}
+    const names=['hash','state','v',...(result.commit_token===undefined?[]:['token'])].sort();
+    const r=result.record,states={EFFECT_NACK:'nack',EFFECT_ACK_CONTINUE:'continue',EFFECT_ACK_DONE:'done',EFFECT_ACK_ISOLATE:'isolate',EFFECT_ACK_BLOCK:'block'};
+    if(Object.keys(members).sort().join('|')!==names.join('|')||members.v!=='1'||!r||result.state!==r.state||members.state!==states[r.state]||typeof r.protocol_hash!=='string'||!sha.test(r.protocol_hash))fail('Kompakter und vollständiger EAP-Record widersprechen sich.');
+    const bytes=Uint8Array.from(r.protocol_hash.slice(7).match(/../g),x=>parseInt(x,16));
+    if(members.hash!==':'+btoa(String.fromCharCode(...bytes))+':'||result.commit_token!==undefined&&(typeof result.commit_token!=='string'||!/^[a-f0-9]{64}$/.test(result.commit_token)||members.token!==':'+btoa(result.commit_token)+':'))fail('EAP-Hash- oder Token-Bindung stimmt nicht.');
+    return true;
+  }
+  async function receipt(value,expected){
+    const event=value?.durable_readback,request=expected.request;
+    if(value?.independent_sqlite_readback!==true||value.durable_persisted!==true||value.principal!==expected.principal||value.request_id!==request.request_id||!event||typeof event.id!=='string'||!new RegExp('^'+expected.ledgerId+':[1-9][0-9]*$').test(event.id)||!/^[a-f0-9]{32}$/.test(expected.ledgerId))fail('Originalquittung gehört nicht zu dieser Vorbereitung.');
+    const {id,ledger_digest,...body}=event;
+    const keys=['schema','kind','subject','provenance','observed_at','message','payload','recorded_at','payload_digest','evidence_transfer','dod'].sort();
+    const payload={adapter:'QIKVRT_OWNER_REST_TERMINAL_V1',principal:expected.principal,request_id:request.request_id,terminal_input:request.input,input_hash:await digest(request.input),effect_ack_done:false};
+    if(Object.keys(body).sort().join('|')!==keys.join('|')||body.schema!=='qikvrt_temdd_event_v1'||body.kind!=='OBSERVE'||canonical(body.subject)!==canonical(request.subject)||canonical(body.payload)!==canonical(payload)||body.payload_digest!==(await digest(payload)).slice(7)||body.evidence_transfer!=='DENY'||body.dod!==false||body.provenance?.source!=='transputer'||!/^terminal:[a-f0-9]{48}$/.test(body.provenance?.native_event_id||'')||ledger_digest!==(await digest(body)).slice(7))fail('Native Ereignisbytes oder Journal-Digest stimmen nicht.');
+    return value;
+  }
   function state(r){
     if(r.deadline_exceeded||r.reasons.includes('PREVIOUS_PROTOCOL_INTEGRITY_FAILURE'))return 'EFFECT_ACK_BLOCK';
     if(!r.transport_ack||r.input_hash==='UNAVAILABLE')return 'EFFECT_NACK';
@@ -70,5 +90,5 @@
     if(!subject||!authority||r.state!=='EFFECT_ACK_DONE'||r.ordinary_release!==true||expected.expiresAt*1000<=Date.now())fail('Keine frische Freigabe für diese native Eingabe.');
     return r;
   }
-  globalThis.QikvrtDevopsWire={canonical,digest,verify,projection,parse};
+  globalThis.QikvrtDevopsWire={canonical,digest,verify,projection,parse,compact,receipt};
 })();

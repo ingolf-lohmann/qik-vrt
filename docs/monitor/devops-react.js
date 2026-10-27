@@ -24,13 +24,14 @@
       if(!/^application\/json(?:;|$)/i.test(response.headers.get('content-type')||''))throw Error('Der Server stellt diesen EAP-Endpunkt noch nicht bereit.');
       const body=wire.parse(await response.text());
       if(!response.ok)throw Error(body.reason||body.error||'HTTP '+response.status);
+      if(path==='/api/eap/effect'&&options.method==='POST')wire.compact(response.headers.get('effect-ack'),body);
       return body;
     }
     async function readContext(value){
       const record=await request(value.record_url),context=await request(value.context_url);
       if(wire.canonical(record)!==wire.canonical(context.chain?.at(-1)))throw Error('Record und unabhängiger Kontext stimmen nicht überein.');
       await wire.verify(context,{request:value.request,recordHash:value.recordHash,principal,expiresAt:value.expires_at});
-      return record;
+      return {record,ledgerId:Object.values(context.evidence).find(x=>x.schema==='qikvrt_eap_subject_v1').ledger_id};
     }
     async function prepare(){
       if(busy.current)return;busy.current=true;const generation=epoch.current;
@@ -45,9 +46,9 @@
         if(result.state!=='EFFECT_ACK_DONE'||!result.commit_token)throw Error('Keine Freigabe: '+result.state);
         if(!/^\/api\/eap\/records\/[a-f0-9]{64}$/.test(result.record_url)||result.context_url!==result.record_url+'/context'||!/^[a-f0-9]{64}$/.test(result.commit_token))throw Error('Ungültige Prepare-Bindung.');
         const value={...result,request:requestBody,recordHash:result.record.protocol_hash};
-        await readContext(value);
+        const checked=await readContext(value);
         if(generation!==epoch.current)return;
-        setPrepared(value);setPhase('prepared');setMessage('Record, Policy und Belege geprüft. Die Texteingabe ist vorbereitet.');
+        setPrepared({...value,ledgerId:checked.ledgerId});setPhase('prepared');setMessage('Record, Policy und Belege geprüft. Die Texteingabe ist vorbereitet.');
       }catch(error){if(generation===epoch.current){setPhase('idle');setMessage(error.message);}}
       finally{busy.current=false;}
     }
@@ -59,9 +60,12 @@
         const field='v=1, mode=commit, token=:'+btoa(prepared.commit_token)+':, hash=:'+btoa(String.fromCharCode(...hash))+':';
         attempted=true;
         const result=await request('/api/eap/effect',{method:'POST',headers:{'Content-Type':'application/json','Effect-Ack-Request':field},body:wire.canonical(prepared.request)});
-        if(result.independent_readback_verified!==true||!result.native_receipt?.durable_readback)throw Error('Native Rücklesung fehlt.');
+        if(result.record.protocol_hash!==prepared.recordHash||result.independent_readback_verified!==true||!result.native_receipt?.durable_readback)throw Error('Native Rücklesung fehlt.');
+        const observed=await request('/api/eap/receipts/'+encodeURIComponent(prepared.request.request_id));
+        await wire.receipt(observed,{request:prepared.request,principal,ledgerId:prepared.ledgerId});
+        if(wire.canonical(observed.durable_readback)!==wire.canonical(result.native_receipt.durable_readback))throw Error('Die separat gelesene Originalquittung widerspricht der Commit-Antwort.');
         if(generation!==epoch.current)return;
-        setReceipt(result.native_receipt);setPhase('committed');setMessage('Texteingabe im Originaljournal übernommen und unabhängig zurückgelesen.');
+        setReceipt(observed);setPhase('committed');setMessage('Texteingabe im Originaljournal übernommen und unabhängig zurückgelesen.');
         onRefresh();
       }catch(error){if(generation===epoch.current){setPhase(attempted?'uncertain':'idle');if(!attempted)setPrepared(null);setMessage(attempted?'Ausgang offen: '+error.message+'. Zuerst Rücklesung ausführen.':'Vorbereitung erneut erforderlich: '+error.message);}}
       finally{busy.current=false;}
@@ -69,7 +73,7 @@
     async function readback(){
       if(!prepared||busy.current)return;busy.current=true;const generation=epoch.current;
       try{const result=await request('/api/eap/receipts/'+encodeURIComponent(prepared.request.request_id));
-        if(result.independent_sqlite_readback!==true||!result.durable_readback)throw Error('Native Rücklesung fehlt.');
+        await wire.receipt(result,{request:prepared.request,principal,ledgerId:prepared.ledgerId});
         if(generation!==epoch.current)return;setReceipt(result);setPhase('committed');setMessage('Vorhandene Originalquittung unabhängig zurückgelesen.');
       }catch(error){if(generation===epoch.current)setMessage('Rücklesung offen: '+error.message);}
       finally{busy.current=false;}

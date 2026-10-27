@@ -7,7 +7,7 @@ import {createHash,webcrypto} from 'node:crypto';
 import vm from 'node:vm';
 import {fileURLToPath} from 'node:url';
 const root=fileURLToPath(new URL('../',import.meta.url));
-const sandbox={crypto:webcrypto,TextEncoder,URL};vm.createContext(sandbox);
+const sandbox={crypto:webcrypto,TextEncoder,URL,btoa};vm.createContext(sandbox);
 for(const file of ['devops-wire.js','devops-projection.js','devops-capture.js','react-runtime.js'])vm.runInContext(readFileSync(root+'docs/monitor/'+file,'utf8'),sandbox,{timeout:2000});
 assert.equal(sandbox.QikvrtReact.React.version,JSON.parse(readFileSync(root+'runtime/self-host/REACT_LOCK.json')).versions.react);
 const p=sandbox.QikVrtDevops.project(sandbox.QikvrtDevopsCapture);
@@ -20,6 +20,12 @@ assert.equal(wire.canonical({'\ue000':1,'\u{10000}':2}),'{"\u{10000}":2,"\ue000"
 const input=readFileSync(0,'utf8').trim();
 if(input){
  const value=JSON.parse(input);await wire.verify(value.context,value.expected);
+ assert.equal(wire.compact(value.field,value.response),true);
+ await wire.receipt(value.receipt,value.expected);
+ for(const field of ['principal','request_id','independent_sqlite_readback']){const bad=structuredClone(value.receipt);bad[field]=field==='independent_sqlite_readback'?false:'different';await assert.rejects(wire.receipt(bad,value.expected));}
+ const event=structuredClone(value.receipt);event.durable_readback.payload.terminal_input.text+=' changed';event.durable_readback.ledger_digest=(await wire.digest(Object.fromEntries(Object.entries(event.durable_readback).filter(([k])=>!['id','ledger_digest'].includes(k))))).slice(7);await assert.rejects(wire.receipt(event,value.expected));
+ await assert.rejects(wire.receipt(value.receipt,{...value.expected,ledgerId:'0'.repeat(32)}));
+ for(const field of [null,value.field.replace('v=1','v=2'),value.field.replace('state=done','state=continue'),value.field+', v=1',value.field+', unknown=1',value.field.replace(/hash=:[^:]+:/,'hash=:'+btoa('a'.repeat(32))+':')])assert.throws(()=>wire.compact(field,value.response));
  for(const field of ['origin_checked','semantics_reconstructed','policy_allows_release']){
    const bad=structuredClone(value.context);bad.chain.at(-1)[field]=false;bad.chain.at(-1).protocol_hash=await wire.digest(wire.projection(bad.chain.at(-1)));
    await assert.rejects(wire.verify(bad,{...value.expected,recordHash:bad.chain.at(-1).protocol_hash}));

@@ -87,9 +87,11 @@ Protected requests use the existing `Authorization: Bearer …` and
 credentials to the loopback adapter only after the same-origin check; it
 never injects an internal key. Bound request bodies are limited to 32 KiB.
 
-The client performs capability discovery and separate record/context reads,
+The client performs capability discovery, compact/full response binding checks and separate record/context reads,
 independently rederives the state and verifies the policy/evidence/input/hash
-bindings before enabling commit. A lost commit response leaves the operation
+bindings before enabling commit. After commit it separately reads the original
+receipt and checks the principal, request, subject, original input, epoch and
+native payload/body digests before displaying acceptance. A lost commit response leaves the operation
 uncertain and exposes only the explicit receipt-readback continuation.
 
 ## Transport, restart and limits

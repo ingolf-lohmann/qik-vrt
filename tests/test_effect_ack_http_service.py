@@ -136,9 +136,12 @@ class ServiceTests(unittest.TestCase):
     def test_browser_independently_validates_real_native_preparation(self):
         p = self.api.prepare(self.grant, self.value)
         context = self.api.record(self.grant, p["record"]["protocol_hash"][7:], True)
+        committed = self.api.commit(self.grant, self.value, self.binding(p))
         result = subprocess.run(["node", str(ROOT / "tests/test_devops_client.mjs")], input=json.dumps({
             "context": context, "expected": {"request": self.value, "recordHash": p["record"]["protocol_hash"],
-                "principal": self.grant["principal"], "expiresAt": p["expires_at"]}}), text=True,
+                "principal": self.grant["principal"], "expiresAt": p["expires_at"], "ledgerId": self.runtime.ledger.epoch},
+            "receipt": committed["native_receipt"],
+            "response": p, "field": "v=1, state=done, hash=" + terminal.sf_bytes(bytes.fromhex(p["record"]["protocol_hash"][7:])) + ", token=" + terminal.sf_bytes(p["commit_token"].encode())}), text=True,
             capture_output=True, timeout=15)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("DEVOPS_CLIENT_PASS", result.stdout)
