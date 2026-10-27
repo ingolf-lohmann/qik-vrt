@@ -1,0 +1,81 @@
+{
+  "schema": "qikvrt_node24_remaining_actions_v1",
+  "owner": "Ingolf Lohmann",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "branch": "ci/node24-remaining-actions",
+  "base_pull_request": 614,
+  "parent_head": "c8305e652aa320e49d97da1bf939b562aac44f10",
+  "parent_tree": "6f907859e2cceb9a2be0906cb7a4f08afbe6ad9a",
+  "authorization_basis": "Owner's request of 2026-10-27 to prepare the repository-wide node24 transition as an isolated, reviewable branch with REST plan; preparation includes no merge. Ubuntu, deployment and domain stay separate.",
+  "contributions": {
+    "human": "Ingolf Lohmann: task scope and authorization.",
+    "artificial_cognitive": "Claude (Anthropic), QIK-VRT Mirror node: runtime resolution of every referenced action commit from the public action repositories, workflow pin change, regression test and digest-binding exclusion.",
+    "joint": [],
+    "unresolved": []
+  },
+  "runtime_resolution": {
+    "method": "action.yml 'runs.using' read at the exact commit from the public action repository on 2026-10-27",
+    "node20_before": {
+      "actions/checkout@v4 (floating)": 4,
+      "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2": 1,
+      "actions/checkout@11d5960a326750d5838078e36cf38b85af677262": 1,
+      "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02": 1,
+      "actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 (v2.2.2)": 2,
+      "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 (Goldkelch-only historical, unchanged)": 10
+    },
+    "targets": {
+      "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1": "v7.0.1, node24, already used at 110 sites",
+      "actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510": "v3.3.0, node24; inputs app-id, private-key, owner, repositories, permission-* retained (app-id only deprecated in favour of client-id); v3 breaking change concerns proxy support via NODE_USE_ENV_PROXY only"
+    },
+    "verified_node24_or_composite": [
+      "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
+      "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c",
+      "actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333",
+      "actions/cache@caa296126883cff596d87d8935842f9db880ef25",
+      "docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069",
+      "leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9 (composite; inner actions/cache v5 node24)",
+      "anthropics/claude-code-action@v1 = def8a3823977dc63984efabd953448fd8fcbd850 (composite; inner oven-sh/setup-bun v2.2.0 node24)"
+    ]
+  },
+  "changed_sites": {
+    ".github/workflows/claude.yml": "checkout @v4 -> v7.0.1 pin",
+    ".github/workflows/deterministic-workflow-dispatch.yml": "checkout @v4 -> v7.0.1 pin",
+    ".github/workflows/issue-agent-backlog-resume.yml": "checkout @v4 -> v7.0.1 pin",
+    ".github/workflows/issue-autonomous-processing.yml": "checkout @v4 -> v7.0.1 pin",
+    ".github/workflows/qikvrt_public_qa_ci.yml": "checkout v4.2.2 -> v7.0.1 pin (persist-credentials: false kept)",
+    ".github/workflows/qikvrt_live_authority_mirror_ab.yml": "create-github-app-token v2.2.2 -> v3.3.0"
+  },
+  "retained_node20_sites": {
+    ".github/workflows/qikvrt_combined_batch_002_promotion_head.yml": "Goldkelch-only job (if: github.repository == 'Goldkelch/qik-vrt'); historical, not rewritten",
+    ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml": "workflow bytes bound by digest in scripts/qikvrt_api_client.py, tests/test_api_client.py, api/qikvrt_github_api.openapi.yaml and an approval work unit; the app-token bump there needs its own Owner-approved rebinding",
+    "setup-python a26af69b (10 Goldkelch-only historical sites)": "unchanged, as before"
+  },
+  "not_in_scope": [
+    "pinning anthropics/claude-code-action@v1 to a commit (runtime already node24)",
+    "Ubuntu runner versions, deployment, domain"
+  ],
+  "local_validation": {
+    "command": "python3 -S -B -m unittest tests.test_workflow_action_runtime_pins",
+    "result": "PASS, 13 tests",
+    "negative_controls": [
+      "claude.yml reverted to checkout@v4: FAIL (3)",
+      "qikvrt_live_authority_mirror_ab.yml reverted to app-token v2.2.2: FAIL (2)"
+    ]
+  },
+  "effect_boundaries": {
+    "historical_receipts_changed": false,
+    "goldkelch_only_jobs_rewritten": false,
+    "digest_bound_workflows_rewritten": false,
+    "main_merge_established": false,
+    "native_ci_established": false,
+    "productive_host_accepted": false,
+    "effect_ack_done": false,
+    "successor_requires_own_native_ci": true
+  },
+  "license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "resume": "Persist as single-parent successor of c8305e65 on a new branch via REST (expected-head-bound, force=false), read back HEAD/TREE/parent, run native CI. No merge."
+}
