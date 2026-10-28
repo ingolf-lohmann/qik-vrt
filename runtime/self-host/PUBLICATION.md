@@ -95,6 +95,11 @@ current Authority; this change restores their missing S1 host connection.
 versioned proof contracts and protected-reference examples. Package admission
 rejects an incomplete publication closure. The existing Actions router remains
 an alternative original invocation route, with its own exact-Main admission.
+Its `requested-zenodo` job retains the original protected `zenodo-production`
+environment and the existing `secrets.ZENODO_ACCESS_TOKEN`/`github.token` inputs.
+This restores the declared source binding. The new Authority's actual environment,
+provider-managed secret delivery and protections still need independent admission;
+the environment name alone establishes none of them.
 
 Keep the existing protected registry/provider store as the credential authority.
 Reuse its opaque references through the existing provisioner; source code and Git

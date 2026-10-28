@@ -48,6 +48,14 @@
         "git_blob_sha1": "9a91c7b73a420550fb59c19280c8361586f543f3",
         "byte_exact_original_verified": true
       }
+    },
+    "protected_workflow_binding": {
+      "path": ".github/workflows/qikvrt_observer_relative_retrocausality_zenodo_publish.yml",
+      "git_blob_sha1": "7eb73d96035101810e2f78cabd02cf99dad04773",
+      "sha256": "eef2d427d5bcc7b194ad35bde26dbbc69927a8ded79fa12ef7c4ba915e0bfd3a",
+      "environment": "zenodo-production",
+      "secret_reference": "secrets.ZENODO_ACCESS_TOKEN",
+      "actual_target_environment_and_secret_delivery": "UNVERIFIED_NOT_INFERRED_FROM_SOURCE"
     }
   },
   "repair": [
@@ -55,7 +63,8 @@
     "Bind both committed role policies and the original publisher to current Authority",
     "Include original publisher, transport, machine-proof modules and versioned proof contracts in the sealed S1 package",
     "Reject package omission before export/verification",
-    "Reuse existing protected references and provider-managed credential files; never save values in source or receipts"
+    "Reuse existing protected references and provider-managed credential files; never save values in source or receipts",
+    "Restore original zenodo-production protected environment on the existing Authority workflow job, retaining both original secret references."
   ],
   "preserved": [
     "Original publication manifests, owner authorizations, consumed locks, prior receipts and historical records remain immutable",

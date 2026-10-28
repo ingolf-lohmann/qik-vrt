@@ -111,9 +111,10 @@
         "expected_main_head",
         "expected_main_tree"
       ],
-      "credential_source": "Existing target-repository secrets.ZENODO_ACCESS_TOKEN and scoped github.token; source code does not transfer or prove credentials.",
+      "credential_source": "Original protected zenodo-production environment, existing secrets.ZENODO_ACCESS_TOKEN and scoped github.token; source binding does not transfer or prove actual credentials.",
       "admission": "Canonical candidate-specific authorization, existing v2 proof/return/one-use gates, complete ordinary tests, exact fresh Authority Main readback.",
-      "completion": "Independent public byte readback and Authority evidence persistence remain required; an Actions artifact or publisher return alone is not EFFECT_ACK_DONE."
+      "completion": "Independent public byte readback and Authority evidence persistence remain required; an Actions artifact or publisher return alone is not EFFECT_ACK_DONE.",
+      "environment": "zenodo-production"
     },
     {
       "launcher": "tools/qikvrt_self_host.py",
