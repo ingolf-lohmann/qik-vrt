@@ -450,3 +450,22 @@ The existing native-only IONOS S1 path remains first. Firefox signing and its
 activation/restart acceptance remain separate. Main protection, native review,
 protected host/storage/configuration, mTLS and exact-domain acceptance remain
 required; a ready plan grants none of them and creates no timer or executor.
+
+## Owner conditional REST merge and continuation — 28 October 2026
+
+Ingolf Lohmann explicitly authorizes automatic repository merges when the current
+PR is conflict-free and its existing applicable tests are green, followed by
+immediate autonomous continuation. Read the later decision at
+state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json
+#/conditional_merge_decision; AI_CONTEXT.json pins the exact source bytes.
+This later Owner decision admits the existing direct REST merge with its expected
+PR-head precondition. Do not repeat the earlier CAS-based authorization hold for
+this separately authorized route or ask the Owner for the same permission again.
+Reobserve Main, head, tree, tests and competing writers immediately before each
+merge; preserve platform protections and independently verify the actual merge,
+Main tree and ordered parents. Resolve an ambiguous result by readback.
+The legacy atomic old-Main CAS qualifier and disabled CAS workflow retain their
+own technical status. This decision does not qualify them, admit an unavailable
+Draft transition or prove an unattended executor. Merge acceptance is separate
+from runtime, host, domain and productive EFFECT_ACK_DONE acceptance.
+

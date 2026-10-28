@@ -1,0 +1,89 @@
+{
+  "schema": "qikvrt_pr614_existing_receipt_index_repair_reuse_v1",
+  "owner": "Ingolf Lohmann",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "pull_request": 614,
+  "branch": "ci/actions-node24",
+  "authorization_basis": "Owner's current Ja continues the identified PR614 receipt-index repair; existing AI/AGENTS known-error repair authorization. No Main merge or productive-host delivery.",
+  "parent_head": "6637c26dfef94221f0b9ece4732b4a5f4d10d385",
+  "parent_tree": "6723eda2195b2c7f97922e731dca1c5210d1455b",
+  "contributions": {
+    "human": "Ingolf Lohmann: task scope, authorization and historical evidence preservation.",
+    "artificial_cognitive": "OpenAI Codex: recover existing PR489 repair, reproduce exact-head failure, import exact source bytes, run source tests and retain separate runtime/effect gates.",
+    "joint": [],
+    "unresolved": []
+  },
+  "native_failure": {
+    "run_id": 40531704947,
+    "job_id": 122285965586,
+    "test": "tests.test_pre_spacetime_ontology_zenodo_effect_ack.PreSpacetimeOntologyZenodoEffectAckTests.test_bound_repository_receipts_are_current",
+    "assertion_line": 118,
+    "current_index_blob": "3bade853befd7a74bfccffb3872ef6ad2c36d5d4",
+    "historically_bound_index_blob": "e167e4d523f1abfa3ddf89d1184d942180b16b70",
+    "local_before_result": "FAIL: six tests, one same hash assertion failure."
+  },
+  "reused_candidate": {
+    "pull_request": 489,
+    "head": "7eb9e171f66c47b11f1ae74ff73f03c675201725",
+    "tree": "f55a3687822f251b87f8af1c0c23f7022e981607",
+    "path": "tests/test_pre_spacetime_ontology_zenodo_effect_ack.py",
+    "bytes": 9121,
+    "git_blob_sha1": "0fe876d79a3cafbe989c4e4f007c13f9f0bef31e",
+    "sha256": "913101b93ffec0c4e7be8a6a67abd8638bde76d94fc252f08fd0e5ac159c8c82",
+    "source_bytes_changed": false,
+    "older_native_ci_transferred_to_successor": false
+  },
+  "diagnosis": "The moving append-only receipt index was compared byte-for-byte with its valid publication-time snapshot. Preserve the snapshot binding and verify that later rows extend its unchanged ordered prefix.",
+  "historical_snapshot": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "commit": "17f66b5ae7a2b1121141c6a0775da361415d58ff",
+    "tree": "db625f1e3461655177c1eb9c349eec5931270525",
+    "path": "evidence/receipts/index.json",
+    "git_blob_sha1": "e167e4d523f1abfa3ddf89d1184d942180b16b70",
+    "sha256": "1fab9f8f78207eb519dded657b825ec0b530b398bc4a664cbe58ee661271f545",
+    "bytes": 18175,
+    "entry_count": 19,
+    "readback": "Original REST commit, three path trees and index bytes independently hash-verified. Only the required historical object path was restored locally; no complete-history-backup claim."
+  },
+  "local_validation": {
+    "command": "python3 -S -B -m unittest -v tests.test_pre_spacetime_ontology_zenodo_effect_ack tests.test_authority_mirror_equality_receipt tests.test_workflow_action_runtime_pins",
+    "result": "PASS",
+    "test_count": 27,
+    "negative_controls": [
+      "rewritten historical row",
+      "deleted historical row",
+      "reordered historical rows",
+      "snapshot byte drift",
+      "index contract drift",
+      "missing Git history fails with Git 128, no lazy fetch"
+    ],
+    "protected_source_inputs_byte_unchanged": 4,
+    "full_suite": "Required on the frozen candidate tree; exact result and subsequent native runs are recorded in PR614's description after execution."
+  },
+  "native_execution": {
+    "site_operator_authorized": true,
+    "ready": false,
+    "open_gate": "ADMITTED_MESH_RUNTIME_ENDPOINT",
+    "source_preparation_only": true,
+    "unadmitted_or_copied_journal_written": false
+  },
+  "effect_boundaries": {
+    "historical_receipts_changed": false,
+    "current_index_changed": false,
+    "action_pins_changed": false,
+    "workflow_bytes_changed": false,
+    "original_scoped_effect_ack_reissued": false,
+    "new_zenodo_mutation": false,
+    "independent_review_inferred": false,
+    "main_merge_established": false,
+    "productive_host_accepted": false,
+    "effect_ack_done": false,
+    "successor_requires_own_native_ci": true
+  },
+  "license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "resume": "Run full make test on the frozen tree, persist the single-parent successor through expected-head-bound force=false REST fast-forward, independently read HEAD/TREE/parent and fresh scoped native workflow. Preserve Draft/review/Main/host gates."
+}
