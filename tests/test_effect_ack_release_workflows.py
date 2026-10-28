@@ -350,6 +350,11 @@ class EffectAckReleaseWorkflowTests(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix="qikvrt-release-workflow-") as raw:
             repository = pathlib.Path(raw)
             run_git(repository, "init", "-q")
+            # No detached writer may outlive this short-lived Git fixture.
+            run_git(repository, "config", "maintenance.auto", "false")
+            run_git(repository, "config", "maintenance.autoDetach", "false")
+            run_git(repository, "config", "gc.auto", "0")
+            run_git(repository, "config", "gc.autoDetach", "false")
             run_git(repository, "config", "user.name", "QIK-VRT fixture")
             run_git(repository, "config", "user.email", "fixture@example.invalid")
             marker_path = repository / MARKER_PATH
@@ -410,6 +415,34 @@ class EffectAckReleaseWorkflowTests(unittest.TestCase):
                 text = path.read_text(encoding="utf-8")
                 self.assertIn('["git", "show", "-s", "--format=%T", "HEAD^"]', text)
                 self.assertNotIn('["git", "rev-parse", "HEAD^{tree}"]', text)
+
+    def test_two_commit_fixture_cannot_outlive_its_temporary_repository(self) -> None:
+        """Host maintenance settings must not leave a writer racing cleanup."""
+        with tempfile.TemporaryDirectory(prefix="qikvrt-release-maintenance-") as raw:
+            root = pathlib.Path(raw)
+            config = root / "global.gitconfig"
+            config.write_text(
+                "[gc]\n\tauto = 1\n\tautoDetach = true\n"
+                "[maintenance]\n\tauto = true\n\tautoDetach = true\n",
+                encoding="utf-8",
+            )
+            trace = root / "trace.jsonl"
+            with mock.patch.dict(os.environ, {
+                "GIT_CONFIG_GLOBAL": os.fspath(config),
+                "GIT_CONFIG_NOSYSTEM": "1",
+                "GIT_CONFIG_COUNT": "0",
+                "GIT_TRACE2_EVENT": os.fspath(trace),
+            }):
+                self.test_two_commit_parent_tree_fixture()
+            events = [json.loads(line) for line in trace.read_text().splitlines()]
+            self.assertTrue(any(event.get("event") == "start" for event in events))
+            automatic_writers = [
+                event["argv"] for event in events
+                if event.get("event") == "child_start"
+                and "--auto" in event.get("argv", [])
+                and any(command in event["argv"] for command in ("maintenance", "gc"))
+            ]
+            self.assertEqual(automatic_writers, [])
 
 
 class GeneralCITerminalDispositionTests(unittest.TestCase):
@@ -586,10 +619,21 @@ class GeneralCITerminalDispositionTests(unittest.TestCase):
         browser = workflow.split("\n  offline_browser:\n", 1)[1]
         job_metadata, steps = browser.split("    steps:\n", 1)
         self.assertNotRegex(job_metadata, r"\$\{\{\s*runner\.")
-        self.assertEqual(
-            steps.count("QIKVRT_OFFLINE_EVIDENCE_DIR: ${{ runner.temp }}/offline-${{ matrix.engine }}"),
-            2,
-        )
+        evidence_binding = "QIKVRT_OFFLINE_EVIDENCE_DIR: ${{ runner.temp }}/offline-${{ matrix.engine }}"
+        self.assertEqual(steps.count(evidence_binding), 5)
+        self.assertIn("if: matrix.engine == 'chromium'", steps)
+        self.assertIn("if: matrix.engine == 'webkit'", steps)
+        self.assertIn("playwright install --with-deps chromium", steps)
+        self.assertIn("playwright install-deps webkit", steps)
+        self.assertIn("playwright install webkit", steps)
+        self.assertIn("timeout --signal=TERM --kill-after=30s 12m", steps)
+        self.assertIn("timeout --signal=TERM --kill-after=30s 8m", steps)
+        self.assertIn("INSTALL_PHASE_SYSTEM_DEPS.txt", steps)
+        self.assertIn("INSTALL_PHASE_BROWSER.txt", steps)
+        self.assertIn("INSTALL_PHASE*.txt", steps)
+        self.assertIn("APT_DIAGNOSIS.json", steps)
+        self.assertIn("if: ${{ !cancelled() && matrix.engine == 'webkit' }}", steps)
+        self.assertIn('exit "$status"', steps)
         self.assertNotIn("continue-on-error:", browser)
 
 

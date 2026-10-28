@@ -423,6 +423,14 @@ merge. See [SECURITY.md](SECURITY.md), [SUPPORT.md](SUPPORT.md),
 for the current reporting, support, decision, and participation boundaries.
 
 Copyright 2026 Ingolf Lohmann.
+# Python und C90
+
+Python bleibt erhalten. C90 ergänzt den vorhandenen Effect-Acknowledgement-Kern
+um einen portablen, auf Überlauf geprüften Q16.16-Referenzpfad. `make c90` prüft
+beide C90-Kerne; `make benchmark-c90` vergleicht dieselbe Festkomma-Arbeit in
+Python und C90. Zahlenvertrag, native Assembly-Ausgabe und Messgrenzen stehen in
+[C90_FIXED_POINT.md](docs/development/C90_FIXED_POINT.md).
+
 
 
 ## `docs/AI_BOOTSTRAP_KNOWLEDGE_CORPUS.md`
@@ -3556,15 +3564,23 @@ independent current-head Code Owner approval remain separately required. No
 predecessor test or availability observation substitutes for those effects.
 
 
-## `docs/TRANSACTIONAL_GITHUB_WORKFLOW_TRIGGER_PROTOCOL.md`
+## `docs/articles/a013_truth_future_quote.md`
 
-<!-- SPDX-License-Identifier: CC-BY-NC-ND-4.0 -->
-<!-- Copyright 2026 Ingolf Lohmann. -->
-# Transactional GitHub workflow trigger protocol
+# Die Wahrheit in der Unterscheidung
 
-Canonical failure class: `NON_ATOMIC_MULTI_COMMIT_WORKFLOW_TRIGGER_ORDERING_RACE`.
+## Status
 
-Repository transactions are assembled as payload writes, exact manifest/hash binding, and one final JSON ready-marker write. Workflows watch only the ready marker and invoke `tools/qikvrt_transactional_workflow_trigger.py verify` before any effect. Missing or malformed markers, missing or unexpected changed paths, absent files, hash divergence and false completion claims block execution.
+`ARTICLE_STATUS = IMAGE_QUOTE_CANONICAL_TEXT`  
+`QIKVRT_GATE = DISTINCTION_PROTECTS_FUTURE`
 
-A verified trigger proves only transaction completeness. It does not prove task completion, merge, publication, Authority/Mirror equality, `PASS`, `FINAL_PASS` or `EFFECT_ACK_DONE`.
+## Kanonischer Bildsatz
+
+Die Katastrophe beginnt nicht, wenn alle lügen.
+
+Sie beginnt, wenn niemand mehr zuverlässig unterscheiden kann, was Fakt, Deutung, Manipulation oder Rauschen ist.
+
+Wer diese Unterscheidung zurückbringt, schützt Wahrheit und Zukunft.
+
+q.e.d.  
+Ingolf Lohmann
 

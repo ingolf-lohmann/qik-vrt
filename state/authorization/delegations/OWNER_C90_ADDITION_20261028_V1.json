@@ -1,0 +1,34 @@
+{
+  "_license": {
+    "license": "CC-BY-NC-ND-4.0",
+    "copyright": "Copyright 2026 Ingolf Lohmann"
+  },
+  "schema": "qikvrt-owner-c90-addition/v1",
+  "work_unit": "QIKVRT_C90_FIXED_Q16_REFERENCE_20261028",
+  "owner": "Ingolf Lohmann",
+  "signature_as_supplied": "Ingolf Rohmann",
+  "source": "Direct instruction in current conversation, 2026-10-28 Europe/Paris",
+  "instruction_excerpt": "Bisher war es Python. Jetzt gehen wir auf C90 als Ergänzung. Denn von dort können wir sehr einfach auf native Maschinensprache der gängigen Prozessoren der heutigen Informatikwelt skalieren und abbilden",
+  "approval_excerpt": "Freigabe erteilt.",
+  "scope": "Add C90 alongside Python and provide a reproducible checked fixed-point reference and bounded CPU performance comparison, reusing the existing C90 Effect-Acknowledgement core.",
+  "licensing_change": false,
+  "human_contribution": "Hardware/Seed/Meta-Transistor application proposal and explicit C90 development authorization.",
+  "artificial_contribution": "Portable C90 arithmetic implementation, Python integer oracle, cross-language tests, build integration, reproducible CPU benchmark and scope documentation.",
+  "baseline": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "50e7e9aa3e2f6f85518ef42cd06d66d2cca3eda4",
+    "tree": "405161d5576b4bfe428eb7b9862c8ea4191ea22c"
+  },
+  "not_established": [
+    "physical Meta-Transistor hardware",
+    "Nvidia GPU performance",
+    "energy efficiency",
+    "whole-system speedup",
+    "new codec compression advantage",
+    "physical superdeterminism",
+    "native peer adoption"
+  ],
+  "preserved": "Existing licenses, original journals and all predecessor obligations; no mutation to attached original evidence.",
+  "related_request": "Codec development authorization 2026-10-28 remains in scope with unchanged licenses.",
+  "native_status": "Source-level contribution and local CPU verification only. Missing admitted public runtime endpoint is not represented as repaired."
+}
