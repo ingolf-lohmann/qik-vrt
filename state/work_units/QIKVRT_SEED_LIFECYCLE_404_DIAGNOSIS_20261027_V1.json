@@ -1,0 +1,134 @@
+{
+  "schema": "qikvrt_seed_lifecycle_404_diagnosis_v1",
+  "work_unit": "QIKVRT_SEED_LIFECYCLE_404_DIAGNOSIS_20261027_V1",
+  "principal": "Ingolf Lohmann",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "source_head": "b05c99f6328df8cf396429f034067e7aabe37674",
+  "source_tree": "7d9b5b933c35b6250b54c9ea78709665948a5a1a",
+  "provenance": {
+    "human_contribution": "Owner supplied independently verified merge, CI, artifact and originalhost observations and retained direct REST connector authorization.",
+    "artificial_cognitive_contribution": "Authenticated source/ref/run reads, byte-exact artifact verification, bounded diagnosis and operation-preserving error repair.",
+    "joint_contribution": "Not asserted.",
+    "native_effect_assessment": "No new native EFFECT or outbox assessment; native connection ready=false."
+  },
+  "observations": [
+    {
+      "kind": "CURRENT_AUTHENTICATED_READ",
+      "subject": "refs/heads/main",
+      "head": "b05c99f6328df8cf396429f034067e7aabe37674",
+      "tree": "7d9b5b933c35b6250b54c9ea78709665948a5a1a",
+      "signature_verified": true,
+      "protected": false,
+      "rulesets": []
+    },
+    {
+      "kind": "CURRENT_AUTHENTICATED_READ",
+      "endpoint": "git/ref/heads/qikvrt/node-lifecycle",
+      "status": 404,
+      "matching_refs_endpoint": "git/matching-refs/heads/qikvrt/node-lifecycle",
+      "matching_refs": []
+    },
+    {
+      "kind": "BYTE_EXACT_ARTIFACT",
+      "run_id": 40595903181,
+      "artifact_id": 12775833000,
+      "bytes": 6263,
+      "sha256": "eb33f851f26ecfdb88d095978ae55a5db5693b39683136f4c728c1a610b02789",
+      "source_head": "b05c99f6328df8cf396429f034067e7aabe37674",
+      "maintenance_error_count": 3,
+      "error": "public lifecycle unavailable: LIFECYCLE_API_404"
+    },
+    {
+      "kind": "BYTE_EXACT_ARTIFACT",
+      "run_id": 40596265235,
+      "artifact_id": 12776766191,
+      "bytes": 6352,
+      "sha256": "b281e6b546aaead4d81f205bb354eb69b35808a9b8f7d29024de2a47445fc00f",
+      "source_head": "b05c99f6328df8cf396429f034067e7aabe37674",
+      "maintenance_error_count": 3,
+      "error": "public lifecycle unavailable: LIFECYCLE_API_404"
+    },
+    {
+      "kind": "BYTE_EXACT_ARTIFACT",
+      "run_id": 40592928466,
+      "artifact_id": 12774417504,
+      "bytes": 3106,
+      "sha256": "fa773efbd623f7e8e678a54e074128850b04603294208da0ac115b8c16bc363f",
+      "source_head": "08296e9804837e9353685dcbd4c4ce31e099c3fb",
+      "publication_state": "BLOCK",
+      "first_blocker": "CODE_OWNER_RULE_NOT_ENFORCED"
+    }
+  ],
+  "diagnosis": {
+    "first_failing_read": "read_public resolves Main, then qikvrt/node-lifecycle before reading snapshot contents.",
+    "shared_failure": "run_maintenance catches that one read_public error and reuses public_error for health, ack and renewal; three error entries do not establish three independent contents-read failures.",
+    "main_file_presence": "The required public snapshot is a separately validated three-file telemetry branch. Files present on Main do not substitute for it.",
+    "publisher": "The last inspected publisher was blocked before snapshot mutation by the existing Code Owner enforcement check. Current Main remains unprotected and has no rulesets.",
+    "scope_limit": "These observations identify the current missing-ref failure and the recorded publisher blocker. They do not prove why the branch was originally absent or that enforcement restoration alone suffices for successful publication.",
+    "diagnostic_defect": "Rest discarded method/path on HTTP and network errors, preventing the failing API operation from being identified in Seed artifacts."
+  },
+  "repair": {
+    "component": "tools/qikvrt_mirror_node_lifecycle.py",
+    "behavior": "Retain the failed HTTP method and API path in ApiError. Strip query strings; omit credentials, request payloads, provider bodies and underlying exception details.",
+    "unchanged_boundaries": [
+      "No retry",
+      "No Main-file fallback",
+      "No governance relaxation",
+      "No synthetic lifecycle branch",
+      "No credential export"
+    ],
+    "regression_before": {
+      "tests": 2,
+      "failures": 3,
+      "scope": "Original code loses missing-ref, forbidden-content and uncertain-network operation context."
+    },
+    "regression_after": {
+      "tests": 72,
+      "result": "PASS",
+      "modules": [
+        "tests.test_mirror_lifecycle_publication",
+        "tests.test_seed_workflows"
+      ]
+    },
+    "required_before_promotion": [
+      "Repository integrity materialization and verification",
+      "Complete make test",
+      "Fresh exact-candidate CI and applicable governance"
+    ]
+  },
+  "open_work": [
+    {
+      "id": "DIAGNOSTIC_SOURCE_INTEGRATION",
+      "state": "OPEN",
+      "next_action": "Review and integrate this diagnostic repair under exact-head governance; tests do not establish deployment."
+    },
+    {
+      "id": "MAIN_CODE_OWNER_ENFORCEMENT",
+      "state": "OPEN",
+      "next_action": "Use the existing authorized administration REST path to enforce current Main Code Owner governance and independently read it back. No administration mutation operation is exposed by the inspected direct connector."
+    },
+    {
+      "id": "PUBLIC_LIFECYCLE_SNAPSHOT",
+      "state": "OPEN",
+      "next_action": "Only after the publisher's causal governance prerequisite changes, execute the existing publisher and independently validate its exact source, branch, run/step provenance and freshness. Preserve other gates."
+    },
+    {
+      "id": "SEED_ORIGINAL_FAILURE",
+      "state": "OPEN",
+      "next_action": "After a valid fresh snapshot exists, execute the original Seed maintenance/dashboard/audit path and verify its returned artifacts. Do not rerun against unchanged missing-ref conditions."
+    },
+    {
+      "id": "ORIGINALHOST_ADMISSION",
+      "state": "OPEN",
+      "next_action": "Restore the authenticated admitted originalhost control/diagnosis binding; current connection ready=false, ADMITTED_MESH_RUNTIME_ENDPOINT, HTTP 525. The existing exposed native contract has no Origin diagnosis operation."
+    },
+    {
+      "id": "EXACT_DOMAIN_DELIVERY",
+      "state": "OPEN",
+      "next_action": "Diagnose Origin TLS through an admitted callable route before a finding-based repair, then independently verify https://raumzeitterminal.de/."
+    }
+  ],
+  "effect_ack_done": false,
+  "product_effect_verified": false,
+  "predecessor_evidence_transfer": false
+}

@@ -43,9 +43,13 @@ class Block(seed.SeedError):
 
 
 class ApiError(Block):
-    def __init__(self, status=None):
+    def __init__(self, status=None, *, method="", path=""):
         self.status = status
-        super().__init__(f"LIFECYCLE_API_{status or 'UNCERTAIN'}")
+        # Keep the failed operation: one snapshot-ref error otherwise appears
+        # as three unexplained health/ack/renewal failures in Seed evidence.
+        # Queries, credentials, payloads and provider error bodies stay private.
+        operation = f" {method} {path.split('?', 1)[0]}" if method and path else ""
+        super().__init__(f"LIFECYCLE_API_{status or 'UNCERTAIN'}{operation}")
 
 
 class Rest:
@@ -85,9 +89,9 @@ class Rest:
             with self.opener.open(request, timeout=20) as response:
                 raw = response.read(2 * seed.MAX_INPUT_BYTES + 1)
         except urllib.error.HTTPError as exc:
-            raise ApiError(exc.code) from None
+            raise ApiError(exc.code, method=method, path=path) from None
         except (OSError, urllib.error.URLError) as exc:
-            raise ApiError() from None
+            raise ApiError(method=method, path=path) from None
         if len(raw) > 2 * seed.MAX_INPUT_BYTES:
             raise Block("LIFECYCLE_RESPONSE_TOO_LARGE")
         try:
