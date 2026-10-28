@@ -277,5 +277,15 @@
     "EFFECT_ACK_DONE": false,
     "FULL_SYNC": false,
     "SYMMETRIC_CANONICALITY": false
+  },
+  "owner_conditional_client_merge": {
+    "decision_source": "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json#/conditional_merge_decision",
+    "decision_source_sha256": "1c99f92090e68fce949267cc81a92ddc3631f566081b4ce8029ee2a7acc33926",
+    "decision_id": "OWNER-CONFLICT-FREE-GREEN-MERGE-20261028",
+    "authorized": true,
+    "github_route": "REST_API_ONLY",
+    "existing_connector_execution": true,
+    "legacy_cas_executor_enablement_changed": false,
+    "live_persistent_executor_proven": false
   }
 }
