@@ -1386,3 +1386,12 @@ This repairs scope selection; it grants no Main, production environment, host,
 mTLS, storage or exact-domain admission. Protected production and independent
 public readback remain required. A successful native-only CI never proves a
 signed Firefox installation or a running IONOS host.
+
+## Existing Zenodo publisher on the Authority host
+
+The original protected-reference publisher adapter is available through
+`publication-check`, `publication-resume` and `publication-supervisor`. Follow
+[PUBLICATION.md](PUBLICATION.md) for current Authority, exact request and
+provider-managed credential bindings. The sealed S1 package carries the
+original publisher and proof contracts; package presence proves neither
+credential transfer nor host activation nor publication.
