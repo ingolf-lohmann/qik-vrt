@@ -1,0 +1,19 @@
+{
+  "checker": "Supplementary direct PDF text and hyperlink inspection; does not substitute unavailable original skill script",
+  "pages": 6,
+  "urls": [
+    "https://zenodo.org/records/21888130",
+    "https://zenodo.org/records/21711193",
+    "https://zenodo.org/records/21947141",
+    "https://arxiv.org/abs/1912.06462",
+    "https://lean-lang.org/doc/reference/latest/ValidatingProofs/",
+    "https://www.itu.int/rec/T-REC-H.264",
+    "https://www.itu.int/rec/T-REC-H.265",
+    "https://www.kva.se/en/news/the-nobel-prize-in-physics-2026/"
+  ],
+  "missing_urls": [],
+  "text_and_link_check": "PASS",
+  "original_skill_gate": "UNAVAILABLE: failed to read skill resource scripts/check_sources.py",
+  "new_repository_source_zenodo_archive": "PENDING",
+  "publication_complete": false
+}

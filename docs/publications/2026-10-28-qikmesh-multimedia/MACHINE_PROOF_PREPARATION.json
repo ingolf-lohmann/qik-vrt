@@ -1,0 +1,23 @@
+{
+  "schema": "qikvrt-publication-proof-preparation-v1",
+  "selected_contract": "qikvrt_zenodo_machine_proof_bundle_v2",
+  "publication_id": "qikvrt-qikmesh-multimedia-reader-20261028",
+  "state": "PENDING",
+  "claim_matrix": "CLAIM_MATRIX.json",
+  "new_lean_execution": false,
+  "gates": {
+    "local_carrier_readback": "PASS",
+    "historical_journal_readback": "PASS",
+    "public_selected_zenodo_source_redownload": "PASS",
+    "supplementary_visible_locator_check": "PASS",
+    "original_skill_source_gate": "UNAVAILABLE",
+    "exact_upload_authorization": "PENDING",
+    "new_repository_source_archive": "PENDING"
+  },
+  "completion_claims": {
+    "machine_proof_complete": false,
+    "zenodo_upload_authorized": false,
+    "zenodo_published": false,
+    "effect_ack_done": false
+  }
+}

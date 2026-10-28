@@ -1,0 +1,411 @@
+{
+  "subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pr": 624,
+    "head": "79275f1aa9c206c93fc8493a0bb77a0beef1165a",
+    "tree": "1f6a182011c72d001d55aa98caef6aeb17c3e7af"
+  },
+  "epoch": "c1e8753772f5437f882f158040d72995",
+  "events": [
+    {
+      "dod": false,
+      "evidence_transfer": "DENY",
+      "kind": "OBSERVE",
+      "message": "Owner-authorized accessible QIKMESH publication: exact local evidence and separately bounded publication status.",
+      "observed_at": "2026-10-28T13:20:32.217908Z",
+      "payload": {
+        "main": "50e7e9aa3e2f6f85518ef42cd06d66d2cca3eda4",
+        "native_outbox_assessment": false,
+        "owner": "Ingolf Lohmann",
+        "predecessors_preserved": true,
+        "request": "Publish an accessible account of original QIKMESH repeated-content demonstration, multimedia authorization, seed architecture, formal scope and physical interpretation.",
+        "runtime_endpoint_gate": "ADMITTED_MESH_RUNTIME_ENDPOINT",
+        "source_carrier_sha256": "6d3421652aa1ba0f4782e30120f407183d3be2c49a069d6d3d1d17998f5bfac0"
+      },
+      "payload_digest": "fa0e8ef945973a44327f24317feb6ce129d3b2dee626e3997a5355d83fded16b",
+      "provenance": {
+        "native_event_id": "codec-publication-fa0e8ef945973a44327f2431",
+        "source": "repository"
+      },
+      "recorded_at": "2026-10-28T13:20:32.233516Z",
+      "schema": "qikvrt_temdd_event_v1",
+      "subject": {
+        "head": "79275f1aa9c206c93fc8493a0bb77a0beef1165a",
+        "pr": 624,
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "1f6a182011c72d001d55aa98caef6aeb17c3e7af"
+      },
+      "id": "c1e8753772f5437f882f158040d72995:1",
+      "ledger_digest": "d9baee44fed6fd6101f0adfd9f2e87fc323c41dedcf14ab2ca3814ebfd32713f"
+    },
+    {
+      "dod": false,
+      "evidence_transfer": "DENY",
+      "kind": "EFFECT",
+      "message": "Owner-authorized accessible QIKMESH publication: exact local evidence and separately bounded publication status.",
+      "observed_at": "2026-10-28T13:24:58.225077Z",
+      "payload": {
+        "all_restored_entries": [
+          {
+            "bytes": 19325,
+            "key": "recursive-pass-1/state/work_units/QIKVRT_IONOS_NATIVE_TERMINAL_FIRST_20261025_V1.json",
+            "sha256": "b097d4fd1af3888375a7e3ebaabac255c8473c09b93ec8b60ef6a74f5d3c1f27"
+          },
+          {
+            "bytes": 1465360,
+            "key": "recursive-pass-1/REPOSITORY_FILE_MANIFEST.json",
+            "sha256": "068d3ff7d2e67dcb1a2366a8465ddd92bd062f616bee306c13b8c5108171f0f8"
+          },
+          {
+            "bytes": 96,
+            "key": "recursive-pass-1/REPOSITORY_FILE_MANIFEST.json.sha256",
+            "sha256": "c581a8790f1cc06ad8f7034a8eb490d05e13b39fb3a9ff5e39646377aa50a850"
+          },
+          {
+            "bytes": 715710,
+            "key": "recursive-pass-1/SHA256SUMS.txt",
+            "sha256": "23eb7936944b9e64a062827bbf619b6ea34a51f51e597a8b9272850a7b910c1d"
+          },
+          {
+            "bytes": 11663,
+            "key": "recursive-pass-1/docs/monitor/mesh-file-codec.js",
+            "sha256": "8c8d73f45cc8298c765842759451eaa3686541765952a77d05f2f928c7160515"
+          },
+          {
+            "bytes": 19325,
+            "key": "recursive-pass-2/state/work_units/QIKVRT_IONOS_NATIVE_TERMINAL_FIRST_20261025_V1.json",
+            "sha256": "b097d4fd1af3888375a7e3ebaabac255c8473c09b93ec8b60ef6a74f5d3c1f27"
+          },
+          {
+            "bytes": 1465360,
+            "key": "recursive-pass-2/REPOSITORY_FILE_MANIFEST.json",
+            "sha256": "068d3ff7d2e67dcb1a2366a8465ddd92bd062f616bee306c13b8c5108171f0f8"
+          },
+          {
+            "bytes": 96,
+            "key": "recursive-pass-2/REPOSITORY_FILE_MANIFEST.json.sha256",
+            "sha256": "c581a8790f1cc06ad8f7034a8eb490d05e13b39fb3a9ff5e39646377aa50a850"
+          },
+          {
+            "bytes": 715710,
+            "key": "recursive-pass-2/SHA256SUMS.txt",
+            "sha256": "23eb7936944b9e64a062827bbf619b6ea34a51f51e597a8b9272850a7b910c1d"
+          },
+          {
+            "bytes": 11663,
+            "key": "recursive-pass-2/docs/monitor/mesh-file-codec.js",
+            "sha256": "8c8d73f45cc8298c765842759451eaa3686541765952a77d05f2f928c7160515"
+          },
+          {
+            "bytes": 4301,
+            "key": "evidence/READBACK_RECEIPT.json",
+            "sha256": "fcc8cc2456f48215c77da4c2cca3972e727a2387ab21ad24770492cba6a40630"
+          },
+          {
+            "bytes": 7780,
+            "key": "evidence/NATIVE_READBACK.json",
+            "sha256": "94a9a0e1c6ae7e5026f4ef44572da4ad5835741ed973faea9d7db925e15fe2d6"
+          },
+          {
+            "bytes": 36864,
+            "key": "native-read-only/events.sqlite3",
+            "sha256": "e8d8987314a340b9546055a7a7ac13b3f53659088ae12ac8e7a9525155a13344"
+          },
+          {
+            "bytes": 1200,
+            "key": "README.txt",
+            "sha256": "8e9895afa47bdaaeab380a22a5d7b16a2ddf527cbe4099753864b8110b7b90b0"
+          }
+        ],
+        "carrier_bytes": 2273118,
+        "carrier_sha256": "6d3421652aa1ba0f4782e30120f407183d3be2c49a069d6d3d1d17998f5bfac0",
+        "effect_ack_done": false,
+        "first_pass_container_bytes": 2217374,
+        "implementation_sha256": "8c8d73f45cc8298c765842759451eaa3686541765952a77d05f2f928c7160515",
+        "negative_controls": [
+          {
+            "error": "CHAIN_DIGEST_MISMATCH",
+            "name": "changed_digest",
+            "rejected": true
+          },
+          {
+            "error": "TRUNCATED_FRAME",
+            "name": "truncation",
+            "rejected": true
+          },
+          {
+            "error": "CHECKPOINT_REPOSITORY_MISMATCH",
+            "name": "wrong_repository",
+            "rejected": true
+          }
+        ],
+        "observed_at": "2026-10-28T13:23:08.021Z",
+        "original_data_entries_verified": 10,
+        "schema": "qikvrt-carrier-independent-readback-v1",
+        "scope": "LOCAL_READBACK_WITH_SHARED_ORIGINAL_CODEC; NOT_INDEPENDENT_IMPLEMENTATION_OR_PEER_ACK",
+        "second_pass_added_bytes": 2481,
+        "second_pass_new_chunks": 0,
+        "second_pass_reduction_percent": 99.88784686780396,
+        "source_bytes_per_pass": 2212154
+      },
+      "payload_digest": "e940952a1bbdce7c4472a7f3859fc552714a03fe344064031d653e849f8243aa",
+      "provenance": {
+        "native_event_id": "codec-publication-e940952a1bbdce7c4472a7f3",
+        "source": "transputer"
+      },
+      "recorded_at": "2026-10-28T13:24:58.237414Z",
+      "schema": "qikvrt_temdd_event_v1",
+      "subject": {
+        "head": "79275f1aa9c206c93fc8493a0bb77a0beef1165a",
+        "pr": 624,
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "1f6a182011c72d001d55aa98caef6aeb17c3e7af"
+      },
+      "id": "c1e8753772f5437f882f158040d72995:2",
+      "ledger_digest": "1196207c46cce8f3c0fba4d0285dde5456f22983837ef7b95bcb1b45466663ac"
+    },
+    {
+      "dod": false,
+      "evidence_transfer": "DENY",
+      "kind": "EFFECT",
+      "message": "Owner-authorized accessible QIKMESH publication: exact local evidence and separately bounded publication status.",
+      "observed_at": "2026-10-28T13:31:26.931127Z",
+      "payload": {
+        "files": [
+          {
+            "bytes": 14709,
+            "git_blob_sha1": "3982fb81cf83341545bd061eae89bc1f885aae8c",
+            "path": "docs/publications/2026-10-28-qikmesh-multimedia/ARTICLE_DE.md",
+            "sha256": "9b42c3304ddeac1593751c0a16e4d573d8a7ea93932f51b4d6589632e7011ba7"
+          },
+          {
+            "bytes": 14622,
+            "git_blob_sha1": "a2dc78e1f591b945fafc56bd9e50fc9bd48794ed",
+            "path": "docs/publications/2026-10-28-qikmesh-multimedia/ARTICLE_DE.txt",
+            "sha256": "54bb5599616128703e6574da5b65481023f24139afafc8ca016a36a24660ac56"
+          },
+          {
+            "bytes": 1668,
+            "git_blob_sha1": "adf24305f8e2039565b5522ac1de6b16e0b86cbc",
+            "path": "docs/publications/2026-10-28-qikmesh-multimedia/CHANGE_NOTICE.md",
+            "sha256": "d3de6a4cf9e4c593c1f950196c4a205cf90b8619cbb0888d4e515115dca01783"
+          },
+          {
+            "bytes": 8439,
+            "git_blob_sha1": "7ba860021c6543a028c3a2dd842f58f119765fa4",
+            "path": "docs/publications/2026-10-28-qikmesh-multimedia/CLAIM_MATRIX.json",
+            "sha256": "2195719de3ba419abfcf37b9bf82a71fbde4891e00a386d544ca97424c15f3fd"
+          },
+          {
+            "bytes": 792,
+            "git_blob_sha1": "9b69bad7ad2e8c1c246338dfc8153811ddc00e0a",
+            "path": "docs/publications/2026-10-28-qikmesh-multimedia/MACHINE_PROOF_PREPARATION.json",
+            "sha256": "6604c7f466674869429cd11cabc7608cf6933ad925bc4323fd178d32b18b3534"
+          },
+          {
+            "bytes": 7659,
+            "git_blob_sha1": "c2f479020362ef2c52148af1525ceaf1f3cf6d47",
+            "path": "docs/publications/2026-10-28-qikmesh-multimedia/OWNER_ORIGINAL.txt",
+            "sha256": "623b9191e74f3d031e37bace98ee42e1c3d1cd81cd58f4107b335a0b9b696558"
+          },
+          {
+            "bytes": 60719,
+            "git_blob_sha1": "c1d31e81e77f725cefac11122fe9e9725c30b27a",
+            "path": "docs/publications/2026-10-28-qikmesh-multimedia/QIKVRT_Codec_verstaendlich.pdf",
+            "sha256": "9928febc471da832433a14b28c76fad2774658881f9ee7141a3079aa109ce089"
+          },
+          {
+            "bytes": 1284,
+            "git_blob_sha1": "a61d765cd5c412dd495edd6e61e00a66b563c875",
+            "path": "docs/publications/2026-10-28-qikmesh-multimedia/README.md",
+            "sha256": "c2e7c0a43938e203ccee4cb49211daec4584a9b9c92330b6340519e8d8266a96"
+          },
+          {
+            "bytes": 982,
+            "git_blob_sha1": "1e1265fcca371dc6d2a2dce96aaf47ac7a04f3e2",
+            "path": "docs/publications/2026-10-28-qikmesh-multimedia/SOURCES.json",
+            "sha256": "06cfafd5fb867ddaaf1ec5b87d908055a48d58439f2e509af9db3ff3ce60385c"
+          },
+          {
+            "bytes": 3577,
+            "git_blob_sha1": "82207b1e1d7e1f543b3690fbf2a3b627d0f76e3f",
+            "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/CARRIER_READBACK.json",
+            "sha256": "226baa11940adbc7f9d5171b01099ab768c21264b8e2ff160838dbf4556a79b8"
+          },
+          {
+            "bytes": 374,
+            "git_blob_sha1": "0081a7415f70ed3aa2c3b33bfc6bf2d3078e553a",
+            "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/CODEC_SOURCE_IDENTITY.json",
+            "sha256": "f9df7440f833b6448495ad2dc7b2e4c277190fd109964eae34d74c917e228d14"
+          },
+          {
+            "bytes": 200,
+            "git_blob_sha1": "3a0f1fe8b8254c1f60ffa95a67e333714ec85974",
+            "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/HISTORICAL_JOURNAL_READBACK.json",
+            "sha256": "aa6990ce822b771885ba2f588f3c64f68e7db08c77734e9a9331ceb7eae0a23d"
+          },
+          {
+            "bytes": 7780,
+            "git_blob_sha1": "fd01f5b343312372132773db822acd561a4cab2f",
+            "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/NATIVE_READBACK.json",
+            "sha256": "94a9a0e1c6ae7e5026f4ef44572da4ad5835741ed973faea9d7db925e15fe2d6"
+          },
+          {
+            "bytes": 2056,
+            "git_blob_sha1": "b1b15de98099bad67af2e2ea49be6b421bcac5ea",
+            "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/PUBLIC_SOURCE_READBACK.json",
+            "sha256": "2468c137647c2604de08bcdc51aacfe16e0c75dff3836b7344d40d75e6dfe8b3"
+          },
+          {
+            "bytes": 2273118,
+            "git_blob_sha1": "cfcefd14867f9a4cabeff22ff9b4a4b08630e442",
+            "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/QIKVRT_Rekursive_Selbstdemonstration_20261028.qikmesh",
+            "sha256": "6d3421652aa1ba0f4782e30120f407183d3be2c49a069d6d3d1d17998f5bfac0"
+          },
+          {
+            "bytes": 4301,
+            "git_blob_sha1": "c2670bbbf32c14467b8a926f18c7d1b3c3db812e",
+            "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/READBACK_RECEIPT.json",
+            "sha256": "fcc8cc2456f48215c77da4c2cca3972e727a2387ab21ad24770492cba6a40630"
+          },
+          {
+            "bytes": 786,
+            "git_blob_sha1": "edc31cd43f62d8604d2cbae0020367e3ac62060b",
+            "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/VISIBLE_LOCATORS_CHECK.json",
+            "sha256": "96b082f8df761740c9506d9b7ff6f4d2dbebff52e447d3498ee0ad61f29a79e8"
+          },
+          {
+            "bytes": 11663,
+            "git_blob_sha1": "ee51d3935ff6937e23861aaed37ab33546ff486d",
+            "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/mesh-file-codec.js",
+            "sha256": "8c8d73f45cc8298c765842759451eaa3686541765952a77d05f2f928c7160515"
+          },
+          {
+            "bytes": 13922,
+            "git_blob_sha1": "3e478aea36cc03a3ae2b71dd70ef2512cee0bc78",
+            "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/sources/21711193/CLAIM_MATRIX.json",
+            "sha256": "6ca018de971cc351091c36e11a708ef852e6079991289b10a962603aef0fadcb"
+          },
+          {
+            "bytes": 8662,
+            "git_blob_sha1": "1ea4d65c4635353b9ef2f383560ed6f6289c6c93",
+            "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/sources/21711193/EVIDENCE_BOUNDARY.md",
+            "sha256": "1019df148d7fbe7dc881b0ade837d6adde06dd034460630a23f920aa6d0b8eba"
+          },
+          {
+            "bytes": 9645,
+            "git_blob_sha1": "554f05dd7a996a8d3e90201ad856f6caf2f18ca1",
+            "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/sources/21711193/KERNEL_RECEIPT.json",
+            "sha256": "b7f0246798e2e3bb50a49580251e5b4909e915dd71da27770c19413cc40d9df6"
+          },
+          {
+            "bytes": 14830,
+            "git_blob_sha1": "fe307b124c91294d0c0cecd1003127bf61cede9d",
+            "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/sources/21711193-metadata.json",
+            "sha256": "a0d63e1c93ab2c9e8304b3bf3ae8ddc676bd7bf273044d6f2a9e6029c1b9d321"
+          },
+          {
+            "bytes": 5150,
+            "git_blob_sha1": "cc13b5530051ea7b7fe0eceae5558cd93f44611d",
+            "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/sources/21888130/ROUND_TRIP_PROMOTED_FORMAL_RESULTS_V1.md",
+            "sha256": "e5fd9c53a0bf6c84471d9b26d0c3c06019977aa6b2367913006fa9560a3c948f"
+          },
+          {
+            "bytes": 24350,
+            "git_blob_sha1": "a072e00a0e3351a41f38fdfec4698e754fbe247a",
+            "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/sources/21888130-metadata.json",
+            "sha256": "261da3d7c1d4b1238f7675f6621eef7e3f2e6218169529337377fa9be8f33899"
+          },
+          {
+            "bytes": 6373,
+            "git_blob_sha1": "9be1f2009988f3135b2498b365194b5e8065ebd6",
+            "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/sources/21947141/CLAIM_MATRIX_V2.json",
+            "sha256": "01f5c79357b950cdef27487b49c5fdc1dec8a887ddf5361d7c6a02d9d812d9c6"
+          },
+          {
+            "bytes": 4185,
+            "git_blob_sha1": "040b1915f2b6a4ba12a54654956aa8158ffde057",
+            "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/sources/21947141/QIKVRT_RETROCAUSALITY_WITNESS.json",
+            "sha256": "817b0bbd38ff2d5e811c7ba4c04dff7e6b9310fbb3016309c451317d1de5b471"
+          },
+          {
+            "bytes": 14628,
+            "git_blob_sha1": "6af67b425f6b40064fbc47a25cb0baa055251796",
+            "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/sources/21947141-metadata.json",
+            "sha256": "2ad2c818ef9b77f459e4f879a431e16579f64f08a3556fdd36b7eda697282a45"
+          },
+          {
+            "bytes": 3304,
+            "git_blob_sha1": "084808b5d87246cf40c90ddf92852b2aaffc342f",
+            "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/verify-carrier.mjs",
+            "sha256": "fb2d82855cc1819ea604acdf0d11bd2faf8e168f81c2aed5f1282110d3e9ee87"
+          }
+        ],
+        "original_files_preserved": true,
+        "publication_id": "qikvrt-qikmesh-multimedia-reader-20261028",
+        "schema": "qikvrt-frozen-reader-candidate-v1",
+        "zenodo_upload_authorized": false
+      },
+      "payload_digest": "927cf40932009b399e03f8ec7aafc2df6e6e528476d8299fb2c130632cfd3a1e",
+      "provenance": {
+        "native_event_id": "codec-publication-927cf40932009b399e03f8ec",
+        "source": "transputer"
+      },
+      "recorded_at": "2026-10-28T13:31:26.946258Z",
+      "schema": "qikvrt_temdd_event_v1",
+      "subject": {
+        "head": "79275f1aa9c206c93fc8493a0bb77a0beef1165a",
+        "pr": 624,
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "1f6a182011c72d001d55aa98caef6aeb17c3e7af"
+      },
+      "id": "c1e8753772f5437f882f158040d72995:3",
+      "ledger_digest": "fb29ba3256e5679f6e15e7d53216f7833dcb767c977e0bf8c0634e26929bd8da"
+    },
+    {
+      "dod": false,
+      "evidence_transfer": "DENY",
+      "kind": "EFFECT",
+      "message": "Owner-authorized accessible QIKMESH publication: exact local evidence and separately bounded publication status.",
+      "observed_at": "2026-10-28T13:33:02.097512Z",
+      "payload": {
+        "archive_publication_status": "PENDING",
+        "claims": 16,
+        "exact_pdf_hyperlinks": 8,
+        "files": [
+          {
+            "bytes": 14710,
+            "name": "ARTICLE_DE.md",
+            "sha256": "dd66a470e7b61a2e9401a5d2ad96731afd2d9708b3d4764e0c773277e01a7dd1"
+          },
+          {
+            "bytes": 60639,
+            "name": "QIKVRT_Codec_verstaendlich.pdf",
+            "sha256": "39a5d70a30ee5bdefffea8bf861b8d5a98a50fb32a86f96c717e059627599615"
+          }
+        ],
+        "historical_journal_events": 5,
+        "pdf_visual_review": "PASS_ALL_6_PAGES",
+        "scope": "ACTUAL_LOCAL_DOCUMENT_AND_READBACK; NO_EXTERNAL_PUBLICATION_CLAIM"
+      },
+      "payload_digest": "6c446624af1c4c519ef7db5dd24c519a6ae6cba8982fb1705b1eb5298014e80a",
+      "provenance": {
+        "native_event_id": "codec-publication-6c446624af1c4c519ef7db5d",
+        "source": "transputer"
+      },
+      "recorded_at": "2026-10-28T13:33:02.113090Z",
+      "schema": "qikvrt_temdd_event_v1",
+      "subject": {
+        "head": "79275f1aa9c206c93fc8493a0bb77a0beef1165a",
+        "pr": 624,
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "1f6a182011c72d001d55aa98caef6aeb17c3e7af"
+      },
+      "id": "c1e8753772f5437f882f158040d72995:4",
+      "ledger_digest": "01f786743ba6c2e4abc80a016dd0aa05a13205ea50c76acd17e099d83c3d3f74"
+    }
+  ],
+  "cold_readback_equal": true,
+  "scope": "OWN_LOCAL_ORIGINAL_RUNTIME_API; NOT_MESH_PEER_ACK",
+  "effect_ack_done": false
+}

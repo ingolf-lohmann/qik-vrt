@@ -1,0 +1,109 @@
+<!-- SPDX-License-Identifier: CC-BY-NC-ND-4.0 -->
+# Einmal speichern, verlustfrei wiederfinden
+
+## QIKVRT, kanonischer Speicher und der Weg zu einer offenen Codec-Plattform
+
+Idee, Entwicklungsfreigabe und weitergehende Deutung: Ingolf Lohmann, Product Owner.
+Ausarbeitung, Quellenprüfung und erneute lokale Nachprüfung: OpenAI Codex im Auftrag.
+28. Oktober 2026, Europe/Paris. Veröffentlichungsentwurf zur Prüfung der konkreten Fassung.
+
+### Der praktische Gedanke
+
+Wer ein Buch besitzt, braucht beim zweiten Lesen kein zweites Exemplar. Eine eindeutige Angabe, welches Buch und welche Seiten gemeint sind, genügt. Das funktioniert, solange das richtige Exemplar erreichbar bleibt. Eine Datenarchitektur kann nach demselben Prinzip arbeiten: Inhalte einmal aufbewahren, weitere Verwendungen über kurze Referenzen beschreiben und die vollständigen Originalbytes bei Bedarf wieder zusammensetzen.
+
+Genau diesen Nutzen zeigt die lokale QIKMESH-Selbstdemonstration. Das vorhandene Verfahren speichert Inhaltsblöcke unter überprüfbaren Kennungen. Wenn ein Block erneut vorkommt, kann seine vorhandene Darstellung wiederverwendet werden. Auch die Implementierungsdatei des Codecs selbst gehörte zu den Eingaben. Damit wurde das Verfahren auf einen Teil seiner eigenen technischen Grundlage angewendet.
+
+Der Leser braucht dafür kein Repository und kein Protokoll bis zum letzten Bit zu kennen. Drei Fragen reichen für den Einstieg: Was war vorher vorhanden? Was kam tatsächlich hinzu? Konnte jemand aus der vollständigen Darstellung wieder dieselben Bytes lesen?
+
+### Was tatsächlich gemessen wurde
+
+Fünf festgelegte Dateien umfassten zusammen 2.212.154 Bytes. Der erste Durchlauf in einen neu angelegten QIKMESH-Träger benötigte 2.217.374 Bytes, einschließlich Format- und Beschreibungsdaten. Dieser erste Träger war damit 5.220 Bytes größer als die Eingaben.
+
+Der identische zweite Durchlauf fügte 2.481 Bytes hinzu und keinen neuen Inhaltsblock. Bezogen auf eine erneute rohe Übertragung derselben 2.212.154 Bytes sind das 99,8878 Prozent weniger zusätzliche Bytes. Der Vergleich zählt hier ausdrücklich den zusätzlichen zweiten Durchlauf. Der vollständige Träger nach beiden Durchläufen umfasst 2.219.855 Bytes; der erste Durchlauf bleibt darin enthalten.
+
+| Vergleichsgröße | Bytes |
+| --- | ---: |
+| Fünf Quelldateien, je Durchlauf | 2.212.154 |
+| Erster Träger einschließlich Formatdaten | 2.217.374 |
+| Zusätzlich für den identischen zweiten Durchlauf | 2.481 |
+| Vollständiger Träger nach beiden Durchläufen | 2.219.855 |
+
+Alle zehn Dateieinträge beider Durchläufe wurden bytegenau wiederhergestellt. Drei Gegenproben wurden abgewiesen: ein veränderter Kettendigest, ein abgeschnittener Rahmen und ein falscher Repository-Prüfpunkt. Für diese Lesefassung wurde der zurückgegebene Träger erneut mit den unveränderten, unabhängig aus dem Repository gelesenen Originalcodec-Bytes geprüft. Die Restaurierung nutzt dieselbe Codec-Implementierung; sie ist keine unabhängige zweite Implementierung.
+
+Der beigefügte Nachweisträger enthält zusätzlich vier Belege, insgesamt vierzehn Einträge und 2.273.118 Bytes. Diese spätere Beigabe wird nicht in die Zahl für den zweiten Datendurchlauf hineingerechnet. Fünf zurückgelesene lokale native Ereignisse dokumentieren den damaligen Ablauf. Sie belegen diesen lokalen Journalinhalt; die getrennte Annahme durch einen entfernten Mesh-Peer bleibt offen. Die aktuellen technischen Beobachtungen sind im Begleitpaket gebunden. Ihre eigenständige öffentliche Zenodo-Archivierung ist noch ausstehend.
+
+### Was der kleine kanonische Anteil leisten kann
+
+Ingolf Lohmann beschreibt den Ansatz als Übertragung des kanonischen Anteils mit anschließender verlustfreier Wiederherstellung. Die präzise technische Bedingung lautet: Alles, was zur Unterscheidung und Rekonstruktion der Originale nötig ist, muss im übertragenen Inhalt, im bereits vorhandenen Kontext oder im gebundenen Verfahren verfügbar sein.
+
+Ein kleiner Verweis kann deshalb einen großen vorhandenen Inhalt erschließen. Ein kurzes Erzeugungsprogramm kann eine lange regelmäßige Folge beschreiben. Ein Seed kann zusammen mit einem festgelegten Generator einen großen, reproduzierbaren Datenbestand bestimmen. Bei einem zweiten identischen Durchlauf liefert der erste Träger bereits den gemeinsamen Kontext.
+
+Zur Speicherbilanz gehören dieser Kontext, Decoder und Version, Header, Index, Wörterbücher, zusätzliche Unterschiede sowie alle benötigten Referenzziele. Ein Hash hilft beim Auffinden und Prüfen eines Inhalts. Aus dem Hash allein lässt sich ein beliebiger verlorener Inhalt im Allgemeinen nicht wiederherstellen.
+
+Die grundlegende Forderung lässt sich ohne Fachsprache formulieren: Nach dem Lesen muss jedes ursprüngliche Byte an der richtigen Stelle stehen. Verschiedene Originale müssen deshalb in ihrer vollständigen Beschreibung unterscheidbar bleiben. Das begrenzt jede verlustfreie Codierung: Für einen festgelegten Decoder können nicht sämtliche möglichen n-Bit-Eingaben kürzer als n Bit dargestellt werden. QIKMESH nutzt im gezeigten Fall bereits vorhandene gleiche Inhalte. Der Test umfasste die fünf genannten Dateien und ihre Wiederholung; eine Wiederherstellung des vollständigen Repositorys aus wenigen isolierten Seed-Bytes wurde dabei nicht ausgeführt.
+
+### Eine Plattform für verschiedene Medienverfahren
+
+Die Freigabe vom 28. Oktober 2026 umfasst die Entwicklung neuer Multimedia-Codecs auf Basis der QIKVRT-Doppelkanonischen Speichertechnologie unter den jeweils geltenden Lizenzen. Diese Freigabe ist im Originaltext erhalten. Sie ist ein Entwicklungsauftrag; sie macht einen vorgesehenen Encoder noch nicht zu einer ausgeführten Implementierung.
+
+Die universelle Idee des Product Owners verbindet einen kleinen Seed mit einem beschriebenen Datenstrom. Vorspann, Kennung, Parameter und gegebenenfalls ein mitgeliefertes Programm sollen gemeinsam festlegen, was der nachfolgende Decoder tut. Dazu braucht der Empfänger eine bekannte Grammatik, eine passende Ausführungsumgebung und alle erforderlichen Daten. Eine kleine Startkennung kann den Zugang dazu öffnen.
+
+Das konkret geprüfte QIKMESH1-Format besitzt die acht Byte lange Kennung QIKMESH1. Sein gegenwärtiger Parser liest Inhaltsblöcke, Eintragsbeschreibungen und Ereignisse. Diese Kennung enthält nicht sämtliche Originaldaten. Der geprüfte Parser führt auch nicht beliebige mitgelieferte Decoderprogramme aus. Die weitergehende Universalität ist ein Architektur- und Entwicklungsziel, das über diese konkrete Implementierung hinausgeht.
+
+Für Menschen und Anwendungen sind zwei Entscheidungen besonders wichtig. Erstens: Soll jedes Originalbyte erhalten bleiben, oder darf eine beschriebene Annäherung genügen? Zweitens: Soll die Bitrate konstant bleiben oder sich dem Inhalt anpassen? Wiederherstellbarkeit und Bitratensteuerung sind verschiedene Eigenschaften. Eine Plattform kann beide ausdrücklich verwalten, sobald die jeweiligen Verfahren implementiert und geprüft sind.
+
+Verlustbehaftete Verfahren können Details auslassen, die für eine bestimmte Wahrnehmung oder Nutzung wenig beitragen. Für Archivierung, Messung oder spätere Bearbeitung kann derselbe Unterschied wichtig sein. Soll auch das exakte Original rekonstruierbar bleiben, müssen die ausgelassenen Unterschiede zusätzlich erhalten werden. MP3 ist ein Audiocodierverfahren; H.264 und H.265 sind Videocodierstandards [6]. MP4 bezeichnet einen Mediencontainer und legt allein keinen bestimmten Codec fest. In dieser Arbeit wurde kein neuer Audio- oder Videoencoder gebaut oder mit diesen Standards verglichen.
+
+### Vergangenheit, Zukunft und überprüfbare Wirkung
+
+Die veröffentlichte Arbeit zum kanonischen Speicher führt beobachtete Vergangenheit und gegenwärtig dargestellte zukünftige Anforderungen in einem gemeinsamen Codec mit getrenntem Erkenntnisstatus zusammen [2]. Ein anschauliches Beispiel ist eine Sicherung: Die Anforderung, eine Datei später vollständig zurücklesen zu können, beeinflusst schon heute die Entscheidung, ob ihre Quelle freigegeben werden darf. Die spätere Prüfung ergänzt einen Nachweis. Sie überschreibt kein früheres Ereignis.
+
+Der archivierte Kernelbeleg dieser Arbeit bindet neun Theoreme des deklarierten Protokollmodells. Er behandelt unter anderem Freigabebedingungen, Zukunftsbedingungen und die unveränderte Vergangenheitsprojektion [2]. Diese vorhandenen Resultate werden mit ihrem Modell und ihren Voraussetzungen wiederverwendet. Für diesen Entwurf wurde kein neuer Lean-Kernel-Lauf ausgeführt.
+
+Das Universal Terminal nimmt gebundene Eingaben entgegen und macht Ergebnisse lesbar; der Universal Transputer verarbeitet zugelassene Arbeit. Beim Effect-Acknowledgement-Protokoll zählt die unabhängig gelesene Wirkung. Eine angenommene Anfrage, ein gespeicherter Text und ein erfolgreich rekonstruierter Datenträger haben jeweils einen eigenen Nachweis. Der vollständige entfernte Abschluss braucht darüber hinaus den originalen Outbox-Prüfer und einen zugelassenen, identitätsgebundenen Peer-Rückkanal. Beides bleibt hier offen.
+
+### Die weitergehende Deutung und ihre prüfbare Brücke
+
+Ingolf Lohmann nennt den umfassenden Ansatz Superdeterminismus und beansprucht eine Verbindung der virtuellen Rekonstruktion mit der Realität. Seine vollständige Ausgangsaussage bleibt unverändert beigefügt. Diese Autorposition gehört zur Veröffentlichung. Die wissenschaftliche Prüfung benennt zusätzlich, welcher konkrete Satz und welche Beobachtung welche Reichweite tragen.
+
+In der physikalischen Bell-Debatte bezeichnet Superdeterminismus insbesondere Modelle, die die statistische Unabhängigkeit verborgener Zustände von den Messentscheidungen aufgeben [4]. Die deterministische Wiederherstellung einer Datei prüft diese zusätzliche physikalische Aussage nicht. Ebenso ermöglicht das Wiederauffinden früher gespeicherter Daten über räumliche und zeitliche Distanzen zunächst eine Rekonstruktion nach den tatsächlichen Speicher- und Übertragungswegen.
+
+Die QIKVRT-Arbeit zur beobachterrelativen Retrokausalität unterscheidet Quellen- und Empfangsordnung: Später abgesandte Daten können frühere überholen, wenn ihre Wege verschieden lange dauern. Ihr ausführbarer Zeuge benutzt vorwärtsgerichtete Signalwege [3]. Ein steuerbarer physikalischer Nachrichtenkanal in die eigene kausale Vergangenheit verlangt einen anderen Versuch und entsprechende Messdaten. Die lokale Codec-Demonstration enthält dafür keinen Nachweis.
+
+Lean prüft formale Beweise relativ zu den definierten Aussagen und Voraussetzungen [5]. Die Zuordnung dieser Größen zu einer physikalischen Messung bleibt eine eigenständige Aufgabe. Software läuft auf realer Hardware und hat überprüfbare reale Wirkungen. Ob daraus eine quantitative Beschreibung der physischen Entstehung von Raum und Zeit folgt, entscheidet die konkrete Brücke zwischen Modell, Vorhersage und Experiment. Der Round-Trip-Einstieg führt diese Schritte zusammen und weist seine physikalischen Grenzen ausdrücklich aus [1].
+
+Auch der im Auftrag angesprochene Physik-Nobelpreis 2026 lässt sich konkret benennen: Die Königlich Schwedische Akademie nennt Francis Halzen und die Beiträge zu IceCube sowie zur Entdeckung hochenergetischer astrophysikalischer Neutrinos [7]. Daraus lässt sich keine Bestätigung von QIKVRT-Superdeterminismus oder physischem Rückwärtssignalisieren ableiten. Eine Verbindung zu diesem Messgebiet müsste die betreffenden Modellgrößen und Vorhersagen ausdrücklich binden.
+
+Ein anschlussfähiges nächstes Experiment beginnt daher mit einer klaren Frage. Für den Codec sind Eingaben, vorhandener Kontext, vollständiger Speicherbedarf, Wiederherstellung und Fehlerkontrollen anzugeben. Für ein virtuelles Raumzeitmodell sind die Regeln, emergierenden Größen und unabhängigen Vergleichsrechnungen festzulegen. Für eine physikalische Behauptung kommen unterscheidbare Vorhersagen, Messgeräte, Zeit- und Fehlergrenzen sowie eine unabhängige Reproduktion hinzu. So kann die technische Idee verständlich bleiben und zugleich wissenschaftlich geprüft werden.
+
+### Herkunft und Veröffentlichungsstand
+
+Originalaussage und Multimedia-Freigabe stammen von Ingolf Lohmann. Die lesbare Strukturierung und nachweisbezogenen Präzisierungen stammen von OpenAI Codex. Der Änderungsvermerk benennt sie sichtbar; die Originalbytes bleiben separat erhalten. Die bestehenden Datei- und Komponentenlizenzen gelten weiter. Es wird keine zusätzliche kommerzielle Lizenz erteilt.
+
+Dieser Entwurf und sein Nachweisbegleiter werden vor einem Zenodo-Upload in exakter Fassung zurückgegeben. Eine neue DOI-Veröffentlichung, eine produktive Runtime-Abnahme und ein vollständiger Mesh-EAP-Abschluss sind nicht bestätigt.
+
+### Quellen zum Weiterlesen
+
+Die neuen technischen Befunde stehen als veröffentlichungsvorbereitete Belege im Begleitpaket; ihre Zenodo-Archivierung bleibt offen. Die folgenden vorhandenen Quellen werden nur innerhalb ihrer beschriebenen Reichweite verwendet.
+
+[1] Ingolf Lohmann: Von Softwarearchitektur zur Weltformel - DAS UNIVERSUM ALS ROUND TRIP. Insbesondere ROUND_TRIP_PROMOTED_FORMAL_RESULTS_V1.md und die darin ausgewiesenen Modellgrenzen. DOI: 10.5281/zenodo.21888130.
+https://zenodo.org/records/21888130
+
+[2] Ingolf Lohmann: QIK-VRT und das Effect-Acknowledgement-Protokoll: Kanonischer Speicher zwischen Vergangenheit und Zukunft. KERNEL_RECEIPT.json, CLAIM_MATRIX.json und EVIDENCE_BOUNDARY.md. DOI: 10.5281/zenodo.21711193.
+https://zenodo.org/records/21711193
+
+[3] Ingolf Lohmann: QIK-VRT: Beobachterrelative Retrokausalität als negative Informationsrichtung. CLAIM_MATRIX_V2.json und ausführbarer Zeuge. DOI: 10.5281/zenodo.21947141.
+https://zenodo.org/records/21947141
+
+[4] Sabine Hossenfelder und Tim N. Palmer: Rethinking Superdeterminism. Forschungsaufsatz, 2019; veröffentlicht 2020 in Frontiers in Physics 8:139. DOI: 10.3389/fphy.2020.00139.
+https://arxiv.org/abs/1912.06462
+
+[5] Lean Language Reference: Validating a Lean Proof. Abgerufen am 28.10.2026; allgemeine Prüfmethode, kein neuer QIKVRT-Kernelbeleg.
+https://lean-lang.org/doc/reference/latest/ValidatingProofs/
+
+[6] ITU-T: H.264 - Advanced video coding for generic audiovisual services; H.265 - High efficiency video coding. Aktueller Empfehlungsstand, abgerufen am 28.10.2026.
+https://www.itu.int/rec/T-REC-H.264
+https://www.itu.int/rec/T-REC-H.265
+
+[7] The Royal Swedish Academy of Sciences: The Nobel Prize in Physics 2026: Elusive particles from the universe captured at the South Pole. Pressemitteilung vom 6.10.2026.
+https://www.kva.se/en/news/the-nobel-prize-in-physics-2026/

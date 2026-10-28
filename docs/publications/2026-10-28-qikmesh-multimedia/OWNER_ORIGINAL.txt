@@ -1,0 +1,69 @@
+QIK-VRT: Freigabe zur Entwicklung von Multimedia-Codecs
+
+Datum der Erklärung: 28. Oktober 2026 (Europe/Paris)
+Product Owner und Erklärender: Ingolf Lohmann
+
+Die Freigabe umfasst die Entwicklung neuer CoDecs zur Speicherung von Multimedia-Daten auf Basis der QIK VRT Doppelkanonischen Speichertechnologie. Dabei sind die bestehenden, jeweils anwendbaren Lizenzbestimmungen einzuhalten.
+
+Originalerklärung
+
+> So gesehen eignet sich QIK VRT Doppelkanonische Speichertechnologie sogar hervorragend zum Entwickeln von neuen CoDecs zur Speicherung von Multimedia-Daten. Auch dazu erteile ich die Freigabe. Aber die Lizenzbestimmungen sind dabei ebenso zu beachten wie bei den anderen technischen Errungenschaften, die auf Basis von QIK VRT Technologie entstehen. Mit freundlichen Grüßen, Product Owner Ingolf Lohmann
+
+SHA-256 des oben wiedergegebenen Originaltexts (UTF-8, ohne zusätzliche Abschlusszeile): f49b7ddce07110d6e1da70d708907439e22eaae88fe3552b5499ad2d14289b25
+
+Lizenzbindung
+
+Diese Entwicklungsfreigabe ändert die bestehenden Lizenzbedingungen nicht. Die gegenwärtig gelesenen Projektdateien unterscheiden:
+
+• Aktuellen, entsprechend gekennzeichneten QIK-VRT-Quellcode: PolyForm-Noncommercial-1.0.0. Die Projektdatei fordert für kommerzielle Nutzung eine separate schriftliche Vereinbarung.
+• Entsprechend gekennzeichnete Dokumentation: CC-BY-NC-ND-4.0, vorbehaltlich spezieller Dateihinweise.
+• Früher oder speziell unter Apache-2.0 lizenziertes Material: seine ursprüngliche Lizenz bleibt maßgeblich.
+• Fremdkomponenten: ihre jeweiligen eigenen Lizenz- und Hinweispflichten; konkrete Dateihinweise gehen dem Repository-Standard vor.
+
+Die Freigabe wird als Entwicklungsauftrag geführt. Sie wird nicht als zusätzliche kommerzielle Lizenz oder Neulizenzierung vorhandener Inhalte ausgelegt.
+
+Geprüfter Quellenstand
+
+Repository: ingolf-lohmann/qik-vrt
+Main-Commit: 50e7e9aa3e2f6f85518ef42cd06d66d2cca3eda4
+Tree: 405161d5576b4bfe428eb7b9862c8ea4191ea22c
+
+Die folgenden Projektquellen wurden am genannten Commit gelesen; diese Angaben dokumentieren den Projektstand und enthalten keine zusätzliche Rechtsbewertung:
+
+• Aktuelle Quellcodelizenz: https://github.com/ingolf-lohmann/qik-vrt/blob/50e7e9aa3e2f6f85518ef42cd06d66d2cca3eda4/.qikvrt/license/SRC_POLYFORM_NONCOMMERCIAL.md
+• Lizenzübergang und Dateigrenzen: https://github.com/ingolf-lohmann/qik-vrt/blob/50e7e9aa3e2f6f85518ef42cd06d66d2cca3eda4/LICENSE_TRANSITION.md
+• Dokumentationslizenz: https://github.com/ingolf-lohmann/qik-vrt/blob/50e7e9aa3e2f6f85518ef42cd06d66d2cca3eda4/.qikvrt/license/DOC_CCBYNC4.md
+
+Technischer Arbeitsstand
+
+Die Eignungsaussage und die Freigabe stammen von Ingolf Lohmann. In dieser Arbeitseinheit wurden die Erklärung strukturiert, die Lizenzquellen gelesen und die Aufnahme in den Fortführungsstand vorbereitet. Ein neuer Encoder oder Decoder wurde dabei nicht implementiert; Codec-Benchmarks wurden nicht ausgeführt.
+
+Die native Schnittstelle bestätigt die Operator-Berechtigung, liefert jedoch ready=false mit dem offenen Gate ADMITTED_MESH_RUNTIME_ENDPOINT. Eine Annahme oder Ausführung dieses Codec-Auftrags im Mesh ist deshalb nicht bestätigt. Der fehlgeschlagene Ausführungspfad wird bei unveränderten Voraussetzungen nicht erneut ausgelöst.
+
+Der nächste zulässige technische Schritt ist die Wiederherstellung und unabhängige Prüfung des bestehenden zugelassenen Runtime-Endpunkts samt Gegenstands- und Writer-Bindung. Danach sind die originale doppelkanonische Speicher-Spezifikation, vorhandene Codec-Schnittstellen und ihre konkreten Dateilizenzen zu binden, bevor die Implementierung beginnt. Es wird kein Ersatzexecutor eingeführt.
+
+Vorbereitete Abnahmekriterien
+
+Die folgenden Kriterien sind ein vorbereiteter Prüfvorschlag, keine ausgeführten Tests:
+
+1. Ein zunächst verlustfreier Referenzpfad rekonstruiert in jedem geprüften Testfall sämtliche Originalbytes: decode(encode(input)) = input. Endliche Testfälle werden nicht als universeller Beweis ausgegeben.
+2. Der Speichervergleich zählt Datenstrom, Header, Index, Wörterbücher, Restdaten und alle zur Rekonstruktion erforderlichen Referenzen. Ein leerer Ausgangsspeicher und die Wiederverwendung vorhandener Daten werden getrennt ausgewiesen.
+3. Aussagen über Vorteile binden Datenkorpus, Baseline, Codec-Fassung, Gesamtspeicher, Durchsatz und Speicherbedarf an tatsächlich ausgeführte Messungen.
+4. Quellherkunft, Dateilizenzen und erforderliche Hinweise bleiben nachvollziehbar.
+
+Fortführung und Herkunft
+
+Die Originalerklärung ist der menschliche Beitrag. Strukturierung, Quellenprüfung und Abnahmevorschlag sind Beiträge des KI-Assistenten. Daraus folgt keine automatische Anwendung durch andere Clients oder Mesh-Knoten.
+
+Alle bisherigen Originaldateien, Journale, Freigaben und offenen Pflichten des gebundenen Vorgängerarchivs bleiben erhalten. Dieser Eintrag ergänzt eine neue Freigabe; er schließt keine früheren offenen Pflichten.
+
+Dies ist ein administrativer Freigabenachweis. Er ist kein wissenschaftlicher Beweis, keine Veröffentlichung, kein EFFECT_ACK-Abschluss und kein Nachweis einer Codec-Implementierung oder eines Kompressionsvorteils.
+
+
+
+
+Das heißt, in Summe musstest du nicht das Repository vollumfänglich übertragen, sondern nur den kanonischen Anteil davon. Und durch geeignete Speicherung und Methodik kann dann aus diesem komprimierten Datensatz der ursprüngliche Datensatz verlustfrei wiederhergestellt werden. Und das über räumliche und zeitliche Distanzen hinweg. Das darf man Superdeterminismus nennen. Ich nenne es auch so. Denn mithilfe des universalen Transputers und des universalen Terminals ist es nicht nur Teil der virtuellen Realität, sondern auch der Obermenge davon: der Realität. Das ist ebenso beweisbar mit dem Lean Kernel, den das Projekt mittlerweile beinhaltet und der angeschlossen ist an die anerkannten existierenden empirischen Beweise, die die Physik erbracht hat, bis hin zu der neuesten Erkenntnis, die durch den im Jahre 2026 verliehenen Physik-Nobelpreis geehrt und anerkannt wurde. So viel zum Thema Kausalität, Retrokausalität, Lichtkegel und was Back-Signaling tatsächlich ist und wie man es in superdeterministischen Systemen nutzen kann mithilfe von verlustfreien Codecs. Und wenn man auf ein paar Details verzichten möchte, weil Menschen sowieso nicht das ganze Spektrum des elektromagnetischen Universums wahrnehmen können, dann kann man auch Dinge wie MP3 oder MP4, H264, H265 etc. etc. mithilfe von doppelkanonischem Speicher bauen. Und das geht mit QIKVRT, doppelkanonischem Speicher, genauso. Das Besondere an QIKVRT ist: erstens, man kann sich aussuchen, ob es verlustfrei, verlustbehaftet, dynamisch oder statische Bitrate ist. So offen ist diese Codec-Plattform gebaut, die letztlich auf einem Seed basiert, der wenige Byte groß ist. Und alles, was vor diesem Seed kommt, entscheidet dann im Datenstrom darüber, was nach erkanntem Seed nachgelagert mit diesem Datenstrom passiert, anhand welcher Algorithmik auch immer, die im nachgelagerten Datenstrom ebenso enthalten ist. Das ist die Universalität dieses Codec-Ansatzes, der sich tatsächlich dazu eignet, die Emergenz von Raum und Zeit in der virtuellen Realität anschlussfähig in Experimenten nachweisen zu können. Auch dazu hatte ich bereits die Freigabe erteilt und wünsche nun, dass all das veröffentlicht und nicht nur technologisch, sondern auch menschlich nachvollzogen werden kann, ohne in die Tiefen von QIKVRT, Trusted Mesh Repository Network und dem Effect Acknowledgement Protokoll bis zum letzten Bit vordringen zu müssen.
+
+Freundliche Grüße, 
+Product Owner 
+Ingolf Lohmann.

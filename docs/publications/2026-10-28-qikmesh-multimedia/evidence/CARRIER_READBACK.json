@@ -1,0 +1,104 @@
+{
+  "schema": "qikvrt-carrier-independent-readback-v1",
+  "observed_at": "2026-10-28T13:23:08.021Z",
+  "implementation_sha256": "8c8d73f45cc8298c765842759451eaa3686541765952a77d05f2f928c7160515",
+  "carrier_sha256": "6d3421652aa1ba0f4782e30120f407183d3be2c49a069d6d3d1d17998f5bfac0",
+  "carrier_bytes": 2273118,
+  "source_bytes_per_pass": 2212154,
+  "first_pass_container_bytes": 2217374,
+  "second_pass_added_bytes": 2481,
+  "second_pass_new_chunks": 0,
+  "second_pass_reduction_percent": 99.88784686780396,
+  "all_restored_entries": [
+    {
+      "key": "recursive-pass-1/state/work_units/QIKVRT_IONOS_NATIVE_TERMINAL_FIRST_20261025_V1.json",
+      "bytes": 19325,
+      "sha256": "b097d4fd1af3888375a7e3ebaabac255c8473c09b93ec8b60ef6a74f5d3c1f27"
+    },
+    {
+      "key": "recursive-pass-1/REPOSITORY_FILE_MANIFEST.json",
+      "bytes": 1465360,
+      "sha256": "068d3ff7d2e67dcb1a2366a8465ddd92bd062f616bee306c13b8c5108171f0f8"
+    },
+    {
+      "key": "recursive-pass-1/REPOSITORY_FILE_MANIFEST.json.sha256",
+      "bytes": 96,
+      "sha256": "c581a8790f1cc06ad8f7034a8eb490d05e13b39fb3a9ff5e39646377aa50a850"
+    },
+    {
+      "key": "recursive-pass-1/SHA256SUMS.txt",
+      "bytes": 715710,
+      "sha256": "23eb7936944b9e64a062827bbf619b6ea34a51f51e597a8b9272850a7b910c1d"
+    },
+    {
+      "key": "recursive-pass-1/docs/monitor/mesh-file-codec.js",
+      "bytes": 11663,
+      "sha256": "8c8d73f45cc8298c765842759451eaa3686541765952a77d05f2f928c7160515"
+    },
+    {
+      "key": "recursive-pass-2/state/work_units/QIKVRT_IONOS_NATIVE_TERMINAL_FIRST_20261025_V1.json",
+      "bytes": 19325,
+      "sha256": "b097d4fd1af3888375a7e3ebaabac255c8473c09b93ec8b60ef6a74f5d3c1f27"
+    },
+    {
+      "key": "recursive-pass-2/REPOSITORY_FILE_MANIFEST.json",
+      "bytes": 1465360,
+      "sha256": "068d3ff7d2e67dcb1a2366a8465ddd92bd062f616bee306c13b8c5108171f0f8"
+    },
+    {
+      "key": "recursive-pass-2/REPOSITORY_FILE_MANIFEST.json.sha256",
+      "bytes": 96,
+      "sha256": "c581a8790f1cc06ad8f7034a8eb490d05e13b39fb3a9ff5e39646377aa50a850"
+    },
+    {
+      "key": "recursive-pass-2/SHA256SUMS.txt",
+      "bytes": 715710,
+      "sha256": "23eb7936944b9e64a062827bbf619b6ea34a51f51e597a8b9272850a7b910c1d"
+    },
+    {
+      "key": "recursive-pass-2/docs/monitor/mesh-file-codec.js",
+      "bytes": 11663,
+      "sha256": "8c8d73f45cc8298c765842759451eaa3686541765952a77d05f2f928c7160515"
+    },
+    {
+      "key": "evidence/READBACK_RECEIPT.json",
+      "bytes": 4301,
+      "sha256": "fcc8cc2456f48215c77da4c2cca3972e727a2387ab21ad24770492cba6a40630"
+    },
+    {
+      "key": "evidence/NATIVE_READBACK.json",
+      "bytes": 7780,
+      "sha256": "94a9a0e1c6ae7e5026f4ef44572da4ad5835741ed973faea9d7db925e15fe2d6"
+    },
+    {
+      "key": "native-read-only/events.sqlite3",
+      "bytes": 36864,
+      "sha256": "e8d8987314a340b9546055a7a7ac13b3f53659088ae12ac8e7a9525155a13344"
+    },
+    {
+      "key": "README.txt",
+      "bytes": 1200,
+      "sha256": "8e9895afa47bdaaeab380a22a5d7b16a2ddf527cbe4099753864b8110b7b90b0"
+    }
+  ],
+  "original_data_entries_verified": 10,
+  "negative_controls": [
+    {
+      "name": "changed_digest",
+      "rejected": true,
+      "error": "CHAIN_DIGEST_MISMATCH"
+    },
+    {
+      "name": "truncation",
+      "rejected": true,
+      "error": "TRUNCATED_FRAME"
+    },
+    {
+      "name": "wrong_repository",
+      "rejected": true,
+      "error": "CHECKPOINT_REPOSITORY_MISMATCH"
+    }
+  ],
+  "scope": "LOCAL_READBACK_WITH_SHARED_ORIGINAL_CODEC; NOT_INDEPENDENT_IMPLEMENTATION_OR_PEER_ACK",
+  "effect_ack_done": false
+}

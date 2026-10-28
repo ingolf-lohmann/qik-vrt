@@ -1,0 +1,204 @@
+{
+  "schema": "qikvrt-codec-reader-claim-disposition-v1",
+  "publication_id": "qikvrt-qikmesh-multimedia-reader-20261028",
+  "author": "Ingolf Lohmann",
+  "claim_count": 16,
+  "claims": [
+    {
+      "claim_id": "QMC-001",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "status": "EVIDENCED",
+      "statement": "Five input files total 2212154 bytes; first container is 2217374 bytes.",
+      "scope": "These exact five files and original QIKMESH implementation.",
+      "evidence_refs": [
+        "docs/publications/2026-10-28-qikmesh-multimedia/evidence/CARRIER_READBACK.json"
+      ],
+      "proof_refs": [],
+      "new_formal_kernel_claim": false
+    },
+    {
+      "claim_id": "QMC-002",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "status": "EVIDENCED",
+      "statement": "Repeated identical pass adds 2481 bytes and zero content chunks; reduction 99.88784686780396 percent versus sending raw input again.",
+      "scope": "Incremental second-pass accounting, not empty-store or universal compression.",
+      "evidence_refs": [
+        "docs/publications/2026-10-28-qikmesh-multimedia/evidence/CARRIER_READBACK.json"
+      ],
+      "proof_refs": [],
+      "new_formal_kernel_claim": false
+    },
+    {
+      "claim_id": "QMC-003",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "status": "EVIDENCED",
+      "statement": "Ten original data entries restore byte-exactly; three corruption controls reject.",
+      "scope": "Shared original implementation; local finite tests, not independent implementation.",
+      "evidence_refs": [
+        "docs/publications/2026-10-28-qikmesh-multimedia/evidence/CARRIER_READBACK.json"
+      ],
+      "proof_refs": [],
+      "new_formal_kernel_claim": false
+    },
+    {
+      "claim_id": "QMC-004",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "status": "EVIDENCED",
+      "statement": "Returned carrier contains 14 entries, 2273118 bytes and historical five-event journal.",
+      "scope": "Exact returned SHA256; journal opened read-only with immutable mode.",
+      "evidence_refs": [
+        "docs/publications/2026-10-28-qikmesh-multimedia/evidence/CARRIER_READBACK.json",
+        "docs/publications/2026-10-28-qikmesh-multimedia/evidence/HISTORICAL_JOURNAL_READBACK.json"
+      ],
+      "proof_refs": [],
+      "new_formal_kernel_claim": false
+    },
+    {
+      "claim_id": "QMC-005",
+      "classification": "NORMATIVE",
+      "status": "DECLARED",
+      "statement": "Owner authorizes development of multimedia codecs subject to applicable licenses.",
+      "scope": "Development authorization, no relicensing.",
+      "evidence_refs": [
+        "docs/publications/2026-10-28-qikmesh-multimedia/OWNER_ORIGINAL.txt"
+      ],
+      "proof_refs": [],
+      "new_formal_kernel_claim": false
+    },
+    {
+      "claim_id": "QMC-006",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "statement": "QIKMESH1 uses an eight-byte marker and content-addressed chunks and descriptors.",
+      "scope": "Exact original implementation, no arbitrary decoder-program interpreter.",
+      "evidence_refs": [
+        "docs/publications/2026-10-28-qikmesh-multimedia/evidence/mesh-file-codec.js"
+      ],
+      "proof_refs": [],
+      "new_formal_kernel_claim": false
+    },
+    {
+      "claim_id": "QMC-007",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "statement": "Seed-directed universal multimedia interpreter and selectable media modes are an architectural development goal.",
+      "scope": "Requires implemented grammar, decoder/runtime, complete accounting and measurements.",
+      "evidence_refs": [
+        "docs/publications/2026-10-28-qikmesh-multimedia/OWNER_ORIGINAL.txt"
+      ],
+      "proof_refs": [],
+      "new_formal_kernel_claim": false
+    },
+    {
+      "claim_id": "QMC-008",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "statement": "Lossless reconstruction requires a distinguishable complete description including context; bitrate and fidelity are separate properties.",
+      "scope": "Elementary injectivity argument and definitions; no fresh Lean proof claimed.",
+      "evidence_refs": [
+        "docs/publications/2026-10-28-qikmesh-multimedia/ARTICLE_DE.md"
+      ],
+      "proof_refs": [],
+      "new_formal_kernel_claim": false
+    },
+    {
+      "claim_id": "QMC-009",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "statement": "Archived canonical temporal-memory receipt contains nine theorem bindings within its finite model.",
+      "scope": "Reuse published receipt, no new kernel execution or physical discovery.",
+      "evidence_refs": [
+        "docs/publications/2026-10-28-qikmesh-multimedia/evidence/sources/21711193/KERNEL_RECEIPT.json",
+        "docs/publications/2026-10-28-qikmesh-multimedia/evidence/sources/21711193/CLAIM_MATRIX.json"
+      ],
+      "proof_refs": [],
+      "new_formal_kernel_claim": false
+    },
+    {
+      "claim_id": "QMC-010",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "statement": "Published observer-relative construction uses positive forward signal delays and reversed source reception ordering.",
+      "scope": "No physical past-directed channel inferred.",
+      "evidence_refs": [
+        "docs/publications/2026-10-28-qikmesh-multimedia/evidence/sources/21947141/CLAIM_MATRIX_V2.json"
+      ],
+      "proof_refs": [],
+      "new_formal_kernel_claim": false
+    },
+    {
+      "claim_id": "QMC-011",
+      "classification": "INTERPRETATIVE",
+      "status": "DECLARED",
+      "statement": "Ingolf Lohmann calls the overarching approach superdeterminism and claims correspondence to reality.",
+      "scope": "Attributed Owner interpretation; original text retained.",
+      "evidence_refs": [
+        "docs/publications/2026-10-28-qikmesh-multimedia/OWNER_ORIGINAL.txt"
+      ],
+      "proof_refs": [],
+      "new_formal_kernel_claim": false
+    },
+    {
+      "claim_id": "QMC-012",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "statement": "Physics usage of superdeterminism involves violation of statistical independence.",
+      "scope": "Hossenfelder and Palmer research paper, separate from file decoding.",
+      "evidence_refs": [
+        "docs/publications/2026-10-28-qikmesh-multimedia/SOURCES.json"
+      ],
+      "proof_refs": [],
+      "new_formal_kernel_claim": false
+    },
+    {
+      "claim_id": "QMC-013",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "statement": "2026 Physics Nobel primary release identifies IceCube/astrophysical neutrino discovery and Francis Halzen.",
+      "scope": "Prize statement, no confirmation of QIKVRT physical claims.",
+      "evidence_refs": [
+        "docs/publications/2026-10-28-qikmesh-multimedia/SOURCES.json"
+      ],
+      "proof_refs": [],
+      "new_formal_kernel_claim": false
+    },
+    {
+      "claim_id": "QMC-014",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "statement": "Physical spacetime emergence and controllable physical back-signalling require separately bound predictions and measurements.",
+      "scope": "No such empirical closure from the local codec tests.",
+      "evidence_refs": [
+        "docs/publications/2026-10-28-qikmesh-multimedia/OWNER_ORIGINAL.txt",
+        "docs/publications/2026-10-28-qikmesh-multimedia/ARTICLE_DE.md"
+      ],
+      "proof_refs": [],
+      "new_formal_kernel_claim": false
+    },
+    {
+      "claim_id": "QMC-015",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "statement": "Remote admitted runtime, original outbox assessor, identity-bound peer return and complete EAP closure remain unresolved.",
+      "scope": "Own local events are not remote acceptance.",
+      "evidence_refs": [
+        "docs/publications/2026-10-28-qikmesh-multimedia/evidence/NATIVE_READBACK.json"
+      ],
+      "proof_refs": [],
+      "new_formal_kernel_claim": false
+    },
+    {
+      "claim_id": "QMC-016",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "statement": "New scientific Zenodo archival and exact candidate upload authorization remain pending.",
+      "scope": "No fabricated DOI, publication or exact authorization.",
+      "evidence_refs": [
+        "docs/publications/2026-10-28-qikmesh-multimedia/CHANGE_NOTICE.md"
+      ],
+      "proof_refs": [],
+      "new_formal_kernel_claim": false
+    }
+  ],
+  "production_machine_proof_bundle_validated": false
+}
