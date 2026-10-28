@@ -396,6 +396,121 @@ class ExistingContainerRecovery(unittest.TestCase):
         self.assertTrue(all(method == 'GET' for method, _ in host.calls))
 
 
+class HostIdentityReadback(unittest.TestCase):
+    """A fixture GET accepts identity only, never deployment or package presence."""
+
+    def arguments(self, directory):
+        value = declaration()
+        source = directory / "binding.json"
+        raw = json.dumps(value).encode(); source.write_bytes(raw)
+        return SimpleNamespace(operation="container-host-identity", production_binding=source,
+            binding_sha256=c.sha(raw), image=c.IMAGE + "@" + value["image_digest"],
+            expected_head=HEAD, expected_tree=TREE, manifest_sha256=value["manifest_sha256"],
+            ca_file=directory / "ca.pem", cert_file=directory / "cert.pem", key_file=directory / "key.pem",
+            receipt=directory / "identity.json")
+
+    def test_one_get_binds_exact_bytes_and_target_without_claiming_installed_package(self):
+        raw = b'{ "OSType": "linux", "ID": "exact-daemon-id", "Name": "PRIVATE_DAEMON_DETAIL" }\n'
+        with tempfile.TemporaryDirectory() as tmp:
+            args = self.arguments(Path(tmp))
+            with patch.object(c, "Engine") as engine, patch.object(c, "deploy") as deploy, \
+                    patch.object(c, "production_gate") as production:
+                engine.return_value.call.return_value = raw
+                result = c.execute(args)
+            engine.assert_called_once_with(declaration()["docker_api"], args.ca_file, args.cert_file, args.key_file)
+            engine.return_value.call.assert_called_once_with("GET", "/v1.45/info", binary=True)
+            deploy.assert_not_called(); production.assert_not_called()
+            self.assertEqual(result, json.loads(args.receipt.read_bytes()))
+            self.assertEqual(result["state"], "AUTHENTICATED_LINUX_HOST_IDENTITY_VERIFIED")
+            self.assertEqual(result["scope"], "HOST_IDENTITY_ONLY")
+            self.assertEqual(result["binding_sha256"], args.binding_sha256)
+            self.assertEqual(result["daemon_info_sha256"], c.sha(raw))
+            self.assertEqual(result["checker_sha256"], c.sha(Path(c.__file__).read_bytes()))
+            for key in ("source_head", "source_tree", "image_digest", "manifest_sha256", "daemon_id"):
+                self.assertEqual(result[key], declaration()[key])
+            self.assertIsNotNone(c.dt.datetime.fromisoformat(result["observed_at"]).utcoffset())
+            self.assertTrue(result["host_identity_verified"])
+            for key in ("host_package_verified", "public_production_verified", "effect_ack_done", "ordinary_release"):
+                self.assertFalse(result[key])
+            encoded = args.receipt.read_text()
+            for private in ("PRIVATE_DAEMON_DETAIL", declaration()["docker_api"],
+                            declaration()["config_directory"], str(args.key_file)):
+                self.assertNotIn(private, encoded)
+
+    def test_missing_or_changed_independent_target_is_rejected_before_connection(self):
+        for field, bad in (("binding_sha256", "0" * 64), ("image", c.IMAGE + ":latest"),
+                           ("expected_head", None), ("expected_tree", None), ("manifest_sha256", None),
+                           ("expected_head", "f" * 40), ("expected_tree", "f" * 40),
+                           ("manifest_sha256", "f" * 64)):
+            with self.subTest(field=field, bad=bad), tempfile.TemporaryDirectory() as tmp:
+                args = self.arguments(Path(tmp)); setattr(args, field, bad)
+                with patch.object(c, "Engine") as engine, self.assertRaises(ValueError):
+                    c.execute(args)
+                engine.assert_not_called(); self.assertFalse(args.receipt.exists())
+
+    def test_unavailable_malformed_or_wrong_host_has_no_success_receipt(self):
+        for response in (OSError("fixture TLS verification unavailable"), b'not JSON', b'[]',
+                         b'{"OSType":"windows","ID":"exact-daemon-id"}',
+                         b'{"OSType":"linux","ID":"another-daemon"}'):
+            with self.subTest(response=response), tempfile.TemporaryDirectory() as tmp:
+                args = self.arguments(Path(tmp))
+                with patch.object(c, "Engine") as engine:
+                    if isinstance(response, OSError): engine.return_value.call.side_effect = response
+                    else: engine.return_value.call.return_value = response
+                    with self.assertRaises((OSError, ValueError)): c.execute(args)
+                engine.return_value.call.assert_called_once_with("GET", "/v1.45/info", binary=True)
+                self.assertFalse(args.receipt.exists())
+
+    def test_existing_or_dangling_receipt_is_rejected_before_host_contact(self):
+        for symlink in (False, True):
+            with self.subTest(symlink=symlink), tempfile.TemporaryDirectory() as tmp:
+                args = self.arguments(Path(tmp))
+                if symlink: args.receipt.symlink_to(Path(tmp) / "absent")
+                else: args.receipt.write_bytes(b"previous independent receipt")
+                with patch.object(c, "Engine") as engine, \
+                        self.assertRaisesRegex(ValueError, "CREATE_ONLY_HOST_IDENTITY_RECEIPT_REQUIRED"):
+                    c.execute(args)
+                engine.assert_not_called()
+
+    def test_concurrent_receipt_is_preserved_and_cannot_be_reported_as_current_success(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            args = self.arguments(Path(tmp))
+            def reply(*_args, **_kwargs):
+                args.receipt.write_bytes(b"another invocation")
+                return b'{"OSType":"linux","ID":"exact-daemon-id"}'
+            with patch.object(c, "Engine") as engine:
+                engine.return_value.call.side_effect = reply
+                with self.assertRaises(FileExistsError): c.execute(args)
+            self.assertEqual(args.receipt.read_bytes(), b"another invocation")
+
+    def test_original_mtls_file_admission_remains_mandatory(self):
+        for invalid in ("mode", "symlink", "missing"):
+            with self.subTest(invalid=invalid), tempfile.TemporaryDirectory() as tmp:
+                args = self.arguments(Path(tmp))
+                for path in (args.ca_file, args.cert_file, args.key_file):
+                    path.write_bytes(b"fixture"); path.chmod(0o600)
+                if invalid == "mode": args.key_file.chmod(0o644)
+                else:
+                    args.key_file.unlink()
+                    if invalid == "symlink": args.key_file.symlink_to(args.cert_file)
+                with patch.object(c.ssl, "create_default_context") as context, \
+                        patch.object(c.http.client, "HTTPSConnection") as connection, \
+                        self.assertRaisesRegex(ValueError, "OWNER_ONLY_MTLS_FILES_REQUIRED"):
+                    c.execute(args)
+                context.assert_not_called(); connection.assert_not_called()
+                self.assertFalse(args.receipt.exists())
+
+    def test_existing_cli_exposes_the_bounded_operation(self):
+        source = Path(__file__).resolve().parents[1] / "tools/qikvrt_self_host.py"
+        help_result = subprocess.run([sys.executable, "-B", str(source), "container-host-identity", "--help"],
+                                     capture_output=True, text=True, timeout=20)
+        self.assertEqual(help_result.returncode, 0, help_result.stderr)
+        result = subprocess.run([sys.executable, "-B", str(source), "container-host-identity"],
+                                capture_output=True, text=True, timeout=20)
+        self.assertEqual(result.returncode, 2, result.stderr)
+        self.assertEqual(json.loads(result.stdout)["cause"], "PRIVATE_HOST_BINDING_AND_NEW_RECEIPT_REQUIRED")
+
+
 class ContainerControls(unittest.TestCase):
     def test_original_archive_oci_is_deterministic_and_recovers_exact_pinned_bytes(self):
         with tempfile.TemporaryDirectory() as tmp:

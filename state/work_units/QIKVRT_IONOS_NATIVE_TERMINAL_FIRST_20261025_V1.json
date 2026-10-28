@@ -15,6 +15,33 @@
     "principal": "Ingolf Lohmann"
   },
   "initial_work_unit_state": "REVIEWABLE_SOURCE_REPAIR_PENDING_NATIVE_CI_AND_HOST_EFFECT",
+  "read_only_host_identity_preparation": {
+    "prepared_on": "2026-10-29",
+    "source_head": "b8881821626c9952fd82d8b9edfc66e49f4ba3cb",
+    "source_tree": "1646807084874a0ca5e2c686ee642f97de5abfce",
+    "state": "SOURCE_PREPARATION_NOT_LIVE_HOST_ACCEPTANCE",
+    "reused_launcher": "tools/qikvrt_self_host.py container-host-identity",
+    "reused_adapter": "tools/qikvrt_self_host_container.py",
+    "fixed_operation": "GET /v1.45/info",
+    "observed_gap": "The existing container-deploy command validates production governance and can mutate the host after its identity GET; it is not a read-only verification operation.",
+    "required_independent_pins": [
+      "binding_sha256",
+      "expected_head",
+      "expected_tree",
+      "image_digest",
+      "manifest_sha256"
+    ],
+    "receipt_scope": "HOST_IDENTITY_ONLY; target pins do not prove an installed image or package",
+    "receipt_is_create_only": true,
+    "raw_response_and_credentials_exported": false,
+    "production_gates_changed": false,
+    "new_executor_or_trigger": false,
+    "live_host_identity_check_executed": false,
+    "host_binding_verified": false,
+    "public_production_verified": false,
+    "effect_ack_done": false,
+    "retry_condition": "The original protected mTLS connection, independent binding pin and approved tested package pins must actually be available to the admitted caller; do not infer credential absence or invoke container-deploy as a read-only probe."
+  },
   "loader_dependency_correction": {
     "error": "manifest unknown for original Skopeo carrier",
     "failed_job": 121107295223,
@@ -25,6 +52,11 @@
     "same_copy_preserve_digests_contract": true
   },
   "open_work": [
+    {
+      "id": "AUTHENTICATED_HOST_IDENTITY_READBACK",
+      "next_action": "Use container-host-identity through the original protected mTLS connection with independent target pins; compare Linux daemon ID and independently read back the fresh create-only receipt. Source tests do not close this duty.",
+      "state": "OPEN"
+    },
     {
       "id": "NATIVE_CONTAINER_CI",
       "next_action": "Run the changed native-only image through the original independent OCI and smoke lane.",
