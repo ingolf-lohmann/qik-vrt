@@ -31,6 +31,13 @@ class FixedQ16Test(unittest.TestCase):
                         "-o", str(binary)], check=True, capture_output=True, text=True)
         subprocess.run([str(binary)], check=True)
 
+    def test_default_build_keeps_python_compile(self):
+        result = subprocess.run(["make", "-pn"], cwd=ROOT, check=True,
+                                capture_output=True, text=True)
+        default = [line for line in result.stdout.splitlines()
+                   if line.startswith(".DEFAULT_GOAL := ")]
+        self.assertEqual(default, [".DEFAULT_GOAL := compile"])
+
     def test_cross_language_edges_and_random_values(self):
         edges = [MIN_RAW, MIN_RAW + 1, -SCALE - 1, -SCALE, -32768, -1,
                  0, 1, 32768, SCALE, SCALE + 1, MAX_RAW - 1, MAX_RAW]
