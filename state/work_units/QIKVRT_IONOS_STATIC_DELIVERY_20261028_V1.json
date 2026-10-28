@@ -29,6 +29,7 @@
   },
   "local_validation": {
     "legacy_provider_and_dns_plus_static_and_web_cases": 91,
+    "workflow_action_pin_tests": 12,
     "declared_tool_cache_coverage": "36/36",
     "actual_installer_execution": "Isolated local directories, including lost ACK, old-byte backup, stale predecessor and symlink/hardlink refusal",
     "native_full_make_test": "REQUIRED_ON_EXACT_CANDIDATE",
@@ -64,6 +65,14 @@
     }
   ],
   "hosting_control_setting_removal_verified": false,
+  "native_ci_correction": {
+    "predecessor_head": "0dbfc2508e3c7a9879278bd1cbe657982c9c6315",
+    "run_id": 40666527925,
+    "job_id": 122742317858,
+    "observed_cause": "Workflow-action pin contract requires the original v6.3.0 annotation alongside the unchanged setup-python SHA.",
+    "correction": "Restore that original annotation; do not change the runtime pin or weaken its regression check.",
+    "original_failed_run_retained": true
+  },
   "productive_host_upload_verified": false,
   "public_hello_world_verified": false,
   "effect_ack_done": false
