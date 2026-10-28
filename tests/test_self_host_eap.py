@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 import re
 import sqlite3
+import subprocess
 import unittest
 import urllib.error
 import urllib.request
@@ -56,6 +57,26 @@ class EapExportTests(unittest.TestCase):
 
     def test_cold_export_owns_complete_public_route_and_original_durable_commit_after_restart(self):
         self.start()
+        code, workspace = self.get('/workspace'); self.assertEqual(code, 200)
+        self.assertEqual(self.get('/workspace/')[0], 200)
+        for asset in re.findall(r'(?:src|href)="(/assets/[^\"]+)"', workspace):
+            self.assertEqual(self.get(asset)[0], 200, asset)
+        code, access = self.get('/workspace/access.json'); self.assertEqual(code, 200)
+        self.assertEqual(access['workspace']['access_release'], 'HOLD')
+        self.assertFalse(access['effect_ack_done'])
+        original = urllib.request.urlopen(self.url + '/workspace/original.html', timeout=6)
+        self.assertEqual(host.digest(original.read()), access['original']['sha256'])
+        self.assertIn("style-src 'sha256-", original.headers['Content-Security-Policy'])
+        checked = subprocess.run(['node', str(standalone.ROOT / 'tests/test_workspace_live_client.mjs'), self.url],
+            capture_output=True, text=True, timeout=20)
+        self.assertEqual(checked.returncode, 0, checked.stdout + checked.stderr)
+        self.assertIn('WORKSPACE_EXPORTED_CLIENT_PASS', checked.stdout)
+        for license_name in ['CC-BY-NC-ND-4.0.txt', 'PolyForm-Noncommercial-1.0.0.txt', 'Apache-2.0.txt', 'REACT_LICENSE.txt']:
+            self.assertEqual(self.get('/workspace/licenses/' + license_name)[0], 200)
+        request = urllib.request.Request(self.url + '/workspace', data=b'{}', headers={'Content-Type':'application/json'})
+        with self.assertRaises(urllib.error.HTTPError) as denied:
+            urllib.request.urlopen(request, timeout=6)
+        self.assertEqual(denied.exception.code, 405)
         code, page = self.get('/devops'); self.assertEqual(code, 200)
         for asset in re.findall(r'(?:src|href)="(/assets/[^\"]+)"', page):
             self.assertEqual(self.get(asset)[0], 200, asset)
