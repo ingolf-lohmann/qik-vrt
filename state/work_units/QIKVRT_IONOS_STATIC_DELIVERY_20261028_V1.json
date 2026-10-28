@@ -75,5 +75,49 @@
   },
   "productive_host_upload_verified": false,
   "public_hello_world_verified": false,
-  "effect_ack_done": false
+  "effect_ack_done": false,
+  "rest_extension": {
+    "owner_instruction": "Add missing REST operations first; retain GraphQL unchanged during this step. Existing grant retained.",
+    "predecessor_head": "951512d04c45956a235691a62a3295579a5c0ece",
+    "predecessor_tree": "edf8f8a92660dbb78826ccc02a8d915acb39a936",
+    "implementation": "Existing src/qikvrt_github_api_shim.py and scripts/qikvrt_api_client.py directly reuse original S1 static_execute and private Receipts.",
+    "operations": [
+      "static_readback",
+      "static_upload",
+      "static_reconcile",
+      "static_public_readback"
+    ],
+    "graphql_source_changed": false,
+    "graphql_invoked": false,
+    "new_executor_or_trigger": false,
+    "original_affected_operation": "Actual original handler blob955162011cb7bd41ce43ced9b4bf4ef3cde7bd71 returns HTTP404 on static POST; candidate actual HTTP test returns200 and reads exact installed bytes.",
+    "local_tests": {
+      "cases": 251,
+      "state": "PASS",
+      "scope": "Original API client/TCPIP/provider/DNS tests plus 11 new static REST tests. Actual remote installer runs only in disposable local directories."
+    },
+    "cold_export": {
+      "actual_python_S_cold_start": true,
+      "archive_sha256": "dea6b9de6bfab22765a5b576c4517bee7eea9200818892e5f358043b64d96cdc",
+      "effect_ack_done": false,
+      "frozen_export_verified": true,
+      "health_http": 200,
+      "manifest_sha256": "3b6ef134e40d6c477d7118cd30971351cb20ce8bd4bf0e93e2032b780b6abb0f",
+      "scope": "DISPOSABLE_GIT_SOURCE_FIXTURE_NOT_AUTHORITY_OR_LIVE_HOST",
+      "source_fixture_head": "554bda3676eadc2045ae058347e5037406115126",
+      "source_fixture_tree": "ce3ecabd4000b14fe2b4c6f0288f1554128fa902",
+      "state": "PASS",
+      "static_implementation_sha256": "e0188e023f755ad927f4534cc04d4405eb91cfb961ccfef663cfa019df9e9cc4",
+      "static_rest_missing_binding_http": 503
+    },
+    "native_full_make_test": "REQUIRED_ON_NEW_EXACT_HEAD",
+    "open_duties": [
+      "GitHub Draft transition remains unavailable via documented pure REST route. No GraphQL call admitted by this instruction.",
+      "Existing IONOS DNS CLI/workflow is unchanged; REST DNS mutation exposure is not part of this first static-delivery extension.",
+      "Protected real VPS connection and server installation/admission remain unverified.",
+      "Exact-domain Hello World, TLS, native Mesh admission and peer ACK remain unverified."
+    ],
+    "live_host_effect_claimed": false,
+    "effect_ack_done": false
+  }
 }

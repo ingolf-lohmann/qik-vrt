@@ -796,19 +796,19 @@ def static_execute(args):
         return static_public_readback("raumzeitterminal.de", args.static_file_sha256)
     value = static_binding(args.production_binding, args.binding_sha256)
     if args.operation == "host-static-readback":
-        observed = static_read(value)
+        observed = static_read(value, static_ssh)
         return {k: v for k, v in observed.items() if k != "body"}
     if not args.provider_receipts or not args.host_operation_id:
         raise ValueError("HOLD_ORIGINAL_PRIVATE_RECEIPTS_AND_OPERATION_ID_REQUIRED")
     receipts = Receipts(args.provider_receipts)
     if args.operation == "host-static-reconcile":
         with receipts.locked():
-            return static_reconcile(value, args.binding_sha256, args.host_operation_id, receipts)
+            return static_reconcile(value, args.binding_sha256, args.host_operation_id, receipts, static_ssh)
     if args.operation != "host-static-upload" or args.static_file is None:
         raise ValueError("HOLD_EXACT_STATIC_UPLOAD_REQUIRED")
     return static_upload(value, args.binding_sha256, args.static_file,
                          args.static_file_sha256, args.expected_static_sha256,
-                         args.host_operation_id, receipts)
+                         args.host_operation_id, receipts, static_ssh)
 
 
 class Receipts:
@@ -1220,4 +1220,3 @@ def repository_readonly(directory, subject):
         raise ValueError("HOLD_IONOS_METADATA_RECEIPT_READBACK_MISMATCH")
     return receipt
     raise ValueError("SUPPORTED_PROVIDER_OPERATION_REQUIRED")
-

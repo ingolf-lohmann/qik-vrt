@@ -39,6 +39,7 @@ API_CONTRACT_VERSION = "2.3.0"
 SHA1_HEX = re.compile(r"^[0-9a-f]{40}$")
 RULESET_OPERATIONS = {"ruleset_authority_dispatch", "ruleset_authority_readback"}
 AMO_OPERATIONS = {"firefox_amo_access", "firefox_amo_dispatch"}
+STATIC_OPERATIONS = {"static_readback", "static_upload", "static_reconcile", "static_public_readback"}
 AMO_WORKFLOW_PATH = ".github/workflows/qikvrt_ci.yml"
 AMO_SECRET_NAMES = ("AMO_JWT_ISSUER", "AMO_JWT_SECRET")
 RULESET_REPOSITORY = "ingolf-lohmann/qik-vrt"
@@ -1177,13 +1178,66 @@ def github_commit_identity_get(repository: str, ref: str, *, token: str = "", op
             "ref_resolution": {"source_url": url, "head": head,
                                "response_sha256": hashlib.sha256(raw.encode("utf-8")).hexdigest()}}
 
+def static_mesh_operation(args, token):
+    """One original S1 request, no retries and no caller-supplied server paths."""
+    mode = args.operation.removeprefix("static_").replace("_", "-")
+    value = {"schema": "qikvrt-static-delivery-rest/v1", "mode": mode,
+             "request_id": args.request_id, "expected_implementation_sha256": args.static_implementation_sha256,
+             "binding_sha256": args.static_binding_sha256, "static_file_sha256": args.expected_sha256}
+    url = args.base_url + f"/repos/{args.owner}/{args.repo}/qikvrt/static-delivery"
+    headers = {"Authorization": f"Bearer {token}", "Accept": "application/json"}
+    if mode == "upload":
+        value.update(expected_static_sha256=args.static_previous_sha256, effect_accepted=True)
+        headers["Content-Type"] = "application/json"
+        request = urllib.request.Request(url, data=json.dumps(value).encode(), headers=headers, method="POST")
+    else:
+        url += "?" + urlencode(value)
+        request = urllib.request.Request(url, headers=headers, method="GET")
+    try:
+        with urllib.request.build_opener(NoRedirectHandler()).open(request, timeout=120) as response:
+            if response.geturl() != url or response.status != 200:
+                raise ValueError("unverified response")
+            result = unique_json(read_response_bytes(response))
+        if (not isinstance(result, dict) or result.get("schema") != value["schema"]
+                or result.get("mode") != mode or result.get("request_id") != args.request_id
+                or result.get("implementation_sha256") != args.static_implementation_sha256
+                or result.get("binding_sha256") != args.static_binding_sha256
+                or result.get("static_file_sha256") != args.expected_sha256
+                or result.get("status") != "VERIFIED" or result.get("effect_ack_done") is not False
+                or not isinstance(result.get("handler_result"), dict)):
+            raise ValueError("unbound response")
+        handler = result["handler_result"]
+        if mode in {"upload", "reconcile"} and (handler.get("state") != "FILE_BYTES_VERIFIED"
+                or handler.get("sha256") != args.expected_sha256):
+            raise ValueError("file effect unverified")
+        if mode == "public-readback" and handler.get("state") != "PUBLIC_STATIC_BYTES_VERIFIED":
+            raise ValueError("public effect unverified")
+        if mode == "public-readback":
+            observations = handler.get("observations")
+            if (not isinstance(observations, list) or len(observations) != 2
+                    or {x.get("url") for x in observations if isinstance(x, dict)} != {
+                        "https://raumzeitterminal.de/", "https://www.raumzeitterminal.de/"}
+                    or any(not isinstance(x, dict) or x.get("verified") is not True
+                           or x.get("status") != 200 or x.get("sha256") != args.expected_sha256
+                           for x in observations)):
+                raise ValueError("exact public observations missing")
+        print(json.dumps(result, sort_keys=True, indent=2))
+        return 0
+    except (ValueError, OSError, urllib.error.URLError):
+        print(json.dumps({"schema": value["schema"], "mode": mode, "request_id": args.request_id,
+                          "state": "HOLD_STATIC_REST_OUTCOME_UNVERIFIED", "retry_permitted": False,
+                          "next_operation": "static_reconcile" if mode == "upload" else "readback",
+                          "effect_ack_done": False}, sort_keys=True))
+        return 2
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--base-url", default="http://127.0.0.1:8766")
     ap.add_argument("--owner", required=True)
     ap.add_argument("--repo", required=True)
     ap.add_argument("--ref", default="main")
-    ap.add_argument("--operation", choices=["ingest", "verify", "stage", "release_status", *sorted(RULESET_OPERATIONS), *sorted(AMO_OPERATIONS)], default="ingest")
+    ap.add_argument("--operation", choices=["ingest", "verify", "stage", "release_status", *sorted(RULESET_OPERATIONS), *sorted(AMO_OPERATIONS), *sorted(STATIC_OPERATIONS)], default="ingest")
     ap.add_argument("--artifact-id", default="qikvrt_artifact")
     ap.add_argument("--payload-file")
     ap.add_argument("--expected-sha256")
@@ -1199,6 +1253,9 @@ def main() -> int:
                     help="Exact reviewed writer contract; omitted preserves the 2.2 legacy-v1 pin")
     ap.add_argument("--ruleset-via-mesh", action="store_true",
                     help="Use the fixed Ruleset REST route at the explicitly configured Mesh base URL")
+    ap.add_argument("--static-implementation-sha256", help="Independently obtained static REST implementation digest")
+    ap.add_argument("--static-binding-sha256", help="Protected existing VPS binding digest; no credential/path upload")
+    ap.add_argument("--static-previous-sha256", help="Fresh remote index.html hash, or ABSENT after original SSH readback")
     ap.add_argument("--amo-expected-head", help="Exact current PR523 commit for direct Owner signing")
     ap.add_argument("--amo-expected-tree", help="Exact current PR523 tree for direct Owner signing")
     ap.add_argument("--amo-workflow-blob", help="Independently reviewed qikvrt_ci.yml Git blob SHA-1")
@@ -1250,6 +1307,26 @@ def main() -> int:
         if not args.accept_effect:
             ap.error("--accept-effect is required when --dry-run=false")
 
+    static_pins = (args.static_implementation_sha256, args.static_binding_sha256)
+    if args.operation in STATIC_OPERATIONS:
+        if (args.base_url == "https://api.github.com" or f"{args.owner}/{args.repo}" != RULESET_REPOSITORY
+                or any(not isinstance(p, str) or not re.fullmatch(r"[0-9a-f]{64}", p)
+                       for p in (*static_pins, args.expected_sha256))):
+            ap.error("Static operations require explicit Mesh origin, Authority and lowercase implementation/target/page pins")
+        if (args.payload_file or args.remote_evidence_file or args.state_run_id or args.return_run_details
+                or args.expected_main_sha or args.ruleset_run_id or args.ruleset_writer_version
+                or any((args.amo_expected_head, args.amo_expected_tree, args.amo_workflow_blob, args.amo_previous_run_id))):
+            ap.error("Unrelated inputs and caller file paths are forbidden for static REST")
+        if args.operation == "static_upload":
+            prior = args.static_previous_sha256
+            if (args.dry_run != "false" or not args.accept_effect or not isinstance(prior, str)
+                    or prior != "ABSENT" and not re.fullmatch(r"[0-9a-f]{64}", prior)):
+                ap.error("Static upload requires explicit effect acceptance and fresh predecessor hash or ABSENT")
+        elif args.dry_run != "true" or args.accept_effect or args.static_previous_sha256 is not None:
+            ap.error("Static readbacks require read-only defaults")
+        return static_mesh_operation(args, token)
+    if any(p is not None for p in (*static_pins, args.static_previous_sha256)):
+        ap.error("Static binding arguments require a static operation")
     amo_bindings = (args.amo_expected_head, args.amo_expected_tree,
                     args.amo_workflow_blob, args.amo_previous_run_id)
     if args.operation in AMO_OPERATIONS:

@@ -67,7 +67,52 @@ same binding, operation ID and private receipt directory. File verification
 does not claim HTTPS delivery, native runtime acceptance or EFFECT_ACK_DONE.
 The static page itself requires no running Mesh or Firefox.
 
-## Routing cutover through the documented IONOS DNS API
+## REST access to the same static controller
+
+The original src/qikvrt_github_api_shim.py server now exposes
+/repos/ingolf-lohmann/qik-vrt/qikvrt/static-delivery. It remains disabled until
+QIKVRT_STATIC_DELIVERY_ENABLED=1 is explicitly configured. Reuse the existing
+expiring QIKVRT_API_TOKEN and bound QIKVRT_API_PRINCIPAL=ingolf-lohmann with
+QIKVRT_ALLOWED_REPOSITORY=ingolf-lohmann/qik-vrt. The REST token is never an
+SSH credential. The operator configures only the original protected references:
+
+- QIKVRT_STATIC_BINDING_FILE and QIKVRT_STATIC_BINDING_SHA256
+- QIKVRT_STATIC_FILE and QIKVRT_STATIC_FILE_SHA256
+- QIKVRT_STATIC_RECEIPTS_DIR, private existing S1 receipts
+
+Clients cannot supply paths, keys, server IPs, commands or arbitrary HTML.
+The independently reviewed implementation digest is the value of
+static_implementation_binding() in the exported original server. It binds
+the REST/client/S1 implementations and the existing Owner governance sources;
+it is recomputed before execution and must equal the boot digest. Obtain
+this digest independently from the verified package, never accept a returned
+hash as its own trust anchor.
+
+Use the original scripts/qikvrt_api_client.py, with these common arguments:
+
+    --base-url https://EXISTING_ADMITTED_MESH_ORIGIN \
+    --owner ingolf-lohmann --repo qik-vrt \
+    --request-id STABLE_ORIGINAL_REQUEST_ID \
+    --static-implementation-sha256 REVIEWED_IMPLEMENTATION_SHA256 \
+    --static-binding-sha256 ACTUAL_BINDING_SHA256 \
+    --expected-sha256 ACTUAL_FROZEN_PAGE_SHA256
+
+Select --operation static_readback (GET) first. For the single POST, select
+--operation static_upload --dry-run false --accept-effect and
+--static-previous-sha256 ACTUAL_OLD_SHA256_OR_ABSENT. On a lost or ambiguous
+response select --operation static_reconcile with the same request ID; never
+repeat upload. static_public_readback separately checks both exact HTTPS URLs.
+The client binds the response to request, mode, implementation, target and page
+digests, refuses redirects, and makes no automatic retry. The original S1
+receipt fence persists across REST restarts. readback creates no webroot file;
+reconcile may append the original scoped readback receipt, never an upload.
+
+This first REST extension does not change or call GraphQL, transition a GitHub
+Draft, expose DNS mutations, install the server or grant runtime admission.
+Those separate duties remain open. The following DNS CLI/workflow path is
+unchanged.
+
+## Routing cutover through the documented IONOS DNS API (unchanged)
 
 tools/qikvrt_ionos_dns.py web-readback --zone raumzeitterminal.de reads the
 whole existing zone, including apex, www, mail and redirect-related TXT records.

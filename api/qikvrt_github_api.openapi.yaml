@@ -21,6 +21,78 @@ servers:
   - url: https://api.github.com
     description: GitHub asynchronous REST dispatch API
 paths:
+  /repos/{owner}/{repo}/qikvrt/static-delivery:
+    servers:
+      - url: http://127.0.0.1:8766
+        description: Existing admitted QIK-VRT REST server; source availability is not deployment.
+    parameters:
+      - { name: owner, in: path, required: true, schema: { type: string, enum: [ingolf-lohmann] } }
+      - { name: repo, in: path, required: true, schema: { type: string, enum: [qik-vrt] } }
+    get:
+      operationId: staticDeliveryReadback
+      summary: Read the existing VPS file, reconcile its original upload, or check both exact public HTTPS URLs.
+      description: >
+        Disabled unless QIKVRT_STATIC_DELIVERY_ENABLED=1. Reuses the existing
+        expiring REST credential and bound natural Owner. No upload, retry,
+        provider key forwarding, GraphQL call or global EFFECT_ACK_DONE.
+        reconcile retains the original request_id and S1 intent. Public checks
+        require actual matching page bytes on both exact HTTPS URLs.
+      security: [{ bearerToken: [] }]
+      parameters:
+        - { name: schema, in: query, required: true, schema: { type: string, enum: [qikvrt-static-delivery-rest/v1] } }
+        - { name: mode, in: query, required: true, schema: { type: string, enum: [readback, reconcile, public-readback] } }
+        - { name: request_id, in: query, required: true, schema: { type: string, pattern: '^[A-Za-z0-9_.=-]{1,128}$' } }
+        - { name: expected_implementation_sha256, in: query, required: true, schema: { type: string, pattern: '^[0-9a-f]{64}$' } }
+        - { name: binding_sha256, in: query, required: true, schema: { type: string, pattern: '^[0-9a-f]{64}$' } }
+        - { name: static_file_sha256, in: query, required: true, schema: { type: string, pattern: '^[0-9a-f]{64}$' } }
+      responses:
+        '200': { description: Bound original-controller readback; scope is file bytes or public HTTPS bytes only. }
+        '400': { description: Invalid or duplicate readback parameters. }
+        '401': { description: Missing or expired REST credential. }
+        '403': { description: Foreign repository or unbound Owner. }
+        '404': { description: Static REST disabled. }
+        '409': { description: Binding mismatch or unverified public/previous effect. }
+        '429': { description: Rate limited; no automatic retry. }
+        '503': { description: Protected original binding or current implementation unavailable. }
+    post:
+      operationId: staticDeliveryUpload
+      summary: Invoke one original S1 static upload and separate byte readback.
+      description: >
+        The existing server-side S1 provider resolves protected binding, source
+        file and receipt directory from explicit operator configuration. Clients
+        supply only reviewed digests, fresh predecessor hash and stable request
+        identity. No client paths, keys, arbitrary payload, shell or provider
+        origin are accepted. Original S1 backup/intent fencing prevents replay
+        after an uncertain upload; continue with GET reconcile, never POST retry.
+        No DNS, hosting-control, certificate, native admission or GitHub lifecycle
+        change is performed. GraphQL is untouched and not invoked.
+      security: [{ bearerToken: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [schema, mode, request_id, expected_implementation_sha256, binding_sha256, static_file_sha256, expected_static_sha256, effect_accepted]
+              properties:
+                schema: { type: string, enum: [qikvrt-static-delivery-rest/v1] }
+                mode: { type: string, enum: [upload] }
+                request_id: { type: string, pattern: '^[A-Za-z0-9_.=-]{1,128}$' }
+                expected_implementation_sha256: { type: string, pattern: '^[0-9a-f]{64}$' }
+                binding_sha256: { type: string, pattern: '^[0-9a-f]{64}$' }
+                static_file_sha256: { type: string, pattern: '^[0-9a-f]{64}$' }
+                expected_static_sha256: { type: string, pattern: '^(ABSENT|[0-9a-f]{64})$' }
+                effect_accepted: { type: boolean, enum: [true] }
+      responses:
+        '200': { description: Independent file-byte readback verified; no public delivery inference. }
+        '400': { description: Duplicate security headers. }
+        '401': { description: Missing or expired REST credential. }
+        '403': { description: Foreign repository or unbound Owner. }
+        '404': { description: Static REST disabled. }
+        '409': { description: Request, predecessor or immutable intent refused; GET reconcile original request. }
+        '429': { description: Rate limited; no automatic retry. }
+        '503': { description: Result/binding unavailable; GET readback before another effect. }
   /repos/{owner}/{repo}/qikvrt/ruleset-authority:
     servers:
       - url: http://127.0.0.1:8766
