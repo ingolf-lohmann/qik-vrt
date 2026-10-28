@@ -2652,6 +2652,12 @@ def native_carrier(package, pin, config, config_path, binding, token):
                     self._hold(str(exc) if isinstance(exc, ValueError) else "INVALID_OWNER_REST_REQUEST", 409)
                 except (OSError, sqlite3.Error): self._hold("OWNER_REST_PERSISTENCE_OR_READBACK_UNAVAILABLE", 503)
 
+        if config.get("effect_ack_http"):
+            load_source(package, "qikvrt_effect_ack")
+            load_source(package, "qikvrt_effect_ack_wire")
+            eap = load_source(package, "qikvrt_effect_ack_http_service")
+            OwnerHTTP = eap.make_handler(OwnerHTTP, rest)
+
         if config.get("unix_ingress", True):
             ingress = native.make_ingress(runtime_instance)
             # Defense in depth for the separate mode-0600 owner-only adapter.
@@ -2774,7 +2780,7 @@ def start(package, pin, config_path, monolith=False):
     private_path(config_path)
     raw = config_path.read_bytes()
     config = json.loads(raw)
-    fields = {"schema", "node_id", "source_head", "source_tree", "adapter", "state_dir", "host", "port", "terminal_port", "terminal_token_file", "github_webhook_secret_file", "terminal_profile", "subject_pr", "source_repository", "browser_password_file", "novnc_port", "vnc_port", "display", "migration_export_sha256", "mesh_work_peers", "mesh_rule_grants", "owner_rest_grants", "unix_ingress", "mesh_file", "mesh_file_allowed_origins"}
+    fields = {"schema", "node_id", "source_head", "source_tree", "adapter", "state_dir", "host", "port", "terminal_port", "terminal_token_file", "github_webhook_secret_file", "terminal_profile", "subject_pr", "source_repository", "browser_password_file", "novnc_port", "vnc_port", "display", "migration_export_sha256", "mesh_work_peers", "mesh_rule_grants", "owner_rest_grants", "unix_ingress", "mesh_file", "mesh_file_allowed_origins", "effect_ack_http"}
     if (set(config) - fields or config.get("schema") != "qikvrt-self-host-config/v1"
             or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,100}", config.get("node_id", ""))
             or config.get("adapter") not in {"none", "github"} or config.get("host") not in {"127.0.0.1", "0.0.0.0"}
@@ -2799,6 +2805,13 @@ def start(package, pin, config_path, monolith=False):
     profile = config.get("terminal_profile", "reference")
     if profile not in {"reference", "temdd", "firefox"}:
         raise ValueError("UNKNOWN_TERMINAL_PROFILE")
+    if config.get("effect_ack_http") is not None:
+        eap = config["effect_ack_http"]
+        if (not isinstance(eap, dict) or set(eap) != {"enabled", "public_origin"}
+                or eap["enabled"] is not True or eap["public_origin"] != "https://raumzeitterminal.de"
+                or profile == "reference" or not config.get("owner_rest_grants")
+                or config.get("unix_ingress") is not False):
+            raise ValueError("EXPLICIT_EAP_NATIVE_PROFILE_WITHOUT_ALTERNATE_INPUT_PATH_REQUIRED")
     if (type(config.get("unix_ingress", True)) is not bool
             or profile == "reference" and (config.get("owner_rest_grants") or config.get("mesh_rule_grants") or config.get("unix_ingress") is False)):
         raise ValueError("NATIVE_OWNER_REST_AND_UNIX_ADAPTER_CONFIGURATION_REQUIRED")
