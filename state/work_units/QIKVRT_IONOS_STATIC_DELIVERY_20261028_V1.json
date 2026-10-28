@@ -1,0 +1,70 @@
+{
+  "schema": "qikvrt-ionos-static-delivery-work-unit/v1",
+  "work_unit_id": "QIKVRT_IONOS_STATIC_DELIVERY_20261028_V1",
+  "authority_repository": "ingolf-lohmann/qik-vrt",
+  "base_head": "9f7cad6cf72890a8dc6cb79ae908b5f0a0f0b65a",
+  "base_tree": "89fc3b51b2118adfa5db33f8f4c9ca765591a6e1",
+  "human_contribution": {
+    "principal": "Ingolf Lohmann",
+    "decision": "Correct the old domain forwarding, deliver a minimal Hello World on the existing IONOS VPS, implement missing functions instead of returning only capability limitations.",
+    "authorization": "Current direct Owner authorization retained; no repeated task approval."
+  },
+  "artificial_cognitive_contribution": {
+    "system": "OpenAI Codex",
+    "scope": "Documented provider mechanisms, existing S1/provider/receipt reuse, bounded SSH static transfer, independent file and HTTPS readbacks, whole-zone apex/www DNS cutover and regression verification."
+  },
+  "reuse": {
+    "entrypoint": "tools/qikvrt_self_host.py",
+    "host_adapter": "tools/qikvrt_self_host_provider.py",
+    "receipt_store": "Existing S1 provider Receipts and private fsync primitives",
+    "dns_adapter": "tools/qikvrt_ionos_dns.py",
+    "workflow": ".github/workflows/qikvrt_ionos_dns.yml",
+    "replacement_runtime_or_scheduler": false
+  },
+  "baseline": {
+    "missing_static_transfer_regression_cases": 2,
+    "original_subject_rejected": true,
+    "source_archive_scope": "Selected original Git blobs; the bounded archive recovery was stopped, not claimed complete.",
+    "local_full_repository_bootstrap": "NOT_ACCEPTED: selected source recovery is not a complete Git checkout"
+  },
+  "local_validation": {
+    "legacy_provider_and_dns_plus_static_and_web_cases": 91,
+    "declared_tool_cache_coverage": "36/36",
+    "actual_installer_execution": "Isolated local directories, including lost ACK, old-byte backup, stale predecessor and symlink/hardlink refusal",
+    "native_full_make_test": "REQUIRED_ON_EXACT_CANDIDATE",
+    "live_vps_effect_inferred": false
+  },
+  "acceptance_order": [
+    "Resolve existing protected VPS identity, SSH identity, independently pinned host key and actual webroot.",
+    "Read the old index, preserve it privately and perform one exact-byte static install through S1.",
+    "Independently read the installed bytes; reconcile uncertain effects without re-upload.",
+    "Read the whole IONOS DNS zone; change only admitted existing apex/www routes with exact state pins.",
+    "Independently read both exact HTTPS URLs with no redirect and compare the frozen page hash."
+  ],
+  "open_work": [
+    {
+      "id": "EXACT_CANDIDATE_NATIVE_CI",
+      "state": "OPEN",
+      "next_action": "Run the original complete make test, integrity and package controls on the exact source candidate."
+    },
+    {
+      "id": "PROTECTED_ORIGINAL_VPS_CONNECTION",
+      "state": "OPEN",
+      "next_action": "Resolve and bind the actual existing protected connection; test fixture addresses are not target evidence."
+    },
+    {
+      "id": "STATIC_FILE_AND_DOMAIN_EFFECT",
+      "state": "OPEN",
+      "next_action": "Execute admitted original-host upload and scoped DNS cutover, then independent exact-domain HTTPS readback."
+    },
+    {
+      "id": "PREDECESSOR_NATIVE_PEER_PUBLICATION_AND_HOST_DUTIES",
+      "state": "OPEN_UNCHANGED",
+      "next_action": "Retain every prior duty; this source repair closes none of their separate effects."
+    }
+  ],
+  "hosting_control_setting_removal_verified": false,
+  "productive_host_upload_verified": false,
+  "public_hello_world_verified": false,
+  "effect_ack_done": false
+}

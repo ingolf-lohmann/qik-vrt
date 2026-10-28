@@ -1,50 +1,44 @@
 # SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
-# Copyright 2026 Ingolf Lohmann. Implementation contribution: Claude (Anthropic); OpenAI Codex (IPv4 cutover, 2026-10-26).
-#
-# Manual, main-only IONOS DNS operation for the product zone.
-#   readback: GET-only; prints and archives the apex record digest.
-#   apply:    changes the single apex A record to target_ipv4, only if the
-#             live records still match expected_records_sha256 from a prior
-#             readback; finishes with a fresh readback.
-# Requires the repository secret IONOS_DNS_API_KEY (<prefix>.<secret>).
+# Copyright 2026 Ingolf Lohmann. Implementation contribution: Claude (Anthropic); OpenAI Codex.
 name: QIKVRT IONOS DNS
-
 on:
   workflow_dispatch:
     inputs:
       operation:
-        description: readback (GET-only) or apply (exact-state-bound A update)
+        description: GET-only readback or exact-state-bound existing-record apply
         type: choice
         default: readback
-        options: [readback, apply]
+        options: [readback, apply, web-readback, web-apply]
       zone:
         description: DNS zone
         type: string
         default: raumzeitterminal.de
       target_ipv4:
-        description: Verified public IPv4 of the owned TLS origin (apply only)
+        description: Independently verified public IPv4 of the owned TLS origin
         type: string
         default: ""
       disable_apex_aaaa:
-        description: Explicitly disable the bound single apex AAAA during the IPv4 cutover
+        description: Explicitly disable the bound single apex AAAA for legacy apply
+        type: boolean
+        default: false
+      disable_web_aaaa:
+        description: Explicitly disable bound apex/www AAAA records for web-apply
         type: boolean
         default: false
       expected_records_sha256:
-        description: apex_records_sha256 from a preceding readback (apply only)
+        description: Exact prior apex digest, or whole-zone digest for web-apply
         type: string
         default: ""
-
 permissions:
   contents: read
-
 concurrency:
   group: qikvrt-ionos-dns-${{ inputs.zone }}
   cancel-in-progress: false
-
 jobs:
   dns:
     if: github.repository == 'ingolf-lohmann/qik-vrt' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
+    environment: ionos-production
     timeout-minutes: 5
     steps:
       - name: Check out exact trusted main event commit
@@ -53,30 +47,39 @@ jobs:
           ref: ${{ github.sha }}
           persist-credentials: false
       - name: Set up declared Python runtime
-        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
           python-version: "3.12"
       - name: Run bounded IONOS DNS operation
+        if: success()
         env:
           IONOS_DNS_API_KEY: ${{ secrets.IONOS_DNS_API_KEY }}
+          GH_TOKEN: ${{ github.token }}
           OPERATION: ${{ inputs.operation }}
           ZONE: ${{ inputs.zone }}
           TARGET_IPV4: ${{ inputs.target_ipv4 }}
           EXPECTED_SHA256: ${{ inputs.expected_records_sha256 }}
           DISABLE_APEX_AAAA: ${{ inputs.disable_apex_aaaa }}
+          DISABLE_WEB_AAAA: ${{ inputs.disable_web_aaaa }}
         run: |
-          set -o pipefail
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq '.object.sha')" = "$GITHUB_SHA"
           mkdir -p "$RUNNER_TEMP/qikvrt-ionos-dns"
           receipt="$RUNNER_TEMP/qikvrt-ionos-dns/receipt.json"
-          if [ "$OPERATION" = apply ]; then
-            apply_args=(--zone "$ZONE" --target-ipv4 "$TARGET_IPV4" --expected-records-sha256 "$EXPECTED_SHA256")
-            if [ "$DISABLE_APEX_AAAA" = true ]; then
-              apply_args+=(--disable-apex-aaaa)
-            fi
-            python3 -B tools/qikvrt_ionos_dns.py apply "${apply_args[@]}" | tee "$receipt"
-          else
-            python3 -B tools/qikvrt_ionos_dns.py readback --zone "$ZONE" | tee "$receipt"
-          fi
+          case "$OPERATION" in
+            apply)
+              args=(apply --zone "$ZONE" --target-ipv4 "$TARGET_IPV4" --expected-records-sha256 "$EXPECTED_SHA256")
+              if [ "$DISABLE_APEX_AAAA" = true ]; then args+=(--disable-apex-aaaa); fi
+              ;;
+            web-apply)
+              args=(web-apply --zone "$ZONE" --target-ipv4 "$TARGET_IPV4" --expected-records-sha256 "$EXPECTED_SHA256")
+              if [ "$DISABLE_WEB_AAAA" = true ]; then args+=(--disable-web-aaaa); fi
+              ;;
+            readback|web-readback) args=("$OPERATION" --zone "$ZONE");;
+            *) echo HOLD_UNKNOWN_OPERATION; exit 2;;
+          esac
+          python3 -B tools/qikvrt_ionos_dns.py "${args[@]}" | tee "$receipt"
       - name: Persist DNS receipt
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a

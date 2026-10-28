@@ -164,6 +164,12 @@
     },
     {
       "cache_class": "runner-image-layer",
+      "component": "ssh",
+      "provider": "Existing OS distribution OpenSSH client; explicit host provisioning only, no key generation or replacement runtime",
+      "version": "strict-pinned-host-key-batch-transfer"
+    },
+    {
+      "cache_class": "runner-image-layer",
       "component": "systemd",
       "provider": "operator-managed Linux host or Ubuntu 24.04 native CI systemd; no installation at startup",
       "version": "252-or-newer-unit-contract"
@@ -213,10 +219,10 @@
   ],
   "coverage_basis": "unique components in runtime/toolchains/TOOLCHAIN.lock.tsv",
   "coverage_percent": 100,
-  "covered_components": 35,
-  "declared_components": 35,
-  "lock_sha256": "c03f018b822eb5aa732bf55d2d2deecfe17548a6192e05982fdbe556497a530f",
-  "registry_sha256": "3c6bdf20d80b939eb8316ef5968769365e5dd02f024320e15883297e8ed1bec9",
+  "covered_components": 36,
+  "declared_components": 36,
+  "lock_sha256": "7587222fa12946c52e04135de31e3d6a4ea390e553535c73dc9ccec7775f7093",
+  "registry_sha256": "cfdd8ad8aea1a870f3ea3a15c068d725eb4ef89800357beba0e699c442c30b2a",
   "rules": {
     "all_declared_tools_have_cache_strategy": true,
     "cache_never_replaces_required_checks": true,

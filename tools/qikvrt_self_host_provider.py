@@ -6,7 +6,9 @@
 Inventory is GET-only. A create is a separate exact-request-authorized effect.
 Private immutable receipts fence cooperating executors before the first POST;
 an uncertain outcome permits reconciliation, never another POST. No delete,
-terms acceptance, key generation, credential discovery or deployment exists here.
+terms acceptance, key generation or credential discovery exists here. Explicit
+static-file upload reuses this S1 adapter, protected existing SSH bindings and
+the same immutable receipt store; it neither creates hosts nor starts a runtime.
 """
 from __future__ import annotations
 
@@ -22,8 +24,11 @@ import json
 import os
 from pathlib import Path
 import re
+import shlex
+import shutil
 import socket
 import ssl
+import stat
 import subprocess
 import sys
 import tempfile
@@ -547,6 +552,265 @@ def plan(snapshot, request, external_quote=None):
     return result
 
 
+STATIC_MAX_BYTES = 32768
+STATIC_BINDING = "qikvrt-owned-host-static-binding/v1"
+# Invoked only through the original S1 provider adapter and an existing pinned
+# OpenSSH identity. JSON is data, never shell source. Readback creates no files.
+STATIC_REMOTE = r'''
+import base64,fcntl,hashlib,json,os,secrets,stat,sys
+r=json.loads(base64.b64decode(sys.argv[1],validate=True))
+limit=32768
+root=r["webroot"]
+if not os.path.isabs(root) or root=="/" or ".." in root.split("/"):
+    raise ValueError("UNSAFE_WEBROOT")
+p="/"
+for part in root.split("/"):
+    if not part: continue
+    p=os.path.join(p,part)
+    if stat.S_ISLNK(os.lstat(p).st_mode): raise ValueError("SYMLINK_WEBROOT")
+d=os.open(root,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW)
+def observe():
+    try: f=os.open("index.html",os.O_RDONLY|os.O_NOFOLLOW,dir_fd=d)
+    except FileNotFoundError: return {"sha256":None,"bytes":0,"body":None}
+    with os.fdopen(f,"rb") as stream:
+        before=os.fstat(stream.fileno())
+        if not stat.S_ISREG(before.st_mode) or before.st_nlink!=1 or before.st_size>limit:
+            raise ValueError("UNSAFE_OR_LARGE_INDEX")
+        body=stream.read(limit+1);after=os.fstat(stream.fileno())
+        if len(body)>limit or any(getattr(before,k)!=getattr(after,k)
+            for k in ("st_dev","st_ino","st_size","st_mtime_ns","st_ctime_ns")):
+            raise ValueError("INDEX_CHANGED_DURING_READ")
+    return {"sha256":hashlib.sha256(body).hexdigest(),"bytes":len(body),
+            "body":base64.b64encode(body).decode()}
+root_id={"device":os.fstat(d).st_dev,"inode":os.fstat(d).st_ino}
+effect="NONE"
+if r["mode"]=="install":
+    if r["root_identity"]!=root_id: raise ValueError("WEBROOT_IDENTITY_CHANGED")
+    lock=os.open(".qikvrt-static.lock",os.O_RDWR|os.O_CREAT|os.O_NOFOLLOW,0o600,dir_fd=d)
+    try:
+        info=os.fstat(lock)
+        if not stat.S_ISREG(info.st_mode) or info.st_nlink!=1 or info.st_uid!=os.geteuid():
+            raise ValueError("UNSAFE_STATIC_LOCK")
+        fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+        current=observe()
+        content=base64.b64decode(r["body"],validate=True)
+        if len(content)>limit or hashlib.sha256(content).hexdigest()!=r["sha256"]:
+            raise ValueError("STATIC_PAYLOAD_MISMATCH")
+        if current["sha256"]!=r["sha256"]:
+            if current["sha256"]!=r["expected_previous_sha256"]:
+                raise ValueError("STATIC_PREDECESSOR_CHANGED")
+            stage=".qikvrt-index-"+secrets.token_hex(16)
+            fd=os.open(stage,os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600,dir_fd=d)
+            try:
+                with os.fdopen(fd,"wb") as out:
+                    out.write(content);out.flush();os.fchmod(out.fileno(),0o644);os.fsync(out.fileno())
+                if observe()["sha256"]!=current["sha256"]:
+                    raise ValueError("STATIC_PREDECESSOR_CHANGED")
+                if current["sha256"] is None:
+                    # A new file cannot overwrite a concurrently created file.
+                    os.link(stage,"index.html",src_dir_fd=d,dst_dir_fd=d,follow_symlinks=False)
+                else:
+                    os.replace(stage,"index.html",src_dir_fd=d,dst_dir_fd=d)
+                os.fsync(d);effect="INDEX_INSTALLED"
+            finally:
+                try: os.unlink(stage,dir_fd=d)
+                except FileNotFoundError: pass
+    finally: os.close(lock)
+elif r["mode"]!="readback": raise ValueError("STATIC_MODE_INVALID")
+result=observe()
+result.update(schema="qikvrt-static-host-readback/v1",root_identity=root_id,effect=effect)
+print(json.dumps(result,sort_keys=True))
+os.close(d)
+'''
+
+
+def static_binding(path, expected):
+    """Existing protected host references only; never generate or export keys."""
+    value = pinned(path, expected)
+    required = {"schema", "provider", "product", "contract_id", "server_id",
+                "host", "port", "user", "domain", "webroot", "identity_file",
+                "known_hosts_file", "known_hosts_sha256", "authorization_reference"}
+    if (set(value) != required or value["schema"] != STATIC_BINDING
+            or value["provider"] != "ionos" or value["product"] != "vps"
+            or value["domain"] != "raumzeitterminal.de"):
+        raise ValueError("HOLD_EXACT_IONOS_VPS_STATIC_BINDING_REQUIRED")
+    for field in ("contract_id", "server_id", "authorization_reference"):
+        if not isinstance(value[field], str) or not value[field].strip():
+            raise ValueError("HOLD_EXISTING_HOST_IDENTITY_AND_AUTHORIZATION_REQUIRED")
+    try:
+        if not ipaddress.ip_address(value["host"]).is_global:
+            raise ValueError()
+    except (ValueError, TypeError):
+        raise ValueError("HOLD_EXISTING_PUBLIC_VPS_IP_REQUIRED") from None
+    if (type(value["port"]) is not int or not 1 <= value["port"] <= 65535
+            or not re.fullmatch(r"[a-z_][a-z0-9_-]{0,31}", str(value["user"]))):
+        raise ValueError("HOLD_SSH_ENDPOINT_INVALID")
+    webroot = value["webroot"]
+    if (not isinstance(webroot, str) or not webroot.startswith("/") or webroot == "/"
+            or ".." in webroot.split("/") or any(c in webroot for c in "\x00\r\n")):
+        raise ValueError("HOLD_EXPLICIT_EXISTING_WEBROOT_REQUIRED")
+    for key in ("identity_file", "known_hosts_file"):
+        host.private_path(Path(value[key]))
+    known = Path(value["known_hosts_file"]).read_bytes()
+    if len(known) > 65536 or sha(known) != pin(value["known_hosts_sha256"]):
+        raise ValueError("HOLD_SSH_HOST_KEY_BINDING_CHANGED")
+    return value
+
+
+def static_ssh(value, payload, runner=run_bounded):
+    for key in ("identity_file", "known_hosts_file"):
+        host.private_path(Path(value[key]))
+    if sha(Path(value["known_hosts_file"]).read_bytes()) != value["known_hosts_sha256"]:
+        raise ValueError("HOLD_SSH_HOST_KEY_BINDING_CHANGED")
+    executable = shutil.which("ssh")
+    if executable is None:
+        raise ValueError("HOLD_DECLARED_OPENSSH_CLIENT_REQUIRED")
+    # Public static bytes are bounded below the single-argument OS limit.
+    # Private keys stay in their protected existing file and out of argv/logs.
+    encoded = base64.b64encode(wire(payload)).decode()
+    remote = "/usr/bin/python3 -c " + shlex.quote(STATIC_REMOTE) + " " + shlex.quote(encoded)
+    argv = [executable, "-F", "/dev/null", "-o", "BatchMode=yes",
+            "-o", "IdentitiesOnly=yes", "-o", "StrictHostKeyChecking=yes",
+            "-o", "UserKnownHostsFile=" + value["known_hosts_file"],
+            "-o", "GlobalKnownHostsFile=/dev/null", "-o", "ConnectionAttempts=1",
+            "-o", "ConnectTimeout=10", "-o", "PasswordAuthentication=no",
+            "-o", "KbdInteractiveAuthentication=no", "-o", "ForwardAgent=no",
+            "-o", "ClearAllForwardings=yes", "-o", "ControlMaster=no",
+            "-o", "ControlPath=none", "-o", "ProxyCommand=none",
+            "-o", "ProxyJump=none", "-o", "PermitLocalCommand=no",
+            "-o", "LogLevel=ERROR", "-i", value["identity_file"],
+            "-p", str(value["port"]), "-l", value["user"], "--", value["host"], remote]
+    result = runner(argv, timeout=30, max_output_bytes=131072)
+    if result.returncode or result.timed_out or result.output_limit_exceeded:
+        # stderr can contain private paths. No retry, key scan, host-key
+        # acceptance, password fallback or diagnostic-content publication.
+        raise ValueError("HOLD_STATIC_SSH_OUTCOME_UNVERIFIED")
+    try:
+        observed = decode(result.stdout)
+        content = (None if observed["body"] is None else
+                   base64.b64decode(observed["body"], validate=True))
+        if (observed["schema"] != "qikvrt-static-host-readback/v1"
+                or observed["bytes"] != (len(content) if content is not None else 0)
+                or observed["sha256"] != (sha(content) if content is not None else None)
+                or content is not None and len(content) > STATIC_MAX_BYTES
+                or set(observed["root_identity"]) != {"device", "inode"}):
+            raise ValueError()
+    except (KeyError, TypeError, ValueError):
+        raise ValueError("HOLD_STATIC_READBACK_INVALID") from None
+    return observed
+
+
+def static_read(value, transport=static_ssh):
+    return transport(value, {"mode": "readback", "webroot": value["webroot"]})
+
+
+def static_reconcile(value, binding_pin, operation_id, receipts, transport=static_ssh):
+    intent = receipts.get(operation_id, "static-intent")
+    if not intent or intent["binding_sha256"] != binding_pin:
+        raise ValueError("HOLD_STATIC_ORIGINAL_INTENT_REQUIRED")
+    observed = static_read(value, transport)
+    result = {"schema": "qikvrt-static-upload-readback/v1",
+              "binding_sha256": binding_pin, "sha256": observed["sha256"],
+              "bytes": observed["bytes"], "retry_permitted": False,
+              "state": "FILE_BYTES_VERIFIED" if (
+                  observed["sha256"] == intent["sha256"]
+                  and observed["root_identity"] == intent["root_identity"])
+              else "HOLD_STATIC_REMOTE_BYTES_MISMATCH",
+              "public_https_verified": False, "effect_ack_done": False}
+    receipts.put(operation_id, "static-readback-" + sha(wire(result)), result)
+    return result
+
+
+def static_upload(value, binding_pin, source, source_pin, previous_pin,
+                  operation_id, receipts, transport=static_ssh):
+    """One admitted SSH install; saved intent fences repeated/uncertain writes."""
+    host.private_path(receipts.directory, directory=True)
+    identifier(operation_id)
+    fd = os.open(source, os.O_RDONLY | os.O_NOFOLLOW)
+    with os.fdopen(fd, "rb") as stream:
+        before = os.fstat(stream.fileno())
+        if (not stat.S_ISREG(before.st_mode) or before.st_nlink != 1
+                or before.st_size > STATIC_MAX_BYTES):
+            raise ValueError("HOLD_BOUNDED_REGULAR_STATIC_FILE_REQUIRED")
+        body = stream.read(STATIC_MAX_BYTES + 1)
+        after = os.fstat(stream.fileno())
+        if len(body) > STATIC_MAX_BYTES or any(getattr(before, k) != getattr(after, k)
+                for k in ("st_dev", "st_ino", "st_size", "st_mtime_ns", "st_ctime_ns")):
+            raise ValueError("HOLD_STATIC_SOURCE_CHANGED")
+    if sha(body) != pin(source_pin):
+        raise ValueError("HOLD_STATIC_SOURCE_CHANGED")
+    previous = None if previous_pin == "ABSENT" else pin(previous_pin)
+    with receipts.locked():
+        if receipts.get(operation_id, "static-intent"):
+            raise ValueError("HOLD_STATIC_READBACK_REQUIRED_NO_UPLOAD_RETRY")
+        observed = static_read(value, transport)
+        if observed["sha256"] != previous:
+            raise ValueError("HOLD_STATIC_PREDECESSOR_CHANGED")
+        # Preserve the original bytes privately before authorizing replacement.
+        receipts.put(operation_id, "static-backup", observed)
+        intent = {"binding_sha256": binding_pin, "sha256": source_pin,
+                  "previous_sha256": previous, "root_identity": observed["root_identity"]}
+        receipts.put(operation_id, "static-intent", intent)
+        payload = {"mode": "install", "webroot": value["webroot"],
+                   "root_identity": observed["root_identity"],
+                   "expected_previous_sha256": previous, "sha256": source_pin,
+                   "body": base64.b64encode(body).decode()}
+        try:
+            transport(value, payload)
+            outcome = "SSH_RETURNED"
+        except (OSError, ValueError, subprocess.SubprocessError):
+            outcome = "SSH_OUTCOME_UNKNOWN"
+        receipts.put(operation_id, "static-transport", {"outcome": outcome})
+        # A fresh separate SSH read decides the file effect, including lost ACK.
+        return static_reconcile(value, binding_pin, operation_id, receipts, transport)
+
+
+def static_public_readback(domain, expected, opener=None):
+    """A static page needs no running Mesh, Firefox or native terminal."""
+    if domain != "raumzeitterminal.de":
+        raise ValueError("HOLD_EXACT_PUBLIC_DOMAIN_REQUIRED")
+    pin(expected)
+    opener = opener or urllib.request.build_opener(NoRedirect())
+    observations = []
+    for name in (domain, "www." + domain):
+        url = "https://" + name + "/"
+        item = {"url": url, "verified": False}
+        try:
+            request = urllib.request.Request(url, headers={"Cache-Control": "no-cache",
+                                                          "Accept-Encoding": "identity"})
+            with opener.open(request, timeout=15) as response:
+                body = response.read(STATIC_MAX_BYTES + 1)
+                item.update(status=response.status, sha256=sha(body))
+                item["verified"] = (response.geturl() == url and response.status == 200
+                                    and len(body) <= STATIC_MAX_BYTES and sha(body) == expected)
+        except (OSError, ValueError, ProviderError):
+            item["boundary"] = "HTTPS_OR_EXACT_CONTENT_NOT_VERIFIED"
+        observations.append(item)
+    return {"schema": "qikvrt-static-public-readback/v1", "observations": observations,
+            "state": "PUBLIC_STATIC_BYTES_VERIFIED" if all(x["verified"] for x in observations)
+            else "HOLD_PUBLIC_STATIC_READBACK", "effect_ack_done": False}
+
+
+def static_execute(args):
+    if args.operation == "host-static-public-readback":
+        return static_public_readback("raumzeitterminal.de", args.static_file_sha256)
+    value = static_binding(args.production_binding, args.binding_sha256)
+    if args.operation == "host-static-readback":
+        observed = static_read(value)
+        return {k: v for k, v in observed.items() if k != "body"}
+    if not args.provider_receipts or not args.host_operation_id:
+        raise ValueError("HOLD_ORIGINAL_PRIVATE_RECEIPTS_AND_OPERATION_ID_REQUIRED")
+    receipts = Receipts(args.provider_receipts)
+    if args.operation == "host-static-reconcile":
+        with receipts.locked():
+            return static_reconcile(value, args.binding_sha256, args.host_operation_id, receipts)
+    if args.operation != "host-static-upload" or args.static_file is None:
+        raise ValueError("HOLD_EXACT_STATIC_UPLOAD_REQUIRED")
+    return static_upload(value, args.binding_sha256, args.static_file,
+                         args.static_file_sha256, args.expected_static_sha256,
+                         args.host_operation_id, receipts)
+
+
 class Receipts:
     """Reuse S1 private/fsync primitives; immutable receipts, not another event ledger."""
     def __init__(self, directory):
@@ -766,6 +1030,8 @@ def api_from_args(args, api_class=API):
 
 
 def execute(args, api_class=API):
+    if args.operation.startswith("host-static-"):
+        return static_execute(args)
     if args.provider not in PRODUCTS: raise ValueError("SUPPORTED_PROVIDER_REQUIRED")
     local_key = None
     if args.provider_public_key:
@@ -954,3 +1220,4 @@ def repository_readonly(directory, subject):
         raise ValueError("HOLD_IONOS_METADATA_RECEIPT_READBACK_MISMATCH")
     return receipt
     raise ValueError("SUPPORTED_PROVIDER_OPERATION_REQUIRED")
+

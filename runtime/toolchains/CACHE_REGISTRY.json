@@ -737,6 +737,28 @@
       ],
       "version": "1.14.2"
     },
+    "ssh": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "tools/qikvrt_self_host_provider.py",
+        "tests/test_self_host_static.py",
+        "runtime/self-host/STATIC_DELIVERY.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "existing owner-controlled administrative host: distribution openssh-client package"
+      ],
+      "profiles": [
+        "self-host-static-delivery"
+      ],
+      "provider": "Existing OS distribution OpenSSH client; explicit host provisioning only, no key generation or replacement runtime",
+      "trusted_save": false,
+      "verification": [
+        "OpenSSH strict known-hosts file SHA-256 and BatchMode contract; one connection attempt, no password/proxy/agent fallback",
+        "Actual remote installer in disposable local directories; atomic install and independent original-byte readback; lost-ACK and stale-predecessor controls"
+      ],
+      "version": "strict-pinned-host-key-batch-transfer"
+    },
     "systemd": {
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",

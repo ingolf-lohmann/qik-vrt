@@ -41,3 +41,4 @@ personal-auth-crypto	cryptography50.0.2+cffi2.1.1+pycparser3.0	python-3.12-linux
 secret-tool	system-libsecret-executable-contract	linux-desktop-user	NO_BUNDLED_ARCHIVE	BEHAVIORAL_CONTRACT_ONLY	LGPL-2.1-or-later	optional_personal_protected_login_collection
 personal-retrieval	sentence-transformers6.0.0+transformers5.4.0+torch2.14.1	python-3.12-linux	requirements-personal-retrieval.txt	VERSION_CONTRACT_ONLY	UPSTREAM_DISTRIBUTION_LICENSES_APPLY	optional_local_source_ranking
 
+ssh	strict-pinned-host-key-batch-transfer	linux	NO_BUNDLED_ARCHIVE	BEHAVIORAL_CONTRACT_ONLY	BSD_AND_OPENSSH_COMPONENT_LICENSES	optional_existing_owned_VPS_static_file_transfer
