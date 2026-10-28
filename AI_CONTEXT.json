@@ -297,5 +297,14 @@
     ],
     "requires_actual_use": true,
     "client_timer_as_continuation": false
+  },
+  "owner_conditional_merge": {
+    "source": "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json",
+    "json_pointer": "/conditional_merge_decision",
+    "decision_id": "OWNER-CONFLICT-FREE-GREEN-MERGE-20261028",
+    "source_sha256": "1c99f92090e68fce949267cc81a92ddc3631f566081b4ce8029ee2a7acc33926",
+    "github_route": "REST_API_ONLY",
+    "scope": "CONFLICT_FREE_GREEN_TEST_REPOSITORY_MERGE_AND_AUTONOMOUS_CONTINUATION",
+    "merge_is_runtime_acceptance": false
   }
 }
