@@ -97,5 +97,64 @@
     "EFFECT_ACK_DONE": false,
     "FULL_SYNC": false,
     "SYMMETRIC_CANONICALITY": false
+  },
+  "conditional_merge_decision": {
+    "schema": "qikvrt_owner_conditional_repository_merge_authorization_v1",
+    "decision_id": "OWNER-CONFLICT-FREE-GREEN-MERGE-20261028",
+    "state": "ACTIVE",
+    "effective_date": "2026-10-28",
+    "owner": {
+      "name": "Ingolf Lohmann",
+      "type": "NATURAL_PERSON",
+      "github_login": "ingolf-lohmann",
+      "github_id": 294949349
+    },
+    "repository": "ingolf-lohmann/qik-vrt",
+    "source_instruction": {
+      "source_kind": "DIRECT_HUMAN_INSTRUCTION_IN_CURRENT_SESSION",
+      "text": "Also ich habe jetzt manuell von Hand gemerged. Mein Kommentar: Wenn etwas konfliktfrei gemerged werden kann und dabei die bestehenden Tests grün sind, erteile ich hiermit die Freigabe zum automatischen Mergen und anschließenden Weitermachen in Autonoma Art und Weise",
+      "sha256": "8dde795ae3a11aab14ad95d9b30b8884e2cf8cf57cee56b59514a1873778711a"
+    },
+    "authorizes": {
+      "conflict_free_green_test_pull_request_merge": true,
+      "autonomous_continuation_after_verified_merge": true,
+      "repeated_owner_authorization_required": false
+    },
+    "conditions": [
+      "CURRENT_PR_CONFLICT_FREE",
+      "EXISTING_APPLICABLE_TESTS_GREEN_ON_EXACT_HEAD",
+      "REOBSERVE_CURRENT_MAIN_HEAD_TREE_AND_COMPETING_WRITERS",
+      "RESPECT_NATIVE_PLATFORM_PROTECTIONS",
+      "BIND_REST_MERGE_TO_EXPECTED_PR_HEAD",
+      "INDEPENDENT_MERGE_MAIN_TREE_AND_ORDERED_PARENT_READBACK"
+    ],
+    "execution": {
+      "github_route": "REST_API_ONLY",
+      "existing_direct_connector_merge_authorized": true,
+      "unchanged_failure": "NO_RETRY_UNTIL_MATERIAL_CHANGE",
+      "ambiguous_merge": "INDEPENDENT_PR_AND_MAIN_READBACK_BEFORE_ANY_NEW_WRITE",
+      "draft_transition": "REQUIRES_AN_ACTUALLY_EXPOSED_ADMITTED_OPERATION",
+      "known_mechanical_integrity_overlap": "SERIALIZE_THEN_REGENERATE_THE_SUCCESSOR_AGAINST_NEW_MAIN"
+    },
+    "effect_boundaries": {
+      "rest_merge_is_atomic_old_main_cas_qualification": false,
+      "legacy_cas_qualification_is_required_for_this_owner_authorized_rest_merge": false,
+      "existing_cas_executor_qualification_and_enablement_changed": false,
+      "platform_protection_bypass_authorized": false,
+      "new_human_source_inspection_inferred": false,
+      "runtime_host_domain_acceptance_inferred": false,
+      "productive_effect_ack_done_inferred": false
+    },
+    "manual_predecessor_merge": {
+      "pull_request": 620,
+      "merge_commit": "9f7cad6cf72890a8dc6cb79ae908b5f0a0f0b65a",
+      "tree": "89fc3b51b2118adfa5db33f8f4c9ca765591a6e1",
+      "merged_at": "2026-10-28T08:49:21Z",
+      "provenance": "INDEPENDENT_GITHUB_REST_READBACK"
+    },
+    "attribution": {
+      "human_contribution": "Conditional merge authorization and manual predecessor merge — Ingolf Lohmann.",
+      "artificial_cognitive_contribution": "Readback, scoped operational binding and persistence — OpenAI Codex."
+    }
   }
 }
