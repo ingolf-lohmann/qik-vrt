@@ -261,3 +261,25 @@ personal-retrieval-test:
 	node tests/test_qikvrt_personal_retrieval_ui.cjs
 
 test: personal-retrieval-test
+
+# Portable C90 companion to the Python runtime.
+C90_OUTPUT_DIR ?= .qikvrt/cache/c90
+
+.PHONY: c90 fixed-q16-compile fixed-q16-test benchmark-c90 c90-assembly
+c90: effect-ack-core-test fixed-q16-test
+
+fixed-q16-compile:
+	$(CC) $(EFFECT_ACK_C90_CFLAGS) -pedantic-errors -Iinclude -fsyntax-only src/fixed_q16.c tests/test_fixed_q16.c tools/qikvrt_c90_benchmark.c
+
+fixed-q16-test: fixed-q16-compile
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 CC="$(CC)" $(PYTHON) -B tests/test_fixed_q16.py
+
+benchmark-c90:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 CC="$(CC)" $(PYTHON) -B tools/qikvrt_c90_benchmark.py
+
+c90-assembly:
+	mkdir -p "$(C90_OUTPUT_DIR)"
+	$(CC) $(EFFECT_ACK_C90_CFLAGS) -pedantic-errors -O2 -Iinclude -S src/fixed_q16.c -o "$(C90_OUTPUT_DIR)/fixed_q16.s"
+
+compile: fixed-q16-compile
+test: fixed-q16-test
