@@ -23,7 +23,7 @@
   },
   "credential": {
     "environment_variable": "ZENODO_ACCESS_TOKEN",
-    "storage": "GitHub Actions secret only",
+    "storage": "Existing GitHub Actions secret or existing protected runtime credential-reference files outside Git; never source/cache/arguments",
     "cacheable": false
   },
   "cache": {
@@ -114,6 +114,19 @@
       "credential_source": "Existing target-repository secrets.ZENODO_ACCESS_TOKEN and scoped github.token; source code does not transfer or prove credentials.",
       "admission": "Canonical candidate-specific authorization, existing v2 proof/return/one-use gates, complete ordinary tests, exact fresh Authority Main readback.",
       "completion": "Independent public byte readback and Authority evidence persistence remain required; an Actions artifact or publisher return alone is not EFFECT_ACK_DONE."
+    },
+    {
+      "launcher": "tools/qikvrt_self_host.py",
+      "operations": [
+        "publication-check",
+        "publication-resume",
+        "publication-supervisor"
+      ],
+      "repository": "ingolf-lohmann/qik-vrt",
+      "admission": "Exact private request, committed current Authority policy/head/tree/publisher, original v2 proof/return/authorization/one-use/reconciliation gates.",
+      "credential_source": "Existing protected-runtime credential-reference registry and provider-managed owner-only files; metadata and source do not prove delivery.",
+      "source_recovery": "Original PR463 ef1d2953a30c1bf27c4a9bc385316c9f50c0c114; current canonical Authority resolved from policy.",
+      "completion": "Independent public byte readback and durable Authority receipts; no global EFFECT_ACK_DONE from launcher return."
     }
   ],
   "editorial_continuation": {

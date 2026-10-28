@@ -885,6 +885,31 @@ class MeshContractTests(unittest.TestCase):
 
 
 class StandaloneTests(unittest.TestCase):
+    def test_packaged_publisher_and_proof_contracts_cold_start_without_checkout_or_credentials(self):
+        code = """
+import json
+from pathlib import Path
+from tools import qikvrt_self_host as host, qikvrt_zenodo_publish as publisher
+root = Path.cwd()
+assert host.deployment_roles(root)['authority_repository'] == publisher.PRODUCTION_REPOSITORY
+assert host.mesh_contract(root)
+assert publisher.machine_proof.publication_contract_blobs(root, v3=True)
+assert all((root / path).is_file() for path in host.PUBLICATION_BOOTSTRAP_FILES)
+print(json.dumps({'state': 'EXPORTED_PUBLICATION_CLOSURE_VERIFIED', 'effect_ack_done': False}))
+"""
+        env = {key: os.environ[key] for key in ('PATH', 'LANG') if key in os.environ}
+        result = subprocess.run([sys.executable, '-B', '-S', '-c', code], cwd=self.export,
+                                env=env, capture_output=True, text=True, timeout=30)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual(json.loads(result.stdout)['state'], 'EXPORTED_PUBLICATION_CLOSURE_VERIFIED')
+        refused = subprocess.run([sys.executable, '-B', '-S', 'tools/qikvrt_self_host.py',
+            'publication-check', '--publication-request', str(self.work / 'absent-private-request'),
+            '--publication-request-sha256', '0' * 64], cwd=self.export, env=env,
+            capture_output=True, text=True, timeout=30)
+        self.assertEqual(refused.returncode, 2)
+        self.assertEqual(json.loads(refused.stdout)['cause'], 'PUBLICATION_GATE_REFUSED')
+        self.assertEqual(refused.stderr, '')
+
     def test_portable_restore_needs_only_python_and_checks_independent_pins_and_absent_target(self):
         exported = self.work / 'portable-restore-input'
         receipt = host.portable(self.source, exported, self.head, self.tree)
