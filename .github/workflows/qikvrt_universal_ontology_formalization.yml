@@ -37,6 +37,10 @@ jobs:
   exact-head-finite-model:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
+    env:
+      LEAN_VERSION: "4.19.0"
+      LEAN_ARCHIVE_BYTES: "343842845"
+      LEAN_ARCHIVE_SHA256: "6fe3ce97a58f44e2b3567d455b994eacec5bfe9ae7774f2a573444480ba813fe"
     steps:
       - name: Check out exact candidate head
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -59,10 +63,69 @@ jobs:
           echo "head=$actual" >> "$GITHUB_OUTPUT"
           echo "tree=$tree" >> "$GITHUB_OUTPUT"
 
-      - uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9 # v1
+      - name: Restore hash-locked Lean archive
+        id: lean_archive
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
-          lake-package-directory: formalization/QIKVRT_Formalization_v2.0
-          test: false
+          path: ${{ runner.temp }}/qikvrt-lean/lean-4.19.0-linux.tar.zst
+          key: qikvrt-lean-release-v1-${{ runner.os }}-${{ runner.arch }}-4.19.0-x86_64-${{ hashFiles('runtime/toolchains/**', '.github/workflows/qikvrt_universal_ontology_formalization.yml', 'formalization/QIKVRT_Formalization_v2.0/lean-toolchain') }}
+
+      - name: Provision and verify exact Lean release
+        shell: bash
+        timeout-minutes: 10
+        run: |
+          set -euo pipefail
+          test "$(cat formalization/QIKVRT_Formalization_v2.0/lean-toolchain)" = "leanprover/lean4:v${LEAN_VERSION}"
+          test "$(uname -m)" = "x86_64"
+          command -v curl tar zstd sha256sum stat uname mktemp mkdir mv rm >/dev/null
+          cache_root="$RUNNER_TEMP/qikvrt-lean"
+          archive="$cache_root/lean-${LEAN_VERSION}-linux.tar.zst"
+          install_root="$RUNNER_TEMP/lean-${LEAN_VERSION}-linux"
+          test ! -L "$cache_root"
+          test ! -L "$archive"
+          test ! -e "$install_root"
+          stage="$(mktemp -d "$RUNNER_TEMP/lean-stage.XXXXXX")"
+          trap 'rm -rf "$stage"' EXIT
+          verify_archive() {
+            test -f "$1"
+            test ! -L "$1"
+            test "$(stat -c '%s' "$1")" = "$LEAN_ARCHIVE_BYTES"
+            printf '%s  %s\n' "$LEAN_ARCHIVE_SHA256" "$1" | sha256sum --check --status
+          }
+          verify_release() {
+            test -x "$1/bin/lean" && test -x "$1/bin/lake" || return 1
+            lean_version="$("$1/bin/lean" --version)" || return 1
+            lake_version="$("$1/bin/lake" --version)" || return 1
+            case "$lean_version" in
+              "Lean (version ${LEAN_VERSION},"*) ;;
+              *) echo "BLOCK: unexpected Lean version" >&2; return 1 ;;
+            esac
+            case "$lake_version" in
+              *"(Lean version ${LEAN_VERSION})") ;;
+              *) echo "BLOCK: unexpected Lake toolchain" >&2; return 1 ;;
+            esac
+          }
+          if [ ! -e "$archive" ]; then
+            curl --fail --location --retry 2 --retry-all-errors \
+              --retry-max-time 540 --connect-timeout 20 --max-time 180 \
+              --output "$stage/lean.tar.zst" \
+              "https://github.com/leanprover/lean4/releases/download/v${LEAN_VERSION}/lean-${LEAN_VERSION}-linux.tar.zst"
+            verify_archive "$stage/lean.tar.zst"
+            mkdir -p "$cache_root"
+            mv "$stage/lean.tar.zst" "$archive"
+          fi
+          verify_archive "$archive"
+          mkdir "$stage/root"
+          tar --zstd --no-same-owner -xf "$archive" -C "$stage/root" --strip-components=1
+          verify_release "$stage/root"
+          mv "$stage/root" "$install_root"
+          if ! verify_release "$install_root"; then
+            rm -rf "$install_root"
+            exit 1
+          fi
+          "$install_root/bin/lean" --version
+          "$install_root/bin/lake" --version
+          echo "$install_root/bin" >> "$GITHUB_PATH"
 
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
@@ -74,7 +137,9 @@ jobs:
 
       - name: Build consolidated Lean library
         working-directory: formalization/QIKVRT_Formalization_v2.0
-        run: lake build QIKVRTUniversalOntology
+        run: |
+          lake build
+          lake build QIKVRTUniversalOntology
 
       - name: Run complete 32-theorem core axiom audit
         working-directory: formalization/QIKVRT_Formalization_v2.0
@@ -166,3 +231,10 @@ jobs:
             formalization/QIKVRT_Formalization_v2.0/.lake/build/UNIVERSAL_ONTOLOGY_KERNEL_RECEIPT.json
             formalization/QIKVRT_Formalization_v2.0/.lake/build/universal-ontology-axioms.txt
             formalization/QIKVRT_Formalization_v2.0/.lake/build/universal-ontology-extended-axioms.txt
+
+      - name: Save verified Lean archive from trusted Main only
+        if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ runner.temp }}/qikvrt-lean/lean-4.19.0-linux.tar.zst
+          key: ${{ steps.lean_archive.outputs.cache-primary-key }}

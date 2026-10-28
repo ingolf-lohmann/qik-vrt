@@ -31,6 +31,29 @@
       ],
       "version": "exact-executable-binding"
     },
+    "bash": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        ".github/workflows/qikvrt_universal_ontology_formalization.yml",
+        "tests/test_universal_ontology_claim_closure.py",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "github-hosted-runner-image:ubuntu-24.04-x64"
+      ],
+      "profiles": [
+        "formal",
+        "all"
+      ],
+      "provider": "Existing GitHub ubuntu-24.04 x64 runner packages; behavioral contract, no source redistribution or package installation",
+      "trusted_save": false,
+      "verification": [
+        "Bash shell, pipefail and staged cleanup behavior",
+        "Required command availability before provisioning; source-bound archive hash/size and executable self-tests; isolated positive/negative shell regressions."
+      ],
+      "version": "bash-euo-pipefail-v1"
+    },
     "cc": {
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
@@ -52,6 +75,52 @@
         "core execution tests"
       ],
       "version": "ansi-c90"
+    },
+    "coreutils": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        ".github/workflows/qikvrt_universal_ontology_formalization.yml",
+        "tests/test_universal_ontology_claim_closure.py",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "github-hosted-runner-image:ubuntu-24.04-x64"
+      ],
+      "profiles": [
+        "formal",
+        "all"
+      ],
+      "provider": "Existing GitHub ubuntu-24.04 x64 runner packages; behavioral contract, no source redistribution or package installation",
+      "trusted_save": false,
+      "verification": [
+        "sha256sum, stat, uname, mktemp and staged mkdir/mv/rm behavior",
+        "Required command availability before provisioning; source-bound archive hash/size and executable self-tests; isolated positive/negative shell regressions."
+      ],
+      "version": "sha256-staging-v1"
+    },
+    "curl": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        ".github/workflows/qikvrt_universal_ontology_formalization.yml",
+        "tests/test_universal_ontology_claim_closure.py",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "github-hosted-runner-image:ubuntu-24.04-x64"
+      ],
+      "profiles": [
+        "formal",
+        "all"
+      ],
+      "provider": "Existing GitHub ubuntu-24.04 x64 runner packages; behavioral contract, no source redistribution or package installation",
+      "trusted_save": false,
+      "verification": [
+        "HTTPS/TLS fail-closed release GET, redirect and bounded retry/deadline options",
+        "Required command availability before provisioning; source-bound archive hash/size and executable self-tests; isolated positive/negative shell regressions."
+      ],
+      "version": "bounded-https-get-v1"
     },
     "docker": {
       "authority_files": [
@@ -252,28 +321,46 @@
       "version": "Mozilla-primary-key-fingerprint-contract"
     },
     "lean": {
+      "action_pins": {
+        "actions/cache/restore": {
+          "commit": "55cc8345863c7cc4c66a329aec7e433d2d1c52a9",
+          "using": "node24",
+          "version": "v6.1.0"
+        },
+        "actions/cache/save": {
+          "commit": "55cc8345863c7cc4c66a329aec7e433d2d1c52a9",
+          "using": "node24",
+          "version": "v6.1.0"
+        }
+      },
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
         "tools/bootstrap-runtime.sh",
-        ".github/workflows/qikvrt_formalization_and_audio.yml"
+        ".github/workflows/qikvrt_formalization_and_audio.yml",
+        ".github/workflows/qikvrt_universal_ontology_formalization.yml",
+        "tests/test_universal_ontology_claim_closure.py",
+        "runtime/toolchains/PROVENANCE.md"
       ],
       "cache_class": "build-cache",
       "cache_locations": [
         "~/.elan",
         "formalization/**/.lake/packages",
-        "formalization/**/.lake/build"
+        "formalization/**/.lake/build",
+        "RUNNER_TEMP/qikvrt-lean/lean-4.19.0-linux.tar.zst: SHA-256-locked archive; fresh extraction on every run"
       ],
       "profiles": [
         "formal",
         "all"
       ],
-      "provider": "leanprover/lean-action+actions/cache",
+      "provider": "official leanprover/lean4 release+actions/cache; leanprover/lean-action for other formal lanes",
       "trusted_save": true,
       "verification": [
         "lean-toolchain contract",
         "lake manifest digest",
         "lake build",
-        "kernel proof checks"
+        "kernel proof checks",
+        "official v4.19.0 Linux x86_64 archive:343842845bytes sha256:6fe3ce97a58f44e2b3567d455b994eacec5bfe9ae7774f2a573444480ba813fe; bounded staged download",
+        "cold and restored archive hash/size checks, fresh extraction and exact Lean/Lake self-tests before PATH activation; original builds/kernel audits mandatory; cache save restricted to successful trusted-Main dispatch"
       ],
       "version": "4.19.0"
     },
@@ -307,7 +394,8 @@
         "runtime/offline/browser-tests/webkit-apt-cache.test.mjs",
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
         "tests/test_workflow_action_runtime_pins.py",
-        "tools/offline-audio-transcription/package-lock.json"
+        "tools/offline-audio-transcription/package-lock.json",
+        ".github/workflows/qikvrt_universal_ontology_formalization.yml"
       ],
       "cache_class": "hosted-toolcache",
       "cache_locations": [
@@ -787,6 +875,29 @@
       ],
       "version": "252-or-newer-unit-contract"
     },
+    "tar": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        ".github/workflows/qikvrt_universal_ontology_formalization.yml",
+        "tests/test_universal_ontology_claim_closure.py",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "github-hosted-runner-image:ubuntu-24.04-x64"
+      ],
+      "profiles": [
+        "formal",
+        "all"
+      ],
+      "provider": "Existing GitHub ubuntu-24.04 x64 runner packages; behavioral contract, no source redistribution or package installation",
+      "trusted_save": false,
+      "verification": [
+        "GNU tar zstd extraction with strip-components and no-same-owner",
+        "Required command availability before provisioning; source-bound archive hash/size and executable self-tests; isolated positive/negative shell regressions."
+      ],
+      "version": "gnu-tar-zstd-v1"
+    },
     "websockify": {
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
@@ -949,6 +1060,29 @@
         "schema-validation tests"
       ],
       "version": "4.4.3"
+    },
+    "zstd": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        ".github/workflows/qikvrt_universal_ontology_formalization.yml",
+        "tests/test_universal_ontology_claim_closure.py",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "github-hosted-runner-image:ubuntu-24.04-x64"
+      ],
+      "profiles": [
+        "formal",
+        "all"
+      ],
+      "provider": "Existing GitHub ubuntu-24.04 x64 runner packages; behavioral contract, no source redistribution or package installation",
+      "trusted_save": false,
+      "verification": [
+        "Decode the SHA-256-verified original Lean release archive",
+        "Required command availability before provisioning; source-bound archive hash/size and executable self-tests; isolated positive/negative shell regressions."
+      ],
+      "version": "zstd-decode-v1"
     }
   },
   "coverage_authority": "runtime/toolchains/CACHE_COVERAGE.json",
