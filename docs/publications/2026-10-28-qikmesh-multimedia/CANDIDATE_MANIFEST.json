@@ -1,0 +1,182 @@
+{
+  "schema": "qikvrt-frozen-reader-candidate-v1",
+  "publication_id": "qikvrt-qikmesh-multimedia-reader-20261028",
+  "files": [
+    {
+      "path": "docs/publications/2026-10-28-qikmesh-multimedia/ARTICLE_DE.md",
+      "bytes": 14709,
+      "sha256": "9de83b3e977842d8aad0e6261dc3e46ddc674139b5ea72ba4c45733ff7c9b818",
+      "git_blob_sha1": "8b69e7b408cfd558617addabb11ac3cbdcdec347"
+    },
+    {
+      "path": "docs/publications/2026-10-28-qikmesh-multimedia/ARTICLE_DE.txt",
+      "bytes": 14622,
+      "sha256": "d3b05a7c859e1680c22b0071b497fc7caffd434cb4d546fd5b914505e4f9d941",
+      "git_blob_sha1": "6dda6f67bab53edb2446bf2fc8d13986fda1a26d"
+    },
+    {
+      "path": "docs/publications/2026-10-28-qikmesh-multimedia/CHANGE_NOTICE.md",
+      "bytes": 1668,
+      "sha256": "d3de6a4cf9e4c593c1f950196c4a205cf90b8619cbb0888d4e515115dca01783",
+      "git_blob_sha1": "adf24305f8e2039565b5522ac1de6b16e0b86cbc"
+    },
+    {
+      "path": "docs/publications/2026-10-28-qikmesh-multimedia/CLAIM_MATRIX.json",
+      "bytes": 8439,
+      "sha256": "2195719de3ba419abfcf37b9bf82a71fbde4891e00a386d544ca97424c15f3fd",
+      "git_blob_sha1": "7ba860021c6543a028c3a2dd842f58f119765fa4"
+    },
+    {
+      "path": "docs/publications/2026-10-28-qikmesh-multimedia/MACHINE_PROOF_PREPARATION.json",
+      "bytes": 792,
+      "sha256": "6604c7f466674869429cd11cabc7608cf6933ad925bc4323fd178d32b18b3534",
+      "git_blob_sha1": "9b69bad7ad2e8c1c246338dfc8153811ddc00e0a"
+    },
+    {
+      "path": "docs/publications/2026-10-28-qikmesh-multimedia/OWNER_ORIGINAL.txt",
+      "bytes": 7659,
+      "sha256": "623b9191e74f3d031e37bace98ee42e1c3d1cd81cd58f4107b335a0b9b696558",
+      "git_blob_sha1": "c2f479020362ef2c52148af1525ceaf1f3cf6d47"
+    },
+    {
+      "path": "docs/publications/2026-10-28-qikmesh-multimedia/QIKVRT_Codec_verstaendlich.pdf",
+      "bytes": 60639,
+      "sha256": "39a5d70a30ee5bdefffea8bf861b8d5a98a50fb32a86f96c717e059627599615",
+      "git_blob_sha1": "27d1c479e8d09cc7c870ba5823f067224bba693c"
+    },
+    {
+      "path": "docs/publications/2026-10-28-qikmesh-multimedia/README.md",
+      "bytes": 1284,
+      "sha256": "c2e7c0a43938e203ccee4cb49211daec4584a9b9c92330b6340519e8d8266a96",
+      "git_blob_sha1": "a61d765cd5c412dd495edd6e61e00a66b563c875"
+    },
+    {
+      "path": "docs/publications/2026-10-28-qikmesh-multimedia/SOURCES.json",
+      "bytes": 1787,
+      "sha256": "3ecbc187cf580b9c4c543c024357b6d1c653d88232cf45d80004b04d7a6dec70",
+      "git_blob_sha1": "e7b86648a7935ac212b2f96a963aeabfbbf72406"
+    },
+    {
+      "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/CARRIER_READBACK.json",
+      "bytes": 3577,
+      "sha256": "226baa11940adbc7f9d5171b01099ab768c21264b8e2ff160838dbf4556a79b8",
+      "git_blob_sha1": "82207b1e1d7e1f543b3690fbf2a3b627d0f76e3f"
+    },
+    {
+      "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/CODEC_SOURCE_IDENTITY.json",
+      "bytes": 374,
+      "sha256": "f9df7440f833b6448495ad2dc7b2e4c277190fd109964eae34d74c917e228d14",
+      "git_blob_sha1": "0081a7415f70ed3aa2c3b33bfc6bf2d3078e553a"
+    },
+    {
+      "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/HISTORICAL_JOURNAL_READBACK.json",
+      "bytes": 200,
+      "sha256": "aa6990ce822b771885ba2f588f3c64f68e7db08c77734e9a9331ceb7eae0a23d",
+      "git_blob_sha1": "3a0f1fe8b8254c1f60ffa95a67e333714ec85974"
+    },
+    {
+      "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/LOCAL_PUBLICATION_NATIVE_READBACK.json",
+      "bytes": 18891,
+      "sha256": "4af7d15efa521199786c10840704ad6645bdc6313355f8f8b12d1d9b91f0cce7",
+      "git_blob_sha1": "e8866c462e994a5cd71afe74a640452899f63d66"
+    },
+    {
+      "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/NATIVE_READBACK.json",
+      "bytes": 7780,
+      "sha256": "94a9a0e1c6ae7e5026f4ef44572da4ad5835741ed973faea9d7db925e15fe2d6",
+      "git_blob_sha1": "fd01f5b343312372132773db822acd561a4cab2f"
+    },
+    {
+      "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/PUBLIC_SOURCE_READBACK.json",
+      "bytes": 2056,
+      "sha256": "2468c137647c2604de08bcdc51aacfe16e0c75dff3836b7344d40d75e6dfe8b3",
+      "git_blob_sha1": "b1b15de98099bad67af2e2ea49be6b421bcac5ea"
+    },
+    {
+      "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/QIKVRT_Rekursive_Selbstdemonstration_20261028.qikmesh",
+      "bytes": 2273118,
+      "sha256": "6d3421652aa1ba0f4782e30120f407183d3be2c49a069d6d3d1d17998f5bfac0",
+      "git_blob_sha1": "cfcefd14867f9a4cabeff22ff9b4a4b08630e442"
+    },
+    {
+      "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/READBACK_RECEIPT.json",
+      "bytes": 4301,
+      "sha256": "fcc8cc2456f48215c77da4c2cca3972e727a2387ab21ad24770492cba6a40630",
+      "git_blob_sha1": "c2670bbbf32c14467b8a926f18c7d1b3c3db812e"
+    },
+    {
+      "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/VISIBLE_LOCATORS_CHECK.json",
+      "bytes": 786,
+      "sha256": "96b082f8df761740c9506d9b7ff6f4d2dbebff52e447d3498ee0ad61f29a79e8",
+      "git_blob_sha1": "edc31cd43f62d8604d2cbae0020367e3ac62060b"
+    },
+    {
+      "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/mesh-file-codec.js",
+      "bytes": 11663,
+      "sha256": "8c8d73f45cc8298c765842759451eaa3686541765952a77d05f2f928c7160515",
+      "git_blob_sha1": "ee51d3935ff6937e23861aaed37ab33546ff486d"
+    },
+    {
+      "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/sources/21711193/CLAIM_MATRIX.json",
+      "bytes": 13922,
+      "sha256": "6ca018de971cc351091c36e11a708ef852e6079991289b10a962603aef0fadcb",
+      "git_blob_sha1": "3e478aea36cc03a3ae2b71dd70ef2512cee0bc78"
+    },
+    {
+      "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/sources/21711193/EVIDENCE_BOUNDARY.md",
+      "bytes": 8662,
+      "sha256": "1019df148d7fbe7dc881b0ade837d6adde06dd034460630a23f920aa6d0b8eba",
+      "git_blob_sha1": "1ea4d65c4635353b9ef2f383560ed6f6289c6c93"
+    },
+    {
+      "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/sources/21711193/KERNEL_RECEIPT.json",
+      "bytes": 9645,
+      "sha256": "b7f0246798e2e3bb50a49580251e5b4909e915dd71da27770c19413cc40d9df6",
+      "git_blob_sha1": "554f05dd7a996a8d3e90201ad856f6caf2f18ca1"
+    },
+    {
+      "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/sources/21711193-metadata.json",
+      "bytes": 14830,
+      "sha256": "a0d63e1c93ab2c9e8304b3bf3ae8ddc676bd7bf273044d6f2a9e6029c1b9d321",
+      "git_blob_sha1": "fe307b124c91294d0c0cecd1003127bf61cede9d"
+    },
+    {
+      "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/sources/21888130/ROUND_TRIP_PROMOTED_FORMAL_RESULTS_V1.md",
+      "bytes": 5150,
+      "sha256": "e5fd9c53a0bf6c84471d9b26d0c3c06019977aa6b2367913006fa9560a3c948f",
+      "git_blob_sha1": "cc13b5530051ea7b7fe0eceae5558cd93f44611d"
+    },
+    {
+      "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/sources/21888130-metadata.json",
+      "bytes": 24350,
+      "sha256": "261da3d7c1d4b1238f7675f6621eef7e3f2e6218169529337377fa9be8f33899",
+      "git_blob_sha1": "a072e00a0e3351a41f38fdfec4698e754fbe247a"
+    },
+    {
+      "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/sources/21947141/CLAIM_MATRIX_V2.json",
+      "bytes": 6373,
+      "sha256": "01f5c79357b950cdef27487b49c5fdc1dec8a887ddf5361d7c6a02d9d812d9c6",
+      "git_blob_sha1": "9be1f2009988f3135b2498b365194b5e8065ebd6"
+    },
+    {
+      "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/sources/21947141/QIKVRT_RETROCAUSALITY_WITNESS.json",
+      "bytes": 4185,
+      "sha256": "817b0bbd38ff2d5e811c7ba4c04dff7e6b9310fbb3016309c451317d1de5b471",
+      "git_blob_sha1": "040b1915f2b6a4ba12a54654956aa8158ffde057"
+    },
+    {
+      "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/sources/21947141-metadata.json",
+      "bytes": 14628,
+      "sha256": "2ad2c818ef9b77f459e4f879a431e16579f64f08a3556fdd36b7eda697282a45",
+      "git_blob_sha1": "6af67b425f6b40064fbc47a25cb0baa055251796"
+    },
+    {
+      "path": "docs/publications/2026-10-28-qikmesh-multimedia/evidence/verify-carrier.mjs",
+      "bytes": 3304,
+      "sha256": "fb2d82855cc1819ea604acdf0d11bd2faf8e168f81c2aed5f1282110d3e9ee87",
+      "git_blob_sha1": "084808b5d87246cf40c90ddf92852b2aaffc342f"
+    }
+  ],
+  "zenodo_upload_authorized": false,
+  "original_files_preserved": true
+}

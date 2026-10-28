@@ -1,0 +1,338 @@
+{
+  "created": "2026-08-15T12:32:15.271151+00:00",
+  "modified": "2026-08-15T12:32:16.265504+00:00",
+  "id": 21947141,
+  "conceptrecid": "21947140",
+  "doi": "10.5281/zenodo.21947141",
+  "conceptdoi": "10.5281/zenodo.21947140",
+  "doi_url": "https://doi.org/10.5281/zenodo.21947141",
+  "metadata": {
+    "title": "QIK-VRT: Beobachterrelative Retrokausalität als negative Informationsrichtung",
+    "doi": "10.5281/zenodo.21947141",
+    "publication_date": "2026-08-14",
+    "description": "<p>Diese eigenständige aktuelle QIK-VRT-Synthese definiert beobachterrelative Retrokausalität als negative Informationsrichtung zwischen zwei gebundenen Ordnungen: der streng wachsenden lokalen Veränderungszeit eines Empfängers (operativ: Eigenzeit) und der absteigenden authentischen Quellenordnung nacheinander empfangener informationsführender Records.</p><p>Für raumartig getrennte Vergleichsereignisse kann das lokale Gegenwartsereignis eines Quellenbeobachters in einer gewählten Koordinatisierung im Koordinaten-Zukunftsbereich eines anderen Beobachters liegen. Diese Koordinatenzuordnung ist keine kausale Zukunftsbeziehung: Ein an das Quellenereignis gebundener Record wird erst nach seiner Erzeugung über einen zukunftsgerichteten Signalweg verfügbar.</p><p>Beigefügt sind die deutsche Hauptfassung, ihre LaTeX-Quelle, ein endlicher netzwerkfreier ausführbarer Zeuge, der kanonische Prüfreport, Claim- und Quellenbindungen sowie die öffentliche Erklärung \"An, von und für alle Menschen\". Der Zeuge prüft einen endlichen deklarativen Modellfall; er ist kein Lean-Kernel-Receipt und keine universelle Naturmessung.</p><p>Die Fassung bewahrt historische Zwischenstände. Sie behauptet weder rückwärts laufende metrische Eigenzeit noch Empfang vor Emission, Überschreiben vergangener Aufzeichnungen, kausale Schleifen, Überlichtkommunikation oder einen steuerbaren Rückkanal in die eigene kausale Vergangenheit. Die vom Autor vertretene Korrespondenzthese bleibt von unabhängiger empirischer Bestätigung und wissenschaftlichem Konsens unterschieden.</p><p>Dieser neue Record ergänzt den unveränderten historischen Round-Trip-Record 21888130; er verändert weder dessen Titel noch DOI oder Dateisatz.</p>",
+    "access_right": "open",
+    "creators": [
+      {
+        "name": "Lohmann, Ingolf",
+        "affiliation": null
+      }
+    ],
+    "keywords": [
+      "QIK-VRT",
+      "observer-relative retrocausality",
+      "beobachterrelative Retrokausalität",
+      "negative information direction",
+      "negative Informationsrichtung",
+      "local change time",
+      "lokale Veränderungszeit",
+      "Eigenzeit",
+      "temporal provenance",
+      "provenance-bound source order",
+      "Quellenordnung",
+      "Informationswirksamkeit",
+      "relational time",
+      "relationale Zeit",
+      "distributed systems",
+      "verteilte Systeme",
+      "observation fibre",
+      "Beobachtungsfaser",
+      "recovery",
+      "Delayed Choice",
+      "quantum eraser",
+      "Quantenradierer",
+      "no signalling",
+      "Verantwortung",
+      "Zukunft"
+    ],
+    "related_identifiers": [
+      {
+        "identifier": "10.5281/zenodo.21888130",
+        "relation": "isDerivedFrom",
+        "scheme": "doi"
+      },
+      {
+        "identifier": "https://github.com/Goldkelch/qik-vrt",
+        "relation": "isSupplementTo",
+        "scheme": "url"
+      }
+    ],
+    "version": "1.1.1",
+    "language": "deu",
+    "resource_type": {
+      "title": "Working paper",
+      "type": "publication",
+      "subtype": "workingpaper"
+    },
+    "license": {
+      "id": "cc-by-nc-nd-4.0"
+    },
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "21947140"
+          }
+        }
+      ]
+    },
+    "notes": "Gemischte Lizenzgrenze: Dokumentation und nicht ausführbare Evidenzartefakte stehen, soweit nicht anders bezeichnet, unter CC BY-NC-ND 4.0; der enthaltene Python-Prüfer unter PolyForm Noncommercial 1.0.0. Dieser Record ist als Working Paper gedacht. Zenodo-Persistenz belegt veröffentlichte Byteidentität, nicht Peer Review, eine universelle Naturtheorie, unabhängige empirische Bestätigung oder wissenschaftlichen Konsens."
+  },
+  "title": "QIK-VRT: Beobachterrelative Retrokausalität als negative Informationsrichtung",
+  "links": {
+    "self": "https://zenodo.org/api/records/21947141",
+    "self_html": "https://zenodo.org/records/21947141",
+    "preview_html": "https://zenodo.org/records/21947141?preview=1",
+    "doi": "https://doi.org/10.5281/zenodo.21947141",
+    "self_doi": "https://doi.org/10.5281/zenodo.21947141",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.21947141",
+    "reserve_doi": "https://zenodo.org/api/records/21947141/draft/pids/doi",
+    "parent": "https://zenodo.org/api/records/21947140",
+    "parent_html": "https://zenodo.org/records/21947140",
+    "parent_doi": "https://doi.org/10.5281/zenodo.21947140",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.21947140",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:21947141/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:21947141/sequence/default",
+    "files": "https://zenodo.org/api/records/21947141/files",
+    "media_files": "https://zenodo.org/api/records/21947141/media-files",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:21947141:QIK-VRT_Beobachterrelative_Retrokausalitaet_DE.pdf/full/%5E10,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:21947141:QIK-VRT_Beobachterrelative_Retrokausalitaet_DE.pdf/full/%5E50,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:21947141:QIK-VRT_Beobachterrelative_Retrokausalitaet_DE.pdf/full/%5E100,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:21947141:QIK-VRT_Beobachterrelative_Retrokausalitaet_DE.pdf/full/%5E250,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:21947141:QIK-VRT_Beobachterrelative_Retrokausalitaet_DE.pdf/full/%5E750,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:21947141:QIK-VRT_Beobachterrelative_Retrokausalitaet_DE.pdf/full/%5E1200,/0/default.jpg"
+    },
+    "latest": "https://zenodo.org/api/records/21947141/versions/latest",
+    "latest_html": "https://zenodo.org/records/21947141/latest",
+    "versions": "https://zenodo.org/api/records/21947141/versions",
+    "draft": "https://zenodo.org/api/records/21947141/draft",
+    "access_links": "https://zenodo.org/api/records/21947141/access/links",
+    "access_grants": "https://zenodo.org/api/records/21947141/access/grants",
+    "access_users": "https://zenodo.org/api/records/21947141/access/users",
+    "access_request": "https://zenodo.org/api/records/21947141/access/request",
+    "access": "https://zenodo.org/api/records/21947141/access",
+    "communities": "https://zenodo.org/api/records/21947141/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/21947141/communities-suggestions",
+    "request_deletion": "https://zenodo.org/api/records/21947141/request-deletion",
+    "file_modification": "https://zenodo.org/api/records/21947141/file-modification",
+    "quota_increase": "https://zenodo.org/api/records/21947141/quota-increase",
+    "requests": "https://zenodo.org/api/records/21947141/requests"
+  },
+  "updated": "2026-08-15T12:32:16.265504+00:00",
+  "recid": "21947141",
+  "revision": 3,
+  "files": [
+    {
+      "id": "3fe2ecd2-6cc3-4e6b-9ac1-8faa5836b3b5",
+      "key": "HISTORICAL_ARTIFACTS.json",
+      "size": 1110,
+      "checksum": "md5:fb4f3c41c7d34fb09055193b88c12e92",
+      "links": {
+        "self": "https://zenodo.org/api/records/21947141/files/HISTORICAL_ARTIFACTS.json/content"
+      }
+    },
+    {
+      "id": "01ea05dc-c1f6-4acc-8224-af590a671eb1",
+      "key": "PREPUBLICATION_RETURN_RECEIPT.json",
+      "size": 14074,
+      "checksum": "md5:3c2ccffce10512070faa32cc7ac17ed0",
+      "links": {
+        "self": "https://zenodo.org/api/records/21947141/files/PREPUBLICATION_RETURN_RECEIPT.json/content"
+      }
+    },
+    {
+      "id": "48f3111f-8525-41cb-958d-d5bebb09f48b",
+      "key": "OBSERVER_RELATIVE_RETROCAUSALITY_CLAIM_MATRIX.json",
+      "size": 8399,
+      "checksum": "md5:400ac7bb07925157b46dd1c4c2bb380b",
+      "links": {
+        "self": "https://zenodo.org/api/records/21947141/files/OBSERVER_RELATIVE_RETROCAUSALITY_CLAIM_MATRIX.json/content"
+      }
+    },
+    {
+      "id": "a15a2b19-520d-4ce9-8e65-0824e088f239",
+      "key": "CC-BY-NC-ND-4.0.txt",
+      "size": 19127,
+      "checksum": "md5:c70f85fe39eb601f25b595299c688bfd",
+      "links": {
+        "self": "https://zenodo.org/api/records/21947141/files/CC-BY-NC-ND-4.0.txt/content"
+      }
+    },
+    {
+      "id": "a7550d86-77b8-4720-8c7b-e0f7a418748a",
+      "key": "CHANGE_NOTICE_CURRENT_SYNTHESIS_V2.md",
+      "size": 3691,
+      "checksum": "md5:219c5b37ce7399c73e9bd58a3c61dd37",
+      "links": {
+        "self": "https://zenodo.org/api/records/21947141/files/CHANGE_NOTICE_CURRENT_SYNTHESIS_V2.md/content"
+      }
+    },
+    {
+      "id": "552ebcdc-d7ab-4c3b-885c-d1e5fe165f20",
+      "key": "QIK-VRT_Beobachterrelative_Retrokausalitaet_DE.tex",
+      "size": 46794,
+      "checksum": "md5:b4d20acded7cc493a7c012bd77837066",
+      "links": {
+        "self": "https://zenodo.org/api/records/21947141/files/QIK-VRT_Beobachterrelative_Retrokausalitaet_DE.tex/content"
+      }
+    },
+    {
+      "id": "e9fc8b50-faca-4fff-90a5-9998079fb571",
+      "key": "CITATION.cff",
+      "size": 547,
+      "checksum": "md5:2dfe916f7bd9c977c265e8ed4a0e1090",
+      "links": {
+        "self": "https://zenodo.org/api/records/21947141/files/CITATION.cff/content"
+      }
+    },
+    {
+      "id": "6527307a-dfdc-48e4-8de9-0157b4298a20",
+      "key": "MACHINE_PROOF_BUNDLE.json",
+      "size": 16649,
+      "checksum": "md5:089568b0b65b2413ae649a84fcbbe658",
+      "links": {
+        "self": "https://zenodo.org/api/records/21947141/files/MACHINE_PROOF_BUNDLE.json/content"
+      }
+    },
+    {
+      "id": "d734bef9-97a1-4643-b0c8-6d2468180130",
+      "key": "QIKVRT_RETROCAUSALITY_WITNESS.json",
+      "size": 4185,
+      "checksum": "md5:fce32584b9cbc23b4530edba20ef6c7c",
+      "links": {
+        "self": "https://zenodo.org/api/records/21947141/files/QIKVRT_RETROCAUSALITY_WITNESS.json/content"
+      }
+    },
+    {
+      "id": "c0f492c6-30fd-436a-a555-8f17f79db7b9",
+      "key": "SOURCE_EVIDENCE_BINDINGS.json",
+      "size": 5783,
+      "checksum": "md5:4f3219bf4a0c742856afa00a9b710500",
+      "links": {
+        "self": "https://zenodo.org/api/records/21947141/files/SOURCE_EVIDENCE_BINDINGS.json/content"
+      }
+    },
+    {
+      "id": "abc333cd-9a5a-4e25-93bc-e838ea9d4ba1",
+      "key": "BOUNDARY_TEST_REPORT.json",
+      "size": 6953,
+      "checksum": "md5:bf8c7065feb3faa92dccd092b2f402b6",
+      "links": {
+        "self": "https://zenodo.org/api/records/21947141/files/BOUNDARY_TEST_REPORT.json/content"
+      }
+    },
+    {
+      "id": "a92aef3f-a5d5-4ffb-ab0b-c5ba38846608",
+      "key": "verify_observer_relative_retrocausality.py",
+      "size": 8409,
+      "checksum": "md5:88679f51676766e41087aaad64d5c7a0",
+      "links": {
+        "self": "https://zenodo.org/api/records/21947141/files/verify_observer_relative_retrocausality.py/content"
+      }
+    },
+    {
+      "id": "1726718b-bbda-41a2-96af-56d270545731",
+      "key": "WHATSAPP_ARTIKEL_BEOBACHTERRELATIVE_RETROKAUSALITAET_DE.md",
+      "size": 18587,
+      "checksum": "md5:85f07c0815ef6b009b41da6812bd1ee6",
+      "links": {
+        "self": "https://zenodo.org/api/records/21947141/files/WHATSAPP_ARTIKEL_BEOBACHTERRELATIVE_RETROKAUSALITAET_DE.md/content"
+      }
+    },
+    {
+      "id": "743570f0-66d5-4c3c-97dd-bfb8ed55c606",
+      "key": "README.md",
+      "size": 8100,
+      "checksum": "md5:4eda3ec8346ce29989607ea2d1318a1f",
+      "links": {
+        "self": "https://zenodo.org/api/records/21947141/files/README.md/content"
+      }
+    },
+    {
+      "id": "ca7977e3-b5eb-4be4-b7d9-cde09fb706c5",
+      "key": "PolyForm-Noncommercial-1.0.0.txt",
+      "size": 4563,
+      "checksum": "md5:fa4f6eb8206bcfb6954542687e669418",
+      "links": {
+        "self": "https://zenodo.org/api/records/21947141/files/PolyForm-Noncommercial-1.0.0.txt/content"
+      }
+    },
+    {
+      "id": "d884e841-15a0-4469-84fd-fb14c50d626e",
+      "key": "QIK-VRT_Beobachterrelative_Retrokausalitaet_DE.pdf",
+      "size": 130002,
+      "checksum": "md5:2eca283e170fb63a3aea677dc482ac30",
+      "links": {
+        "self": "https://zenodo.org/api/records/21947141/files/QIK-VRT_Beobachterrelative_Retrokausalitaet_DE.pdf/content"
+      }
+    },
+    {
+      "id": "fc7fac36-8d6f-468a-81a6-bfda78684a5d",
+      "key": "AN_VON_UND_FUER_ALLE_MENSCHEN_CLAIM_MATRIX.json",
+      "size": 5554,
+      "checksum": "md5:b31a696ad666428e5e35aaf2e2ad6598",
+      "links": {
+        "self": "https://zenodo.org/api/records/21947141/files/AN_VON_UND_FUER_ALLE_MENSCHEN_CLAIM_MATRIX.json/content"
+      }
+    },
+    {
+      "id": "59a125ba-a0c2-4da5-adc5-5636234dfffd",
+      "key": "AN_VON_UND_FUER_ALLE_MENSCHEN_DE.md",
+      "size": 16454,
+      "checksum": "md5:5c7356b55efae658e0d6c9a172228c73",
+      "links": {
+        "self": "https://zenodo.org/api/records/21947141/files/AN_VON_UND_FUER_ALLE_MENSCHEN_DE.md/content"
+      }
+    },
+    {
+      "id": "b5b52c82-1693-4296-a01c-a643df6ed108",
+      "key": "ZENODO_LICENSE_NOTICE.md",
+      "size": 785,
+      "checksum": "md5:4b740559022cc6c014de442ff094cf82",
+      "links": {
+        "self": "https://zenodo.org/api/records/21947141/files/ZENODO_LICENSE_NOTICE.md/content"
+      }
+    },
+    {
+      "id": "80cef91f-8798-4f41-88fa-f0322cb99dab",
+      "key": "CLAIM_MATRIX_V2.json",
+      "size": 6373,
+      "checksum": "md5:79106f0fdf4426f2402e6dff347d812c",
+      "links": {
+        "self": "https://zenodo.org/api/records/21947141/files/CLAIM_MATRIX_V2.json/content"
+      }
+    },
+    {
+      "id": "0411ef35-5e2b-40d4-9247-9337674e38bd",
+      "key": "CHANGE_NOTICE.md",
+      "size": 4619,
+      "checksum": "md5:a30bb6d8ed08ed424940226e5d854fa6",
+      "links": {
+        "self": "https://zenodo.org/api/records/21947141/files/CHANGE_NOTICE.md/content"
+      }
+    }
+  ],
+  "swh": {},
+  "owners": [
+    {
+      "id": "1716671"
+    }
+  ],
+  "status": "published",
+  "stats": {
+    "downloads": 184,
+    "unique_downloads": 100,
+    "views": 119,
+    "unique_views": 106,
+    "version_downloads": 184,
+    "version_unique_downloads": 100,
+    "version_unique_views": 106,
+    "version_views": 119
+  },
+  "state": "done",
+  "submitted": true
+}

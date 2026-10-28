@@ -1,0 +1,333 @@
+{
+  "created": "2026-07-30T23:00:51.863173+00:00",
+  "modified": "2026-07-30T23:00:53.148760+00:00",
+  "id": 21711193,
+  "conceptrecid": "21711192",
+  "doi": "10.5281/zenodo.21711193",
+  "conceptdoi": "10.5281/zenodo.21711192",
+  "doi_url": "https://doi.org/10.5281/zenodo.21711193",
+  "metadata": {
+    "title": "QIK-VRT und das Effect-Acknowledgement-Protokoll: Kanonischer Speicher zwischen Vergangenheit und Zukunft",
+    "doi": "10.5281/zenodo.21711193",
+    "publication_date": "2026-07-31",
+    "description": "<p>Diese Arbeit formalisiert Ingolf Lohmanns These eines kanonischen Speichers zwischen Vergangenheit und Zukunft als endliches QIK-VRT-Protokollmodell. Beobachtete Vergangenheitsrecords und antizipierte oder geforderte zukünftige Wirkungen werden mit demselben kanonischen Codec, aber mit getrenntem epistemischem Status repräsentiert. Eine gegenwärtige Freigabe hängt von einer gegenwärtig vorhandenen, zukunftsindexierten Wirkungsbedingung und EFFECT_ACK_DONE ab; der Autor bezeichnet diese eng definierte Abhängigkeit als operationale Protokoll-Retrokausalität.</p><p>Der formale Begleitkern besteht aus neun Lean-4-Theoremen. Vier Claims sind im offengelegten abstrakten Modell kernel-verifiziert: DONE-only-Freigabe unter beiden Archivbedingungen, kontrafaktische Relevanz der Zukunftsbedingung, Nichtüberschreibung der Vergangenheitsprojektion und reziproke Ursachen-/Wirkungsschließung. Claim-Matrix, Exact-Head-Kernel-Receipt, Rohbelege, Quellenbindungen, negative Grenztests und reproduzierbare LaTeX-Quelle sind bytegenau beigefügt.</p><p>Nicht behauptet werden ein physikalischer Rückwärtssignalkanal, eine nachträgliche Änderung der Vergangenheit, ontische Retrokausalität, die Hinlänglichkeit reziproker Speicherung für Bewusstsein, semantische Wahrheit aus Hashgleichheit, IETF-Konsens oder systemweite Vollständigkeit. Panpsychismus bleibt als autorielle Interpretation und die physikalische Erweiterung als offene empirische Frage ausgewiesen.</p><p>Das proof-bearing Fileset trennt Primärdokument, Reproduktionsquelle, Originaltranskript, sichtbaren Änderungsnachweis und maschinenlesbare Evidenz. Alle positiven Aussagen gelten ausschließlich innerhalb der jeweils deklarierten Geltungsgrenze.</p>",
+    "access_right": "open",
+    "creators": [
+      {
+        "name": "Lohmann, Ingolf",
+        "affiliation": "Independent Researcher; QIK-VRT"
+      }
+    ],
+    "keywords": [
+      "QIK-VRT",
+      "Effect Acknowledgement",
+      "kanonischer Speicher",
+      "operational protocol retrocausality",
+      "causality",
+      "two-boundary constraints",
+      "canonicalization",
+      "provenance",
+      "content addressing",
+      "Lean 4",
+      "formal verification",
+      "machine-verifiable science",
+      "information thermodynamics",
+      "consciousness",
+      "panpsychism"
+    ],
+    "related_identifiers": [
+      {
+        "identifier": "https://github.com/Goldkelch/qik-vrt",
+        "relation": "isSupplementTo",
+        "scheme": "url"
+      },
+      {
+        "identifier": "10.5281/zenodo.21498773",
+        "relation": "isDerivedFrom",
+        "scheme": "doi"
+      },
+      {
+        "identifier": "https://datatracker.ietf.org/doc/draft-lohmann-qikvrt-effect-ack/01/",
+        "relation": "references",
+        "scheme": "url"
+      }
+    ],
+    "version": "1.0.0",
+    "language": "deu",
+    "resource_type": {
+      "title": "Working paper",
+      "type": "publication",
+      "subtype": "workingpaper"
+    },
+    "license": {
+      "id": "cc-by-nc-nd-4.0"
+    },
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "21711192"
+          }
+        }
+      ]
+    },
+    "notes": "Urheber und Rechteinhaber: Ingolf Lohmann. Dokumentation und wissenschaftliche Nicht-Software-Artefakte dieses Records stehen unter CC BY-NC-ND 4.0; der separat im Repository gebundene Lean-Quelltext unterliegt seiner dort ausgewiesenen Softwarelizenz. Zenodo-Persistenz belegt Identität, Version und Fixität der veröffentlichten Bytes, nicht Peer Review, semantische Wahrheit, Personenauthentizität oder empirische Bestätigung offener physikalischer und bewusstseinstheoretischer Aussagen. draft-lohmann-qikvrt-effect-ack-01 ist ein individueller Internet-Draft und keine IETF-Billigung, Standards- oder Konsensfeststellung. PROOF_CORPUS_PUBLISHED, IETF_INTEROPERABILITY_COMPLETE und SYSTEM_WIDE_COMPLETION bleiben außerhalb dieses Records unbeansprucht."
+  },
+  "title": "QIK-VRT und das Effect-Acknowledgement-Protokoll: Kanonischer Speicher zwischen Vergangenheit und Zukunft",
+  "links": {
+    "self": "https://zenodo.org/api/records/21711193",
+    "self_html": "https://zenodo.org/records/21711193",
+    "preview_html": "https://zenodo.org/records/21711193?preview=1",
+    "doi": "https://doi.org/10.5281/zenodo.21711193",
+    "self_doi": "https://doi.org/10.5281/zenodo.21711193",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.21711193",
+    "reserve_doi": "https://zenodo.org/api/records/21711193/draft/pids/doi",
+    "parent": "https://zenodo.org/api/records/21711192",
+    "parent_html": "https://zenodo.org/records/21711192",
+    "parent_doi": "https://doi.org/10.5281/zenodo.21711192",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.21711192",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:21711193/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:21711193/sequence/default",
+    "files": "https://zenodo.org/api/records/21711193/files",
+    "media_files": "https://zenodo.org/api/records/21711193/media-files",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:21711193:QIK-VRT_Kanonischer_Speicher_Retrokausalitaet_EFFECT_ACK_2026-07-30.pdf/full/%5E10,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:21711193:QIK-VRT_Kanonischer_Speicher_Retrokausalitaet_EFFECT_ACK_2026-07-30.pdf/full/%5E50,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:21711193:QIK-VRT_Kanonischer_Speicher_Retrokausalitaet_EFFECT_ACK_2026-07-30.pdf/full/%5E100,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:21711193:QIK-VRT_Kanonischer_Speicher_Retrokausalitaet_EFFECT_ACK_2026-07-30.pdf/full/%5E250,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:21711193:QIK-VRT_Kanonischer_Speicher_Retrokausalitaet_EFFECT_ACK_2026-07-30.pdf/full/%5E750,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:21711193:QIK-VRT_Kanonischer_Speicher_Retrokausalitaet_EFFECT_ACK_2026-07-30.pdf/full/%5E1200,/0/default.jpg"
+    },
+    "latest": "https://zenodo.org/api/records/21711193/versions/latest",
+    "latest_html": "https://zenodo.org/records/21711193/latest",
+    "versions": "https://zenodo.org/api/records/21711193/versions",
+    "draft": "https://zenodo.org/api/records/21711193/draft",
+    "access_links": "https://zenodo.org/api/records/21711193/access/links",
+    "access_grants": "https://zenodo.org/api/records/21711193/access/grants",
+    "access_users": "https://zenodo.org/api/records/21711193/access/users",
+    "access_request": "https://zenodo.org/api/records/21711193/access/request",
+    "access": "https://zenodo.org/api/records/21711193/access",
+    "communities": "https://zenodo.org/api/records/21711193/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/21711193/communities-suggestions",
+    "request_deletion": "https://zenodo.org/api/records/21711193/request-deletion",
+    "file_modification": "https://zenodo.org/api/records/21711193/file-modification",
+    "quota_increase": "https://zenodo.org/api/records/21711193/quota-increase",
+    "requests": "https://zenodo.org/api/records/21711193/requests"
+  },
+  "updated": "2026-07-30T23:00:53.148760+00:00",
+  "recid": "21711193",
+  "revision": 3,
+  "files": [
+    {
+      "id": "cc5926b4-f5f4-4659-b6ca-7f09dd5cc186",
+      "key": "CHANGE_NOTICE.md",
+      "size": 5137,
+      "checksum": "md5:41757a99d46988f5185293cf00a1ff44",
+      "links": {
+        "self": "https://zenodo.org/api/records/21711193/files/CHANGE_NOTICE.md/content"
+      }
+    },
+    {
+      "id": "0292d7c6-cd6d-46e7-8258-f1ee5c0ed61c",
+      "key": "CLAIM_MATRIX.json",
+      "size": 13922,
+      "checksum": "md5:98db3575bc5a24b504bb2c8cd1b9907d",
+      "links": {
+        "self": "https://zenodo.org/api/records/21711193/files/CLAIM_MATRIX.json/content"
+      }
+    },
+    {
+      "id": "86864342-ebd3-4cda-8f30-0168c6a4e2c9",
+      "key": "CLAIM_MATRIX_H0_PENDING.json",
+      "size": 14133,
+      "checksum": "md5:58f858959f3f2968d3117c43bd3f2526",
+      "links": {
+        "self": "https://zenodo.org/api/records/21711193/files/CLAIM_MATRIX_H0_PENDING.json/content"
+      }
+    },
+    {
+      "id": "2cad2978-458b-4ed7-be54-bd5fe486728f",
+      "key": "PREPUBLICATION_RETURN_RECEIPT.json",
+      "size": 14032,
+      "checksum": "md5:82c2a7c290fcddd868ceb5edcb4ec4b5",
+      "links": {
+        "self": "https://zenodo.org/api/records/21711193/files/PREPUBLICATION_RETURN_RECEIPT.json/content"
+      }
+    },
+    {
+      "id": "55f200dc-e441-42cf-887f-d70ac8c428dc",
+      "key": "README.md",
+      "size": 6274,
+      "checksum": "md5:850cee6bacd74a12bc4f30aadda44ef5",
+      "links": {
+        "self": "https://zenodo.org/api/records/21711193/files/README.md/content"
+      }
+    },
+    {
+      "id": "9faf88d8-8434-46da-8626-ca1b3e609890",
+      "key": "QIK-VRT_Kanonischer_Speicher_Retrokausalitaet_EFFECT_ACK_2026-07-30.tex",
+      "size": 47857,
+      "checksum": "md5:3065143678e9ee3c47bfbfa63cee592a",
+      "links": {
+        "self": "https://zenodo.org/api/records/21711193/files/QIK-VRT_Kanonischer_Speicher_Retrokausalitaet_EFFECT_ACK_2026-07-30.tex/content"
+      }
+    },
+    {
+      "id": "75cbe7f1-f81e-47f3-a565-703f442e8f82",
+      "key": "KERNEL_EVIDENCE_H1_TARGET.json",
+      "size": 5712,
+      "checksum": "md5:6ed57a5d898cb922c644ae8ab770e503",
+      "links": {
+        "self": "https://zenodo.org/api/records/21711193/files/KERNEL_EVIDENCE_H1_TARGET.json/content"
+      }
+    },
+    {
+      "id": "14cabe74-4b8b-41e0-bc6f-80a8b766ede5",
+      "key": "BOUNDARY_TEST_REPORT.json",
+      "size": 6952,
+      "checksum": "md5:182de5417eeb8239b764d7c7526a25d4",
+      "links": {
+        "self": "https://zenodo.org/api/records/21711193/files/BOUNDARY_TEST_REPORT.json/content"
+      }
+    },
+    {
+      "id": "ab1ccb12-5f03-49f5-a8fc-69e7da7a6c6d",
+      "key": "CITATION.cff",
+      "size": 1418,
+      "checksum": "md5:5411f199206b5fa7dbd5760c73ba40c1",
+      "links": {
+        "self": "https://zenodo.org/api/records/21711193/files/CITATION.cff/content"
+      }
+    },
+    {
+      "id": "2fed8555-c376-47dc-a361-f6c3220dfc5c",
+      "key": "KERNEL_EVIDENCE_H0_PENDING.json",
+      "size": 5712,
+      "checksum": "md5:6a71cb117d70f88e2a6b0157cdf5a8da",
+      "links": {
+        "self": "https://zenodo.org/api/records/21711193/files/KERNEL_EVIDENCE_H0_PENDING.json/content"
+      }
+    },
+    {
+      "id": "2cb8cdfb-1114-4311-86c3-1c8765ca2f83",
+      "key": "QIK-VRT_Kanonischer_Speicher_Retrokausalitaet_EFFECT_ACK_2026-07-30.pdf",
+      "size": 133421,
+      "checksum": "md5:10581cd0605eb8ce1b3a483c23cb39c9",
+      "links": {
+        "self": "https://zenodo.org/api/records/21711193/files/QIK-VRT_Kanonischer_Speicher_Retrokausalitaet_EFFECT_ACK_2026-07-30.pdf/content"
+      }
+    },
+    {
+      "id": "007931b7-2dd3-4e66-bf73-798283a165e3",
+      "key": "KERNEL_PROOF_PLAN.json",
+      "size": 2761,
+      "checksum": "md5:532f9bccf8e2d6fc5e16c2a946705510",
+      "links": {
+        "self": "https://zenodo.org/api/records/21711193/files/KERNEL_PROOF_PLAN.json/content"
+      }
+    },
+    {
+      "id": "2469080f-cdaf-4f24-9895-85ac7f9a1f44",
+      "key": "KERNEL_RECEIPT.json",
+      "size": 9645,
+      "checksum": "md5:8134352630ebc6547c923de8f723a9f7",
+      "links": {
+        "self": "https://zenodo.org/api/records/21711193/files/KERNEL_RECEIPT.json/content"
+      }
+    },
+    {
+      "id": "aa886292-4f44-4c7a-9863-66f1cf3aa4e3",
+      "key": "PDF_RENDER_VALIDATION.json",
+      "size": 2409,
+      "checksum": "md5:6772dff0218c97e3418bb803614a9cb8",
+      "links": {
+        "self": "https://zenodo.org/api/records/21711193/files/PDF_RENDER_VALIDATION.json/content"
+      }
+    },
+    {
+      "id": "cade7c42-9b22-4a15-94c6-cb5046d565b3",
+      "key": "EVIDENCE_BOUNDARY.md",
+      "size": 8662,
+      "checksum": "md5:2752b75c7880a266a02000aa278d2e71",
+      "links": {
+        "self": "https://zenodo.org/api/records/21711193/files/EVIDENCE_BOUNDARY.md/content"
+      }
+    },
+    {
+      "id": "be23acd7-5e0c-4b1a-84e4-8a736b64ae5f",
+      "key": "LICENSE_NOTICE.md",
+      "size": 1074,
+      "checksum": "md5:a84a9365d26ca25169fe32b83535a1bc",
+      "links": {
+        "self": "https://zenodo.org/api/records/21711193/files/LICENSE_NOTICE.md/content"
+      }
+    },
+    {
+      "id": "cf23b58d-acad-4e58-93dd-d358113adfa3",
+      "key": "MACHINE_PROOF_BUNDLE.json",
+      "size": 27961,
+      "checksum": "md5:c16523a4e3c79db22b613b28acb89bf7",
+      "links": {
+        "self": "https://zenodo.org/api/records/21711193/files/MACHINE_PROOF_BUNDLE.json/content"
+      }
+    },
+    {
+      "id": "2736f16d-5108-4733-9917-bfa9ca320f4c",
+      "key": "ORIGINAL_THESIS_TRANSCRIPT.md",
+      "size": 3169,
+      "checksum": "md5:6c8d0f90b1cec7b6ac7a2fd1bfd10553",
+      "links": {
+        "self": "https://zenodo.org/api/records/21711193/files/ORIGINAL_THESIS_TRANSCRIPT.md/content"
+      }
+    },
+    {
+      "id": "a64007ae-6790-4f88-8e8f-76e03dffa105",
+      "key": "ZENODO_FILESET.md",
+      "size": 1990,
+      "checksum": "md5:64ec6422e3e3924e8c4fc8bc8eb417c7",
+      "links": {
+        "self": "https://zenodo.org/api/records/21711193/files/ZENODO_FILESET.md/content"
+      }
+    },
+    {
+      "id": "85d97a5c-701b-40b6-99dd-52b8c508249f",
+      "key": "SOURCE_EVIDENCE_BINDINGS.json",
+      "size": 39988,
+      "checksum": "md5:b48514ad1378686f8ff5b0256d19600a",
+      "links": {
+        "self": "https://zenodo.org/api/records/21711193/files/SOURCE_EVIDENCE_BINDINGS.json/content"
+      }
+    },
+    {
+      "id": "bd9c0c40-e5b2-4f09-b689-14b0f14c70b7",
+      "key": "ZENODO_SHA256SUMS",
+      "size": 1695,
+      "checksum": "md5:43cc57b9e66a2bd8544da450ebf56068",
+      "links": {
+        "self": "https://zenodo.org/api/records/21711193/files/ZENODO_SHA256SUMS/content"
+      }
+    }
+  ],
+  "swh": {},
+  "owners": [
+    {
+      "id": "1716671"
+    }
+  ],
+  "status": "published",
+  "stats": {
+    "downloads": 132,
+    "unique_downloads": 111,
+    "views": 28,
+    "unique_views": 24,
+    "version_downloads": 132,
+    "version_unique_downloads": 111,
+    "version_unique_views": 24,
+    "version_views": 28
+  },
+  "state": "done",
+  "submitted": true
+}

@@ -1,0 +1,131 @@
+{
+  "schema": "qikvrt-original-codec-recursive-byte-demonstration/v1",
+  "observed_at": "2026-10-28T12:08:35.688Z",
+  "implementation": "docs/monitor/mesh-file-codec.js",
+  "implementation_sha256": "8c8d73f45cc8298c765842759451eaa3686541765952a77d05f2f928c7160515",
+  "inputs": [
+    {
+      "path": "state/work_units/QIKVRT_IONOS_NATIVE_TERMINAL_FIRST_20261025_V1.json",
+      "bytes": 19325,
+      "sha256": "b097d4fd1af3888375a7e3ebaabac255c8473c09b93ec8b60ef6a74f5d3c1f27"
+    },
+    {
+      "path": "REPOSITORY_FILE_MANIFEST.json",
+      "bytes": 1465360,
+      "sha256": "068d3ff7d2e67dcb1a2366a8465ddd92bd062f616bee306c13b8c5108171f0f8"
+    },
+    {
+      "path": "REPOSITORY_FILE_MANIFEST.json.sha256",
+      "bytes": 96,
+      "sha256": "c581a8790f1cc06ad8f7034a8eb490d05e13b39fb3a9ff5e39646377aa50a850"
+    },
+    {
+      "path": "SHA256SUMS.txt",
+      "bytes": 715710,
+      "sha256": "23eb7936944b9e64a062827bbf619b6ea34a51f51e597a8b9272850a7b910c1d"
+    },
+    {
+      "path": "docs/monitor/mesh-file-codec.js",
+      "bytes": 11663,
+      "sha256": "8c8d73f45cc8298c765842759451eaa3686541765952a77d05f2f928c7160515"
+    }
+  ],
+  "source_bytes_per_pass": 2212154,
+  "genesis_bytes": 750,
+  "first_pass_container_bytes": 2217374,
+  "second_pass_added_bytes": 2481,
+  "second_pass_new_chunks": 0,
+  "second_pass_payload_bytes_avoided": 2212154,
+  "second_pass_reduction_percent": 99.88784686780396,
+  "container_bytes": 2219855,
+  "container_sha256": "643933d2955942e1275bec5405a89051a2009ee7d5a43197afbdbc6b9af9e9e8",
+  "checkpoint": {
+    "repository_id": "owner-runtime-admission-20261028",
+    "head": "e4e5a40e492584ca0b8636a952bbd34515eb50cca319a6e96c158d8ac258f458"
+  },
+  "epistemic_scope": "MEASURED_ON_THESE_FILES; NOT_UNIVERSAL_COMPRESSION_OPTIMALITY",
+  "independent_restore_verified": true,
+  "native_effect_ack_verified": false,
+  "effect_ack_done": false,
+  "restored_entries": [
+    {
+      "pass": 1,
+      "path": "state/work_units/QIKVRT_IONOS_NATIVE_TERMINAL_FIRST_20261025_V1.json",
+      "bytes": 19325,
+      "sha256": "b097d4fd1af3888375a7e3ebaabac255c8473c09b93ec8b60ef6a74f5d3c1f27"
+    },
+    {
+      "pass": 1,
+      "path": "REPOSITORY_FILE_MANIFEST.json",
+      "bytes": 1465360,
+      "sha256": "068d3ff7d2e67dcb1a2366a8465ddd92bd062f616bee306c13b8c5108171f0f8"
+    },
+    {
+      "pass": 1,
+      "path": "REPOSITORY_FILE_MANIFEST.json.sha256",
+      "bytes": 96,
+      "sha256": "c581a8790f1cc06ad8f7034a8eb490d05e13b39fb3a9ff5e39646377aa50a850"
+    },
+    {
+      "pass": 1,
+      "path": "SHA256SUMS.txt",
+      "bytes": 715710,
+      "sha256": "23eb7936944b9e64a062827bbf619b6ea34a51f51e597a8b9272850a7b910c1d"
+    },
+    {
+      "pass": 1,
+      "path": "docs/monitor/mesh-file-codec.js",
+      "bytes": 11663,
+      "sha256": "8c8d73f45cc8298c765842759451eaa3686541765952a77d05f2f928c7160515"
+    },
+    {
+      "pass": 2,
+      "path": "state/work_units/QIKVRT_IONOS_NATIVE_TERMINAL_FIRST_20261025_V1.json",
+      "bytes": 19325,
+      "sha256": "b097d4fd1af3888375a7e3ebaabac255c8473c09b93ec8b60ef6a74f5d3c1f27"
+    },
+    {
+      "pass": 2,
+      "path": "REPOSITORY_FILE_MANIFEST.json",
+      "bytes": 1465360,
+      "sha256": "068d3ff7d2e67dcb1a2366a8465ddd92bd062f616bee306c13b8c5108171f0f8"
+    },
+    {
+      "pass": 2,
+      "path": "REPOSITORY_FILE_MANIFEST.json.sha256",
+      "bytes": 96,
+      "sha256": "c581a8790f1cc06ad8f7034a8eb490d05e13b39fb3a9ff5e39646377aa50a850"
+    },
+    {
+      "pass": 2,
+      "path": "SHA256SUMS.txt",
+      "bytes": 715710,
+      "sha256": "23eb7936944b9e64a062827bbf619b6ea34a51f51e597a8b9272850a7b910c1d"
+    },
+    {
+      "pass": 2,
+      "path": "docs/monitor/mesh-file-codec.js",
+      "bytes": 11663,
+      "sha256": "8c8d73f45cc8298c765842759451eaa3686541765952a77d05f2f928c7160515"
+    }
+  ],
+  "negative_controls": [
+    {
+      "name": "changed_final_digest",
+      "rejected": true,
+      "reason": "CHAIN_DIGEST_MISMATCH"
+    },
+    {
+      "name": "truncated_frame",
+      "rejected": true,
+      "reason": "TRUNCATED_FRAME"
+    },
+    {
+      "name": "wrong_repository_checkpoint",
+      "rejected": true,
+      "reason": "CHECKPOINT_REPOSITORY_MISMATCH"
+    }
+  ],
+  "verified_at": "2026-10-28T12:23:24.328Z",
+  "readback_scope": "SEPARATE_NODE_PROCESS; SHARED_ORIGINAL_CODEC_DEPENDENCY"
+}

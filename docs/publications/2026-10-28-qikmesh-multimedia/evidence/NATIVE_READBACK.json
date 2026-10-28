@@ -1,0 +1,189 @@
+{
+  "schema": "qikvrt-local-native-codec-effect-readback/v1",
+  "subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pr": 624,
+    "head": "79275f1aa9c206c93fc8493a0bb77a0beef1165a",
+    "tree": "1f6a182011c72d001d55aa98caef6aeb17c3e7af"
+  },
+  "epoch": "00940a7fbed549cdacea05288c911f0a",
+  "events": [
+    {
+      "dod": false,
+      "evidence_transfer": "DENY",
+      "kind": "OBSERVE",
+      "message": "Owner authorized original QIKVRT recursive compression and effect verification.",
+      "observed_at": "2026-10-28T12:23:24.148350Z",
+      "payload": {
+        "owner": "Ingolf Lohmann",
+        "runtime_authorization_granted": true,
+        "scope": "OWN_LOCAL_DEMONSTRATION; ORIGINALHOST_ACCEPTANCE_SEPARATE"
+      },
+      "payload_digest": "eaecff93fddedf897f8e31e76b4a83c23c9b51d87604611b3c7cc8e0c956fb0b",
+      "provenance": {
+        "native_event_id": "owner-compression-grant-20261028",
+        "source": "repository"
+      },
+      "recorded_at": "2026-10-28T12:23:24.160985Z",
+      "schema": "qikvrt_temdd_event_v1",
+      "subject": {
+        "head": "79275f1aa9c206c93fc8493a0bb77a0beef1165a",
+        "pr": 624,
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "1f6a182011c72d001d55aa98caef6aeb17c3e7af"
+      },
+      "id": "00940a7fbed549cdacea05288c911f0a:1",
+      "ledger_digest": "ada067efef381209c6811f43301ed1d9ff67ca5cb0aeeb0b9e72bff55c8914d3"
+    },
+    {
+      "dod": false,
+      "evidence_transfer": "DENY",
+      "kind": "ACTION",
+      "message": "Execute unchanged original QIKMESH restoration and corruption controls.",
+      "observed_at": "2026-10-28T12:23:24.162731Z",
+      "payload": {
+        "implementation": "docs/monitor/mesh-file-codec.js",
+        "input_candidate_tree": "1f6a182011c72d001d55aa98caef6aeb17c3e7af"
+      },
+      "payload_digest": "5dbfdb1534af542f5e989863e0d2157371feb283032a6ccf13f01ea91e9ab832",
+      "provenance": {
+        "native_event_id": "original-qikmesh-recursive-readback-20261028",
+        "source": "transputer"
+      },
+      "recorded_at": "2026-10-28T12:23:24.175831Z",
+      "schema": "qikvrt_temdd_event_v1",
+      "subject": {
+        "head": "79275f1aa9c206c93fc8493a0bb77a0beef1165a",
+        "pr": 624,
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "1f6a182011c72d001d55aa98caef6aeb17c3e7af"
+      },
+      "id": "00940a7fbed549cdacea05288c911f0a:2",
+      "ledger_digest": "2e42001bc9690a710118094f8853a56766614bcc2f74fdaea5d7a40bef55211a"
+    },
+    {
+      "dod": false,
+      "evidence_transfer": "DENY",
+      "kind": "EFFECT",
+      "message": "Original-codec output actually restored and checked byte-exactly; local effect only.",
+      "observed_at": "2026-10-28T12:23:24.337934Z",
+      "payload": {
+        "measurement": {
+          "effect_ack_done": false,
+          "first_pass_container_bytes": 2217374,
+          "independent_restore_verified": true,
+          "native_effect_ack_verified": false,
+          "negative_controls": [
+            {
+              "name": "changed_final_digest",
+              "reason": "CHAIN_DIGEST_MISMATCH",
+              "rejected": true
+            },
+            {
+              "name": "truncated_frame",
+              "reason": "TRUNCATED_FRAME",
+              "rejected": true
+            },
+            {
+              "name": "wrong_repository_checkpoint",
+              "reason": "CHECKPOINT_REPOSITORY_MISMATCH",
+              "rejected": true
+            }
+          ],
+          "restored_entries": 10,
+          "second_pass_added_bytes": 2481,
+          "second_pass_new_chunks": 0,
+          "second_pass_reduction_percent": 99.88784686780396,
+          "source_bytes_per_pass": 2212154
+        },
+        "public_host_effect": false,
+        "readback_receipt_sha256": "fcc8cc2456f48215c77da4c2cca3972e727a2387ab21ad24770492cba6a40630"
+      },
+      "payload_digest": "fcd3747a18ec20d34f2455f62846672d2a5905e4ec9321a62267a1d17f265b11",
+      "provenance": {
+        "native_event_id": "original-qikmesh-restored-bytes-20261028",
+        "source": "transputer"
+      },
+      "recorded_at": "2026-10-28T12:23:24.350178Z",
+      "schema": "qikvrt_temdd_event_v1",
+      "subject": {
+        "head": "79275f1aa9c206c93fc8493a0bb77a0beef1165a",
+        "pr": 624,
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "1f6a182011c72d001d55aa98caef6aeb17c3e7af"
+      },
+      "id": "00940a7fbed549cdacea05288c911f0a:3",
+      "ledger_digest": "428310d7aa89e321e59d5fd8555f34a3c768408e62089f80f675669f2c8e6990"
+    },
+    {
+      "dod": false,
+      "evidence_transfer": "DENY",
+      "kind": "READBACK",
+      "message": "Original native Terminal replay API and separate read-only process match the durable event bytes.",
+      "observed_at": "2026-10-28T12:23:24.449502Z",
+      "payload": {
+        "cold_readback_sha256": "d1f906faa081d51917098c8450f3e9e39b302309001a0e5447ab85a95ad97087",
+        "effect_digest": "428310d7aa89e321e59d5fd8555f34a3c768408e62089f80f675669f2c8e6990",
+        "effect_id": "00940a7fbed549cdacea05288c911f0a:3",
+        "terminal_api_event_ids": [
+          "00940a7fbed549cdacea05288c911f0a:1",
+          "00940a7fbed549cdacea05288c911f0a:2",
+          "00940a7fbed549cdacea05288c911f0a:3"
+        ]
+      },
+      "payload_digest": "367278e27426cb52cfa73f39c6e29e663fdd5966139b9966d12c4337cd9a8ffb",
+      "provenance": {
+        "native_event_id": "independent-native-terminal-readback-20261028",
+        "source": "repository"
+      },
+      "recorded_at": "2026-10-28T12:23:24.461871Z",
+      "schema": "qikvrt_temdd_event_v1",
+      "subject": {
+        "head": "79275f1aa9c206c93fc8493a0bb77a0beef1165a",
+        "pr": 624,
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "1f6a182011c72d001d55aa98caef6aeb17c3e7af"
+      },
+      "id": "00940a7fbed549cdacea05288c911f0a:4",
+      "ledger_digest": "e58848b34b32b196fe8fffa54efc4c9d3b72ab6f55460f1e7843b51aca5ce070"
+    },
+    {
+      "dod": false,
+      "evidence_transfer": "DENY",
+      "kind": "HOLD",
+      "message": "Local native event chain persisted. Original EAP outbox assessment and authenticated peer return remain open.",
+      "observed_at": "2026-10-28T12:23:24.462722Z",
+      "payload": {
+        "carrier": "Original Authority source or verified continuation export",
+        "effect_ack_done": false,
+        "missing_original_source": "node-tools/qikvrt_mirror_emit.py",
+        "no_replacement_assessment_created": true,
+        "runtime_peer_gate": "ADMITTED_MESH_RUNTIME_ENDPOINT"
+      },
+      "payload_digest": "add81c315bc5e5fc8223f82c04ea7ce6b349b4fde3bc434e8293b71b0d3be8b9",
+      "provenance": {
+        "native_event_id": "original-eap-outbox-carrier-open-20261028",
+        "source": "repository"
+      },
+      "recorded_at": "2026-10-28T12:23:24.474575Z",
+      "schema": "qikvrt_temdd_event_v1",
+      "subject": {
+        "head": "79275f1aa9c206c93fc8493a0bb77a0beef1165a",
+        "pr": 624,
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "1f6a182011c72d001d55aa98caef6aeb17c3e7af"
+      },
+      "id": "00940a7fbed549cdacea05288c911f0a:5",
+      "ledger_digest": "65b332a034299a88547a17abbf880518a0763f59eb3c3ca0e6040d7057b13fec"
+    }
+  ],
+  "original_unix_ingress_used": false,
+  "socket_observation": "Original UnixStreamServer refused with PermissionError errno1; no socket mock or guard relaxation.",
+  "original_in_process_runtime_api_used": true,
+  "original_terminal_replay_api_verified": true,
+  "independent_read_only_process_verified": true,
+  "readback_receipt_sha256": "fcc8cc2456f48215c77da4c2cca3972e727a2387ab21ad24770492cba6a40630",
+  "native_scope": "OWN_NEW_LOCAL_JOURNAL; NOT_ORIGINALHOST_OR_MESH_PEER_ACCEPTANCE",
+  "outbox_assessment_source_available": false,
+  "effect_ack_done": false
+}
