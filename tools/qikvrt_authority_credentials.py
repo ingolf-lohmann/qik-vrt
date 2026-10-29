@@ -28,6 +28,7 @@ PRODUCTION_VARIABLES = ("QIKVRT_LINUX_HOST_BINDING_JSON", "QIKVRT_LINUX_HOST_BIN
 PRODUCTION_SECRETS = ("QIKVRT_LINUX_HOST_CA", "QIKVRT_LINUX_HOST_CERT", "QIKVRT_LINUX_HOST_KEY")
 PRODUCTION_SCHEMA = "qikvrt-production-environment-rest/v1"
 PRODUCTION_MATERIAL_SOURCE = ("QIKVRT_PRODUCTION_MATERIAL_SOURCE", "QIKVRT_PRODUCTION_MATERIAL_SOURCE_SHA256")
+PUBLICATION_REST_SCHEMA = "qikvrt-publication-rest/v1"
 
 
 class ProductionBlock(ValueError):
@@ -169,6 +170,117 @@ def production_source(expected_head, expected_tree):
     observed = subject()
     return (observed.get("head") == expected_head and observed.get("tree") == expected_tree
             and observed.get("worktree_dirty") is False)
+
+
+def publication_handoff(auth, bearer, request, environment, *, write=False):
+    """Expose the original protected launcher, never a second publisher or vault.
+
+    The server selects the existing private request. Clients supply only its
+    observed digest and source identity. An uncertain call is readback-only;
+    changing its request ID or source timestamp cannot repeat the invocation.
+    """
+    import re
+    from pathlib import Path
+    from tools import qikvrt_self_host as host
+    with auth.lock:
+        auth.authenticate(bearer)
+        if not auth.status().get("live_authentication_observed_this_process"):
+            raise ProductionBlock("LIVE_ORIGINAL_SSO_SESSION_REQUIRED")
+        base = {"schema", "request_id"}
+        bound = base | {"expected_main_sha", "request_sha256"}
+        shapes = [bound | {"effect_accepted"}] if write else [base, bound]
+        if (not isinstance(request, dict) or set(request) not in shapes
+                or request.get("schema") != PUBLICATION_REST_SCHEMA
+                or not isinstance(request.get("request_id"), str)
+                or not re.fullmatch(r"[A-Za-z0-9_.=-]{1,128}", request["request_id"])
+                or ("expected_main_sha" in request and (not isinstance(request["expected_main_sha"], str)
+                    or not re.fullmatch(r"[a-f0-9]{40}", request["expected_main_sha"])))
+                or ("request_sha256" in request and (not isinstance(request["request_sha256"], str)
+                    or not re.fullmatch(r"[a-f0-9]{64}", request["request_sha256"])))
+                or (write and request.get("effect_accepted") is not True)):
+            raise ProductionBlock("EXACT_PUBLICATION_REST_REQUEST_REQUIRED")
+        if (environment.get("QIKVRT_ALLOWED_REPOSITORY") != PRODUCTION_REPOSITORY
+                or environment.get("QIKVRT_API_PRINCIPAL") != "ingolf-lohmann"):
+            raise ProductionBlock("ORIGINAL_AUTHORITY_AND_PRINCIPAL_REQUIRED")
+        location = environment.get("QIKVRT_PUBLICATION_REQUEST", "")
+        pin = environment.get("QIKVRT_PUBLICATION_REQUEST_SHA256", "")
+        if (not isinstance(location, str) or not location or len(location) > 4096
+                or not isinstance(pin, str) or not re.fullmatch(r"[a-f0-9]{64}", pin)):
+            raise ProductionBlock("ORIGINAL_PRIVATE_PUBLICATION_REQUEST_REQUIRED")
+        try:
+            admitted = host.publication_request(Path(location), pin)
+            original, root, manifest_path, manifest, publisher, registry_path, registry = admitted
+        except Exception:
+            # A malformed private source or checker failure never exposes paths,
+            # original exception bodies, credentials or an invented readiness.
+            raise ProductionBlock("ORIGINAL_PUBLICATION_ADMISSION_UNAVAILABLE") from None
+        if (original["repository"] != PRODUCTION_REPOSITORY
+                or ("expected_main_sha" in request and request["expected_main_sha"] != original["execution_head"])
+                or ("request_sha256" in request and request["request_sha256"] != pin)):
+            raise ProductionBlock("PUBLICATION_REST_SOURCE_OR_REQUEST_DRIFT")
+        try:
+            implementation = production_source(original["execution_head"], original["execution_tree"])
+        except Exception:
+            raise ProductionBlock("ORIGINAL_PUBLICATION_SOURCE_CHECK_UNAVAILABLE") from None
+        if write and not implementation:
+            raise ProductionBlock("CLEAN_ORIGINAL_MAIN_RUNTIME_SOURCE_REQUIRED")
+        authorization = manifest["owner_authorization"]
+        identity = _pin({"repository": original["repository"],
+            "publication_id": manifest["machine_proof"]["publication_id"],
+            "consumption_key": authorization["consumption_key"]})
+        state = auth.store.read()
+        attempts = state.get("publication_rest_handoffs", {})
+        if not isinstance(attempts, dict):
+            raise ProductionBlock("ORIGINAL_PUBLICATION_REST_JOURNAL_INVALID")
+        prior = attempts.get(identity)
+        if identity in attempts and (not isinstance(prior, dict) or not prior
+                or prior.get("state") not in {"UNKNOWN_READBACK_REQUIRED", "RETURNED_REQUIRES_ORIGINAL_PUBLIC_READBACK"}):
+            raise ProductionBlock("ORIGINAL_PUBLICATION_REST_JOURNAL_INVALID")
+        if prior and prior.get("auth_binding") != auth.binding:
+            raise ProductionBlock("ORIGINAL_SSO_JOURNAL_BINDING_MISMATCH")
+        receipt = {"schema": PUBLICATION_REST_SCHEMA, "request_id": request["request_id"],
+            "repository": original["repository"], "expected_main_sha": original["execution_head"],
+            "source_tree": original["execution_tree"], "request_sha256": pin,
+            "manifest_sha256": original["manifest_sha256"],
+            "publication_id": manifest["machine_proof"]["publication_id"],
+            "implementation_source_verified": implementation,
+            "state": "SOURCE_AND_REFERENCES_ADMITTED", "publisher_invoked": False,
+            "job_credential_delivery_verified": False, "public_readback_verified": False,
+            "effect_ack_done": False, "ordinary_release": False,
+            "prior_attempt_state": prior.get("state") if prior else "NOT_ATTEMPTED"}
+        if not write:
+            if prior:
+                receipt["state"] = "ORIGINAL_ATTEMPT_READBACK_ONLY"
+                receipt["publisher_result_state"] = prior.get("publisher_result_state")
+            return receipt
+        if prior:
+            receipt.update(state="NOOP_ORIGINAL_ATTEMPT_READBACK_ONLY")
+            return receipt
+        if len(attempts) >= 32:
+            raise ProductionBlock("PROTECTED_PUBLICATION_HISTORY_FULL_NO_WITNESS_DISCARDED")
+        record = {"auth_binding": auth.binding, "state": "UNKNOWN_READBACK_REQUIRED",
+            "request_id": request["request_id"], "request_sha256": pin,
+            "expected_main_sha": original["execution_head"], "manifest_sha256": original["manifest_sha256"]}
+        attempts[identity] = record
+        state["publication_rest_handoffs"] = attempts
+        auth.store.write(state)  # Durable intent before invoking the original launcher.
+        try:
+            result = host.publication_resume(Path(location), pin)
+            result_state = result.get("state")
+            if result_state not in {"HOLD_PUBLISHER", "HOLD_RECONCILIATION", "PUBLICATION_SCOPE_VERIFIED"}:
+                raise ValueError()
+            record.update(state="RETURNED_REQUIRES_ORIGINAL_PUBLIC_READBACK", publisher_result_state=result_state)
+            state = auth.store.read()
+            state["publication_rest_handoffs"][identity] = record
+            auth.store.write(state)
+        except Exception:
+            # Original publisher receipts and consumption refs remain authoritative.
+            # Never retry this POST after an uncertain invocation or lost reply.
+            raise ProductionBlock("PUBLICATION_RESULT_UNKNOWN_ORIGINAL_READBACK_ONLY") from None
+        receipt.update(state="ORIGINAL_PUBLISHER_RETURNED_REQUIRES_PUBLIC_READBACK",
+            publisher_invoked=True, publisher_result_state=result_state,
+            prior_attempt_state=record["state"])
+        return receipt
 
 
 class ProductionEnvironmentAPI:
