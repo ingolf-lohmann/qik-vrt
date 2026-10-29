@@ -33,6 +33,7 @@ DISPATCH_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT
 REPO_DISPATCH_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/dispatches$")
 READBACK_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/qikvrt/artifacts/([A-Za-z0-9_.=-]{{1,128}})/readback$")
 RULESET_REST_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/qikvrt/ruleset-authority$")
+STATIC_REST_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/qikvrt/static-delivery$")
 CONTINUATION_REST_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/qikvrt/continuation$")
 PRODUCTION_ENVIRONMENT_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/qikvrt/production-environment$")
 MCP_VERSIONS = ("2025-11-25", "2026-07-28")
@@ -56,6 +57,25 @@ def mcp_implementation_binding() -> dict:
 
 
 MCP_BOOT_BINDING = mcp_implementation_binding()
+
+
+STATIC_REST_SCHEMA = "qikvrt-static-delivery-rest/v1"
+STATIC_SOURCE_PATHS = (*MCP_SOURCE_PATHS, "tools/qikvrt_self_host.py",
+                       "tools/qikvrt_self_host_provider.py", "tools/qikvrt_subprocess.py",
+                       "tools/qikvrt_required_review_gate.py", "tools/qikvrt_workflow_executor.py",
+                       "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+                       "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+                       "state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json")
+
+
+def static_implementation_binding() -> str:
+    root = Path(__file__).resolve().parents[1]
+    hashes = {p: hashlib.sha256(read_regular_file(root / p, max_bytes=1024 * 1024)).hexdigest()
+              for p in STATIC_SOURCE_PATHS}
+    return hashlib.sha256(json.dumps(hashes, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+
+
+STATIC_BOOT_BINDING = static_implementation_binding()
 
 
 def _mcp_scopes() -> set[str]:
@@ -459,6 +479,91 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
         except Exception:
             self._send_json(503, {"status": "BLOCK", "reason": "Continuation unavailable; read back before retry"})
 
+    def _static_rest(self, *, write: bool) -> None:
+        """Expose the original S1 static controller; never accept caller paths or keys."""
+        if os.environ.get("QIKVRT_STATIC_DELIVERY_ENABLED", "0") != "1":
+            self._send_json(404, {"status": "BLOCK", "reason": "Static REST not admitted"})
+            return
+        if not self._rate_allowed():
+            self._send_json(429, {"status": "BLOCK", "reason": "rate limit exceeded"})
+            return
+        if any(len(self.headers.get_all(h, [])) > 1 for h in ("Authorization", "Host", "Content-Type")):
+            self._send_json(400, {"status": "BLOCK", "reason": "duplicate security header"})
+            return
+        if not self._authorized():
+            self._send_json(401, {"status": "BLOCK", "reason": "unauthorized"})
+            return
+        try:
+            parsed = urlparse(self.path)
+            match = STATIC_REST_RE.fullmatch(parsed.path)
+            repository = "/".join(match.groups()) if match else ""
+            from tools.qikvrt_required_review_gate import resolve_required_code_owner
+            if (repository != "ingolf-lohmann/qik-vrt"
+                    or os.environ.get("QIKVRT_ALLOWED_REPOSITORY") != repository
+                    or os.environ.get("QIKVRT_API_PRINCIPAL", "").strip() != resolve_required_code_owner(repository)):
+                self._send_json(403, {"status": "BLOCK", "reason": "Bound Authority Owner required"})
+                return
+            if parsed.params or parsed.fragment or len(parsed.query) > 2048:
+                raise ValueError()
+            if static_implementation_binding() != STATIC_BOOT_BINDING:
+                self._send_json(503, {"status": "BLOCK", "reason": "Static implementation changed; restart reviewed source"})
+                return
+            common = {"schema", "mode", "request_id", "expected_implementation_sha256",
+                      "binding_sha256", "static_file_sha256"}
+            if write:
+                if parsed.query:
+                    raise ValueError()
+                value = self._read_json()
+                if (set(value) != common | {"expected_static_sha256", "effect_accepted"}
+                        or value.get("mode") != "upload" or value.get("effect_accepted") is not True):
+                    raise ValueError()
+                prior = value["expected_static_sha256"]
+                if prior != "ABSENT" and (not isinstance(prior, str) or not re.fullmatch(r"[0-9a-f]{64}", prior)):
+                    raise ValueError()
+            else:
+                query = parse_qs(parsed.query, keep_blank_values=True, strict_parsing=True)
+                if set(query) != common or any(len(v) != 1 for v in query.values()):
+                    raise ValueError()
+                value = {k: v[0] for k, v in query.items()}
+                if value["mode"] not in {"readback", "reconcile", "public-readback"}:
+                    raise ValueError()
+            if (value.get("schema") != STATIC_REST_SCHEMA
+                    or not isinstance(value["request_id"], str)
+                    or not authority_client.SAFE_ID.fullmatch(value["request_id"])
+                    or any(not isinstance(value[k], str) or not re.fullmatch(r"[0-9a-f]{64}", value[k])
+                           for k in ("expected_implementation_sha256", "binding_sha256", "static_file_sha256"))):
+                raise ValueError()
+            if value["expected_implementation_sha256"] != STATIC_BOOT_BINDING:
+                self._send_json(409, {"status": "BLOCK", "reason": "Static implementation pin mismatch"})
+                return
+            # Server-side protected configuration only. Never serialize its paths, host or private backups.
+            binding_pin = os.environ.get("QIKVRT_STATIC_BINDING_SHA256", "")
+            page_pin = os.environ.get("QIKVRT_STATIC_FILE_SHA256", "")
+            if (binding_pin != value["binding_sha256"] or page_pin != value["static_file_sha256"]):
+                self._send_json(409, {"status": "BLOCK", "reason": "Static target/source pin mismatch"})
+                return
+            from tools import qikvrt_self_host_provider as provider
+            args = SimpleNamespace(operation="host-static-" + value["mode"],
+                production_binding=Path(os.environ["QIKVRT_STATIC_BINDING_FILE"]),
+                binding_sha256=binding_pin, static_file_sha256=page_pin,
+                static_file=Path(os.environ["QIKVRT_STATIC_FILE"]),
+                provider_receipts=Path(os.environ["QIKVRT_STATIC_RECEIPTS_DIR"]),
+                host_operation_id=value["request_id"],
+                expected_static_sha256=value.get("expected_static_sha256"))
+            result = provider.static_execute(args)
+            ok = result.get("state") in {"FILE_BYTES_VERIFIED", "PUBLIC_STATIC_BYTES_VERIFIED"}
+            if value["mode"] == "readback":
+                ok = True  # Original controller validated the actual SSH read, including ABSENT.
+            self._send_json(200 if ok else 409, {
+                "schema": STATIC_REST_SCHEMA, "mode": value["mode"], "request_id": value["request_id"],
+                "implementation_sha256": STATIC_BOOT_BINDING, "binding_sha256": binding_pin,
+                "static_file_sha256": page_pin, "status": "VERIFIED" if ok else "BLOCK",
+                "handler_result": result, "effect_ack_done": False})
+        except (ValueError, TypeError, UnicodeError):
+            self._send_json(409 if write else 400, {"status": "BLOCK", "reason": "Static request refused; use original request readback before retry"})
+        except Exception:
+            self._send_json(503, {"status": "BLOCK", "reason": "Static result unavailable; use original request readback before retry"})
+
     def _mcp_guard(self) -> bool:
         if not _mcp_configuration_valid():
             self._send_json(503, {"status": "BLOCK", "reason": "invalid service configuration"})
@@ -722,6 +827,8 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
             error(200, -32603, "Committed evidence unavailable; reobserve before any mutation")
 
     def do_GET(self):
+        if STATIC_REST_RE.fullmatch(urlparse(self.path).path):
+            return self._static_rest(write=False)
         if PRODUCTION_ENVIRONMENT_RE.fullmatch(urlparse(self.path).path):
             return self._production_environment_rest(write=False)
         if CONTINUATION_REST_RE.fullmatch(urlparse(self.path).path):
@@ -766,6 +873,8 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
         self._send_json(404, {"status": "BLOCK", "reason": "not found"})
 
     def do_POST(self):
+        if STATIC_REST_RE.fullmatch(urlparse(self.path).path):
+            return self._static_rest(write=True)
         if PRODUCTION_ENVIRONMENT_RE.fullmatch(urlparse(self.path).path):
             return self._production_environment_rest(write=True)
         if CONTINUATION_REST_RE.fullmatch(urlparse(self.path).path):

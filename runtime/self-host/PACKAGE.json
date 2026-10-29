@@ -132,6 +132,8 @@
     "runtime/self-host/PUBLICATION_REQUEST.example.json",
     "runtime/self-host/REACT_LOCK.json",
     "runtime/self-host/README.md",
+    "runtime/self-host/STATIC_DELIVERY.md",
+    "runtime/self-host/hello-world/index.html",
     "runtime/self-host/RECOVERED_TERMINAL.md",
     "runtime/self-host/original-firefox/README.md",
     "runtime/self-host/original-firefox/_locales/ar/messages.json",
@@ -177,6 +179,7 @@
     "tools/ai_handoff.py",
     "tools/qikvrt_authority_credentials.py",
     "tools/qikvrt_integrity.py",
+    "tools/qikvrt_ionos_dns.py",
     "tools/qikvrt_mesh_monitor_readback.mjs",
     "tools/qikvrt_required_review_gate.py",
     "tools/qikvrt_self_host.py",
@@ -236,3 +239,4 @@
     "contains_credentials": false
   }
 }
+

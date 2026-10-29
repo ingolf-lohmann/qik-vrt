@@ -3937,7 +3937,8 @@ def main():
         "container-tool-prepare", "container-context", "container-carrier", "container-carrier-archive-check", "container-artifact-split", "container-artifact-join", "container-oci-check", "container-smoke", "container-production-gate", "container-host-identity", "container-deploy", "container-readback",
         "migration-inventory", "migration-verify-source", "migration-export", "migration-verify-export", "migration-import",
         "migration-verify-import", "migration-rollback", "migration-capture-supervisor", "migration-capture-arm", "migration-capture",
-        "provider-inventory", "provider-classify", "provider-plan", "provider-apply", "provider-reconcile", "provider-readback"))
+        "provider-inventory", "provider-classify", "provider-plan", "provider-apply", "provider-reconcile", "provider-readback",
+        "host-static-readback", "host-static-upload", "host-static-reconcile", "host-static-public-readback"))
     parser.add_argument("--extension-xpi", type=Path, help="exact candidate XPI; disposable local probe only")
     parser.add_argument("--firefox-package", choices=("firefox-esr", "firefox"), default="firefox-esr")
     parser.add_argument("--root", type=Path, default=ROOT)
@@ -4011,6 +4012,10 @@ def main():
     parser.add_argument("--provider-authorization", type=Path, help="exact private create, payment and previously accepted terms evidence")
     parser.add_argument("--provider-authorization-sha256")
     parser.add_argument("--provider-receipts", type=Path, help="existing separate owner-only durable receipt directory")
+    parser.add_argument("--static-file", type=Path, help="explicit public index.html, at most 32 KiB")
+    parser.add_argument("--static-file-sha256", help="independently frozen static page digest")
+    parser.add_argument("--expected-static-sha256", help="observed old index digest or explicit ABSENT")
+    parser.add_argument("--host-operation-id", help="stable existing-host upload identity; uncertain writes require reconcile")
     args = parser.parse_args()
     try:
         if args.operation.startswith("publication-"):
@@ -4047,7 +4052,7 @@ def main():
             import importlib
             sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
             result = importlib.import_module("tools.qikvrt_self_host_container").execute(args)
-        elif args.operation.startswith("provider-"):
+        elif args.operation.startswith(("provider-", "host-static-")):
             result = provider_module().execute(args)
         elif args.operation == "mesh-rule-confirm":
             if not args.mesh_cache or not args.work_request or not args.peer:
@@ -4152,7 +4157,7 @@ def main():
             if not args.config: raise ValueError("PRIVATE_START_CONFIGURATION_REQUIRED")
             return start(args.root.resolve(), args.manifest_sha256, args.config.absolute())
         print(json.dumps(result, sort_keys=True))
-        return 2 if args.operation.startswith("publication-") and result["state"].startswith("HOLD") else 0
+        return 2 if args.operation.startswith(("publication-", "host-static-")) and str(result.get("state", "")).startswith("HOLD") else 0
     except (OSError, ValueError, KeyError, TypeError, RuntimeError, sqlite3.Error, subprocess.SubprocessError) as exc:
         # Capture diagnostics can contain private filenames or event data.
         cause = ("PUBLICATION_GATE_REFUSED" if args.operation.startswith("publication-") else
@@ -4163,6 +4168,7 @@ def main():
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
 
 
 

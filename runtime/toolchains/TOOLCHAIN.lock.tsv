@@ -42,3 +42,9 @@ github-environment-crypto	PyNaCl1.6.2	python-3.12-linux	NO_BUNDLED_ARCHIVE	VERSI
 secret-tool	system-libsecret-executable-contract	linux-desktop-user	NO_BUNDLED_ARCHIVE	BEHAVIORAL_CONTRACT_ONLY	LGPL-2.1-or-later	optional_personal_protected_login_collection
 personal-retrieval	sentence-transformers6.0.0+transformers5.4.0+torch2.14.1	python-3.12-linux	requirements-personal-retrieval.txt	VERSION_CONTRACT_ONLY	UPSTREAM_DISTRIBUTION_LICENSES_APPLY	optional_local_source_ranking
 
+ssh	strict-pinned-host-key-batch-transfer	linux	NO_BUNDLED_ARCHIVE	BEHAVIORAL_CONTRACT_ONLY	BSD_AND_OPENSSH_COMPONENT_LICENSES	optional_existing_owned_VPS_static_file_transfer
+bash	bash-euo-pipefail-v1	ubuntu-24.04-x64	RUNNER_PROVIDED	BEHAVIOR_CONTRACT	UPSTREAM_RUNNER_PACKAGE_LICENSES	lean_release_provisioning
+curl	bounded-https-get-v1	ubuntu-24.04-x64	RUNNER_PROVIDED	BEHAVIOR_CONTRACT	UPSTREAM_RUNNER_PACKAGE_LICENSES	lean_release_provisioning
+tar	gnu-tar-zstd-v1	ubuntu-24.04-x64	RUNNER_PROVIDED	BEHAVIOR_CONTRACT	UPSTREAM_RUNNER_PACKAGE_LICENSES	lean_release_provisioning
+zstd	zstd-decode-v1	ubuntu-24.04-x64	RUNNER_PROVIDED	BEHAVIOR_CONTRACT	UPSTREAM_RUNNER_PACKAGE_LICENSES	lean_release_provisioning
+coreutils	sha256-staging-v1	ubuntu-24.04-x64	RUNNER_PROVIDED	BEHAVIOR_CONTRACT	UPSTREAM_RUNNER_PACKAGE_LICENSES	lean_release_provisioning
