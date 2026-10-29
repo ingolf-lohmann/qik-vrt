@@ -1631,9 +1631,11 @@ jobs:
           retention-days: 30
 
   container_deploy:
-    name: Existing admitted Linux host via mutual TLS REST
+    name: Original Linux host identity and admitted deployment via mutual TLS REST
     needs: [container, container_publish]
-    if: github.ref == 'refs/heads/main' && vars.QIKVRT_CONTAINER_DEPLOY_ENABLED == 'true'
+    # Read-only identity must remain observable when registry publication is
+    # skipped. The existing publication/deployment guards still gate all writes.
+    if: ${{ always() && github.ref == 'refs/heads/main' && needs.container.result == 'success' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 8
     environment: qikvrt-production
@@ -1645,13 +1647,16 @@ jobs:
     concurrency:
       group: qikvrt-s1-owner-node-${{ github.repository }}
       cancel-in-progress: false
+    outputs:
+      deployed: ${{ steps.host.outputs.deployed }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           ref: ${{ needs.container.outputs.head }}
           fetch-depth: 1
           persist-credentials: false
-      - name: Execute exact host deployment or unchanged container recovery
+      - name: Read original host identity before any admitted deployment or recovery
+        id: host
         env:
           GITHUB_TOKEN: ${{ github.token }}
           QIKVRT_HOST_BINDING: ${{ vars.QIKVRT_LINUX_HOST_BINDING_JSON }}
@@ -1659,8 +1664,13 @@ jobs:
           QIKVRT_HOST_CA: ${{ secrets.QIKVRT_LINUX_HOST_CA }}
           QIKVRT_HOST_CERT: ${{ secrets.QIKVRT_LINUX_HOST_CERT }}
           QIKVRT_HOST_KEY: ${{ secrets.QIKVRT_LINUX_HOST_KEY }}
-          EXPECTED_IMAGE: ${{ needs.container_publish.outputs.image }}
+          EXPECTED_HEAD: ${{ needs.container.outputs.head }}
+          EXPECTED_TREE: ${{ needs.container.outputs.tree }}
+          EXPECTED_IMAGE: ghcr.io/ingolf-lohmann/qik-vrt-s1@${{ needs.container.outputs.digest }}
           EXPECTED_MANIFEST: ${{ needs.container.outputs.manifest }}
+          PUBLISHED_IMAGE: ${{ needs.container_publish.outputs.image }}
+          PUBLISH_RESULT: ${{ needs.container_publish.result }}
+          DEPLOY_ENABLED: ${{ vars.QIKVRT_CONTAINER_DEPLOY_ENABLED }}
         run: |
           set -euo pipefail
           private="$RUNNER_TEMP/qikvrt-host-auth"
@@ -1675,23 +1685,59 @@ jobs:
               file=p/name;file.write_text(value);file.chmod(0o600)
           b=json.loads((p/'binding.json').read_bytes())
           assert hashlib.sha256((p/'binding.json').read_bytes()).hexdigest()==os.environ['QIKVRT_HOST_BINDING_SHA256']
+          assert (b['source_head'],b['source_tree'])==(os.environ['EXPECTED_HEAD'],os.environ['EXPECTED_TREE'])
           assert b['manifest_sha256']==os.environ['EXPECTED_MANIFEST']
           assert b['image_digest']==os.environ['EXPECTED_IMAGE'].split('@')[1]
           PY
-          python3 -B tools/qikvrt_self_host.py container-deploy \
+          export IDENTITY_NOT_BEFORE="$(python3 -c 'import datetime; print(datetime.datetime.now(datetime.timezone.utc).isoformat())')"
+          python3 -B tools/qikvrt_self_host.py container-host-identity \
             --production-binding "$private/binding.json" --binding-sha256 "$QIKVRT_HOST_BINDING_SHA256" \
             --ca-file "$private/ca.pem" --cert-file "$private/cert.pem" --key-file "$private/key.pem" \
-            --image "$EXPECTED_IMAGE" --receipt "$RUNNER_TEMP/host-start.json"
+            --expected-head "$EXPECTED_HEAD" --expected-tree "$EXPECTED_TREE" \
+            --manifest-sha256 "$EXPECTED_MANIFEST" --image "$EXPECTED_IMAGE" \
+            --receipt "$RUNNER_TEMP/host-identity.json"
+          python3 -B - <<'PYHOSTREADBACK'
+          import datetime as dt,hashlib,json,os,re
+          from pathlib import Path
+          r=json.loads((Path(os.environ['RUNNER_TEMP'])/'host-identity.json').read_bytes())
+          expected={'schema':'qikvrt-s1-container-receipt/v1',
+              'state':'AUTHENTICATED_LINUX_HOST_IDENTITY_VERIFIED','scope':'HOST_IDENTITY_ONLY',
+              'os_type':'linux','source_head':os.environ['EXPECTED_HEAD'],'source_tree':os.environ['EXPECTED_TREE'],
+              'image_digest':os.environ['EXPECTED_IMAGE'].split('@')[1],
+              'manifest_sha256':os.environ['EXPECTED_MANIFEST'],'binding_sha256':os.environ['QIKVRT_HOST_BINDING_SHA256'],
+              'checker_sha256':hashlib.sha256(Path('tools/qikvrt_self_host_container.py').read_bytes()).hexdigest()}
+          assert all(r.get(k)==v for k,v in expected.items()), 'host identity receipt pin mismatch'
+          assert r.get('host_identity_verified') is True
+          assert all(r.get(k) is False for k in ('host_package_verified','public_production_verified','effect_ack_done','ordinary_release'))
+          assert re.fullmatch('[a-f0-9]{64}',r.get('daemon_info_sha256',''))
+          observed=dt.datetime.fromisoformat(r['observed_at'])
+          start=dt.datetime.fromisoformat(os.environ['IDENTITY_NOT_BEFORE'])
+          now=dt.datetime.now(dt.timezone.utc)
+          assert observed.utcoffset() is not None and start <= observed <= now
+          assert (now-observed).total_seconds() <= 300, 'stale host identity receipt'
+          PYHOSTREADBACK
+          if test "$DEPLOY_ENABLED" = 'true' && test "$PUBLISH_RESULT" = 'success'; then
+            test "$PUBLISHED_IMAGE" = "$EXPECTED_IMAGE"
+            python3 -B tools/qikvrt_self_host.py container-deploy \
+              --production-binding "$private/binding.json" --binding-sha256 "$QIKVRT_HOST_BINDING_SHA256" \
+              --ca-file "$private/ca.pem" --cert-file "$private/cert.pem" --key-file "$private/key.pem" \
+              --image "$EXPECTED_IMAGE" --receipt "$RUNNER_TEMP/host-start.json"
+            printf 'deployed=true\n' >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        if: always()
         with:
           name: qikvrt-s1-host-start-${{ needs.container.outputs.head }}
-          path: ${{ runner.temp }}/host-start.json
+          path: |
+            ${{ runner.temp }}/host-identity.json
+            ${{ runner.temp }}/host-start.json
           if-no-files-found: error
           retention-days: 30
 
   container_public_readback:
     name: Independent exact-domain TLS and terminal acceptance
     needs: [container, container_deploy]
+    if: needs.container_deploy.outputs.deployed == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     permissions:

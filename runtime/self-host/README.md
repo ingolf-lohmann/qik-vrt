@@ -137,7 +137,7 @@ production predicates.
 The private connection is `vars.QIKVRT_LINUX_HOST_BINDING_JSON`, independently
 pinned by `vars.QIKVRT_LINUX_HOST_BINDING_SHA256`, and the existing protected
 `QIKVRT_LINUX_HOST_CA`, `QIKVRT_LINUX_HOST_CERT`, `QIKVRT_LINUX_HOST_KEY` secrets.
-`vars.QIKVRT_CONTAINER_DEPLOY_ENABLED` admits this existing consumer. The binding
+`vars.QIKVRT_CONTAINER_DEPLOY_ENABLED` admits deployment by this existing consumer. The binding
 must supply the real mTLS Docker API origin, daemon ID, container name, existing
 state volume, private configuration directory and digest, node ID, manifest
 digest, loopback routing port, exact source HEAD/TREE and image digest. The
@@ -151,6 +151,17 @@ exactly one `GET /v1.45/info`. Supply `--production-binding`, `--binding-sha256`
 The separate `--expected-head`, `--expected-tree` and `--manifest-sha256` must
 come from the approved tested package, not be derived from the host binding.
 All target-pin comparisons happen before opening the mTLS connection.
+
+The existing Main-only host job now invokes this read-only check after the exact
+container build, even when OCI publication is skipped. Its independent HEAD,
+TREE, image and package-manifest pins come from the accepted container job.
+A separate process reads the create-only receipt and verifies those pins, the
+checker digest, its fresh observation time and its limited identity-only scope.
+The existing artifact retains `host-identity.json` even when deployment fails.
+Deployment still requires the existing enable flag, successful reviewed OCI
+publication, identical published image and all original production guards.
+The public-domain job runs only after an actual successful deployment/recovery;
+identity alone cannot start public acceptance or establish package installation.
 
 The create-only receipt binds the Linux daemon ID, exact response-byte SHA-256,
 observation time, checker SHA-256, binding SHA-256 and target package pins. It
