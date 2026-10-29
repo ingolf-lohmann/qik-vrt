@@ -673,12 +673,14 @@ class GeneralCITestedSubjectTests(unittest.TestCase):
     def bind(self, *, required="true", expected=None):
         block = GENERAL_CI.read_text().split(self.STEP, 1)[1]
         block = block.split("\n  offline_browser:\n", 1)[0]
+        block = block.split("\n      - name: ", 1)[0]
         script = textwrap.dedent(block.split("        run: |\n", 1)[1])
         return subprocess.run(
             ["bash", "--noprofile", "--norc", "-c", script],
             cwd=self.root,
             env=dict(os.environ, EXPECTED_HEAD=expected or self.predecessor,
                      FIXPOINT_REQUIRED=required, TARGET_REF="fixture",
+                     GITHUB_REPOSITORY="ingolf-lohmann/qik-vrt", GITHUB_RUN_ID="1", GITHUB_RUN_ATTEMPT="1",
                      GITHUB_OUTPUT=os.fspath(self.output)),
             text=True, capture_output=True, timeout=10, check=False,
         )
@@ -691,6 +693,10 @@ class GeneralCITestedSubjectTests(unittest.TestCase):
         self.assertEqual(values, {"head": successor,
                                  "tree": run_git(self.root, "rev-parse", "HEAD^{tree}")})
         self.assertNotEqual(values["head"], self.predecessor)
+        receipt = json.loads((self.root / ".qikvrt/ci-tested-subject/TESTED_SUBJECT.json").read_bytes())
+        self.assertEqual(receipt["head_sha"], values["head"])
+        self.assertEqual(receipt["tree_sha"], values["tree"])
+        self.assertEqual(receipt["run_id"], 1)
         workflow = GENERAL_CI.read_text()
         self.assertIn("tested_head: ${{ steps.tested_subject.outputs.head }}", workflow)
         self.assertIn("tested_tree: ${{ steps.tested_subject.outputs.tree }}", workflow)

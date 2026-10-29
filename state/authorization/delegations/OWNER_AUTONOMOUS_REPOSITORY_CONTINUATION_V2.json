@@ -156,5 +156,28 @@
       "human_contribution": "Conditional merge authorization and manual predecessor merge — Ingolf Lohmann.",
       "artificial_cognitive_contribution": "Readback, scoped operational binding and persistence — OpenAI Codex."
     }
+  },
+  "graphql_fallback_decision": {
+    "schema": "qikvrt-owner-graphql-fallback/v1",
+    "state": "ACTIVE",
+    "owner": "Ingolf Lohmann",
+    "date": "2026-10-29",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "source_instruction": {
+      "source_kind": "DIRECT_HUMAN_INSTRUCTION_IN_CURRENT_SESSION",
+      "text": "Graf QL ist in der Form wie es jetzt vorliegt die Garantie dafür, dass das Repository nicht zum Stillstand kommt, solange es noch unerledigte Arbeit hat. Das ist der immerwährende Fallback. Und jetzt bilden wir das in einer REST-API ab, die dafür sorgt, dass der GraphQL Baum sich selbstständig optimieren kann anhand der erfolgreichen Durchläufe des Continuous Integration, Continuous Development, Continuous Operation Workflows",
+      "sha256": "895af5d62f83b689eead5af092fedd94770e2d5732c41009a95965749f76d0d4"
+    },
+    "rest_primary": true,
+    "fallback_must_be_retained": true,
+    "allowed_operations": [
+      "markPullRequestReadyForReview"
+    ],
+    "fallback_endpoint": "https://api.github.com/graphql",
+    "learning": "SUCCESSFUL_ORIGINAL_CI_CD_CO_RUNS; ORDER_INDEPENDENT_SIBLINGS_ONLY",
+    "no_gate_removal": true,
+    "ambiguous_effect_requires_readback": true,
+    "arbitrary_graphql_document": false,
+    "production_acceptance_inferred": false
   }
 }

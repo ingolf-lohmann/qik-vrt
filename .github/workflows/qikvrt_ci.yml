@@ -253,6 +253,22 @@ jobs:
           fi
           printf 'head=%s\ntree=%s\n' "$subject" "$tree" >> "$GITHUB_OUTPUT"
           echo "QIKVRT_TESTED_SUBJECT head=$subject tree=$tree"
+          mkdir -p .qikvrt/ci-tested-subject
+          python3 - "$subject" "$tree" <<'PY'
+          import json, os, pathlib, sys
+          value = {"schema": "qikvrt-ci-tested-subject/v1", "repository": os.environ["GITHUB_REPOSITORY"],
+                   "run_id": int(os.environ["GITHUB_RUN_ID"]), "run_attempt": int(os.environ["GITHUB_RUN_ATTEMPT"]),
+                   "head_sha": sys.argv[1], "tree_sha": sys.argv[2]}
+          pathlib.Path(".qikvrt/ci-tested-subject/TESTED_SUBJECT.json").write_text(json.dumps(value, sort_keys=True) + "\n")
+          PY
+
+      - name: Preserve the exact terminal tested subject independently
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-ci-tested-subject-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .qikvrt/ci-tested-subject/TESTED_SUBJECT.json
+          if-no-files-found: error
+          retention-days: 90
 
   offline_browser:
     needs: test

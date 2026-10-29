@@ -1449,6 +1449,88 @@ def amo_event(root: Path, context: Mapping[str, Any]) -> dict[str, Any] | None:
         raise ExecutorBlock("AMO_GITHUB_COMPLETION_EVENT_UNVERIFIED") from None
 
 
+CONTINUATION_WORKFLOWS = {
+    ".github/workflows/qikvrt_ci.yml": "CI",
+    ".github/workflows/qikvrt_temdd.yml": "CD",
+    ".github/workflows/qikvrt_workflow_executor_watchdog.yml": "CO",
+}
+
+
+def continuation_graph(run: Mapping[str, Any], jobs: Sequence[Mapping[str, Any]],
+                       tested_subject: Mapping[str, Any] | None = None) -> dict[str, Any]:
+    """Adapt sibling priority from successful original jobs, retaining all gates.
+
+    This is the QIK-VRT continuation graph, not a modification of GitHub's
+    schema. Durations guide order only; they never transfer gate acceptance.
+    Callers must independently read the original run and complete job inventory.
+    """
+    from datetime import datetime
+    if (run.get("path") not in CONTINUATION_WORKFLOWS
+            or type(run.get("id")) is not int or run["id"] <= 0
+            or type(run.get("run_attempt")) is not int or run["run_attempt"] <= 0
+            or not SHA_RE.fullmatch(str(run.get("head_sha", "")))
+            or run.get("repository", {}).get("full_name") != AMO_REPOSITORY
+            or run.get("head_repository", {}).get("full_name") != AMO_REPOSITORY
+            or not 0 < len(jobs) < 100
+            or any(type(j.get("id")) is not int or j["id"] <= 0 for j in jobs)
+            or len({j["id"] for j in jobs}) != len(jobs)):
+        raise ExecutorBlock("CONTINUATION_ORIGINAL_RUN_AND_JOBS_REQUIRED")
+    succeeded = run.get("status") == "completed" and run.get("conclusion") == "success"
+    timings = []
+    for job in jobs:
+        if (not isinstance(job.get("name"), str) or not 0 < len(job["name"]) <= 200
+                or job.get("status") != "completed"):
+            succeeded = False
+        if job.get("conclusion") not in {"success", "skipped"}:
+            succeeded = False
+        if job.get("conclusion") == "success":
+            try:
+                start = datetime.fromisoformat(job["started_at"].replace("Z", "+00:00"))
+                end = datetime.fromisoformat(job["completed_at"].replace("Z", "+00:00"))
+                seconds = (end - start).total_seconds()
+                if start.tzinfo is None or end.tzinfo is None or not 0 <= seconds <= 86400:
+                    raise ValueError("invalid job duration")
+                timings.append({"job_id": job["id"], "name": job["name"], "seconds": seconds})
+            except (KeyError, TypeError, ValueError, AttributeError):
+                pass  # Unknown timing is never a synthetic zero-cost success.
+    timings = sorted(timings, key=lambda j: (-j["seconds"], j["job_id"])) if succeeded else []
+    parallel_ci = {"offline_browser (chromium)", "offline_browser (webkit)",
+                   "Linux S1 native terminal production and smoke"}
+    sibling_priority = ([j for j in timings if j["name"] in parallel_ci]
+                        if run["path"] == AMO_CI_WORKFLOW else [])
+    required = {"test", "offline_browser (chromium)", "offline_browser (webkit)",
+                "Linux S1 native terminal production and smoke"}
+    accepted = {j.get("name") for j in jobs if j.get("conclusion") == "success"}
+    bound = (isinstance(tested_subject, Mapping)
+             and tested_subject.get("schema") == "qikvrt-ci-tested-subject/v1"
+             and tested_subject.get("repository") == AMO_REPOSITORY
+             and type(tested_subject.get("run_id")) is int and tested_subject["run_id"] == run["id"]
+             and type(tested_subject.get("run_attempt")) is int
+             and tested_subject["run_attempt"] == run.get("run_attempt")
+             and all(SHA_RE.fullmatch(str(tested_subject.get(k, ""))) for k in ("head_sha", "tree_sha")))
+    return {"schema": "qikvrt-continuation-graph/v1", "run_id": run["id"],
+            "event_head_sha": run["head_sha"],
+            "head_sha": tested_subject["head_sha"] if bound else run["head_sha"],
+            "tree_sha": tested_subject["tree_sha"] if bound else None,
+            "workflow_stage": CONTINUATION_WORKFLOWS[run["path"]],
+            "provider_metadata_sha256": sha256_bytes(canonical_json_bytes({"run": run, "jobs": jobs})),
+            "tested_subject": dict(tested_subject) if bound else None,
+            "ci_verified": bool(bound and succeeded and run["path"] == AMO_CI_WORKFLOW and required <= accepted),
+            "success_learning": succeeded, "successful_job_timings": timings,
+            "sibling_priority": sibling_priority, "sibling_dependency": "test",
+            "skipped_jobs": [j["id"] for j in jobs if j.get("conclusion") == "skipped"],
+            "nodes": [{"id": "source", "requires": []},
+                      {"id": "review", "requires": ["source"]},
+                      {"id": "ci", "requires": ["source"], "mandatory_root": "test",
+                       "independent_children": sorted(parallel_ci)},
+                      {"id": "graphql-fallback", "requires": ["review", "ci"],
+                       "operation": "markPullRequestReadyForReview", "never_prune": True},
+                      {"id": "rest-merge", "requires": ["graphql-fallback"],
+                       "fresh_expected_head_admission_required": True}],
+            "learning_scope": "ORDER_INDEPENDENT_CI_SIBLINGS_ONLY; NEVER_SKIP_GATES",
+            "graph_source_mutation": False, "effect_ack_done": False}
+
+
 def github_completion_feedback(root: Path = ROOT) -> dict[str, Any]:
     """Read CI completion diagnostics without executing code from the triggering run."""
     context = amo_context()
@@ -1467,14 +1549,28 @@ def github_completion_feedback(root: Path = ROOT) -> dict[str, Any]:
         run = _amo_get(root, f"repos/{AMO_REPOSITORY}/actions/runs/{run_id}")
         if (run.get("repository", {}).get("full_name") != AMO_REPOSITORY
                 or run.get("head_repository", {}).get("full_name") != AMO_REPOSITORY
-                or run.get("path") not in {AMO_CI_WORKFLOW, ".github/workflows/qikvrt_workflow_executor_watchdog.yml"}
+                or run.get("path") not in CONTINUATION_WORKFLOWS
                 or run.get("status") != "completed"
                 or any(run.get(k) != source.get(k) for k in ("id", "head_sha", "conclusion", "run_attempt", "event"))):
             raise ExecutorBlock("AMO_GITHUB_COMPLETION_EVENT_MISMATCH")
         jobs = _amo_get(root, f"repos/{AMO_REPOSITORY}/actions/runs/{run_id}/jobs?per_page=100")
         if jobs.get("total_count") != len(jobs.get("jobs", [])):
             raise ExecutorBlock("AMO_TARGET_JOB_INVENTORY_INCOMPLETE")
-        return github_failure_feedback(root, amo_feedback(run, jobs["jobs"]))
+        feedback = github_failure_feedback(root, amo_feedback(run, jobs["jobs"]))
+        try:
+            tested = None
+            if run.get("conclusion") == "success" and run.get("path") == AMO_CI_WORKFLOW:
+                artifact = amo_artifact(root, run_id,
+                    f"qikvrt-ci-tested-subject-{run_id}-{run['run_attempt']}", {"TESTED_SUBJECT.json"})
+                if artifact is not None:
+                    tested = _amo_object(artifact["TESTED_SUBJECT.json"])
+            feedback["continuation_graph"] = continuation_graph(run, jobs["jobs"], tested)
+        except ExecutorBlock:
+            # A failed learner must not erase the original provider outcome.
+            feedback["continuation_graph"] = {"schema": "qikvrt-continuation-graph/v1",
+                "state": "UNVERIFIED", "ci_verified": False, "success_learning": False,
+                "fallback_retained": True, "sibling_priority": [], "effect_ack_done": False}
+        return feedback
     except (OSError, KeyError, TypeError):
         raise ExecutorBlock("AMO_GITHUB_COMPLETION_EVENT_UNVERIFIED") from None
 

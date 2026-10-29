@@ -1,5 +1,17 @@
 # QIK-VRT Human–Machine Progress Protocol
 
+## Later Owner GraphQL fallback decision — 29 October 2026
+
+GraphQL remains the standing admitted continuation fallback. REST stays primary;
+the shared client guard accepts `GRAPHQL_FALLBACK` only against the exact pinned
+Owner decision and fixed operation, with no prior ambiguous REST effect. See
+`client_continuation.github_fallback` in the existing policy and
+`graphql_fallback_decision` in the existing autonomous continuation delegation.
+Do not request this authorization again. Successful original CI/CD/CO feedback
+can reorder independent verification branches while retaining every gate and
+the fallback. Readiness, merge and productive host/domain acceptance remain
+distinct and require their own fresh readbacks.
+
 ## Owner decisions before tool selection — 26 October 2026
 
 All current and future QIK-VRT artificial-cognitive clients load the shared
