@@ -193,6 +193,12 @@ digital-twin-sso-test:
 
 test: digital-twin-sso-test
 
+.PHONY: digital-twin-rest-test
+digital-twin-rest-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_digital_twin_rest
+
+test: digital-twin-rest-test
+
 .PHONY: public-qa-test
 public-qa-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_public_qa_server tests.test_public_question_entrypoint
