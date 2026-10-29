@@ -1,0 +1,74 @@
+{
+  "schema": "qikvrt_source_intake_work_unit_v1",
+  "work_unit_id": "QIKVRT_RAUMZEIT_EN_DE_SOURCE_INTAKE_20261029_V1",
+  "observed_at": "2026-10-29T12:07:42.751545Z",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "refs/heads/main",
+  "source_head": "289b522e51017d0eb677ec4232e1a3861a87feb8",
+  "source_tree": "830506aa7d1a0c3cd7f7b01e002d48fea8b7bb74",
+  "source_identity": {
+    "path": "docs/publications/2026-10-20-emergent-spacetime-en-de/Raumzeit_arXiv_EN_DE.pdf",
+    "bytes": 376446,
+    "sha256": "88d0eb41fa8d3b11a809419f9587cf97783d7b253a50d5297fac016a41a30d68",
+    "md5": "d4ddca6e884f00a19d14d2c45899b787",
+    "git_blob_sha1": "051bc588b083c73ea5fee2c9ccbd0302262b7953",
+    "pages": 27,
+    "encrypted": false,
+    "pdf_title": "Emergent Spacetime, Reconstructible Virtuality, and Physical Time",
+    "pdf_author": "Ingolf Lohmann",
+    "pdf_document_date": "2026-10-20",
+    "document_body_modified": false
+  },
+  "human_actor": "Ingolf Lohmann",
+  "human_contribution": "Supplied the current PDF and authorized the publication/QR sequence; existing authorization is retained without treating an older candidate as this one.",
+  "artificial_actor": "OpenAI Codex",
+  "artificial_contribution": "PDF structural inspection, title-page visual check, exact-byte freeze and source-intake metadata.",
+  "unresolved_origin": "The manuscript generation history is not independently verified by PDF metadata.",
+  "content_modified": false,
+  "verified_checks": [
+    "27 pages",
+    "not encrypted",
+    "text extraction succeeds on every page",
+    "original copy byte-identical",
+    "title page visually inspected",
+    "source SHA-256 and Git blob identity computed"
+  ],
+  "production_effects": {
+    "new_zenodo_mutation": false,
+    "zenodo_doi": null,
+    "productive_effect_ack_done": false
+  },
+  "work": [
+    {
+      "id": "EXACT_SOURCE_BINDING",
+      "state": "PREPARED_REQUIRES_REMOTE_READBACK",
+      "next_action": "Persist the source branch through the existing GitHub connector and independently verify the stored PDF blob."
+    },
+    {
+      "id": "CANDIDATE_PROOF_AND_RETURN",
+      "state": "OPEN",
+      "next_action": "Use the existing v2 claim/proof and prepublication-return validators for this exact 27-page source; no proof or exact-upload decision is inherited from another candidate."
+    },
+    {
+      "id": "ORIGINAL_ZENODO_PUBLICATION",
+      "state": "OPEN",
+      "next_action": "After the exact candidate gates pass, use the existing protected publisher, reconcile prior effects and independently redownload the public PDF."
+    },
+    {
+      "id": "SECOND_PDF_AND_ZENODO_QR",
+      "state": "OPEN",
+      "next_action": "Use only the verified original record URL; add its QR to the title page, preserve the body, freeze and validate the second exact candidate, publish and independently read it back."
+    },
+    {
+      "id": "THIRD_PDF_AND_ZENODO_QR",
+      "state": "OPEN",
+      "next_action": "Use only the verified second record URL; derive the third from the original, freeze and validate, publish, redownload and deliver the third PDF plus both QR images."
+    }
+  ],
+  "bound_execution_route_observation": {
+    "native_ready": false,
+    "open_gate": "ADMITTED_MESH_RUNTIME_ENDPOINT",
+    "observed_at": "2026-10-29T12:03:11.164Z",
+    "scope": "Existing Site-native connection only; no general credential-absence claim."
+  }
+}
