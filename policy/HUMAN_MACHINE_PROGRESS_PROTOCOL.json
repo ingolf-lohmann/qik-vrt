@@ -493,6 +493,21 @@
       "rest_facade": "/repos/ingolf-lohmann/qik-vrt/qikvrt/continuation",
       "consumer": "Existing workflow executor completion receiver and GitHub REST shim",
       "live_activation": "REQUIRES_ORIGINAL_PROTECTED_SERVICE_AND_INDEPENDENT_READBACK"
+    },
+    "sso_use": {
+      "owner": "Ingolf Lohmann",
+      "decision": "state/work_units/QIKVRT_PRODUCTION_SSO_HANDOFF_20261029.json",
+      "decision_sha256": "2dabf716b87d65d8c78488e6f5759374dabd1513b3b4a596436a76a875366bca",
+      "existing_authenticated_connector_first": true,
+      "existing_registered_sso_sessions_required_when_available": true,
+      "repeat_existing_authorization_request": false,
+      "separate_account_rights_connector_capability_and_native_admission": true,
+      "original_os_secret_store_and_writer_fence": true,
+      "browser_or_connector_credential_transfer": false,
+      "secret_values_in_chat_or_repository": false,
+      "all_clients_adoption_inferred": false,
+      "implementation": "src/qikvrt_github_api_shim.py::authority_sso_handler",
+      "native_acceptance_requires_independent_readback": true
     }
   },
   "continuation_semantics": {
