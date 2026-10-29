@@ -82,8 +82,14 @@
     "head": "d6e8a058e3308c3ccf54ee7b330aa019ee6404fe",
     "merge_commit": "c8b8bdf3c8a22cd5abbce552cc86d5ee70de330f",
     "merge_tree": "aac0a6f41d7a3beea925baf88ee39c792c30ebe4",
-    "ordered_parents": ["e2e4f0b8f88bd2ab4ca6b0881b3a1b804376ed18", "d6e8a058e3308c3ccf54ee7b330aa019ee6404fe"],
-    "native_ci_runs": [40835290481, 40835282768],
+    "ordered_parents": [
+      "e2e4f0b8f88bd2ab4ca6b0881b3a1b804376ed18",
+      "d6e8a058e3308c3ccf54ee7b330aa019ee6404fe"
+    ],
+    "native_ci_runs": [
+      40835290481,
+      40835282768
+    ],
     "native_ci_conclusion": "success",
     "merge_independently_observed": true,
     "merge_issued_by_this_session": false
@@ -115,7 +121,12 @@
     "state": "HOLD_ORIGINAL_ADMITTED_NATIVE_EFFECT_OUTBOX_CARRIER_UNAVAILABLE",
     "sent": false,
     "node_adoption_verified": false,
-    "preserved_members": ["Codex", "Goldkelch Mirror", "Originalhost", "Mesh-Monitor"]
+    "preserved_members": [
+      "Codex",
+      "Goldkelch Mirror",
+      "Originalhost",
+      "Mesh-Monitor"
+    ]
   },
   "native_observation": {
     "operator_authorized": true,
@@ -132,5 +143,35 @@
   "host_identity_verified": false,
   "restart_executed": false,
   "feature_toggle_activated": false,
-  "effect_ack_done": false
+  "effect_ack_done": false,
+  "owner_pr_creation_followup": {
+    "source_head": "727c5ef8a4dae0a786a43ac946f54be8abce0028",
+    "source_tree": "dc55936397ad4cb72db625ae816ef9bd4bdcb987",
+    "decision": "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json#/conditional_pull_request_creation_decision",
+    "instruction_sha256": "4b91eb9020f6243cf57066b51676637cb9d3923172f5d9afa30f64735f1ac8dd",
+    "implementation": "Reuse existing PR #636 and continuation records; bind the Owner decision from AI, AGENTS, context, shared progress policy and the previous recursive creation prohibition.",
+    "human_contribution": "Ingolf Lohmann: new Pull Request creation authorization conditional on at least one other closure target.",
+    "artificial_cognitive_contribution": "OpenAI Codex: source persistence, hash/context/policy binding, conflicting-rule reconciliation and current-candidate verification.",
+    "validation": {
+      "focused_command": "python3 -B -m unittest -v tests.test_production_environment tests.test_self_host_publication tests.test_ruleset_authority_token_route",
+      "focused_tests": 88,
+      "focused_result": "OK_WITH_ONE_OPTIONAL_LOCKED_PYNACL_SKIP",
+      "continuation_command": "make ai-runtime-contract self-heal-materialization-test autonomous-pr-continuation-test",
+      "continuation_result": "PASS",
+      "first_full_command": "make test",
+      "first_full_result": "TEST_GROUPS_PASSED_FINAL_INTEGRITY_BLOCKED_BY_SUBSEQUENT_POLICY_EDIT",
+      "causal_correction": "Regenerate existing integrity metadata after final source edits; freeze candidate before another complete test run.",
+      "exact_candidate_native_ci": "REQUIRED"
+    },
+    "new_pull_request_created": false,
+    "predecessor_open_work_retained": true,
+    "original_protected_material_delivered": false,
+    "host_or_domain_acceptance_inferred": false,
+    "rule_persistence_is_runtime_enforcement": false,
+    "continued_from_remote_successor": {
+      "head": "b0ac53a1a64840c9f6e7b9a09062ed259d5c3ac7",
+      "cold_package_repair_retained": true,
+      "new_exact_subject_checks_required": true
+    }
+  }
 }

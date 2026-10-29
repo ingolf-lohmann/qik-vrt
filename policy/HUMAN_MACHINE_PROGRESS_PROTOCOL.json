@@ -508,6 +508,16 @@
       "all_clients_adoption_inferred": false,
       "implementation": "src/qikvrt_github_api_shim.py::authority_sso_handler",
       "native_acceptance_requires_independent_readback": true
+    },
+    "pull_request_creation": {
+      "source": "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json",
+      "json_pointer": "/conditional_pull_request_creation_decision",
+      "decision_id": "OWNER-PR-CREATION-WITH-OTHER-CLOSURE-20261029",
+      "decision_sha256": "1304b2dd882e19afd22c863d95612c9b20a3ff40532616ca689086fed926697c",
+      "minimum_other_closure_targets": 1,
+      "reuse_existing_candidate_when_sufficient": true,
+      "closure_requires_independent_readback": true,
+      "rule_save_is_runtime_enforcement": false
     }
   },
   "continuation_semantics": {
