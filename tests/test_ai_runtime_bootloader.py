@@ -169,6 +169,28 @@ class AIRuntimeBootloaderContractTests(unittest.TestCase):
 class ClientContinuationRegressionTests(unittest.TestCase):
     """Client behavior receipts are fixtures, never productive effect evidence."""
 
+    def test_later_owner_fallback_preserves_rest_default_and_requires_exact_decision(self):
+        from tools import ai_handoff
+        policy = json.loads((ROOT / "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json").read_bytes())
+        action = {"subject": {"repository": "ingolf-lohmann/qik-vrt"},
+                  "method": "POST", "operation": "markPullRequestReadyForReview",
+                  "endpoint": "https://api.github.com/graphql", "fallback_reason": "REST_OPERATION_UNAVAILABLE",
+                  "rest_effect_state": "NOT_ATTEMPTED", "owner_decision_sha256": policy["client_continuation"]["github_fallback"]["decision_sha256"]}
+        self.assertEqual(policy["client_continuation"]["github_route"], "REST_API_ONLY")
+        self.assertTrue(ai_handoff.github_graphql_fallback_allowed(action, policy))
+        subject = {"repository": "ingolf-lohmann/qik-vrt", "ref": "main", "head": "a" * 40, "tree": "b" * 40}
+        declared = {**action, "subject": subject, "route": "connector", "service": "github",
+                    "transport": "GRAPHQL_FALLBACK", "evidence": "fixture:later-Owner-exact-decision",
+                    "observed_method": "POST", "observed_operation": action["operation"],
+                    "observed_repository": subject["repository"],
+                    **{k: True for k in ("authorized", "safe", "deterministic", "callable", "authenticated", "permitted", "admitted")}}
+        self.assertTrue(ai_handoff.validate_client_action(declared, subject))
+        for changed in ({"operation": "mergePullRequest"}, {"endpoint": "https://foreign.example/graphql"},
+                        {"rest_effect_state": "UNKNOWN"}, {"owner_decision_sha256": "0" * 64},
+                        {"subject": {"repository": "foreign/repo"}}):
+            with self.subTest(changed=changed):
+                self.assertFalse(ai_handoff.github_graphql_fallback_allowed({**action, **changed}, policy))
+
     def setUp(self) -> None:
         from tools import ai_handoff
         self.handoff = ai_handoff

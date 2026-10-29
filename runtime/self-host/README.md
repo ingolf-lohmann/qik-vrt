@@ -137,12 +137,45 @@ production predicates.
 The private connection is `vars.QIKVRT_LINUX_HOST_BINDING_JSON`, independently
 pinned by `vars.QIKVRT_LINUX_HOST_BINDING_SHA256`, and the existing protected
 `QIKVRT_LINUX_HOST_CA`, `QIKVRT_LINUX_HOST_CERT`, `QIKVRT_LINUX_HOST_KEY` secrets.
-`vars.QIKVRT_CONTAINER_DEPLOY_ENABLED` admits this existing consumer. The binding
+`vars.QIKVRT_CONTAINER_DEPLOY_ENABLED` admits deployment by this existing consumer. The binding
 must supply the real mTLS Docker API origin, daemon ID, container name, existing
 state volume, private configuration directory and digest, node ID, manifest
 digest, loopback routing port, exact source HEAD/TREE and image digest. The
 checked-in `LINUX_HOST_BINDING.example.json` remains a template; do not fill its
 unknown fields with invented host values or export credentials into Git.
+
+`container-host-identity` is the read-only first-host check in the same launcher.
+It validates the existing independently pinned binding and mTLS files, then sends
+exactly one `GET /v1.45/info`. Supply `--production-binding`, `--binding-sha256`,
+`--image`, `--ca-file`, `--cert-file`, `--key-file` and a new `--receipt` path.
+The separate `--expected-head`, `--expected-tree` and `--manifest-sha256` must
+come from the approved tested package, not be derived from the host binding.
+All target-pin comparisons happen before opening the mTLS connection.
+
+The existing Main-only host job now invokes this read-only check after the exact
+container build, even when OCI publication is skipped. Its independent HEAD,
+TREE, image and package-manifest pins come from the accepted container job.
+A separate process reads the create-only receipt and verifies those pins, the
+checker digest, its fresh observation time and its limited identity-only scope.
+The existing artifact retains `host-identity.json` even when deployment fails.
+Deployment still requires the existing enable flag, successful reviewed OCI
+publication, identical published image and all original production guards.
+The public-domain job runs only after an actual successful deployment/recovery;
+identity alone cannot start public acceptance or establish package installation.
+
+The create-only receipt binds the Linux daemon ID, exact response-byte SHA-256,
+observation time, checker SHA-256, binding SHA-256 and target package pins. It
+contains no raw daemon response, private connection/configuration paths or
+credential values. A rejected/unavailable check produces no success receipt;
+an existing receipt path is rejected before contacting the host. Use only the
+existing admitted protected connection; this command neither locates credentials
+nor registers or activates a hosted connector.
+
+This operation proves host identity only. The target package pins do not prove
+that the image or package is installed on that host. It cannot pull an image,
+create or start a container, change configuration or accept the public domain.
+`container-deploy` retains all production-governance, host/storage/configuration
+and package checks; subsequent independent exact-domain acceptance is unchanged.
 
 Recovery first checks the authenticated daemon and owner volume, the same
 container/image/binding labels, runtime user/command, security and loopback
@@ -1386,3 +1419,12 @@ This repairs scope selection; it grants no Main, production environment, host,
 mTLS, storage or exact-domain admission. Protected production and independent
 public readback remain required. A successful native-only CI never proves a
 signed Firefox installation or a running IONOS host.
+
+## Existing Zenodo publisher on the Authority host
+
+The original protected-reference publisher adapter is available through
+`publication-check`, `publication-resume` and `publication-supervisor`. Follow
+[PUBLICATION.md](PUBLICATION.md) for current Authority, exact request and
+provider-managed credential bindings. The sealed S1 package carries the
+original publisher and proof contracts; package presence proves neither
+credential transfer nor host activation nor publication.

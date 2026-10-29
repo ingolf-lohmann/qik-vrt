@@ -32,6 +32,7 @@ DISPATCH_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT
 REPO_DISPATCH_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/dispatches$")
 READBACK_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/qikvrt/artifacts/([A-Za-z0-9_.=-]{{1,128}})/readback$")
 RULESET_REST_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/qikvrt/ruleset-authority$")
+CONTINUATION_REST_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/qikvrt/continuation$")
 MCP_VERSIONS = ("2025-11-25", "2026-07-28")
 MCP_MAX_PAYLOAD_BYTES = 256 * 1024
 MCP_SOURCE_PATHS = ("scripts/qikvrt_api_client.py", "src/qikvrt_api_handler.py",
@@ -346,6 +347,72 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
         except Exception:
             self._send_json(503, {"status": "BLOCK", "reason": "Ruleset REST unavailable; read back before retry"})
 
+    def _continuation_rest(self, *, write: bool) -> None:
+        """Fixed Owner-bound REST facade; GraphQL remains the admitted fallback."""
+        if os.environ.get("QIKVRT_CONTINUATION_ENABLED", "0") != "1":
+            self._send_json(404, {"status": "BLOCK", "reason": "Continuation REST not admitted"})
+            return
+        if not self._rate_allowed():
+            self._send_json(429, {"status": "BLOCK", "reason": "rate limit exceeded"})
+            return
+        if not self._authorized():
+            self._send_json(401, {"status": "BLOCK", "reason": "unauthorized"})
+            return
+        try:
+            parsed = urlparse(self.path)
+            match = CONTINUATION_REST_RE.fullmatch(parsed.path)
+            repository = "/".join(match.groups()) if match else ""
+            if (repository != authority_client.RULESET_REPOSITORY
+                    or os.environ.get("QIKVRT_ALLOWED_REPOSITORY") != repository
+                    or os.environ.get("QIKVRT_API_PRINCIPAL") != "ingolf-lohmann"):
+                self._send_json(403, {"status": "BLOCK", "reason": "Bound Authority Owner required"})
+                return
+            fields = {"request_id", "pull_request", "expected_main_sha", "expected_head", "expected_tree", "ci_run_id"}
+            if parsed.params or parsed.fragment or len(parsed.query) > 4096:
+                raise ValueError("bounded exact REST path required")
+            if write:
+                value = self._read_json()
+                if (parsed.query or set(value) != fields | {"schema", "effect_accepted"}
+                        or value.get("schema") != "qikvrt-continuation-rest/v1"
+                        or value.get("effect_accepted") is not True):
+                    raise ValueError("exact readiness acceptance required")
+            else:
+                query = parse_qs(parsed.query, keep_blank_values=True, strict_parsing=True)
+                if set(query) != fields or any(len(v) != 1 for v in query.values()):
+                    raise ValueError("exact single-valued readback parameters required")
+                value = {k: v[0] for k, v in query.items()}
+            if (not isinstance(value["request_id"], str)
+                    or not authority_client.SAFE_ID.fullmatch(value["request_id"])
+                    or any(not isinstance(value[k], str) or not authority_client.SHA1_HEX.fullmatch(value[k])
+                           for k in ("expected_main_sha", "expected_head", "expected_tree"))
+                    or any(isinstance(value[k], bool) or not re.fullmatch(r"[1-9][0-9]{0,15}", str(value[k]))
+                           for k in ("pull_request", "ci_run_id"))):
+                raise ValueError("exact source and original run required")
+            from tools.qikvrt_authority_credentials import credential
+            protected = {k: os.environ.get(k, "") for k in (
+                "QIKVRT_RULESET_ADMIN_TOKEN", "QIKVRT_GITHUB_ADMIN_TOKEN",
+                "QIKVRT_MESH_TOKEN", "QIKVRT_AUTHORITY_APP_TOKEN")}
+            token, reference, _presence = credential(protected)
+            if (not token or len(token) > 4096 or any(ord(c) < 33 or ord(c) > 126 for c in token)
+                    or hmac.compare_digest(token, os.environ.get("QIKVRT_API_TOKEN", ""))):
+                self._send_json(503, {"status": "BLOCK", "reason": "Protected Authority credential binding unavailable"})
+                return
+            state = Path(os.environ.get("QIKVRT_API_CLIENT_STATE_DIR",
+                str(Path(os.environ.get("QIKVRT_REPO_ROOT", os.getcwd())) / ".qikvrt/api-client")))
+            args = SimpleNamespace(**{k: value[k] for k in fields}, owner="ingolf-lohmann", repo="qik-vrt",
+                ref="main", base_url="https://api.github.com", artifact_id="pr-ready",
+                operation="continuation_ready", state_dir=str(state / "continuation-server"), retry_evidence_file=None)
+            args.pull_request, args.ci_run_id = int(args.pull_request), int(args.ci_run_id)
+            result = authority_client.continuation_result(args, token, write=write)
+            result["authority_credential_reference"] = reference
+            self._send_json(200 if result["ready_verified"] or not write else 202,
+                            {"status": "CONTINUE", "handler_result": result,
+                             "effect_ack_done": False, "ordinary_release": False})
+        except (ValueError, TypeError, KeyError, UnicodeError):
+            self._send_json(409, {"status": "BLOCK", "reason": "Continuation request or exact evidence rejected"})
+        except Exception:
+            self._send_json(503, {"status": "BLOCK", "reason": "Continuation unavailable; read back before retry"})
+
     def _mcp_guard(self) -> bool:
         if not _mcp_configuration_valid():
             self._send_json(503, {"status": "BLOCK", "reason": "invalid service configuration"})
@@ -609,6 +676,9 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
             error(200, -32603, "Committed evidence unavailable; reobserve before any mutation")
 
     def do_GET(self):
+        if CONTINUATION_REST_RE.fullmatch(urlparse(self.path).path):
+            self._continuation_rest(write=False)
+            return
         if RULESET_REST_RE.fullmatch(urlparse(self.path).path):
             self._ruleset_rest(write=False)
             return
@@ -648,6 +718,9 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
         self._send_json(404, {"status": "BLOCK", "reason": "not found"})
 
     def do_POST(self):
+        if CONTINUATION_REST_RE.fullmatch(urlparse(self.path).path):
+            self._continuation_rest(write=True)
+            return
         if RULESET_REST_RE.fullmatch(urlparse(self.path).path):
             self._ruleset_rest(write=True)
             return

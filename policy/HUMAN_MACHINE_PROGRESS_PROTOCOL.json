@@ -479,6 +479,20 @@
         "external_tools_outside_qikvrt_control_are_platform_enforced": false,
         "all_node_adoption_requires_exact_policy_ack_and_independent_readback": true
       }
+    },
+    "github_fallback": {
+      "source": "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json",
+      "decision_sha256": "f0220e4bef4e5884f744835d6a9885158045d9f31b387ea63c5325e6c86ccc8c",
+      "transport": "GRAPHQL_FALLBACK",
+      "allowed_operations": [
+        "markPullRequestReadyForReview"
+      ],
+      "rest_primary": true,
+      "fallback_must_be_retained": true,
+      "optimization_cannot_remove_gates": true,
+      "rest_facade": "/repos/ingolf-lohmann/qik-vrt/qikvrt/continuation",
+      "consumer": "Existing workflow executor completion receiver and GitHub REST shim",
+      "live_activation": "REQUIRES_ORIGINAL_PROTECTED_SERVICE_AND_INDEPENDENT_READBACK"
     }
   },
   "continuation_semantics": {

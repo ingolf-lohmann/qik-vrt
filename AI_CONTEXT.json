@@ -302,9 +302,18 @@
     "source": "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json",
     "json_pointer": "/conditional_merge_decision",
     "decision_id": "OWNER-CONFLICT-FREE-GREEN-MERGE-20261028",
-    "source_sha256": "1c99f92090e68fce949267cc81a92ddc3631f566081b4ce8029ee2a7acc33926",
+    "source_sha256": "b7dfec0771ec4cfaf3b39ff50ecddaa9fb928b419def0a4838225511a20f5a6a",
     "github_route": "REST_API_ONLY",
     "scope": "CONFLICT_FREE_GREEN_TEST_REPOSITORY_MERGE_AND_AUTONOMOUS_CONTINUATION",
     "merge_is_runtime_acceptance": false
+  },
+  "github_continuation_fallback": {
+    "owner_decision": "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json#/graphql_fallback_decision",
+    "decision_sha256": "f0220e4bef4e5884f744835d6a9885158045d9f31b387ea63c5325e6c86ccc8c",
+    "default_route": "REST_API_ONLY",
+    "fallback_route": "GRAPHQL_FALLBACK",
+    "always_retained": true,
+    "learn_from": "ORIGINAL_SUCCESSFUL_CI_CD_CO_RUNS",
+    "ordinary_release_inferred": false
   }
 }

@@ -21,6 +21,71 @@ servers:
   - url: https://api.github.com
     description: GitHub asynchronous REST dispatch API
 paths:
+  /repos/{owner}/{repo}/qikvrt/continuation:
+    servers:
+      - url: http://127.0.0.1:8766
+        description: Existing protected QIK-VRT service; deployment requires separate readback.
+    parameters:
+      - { name: owner, in: path, required: true, schema: { type: string, enum: [ingolf-lohmann] } }
+      - { name: repo, in: path, required: true, schema: { type: string, enum: [qik-vrt] } }
+    get:
+      operationId: meshContinuationPlanAndReadback
+      summary: Read exact PR, review, original CI jobs and adaptive continuation graph.
+      description: >
+        Requires QIKVRT_CONTINUATION_ENABLED=1, the original expiring caller token,
+        Owner binding and separate protected Authority credential. Reads only.
+        Original successful CI/CD/CO jobs may rank independent siblings; every
+        gate and the GraphQL fallback remain in the graph. Missing, foreign,
+        failed or incomplete evidence cannot grant mutation or product acceptance.
+      security: [{ bearerToken: [] }]
+      parameters:
+        - { name: request_id, in: query, required: true, schema: { type: string, pattern: '^[A-Za-z0-9_.=-]{1,128}$' } }
+        - { name: pull_request, in: query, required: true, schema: { type: integer, minimum: 1 } }
+        - { name: expected_main_sha, in: query, required: true, schema: { type: string, pattern: '^[0-9a-f]{40}$' } }
+        - { name: expected_head, in: query, required: true, schema: { type: string, pattern: '^[0-9a-f]{40}$' } }
+        - { name: expected_tree, in: query, required: true, schema: { type: string, pattern: '^[0-9a-f]{40}$' } }
+        - { name: ci_run_id, in: query, required: true, schema: { type: integer, minimum: 1 } }
+      responses:
+        '200': { description: Fresh plan or narrow readiness readback; no merge or deployment. }
+        '409': { description: Source, review or original CI evidence rejected. }
+        '503': { description: Protected binding or provider observation unavailable. }
+    post:
+      operationId: meshContinuationReady
+      summary: Execute the fixed admitted GraphQL readiness fallback once.
+      description: >
+        Uses exactly markPullRequestReadyForReview with variables, the existing
+        protected credential resolver and original durable attempt journal.
+        Requires current exact source, successful complete CI and actual Owner
+        review, then fresh admission under the existing lock. A separate REST
+        GET verifies readiness after GraphQL. Unknown effects retain their
+        journal and cannot be replayed by a changed request ID or HEAD. The
+        GraphQL mutation itself has no atomic expected-head argument; drift
+        detected after it keeps acceptance unknown. Merge remains a separate
+        expected-head-bound REST operation. No arbitrary query, URL or code is
+        accepted. Source presence is not live activation.
+      security: [{ bearerToken: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [schema, request_id, pull_request, expected_main_sha, expected_head, expected_tree, ci_run_id, effect_accepted]
+              properties:
+                schema: { type: string, enum: [qikvrt-continuation-rest/v1] }
+                request_id: { type: string, pattern: '^[A-Za-z0-9_.=-]{1,128}$' }
+                pull_request: { type: integer, minimum: 1 }
+                expected_main_sha: { type: string, pattern: '^[0-9a-f]{40}$' }
+                expected_head: { type: string, pattern: '^[0-9a-f]{40}$' }
+                expected_tree: { type: string, pattern: '^[0-9a-f]{40}$' }
+                ci_run_id: { type: integer, minimum: 1 }
+                effect_accepted: { type: boolean, enum: [true] }
+      responses:
+        '200': { description: Independent exact readiness readback verified. }
+        '202': { description: Unresolved attempt retained; read back without another mutation. }
+        '409': { description: Exact admission rejected before a new mutation. }
+        '503': { description: Protected binding or original provider unavailable. }
   /repos/{owner}/{repo}/qikvrt/ruleset-authority:
     servers:
       - url: http://127.0.0.1:8766

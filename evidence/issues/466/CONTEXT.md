@@ -2185,6 +2185,18 @@ zu ihren jeweiligen frischen Nachweisen offen.
 
 # QIK-VRT Human–Machine Progress Protocol
 
+## Later Owner GraphQL fallback decision — 29 October 2026
+
+GraphQL remains the standing admitted continuation fallback. REST stays primary;
+the shared client guard accepts `GRAPHQL_FALLBACK` only against the exact pinned
+Owner decision and fixed operation, with no prior ambiguous REST effect. See
+`client_continuation.github_fallback` in the existing policy and
+`graphql_fallback_decision` in the existing autonomous continuation delegation.
+Do not request this authorization again. Successful original CI/CD/CO feedback
+can reorder independent verification branches while retaining every gate and
+the fallback. Readiness, merge and productive host/domain acceptance remain
+distinct and require their own fresh readbacks.
+
 ## Owner decisions before tool selection — 26 October 2026
 
 All current and future QIK-VRT artificial-cognitive clients load the shared
@@ -3433,154 +3445,189 @@ Version: `QIKVRT_V2_13_4AX1`
 Referenzlauf: `4AV1_20260708T174034Z_709544`
 
 
-## `docs/REFLEXIVE_REPOSITORY_WATCHDOG.md`
+## `docs/STATUS_REPORT_RELEASE_AUTOMATION.md`
 
-# Reflexive repository Gatewatch and pre-deadlock admission
+<!--
+SPDX-License-Identifier: CC-BY-NC-ND-4.0
+Copyright 2026 Ingolf Lohmann.
+-->
 
-The adaptive repository monitor is extended by a read-only watchdog that observes its own repository instance every five minutes and at relevant workflow transitions. Its purpose is not to wait for a deadlock and then diagnose it. It models writer leases, runner pressure, exact-head execution evidence, and unchanged progress topology early enough to issue a deterministic `HOLD` before a second writer or replacement writer is admitted.
+# Zweiphasige Automation der offiziellen QIK-VRT-Statuserklärung
 
-## Operational model
+## Gegenwärtiger Zustand
 
-Each repository instance carries the same contract, controller, workflow, and regression test. The Authority remains the serialized source of the portable contract; Mirror and future mesh nodes must retain their own repository identity and integrity projections while satisfying the same structural acceptance.
+Die Automation ist im eingecheckten Zustand **inert**. Der Marker
+`release/status-clarification-request.json` enthält `action: inactive`,
+`confirm: NOT_AUTHORIZED`, ausschließlich Null-Identitäten und keine DOI. Ein
+normaler Push auf `main` reserviert nichts, erzeugt keinen Tag und publiziert
+nichts. Eine Wirkung benötigt jeweils einen separat geprüften, nicht forcierten
+Push eines Marker-only-Commits auf den unten festgelegten Branch.
 
-The watchdog treats repository activity as a resource-allocation graph:
+Die Automation erzeugt ausschließlich einen neuen, eigenständigen
+Statusbericht. Die vorhandenen Zenodo-Records `21498772`, `21498773`,
+`21498774` und `21488115` sind unveränderliche Schutzanker. Der Client besitzt
+keinen `newversion`-Pfad und blockiert jede Mutation dieser IDs.
 
-- `REPOSITORY_WRITE_LEASE` has capacity one;
-- active repository writers hold or request that lease;
-- queued productive workflows request platform runner capacity;
-- a writer without a job/step transition beyond its lease is stale;
-- unchanged active topology beyond the progress lease is an early stall signal;
-- `action_required` and zero-job runs are untrusted execution gaps;
-- no active runner is not interpreted as `PIPELINE_EMPTY`.
+## Fester Vertrag
 
-The first deterministic response is admission control, not destructive recovery: keep one expected-head-bound writer, coalesce only superseded observer runs, preserve an exact-head receipt, and stop before another writer is introduced. The watchdog never cancels a productive writer, mutates a ref, merges a pull request, or performs a release, deployment, Zenodo, DOI, or IETF effect.
+| Element | Wert |
+|---|---|
+| Autoritätsrepository | `Goldkelch/qik-vrt` |
+| Spiegelrepository | `ingolf-lohmann/qik-vrt` |
+| Reserve-Branch | `automation/status-clarification-reserve-20260722` |
+| Finalize-Branch | `automation/status-clarification-finalize-20260722` |
+| Zustandsbranch | `qikvrt/status-report-state` |
+| Tag | `v2026.07.22-status-clarification-1.0.0` |
+| Marker | `release/status-clarification-request.json` |
+| Schema | `policy/qikvrt-status-report-release-request.schema.json` |
+| Client | `tools/qikvrt_status_zenodo.py` |
 
-## Continuous exact-head Gatewatch
+Der Marker bindet die beiden repository-spezifischen `main`-Commits, ihren
+identischen Git-Tree, den Client sowie sämtliche Manifestbytes per SHA-256.
+Der aktive Commit darf gegenüber seinem unmittelbaren `main`-Quellparent
+ausschließlich den Marker ändern. Ein Merge- oder Mehr-Eltern-Commit ist keine
+Autorisierung. Der annotierte Tag zeigt immer auf den jeweiligen Quellparent,
+nie auf den Marker-Commit.
 
-Every scheduled or event-driven observation materializes an artifact-only
-`reflexive-watchdog-receipt.json` and the identically bound
-`gatewatch-receipt.json`. Both records contain the literal observed head and
-tree, a trusted-workflow matrix, node-liveness observations, and the prior
-receipt binding. A receipt from another head or tree is discarded rather than
-being used as fresh evidence.
+## Drei Manifestebenen
 
-The Gatewatch classifies each declared trusted workflow as `SUCCESS`,
-`FAILED`, `MISSING`, `ACTIVE`, `UNTRUSTED`, `NOT_OBSERVED`, or
-`NOT_APPLICABLE`. A terminal execution failure is a deterministic `HOLD`; a
-required pull-request gate that is missing or lacks executed job evidence is
-also a `HOLD`. The contract distinguishes a pull request against `main` from
-a stacked pull request: only the former requires the evidence-materialization
-workflow, because that workflow is configured to trigger only for `main`-base
-pull requests. A stacked successor therefore still requires exact-head CI but
-never treats an impossible materializer run as proof. Main observations
-distinguish an optional scheduled gate from a missing pull-request gate, so a
-missing main-only run is never silently invented as a successful verification.
+Die DOI wird nicht vorweggenommen. Deshalb trennt Schema 2 drei Dateien:
 
-For repository nodes that carry the onboarding records, the same observation
-parses all three exact-tree inputs:
+1. `release/status-clarification-zenodo-reservation-manifest.json` bindet
+   Metadaten, Report-ID, das Template-Manifest und genau eine erlaubte
+   DOI-Einbettungsstelle.
+2. `release/status-clarification-zenodo-template.json` bindet die endgültige
+   Dateiliste vor der Reservierung. Genau eine autorisierte Datei enthält
+   einmal `10.5281/zenodo.__RESERVED__`.
+3. `release/status-clarification-zenodo.json` ist das Finalmanifest. Gegenüber
+   dem Template ist ausschließlich die bytegenaue Ersetzung dieses einen
+   Sentinels durch die von Zenodo reservierte DOI zulässig.
 
-- `SEED_ACCEPTANCE_STATUS.json` must bind the currently reobserved Authority
-  `main` head;
-- `NODE_REGISTRATION_RENEWAL.json` must not be overdue;
-- `NODE_HEALTH.json` must not be expired.
+Im Reserve-Marker sind Client-, Reservierungsmanifest- und Templatehash
+gesetzt; `final_manifest_sha256`, Reservierungsevidenz und DOI bleiben Null.
+Im Finalize-Marker sind alle drei Manifesthashes, der Hash der öffentlichen
+Reservierungsevidenz und die reservierte DOI gesetzt.
 
-An Authority instance without all three node-local records is explicitly
-`NOT_APPLICABLE`; a partial record set, malformed record, stale seed
-acceptance, overdue renewal, or expired health becomes a read-only `HOLD`.
-Records approaching expiry remain visible as `EXPIRING` without a fabricated
-renewal. The observer also detects a missed continuous observation only when a
-previous receipt is bound to the same head and tree and exceeds the declared
-fifteen-minute freshness bound. A burst of cancelled, zero-job observer runs is
-coalesced only when a later exact-head receipt remains within that bound;
-otherwise it is a deterministic observation-cadence `HOLD`, not a claim of
-pipeline quiescence.
+Der aktuelle Clientvertrag lautet:
 
-The workflow remains five-minute, exact-head-bound, and read-only. It fetches
-the current Authority head only for comparison, materializes Action artifacts
-only, and never writes a repository liveness record, dispatches a productive
-workflow, or treats its own terminality as gate success.
+```text
+reserve
+  --reservation-manifest release/status-clarification-zenodo-reservation-manifest.json
+  --final-template-manifest release/status-clarification-zenodo-template.json
+  --reservation OUT
+  --repository-root .
 
-## Reflexivity
+finalize
+  --reservation-manifest release/status-clarification-zenodo-reservation-manifest.json
+  --final-template-manifest release/status-clarification-zenodo-template.json
+  --final-manifest release/status-clarification-zenodo.json
+  --reservation IN
+  --result OUT
+  --repository-root .
+```
 
-### Failure of the observer itself
+Der Zenodo-Token ist ausschließlich als `ZENODO_ACCESS_TOKEN` zulässig. Er
+darf weder als Argument noch in Evidenz, Artifact oder Zustandsbranch
+erscheinen.
 
-An API/readback failure before analysis is an observation error. It must leave
-a `qikvrt_reflexive_observation_failure_receipt_v1` in both receipt paths,
-bound to the actual checkout head/tree, expected head, run, attempt, failing
-stage and nonzero exit code. The receipt records `OBSERVATION_FAILED` and
-`HOLD`; live state and pipeline progress remain unknown. The failed workflow
-remains failed even when artifact upload succeeds. This distinct receipt is
-never substituted for a successful observation or a trusted gate.
+## Phase 1: Reservierung
 
-Recovery requires restoring the failed authorized read path, freshly reading
-the exact subject, and continuing the existing work unit. A prior receipt,
-owner authorization, repeating observer, or missing active runner does not
-establish recovery or productive delivery. No new controller, credential,
-permission expansion or automatic productive-writer cancellation is involved.
+Nur `Goldkelch/qik-vrt` kann die Reservierung ausführen.
 
-The watchdog observes the workflows that create and verify repository state,
-while its own executions are classified as observers rather than productive
-writers. Main's 26 October delivery repair uses completion notifications and
-`cancel-in-progress: false` so a new lifecycle notification does not cancel
-the active observation. The existing five-minute schedule remains, including
-readback of unfinished runs and unchanged heads. The analyzer still evaluates
-every returned run and its jobs; no liveness, missing-evidence or stale-progress
-criterion is removed. This source configuration change does not establish a
-completed public-host observation or global deadlock freedom.
+1. Beide `main`-Commits und der gemeinsame Tree werden endgültig bestimmt.
+2. Client, Reservierungsmanifest und Template werden vollständig geprüft und
+   gehasht. Das Finalmanifest existiert noch nicht beziehungsweise ist nicht
+   autorisiert.
+3. Vom exakten Goldkelch-`main` wird der Reserve-Branch erzeugt.
+4. Ein zweiter Commit ändert ausschließlich den Marker zu `action: reserve`,
+   bindet beide Commits, Tree und Hashes und verwendet
+   `RESERVE_ONE_NEW_STATUS_REPORT_DRAFT_NO_PUBLISH`.
+5. Erst der nicht forcierte Push dieses Zweitcommits startet die Wirkung.
 
-## Database comparison boundary
+Der Workflow prüft Branchkopf, Push-Vorher/Nachher, beide öffentlichen
+`main`-Refs, beide Git-Trees, Parent, Marker-Diff, Schema, kanonischen
+Autorisierungshash, Client und Template. Danach läuft das vollständige
+`make test` des Quellparents. Erst unmittelbar vor der Wirkung werden die
+entscheidenden Bindungen erneut geprüft.
 
-Conventional relational database systems already provide transaction deadlock handling techniques such as prevention, detection, ordering, and timeout policies. The QIK-VRT improvement claimed here is narrower and architectural: deadlock-risk admission is bound to versioned repository heads, workflow/job evidence, provenance receipts, Authority-to-node serialization, and external-effect boundaries across independently instantiated repositories. It is not a claim that every relational database lacks deadlock management, nor a benchmark proving universal performance superiority.
+Vor jedem Zenodo-POST persistiert der Workflow zunächst einen deterministischen
+One-shot-Intent unter
+`release-state/status-clarification/zenodo-reservation-attempt.json`. Erst
+der Lauf, der diesen Intent selbst erfolgreich angelegt hat, darf einen neuen
+leeren Entwurf erzeugen. Liegt der Intent bei einem späteren Lauf bereits vor,
+aber noch keine Reservierungsevidenz, wird kein weiterer POST gesendet: Der
+mehrdeutige Zwischenzustand muss anhand der Zenodo-Entwürfe ausdrücklich
+reconciliiert werden. Damit wird nach einem Antwortverlust oder Abbruch kein
+zweiter Entwurf automatisch erzeugt.
 
-## Nonclaims
+Der Entwurf wird nicht veröffentlicht. Die token-authentisierte
+Reservierungsevidenz wird unter
+`release-state/status-clarification/zenodo-reservation.json` im dedizierten
+Zustandsbranch und zusätzlich als SHA-gepinntes Actions-Artifact gespeichert.
 
-A successful watchdog run is observation evidence, not gate success. The mechanism does not prove global deadlock freedom, repository completion, Authority–Mirror equality, empirical confirmation, scientific consensus, `PASS`, `FINAL_PASS`, or `EFFECT_ACK_DONE`.
+## DOI-Einbettung zwischen den Phasen
 
-## Canonical roles and independent native readback
+Aus der Reservierung werden DOI und Evidenzhash gelesen. Die eine autorisierte
+Template-Datei wird durch exakte Sentinel-Ersetzung erzeugt; anschließend wird
+das Finalmanifest aus den tatsächlichen finalen Bytes erstellt. Diese
+Änderungen gehören in einen regulär geprüften neuen `main`-Quellstand beider
+Repositories. Sie gehören nicht in einen wirkenden Marker-Commit.
 
-The existing `policy/CANONICAL_UPSTREAM_REMOTE_V1.json` is the sole normative
-repository-role source. The executor/liveness contract is a checked projection.
-The shared resolver reused from the authority-repair work rejects missing,
-malformed, overlapping or contradictory Authority/Mirror assignments. A Mirror
-receipt cannot establish Authority continuity even when its commit matches.
-Historical receipts retain their original bytes and repository identity.
+Damit können Reserve- und Finalize-Quellcommits verschieden sein. Jeder
+Finalize-Tag bindet den dann aktuellen Parent-Commit und den identischen
+finalen Tree beider Repositories.
 
-The native wrapper uses the mandatory job token and bounded GitHub REST GETs.
-It binds Authority Main to its exact commit and tree, validates the canonical
-role policy, governance policy and CODEOWNERS bytes by Git blob identity, then
-reobserves Main. HTTP 200 without the expected active Main roles remains
-`AUTHORITY_ROLE_BINDING_NOT_ACTIVE`. HTTP 403/404 has no Mirror, anonymous,
-browser or alternate-token fallback. The latest completed observation supplies
-the prior denial receipt, including failed observations. An unchanged causal
-binding suppresses a repeated denied request. Unrelated commits, lifecycle
-progress and timestamps do not admit a retry. Changes to the role policy,
-Authority binding or reviewed token/transport carrier require one new bounded
-observation; external permission repair must be independently evidenced before
-clearing a denial receipt.
+## Phase 2: Tag und Publikation
 
-A successful role readback still sets `native_activation_verified=false`:
-executed native candidate gates, trusted-Main adoption, native enforcement and
-independent current-head Code Owner approval remain separately required. No
-predecessor test or availability observation substitutes for those effects.
+1. Von jedem exakten finalen `main`-Commit wird separat der Finalize-Branch
+   erzeugt.
+2. Der zweite Commit ändert in jedem Repository ausschließlich denselben
+   Marker zu `action: finalize` und bindet die repo-spezifischen Commits, den
+   gemeinsamen Tree, alle Manifesthashes, Reservierungsevidenzhash und DOI.
+3. Der nicht forcierte Push läuft in beiden Repositories.
+
+Jedes Repository prüft die Reservierung, die exakte Template-zu-Final-Differenz
+und beide weiterhin unveränderten `main`-Refs. Danach erstellt oder verifiziert
+es mit seinem eigenen kurzlebigen `GITHUB_TOKEN` einen annotierten Tag auf
+seinem jeweiligen Quellparent. Die Automation erstellt kein
+GitHub-Release-Objekt.
+
+Nur der Goldkelch-Lauf verwendet `ZENODO_ACCESS_TOKEN`. Unmittelbar vor der
+Zenodo-Wirkung prüft er den eigenen und den Spiegel-Tag vollständig, darunter
+Tagger, Nachricht, Zielcommit und Zieltree, und wartet begrenzt auf den
+Spiegel-Tag. Erst danach lädt der Client ausschließlich die final gebundenen
+Dateien hoch, liest sie zur Hashprüfung zurück und publiziert den frisch
+reservierten Report. Der Spiegel-Lauf besitzt keine Zenodo-Wirkung.
+
+## Fail-closed-Grenzen
+
+Die Wirkung bleibt blockiert bei unter anderem:
+
+- falschem Repository, Event, Branch oder Marker-`action`;
+- Force-Push, Merge-Marker oder mehr als einer geänderten Datei;
+- von `main` abweichendem Parent oder verändertem gemeinsamen Tree;
+- abweichendem Schema-, Client-, Manifest- oder Evidenzhash;
+- einer zweiten oder verschobenen DOI-Einbettungsstelle;
+- Metadaten-, Dateilisten- oder Byteänderungen neben der DOI-Ersetzung;
+- einem vorhandenen divergenten oder leichtgewichtigen Tag;
+- einer fehlenden Spiegel-Tag-Barriere oder einem inzwischen verschobenen
+  `main`-Ref;
+- einem vorhandenen One-shot-Intent ohne eindeutig persistierte
+  Reservierungsevidenz;
+- einer geschützten Alt-ID, einem `newversion`-Pfad oder einer Token-Spur;
+- einem fehlgeschlagenen Quelltest oder einer veränderten Autorisierungsbranch.
+
+Ein inaktiver Marker ist kein vorläufiges PASS, sondern ausdrücklich keine
+Autorisierung.
 
 
-## `docs/articles/a013_truth_future_quote.md`
+## `docs/qikvrt_trust_mesh/QIKVRT_4AW_ROLE_MARKER.md`
 
-# Die Wahrheit in der Unterscheidung
+# QIKVRT 4AW Role Marker
 
-## Status
+Role: seed
 
-`ARTICLE_STATUS = IMAGE_QUOTE_CANONICAL_TEXT`  
-`QIKVRT_GATE = DISTINCTION_PROTECTS_FUTURE`
+Commercial readiness package for QIK-VRT Trust Mesh.
 
-## Kanonischer Bildsatz
-
-Die Katastrophe beginnt nicht, wenn alle lügen.
-
-Sie beginnt, wenn niemand mehr zuverlässig unterscheiden kann, was Fakt, Deutung, Manipulation oder Rauschen ist.
-
-Wer diese Unterscheidung zurückbringt, schützt Wahrheit und Zukunft.
-
-q.e.d.  
-Ingolf Lohmann
+Reference run: 4AV1_20260708T174034Z_709544
 
