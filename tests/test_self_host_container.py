@@ -511,6 +511,126 @@ class HostIdentityReadback(unittest.TestCase):
         self.assertEqual(json.loads(result.stdout)["cause"], "PRIVATE_HOST_BINDING_AND_NEW_RECEIPT_REQUIRED")
 
 
+class HostWorkflowIdentity(unittest.TestCase):
+    """Execute the actual workflow shell against an isolated fixture Engine."""
+
+    def job(self):
+        text = (Path(__file__).resolve().parents[1] / '.github/workflows/qikvrt_ci.yml').read_text()
+        return text.split('  container_deploy:\n', 1)[1].split('  container_public_readback:\n', 1)[0]
+
+    def test_host_identity_is_main_only_and_does_not_wait_for_publication_admission(self):
+        expression = next(line.strip()[4:] for line in self.job().splitlines()
+                          if line.startswith('    if: '))
+        expression = expression.removeprefix('${{').removesuffix('}}').strip()
+        expression = expression.replace('always()', 'True').replace('&&', ' and ').replace('||', ' or ')
+        parsed = ast.parse(expression, mode='eval')
+        allowed = (ast.Expression, ast.BoolOp, ast.And, ast.Or, ast.Compare, ast.Eq,
+                   ast.Attribute, ast.Name, ast.Load, ast.Constant)
+        self.assertTrue(all(isinstance(node, allowed) for node in ast.walk(parsed)))
+        for ref, result, expected in (('refs/heads/main', 'success', True),
+                ('refs/heads/main', 'failure', False), ('refs/heads/main', 'skipped', False),
+                ('refs/pull/631/merge', 'success', False), ('refs/heads/repair', 'success', False)):
+            with self.subTest(ref=ref, result=result):
+                scope = {'github': SimpleNamespace(ref=ref),
+                         'needs': SimpleNamespace(container=SimpleNamespace(result=result))}
+                self.assertEqual(eval(compile(parsed, '<host-job-selection>', 'eval'),
+                                      {'__builtins__': {}}, scope), expected)
+        self.assertIn('environment: qikvrt-production', self.job())
+        self.assertIn('cancel-in-progress: false', self.job())
+
+    def run_workflow(self, *, variant='valid', enabled='false', published='skipped'):
+        root = Path(__file__).resolve().parents[1]
+        script = textwrap.dedent(self.job().split('        run: |\n', 1)[1].split('\n      - uses:', 1)[0])
+        with tempfile.TemporaryDirectory() as directory:
+            fixture = Path(directory); (fixture / 'tools').mkdir()
+            (fixture / 'tools/qikvrt_self_host_container.py').write_bytes(Path(c.__file__).read_bytes())
+            # This fixture substitutes only the protected Engine. It executes the
+            # original identity checker; no network or production deployment runs.
+            launcher = '''import sys,json,os
+from pathlib import Path
+from types import SimpleNamespace
+from unittest.mock import patch
+from tools import qikvrt_self_host_container as c
+op=sys.argv[1]; fields=dict(zip(sys.argv[2::2],sys.argv[3::2]))
+with open('calls.jsonl','a') as out: out.write(json.dumps(sys.argv[1:])+'\\n')
+if op=='container-host-identity':
+    args=SimpleNamespace(operation=op,production_binding=Path(fields['--production-binding']),
+        binding_sha256=fields['--binding-sha256'],image=fields['--image'],
+        expected_head=fields['--expected-head'],expected_tree=fields['--expected-tree'],
+        manifest_sha256=fields['--manifest-sha256'],ca_file=Path(fields['--ca-file']),
+        cert_file=Path(fields['--cert-file']),key_file=Path(fields['--key-file']),
+        receipt=Path(fields['--receipt']))
+    binding=json.loads(args.production_binding.read_bytes())
+    variant=os.environ['FIXTURE_HOST_CASE']
+    with patch.object(c,'Engine') as engine:
+        engine.return_value.call.return_value=json.dumps({'OSType':'linux',
+            'ID':'wrong-host' if variant=='wrong-host' else binding['daemon_id']}).encode()
+        c.execute(args)
+    receipt=json.loads(args.receipt.read_bytes())
+    changes={'head':('source_head','0'*40),'tree':('source_tree','0'*40),
+        'manifest':('manifest_sha256','0'*64),'image':('image_digest','sha256:'+'0'*64),
+        'binding':('binding_sha256','0'*64),'checker':('checker_sha256','0'*64),
+        'claim':('host_package_verified',True),'stale':('observed_at','2000-01-01T00:00:00+00:00')}
+    if variant in changes:
+        key,value=changes[variant];receipt[key]=value;args.receipt.write_text(json.dumps(receipt))
+    if variant=='missing':args.receipt.unlink()
+elif op=='container-deploy':
+    Path(fields['--receipt']).write_text(json.dumps({'fixture_only':True}))
+else:raise RuntimeError('unexpected fixture operation')
+'''
+            (fixture / 'tools/qikvrt_self_host.py').write_text(
+                'import sys\nsys.path.insert(0,' + repr(str(root)) + ')\n' + launcher)
+            value = declaration(); raw = json.dumps(value)
+            env = {**os.environ, 'RUNNER_TEMP': str(fixture), 'GITHUB_OUTPUT': str(fixture/'output'),
+                'QIKVRT_HOST_BINDING': raw, 'QIKVRT_HOST_BINDING_SHA256': c.sha(raw.encode()),
+                'QIKVRT_HOST_CA': 'fixture-ca', 'QIKVRT_HOST_CERT': 'fixture-cert', 'QIKVRT_HOST_KEY': 'fixture-key',
+                'EXPECTED_HEAD': HEAD, 'EXPECTED_TREE': TREE,
+                'EXPECTED_IMAGE': c.IMAGE + '@' + value['image_digest'],
+                'EXPECTED_MANIFEST': value['manifest_sha256'], 'PUBLISHED_IMAGE': c.IMAGE + '@' + value['image_digest'],
+                'PUBLISH_RESULT': published, 'DEPLOY_ENABLED': enabled, 'FIXTURE_HOST_CASE': variant}
+            if variant == 'published-image': env['PUBLISHED_IMAGE'] = c.IMAGE + '@sha256:' + '0'*64
+            if variant == 'credential': env['QIKVRT_HOST_KEY'] = ''
+            if variant == 'input-pin': env['EXPECTED_TREE'] = '0'*40
+            result = subprocess.run(['bash', '-c', script], cwd=fixture, env=env,
+                                    capture_output=True, text=True, timeout=30)
+            self.assertFalse((fixture / 'qikvrt-host-auth').exists(), result.stderr)
+            calls = [json.loads(line) for line in (fixture/'calls.jsonl').read_text().splitlines()] \
+                if (fixture/'calls.jsonl').exists() else []
+            output = (fixture/'output').read_text() if (fixture/'output').exists() else ''
+            return result, calls, output
+
+    def test_real_workflow_runs_identity_when_writes_are_not_admitted(self):
+        for enabled, published in (('false','skipped'), ('true','skipped'), ('false','success'), ('true','failure')):
+            with self.subTest(enabled=enabled, published=published):
+                result, calls, output = self.run_workflow(enabled=enabled, published=published)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertEqual([call[0] for call in calls], ['container-host-identity'])
+                self.assertEqual(output, '')
+
+    def test_actual_shell_requires_fresh_identity_before_the_existing_deployment_path(self):
+        result, calls, output = self.run_workflow(enabled='true', published='success')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual([call[0] for call in calls], ['container-host-identity', 'container-deploy'])
+        self.assertEqual(output, 'deployed=true\n')
+        for variant in ('wrong-host','head','tree','manifest','image','binding','checker','claim','stale','missing',
+                        'credential','input-pin','published-image'):
+            with self.subTest(variant=variant):
+                result, calls, output = self.run_workflow(variant=variant, enabled='true', published='success')
+                self.assertNotEqual(result.returncode, 0)
+                self.assertNotIn('container-deploy', [call[0] for call in calls])
+                self.assertEqual(output, '')
+
+    def test_identity_evidence_is_retained_and_cannot_start_public_acceptance(self):
+        artifact = self.job().split('      - uses: actions/upload-artifact@', 1)[1]
+        self.assertIn('if: always()', artifact)
+        self.assertIn('/host-identity.json', artifact)
+        self.assertNotIn('qikvrt-host-auth', artifact)
+        text = (Path(__file__).resolve().parents[1]/'.github/workflows/qikvrt_ci.yml').read_text()
+        public = text.split('  container_public_readback:\n', 1)[1]
+        self.assertIn("if: needs.container_deploy.outputs.deployed == 'true'", public)
+        self.assertIn('deployed: ${{ steps.host.outputs.deployed }}', self.job())
+
+
 class ContainerControls(unittest.TestCase):
     def test_original_archive_oci_is_deterministic_and_recovers_exact_pinned_bytes(self):
         with tempfile.TemporaryDirectory() as tmp:
