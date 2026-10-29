@@ -143,6 +143,37 @@ def validate_client_tool_selection(action: dict[str, Any]) -> str:
     return pin
 
 
+def github_graphql_fallback_allowed(action: dict[str, Any], policy: dict[str, Any]) -> bool:
+    """Check the later Owner decision without relabeling GraphQL as REST.
+
+    This checks declared routing metadata, not credential scope or live effect.
+    An ambiguous REST effect cannot be retried through the fallback.
+    """
+    fallback = policy.get("client_continuation", {}).get("github_fallback", {})
+    try:
+        source = "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json"
+        if fallback.get("source") != source:
+            return False
+        owner = json.loads((ROOT / source).read_bytes())
+        decision = owner["graphql_fallback_decision"]
+        encoded = json.dumps(decision, sort_keys=True, separators=(",", ":")).encode()
+        pin = hashlib.sha256(encoded).hexdigest()
+        instruction = decision["source_instruction"]
+        return (decision.get("state") == "ACTIVE"
+            and decision.get("repository") == action.get("subject", {}).get("repository")
+            and instruction["sha256"] == hashlib.sha256(instruction["text"].encode()).hexdigest()
+            and pin == fallback.get("decision_sha256") == action.get("owner_decision_sha256")
+            and decision.get("fallback_must_be_retained") is True
+            and action.get("operation") in fallback.get("allowed_operations", [])
+            and action.get("operation") in decision.get("allowed_operations", [])
+            and action.get("method") == "POST"
+            and action.get("endpoint") == "https://api.github.com/graphql"
+            and action.get("fallback_reason") == "REST_OPERATION_UNAVAILABLE"
+            and action.get("rest_effect_state") == "NOT_ATTEMPTED")
+    except (OSError, ValueError, TypeError, KeyError, AttributeError):
+        return False
+
+
 def validate_client_action(action: dict[str, Any], subject: dict[str, Any]) -> bool:
     if not isinstance(action, dict) or action.get("subject") != subject:
         fail("CLIENT_ACTION_SUBJECT_DRIFT")
@@ -157,7 +188,9 @@ def validate_client_action(action: dict[str, Any], subject: dict[str, Any]) -> b
         required_route = policy.get("client_continuation", {}).get(service + "_route")
         if required_route != "REST_API_ONLY":
             fail("CLIENT_" + service.upper() + "_ROUTE_POLICY_INVALID")
-        if action.get("transport") != required_route:
+        fallback = (service == "github" and action.get("transport") == "GRAPHQL_FALLBACK"
+                    and github_graphql_fallback_allowed(action, policy))
+        if action.get("transport") != required_route and not fallback:
             fail("CLIENT_" + service.upper() + "_ROUTE_FORBIDDEN")
     for key in ("operation", "evidence"):
         if not isinstance(action.get(key), str) or not action[key].strip():

@@ -33,7 +33,7 @@ on:
     - cron: "0 10-20/2 6 10 *"
       timezone: "Europe/Paris"
   workflow_run:
-    workflows: ["QIKVRT CI", "QIKVRT workflow executor watchdog"]
+    workflows: ["QIKVRT CI", "QIKVRT productive TEMDD S1 carrier", "QIKVRT workflow executor watchdog"]
     types: [completed]
   push:
     branches: [main]
@@ -243,7 +243,7 @@ jobs:
 
   owner-firefox-signing:
     name: Owner-authorized Firefox signing continuation
-    if: github.repository == 'ingolf-lohmann/qik-vrt' && github.ref == 'refs/heads/main' && (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.task_mode == 'firefox-signing-continuation') || (github.event_name == 'workflow_run' && github.event.workflow_run.head_repository.full_name == github.repository && github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.event == 'workflow_dispatch'))
+    if: github.repository == 'ingolf-lohmann/qik-vrt' && github.ref == 'refs/heads/main' && (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.task_mode == 'firefox-signing-continuation') || (github.event_name == 'workflow_run' && (github.event.workflow_run.name == 'QIKVRT CI' || github.event.workflow_run.name == 'QIKVRT workflow executor watchdog') && github.event.workflow_run.head_repository.full_name == github.repository && github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.event == 'workflow_dispatch'))
     runs-on: ubuntu-24.04
     # Completion receivers cannot queue behind their original caller. Only
     # admission writers serialize together; each provider event has its own lane.

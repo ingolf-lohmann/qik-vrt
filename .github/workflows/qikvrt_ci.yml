@@ -75,6 +75,8 @@ jobs:
         shell: bash
         run: |
           set +e
+          initial_head="$(git rev-parse --verify HEAD^{commit})"
+          initial_tree="$(git rev-parse --verify HEAD^{tree})"
           diagnostics=.qikvrt/runtime/ci-diagnostics
           mkdir -p "$diagnostics"
           make test repository-monitor-test self-host-test > "$diagnostics/MAKE_TEST_FULL.log" 2>&1
@@ -112,6 +114,11 @@ jobs:
           cp "$diagnostics/MAKE_TEST_DIAGNOSTICS.log" \
             audit/ci-diagnostics/MAKE_TEST_DIAGNOSTICS.log
           cat "$diagnostics/MAKE_TEST_DIAGNOSTICS.log"
+          if test "$status" -eq 0 && test "$(git rev-parse --verify HEAD^{commit})" = "$initial_head" &&
+             test "$(git rev-parse --verify HEAD^{tree})" = "$initial_tree" && git diff --quiet HEAD -- &&
+             test -z "$(git ls-files --others --exclude-standard)"; then
+            printf 'head=%s\ntree=%s\n' "$initial_head" "$initial_tree" >> "$GITHUB_OUTPUT"
+          fi
           exit "$status"
       - name: Upload audit
         if: always()
@@ -131,12 +138,29 @@ jobs:
           TARGET_REF: ${{ github.head_ref }}
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
           MAX_SUCCESSORS: "4"
+          INITIAL_FULL_TEST_OUTCOME: ${{ steps.full_test.outcome }}
+          INITIAL_TESTED_HEAD: ${{ steps.full_test.outputs.head }}
+          INITIAL_TESTED_TREE: ${{ steps.full_test.outputs.tree }}
         shell: bash
         run: |
           set -euo pipefail
 
           subject="$(git rev-parse --verify HEAD^{commit})"
           test "$subject" = "$EXPECTED_HEAD"
+
+          # Reuse only the successful complete gate for this exact unchanged
+          # subject. Missing proof, integrity drift or a changed ref retains
+          # the original bounded repair/re-execution path below.
+          tree="$(git rev-parse --verify HEAD^{tree})"
+          if test "${INITIAL_FULL_TEST_OUTCOME:-}" = success &&
+             test "${INITIAL_TESTED_HEAD:-}" = "$subject" &&
+             test "${INITIAL_TESTED_TREE:-}" = "$tree" &&
+             test "$(git ls-remote --heads origin "refs/heads/$TARGET_REF" | awk 'NR == 1 { print $1 }')" = "$subject" &&
+             git diff --quiet HEAD -- && test -z "$(git ls-files --others --exclude-standard)" &&
+             python3 -B tools/qikvrt_integrity.py verify; then
+            echo "QIKVRT_FIXPOINT_REACHED iteration=0 head=$subject tree=$tree scope=INITIAL_EXACT_COMPLETE_GATE_REUSED"
+            exit 0
+          fi
 
           for iteration in $(seq 0 "$MAX_SUCCESSORS"); do
             subject="$(git rev-parse --verify HEAD^{commit})"
@@ -253,6 +277,22 @@ jobs:
           fi
           printf 'head=%s\ntree=%s\n' "$subject" "$tree" >> "$GITHUB_OUTPUT"
           echo "QIKVRT_TESTED_SUBJECT head=$subject tree=$tree"
+          mkdir -p .qikvrt/ci-tested-subject
+          python3 - "$subject" "$tree" <<'PY'
+          import json, os, pathlib, sys
+          value = {"schema": "qikvrt-ci-tested-subject/v1", "repository": os.environ["GITHUB_REPOSITORY"],
+                   "run_id": int(os.environ["GITHUB_RUN_ID"]), "run_attempt": int(os.environ["GITHUB_RUN_ATTEMPT"]),
+                   "head_sha": sys.argv[1], "tree_sha": sys.argv[2]}
+          pathlib.Path(".qikvrt/ci-tested-subject/TESTED_SUBJECT.json").write_text(json.dumps(value, sort_keys=True) + "\n")
+          PY
+
+      - name: Preserve the exact terminal tested subject independently
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-ci-tested-subject-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .qikvrt/ci-tested-subject/TESTED_SUBJECT.json
+          if-no-files-found: error
+          retention-days: 90
 
   offline_browser:
     needs: test
