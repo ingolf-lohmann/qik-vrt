@@ -144,6 +144,28 @@ digest, loopback routing port, exact source HEAD/TREE and image digest. The
 checked-in `LINUX_HOST_BINDING.example.json` remains a template; do not fill its
 unknown fields with invented host values or export credentials into Git.
 
+`container-host-identity` is the read-only first-host check in the same launcher.
+It validates the existing independently pinned binding and mTLS files, then sends
+exactly one `GET /v1.45/info`. Supply `--production-binding`, `--binding-sha256`,
+`--image`, `--ca-file`, `--cert-file`, `--key-file` and a new `--receipt` path.
+The separate `--expected-head`, `--expected-tree` and `--manifest-sha256` must
+come from the approved tested package, not be derived from the host binding.
+All target-pin comparisons happen before opening the mTLS connection.
+
+The create-only receipt binds the Linux daemon ID, exact response-byte SHA-256,
+observation time, checker SHA-256, binding SHA-256 and target package pins. It
+contains no raw daemon response, private connection/configuration paths or
+credential values. A rejected/unavailable check produces no success receipt;
+an existing receipt path is rejected before contacting the host. Use only the
+existing admitted protected connection; this command neither locates credentials
+nor registers or activates a hosted connector.
+
+This operation proves host identity only. The target package pins do not prove
+that the image or package is installed on that host. It cannot pull an image,
+create or start a container, change configuration or accept the public domain.
+`container-deploy` retains all production-governance, host/storage/configuration
+and package checks; subsequent independent exact-domain acceptance is unchanged.
+
 Recovery first checks the authenticated daemon and owner volume, the same
 container/image/binding labels, runtime user/command, security and loopback
 settings, `unless-stopped` policy, and exactly the existing writable state
