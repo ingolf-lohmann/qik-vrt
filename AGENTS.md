@@ -5,6 +5,43 @@ Copyright (c) 2026 Ingolf Lohmann.
 
 # Repository agent protocol
 
+## Later Owner conditional merge decision — 28 October 2026
+
+Ingolf Lohmann explicitly authorizes automatic repository merges when the current
+PR is conflict-free and its existing applicable tests are green, followed by
+immediate autonomous continuation. Read the later decision at
+state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json
+#/conditional_merge_decision; AI_CONTEXT.json pins the exact source bytes.
+This later Owner decision admits the existing direct REST merge with its expected
+PR-head precondition. Do not repeat the earlier CAS-based authorization hold for
+this separately authorized route or ask the Owner for the same permission again.
+Reobserve Main, head, tree, tests and competing writers immediately before each
+merge; preserve platform protections and independently verify the actual merge,
+Main tree and ordered parents. Resolve an ambiguous result by readback.
+The legacy atomic old-Main CAS qualifier and disabled CAS workflow retain their
+own technical status. This decision does not qualify them, admit an unavailable
+Draft transition or prove an unattended executor. Merge acceptance is separate
+from runtime, host, domain and productive EFFECT_ACK_DONE acceptance.
+
+## Owner decisions before external tool selection
+
+Every current and future QIK-VRT artificial-cognitive client MUST load
+policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json client_continuation.tool_selection
+before selecting or invoking an external service. Run the existing read-only
+preflight `python3 -B tools/ai_handoff.py --client-action <non-secret-action.json>`
+with the actual service, tool, endpoint and exact task/source binding. Keep its
+policy SHA-256 with the action. A disconnected provider is rejected before
+capability, login or transport checks, including discovery and GET/read-only.
+Railway is DISCONNECTED. A newly available plugin, a new session, missing access
+elsewhere or general authorization does not supersede this Owner decision.
+Historical artifacts remain readable through their actual admitted owner store;
+that is not permission to query the former provider. Change the shared policy
+only under a later explicit Owner instruction. Apply the same guard to receipts
+and proposed transition actions, including recorded zero-effect reads.
+The preflight validates declared metadata only. Native admission, actual effects
+and each node's exact-policy ACK/readback remain separately required; do not claim
+platform-wide enforcement or adoption by every client from a saved rule.
+
 MANDATORY MIRROR OUTBOX — OWNER 2026-10-19
 
 Read and apply `docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md#mandatory-mirror-outbox-and-delivery-evidence-owner-2026-10-19`
@@ -87,6 +124,12 @@ repository's existing authorized executor is unavailable.
 
 Execute each safe deterministic authorized successor and complete useful
 authorized preparation and persistence while other effects are blocked.
+The Owner's grant of 2026-10-26 requires known errors with existing admitted
+deterministic repairs to be corrected autonomously, without another prompt or
+a required preliminary notification. Repair the causal prerequisite, then verify
+the affected exact-subject path. Use the existing preparation/blocking-repair
+plan and journal. Preserve capability and admission checks; do not retry an
+unchanged failed effect or turn an unknown cause into a claimed known repair.
 Preserve `GITHUB_ROUTE=REST_API_ONLY`, credentials, Authority/Mirror roles and
 protected governance. Do not create proxy executors, synthetic triggers or
 new permission scopes to replace a missing operation. Preserve original
@@ -393,3 +436,38 @@ self-modification, and recursive agent spawning are prohibited.
 The normative machine-readable policy is
 `policy/COLLECTIVE_ADAPTIVE_COGNITION.json`. The explanatory contract is
 `docs/COLLECTIVE_ADAPTIVE_COGNITION.md`.
+
+
+## Later Owner GraphQL fallback decision — 29 October 2026
+
+GraphQL remains the standing admitted fallback when the required GitHub REST
+operation does not exist. REST is the primary interface, including the existing
+`/repos/ingolf-lohmann/qik-vrt/qikvrt/continuation` facade. Read the later decision
+in `state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json`
+under `graphql_fallback_decision`; the shared client policy pins its exact bytes.
+This later Owner instruction supersedes the unconditional GraphQL prohibition
+for the bounded admitted fallback; do not ask for the same authorization again.
+Keep the fallback during adaptation. Successful original CI/CD/CO run/job
+observations may reorder independent verification branches; they cannot remove
+gates, rewrite source, expand credentials or transfer acceptance to another HEAD.
+The first fixed operation is `markPullRequestReadyForReview`, followed by an
+independent REST readback. Unknown effects prohibit another mutation. Merge,
+protected service activation, native host and exact-domain acceptance remain
+separate. No new timer, trigger service or replacement executor is introduced.
+
+## Later Owner conditional Pull Request creation — 29 October 2026
+
+Ingolf Lohmann authorizes autonomous creation of new Pull Requests only when
+they close at least one other Pull Request, issue or branch. Read
+`state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json`
+under `conditional_pull_request_creation_decision`; `AI_CONTEXT.json` and the
+shared progress policy bind that decision. Reuse an existing candidate when it
+can complete the same work. Before creating a new candidate, name the existing
+other target, bind its current subject, explain the completed or fully superseded
+work and select the supported closure path. A reference or closing keyword is
+not a completed closure; independently read back the actual closure or completed
+branch integration after the admitted effect. Preserve discussion, history and
+all unresolved duties. Do not close unresolved work or infer branch-deletion
+authority merely to satisfy this condition. The existing exact-head test, review,
+conditional-merge and separate host/domain acceptance boundaries still apply.
+Saving this rule proves neither runtime enforcement nor adoption by other clients.

@@ -20,6 +20,57 @@ from unittest import mock
 
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+
+
+class ContinuationGraphLearningTests(unittest.TestCase):
+    def test_native_completion_receiver_retains_failed_checker_and_original_outcome(self):
+        from tools import qikvrt_workflow_executor as executor
+        run = {"id": 51, "head_sha": "a" * 40, "path": ".github/workflows/qikvrt_ci.yml",
+               "repository": {"full_name": executor.AMO_REPOSITORY},
+               "head_repository": {"full_name": executor.AMO_REPOSITORY},
+               "status": "completed", "conclusion": "action_required", "event": "pull_request", "run_attempt": 1}
+        event = {"action": "completed", "repository": {"full_name": executor.AMO_REPOSITORY}, "workflow_run": run}
+        context = {"event": "workflow_run", "repository": executor.AMO_REPOSITORY,
+                   "ref": "refs/heads/main", "workflow_ref": executor.AMO_REPOSITORY + "/" + executor.AMO_NATIVE_WORKFLOW + "@refs/heads/main"}
+        with tempfile.TemporaryDirectory() as tmp:
+            path = pathlib.Path(tmp) / "event.json"; path.write_text(json.dumps(event))
+            with mock.patch.dict(os.environ, {"GITHUB_EVENT_PATH": str(path)}), \
+                    mock.patch.object(executor, "amo_context", return_value=context), \
+                    mock.patch.object(executor, "_amo_get", side_effect=[run, {"total_count": 0, "jobs": []}]):
+                feedback = executor.github_completion_feedback()
+        self.assertEqual(feedback["conclusion"], "action_required")
+        self.assertEqual(feedback["continuation_graph"]["state"], "UNVERIFIED")
+        self.assertTrue(feedback["continuation_graph"]["fallback_retained"])
+        self.assertFalse(feedback["continuation_graph"]["ci_verified"])
+
+    def test_only_successful_original_jobs_reorder_siblings_and_never_remove_fallback(self):
+        from tools.qikvrt_workflow_executor import continuation_graph, ExecutorBlock
+        run = {"id": 51, "head_sha": "a" * 40, "path": ".github/workflows/qikvrt_ci.yml",
+               "repository": {"full_name": "ingolf-lohmann/qik-vrt"},
+               "head_repository": {"full_name": "ingolf-lohmann/qik-vrt"},
+               "status": "completed", "conclusion": "success", "run_attempt": 1}
+        jobs = [{"id": 1, "name": "offline_browser (chromium)", "status": "completed", "conclusion": "success",
+                 "started_at": "2026-10-29T00:00:00Z", "completed_at": "2026-10-29T00:00:10Z"},
+                {"id": 2, "name": "offline_browser (webkit)", "status": "completed", "conclusion": "success",
+                 "started_at": "2026-10-29T00:00:00Z", "completed_at": "2026-10-29T00:01:00Z"}]
+        initial = continuation_graph(run, jobs)
+        self.assertEqual([j["job_id"] for j in initial["sibling_priority"]], [2, 1])
+        jobs[0]["completed_at"] = "2026-10-29T00:02:00Z"
+        adapted = continuation_graph(run, jobs)
+        self.assertEqual([j["job_id"] for j in adapted["sibling_priority"]], [1, 2])
+        self.assertEqual([(n["id"], n["requires"]) for n in initial["nodes"]],
+                         [(n["id"], n["requires"]) for n in adapted["nodes"]])
+        self.assertNotEqual(initial["nodes"][2]["independent_children"], adapted["nodes"][2]["independent_children"])
+        self.assertTrue(adapted["nodes"][3]["never_prune"])
+        self.assertFalse(adapted["ci_verified"])
+        failed = continuation_graph({**run, "conclusion": "failure"}, jobs)
+        self.assertFalse(failed["success_learning"]); self.assertEqual(failed["sibling_priority"], [])
+        self.assertEqual({n["id"] for n in failed["nodes"]}, {n["id"] for n in initial["nodes"]})
+        for changed in ({**run, "head_sha": "wrong"}, {**run, "path": "untrusted.yml"},
+                        {**run, "head_repository": {"full_name": "foreign/repo"}}):
+            with self.assertRaises(ExecutorBlock): continuation_graph(changed, jobs)
+        with self.assertRaises(ExecutorBlock): continuation_graph(run, jobs + [jobs[0]])
+
 CONTRACT = ROOT / "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json"
 SELF_HEALING_CONTRACT = ROOT / "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json"
 NODE_POLICY = ROOT / "registry/NODE_DISCOVERY_POLICY.json"

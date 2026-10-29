@@ -1,0 +1,93 @@
+{
+  "scope": "LOCAL_REFERENCE_HTTP_INTEGRATION_ONLY",
+  "reader": "independent client process, original HTTP handler, independent SHA256 recomputation",
+  "before": [
+    200,
+    {
+      "authority_subject": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+      "effect_ack_done": false,
+      "mirror_subject": "630fd695791da71185077fb442e0f090a8fbcb13",
+      "pole_equality_claim": false,
+      "schema": "qikvrt_digital_twin_rest_v1",
+      "state": {
+        "position_m": 1200.0,
+        "temperature_c": 41.5,
+        "twin_id": "reference-train-001",
+        "velocity_mps": 22.0,
+        "version": 7
+      },
+      "state_sha256": "41f54e65eedd152438289808a14d7ac23a43bb1f23177313c47ab8b4db9691b9"
+    }
+  ],
+  "write": [
+    200,
+    {
+      "effect": {
+        "after_version": 8,
+        "before_version": 7,
+        "kind": "SIMULATED_REFERENCE_TRANSITION",
+        "physical_effect": false,
+        "target_velocity_mps": 23.0
+      },
+      "prepared": {
+        "before_state_sha256": "41f54e65eedd152438289808a14d7ac23a43bb1f23177313c47ab8b4db9691b9",
+        "expected_version": 7,
+        "target_velocity_mps": 23.0
+      },
+      "receipt": {
+        "after_state_sha256": "16f60b9e5cd4f12b7fd4440b7aebab3df61b920a9665203ffb86c114fdea76d7",
+        "before_state_sha256": "41f54e65eedd152438289808a14d7ac23a43bb1f23177313c47ab8b4db9691b9",
+        "effect_ack": true,
+        "physical_effect_ack": false
+      },
+      "state": {
+        "position_m": 1200.0,
+        "temperature_c": 41.5,
+        "twin_id": "reference-train-001",
+        "velocity_mps": 23.0,
+        "version": 8
+      }
+    }
+  ],
+  "after": [
+    200,
+    {
+      "authority_subject": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+      "effect_ack_done": false,
+      "mirror_subject": "630fd695791da71185077fb442e0f090a8fbcb13",
+      "pole_equality_claim": false,
+      "schema": "qikvrt_digital_twin_rest_v1",
+      "state": {
+        "position_m": 1200.0,
+        "temperature_c": 41.5,
+        "twin_id": "reference-train-001",
+        "velocity_mps": 23.0,
+        "version": 8
+      },
+      "state_sha256": "16f60b9e5cd4f12b7fd4440b7aebab3df61b920a9665203ffb86c114fdea76d7"
+    }
+  ],
+  "receipt": [
+    200,
+    {
+      "effect_ack_done": false,
+      "receipt": {
+        "after_state_sha256": "16f60b9e5cd4f12b7fd4440b7aebab3df61b920a9665203ffb86c114fdea76d7",
+        "before_state_sha256": "41f54e65eedd152438289808a14d7ac23a43bb1f23177313c47ab8b4db9691b9",
+        "effect_ack": true,
+        "physical_effect_ack": false
+      }
+    }
+  ],
+  "replay_conflict": [
+    409,
+    {
+      "effect_ack_done": false,
+      "reason": "STALE_EXACT_TWIN_VERSION",
+      "state": "HOLD"
+    }
+  ],
+  "unchanged_after_conflict": true,
+  "siemens_tenant_contacted": false,
+  "physical_effect": false
+}

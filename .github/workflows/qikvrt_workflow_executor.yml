@@ -33,7 +33,7 @@ on:
     - cron: "0 10-20/2 6 10 *"
       timezone: "Europe/Paris"
   workflow_run:
-    workflows: ["QIKVRT CI", "QIKVRT workflow executor watchdog"]
+    workflows: ["QIKVRT CI", "QIKVRT productive TEMDD S1 carrier", "QIKVRT workflow executor watchdog"]
     types: [completed]
   push:
     branches: [main]
@@ -78,7 +78,7 @@ jobs:
           ref: ${{ github.sha }}
           persist-credentials: false
       - name: Set up declared Python runtime
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.12"
       - name: Verify cache coverage and reminder contract
@@ -114,7 +114,7 @@ jobs:
           persist-credentials: false
 
       - name: Set up Python
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.12"
 
@@ -224,7 +224,7 @@ jobs:
         with:
           ref: ${{ github.sha }}
           persist-credentials: false
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.12"
       - name: Read GitHub completion, cancellation and original job diagnostics
@@ -243,7 +243,7 @@ jobs:
 
   owner-firefox-signing:
     name: Owner-authorized Firefox signing continuation
-    if: github.repository == 'ingolf-lohmann/qik-vrt' && github.ref == 'refs/heads/main' && (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.task_mode == 'firefox-signing-continuation') || (github.event_name == 'workflow_run' && github.event.workflow_run.head_repository.full_name == github.repository && github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.event == 'workflow_dispatch'))
+    if: github.repository == 'ingolf-lohmann/qik-vrt' && github.ref == 'refs/heads/main' && (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.task_mode == 'firefox-signing-continuation') || (github.event_name == 'workflow_run' && (github.event.workflow_run.name == 'QIKVRT CI' || github.event.workflow_run.name == 'QIKVRT workflow executor watchdog') && github.event.workflow_run.head_repository.full_name == github.repository && github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.event == 'workflow_dispatch'))
     runs-on: ubuntu-24.04
     # Completion receivers cannot queue behind their original caller. Only
     # admission writers serialize together; each provider event has its own lane.
@@ -259,7 +259,7 @@ jobs:
         with:
           ref: ${{ github.sha }}
           persist-credentials: false
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.12"
       - name: Verify existing tool and repository contracts
@@ -350,7 +350,7 @@ jobs:
           ref: ${{ github.sha }}
           persist-credentials: false
       - name: Set up declared Python runtime
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.12"
       - name: Verify coverage and fresh exact main before any provider credential delivery

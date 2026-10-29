@@ -34,6 +34,12 @@ tool-cache-contract:
 offline-browser-precheck: tool-cache-contract
 	QIKVRT_OFFLINE_CLIENT_DIR="$(CURDIR)/docs/monitor/offline" node runtime/offline/browser-tests/browser.test.mjs --precheck
 
+.PHONY: offline-browser-install-diagnosis-test
+offline-browser-install-diagnosis-test: tool-cache-contract
+	node --test runtime/offline/browser-tests/apt-diagnosis.test.mjs runtime/offline/browser-tests/webkit-apt-cache.test.mjs
+
+test: offline-browser-install-diagnosis-test
+
 offline-browser-test: offline-browser-precheck
 	QIKVRT_OFFLINE_CLIENT_DIR="$(CURDIR)/docs/monitor/offline" node runtime/offline/browser-tests/browser.test.mjs
 
@@ -45,7 +51,7 @@ runtime-contract: tool-cache-contract
 	PYTHON="$(PYTHON)" sh tests/test_runtime_bootstrap.sh
 
 ai-runtime-contract:
-	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_ai_runtime_bootloader
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_ai_runtime_bootloader tests.test_ai_onboarding
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/ai_runtime_bootloader.py --help >/dev/null
 
 interaction-archive-test:
@@ -53,7 +59,7 @@ interaction-archive-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_interaction_archive.py --help >/dev/null
 
 release-automation:
-	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_effect_ack_release_workflows tests.test_formalization_v2_release_workflow tests.test_formalization_v2_zenodo tests.test_status_release_workflows tests.test_zenodo_actions tests.test_zenodo_metadata_clarification_candidates tests.test_qikvrt_zenodo_metadata_edit tests.test_status_zenodo tests.test_zenodo_manifest_builder tests.test_status_clarification_bundle tests.test_publication_router tests.test_global_completion tests.test_content_disposition_batch_002_terminal tests.test_content_disposition_batch_002_corrected_candidate tests.test_content_disposition_batch_002_owner_acceptance tests.test_content_disposition_status_after_batch_002_acceptance tests.test_content_disposition_batch_003_dispatch tests.test_transactional_workflow_trigger
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_effect_ack_release_workflows tests.test_workflow_action_runtime_pins tests.test_formalization_v2_release_workflow tests.test_formalization_v2_zenodo tests.test_status_release_workflows tests.test_zenodo_actions tests.test_zenodo_metadata_clarification_candidates tests.test_qikvrt_zenodo_metadata_edit tests.test_status_zenodo tests.test_zenodo_manifest_builder tests.test_status_clarification_bundle tests.test_publication_router tests.test_global_completion tests.test_content_disposition_batch_002_terminal tests.test_content_disposition_batch_002_corrected_candidate tests.test_content_disposition_batch_002_owner_acceptance tests.test_content_disposition_status_after_batch_002_acceptance tests.test_content_disposition_batch_003_dispatch tests.test_transactional_workflow_trigger
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tests/test_content_disposition_batch_001.py
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tests/test_zenodo_union_disposition.py
 
@@ -90,10 +96,10 @@ unit:
 	$(PYTHON) tests/test_handler_unit.py
 
 conformance:
-	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m unittest -v tests.test_effect_ack_conformance
+	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m unittest -v tests.test_effect_ack_conformance tests.test_effect_ack_wire tests.test_effect_ack_http_service
 
 security:
-	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -B -m unittest -v tests.test_handler_security tests.test_api_client tests.test_qikvrt_ionos_dns
+	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -B -m unittest -v tests.test_handler_security tests.test_api_client tests.test_qikvrt_ionos_dns tests.test_qikvrt_ionos_web
 
 license:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_license_transition
@@ -114,7 +120,7 @@ run-api:
 	@test -n "$(QIKVRT_API_TOKEN_EXPIRES_UTC)" || (echo "BLOCK: set QIKVRT_API_TOKEN_EXPIRES_UTC" >&2; exit 2)
 	@test -n "$(QIKVRT_ALLOWED_REPOSITORY)" || (echo "BLOCK: set QIKVRT_ALLOWED_REPOSITORY=owner/repo" >&2; exit 2)
 	@test -n "$(QIKVRT_API_PRINCIPAL)" || (echo "BLOCK: set QIKVRT_API_PRINCIPAL" >&2; exit 2)
-	PYTHONNOUSERSITE=1 $(PYTHON) -S src/qikvrt_github_api_shim.py
+	PYTHONNOUSERSITE=1 $(PYTHON) $(if $(filter 1,$(QIKVRT_PRODUCTION_ENVIRONMENT_ENABLED) $(QIKVRT_PUBLICATION_REST_ENABLED)),-B,-S) src/qikvrt_github_api_shim.py
 
 .PHONY: mcp-conformance-test
 mcp-conformance-test:
@@ -136,6 +142,9 @@ clean:
 
 .PHONY: personal-firefox-boundary-test
 personal-firefox-boundary-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_production_environment
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_publication_rest
+	node tests/test_production_environment_ui.cjs
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_firefox_capability_boundary
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_assistant
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_auth
@@ -184,6 +193,12 @@ digital-twin-sso-test:
 
 test: digital-twin-sso-test
 
+.PHONY: digital-twin-rest-test
+digital-twin-rest-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_digital_twin_rest
+
+test: digital-twin-rest-test
+
 .PHONY: public-qa-test
 public-qa-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_public_qa_server tests.test_public_question_entrypoint
@@ -199,6 +214,7 @@ test: editorial-navigation-test
 
 .PHONY: repository-monitor-test self-host-test
 repository-monitor-test:
+	node --test docs/monitor/workspace.test.mjs
 	node docs/monitor/observer.test.mjs
 	node --test docs/monitor/monitor.test.mjs
 	node --test docs/monitor/mesh-file.test.mjs
@@ -214,10 +230,13 @@ test: temdd-event-ledger-test
 endif
 
 self-host-test: tool-cache-contract temdd-event-ledger-test
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_publication
 	node --test docs/monitor/mesh-file.test.mjs
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_provider
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_static tests.test_static_delivery_rest
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_temdd
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_eap
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_migration
 	node --check docs/monitor/self-host.mjs
 	node --check tools/qikvrt_mesh_monitor_readback.mjs
@@ -248,3 +267,25 @@ personal-retrieval-test:
 	node tests/test_qikvrt_personal_retrieval_ui.cjs
 
 test: personal-retrieval-test
+
+# Portable C90 companion to the Python runtime.
+C90_OUTPUT_DIR ?= .qikvrt/cache/c90
+
+.PHONY: c90 fixed-q16-compile fixed-q16-test benchmark-c90 c90-assembly
+c90: effect-ack-core-test fixed-q16-test
+
+fixed-q16-compile:
+	$(CC) $(EFFECT_ACK_C90_CFLAGS) -pedantic-errors -Iinclude -fsyntax-only src/fixed_q16.c tests/test_fixed_q16.c tools/qikvrt_c90_benchmark.c
+
+fixed-q16-test: fixed-q16-compile
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 CC="$(CC)" $(PYTHON) -B tests/test_fixed_q16.py
+
+benchmark-c90:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 CC="$(CC)" $(PYTHON) -B tools/qikvrt_c90_benchmark.py
+
+c90-assembly:
+	mkdir -p "$(C90_OUTPUT_DIR)"
+	$(CC) $(EFFECT_ACK_C90_CFLAGS) -pedantic-errors -O2 -Iinclude -S src/fixed_q16.c -o "$(C90_OUTPUT_DIR)/fixed_q16.s"
+
+compile: fixed-q16-compile
+test: fixed-q16-test

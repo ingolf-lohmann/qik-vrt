@@ -1,6 +1,64 @@
 # QIK-VRT Human–Machine Progress Protocol
 
+## Later Owner GraphQL fallback decision — 29 October 2026
+
+GraphQL remains the standing admitted continuation fallback. REST stays primary;
+the shared client guard accepts `GRAPHQL_FALLBACK` only against the exact pinned
+Owner decision and fixed operation, with no prior ambiguous REST effect. See
+`client_continuation.github_fallback` in the existing policy and
+`graphql_fallback_decision` in the existing autonomous continuation delegation.
+Do not request this authorization again. Successful original CI/CD/CO feedback
+can reorder independent verification branches while retaining every gate and
+the fallback. Readiness, merge and productive host/domain acceptance remain
+distinct and require their own fresh readbacks.
+
+## Owner decisions before tool selection — 26 October 2026
+
+All current and future QIK-VRT artificial-cognitive clients load the shared
+`policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json` contract at
+`client_continuation.tool_selection` before selecting or invoking an external
+service. The existing handoff validator also checks one proposed action:
+
+```sh
+python3 -B tools/ai_handoff.py --client-action <non-secret-action.json>
+```
+
+Use the same non-secret action shape as `next_actions`: exact `subject`, `route`,
+`service`, `operation`, `method`, actual `tool` and `endpoint` when applicable,
+observed operation/repository/method, evidence and the existing authorization,
+safety, determinism, capability, authentication, permission and admission flags.
+The read-only command reports `CLIENT_ROUTE_POLICY_SHA256` and the declared
+READY/HOLD state; it never invokes a provider. Bind that current digest as
+`route_policy_sha256` when carrying the action forward; a supplied stale digest
+is rejected. `--client-action` and `--client-receipt` are mutually exclusive.
+
+Railway is DISCONNECTED under the Owner's reaffirmed decision. The guard rejects
+direct provider discovery, authentication, reads, writes and recovery, including
+GET/read-only and zero-effect recorded reads. It checks the actual declared
+service/provider, tool prefix and endpoint hostname before capability/transport
+selection. Tool availability, a new session, generic authorization or an
+unavailable permitted route does not reactivate a disconnected provider. Only a
+later explicit Owner instruction can revise the shared policy. Preserved old
+artifacts remain readable through their actual admitted owner storage.
+
+The same check covers proposed actions, transition plans and client receipts.
+It checks declared metadata, not the truth of a client assertion. A saved policy
+or a passing fixture does not prove use by another client, native enforcement,
+external platform control or a runtime effect. Require exact-policy ACK and
+independent readback for each node before claiming adoption. Historical records
+remain immutable; current evaluation never transfers their former route grant.
+
 ## Purpose
+
+The Owner's authorization of 26 October 2026 requires every client to execute
+known, admitted deterministic repairs autonomously without asking the same
+permission or requiring a preliminary notification. The existing
+`client_continuation.blocking_repair_priority.known_error_authorization` rule
+uses the original transition preparation and blocking-repair journal. Correct
+the causal prerequisite, verify the affected exact-subject path, and report
+the verified result. Missing capability or an unknown cause remains a concrete
+prerequisite to recover. Authorization never substitutes for credential binding,
+admission or effect readback, and never permits an unchanged failed retry.
 
 During repository, build, verification, publication, deployment, or GitHub Actions work, every artificial-cognitive client MUST behave like a visible engineering client rather than a conversational black box.
 
