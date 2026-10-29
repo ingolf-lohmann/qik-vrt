@@ -274,5 +274,21 @@
       },
       "effect_ack_done": false
     }
+  },
+  "host_identity_ci_binding": {
+    "prepared_on": "2026-10-29",
+    "source_head": "610864ed46682f5a978ee93a6fe30cbb1aa973bc",
+    "source_tree": "575ce0ca641d3ec6225e2fcbee17dd18d7b30d48",
+    "owner_instruction": "Freigabe erteilt. Zum vorherigen Pull, Merge, Push und Neustart!",
+    "owner": "Ingolf Lohmann",
+    "observed_gap": "PR630 implemented the identity checker, but the original CI host job still invoked only container-deploy and was skipped with registry publication.",
+    "repair": "Reuse container_deploy on trusted Main after successful exact-source container CI; invoke container-host-identity with independent container output pins, separately read and validate the fresh receipt, and retain its non-secret artifact.",
+    "write_guards": "The existing deployment enable flag, successful reviewed OCI publication, identical published image and original production governance remain required. Public acceptance requires an actually successful deployment/recovery output.",
+    "live_host_identity_check_executed": false,
+    "credential_absence_established": false,
+    "public_production_verified": false,
+    "effect_ack_done": false,
+    "retry_condition": "After exact tested source integration, inspect the original Main CI host job and independently download and validate host-identity.json; retain the precise protected-binding, pin, mTLS or remote failure if the actual check cannot complete.",
+    "all_predecessor_obligations_preserved": true
   }
 }
