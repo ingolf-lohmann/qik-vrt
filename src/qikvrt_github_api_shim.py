@@ -13,6 +13,7 @@ import ssl
 import sys
 import threading
 import time
+from contextlib import ExitStack
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -33,6 +34,7 @@ REPO_DISPATCH_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMP
 READBACK_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/qikvrt/artifacts/([A-Za-z0-9_.=-]{{1,128}})/readback$")
 RULESET_REST_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/qikvrt/ruleset-authority$")
 CONTINUATION_REST_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/qikvrt/continuation$")
+PRODUCTION_ENVIRONMENT_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/qikvrt/production-environment$")
 MCP_VERSIONS = ("2025-11-25", "2026-07-28")
 MCP_MAX_PAYLOAD_BYTES = 256 * 1024
 MCP_SOURCE_PATHS = ("scripts/qikvrt_api_client.py", "src/qikvrt_api_handler.py",
@@ -223,6 +225,50 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
         if not isinstance(body, dict):
             raise ValueError("JSON request body must be an object")
         return body
+
+    def _read_body(self) -> dict:
+        # Original OIDC handler, reusing this adapter's strict JSON framing.
+        return self._read_json()
+
+    def _production_environment_rest(self, *, write: bool) -> None:
+        from tools.qikvrt_authority_credentials import production_environment, ProductionBlock, PRODUCTION_SCHEMA
+        if os.environ.get("QIKVRT_PRODUCTION_ENVIRONMENT_ENABLED") != "1":
+            return self._send_json(404, {"state": "HOLD", "reason": "PRODUCTION_ENVIRONMENT_NOT_ENABLED"})
+        if not self._rate_allowed():
+            return self._send_json(429, {"state": "HOLD", "reason": "LOCAL_RATE_LIMIT"})
+        try:
+            parsed = urlparse(self.path)
+            match = PRODUCTION_ENVIRONMENT_RE.fullmatch(parsed.path)
+            if not match or "/".join(match.groups()) != "ingolf-lohmann/qik-vrt" or parsed.params or parsed.fragment:
+                raise ProductionBlock("EXACT_AUTHORITY_PRODUCTION_ROUTE_REQUIRED")
+            runtime = getattr(self.server, "authority_sso", None)
+            if runtime is None:
+                raise ProductionBlock("ORIGINAL_NATIVE_SSO_RUNTIME_REQUIRED")
+            host = f"127.0.0.1:{self.server.server_port}"
+            if (self.server.server_address[0] != "127.0.0.1" or self.headers.get("Host") != host
+                    or self.headers.get("Sec-Fetch-Site") == "cross-site"
+                    or (self.headers.get("Origin") and self.headers.get("Origin") != "http://" + host)
+                    or (write and self.headers.get("Origin") != "http://" + host)):
+                raise ProductionBlock("EXACT_NATIVE_SSO_ORIGIN_REQUIRED")
+            supplied = self.headers.get("Authorization", "")
+            bearer = supplied.removeprefix("Bearer ") if supplied.startswith("Bearer ") else ""
+            if write:
+                if parsed.query:
+                    raise ProductionBlock("PRODUCTION_WRITE_QUERY_FORBIDDEN")
+                request = self._read_json()
+            else:
+                if len(parsed.query) > 2048:
+                    raise ProductionBlock("BOUNDED_PRODUCTION_READBACK_REQUIRED")
+                fields = parse_qs(parsed.query, keep_blank_values=True, strict_parsing=True, max_num_fields=4)
+                if any(len(v) != 1 for v in fields.values()):
+                    raise ProductionBlock("SINGLE_VALUED_PRODUCTION_QUERY_REQUIRED")
+                request = {k: v[0] for k, v in fields.items()}
+            result = production_environment(runtime.personal_auth, bearer, request, os.environ, write=write)
+            return self._send_json(200, result)
+        except ProductionBlock as exc:
+            return self._send_json(409, {"schema": PRODUCTION_SCHEMA, "state": "HOLD", "reason": str(exc), "effect_ack_done": False})
+        except Exception:
+            return self._send_json(409, {"schema": PRODUCTION_SCHEMA, "state": "HOLD", "reason": "PRODUCTION_SSO_OR_BINDING_UNAVAILABLE", "effect_ack_done": False})
 
     def _authorized(self) -> bool:
         token = os.environ.get("QIKVRT_API_TOKEN", "")
@@ -676,6 +722,8 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
             error(200, -32603, "Committed evidence unavailable; reobserve before any mutation")
 
     def do_GET(self):
+        if PRODUCTION_ENVIRONMENT_RE.fullmatch(urlparse(self.path).path):
+            return self._production_environment_rest(write=False)
         if CONTINUATION_REST_RE.fullmatch(urlparse(self.path).path):
             self._continuation_rest(write=False)
             return
@@ -718,6 +766,8 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
         self._send_json(404, {"status": "BLOCK", "reason": "not found"})
 
     def do_POST(self):
+        if PRODUCTION_ENVIRONMENT_RE.fullmatch(urlparse(self.path).path):
+            return self._production_environment_rest(write=True)
         if CONTINUATION_REST_RE.fullmatch(urlparse(self.path).path):
             self._continuation_rest(write=True)
             return
@@ -838,6 +888,31 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
         if os.environ.get("QIKVRT_API_LOG", "0") == "1":
             super().log_message(fmt, *args)
 
+def authority_sso_handler(stack, host, port):
+    """Attach the original OS-store/OIDC lifecycle to this same listener.
+
+    The existing Personal profile and writer fence are reused. No model key,
+    browser cookie import, provider password or new OAuth client is needed.
+    """
+    if os.environ.get("QIKVRT_PRODUCTION_ENVIRONMENT_ENABLED", "0") == "0":
+        return QikvrtGitHubApiShim, None
+    if os.environ.get("QIKVRT_PRODUCTION_ENVIRONMENT_ENABLED") != "1" or host != "127.0.0.1":
+        raise ValueError("EXACT_NATIVE_SSO_LOOPBACK_REQUIRED")
+    from qikvrt_personal_auth import OSSecretStore, PersonalAuth, load_config
+    from qikvrt_personal_assistant import personal_handler
+    state_dir = os.environ.get("QIKVRT_SSO_STATE_DIR", "")
+    config_path = os.environ.get("QIKVRT_SSO_AUTH_CONFIG", "")
+    profile = os.environ.get("QIKVRT_SSO_PROFILE", "openai")
+    if not state_dir or not config_path or profile not in {"openai", "gemini"}:
+        raise ValueError("ORIGINAL_REGISTERED_SSO_PROFILE_REQUIRED")
+    config = load_config(config_path, f"http://127.0.0.1:{port}")
+    store = OSSecretStore(state_dir, profile)
+    stack.enter_context(store.provision_lock(state_dir))
+    auth = PersonalAuth(store, config)
+    runtime = SimpleNamespace(personal_auth=auth, lock=auth.lock, native_terminal=None, auth_receipt=None)
+    return personal_handler(QikvrtGitHubApiShim, runtime, auth_only=True), runtime
+
+
 def main() -> int:
     host = os.environ.get("QIKVRT_API_HOST", "127.0.0.1")
     try:
@@ -892,13 +967,22 @@ def main() -> int:
     if host != "127.0.0.1" and os.environ.get("QIKVRT_ALLOW_NON_LOOPBACK") != "1":
         print("BLOCK non-loopback requires QIKVRT_ALLOW_NON_LOOPBACK=1", file=sys.stderr)
         return 2
-    server = ThreadingHTTPServer((host, port), QikvrtGitHubApiShim)
+    stack = ExitStack()
+    try:
+        handler, authority_sso = authority_sso_handler(stack, host, port)
+        server = ThreadingHTTPServer((host, port), handler)
+        server.authority_sso = authority_sso
+    except Exception:
+        stack.close()
+        print("BLOCK original SSO profile/store/writer unavailable", file=sys.stderr)
+        return 2
     if host != "127.0.0.1":
         cert_file = os.environ.get("QIKVRT_TLS_CERT_FILE", "")
         key_file = os.environ.get("QIKVRT_TLS_KEY_FILE", "")
         if not cert_file or not key_file:
             print("BLOCK non-loopback service requires QIKVRT_TLS_CERT_FILE and QIKVRT_TLS_KEY_FILE", file=sys.stderr)
             server.server_close()
+            stack.close()
             return 2
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
         context.minimum_version = ssl.TLSVersion.TLSv1_2
@@ -911,6 +995,7 @@ def main() -> int:
         pass
     finally:
         server.server_close()
+        stack.close()
     return 0
 
 if __name__ == "__main__":

@@ -415,3 +415,24 @@ upload, keeping the original OCI archive at the artifact root for publication.
 Primary format source: https://github.com/podman-container-tools/skopeo/blob/v1.22.3/cmd/skopeo/main.go#L73 .
 This local ELF/version observation does not establish Docker smoke or deployment;
 the corrected exact-head original CI must independently accept those steps.
+
+
+## Optional GitHub environment sealed boxes (29 October 2026)
+
+The existing Authority/Personal SSO runtime may explicitly provision
+`runtime/toolchains/requirements-github-environment.txt`. PyNaCl 1.6.2 is the
+official Python Cryptographic Authority release (Apache-2.0), with bundled
+LibSodium. The existing OS Secret Service, cryptography 50.0.2, cffi 2.1.1 and
+pycparser 3.0 contracts are retained. The service performs no package install,
+version downgrade or alternate encryption fallback. Wheels remain in the
+existing ecosystem cache; credentials and mutable authentication never do.
+
+Source/provenance: https://pypi.org/project/PyNaCl/1.6.2/
+Protocol: https://docs.github.com/en/rest/actions/secrets
+Sealed boxes: https://pynacl.readthedocs.io/en/latest/public/
+
+Tests generate a disposable encryption key and independently decrypt the exact
+sealed-box ciphertext; wrong version, invalid key, unavailable runtime and lost
+HTTP acknowledgement keep the handoff closed. Package rollback means disabling
+the opt-in Authority environment route and retaining its protected original
+journal; no prior secret is reconstructed, exported or silently overwritten.

@@ -21,6 +21,63 @@ servers:
   - url: https://api.github.com
     description: GitHub asynchronous REST dispatch API
 paths:
+  /repos/{owner}/{repo}/qikvrt/production-environment:
+    description: >
+      Opt-in native Authority route on the existing local adapter only, not an
+      endpoint provided by api.github.com or the managed ChatGPT connector.
+      Uses the original registered OIDC session and OS Secret Service writer
+      lock. Only ingolf-lohmann/qik-vrt and its existing qikvrt-production
+      environment are admitted. The caller cannot supply secrets, a provider
+      credential, another environment, a URL, a workflow or new permissions.
+    parameters:
+      - $ref: '#/components/parameters/Owner'
+      - $ref: '#/components/parameters/Repo'
+    get:
+      operationId: productionEnvironmentReadback
+      security: [{nativeSSOSession: []}]
+      summary: Prepare or independently read back the five original protected bindings
+      parameters:
+        - {name: schema, in: query, required: true, schema: {type: string, enum: [qikvrt-production-environment-rest/v1]}}
+        - {name: request_id, in: query, required: true, schema: {type: string, pattern: '^[A-Za-z0-9_.=-]{1,128}$'}}
+        - {name: expected_main_sha, in: query, schema: {type: string, pattern: '^[a-f0-9]{40}$'}, description: Supply both source and binding pins or omit both for a read-only preparation.}
+        - {name: binding_sha256, in: query, schema: {type: string, pattern: '^[a-f0-9]{64}$'}}
+      responses:
+        '200':
+          description: Non-secret current Main HEAD/TREE, binding-presence and variable-equality observations; secret values and job delivery remain unverified.
+        '404': {description: Opt-in route disabled}
+        '409': {description: Existing SSO, source, private binding or original provider operation unavailable}
+        '429': {description: Local request budget exceeded; no provider retry}
+    post:
+      operationId: productionEnvironmentRestore
+      security: [{nativeSSOSession: []}]
+      summary: Restore only the existing five exact bindings with encrypted secret uploads
+      description: >
+        Requires the exact same-origin Origin header and the existing SSO bearer.
+        The adapter independently rechecks actual GitHub Owner/admin identity,
+        current Main, the existing environment and unchanged native protections.
+        Every write is preceded by protected durable intent. Unknown results
+        permit GET-only recovery, never another PUT. HTTP acknowledgement and
+        metadata readback do not prove job credential delivery, /v1.45/info
+        identity, restart, toggle activation or product delivery.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [schema, request_id, expected_main_sha, binding_sha256, effect_accepted]
+              properties:
+                schema: {type: string, enum: [qikvrt-production-environment-rest/v1]}
+                request_id: {type: string, pattern: '^[A-Za-z0-9_.=-]{1,128}$'}
+                expected_main_sha: {type: string, pattern: '^[a-f0-9]{40}$'}
+                binding_sha256: {type: string, pattern: '^[a-f0-9]{64}$'}
+                effect_accepted: {type: boolean, enum: [true]}
+      responses:
+        '200': {description: Scoped HTTP acknowledgements and independent metadata readback or journal-preserving NOOP; effect_ack_done remains false}
+        '404': {description: Opt-in route disabled}
+        '409': {description: HOLD; keep the original protected journal and use GET-only readback}
+        '429': {description: Local request budget exceeded; no provider retry}
   /repos/{owner}/{repo}/qikvrt/continuation:
     servers:
       - url: http://127.0.0.1:8766
@@ -499,6 +556,13 @@ components:
         state_run_id: { type: string, pattern: '^[0-9]{1,32}$' }
         remote_evidence_b64: { type: string, description: HMAC-authenticated qikvrt_remote_release_attestation_v1 JSON encoded as base64. }
   securitySchemes:
+    nativeSSOSession:
+      type: http
+      scheme: bearer
+      description: >
+        Local session bearer issued by the original validated OIDC callback;
+        renewed and revoked through the original protected profile. No browser
+        session or managed-connector token is imported or forwarded to GitHub.
     mcpReadBearer:
       type: http
       scheme: bearer

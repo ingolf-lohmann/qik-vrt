@@ -55,6 +55,12 @@
       "version": "read-only-object-export"
     },
     {
+      "cache_class": "ecosystem-cache",
+      "component": "github-environment-crypto",
+      "provider": "Official Python Cryptographic Authority PyNaCl PyPI distribution; existing optional private SSO runtime only",
+      "version": "PyNaCl1.6.2"
+    },
+    {
       "cache_class": "runner-image-layer",
       "component": "gpg",
       "provider": "Debian Bookworm gnupg package; fixed public Mozilla APT key, no private keys",
@@ -213,10 +219,10 @@
   ],
   "coverage_basis": "unique components in runtime/toolchains/TOOLCHAIN.lock.tsv",
   "coverage_percent": 100,
-  "covered_components": 35,
-  "declared_components": 35,
-  "lock_sha256": "c03f018b822eb5aa732bf55d2d2deecfe17548a6192e05982fdbe556497a530f",
-  "registry_sha256": "3c6bdf20d80b939eb8316ef5968769365e5dd02f024320e15883297e8ed1bec9",
+  "covered_components": 36,
+  "declared_components": 36,
+  "lock_sha256": "d9f7a56394b2f9b99ddc257d1276e055c1c805003a215934f6863a27dded0d07",
+  "registry_sha256": "2a2f6eaccaed5183045a6a46ace8d77cd41c0352af2b8019d16631b3685844ce",
   "rules": {
     "all_declared_tools_have_cache_strategy": true,
     "cache_never_replaces_required_checks": true,
