@@ -214,8 +214,11 @@ def production_environment(auth, bearer, request, environment, *, write=False, a
         if (not token or len(token) > 4096 or any(ord(c) < 33 or ord(c) > 126 for c in token)
                 or hmac.compare_digest(token, environment.get("QIKVRT_API_TOKEN", "")) or hmac.compare_digest(token, bearer)):
             raise ProductionBlock("ORIGINAL_PROTECTED_AUTHORITY_CREDENTIAL_REQUIRED")
-        values = production_material(environment)
-        if "binding_sha256" in request and values[PRODUCTION_VARIABLES[1]] != request["binding_sha256"]:
+        # Writes still require the original validated material before any HTTP.
+        # A readback must remain usable when that material was never delivered
+        # or was lost after an uncertain upload.
+        values = production_material(environment) if write else None
+        if write and values[PRODUCTION_VARIABLES[1]] != request["binding_sha256"]:
             raise ProductionBlock("REQUEST_HOST_BINDING_PIN_MISMATCH")
         api = api_factory(token, auth.store)
         prefix = "/repos/" + PRODUCTION_REPOSITORY
@@ -226,8 +229,7 @@ def production_environment(auth, bearer, request, environment, *, write=False, a
                 or repository.get("permissions", {}).get("admin") is not True):
             raise ProductionBlock("AUTHENTICATED_GITHUB_OWNER_ADMIN_REQUIRED")
         if not write and set(request) == {"schema", "request_id"}:
-            request = dict(request, expected_main_sha=api.call("GET", prefix + "/git/ref/heads/main").get("object", {}).get("sha"),
-                binding_sha256=values[PRODUCTION_VARIABLES[1]])
+            request = dict(request, expected_main_sha=api.call("GET", prefix + "/git/ref/heads/main").get("object", {}).get("sha"))
             if not isinstance(request["expected_main_sha"], str) or not re.fullmatch(r"[a-f0-9]{40}", request["expected_main_sha"]):
                 raise ProductionBlock("CURRENT_MAIN_SOURCE_UNVERIFIED")
 
@@ -257,24 +259,33 @@ def production_environment(auth, bearer, request, environment, *, write=False, a
             return found
 
         found = observe()
+        material_reason = None
+        if not write:
+            try:
+                values = production_material(environment)
+                if "binding_sha256" in request and values[PRODUCTION_VARIABLES[1]] != request["binding_sha256"]:
+                    raise ProductionBlock("REQUEST_HOST_BINDING_PIN_MISMATCH")
+            except ProductionBlock as exc:
+                values, material_reason = None, str(exc)
         journal = auth.store.read().get("github_environment_handoff", {})
         if journal and journal.get("auth_binding") != auth.binding:
             raise ProductionBlock("ORIGINAL_SSO_JOURNAL_BINDING_MISMATCH")
         # Input identity remains in protected storage; neither secret bytes nor
         # their digests are included in a public/client receipt.
-        revision = _pin(values)
         receipt = {"schema": PRODUCTION_SCHEMA, "request_id": request["request_id"], "repository": PRODUCTION_REPOSITORY,
             "environment": PRODUCTION_ENVIRONMENT, "expected_main_sha": request["expected_main_sha"],
             "source_tree": source_tree,
             "implementation_source_verified": implementation_verified,
-            "binding_sha256": request["binding_sha256"], "credential_reference": reference,
-            "bindings": {n: {"present": found[n] is not None, **({"value_matches": found[n] is not None and found[n].get("value") == values[n]} if n in PRODUCTION_VARIABLES else {})} for n in found},
+            "binding_sha256": values[PRODUCTION_VARIABLES[1]] if values is not None else None, "credential_reference": reference,
+            "protected_material_available": values is not None, "protected_material_reason": material_reason,
+            "bindings": {n: {"present": found[n] is not None, **({"value_matches": (found[n] is not None and found[n].get("value") == values[n]) if values is not None else None} if n in PRODUCTION_VARIABLES else {})} for n in found},
             "mutation_count": 0, "state": "READBACK_ONLY", "secret_values_verified": False,
             "job_credential_delivery_verified": False, "host_identity_verified": False,
-            "next_required_operation": "GET /v1.45/info", "effect_ack_done": False, "ordinary_release": False}
+            "next_required_operation": "GET /v1.45/info" if values is not None else "CONNECT_ORIGINAL_PROTECTED_MATERIAL_SOURCE", "effect_ack_done": False, "ordinary_release": False}
         if not write:
             receipt["prior_attempt_state"] = journal.get("state", "NOT_ATTEMPTED")
             return receipt
+        revision = _pin(values)
         if journal and (journal.get("state") != "COMPLETE" or journal.get("revision") == revision):
             receipt.update(state="NOOP", prior_attempt_state=journal.get("state"), reason="ORIGINAL_ATTEMPT_READBACK_ONLY_NO_RETRY")
             return receipt

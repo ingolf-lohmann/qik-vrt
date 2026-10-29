@@ -35,7 +35,14 @@ paths:
     get:
       operationId: productionEnvironmentReadback
       security: [{nativeSSOSession: []}]
-      summary: Prepare or independently read back the five original protected bindings
+      summary: Read GitHub binding metadata independently of local production material
+      description: >
+        After the existing SSO and GitHub Owner/admin checks, observe current
+        Main and all five remote binding metadata records before attempting
+        local material validation. Missing or invalid local production values
+        permit a read-only response with protected_material_available=false,
+        binding_sha256=null and variable value_matches=null. This response
+        cannot prepare an upload. Original material acquisition remains open.
       parameters:
         - {name: schema, in: query, required: true, schema: {type: string, enum: [qikvrt-production-environment-rest/v1]}}
         - {name: request_id, in: query, required: true, schema: {type: string, pattern: '^[A-Za-z0-9_.=-]{1,128}$'}}
@@ -43,9 +50,9 @@ paths:
         - {name: binding_sha256, in: query, schema: {type: string, pattern: '^[a-f0-9]{64}$'}}
       responses:
         '200':
-          description: Non-secret current Main HEAD/TREE, binding-presence and variable-equality observations; secret values and job delivery remain unverified.
+          description: Non-secret Main HEAD/TREE and binding presence; variable equality is null without verified original material. Secret values, job delivery and host identity remain unverified.
         '404': {description: Opt-in route disabled}
-        '409': {description: Existing SSO, source, private binding or original provider operation unavailable}
+        '409': {description: Existing SSO, source or original provider credential/operation unavailable}
         '429': {description: Local request budget exceeded; no provider retry}
     post:
       operationId: productionEnvironmentRestore
