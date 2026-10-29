@@ -3684,7 +3684,7 @@ def firefox_extension_probe(xpi, output, package="firefox-esr"):
 def publication_private_bytes(path, maximum):
     """Reuse private-path admission and reject replacement/oversized inputs."""
     private_path(path)
-    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
     with os.fdopen(fd, "rb") as source:
         info = os.fstat(source.fileno())
         if (not stat.S_ISREG(info.st_mode) or info.st_uid != os.geteuid()

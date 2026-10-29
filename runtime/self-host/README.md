@@ -184,8 +184,55 @@ binding pins. Session bearers stay in page memory; refresh/access credentials
 remain in OS Secret Service. Authentication, renewal and logout are the original
 `/personal/auth/*` routes. There are no polling timers or background uploads.
 
-The backend reads the five original `QIKVRT_LINUX_HOST_*` bindings from its
-existing protected process environment. The existing Authority credential
+The backend validates the five original `QIKVRT_LINUX_HOST_*` bindings from its
+existing protected process environment, or from explicitly selected original
+private files. To use the file source, configure only these two non-secret
+selectors in that same admitted native process:
+
+```sh
+export QIKVRT_PRODUCTION_MATERIAL_SOURCE=/private/original-facility/material-source.json
+export QIKVRT_PRODUCTION_MATERIAL_SOURCE_SHA256='<independently-approved-descriptor-sha256>'
+```
+
+The descriptor has exactly this shape. Replace the placeholders with the
+already provisioned original file paths and independently approved binding pin;
+do not generate replacement keys or invent host/package facts:
+
+```json
+{
+  "schema": "qikvrt-production-material-files/v1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "environment": "qikvrt-production",
+  "binding_sha256": "<independently-approved-original-binding-sha256>",
+  "files": {
+    "QIKVRT_LINUX_HOST_BINDING_JSON": "/private/original-facility/binding.json",
+    "QIKVRT_LINUX_HOST_CA": "/private/original-facility/ca.pem",
+    "QIKVRT_LINUX_HOST_CERT": "/private/original-facility/client-cert.pem",
+    "QIKVRT_LINUX_HOST_KEY": "/private/original-facility/client-key.pem"
+  }
+}
+```
+
+The native operator must already have authorized access to those originals.
+The descriptor and inputs must be regular, non-symlinked, single-link files
+owned by the running native user with mode 0600, in private mode-0700 immediate
+directories outside every Git checkout. The existing host preparation names
+`ca.pem`, `client-cert.pem` and `client-key.pem`; this adapter reads the selected
+originals in place. It never changes their ownership, permissions or contents.
+The complete, package-bound host binding is required; the partial preparation
+output with null pins is insufficient. The descriptor hash is checked before
+following its four references. The host-binding hash is never recomputed to
+authorize changed bytes. Original binding/PEM/key-pair validation then applies.
+
+Selecting either file-source variable requires the complete pair. Mixing any
+of the five process values with file selection is rejected. Missing, changed,
+oversized, unsafe or invalid input never falls back to another source. Reads
+remain metadata-only when source admission fails; writes stop before provider
+access. These selectors cannot be supplied by the browser or REST request.
+Actual source provisioning, consuming-job delivery, mTLS host identity and
+exact-domain acceptance require their own independent native evidence.
+
+The existing Authority credential
 resolver supplies its original admitted GitHub credential; generic
 `GITHUB_TOKEN`, the local bearer and caller-supplied credentials are excluded.
 This does not recover secret values from GitHub, where they are unreadable.

@@ -1,0 +1,131 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_PRODUCTION_ORIGINAL_MATERIAL_SOURCE_20261029",
+  "owner": "Ingolf Lohmann",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "base_head": "c8b8bdf3c8a22cd5abbce552cc86d5ee70de330f",
+  "base_tree": "aac0a6f41d7a3beea925baf88ee39c792c30ebe4",
+  "state": "ORIGINAL_PRIVATE_FILE_SOURCE_IMPLEMENTED_NATIVE_PROVISIONING_OPEN",
+  "predecessor": {
+    "path": "state/work_units/QIKVRT_PRODUCTION_SSO_BOOTSTRAP_READBACK_20261029.json",
+    "immutable_sso_decision": "state/work_units/QIKVRT_PRODUCTION_SSO_HANDOFF_20261029.json",
+    "original_work_unit_retained": true
+  },
+  "scope": "Extend the existing production material resolver to read explicitly selected, independently pinned original private files through the original native private-file reader. Preserve process mode, SSO, provider identity, fixed Environment, durable intent and no-retry boundaries.",
+  "authorization_basis": "Existing Owner production/SSO implementation authorization, reaffirmed by ja in the current session after the exact workflow blocker and protected-source repair were identified.",
+  "reused_components": [
+    "tools/qikvrt_authority_credentials.py::production_material",
+    "tools/qikvrt_self_host.py::private_path",
+    "tools/qikvrt_self_host.py::publication_private_bytes",
+    "runtime/self-host/host-prepare.sh original CA/client certificate/client key paths",
+    "existing production-environment REST handler and qikvrt-production consuming job"
+  ],
+  "source_contract": {
+    "selector": "QIKVRT_PRODUCTION_MATERIAL_SOURCE",
+    "independent_descriptor_pin": "QIKVRT_PRODUCTION_MATERIAL_SOURCE_SHA256",
+    "schema": "qikvrt-production-material-files/v1",
+    "source_paths_guessed": false,
+    "source_files_modified": false,
+    "mixed_or_automatic_fallback": false,
+    "new_executor_or_workflow": false,
+    "new_permissions_or_credential_generation": false,
+    "secret_values_in_repository": false,
+    "provisioning_binding_observed_in_this_session": false
+  },
+  "validation": {
+    "before": "New file-source regressions fail before the adapter exists; no existing original-file source could be selected.",
+    "focused_command": "python3 -B -m unittest -v tests.test_production_environment tests.test_self_host_publication",
+    "focused_tests": 64,
+    "focused_result": "OK_WITH_ONE_OPTIONAL_LOCKED_PYNACL_SKIP",
+    "expanded_focused_command": "python3 -B -m unittest -v tests.test_production_environment tests.test_self_host_publication tests.test_ruleset_authority_token_route",
+    "expanded_focused_tests": 88,
+    "expanded_focused_result": "OK_WITH_ONE_OPTIONAL_LOCKED_PYNACL_SKIP",
+    "ui_result": "PASS_METADATA_ONLY_UPLOAD_SUPPRESSION_RETAINED",
+    "mesh_contract_result": "SOURCE_OBLIGATIONS_BOUND_NO_LIVE_ACCEPTANCE_INFERRED",
+    "real_file_binding_and_pem_validation_exercised": true,
+    "negative_cases": [
+      "missing/partial source selection and changed independent pins",
+      "missing/empty/oversized/non-UTF8 inputs",
+      "unsafe file/directory permissions or wrong owner",
+      "symlinks, hardlinks, FIFO, relative paths and Git checkouts",
+      "wrong repository/environment/schema, duplicate keys and incomplete file sets",
+      "replacement during private read",
+      "no changed-byte repinning and no mixed process/file source",
+      "real source failure stops writes before provider access",
+      "read-only remote metadata remains observable without original source"
+    ],
+    "full_command": "make test repository-monitor-test self-host-test",
+    "full_result": "LOCAL_BLOCKED_NO_FULL_PASS_CLAIMED",
+    "full_exit_code": 2,
+    "local_full_failure": "The partial local Git history lacks predecessor subtrees required by git show -s in existing publication-time tests; recovering the exact root tree exposed a further missing subtree. No fixture or production gate was weakened.",
+    "package_command": "make repository-monitor-test self-host-test ruleset-authority-test",
+    "package_exit_code": 2,
+    "local_package_failure": "Existing native UnixStreamServer creation fails with PermissionError Errno 1 Operation not permitted; ten TEMDD test errors. No socket mock, skipped required test or replacement executor was introduced.",
+    "exact_candidate_native_ci": "REQUIRED",
+    "native_sso_or_credential_delivery_inferred": false
+  },
+  "existing_main_failure": {
+    "run_id": 40816861841,
+    "job_id": 123264003734,
+    "source_head": "e2e4f0b8f88bd2ab4ca6b0881b3a1b804376ed18",
+    "reason": "protected host binding/credential unavailable before identity GET",
+    "global_credential_absence_inferred": false,
+    "unchanged_rerun_executed": false
+  },
+  "predecessor_integration": {
+    "pull_request": 634,
+    "head": "d6e8a058e3308c3ccf54ee7b330aa019ee6404fe",
+    "merge_commit": "c8b8bdf3c8a22cd5abbce552cc86d5ee70de330f",
+    "merge_tree": "aac0a6f41d7a3beea925baf88ee39c792c30ebe4",
+    "ordered_parents": ["e2e4f0b8f88bd2ab4ca6b0881b3a1b804376ed18", "d6e8a058e3308c3ccf54ee7b330aa019ee6404fe"],
+    "native_ci_runs": [40835290481, 40835282768],
+    "native_ci_conclusion": "success",
+    "merge_independently_observed": true,
+    "merge_issued_by_this_session": false
+  },
+  "open_work": [
+    {
+      "id": "native-sso",
+      "next_action": "Use the original admitted native process, registered SSO profile and protected Authority credential; confirm native identity/renewal without exporting credentials."
+    },
+    {
+      "id": "original-material-source-binding",
+      "next_action": "Bind the already provisioned original private descriptor, independently approved descriptor/binding pins and four original files in the existing native process. No source path or original secret has been supplied to this session."
+    },
+    {
+      "id": "protected-handoff",
+      "next_action": "After native source and exact-Main admission, execute the original handoff once and independently verify actual delivery to the existing qikvrt-production consuming job."
+    },
+    {
+      "id": "original-host-identity",
+      "next_action": "Read mTLS GET /v1.45/info with the independently tested exact package/source pins and fresh original receipt before any restart or toggle."
+    },
+    {
+      "id": "exact-domain-delivery",
+      "next_action": "Verify the actual public terminal and exact source at https://raumzeitterminal.de/ independently; no delivery inferred from source tests or GitHub metadata."
+    }
+  ],
+  "mirror_outbox": {
+    "original_tool": "node-tools/qikvrt_mirror_emit.py",
+    "state": "HOLD_ORIGINAL_ADMITTED_NATIVE_EFFECT_OUTBOX_CARRIER_UNAVAILABLE",
+    "sent": false,
+    "node_adoption_verified": false,
+    "preserved_members": ["Codex", "Goldkelch Mirror", "Originalhost", "Mesh-Monitor"]
+  },
+  "native_observation": {
+    "operator_authorized": true,
+    "ready": false,
+    "open_gate": "ADMITTED_MESH_RUNTIME_ENDPOINT",
+    "domain_http_status": 525,
+    "observed_at": "2026-10-29T07:30:14.809Z"
+  },
+  "contributions": {
+    "human": "Ingolf Lohmann: production goal, original-source requirement and continuing implementation authorization.",
+    "artificial_cognitive": "OpenAI Codex: original-source resolver extension, failure-case tests and integration preparation."
+  },
+  "github_environment_handoff_executed": false,
+  "host_identity_verified": false,
+  "restart_executed": false,
+  "feature_toggle_activated": false,
+  "effect_ack_done": false
+}
