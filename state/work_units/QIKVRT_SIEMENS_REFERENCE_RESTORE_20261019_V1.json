@@ -181,5 +181,35 @@
     "global_effect_ack_done": false,
     "exact_domain_delivery": "OPEN; public monitor observed HTTP525 at 2026-10-19T12:26:31.718Z"
   },
-  "next_action": "Admit the smallest Main-based source candidate through the existing reviewed PR/CI path; independently read exact source and native checks, then promote only under existing governance. Continue real Siemens acceptance only with actual protected target/role/API bindings."
+  "next_action": "Admit the smallest Main-based source candidate through the existing reviewed PR/CI path; independently read exact source and native checks, then promote only under existing governance. Continue real Siemens acceptance only with actual protected target/role/API bindings.",
+  "history_preserving_reconciliations": [
+    {
+      "observed_at_utc": "2026-10-29T14:54:14.899896+00:00",
+      "requested_by": "Ingolf Lohmann; direct PR627 conflict-repair instruction, 2026-10-29",
+      "implemented_by": "OpenAI Codex",
+      "predecessor_head": "f3c8fa8b82343fd700879ac58f2fc6e171f1cadd",
+      "merged_main": "dafe3c15c42dd228642698167043d7677eb0c92f",
+      "merge_base": "6d3e7d31c56352b3334a225b061f403a83efd2ac",
+      "ordered_parents": [
+        "f3c8fa8b82343fd700879ac58f2fc6e171f1cadd",
+        "dafe3c15c42dd228642698167043d7677eb0c92f"
+      ],
+      "conflicted_paths": [
+        "REPOSITORY_FILE_MANIFEST.json",
+        "REPOSITORY_FILE_MANIFEST.json.sha256",
+        "SHA256SUMS.txt"
+      ],
+      "resolution": "Reuse tools/qikvrt_integrity.py generate on the merged source set; retain both Siemens REST and C90 make targets. No hand-edited digest.",
+      "siemens_reference_blob": "816d55781e53e0801390a96e8032c9fa2b327ae2",
+      "siemens_reference_unchanged": true,
+      "validation_commands": [
+        "python3 -B tools/qikvrt_integrity.py verify",
+        "make test"
+      ],
+      "validation_results": "Require fresh local results and native CI on the resulting successor; historical CI is not transferred.",
+      "review_state": "COMMENTED on predecessor only; no independent GitHub APPROVED inferred",
+      "repository_scope_only": true,
+      "host_domain_runtime_production_acceptance_inferred": false
+    }
+  ]
 }

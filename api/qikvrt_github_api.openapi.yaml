@@ -21,6 +21,210 @@ servers:
   - url: https://api.github.com
     description: GitHub asynchronous REST dispatch API
 paths:
+  /repos/{owner}/{repo}/qikvrt/static-delivery:
+    servers:
+      - url: http://127.0.0.1:8766
+        description: Existing admitted QIK-VRT REST server; source availability is not deployment.
+    parameters:
+      - { name: owner, in: path, required: true, schema: { type: string, enum: [ingolf-lohmann] } }
+      - { name: repo, in: path, required: true, schema: { type: string, enum: [qik-vrt] } }
+    get:
+      operationId: staticDeliveryReadback
+      summary: Read the existing VPS file, reconcile its original upload, or check both exact public HTTPS URLs.
+      description: >
+        Disabled unless QIKVRT_STATIC_DELIVERY_ENABLED=1. Reuses the existing
+        expiring REST credential and bound natural Owner. No upload, retry,
+        provider key forwarding, GraphQL call or global EFFECT_ACK_DONE.
+        reconcile retains the original request_id and S1 intent. Public checks
+        require actual matching page bytes on both exact HTTPS URLs.
+      security: [{ bearerToken: [] }]
+      parameters:
+        - { name: schema, in: query, required: true, schema: { type: string, enum: [qikvrt-static-delivery-rest/v1] } }
+        - { name: mode, in: query, required: true, schema: { type: string, enum: [readback, reconcile, public-readback] } }
+        - { name: request_id, in: query, required: true, schema: { type: string, pattern: '^[A-Za-z0-9_.=-]{1,128}$' } }
+        - { name: expected_implementation_sha256, in: query, required: true, schema: { type: string, pattern: '^[0-9a-f]{64}$' } }
+        - { name: binding_sha256, in: query, required: true, schema: { type: string, pattern: '^[0-9a-f]{64}$' } }
+        - { name: static_file_sha256, in: query, required: true, schema: { type: string, pattern: '^[0-9a-f]{64}$' } }
+      responses:
+        '200': { description: Bound original-controller readback; scope is file bytes or public HTTPS bytes only. }
+        '400': { description: Invalid or duplicate readback parameters. }
+        '401': { description: Missing or expired REST credential. }
+        '403': { description: Foreign repository or unbound Owner. }
+        '404': { description: Static REST disabled. }
+        '409': { description: Binding mismatch or unverified public/previous effect. }
+        '429': { description: Rate limited; no automatic retry. }
+        '503': { description: Protected original binding or current implementation unavailable. }
+    post:
+      operationId: staticDeliveryUpload
+      summary: Invoke one original S1 static upload and separate byte readback.
+      description: >
+        The existing server-side S1 provider resolves protected binding, source
+        file and receipt directory from explicit operator configuration. Clients
+        supply only reviewed digests, fresh predecessor hash and stable request
+        identity. No client paths, keys, arbitrary payload, shell or provider
+        origin are accepted. Original S1 backup/intent fencing prevents replay
+        after an uncertain upload; continue with GET reconcile, never POST retry.
+        No DNS, hosting-control, certificate, native admission or GitHub lifecycle
+        change is performed. GraphQL is untouched and not invoked.
+      security: [{ bearerToken: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [schema, mode, request_id, expected_implementation_sha256, binding_sha256, static_file_sha256, expected_static_sha256, effect_accepted]
+              properties:
+                schema: { type: string, enum: [qikvrt-static-delivery-rest/v1] }
+                mode: { type: string, enum: [upload] }
+                request_id: { type: string, pattern: '^[A-Za-z0-9_.=-]{1,128}$' }
+                expected_implementation_sha256: { type: string, pattern: '^[0-9a-f]{64}$' }
+                binding_sha256: { type: string, pattern: '^[0-9a-f]{64}$' }
+                static_file_sha256: { type: string, pattern: '^[0-9a-f]{64}$' }
+                expected_static_sha256: { type: string, pattern: '^(ABSENT|[0-9a-f]{64})$' }
+                effect_accepted: { type: boolean, enum: [true] }
+      responses:
+        '200': { description: Independent file-byte readback verified; no public delivery inference. }
+        '400': { description: Duplicate security headers. }
+        '401': { description: Missing or expired REST credential. }
+        '403': { description: Foreign repository or unbound Owner. }
+        '404': { description: Static REST disabled. }
+        '409': { description: Request, predecessor or immutable intent refused; GET reconcile original request. }
+        '429': { description: Rate limited; no automatic retry. }
+        '503': { description: Result/binding unavailable; GET readback before another effect. }
+  /repos/{owner}/{repo}/qikvrt/production-environment:
+    description: >
+      Opt-in native Authority route on the existing local adapter only, not an
+      endpoint provided by api.github.com or the managed ChatGPT connector.
+      Uses the original registered OIDC session and OS Secret Service writer
+      lock. Only ingolf-lohmann/qik-vrt and its existing qikvrt-production
+      environment are admitted. The caller cannot supply secrets, a provider
+      credential, another environment, a URL, a workflow or new permissions.
+    parameters:
+      - $ref: '#/components/parameters/Owner'
+      - $ref: '#/components/parameters/Repo'
+    get:
+      operationId: productionEnvironmentReadback
+      security: [{nativeSSOSession: []}]
+      summary: Read GitHub binding metadata independently of local production material
+      description: >
+        After the existing SSO and GitHub Owner/admin checks, observe current
+        Main and all five remote binding metadata records before attempting
+        local material validation. Missing or invalid local production values
+        permit a read-only response with protected_material_available=false,
+        binding_sha256=null and variable value_matches=null. This response
+        cannot prepare an upload. The native process may explicitly select
+        independently pinned original private files instead of process values;
+        the caller cannot supply source paths or source pins. Source provisioning
+        and actual job delivery remain separately unverified.
+      parameters:
+        - {name: schema, in: query, required: true, schema: {type: string, enum: [qikvrt-production-environment-rest/v1]}}
+        - {name: request_id, in: query, required: true, schema: {type: string, pattern: '^[A-Za-z0-9_.=-]{1,128}$'}}
+        - {name: expected_main_sha, in: query, schema: {type: string, pattern: '^[a-f0-9]{40}$'}, description: Supply both source and binding pins or omit both for a read-only preparation.}
+        - {name: binding_sha256, in: query, schema: {type: string, pattern: '^[a-f0-9]{64}$'}}
+      responses:
+        '200':
+          description: Non-secret Main HEAD/TREE and binding presence; variable equality is null without verified original material. Secret values, job delivery and host identity remain unverified.
+        '404': {description: Opt-in route disabled}
+        '409': {description: Existing SSO, source or original provider credential/operation unavailable}
+        '429': {description: Local request budget exceeded; no provider retry}
+    post:
+      operationId: productionEnvironmentRestore
+      security: [{nativeSSOSession: []}]
+      summary: Restore only the existing five exact bindings with encrypted secret uploads
+      description: >
+        Requires the exact same-origin Origin header and the existing SSO bearer.
+        The adapter independently rechecks actual GitHub Owner/admin identity,
+        current Main, the existing environment and unchanged native protections.
+        Every write is preceded by protected durable intent. Unknown results
+        permit GET-only recovery, never another PUT. HTTP acknowledgement and
+        metadata readback do not prove job credential delivery, /v1.45/info
+        identity, restart, toggle activation or product delivery.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [schema, request_id, expected_main_sha, binding_sha256, effect_accepted]
+              properties:
+                schema: {type: string, enum: [qikvrt-production-environment-rest/v1]}
+                request_id: {type: string, pattern: '^[A-Za-z0-9_.=-]{1,128}$'}
+                expected_main_sha: {type: string, pattern: '^[a-f0-9]{40}$'}
+                binding_sha256: {type: string, pattern: '^[a-f0-9]{64}$'}
+                effect_accepted: {type: boolean, enum: [true]}
+      responses:
+        '200': {description: Scoped HTTP acknowledgements and independent metadata readback or journal-preserving NOOP; effect_ack_done remains false}
+        '404': {description: Opt-in route disabled}
+        '409': {description: HOLD; keep the original protected journal and use GET-only readback}
+        '429': {description: Local request budget exceeded; no provider retry}
+  /repos/{owner}/{repo}/qikvrt/continuation:
+    servers:
+      - url: http://127.0.0.1:8766
+        description: Existing protected QIK-VRT service; deployment requires separate readback.
+    parameters:
+      - { name: owner, in: path, required: true, schema: { type: string, enum: [ingolf-lohmann] } }
+      - { name: repo, in: path, required: true, schema: { type: string, enum: [qik-vrt] } }
+    get:
+      operationId: meshContinuationPlanAndReadback
+      summary: Read exact PR, review, original CI jobs and adaptive continuation graph.
+      description: >
+        Requires QIKVRT_CONTINUATION_ENABLED=1, the original expiring caller token,
+        Owner binding and separate protected Authority credential. Reads only.
+        Original successful CI/CD/CO jobs may rank independent siblings; every
+        gate and the GraphQL fallback remain in the graph. Missing, foreign,
+        failed or incomplete evidence cannot grant mutation or product acceptance.
+      security: [{ bearerToken: [] }]
+      parameters:
+        - { name: request_id, in: query, required: true, schema: { type: string, pattern: '^[A-Za-z0-9_.=-]{1,128}$' } }
+        - { name: pull_request, in: query, required: true, schema: { type: integer, minimum: 1 } }
+        - { name: expected_main_sha, in: query, required: true, schema: { type: string, pattern: '^[0-9a-f]{40}$' } }
+        - { name: expected_head, in: query, required: true, schema: { type: string, pattern: '^[0-9a-f]{40}$' } }
+        - { name: expected_tree, in: query, required: true, schema: { type: string, pattern: '^[0-9a-f]{40}$' } }
+        - { name: ci_run_id, in: query, required: true, schema: { type: integer, minimum: 1 } }
+      responses:
+        '200': { description: Fresh plan or narrow readiness readback; no merge or deployment. }
+        '409': { description: Source, review or original CI evidence rejected. }
+        '503': { description: Protected binding or provider observation unavailable. }
+    post:
+      operationId: meshContinuationReady
+      summary: Execute the fixed admitted GraphQL readiness fallback once.
+      description: >
+        Uses exactly markPullRequestReadyForReview with variables, the existing
+        protected credential resolver and original durable attempt journal.
+        Requires current exact source, successful complete CI and actual Owner
+        review, then fresh admission under the existing lock. A separate REST
+        GET verifies readiness after GraphQL. Unknown effects retain their
+        journal and cannot be replayed by a changed request ID or HEAD. The
+        GraphQL mutation itself has no atomic expected-head argument; drift
+        detected after it keeps acceptance unknown. Merge remains a separate
+        expected-head-bound REST operation. No arbitrary query, URL or code is
+        accepted. Source presence is not live activation.
+      security: [{ bearerToken: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [schema, request_id, pull_request, expected_main_sha, expected_head, expected_tree, ci_run_id, effect_accepted]
+              properties:
+                schema: { type: string, enum: [qikvrt-continuation-rest/v1] }
+                request_id: { type: string, pattern: '^[A-Za-z0-9_.=-]{1,128}$' }
+                pull_request: { type: integer, minimum: 1 }
+                expected_main_sha: { type: string, pattern: '^[0-9a-f]{40}$' }
+                expected_head: { type: string, pattern: '^[0-9a-f]{40}$' }
+                expected_tree: { type: string, pattern: '^[0-9a-f]{40}$' }
+                ci_run_id: { type: integer, minimum: 1 }
+                effect_accepted: { type: boolean, enum: [true] }
+      responses:
+        '200': { description: Independent exact readiness readback verified. }
+        '202': { description: Unresolved attempt retained; read back without another mutation. }
+        '409': { description: Exact admission rejected before a new mutation. }
+        '503': { description: Protected binding or original provider unavailable. }
   /repos/{owner}/{repo}/qikvrt/ruleset-authority:
     servers:
       - url: http://127.0.0.1:8766
@@ -434,6 +638,13 @@ components:
         state_run_id: { type: string, pattern: '^[0-9]{1,32}$' }
         remote_evidence_b64: { type: string, description: HMAC-authenticated qikvrt_remote_release_attestation_v1 JSON encoded as base64. }
   securitySchemes:
+    nativeSSOSession:
+      type: http
+      scheme: bearer
+      description: >
+        Local session bearer issued by the original validated OIDC callback;
+        renewed and revoked through the original protected profile. No browser
+        session or managed-connector token is imported or forwarded to GitHub.
     mcpReadBearer:
       type: http
       scheme: bearer

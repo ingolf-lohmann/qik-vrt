@@ -99,7 +99,7 @@ conformance:
 	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m unittest -v tests.test_effect_ack_conformance tests.test_effect_ack_wire tests.test_effect_ack_http_service
 
 security:
-	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -B -m unittest -v tests.test_handler_security tests.test_api_client tests.test_qikvrt_ionos_dns
+	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -B -m unittest -v tests.test_handler_security tests.test_api_client tests.test_qikvrt_ionos_dns tests.test_qikvrt_ionos_web
 
 license:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_license_transition
@@ -120,7 +120,7 @@ run-api:
 	@test -n "$(QIKVRT_API_TOKEN_EXPIRES_UTC)" || (echo "BLOCK: set QIKVRT_API_TOKEN_EXPIRES_UTC" >&2; exit 2)
 	@test -n "$(QIKVRT_ALLOWED_REPOSITORY)" || (echo "BLOCK: set QIKVRT_ALLOWED_REPOSITORY=owner/repo" >&2; exit 2)
 	@test -n "$(QIKVRT_API_PRINCIPAL)" || (echo "BLOCK: set QIKVRT_API_PRINCIPAL" >&2; exit 2)
-	PYTHONNOUSERSITE=1 $(PYTHON) -S src/qikvrt_github_api_shim.py
+	PYTHONNOUSERSITE=1 $(PYTHON) $(if $(filter 1,$(QIKVRT_PRODUCTION_ENVIRONMENT_ENABLED)),-B,-S) src/qikvrt_github_api_shim.py
 
 .PHONY: mcp-conformance-test
 mcp-conformance-test:
@@ -142,6 +142,8 @@ clean:
 
 .PHONY: personal-firefox-boundary-test
 personal-firefox-boundary-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_production_environment
+	node tests/test_production_environment_ui.cjs
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_firefox_capability_boundary
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_assistant
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_auth
@@ -211,6 +213,7 @@ test: editorial-navigation-test
 
 .PHONY: repository-monitor-test self-host-test
 repository-monitor-test:
+	node --test docs/monitor/workspace.test.mjs
 	node docs/monitor/observer.test.mjs
 	node --test docs/monitor/monitor.test.mjs
 	node --test docs/monitor/mesh-file.test.mjs
@@ -226,8 +229,10 @@ test: temdd-event-ledger-test
 endif
 
 self-host-test: tool-cache-contract temdd-event-ledger-test
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_publication
 	node --test docs/monitor/mesh-file.test.mjs
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_provider
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_static tests.test_static_delivery_rest
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_temdd
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_eap

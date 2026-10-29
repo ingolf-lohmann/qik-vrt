@@ -5,6 +5,40 @@ Copyright 2026 Ingolf Lohmann.
 
 # Runtime toolchain provenance
 
+## Ontology Lean provisioning repair — 28 October 2026
+
+Run 40676429511, job 122775926186 at Authority HEAD
+`7ec67b0985027e77d86e6bcae7607c510ec07ac1` failed before any kernel check:
+the pinned lean-action downloaded mutable Elan bootstrap content and its
+installer ended with a connection reset after 573 seconds. The ontology
+workflow now reuses the existing shell-fallback route's official Lean release
+directly, retaining Lean 4.19.0 and all three default library builds, the
+32/71-constant audits, boundary tests and exact-head receipt.
+
+Official asset: <https://github.com/leanprover/lean4/releases/download/v4.19.0/lean-4.19.0-linux.tar.zst>.
+The official release API identifies asset `250981932`, published on 1 May 2025,
+with 343,842,845 bytes. Its provider `digest` field is null. An independent
+public octet-stream retrieval on 28 October 2026 matched that size and produced
+SHA-256 `6fe3ce97a58f44e2b3567d455b994eacec5bfe9ae7774f2a573444480ba813fe`.
+This is a measured byte binding, not an upstream-published checksum/signature.
+The workflow pins both size and SHA-256 before every fresh extraction, checks
+Lean/Lake versions before and after promotion, and activates PATH only afterward.
+
+Only that hash-locked archive is cached. Keys include OS, architecture, exact
+toolchain, toolchain metadata and consuming workflow digests. Cached executable
+directories and broad restore keys are excluded. PRs may restore archives;
+only a successful explicitly dispatched trusted-Main run may save them.
+Cold downloads have bounded connection, transfer and overall step deadlines.
+The existing runner-provided Bash, curl, GNU tar, zstd and coreutils are explicitly
+declared in the runtime lock/registry with the Linux extraction/HTTPS/hash
+behavior used here. Their availability is checked before provisioning; this
+source repair installs none of those utilities.
+Corrupt cached bytes, source drift, failed extraction or wrong executables fail
+closed without a replacement download. Staged incomplete output is removed;
+no prior runtime directory is overwritten. The existing regression module
+executes the workflow shell with isolated transport/tool fixtures. Those tests
+do not establish a real Lean build, hosted execution or productive delivery.
+
 The optional `self-host-systemd` profile uses an already provisioned Linux
 systemd >=252. The host distribution owns its binary/package provenance; no
 service startup installs or downloads tools. The behavioral contract is unit
@@ -415,3 +449,24 @@ upload, keeping the original OCI archive at the artifact root for publication.
 Primary format source: https://github.com/podman-container-tools/skopeo/blob/v1.22.3/cmd/skopeo/main.go#L73 .
 This local ELF/version observation does not establish Docker smoke or deployment;
 the corrected exact-head original CI must independently accept those steps.
+
+
+## Optional GitHub environment sealed boxes (29 October 2026)
+
+The existing Authority/Personal SSO runtime may explicitly provision
+`runtime/toolchains/requirements-github-environment.txt`. PyNaCl 1.6.2 is the
+official Python Cryptographic Authority release (Apache-2.0), with bundled
+LibSodium. The existing OS Secret Service, cryptography 50.0.2, cffi 2.1.1 and
+pycparser 3.0 contracts are retained. The service performs no package install,
+version downgrade or alternate encryption fallback. Wheels remain in the
+existing ecosystem cache; credentials and mutable authentication never do.
+
+Source/provenance: https://pypi.org/project/PyNaCl/1.6.2/
+Protocol: https://docs.github.com/en/rest/actions/secrets
+Sealed boxes: https://pynacl.readthedocs.io/en/latest/public/
+
+Tests generate a disposable encryption key and independently decrypt the exact
+sealed-box ciphertext; wrong version, invalid key, unavailable runtime and lost
+HTTP acknowledgement keep the handoff closed. Package rollback means disabling
+the opt-in Authority environment route and retaining its protected original
+journal; no prior secret is reconstructed, exported or silently overwritten.

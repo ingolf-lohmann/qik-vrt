@@ -57,6 +57,7 @@ def subject() -> dict[str, Any]:
             return None
     paths = ["src/qikvrt_personal_assistant.py", "src/qikvrt_effect_ack_http_terminal.py",
              "src/qikvrt_personal_auth.py", "src/qikvrt_personal_retrieval.py",
+             "src/qikvrt_github_api_shim.py", "tools/qikvrt_authority_credentials.py",
              "runtime/models/pplx-embed-v2-late-0.6b.lock.json",
              *[str(p.relative_to(ROOT)) for p in sorted(UI.iterdir()) if p.is_file()]]
     return {"repository": "ingolf-lohmann/qik-vrt", "head": git("rev-parse", "HEAD"),
@@ -548,7 +549,12 @@ class PersonalRuntime:
                     "ordinary_release": False, "personal_release_effect_ack_done": False}
 
 
-def personal_handler(base_handler, runtime: PersonalRuntime):
+def personal_handler(base_handler, runtime: PersonalRuntime, *, auth_only=False):
+    """Reuse the original OIDC routes for the existing Authority API as well.
+
+    Auth-only mode retains the same session/store/refresh/lock and exposes no
+    model request, transcript, native transition or model-key prerequisite.
+    """
     class PersonalHandler(base_handler):
         def _personal_response(self, code: int, body: Any, media: str = "application/json; charset=utf-8", nonce=None):
             raw = canonical(body) if media.startswith("application/json") else body
@@ -594,9 +600,14 @@ def personal_handler(base_handler, runtime: PersonalRuntime):
         def do_GET(self):
             if not self.path.startswith("/personal/"):
                 return super().do_GET()
+            if auth_only and self.path not in {"/personal/", "/personal/authority.js", "/personal/auth/info", "/personal/auth/status"}:
+                return self._personal_response(404, {"state": "HOLD"})
             assets = {"/personal/": ("ui.html", "text/html; charset=utf-8"),
                       "/personal/ui.js": ("ui.js", "text/javascript; charset=utf-8"),
                       "/personal/ui.css": ("ui.css", "text/css; charset=utf-8")}
+            if auth_only:
+                assets = {"/personal/": ("authority.html", "text/html; charset=utf-8"),
+                          "/personal/authority.js": ("authority.js", "text/javascript; charset=utf-8")}
             try:
                 self._personal_guard(public=self.path in assets or self.path == "/personal/auth/info")
                 if self.path == "/personal/auth/info":
@@ -607,6 +618,8 @@ def personal_handler(base_handler, runtime: PersonalRuntime):
                 if self.path in assets:
                     path, media = assets[self.path]
                     return self._personal_response(200, (UI / path).read_bytes(), media)
+                if runtime.personal_auth and self.path == "/personal/auth/status":
+                    return self._personal_response(200, runtime.personal_auth.status())
                 if self.path == "/personal/capabilities":
                     return self._personal_response(200, dict(runtime.capabilities(), local_client_authenticated=True))
                 if self.path == "/personal/sessions":
@@ -628,6 +641,8 @@ def personal_handler(base_handler, runtime: PersonalRuntime):
         def do_POST(self):
             if not self.path.startswith("/personal/"):
                 return super().do_POST()
+            if auth_only and self.path not in {"/personal/auth/start", "/personal/auth/callback", "/personal/auth/renew", "/personal/auth/logout"}:
+                return self._personal_response(404, {"state": "HOLD"})
             try:
                 auth = runtime.personal_auth
                 if auth and self.path == "/personal/auth/callback":
