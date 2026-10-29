@@ -4,7 +4,7 @@
 // Simulated DOM/network only; no live user authentication or production effect.
 const fs = require('node:fs'), vm = require('node:vm'), assert = require('node:assert/strict');
 const source = fs.readFileSync(require('node:path').join(__dirname, '../personal/ingolf-lohmann/firefox-assistant/authority.js'), 'utf8');
-async function scenario(lost) {
+async function scenario(lost, missingMaterial = false) {
   const nodes = new Map(), events = {}, calls = [], popup = {};
   const node = id => { if (!nodes.has(id)) nodes.set(id, {textContent: '', disabled: false}); return nodes.get(id); };
   let applyCount = 0;
@@ -19,7 +19,7 @@ async function scenario(lost) {
       else if (path.endsWith('/status')) value = {state: 'AUTHENTICATED'};
       else if (path.endsWith('/logout')) value = {local_logout: true};
       else if (options.method === 'POST') { applyCount++; if (lost) throw Error('LOST_REPLY'); value = {state: 'UPLOAD_ACKNOWLEDGED_METADATA_READBACK_VERIFIED'}; }
-      else value = {request_id: 'fixture-request', expected_main_sha: '1'.repeat(40), binding_sha256: 'a'.repeat(64), implementation_source_verified: true, prior_attempt_state: lost && applyCount ? 'UNKNOWN_READBACK_REQUIRED' : 'NOT_ATTEMPTED'};
+      else value = {request_id: 'fixture-request', expected_main_sha: '1'.repeat(40), binding_sha256: missingMaterial ? null : 'a'.repeat(64), material_state: missingMaterial ? 'ORIGINAL_FIVE_PROTECTED_BINDINGS_REQUIRED' : 'LOCALLY_VALIDATED', implementation_source_verified: true, prior_attempt_state: lost && applyCount ? 'UNKNOWN_READBACK_REQUIRED' : 'NOT_ATTEMPTED'};
       return {ok: true, json: async () => value};
     }};
   vm.createContext(sandbox); vm.runInContext(source, sandbox);
@@ -30,7 +30,17 @@ async function scenario(lost) {
   await tick(); assert(node('inspect').disabled, 'foreign origin/window/state cannot obtain an authenticated UI');
   events.message({origin: sandbox.location.origin, source: popup, data: {type: 'qikvrt-oidc-result', state: 'fixture-state', token: 'FIXTURE_ONLY_BEARER'}});
   await tick(); assert.equal(node('inspect').disabled, false);
-  await node('inspect').onclick(); assert.equal(node('apply').disabled, false);
+  await node('inspect').onclick();
+  if (missingMaterial) {
+    assert(node('apply').disabled, 'remote inventory is not handoff readiness');
+    const readCount = calls.length;
+    await node('apply').onclick(); assert.equal(applyCount, 0);
+    assert.equal(calls.length, readCount, 'disabled handoff sends no request');
+    assert.match(node('status').textContent, /Hostmaterial/);
+    await node('logout').onclick(); assert(node('inspect').disabled);
+    return;
+  }
+  assert.equal(node('apply').disabled, false);
   await node('apply').onclick(); assert.equal(applyCount, 1); assert(node('apply').disabled);
   if (lost) { await node('inspect').onclick(); assert(node('apply').disabled, 'unresolved handoff remains readback-only'); }
   await node('logout').onclick(); assert(node('inspect').disabled);
@@ -39,4 +49,4 @@ async function scenario(lost) {
   assert(mutation); assert.deepEqual(Object.keys(JSON.parse(mutation[1].body)).sort(), ['binding_sha256', 'effect_accepted', 'expected_main_sha', 'request_id', 'schema']);
   assert(!source.includes('localStorage')); assert(!source.includes('setInterval'));
 }
-(async () => { await scenario(false); await scenario(true); console.log('PASS: Authority SSO UI origin/state/window binding, one upload, lost-reply readback, logout'); })().catch(error => {console.error(error); process.exitCode=1;});
+(async () => { await scenario(false); await scenario(true); await scenario(false, true); console.log('PASS: Authority SSO UI origin/state/window binding, one upload, lost-reply readback, metadata-only hold, logout'); })().catch(error => {console.error(error); process.exitCode=1;});

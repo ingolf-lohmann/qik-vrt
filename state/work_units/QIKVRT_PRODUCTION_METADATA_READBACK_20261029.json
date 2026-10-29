@@ -1,0 +1,50 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_PRODUCTION_METADATA_READBACK_20261029",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "source_baseline": {
+    "head": "e2e4f0b8f88bd2ab4ca6b0881b3a1b804376ed18",
+    "tree": "c596b4a49d2f05f79891d20ecd136971a1a23a64",
+    "original_implementation": "1cb114585c4c24be9a4a8a7d71017eb728470059"
+  },
+  "human_actor": "Ingolf Lohmann",
+  "artificial_cognitive_actor": "OpenAI Codex",
+  "scope": "Repair the demonstrated metadata GET dependency on absent process host material, preserving all production write guards.",
+  "causal_evidence": {
+    "baseline_negative_control": "Real production_material resolver raises ORIGINAL_FIVE_PROTECTED_BINDINGS_REQUIRED before any provider read in the original implementation.",
+    "repair": "Observe authenticated fixed-scope GitHub metadata before optional local material validation; do not infer an independent source pin or value equality when original material is unavailable.",
+    "write_negative_control": "Missing original material still rejects POST before any provider call or journal mutation.",
+    "ui_negative_control": "Metadata-only readback cannot enable or submit a handoff."
+  },
+  "verification_scope": {
+    "flow_tests": "Fixture SSO and GitHub provider; the new missing-material cases execute the real material resolver. No productive SSO or GitHub handoff is inferred.",
+    "focused_python": "30 tests executed, 29 passed and the pre-existing optional locked PyNaCl case skipped locally.",
+    "ui": "Simulated DOM/network controls passed, including no request from a disabled handoff.",
+    "native_exact_candidate_ci_required": true,
+    "earlier_local_full_attempt": "UNVERIFIED: process reported zero but the log lacked terminal completion. The last observed individual test independently passed; a complete guarded run is required. No full PASS inferred from that exit code.",
+    "guarded_local_full_attempt": "UNVERIFIED: the added process-exit marker also reported zero, but the expected remaining test commands and terminal suite summary were absent. The last observed test independently passes. No further unchanged full local retry; require complete exact-candidate native CI logs.",
+    "crypto_or_fixture_success_is_job_delivery": false
+  },
+  "original_source_connection": {
+    "contract": "114100762",
+    "consumer": ".github/workflows/qikvrt_ci.yml#container_deploy",
+    "environment": "qikvrt-production",
+    "existing_material_source": "Protected process environment; original source acquisition remains unconnected in the inspected implementation.",
+    "authenticated_management_operation_exposed_in_this_client": false,
+    "global_credential_absence_inferred": false,
+    "managed_connector_token_exported": false,
+    "replacement_material_or_store_created": false
+  },
+  "open_work": [
+    {"id": "original-protected-source", "next_action": "Use the original authenticated contract-bound management/material consumer once actually available; preserve its provenance and protected handling, without copying a managed connector token or inventing a source."},
+    {"id": "production-job-delivery", "next_action": "Independently verify delivery of all five original bindings to the existing qikvrt-production job; metadata presence alone is insufficient."},
+    {"id": "original-host-identity", "next_action": "Read GET /v1.45/info through the original mTLS binding and verify original host and tested package pins before restart."},
+    {"id": "exact-domain", "next_action": "Retain separate native Runtime, host and exact raumzeitterminal.de acceptance."}
+  ],
+  "production_environment_mutated": false,
+  "job_credential_delivery_verified": false,
+  "host_identity_verified": false,
+  "restart_executed": false,
+  "feature_toggle_activated": false,
+  "effect_ack_done": false
+}

@@ -54,16 +54,21 @@
     prepared = {schema, request_id: result.request_id, expected_main_sha: result.expected_main_sha,
                 binding_sha256: result.binding_sha256, effect_accepted: true};
     if (result.implementation_source_verified !== true) prepared = null;
+    if (result.material_state !== 'LOCALLY_VALIDATED') prepared = null;
     if (result.prior_attempt_state && !['NOT_ATTEMPTED', 'COMPLETE'].includes(result.prior_attempt_state)) prepared = null;
     display(result); $('status').textContent = prepared ? 'Prüfung abgeschlossen. Übergabe bereit.' :
       result.implementation_source_verified !== true ? 'Laufender Verwaltungscode noch nicht am sauberen Main-Stand bestätigt. Nur Rücklesung zulässig.' :
+      result.material_state !== 'LOCALLY_VALIDATED' ? 'GitHub-Bestand gelesen. Hostmaterial für die Übergabe fehlt oder ist ungültig.' :
       'Vorherige Übergabe ungeklärt. Nur Rücklesung zulässig.';
   });
-  $('apply').onclick = () => action(async () => {
-    const exact = prepared; prepared = null; // A lost reply never enables another POST.
-    const result = await request(route, exact);
-    display(result); $('status').textContent = 'Übergabe zurückgelesen. Originalhost-Identität über /v1.45/info weiterhin gesondert prüfen.';
-  });
+  $('apply').onclick = () => {
+    if (!prepared || busy) return;
+    return action(async () => {
+      const exact = prepared; prepared = null; // A lost reply never enables another POST.
+      const result = await request(route, exact);
+      display(result); $('status').textContent = 'Übergabe zurückgelesen. Originalhost-Identität über /v1.45/info weiterhin gesondert prüfen.';
+    });
+  };
   $('logout').onclick = () => action(async () => {
     try { display(await request('/personal/auth/logout', {confirmed: true})); }
     finally { bearer = ''; prepared = null; $('status').textContent = 'Lokale Sitzung beendet.'; }

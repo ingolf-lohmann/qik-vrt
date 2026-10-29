@@ -70,6 +70,7 @@ class Provider:
 class ProductionTests(unittest.TestCase):
     def setUp(self):
         self.auth, self.api = Auth(), Provider()
+        self.original_material = a.production_material
         self.values = {n: "FIXTURE_ONLY_" + n for n in a.PRODUCTION_VARIABLES + a.PRODUCTION_SECRETS}
         self.values[a.PRODUCTION_VARIABLES[1]] = "a" * 64
         self.env = {"QIKVRT_ALLOWED_REPOSITORY": a.PRODUCTION_REPOSITORY,
@@ -92,6 +93,36 @@ class ProductionTests(unittest.TestCase):
         self.assertEqual(result["expected_main_sha"], self.api.main)
         self.assertEqual(result["binding_sha256"], "a" * 64)
         self.assertTrue(all(m == "GET" for m, _, _ in self.api.calls))
+        self.assertEqual(self.auth.store.read(), {})
+
+    def test_missing_source_does_not_block_readonly_github_inventory(self):
+        # Real material resolver, deliberately absent original values. Provider
+        # and SSO remain explicit fixtures; this is no production handoff proof.
+        self.api.variables = {a.PRODUCTION_VARIABLES[0]: "REMOTE_METADATA_ONLY"}
+        self.auth.store.value = {"github_environment_handoff": {
+            "auth_binding": self.auth.binding, "state": "UNKNOWN_READBACK_REQUIRED"}}
+        before = self.auth.store.read()
+        with mock.patch.object(a, "production_material", side_effect=self.original_material):
+            result = self.run_operation(write=False, request={"schema": a.PRODUCTION_SCHEMA, "request_id": "inspect"})
+        self.assertEqual(result["expected_main_sha"], self.api.main)
+        self.assertIsNone(result["binding_sha256"])
+        self.assertEqual(result["material_state"], "ORIGINAL_FIVE_PROTECTED_BINDINGS_REQUIRED")
+        self.assertTrue(result["bindings"][a.PRODUCTION_VARIABLES[0]]["present"])
+        self.assertFalse(result["bindings"][a.PRODUCTION_SECRETS[0]]["present"])
+        self.assertTrue(all("value_matches" not in result["bindings"][n] for n in a.PRODUCTION_VARIABLES))
+        self.assertTrue(self.api.calls)
+        self.assertTrue(all(method == "GET" for method, _, _ in self.api.calls))
+        self.assertEqual(self.api.mutations, 0)
+        self.assertEqual(self.auth.store.read(), before)
+        self.assertEqual(result["prior_attempt_state"], "UNKNOWN_READBACK_REQUIRED")
+        for flag in ("secret_values_verified", "job_credential_delivery_verified", "host_identity_verified", "effect_ack_done"):
+            self.assertFalse(result[flag])
+
+    def test_missing_source_still_blocks_write_before_provider_or_journal(self):
+        with mock.patch.object(a, "production_material", side_effect=self.original_material):
+            with self.assertRaisesRegex(a.ProductionBlock, "ORIGINAL_FIVE_PROTECTED_BINDINGS_REQUIRED"):
+                self.run_operation()
+        self.assertEqual(self.api.calls, [])
         self.assertEqual(self.auth.store.read(), {})
 
     def test_all_five_exact_bindings_and_independent_metadata_readback(self):
