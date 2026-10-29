@@ -264,6 +264,21 @@ or unrelated commit cannot repeat the same handoff. An uncertain reply admits
 GET-only readback; secret metadata cannot disambiguate secret values. GitHub
 rate-limit/cooldown observations also persist there across process restarts.
 
+After a completed handoff, a fresh exact-Environment readback may establish that
+a binding was removed or a variable differs from the still-authorized original
+source. The same binder can restore exactly those bindings, retaining the
+previous completed journal in its bounded history and persisting new intent
+before each write. It does not rewrite other secrets. Present secret metadata
+does not establish value drift; unavailable readback and unresolved earlier
+writes remain readback-only. No new timer or executor is introduced.
+
+The existing host job also retains `host-material-delivery.json` before it
+checks or writes the five inputs to private files. Missing inputs fail before
+any host request and leave this non-secret presence receipt for the existing
+artifact step. Presence alone establishes neither correct secret bytes nor
+authenticated host identity, deployment or product acceptance. This diagnostic
+does not connect an otherwise unavailable original source.
+
 Successful HTTP acknowledgements plus independent variable/secret-metadata
 readback establish only that scoped result. Actual job credential delivery,
 original-host identity, runtime/package acceptance and public product delivery

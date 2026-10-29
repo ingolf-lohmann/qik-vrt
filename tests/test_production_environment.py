@@ -186,6 +186,88 @@ class ProductionTests(unittest.TestCase):
         self.assertEqual(self.run_operation()["state"], "NOOP")
         self.assertEqual(self.api.mutations, count)
 
+    def test_confirmed_missing_binding_is_restored_without_rewriting_other_secrets(self):
+        for name in a.PRODUCTION_VARIABLES + a.PRODUCTION_SECRETS:
+            with self.subTest(name=name):
+                self.auth, self.api = Auth(), Provider()
+                self.run_operation()
+                original = self.auth.store.read()["github_environment_handoff"]
+                target = self.api.variables if name in a.PRODUCTION_VARIABLES else self.api.secrets
+                del target[name]
+                before = len(self.api.calls)
+                result = self.run_operation()
+                writes = [(m, p) for m, p, _ in self.api.calls[before:] if m != "GET"]
+                self.assertEqual(result["state"], "UPLOAD_ACKNOWLEDGED_METADATA_READBACK_VERIFIED")
+                self.assertEqual(result["mutation_count"], 1)
+                self.assertEqual(writes, [("POST" if name in a.PRODUCTION_VARIABLES else "PUT",
+                    self.api.target + ("/variables" if name in a.PRODUCTION_VARIABLES else "/secrets/" + name))])
+                self.assertIn(name, target)
+                self.assertEqual(self.auth.store.read()["github_environment_handoff_history"], [original])
+                count = self.api.mutations
+                self.assertEqual(self.run_operation()["state"], "NOOP")
+                self.assertEqual(self.api.mutations, count)
+                self.assertFalse(result["secret_values_verified"])
+                self.assertFalse(result["job_credential_delivery_verified"])
+
+    def test_confirmed_variable_drift_needs_no_secret_encryption_or_secret_write(self):
+        self.run_operation()
+        self.api.variables[a.PRODUCTION_VARIABLES[0]] = "REMOTE_CHANGED_FIXTURE"
+        before = len(self.api.calls)
+        with mock.patch.object(a, "seal_environment_secret", side_effect=AssertionError("unexpected secret rewrite")):
+            result = self.run_operation()
+        self.assertEqual(result["mutation_count"], 1)
+        self.assertEqual([(m, p) for m, p, _ in self.api.calls[before:] if m != "GET"],
+            [("PATCH", self.api.target + "/variables/" + a.PRODUCTION_VARIABLES[0])])
+        self.assertEqual(self.api.variables[a.PRODUCTION_VARIABLES[0]], self.values[a.PRODUCTION_VARIABLES[0]])
+
+    def test_missing_binding_preview_cannot_restore_or_change_completed_journal(self):
+        self.run_operation()
+        del self.api.secrets[a.PRODUCTION_SECRETS[0]]
+        before, count = self.auth.store.read(), self.api.mutations
+        result = self.run_operation(write=False)
+        self.assertFalse(result["bindings"][a.PRODUCTION_SECRETS[0]]["present"])
+        self.assertEqual(self.auth.store.read(), before)
+        self.assertEqual(self.api.mutations, count)
+
+    def test_lost_restoration_reply_remains_readback_only_even_if_binding_disappears(self):
+        self.run_operation()
+        del self.api.secrets[a.PRODUCTION_SECRETS[0]]
+        self.api.fail_after = self.api.mutations + 1
+        with self.assertRaisesRegex(a.ProductionBlock, "UNRESOLVED_READBACK_ONLY"):
+            self.run_operation()
+        self.assertEqual(self.auth.store.read()["github_environment_handoff"]["state"], "UNKNOWN_READBACK_REQUIRED")
+        del self.api.secrets[a.PRODUCTION_SECRETS[0]]
+        count = self.api.mutations
+        self.body["request_id"] = "reconnect-after-restoration"
+        self.assertEqual(self.run_operation()["state"], "NOOP")
+        self.assertEqual(self.api.mutations, count)
+
+    def test_unavailable_drift_checker_does_not_mutate_or_discard_original_history(self):
+        self.run_operation()
+        before, count = self.auth.store.read(), self.api.mutations
+        original = self.api.call
+        def unavailable(method, path, *args, **kwargs):
+            if method == "GET" and "/secrets/" in path:
+                raise a.ProductionBlock("GITHUB_RESULT_UNKNOWN_READBACK_ONLY")
+            return original(method, path, *args, **kwargs)
+        with mock.patch.object(self.api, "call", side_effect=unavailable):
+            with self.assertRaisesRegex(a.ProductionBlock, "UNKNOWN_READBACK_ONLY"):
+                self.run_operation()
+        self.assertEqual(self.auth.store.read(), before)
+        self.assertEqual(self.api.mutations, count)
+
+    def test_full_history_blocks_restoration_without_discarding_any_witness(self):
+        self.run_operation()
+        state = self.auth.store.read()
+        state["github_environment_handoff_history"] = [{"retained": i} for i in range(16)]
+        self.auth.store.write(state)
+        del self.api.secrets[a.PRODUCTION_SECRETS[0]]
+        count = self.api.mutations
+        with self.assertRaisesRegex(a.ProductionBlock, "HISTORY_FULL_NO_WITNESS_DISCARDED"):
+            self.run_operation()
+        self.assertEqual(self.auth.store.read(), state)
+        self.assertEqual(self.api.mutations, count)
+
     def test_lost_put_reply_persists_intent_and_never_uploads_again_after_reconnect(self):
         self.api.fail_after = 3
         with self.assertRaisesRegex(a.ProductionBlock, "UNRESOLVED_READBACK_ONLY"): self.run_operation()

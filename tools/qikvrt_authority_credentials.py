@@ -472,14 +472,29 @@ def production_environment(auth, bearer, request, environment, *, write=False, a
             receipt["prior_attempt_state"] = journal.get("state", "NOT_ATTEMPTED")
             return receipt
         revision = _pin(values)
-        if journal and (journal.get("state") != "COMPLETE" or journal.get("revision") == revision):
+        completed_same_input = bool(journal and journal.get("state") == "COMPLETE"
+                                    and journal.get("revision") == revision)
+        # A completed upload does not make the remote bindings permanent.
+        # Restore only independently observed missing bindings or mismatched
+        # variables. Existing secret metadata cannot establish secret-value
+        # drift and never authorizes rewriting an otherwise unchanged secret.
+        drift = tuple(n for n in PRODUCTION_VARIABLES
+                      if found[n] is None or found[n].get("value") != values[n])
+        drift += tuple(n for n in PRODUCTION_SECRETS if found[n] is None)
+        if journal and (journal.get("state") != "COMPLETE" or (completed_same_input and not drift)):
             receipt.update(state="NOOP", prior_attempt_state=journal.get("state"), reason="ORIGINAL_ATTEMPT_READBACK_ONLY_NO_RETRY")
             return receipt
-        public_key = api.call("GET", target + "/secrets/public-key")
-        if not isinstance(public_key.get("key_id"), str) or not re.fullmatch(r"[A-Za-z0-9_-]{1,128}", public_key["key_id"]):
-            raise ProductionBlock("GITHUB_ENVIRONMENT_KEY_ID_INVALID")
-        sealed = {n: seal_environment_secret(public_key.get("key"), values[n]) for n in PRODUCTION_SECRETS}
+        names = drift if completed_same_input else PRODUCTION_VARIABLES + PRODUCTION_SECRETS
+        secret_names = tuple(n for n in names if n in PRODUCTION_SECRETS)
+        sealed = {}
+        if secret_names:
+            public_key = api.call("GET", target + "/secrets/public-key")
+            if not isinstance(public_key.get("key_id"), str) or not re.fullmatch(r"[A-Za-z0-9_-]{1,128}", public_key["key_id"]):
+                raise ProductionBlock("GITHUB_ENVIRONMENT_KEY_ID_INVALID")
+            sealed = {n: seal_environment_secret(public_key.get("key"), values[n]) for n in secret_names}
         record = {"auth_binding": auth.binding, "revision": revision, "state": "IN_FLIGHT", "request_id": request["request_id"], "steps": []}
+        if completed_same_input:
+            record["repair_scope"] = list(names)
 
         def save():
             state = auth.store.read()
@@ -497,7 +512,7 @@ def production_environment(auth, bearer, request, environment, *, write=False, a
             auth.store.write(state)
         save()
         try:
-            for name in PRODUCTION_VARIABLES + PRODUCTION_SECRETS:
+            for name in names:
                 source()
                 if not production_source(request["expected_main_sha"], source_tree):
                     raise ProductionBlock("RUNNING_AUTHORITY_SOURCE_CHANGED")
