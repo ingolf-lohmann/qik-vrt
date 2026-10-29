@@ -42,6 +42,11 @@
     "expanded_focused_result": "OK_WITH_ONE_OPTIONAL_LOCKED_PYNACL_SKIP",
     "ui_result": "PASS_METADATA_ONLY_UPLOAD_SUPPRESSION_RETAINED",
     "mesh_contract_result": "SOURCE_OBLIGATIONS_BOUND_NO_LIVE_ACCEPTANCE_INFERRED",
+    "cold_package_regression_before": "The first actual frozen-export file-reader invocation failed with ModuleNotFoundError for src.qikvrt_personal_auth; the original optional SSO source carriers were absent from PACKAGE.json.",
+    "cold_package_repair": "Include the original authentication/handler/retrieval source, source-observer inputs, Authority UI and existing optional dependency locks in the same enforced REST_BOOTSTRAP_FILES closure. No runtime, secret store or executor was replaced.",
+    "cold_package_tests": 31,
+    "cold_package_result": "PASS_ORIGINAL_FILE_READER_AND_REST_COLD_START_PLUS_MESH_ADMISSION",
+    "frozen_export_can_self_admit_clean_main": false,
     "real_file_binding_and_pem_validation_exercised": true,
     "negative_cases": [
       "missing/partial source selection and changed independent pins",

@@ -232,6 +232,13 @@ access. These selectors cannot be supplied by the browser or REST request.
 Actual source provisioning, consuming-job delivery, mTLS host identity and
 exact-domain acceptance require their own independent native evidence.
 
+The sealed S1 package carries the original Personal authentication/handler,
+source-observer inputs, Authority panel and optional dependency locks in its
+existing REST bootstrap closure. Missing carriers fail package admission.
+The frozen-export regression runs the original file reader under Python `-S`
+without a checkout or site-packages. A code-only export still cannot claim a
+clean Main identity: packaging alone does not admit a production write or SSO.
+
 The existing Authority credential
 resolver supplies its original admitted GitHub credential; generic
 `GITHUB_TOKEN`, the local bearer and caller-supplied credentials are excluded.
