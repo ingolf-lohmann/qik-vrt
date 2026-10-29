@@ -210,6 +210,36 @@
       "review_state": "COMMENTED on predecessor only; no independent GitHub APPROVED inferred",
       "repository_scope_only": true,
       "host_domain_runtime_production_acceptance_inferred": false
+    },
+    {
+      "observed_at_utc": "2026-10-29T15:10:33.191161+00:00",
+      "requested_by": "Ingolf Lohmann; same PR627 conflict-repair task, 2026-10-29",
+      "implemented_by": "OpenAI Codex",
+      "predecessor_head": "f2dc1b92e9b527cb67e49e367f8cebc1bc19730c",
+      "merged_main": "9b2d505ad7e185e0aa94a240d2215d7e7154d530",
+      "merge_base": "dafe3c15c42dd228642698167043d7677eb0c92f",
+      "ordered_parents": [
+        "f2dc1b92e9b527cb67e49e367f8cebc1bc19730c",
+        "9b2d505ad7e185e0aa94a240d2215d7e7154d530"
+      ],
+      "cause": "Main advanced through PR463 while predecessor native CI was running. Reconcile the new Main; preserve predecessor results as historical exact-subject evidence.",
+      "conflicted_paths": [
+        "REPOSITORY_FILE_MANIFEST.json",
+        "REPOSITORY_FILE_MANIFEST.json.sha256",
+        "SHA256SUMS.txt"
+      ],
+      "resolution": "Deterministic regeneration using the existing integrity generator. Automatic Makefile merge retains Siemens REST, C90 and the new Main publication REST regression target.",
+      "predecessor_native_test_evidence": {
+        "run_id": 40896917541,
+        "job_id": 123528450590,
+        "tested_head": "f2dc1b92e9b527cb67e49e367f8cebc1bc19730c",
+        "tested_tree": "174ba6f8915f78ca185731b044030c065f644193",
+        "test_log_sha256": "007600d1acab93f0b0b70977cc297a0546898b2dbe65b92b924d4bf18a76673d",
+        "transferred_to_successor": false
+      },
+      "siemens_reference_blob": "816d55781e53e0801390a96e8032c9fa2b327ae2",
+      "repository_scope_only": true,
+      "host_domain_runtime_production_acceptance_inferred": false
     }
   ]
 }

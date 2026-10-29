@@ -3847,6 +3847,23 @@ def publication_interaction(registry_path, registry, request_pin, state):
 
 
 def publication_invoke(root, request, env):
+    # Reuse the original credential-bearing Git-Data transport in this dedicated
+    # launcher process. Browser login and generic workflow credentials confer
+    # no publication authority. Reobserve Main immediately before the child.
+    try:
+        from tools import qikvrt_zenodo_publish as publisher
+    except ModuleNotFoundError:
+        import qikvrt_zenodo_publish as publisher
+    prefix = "/repos/" + request["repository"]
+    _, ref = publisher._github_api_request("GET", prefix + "/git/ref/heads/main", env["GITHUB_TOKEN"])
+    if ref.get("ref") != "refs/heads/main" or ref.get("object", {}).get("sha") != request["execution_head"]:
+        raise ValueError("PUBLICATION_LIVE_AUTHORITY_MAIN_DRIFT")
+    _, commit = publisher._github_api_request("GET", prefix + "/git/commits/" + request["execution_head"], env["GITHUB_TOKEN"])
+    if commit.get("sha") != request["execution_head"] or commit.get("tree", {}).get("sha") != request["execution_tree"]:
+        raise ValueError("PUBLICATION_LIVE_AUTHORITY_TREE_DRIFT")
+    _, final = publisher._github_api_request("GET", prefix + "/git/ref/heads/main", env["GITHUB_TOKEN"])
+    if final.get("ref") != "refs/heads/main" or final.get("object", {}).get("sha") != request["execution_head"]:
+        raise ValueError("PUBLICATION_LIVE_AUTHORITY_MAIN_DRIFT")
     return subprocess.run([sys.executable, "-B", str(root / "tools/qikvrt_zenodo_publish.py"),
         "--manifest", request["manifest"]], cwd=root, env=env,
         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=3600, check=False)

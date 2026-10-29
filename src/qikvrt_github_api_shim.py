@@ -36,6 +36,7 @@ RULESET_REST_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPO
 STATIC_REST_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/qikvrt/static-delivery$")
 CONTINUATION_REST_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/qikvrt/continuation$")
 PRODUCTION_ENVIRONMENT_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/qikvrt/production-environment$")
+PUBLICATION_REST_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/qikvrt/publication$")
 MCP_VERSIONS = ("2025-11-25", "2026-07-28")
 MCP_MAX_PAYLOAD_BYTES = 256 * 1024
 MCP_SOURCE_PATHS = ("scripts/qikvrt_api_client.py", "src/qikvrt_api_handler.py",
@@ -250,15 +251,21 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
         # Original OIDC handler, reusing this adapter's strict JSON framing.
         return self._read_json()
 
-    def _production_environment_rest(self, *, write: bool) -> None:
-        from tools.qikvrt_authority_credentials import production_environment, ProductionBlock, PRODUCTION_SCHEMA
-        if os.environ.get("QIKVRT_PRODUCTION_ENVIRONMENT_ENABLED") != "1":
-            return self._send_json(404, {"state": "HOLD", "reason": "PRODUCTION_ENVIRONMENT_NOT_ENABLED"})
+    def _production_environment_rest(self, *, write: bool, publication: bool = False) -> None:
+        from tools.qikvrt_authority_credentials import (production_environment, publication_handoff,
+            ProductionBlock, PRODUCTION_SCHEMA, PUBLICATION_REST_SCHEMA)
+        enabled = "QIKVRT_PUBLICATION_REST_ENABLED" if publication else "QIKVRT_PRODUCTION_ENVIRONMENT_ENABLED"
+        route = PUBLICATION_REST_RE if publication else PRODUCTION_ENVIRONMENT_RE
+        schema = PUBLICATION_REST_SCHEMA if publication else PRODUCTION_SCHEMA
+        operation = publication_handoff if publication else production_environment
+        if os.environ.get(enabled) != "1":
+            return self._send_json(404, {"state": "HOLD", "reason":
+                "PUBLICATION_REST_NOT_ENABLED" if publication else "PRODUCTION_ENVIRONMENT_NOT_ENABLED"})
         if not self._rate_allowed():
             return self._send_json(429, {"state": "HOLD", "reason": "LOCAL_RATE_LIMIT"})
         try:
             parsed = urlparse(self.path)
-            match = PRODUCTION_ENVIRONMENT_RE.fullmatch(parsed.path)
+            match = route.fullmatch(parsed.path)
             if not match or "/".join(match.groups()) != "ingolf-lohmann/qik-vrt" or parsed.params or parsed.fragment:
                 raise ProductionBlock("EXACT_AUTHORITY_PRODUCTION_ROUTE_REQUIRED")
             runtime = getattr(self.server, "authority_sso", None)
@@ -283,12 +290,12 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
                 if any(len(v) != 1 for v in fields.values()):
                     raise ProductionBlock("SINGLE_VALUED_PRODUCTION_QUERY_REQUIRED")
                 request = {k: v[0] for k, v in fields.items()}
-            result = production_environment(runtime.personal_auth, bearer, request, os.environ, write=write)
+            result = operation(runtime.personal_auth, bearer, request, os.environ, write=write)
             return self._send_json(200, result)
         except ProductionBlock as exc:
-            return self._send_json(409, {"schema": PRODUCTION_SCHEMA, "state": "HOLD", "reason": str(exc), "effect_ack_done": False})
+            return self._send_json(409, {"schema": schema, "state": "HOLD", "reason": str(exc), "effect_ack_done": False})
         except Exception:
-            return self._send_json(409, {"schema": PRODUCTION_SCHEMA, "state": "HOLD", "reason": "PRODUCTION_SSO_OR_BINDING_UNAVAILABLE", "effect_ack_done": False})
+            return self._send_json(409, {"schema": schema, "state": "HOLD", "reason": "PRODUCTION_SSO_OR_BINDING_UNAVAILABLE", "effect_ack_done": False})
 
     def _authorized(self) -> bool:
         token = os.environ.get("QIKVRT_API_TOKEN", "")
@@ -827,6 +834,8 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
             error(200, -32603, "Committed evidence unavailable; reobserve before any mutation")
 
     def do_GET(self):
+        if PUBLICATION_REST_RE.fullmatch(urlparse(self.path).path):
+            return self._production_environment_rest(write=False, publication=True)
         if STATIC_REST_RE.fullmatch(urlparse(self.path).path):
             return self._static_rest(write=False)
         if PRODUCTION_ENVIRONMENT_RE.fullmatch(urlparse(self.path).path):
@@ -873,6 +882,8 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
         self._send_json(404, {"status": "BLOCK", "reason": "not found"})
 
     def do_POST(self):
+        if PUBLICATION_REST_RE.fullmatch(urlparse(self.path).path):
+            return self._production_environment_rest(write=True, publication=True)
         if STATIC_REST_RE.fullmatch(urlparse(self.path).path):
             return self._static_rest(write=True)
         if PRODUCTION_ENVIRONMENT_RE.fullmatch(urlparse(self.path).path):
@@ -1003,9 +1014,11 @@ def authority_sso_handler(stack, host, port):
     The existing Personal profile and writer fence are reused. No model key,
     browser cookie import, provider password or new OAuth client is needed.
     """
-    if os.environ.get("QIKVRT_PRODUCTION_ENVIRONMENT_ENABLED", "0") == "0":
+    flags = [os.environ.get(name, "0") for name in
+             ("QIKVRT_PRODUCTION_ENVIRONMENT_ENABLED", "QIKVRT_PUBLICATION_REST_ENABLED")]
+    if flags == ["0", "0"]:
         return QikvrtGitHubApiShim, None
-    if os.environ.get("QIKVRT_PRODUCTION_ENVIRONMENT_ENABLED") != "1" or host != "127.0.0.1":
+    if any(flag not in {"0", "1"} for flag in flags) or host != "127.0.0.1":
         raise ValueError("EXACT_NATIVE_SSO_LOOPBACK_REQUIRED")
     from qikvrt_personal_auth import OSSecretStore, PersonalAuth, load_config
     from qikvrt_personal_assistant import personal_handler

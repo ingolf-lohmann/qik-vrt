@@ -3,7 +3,7 @@
 openapi: 3.0.3
 info:
   title: QIKVRT GitHub Dispatch Adapter API
-  version: 2.3.0
+  version: 2.4.0
   description: >
     The local adapter exposes GitHub-shaped dispatch paths but evaluates the
     request synchronously and returns a QIK-VRT EFFECT_ACK body. GitHub's real
@@ -21,6 +21,58 @@ servers:
   - url: https://api.github.com
     description: GitHub asynchronous REST dispatch API
 paths:
+  /repos/{owner}/{repo}/qikvrt/publication:
+    servers:
+      - url: http://127.0.0.1:8766
+        description: Original native SSO listener; source availability is not a running admitted endpoint.
+    parameters:
+      - $ref: '#/components/parameters/Owner'
+      - $ref: '#/components/parameters/Repo'
+    description: >
+      Opt-in ingress to the existing publication-check/publication-resume launcher.
+      Only the server selects the original pinned private request and protected
+      credential references. No browser cookies, passwords, token values, paths,
+      arbitrary provider URLs or new authorization are accepted from clients.
+      The existing v2 publisher, single-use consumption refs and public byte
+      readback remain authoritative. Uncertain POST results permit GET only;
+      neither a new request_id nor another source pin re-invokes that candidate.
+    get:
+      operationId: originalPublicationCheck
+      security: [{nativeSSOSession: []}]
+      summary: Admit original source/references or read the existing invocation state, without credentials or effects.
+      parameters:
+        - {name: schema, in: query, required: true, schema: {type: string, enum: [qikvrt-publication-rest/v1]}}
+        - {name: request_id, in: query, required: true, schema: {type: string, pattern: '^[A-Za-z0-9_.=-]{1,128}$'}}
+        - {name: expected_main_sha, in: query, schema: {type: string, pattern: '^[a-f0-9]{40}$'}, description: Supply both source and request pins or omit both.}
+        - {name: request_sha256, in: query, schema: {type: string, pattern: '^[a-f0-9]{64}$'}}
+      responses:
+        '200': {description: Source/reference admission or original attempt state; no credential delivery or publication acceptance.}
+        '404': {description: Publication REST disabled.}
+        '409': {description: Original SSO, pinned private request, source or checker unavailable.}
+        '429': {description: Existing local rate limit; no retry.}
+    post:
+      operationId: originalPublicationResumeOnce
+      security: [{nativeSSOSession: []}]
+      summary: Invoke the original exact-authorized publisher once under durable native intent.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [schema, request_id, expected_main_sha, request_sha256, effect_accepted]
+              properties:
+                schema: {type: string, enum: [qikvrt-publication-rest/v1]}
+                request_id: {type: string, pattern: '^[A-Za-z0-9_.=-]{1,128}$'}
+                expected_main_sha: {type: string, pattern: '^[a-f0-9]{40}$'}
+                request_sha256: {type: string, pattern: '^[a-f0-9]{64}$'}
+                effect_accepted: {type: boolean, enum: [true]}
+      responses:
+        '200': {description: Original publisher result or prior-attempt NOOP; independent public readback and durable receipts remain required.}
+        '404': {description: Publication REST disabled.}
+        '409': {description: Source/request drift, failed admission or uncertain original invocation; use GET only.}
+        '429': {description: Existing local rate limit; no retry.}
   /repos/{owner}/{repo}/qikvrt/static-delivery:
     servers:
       - url: http://127.0.0.1:8766
