@@ -213,6 +213,12 @@ def load_previous_work(root: Path) -> dict | None:
     return previous
 
 
+def completion_evidence(record: dict):
+    if record.get("completion_basis") == "INDEPENDENT_PR_READY_READBACK":
+        return record.get("effect_readback_sha256")
+    return record.get("response_sha256")
+
+
 def completed_request_evidence(record: dict) -> dict:
     """Retain stable completion witnesses in the existing bounded journal."""
     completed = record.get("completed_requests", {})
@@ -223,7 +229,7 @@ def completed_request_evidence(record: dict) -> dict:
         raise ValueError("invalid completed-request evidence")
     completed = dict(completed)
     if record["status"] == "completed":
-        identifier, evidence = record.get("request_id"), record.get("response_sha256")
+        identifier, evidence = record.get("request_id"), completion_evidence(record)
         if (not isinstance(identifier, str) or not SAFE_ID.fullmatch(identifier)
                 or not isinstance(evidence, str) or not SHA256_HEX.fullmatch(evidence)):
             raise ValueError("completed journal lacks its stable response binding")
@@ -320,7 +326,7 @@ def preserve_attempt_evidence(root: Path, record: dict, raw: bytes) -> None:
         identifier = "legacy-durable-attempt:" + source_digest
     task = {"id": "api:" + record["subject_key"],
             "state": "VERIFIED" if record["status"] == "completed" else "OPEN",
-            "evidence": record.get("response_sha256", "") if record["status"] == "completed" else "",
+            "evidence": completion_evidence(record) if record["status"] == "completed" else "",
             "next_action": "Resolve the preserved original attempt before any further effect"}
     checkpoint = {"schema": WORK_SCHEMA, "execution_id": identifier,
                   "state": "CONTINUE", "work": [task], "attempt_record": record,
@@ -360,7 +366,7 @@ def persist_successor_work(root: Path, args, *, subject_key: str, record: dict,
         {"id": "api:" + subject_key, "state": "VERIFIED" if record["status"] == "completed" else "OPEN",
          "repository": repository, "ref": args.ref, "operation": args.operation,
          "artifact_id": args.artifact_id, "state_file": subject_key + ".json",
-         "evidence": record.get("response_sha256", "") if record["status"] == "completed" else "",
+         "evidence": completion_evidence(record) if record["status"] == "completed" else "",
          "next_action": "Resolve " + args.operation + " for " + repository + "@" + args.ref
                         + " artifact " + args.artifact_id + " using recorded subject " + subject_key},
         {"id": "repository:" + repository + "@" + args.ref, "state": "VERIFIED" if repo_valid else "OPEN",
@@ -392,7 +398,8 @@ def persist_successor_work(root: Path, args, *, subject_key: str, record: dict,
 
 def dispatch_with_journal(opener, request, args, *, subject_key: str, receipt: dict,
                           closure: dict, action_id: str, token: str, domain: str,
-                          before_dispatch=None, intent_metadata=None, validate_transport=None):
+                          before_dispatch=None, intent_metadata=None, validate_transport=None,
+                          interpret_response=None):
     """Persist intent before POST; unchanged failures survive client restarts."""
     root = Path(args.state_dir).absolute()
     # Reuse the handler's no-symlink target checks and durable private writer,
@@ -491,7 +498,7 @@ def dispatch_with_journal(opener, request, args, *, subject_key: str, receipt: d
                 raw = read_response_bytes(response)
                 receipt.update(http_status=response.status,
                                response_sha256=hashlib.sha256(raw).hexdigest())
-                _, transport = interpret_dispatch_response(
+                _, transport = (interpret_response or interpret_dispatch_response)(
                     response, request=request, repository=f"{args.owner}/{args.repo}",
                     ref=args.ref, request_id=args.request_id,
                     response_text=raw.decode("utf-8"),
@@ -714,6 +721,203 @@ def ruleset_run_binding(run, run_id, expected_sha):
         "id", "path", "event", "head_branch", "head_sha", "workflow_id",
         "run_attempt", "status", "conclusion",
     ))
+
+
+CONTINUATION_READY_DOCUMENT = (
+    "mutation QikvrtReady($input:MarkPullRequestReadyForReviewInput!){"
+    "markPullRequestReadyForReview(input:$input){pullRequest{id isDraft headRefOid}}}"
+)
+
+
+def continuation_tested_subject(get, run, token):
+    """Read the immutable small CI subject using the original artifact transport."""
+    import io
+    import tempfile
+    import zipfile
+    from tools.qikvrt_self_host_container import actions_archive_download
+    name = f"qikvrt-ci-tested-subject-{run['id']}-{run['run_attempt']}"
+    artifacts = ruleset_collection(get("actions/runs/" + str(run["id"]) + "/artifacts?per_page=100"), "artifacts")
+    found = [a for a in artifacts if a.get("name") == name and a.get("expired") is False]
+    if len(found) != 1:
+        raise ValueError("CONTINUATION_TESTED_SUBJECT_UNAVAILABLE")
+    artifact = found[0]
+    if (type(artifact.get("id")) is not int or artifact["id"] <= 0
+            or type(artifact.get("size_in_bytes")) is not int or not 0 < artifact["size_in_bytes"] <= 16384
+            or not re.fullmatch(r"sha256:[0-9a-f]{64}", str(artifact.get("digest", "")))
+            or artifact.get("workflow_run", {}).get("id") != run["id"]
+            or artifact.get("workflow_run", {}).get("head_sha") != run["head_sha"]):
+        raise ValueError("CONTINUATION_TESTED_ARTIFACT_BINDING_INVALID")
+    with tempfile.TemporaryDirectory() as tmp:
+        path = Path(tmp) / "tested.zip"
+        actions_archive_download(artifact["id"], artifact["size_in_bytes"], path, token)
+        raw = read_regular_file(path, max_bytes=16384)
+    if "sha256:" + hashlib.sha256(raw).hexdigest() != artifact["digest"]:
+        raise ValueError("CONTINUATION_TESTED_ARTIFACT_DIGEST_MISMATCH")
+    with zipfile.ZipFile(io.BytesIO(raw)) as archive:
+        if (archive.namelist() != ["TESTED_SUBJECT.json"]
+                or archive.getinfo("TESTED_SUBJECT.json").file_size > 4096):
+            raise ValueError("CONTINUATION_TESTED_ARTIFACT_CONTENT_INVALID")
+        return unique_json(archive.read("TESTED_SUBJECT.json"))
+
+
+def continuation_result(args, token, *, write=False):
+    """REST coordination of the original fixed GraphQL fallback; no merge.
+
+    Provider evidence is read afresh. Learning changes verification order only;
+    it never removes a gate or the fallback. The original durable journal owns
+    the single POST and survives an unknown outcome or changed request ID.
+    """
+    from tools.qikvrt_workflow_executor import continuation_graph, continuation_frontier, load_repository_roles
+    from tools.qikvrt_required_review_gate import (
+        evaluate_required_review, resolve_required_code_owner,
+    )
+    if RULESET_REPOSITORY != load_repository_roles()["AUTHORITY"]:
+        raise ValueError("CONTINUATION_AUTHORITY_MISMATCH")
+    opener = urllib.request.build_opener(NoRedirectHandler())
+    get = lambda path: ruleset_json_get(opener, token, path)
+    result = {"schema": "qikvrt-continuation-rest/v1", "repository": RULESET_REPOSITORY,
+              "pull_request": args.pull_request, "head_sha": args.expected_head,
+              "tree_sha": args.expected_tree, "request_id": args.request_id,
+              "dispatch_count": 0, "ready_verified": False, "merge_verified": False,
+              "effect_ack_done": False, "ordinary_release": False}
+
+    def source():
+        main = get("branches/main")
+        pr = get("pulls/" + str(args.pull_request))
+        commit = get("git/commits/" + args.expected_head)
+        current = ruleset_collection(get("actions/workflows/qikvrt_ci.yml/runs?head_sha="
+                                     + args.expected_head + "&per_page=100"), "workflow_runs")
+        if (main.get("commit", {}).get("sha") != args.expected_main_sha
+                or pr.get("number") != args.pull_request or pr.get("state") != "open"
+                or pr.get("merged") is not False or pr.get("base", {}).get("ref") != "main"
+                or pr.get("base", {}).get("sha") != args.expected_main_sha
+                or pr.get("base", {}).get("repo", {}).get("full_name") != RULESET_REPOSITORY
+                or pr.get("head", {}).get("repo", {}).get("full_name") != RULESET_REPOSITORY
+                or pr.get("head", {}).get("sha") != args.expected_head
+                or commit.get("sha") != args.expected_head
+                or commit.get("tree", {}).get("sha") != args.expected_tree
+                or any(r.get("id") != args.ci_run_id and r.get("conclusion") not in {"action_required", "success", "skipped"}
+                       for r in current)
+                or type(pr.get("draft")) is not bool or not isinstance(pr.get("node_id"), str)):
+            raise ValueError("CONTINUATION_SOURCE_DRIFT")
+        return pr
+
+    pr = source()
+    binding = {"repository": RULESET_REPOSITORY, "pull_request": args.pull_request,
+               "head_sha": args.expected_head, "tree_sha": args.expected_tree,
+               "main_sha": args.expected_main_sha, "document_sha256": hashlib.sha256(
+                   CONTINUATION_READY_DOCUMENT.encode()).hexdigest()}
+    subject_key = digest({"operation": "markPullRequestReadyForReview", "repository": RULESET_REPOSITORY,
+                          "pull_request": args.pull_request})
+    run = get("actions/runs/" + str(args.ci_run_id))
+    jobs = get("actions/runs/" + str(args.ci_run_id) + "/jobs?per_page=100")
+    if (run.get("id") != args.ci_run_id
+            or run.get("path") != ".github/workflows/qikvrt_ci.yml"
+            or run.get("repository", {}).get("full_name") != RULESET_REPOSITORY
+            or run.get("head_repository", {}).get("full_name") != RULESET_REPOSITORY
+            or jobs.get("total_count") != len(jobs.get("jobs", []))
+            or not 0 < len(jobs.get("jobs", [])) < 100):
+        raise ValueError("CONTINUATION_EXACT_CI_EVIDENCE_REQUIRED")
+    tested = continuation_tested_subject(get, run, token)
+    graph = continuation_graph(run, jobs["jobs"], tested)
+    if (not graph.get("tested_subject") or tested.get("head_sha") != args.expected_head
+            or tested.get("tree_sha") != args.expected_tree):
+        raise ValueError("CONTINUATION_TESTED_SUBJECT_MISMATCH")
+    result["graph"] = graph
+    reviews = ruleset_collection(get("pulls/" + str(args.pull_request) + "/reviews?per_page=100"))
+    review = evaluate_required_review(pr, [], reviews,
+        required_code_owner=resolve_required_code_owner(RULESET_REPOSITORY, pr_author=pr["user"]["login"]))
+    result["review_gate"] = review["gate_state"]
+    result["graph"] = continuation_frontier(graph, pr, review)
+    result["ready_verified"] = pr["draft"] is False
+    if not write or result["ready_verified"]:
+        result["state"] = "READY_VERIFIED" if result["ready_verified"] else "PLAN_ONLY"
+        # A GET stays read-only. An accepted POST may close the original
+        # unknown attempt from this independent readback without another
+        # GraphQL mutation. Retain the original response (if any) separately.
+        root = Path(args.state_dir).absolute()
+        if write and result["ready_verified"] and root.exists():
+            for parent in (root, *root.parents):
+                if parent.is_symlink():
+                    raise OSError("client state directory must not traverse a symlink")
+            if root.stat().st_mode & 0o022:
+                raise OSError("client state directory must not be group/world writable")
+            path = root / (subject_key + ".json")
+            with _exclusive_integrity_lock(root):
+                _assert_safe_target(path)
+                if path.exists():
+                    if path.stat().st_nlink != 1:
+                        raise OSError("client state must be single-link")
+                    raw = read_regular_file(path, max_bytes=MAX_JOURNAL_BYTES)
+                    record = unique_json(raw)
+                    if (record.get("schema") != JOURNAL_SCHEMA or record.get("subject_key") != subject_key):
+                        raise ValueError("invalid original continuation attempt")
+                    if (record.get("operation_binding") == binding
+                            and record.get("status") in {"in_flight", "ambiguous", "pending"}):
+                        preserve_attempt_evidence(root, record, raw)
+                        record.update(status="completed", completion_basis="INDEPENDENT_PR_READY_READBACK",
+                                      effect_readback_sha256=digest(pr), mutation_attribution_verified=False)
+                        atomic_write_bytes(path, json.dumps(record, sort_keys=True).encode())
+                        action_id = "ready-readback:" + args.request_id + ":" + utc_now()
+                        domain = client_end_of_action_domain()
+                        closure = closing_readback(opener, args, action_id=action_id,
+                            completed_at=utc_now(), token=token, domain=domain)
+                        result["continuation_work"] = persist_successor_work(root, args, subject_key=subject_key,
+                            record=record, closure=closure, action_id=action_id, domain=domain,
+                            previous=load_previous_work(root))
+                        result["original_attempt_recovered"] = True
+        return result
+    if "graphql-fallback" not in result["graph"]["frontier"]:
+        raise ValueError("CONTINUATION_GREEN_CI_AND_OWNER_REVIEW_REQUIRED")
+    from tools.ai_handoff import github_graphql_fallback_allowed
+    policy = unique_json((ROOT / "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json").read_bytes())
+    if not github_graphql_fallback_allowed({
+            "subject": {"repository": RULESET_REPOSITORY}, "method": "POST",
+            "operation": "markPullRequestReadyForReview", "endpoint": "https://api.github.com/graphql",
+            "fallback_reason": "REST_OPERATION_UNAVAILABLE", "rest_effect_state": "NOT_ATTEMPTED",
+            "owner_decision_sha256": policy.get("client_continuation", {}).get("github_fallback", {}).get("decision_sha256")}, policy):
+        raise ValueError("CONTINUATION_OWNER_FALLBACK_DECISION_REQUIRED")
+
+    body = json.dumps({"query": CONTINUATION_READY_DOCUMENT,
+        "variables": {"input": {"pullRequestId": pr["node_id"],
+                                  "clientMutationId": args.request_id}}}, separators=(",", ":")).encode()
+    request = urllib.request.Request("https://api.github.com/graphql", data=body,
+        headers={"Authorization": "Bearer " + token, "Content-Type": "application/json"}, method="POST")
+
+    def interpret(response, **kwargs):
+        parsed = unique_json(kwargs["response_text"].encode())
+        if response.status != 200 or not isinstance(parsed, dict) or parsed.get("errors"):
+            raise ValueError("CONTINUATION_GRAPHQL_RESPONSE_UNVERIFIED")
+        observed = parsed.get("data", {}).get("markPullRequestReadyForReview", {}).get("pullRequest", {})
+        if (observed.get("id") != pr["node_id"] or observed.get("isDraft") is not False
+                or observed.get("headRefOid") != args.expected_head):
+            raise ValueError("CONTINUATION_GRAPHQL_TARGET_MISMATCH")
+        live = source()  # Independent REST read, even after HTTP200 GraphQL success.
+        if live["draft"] is not False:
+            raise ValueError("CONTINUATION_READY_READBACK_FAILED")
+        result["ready_verified"] = True
+        result["graph"] = continuation_frontier(graph, live, review)
+        return 20, {"schema": "qikvrt-pr-ready-readback/v1", "ready_readback_sha256": digest(live),
+                    "handler_result": {"effect_state": "EFFECT_ACK_DONE", "scope": "PR_READY_ONLY"}}
+
+    domain = client_end_of_action_domain()
+    def admission():
+        live = source()
+        fresh = get("actions/runs/" + str(args.ci_run_id))
+        if any(fresh.get(k) != run.get(k) for k in ("id", "head_sha", "run_attempt", "status", "conclusion")):
+            raise ValueError("CONTINUATION_CI_CHANGED_BEFORE_MUTATION")
+        fresh_reviews = ruleset_collection(get("pulls/" + str(args.pull_request) + "/reviews?per_page=100"))
+        fresh_review = evaluate_required_review(live, [], fresh_reviews,
+            required_code_owner=resolve_required_code_owner(RULESET_REPOSITORY, pr_author=live["user"]["login"]))
+        if fresh_review["gate_state"] != "success":
+            raise ValueError("CONTINUATION_REVIEW_CHANGED_BEFORE_MUTATION")
+    dispatch_with_journal(opener, request, args,
+        subject_key=subject_key,
+        receipt=result, closure={}, action_id="ready:" + args.request_id + ":" + utc_now(),
+        token=token, domain=domain, before_dispatch=admission, intent_metadata=binding,
+        interpret_response=interpret)
+    result["state"] = "READY_VERIFIED" if result["ready_verified"] else "HOLD_READBACK_REQUIRED"
+    return result
 
 
 def ruleset_authority_result(args, token):

@@ -469,3 +469,75 @@ own technical status. This decision does not qualify them, admit an unavailable
 Draft transition or prove an unattended executor. Merge acceptance is separate
 from runtime, host, domain and productive EFFECT_ACK_DONE acceptance.
 
+
+
+## Later Owner GraphQL fallback decision — 29 October 2026
+
+GraphQL remains the standing admitted fallback when the required GitHub REST
+operation does not exist. REST is the primary interface, including the existing
+`/repos/ingolf-lohmann/qik-vrt/qikvrt/continuation` facade. Read the later decision
+in `state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json`
+under `graphql_fallback_decision`; the shared client policy pins its exact bytes.
+This later Owner instruction supersedes the unconditional GraphQL prohibition
+for the bounded admitted fallback; do not ask for the same authorization again.
+Keep the fallback during adaptation. Successful original CI/CD/CO run/job
+observations may reorder independent verification branches; they cannot remove
+gates, rewrite source, expand credentials or transfer acceptance to another HEAD.
+The first fixed operation is `markPullRequestReadyForReview`, followed by an
+independent REST readback. Unknown effects prohibit another mutation. Merge,
+protected service activation, native host and exact-domain acceptance remain
+separate. No new timer, trigger service or replacement executor is introduced.
+
+The existing workflow completion receiver now includes original CI, the native
+TEMDD carrier and the operation watchdog. Its immutable per-run feedback artifact
+retains job durations and skipped jobs. `continuation_graph` uses successful
+job durations to order independent CI siblings by longest observed duration
+first; missing timings remain unknown. Failure, an incomplete inventory or
+stale/foreign source provides no learning or admission. This is an adaptive
+QIK-VRT continuation plan, not a modification of GitHub's GraphQL schema.
+
+The existing protected REST service exposes GET (plan/readback) and POST (one
+fixed readiness mutation) at `/repos/ingolf-lohmann/qik-vrt/qikvrt/continuation`.
+`QIKVRT_CONTINUATION_ENABLED=1` admits that route using the existing expiring
+caller token, Owner binding and separate protected Authority credential resolver.
+Required fields are `request_id`, `pull_request`, `expected_main_sha`,
+`expected_head`, `expected_tree`, and `ci_run_id`; POST additionally requires
+`schema=qikvrt-continuation-rest/v1` and literal `effect_accepted=true`. No query,
+credential, provider URL, merge command or source patch is accepted from clients.
+The original attempt journal persists intent before the GraphQL POST and keeps
+unresolved effects fenced across request IDs and source changes. Native service
+activation and end-to-end acceptance require their own readback; source tests
+do not establish a deployed endpoint or guaranteed progress.
+
+Fresh evidence advances the retained graph's execution frontier: verified
+source/review/CI branches remain recorded, Draft selects the GraphQL fallback,
+and independently verified readiness selects a fresh REST merge recheck. That
+frontier drives the fixed readiness controller. Successful timings reorder only
+the explicitly independent children after the mandatory test root. The sealed
+REST package carries both the original Owner decision and artifact transport;
+a cold `python -S` export test checks this closure without checkout or credentials.
+
+The existing CI fixpoint writer also reuses its own successful complete initial
+gate when its captured HEAD/TREE still match the current committed subject,
+the worktree has no tracked or untracked changes, the remote ref is unchanged,
+and an independent integrity recheck succeeds. This marks that same test subtree
+verified instead of executing the identical complete suite twice more. Missing
+proof, a failed checker or any source/ref drift retains the original bounded
+repair/re-execution path. Success is never transferred to a successor candidate.
+
+Provider contract: https://docs.github.com/en/graphql/reference/pulls#markpullrequestreadyforreview
+and https://docs.github.com/en/graphql/guides/forming-calls-with-graphql.
+
+The existing CI producer now preserves `TESTED_SUBJECT.json` only after its
+terminal full-test/fixpoint disposition. The small immutable Actions artifact
+binds the original run/attempt and actual accepted HEAD/TREE. Consumers verify
+its original metadata, archive size/digest and sole bounded JSON member. A run's
+event HEAD is retained separately; a green event alone cannot accept either
+that predecessor or another candidate. Historical runs without this artifact
+remain useful timing observations but cannot authorize the new REST mutation.
+
+If the original readiness ACK was lost, GET independently reports the current
+exact readiness. An accepted POST on that same bound already-ready subject may
+close the original journal using the independent readback, with zero new
+GraphQL mutations. Its original response remains unchanged or explicitly absent;
+the closing digest is labeled as readback and claims no mutation attribution.
