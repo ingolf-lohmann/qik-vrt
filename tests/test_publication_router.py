@@ -15,6 +15,17 @@ ROOT = Path(__file__).resolve().parents[1] / "docs/publications/2026-08-04-pre-s
 ROUTER = Path(__file__).resolve().parents[1] / "tools/qikvrt_publication_router.py"
 
 class PublicationRouterTests(unittest.TestCase):
+    def test_authority_publisher_retains_original_protected_environment(self):
+        workflow_root = ROUTER.parents[1] / '.github/workflows'
+        original = (workflow_root / 'qikvrt_observer_relative_retrocausality_zenodo_publish.yml').read_text()
+        current = (workflow_root / 'qikvrt_publication_router.yml').read_text()
+        original_job = original.split('  publish:\n', 1)[1]
+        requested_job = current.split('  requested-zenodo:\n', 1)[1]
+        self.assertIn('    environment: zenodo-production\n', original_job)
+        self.assertIn('    environment: zenodo-production\n', requested_job)
+        self.assertIn('ZENODO_ACCESS_TOKEN: ${{ secrets.ZENODO_ACCESS_TOKEN }}', requested_job)
+        self.assertIn('GITHUB_TOKEN: ${{ github.token }}', requested_job)
+
     def test_router_is_fail_closed_and_effect_free(self) -> None:
         cp = subprocess.run(
             [sys.executable, "-B", str(ROUTER), str(ROOT), "--json"],

@@ -53,7 +53,7 @@
       finally{busy.current=false;}
     }
     async function commit(){
-      if(!prepared||busy.current)return;busy.current=true;const generation=epoch.current;let attempted=false;setPhase('committing');
+      if(!ready||!prepared||busy.current)return;busy.current=true;const generation=epoch.current;let attempted=false;setPhase('committing');
       try{
         await readContext(prepared);
         const hash=Uint8Array.from(prepared.recordHash.slice(7).match(/../g),x=>parseInt(x,16));
@@ -86,7 +86,7 @@
           h('label',null,'Vorhandener Owner-Zugang',h('input',{type:'password',value:token,disabled:editingBlocked,onChange:e=>invalidate(setToken,e.target.value),autoComplete:'off',placeholder:'Geschützter REST-Zugang'}))),
         h('label',null,'Texteingabe für das native Terminal',h('textarea',{value:text,maxLength:4096,disabled:editingBlocked,onChange:e=>invalidate(setText,e.target.value),placeholder:'Eine konkrete Nachricht für das Universal Terminal …'})),
         h('div',{className:'toolbar'},h('button',{className:'primary',onClick:prepare,disabled:!ready||!token||!principal||!text||phase!=='idle'},phase==='preparing'?'Prüfung läuft …':'Vorbereiten'),
-          h('button',{onClick:commit,disabled:phase!=='prepared'},phase==='committing'?'Übernahme läuft …':'Eingabe übernehmen'),
+          h('button',{onClick:commit,disabled:!ready||phase!=='prepared'},phase==='committing'?'Übernahme läuft …':'Eingabe übernehmen'),
           h('button',{onClick:readback,disabled:!prepared||['preparing','committing'].includes(phase)},'Originalquittung lesen'),
           h('button',{onClick:()=>{epoch.current++;setToken('');setPrepared(null);setReceipt(null);setPhase('idle');setMessage('Zugang aus dieser Ansicht entfernt.');}},'Abmelden')),
         h('p',{className:'compact'},'Der Zugang bleibt im Arbeitsspeicher dieser Ansicht. Er wird weder im Browser gespeichert noch in den Export aufgenommen.'),
@@ -153,5 +153,7 @@
         h('details',{className:'panel wide'},h('summary',null,'Protokoll und Nachweisgrenzen'),h('p',null,'Grundlage: draft-lohmann-qikvrt-effect-ack-03. Die HTTP-Prepare-/Commit-Abbildung folgt dem vorhandenen HTTP-Binding-Kandidaten. Abgenommen wird die dauerhafte lokale Terminaleingabe über das Originaljournal.'),h('p',null,'Der JSONL-Export bindet Projektionsbytes. Eine ClickHouse-Datenübernahme wird durch den Export nicht bestätigt.'),h('a',{href:'https://datatracker.ietf.org/doc/html/draft-lohmann-qikvrt-effect-ack-03',target:'_blank',rel:'noopener noreferrer'},'IETF-Originalfassung öffnen')),
         h('footer',{className:'footer'},'Anforderungen und Autorisierung: Ingolf Lohmann. Implementierung: OpenAI Codex. · Ereignisbasierter Readback, ohne Client-Polling.')));
   }
-  ReactDOM.createRoot(document.getElementById('qikvrt-devops')).render(h(Boundary,null,h(App)));
+  globalThis.QikvrtNativeTerminal = NativeTerminal;
+  const mount = document.getElementById('qikvrt-devops');
+  if (mount) ReactDOM.createRoot(mount).render(h(Boundary,null,h(App)));
 })();
