@@ -517,6 +517,14 @@ the explicitly independent children after the mandatory test root. The sealed
 REST package carries both the original Owner decision and artifact transport;
 a cold `python -S` export test checks this closure without checkout or credentials.
 
+The existing CI fixpoint writer also reuses its own successful complete initial
+gate when its captured HEAD/TREE still match the current committed subject,
+the worktree has no tracked or untracked changes, the remote ref is unchanged,
+and an independent integrity recheck succeeds. This marks that same test subtree
+verified instead of executing the identical complete suite twice more. Missing
+proof, a failed checker or any source/ref drift retains the original bounded
+repair/re-execution path. Success is never transferred to a successor candidate.
+
 Provider contract: https://docs.github.com/en/graphql/reference/pulls#markpullrequestreadyforreview
 and https://docs.github.com/en/graphql/guides/forming-calls-with-graphql.
 

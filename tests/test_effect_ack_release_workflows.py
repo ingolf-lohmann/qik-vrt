@@ -712,6 +712,40 @@ class GeneralCITestedSubjectTests(unittest.TestCase):
                 self.assertIn('test "$(git rev-parse --verify HEAD^{commit})" = "$EXPECTED_HEAD"', block)
                 self.assertIn('test "$(git rev-parse --verify HEAD^{tree})" = "$EXPECTED_TREE"', block)
 
+    def test_successful_complete_gate_reuse_requires_the_same_clean_subject_and_checker(self):
+        # Execute the actual production branch against real Git refs. The
+        # controlled integrity checker exercises its success/failure boundary;
+        # this fixture is not a claim that the repository suite ran here.
+        checker = self.root / "tools/qikvrt_integrity.py"
+        checker.parent.mkdir()
+        checker.write_text("import os,sys\nsys.exit(0 if os.environ.get('FIXTURE_INTEGRITY') == 'valid' else 1)\n")
+        run_git(self.root, "add", "."); run_git(self.root, "commit", "-m", "Controlled checker fixture")
+        head = run_git(self.root, "rev-parse", "HEAD")
+        tree = run_git(self.root, "rev-parse", "HEAD^{tree}")
+        run_git(self.root, "push", "origin", "HEAD:refs/heads/fixture")
+        block = GENERAL_CI.read_text().split('      - name: Same-writer successor re-entry to tested fixpoint\n', 1)[1]
+        script = textwrap.dedent(block.split('        run: |\n', 1)[1].split('\n      - name: ', 1)[0])
+        script = script.split('for iteration in $(seq 0 "$MAX_SUCCESSORS"); do', 1)[0] + '\necho ORIGINAL_FALLBACK_RETAINED\n'
+        env = dict(os.environ, EXPECTED_HEAD=head, TARGET_REF="fixture", INITIAL_FULL_TEST_OUTCOME="success",
+                   INITIAL_TESTED_HEAD=head, INITIAL_TESTED_TREE=tree, FIXTURE_INTEGRITY="valid")
+        def invoke(changes=None):
+            return subprocess.run(["bash", "--noprofile", "--norc", "-c", script], cwd=self.root,
+                env={**env, **(changes or {})}, text=True, capture_output=True, timeout=10)
+        result = invoke(); self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('scope=INITIAL_EXACT_COMPLETE_GATE_REUSED', result.stdout)
+        self.assertNotIn('ORIGINAL_FALLBACK_RETAINED', result.stdout)
+        for change in ({'INITIAL_FULL_TEST_OUTCOME': 'failure'}, {'INITIAL_TESTED_HEAD': 'f' * 40},
+                       {'INITIAL_TESTED_TREE': 'f' * 40}, {'FIXTURE_INTEGRITY': 'invalid'}):
+            with self.subTest(change=change):
+                result = invoke(change)
+                self.assertIn('ORIGINAL_FALLBACK_RETAINED', result.stdout)
+                self.assertNotIn('scope=INITIAL_EXACT_COMPLETE_GATE_REUSED', result.stdout)
+        (self.root / 'untracked.py').write_text('extra source\n')
+        self.assertIn('ORIGINAL_FALLBACK_RETAINED', invoke().stdout)
+        (self.root / 'untracked.py').unlink()
+        (self.root / 'source.txt').write_text('changed source\n')
+        self.assertIn('ORIGINAL_FALLBACK_RETAINED', invoke().stdout)
+
     def test_non_writer_binds_only_the_literal_event_checkout(self):
         self.assertEqual(self.bind(required="false").returncode, 0)
         self.assertIn("head=" + self.predecessor, self.output.read_text())
