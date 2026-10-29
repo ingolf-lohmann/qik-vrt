@@ -1,0 +1,65 @@
+{
+  "historical_article_main_snapshot_rewritten": false,
+  "input_head": "d983872c27093bc7e114fd40284a8ae8ed462303",
+  "input_tree": "e6a44679cb9e7798215c8890abd8059642ea7dc3",
+  "lifecycle_files_from_main": [
+    {
+      "bytes": 241,
+      "git_blob_sha1": "dc66e2c48a70f952167f50ed4475982442e75a64",
+      "path": "evidence/node_health/37120239456-1.json",
+      "sha256": "a39baf8c14e933e33f5944b20737ec650d9cc162b717a422be25dadbbcca2f24"
+    },
+    {
+      "bytes": 241,
+      "git_blob_sha1": "dc66e2c48a70f952167f50ed4475982442e75a64",
+      "path": "evidence/node_health/LATEST.json",
+      "sha256": "a39baf8c14e933e33f5944b20737ec650d9cc162b717a422be25dadbbcca2f24"
+    },
+    {
+      "bytes": 262,
+      "git_blob_sha1": "a3a3cc16510e1bb96938b149570bbcdbf48dd103",
+      "path": "evidence/node_registration_renewal/37120239456-1.json",
+      "sha256": "1300982549f97047297816a532babcd1362fe3916919aa1df361c9bead878a5c"
+    },
+    {
+      "bytes": 262,
+      "git_blob_sha1": "a3a3cc16510e1bb96938b149570bbcdbf48dd103",
+      "path": "evidence/node_registration_renewal/LATEST.json",
+      "sha256": "1300982549f97047297816a532babcd1362fe3916919aa1df361c9bead878a5c"
+    },
+    {
+      "bytes": 563,
+      "git_blob_sha1": "3cb75551391ca9bcd05115c949ea58c19bd55f57",
+      "path": "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+      "sha256": "9ce464f2caa15ca432a1240640111f3a651d959019bf15098add86fa40e11f07"
+    },
+    {
+      "bytes": 542,
+      "git_blob_sha1": "788a2948129b916dfb53ee071bb95cdcbe90f184",
+      "path": "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+      "sha256": "b1ff7e4f57975db6a64bb577fa9596ffce4c0ad7fa6966ee73236c3de164abda"
+    }
+  ],
+  "main_committed_at": "2026-10-03T11:37:34Z",
+  "main_head": "8153c4e69a6245aadf67f0741fb50d9707c19e34",
+  "main_tree": "034bbaf55c9c31364b6d160c553cd507fb7c04c5",
+  "merge_base": "8704969da54ed9c0ad08d4540ea89aee15d85ae2",
+  "observed_at": "2026-10-03T12:29:15.676389Z",
+  "pdf_byte_identity": {
+    "bytes": 52555,
+    "git_blob_sha1": "f635e3b5f574cd4283405aff0c0c2585f36ff2e9",
+    "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/QIK-VRT_Kollektives_Funktionales_Bewusstsein_2026-10-03.pdf",
+    "sha256": "a1dd8d153a29ff3ba0c8e65b9c415279f60d7cb72efcdc5aec7908e64b1865ee"
+  },
+  "pdf_render_repeated": false,
+  "predecessor_gates_transferred": false,
+  "publication_id": "qikvrt-collective-functional-consciousness-20261003-v1",
+  "pull_request": 447,
+  "repository": "ingolf-lohmann/qik-vrt",
+  "required_parent_order": [
+    "d983872c27093bc7e114fd40284a8ae8ed462303",
+    "8153c4e69a6245aadf67f0741fb50d9707c19e34"
+  ],
+  "schema": "qikvrt_main_integration_inputs_v1",
+  "scope": "Observed integration inputs and byte constraints, not a final-head test receipt or a publication authorization."
+}

@@ -2,10 +2,11 @@
 // Extends the existing docs/monitor carrier; no repository mutation route.
 import http from 'node:http';
 import {createHash, createHmac, timingSafeEqual, randomUUID} from 'node:crypto';
-import {readFileSync, mkdirSync, openSync, closeSync, writeFileSync, renameSync, fsyncSync, existsSync, unlinkSync} from 'node:fs';
+import {readFileSync, mkdirSync, openSync, closeSync, writeFileSync, renameSync, fsyncSync, existsSync, unlinkSync, lstatSync} from 'node:fs';
 import {dirname, resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import observer, {snapshot, configureRepositories, invalidateRepository, SECURITY} from './observer.mjs';
+import {MeshFileStore,meshFileRoutes} from './mesh-file-store.mjs';
 import './health-projection.js';
 
 export const VERSION = '2026-10-04.9';
@@ -14,6 +15,58 @@ const MAX_REPLICATION_BODY = 8 * MAX_BODY;
 const ZERO_DIGEST = '0'.repeat(64);
 const sha256 = value => createHash('sha256').update(value).digest('hex');
 const iso = () => new Date().toISOString();
+const MESH_WORK_SCOPE = 'OWNER_SELECTED_EXPORTABLE_PROPOSAL_BYTES';
+// Shared wire normalization with the existing S1 launcher. The protocol has
+// ASCII keys, bounded integers and base64 byte objects; no floating-point data.
+export const meshWire = value => value && typeof value === 'object' ?
+  Array.isArray(value) ? '['+value.map(meshWire).join(',')+']' :
+    '{'+Object.keys(value).sort().map(k=>JSON.stringify(k)+':'+meshWire(value[k])).join(',')+'}' : JSON.stringify(value);
+const hex64 = value => typeof value === 'string' && /^[a-f0-9]{64}$/.test(value);
+const identity = value => typeof value === 'string' && /^[A-Za-z0-9_.:-]{1,100}$/.test(value) && !['__proto__','constructor','prototype'].includes(value);
+const shape = (value, keys) => value && typeof value === 'object' && !Array.isArray(value) && Object.keys(value).sort().join(',') === keys;
+const sourceBinding = value => shape(value,'head,tree') && Object.values(value).every(v=>typeof v === 'string' && /^[a-f0-9]{40}$/.test(v));
+function meshObjects(objects) {
+  if (!objects || typeof objects !== 'object' || Array.isArray(objects)) throw Error('MESH_WORK_OBJECTS_REQUIRED');
+  let size=0;
+  for (const [key,encoded] of Object.entries(objects)) {
+    if (!hex64(key) || typeof encoded !== 'string' || Buffer.from(encoded,'base64').toString('base64') !== encoded ||
+        sha256(Buffer.from(encoded,'base64')) !== key) throw Error('MESH_WORK_OBJECT_DIGEST_MISMATCH');
+    size+=Buffer.byteLength(encoded);
+    if (size>64*1024*1024) throw Error('MESH_WORK_CACHE_CAPACITY_HOLD');
+  }
+}
+function meshEntries(entries, objects) {
+  if (!entries || typeof entries !== 'object' || Array.isArray(entries) || !Object.keys(entries).length || Object.keys(entries).length>8192) throw Error('MESH_WORK_ENTRIES_REQUIRED');
+  for (const [name,entry] of Object.entries(entries)) {
+    if (!/^[A-Za-z0-9_.+/-]{1,256}$/.test(name) || name.startsWith('/') || name.split('/').some(p=>['','.','..','.git','__proto__','constructor','prototype'].includes(p)) ||
+        !shape(entry,'bytes,sha256') || !Number.isSafeInteger(entry.bytes) || entry.bytes<0 || !hex64(entry.sha256) ||
+        !Object.hasOwn(objects,entry.sha256) || Buffer.from(objects[entry.sha256],'base64').length!==entry.bytes) throw Error('MESH_WORK_ENTRY_MISMATCH');
+  }
+}
+function validateMeshInbox(inbox) {
+  if (!shape(inbox,'nodes,objects,schema') || inbox.schema !== 'qikvrt-repository-work-inbox/v1') throw Error('MESH_WORK_DURABLE_INBOX_MISMATCH');
+  meshObjects(inbox.objects);
+  if (!inbox.nodes || typeof inbox.nodes !== 'object' || Array.isArray(inbox.nodes)) throw Error('MESH_WORK_DURABLE_INBOX_MISMATCH');
+  for (const [node,state] of Object.entries(inbox.nodes)) {
+    if (!identity(node) || ['__proto__','constructor','prototype'].includes(node) || !shape(state,'entries,epoch,last_batch,receipts,revision,units') || !/^[a-f0-9]{32}$/.test(state.epoch) ||
+        !Number.isSafeInteger(state.revision) || state.revision<1 || !hex64(state.last_batch)) throw Error('MESH_WORK_DURABLE_INBOX_MISMATCH');
+    meshEntries(state.entries,inbox.objects);
+    if (!state.units || typeof state.units !== 'object' || Array.isArray(state.units) ||
+        !state.receipts || typeof state.receipts !== 'object' || Array.isArray(state.receipts)) throw Error('MESH_WORK_DURABLE_INBOX_MISMATCH');
+    for (const [id,unit] of Object.entries(state.units)) if (!identity(id) || unit.id!==id || !shape(unit,'entries_sha256,id,instructions_sha256,source') ||
+        !sourceBinding(unit.source) || !hex64(unit.entries_sha256) || !Object.hasOwn(inbox.objects,unit.instructions_sha256)) throw Error('MESH_WORK_DURABLE_INBOX_MISMATCH');
+    for (const [id,receipt] of Object.entries(state.receipts)) {
+      const unsigned={...receipt};delete unsigned.receipt_sha256;
+      if (!shape(receipt,'batch_id,effect_ack_done,entries_sha256,node_id,proposal_execution,receipt_sha256,repository,revision,schema,scope,serving_node_id,source_head,source_tree') ||
+        sha256(meshWire(unsigned))!==receipt.receipt_sha256 || !hex64(id) || receipt.batch_id!==id || receipt.node_id!==node ||
+        receipt.schema!=='qikvrt-repository-work-receipt/v1' || receipt.proposal_execution!=='NOT_EXECUTED' || receipt.effect_ack_done!==false ||
+        receipt.scope!==MESH_WORK_SCOPE || !hex64(receipt.entries_sha256) || !identity(receipt.serving_node_id) ||
+        !sourceBinding({head:receipt.source_head,tree:receipt.source_tree}) || !/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(receipt.repository) ||
+        !Number.isSafeInteger(receipt.revision) || receipt.revision<1 || receipt.revision>state.revision) throw Error('MESH_WORK_DURABLE_INBOX_MISMATCH');
+    }
+    if (state.receipts[state.last_batch]?.entries_sha256!==sha256(meshWire(state.entries)) || state.receipts[state.last_batch]?.revision!==state.revision) throw Error('MESH_WORK_DURABLE_INBOX_MISMATCH');
+  }
+}
 
 export function providerFetch(adapter, transport = globalThis.fetch) {
   if (!['none','github'].includes(adapter)) throw new Error('INVALID_SOURCE_ADAPTER');
@@ -78,6 +131,7 @@ export class MonitorStore {
           (prior.deliveries[prior.confirmed.event_sequence - 1]?.record_digest || ZERO_DIGEST) !== prior.confirmed.journal_head_digest ||
           (prior.confirmed.snapshot && sha256(JSON.stringify(prior.confirmed.snapshot)) !== prior.confirmed.digest) ||
           !Number.isSafeInteger(prior.confirmed.sequence) || prior.confirmed.sequence < 0 || prior.confirmed.sequence > prior.sequence)) throw new Error('DURABLE_REPLICA_RECEIPT_MISMATCH');
+      if (prior.mesh_work) validateMeshInbox(prior.mesh_work);
       this.state = prior;
     }
   }
@@ -139,6 +193,52 @@ export class MonitorStore {
     const previous = this.state;
     this.state = {...previous, confirmed: this.checkpoint()};
     try { this.persist(); } catch (error) { this.state = previous; throw error; }
+  }
+  acceptMeshWork(packet, peer, serving) {
+    if (this.storageFailed) throw Error('STORAGE_RESTART_REQUIRED');
+    if (!shape(packet,'base_digest,batch_id,effect_ack_done,entries,epoch,idle,node_id,objects,repository,revision,schema,scope,source,work_units') ||
+        packet.schema!=='qikvrt-repository-work-batch/v1' || packet.scope!==MESH_WORK_SCOPE || packet.effect_ack_done!==false ||
+        packet.node_id!==peer.node_id || packet.repository!==peer.repository || !identity(packet.node_id) ||
+        !/^[a-f0-9]{32}$/.test(packet.epoch) || !sourceBinding(packet.source) || !Number.isSafeInteger(packet.revision) || packet.revision<1 ||
+        !hex64(packet.base_digest) || !hex64(packet.batch_id) || !sourceBinding({head:serving.source_head,tree:serving.source_tree})) throw Error('MESH_WORK_BINDING_MISMATCH');
+    const unsigned={...packet};delete unsigned.batch_id;
+    if (sha256(meshWire(unsigned))!==packet.batch_id) throw Error('MESH_WORK_BATCH_DIGEST_MISMATCH');
+    const inbox=this.state.mesh_work || {schema:'qikvrt-repository-work-inbox/v1',objects:{},nodes:{}};
+    const prior=inbox.nodes[packet.node_id];
+    if (prior?.receipts[packet.batch_id]) return prior.receipts[packet.batch_id];
+    if ((prior ? prior.last_batch : ZERO_DIGEST)!==packet.base_digest ||
+        (prior && (prior.epoch!==packet.epoch || prior.revision>=packet.revision))) throw Error('MESH_WORK_BASE_CONFLICT');
+    meshObjects(packet.objects);
+    const objects={...inbox.objects,...packet.objects};meshObjects(objects);meshEntries(packet.entries,objects);
+    const proof=packet.idle, validation=proof?.validation;
+    if (!shape(proof,'active_cache_writers,entries_sha256,equal_source_observations,scope,state,validation') ||
+        proof.state!=='IDLE_STABLE_VALIDATED' || proof.scope!=='CACHE_WRITER_LOCK_AND_EXACT_SELECTED_GIT_BYTES' ||
+        proof.active_cache_writers!==0 || proof.equal_source_observations!==2 || proof.entries_sha256!==sha256(meshWire(packet.entries)) ||
+        !shape(validation,'command_sha256,exit_code,kind,stderr_sha256,stdout_sha256') || validation.kind!=='EXECUTED_COMMAND_EXIT_ZERO' ||
+        validation.exit_code!==0 || !['command_sha256','stdout_sha256','stderr_sha256'].every(k=>hex64(validation[k]))) throw Error('MESH_WORK_VALIDATED_IDLE_REQUIRED');
+    if (!Array.isArray(packet.work_units) || !packet.work_units.length || packet.work_units.length>1024) throw Error('MESH_WORK_UNITS_REQUIRED');
+    const units={...prior?.units};const ids=new Set();
+    for (const unit of packet.work_units) {
+      if (!shape(unit,'entries_sha256,id,instructions_sha256,source') || !identity(unit.id) || ids.has(unit.id) ||
+          !hex64(unit.entries_sha256) || !sourceBinding(unit.source) || !hex64(unit.instructions_sha256) || !Object.hasOwn(objects,unit.instructions_sha256) ||
+          (Object.hasOwn(units,unit.id) && meshWire(units[unit.id])!==meshWire(unit))) throw Error('MESH_WORK_UNIT_CONFLICT');
+      ids.add(unit.id);units[unit.id]=unit;
+    }
+    const required=new Set([...Object.values(packet.entries).map(e=>e.sha256),...packet.work_units.map(u=>u.instructions_sha256)]);
+    if (Object.keys(packet.objects).some(k=>!required.has(k))) throw Error('MESH_WORK_UNREFERENCED_OBJECT');
+    const receipt={schema:'qikvrt-repository-work-receipt/v1',node_id:packet.node_id,repository:packet.repository,
+      batch_id:packet.batch_id,revision:packet.revision,entries_sha256:proof.entries_sha256,scope:MESH_WORK_SCOPE,
+      serving_node_id:serving.node_id,source_head:serving.source_head,source_tree:serving.source_tree,
+      proposal_execution:'NOT_EXECUTED',effect_ack_done:false};
+    receipt.receipt_sha256=sha256(meshWire(receipt));
+    const next={schema:inbox.schema,objects,nodes:{...inbox.nodes,[packet.node_id]:{
+      epoch:packet.epoch,revision:packet.revision,last_batch:packet.batch_id,entries:packet.entries,units,
+      receipts:{...prior?.receipts,[packet.batch_id]:receipt}}}};
+    if (Buffer.byteLength(meshWire(next))>64*1024*1024) throw Error('MESH_WORK_CACHE_CAPACITY_HOLD');
+    validateMeshInbox(next);
+    const previous=this.state;this.state={...previous,mesh_work:next};
+    try {this.persist();} catch(error) {this.state=previous;throw error;}
+    return receipt;
   }
   importBatch(packet, expectedSource, repositories) {
     if (this.storageFailed) throw new Error('STORAGE_RESTART_REQUIRED');
@@ -205,14 +305,25 @@ export function verifyWebhook(raw, signature, secret) {
 
 export function createMonitor(options = {}) {
   const env = options.env || process.env;
-  const repos = options.repositories || JSON.parse(env.QIKVRT_MONITOR_REPOSITORIES || '[{"name":"ingolf-lohmann/qik-vrt","role":"Mirror","branch":"main"},{"name":"Goldkelch/qik-vrt","role":"Authority","branch":"main"}]');
+  const repos = options.repositories || JSON.parse(env.QIKVRT_MONITOR_REPOSITORIES || '[{"name":"ingolf-lohmann/qik-vrt","role":"Authority","branch":"main"},{"name":"Goldkelch/qik-vrt","role":"Mirror","branch":"main"}]');
   configureRepositories(repos);
-  const nodeId = env.QIKVRT_MONITOR_NODE_ID || 'mirror:ingolf-lohmann/qik-vrt';
+  const nodeId = env.QIKVRT_MONITOR_NODE_ID || 'authority:ingolf-lohmann/qik-vrt';
   const role = env.QIKVRT_MONITOR_ROLE || 'primary';
   const primaryId = env.QIKVRT_MONITOR_PRIMARY_NODE_ID;
   const replicaId = env.QIKVRT_MONITOR_REPLICA_NODE_ID;
   const replicaUrl = env.QIKVRT_MONITOR_REPLICA_URL;
   const replicationSecret = env.QIKVRT_MONITOR_REPLICATION_SECRET;
+  const meshPeers = options.meshWorkPeers || JSON.parse(env.QIKVRT_MESH_WORK_PEERS || '[]').map(peer=>{
+    const path=resolve(peer.secret_file),info=lstatSync(path);
+    let parent=path;
+    while(true) {if(lstatSync(parent).isSymbolicLink()) throw Error('MESH_WORK_OWNER_ONLY_KEY_REQUIRED'); const next=dirname(parent);if(next===parent)break;parent=next;}
+    if (path!==peer.secret_file || !info.isFile() || info.nlink!==1 || (info.mode & 0o777)!==0o600 || info.uid!==process.geteuid()) throw Error('MESH_WORK_OWNER_ONLY_KEY_REQUIRED');
+    return {...peer,secret:readFileSync(path,'utf8').trim()};
+  });
+  if (!Array.isArray(meshPeers) || new Set(meshPeers.map(p=>p.node_id)).size!==meshPeers.length || new Set(meshPeers.map(p=>p.secret)).size!==meshPeers.length || meshPeers.some(p=>
+      !identity(p.node_id) || ['__proto__','constructor','prototype'].includes(p.node_id) ||
+      typeof p.repository!=='string' || !/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(p.repository) ||
+      typeof p.secret!=='string' || Buffer.byteLength(p.secret)<32 || Buffer.byteLength(p.secret)>256 || !/^[\x21-\x7e]+$/.test(p.secret))) throw Error('MESH_WORK_ADMITTED_PEERS_REQUIRED');
   if (!['primary','replica'].includes(role) ||
       (role === 'replica' && (!primaryId || primaryId === nodeId || replicaUrl || !replicationSecret)) ||
       (role === 'primary' && ((!!replicaUrl !== !!replicaId) || (replicaUrl && (!replicationSecret || replicaId === nodeId))))) throw new Error('INVALID_REPLICATION_CONFIGURATION');
@@ -225,6 +336,9 @@ export function createMonitor(options = {}) {
   const artifacts = Object.fromEntries(['server.mjs','observer.mjs','index.html','client-replica.js','health-projection.js','package.json'].map(name=>[name,sha256(readFileSync(new URL('./'+name,import.meta.url)))]));
   const statePath = options.statePath || resolve(env.QIKVRT_MONITOR_STATE_DIR || '/var/lib/qikvrt/monitor', 'node.json');
   const store = new MonitorStore(statePath, nodeId);
+  const meshStore=options.meshFileStore || (env.QIKVRT_MESH_FILE ? new MeshFileStore(env.QIKVRT_MESH_FILE) : null);
+  const meshRoutes=meshStore ? meshFileRoutes(meshStore,env.QIKVRT_MESH_FILE_TOKEN,
+    {allowedOrigins:JSON.parse(env.QIKVRT_MESH_FILE_ALLOWED_ORIGINS||'[]')}) : null;
   if ((role === 'primary' && store.state.journal_source_node_id) ||
       (role === 'replica' && store.state.journal_source_node_id && store.state.journal_source_node_id !== primaryId) ||
       (store.state.required_replica_node_id && store.state.required_replica_node_id !== replicaId)) throw new Error('DURABLE_REPLICATION_CONFIGURATION_MISMATCH');
@@ -251,6 +365,24 @@ export function createMonitor(options = {}) {
       return {...status, whole_transputer_verified:false};
     } catch (error) { return {state:'BLOCK', cause:error.message, whole_transputer_verified:false}; }
   }
+  function durableMeshInbox() {
+    if (store.storageFailed) throw Error('MESH_WORK_STORAGE_RESTART_REQUIRED');
+    const disk = new MonitorStore(store.path,nodeId);
+    if (meshWire(disk.state.mesh_work || null)!==meshWire(store.state.mesh_work || null)) throw Error('MESH_WORK_DURABLE_READBACK_MISMATCH');
+    return disk.state.mesh_work;
+  }
+  function meshWorkStatus() {
+    const base={admitted_peers:meshPeers.length,received_peers:0,proposal_execution:'NOT_EXECUTED',effect_ack_done:false};
+    if (!meshPeers.length) return {...base,state:'NO_PEERS_ADMITTED'};
+    if (role==='replica') return {...base,state:'READ_ONLY_REPLICA'};
+    try {
+      const inbox=durableMeshInbox();
+      const received=meshPeers.filter(peer=>Object.values(inbox?.nodes[peer.node_id]?.receipts || {}).some(receipt=>
+        receipt.repository===peer.repository && receipt.serving_node_id===nodeId &&
+        receipt.source_head===sourceHead && receipt.source_tree===sourceTree)).length;
+      return {...base,received_peers:received,state:received===meshPeers.length ? 'PEER_BATCHES_DURABLE' : 'PEER_BATCH_REQUIRED'};
+    } catch (_) {return {...base,state:'DURABLE_READBACK_HOLD'};}
+  }
   const metadata = () => {
     const visible = store.visible();
     const binding = {schema: 'qikvrt-monitor-binding/v1', node_id: role === 'replica' ? primaryId : nodeId, serving_node_id: nodeId, epoch: visible.epoch,
@@ -269,7 +401,7 @@ export function createMonitor(options = {}) {
     losslessness_scope: replicaUrl ? 'Configured two-node durable receipt and confirmed-prefix replay; independently deployed failover remains unverified.' :
       'Single-node durable receipt or read-only replicated checkpoint. Deployed Mesh failover remains a separate gate.',
     snapshot_durable: !!visible.snapshot, connected_clients: clients.size,
-    operation_error: operationError,
+    operation_error: operationError, mesh_work:meshWorkStatus(),
     runtime_health: options.runtimeHealth?.() || {state:'UNKNOWN', cause:'SYSTEM_RUNTIME_HEALTH_NOT_BOUND'},
     native_runtime: nativeStatus(), workflow_success_is_effect_ack_done: false};
     binding.health = globalThis.QikvrtHealth.project(visible.snapshot,binding,null,Date.now());
@@ -366,9 +498,44 @@ export function createMonitor(options = {}) {
   const server = http.createServer(async (request, response) => {
     try {
       const url = new URL(request.url, 'http://monitor.invalid');
+      if(meshRoutes && await meshRoutes(request,response,url))return;
       // Reuse this listener for fixed standalone read routes. The hook cannot
       // replace the durable monitor store or start another observer/executor.
       if (options.handleRequest && await options.handleRequest(request, response, url)) return;
+      if (url.pathname.startsWith('/api/mesh-work/')) {
+        const path=url.pathname, peer=meshPeers.find(p=>p.node_id===request.headers['x-qikvrt-mesh-node']);
+        if (!peer) return json(response,403,{error:'MESH_WORK_PEER_NOT_ADMITTED'});
+        const reply=(code,value)=>{
+          const body=JSON.stringify(value);
+          response.writeHead(code,{...SECURITY,'content-type':'application/json; charset=utf-8','cache-control':'no-store',
+            'x-qikvrt-replication-signature':replicationSignature(body,'RESPONSE',path,peer.secret)});
+          response.end(body);
+        };
+        const raw=await readBody(request,MAX_REPLICATION_BODY);
+        if (!verifyReplication(raw,request.headers['x-qikvrt-replication-signature'],request.method,path,peer.secret)) return reply(401,{error:'MESH_WORK_SIGNATURE_REQUIRED'});
+        if (role==='replica') return reply(409,{error:'MESH_WORK_READ_ONLY_REPLICA'});
+        try {
+          if (path==='/api/mesh-work/batch' && request.method==='POST' && /^application\/json(?:;|$)/i.test(request.headers['content-type'] || '')) {
+            const packet=JSON.parse(raw);
+            const receipt=await enqueue(()=>store.acceptMeshWork(packet,peer,{node_id:nodeId,source_head:sourceHead,source_tree:sourceTree}));
+            return reply(200,receipt);
+          }
+          const id=/^\/api\/mesh-work\/receipt\/([a-f0-9]{64})$/.exec(path)?.[1];
+          if (id && request.method==='GET' && !raw.length) {
+            const receipt=store.state.mesh_work?.nodes[peer.node_id]?.receipts[id];
+            return receipt ? reply(200,receipt) : reply(404,{error:'MESH_WORK_RECEIPT_NOT_FOUND'});
+          }
+          const live=/^\/api\/mesh-work\/readback\/([a-f0-9]{64})\/([a-f0-9]{32})$/.exec(path);
+          if (live && request.method==='GET' && !raw.length) {
+            const receipt=durableMeshInbox()?.nodes[peer.node_id]?.receipts[live[1]];
+            if (!receipt) return reply(404,{error:'MESH_WORK_RECEIPT_NOT_FOUND'});
+            return reply(200,{schema:'qikvrt-repository-work-live-readback/v1',challenge:live[2],
+              serving_node_id:nodeId,source_head:sourceHead,source_tree:sourceTree,receipt,
+              proposal_execution:'NOT_EXECUTED',effect_ack_done:false});
+          }
+          return reply(405,{error:'MESH_WORK_OPERATION_NOT_ALLOWED'});
+        } catch(error) {return reply(store.storageFailed?503:409,{error:error.message,effect_ack_done:false});}
+      }
       if (url.pathname.startsWith('/api/replication/')) {
         const path = url.pathname;
         if (!replicationSecret) return json(response, 503, {error: 'REPLICATION_SECRET_NOT_CONFIGURED'});

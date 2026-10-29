@@ -62,7 +62,7 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
       - name: Set up Python
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: '3.12'
       - name: Materialize frozen Alpha-2 status inputs
@@ -107,9 +107,10 @@ jobs:
       contents: read
     steps:
       - name: Set up standalone Node runtime
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: '24'
+          package-manager-cache: false
       - name: Check out exact candidate with tags
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -118,7 +119,7 @@ jobs:
           fetch-tags: true
           persist-credentials: false
       - name: Set up Python
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: '3.12'
       - name: Diagnose frozen inputs and historical Alpha-2 archive
@@ -159,17 +160,17 @@ jobs:
         run: python3 -B tools/qikvrt_global_completion.py check
       - name: Run positive and negative global completion tests
         run: python3 -B tests/test_global_completion.py
-      - name: Resolve Authority tag locally for Mirror-side source verification
+      - name: Resolve the historical 2026-07-28 tag source
         if: github.repository == 'ingolf-lohmann/qik-vrt'
         shell: bash
         run: |
           set -euo pipefail
           tag='v2026.07.28-authority-mirror-zenodo-equality-1.0.0'
-          authority='42389236ea638f5cd40c13a486b70b1e1bf03055'
-          git fetch --no-tags https://github.com/Goldkelch/qik-vrt.git "$authority"
-          [ "$(git rev-parse FETCH_HEAD)" = "$authority" ]
+          historical_source='42389236ea638f5cd40c13a486b70b1e1bf03055'
+          git fetch --no-tags https://github.com/Goldkelch/qik-vrt.git "$historical_source"
+          [ "$(git rev-parse FETCH_HEAD)" = "$historical_source" ]
           [ "$(git show -s --format=%T FETCH_HEAD)" = 'cc3f0421c7eb9255ec35cdd5a7326d3a21dabb9e' ]
-          git tag -f "$tag" "$authority"
+          git tag -f "$tag" "$historical_source"
       - name: Verify exact common-tag kernel source binding
         run: python3 -B tools/qikvrt_global_completion.py verify-tag
       - name: Verify completed manuscript graph and EFFECT_ACK boundaries

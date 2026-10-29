@@ -1,6 +1,6 @@
 {
   "schema": "qikvrt-publication-runtime-request/v1",
-  "repository": "Goldkelch/qik-vrt",
+  "repository": "ingolf-lohmann/qik-vrt",
   "checkout": "/private/verified-complete-authority-checkout",
   "execution_head": "EXACT_EXECUTION_COMMIT",
   "execution_tree": "EXACT_EXECUTION_TREE",
@@ -11,3 +11,4 @@
   "python_sha256": "EXACT_PROVISIONED_INTERPRETER_SHA256",
   "credential_registry": "/private/protected-credential-references.json"
 }
+

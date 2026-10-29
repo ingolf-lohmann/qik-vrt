@@ -10,23 +10,61 @@ on:
       - automation/effect-ack-universality-finalize-20260722
   pull_request:
   workflow_dispatch:
+    inputs:
+      amo_sign_unlisted:
+        description: 'Explicit official Mozilla unlisted signing of the exact PR523 Standard source'
+        type: boolean
+        default: false
+      amo_expected_head:
+        description: 'Reviewed PR523 commit SHA; required for a signing effect'
+        type: string
+        default: ''
+      amo_expected_tree:
+        description: 'Reviewed PR523 root tree SHA; required for a signing effect'
+        type: string
+        default: ''
+      amo_previous_run_id:
+        description: 'Previous native signing run for journal recovery; zero only for the initial invocation'
+        type: string
+        default: '0'
+      amo_executor_run_id:
+        description: 'Original protected Main executor run; zero retains the direct Owner path'
+        type: string
+        default: '0'
+      amo_intent_sha256:
+        description: 'Digest of the original pre-published protected Main intent'
+        type: string
+        default: ''
+      amo_readback_only:
+        description: 'Only read the existing official version; never submit an upload'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
 
 jobs:
   test:
+    outputs:
+      tested_head: ${{ steps.tested_subject.outputs.head }}
+      tested_tree: ${{ steps.tested_subject.outputs.tree }}
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # The admitted PR writer runs one initial suite, then two complete suites
+    # per iteration (0..MAX_SUCCESSORS=4): at most 11 suites. Native PR38625640158
+    # needed 17m50s already at iteration 0 and was cancelled by the old 15m limit.
+    # Budget 90m for the bounded writer (~65m at measured suite times, plus margin).
+    # Non-writer paths retain 15m; all tests and terminal enforcement stay intact.
+    timeout-minutes: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && 90 || 15 }}
     steps:
       - name: Set up standalone Python runtime
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: '3.12'
       - name: Set up standalone Node runtime
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: '24'
+          package-manager-cache: false
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
@@ -37,6 +75,8 @@ jobs:
         shell: bash
         run: |
           set +e
+          initial_head="$(git rev-parse --verify HEAD^{commit})"
+          initial_tree="$(git rev-parse --verify HEAD^{tree})"
           diagnostics=.qikvrt/runtime/ci-diagnostics
           mkdir -p "$diagnostics"
           make test repository-monitor-test self-host-test > "$diagnostics/MAKE_TEST_FULL.log" 2>&1
@@ -74,6 +114,11 @@ jobs:
           cp "$diagnostics/MAKE_TEST_DIAGNOSTICS.log" \
             audit/ci-diagnostics/MAKE_TEST_DIAGNOSTICS.log
           cat "$diagnostics/MAKE_TEST_DIAGNOSTICS.log"
+          if test "$status" -eq 0 && test "$(git rev-parse --verify HEAD^{commit})" = "$initial_head" &&
+             test "$(git rev-parse --verify HEAD^{tree})" = "$initial_tree" && git diff --quiet HEAD -- &&
+             test -z "$(git ls-files --others --exclude-standard)"; then
+            printf 'head=%s\ntree=%s\n' "$initial_head" "$initial_tree" >> "$GITHUB_OUTPUT"
+          fi
           exit "$status"
       - name: Upload audit
         if: always()
@@ -93,12 +138,29 @@ jobs:
           TARGET_REF: ${{ github.head_ref }}
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
           MAX_SUCCESSORS: "4"
+          INITIAL_FULL_TEST_OUTCOME: ${{ steps.full_test.outcome }}
+          INITIAL_TESTED_HEAD: ${{ steps.full_test.outputs.head }}
+          INITIAL_TESTED_TREE: ${{ steps.full_test.outputs.tree }}
         shell: bash
         run: |
           set -euo pipefail
 
           subject="$(git rev-parse --verify HEAD^{commit})"
           test "$subject" = "$EXPECTED_HEAD"
+
+          # Reuse only the successful complete gate for this exact unchanged
+          # subject. Missing proof, integrity drift or a changed ref retains
+          # the original bounded repair/re-execution path below.
+          tree="$(git rev-parse --verify HEAD^{tree})"
+          if test "${INITIAL_FULL_TEST_OUTCOME:-}" = success &&
+             test "${INITIAL_TESTED_HEAD:-}" = "$subject" &&
+             test "${INITIAL_TESTED_TREE:-}" = "$tree" &&
+             test "$(git ls-remote --heads origin "refs/heads/$TARGET_REF" | awk 'NR == 1 { print $1 }')" = "$subject" &&
+             git diff --quiet HEAD -- && test -z "$(git ls-files --others --exclude-standard)" &&
+             python3 -B tools/qikvrt_integrity.py verify; then
+            echo "QIKVRT_FIXPOINT_REACHED iteration=0 head=$subject tree=$tree scope=INITIAL_EXACT_COMPLETE_GATE_REUSED"
+            exit 0
+          fi
 
           for iteration in $(seq 0 "$MAX_SUCCESSORS"); do
             subject="$(git rev-parse --verify HEAD^{commit})"
@@ -188,3 +250,1570 @@ jobs:
               ;;
           esac
           echo "QIKVRT_TERMINAL_DISPOSITION PASS mode=$mode"
+
+      - name: Bind the committed subject actually accepted by the complete test gate
+        id: tested_subject
+        env:
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+          FIXPOINT_REQUIRED: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository }}
+          TARGET_REF: ${{ github.head_ref }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          subject="$(git rev-parse --verify HEAD^{commit})"
+          tree="$(git rev-parse --verify HEAD^{tree})"
+          git diff --quiet HEAD --
+          if test "$FIXPOINT_REQUIRED" = true; then
+            git merge-base --is-ancestor "$EXPECTED_HEAD" "$subject"
+            # Only the existing integrity writer may advance the tested subject.
+            changed="$(git diff --name-only "$EXPECTED_HEAD" "$subject" -- . \
+              ':!REPOSITORY_FILE_MANIFEST.json' ':!REPOSITORY_FILE_MANIFEST.json.sha256' ':!SHA256SUMS.txt')"
+            test -z "$changed"
+            remote="$(git ls-remote --heads origin "refs/heads/$TARGET_REF" | awk 'NR == 1 { print $1 }')"
+            test "$remote" = "$subject"
+          else
+            test "$FIXPOINT_REQUIRED" = false
+            test "$subject" = "$EXPECTED_HEAD"
+          fi
+          printf 'head=%s\ntree=%s\n' "$subject" "$tree" >> "$GITHUB_OUTPUT"
+          echo "QIKVRT_TESTED_SUBJECT head=$subject tree=$tree"
+          mkdir -p .qikvrt/ci-tested-subject
+          python3 - "$subject" "$tree" <<'PY'
+          import json, os, pathlib, sys
+          value = {"schema": "qikvrt-ci-tested-subject/v1", "repository": os.environ["GITHUB_REPOSITORY"],
+                   "run_id": int(os.environ["GITHUB_RUN_ID"]), "run_attempt": int(os.environ["GITHUB_RUN_ATTEMPT"]),
+                   "head_sha": sys.argv[1], "tree_sha": sys.argv[2]}
+          pathlib.Path(".qikvrt/ci-tested-subject/TESTED_SUBJECT.json").write_text(json.dumps(value, sort_keys=True) + "\n")
+          PY
+
+      - name: Preserve the exact terminal tested subject independently
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-ci-tested-subject-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .qikvrt/ci-tested-subject/TESTED_SUBJECT.json
+          if-no-files-found: error
+          retention-days: 90
+
+  offline_browser:
+    needs: test
+    # Reuse the frozen native offline suite for the derived Site32 client.
+    # This gate has no dependence on Zenodo, a deployment or a native executor.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, webkit]
+    env:
+      QIKVRT_OFFLINE_CLIENT_DIR: ${{ github.workspace }}/docs/monitor/offline
+      QIKVRT_PLAYWRIGHT_MODULE: ${{ github.workspace }}/runtime/offline/browser-tests/node_modules/playwright
+      QIKVRT_OFFLINE_ENGINE: ${{ matrix.engine }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.test.outputs.tested_head }}
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: runtime/offline/browser-tests/package-lock.json
+      - name: Verify exact source, tool cache and package-bound browser lock
+        env:
+          QIKVRT_OFFLINE_EVIDENCE_DIR: ${{ runner.temp }}/offline-${{ matrix.engine }}
+          EXPECTED_HEAD: ${{ needs.test.outputs.tested_head }}
+          EXPECTED_TREE: ${{ needs.test.outputs.tested_tree }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse --verify HEAD^{commit})" = "$EXPECTED_HEAD"
+          test "$(git rev-parse --verify HEAD^{tree})" = "$EXPECTED_TREE"
+          mkdir -p "$QIKVRT_OFFLINE_EVIDENCE_DIR"
+          git rev-parse HEAD HEAD^{tree} > "$QIKVRT_OFFLINE_EVIDENCE_DIR/SUBJECT.txt"
+          python3 -B tools/qikvrt_tool_cache.py verify
+          python3 -B tools/qikvrt_integrity.py verify
+          npm ci --ignore-scripts --prefix runtime/offline/browser-tests
+          node runtime/offline/browser-tests/browser.test.mjs --precheck
+      # Keep Chromium's proven path unchanged. Diagnose the failing WebKit leg.
+      - name: Install exact package-bound browser (Chromium)
+        if: matrix.engine == 'chromium'
+        run: runtime/offline/browser-tests/node_modules/.bin/playwright install --with-deps chromium
+      # Reuse already downloaded WebKit system packages and the package-bound
+      # browser binary. APT still verifies every reused .deb against the signed
+      # index; a miss or stale archive falls back to the unchanged download path.
+      - name: Bind WebKit package and browser caches
+        id: webkit_cache_binding
+        if: matrix.engine == 'webkit'
+        shell: bash
+        run: |
+          set -euo pipefail
+          : "${ImageOS:?RUNNER_IMAGE_OS_REQUIRED}"
+          : "${ImageVersion:?RUNNER_IMAGE_VERSION_REQUIRED}"
+          archives="/var/cache/qikvrt-webkit-apt/archives"
+          sudo install -d -m 0755 /var/cache/qikvrt-webkit-apt
+          sudo install -d -o "$(id -un)" -g "$(id -gn)" -m 0755 "$archives"
+          node runtime/offline/browser-tests/webkit-apt-cache.mjs config "$archives" \
+            | sudo tee /etc/apt/apt.conf.d/99qikvrt-webkit-archive-cache >/dev/null
+          # Retain APT's default unprivileged download user. Fail here if the
+          # runner's directory permissions cannot support it; never use root.
+          if [ "$(apt-config shell sandbox_user APT::Sandbox::User)" != "sandbox_user='_apt'" ]; then
+            echo '::error::WEBKIT_APT_SANDBOX_USER_MISMATCH'
+            exit 1
+          fi
+          sudo install -d -o _apt -g root -m 0700 "$archives/partial"
+          sudo -u _apt test -w "$archives/partial"
+          printf 'image=%s-%s\n' "$ImageOS" "$ImageVersion" >> "$GITHUB_OUTPUT"
+      - name: Restore WebKit system package cache
+        id: webkit_apt_cache
+        if: matrix.engine == 'webkit'
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: /var/cache/qikvrt-webkit-apt/archives/*.deb
+          key: qikvrt-webkit-apt-v2-${{ runner.os }}-${{ runner.arch }}-${{ steps.webkit_cache_binding.outputs.image }}-${{ hashFiles('runtime/offline/browser-tests/package-lock.json') }}
+          restore-keys: |
+            qikvrt-webkit-apt-v2-${{ runner.os }}-${{ runner.arch }}-${{ steps.webkit_cache_binding.outputs.image }}-
+      - name: Restore WebKit browser binary cache
+        id: webkit_browser_cache
+        if: matrix.engine == 'webkit'
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.cache/ms-playwright/webkit-*
+          key: qikvrt-webkit-browser-v1-${{ runner.os }}-${{ runner.arch }}-${{ steps.webkit_cache_binding.outputs.image }}-${{ hashFiles('runtime/offline/browser-tests/package-lock.json') }}
+      - name: Install WebKit system dependencies (bounded diagnosis)
+        id: webkit_system_deps
+        if: matrix.engine == 'webkit'
+        shell: bash
+        env:
+          QIKVRT_OFFLINE_EVIDENCE_DIR: ${{ runner.temp }}/offline-${{ matrix.engine }}
+          APT_CACHE_HIT: ${{ steps.webkit_apt_cache.outputs.cache-hit }}
+          APT_CACHE_MATCHED_KEY: ${{ steps.webkit_apt_cache.outputs.cache-matched-key }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$QIKVRT_OFFLINE_EVIDENCE_DIR"
+          receipt="$QIKVRT_OFFLINE_EVIDENCE_DIR/INSTALL_PHASE_SYSTEM_DEPS.txt"
+          archives="/var/cache/qikvrt-webkit-apt/archives"
+          started_epoch="$(date -u +%s)"
+          printf 'phase=system-deps\nsource_head=%s\nstarted_utc=%s\ntimeout_seconds=720\n' \
+            "$(git rev-parse HEAD)" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$receipt"
+          printf 'apt_cache_exact_hit=%s\napt_cache_restored=%s\n' \
+            "${APT_CACHE_HIT:-false}" "$([ -n "${APT_CACHE_MATCHED_KEY:-}" ] && echo true || echo false)" >> "$receipt"
+          node runtime/offline/browser-tests/webkit-apt-cache.mjs summary "$archives" \
+            "$QIKVRT_OFFLINE_EVIDENCE_DIR/APT_CACHE_BEFORE.json" | sed 's/^/before_/' >> "$receipt"
+          apt_log="$RUNNER_TEMP/webkit-install-deps.log"
+          set +e
+          timeout --signal=TERM --kill-after=30s 12m runtime/offline/browser-tests/node_modules/.bin/playwright install-deps webkit 2>&1 | tee "$apt_log"
+          status="${PIPESTATUS[0]}"
+          set -e
+          printf 'ended_utc=%s\nduration_seconds=%s\nexit_status=%s\n' \
+            "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$(( $(date -u +%s) - started_epoch ))" "$status" >> "$receipt"
+          node runtime/offline/browser-tests/webkit-apt-cache.mjs fetched "$apt_log" >> "$receipt" \
+            || printf 'apt_archive_bytes_fetched=UNKNOWN\n' >> "$receipt"
+          summary_status=0
+          node runtime/offline/browser-tests/webkit-apt-cache.mjs summary "$archives" \
+            "$QIKVRT_OFFLINE_EVIDENCE_DIR/APT_CACHE_AFTER.json" | sed 's/^/after_/' >> "$receipt" || summary_status=$?
+          printf 'after_summary_exit_status=%s\n' "$summary_status" >> "$receipt"
+          if [ "$summary_status" -ne 0 ] && [ "$status" -eq 0 ]; then
+            echo '::error::WEBKIT_APT_CACHE_EVIDENCE_FAILED'
+            status="$summary_status"
+          fi
+          cat "$receipt"
+          if [ "$status" -eq 124 ]; then echo '::error::WEBKIT_SYSTEM_DEPENDENCIES_TIMEOUT'; fi
+          exit "$status"
+      - name: Save WebKit system package cache
+        if: matrix.engine == 'webkit' && steps.webkit_system_deps.outcome == 'success' && steps.webkit_apt_cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: /var/cache/qikvrt-webkit-apt/archives/*.deb
+          key: ${{ steps.webkit_apt_cache.outputs.cache-primary-key }}
+      - name: Observe root APT limits and same-package HTTP HTTPS transfer
+        id: webkit_apt_diagnosis
+        if: ${{ !cancelled() && matrix.engine == 'webkit' }}
+        timeout-minutes: 2
+        env:
+          QIKVRT_OFFLINE_EVIDENCE_DIR: ${{ runner.temp }}/offline-${{ matrix.engine }}
+          EXPECTED_HEAD: ${{ needs.test.outputs.tested_head }}
+          EXPECTED_TREE: ${{ needs.test.outputs.tested_tree }}
+        run: |
+          # A valid partial record returns 0 with transport state UNVERIFIED.
+          # Source/checker failures remain nonzero; browser gates stay mandatory.
+          node runtime/offline/browser-tests/apt-diagnosis.mjs "$QIKVRT_OFFLINE_EVIDENCE_DIR/APT_DIAGNOSIS.json"
+      - name: Install exact package-bound WebKit binary (bounded diagnosis)
+        id: webkit_browser_binary
+        if: matrix.engine == 'webkit'
+        shell: bash
+        env:
+          QIKVRT_OFFLINE_EVIDENCE_DIR: ${{ runner.temp }}/offline-${{ matrix.engine }}
+        run: |
+          set -euo pipefail
+          receipt="$QIKVRT_OFFLINE_EVIDENCE_DIR/INSTALL_PHASE_BROWSER.txt"
+          started_epoch="$(date -u +%s)"
+          printf 'phase=browser-binary\nsource_head=%s\nstarted_utc=%s\ntimeout_seconds=480\n' \
+            "$(git rev-parse HEAD)" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$receipt"
+          set +e
+          timeout --signal=TERM --kill-after=30s 8m runtime/offline/browser-tests/node_modules/.bin/playwright install webkit
+          status=$?
+          set -e
+          printf 'ended_utc=%s\nduration_seconds=%s\nexit_status=%s\n' \
+            "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$(( $(date -u +%s) - started_epoch ))" "$status" >> "$receipt"
+          cat "$receipt"
+          if [ "$status" -eq 124 ]; then echo '::error::WEBKIT_BROWSER_DOWNLOAD_TIMEOUT'; fi
+          exit "$status"
+      - name: Save WebKit browser binary cache
+        if: matrix.engine == 'webkit' && steps.webkit_browser_binary.outcome == 'success' && steps.webkit_browser_cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.cache/ms-playwright/webkit-*
+          key: ${{ steps.webkit_browser_cache.outputs.cache-primary-key }}
+      - name: Fresh offline and full browser-process restart controls
+        env:
+          QIKVRT_OFFLINE_EVIDENCE_DIR: ${{ runner.temp }}/offline-${{ matrix.engine }}
+        run: |
+          set -euo pipefail
+          node runtime/offline/browser-tests/browser.test.mjs
+          git rev-parse HEAD HEAD^{tree} > "$QIKVRT_OFFLINE_EVIDENCE_DIR/SUBJECT_AFTER.txt"
+          cmp "$QIKVRT_OFFLINE_EVIDENCE_DIR/SUBJECT.txt" "$QIKVRT_OFFLINE_EVIDENCE_DIR/SUBJECT_AFTER.txt"
+          git status --porcelain --untracked-files=no > "$QIKVRT_OFFLINE_EVIDENCE_DIR/TRACKED_STATUS.txt"
+          test ! -s "$QIKVRT_OFFLINE_EVIDENCE_DIR/TRACKED_STATUS.txt"
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: always()
+        with:
+          name: qikvrt-site32-offline-browser-${{ matrix.engine }}-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/offline-${{ matrix.engine }}/browser-readback.json
+            ${{ runner.temp }}/offline-${{ matrix.engine }}/failure.json
+            ${{ runner.temp }}/offline-${{ matrix.engine }}/SUBJECT*.txt
+            ${{ runner.temp }}/offline-${{ matrix.engine }}/TRACKED_STATUS.txt
+            ${{ runner.temp }}/offline-${{ matrix.engine }}/INSTALL_PHASE*.txt
+            ${{ runner.temp }}/offline-${{ matrix.engine }}/APT_DIAGNOSIS.json
+            ${{ runner.temp }}/offline-${{ matrix.engine }}/APT_CACHE_*.json
+          retention-days: 30
+          if-no-files-found: warn
+
+  amo_unlisted:
+    name: Mozilla AMO unlisted access and exact-source signing
+    needs: test
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      actions: read
+    concurrency:
+      group: qikvrt-amo-unlisted-${{ inputs.amo_readback_only && format('readback-{0}', github.run_id) || 'standard-1.1.0' }}
+      cancel-in-progress: false
+    outputs:
+      signed_binding: ${{ steps.sign.outputs.signed_binding }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ needs.test.outputs.tested_head }}
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: '3.12'
+      - name: Verify the successful committed test subject before signing admission
+        env:
+          TEST_RESULT: ${{ needs.test.result }}
+          EXPECTED_HEAD: ${{ needs.test.outputs.tested_head }}
+          EXPECTED_TREE: ${{ needs.test.outputs.tested_tree }}
+        run: |
+          set -euo pipefail
+          test "$TEST_RESULT" = success
+          test "$(git rev-parse --verify HEAD^{commit})" = "$EXPECTED_HEAD"
+          test "$(git rev-parse --verify HEAD^{tree})" = "$EXPECTED_TREE"
+      - name: Verify existing tool contract and AMO adversarial controls without credentials
+        run: |
+          python3 -B tools/qikvrt_tool_cache.py verify
+          python3 -B -m unittest -v tests.test_self_host_firefox.FirefoxAMOUnlistedTests
+      - name: Inspect only securely managed credential presence and exact effect admission
+        id: admission
+        env:
+          AMO_ISSUER_PRESENT: ${{ secrets.AMO_JWT_ISSUER != '' }}
+          AMO_SECRET_PRESENT: ${{ secrets.AMO_JWT_SECRET != '' }}
+          SIGN_REQUESTED: ${{ (github.event_name == 'workflow_dispatch' && inputs.amo_sign_unlisted) || (github.event_name == 'push' && github.repository == 'ingolf-lohmann/qik-vrt' && github.actor == 'ingolf-lohmann' && github.triggering_actor == 'ingolf-lohmann' && github.ref == 'refs/heads/integration/515-519-521-522-20261012-eceb9b63') }}
+          OWNER_CI_HANDOFF: ${{ github.event_name == 'push' && github.repository == 'ingolf-lohmann/qik-vrt' && github.actor == 'ingolf-lohmann' && github.triggering_actor == 'ingolf-lohmann' && github.ref == 'refs/heads/integration/515-519-521-522-20261012-eceb9b63' }}
+          AMO_TEST_RESULT: ${{ needs.test.result }}
+          AMO_TESTED_HEAD: ${{ needs.test.outputs.tested_head }}
+          AMO_TESTED_TREE: ${{ needs.test.outputs.tested_tree }}
+          EXPECTED_HEAD: ${{ inputs.amo_expected_head || needs.test.outputs.tested_head }}
+          EXPECTED_TREE: ${{ inputs.amo_expected_tree || needs.test.outputs.tested_tree }}
+          PREVIOUS_RUN_ID: ${{ inputs.amo_previous_run_id || '0' }}
+          GH_TOKEN: ${{ github.token }}
+          AMO_EXECUTOR_RUN_ID: ${{ inputs.amo_executor_run_id || '0' }}
+          AMO_INTENT_SHA256: ${{ inputs.amo_intent_sha256 }}
+          AMO_READBACK_ONLY: ${{ inputs.amo_readback_only || false }}
+        run: |
+          python3 -B - <<'PYAMO'
+          import json,os,re,subprocess
+          from pathlib import Path
+          from tools import qikvrt_workflow_executor as executor
+          p=Path(os.environ['RUNNER_TEMP'])/'amo-original';p.mkdir(mode=0o700)
+          requested=os.environ['SIGN_REQUESTED']=='true'
+          head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          tree=subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip()
+          issuer=os.environ['AMO_ISSUER_PRESENT']=='true';secret=os.environ['AMO_SECRET_PRESENT']=='true'
+          r={'schema':'qikvrt-amo-secure-access-preflight/v1','repository':os.environ['GITHUB_REPOSITORY'],
+              'source_head':head,'source_tree':tree,'issuer_present':issuer,'secret_present':secret,
+              'secret_names':['AMO_JWT_ISSUER','AMO_JWT_SECRET'],'credential_values_read':False,
+              'amo_authentication_verified':False,'signing_requested':requested,'effect_ack_done':False,
+              'request_mode':('DIRECT_OWNER_TESTED_PUSH' if os.environ.get('OWNER_CI_HANDOFF')=='true' else 'WORKFLOW_DISPATCH') if requested else 'NONE',
+              'executor_run_id':os.environ['AMO_EXECUTOR_RUN_ID'],
+              'readback_only':os.environ['AMO_READBACK_ONLY']=='true','first_boundary':None}
+          r['credential_delivery']=executor.amo_credential_delivery(
+              {'issuer_present':issuer,'secret_present':secret})
+          try:
+              if requested:
+                  assert os.environ['GITHUB_REPOSITORY']=='ingolf-lohmann/qik-vrt','AMO_WRONG_REPOSITORY'
+                  assert head==os.environ['EXPECTED_HEAD'] and tree==os.environ['EXPECTED_TREE'],'AMO_EXACT_REVIEWED_SOURCE_REQUIRED'
+                  assert re.fullmatch(r'0|[1-9][0-9]{0,19}',os.environ['PREVIOUS_RUN_ID']),'AMO_PREVIOUS_RUN_INVALID'
+                  if os.environ.get('OWNER_CI_HANDOFF')=='true':
+                      assert os.environ['AMO_EXECUTOR_RUN_ID']=='0','AMO_DIRECT_OWNER_CI_CONTEXT_REQUIRED'
+                      r['owner_ci_handoff']=executor.amo_validate_owner_ci(Path.cwd())
+                  elif os.environ['AMO_EXECUTOR_RUN_ID']!='0':
+                      executor.amo_validate_delegation(Path.cwd())
+                  else:
+                      assert os.environ['GITHUB_ACTOR']=='ingolf-lohmann','AMO_DIRECT_OWNER_EXECUTION_REQUIRED'
+                  if not (issuer and secret):
+                      r['first_boundary']='AMO_CREDENTIAL_PAIR_NOT_DELIVERED_TO_THIS_JOB'
+              else:
+                  r['first_boundary']='AMO_SIGNING_NOT_REQUESTED'
+          except Exception as exc:
+              code=str(exc)
+              r['first_boundary']=code if re.fullmatch(r'AMO_[A-Z0-9_]{1,100}',code) else 'AMO_SOURCE_ADMISSION_UNVERIFIED'
+              raise SystemExit(r['first_boundary']) from None
+          finally:
+              (p/'ACCESS_PREFLIGHT.json').write_text(json.dumps(r,sort_keys=True,indent=2)+'\n')
+          with open(os.environ['GITHUB_OUTPUT'],'a') as out:
+              out.write('submit='+str(requested and issuer and secret).lower()+'\n')
+              out.write('previous_run_id='+os.environ['PREVIOUS_RUN_ID']+'\n')
+          print('AMO_SUBMISSION_NOT_REQUESTED' if not requested else (
+              'AMO_ACCESS_PRESENT_UNVERIFIED' if issuer and secret else 'HOLD_AMO_AUTHORIZED_CREDENTIAL_PAIR_UNAVAILABLE'))
+          PYAMO
+      - name: Resolve the preceding actual signing invocation through existing GitHub REST reads
+        id: journal
+        if: steps.admission.outputs.submit == 'true' && !inputs.amo_readback_only
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REQUESTED_PREVIOUS_RUN_ID: ${{ steps.admission.outputs.previous_run_id }}
+        run: |
+          python3 -B - <<'PYJOURNAL'
+          import os
+          from pathlib import Path
+          from tools import qikvrt_workflow_executor as executor
+          previous=executor.amo_signing_predecessor(Path.cwd(),int(os.environ['GITHUB_RUN_ID']),
+              int(os.environ['GITHUB_RUN_ATTEMPT']),int(os.environ['REQUESTED_PREVIOUS_RUN_ID']))
+          with open(os.environ['GITHUB_OUTPUT'],'a') as out:out.write('previous_run_id='+str(previous)+'\n')
+          PYJOURNAL
+      - name: Retrieve original preceding non-secret signing journal
+        if: steps.admission.outputs.submit == 'true' && !inputs.amo_readback_only && steps.journal.outputs.previous_run_id != '0'
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ steps.journal.outputs.previous_run_id }}
+          pattern: qikvrt-amo-unlisted-*
+          path: ${{ runner.temp }}/amo-previous
+          merge-multiple: true
+      - name: Official source-bound unlisted signing and original-byte readback
+        id: sign
+        if: steps.admission.outputs.submit == 'true'
+        env:
+          WEB_EXT_API_KEY: ${{ secrets.AMO_JWT_ISSUER }}
+          WEB_EXT_API_SECRET: ${{ secrets.AMO_JWT_SECRET }}
+          GH_READ_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_HEAD: ${{ inputs.amo_expected_head || needs.test.outputs.tested_head }}
+          EXPECTED_TREE: ${{ inputs.amo_expected_tree || needs.test.outputs.tested_tree }}
+          OWNER_CI_HANDOFF: ${{ github.event_name == 'push' && github.repository == 'ingolf-lohmann/qik-vrt' && github.actor == 'ingolf-lohmann' && github.triggering_actor == 'ingolf-lohmann' && github.ref == 'refs/heads/integration/515-519-521-522-20261012-eceb9b63' }}
+          AMO_TEST_RESULT: ${{ needs.test.result }}
+          AMO_TESTED_HEAD: ${{ needs.test.outputs.tested_head }}
+          AMO_TESTED_TREE: ${{ needs.test.outputs.tested_tree }}
+          PREVIOUS_RUN_ID: ${{ steps.journal.outputs.previous_run_id || '0' }}
+          AMO_EXECUTOR_RUN_ID: ${{ inputs.amo_executor_run_id || '0' }}
+          AMO_INTENT_SHA256: ${{ inputs.amo_intent_sha256 }}
+          AMO_READBACK_ONLY: ${{ inputs.amo_readback_only || false }}
+        run: |
+          python3 -B - <<'PYAMO'
+          import json,os,urllib.request
+          from pathlib import Path
+          from tools import qikvrt_self_host as host
+          from tools import qikvrt_workflow_executor as executor
+          if os.environ.get('OWNER_CI_HANDOFF')=='true':
+              executor.amo_validate_owner_ci(Path.cwd())
+          elif os.environ['AMO_EXECUTOR_RUN_ID']!='0':
+              executor.amo_validate_delegation(Path.cwd())
+          else:
+              assert os.environ['GITHUB_ACTOR']=='ingolf-lohmann','AMO_DIRECT_OWNER_EXECUTION_REQUIRED'
+              request=urllib.request.Request('https://api.github.com/repos/ingolf-lohmann/qik-vrt/pulls/523',
+                  headers={'Authorization':'Bearer '+os.environ['GH_READ_TOKEN'],'Accept':'application/vnd.github+json'})
+              class NoRedirect(urllib.request.HTTPRedirectHandler):
+                  def redirect_request(self,*args,**kwargs):return None
+              with urllib.request.build_opener(NoRedirect).open(request,timeout=30) as response:
+                  raw=response.read(1024*1024+1);assert len(raw)<=1024*1024;pr=json.loads(raw)
+              assert pr['state']=='open' and pr['head']['repo']['full_name']=='ingolf-lohmann/qik-vrt'
+              assert pr['head']['sha']==os.environ['EXPECTED_HEAD']==os.environ['GITHUB_SHA'],'AMO_PR523_HEAD_DRIFT'
+          root=Path(os.environ['RUNNER_TEMP']);previous=root/'amo-previous/AMO_ATTEMPT.json'
+          if os.environ['PREVIOUS_RUN_ID']!='0':
+              if not previous.is_file():previous=root/'amo-previous/AMO_SIGNING_RECEIPT.json'
+              assert previous.is_file(),'AMO_ORIGINAL_PREDECESSOR_JOURNAL_REQUIRED'
+              previous.chmod(0o600)
+          else:previous=None
+          receipt=host.firefox_amo_unlisted(Path.cwd(),root/'amo-original',os.environ['EXPECTED_HEAD'],
+              os.environ['EXPECTED_TREE'],root/'amo-state',submit=True,previous_state=previous,
+              readback_only=os.environ['AMO_READBACK_ONLY']=='true')
+          if receipt.get('signed_original_returned') is True:
+              binding={'repository':'ingolf-lohmann/qik-vrt','run_id':int(os.environ['GITHUB_RUN_ID']),
+                  'artifact_name':'qikvrt-amo-unlisted-'+os.environ['GITHUB_SHA'],
+                  'file_name':receipt['file_name'],'xpi_sha256':receipt['xpi_sha256']}
+              receipt['signed_xpi_artifact']=binding
+              (root/'amo-original/AMO_SIGNING_RECEIPT.json').write_bytes(host.raw_json(receipt))
+              with open(os.environ['GITHUB_OUTPUT'],'a') as out:
+                  out.write('signed_binding='+json.dumps(binding,separators=(',',':'))+'\n')
+          print(json.dumps(receipt,sort_keys=True))
+          assert receipt.get('signed_original_returned') is True,receipt['state']
+          PYAMO
+      - name: Place the original non-secret attempt journal beside the exact XPI
+        if: always()
+        run: |
+          python3 -B - <<'PYLAYOUT'
+          import os,shutil
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP'])
+          journal=root/'amo-state/AMO_ATTEMPT.json'
+          if journal.is_file():
+              destination=root/'amo-original/AMO_ATTEMPT.json'
+              assert not journal.is_symlink() and not destination.exists()
+              shutil.copyfile(journal,destination);destination.chmod(0o600)
+              assert destination.read_bytes()==journal.read_bytes()
+          PYLAYOUT
+      - name: Preserve only non-secret signing receipts, journal and original XPI
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-amo-unlisted-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            ${{ runner.temp }}/amo-original/*.json
+            ${{ runner.temp }}/amo-original/*.xpi
+          retention-days: 90
+          if-no-files-found: error
+
+  s1_firefox_extension:
+    outputs:
+      signed_binding: ${{ steps.effect-admission.outputs.signed_binding }}
+    name: Reused S1 + Mozilla Release - Firefox 158 XPI admission
+    needs: [amo_unlisted, container]
+    # The native-only package has no Firefox installation to admit. Keep the
+    # existing browser gate for a browser package or an explicit signing path.
+    if: ${{ always() && (needs.container.outputs.terminal_profile == 'firefox' || (github.event_name == 'workflow_dispatch' && (inputs.amo_sign_unlisted || inputs.amo_readback_only)) || needs.amo_unlisted.outputs.signed_binding != '') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - name: Check out exact candidate XPI and existing probe
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: '3.12'
+      - name: Verify existing tool contract and negative admission controls
+        run: |
+          python3 -B tools/qikvrt_tool_cache.py verify
+          python3 -B -m unittest -v tests.test_self_host_firefox.FirefoxExtensionAdmissionTests
+      - name: Admit only a materially changed image, XPI or probe
+        id: effect-admission
+        env:
+          AMO_SIGNED_BINDING: ${{ needs.amo_unlisted.outputs.signed_binding }}
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          evidence=Path(os.environ['RUNNER_TEMP'])/'s1-extension-evidence'
+          evidence.mkdir(mode=0o777,exist_ok=True);evidence.chmod(0o777)
+          root='browser/firefox/qikvrt-terminal/'
+          files=['manifest.json','background.js','content.js','options.html','options.js','terminal.css','client.html']
+          blob=lambda path:subprocess.check_output(['git','rev-parse','HEAD:'+path],text=True).strip()
+          work=json.loads(Path('state/work_units/QIKVRT_MAIN_CONVERGENCE_20261014_V1.json').read_bytes())
+          upgrade=work.get('firefox158_s1_upgrade',{})
+          signed=json.loads(os.environ['AMO_SIGNED_BINDING']) if os.environ.get('AMO_SIGNED_BINDING') else upgrade.get('signed_xpi_artifact')
+          cached=upgrade.get('runtime_artifact')
+          # Validate the unchanged upgrade recipe from the retained parent
+          # object; unrelated OCI stages must not retry a known signing failure.
+          merge=work.get('oci_publication_merge_20261014',{})
+          parent=merge.get('candidate_subject',{}).get('first_parent')
+          same_recipe=False
+          if parent:
+              old=subprocess.check_output(['git','show',parent+':runtime/self-host/Dockerfile'])
+              current=Path('runtime/self-host/Dockerfile').read_bytes()
+              def recipe(raw):
+                  lines=raw.splitlines(keepends=True)
+                  arg=[line for line in lines if line.startswith(b'ARG QIKVRT_S1_BASE_IMAGE=')]
+                  body=raw.split(b'FROM ${QIKVRT_S1_BASE_IMAGE} AS s1-firefox-release\n',1)[1]
+                  body=body.split(b'\nFROM ',1)[0]
+                  return arg,body
+              same_recipe=recipe(old)==recipe(current)
+              parent_recipe_blob=hashlib.sha1(b'blob '+str(len(old)).encode()+b'\0'+old).hexdigest()
+          recipe_blob_matches=lambda expected:(expected==blob('runtime/self-host/Dockerfile') or
+              same_recipe and expected==parent_recipe_blob)
+          inputs={'image_digest':'sha256:eda9516930cf7a51f0342e9b154b430c386ad04b80ce6401ce6b7d1a103ac74d',
+              'upgrade_dockerfile_blob':blob('runtime/self-host/Dockerfile'),
+              'terminal_entrypoint_blob':blob('deploy/universal-terminal/entrypoint.sh'),
+              'signed_xpi_artifact':signed,
+              'probe_blob':blob('tools/qikvrt_self_host.py'),
+              'extension_blobs':{name:blob(root+name) for name in files}}
+          from tools import qikvrt_self_host as host
+          reuse=(cached is not None and recipe_blob_matches(cached['component_blobs'].get('runtime/self-host/Dockerfile')) and
+              cached['component_blobs'].get('deploy/universal-terminal/entrypoint.sh')==blob('deploy/universal-terminal/entrypoint.sh') and
+              (cached['component_blobs'].get('tools/qikvrt_self_host.py')==blob('tools/qikvrt_self_host.py') or
+               cached.get('probe_runtime_sha256')==host.firefox_amo_runtime_fingerprint(Path('tools/qikvrt_self_host.py').read_bytes())))
+          if reuse:
+              assert cached['repository']=='ingolf-lohmann/qik-vrt'
+              assert cached['parent_image_id']=='sha256:2f35af27a2cfd36e383ae0ced8f85eca4ff328d888a7169d7cdafa62810dfe2e'
+              assert type(cached['run_id']) is int and cached['run_id']>0
+              import re
+              assert re.fullmatch(r'[A-Za-z0-9_.-]{1,160}',cached['artifact_name'])
+              assert re.fullmatch(r'[a-f0-9]{64}',cached['archive_sha256'])
+          runtime_inputs={k:v for k,v in inputs.items() if k!='probe_blob'}
+          runtime_inputs['probe_runtime_sha256']=host.firefox_amo_runtime_fingerprint(Path('tools/qikvrt_self_host.py').read_bytes())
+          causal_digest=hashlib.sha256(json.dumps(runtime_inputs,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+          work=json.loads(Path('state/work_units/QIKVRT_MAIN_CONVERGENCE_20261014_V1.json').read_bytes())
+          prior=upgrade.get('native_observation',{})
+          equivalent_inputs=dict(runtime_inputs)
+          if same_recipe: equivalent_inputs['upgrade_dockerfile_blob']=parent_recipe_blob
+          equivalent_digest=hashlib.sha256(json.dumps(equivalent_inputs,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+          unchanged=(prior.get('runtime_causal_input_sha256') in (causal_digest,equivalent_digest) and
+              prior.get('receipt',{}).get('state','').startswith('HOLD_'))
+          if unchanged:
+              r=dict(prior['receipt']);r.update(current_probe_executed=False,
+                  reused_failure_source_head=prior['source_head'],reused_failure_run_id=prior['run_id'])
+              (evidence/'extension-installation.json').write_text(json.dumps(r,sort_keys=True,indent=2)+'\n')
+              print('NOOP_UNCHANGED_FIREFOX_RELEASE_OR_SIGNING_FAILURE')
+          if signed is not None:
+              import re
+              assert signed['repository']=='ingolf-lohmann/qik-vrt'
+              assert type(signed['run_id']) is int and signed['run_id']>0
+              assert re.fullmatch(r'[A-Za-z0-9_.-]{1,160}',signed['artifact_name'])
+              assert re.fullmatch(r'[A-Za-z0-9_.-]+[.]xpi',signed['file_name'])
+              assert re.fullmatch(r'[a-f0-9]{64}',signed['xpi_sha256'])
+          (evidence/'causal-inputs.json').write_text(json.dumps({'inputs':inputs,
+              'sha256':causal_digest,'current_probe_required':not unchanged,
+              'effect_ack_done':False},sort_keys=True,indent=2)+'\n')
+          with open(os.environ['GITHUB_OUTPUT'],'a') as output:
+              output.write('probe_required='+str(not unchanged).lower()+'\n')
+              output.write('signed_candidate='+str(signed is not None).lower()+'\n')
+              output.write('signed_binding='+json.dumps(signed,separators=(',',':'))+'\n')
+              output.write('runtime_reuse='+str(reuse).lower()+'\n')
+              if reuse:
+                  output.write('runtime_run_id='+str(cached['run_id'])+'\n')
+                  output.write('runtime_artifact_name='+cached['artifact_name']+'\n')
+              if signed:
+                  output.write('signed_run_id='+str(signed['run_id'])+'\n')
+                  output.write('signed_artifact_name='+signed['artifact_name']+'\n')
+          PY
+
+      - name: Admit reuse of the already delivered dependency parts
+        id: transport-admission
+        env:
+          RUNTIME_REUSE: ${{ steps.effect-admission.outputs.runtime_reuse }}
+        run: |
+          python3 -B - <<'PYTRANSFER'
+          import json,os,re,subprocess
+          from pathlib import Path
+          upgrade=json.loads(Path('state/work_units/QIKVRT_MAIN_CONVERGENCE_20261014_V1.json').read_bytes())['firefox158_s1_upgrade']
+          cached=upgrade.get('runtime_artifact')
+          transport=upgrade.get('bounded_transport_repair_20261017',{}).get('delivery_cache')
+          reuse=False
+          if transport is not None:
+              assert transport['schema']=='qikvrt-runtime-transport-cache/v1'
+              delivery=transport['delivery'];metadata=transport['metadata_artifact']
+              assert delivery['repository']=='ingolf-lohmann/qik-vrt'
+              assert delivery['schema']=='qikvrt-container-artifact-delivery/v1'
+              assert type(delivery['run_id']) is int and delivery['run_id']>0
+              assert delivery['independent_download_back_verified'] is True
+              assert delivery['original_archive_restored_verified'] is True
+              assert delivery['image_imported'] is False and delivery['extension_activation_verified'] is False
+              assert delivery['public_production_verified'] is False and delivery['effect_ack_done'] is False
+              assert all(re.fullmatch(r'[a-f0-9]{40}',delivery[key]) for key in ('exporter_head','exporter_tree'))
+              assert type(metadata['id']) is int and metadata['id']>0 and 0<metadata['bytes']<536870912
+              assert re.fullmatch(r'[A-Za-z0-9_.-]{1,160}',metadata['name'])
+              for pin in (metadata['sha256'],transport['delivery_json_sha256'],delivery['parts_manifest_sha256']):
+                  assert re.fullmatch(r'[a-f0-9]{64}',pin)
+              assert 1<=len(delivery['parts'])<=4
+              for index,part in enumerate(delivery['parts']):
+                  assert type(part['index']) is int and part['index']==index
+                  assert type(part['artifact_id']) is int and part['artifact_id']>0
+                  assert re.fullmatch(r'[A-Za-z0-9_.-]{1,160}',part['artifact_name'])
+                  assert re.fullmatch(r'[a-f0-9]{64}',part['zip_sha256'])
+              helper=subprocess.check_output(['git','rev-parse','HEAD:tools/qikvrt_self_host_container.py'],text=True).strip()
+              reuse=(os.environ['RUNTIME_REUSE']=='true' and cached is not None and
+                  transport['transport_module_blob']==helper and all(
+                  delivery['original_image'][key]==cached[key] for key in
+                  ('source_head','source_tree','image_id','archive_bytes','archive_sha256')))
+          with open(os.environ['GITHUB_OUTPUT'],'a') as out:
+              out.write('reuse='+str(reuse).lower()+'\n')
+              if reuse:
+                  out.write('run_id='+str(delivery['run_id'])+'\n')
+                  out.write('artifact_name='+metadata['name']+'\n')
+          PYTRANSFER
+      - name: Read the small pinned dependency delivery metadata
+        if: steps.transport-admission.outputs.reuse == 'true'
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ steps.transport-admission.outputs.run_id }}
+          name: ${{ steps.transport-admission.outputs.artifact_name }}
+          path: ${{ runner.temp }}/s1-firefox158-existing-transport
+      - name: Verify existing part availability and original delivery pins without retransferring image bytes
+        if: steps.transport-admission.outputs.reuse == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 -B - <<'PYEXISTING'
+          import hashlib,json,os,urllib.request,urllib.error
+          from pathlib import Path
+          upgrade=json.loads(Path('state/work_units/QIKVRT_MAIN_CONVERGENCE_20261014_V1.json').read_bytes())['firefox158_s1_upgrade']
+          bound=upgrade['bounded_transport_repair_20261017']['delivery_cache']
+          original=bound['delivery'];metadata=bound['metadata_artifact']
+          root=Path(os.environ['RUNNER_TEMP']);folder=root/'s1-firefox158-existing-transport'
+          assert hashlib.sha256((folder/'DELIVERY.json').read_bytes()).hexdigest()==bound['delivery_json_sha256']
+          assert json.loads((folder/'DELIVERY.json').read_bytes())==original
+          assert hashlib.sha256((folder/'PARTS.json').read_bytes()).hexdigest()==original['parts_manifest_sha256']
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self,*args,**kwargs): return None
+          opener=urllib.request.build_opener(NoRedirect())
+          records=[{'id':metadata['id'],'name':metadata['name'],'digest':metadata['sha256'],'bytes':metadata['bytes']}]
+          records.extend({'id':p['artifact_id'],'name':p['artifact_name'],'digest':p['zip_sha256']} for p in original['parts'])
+          for record in records:
+              request=urllib.request.Request('https://api.github.com/repos/ingolf-lohmann/qik-vrt/actions/artifacts/'+str(record['id']),
+                  headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'})
+              try:
+                  with opener.open(request,timeout=20) as response:
+                      assert response.status==200;raw=response.read(65537)
+              except urllib.error.HTTPError as error:
+                  raise ValueError('HOLD_PINNED_RUNTIME_TRANSPORT_HTTP_'+str(error.code)) from None
+              assert len(raw)<=65536
+              observed=json.loads(raw)
+              assert observed['id']==record['id'] and observed['name']==record['name']
+              assert observed['digest']=='sha256:'+record['digest'] and observed['expired'] is False
+              assert 0<observed['size_in_bytes']<536870912
+              assert observed['workflow_run']['id']==original['run_id']
+              assert observed['workflow_run']['head_sha']==original['exporter_head']
+              if 'bytes' in record:assert observed['size_in_bytes']==record['bytes']
+          result={'schema':'qikvrt-runtime-transport-cache-readback/v1','state':'PINNED_ORIGINAL_DELIVERY_REUSED',
+              'exporter_head':original['exporter_head'],'exporter_tree':original['exporter_tree'],
+              'archive_sha256':original['original_image']['archive_sha256'],'parts_checked':len(original['parts']),
+              'large_archive_downloaded':False,'parts_republished':False,'image_imported':False,
+              'extension_activation_verified':False,'public_production_verified':False,'effect_ack_done':False}
+          (root/'s1-extension-evidence/transport-cache-readback.json').write_text(json.dumps(result,sort_keys=True,indent=2)+'\n')
+          print('PINNED_ORIGINAL_DELIVERY_REUSED_WITHOUT_LARGE_TRANSFER')
+          PYEXISTING
+      - name: Reuse the already verified Firefox-158 dependency bytes
+        if: steps.effect-admission.outputs.runtime_reuse == 'true' && (steps.effect-admission.outputs.probe_required == 'true' || steps.transport-admission.outputs.reuse != 'true')
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ steps.effect-admission.outputs.runtime_run_id }}
+          name: ${{ steps.effect-admission.outputs.runtime_artifact_name }}
+          path: ${{ runner.temp }}/s1-firefox158-cached
+      - name: Independently verify upgraded archive, parent layers, package and actual ELF
+        if: steps.effect-admission.outputs.probe_required == 'true' && steps.effect-admission.outputs.runtime_reuse == 'true'
+        run: |
+          python3 -B - <<'PYCACHE'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          work=json.loads(Path('state/work_units/QIKVRT_MAIN_CONVERGENCE_20261014_V1.json').read_bytes())
+          bound=work['firefox158_s1_upgrade']['runtime_artifact']
+          root=Path(os.environ['RUNNER_TEMP']);archive=root/'s1-firefox158-cached/image.docker.tar.gz'
+          with archive.open('rb') as f: pin=hashlib.file_digest(f,'sha256').hexdigest()
+          assert archive.stat().st_size==bound['archive_bytes'] and pin==bound['archive_sha256']
+          subprocess.run(['docker','load','--input',str(archive)],check=True)
+          live=json.loads(subprocess.check_output(['docker','image','inspect','qikvrt-s1:firefox-158-release']))[0]
+          assert live['Id']==bound['image_id'] and live['RootFS']['Layers']==bound['diff_ids']
+          assert live['RootFS']['Layers'][:len(bound['parent_diff_ids'])]==bound['parent_diff_ids']
+          code="import hashlib,json,subprocess;from pathlib import Path;p=Path('/usr/lib/firefox/firefox');print(json.dumps({'binary_sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'package_version':subprocess.check_output(['dpkg-query','-W','-f=${Version}','firefox'],text=True).strip(),'version_output':subprocess.check_output([str(p),'--version'],stderr=subprocess.STDOUT,text=True).strip()}))"
+          actual=json.loads(subprocess.check_output(['docker','run','--rm','--network','none','--user','10001:10001',
+              '--read-only','--cap-drop','ALL','--security-opt','no-new-privileges:true',
+              '--entrypoint','python3','qikvrt-s1:firefox-158-release','-B','-c',code]))
+          assert actual['binary_sha256']==bound['provision']['binary_sha256']
+          assert actual['package_version']==bound['provision']['debian_package_version']
+          from tools import qikvrt_self_host as host
+          assert host.firefox_release_minimum_satisfied(actual['version_output'])
+          evidence=root/'s1-extension-evidence'
+          (evidence/'release-cache-readback.json').write_text(json.dumps({'state':'EXACT_UPGRADED_IMAGE_REIMPORTED_VERIFIED',
+              'archive_sha256':pin,'archive_bytes':archive.stat().st_size,'image_id':live['Id'],
+              'all_parent_layers_retained':True,'actual':actual,'runtime_components_rebuilt':False,
+              'source_component_blobs':bound['component_blobs'],'cached_source_head':bound['source_head'],
+              'current_candidate_head':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+              'extension_activation_verified':False,'predecessor_full_head_acceptance_transferred':False,
+              'effect_ack_done':False},sort_keys=True,indent=2)+'\n')
+          print('EXACT_UPGRADED_S1_BYTES_REUSED_WITHOUT_REBUILD')
+          PYCACHE
+      - name: Reuse original S1 source verifier
+        if: steps.effect-admission.outputs.probe_required == 'true' && steps.effect-admission.outputs.runtime_reuse != 'true'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: c1cca8fae42166d456c776e5c876c23ac7689aea
+          path: .qikvrt/runtime/s1-baseline-source
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Retrieve existing proven OCI bytes without rebuilding runtime
+        if: steps.effect-admission.outputs.probe_required == 'true' && steps.effect-admission.outputs.runtime_reuse != 'true'
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          github-token: ${{ github.token }}
+          run-id: 38475417828
+          name: qikvrt-s1-container-c1cca8fae42166d456c776e5c876c23ac7689aea
+          path: ${{ runner.temp }}/s1-original
+      - name: Verify original archive, every OCI object and exact image binding
+        if: steps.effect-admission.outputs.probe_required == 'true' && steps.effect-admission.outputs.runtime_reuse != 'true'
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,sys
+          from pathlib import Path
+          import os
+          original=Path(os.environ['RUNNER_TEMP'])/'s1-original'
+          archive=original/'image.oci.tar'
+          h=hashlib.sha256()
+          with archive.open('rb') as f:
+              for block in iter(lambda:f.read(8*1024*1024),b''): h.update(block)
+          assert h.hexdigest()=='09ca059f741bdb93232c35fe463b37256dc8dfa25478804461a9c0b575b75b25'
+          sys.path.insert(0,str(Path('.qikvrt/runtime/s1-baseline-source').resolve()))
+          from tools import qikvrt_self_host_container as original_verifier
+          r=original_verifier.oci(archive,'c1cca8fae42166d456c776e5c876c23ac7689aea',
+              '65997163a6bee14f8d14f4a193038b51f4599ead')
+          assert r['image_digest']=='sha256:eda9516930cf7a51f0342e9b154b430c386ad04b80ce6401ce6b7d1a103ac74d'
+          evidence=Path(os.environ['RUNNER_TEMP'])/'s1-extension-evidence'
+          evidence.mkdir(mode=0o777,exist_ok=True);evidence.chmod(0o777)
+          (evidence/'original-oci.json').write_text(json.dumps(r,sort_keys=True,indent=2)+'\n')
+          PY
+          mkdir "$RUNNER_TEMP/s1-original/load"
+          python3 -B - <<'PYIMPORT'
+          import os
+          from pathlib import Path
+          from tools import qikvrt_self_host as host
+          p=Path(os.environ['RUNNER_TEMP'])/'s1-original'
+          print(host.oci_to_docker_archive(p/'image.oci.tar',p/'load/image.docker.tar',
+              'qikvrt-s1:firefox-158-baseline'))
+          PYIMPORT
+          docker load --input "$RUNNER_TEMP/s1-original/load/image.docker.tar"
+          python3 -B - <<'PY'
+          import json,os,subprocess
+          from pathlib import Path
+          p=Path(os.environ['RUNNER_TEMP'])/'s1-extension-evidence'
+          o=json.loads((p/'original-oci.json').read_bytes())
+          live=json.loads(subprocess.check_output(['docker','image','inspect','qikvrt-s1:firefox-158-baseline']))[0]
+          assert live['Id']==o['config_digest']
+          assert live['RootFS']['Layers']==o['diff_ids']
+          assert live['Config']['Labels']['org.opencontainers.image.revision']==o['source_head']
+          assert live['Config']['Labels']['de.qikvrt.source-tree']==o['source_tree']
+          (p/'image-readback.json').write_text(json.dumps({'image_id':live['Id'],
+              'source_head':o['source_head'],'source_tree':o['source_tree'],
+              'original_oci_archive_sha256':'09ca059f741bdb93232c35fe463b37256dc8dfa25478804461a9c0b575b75b25',
+              'predecessor_acceptance_transferred':False,'rebuilt':False,
+              'effect_ack_done':False},sort_keys=True,indent=2)+'\n')
+          PY
+      - name: Retrieve an explicitly pinned signed candidate when one is bound
+        if: steps.effect-admission.outputs.probe_required == 'true' && steps.effect-admission.outputs.signed_candidate == 'true'
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ steps.effect-admission.outputs.signed_run_id }}
+          name: ${{ steps.effect-admission.outputs.signed_artifact_name }}
+          path: ${{ runner.temp }}/s1-signed-input
+      - name: Package exact candidate source and bind all original extension blobs
+        if: steps.effect-admission.outputs.probe_required == 'true'
+        env:
+          SIGNED_BINDING: ${{ steps.effect-admission.outputs.signed_binding }}
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess,zipfile
+          from pathlib import Path
+          evidence=Path(os.environ['RUNNER_TEMP'])/'s1-extension-evidence'
+          root=Path('browser/firefox/qikvrt-terminal')
+          names=['manifest.json','background.js','content.js','options.html','options.js','terminal.css','client.html']
+          records=[]
+          with zipfile.ZipFile(evidence/'candidate.xpi','w',zipfile.ZIP_DEFLATED) as z:
+              for name in names:
+                  raw=(root/name).read_bytes()
+                  info=zipfile.ZipInfo(name,(2000,1,1,0,0,0))
+                  info.compress_type=zipfile.ZIP_DEFLATED;info.external_attr=0o100644<<16
+                  z.writestr(info,raw)
+                  blob=hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()
+                  assert blob==subprocess.check_output(['git','rev-parse','HEAD:'+str(root/name)],text=True).strip()
+                  records.append({'path':str(root/name),'git_blob':blob,'sha256':hashlib.sha256(raw).hexdigest()})
+          binding={'candidate_head':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+              'candidate_tree':subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip(),
+              'xpi_sha256':hashlib.sha256((evidence/'candidate.xpi').read_bytes()).hexdigest(),
+              'source_files':records,'signed_production_package':False,'effect_ack_done':False}
+          from tools import qikvrt_self_host as host
+          signed=json.loads(os.environ['SIGNED_BINDING'])
+          if signed:
+              import shutil
+              incoming=Path(os.environ['RUNNER_TEMP'])/'s1-signed-input'/signed['file_name']
+              checked=host.firefox_xpi_source_binding(incoming,root)
+              assert checked['xpi_sha256']==signed['xpi_sha256']
+              assert checked['signature_metadata_present'] is True
+              shutil.copyfile(evidence/'candidate.xpi',evidence/'unsigned-signing-input.zip')
+              shutil.copyfile(incoming,evidence/'candidate.xpi')
+              binding.update(checked,signed_candidate_available=True,
+                  signing_binding=signed,signed_production_package=False)
+          else:
+              binding.update(signed_candidate_available=False,
+                  signing_blocker='MOZILLA_SIGNING_BINDING_AND_SIGNED_XPI_UNAVAILABLE')
+              print('HOLD_SIGNED_XPI_UNAVAILABLE: no credential delivery or AMO signing effect is established')
+          (evidence/'xpi-source-binding.json').write_text(json.dumps(binding,sort_keys=True,indent=2)+'\n')
+          PY
+      - name: Add only the supported Mozilla Release upgrade to verified S1 parent layers
+        if: steps.effect-admission.outputs.probe_required == 'true' && steps.effect-admission.outputs.runtime_reuse != 'true'
+        run: |
+          docker build --target s1-firefox-release --file runtime/self-host/Dockerfile \
+            --build-arg QIKVRT_S1_BASE_IMAGE=qikvrt-s1:firefox-158-baseline \
+            --tag qikvrt-s1:firefox-158-release .
+          python3 -B - <<'PYUPGRADE'
+          import json,os,subprocess
+          from pathlib import Path
+          evidence=Path(os.environ['RUNNER_TEMP'])/'s1-extension-evidence'
+          inspect=lambda image:json.loads(subprocess.check_output(['docker','image','inspect',image]))[0]
+          parent=inspect('qikvrt-s1:firefox-158-baseline');current=inspect('qikvrt-s1:firefox-158-release')
+          assert current['RootFS']['Layers'][:len(parent['RootFS']['Layers'])]==parent['RootFS']['Layers']
+          provision=json.loads(subprocess.check_output(['docker','run','--rm','--network','none',
+              '--entrypoint','cat','qikvrt-s1:firefox-158-release',
+              '/opt/qikvrt/runtime/firefox-release/provision.json']))
+          assert provision['minimum_satisfied'] is True
+          blob=lambda path:subprocess.check_output(['git','rev-parse','HEAD:'+path],text=True).strip()
+          receipt={'image_id':current['Id'],'parent_image_id':parent['Id'],
+              'parent_diff_ids':parent['RootFS']['Layers'],'diff_ids':current['RootFS']['Layers'],
+              'all_original_parent_layers_retained':True,'native_components_rebuilt':False,
+              'source_head':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+              'source_tree':subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip(),
+              'component_blobs':{path:blob(path) for path in ('runtime/self-host/Dockerfile',
+                  'tools/qikvrt_self_host.py','deploy/universal-terminal/entrypoint.sh')},
+              'provision':provision,'extension_activation_verified':False,'effect_ack_done':False}
+          (evidence/'release-image-readback.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
+          PYUPGRADE
+      - name: Freeze the upgraded dependency image for later signed-XPI admission
+        if: steps.effect-admission.outputs.probe_required == 'true' && steps.effect-admission.outputs.runtime_reuse != 'true'
+        run: |
+          mkdir "$RUNNER_TEMP/s1-firefox158-runtime"
+          docker save --output "$RUNNER_TEMP/s1-firefox158-runtime/image.docker.tar" qikvrt-s1:firefox-158-release
+          python3 -B - <<'PYFREEZE'
+          import gzip,hashlib,json,os,shutil
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP']);delivery=root/'s1-firefox158-runtime'
+          raw=delivery/'image.docker.tar';frozen=delivery/'image.docker.tar.gz'
+          with raw.open('rb') as source,frozen.open('wb') as destination:
+              with gzip.GzipFile(fileobj=destination,mode='wb',compresslevel=1,mtime=0) as out:
+                  shutil.copyfileobj(source,out,8*1024*1024)
+          raw.unlink()
+          with frozen.open('rb') as source: pin=hashlib.file_digest(source,'sha256').hexdigest()
+          evidence=root/'s1-extension-evidence';receipt=json.loads((evidence/'release-image-readback.json').read_bytes())
+          receipt.update(archive_sha256=pin,archive_bytes=frozen.stat().st_size,
+              artifact_name='qikvrt-s1-firefox158-runtime-'+receipt['source_head'],
+              run_id=int(os.environ['GITHUB_RUN_ID']),signing_material_excluded=True)
+          text=json.dumps(receipt,sort_keys=True,indent=2)+'\n'
+          (delivery/'release-image-readback.json').write_text(text)
+          (evidence/'release-image-readback.json').write_text(text)
+          PYFREEZE
+      - name: Preserve the reusable upgraded S1 dependency bytes
+        if: steps.effect-admission.outputs.probe_required == 'true' && steps.effect-admission.outputs.runtime_reuse != 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-s1-firefox158-runtime-${{ github.event.pull_request.head.sha || github.sha }}
+          path: ${{ runner.temp }}/s1-firefox158-runtime
+          retention-days: 90
+          if-no-files-found: error
+      - name: Export original dependency bytes below the connector artifact limit
+        id: runtime-parts
+        if: steps.transport-admission.outputs.reuse != 'true' && (steps.effect-admission.outputs.runtime_reuse == 'true' || steps.effect-admission.outputs.probe_required == 'true')
+        env:
+          RUNTIME_REUSE: ${{ steps.effect-admission.outputs.runtime_reuse }}
+        run: |
+          python3 -B - <<'PYPARTS'
+          import json,os,re,shutil,subprocess
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP'])
+          metadata=root/'s1-firefox158-transport';metadata.mkdir()
+          if os.environ['RUNTIME_REUSE']=='true':
+              work=json.loads(Path('state/work_units/QIKVRT_MAIN_CONVERGENCE_20261014_V1.json').read_bytes())
+              bound=work['firefox158_s1_upgrade']['runtime_artifact']
+              archive=root/'s1-firefox158-cached/image.docker.tar.gz'
+          else:
+              bound=json.loads((root/'s1-firefox158-runtime/release-image-readback.json').read_bytes())
+              archive=root/'s1-firefox158-runtime/image.docker.tar.gz'
+          assert bound['signing_material_excluded'] is True
+          assert all(re.fullmatch(r'[a-f0-9]{40}',bound[key]) for key in ('source_head','source_tree'))
+          assert re.fullmatch(r'sha256:[a-f0-9]{64}',bound['image_id'])
+          assert archive.stat().st_size==bound['archive_bytes']
+          subprocess.run(['python3','-B','tools/qikvrt_self_host.py','container-artifact-split',
+              '--carrier-archive',str(archive),'--transport-sha256',bound['archive_sha256'],
+              '--output',str(root/'s1-firefox158-parts'),'--receipt',str(metadata/'split.json')],check=True)
+          result=json.loads((metadata/'split.json').read_bytes())
+          shutil.copyfile(root/'s1-firefox158-parts/PARTS.json',metadata/'PARTS.json')
+          original={key:bound[key] for key in ('source_head','source_tree','image_id','archive_sha256','archive_bytes')}
+          (metadata/'ORIGINAL.json').write_text(json.dumps(original,sort_keys=True,indent=2)+'\n')
+          with open(os.environ['GITHUB_OUTPUT'],'a') as out:
+              out.write('part_count='+str(result['part_count'])+'\n')
+              out.write('manifest_sha256='+result['parts_manifest_sha256']+'\n')
+              out.write('archive_sha256='+bound['archive_sha256']+'\n')
+          PYPARTS
+      - name: Preserve bounded dependency part 000
+        id: runtime-part-0
+        if: steps.runtime-parts.outputs.part_count > 0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-s1-firefox158-runtime-${{ github.event.pull_request.head.sha || github.sha }}-part-000
+          path: ${{ runner.temp }}/s1-firefox158-parts/artifact.part-000
+          compression-level: 0
+          retention-days: 90
+          if-no-files-found: error
+      - name: Preserve bounded dependency part 001
+        id: runtime-part-1
+        if: steps.runtime-parts.outputs.part_count > 1
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-s1-firefox158-runtime-${{ github.event.pull_request.head.sha || github.sha }}-part-001
+          path: ${{ runner.temp }}/s1-firefox158-parts/artifact.part-001
+          compression-level: 0
+          retention-days: 90
+          if-no-files-found: error
+      - name: Preserve bounded dependency part 002
+        id: runtime-part-2
+        if: steps.runtime-parts.outputs.part_count > 2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-s1-firefox158-runtime-${{ github.event.pull_request.head.sha || github.sha }}-part-002
+          path: ${{ runner.temp }}/s1-firefox158-parts/artifact.part-002
+          compression-level: 0
+          retention-days: 90
+          if-no-files-found: error
+      - name: Preserve bounded dependency part 003
+        id: runtime-part-3
+        if: steps.runtime-parts.outputs.part_count > 3
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-s1-firefox158-runtime-${{ github.event.pull_request.head.sha || github.sha }}-part-003
+          path: ${{ runner.temp }}/s1-firefox158-parts/artifact.part-003
+          compression-level: 0
+          retention-days: 90
+          if-no-files-found: error
+      - name: Independently download the bounded dependency parts
+        if: steps.runtime-parts.outcome == 'success'
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          pattern: qikvrt-s1-firefox158-runtime-${{ github.event.pull_request.head.sha || github.sha }}-part-*
+          path: ${{ runner.temp }}/s1-firefox158-delivered
+          merge-multiple: true
+      - name: Reassemble independently delivered original bytes and bind part artifacts
+        if: steps.runtime-parts.outcome == 'success'
+        env:
+          PART_COUNT: ${{ steps.runtime-parts.outputs.part_count }}
+          MANIFEST_SHA256: ${{ steps.runtime-parts.outputs.manifest_sha256 }}
+          ARCHIVE_SHA256: ${{ steps.runtime-parts.outputs.archive_sha256 }}
+          PART0_ID: ${{ steps.runtime-part-0.outputs.artifact-id }}
+          PART0_DIGEST: ${{ steps.runtime-part-0.outputs.artifact-digest }}
+          PART1_ID: ${{ steps.runtime-part-1.outputs.artifact-id }}
+          PART1_DIGEST: ${{ steps.runtime-part-1.outputs.artifact-digest }}
+          PART2_ID: ${{ steps.runtime-part-2.outputs.artifact-id }}
+          PART2_DIGEST: ${{ steps.runtime-part-2.outputs.artifact-digest }}
+          PART3_ID: ${{ steps.runtime-part-3.outputs.artifact-id }}
+          PART3_DIGEST: ${{ steps.runtime-part-3.outputs.artifact-digest }}
+        run: |
+          python3 -B - <<'PYDELIVERED'
+          import json,os,re,shutil,subprocess
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP']);metadata=root/'s1-firefox158-transport'
+          delivered=root/'s1-firefox158-delivered'
+          shutil.copyfile(metadata/'PARTS.json',delivered/'PARTS.json')
+          subprocess.run(['python3','-B','tools/qikvrt_self_host.py','container-artifact-join',
+              '--root',str(delivered),'--output',str(root/'s1-firefox158-original-restored.tar.gz'),
+              '--manifest-sha256',os.environ['MANIFEST_SHA256'],
+              '--transport-sha256',os.environ['ARCHIVE_SHA256'],
+              '--receipt',str(metadata/'restore-readback.json')],check=True)
+          original=json.loads((metadata/'ORIGINAL.json').read_bytes())
+          head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          tree=subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip()
+          parts=[]
+          for index in range(int(os.environ['PART_COUNT'])):
+              identity=os.environ['PART%d_ID'%index]
+              digest=os.environ['PART%d_DIGEST'%index].removeprefix('sha256:')
+              assert re.fullmatch(r'[1-9][0-9]*',identity) and re.fullmatch(r'[a-f0-9]{64}',digest)
+              parts.append({'index':index,'artifact_id':int(identity),'zip_sha256':digest,
+                  'artifact_name':'qikvrt-s1-firefox158-runtime-'+head+'-part-%03d'%index})
+          binding={'schema':'qikvrt-container-artifact-delivery/v1','repository':os.environ['GITHUB_REPOSITORY'],
+              'run_id':int(os.environ['GITHUB_RUN_ID']),'exporter_head':head,'exporter_tree':tree,
+              'original_image':original,'parts_manifest_sha256':os.environ['MANIFEST_SHA256'],
+              'parts':parts,'connector_max_artifact_bytes':536870912,
+              'part_payload_max_bytes':268435456,'independent_download_back_verified':True,
+              'original_archive_restored_verified':True,'image_imported':False,
+              'extension_activation_verified':False,'public_production_verified':False,'effect_ack_done':False}
+          (metadata/'DELIVERY.json').write_text(json.dumps(binding,sort_keys=True,indent=2)+'\n')
+          PYDELIVERED
+      - name: Preserve bounded original-byte transport and readback
+        if: steps.runtime-parts.outcome == 'success'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-s1-firefox158-transport-${{ github.event.pull_request.head.sha || github.sha }}
+          path: ${{ runner.temp }}/s1-firefox158-transport/*.json
+          retention-days: 90
+          if-no-files-found: error
+      - name: Reuse native Firefox, noVNC and persistent restart controls on the upgraded carrier
+        if: steps.effect-admission.outputs.probe_required == 'true'
+        run: |
+          docker build --target test --file runtime/self-host/Dockerfile \
+            --build-arg QIKVRT_DEPENDENCY_IMAGE=qikvrt-s1:firefox-158-release \
+            --tag qikvrt-s1:firefox-158-release-test .
+          docker run --rm --init --network none --shm-size 256m \
+            --tmpfs /tmp:size=768m,mode=1777 --workdir /source \
+            --mount "type=bind,source=$PWD,target=/source,readonly" \
+            --mount "type=bind,source=$RUNNER_TEMP/s1-extension-evidence,target=/evidence" \
+            --env QIKVRT_FIREFOX_PACKAGE=firefox --env QIKVRT_BROWSER_TEST_EVIDENCE=/evidence \
+            --entrypoint python3 qikvrt-s1:firefox-158-release-test \
+            -B -m unittest -v tests.test_self_host_firefox.FirefoxCarrierTests
+      - name: Actual package version, persistent installation and live AddonManager activation
+        if: steps.effect-admission.outputs.probe_required == 'true'
+        run: |
+          docker run --rm --init --network none --user 10001:10001 --read-only \
+            --env HOME=/tmp --cap-drop ALL --security-opt no-new-privileges:true --shm-size 256m \
+            --tmpfs /tmp:rw,nosuid,size=768m,mode=1777 \
+            --mount "type=bind,source=$PWD/tools/qikvrt_self_host.py,target=/probe/qikvrt_self_host.py,readonly" \
+            --mount "type=bind,source=$RUNNER_TEMP/s1-extension-evidence,target=/evidence" \
+            --entrypoint python3 qikvrt-s1:firefox-158-release \
+            -B /probe/qikvrt_self_host.py firefox-extension-check --extension-xpi /evidence/candidate.xpi \
+            --output /evidence --firefox-package firefox
+      - name: Enforce actual compatible activation; a diagnostic read is not admission
+        run: |
+          python3 -B - <<'PY'
+          import json,os
+          from pathlib import Path
+          p=Path(os.environ['RUNNER_TEMP'])/'s1-extension-evidence'
+          r=json.loads((p/'extension-installation.json').read_bytes())
+          if (p/'xpi-source-binding.json').exists():
+              b=json.loads((p/'xpi-source-binding.json').read_bytes())
+              assert r['xpi_sha256']==b['xpi_sha256']
+          assert r['strict_min_version']=='158.0'
+          assert r.get('current_probe_executed',True) is True, 'NOOP: unchanged failed installation remains unaccepted'
+          assert r['state']=='EXTENSION_ACTIVATION_AND_RESTART_VERIFIED', 'HOLD: actual extension activation is unverified'
+          assert r['signed_production_package_verified'] is True, 'HOLD: a real Mozilla-signed XPI is required under default enforcement'
+          assert r['extension_activation_verified'] is True, 'HOLD: default production signing-policy activation is not verified'
+          PY
+      - name: Preserve bounded original installation and activation evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-s1-firefox158-installation-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            ${{ runner.temp }}/s1-extension-evidence/*.json
+            ${{ runner.temp }}/s1-extension-evidence/*.log
+            ${{ runner.temp }}/s1-extension-evidence/*.txt
+            ${{ runner.temp }}/s1-extension-evidence/unsigned-signing-input.zip
+            ${{ runner.temp }}/s1-extension-evidence/candidate.xpi
+          retention-days: 30
+          if-no-files-found: warn
+
+  container:
+    name: Linux S1 native terminal production and smoke
+    needs: test
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    permissions:
+      contents: read
+      actions: read
+    outputs:
+      head: ${{ steps.receipt.outputs.head }}
+      tree: ${{ steps.receipt.outputs.tree }}
+      digest: ${{ steps.receipt.outputs.digest }}
+      manifest: ${{ steps.receipt.outputs.manifest }}
+      terminal_profile: ${{ steps.receipt.outputs.terminal_profile }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ needs.test.outputs.tested_head }}
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Verify exact source and existing tool/integrity/admission controls
+        env:
+          EXPECTED_HEAD: ${{ needs.test.outputs.tested_head }}
+          EXPECTED_TREE: ${{ needs.test.outputs.tested_tree }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse --verify HEAD^{commit})" = "$EXPECTED_HEAD"
+          test "$(git rev-parse --verify HEAD^{tree})" = "$EXPECTED_TREE"
+          python3 -B tools/qikvrt_tool_cache.py verify
+          python3 -B tools/qikvrt_integrity.py verify
+          make self-host-container-test
+      - name: Set up exact Docker Buildx and BuildKit
+        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4
+        with:
+          version: v0.38.0
+          driver-opts: image=moby/buildkit@sha256:b059f8d7226d0b326bc871af489a5dddf65e36af4d20d14251b072974d9ee87c
+      - name: Prepare exact Skopeo tool from verified cache or pinned official source
+        id: tool-loader
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/container-evidence"
+          trap 'if test -f "$RUNNER_TEMP/skopeo-loader/version-check.json"; then cp "$RUNNER_TEMP/skopeo-loader/version-check.json" "$RUNNER_TEMP/container-evidence/skopeo-version-check.json"; fi' EXIT
+          python3 -B tools/qikvrt_self_host.py container-tool-prepare \
+            --output "$RUNNER_TEMP/skopeo-loader" --receipt "$RUNNER_TEMP/skopeo-loader/receipt.json"
+          python3 -B - <<'PYTOOL'
+          import json,os
+          from pathlib import Path
+          r=json.loads((Path(os.environ['RUNNER_TEMP'])/'skopeo-loader/receipt.json').read_bytes())
+          assert r['state']=='VERIFIED_TOOL_IMAGE_READY'
+          with open(os.environ['GITHUB_OUTPUT'],'a') as out:
+              out.write('image='+r['tool_image_id']+'\n')
+              out.write('artifact='+r['cache_name']+'\n')
+          PYTOOL
+      - name: Retain verified exact tool before runtime build and smoke
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: ${{ steps.tool-loader.outputs.artifact }}
+          path: ${{ runner.temp }}/skopeo-loader/skopeo-loader.docker.tar
+          if-no-files-found: error
+          retention-days: 90
+      - name: Export credential-free committed build context
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/container-evidence"
+          python3 -B tools/qikvrt_self_host.py container-context --root . \
+            --output "$RUNNER_TEMP/s1-context" --receipt "$RUNNER_TEMP/container-evidence/context.json"
+          docker version > "$RUNNER_TEMP/container-evidence/docker-version.txt"
+          docker buildx version > "$RUNNER_TEMP/container-evidence/buildx-version.txt"
+      - name: Verify and reuse original PR494 Docker carrier
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_self_host.py container-carrier --root . \
+            --output "$RUNNER_TEMP/frozen-carrier" \
+            --carrier-oci-archive "$RUNNER_TEMP/container-evidence/carrier-original.oci.tar" \
+            --receipt "$RUNNER_TEMP/container-evidence/carrier.json"
+      - name: Two independent native terminal OCI builds from the original frozen carrier
+        id: independent-builds
+        run: |
+          set -euo pipefail
+          head="$(git rev-parse HEAD)"
+          tree="$(git rev-parse HEAD^{tree})"
+          epoch="$(git show -s --format=%ct HEAD)"
+          for build in 1 2; do
+            docker buildx build --no-cache --platform linux/amd64 --target production-terminal \
+              --file "$RUNNER_TEMP/s1-context/runtime/self-host/Dockerfile" \
+              --provenance=false --sbom=false \
+              --build-context "qikvrt-frozen-carrier=oci-layout://$RUNNER_TEMP/frozen-carrier@sha256:b2c5d065f9e9253d9f9eb454a86614e94592e6a8a251b8c9b44f26295ffb59b9" \
+              --build-arg QIKVRT_PRODUCTION_IMAGE=qikvrt-frozen-carrier \
+              --build-arg QIKVRT_TERMINAL_PROFILE=temdd \
+              --build-arg "SOURCE_DATE_EPOCH=$epoch" \
+              --build-arg "QIKVRT_SOURCE_HEAD=$head" --build-arg "QIKVRT_SOURCE_TREE=$tree" \
+              --tag "qikvrt-s1:sha-$head" \
+              --output "type=oci,dest=$RUNNER_TEMP/container-evidence/s1-$build.oci.tar,compression=gzip,compression-level=9,rewrite-timestamp=true" \
+              "$RUNNER_TEMP/s1-context"
+          done
+          python3 -B tools/qikvrt_self_host.py container-oci-check \
+            --oci-archive "$RUNNER_TEMP/container-evidence/s1-1.oci.tar" \
+            --second-oci-archive "$RUNNER_TEMP/container-evidence/s1-2.oci.tar" \
+            --expected-head "$head" --expected-tree "$tree" \
+            --receipt "$RUNNER_TEMP/container-evidence/oci.json"
+          mv "$RUNNER_TEMP/container-evidence/s1-1.oci.tar" "$RUNNER_TEMP/container-evidence/image.oci.tar"
+          rm "$RUNNER_TEMP/container-evidence/s1-2.oci.tar"
+      - name: Real unprivileged native terminal container and durable restart
+        run: |
+          set -euo pipefail
+          head="$(git rev-parse HEAD)"
+          loader="${{ steps.tool-loader.outputs.image }}"
+          load_dir="$(mktemp -d "$RUNNER_TEMP/qikvrt-smoke-load.XXXXXX")"
+          trap 'rm -rf "$load_dir"' EXIT
+          docker run --rm --pull=never --network none --read-only --cap-drop ALL \
+            --security-opt no-new-privileges:true "$loader" --version \
+            | tee "$RUNNER_TEMP/container-evidence/skopeo-version.txt"
+          docker run --rm --pull=never --read-only --network none --user "$(id -u):$(id -g)" --cap-drop ALL --security-opt no-new-privileges:true \
+            --tmpfs /tmp:rw,nosuid,size=128m,mode=1777 --tmpfs /var/tmp:rw,nosuid,size=2g,mode=1777 \
+            --mount "type=bind,source=$RUNNER_TEMP/container-evidence/image.oci.tar,target=/input.oci.tar,readonly" \
+            --mount "type=bind,source=$load_dir,target=/output" \
+            "$loader" copy --format v2s2 oci-archive:/input.oci.tar \
+            "docker-archive:/output/image.docker.tar:qikvrt-s1:sha-$head"
+          docker load --input "$load_dir/image.docker.tar"
+          python3 -B - <<'PYLOAD'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          p=Path(os.environ['RUNNER_TEMP'])/'container-evidence'
+          o=json.loads((p/'oci.json').read_bytes())
+          assert o['independent_rebuild_digest_equal'] is True, 'independent OCI build gate required'
+          digest=hashlib.sha256()
+          with (p/'image.oci.tar').open('rb') as archive:
+              for block in iter(lambda:archive.read(8*1024*1024),b''):
+                  digest.update(block)
+          assert digest.hexdigest()==o['oci_archive_sha256'], 'original OCI archive changed before load'
+          image='qikvrt-s1:sha-'+o['source_head']
+          loaded=json.loads(subprocess.check_output(['docker','image','inspect',image],text=True))[0]
+          assert loaded['Id']==o['image_config_digest'], 'Docker import changed image configuration'
+          assert loaded['RootFS']['Layers']==o['diff_ids'], 'Docker import changed ordered filesystem layers'
+          labels=loaded['Config']['Labels']
+          assert (labels['org.opencontainers.image.revision'],labels['de.qikvrt.source-tree'])==(o['source_head'],o['source_tree']), 'Docker import changed source binding'
+          r={'state':'DOCKER_LOAD_EXACT_OCI_RUNTIME_VERIFIED','source_head':o['source_head'],
+             'source_tree':o['source_tree'],'original_oci_image_digest':o['image_digest'],
+             'docker_image_id':loaded['Id'],'ordered_diff_ids_verified':True,
+             'effect_ack_done':False,'public_production_verified':False}
+          (p/'load.json').write_text(json.dumps(r,sort_keys=True,indent=2)+'\n')
+          print(json.dumps(r,sort_keys=True))
+          PYLOAD
+          python3 -B tools/qikvrt_self_host.py container-smoke \
+            --image "qikvrt-s1:sha-$(git rev-parse HEAD)" --terminal-profile temdd \
+            --output "$RUNNER_TEMP/container-evidence" \
+            --receipt "$RUNNER_TEMP/container-evidence/smoke.json"
+      - name: Bind exact image/package and CI execution identities
+        id: receipt
+        env:
+          EVIDENCE: ${{ runner.temp }}/container-evidence
+        run: |
+          python3 -B - <<'PY'
+          import json, os, subprocess
+          from pathlib import Path
+          p=Path(os.environ['EVIDENCE'])
+          o=json.loads((p/'oci.json').read_bytes()); s=json.loads((p/'smoke.json').read_bytes())
+          assert (o['source_head'],o['source_tree']) == (s['source_head'],s['source_tree'])
+          assert o['independent_rebuild_digest_equal'] is True
+          assert s['state'] == 'CONTAINER_SMOKE_AND_RESTART_VERIFIED'
+          profile=s['terminal_profile']
+          assert profile in {'temdd','firefox'}
+          assert type(s['firefox_acceptance_in_scope']) is bool
+          assert s['firefox_acceptance_in_scope'] == (profile == 'firefox')
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip() == o['source_head']
+          assert not subprocess.check_output(['git','status','--porcelain','--untracked-files=no'])
+          r={'repository':os.environ['GITHUB_REPOSITORY'],'run_id':os.environ['GITHUB_RUN_ID'],
+             'run_attempt':os.environ['GITHUB_RUN_ATTEMPT'],'source_head':o['source_head'],
+             'source_tree':o['source_tree'],'image_digest':o['image_digest'],
+             'manifest_sha256':s['manifest_sha256'],'container_production_verified':True,
+             'terminal_profile':profile,'firefox_acceptance_in_scope':s['firefox_acceptance_in_scope'],
+             'registry_publication_verified':False,'public_production_verified':False,'effect_ack_done':False}
+          (p/'ci.json').write_text(json.dumps(r,sort_keys=True,indent=2)+'\n')
+          with open(os.environ['GITHUB_OUTPUT'],'a') as out:
+              for k,v in [('head',o['source_head']),('tree',o['source_tree']),('digest',o['image_digest']),('manifest',s['manifest_sha256']),('terminal_profile',profile)]:
+                  out.write(k+'='+v+'\n')
+          print(json.dumps(r,sort_keys=True))
+          PY
+      - name: Preserve first original failed OCI build separately
+        if: ${{ always() && steps.independent-builds.outcome == 'failure' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-s1-rebuild-1-${{ github.event.pull_request.head.sha || github.sha }}
+          path: ${{ runner.temp }}/container-evidence/s1-1.oci.tar
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Preserve second original failed OCI build separately
+        if: ${{ always() && steps.independent-builds.outcome == 'failure' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-s1-rebuild-2-${{ github.event.pull_request.head.sha || github.sha }}
+          path: ${{ runner.temp }}/container-evidence/s1-2.oci.tar
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Preserve exact OCI image and non-secret original evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-s1-container-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            ${{ runner.temp }}/container-evidence
+            !${{ runner.temp }}/container-evidence/s1-*.oci.tar
+          if-no-files-found: error
+          retention-days: 30
+
+  container_publish:
+    name: Reviewed versioned OCI publication
+    needs: [test, container]
+    if: github.ref == 'refs/heads/main' && vars.QIKVRT_CONTAINER_PUBLISH_ENABLED == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment: qikvrt-production
+    permissions:
+      contents: read
+      actions: read
+      pull-requests: read
+      packages: write
+    concurrency:
+      group: qikvrt-s1-publication-${{ github.repository }}-${{ needs.container.outputs.head }}
+      cancel-in-progress: false
+    outputs:
+      image: ${{ steps.publish.outputs.image }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ needs.container.outputs.head }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Reobserve protected Main, native required checks and independent review
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python3 -B tools/qikvrt_self_host.py container-production-gate \
+            --expected-head "$(git rev-parse HEAD)" --receipt "$RUNNER_TEMP/production-admission.json"
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+        with:
+          name: qikvrt-s1-container-${{ needs.container.outputs.head }}
+          path: ${{ runner.temp }}/container-evidence
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069
+        with:
+          version: v0.38.0
+          driver-opts: image=moby/buildkit@sha256:b059f8d7226d0b326bc871af489a5dddf65e36af4d20d14251b072974d9ee87c
+      - name: Publish immutable application and original ZIP; independently read back both
+        id: publish
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          EXPECTED_DIGEST: ${{ needs.container.outputs.digest }}
+          DOCKER_CONFIG: ${{ runner.temp }}/registry-auth
+        run: |
+          set -euo pipefail
+          trap 'rm -rf "$DOCKER_CONFIG"' EXIT
+          printf '%s' "$GITHUB_TOKEN" | docker login ghcr.io --username "$GITHUB_ACTOR" --password-stdin
+          head="$(git rev-parse HEAD)"
+          image="ghcr.io/ingolf-lohmann/qik-vrt-s1"
+          python3 -B tools/qikvrt_self_host.py container-oci-check \
+            --oci-archive "$RUNNER_TEMP/container-evidence/image.oci.tar" \
+            --expected-head "$head" --expected-tree "$(git rev-parse HEAD^{tree})" \
+            --receipt "$RUNNER_TEMP/publish-oci-check.json"
+          python3 -B tools/qikvrt_self_host.py container-tool-prepare \
+            --output "$RUNNER_TEMP/skopeo-publisher" --receipt "$RUNNER_TEMP/skopeo-publisher/receipt.json"
+          publisher="$(python3 -B -c 'import json,os,pathlib; print(json.loads((pathlib.Path(os.environ["RUNNER_TEMP"])/"skopeo-publisher/receipt.json").read_bytes())["tool_image_id"])')"
+          docker run --rm --pull=never --network none --read-only --cap-drop ALL \
+            --security-opt no-new-privileges:true "$publisher" --version > "$RUNNER_TEMP/publisher-version.txt"
+          for tag in "sha-$head" "s1-1.12.0-$head"; do
+            if docker buildx imagetools inspect "$image:$tag" --raw > "$RUNNER_TEMP/registry.json" 2> "$RUNNER_TEMP/registry-error"; then
+              : # An existing immutable version is verified below, never overwritten.
+            else
+              python3 -c 'import pathlib,re,os; assert re.search("not found|manifest unknown",pathlib.Path(os.environ["RUNNER_TEMP"]+"/registry-error").read_text(),re.I), "registry transport/authentication unavailable"'
+              docker run --rm --pull=never --read-only --cap-drop ALL --security-opt no-new-privileges:true \
+                --user "$(id -u):$(id -g)" --env HOME=/tmp \
+                --tmpfs /tmp:rw,nosuid,size=128m,mode=1777 --tmpfs /var/tmp:rw,nosuid,size=2g,mode=1777 \
+                --mount "type=bind,source=$DOCKER_CONFIG,target=/auth,readonly" \
+                --mount "type=bind,source=$RUNNER_TEMP/container-evidence/image.oci.tar,target=/image.oci.tar,readonly" \
+                "$publisher" copy --preserve-digests --dest-authfile /auth/config.json \
+                oci-archive:/image.oci.tar "docker://$image:$tag"
+              docker buildx imagetools inspect "$image:$tag" --raw > "$RUNNER_TEMP/registry.json"
+            fi
+            python3 -B - <<'PYREGISTRY'
+          import hashlib,os
+          from pathlib import Path
+          p=Path(os.environ['RUNNER_TEMP'])/'registry.json';raw=p.read_bytes()
+          expected=os.environ['EXPECTED_DIGEST']
+          if 'sha256:'+hashlib.sha256(raw).hexdigest()!=expected:
+              raw=raw.removesuffix(b'\n')
+          assert 'sha256:'+hashlib.sha256(raw).hexdigest()==expected, 'immutable tested registry digest differs'
+          p.write_bytes(raw)
+          PYREGISTRY
+          done
+          # Reuse this same admitted publisher/package and token scope. The
+          # original ZIP lives unchanged inside one deterministic OCI layer.
+          # This publication does not activate a durable CI download source.
+          python3 -B tools/qikvrt_self_host.py container-carrier-archive-check --root . \
+            --oci-archive "$RUNNER_TEMP/container-evidence/carrier-original.oci.tar" \
+            --receipt "$RUNNER_TEMP/carrier-publish-check.json"
+          carrier_digest="$(python3 -c 'import json,os; print(json.load(open(os.environ["RUNNER_TEMP"]+"/carrier-publish-check.json"))["image_digest"])')"
+          carrier_tag="$(python3 -c 'import json; print("carrier-original-"+json.load(open("runtime/self-host/CONTAINER_CARRIER.json"))["archive_sha256"])')"
+          if docker buildx imagetools inspect "$image:$carrier_tag" --raw > "$RUNNER_TEMP/carrier-registry.json" 2> "$RUNNER_TEMP/carrier-registry-error"; then
+            : # Verify an existing version; never replace it.
+          else
+            python3 -c 'import pathlib,re,os; assert re.search("not found|manifest unknown",pathlib.Path(os.environ["RUNNER_TEMP"]+"/carrier-registry-error").read_text(),re.I), "registry transport/authentication unavailable"'
+            docker run --rm --pull=never --read-only --cap-drop ALL --security-opt no-new-privileges:true \
+              --user "$(id -u):$(id -g)" --env HOME=/tmp \
+              --tmpfs /tmp:rw,nosuid,size=128m,mode=1777 --tmpfs /var/tmp:rw,nosuid,size=2g,mode=1777 \
+              --mount "type=bind,source=$DOCKER_CONFIG,target=/auth,readonly" \
+              --mount "type=bind,source=$RUNNER_TEMP/container-evidence/carrier-original.oci.tar,target=/carrier.oci.tar,readonly" \
+              "$publisher" copy --preserve-digests --dest-authfile /auth/config.json \
+              oci-archive:/carrier.oci.tar "docker://$image:$carrier_tag"
+            docker buildx imagetools inspect "$image:$carrier_tag" --raw > "$RUNNER_TEMP/carrier-registry.json"
+          fi
+          CARRIER_DIGEST="$carrier_digest" python3 -B - <<'PYCARRIERDIGEST'
+          import hashlib,os
+          from pathlib import Path
+          raw=(Path(os.environ['RUNNER_TEMP'])/'carrier-registry.json').read_bytes()
+          if 'sha256:'+hashlib.sha256(raw).hexdigest()!=os.environ['CARRIER_DIGEST']:
+              raw=raw.removesuffix(b'\n')
+          assert 'sha256:'+hashlib.sha256(raw).hexdigest()==os.environ['CARRIER_DIGEST'], 'immutable original archive registry digest differs'
+          PYCARRIERDIGEST
+          mkdir "$RUNNER_TEMP/carrier-registry-readback"
+          docker run --rm --pull=never --read-only --cap-drop ALL --security-opt no-new-privileges:true \
+            --user "$(id -u):$(id -g)" --env HOME=/tmp \
+            --tmpfs /tmp:rw,nosuid,size=128m,mode=1777 --tmpfs /var/tmp:rw,nosuid,size=2g,mode=1777 \
+            --mount "type=bind,source=$DOCKER_CONFIG,target=/auth,readonly" \
+            --mount "type=bind,source=$RUNNER_TEMP/carrier-registry-readback,target=/readback" \
+            "$publisher" copy --preserve-digests --src-authfile /auth/config.json \
+            "docker://$image@$carrier_digest" oci-archive:/readback/carrier.oci.tar
+          python3 -B tools/qikvrt_self_host.py container-carrier-archive-check --root . \
+            --oci-archive "$RUNNER_TEMP/carrier-registry-readback/carrier.oci.tar" \
+            --receipt "$RUNNER_TEMP/carrier-registry-readback.json"
+          printf 'carrier_archive_image=%s@%s\n' "$image" "$carrier_digest" >> "$GITHUB_OUTPUT"
+          printf 'image=%s@%s\n' "$image" "$EXPECTED_DIGEST" >> "$GITHUB_OUTPUT"
+          cp "$RUNNER_TEMP/production-admission.json" "$RUNNER_TEMP/container-evidence/production-admission.json"
+          cp "$RUNNER_TEMP/registry.json" "$RUNNER_TEMP/container-evidence/published-manifest.json"
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-s1-publication-${{ needs.container.outputs.head }}
+          path: |
+            ${{ runner.temp }}/production-admission.json
+            ${{ runner.temp }}/registry.json
+            ${{ runner.temp }}/carrier-publish-check.json
+            ${{ runner.temp }}/carrier-registry.json
+            ${{ runner.temp }}/carrier-registry-readback.json
+          if-no-files-found: error
+          retention-days: 30
+
+  container_deploy:
+    name: Original Linux host identity and admitted deployment via mutual TLS REST
+    needs: [container, container_publish]
+    # Read-only identity must remain observable when registry publication is
+    # skipped. The existing publication/deployment guards still gate all writes.
+    if: ${{ always() && github.ref == 'refs/heads/main' && needs.container.result == 'success' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    environment: qikvrt-production
+    permissions:
+      contents: read
+      actions: read
+      pull-requests: read
+      packages: read
+    concurrency:
+      group: qikvrt-s1-owner-node-${{ github.repository }}
+      cancel-in-progress: false
+    outputs:
+      deployed: ${{ steps.host.outputs.deployed }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ needs.container.outputs.head }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Read original host identity before any admitted deployment or recovery
+        id: host
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          QIKVRT_HOST_BINDING: ${{ vars.QIKVRT_LINUX_HOST_BINDING_JSON }}
+          QIKVRT_HOST_BINDING_SHA256: ${{ vars.QIKVRT_LINUX_HOST_BINDING_SHA256 }}
+          QIKVRT_HOST_CA: ${{ secrets.QIKVRT_LINUX_HOST_CA }}
+          QIKVRT_HOST_CERT: ${{ secrets.QIKVRT_LINUX_HOST_CERT }}
+          QIKVRT_HOST_KEY: ${{ secrets.QIKVRT_LINUX_HOST_KEY }}
+          EXPECTED_HEAD: ${{ needs.container.outputs.head }}
+          EXPECTED_TREE: ${{ needs.container.outputs.tree }}
+          EXPECTED_IMAGE: ghcr.io/ingolf-lohmann/qik-vrt-s1@${{ needs.container.outputs.digest }}
+          EXPECTED_MANIFEST: ${{ needs.container.outputs.manifest }}
+          PUBLISHED_IMAGE: ${{ needs.container_publish.outputs.image }}
+          PUBLISH_RESULT: ${{ needs.container_publish.result }}
+          DEPLOY_ENABLED: ${{ vars.QIKVRT_CONTAINER_DEPLOY_ENABLED }}
+        run: |
+          set -euo pipefail
+          private="$RUNNER_TEMP/qikvrt-host-auth"
+          trap 'rm -rf "$private"' EXIT
+          python3 -B - <<'PY'
+          import hashlib,json,os
+          from pathlib import Path
+          p=Path(os.environ['RUNNER_TEMP'])/'qikvrt-host-auth'; p.mkdir(mode=0o700)
+          fields={'binding.json':'QIKVRT_HOST_BINDING','ca.pem':'QIKVRT_HOST_CA','cert.pem':'QIKVRT_HOST_CERT','key.pem':'QIKVRT_HOST_KEY'}
+          for name,key in fields.items():
+              value=os.environ.get(key,''); assert value, 'protected host binding/credential unavailable'
+              file=p/name;file.write_text(value);file.chmod(0o600)
+          b=json.loads((p/'binding.json').read_bytes())
+          assert hashlib.sha256((p/'binding.json').read_bytes()).hexdigest()==os.environ['QIKVRT_HOST_BINDING_SHA256']
+          assert (b['source_head'],b['source_tree'])==(os.environ['EXPECTED_HEAD'],os.environ['EXPECTED_TREE'])
+          assert b['manifest_sha256']==os.environ['EXPECTED_MANIFEST']
+          assert b['image_digest']==os.environ['EXPECTED_IMAGE'].split('@')[1]
+          PY
+          export IDENTITY_NOT_BEFORE="$(python3 -c 'import datetime; print(datetime.datetime.now(datetime.timezone.utc).isoformat())')"
+          python3 -B tools/qikvrt_self_host.py container-host-identity \
+            --production-binding "$private/binding.json" --binding-sha256 "$QIKVRT_HOST_BINDING_SHA256" \
+            --ca-file "$private/ca.pem" --cert-file "$private/cert.pem" --key-file "$private/key.pem" \
+            --expected-head "$EXPECTED_HEAD" --expected-tree "$EXPECTED_TREE" \
+            --manifest-sha256 "$EXPECTED_MANIFEST" --image "$EXPECTED_IMAGE" \
+            --receipt "$RUNNER_TEMP/host-identity.json"
+          python3 -B - <<'PYHOSTREADBACK'
+          import datetime as dt,hashlib,json,os,re
+          from pathlib import Path
+          r=json.loads((Path(os.environ['RUNNER_TEMP'])/'host-identity.json').read_bytes())
+          expected={'schema':'qikvrt-s1-container-receipt/v1',
+              'state':'AUTHENTICATED_LINUX_HOST_IDENTITY_VERIFIED','scope':'HOST_IDENTITY_ONLY',
+              'os_type':'linux','source_head':os.environ['EXPECTED_HEAD'],'source_tree':os.environ['EXPECTED_TREE'],
+              'image_digest':os.environ['EXPECTED_IMAGE'].split('@')[1],
+              'manifest_sha256':os.environ['EXPECTED_MANIFEST'],'binding_sha256':os.environ['QIKVRT_HOST_BINDING_SHA256'],
+              'checker_sha256':hashlib.sha256(Path('tools/qikvrt_self_host_container.py').read_bytes()).hexdigest()}
+          assert all(r.get(k)==v for k,v in expected.items()), 'host identity receipt pin mismatch'
+          assert r.get('host_identity_verified') is True
+          assert all(r.get(k) is False for k in ('host_package_verified','public_production_verified','effect_ack_done','ordinary_release'))
+          assert re.fullmatch('[a-f0-9]{64}',r.get('daemon_info_sha256',''))
+          observed=dt.datetime.fromisoformat(r['observed_at'])
+          start=dt.datetime.fromisoformat(os.environ['IDENTITY_NOT_BEFORE'])
+          now=dt.datetime.now(dt.timezone.utc)
+          assert observed.utcoffset() is not None and start <= observed <= now
+          assert (now-observed).total_seconds() <= 300, 'stale host identity receipt'
+          PYHOSTREADBACK
+          if test "$DEPLOY_ENABLED" = 'true' && test "$PUBLISH_RESULT" = 'success'; then
+            test "$PUBLISHED_IMAGE" = "$EXPECTED_IMAGE"
+            python3 -B tools/qikvrt_self_host.py container-deploy \
+              --production-binding "$private/binding.json" --binding-sha256 "$QIKVRT_HOST_BINDING_SHA256" \
+              --ca-file "$private/ca.pem" --cert-file "$private/cert.pem" --key-file "$private/key.pem" \
+              --image "$EXPECTED_IMAGE" --receipt "$RUNNER_TEMP/host-start.json"
+            printf 'deployed=true\n' >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        if: always()
+        with:
+          name: qikvrt-s1-host-start-${{ needs.container.outputs.head }}
+          path: |
+            ${{ runner.temp }}/host-identity.json
+            ${{ runner.temp }}/host-start.json
+          if-no-files-found: error
+          retention-days: 30
+
+  container_public_readback:
+    name: Independent exact-domain TLS and terminal acceptance
+    needs: [container, container_deploy]
+    if: needs.container_deploy.outputs.deployed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ needs.container.outputs.head }}
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          name: qikvrt-s1-container-${{ needs.container.outputs.head }}
+          path: ${{ runner.temp }}/container-evidence
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          name: qikvrt-s1-host-start-${{ needs.container.outputs.head }}
+          path: ${{ runner.temp }}/host-evidence
+      - name: Verify HTTPS, fresh runtime/package pins and original terminal use
+        run: |
+          python3 -B tools/qikvrt_self_host.py container-readback \
+            --root "$RUNNER_TEMP/container-evidence/public-package" \
+            --production-binding "$RUNNER_TEMP/host-evidence/host-start.json" \
+            --receipt "$RUNNER_TEMP/public-delivery.json"
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        if: always()
+        with:
+          name: qikvrt-raumzeitterminal-delivery-${{ needs.container.outputs.head }}
+          path: ${{ runner.temp }}/public-delivery.json
+          if-no-files-found: error
+          retention-days: 30
+
+
+

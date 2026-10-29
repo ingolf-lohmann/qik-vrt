@@ -1,6 +1,39 @@
 <!-- SPDX-License-Identifier: CC-BY-NC-ND-4.0 -->
 # Exact publication continuation through the existing terminal host
 
+## Existing native REST ingress
+
+The existing GitHub-shaped listener also exposes
+`/repos/ingolf-lohmann/qik-vrt/qikvrt/publication`. Set
+`QIKVRT_PUBLICATION_REST_ENABLED=1` on that original loopback listener and reuse
+its registered OIDC profile, OS Secret Service store and writer fence. The
+operator binds `QIKVRT_PUBLICATION_REQUEST` and
+`QIKVRT_PUBLICATION_REQUEST_SHA256` to the same existing private request accepted
+by `publication-check` and `publication-resume`. These select original files;
+they contain no credential values and do not provision missing source material.
+
+GET accepts `schema=qikvrt-publication-rest/v1` and `request_id`. It runs original
+source/reference admission without reading provider secret values or invoking
+the publisher. It returns the source and private-request pins for the bound POST.
+POST accepts only those pins, its stable request ID and `effect_accepted=true`;
+the same-origin native SSO guard and exact v2 candidate authorization remain
+mandatory. The original launcher obtains credentials through its protected
+registry and files. The browser's GitHub login is not a publication credential.
+No token is copied into a Site, request body, source, or another vault.
+
+The original launcher reobserves real Authority Main HEAD/TREE through its
+existing Git-Data REST transport immediately before starting the publisher.
+This bounded fresh observation is not an atomic Main lease. Its native OS store
+records intent before invocation. An uncertain response or duplicate candidate
+permits only GET readback; changing request IDs, clocks or source pins cannot
+repeat the invocation. Preserve original publisher receipts and consumption
+refs. Any required provider reconciliation continues through the original
+publisher recovery path; never delete the native intent to force a retry.
+
+This source integration does not establish a running listener, a live SSO
+session, an available private request, credential delivery, a public Zenodo
+record or node acceptance. Each still needs its own actual readback.
+
 Product Owner Ingolf Lohmann authorized closing this integration gap on
 5 October 2026. Using QIK-VRT's own existing Terminal, Transputer and Mesh
 functions for legitimate recovery is a permanent product acceptance criterion.
@@ -27,7 +60,10 @@ registry, Git, cache, request, command line or public receipt.
 `PUBLICATION_REQUEST.example.json` binds the actual complete Authority checkout,
 execution HEAD/TREE, existing publisher/launcher/interpreter bytes and manifest
 digest. Its independently reviewed SHA-256 is supplied separately. The real
-origin must be Goldkelch/qik-vrt. The Mirror, an old deployed source and a
+origin must be the current `ingolf-lohmann/qik-vrt` Authority. Both committed
+role policies must match the launcher, and the production publisher must name
+the same Authority. Historical Goldkelch requests and consumed authorizations
+remain immutable; they do not authorize a new Authority upload. The Mirror, an old deployed source and a
 `READY` response cannot substitute for this binding. Every invocation rechecks
 the original v2 manifest, machine proof, return receipt and authorization.
 The request grants no authorization absent those publisher controls.
@@ -81,12 +117,36 @@ than silently repinning the authorization. Install/enable these exact units
 through the existing independently admitted host workflow. No Railway staged
 patch, deployment, restart or key registration is applied by this command.
 
-The local tests exercise adapter admission, negative controls and publisher
-outcome handling with isolated Git repositories and mocked external effects.
-They do not prove a deployed supervisor, real credentials, a Zenodo publication,
-SSO, Authority accessibility or all-node equality. The current Railway session
-still lacks production exec and scoped publisher credential delivery; activation
-must be verified on that exact carrier before product acceptance is reported.
+## Recovered source and acceptance scope
 
-The original PR461 candidate bc2da76a, artifact 11343403081, is unchanged. This
-launcher successor does not rebuild, replace or promote those frozen bytes.
+The adapter is recovered from the preserved PR463 source at commit
+`ef1d2953a30c1bf27c4a9bc385316c9f50c0c114`, originally proposed while
+Goldkelch was Authority. That PR remained unmerged. The generic publisher,
+transport, proof validator and existing workflow route already reside in the
+current Authority; this change restores their missing S1 host connection.
+`PACKAGE.json` now includes the publisher, both dependencies, the original
+versioned proof contracts and protected-reference examples. Package admission
+rejects an incomplete publication closure. The existing Actions router remains
+an alternative original invocation route, with its own exact-Main admission.
+Its `requested-zenodo` job retains the original protected `zenodo-production`
+environment and the existing `secrets.ZENODO_ACCESS_TOKEN`/`github.token` inputs.
+This restores the declared source binding. The new Authority's actual environment,
+provider-managed secret delivery and protections still need independent admission;
+the environment name alone establishes none of them.
+
+Keep the existing protected registry/provider store as the credential authority.
+Reuse its opaque references through the existing provisioner; source code and Git
+history do not contain or export provider-managed secrets. The GitHub credential
+must actually authorize the new Authority; the Zenodo credential must actually
+access the intended account. These permissions are established by the original
+publisher's authenticated operations, not by declared reference metadata.
+This port does not reset consumption locks, mint credentials or claim that
+credential delivery has occurred.
+
+Local acceptance tests exercise current Authority binding, private references,
+negative controls, one invocation under a lock, suppressed child output and
+publisher outcomes. A cold export test checks the shipped closure separately.
+They do not prove installation on the original host, credential delivery,
+a new Zenodo record, node adoption or EFFECT_ACK_DONE. The existing original
+host binding and protected credential references must be observed there before
+productive acceptance. Preserve every unresolved publication and host duty.

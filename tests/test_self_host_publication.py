@@ -27,9 +27,12 @@ class PublicationAdapterTests(unittest.TestCase):
         (self.root / "tools").mkdir()
         for name in ("qikvrt_zenodo_publish.py", "qikvrt_zenodo_actions.py", "qikvrt_zenodo_machine_proof.py"):
             (self.root / "tools" / name).write_bytes((host.ROOT / "tools" / name).read_bytes())
+        (self.root / "policy").mkdir()
+        for relative in host.MESH_ROLE_POLICIES:
+            (self.root / relative).write_bytes((host.ROOT / relative).read_bytes())
         for command in (["init", "-q"], ["config", "user.name", "Fixture"],
                         ["config", "user.email", "fixture@example.invalid"],
-                        ["remote", "add", "origin", "https://github.com/Goldkelch/qik-vrt.git"],
+                        ["remote", "add", "origin", "https://github.com/ingolf-lohmann/qik-vrt.git"],
                         ["add", "."], ["commit", "-qm", "fixture"]):
             subprocess.run(["git", "-C", str(self.root), *command], check=True,
                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -48,7 +51,7 @@ class PublicationAdapterTests(unittest.TestCase):
                 "opaque_reference": "facility/" + name, "source_path": str(secret), "scopes": ["declared-publisher-scope"], "expires_at": expiry}
         self.write(self.registry_path, host.raw_json(self.registry))
         self.request_path = self.base / "publication.json"
-        self.request = {"schema": "qikvrt-publication-runtime-request/v1", "repository": "Goldkelch/qik-vrt",
+        self.request = {"schema": "qikvrt-publication-runtime-request/v1", "repository": "ingolf-lohmann/qik-vrt",
             "checkout": str(self.root), "execution_head": self.head, "execution_tree": self.tree,
             "manifest": "request.json", "manifest_sha256": host.digest(self.manifest_path.read_bytes()),
             "publisher_sha256": host.digest((host.ROOT / "tools/qikvrt_zenodo_publish.py").read_bytes()),
@@ -56,7 +59,7 @@ class PublicationAdapterTests(unittest.TestCase):
             "python_sha256": host.digest(Path(sys.executable).resolve().read_bytes()),
             "credential_registry": str(self.registry_path)}
         self.pin = self.save_request()
-        self.manifest = {"schema": publisher.SCHEMA_V2, "repository": "Goldkelch/qik-vrt",
+        self.manifest = {"schema": publisher.SCHEMA_V2, "repository": "ingolf-lohmann/qik-vrt",
             "machine_proof": {"fixture": True}, "owner_authorization": {"fixture": True},
             "evidence_path": self.root / "receipt.json"}
         stack = contextlib.ExitStack()
@@ -83,15 +86,37 @@ class PublicationAdapterTests(unittest.TestCase):
             client.assert_not_called()
 
     def test_mirror_cannot_replace_pinned_authority(self):
-        self.request["repository"] = "ingolf-lohmann/qik-vrt"
+        self.request["repository"] = "Goldkelch/qik-vrt"
         with self.assertRaisesRegex(ValueError, "PINNED_PUBLICATION_AUTHORITY"):
             host.publication_request(self.request_path, self.save_request())
 
     def test_actual_mirror_origin_is_refused_even_with_authority_request(self):
         subprocess.run(["git", "-C", str(self.root), "remote", "set-url", "origin",
-                        "https://github.com/ingolf-lohmann/qik-vrt.git"], check=True)
+                        "https://github.com/Goldkelch/qik-vrt.git"], check=True)
         with self.assertRaises(publisher.zenodo.ZenodoError):
             host.publication_request(self.request_path, self.pin)
+
+    def test_check_reads_references_but_never_provider_credential_values(self):
+        with mock.patch.object(host, "publication_private_bytes", wraps=host.publication_private_bytes) as read:
+            host.publication_request(self.request_path, self.pin)
+        self.assertEqual({call.args[0] for call in read.call_args_list},
+                         {self.request_path, self.registry_path})
+
+    def test_current_authority_policy_must_match_committed_source(self):
+        policy = self.root / host.MESH_ROLE_POLICIES[0]
+        policy.write_bytes(policy.read_bytes() + b"\n")
+        with self.assertRaisesRegex(ValueError, "ROLE_POLICY_DRIFT"):
+            host.publication_request(self.request_path, self.pin)
+        self.load.assert_not_called()
+
+    def test_original_package_without_publisher_is_rejected(self):
+        definition = json.loads((host.ROOT / host.DEFINITION).read_bytes())
+        self.assertTrue(host.mesh_contract(host.ROOT, definition))
+        for relative in host.PUBLICATION_BOOTSTRAP_FILES:
+            changed = json.loads(json.dumps(definition))
+            changed["files"].remove(relative)
+            with self.subTest(carrier=relative), self.assertRaisesRegex(ValueError, "PUBLICATION_BOOTSTRAP"):
+                host.mesh_contract(host.ROOT, changed)
 
     def test_request_pin_and_execution_drift_refused(self):
         with self.assertRaisesRegex(ValueError, "PIN_MISMATCH"):
@@ -236,3 +261,4 @@ class PublicationAdapterTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+

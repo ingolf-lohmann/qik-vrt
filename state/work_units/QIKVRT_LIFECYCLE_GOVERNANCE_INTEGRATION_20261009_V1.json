@@ -1,0 +1,173 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_LIFECYCLE_GOVERNANCE_INTEGRATION_20261009_V1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "base_head": "502229de5259080939b54ec99dd131a7c96f476c",
+  "base_tree": "4c60f64a2646f77403587c16fda4173833fcb03b",
+  "donor": {
+    "pull_request": 480,
+    "head": "717589d7aa57c733263023257c44510549c1ecb8",
+    "source_patch_applies_cleanly": true,
+    "comparison": "Seven Main commits since donor base modify only lifecycle data; all donor source changes are absent from Main. Historical work-unit receipts and stale generated integrity were not copied."
+  },
+  "human_contribution": {
+    "name": "Ingolf Lohmann",
+    "role": "Product Owner / Code Owner",
+    "scope": "Explicit request for current-Main lifecycle/governance integration, TTL/readback preservation, regressions, reviewable candidate and REST-only GitHub operations"
+  },
+  "artificial_contribution": {
+    "system": "OpenAI Codex",
+    "model_build": "UNAVAILABLE",
+    "scope": "Source integration, REST telemetry and candidate persistence, Seed readback adapter, regression tests and verification",
+    "retention": "METADATA_ONLY"
+  },
+  "reuse": [
+    "PR480 governance and actual-shell controls",
+    "tools/qikvrt_mirror_node_lifecycle.sh unchanged",
+    "tools/qikvrt_seed_common.py identity TTL and acknowledgement checks",
+    "tools/qikvrt_required_review_gate.py native governance",
+    "PR499/501 Git-Data REST object and readback pattern; no unrelated continuation changes imported"
+  ],
+  "new_component_reason": "Existing shell generator has no typed REST publication/readback primitive; reuse of raw Main documents or authenticated Actions artifacts cannot keep public node liveness current while reviews are pending. Small typed helper extends the existing workflow and Seed reader, with no parallel scheduler.",
+  "checks": {
+    "local_targeted": "127 behavioral/contract tests passed (fresh source execution); exact-head native checks separately required",
+    "local_boot": "BLOCK: 44 large archived blobs unavailable locally; full corpus boot/integrity not attested",
+    "local_tool_cache": "14/14 strategies verified",
+    "native_exact_head": "REQUIRED_AFTER_CANDIDATE_CREATION",
+    "predecessor_evidence_transfer": false
+  },
+  "publication_contract": {
+    "branch": "qikvrt/node-lifecycle",
+    "class": "UNREVIEWED_TELEMETRY",
+    "schedule_hours": 6,
+    "health_ttl_minutes": 1500,
+    "renewal_hours": 24,
+    "reader": "tools/qikvrt_mirror_node_lifecycle.py:read_public",
+    "main_writes": false,
+    "write_concurrency": "create-only first ref; non-force append with preceding telemetry and source Main parents; one attempt then readback",
+    "readback": "exact commit tree/hash, trusted source ancestry and source bytes, actual main workflow/run/attempt and successful publication step, GUID/repository/seed/branch, source-clock window, TTL and registration expiry",
+    "consumer_adoption": "Reviewed mapping in registry/NODE_LIFECYCLE_TRANSPORT_V1.json; other repos require their own adoption. No silent legacy Main fallback.",
+    "operational_limit": "Outages/write denial/scheduler or reader delays can cause STALE; no TTL extension or availability claim beyond evidence."
+  },
+  "ruleset_client_dependency": {
+    "pr": 502,
+    "state": "NOT_IMPORTED_OR_ACTIVATED",
+    "detail": "PR502 currently pins writer blob 1202d24c2f23eb8fa52ab7c562a583e79f9e8444. The reused PR480 writer has current authority/context changes. Any later combined client candidate must explicitly rebind and retest that pin; no bypass or silent pin acceptance.",
+    "candidate_writer_blob": "ab47a8ec98c39b39bda420050cb7c970a9da6165"
+  },
+  "live_readback_before_candidate": {
+    "main_protected": false,
+    "rulesets": [],
+    "first_blocker": "CODE_OWNER_RULE_NOT_ENFORCED",
+    "administrative_effect": false
+  },
+  "outputs": {
+    ".github/CODEOWNERS": {
+      "sha256": "b7641aac1b1d611a27d1f34bc6c85b7c8c140736bcbd065ee680f2880683984b",
+      "git_blob_sha1": "d8cfd8ebf2d02bffbf0188f8f9ea2a7ad18539f9"
+    },
+    ".github/workflows/qikvrt_code_owner_review_observer.yml": {
+      "sha256": "6d6975b55c358fdeebdf125aae6ed855f75bfec06164b6b47cac15bd27de4fd0",
+      "git_blob_sha1": "efd13271fec4584ec1f6057b743a2b6c5aaf3057"
+    },
+    ".github/workflows/qikvrt_expected_head_promotion.yml": {
+      "sha256": "46386356f365d1c61fb1e9c3707f9c29d162969b27a1f2c3560e8ac636a0f192",
+      "git_blob_sha1": "15e4bc87864608d2fec1cd77fcdb96cacce855ab"
+    },
+    ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml": {
+      "sha256": "bfe554a15c993d0b46d33100682a0c8dd38718988d54c495082256a9fe8c260d",
+      "git_blob_sha1": "ab47a8ec98c39b39bda420050cb7c970a9da6165"
+    },
+    ".github/workflows/qikvrt_live_status_watch.yml": {
+      "sha256": "bdd5e54a7ccc73384121f3d13c6abd5d8ff7a0ef6640493d41ba2590be5f3c22",
+      "git_blob_sha1": "ca66f83148125ea7f5cacd8386f0df034cca5ded"
+    },
+    ".github/workflows/qikvrt_mirror_node_lifecycle.yml": {
+      "sha256": "a5d26a5c3e7ae35318d1c2a720bd9444cc0000a441ccc7bf01178f47239c2247",
+      "git_blob_sha1": "0cc2db957b0e882488a7cadba8b7910f11e5a0d8"
+    },
+    ".github/workflows/qikvrt_requested_review_contract.yml": {
+      "sha256": "0b449e59ae0bbaab1803169382637aa6acbc9fde92be45abf384e7988d651687",
+      "git_blob_sha1": "2ff69bac9889407a65a914619c136b2d45193d15"
+    },
+    ".github/workflows/qikvrt_requested_review_executor.yml": {
+      "sha256": "91ae244aa9d82731a406a9cc15ab51e12eca5b034a748927fe65157de6fd2934",
+      "git_blob_sha1": "e32a2947c2d266de3763c0efb410d9b78e75fe5a"
+    },
+    ".github/workflows/qikvrt_required_review_gate.yml": {
+      "sha256": "9f67e34b70834f6c4e9054a4def9d5c9852151cc5a828f7d8b4f9ede86085740",
+      "git_blob_sha1": "7125c55a543bf7e144bb5b51c47d17bf9b5ebfb9"
+    },
+    "Makefile": {
+      "sha256": "89c5d5cd195aac7f646cbb02aba275c16a501be5ecfd502fecbbe67e027792ca",
+      "git_blob_sha1": "b586f634414fbf19b93626c339a77f4fc7d55ed2"
+    },
+    "docs/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE.md": {
+      "sha256": "1d3fe16c8031daf4b186ba7370f37241294f323547b6bd37f28aa8ea90ec3d92",
+      "git_blob_sha1": "f8960058b6df7d7b0a2bb21f74649304a7f21755"
+    },
+    "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json": {
+      "sha256": "e1d9f659ae8ecf828db193c77775fe0b0ebee5c9d378ba56d880f8b23265959f",
+      "git_blob_sha1": "24dd2e644dc8fc97a9a8476aaf28f5334fcd1382"
+    },
+    "tests/test_qikvrt_expected_head_promotion.py": {
+      "sha256": "7ffcf31cc12217ef77511d35c85f9102fe30e8549bec01d2a18dba3adda55d4a",
+      "git_blob_sha1": "38216b3e5d37b9755612d3ab4b9dc3a3cd1d81d2"
+    },
+    "tests/test_qikvrt_expected_head_promotion_contract.py": {
+      "sha256": "68da294d5f51cb5039156b1452da8f5bccdb003ae6f4d7760059d5e2fcc35c19",
+      "git_blob_sha1": "9c140805f9336b8ca5c73d7b9ba2dcf0ec81a399"
+    },
+    "tests/test_qikvrt_requested_review_executor.py": {
+      "sha256": "14661083ff0617ecc8c7c263c4448d6aec72e5a3aae6f4f1ab7043d1c7c79845",
+      "git_blob_sha1": "3772d9e8124a8c3961c9f27942e3429a882601e9"
+    },
+    "tests/test_qikvrt_required_review_gate.py": {
+      "sha256": "dbca4480c3805d3251a43c82ffa0037b9c115d3fe2c9fd379f60266709f847ae",
+      "git_blob_sha1": "e88693e9e0a9e4d10a8ba43c52bf3cb80b807783"
+    },
+    "tests/test_ruleset_authority_token_route.py": {
+      "sha256": "87ce7e80ef3f24e8c00de350d534cdcbbde95b34105c2775c4487529035492d9",
+      "git_blob_sha1": "d70a18a296f0a5b10dd2ad6ecbd4af6e59456793"
+    },
+    "tests/test_seed_workflows.py": {
+      "sha256": "d121083b3b77a3cf91b35783206ed149265cc5199588ef35d3436abf1141df44",
+      "git_blob_sha1": "c7dbc311456e72e66d510521951824318ee519a0"
+    },
+    "tools/qikvrt_expected_head_promotion.py": {
+      "sha256": "c29b63736380550137a8f1aec2f4a36eec0d6301f869451909fd016c02618279",
+      "git_blob_sha1": "78acc8c7b32b15e0416b76c3ed1b191b656b073b"
+    },
+    "tools/qikvrt_requested_review_executor.py": {
+      "sha256": "4a70a452b9642ea480e14c312d34ff6e26b648584e4dc1d396adeb83c5b65117",
+      "git_blob_sha1": "b3eccb774851dc434bd75c531216e6ed1e3096ef"
+    },
+    "tools/qikvrt_required_review_gate.py": {
+      "sha256": "4acb1cc39e7af168db64f0eb7e66b8f712596bf8bfc52efa1b08020cddf1c9f6",
+      "git_blob_sha1": "1463ec8103b315c6489201c5876d64b77af8b1f6"
+    },
+    "tools/qikvrt_seed_common.py": {
+      "sha256": "60fdc009481edd8079be09954630c29a623838dfc5964ef09c2815ded583dc5f",
+      "git_blob_sha1": "88ad10f0d1289030937c5a43172dcac8c9299cfb"
+    },
+    "registry/NODE_LIFECYCLE_TRANSPORT_V1.json": {
+      "sha256": "45e7273c9edeccafef5095a4dc897eb658b5d91db144c89d35d6d4d72508a790",
+      "git_blob_sha1": "9facd85b130ff8c52b5e91a2252b7754ff29d516"
+    },
+    "tests/test_mirror_lifecycle_publication.py": {
+      "sha256": "53279171d5e038470757ae7864495a745b9b620e5cffbbbf457b542f6f8f87f7",
+      "git_blob_sha1": "bc743e212e2249deb351c6d42810e0087d7133cb"
+    },
+    "tools/qikvrt_mirror_node_lifecycle.py": {
+      "sha256": "ddde9375d5605846d8915bc14baa5a2647af4d9908dcdb718a6a69cee82611e4",
+      "git_blob_sha1": "f8f860b19a3eb3c64cb58e742b783ac18b40d2af"
+    }
+  },
+  "completion_claims": {
+    "MAIN_ACTIVATED": false,
+    "PUBLIC_TELEMETRY_ACTIVATED": false,
+    "NATIVE_CODE_OWNER_APPROVAL": false,
+    "EFFECT_ACK_DONE": false
+  },
+  "next_step": "Run exact candidate HEAD native checks and read back results; independently enforce native Main governance and obtain valid current-head Code-Owner review before governed adoption. Then verify actual public anonymous telemetry and consumer readback."
+}

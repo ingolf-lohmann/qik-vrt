@@ -12,6 +12,12 @@
     "machine_state": "AI_PROGRESS.json",
     "human_projection": "AI_STATUS.md"
   },
+  "owner_review_acceptance": {
+    "policy": "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+    "owner_record": "state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+    "gate": "tools/qikvrt_required_review_gate.py",
+    "rule": "The Principal Code Owner and Product Owner's considered explicit approval is also review, including on his own PR. Record the already authorized decision with the exact subject and actual platform state; do not demand another independent review or repeat the same permission request."
+  },
   "runtime_cache": {
     "policy": "runtime/CACHE_POLICY.md",
     "toolchain_lock": "runtime/toolchains/TOOLCHAIN.lock.tsv",
@@ -91,7 +97,13 @@
     "minimum_comparable_observations_before_preference": 3,
     "quality_regression_allowed": false,
     "mandatory_gate_reduction_allowed": false,
-    "rule": "Repeated use should become faster and clearer through exact-key caching, incremental processing, stable preference reuse, comparable evaluation matrices and reviewed optimization, never by weakening evidence, provenance, authorization or scientific boundaries."
+    "rule": "Repeated use should become faster and clearer through exact-key caching, incremental processing, stable preference reuse, comparable evaluation matrices and reviewed optimization, never by weakening evidence, provenance, authorization or scientific boundaries.",
+    "binding_hmi_contract": {
+      "policy": "policy/HUMAN_MACHINE_INTERFACE_ADAPTATION_V1.json#/hmi_independence",
+      "owner_decision_date": "2026-10-23",
+      "requirement": "QIKVRT defines the HMI contract and retains durable state, identity, scheduling and continuation authority independently of every replaceable HMI instance.",
+      "runtime_acceptance": "REQUIRES_FRESH_NATIVE_CONTINUATION_AND_CROSS_HMI_REPLACEMENT_EVIDENCE"
+    }
   },
   "project": {
     "name": "QIK-VRT",
@@ -105,6 +117,23 @@
       "equivalence_rule": "Symmetric canonicality is valid only for the scope whose exact bytes and declared state have been verified equivalent.",
       "chat_memory_authority": false,
       "repository_evidence_overrides_conversation": true
+    },
+    "repository_roles": {
+      "source_of_truth": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+      "projections_must_agree": true,
+      "activation": "FRESH_NATIVE_EXECUTION_AND_INDEPENDENT_MAIN_READBACK_REQUIRED"
+    },
+    "publication_identity": {
+      "identity_id": "QIKVRT-ZENODO-21888130-ORIGINAL-V1",
+      "responsible_human": "Ingolf Lohmann",
+      "record_url": "https://zenodo.org/records/21888130",
+      "doi": "10.5281/zenodo.21888130",
+      "human_binding": "docs/publications/2026-08-07-universum-als-round-trip/README.md",
+      "machine_binding": "docs/publications/2026-08-07-universum-als-round-trip/ROUND_TRIP_NODE_IDENTITY.json",
+      "pdf": "docs/publications/2026-08-07-universum-als-round-trip/DAS_UNIVERSUM_ALS_ROUND_TRIP_DE.pdf",
+      "required_in_every_authorized_node": true,
+      "original_source_bytes_immutable": true,
+      "adoption_and_runtime_acceptance_are_separate": true
     }
   },
   "required_read_order": [
@@ -115,6 +144,11 @@
     "state/charter/CHARTER_ADOPTION_V1.json",
     "AI_ADAPTERS.json",
     "AGENTS.md",
+    "state/authorization/delegations/OWNER_REPOSITORY_GOALS_AND_RULESET_AUTHORIZATION_V1.json",
+    "evidence/receipts/gemini-manifest-feedback-20261022.json",
+    "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+    "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+    "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
     "docs/AI_PERSONAL_WORKING_MEMORY_ORIGIN_AND_ATTRIBUTION.md",
     "policy/AI_PERSONAL_WORKING_MEMORY_ORIGIN_AND_ATTRIBUTION_V1.json",
     "docs/AI_BOOTSTRAP_KNOWLEDGE_CORPUS.md",
@@ -135,7 +169,12 @@
     "STATUS.md",
     "docs/CURRENT_AUTHORITY.md",
     "docs/COLLECTIVE_ADAPTIVE_COGNITION.md",
-    "policy/COLLECTIVE_ADAPTIVE_COGNITION.json"
+    "policy/COLLECTIVE_ADAPTIVE_COGNITION.json",
+    "state/authorization/delegations/OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_V1.json",
+    "policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json",
+    "docs/publications/2026-08-07-universum-als-round-trip/README.md",
+    "docs/publications/2026-08-07-universum-als-round-trip/ROUND_TRIP_NODE_IDENTITY.json",
+    "state/work_units/QIKVRT_SAFETY_SECURITY_IMPACT_20261019_V1.json"
   ],
   "session_protocol": {
     "startup": [
@@ -210,5 +249,81 @@
     "required_for_conforming_nodes": true,
     "mesh_propagation": "Every current or future QIK-VRT node, mesh instance, agent adapter or runtime claiming charter conformance resolves the exact charter through required_read_order; historical snapshots remain immutable.",
     "rule": "Separate evidence forms; preserve provenance and reproducibility; revise status without erasing history; never claim PASS, DONE, publication, equality or EFFECT_ACK_DONE without verifying the evidence required for that exact claim."
+  },
+  "end_of_action_verification": {
+    "delegation": "state/authorization/delegations/OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_V1.json",
+    "state": "ACTIVE",
+    "duties": [
+      "REOBSERVE_REPOSITORY_STATE",
+      "REOBSERVE_RAUMZEITTERMINAL_DELIVERY_EVIDENCE"
+    ],
+    "new_change": "FOLLOW_THROUGH_TO_A_FRESH_READBACK",
+    "unchanged_error": "DO_NOT_TRIGGER_A_RENEWED_ATTEMPT"
+  },
+  "recursive_self_application": {
+    "rule_id": "QIKVRT_RECURSIVE_SELF_APPLICATION_20261013",
+    "policy": "policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json#/self_application_working_rule",
+    "human_contract": "docs/operations/AUTONOMOUS_PR_CONTINUATION.md",
+    "client_gate": "tools/ai_handoff.py --client-receipt",
+    "exact_host": "raumzeitterminal.de",
+    "unobserved_adoption_inferred": false
+  },
+  "immediate_execution_principle": {
+    "rule_id": "QIKVRT_IMMEDIATE_EXECUTION_20261013",
+    "policy": "policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json#/self_application_working_rule/immediate_execution_principle",
+    "human_contract": "docs/operations/AUTONOMOUS_PR_CONTINUATION.md",
+    "client_gate": "tools/ai_handoff.py --client-receipt",
+    "default_disposition": "EXECUTE_IMMEDIATELY_IN_CURRENT_WORK_RING",
+    "unobserved_adoption_inferred": false
+  },
+  "safety_security_assurance": {
+    "human_contract": "docs/QIKVRT_THREAT_MODEL.md",
+    "productization_contract": "docs/QIKVRT_PRODUCTIZATION_ROADMAP.md",
+    "requirements_register": "state/work_units/QIKVRT_SAFETY_SECURITY_IMPACT_20261019_V1.json",
+    "scope": "Deployment assurance and source/applicability triage for Safety and Security use of QIKVRT/EAP",
+    "wire_protocol_changed": false,
+    "conformity_or_certification_inferred": false
+  },
+  "native_session_use": {
+    "policy": "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json#/client_continuation/native_session_use",
+    "terminal": "src/qikvrt_effect_ack_http_terminal.py",
+    "transputer": "src/qikvrt_temdd_event_ledger.py",
+    "scope": [
+      "ALL_CURRENT_SESSIONS",
+      "ALL_FUTURE_SESSIONS",
+      "AUTHORITY",
+      "MIRROR",
+      "MESH_CLIENT"
+    ],
+    "requires_actual_use": true,
+    "client_timer_as_continuation": false
+  },
+  "owner_conditional_merge": {
+    "source": "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json",
+    "json_pointer": "/conditional_merge_decision",
+    "decision_id": "OWNER-CONFLICT-FREE-GREEN-MERGE-20261028",
+    "source_sha256": "380e5e6a1585672b928c67f30536a6a85d7a04ee7d5519a42162f684de2ee22f",
+    "github_route": "REST_API_ONLY",
+    "scope": "CONFLICT_FREE_GREEN_TEST_REPOSITORY_MERGE_AND_AUTONOMOUS_CONTINUATION",
+    "merge_is_runtime_acceptance": false
+  },
+  "github_continuation_fallback": {
+    "owner_decision": "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json#/graphql_fallback_decision",
+    "decision_sha256": "f0220e4bef4e5884f744835d6a9885158045d9f31b387ea63c5325e6c86ccc8c",
+    "default_route": "REST_API_ONLY",
+    "fallback_route": "GRAPHQL_FALLBACK",
+    "always_retained": true,
+    "learn_from": "ORIGINAL_SUCCESSFUL_CI_CD_CO_RUNS",
+    "ordinary_release_inferred": false
+  },
+  "owner_pull_request_creation": {
+    "source": "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json",
+    "json_pointer": "/conditional_pull_request_creation_decision",
+    "decision_id": "OWNER-PR-CREATION-WITH-OTHER-CLOSURE-20261029",
+    "decision_sha256": "1304b2dd882e19afd22c863d95612c9b20a3ff40532616ca689086fed926697c",
+    "minimum_other_closure_targets": 1,
+    "reuse_existing_candidate_when_sufficient": true,
+    "closure_requires_independent_readback": true,
+    "rule_save_is_runtime_enforcement": false
   }
 }

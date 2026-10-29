@@ -1,8 +1,14 @@
 #!/bin/sh
 set -eu
 
-AUTHORITY_URL="${QIKVRT_AUTHORITY_URL:-https://github.com/Goldkelch/qik-vrt.git}"
-MIRROR_URL="${QIKVRT_MIRROR_URL:-https://github.com/ingolf-lohmann/qik-vrt.git}"
+AUTHORITY_URL="${QIKVRT_AUTHORITY_URL:-https://github.com/ingolf-lohmann/qik-vrt.git}"
+MIRROR_URL="${QIKVRT_MIRROR_URL:-https://github.com/Goldkelch/qik-vrt.git}"
+# Validate against the packaged normative contract before any remote access.
+export QIKVRT_AUTHORITY_URL="$AUTHORITY_URL" QIKVRT_MIRROR_URL="$MIRROR_URL"
+python3 -B /opt/qikvrt/tools/qikvrt_self_host.py deployment-roles --root /opt/qikvrt >/dev/null
+# REST_API_ONLY cannot be bypassed by an environment variable.
+echo "HOLD: existing mirror Git transport is not an authorized GitHub REST executor" >&2
+exit 78
 ROOT="${QIKVRT_MIRROR_STATE_DIR:-/var/lib/qikvrt/mirror}"
 REPO="${ROOT}/qik-vrt.git"
 STATE="${ROOT}/mirror-state.json"

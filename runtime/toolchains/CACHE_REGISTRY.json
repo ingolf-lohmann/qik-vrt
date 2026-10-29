@@ -31,6 +31,29 @@
       ],
       "version": "exact-executable-binding"
     },
+    "bash": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        ".github/workflows/qikvrt_universal_ontology_formalization.yml",
+        "tests/test_universal_ontology_claim_closure.py",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "github-hosted-runner-image:ubuntu-24.04-x64"
+      ],
+      "profiles": [
+        "formal",
+        "all"
+      ],
+      "provider": "Existing GitHub ubuntu-24.04 x64 runner packages; behavioral contract, no source redistribution or package installation",
+      "trusted_save": false,
+      "verification": [
+        "Bash shell, pipefail and staged cleanup behavior",
+        "Required command availability before provisioning; source-bound archive hash/size and executable self-tests; isolated positive/negative shell regressions."
+      ],
+      "version": "bash-euo-pipefail-v1"
+    },
     "cc": {
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
@@ -52,6 +75,52 @@
         "core execution tests"
       ],
       "version": "ansi-c90"
+    },
+    "coreutils": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        ".github/workflows/qikvrt_universal_ontology_formalization.yml",
+        "tests/test_universal_ontology_claim_closure.py",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "github-hosted-runner-image:ubuntu-24.04-x64"
+      ],
+      "profiles": [
+        "formal",
+        "all"
+      ],
+      "provider": "Existing GitHub ubuntu-24.04 x64 runner packages; behavioral contract, no source redistribution or package installation",
+      "trusted_save": false,
+      "verification": [
+        "sha256sum, stat, uname, mktemp and staged mkdir/mv/rm behavior",
+        "Required command availability before provisioning; source-bound archive hash/size and executable self-tests; isolated positive/negative shell regressions."
+      ],
+      "version": "sha256-staging-v1"
+    },
+    "curl": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        ".github/workflows/qikvrt_universal_ontology_formalization.yml",
+        "tests/test_universal_ontology_claim_closure.py",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "github-hosted-runner-image:ubuntu-24.04-x64"
+      ],
+      "profiles": [
+        "formal",
+        "all"
+      ],
+      "provider": "Existing GitHub ubuntu-24.04 x64 runner packages; behavioral contract, no source redistribution or package installation",
+      "trusted_save": false,
+      "verification": [
+        "HTTPS/TLS fail-closed release GET, redirect and bounded retry/deadline options",
+        "Required command availability before provisioning; source-bound archive hash/size and executable self-tests; isolated positive/negative shell regressions."
+      ],
+      "version": "bounded-https-get-v1"
     },
     "docker": {
       "authority_files": [
@@ -120,13 +189,40 @@
       ],
       "version": "same-as-ffmpeg"
     },
+    "firefox": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/self-host/Dockerfile",
+        "tools/qikvrt_self_host.py",
+        "tests/test_self_host_firefox.py",
+        "runtime/toolchains/PROVENANCE.md",
+        ".github/workflows/qikvrt_ci.yml"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "native qikvrt-s1-firefox158-runtime content-addressed image artifact; exact package DEB and executable digests in provision receipt"
+      ],
+      "profiles": [
+        "self-host-firefox"
+      ],
+      "provider": "Official Mozilla packages.mozilla.org signed APT Release packages on retained exact S1 image; no full OS upgrade or runtime rebuild",
+      "trusted_save": false,
+      "verification": [
+        "Primary Mozilla signing-key fingerprint 35BAA0B33E9EB396F59CA838C0BA5CE6DC6315A3 and signed APT metadata",
+        "Actual package version and executable SHA-256; Firefox live version >=158.0",
+        "Parent RootFS diff IDs preserved; current source native startup/noVNC/restart controls",
+        "Persistent getInstallForFile plus live AddonManager Mozilla signedState, compatibility, policy and background registration before and after restart; no temporary installation or signing exception"
+      ],
+      "version": "158-or-newer-exact-Mozilla-APT-binding"
+    },
     "firefox-esr": {
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
         "runtime/self-host/Dockerfile",
         "tools/qikvrt_self_host.py",
         "tests/test_self_host_firefox.py",
-        "runtime/toolchains/PROVENANCE.md"
+        "runtime/toolchains/PROVENANCE.md",
+        ".github/workflows/qikvrt_ci.yml"
       ],
       "cache_class": "runner-image-layer",
       "cache_locations": [
@@ -139,7 +235,8 @@
       "trusted_save": false,
       "verification": [
         "exact executable SHA-256 in manifest",
-        "productive startup, Unix/SQLite/SSE/restart and negative controls"
+        "productive startup, Unix/SQLite/SSE/restart and negative controls",
+        "live AddonManager compatibility, persistent XPI activation and process restart on the existing exact S1 OCI image; signing default and explicit ESR reference kept separate"
       ],
       "version": "exact-executable-binding"
     },
@@ -160,8 +257,7 @@
         "formal",
         "audio",
         "publication",
-        "all",
-        "self-host:github"
+        "all"
       ],
       "provider": "tools/bootstrap-gh.sh|tools/bootstrap-gh.ps1",
       "trusted_save": true,
@@ -200,66 +296,160 @@
       ],
       "version": "read-only-object-export"
     },
+    "github-environment-crypto": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/toolchains/PROVENANCE.md",
+        "runtime/toolchains/requirements-github-environment.txt",
+        "tools/qikvrt_authority_credentials.py",
+        "tests/test_production_environment.py"
+      ],
+      "cache_class": "ecosystem-cache",
+      "cache_locations": [
+        "operator-provisioned-personal-venv:versioned-package-installation"
+      ],
+      "failure_rollback": [
+        "HOLD before any GitHub mutation if absent, wrong version or unavailable; do not downgrade existing runtime"
+      ],
+      "license": "Apache-2.0",
+      "profiles": [
+        "authority-production-sso"
+      ],
+      "progress": [
+        "Non-secret per-binding intent/HTTP acknowledgement/readback in the original protected SSO store"
+      ],
+      "provider": "Official Python Cryptographic Authority PyNaCl PyPI distribution; existing optional private SSO runtime only",
+      "provision": [
+        "Explicit operator installation from requirements-github-environment.txt; no service-side installer or fallback"
+      ],
+      "self_test": [
+        "Real sealed-box encryption/decryption and invalid-key/version tests in tests/test_production_environment.py"
+      ],
+      "trusted_save": false,
+      "verification": [
+        "Exact imported PyNaCl 1.6.2 guard; locked existing Personal cryptography/cffi runtime",
+        "Generated-key sealed-box roundtrip with independent private-key decrypt; never infer live GitHub delivery"
+      ],
+      "version": "PyNaCl1.6.2"
+    },
+    "gpg": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/self-host/Dockerfile",
+        "tools/qikvrt_self_host.py",
+        "tests/test_self_host_firefox.py",
+        "runtime/toolchains/PROVENANCE.md",
+        ".github/workflows/qikvrt_ci.yml"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "verified S1 provision layer with reported gpg version and Debian package version"
+      ],
+      "profiles": [
+        "self-host-firefox"
+      ],
+      "provider": "Debian Bookworm gnupg package; fixed public Mozilla APT key, no private keys",
+      "trusted_save": false,
+      "verification": [
+        "gpg --version",
+        "gpg --show-keys --with-colons yields exactly one declared primary fingerprint; reject mismatch before Mozilla APT admission"
+      ],
+      "version": "Mozilla-primary-key-fingerprint-contract"
+    },
     "lean": {
+      "action_pins": {
+        "actions/cache/restore": {
+          "commit": "55cc8345863c7cc4c66a329aec7e433d2d1c52a9",
+          "using": "node24",
+          "version": "v6.1.0"
+        },
+        "actions/cache/save": {
+          "commit": "55cc8345863c7cc4c66a329aec7e433d2d1c52a9",
+          "using": "node24",
+          "version": "v6.1.0"
+        }
+      },
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
         "tools/bootstrap-runtime.sh",
-        ".github/workflows/qikvrt_formalization_and_audio.yml"
+        ".github/workflows/qikvrt_formalization_and_audio.yml",
+        ".github/workflows/qikvrt_universal_ontology_formalization.yml",
+        "tests/test_universal_ontology_claim_closure.py",
+        "runtime/toolchains/PROVENANCE.md"
       ],
       "cache_class": "build-cache",
       "cache_locations": [
         "~/.elan",
         "formalization/**/.lake/packages",
-        "formalization/**/.lake/build"
+        "formalization/**/.lake/build",
+        "RUNNER_TEMP/qikvrt-lean/lean-4.19.0-linux.tar.zst: SHA-256-locked archive; fresh extraction on every run"
       ],
       "profiles": [
         "formal",
         "all"
       ],
-      "provider": "leanprover/lean-action+actions/cache",
+      "provider": "official leanprover/lean4 release+actions/cache; leanprover/lean-action for other formal lanes",
       "trusted_save": true,
       "verification": [
         "lean-toolchain contract",
         "lake manifest digest",
         "lake build",
-        "kernel proof checks"
+        "kernel proof checks",
+        "official v4.19.0 Linux x86_64 archive:343842845bytes sha256:6fe3ce97a58f44e2b3567d455b994eacec5bfe9ae7774f2a573444480ba813fe; bounded staged download",
+        "cold and restored archive hash/size checks, fresh extraction and exact Lean/Lake self-tests before PATH activation; original builds/kernel audits mandatory; cache save restricted to successful trusted-Main dispatch"
       ],
       "version": "4.19.0"
     },
     "node": {
+      "action_pins": {
+        "actions/cache/save": {
+          "commit": "55cc8345863c7cc4c66a329aec7e433d2d1c52a9",
+          "using": "node24",
+          "version": "v6.1.0"
+        },
+        "actions/setup-node": {
+          "commit": "949feb2413d6458794dcd2491c4babbbce0c15c1",
+          "using": "node24",
+          "version": "v7.1.0"
+        }
+      },
       "authority_files": [
-        "runtime/toolchains/TOOLCHAIN.lock.tsv",
-        "formalization/QIKVRT_Formalization_v1.0/package-lock.json",
-        "tools/offline-audio-transcription/package-lock.json",
+        ".github/workflows/qikvrt_adaptive_runtime.yml",
+        ".github/workflows/qikvrt_audio_request.yml",
+        ".github/workflows/qikvrt_batch003_remaining_disposition.yml",
+        ".github/workflows/qikvrt_batch04_integrity.yml",
+        ".github/workflows/qikvrt_ci.yml",
+        ".github/workflows/qikvrt_collective_review.yml",
+        ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
         ".github/workflows/qikvrt_formalization_and_audio.yml",
-        "runtime/self-host/PACKAGE.json",
-        "tools/qikvrt_self_host.py",
-        "tests/test_self_host.py",
-        "tools/qikvrt_self_host_migration.py",
-        "tests/test_self_host_migration.py",
-        "runtime/self-host/MIGRATION.md"
+        ".github/workflows/qikvrt_global_completion.yml",
+        ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+        ".github/workflows/qikvrt_publication_router.yml",
+        ".github/workflows/qikvrt_temdd.yml",
+        "formalization/QIKVRT_Formalization_v1.0/package-lock.json",
+        "runtime/offline/browser-tests/webkit-apt-cache.test.mjs",
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "tests/test_workflow_action_runtime_pins.py",
+        "tools/offline-audio-transcription/package-lock.json",
+        ".github/workflows/qikvrt_universal_ontology_formalization.yml"
       ],
       "cache_class": "hosted-toolcache",
       "cache_locations": [
         "github-hosted-toolcache:Node/24",
-        "github-actions-cache:npm",
-        "operator-provisioned:manifest-bound-node24"
+        "github-actions-cache:npm"
       ],
       "profiles": [
         "formal",
         "audio",
-        "all",
-        "self-host"
+        "all"
       ],
-      "provider": "actions/setup-node or operator-provisioned exact executable",
+      "provider": "actions/setup-node",
       "trusted_save": false,
       "verification": [
         "Node major-version contract",
         "npm ci",
         "package-lock digest",
-        "test execution",
-        "self-host manifest version and executable SHA-256 with offline execution tests",
-        "separate-process offline Railway-state export/import/dry-run, corruption, completion and fail-closed rollback controls"
+        "test execution"
       ],
       "version": "24.x"
     },
@@ -285,6 +475,110 @@
         "productive startup, Unix/SQLite/SSE/restart and negative controls"
       ],
       "version": "reported-version-and-exact-package-digest"
+    },
+    "personal-auth-crypto": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/toolchains/PROVENANCE.md",
+        "src/qikvrt_personal_auth.py",
+        "tests/test_qikvrt_personal_auth.py",
+        "personal/ingolf-lohmann/firefox-assistant/README.md",
+        "runtime/toolchains/requirements-personal-auth-50.0.2.txt"
+      ],
+      "cache_class": "ecosystem-cache",
+      "cache_locations": [
+        "operator-provisioned-personal-venv:versioned-package-installation"
+      ],
+      "profiles": [
+        "personal-firefox-oidc"
+      ],
+      "provider": "Official PyPI distributions from pyca and their cffi/pycparser maintainers; optional private runtime environment only",
+      "trusted_save": false,
+      "verification": [
+        "Exact imported cryptography 50.0.2 runtime guard; locked cffi2.1.1/pycparser3.0 provisioning contract",
+        "Real generated RSA signature validation and negative controls in tests/test_qikvrt_personal_auth.py",
+        "If unavailable or a different version is installed: HOLD; never downgrade or modify the Standard runtime"
+      ],
+      "version": "cryptography50.0.2+cffi2.1.1+pycparser3.0"
+    },
+    "personal-retrieval": {
+      "authority_files": [
+        "runtime/toolchains/requirements-personal-retrieval.txt",
+        "runtime/models/pplx-embed-v2-late-0.6b.lock.json",
+        "personal/ingolf-lohmann/firefox-assistant/README.md"
+      ],
+      "cache_class": "ecosystem-cache",
+      "cache_locations": [
+        "pip version-keyed wheel cache; explicit external model directory bound by SHA-256 lock"
+      ],
+      "profiles": [
+        "personal-retrieval-opt-in"
+      ],
+      "provider": "Official PyPI distributions and pinned perplexity-ai Hugging Face model revision; optional isolated environment only",
+      "trusted_save": false,
+      "verification": [
+        "pinned dependency versions via pip check/freeze; model file-set, size and SHA-256 verification",
+        "make personal-retrieval-test; optional real offline model smoke probe"
+      ],
+      "version": "sentence-transformers6.0.0+transformers5.4.0+torch2.14.1"
+    },
+    "playwright-offline-tests": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        ".github/workflows/qikvrt_ci.yml",
+        "runtime/offline/browser-tests/apt-diagnosis.mjs",
+        "runtime/offline/browser-tests/apt-diagnosis.test.mjs",
+        "runtime/offline/browser-tests/package-lock.json",
+        "runtime/offline/BROWSER_LOCK.json"
+      ],
+      "cache_class": "ecosystem-cache",
+      "cache_locations": [
+        "github-actions-cache:npm",
+        "package-bound-playwright-browser-cache"
+      ],
+      "failure_handling": "No software downgrade; preserve failure.json, restore the exact tested cache response, dispose of fixture processes; browser failures remain blocking. A structurally valid partial APT observation returns collection exit 0 while transport state stays UNVERIFIED; source/checker failures remain nonzero",
+      "profiles": [
+        "offline-repository"
+      ],
+      "progress": "Stage-bound timeline and exact-byte browser-readback.json; bounded post-install APT_DIAGNOSIS.json with root numeric limits, private-value redaction and direct same-prefix HTTP/HTTPS timing",
+      "provider": "npm integrity-bound package and browser artifacts",
+      "self_test": "node runtime/offline/browser-tests/browser.test.mjs",
+      "trusted_save": false,
+      "verification": [
+        "npm ci integrity lock",
+        "browser revision and version lock",
+        "node runtime/offline/browser-tests/browser.test.mjs",
+        "node --test runtime/offline/browser-tests/apt-diagnosis.test.mjs",
+        "browser process exit and same-profile head/tree readback"
+      ],
+      "version": "1.62.1"
+    },
+    "playwright-origin-tests": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/toolchains/PROVENANCE.md",
+        "docs/monitor/origin/origin.browser.test.mjs",
+        "runtime/self-host/ORIGIN_BROWSER_TEST_LOCK.json",
+        "runtime/self-host/origin-tests/package.json",
+        "runtime/self-host/origin-tests/package-lock.json",
+        "runtime/self-host/original-workflows/qikvrt_temdd.yml"
+      ],
+      "cache_class": "hosted-toolcache",
+      "cache_locations": [
+        "npm-integrity-locked Playwright 1.62.1 package",
+        "SHA256-locked official Chrome for Testing 151.0.7922.34 archive"
+      ],
+      "profiles": [
+        "self-host-origin-tests"
+      ],
+      "provider": "https://github.com/microsoft/playwright/tree/v1.62.1",
+      "trusted_save": false,
+      "verification": [
+        "npm ci SRI locks; browser archive SHA-256 and byte count; exact executable --version",
+        "desktop persistent-context close/relaunch; offline and negative controls",
+        "device emulation or desktop WebKit never counted as Android or iOS witness"
+      ],
+      "version": "1.62.1"
     },
     "poppler": {
       "authority_files": [
@@ -365,11 +659,26 @@
       "version": "9.1.1"
     },
     "python": {
+      "action_pins": {
+        "actions/setup-python": {
+          "commit": "ece7cb06caefa5fff74198d8649806c4678c61a1",
+          "using": "node24",
+          "version": "v6.3.0"
+        }
+      },
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
         "tools/bootstrap-runtime.sh",
         ".github/workflows/qikvrt_adaptive_runtime.yml",
-        ".github/workflows/qikvrt_formalization_and_audio.yml"
+        ".github/workflows/qikvrt_formalization_and_audio.yml",
+        "tools/qikvrt_browser_assistant_ab.py",
+        "tests/test_qikvrt_browser_assistant_ab.py",
+        "benchmarks/browser-assistant-ab/contract.json",
+        "src/qikvrt_personal_assistant.py",
+        "src/qikvrt_effect_ack_http_terminal.py",
+        "tests/test_qikvrt_personal_assistant.py",
+        "personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json",
+        "tests/test_workflow_action_runtime_pins.py"
       ],
       "cache_class": "hosted-toolcache",
       "cache_locations": [
@@ -402,7 +711,13 @@
         "runtime/self-host/MIGRATION.md",
         "runtime/self-host/CAPTURE.md",
         "deploy/universal-terminal/railway-capture-hook.sh",
-        "tests/test_self_host_capture.py"
+        "tests/test_self_host_capture.py",
+        "tools/qikvrt_self_host_provider.py",
+        "tests/test_self_host_provider.py",
+        "runtime/self-host/PROVIDER_ADMISSION.md",
+        "tests/test_self_host_firefox.py",
+        ".github/workflows/qikvrt_ci.yml",
+        "browser/firefox/qikvrt-terminal/README.md"
       ],
       "cache_class": "runner-image-layer",
       "cache_locations": [
@@ -418,9 +733,60 @@
         "version and SHA-256 where runtime-bound",
         "positive, negative and restart tests",
         "separate-process offline Railway-state export/import/dry-run, corruption, completion and fail-closed rollback controls",
-        "private pinned one-shot capture, root-only full metadata/inventory, original supervisor composition, durable acknowledgement cut, producer locks and fail-closed PID namespace census; no provider identity or live capture inferred"
+        "private pinned one-shot capture, root-only full metadata/inventory, original supervisor composition, durable acknowledgement cut, producer locks and fail-closed PID namespace census; no provider identity or live capture inferred",
+        "provider-neutral GET inventory, contradiction/partial-page refusal, exact cost/key binding, immutable fsynced intent and ambiguous-ACK restart/readback controls; no live host or payment/terms inference",
+        "Official Mozilla AMO unlisted REST v4, Python stdlib HS256 JWT with 60-second expiry, exact six committed Standard source files, private fsynced one-shot journal, SHA256/source-bound original-byte readback and credential-free hostile HTTP controls; a mocked API or signature metadata is not Mozilla/browser acceptance"
       ],
       "version": "3.12.x"
+    },
+    "react-browser": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/self-host/REACT_LOCK.json",
+        "docs/monitor/react-runtime.js",
+        "docs/monitor/REACT_LICENSE.txt",
+        "tools/qikvrt_self_host.py",
+        "tests/test_self_host.py"
+      ],
+      "cache_class": "repo-managed-archive",
+      "cache_locations": [
+        "docs/monitor/react-runtime.js"
+      ],
+      "profiles": [
+        "self-host"
+      ],
+      "provider": "Pinned React 19.2.6, React DOM 19.2.6 and Scheduler 0.27.0 production CommonJS source bytes; MIT",
+      "trusted_save": false,
+      "verification": [
+        "Static bundle size/SHA-256 and each original production-source slice digest plus complete MIT license",
+        "Node VM loads actual React version and ReactDOM createRoot; exported public HTTP assets/version/immutable original-file readback",
+        "Existing hash-checked client replica handles event snapshots; no CDN, npm install or server renderer at startup; missing or changed static bytes fail closed"
+      ],
+      "version": "19.2.6+0.27.0"
+    },
+    "secret-tool": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/toolchains/PROVENANCE.md",
+        "src/qikvrt_personal_auth.py",
+        "tests/test_qikvrt_personal_auth.py",
+        "personal/ingolf-lohmann/firefox-assistant/README.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "operator-provisioned-linux-desktop:signed-distribution-package"
+      ],
+      "profiles": [
+        "personal-firefox-oidc"
+      ],
+      "provider": "GNOME libsecret via signed operating-system distribution package; actual user desktop Secret Service required",
+      "trusted_save": false,
+      "verification": [
+        "Fixed /usr/bin/secret-tool regular root-owned executable without group/world write",
+        "Stdin-only secret transfer and exact protected-store readback; no fallback",
+        "Native acceptance requires protected login collection and real lock/unlock/restart/deletion witness; current CI fixture is not that witness"
+      ],
+      "version": "system-libsecret-executable-contract"
     },
     "sherpa-onnx-node": {
       "authority_files": [
@@ -444,6 +810,78 @@
         "offline audio tests"
       ],
       "version": "1.13.4"
+    },
+    "skopeo": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        ".github/workflows/qikvrt_ci.yml",
+        "tests/test_self_host_container.py",
+        "runtime/toolchains/PROVENANCE.md",
+        "evidence/self_host/SKOPEO_CARRIER_READBACK_20261026.json",
+        "tools/qikvrt_self_host_container.py"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "existing repository Actions artifact qikvrt-skopeo-<pinned-platform-digest>/skopeo-loader.docker.tar; retention 90 days",
+        "local Docker image by verified config SHA-256; exact official manifest on cache miss only"
+      ],
+      "profiles": [
+        "self-host-container"
+      ],
+      "provider": "Official Quay linux/amd64 manifest pin, preserved as a verified repository tool artifact",
+      "trusted_save": false,
+      "verification": [
+        "verify original official index, platform manifest and config bytes against reviewed digests and TOOLCHAIN.lock.tsv",
+        "canonical Docker archive, exact config digest and every ordered uncompressed rootfs.diff_id before Docker load",
+        "verify loaded image ID, platform, ordered layers and offline skopeo --version",
+        "existing S1 smoke/restart and publication --preserve-digests gates remain mandatory",
+        "fail closed on corrupt cache or API/authentication failure; cache miss alone permits exact-pin source pull; no tag fallback"
+      ],
+      "version": "exact-OCI-carrier-preserve-digests"
+    },
+    "sqljs-browser": {
+      "authority_files": [
+        "runtime/self-host/ORIGIN_SQLITE_LOCK.json",
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "cache_class": "repo-managed-archive",
+      "cache_locations": [
+        "docs/monitor/origin/vendor"
+      ],
+      "profiles": [
+        "self-host-origin"
+      ],
+      "provider": "https://registry.npmjs.org/sql.js/-/sql.js-1.14.2.tgz",
+      "trusted_save": false,
+      "verification": [
+        "archive SHA-512 integrity; every vendored file size and SHA-256",
+        "actual original SQLite carrier validation; corrupt-byte and identity refusal",
+        "offline Service Worker cache hashes; fail closed and preserve previous store on error"
+      ],
+      "version": "1.14.2"
+    },
+    "ssh": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "tools/qikvrt_self_host_provider.py",
+        "tests/test_self_host_static.py",
+        "runtime/self-host/STATIC_DELIVERY.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "existing owner-controlled administrative host: distribution openssh-client package"
+      ],
+      "profiles": [
+        "self-host-static-delivery"
+      ],
+      "provider": "Existing OS distribution OpenSSH client; explicit host provisioning only, no key generation or replacement runtime",
+      "trusted_save": false,
+      "verification": [
+        "OpenSSH strict known-hosts file SHA-256 and BatchMode contract; one connection attempt, no password/proxy/agent fallback",
+        "Actual remote installer in disposable local directories; atomic install and independent original-byte readback; lost-ACK and stale-predecessor controls"
+      ],
+      "version": "strict-pinned-host-key-batch-transfer"
     },
     "systemd": {
       "authority_files": [
@@ -472,6 +910,29 @@
         "Actual systemd PID1/version and manager MainPID/InvocationID must match the guarded launcher process; env self-report insufficient"
       ],
       "version": "252-or-newer-unit-contract"
+    },
+    "tar": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        ".github/workflows/qikvrt_universal_ontology_formalization.yml",
+        "tests/test_universal_ontology_claim_closure.py",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "github-hosted-runner-image:ubuntu-24.04-x64"
+      ],
+      "profiles": [
+        "formal",
+        "all"
+      ],
+      "provider": "Existing GitHub ubuntu-24.04 x64 runner packages; behavioral contract, no source redistribution or package installation",
+      "trusted_save": false,
+      "verification": [
+        "GNU tar zstd extraction with strip-components and no-same-owner",
+        "Required command availability before provisioning; source-bound archive hash/size and executable self-tests; isolated positive/negative shell regressions."
+      ],
+      "version": "gnu-tar-zstd-v1"
     },
     "websockify": {
       "authority_files": [
@@ -635,6 +1096,29 @@
         "schema-validation tests"
       ],
       "version": "4.4.3"
+    },
+    "zstd": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        ".github/workflows/qikvrt_universal_ontology_formalization.yml",
+        "tests/test_universal_ontology_claim_closure.py",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "github-hosted-runner-image:ubuntu-24.04-x64"
+      ],
+      "profiles": [
+        "formal",
+        "all"
+      ],
+      "provider": "Existing GitHub ubuntu-24.04 x64 runner packages; behavioral contract, no source redistribution or package installation",
+      "trusted_save": false,
+      "verification": [
+        "Decode the SHA-256-verified original Lean release archive",
+        "Required command availability before provisioning; source-bound archive hash/size and executable self-tests; isolated positive/negative shell regressions."
+      ],
+      "version": "zstd-decode-v1"
     }
   },
   "coverage_authority": "runtime/toolchains/CACHE_COVERAGE.json",

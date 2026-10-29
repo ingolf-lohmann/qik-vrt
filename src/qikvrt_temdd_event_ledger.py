@@ -61,6 +61,10 @@ def utc():
 
 def subject(root, repository, pr):
     """Observe one clean immutable checkout, without a floating tree lookup."""
+    if not isinstance(repository, str) or not re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', repository):
+        raise Hold('REPOSITORY_REQUIRED')
+    if type(pr) is not int or pr < 1:
+        raise Hold('PR_REQUIRED')
     def git(*args):
         return subprocess.check_output(['git', '-C', str(root), *args],
             stderr=subprocess.DEVNULL, timeout=5, text=True).strip()
@@ -74,29 +78,46 @@ def subject(root, repository, pr):
             raise Hold('EXACT_SUBJECT_CHANGED')
     except (OSError, subprocess.SubprocessError) as exc:
         raise Hold('EXACT_SUBJECT_UNOBSERVABLE_OR_DIRTY') from exc
-    if not re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', repository):
-        raise Hold('REPOSITORY_REQUIRED')
-    if type(pr) is not int or pr < 1:
-        raise Hold('PR_REQUIRED')
     return {'repository': repository, 'pr': pr, 'head': head, 'tree': tree}
 
 
 class Ledger:
     """One process owns the durable store; append is a finite transaction."""
-    def __init__(self, state_dir, exact_subject):
+    def __init__(self, state_dir, exact_subject, *, read_only=False):
         self.subject = dict(exact_subject)
         self.binding = digest(self.subject)
         self.condition = threading.Condition(threading.RLock())
         self.stopped = False
         self.reason = ''
         self.listeners = set()
+        self.read_only = read_only
         self.directory = Path(state_dir) / 'temdd'
         if self.directory.is_symlink():
             raise Hold('UNSAFE_LEDGER_DIRECTORY')
-        self.directory.mkdir(mode=0o700, parents=True, exist_ok=True)
+        if not read_only:
+            self.directory.mkdir(mode=0o700, parents=True, exist_ok=True)
         info = self.directory.stat()
         if info.st_uid != os.geteuid() or stat.S_IMODE(info.st_mode) & 0o077:
             raise Hold('LEDGER_DIRECTORY_MUST_BE_OWNER_ONLY')
+        self.lock_fd = None
+        if read_only:
+            for name in ('events.sqlite3', 'events.sqlite3-wal', 'events.sqlite3-shm'):
+                path = self.directory / name
+                if path.is_symlink():
+                    raise Hold('UNSAFE_LEDGER_FILE')
+                if path.exists():
+                    info = path.stat()
+                    if info.st_uid != os.geteuid() or stat.S_IMODE(info.st_mode) & 0o077:
+                        raise Hold('LEDGER_FILE_MUST_BE_OWNER_ONLY')
+            self.db = sqlite3.connect((self.directory / 'events.sqlite3').absolute().as_uri() + '?mode=ro',
+                                     uri=True, check_same_thread=False, timeout=5)
+            self.db.execute('PRAGMA query_only=ON')
+            meta = dict(self.db.execute('SELECT key,value FROM meta'))
+            if meta.get('schema') not in ('1', '2') or not re.fullmatch(r'[0-9a-f]{32}', meta.get('epoch', '')):
+                self.db.close()
+                raise Hold('UNKNOWN_LEDGER_SCHEMA')
+            self.epoch = meta['epoch']
+            return
         self.lock_fd = os.open(self.directory / 'owner.lock',
             os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)
         try:
@@ -104,8 +125,17 @@ class Ledger:
             for name in ('events.sqlite3', 'events.sqlite3-wal', 'events.sqlite3-shm'):
                 if (self.directory / name).is_symlink():
                     raise Hold('UNSAFE_LEDGER_FILE')
+            existing = (self.directory / 'events.sqlite3').exists()
             self.db = sqlite3.connect(self.directory / 'events.sqlite3',
                                       check_same_thread=False, timeout=5)
+            os.chmod(self.directory / 'events.sqlite3', 0o600)
+            # A legacy store has no writer provenance. Never bless a restored
+            # copy merely because this machine can lock its own copy of a file.
+            if existing and self.db.execute("SELECT name FROM sqlite_master WHERE name='meta'").fetchone():
+                meta = dict(self.db.execute('SELECT key,value FROM meta'))
+                if meta.get('schema') != '2':
+                    raise Hold('LEGACY_LEDGER_REQUIRES_FENCED_WRITER_ADMISSION')
+                self._check_writer()
             self.db.execute('PRAGMA journal_mode=WAL')
             self.db.execute('PRAGMA synchronous=FULL')
             with self.db:
@@ -115,10 +145,11 @@ class Ledger:
                     'source TEXT NOT NULL, native_id TEXT NOT NULL, native_digest TEXT NOT NULL, '
                     'body TEXT NOT NULL, body_digest TEXT NOT NULL, UNIQUE(source,native_id))')
                 self.db.execute('CREATE INDEX IF NOT EXISTS events_binding ON events(binding,seq)')
-                self.db.execute('INSERT OR IGNORE INTO meta VALUES (?,?)', ('schema', '1'))
+                self.db.execute('INSERT OR IGNORE INTO meta VALUES (?,?)', ('schema', '2'))
                 self.db.execute('INSERT OR IGNORE INTO meta VALUES (?,?)', ('epoch', uuid.uuid4().hex))
+                self.db.execute('INSERT OR IGNORE INTO meta VALUES (?,?)', ('writer_seal', self._writer_seal()))
             meta = dict(self.db.execute('SELECT key,value FROM meta'))
-            if meta.get('schema') != '1' or not re.fullmatch(r'[0-9a-f]{32}', meta.get('epoch', '')):
+            if meta.get('schema') != '2' or not re.fullmatch(r'[0-9a-f]{32}', meta.get('epoch', '')):
                 raise Hold('UNKNOWN_LEDGER_SCHEMA')
             self.epoch = meta['epoch']
             if self.db.execute('PRAGMA quick_check').fetchone() != ('ok',):
@@ -128,6 +159,126 @@ class Ledger:
                 self.db.close()
             os.close(self.lock_fd)
             raise
+
+    def _writer_seal(self):
+        """Local physical ownership only; this is not distributed fencing."""
+        boot = Path('/proc/sys/kernel/random/boot_id').read_text().strip()
+        if not re.fullmatch(r'[0-9a-f-]{36}', boot):
+            raise Hold('WRITER_HOST_IDENTITY_UNOBSERVABLE')
+        paths = [self.directory, self.directory / 'events.sqlite3', self.directory / 'owner.lock']
+        identities = []
+        for path in paths:
+            info = path.lstat()
+            if stat.S_ISLNK(info.st_mode) or info.st_uid != os.geteuid():
+                raise Hold('UNSAFE_WRITER_IDENTITY')
+            identities.append([info.st_dev, info.st_ino])
+        lock = os.fstat(self.lock_fd)
+        if identities[-1] != [lock.st_dev, lock.st_ino]:
+            raise Hold('WRITER_LOCK_REPLACED')
+        return digest({'boot': boot, 'objects': identities})
+
+    def _check_writer(self):
+        if self.read_only:
+            raise Hold('READ_ONLY_LEDGER')
+        meta = dict(self.db.execute('SELECT key,value FROM meta'))
+        if meta.get('schema') != '2' or meta.get('writer_seal') != self._writer_seal():
+            raise Hold('COPIED_OR_UNADMITTED_LEDGER_WRITER')
+
+    def history_frontier(self):
+        # Preserve the ORIGINAL canonical frontier bytes, including row order,
+        # while retaining at most one bounded native event at a time. The lock
+        # excludes same-connection appends during this finite SQLite snapshot.
+        with self.condition, contextlib.closing(self.db.execute(
+                'SELECT * FROM events ORDER BY seq')) as rows:
+            frontier = hashlib.sha256(b'{"epoch":' + canonical(self.epoch) + b',"rows":[')
+            separator = b''
+            for row in rows:
+                seq, binding, source, native_id, native_digest, text, expected = row
+                body = json.loads(text)
+                original = {key: body[key] for key in
+                            ('kind', 'subject', 'provenance', 'observed_at', 'message', 'payload')}
+                original['schema'] = SCHEMA
+                validator = object.__new__(Ledger); validator.subject = body['subject']
+                validator._validate(original)
+                if (digest(body) != expected or digest(body['subject']) != binding
+                        or digest(original) != native_digest
+                        or body['provenance'] != {'source': source, 'native_event_id': native_id}
+                        or body.get('schema') != 'qikvrt_temdd_event_v1'
+                        or body.get('payload_digest') != digest(body['payload'])
+                        or body.get('evidence_transfer') != 'DENY' or body.get('dod') is not False):
+                    raise Hold('LEDGER_HISTORY_READBACK_MISMATCH')
+                frontier.update(separator)
+                frontier.update(canonical(row))
+                separator = b','
+            frontier.update(b']}')
+            return frontier.hexdigest()
+
+    def _same_history(self, other):
+        """Exact row equality, without materializing either complete journal."""
+        with self.condition, other.condition, contextlib.closing(self.db.execute(
+                'SELECT * FROM events ORDER BY seq')) as left, contextlib.closing(other.db.execute(
+                'SELECT * FROM events ORDER BY seq')) as right:
+            while True:
+                row = left.fetchone()
+                peer = right.fetchone()
+                if row != peer:
+                    return False
+                if row is None:
+                    return True
+
+    @classmethod
+    def transfer_local_writer(cls, source, target, exact_subject, expected_frontier):
+        """Explicit, quiescent local handoff; never an unreachable-host takeover.
+
+        Both physical stores and both node locks must be observable here. The
+        caller pins all original rows, not just one subject's replay partition.
+        Revocation commits before admission. An interrupted transfer fails
+        closed; no event, epoch, native input or receipt is rewritten.
+        """
+        with contextlib.ExitStack() as stack:
+            for volume in sorted({Path(source).resolve(), Path(target).resolve()}):
+                path = volume / 'node.lock'
+                if path.exists():
+                    fd = os.open(path, os.O_RDWR | os.O_NOFOLLOW)
+                    stack.callback(os.close, fd)
+                    fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            writer = cls(source, exact_subject)
+            stack.callback(writer.close)
+            reader = cls(target, exact_subject, read_only=True)
+            stack.callback(reader.close)
+            fd = os.open(reader.directory / 'owner.lock', os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)
+            stack.callback(os.close, fd)
+            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            reader.lock_fd = fd
+            # ExitStack owns this descriptor, not the read-only reader.
+            stack.callback(setattr, reader, 'lock_fd', None)
+            frontier = writer.history_frontier()
+            if (frontier != expected_frontier or reader.epoch != writer.epoch
+                    or reader.history_frontier() != frontier
+                    or not writer._same_history(reader)):
+                raise Hold('EXACT_LOCAL_HANDOFF_PREFIX_REQUIRED')
+            seal = reader._writer_seal()
+            if seal == writer._writer_seal():
+                raise Hold('DISTINCT_LOCAL_HANDOFF_TARGET_REQUIRED')
+            meta = dict(reader.db.execute('SELECT key,value FROM meta'))
+            original_meta = dict(writer.db.execute('SELECT key,value FROM meta'))
+            if meta != original_meta:
+                raise Hold('EXACT_LOCAL_HANDOFF_METADATA_REQUIRED')
+            with writer.db:
+                writer.db.execute("UPDATE meta SET value=? WHERE key='writer_seal'", ('revoked:' + seal,))
+            # A crash here leaves source revoked and target still unadmitted.
+            target_db = sqlite3.connect(reader.directory / 'events.sqlite3')
+            try:
+                target_db.execute('PRAGMA synchronous=FULL')
+                with target_db:
+                    target_db.execute("UPDATE meta SET value=? WHERE key='writer_seal'", (seal,))
+                if dict(target_db.execute('SELECT key,value FROM meta')).get('writer_seal') != seal:
+                    raise Hold('LOCAL_HANDOFF_READBACK_FAILED')
+            finally:
+                target_db.close()
+            return {'state': 'LOCAL_WRITER_TRANSFERRED', 'epoch': writer.epoch,
+                    'frontier_sha256': frontier, 'distributed_fencing_verified': False,
+                    'host_admission_verified': False, 'effect_ack_done': False}
 
     def _validate(self, event):
         required = {'schema', 'kind', 'subject', 'provenance', 'observed_at', 'message', 'payload'}
@@ -175,6 +326,7 @@ class Ledger:
         with self.condition:
             if self.stopped:
                 raise Hold(self.reason or 'LEDGER_STOPPED')
+            self._check_writer()
             old = self.db.execute('SELECT seq,native_digest FROM events WHERE source=? AND native_id=?',
                 (provenance['source'], provenance['native_event_id'])).fetchone()
             if old is not None:
@@ -249,7 +401,8 @@ class Ledger:
         self.stop()
         with self.condition:
             self.db.close()
-            os.close(self.lock_fd)
+            if self.lock_fd is not None:
+                os.close(self.lock_fd)
 
 
 class Runtime:
@@ -418,8 +571,8 @@ def main():
     parser.add_argument('--host', default='127.0.0.1')
     parser.add_argument('--port', type=int, default=8771)
     parser.add_argument('--root', default=str(Path(__file__).resolve().parents[1]))
-    parser.add_argument('--repository', default='Goldkelch/qik-vrt')
-    parser.add_argument('--pr', type=int, default=1103)
+    parser.add_argument('--repository', help='Explicit owner/repository of the serve carrier; no inferred default')
+    parser.add_argument('--pr', type=int, help='Explicit positive PR binding of the serve carrier; no historical default')
     args = parser.parse_args()
     try:
         if args.operation == 'append':

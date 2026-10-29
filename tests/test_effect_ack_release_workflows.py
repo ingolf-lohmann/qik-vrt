@@ -350,6 +350,11 @@ class EffectAckReleaseWorkflowTests(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix="qikvrt-release-workflow-") as raw:
             repository = pathlib.Path(raw)
             run_git(repository, "init", "-q")
+            # No detached writer may outlive this short-lived Git fixture.
+            run_git(repository, "config", "maintenance.auto", "false")
+            run_git(repository, "config", "maintenance.autoDetach", "false")
+            run_git(repository, "config", "gc.auto", "0")
+            run_git(repository, "config", "gc.autoDetach", "false")
             run_git(repository, "config", "user.name", "QIK-VRT fixture")
             run_git(repository, "config", "user.email", "fixture@example.invalid")
             marker_path = repository / MARKER_PATH
@@ -411,6 +416,34 @@ class EffectAckReleaseWorkflowTests(unittest.TestCase):
                 self.assertIn('["git", "show", "-s", "--format=%T", "HEAD^"]', text)
                 self.assertNotIn('["git", "rev-parse", "HEAD^{tree}"]', text)
 
+    def test_two_commit_fixture_cannot_outlive_its_temporary_repository(self) -> None:
+        """Host maintenance settings must not leave a writer racing cleanup."""
+        with tempfile.TemporaryDirectory(prefix="qikvrt-release-maintenance-") as raw:
+            root = pathlib.Path(raw)
+            config = root / "global.gitconfig"
+            config.write_text(
+                "[gc]\n\tauto = 1\n\tautoDetach = true\n"
+                "[maintenance]\n\tauto = true\n\tautoDetach = true\n",
+                encoding="utf-8",
+            )
+            trace = root / "trace.jsonl"
+            with mock.patch.dict(os.environ, {
+                "GIT_CONFIG_GLOBAL": os.fspath(config),
+                "GIT_CONFIG_NOSYSTEM": "1",
+                "GIT_CONFIG_COUNT": "0",
+                "GIT_TRACE2_EVENT": os.fspath(trace),
+            }):
+                self.test_two_commit_parent_tree_fixture()
+            events = [json.loads(line) for line in trace.read_text().splitlines()]
+            self.assertTrue(any(event.get("event") == "start" for event in events))
+            automatic_writers = [
+                event["argv"] for event in events
+                if event.get("event") == "child_start"
+                and "--auto" in event.get("argv", [])
+                and any(command in event["argv"] for command in ("maintenance", "gc"))
+            ]
+            self.assertEqual(automatic_writers, [])
+
 
 class GeneralCITerminalDispositionTests(unittest.TestCase):
     """Execute the real terminal step; a skipped writer is not a failed test."""
@@ -423,6 +456,10 @@ class GeneralCITerminalDispositionTests(unittest.TestCase):
 
     def run_terminal(self, required: str, full_test: str, fixpoint: str):
         block = GENERAL_CI.read_text(encoding="utf-8").split(self.STEP, 1)[1]
+        block = block.split("\n      - name:", 1)[0]
+        # A later independent job is not part of this terminal shell step.
+        # Keep the original failure/success cases on the exact step bytes.
+        block = re.split(r"\n  [A-Za-z_][\w-]*:\n", block, maxsplit=1)[0]
         metadata, script = block.split("        run: |\n", 1)
         values = {
             self.SCOPE: required,
@@ -576,6 +613,167 @@ class GeneralCITerminalDispositionTests(unittest.TestCase):
         self.assertIn("FULL_TEST_OUTCOME: ${{ steps.full_test.outcome }}", terminal)
         self.assertIn("FIXPOINT_OUTCOME: ${{ steps.fixpoint.outcome }}", terminal)
         self.assertNotIn(".conclusion", terminal)
+
+    def test_offline_browser_runner_paths_are_bound_inside_steps(self):
+        workflow = GENERAL_CI.read_text(encoding="utf-8")
+        browser = workflow.split("\n  offline_browser:\n", 1)[1]
+        job_metadata, steps = browser.split("    steps:\n", 1)
+        self.assertNotRegex(job_metadata, r"\$\{\{\s*runner\.")
+        evidence_binding = "QIKVRT_OFFLINE_EVIDENCE_DIR: ${{ runner.temp }}/offline-${{ matrix.engine }}"
+        self.assertEqual(steps.count(evidence_binding), 5)
+        self.assertIn("if: matrix.engine == 'chromium'", steps)
+        self.assertIn("if: matrix.engine == 'webkit'", steps)
+        self.assertIn("playwright install --with-deps chromium", steps)
+        self.assertIn("playwright install-deps webkit", steps)
+        self.assertIn("playwright install webkit", steps)
+        self.assertIn("timeout --signal=TERM --kill-after=30s 12m", steps)
+        self.assertIn("timeout --signal=TERM --kill-after=30s 8m", steps)
+        self.assertIn("INSTALL_PHASE_SYSTEM_DEPS.txt", steps)
+        self.assertIn("INSTALL_PHASE_BROWSER.txt", steps)
+        self.assertIn("INSTALL_PHASE*.txt", steps)
+        self.assertIn("APT_DIAGNOSIS.json", steps)
+        self.assertIn("if: ${{ !cancelled() && matrix.engine == 'webkit' }}", steps)
+        self.assertIn('exit "$status"', steps)
+        self.assertNotIn("continue-on-error:", browser)
+
+
+class GeneralCITestedSubjectTests(unittest.TestCase):
+    """Execute the production handoff against real predecessor/successor Git objects."""
+
+    STEP = "      - name: Bind the committed subject actually accepted by the complete test gate\n"
+
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory(prefix="qikvrt-ci-subject-")
+        self.addCleanup(self.temporary.cleanup)
+        self.base = pathlib.Path(self.temporary.name)
+        self.root = self.base / "source"
+        self.root.mkdir()
+        self.remote = self.base / "remote.git"
+        run_git(self.base, "init", "--bare", os.fspath(self.remote))
+        run_git(self.root, "init")
+        run_git(self.root, "config", "user.name", "CI subject regression")
+        run_git(self.root, "config", "user.email", "ci-subject@example.invalid")
+        (self.root / "source.txt").write_text("original source\n")
+        (self.root / "REPOSITORY_FILE_MANIFEST.json").write_text("predecessor\n")
+        run_git(self.root, "add", ".")
+        run_git(self.root, "commit", "-m", "predecessor")
+        self.predecessor = run_git(self.root, "rev-parse", "HEAD")
+        run_git(self.root, "remote", "add", "origin", os.fspath(self.remote))
+        run_git(self.root, "push", "origin", "HEAD:refs/heads/fixture")
+        self.output = self.base / "output"
+
+    def successor(self, path="REPOSITORY_FILE_MANIFEST.json", *, push=True):
+        (self.root / path).write_text("successor\n")
+        run_git(self.root, "add", path)
+        run_git(self.root, "commit", "-m", "successor")
+        if push:
+            run_git(self.root, "push", "origin", "HEAD:refs/heads/fixture")
+        return run_git(self.root, "rev-parse", "HEAD")
+
+    def bind(self, *, required="true", expected=None):
+        block = GENERAL_CI.read_text().split(self.STEP, 1)[1]
+        block = block.split("\n  offline_browser:\n", 1)[0]
+        block = block.split("\n      - name: ", 1)[0]
+        script = textwrap.dedent(block.split("        run: |\n", 1)[1])
+        return subprocess.run(
+            ["bash", "--noprofile", "--norc", "-c", script],
+            cwd=self.root,
+            env=dict(os.environ, EXPECTED_HEAD=expected or self.predecessor,
+                     FIXPOINT_REQUIRED=required, TARGET_REF="fixture",
+                     GITHUB_REPOSITORY="ingolf-lohmann/qik-vrt", GITHUB_RUN_ID="1", GITHUB_RUN_ATTEMPT="1",
+                     GITHUB_OUTPUT=os.fspath(self.output)),
+            text=True, capture_output=True, timeout=10, check=False,
+        )
+
+    def test_integrity_successor_is_the_bound_downstream_subject(self):
+        successor = self.successor()
+        result = self.bind()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        values = dict(line.split("=", 1) for line in self.output.read_text().splitlines())
+        self.assertEqual(values, {"head": successor,
+                                 "tree": run_git(self.root, "rev-parse", "HEAD^{tree}")})
+        self.assertNotEqual(values["head"], self.predecessor)
+        receipt = json.loads((self.root / ".qikvrt/ci-tested-subject/TESTED_SUBJECT.json").read_bytes())
+        self.assertEqual(receipt["head_sha"], values["head"])
+        self.assertEqual(receipt["tree_sha"], values["tree"])
+        self.assertEqual(receipt["run_id"], 1)
+        workflow = GENERAL_CI.read_text()
+        self.assertIn("tested_head: ${{ steps.tested_subject.outputs.head }}", workflow)
+        self.assertIn("tested_tree: ${{ steps.tested_subject.outputs.tree }}", workflow)
+        for job, following in (("offline_browser", "amo_unlisted"),
+                               ("amo_unlisted", "s1_firefox_extension"),
+                               ("container", "container_publish")):
+            with self.subTest(job=job):
+                block = workflow.split("\n  " + job + ":\n", 1)[1]
+                block = block.split("\n  " + following + ":\n", 1)[0]
+                self.assertRegex(block, r"needs: (?:test|\[test,)")
+                self.assertIn("ref: ${{ needs.test.outputs.tested_head }}", block)
+                self.assertNotIn("ref: ${{ github.event", block)
+                self.assertIn('test "$(git rev-parse --verify HEAD^{commit})" = "$EXPECTED_HEAD"', block)
+                self.assertIn('test "$(git rev-parse --verify HEAD^{tree})" = "$EXPECTED_TREE"', block)
+
+    def test_successful_complete_gate_reuse_requires_the_same_clean_subject_and_checker(self):
+        # Execute the actual production branch against real Git refs. The
+        # controlled integrity checker exercises its success/failure boundary;
+        # this fixture is not a claim that the repository suite ran here.
+        checker = self.root / "tools/qikvrt_integrity.py"
+        checker.parent.mkdir()
+        checker.write_text("import os,sys\nsys.exit(0 if os.environ.get('FIXTURE_INTEGRITY') == 'valid' else 1)\n")
+        run_git(self.root, "add", "."); run_git(self.root, "commit", "-m", "Controlled checker fixture")
+        head = run_git(self.root, "rev-parse", "HEAD")
+        tree = run_git(self.root, "rev-parse", "HEAD^{tree}")
+        run_git(self.root, "push", "origin", "HEAD:refs/heads/fixture")
+        block = GENERAL_CI.read_text().split('      - name: Same-writer successor re-entry to tested fixpoint\n', 1)[1]
+        script = textwrap.dedent(block.split('        run: |\n', 1)[1].split('\n      - name: ', 1)[0])
+        script = script.split('for iteration in $(seq 0 "$MAX_SUCCESSORS"); do', 1)[0] + '\necho ORIGINAL_FALLBACK_RETAINED\n'
+        env = dict(os.environ, EXPECTED_HEAD=head, TARGET_REF="fixture", INITIAL_FULL_TEST_OUTCOME="success",
+                   INITIAL_TESTED_HEAD=head, INITIAL_TESTED_TREE=tree, FIXTURE_INTEGRITY="valid")
+        def invoke(changes=None):
+            return subprocess.run(["bash", "--noprofile", "--norc", "-c", script], cwd=self.root,
+                env={**env, **(changes or {})}, text=True, capture_output=True, timeout=10)
+        result = invoke(); self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('scope=INITIAL_EXACT_COMPLETE_GATE_REUSED', result.stdout)
+        self.assertNotIn('ORIGINAL_FALLBACK_RETAINED', result.stdout)
+        for change in ({'INITIAL_FULL_TEST_OUTCOME': 'failure'}, {'INITIAL_TESTED_HEAD': 'f' * 40},
+                       {'INITIAL_TESTED_TREE': 'f' * 40}, {'FIXTURE_INTEGRITY': 'invalid'}):
+            with self.subTest(change=change):
+                result = invoke(change)
+                self.assertIn('ORIGINAL_FALLBACK_RETAINED', result.stdout)
+                self.assertNotIn('scope=INITIAL_EXACT_COMPLETE_GATE_REUSED', result.stdout)
+        (self.root / 'untracked.py').write_text('extra source\n')
+        self.assertIn('ORIGINAL_FALLBACK_RETAINED', invoke().stdout)
+        (self.root / 'untracked.py').unlink()
+        (self.root / 'source.txt').write_text('changed source\n')
+        self.assertIn('ORIGINAL_FALLBACK_RETAINED', invoke().stdout)
+
+    def test_non_writer_binds_only_the_literal_event_checkout(self):
+        self.assertEqual(self.bind(required="false").returncode, 0)
+        self.assertIn("head=" + self.predecessor, self.output.read_text())
+        self.output.unlink()
+        self.successor()
+        self.assertNotEqual(self.bind(required="false").returncode, 0)
+        self.assertFalse(self.output.exists())
+
+    def test_source_change_cannot_pass_as_integrity_only_reentry(self):
+        self.successor("source.txt")
+        self.assertNotEqual(self.bind().returncode, 0)
+        self.assertFalse(self.output.exists())
+
+    def test_unread_back_successor_and_dirty_worktree_are_rejected(self):
+        self.successor(push=False)
+        self.assertNotEqual(self.bind().returncode, 0)
+        self.assertFalse(self.output.exists())
+        run_git(self.root, "push", "origin", "HEAD:refs/heads/fixture")
+        (self.root / "source.txt").write_text("uncommitted change\n")
+        self.assertNotEqual(self.bind().returncode, 0)
+        self.assertFalse(self.output.exists())
+
+    def test_unrelated_predecessor_and_unknown_scope_are_rejected(self):
+        run_git(self.root, "checkout", "--orphan", "unrelated")
+        run_git(self.root, "commit", "-m", "unrelated root")
+        self.assertNotEqual(self.bind().returncode, 0)
+        self.assertNotEqual(self.bind(required="unknown").returncode, 0)
+        self.assertFalse(self.output.exists())
 
 
 if __name__ == "__main__":

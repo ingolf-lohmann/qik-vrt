@@ -1,0 +1,214 @@
+{
+  "candidate_id": "qikvrt-effective-continuity-synthesis-20261003-review-v1",
+  "files": [
+    {
+      "bytes": 1232,
+      "git_blob_sha1_computed_locally": "483e5cccdcb6e91f869c766b6cdedc3d6cd987cf",
+      "path": "CHANGE_NOTICE.md",
+      "sha256": "bb905fc3acf7a77a7d9f799df8313b9821bc8e0a5c69ff61f37b13199bd37b5a"
+    },
+    {
+      "bytes": 11706,
+      "git_blob_sha1_computed_locally": "51cb14a2663445e8c07f0e222bf06916889e5814",
+      "path": "CLAIM_DISPOSITION_DRAFT.json",
+      "sha256": "086e67d1f44c1ba9922aecc297783199f17bc5cd18aa378838d7770fd95d2f06"
+    },
+    {
+      "bytes": 1910,
+      "git_blob_sha1_computed_locally": "446d5730525a880547ee272323e76ce6bd2cbb9b",
+      "path": "MACHINE_PROOF_BUNDLE_DRAFT.json",
+      "sha256": "d539e812df8ee7da4758534675d88555db99486d4aa247fdd8374b18369c96d6"
+    },
+    {
+      "bytes": 1487,
+      "git_blob_sha1_computed_locally": "3ff65656f8bed52c5f37a7e88d59c3daa0aa86d5",
+      "path": "PREPUBLICATION_RETURN_RECEIPT_DRAFT.json",
+      "sha256": "3002287dbe54dae0f303fefd3920d03e76e2b33624e210eebca042dc03206c54"
+    },
+    {
+      "bytes": 18839,
+      "git_blob_sha1_computed_locally": "447d63681c7a9c180bc76e062d40be655e64dccd",
+      "path": "PROSA_DE.md",
+      "sha256": "df9295c3c7a80b2a08a3661c78c37d881ce47739e0b466e914c2f73cf13ad501"
+    },
+    {
+      "bytes": 18839,
+      "git_blob_sha1_computed_locally": "447d63681c7a9c180bc76e062d40be655e64dccd",
+      "path": "PROSA_DE.txt",
+      "sha256": "df9295c3c7a80b2a08a3661c78c37d881ce47739e0b466e914c2f73cf13ad501"
+    },
+    {
+      "bytes": 189440,
+      "git_blob_sha1_computed_locally": "053259060c1d495d3e6a99537342dfb1888eebc5",
+      "path": "QIK-VRT_Die_wirksame_Kontinuitaet_Gesamtausgabe_2026-10-03.pdf",
+      "sha256": "c82e9182dc2b6068b2d7a70edbd4c3696557813aa8859e92c72a865a46256cce"
+    },
+    {
+      "bytes": 2133,
+      "git_blob_sha1_computed_locally": "208b10e5039820854b69d7fd40fd3c8830a59975",
+      "path": "README.md",
+      "sha256": "7b780af7bf8bf95d53441fd085bf6743aac1506e496b01c17616b2d92579d3c9"
+    },
+    {
+      "bytes": 3089,
+      "git_blob_sha1_computed_locally": "b74fad0d7650e261a8de873a32a6f859ceabae45",
+      "path": "ROADMAP_SCENARIOS.json",
+      "sha256": "7944e410447c4c585640978e661a36ceb0eafa029ebbb035fc16d80ab0ab4924"
+    },
+    {
+      "bytes": 13517,
+      "git_blob_sha1_computed_locally": "b5237f484d81f6a31770b769c928899c014c1260",
+      "path": "SOURCE_BINDINGS.json",
+      "sha256": "95285e6a4b7528a69240443eeeffe3f124be7fb0e21e7cb30bc977fd8ce7fe2a"
+    },
+    {
+      "bytes": 3160,
+      "git_blob_sha1_computed_locally": "ed6de7a21c4e5c0bcc1b0e008f3ce1baf7217a70",
+      "path": "calculations/RECALCULATIONS_AND_METHOD_CONTROLS.json",
+      "sha256": "fcc754ccf0f6b594a398599727995dc4ea30242a4322bfeee6cd9ddf542c0ba7"
+    },
+    {
+      "bytes": 2968,
+      "git_blob_sha1_computed_locally": "29ed3ecdbdb0b25d3fcc21e63f4c0fd8e79a07b3",
+      "path": "calculations/calculate.py",
+      "sha256": "43aae55bd6ac5467f6e24ec2e9437ebdc25be6d2f02e59b5c09399f2beb69eb4"
+    },
+    {
+      "bytes": 8385,
+      "git_blob_sha1_computed_locally": "2ca548b2926291468b50c38062abe661d7cfc9f2",
+      "path": "historical_sources/Das unterscheidet QIK-VRT!.txt",
+      "sha256": "19967f897e995126c9650ed708683373c8a66e71dd9207904af3ca484d45087d"
+    },
+    {
+      "bytes": 358,
+      "git_blob_sha1_computed_locally": "86e803c3829fd3986c02ba7810a3cd69c2cbb8d1",
+      "path": "historical_sources/QIK-VRT_A_B_microbenchmark.csv",
+      "sha256": "06a9fe29a91eb5d090687723f2779cb29a4d122304f0a4cefb79e097413fb480"
+    },
+    {
+      "bytes": 143857,
+      "git_blob_sha1_computed_locally": "b2beb3fbea89b449443f7fbf53ff5a5dcd9f1a12",
+      "path": "historical_sources/QIK-VRT_Die_universelle_Huelle_2026-10-03.pdf",
+      "sha256": "83bd343294ebf14f92b6454b3977343030aa0a2f88ba0803c94bedfbd4ebf18d"
+    },
+    {
+      "bytes": 82564,
+      "git_blob_sha1_computed_locally": "7e1dae9f57ff1e9073e6987226d3424a053d3b49",
+      "path": "historical_sources/QIK-VRT_Kognition_Wirkung_Evidenz_2026-10-03.pdf",
+      "sha256": "5f3c824d7febe92808ffdcde8533fc3efa2eb0ab0dbc08313181ac00ecbe62bb"
+    },
+    {
+      "bytes": 176577,
+      "git_blob_sha1_computed_locally": "bc1cd73da3435d7169304ca7b886c7b2c5807174",
+      "path": "historical_sources/QIK-VRT_Kollektives_Funktionales_Bewusstsein_Zenodo_Candidate_2026-10-03.pdf",
+      "sha256": "63f732e0f2825f650ce00e0d8be81a2ca7a1aac0dd545298c47b9ab0d7ffb9b9"
+    },
+    {
+      "bytes": 169240,
+      "git_blob_sha1_computed_locally": "3408c9debd2868cc55fff578b7a3b2bf8926ee82",
+      "path": "historical_sources/QIK-VRT_Kuenstliche_Kognition_Speicher_Bewusstsein_2026-10-03.pdf",
+      "sha256": "6d306e287f6a895a8a67d485b6381e2cfabb84370645de811975be5a55359a2d"
+    },
+    {
+      "bytes": 14775,
+      "git_blob_sha1_computed_locally": "673b856802ca3199cbd8b2646a36f58d2e18c375",
+      "path": "historical_sources/QIK-VRT_Prosa_Kognition_Speicher_Bewusstsein_Forecast_2026-10-03.txt",
+      "sha256": "f051d6dd4a1384e237ac06a2d91911368027e26e0ec0bdcaeb4bb21706dcc933"
+    },
+    {
+      "bytes": 127288,
+      "git_blob_sha1_computed_locally": "a0079f1e7fdae0e0f2aac913d6f8b52aa184e5fb",
+      "path": "historical_sources/QIK-VRT_Wissenschaftlicher_Artikel_Kognition_Speicher_Bewusstsein_Forecast_2026-10-03.pdf",
+      "sha256": "e3a7189f12731593c965a4a46f53b75bc5c94500f0e4292522a0b2de20df9f07"
+    },
+    {
+      "bytes": 375155,
+      "git_blob_sha1_computed_locally": "154acca77c9f8ca4cea5a6257f57aafb07b7fa73",
+      "path": "historical_sources/QIK-VRT_Wissenschaftlicher_Artikel_Kognition_Wirkung_Evidenz_2026-10-03.pdf",
+      "sha256": "ec66cc8ce638390bd9e4f792c90a6a4031991663c6102e08fe329c96ce7815cc"
+    },
+    {
+      "bytes": 247170,
+      "git_blob_sha1_computed_locally": "dc874cd8b459967770a089273431e5128b413813",
+      "path": "historical_sources/QIKVRT_SINN_UND_ZWECK(4).pdf",
+      "sha256": "6a15c71919a6c703cfeabfa3e1e13d9d1928c2a9accdfc333aef807c267f31ca"
+    },
+    {
+      "bytes": 9169,
+      "git_blob_sha1_computed_locally": "e463871716b8d00fe77bac43d7521d7922fe02cb",
+      "path": "historical_sources/qikvrt_collective_cognition_ab_microbenchmark_20261003.json",
+      "sha256": "e07cd0673e72f6f84becb234c015ea00989e5ee283ec7ba32e59a982da047eb3"
+    },
+    {
+      "bytes": 18024,
+      "git_blob_sha1_computed_locally": "72bf011c6b0150a9a8c46969d9cc7ad218a74b6b",
+      "path": "manuscript/appendix.tex",
+      "sha256": "ef2a9c3228e261695f997df0d0ce934d11a0470efebba4c740acc127aca8ab75"
+    },
+    {
+      "bytes": 21214,
+      "git_blob_sha1_computed_locally": "a38d67c8985f3f45800a9468da45870705b28c95",
+      "path": "manuscript/delivery.tex",
+      "sha256": "e6116879d193b65490e2a2d667b7c05ab1d42dec321277c7d0660eb2ffb7a7a3"
+    },
+    {
+      "bytes": 5138,
+      "git_blob_sha1_computed_locally": "d8c45eaee8cdd06aee150037eeb0476f513d00d5",
+      "path": "manuscript/main.tex",
+      "sha256": "f787f6c398c234c052fe9092dc6c0790b167680681ba3b41e8d4a4e2b5400c81"
+    },
+    {
+      "bytes": 10258,
+      "git_blob_sha1_computed_locally": "a6cef01487e903f3a8cb0a7a712779082f867703",
+      "path": "manuscript/measurements.tex",
+      "sha256": "268091f9667059b71d6dea6c96d8f7cd15e154324dafc5a4c3d3c40d3bad6529"
+    },
+    {
+      "bytes": 5032,
+      "git_blob_sha1_computed_locally": "79b568e4f6157f7e92357e389586552ecc90c744",
+      "path": "manuscript/orientation.tex",
+      "sha256": "18b21bbddcd1d3ab08d822183f9725ac8a44f9cc90ddcf592d381372920cc085"
+    },
+    {
+      "bytes": 23473,
+      "git_blob_sha1_computed_locally": "8f68433c6a63faa0578a61528f05e45ac1c5ca23",
+      "path": "manuscript/theory.tex",
+      "sha256": "70915330b7ffeab6ea534b02bb368f8c34bd96773e666edb4e20c38dbfb1f861"
+    },
+    {
+      "bytes": 956,
+      "git_blob_sha1_computed_locally": "633267741af97f45b183a6f52e905830778ad7ea",
+      "path": "review/FINAL_PR_READBACK.json",
+      "sha256": "c0c55c1e0930d55179b06eca5d68acf54f1d89475a8f7528ae430164e25e69e2"
+    },
+    {
+      "bytes": 945,
+      "git_blob_sha1_computed_locally": "5fcb0dd622d0add4b3e587d64f36be53efe361f2",
+      "path": "review/PDF_FONTS.txt",
+      "sha256": "05b192469ecb68b025ccb5e5a233ec10a219d2627b50262c990b8d631f2fe11c"
+    },
+    {
+      "bytes": 154,
+      "git_blob_sha1_computed_locally": "c783b4fa35d4c962e9ea42d90163c3441201c4a5",
+      "path": "review/PDF_PREFLIGHT.txt",
+      "sha256": "a7c16f05f1f0e138f8eca3bd42cc9b18659d5d80e56f55499e1419a994287a50"
+    },
+    {
+      "bytes": 2354,
+      "git_blob_sha1_computed_locally": "49ab2e57fa276ac608d2b962a8fba3c39f75783c",
+      "path": "review/PDF_QA.json",
+      "sha256": "99404a1a276d557cfc9b2e069763b90f85cf031340023d0aa878f577d969993e"
+    },
+    {
+      "bytes": 19558,
+      "git_blob_sha1_computed_locally": "2baa3c67634d3656dc143f322ee9711364ab57ae",
+      "path": "review/XELATEX_BUILD_LOG.txt",
+      "sha256": "5fc79d9daed0d75ab5d080c987308c995019bf33fb5e2d5912813f9238ca3461"
+    }
+  ],
+  "manifest_self_hash_excluded": true,
+  "remote_pdf_persistence_verified": false,
+  "schema": "qikvrt_local_delivery_manifest_v1",
+  "status": "LOCAL_REVIEW_PACKAGE",
+  "zenodo_publication_verified": false
+}

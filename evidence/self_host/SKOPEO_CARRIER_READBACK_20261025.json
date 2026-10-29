@@ -1,0 +1,43 @@
+{
+  "config_created": "2026-10-23T03:40:32.070067212Z",
+  "config_labels": {
+    "built.by.commit": "b86020d8c306c4724780adfb6fc492d0a2d9cc48",
+    "built.by.digest": "sha256:b2c06972d46016b440a6d5f0e0a142d348ce52cba9d630c44f86fe19916f5841",
+    "built.by.exec": "containers_build_push.sh",
+    "built.by.logs": "https://github.com/podman-container-tools/image_build/actions/runs/39895656605",
+    "built.by.repo": "https://github.com/podman-container-tools/image_build",
+    "io.buildah.version": "1.43.5",
+    "org.opencontainers.image.authors": "podman@lists.podman.io",
+    "org.opencontainers.image.created": "2026-10-23T03:35:40+00:00",
+    "org.opencontainers.image.documentation": "https://github.com/podman-container-tools/image_build/blob/b86020d8c306c4724780adfb6fc492d0a2d9cc48/skopeo/README.md",
+    "org.opencontainers.image.licenses": "MIT",
+    "org.opencontainers.image.revision": "b86020d8c306c4724780adfb6fc492d0a2d9cc48",
+    "org.opencontainers.image.source": "https://github.com/podman-container-tools/image_build/blob/b86020d8c306c4724780adfb6fc492d0a2d9cc48/skopeo/",
+    "org.opencontainers.image.title": "fedora",
+    "org.opencontainers.image.url": "https://quay.io/skopeo/stable",
+    "org.opencontainers.image.vendor": "Fedora Project",
+    "org.opencontainers.image.version": "1.22.3"
+  },
+  "config_sha256": "sha256:4dae3515eaca8cfb2224f0af8eb7a6f6b97abd5c79b1efa00e734054518bc754",
+  "effect_ack_done": false,
+  "host_deployed": false,
+  "index_original_utf8": "{\"schemaVersion\":2,\"mediaType\":\"application/vnd.oci.image.index.v1+json\",\"manifests\":[{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:1eecf5e5ff2baf6b2fca4ee2e2d5ace3a1c6b22a3a2caf2694c28d9e351ca0d3\",\"size\":2291,\"platform\":{\"architecture\":\"s390x\",\"os\":\"linux\"}},{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:e495a50899e8a7ceadcf03215109223148abd51a81a636265cf0a4cf37bc5a50\",\"size\":2371,\"platform\":{\"architecture\":\"ppc64le\",\"os\":\"linux\"}},{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:9ed1ae7b6c744e51843cffa8565a88ac64cd26500ee21f9c432d922f574081c2\",\"size\":2371,\"platform\":{\"architecture\":\"arm64\",\"os\":\"linux\"}},{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:309ce24d7a87ca4eb35fc6dd9d91af7c4750d7f24578f633c6effd75c81f315d\",\"size\":2371,\"platform\":{\"architecture\":\"amd64\",\"os\":\"linux\"}}]}",
+  "observed_at": "2026-10-25T07:36:43.053761+00:00",
+  "platform": {
+    "architecture": "amd64",
+    "os": "linux"
+  },
+  "platform_manifest_original_utf8": "{\"schemaVersion\":2,\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"config\":{\"mediaType\":\"application/vnd.oci.image.config.v1+json\",\"digest\":\"sha256:4dae3515eaca8cfb2224f0af8eb7a6f6b97abd5c79b1efa00e734054518bc754\",\"size\":8622},\"layers\":[{\"mediaType\":\"application/vnd.oci.image.layer.v1.tar+gzip\",\"digest\":\"sha256:de732039c1c1c98f7e20c38843cdd8feb5f5a77caff42937d821412033cb0adf\",\"size\":72047681},{\"mediaType\":\"application/vnd.oci.image.layer.v1.tar+gzip\",\"digest\":\"sha256:d1cf224fc3f9ad8150d6fd0423760ed252cd87eeb3f7a9a8f9541ccbb4e59784\",\"size\":249},{\"mediaType\":\"application/vnd.oci.image.layer.v1.tar+gzip\",\"digest\":\"sha256:cda111342c7e5121174823af281dc7b787a0c11c89141af9141500dd6e66277c\",\"size\":19255846},{\"mediaType\":\"application/vnd.oci.image.layer.v1.tar+gzip\",\"digest\":\"sha256:0e33375bc5881de9621d45b950d2645b22605f45e111731b2dcc13daabab2a80\",\"size\":1709},{\"mediaType\":\"application/vnd.oci.image.layer.v1.tar+gzip\",\"digest\":\"sha256:d93d48c8828b04650143c8f47916ff267d9b89de3795b6a18cc2326a4058543d\",\"size\":3323},{\"mediaType\":\"application/vnd.oci.image.layer.v1.tar+gzip\",\"digest\":\"sha256:ec1cf86ab7be571b76ed4a6ed8c4a86f42653e51c62c3b37132baa2d22cbea52\",\"size\":230}],\"annotations\":{\"built.by.commit\":\"b86020d8c306c4724780adfb6fc492d0a2d9cc48\",\"built.by.digest\":\"sha256:b2c06972d46016b440a6d5f0e0a142d348ce52cba9d630c44f86fe19916f5841\",\"built.by.exec\":\"containers_build_push.sh\",\"built.by.logs\":\"https://github.com/podman-container-tools/image_build/actions/runs/39895656605\",\"built.by.repo\":\"https://github.com/podman-container-tools/image_build\",\"org.opencontainers.image.authors\":\"podman@lists.podman.io\",\"org.opencontainers.image.base.digest\":\"sha256:6994884e00951ada912893c0d7686d99be2ff91e449a0ee7535866aa16609ec6\",\"org.opencontainers.image.base.name\":\"registry.fedoraproject.org/fedora:latest\",\"org.opencontainers.image.created\":\"2026-10-23T03:35:40+00:00\",\"org.opencontainers.image.documentation\":\"https://github.com/podman-container-tools/image_build/blob/b86020d8c306c4724780adfb6fc492d0a2d9cc48/skopeo/README.md\",\"org.opencontainers.image.revision\":\"b86020d8c306c4724780adfb6fc492d0a2d9cc48\",\"org.opencontainers.image.source\":\"https://github.com/podman-container-tools/image_build/blob/b86020d8c306c4724780adfb6fc492d0a2d9cc48/skopeo/\",\"org.opencontainers.image.url\":\"https://quay.io/skopeo/stable\",\"org.opencontainers.image.version\":\"1.22.3\"}}",
+  "predecessor_digest": "sha256:97772f3c64fd2fba720b2bafaf37239dc44d8b1c625c8383c64044832efe9ed9",
+  "predecessor_failure": {
+    "error": "manifest unknown on docker pull",
+    "job_id": 121107295223,
+    "run_id": 40172405691
+  },
+  "repository": "quay.io/skopeo/stable",
+  "resolution_url": "https://quay.io/v2/skopeo/stable/manifests/latest",
+  "resolved_index_digest": "sha256:24940638e4abb0edfedc78a680554f316069d0212a00159276759421a059e611",
+  "resolved_platform_digest": "sha256:309ce24d7a87ca4eb35fc6dd9d91af7c4750d7f24578f633c6effd75c81f315d",
+  "schema": "qikvrt-oci-tool-carrier-public-readback/v1",
+  "scope": "PUBLIC_ORIGINAL_MANIFEST_BYTES_AND_PLATFORM; runtime version and copy behavior still require native execution"
+}

@@ -14,12 +14,11 @@ DISPLAY_VALUE="${DISPLAY:-:99}"
 START_URL="${QIKVRT_START_URL:-about:blank}"
 
 # BEGIN TEMDD deployment subject binding
-# Exact deployments must not silently inherit the language carrier's PR 1103.
-# Unsealed standalone/reference launches retain their existing compatibility.
+# Every ledger launch needs its actual carrier identity, including reference
+# launches. Missing values must not create a journal under a historical subject.
 set --
-if [ -n "${QIKVRT_EXACT_HEAD:-}${QIKVRT_EXACT_TREE:-}" ]; then
-  : "${QIKVRT_TEMDD_PR:?BLOCK: QIKVRT_TEMDD_PR is required for an exact deployment}"
-fi
+: "${QIKVRT_TEMDD_PR:?BLOCK: QIKVRT_TEMDD_PR is required for every TEMDD launch}"
+: "${QIKVRT_TEMDD_REPOSITORY:?BLOCK: QIKVRT_TEMDD_REPOSITORY is required for every TEMDD launch}"
 if [ "${QIKVRT_TEMDD_PR+x}" = x ]; then
   case "$QIKVRT_TEMDD_PR" in
     ''|*[!0-9]*|0*)
@@ -28,6 +27,25 @@ if [ "${QIKVRT_TEMDD_PR+x}" = x ]; then
       ;;
   esac
   set -- --pr "$QIKVRT_TEMDD_PR"
+fi
+if [ "${QIKVRT_TEMDD_REPOSITORY+x}" = x ]; then
+  # Match the ledger's owner/repository syntax before any runtime side effect.
+  # Quoted argv preserves the explicit node identity; an Authority deployment
+  # must not inherit the reference carrier's historical Mirror default.
+  case "$QIKVRT_TEMDD_REPOSITORY" in
+    ''|*[!a-zA-Z0-9_./-]*|/*|*/|*/*/*)
+      echo "BLOCK: QIKVRT_TEMDD_REPOSITORY must be owner/repository" >&2
+      exit 64
+      ;;
+  esac
+  case "$QIKVRT_TEMDD_REPOSITORY" in
+    */*) ;;
+    *)
+      echo "BLOCK: QIKVRT_TEMDD_REPOSITORY must be owner/repository" >&2
+      exit 64
+      ;;
+  esac
+  set -- "$@" --repository "$QIKVRT_TEMDD_REPOSITORY"
 fi
 # END TEMDD deployment subject binding
 
@@ -150,18 +168,27 @@ websockify --web=/usr/share/novnc/ "$NOVNC_PORT" localhost:5900 \
 NOVNC_PID=$!
 PIDS="$PIDS ${NOVNC_PID}"
 
-firefox-esr --no-remote --profile "$PROFILE_DIR" "$START_URL" \
+FIREFOX_BINARY="${QIKVRT_FIREFOX_BINARY:-firefox-esr}"
+# Reject a new terminal start below the unchanged Owner minimum.
+python3 -B - "$FIREFOX_BINARY" <<'PY'
+import re,subprocess,sys
+raw=subprocess.check_output([sys.argv[1],'--version'],stderr=subprocess.STDOUT,text=True,timeout=15)
+version=re.search(r'Firefox\s+(\d+)(?:\.(\d+))?',raw)
+if version is None or (int(version[1]),int(version[2] or 0)) < (158,0):
+    raise SystemExit('HOLD_FIREFOX_BELOW_OWNER_MINIMUM_158_0')
+PY
+"$FIREFOX_BINARY" --no-remote --profile "$PROFILE_DIR" "$START_URL" \
   > /opt/qikvrt/runtime/logs/firefox.log 2>&1 &
 FIREFOX_PID=$!
 PIDS="$PIDS ${FIREFOX_PID}"
 
-python3 -B - "$STATE_DIR/runtime.json" "$RUNTIME_ID" "$PROFILE_DIR" "$START_URL" "$NOVNC_PORT" "$HTTP_HOST" "$HTTP_PORT" <<'PY'
+python3 -B - "$STATE_DIR/runtime.json" "$RUNTIME_ID" "$PROFILE_DIR" "$START_URL" "$NOVNC_PORT" "$HTTP_HOST" "$HTTP_PORT" "$FIREFOX_BINARY" <<'PY'
 import json,sys,time
-path,runtime_id,profile,start_url,novnc_port,http_host,http_port=sys.argv[1:]
+path,runtime_id,profile,start_url,novnc_port,http_host,http_port,browser=sys.argv[1:]
 obj={
   'schema':'qikvrt_universal_terminal_runtime_state_v2',
   'runtime_id':runtime_id,
-  'browser':'firefox-esr',
+  'browser':browser,
   'profile_dir':profile,
   'profile_persistent':True,
   'start_url':start_url,
@@ -212,3 +239,4 @@ while :; do
   done
   sleep 1
 done
+

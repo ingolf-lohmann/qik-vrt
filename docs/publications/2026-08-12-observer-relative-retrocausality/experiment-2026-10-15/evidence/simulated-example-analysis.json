@@ -1,0 +1,38 @@
+{
+  "status": "DATA_COHERENCE_CHECKED_EXTERNAL_OBLIGATIONS_OPEN",
+  "origin_class": "SIMULATED",
+  "statistics": {
+    "n_attempted": 4,
+    "known_matches": 2,
+    "missing": 0,
+    "feasible_matches": [
+      2,
+      2
+    ],
+    "rng_conditional_bias_bound": 0.001,
+    "alpha_two_sided": 0.001,
+    "log_p_upper_bound": 0.0,
+    "p_upper_bound": 1.0,
+    "reject_bounded_randomness_null": false,
+    "abs_match_advantage_upper_99": 0.5,
+    "interval_scope": "mean conditional match propensity; physical stationarity and transfer are separate",
+    "physical_confirmation": false,
+    "two_sided_binomial_p_under_ideal_fair_null": 1.0
+  },
+  "min_early_to_entropy_margin_ns": 299,
+  "clock_ids": [
+    "SIMULATED_CLOCK"
+  ],
+  "physical_confirmation": false,
+  "independent_reproduction": false,
+  "external_checks_not_certified_by_json": [
+    "physical channel and distinctive prediction",
+    "authentic capture and custody",
+    "calibrated independent clocks and uncertainty budget",
+    "fresh conditional randomness",
+    "isolation and absence of ordinary leakage",
+    "preregistration and complete run inventory",
+    "independent physical reproduction"
+  ],
+  "input_sha256": "12bf9cbccbc362a2e595637eba092915b8440a7a0c6c15b8436b79ac5b201c0b"
+}

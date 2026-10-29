@@ -1,0 +1,267 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "work_unit_provenance"
+  },
+  "schema": "qikvrt_ai_work_unit_v1",
+  "work_unit_id": "QIKVRT_PRINCIPAL_APPROVAL_IS_REVIEW_20261018_V1",
+  "created_at": "2026-10-18T04:20:23.417891+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_pr": 523,
+  "source_ref": "integration/515-519-521-522-20261012-eceb9b63",
+  "source_commit": "98f8c6fe428700fd44b8b17ba10b1b0768764e22",
+  "source_tree": "1a83177c21e13601a4afd4522672913f61971739",
+  "human_actor": {
+    "class": "HUMAN",
+    "attribution_id": "Ingolf Lohmann",
+    "roles": [
+      "Principal",
+      "Code Owner",
+      "Product Owner"
+    ]
+  },
+  "artificial_cognitive_actor": {
+    "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6",
+    "build_id": "UNAVAILABLE",
+    "session_or_run_id": "UNAVAILABLE",
+    "identity_limit": "Attribution metadata, not biometric proof."
+  },
+  "human_contributions": [
+    "Existing explicit repair, integration and production mandate.",
+    "Also nach meiner Definition bin ich der Principal Code Owner und Product Owner. Und wenn ich sage Freigabe erteilt und ich das auch mir gut überlegt habe, gilt das zugleich als Review. Alles andere war, ist und bleibt inakzeptabel."
+  ],
+  "artificial_cognitive_contributions": [
+    "Implemented the explicit Principal-review alternative in the existing shared gate and publisher, preserving actual GitHub state.",
+    "Updated existing consumers, entrypoints and regressions; no new workflow, executor, trigger, credential store or permission scope.",
+    "Updated the existing Ruleset postimage and shared enforcement predicate so protected signing and lifecycle paths accept the trusted Principal-review check instead of demanding an extra independent account review; retained strict checks, no bypass, no forced history update, deletion protection and resolved threads."
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "evidence_retention": "METADATA_ONLY",
+  "owner_decision_source": {
+    "path": "state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+    "sha256": "798bfc42199b9b5c0459cfee3de2470d4074887c12c16b8049b6694a642256e1",
+    "instruction_sha256": "a454e3384e3b3740a1511d3613cf82a4aeed67036013649d2bee6cbce9ed3b76"
+  },
+  "outputs": [
+    {
+      "path": ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml",
+      "bytes": 12539,
+      "sha256": "e48a36d82d0c0bfa25c71e74a1896f8245f30e3b177fa05fa8e502ab0b917263"
+    },
+    {
+      "path": ".github/workflows/qikvrt_mirror_node_lifecycle.yml",
+      "bytes": 13373,
+      "sha256": "ff9f4fdd216c992b4a72ff7c265bd53885c26f3cebdfb06a412dca8d8c1772bf"
+    },
+    {
+      "path": ".github/workflows/qikvrt_required_review_gate.yml",
+      "bytes": 5135,
+      "sha256": "10f572ddbfae1bcf29464c57d38bb072611ebf8b3aa75b878520456f977fa061"
+    },
+    {
+      "path": "AGENTS.md",
+      "bytes": 17396,
+      "sha256": "3160bddc2e37dc0b8a00bd7b789a772a3c05957ebcb3e999634e681e1a4dc1d7"
+    },
+    {
+      "path": "AI",
+      "bytes": 27152,
+      "sha256": "3b5be74d2959cf59c6650d95e712f95a481031104b4e9c7c217d26c540f78545"
+    },
+    {
+      "path": "AI_CONTEXT.json",
+      "bytes": 15070,
+      "sha256": "16b29dd224fadf976f217cebe8beb7ca8cc7cfaf9813c214356825a5548048fd"
+    },
+    {
+      "path": "api/qikvrt_github_api.openapi.yaml",
+      "bytes": 19796,
+      "sha256": "4d8c05c337a1db4b8ae906d1530eee23258bd5573c84e69887a667c7145f0127"
+    },
+    {
+      "path": "docs/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE.md",
+      "bytes": 16731,
+      "sha256": "7fbfc92d9ec035e4f0b70d75619a514d8ff0b9fb5ecdb5372aff795166fad84d"
+    },
+    {
+      "path": "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+      "bytes": 10170,
+      "sha256": "b60b45ad729fae85f1b18faf0e924125b644a0bc4b11049a309bc18f3957c1cc"
+    },
+    {
+      "path": "scripts/qikvrt_api_client.py",
+      "bytes": 68547,
+      "sha256": "20892491ff74043566612dfb1a7a83ff9bbc84e29827954edb3a11bd0330a58f"
+    },
+    {
+      "path": "state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+      "bytes": 7946,
+      "sha256": "798bfc42199b9b5c0459cfee3de2470d4074887c12c16b8049b6694a642256e1"
+    },
+    {
+      "path": "tests/fixtures/ruleset_writer_app_renewal_v3.yml",
+      "bytes": 12437,
+      "sha256": "a7c22e899291a5fe300a22bd269c14481da5180fc2090b4d2f2b3e3502216fc2"
+    },
+    {
+      "path": "tests/test_api_client.py",
+      "bytes": 87283,
+      "sha256": "1d687773637d1bba7b89ca7aa34be289d7919c0abb512727a4d24613f971d082"
+    },
+    {
+      "path": "tests/test_publication_router.py",
+      "bytes": 45839,
+      "sha256": "d99cf3783f6a5bae74ea864a0cf4225f92ba46871e09db3ac192ba99068ff6b8"
+    },
+    {
+      "path": "tests/test_qikvrt_expected_head_promotion.py",
+      "bytes": 38813,
+      "sha256": "ccace3bf7fec4c2f24c1b7dd2a18cbef971f884b0d57ec05f25dea1c93529796"
+    },
+    {
+      "path": "tests/test_qikvrt_required_review_gate.py",
+      "bytes": 35989,
+      "sha256": "68bcaa89181529a11dc632434831e5c1484f5148753f11c3f2de50daf7708af9"
+    },
+    {
+      "path": "tests/test_qikvrt_workflow_executor_mesh_contract.py",
+      "bytes": 67739,
+      "sha256": "348daf57ee0b26dced2258084236264a1041dbaf6b8869e1b0d4284f1342f378"
+    },
+    {
+      "path": "tests/test_ruleset_authority_token_route.py",
+      "bytes": 30510,
+      "sha256": "bb54a42d024d5a40ec1078e57476b119dfbc99f3d1aa2868c72aed3921423d53"
+    },
+    {
+      "path": "tools/qikvrt_expected_head_promotion.py",
+      "bytes": 39628,
+      "sha256": "cee961d9dd62f642d047c4eec5c18a2a4d1d8a3980a86214d4e3df9bbd48ba3a"
+    },
+    {
+      "path": "tools/qikvrt_mirror_node_lifecycle.py",
+      "bytes": 25920,
+      "sha256": "8d3273fd1e5a4bdd5237f0135aa51f4cc21868733c228128e629adc73de3b5ab"
+    },
+    {
+      "path": "tools/qikvrt_publication_router.py",
+      "bytes": 46599,
+      "sha256": "b3e60431b4991c17975a1fa5cada9a5b01030e188b9225f61758d581a994e138"
+    },
+    {
+      "path": "tools/qikvrt_required_review_gate.py",
+      "bytes": 30740,
+      "sha256": "054f2c8c1b9725db151318c43e34dc501ad634e91e762e5055edb0b1379818f4"
+    },
+    {
+      "path": "tools/qikvrt_self_host_container.py",
+      "bytes": 65692,
+      "sha256": "40510ee96126d61a9b8cbbb1d00c80b44605b1926cf6400eaaab6f4b4c503b70"
+    },
+    {
+      "path": "tools/qikvrt_workflow_executor.py",
+      "bytes": 103076,
+      "sha256": "ec1f7df66158f57593d4e3d96ea89802692f131d0f84f945a6f13b5b41f1c842"
+    }
+  ],
+  "verification": {
+    "targeted_tests": 358,
+    "failures": 0,
+    "errors": 0,
+    "log_sha256": "a6c10b3cd43a5ff7efe514d3e0463187c7787c6ea270ed3edc048c29b227f118",
+    "scope": "Local actual-source tests; provider/production effects are fixtures, not live delivery.",
+    "full_native_successor_tests": "PENDING_AFTER_PUSH",
+    "predecessor_pass_transfer": false,
+    "additional_client_tests": {
+      "tests": 68,
+      "failures": 0,
+      "errors": 0,
+      "log_sha256": "f68e23b0c473547797dfd66de9f81c7e21aae0cfdbf2df41620e37cdd31db525"
+    },
+    "api_client_security_tests": {
+      "command": "make security",
+      "tests": 143,
+      "failures": 0,
+      "errors": 0,
+      "log_sha256": "4345090c45eff1b5d21012826ecf3e714d5ac1a4c048cf7d75526c25ee2996fa"
+    }
+  },
+  "review_acceptance": {
+    "principal_approval_is_review": true,
+    "principal_authored_pr_accepted": true,
+    "native_event_recording": "COMMENTED through the bound Principal account",
+    "independent_native_approved_inferred": false,
+    "already_granted_authorization_requires_repetition": false,
+    "automatic_promoter_checks_and_cas_preserved": true,
+    "platform_protection_mutation": false
+  },
+  "inherited_open_obligations": [
+    "PR523 actual integration/readback",
+    "Official Firefox signing and persistent native acceptance",
+    "Existing ordered IONOS VPS authenticated administration and running product",
+    "DNS/TLS/useful product acceptance at https://raumzeitterminal.de/"
+  ],
+  "git_history": {
+    "expected_remote_head": "98f8c6fe428700fd44b8b17ba10b1b0768764e22",
+    "force_push": false,
+    "history_rewrite": false,
+    "resulting_identity": "Bind by independent final commit/tree/ref readback; no self-referential commit field.",
+    "unreferenced_preparation_object": {
+      "commit": "3860d3cb4bdb000e7b143efe5279b185aa9c88bf",
+      "tree": "a749acd0b5ba9a2720436b831ab472a4b04dc180",
+      "branch_update": false,
+      "scope": "Earlier preparation before completing all review-policy consumers; no merge or release."
+    }
+  },
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "ordinary_release": false
+  },
+  "ruleset_postimage": {
+    "sha256": "59b80123aee14fd0f82a0af8a7e3265a2a5782f786785cf09be35f251b9c6999",
+    "review_enforcement": "Trusted GitHub Actions exact-head Principal/independent review status",
+    "additional_independent_approval_count": 0,
+    "live_activation": "NOT_ESTABLISHED_BY_LOCAL_TESTS"
+  },
+  "continuation_repair": {
+    "parent_commit": "d982210855defddfb1baa29757d4c504e994b0bc",
+    "parent_tree": "9464bce61f57a5147d1981e39d8050528d038850",
+    "actual_parent_readback": {
+      "changed_blobs_byte_exact": 24,
+      "native_principal_review_id": 5561432788,
+      "actual_github_review_state": "COMMENTED",
+      "principal_gate_state": "success",
+      "native_review_contract_run": 39097233653,
+      "native_review_contract_conclusion": "success"
+    },
+    "native_full_test_failure": {
+      "run": 39097230860,
+      "job": 117586089484,
+      "make_test_exit": 2,
+      "cause": "Existing API client version-pinned the original v3 writer and its old independent-review postimage. The changed current writer must have an explicit new version instead of silently changing historical v3."
+    },
+    "repair": "Preserved original v3 bytes as a fixture, added explicit principal-review-v4 source/postimage pins to the existing API client/OpenAPI contract and exercised its transport, drift, credential and independent effect-readback controls.",
+    "writer_blob_sha1": "3b9396f4b6415baff047526bd6ecb193f606863e",
+    "writer_postimage_sha256": "59b80123aee14fd0f82a0af8a7e3265a2a5782f786785cf09be35f251b9c6999",
+    "original_v3": {
+      "path": "tests/fixtures/ruleset_writer_app_renewal_v3.yml",
+      "bytes": 12437,
+      "git_blob_sha1": "05066f6fb83a7f3ba8799677db35647e06942fd2"
+    },
+    "predecessor_review_or_full_test_pass_transferred": false,
+    "final_successor_native_checks": "PENDING_AFTER_PUSH",
+    "concurrent_main": {
+      "head": "074462e6310b2a9c88b0572323357be43dc0af84",
+      "tree": "fbabb5538e45e0dfa110a706023da82a1f9eb1f5",
+      "delta": "Six lifecycle receipt/heartbeat paths; normal merge must preserve the incoming Main changes."
+    }
+  }
+}

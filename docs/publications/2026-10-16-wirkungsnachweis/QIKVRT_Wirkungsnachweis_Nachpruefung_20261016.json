@@ -1,0 +1,1162 @@
+{
+  "schema": "qikvrt-local-research-recheck-v1",
+  "created_at_utc": "2026-10-16T08:52:37.657366+00:00",
+  "status": "LOCAL_REPLAY_MATCHES_FROZEN_RESEARCH_PACKAGE",
+  "scope": "Read and verify the named author-review documents; repeat the bounded local comparison. No publication or exact-host delivery effect.",
+  "actor": {
+    "human_research_origin": "Ingolf Lohmann",
+    "recheck_system": "OpenAI Codex",
+    "independence_limit": "Another local execution; not independent human peer review or provider-independent runtime evidence."
+  },
+  "candidate_files": [
+    {
+      "path": "QIKVRT_Wirkungsnachweis_Wissenschaft_20261016.pdf",
+      "bytes": 155074,
+      "sha256": "f0546d0228dea325c9c89a14f0893d33d30ea95c89ee3716a6103820a5116965",
+      "git_blob_sha1": "950166ddc09c8969a8a90bd60c5bd88bd9cde5c6"
+    },
+    {
+      "path": "QIKVRT_Der_entscheidende_Unterschied_Prosa_20261016.pdf",
+      "bytes": 111820,
+      "sha256": "a76e8f767b71503c479fc3b457b7fd997c9f18dd10ebaa9edfd378484da00f4d",
+      "git_blob_sha1": "b269b740bcee336712e2c0cb74b31f6ff5e33219"
+    },
+    {
+      "path": "QIKVRT_Der_entscheidende_Unterschied_Prosa_20261016.txt",
+      "bytes": 19428,
+      "sha256": "2d1aff659360a09c39f33afe8f64433b6f85f339e7ee6276a60ae17b77b9ad42",
+      "git_blob_sha1": "a9e351c93153e65dd8042f4f5173228aa98abf74"
+    },
+    {
+      "path": "QIKVRT_Wirkungsnachweis_Nachweispaket_20261016.zip",
+      "bytes": 684977,
+      "sha256": "0f7bf05eb76f76bc8abac004ec0dd81126e088e557d0839635a42397e2fc0cc0",
+      "git_blob_sha1": "37a84a6b93715d4eb4d403b8e6e6dc800bf83ce6"
+    }
+  ],
+  "original_candidate_status": "PREPARED_FOR_OWNER_REVIEW",
+  "archive_integrity": {
+    "verified_manifest_files": 68,
+    "findings": [],
+    "all_standalone_pdf_and_text_match_frozen_output": true
+  },
+  "formal_evidence": {
+    "original_receipt": {
+      "schema": "qikvrt-local-lean-kernel-receipt/v1",
+      "verified_at_utc": "2026-10-16T04:57:53.219287+00:00",
+      "lean_version": "Lean (version 4.19.0, x86_64-unknown-linux-gnu, commit 6caaee842e94, Release)",
+      "exit_code": 0,
+      "stdout": "'QIKVRTComparison.factorization_iff_fiber_constant' does not depend on any axioms\n'QIKVRTComparison.indistinguishable_outcomes_no_perfect_classifier' does not depend on any axioms\n'QIKVRTComparison.mediated_acceptance_implies_goal' does not depend on any axioms\n",
+      "stderr": "",
+      "source_sha256": "4547bea44e87427d0c07b68fb53b47b5a906f5a34b154367597dc3709a1d1cd6",
+      "compiler_sha256": "92c3d35b5bfaa5e0fea413a775d504cf46cd95e1345df61c2274f76779e7e023",
+      "official_distribution_sha256": "6fe3ce97a58f44e2b3567d455b994eacec5bfe9ae7774f2a573444480ba813fe",
+      "official_distribution_url": "https://github.com/leanprover/lean4/releases/download/v4.19.0/lean-4.19.0-linux.tar.zst",
+      "publisher_asset_digest_available": false,
+      "path_compatibility_adapter": {
+        "source_sha256": "6a99f740b06b6556402c82526052a0a1af2836d881aa35227db86c40b2e938b5",
+        "binary_sha256": "d16aeab50dfb6fd764352c2553055b858c3ad03400d6c56b0e14670bf68499c8",
+        "scope": "Only numeric own-pid executable lookup is mapped to permitted /proc/self/exe; no proof rule changed."
+      },
+      "theorem_constants": [
+        "QIKVRTComparison.factorization_iff_fiber_constant",
+        "QIKVRTComparison.indistinguishable_outcomes_no_perfect_classifier",
+        "QIKVRTComparison.mediated_acceptance_implies_goal"
+      ],
+      "no_unproved_placeholders": true,
+      "negative_control_rejected": true,
+      "negative_control_exit_code": 1,
+      "negative_control_output": "/workspace/scratch/8edfece2cfbb/evidence/NegativeControl.lean:2:2: error: type mismatch\n  True.intro\nhas type\n  True : Prop\nbut is expected to have type\n  False : Prop\n",
+      "native_mesh_execution": false,
+      "scope": "Three source-bound mathematical implications; no proof of sensor soundness or product completion.",
+      "olean_sha256": "b18b77ef12943656bd3b589ac84e065d47bafd3edc2f2531b0c306c4b7c25c66",
+      "status": "KERNEL_CHECKED"
+    },
+    "source_sha256_matches": true,
+    "olean_sha256_matches": true,
+    "kernel_reexecuted_in_this_check": false,
+    "reason": "No Lean executable exposed on the current PATH; recorded exact-source kernel evidence is retained as such."
+  },
+  "fresh_local_execution": {
+    "completed_at_utc": "2026-10-16T08:50:16Z",
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "sqlite": "3.53.1",
+    "script_sha256": "90971dc9bbe24924630f648b6d92bb5b31ba1ef8c962aba4aa55c403acdd5e0e",
+    "semantic_comparison": {
+      "scenario_count": true,
+      "goal_true_cases": true,
+      "goal_false_cases": true,
+      "policy_summary": true,
+      "finite_factorization": true,
+      "repair_count": true,
+      "repair_accept_count": true,
+      "case_decisions": true,
+      "counterexamples": true
+    },
+    "all_semantic_comparisons_match": true,
+    "report": {
+      "schema": "qikvrt-bounded-comparison-research/v1",
+      "completed_at_utc": "2026-10-16T08:50:16Z",
+      "implementation_status": "PRINCIPLE_DEMONSTRATOR_NOT_NATIVE_QIKVRT_RUNTIME",
+      "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+      "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+      "sqlite": "3.53.1",
+      "script_sha256": "90971dc9bbe24924630f648b6d92bb5b31ba1ef8c962aba4aa55c403acdd5e0e",
+      "scenario_count": 13,
+      "goal_true_cases": 5,
+      "goal_false_cases": 8,
+      "policy_summary": {
+        "ack_only": {
+          "done": 12,
+          "true_done": 4,
+          "false_done": 8,
+          "holds_despite_goal": 1,
+          "holds_when_goal_absent": 0
+        },
+        "payload_only": {
+          "done": 10,
+          "true_done": 4,
+          "false_done": 6,
+          "holds_despite_goal": 1,
+          "holds_when_goal_absent": 2
+        },
+        "qik_principle": {
+          "done": 1,
+          "true_done": 1,
+          "false_done": 0,
+          "holds_despite_goal": 4,
+          "holds_when_goal_absent": 8
+        },
+        "conventional_e2e": {
+          "done": 1,
+          "true_done": 1,
+          "false_done": 0,
+          "holds_despite_goal": 4,
+          "holds_when_goal_absent": 8
+        }
+      },
+      "finite_factorization": [
+        {
+          "states": 3,
+          "observation_values": 2,
+          "pairs": 64,
+          "factorizable": 28,
+          "not_factorizable": 36,
+          "disagreements": 0,
+          "counterexample": {
+            "observation": [
+              0,
+              0,
+              0
+            ],
+            "semantic_property": [
+              0,
+              0,
+              1
+            ]
+          }
+        },
+        {
+          "states": 4,
+          "observation_values": 3,
+          "pairs": 1296,
+          "factorizable": 462,
+          "not_factorizable": 834,
+          "disagreements": 0,
+          "counterexample": {
+            "observation": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "semantic_property": [
+              0,
+              0,
+              0,
+              1
+            ]
+          }
+        }
+      ],
+      "cases": [
+        {
+          "case": "nominal",
+          "fault": "success",
+          "observation_mode": "live",
+          "spec": {
+            "origin": "local://authority",
+            "target": "publication/demo",
+            "version": 7,
+            "run_id": "trial-current",
+            "nonce": "challenge-current",
+            "payload_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316"
+          },
+          "authority": true,
+          "start_ns": 1792140612719040119,
+          "decision_ns": 1792140612826485323,
+          "observation": {
+            "observed_ns": 1792140612817286991,
+            "read_origin": "local://authority",
+            "read_target": "publication/demo",
+            "record": {
+              "nonce": "challenge-current",
+              "origin": "local://authority",
+              "payload_b64": "UUlLLVZSVDogWndlY2ssIEhhbmRsdW5nLCBuYWNoZ2VsZXNlbmUgV2lya3VuZy4K",
+              "run_id": "trial-current",
+              "stored_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316",
+              "target": "publication/demo",
+              "version": 7,
+              "written_ns": 1792140612753615239
+            },
+            "schema": "local-effect-readback/v1"
+          },
+          "goal_holds": true,
+          "policies": {
+            "ack_only": true,
+            "payload_only": true,
+            "qik_principle": true,
+            "conventional_e2e": true
+          },
+          "qik_reasons": []
+        },
+        {
+          "case": "ack_lost",
+          "fault": "ack_lost",
+          "observation_mode": "live",
+          "spec": {
+            "origin": "local://authority",
+            "target": "publication/demo",
+            "version": 7,
+            "run_id": "trial-current",
+            "nonce": "challenge-current",
+            "payload_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316"
+          },
+          "authority": true,
+          "start_ns": 1792140612923513033,
+          "decision_ns": 1792140613002678596,
+          "observation": {
+            "observed_ns": 1792140612997549176,
+            "read_origin": "local://authority",
+            "read_target": "publication/demo",
+            "record": {
+              "nonce": "challenge-current",
+              "origin": "local://authority",
+              "payload_b64": "UUlLLVZSVDogWndlY2ssIEhhbmRsdW5nLCBuYWNoZ2VsZXNlbmUgV2lya3VuZy4K",
+              "run_id": "trial-current",
+              "stored_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316",
+              "target": "publication/demo",
+              "version": 7,
+              "written_ns": 1792140612955207978
+            },
+            "schema": "local-effect-readback/v1"
+          },
+          "goal_holds": true,
+          "policies": {
+            "ack_only": false,
+            "payload_only": true,
+            "qik_principle": false,
+            "conventional_e2e": false
+          },
+          "qik_reasons": [
+            "TRANSPORT_ACK_MISSING"
+          ]
+        },
+        {
+          "case": "rollback",
+          "fault": "rollback",
+          "observation_mode": "live",
+          "spec": {
+            "origin": "local://authority",
+            "target": "publication/demo",
+            "version": 7,
+            "run_id": "trial-current",
+            "nonce": "challenge-current",
+            "payload_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316"
+          },
+          "authority": true,
+          "start_ns": 1792140613236791844,
+          "decision_ns": 1792140613311701780,
+          "observation": {
+            "observed_ns": 1792140613306514721,
+            "read_origin": "local://authority",
+            "read_target": "publication/demo",
+            "record": {
+              "nonce": "old-challenge",
+              "origin": "local://authority",
+              "payload_b64": "UUlLLVZSVDogWndlY2ssIEhhbmRsdW5nLCBuYWNoZ2VsZXNlbmUgV2lya3VuZy4K",
+              "run_id": "trial-predecessor",
+              "stored_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316",
+              "target": "publication/demo",
+              "version": 6,
+              "written_ns": 1792140603200690460
+            },
+            "schema": "local-effect-readback/v1"
+          },
+          "goal_holds": false,
+          "policies": {
+            "ack_only": true,
+            "payload_only": true,
+            "qik_principle": false,
+            "conventional_e2e": false
+          },
+          "qik_reasons": [
+            "IDENTITY_VERSION",
+            "IDENTITY_RUN_ID",
+            "IDENTITY_NONCE",
+            "WRITE_ORDER"
+          ]
+        },
+        {
+          "case": "wrong_payload",
+          "fault": "wrong_payload",
+          "observation_mode": "live",
+          "spec": {
+            "origin": "local://authority",
+            "target": "publication/demo",
+            "version": 7,
+            "run_id": "trial-current",
+            "nonce": "challenge-current",
+            "payload_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316"
+          },
+          "authority": true,
+          "start_ns": 1792140613500748199,
+          "decision_ns": 1792140613583463311,
+          "observation": {
+            "observed_ns": 1792140613578441758,
+            "read_origin": "local://authority",
+            "read_target": "publication/demo",
+            "record": {
+              "nonce": "challenge-current",
+              "origin": "local://authority",
+              "payload_b64": "RGlmZmVyZW50IGJ5dGVzLgo=",
+              "run_id": "trial-current",
+              "stored_sha256": "3470c49bab06fd0653fba01e079ee079747ec35a2b997ab27bceef7497bcf836",
+              "target": "publication/demo",
+              "version": 7,
+              "written_ns": 1792140613533963858
+            },
+            "schema": "local-effect-readback/v1"
+          },
+          "goal_holds": false,
+          "policies": {
+            "ack_only": true,
+            "payload_only": false,
+            "qik_principle": false,
+            "conventional_e2e": false
+          },
+          "qik_reasons": [
+            "GOAL_BYTES"
+          ]
+        },
+        {
+          "case": "wrong_target",
+          "fault": "wrong_target",
+          "observation_mode": "live",
+          "spec": {
+            "origin": "local://authority",
+            "target": "publication/demo",
+            "version": 7,
+            "run_id": "trial-current",
+            "nonce": "challenge-current",
+            "payload_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316"
+          },
+          "authority": true,
+          "start_ns": 1792140613790239201,
+          "decision_ns": 1792140613866458386,
+          "observation": {
+            "observed_ns": 1792140613861547607,
+            "read_origin": "local://authority",
+            "read_target": "publication/demo",
+            "record": {
+              "nonce": "old-challenge",
+              "origin": "local://authority",
+              "payload_b64": "UUlLLVZSVDogWndlY2ssIEhhbmRsdW5nLCBuYWNoZ2VsZXNlbmUgV2lya3VuZy4K",
+              "run_id": "trial-predecessor",
+              "stored_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316",
+              "target": "publication/demo",
+              "version": 6,
+              "written_ns": 1792140603750669601
+            },
+            "schema": "local-effect-readback/v1"
+          },
+          "goal_holds": false,
+          "policies": {
+            "ack_only": true,
+            "payload_only": true,
+            "qik_principle": false,
+            "conventional_e2e": false
+          },
+          "qik_reasons": [
+            "IDENTITY_VERSION",
+            "IDENTITY_RUN_ID",
+            "IDENTITY_NONCE",
+            "WRITE_ORDER"
+          ]
+        },
+        {
+          "case": "wrong_origin",
+          "fault": "wrong_origin",
+          "observation_mode": "live",
+          "spec": {
+            "origin": "local://authority",
+            "target": "publication/demo",
+            "version": 7,
+            "run_id": "trial-current",
+            "nonce": "challenge-current",
+            "payload_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316"
+          },
+          "authority": true,
+          "start_ns": 1792140614059126414,
+          "decision_ns": 1792140614135570618,
+          "observation": {
+            "observed_ns": 1792140614130587036,
+            "read_origin": "local://authority",
+            "read_target": "publication/demo",
+            "record": {
+              "nonce": "old-challenge",
+              "origin": "local://authority",
+              "payload_b64": "UUlLLVZSVDogWndlY2ssIEhhbmRsdW5nLCBuYWNoZ2VsZXNlbmUgV2lya3VuZy4K",
+              "run_id": "trial-predecessor",
+              "stored_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316",
+              "target": "publication/demo",
+              "version": 6,
+              "written_ns": 1792140604021402988
+            },
+            "schema": "local-effect-readback/v1"
+          },
+          "goal_holds": false,
+          "policies": {
+            "ack_only": true,
+            "payload_only": true,
+            "qik_principle": false,
+            "conventional_e2e": false
+          },
+          "qik_reasons": [
+            "IDENTITY_VERSION",
+            "IDENTITY_RUN_ID",
+            "IDENTITY_NONCE",
+            "WRITE_ORDER"
+          ]
+        },
+        {
+          "case": "wrong_version",
+          "fault": "wrong_version",
+          "observation_mode": "live",
+          "spec": {
+            "origin": "local://authority",
+            "target": "publication/demo",
+            "version": 7,
+            "run_id": "trial-current",
+            "nonce": "challenge-current",
+            "payload_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316"
+          },
+          "authority": true,
+          "start_ns": 1792140614325326863,
+          "decision_ns": 1792140614402134836,
+          "observation": {
+            "observed_ns": 1792140614397064030,
+            "read_origin": "local://authority",
+            "read_target": "publication/demo",
+            "record": {
+              "nonce": "challenge-current",
+              "origin": "local://authority",
+              "payload_b64": "UUlLLVZSVDogWndlY2ssIEhhbmRsdW5nLCBuYWNoZ2VsZXNlbmUgV2lya3VuZy4K",
+              "run_id": "trial-current",
+              "stored_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316",
+              "target": "publication/demo",
+              "version": 6,
+              "written_ns": 1792140614357626906
+            },
+            "schema": "local-effect-readback/v1"
+          },
+          "goal_holds": false,
+          "policies": {
+            "ack_only": true,
+            "payload_only": true,
+            "qik_principle": false,
+            "conventional_e2e": false
+          },
+          "qik_reasons": [
+            "IDENTITY_VERSION"
+          ]
+        },
+        {
+          "case": "wrong_run",
+          "fault": "wrong_run",
+          "observation_mode": "live",
+          "spec": {
+            "origin": "local://authority",
+            "target": "publication/demo",
+            "version": 7,
+            "run_id": "trial-current",
+            "nonce": "challenge-current",
+            "payload_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316"
+          },
+          "authority": true,
+          "start_ns": 1792140614602880809,
+          "decision_ns": 1792140614676334523,
+          "observation": {
+            "observed_ns": 1792140614670868597,
+            "read_origin": "local://authority",
+            "read_target": "publication/demo",
+            "record": {
+              "nonce": "challenge-current",
+              "origin": "local://authority",
+              "payload_b64": "UUlLLVZSVDogWndlY2ssIEhhbmRsdW5nLCBuYWNoZ2VsZXNlbmUgV2lya3VuZy4K",
+              "run_id": "trial-other",
+              "stored_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316",
+              "target": "publication/demo",
+              "version": 7,
+              "written_ns": 1792140614633063666
+            },
+            "schema": "local-effect-readback/v1"
+          },
+          "goal_holds": false,
+          "policies": {
+            "ack_only": true,
+            "payload_only": true,
+            "qik_principle": false,
+            "conventional_e2e": false
+          },
+          "qik_reasons": [
+            "IDENTITY_RUN_ID"
+          ]
+        },
+        {
+          "case": "wrong_nonce",
+          "fault": "wrong_nonce",
+          "observation_mode": "live",
+          "spec": {
+            "origin": "local://authority",
+            "target": "publication/demo",
+            "version": 7,
+            "run_id": "trial-current",
+            "nonce": "challenge-current",
+            "payload_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316"
+          },
+          "authority": true,
+          "start_ns": 1792140614873030653,
+          "decision_ns": 1792140614950577069,
+          "observation": {
+            "observed_ns": 1792140614945411327,
+            "read_origin": "local://authority",
+            "read_target": "publication/demo",
+            "record": {
+              "nonce": "replayed-challenge",
+              "origin": "local://authority",
+              "payload_b64": "UUlLLVZSVDogWndlY2ssIEhhbmRsdW5nLCBuYWNoZ2VsZXNlbmUgV2lya3VuZy4K",
+              "run_id": "trial-current",
+              "stored_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316",
+              "target": "publication/demo",
+              "version": 7,
+              "written_ns": 1792140614903317814
+            },
+            "schema": "local-effect-readback/v1"
+          },
+          "goal_holds": false,
+          "policies": {
+            "ack_only": true,
+            "payload_only": true,
+            "qik_principle": false,
+            "conventional_e2e": false
+          },
+          "qik_reasons": [
+            "IDENTITY_NONCE"
+          ]
+        },
+        {
+          "case": "corruption",
+          "fault": "corruption",
+          "observation_mode": "live",
+          "spec": {
+            "origin": "local://authority",
+            "target": "publication/demo",
+            "version": 7,
+            "run_id": "trial-current",
+            "nonce": "challenge-current",
+            "payload_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316"
+          },
+          "authority": true,
+          "start_ns": 1792140615141906770,
+          "decision_ns": 1792140615218349617,
+          "observation": {
+            "observed_ns": 1792140615212551398,
+            "read_origin": "local://authority",
+            "read_target": "publication/demo",
+            "record": {
+              "nonce": "challenge-current",
+              "origin": "local://authority",
+              "payload_b64": "Q29ycnVwdGVkIGFmdGVyIHdyaXRlLgo=",
+              "run_id": "trial-current",
+              "stored_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316",
+              "target": "publication/demo",
+              "version": 7,
+              "written_ns": 1792140615172683646
+            },
+            "schema": "local-effect-readback/v1"
+          },
+          "goal_holds": false,
+          "policies": {
+            "ack_only": true,
+            "payload_only": false,
+            "qik_principle": false,
+            "conventional_e2e": false
+          },
+          "qik_reasons": [
+            "INTEGRITY",
+            "GOAL_BYTES"
+          ]
+        },
+        {
+          "case": "observer_missing",
+          "fault": "success",
+          "observation_mode": "missing",
+          "spec": {
+            "origin": "local://authority",
+            "target": "publication/demo",
+            "version": 7,
+            "run_id": "trial-current",
+            "nonce": "challenge-current",
+            "payload_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316"
+          },
+          "authority": true,
+          "start_ns": 1792140615408370639,
+          "decision_ns": 1792140615452248180,
+          "observation": null,
+          "goal_holds": true,
+          "policies": {
+            "ack_only": true,
+            "payload_only": false,
+            "qik_principle": false,
+            "conventional_e2e": false
+          },
+          "qik_reasons": [
+            "OBSERVATION_MISSING"
+          ]
+        },
+        {
+          "case": "observer_stale",
+          "fault": "success",
+          "observation_mode": "stale",
+          "spec": {
+            "origin": "local://authority",
+            "target": "publication/demo",
+            "version": 7,
+            "run_id": "trial-current",
+            "nonce": "challenge-current",
+            "payload_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316"
+          },
+          "authority": true,
+          "start_ns": 1792140615651806544,
+          "decision_ns": 1792140615691746924,
+          "observation": {
+            "observed_ns": 1792140615646865896,
+            "read_origin": "local://authority",
+            "read_target": "publication/demo",
+            "record": {
+              "nonce": "old-challenge",
+              "origin": "local://authority",
+              "payload_b64": "UUlLLVZSVDogWndlY2ssIEhhbmRsdW5nLCBuYWNoZ2VsZXNlbmUgV2lya3VuZy4K",
+              "run_id": "trial-predecessor",
+              "stored_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316",
+              "target": "publication/demo",
+              "version": 6,
+              "written_ns": 1792140605613621475
+            },
+            "schema": "local-effect-readback/v1"
+          },
+          "goal_holds": true,
+          "policies": {
+            "ack_only": true,
+            "payload_only": true,
+            "qik_principle": false,
+            "conventional_e2e": false
+          },
+          "qik_reasons": [
+            "OBSERVATION_ORDER",
+            "IDENTITY_VERSION",
+            "IDENTITY_RUN_ID",
+            "IDENTITY_NONCE",
+            "WRITE_ORDER"
+          ]
+        },
+        {
+          "case": "authority_denied",
+          "fault": "success",
+          "observation_mode": "live",
+          "spec": {
+            "origin": "local://authority",
+            "target": "publication/demo",
+            "version": 7,
+            "run_id": "trial-current",
+            "nonce": "challenge-current",
+            "payload_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316"
+          },
+          "authority": false,
+          "start_ns": 1792140615884369935,
+          "decision_ns": 1792140615964147396,
+          "observation": {
+            "observed_ns": 1792140615958020636,
+            "read_origin": "local://authority",
+            "read_target": "publication/demo",
+            "record": {
+              "nonce": "challenge-current",
+              "origin": "local://authority",
+              "payload_b64": "UUlLLVZSVDogWndlY2ssIEhhbmRsdW5nLCBuYWNoZ2VsZXNlbmUgV2lya3VuZy4K",
+              "run_id": "trial-current",
+              "stored_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316",
+              "target": "publication/demo",
+              "version": 7,
+              "written_ns": 1792140615917174064
+            },
+            "schema": "local-effect-readback/v1"
+          },
+          "goal_holds": true,
+          "policies": {
+            "ack_only": true,
+            "payload_only": true,
+            "qik_principle": false,
+            "conventional_e2e": false
+          },
+          "qik_reasons": [
+            "AUTHORITY_NOT_GRANTED"
+          ]
+        }
+      ],
+      "boundary_counterexamples": [
+        {
+          "case": "forged_observer",
+          "gate_done": true,
+          "conventional_done": true,
+          "goal_holds": false,
+          "expected_counterexample": true,
+          "violated_premise": "Observer report is not a sound account of storage."
+        },
+        {
+          "case": "race_after_observation",
+          "gate_done_at_observation": true,
+          "goal_holds_later": false,
+          "expected_counterexample": true,
+          "violated_premise": "Observed state is not guaranteed unchanged at later use."
+        },
+        {
+          "case": "unmediated_release",
+          "gate_done": false,
+          "release_via_bypass": true,
+          "release_log_count": 1,
+          "expected_counterexample": true,
+          "violated_premise": "Ordinary effect paths are not completely mediated."
+        }
+      ],
+      "repairs": [
+        {
+          "predecessor": "ack_lost",
+          "successor_spec": {
+            "origin": "local://authority",
+            "target": "publication/demo",
+            "version": 8,
+            "run_id": "trial-repaired",
+            "nonce": "challenge-repaired",
+            "payload_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316"
+          },
+          "goal_holds": true,
+          "local_accept": true,
+          "observation": {
+            "observed_ns": 1792140613158123220,
+            "read_origin": "local://authority",
+            "read_target": "publication/demo",
+            "record": {
+              "nonce": "challenge-repaired",
+              "origin": "local://authority",
+              "payload_b64": "UUlLLVZSVDogWndlY2ssIEhhbmRsdW5nLCBuYWNoZ2VsZXNlbmUgV2lya3VuZy4K",
+              "run_id": "trial-repaired",
+              "stored_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316",
+              "target": "publication/demo",
+              "version": 8,
+              "written_ns": 1792140613078955267
+            },
+            "schema": "local-effect-readback/v1"
+          },
+          "changed_premises": "Fault removed, fresh successor write/read, fixture authority granted."
+        },
+        {
+          "predecessor": "rollback",
+          "successor_spec": {
+            "origin": "local://authority",
+            "target": "publication/demo",
+            "version": 8,
+            "run_id": "trial-repaired",
+            "nonce": "challenge-repaired",
+            "payload_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316"
+          },
+          "goal_holds": true,
+          "local_accept": true,
+          "observation": {
+            "observed_ns": 1792140613418207986,
+            "read_origin": "local://authority",
+            "read_target": "publication/demo",
+            "record": {
+              "nonce": "challenge-repaired",
+              "origin": "local://authority",
+              "payload_b64": "UUlLLVZSVDogWndlY2ssIEhhbmRsdW5nLCBuYWNoZ2VsZXNlbmUgV2lya3VuZy4K",
+              "run_id": "trial-repaired",
+              "stored_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316",
+              "target": "publication/demo",
+              "version": 8,
+              "written_ns": 1792140613379748114
+            },
+            "schema": "local-effect-readback/v1"
+          },
+          "changed_premises": "Fault removed, fresh successor write/read, fixture authority granted."
+        },
+        {
+          "predecessor": "wrong_payload",
+          "successor_spec": {
+            "origin": "local://authority",
+            "target": "publication/demo",
+            "version": 8,
+            "run_id": "trial-repaired",
+            "nonce": "challenge-repaired",
+            "payload_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316"
+          },
+          "goal_holds": true,
+          "local_accept": true,
+          "observation": {
+            "observed_ns": 1792140613703883276,
+            "read_origin": "local://authority",
+            "read_target": "publication/demo",
+            "record": {
+              "nonce": "challenge-repaired",
+              "origin": "local://authority",
+              "payload_b64": "UUlLLVZSVDogWndlY2ssIEhhbmRsdW5nLCBuYWNoZ2VsZXNlbmUgV2lya3VuZy4K",
+              "run_id": "trial-repaired",
+              "stored_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316",
+              "target": "publication/demo",
+              "version": 8,
+              "written_ns": 1792140613662907573
+            },
+            "schema": "local-effect-readback/v1"
+          },
+          "changed_premises": "Fault removed, fresh successor write/read, fixture authority granted."
+        },
+        {
+          "predecessor": "wrong_target",
+          "successor_spec": {
+            "origin": "local://authority",
+            "target": "publication/demo",
+            "version": 8,
+            "run_id": "trial-repaired",
+            "nonce": "challenge-repaired",
+            "payload_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316"
+          },
+          "goal_holds": true,
+          "local_accept": true,
+          "observation": {
+            "observed_ns": 1792140613978508208,
+            "read_origin": "local://authority",
+            "read_target": "publication/demo",
+            "record": {
+              "nonce": "challenge-repaired",
+              "origin": "local://authority",
+              "payload_b64": "UUlLLVZSVDogWndlY2ssIEhhbmRsdW5nLCBuYWNoZ2VsZXNlbmUgV2lya3VuZy4K",
+              "run_id": "trial-repaired",
+              "stored_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316",
+              "target": "publication/demo",
+              "version": 8,
+              "written_ns": 1792140613939126667
+            },
+            "schema": "local-effect-readback/v1"
+          },
+          "changed_premises": "Fault removed, fresh successor write/read, fixture authority granted."
+        },
+        {
+          "predecessor": "wrong_origin",
+          "successor_spec": {
+            "origin": "local://authority",
+            "target": "publication/demo",
+            "version": 8,
+            "run_id": "trial-repaired",
+            "nonce": "challenge-repaired",
+            "payload_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316"
+          },
+          "goal_holds": true,
+          "local_accept": true,
+          "observation": {
+            "observed_ns": 1792140614242723432,
+            "read_origin": "local://authority",
+            "read_target": "publication/demo",
+            "record": {
+              "nonce": "challenge-repaired",
+              "origin": "local://authority",
+              "payload_b64": "UUlLLVZSVDogWndlY2ssIEhhbmRsdW5nLCBuYWNoZ2VsZXNlbmUgV2lya3VuZy4K",
+              "run_id": "trial-repaired",
+              "stored_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316",
+              "target": "publication/demo",
+              "version": 8,
+              "written_ns": 1792140614203626692
+            },
+            "schema": "local-effect-readback/v1"
+          },
+          "changed_premises": "Fault removed, fresh successor write/read, fixture authority granted."
+        },
+        {
+          "predecessor": "wrong_version",
+          "successor_spec": {
+            "origin": "local://authority",
+            "target": "publication/demo",
+            "version": 8,
+            "run_id": "trial-repaired",
+            "nonce": "challenge-repaired",
+            "payload_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316"
+          },
+          "goal_holds": true,
+          "local_accept": true,
+          "observation": {
+            "observed_ns": 1792140614508117391,
+            "read_origin": "local://authority",
+            "read_target": "publication/demo",
+            "record": {
+              "nonce": "challenge-repaired",
+              "origin": "local://authority",
+              "payload_b64": "UUlLLVZSVDogWndlY2ssIEhhbmRsdW5nLCBuYWNoZ2VsZXNlbmUgV2lya3VuZy4K",
+              "run_id": "trial-repaired",
+              "stored_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316",
+              "target": "publication/demo",
+              "version": 8,
+              "written_ns": 1792140614469796561
+            },
+            "schema": "local-effect-readback/v1"
+          },
+          "changed_premises": "Fault removed, fresh successor write/read, fixture authority granted."
+        },
+        {
+          "predecessor": "wrong_run",
+          "successor_spec": {
+            "origin": "local://authority",
+            "target": "publication/demo",
+            "version": 8,
+            "run_id": "trial-repaired",
+            "nonce": "challenge-repaired",
+            "payload_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316"
+          },
+          "goal_holds": true,
+          "local_accept": true,
+          "observation": {
+            "observed_ns": 1792140614789289756,
+            "read_origin": "local://authority",
+            "read_target": "publication/demo",
+            "record": {
+              "nonce": "challenge-repaired",
+              "origin": "local://authority",
+              "payload_b64": "UUlLLVZSVDogWndlY2ssIEhhbmRsdW5nLCBuYWNoZ2VsZXNlbmUgV2lya3VuZy4K",
+              "run_id": "trial-repaired",
+              "stored_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316",
+              "target": "publication/demo",
+              "version": 8,
+              "written_ns": 1792140614750220292
+            },
+            "schema": "local-effect-readback/v1"
+          },
+          "changed_premises": "Fault removed, fresh successor write/read, fixture authority granted."
+        },
+        {
+          "predecessor": "wrong_nonce",
+          "successor_spec": {
+            "origin": "local://authority",
+            "target": "publication/demo",
+            "version": 8,
+            "run_id": "trial-repaired",
+            "nonce": "challenge-repaired",
+            "payload_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316"
+          },
+          "goal_holds": true,
+          "local_accept": true,
+          "observation": {
+            "observed_ns": 1792140615059243159,
+            "read_origin": "local://authority",
+            "read_target": "publication/demo",
+            "record": {
+              "nonce": "challenge-repaired",
+              "origin": "local://authority",
+              "payload_b64": "UUlLLVZSVDogWndlY2ssIEhhbmRsdW5nLCBuYWNoZ2VsZXNlbmUgV2lya3VuZy4K",
+              "run_id": "trial-repaired",
+              "stored_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316",
+              "target": "publication/demo",
+              "version": 8,
+              "written_ns": 1792140615020689063
+            },
+            "schema": "local-effect-readback/v1"
+          },
+          "changed_premises": "Fault removed, fresh successor write/read, fixture authority granted."
+        },
+        {
+          "predecessor": "corruption",
+          "successor_spec": {
+            "origin": "local://authority",
+            "target": "publication/demo",
+            "version": 8,
+            "run_id": "trial-repaired",
+            "nonce": "challenge-repaired",
+            "payload_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316"
+          },
+          "goal_holds": true,
+          "local_accept": true,
+          "observation": {
+            "observed_ns": 1792140615327685118,
+            "read_origin": "local://authority",
+            "read_target": "publication/demo",
+            "record": {
+              "nonce": "challenge-repaired",
+              "origin": "local://authority",
+              "payload_b64": "UUlLLVZSVDogWndlY2ssIEhhbmRsdW5nLCBuYWNoZ2VsZXNlbmUgV2lya3VuZy4K",
+              "run_id": "trial-repaired",
+              "stored_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316",
+              "target": "publication/demo",
+              "version": 8,
+              "written_ns": 1792140615288754780
+            },
+            "schema": "local-effect-readback/v1"
+          },
+          "changed_premises": "Fault removed, fresh successor write/read, fixture authority granted."
+        },
+        {
+          "predecessor": "observer_missing",
+          "successor_spec": {
+            "origin": "local://authority",
+            "target": "publication/demo",
+            "version": 8,
+            "run_id": "trial-repaired",
+            "nonce": "challenge-repaired",
+            "payload_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316"
+          },
+          "goal_holds": true,
+          "local_accept": true,
+          "observation": {
+            "observed_ns": 1792140615562255792,
+            "read_origin": "local://authority",
+            "read_target": "publication/demo",
+            "record": {
+              "nonce": "challenge-repaired",
+              "origin": "local://authority",
+              "payload_b64": "UUlLLVZSVDogWndlY2ssIEhhbmRsdW5nLCBuYWNoZ2VsZXNlbmUgV2lya3VuZy4K",
+              "run_id": "trial-repaired",
+              "stored_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316",
+              "target": "publication/demo",
+              "version": 8,
+              "written_ns": 1792140615520682499
+            },
+            "schema": "local-effect-readback/v1"
+          },
+          "changed_premises": "Fault removed, fresh successor write/read, fixture authority granted."
+        },
+        {
+          "predecessor": "observer_stale",
+          "successor_spec": {
+            "origin": "local://authority",
+            "target": "publication/demo",
+            "version": 8,
+            "run_id": "trial-repaired",
+            "nonce": "challenge-repaired",
+            "payload_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316"
+          },
+          "goal_holds": true,
+          "local_accept": true,
+          "observation": {
+            "observed_ns": 1792140615798823715,
+            "read_origin": "local://authority",
+            "read_target": "publication/demo",
+            "record": {
+              "nonce": "challenge-repaired",
+              "origin": "local://authority",
+              "payload_b64": "UUlLLVZSVDogWndlY2ssIEhhbmRsdW5nLCBuYWNoZ2VsZXNlbmUgV2lya3VuZy4K",
+              "run_id": "trial-repaired",
+              "stored_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316",
+              "target": "publication/demo",
+              "version": 8,
+              "written_ns": 1792140615759900973
+            },
+            "schema": "local-effect-readback/v1"
+          },
+          "changed_premises": "Fault removed, fresh successor write/read, fixture authority granted."
+        },
+        {
+          "predecessor": "authority_denied",
+          "successor_spec": {
+            "origin": "local://authority",
+            "target": "publication/demo",
+            "version": 8,
+            "run_id": "trial-repaired",
+            "nonce": "challenge-repaired",
+            "payload_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316"
+          },
+          "goal_holds": true,
+          "local_accept": true,
+          "observation": {
+            "observed_ns": 1792140616083629617,
+            "read_origin": "local://authority",
+            "read_target": "publication/demo",
+            "record": {
+              "nonce": "challenge-repaired",
+              "origin": "local://authority",
+              "payload_b64": "UUlLLVZSVDogWndlY2ssIEhhbmRsdW5nLCBuYWNoZ2VsZXNlbmUgV2lya3VuZy4K",
+              "run_id": "trial-repaired",
+              "stored_sha256": "a0048744896413b1d2ee3af6288af8561e78f2c87f5db93d07d1f588ee01b316",
+              "target": "publication/demo",
+              "version": 8,
+              "written_ns": 1792140616043589219
+            },
+            "schema": "local-effect-readback/v1"
+          },
+          "changed_premises": "Fault removed, fresh successor write/read, fixture authority granted."
+        }
+      ],
+      "repair_count": 12,
+      "repair_accept_count": 12,
+      "scope": "Deterministic finite models and same-host subprocess SQLite experiments, no population inference.",
+      "independence": "Separate processes and separate control implementation; same author, machine and account.",
+      "kernel_proof_executed_by_this_script": false,
+      "native_mesh_execution": false,
+      "universal_superiority_proved": false
+    }
+  },
+  "closing_delivery": {
+    "url": "https://raumzeitterminal.de/",
+    "method": "GET",
+    "started_at": "2026-10-16T08:51:59.966176+00:00",
+    "origin_attribution": "UNKNOWN; response traverses this client network path",
+    "http_status": 502,
+    "final_url": "https://raumzeitterminal.de/",
+    "bytes": 150,
+    "response_sha256": "81074a9c8dfb24290e8fc4af14d20f67f5304618d27ac713628b1126e41dbd8e",
+    "observed_at": "2026-10-16T08:52:04.817782+00:00"
+  },
+  "claims": {
+    "false_successes_qik_principle": 0,
+    "conventional_control_same_results": true,
+    "accepted_successors": 12,
+    "formal_model_not_empirical_sensor_proof": true,
+    "native_mesh_execution_verified": false,
+    "publication_performed_by_this_check": false,
+    "exact_host_delivery_verified": false,
+    "original_candidate_bytes_modified": false,
+    "EFFECT_ACK_DONE": false,
+    "PREDECESSOR_EVIDENCE_TRANSFER": false
+  },
+  "closing_repository_and_host_binding": {
+    "main": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "head": "85cf48be8405d66ee567f868c1b8f33bd54add97",
+      "tree": "526e6a38986c75a33ae3b920eceae2d590e48ca2",
+      "observed_at": "2026-10-16T08:52:01.254Z"
+    },
+    "host_binding": [
+      {
+        "hostname": "raumzeitterminal.de",
+        "status": "pending",
+        "provider_status": "pending",
+        "ssl_status": "pending_validation"
+      }
+    ]
+  }
+}

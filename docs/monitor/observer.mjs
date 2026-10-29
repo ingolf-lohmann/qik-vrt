@@ -7,8 +7,8 @@ const PAGE=readFileSync(new URL('./index.html',import.meta.url),'utf8');
 const VERSION='2026-10-04.9';
 const CACHE_ORIGIN='https://qikvrt-monitor.invalid';
 let REPOS=[
- {name:'ingolf-lohmann/qik-vrt',role:'Persönlicher Knoten',branch:'main'},
- {name:'Goldkelch/qik-vrt',role:'Authority',branch:'main'}
+ {name:'ingolf-lohmann/qik-vrt',role:'Authority',branch:'main'},
+ {name:'Goldkelch/qik-vrt',role:'Mirror',branch:'main'}
 ];
 export function configureRepositories(repos){
  if(!Array.isArray(repos)||!repos.length||repos.length>10||repos.some(r=>!/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(r.name)||r.branch!=='main'))throw new Error('Invalid public repository configuration');

@@ -31,12 +31,22 @@ EXCLUDED_PARTS = {
 # immutable Alpha-2 release and are therefore not part of its closed historical
 # input set. They remain compiled and tested in the current repository.
 POST_ALPHA2_EXCLUSIONS = {
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CausalDistance.lean",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CausalDistanceTemporalBridge.lean",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CausalDistanceBoundaryChecks.lean",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CausalDistanceAxiomAudit.lean",
+    "formalization/QIKVRT_Formalization_v2.0/tests/test_measurement_transfer_audit.py",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Physics/MeasurementTransfer.lean",
     "formalization/QIKVRT_Formalization_v2.0/GLOBAL_COMPLETION_STATUS.json",
     "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/QuantumClassicalRuntime.lean",
     "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CanonicalTemporalMemory.lean",
     "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ConnectabilitySimulation.lean",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ConnectabilityMaximality.lean",
     "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/OperationalContinuation.lean",
     "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/WeightedConnectability.lean",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Retrocausality/BacksignalingBoundary.lean",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Retrocausality/ThreeObserverProtocol.lean",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Retrocausality/ObserverRelative.lean",
     "formalization/QIKVRT_Formalization_v2.0/tests/test_quantum_classical_runtime_article.py",
     "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Decision/ObservationSufficiency.lean",
     "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Hardware/AuthorityMirrorWitness.lean",

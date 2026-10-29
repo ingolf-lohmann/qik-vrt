@@ -1,0 +1,26 @@
+test_signed_sender_receipt_and_live_check_survive_both_process_restarts (test_self_host.MeshWorkCacheTests.test_signed_sender_receipt_and_live_check_survive_both_process_restarts) ... ERROR
+test_authenticated_bad_receipt_digest_holds_outbox_before_a_single_recovery_read (test_self_host.MeshWorkCacheTests.test_authenticated_bad_receipt_digest_holds_outbox_before_a_single_recovery_read) ... FAIL
+
+======================================================================
+ERROR: test_signed_sender_receipt_and_live_check_survive_both_process_restarts (test_self_host.MeshWorkCacheTests.test_signed_sender_receipt_and_live_check_survive_both_process_restarts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/4d0160b72ea7/source/tests/test_self_host.py", line 1816, in test_signed_sender_receipt_and_live_check_survive_both_process_restarts
+    retained = self.state()["receipts"][sent["batch_id"]]
+               ~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'receipts'
+
+======================================================================
+FAIL: test_authenticated_bad_receipt_digest_holds_outbox_before_a_single_recovery_read (test_self_host.MeshWorkCacheTests.test_authenticated_bad_receipt_digest_holds_outbox_before_a_single_recovery_read)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/4d0160b72ea7/source/tests/test_self_host.py", line 1889, in test_authenticated_bad_receipt_digest_holds_outbox_before_a_single_recovery_read
+    with self.assertRaisesRegex(ValueError, "RECEIPT_BINDING_MISMATCH"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.471s
+
+FAILED (failures=1, errors=1)
+EXPECTED_PREDECESSOR_FAILURES=2

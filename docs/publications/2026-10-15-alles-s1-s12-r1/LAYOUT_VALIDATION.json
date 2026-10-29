@@ -1,0 +1,28 @@
+{
+  "schema": "qikvrt_pdf_layout_validation_v1",
+  "output_sha256": "68b59b146904aae567bf302268b1e795d9ffd8506921aa282817aab4c0d41f1e",
+  "original_overflow_pages": [
+    1,
+    117,
+    118,
+    119,
+    120,
+    121
+  ],
+  "original_overflow_span_count": 29,
+  "output_overflow_count": 0,
+  "output_overflow": [],
+  "preserved_page_count": 115,
+  "all_preserved_text_and_renders_identical": true,
+  "missing_reflowed_lines": [],
+  "checks": {
+    "full_reflowed_lines_visible": true,
+    "two_original_attachments": true,
+    "embedded_121_original_exact": true,
+    "embedded_116_original_exact": true,
+    "bookmarks": true,
+    "no_replacement_glyph": true
+  },
+  "result": "PASS",
+  "scope": "PDF layout, text completeness, links/bookmarks and original-byte preservation; no runtime or scientific theorem proof"
+}

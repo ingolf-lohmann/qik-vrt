@@ -12,6 +12,7 @@ Copyright (c) 2026 Ingolf Lohmann.
   <meta property="og:title" content="QIK-VRT Repository-Terminal">
   <meta property="og:description" content="Öffentliche Repository-Evidenz lesen, lokal analysieren und optional im Browser diktieren oder vorlesen lassen.">
   <meta property="og:type" content="website">
+  <link rel="canonical" href="https://raumzeitterminal.de/terminal/">
   <link rel="stylesheet" href="../assets/css/qikvrt.css">
   <link rel="stylesheet" href="../assets/css/qikvrt-terminal.css">
 </head>
@@ -22,8 +23,8 @@ Copyright (c) 2026 Ingolf Lohmann.
     <a class="brand" href="../" aria-label="QIK-VRT Start / QIK-VRT home"><span class="logo">Q</span><span>QIK-VRT<br><small>Repository Terminal</small></span></a>
     <nav class="navlinks" aria-label="Hauptnavigation / Main navigation">
       <a href="../"><span class="de">Start</span><span class="en" lang="en">Home</span></a>
-      <a href="../publications/"><span class="de">Publikationen</span><span class="en" lang="en">Publications</span></a>
-      <a href="https://github.com/Goldkelch/qik-vrt" rel="noopener">GitHub</a>
+      <a href="https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/index.html"><span class="de">Publikationen</span><span class="en" lang="en">Publications</span></a>
+      <a href="https://github.com/ingolf-lohmann/qik-vrt" rel="noopener">GitHub</a>
       <button id="languageToggle" class="btn" type="button" aria-pressed="false">English</button>
       <button id="themeToggle" class="btn" type="button"><span class="de">Hell/Dunkel</span><span class="en" lang="en">Light/Dark</span></button>
     </nav>
@@ -47,7 +48,10 @@ Copyright (c) 2026 Ingolf Lohmann.
         <h2><span class="de">Wirkungsgrenze</span><span class="en" lang="en">Effect boundary</span></h2>
         <p class="de">Eine erfolgreiche Anzeige ist eine lesbare Beobachtung. Sie beweist weder wissenschaftliche Bestätigung noch Sicherheit, Rechtmäßigkeit, Veröffentlichung, Synchronität oder eine externe Wirkung.</p>
         <p class="en" lang="en">A successful display is a readable observation. It proves neither scientific confirmation nor security, legality, publication, synchronization, or an external effect.</p>
-        <a class="btn" href="../CURRENT_AUTHORITY.md"><span class="de">Aktuelle Authority lesen</span><span class="en" lang="en">Read current authority</span></a>
+        <p class="mini de" data-repository-link-policy="current-main">Repository-Links öffnen den aktuellen <code>main</code> (veränderlich). Die Konsole zeigt den tatsächlich gelesenen Commit und Tree.</p>
+        <p class="mini en" lang="en">Repository links open the current <code>main</code> (mutable). The console shows the commit and tree actually read.</p>
+        <p class="mini" data-content-source="4b2e0e91c7b0fbbc6176d68de508eeeb6a518a47"><span class="de">Statischer Inhaltsstand:</span><span class="en" lang="en">Static content source:</span> <a href="https://github.com/ingolf-lohmann/qik-vrt/tree/4b2e0e91c7b0fbbc6176d68de508eeeb6a518a47"><code style="overflow-wrap:anywhere">4b2e0e91c7b0fbbc6176d68de508eeeb6a518a47</code> <span class="de">(eingefroren)</span><span class="en" lang="en">(frozen)</span></a>.</p>
+        <a class="btn" href="https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/CURRENT_AUTHORITY.md"><span class="de">Aktuelle Authority lesen</span><span class="en" lang="en">Read current authority</span></a>
       </aside>
     </div>
   </section>
@@ -63,11 +67,11 @@ Copyright (c) 2026 Ingolf Lohmann.
         <div class="terminal-repo-select">
           <label for="repositorySelect"><span class="de">Lesekontext</span><span class="en" lang="en">Read context</span></label>
           <select id="repositorySelect" aria-describedby="repositoryHelp">
-            <option value="authority">Authority — Goldkelch/qik-vrt</option>
-            <option value="mirror">Mirror — ingolf-lohmann/qik-vrt</option>
+            <option value="authority">Authority (Owner-Zuweisung) — ingolf-lohmann/qik-vrt</option>
+            <option value="mirror">Mirror (Owner-Zuweisung) — Goldkelch/qik-vrt</option>
           </select>
-          <p id="repositoryHelp" class="mini de">Die Auswahl ändert nur, welches öffentliche Repository gelesen wird.</p>
-          <p class="mini en" lang="en">The selection changes only which public repository is read.</p>
+          <p id="repositoryHelp" class="mini de">Die Auswahl ändert nur den öffentlichen Lesekontext. Die Owner-Rollenzuweisung vom 7. Oktober 2026 ist kein Nachweis ihrer nativen Repository-Aktivierung.</p>
+          <p class="mini en" lang="en">The selection changes only the public read context. The Owner role assignment of 7 October 2026 does not prove native repository activation.</p>
         </div>
       </div>
 
@@ -89,7 +93,7 @@ Copyright (c) 2026 Ingolf Lohmann.
           <ul class="terminal-command-list" aria-label="Erlaubte Terminalbefehle / Allowed terminal commands">
             <li><button class="terminal-command" type="button" data-command="help"><code>help</code><span class="de">Befehle und Grenzen</span><span class="en" lang="en">commands and boundaries</span></button></li>
             <li><button class="terminal-command" type="button" data-command="status"><code>status [authority|mirror]</code><span class="de">aktuellen öffentlichen Ref lesen</span><span class="en" lang="en">read current public ref</span></button></li>
-            <li><button class="terminal-command" type="button" data-command="capabilities"><code>capabilities</code><span class="de">Selbstauskunft lesen</span><span class="en" lang="en">read self-disclosure</span></button></li>
+            <li><button class="terminal-command" type="button" data-command="capabilities"><code>capabilities [authority|mirror]</code><span class="de">Selbstauskunft lesen</span><span class="en" lang="en">read self-disclosure</span></button></li>
             <li><button class="terminal-command" type="button" data-command="read AI"><code>read AI|STATUS|README|ARCHITECTURE|BOUNDARIES|PRIVACY</code><span class="de">festgelegte Quelle lesen</span><span class="en" lang="en">read a fixed source</span></button></li>
             <li><button class="terminal-command" type="button" data-command="publications"><code>publications</code><span class="de">öffentlichen Publikationsindex lesen</span><span class="en" lang="en">read public publication index</span></button></li>
             <li><button class="terminal-command" type="button" data-command="analyse Beispiel: Welche Evidenz braucht ein Repository-Release?"><code>analyse … / analyze …</code><span class="de">lokale Regelanalyse</span><span class="en" lang="en">local rule analysis</span></button></li>
@@ -139,7 +143,7 @@ Copyright (c) 2026 Ingolf Lohmann.
           <li class="de">Die hash-gebundene, repository-native Offline-Transkription bleibt ein getrenntes Verfahren mit eigener Freigabe.</li>
           <li class="en" lang="en">Hash-bound repository-native offline transcription remains a separate procedure with its own authorization.</li>
         </ul>
-        <a class="btn" href="../OFFLINE_AUDIO_TRANSCRIPTION_DE.md"><span class="de">Offline-Audio-Grenze lesen</span><span class="en" lang="en">Read offline-audio boundary</span></a>
+        <a class="btn" href="https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/OFFLINE_AUDIO_TRANSCRIPTION_DE.md"><span class="de">Offline-Audio-Grenze lesen</span><span class="en" lang="en">Read offline-audio boundary</span></a>
       </aside>
     </div>
   </section>
@@ -152,10 +156,10 @@ Copyright (c) 2026 Ingolf Lohmann.
         <p class="en" lang="en">The console visibly separates three layers: public repository evidence, local rule analysis, and optional browser aids. No layer replaces a responsible human decision or expert review.</p>
       </div>
       <div class="card terminal-source-links">
-        <a href="https://github.com/Goldkelch/qik-vrt/blob/main/AI">/AI</a>
-        <a href="https://github.com/Goldkelch/qik-vrt/blob/main/STATUS.md">STATUS.md</a>
-        <a href="https://github.com/Goldkelch/qik-vrt/blob/main/docs/PRIVACY_PRESERVING_INTERACTION_ARCHIVE.md">Privacy boundary</a>
-        <a href="https://github.com/Goldkelch/qik-vrt/blob/main/.well-known/qik-vrt-self-disclosure.json">Capability disclosure</a>
+        <a href="https://github.com/ingolf-lohmann/qik-vrt/blob/main/AI">/AI</a>
+        <a href="https://github.com/ingolf-lohmann/qik-vrt/blob/main/STATUS.md">STATUS.md</a>
+        <a href="https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/PRIVACY_PRESERVING_INTERACTION_ARCHIVE.md">Privacy boundary</a>
+        <a href="https://github.com/ingolf-lohmann/qik-vrt/blob/main/.well-known/qik-vrt-self-disclosure.json">Capability disclosure</a>
       </div>
     </div>
   </section>

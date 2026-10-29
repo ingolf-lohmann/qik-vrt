@@ -330,7 +330,7 @@ def inspect_sqlite(root, name, native, normalized=None):
                         ["seq", "binding", "source", "native_id", "native_digest", "body", "body_digest"]):
                     raise ValueError("UNKNOWN_OR_EXECUTABLE_NATIVE_LEDGER_SCHEMA")
                 meta = dict(db.execute("SELECT key,value FROM meta"))
-                if set(meta) != {"schema", "epoch"} or meta["schema"] != "1" or not re.fullmatch(r"[a-f0-9]{32}", meta["epoch"]):
+                if (set(meta) != ({"schema", "epoch", "writer_seal"} if meta.get("schema") == "2" else {"schema", "epoch"}) or meta.get("schema") not in ("1", "2")) or not re.fullmatch(r"[a-f0-9]{32}", meta["epoch"]):
                     raise ValueError("UNKNOWN_NATIVE_LEDGER_META")
                 count = 0
                 subjects = {}

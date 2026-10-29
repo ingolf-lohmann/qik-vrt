@@ -20,7 +20,7 @@ RUN set -eux; \
 FROM debian:bookworm-slim
 ENV DEBIAN_FRONTEND=noninteractive DISPLAY=:99 \
     QIKVRT_HTTP_HOST=127.0.0.1 QIKVRT_HTTP_PORT=8771 QIKVRT_NOVNC_PORT=6080 \
-    QIKVRT_START_URL=about:blank \
+    QIKVRT_START_URL=about:blank QIKVRT_FIREFOX_BINARY=/usr/lib/firefox/firefox \
     QIKVRT_PROFILE_DIR=/var/lib/qikvrt/profile QIKVRT_STATE_DIR=/var/lib/qikvrt/state \
     QIKVRT_RUNTIME_ID=qikvrt-firefox-terminal QIKVRT_SERVICE_MODE=terminal \
     QIKVRT_MC68000_CC=m68k-linux-gnu-gcc QIKVRT_MC68000_RUNNER=qemu-m68k
@@ -34,6 +34,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /opt/qikvrt
 COPY . /opt/qikvrt
+RUN python3 -B tools/qikvrt_self_host.py firefox-release-provision \
+      --output /opt/qikvrt/runtime/firefox-release
 COPY --from=qikvrt-m68k-builder /out/qikvrt-ip-bootstrap /usr/local/bin/qikvrt-ip-bootstrap
 COPY --from=qikvrt-m68k-builder /out/qikvrt-m68k-selftest /usr/local/bin/qikvrt-m68k-selftest
 COPY --from=qikvrt-m68k-builder /out/m68k /opt/qikvrt/runtime/m68k
@@ -68,3 +70,4 @@ PY
 EXPOSE 6080 8080 8771 2222 2525 5353 9418 1161 5432 7331/udp
 HEALTHCHECK --interval=10s --timeout=5s --start-period=20s --retries=6 CMD ["/usr/local/bin/qikvrt-runtime-health"]
 ENTRYPOINT ["/usr/local/bin/qikvrt-service-entrypoint"]
+

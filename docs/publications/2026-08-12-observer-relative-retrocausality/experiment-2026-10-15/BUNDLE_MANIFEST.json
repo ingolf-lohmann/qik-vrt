@@ -1,0 +1,579 @@
+{
+  "schema": "qikvrt_retrocausality_experiment_bundle_v1",
+  "source_head": "cdbdce01ba13f0c41ade9982a2d9a26a8ea4b92f",
+  "files": [
+    {
+      "path": "Makefile",
+      "bytes": 16050,
+      "sha256": "de395bb7346a71fb0664d13fcc01d69a7fcce2298fa7f7594fa5b0407c891218",
+      "git_blob": "bc187e0e3ed3677d1d2e39e8269284cfd0d46bc9"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/AxiomAudit.lean",
+      "bytes": 2077,
+      "sha256": "32cfd7e4d041665d72834991b8d363b2b66f509be1a390174672fab8d118ea9e",
+      "git_blob": "e5929d487d70cd964522f61280f58ba07b69a99d"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/CLAIM_MATRIX.json",
+      "bytes": 3432,
+      "sha256": "69062e7cfada1b8f9c9bb7256625655a11045d454af8a6a6f962a1b8eb8c00f9",
+      "git_blob": "829ca0594d27d9c4421177b8305a42c91a3fc523"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/PROTOKOLL_DE.md",
+      "bytes": 15829,
+      "sha256": "2d3c95dcc3850d189c6df9de7d0ab6a1db36907de062ddb9d00c978f0df872c0",
+      "git_blob": "3a07ef13740a252c5800c3148c5f8513d584f58c"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/PUBLICATION_SOURCES_PENDING.json",
+      "bytes": 1226,
+      "sha256": "6040037c590b667600e36f5a27f0d42691ecf1a592978c32da3b453e2c6a8513",
+      "git_blob": "8d6eabd25cfdc3149c23b43e255c047459371e74"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/README.md",
+      "bytes": 15512,
+      "sha256": "cd3c778df994c37588233abb6f44a5b027aa6e6aabc487e4a56e1a6df139ca68",
+      "git_blob": "209a6b623ae23767c460adef2b84da15ffd383e2"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/SIMULATED_EXAMPLE.json",
+      "bytes": 2912,
+      "sha256": "12bf9cbccbc362a2e595637eba092915b8440a7a0c6c15b8436b79ac5b201c0b",
+      "git_blob": "216323a901e8996f9761e5374764e54fa9e02669"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/SOURCE_BINDINGS.json",
+      "bytes": 4155,
+      "sha256": "ce228f0103ef8df5e8c9d60e76cba7da0e24daad6449f969eb47696553ce7207",
+      "git_blob": "dc78d3a2d5245ea4815aad34b8bc9e7f9d8b87df"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/VISIBLE_SOURCES.json",
+      "bytes": 1057,
+      "sha256": "4540218c64c511cf543be195593cb80115e0ecab1da248c10c5873b24d803c2e",
+      "git_blob": "226bbd9f6608b938fe971ff58440f4b5b27f9220"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/analyze_experiment.py",
+      "bytes": 10437,
+      "sha256": "4a9d6228482c6fa04bfb21583d2a6b68691f2a3657a2b8f9901864eb2fd8473b",
+      "git_blob": "5b13370b1da941164c9aa2a307bebc8f83b17f2d"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/alpha2-exact-rebuild.log",
+      "bytes": 183,
+      "sha256": "759814d405fadcf83809b3ea58a84c34913898fbf8afc7a32633daae1b147f36",
+      "git_blob": "b0f356d9e8a8d350a19f18764df4a3a328341277"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/computational-checks.json",
+      "bytes": 846,
+      "sha256": "9d6c455f45fc4b093b9e3136044f3f5fb354ab192360318c39fc6b73e8ced642",
+      "git_blob": "edc10dcf896105902fb90ed9998b93adae6557a3"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/evidence-contract-initial.log",
+      "bytes": 49508,
+      "sha256": "ec307791fb1db8a38103465006042ac8d773b3e875b637059cfc95cbe5245107",
+      "git_blob": "6cddd9b4ef5bc9af24232e35b62c15c21c0ca6dc"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/evidence-contract-successor.log",
+      "bytes": 42703,
+      "sha256": "836b61cb031ce706b786c999dc509c40afc14b7984be026fb9affb2f34770424",
+      "git_blob": "29b9d825af14cb33926723d3629516170837a237"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/formal-v2-tests.log",
+      "bytes": 5851,
+      "sha256": "7ffbc6bc6d80ad30abe44fd509f0d61332daefffebdcb265264a0fed6c5ad929",
+      "git_blob": "a2541595f3b7016e1ff820b77975563127cd62dc"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/fresh-kernel/FalseBacksignaling.log",
+      "bytes": 546,
+      "sha256": "bd59beab2c1fe85c330f570660f2a377ea345c640be56594c2d25ec13973bc63",
+      "git_blob": "04e60e35cecd52184e4c1a07f0578d0763382c31"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/fresh-kernel/FalseForwardReturn.log",
+      "bytes": 880,
+      "sha256": "374639d986c30fb1759abb2ad043635ecd00f5e4b5aeca89b1ce2895a8df1c13",
+      "git_blob": "64fe856c67c1cb39effec9123895fb79caca2c3e"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/fresh-kernel/FalseReceptionOrder.log",
+      "bytes": 557,
+      "sha256": "298297e2151bcde137698dc7361c66e5e78616c62128e981e0baada0570a3cd8",
+      "git_blob": "15f6c1aaebb6f35799c8f323018b54ccd8b35ccb"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/fresh-kernel/axioms.log",
+      "bytes": 2675,
+      "sha256": "3c8a8e1c11b1a70b3f871783b064261e5adb1ebf1b2d81a18543e6314bb7fee9",
+      "git_blob": "a850134229562ed768f0ac81d4ae5a2fd5da1970"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/fresh-kernel/build.log",
+      "bytes": 14265,
+      "sha256": "f984c31d77ee7177c29e7d1d2104b705dd42bc78f7d930c9c7c83285bf6e1808",
+      "git_blob": "03567fc80d18c2d07836e543b789edddcf067824"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/fresh-kernel/original-v1-axioms.log",
+      "bytes": 549,
+      "sha256": "ed94a32e877c5408141c5e04f13bfaf418faf22703472653866dfcf8c1ea5568",
+      "git_blob": "cc7e02b0db99a5edfc03145e51cd5808afb2859c"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/fresh-kernel/original-v1-build.log",
+      "bytes": 1879,
+      "sha256": "fb9cf6a6b7cc3c23af08f8de32cc7c0d6cecc40d0e3b4a277347706f812abd64",
+      "git_blob": "55e4851be5c10e37e83808d5f8a12eec5368c9cc"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/fresh-kernel/receipt.json",
+      "bytes": 5933,
+      "sha256": "fbbca46cd9c355b1e0d2a712bfea0602336e211809ecfaf59d7fa943e83121cd",
+      "git_blob": "b1bee042fa10782c834ae2b14c671e392e140730"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/fresh-kernel/version.log",
+      "bytes": 78,
+      "sha256": "5362a246ce2545424db10a77de8fd4694f4cf8b0170dfd43fa727acf7f7f259b",
+      "git_blob": "507e58dc270fb40a999f3a0a9f2245cc58f7fa19"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/historical-local-controls/4-transceivers/C_audit.json",
+      "bytes": 1411,
+      "sha256": "57b3492cf3fc2d34e90c8116dfdb93c05d8b86fec62ff73da889e913ec2b7077",
+      "git_blob": "6a640e92ed609f4b4448efba301b1fbe09fa5cf0"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/historical-local-controls/4-transceivers/C_custody_and_peer_records.json",
+      "bytes": 374888,
+      "sha256": "e4933a6933943b4bd4ce70ea2295023a549b3638f6acf461b69476fd00bed8b0",
+      "git_blob": "9c70bd077d54944e44dca0e15d29e281ff071952"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/historical-local-controls/4-transceivers/controls.json",
+      "bytes": 407,
+      "sha256": "adfa43d336352927c749799bf8a7ea968e1d8e52d6bfec022baa9d9c8e78c681",
+      "git_blob": "af0ebe744091e04d898cd8e6d52b1488aadbb68b"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/historical-local-controls/4-transceivers/reordering_fixture_SIMULATED.json",
+      "bytes": 646,
+      "sha256": "51322d5116ea46bbd67d99b5af78c5d3693a3405a17f1d3cc6efbbed4e59383b",
+      "git_blob": "079989fadc6ac7b3a2af22968cba0d11573d9611"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/historical-local-controls/4-transceivers/summary.json",
+      "bytes": 1473,
+      "sha256": "39a97b59128dd7d6883743018c3dd5b7c732acda4a4bea418e2cbe667f739757",
+      "git_blob": "4a71342a359f4330bb99b56e0448aaa8b465fb55"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/historical-local-controls/8-transceivers/C_audit.json",
+      "bytes": 2335,
+      "sha256": "9dd797e95fe7d8b687c292a691b61fc9e5342f3981f351e1ae75dc80c1c30a30",
+      "git_blob": "0aab243250c3c4ecfbdc26effce0f6317b904897"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/historical-local-controls/8-transceivers/C_custody_and_peer_records.json",
+      "bytes": 680645,
+      "sha256": "45fe1be5d39de97f008dbff687106e2f22509ffea887d38b057893ef15307b01",
+      "git_blob": "1eb1d067d4a0edb31d4526b9fece01a8bcce92da"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/historical-local-controls/8-transceivers/controls.json",
+      "bytes": 407,
+      "sha256": "adfa43d336352927c749799bf8a7ea968e1d8e52d6bfec022baa9d9c8e78c681",
+      "git_blob": "af0ebe744091e04d898cd8e6d52b1488aadbb68b"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/historical-local-controls/8-transceivers/reordering_fixture_SIMULATED.json",
+      "bytes": 1133,
+      "sha256": "5d1e71df98a4a6b6cc431c0b7f8003da2adb7508719fb0298674bed31b3f450a",
+      "git_blob": "d775cc0bf37ceef183727ea020833d501557c4ee"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/historical-local-controls/8-transceivers/summary.json",
+      "bytes": 2397,
+      "sha256": "63b0e95769527a9c091160cad8d22c07c178cb37cfd4539edbe52b0b05d9b139",
+      "git_blob": "5886be849a67674364f26ee51d74979684af9162"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/historical-local-controls/runtime-provenance.json",
+      "bytes": 972,
+      "sha256": "584c8a4e081393a90e9cf20ee439d9e806292a712d827810bf9afc886e8998ba",
+      "git_blob": "c3090fa7221b1dc2aa18b2faaf3c679e4f314b3a"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/historical-local-controls/three-observer/A_early_custodied_by_C.json",
+      "bytes": 14668,
+      "sha256": "640d6501613e81d6197782c847237c593806eccdd071bc39d13b94cf2f12db1d",
+      "git_blob": "934b8ba5b370551845c8220caa4bd35384334bb4"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/historical-local-controls/three-observer/A_final.json",
+      "bytes": 48367,
+      "sha256": "0810d369733f879bea2c4ab4400b6e29de7e51f5e30b5b9d1ffd47d90b496c10",
+      "git_blob": "e9bc483d4d934a2efc84111fd282015348be7308"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/historical-local-controls/three-observer/B_final.json",
+      "bytes": 14643,
+      "sha256": "fb3bc244d84588058311df8bcee51457f7b45bafbb7ea2e5d51250fce90a09f0",
+      "git_blob": "c8e5152edd7bdaa82da9048b747edaff290df8c8"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/historical-local-controls/three-observer/C_audit.json",
+      "bytes": 419,
+      "sha256": "d472c402607ebe0c52e2e503398364976a0607b2ff4d08c071194c027ec5f215",
+      "git_blob": "1c2dd62258681d9f2c375f0b5d50a19cf6ef61e2"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/historical-local-controls/three-observer/C_receipt.json",
+      "bytes": 128,
+      "sha256": "6f9cdcec753720d21767596f47f33a506d47503f96f4881957b0245e16a771ee",
+      "git_blob": "f99f92667180ded182c6a958ab772ecbe039527d"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/historical-local-controls/three-observer/assumed_backchannel_fixture.json",
+      "bytes": 433,
+      "sha256": "a0d12a2d78d69ff2334aa07c281a3b16ff208e9de678a993b80e7448729339c3",
+      "git_blob": "ea665b05e7d77420cff7148083cf80fed0ccd418"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/historical-local-controls/three-observer/controls.json",
+      "bytes": 796,
+      "sha256": "d53f4256dc9030c32102fac5991bdab526c88c2cb074590fa55c8e12728bd455",
+      "git_blob": "b73dc5a9c587bc7a8852efebbcb14194a14c0874"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/historical-local-controls/three-observer/summary.json",
+      "bytes": 517,
+      "sha256": "82152a8560ffbed4895ec2982f2dae57ef7edd9f3e6c4b9d3f002f8fc99cf5ec",
+      "git_blob": "8e8e84322d9621ca2770db20faa8389162fd6eac"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/historical-local-controls/verification.json",
+      "bytes": 1234,
+      "sha256": "3bce20a4f10246fdcf0883f3f2fc6ef71bac744c6dfb72fedeeb1f2e1c4827e5",
+      "git_blob": "cff76cab40a2c2bf3e33229f9aa6b3c1f220838a"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/local-checkout-recovery.json",
+      "bytes": 784,
+      "sha256": "0eb29e117d0506b81971ccc4c3091992a09e14ddd88aacbfca4c2df854d29728",
+      "git_blob": "7716ec0be1eb436d4663aaacae023aa8f463b9c2"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/local-reanalysis.json",
+      "bytes": 11328,
+      "sha256": "737df8bb8717d38e51afd022b3627b017f43a712f0e2cc9db191d248ebce61cb",
+      "git_blob": "0ee413eb83b8a2d761820878e2e48a9c89233e23"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/native-first-successor.json",
+      "bytes": 3831,
+      "sha256": "4fc59c4530422de1b8f56deb5d44d6da7d1b488b231a15b2d6b97a2db451c004",
+      "git_blob": "4492b2b5186f7767b181aa0cdb2264c80db89b8e"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/prewrite-repository-delivery-observation.json",
+      "bytes": 19591,
+      "sha256": "3bf055edf6fd5e76e7f2f225c526b0a4edaf0e56f2a3a26b54140dffcaa81b9e",
+      "git_blob": "2d59cb397096234ba1c6c82770b694965a127120"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/publication-source-gate.json",
+      "bytes": 405,
+      "sha256": "7643ac24a0dbc9c736448464ff75cf66144bdbe01f5fc09e169955c1696d4050",
+      "git_blob": "4f390ce0c79f2605794a1476d9149f9f26e271f8"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/published-originals/21731492--SCIENTIFIC_ADDENDUM_DE.md",
+      "bytes": 11010,
+      "sha256": "5173e4231822294b2ded88653f7e73bd2626ae3e3cade6f7f92eda20b28bdecc",
+      "git_blob": "ea2f53601ec64300900c18fc4320e45d055c883b"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/published-originals/21731492.json",
+      "bytes": 14978,
+      "sha256": "3e389ec58d92d26330f0bfa1e18c1d4bfe8acdd179a0b8b9bed0166b4c975319",
+      "git_blob": "c545f527545f7ed24867903cc9b92c5d0313a73e"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/published-originals/21888130--DAS_UNIVERSUM_ALS_ROUND_TRIP_DE.md",
+      "bytes": 18120,
+      "sha256": "dc58e50161b22826152dd251db836f06f85235a470e0253aeefa1b0a380787fe",
+      "git_blob": "e1ed265239aa5e1436055279069c7e21525a13fe"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/published-originals/21888130--ROUND_TRIP_PROMOTED_FORMAL_RESULTS_V1.md",
+      "bytes": 5150,
+      "sha256": "e5fd9c53a0bf6c84471d9b26d0c3c06019977aa6b2367913006fa9560a3c948f",
+      "git_blob": "cc13b5530051ea7b7fe0eceae5558cd93f44611d"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/published-originals/21888130.json",
+      "bytes": 20647,
+      "sha256": "de203b05d4cc7590c6c606c4b6b72866f871b108ebce88035baf3245f17778ca",
+      "git_blob": "ac61391edf5a836b6ccbf60278f4ed166f3bd8bc"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/published-originals/21947141--CLAIM_MATRIX_V2.json",
+      "bytes": 6373,
+      "sha256": "01f5c79357b950cdef27487b49c5fdc1dec8a887ddf5361d7c6a02d9d812d9c6",
+      "git_blob": "9be1f2009988f3135b2498b365194b5e8065ebd6"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/published-originals/21947141--QIKVRT_RETROCAUSALITY_WITNESS.json",
+      "bytes": 4185,
+      "sha256": "817b0bbd38ff2d5e811c7ba4c04dff7e6b9310fbb3016309c451317d1de5b471",
+      "git_blob": "040b1915f2b6a4ba12a54654956aa8158ffde057"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/published-originals/21947141--verify_observer_relative_retrocausality.py",
+      "bytes": 8409,
+      "sha256": "5546b3d5f5367596438ecbd6c2b00f89dbb21d84e66b54784c45d0b52436388c",
+      "git_blob": "bd371046efc8a088d031065b1034661053c1b2d4"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/published-originals/21947141.json",
+      "bytes": 12849,
+      "sha256": "576180fd72b5874545dbc9b6780cee26085ead7b4045b41fb9c36f059d75f749",
+      "git_blob": "80fa948d9879fbd9b86ee6b6e16e973698bfd6f1"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/published-originals/22216916--CLAIM_MATRIX_V2.json",
+      "bytes": 3911,
+      "sha256": "21e622ab38227d023bc629c937dc728516e647003485ae8af58d77d1538f4827",
+      "git_blob": "a5c82fea957e4acbfd93aaa49f3fd570b58f4cf1"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/published-originals/22216916.json",
+      "bytes": 7087,
+      "sha256": "25c1f51b0117fb4c1b7c85686727ec20477103caa435ef3700ead9b518fa6c1f",
+      "git_blob": "55078a890bcc82214cc76a23b462b826e61f47a7"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/release-automation-successor.log",
+      "bytes": 30916,
+      "sha256": "2e81ba3665fed7ff24c60d0c434caaf904b990771f8eaeaa233e6dcfe726799b",
+      "git_blob": "241b6af539f297368eadadb19837620f100dd33f"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/simulated-example-analysis.json",
+      "bytes": 1261,
+      "sha256": "96faa858e158d055752594b2c1cecd9a1facbbf5504546b689f79663529acbc0",
+      "git_blob": "2e4deca2a9003c7cf9f914f72c6eac5cc6d534e0"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/source-readback.json",
+      "bytes": 4366,
+      "sha256": "ed2c82bfb8e9edce11f1b9e4943427db3fbd6dbfece615508b6bf967c191ea9a",
+      "git_blob": "172b7f1198f69dd58b87856934b55b872d7796dc"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/evidence/source-visibility.json",
+      "bytes": 936,
+      "sha256": "53c0afa1b05a7e886dcc8608480f4da34ef2ec1fd800682fb900de29540da70c",
+      "git_blob": "6947a53d3cf5d3328167a240c5a02d4ac7e0b07f"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/local-control/audit_three_observer.py",
+      "bytes": 2875,
+      "sha256": "82e26b41a346b50276512246e0eaedcf0a5cd494d5cc7bacac773d1ca2fc7419",
+      "git_blob": "2b27377e6744be83d8dcd9ed7aad64c19795b272"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/local-control/evidence/4-transceivers/C_audit.json",
+      "bytes": 1413,
+      "sha256": "7bf8142b10108925b6a5c07198d8aec3345ae7de08a574d18406cec4535db47f",
+      "git_blob": "1176003ca42cbcb6f10e8f56198362d933714627"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/local-control/evidence/4-transceivers/C_custody_and_peer_records.json",
+      "bytes": 374888,
+      "sha256": "6ac2d17eb8986c69f37348c618bc2e420176070d6a777f16db51d0d97e0d795c",
+      "git_blob": "c3d9f61a8bcd18d9bf08b9d8f3b4f13a844fa1af"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/local-control/evidence/4-transceivers/controls.json",
+      "bytes": 407,
+      "sha256": "adfa43d336352927c749799bf8a7ea968e1d8e52d6bfec022baa9d9c8e78c681",
+      "git_blob": "af0ebe744091e04d898cd8e6d52b1488aadbb68b"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/local-control/evidence/4-transceivers/reordering_fixture_SIMULATED.json",
+      "bytes": 646,
+      "sha256": "51322d5116ea46bbd67d99b5af78c5d3693a3405a17f1d3cc6efbbed4e59383b",
+      "git_blob": "079989fadc6ac7b3a2af22968cba0d11573d9611"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/local-control/evidence/4-transceivers/summary.json",
+      "bytes": 1475,
+      "sha256": "b8e0de52f3d0fbdb1087e719e11270159a735da555b16240037d9fb556c2431c",
+      "git_blob": "958f65dc4b092f1da422570564138ede45f36983"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/local-control/evidence/8-transceivers/C_audit.json",
+      "bytes": 2334,
+      "sha256": "3af14f94e68047124d8b4abf5edb6a0e10221eb7d60d8f9a4c8dbd91d8b8621a",
+      "git_blob": "a39abe5f38278d80587e278aea2b190f1c7aef3d"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/local-control/evidence/8-transceivers/C_custody_and_peer_records.json",
+      "bytes": 680645,
+      "sha256": "c9716f83f972055b717368473c6fd6edc5d99ee5dc3de63b1df44bd18ef30c17",
+      "git_blob": "6a1696e73b187f6eab0aed4fea001dcdfbd65d76"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/local-control/evidence/8-transceivers/controls.json",
+      "bytes": 407,
+      "sha256": "adfa43d336352927c749799bf8a7ea968e1d8e52d6bfec022baa9d9c8e78c681",
+      "git_blob": "af0ebe744091e04d898cd8e6d52b1488aadbb68b"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/local-control/evidence/8-transceivers/reordering_fixture_SIMULATED.json",
+      "bytes": 1133,
+      "sha256": "5d1e71df98a4a6b6cc431c0b7f8003da2adb7508719fb0298674bed31b3f450a",
+      "git_blob": "d775cc0bf37ceef183727ea020833d501557c4ee"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/local-control/evidence/8-transceivers/summary.json",
+      "bytes": 2396,
+      "sha256": "d073898772959655ffd19012ebb7b160081be3e981a87ea8a37a401faff14051",
+      "git_blob": "73afd8376d8cdad0d0d9c4cbc754d45a63f208c4"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/local-control/evidence/three-observer/A_early_custodied_by_C.json",
+      "bytes": 14668,
+      "sha256": "ffac3163b5cf412dd6e5119e3dd53b4c7c3642331a7ec3d261e2f96dd46f93f8",
+      "git_blob": "6ecdc9356356907fe64fd4c76f4b182039790391"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/local-control/evidence/three-observer/A_final.json",
+      "bytes": 48367,
+      "sha256": "1da1fd0afe0c7d2d87bc5359ae805aa8328cf0fb5533d92268278c36f90bc0df",
+      "git_blob": "4ea75ab188d059fe7cb5d7cf6f1dee616dbedfc7"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/local-control/evidence/three-observer/B_final.json",
+      "bytes": 14643,
+      "sha256": "adf09c9fa6a10e54ef5b01b9c5e8bdfa205f3d99b5ed1cb9373c516f61bd4df1",
+      "git_blob": "2686ed689028cdbdce6e4e3769be9984b1a5fdd6"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/local-control/evidence/three-observer/C_audit.json",
+      "bytes": 418,
+      "sha256": "fcba4db86e8a990d06597b90da906882e5b23bc7ee099e970b342de815f737dd",
+      "git_blob": "097777d54f3b7717bf9cbaca661374be72bab613"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/local-control/evidence/three-observer/C_receipt.json",
+      "bytes": 128,
+      "sha256": "cdd82360eacb379e8019794330c26a7900559340bac19a91ff441b3759fe3b1a",
+      "git_blob": "d86b32d64f05ac25f10e37d88c6e9e59d1abcf06"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/local-control/evidence/three-observer/assumed_backchannel_fixture.json",
+      "bytes": 433,
+      "sha256": "a0d12a2d78d69ff2334aa07c281a3b16ff208e9de678a993b80e7448729339c3",
+      "git_blob": "ea665b05e7d77420cff7148083cf80fed0ccd418"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/local-control/evidence/three-observer/controls.json",
+      "bytes": 796,
+      "sha256": "d53f4256dc9030c32102fac5991bdab526c88c2cb074590fa55c8e12728bd455",
+      "git_blob": "b73dc5a9c587bc7a8852efebbcb14194a14c0874"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/local-control/evidence/three-observer/summary.json",
+      "bytes": 516,
+      "sha256": "e572f2c161041c8b81b81fba746eaba237af0906fd799cc3635befdfc91f30b2",
+      "git_blob": "ee0861226a0b559079bbdcb3ad643a43ca729042"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/local-control/run_multi_observer.py",
+      "bytes": 9491,
+      "sha256": "37652caf683cb9da1755423cf171f2454ed445f86aba9cdd8be5d8b6d9b79f7c",
+      "git_blob": "e17acf38b7ebfd0f7062a3567d655755ebcf0537"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/local-control/run_three_observer.py",
+      "bytes": 7386,
+      "sha256": "efdb7965987e025d78357921374d490f32db778d8f07bab635ddc4854a2e7209",
+      "git_blob": "65b18c186a9b52491536ebc83997e46c86c6beb1"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/negative/FalseBacksignaling.lean",
+      "bytes": 255,
+      "sha256": "e8826ed7d9cffddb77e6b669291baea6033a2caee812fa8a6f01ab7dd06a23f1",
+      "git_blob": "99f2e6450d6c3609ce826078526dbf0f074798b8"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/negative/FalseForwardReturn.lean",
+      "bytes": 256,
+      "sha256": "a4cb52dd3a081af9fe933f593cc945c30a9a48cef67b5814b1bce0f6c74792b9",
+      "git_blob": "39e6542fecc243ee44787198d120f18b32cae3cd"
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/negative/FalseReceptionOrder.lean",
+      "bytes": 233,
+      "sha256": "ac550b9b8f1a3040171d1dc17492d3e38927ca7710e044aa67791e4ca6828ea5",
+      "git_blob": "e55df0c345e91534e4c146a6eef5e0a87a814b50"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Retrocausality/BacksignalingBoundary.lean",
+      "bytes": 2526,
+      "sha256": "7544717fad739fe0393794a789d666ddc2d337c8dc3bd18cb682bd2371914659",
+      "git_blob": "7245c8c071abae3ef126b25fe3088bcbc985bb5c"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Retrocausality/ObserverRelative.lean",
+      "bytes": 2384,
+      "sha256": "7e52cc78b019663c95bfc240b725c9d5318466384e6d4afe63798b4290c8f863",
+      "git_blob": "7d6dbb825cdf5144aa744fd7993f191722903105"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Retrocausality/ThreeObserverProtocol.lean",
+      "bytes": 3125,
+      "sha256": "734c9f31bd1e47b096ff997b35610d720ba376469f1845bde54654c1ec72aca1",
+      "git_blob": "3947af861a64565635ea7e14f455405288435ea9"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization.lean",
+      "bytes": 3736,
+      "sha256": "c8ef9a53c23ecee7a68da1ee3a78ebc132a94a6cacdbd1ec4b0d760a590c7d56",
+      "git_blob": "50109305d4248e407d23c343e48807fd68258686"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/scripts/package_release.py",
+      "bytes": 13583,
+      "sha256": "573cdf0ce25c4f985f04e930157f1d15b14d1f415ef422f563ad15ba8fb8865f",
+      "git_blob": "1f0a96de42479f7ec2ad7041d77462c79853c5df"
+    },
+    {
+      "path": "state/work_units/QIKVRT_RETROCAUSALITY_EXPERIMENT_20261015_V1.json",
+      "bytes": 4179,
+      "sha256": "fe7132eedae347c7b374e233a5a44f7c134289f87e2ce24996443de4c6b9504c",
+      "git_blob": "80ea3a20711bb0049f765f8d4c98380465a8b5e8"
+    },
+    {
+      "path": "tests/test_retrocausality_experiment.py",
+      "bytes": 6958,
+      "sha256": "3a560baa9e7bf2454993d79902fdf5ec754dc633fbc9fbfc9e3365d96aecb4d9",
+      "git_blob": "761ced9d1352728e7b778f7132983120e773cc93"
+    }
+  ],
+  "self_excluded": true,
+  "physical_confirmation": false,
+  "integration_repair_parent": "9c3c6b131698a6a233bfea75dc8f23f406969a97"
+}

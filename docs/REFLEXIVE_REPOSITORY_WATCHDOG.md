@@ -81,7 +81,15 @@ owner authorization, repeating observer, or missing active runner does not
 establish recovery or productive delivery. No new controller, credential,
 permission expansion or automatic productive-writer cancellation is involved.
 
-The watchdog observes the workflows that create and verify repository state, while its own executions are classified as observers rather than productive writers. Observer executions use a coalescing concurrency group so newer observations replace obsolete observations without consuming the repository write lease. A scheduled observation prevents unchanged heads from becoming permanently invisible merely because no new event occurs.
+The watchdog observes the workflows that create and verify repository state,
+while its own executions are classified as observers rather than productive
+writers. Main's 26 October delivery repair uses completion notifications and
+`cancel-in-progress: false` so a new lifecycle notification does not cancel
+the active observation. The existing five-minute schedule remains, including
+readback of unfinished runs and unchanged heads. The analyzer still evaluates
+every returned run and its jobs; no liveness, missing-evidence or stale-progress
+criterion is removed. This source configuration change does not establish a
+completed public-host observation or global deadlock freedom.
 
 ## Database comparison boundary
 
@@ -90,3 +98,30 @@ Conventional relational database systems already provide transaction deadlock ha
 ## Nonclaims
 
 A successful watchdog run is observation evidence, not gate success. The mechanism does not prove global deadlock freedom, repository completion, Authority–Mirror equality, empirical confirmation, scientific consensus, `PASS`, `FINAL_PASS`, or `EFFECT_ACK_DONE`.
+
+## Canonical roles and independent native readback
+
+The existing `policy/CANONICAL_UPSTREAM_REMOTE_V1.json` is the sole normative
+repository-role source. The executor/liveness contract is a checked projection.
+The shared resolver reused from the authority-repair work rejects missing,
+malformed, overlapping or contradictory Authority/Mirror assignments. A Mirror
+receipt cannot establish Authority continuity even when its commit matches.
+Historical receipts retain their original bytes and repository identity.
+
+The native wrapper uses the mandatory job token and bounded GitHub REST GETs.
+It binds Authority Main to its exact commit and tree, validates the canonical
+role policy, governance policy and CODEOWNERS bytes by Git blob identity, then
+reobserves Main. HTTP 200 without the expected active Main roles remains
+`AUTHORITY_ROLE_BINDING_NOT_ACTIVE`. HTTP 403/404 has no Mirror, anonymous,
+browser or alternate-token fallback. The latest completed observation supplies
+the prior denial receipt, including failed observations. An unchanged causal
+binding suppresses a repeated denied request. Unrelated commits, lifecycle
+progress and timestamps do not admit a retry. Changes to the role policy,
+Authority binding or reviewed token/transport carrier require one new bounded
+observation; external permission repair must be independently evidenced before
+clearing a denial receipt.
+
+A successful role readback still sets `native_activation_verified=false`:
+executed native candidate gates, trusted-Main adoption, native enforcement and
+independent current-head Code Owner approval remain separately required. No
+predecessor test or availability observation substitutes for those effects.
