@@ -114,6 +114,64 @@ class ProductionTests(unittest.TestCase):
             if secret != "a" * 64: self.assertNotIn(secret, raw)
         self.assertEqual(self.auth.store.read()["github_environment_handoff"]["state"], "COMPLETE")
 
+    def test_readback_without_local_material_observes_remote_state_first(self):
+        self.api.variables = {n: "REMOTE_FIXTURE_ONLY" for n in a.PRODUCTION_VARIABLES}
+        self.api.secrets = {n: {"name": n} for n in a.PRODUCTION_SECRETS}
+        def unavailable(_environment):
+            self.assertEqual(self.api.calls[-1][1], self.api.target + "/secrets/" + a.PRODUCTION_SECRETS[-1])
+            raise a.ProductionBlock("ORIGINAL_FIVE_PROTECTED_BINDINGS_REQUIRED")
+        with mock.patch.object(a, "production_material", side_effect=unavailable):
+            result = self.run_operation(write=False, request={"schema": a.PRODUCTION_SCHEMA, "request_id": "metadata-only"})
+        self.assertEqual(result["state"], "READBACK_ONLY")
+        self.assertFalse(result["protected_material_available"])
+        self.assertEqual(result["protected_material_reason"], "ORIGINAL_FIVE_PROTECTED_BINDINGS_REQUIRED")
+        self.assertIsNone(result["binding_sha256"])
+        self.assertTrue(all(v["present"] for v in result["bindings"].values()))
+        for name in a.PRODUCTION_VARIABLES:
+            self.assertIsNone(result["bindings"][name]["value_matches"])
+        self.assertNotIn("REMOTE_FIXTURE_ONLY", json.dumps(result))
+        self.assertTrue(all(method == "GET" for method, _, _ in self.api.calls))
+        self.assertEqual(self.auth.store.read(), {})
+        self.assertFalse(result["secret_values_verified"])
+        self.assertFalse(result["job_credential_delivery_verified"])
+        self.assertFalse(result["host_identity_verified"])
+        self.assertFalse(result["effect_ack_done"])
+
+    def test_unresolved_handoff_readback_preserves_journal_without_material(self):
+        journal = {"auth_binding": self.auth.binding, "state": "UNKNOWN_READBACK_REQUIRED", "steps": [{"name": a.PRODUCTION_SECRETS[0], "state": "UNKNOWN_READBACK_REQUIRED"}]}
+        self.auth.store.write({"github_environment_handoff": journal})
+        before = self.auth.store.read()
+        with mock.patch.object(a, "production_material", side_effect=a.ProductionBlock("ORIGINAL_HOST_OR_MTLS_MATERIAL_INVALID")):
+            result = self.run_operation(write=False)
+        self.assertEqual(result["prior_attempt_state"], "UNKNOWN_READBACK_REQUIRED")
+        self.assertFalse(result["protected_material_available"])
+        self.assertEqual(self.auth.store.read(), before)
+        self.assertEqual(self.api.mutations, 0)
+
+    def test_readback_with_real_missing_material_validation_needs_no_bindings(self):
+        self.patches[0].stop()  # Exercise the original material validator, not its double.
+        result = self.run_operation(write=False, request={"schema": a.PRODUCTION_SCHEMA, "request_id": "real-validator-empty-input"})
+        self.assertFalse(result["protected_material_available"])
+        self.assertEqual(result["protected_material_reason"], "ORIGINAL_FIVE_PROTECTED_BINDINGS_REQUIRED")
+        self.assertEqual(result["next_required_operation"], "CONNECT_ORIGINAL_PROTECTED_MATERIAL_SOURCE")
+        self.assertEqual(self.api.mutations, 0)
+
+    def test_write_without_material_still_stops_before_provider_access(self):
+        with mock.patch.object(a, "production_material", side_effect=a.ProductionBlock("ORIGINAL_FIVE_PROTECTED_BINDINGS_REQUIRED")):
+            with self.assertRaisesRegex(a.ProductionBlock, "FIVE_PROTECTED_BINDINGS"):
+                self.run_operation()
+        self.assertEqual(self.api.calls, [])
+
+    def test_failed_optional_material_checker_keeps_remote_readback_unknown(self):
+        with mock.patch.object(a, "production_material", side_effect=OSError("PRIVATE_ERROR_MUST_NOT_ESCAPE")):
+            result = self.run_operation(write=False, request={"schema": a.PRODUCTION_SCHEMA, "request_id": "checker-unavailable"})
+        self.assertFalse(result["protected_material_available"])
+        self.assertEqual(result["protected_material_reason"], "ORIGINAL_PROTECTED_MATERIAL_VALIDATION_UNAVAILABLE")
+        self.assertIsNone(result["binding_sha256"])
+        self.assertNotIn("PRIVATE_ERROR", json.dumps(result))
+        self.assertTrue(all(method == "GET" for method, _, _ in self.api.calls))
+        self.assertFalse(result["effect_ack_done"])
+
     def test_matching_variables_are_not_rewritten_and_mismatches_use_patch(self):
         self.api.variables = dict((n, self.values[n]) for n in a.PRODUCTION_VARIABLES)
         self.api.variables[a.PRODUCTION_VARIABLES[0]] = "OLD_FIXTURE"
