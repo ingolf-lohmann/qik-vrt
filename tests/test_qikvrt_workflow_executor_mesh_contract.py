@@ -58,12 +58,14 @@ class ContinuationGraphLearningTests(unittest.TestCase):
         jobs[0]["completed_at"] = "2026-10-29T00:02:00Z"
         adapted = continuation_graph(run, jobs)
         self.assertEqual([j["job_id"] for j in adapted["sibling_priority"]], [1, 2])
-        self.assertEqual(initial["nodes"], adapted["nodes"])
+        self.assertEqual([(n["id"], n["requires"]) for n in initial["nodes"]],
+                         [(n["id"], n["requires"]) for n in adapted["nodes"]])
+        self.assertNotEqual(initial["nodes"][2]["independent_children"], adapted["nodes"][2]["independent_children"])
         self.assertTrue(adapted["nodes"][3]["never_prune"])
         self.assertFalse(adapted["ci_verified"])
         failed = continuation_graph({**run, "conclusion": "failure"}, jobs)
         self.assertFalse(failed["success_learning"]); self.assertEqual(failed["sibling_priority"], [])
-        self.assertEqual(failed["nodes"], initial["nodes"])
+        self.assertEqual({n["id"] for n in failed["nodes"]}, {n["id"] for n in initial["nodes"]})
         for changed in ({**run, "head_sha": "wrong"}, {**run, "path": "untrusted.yml"},
                         {**run, "head_repository": {"full_name": "foreign/repo"}}):
             with self.assertRaises(ExecutorBlock): continuation_graph(changed, jobs)

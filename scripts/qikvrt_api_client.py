@@ -767,7 +767,7 @@ def continuation_result(args, token, *, write=False):
     it never removes a gate or the fallback. The original durable journal owns
     the single POST and survives an unknown outcome or changed request ID.
     """
-    from tools.qikvrt_workflow_executor import continuation_graph, load_repository_roles
+    from tools.qikvrt_workflow_executor import continuation_graph, continuation_frontier, load_repository_roles
     from tools.qikvrt_required_review_gate import (
         evaluate_required_review, resolve_required_code_owner,
     )
@@ -828,6 +828,7 @@ def continuation_result(args, token, *, write=False):
     review = evaluate_required_review(pr, [], reviews,
         required_code_owner=resolve_required_code_owner(RULESET_REPOSITORY, pr_author=pr["user"]["login"]))
     result["review_gate"] = review["gate_state"]
+    result["graph"] = continuation_frontier(graph, pr, review)
     result["ready_verified"] = pr["draft"] is False
     if not write or result["ready_verified"]:
         result["state"] = "READY_VERIFIED" if result["ready_verified"] else "PLAN_ONLY"
@@ -866,7 +867,7 @@ def continuation_result(args, token, *, write=False):
                             previous=load_previous_work(root))
                         result["original_attempt_recovered"] = True
         return result
-    if not graph["ci_verified"] or review["gate_state"] != "success":
+    if "graphql-fallback" not in result["graph"]["frontier"]:
         raise ValueError("CONTINUATION_GREEN_CI_AND_OWNER_REVIEW_REQUIRED")
     from tools.ai_handoff import github_graphql_fallback_allowed
     policy = unique_json((ROOT / "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json").read_bytes())
@@ -895,6 +896,7 @@ def continuation_result(args, token, *, write=False):
         if live["draft"] is not False:
             raise ValueError("CONTINUATION_READY_READBACK_FAILED")
         result["ready_verified"] = True
+        result["graph"] = continuation_frontier(graph, live, review)
         return 20, {"schema": "qikvrt-pr-ready-readback/v1", "ready_readback_sha256": digest(live),
                     "handler_result": {"effect_state": "EFFECT_ACK_DONE", "scope": "PR_READY_ONLY"}}
 

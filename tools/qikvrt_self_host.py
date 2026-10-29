@@ -64,10 +64,12 @@ REST_BOOTSTRAP_FILES = (
     'src/qikvrt_mcp_adapter.py', 'tools/ai_handoff.py',
     'tools/qikvrt_authority_credentials.py', 'tools/qikvrt_integrity.py',
     'tools/qikvrt_required_review_gate.py', 'tools/qikvrt_subprocess.py',
-    'tools/qikvrt_workflow_executor.py', 'policy/CANONICAL_UPSTREAM_REMOTE_V1.json',
+    'tools/qikvrt_workflow_executor.py', 'tools/qikvrt_self_host_container.py',
+    'policy/CANONICAL_UPSTREAM_REMOTE_V1.json',
     'policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json',
     'policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json',
     'state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json',
+    'state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json',
     'state/authorization/delegations/OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_V1.json',
 )
 PUBLICATION_BOOTSTRAP_FILES = (

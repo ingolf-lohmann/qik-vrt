@@ -1498,6 +1498,8 @@ def continuation_graph(run: Mapping[str, Any], jobs: Sequence[Mapping[str, Any]]
                    "Linux S1 native terminal production and smoke"}
     sibling_priority = ([j for j in timings if j["name"] in parallel_ci]
                         if run["path"] == AMO_CI_WORKFLOW else [])
+    ordered_children = [j["name"] for j in sibling_priority]
+    ordered_children += sorted(parallel_ci - set(ordered_children))
     required = {"test", "offline_browser (chromium)", "offline_browser (webkit)",
                 "Linux S1 native terminal production and smoke"}
     accepted = {j.get("name") for j in jobs if j.get("conclusion") == "success"}
@@ -1522,13 +1524,33 @@ def continuation_graph(run: Mapping[str, Any], jobs: Sequence[Mapping[str, Any]]
             "nodes": [{"id": "source", "requires": []},
                       {"id": "review", "requires": ["source"]},
                       {"id": "ci", "requires": ["source"], "mandatory_root": "test",
-                       "independent_children": sorted(parallel_ci)},
+                       "independent_children": ordered_children},
                       {"id": "graphql-fallback", "requires": ["review", "ci"],
                        "operation": "markPullRequestReadyForReview", "never_prune": True},
                       {"id": "rest-merge", "requires": ["graphql-fallback"],
                        "fresh_expected_head_admission_required": True}],
             "learning_scope": "ORDER_INDEPENDENT_CI_SIBLINGS_ONLY; NEVER_SKIP_GATES",
             "graph_source_mutation": False, "effect_ack_done": False}
+
+
+def continuation_frontier(graph: Mapping[str, Any], pr: Mapping[str, Any],
+                          review: Mapping[str, Any]) -> dict[str, Any]:
+    """Advance the retained graph from fresh source/review/CI/readiness evidence.
+
+    A merge frontier requests the existing fresh merge admission; it never
+    grants or executes a merge. Unknown or failed gates keep their branches.
+    """
+    value = json.loads(json.dumps(graph))
+    admitted = graph.get("ci_verified") is True and review.get("gate_state") == "success"
+    states = {"source": "VERIFIED", "review": "VERIFIED" if review.get("gate_state") == "success" else "OPEN",
+              "ci": "VERIFIED" if graph.get("ci_verified") else "OPEN",
+              "graphql-fallback": "VERIFIED" if pr.get("draft") is False else "READY" if admitted else "WAITING",
+              "rest-merge": "RECHECK_REQUIRED" if admitted and pr.get("draft") is False else "WAITING"}
+    for node in value["nodes"]:
+        node["state"] = states[node["id"]]
+    value["frontier"] = [n["id"] for n in value["nodes"] if n["state"] in {"READY", "RECHECK_REQUIRED"}]
+    value["merge_admission_inferred"] = False
+    return value
 
 
 def github_completion_feedback(root: Path = ROOT) -> dict[str, Any]:

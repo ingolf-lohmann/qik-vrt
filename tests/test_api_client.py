@@ -108,6 +108,7 @@ class ContinuationRESTTests(unittest.TestCase):
     def test_plan_is_read_only_and_keeps_all_gates_and_fallback(self):
         result = self.invoke(False)
         self.assertFalse(result["ready_verified"]); self.assertTrue(result["graph"]["ci_verified"])
+        self.assertEqual(result["graph"]["frontier"], ["graphql-fallback"])
         self.assertTrue(next(n for n in result["graph"]["nodes"] if n["id"] == "graphql-fallback")["never_prune"])
         self.assertTrue(all(method == "GET" for method, _ in self.calls))
         self.assertEqual(list(Path(self.temp.name).iterdir()), [])
@@ -146,6 +147,8 @@ class ContinuationRESTTests(unittest.TestCase):
     def test_one_fixed_mutation_requires_independent_rest_readback(self):
         result = self.invoke()
         self.assertTrue(result["ready_verified"]); self.assertEqual(result["dispatch_count"], 1)
+        self.assertEqual(result["graph"]["frontier"], ["rest-merge"])
+        self.assertFalse(result["graph"]["merge_admission_inferred"])
         self.assertFalse(result["merge_verified"]); self.assertFalse(result["effect_ack_done"])
         post = next(i for i, (m, _) in enumerate(self.calls) if m == "POST")
         self.assertIn(("GET", "https://api.github.com/repos/" + client.RULESET_REPOSITORY + "/pulls/631"), self.calls[post + 1:])

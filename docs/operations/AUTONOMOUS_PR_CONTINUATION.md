@@ -509,6 +509,14 @@ unresolved effects fenced across request IDs and source changes. Native service
 activation and end-to-end acceptance require their own readback; source tests
 do not establish a deployed endpoint or guaranteed progress.
 
+Fresh evidence advances the retained graph's execution frontier: verified
+source/review/CI branches remain recorded, Draft selects the GraphQL fallback,
+and independently verified readiness selects a fresh REST merge recheck. That
+frontier drives the fixed readiness controller. Successful timings reorder only
+the explicitly independent children after the mandatory test root. The sealed
+REST package carries both the original Owner decision and artifact transport;
+a cold `python -S` export test checks this closure without checkout or credentials.
+
 Provider contract: https://docs.github.com/en/graphql/reference/pulls#markpullrequestreadyforreview
 and https://docs.github.com/en/graphql/guides/forming-calls-with-graphql.
 
