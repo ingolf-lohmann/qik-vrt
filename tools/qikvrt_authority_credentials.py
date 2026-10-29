@@ -267,6 +267,10 @@ def production_environment(auth, bearer, request, environment, *, write=False, a
                     raise ProductionBlock("REQUEST_HOST_BINDING_PIN_MISMATCH")
             except ProductionBlock as exc:
                 values, material_reason = None, str(exc)
+            except Exception:
+                # The optional local checker may itself be unavailable. Keep
+                # the already observed remote metadata; never expose its error.
+                values, material_reason = None, "ORIGINAL_PROTECTED_MATERIAL_VALIDATION_UNAVAILABLE"
         journal = auth.store.read().get("github_environment_handoff", {})
         if journal and journal.get("auth_binding") != auth.binding:
             raise ProductionBlock("ORIGINAL_SSO_JOURNAL_BINDING_MISMATCH")

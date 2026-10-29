@@ -162,6 +162,16 @@ class ProductionTests(unittest.TestCase):
                 self.run_operation()
         self.assertEqual(self.api.calls, [])
 
+    def test_failed_optional_material_checker_keeps_remote_readback_unknown(self):
+        with mock.patch.object(a, "production_material", side_effect=OSError("PRIVATE_ERROR_MUST_NOT_ESCAPE")):
+            result = self.run_operation(write=False, request={"schema": a.PRODUCTION_SCHEMA, "request_id": "checker-unavailable"})
+        self.assertFalse(result["protected_material_available"])
+        self.assertEqual(result["protected_material_reason"], "ORIGINAL_PROTECTED_MATERIAL_VALIDATION_UNAVAILABLE")
+        self.assertIsNone(result["binding_sha256"])
+        self.assertNotIn("PRIVATE_ERROR", json.dumps(result))
+        self.assertTrue(all(method == "GET" for method, _, _ in self.api.calls))
+        self.assertFalse(result["effect_ack_done"])
+
     def test_matching_variables_are_not_rewritten_and_mismatches_use_patch(self):
         self.api.variables = dict((n, self.values[n]) for n in a.PRODUCTION_VARIABLES)
         self.api.variables[a.PRODUCTION_VARIABLES[0]] = "OLD_FIXTURE"
