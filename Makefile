@@ -120,7 +120,7 @@ run-api:
 	@test -n "$(QIKVRT_API_TOKEN_EXPIRES_UTC)" || (echo "BLOCK: set QIKVRT_API_TOKEN_EXPIRES_UTC" >&2; exit 2)
 	@test -n "$(QIKVRT_ALLOWED_REPOSITORY)" || (echo "BLOCK: set QIKVRT_ALLOWED_REPOSITORY=owner/repo" >&2; exit 2)
 	@test -n "$(QIKVRT_API_PRINCIPAL)" || (echo "BLOCK: set QIKVRT_API_PRINCIPAL" >&2; exit 2)
-	PYTHONNOUSERSITE=1 $(PYTHON) -S src/qikvrt_github_api_shim.py
+	PYTHONNOUSERSITE=1 $(PYTHON) $(if $(filter 1,$(QIKVRT_PRODUCTION_ENVIRONMENT_ENABLED)),-B,-S) src/qikvrt_github_api_shim.py
 
 .PHONY: mcp-conformance-test
 mcp-conformance-test:
@@ -142,6 +142,8 @@ clean:
 
 .PHONY: personal-firefox-boundary-test
 personal-firefox-boundary-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_production_environment
+	node tests/test_production_environment_ui.cjs
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_firefox_capability_boundary
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_assistant
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_auth
@@ -205,6 +207,7 @@ test: editorial-navigation-test
 
 .PHONY: repository-monitor-test self-host-test
 repository-monitor-test:
+	node --test docs/monitor/workspace.test.mjs
 	node docs/monitor/observer.test.mjs
 	node --test docs/monitor/monitor.test.mjs
 	node --test docs/monitor/mesh-file.test.mjs
@@ -220,6 +223,7 @@ test: temdd-event-ledger-test
 endif
 
 self-host-test: tool-cache-contract temdd-event-ledger-test
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_publication
 	node --test docs/monitor/mesh-file.test.mjs
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_provider
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_static tests.test_static_delivery_rest
@@ -256,3 +260,25 @@ personal-retrieval-test:
 	node tests/test_qikvrt_personal_retrieval_ui.cjs
 
 test: personal-retrieval-test
+
+# Portable C90 companion to the Python runtime.
+C90_OUTPUT_DIR ?= .qikvrt/cache/c90
+
+.PHONY: c90 fixed-q16-compile fixed-q16-test benchmark-c90 c90-assembly
+c90: effect-ack-core-test fixed-q16-test
+
+fixed-q16-compile:
+	$(CC) $(EFFECT_ACK_C90_CFLAGS) -pedantic-errors -Iinclude -fsyntax-only src/fixed_q16.c tests/test_fixed_q16.c tools/qikvrt_c90_benchmark.c
+
+fixed-q16-test: fixed-q16-compile
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 CC="$(CC)" $(PYTHON) -B tests/test_fixed_q16.py
+
+benchmark-c90:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 CC="$(CC)" $(PYTHON) -B tools/qikvrt_c90_benchmark.py
+
+c90-assembly:
+	mkdir -p "$(C90_OUTPUT_DIR)"
+	$(CC) $(EFFECT_ACK_C90_CFLAGS) -pedantic-errors -O2 -Iinclude -S src/fixed_q16.c -o "$(C90_OUTPUT_DIR)/fixed_q16.s"
+
+compile: fixed-q16-compile
+test: fixed-q16-test

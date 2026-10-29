@@ -10,6 +10,7 @@ no DNS, registrar, credential-store, purchase or destructive cutover operations.
 from __future__ import annotations
 
 import hashlib
+import datetime as dt
 import gzip
 import base64
 import http.client
@@ -207,14 +208,15 @@ def require(condition, code):
         raise ValueError(code)
 
 
-def write_receipt(path, result):
+def write_receipt(path, result, *, create_only=False):
     # Receipts contain public source/image/operation identities, never config
     # bytes, auth headers, tokens, client certificates or daemon responses.
     result = {"schema": "qikvrt-s1-container-receipt/v1", **result,
               "effect_ack_done": False, "ordinary_release": False}
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(result, sort_keys=True, indent=2) + "\n")
+    with path.open("x" if create_only else "w", encoding="utf-8") as output:
+        output.write(json.dumps(result, sort_keys=True, indent=2) + "\n")
     return result
 
 
@@ -945,10 +947,29 @@ def existing_container(live, identifier, value, request):
             "EXISTING_CONTAINER_NOT_RESUMABLE")
 
 
+def authenticated_linux_host(value, info):
+    require(isinstance(info, dict) and info.get("OSType") == "linux" and
+            info.get("ID") == value["daemon_id"], "AUTHENTICATED_LINUX_HOST_MISMATCH")
+
+
+def host_identity(value, binding_sha256, engine):
+    """One fixed mTLS GET; target pins are not installed-package evidence."""
+    raw = engine.call("GET", "/v1.45/info", binary=True)
+    authenticated_linux_host(value, json.loads(raw))
+    return {"state": "AUTHENTICATED_LINUX_HOST_IDENTITY_VERIFIED",
+            "scope": "HOST_IDENTITY_ONLY", "observed_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+            "binding_sha256": binding_sha256, "daemon_id": value["daemon_id"], "os_type": "linux",
+            "source_head": value["source_head"], "source_tree": value["source_tree"],
+            "image_digest": value["image_digest"], "manifest_sha256": value["manifest_sha256"],
+            "daemon_info_sha256": sha(raw), "checker_sha256": sha(Path(__file__).read_bytes()),
+            "host_identity_verified": True, "host_package_verified": False,
+            "public_production_verified": False}
+
+
 def deploy(value, image, engine):
     """Create-only initial delivery, or resume the exact existing container."""
     info = engine.call("GET", "/v1.45/info")
-    require(info.get("OSType") == "linux" and info.get("ID") == value["daemon_id"], "AUTHENTICATED_LINUX_HOST_MISMATCH")
+    authenticated_linux_host(value, info)
     volume = engine.call("GET", "/v1.45/volumes/" + value["state_volume"])
     require(volume.get("Driver") == "local" and volume.get("Scope") == "local" and
             volume.get("Labels", {}).get("de.qikvrt.repository") == REPOSITORY and
@@ -1268,6 +1289,20 @@ def execute(args):
         result = smoke(args.image, args.output, getattr(args, "terminal_profile", "firefox"))
     elif operation == "production-gate":
         result = production_gate(args.expected_head)
+    elif operation == "host-identity":
+        require(args.production_binding is not None and args.receipt is not None,
+                "PRIVATE_HOST_BINDING_AND_NEW_RECEIPT_REQUIRED")
+        require(not os.path.lexists(args.receipt), "CREATE_ONLY_HOST_IDENTITY_RECEIPT_REQUIRED")
+        value = binding(args.production_binding.read_bytes(), args.binding_sha256, args.image)
+        require(re.fullmatch(r"[a-f0-9]{40}", args.expected_head or "") and
+                re.fullmatch(r"[a-f0-9]{40}", args.expected_tree or "") and
+                re.fullmatch(r"[a-f0-9]{64}", args.manifest_sha256 or ""),
+                "INDEPENDENT_HOST_IDENTITY_TARGET_REQUIRED")
+        require((value["source_head"], value["source_tree"], value["manifest_sha256"]) ==
+                (args.expected_head, args.expected_tree, args.manifest_sha256),
+                "HOST_IDENTITY_TARGET_MISMATCH")
+        result = host_identity(value, args.binding_sha256,
+                               Engine(value["docker_api"], args.ca_file, args.cert_file, args.key_file))
     elif operation == "deploy":
         value = binding(args.production_binding.read_bytes(), args.binding_sha256, args.image)
         production_gate(value["source_head"])
@@ -1276,6 +1311,6 @@ def execute(args):
         result = public_readback(json.loads(args.production_binding.read_bytes()), args.root)
     else:
         raise ValueError("UNKNOWN_CONTAINER_OPERATION")
-    return write_receipt(args.receipt, result)
+    return write_receipt(args.receipt, result, create_only=operation == "host-identity")
 
 

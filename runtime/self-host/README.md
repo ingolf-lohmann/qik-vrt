@@ -137,12 +137,177 @@ production predicates.
 The private connection is `vars.QIKVRT_LINUX_HOST_BINDING_JSON`, independently
 pinned by `vars.QIKVRT_LINUX_HOST_BINDING_SHA256`, and the existing protected
 `QIKVRT_LINUX_HOST_CA`, `QIKVRT_LINUX_HOST_CERT`, `QIKVRT_LINUX_HOST_KEY` secrets.
-`vars.QIKVRT_CONTAINER_DEPLOY_ENABLED` admits this existing consumer. The binding
+`vars.QIKVRT_CONTAINER_DEPLOY_ENABLED` admits deployment by this existing consumer. The binding
 must supply the real mTLS Docker API origin, daemon ID, container name, existing
 state volume, private configuration directory and digest, node ID, manifest
 digest, loopback routing port, exact source HEAD/TREE and image digest. The
 checked-in `LINUX_HOST_BINDING.example.json` remains a template; do not fill its
 unknown fields with invented host values or export credentials into Git.
+
+### Original SSO session and protected Environment handoff
+
+The existing `src/qikvrt_github_api_shim.py` now has the explicitly opted-in
+`/repos/ingolf-lohmann/qik-vrt/qikvrt/production-environment` REST route. It is a
+QIK-VRT local adapter route, not a new operation in the managed ChatGPT GitHub
+connector or in GitHub's own API. The already authenticated GitHub connector
+remains the primary repository interface; its account permissions do not export
+its token or establish a separate browser/OS session.
+
+The original `qikvrt_personal_auth.PersonalAuth`, registered OIDC configuration,
+OS Secret Service profile, refresh journal and lifetime `writer.lock` are reused.
+The new authentication-only mode requires no model credential. Existing tokens
+remain in the protected login collection; no browser cookies or connector token
+are transferred, no IdP/client is guessed, and no new permission scope is granted.
+An expired, revoked or ambiguous grant remains closed under the existing rules.
+The exact original registered loopback origin must match the adapter's port.
+Another active writer of that same profile blocks this process.
+
+On the already admitted native desktop host, use its original private settings:
+
+```sh
+QIKVRT_PRODUCTION_ENVIRONMENT_ENABLED=1 make run-api
+```
+
+In that process `QIKVRT_SSO_STATE_DIR`, `QIKVRT_SSO_AUTH_CONFIG` and the optional
+`QIKVRT_SSO_PROFILE` refer to the existing private Personal profile/configuration
+(default profile `openai`). `QIKVRT_API_HOST` must remain `127.0.0.1`. The normal
+adapter principal, repository, API credential and expiry checks still apply.
+`make run-api` retains Standard's `-S` mode when disabled; the explicitly enabled
+optional SSO profile uses its already provisioned Python environment with `-B`.
+The pinned optional requirements are in
+`runtime/toolchains/requirements-github-environment.txt`; the running service
+never installs packages. Missing/wrong encryption runtime blocks before writes.
+
+Open `/personal/` on that same native adapter. The panel signs in once through
+the original IdP, checks the handoff and submits the exact returned source and
+binding pins. Session bearers stay in page memory; refresh/access credentials
+remain in OS Secret Service. Authentication, renewal and logout are the original
+`/personal/auth/*` routes. There are no polling timers or background uploads.
+
+The backend validates the five original `QIKVRT_LINUX_HOST_*` bindings from its
+existing protected process environment, or from explicitly selected original
+private files. To use the file source, configure only these two non-secret
+selectors in that same admitted native process:
+
+```sh
+export QIKVRT_PRODUCTION_MATERIAL_SOURCE=/private/original-facility/material-source.json
+export QIKVRT_PRODUCTION_MATERIAL_SOURCE_SHA256='<independently-approved-descriptor-sha256>'
+```
+
+The descriptor has exactly this shape. Replace the placeholders with the
+already provisioned original file paths and independently approved binding pin;
+do not generate replacement keys or invent host/package facts:
+
+```json
+{
+  "schema": "qikvrt-production-material-files/v1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "environment": "qikvrt-production",
+  "binding_sha256": "<independently-approved-original-binding-sha256>",
+  "files": {
+    "QIKVRT_LINUX_HOST_BINDING_JSON": "/private/original-facility/binding.json",
+    "QIKVRT_LINUX_HOST_CA": "/private/original-facility/ca.pem",
+    "QIKVRT_LINUX_HOST_CERT": "/private/original-facility/client-cert.pem",
+    "QIKVRT_LINUX_HOST_KEY": "/private/original-facility/client-key.pem"
+  }
+}
+```
+
+The native operator must already have authorized access to those originals.
+The descriptor and inputs must be regular, non-symlinked, single-link files
+owned by the running native user with mode 0600, in private mode-0700 immediate
+directories outside every Git checkout. The existing host preparation names
+`ca.pem`, `client-cert.pem` and `client-key.pem`; this adapter reads the selected
+originals in place. It never changes their ownership, permissions or contents.
+The complete, package-bound host binding is required; the partial preparation
+output with null pins is insufficient. The descriptor hash is checked before
+following its four references. The host-binding hash is never recomputed to
+authorize changed bytes. Original binding/PEM/key-pair validation then applies.
+
+Selecting either file-source variable requires the complete pair. Mixing any
+of the five process values with file selection is rejected. Missing, changed,
+oversized, unsafe or invalid input never falls back to another source. Reads
+remain metadata-only when source admission fails; writes stop before provider
+access. These selectors cannot be supplied by the browser or REST request.
+Actual source provisioning, consuming-job delivery, mTLS host identity and
+exact-domain acceptance require their own independent native evidence.
+
+The sealed S1 package carries the original Personal authentication/handler,
+source-observer inputs, Authority panel and optional dependency locks in its
+existing REST bootstrap closure. Missing carriers fail package admission.
+The frozen-export regression runs the original file reader under Python `-S`
+without a checkout or site-packages. A code-only export still cannot claim a
+clean Main identity: packaging alone does not admit a production write or SSO.
+
+The existing Authority credential
+resolver supplies its original admitted GitHub credential; generic
+`GITHUB_TOKEN`, the local bearer and caller-supplied credentials are excluded.
+This does not recover secret values from GitHub, where they are unreadable.
+No secret values belong in a URL, browser form, chat, repository, artifact or log.
+
+A read-only GET with `schema=qikvrt-production-environment-rest/v1` and a stable
+`request_id` prepares current Main HEAD/TREE and the independent host-binding
+pin. POST requires exactly those source/binding pins and `effect_accepted=true`,
+the same-origin Origin header and the existing SSO bearer. Only the two named
+variables and three named secrets can change. Actual GitHub Owner/admin
+identity, current Main and the unchanged existing Environment protections are
+checked first and again before each write. The running adapter must also match
+clean Main HEAD/TREE through the existing runtime source observer before each
+write. An unmerged/dirty checkout or unavailable Git source identity permits only
+read-only preparation. Secrets use GitHub's Environment public key and PyNaCl
+1.6.2 LibSodium sealed boxes. Environment creation,
+protection changes, credential expansion and arbitrary API forwarding are absent.
+
+The same protected profile keeps original intent before every mutation, bounded
+attempt history, acknowledgements and unresolved state. A different request ID
+or unrelated commit cannot repeat the same handoff. An uncertain reply admits
+GET-only readback; secret metadata cannot disambiguate secret values. GitHub
+rate-limit/cooldown observations also persist there across process restarts.
+
+Successful HTTP acknowledgements plus independent variable/secret-metadata
+readback establish only that scoped result. Actual job credential delivery,
+original-host identity, runtime/package acceptance and public product delivery
+remain separately unverified. The next native operation is still the existing
+`container-host-identity` / `GET /v1.45/info` path below, before any restart or
+feature-toggle activation. No deployment flag is changed by this route.
+
+Official contracts: [GitHub Environment secrets](https://docs.github.com/en/rest/actions/secrets),
+[Environment variables](https://docs.github.com/en/rest/actions/variables),
+[SSO app authorization](https://docs.github.com/en/enterprise-cloud@latest/authentication/authenticating-with-single-sign-on/authorizing-an-app-for-single-sign-on)
+and [PyNaCl 1.6.2](https://pypi.org/project/PyNaCl/1.6.2/).
+
+`container-host-identity` is the read-only first-host check in the same launcher.
+It validates the existing independently pinned binding and mTLS files, then sends
+exactly one `GET /v1.45/info`. Supply `--production-binding`, `--binding-sha256`,
+`--image`, `--ca-file`, `--cert-file`, `--key-file` and a new `--receipt` path.
+The separate `--expected-head`, `--expected-tree` and `--manifest-sha256` must
+come from the approved tested package, not be derived from the host binding.
+All target-pin comparisons happen before opening the mTLS connection.
+
+The existing Main-only host job now invokes this read-only check after the exact
+container build, even when OCI publication is skipped. Its independent HEAD,
+TREE, image and package-manifest pins come from the accepted container job.
+A separate process reads the create-only receipt and verifies those pins, the
+checker digest, its fresh observation time and its limited identity-only scope.
+The existing artifact retains `host-identity.json` even when deployment fails.
+Deployment still requires the existing enable flag, successful reviewed OCI
+publication, identical published image and all original production guards.
+The public-domain job runs only after an actual successful deployment/recovery;
+identity alone cannot start public acceptance or establish package installation.
+
+The create-only receipt binds the Linux daemon ID, exact response-byte SHA-256,
+observation time, checker SHA-256, binding SHA-256 and target package pins. It
+contains no raw daemon response, private connection/configuration paths or
+credential values. A rejected/unavailable check produces no success receipt;
+an existing receipt path is rejected before contacting the host. Use only the
+existing admitted protected connection; this command neither locates credentials
+nor registers or activates a hosted connector.
+
+This operation proves host identity only. The target package pins do not prove
+that the image or package is installed on that host. It cannot pull an image,
+create or start a container, change configuration or accept the public domain.
+`container-deploy` retains all production-governance, host/storage/configuration
+and package checks; subsequent independent exact-domain acceptance is unchanged.
 
 Recovery first checks the authenticated daemon and owner volume, the same
 container/image/binding labels, runtime user/command, security and loopback
@@ -1386,3 +1551,12 @@ This repairs scope selection; it grants no Main, production environment, host,
 mTLS, storage or exact-domain admission. Protected production and independent
 public readback remain required. A successful native-only CI never proves a
 signed Firefox installation or a running IONOS host.
+
+## Existing Zenodo publisher on the Authority host
+
+The original protected-reference publisher adapter is available through
+`publication-check`, `publication-resume` and `publication-supervisor`. Follow
+[PUBLICATION.md](PUBLICATION.md) for current Authority, exact request and
+provider-managed credential bindings. The sealed S1 package carries the
+original publisher and proof contracts; package presence proves neither
+credential transfer nor host activation nor publication.

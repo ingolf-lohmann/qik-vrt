@@ -479,6 +479,45 @@
         "external_tools_outside_qikvrt_control_are_platform_enforced": false,
         "all_node_adoption_requires_exact_policy_ack_and_independent_readback": true
       }
+    },
+    "github_fallback": {
+      "source": "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json",
+      "decision_sha256": "f0220e4bef4e5884f744835d6a9885158045d9f31b387ea63c5325e6c86ccc8c",
+      "transport": "GRAPHQL_FALLBACK",
+      "allowed_operations": [
+        "markPullRequestReadyForReview"
+      ],
+      "rest_primary": true,
+      "fallback_must_be_retained": true,
+      "optimization_cannot_remove_gates": true,
+      "rest_facade": "/repos/ingolf-lohmann/qik-vrt/qikvrt/continuation",
+      "consumer": "Existing workflow executor completion receiver and GitHub REST shim",
+      "live_activation": "REQUIRES_ORIGINAL_PROTECTED_SERVICE_AND_INDEPENDENT_READBACK"
+    },
+    "sso_use": {
+      "owner": "Ingolf Lohmann",
+      "decision": "state/work_units/QIKVRT_PRODUCTION_SSO_HANDOFF_20261029.json",
+      "decision_sha256": "2dabf716b87d65d8c78488e6f5759374dabd1513b3b4a596436a76a875366bca",
+      "existing_authenticated_connector_first": true,
+      "existing_registered_sso_sessions_required_when_available": true,
+      "repeat_existing_authorization_request": false,
+      "separate_account_rights_connector_capability_and_native_admission": true,
+      "original_os_secret_store_and_writer_fence": true,
+      "browser_or_connector_credential_transfer": false,
+      "secret_values_in_chat_or_repository": false,
+      "all_clients_adoption_inferred": false,
+      "implementation": "src/qikvrt_github_api_shim.py::authority_sso_handler",
+      "native_acceptance_requires_independent_readback": true
+    },
+    "pull_request_creation": {
+      "source": "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json",
+      "json_pointer": "/conditional_pull_request_creation_decision",
+      "decision_id": "OWNER-PR-CREATION-WITH-OTHER-CLOSURE-20261029",
+      "decision_sha256": "1304b2dd882e19afd22c863d95612c9b20a3ff40532616ca689086fed926697c",
+      "minimum_other_closure_targets": 1,
+      "reuse_existing_candidate_when_sufficient": true,
+      "closure_requires_independent_readback": true,
+      "rule_save_is_runtime_enforcement": false
     }
   },
   "continuation_semantics": {
