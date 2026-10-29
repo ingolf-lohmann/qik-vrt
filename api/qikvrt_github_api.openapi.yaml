@@ -42,7 +42,10 @@ paths:
         local material validation. Missing or invalid local production values
         permit a read-only response with protected_material_available=false,
         binding_sha256=null and variable value_matches=null. This response
-        cannot prepare an upload. Original material acquisition remains open.
+        cannot prepare an upload. The native process may explicitly select
+        independently pinned original private files instead of process values;
+        the caller cannot supply source paths or source pins. Source provisioning
+        and actual job delivery remain separately unverified.
       parameters:
         - {name: schema, in: query, required: true, schema: {type: string, enum: [qikvrt-production-environment-rest/v1]}}
         - {name: request_id, in: query, required: true, schema: {type: string, pattern: '^[A-Za-z0-9_.=-]{1,128}$'}}

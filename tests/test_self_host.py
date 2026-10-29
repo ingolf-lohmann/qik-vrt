@@ -887,6 +887,40 @@ class MeshContractTests(unittest.TestCase):
 
 
 class StandaloneTests(unittest.TestCase):
+    def test_original_production_file_source_cold_starts_in_the_frozen_export(self):
+        inputs = self.work / 'original-file-fixture'; inputs.mkdir(mode=0o700)
+        names = ('QIKVRT_LINUX_HOST_BINDING_JSON', 'QIKVRT_LINUX_HOST_CA',
+                 'QIKVRT_LINUX_HOST_CERT', 'QIKVRT_LINUX_HOST_KEY')
+        files = {}
+        for index, name in enumerate(names):
+            path = inputs / (str(index) + '.input')
+            path.write_text('DISPOSABLE_TEST_ONLY_' + name); path.chmod(0o600)
+            files[name] = str(path)
+        descriptor = {'schema': 'qikvrt-production-material-files/v1',
+            'repository': 'ingolf-lohmann/qik-vrt', 'environment': 'qikvrt-production',
+            'binding_sha256': hashlib.sha256(Path(files[names[0]]).read_bytes()).hexdigest(), 'files': files}
+        source = inputs / 'source.json'; source.write_bytes(host.raw_json(descriptor)); source.chmod(0o600)
+        code = '''
+import os,json
+from tools.qikvrt_authority_credentials import production_file_material, production_source, PRODUCTION_VARIABLES, PRODUCTION_SECRETS
+from src.qikvrt_personal_assistant import subject
+from src.qikvrt_github_api_shim import authority_sso_handler
+values=production_file_material(os.environ)
+assert set(values)==set(PRODUCTION_VARIABLES+PRODUCTION_SECRETS)
+assert all(values[name].startswith('DISPOSABLE_TEST_ONLY_') for name in (PRODUCTION_VARIABLES[0], *PRODUCTION_SECRETS))
+assert callable(authority_sso_handler)
+observed=subject()
+assert observed['head'] is None and observed['tree'] is None
+assert not production_source('0'*40,'0'*40), 'Packaging must not grant clean-Main write admission'
+print(json.dumps({'state':'FROZEN_ORIGINAL_FILE_SOURCE_VERIFIED','effect_ack_done':False}))
+'''
+        env = {'PATH': '', 'QIKVRT_PRODUCTION_MATERIAL_SOURCE': str(source),
+               'QIKVRT_PRODUCTION_MATERIAL_SOURCE_SHA256': host.digest(source.read_bytes())}
+        result = subprocess.run([sys.executable, '-B', '-S', '-c', code], cwd=self.export,
+                                env=env, capture_output=True, text=True, timeout=30)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual(json.loads(result.stdout)['state'], 'FROZEN_ORIGINAL_FILE_SOURCE_VERIFIED')
+
     def test_packaged_publisher_and_proof_contracts_cold_start_without_checkout_or_credentials(self):
         code = """
 import json

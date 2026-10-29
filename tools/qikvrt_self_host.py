@@ -62,6 +62,19 @@ REST_BOOTSTRAP_FILES = (
     'scripts/qikvrt_api_client.py', 'src/qikvrt_api_handler.py',
     'src/qikvrt_effect_ack.py', 'src/qikvrt_github_api_shim.py',
     'src/qikvrt_mcp_adapter.py', 'tools/ai_handoff.py',
+    'src/qikvrt_personal_auth.py', 'src/qikvrt_personal_assistant.py',
+    'src/qikvrt_personal_retrieval.py',
+    'runtime/models/pplx-embed-v2-late-0.6b.lock.json',
+    'runtime/toolchains/requirements-personal-auth-50.0.2.txt',
+    'runtime/toolchains/requirements-github-environment.txt',
+    'personal/ingolf-lohmann/firefox-assistant/ARGON_REVIEW.md',
+    'personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json',
+    'personal/ingolf-lohmann/firefox-assistant/README.md',
+    'personal/ingolf-lohmann/firefox-assistant/authority.html',
+    'personal/ingolf-lohmann/firefox-assistant/authority.js',
+    'personal/ingolf-lohmann/firefox-assistant/ui.css',
+    'personal/ingolf-lohmann/firefox-assistant/ui.html',
+    'personal/ingolf-lohmann/firefox-assistant/ui.js',
     'tools/qikvrt_authority_credentials.py', 'tools/qikvrt_integrity.py',
     'tools/qikvrt_required_review_gate.py', 'tools/qikvrt_subprocess.py',
     'tools/qikvrt_workflow_executor.py', 'tools/qikvrt_self_host_container.py',
@@ -3684,7 +3697,7 @@ def firefox_extension_probe(xpi, output, package="firefox-esr"):
 def publication_private_bytes(path, maximum):
     """Reuse private-path admission and reject replacement/oversized inputs."""
     private_path(path)
-    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
     with os.fdopen(fd, "rb") as source:
         info = os.fstat(source.fileno())
         if (not stat.S_ISREG(info.st_mode) or info.st_uid != os.geteuid()

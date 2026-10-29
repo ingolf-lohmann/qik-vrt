@@ -302,7 +302,7 @@
     "source": "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json",
     "json_pointer": "/conditional_merge_decision",
     "decision_id": "OWNER-CONFLICT-FREE-GREEN-MERGE-20261028",
-    "source_sha256": "b7dfec0771ec4cfaf3b39ff50ecddaa9fb928b419def0a4838225511a20f5a6a",
+    "source_sha256": "380e5e6a1585672b928c67f30536a6a85d7a04ee7d5519a42162f684de2ee22f",
     "github_route": "REST_API_ONLY",
     "scope": "CONFLICT_FREE_GREEN_TEST_REPOSITORY_MERGE_AND_AUTONOMOUS_CONTINUATION",
     "merge_is_runtime_acceptance": false
@@ -315,5 +315,15 @@
     "always_retained": true,
     "learn_from": "ORIGINAL_SUCCESSFUL_CI_CD_CO_RUNS",
     "ordinary_release_inferred": false
+  },
+  "owner_pull_request_creation": {
+    "source": "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json",
+    "json_pointer": "/conditional_pull_request_creation_decision",
+    "decision_id": "OWNER-PR-CREATION-WITH-OTHER-CLOSURE-20261029",
+    "decision_sha256": "1304b2dd882e19afd22c863d95612c9b20a3ff40532616ca689086fed926697c",
+    "minimum_other_closure_targets": 1,
+    "reuse_existing_candidate_when_sufficient": true,
+    "closure_requires_independent_readback": true,
+    "rule_save_is_runtime_enforcement": false
   }
 }

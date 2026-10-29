@@ -179,5 +179,54 @@
     "ambiguous_effect_requires_readback": true,
     "arbitrary_graphql_document": false,
     "production_acceptance_inferred": false
+  },
+  "conditional_pull_request_creation_decision": {
+    "schema": "qikvrt-owner-conditional-pull-request-creation/v1",
+    "decision_id": "OWNER-PR-CREATION-WITH-OTHER-CLOSURE-20261029",
+    "state": "ACTIVE",
+    "effective_date": "2026-10-29",
+    "owner": {
+      "name": "Ingolf Lohmann",
+      "role": "Product Owner",
+      "github_login": "ingolf-lohmann",
+      "github_id": 294949349
+    },
+    "repository": "ingolf-lohmann/qik-vrt",
+    "source_instruction": {
+      "source_kind": "DIRECT_HUMAN_INSTRUCTION_IN_CURRENT_SESSION",
+      "context_url": "https://github.com/ingolf-lohmann/qik-vrt/pull/636",
+      "text": "Freigabe erteilt zum selbstständigen Anlegen neuer Pull Requests, sofern sie mindestens einen anderen Pull Request oder einen anderen Issue oder einen anderen Branch schließen. Product Owner Ingolf Lohmann",
+      "sha256": "4b91eb9020f6243cf57066b51676637cb9d3923172f5d9afa30f64735f1ac8dd"
+    },
+    "authorizes": {
+      "autonomous_new_pull_request_creation": true,
+      "repeated_owner_authorization_required": false
+    },
+    "closure_condition": {
+      "minimum_other_targets": 1,
+      "allowed_target_types": [
+        "PULL_REQUEST",
+        "ISSUE",
+        "BRANCH"
+      ],
+      "target_must_differ_from_new_pull_request": true,
+      "before_creation": "Identify the existing target, its current exact subject, the concrete work this candidate completes or fully supersedes, and the supported closure path.",
+      "completion": "Independently read back the actual target closure or completed branch integration after the admitted repository effect.",
+      "mere_reference_or_closing_keyword_is_completion": false,
+      "unresolved_work_may_be_hidden_or_discarded": false,
+      "branch_deletion_is_implicitly_authorized": false
+    },
+    "continuation": {
+      "reuse_existing_candidate_when_sufficient": true,
+      "preserve_original_discussion_history_and_open_duties": true,
+      "new_candidate_tests_require_fresh_exact_head_evidence": true,
+      "existing_conditional_merge_decision_remains_separate": true,
+      "runtime_host_domain_acceptance_inferred": false,
+      "productive_effect_ack_done_inferred": false
+    },
+    "attribution": {
+      "human_contribution": "Conditional autonomous Pull Request creation authorization — Ingolf Lohmann.",
+      "artificial_cognitive_contribution": "Scoped persistence and binding to the existing continuation contract — OpenAI Codex."
+    }
   }
 }

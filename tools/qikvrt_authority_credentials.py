@@ -27,6 +27,7 @@ PRODUCTION_ENVIRONMENT = "qikvrt-production"
 PRODUCTION_VARIABLES = ("QIKVRT_LINUX_HOST_BINDING_JSON", "QIKVRT_LINUX_HOST_BINDING_SHA256")
 PRODUCTION_SECRETS = ("QIKVRT_LINUX_HOST_CA", "QIKVRT_LINUX_HOST_CERT", "QIKVRT_LINUX_HOST_KEY")
 PRODUCTION_SCHEMA = "qikvrt-production-environment-rest/v1"
+PRODUCTION_MATERIAL_SOURCE = ("QIKVRT_PRODUCTION_MATERIAL_SOURCE", "QIKVRT_PRODUCTION_MATERIAL_SOURCE_SHA256")
 
 
 class ProductionBlock(ValueError):
@@ -43,15 +44,84 @@ def _pin(value):
     return hashlib.sha256(_encoded(value)).hexdigest()
 
 
-def production_material(environment):
-    """Read the existing five bindings in this original protected process.
+def _production_private_bytes(value, maximum):
+    """Reuse the native private-file reader, with repository and change guards."""
+    from pathlib import Path
+    from tools.qikvrt_self_host import private_path, publication_private_bytes
+    if not isinstance(value, str) or not value or len(value) > 4096:
+        raise ProductionBlock("ORIGINAL_PROTECTED_MATERIAL_SOURCE_UNAVAILABLE")
+    path = Path(value)
+    try:
+        if any((parent / ".git").exists() for parent in path.parents):
+            raise ValueError()
+        private_path(path.parent, directory=True)
+        private_path(path)
+        before = path.lstat()
+        if before.st_nlink != 1:
+            raise ValueError()
+        raw = publication_private_bytes(path, maximum)
+        after = path.lstat()
+        identity = lambda s: (s.st_dev, s.st_ino, s.st_uid, s.st_mode, s.st_nlink,
+                              s.st_size, s.st_mtime_ns, s.st_ctime_ns)
+        if identity(before) != identity(after) or not raw:
+            raise ValueError()
+        return raw
+    except (OSError, ValueError, TypeError):
+        # Native paths, exception bodies and input bytes never reach a receipt.
+        raise ProductionBlock("ORIGINAL_PROTECTED_MATERIAL_SOURCE_UNAVAILABLE") from None
 
-    No filesystem, browser, connector-token extraction, generated replacement,
-    public request payload or alternative repository secret is consulted.
+
+def production_file_material(environment):
+    """Read explicitly pinned original files; no discovery, export or fallback.
+
+    The original native operator supplies the private descriptor and its
+    independent hash. Neither SSO nor a request can invent that source binding.
+    Existing host-preparation files are read in place and never rewritten.
+    """
+    import hashlib
+    import re
+    from src.qikvrt_personal_auth import object_json
+    source, source_pin = (environment.get(name, "") for name in PRODUCTION_MATERIAL_SOURCE)
+    if (not isinstance(source, str) or not source or not isinstance(source_pin, str)
+            or not re.fullmatch(r"[a-f0-9]{64}", source_pin)):
+        raise ProductionBlock("ORIGINAL_PROTECTED_MATERIAL_SOURCE_REQUIRED")
+    if any(environment.get(name) for name in PRODUCTION_VARIABLES + PRODUCTION_SECRETS):
+        raise ProductionBlock("ORIGINAL_PROTECTED_MATERIAL_SOURCE_AMBIGUOUS")
+    raw = _production_private_bytes(source, 16 * 1024)
+    if hashlib.sha256(raw).hexdigest() != source_pin:
+        raise ProductionBlock("ORIGINAL_PROTECTED_MATERIAL_SOURCE_PIN_MISMATCH")
+    try:
+        descriptor = object_json(raw)
+        names = (PRODUCTION_VARIABLES[0], *PRODUCTION_SECRETS)
+        if (set(descriptor) != {"schema", "repository", "environment", "binding_sha256", "files"}
+                or descriptor["schema"] != "qikvrt-production-material-files/v1"
+                or descriptor["repository"] != PRODUCTION_REPOSITORY
+                or descriptor["environment"] != PRODUCTION_ENVIRONMENT
+                or not isinstance(descriptor["binding_sha256"], str)
+                or not re.fullmatch(r"[a-f0-9]{64}", descriptor["binding_sha256"])
+                or not isinstance(descriptor["files"], dict) or set(descriptor["files"]) != set(names)):
+            raise ValueError()
+        values = {name: _production_private_bytes(descriptor["files"][name], 48 * 1024).decode("utf-8")
+                  for name in names}
+        values[PRODUCTION_VARIABLES[1]] = descriptor["binding_sha256"]
+        return values
+    except ProductionBlock:
+        raise
+    except (ValueError, TypeError, KeyError):
+        raise ProductionBlock("ORIGINAL_PROTECTED_MATERIAL_SOURCE_INVALID") from None
+
+
+def production_material(environment):
+    """Validate the original process bindings or explicitly pinned native files.
+
+    A selected file source never mixes with or falls back to process values.
+    Browser/connector credentials, generated replacements and public payloads
+    remain excluded. Missing source admission is not global material absence.
     """
     import hashlib
     from tools.qikvrt_self_host_container import binding, IMAGE
-    values = {name: environment.get(name, "") for name in PRODUCTION_VARIABLES + PRODUCTION_SECRETS}
+    values = (production_file_material(environment) if any(name in environment for name in PRODUCTION_MATERIAL_SOURCE)
+              else {name: environment.get(name, "") for name in PRODUCTION_VARIABLES + PRODUCTION_SECRETS})
     if any(not isinstance(v, str) or not v or len(v.encode()) > 48 * 1024 for v in values.values()):
         raise ProductionBlock("ORIGINAL_FIVE_PROTECTED_BINDINGS_REQUIRED")
     raw = values[PRODUCTION_VARIABLES[0]].encode()

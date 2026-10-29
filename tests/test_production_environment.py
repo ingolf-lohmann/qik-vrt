@@ -298,6 +298,151 @@ class TransportTests(unittest.TestCase):
         with self.assertRaises(ValueError): self.api.call("GET", "/user")
 
 
+class MaterialFileSourceTests(unittest.TestCase):
+    """Disposable local files exercise the original source path, never production."""
+    def setUp(self):
+        import tempfile
+        self.temp = tempfile.TemporaryDirectory(prefix="qikvrt-original-material-")
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        self.source = self.root / "material-source.json"
+        self.values = {name: "DISPOSABLE_TEST_ONLY_" + name for name in
+                       (a.PRODUCTION_VARIABLES[0], *a.PRODUCTION_SECRETS)}
+        self.files = {}
+        for index, (name, value) in enumerate(self.values.items()):
+            path = self.root / (str(index) + ".input")
+            path.write_text(value, encoding="utf-8"); path.chmod(0o600)
+            self.files[name] = str(path)
+        self.pin = hashlib.sha256(self.values[a.PRODUCTION_VARIABLES[0]].encode()).hexdigest()
+        self.descriptor = {"schema": "qikvrt-production-material-files/v1",
+            "repository": a.PRODUCTION_REPOSITORY, "environment": a.PRODUCTION_ENVIRONMENT,
+            "binding_sha256": self.pin, "files": self.files}
+        self.env = {}
+        self.freeze()
+
+    def freeze(self, raw=None):
+        raw = json.dumps(self.descriptor).encode() if raw is None else raw
+        self.source.write_bytes(raw); self.source.chmod(0o600)
+        self.env.update(QIKVRT_PRODUCTION_MATERIAL_SOURCE=str(self.source),
+            QIKVRT_PRODUCTION_MATERIAL_SOURCE_SHA256=hashlib.sha256(raw).hexdigest())
+
+    def test_reads_only_the_four_explicit_original_files_and_independent_pin(self):
+        values = a.production_file_material(self.env)
+        self.assertEqual(values, dict(self.values, **{a.PRODUCTION_VARIABLES[1]: self.pin}))
+        self.assertEqual(self.env.keys(), {"QIKVRT_PRODUCTION_MATERIAL_SOURCE", "QIKVRT_PRODUCTION_MATERIAL_SOURCE_SHA256"})
+        self.assertEqual(Path(self.files[a.PRODUCTION_SECRETS[-1]]).read_text(), self.values[a.PRODUCTION_SECRETS[-1]])
+
+    def test_incomplete_selector_or_wrong_descriptor_pin_never_falls_back(self):
+        for change in ({"QIKVRT_PRODUCTION_MATERIAL_SOURCE": ""},
+                       {"QIKVRT_PRODUCTION_MATERIAL_SOURCE_SHA256": ""},
+                       {"QIKVRT_PRODUCTION_MATERIAL_SOURCE_SHA256": "0" * 64}):
+            with self.subTest(change=change), self.assertRaises(a.ProductionBlock):
+                a.production_material(dict(self.env, **change))
+
+    def test_selected_file_source_cannot_mix_with_process_material(self):
+        for name in (*a.PRODUCTION_VARIABLES, *a.PRODUCTION_SECRETS):
+            with self.subTest(name=name), self.assertRaisesRegex(a.ProductionBlock, "AMBIGUOUS"):
+                a.production_file_material(dict(self.env, **{name: "DISPOSABLE_OTHER_SOURCE"}))
+
+    def test_missing_empty_oversized_or_non_utf8_original_input_is_closed(self):
+        key = Path(self.files[a.PRODUCTION_SECRETS[-1]])
+        for raw in (None, b"", b"x" * (48 * 1024 + 1), b"\xff"):
+            with self.subTest(kind="missing" if raw is None else len(raw)):
+                if key.exists(): key.unlink()
+                if raw is not None: key.write_bytes(raw); key.chmod(0o600)
+                with self.assertRaises(a.ProductionBlock) as caught:
+                    a.production_file_material(self.env)
+                self.assertNotIn(str(key), str(caught.exception))
+                self.assertNotIn("DISPOSABLE_TEST_ONLY", str(caught.exception))
+
+    def test_source_and_input_require_private_owner_files_and_directory(self):
+        key = Path(self.files[a.PRODUCTION_SECRETS[-1]])
+        for path, unsafe, safe in ((self.source, 0o644, 0o600),
+                                   (key, 0o644, 0o600), (self.root, 0o755, 0o700)):
+            with self.subTest(path=path.name):
+                path.chmod(unsafe)
+                with self.assertRaises(a.ProductionBlock): a.production_file_material(self.env)
+                path.chmod(safe)
+        with mock.patch("os.geteuid", return_value=os.geteuid() + 1):
+            with self.assertRaises(a.ProductionBlock): a.production_file_material(self.env)
+
+    def test_symlinks_hardlinks_fifo_relative_and_repository_paths_are_refused(self):
+        original = Path(self.files[a.PRODUCTION_SECRETS[-1]])
+        alias = self.root / "alias"
+        alias.symlink_to(original)
+        self.descriptor["files"][a.PRODUCTION_SECRETS[-1]] = str(alias)
+        self.freeze()
+        with self.assertRaises(a.ProductionBlock): a.production_file_material(self.env)
+        alias.unlink(); os.link(original, alias)
+        self.descriptor["files"][a.PRODUCTION_SECRETS[-1]] = str(original); self.freeze()
+        with self.assertRaises(a.ProductionBlock): a.production_file_material(self.env)
+        alias.unlink(); original.unlink(); os.mkfifo(original, 0o600)
+        with self.assertRaises(a.ProductionBlock): a.production_file_material(self.env)
+        original.unlink(); original.write_text("DISPOSABLE_TEST_ONLY"); original.chmod(0o600)
+        self.descriptor["files"][a.PRODUCTION_SECRETS[-1]] = "relative-key.pem"; self.freeze()
+        with self.assertRaises(a.ProductionBlock): a.production_file_material(self.env)
+        self.descriptor["files"][a.PRODUCTION_SECRETS[-1]] = str(original); self.freeze()
+        (self.root / ".git").write_text("gitdir: DISPOSABLE_TEST_ONLY")
+        with self.assertRaises(a.ProductionBlock): a.production_file_material(self.env)
+
+    def test_duplicate_json_extra_fields_wrong_target_and_partial_file_set_rejected(self):
+        saved = copy.deepcopy(self.descriptor)
+        for change in ({"schema": "other"}, {"repository": "other/repo"},
+                       {"environment": "other"}, {"binding_sha256": "invalid"},
+                       {"unexpected": "DISPOSABLE_TEST_ONLY"}, {"files": {}},
+                       {"files": dict(self.files, extra="DISPOSABLE_TEST_ONLY")}):
+            self.descriptor = dict(saved, **change); self.freeze()
+            with self.subTest(change=next(iter(change))), self.assertRaises(a.ProductionBlock):
+                a.production_file_material(self.env)
+        self.freeze(b'{"schema":"one","schema":"two"}')
+        with self.assertRaises(a.ProductionBlock): a.production_file_material(self.env)
+
+    def test_binding_bytes_are_not_repinned_to_make_a_changed_source_pass(self):
+        Path(self.files[a.PRODUCTION_VARIABLES[0]]).write_text("DISPOSABLE_CHANGED_BINDING")
+        with self.assertRaisesRegex(a.ProductionBlock, "INDEPENDENT_HOST_BINDING_PIN"):
+            a.production_material(self.env)
+
+    def test_input_replacement_during_the_original_private_read_is_rejected(self):
+        from tools import qikvrt_self_host as host
+        original = host.publication_private_bytes
+        key = Path(self.files[a.PRODUCTION_SECRETS[-1]])
+        def changed(path, maximum):
+            raw = original(path, maximum)
+            if path == key:
+                key.unlink(); key.write_bytes(raw); key.chmod(0o600)
+            return raw
+        with mock.patch.object(host, "publication_private_bytes", side_effect=changed):
+            with self.assertRaises(a.ProductionBlock): a.production_file_material(self.env)
+
+    def test_real_missing_source_preserves_read_only_remote_metadata(self):
+        self.source.unlink()
+        auth, api = Auth(), Provider()
+        env = dict(self.env, QIKVRT_ALLOWED_REPOSITORY=a.PRODUCTION_REPOSITORY,
+                   QIKVRT_API_PRINCIPAL="ingolf-lohmann", QIKVRT_GITHUB_ADMIN_TOKEN="fixture-protected-token")
+        request = {"schema": a.PRODUCTION_SCHEMA, "request_id": "missing-original-readback"}
+        with mock.patch.object(a, "production_source", return_value=False):
+            result = a.production_environment(auth, "fixture-sso-bearer", request, env,
+                                              api_factory=lambda *_: api)
+        self.assertFalse(result["protected_material_available"])
+        self.assertIsNone(result["binding_sha256"])
+        self.assertTrue(all(method == "GET" for method, _, _ in api.calls))
+        self.assertEqual(auth.store.read(), {})
+        self.assertFalse(result["effect_ack_done"])
+
+    def test_real_source_failure_precedes_provider_access(self):
+        self.source.unlink()
+        auth, api = Auth(), Provider()
+        env = dict(self.env, QIKVRT_ALLOWED_REPOSITORY=a.PRODUCTION_REPOSITORY,
+                   QIKVRT_API_PRINCIPAL="ingolf-lohmann", QIKVRT_GITHUB_ADMIN_TOKEN="fixture-protected-token")
+        request = {"schema": a.PRODUCTION_SCHEMA, "request_id": "missing-original-file",
+            "expected_main_sha": "1" * 40, "binding_sha256": self.pin, "effect_accepted": True}
+        with self.assertRaises(a.ProductionBlock):
+            a.production_environment(auth, "fixture-sso-bearer", request, env,
+                                     write=True, api_factory=lambda *_: api)
+        self.assertEqual(api.calls, [])
+        self.assertEqual(auth.store.read(), {})
+
+
 class MaterialTests(unittest.TestCase):
     def test_original_binding_accepts_real_matching_pem_and_rejects_changed_private_key(self):
         try:
@@ -325,6 +470,47 @@ class MaterialTests(unittest.TestCase):
         wrong = rsa.generate_private_key(public_exponent=65537, key_size=2048)
         values[a.PRODUCTION_SECRETS[2]] = wrong.private_bytes(serialization.Encoding.PEM, serialization.PrivateFormat.PKCS8, serialization.NoEncryption()).decode()
         with self.assertRaisesRegex(a.ProductionBlock, "MTLS_MATERIAL_INVALID"): a.production_material(values)
+
+    def test_pinned_original_file_source_exercises_real_binding_and_pem_validation(self):
+        try:
+            from src.qikvrt_personal_auth import require_crypto_runtime
+            require_crypto_runtime()
+            from cryptography import x509
+            from cryptography.hazmat.primitives import hashes, serialization
+            from cryptography.hazmat.primitives.asymmetric import rsa
+            from cryptography.x509.oid import NameOID
+        except (ImportError, ValueError):
+            self.skipTest("Optional locked cryptography unavailable; no native material acceptance inferred")
+        import tempfile
+        from datetime import datetime, timedelta, timezone
+        from tests.test_self_host_container import declaration
+        key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+        name = x509.Name([x509.NameAttribute(NameOID.COMMON_NAME, "DISPOSABLE_FILE_SOURCE_TEST_ONLY")])
+        now = datetime.now(timezone.utc)
+        cert = (x509.CertificateBuilder().subject_name(name).issuer_name(name).public_key(key.public_key())
+                .serial_number(2).not_valid_before(now - timedelta(days=1)).not_valid_after(now + timedelta(days=1))
+                .sign(key, hashes.SHA256()).public_bytes(serialization.Encoding.PEM).decode())
+        raw = json.dumps(declaration())
+        values = {a.PRODUCTION_VARIABLES[0]: raw, a.PRODUCTION_VARIABLES[1]: hashlib.sha256(raw.encode()).hexdigest(),
+            a.PRODUCTION_SECRETS[0]: cert, a.PRODUCTION_SECRETS[1]: cert,
+            a.PRODUCTION_SECRETS[2]: key.private_bytes(serialization.Encoding.PEM, serialization.PrivateFormat.PKCS8, serialization.NoEncryption()).decode()}
+        with tempfile.TemporaryDirectory(prefix="qikvrt-disposable-source-") as temp:
+            root = Path(temp); paths = {}
+            for index, name in enumerate((a.PRODUCTION_VARIABLES[0], *a.PRODUCTION_SECRETS)):
+                path = root / (str(index) + ".input")
+                path.write_text(values[name], encoding="utf-8"); path.chmod(0o600)
+                paths[name] = str(path)
+            descriptor = {"schema": "qikvrt-production-material-files/v1", "repository": a.PRODUCTION_REPOSITORY,
+                "environment": a.PRODUCTION_ENVIRONMENT, "binding_sha256": values[a.PRODUCTION_VARIABLES[1]], "files": paths}
+            source = root / "source.json"; source.write_text(json.dumps(descriptor)); source.chmod(0o600)
+            env = {"QIKVRT_PRODUCTION_MATERIAL_SOURCE": str(source),
+                   "QIKVRT_PRODUCTION_MATERIAL_SOURCE_SHA256": hashlib.sha256(source.read_bytes()).hexdigest()}
+            self.assertEqual(a.production_material(env), values)
+            wrong = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+            Path(paths[a.PRODUCTION_SECRETS[-1]]).write_bytes(wrong.private_bytes(
+                serialization.Encoding.PEM, serialization.PrivateFormat.PKCS8, serialization.NoEncryption()))
+            with self.assertRaisesRegex(a.ProductionBlock, "MTLS_MATERIAL_INVALID"):
+                a.production_material(env)
 
     def test_runtime_source_checks_actual_head_tree_and_dirty_state(self):
         from src import qikvrt_personal_assistant as personal
