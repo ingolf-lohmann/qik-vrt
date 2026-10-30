@@ -1,0 +1,72 @@
+{
+  "schema": "qikvrt_provenance_work_unit_v1",
+  "work_unit_id": "QIKVRT_NATIVE_ARCHIVE_RUNTIME_PROOF_20261030_V1",
+  "execution_id": "QIKVRT_NATIVE_ARCHIVE_RUNTIME_PROOF_20261030_V1",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_commit": "630fe6a2db8b202fd8483a3ed5d9d13112839d46",
+  "source_tree": "ba8e32c34d387c6d2532c491088c06fcbad4106e",
+  "priority_class": "CI_BUILD_CHAIN_PERFORMANCE",
+  "human_actor": {
+    "name": "Ingolf Lohmann",
+    "role": "Principal / Code Owner / Product Owner"
+  },
+  "human_contributions": [
+    "Universal double-canonical-storage, archive, native runtime, Transputer and Terminal architecture thesis.",
+    "Current instruction: Dann mach das jetzt. C90/fixed-point archive DoD and measured performance phase authorized."
+  ],
+  "artificial_cognitive_contributions": [
+    "Port existing QIKVRTC RAW/ZLIB codec to bounded integer C90; preserve signature and Python reference.",
+    "Freeze complete tracked source including original Git object identities; standard ZIP and real Linux ELF SFX with independent readers.",
+    "Add a side-effect-free bounded binary-machine reference to demonstrate explicit stored-program execution instead of inferring computation from storage.",
+    "Use original authenticated loopback Terminal prepare/commit/readback; preserve native Mesh admission boundary."
+  ],
+  "reuse_insufficiency": {
+    "existing_reused": [
+      "src/qikvrt_codec.py",
+      "src/qikvrt_standpoint_codex.py",
+      "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin",
+      "src/qikvrt_effect_ack_http_terminal.py",
+      "tools/qikvrt_tool_cache.py",
+      "Makefile"
+    ],
+    "specific_gap": "Existing codec has no C90 QIKVRTC backend or native ZIP/SFX bridge. Original Terminal is a protocol and native-ledger adapter, not a binary Turing-table interpreter. The added machine is bounded pure computation, not a substitute node executor, scheduler or permission path."
+  },
+  "outputs": [
+    "src/codec_native.c",
+    "src/finite_machine.c",
+    "tools/qikvrt_native_archive.py",
+    "tests/test_native_archive.py",
+    "docs/development/NATIVE_ARCHIVE.md",
+    "evidence/native-archive/2026-10-30/"
+  ],
+  "open_obligations": [
+    "Native Windows/macOS/ARM and actual WinZip application execution require those actual target environments.",
+    "Unbounded mathematical machine semantics and the bounded C90 reference profile are distinct. No kernel-certified C compiler or whole-C implementation proof is claimed.",
+    "Original productive Transputer/Terminal admission remains OPEN at ADMITTED_MESH_RUNTIME_ENDPOINT; no prepare/commit on an unready runtime.",
+    "Portable C90 codec measured slower than the native-library-backed Python reference on this complete archive. Profile the actual hotspot before selecting a faster backend; preserve Python default and full-CI measurement requirement."
+  ],
+  "completion_claims": {
+    "all_platforms_verified": false,
+    "productive_mesh_accepted": false,
+    "formal_c_implementation_proof": false,
+    "effect_ack_done": false
+  },
+  "verification": {
+    "full_local_make_test": {
+      "tree": "d9688679cba0fe8d80dd6be41e5c83379b4577fa",
+      "python_test_executions": 2247,
+      "exit": 0,
+      "receipt": "evidence/native-archive/2026-10-30/FULL_TEST_VALIDATION.json"
+    },
+    "measurement": {
+      "pairs": 5,
+      "path": "evidence/native-archive/2026-10-30/MEASUREMENT.json",
+      "native_encode_median_ns": 10460859975,
+      "python_encode_median_ns": 7527495490,
+      "native_decode_median_ns": 3647929496,
+      "python_decode_median_ns": 859956301,
+      "native_default_changed": false,
+      "full_ci_speedup_claimed": false
+    }
+  }
+}

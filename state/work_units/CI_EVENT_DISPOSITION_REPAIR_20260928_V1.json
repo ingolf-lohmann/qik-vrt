@@ -1,0 +1,86 @@
+{
+  "schema": "qikvrt_ci_event_disposition_repair_v1",
+  "work_unit_id": "CI_EVENT_DISPOSITION_REPAIR_20260928_V1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "carrier_pr": 411,
+  "parent_head": "76a14c73efa027f9c49a72b48d06ec161ee5c823",
+  "parent_tree": "f90ab10db80234ff7361ffc59b6fdcd5058ca28f",
+  "base_main": "4e3cdb18c7d386f1b3be74245156b32e6ef9e40f",
+  "human_contribution": {
+    "actor": "Ingolf Lohmann",
+    "role": "Product and Code Owner",
+    "scope": "Repair the causes of the observed repository blockades durably."
+  },
+  "artificial_cognitive_contribution": {
+    "actor": "OpenAI Codex",
+    "scope": "Exact-subject diagnosis, existing-workflow repair, executable regression tests and verification."
+  },
+  "separable_joint_component": "Human repair direction and AI implementation are separately attributed.",
+  "unresolved_origin": [],
+  "failure_evidence": {
+    "run_id": 36357008762,
+    "job_id": 108726646600,
+    "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/36357008762/job/108726646600",
+    "event": "push",
+    "head": "93e2d0c59bbc6b18f618b6f9a3ae440910b6c21a",
+    "full_test_exit": 0,
+    "full_test_observed_at": "2026-09-27T22:57:42Z",
+    "fixpoint_outcome": "skipped",
+    "terminal_exit": 1,
+    "terminal_observed_at": "2026-09-27T22:57:43Z",
+    "root_cause": "The terminal step unconditionally required a successful fixpoint even though the writer is admitted only for same-repository pull_request events."
+  },
+  "repair": {
+    "workflow": ".github/workflows/qikvrt_ci.yml",
+    "same_repository_pr": "Require the completed tested fixpoint; a re-tested successor may recover the predecessor failure.",
+    "push_manual_and_fork_pr": "Require the literal-checkout full_test outcome to be success and the non-admitted writer to be skipped.",
+    "unknown_or_failed_states": "Fail closed; continue-on-error conclusions do not replace raw outcomes.",
+    "native_test_integration": "The existing release-automation make target already executes tests.test_effect_ack_release_workflows, including the added real-shell regression class.",
+    "new_workflow_or_scheduler": false,
+    "admin_route_and_policy_changes": false
+  },
+  "verification": {
+    "original_workflow": "The new regression class rejects the original unconditional terminal guard, including the observed successful non-writer checkout.",
+    "targeted_command": "python3 -B -m unittest -v tests.test_effect_ack_release_workflows tests.test_ruleset_authority_token_route tests.test_ai_runtime_bootloader",
+    "targeted_tests_passed": 29,
+    "successor_ci": "Requires fresh native push and pull_request execution after the commit is published."
+  },
+  "remaining_independent_boundaries": [
+    "Actual admission and execution of the configured canonical ruleset-admin route.",
+    "Native current-head Code Owner review and protected Main integration.",
+    "Public byte-exact version-manifest readback from the Authority projection carrier PR 1263."
+  ],
+  "predecessor_evidence_transfer": false,
+  "main_integrated": false,
+  "ruleset_effect_observed": false,
+  "publication_completed": false,
+  "effect_ack_done": false,
+  "fresh_failure_confirmation": {
+    "run_id": 36381926402,
+    "job_id": 108799281136,
+    "head": "76a14c73efa027f9c49a72b48d06ec161ee5c823",
+    "event": "push",
+    "full_test_exit": 0,
+    "full_test_observed_at": "2026-09-28T05:27:25Z",
+    "terminal_observed_at": "2026-09-28T05:27:26Z",
+    "terminal_command": "test \"skipped\" = \"success\"",
+    "terminal_exit": 1,
+    "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/36381926402/job/108799281136"
+  },
+  "regression_extension": {
+    "date": "2026-09-28",
+    "human_actor": "Ingolf Lohmann",
+    "artificial_cognitive_actor": "OpenAI Codex",
+    "scope": "Explicit push, workflow_dispatch and fork-PR cases plus a genuinely failing make target through the existing full_test and fixpoint shell scripts.",
+    "base_head": "57b232d84e185e789709b451d7526c4586d725f0",
+    "base_tree": "c29a8e29edad56fca191214092319b7dee0f87aa",
+    "reuse": "Preserve the already implemented CI workflow bytes; extend the existing PR and regression module.",
+    "test_path": "tests/test_effect_ack_release_workflows.py",
+    "test_sha256": "82a0c0d31d7b5541cf7541dd973f1cd3d1e1b07cbf3e79d4a33e6f59e81a103d",
+    "command": "python3 -B -m unittest -v tests.test_effect_ack_release_workflows",
+    "result": "18 tests passed",
+    "negative_control": "A real make test target exits 17, make returns 2. Both original workflow paths fail despite successful integrity generation; terminal PASS is absent and source/local-remote HEAD are unchanged.",
+    "new_runtime_dependency": false,
+    "fresh_exact_head_ci": "Required after this successor is committed; results are recorded in the PR readback without inheriting predecessor success."
+  }
+}

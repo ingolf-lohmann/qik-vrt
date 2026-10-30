@@ -19,7 +19,7 @@ on:
       - "QIK-VRT global claim completion"
       - "QIKVRT Batch-003 remaining subject disposition"
       - "QIKVRT adaptive runtime"
-    types: [requested, in_progress, completed]
+    types: [completed]
   push:
     branches: [main]
     paths:
@@ -30,6 +30,8 @@ on:
       - "tools/qikvrt_reflexive_repository_watchdog.py"
       - "tools/qikvrt_workflow_executor.py"
       - "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json"
+      - "policy/CANONICAL_UPSTREAM_REMOTE_V1.json"
+      - "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json"
       - "registry/NODE_DISCOVERY_POLICY.json"
       - "qikvrt/runtime/onboarding/SEED_ACCEPTANCE_STATUS.json"
       - "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json"
@@ -43,6 +45,8 @@ on:
       - ".github/workflows/qikvrt_workflow_executor_watchdog.yml"
       - "tools/qikvrt_reflexive_repository_watchdog.py"
       - "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json"
+      - "policy/CANONICAL_UPSTREAM_REMOTE_V1.json"
+      - "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json"
       - "registry/NODE_DISCOVERY_POLICY.json"
       - "qikvrt/runtime/onboarding/SEED_ACCEPTANCE_STATUS.json"
       - "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json"
@@ -59,7 +63,7 @@ permissions:
 
 concurrency:
   group: qikvrt-reflexive-watchdog-${{ github.repository }}-${{ github.event.pull_request.number || 'main' }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   pre-deadlock-observation:
@@ -74,11 +78,12 @@ jobs:
           persist-credentials: false
 
       - name: Set up Python
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.12"
 
       - name: Reobserve exact head, tree, runs, jobs, and previous reflexive receipt
+        id: reobserve
         env:
           GH_TOKEN: ${{ github.token }}
           REPOSITORY: ${{ github.repository }}
@@ -88,11 +93,14 @@ jobs:
           CURRENT_RUN_ID: ${{ github.run_id }}
         shell: bash
         run: |
-          set -euo pipefail
+          set -eEuo pipefail
           root=.qikvrt/reflexive-repository-watchdog
           mkdir -p "$root/jobs"
+          observation_stage=CHECKOUT_BINDING
+          trap 'observation_rc=$?; printf "%s\n" "$observation_stage" > "$root/failed-stage.txt"; printf "%s\n" "$observation_rc" > "$root/failed-exit-code.txt"' ERR
           local_head="$(git rev-parse --verify HEAD^{commit})"
           test "$local_head" = "$EXPECTED_HEAD"
+          observation_stage=SUBJECT_READBACK
           if test "$EVENT_NAME" = pull_request; then
             live_head="$(gh api "repos/$REPOSITORY/pulls/$EVENT_PR" --jq '.head.sha')"
           else
@@ -110,10 +118,40 @@ jobs:
           else
             printf '%s\n' MAIN > "$root/observation-scope.txt"
           fi
-          authority_repository="$(jq -r '.authority.repository' state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json)"
-          test "$authority_repository" != null
-          gh api "repos/$authority_repository/git/ref/heads/main" --jq '.object.sha' \
+          observation_stage=BASELINE_READBACK
+          previous_run="$(
+            gh api "repos/$REPOSITORY/actions/workflows/qikvrt_reflexive_repository_watchdog.yml/runs?status=completed&per_page=20" \
+              | jq -r --argjson current "$CURRENT_RUN_ID" \
+                '[.workflow_runs[] | select(.id != $current)][0].id // empty'
+          )"
+          if test -n "$previous_run"; then
+            previous_artifact="$(
+              gh api "repos/$REPOSITORY/actions/runs/$previous_run/artifacts?per_page=100" \
+                | jq -r '[.artifacts[] | select(.name | startswith("qikvrt-reflexive-repository-watchdog-"))][0].id // empty'
+            )"
+            if test -n "$previous_artifact"; then
+              gh api "repos/$REPOSITORY/actions/artifacts/$previous_artifact/zip" \
+                > "$root/previous-receipt.zip" || true
+              unzip -p "$root/previous-receipt.zip" authority-role-readback.json \
+                > "$root/previous-authority-readback.json" 2>/dev/null || true
+              unzip -p "$root/previous-receipt.zip" reflexive-watchdog-receipt.json \
+                > "$root/previous-receipt.json" 2>/dev/null || true
+              if ! jq -e '.semantic_fingerprint' "$root/previous-receipt.json" >/dev/null 2>&1; then
+                rm -f "$root/previous-receipt.json"
+              fi
+            fi
+          fi
+
+          observation_stage=AUTHORITY_READBACK
+          args=(authority-readback --json)
+          if test -s "$root/previous-authority-readback.json"; then
+            args+=(--previous-readback "$root/previous-authority-readback.json")
+          fi
+          python3 -B tools/qikvrt_workflow_executor.py "${args[@]}" \
+            > "$root/authority-role-readback.json"
+          jq -er '.main_head' "$root/authority-role-readback.json" \
             > "$root/observed-authority-main-head.txt"
+          observation_stage=RUNS_READBACK
           gh api "repos/$REPOSITORY/actions/runs?head_sha=$EXPECTED_HEAD&per_page=100" \
             > "$root/current-runs.json"
 
@@ -124,29 +162,40 @@ jobs:
             jq -r '.workflow_runs[].id' "$root/current-runs.json"
           )
           for run_id in "${run_ids[@]}"; do
+            observation_stage=JOBS_READBACK
             gh api "repos/$REPOSITORY/actions/runs/$run_id/jobs?per_page=100" \
               > "$root/jobs/$run_id.json"
           done
 
-          if test "$EVENT_NAME" != pull_request; then
-            previous_run="$(
-              gh api "repos/$REPOSITORY/actions/workflows/qikvrt_reflexive_repository_watchdog.yml/runs?branch=main&status=completed&per_page=20" \
-                | jq -r --argjson current "$CURRENT_RUN_ID" \
-                  '[.workflow_runs[] | select(.id != $current and .conclusion == "success")][0].id // empty'
-            )"
-            if test -n "$previous_run"; then
-              previous_artifact="$(
-                gh api "repos/$REPOSITORY/actions/runs/$previous_run/artifacts?per_page=100" \
-                  | jq -r '[.artifacts[] | select(.name | startswith("qikvrt-reflexive-repository-watchdog-"))][0].id // empty'
-              )"
-              if test -n "$previous_artifact"; then
-                gh api "repos/$REPOSITORY/actions/artifacts/$previous_artifact/zip" \
-                  > "$root/previous-receipt.zip" || true
-                unzip -p "$root/previous-receipt.zip" reflexive-watchdog-receipt.json \
-                  > "$root/previous-receipt.json" 2>/dev/null || true
-              fi
-            fi
+
+      - name: Preserve failed observation as machine-readable HOLD
+        if: failure() && steps.reobserve.outcome == 'failure'
+        env:
+          REPOSITORY: ${{ github.repository }}
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+          CURRENT_RUN_ID: ${{ github.run_id }}
+          CURRENT_RUN_ATTEMPT: ${{ github.run_attempt }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          root=.qikvrt/reflexive-repository-watchdog
+          stage="$(cat "$root/failed-stage.txt")"
+          exit_code="$(cat "$root/failed-exit-code.txt")"
+          if test -s "$root/authority-role-readback.json"; then
+            jq '{state, first_blocker, retry_binding_sha256, native_activation_verified}' \
+              "$root/authority-role-readback.json"
           fi
+          python3 -B tools/qikvrt_reflexive_repository_watchdog.py observation-failure \
+            --expect-head "$EXPECTED_HEAD" \
+            --observed-head "$(git rev-parse --verify HEAD^{commit})" \
+            --observed-tree "$(git rev-parse --verify HEAD^{tree})" \
+            --repository "$REPOSITORY" \
+            --now "$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
+            --run-id "$CURRENT_RUN_ID" \
+            --run-attempt "$CURRENT_RUN_ATTEMPT" \
+            --failed-stage "$stage" --exit-code "$exit_code" --json \
+            > "$root/reflexive-watchdog-receipt.json"
+          cp "$root/reflexive-watchdog-receipt.json" "$root/gatewatch-receipt.json"
 
       - name: Analyze the pre-deadlock state without mutation
         env:

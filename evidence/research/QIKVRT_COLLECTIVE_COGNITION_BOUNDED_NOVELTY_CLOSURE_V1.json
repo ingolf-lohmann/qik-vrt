@@ -1,0 +1,52 @@
+{
+  "schema": "qikvrt_collective_cognition_bounded_novelty_closure_v1",
+  "status": "BOUNDED_NOVELTY_SEARCH_CLOSED_REOPEN_ON_NEW_EVIDENCE",
+  "owner_attribution": "Ingolf Lohmann",
+  "claim": "Novelty of the executable QIK-VRT collective-cognition composition within the explicitly searched and classified scope.",
+  "feature_vector": [
+    "EXACT_SUBJECT_PROVENANCE",
+    "PREDECESSOR_EVIDENCE_TRANSFER_FALSE",
+    "CONTRADICTION_PRESERVATION",
+    "TRANSPORT_ACK_NE_EFFECT_ACK",
+    "AUTHORITY_SEPARATION",
+    "ERROR_TO_RULE_TO_MANDATORY_GATE",
+    "LOSSLESS_EPISTEMIC_CONSOLIDATION",
+    "RECURSIVE_SELF_APPLICATION",
+    "HUMAN_MACHINE_COLLECTIVE_COGNITION"
+  ],
+  "search_families": [
+    "HUMAN_AI_COLLABORATION_AND_COLLECTIVE_INTELLIGENCE",
+    "PROVENANCE_AWARE_SCIENTIFIC_WORKFLOWS",
+    "ARGUMENTATION_CONTRADICTION_AND_EVIDENCE_SYSTEMS",
+    "AGENTIC_SELF_CORRECTION_AND_GOVERNANCE",
+    "EVENT_SOURCING_TRANSACTION_AND_ACKNOWLEDGEMENT_SYSTEMS",
+    "QIKVRT_PUBLIC_IETF_AND_REPOSITORY_PRIOR_ART"
+  ],
+  "observed_neighbors": [
+    {
+      "family": "QIKVRT_EFFECT_ACK",
+      "result": "PARTIAL_AND_OWN_PRIOR_PUBLICATION",
+      "evidence": "IETF draft-lohmann-qikvrt-effect-ack-00, dated 2026-06-17"
+    },
+    {
+      "family": "AI_SCIENTIFIC_WORKFLOWS",
+      "result": "PARTIAL_NEIGHBOR",
+      "evidence": "AI-Driven Scientific Computing Workflows review, arXiv:2609.21162"
+    },
+    {
+      "family": "GENERAL_SEARCH",
+      "result": "NO_FUNCTIONALLY_EQUIVALENT_FULL_COMPOSITION_FOUND_IN_EXECUTED_QUERY_SET"
+    }
+  ],
+  "conclusion": {
+    "bounded_search_complete": true,
+    "full_composition_prior_art_found": false,
+    "novelty_supported_within_bound_search": true,
+    "global_nonexistence_proven": false,
+    "patentability_proven": false,
+    "scientific_priority_beyond_bound_search_proven": false
+  },
+  "reopen_rule": "ANY_NEW_CANDIDATE_PRIOR_ART_OR_FEATURE_EQUIVALENCE_EVIDENCE -> REOPEN_SEARCH -> CLASSIFY -> BIND_SUCCESSOR",
+  "liveness_rule": "OPEN_PROOF_OBLIGATION + KNOWN_EXECUTABLE_TEST -> WORK; terminal HOLD only for typed irreducible boundary.",
+  "effect_ack_done": false
+}

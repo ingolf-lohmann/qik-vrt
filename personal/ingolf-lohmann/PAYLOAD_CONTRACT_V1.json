@@ -1,0 +1,143 @@
+{
+  "schema": "qikvrt_personal_payload_contract_v1",
+  "owner": "Ingolf Lohmann",
+  "status": "NORMATIVE_PERSONAL_MIRROR_EXTENSION",
+  "purpose": "Versioned provenance-bound personal payload in the Mirror without weakening Authority/Mirror evidence separation.",
+  "root": "personal/ingolf-lohmann",
+  "semantics": {
+    "mirror_is_personal_payload_authority_for_owner_material": true,
+    "authority_repository_not_implicitly_modified": true,
+    "append_or_supersede_not_silent_rewrite": true,
+    "mutation_creates_successor": true,
+    "predecessor_evidence_transfer": false,
+    "multiple_epistemic_classes_may_coexist": true,
+    "uncertainty_must_be_preserved_not_collapsed": true,
+    "personal_quote_requires_owner_attribution": true,
+    "audio_quote_requires_exact_audio_provenance": true,
+    "time_place_require_explicit_provenance": true,
+    "personal_authorization_not_global_personal_data_release": true
+  },
+  "epistemic_classes": [
+    "OWNER_STATEMENT",
+    "ENGINEERING_HYPOTHESIS",
+    "SCIENTIFIC_HYPOTHESIS",
+    "OBSERVATION",
+    "PROOF_EVIDENCE",
+    "OPEN_INTERPRETATION"
+  ],
+  "audio": {
+    "request_path": "requests/audio/",
+    "workflow": ".github/workflows/qikvrt_audio_request.yml",
+    "raw_audio_committed_by_default": false,
+    "transcription_requires_byte_hash_binding": true,
+    "spoken_content_must_not_be_invented": true,
+    "human_countercheck_required_for_content_release": true
+  },
+  "digital_twin": {
+    "contract": "policy/QIKVRT_DIGITAL_TWIN_REST_CONTRACT_V1.json",
+    "mesh_contract": "policy/QIKVRT_ETHICAL_EVOLUTIONARY_DIGITAL_TWIN_MESH_V1.json",
+    "peer_repository": "Goldkelch/qik-vrt",
+    "peer_state_is_not_authority": true,
+    "transport_ack_not_effect_ack": true
+  },
+  "completion_claims": {
+    "PERSONAL_PAYLOAD_PATH_DEFINED": true,
+    "AUDIO_CONTENT_BOUND": false,
+    "EFFECT_ACK_DONE": false
+  },
+  "media": {
+    "universal_payload_classes": [
+      "text",
+      "audio",
+      "video",
+      "image",
+      "binary",
+      "structured_data",
+      "other_hash_bound_payload"
+    ],
+    "rule": "Any payload class may be admitted only with explicit provenance, rights/privacy checks, bounded identity and successor semantics.",
+    "audio_video_content_requires_exact_provenance": true,
+    "time_place_require_explicit_provenance": true,
+    "payload_type_does_not_upgrade_claim_truth": true
+  },
+  "bidirectionality": {
+    "engineering_scope": "Authority/Mirror and Universal Terminal/Transputer interfaces may support bidirectional information exchange between versioned states.",
+    "temporal_claim_boundary": "Bidirectional exchange across versioned repository/history states does not by itself prove physical backward-in-time information transfer.",
+    "physical_time_corridor_claim": "OPEN_HYPOTHESIS_REQUIRES_SEPARATE_EMPIRICAL_EVIDENCE"
+  },
+  "ethical_neutral_zone": {
+    "owner_principle": "QIK-VRT should preserve responsibility, provenance, admissibility and effect-readback boundaries rather than silently deciding the human purpose of an effect.",
+    "categorical_imperative_reference": "OWNER_NORMATIVE_ENGINEERING_PRINCIPLE",
+    "responsibility_not_eliminated": true
+  },
+  "liveness": {
+    "repeated_identical_observation_rule": "An identical unresolved observation MUST NOT cause an identical no-effect transition indefinitely.",
+    "deadlock_signature": "SAME_SUBJECT + SAME_BLOCKER + SAME_ACTION + NO_NEW_EVIDENCE",
+    "required_transition": [
+      "ALTERNATE_VERIFIER_IF_AVAILABLE",
+      "TYPED_EXTERNAL_HOLD_IF_NO_AUTHORIZED_ALTERNATIVE",
+      "EVIDENCE_BOUND_SUCCESSOR_IF_NEW_INFORMATION_EXISTS"
+    ],
+    "retry_without_new_information": "FORBIDDEN_AS_PROGRESS",
+    "repeated_user_transport": "Repeated presentation of the same canonical reference is not new proof evidence, but it is evidence that a prior response path may be non-progressing and MUST trigger liveness classification.",
+    "human_reconfirmation_required": false
+  },
+  "epistemic_exact_subject": {
+    "rule": "A proof component is admissible only when its path/blob is present on the currently bound exact subject and freshly read back.",
+    "predecessor_or_successor_membership": "NOT_CURRENT_PROOF_EVIDENCE",
+    "correction": "A disproven membership claim is retained as historical error evidence and removed from the current proof immediately.",
+    "human_reconfirmation_required": false
+  },
+  "engineering_practice": {
+    "clean_code": "One normative source per rule; explicit typed states; smallest cohesive change; no duplicated controller semantics.",
+    "agile": "Observe current state first; use small verifiable successors; executed feedback outranks status prose; proven repeated failures must change the process.",
+    "sustainable_devops": "Eliminate identical no-effect retries and root causes; minimize avoidable compute, network, storage, rework and human attention per verified useful transition without weakening gates.",
+    "reflexive": "These principles apply to changes of these principles themselves.",
+    "uncertainty": "Unknown or unavailable evidence becomes a typed HOLD, never an invented fact."
+  },
+  "owner_engineering_principles": {
+    "reverse_engineering": {
+      "attribution": "Ingolf Lohmann",
+      "epistemic_class": "OWNER_NORMATIVE_ENGINEERING_PRINCIPLE",
+      "statement": "Die Königsdisziplin des Ingenierens ist und bleibt das Reverse-Ingenieren. Die Königsdisziplin darin ist und bleibt die Physik und die Mathematik und die Informatik.",
+      "operational_rule": "OBSERVE_EFFECT -> RECONSTRUCT_CONDITIONS_MODEL_IMPLEMENTATION_AND_INVARIANTS -> FORWARD_REBUILD -> EXECUTE -> INDEPENDENT_COMPARE -> READBACK -> BIND_SUCCESSOR -> REPEAT",
+      "complementary_domains": [
+        "physics",
+        "mathematics",
+        "computer_science"
+      ],
+      "persistence": "ACCEPT_APPLY_REPEAT_AS_OWNER_ENGINEERING_HEURISTIC",
+      "boundary": "This is Ingolf Lohmann's normative engineering principle and methodology, not an independently proven universal ranking of engineering or scientific disciplines."
+    }
+  },
+  "usability_completion": {
+    "rule": "Clear authorized user intent must resolve to the requested effect, a typed HOLD, or an explicit error in the same interaction scope; analysis-only substitution and silent promise-without-effect are unacceptable.",
+    "metrics": {
+      "promise_without_effect_incidents": 0,
+      "redundant_human_reconfirmations": 0
+    },
+    "remediation": "A recurrence must strengthen executable prevention; apology alone is not remediation.",
+    "authority_boundary": "No completion rule may fabricate authority or bypass safety, review, provenance or effect-readback requirements."
+  },
+  "seed_connectability_continuity": {
+    "authority_seed_path": "runtime/m68000/QIKVRT_SELF_REFLEXIVE_SEED_BINDING_V1.json",
+    "continuity_contract": "policy/QIKVRT_EPISTEMIC_CONNECTABILITY_CONTINUITY_V1.json",
+    "mirror_seed_descriptor_status": "ABSENT_ON_MIRROR_MAIN_AT_BINDING_TIME",
+    "rule": "Mirror preserves the continuity contract and explicit Authority seed reference; absence MUST NOT be represented as local seed execution or reciprocal seed proof.",
+    "required_future_transition": "AUTHORIZED_HISTORY_PRESERVING_SUCCESSOR_MAY_MATERIALIZE_LOCAL_SEED_DESCRIPTOR_THEN_FRESHLY_REOBSERVE",
+    "predecessor_evidence_transfer": false
+  },
+  "non_self_fulfilling_roundtrip": {
+    "rule": "DONE_IFF_CURRENT_BOUND_SUBJECT_EFFECT_EXECUTED_OBSERVED_READ_BACK_AND_BOUND",
+    "forbidden": [
+      "CLAIMED_DONE_IMPLIES_DONE",
+      "TRANSPORT_ACK_IMPLIES_EFFECT_ACK",
+      "PREDECESSOR_PASS_IMPLIES_SUCCESSOR_PASS",
+      "PERSISTENCE_IMPLIES_EFFECT"
+    ],
+    "transition": "CLAIM -> EXECUTE -> OBSERVE -> READBACK -> BIND_SUCCESSOR",
+    "successor": "OBSERVED_SUCCESSOR_BECOMES_NEXT_BOUND_INPUT",
+    "mirror_seed_note": "Mirror main has no local Authority seed descriptor; this payload preserves the invariant without fabricating reciprocal seed execution.",
+    "fail_closed": true
+  }
+}

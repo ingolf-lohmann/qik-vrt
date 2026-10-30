@@ -2,7 +2,7 @@
   "schema": "qikvrt_publication_overview_v1",
   "title": "QIK-VRT Publikationen und Referenzen",
   "canonical_url": "https://goldkelch.github.io/qik-vrt/publications/",
-  "repository": "Goldkelch/qik-vrt",
+  "repository": "ingolf-lohmann/qik-vrt",
   "human_index_path": "docs/publications/index.html",
   "machine_index_path": "docs/publications/index.json",
   "ai_entrypoint_path": "AI",
@@ -154,13 +154,59 @@
       "primary_article_path": "docs/publications/2026-09-23-qik-scientific-revision/QIK_Publikationsfassung_revidiert.md",
       "revision_report_path": "docs/publications/2026-09-23-qik-scientific-revision/QIK_Wissenschaftlicher_Revisionsbericht.md",
       "version": "2026-09-23",
-      "state": "repository_candidate_zenodo_authorized_pending_live_deposition",
+      "state": "zenodo_published_exact_original_docx_verified",
       "boundary": "Scientifically revised conceptual framework; no claim of peer review, independent empirical confirmation, scientific consensus, completed quantum gravity, or proven fundamental discreteness.",
       "archive_reconstruct_path": "docs/publications/2026-09-23-qik-scientific-revision/ARCHIVE_RECONSTRUCT.md",
       "archive_sha256_path": "docs/publications/2026-09-23-qik-scientific-revision/ARCHIVE_SHA256SUMS",
       "zenodo_metadata_path": "docs/publications/2026-09-23-qik-scientific-revision/ZENODO_METADATA.json",
       "zenodo_publish_request_path": "docs/publications/2026-09-23-qik-scientific-revision/ZENODO_PUBLISH_REQUEST.json",
-      "exact_archive_sha256": "a83d7b10db2065735ac033d39092f13d8f38ab311d6e1a3080236e473b51f02a"
+      "exact_archive_sha256": "a83d7b10db2065735ac033d39092f13d8f38ab311d6e1a3080236e473b51f02a",
+      "doi": "10.5281/zenodo.22907018",
+      "record_id": 22907018,
+      "record_url": "https://zenodo.org/records/22907018",
+      "public_readback_path": "docs/publications/2026-09-23-qik-scientific-revision/PUBLICATION_READBACK_20261019.json",
+      "mailed_pdf_in_record": false
+    },
+    {
+      "id": "2026-10-15-alles-s1-s12-r1",
+      "title": "QIK-VRT ALLES - S1 und S12 - Revision R1",
+      "path": "docs/publications/2026-10-15-alles-s1-s12-r1/README.md",
+      "state": "repository_candidate",
+      "repository_commit": "1a1faca0c1dbaa3cb68338652426e664036ad680",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/1a1faca0c1dbaa3cb68338652426e664036ad680/docs/publications/2026-10-15-alles-s1-s12-r1/README.md",
+      "artifact_sha256": "68b59b146904aae567bf302268b1e795d9ffd8506921aa282817aab4c0d41f1e",
+      "publication_boundary": "Editorial archive draft; not a new Zenodo record or IETF submission"
+    },
+    {
+      "id": "2026-10-15-trust-mesh-roundtrip",
+      "title": "Gesamtdarstellung und kritische Würdigung: zurücklieferbarer Kandidat",
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/README.md",
+      "state": "repository_candidate",
+      "current_primary_artifact_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/QIKVRT_Gesamtdarstellung_neu_2026-10-15.md",
+      "current_primary_sha256": "84e37878f497208bdf6b2db04c8a4f83ee642559ad6db794d408e159c4c94c2c",
+      "current_primary_state": "editorially_approved_publication_pending",
+      "current_integration_receipt_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/EDITORIAL_INTEGRATION.json",
+      "predecessor_artifacts_retained": true,
+      "author_approval_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/EDITORIAL_AUTHOR_APPROVAL.json"
+    },
+    {
+      "id": "2026-08-07-universum-als-round-trip",
+      "title": "QIK-VRT: Originalpublikation und eindeutige Zuordnung",
+      "path": "docs/publications/2026-08-07-universum-als-round-trip/README.md",
+      "state": "repository_candidate"
+    },
+    {
+      "id": "wirkungsnachweis-20261016",
+      "title": "Der entscheidende Unterschied: wissenschaftliche Erläuterung, Prosa und lokaler Wirkungsnachweis",
+      "path": "docs/publications/2026-10-16-wirkungsnachweis/index.html",
+      "state": "unchanged_author_review_candidate_distributed_zenodo_open",
+      "publication_status_path": "docs/publications/2026-10-16-wirkungsnachweis/PUBLICATION_STATUS.json"
+    },
+    {
+      "id": "2026-10-30-storage-integrity-and-effect-ack",
+      "title": "QIK-VRT-Speicher: Rechteprofil, Lean-Modell und Effect Acknowledgement",
+      "path": "docs/publications/2026-10-30-storage-integrity-and-effect-ack/README.md",
+      "state": "repository_candidate"
     }
   ],
   "featured_artifacts": [
@@ -219,7 +265,13 @@
       "doi_url": "https://doi.org/10.5281/zenodo.21488116",
       "concept_doi": "10.5281/zenodo.21488115",
       "evidence_path": "docs/publications/2026-07-22-machine-verifiable-proof-status/zenodo-record-21488116.json",
-      "state": "published_record"
+      "state": "published_record",
+      "record_id": 21488116,
+      "version": "1.0.0",
+      "publication_date": "2026-07-22",
+      "native_title": "QIK-VRT: Vollständige maschinenprüfbare Formalisierung des formal entscheidbaren Kerns",
+      "record_url": "https://zenodo.org/records/21488116",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
     },
     {
       "id": "effect-ack-working-paper",
@@ -227,7 +279,14 @@
       "doi": "10.5281/zenodo.21498773",
       "doi_url": "https://doi.org/10.5281/zenodo.21498773",
       "evidence_path": "release/effect-ack-universality-zenodo.json",
-      "state": "published_record"
+      "state": "published_record",
+      "record_id": 21498773,
+      "concept_doi": "10.5281/zenodo.21498772",
+      "version": "1.0.0",
+      "publication_date": "2026-07-22",
+      "native_title": "QIK-VRT/EFFECT_ACK: Verfassungsschicht der Wirkung - Exhaustive Prüfung eines bedingten Kontrollsatzes, Grenzen universeller Rekonstruktion und cyberphysische Geltungsbedingungen",
+      "record_url": "https://zenodo.org/records/21498773",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
     },
     {
       "id": "effect-ack-software-snapshot",
@@ -235,7 +294,14 @@
       "doi": "10.5281/zenodo.21498774",
       "doi_url": "https://doi.org/10.5281/zenodo.21498774",
       "evidence_path": "release/effect-ack-universality-zenodo.json",
-      "state": "published_record"
+      "state": "published_record",
+      "record_id": 21498774,
+      "concept_doi": "10.5281/zenodo.21488115",
+      "version": "2026.07.22-effect-ack-universality-1.0.0",
+      "publication_date": "2026-07-22",
+      "native_title": "QIK-VRT: EFFECT_ACK - universalisierbare Wirkungssteuerung und adaptive fail-closed Laufzeit",
+      "record_url": "https://zenodo.org/records/21498774",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
     },
     {
       "id": "official-status-clarification",
@@ -244,7 +310,13 @@
       "doi_url": "https://doi.org/10.5281/zenodo.21500322",
       "concept_doi": "10.5281/zenodo.21500321",
       "evidence_path": "release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-002/public-candidate-byte-freeze/records/zenodo-21500322.json",
-      "state": "published_record"
+      "state": "published_record",
+      "record_id": 21500322,
+      "version": "1.0.0",
+      "publication_date": "2026-07-22",
+      "native_title": "QIK-VRT/EFFECT_ACK: Offizielle Statusklärung zu Evidenz, Totalisierungsgrenzen, Quantenbezug und Patentoffenlegung",
+      "record_url": "https://zenodo.org/records/21500322",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
     },
     {
       "id": "machine-verifiable-science-charter",
@@ -256,7 +328,13 @@
       "manifest_sha256": "f3a04aa07544de4afd46349cbeb75e855d13d8b504f398b8b104bb6f42e0fe04",
       "repository_commit": "38b27189d09363ca6715c01cfd338a4a82c22f83",
       "file_count": 1,
-      "state": "published_receipt"
+      "state": "published_receipt",
+      "record_id": 21515074,
+      "version": "1.0.0-2026-07-23",
+      "publication_date": "2026-07-23",
+      "native_title": "Charta einer maschinenprüfbaren Wissenschaft",
+      "record_url": "https://zenodo.org/records/21515074",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
     },
     {
       "id": "formalization-v2-alpha3",
@@ -267,7 +345,13 @@
       "receipt_path": "release/formalization-v2-alpha3/zenodo-publication.json",
       "manifest_sha256": "7d439e68c76ceb528b687e5d2ccd24d1f0a5ff54e192653f715c62c563ff7a81",
       "file_count": 19,
-      "state": "published_legacy_receipt"
+      "state": "published_legacy_receipt",
+      "record_id": 21529081,
+      "version": "2.0.0-alpha.3",
+      "publication_date": "2026-07-24",
+      "native_title": "QIK-VRT: Quellengebundene Lean-4-Formalisierung des 62-seitigen Manuskripts – Alpha 3 mit vollständiger Formalumgebungsabdeckung",
+      "record_url": "https://zenodo.org/records/21529081",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
     },
     {
       "id": "authority-mirror-equality",
@@ -279,7 +363,13 @@
       "manifest_sha256": "e83e05c511c3eb444e6171c0ba562fa5bfd0e12615d7055bd5d58a5b97d9a4e9",
       "repository_commit": "66c81d4f058e8b5c05b3dc37d266b8438f83a55f",
       "file_count": 2,
-      "state": "published_receipt"
+      "state": "published_receipt",
+      "record_id": 21633411,
+      "version": "1.0.0-2026-07-27",
+      "publication_date": "2026-07-27",
+      "native_title": "QIK-VRT Authority/Mirror Equality Receipt — Promotion PR #106 and Mirror PR #56",
+      "record_url": "https://zenodo.org/records/21633411",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
     },
     {
       "id": "canonical-closing-status",
@@ -291,7 +381,13 @@
       "manifest_sha256": "7d83378e3616feeba973b1a780ad9bba247ffe785aec44deb402b134ba156ac2",
       "repository_commit": "a6f70111d4301c36f0e2a300f9367242d9598145",
       "file_count": 3,
-      "state": "published_receipt"
+      "state": "published_receipt",
+      "record_id": 21636774,
+      "version": "1.0.0-2026-07-28",
+      "publication_date": "2026-07-28",
+      "native_title": "Vom Unterschied zur Verantwortung — Kanonische Schlusserklärung und historische Einordnung des maschinenverifizierten QIK-VRT-Abschlusses",
+      "record_url": "https://zenodo.org/records/21636774",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
     },
     {
       "id": "quantum-classical-runtime-article",
@@ -303,7 +399,13 @@
       "manifest_sha256": "82950324a2427469e34b8004a51b3b98b24cec04c1a567a6205ec7c5b86243aa",
       "repository_commit": "dad0d82f768d1ef4506aa41f7399507d72611900",
       "file_count": 7,
-      "state": "published_receipt"
+      "state": "published_receipt",
+      "record_id": 21640173,
+      "version": "1.0.0-2026-07-28",
+      "publication_date": "2026-07-28",
+      "native_title": "Vom verantwortungsgebundenen Erkenntnisprozess zur virtuellen Wirkungsmaschine",
+      "record_url": "https://zenodo.org/records/21640173",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
     },
     {
       "id": "canonical-temporal-memory",
@@ -315,7 +417,13 @@
       "manifest_sha256": "70495538e8b1112c6ada68024969ccf5ca82467711adac46dc05bb30e2988aa5",
       "repository_commit": "bd3db01115ff349e4c00db0ac20d409a8ae5ae7a",
       "file_count": 21,
-      "state": "published_receipt"
+      "state": "published_receipt",
+      "record_id": 21711193,
+      "version": "1.0.0",
+      "publication_date": "2026-07-31",
+      "native_title": "QIK-VRT und das Effect-Acknowledgement-Protokoll: Kanonischer Speicher zwischen Vergangenheit und Zukunft",
+      "record_url": "https://zenodo.org/records/21711193",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
     },
     {
       "id": "survival-anschlussfaehigsten",
@@ -327,7 +435,13 @@
       "manifest_sha256": "b5b5df6da3c94cd3d51c1fee473f0c076a624111dc0973107982791f7a28a1ef",
       "repository_commit": "b5e590802a729ad3a15ce3cc1c1d3eb18adea854",
       "file_count": 31,
-      "state": "published_receipt"
+      "state": "published_receipt",
+      "record_id": 21721918,
+      "version": "1.0.0",
+      "publication_date": "2026-07-31",
+      "native_title": "Survival of the Anschlussfähigsten: Eine operational-formale Übertragung des evolutionären Fitnessgedankens auf Computer-, Informations- und soziotechnische Systeme",
+      "record_url": "https://zenodo.org/records/21721918",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
     },
     {
       "id": "epistemic-fairness-audio-addendum",
@@ -342,7 +456,13 @@
       "repository_commit": "f5008ad1eabcc3f1f017053bbf33b1f1a3b785fb",
       "receipt_commit": "e1c82969073e9a502f386be3b5db3e1f6f858b24",
       "file_count": 27,
-      "state": "published_receipt_in_repository_snapshot"
+      "state": "published_receipt_in_repository_snapshot",
+      "record_id": 21731492,
+      "version": "1.0.0",
+      "publication_date": "2026-08-01",
+      "native_title": "QIK-VRT: Epistemische Fairness, Vorstellungskraft und der Weg vom virtuellen Zeugen zum Beobachtungssystem",
+      "record_url": "https://zenodo.org/records/21731492",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
     },
     {
       "id": "round-trip-canonical-publication-v1",
@@ -357,7 +477,13 @@
       "repository_commit": "ce44e23e74b08d51d489a0bd5c8eb6f2017fff83",
       "receipt_commit": "8bfc80ab5e9072fef527c74c3156e6f859dcbec8",
       "file_count": 54,
-      "state": "published_receipt"
+      "state": "published_receipt",
+      "record_id": 21888130,
+      "version": "1.0.0-candidate.1",
+      "publication_date": "2026-08-08",
+      "native_title": "Von Softwarearchitektur zur Weltformel – DAS UNIVERSUM ALS ROUND TRIP",
+      "record_url": "https://zenodo.org/records/21888130",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
     },
     {
       "id": "qikvrt-observer-relative-retrocausality-current-synthesis-v2",
@@ -374,7 +500,434 @@
       "repository_commit": "a7cd4011b8cdf06e650e22dc3e8dda6df22a5bf0",
       "receipt_commit": "67dbb53c4a244e66aa0ac41cc69a2dc114f0b61f",
       "file_count": 21,
-      "state": "published_receipt"
+      "state": "published_receipt",
+      "publication_date": "2026-08-14",
+      "native_title": "QIK-VRT: Beobachterrelative Retrokausalität als negative Informationsrichtung",
+      "record_url": "https://zenodo.org/records/21947141",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+    },
+    {
+      "id": "zenodo-record-20712301",
+      "title": "QIK-VRT: Operationalisierte epistemische Zustandskontrolle und schichtgebundene Evidenzpersistenz",
+      "doi": "10.5281/zenodo.20712301",
+      "doi_url": "https://doi.org/10.5281/zenodo.20712301",
+      "state": "published_record",
+      "record_id": 20712301,
+      "concept_doi": "10.5281/zenodo.20712300",
+      "version": "QIKVRT V8.33",
+      "publication_date": "2026-06-16",
+      "native_title": "QIK-VRT: Operationalisierte epistemische Zustandskontrolle und schichtgebundene Evidenzpersistenz",
+      "record_url": "https://zenodo.org/records/20712301",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+    },
+    {
+      "id": "zenodo-record-21244412",
+      "title": "RFC-QIKVRT-0001",
+      "doi": "10.5281/zenodo.21244412",
+      "doi_url": "https://doi.org/10.5281/zenodo.21244412",
+      "state": "published_record",
+      "record_id": 21244412,
+      "concept_doi": "10.5281/zenodo.21244411",
+      "version": "qikvrt-v13.164-28434-5434",
+      "publication_date": "2026-07-07",
+      "native_title": "RFC-QIKVRT-0001",
+      "record_url": "https://zenodo.org/records/21244412",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+    },
+    {
+      "id": "zenodo-record-21245282",
+      "title": "RFC-QIKVRT-0001",
+      "doi": "10.5281/zenodo.21245282",
+      "doi_url": "https://doi.org/10.5281/zenodo.21245282",
+      "state": "published_record",
+      "record_id": 21245282,
+      "concept_doi": "10.5281/zenodo.21244411",
+      "version": "qikvrt-v13.164-1077-22520",
+      "publication_date": "2026-07-07",
+      "native_title": "RFC-QIKVRT-0001",
+      "record_url": "https://zenodo.org/records/21245282",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+    },
+    {
+      "id": "zenodo-record-21245951",
+      "title": "RFC-QIKVRT-0001",
+      "doi": "10.5281/zenodo.21245951",
+      "doi_url": "https://doi.org/10.5281/zenodo.21245951",
+      "state": "published_record",
+      "record_id": 21245951,
+      "concept_doi": "10.5281/zenodo.21244411",
+      "version": "qikvrt-v13.164-9927-19949",
+      "publication_date": "2026-07-07",
+      "native_title": "RFC-QIKVRT-0001",
+      "record_url": "https://zenodo.org/records/21245951",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+    },
+    {
+      "id": "zenodo-record-21247297",
+      "title": "RFC-QIKVRT-0001",
+      "doi": "10.5281/zenodo.21247297",
+      "doi_url": "https://doi.org/10.5281/zenodo.21247297",
+      "state": "published_record",
+      "record_id": 21247297,
+      "concept_doi": "10.5281/zenodo.21244411",
+      "version": "qikvrt-v13.164-32156-13407",
+      "publication_date": "2026-07-07",
+      "native_title": "RFC-QIKVRT-0001",
+      "record_url": "https://zenodo.org/records/21247297",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+    },
+    {
+      "id": "zenodo-record-21247388",
+      "title": "RFC-QIKVRT-0001",
+      "doi": "10.5281/zenodo.21247388",
+      "doi_url": "https://doi.org/10.5281/zenodo.21247388",
+      "state": "published_record",
+      "record_id": 21247388,
+      "concept_doi": "10.5281/zenodo.21244411",
+      "version": "qikvrt-v13.164-1210-14474",
+      "publication_date": "2026-07-07",
+      "native_title": "RFC-QIKVRT-0001",
+      "record_url": "https://zenodo.org/records/21247388",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+    },
+    {
+      "id": "zenodo-record-21252415",
+      "title": "ingolf-lohmann/qik-vrt: QIKVRT V2.13.4 node repository",
+      "doi": "10.5281/zenodo.21252415",
+      "doi_url": "https://doi.org/10.5281/zenodo.21252415",
+      "state": "published_record",
+      "record_id": 21252415,
+      "concept_doi": "10.5281/zenodo.21244411",
+      "version": "v2.13.4-node",
+      "publication_date": "2026-07-08",
+      "native_title": "ingolf-lohmann/qik-vrt: QIKVRT V2.13.4 node repository",
+      "record_url": "https://zenodo.org/records/21252415",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+    },
+    {
+      "id": "zenodo-record-21252649",
+      "title": "ingolf-lohmann/qik-vrt: QIKVRT V2.13.4R node repository",
+      "doi": "10.5281/zenodo.21252649",
+      "doi_url": "https://doi.org/10.5281/zenodo.21252649",
+      "state": "published_record",
+      "record_id": 21252649,
+      "concept_doi": "10.5281/zenodo.21244411",
+      "version": "v2.13.4-node-r",
+      "publication_date": "2026-07-08",
+      "native_title": "ingolf-lohmann/qik-vrt: QIKVRT V2.13.4R node repository",
+      "record_url": "https://zenodo.org/records/21252649",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+    },
+    {
+      "id": "zenodo-record-21266670",
+      "title": "RFC-QIKVRT-0001",
+      "doi": "10.5281/zenodo.21266670",
+      "doi_url": "https://doi.org/10.5281/zenodo.21266670",
+      "state": "published_record",
+      "record_id": 21266670,
+      "concept_doi": "10.5281/zenodo.21244411",
+      "version": "v2.13.4au1-node-productization",
+      "publication_date": "2026-07-08",
+      "native_title": "RFC-QIKVRT-0001",
+      "record_url": "https://zenodo.org/records/21266670",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+    },
+    {
+      "id": "zenodo-record-21267021",
+      "title": "RFC-QIKVRT-0001",
+      "doi": "10.5281/zenodo.21267021",
+      "doi_url": "https://doi.org/10.5281/zenodo.21267021",
+      "state": "published_record",
+      "record_id": 21267021,
+      "concept_doi": "10.5281/zenodo.21244411",
+      "version": "v2.13.4av1-node-open-multi-node",
+      "publication_date": "2026-07-08",
+      "native_title": "RFC-QIKVRT-0001",
+      "record_url": "https://zenodo.org/records/21267021",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+    },
+    {
+      "id": "zenodo-record-21482023",
+      "title": "Mandelbrot-Menge, Anschlussordnung und physikalisches Modelluniversum – Komplementbeweis, rekursive Wirkungsklassifikation, dimensionsrichtige Raumzeitbrücke, Retrokausalität und der entscheidende Unterschied zur empirischen Quantengravitation",
+      "doi": "10.5281/zenodo.21482023",
+      "doi_url": "https://doi.org/10.5281/zenodo.21482023",
+      "state": "published_record",
+      "record_id": 21482023,
+      "concept_doi": "10.5281/zenodo.21482022",
+      "version": "3.0",
+      "publication_date": "2026-07-21",
+      "native_title": "Mandelbrot-Menge, Anschlussordnung und physikalisches Modelluniversum – Komplementbeweis, rekursive Wirkungsklassifikation, dimensionsrichtige Raumzeitbrücke, Retrokausalität und der entscheidende Unterschied zur empirischen Quantengravitation",
+      "record_url": "https://zenodo.org/records/21482023",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+    },
+    {
+      "id": "zenodo-record-21501365",
+      "title": "QIK-VRT: Quellengebundene partielle Lean-4-Formalisierung des 62-seitigen Manuskripts",
+      "doi": "10.5281/zenodo.21501365",
+      "doi_url": "https://doi.org/10.5281/zenodo.21501365",
+      "state": "published_record",
+      "record_id": 21501365,
+      "concept_doi": "10.5281/zenodo.21488115",
+      "version": "2.0.0-alpha.1",
+      "publication_date": "2026-07-23",
+      "native_title": "QIK-VRT: Quellengebundene partielle Lean-4-Formalisierung des 62-seitigen Manuskripts",
+      "record_url": "https://zenodo.org/records/21501365",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+    },
+    {
+      "id": "zenodo-record-21518464",
+      "title": "QIK-VRT: Quellengebundene partielle Lean-4-Formalisierung des 62-seitigen Manuskripts – Alpha 2 mit EFFECT_ACK-Kern",
+      "doi": "10.5281/zenodo.21518464",
+      "doi_url": "https://doi.org/10.5281/zenodo.21518464",
+      "state": "published_record",
+      "record_id": 21518464,
+      "concept_doi": "10.5281/zenodo.21488115",
+      "version": "2.0.0-alpha.2",
+      "publication_date": "2026-07-23",
+      "native_title": "QIK-VRT: Quellengebundene partielle Lean-4-Formalisierung des 62-seitigen Manuskripts – Alpha 2 mit EFFECT_ACK-Kern",
+      "record_url": "https://zenodo.org/records/21518464",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+    },
+    {
+      "id": "zenodo-record-21582781",
+      "title": "Die Ontologie des Unterschieds als universaler Reverse-Engineering-Mechanismus",
+      "doi": "10.5281/zenodo.21582781",
+      "doi_url": "https://doi.org/10.5281/zenodo.21582781",
+      "state": "published_record",
+      "record_id": 21582781,
+      "concept_doi": "10.5281/zenodo.21582780",
+      "version": null,
+      "publication_date": "2026-07-26",
+      "native_title": "Die Ontologie des Unterschieds als universaler Reverse-Engineering-Mechanismus",
+      "record_url": "https://zenodo.org/records/21582781",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+    },
+    {
+      "id": "zenodo-record-21640160",
+      "title": "Vom verantwortungsgebundenen Erkenntnisprozess zur virtuellen Wirkungsmaschine",
+      "doi": "10.5281/zenodo.21640160",
+      "doi_url": "https://doi.org/10.5281/zenodo.21640160",
+      "state": "published_record",
+      "record_id": 21640160,
+      "concept_doi": "10.5281/zenodo.21640159",
+      "version": "1.0.0-2026-07-28",
+      "publication_date": "2026-07-28",
+      "native_title": "Vom verantwortungsgebundenen Erkenntnisprozess zur virtuellen Wirkungsmaschine",
+      "record_url": "https://zenodo.org/records/21640160",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+    },
+    {
+      "id": "zenodo-record-21748371",
+      "title": "QIK-VRT als Kausalitätsspiegel: Ein maschinenverifizierbares Protokoll für wissenschaftliches Faktenwachstum",
+      "doi": "10.5281/zenodo.21748371",
+      "doi_url": "https://doi.org/10.5281/zenodo.21748371",
+      "state": "published_record",
+      "record_id": 21748371,
+      "concept_doi": "10.5281/zenodo.21748370",
+      "version": "1.0.0",
+      "publication_date": "2026-08-01",
+      "native_title": "QIK-VRT als Kausalitätsspiegel: Ein maschinenverifizierbares Protokoll für wissenschaftliches Faktenwachstum",
+      "record_url": "https://zenodo.org/records/21748371",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+    },
+    {
+      "id": "zenodo-record-21804399",
+      "title": "Prä-raumzeitliche Ontologie: Unterschied, Relation, Information und emergente Raumzeit",
+      "doi": "10.5281/zenodo.21804399",
+      "doi_url": "https://doi.org/10.5281/zenodo.21804399",
+      "state": "published_record",
+      "record_id": 21804399,
+      "concept_doi": "10.5281/zenodo.21804398",
+      "version": null,
+      "publication_date": "2026-08-05",
+      "native_title": "Prä-raumzeitliche Ontologie: Unterschied, Relation, Information und emergente Raumzeit",
+      "record_url": "https://zenodo.org/records/21804399",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+    },
+    {
+      "id": "zenodo-record-21983644",
+      "title": "Vom Unterschied zum integrierten Wirkraum",
+      "doi": "10.5281/zenodo.21983644",
+      "doi_url": "https://doi.org/10.5281/zenodo.21983644",
+      "state": "published_record",
+      "record_id": 21983644,
+      "concept_doi": "10.5281/zenodo.21983643",
+      "version": null,
+      "publication_date": "2026-08-17",
+      "native_title": "Vom Unterschied zum integrierten Wirkraum",
+      "record_url": "https://zenodo.org/records/21983644",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+    },
+    {
+      "id": "zenodo-record-22216916",
+      "title": "Relationale Zeit, virtuelle Retrokausalität und die monoton wachsende Evidenzkugel",
+      "doi": "10.5281/zenodo.22216916",
+      "doi_url": "https://doi.org/10.5281/zenodo.22216916",
+      "state": "published_record",
+      "record_id": 22216916,
+      "concept_doi": "10.5281/zenodo.22216915",
+      "version": "1.0",
+      "publication_date": "2026-08-12",
+      "native_title": "Relationale Zeit, virtuelle Retrokausalität und die monoton wachsende Evidenzkugel",
+      "record_url": "https://zenodo.org/records/22216916",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+    },
+    {
+      "id": "zenodo-record-22283396",
+      "title": "From Exact Causal Binding to a Falsifiable Planck-Tick Gap Law",
+      "doi": "10.5281/zenodo.22283396",
+      "doi_url": "https://doi.org/10.5281/zenodo.22283396",
+      "state": "published_record",
+      "record_id": 22283396,
+      "concept_doi": "10.5281/zenodo.22283395",
+      "version": "1.0.0-candidate.1",
+      "publication_date": "2026-09-03",
+      "native_title": "From Exact Causal Binding to a Falsifiable Planck-Tick Gap Law",
+      "record_url": "https://zenodo.org/records/22283396",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+    },
+    {
+      "id": "zenodo-record-22527889",
+      "title": "QIK-VRT VRTCore SMG H5: Planck-Brücke, massive Schließung und virtuelle Kosmogenese",
+      "doi": "10.5281/zenodo.22527889",
+      "doi_url": "https://doi.org/10.5281/zenodo.22527889",
+      "state": "published_record",
+      "record_id": 22527889,
+      "concept_doi": "10.5281/zenodo.22527888",
+      "version": "5.0.0-candidate.1",
+      "publication_date": "2026-08-02",
+      "native_title": "QIK-VRT VRTCore SMG H5: Planck-Brücke, massive Schließung und virtuelle Kosmogenese",
+      "record_url": "https://zenodo.org/records/22527889",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+    },
+    {
+      "id": "zenodo-record-22813431",
+      "title": "Offener Brief und rechtsstaatliches Evidenzdossier — Aufforderung zur unabhängigen juristischen Prüfung",
+      "doi": "10.5281/zenodo.22813431",
+      "doi_url": "https://doi.org/10.5281/zenodo.22813431",
+      "state": "published_record",
+      "record_id": 22813431,
+      "concept_doi": "10.5281/zenodo.22813430",
+      "version": null,
+      "publication_date": "2026-09-17",
+      "native_title": "Offener Brief und rechtsstaatliches Evidenzdossier — Aufforderung zur unabhängigen juristischen Prüfung",
+      "record_url": "https://zenodo.org/records/22813431",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+    },
+    {
+      "id": "zenodo-record-22840633",
+      "title": "Die Wahrheit braucht keine Verschwörungstheorie",
+      "doi": "10.5281/zenodo.22840633",
+      "doi_url": "https://doi.org/10.5281/zenodo.22840633",
+      "state": "published_record",
+      "record_id": 22840633,
+      "concept_doi": "10.5281/zenodo.22840632",
+      "version": "1.0.0",
+      "publication_date": "2026-09-19",
+      "native_title": "Die Wahrheit braucht keine Verschwörungstheorie",
+      "record_url": "https://zenodo.org/records/22840633",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+    },
+    {
+      "id": "zenodo-record-22845516",
+      "title": "Erwartungen, Wetten, Wirkung und Recht",
+      "doi": "10.5281/zenodo.22845516",
+      "doi_url": "https://doi.org/10.5281/zenodo.22845516",
+      "state": "published_record",
+      "record_id": 22845516,
+      "concept_doi": "10.5281/zenodo.22845515",
+      "version": "2.0.0",
+      "publication_date": "2026-09-19",
+      "native_title": "Erwartungen, Wetten, Wirkung und Recht",
+      "record_url": "https://zenodo.org/records/22845516",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+    },
+    {
+      "id": "zenodo-record-22847245",
+      "title": "Das universale Universalprinzip — Grundsatzerklärung von Ingolf Lohmann",
+      "doi": "10.5281/zenodo.22847245",
+      "doi_url": "https://doi.org/10.5281/zenodo.22847245",
+      "state": "published_record",
+      "record_id": 22847245,
+      "concept_doi": "10.5281/zenodo.22847244",
+      "version": "1.0.0",
+      "publication_date": "2026-09-19",
+      "native_title": "Das universale Universalprinzip — Grundsatzerklärung von Ingolf Lohmann",
+      "record_url": "https://zenodo.org/records/22847245",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+    },
+    {
+      "id": "zenodo-record-22907018",
+      "title": "Quantität–Information–Kausalität (QIK): Ein operationales Rahmenmodell für Ereignisstruktur, Kausalordnung und emergente Raumzeit",
+      "doi": "10.5281/zenodo.22907018",
+      "doi_url": "https://doi.org/10.5281/zenodo.22907018",
+      "state": "published_record",
+      "record_id": 22907018,
+      "concept_doi": "10.5281/zenodo.22907017",
+      "version": "2026-09-23-qik-scientific-revision",
+      "publication_date": "2026-09-23",
+      "native_title": "Quantität–Information–Kausalität (QIK): Ein operationales Rahmenmodell für Ereignisstruktur, Kausalordnung und emergente Raumzeit",
+      "record_url": "https://zenodo.org/records/22907018",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json",
+      "public_readback_path": "docs/publications/2026-09-23-qik-scientific-revision/PUBLICATION_READBACK_20261019.json",
+      "public_original_docx_sha256_verified": true,
+      "public_file_count": 8
+    },
+    {
+      "id": "zenodo-record-22941556",
+      "title": "Proof Closure: The Terminal Meta-Condition for an Evidence-Bound Subject",
+      "doi": "10.5281/zenodo.22941556",
+      "doi_url": "https://doi.org/10.5281/zenodo.22941556",
+      "state": "published_record",
+      "record_id": 22941556,
+      "concept_doi": "10.5281/zenodo.22941555",
+      "version": "1.0.0",
+      "publication_date": "2026-09-24",
+      "native_title": "Proof Closure: The Terminal Meta-Condition for an Evidence-Bound Subject",
+      "record_url": "https://zenodo.org/records/22941556",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+    },
+    {
+      "id": "zenodo-record-22955727",
+      "title": "Der ontologische Vorrang des Unterschieds: Ein maschinenprüfbares Minimaltheorem über Bestimmbarkeit, Information und den Geltungsbereich formaler Welterklärungen",
+      "doi": "10.5281/zenodo.22955727",
+      "doi_url": "https://doi.org/10.5281/zenodo.22955727",
+      "state": "published_record",
+      "record_id": 22955727,
+      "concept_doi": "10.5281/zenodo.22955726",
+      "version": "1.0.0",
+      "publication_date": "2026-09-25",
+      "native_title": "Der ontologische Vorrang des Unterschieds: Ein maschinenprüfbares Minimaltheorem über Bestimmbarkeit, Information und den Geltungsbereich formaler Welterklärungen",
+      "record_url": "https://zenodo.org/records/22955727",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+    },
+    {
+      "id": "zenodo-record-23008330",
+      "title": "Abgeschlossen und anschlussfähig: bedingte Formalisierung evidenzgebundener Zustandsarchitekturen",
+      "doi": "10.5281/zenodo.23008330",
+      "doi_url": "https://doi.org/10.5281/zenodo.23008330",
+      "state": "published_record",
+      "record_id": 23008330,
+      "concept_doi": "10.5281/zenodo.23008329",
+      "version": "0.1-archive-20260928",
+      "publication_date": "2026-09-28",
+      "native_title": "Abgeschlossen und anschlussfähig: bedingte Formalisierung evidenzgebundener Zustandsarchitekturen",
+      "record_url": "https://zenodo.org/records/23008330",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
+    },
+    {
+      "id": "zenodo-record-23008704",
+      "title": "Spur halten: Quality Gates für einen portablen Universal Transputer",
+      "doi": "10.5281/zenodo.23008704",
+      "doi_url": "https://doi.org/10.5281/zenodo.23008704",
+      "state": "published_record",
+      "record_id": 23008704,
+      "concept_doi": "10.5281/zenodo.23008703",
+      "version": "0.1-20260928",
+      "publication_date": "2026-09-28",
+      "native_title": "Spur halten: Quality Gates für einen portablen Universal Transputer",
+      "record_url": "https://zenodo.org/records/23008704",
+      "corpus_coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json"
     }
   ],
   "ietf_documents": [
@@ -482,7 +1035,80 @@
           "sha256": "ac074a4f1e8a8ceada94e4b2c0817af56e8c3612f179b05b69ce71f1e3156b87"
         }
       },
-      "boundary": "Lokaler Entwurfs- und Rendering-Satz; nicht beim IETF Datatracker eingereicht."
+      "boundary": "Lokaler Entwurfs- und Rendering-Satz; nicht beim IETF Datatracker eingereicht.",
+      "candidate_locations": [
+        "original-archive:zenodo/21731492/draft-lohmann-qikvrt-epistemic-fairness-observation-profile-00.txt",
+        "original-archive:zenodo/21731492/draft-lohmann-qikvrt-epistemic-fairness-observation-profile-00.xml",
+        "original-archive:zenodo/21731492/draft-lohmann-qikvrt-epistemic-fairness-observation-profile-00.html"
+      ]
+    },
+    {
+      "id": "draft-lohmann-qikvrt-temporal-provenance-00",
+      "title": "draft-lohmann-qikvrt-temporal-provenance-00",
+      "state": "candidate_not_submitted",
+      "evidence_path": "docs/publications/2026-08-12-observer-relative-retrocausality/ietf-temporal-provenance-00-candidate/README.md",
+      "boundary": "Local prepared candidate only; not an IETF submission, RFC or IETF consensus.",
+      "candidate_locations": [
+        "docs/publications/2026-08-12-observer-relative-retrocausality/ietf-temporal-provenance-00-candidate/draft-lohmann-qikvrt-temporal-provenance-00.xml"
+      ]
+    },
+    {
+      "id": "draft-lohmann-qikvrt-local-change-time-00",
+      "title": "draft-lohmann-qikvrt-local-change-time-00",
+      "state": "candidate_not_submitted",
+      "evidence_path": "docs/publications/2026-08-12-observer-relative-retrocausality/ietf-local-change-time-provenance-00-current-synthesis-candidate/README.md",
+      "boundary": "Local prepared candidate only; not an IETF submission, RFC or IETF consensus.",
+      "candidate_locations": [
+        "docs/publications/2026-08-12-observer-relative-retrocausality/ietf-local-change-time-provenance-00-current-synthesis-candidate/draft-lohmann-qikvrt-local-change-time-00.html",
+        "docs/publications/2026-08-12-observer-relative-retrocausality/ietf-local-change-time-provenance-00-current-synthesis-candidate/draft-lohmann-qikvrt-local-change-time-00.txt",
+        "docs/publications/2026-08-12-observer-relative-retrocausality/ietf-local-change-time-provenance-00-current-synthesis-candidate/draft-lohmann-qikvrt-local-change-time-00.xml"
+      ]
+    },
+    {
+      "id": "draft-lohmann-qikvrt-epistemic-status-00",
+      "title": "draft-lohmann-qikvrt-epistemic-status-00",
+      "state": "published_internet_draft",
+      "official_url": "https://www.ietf.org/archive/id/draft-lohmann-qikvrt-epistemic-status-00.txt",
+      "corpus_readback_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/PUBLIC_CORPUS_RECONCILIATION.json",
+      "boundary": "Individual Internet-Draft; work in progress; not an RFC or IETF consensus."
+    },
+    {
+      "id": "draft-lohmann-qikvrt-effect-ack-http-00",
+      "title": "draft-lohmann-qikvrt-effect-ack-http-00",
+      "state": "local_candidate_no_public_posting_observed",
+      "boundary": "Local preparation or Zenodo-archived source; no public IETF posting found in the complete native person/author and submission readback. Not an additional published IETF document.",
+      "candidate_locations": [
+        "external/ietf/draft-lohmann-qikvrt-effect-ack-http-00.xml"
+      ]
+    },
+    {
+      "id": "draft-lohmann-qikvrt-effect-ack-http-01",
+      "title": "draft-lohmann-qikvrt-effect-ack-http-01",
+      "state": "local_candidate_no_public_posting_observed",
+      "boundary": "Local preparation or Zenodo-archived source; no public IETF posting found in the complete native person/author and submission readback. Not an additional published IETF document.",
+      "candidate_locations": [
+        "original-archive:zenodo/21983644/draft-lohmann-qikvrt-effect-ack-http-01.xml"
+      ]
+    },
+    {
+      "id": "draft-lohmann-qikvrt-scientific-claim-assurance-00",
+      "title": "draft-lohmann-qikvrt-scientific-claim-assurance-00",
+      "state": "local_candidate_no_public_posting_observed",
+      "boundary": "Local preparation or Zenodo-archived source; no public IETF posting found in the complete native person/author and submission readback. Not an additional published IETF document.",
+      "candidate_locations": [
+        "original-archive:zenodo/21748371/draft-lohmann-qikvrt-scientific-claim-assurance-00.html",
+        "original-archive:zenodo/21748371/draft-lohmann-qikvrt-scientific-claim-assurance-00.xml",
+        "original-archive:zenodo/21748371/draft-lohmann-qikvrt-scientific-claim-assurance-00.txt"
+      ]
+    },
+    {
+      "id": "draft-lohmann-repository-capability-protocol-00",
+      "title": "draft-lohmann-repository-capability-protocol-00",
+      "state": "local_candidate_no_public_posting_observed",
+      "boundary": "Local preparation or Zenodo-archived source; no public IETF posting found in the complete native person/author and submission readback. Not an additional published IETF document.",
+      "candidate_locations": [
+        "external/ietf/draft-lohmann-repository-capability-protocol-00.md"
+      ]
     }
   ],
   "truth_boundaries": [
@@ -504,5 +1130,23 @@
       "docs/CURRENT_AUTHORITY.md"
     ],
     "verification_test": "python3 -B -m unittest -v tests.test_qikvrt_self_disclosure"
-  }
+  },
+  "editorial_navigation": {
+    "topics_path": "docs/news/topics.json",
+    "index_path": "docs/news/index.html",
+    "canonical_url": "https://raumzeitterminal.de/news/",
+    "reachable_site_origin_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/news/",
+    "topic_ids": [
+      "zutrittskontrolle",
+      "kuenstliche-intelligenz",
+      "physik"
+    ],
+    "boundary": "Thematische Navigation; archivierte Originalfassungen und bestehende Eintragsmetadaten bleiben erhalten. Kein Nachweis der Auslieferung auf der Produktdomain."
+  },
+  "verified_public_corpus": {
+    "coverage_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json",
+    "metadata_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/zenodo_inventory_confirmed.json",
+    "readback_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/PUBLIC_CORPUS_RECONCILIATION.json"
+  },
+  "authority_repository": "ingolf-lohmann/qik-vrt"
 }

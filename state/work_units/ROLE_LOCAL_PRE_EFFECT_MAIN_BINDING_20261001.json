@@ -1,0 +1,74 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "ROLE_LOCAL_PRE_EFFECT_MAIN_BINDING_20261001",
+  "created_at": "2026-10-01T00:12:22.416876+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "main",
+  "source_commit": "7dde2035f07bb537796dac5d83701dba73fe110b",
+  "source_tree": "87e265c2a849672103256bc4f5cdafae27d24147",
+  "human_actor": "Ingolf Lohmann",
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6",
+    "session_or_run_id": "UNAVAILABLE"
+  },
+  "human_contributions": [
+    "Explicit repair, commit, push and merge authorization in the current conversation"
+  ],
+  "artificial_cognitive_contributions": [
+    "Diagnosed Authority-origin comparison in Mirror local repair admission",
+    "Implemented policy-bound role-local origin main comparison and negative regression controls"
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "inputs": {
+    "failing_run": 36788799321,
+    "job": 110136489061,
+    "artifact": 11131185041,
+    "failure": "canonical source remote URL mismatch"
+  },
+  "outputs": [
+    "tools/qikvrt_autonomous_pre_effect_controller.py",
+    "tests/test_qikvrt_autonomous_pre_effect_controller.py",
+    ".github/workflows/qikvrt_autonomous_self_heal.yml"
+  ],
+  "git_history": {
+    "force_push": false,
+    "history_rewrite": false,
+    "subject_binding": "Containing Git commit and tree"
+  },
+  "verification": {
+    "focused_tests": {
+      "count": 39,
+      "result": "PASS",
+      "scope": "Local controller/self-heal/promotion contracts"
+    },
+    "hosted_executor_effect": "PENDING",
+    "independent_authority_readback": "HOLD_UNVERIFIED",
+    "make_test": {
+      "result": "PASS",
+      "scope": "Local complete Makefile test target; historical source commit fetched without modifying tests"
+    },
+    "local_remote_readback": {
+      "result": "PASS",
+      "remote": "origin",
+      "main": "7dde2035f07bb537796dac5d83701dba73fe110b",
+      "observed_at": "2026-10-01T00:16:47.434727+00:00"
+    }
+  },
+  "human_decision": {
+    "repair_commit_push_merge": "AUTHORIZED",
+    "native_review": "NOT_INFERRED"
+  },
+  "external_effects": {
+    "release": false,
+    "deployment": false,
+    "publication": false
+  },
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false
+  }
+}

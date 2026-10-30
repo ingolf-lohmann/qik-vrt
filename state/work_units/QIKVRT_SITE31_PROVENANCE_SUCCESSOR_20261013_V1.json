@@ -1,0 +1,892 @@
+{
+  "schema": "qikvrt_site_publication_provenance_successor_work_unit_v1",
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "classification": "operational_repository_work_unit"
+  },
+  "work_unit_id": "QIKVRT_SITE31_PROVENANCE_SUCCESSOR_20261013_V1",
+  "created_at_utc": "2026-10-13T07:19:17.457993+00:00",
+  "classification": "OPERATIONAL_SITE_PUBLICATION_AND_REPAIR_PROVENANCE_NOT_SCIENTIFIC_PUBLICATION",
+  "authority_repository": "ingolf-lohmann/qik-vrt",
+  "mirror_repository": "Goldkelch/qik-vrt",
+  "source_pr": 523,
+  "source_ref": "integration/515-519-521-522-20261012-eceb9b63",
+  "source_commit": "08f9c54a8e391bd1632a95e7800f55e329fc2c4f",
+  "source_tree": "d1278194b8836f855246948651fa4cbbf1760dd1",
+  "human_actor": {
+    "attribution_id": "Ingolf Lohmann",
+    "roles": [
+      "Product Owner",
+      "Code Owner"
+    ],
+    "identity_evidence": "DIRECT_OWNER_TASK_NOT_INDEPENDENT_BIOMETRIC_PROOF"
+  },
+  "human_contributions": [
+    {
+      "kind": "AUTHORIZATION",
+      "text": "Übernimm den bereits geprüften Veröffentlichungs- und Reparaturnachweis der Site-Version 31 in die bestehende QIK-VRT-Provenienzkette. Historische Version-30-Nachweise unverändert erhalten; bestehenden Repository-Integrationsweg verwenden."
+    }
+  ],
+  "artificial_cognitive_contributions": [
+    "Exact current PR/Work-Unit and Library-byte comparison",
+    "Verification of actual Site source objects, all nine changed file digests and reproduction of its root tree from the exact source delta",
+    "Append-only predecessor/successor binding, inherited obligation preservation, existing integrity and client gates, authenticated REST write/readback"
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "human_decision": "AUTHORIZED_EXISTING_PR_PROVENANCE_INTEGRATION",
+  "predecessors": [
+    {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "head": "08f9c54a8e391bd1632a95e7800f55e329fc2c4f",
+      "tree": "d1278194b8836f855246948651fa4cbbf1760dd1",
+      "path": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json",
+      "bytes": 15751,
+      "sha256": "cf3af7fb0ab8d9e5193ff4d4520b6034509771a5513adaa655cf6cf47ba5ca4a",
+      "git_blob_sha1": "a5faa4cebbee7ffcdc5ff2687949b1788c91f3ff",
+      "preserved_byte_exact": true
+    },
+    {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "head": "08f9c54a8e391bd1632a95e7800f55e329fc2c4f",
+      "tree": "d1278194b8836f855246948651fa4cbbf1760dd1",
+      "path": "state/work_units/QIKVRT_IMMEDIATE_EXECUTION_20261013_V1.json",
+      "bytes": 7851,
+      "sha256": "99efcff7d62ee39966dfa2f719897b16cb83370bb01d981dccf87293c323a43f",
+      "git_blob_sha1": "46c97e8cbd51c4c4f54926a3e99f20b4560947a3",
+      "preserved_byte_exact": true
+    }
+  ],
+  "predecessor_policy": "Both repository Work Units and all older evidence remain byte-identical. New publication evidence lives in this successor; no predecessor PASS is transferred.",
+  "original_report": {
+    "path": "evidence/receipts/QIKVRT_SITE31_PROVENANCE_20261013_V1/QIKVRT_Site30_Nutzpfadpruefung_20261013.json",
+    "bytes": 458243,
+    "sha256": "34c5ba6be739bd8fc06a381e00c94664039d14c853c14998c615fc1f6353fdbb",
+    "git_blob_sha1": "18994545b56ff45d5f0b05dc5f828bdf1cfa5d4c",
+    "library_file_id": "libfile_f335f42b43cc81919ace50052e229cf0",
+    "file_id": "file_00000000bb5c820a80f23e523160cc01",
+    "library_version_number": 2,
+    "original_schema": "QIKVRT_SITE30_USE_PATH_VERIFICATION_20261013_V1",
+    "classification": "OPERATIONAL_FUNCTIONAL_VERIFICATION_AND_REPAIR_NOT_SCIENTIFIC_PUBLICATION",
+    "last_updated_at_utc": "2026-10-13T06:10:48.027074+00:00"
+  },
+  "site_successor": {
+    "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+    "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site",
+    "site_version": 31,
+    "source_head": "4179d18907e71da125ba51a1a7250dfea82590e6",
+    "source_tree": "ad09e2626b32893e0328534bf0737934d4a25538",
+    "source_parent": "0e8124d6ff8494532d8f627bba89daef2f867489",
+    "source_predecessor_tree": "7ea5ac09e969060625e1538b22e40377fe37280a",
+    "version_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea~appgver_761d40275e448191bd10ab27a453e88d",
+    "deployment": {
+      "id": "appgdep_6acdc3e5f19c81918728e6032f58b864",
+      "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+      "title": "QIK-VRT · Mesh Monitor · Scheibenhard",
+      "version_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea~appgver_761d40275e448191bd10ab27a453e88d",
+      "type": "publish",
+      "status": "succeeded",
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site",
+      "has_mcp": true,
+      "screenshot_asset_pointer": null,
+      "provider_deployment_id": "site---6ac4018a3e0c8191a06187c296d6c7ea",
+      "failure_message": null,
+      "env_set_revision": 4,
+      "updated_at": "2026-10-13T05:39:05.974664+00:00"
+    },
+    "fresh_native_deployment_readback": {
+      "path": "evidence/receipts/QIKVRT_SITE31_PROVENANCE_20261013_V1/site31-native-deployment.json",
+      "bytes": 660,
+      "sha256": "31adba3959fca019d87f4792e77b3da0df23bc0a789d6e2ab745e4afc2ee3c04",
+      "git_blob_sha1": "64d1c4ed38d3c8505489f7c2bf3192d1b07426e5"
+    },
+    "archive_storage": {
+      "archive_format": "tar",
+      "sediment_file_id": "file_00000000ab8c820aae5d9e810012bbe7",
+      "content_hash": "sha256:798215f9499d7a1b09462af2cf7fd1eecf413a8099f49a41884ee0f52423b407",
+      "size_bytes": 123228160,
+      "file_count": 163
+    },
+    "source_work_unit_locator": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json#use_path_successor_20261013",
+    "changed_source_files": [
+      {
+        "path": "app/page.tsx",
+        "bytes": 38063,
+        "sha256": "7a0ee4fe45989aceb1169f5f894cc6012e71462dbedf3dae6148fafd56bc7a62",
+        "git_blob_sha1": "ad57afe284908ab51946f71de7ae0d1dddacf04d",
+        "predecessor_bytes": 38053,
+        "predecessor_sha256": "ebee891142db8271ce8fa860ce7f9b6746eecf52d74c27e573d98dd89742e3ca",
+        "predecessor_git_blob_sha1": "21976e0c4f561833c5463ad686978ffd6f71ff8f"
+      },
+      {
+        "path": "lib/offline-client-hosting.ts",
+        "bytes": 4667,
+        "sha256": "70a251c58525af4443b477eb4ddfa8a102f64c8cb2a52a49a8f4022adc848405",
+        "git_blob_sha1": "6742a9a0a2653c27c2ac78f5789085160befbfdc",
+        "predecessor_bytes": 4551,
+        "predecessor_sha256": "a18139bf23149d99693b1ebef72d672ff87846bfdec3ba2a03da08ca065ec090",
+        "predecessor_git_blob_sha1": "1988ffb10129646c9747289045391a13870ffaa8"
+      },
+      {
+        "path": "public/AI",
+        "bytes": 1712,
+        "sha256": "515813d303cb744b5ff94489d55c4dd48b603a316e14e84bd352dad38a69f89f",
+        "git_blob_sha1": "88b7838fdb6f31c39ddc8da468c08eb166e2ff4d",
+        "predecessor_bytes": 1704,
+        "predecessor_sha256": "9bffa44c68429fa093e29783f92037e5a341c3119a69c907fdb256d5c0773352",
+        "predecessor_git_blob_sha1": "d3466c5d21f51a9e2130a11b9e1eb43745766076"
+      },
+      {
+        "path": "public/mesh-sw.js",
+        "bytes": 2463,
+        "sha256": "84127c825221336d12b9d1d3efc6ddc76067d9143259d42ba47104a3fba4b7c6",
+        "git_blob_sha1": "36367b2540515e5faca8c1c3b385ee1e8e248f66",
+        "predecessor_bytes": 2347,
+        "predecessor_sha256": "bffe653b8fb52f268845e019d1f12bda7d9faa6a916dc79112c33d3f473dc80d",
+        "predecessor_git_blob_sha1": "355778052f038e081a2a16c4fdc8257ec99662c4"
+      },
+      {
+        "path": "scripts/build-offline-shell.mjs",
+        "bytes": 1732,
+        "sha256": "c80376e8c7ccdce53b0c7bf35d2579921c5656a1ffc98d20724aa71bd917eb57",
+        "git_blob_sha1": "c53b2bea22b50fd459eb9f279ba30a2fcc9ad548",
+        "predecessor_bytes": 1459,
+        "predecessor_sha256": "cde7a84349362beb26ca8271c741b806738ad26efcd7bd7e06d85380247c8cf4",
+        "predecessor_git_blob_sha1": "ace5f3da194faa46b9d2103960e9adfacd5eda2b"
+      },
+      {
+        "path": "scripts/verify-evidence.mjs",
+        "bytes": 33844,
+        "sha256": "b92dcaf02a1741c013c6d35475283d9740042419455bfb1687db763e405715ba",
+        "git_blob_sha1": "b347ff3e8aa1c281354eb0ec24d5b92aef404a70",
+        "predecessor_bytes": 31770,
+        "predecessor_sha256": "2533fef2c8d9ec17dd05d9bbe9e2b8de9aaee3b41a3572d5d3874f13e5a433b3",
+        "predecessor_git_blob_sha1": "6d74007993a923e43c634610b0ab748ca2cc32e6"
+      },
+      {
+        "path": "scripts/verify-offline.mjs",
+        "bytes": 3614,
+        "sha256": "a479a442e784be411d17a3bbe2c35510b7403b259a5be0874cf8106d37b43c5a",
+        "git_blob_sha1": "1ac653555a6b20569c69e9b20da45a7b0851bd25",
+        "predecessor_bytes": 2678,
+        "predecessor_sha256": "7cf63d26f469fa812721e9eebfbf0d9eb09e568acadbf52db95321651833dd2e",
+        "predecessor_git_blob_sha1": "dda286ec08486cd31fea9deb4e3d6cebf7f41b75"
+      },
+      {
+        "path": "state/UPDATE_CONTRACT.json",
+        "bytes": 5681,
+        "sha256": "95cc3abdf852d997aaf8d87a465e92463593872ecc0a5547ec07d6578a8c9bfe",
+        "git_blob_sha1": "9afce13ba0dc43509f9e548a7dff8cff84b5130a",
+        "predecessor_bytes": 5470,
+        "predecessor_sha256": "aa732ac555c8385111e46d62d023fac13016f3520f31db4fbecd331ed857829a",
+        "predecessor_git_blob_sha1": "11013e0183f4cb09511fcfdfb9573d66a1a491c5"
+      },
+      {
+        "path": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json",
+        "bytes": 28909,
+        "sha256": "3e27f2f1a93c71dc4c3361af8f6727603594f4c20b8a8d2d2cd7672aab1cf0db",
+        "git_blob_sha1": "23e59d9fc574a50d1a364808422a888e76169985",
+        "predecessor_bytes": 2679,
+        "predecessor_sha256": "ba39b5bbe4df2b51cf7e0ba7a8aa2647b92c20a73ae6ac24d0d06648d232a5c9",
+        "predecessor_git_blob_sha1": "18e554babe51d8403ba8e4a94de2ef423cdd02d0"
+      }
+    ],
+    "source_delta_patch": {
+      "path": "evidence/receipts/QIKVRT_SITE31_PROVENANCE_20261013_V1/site31-source-delta.patch",
+      "bytes": 47552,
+      "sha256": "b9844982c6f410b8f27676e5aece89e489420f212cb3095a02ab9a2ce56c51f0",
+      "git_blob_sha1": "c0dc88261d2cec114c710e0597865d5ed53216db"
+    },
+    "exact_site_source_not_authority_head": true,
+    "repair_cases": [
+      {
+        "id": "AI_EVIDENCE_ENTRYPOINT",
+        "baseline_failure": "public/AI pointed to /#/evidence; root serves the static public homepage",
+        "repair": "Use /monitor/#/evidence",
+        "original_reproduction": "AssertionError before product mutation; live /AI bytes matched predecessor source"
+      },
+      {
+        "id": "REACT_MONITOR_OFFLINE_SHELL",
+        "baseline_failure": "The service worker did not intercept /monitor and cached only /",
+        "repair": "Cache /monitor/ and select its own installed shell for /monitor, /monitor/ and query variants",
+        "original_reproduction": "Expanded existing scripts/verify-offline.mjs failed on /monitor before product mutation"
+      },
+      {
+        "id": "AI_INLINE_CONTENT_TYPE",
+        "baseline_failure": "Live /AI GET returned application/octet-stream",
+        "repair": "Existing hosting adapter serves text/plain with nosniff; build removes the duplicate static AI asset",
+        "verification": "Actual unchanged working-rule bytes, GET/HEAD body semantics and POST 405 checked; post-deployment HTTP required"
+      },
+      {
+        "id": "OPERATOR_RETURN_PATH",
+        "baseline_failure": "Conditional operator sign-in returned to /#/terminal despite the React app being hosted at /monitor/",
+        "repair": "Keep the existing sign-in flow and correct return_to to /monitor/#/terminal",
+        "verification": "Source/route regression; authenticated operator flow remains unexecuted because no operator/runtime is configured"
+      }
+    ],
+    "repair_execution_checks": {
+      "typescript": "PASS",
+      "evidence_regressions": "PASS",
+      "mcp_regressions": "PASS",
+      "offline_monitor_shell_regressions": "PASS",
+      "editorial_tests": {
+        "passed": 10
+      },
+      "unchanged_repository_terminal_tests": {
+        "passed": 5,
+        "source_blob": "993e3c8005273c639328b5718b039f0d168f521a",
+        "scope": "Actual Site files; deterministic DOM/HTTP fixture; two repository-only sitemap/home tests excluded"
+      },
+      "production_build": "PASS",
+      "built_static_AI_asset_removed": true
+    },
+    "post_deployment_http_readbacks": [
+      {
+        "path": "/",
+        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/",
+        "status": 200,
+        "final_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/",
+        "content_type": "text/html",
+        "bytes": 17377,
+        "sha256": "8b1346472271497c37919d153dd9d465741f887caf2e869131bf20a72673b80f",
+        "saved_file": "/workspace/scratch/d58601f79826/postdeploy/root",
+        "observed_at": "2026-10-13T05:40:55.098828+00:00"
+      },
+      {
+        "path": "/terminal/",
+        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/terminal/",
+        "status": 200,
+        "final_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/terminal/",
+        "content_type": "text/html",
+        "bytes": 16137,
+        "sha256": "6cb665d5feb3e5716a457beb85d507646daaa37d96ace49cdc8e14ea18a92fb8",
+        "saved_file": "/workspace/scratch/d58601f79826/postdeploy/terminal",
+        "observed_at": "2026-10-13T05:40:55.159296+00:00"
+      },
+      {
+        "path": "/monitor/",
+        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/monitor/",
+        "status": 200,
+        "final_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/monitor",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 27580,
+        "sha256": "157e8a17f9c2fe48f8383d543bf3592561a557c275258c3a18b32bfa67f6ca5f",
+        "saved_file": "/workspace/scratch/d58601f79826/postdeploy/monitor",
+        "observed_at": "2026-10-13T05:40:59.195265+00:00"
+      },
+      {
+        "path": "/AI",
+        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/AI",
+        "status": 200,
+        "final_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/AI",
+        "content_type": "text/plain; charset=utf-8",
+        "bytes": 1712,
+        "sha256": "515813d303cb744b5ff94489d55c4dd48b603a316e14e84bd352dad38a69f89f",
+        "saved_file": "/workspace/scratch/d58601f79826/postdeploy/AI",
+        "observed_at": "2026-10-13T05:40:55.192835+00:00"
+      },
+      {
+        "path": "/mesh-sw.js",
+        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/mesh-sw.js",
+        "status": 200,
+        "final_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/mesh-sw.js",
+        "content_type": "text/javascript",
+        "bytes": 2541,
+        "sha256": "ff02681b288853f46fe6b15860a1bc1e56c739b0d802270737bf50c7737ab1b6",
+        "saved_file": "/workspace/scratch/d58601f79826/postdeploy/mesh-sw.js",
+        "observed_at": "2026-10-13T05:40:59.196889+00:00"
+      },
+      {
+        "path": "/api/evidence",
+        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/evidence",
+        "status": 200,
+        "final_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/evidence",
+        "content_type": "application/json",
+        "bytes": 14767,
+        "sha256": "5ab8f4857c36ab3a01d936537f027c356eec9030218bc279523af7f22b80634c",
+        "saved_file": "/workspace/scratch/d58601f79826/postdeploy/api_evidence",
+        "observed_at": "2026-10-13T05:41:00.016314+00:00"
+      },
+      {
+        "path": "/api/mesh/terminal",
+        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/mesh/terminal",
+        "status": 200,
+        "final_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/mesh/terminal",
+        "content_type": "application/json",
+        "bytes": 847,
+        "sha256": "0b75927aa32b50bd09e257700620dfa6c7afecd41fd1f13f0b7de29b9334ddf5",
+        "saved_file": "/workspace/scratch/d58601f79826/postdeploy/api_mesh_terminal",
+        "observed_at": "2026-10-13T05:40:59.196398+00:00"
+      },
+      {
+        "path": "/offline/",
+        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/offline/",
+        "status": 200,
+        "final_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/offline/",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 1043,
+        "sha256": "2281a5a5cabacad9f2278b34fa4d978d8c2669b13fbb3bd4c2e05aafe43940b3",
+        "saved_file": "/workspace/scratch/d58601f79826/postdeploy/offline",
+        "observed_at": "2026-10-13T05:41:03.761172+00:00"
+      }
+    ],
+    "dependent_assets_and_parent_readback": {
+      "assets_and_original_parent_readback": [
+        {
+          "path": "/_next/static/css/index.CTgxNWr7.css",
+          "status": 200,
+          "content_type": "text/css",
+          "bytes": 161008,
+          "sha256": "78cf31a92bab9a731ab53bf4d732a23a26219ce67c986a14ed4b562372de3368",
+          "observed_at": "2026-10-13T05:42:45.237318+00:00",
+          "matches_built_asset": true
+        },
+        {
+          "path": "/_next/static/chunks/rolldown-runtime-C60lm6uB.js",
+          "status": 200,
+          "content_type": "text/javascript",
+          "bytes": 694,
+          "sha256": "5db5ba82eef00d1dee7e86e663098c9427d01183a88d357437daff295aec3e75",
+          "observed_at": "2026-10-13T05:42:45.146818+00:00",
+          "matches_built_asset": true
+        },
+        {
+          "path": "/_next/static/chunks/framework-D_rUT4EX.js",
+          "status": 200,
+          "content_type": "text/javascript",
+          "bytes": 190152,
+          "sha256": "939d0fabebb3b2f01753bb866b067d8d3384fb06da19f0e6557609d3b1a9f4f7",
+          "observed_at": "2026-10-13T05:42:45.179067+00:00",
+          "matches_built_asset": true
+        },
+        {
+          "path": "/_next/static/chunks/index-Dmlujm3N.js",
+          "status": 200,
+          "content_type": "text/javascript",
+          "bytes": 199569,
+          "sha256": "abe3fefad8442851ebd55faef55c1ba4c91c7b702de62940a118e3f20218f343",
+          "observed_at": "2026-10-13T05:42:45.295493+00:00",
+          "matches_built_asset": true
+        },
+        {
+          "path": "/api/readback?id=fecd6a79-5fa7-49a8-b336-2972719ce74f",
+          "status": 200,
+          "content_type": "application/json; charset=utf-8",
+          "bytes": 12754,
+          "sha256": "dfab516d7dde851a8672512882922371c49bc9ddf80c2deb9d4e10ca6f50e370",
+          "observed_at": "2026-10-13T05:42:50.202443+00:00",
+          "expected_sha256": "dfab516d7dde851a8672512882922371c49bc9ddf80c2deb9d4e10ca6f50e370",
+          "hash_match": true,
+          "header_match": true
+        },
+        {
+          "path": "/api/readback?id=b4d5d370-9eb8-43b7-959e-8a1b17b49a3a",
+          "status": 200,
+          "content_type": "application/json; charset=utf-8",
+          "bytes": 12522,
+          "sha256": "f82bc0af135de43d92841feb24276adbd9003e066d60330b77214f803401a57d",
+          "observed_at": "2026-10-13T05:42:50.180623+00:00",
+          "expected_sha256": "f82bc0af135de43d92841feb24276adbd9003e066d60330b77214f803401a57d",
+          "hash_match": true,
+          "header_match": true
+        }
+      ],
+      "all_pass": true,
+      "AI_source_byte_exact": true,
+      "service_worker_built_byte_exact": true,
+      "browser_qa": false
+    },
+    "actual_client_verifier": {
+      "proof": {
+        "state": "VERIFIED",
+        "snapshot_id": "fecd6a79-5fa7-49a8-b336-2972719ce74f",
+        "sha256": "dfab516d7dde851a8672512882922371c49bc9ddf80c2deb9d4e10ca6f50e370",
+        "bytes": 12754,
+        "verified_at": "2026-10-13T05:42:44.119Z"
+      },
+      "runtime_view": {
+        "counts": {
+          "total": 2,
+          "healthy": 0,
+          "degraded": 0,
+          "unavailable": 0,
+          "unknown": 2,
+          "repository_readable": 0
+        },
+        "health": "UNKNOWN",
+        "coverage_percent": 0,
+        "median_latency_ms": null
+      },
+      "scope": "PUBLISHED_VERSION31_ACTUAL_CLIENT_VERIFIER_IN_NODE_AGAINST_PUBLIC_HTTP_NOT_BROWSER_QA"
+    },
+    "independent_functional_readback": {
+      "execution_id": "QIKVRT_SITE31_INDEPENDENT_READBACK_20261013_388655ef4a85",
+      "verified_at_utc": "2026-10-13T05:54:36.780437+00:00",
+      "report_locator": "evidence/receipts/QIKVRT_SITE31_PROVENANCE_20261013_V1/QIKVRT_Site30_Nutzpfadpruefung_20261013.json#independent_successor_readback",
+      "exact_source_regression_executions": [
+        {
+          "subject": "0e8124d6ff8494532d8f627bba89daef2f867489",
+          "site_version": 30,
+          "executed_at": "2026-10-13T05:48:25.634261+00:00",
+          "results": [
+            {
+              "command": [
+                "node",
+                "scripts/verify-evidence.mjs"
+              ],
+              "exit_code": 0,
+              "stdout": "PASS: fixed exact-domain recursive DNS readback, question/type binding and original-response hashes; access denial and wrong-domain answers remain UNKNOWN and conflicting evidence is preserved.\nPASS: bounded error-response diagnosis, exact error-byte hashes, provider rate-limit evidence, unclassified 403, safe metadata and absence of reflected IP/body data.\nPASS: persisted provider deadlines prevent early requests, survive serialization, preserve historical timestamps, expire without extension and resume a fresh exact repository read.\nPASS: unchanged 401/403/404 produce NOOP across serialized refreshes, preserve original evidence and require a materially changed source/access before recovery.\nPASS: HTTP failures, redirects, timeouts, invalid API data and independent runtime acceptance boundary.\nPASS: self-application carries exact-subject duties and SHA-256 parent binding, rejects lost nodes/alternate-host/HTTP-only acceptance, and suppresses effect retries after unchanged observations or unrelated lifecycle changes.\nPASS: variable Node discovery and deduplication (2/3/9/66 nodes), Mirror fallback, exact-head source binding, unknown/stale/misbound Runtime states, mesh-only terminal scope and Structured Field commit binding.\nPASS: immutable Mesh input binding, mesh-owned idempotency capability, mismatched acknowledgement rejection and automatic readback after interrupted delivery without duplicate effect POST.\nPASS: independent client byte hash, complete snapshot binding, altered bytes/content rejection, header mismatch, HTTP and format failures, no promotion of an unverified server claim, exact pretty-JSON hash and out-of-order observation rejection.\nPASS: each Runtime expires independently during a fresh monitor interval, metrics/latency lose current authority, future and unbound samples remain UNKNOWN, incomplete registry prevents overall HEALTHY, owner role assignment does not claim native activation.\nPASS: 200 repeated offline document reads and persisted JSON restart roundtrips preserve original content/time, including after original journal entry eviction; no fresh-cloud/effect claim.\nPASS: legacy nested readback recovery and rejection of cyclic or invalid-time provenance.\nPASS: retained article atlas links resolve through bounded GET/HEAD redirects to the existing publication index.\n",
+              "stderr": "..........\n----------------------------------------------------------------------\nRan 10 tests in 0.158s\n\nOK\n"
+            },
+            {
+              "command": [
+                "node",
+                "scripts/verify-mcp.mjs"
+              ],
+              "exit_code": 0,
+              "stdout": "PASS: existing REST reuse, exact-byte independent digest, mismatch rejection, UNKNOWN/native/domain boundaries and no automatic retries.\nPASS: bad origins, bounded request bodies, invalid methods/IDs/arguments and notifications cannot reach a data operation.\nPASS: modern stateless discovery, legacy negotiation, header/body identity checks and per-request version/capability validation.\n",
+              "stderr": ""
+            },
+            {
+              "command": [
+                "node",
+                "scripts/verify-offline.mjs"
+              ],
+              "exit_code": 0,
+              "stdout": "PASS: installed offline shell and static asset recovery after network loss; live APIs, private input POSTs and sign-in bypass the cache.\n",
+              "stderr": ""
+            }
+          ]
+        },
+        {
+          "subject": "4179d18907e71da125ba51a1a7250dfea82590e6",
+          "site_version": 31,
+          "executed_at": "2026-10-13T05:48:25.704019+00:00",
+          "results": [
+            {
+              "command": [
+                "node",
+                "scripts/verify-evidence.mjs"
+              ],
+              "exit_code": 0,
+              "stdout": "PASS: fixed exact-domain recursive DNS readback, question/type binding and original-response hashes; access denial and wrong-domain answers remain UNKNOWN and conflicting evidence is preserved.\nPASS: bounded error-response diagnosis, exact error-byte hashes, provider rate-limit evidence, unclassified 403, safe metadata and absence of reflected IP/body data.\nPASS: persisted provider deadlines prevent early requests, survive serialization, preserve historical timestamps, expire without extension and resume a fresh exact repository read.\nPASS: unchanged 401/403/404 produce NOOP across serialized refreshes, preserve original evidence and require a materially changed source/access before recovery.\nPASS: HTTP failures, redirects, timeouts, invalid API data and independent runtime acceptance boundary.\nPASS: self-application carries exact-subject duties and SHA-256 parent binding, rejects lost nodes/alternate-host/HTTP-only acceptance, and suppresses effect retries after unchanged observations or unrelated lifecycle changes.\nPASS: variable Node discovery and deduplication (2/3/9/66 nodes), Mirror fallback, exact-head source binding, unknown/stale/misbound Runtime states, mesh-only terminal scope and Structured Field commit binding.\nPASS: immutable Mesh input binding, mesh-owned idempotency capability, mismatched acknowledgement rejection and automatic readback after interrupted delivery without duplicate effect POST.\nPASS: independent client byte hash, complete snapshot binding, altered bytes/content rejection, header mismatch, HTTP and format failures, no promotion of an unverified server claim, exact pretty-JSON hash and out-of-order observation rejection.\nPASS: each Runtime expires independently during a fresh monitor interval, metrics/latency lose current authority, future and unbound samples remain UNKNOWN, incomplete registry prevents overall HEALTHY, owner role assignment does not claim native activation.\nPASS: 200 repeated offline document reads and persisted JSON restart roundtrips preserve original content/time, including after original journal entry eviction; no fresh-cloud/effect claim.\nPASS: legacy nested readback recovery and rejection of cyclic or invalid-time provenance.\nPASS: retained article atlas links resolve through bounded GET/HEAD redirects to the existing publication index.\nPASS: public AI is inline plain text with the actual React evidence path; operator return targets the existing monitor; homepage and framework routing remain distinct.\n",
+              "stderr": "..........\n----------------------------------------------------------------------\nRan 10 tests in 0.155s\n\nOK\n"
+            },
+            {
+              "command": [
+                "node",
+                "scripts/verify-mcp.mjs"
+              ],
+              "exit_code": 0,
+              "stdout": "PASS: existing REST reuse, exact-byte independent digest, mismatch rejection, UNKNOWN/native/domain boundaries and no automatic retries.\nPASS: bad origins, bounded request bodies, invalid methods/IDs/arguments and notifications cannot reach a data operation.\nPASS: modern stateless discovery, legacy negotiation, header/body identity checks and per-request version/capability validation.\n",
+              "stderr": ""
+            },
+            {
+              "command": [
+                "node",
+                "scripts/verify-offline.mjs"
+              ],
+              "exit_code": 0,
+              "stdout": "PASS: homepage and React monitor recover their own installed shells after network loss; assets recover, live APIs and sign-in bypass the cache, and unrelated pages are not replaced.\n",
+              "stderr": ""
+            }
+          ]
+        }
+      ],
+      "http_readback_count": 38,
+      "mcp_snapshot_id": "63568bc8-8320-431e-a6a1-e415e61cdc8f",
+      "mcp_snapshot_sha256": "029c79875e5623d7fed3ff65eacb012c14484933f651b3544bfc87e219d90190",
+      "mcp_bytes": 12754,
+      "wrong_expected_hash_rejection": {
+        "isError": true,
+        "error_code": "INVALID_ARGUMENT",
+        "message": "Exact snapshot SHA-256 mismatch; persistence is not accepted. No retry was issued."
+      },
+      "acceptance": {
+        "http_reachability": true,
+        "public_read_command_response": true,
+        "raw_snapshot_byte_integrity": true,
+        "connected_mcp_readback": true,
+        "real_browser_interaction": false,
+        "personal_onboarding_install_restart": false,
+        "authenticated_native_runtime": false,
+        "product_domain_delivery": false,
+        "application_errors_remaining_confirmed": [],
+        "effect_ack_done": false
+      }
+    },
+    "publication_scope": "EXISTING_SITE_VERSION31_PUBLICATION_AND_RECORDED_HTTP_API_MCP_BYTE_EFFECTS_ONLY"
+  },
+  "current_mcp_readback": {
+    "snapshot_id": "04f903dd-6553-46e0-8bc3-437a1d26ef20",
+    "sha256": "52a00813d58515ce3c2752026106addae89911ec0a1f97de330e12bdbe6eba27",
+    "bytes": 12752,
+    "independent_local_original_byte_hash_verified": true,
+    "observe": {
+      "path": "evidence/receipts/QIKVRT_SITE31_PROVENANCE_20261013_V1/live-mcp-observe.json",
+      "bytes": 20006,
+      "sha256": "11949735266ce28cb0bc8926d4e213dbf0b4366177316f0cd2aa5cf6d12653b4",
+      "git_blob_sha1": "9c361540864d6c958a8581a66ed20c6a1cce0bbc"
+    },
+    "readback": {
+      "path": "evidence/receipts/QIKVRT_SITE31_PROVENANCE_20261013_V1/live-mcp-readback.json",
+      "bytes": 31524,
+      "sha256": "dab417f30d535db9673b27146c4b74918935eaa4699d7e1ec8e10651634536e6",
+      "git_blob_sha1": "e064648be3380a3291d87ea8522d4060f57432ad"
+    },
+    "exact_product_domain_observation": {
+      "url": "https://raumzeitterminal.de/",
+      "method": "GET (ohne Redirect)",
+      "status": 530,
+      "observed_at": "2026-10-13T07:13:53.457Z",
+      "latency_ms": 18
+    },
+    "monitor_repository_access_state": "Historical rate-limit/access markers remain historical; current authenticated GitHub REST connector read is separately bound."
+  },
+  "inherited_open_obligations": [
+    {
+      "id": "delivery:raumzeitterminal.de",
+      "layer": "DELIVERY",
+      "target": "raumzeitterminal.de",
+      "label": "Produktdomain in Betrieb nehmen",
+      "reason": "EXACT_HOST_NXDOMAIN_HTTP_530",
+      "acceptance": "DNS und TLS für raumzeitterminal.de, gebundene Anwendung und frischer Nutzpfad-Readback bestätigen.",
+      "subject": {
+        "url": "https://raumzeitterminal.de/"
+      },
+      "semantic_sha256": "5afbeef30fbb021c40ac673f137ee417af2ded95b522e5ace2167e1f07af92cc",
+      "state": "OPEN",
+      "transition": "CHANGED_OBSERVATION",
+      "retry_condition": "Material geänderte Domain-/DNS-/TLS-Evidenz oder ein authentifizierter Schreibzugang für genau diese Domain; danach die ursprüngliche Auslieferung prüfen.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Material geänderte Domain-/DNS-/TLS-Evidenz oder ein authentifizierter Schreibzugang für genau diese Domain; danach die ursprüngliche Auslieferung prüfen.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "governance:qik-vrt",
+      "layer": "GOVERNANCE",
+      "target": "ingolf-lohmann/qik-vrt",
+      "label": "Native Authority-Bindung bestätigen",
+      "reason": "NATIVE_AUTHORITY_BINDING_NOT_VERIFIED",
+      "acceptance": "Aktuelle Authority-Bindung, Governance und zugelassene Operation am exakten Gegenstand unabhängig zurücklesen.",
+      "subject": {},
+      "semantic_sha256": "3ce3d30b4a258ec59bfb8e6d5569ac84138276bb0748486f49d93017496e4b8e",
+      "state": "OPEN",
+      "transition": "UNCHANGED",
+      "retry_condition": "Neue gebundene Authority-/Governance-Evidenz und die erforderliche zugelassene Operation.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Neue gebundene Authority-/Governance-Evidenz und die erforderliche zugelassene Operation.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "native:qik-vrt",
+      "layer": "RUNTIME",
+      "target": "qik-vrt",
+      "label": "Native Terminal-Ausführung abnehmen",
+      "reason": "AUTHENTICATED_NATIVE_EXECUTION_NOT_ACCEPTED",
+      "acceptance": "Identitätsgebundene Ausführung und unabhängigen Effect-Readback am freigegebenen Runtime-Host nachweisen.",
+      "subject": {},
+      "semantic_sha256": "acfd89257d2e10c21f95ccb4d111bc45b9e8f64f748fb60471aaf860085dcdea",
+      "state": "OPEN",
+      "transition": "UNCHANGED",
+      "retry_condition": "Ein authentifizierter, identitätsgebundener Ausführungsweg ist tatsächlich verfügbar und für den konkreten Auftrag zugelassen.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Ein authentifizierter, identitätsgebundener Ausführungsweg ist tatsächlich verfügbar und für den konkreten Auftrag zugelassen.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "registry:qik-vrt",
+      "layer": "REGISTRY",
+      "target": "qik-vrt",
+      "label": "Knotenverzeichnis vollständig zurücklesen",
+      "reason": "REGISTRY_DISCOVERY_INCOMPLETE",
+      "acceptance": "Vollständige Quellen mit aktuellen HEAD/TREE-Bindungen lesen.",
+      "subject": {},
+      "semantic_sha256": "f9892acb87572ca11e0986104ebf6a04a0438fbdcb89ad0843b6662d4e5607ca",
+      "state": "OPEN",
+      "transition": "UNCHANGED",
+      "retry_condition": "Geänderte Quellen-/Zugriffsevidenz für die betroffenen Verzeichnisquellen.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Geänderte Quellen-/Zugriffsevidenz für die betroffenen Verzeichnisquellen.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "repository:Goldkelch/qik-vrt",
+      "layer": "REPOSITORY",
+      "target": "Goldkelch/qik-vrt",
+      "label": "Aktuellen Repository-Gegenstand lesen",
+      "reason": "REPOSITORY_NOT_FOUND",
+      "acceptance": "Aktuellen HEAD und TREE über den erlaubten REST-Pfad zurücklesen.",
+      "subject": {
+        "repository": "Goldkelch/qik-vrt",
+        "head": null,
+        "tree": null
+      },
+      "semantic_sha256": "a7bb27dcba97eea2252cf151e48b26e74415019d93f90d22e15c5bacd75352b0",
+      "state": "OPEN",
+      "transition": "UNCHANGED",
+      "retry_condition": "Neue, unabhängig bestätigte Quellenbindung oder wiederhergestellter Zugriff erforderlich.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Neue, unabhängig bestätigte Quellenbindung oder wiederhergestellter Zugriff erforderlich.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "repository:ingolf-lohmann/qik-vrt",
+      "layer": "REPOSITORY",
+      "target": "ingolf-lohmann/qik-vrt",
+      "label": "Aktuellen Repository-Gegenstand lesen",
+      "reason": "REPOSITORY_RATE_LIMITED",
+      "acceptance": "Aktuellen HEAD und TREE über den erlaubten REST-Pfad zurücklesen.",
+      "subject": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "head": null,
+        "tree": null
+      },
+      "semantic_sha256": "452e066819947d286f891b27aa36018c470d5ac423615123741d50e7df73386f",
+      "state": "OPEN",
+      "transition": "UNCHANGED",
+      "retry_condition": "Material geänderte Zugriffs- oder Quellenbindung; unveränderte Zugriffssperren bleiben NOOP.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Material geänderte Zugriffs- oder Quellenbindung; unveränderte Zugriffssperren bleiben NOOP.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "runtime:Goldkelch/qik-vrt",
+      "layer": "RUNTIME",
+      "target": "Goldkelch/qik-vrt",
+      "label": "Knoten-Runtime anschließen",
+      "reason": "RUNTIME_ENDPOINT_NOT_ADVERTISED",
+      "acceptance": "Frischen, identitätsgebundenen Runtime-Befund am angekündigten Endpunkt lesen; dies ersetzt keine native Effektabnahme.",
+      "subject": {
+        "repository": "Goldkelch/qik-vrt",
+        "head": null,
+        "tree": null
+      },
+      "semantic_sha256": "470f253ac5e04fdacbf4262d1f03ccee465c8822e89312675cb46cc3f5549ed1",
+      "state": "OPEN",
+      "transition": "UNCHANGED",
+      "retry_condition": "Material geänderter Runtime-Endpunkt, Zugriff oder identitätsgebundener Runtime-Befund.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Material geänderter Runtime-Endpunkt, Zugriff oder identitätsgebundener Runtime-Befund.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "runtime:ingolf-lohmann/qik-vrt",
+      "layer": "RUNTIME",
+      "target": "ingolf-lohmann/qik-vrt",
+      "label": "Knoten-Runtime anschließen",
+      "reason": "RUNTIME_ENDPOINT_NOT_ADVERTISED",
+      "acceptance": "Frischen, identitätsgebundenen Runtime-Befund am angekündigten Endpunkt lesen; dies ersetzt keine native Effektabnahme.",
+      "subject": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "head": null,
+        "tree": null
+      },
+      "semantic_sha256": "a3af1fe781dd9e39f1eeefe027123bfaceb723b890f7af5ed82603b3737e7bdc",
+      "state": "OPEN",
+      "transition": "UNCHANGED",
+      "retry_condition": "Material geänderter Runtime-Endpunkt, Zugriff oder identitätsgebundener Runtime-Befund.",
+      "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "next_action": "Material geänderter Runtime-Endpunkt, Zugriff oder identitätsgebundener Runtime-Befund.",
+      "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    },
+    {
+      "id": "MAIN_GOVERNANCE_AND_INTEGRATION",
+      "state": "OPEN",
+      "source": "https://github.com/ingolf-lohmann/qik-vrt/pull/523",
+      "evidence": "Current rulesets=[], reviews=[]; requested review execution failure CODE_OWNER_RULE_NOT_ENFORCED.",
+      "next_action": "Use an admitted existing native ruleset writer and independent exact-head review before guarded Main integration.",
+      "source_predecessor": "state/work_units/QIKVRT_IMMEDIATE_EXECUTION_20261013_V1.json"
+    },
+    {
+      "id": "EXACT_DOMAIN_DELIVERY",
+      "state": "OPEN",
+      "source": "https://raumzeitterminal.de/",
+      "next_action": "Usable target-bound authenticated registrar/DNS write, then DNS/TLS and useful application readback; unchanged denied writes remain NOOP.",
+      "source_predecessor": "state/work_units/QIKVRT_IMMEDIATE_EXECUTION_20261013_V1.json"
+    },
+    {
+      "id": "AUTHENTICATED_NATIVE_RUNTIME",
+      "state": "OPEN",
+      "source": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json",
+      "next_action": "Establish an actual identity-bound native runtime start and independent effect readback.",
+      "source_predecessor": "state/work_units/QIKVRT_IMMEDIATE_EXECUTION_20261013_V1.json"
+    },
+    {
+      "id": "BROWSER_USE_PATH_ACCEPTANCE",
+      "state": "OPEN",
+      "next_action": "Expose the supported control-browser operation, then execute homepage → existing monitor terminal/evidence, personal client onboarding/storage/restart, and fresh independent readback on the same published source.",
+      "source_predecessor": "original_report#independent_successor_readback.client_continuation.work"
+    },
+    {
+      "id": "NATIVE_GOVERNANCE_AND_PR523_MAIN_INTEGRATION",
+      "state": "OPEN",
+      "next_action": "Use the existing admitted native ruleset writer and independent exact-head review, then guarded Main integration; rulesets=[], main.protected=false, reviews=[] remain observed."
+    },
+    {
+      "id": "DNS_TLS_EXACT_DOMAIN_DELIVERY",
+      "state": "OPEN",
+      "next_action": "Use target-bound authenticated domain/DNS writer when available; independently accept DNS, TLS and the actual application on https://raumzeitterminal.de/. HTTP 530 remains OPEN."
+    }
+  ],
+  "closed_in_this_scope": [
+    {
+      "id": "PUBLICATION_AND_POST_DEPLOYMENT_READBACK",
+      "state": "VERIFIED",
+      "evidence": "Site version31 deployment, exact source binding and independently byte-verified HTTP/MCP report. This closes only that existing Site publication obligation."
+    }
+  ],
+  "historical_offline_browser_evidence": {
+    "source_head": "ad47e6386536abdca5d5ba025832b27718ee66dd",
+    "source_tree": "3af7d383933a8972469f48928a800aa6c06031d4",
+    "scope": {
+      "offline_client_at_frozen_source": "NATIVE_BROWSER_RESULT_READBACK_VERIFIED",
+      "published_site_http_files": "13/13 matches retained from previous exact-source readback",
+      "current_origin_browser_interaction": "NOT_EXECUTED",
+      "actual_iphone_acceptance": false,
+      "authenticated_native_runtime": false,
+      "predecessor_pass_transferred_to_site31": false
+    },
+    "report_locator": "evidence/receipts/QIKVRT_SITE31_PROVENANCE_20261013_V1/QIKVRT_Site30_Nutzpfadpruefung_20261013.json#browser_execution_route_continuation_20261013",
+    "controls_per_engine": 14,
+    "engines": [
+      "chromium",
+      "webkit"
+    ],
+    "current_site31_browser_pass_inferred": false
+  },
+  "verification": {
+    "source_and_report_bindings": "PASS; source-report-verification.json",
+    "repository_integrity": {
+      "generator_version": "3.2",
+      "contract_tests": 11,
+      "contract_tests_result": "PASS",
+      "final_bytes_binding": "Generated successor manifest/detached digest/SHA256SUMS bind all final work-unit and evidence bytes; final generator verification and independent remote readback are required after this freeze."
+    },
+    "existing_client_contract": {
+      "result": "PASS",
+      "tests": 63,
+      "receipt": {
+        "path": "evidence/receipts/QIKVRT_SITE31_PROVENANCE_20261013_V1/repository-gate-verification.json",
+        "bytes": 2914,
+        "sha256": "7e1104236eb80227b9363cafc81f52a30a3531de364116320ce5febde88cc019",
+        "git_blob_sha1": "bd3dc8b6226e06910b888d15223180a3d2108d0b"
+      },
+      "scope": "Unchanged exact gate inputs above; no predecessor test result transferred to changed Site source."
+    },
+    "remote_successor_readback": "REQUIRES_POST_WRITE_CURRENT_HEAD_TREE_AND_ORIGINAL_BLOBS",
+    "self_binding": "This Work Unit is bound by the generated integrity manifest and the independently read-back Git tree; it does not embed its own hash or its future commit identity."
+  },
+  "evidence_outputs": [
+    {
+      "path": "evidence/receipts/QIKVRT_SITE31_PROVENANCE_20261013_V1/QIKVRT_Site30_Nutzpfadpruefung_20261013.json",
+      "bytes": 458243,
+      "sha256": "34c5ba6be739bd8fc06a381e00c94664039d14c853c14998c615fc1f6353fdbb",
+      "git_blob_sha1": "18994545b56ff45d5f0b05dc5f828bdf1cfa5d4c"
+    },
+    {
+      "path": "evidence/receipts/QIKVRT_SITE31_PROVENANCE_20261013_V1/ai-runtime-contract.log",
+      "bytes": 11866,
+      "sha256": "0ee92a1dd7f5ff3f8630f668570f94cbb63ad082b69a4564d924244c4600a3cb",
+      "git_blob_sha1": "1ed15c05319d1d4c218cf6dc42807c987f55006f"
+    },
+    {
+      "path": "evidence/receipts/QIKVRT_SITE31_PROVENANCE_20261013_V1/fresh-authority-governance.json",
+      "bytes": 490,
+      "sha256": "e968ca1279fab665bad27eeb09287e7aa5b2b57885a744b72f3a861780225f13",
+      "git_blob_sha1": "5942a7eb19eba6beda2e0609d3353ba991de54d8"
+    },
+    {
+      "path": "evidence/receipts/QIKVRT_SITE31_PROVENANCE_20261013_V1/integrity.log",
+      "bytes": 344,
+      "sha256": "c0dc329e3f29001c721cba45c82685f18ab56ea26e6bb3f0ee69d77e245512ad",
+      "git_blob_sha1": "fb9b415c2080f3746737263e0e3f6ea7fd45a344"
+    },
+    {
+      "path": "evidence/receipts/QIKVRT_SITE31_PROVENANCE_20261013_V1/live-mcp-observe.json",
+      "bytes": 20006,
+      "sha256": "11949735266ce28cb0bc8926d4e213dbf0b4366177316f0cd2aa5cf6d12653b4",
+      "git_blob_sha1": "9c361540864d6c958a8581a66ed20c6a1cce0bbc"
+    },
+    {
+      "path": "evidence/receipts/QIKVRT_SITE31_PROVENANCE_20261013_V1/live-mcp-readback.json",
+      "bytes": 31524,
+      "sha256": "dab417f30d535db9673b27146c4b74918935eaa4699d7e1ec8e10651634536e6",
+      "git_blob_sha1": "e064648be3380a3291d87ea8522d4060f57432ad"
+    },
+    {
+      "path": "evidence/receipts/QIKVRT_SITE31_PROVENANCE_20261013_V1/repository-gate-verification.json",
+      "bytes": 2914,
+      "sha256": "7e1104236eb80227b9363cafc81f52a30a3531de364116320ce5febde88cc019",
+      "git_blob_sha1": "bd3dc8b6226e06910b888d15223180a3d2108d0b"
+    },
+    {
+      "path": "evidence/receipts/QIKVRT_SITE31_PROVENANCE_20261013_V1/site31-native-deployment.json",
+      "bytes": 660,
+      "sha256": "31adba3959fca019d87f4792e77b3da0df23bc0a789d6e2ab745e4afc2ee3c04",
+      "git_blob_sha1": "64d1c4ed38d3c8505489f7c2bf3192d1b07426e5"
+    },
+    {
+      "path": "evidence/receipts/QIKVRT_SITE31_PROVENANCE_20261013_V1/site31-native-version.json",
+      "bytes": 591,
+      "sha256": "0f4d44fd46e279637c8c643682b8b4e3f6c311c81c9ff71809302721aed56342",
+      "git_blob_sha1": "ed605458e42a5dc4900091326974095894dc344c"
+    },
+    {
+      "path": "evidence/receipts/QIKVRT_SITE31_PROVENANCE_20261013_V1/site31-source-delta.json",
+      "bytes": 4123,
+      "sha256": "8f81b3f47fd9ecad6ce6f496587262d92249625ecf68c1e2751e12f907fd6527",
+      "git_blob_sha1": "894de6286536c4df44bb2b6d88bcffaa53ff8fc1"
+    },
+    {
+      "path": "evidence/receipts/QIKVRT_SITE31_PROVENANCE_20261013_V1/site31-source-delta.patch",
+      "bytes": 47552,
+      "sha256": "b9844982c6f410b8f27676e5aece89e489420f212cb3095a02ab9a2ce56c51f0",
+      "git_blob_sha1": "c0dc88261d2cec114c710e0597865d5ed53216db"
+    },
+    {
+      "path": "evidence/receipts/QIKVRT_SITE31_PROVENANCE_20261013_V1/source-report-verification.json",
+      "bytes": 2311,
+      "sha256": "7e5d8d63c18b671f0e3af3e34476b6abe5d83b898adfd0400d11d3898f10a257",
+      "git_blob_sha1": "d352903b6b9b8c2899f1dfdb989ffde6f5711cee"
+    }
+  ],
+  "reuse": {
+    "existing_pr": 523,
+    "new_site": false,
+    "new_controller": false,
+    "new_trigger": false,
+    "new_pull_request": false,
+    "existing_integrity_generator": "tools/qikvrt_integrity.py",
+    "client_gate": "tools/ai_handoff.py --client-receipt"
+  },
+  "git_history": {
+    "history_preserving_parent": "08f9c54a8e391bd1632a95e7800f55e329fc2c4f",
+    "force_push": false,
+    "transport": "REST_API_ONLY"
+  },
+  "effect_boundary": {
+    "site_deployed_by_this_work_unit": false,
+    "product_source_mutated": false,
+    "main_integration": false,
+    "mirror_adoption": false,
+    "native_execution": false,
+    "exact_product_domain_delivery": false,
+    "independent_current_site_browser_acceptance": false,
+    "predecessor_pass_transfer": false,
+    "zenodo_publication": false
+  },
+  "exact_delivery_url": "https://raumzeitterminal.de/",
+  "effect_ack_done": false,
+  "ordinary_release": false,
+  "completion_scope": "Persist and independently read back this evidence successor in existing draft PR523. Protected Main review/integration and product acceptance stay OPEN.",
+  "current_repository_governance_readback": {
+    "path": "evidence/receipts/QIKVRT_SITE31_PROVENANCE_20261013_V1/fresh-authority-governance.json",
+    "bytes": 490,
+    "sha256": "e968ca1279fab665bad27eeb09287e7aa5b2b57885a744b72f3a861780225f13",
+    "git_blob_sha1": "5942a7eb19eba6beda2e0609d3353ba991de54d8"
+  }
+}

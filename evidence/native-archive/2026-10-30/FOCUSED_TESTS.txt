@@ -1,0 +1,16 @@
+test_binary_machine_reference_differential_and_resource_negative_cases (tests.test_native_archive.NativeArchiveTests.test_binary_machine_reference_differential_and_resource_negative_cases) ... ok
+test_binary_machine_rejects_bad_program_and_does_not_execute_host_code (tests.test_native_archive.NativeArchiveTests.test_binary_machine_rejects_bad_program_and_does_not_execute_host_code) ... ok
+test_complete_git_inventory_zip_and_real_native_self_extraction (tests.test_native_archive.NativeArchiveTests.test_complete_git_inventory_zip_and_real_native_self_extraction) ... ok
+test_corruption_truncation_foreign_seed_budgets_and_footer_counters (tests.test_native_archive.NativeArchiveTests.test_corruption_truncation_foreign_seed_budgets_and_footer_counters) ... ok
+test_cross_decode_all_bytes_boundaries_random_and_native_c90_ubsan (tests.test_native_archive.NativeArchiveTests.test_cross_decode_all_bytes_boundaries_random_and_native_c90_ubsan) ... ok
+test_native_result_original_authenticated_terminal_readback_and_replay (tests.test_native_archive.NativeArchiveTests.test_native_result_original_authenticated_terminal_readback_and_replay) ... ok
+test_noncanonical_lengths_block_order_and_numeric_arguments (tests.test_native_archive.NativeArchiveTests.test_noncanonical_lengths_block_order_and_numeric_arguments) ... ok
+test_rehashed_trailing_concatenated_incomplete_and_excess_zlib_output (tests.test_native_archive.NativeArchiveTests.test_rehashed_trailing_concatenated_incomplete_and_excess_zlib_output) ... ok
+test_sfx_modified_payload_or_locator_cannot_clobber_destination (tests.test_native_archive.NativeArchiveTests.test_sfx_modified_payload_or_locator_cannot_clobber_destination) ... ok
+test_sha256_known_vectors_and_padding_boundaries (tests.test_native_archive.NativeArchiveTests.test_sha256_known_vectors_and_padding_boundaries) ... ok
+test_special_or_link_destinations_and_failed_hash_output_are_rejected (tests.test_native_archive.NativeArchiveTests.test_special_or_link_destinations_and_failed_hash_output_are_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 1.963s
+
+OK

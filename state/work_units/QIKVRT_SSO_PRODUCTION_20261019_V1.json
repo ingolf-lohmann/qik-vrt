@@ -1,0 +1,143 @@
+{
+  "schema": "qikvrt_sso_production_work_unit_v1",
+  "id": "QIKVRT_SSO_PRODUCTION_20261019_V1",
+  "status": "SOURCE_IMPLEMENTED_TESTED_PRODUCTIVE_IDENTITY_ACCEPTANCE_OPEN",
+  "source_parent": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+    "tree": "15eb1a7bdd2c1880405df1026b14756f0fe72714"
+  },
+  "authorization": {
+    "principal": "Ingolf Lohmann",
+    "instruction": "Das Feature Single Sign-On ist nun zu produktivieren! Freigabe erteilt.",
+    "recorded_at": "2026-10-19T12:30:27+03:00",
+    "scope": "Existing QIK-VRT SSO productization; existing OneNote-only notes task retained; no other provider selected."
+  },
+  "contributions": {
+    "human": "Ingolf Lohmann: product goal, Microsoft/OneNote selection and authorization",
+    "artificial_cognitive": "Codex: source diagnosis, native SSO readback, security regressions and verification"
+  },
+  "reuse": [
+    "src/qikvrt_personal_auth.py PersonalAuth and OSSecretStore",
+    "Existing terminal CLI and protected profile writer lock",
+    "Existing refresh-pending journal, exact OIDC binding and 12-hour limit",
+    "Existing make test and Personal boundary workflow; no additional dependency or executor"
+  ],
+  "implemented": [
+    "Native protected-session resume forces refresh before non-secret status readback",
+    "personal-auth-readback CLI operates without model API credential or HTTP listener",
+    "Pending/expired/signed-out states fail closed; competing runtime writer blocks renewal",
+    "No browser or connector session import; no unauthenticated bearer-recovery HTTP route"
+  ],
+  "validation": {
+    "auth_suite": {
+      "command": "python3 -B -m unittest -v tests.test_qikvrt_personal_auth",
+      "tests": 53,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "new_regressions": 9,
+      "real_rsa_cases": 4,
+      "actual_loopback_http_controls": true,
+      "identity_provider_and_vault": "SIMULATED_NOT_PRODUCTIVE"
+    },
+    "full_make": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 make test",
+      "exit_code": 0,
+      "reported_python_tests": 1672,
+      "suite_summaries": 34,
+      "source_scope": "Runtime/auth/test source bytes below; final receipt and integrity metadata subsequently added and reverified."
+    },
+    "baseline_control": "Original exact Main PersonalAuth has no resume method and is rejected by the new restart/readback regression.",
+    "source_files": [
+      {
+        "path": "src/qikvrt_personal_auth.py",
+        "bytes": 31503,
+        "sha256": "6b37b8db560bd3f72bf9a1549815e6a799edbb6aef351ba60b51982bf20cf030"
+      },
+      {
+        "path": "src/qikvrt_effect_ack_http_terminal.py",
+        "bytes": 35724,
+        "sha256": "ae3f32fb39a8f4a8a7af76fb90b099255b1c43568ffff0583587801d1936e50c"
+      },
+      {
+        "path": "tests/test_qikvrt_personal_auth.py",
+        "bytes": 47727,
+        "sha256": "52949ebe23114568d5b0c1fcd115191fd5c2e6f667848dbdbbfc363693d1800e"
+      },
+      {
+        "path": "personal/ingolf-lohmann/firefox-assistant/README.md",
+        "bytes": 24081,
+        "sha256": "dc5776eb0094d57b842a5001fbec5b8cd31789752dbec789643fec57f92961f1"
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "evidence/native-runtime-acceptance/sso-production-20261019/full-make-test.log",
+        "bytes": 321641,
+        "sha256": "d362e39fc647f314954e9e55521ceb95f088abc2b6f444f5d7d8d0e93e41168e"
+      },
+      {
+        "path": "evidence/native-runtime-acceptance/sso-production-20261019/native-baseline.json",
+        "bytes": 3836,
+        "sha256": "b55bf0de613863529f557b78306913a07024f1da2bb268d7ab7df119452acd4a"
+      },
+      {
+        "path": "evidence/native-runtime-acceptance/sso-production-20261019/personal-auth-test.log",
+        "bytes": 9799,
+        "sha256": "0e4ca9a8416046c0e231e281bdafc36f6a68e69de755472a1d033be4bee742c4"
+      }
+    ]
+  },
+  "native_input": {
+    "event_id": "df8520fb97694751ab364668d1afac56:1",
+    "ledger_digest": "1b91b8a300b02de3768b4e6c73b00dd6ec89692c168805ff624e758288c41f6e",
+    "route": "ORIGINAL_IN_PROCESS_TERMINAL_INPUT_AND_TRANSPUTER_API",
+    "independent_terminal_readback": true,
+    "scope": "LOCAL_TASK_OBSERVATION_ONLY; PR462 is the original Personal feature lineage, not a new source candidate or productive SSO receipt."
+  },
+  "activation_observations": {
+    "local_execution_host": "OS_SECRET_SERVICE_UNAVAILABLE_NO_FALLBACK; root process, not admitted desktop-user store. This does not establish absence on the original host.",
+    "registration": "No executable existing private registered-client/Owner-subject configuration reference was returned by inspected source, prior acceptance record or targeted context retrieval. Existing provider rights are not denied.",
+    "existing_connector_auth": "Microsoft file access established earlier; its credential is not an exportable QIK-VRT grant. No productive QIK-VRT Microsoft login is attested.",
+    "identity_scopes": [
+      "openid",
+      "offline_access"
+    ],
+    "onenote": "Delegated Notes permission and actual page readback remain separate; this change requests no Graph scope.",
+    "exact_domain": "Fresh external observer HTTP525 at 2026-10-19T09:32:36.510Z; not productive SSO delivery."
+  },
+  "open_work": [
+    {
+      "id": "registered-native-microsoft-binding",
+      "state": "OPEN",
+      "next_action": "Resolve existing authorized private Public-Client ID, concrete tenant/issuer, application-specific verified Owner subject and registered callback through the original admitted host/configuration route; do not borrow connector IDs or collect credentials in chat."
+    },
+    {
+      "id": "productive-native-sso",
+      "state": "OPEN",
+      "next_action": "On the admitted actual desktop-user host with protected Secret Service, run personal-auth-readback against its existing configuration, independently verify the identity-bound result and exercise restart/expiry/pending/logout; do not treat fixture PASS as a human login."
+    },
+    {
+      "id": "onenote-original-task",
+      "state": "OPEN",
+      "next_action": "Use the authorized native Microsoft OneNote adapter with correctly scoped delegated access to read pages and apply the requested organization, then independently read the result back."
+    }
+  ],
+  "primary_sources": [
+    "https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-auth-code-flow",
+    "https://learn.microsoft.com/en-us/graph/api/resources/onenote-api-overview?view=graph-rest-1.0",
+    "https://learn.microsoft.com/en-us/graph/permissions-reference#notesreadwrite"
+  ],
+  "predecessor_work_unit": "state/work_units/QIKVRT_PERSONAL_FIREFOX_MICROSOFT_COMPATIBILITY_20261016_V1.json",
+  "predecessor_evidence_transfer": false,
+  "live_owner_sso_verified": false,
+  "browser_session_transfer": false,
+  "onenote_pages_changed": false,
+  "effect_ack_done": false,
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "bounded_operational_source_test_evidence_not_scientific_publication"
+  }
+}

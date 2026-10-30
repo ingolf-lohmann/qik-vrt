@@ -1,0 +1,17 @@
+{
+  "schema": "qikvrt_personal_payload_entry_v1",
+  "id": "2026-09-30-repeated-readback-deadlock-lesson",
+  "owner": "Ingolf Lohmann",
+  "class": "OBSERVED_CONTROL_FAILURE_AND_ENGINEERING_LESSON",
+  "observation": {
+    "pattern": "The same two canonical GitHub references were repeatedly presented; the assistant repeatedly attempted the same unavailable independent-web readback and returned the same NOT_PROVEN state.",
+    "deadlock_signature": "SAME_SUBJECT + SAME_BLOCKER + SAME_ACTION + NO_NEW_EVIDENCE",
+    "examples_needed_for_policy_change": "NO_ADDITIONAL_IDENTICAL_EXAMPLE_REQUIRED"
+  },
+  "lesson": {
+    "statement": "Once repetition establishes a stable no-progress transition, further identical retries are not progress and must be replaced by an alternate verifier, a typed external HOLD, or an evidence-bound successor.",
+    "human_reconfirmation": "NOT_REQUIRED_FOR_IDENTICAL_ALREADY_CLASSIFIED_BLOCKER",
+    "epistemic_boundary": "Failure of one independent web channel does not negate repository persistence; it only leaves that distinct verification predicate open."
+  },
+  "effect_ack_done": false
+}

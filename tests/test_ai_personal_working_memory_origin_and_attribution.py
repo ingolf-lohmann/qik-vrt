@@ -66,7 +66,7 @@ class PersonalWorkingMemoryOriginAndAttributionTests(unittest.TestCase):
         upstream = memory["canonical_source_remote"]
         origin = memory["personal_remote"]
         self.assertEqual(upstream["name"], "upstream")
-        self.assertEqual(upstream["url"], "https://github.com/Goldkelch/qik-vrt.git")
+        self.assertEqual(upstream["url"], "https://github.com/ingolf-lohmann/qik-vrt.git")
         self.assertEqual(origin["name"], "origin")
         self.assertEqual(origin["selected_by"], "QUESTION_2_PERSONAL_ORIGIN")
         self.assertFalse(origin["canonicality_inferred"])

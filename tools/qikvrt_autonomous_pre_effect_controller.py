@@ -13,12 +13,14 @@ from collections.abc import Sequence
 from typing import Any
 
 from tools import qikvrt_autonomous_self_heal as self_heal
+from tools import qikvrt_workflow_executor as role_resolver
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 POLICY = ROOT / "state/autonomy/AUTONOMOUS_PRE_EFFECT_POLICY_V1.json"
 PERSONAL_ORIGIN_POLICY = (
     ROOT / "policy/AI_PERSONAL_WORKING_MEMORY_ORIGIN_AND_ATTRIBUTION_V1.json"
 )
+REMOTE_ROLE_POLICY = ROOT / "policy/CANONICAL_UPSTREAM_REMOTE_V1.json"
 EXPECTED_PRECONDITIONS = [
     "CURRENT_MAIN_REOBSERVED",
     "EXACT_HEAD_BOUND",
@@ -95,6 +97,12 @@ def _canonical_source_remote() -> str:
     canonical = policy.get("personal_working_memory", {}).get("canonical_source_remote", {})
     expected_name = canonical.get("name")
     expected_url = canonical.get("url")
+    try:
+        authority = role_resolver.load_repository_roles(ROOT)["AUTHORITY"]
+    except role_resolver.ExecutorBlock as exc:
+        raise PreEffectBlock(str(exc)) from exc
+    if expected_url != f"https://github.com/{authority}.git":
+        raise PreEffectBlock("personal-origin and canonical role policies disagree")
     if expected_name != "upstream" or not isinstance(expected_url, str):
         raise PreEffectBlock("canonical source remote contract mismatch")
 
@@ -112,17 +120,64 @@ def _canonical_source_remote() -> str:
     return candidate
 
 
+def _execution_source_remote() -> str:
+    """Bind repository-local repairs to that repository, not Authority equality.
+
+    Canonical upstream remains a separate provenance and Mesh obligation.
+    Never accept an arbitrary personal origin as an execution authority.
+    """
+    try:
+        policy = json.loads(REMOTE_ROLE_POLICY.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as exc:
+        raise PreEffectBlock("repository remote role policy cannot be loaded") from exc
+    if not isinstance(policy, dict) or policy.get("schema") != "qikvrt_canonical_upstream_remote_v1":
+        raise PreEffectBlock("repository remote role policy schema mismatch")
+    try:
+        role_resolver.resolve_repository_roles(policy)
+    except role_resolver.ExecutorBlock as exc:
+        raise PreEffectBlock(str(exc)) from exc
+    expected_urls = set()
+    for key, role in (("canonical_upstream", "AUTHORITY"), ("mirror", "MIRROR")):
+        binding = policy.get(key, {})
+        if not isinstance(binding, dict):
+            raise PreEffectBlock("repository remote role binding mismatch")
+        repository = binding.get("repository")
+        if (
+            not isinstance(repository, str)
+            or re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repository) is None
+            or binding.get("role") != role
+            or binding.get("default_branch") != "main"
+            or binding.get("canonical_https_url") != f"https://github.com/{repository}.git"
+        ):
+            raise PreEffectBlock("repository remote role binding mismatch")
+        expected_urls.update((f"https://github.com/{repository}", f"https://github.com/{repository}.git"))
+    result = self_heal.run(("git", "remote", "get-url", "--all", "origin"), timeout=60)
+    urls = result.stdout.splitlines()
+    if result.returncode or len(urls) != 1 or urls[0] not in expected_urls:
+        raise PreEffectBlock("repository-local origin URL mismatch")
+    return "origin"
+
+
 def _remote_main_revision() -> str | None:
-    remote = _canonical_source_remote()
+    remote = _execution_source_remote()
+    origin = self_heal.run(("git", "remote", "get-url", "--all", remote), timeout=60)
+    repository = origin.stdout.strip().removesuffix(".git").removeprefix("https://github.com/")
+    if origin.returncode or re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repository) is None:
+        return None
     result = self_heal.run((
-        "git", "ls-remote", "--heads", remote, "refs/heads/main",
+        "gh", "api", "--hostname", "github.com", "--method", "GET",
+        f"repos/{repository}/git/ref/heads/main",
     ), timeout=60)
     if result.returncode:
         return None
-    fields = result.stdout.split()
-    if len(fields) != 2 or not SHA1.fullmatch(fields[0]):
+    try:
+        value = json.loads(result.stdout)["object"]
+        head = value["sha"]
+        if value["type"] != "commit" or not isinstance(head, str) or not SHA1.fullmatch(head):
+            return None
+    except (ValueError, KeyError, TypeError):
         return None
-    return fields[0]
+    return head
 
 
 def observe_preconditions() -> dict[str, bool]:

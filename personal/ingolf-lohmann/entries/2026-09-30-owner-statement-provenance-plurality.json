@@ -1,0 +1,45 @@
+{
+  "schema": "qikvrt_personal_payload_entry_v1",
+  "id": "2026-09-30-owner-statement-provenance-plurality",
+  "owner": "Ingolf Lohmann",
+  "attribution": "Ingolf Lohmann",
+  "source": {
+    "kind": "CHAT_OWNER_STATEMENT",
+    "date": "2026-09-30",
+    "time": "NOT_BOUND_TO_VERIFIED_RECORDING_TIMESTAMP",
+    "place": "NOT_BOUND",
+    "audio": "NOT_BOUND"
+  },
+  "authorization": {
+    "personal_quote": true,
+    "audio_quote": "REQUIRES_SEPARATE_EXACT_AUDIO_BINDING",
+    "time_place": "REQUIRES_EXPLICIT_PROVENANCE"
+  },
+  "statements": [
+    {
+      "class": "OWNER_STATEMENT",
+      "text": "Persönliche Aussagen dürfen mit Ingolf Lohmann attribuiert und provenance-gebunden in der persönlichen QIK-VRT-Payload erhalten werden."
+    },
+    {
+      "class": "ENGINEERING_HYPOTHESIS",
+      "text": "Ein anschlussfähiges Speichersystem sollte konkurrierende, unsichere oder komplementäre Beobachtungen gleichzeitig provenance-gebunden erhalten können, statt sie vorzeitig auf eine binäre Entscheidung zu reduzieren."
+    },
+    {
+      "class": "OPEN_INTERPRETATION",
+      "text": "Ingolf Lohmann verbindet dieses Prinzip konzeptionell mit Quantenphysik und der Heisenbergschen Unschärferelation. Diese Verbindung wird hier als persönliche wissenschaftliche Interpretation/Hypothese persistiert, nicht als daraus bereits bewiesene Eigenschaft von QIK-VRT."
+    },
+    {
+      "class": "ENGINEERING_HYPOTHESIS",
+      "text": "QIK-VRT wird als versioniertes Authority/Mirror-Mesh mit REST-Digital-Twin-Semantik verstanden, dessen Ziel sichere, nachvollziehbare, auditierbare und zukünftig anschlussfähige Persistenz ist."
+    }
+  ],
+  "boundaries": [
+    "OWNER_STATEMENT != INDEPENDENT_PROOF_EVIDENCE",
+    "HEISENBERG_UNCERTAINTY != PROOF_OF_QIKVRT_ARCHITECTURE",
+    "GITHUB_PERSISTENCE != PUBLICATION_EFFECT_ACK",
+    "AUDIO_QUOTE_REQUIRES_EXACT_AUDIO_PROVENANCE",
+    "TIME_AND_PLACE_NOT_INFERRED"
+  ],
+  "continuation": "Future exact audio, timestamp, place, independent proof or publication receipts may append/supersede this entry without rewriting its historical provenance.",
+  "effect_ack_done": false
+}

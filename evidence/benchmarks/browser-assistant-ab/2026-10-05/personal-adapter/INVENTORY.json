@@ -1,0 +1,54 @@
+{
+  "archive_insufficiency": "Encrypted audit archive/export; no callable research inference, normal provider conversation, or Firefox resume interface. Not replaced or reinterpreted as a model runtime.",
+  "existing_components_reused": [
+    "src/qikvrt_effect_ack_http_terminal.py",
+    "browser/firefox/qikvrt-terminal/",
+    "tools/qikvrt_browser_assistant_ab.py",
+    "Makefile",
+    ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+    "runtime/toolchains/CACHE_REGISTRY.json"
+  ],
+  "inspected_code_scopes": [
+    "src/",
+    "tools/",
+    "browser/",
+    "runtime/",
+    "personal/"
+  ],
+  "limitations": [
+    "Bounded accessible inventory only; missing registered runners or credentials elsewhere cannot be inferred.",
+    "A ChatGPT Work session or GitHub connector is not a credential delivered to this model-runtime process.",
+    "No browser or provider invocation performed by the product harness."
+  ],
+  "mesh_workflow_dispatch_callable": false,
+  "next_step": "Provide an authorized model-runtime carrier to the opt-in existing terminal and obtain fresh authenticated readback; then bind normal provider retention and the same Firefox end-user path for both arms.",
+  "observed_host": {
+    "firefox": {
+      "executable": null,
+      "executable_sha256": null,
+      "version": null
+    },
+    "machine": "x86_64",
+    "os": "Linux-6.18.44-x86_64-with-glibc2.39",
+    "python": "3.12.14"
+  },
+  "observed_utc": "2026-10-05T13:04:21Z",
+  "personal_branch_additional_browser_src_or_capability_payload_found": false,
+  "personal_branch_inspected": "personal/firefox-capability-boundary-20260927",
+  "prior_executable_personal_research_path_found": false,
+  "prior_interaction_archive_inspected": "tools/qikvrt_interaction_archive.py",
+  "product_claim_allowed": false,
+  "product_metrics": null,
+  "product_trials_executed": 0,
+  "product_trials_planned": 24,
+  "repository": "ingolf-lohmann/qik-vrt",
+  "runner_inventory_read": "NOT_AVAILABLE_THROUGH_CURRENT_CONNECTOR_GET_ALLOWLIST",
+  "runtime_credentials_present": {
+    "CHATGPT_ACCESS_TOKEN": false,
+    "OPENAI_API_KEY": false,
+    "QIKVRT_PERSONAL_LOCAL_TOKEN": false
+  },
+  "schema": "qikvrt_personal_adapter_inventory_v1",
+  "source_head": "5bd1afc5bfa7c3887698f24f899b72e6f5701990",
+  "source_tree": "9ed7eabb3d56f1d346d40397f0a3150c976eb786"
+}

@@ -1,0 +1,14 @@
+{
+  "schema": "qikvrt-origin-browser-test-lock/v1",
+  "playwright": "1.62.1",
+  "chromium_revision": "1234",
+  "chromium_version": "151.0.7922.34",
+  "archive_url": "https://storage.googleapis.com/chrome-for-testing-public/151.0.7922.34/linux64/chrome-linux64.zip",
+  "archive_bytes": 193282658,
+  "archive_sha256": "ae8736ac28bc69278551500f219fc749575648263c43ec5990749eff43b9fcf8",
+  "executable_relative_path": "chrome-linux64/chrome",
+  "license": "Chromium upstream notices retained in archive; Playwright Apache-2.0",
+  "scope": "LINUX_DESKTOP_BROWSER_TESTS_ONLY",
+  "android_verified": false,
+  "ios_verified": false
+}

@@ -1,0 +1,25 @@
+{
+  "schema": "qikvrt_mirror_admission_liveness_probe_v1",
+  "authority_blocked_subject": "12905504e83150a755c237ca4338de6e2f109e95",
+  "authority_observation": {
+    "recovery_run": 36680571709,
+    "trigger": "pull_request_target/review_requested",
+    "state": "PENDING_ZERO_JOB",
+    "conclusion": "AUTHORITY_PRE_JOB_ADMISSION_NOT_YET_EXECUTING"
+  },
+  "mirror_predecessor": "1f504fb577473655886ba51ad4b590d8e7e17f0e",
+  "purpose": "Use the independent Mirror pole to prove that QIK-VRT evidence growth does not collapse merely because Authority GitHub Actions admission is stalled.",
+  "challenge": {
+    "vector": "LIVENESS-ADMISSION-001",
+    "required_relation": "OPEN_SOLVABLE + AUTHORIZED_NEXT + !PROVEN_COMPLETION -> CONTINUE_TO_FRESH_EVIDENCE",
+    "this_mutation_is": "MIRROR_SUCCESSOR_EVIDENCE",
+    "authority_pass_transfer": false
+  },
+  "result": {
+    "MIRROR_CAN_MATERIALIZE_SUCCESSOR": true,
+    "AUTHORITY_ACTIONS_ADMISSION_REPAIRED": false,
+    "DUAL_POLE_SYSTEM_STAGNANT": false,
+    "EFFECT_ACK_DONE": false
+  },
+  "next": "FRESH_READBACK_MIRROR_HEAD_THEN_COMPARE_WITH_AUTHORITY_AND_BIND_DIVERGENCE_AS_NEXT_DUAL_POLE_INPUT"
+}

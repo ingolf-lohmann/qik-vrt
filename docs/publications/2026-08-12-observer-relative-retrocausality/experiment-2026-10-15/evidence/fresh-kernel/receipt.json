@@ -1,0 +1,123 @@
+{
+  "schema": "qikvrt_retrocausality_successor_kernel_receipt_v1",
+  "observed_at": "2026-10-15T12:45:35.615456+00:00",
+  "source_base_head": "cdbdce01ba13f0c41ade9982a2d9a26a8ea4b92f",
+  "subject": "exact source digests below; precommit local candidate, not a native GitHub receipt",
+  "full_v2_lake_build_exit": 0,
+  "scoped_theorem_count": 24,
+  "reused_local_theorems_rechecked": 16,
+  "additional_integer_theorems": 8,
+  "negative_controls": 3,
+  "axioms_by_theorem": {
+    "QIKVRT.V2.BacksignalingBoundary.published_order_is_forward": [],
+    "QIKVRT.V2.BacksignalingBoundary.published_order_is_reversed": [],
+    "QIKVRT.V2.BacksignalingBoundary.published_order_has_no_receive_before_emit": [],
+    "QIKVRT.V2.BacksignalingBoundary.reception_reversal_does_not_imply_receive_before_emit": [],
+    "QIKVRT.V2.BacksignalingBoundary.forward_delivery_excludes_receive_before_emit": [
+      "propext",
+      "Quot.sound"
+    ],
+    "QIKVRT.V2.BacksignalingBoundary.positive_delay_is_after_emission": [
+      "propext",
+      "Quot.sound"
+    ],
+    "QIKVRT.V2.BacksignalingBoundary.virtual_past_address_with_forward_host_order": [],
+    "QIKVRT.V2.BacksignalingBoundary.later_inputs_preserve_captured_prefix": [
+      "Quot.sound"
+    ],
+    "QIKVRT.V2.ThreeObserverProtocol.C_preserves_A_record": [],
+    "QIKVRT.V2.ThreeObserverProtocol.forward_round_trip_returns_after_query": [
+      "propext",
+      "Quot.sound"
+    ],
+    "QIKVRT.V2.ThreeObserverProtocol.forward_model_excludes_early_reply": [
+      "propext",
+      "Quot.sound"
+    ],
+    "QIKVRT.V2.ThreeObserverProtocol.abstract_past_directed_trace_is_representable": [],
+    "QIKVRT.V2.ThreeObserverProtocol.assumed_trace_violates_forward_transport": [],
+    "QIKVRT.V2.ThreeObserverProtocol.C_observation_preserves_early_reply_predicate": [],
+    "QIKVRT.V2.ThreeObserverProtocol.any_finite_forward_path_returns_later": [
+      "propext",
+      "Quot.sound"
+    ],
+    "QIKVRT.V2.ThreeObserverProtocol.adding_forward_relays_cannot_close_a_cycle": [
+      "propext",
+      "Quot.sound"
+    ],
+    "QIKVRT.V2.ObserverRelative.inverse_orientation_has_signed_differences": [
+      "propext,\n Classical.choice,\n Quot.sound"
+    ],
+    "QIKVRT.V2.ObserverRelative.increasing_reparameterizations_preserve_orientation": [],
+    "QIKVRT.V2.ObserverRelative.overtaking_iff_delay_difference_exceeds_emission_gap": [
+      "propext,\n Classical.choice,\n Quot.sound"
+    ],
+    "QIKVRT.V2.ObserverRelative.equal_delays_preserve_source_order": [
+      "propext",
+      "Quot.sound"
+    ],
+    "QIKVRT.V2.ObserverRelative.every_positive_emission_gap_allows_positive_delay_overtaking": [
+      "propext,\n Classical.choice,\n Quot.sound"
+    ],
+    "QIKVRT.V2.ObserverRelative.separated_time_intervals_establish_actual_order": [
+      "propext",
+      "Quot.sound"
+    ],
+    "QIKVRT.V2.ObserverRelative.complementary_numerators_have_constant_sum": [
+      "propext",
+      "Quot.sound"
+    ],
+    "QIKVRT.V2.ObserverRelative.published_mark_orientation": []
+  },
+  "checks": [
+    {
+      "name": "version",
+      "exit_code": 0,
+      "log_sha256": "5362a246ce2545424db10a77de8fd4694f4cf8b0170dfd43fa727acf7f7f259b"
+    },
+    {
+      "name": "axioms",
+      "exit_code": 0,
+      "log_sha256": "3c8a8e1c11b1a70b3f871783b064261e5adb1ebf1b2d81a18543e6314bb7fee9"
+    },
+    {
+      "name": "FalseBacksignaling",
+      "exit_code": 1,
+      "log_sha256": "bd59beab2c1fe85c330f570660f2a377ea345c640be56594c2d25ec13973bc63"
+    },
+    {
+      "name": "FalseForwardReturn",
+      "exit_code": 1,
+      "log_sha256": "374639d986c30fb1759abb2ad043635ecd00f5e4b5aeca89b1ce2895a8df1c13"
+    },
+    {
+      "name": "FalseReceptionOrder",
+      "exit_code": 1,
+      "log_sha256": "298297e2151bcde137698dc7361c66e5e78616c62128e981e0baada0570a3cd8"
+    }
+  ],
+  "sources": {
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization.lean": "c8ef9a53c23ecee7a68da1ee3a78ebc132a94a6cacdbd1ec4b0d760a590c7d56",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Retrocausality/BacksignalingBoundary.lean": "7544717fad739fe0393794a789d666ddc2d337c8dc3bd18cb682bd2371914659",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Retrocausality/ForwardProcess.lean": "bc618608089ca2430473bd892a8decc0d2a190d5ced28271292ca851381ca0e0",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Retrocausality/ObserverRelative.lean": "7e52cc78b019663c95bfc240b725c9d5318466384e6d4afe63798b4290c8f863",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Retrocausality/Reclassification.lean": "d674237eeb3e9ce0ade50a31b3ebe705695a5bcc28b88163b776f6e25c0adc24",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Retrocausality/ThreeObserverProtocol.lean": "734c9f31bd1e47b096ff997b35610d720ba376469f1845bde54654c1ec72aca1",
+    "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/AxiomAudit.lean": "32cfd7e4d041665d72834991b8d363b2b66f509be1a390174672fab8d118ea9e"
+  },
+  "toolchain": {
+    "version": "Lean 4.19.0",
+    "lean_binary_sha256": "92c3d35b5bfaa5e0fea413a775d504cf46cd95e1345df61c2274f76779e7e023",
+    "libleanshared_sha256": "2ab605c74c78f9ba4431a7b5305a4b28a9071d8a826f223eb14fe5530f78e14d",
+    "runtime_compatibility_source": "docs/publications/2026-08-02-causality-is-relation-vrtcore/lean_selfexe_compat.c",
+    "runtime_compatibility_source_sha256": "5b797bcf5673e81099b2f675f42211b0af92bef2c4553701e82d02035bc08f4d",
+    "runtime_compatibility_binary_sha256": "cd2f4312b960a86e7a5780096ba3c9ae0c5fc0ef10c8827171494be97a53e2cc",
+    "upstream_digest_independently_authenticated": false
+  },
+  "physical_confirmation": false,
+  "independent_reproduction": false,
+  "original_v1_build_exit": 0,
+  "original_v1_retrocausality_theorems_rechecked": 8,
+  "original_v1_source_sha256": "12a1ad6d85c8cbcd89c48df88b78b9e1d2c575ab57b5f9e8d9068306eaea7eb8",
+  "original_v1_no_sorryAx": true
+}

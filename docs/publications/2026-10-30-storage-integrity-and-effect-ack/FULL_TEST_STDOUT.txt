@@ -1,0 +1,246 @@
+Makefile:16: target 'effect-ack-core-compile' does not exist
+cc -std=c90 -pedantic -Wall -Wextra -Werror -Iinclude -fsyntax-only src/effect_ack_core.c tests/test_effect_ack_core.c
+Makefile:280: target 'fixed-q16-compile' does not exist
+cc -std=c90 -pedantic -Wall -Wextra -Werror -pedantic-errors -Iinclude -fsyntax-only src/fixed_q16.c tests/test_fixed_q16.c tools/qikvrt_c90_benchmark.c
+Makefile:13: update target 'compile' due to: effect-ack-core-compile fixed-q16-compile
+PYTHONDONTWRITEBYTECODE=1 python3 -m py_compile qikvrt.py tools/qikvrt_runtime_logger.py tools/qikvrt_subprocess.py tools/qikvrt_initial_acceptance_gate.py tools/qikvrt_integrity.py tools/qikvrt_tool_cache.py tools/ai_runtime_bootloader.py tools/qikvrt_master_acceptance_gate.py tools/qikvrt_cicd_publish.py tools/qikvrt_seed_common.py tools/qikvrt_workflow_executor.py tools/qikvrt_anticipation.py tools/qikvrt_validate_state_run.py tools/qikvrt_zenodo_actions.py tools/qikvrt_zenodo_metadata_edit.py tools/qikvrt_formalization_v2_zenodo.py tools/qikvrt_build_zenodo_manifest.py tools/qikvrt_status_zenodo.py tools/qikvrt_interaction_archive.py tools/qikvrt_global_completion.py tools/qikvrt_causal_distance_kernel_evidence.py tools/qikvrt_canonical_temporal_memory_kernel_evidence.py tools/qikvrt_vrtcore_zenodo_candidate.py tools/qikvrt_content_disposition_batch_001.py tools/qikvrt_content_disposition_batch_002_terminal.py tools/qikvrt_content_disposition_batch_002_corrected_candidate.py tools/qikvrt_content_disposition_batch_002_owner_acceptance.py tools/qikvrt_content_disposition_status_after_batch_002_acceptance.py tools/qikvrt_content_disposition_status_after_batch_002_acceptance_compat.py tools/qikvrt_content_disposition_batch_003_dispatch.py tools/qikvrt_zenodo_union_disposition.py release/observer-relative-retrocausality-current-synthesis-zenodo-v2/finalize_authorized_controls.py src/qikvrt_effect_ack.py src/qikvrt_api_handler.py src/qikvrt_github_api_shim.py scripts/qikvrt_api_client.py tests/test_integrity.py tests/test_ai_runtime_bootloader.py tests/test_launcher_runtime.py tests/test_effect_ack_conformance.py tests/test_effect_ack_release_workflows.py tests/test_formalization_v2_release_workflow.py tests/test_formalization_v2_zenodo.py tests/test_status_release_workflows.py tests/test_zenodo_actions.py tests/test_zenodo_metadata_clarification_candidates.py tests/test_qikvrt_zenodo_metadata_edit.py tests/test_status_zenodo.py tests/test_zenodo_manifest_builder.py tests/test_status_clarification_bundle.py tests/test_global_completion.py tests/test_content_disposition_batch_001.py tests/test_content_disposition_batch_002_terminal.py tests/test_content_disposition_batch_002_corrected_candidate.py tests/test_content_disposition_batch_002_owner_acceptance.py tests/test_content_disposition_status_after_batch_002_acceptance.py tests/test_content_disposition_batch_003_dispatch.py tests/test_zenodo_union_disposition.py tests/test_handler_unit.py tests/test_handler_security.py tests/test_api_client.py tests/test_interaction_archive.py tests/test_anticipation.py tests/test_license_transition.py tests/test_ietf_offline_render.py tests/test_seed_workflows.py tests/test_qikvrt_workflow_executor_mesh_contract.py tests/test_tcpip_e2e.py tests/test_canonical_temporal_memory_publication.py
+Makefile:91: target 'integrity' does not exist
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tests/test_integrity.py
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tools/qikvrt_integrity.py verify
+PASS verified 5343 classified entries and 5332 immutable digests
+Makefile:19: update target 'effect-ack-core-test' due to: effect-ack-core-compile
+CC="cc" sh tests/test_effect_ack_core.sh
+EFFECT_ACK C90 core: PASS (7864387 checks)
+Makefile:22: target 'scientific-bundle-test' does not exist
+PYTHON="python3" sh tests/test_effect_ack_scientific_bundle.sh
+PASS: EFFECT_ACK scientific proof, optimized-mode guard and bundle SHA-256 index
+Makefile:25: target 'adaptive-cognition-test' does not exist
+bash -n tools/qikvrt_adaptive_runtime.sh tests/test_adaptive_runtime.sh
+bash tests/test_adaptive_runtime.sh
+PASS: collective adaptive runtime contract and negative controls
+Makefile:29: target 'anticipation-contract' does not exist
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_anticipation
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tools/qikvrt_anticipation.py check >/dev/null
+Makefile:33: target 'tool-cache-contract' does not exist
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tools/qikvrt_tool_cache.py verify
+PASS: 44/44 declared tools have cache strategies (100%)
+Makefile:49: update target 'runtime-contract' due to: tool-cache-contract
+sh -n tools/bootstrap-gh.sh tools/bootstrap-runtime.sh
+sh -n tests/test_runtime_bootstrap.sh
+sh tools/bootstrap-gh.sh --help >/dev/null
+sh tools/bootstrap-runtime.sh --help >/dev/null
+PYTHON="python3" sh tests/test_runtime_bootstrap.sh
+PASS: 44/44 declared tools have cache strategies (100%)
+SKIP: verified source archive is absent; CI creates it with the full install contract
+Makefile:56: target 'ai-runtime-contract' does not exist
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_ai_runtime_bootloader tests.test_ai_onboarding
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tools/ai_runtime_bootloader.py --help >/dev/null
+Makefile:60: target 'interaction-archive-test' does not exist
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_interaction_archive
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tools/qikvrt_interaction_archive.py --help >/dev/null
+Makefile:64: target 'release-automation' does not exist
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_effect_ack_release_workflows tests.test_workflow_action_runtime_pins tests.test_formalization_v2_release_workflow tests.test_formalization_v2_zenodo tests.test_status_release_workflows tests.test_zenodo_actions tests.test_zenodo_metadata_clarification_candidates tests.test_qikvrt_zenodo_metadata_edit tests.test_status_zenodo tests.test_zenodo_manifest_builder tests.test_status_clarification_bundle tests.test_publication_router tests.test_global_completion tests.test_content_disposition_batch_002_terminal tests.test_content_disposition_batch_002_corrected_candidate tests.test_content_disposition_batch_002_owner_acceptance tests.test_content_disposition_status_after_batch_002_acceptance tests.test_content_disposition_batch_003_dispatch tests.test_transactional_workflow_trigger
+PASS verified 9 frozen Alpha-2 text inputs from 500087f6aeee41787959cfc8902852503e2182019ae4f3e88f115e94a1f5e689
+PASS verified global completion ledger: 92 claims, 54 primary kernel receipts, FINAL_PASS receipt present
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tests/test_content_disposition_batch_001.py
+CONTENT_DISPOSITION_BATCH_001=DISPOSITIONED_NO_CONTENT_CHANGE
+DOWNSTREAM_STATE=CONTENT_DISPOSITION_BATCH_002_TERMINALLY_DISPOSITIONED
+test_content_disposition_batch_001: PASS
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tests/test_zenodo_union_disposition.py
+CANONICAL_UNION_RECORD_COUNT=24
+CLAIM_SUBJECT_COUNT=19
+FIRST_BATCH_SUBJECT_COUNT=6
+GENERATOR_BASE_STATE=CANONICAL_UNION_BUILT_CONTENT_DISPOSITION_STARTED
+STATE=CONTENT_DISPOSITION_BATCH_002_TERMINALLY_DISPOSITIONED_CORRECTION_REQUIRED
+CANONICAL_UNION_DISPOSITION_TEST=PASS
+Makefile:69: target 'evidence-contract-test' does not exist
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_retrocausality_experiment
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_archive_get_causal_journal
+PYTHONDONTWRITEBYTECODE=1 python3 -m py_compile tools/qikvrt_zenodo_publish.py tools/qikvrt_zenodo_corpus_proof.py tools/qikvrt_zenodo_machine_proof.py tools/qikvrt_vrtcore_zenodo_publication_controls.py release/observer-relative-retrocausality-current-synthesis-zenodo-v2/finalize_authorized_controls.py tools/qikvrt_canonical_temporal_memory_kernel_evidence.py scripts/issue_agent/validate.py tests/issue_agent/test_validate.py tests/test_authority_mirror_equality_receipt.py tests/test_canonical_closing_status_article.py tests/test_charter_zenodo.py tests/test_qikvrt_self_disclosure.py tests/test_virtual_past_reception.py tests/test_quantum_classical_runtime_article.py tests/test_canonical_temporal_memory_publication.py tests/test_vrtcore_h56_zenodo_candidate.py tests/test_vrtcore_zenodo_publication_controls.py tests/test_observer_relative_retrocausality_zenodo_finalizer.py tests/test_zenodo_corpus_inventory_failure_receipt.py tests/test_zenodo_corpus_proof.py tests/test_zenodo_machine_proof_policy.py
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tools/qikvrt_canonical_temporal_memory_kernel_evidence.py --static-only >/dev/null
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_causal_distance_kernel_evidence tests.issue_agent.test_validate tests.test_authority_mirror_equality_receipt tests.test_canonical_closing_status_article tests.test_charter_zenodo tests.test_qikvrt_self_disclosure tests.test_virtual_past_reception tests.test_quantum_classical_runtime_article tests.test_canonical_temporal_memory_publication tests.test_vrtcore_h56_zenodo_candidate tests.test_vrtcore_zenodo_publication_controls tests.test_observer_relative_retrocausality_zenodo_finalizer tests.test_zenodo_corpus_inventory_failure_receipt tests.test_zenodo_corpus_proof tests.test_zenodo_machine_proof_policy
+Makefile:76: target 'workflow-executor-mesh-contract' does not exist
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_self_host.AuthoritySuccessionModelTests
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_qikvrt_workflow_executor_mesh_contract tests.test_seed_workflows tests.test_qikvrt_reflexive_repository_watchdog tests.test_qikvrt_required_review_gate tests.test_qikvrt_requested_review_executor tests.test_qikvrt_expected_head_promotion tests.test_self_host_provider.RepositoryIONOSReadonlyTests
+{"detail": "the Principal's explicit approval is the current-head review; GitHub state remains COMMENTED", "external_effect": "NONE", "first_blocker": null, "gate_state": "success", "head_sha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "independent_native_approval": false, "native_code_owner_rule_enforced": false, "platform_review_state": "COMMENTED", "pr_number": 523, "required_code_owner": "ingolf-lohmann", "review_basis": "OWNER_PRINCIPAL_REVIEW", "review_id": 7, "review_mutation": "FORBIDDEN", "schema": "qikvrt_required_code_owner_review_gate_v1"}
+BOOTSTRAP_NOOP: current Mesh Authority binding is not yet promoted.
+{"acceptance": "BLOCKED", "first_blocker": "AUTHORITY_BINDING_NOT_PROMOTED", "gate_state": "failure", "head_sha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}
+{"acceptance": "BLOCKED", "base_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "completion_claims": {"EFFECT_ACK_DONE": false, "FINAL_PASS": false, "PASS": false}, "execution_success_implies_enforcement": false, "execution_success_implies_independent_approval": false, "first_blocker": "CODE_OWNER_RULE_NOT_ENFORCED", "gate_state": "failure", "head_sha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "independent_native_approval": false, "legacy_status_context": "QIKVRT requested review execution", "legacy_status_id": null, "native_review_gate": {"detail": "main must require one approval, Code Owner review, stale-review dismissal, and last-push approval", "external_effect": "NONE", "first_blocker": "CODE_OWNER_RULE_NOT_ENFORCED", "gate_state": "failure", "head_sha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "pr_number": 641, "required_code_owner": "ingolf-lohmann", "review_mutation": "FORBIDDEN", "schema": "qikvrt_required_code_owner_review_gate_v1"}, "pr_number": 641, "review_basis": null, "schema": "qikvrt_governance_projection_v1", "status_context": "QIKVRT required code-owner review", "status_id": 4}
+{"detail": "@ingolf-lohmann approved the current head", "external_effect": "NONE", "first_blocker": null, "gate_state": "success", "head_sha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "independent_native_approval": true, "native_code_owner_rule_enforced": true, "platform_review_state": "APPROVED", "pr_number": 641, "required_code_owner": "ingolf-lohmann", "review_basis": "INDEPENDENT_NATIVE_APPROVAL", "review_id": 3, "review_mutation": "FORBIDDEN", "schema": "qikvrt_required_code_owner_review_gate_v1"}
+{"detail": "@Goldkelch approved the current head", "external_effect": "NONE", "first_blocker": null, "gate_state": "success", "head_sha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "independent_native_approval": true, "native_code_owner_rule_enforced": true, "platform_review_state": "APPROVED", "pr_number": 641, "required_code_owner": "Goldkelch", "review_basis": "INDEPENDENT_NATIVE_APPROVAL", "review_id": 3, "review_mutation": "FORBIDDEN", "schema": "qikvrt_required_code_owner_review_gate_v1"}
+{"detail": "main must require one approval, Code Owner review, stale-review dismissal, and last-push approval", "external_effect": "NONE", "first_blocker": "CODE_OWNER_RULE_NOT_ENFORCED", "gate_state": "failure", "head_sha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "pr_number": 641, "required_code_owner": "ingolf-lohmann", "review_mutation": "FORBIDDEN", "schema": "qikvrt_required_code_owner_review_gate_v1"}
+MESH_AUTHORITY_BOUND: human=ingolf-lohmann; administration effect NOT_EXECUTED
+BOOTSTRAP_NOOP: native review routing is not yet promoted to trusted main.
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tools/qikvrt_workflow_executor.py snapshot --expect-head "$(git rev-parse --verify HEAD^{commit})" --json >/dev/null
+Makefile:88: target 'repository-terminal-test' does not exist
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_qikvrt_repository_terminal
+Makefile:95: target 'launcher' does not exist
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tests/test_launcher_runtime.py
+PASS_DRY_RUN plan validated; no external effect executed. Evidence: /tmp/tmprlbmifxt/.qikvrt/evidence/QIKVRT_CICD_EVIDENCE_LEDGER.json
+PASS_PUBLISH_PLAN publish plan materialized; no external effect executed. Evidence: /tmp/tmprlbmifxt/.qikvrt/evidence/QIKVRT_CICD_EVIDENCE_LEDGER.json
+usage: test_launcher_runtime.py [-h] [--test-timeout SECONDS]
+
+QIK-VRT non-recursive master acceptance gate
+
+options:
+  -h, --help            show this help message and exit
+  --test-timeout SECONDS
+usage: test_launcher_runtime.py [-h] [{cicd-publish,master-gate}] ...
+
+QIK-VRT launcher. Scoped local authorization is required before any effect.
+
+positional arguments:
+  {cicd-publish,master-gate}
+  args
+
+options:
+  -h, --help            show this help message and exit
+Makefile:101: target 'conformance' does not exist
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v tests.test_effect_ack_conformance tests.test_effect_ack_wire tests.test_effect_ack_http_service
+Makefile:98: target 'unit' does not exist
+python3 tests/test_handler_unit.py
+Makefile:104: target 'security' does not exist
+PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest -v tests.test_handler_security tests.test_api_client tests.test_qikvrt_ionos_dns tests.test_qikvrt_ionos_web
+Makefile:107: target 'license' does not exist
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_license_transition
+Makefile:110: target 'seed' does not exist
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tools/qikvrt_seed_common.py config-check --root .
+QIKVRT_SEED_CONFIG_CHECK PASS run_id=20261030T121743Z
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_seed_workflows tests.test_mirror_lifecycle_publication
+for script in tools/qikvrt_seed_*.sh; do sh -n "$script"; done
+Makefile:115: target 'e2e' does not exist
+python3 tests/test_tcpip_e2e.py
+Makefile:41: update target 'offline-browser-install-diagnosis-test' due to: tool-cache-contract
+node --test runtime/offline/browser-tests/apt-diagnosis.test.mjs runtime/offline/browser-tests/webkit-apt-cache.test.mjs
+✔ APT proxy credentials and unrelated secret-bearing fields never reach the report (1.453236ms)
+✔ metadata rejects wrong packages, traversal, invalid digests and oversized objects (0.977948ms)
+✔ the requested exact range is measured and a complete small package is hash-checked (21.589233ms)
+✔ a live heartbeat without useful body progress hits the wall timeout (62.860147ms)
+✔ redirects, wrong ranges and truncated bodies cannot become successful observations (6.615737ms)
+✔ identical complete but wrong bytes fail the package digest check (1.880542ms)
+✔ large transfers are bounded to the prefix and never claim whole-package verification (7.751663ms)
+✔ the original workflow retains installation failure and always uploads the diagnostic (0.87336ms)
+✔ wrong source and unavailable checker remain unverified, without leaking command output (139.611458ms)
+✔ original DNS-only HTTPS timeout remains UNVERIFIED while both downstream steps become reachable (75.756444ms)
+✔ checker errors, wrong source and malformed records still stop the guarded downstream steps (291.567191ms)
+✔ an allowed partial diagnostic cannot turn browser-download or browser-test failure into success (140.123403ms)
+✔ APT configuration only relocates the archive cache and never weakens authentication (1.268366ms)
+✔ an unreadable archive inventory is an error rather than an empty cache (0.975114ms)
+✔ the actual install shell retains install failures and rejects missing after-evidence on success (634.514556ms)
+✔ missing runner image identity stops before any privileged configuration or cache creation (6.226268ms)
+✔ unsafe archive paths are rejected before they can reach root APT configuration (0.379844ms)
+✔ summary binds only regular .deb files and ignores partial downloads, locks and links (3.229851ms)
+✔ a missing archive directory is an empty cache, and receipts are never overwritten (333.22251ms)
+✔ workflow restores caches before installation and keeps the bounded original install path (0.867731ms)
+✔ caches are keyed to runner image and lockfile, use repository-pinned actions and only save verified results (1.483311ms)
+✔ fetched-archive evidence is exact only for a single APT "0 B" line and UNKNOWN otherwise (0.642461ms)
+✔ the actual install shell records the APT fetch line and keeps the install exit status (592.776642ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1663.021526
+Makefile:82: target 'owner-reminders-test' does not exist
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_owner_reminders
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tools/qikvrt_owner_reminders.py >/dev/null
+Makefile:190: target 'issue-agent-test' does not exist
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest discover -s tests/issue_agent -p 'test_*.py' -v
+Makefile:129: target 'mcp-conformance-test' does not exist
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_mcp_e2e tests.test_qikvrt_mcp_adapter tests.test_mcp_integration tests.test_seed_mcp_governance
+PYTHONDONTWRITEBYTECODE=1 python3 -m py_compile scripts/qikvrt_mcp_probe.py
+Makefile:136: target 'eu-ai-act-evidence-gate-test' does not exist
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_eu_ai_act_evidence_gate
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tools/qikvrt_eu_ai_act_evidence_gate.py --json
+{
+  "findings": [
+    {
+      "code": "STATUS_CLASSIFICATION",
+      "detail": "Required conservative status marker present.",
+      "status": "PASS"
+    },
+    {
+      "code": "STATUS_COMPLIANCE_NOT_ESTABLISHED",
+      "detail": "Required conservative status marker present.",
+      "status": "PASS"
+    },
+    {
+      "code": "STATUS_REQUIREMENT_REGISTER_LINK",
+      "detail": "Required conservative status marker present.",
+      "status": "PASS"
+    },
+    {
+      "code": "REGISTER_CLASSIFICATION",
+      "detail": "Required evidence-control marker present.",
+      "status": "PASS"
+    },
+    {
+      "code": "REGISTER_OPEN_APPLICABILITY_GATES",
+      "detail": "Required evidence-control marker present.",
+      "status": "PASS"
+    },
+    {
+      "code": "REGISTER_MISSING_EVIDENCE_DISPOSITION",
+      "detail": "Required evidence-control marker present.",
+      "status": "PASS"
+    },
+    {
+      "code": "REGISTER_NO_SHORTCUT_TO_NOT_APPLICABLE",
+      "detail": "Required evidence-control marker present.",
+      "status": "PASS"
+    }
+  ],
+  "result": "DOCUMENTARY_GUARDS_PASS",
+  "schema": "qikvrt_eu_ai_act_evidence_gate_v1",
+  "scope": "repository-document consistency only; no legal or operational conformity conclusion"
+}
+Makefile:147: target 'personal-firefox-boundary-test' does not exist
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_production_environment
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_publication_rest
+node tests/test_production_environment_ui.cjs
+PASS: Authority SSO UI origin/state/window binding, metadata-only readback, one upload, lost-reply readback, logout
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_qikvrt_personal_firefox_capability_boundary
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_qikvrt_personal_assistant
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_qikvrt_personal_auth
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_qikvrt_personal_terminal_transition
+node tests/test_qikvrt_personal_auth_ui.cjs
+PASS: 7 Personal controller scenarios; simulated DOM/fetch, no actual browser or authenticated session.
+Makefile:160: target 'browser-assistant-ab-test' does not exist
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_qikvrt_browser_assistant_ab
+Makefile:166: target 'machine-verifiable-science-charter-test' does not exist
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tests/test_machine_verifiable_science_charter.py
+Makefile:172: target 'ruleset-authority-test' does not exist
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_ruleset_authority_token_route
+Makefile:178: target 'self-heal-materialization-test' does not exist
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_qikvrt_self_heal_pr_materializer tests.test_qikvrt_autonomous_pre_effect_controller tests.test_qikvrt_continuous_auto_repair
+Makefile:184: target 'autonomous-pr-continuation-test' does not exist
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_qikvrt_autonomous_pr_continuation tests.test_qikvrt_autonomous_self_heal tests.test_qikvrt_expected_head_promotion tests.test_qikvrt_expected_head_promotion_contract
+Makefile:194: target 'digital-twin-sso-test' does not exist
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_digital_twin_sso_gate
+Makefile:200: target 'digital-twin-rest-test' does not exist
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v --durations=20 tests.test_qikvrt_digital_twin_rest
+Makefile:206: target 'public-qa-test' does not exist
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_public_qa_server tests.test_public_question_entrypoint
+PYTHONDONTWRITEBYTECODE=1 python3 -m py_compile runtime/public_qa/server.py
+Makefile:213: target 'editorial-navigation-test' does not exist
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tests/test_editorial_navigation.py
+Makefile:256: update target 'self-host-container-test' due to: tool-cache-contract
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_self_host_container
+PINNED_ORIGINAL_DELIVERY_REUSED_WITHOUT_LARGE_TRANSFER
+Makefile:262: target 'live-authority-mirror-ab-contract' does not exist
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_qikvrt_live_authority_mirror_ab
+Makefile:268: target 'personal-retrieval-test' does not exist
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_qikvrt_personal_retrieval
+node tests/test_qikvrt_personal_retrieval_ui.cjs
+PASS: 9 simulated retrieval UI controls
+Makefile:283: update target 'fixed-q16-test' due to: fixed-q16-compile
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 CC="cc" python3 -B tests/test_fixed_q16.py
+Makefile:297: update target 'mesh-recovery-test' due to: digital-twin-rest-test
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v --durations=20 tests.test_qikvrt_codec tests.test_qikvrt_feedback tests.test_qikvrt_standpoint_codex tests.test_qikvrt_mesh_recovery tests.test_qikvrt_authority_transition tests.test_qikvrt_github_authority_provider tests.test_qikvrt_pr_closure_engine tests.test_qikvrt_merge_priority tests.test_reciprocal_closure_step tests.test_reciprocal_devops_closure
+Makefile:303: target 'native-archive-test' does not exist
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_native_archive
+Makefile:118: update target 'test' due to: compile integrity effect-ack-core-test scientific-bundle-test adaptive-cognition-test anticipation-contract runtime-contract ai-runtime-contract interaction-archive-test release-automation evidence-contract-test workflow-executor-mesh-contract repository-terminal-test launcher conformance unit security license seed e2e offline-browser-install-diagnosis-test owner-reminders-test issue-agent-test mcp-conformance-test eu-ai-act-evidence-gate-test personal-firefox-boundary-test browser-assistant-ab-test machine-verifiable-science-charter-test ruleset-authority-test self-heal-materialization-test autonomous-pr-continuation-test digital-twin-sso-test digital-twin-rest-test public-qa-test editorial-navigation-test self-host-container-test live-authority-mirror-ab-contract personal-retrieval-test fixed-q16-test mesh-recovery-test native-archive-test
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tools/qikvrt_integrity.py verify
+PASS verified 5343 classified entries and 5332 immutable digests

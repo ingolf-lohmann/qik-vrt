@@ -1,0 +1,246 @@
+{
+  "schema": "qikvrt_causal_distance_kernel_plan_v1",
+  "proof_modules": [
+    "QIKVRTEffectAck.CausalDistance",
+    "QIKVRTEffectAck.CausalDistanceTemporalBridge",
+    "QIKVRTEffectAck.CausalDistanceBoundaryChecks"
+  ],
+  "source_bindings": {
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck.lean": {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck.lean",
+      "bytes": 1618,
+      "sha256": "7061aaa0d9959f6a5397531062276393580909385e52e82f02ce64fa234a1043",
+      "git_blob_sha1": "3ba05628fd377a54f71936d4bc6bfc1b969a5695"
+    },
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CausalDistance.lean": {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CausalDistance.lean",
+      "bytes": 8257,
+      "sha256": "0a72170f07a101a31b757c215b8af84ea5ad33175ace8d13b30e7ef9fb3f6b97",
+      "git_blob_sha1": "2ea1cd5e7685f70bb2485e59a41440bc5bd10d8c"
+    },
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CausalDistanceTemporalBridge.lean": {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CausalDistanceTemporalBridge.lean",
+      "bytes": 5637,
+      "sha256": "d4c3b08c7004be9fa1a5eec6cb9f71501aaf952e936d241aa7980ed57f326fe5",
+      "git_blob_sha1": "231f1cab53b34f061d5911badfd47a85e213b794"
+    },
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CausalDistanceBoundaryChecks.lean": {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CausalDistanceBoundaryChecks.lean",
+      "bytes": 3792,
+      "sha256": "ca2b503f6d6df1412b54dfab176caae81e1970a6ddf95d0e8db1ebe19ed55994",
+      "git_blob_sha1": "1bdb8546427b86d5231e6d51f2764eb10c002f5f"
+    },
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CausalDistanceAxiomAudit.lean": {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CausalDistanceAxiomAudit.lean",
+      "bytes": 2677,
+      "sha256": "42bea7cc176eff9692f463e213dfaea2e99587ef5870f9d70e932dce0f78b4ca",
+      "git_blob_sha1": "f8a7dc37b271195ad27c06b0cb8903ca3698ad2f"
+    },
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CanonicalTemporalMemory.lean": {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CanonicalTemporalMemory.lean",
+      "bytes": 6991,
+      "sha256": "f125d126219a152fcf50dd07f0152a4d23fdbf64e657a4ceb8aff2ae9592fbc4",
+      "git_blob_sha1": "5fb78df6e90ae43903d48fd77dacfdc8a293372b"
+    },
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/Model.lean": {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/Model.lean",
+      "bytes": 6854,
+      "sha256": "83ab0d7a50152545beefc0f88fe3dc479ae681d3d2e04615a4ab9f7c2f305499",
+      "git_blob_sha1": "02cf71f7ded77f0b9b0c18d8fd326fc0fec7f0cb"
+    },
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/Safety.lean": {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/Safety.lean",
+      "bytes": 6695,
+      "sha256": "473d35b74ff40ddcf76ad5775687ac70d1829fa4309ed656e717478ae5039cf5",
+      "git_blob_sha1": "8dd693f1fd66290d74cdb1e5f7e605b95b6fc73c"
+    },
+    "formalization/QIKVRT_Formalization_v2.0/lean-toolchain": {
+      "path": "formalization/QIKVRT_Formalization_v2.0/lean-toolchain",
+      "bytes": 26,
+      "sha256": "ee6fd37555065223ddad24dff70b5447dfbac23c14f48fb8e3ddf266104bfa87",
+      "git_blob_sha1": "cf00978c98941128bcbab27eaa26ed28b9cbbf15"
+    },
+    "formalization/QIKVRT_Formalization_v2.0/lakefile.toml": {
+      "path": "formalization/QIKVRT_Formalization_v2.0/lakefile.toml",
+      "bytes": 265,
+      "sha256": "45d01cd75d0b966cceaed22a246d804811544f8b7c0403ba5d7a6d0e78a55f30",
+      "git_blob_sha1": "5cec9150deb3e6821dc3ae2b4bf12e36ca8f53da"
+    }
+  },
+  "expected_axioms_by_theorem": {
+    "QIKVRT.CausalDistance.V1.path_append": [],
+    "QIKVRT.CausalDistance.V1.zero_path_endpoints": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.CausalDistance.V1.exists_least_cost": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.CausalDistance.V1.minimum_spec": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.CausalDistance.V1.distance_some_iff": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.CausalDistance.V1.distance_none_iff": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.CausalDistance.V1.distance_zero_iff": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.CausalDistance.V1.distance_le_path": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.CausalDistance.V1.triangle": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.CausalDistance.V1.reverse_path": [],
+    "QIKVRT.CausalDistance.V1.reverse_path_iff": [],
+    "QIKVRT.CausalDistance.V1.distance_ext": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.CausalDistance.V1.reverse_distance": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.CausalDistance.V1.undirected_path_symm": [],
+    "QIKVRT.CausalDistance.V1.undirected_distance_symmetric": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.CausalDistance.V1.selected_edges_only": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.CausalDistance.V1.path_inclusion": [],
+    "QIKVRT.CausalDistance.V1.edge_addition_cannot_increase_distance": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.CausalDistance.V1.weak_component_distance_finite": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.CausalDistance.V1.certificate_exact": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.CausalDistance.TemporalBridge.V1.confirmed_requires_original_authorization": [
+      "propext"
+    ],
+    "QIKVRT.CausalDistance.TemporalBridge.V1.confirmed_requires_recomputed_done": [
+      "propext"
+    ],
+    "QIKVRT.CausalDistance.TemporalBridge.V1.confirmed_requires_responsible_owner": [
+      "propext"
+    ],
+    "QIKVRT.CausalDistance.TemporalBridge.V1.confirmed_requires_past_future_and_observation": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.CausalDistance.TemporalBridge.V1.selected_confirmation_is_one_step": [],
+    "QIKVRT.CausalDistance.TemporalBridge.V1.distinct_selected_confirmation_distance": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.CausalDistance.TemporalBridge.V1.retrospective_confirmation_distance": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.CausalDistance.TemporalBridge.V1.future_representation_preserves_original_past": [],
+    "QIKVRT.CausalDistance.BoundaryChecks.V1.forward_distance_two": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.CausalDistance.BoundaryChecks.V1.backward_distance_infinite": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.CausalDistance.BoundaryChecks.V1.directed_distance_can_be_asymmetric": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.CausalDistance.BoundaryChecks.V1.undirected_projection_can_shorten_reverse_distance": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.CausalDistance.BoundaryChecks.V1.finite_distance_does_not_certify_release": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.CausalDistance.BoundaryChecks.V1.observed_is_not_an_anticipated_boundary": [],
+    "QIKVRT.CausalDistance.BoundaryChecks.V1.inhabited_bridge_distance_one": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.CausalDistance.BoundaryChecks.V1.missing_responsibility_never_authorized": []
+  },
+  "negative_controls": {
+    "FalseDirectedSymmetry.lean": {
+      "path": "docs/publications/2026-10-24-causal-distance-temporal-memory/negative/FalseDirectedSymmetry.lean",
+      "bytes": 256,
+      "sha256": "446e207a9bf475edfee403a52e406e4f2081ea21cae2abe20cc66dbb7d24cec5",
+      "git_blob_sha1": "c66f7056fac6570f8356619a770c25558e38312a"
+    },
+    "FalseZeroEdge.lean": {
+      "path": "docs/publications/2026-10-24-causal-distance-temporal-memory/negative/FalseZeroEdge.lean",
+      "bytes": 170,
+      "sha256": "bf9181782600bb257313de7685e8cbdd2a8f66f9881dd51a4bcbad15776f1b1e",
+      "git_blob_sha1": "e10ad4bca9e21a3f929af92fe9e1a371c50d56c2"
+    },
+    "FalseFutureAdmission.lean": {
+      "path": "docs/publications/2026-10-24-causal-distance-temporal-memory/negative/FalseFutureAdmission.lean",
+      "bytes": 148,
+      "sha256": "e215031ddf49eaeb87a4236ade99bf858050151a693c42cdd08c9a7fe2275b25",
+      "git_blob_sha1": "22e37882398b83d85cce66d2ddf1dd4ea8d79ff1"
+    },
+    "FalseUnownedAdmission.lean": {
+      "path": "docs/publications/2026-10-24-causal-distance-temporal-memory/negative/FalseUnownedAdmission.lean",
+      "bytes": 270,
+      "sha256": "d024b857eb94052e6f51ed79088998949390d13fa4c856c2c7ece8b1d05ca7ac",
+      "git_blob_sha1": "b54e143d3df57b8b23755fa3c12517ae4fe474ee"
+    }
+  },
+  "scope": [
+    "Positive natural weighted directed path distance; graph-relative infinity; null-distance identity; directed triangle inequality.",
+    "Exact reversal of relation and symmetric finite metric within each weak component of the undirected projection.",
+    "Original EAP and dual-canonical memory obligations remain necessary for selected confirmed links; nonvacuous model instance."
+  ],
+  "nonclaims": [
+    "No physical backward signalling or rewriting of historical bytes.",
+    "No universal biological/nonbiological classification theorem.",
+    "No full formal verification of the Python Dijkstra implementation, serializers, hashes, live receipts or identity authentication.",
+    "No complete productive Digital Twin, universal physical measurement or deployment acceptance."
+  ]
+}

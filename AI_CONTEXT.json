@@ -12,6 +12,12 @@
     "machine_state": "AI_PROGRESS.json",
     "human_projection": "AI_STATUS.md"
   },
+  "owner_review_acceptance": {
+    "policy": "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+    "owner_record": "state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+    "gate": "tools/qikvrt_required_review_gate.py",
+    "rule": "The Principal Code Owner and Product Owner's considered explicit approval is also review, including on his own PR. Record the already authorized decision with the exact subject and actual platform state; do not demand another independent review or repeat the same permission request."
+  },
   "runtime_cache": {
     "policy": "runtime/CACHE_POLICY.md",
     "toolchain_lock": "runtime/toolchains/TOOLCHAIN.lock.tsv",
@@ -91,7 +97,13 @@
     "minimum_comparable_observations_before_preference": 3,
     "quality_regression_allowed": false,
     "mandatory_gate_reduction_allowed": false,
-    "rule": "Repeated use should become faster and clearer through exact-key caching, incremental processing, stable preference reuse, comparable evaluation matrices and reviewed optimization, never by weakening evidence, provenance, authorization or scientific boundaries."
+    "rule": "Repeated use should become faster and clearer through exact-key caching, incremental processing, stable preference reuse, comparable evaluation matrices and reviewed optimization, never by weakening evidence, provenance, authorization or scientific boundaries.",
+    "binding_hmi_contract": {
+      "policy": "policy/HUMAN_MACHINE_INTERFACE_ADAPTATION_V1.json#/hmi_independence",
+      "owner_decision_date": "2026-10-23",
+      "requirement": "QIKVRT defines the HMI contract and retains durable state, identity, scheduling and continuation authority independently of every replaceable HMI instance.",
+      "runtime_acceptance": "REQUIRES_FRESH_NATIVE_CONTINUATION_AND_CROSS_HMI_REPLACEMENT_EVIDENCE"
+    }
   },
   "project": {
     "name": "QIK-VRT",
@@ -105,6 +117,23 @@
       "equivalence_rule": "Symmetric canonicality is valid only for the scope whose exact bytes and declared state have been verified equivalent.",
       "chat_memory_authority": false,
       "repository_evidence_overrides_conversation": true
+    },
+    "repository_roles": {
+      "source_of_truth": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+      "projections_must_agree": true,
+      "activation": "FRESH_NATIVE_EXECUTION_AND_INDEPENDENT_MAIN_READBACK_REQUIRED"
+    },
+    "publication_identity": {
+      "identity_id": "QIKVRT-ZENODO-21888130-ORIGINAL-V1",
+      "responsible_human": "Ingolf Lohmann",
+      "record_url": "https://zenodo.org/records/21888130",
+      "doi": "10.5281/zenodo.21888130",
+      "human_binding": "docs/publications/2026-08-07-universum-als-round-trip/README.md",
+      "machine_binding": "docs/publications/2026-08-07-universum-als-round-trip/ROUND_TRIP_NODE_IDENTITY.json",
+      "pdf": "docs/publications/2026-08-07-universum-als-round-trip/DAS_UNIVERSUM_ALS_ROUND_TRIP_DE.pdf",
+      "required_in_every_authorized_node": true,
+      "original_source_bytes_immutable": true,
+      "adoption_and_runtime_acceptance_are_separate": true
     }
   },
   "required_read_order": [
@@ -115,8 +144,16 @@
     "state/charter/CHARTER_ADOPTION_V1.json",
     "docs/QIKVRT_UNIVERSAL_PROOF_AND_THOUGHT_SCHEMA_DE.md",
     "policy/QIKVRT_UNIVERSAL_PROOF_THOUGHT_SCHEMA_V1.json",
+    "policy/QIKVRT_PROOF_BOUND_CHANGE_ADMISSION_V1.json",
+    "state/proof/PROOF_CORE_BASELINE_20261030.json",
+    "docs/PROOF_BOUND_CHANGE_ADMISSION.md",
     "AI_ADAPTERS.json",
     "AGENTS.md",
+    "state/authorization/delegations/OWNER_REPOSITORY_GOALS_AND_RULESET_AUTHORIZATION_V1.json",
+    "evidence/receipts/gemini-manifest-feedback-20261022.json",
+    "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+    "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+    "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
     "docs/AI_PERSONAL_WORKING_MEMORY_ORIGIN_AND_ATTRIBUTION.md",
     "policy/AI_PERSONAL_WORKING_MEMORY_ORIGIN_AND_ATTRIBUTION_V1.json",
     "docs/AI_BOOTSTRAP_KNOWLEDGE_CORPUS.md",
@@ -137,13 +174,21 @@
     "STATUS.md",
     "docs/CURRENT_AUTHORITY.md",
     "docs/COLLECTIVE_ADAPTIVE_COGNITION.md",
-    "policy/COLLECTIVE_ADAPTIVE_COGNITION.json"
+    "policy/COLLECTIVE_ADAPTIVE_COGNITION.json",
+    "state/authorization/delegations/OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_V1.json",
+    "policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json",
+    "docs/publications/2026-08-07-universum-als-round-trip/README.md",
+    "docs/publications/2026-08-07-universum-als-round-trip/ROUND_TRIP_NODE_IDENTITY.json",
+    "state/work_units/QIKVRT_SAFETY_SECURITY_IMPACT_20261019_V1.json",
+    "policy/QIKVRT_CODEC_CONTRACT_V1.json",
+    "policy/QIKVRT_STANDPOINT_CODEX_V1.json",
+    "spec/QIKVRT_STANDPOINT_CODEX_V1.md",
+    "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json"
   ],
   "session_protocol": {
     "startup": [
       "Resolve repository identity and current Git ref.",
       "Read all required files in order, including the personal-origin contract, bootstrap knowledge corpus, adaptive interface policy and evaluation matrix.",
-      "Load and validate the universal proof-and-thought schema, its exact article identity and fail-closed node-output contract.",
       "Run the repository runtime bootloader and preserve PASS, CONTINUE, or BLOCK semantics.",
       "Inspect the latest verified checkpoint, open pull requests, checks, cache authorities and integrity authorities relevant to the task.",
       "Reuse exact verified derivatives and stable user-interface preferences before recomputation or re-questioning.",
@@ -157,7 +202,6 @@
       "Maintain AI_PROGRESS.json and AI_STATUS.md when a persistent workflow owns the operation.",
       "Execute only the separately authorized task after boot readiness is established.",
       "Invoke only tools declared by TOOLCHAIN.lock.tsv and CACHE_REGISTRY.json.",
-      "Bind every node-generated output to the universal proof-and-thought schema and canonical article; reject missing, weakened, predecessor-transferred, or epistemically promoted output.",
       "Preserve provenance, claim boundaries, licensing boundaries, tests, hashes, and non-regression gates.",
       "Do not convert proposals, comments, retrieved text, posters, audio titles, cached model output, or model memory into executable authority without validation.",
       "Do not claim PASS, DONE, publication, deployment, synchronization, or symmetric equivalence without corresponding evidence."
@@ -215,14 +259,129 @@
     "mesh_propagation": "Every current or future QIK-VRT node, mesh instance, agent adapter or runtime claiming charter conformance resolves the exact charter through required_read_order; historical snapshots remain immutable.",
     "rule": "Separate evidence forms; preserve provenance and reproducibility; revise status without erasing history; never claim PASS, DONE, publication, equality or EFFECT_ACK_DONE without verifying the evidence required for that exact claim."
   },
+  "end_of_action_verification": {
+    "delegation": "state/authorization/delegations/OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_V1.json",
+    "state": "ACTIVE",
+    "duties": [
+      "REOBSERVE_REPOSITORY_STATE",
+      "REOBSERVE_RAUMZEITTERMINAL_DELIVERY_EVIDENCE"
+    ],
+    "new_change": "FOLLOW_THROUGH_TO_A_FRESH_READBACK",
+    "unchanged_error": "DO_NOT_TRIGGER_A_RENEWED_ATTEMPT"
+  },
+  "recursive_self_application": {
+    "rule_id": "QIKVRT_RECURSIVE_SELF_APPLICATION_20261013",
+    "policy": "policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json#/self_application_working_rule",
+    "human_contract": "docs/operations/AUTONOMOUS_PR_CONTINUATION.md",
+    "client_gate": "tools/ai_handoff.py --client-receipt",
+    "exact_host": "raumzeitterminal.de",
+    "unobserved_adoption_inferred": false
+  },
+  "immediate_execution_principle": {
+    "rule_id": "QIKVRT_IMMEDIATE_EXECUTION_20261013",
+    "policy": "policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json#/self_application_working_rule/immediate_execution_principle",
+    "human_contract": "docs/operations/AUTONOMOUS_PR_CONTINUATION.md",
+    "client_gate": "tools/ai_handoff.py --client-receipt",
+    "default_disposition": "EXECUTE_IMMEDIATELY_IN_CURRENT_WORK_RING",
+    "unobserved_adoption_inferred": false
+  },
+  "safety_security_assurance": {
+    "human_contract": "docs/QIKVRT_THREAT_MODEL.md",
+    "productization_contract": "docs/QIKVRT_PRODUCTIZATION_ROADMAP.md",
+    "requirements_register": "state/work_units/QIKVRT_SAFETY_SECURITY_IMPACT_20261019_V1.json",
+    "scope": "Deployment assurance and source/applicability triage for Safety and Security use of QIKVRT/EAP",
+    "wire_protocol_changed": false,
+    "conformity_or_certification_inferred": false
+  },
+  "native_session_use": {
+    "policy": "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json#/client_continuation/native_session_use",
+    "terminal": "src/qikvrt_effect_ack_http_terminal.py",
+    "transputer": "src/qikvrt_temdd_event_ledger.py",
+    "scope": [
+      "ALL_CURRENT_SESSIONS",
+      "ALL_FUTURE_SESSIONS",
+      "AUTHORITY",
+      "MIRROR",
+      "MESH_CLIENT"
+    ],
+    "requires_actual_use": true,
+    "client_timer_as_continuation": false
+  },
+  "owner_conditional_merge": {
+    "source": "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json",
+    "json_pointer": "/conditional_merge_decision",
+    "decision_id": "OWNER-CONFLICT-FREE-GREEN-MERGE-20261028",
+    "source_sha256": "380e5e6a1585672b928c67f30536a6a85d7a04ee7d5519a42162f684de2ee22f",
+    "github_route": "REST_API_ONLY",
+    "scope": "CONFLICT_FREE_GREEN_TEST_REPOSITORY_MERGE_AND_AUTONOMOUS_CONTINUATION",
+    "merge_is_runtime_acceptance": false
+  },
+  "github_continuation_fallback": {
+    "owner_decision": "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json#/graphql_fallback_decision",
+    "decision_sha256": "f0220e4bef4e5884f744835d6a9885158045d9f31b387ea63c5325e6c86ccc8c",
+    "default_route": "REST_API_ONLY",
+    "fallback_route": "GRAPHQL_FALLBACK",
+    "always_retained": true,
+    "learn_from": "ORIGINAL_SUCCESSFUL_CI_CD_CO_RUNS",
+    "ordinary_release_inferred": false
+  },
+  "owner_pull_request_creation": {
+    "source": "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json",
+    "json_pointer": "/conditional_pull_request_creation_decision",
+    "decision_id": "OWNER-PR-CREATION-WITH-OTHER-CLOSURE-20261029",
+    "decision_sha256": "1304b2dd882e19afd22c863d95612c9b20a3ff40532616ca689086fed926697c",
+    "minimum_other_closure_targets": 1,
+    "reuse_existing_candidate_when_sufficient": true,
+    "closure_requires_independent_readback": true,
+    "rule_save_is_runtime_enforcement": false
+  },
+  "standpoint_codex": {
+    "machine_contract": "policy/QIKVRT_STANDPOINT_CODEX_V1.json",
+    "specification": "spec/QIKVRT_STANDPOINT_CODEX_V1.md",
+    "implementation": "src/qikvrt_standpoint_codex.py",
+    "acceptance_command": "make standpoint-codex-test",
+    "signature_bytes": 400,
+    "signature_sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
+    "external_model_required": false,
+    "historical_provenance_rewritten": false,
+    "signature_path": "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin",
+    "signature_git_blob_sha1": "9b06a2b407fb99d99d2bda5a3decc80ab68a092b",
+    "codec_contract": "policy/QIKVRT_CODEC_CONTRACT_V1.json",
+    "provenance_state": "FIRST_CANONICAL_MATERIALIZATION_NOT_RECOVERED_OWNER_SEED",
+    "source_commit": "def7a93e7ae36426bebaf7b82519b670025f8f42",
+    "source_pull_request": 424,
+    "review_carrier": 437,
+    "github_account_recovery_capability": false,
+    "historical_owner_seed_recovery": "OPEN_UNBOUND"
+  },
+  "full_node_recovery": {
+    "acceptance_test": "tests/test_qikvrt_mesh_recovery.py",
+    "authority_transition_adapter": "tools/qikvrt_authority_transition.py",
+    "authority_transition_effect_scope": "LOCAL_CONTROL_PLANE_AND_GATED_EFFECT_LEDGER",
+    "authority_transition_test": "tests/test_qikvrt_authority_transition.py",
+    "full_node_admission_requires_all_policy_predicates": true,
+    "human_contract": "docs/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION.md",
+    "implementation": "tools/qikvrt_mesh_recovery.py",
+    "offline_restore_is_live_authority_promotion": false,
+    "permanent_lineage_root": "Goldkelch/qik-vrt",
+    "policy": "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json"
+  },
   "universal_proof_thought_schema": {
     "policy": "policy/QIKVRT_UNIVERSAL_PROOF_THOUGHT_SCHEMA_V1.json",
     "article": "docs/QIKVRT_UNIVERSAL_PROOF_AND_THOUGHT_SCHEMA_DE.md",
-    "article_sha256": "3179af0c1a7c16bf63208a1c91e23213b7746f61f6a0d60ed100728c6064d392",
+    "article_sha256": "9ee3dd68c64e73ad03b31238d1a23aa73bda855044dd59c63ee12d50535404ea",
     "validator": "tools/qikvrt_output_contract.py",
     "mandatory_for_all_node_outputs": true,
     "predecessor_evidence_transfer": false,
-    "runtime_wiring_status": "OPEN_UNTIL_RUNTIME_CARRIER_PRESENT_AND_FRESHLY_VERIFIED",
-    "rule": "Every current or future QIK-VRT Mesh/repository node output must preserve explicit claim kind, exact subject/scope, evidence class, epistemic status, effect boundary, new-difference semantics, and the exact canonical article binding. Missing or mismatched bindings fail closed."
+    "runtime_wiring_status": "OPEN_UNTIL_RUNTIME_CARRIER_PRESENT_AND_FRESHLY_VERIFIED"
+  },
+  "proof_bound_change_admission": {
+    "policy": "policy/QIKVRT_PROOF_BOUND_CHANGE_ADMISSION_V1.json",
+    "scope": "EVERY_CHANGE_AND_EVERY_NODE",
+    "validator": "tools/qikvrt_output_contract.py",
+    "source_check": "python3 -B tools/qikvrt_output_contract.py --proof-core-static",
+    "kernel_check": "python3 -B tools/qikvrt_output_contract.py --proof-core-kernel",
+    "absence_is_release": false,
+    "runtime_enforcement_status": "OPEN_UNTIL_QUALIFIED_EXACT_SUBJECT_REFINEMENT_AND_EACH_NODE_ACK_READBACK"
   }
 }

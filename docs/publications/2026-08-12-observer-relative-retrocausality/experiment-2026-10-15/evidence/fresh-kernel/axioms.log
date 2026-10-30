@@ -1,0 +1,30 @@
+'QIKVRT.V2.BacksignalingBoundary.published_order_is_forward' does not depend on any axioms
+'QIKVRT.V2.BacksignalingBoundary.published_order_is_reversed' does not depend on any axioms
+'QIKVRT.V2.BacksignalingBoundary.published_order_has_no_receive_before_emit' does not depend on any axioms
+'QIKVRT.V2.BacksignalingBoundary.reception_reversal_does_not_imply_receive_before_emit' does not depend on any axioms
+'QIKVRT.V2.BacksignalingBoundary.forward_delivery_excludes_receive_before_emit' depends on axioms: [propext, Quot.sound]
+'QIKVRT.V2.BacksignalingBoundary.positive_delay_is_after_emission' depends on axioms: [propext, Quot.sound]
+'QIKVRT.V2.BacksignalingBoundary.virtual_past_address_with_forward_host_order' does not depend on any axioms
+'QIKVRT.V2.BacksignalingBoundary.later_inputs_preserve_captured_prefix' depends on axioms: [Quot.sound]
+'QIKVRT.V2.ThreeObserverProtocol.C_preserves_A_record' does not depend on any axioms
+'QIKVRT.V2.ThreeObserverProtocol.forward_round_trip_returns_after_query' depends on axioms: [propext, Quot.sound]
+'QIKVRT.V2.ThreeObserverProtocol.forward_model_excludes_early_reply' depends on axioms: [propext, Quot.sound]
+'QIKVRT.V2.ThreeObserverProtocol.abstract_past_directed_trace_is_representable' does not depend on any axioms
+'QIKVRT.V2.ThreeObserverProtocol.assumed_trace_violates_forward_transport' does not depend on any axioms
+'QIKVRT.V2.ThreeObserverProtocol.C_observation_preserves_early_reply_predicate' does not depend on any axioms
+'QIKVRT.V2.ThreeObserverProtocol.any_finite_forward_path_returns_later' depends on axioms: [propext, Quot.sound]
+'QIKVRT.V2.ThreeObserverProtocol.adding_forward_relays_cannot_close_a_cycle' depends on axioms: [propext, Quot.sound]
+'QIKVRT.V2.ObserverRelative.inverse_orientation_has_signed_differences' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QIKVRT.V2.ObserverRelative.increasing_reparameterizations_preserve_orientation' does not depend on any axioms
+'QIKVRT.V2.ObserverRelative.overtaking_iff_delay_difference_exceeds_emission_gap' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QIKVRT.V2.ObserverRelative.equal_delays_preserve_source_order' depends on axioms: [propext, Quot.sound]
+'QIKVRT.V2.ObserverRelative.every_positive_emission_gap_allows_positive_delay_overtaking' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QIKVRT.V2.ObserverRelative.separated_time_intervals_establish_actual_order' depends on axioms: [propext, Quot.sound]
+'QIKVRT.V2.ObserverRelative.complementary_numerators_have_constant_sum' depends on axioms: [propext, Quot.sound]
+'QIKVRT.V2.ObserverRelative.published_mark_orientation' does not depend on any axioms

@@ -1,0 +1,36 @@
+{
+  "schema": "qikvrt_truthfulness_invariant_v1",
+  "status": "PROVED_WITHIN_BOUND_CONTRACT",
+  "observed_at": "2026-10-03",
+  "claim_id": "QIKVRT_TRUTHFULNESS_INVARIANT_V1",
+  "canonical_statement_de": "QIK-VRT erzwingt innerhalb seines zugänglichen, korrekt gebundenen Informations- und Evidenzraums eine epistemische Disziplin, nach der eine künstliche Kognition einen Claim nicht mit einem stärkeren Erkenntnisstatus ausgeben darf, als die aktuell erreichbare, provenance-gebundene Evidenz trägt.",
+  "short_form_de": "Nicht Unfehlbarkeit wird erzwungen, sondern Wahrhaftigkeit.",
+  "formal": {
+    "positive": "ASSERT_AS_PROVED(C) -> VALID_BOUND_EVIDENCE(C)",
+    "negative": "NOT VALID_BOUND_EVIDENCE(C) -> C MUST NOT BE CLASSIFIED AS PROVED",
+    "object_truth_distinct_from_epistemic_truthfulness": true
+  },
+  "forbidden_category_collapses": [
+    "prediction->observed",
+    "source_says_X->X_is_true",
+    "transport_ack->effect_ack",
+    "execute->done",
+    "historical_pass->current_pass",
+    "internal_calculation->external_reality"
+  ],
+  "self_application": true,
+  "boundaries": {
+    "never_false_output_claimed": false,
+    "all_sources_true_claimed": false,
+    "reasoning_infallibility_claimed": false,
+    "complete_world_observability_claimed": false,
+    "phenomenal_consciousness_claimed": false
+  },
+  "evidence_basis": [
+    "QIK-VRT effect semantics",
+    "PREDECESSOR_EVIDENCE_TRANSFER=false",
+    "claim/evidence classification discipline",
+    "self-application requirement",
+    "Effect-Readback distinction"
+  ]
+}

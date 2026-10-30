@@ -5,9 +5,66 @@ Copyright 2026 Ingolf Lohmann.
 
 # Runtime toolchain provenance
 
+## Ontology Lean provisioning repair — 28 October 2026
+
+Run 40676429511, job 122775926186 at Authority HEAD
+`7ec67b0985027e77d86e6bcae7607c510ec07ac1` failed before any kernel check:
+the pinned lean-action downloaded mutable Elan bootstrap content and its
+installer ended with a connection reset after 573 seconds. The ontology
+workflow now reuses the existing shell-fallback route's official Lean release
+directly, retaining Lean 4.19.0 and all three default library builds, the
+32/71-constant audits, boundary tests and exact-head receipt.
+
+Official asset: <https://github.com/leanprover/lean4/releases/download/v4.19.0/lean-4.19.0-linux.tar.zst>.
+The official release API identifies asset `250981932`, published on 1 May 2025,
+with 343,842,845 bytes. Its provider `digest` field is null. An independent
+public octet-stream retrieval on 28 October 2026 matched that size and produced
+SHA-256 `6fe3ce97a58f44e2b3567d455b994eacec5bfe9ae7774f2a573444480ba813fe`.
+This is a measured byte binding, not an upstream-published checksum/signature.
+The workflow pins both size and SHA-256 before every fresh extraction, checks
+Lean/Lake versions before and after promotion, and activates PATH only afterward.
+
+Only that hash-locked archive is cached. Keys include OS, architecture, exact
+toolchain, toolchain metadata and consuming workflow digests. Cached executable
+directories and broad restore keys are excluded. PRs may restore archives;
+only a successful explicitly dispatched trusted-Main run may save them.
+Cold downloads have bounded connection, transfer and overall step deadlines.
+The existing runner-provided Bash, curl, GNU tar, zstd and coreutils are explicitly
+declared in the runtime lock/registry with the Linux extraction/HTTPS/hash
+behavior used here. Their availability is checked before provisioning; this
+source repair installs none of those utilities.
+Corrupt cached bytes, source drift, failed extraction or wrong executables fail
+closed without a replacement download. Staged incomplete output is removed;
+no prior runtime directory is overwritten. The existing regression module
+executes the workflow shell with isolated transport/tool fixtures. Those tests
+do not establish a real Lean build, hosted execution or productive delivery.
+
+The optional `self-host-systemd` profile uses an already provisioned Linux
+systemd >=252. The host distribution owns its binary/package provenance; no
+service startup installs or downloads tools. The behavioral contract is unit
+syntax verification, exact guard pins and native supervisor/cgroup restart
+controls in the existing terminal workflow. The 252 minimum includes path
+trigger rate limits. Upstream unit/service/exec contracts are at
+<https://github.com/systemd/systemd/tree/v255/man>. `systemctl --version` is
+retained with the native test receipt. Actual host admission must separately
+bind the authorized host supervisor and its independently validated evidence.
+Unavailable tools yield CONTINUE; invalid unit/pin/identity/mount yields HOLD.
+Recovery never deletes state, changes a package pin, installs dependencies,
+grants review approval or creates a public acceptance receipt.
+
 No executable or authentication token is stored in this directory. The files
 here define independently checkable versions, upstream locations, checksums,
 and license boundaries for an optional local cache.
+
+The S1 provider admission extension uses the already locked Python 3.12 standard
+library (HTTPS/TLS, JSON, Decimal, POSIX locks/fsync) and existing Node 24 monitor
+readback plus the existing bounded subprocess helper. It installs no provider
+SDK/CLI. Its source/API authorities, error/recovery boundaries and control tests
+are in `runtime/self-host/PROVIDER_ADMISSION.md` and
+`tests/test_self_host_provider.py`; both extend the existing cache registry.
+Bearer credentials, mutable provider state and payment/terms authorizations are
+private operator inputs and never cache payloads. A successful fake-provider
+test does not establish a live REST/SSH/HTTPS admission.
 
 ## GitHub CLI 2.96.0
 
@@ -113,3 +170,303 @@ any declared Poppler command is absent, it installs the distribution
 `poppler-utils` package without recommended packages, records the reported
 package and command versions, and then executes the unchanged PDF verification
 gate. Other installation remains an operator/platform responsibility.
+
+## S1 standalone runtime (2026-10-04)
+
+The additional `python-selfhost` component uses operator-provisioned CPython
+3.12.x, separately from the unchanged exact 3.12.13 IETF renderer. Upstream:
+https://www.python.org/ ; build/provider licenses and notices remain applicable.
+Node 24.x uses the existing component (https://nodejs.org/). Package assembly
+records actual version, architecture and executable SHA-256; every start must
+match them. No unverified fallback or interpreter download is performed.
+Read-only Git object export uses https://git-scm.com/ (GPL-2.0-only); it is a
+build/native-owner-client dependency, absent from the standalone HTTP readback.
+Provision failure holds; recovery restores the exact admitted executables or
+requires a reviewed new package/volume migration. Self-host fixtures test source
+binding, denied providers, authentication, crash restart and exact readback.
+The cache registry covers both added tools and the explicit GitHub-only adapter.
+
+
+## S1 recovered Firefox/noVNC carrier
+
+The optional `self-host-firefox` profile preserves the existing Node 24 and
+Python 3.12 requirement and needs no GitHub CLI. Linux provisioning is declared
+in `runtime/self-host/Dockerfile`; startup performs no download or installation.
+The official base indexes observed on 2026-10-05 are pinned by digest:
+
+- `node:24-bookworm-slim`: `sha256:0e0ff40c39bc087845bfb27465a0df4ea419520094bc35842ff83dd8cbe6f9b6`.
+- `python:3.12-slim-bookworm`: `sha256:54c85f3c47607a77f32adec749d3c81d1348bf25833671f512b26a9b6d778cb3`.
+
+Debian apt resolution happens only while provisioning. An arbitrary later build
+is not claimed to reproduce those package versions. CI retains the actual OCI
+image ID and distribution versions; the frozen export pins actual Node/Python
+and browser executable hashes, Firefox version and every noVNC asset byte.
+Debian distribution-managed noVNC links are frozen as regular files within the
+explicit source tree or `/usr/share/javascript` and `/usr/share/nodejs`.
+The noVNC distribution copyright file travels with those assets. Firefox/noVNC
+use MPL-2.0, x11vnc GPL-2.0-or-later and websockify LGPL-3.0; X11 tool notices and
+other dependency licenses are carried by the actual Debian distribution image.
+No binary, private profile, password or credential is committed into the source
+package or tool cache. Existing tools retain their earlier versions and license
+boundaries. Missing Firefox dependencies produce CONTINUE readiness, not PASS.
+
+Original QIK-VRT deployment/source provenance is separately recorded in
+`evidence/self_host/SOURCE_RECOVERY_20261005.json`. The historical originals are
+not relabeled as new implementations. The S1 source/config binding and portable
+browser startup are explicitly new adapters, with no public deployment claim.
+
+
+The isolated Firefox acceptance runs Docker with `--init`; the platform-provided
+Docker init (tini, MIT) is the namespace PID 1 and reaps killed child processes.
+It is part of the Docker distribution, not an additional QIK-VRT executor or
+bundled binary. CI records the actual Docker engine version and init executable
+hash. A real crash/restart control observes removal of the old Xvfb PID before
+acknowledged ledger/profile readback. x11vnc uses `-no6 -rfbportv6 0` so neither
+its own IPv6 adapter nor LibVNCServer opens a default undeclared VNC port. Actual
+kernel listener readback requires exactly the four declared IPv4 loopback ports.
+Source authorities: https://docs.docker.com/reference/cli/docker/container/run/
+and the LibVNCServer-0.9.14 `libvncserver/cargs.c` / `sockets.c` source.
+
+## S1 offline Railway-state migration
+
+The storage-only migration module extends the existing self-host tool. It uses
+the already declared Python 3.12 stdlib (`sqlite3`, `hashlib`, `fcntl`, file I/O)
+and Node 24 original MonitorStore. No provider SDK, database server, new transfer
+daemon, installer or executable dependency is introduced; cache coverage stays
+25/25. The exact source export pins the new module with the existing launcher
+and verifier. The committed transport code is PolyForm-Noncommercial-1.0.0;
+private state, credentials and transfer manifests never enter tool caches.
+SQLite format authority: https://www.sqlite.org/fileformat2.html#walformat
+and Backup API: https://www.sqlite.org/backup.html . Native event checks reuse
+the recovered original Ledger validator; its restoration provenance is unchanged.
+Missing/changed pins, files, snapshots, SQLite/journal consistency or writer locks
+hold. Failed imports are quarantined; explicit rollback preserves target bytes
+and never resets a route or source writer. The mandatory completion receipt
+prevents implicit fresh-state startup after an interrupted planned migration.
+Dry-run and corruption controls run through `make self-host-test`; the existing
+native Unix lane verifies imported historical and new-subject event restart.
+
+The one-shot Railway capture adapter reuses those same Python/Git/Node
+authorities and the original cloud supervisor; it adds no executable dependency
+or cache profile. Privileged Linux mount metadata, `fcntl` locks, `/proc` PID
+namespace visibility and mixed UID/GID access are required behavioral inputs,
+not inferred from provider environment variables. The existing isolated root
+Docker lane tests the complete storage adapter, real process-census admission
+and foreign-owner preservation. Private request/capture/export bytes remain
+outside Git and caches. The currently unavailable authenticated privileged
+exec/SSH plus private transfer carrier remains an explicit capability HOLD.
+
+## Static React S1 interface
+
+React and React DOM 19.2.6 and Scheduler 0.27.0 are reused from the already
+installed, lock-bound Site source dependencies. Their unmodified production
+CommonJS sources and identical full MIT licenses were independently read.
+`runtime/self-host/REACT_LOCK.json` binds each source slice, package/version,
+reproduction locator and the assembled browser bundle. All upstream notices and
+the complete MIT permission text accompany the bundle. This MIT dependency does
+not relicense QIK-VRT implementation code. No CDN, compiler, npm installation,
+server renderer or new service is needed at S1 startup. The existing package
+freezer verifies the bundle and every original source slice; the ordinary
+manifest then binds the emitted assets. Corruption returns HOLD before export.
+Node VM/API and real exported-process HTTP controls verify this bounded scope.
+Browser rendering, public hosting, provider CI, native Mesh ping and all terminal
+receipts remain separately required; source assets never establish those effects.
+
+## Origin SQLite readback and desktop test runtime
+
+sql.js 1.14.2 is copied as the unmodified `sql-wasm.js`/`sql-wasm.wasm` pair
+from `https://registry.npmjs.org/sql.js/-/sql.js-1.14.2.tgz`. The archive's
+registry SHA-512 integrity was checked before extraction; its SHA-256 and each
+retained file's SHA-256/size are in `runtime/self-host/ORIGIN_SQLITE_LOCK.json`.
+The full upstream MIT, SQLite public-domain and Emscripten notices accompany
+the assets. They do not relicense QIK-VRT source. Runtime verification refuses
+changed dependencies before shell export. The native SQLite image is read
+with fixed, query-only SQL in an isolated Worker and never rewritten by sql.js.
+No CDN or package installation occurs at Terminal startup. Failed import,
+transaction abort, quota, corrupt cached bytes or mismatched epoch/carrier pin
+hold visibly and retain the previously admitted store. Cache installation
+verifies every shell body and never caches imports, credentials or API bodies.
+
+Desktop tests use Playwright 1.62.1 (Apache-2.0), its npm integrity-locked
+`origin-tests/package-lock.json`, and Chrome for Testing 151.0.7922.34, the
+Playwright Chromium revision 1234. `ORIGIN_BROWSER_TEST_LOCK.json` pins the
+official browser archive source, byte count and SHA-256. The CLI CDN route
+returned invalid archives in the local workspace; the verified official
+Google storage archive was available. Local persistent Chromium startup is
+blocked by AF_UNIX `socket()` returning EPERM before any page loads. No older
+browser, sandbox-policy change or emulated persistence substitutes for that
+proof. The existing Linux S1 CI executor provides the fresh browser-test route.
+Dependency extraction/version checking and test execution fail closed; retained
+archives may be reused only after the same pins pass. Browser-data profiles and
+production state are never cache inputs. Test receipts contain only synthetic
+original-kernel fixture bindings, runtime versions, hashes and scoped results.
+Desktop success does not establish a public HTTPS or Android/iOS witness.
+
+Mozilla Release forward path: the existing S1 image is verified before a bounded `s1-firefox-release` layer in the existing Dockerfile. The primary APT key fingerprint is 35BAA0B33E9EB396F59CA838C0BA5CE6DC6315A3; APT metadata verifies the selected package. Provision receipts retain exact DEB, package, executable and dependency changes. Existing Python/Node/noVNC and parent layers are reused. Browser-only version success is not signed extension activation. No AMO signing credential or source-bound signed artifact is currently established; the unsigned artifact remains a negative control. Missing credentials are never cached or logged.
+
+AMO unlisted extension signing reuses the existing Python self-host builder,
+its stdlib urllib/HMAC/SHA-256 primitives and the existing QIKVRT CI workflow.
+No web-ext/npm dependency, new workflow, credential cache, signing-policy
+exception or lowered minimum is introduced. The official frozen REST Signing
+API v4 supports unlisted self-distribution. An authorized Developer Hub issuer
+and secret pair is step-scoped through secure repository secrets only. The
+producer binds exactly six committed Standard files, uses 60-second HS256 JWTs,
+persists a non-secret fsynced attempt before one PUT, reads back on ambiguous or
+pending outcomes and verifies the unchanged original downloaded XPI against
+AMO's SHA-256 and all six source components. A declared Mozilla CDN redirect
+receives no JWT. Tests in `FirefoxAMOUnlistedTests` use synthetic credentials
+and mocked HTTP; they do not establish live AMO access or a Mozilla signature.
+The existing default-policy Gecko activation/restart gate remains mandatory.
+The S1 causal key binds all inherited runtime AST while projecting out only the
+new AMO helpers/options/branch, so signing preparation cannot retry the unchanged
+unsigned-XPI failure. The baseline failure remains exact-head historical
+evidence; it is never promoted to successor PASS or public product delivery.
+
+### S1 production extension, 2026-10-13
+
+The existing Docker component now covers Buildx v0.38.0 and official BuildKit
+v0.34.0, index digest b059f8d7226d0b326bc871af489a5dddf65e36af4d20d14251b072974d9ee87c.
+The existing Dockerfile's Python/Node base pins remain. Signed Debian snapshot
+20261013T000000Z fixes distribution inputs; every cold build runs the same
+integrity controls. Two independent OCI exports must have the same descriptor.
+The new publisher component is the official containers/skopeo stable image,
+index digest 97772f3c64fd2fba720b2bafaf37239dc44d8b1c625c8383c64044832efe9ed9,
+Linux/amd64 manifest c8ff8395135363f083e849345612998aa3882f3796b73fa9341bff691df1ef24.
+Its actual version is recorded, and copy --preserve-digests plus registry
+readback verifies the tested bytes. Docker/BuildKit use Apache-2.0; Skopeo uses
+Apache-2.0. No credentials are admitted to any build/runtime cache.
+Primary sources: https://github.com/docker/buildx/releases/tag/v0.38.0 ,
+https://github.com/moby/buildkit/releases/tag/v0.34.0 ,
+https://github.com/containers/skopeo , https://quay.io/repository/skopeo/stable ,
+https://docs.docker.com/build/ci/github-actions/reproducible-builds/ .
+
+Frozen production carrier: existing PR494, run 37710500668, artifact11521962723; exact source, ZIP, delivery, sealed package and OCI/config pins are in runtime/self-host/CONTAINER_CARRIER.json. Original seven ordered layer bytes are reused through Buildx named OCI context, independently checked before use. Original 223 sealed package files were locally byte-verified. Production application acceptance is always new-source evidence. The build-only Git/Make provisioning layer is excluded from the runtime image. The original artifact expires 2026-11-07; an unavailable original holds, never silently rebuilds. Primary source: https://github.com/ingolf-lohmann/qik-vrt/pull/494 ; named contexts: https://docs.docker.com/reference/cli/docker/buildx/build/ .
+
+## Optional Personal OIDC profile (2026-10-16)
+
+`personal-firefox-oidc` uses cryptography 50.0.2, cffi 2.1.1 and pycparser 3.0
+in a separately provisioned private environment. The lock specifies versions,
+not a fetched wheel/archive witness. No packages are installed implicitly.
+Provision a new environment when needed; never downgrade an installed runtime.
+A successor dependency version requires a reviewed lock update and fresh RSA
+controls. Standard has no dependency on this optional profile.
+
+Linux storage uses the fixed system libsecret `secret-tool` executable and the
+user's protected Secret Service login collection. Package availability is not
+evidence of an encrypted/unlocked collection or of persistent credentials.
+Native desktop acceptance must check that protection and real restart. A locked
+or missing service holds execution; there is no file/SQLite fallback. Store
+contents and mutable authentication state are excluded from every cache.
+
+Primary component and protocol authorities:
+- https://cryptography.io/en/50.0.2/installation/
+- https://cryptography.io/en/50.0.2/hazmat/primitives/asymmetric/rsa/
+- https://gnome.pages.gitlab.gnome.org/libsecret/
+- https://github.com/GNOME/libsecret/blob/main/tool/secret-tool.c
+- https://openid.net/specs/openid-connect-core-1_0.html
+- https://www.rfc-editor.org/rfc/rfc7636
+- https://www.rfc-editor.org/rfc/rfc8252
+- https://www.rfc-editor.org/rfc/rfc9700
+- https://www.rfc-editor.org/rfc/rfc7009
+
+## Skopeo carrier repair — 25 October 2026
+
+The previous exact carrier digest returned `manifest unknown` in native CI run
+40172405691, job 121107295223, after the independent native OCI builds passed.
+The existing Skopeo import/publish path is retained. Its Linux/amd64 image is
+now pinned to `sha256:309ce24d7a87ca4eb35fc6dd9d91af7c4750d7f24578f633c6effd75c81f315d`. Original public index and platform-manifest
+bytes, their SHA-256 digests and the independently hashed configuration binding
+are in `evidence/self_host/SKOPEO_CARRIER_READBACK_20261025.json`. The official
+carrier labels identify Skopeo 1.22.3, built 23 October 2026. The native job records
+`--version`; OCI config, ordered filesystem layers, source pins and preserved
+registry digests are still checked before runtime or publication acceptance.
+No mutable tag is used for execution, no installed runtime is downgraded, and
+manifest availability alone proves neither executable-tool behavior nor delivery.
+
+
+## Skopeo verified cache repair — 26 October 2026
+
+The 25 October pin returned `manifest unknown` in both full Linux workflows at
+source 5c7055c3bd5c5992d6c4881ef01348a77a8002fb: runs 40302026752 and
+40302029683, jobs 121504698465 and 121509381560. Their independent native
+OCI builds and repository tests passed before the tool-image import failed.
+The original logs distinguish tool-carrier availability from application failure.
+
+The official current Linux/amd64 manifest is
+`sha256:d506b4167696eb5d3bd624b3619480bddeabdca291b2e795e9c20ed862e11ae4`,
+config `sha256:4e58ecdbdffe153073ff7ee38ffc19d7c61ede7d5d37e1096d624dfc58244d8c`.
+The read-only resolution of the official index, platform manifest and config
+verified the original bytes against SHA-256 and descriptor lengths. The labels
+identify Skopeo 1.22.3, built 26 October 2026; this is no version downgrade.
+The exact original metadata and preceding failed-run identities are retained in
+`evidence/self_host/SKOPEO_CARRIER_READBACK_20261026.json`. The former dated
+record remains historical. Mutable tags are never execution fallbacks.
+
+The existing S1 container helper now restores the deterministic, digest-named
+repository Actions tool artifact before attempting the exact official source.
+Only a genuine cache miss permits that pull; API/authentication failures and
+corrupt cache data fail closed. Before Docker import, it verifies the pinned
+config and every ordered uncompressed rootfs diff_id, exports only their minimal
+Docker graph, and removes all archive-supplied tags and extra daemon metadata.
+It then checks the loaded image ID, platform, layers and offline executable
+version. The original OCI conversion and `--preserve-digests` publication keep
+their existing independent gates. The same helper handles smoke and publication.
+
+The pinned existing upload-artifact action retains the verified tool immediately
+before runtime builds, for 90 days. A nonexpired repository artifact survives
+upstream manifest removal; this does not promise permanent archival. The cache
+contains public tool bytes only, never registry credentials or runtime state.
+Local fixture tests prove verification and fail-closed behavior, not an actual
+Docker import, complete Linux CI success or production activation. Those results
+require fresh exact-head original CI and host readback.
+
+Primary sources: https://quay.io/v2/skopeo/stable/manifests/sha256:d506b4167696eb5d3bd624b3619480bddeabdca291b2e795e9c20ed862e11ae4 ,
+https://github.com/podman-container-tools/image_build/actions/runs/40265021526 ,
+https://github.com/actions/upload-artifact/tree/043fb46d1a93c77aae656e7c1c64a875d1fc6a0a ,
+https://docs.github.com/en/rest/actions/artifacts .
+
+### Exact executable version output
+
+Native job 121530027774 at source 17decbd6412dd2163f0d6c3055d2180f85314be0
+verified, canonicalized and loaded the pinned tool graph, then rejected the
+initial check against a bare release string. The exact official binary SHA-256
+is 5d976d2f5854ab098bc32bfd9791aae4b22f0c62a5953b007b22e581d0d91a34,
+read from the verified compressed layer 008fd0cc15aeb8204052f1f4d0ea2be056ab1d98c628813ecd26dc625f0fdf38.
+Its original runtime libraries were read from the same pinned manifest, without
+changing an installed runtime. The isolated original ELF reports exactly:
+`skopeo version 1.22.3 commit: 92397d5ba399784c6e2f9f229a4244b724743dba`.
+The official v1.22.3 main.go explicitly appends that build commit when available.
+The reviewed readback retains the complete observed executable version line.
+The concurrent Authority successor a39e44ca80b2a68feccea88a6c9640cdafc84997
+already implements the official optional 40-hex commit format while retaining
+the exact release, config and ordered filesystem checks. That exact image graph
+binds the executable bytes and build commit. Wrong releases, dirty or malformed
+suffixes still fail. Its regression fixture reproduces the native failure before
+correction, and CI preserves the non-secret observed/expected version receipt.
+The receipt is copied into the existing container-evidence directory before
+upload, keeping the original OCI archive at the artifact root for publication.
+
+Primary format source: https://github.com/podman-container-tools/skopeo/blob/v1.22.3/cmd/skopeo/main.go#L73 .
+This local ELF/version observation does not establish Docker smoke or deployment;
+the corrected exact-head original CI must independently accept those steps.
+
+
+## Optional GitHub environment sealed boxes (29 October 2026)
+
+The existing Authority/Personal SSO runtime may explicitly provision
+`runtime/toolchains/requirements-github-environment.txt`. PyNaCl 1.6.2 is the
+official Python Cryptographic Authority release (Apache-2.0), with bundled
+LibSodium. The existing OS Secret Service, cryptography 50.0.2, cffi 2.1.1 and
+pycparser 3.0 contracts are retained. The service performs no package install,
+version downgrade or alternate encryption fallback. Wheels remain in the
+existing ecosystem cache; credentials and mutable authentication never do.
+
+Source/provenance: https://pypi.org/project/PyNaCl/1.6.2/
+Protocol: https://docs.github.com/en/rest/actions/secrets
+Sealed boxes: https://pynacl.readthedocs.io/en/latest/public/
+
+Tests generate a disposable encryption key and independently decrypt the exact
+sealed-box ciphertext; wrong version, invalid key, unavailable runtime and lost
+HTTP acknowledgement keep the handoff closed. Package rollback means disabling
+the opt-in Authority environment route and retaining its protected original
+journal; no prior secret is reconstructed, exported or silently overwritten.

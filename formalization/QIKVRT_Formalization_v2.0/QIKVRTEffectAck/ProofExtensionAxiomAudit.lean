@@ -1,0 +1,22 @@
+-- SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+-- Copyright 2026 Ingolf Lohmann.
+import QIKVRTEffectAck.ProofExtension
+import QIKVRTUniversalOntology.Origin
+
+#print axioms QIKVRT.ProofExtension.extension_retains_claim
+#print axioms QIKVRT.ProofExtension.extended_satisfaction_includes_predecessor
+#print axioms QIKVRT.ProofExtension.checked_append_is_satisfied
+#print axioms QIKVRT.ProofExtension.checked_step_preserves
+#print axioms QIKVRT.ProofExtension.checked_step_preserves_old_meaning
+#print axioms QIKVRT.ProofExtension.every_checked_prefix_preserves_invariants
+#print axioms QIKVRT.ProofExtension.every_checked_prefix_retains_initial_claim
+#print axioms QIKVRT.ProofExtension.unavailable_never_admits
+#print axioms QIKVRT.ProofExtension.refuted_never_admits
+#print axioms QIKVRT.ProofExtension.verified_contains_actual_proof
+#print axioms QIKVRT.ProofExtension.activation_requires_proof
+#print axioms QIKVRT.ProofExtension.activation_requires_exact_subject
+#print axioms QIKVRT.ProofExtension.activation_requires_effect_ack
+#print axioms QIKVRT.ProofExtension.unavailable_cannot_activate
+#print axioms QIKVRT.UniversalOntology.determinateReality_requires_difference
+#print axioms QIKVRT.UniversalOntology.noDifference_excludes_determinateReality
+#print axioms QIKVRT.UniversalOntology.noDifference_excludes_information

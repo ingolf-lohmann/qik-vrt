@@ -1,0 +1,424 @@
+{
+  "schema": "qikvrt_proof_core_baseline_v1",
+  "head": "5a42baf45748e4407a8fa16aef287a77873e788d",
+  "tree": "3f6e816b6b496eeb9ce8777d8fb93d95717be9ae",
+  "scope": "active locked V2 formalization project; other published versions are not silently equated",
+  "files": [
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck.lean",
+      "git_blob_sha1": "3ba05628fd377a54f71936d4bc6bfc1b969a5695",
+      "bytes": 1618,
+      "sha256": "7061aaa0d9959f6a5397531062276393580909385e52e82f02ce64fa234a1043"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/AxiomAudit.lean",
+      "git_blob_sha1": "1a7c0c4b4344ecbcd1372e7d980072d4ba41c0bc",
+      "bytes": 2669,
+      "sha256": "a1321e3d5d4dd0e9f3b521c26c3a88776d72b30ce446253d827de85507bac3b0"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CanonicalTemporalMemory.lean",
+      "git_blob_sha1": "5fb78df6e90ae43903d48fd77dacfdc8a293372b",
+      "bytes": 6991,
+      "sha256": "f125d126219a152fcf50dd07f0152a4d23fdbf64e657a4ceb8aff2ae9592fbc4"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CausalDistance.lean",
+      "git_blob_sha1": "2ea1cd5e7685f70bb2485e59a41440bc5bd10d8c",
+      "bytes": 8257,
+      "sha256": "0a72170f07a101a31b757c215b8af84ea5ad33175ace8d13b30e7ef9fb3f6b97"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CausalDistanceAxiomAudit.lean",
+      "git_blob_sha1": "f8a7dc37b271195ad27c06b0cb8903ca3698ad2f",
+      "bytes": 2677,
+      "sha256": "42bea7cc176eff9692f463e213dfaea2e99587ef5870f9d70e932dce0f78b4ca"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CausalDistanceBoundaryChecks.lean",
+      "git_blob_sha1": "1bdb8546427b86d5231e6d51f2764eb10c002f5f",
+      "bytes": 3792,
+      "sha256": "ca2b503f6d6df1412b54dfab176caae81e1970a6ddf95d0e8db1ebe19ed55994"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CausalDistanceTemporalBridge.lean",
+      "git_blob_sha1": "231f1cab53b34f061d5911badfd47a85e213b794",
+      "bytes": 5637,
+      "sha256": "d4c3b08c7004be9fa1a5eec6cb9f71501aaf952e936d241aa7980ed57f326fe5"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/Claims.lean",
+      "git_blob_sha1": "08e0d6e6a7aeb15ac139ad6bd55c5ee5291d416c",
+      "bytes": 5469,
+      "sha256": "d36d0e53a825f031e0f87420e4b22f35312c2f0c4a51400a17350f3869ef04d3"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/InformationBoundary.lean",
+      "git_blob_sha1": "5efb6978f38bd6f49defb526fc8abb3bc21d1822",
+      "bytes": 3441,
+      "sha256": "bca003e52d764805a949f2e57110658771b9a60dc358973148af24d45931a1c8"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/Mediation.lean",
+      "git_blob_sha1": "0483422d9b4271f426cbd3e999a1dbc2e328792b",
+      "bytes": 3069,
+      "sha256": "1e8ce147908212a406fc2eedcdf6f64ac63174b53d612a372fedf12f10b2d9bc"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/Model.lean",
+      "git_blob_sha1": "02cf71f7ded77f0b9b0c18d8fd326fc0fec7f0cb",
+      "bytes": 6854,
+      "sha256": "83ab0d7a50152545beefc0f88fe3dc479ae681d3d2e04615a4ab9f7c2f305499"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/QuantumClassicalRuntime.lean",
+      "git_blob_sha1": "1d0f806a62e1729893b4688e2322f7403a1cb931",
+      "bytes": 6248,
+      "sha256": "9a02bb3ba762063646aa22af4c05467b52ac49ef05773bfc067f3a3c2be22465"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/Safety.lean",
+      "git_blob_sha1": "8dd693f1fd66290d74cdb1e5f7e605b95b6fc73c",
+      "bytes": 6695,
+      "sha256": "473d35b74ff40ddcf76ad5775687ac70d1829fa4309ed656e717478ae5039cf5"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/StorageIntegrity.lean",
+      "git_blob_sha1": "f085a894f14eafab98de18415e1526da35d55cbb",
+      "bytes": 7297,
+      "sha256": "456ba4f7c5f0ea9f960eb547b66de8630436af6678e400d92b350a77648e11e6"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/StorageIntegrityAxiomAudit.lean",
+      "git_blob_sha1": "b6bde1c836f443f7ae721402e787a0ea2b0e9ffc",
+      "bytes": 1672,
+      "sha256": "ed31f5a2a5c66138c3c03fc998a3a77f4f218f29ccdd269abb0cd500b9c55786"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization.lean",
+      "git_blob_sha1": "2e84680fcd837bae1c4f67c8a20f96ea0cdfdb86",
+      "bytes": 3791,
+      "sha256": "ab68abcabd510f816565ea7ceeab1a73bb95c83620d6d8a87275552e51fa3527"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/AxiomAudit.lean",
+      "git_blob_sha1": "76141ad6bdcda56fa36dcc580b2d6ec75c6ce8ab",
+      "bytes": 466,
+      "sha256": "2c506c8fc2e1bbaab620027ef86f7c8c135173389e0d98c98557a19d5519749f"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/AxiomAudit02.lean",
+      "git_blob_sha1": "ea38f8ab85f59a321aa42964c3fe97e115c512f3",
+      "bytes": 365,
+      "sha256": "667dfdc6dac0cbe8909c9bd783b644e3c0c11f6c30d8e6c55e3b0279322cd883"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/AxiomAuditAll.lean",
+      "git_blob_sha1": "afad9bfa18211ffe2002b8991712f8c1b20bce7e",
+      "bytes": 1499,
+      "sha256": "adb215c3d39095ab8ebcae36081c7da1ea83f63e4a262829a943fad84eec86e0"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/AxiomAuditDimensions.lean",
+      "git_blob_sha1": "b8073264fdef97c266cb8fc2af5741d81ff203fe",
+      "bytes": 500,
+      "sha256": "e75294835c8b025a0d2846114cca0e5e3ed61ae3f340bf4b78d3ca61bf3f38d3"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/AxiomAuditFactorization.lean",
+      "git_blob_sha1": "b2d132db24abf937c9cd17dd38d0a60de2024021",
+      "bytes": 519,
+      "sha256": "4178eeaa8d20cfe5e484f7109bc2ca7ebe8e8029723dfeb4915494aff93d0a1f"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/Batch01.lean",
+      "git_blob_sha1": "69de72fee3b6e02740960c43ac8ae6f46ccf3622",
+      "bytes": 1766,
+      "sha256": "dbd617355153ab8576ffef33664cc38b8f5bb2ade5071fb41f06bd395593106a"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/Batch02.lean",
+      "git_blob_sha1": "dd572b150fcaa3979f455d32ffd7723fe9cec300",
+      "bytes": 1209,
+      "sha256": "60b8799f96a20647d40e9e1c7d5c32dce725ea717302fd88b809ab222924ca24"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/Batch02AxiomAudit.lean",
+      "git_blob_sha1": "1874da016aafc63b0f8192ce7e01b5e3ad514893",
+      "bytes": 386,
+      "sha256": "a12b6d41067cf1f55abcdd79ca595e5e6886e7a5d0b33b500a2d944c2c6cd8da"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/Batch02Counterexamples.lean",
+      "git_blob_sha1": "bc81b03573d1a1b6bfc7cceeabbd82fb1750fe53",
+      "bytes": 1186,
+      "sha256": "4e6c1777df747e06ff9c5461dcfad4a111dc456206250c9121607ed823a96f4a"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/Batch02Dimensions.lean",
+      "git_blob_sha1": "5ab9ce2beb4fc6dbba08beed2fe5738566f3ef4a",
+      "bytes": 843,
+      "sha256": "d27e574d248e442346cf5f02d964b460a452af910cc98f9d3d6e7527c495bb68"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/Batch02Factorization.lean",
+      "git_blob_sha1": "7429a7b0aff142ac8708dbcdc4a64af168454bd9",
+      "bytes": 895,
+      "sha256": "6758d73f27b961a768b4653f31956909af082f4262a205ab8b80d2928c121e6e"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/Batch04.lean",
+      "git_blob_sha1": "d995262b99549f064c1bde0c719e55072da202bd",
+      "bytes": 937,
+      "sha256": "f9104084d456cce963ff112cdae9ef7efedaa7d60755fa0532476659dd1a4212"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/Batch05.lean",
+      "git_blob_sha1": "6f56ace209e882d1e7704d4204aef9c2bf6f27b4",
+      "bytes": 689,
+      "sha256": "3aa0e38702ff04757b334afda9b8436877e1f20b7a322ba6444fc2b243b64259"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/CheckedRegistry.lean",
+      "git_blob_sha1": "11f4a5e49f6ff8e658cdadd5549c4fe28be1f2b4",
+      "bytes": 786,
+      "sha256": "404414548a7a61272f364a5b1612943045ba8b26437cd34c8463a9d6989e7384"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Claims/Completion.lean",
+      "git_blob_sha1": "6f585bceda9dce0f9827bc868c6adeff62b2ee12",
+      "bytes": 4667,
+      "sha256": "f48e8511825e50ee7c853be48af47d50a1958bddaf2fa05114eb4066e91a36bb"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Completion/OpenClaims.lean",
+      "git_blob_sha1": "f5f27b0d1f7709359d20513eb0031f704c059856",
+      "bytes": 15440,
+      "sha256": "96a7bc98e3ed132e46e697739fad037f3547bc9c5320f2cebe879daab9d1405c"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Decision/ObservationSufficiency.lean",
+      "git_blob_sha1": "486386f206c6d4c18d2ef0e60c9459600dd612d2",
+      "bytes": 6827,
+      "sha256": "17c16ef883bcde7293880ba383bcd1faf9782595e9dc603a61bfb8bc300d74ec"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Definitions/Manuscript.lean",
+      "git_blob_sha1": "fa0ff5ececde00e4f244e87ef6e84ad3f71d648d",
+      "bytes": 15783,
+      "sha256": "c5b483e1657b26f35f532548c6429a43d3a5b6d5cda402806cb194f7e3b95e17"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Escape/FiniteStages.lean",
+      "git_blob_sha1": "977b4ad8d51eed5149743b51f6fbc42446b82eb8",
+      "bytes": 2828,
+      "sha256": "3057553473d7fc0ce87388f1d5cbe7fe5f998f91a423a5dd47a980f1313a59ad"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Foundation/ImageComplement.lean",
+      "git_blob_sha1": "c4bb8539c6f8bdf31977e48610f2c21fe8463432",
+      "bytes": 3002,
+      "sha256": "022cbb59d85690ec1e37ec844b21118cdbf2f2366d90422b0c263e19cc0a6c85"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Foundation/Preimage.lean",
+      "git_blob_sha1": "af575d8c62d04d7d2dd4f321d707ff79bbc750fb",
+      "bytes": 1757,
+      "sha256": "423302b8a3881b7f8e87937352cfd916db98093130ec3e6a315e0e3d29b52cd9"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Foundation/RelativeComplement.lean",
+      "git_blob_sha1": "2a8c6feee7ea2798449640e7f7ef733274890811",
+      "bytes": 3387,
+      "sha256": "fa8cc089badd85f29dc62ef2deaa50b8f7e79f679bd1dca7a71eca15a17bd6c5"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Hardware/AuthorityMirrorWitness.lean",
+      "git_blob_sha1": "25ba2bb65033aede7e1251950be9afaa68e897e7",
+      "bytes": 17888,
+      "sha256": "e8e236154b2a3c94242ee5220da9c01b2403c72e1224fa9a7e20b1cce9c143b0"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Hardware/AxiomAudit.lean",
+      "git_blob_sha1": "c71dddb7b4fd6421f28941e0693bd49fae06d846",
+      "bytes": 3133,
+      "sha256": "30d074057c4f5a101362ec5c9b2348bb1fae26bf6d99cb7965b60019fe6763cf"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Physics/Dimensions.lean",
+      "git_blob_sha1": "3424ca48f8eba3c8b9fc0e470daf9d3b0b7737ff",
+      "bytes": 6463,
+      "sha256": "d6d404e97207b0e0a14e90553ca2d6a210ab05330af43823e916a962f04d03e4"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Physics/EmpiricalBridge.lean",
+      "git_blob_sha1": "5e82c92369ab94ea87690c3a1b73fb5212e9a5eb",
+      "bytes": 2745,
+      "sha256": "f0f98f33d49b6ffe8e438d8b8f8fd9668c83c273f37fd138f1930a53b89fcfec"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Physics/Lorentz.lean",
+      "git_blob_sha1": "dea9123a228f7878b647d314d3425430ecf40754",
+      "bytes": 3841,
+      "sha256": "ff5cef9b7f852d1e6b43e0ab08ae0b6488fc5cd78a5a17e351f85f17a1367ced"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Physics/MeasurementTransfer.lean",
+      "git_blob_sha1": "73e4459fa77be82356d3d6771d3ff9577b9da864",
+      "bytes": 7420,
+      "sha256": "57749847cd5285c4d1295e35f31213d3c3b8920d7f980472006efa70f38696d3"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ConnectabilityMaximality.lean",
+      "git_blob_sha1": "c2932d65bc8f2c010c0cbbc6fc3e02458992c18a",
+      "bytes": 8513,
+      "sha256": "a61d3a67e4a743de75c2204e58a09dfd30cbd5b098bcf5eb026f4c8605208be4"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ConnectabilitySimulation.lean",
+      "git_blob_sha1": "0827e5fd24fa5cb633c1980edb334157b2c230c5",
+      "bytes": 15641,
+      "sha256": "ea24867dd46c9cd5cd745a4427fff83620813ca05a7e5ba48596a4f667b3cb0a"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/Factorization.lean",
+      "git_blob_sha1": "57f00504393a0fc0e397d3fab26a30271d2faef2",
+      "bytes": 4314,
+      "sha256": "951835383c10d246315f6febe9129f6db3904cfff589f89708205b82935deb0e"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/GateCompleteness.lean",
+      "git_blob_sha1": "94875dafeebb07c19d4506f493feea5ae1108001",
+      "bytes": 5589,
+      "sha256": "4c8dd203f98eaa86eefd8c5f77fa2fd3c401fdb472edd08a110a20964a6bdd1b"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/Gates.lean",
+      "git_blob_sha1": "479dc947ae3b1619b4a974f0231d711e2cd80161",
+      "bytes": 6391,
+      "sha256": "e5c27df2bcfeee4cc1893a6b32bc431b3af2803c8db364bce7ecb812d7d6f42d"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/OperationalContinuation.lean",
+      "git_blob_sha1": "acd8a45b13c0e0ac8cea6ecb635538940c6b3390",
+      "bytes": 7338,
+      "sha256": "b9e7dfedad068773b5e46a8cf4d0a3823cea223bab0a6070ff906eb13c928d31"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/ShiftInvariance.lean",
+      "git_blob_sha1": "c06d4191dce880e04bb548ae816e5e226224b157",
+      "bytes": 3154,
+      "sha256": "f4229851bfb0b63b8594042a6c3bcdf01f49c9a385f1cd43be9b37ad222f8868"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Process/WeightedConnectability.lean",
+      "git_blob_sha1": "1ab2a7553d3b2d6f83b925eec80299a82423442b",
+      "bytes": 9234,
+      "sha256": "feadf23a9643e0e41f39cf5e37bca42f07bd0da29bfead8f751f3a2d7764f290"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Quantization/NonDiscreteness.lean",
+      "git_blob_sha1": "d330900015a0e15ca74be9fccfdbe4aaf7df5709",
+      "bytes": 7923,
+      "sha256": "8596b3ecac01ce1c107925faab99c1c9b0038c9065909eff20fa4edd4e616d85"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/QuantumFoundations/AxiomAudit.lean",
+      "git_blob_sha1": "91e0312046230602983ae5b937fefe7942108e87",
+      "bytes": 1069,
+      "sha256": "93c3d1288b8413bacfe65e9281db3cdeac5820b570616a324def4cb24e40dedd"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/QuantumFoundations/MeasurementIndependence.lean",
+      "git_blob_sha1": "786a050c416ab25e1947c05ed449a0c55bda0d98",
+      "bytes": 6096,
+      "sha256": "f62f4532f5650cfedeef97c9f09251e5945efcd34439273fe5807101056ab103"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Retrocausality/BacksignalingBoundary.lean",
+      "git_blob_sha1": "7245c8c071abae3ef126b25fe3088bcbc985bb5c",
+      "bytes": 2526,
+      "sha256": "7544717fad739fe0393794a789d666ddc2d337c8dc3bd18cb682bd2371914659"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Retrocausality/ForwardProcess.lean",
+      "git_blob_sha1": "a85aea3ece123612d39fbdef540b1d8d5be1b95d",
+      "bytes": 2459,
+      "sha256": "bc618608089ca2430473bd892a8decc0d2a190d5ced28271292ca851381ca0e0"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Retrocausality/ObserverRelative.lean",
+      "git_blob_sha1": "7d6dbb825cdf5144aa744fd7993f191722903105",
+      "bytes": 2384,
+      "sha256": "7e52cc78b019663c95bfc240b725c9d5318466384e6d4afe63798b4290c8f863"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Retrocausality/Reclassification.lean",
+      "git_blob_sha1": "fc32c5f11dc98dda7ef598dd8282e7070c4e4757",
+      "bytes": 3005,
+      "sha256": "d674237eeb3e9ce0ade50a31b3ebe705695a5bcc28b88163b776f6e25c0adc24"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Retrocausality/ThreeObserverProtocol.lean",
+      "git_blob_sha1": "3947af861a64565635ea7e14f455405288435ea9",
+      "bytes": 3125,
+      "sha256": "734c9f31bd1e47b096ff997b35610d720ba376469f1845bde54654c1ec72aca1"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/WorldFormula/AxiomAudit.lean",
+      "git_blob_sha1": "6895b071e9d6b71ef2054f18d0a1d96ac1b1f105",
+      "bytes": 757,
+      "sha256": "225090c0bcd95ae90bab3db9140a1cef09fa8e02f8fade9adf6f5ade9343a5a3"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/WorldFormula/Relations.lean",
+      "git_blob_sha1": "2e08d9e723856a576e50948e2325ca0768a4fb4f",
+      "bytes": 11291,
+      "sha256": "557c736d042a06103d45810d10293b797980544d9d5a63c7cdb81540c4e6ce36"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTUniversalOntology.lean",
+      "git_blob_sha1": "674c50a8396d1e6837d0d8cee34f80785ac0763d",
+      "bytes": 431,
+      "sha256": "3f689dbc1267af85ab66e6690e107847f470d359bc0e3e777ff5473861588e60"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTUniversalOntology/AxiomAudit.lean",
+      "git_blob_sha1": "832063df5d2083654110cb539c2b211c413aff0d",
+      "bytes": 2263,
+      "sha256": "2e6b967c30e4b1d724953bd8aceb9168f71bd162820b76fbe49349bab89f06d6"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTUniversalOntology/Core.lean",
+      "git_blob_sha1": "97e4ca8129c390f5317f304f385edada718c1f4b",
+      "bytes": 8099,
+      "sha256": "c547c9f0a84ffb7d99d80748e47f75d8f412c2a6c5eb7c8e3652afd3cdc1f1d5"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTUniversalOntology/ExtendedAxiomAudit.lean",
+      "git_blob_sha1": "362b4b766a43ff9ff3a5361a8e4248b144086eb9",
+      "bytes": 5562,
+      "sha256": "9d5415247ead0a2de44657039361d446865128b464c816038a234a1071a1f29a"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/lake-manifest.json",
+      "git_blob_sha1": "05f9c472ae34ac083fb3a8090089821e212bd243",
+      "bytes": 127,
+      "sha256": "07d6545fe29e15a39f08519aac71f6ea5fc0530d0d5101d5b3e8df93cf9f7e5e"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/lakefile.toml",
+      "git_blob_sha1": "5cec9150deb3e6821dc3ae2b4bf12e36ca8f53da",
+      "bytes": 265,
+      "sha256": "45d01cd75d0b966cceaed22a246d804811544f8b7c0403ba5d7a6d0e78a55f30"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/lean-toolchain",
+      "git_blob_sha1": "cf00978c98941128bcbab27eaa26ed28b9cbbf15",
+      "bytes": 26,
+      "sha256": "ee6fd37555065223ddad24dff70b5447dfbac23c14f48fb8e3ddf266104bfa87"
+    }
+  ],
+  "entrypoint_imports_may_only_be_extended": [],
+  "proof_object_preservation_is_not_whole_software_verification": true
+}

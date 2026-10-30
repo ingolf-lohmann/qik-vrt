@@ -1,0 +1,95 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_PRODUCTION_BINDING_RECOVERY_20261029",
+  "owner": "Ingolf Lohmann",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "base_head": "e15a691d2a05c0c1758f2c94bb17a7fb8272b403",
+  "base_tree": "42601f647175d5983c73013ff5ef5e76cfc3b6e4",
+  "state": "BINDING_RECOVERY_SOURCE_REPAIRED_ORIGINAL_SOURCE_CONNECTION_OPEN",
+  "authorization": {
+    "date": "2026-10-29",
+    "source": "Current direct Principal instruction: eliminate the identified blocker and continue the remaining authorized work; Freigabe erteilt.",
+    "existing_production_sso_and_conditional_merge_grants_retained": true,
+    "renewed_permission_requested": false
+  },
+  "predecessors": [
+    "state/work_units/QIKVRT_PRODUCTION_ORIGINAL_MATERIAL_SOURCE_20261029.json",
+    "state/work_units/QIKVRT_PRODUCTION_SSO_BOOTSTRAP_READBACK_20261029.json",
+    "state/work_units/QIKVRT_PUBLICATION_REST_CLOSURE_20261029_V1.json"
+  ],
+  "existing_candidate": {
+    "pull_request": 554,
+    "branch": "repair/ionos-host-preflight-20261020-e15cbf39",
+    "retained_parent": "568c6a604f840c91cde7d4c0ad3ee574223ad8cb",
+    "resolution": "Retain current Main source and the original branch history. Main's native-terminal build and exact host-identity path supersede the older Firefox-dependent preflight arrangement. Extend that same host job with durable non-secret input-presence evidence; retain every existing host, deployment and public-acceptance guard."
+  },
+  "reused_components": [
+    "tools/qikvrt_authority_credentials.py::production_environment",
+    "original protected SSO journal and bounded handoff history",
+    ".github/workflows/qikvrt_ci.yml::container_deploy",
+    "tests/test_production_environment.py",
+    "tests/test_self_host_container.py::HostWorkflowIdentity"
+  ],
+  "reproduced_defects": [
+    {
+      "id": "completed-handoff-blocks-confirmed-restoration",
+      "result_before": "After the fixture completed a handoff, deleting any one of its five remote bindings produced NOOP with zero writes; the binding stayed absent.",
+      "repair": "An authenticated fresh readback can select only confirmed absent bindings or mismatched variables for restoration from the still-validated original material. Retain the previous journal and save new intent before writes. Present secret metadata, a changed request ID and an unrelated commit do not authorize secret rewrites."
+    },
+    {
+      "id": "missing-job-inputs-produce-no-host-diagnostic-artifact",
+      "result_before": "Executing the actual workflow shell with one or all five empty fixture inputs failed before a host call and left no diagnostic receipt.",
+      "repair": "Write host-material-delivery.json containing only source identity, input-presence booleans and explicit acceptance limits before private-file materialization; include it in the existing always-uploaded artifact."
+    },
+    {
+      "id": "stale-default-repository-negative-test",
+      "result_before": "The full local gate stopped in the archive transport default-repository negative case: its supposedly foreign path now names the actual Authority and can issue an unmocked HTTP request with a fixture token.",
+      "repair": "Exercise an explicitly pinned Mirror journal GET with a fixture transport, then verify that the same Mirror path is rejected under the Authority publication default before constructing any opener. Production transport and publication gates remain unchanged."
+    }
+  ],
+  "validation": {
+    "failing_binder_regressions_observed_before_repair": true,
+    "failing_workflow_shell_regressions_observed_before_repair": true,
+    "focused_command": "python3 -B -m unittest tests.test_production_environment tests.test_self_host_container.HostWorkflowIdentity",
+    "focused_tests": 57,
+    "focused_result": "OK_WITH_ONE_OPTIONAL_CRYPTOGRAPHY_SKIP",
+    "provider_and_sso_scope": "FIXTURES_NO_PRODUCTIVE_EFFECT",
+    "workflow_shell_scope": "ACTUAL_SHELL_ORIGINAL_IDENTITY_CHECKER_WITH_FIXTURE_ENGINE",
+    "negative_controls": [
+      "unchanged completed input remains NOOP",
+      "uncertain earlier write remains readback-only",
+      "lost restoration reply remains readback-only after reconnect and renewed remote loss",
+      "unavailable metadata checker performs no write and preserves the journal",
+      "full protected history holds without discarding a witness",
+      "one or all five empty job inputs prevent every host request",
+      "input presence does not claim correct secret bytes or host acceptance"
+    ],
+    "full_suite_and_integrity": "REQUIRED_ON_FINAL_CANDIDATE",
+    "native_exact_candidate_ci": "REQUIRED"
+  },
+  "execution_boundary": {
+    "original_material_source_connection_repaired": false,
+    "real_environment_restoration_performed": false,
+    "real_job_credential_delivery_verified": false,
+    "native_host_identity_verified": false,
+    "repository_integration_verified_by_this_record": false,
+    "failure_cannot_recur_guarantee": false,
+    "new_executor_scheduler_provider_or_credential_scope": false,
+    "secret_values_or_private_source_paths_recorded": false
+  },
+  "open_work": [
+    {"id": "source-integration", "next_action": "Complete exact candidate integrity and CI on existing PR554, merge through the retained conditional REST authorization when admitted, and independently verify Main tree and ordered parents."},
+    {"id": "native-sso-original-source", "next_action": "Connect the existing authenticated original material source and independently approved descriptor pin to the original native SSO binder. Current sources have not supplied a callable original connection; local input absence does not prove global credential absence."},
+    {"id": "actual-protected-delivery", "next_action": "Use the original admitted binder and independently verify all five actual qikvrt-production consuming-job inputs; source tests and secret metadata do not establish their values."},
+    {"id": "original-host-identity", "next_action": "Verify the original host through mTLS GET /v1.45/info with exact daemon, config, source, package and image pins before any admitted deployment or restart."},
+    {"id": "runtime-and-domain", "next_action": "Verify the admitted original Mesh runtime and actual TLS/application delivery on raumzeitterminal.de; retain existing HTTP525 and ready=false as observations of their own exact subjects."},
+    {"id": "publication-chain", "next_action": "Retain exact original/PDF2/PDF3 and QR obligations, original publisher authorization/consumption refs and independent public-byte readback; this source repair authorizes no substitute upload."},
+    {"id": "native-mirror-and-journals", "next_action": "Preserve all original journals and remaining predecessor duties; obtain actual authenticated named-node ACK/application replies through the existing native work ring."}
+  ],
+  "contributions": {
+    "human": "Ingolf Lohmann: blocker priority, recurrence-prevention goal and retained Principal authorization.",
+    "artificial_cognitive": "OpenAI Codex: current-source inspection, reproduced fixture failures, minimal repairs and bounded verification."
+  },
+  "effect_ack_done": false,
+  "ordinary_release": false
+}
