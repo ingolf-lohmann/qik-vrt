@@ -86,6 +86,16 @@
       "id": "AUTHORIZED_TWO_PDF_PUBLICATION",
       "state": "OPEN",
       "next_action": "Resume exact candidate-bound request through original publisher, reconcile prior ambiguous effects first and independently verify public PDF bytes and both QR targets."
+    },
+    {
+      "id": "GOLDKELCH_CURRENT_REPOSITORY_BINDING",
+      "state": "OPEN",
+      "next_action": "Reestablish the existing repository binding for known repository ID 1271407206, then independently read current Mirror HEAD/TREE and /AI. The listed installation and concrete HTTP 404 reads disagree; do not infer deletion or credential loss."
+    },
+    {
+      "id": "GOLDKELCH_AUTHENTICATED_MESH_RECONCILIATION",
+      "state": "OPEN",
+      "next_action": "Use original admitted peer source pins and key through mesh-cache-send followed by mesh-cache-check; preserve unsent proposals and require found named-node ingress, native events and independent Terminal readback before claiming Mesh effects."
     }
   ],
   "evidence_boundary": {
@@ -94,5 +104,92 @@
     "host_activation_verified": false,
     "new_zenodo_mutation": false,
     "effect_ack_done": false
+  },
+  "continuation_20261030": {
+    "owner_instruction": {
+      "principal": "Ingolf Lohmann",
+      "text": "Also die Anmeldeinformationen und andere Parameter für Zenodo stehen in dem entsprechenden Zenodo-Token. Wenn er nicht im Ingolf Lohmann Repository zu finden ist, dann ist er im Goldkelch Repository zu finden. Und auf irgendeine geeignete Art und Weise daraus zu fummeln. Und dazu gibt es anschlussfähigen Transputer und anschlussfähigen Universal Terminal Adapter im Goldkelch Repository. Und das ist auch dafür zu nutzen und anzuwenden, um so sukzessive Stückchen für Stückchen das Goldkelch Repository von innen heraus anzuschließen an das QIK VRT Mesh Repository, um zumindest einen Datenabgleich durchführen zu können. Freigabe erteilt. Code owner, product owner, principal Ingolf Lohmann",
+      "sha256": "8447608375367e1a14eac5718f69ea51a52c15e400d1d9254191a473ce6a4f47",
+      "classification": "OWNER_AUTHORIZED_WORK; TOKEN_LOCATION_IS_OWNER_REPORTED_UNTIL_PROVIDER_READBACK"
+    },
+    "source_head": "5a42baf45748e4407a8fa16aef287a77873e788d",
+    "source_tree": "3f6e816b6b496eeb9ce8777d8fb93d95717be9ae",
+    "evidence": "evidence/self_host/zenodo-mirror-connection-20261030/READBACK.json",
+    "source_bindings": "evidence/self_host/zenodo-mirror-connection-20261030/SOURCE_BINDINGS.json",
+    "credential_routes": [
+      {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "workflow": ".github/workflows/qikvrt_publication_router.yml",
+        "job": "requested-zenodo",
+        "environment": "zenodo-production",
+        "reference": "secrets.ZENODO_ACCESS_TOKEN",
+        "state": "SOURCE_BINDING_VERIFIED; CURRENT_JOB_DELIVERY_AND_ACCOUNT_ACCESS_UNVERIFIED"
+      },
+      {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "launcher": "tools/qikvrt_self_host.py",
+        "operations": [
+          "publication-check",
+          "publication-resume"
+        ],
+        "private_reference_schema": "qikvrt-protected-runtime-credential-references/v1",
+        "state": "SOURCE_BINDING_VERIFIED; ORIGINAL_HOST_REFERENCE_DELIVERY_UNVERIFIED"
+      },
+      {
+        "repository": "Goldkelch/qik-vrt",
+        "repository_id": 1271407206,
+        "state": "INSTALLATION_LISTED_BUT_ACTUAL_REPOSITORY_AND_AI_READS_HTTP_404; SECRET_LOCATION_AND_CURRENT_BYTES_UNVERIFIED"
+      }
+    ],
+    "mesh_route": {
+      "launcher": "tools/qikvrt_self_host.py",
+      "operations": [
+        "mesh-cache-stage",
+        "mesh-cache-idle",
+        "mesh-cache-send",
+        "mesh-cache-check"
+      ],
+      "terminal": "src/qikvrt_effect_ack_http_terminal.py",
+      "transputer": "src/qikvrt_temdd_event_ledger.py",
+      "role": "Goldkelch remains MIRROR; no failback or writer admission is inferred",
+      "preparation": {
+        "state": "IDLE_STABLE_VALIDATED",
+        "batch_id": "6955f1704bed9e3cf4057d01c14cc5d41c6b55231a298b70160b2e7756716228",
+        "wire_sha256": "c4741359d8397eb7ebe50e4843d6ad73f4db507aac444634cf3526f85277393e",
+        "source": {
+          "head": "5a42baf45748e4407a8fa16aef287a77873e788d",
+          "tree": "3f6e816b6b496eeb9ce8777d8fb93d95717be9ae"
+        },
+        "selected_source_files": 13,
+        "evidence": "evidence/self_host/zenodo-mirror-connection-20261030/MESH_PREPARATION.json",
+        "packet": "evidence/self_host/zenodo-mirror-connection-20261030/MESH_WORK_BATCH.json",
+        "transport": "NOT_SENT",
+        "receiver_ingress": "NOT_VERIFIED",
+        "native_node_admission_inferred": false
+      },
+      "native_connection": "ADMITTED_MESH_RUNTIME_ENDPOINT remains open; no prepare or commit was called"
+    },
+    "native_assessment_carrier": {
+      "tool": "node-tools/qikvrt_mirror_emit.py",
+      "state": "HOLD_ORIGINAL_TOOL_NOT_PRESENT_IN_CURRENT_AUTHORITY_TREE",
+      "replacement_created": false
+    },
+    "next_action": "Use the existing admitted original-host publication GET with its pinned private request and original provider references; bind the actual Mirror peer URL/current HEAD/TREE/key through its original native admission, then send/check the frozen selected-source proposal. Reconcile an uncertain publisher effect before any new mutation.",
+    "claims": {
+      "token_value_exported": false,
+      "token_absent_from_remote_store": false,
+      "mirror_current_state_verified": false,
+      "native_terminal_execution_verified": false,
+      "mirror_delivery_verified": false,
+      "zenodo_publication_verified": false,
+      "effect_ack_done": false
+    },
+    "validation": {
+      "full_make_test_exit": 0,
+      "python_unittest_executions": 2259,
+      "focused_tests": 55,
+      "native_final_candidate_ci": "REQUIRED_SEPARATE_EXACT_HEAD_READBACK",
+      "record": "evidence/self_host/zenodo-mirror-connection-20261030/VALIDATION.json"
+    }
   }
 }

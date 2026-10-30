@@ -1,0 +1,159 @@
+{
+  "schema": "qikvrt_connection_readback_v1",
+  "observed_at": "2026-10-30T17:09:17.395Z",
+  "subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "ref": "main",
+    "head": "5a42baf45748e4407a8fa16aef287a77873e788d",
+    "tree": "3f6e816b6b496eeb9ce8777d8fb93d95717be9ae"
+  },
+  "source_routes_verified": true,
+  "mirror": {
+    "listed_repository": {
+      "id": "1271407206",
+      "name": "qik-vrt",
+      "owner": {
+        "login": "Goldkelch",
+        "id": 293941403,
+        "type": "User",
+        "avatar_url": "https://avatars.githubusercontent.com/u/293941403?v=4",
+        "url": "https://api.github.com/users/Goldkelch"
+      },
+      "repository_full_name": "Goldkelch/qik-vrt",
+      "permissions": {
+        "admin": false,
+        "maintain": false,
+        "pull": true,
+        "push": true,
+        "triage": true
+      },
+      "allow_auto_merge": null,
+      "allow_merge_commit": null,
+      "allow_rebase_merge": null,
+      "allow_squash_merge": null,
+      "allow_update_branch": null,
+      "clone_url": "https://github.com/Goldkelch/qik-vrt.git",
+      "size": 281459,
+      "default_branch": "main",
+      "git_commits_url": "https://api.github.com/repos/Goldkelch/qik-vrt/git/commits{/sha}",
+      "git_refs_url": "https://api.github.com/repos/Goldkelch/qik-vrt/git/refs{/sha}",
+      "git_url": "git://github.com/Goldkelch/qik-vrt.git",
+      "master_branch": null,
+      "visibility": "public",
+      "archived": false,
+      "is_code_search_indexed": null,
+      "display_title": "Goldkelch/qik-vrt",
+      "display_url": "https://github.com/Goldkelch/qik-vrt"
+    },
+    "branch_read": {
+      "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest\",\"status\":\"404\"}",
+      "error_code": "NOT_FOUND",
+      "error_data": {
+        "message": "Not Found",
+        "documentation_url": "https://docs.github.com/rest",
+        "status": "404"
+      }
+    },
+    "repository_name_read": {
+      "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest\",\"status\":\"404\"}",
+      "error_code": "NOT_FOUND",
+      "error_data": {
+        "message": "Not Found",
+        "documentation_url": "https://docs.github.com/rest",
+        "status": "404"
+      }
+    },
+    "stable_id_read": {
+      "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest\",\"status\":\"404\"}",
+      "error_code": "NOT_FOUND",
+      "error_data": {
+        "message": "Not Found",
+        "documentation_url": "https://docs.github.com/rest",
+        "status": "404"
+      }
+    },
+    "entrypoint_read": {
+      "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}",
+      "error_code": "NOT_FOUND",
+      "error_data": {
+        "message": "Not Found",
+        "documentation_url": "https://docs.github.com/rest/repos/contents#get-repository-content",
+        "status": "404"
+      }
+    },
+    "outcome": "VERIFICATION_UNAVAILABLE; LISTING_CONTRADICTS_CONCRETE_READS",
+    "repository_deletion_or_global_credential_absence_inferred": false
+  },
+  "native_connection": {
+    "schema": "qikvrt_native_terminal_connection_v1",
+    "adapter_version": "20261025.1",
+    "mesh_id": "qik-vrt",
+    "scope": "MESH",
+    "runtime_observations": [
+      {
+        "origin": "https://raumzeitterminal.de",
+        "status": 525,
+        "observed_at": "2026-10-30T17:00:15.149Z",
+        "mesh_scope_verified": false
+      }
+    ],
+    "native_available": false,
+    "operator_configured": true,
+    "operator_authorized": true,
+    "ready": false,
+    "open_gates": [
+      "ADMITTED_MESH_RUNTIME_ENDPOINT"
+    ],
+    "reason": "Kein Endpunkt weist den gemeinsamen Mesh-Kontext aus.",
+    "effect_ack_done": false
+  },
+  "zenodo": {
+    "reference": "secrets.ZENODO_ACCESS_TOKEN",
+    "environment": "zenodo-production",
+    "workflow": ".github/workflows/qikvrt_publication_router.yml",
+    "protected_store_presence": "NOT_INSPECTED",
+    "job_input_delivery": "UNVERIFIED",
+    "account_access": "UNVERIFIED",
+    "token_values_exported": false,
+    "new_mutations": 0,
+    "workflow_history_checker": {
+      "attempted_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/actions/workflows/qikvrt_publication_router.yml/runs?per_page=5",
+      "result": {
+        "error": "HTTPError: 400: GitHub Fetch URL is not an allowed public GitHub repository or search endpoint. (Response: None)",
+        "error_code": "INVALID_ARGUMENT"
+      },
+      "outcome": "CHECKER_ROUTE_UNAVAILABLE_NOT_TARGET_FAILURE"
+    },
+    "local_only_presence": {
+      "ZENODO_ACCESS_TOKEN": false,
+      "ZENODO_TOKEN": false,
+      "GITHUB_TOKEN": false,
+      "GH_TOKEN": false,
+      "QIKVRT_PUBLICATION_REQUEST": false,
+      "QIKVRT_PUBLICATION_REQUEST_SHA256": false
+    },
+    "local_presence_does_not_establish_remote_absence": true,
+    "existing_candidate": {
+      "pull_request": 605,
+      "state": "open",
+      "draft": true,
+      "mergeable": false,
+      "head": "61eb89998339d4ae416bdef976fdeb6e9a1bef13",
+      "scope": "Observed existing pending article intake; not changed by this connection work"
+    }
+  },
+  "effect_boundaries": {
+    "remote_credentials_recovered": false,
+    "native_execution": false,
+    "proposal_sent": false,
+    "mirror_ingress": false,
+    "published_record": false,
+    "domain_acceptance": false,
+    "effect_ack_done": false
+  },
+  "logging": {
+    "scope": "Selected original connector outputs, exact source-byte identities and executable command logs; private caller identity excluded",
+    "bootstrap_reads_before_local_preflight": "Recorded initial read-only source/connection discovery preceded availability of the local preflight; no productive mutation occurred"
+  }
+}
+

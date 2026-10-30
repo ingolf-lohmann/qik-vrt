@@ -1,0 +1,41 @@
+{
+  "schema": "qikvrt_existing_mesh_cache_preparation_readback_v1",
+  "observed_at": "2026-10-30T17:16:35.442918+00:00",
+  "source": {
+    "head": "5a42baf45748e4407a8fa16aef287a77873e788d",
+    "tree": "3f6e816b6b496eeb9ce8777d8fb93d95717be9ae"
+  },
+  "original_launcher": "tools/qikvrt_self_host.py",
+  "operations": [
+    "mesh-cache-stage",
+    "mesh-cache-idle"
+  ],
+  "independent_readback": "Fresh Python process reopened original cache, verified its envelope/outbox digest and compared each selected object to committed original source bytes",
+  "batch_id": "6955f1704bed9e3cf4057d01c14cc5d41c6b55231a298b70160b2e7756716228",
+  "wire_bytes": 822527,
+  "wire_sha256": "c4741359d8397eb7ebe50e4843d6ad73f4db507aac444634cf3526f85277393e",
+  "selected_source_files": 13,
+  "objects": 14,
+  "work_units": 1,
+  "validation": {
+    "command_sha256": "d2a5e9b9352ef8f21f76756420ba9a9f8f1211c7522947df9dacc6e4792d7e81",
+    "exit_code": 0,
+    "kind": "EXECUTED_COMMAND_EXIT_ZERO",
+    "stderr_sha256": "0c65e85b69bb35238a61e31522bda6f3e0630849b60021caea49361967f652fe",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "mode": "IDLE_STABLE_VALIDATED",
+  "pending_attempted": false,
+  "last_ack": "0000000000000000000000000000000000000000000000000000000000000000",
+  "sender_identity_class": "DECLARED_LOCAL_CACHE_ID_NOT_AN_ADMITTED_NATIVE_NODE",
+  "transport": "NOT_SENT",
+  "recipient_repository": "Goldkelch/qik-vrt",
+  "peer_url_and_source_pins": "UNBOUND",
+  "peer_key": "NOT_ACCESSED",
+  "native_effect_event": "UNVERIFIED",
+  "native_terminal_readback": "UNAVAILABLE_ADMITTED_RUNTIME_GATE_OPEN",
+  "mirror_ingress": "NOT_VERIFIED",
+  "zenodo_credentials_delivered": false,
+  "zenodo_mutations": 0,
+  "effect_ack_done": false
+}

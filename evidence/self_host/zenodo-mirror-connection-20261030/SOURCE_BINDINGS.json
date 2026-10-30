@@ -1,0 +1,77 @@
+{
+  "schema": "qikvrt_source_binding_inventory_v1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "head": "5a42baf45748e4407a8fa16aef287a77873e788d",
+  "tree": "3f6e816b6b496eeb9ce8777d8fb93d95717be9ae",
+  "scope": "SOURCE_IDENTITIES_FOR_EXISTING_PUBLICATION_AND_MESH_ADAPTERS",
+  "files": {
+    "policy/CANONICAL_UPSTREAM_REMOTE_V1.json": {
+      "bytes": 5363,
+      "sha256": "f7d943385ceb64beec29c7902575a257d7fd0daa8fb622b18b0d5b88db0911d7",
+      "git_blob_sha1": "a07851a64ef28172933544e565e9740e9c611fe5"
+    },
+    "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json": {
+      "bytes": 24942,
+      "sha256": "22eee596b233e52d8eeabb2144b53c53e1fba436958cc9c1eee5977d99073948",
+      "git_blob_sha1": "2a55d55b1d8f5c144537f84d9825f5306bd4d986"
+    },
+    "runtime/self-host/PUBLICATION.md": {
+      "bytes": 9319,
+      "sha256": "a5fdd6de6592e0d8e48f6adaa144068629aae7065b63a540dc5f6dc82f32639b",
+      "git_blob_sha1": "1ffd96c248e2d3127a0ed98b521fa294763aea3e"
+    },
+    "runtime/self-host/PUBLICATION_CREDENTIAL_REFERENCES.example.json": {
+      "bytes": 827,
+      "sha256": "ed01c17a55b5ddaddfddf556c81db586f7ad07da750718eb985193ac4b43832b",
+      "git_blob_sha1": "d83d0d25a2b0912bebf50424509c49d3744148df"
+    },
+    "runtime/self-host/PUBLICATION_REQUEST.example.json": {
+      "bytes": 611,
+      "sha256": "a2437fbc962f2afbff5f7ad5f8b03ecf75522ee819fcfb89c52c047aa73d5a88",
+      "git_blob_sha1": "628657bbce8e44eb8a125f82cf8a147de544edf5"
+    },
+    "runtime/capabilities/ZENODO_PUBLICATION_CAPABILITY.json": {
+      "bytes": 9788,
+      "sha256": "6d0ca7ee2bbbadb2ef7b2208daf918cc2a5ae6d5ddc242e7ea249c41244e07bd",
+      "git_blob_sha1": "dd0f9a83409b79c926229627ee9ecdba2cbfe241"
+    },
+    ".github/workflows/qikvrt_publication_router.yml": {
+      "bytes": 13408,
+      "sha256": "d22c1ec448f86b76174bf96da1c1ae21b641d090e4397a9a9d70b6ae0e2c0b2b",
+      "git_blob_sha1": "89da56ca0a8239acac817e3377dd79833b966211"
+    },
+    "tools/qikvrt_self_host.py": {
+      "bytes": 268308,
+      "sha256": "f4358c2cb407228af6cf08db127193886dd85d51a2c912dfc1e8b1c07af8fe77",
+      "git_blob_sha1": "b55943e41a612695a4d39ee74447bf94c44830c6"
+    },
+    "tools/qikvrt_zenodo_publish.py": {
+      "bytes": 105979,
+      "sha256": "9d68c7bad83ef9115c2862d4ec5679e20b019198cf9857aa88f956cd55e80afe",
+      "git_blob_sha1": "99a9c502d460a8b798e1b4a59f6632313af237ea"
+    },
+    "tools/qikvrt_zenodo_actions.py": {
+      "bytes": 64823,
+      "sha256": "77ab829b5018143568917762328366e5698dc2cd599f0ba0cd4106a5b5c292d8",
+      "git_blob_sha1": "fbbfed55004b580e9788b8ffa7a51d59e581d09b"
+    },
+    "src/qikvrt_temdd_event_ledger.py": {
+      "bytes": 30483,
+      "sha256": "f70e328ae438c6464a051d0aaa247ad7e281812304e3461e1b28f0b9795ba75c",
+      "git_blob_sha1": "941ff7626cfed58905ce890db0a55f581abd9c0a"
+    },
+    "src/qikvrt_effect_ack_http_terminal.py": {
+      "bytes": 54152,
+      "sha256": "213fe3f2b62666df45bd799ee814bd3e74bfc7d70f5e6e3a304e343e5d319c90",
+      "git_blob_sha1": "60da8998201333ea1b3ba235893258f9374252b5"
+    },
+    "docs/monitor/self-host.mjs": {
+      "bytes": 19145,
+      "sha256": "b660f27c89cde9dfb1fded7129340529766447a1a8571d937cce92bf7646dfd7",
+      "git_blob_sha1": "8835ad293b619b009e0307b0dfc8127c75122092"
+    }
+  },
+  "mirror_current_bytes_verified": false,
+  "secret_values_included": false,
+  "native_acceptance_inferred": false
+}

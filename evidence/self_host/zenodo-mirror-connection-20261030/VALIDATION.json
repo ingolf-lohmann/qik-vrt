@@ -1,0 +1,45 @@
+{
+  "schema": "qikvrt_connection_source_validation_v1",
+  "unchanged_runtime_source_base": "5a42baf45748e4407a8fa16aef287a77873e788d",
+  "source_change_scope": "Existing recovery work unit plus source/readback evidence only",
+  "cache_contract": "PASS_44_OF_44_TOOLS",
+  "mesh_contract": "PASS",
+  "focused_suite": {
+    "modules": [
+      "tests.test_self_host_publication",
+      "tests.test_self_host.MeshWorkCacheTests"
+    ],
+    "tests": 55,
+    "result": "OK",
+    "scope": "Isolated source/negative-control tests; no production credentials, original-host run or Mesh delivery"
+  },
+  "logs": {
+    "mesh-contract.log": {
+      "bytes": 2207,
+      "sha256": "0e74555291e6183ad691a5529fb063f0645f42c2dd8ba5b07510bd23ca2334ab"
+    },
+    "focused-tests.log": {
+      "bytes": 10304,
+      "sha256": "e45ca00c4b2e910de5203b7e1c512171c364e93aa15366f1d65d179ad1d75c4f"
+    }
+  },
+  "native_runtime_acceptance": false,
+  "zenodo_credential_delivery": false,
+  "mirror_received": false,
+  "effect_ack_done": false,
+  "full_suite": {
+    "operation": "make test",
+    "source_base": "5a42baf45748e4407a8fa16aef287a77873e788d",
+    "started_at": "2026-10-30T17:10:04.532993+00:00",
+    "completion": "COMPLETED",
+    "exit_code": 0,
+    "completed_at": "2026-10-30T17:14:48.792137+00:00",
+    "stdout_stderr_bytes": 444461,
+    "stdout_stderr_sha256": "105c7d8a50f3ee4a3d74ff31b2ea022f262db28df8b3023835475ac1154d3b0d",
+    "python_unittest_executions": 2259,
+    "groups": 43,
+    "tested_local_tree": "a3358fad0387125297bf2e3e852f0759c8064b0e",
+    "final_evidence_append": "Full log and Mesh preparation results are appended after the unchanged runtime-source suite; final candidate needs its own native CI."
+  },
+  "mesh_preparation": "MESH_PREPARATION.json; local original adapter only, no peer delivery"
+}
