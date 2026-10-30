@@ -1,0 +1,710 @@
+{
+  "archive_bytes": 295614106,
+  "archive_sha256": "9a135e2a6ad9104c5f6e9fa7bd59cd3ee871cdbfd439f25a342777567c8195b5",
+  "binary_sha256": "e268baa947c993efde2731d98bdcfeec1a078020b276ccb0b5c2241c7f45dc82",
+  "build": {
+    "binary_sha256": "e268baa947c993efde2731d98bdcfeec1a078020b276ccb0b5c2241c7f45dc82",
+    "command": [
+      "cc",
+      "-std=c90",
+      "-pedantic-errors",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-O2",
+      "-I",
+      "/workspace/scratch/5cf3cb2fac5e/universal-archive/include",
+      "/workspace/scratch/5cf3cb2fac5e/universal-archive/src/sha256.c",
+      "/workspace/scratch/5cf3cb2fac5e/universal-archive/src/codec_native.c",
+      "/workspace/scratch/5cf3cb2fac5e/universal-archive/src/finite_machine.c",
+      "/workspace/scratch/5cf3cb2fac5e/universal-archive/tools/qikvrt_archive_native.c",
+      "-lz",
+      "-o",
+      "/tmp/qikvrt-codec-measurement-t0eajp9w/compiled"
+    ],
+    "compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+    "headers_sha256": {
+      "include/qikvrt/codec_native.h": "0b7d06a1ab6c72a1a1a7ae951bc26660218b014eef1d65d616e5f9c2c0741a8f",
+      "include/qikvrt/effect_ack.h": "bbd62bd4044e0feb7561770cb11cbbb866fdf3c9b5124c0d520637cdd0172580",
+      "include/qikvrt/finite_machine.h": "7da9a55a8e6b9a9d690634c4547ddb78ce262d0b117e3b8ef3e0db7bc631c581",
+      "include/qikvrt/fixed_q16.h": "5fa4ecca2859a02ec45b88e1dd123782bc16a558c68a9d439bbae9783212e55e",
+      "include/qikvrt/sha256.h": "a37f974ef184b4c05f1ca2c23839680f739a91fc7de8cf74f50cc3db67908d89",
+      "include/qikvrt/standpoint_signature_v1.h": "ce45d0502d3df437a3b702235d523ed5821de2d43e70ae06e77e449993deea27"
+    },
+    "sources_sha256": {
+      "src/codec_native.c": "4199867e66497f3b2890c2a352c6943c7a8ff6ad90122e0ff5db14a35ecb57ce",
+      "src/finite_machine.c": "77673ef1784d81c16257faab7fd7ddc1dfec887aa4e97cecfe620ee80b3c1d04",
+      "src/sha256.c": "ead4899bf35c93c6fbb41c1b5ab6c2e01d8bcf6e70d4356683bd3faa36b7e5d3",
+      "tools/qikvrt_archive_native.c": "6a00cd2f5d7c09d3db5e112c1bf7dba274d7f031fa6d70d58f895f9dbabd073c"
+    },
+    "version": "QIKVRT native codec V1; C90; POSIX/Linux adapter; zlib=1.3",
+    "zlib_shared_library": {
+      "path": "/usr/lib/x86_64-linux-gnu/libz.so.1.3",
+      "sha256": "9b64150b28505a33d6bc3ecf709c279f6de97a1c184dbda65d06ee4537f6d286"
+    }
+  },
+  "compile_child_cpu_ns": 460470000,
+  "compile_wall_ns": 464169637,
+  "effect_ack_done": false,
+  "host": {
+    "cpu_affinity": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "machine": "x86_64",
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.39",
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "uname_node_sha256": "b77751972d96e7d1318ca9e0c809010214c417e7cb6df5686fe2efedb1b304c5"
+  },
+  "io_baseline": [
+    {
+      "bytes": 295614106,
+      "operation": "buffered_copy_with_fsync",
+      "wall_ns": 1012861889
+    },
+    {
+      "bytes": 295614106,
+      "operation": "buffered_copy_with_fsync",
+      "wall_ns": 150887673
+    },
+    {
+      "bytes": 295614106,
+      "operation": "buffered_copy_with_fsync",
+      "wall_ns": 165301359
+    }
+  ],
+  "limitations": [
+    "warm cache only; no cold-cache or full-CI speedup claim",
+    "Python reference additionally calculates a raw payload digest",
+    "buffered I/O baseline does not isolate all filesystem effects",
+    "shared host; no claim of exclusive hardware allocation"
+  ],
+  "native_default_changed": false,
+  "order": "alternating Python/native by pair",
+  "repeats": 5,
+  "schema": "qikvrt-native-archive-paired-measurement/v1",
+  "scope": "COMPLETE_SELECTED_ARCHIVE_CODEC_CLI_WARM_CACHE_NOT_FULL_CI",
+  "source": {
+    "commit": "630fe6a2db8b202fd8483a3ed5d9d13112839d46",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "scope": "COMPLETE_TRACKED_SOURCE_TREE_NOT_GIT_HISTORY",
+    "tree": "ba8e32c34d387c6d2532c491088c06fcbad4106e"
+  },
+  "source_sha256": {
+    "src/codec_native.c": "4199867e66497f3b2890c2a352c6943c7a8ff6ad90122e0ff5db14a35ecb57ce",
+    "src/finite_machine.c": "77673ef1784d81c16257faab7fd7ddc1dfec887aa4e97cecfe620ee80b3c1d04",
+    "src/qikvrt_codec.py": "703bb15d75b441f2eccf9d414a3134ff7afa144763dc15241a90067a15c185e5",
+    "src/sha256.c": "ead4899bf35c93c6fbb41c1b5ab6c2e01d8bcf6e70d4356683bd3faa36b7e5d3",
+    "tools/qikvrt_archive_native.c": "6a00cd2f5d7c09d3db5e112c1bf7dba274d7f031fa6d70d58f895f9dbabd073c"
+  },
+  "startup_baseline": {
+    "native": [
+      {
+        "child_system_cpu_ns": 0,
+        "child_user_cpu_ns": 1470000,
+        "command": [
+          "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/qikvrt-archive",
+          "--version"
+        ],
+        "exit": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "97f6392652a77887611460193ac1763a149db4c0b414f334a196fa170d592a7a",
+        "wall_ns": 1613511
+      },
+      {
+        "child_system_cpu_ns": 0,
+        "child_user_cpu_ns": 2102000,
+        "command": [
+          "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/qikvrt-archive",
+          "--version"
+        ],
+        "exit": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "97f6392652a77887611460193ac1763a149db4c0b414f334a196fa170d592a7a",
+        "wall_ns": 2289174
+      },
+      {
+        "child_system_cpu_ns": 1038000,
+        "child_user_cpu_ns": 0,
+        "command": [
+          "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/qikvrt-archive",
+          "--version"
+        ],
+        "exit": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "97f6392652a77887611460193ac1763a149db4c0b414f334a196fa170d592a7a",
+        "wall_ns": 1233758
+      },
+      {
+        "child_system_cpu_ns": 0,
+        "child_user_cpu_ns": 1258000,
+        "command": [
+          "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/qikvrt-archive",
+          "--version"
+        ],
+        "exit": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "97f6392652a77887611460193ac1763a149db4c0b414f334a196fa170d592a7a",
+        "wall_ns": 1776862
+      },
+      {
+        "child_system_cpu_ns": 0,
+        "child_user_cpu_ns": 1175000,
+        "command": [
+          "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/qikvrt-archive",
+          "--version"
+        ],
+        "exit": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "97f6392652a77887611460193ac1763a149db4c0b414f334a196fa170d592a7a",
+        "wall_ns": 1337686
+      }
+    ],
+    "python": [
+      {
+        "child_system_cpu_ns": 12601000,
+        "child_user_cpu_ns": 55343000,
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-B",
+          "-c",
+          "from src import qikvrt_codec"
+        ],
+        "exit": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "wall_ns": 68333675
+      },
+      {
+        "child_system_cpu_ns": 0,
+        "child_user_cpu_ns": 58502000,
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-B",
+          "-c",
+          "from src import qikvrt_codec"
+        ],
+        "exit": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "wall_ns": 58801270
+      },
+      {
+        "child_system_cpu_ns": 16925000,
+        "child_user_cpu_ns": 43168000,
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-B",
+          "-c",
+          "from src import qikvrt_codec"
+        ],
+        "exit": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "wall_ns": 60332387
+      },
+      {
+        "child_system_cpu_ns": 9758000,
+        "child_user_cpu_ns": 65061000,
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-B",
+          "-c",
+          "from src import qikvrt_codec"
+        ],
+        "exit": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "wall_ns": 75083053
+      },
+      {
+        "child_system_cpu_ns": 3914000,
+        "child_user_cpu_ns": 43448000,
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-B",
+          "-c",
+          "from src import qikvrt_codec"
+        ],
+        "exit": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "wall_ns": 47602996
+      }
+    ]
+  },
+  "summary": {
+    "decode": {
+      "median": {
+        "native": {
+          "cpu_ns": 3576472000,
+          "wall_ns": 3647929496
+        },
+        "python": {
+          "cpu_ns": 791100000,
+          "wall_ns": 859956301
+        }
+      },
+      "python_over_native_wall_ratio": 0.2357381911966645
+    },
+    "encode": {
+      "median": {
+        "native": {
+          "cpu_ns": 10388981000,
+          "wall_ns": 10460859975
+        },
+        "python": {
+          "cpu_ns": 7457858000,
+          "wall_ns": 7527495490
+        }
+      },
+      "python_over_native_wall_ratio": 0.7195866791057014
+    }
+  },
+  "timing": "wall and child user/system CPU include CLI startup, I/O and fsync; compilation, startup baseline and I/O baseline reported separately without subtraction",
+  "trials": [
+    {
+      "child_system_cpu_ns": 724218000,
+      "child_user_cpu_ns": 7773427000,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "-m",
+        "src.qikvrt_codec",
+        "encode",
+        "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/repository.zip",
+        "/tmp/qikvrt-codec-measurement-t0eajp9w/result",
+        "--max-output-bytes",
+        "2147483647"
+      ],
+      "exit": 0,
+      "implementation": "python",
+      "operation": "encode",
+      "pair": 0,
+      "result_bytes": 294468676,
+      "result_sha256": "bd6705a2f543cb01f2dc1991df1390fa5990b2a2c77b8fc5ab33afbefe50dd3b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_ns": 8581552858
+    },
+    {
+      "child_system_cpu_ns": 196403000,
+      "child_user_cpu_ns": 9676552000,
+      "command": [
+        "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/qikvrt-archive",
+        "encode",
+        "balanced",
+        "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/repository.zip",
+        "/tmp/qikvrt-codec-measurement-t0eajp9w/result"
+      ],
+      "exit": 0,
+      "implementation": "native",
+      "operation": "encode",
+      "pair": 0,
+      "result_bytes": 294468676,
+      "result_sha256": "bd6705a2f543cb01f2dc1991df1390fa5990b2a2c77b8fc5ab33afbefe50dd3b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_ns": 9947086919
+    },
+    {
+      "child_system_cpu_ns": 330865000,
+      "child_user_cpu_ns": 800740000,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "-m",
+        "src.qikvrt_codec",
+        "decode",
+        "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/repository.qikvrt",
+        "/tmp/qikvrt-codec-measurement-t0eajp9w/result",
+        "--max-output-bytes",
+        "2147483647"
+      ],
+      "exit": 0,
+      "implementation": "python",
+      "operation": "decode",
+      "pair": 0,
+      "result_bytes": 295614106,
+      "result_sha256": "9a135e2a6ad9104c5f6e9fa7bd59cd3ee871cdbfd439f25a342777567c8195b5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_ns": 1211417648
+    },
+    {
+      "child_system_cpu_ns": 227378000,
+      "child_user_cpu_ns": 3448443000,
+      "command": [
+        "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/qikvrt-archive",
+        "decode",
+        "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/repository.qikvrt",
+        "/tmp/qikvrt-codec-measurement-t0eajp9w/result"
+      ],
+      "exit": 0,
+      "implementation": "native",
+      "operation": "decode",
+      "pair": 0,
+      "result_bytes": 295614106,
+      "result_sha256": "9a135e2a6ad9104c5f6e9fa7bd59cd3ee871cdbfd439f25a342777567c8195b5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_ns": 3750188126
+    },
+    {
+      "child_system_cpu_ns": 370066000,
+      "child_user_cpu_ns": 10018915000,
+      "command": [
+        "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/qikvrt-archive",
+        "encode",
+        "balanced",
+        "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/repository.zip",
+        "/tmp/qikvrt-codec-measurement-t0eajp9w/result"
+      ],
+      "exit": 0,
+      "implementation": "native",
+      "operation": "encode",
+      "pair": 1,
+      "result_bytes": 294468676,
+      "result_sha256": "bd6705a2f543cb01f2dc1991df1390fa5990b2a2c77b8fc5ab33afbefe50dd3b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_ns": 10460859975
+    },
+    {
+      "child_system_cpu_ns": 387926000,
+      "child_user_cpu_ns": 7797530000,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "-m",
+        "src.qikvrt_codec",
+        "encode",
+        "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/repository.zip",
+        "/tmp/qikvrt-codec-measurement-t0eajp9w/result",
+        "--max-output-bytes",
+        "2147483647"
+      ],
+      "exit": 0,
+      "implementation": "python",
+      "operation": "encode",
+      "pair": 1,
+      "result_bytes": 294468676,
+      "result_sha256": "bd6705a2f543cb01f2dc1991df1390fa5990b2a2c77b8fc5ab33afbefe50dd3b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_ns": 8261836808
+    },
+    {
+      "child_system_cpu_ns": 117821000,
+      "child_user_cpu_ns": 3458651000,
+      "command": [
+        "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/qikvrt-archive",
+        "decode",
+        "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/repository.qikvrt",
+        "/tmp/qikvrt-codec-measurement-t0eajp9w/result"
+      ],
+      "exit": 0,
+      "implementation": "native",
+      "operation": "decode",
+      "pair": 1,
+      "result_bytes": 295614106,
+      "result_sha256": "9a135e2a6ad9104c5f6e9fa7bd59cd3ee871cdbfd439f25a342777567c8195b5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_ns": 3647929496
+    },
+    {
+      "child_system_cpu_ns": 111770000,
+      "child_user_cpu_ns": 679330000,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "-m",
+        "src.qikvrt_codec",
+        "decode",
+        "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/repository.qikvrt",
+        "/tmp/qikvrt-codec-measurement-t0eajp9w/result",
+        "--max-output-bytes",
+        "2147483647"
+      ],
+      "exit": 0,
+      "implementation": "python",
+      "operation": "decode",
+      "pair": 1,
+      "result_bytes": 295614106,
+      "result_sha256": "9a135e2a6ad9104c5f6e9fa7bd59cd3ee871cdbfd439f25a342777567c8195b5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_ns": 859956301
+    },
+    {
+      "child_system_cpu_ns": 191329000,
+      "child_user_cpu_ns": 7062781000,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "-m",
+        "src.qikvrt_codec",
+        "encode",
+        "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/repository.zip",
+        "/tmp/qikvrt-codec-measurement-t0eajp9w/result",
+        "--max-output-bytes",
+        "2147483647"
+      ],
+      "exit": 0,
+      "implementation": "python",
+      "operation": "encode",
+      "pair": 2,
+      "result_bytes": 294468676,
+      "result_sha256": "bd6705a2f543cb01f2dc1991df1390fa5990b2a2c77b8fc5ab33afbefe50dd3b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_ns": 7329723345
+    },
+    {
+      "child_system_cpu_ns": 376225000,
+      "child_user_cpu_ns": 10066962000,
+      "command": [
+        "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/qikvrt-archive",
+        "encode",
+        "balanced",
+        "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/repository.zip",
+        "/tmp/qikvrt-codec-measurement-t0eajp9w/result"
+      ],
+      "exit": 0,
+      "implementation": "native",
+      "operation": "encode",
+      "pair": 2,
+      "result_bytes": 294468676,
+      "result_sha256": "bd6705a2f543cb01f2dc1991df1390fa5990b2a2c77b8fc5ab33afbefe50dd3b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_ns": 10519668756
+    },
+    {
+      "child_system_cpu_ns": 315296000,
+      "child_user_cpu_ns": 689917000,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "-m",
+        "src.qikvrt_codec",
+        "decode",
+        "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/repository.qikvrt",
+        "/tmp/qikvrt-codec-measurement-t0eajp9w/result",
+        "--max-output-bytes",
+        "2147483647"
+      ],
+      "exit": 0,
+      "implementation": "python",
+      "operation": "decode",
+      "pair": 2,
+      "result_bytes": 295614106,
+      "result_sha256": "9a135e2a6ad9104c5f6e9fa7bd59cd3ee871cdbfd439f25a342777567c8195b5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_ns": 1087095802
+    },
+    {
+      "child_system_cpu_ns": 350588000,
+      "child_user_cpu_ns": 3581853000,
+      "command": [
+        "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/qikvrt-archive",
+        "decode",
+        "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/repository.qikvrt",
+        "/tmp/qikvrt-codec-measurement-t0eajp9w/result"
+      ],
+      "exit": 0,
+      "implementation": "native",
+      "operation": "decode",
+      "pair": 2,
+      "result_bytes": 295614106,
+      "result_sha256": "9a135e2a6ad9104c5f6e9fa7bd59cd3ee871cdbfd439f25a342777567c8195b5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_ns": 4015948851
+    },
+    {
+      "child_system_cpu_ns": 399944000,
+      "child_user_cpu_ns": 10708139000,
+      "command": [
+        "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/qikvrt-archive",
+        "encode",
+        "balanced",
+        "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/repository.zip",
+        "/tmp/qikvrt-codec-measurement-t0eajp9w/result"
+      ],
+      "exit": 0,
+      "implementation": "native",
+      "operation": "encode",
+      "pair": 3,
+      "result_bytes": 294468676,
+      "result_sha256": "bd6705a2f543cb01f2dc1991df1390fa5990b2a2c77b8fc5ab33afbefe50dd3b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_ns": 11187233695
+    },
+    {
+      "child_system_cpu_ns": 221426000,
+      "child_user_cpu_ns": 7236432000,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "-m",
+        "src.qikvrt_codec",
+        "encode",
+        "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/repository.zip",
+        "/tmp/qikvrt-codec-measurement-t0eajp9w/result",
+        "--max-output-bytes",
+        "2147483647"
+      ],
+      "exit": 0,
+      "implementation": "python",
+      "operation": "encode",
+      "pair": 3,
+      "result_bytes": 294468676,
+      "result_sha256": "bd6705a2f543cb01f2dc1991df1390fa5990b2a2c77b8fc5ab33afbefe50dd3b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_ns": 7527495490
+    },
+    {
+      "child_system_cpu_ns": 128725000,
+      "child_user_cpu_ns": 2983390000,
+      "command": [
+        "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/qikvrt-archive",
+        "decode",
+        "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/repository.qikvrt",
+        "/tmp/qikvrt-codec-measurement-t0eajp9w/result"
+      ],
+      "exit": 0,
+      "implementation": "native",
+      "operation": "decode",
+      "pair": 3,
+      "result_bytes": 295614106,
+      "result_sha256": "9a135e2a6ad9104c5f6e9fa7bd59cd3ee871cdbfd439f25a342777567c8195b5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_ns": 3182314019
+    },
+    {
+      "child_system_cpu_ns": 117385000,
+      "child_user_cpu_ns": 653960000,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "-m",
+        "src.qikvrt_codec",
+        "decode",
+        "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/repository.qikvrt",
+        "/tmp/qikvrt-codec-measurement-t0eajp9w/result",
+        "--max-output-bytes",
+        "2147483647"
+      ],
+      "exit": 0,
+      "implementation": "python",
+      "operation": "decode",
+      "pair": 3,
+      "result_bytes": 295614106,
+      "result_sha256": "9a135e2a6ad9104c5f6e9fa7bd59cd3ee871cdbfd439f25a342777567c8195b5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_ns": 849571326
+    },
+    {
+      "child_system_cpu_ns": 214909000,
+      "child_user_cpu_ns": 6940435000,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "-m",
+        "src.qikvrt_codec",
+        "encode",
+        "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/repository.zip",
+        "/tmp/qikvrt-codec-measurement-t0eajp9w/result",
+        "--max-output-bytes",
+        "2147483647"
+      ],
+      "exit": 0,
+      "implementation": "python",
+      "operation": "encode",
+      "pair": 4,
+      "result_bytes": 294468676,
+      "result_sha256": "bd6705a2f543cb01f2dc1991df1390fa5990b2a2c77b8fc5ab33afbefe50dd3b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_ns": 7231153848
+    },
+    {
+      "child_system_cpu_ns": 214319000,
+      "child_user_cpu_ns": 9108723000,
+      "command": [
+        "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/qikvrt-archive",
+        "encode",
+        "balanced",
+        "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/repository.zip",
+        "/tmp/qikvrt-codec-measurement-t0eajp9w/result"
+      ],
+      "exit": 0,
+      "implementation": "native",
+      "operation": "encode",
+      "pair": 4,
+      "result_bytes": 294468676,
+      "result_sha256": "bd6705a2f543cb01f2dc1991df1390fa5990b2a2c77b8fc5ab33afbefe50dd3b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_ns": 9398044617
+    },
+    {
+      "child_system_cpu_ns": 98597000,
+      "child_user_cpu_ns": 663483000,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "-m",
+        "src.qikvrt_codec",
+        "decode",
+        "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/repository.qikvrt",
+        "/tmp/qikvrt-codec-measurement-t0eajp9w/result",
+        "--max-output-bytes",
+        "2147483647"
+      ],
+      "exit": 0,
+      "implementation": "python",
+      "operation": "decode",
+      "pair": 4,
+      "result_bytes": 295614106,
+      "result_sha256": "9a135e2a6ad9104c5f6e9fa7bd59cd3ee871cdbfd439f25a342777567c8195b5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_ns": 840117344
+    },
+    {
+      "child_system_cpu_ns": 96523000,
+      "child_user_cpu_ns": 3231768000,
+      "command": [
+        "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/qikvrt-archive",
+        "decode",
+        "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/repository.qikvrt",
+        "/tmp/qikvrt-codec-measurement-t0eajp9w/result"
+      ],
+      "exit": 0,
+      "implementation": "native",
+      "operation": "decode",
+      "pair": 4,
+      "result_bytes": 295614106,
+      "result_sha256": "9a135e2a6ad9104c5f6e9fa7bd59cd3ee871cdbfd439f25a342777567c8195b5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_ns": 3402884943
+    }
+  ],
+  "wire_sha256": "bd6705a2f543cb01f2dc1991df1390fa5990b2a2c77b8fc5ab33afbefe50dd3b"
+}

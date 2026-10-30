@@ -1,0 +1,46 @@
+{
+  "archive_sha256": "9a135e2a6ad9104c5f6e9fa7bd59cd3ee871cdbfd439f25a342777567c8195b5",
+  "complete_source_archive": {
+    "commit": "630fe6a2db8b202fd8483a3ed5d9d13112839d46",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "scope": "COMPLETE_TRACKED_SOURCE_TREE_NOT_GIT_HISTORY",
+    "tree": "ba8e32c34d387c6d2532c491088c06fcbad4106e"
+  },
+  "differential_binary_machine_programs": 103,
+  "evidence_sha256": "4e58e0db5af0808442c675e0b731fdc90327851232c81fdc656ba2a87a0d555b",
+  "focused_log_path": "evidence/native-archive/2026-10-30/FOCUSED_TESTS.txt",
+  "focused_log_sha256": "b21b4969a951d8ccbf06853009d42500d877ae037eae0804f4e60ee44fa62b51",
+  "focused_tests": 11,
+  "full_test_validation": {
+    "exit": 0,
+    "path": "evidence/native-archive/2026-10-30/FULL_TEST_VALIDATION.json",
+    "python_test_executions": 2247,
+    "sha256": "55dba0c32fe34da33ce22d6549856fe4a9b5aa38fd659a838159880fef9c70ae",
+    "tested_source_tree": "d9688679cba0fe8d80dd6be41e5c83379b4577fa"
+  },
+  "native_build": "STRICT_C90_AND_UBSAN",
+  "paired_measurement": {
+    "native_faster": false,
+    "pairs": 5,
+    "path": "evidence/native-archive/2026-10-30/MEASUREMENT.json",
+    "scope": "WARM_CACHE_COMPLETE_ARCHIVE_CLI_NOT_FULL_CI",
+    "sha256": "e821ea4696b93f47dba81d5ada84ee2a661014dc66ac00cdbae4e25ad3448898",
+    "standard_python_path_retained": true
+  },
+  "productive_native_runtime": {
+    "gate": "ADMITTED_MESH_RUNTIME_ENDPOINT",
+    "no_private_caller_identity_recorded": true,
+    "state": "OPEN"
+  },
+  "reference_dependencies_sha256": {
+    "src/qikvrt_codec.py": "703bb15d75b441f2eccf9d414a3134ff7afa144763dc15241a90067a15c185e5",
+    "src/qikvrt_effect_ack.py": "046e8703d425f97bab5533b187cfd661df99567c61d395f5f61d5df8e2b7c038",
+    "src/qikvrt_effect_ack_http_terminal.py": "213fe3f2b62666df45bd799ee814bd3e74bfc7d70f5e6e3a304e343e5d319c90",
+    "src/qikvrt_standpoint_codex.py": "aedf27f794c3c3092d1bdeddbf4b9e18e6f9d359574af9c3b68a7364cde7a2a2"
+  },
+  "schema": "qikvrt-native-archive-validation/v1",
+  "sha256_fields_equal": true,
+  "source_bytes": 448821631,
+  "source_files": 5453,
+  "universal_all_platforms_or_effect_ack_done_claimed": false
+}

@@ -110,7 +110,28 @@
         "microbenchmark_establishes_full_archive_acceptance": false
       },
       "required_before_performance_phase_completion": true,
-      "acceptance_claimed": false
+      "acceptance_claimed": false,
+      "local_profile_evidence": {
+        "state": "VERIFIED_FOR_EXACT_SOURCE_TREE_AND_LINUX_PROFILE",
+        "path": "evidence/native-archive/2026-10-30/EVIDENCE.json",
+        "sha256": "4e58e0db5af0808442c675e0b731fdc90327851232c81fdc656ba2a87a0d555b",
+        "source_commit": "630fe6a2db8b202fd8483a3ed5d9d13112839d46",
+        "source_tree": "ba8e32c34d387c6d2532c491088c06fcbad4106e",
+        "source_files": 5453,
+        "remaining": [
+          "Other native platforms and actual WinZip application execution",
+          "Productive native Transputer/Terminal admission",
+          "Any separately requested formal kernel proof of the C implementation",
+          "Paired full-CI cold/warm runner measurements and measured compute-hotspot optimization; current portable native codec is slower on this archive."
+        ],
+        "measurement": {
+          "path": "evidence/native-archive/2026-10-30/MEASUREMENT.json",
+          "pairs": 5,
+          "scope": "MATCHED_COMPLETE_ARCHIVE_CLI_WARM_CACHE_ONLY",
+          "native_faster": false,
+          "standard_python_path_retained": true
+        }
+      }
     }
   }
 }

@@ -575,5 +575,37 @@
     "trailing_input": "REJECT",
     "unknown_version_flags_or_method": "REJECT",
     "version": 1
+  },
+  "native_c90_profile": {
+    "contract_version": 1,
+    "wire_format_unchanged": true,
+    "implementation": [
+      "src/codec_native.c",
+      "src/sha256.c",
+      "src/finite_machine.c",
+      "tools/qikvrt_archive_native.c"
+    ],
+    "profiles": [
+      "raw",
+      "balanced"
+    ],
+    "decode_methods": [
+      "RAW",
+      "ZLIB"
+    ],
+    "total_payload_bytes_limit": 2147483647,
+    "block_bytes_min": 4096,
+    "block_bytes_max": 16777216,
+    "archive_arithmetic": "INTEGER_AND_BIT_OPERATIONS_EXACT_NO_Q16_QUANTIZATION",
+    "signature": "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin",
+    "filesystem_adapter": "POSIX_LINUX_ATOMIC_STAGED_OUTPUT",
+    "native_sfx": "ELF_PREFIX_STANDARD_ZIP_WITH_STORED_REPOSITORY_ZIP_AND_HASH_BOUND_COMMENT_LOCATOR",
+    "binary_machine": "BOUNDED_REFERENCE_4096_STATES_10000000_STEPS_1000000_CELLS_NOT_PRODUCTIVE_DISPATCH",
+    "evidence": "evidence/native-archive/2026-10-30/EVIDENCE.json",
+    "evidence_sha256": "4e58e0db5af0808442c675e0b731fdc90327851232c81fdc656ba2a87a0d555b",
+    "scope_and_open_obligations": "docs/development/NATIVE_ARCHIVE.md",
+    "all_platform_acceptance": false,
+    "productive_mesh_acceptance": false,
+    "effect_ack_done": false
   }
 }
