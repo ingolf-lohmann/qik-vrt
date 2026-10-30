@@ -596,6 +596,41 @@ class MeshRecoveryTests(unittest.TestCase):
         with self.assertRaisesRegex(recovery.RecoveryError, "replacement ref"):
             recovery.git_snapshot(self.source)
 
+    def test_snapshot_matches_separate_queries_and_observes_successor(self) -> None:
+        for revision in range(2):
+            with self.subTest(revision=revision):
+                snapshot = recovery.git_snapshot(self.source)
+                self.assertEqual(snapshot["head"], recovery.git_command(self.source, "rev-parse", "HEAD"))
+                self.assertEqual(snapshot["tree"], recovery.git_command(self.source, "rev-parse", "HEAD^{tree}"))
+                self.assertEqual(snapshot["head_ref"], "refs/heads/main")
+                self.assertEqual(snapshot["refs"]["refs/heads/main"], snapshot["head"])
+                self.assertEqual(snapshot["object_format"], "sha1")
+                if revision:
+                    self.assertNotEqual(snapshot["head"], self.plan["git"]["head"])
+                    self.assertNotEqual(snapshot["tree"], self.plan["git"]["tree"])
+                else:
+                    (self.source / "data.bin").write_bytes(b"fresh snapshot")
+                    recovery.git_command(self.source, "add", "data.bin")
+                    recovery.git_command(self.source, "commit", "-qm", "fresh successor")
+        recovery.git_command(self.source, "checkout", "--detach", "-q")
+        with self.assertRaises(recovery.RecoveryError):
+            recovery.git_snapshot(self.source)
+
+    def test_snapshot_rejects_incomplete_or_invalid_git_metadata(self) -> None:
+        original = recovery.git_command
+        valid = ["false", "sha1", self.plan["git"]["head"], self.plan["git"]["tree"]]
+        for fields in (valid[:-1], valid + ["extra"],
+                       ["false", "sha256", *valid[2:]],
+                       ["false", "sha1", "not-an-object", valid[3]],
+                       ["false", "sha1", valid[2], "0" * 39]):
+            def malformed(repository, *args):
+                if args == ("rev-parse", "--is-shallow-repository", "--show-object-format", "HEAD", "HEAD^{tree}"):
+                    return "\n".join(fields)
+                return original(repository, *args)
+            with self.subTest(fields=fields), mock.patch.object(recovery, "git_command", side_effect=malformed):
+                with self.assertRaises(recovery.RecoveryError):
+                    recovery.git_snapshot(self.source)
+
     def test_head_or_ref_change_after_plan_is_blocked(self) -> None:
         binding = self.write_plan()
         recovery.git_command(self.source, "branch", "unexpected")

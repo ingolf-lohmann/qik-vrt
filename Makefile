@@ -2,6 +2,8 @@
 # Copyright 2026 Ingolf Lohmann.
 
 PYTHON ?= python3
+# unittest durations are available from Python 3.12; retain older runtimes.
+UNITTEST_TIMING ?= $(shell $(PYTHON) -c "import sys; print('--durations=20' if sys.version_info >= (3, 12) else '')")
 CC ?= cc
 EFFECT_ACK_C90_CFLAGS ?= -std=c90 -pedantic -Wall -Wextra -Werror
 
@@ -195,7 +197,7 @@ test: digital-twin-sso-test
 
 .PHONY: digital-twin-rest-test
 digital-twin-rest-test:
-	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_digital_twin_rest
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v $(UNITTEST_TIMING) tests.test_qikvrt_digital_twin_rest
 
 test: digital-twin-rest-test
 
@@ -291,7 +293,7 @@ compile: fixed-q16-compile
 test: fixed-q16-test
 
 .PHONY: mesh-recovery-test
-mesh-recovery-test:
-	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_codec tests.test_qikvrt_feedback tests.test_qikvrt_standpoint_codex tests.test_qikvrt_mesh_recovery tests.test_qikvrt_authority_transition tests.test_qikvrt_github_authority_provider tests.test_qikvrt_digital_twin_rest tests.test_qikvrt_pr_closure_engine tests.test_qikvrt_merge_priority tests.test_reciprocal_closure_step tests.test_reciprocal_devops_closure
+mesh-recovery-test: digital-twin-rest-test
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v $(UNITTEST_TIMING) tests.test_qikvrt_codec tests.test_qikvrt_feedback tests.test_qikvrt_standpoint_codex tests.test_qikvrt_mesh_recovery tests.test_qikvrt_authority_transition tests.test_qikvrt_github_authority_provider tests.test_qikvrt_pr_closure_engine tests.test_qikvrt_merge_priority tests.test_reciprocal_closure_step tests.test_reciprocal_devops_closure
 
 test: mesh-recovery-test
