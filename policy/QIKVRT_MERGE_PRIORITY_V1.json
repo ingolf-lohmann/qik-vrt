@@ -1,0 +1,57 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_merge_priority_policy_v1",
+  "status": "ACTIVE",
+  "effective_date": "2026-10-30",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "owner_decision": {
+    "owner": "Ingolf Lohmann",
+    "github_login": "ingolf-lohmann",
+    "github_id": 294949349,
+    "source_kind": "DIRECT_HUMAN_INSTRUCTION_IN_CLAUDE_MIRROR_SESSION",
+    "received_local": "2026-10-30T10:27:00+01:00",
+    "text": "Ja, das ist richtig. Das können wir so lassen, die Regel. Vorzugsweise wählen wir jetzt aber Dinge zum Merchen, die Performance verbessern von der Continuous Integration Build Chain einerseits und andererseits auf dem Weg zur Veröffentlichung erstmal auf Zenodo und anschließend auf raumzeitterminal.de noch im Wege stehen. Und diese Vorgabe kannst nun du geeignet in das Repository einbringen, denn die Continuous Integration Chain läuft ja sowieso ohnehin schon.",
+    "sha256": "45f81ca42957857974d49fe13f6864c2953cff271862489af397c111373ff97e",
+    "confirms": "OWNER-CONFLICT-FREE-GREEN-MERGE-20261028 remains unchanged"
+  },
+  "scope": "ORDER_ONLY",
+  "gates_unchanged": true,
+  "priority_classes": [
+    {
+      "id": "CI_BUILD_CHAIN_PERFORMANCE",
+      "meaning": "Changes that make the continuous integration build chain faster or cheaper.",
+      "head_ref_prefixes": [
+        "ci/",
+        "perf/",
+        "build/"
+      ]
+    },
+    {
+      "id": "PUBLICATION_PATH_ZENODO_THEN_RAUMZEITTERMINAL",
+      "meaning": "Changes that remove a blocker on the way to publication, first on Zenodo, then on https://raumzeitterminal.de/.",
+      "head_ref_prefixes": [
+        "publication/",
+        "release/",
+        "zenodo/",
+        "production/",
+        "deploy/",
+        "domain/",
+        "host/"
+      ]
+    }
+  ],
+  "ordering": "PRIORITY_CLASSES_FIRST_THEN_ALL_OTHERS_EACH_BY_CREATED_AT_AND_NUMBER",
+  "classification_basis": "PR head branch name prefix only; authors steer priority by naming the branch, no additional API reads",
+  "boundaries": {
+    "admits_merge": false,
+    "skips_or_relaxes_any_gate": false,
+    "excludes_other_pull_requests": false,
+    "authorizes_zenodo_mutation": false,
+    "authorizes_deployment": false,
+    "effect_ack_done_claim": false
+  }
+}

@@ -45,6 +45,18 @@ own technical status. This decision does not qualify them, admit an unavailable
 Draft transition or prove an unattended executor. Merge acceptance is separate
 from runtime, host, domain and productive EFFECT_ACK_DONE acceptance.
 
+OWNER MERGE PRIORITY — 2026-10-30
+
+Ingolf Lohmann confirms the 2026-10-28 conditional merge rule unchanged and sets
+a preference for what to merge next: first changes that make the continuous
+integration build chain faster, and changes that remove a blocker on the way to
+publication, first on Zenodo and then on https://raumzeitterminal.de/. Read
+policy/QIKVRT_MERGE_PRIORITY_V1.json. It orders work only: it admits no merge,
+relaxes no gate, excludes no pull request and authorizes no Zenodo mutation or
+deployment. Name such branches ci/, perf/, build/, publication/, release/,
+zenodo/, production/, deploy/, domain/ or host/ so the closure engine
+(tools/qikvrt_pr_closure_engine.py) scans them first.
+
 OWNER DECISIONS BEFORE TOOL SELECTION — ALL CLIENTS — 2026-10-26
 
 Read policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json client_continuation.tool_selection
