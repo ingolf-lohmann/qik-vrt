@@ -131,6 +131,66 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Audit rights-bearing storage proofs and bind exact candidate
+        working-directory: formalization/QIKVRT_Formalization_v2.0
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake build QIKVRTEffectAck.StorageIntegrity
+          mkdir -p .lake/build
+          lake env lean QIKVRTEffectAck/StorageIntegrityAxiomAudit.lean > .lake/build/storage-integrity-axioms.txt 2>&1
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib, json, os, re, subprocess
+          from scripts.audit_lean_axioms import parse_axiom_reports
+          source = Path('QIKVRTEffectAck/StorageIntegrity.lean')
+          audit = Path('QIKVRTEffectAck/StorageIntegrityAxiomAudit.lean')
+          output = Path('.lake/build/storage-integrity-axioms.txt')
+          reports = parse_axiom_reports(output.read_text())
+          expected = set(re.findall(r'^#print axioms (\S+)$', audit.read_text(), re.M))
+          if len(expected) != 22 or len(reports) != 22 or {name for name, _ in reports} != expected:
+              raise SystemExit('BLOCK: incomplete storage axiom audit')
+          if any(axioms for _, axioms in reports):
+              raise SystemExit('BLOCK: storage theorem depends on axioms')
+          def binding(path):
+              raw = path.read_bytes()
+              return {'path': str(path), 'bytes': len(raw), 'sha256': hashlib.sha256(raw).hexdigest()}
+          controls = []
+          for control in sorted(Path('../../docs/publications/2026-10-30-storage-integrity-and-effect-ack/negative').glob('*.lean')):
+              result = subprocess.run(['lake', 'env', 'lean', str(control)], capture_output=True, text=True)
+              diagnostic = result.stdout + result.stderr
+              if result.returncode == 0 or 'is false' not in diagnostic or 'unknown module' in diagnostic:
+                  raise SystemExit('BLOCK: invalid negative control: ' + str(control))
+              controls.append({'source': binding(control), 'exit_code': result.returncode,
+                  'diagnostic_sha256': hashlib.sha256(diagnostic.encode()).hexdigest()})
+          if len(controls) != 3:
+              raise SystemExit('BLOCK: missing storage negative controls')
+          receipt = {'schema': 'qikvrt_storage_integrity_kernel_receipt_v1',
+              'scope': 'ABSTRACT_MODEL_NOT_PYTHON_OR_HARDWARE_VERIFICATION',
+              'repository': os.environ['GITHUB_REPOSITORY'],
+              'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip(),
+              'run_id': os.environ['GITHUB_RUN_ID'], 'run_attempt': os.environ['GITHUB_RUN_ATTEMPT'],
+              'toolchain': subprocess.check_output(['lean', '--version'], text=True).strip(),
+              'bindings': [binding(p) for p in (source, audit, output,
+                  Path('.lake/build/lib/lean/QIKVRTEffectAck/StorageIntegrity.olean'))],
+              'theorem_axioms': {name: sorted(axioms) for name, axioms in reports},
+              'negative_controls': controls,
+              'effect_ack_done': False}
+          Path('.lake/build/STORAGE_INTEGRITY_KERNEL_RECEIPT.json').write_text(json.dumps(receipt, indent=2) + '\n')
+          print('VERIFIED: 22 storage theorems; no axioms; exact source and kernel object bound')
+          PY
+
+      - name: Upload storage proof receipt before unrelated historical-source checks
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qikvrt-storage-integrity-kernel-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 30
+          if-no-files-found: error
+          path: |
+            formalization/QIKVRT_Formalization_v2.0/.lake/build/STORAGE_INTEGRITY_KERNEL_RECEIPT.json
+            formalization/QIKVRT_Formalization_v2.0/.lake/build/storage-integrity-axioms.txt
+
       - name: Verify source scope and claim boundaries
         working-directory: formalization/QIKVRT_Formalization_v2.0
         run: python3 -B scripts/verify_universal_ontology.py

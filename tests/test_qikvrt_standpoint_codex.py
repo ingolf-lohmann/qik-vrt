@@ -312,5 +312,170 @@ class StandpointCodexTests(unittest.TestCase):
         self.assertEqual(consumed, [0, 1, 2])
 
 
+class LicensedElementTests(unittest.TestCase):
+    def element(self, payload=b"opaque\x00\xff", label=0):
+        return codex.licensed_element(bytes([label]) * 32, payload,
+            payload_attribution="Declared payload creator", payload_license="TEST-ONLY",
+            payload_source="urn:qikvrt:test:opaque")
+
+    def test_rights_text_and_owner_are_persisted_per_element(self):
+        a, b = self.element(), self.element(b"", 1)
+        wire = codex.serialize_licensed([a, b])
+        self.assertEqual(wire.count(codex.RIGHTS_BYTES), 2)
+        self.assertEqual(codex.RIGHTS_NOTICE["qikvrt_rights_holder"], "Ingolf Lohmann")
+        self.assertEqual(codex.RIGHTS_NOTICE["private_noncommercial_license_fee_eur"], 0)
+        self.assertEqual(codex.RIGHTS_NOTICE["software_license_text"],
+            (ROOT / "LICENSES/PolyForm-Noncommercial-1.0.0.txt").read_text())
+        self.assertIn("Separate written paid agreement", codex.RIGHTS_NOTICE["ordinary_commercial_use"])
+        self.assertIn(b"Ingolf Lohmann", wire)
+        self.assertIn(b"TEST-ONLY", wire)
+
+    def test_licensed_roundtrip_has_two_canonical_equalities(self):
+        elements = tuple(self.element(p, n) for n, p in enumerate(
+            (b"", bytes(range(256)), "é".encode(), b"\x00\xff" * 4096)))
+        wire = codex.serialize_licensed(reversed(elements))
+        restored = codex.deserialize_licensed(wire)
+        self.assertEqual(restored, elements)
+        self.assertEqual(codex.serialize_licensed(restored), wire)
+        self.assertEqual([codex.licensed_payload(e)[0] for e in restored],
+                         [b"", bytes(range(256)), "é".encode(), b"\x00\xff" * 4096])
+
+    def test_all_6400_wire_signature_bit_flips_are_rejected(self):
+        wire = codex.serialize_licensed([self.element()])
+        start = len(codex.LICENSED_SNAPSHOT_PREFIX)
+        for position in (start + codex.SNAPSHOT_HEADER.size, start + codex.MIN_SNAPSHOT_BYTES):
+            for byte in range(400):
+                for bit in range(8):
+                    changed = bytearray(wire)
+                    changed[position + byte] ^= 1 << bit
+                    with self.assertRaises(codex.CodexError):
+                        codex.deserialize_licensed(bytes(changed))
+
+    def test_rehashed_rights_change_and_rights_removal_are_rejected(self):
+        element = self.element()
+        start = codex.LICENSED_PAYLOAD_HEADER.size
+        variants = [element.payload[:start] + element.payload[start:].replace(
+            b"Ingolf Lohmann", b"Nobody OwnsIt", 1), element.payload[:start]]
+        for payload in variants:
+            forged = codex.Element(element.stable_id, payload)  # Rehash by attacker.
+            with self.assertRaises(codex.CodexError):
+                codex.serialize_licensed([forged])
+            # Even a correctly hashed V1 snapshot behind the new prefix fails.
+            wire = codex.LICENSED_SNAPSHOT_PREFIX + codex.serialize([forged])
+            with self.assertRaises(codex.CodexError):
+                codex.deserialize_licensed(wire)
+
+    def test_raw_v1_is_never_silently_upgraded(self):
+        raw = codex.Element(bytes(32), b"no rights")
+        with self.assertRaises(codex.CodexError):
+            codex.deserialize_licensed(codex.serialize([raw]))
+        with self.assertRaises(codex.CodexError):
+            codex.serialize_licensed([raw])
+        self.assertEqual(codex.deserialize(codex.serialize([raw])), (raw,))
+
+    def test_external_digest_detects_fully_rebuilt_payload_substitution(self):
+        original = codex.serialize_licensed([self.element(b"original")])
+        substitution = codex.serialize_licensed([self.element(b"replacement")])
+        # The public standpoint is NOT a keyed authorship certificate.
+        self.assertEqual(codex.inspect_licensed(substitution)["state"], "VERIFIED")
+        trusted = hashlib.sha256(original).hexdigest()
+        rejected = codex.inspect_licensed(substitution, expected_sha256=trusted)
+        self.assertEqual(rejected["state"], "REJECTED")
+        self.assertEqual(rejected["reason"], "TRUSTED_DIGEST_MISMATCH")
+        self.assertFalse(rejected["origin_authenticated"])
+        self.assertFalse(rejected["effect_ack_done"])
+
+    def test_signal_failure_and_unavailable_checker_input_are_distinct(self):
+        sent = []
+        rejected = codex.inspect_licensed(b"removed", signal=sent.append)
+        self.assertEqual(rejected["state"], "REJECTED")
+        self.assertEqual(rejected["signal_state"], "SUBMITTED_UNCONFIRMED")
+        self.assertEqual(sent[0]["state"], "REJECTED")
+        def failed_sink(report):
+            raise OSError("unavailable")
+        failed = codex.inspect_licensed(b"removed", signal=failed_sink)
+        self.assertEqual((failed["state"], failed["signal_state"]), ("REJECTED", "SIGNAL_FAILED"))
+        unavailable = codex.inspect_licensed(None)
+        self.assertEqual(unavailable["state"], "UNVERIFIED")
+        self.assertIsNone(unavailable["subject_sha256"])
+
+    def test_provenance_is_required_canonical_and_separate(self):
+        for value in (None, "", "  ", 3, "x" * 4097, "\ud800"):
+            with self.assertRaises(codex.CodexError):
+                codex.licensed_element(bytes(32), b"data", payload_attribution=value,
+                    payload_license="third-party", payload_source="urn:test")
+        payload, provenance = codex.licensed_payload(self.element())
+        self.assertEqual(payload, b"opaque\x00\xff")
+        self.assertEqual(provenance["attribution"], "Declared payload creator")
+        self.assertNotEqual(provenance["attribution"], codex.RIGHTS_NOTICE["qikvrt_rights_holder"])
+
+    def test_checker_failure_and_bad_configuration_are_unverified(self):
+        wire = codex.serialize_licensed([self.element()])
+        for config in ({"expected_sha256": "invalid"}, {"limits": None}):
+            report = codex.inspect_licensed(wire, **config)
+            self.assertEqual((report["state"], report["code"]),
+                             ("UNVERIFIED", "CHECKER_CONFIGURATION_INVALID"))
+        with patch.object(codex, "deserialize_licensed", side_effect=RuntimeError("internal failure")):
+            report = codex.inspect_licensed(wire)
+        self.assertEqual((report["state"], report["code"]), ("UNVERIFIED", "CHECKER_FAILED"))
+        self.assertFalse(report["effect_ack_done"])
+
+    def test_licensed_budgets_and_frozen_object_recheck(self):
+        e = self.element()
+        wire = codex.serialize_licensed([e])
+        exact = codex.Limits(len(wire), 1, len(e.payload))
+        self.assertEqual(codex.deserialize_licensed(wire, limits=exact), (e,))
+        for limits in (codex.Limits(len(wire)-1, 1, len(e.payload)),
+                       codex.Limits(len(wire), 0, len(e.payload)),
+                       codex.Limits(len(wire), 1, len(e.payload)-1)):
+            with self.assertRaises(codex.CodexError):
+                codex.deserialize_licensed(wire, limits=limits)
+        object.__setattr__(e, "identity", bytes(32))
+        with self.assertRaises(codex.CodexError):
+            codex.serialize_licensed([e])
+
+    def test_each_truncated_rights_envelope_is_rejected_after_rehash(self):
+        e = self.element()
+        for end in (0, 1, codex.LICENSED_PAYLOAD_HEADER.size - 1,
+                    codex.LICENSED_PAYLOAD_HEADER.size,
+                    codex.LICENSED_PAYLOAD_HEADER.size + len(codex.RIGHTS_BYTES)-1,
+                    len(e.payload)-1):
+            forged = codex.Element(e.stable_id, e.payload[:end])
+            with self.assertRaises(codex.CodexError):
+                codex.licensed_payload(forged)
+
+    def test_licensed_codec_cli_roundtrip_and_atomic_rejection(self):
+        from src import qikvrt_codec as codec
+        import subprocess
+        import sys
+        raw = b"arbitrary payload\x00\xff" * 50
+        wire = codec.encode_licensed_snapshot([self.element(raw)])
+        restored = codec.decode_licensed_snapshot(wire)
+        self.assertEqual(codex.licensed_payload(restored[0])[0], raw)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source, sealed, output = root/"input", root/"sealed", root/"output"
+            source.write_bytes(raw)
+            seal = subprocess.run([sys.executable, "-B", "-m", "src.qikvrt_codec", "seal",
+                str(source), str(sealed), "--stable-id", "00"*32,
+                "--payload-attribution", "Declared creator", "--payload-license", "TEST-ONLY",
+                "--payload-source", "urn:test:cli"], cwd=ROOT, capture_output=True)
+            self.assertEqual(seal.returncode, 0, seal.stderr)
+            unseal = subprocess.run([sys.executable, "-B", "-m", "src.qikvrt_codec", "unseal",
+                str(sealed), str(output)], cwd=ROOT, capture_output=True)
+            self.assertEqual(unseal.returncode, 0, unseal.stderr)
+            self.assertEqual(output.read_bytes(), raw)
+            output.write_bytes(b"keep existing target")
+            bad = bytearray(sealed.read_bytes()); bad[20] ^= 1; sealed.write_bytes(bad)
+            rejected = subprocess.run([sys.executable, "-B", "-m", "src.qikvrt_codec", "unseal",
+                str(sealed), str(output)], cwd=ROOT, capture_output=True, text=True)
+            self.assertEqual(rejected.returncode, 2)
+            report = json.loads(rejected.stderr.splitlines()[0])
+            self.assertEqual(report["state"], "REJECTED")
+            self.assertFalse(report["effect_ack_done"])
+            self.assertEqual(output.read_bytes(), b"keep existing target")
+            self.assertFalse(list(root.glob(".qikvrt-codec-*")))
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -13,9 +13,11 @@ import argparse
 import hashlib
 import hmac
 import io
+import json
 import os
 import struct
 import tempfile
+import sys
 import zlib
 from dataclasses import dataclass
 from pathlib import Path
@@ -28,6 +30,7 @@ from src.qikvrt_effect_ack import (
 from src.qikvrt_standpoint_codex import (
     DEFAULT_LIMITS, QIKVRT_SIGNATURE, SIGNATURE_BYTES, CodexError, Element,
     Limits, deserialize, serialize, validate_signature,
+    deserialize_licensed, serialize_licensed, licensed_element, licensed_payload,
 )
 
 DEFAULT_BLOCK_BYTES = 256 * 1024
@@ -295,6 +298,20 @@ def decode_snapshot(data: bytes, *, limits: Limits = DEFAULT_LIMITS) -> tuple[El
     return deserialize(snapshot, limits=limits)
 
 
+def encode_licensed_snapshot(elements: Iterable[Element], *,
+                             limits: Limits = DEFAULT_LIMITS,
+                             profile: str = "balanced") -> bytes:
+    """Rights-bearing profile over the existing lossless transport; no execution."""
+    return encode(serialize_licensed(elements, limits=limits), profile=profile)
+
+
+def decode_licensed_snapshot(data: bytes, *, limits: Limits = DEFAULT_LIMITS) -> tuple[Element, ...]:
+    if type(limits) is not Limits:
+        raise CodecError("LIMITS_INSTANCE_REQUIRED")
+    raw = decode(data, max_output_bytes=limits.max_snapshot_bytes)
+    return deserialize_licensed(raw, limits=limits)
+
+
 # Local feedback adapter. The existing container and 400-byte standpoint remain
 # unchanged. No provider transport, repository writer or permit issuer is added.
 _INVERT_BITS = bytes(255 - n for n in range(256))
@@ -499,7 +516,7 @@ def local_refeed(step: FeedbackStep, policy: FeedbackPolicy, *, port: int,
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("operation", choices=("encode", "decode"))
+    parser.add_argument("operation", choices=("encode", "decode", "seal", "unseal"))
     parser.add_argument("input", type=Path)
     parser.add_argument("output", type=Path)
     parser.add_argument("--signature-file", type=Path,
@@ -509,6 +526,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--profile", choices=tuple(PROFILES), default="balanced")
     parser.add_argument("--block-bytes", type=int, default=DEFAULT_BLOCK_BYTES)
     parser.add_argument("--max-output-bytes", type=int, default=None)
+    parser.add_argument("--stable-id", help="seal: caller-assigned persistent 64 lowercase hex digits")
+    parser.add_argument("--payload-attribution", help="seal: declared payload creator(s)")
+    parser.add_argument("--payload-license", help="seal: actual payload license or explicit unresolved status")
+    parser.add_argument("--payload-source", help="seal: provenance reference, not an authentication claim")
     args = parser.parse_args(argv)
     temporary = None
     try:
@@ -525,7 +546,32 @@ def main(argv: list[str] | None = None) -> int:
             mode="wb", dir=args.output.parent, prefix=".qikvrt-codec-", delete=False
         ) as sink:
             temporary = Path(sink.name)
-            if args.operation == "encode":
+            if args.operation == "seal":
+                if (type(args.stable_id) is not str or len(args.stable_id) != 64
+                        or any(c not in "0123456789abcdef" for c in args.stable_id)):
+                    raise CodecError("SEAL_REQUIRES_STABLE_ID")
+                payload = source.read(DEFAULT_LIMITS.max_payload_bytes + 1)
+                if len(payload) > DEFAULT_LIMITS.max_payload_bytes:
+                    raise CodecError("PAYLOAD_LIMIT_EXCEEDED")
+                element = licensed_element(bytes.fromhex(args.stable_id), payload,
+                    payload_attribution=args.payload_attribution,
+                    payload_license=args.payload_license, payload_source=args.payload_source)
+                _write(sink, encode_licensed_snapshot([element], profile=args.profile))
+            elif args.operation == "unseal":
+                wire_limit = DEFAULT_LIMITS.max_snapshot_bytes * 2
+                wire = source.read(wire_limit + 1)
+                if len(wire) > wire_limit:
+                    raise CodecError("WIRE_LIMIT_EXCEEDED")
+                elements = decode_licensed_snapshot(wire)
+                if len(elements) != 1:
+                    raise CodecError("UNSEAL_REQUIRES_ONE_ELEMENT")
+                payload, _ = licensed_payload(elements[0])
+                if args.max_output_bytes is not None:
+                    _integer(args.max_output_bytes, 0, 2**64 - 1, "INVALID_OUTPUT_LIMIT")
+                    if len(payload) > args.max_output_bytes:
+                        raise CodecError("OUTPUT_LIMIT_EXCEEDED")
+                _write(sink, payload)
+            elif args.operation == "encode":
                 encode_stream(source, sink, signature=signature, profile=args.profile,
                               block_bytes=args.block_bytes)
             else:
@@ -536,7 +582,13 @@ def main(argv: list[str] | None = None) -> int:
             os.fsync(sink.fileno())
         os.replace(temporary, args.output)
         temporary = None
-    except (OSError, CodecError) as exc:
+    except (OSError, CodecError, CodexError) as exc:
+        if args.operation in {"seal", "unseal"}:
+            # stderr is a local signal interface; this is not a remote receipt.
+            print(json.dumps({"schema": "qikvrt_element_diagnostic_v1",
+                  "state": "UNVERIFIED" if isinstance(exc, OSError) else "REJECTED",
+                  "code": "IO_UNAVAILABLE" if isinstance(exc, OSError) else "LICENSED_PROFILE_REJECTED",
+                  "signal_state": "LOCAL_STDERR", "effect_ack_done": False}), file=sys.stderr)
         parser.exit(2, f"BLOCK: {exc}\n")
     finally:
         if temporary is not None:
