@@ -62,6 +62,19 @@ REST_BOOTSTRAP_FILES = (
     'scripts/qikvrt_api_client.py', 'src/qikvrt_api_handler.py',
     'src/qikvrt_effect_ack.py', 'src/qikvrt_github_api_shim.py',
     'src/qikvrt_mcp_adapter.py', 'tools/ai_handoff.py',
+    'src/qikvrt_personal_auth.py', 'src/qikvrt_personal_assistant.py',
+    'src/qikvrt_personal_retrieval.py',
+    'runtime/models/pplx-embed-v2-late-0.6b.lock.json',
+    'runtime/toolchains/requirements-personal-auth-50.0.2.txt',
+    'runtime/toolchains/requirements-github-environment.txt',
+    'personal/ingolf-lohmann/firefox-assistant/ARGON_REVIEW.md',
+    'personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json',
+    'personal/ingolf-lohmann/firefox-assistant/README.md',
+    'personal/ingolf-lohmann/firefox-assistant/authority.html',
+    'personal/ingolf-lohmann/firefox-assistant/authority.js',
+    'personal/ingolf-lohmann/firefox-assistant/ui.css',
+    'personal/ingolf-lohmann/firefox-assistant/ui.html',
+    'personal/ingolf-lohmann/firefox-assistant/ui.js',
     'tools/qikvrt_authority_credentials.py', 'tools/qikvrt_integrity.py',
     'tools/qikvrt_required_review_gate.py', 'tools/qikvrt_subprocess.py',
     'tools/qikvrt_workflow_executor.py', 'tools/qikvrt_self_host_container.py',
@@ -3684,7 +3697,7 @@ def firefox_extension_probe(xpi, output, package="firefox-esr"):
 def publication_private_bytes(path, maximum):
     """Reuse private-path admission and reject replacement/oversized inputs."""
     private_path(path)
-    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
     with os.fdopen(fd, "rb") as source:
         info = os.fstat(source.fileno())
         if (not stat.S_ISREG(info.st_mode) or info.st_uid != os.geteuid()
@@ -3834,6 +3847,23 @@ def publication_interaction(registry_path, registry, request_pin, state):
 
 
 def publication_invoke(root, request, env):
+    # Reuse the original credential-bearing Git-Data transport in this dedicated
+    # launcher process. Browser login and generic workflow credentials confer
+    # no publication authority. Reobserve Main immediately before the child.
+    try:
+        from tools import qikvrt_zenodo_publish as publisher
+    except ModuleNotFoundError:
+        import qikvrt_zenodo_publish as publisher
+    prefix = "/repos/" + request["repository"]
+    _, ref = publisher._github_api_request("GET", prefix + "/git/ref/heads/main", env["GITHUB_TOKEN"])
+    if ref.get("ref") != "refs/heads/main" or ref.get("object", {}).get("sha") != request["execution_head"]:
+        raise ValueError("PUBLICATION_LIVE_AUTHORITY_MAIN_DRIFT")
+    _, commit = publisher._github_api_request("GET", prefix + "/git/commits/" + request["execution_head"], env["GITHUB_TOKEN"])
+    if commit.get("sha") != request["execution_head"] or commit.get("tree", {}).get("sha") != request["execution_tree"]:
+        raise ValueError("PUBLICATION_LIVE_AUTHORITY_TREE_DRIFT")
+    _, final = publisher._github_api_request("GET", prefix + "/git/ref/heads/main", env["GITHUB_TOKEN"])
+    if final.get("ref") != "refs/heads/main" or final.get("object", {}).get("sha") != request["execution_head"]:
+        raise ValueError("PUBLICATION_LIVE_AUTHORITY_MAIN_DRIFT")
     return subprocess.run([sys.executable, "-B", str(root / "tools/qikvrt_zenodo_publish.py"),
         "--manifest", request["manifest"]], cwd=root, env=env,
         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=3600, check=False)
@@ -3924,7 +3954,8 @@ def main():
         "container-tool-prepare", "container-context", "container-carrier", "container-carrier-archive-check", "container-artifact-split", "container-artifact-join", "container-oci-check", "container-smoke", "container-production-gate", "container-host-identity", "container-deploy", "container-readback",
         "migration-inventory", "migration-verify-source", "migration-export", "migration-verify-export", "migration-import",
         "migration-verify-import", "migration-rollback", "migration-capture-supervisor", "migration-capture-arm", "migration-capture",
-        "provider-inventory", "provider-classify", "provider-plan", "provider-apply", "provider-reconcile", "provider-readback"))
+        "provider-inventory", "provider-classify", "provider-plan", "provider-apply", "provider-reconcile", "provider-readback",
+        "host-static-readback", "host-static-upload", "host-static-reconcile", "host-static-public-readback"))
     parser.add_argument("--extension-xpi", type=Path, help="exact candidate XPI; disposable local probe only")
     parser.add_argument("--firefox-package", choices=("firefox-esr", "firefox"), default="firefox-esr")
     parser.add_argument("--root", type=Path, default=ROOT)
@@ -3998,6 +4029,10 @@ def main():
     parser.add_argument("--provider-authorization", type=Path, help="exact private create, payment and previously accepted terms evidence")
     parser.add_argument("--provider-authorization-sha256")
     parser.add_argument("--provider-receipts", type=Path, help="existing separate owner-only durable receipt directory")
+    parser.add_argument("--static-file", type=Path, help="explicit public index.html, at most 32 KiB")
+    parser.add_argument("--static-file-sha256", help="independently frozen static page digest")
+    parser.add_argument("--expected-static-sha256", help="observed old index digest or explicit ABSENT")
+    parser.add_argument("--host-operation-id", help="stable existing-host upload identity; uncertain writes require reconcile")
     args = parser.parse_args()
     try:
         if args.operation.startswith("publication-"):
@@ -4034,7 +4069,7 @@ def main():
             import importlib
             sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
             result = importlib.import_module("tools.qikvrt_self_host_container").execute(args)
-        elif args.operation.startswith("provider-"):
+        elif args.operation.startswith(("provider-", "host-static-")):
             result = provider_module().execute(args)
         elif args.operation == "mesh-rule-confirm":
             if not args.mesh_cache or not args.work_request or not args.peer:
@@ -4139,7 +4174,7 @@ def main():
             if not args.config: raise ValueError("PRIVATE_START_CONFIGURATION_REQUIRED")
             return start(args.root.resolve(), args.manifest_sha256, args.config.absolute())
         print(json.dumps(result, sort_keys=True))
-        return 2 if args.operation.startswith("publication-") and result["state"].startswith("HOLD") else 0
+        return 2 if args.operation.startswith(("publication-", "host-static-")) and str(result.get("state", "")).startswith("HOLD") else 0
     except (OSError, ValueError, KeyError, TypeError, RuntimeError, sqlite3.Error, subprocess.SubprocessError) as exc:
         # Capture diagnostics can contain private filenames or event data.
         cause = ("PUBLICATION_GATE_REFUSED" if args.operation.startswith("publication-") else
@@ -4150,6 +4185,7 @@ def main():
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
 
 
 

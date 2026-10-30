@@ -590,6 +590,10 @@ else:raise RuntimeError('unexpected fixture operation')
                 'PUBLISH_RESULT': published, 'DEPLOY_ENABLED': enabled, 'FIXTURE_HOST_CASE': variant}
             if variant == 'published-image': env['PUBLISHED_IMAGE'] = c.IMAGE + '@sha256:' + '0'*64
             if variant == 'credential': env['QIKVRT_HOST_KEY'] = ''
+            if variant == 'all-credentials':
+                for name in ('QIKVRT_HOST_BINDING', 'QIKVRT_HOST_BINDING_SHA256',
+                             'QIKVRT_HOST_CA', 'QIKVRT_HOST_CERT', 'QIKVRT_HOST_KEY'):
+                    env[name] = ''
             if variant == 'input-pin': env['EXPECTED_TREE'] = '0'*40
             result = subprocess.run(['bash', '-c', script], cwd=fixture, env=env,
                                     capture_output=True, text=True, timeout=30)
@@ -597,7 +601,40 @@ else:raise RuntimeError('unexpected fixture operation')
             calls = [json.loads(line) for line in (fixture/'calls.jsonl').read_text().splitlines()] \
                 if (fixture/'calls.jsonl').exists() else []
             output = (fixture/'output').read_text() if (fixture/'output').exists() else ''
+            delivery = fixture / 'host-material-delivery.json'
+            self.last_material_receipt = json.loads(delivery.read_bytes()) if delivery.exists() else None
             return result, calls, output
+
+    def test_missing_job_inputs_have_durable_diagnostics_before_any_host_call(self):
+        for variant, missing in (('credential', 1), ('all-credentials', 5)):
+            with self.subTest(variant=variant):
+                result, calls, output = self.run_workflow(variant=variant, enabled='true', published='success')
+                self.assertNotEqual(result.returncode, 0)
+                self.assertEqual(calls, [])
+                self.assertEqual(output, '')
+                receipt = self.last_material_receipt
+                self.assertIsNotNone(receipt)
+                self.assertEqual(receipt['state'], 'HOLD_PROTECTED_INPUT_DELIVERY')
+                self.assertEqual(sum(not v for v in receipt['bindings'].values()), missing)
+                self.assertEqual((receipt['source_head'], receipt['source_tree']), (HEAD, TREE))
+                self.assertFalse(receipt['job_credential_delivery_verified'])
+                self.assertFalse(receipt['host_identity_verified'])
+                self.assertFalse(receipt['effect_ack_done'])
+                raw = json.dumps(receipt)
+                for private in ('fixture-ca', 'fixture-cert', 'fixture-key', declaration()['docker_api']):
+                    self.assertNotIn(private, raw)
+
+    def test_present_job_inputs_do_not_claim_correct_keys_or_host_acceptance(self):
+        result, calls, _ = self.run_workflow()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual([call[0] for call in calls], ['container-host-identity'])
+        receipt = self.last_material_receipt
+        self.assertIsNotNone(receipt)
+        self.assertEqual(receipt['state'], 'PROTECTED_INPUTS_PRESENT')
+        self.assertTrue(all(receipt['bindings'].values()))
+        self.assertFalse(receipt['job_credential_delivery_verified'])
+        self.assertFalse(receipt['host_identity_verified'])
+        self.assertFalse(receipt['effect_ack_done'])
 
     def test_real_workflow_runs_identity_when_writes_are_not_admitted(self):
         for enabled, published in (('false','skipped'), ('true','skipped'), ('false','success'), ('true','failure')):
@@ -624,6 +661,7 @@ else:raise RuntimeError('unexpected fixture operation')
         artifact = self.job().split('      - uses: actions/upload-artifact@', 1)[1]
         self.assertIn('if: always()', artifact)
         self.assertIn('/host-identity.json', artifact)
+        self.assertIn('/host-material-delivery.json', artifact)
         self.assertNotIn('qikvrt-host-auth', artifact)
         text = (Path(__file__).resolve().parents[1]/'.github/workflows/qikvrt_ci.yml').read_text()
         public = text.split('  container_public_readback:\n', 1)[1]
