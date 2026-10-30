@@ -348,14 +348,24 @@ def git_snapshot(repository: Path, required_objects: dict[str, str] | None = Non
         if parent.is_symlink():
             raise RecoveryError("symlink repository path")
     directory = Path(git_command(repository, "rev-parse", "--absolute-git-dir"))
-    if git_command(repository, "rev-parse", "--is-shallow-repository") != "false":
+    # Observe these values in one Git process instead of four. Checkpoint and
+    # takeover verification call this repeatedly; keep each observation fresh
+    # rather than caching a preceding snapshot or omitting any validation.
+    metadata = git_command(repository, "rev-parse", "--is-shallow-repository",
+                           "--show-object-format", "HEAD", "HEAD^{tree}").splitlines()
+    if len(metadata) != 4:
+        raise RecoveryError("incomplete Git snapshot metadata")
+    shallow, object_format, head, tree = metadata
+    if shallow != "false":
         raise RecoveryError("SHALLOW_REPOSITORY_CANNOT_BE_A_FULL_NODE")
     if (directory / "objects/info/alternates").exists() or (directory / "info/grafts").exists():
         raise RecoveryError("external alternates or grafts are not self-contained")
     if list((directory / "objects/pack").glob("*.promisor")):
         raise RecoveryError("partial/promisor repository is not self-contained")
-    if git_command(repository, "rev-parse", "--show-object-format") != "sha1":
+    if object_format != "sha1":
         raise RecoveryError("unsupported Git object format")
+    if not all(re.fullmatch(r"[0-9a-f]{40}", value) for value in (head, tree)):
+        raise RecoveryError("invalid Git snapshot object identity")
     inventory: dict[str, str] = {}
     for row in git_command(repository, "for-each-ref", "--format=%(refname) %(objectname) %(symref)").splitlines():
         parts = row.split()
@@ -367,8 +377,8 @@ def git_snapshot(repository: Path, required_objects: dict[str, str] | None = Non
         if git_command(repository, "cat-file", "-t", oid) != kind:
             raise RecoveryError("required historical Git object type mismatch")
     return {
-        "head": git_command(repository, "rev-parse", "HEAD"),
-        "tree": git_command(repository, "rev-parse", "HEAD^{tree}"),
+        "head": head,
+        "tree": tree,
         "head_ref": git_command(repository, "symbolic-ref", "HEAD"),
         "refs": dict(sorted(inventory.items())), "object_format": "sha1",
         "required_objects": dict(sorted(required_objects.items())),
