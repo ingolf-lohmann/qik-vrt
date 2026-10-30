@@ -357,6 +357,39 @@ jobs:
           path: >-
             formalization/QIKVRT_Formalization_v2.0/.lake/build/qikvrt-survival-connectability-kernel-evidence.json
           if-no-files-found: error
+      - name: Check finite recovery and shared evidence contracts
+        run: |
+          set -euo pipefail
+          lake build QIKVRTEffectAck.EvidenceRecovery QIKVRTEffectAck.EvidenceRecoveryAxiomAudit
+          lake env lean QIKVRTEffectAck/EvidenceRecoveryAxiomAudit.lean > .lake/build/evidence-recovery-axioms.log
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          source = Path('QIKVRTEffectAck/EvidenceRecovery.lean').read_text()
+          names = re.findall(r'^theorem ([A-Za-z_][A-Za-z0-9_]*)', source, re.M)
+          claims = json.loads(Path('../../docs/proofs/evidence-recovery-2026-10-30/CLAIM_MATRIX.json').read_text())
+          expected = {item['theorem'].split('.')[-1]: item['axioms'] for item in claims['formal_claims']}
+          assert len(names) == 16 and set(names) == set(expected), 'Recovery theorem inventory differs'
+          audit = Path('.lake/build/evidence-recovery-axioms.log').read_text()
+          for name in names:
+              lines = [s for s in audit.splitlines() if s.startswith("'QIKVRT.EvidenceRecovery.V1." + name + "'")]
+              assert len(lines) == 1, 'Recovery kernel audit missing or duplicated'
+              axioms = [] if 'does not depend on any axioms' in lines[0] else [s.strip() for s in re.search(r'\[(.*)\]', lines[0]).group(1).split(',')]
+              assert axioms == expected[name] and set(axioms) <= {'propext', 'Quot.sound'}, 'Recovery axioms differ'
+          print('EVIDENCE_RECOVERY_KERNEL_THEOREMS=16')
+          PY
+          count=0
+          for source in ../../docs/proofs/evidence-recovery-2026-10-30/negative/*.lean; do
+            log=".lake/build/$(basename "$source" .lean).log"
+            if lake env lean "$source" > "$log" 2>&1; then
+              echo "False recovery control accepted: $source"
+              exit 1
+            fi
+            grep -q "tactic 'decide'" "$log"
+            grep -q 'is false' "$log"
+            count=$((count + 1))
+          done
+          test "$count" -eq 3
       - name: Audit every completed manuscript proof constant
         run: python3 scripts/audit_completion_axioms.py
       - name: Build additive storage module before project-wide proof audit

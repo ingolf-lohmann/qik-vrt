@@ -31,6 +31,8 @@ EXCLUDED_PARTS = {
 # immutable Alpha-2 release and are therefore not part of its closed historical
 # input set. They remain compiled and tested in the current repository.
 POST_ALPHA2_EXCLUSIONS = {
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/EvidenceRecovery.lean",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/EvidenceRecoveryAxiomAudit.lean",
     "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/SeedArchitecture.lean",
     "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/SeedArchitectureAxiomAudit.lean",
     "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/StorageIntegrity.lean",

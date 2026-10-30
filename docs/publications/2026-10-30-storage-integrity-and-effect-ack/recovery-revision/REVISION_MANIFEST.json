@@ -1,0 +1,34 @@
+{
+  "schema": "qikvrt-article-revision-manifest/v1",
+  "state": "AUTHOR_REVIEW_DRAFT_ZENODO_ARCHIVE_PENDING",
+  "previous_articles_preserved": true,
+  "new_formal_claims": 16,
+  "concrete_recovery_status": "OWNER_REPORTED_SUCCESS_INDEPENDENT_READBACK_OPEN",
+  "files": [
+    {
+      "name": "FACHARTIKEL.md",
+      "bytes": 13322,
+      "sha256": "b1fd92bee167ef36ba60ec4ae6ec53082211830c1b946ab0e2b63846f84c0f97"
+    },
+    {
+      "name": "PROSAARTIKEL.md",
+      "bytes": 7669,
+      "sha256": "b568491acc14e4ec7b4711ce14f443053aab6229971f9a57c74ae1eb5489edd9"
+    },
+    {
+      "name": "QIKVRT_Hier_und_Jetzt_Prosaartikel.pdf",
+      "bytes": 51616,
+      "sha256": "9601e64415c26c985c9ed902b1d61cb425639f6de0fe483392cd197dfb4f7c88"
+    },
+    {
+      "name": "QIKVRT_Rekonstruktion_Fachartikel.pdf",
+      "bytes": 57362,
+      "sha256": "8458836a54a200420379f404772bc7a111467d9666d4983bb1687be44154848a"
+    },
+    {
+      "name": "render_articles.py",
+      "bytes": 3040,
+      "sha256": "510a7e1078a9444ad2de6edb266392938ece0b3d9b8d7d720c9f971bd142c84a"
+    }
+  ]
+}
