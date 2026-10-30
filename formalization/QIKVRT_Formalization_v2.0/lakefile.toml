@@ -10,3 +10,8 @@ name = "QIKVRTEffectAck"
 
 [[lean_lib]]
 name = "QIKVRTUniversalOntology"
+
+# Reuse the unchanged, archived H6 source; do not duplicate its sphere model.
+[[lean_lib]]
+name = "VRTCore_VirtualSphere"
+srcDir = "../../docs/publications/2026-08-02-vrtcore-virtual-sphere-h6"

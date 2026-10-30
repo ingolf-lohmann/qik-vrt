@@ -1,0 +1,470 @@
+{
+  "schema": "qikvrt_raumzeit_supplement_claim_matrix_v1",
+  "original_matrix": {
+    "path": "release/raumzeit-original-2026-10-29/CLAIM_MATRIX.json",
+    "bytes": 21884,
+    "sha256": "709096a4075ebdbd9c240923822e74d9b7df834315986486d69944b14dc27daa"
+  },
+  "original_pdf": {
+    "path": "release/raumzeit-original-2026-10-29/Raumzeit_arXiv_EN_DE.pdf",
+    "bytes": 376446,
+    "sha256": "88d0eb41fa8d3b11a809419f9587cf97783d7b253a50d5297fac016a41a30d68"
+  },
+  "all_original_claims_included": true,
+  "claim_count": 46,
+  "claims": [
+    {
+      "original_claim_id": "RZO-001",
+      "original_classification": "INTERPRETATIVE",
+      "original_status": "DECLARED",
+      "statement": "Das Laden eines virtuellen früheren Zustands ist eine gegenwärtige physische Operation.",
+      "original_boundary": "Unterscheidung zwischen dargestellter Modellzeit und Ausführungszeit; kein physischer Zeitsprung.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-002",
+      "original_classification": "SOURCE_BOUND",
+      "original_status": "BOUND",
+      "statement": "Der Beitrag formuliert deterministische Wiederholung unter vollständiger Bindung von Anfangszustand, Regeln, Eingaben und relevanter Ausführungsreihenfolge.",
+      "original_boundary": "Bedingte Modellbeschreibung; ein Programm allein bindet keine unbekannten äußeren Eingaben.",
+      "proof_constants": [
+        "QIKVRT.ReconstructibleVirtuality.V1.complete_recording_replays_identically",
+        "QIKVRT.ReconstructibleVirtuality.V1.replay_append"
+      ],
+      "supplement_disposition": "KERNEL_MODEL_SUPPLEMENT"
+    },
+    {
+      "original_claim_id": "RZO-003",
+      "original_classification": "SOURCE_BOUND",
+      "original_status": "BOUND",
+      "statement": "Der Beitrag unterscheidet deterministische Entwicklung von Injektivität und logischer Umkehrbarkeit.",
+      "original_boundary": "Literaturbezogene Darstellung; deterministisches Löschen ist das Gegenbeispiel.",
+      "proof_constants": [
+        "QIKVRT.ReconstructibleVirtuality.V1.deterministic_erasure_is_not_injective",
+        "QIKVRT.ReconstructibleVirtuality.V1.deterministic_erasure_has_no_exact_decoder"
+      ],
+      "supplement_disposition": "KERNEL_MODEL_SUPPLEMENT"
+    },
+    {
+      "original_claim_id": "RZO-004",
+      "original_classification": "SOURCE_BOUND",
+      "original_status": "BOUND",
+      "statement": "Die Fachfassung präsentiert Aussage A als elementares Argument für eindeutige Rückrechnung auf dem Bild genau bei Injektivität.",
+      "original_boundary": "Die im Original argumentativ hergeleitete mathematische Darstellung wird unverändert dokumentiert; kein neuer Lean-Kernelbeleg und keine physikalische Messung werden behauptet.",
+      "proof_constants": [
+        "QIKVRT.ReconstructibleVirtuality.V1.injective_iff_unique_predecessors_on_image",
+        "QIKVRT.ReconstructibleVirtuality.V1.inverse_on_image_is_unique"
+      ],
+      "supplement_disposition": "KERNEL_MODEL_SUPPLEMENT"
+    },
+    {
+      "original_claim_id": "RZO-005",
+      "original_classification": "SOURCE_BOUND",
+      "original_status": "BOUND",
+      "statement": "Die Fachfassung präsentiert Aussage B: Die Erweiterung x ↦ (F_u(x),x) erhält den Vorgänger und ist injektiv.",
+      "original_boundary": "Quellengebundene mathematische Darstellung mit expliziter zweiter Komponente; keine unbegrenzte oder kostenlose Historie und keine neu ausgeführte formale Kernelprüfung.",
+      "proof_constants": [
+        "QIKVRT.ReconstructibleVirtuality.V1.history_extension_is_injective",
+        "QIKVRT.ReconstructibleVirtuality.V1.history_projection_restores",
+        "QIKVRT.ReconstructibleVirtuality.V1.encoded_history_restores_predecessor"
+      ],
+      "supplement_disposition": "KERNEL_MODEL_SUPPLEMENT"
+    },
+    {
+      "original_claim_id": "RZO-006",
+      "original_classification": "SOURCE_BOUND",
+      "original_status": "BOUND",
+      "statement": "Die Fachfassung präsentiert Aussage C zur bedingten Shannon-Unsicherheit bei endlicher vergröberter Beobachtung.",
+      "original_boundary": "Quellengebundene mathematische Darstellung unter angegebener Verteilung; Determinismus erzeugt dadurch keinen ontischen Zufall. Keine neue maschinelle Formalprüfung beansprucht.",
+      "proof_constants": [
+        "QIKVRT.ReconstructibleVirtuality.V1.ambiguous_observation_blocks_exact_estimator",
+        "QIKVRT.ReconstructibleVirtuality.V1.deterministic_world_can_have_ambiguous_observation"
+      ],
+      "supplement_disposition": "PARTIAL_STRUCTURAL_OR_FINITE_MODEL_SUPPLEMENT"
+    },
+    {
+      "original_claim_id": "RZO-007",
+      "original_classification": "INTERPRETATIVE",
+      "original_status": "DECLARED",
+      "statement": "Disassemblierung, Originalrekonstruktion und Umkehr ausgeführter Berechnung sind verschiedene Aufgaben.",
+      "original_boundary": "Die passende Befehlsdarstellung stellt verlorene Kommentare oder Symbolnamen nicht automatisch wieder her.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-008",
+      "original_classification": "SOURCE_BOUND",
+      "original_status": "BOUND",
+      "statement": "Die Bell-fachliche Verwendung von Superdeterminismus betrifft insbesondere die statistische Unabhängigkeit von Zustandsgrößen und Messeinstellungen.",
+      "original_boundary": "Eine deterministische Simulation verletzt diese Unabhängigkeit nicht allein wegen fester Regeln.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-009",
+      "original_classification": "INTERPRETATIVE",
+      "original_status": "DECLARED",
+      "statement": "Virtuelle Entropie wird als ausdrücklich gewählte Skalierung bedingter Shannon-Entropie relativ zum verfügbaren Gedächtnis definiert.",
+      "original_boundary": "Eigene beobachterbezogene Modellgröße; keine neue thermodynamische Konstante und kein universeller Entropiesatz.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-010",
+      "original_classification": "INTERPRETATIVE",
+      "original_status": "DECLARED",
+      "statement": "Virtuelle Intelligenz wird funktional über Informationsaufnahme, Modelländerung, Handlung und Folgenverarbeitung gefasst.",
+      "original_boundary": "Die Festlegung setzt kein phänomenales Bewusstsein voraus.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-011",
+      "original_classification": "SOURCE_BOUND",
+      "original_status": "BOUND",
+      "statement": "Der Beitrag erläutert Änderung bedingter Unsicherheit durch Information, Lernen und Vergessen.",
+      "original_boundary": "Monotonie zusätzlicher Information setzt dieselbe gemeinsame Verteilung voraus; zeitlich veränderte Verteilungen erlauben keinen allgemeinen monotonen Verlauf.",
+      "proof_constants": [
+        "QIKVRT.ReconstructibleVirtuality.V1.refined_observation_preserves_compatibility"
+      ],
+      "supplement_disposition": "PARTIAL_STRUCTURAL_OR_FINITE_MODEL_SUPPLEMENT"
+    },
+    {
+      "original_claim_id": "RZO-012",
+      "original_classification": "INTERPRETATIVE",
+      "original_status": "DECLARED",
+      "statement": "Mehr erzeugte Wörter allein belegen keine Zunahme der definierten Entropie.",
+      "original_boundary": "Die gewählte Größe verlangt Zustandsraum, Verteilung und Beobachtergrenze.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-013",
+      "original_classification": "SOURCE_BOUND",
+      "original_status": "BOUND",
+      "statement": "Die Darstellung behandelt eine lernende Maschine unter vollständig festgelegten Parametern und relevanten Eingaben weiter als deterministisches erweitertes Modell.",
+      "original_boundary": "Bedingte Modellargumentation; physisch eingespeister Zufall ist eine zusätzliche Frage.",
+      "proof_constants": [
+        "QIKVRT.ReconstructibleVirtuality.V1.complete_recording_replays_identically"
+      ],
+      "supplement_disposition": "PARTIAL_STRUCTURAL_OR_FINITE_MODEL_SUPPLEMENT"
+    },
+    {
+      "original_claim_id": "RZO-014",
+      "original_classification": "SOURCE_BOUND",
+      "original_status": "BOUND",
+      "statement": "Das Landauer-Szenario wird für die isotherme Rücksetzung eines gleichwahrscheinlichen unkorrelierten Bits mit Q_min ≥ k_B T ln 2 dargestellt.",
+      "original_boundary": "Literaturbezug unter den ausgewiesenen Voraussetzungen; keine Mindestwärme für jeden logischen Schritt oder bedeutungsvollen Gedanken.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-015",
+      "original_classification": "INTERPRETATIVE",
+      "original_status": "DECLARED",
+      "statement": "Virtuelle Zustandsunsicherheit und thermodynamische Entropie werden getrennt.",
+      "original_boundary": "Eine digitale Anwendung hat physische Träger; virtuelle Ordnung ersetzt keine thermodynamischen Bedingungen.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-016",
+      "original_classification": "SOURCE_BOUND",
+      "original_status": "BOUND",
+      "statement": "Die Darstellung verbindet makroskopische Irreversibilität mit Makrobeschreibung, Dynamik und Randbedingungen.",
+      "original_boundary": "Das Zählen von Mikrozuständen allein erklärt keine zeitliche Entwicklung.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-017",
+      "original_classification": "SOURCE_BOUND",
+      "original_status": "BOUND",
+      "statement": "Begrenzte makroskopische Rekonstruktion wird nicht als Widerlegung deterministischer reversibler Mikrodynamik dargestellt.",
+      "original_boundary": "Statistische und dynamische Beschreibungsebenen bleiben getrennt.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-018",
+      "original_classification": "SOURCE_BOUND",
+      "original_status": "BOUND",
+      "statement": "Der Fachtext verwendet zehn Münzen mit 1024 Mikrozuständen und 252 Zuständen mit genau fünfmal Kopf als elementares Zählbeispiel.",
+      "original_boundary": "Illustration der Makroklassengröße, keine Dynamik oder empirische Zeitpfeilmessung.",
+      "proof_constants": [
+        "QIKVRT.ReconstructibleVirtuality.V1.coinWords_membership",
+        "QIKVRT.ReconstructibleVirtuality.V1.coinWords_length",
+        "QIKVRT.ReconstructibleVirtuality.V1.ten_coin_microstates",
+        "QIKVRT.ReconstructibleVirtuality.V1.ten_coin_five_heads"
+      ],
+      "supplement_disposition": "PARTIAL_STRUCTURAL_OR_FINITE_MODEL_SUPPLEMENT"
+    },
+    {
+      "original_claim_id": "RZO-019",
+      "original_classification": "SOURCE_BOUND",
+      "original_status": "BOUND",
+      "statement": "Die Quantenbeschreibung unterscheidet unitäre Gesamtentwicklung, erhaltene feinkörnige von-Neumann-Entropie und veränderliche reduzierte Teilsystementropie.",
+      "original_boundary": "Übliche Theorie abgeschlossener Systeme; keine allgemeine monotone Zunahme für jedes Teilsystem.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-020",
+      "original_classification": "SOURCE_BOUND",
+      "original_status": "BOUND",
+      "statement": "Die Ort-Impuls-Unschärfe wird als Streuungsrelation σ_x σ_p ≥ ℏ/2 dargestellt.",
+      "original_boundary": "Gilt für die betreffenden Observablen und Zustände; allein kein Nachweis von Bewusstsein, Willensfreiheit oder neuer Gravitation.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-021",
+      "original_classification": "SOURCE_BOUND",
+      "original_status": "BOUND",
+      "statement": "Der Lichtkegel wird als Lorentz-geometrische Trennung lichtartiger, zeitartiger und raumartiger Richtungen behandelt.",
+      "original_boundary": "Lokale Kegelstruktur ersetzt nicht die gesamte globale Geometrie; Einsteins Theorie macht Geometrie dynamisch.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-022",
+      "original_classification": "INTERPRETATIVE",
+      "original_status": "DECLARED",
+      "statement": "Räumliche Rückkehr erreicht entlang einer gewöhnlichen zukunftsgerichteten Weltlinie ein anderes Raumzeitereignis.",
+      "original_boundary": "Gleiche räumliche Adresse bedeutet keine Rücknahme verstrichener Eigenzeit oder Wirkungen.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-023",
+      "original_classification": "INTERPRETATIVE",
+      "original_status": "DECLARED",
+      "statement": "Ein Lichtkegel allein ist keine vollständige Beschreibung von Quantenzustand, Feldern und Beobachterwissen.",
+      "original_boundary": "Die Zweckgrenze ist kein Nachweis einer widerlegten relativistischen Kausalgrenze.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-024",
+      "original_classification": "INTERPRETATIVE",
+      "original_status": "DECLARED",
+      "statement": "Emergente Raumzeit bezeichnet im Beitrag eine Beschreibungsebene aus grundlegenderen Strukturen.",
+      "original_boundary": "Forschungsbegriff und begrenzte Analogie; nicht die Behauptung einer empirisch abgeschlossenen QIK-VRT-Raumzeittheorie.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-025",
+      "original_classification": "SOURCE_BOUND",
+      "original_status": "BOUND",
+      "statement": "Kausalmengen werden als lokal endliche Ereignisordnungen angeführt.",
+      "original_boundary": "Theoretischer Ausgangspunkt der zitierten Forschung.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-026",
+      "original_classification": "SOURCE_BOUND",
+      "original_status": "BOUND",
+      "statement": "Holographische Ansätze verbinden Verschränkungsentropie und Geometrie unter speziellen theoretischen Voraussetzungen.",
+      "original_boundary": "Kein allgemeiner Nachweis, dass jede Informationsstruktur physische Raumzeit ist.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-027",
+      "original_classification": "SOURCE_BOUND",
+      "original_status": "BOUND",
+      "statement": "Van Raamsdonks Arbeit wird als Untersuchung von Verschränkung und räumlicher Verbundenheit herangezogen.",
+      "original_boundary": "Die ausdrücklich zitierte Version und ihr theoretischer Rahmen bleiben erhalten.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-028",
+      "original_classification": "NORMATIVE",
+      "original_status": "DECLARED",
+      "statement": "Der Beitrag benennt No-Signalling als unzureichend, um alle Quantenkorrelationen und Born-Wahrscheinlichkeiten festzulegen.",
+      "original_boundary": "Anforderung des in Abschnitt 8 und 12 formulierten Forschungsprogramms; kein ausgeführter Rekonstruktionsnachweis.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-029",
+      "original_classification": "NORMATIVE",
+      "original_status": "DECLARED",
+      "statement": "Weiterführende physische Raumzeitrekonstruktion soll Messgrößenbezug, Dimension, relativistische Grenzfälle, Dynamik und Quantenstatistik ausweisen.",
+      "original_boundary": "Bedingungen für eine stärkere künftige Aussage; kein Gegenbeweis gegen unkontrolliert vermutete persönliche Vorarbeiten.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-030",
+      "original_classification": "INTERPRETATIVE",
+      "original_status": "DECLARED",
+      "statement": "Prä-raumzeitliche Erklärungsabhängigkeit wird von einem zeitlichen Vorher unterschieden.",
+      "original_boundary": "Physische Zeitbehauptungen brauchen einen definierten Zeitbegriff und eine begründete Zuordnung.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-031",
+      "original_classification": "SOURCE_BOUND",
+      "original_status": "BOUND",
+      "statement": "Schrödingers Katzen-Gedankenexperiment dient als Bezug für den Übergang zwischen Quantenzustand und makroskopischer Ergebnisbeschreibung.",
+      "original_boundary": "Historisches Gedankenexperiment, kein Bericht eines neuen Katzenexperiments.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-032",
+      "original_classification": "SOURCE_BOUND",
+      "original_status": "BOUND",
+      "statement": "Dekohärenz wird als Erklärung lokaler Interferenzunterdrückung und robuster Aufzeichnungen dargestellt.",
+      "original_boundary": "Die einzelne erfahrene Ergebnisauswahl ist damit nicht interpretationsunabhängig vollständig entschieden.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-033",
+      "original_classification": "OPEN",
+      "original_status": "OPEN",
+      "statement": "Aus einer Aufzeichnung wird keine durchgeführte biologische Wiederherstellung oder erhaltene subjektive Kontinuität abgeleitet.",
+      "original_boundary": "Ein biologisches Verfahren und ein Identitätskriterium wären für diese zusätzliche Folgerung gesondert nötig.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-034",
+      "original_classification": "INTERPRETATIVE",
+      "original_status": "DECLARED",
+      "statement": "Rekonstruktion, rückwärts gelöste Rechnung, gegenwärtige Zielrepräsentation und physische Rückwärtskommunikation werden unterschieden.",
+      "original_boundary": "Die ersten drei Vorgänge liefern für sich nicht den vierten.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-035",
+      "original_classification": "SOURCE_BOUND",
+      "original_status": "BOUND",
+      "statement": "Retrokausale Quantenmodelle werden als Modelle mit späteren Rand- beziehungsweise Messbedingungen beschrieben.",
+      "original_boundary": "Modellabhängigkeit ist nicht automatisch ein steuerbarer Nachrichtenkanal in die Vergangenheit.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-036",
+      "original_classification": "NORMATIVE",
+      "original_status": "DECLARED",
+      "statement": "Der Beitrag fordert für eine Wirkungsbehauptung einen gebundenen Gegenstand, erwarteten Zustandswechsel und getrennt prüfbare Beobachtung.",
+      "original_boundary": "Methodische Anforderung in Abschnitt 10; keine Behauptung eines neuen Naturgesetzes oder einer bereits eingetretenen physikalischen Rückwärtswirkung.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-037",
+      "original_classification": "INTERPRETATIVE",
+      "original_status": "DECLARED",
+      "statement": "Lohmanns Ablehnung einer vollständig vorbestimmten realen Welt wird als naturphilosophische Leitthese aufgenommen.",
+      "original_boundary": "Der Beitrag leitet keinen experimentellen Ausschluss sämtlicher deterministischer oder superdeterministischer Modelle ab.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-038",
+      "original_classification": "SOURCE_BOUND",
+      "original_status": "BOUND",
+      "statement": "Hensens Bell-Test wird als empirischer Literaturbezug unter seinen Modell- und Messvoraussetzungen angeführt.",
+      "original_boundary": "Keine neue eigene Messung und kein allgemeiner Beweis menschlicher Willensfreiheit.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-039",
+      "original_classification": "INTERPRETATIVE",
+      "original_status": "DECLARED",
+      "statement": "Leben wird für die Betrachtung als Erhaltung funktionsfähiger offener Organisation beschrieben.",
+      "original_boundary": "Begrenzte Arbeitsbeschreibung; der einfache Regelkreis ist keine Gleichsetzung mit vollständiger Biologie.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-040",
+      "original_classification": "OPEN",
+      "original_status": "OPEN",
+      "statement": "Subjektive Kontinuität und metaphysische Jenseitsfragen bleiben ohne eigene Kriterien beziehungsweise prüfbare Aussagen offen.",
+      "original_boundary": "Dateigleichheit, Hash und Reversibilitätsargument entscheiden diese Fragen nicht.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-041",
+      "original_classification": "NORMATIVE",
+      "original_status": "DECLARED",
+      "statement": "Verantwortung und Sinn werden als philosophische beziehungsweise normative Beziehungen zu Handlungen, Zielen und anderen Menschen diskutiert.",
+      "original_boundary": "Kein zusätzlicher Term eines Naturgesetzes und kein Schluss von Zufall auf Urheberschaft.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-042",
+      "original_classification": "INTERPRETATIVE",
+      "original_status": "DECLARED",
+      "statement": "Der Beitrag ordnet seine Methode dem persönlichen Round-Trip-Programm zu.",
+      "original_boundary": "Konzeptioneller Bezug auf Q1; die Archivierung bestätigt keine neuen empirischen Ergebnisse.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-043",
+      "original_classification": "SOURCE_BOUND",
+      "original_status": "BOUND",
+      "statement": "Die Originalbibliographie nennt Q1 mit der Versionsangabe 1.0.0-candidate.1.",
+      "original_boundary": "Unveränderte Selbstzitation des Originals vom 20.10.2026; keine Umdeklaration als neueste Version.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-044",
+      "original_classification": "NORMATIVE",
+      "original_status": "DECLARED",
+      "statement": "Das Forschungsprogramm trennt digitale Demonstration, Beobachter-Entropiemodell, Raumzeitrekonstruktion, physische Rückwärtswirkung und biologische beziehungsweise subjektive Kriterien.",
+      "original_boundary": "Unabhängige Prüfziele für jeweils stärkere Aussagen, keine nachträgliche Pauschalverwerfung der vorliegenden Argumentation.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-045",
+      "original_classification": "SOURCE_BOUND",
+      "original_status": "BOUND",
+      "statement": "Die Texte enthalten datierte Aussagen zum Stand vor ihrer neuen Archivierung.",
+      "original_boundary": "Historischer Manuskriptstatus; eine spätere Zenodo-Ablage ist kein wissenschaftlicher Beweis und wird durch öffentliche Metadaten gesondert belegt.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    },
+    {
+      "original_claim_id": "RZO-046",
+      "original_classification": "SOURCE_BOUND",
+      "original_status": "BOUND",
+      "statement": "Die Originaldateien weisen Konzeption und Leitfragen Ingolf Lohmann sowie Recherche und Ausarbeitung ChatGPT zu.",
+      "original_boundary": "Keine nachträgliche Umdeklaration maschineller Beiträge als rein menschliche Urheberschaft.",
+      "proof_constants": [],
+      "supplement_disposition": "SOURCE_OR_DECLARED_SCOPE_PRESERVED"
+    }
+  ],
+  "new_open_claims": [
+    {
+      "id": "RZK-OPEN-01",
+      "statement": "A measured physical or phenomenal-consciousness interpretation of the Owner requested sphere magnitude",
+      "status": "OPEN",
+      "needed": "Dimension, radius/diameter/volume interpretation, correspondence map, physical model and independent measurement"
+    },
+    {
+      "id": "RZK-OPEN-02",
+      "statement": "Automatic unique reverse engineering of every arbitrary system from incomplete observations",
+      "status": "UNSUPPORTED_IN_THIS_GENERALITY",
+      "reason": "The proved deterministic bit-erasure counterexample has no exact inverse."
+    }
+  ]
+}

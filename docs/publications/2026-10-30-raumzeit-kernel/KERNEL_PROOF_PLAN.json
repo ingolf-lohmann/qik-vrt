@@ -1,0 +1,313 @@
+{
+  "schema": "qikvrt_raumzeit_kernel_plan_v1",
+  "proof_modules": [
+    "QIKVRTEffectAck.ReconstructibleVirtuality",
+    "QIKVRTEffectAck.VirtualSphereBridge"
+  ],
+  "source_bindings": {
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/ReconstructibleVirtuality.lean": {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/ReconstructibleVirtuality.lean",
+      "bytes": 8494,
+      "sha256": "0fc21e153d0b19d554adeb5c0e8784cd0db1f43478c2ee1573f483b602460316",
+      "git_blob_sha1": "38b612f6c06bce1e7b53a4d5b59e9ae01388dcb1"
+    },
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/VirtualSphereBridge.lean": {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/VirtualSphereBridge.lean",
+      "bytes": 3120,
+      "sha256": "87b1ca62145f7ced5ed4f65ada57e2358ee02aff867f75c5d6514c2c24b48e99",
+      "git_blob_sha1": "edac822342b210d0c838f7367dbcc68df5d4b7dd"
+    },
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/ReconstructibleVirtualityAxiomAudit.lean": {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/ReconstructibleVirtualityAxiomAudit.lean",
+      "bytes": 2136,
+      "sha256": "997dbef776d87d0d91ea2dfa6dcafd20c0394b86bb2fe0d1df27b72ce3661cc9",
+      "git_blob_sha1": "66e0e6751ca1623e1bf9bcedfbba4eab38ac0ff3"
+    },
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck.lean": {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck.lean",
+      "bytes": 1710,
+      "sha256": "494807a1cc1f4ad90a5422ba5e78673051a4ec7384616dfeabbe77ffdb09cc88",
+      "git_blob_sha1": "85985d6b48632d693f22145580b1ac8b529360cc"
+    },
+    "formalization/QIKVRT_Formalization_v2.0/lakefile.toml": {
+      "path": "formalization/QIKVRT_Formalization_v2.0/lakefile.toml",
+      "bytes": 460,
+      "sha256": "981db0d6cd1883ad7dbbc3900aa377c6b760d82ebe23be42ccd20ddda8c02762",
+      "git_blob_sha1": "95b8e9bd11c6b35a5f5e3d1b5b356dce4ff4ad37"
+    },
+    "formalization/QIKVRT_Formalization_v2.0/lean-toolchain": {
+      "path": "formalization/QIKVRT_Formalization_v2.0/lean-toolchain",
+      "bytes": 26,
+      "sha256": "ee6fd37555065223ddad24dff70b5447dfbac23c14f48fb8e3ddf266104bfa87",
+      "git_blob_sha1": "cf00978c98941128bcbab27eaa26ed28b9cbbf15"
+    },
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/InformationBoundary.lean": {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/InformationBoundary.lean",
+      "bytes": 3441,
+      "sha256": "bca003e52d764805a949f2e57110658771b9a60dc358973148af24d45931a1c8",
+      "git_blob_sha1": "5efb6978f38bd6f49defb526fc8abb3bc21d1822"
+    },
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/StorageIntegrity.lean": {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/StorageIntegrity.lean",
+      "bytes": 7297,
+      "sha256": "456ba4f7c5f0ea9f960eb547b66de8630436af6678e400d92b350a77648e11e6",
+      "git_blob_sha1": "f085a894f14eafab98de18415e1526da35d55cbb"
+    },
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CanonicalTemporalMemory.lean": {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CanonicalTemporalMemory.lean",
+      "bytes": 6991,
+      "sha256": "f125d126219a152fcf50dd07f0152a4d23fdbf64e657a4ceb8aff2ae9592fbc4",
+      "git_blob_sha1": "5fb78df6e90ae43903d48fd77dacfdc8a293372b"
+    },
+    "docs/publications/2026-08-02-vrtcore-virtual-sphere-h6/VRTCore_VirtualSphere.lean": {
+      "path": "docs/publications/2026-08-02-vrtcore-virtual-sphere-h6/VRTCore_VirtualSphere.lean",
+      "bytes": 27562,
+      "sha256": "2bfc26a7728b7a63cc9ecfb11981ff54d69b710b229259ec035f51acf8b7a1c3",
+      "git_blob_sha1": "0b3e8664b1d5a52b2c4c65f80633e512661a5c25"
+    },
+    "docs/publications/2026-08-02-vrtcore-virtual-sphere-h6/VRTCore_VirtualSphere_AxiomAudit.lean": {
+      "path": "docs/publications/2026-08-02-vrtcore-virtual-sphere-h6/VRTCore_VirtualSphere_AxiomAudit.lean",
+      "bytes": 3818,
+      "sha256": "01c969946c02e655960e996f55f27bc302b09ca9bea969dae414a28c04e7439e",
+      "git_blob_sha1": "c1512f604f351c0f07d293da87ac02f35d84ccc9"
+    }
+  },
+  "expected_axioms_by_theorem": {
+    "QIKVRT.ReconstructibleVirtuality.V1.injective_iff_unique_predecessors_on_image": [],
+    "QIKVRT.ReconstructibleVirtuality.V1.inverse_on_image_is_unique": [],
+    "QIKVRT.ReconstructibleVirtuality.V1.history_projection_restores": [],
+    "QIKVRT.ReconstructibleVirtuality.V1.history_extension_is_injective": [],
+    "QIKVRT.ReconstructibleVirtuality.V1.history_has_unique_predecessors": [],
+    "QIKVRT.ReconstructibleVirtuality.V1.encoded_history_restores_predecessor": [],
+    "QIKVRT.ReconstructibleVirtuality.V1.replay_append": [],
+    "QIKVRT.ReconstructibleVirtuality.V1.complete_recording_replays_identically": [],
+    "QIKVRT.ReconstructibleVirtuality.V1.deterministic_erasure_is_not_injective": [],
+    "QIKVRT.ReconstructibleVirtuality.V1.deterministic_erasure_has_no_exact_decoder": [],
+    "QIKVRT.ReconstructibleVirtuality.V1.ambiguous_observation_blocks_exact_estimator": [],
+    "QIKVRT.ReconstructibleVirtuality.V1.deterministic_world_can_have_ambiguous_observation": [],
+    "QIKVRT.ReconstructibleVirtuality.V1.refined_observation_preserves_compatibility": [],
+    "QIKVRT.ReconstructibleVirtuality.V1.coinWords_membership": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.ReconstructibleVirtuality.V1.coinWords_length": [
+      "propext"
+    ],
+    "QIKVRT.ReconstructibleVirtuality.V1.ten_coin_microstates": [
+      "propext"
+    ],
+    "QIKVRT.ReconstructibleVirtuality.V1.ten_coin_five_heads": [],
+    "QIKVRT.ReconstructibleVirtuality.V1.encoded_history_and_effect_readback": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.VirtualSphereBridge.V1.length_is_not_volume": [],
+    "QIKVRT.VirtualSphereBridge.V1.calibrated_run_radius": [
+      "propext"
+    ],
+    "QIKVRT.VirtualSphereBridge.V1.virtual_correctness_does_not_identify_scale": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.VirtualSphereBridge.V1.scale_ambiguity_at_requested_magnitude": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.VirtualSphereBridge.V1.stored_history_has_no_hole_sphere_projection": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ]
+  },
+  "reused_h6_source": {
+    "path": "docs/publications/2026-08-02-vrtcore-virtual-sphere-h6/VRTCore_VirtualSphere.lean",
+    "bytes": 27562,
+    "sha256": "2bfc26a7728b7a63cc9ecfb11981ff54d69b710b229259ec035f51acf8b7a1c3",
+    "git_blob_sha1": "0b3e8664b1d5a52b2c4c65f80633e512661a5c25"
+  },
+  "expected_h6_axioms": {
+    "QIKVRT.VRTCore.VirtualSphereH6.virtualClosure_ne_physicalClosure": [],
+    "QIKVRT.VRTCore.VirtualSphereH6.virtualSeed_ne_physicalBigBang": [],
+    "QIKVRT.VRTCore.VirtualSphereH6.state_ext_by_radius": [],
+    "QIKVRT.VRTCore.VirtualSphereH6.shell_mem_iff": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.VRTCore.VirtualSphereH6.state_nonvacuous": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.VRTCore.VirtualSphereH6.state_noHole": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.VRTCore.VirtualSphereH6.outer_shell_absent": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.VRTCore.VirtualSphereH6.firstState_ne_seed": [],
+    "QIKVRT.VRTCore.VirtualSphereH6.next_refines_stepSpec": [],
+    "QIKVRT.VRTCore.VirtualSphereH6.next_strictly_grows": [
+      "propext"
+    ],
+    "QIKVRT.VRTCore.VirtualSphereH6.next_never_regresses": [
+      "propext"
+    ],
+    "QIKVRT.VRTCore.VirtualSphereH6.next_preserves_shells": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.VRTCore.VirtualSphereH6.next_shell_delta_exact": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.VRTCore.VirtualSphereH6.stepSpec_total_unique": [],
+    "QIKVRT.VRTCore.VirtualSphereH6.stepSpec_deterministic": [],
+    "QIKVRT.VRTCore.VirtualSphereH6.run_radius": [
+      "propext"
+    ],
+    "QIKVRT.VRTCore.VirtualSphereH6.run_reachable": [],
+    "QIKVRT.VRTCore.VirtualSphereH6.seed_reachable": [],
+    "QIKVRT.VRTCore.VirtualSphereH6.every_state_reachable": [
+      "propext"
+    ],
+    "QIKVRT.VRTCore.VirtualSphereH6.reachable_next": [
+      "propext"
+    ],
+    "QIKVRT.VRTCore.VirtualSphereH6.reachable_nonseed_has_predecessor": [
+      "propext"
+    ],
+    "QIKVRT.VRTCore.VirtualSphereH6.reachable_noHole": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.VRTCore.VirtualSphereH6.reachable_progress": [
+      "propext"
+    ],
+    "QIKVRT.VRTCore.VirtualSphereH6.run_strict_growth": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.VRTCore.VirtualSphereH6.reachable_unbounded": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.VRTCore.VirtualSphereH6.population_eq_radius_succ": [
+      "propext"
+    ],
+    "QIKVRT.VRTCore.VirtualSphereH6.next_population_exact": [
+      "propext"
+    ],
+    "QIKVRT.VRTCore.VirtualSphereH6.stateAt_injective": [
+      "propext"
+    ],
+    "QIKVRT.VRTCore.VirtualSphereH6.state_virtualInvariant": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.VRTCore.VirtualSphereH6.reachable_virtualInvariant": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.VRTCore.VirtualSphereH6.render_grammar": [],
+    "QIKVRT.VRTCore.VirtualSphereH6.grammar_complete": [],
+    "QIKVRT.VRTCore.VirtualSphereH6.parse_sound": [
+      "propext"
+    ],
+    "QIKVRT.VRTCore.VirtualSphereH6.parse_some_iff_grammar": [
+      "propext"
+    ],
+    "QIKVRT.VRTCore.VirtualSphereH6.parse_none_iff_not_wellFormed": [
+      "propext"
+    ],
+    "QIKVRT.VRTCore.VirtualSphereH6.render_wellFormed": [],
+    "QIKVRT.VRTCore.VirtualSphereH6.parse_render_roundtrip": [],
+    "QIKVRT.VRTCore.VirtualSphereH6.render_injective": [],
+    "QIKVRT.VRTCore.VirtualSphereH6.grammar_unique": [],
+    "QIKVRT.VRTCore.VirtualSphereH6.canonicalDocument_roundtrip_and_boundary": [],
+    "QIKVRT.VRTCore.VirtualSphereH6.normalize_render": [
+      "propext"
+    ],
+    "QIKVRT.VRTCore.VirtualSphereH6.normalize_idempotent": [
+      "propext"
+    ],
+    "QIKVRT.VRTCore.VirtualSphereH6.deserialize_serialize": [],
+    "QIKVRT.VRTCore.VirtualSphereH6.normalize_of_parse": [
+      "propext"
+    ],
+    "QIKVRT.VRTCore.VirtualSphereH6.normalize_preserves_document": [
+      "propext"
+    ],
+    "QIKVRT.VRTCore.VirtualSphereH6.effect_preserved": [],
+    "QIKVRT.VRTCore.VirtualSphereH6.virtual_no_effect_escalation": [
+      "propext"
+    ],
+    "QIKVRT.VRTCore.VirtualSphereH6.no_external_authorization": [],
+    "QIKVRT.VRTCore.VirtualSphereH6.semantic_binding_total_unique": [],
+    "QIKVRT.VRTCore.VirtualSphereH6.canonicalDocument_exact_semanticModel": [],
+    "QIKVRT.VRTCore.VirtualSphereH6.canonicalBits_exact_model": [],
+    "QIKVRT.VRTCore.VirtualSphereH6.normalize_preserves_semantics": [
+      "propext"
+    ],
+    "QIKVRT.VRTCore.VirtualSphereH6.kernelClosureProjection_all_true": [],
+    "QIKVRT.VRTCore.VirtualSphereH6.virtualCertificate_disjoint_physicalEvidence": [],
+    "QIKVRT.VRTCore.VirtualSphereH6.h6_virtualSphere_noHole_complete": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ]
+  },
+  "negative_controls": {
+    "FalseErasureInjective.lean": {
+      "path": "docs/publications/2026-10-30-raumzeit-kernel/negative/FalseErasureInjective.lean",
+      "bytes": 237,
+      "sha256": "5cf210fdcfe5b21be5f5a48eba437254b6be71c1ffe4c1caeb30ee6c21dcc07e",
+      "git_blob_sha1": "63fa8944e9ad9191f384556436fd36ad8ebef590"
+    },
+    "FalseHistoryLoss.lean": {
+      "path": "docs/publications/2026-10-30-raumzeit-kernel/negative/FalseHistoryLoss.lean",
+      "bytes": 242,
+      "sha256": "0adb47b73e7b05dc583cfd3662a3d4968471bdad45fd191ffff0441d90a32d7e",
+      "git_blob_sha1": "4519745efb79bbfc79a04eb5a1e877a48482affe"
+    },
+    "FalseLengthIsVolume.lean": {
+      "path": "docs/publications/2026-10-30-raumzeit-kernel/negative/FalseLengthIsVolume.lean",
+      "bytes": 227,
+      "sha256": "ecfbe38c9b3e18d18f003ca5dcf2fff7e6744ad539858fb9d3450b0e6cd57028",
+      "git_blob_sha1": "8b80414a75f84a55bf8356aa6b4386ef9f53791c"
+    },
+    "FalseTenCoinCount.lean": {
+      "path": "docs/publications/2026-10-30-raumzeit-kernel/negative/FalseTenCoinCount.lean",
+      "bytes": 229,
+      "sha256": "691a2003548b4b144810019f48c0786cf049b12d725c234bca864acd3f3e4b44",
+      "git_blob_sha1": "30ae2ef91e6e4faab70a2aecc700003ca205717d"
+    },
+    "FalseUniqueScale.lean": {
+      "path": "docs/publications/2026-10-30-raumzeit-kernel/negative/FalseUniqueScale.lean",
+      "bytes": 306,
+      "sha256": "de0972345bfaada58fa6aaf2e44553ed45bcf8ab248d1f6e6c4675efb2ff17cf",
+      "git_blob_sha1": "55239fd995485c648fc230a87ae79612d184b21e"
+    }
+  },
+  "scope": "MANUSCRIPT_RECONSTRUCTION_INFORMATION_BOUNDARIES_AND_REUSED_VIRTUAL_H6_SPHERE",
+  "nonclaims": [
+    "Full real-valued Shannon entropy formalization",
+    "Verification of Python, HTTP, compilers or arbitrary processors",
+    "Unconditional reverse engineering after information loss",
+    "Physical spacetime emergence or cosmological scale measurement",
+    "Phenomenal consciousness or universal physical causality",
+    "Zenodo publication, Main integration or productive EFFECT_ACK_DONE"
+  ]
+}

@@ -131,6 +131,21 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Audit Raumzeit reconstruction and the original H6 sphere
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_causal_distance_kernel_evidence.py --profile raumzeit \
+            > "$RUNNER_TEMP/RAUMZEIT_KERNEL_RECEIPT.json"
+
+      - name: Preserve exact-head Raumzeit and H6 kernel receipt
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qikvrt-raumzeit-kernel-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 30
+          if-no-files-found: error
+          path: ${{ runner.temp }}/RAUMZEIT_KERNEL_RECEIPT.json
+
       - name: Audit rights-bearing storage proofs and bind exact candidate
         working-directory: formalization/QIKVRT_Formalization_v2.0
         shell: bash

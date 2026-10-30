@@ -1,0 +1,30 @@
+-- SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+-- Copyright 2026 Ingolf Lohmann.
+import QIKVRTEffectAck.ReconstructibleVirtuality
+import QIKVRTEffectAck.VirtualSphereBridge
+
+/-! Complete audit of the new manuscript and sphere-bridge theorems. -/
+
+#print axioms QIKVRT.ReconstructibleVirtuality.V1.injective_iff_unique_predecessors_on_image
+#print axioms QIKVRT.ReconstructibleVirtuality.V1.inverse_on_image_is_unique
+#print axioms QIKVRT.ReconstructibleVirtuality.V1.history_projection_restores
+#print axioms QIKVRT.ReconstructibleVirtuality.V1.history_extension_is_injective
+#print axioms QIKVRT.ReconstructibleVirtuality.V1.history_has_unique_predecessors
+#print axioms QIKVRT.ReconstructibleVirtuality.V1.encoded_history_restores_predecessor
+#print axioms QIKVRT.ReconstructibleVirtuality.V1.replay_append
+#print axioms QIKVRT.ReconstructibleVirtuality.V1.complete_recording_replays_identically
+#print axioms QIKVRT.ReconstructibleVirtuality.V1.deterministic_erasure_is_not_injective
+#print axioms QIKVRT.ReconstructibleVirtuality.V1.deterministic_erasure_has_no_exact_decoder
+#print axioms QIKVRT.ReconstructibleVirtuality.V1.ambiguous_observation_blocks_exact_estimator
+#print axioms QIKVRT.ReconstructibleVirtuality.V1.deterministic_world_can_have_ambiguous_observation
+#print axioms QIKVRT.ReconstructibleVirtuality.V1.refined_observation_preserves_compatibility
+#print axioms QIKVRT.ReconstructibleVirtuality.V1.coinWords_membership
+#print axioms QIKVRT.ReconstructibleVirtuality.V1.coinWords_length
+#print axioms QIKVRT.ReconstructibleVirtuality.V1.ten_coin_microstates
+#print axioms QIKVRT.ReconstructibleVirtuality.V1.ten_coin_five_heads
+#print axioms QIKVRT.ReconstructibleVirtuality.V1.encoded_history_and_effect_readback
+#print axioms QIKVRT.VirtualSphereBridge.V1.length_is_not_volume
+#print axioms QIKVRT.VirtualSphereBridge.V1.calibrated_run_radius
+#print axioms QIKVRT.VirtualSphereBridge.V1.virtual_correctness_does_not_identify_scale
+#print axioms QIKVRT.VirtualSphereBridge.V1.scale_ambiguity_at_requested_magnitude
+#print axioms QIKVRT.VirtualSphereBridge.V1.stored_history_has_no_hole_sphere_projection

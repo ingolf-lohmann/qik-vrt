@@ -57,6 +57,20 @@ class EvidenceMutationControls(unittest.TestCase):
         self.plan["source_bindings"][source] = evidence.original.identity(path, self.root)
         self.reject_before_execution("unconnected module")
 
+    def test_unknown_profile_never_reaches_kernel_execution(self):
+        with patch.object(evidence.original, "run", side_effect=AssertionError("kernel invoked")):
+            with self.assertRaisesRegex(evidence.original.EvidenceError, "unknown proof profile"):
+                evidence.verify("unreviewed-scope")
+
+    def test_raumzeit_rejects_old_profile_plan_before_execution(self):
+        path = self.root / evidence.RAUMZEIT_PUBLICATION / "KERNEL_PROOF_PLAN.json"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(self.plan))
+        with patch.object(evidence, "ROOT", self.root), patch.object(
+                evidence.original, "run", side_effect=AssertionError("kernel invoked")):
+            with self.assertRaisesRegex(evidence.original.EvidenceError, "wrong plan schema"):
+                evidence.verify("raumzeit")
+
 
 if __name__ == "__main__":
     unittest.main()

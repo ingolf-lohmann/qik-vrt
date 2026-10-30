@@ -1,0 +1,161 @@
+{
+  "schema": "qikvrt_public_search_readback_v1",
+  "observed_at": "2026-10-30T14:29:49.689135+00:00",
+  "observations": [
+    {
+      "file_name": "zenodo-public-page1.json",
+      "response_sha256": "df5730d57714d3428254956848e3f9b765cc9e6647a146419329bacb7f72282c",
+      "self_url": "https://zenodo.org/api/records?allversions=True&page=1&q=Ingolf+AND+Lohmann&size=25&sort=bestmatch",
+      "next_url": "https://zenodo.org/api/records?allversions=True&page=2&q=Ingolf+AND+Lohmann&size=25&sort=bestmatch",
+      "reported_total": 46,
+      "returned_count": 25,
+      "returned_record_ids": [
+        6404674,
+        12197242,
+        21582781,
+        22813431,
+        22840633,
+        21636774,
+        22847245,
+        21983644,
+        22845516,
+        21640160,
+        21640173,
+        21515074,
+        21252415,
+        21252649,
+        23008330,
+        23008704,
+        22283396,
+        21888130,
+        21721918,
+        21488116,
+        21498774,
+        21500322,
+        21711193,
+        21731492,
+        21245951
+      ]
+    },
+    {
+      "file_name": "zenodo-public-page2.json",
+      "response_sha256": "203024f98588d3293d8d2b5ee0ed5a45a1c264e070a000c0322869317f70ebff",
+      "self_url": "https://zenodo.org/api/records?allversions=True&page=2&q=Ingolf+AND+Lohmann&size=25&sort=bestmatch",
+      "next_url": null,
+      "reported_total": 46,
+      "returned_count": 21,
+      "returned_record_ids": [
+        21245282,
+        21482023,
+        22527889,
+        22216916,
+        21804399,
+        21501365,
+        21518464,
+        22941556,
+        22955727,
+        21633411,
+        21498773,
+        21947141,
+        21529081,
+        22907018,
+        20712301,
+        21266670,
+        21244412,
+        21267021,
+        21247388,
+        21247297,
+        21748371
+      ]
+    },
+    {
+      "file_name": "zenodo-creators-page1.json",
+      "response_sha256": "157b1c9c7989e24398bfca0e8a0372c944895c87bd4620b2075b205d84919892",
+      "self_url": "https://zenodo.org/api/records?allversions=True&page=1&q=creators.name:(Ingolf+AND+Lohmann)&size=25&sort=mostrecent",
+      "next_url": "https://zenodo.org/api/records?allversions=True&page=2&q=creators.name:(Ingolf+AND+Lohmann)&size=25&sort=mostrecent",
+      "reported_total": 42,
+      "returned_count": 25,
+      "returned_record_ids": [
+        23008704,
+        23008330,
+        22955727,
+        22941556,
+        22907018,
+        22847245,
+        22845516,
+        22840633,
+        22813431,
+        22527889,
+        22283396,
+        22216916,
+        21983644,
+        21947141,
+        21888130,
+        21804399,
+        21748371,
+        21731492,
+        21721918,
+        21711193,
+        21640173,
+        21640160,
+        21636774,
+        21633411,
+        21582781
+      ]
+    },
+    {
+      "file_name": "zenodo-creators-page2.json",
+      "response_sha256": "4af7de2a19d49bb3bb73933ffdac76d2bf5716c57e4dcb792978eacadd54d3f9",
+      "self_url": "https://zenodo.org/api/records?allversions=True&page=2&q=creators.name:(Ingolf+AND+Lohmann)&size=25&sort=mostrecent",
+      "next_url": null,
+      "reported_total": 42,
+      "returned_count": 17,
+      "returned_record_ids": [
+        21529081,
+        21518464,
+        21515074,
+        21501365,
+        21500322,
+        21498774,
+        21498773,
+        21488116,
+        21482023,
+        21267021,
+        21266670,
+        21247388,
+        21247297,
+        21245951,
+        21245282,
+        21244412,
+        20712301
+      ]
+    },
+    {
+      "file_name": "zenodo-creator-handle-exact.json",
+      "response_sha256": "3a8d4c9ab11aa5df5e951c46a7de7286aa172ccfc853f5710ddc780f9b357373",
+      "self_url": "https://zenodo.org/api/records?allversions=True&page=1&q=creators.name:%22ingolf-lohmann%22&size=25&sort=bestmatch",
+      "next_url": null,
+      "reported_total": 2,
+      "returned_count": 2,
+      "returned_record_ids": [
+        21252415,
+        21252649
+      ]
+    }
+  ],
+  "broad_name_pages_complete": true,
+  "creator_name_pages_complete": true,
+  "exact_creator_handle_complete": true,
+  "attributed_version_count": 44,
+  "all_account_or_unindexed_records_covered": false,
+  "corrected_request_failures": [
+    {
+      "cause": "Public unauthenticated page size is limited to 25, not 100.",
+      "repair": "Use 25 and follow actual next links."
+    },
+    {
+      "cause": "Unscoped ingolf-lohmann search matches 3116 text records.",
+      "repair": "Use exact creators.name field, yielding two attributable records; broad query is not projected as complete."
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+'QIKVRT.VRTCore.VirtualSphereH6.virtualClosure_ne_physicalClosure' does not depend on any axioms
+'QIKVRT.VRTCore.VirtualSphereH6.virtualSeed_ne_physicalBigBang' does not depend on any axioms
+'QIKVRT.VRTCore.VirtualSphereH6.state_ext_by_radius' does not depend on any axioms
+'QIKVRT.VRTCore.VirtualSphereH6.shell_mem_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QIKVRT.VRTCore.VirtualSphereH6.state_nonvacuous' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QIKVRT.VRTCore.VirtualSphereH6.state_noHole' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QIKVRT.VRTCore.VirtualSphereH6.outer_shell_absent' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QIKVRT.VRTCore.VirtualSphereH6.firstState_ne_seed' does not depend on any axioms
+'QIKVRT.VRTCore.VirtualSphereH6.next_refines_stepSpec' does not depend on any axioms
+'QIKVRT.VRTCore.VirtualSphereH6.next_strictly_grows' depends on axioms: [propext]
+'QIKVRT.VRTCore.VirtualSphereH6.next_never_regresses' depends on axioms: [propext]
+'QIKVRT.VRTCore.VirtualSphereH6.next_preserves_shells' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QIKVRT.VRTCore.VirtualSphereH6.next_shell_delta_exact' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QIKVRT.VRTCore.VirtualSphereH6.stepSpec_total_unique' does not depend on any axioms
+'QIKVRT.VRTCore.VirtualSphereH6.stepSpec_deterministic' does not depend on any axioms
+'QIKVRT.VRTCore.VirtualSphereH6.run_radius' depends on axioms: [propext]
+'QIKVRT.VRTCore.VirtualSphereH6.run_reachable' does not depend on any axioms
+'QIKVRT.VRTCore.VirtualSphereH6.seed_reachable' does not depend on any axioms
+'QIKVRT.VRTCore.VirtualSphereH6.every_state_reachable' depends on axioms: [propext]
+'QIKVRT.VRTCore.VirtualSphereH6.reachable_next' depends on axioms: [propext]
+'QIKVRT.VRTCore.VirtualSphereH6.reachable_nonseed_has_predecessor' depends on axioms: [propext]
+'QIKVRT.VRTCore.VirtualSphereH6.reachable_noHole' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QIKVRT.VRTCore.VirtualSphereH6.reachable_progress' depends on axioms: [propext]
+'QIKVRT.VRTCore.VirtualSphereH6.run_strict_growth' depends on axioms: [propext, Quot.sound]
+'QIKVRT.VRTCore.VirtualSphereH6.reachable_unbounded' depends on axioms: [propext, Quot.sound]
+'QIKVRT.VRTCore.VirtualSphereH6.population_eq_radius_succ' depends on axioms: [propext]
+'QIKVRT.VRTCore.VirtualSphereH6.next_population_exact' depends on axioms: [propext]
+'QIKVRT.VRTCore.VirtualSphereH6.stateAt_injective' depends on axioms: [propext]
+'QIKVRT.VRTCore.VirtualSphereH6.state_virtualInvariant' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QIKVRT.VRTCore.VirtualSphereH6.reachable_virtualInvariant' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QIKVRT.VRTCore.VirtualSphereH6.render_grammar' does not depend on any axioms
+'QIKVRT.VRTCore.VirtualSphereH6.grammar_complete' does not depend on any axioms
+'QIKVRT.VRTCore.VirtualSphereH6.parse_sound' depends on axioms: [propext]
+'QIKVRT.VRTCore.VirtualSphereH6.parse_some_iff_grammar' depends on axioms: [propext]
+'QIKVRT.VRTCore.VirtualSphereH6.parse_none_iff_not_wellFormed' depends on axioms: [propext]
+'QIKVRT.VRTCore.VirtualSphereH6.render_wellFormed' does not depend on any axioms
+'QIKVRT.VRTCore.VirtualSphereH6.parse_render_roundtrip' does not depend on any axioms
+'QIKVRT.VRTCore.VirtualSphereH6.render_injective' does not depend on any axioms
+'QIKVRT.VRTCore.VirtualSphereH6.grammar_unique' does not depend on any axioms
+'QIKVRT.VRTCore.VirtualSphereH6.canonicalDocument_roundtrip_and_boundary' does not depend on any axioms
+'QIKVRT.VRTCore.VirtualSphereH6.normalize_render' depends on axioms: [propext]
+'QIKVRT.VRTCore.VirtualSphereH6.normalize_idempotent' depends on axioms: [propext]
+'QIKVRT.VRTCore.VirtualSphereH6.deserialize_serialize' does not depend on any axioms
+'QIKVRT.VRTCore.VirtualSphereH6.normalize_of_parse' depends on axioms: [propext]
+'QIKVRT.VRTCore.VirtualSphereH6.normalize_preserves_document' depends on axioms: [propext]
+'QIKVRT.VRTCore.VirtualSphereH6.effect_preserved' does not depend on any axioms
+'QIKVRT.VRTCore.VirtualSphereH6.virtual_no_effect_escalation' depends on axioms: [propext]
+'QIKVRT.VRTCore.VirtualSphereH6.no_external_authorization' does not depend on any axioms
+'QIKVRT.VRTCore.VirtualSphereH6.semantic_binding_total_unique' does not depend on any axioms
+'QIKVRT.VRTCore.VirtualSphereH6.canonicalDocument_exact_semanticModel' does not depend on any axioms
+'QIKVRT.VRTCore.VirtualSphereH6.canonicalBits_exact_model' does not depend on any axioms
+'QIKVRT.VRTCore.VirtualSphereH6.normalize_preserves_semantics' depends on axioms: [propext]
+'QIKVRT.VRTCore.VirtualSphereH6.kernelClosureProjection_all_true' does not depend on any axioms
+'QIKVRT.VRTCore.VirtualSphereH6.virtualCertificate_disjoint_physicalEvidence' does not depend on any axioms
+'QIKVRT.VRTCore.VirtualSphereH6.h6_virtualSphere_noHole_complete' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

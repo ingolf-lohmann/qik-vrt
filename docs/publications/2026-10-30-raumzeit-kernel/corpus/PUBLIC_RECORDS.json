@@ -1,0 +1,1356 @@
+{
+  "schema": "qikvrt_published_corpus_inclusion_v1",
+  "observed_at": "2026-10-30T14:24:43.674715+00:00",
+  "records": [
+    {
+      "record_id": 20712301,
+      "doi": "10.5281/zenodo.20712301",
+      "concept_record_id": "20712300",
+      "title": "QIK-VRT: Operationalisierte epistemische Zustandskontrolle und schichtgebundene Evidenzpersistenz",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": "Independent researcher / QIK-VRT author"
+        }
+      ],
+      "publication_date": "2026-06-16",
+      "record_url": "https://zenodo.org/records/20712301",
+      "native_file_count": 2,
+      "all_native_files_verified": true,
+      "contribution": "Archiviert einen frühen versionierten Bestand für Verifikation, Persistenz, Audit und Release-Gating informationskausaler Artefakte. Das Paket enthält Repositoryzustand, Manifeste, SHA-256-Bindungen, Auditmetadaten, Validierungslogik und Gate-Statusrecords.",
+      "boundary": "Archivierte Validierungslogik und Gate-Records sind an diese Fassung gebunden. Sie ersetzen keine aktuelle Ausführung oder empirische Bestätigung von Physik- und Kognitionsansprüchen.",
+      "text_extractions": [],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 21244412,
+      "doi": "10.5281/zenodo.21244412",
+      "concept_record_id": "21244411",
+      "title": "RFC-QIKVRT-0001",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": "Independent Researcher"
+        }
+      ],
+      "publication_date": "2026-07-07",
+      "record_url": "https://zenodo.org/records/21244412",
+      "native_file_count": 1,
+      "all_native_files_verified": true,
+      "contribution": "Archiviert versionierte Repository-Snapshots der QIKVRT-Knotenentwicklung. Neun veröffentlichte Fassungen derselben Zenodo-Familie sind erfasst, darunter zwei automatische Releases unter dem Creator-Namen ingolf-lohmann. Die native Metadatenbeschreibung nennt im Repository materialisierte DOI-Statusinformationen.",
+      "boundary": "Ein Release- oder RFC-Titel beweist keine IETF-Standardannahme, allgemeine Runtime-Freigabe oder physische Weltformel. Das große aktuelle ZIP wurde hier nicht vollständig inhaltlich oder als ausführbare Runtime geprüft.",
+      "text_extractions": [],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 21245282,
+      "doi": "10.5281/zenodo.21245282",
+      "concept_record_id": "21244411",
+      "title": "RFC-QIKVRT-0001",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": "Independent Researcher"
+        }
+      ],
+      "publication_date": "2026-07-07",
+      "record_url": "https://zenodo.org/records/21245282",
+      "native_file_count": 1,
+      "all_native_files_verified": true,
+      "contribution": "Archiviert versionierte Repository-Snapshots der QIKVRT-Knotenentwicklung. Neun veröffentlichte Fassungen derselben Zenodo-Familie sind erfasst, darunter zwei automatische Releases unter dem Creator-Namen ingolf-lohmann. Die native Metadatenbeschreibung nennt im Repository materialisierte DOI-Statusinformationen.",
+      "boundary": "Ein Release- oder RFC-Titel beweist keine IETF-Standardannahme, allgemeine Runtime-Freigabe oder physische Weltformel. Das große aktuelle ZIP wurde hier nicht vollständig inhaltlich oder als ausführbare Runtime geprüft.",
+      "text_extractions": [],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 21245951,
+      "doi": "10.5281/zenodo.21245951",
+      "concept_record_id": "21244411",
+      "title": "RFC-QIKVRT-0001",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": "Independent Researcher"
+        }
+      ],
+      "publication_date": "2026-07-07",
+      "record_url": "https://zenodo.org/records/21245951",
+      "native_file_count": 1,
+      "all_native_files_verified": true,
+      "contribution": "Archiviert versionierte Repository-Snapshots der QIKVRT-Knotenentwicklung. Neun veröffentlichte Fassungen derselben Zenodo-Familie sind erfasst, darunter zwei automatische Releases unter dem Creator-Namen ingolf-lohmann. Die native Metadatenbeschreibung nennt im Repository materialisierte DOI-Statusinformationen.",
+      "boundary": "Ein Release- oder RFC-Titel beweist keine IETF-Standardannahme, allgemeine Runtime-Freigabe oder physische Weltformel. Das große aktuelle ZIP wurde hier nicht vollständig inhaltlich oder als ausführbare Runtime geprüft.",
+      "text_extractions": [],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 21247297,
+      "doi": "10.5281/zenodo.21247297",
+      "concept_record_id": "21244411",
+      "title": "RFC-QIKVRT-0001",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": "Independent Researcher"
+        }
+      ],
+      "publication_date": "2026-07-07",
+      "record_url": "https://zenodo.org/records/21247297",
+      "native_file_count": 1,
+      "all_native_files_verified": true,
+      "contribution": "Archiviert versionierte Repository-Snapshots der QIKVRT-Knotenentwicklung. Neun veröffentlichte Fassungen derselben Zenodo-Familie sind erfasst, darunter zwei automatische Releases unter dem Creator-Namen ingolf-lohmann. Die native Metadatenbeschreibung nennt im Repository materialisierte DOI-Statusinformationen.",
+      "boundary": "Ein Release- oder RFC-Titel beweist keine IETF-Standardannahme, allgemeine Runtime-Freigabe oder physische Weltformel. Das große aktuelle ZIP wurde hier nicht vollständig inhaltlich oder als ausführbare Runtime geprüft.",
+      "text_extractions": [],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 21247388,
+      "doi": "10.5281/zenodo.21247388",
+      "concept_record_id": "21244411",
+      "title": "RFC-QIKVRT-0001",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": "Independent Researcher"
+        }
+      ],
+      "publication_date": "2026-07-07",
+      "record_url": "https://zenodo.org/records/21247388",
+      "native_file_count": 1,
+      "all_native_files_verified": true,
+      "contribution": "Archiviert versionierte Repository-Snapshots der QIKVRT-Knotenentwicklung. Neun veröffentlichte Fassungen derselben Zenodo-Familie sind erfasst, darunter zwei automatische Releases unter dem Creator-Namen ingolf-lohmann. Die native Metadatenbeschreibung nennt im Repository materialisierte DOI-Statusinformationen.",
+      "boundary": "Ein Release- oder RFC-Titel beweist keine IETF-Standardannahme, allgemeine Runtime-Freigabe oder physische Weltformel. Das große aktuelle ZIP wurde hier nicht vollständig inhaltlich oder als ausführbare Runtime geprüft.",
+      "text_extractions": [],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 21252415,
+      "doi": "10.5281/zenodo.21252415",
+      "concept_record_id": "21244411",
+      "title": "ingolf-lohmann/qik-vrt: QIKVRT V2.13.4 node repository",
+      "creators": [
+        {
+          "name": "ingolf-lohmann",
+          "affiliation": null
+        }
+      ],
+      "publication_date": "2026-07-08",
+      "record_url": "https://zenodo.org/records/21252415",
+      "native_file_count": 1,
+      "all_native_files_verified": true,
+      "contribution": "Archiviert versionierte Repository-Snapshots der QIKVRT-Knotenentwicklung. Neun veröffentlichte Fassungen derselben Zenodo-Familie sind erfasst, darunter zwei automatische Releases unter dem Creator-Namen ingolf-lohmann. Die native Metadatenbeschreibung nennt im Repository materialisierte DOI-Statusinformationen.",
+      "boundary": "Ein Release- oder RFC-Titel beweist keine IETF-Standardannahme, allgemeine Runtime-Freigabe oder physische Weltformel. Das große aktuelle ZIP wurde hier nicht vollständig inhaltlich oder als ausführbare Runtime geprüft.",
+      "text_extractions": [],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 21252649,
+      "doi": "10.5281/zenodo.21252649",
+      "concept_record_id": "21244411",
+      "title": "ingolf-lohmann/qik-vrt: QIKVRT V2.13.4R node repository",
+      "creators": [
+        {
+          "name": "ingolf-lohmann",
+          "affiliation": null
+        }
+      ],
+      "publication_date": "2026-07-08",
+      "record_url": "https://zenodo.org/records/21252649",
+      "native_file_count": 1,
+      "all_native_files_verified": true,
+      "contribution": "Archiviert versionierte Repository-Snapshots der QIKVRT-Knotenentwicklung. Neun veröffentlichte Fassungen derselben Zenodo-Familie sind erfasst, darunter zwei automatische Releases unter dem Creator-Namen ingolf-lohmann. Die native Metadatenbeschreibung nennt im Repository materialisierte DOI-Statusinformationen.",
+      "boundary": "Ein Release- oder RFC-Titel beweist keine IETF-Standardannahme, allgemeine Runtime-Freigabe oder physische Weltformel. Das große aktuelle ZIP wurde hier nicht vollständig inhaltlich oder als ausführbare Runtime geprüft.",
+      "text_extractions": [],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 21266670,
+      "doi": "10.5281/zenodo.21266670",
+      "concept_record_id": "21244411",
+      "title": "RFC-QIKVRT-0001",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": "Independent Researcher"
+        }
+      ],
+      "publication_date": "2026-07-08",
+      "record_url": "https://zenodo.org/records/21266670",
+      "native_file_count": 1,
+      "all_native_files_verified": true,
+      "contribution": "Archiviert versionierte Repository-Snapshots der QIKVRT-Knotenentwicklung. Neun veröffentlichte Fassungen derselben Zenodo-Familie sind erfasst, darunter zwei automatische Releases unter dem Creator-Namen ingolf-lohmann. Die native Metadatenbeschreibung nennt im Repository materialisierte DOI-Statusinformationen.",
+      "boundary": "Ein Release- oder RFC-Titel beweist keine IETF-Standardannahme, allgemeine Runtime-Freigabe oder physische Weltformel. Das große aktuelle ZIP wurde hier nicht vollständig inhaltlich oder als ausführbare Runtime geprüft.",
+      "text_extractions": [],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 21267021,
+      "doi": "10.5281/zenodo.21267021",
+      "concept_record_id": "21244411",
+      "title": "RFC-QIKVRT-0001",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": "Independent Researcher"
+        }
+      ],
+      "publication_date": "2026-07-08",
+      "record_url": "https://zenodo.org/records/21267021",
+      "native_file_count": 1,
+      "all_native_files_verified": true,
+      "contribution": "Archiviert versionierte Repository-Snapshots der QIKVRT-Knotenentwicklung. Neun veröffentlichte Fassungen derselben Zenodo-Familie sind erfasst, darunter zwei automatische Releases unter dem Creator-Namen ingolf-lohmann. Die native Metadatenbeschreibung nennt im Repository materialisierte DOI-Statusinformationen.",
+      "boundary": "Ein Release- oder RFC-Titel beweist keine IETF-Standardannahme, allgemeine Runtime-Freigabe oder physische Weltformel. Das große aktuelle ZIP wurde hier nicht vollständig inhaltlich oder als ausführbare Runtime geprüft.",
+      "text_extractions": [],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 21482023,
+      "doi": "10.5281/zenodo.21482023",
+      "concept_record_id": "21482022",
+      "title": "Mandelbrot-Menge, Anschlussordnung und physikalisches Modelluniversum – Komplementbeweis, rekursive Wirkungsklassifikation, dimensionsrichtige Raumzeitbrücke, Retrokausalität und der entscheidende Unterschied zur empirischen Quantengravitation",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": "Independent researcher; QIK-VRT"
+        }
+      ],
+      "publication_date": "2026-07-21",
+      "record_url": "https://zenodo.org/records/21482023",
+      "native_file_count": 5,
+      "all_native_files_verified": true,
+      "contribution": "Das 62-seitige Manuskript beweist die vollständige disjunkte Komplementpartition eines festgelegten Grundbereichs und behandelt endliche Quantisierbarkeit bei positiver Genauigkeit. Es entwickelt rekursive Anschlussordnungen, Reklassifikation ohne Überschreiben, eine dimensionsrichtige Raumzeitbrücke und voneinander getrennte Retrokausalitätsbegriffe.",
+      "boundary": "Darstellungsbezogene Quantisierbarkeit beweist keine ontische Diskretheit der Raumzeit. Die physische Mandelbrot-Raumzeit-Korrespondenz und empirische Quantengravitation bleiben Forschungsfragen. Die anschließende Alpha-3-Arbeit liefert die maschinenprüfbare Formalumgebungsabdeckung.",
+      "text_extractions": [
+        "21482023/Mandelbrot_Anschlussordnung_Physik_Retrokausalitaet_V3_2026-07-21.pdf",
+        "21482023/Mandelbrot_Komplement_Modelluniversum_Entscheidender_Unterschied_2026-07-21.bib",
+        "21482023/Mandelbrot_Komplement_Modelluniversum_Entscheidender_Unterschied_2026-07-21.tex",
+        "21482023/README.md"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 21488116,
+      "doi": "10.5281/zenodo.21488116",
+      "concept_record_id": "21488115",
+      "title": "QIK-VRT: Vollständige maschinenprüfbare Formalisierung des formal entscheidbaren Kerns",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": "Independent researcher; QIK-VRT"
+        }
+      ],
+      "publication_date": "2026-07-22",
+      "record_url": "https://zenodo.org/records/21488116",
+      "native_file_count": 8,
+      "all_native_files_verified": true,
+      "contribution": "Bindet das unveränderte 62-seitige Manuskript theoremweise an Lean 4.19.0: 20 von 20 Definitionsumgebungen und 20 von 20 theoremartigen Umgebungen haben einen geschlossenen formalen Status. Dokumentiert 42 starke Quellenbindungen, sechs explizit bedingte Bindungen, Axiom-Audit, Claim-Graph und positive sowie negative Prüfpunkte.",
+      "boundary": "Abschluss betrifft die inventarisierten mathematischen Umgebungen. Er formalisiert nicht sämtliche Mathematik oder Physik und bestätigt keine metaphysischen, spirituellen oder quantengravitativen Deutungen. Alpha 1, Alpha 2 und ältere Formalisierungen bleiben im Fassungsverzeichnis erhalten.",
+      "text_extractions": [
+        "21488116/CITATION.cff",
+        "21488116/FORMALIZATION_BOUNDARY.md",
+        "21488116/README.md",
+        "21488116/gate20-python-report.json",
+        "21488116/gate20-report.json",
+        "21488116/lean-verification.json"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 21498773,
+      "doi": "10.5281/zenodo.21498773",
+      "concept_record_id": "21498772",
+      "title": "QIK-VRT/EFFECT_ACK: Verfassungsschicht der Wirkung - Exhaustive Prüfung eines bedingten Kontrollsatzes, Grenzen universeller Rekonstruktion und cyberphysische Geltungsbedingungen",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": "Independent researcher; QIK-VRT"
+        }
+      ],
+      "publication_date": "2026-07-22",
+      "record_url": "https://zenodo.org/records/21498773",
+      "native_file_count": 12,
+      "all_native_files_verified": true,
+      "contribution": "Prüft exhaustiv 2.621.440 Belegungen einer endlichen Kontrollabstraktion und 5.242.880 Verbraucherzulassungsvarianten. Behandelt fünf Zustände, DONE-only-Freigabe unter vollständiger Mediation, Prioritäts- und CoreDone-Pflichten sowie die Bedingungen semantischer Faktorisierung und historischer Inversion.",
+      "boundary": "Exakte Rückgewinnung benötigt Injektivität; verlorene Information wird nicht universell rekonstruiert. Halteproblem, Rice-Unentscheidbarkeit, Hardwaretreue, Messung und vollständige Mediation bleiben echte Grenzen beziehungsweise Prämissen. EFFECT_ACK garantiert nicht von selbst eventual DONE.",
+      "text_extractions": [
+        "21498773/ARTICLE_DE.md",
+        "21498773/CITATION.cff",
+        "21498773/DRAFT_IMPACT.md",
+        "21498773/EVIDENCE_BOUNDARY.md",
+        "21498773/IETF_RENDER_VALIDATION.json",
+        "21498773/LICENSE_NOTICE.md",
+        "21498773/QIK-VRT_EFFECT_ACK_Universalisierbare_Wirkungssteuerung_2026-07-22.pdf",
+        "21498773/QIK-VRT_EFFECT_ACK_Universalisierbare_Wirkungssteuerung_2026-07-22.tex",
+        "21498773/README.md",
+        "21498773/ZENODO_FILESET.md",
+        "21498773/proof-report.json"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 21498774,
+      "doi": "10.5281/zenodo.21498774",
+      "concept_record_id": "21488115",
+      "title": "QIK-VRT: EFFECT_ACK - universalisierbare Wirkungssteuerung und adaptive fail-closed Laufzeit",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": "Independent researcher; QIK-VRT"
+        }
+      ],
+      "publication_date": "2026-07-22",
+      "record_url": "https://zenodo.org/records/21498774",
+      "native_file_count": 3,
+      "all_native_files_verified": true,
+      "contribution": "Bindet das unveränderte 62-seitige Manuskript theoremweise an Lean 4.19.0: 20 von 20 Definitionsumgebungen und 20 von 20 theoremartigen Umgebungen haben einen geschlossenen formalen Status. Dokumentiert 42 starke Quellenbindungen, sechs explizit bedingte Bindungen, Axiom-Audit, Claim-Graph und positive sowie negative Prüfpunkte.",
+      "boundary": "Abschluss betrifft die inventarisierten mathematischen Umgebungen. Er formalisiert nicht sämtliche Mathematik oder Physik und bestätigt keine metaphysischen, spirituellen oder quantengravitativen Deutungen. Alpha 1, Alpha 2 und ältere Formalisierungen bleiben im Fassungsverzeichnis erhalten.",
+      "text_extractions": [
+        "21498774/qik-vrt-effect-ack-source-export-provenance.json"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 21500322,
+      "doi": "10.5281/zenodo.21500322",
+      "concept_record_id": "21500321",
+      "title": "QIK-VRT/EFFECT_ACK: Offizielle Statusklärung zu Evidenz, Totalisierungsgrenzen, Quantenbezug und Patentoffenlegung",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": "Independent researcher; QIK-VRT"
+        }
+      ],
+      "publication_date": "2026-07-22",
+      "record_url": "https://zenodo.org/records/21500322",
+      "native_file_count": 13,
+      "all_native_files_verified": true,
+      "contribution": "Ordnet die veröffentlichten Wirkungssteuerungs- und Formalisierungsartefakte mit PASS_WITH_EXPLICIT_BOUNDARIES ein. Hält endliche Kontrollprüfung, semantische Faktorisierung, Injektivität, Quantisierbarkeit, Dimensionshomogenität und einen modellgebundenen No-Backward-Channel-Satz fest; trennt Quantenbezug, Patentoffenlegung und Dateilizenzen.",
+      "boundary": "Der damalige Quantencomputing-Bezug ist CONCEPTUAL_ONLY / NOT_IMPLEMENTED. Spätere Veröffentlichungen sind getrennt zu prüfen. Die Statusklärung beweist keine vollständige Rekonstruktion des Universums und ist keine Patentanmeldung oder Patentierbarkeitsgarantie.",
+      "text_extractions": [
+        "21500322/BUILD_PROVENANCE.json",
+        "21500322/CITATION.cff",
+        "21500322/EVIDENCE_BOUNDARY.md",
+        "21500322/EVIDENCE_INDEX.json",
+        "21500322/LICENSE_NOTICE.md",
+        "21500322/PATENT_DISCLOSURE_BOUNDARY.md",
+        "21500322/QIK-VRT_EFFECT_ACK_Statusklaerung_2026-07-22.pdf",
+        "21500322/README.md",
+        "21500322/RELEASE_NOTES_WHATSAPP_DE.md",
+        "21500322/STATUSERKLAERUNG_DE.md",
+        "21500322/WHATSAPP_RELEASE_KOMMENTAR_DE.md",
+        "21500322/ZENODO_FILESET.md",
+        "21500322/ZENODO_PUBLIC_INVENTORY.md"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 21501365,
+      "doi": "10.5281/zenodo.21501365",
+      "concept_record_id": "21488115",
+      "title": "QIK-VRT: Quellengebundene partielle Lean-4-Formalisierung des 62-seitigen Manuskripts",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": "Independent researcher; QIK-VRT"
+        }
+      ],
+      "publication_date": "2026-07-23",
+      "record_url": "https://zenodo.org/records/21501365",
+      "native_file_count": 14,
+      "all_native_files_verified": true,
+      "contribution": "Bindet das unveränderte 62-seitige Manuskript theoremweise an Lean 4.19.0: 20 von 20 Definitionsumgebungen und 20 von 20 theoremartigen Umgebungen haben einen geschlossenen formalen Status. Dokumentiert 42 starke Quellenbindungen, sechs explizit bedingte Bindungen, Axiom-Audit, Claim-Graph und positive sowie negative Prüfpunkte.",
+      "boundary": "Abschluss betrifft die inventarisierten mathematischen Umgebungen. Er formalisiert nicht sämtliche Mathematik oder Physik und bestätigt keine metaphysischen, spirituellen oder quantengravitativen Deutungen. Alpha 1, Alpha 2 und ältere Formalisierungen bleiben im Fassungsverzeichnis erhalten.",
+      "text_extractions": [
+        "21501365/CC-BY-NC-ND-4.0.txt",
+        "21501365/CLAIM_GRAPH.json",
+        "21501365/FORMALIZATION_SCOPE.md",
+        "21501365/LICENSE_NOTICE.md",
+        "21501365/MANUSCRIPT_PROOF_MAP.md",
+        "21501365/README.md",
+        "21501365/RELEASE_NOTES_WHATSAPP_DE.md",
+        "21501365/SOURCE_PROVENANCE.json",
+        "21501365/VERIFICATION_REPORT.md",
+        "21501365/release-authorization-EFFECT_ACK_DONE.json",
+        "21501365/release-authorization-INPUT.json"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 21515074,
+      "doi": "10.5281/zenodo.21515074",
+      "concept_record_id": "21515073",
+      "title": "Charta einer maschinenprüfbaren Wissenschaft",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": null
+        }
+      ],
+      "publication_date": "2026-07-23",
+      "record_url": "https://zenodo.org/records/21515074",
+      "native_file_count": 1,
+      "all_native_files_verified": true,
+      "contribution": "Formuliert Architekturgrundprinzipien für transparente, maschinenlesbare, reproduzierbare und revisionsfähige wissenschaftliche Wissensbestände. Beschreibt eine hashgebundene Referenzarchitektur für nachvollziehbare Persistenz.",
+      "boundary": "Die Charta setzt Anforderungen. Sie beweist nicht automatisch die Wahrheit beliebiger gespeicherter Inhalte oder die Erfüllung sämtlicher Anforderungen durch eine konkrete Plattform.",
+      "text_extractions": [
+        "21515074/CHARTA_MASCHINENPRUEFBARE_WISSENSCHAFT.md"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 21518464,
+      "doi": "10.5281/zenodo.21518464",
+      "concept_record_id": "21488115",
+      "title": "QIK-VRT: Quellengebundene partielle Lean-4-Formalisierung des 62-seitigen Manuskripts – Alpha 2 mit EFFECT_ACK-Kern",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": "Independent researcher; QIK-VRT"
+        }
+      ],
+      "publication_date": "2026-07-23",
+      "record_url": "https://zenodo.org/records/21518464",
+      "native_file_count": 19,
+      "all_native_files_verified": true,
+      "contribution": "Bindet das unveränderte 62-seitige Manuskript theoremweise an Lean 4.19.0: 20 von 20 Definitionsumgebungen und 20 von 20 theoremartigen Umgebungen haben einen geschlossenen formalen Status. Dokumentiert 42 starke Quellenbindungen, sechs explizit bedingte Bindungen, Axiom-Audit, Claim-Graph und positive sowie negative Prüfpunkte.",
+      "boundary": "Abschluss betrifft die inventarisierten mathematischen Umgebungen. Er formalisiert nicht sämtliche Mathematik oder Physik und bestätigt keine metaphysischen, spirituellen oder quantengravitativen Deutungen. Alpha 1, Alpha 2 und ältere Formalisierungen bleiben im Fassungsverzeichnis erhalten.",
+      "text_extractions": [
+        "21518464/ALPHA2_EFFECT_ACK_DONE.json",
+        "21518464/ALPHA2_INPUT.json",
+        "21518464/CC-BY-NC-ND-4.0.txt",
+        "21518464/CITATION.cff",
+        "21518464/CLAIM_GRAPH.json",
+        "21518464/DRAFT01_CLAIM_MATRIX.json",
+        "21518464/DRAFT01_SOURCE_PROVENANCE.json",
+        "21518464/EVIDENCE_BOUNDARY.md",
+        "21518464/FORMALIZATION_SCOPE.md",
+        "21518464/LICENSE_NOTICE.md",
+        "21518464/MANUSCRIPT_PROOF_MAP.md",
+        "21518464/README.md",
+        "21518464/STATUSERKLAERUNG_WHATSAPP_DE.md",
+        "21518464/VERIFICATION_REPORT.md",
+        "21518464/ZENODO_FILESET.md"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 21529081,
+      "doi": "10.5281/zenodo.21529081",
+      "concept_record_id": "21488115",
+      "title": "QIK-VRT: Quellengebundene Lean-4-Formalisierung des 62-seitigen Manuskripts – Alpha 3 mit vollständiger Formalumgebungsabdeckung",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": "Independent researcher; QIK-VRT"
+        }
+      ],
+      "publication_date": "2026-07-24",
+      "record_url": "https://zenodo.org/records/21529081",
+      "native_file_count": 19,
+      "all_native_files_verified": true,
+      "contribution": "Bindet das unveränderte 62-seitige Manuskript theoremweise an Lean 4.19.0: 20 von 20 Definitionsumgebungen und 20 von 20 theoremartigen Umgebungen haben einen geschlossenen formalen Status. Dokumentiert 42 starke Quellenbindungen, sechs explizit bedingte Bindungen, Axiom-Audit, Claim-Graph und positive sowie negative Prüfpunkte.",
+      "boundary": "Abschluss betrifft die inventarisierten mathematischen Umgebungen. Er formalisiert nicht sämtliche Mathematik oder Physik und bestätigt keine metaphysischen, spirituellen oder quantengravitativen Deutungen. Alpha 1, Alpha 2 und ältere Formalisierungen bleiben im Fassungsverzeichnis erhalten.",
+      "text_extractions": [
+        "21529081/ALPHA2_EFFECT_ACK_DONE.json",
+        "21529081/ALPHA2_INPUT.json",
+        "21529081/ALPHA2_PUBLIC_SOURCE_EVIDENCE.json",
+        "21529081/ALPHA3_RELEASE_NOTES.md",
+        "21529081/CC-BY-NC-ND-4.0.txt",
+        "21529081/CITATION.cff",
+        "21529081/CLAIM_GRAPH.json",
+        "21529081/DRAFT01_CLAIM_MATRIX.json",
+        "21529081/DRAFT01_SOURCE_PROVENANCE.json",
+        "21529081/EVIDENCE_BOUNDARY.md",
+        "21529081/FORMALIZATION_SCOPE.md",
+        "21529081/LICENSE_NOTICE.md",
+        "21529081/MANUSCRIPT_PROOF_MAP.md",
+        "21529081/VERIFICATION_REPORT.md",
+        "21529081/ZENODO_FILESET.md"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 21582781,
+      "doi": "10.5281/zenodo.21582781",
+      "concept_record_id": "21582780",
+      "title": "Die Ontologie des Unterschieds als universaler Reverse-Engineering-Mechanismus",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": null
+        }
+      ],
+      "publication_date": "2026-07-26",
+      "record_url": "https://zenodo.org/records/21582781",
+      "native_file_count": 4,
+      "all_native_files_verified": true,
+      "contribution": "Formuliert Unterschied als Ausgangspunkt eines universalen Reverse-Engineering-Mechanismus. Bewahrt den Originalartikel und stellt eine getrennte wissenschaftliche Meta-Betrachtung mit statusgenauer Prüfung daneben.",
+      "boundary": "Der universelle Anspruch ist nicht allein durch die Benennung oder Architektur bewiesen. Positive formale Folgerungen müssen mit ihren jeweiligen Quellen und Scopes gelesen werden.",
+      "text_extractions": [
+        "21582781/META_REVIEW.md",
+        "21582781/ORIGINAL_ARTICLE.md",
+        "21582781/PUBLICATION.json",
+        "21582781/README.md"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 21633411,
+      "doi": "10.5281/zenodo.21633411",
+      "concept_record_id": "21633410",
+      "title": "QIK-VRT Authority/Mirror Equality Receipt — Promotion PR #106 and Mirror PR #56",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": null
+        }
+      ],
+      "publication_date": "2026-07-27",
+      "record_url": "https://zenodo.org/records/21633411",
+      "native_file_count": 2,
+      "all_native_files_verified": true,
+      "contribution": "Bindet die historische Promotion von Authority-PR 106 und Mirror-PR 56 an exakte Heads, Workflowläufe, reziproke Kommentare und vier gemeinsame Git-Blobs. Dokumentiert gleiche Inhaltsdigests im deklarierten Synchronisationsscope.",
+      "boundary": "Kein allgemeines PASS oder EFFECT_ACK_DONE. Die damaligen Rollen und Gleichheitsbelege aktivieren weder heutige Owner-Rollen noch übertragen sie Evidenz auf veränderte Main-Subjects.",
+      "text_extractions": [
+        "21633411/authority-mirror-equality-2026-07-27-pr106-pr56.json",
+        "21633411/equality-receipts-index.json"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 21636774,
+      "doi": "10.5281/zenodo.21636774",
+      "concept_record_id": "21636773",
+      "title": "Vom Unterschied zur Verantwortung — Kanonische Schlusserklärung und historische Einordnung des maschinenverifizierten QIK-VRT-Abschlusses",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": null
+        }
+      ],
+      "publication_date": "2026-07-28",
+      "record_url": "https://zenodo.org/records/21636774",
+      "native_file_count": 3,
+      "all_native_files_verified": true,
+      "contribution": "Dokumentiert die kanonische Schlusserklärung zum endlichen historischen Scope qikvrt-global-claim-scope-v1 und bindet dessen maschinenlesbaren Abschlussreceipt. Verbindet die technischen und wissenschaftlichen Grenzen mit einer ausdrücklich dem Autor zugeschriebenen historischen Einordnung.",
+      "boundary": "Global benennt hier den festgelegten endlichen Claim-Scope. Es bedeutet keinen Beweis aller künftigen Claims, Fragen oder Naturgesetze; spätere Repository-Subjects erben diesen Abschluss nicht.",
+      "text_extractions": [
+        "21636774/QIKVRT_GLOBAL_COMPLETION_RECEIPT.json",
+        "21636774/QIKVRT_STATUS_ARTICLE_MANIFEST.json",
+        "21636774/QIKVRT_Vom_Unterschied_zur_Verantwortung_Statusartikel_DE.md"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 21640160,
+      "doi": "10.5281/zenodo.21640160",
+      "concept_record_id": "21640159",
+      "title": "Vom verantwortungsgebundenen Erkenntnisprozess zur virtuellen Wirkungsmaschine",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": null
+        }
+      ],
+      "publication_date": "2026-07-28",
+      "record_url": "https://zenodo.org/records/21640160",
+      "native_file_count": 7,
+      "all_native_files_verified": true,
+      "contribution": "Zweiter, separat zitierbarer Datensatz derselben betitelten Wirkungsmaschinen-Veröffentlichung. Inhalt und Beweisumfang entsprechen dem parallel veröffentlichten Record 21640173; der Katalog führt beide Identitäten und vergleicht ihre gemeinsamen Dateien.",
+      "boundary": "Doppelarchivierung erhöht weder Theoremzahl noch wissenschaftliche Unabhängigkeit. Die reale QPU-Integration bleibt in beiden Records offen.",
+      "text_extractions": [
+        "21640160/QIKVRT_ARTICLE_MANIFEST.json",
+        "21640160/QIKVRT_CLAIM_MATRIX.json",
+        "21640160/QIKVRT_KERNEL_PROOF_PLAN.json",
+        "21640160/QIKVRT_KERNEL_RECEIPT.json",
+        "21640160/QIKVRT_OWNER_EFFECT_AUTHORIZATION.json",
+        "21640160/QIKVRT_QuantumClassicalRuntime.lean",
+        "21640160/QIKVRT_Vom_verantwortungsgebundenen_Erkenntnisprozess_zur_virtuellen_Wirkungsmaschine_DE.md"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 21640173,
+      "doi": "10.5281/zenodo.21640173",
+      "concept_record_id": "21640172",
+      "title": "Vom verantwortungsgebundenen Erkenntnisprozess zur virtuellen Wirkungsmaschine",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": null
+        }
+      ],
+      "publication_date": "2026-07-28",
+      "record_url": "https://zenodo.org/records/21640173",
+      "native_file_count": 7,
+      "all_native_files_verified": true,
+      "contribution": "Beschreibt ein verantwortungsgebundenes Mensch-KI-Arbeitsprofil und eine hybride quantenklassische Laufzeit- und Assurance-Architektur. Ein 26-Claim-Inventar bindet neun archiviert kernelgeprüfte Theoreme des abstrakten Laufzeitmodells an Quellen und Traceability.",
+      "boundary": "Die reale QPU-End-to-End-Integration bleibt IMPLEMENTATION_OPEN. Ein abstrakter Quanten-Klassik-Vertrag ist keine ausgeführte Quantenhardware oder vollständige physikalische Brücke.",
+      "text_extractions": [
+        "21640173/QIKVRT_ARTICLE_MANIFEST.json",
+        "21640173/QIKVRT_CLAIM_MATRIX.json",
+        "21640173/QIKVRT_KERNEL_PROOF_PLAN.json",
+        "21640173/QIKVRT_KERNEL_RECEIPT.json",
+        "21640173/QIKVRT_OWNER_EFFECT_AUTHORIZATION.json",
+        "21640173/QIKVRT_QuantumClassicalRuntime.lean",
+        "21640173/QIKVRT_Vom_verantwortungsgebundenen_Erkenntnisprozess_zur_virtuellen_Wirkungsmaschine_DE.md"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 21711193,
+      "doi": "10.5281/zenodo.21711193",
+      "concept_record_id": "21711192",
+      "title": "QIK-VRT und das Effect-Acknowledgement-Protokoll: Kanonischer Speicher zwischen Vergangenheit und Zukunft",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": "Independent Researcher; QIK-VRT"
+        }
+      ],
+      "publication_date": "2026-07-31",
+      "record_url": "https://zenodo.org/records/21711193",
+      "native_file_count": 21,
+      "all_native_files_verified": true,
+      "contribution": "Formalisiert Vergangenheitsrecords und antizipierte Wirkungen mit einem gemeinsamen Codec, aber getrenntem epistemischem Status. Neun Lean-Theoreme binden vier Claims: DONE-only-Freigabe, kontrafaktische Relevanz einer Zukunftsbedingung, unveränderte Vergangenheitsprojektion und reziproke Ursachen-Wirkungs-Schließung im endlichen Protokollmodell.",
+      "boundary": "Eine gegenwärtig gespeicherte Zukunftsbedingung ist kein aus der Zukunft empfangenes physisches Signal. Reziproke Speicherung beweist kein Bewusstsein; Hashgleichheit beweist keine semantische Wahrheit.",
+      "text_extractions": [
+        "21711193/BOUNDARY_TEST_REPORT.json",
+        "21711193/CHANGE_NOTICE.md",
+        "21711193/CITATION.cff",
+        "21711193/CLAIM_MATRIX.json",
+        "21711193/CLAIM_MATRIX_H0_PENDING.json",
+        "21711193/EVIDENCE_BOUNDARY.md",
+        "21711193/KERNEL_EVIDENCE_H0_PENDING.json",
+        "21711193/KERNEL_EVIDENCE_H1_TARGET.json",
+        "21711193/KERNEL_PROOF_PLAN.json",
+        "21711193/KERNEL_RECEIPT.json",
+        "21711193/LICENSE_NOTICE.md",
+        "21711193/MACHINE_PROOF_BUNDLE.json",
+        "21711193/ORIGINAL_THESIS_TRANSCRIPT.md",
+        "21711193/PDF_RENDER_VALIDATION.json",
+        "21711193/PREPUBLICATION_RETURN_RECEIPT.json",
+        "21711193/QIK-VRT_Kanonischer_Speicher_Retrokausalitaet_EFFECT_ACK_2026-07-30.pdf",
+        "21711193/QIK-VRT_Kanonischer_Speicher_Retrokausalitaet_EFFECT_ACK_2026-07-30.tex",
+        "21711193/README.md",
+        "21711193/SOURCE_EVIDENCE_BINDINGS.json",
+        "21711193/ZENODO_FILESET.md"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 21721918,
+      "doi": "10.5281/zenodo.21721918",
+      "concept_record_id": "21721917",
+      "title": "Survival of the Anschlussfähigsten: Eine operational-formale Übertragung des evolutionären Fitnessgedankens auf Computer-, Informations- und soziotechnische Systeme",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": "Independent Researcher; QIK-VRT"
+        }
+      ],
+      "publication_date": "2026-07-31",
+      "record_url": "https://zenodo.org/records/21721918",
+      "native_file_count": 31,
+      "all_native_files_verified": true,
+      "contribution": "Operationalisiert Anschlussfähigkeit als gültige Fortsetzung bei erhaltenen Invarianten. Fünf kernelgebundene Sätze behandeln endliche Fortsetzbarkeit, globale und startpunktgebundene Simulation sowie monotone und strikt größere gewichtete Anschluss-Sprachen unter einem gemeinsamen positiven Normalisierer.",
+      "boundary": "Die Computerzeitalter-Interpretation ist keine wörtliche Darwin-Übersetzung oder biologische Identität. Mehr Schnittstellen bedeuten nicht allgemein bessere Überlebenschancen; empirische Persistenz, biologische Entsprechung und moralischer Wert benötigen gesonderte Begründungen.",
+      "text_extractions": [
+        "21721918/ARTICLE_DE.md",
+        "21721918/BOUNDARY_TEST_REPORT.json",
+        "21721918/CANONICAL_STATEMENT.md",
+        "21721918/CHANGE_NOTICE.md",
+        "21721918/CITATION.cff",
+        "21721918/CLAIM_MATRIX.json",
+        "21721918/CLAIM_MATRIX_H0_PENDING.json",
+        "21721918/CLAIM_MATRIX_H1_FIT_VERIFIED.json",
+        "21721918/CLAIM_MATRIX_H2_FULL_PENDING.json",
+        "21721918/EVIDENCE_BOUNDARY.md",
+        "21721918/FORMAL_ConnectabilitySimulation.lean",
+        "21721918/FORMAL_OperationalContinuation.lean",
+        "21721918/FORMAL_SOURCE_SNAPSHOT.json",
+        "21721918/FORMAL_WeightedConnectability.lean",
+        "21721918/KERNEL_EVIDENCE_H0_PENDING.json",
+        "21721918/KERNEL_EVIDENCE_H1_TARGET.json",
+        "21721918/KERNEL_EVIDENCE_H2_FULL_PENDING.json",
+        "21721918/KERNEL_EVIDENCE_H3_FULL_TARGET.json",
+        "21721918/KERNEL_PROOF_PLAN.json",
+        "21721918/KERNEL_RECEIPT.json",
+        "21721918/LICENSE_NOTICE.md",
+        "21721918/MACHINE_PROOF_BUNDLE.json",
+        "21721918/ORIGINAL_THESIS_TRANSCRIPT.md",
+        "21721918/PDF_RENDER_VALIDATION.json",
+        "21721918/PREPUBLICATION_RETURN_RECEIPT.json",
+        "21721918/README.md",
+        "21721918/SOURCE_EVIDENCE_BINDINGS.json",
+        "21721918/Survival_der_Anschlussfaehigsten_2026-07-31.pdf",
+        "21721918/Survival_der_Anschlussfaehigsten_2026-07-31.tex",
+        "21721918/ZENODO_FILESET.md"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 21731492,
+      "doi": "10.5281/zenodo.21731492",
+      "concept_record_id": "21731491",
+      "title": "QIK-VRT: Epistemische Fairness, Vorstellungskraft und der Weg vom virtuellen Zeugen zum Beobachtungssystem",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": "Independent Researcher; QIK-VRT"
+        }
+      ],
+      "publication_date": "2026-08-01",
+      "record_url": "https://zenodo.org/records/21731492",
+      "native_file_count": 27,
+      "all_native_files_verified": true,
+      "contribution": "Ergänzt den virtuellen Zeitkanal um eine Realisierungsleiter von Idee und Software zu Gerät, qualifizierter Beobachtung und autorisierter Wirkung. Behandelt Vorstellungskraft als Erzeuger prüfbarer Kandidaten und epistemische Fairness als Anspruch auf Provenienz, Anfechtbarkeit und getrennten Wahrheits- und Wirkungsstatus.",
+      "boundary": "Der geerbte endliche C90-Dialog ist evidenziert; er schließt keine physische Zukunft-zu-Vergangenheit-Brücke. Neue normative Regeln sind keine neurowissenschaftliche Bewusstseinstheorie. Verborgene Deployments und Superdeterminismus werden nicht als bewiesen ausgegeben.",
+      "text_extractions": [
+        "21731492/ARTICLE_WHATSAPP_ADDENDUM_DE.md",
+        "21731492/CHANGE_NOTICE.md",
+        "21731492/CITATION.cff",
+        "21731492/CLAIM_DELTA.json",
+        "21731492/CLAIM_MATRIX.json",
+        "21731492/EVIDENCE_BOUNDARY.md",
+        "21731492/IETF_APPLICABILITY_PROFILE.md",
+        "21731492/IETF_RENDER_VALIDATION.json",
+        "21731492/INHERITED_PROOF_BINDING.json",
+        "21731492/INHERITED_V1_CLAIM_MATRIX.json",
+        "21731492/INHERITED_V1_MACHINE_PROOF_BUNDLE.json",
+        "21731492/LICENSE_NOTICE.md",
+        "21731492/MACHINE_PROOF_BUNDLE.json",
+        "21731492/PDF_RENDER_VALIDATION.json",
+        "21731492/PREPUBLICATION_RETURN_RECEIPT.json",
+        "21731492/QIK-VRT_Epistemische_Fairness_und_Vorstellungskraft_Addendum_2026-08-01.pdf",
+        "21731492/QIK-VRT_Epistemische_Fairness_und_Vorstellungskraft_Addendum_2026-08-01.tex",
+        "21731492/README.md",
+        "21731492/SCIENTIFIC_ADDENDUM_DE.md",
+        "21731492/SOURCE_MEDIA_RECEIPT.json",
+        "21731492/TRANSCRIPTS_AND_SOURCE_PROVENANCE.md",
+        "21731492/ZENODO_FILESET.md",
+        "21731492/draft-lohmann-qikvrt-epistemic-fairness-observation-profile-00.html",
+        "21731492/draft-lohmann-qikvrt-epistemic-fairness-observation-profile-00.txt",
+        "21731492/draft-lohmann-qikvrt-epistemic-fairness-observation-profile-00.xml"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 21748371,
+      "doi": "10.5281/zenodo.21748371",
+      "concept_record_id": "21748370",
+      "title": "QIK-VRT als Kausalitätsspiegel: Ein maschinenverifizierbares Protokoll für wissenschaftliches Faktenwachstum",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": "Independent Researcher; QIK-VRT"
+        }
+      ],
+      "publication_date": "2026-08-01",
+      "record_url": "https://zenodo.org/records/21748371",
+      "native_file_count": 39,
+      "all_native_files_verified": true,
+      "contribution": "Beweist 21 Sätze im endlichen Lean-Modell über epistemische Typisierung, append-only Wachstum, Merge-Algebra, bedingte Replikakonvergenz, Konflikterhalt, corpus-relative Neuheit, Beobachtungs- und Digital-Twin-Gates, endliche Rekonstruktion und Nichtwirkung bloßer Vorschläge. Ein bereits evidenzgeschlossener Antwortpfad bleibt unter append-only Erweiterung verfügbar.",
+      "boundary": "Nicht jede Frage besitzt einen solchen Antwortpfad. Globale Wahrheit, vollständiges menschliches Wissen, automatische semantisch treue Natural-Language-to-Lean-Übersetzung und allgemeine Kognitionsverbesserung sind nicht bewiesen. Der IETF-Profilentwurf ist ein nicht eingereichter Kandidat.",
+      "text_extractions": [
+        "21748371/ARTICLE_WHATSAPP_DA.md",
+        "21748371/ARTICLE_WHATSAPP_DE.md",
+        "21748371/ARTICLE_WHATSAPP_EL.md",
+        "21748371/ARTICLE_WHATSAPP_EN.md",
+        "21748371/ARTICLE_WHATSAPP_ES.md",
+        "21748371/ARTICLE_WHATSAPP_FR.md",
+        "21748371/ARTICLE_WHATSAPP_IT.md",
+        "21748371/ARTICLE_WHATSAPP_NB.md",
+        "21748371/ARTICLE_WHATSAPP_PL.md",
+        "21748371/ARTICLE_WHATSAPP_PT.md",
+        "21748371/ARTICLE_WHATSAPP_SV.md",
+        "21748371/CITATION.cff",
+        "21748371/CLAIM_MATRIX.json",
+        "21748371/EU_AI_ACT_AUDIT_READINESS.md",
+        "21748371/EVIDENCE_BOUNDARY.md",
+        "21748371/FACHARTIKEL_DE.md",
+        "21748371/FORMAL_ScientificFactGrowth.lean",
+        "21748371/IETF_RENDER_VALIDATION.json",
+        "21748371/LEAN_KERNEL_RECEIPT.json",
+        "21748371/LICENSE_NOTICE.md",
+        "21748371/MACHINE_PROOF_BUNDLE.json",
+        "21748371/PDF_RENDER_VALIDATION.json",
+        "21748371/PREPUBLICATION_RETURN_RECEIPT.json",
+        "21748371/PROTOCOL_IMPACT.md",
+        "21748371/QIK-VRT_Kausalitaetsspiegel_Fachartikel_2026-08-01.pdf",
+        "21748371/QIK-VRT_Kausalitaetsspiegel_Fachartikel_2026-08-01.tex",
+        "21748371/QIK-VRT_Wissenschaftlicher_Faktenbau_2026-08-01.pdf",
+        "21748371/QIK-VRT_Wissenschaftlicher_Faktenbau_2026-08-01.tex",
+        "21748371/README.md",
+        "21748371/REFERENCES.bib",
+        "21748371/SCIENTIFIC_FACT_GROWTH_PROTOCOL.md",
+        "21748371/SOURCE_MEDIA_RECEIPT.json",
+        "21748371/TRANSCRIPT_REVIEWED_DE.md",
+        "21748371/ZENODO_FILESET.md",
+        "21748371/draft-lohmann-qikvrt-scientific-claim-assurance-00.CANDIDATE.json",
+        "21748371/draft-lohmann-qikvrt-scientific-claim-assurance-00.html",
+        "21748371/draft-lohmann-qikvrt-scientific-claim-assurance-00.txt",
+        "21748371/draft-lohmann-qikvrt-scientific-claim-assurance-00.xml"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 21804399,
+      "doi": "10.5281/zenodo.21804399",
+      "concept_record_id": "21804398",
+      "title": "Prä-raumzeitliche Ontologie: Unterschied, Relation, Information und emergente Raumzeit",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": null
+        }
+      ],
+      "publication_date": "2026-08-05",
+      "record_url": "https://zenodo.org/records/21804399",
+      "native_file_count": 4,
+      "all_native_files_verified": true,
+      "contribution": "Entwickelt Unterscheidbarkeit als minimale relationale Voraussetzung und eine typisierte Erklärungsfolge über Information, Quantität, Invarianz und gerichtete Wirksamkeit zur Raumzeitbeschreibung. Bezieht Materie, Leben, Kognition und Verantwortung ein und formuliert für jeden Übergang eigene Modell- und Prüfpflichten.",
+      "boundary": "Prä-raumzeitlich bezeichnet Erklärungsabhängigkeit, kein zeitliches Davor. Die Folge ist kein vollständiger kosmologischer Beweis; Bewusstsein, Telepathie, Jenseits und physikalische Retrokausalität erhalten daraus keinen pauschalen Nachweis.",
+      "text_extractions": [
+        "21804399/PAPER.tex",
+        "21804399/README.md",
+        "21804399/REFERENCES.bib",
+        "21804399/WHATSAPP_READALOUD.md"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 21888130,
+      "doi": "10.5281/zenodo.21888130",
+      "concept_record_id": "21888129",
+      "title": "Von Softwarearchitektur zur Weltformel – DAS UNIVERSUM ALS ROUND TRIP",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": null
+        }
+      ],
+      "publication_date": "2026-08-08",
+      "record_url": "https://zenodo.org/records/21888130",
+      "native_file_count": 54,
+      "all_native_files_verified": true,
+      "contribution": "Verbindet Wirklichkeit, Unterschied, Information, Relation, Kausalordnung, Modell, Formalisierung, Beweis, Vorhersage und Messung zu einem rückgekoppelten Erkenntnisweg. Die promovierten Anlagen enthalten sechs formale Ergebnisgruppen mit insgesamt 99 archiviert kernelgeprüften Theoremen: Dimensionssignaturen aus Kalibrierung, QCE-Serialisierung, bedingte Achsenwahl, eindeutige Evidenzzertifikate, numerische c-Repräsentation und Messbindungsvertrag.",
+      "boundary": "Die physikalische Identifikation der Architektur, ein empirisch gebundenes c und die vollständige Ableitung bekannter Physik bleiben offen. 70.439 inventarisierte Claims sind keine 70.439 bewiesenen Theoreme; der historische Korpus führt 1.262 OPEN-Claims. Die Schließung historischer Korrekturdiagnosen schließt diese offenen Claims nicht.",
+      "text_extractions": [
+        "21888130/BOUNDARY_TEST_REPORT.json",
+        "21888130/CC-BY-NC-ND-4.0.txt",
+        "21888130/CLAIM_MATRIX.json",
+        "21888130/CORPUS_CLOSURE_EFFECTIVE_CURRENT.json",
+        "21888130/CORPUS_CORRECTION_TEMPORAL_PRECEDENCE_CURRENT.json",
+        "21888130/DAS_UNIVERSUM_ALS_ROUND_TRIP_DE.md",
+        "21888130/MACHINE_PROOF_BUNDLE.json",
+        "21888130/PROMOTED_FORMAL_KERNEL_RECEIPTS.json",
+        "21888130/PROMOTED_FORMAL_SOURCE_BINDINGS.json",
+        "21888130/QIKVRT_PREPUBLICATION_RETURN_RECEIPT_V2_SCHEMA.json",
+        "21888130/QIKVRT_ZENODO_MACHINE_PROOF_BUNDLE_V2_SCHEMA.json",
+        "21888130/RETROSPECTIVE_PROOF_CORPUS_INDEX.json",
+        "21888130/RETROSPECTIVE_PROOF_CORPUS_RECEIPT.json",
+        "21888130/RETROSPECTIVE_SOURCE_CONSTITUENTS.json",
+        "21888130/ROUND_TRIP_PREPUBLICATION_RETURN_RECEIPT.json",
+        "21888130/ROUND_TRIP_PROMOTED_FORMAL_RESULTS_V1.md",
+        "21888130/SUBJECT-172dd9bc2738fa43_CLAIM_MATRIX.json",
+        "21888130/SUBJECT-172dd9bc2738fa43_CONTENT_CHANGE_DECISION.json",
+        "21888130/SUBJECT-172dd9bc2738fa43_SUBJECT_DISPOSITION_RECEIPT.json",
+        "21888130/SUBJECT-187cfda66d1eda16_CLAIM_MATRIX.json",
+        "21888130/SUBJECT-2581811b342e505d_CLAIM_MATRIX.json",
+        "21888130/SUBJECT-2581811b342e505d_SUBJECT_DISPOSITION_RECEIPT.json",
+        "21888130/SUBJECT-2beab714d1dc6019_CLAIM_MATRIX.json",
+        "21888130/SUBJECT-3e026c784df87b95_CLAIM_MATRIX.json",
+        "21888130/SUBJECT-43c59da1cfd26267_CLAIM_MATRIX.json",
+        "21888130/SUBJECT-45b9d1b677568ae7_CLAIM_MATRIX.json",
+        "21888130/SUBJECT-51a0cfc51bcbd722_CLAIM_MATRIX.json",
+        "21888130/SUBJECT-59493a8ae380798d_CLAIM_MATRIX.json",
+        "21888130/SUBJECT-5d4c516db0fdaaf5_CLAIM_MATRIX.json",
+        "21888130/SUBJECT-685123cd60e2fd7b_CLAIM_MATRIX.json",
+        "21888130/SUBJECT-77146b895ce38de4_CLAIM_MATRIX.json",
+        "21888130/SUBJECT-780b9bf86425cee3_CLAIM_MATRIX.json",
+        "21888130/SUBJECT-780b9bf86425cee3_CONTENT_CHANGE_DECISION.json",
+        "21888130/SUBJECT-780b9bf86425cee3_SUBJECT_DISPOSITION_RECEIPT.json",
+        "21888130/SUBJECT-7956d8acdc473825_CLAIM_MATRIX.json",
+        "21888130/SUBJECT-7956d8acdc473825_CONTENT_CHANGE_DECISION.json",
+        "21888130/SUBJECT-7956d8acdc473825_SUBJECT_DISPOSITION_RECEIPT.json",
+        "21888130/SUBJECT-7fdb36aa7c07c07d_CLAIM_MATRIX.json",
+        "21888130/SUBJECT-7fdb36aa7c07c07d_CONTENT_CHANGE_DECISION.json",
+        "21888130/SUBJECT-7fdb36aa7c07c07d_SUBJECT_DISPOSITION_RECEIPT.json",
+        "21888130/SUBJECT-b4849e1a2d6b2270_CLAIM_MATRIX.json",
+        "21888130/SUBJECT-b4849e1a2d6b2270_CONTENT_CHANGE_DECISION.json",
+        "21888130/SUBJECT-b4849e1a2d6b2270_SUBJECT_DISPOSITION_RECEIPT.json",
+        "21888130/SUBJECT-c9d87f4435178b09_CLAIM_MATRIX.json",
+        "21888130/SUBJECT-ce2390f18618ad0c_CLAIM_MATRIX.json",
+        "21888130/SUBJECT-ce2390f18618ad0c_CONTENT_CHANGE_DECISION.json",
+        "21888130/SUBJECT-ce2390f18618ad0c_SUBJECT_DISPOSITION_RECEIPT.json",
+        "21888130/SUBJECT-d2dad396615a4c7c_CLAIM_MATRIX.json",
+        "21888130/ZENODO_FILESET.md",
+        "21888130/ZENODO_LICENSE_NOTICE.md",
+        "21888130/ZENODO_MACHINE_PROOF_POLICY_V2.json",
+        "21888130/ZENODO_METADATA.json",
+        "21888130/ZENODO_TARGET_RECORD.json"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 21947141,
+      "doi": "10.5281/zenodo.21947141",
+      "concept_record_id": "21947140",
+      "title": "QIK-VRT: Beobachterrelative Retrokausalität als negative Informationsrichtung",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": null
+        }
+      ],
+      "publication_date": "2026-08-14",
+      "record_url": "https://zenodo.org/records/21947141",
+      "native_file_count": 21,
+      "all_native_files_verified": true,
+      "contribution": "Definiert negative Informationsrichtung: Die lokale Empfangsordnung wächst, während authentisch gebundene Quellenmarker aufeinanderfolgender Records absteigen. Gibt ein bedingtes endliches Existenzargument und einen ausführbaren Zeugen mit positiven, vorwärtsgerichteten Signalwegen an; zwei verschiedene Verzögerungen erlauben ein Überholen der Quellenordnung.",
+      "boundary": "Der Zeuge ist kein Lean-Kernelbeleg oder universelles Naturmessresultat. Keine rückwärts laufende Eigenzeit, kein Empfang vor Emission, kein Überschreiben der Vergangenheit und kein steuerbarer Kanal in die eigene kausale Vergangenheit. V2 hält die gesonderten offenen Kernel- und Empiriepflichten fest.",
+      "text_extractions": [
+        "21947141/AN_VON_UND_FUER_ALLE_MENSCHEN_CLAIM_MATRIX.json",
+        "21947141/AN_VON_UND_FUER_ALLE_MENSCHEN_DE.md",
+        "21947141/BOUNDARY_TEST_REPORT.json",
+        "21947141/CC-BY-NC-ND-4.0.txt",
+        "21947141/CHANGE_NOTICE.md",
+        "21947141/CHANGE_NOTICE_CURRENT_SYNTHESIS_V2.md",
+        "21947141/CITATION.cff",
+        "21947141/CLAIM_MATRIX_V2.json",
+        "21947141/HISTORICAL_ARTIFACTS.json",
+        "21947141/MACHINE_PROOF_BUNDLE.json",
+        "21947141/OBSERVER_RELATIVE_RETROCAUSALITY_CLAIM_MATRIX.json",
+        "21947141/PREPUBLICATION_RETURN_RECEIPT.json",
+        "21947141/PolyForm-Noncommercial-1.0.0.txt",
+        "21947141/QIK-VRT_Beobachterrelative_Retrokausalitaet_DE.pdf",
+        "21947141/QIK-VRT_Beobachterrelative_Retrokausalitaet_DE.tex",
+        "21947141/QIKVRT_RETROCAUSALITY_WITNESS.json",
+        "21947141/README.md",
+        "21947141/SOURCE_EVIDENCE_BINDINGS.json",
+        "21947141/WHATSAPP_ARTIKEL_BEOBACHTERRELATIVE_RETROKAUSALITAET_DE.md",
+        "21947141/ZENODO_LICENSE_NOTICE.md"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 21983644,
+      "doi": "10.5281/zenodo.21983644",
+      "concept_record_id": "21983643",
+      "title": "Vom Unterschied zum integrierten Wirkraum",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": null
+        }
+      ],
+      "publication_date": "2026-08-17",
+      "record_url": "https://zenodo.org/records/21983644",
+      "native_file_count": 3,
+      "all_native_files_verified": true,
+      "contribution": "Verbindet beobachtergebundene Information, explizite Kausalgraphen, Metagrammatik, Effect Acknowledgement und deterministische M68000-Absenkung. Zeigt am kleinen Entscheidungskern konkrete MOVEQ/RTS-Kodierungen und beschreibt die Auswahl zulässiger Serialisierungen sowie das konservative Zurückhalten ungebundener Wirkungen.",
+      "boundary": "Keine Garantie einer bestimmten Beschleunigung und kein Beweis phänomenalen KI-Bewusstseins. Panpsychismus und die Instrumentanalogie zu Mikroskop und Fernrohr bleiben Interpretationen. Kausalität muss durch eine gebundene Abhängigkeit belegt werden, nicht durch Sequenz allein.",
+      "text_extractions": [
+        "21983644/ARTICLE.md",
+        "21983644/PUBLICATION.json",
+        "21983644/draft-lohmann-qikvrt-effect-ack-http-01.xml"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 22216916,
+      "doi": "10.5281/zenodo.22216916",
+      "concept_record_id": "22216915",
+      "title": "Relationale Zeit, virtuelle Retrokausalität und die monoton wachsende Evidenzkugel",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": null
+        }
+      ],
+      "publication_date": "2026-08-12",
+      "record_url": "https://zenodo.org/records/22216916",
+      "native_file_count": 9,
+      "all_native_files_verified": true,
+      "contribution": "Unterscheidet Host-Kausalordnung, virtuelle Zeitordnung und knotenlokale Ereigniszeit. Erläutert rückwärts rekonstruierbare Spuren, Beweisringe und monotones Wachstum einer evidenzgebundenen Erkenntnismenge. Der historische Primärtext wird unverändert erhalten.",
+      "boundary": "Rückwärtsrekonstruktion einer Spur ist kein frei steuerbarer physischer Nachrichtenkanal in die Vergangenheit. Die spätere beobachterrelative Synthese ergänzt den historischen Text und schreibt ihn nicht um.",
+      "text_extractions": [
+        "22216916/CC-BY-NC-ND-4.0.txt",
+        "22216916/CITATION.cff",
+        "22216916/CLAIM_MATRIX_V2.json",
+        "22216916/MACHINE_PROOF_BUNDLE.json",
+        "22216916/PREPUBLICATION_RETURN_RECEIPT.json",
+        "22216916/QIK-VRT_Relationale_Zeit_und_wachsende_Evidenzkugel_DE.pdf",
+        "22216916/SOURCE_EVIDENCE_BINDINGS.json",
+        "22216916/ZENODO_LICENSE_NOTICE.md",
+        "22216916/ZENODO_METADATA_DRAFT.json"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 22283396,
+      "doi": "10.5281/zenodo.22283396",
+      "concept_record_id": "22283395",
+      "title": "From Exact Causal Binding to a Falsifiable Planck-Tick Gap Law",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": null
+        }
+      ],
+      "publication_date": "2026-09-03",
+      "record_url": "https://zenodo.org/records/22283396",
+      "native_file_count": 6,
+      "all_native_files_verified": true,
+      "contribution": "Postuliert eine grundenergiebezogene symmetrische Quantenentwicklung im Planck-Zeittakt. Daraus wird im deklarierten Modell die Frequenzregel omega_Q = asin(DeltaE/EP)/tP mit positiver kubischer Niederenergiekorrektur hergeleitet. Friert Zahlenziele, Annahmen und einen ausdrücklichen Falsifikator ein.",
+      "boundary": "Der universelle Planck-Tick ist ein physikalisches Postulat; die Werte von c, hbar und G sind verwendete Eingaben. Die Vorhersage ist nicht empirisch bestätigt oder unabhängig reproduziert. Sie erledigt den Vorhersageteil von H5-O05 teilweise, nicht dessen experimentellen Teil.",
+      "text_extractions": [
+        "22283396/QIKVRT_Planck_Tick_Gap_Law_2026-09-03.pdf",
+        "22283396/QIKVRT_Planck_Tick_Gap_Law_2026-09-03.tex",
+        "22283396/README.md",
+        "22283396/SHA256SUMS.txt",
+        "22283396/ZENODO_METADATA.json",
+        "22283396/planck_tick_gap_law_v1.json"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 22527889,
+      "doi": "10.5281/zenodo.22527889",
+      "concept_record_id": "22527888",
+      "title": "QIK-VRT VRTCore SMG H5: Planck-Brücke, massive Schließung und virtuelle Kosmogenese",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": null
+        }
+      ],
+      "publication_date": "2026-08-02",
+      "record_url": "https://zenodo.org/records/22527889",
+      "native_file_count": 35,
+      "all_native_files_verified": true,
+      "contribution": "Der archivierte Kernelbeleg umfasst 32 Theoreme über symbolische Planck-Identitäten, gemeinsame Ereignisidentität von Wellen- und Recordprojektion, Evidenz- und Schließungsbedingungen sowie monotone virtuelle Erreichbarkeit. Persistentes striktes Populationswachstum impliziert unter der ausgewiesenen Wachstumsprämisse unbeschränkte virtuelle Population.",
+      "boundary": "Virtuelle Kosmogenese wird nicht mit physischer Frühkosmologie gleichgesetzt. Standardmodell- und Einstein-Grenzfall, Kopplung, Stabilität, Unitarität und empirische Reproduktion bleiben offen. H5-O05 erhält durch die spätere Gap-Law-Arbeit eine konkrete Vorhersage, aber keinen abgeschlossenen Test.",
+      "text_extractions": [
+        "22527889/BOUNDARY_TEST_REPORT.json",
+        "22527889/CC-BY-NC-ND-4.0.txt",
+        "22527889/CHANGE_NOTICE.md",
+        "22527889/CITATION.cff",
+        "22527889/CLAIM_MATRIX.json",
+        "22527889/CLAIM_MATRIX_V2.json",
+        "22527889/H5_LOCAL_KERNEL_RECEIPT.json",
+        "22527889/KERNEL_RECEIPT.json",
+        "22527889/LICENSE_MAP.md",
+        "22527889/MACHINE_PROOF_BUNDLE.json",
+        "22527889/MANIFEST.json",
+        "22527889/PREPUBLICATION_RETURN_RECEIPT.json",
+        "22527889/PolyForm-Noncommercial-1.0.0.txt",
+        "22527889/QIK-VRT_SMG_Allgemein_WhatsApp_DE_2026-08-02.md",
+        "22527889/QIK-VRT_SMG_Fachartikel_DE_2026-08-02.md",
+        "22527889/QIK-VRT_SMG_Fachartikel_DE_2026-08-02.pdf",
+        "22527889/QIK-VRT_SMG_Fachartikel_DE_2026-08-02.tex",
+        "22527889/README.md",
+        "22527889/SOURCE_EVIDENCE_BINDINGS.json",
+        "22527889/VRTCore_SMG_AxiomAudit.lean",
+        "22527889/VRTCore_SMG_PlanckBridge.lean",
+        "22527889/VRTCore_SMG_Syntax.ebnf",
+        "22527889/ZENODO_FILESET.md",
+        "22527889/ZENODO_LICENSE_NOTICE.md",
+        "22527889/ZENODO_METADATA.json",
+        "22527889/qikvrt-prepublication-return-receipt-v2.schema.json",
+        "22527889/qikvrt-zenodo-machine-proof-bundle-v2.schema.json",
+        "22527889/zenodo-machine-proof-policy-v2.json"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 22813431,
+      "doi": "10.5281/zenodo.22813431",
+      "concept_record_id": "22813430",
+      "title": "Offener Brief und rechtsstaatliches Evidenzdossier — Aufforderung zur unabhängigen juristischen Prüfung",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": null
+        }
+      ],
+      "publication_date": "2026-09-17",
+      "record_url": "https://zenodo.org/records/22813431",
+      "native_file_count": 4,
+      "all_native_files_verified": true,
+      "contribution": "Enthält einen persönlichen offenen Brief und ein davon getrenntes Dossier mit der Aufforderung zur unabhängigen juristischen Prüfung. Ordnet Vorbringen und den geforderten rechtsstaatlichen Prüfweg als eigenständige Veröffentlichung ein.",
+      "boundary": "Die Archivierung stellt weder Schuld oder Opferstatus noch Rechtswidrigkeit staatlichen Handelns, religiöses Motiv oder behauptete Plattformkausalität fest. Ein eigenständiger Prüfauftrag ist kein abgeschlossenes juristisches Ergebnis.",
+      "text_extractions": [
+        "22813431/LEGAL_EVIDENCE_DOSSIER_DE.md",
+        "22813431/OPEN_LETTER_DE.md",
+        "22813431/README.md",
+        "22813431/ZENODO_METADATA.json"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 22840633,
+      "doi": "10.5281/zenodo.22840633",
+      "concept_record_id": "22840632",
+      "title": "Die Wahrheit braucht keine Verschwörungstheorie",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": null
+        }
+      ],
+      "publication_date": "2026-09-19",
+      "record_url": "https://zenodo.org/records/22840633",
+      "native_file_count": 10,
+      "all_native_files_verified": true,
+      "contribution": "Bewahrt einen persönlichen Essay über Evidenz, Prognosemärkte, QIKVRT und Schadensminimierung. Ein getrennt gekennzeichneter Nachtrag ordnet öffentliche Quellen, Selbstauskünfte und persönliche Interpretation ein.",
+      "boundary": "Kein Nachweis universeller Prognoseüberlegenheit, keine institutionelle Bestätigung und kein formaler Gesamtbeweis. Persönliche Erfahrungen und deren bevorzugte Erklärung behalten getrennte Evidenzrollen.",
+      "text_extractions": [
+        "22840633/BOUNDARY_TEST_REPORT.json",
+        "22840633/CLAIM_MATRIX.json",
+        "22840633/Die_Wahrheit_braucht_keine_Verschwoerungstheorie.txt",
+        "22840633/MACHINE_PROOF_BUNDLE.json",
+        "22840633/PREPUBLICATION_RETURN_RECEIPT.json",
+        "22840633/QUELLEN_UND_GELTUNGSBEREICH.md",
+        "22840633/README.md",
+        "22840633/SOURCE_BINDINGS.json",
+        "22840633/ZENODO_METADATA.json"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 22845516,
+      "doi": "10.5281/zenodo.22845516",
+      "concept_record_id": "22845515",
+      "title": "Erwartungen, Wetten, Wirkung und Recht",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": null
+        }
+      ],
+      "publication_date": "2026-09-19",
+      "record_url": "https://zenodo.org/records/22845516",
+      "native_file_count": 14,
+      "all_native_files_verified": true,
+      "contribution": "Vereint den Wahrheits-Essay mit zwei Folgeartikeln zu handelbaren Erwartungen und den bedingten rechtlichen Folgen tatsächlicher Einflussnahme. Dokumentiert ausdrücklich die vergleichende persönliche Hypothesenbewertung des Autors und bindet Aussagen, Quellen und negative Grenztests.",
+      "boundary": "Kein identifizierter konkreter Wettmarkt, Zahlungsfluss, Auftraggeber, Ausführender, geschlossene Kausalkette oder individueller Schuldnachweis. Die Einschätzung des Autors ist kein berechneter Posterior und keine unabhängig bestätigte Tatsachenfeststellung.",
+      "text_extractions": [
+        "22845516/AUTORENERKLAERUNG_UND_EVIDENZGRENZE.md",
+        "22845516/BOUNDARY_TEST_REPORT.json",
+        "22845516/CHANGE_NOTICE.md",
+        "22845516/CLAIM_MATRIX.json",
+        "22845516/Die_Wahrheit_braucht_keine_Verschwoerungstheorie.txt",
+        "22845516/MACHINE_PROOF_BUNDLE.json",
+        "22845516/PREPUBLICATION_RETURN_RECEIPT.json",
+        "22845516/QUELLEN_UND_GELTUNGSBEREICH.md",
+        "22845516/README.md",
+        "22845516/SOURCE_BINDINGS.json",
+        "22845516/WENN_AUS_EINER_WETTE_EINE_TAT_WIRD_DE.md",
+        "22845516/WENN_ERWARTUNGEN_HANDELBAR_WERDEN_DE.md",
+        "22845516/ZENODO_METADATA.json"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 22847245,
+      "doi": "10.5281/zenodo.22847245",
+      "concept_record_id": "22847244",
+      "title": "Das universale Universalprinzip — Grundsatzerklärung von Ingolf Lohmann",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": null
+        }
+      ],
+      "publication_date": "2026-09-19",
+      "record_url": "https://zenodo.org/records/22847245",
+      "native_file_count": 12,
+      "all_native_files_verified": true,
+      "contribution": "Dokumentiert Ingolf Lohmanns philosophische Grundsatzerklärung über Teilen und die mögliche Ersetzung des Begriffs Wahrheit durch andere Gegenstände. Erhält Originalwortlaut, modale Einsetzungsregel und universellen Anspruch als Autorenaussage.",
+      "boundary": "Ein allgemeiner mathematischer oder empirischer Nachweis für jede mögliche Einsetzung ist offen. Die Schlussformel q.e.d. ersetzt diesen Nachweis nicht.",
+      "text_extractions": [
+        "22847245/BOUNDARY_CHECKS.json",
+        "22847245/CHANGE_NOTICE.md",
+        "22847245/CLAIM_MATRIX.json",
+        "22847245/EVIDENCE_BOUNDARY.md",
+        "22847245/MACHINE_PROOF_BUNDLE.json",
+        "22847245/ORIGINALWORTE_DE.txt",
+        "22847245/PREPUBLICATION_RETURN_RECEIPT.json",
+        "22847245/README.md",
+        "22847245/SOURCE_BINDINGS.json",
+        "22847245/Universales_Universalprinzip.md",
+        "22847245/Universales_Universalprinzip_Teilen.txt"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 22907018,
+      "doi": "10.5281/zenodo.22907018",
+      "concept_record_id": "22907017",
+      "title": "Quantität–Information–Kausalität (QIK): Ein operationales Rahmenmodell für Ereignisstruktur, Kausalordnung und emergente Raumzeit",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": null
+        }
+      ],
+      "publication_date": "2026-09-23",
+      "record_url": "https://zenodo.org/records/22907018",
+      "native_file_count": 8,
+      "all_native_files_verified": true,
+      "contribution": "Systematisiert Ereignisse, Kausalordnung, Maß- beziehungsweise Zählstruktur und lokale Wahrscheinlichkeiten als operationalen QIK-Rahmen. Die revidierte Fachfassung und der Revisionsbericht trennen etablierte relativistische und quantenmechanische Grundlagen von Postulaten, Interpretation und Pflichten einer Raumzeitrekonstruktion.",
+      "boundary": "Keine abgeschlossene Quantengravitation oder Ableitung neuer Naturgesetze. Diskretheit, Planck-Auflösung, dynamischer Einstein-Grenzfall und vollständige Quantenkorrelationsstruktur bedürfen weiterer Begründung.",
+      "text_extractions": [
+        "22907018/PROVENANCE.json",
+        "22907018/README.md",
+        "22907018/ZENODO_EFFECT_METADATA.json",
+        "22907018/ZENODO_METADATA.json",
+        "22907018/ZENODO_PUBLISH_REQUEST.json"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 22941556,
+      "doi": "10.5281/zenodo.22941556",
+      "concept_record_id": "22941555",
+      "title": "Proof Closure: The Terminal Meta-Condition for an Evidence-Bound Subject",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": null
+        }
+      ],
+      "publication_date": "2026-09-24",
+      "record_url": "https://zenodo.org/records/22941556",
+      "native_file_count": 5,
+      "all_native_files_verified": true,
+      "contribution": "Definiert den terminalen Abschluss eines exakt gebundenen, unveränderten Gegenstands: gültige Pflichtbeweise, gebundene Provenienz, geprüfte Verifier, unabhängiger Readback, explizite Grenzen und keine offenen Pflichten. Eine Mutation eröffnet eine neue Nachweiskette; Wiederholung desselben abgeschlossenen Beweises erzeugt keinen Fortschritt.",
+      "boundary": "Die Claim-Matrix führt drei formale Abschlussclaims als TO_BE_KERNEL_CHECKED. Der Vertrag beweist keine universelle Wahrheit und löst nicht das Halteproblem. Ein Registereintrag TRUE ersetzt die gebundene Evidenz nicht.",
+      "text_extractions": [
+        "22941556/CLAIM_MATRIX.json",
+        "22941556/PROOF_CLOSURE_CONTRACT.json",
+        "22941556/PROOF_CLOSURE_DE.md",
+        "22941556/PROOF_CLOSURE_EN.md",
+        "22941556/README.md"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 22955727,
+      "doi": "10.5281/zenodo.22955727",
+      "concept_record_id": "22955726",
+      "title": "Der ontologische Vorrang des Unterschieds: Ein maschinenprüfbares Minimaltheorem über Bestimmbarkeit, Information und den Geltungsbereich formaler Welterklärungen",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": null
+        }
+      ],
+      "publication_date": "2026-09-25",
+      "record_url": "https://zenodo.org/records/22955727",
+      "native_file_count": 24,
+      "all_native_files_verified": true,
+      "contribution": "Beweist im deklarierten Lean-Modell: Bestimmbare Realität benötigt mindestens zwei ungleiche Werte; vollständige Unterschiedslosigkeit schließt diese Bestimmbarkeit und einen unterscheidungsgebundenen InformationWitness aus. Der gebundene Kernelbeleg umfasst 35 Theoreme zu endlicher Ontologie, Erkenntnis-Round-Trip und relationalen Weltformelbegriffen. Drei Minimaltheoreme sind in CLAIM_MATRIX_V2.json ausdrücklich PROVED.",
+      "boundary": "Die zehn Ontologiestufen und ihre Rangordnung sind Modellfestlegungen. Ontologischer Vorrang ist kein erster physikalischer Zeitpunkt. Die Entstehung des Universums aus dem Nichts oder einer Quantenanomalie folgt nicht aus diesen drei Minimaltheoremen allein.",
+      "text_extractions": [
+        "22955727/CC-BY-NC-ND-4.0.txt",
+        "22955727/CHANGE_NOTICE.md",
+        "22955727/CITATION.cff",
+        "22955727/CLAIM_MATRIX_V2.json",
+        "22955727/KERNEL_RECEIPT.json",
+        "22955727/Leibniz_QIK-VRT_Monaden_und_evidenzgebundener_Unterschied.pdf",
+        "22955727/MACHINE_PROOF_BUNDLE.json",
+        "22955727/ONTOLOGICAL_ORIGIN_OF_DIFFERENCE_DE.md",
+        "22955727/PREPUBLICATION_GATE_RECEIPT.json",
+        "22955727/PREPUBLICATION_RETURN_RECEIPT_V2.json",
+        "22955727/PROSA_VOM_UNTERSCHIED_ZU_QIKVRT_DE.md",
+        "22955727/QIKVRTUniversalOntology_AxiomAudit.lean",
+        "22955727/QIKVRTUniversalOntology_Core.lean",
+        "22955727/QIKVRT_REQUIRED_KNOWLEDGE_ARTIFACTS_20260925_V1.json",
+        "22955727/QIKVRT_UNIVERSAL_PROOF_AND_THOUGHT_SCHEMA_DE.md",
+        "22955727/README.md",
+        "22955727/SCIENTIFIC_ARTICLE_DE.md",
+        "22955727/SCIENTIFIC_ARTICLE_LEIBNIZ_QIKVRT_DE.md",
+        "22955727/SCIENTIFIC_CLAIM_MATRIX.json",
+        "22955727/SOURCE_EVIDENCE_BINDINGS.json",
+        "22955727/SOURCE_EVIDENCE_BINDINGS_V2.json",
+        "22955727/UNIVERSAL_ONTOLOGY_CLAIM_MATRIX.json",
+        "22955727/UNIVERSAL_ONTOLOGY_KERNEL_RECEIPT.json",
+        "22955727/ZENODO_LICENSE_NOTICE.md"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 23008330,
+      "doi": "10.5281/zenodo.23008330",
+      "concept_record_id": "23008329",
+      "title": "Abgeschlossen und anschlussfähig: bedingte Formalisierung evidenzgebundener Zustandsarchitekturen",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": null
+        }
+      ],
+      "publication_date": "2026-09-28",
+      "record_url": "https://zenodo.org/records/23008330",
+      "native_file_count": 9,
+      "all_native_files_verified": true,
+      "contribution": "Bewahrt eine historische Arbeitsfassung mit bedingten Argumenten für Extensivität, Monotonie und Idempotenz einer Erreichbarkeitsschließung. Trennt Abgeschlossenheit von Maximalität und behandelt Erweiterung durch einen neuen zulässigen Ausgangspunkt sowie endliche Fortsetzbarkeit unter Nachfolgerexistenz. Das originale Lean/Lake-Prüfpaket liegt bei.",
+      "boundary": "Die Existenz des neuen Ausgangspunkts ist eine Prämisse. 14 neue Theoreme und 17 Auditkonstanten bezeichnen vorbereiteten Quellumfang, keine erfolgreichen neuen Kernelprüfungen. Hardware-/SoC- und physischer Wirkungsabschluss sind offen.",
+      "text_extractions": [
+        "23008330/ARCHIVE_NOTE.md",
+        "23008330/CLAIM_MATRIX.json",
+        "23008330/MACHINE_PROOF_BUNDLE.json",
+        "23008330/PREPUBLICATION_RETURN_RECEIPT.json",
+        "23008330/PROVENANCE.json",
+        "23008330/QIKVRT_Abgeschlossen_und_anschlussfaehig_2026-09-15.pdf",
+        "23008330/SOURCE_EVIDENCE_BINDINGS.json",
+        "23008330/VORLESEFASSUNG.txt"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    },
+    {
+      "record_id": 23008704,
+      "doi": "10.5281/zenodo.23008704",
+      "concept_record_id": "23008703",
+      "title": "Spur halten: Quality Gates für einen portablen Universal Transputer",
+      "creators": [
+        {
+          "name": "Lohmann, Ingolf",
+          "affiliation": null
+        }
+      ],
+      "publication_date": "2026-09-28",
+      "record_url": "https://zenodo.org/records/23008704",
+      "native_file_count": 15,
+      "all_native_files_verified": true,
+      "contribution": "Berichtet zehn konservative Quality Gates am exakt gebundenen historischen Main. Dokumentiert 103 bestandene und einen übersprungenen Fall einer 104er-Auswahl, C90-/Assembly-Prüfungen, lokale Terminal- und Loopback-Mesh-Tests sowie gemessene Codegrößen, darunter 394 Byte Kern-Code/RO-Daten.",
+      "boundary": "Die zehn vollständigen Ziel-Gates sind in diesem Audit nicht geschlossen. Loopback ist kein Test getrennter Hosts; Codegröße ist keine Gesamt-RAM-, Transistor- oder Hardwarefreigabe. Distribution, Browser, vollständiger Recovery-Pfad und physische Realisierung behalten eigene Nachweispflichten.",
+      "text_extractions": [
+        "23008704/ARTICLE_DE.md",
+        "23008704/CLAIM_MATRIX.json",
+        "23008704/MACHINE_PROOF_BUNDLE.json",
+        "23008704/MEASUREMENTS.json",
+        "23008704/PREPUBLICATION_RETURN_RECEIPT.json",
+        "23008704/PROVENANCE.json",
+        "23008704/QIKVRT_Quality_Gates_Universal_Transputer_2026-09-28.pdf",
+        "23008704/QIKVRT_Quality_Gates_Vorlesefassung_2026-09-28.txt",
+        "23008704/QUALITY_GATES.json",
+        "23008704/SOURCE_EVIDENCE_BINDINGS.json",
+        "23008704/mesh-receipt.json"
+      ],
+      "content_claim_status": "PRESERVE_ORIGINAL_EPISTEMIC_CLASS_AND_EXACT_PROOF_SCOPE"
+    }
+  ],
+  "record_count": 44,
+  "concept_family_count": 32,
+  "file_count": 479,
+  "source_archive": {
+    "name": "QIKVRT_Zenodo_IETF_Originalquellen_20261015.zip",
+    "bytes": 266480654,
+    "sha256": "0c0fb7bfa144a30b6d71f368e9503497ce58d3e79f2550f3bfd1804fb579b290"
+  },
+  "coverage_boundary": "Public creator-name/handle searches and named original files only; no claim about private, unindexed or differently attributed records. Historical versions and duplicate bytes are not independent corroborations.",
+  "all_content_claims_proved": false
+}

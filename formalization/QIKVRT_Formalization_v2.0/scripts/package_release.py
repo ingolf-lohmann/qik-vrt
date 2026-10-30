@@ -31,6 +31,9 @@ EXCLUDED_PARTS = {
 # immutable Alpha-2 release and are therefore not part of its closed historical
 # input set. They remain compiled and tested in the current repository.
 POST_ALPHA2_EXCLUSIONS = {
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/ReconstructibleVirtuality.lean",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/ReconstructibleVirtualityAxiomAudit.lean",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/VirtualSphereBridge.lean",
     "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/StorageIntegrity.lean",
     "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/StorageIntegrityAxiomAudit.lean",
     "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CausalDistance.lean",

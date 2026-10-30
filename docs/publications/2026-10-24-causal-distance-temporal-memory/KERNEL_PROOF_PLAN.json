@@ -8,9 +8,9 @@
   "source_bindings": {
     "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck.lean": {
       "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck.lean",
-      "bytes": 1618,
-      "sha256": "7061aaa0d9959f6a5397531062276393580909385e52e82f02ce64fa234a1043",
-      "git_blob_sha1": "3ba05628fd377a54f71936d4bc6bfc1b969a5695"
+      "bytes": 1710,
+      "sha256": "494807a1cc1f4ad90a5422ba5e78673051a4ec7384616dfeabbe77ffdb09cc88",
+      "git_blob_sha1": "85985d6b48632d693f22145580b1ac8b529360cc"
     },
     "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CausalDistance.lean": {
       "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CausalDistance.lean",
@@ -62,9 +62,9 @@
     },
     "formalization/QIKVRT_Formalization_v2.0/lakefile.toml": {
       "path": "formalization/QIKVRT_Formalization_v2.0/lakefile.toml",
-      "bytes": 265,
-      "sha256": "45d01cd75d0b966cceaed22a246d804811544f8b7c0403ba5d7a6d0e78a55f30",
-      "git_blob_sha1": "5cec9150deb3e6821dc3ae2b4bf12e36ca8f53da"
+      "bytes": 460,
+      "sha256": "981db0d6cd1883ad7dbbc3900aa377c6b760d82ebe23be42ccd20ddda8c02762",
+      "git_blob_sha1": "95b8e9bd11c6b35a5f5e3d1b5b356dce4ff4ad37"
     }
   },
   "expected_axioms_by_theorem": {

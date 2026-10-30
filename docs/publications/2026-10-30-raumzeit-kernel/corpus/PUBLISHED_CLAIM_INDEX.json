@@ -1,0 +1,1559 @@
+{
+  "schema": "qikvrt_source_declared_claim_inventory_v1",
+  "source_declared_claim_occurrences": 72603,
+  "source_files": [
+    {
+      "record_id": 21498773,
+      "file": "proof-report.json",
+      "claim_occurrences": 10,
+      "classification_counts": {
+        "UNSPECIFIED": 10
+      },
+      "status_counts": {
+        "PASS": 5,
+        "PASS_CONDITIONAL": 1,
+        "PASS_MODEL_CONDITIONAL": 1,
+        "PASS_BOUNDED_MODEL": 1,
+        "PASS_BOUNDED_MODEL_WITH_COUNTEREXAMPLES": 1,
+        "CONTINUE_PARTIAL_CORE_ONLY": 1
+      },
+      "distinct_canonical_claim_objects": 10,
+      "claim_multiset_sha256": "79df5c4d8658d99b96a512a7d83881092edb33537d45e5de2431d4a112c43b13"
+    },
+    {
+      "record_id": 21501365,
+      "file": "CLAIM_GRAPH.json",
+      "claim_occurrences": 43,
+      "classification_counts": {
+        "UNSPECIFIED": 43
+      },
+      "status_counts": {
+        "UNSPECIFIED": 43
+      },
+      "distinct_canonical_claim_objects": 43,
+      "claim_multiset_sha256": "8a2d4f1570e87a6f98fc6d26f575a6897b5faca07cc07a8a2480e85a28d3f5e7"
+    },
+    {
+      "record_id": 21518464,
+      "file": "CLAIM_GRAPH.json",
+      "claim_occurrences": 43,
+      "classification_counts": {
+        "UNSPECIFIED": 43
+      },
+      "status_counts": {
+        "UNSPECIFIED": 43
+      },
+      "distinct_canonical_claim_objects": 43,
+      "claim_multiset_sha256": "8a2d4f1570e87a6f98fc6d26f575a6897b5faca07cc07a8a2480e85a28d3f5e7"
+    },
+    {
+      "record_id": 21518464,
+      "file": "DRAFT01_CLAIM_MATRIX.json",
+      "claim_occurrences": 15,
+      "classification_counts": {
+        "NORMATIVE_PROTOCOL": 6,
+        "COUNTEREXAMPLE": 2,
+        "CONDITIONAL_SOFTWARE_THEOREM": 1,
+        "CONDITIONAL_CYBERPHYSICAL_THEOREM": 1,
+        "INFORMATION_THEOREM": 2,
+        "IMPLEMENTATION_CONFORMANCE": 1,
+        "EMPIRICAL_PHYSICS": 1,
+        "TOTALITY_CLAIM": 1
+      },
+      "status_counts": {
+        "KERNEL_PROVED": 10,
+        "KERNEL_PROVED_CONDITIONAL": 2,
+        "OPEN": 2,
+        "EMPIRICAL_OPEN": 1
+      },
+      "distinct_canonical_claim_objects": 15,
+      "claim_multiset_sha256": "da74fe35ff1f685f9fe17b4976e208a9cbdea6d0e663bc6a761fa5955057ad75"
+    },
+    {
+      "record_id": 21529081,
+      "file": "CLAIM_GRAPH.json",
+      "claim_occurrences": 43,
+      "classification_counts": {
+        "UNSPECIFIED": 43
+      },
+      "status_counts": {
+        "UNSPECIFIED": 43
+      },
+      "distinct_canonical_claim_objects": 43,
+      "claim_multiset_sha256": "dfd2d4ee2f178f389b537b601fd8ca027f31d2684ab9fe1781f489c3172c2112"
+    },
+    {
+      "record_id": 21529081,
+      "file": "DRAFT01_CLAIM_MATRIX.json",
+      "claim_occurrences": 15,
+      "classification_counts": {
+        "NORMATIVE_PROTOCOL": 6,
+        "COUNTEREXAMPLE": 2,
+        "CONDITIONAL_SOFTWARE_THEOREM": 1,
+        "CONDITIONAL_CYBERPHYSICAL_THEOREM": 1,
+        "INFORMATION_THEOREM": 2,
+        "IMPLEMENTATION_CONFORMANCE": 1,
+        "EMPIRICAL_PHYSICS": 1,
+        "TOTALITY_CLAIM": 1
+      },
+      "status_counts": {
+        "KERNEL_PROVED": 10,
+        "KERNEL_PROVED_CONDITIONAL": 2,
+        "OPEN": 2,
+        "EMPIRICAL_OPEN": 1
+      },
+      "distinct_canonical_claim_objects": 15,
+      "claim_multiset_sha256": "da74fe35ff1f685f9fe17b4976e208a9cbdea6d0e663bc6a761fa5955057ad75"
+    },
+    {
+      "record_id": 21640160,
+      "file": "QIKVRT_CLAIM_MATRIX.json",
+      "claim_occurrences": 26,
+      "classification_counts": {
+        "HISTORICAL_EVIDENCE_BOUND": 2,
+        "ARCHITECTURE_SPECIFIED": 2,
+        "AUTHORIAL_INTERPRETATION": 2,
+        "NEGATIVE_BOUNDARY": 3,
+        "EXTERNAL_DOCUMENTED": 7,
+        "FORMAL_KERNEL_PROVED": 8,
+        "IMPLEMENTATION_OPEN": 1,
+        "AUTHORIAL_ARCHITECTURE_SUMMARY": 1
+      },
+      "status_counts": {
+        "SUPPORTED": 12,
+        "SUPPORTED_BY_DOCUMENTED_PROCESS": 1,
+        "INTERPRETIVE": 1,
+        "ENFORCED": 3,
+        "PROOF_SOURCE_PRESENT_AWAITING_KERNEL_RECEIPT": 8,
+        "OPEN": 1
+      },
+      "distinct_canonical_claim_objects": 26,
+      "claim_multiset_sha256": "864298928176ec36736abb7cc414a80ee8a5532842de8d7d12e917c76534ff59"
+    },
+    {
+      "record_id": 21640173,
+      "file": "QIKVRT_CLAIM_MATRIX.json",
+      "claim_occurrences": 26,
+      "classification_counts": {
+        "HISTORICAL_EVIDENCE_BOUND": 2,
+        "ARCHITECTURE_SPECIFIED": 2,
+        "AUTHORIAL_INTERPRETATION": 2,
+        "NEGATIVE_BOUNDARY": 3,
+        "EXTERNAL_DOCUMENTED": 7,
+        "FORMAL_KERNEL_PROVED": 8,
+        "IMPLEMENTATION_OPEN": 1,
+        "AUTHORIAL_ARCHITECTURE_SUMMARY": 1
+      },
+      "status_counts": {
+        "SUPPORTED": 12,
+        "SUPPORTED_BY_DOCUMENTED_PROCESS": 1,
+        "INTERPRETIVE": 1,
+        "ENFORCED": 3,
+        "PROOF_SOURCE_PRESENT_AWAITING_KERNEL_RECEIPT": 8,
+        "OPEN": 1
+      },
+      "distinct_canonical_claim_objects": 26,
+      "claim_multiset_sha256": "864298928176ec36736abb7cc414a80ee8a5532842de8d7d12e917c76534ff59"
+    },
+    {
+      "record_id": 21711193,
+      "file": "CLAIM_MATRIX.json",
+      "claim_occurrences": 22,
+      "classification_counts": {
+        "FORMAL_PROVED": 4,
+        "SOURCE_BOUND": 11,
+        "NORMATIVE": 3,
+        "INTERPRETATIVE": 1,
+        "OPEN": 2,
+        "EMPIRICALLY_EVIDENCED": 1
+      },
+      "status_counts": {
+        "KERNEL_VERIFIED": 4,
+        "BOUND": 11,
+        "DECLARED": 4,
+        "OPEN": 2,
+        "EVIDENCED": 1
+      },
+      "distinct_canonical_claim_objects": 22,
+      "claim_multiset_sha256": "0dea720bee66219e5236c70d681341e8510fbc66c12d57a74fcbceead9f561f7"
+    },
+    {
+      "record_id": 21711193,
+      "file": "CLAIM_MATRIX_H0_PENDING.json",
+      "claim_occurrences": 22,
+      "classification_counts": {
+        "FORMAL_PENDING_KERNEL": 4,
+        "SOURCE_BOUND": 11,
+        "NORMATIVE": 3,
+        "INTERPRETATIVE": 1,
+        "OPEN": 2,
+        "EMPIRICALLY_EVIDENCED": 1
+      },
+      "status_counts": {
+        "PROOF_SOURCE_PRESENT_AWAITING_EXACT_HEAD_KERNEL_RECEIPT": 4,
+        "BOUND": 11,
+        "DECLARED": 4,
+        "OPEN": 2,
+        "EVIDENCED": 1
+      },
+      "distinct_canonical_claim_objects": 22,
+      "claim_multiset_sha256": "0d5354f9f04cc49b31a680a02f15f065b3888d264f0ac6a43bd4dd9ea10bb6f5"
+    },
+    {
+      "record_id": 21711193,
+      "file": "KERNEL_EVIDENCE_H0_PENDING.json",
+      "claim_occurrences": 4,
+      "classification_counts": {
+        "UNSPECIFIED": 4
+      },
+      "status_counts": {
+        "UNSPECIFIED": 4
+      },
+      "distinct_canonical_claim_objects": 4,
+      "claim_multiset_sha256": "0ff10aaff67b8035d2cbcea3bb0f0df449a77d0f4840d334fd5a878156532ee6"
+    },
+    {
+      "record_id": 21711193,
+      "file": "KERNEL_EVIDENCE_H1_TARGET.json",
+      "claim_occurrences": 4,
+      "classification_counts": {
+        "UNSPECIFIED": 4
+      },
+      "status_counts": {
+        "UNSPECIFIED": 4
+      },
+      "distinct_canonical_claim_objects": 4,
+      "claim_multiset_sha256": "0ff10aaff67b8035d2cbcea3bb0f0df449a77d0f4840d334fd5a878156532ee6"
+    },
+    {
+      "record_id": 21711193,
+      "file": "MACHINE_PROOF_BUNDLE.json",
+      "claim_occurrences": 22,
+      "classification_counts": {
+        "FORMAL_PROVED": 4,
+        "SOURCE_BOUND": 11,
+        "NORMATIVE": 3,
+        "INTERPRETATIVE": 1,
+        "OPEN": 2,
+        "EMPIRICALLY_EVIDENCED": 1
+      },
+      "status_counts": {
+        "PROVED": 4,
+        "BOUND": 11,
+        "DECLARED": 4,
+        "OPEN": 2,
+        "EVIDENCED": 1
+      },
+      "distinct_canonical_claim_objects": 22,
+      "claim_multiset_sha256": "2873b4908247be01c956e2163e5ec1553ec3c699f6e53930c14d2e88c3457320"
+    },
+    {
+      "record_id": 21711193,
+      "file": "PREPUBLICATION_RETURN_RECEIPT.json",
+      "claim_occurrences": 22,
+      "classification_counts": {
+        "UNSPECIFIED": 22
+      },
+      "status_counts": {
+        "UNSPECIFIED": 22
+      },
+      "distinct_canonical_claim_objects": 22,
+      "claim_multiset_sha256": "05aae00840a45efcefef519ac16c4adafcbfa62b60231a5bf3205d48fb773aa7"
+    },
+    {
+      "record_id": 21721918,
+      "file": "CLAIM_MATRIX.json",
+      "claim_occurrences": 11,
+      "classification_counts": {
+        "SOURCE_BOUND": 2,
+        "INTERPRETATIVE": 1,
+        "FORMAL_PROVED": 5,
+        "OPEN": 2,
+        "NORMATIVE": 1
+      },
+      "status_counts": {
+        "BOUND": 2,
+        "DECLARED": 2,
+        "KERNEL_VERIFIED": 5,
+        "OPEN": 2
+      },
+      "distinct_canonical_claim_objects": 11,
+      "claim_multiset_sha256": "ddd82172dc9605c5a7dca4c5e84a06c27e5ba204c2518dec5b3cc438d9eacc78"
+    },
+    {
+      "record_id": 21721918,
+      "file": "CLAIM_MATRIX_H0_PENDING.json",
+      "claim_occurrences": 11,
+      "classification_counts": {
+        "SOURCE_BOUND": 2,
+        "INTERPRETATIVE": 1,
+        "FORMAL_PENDING_KERNEL": 3,
+        "MATHEMATICAL_DERIVATION": 2,
+        "OPEN": 2,
+        "NORMATIVE": 1
+      },
+      "status_counts": {
+        "BOUND": 2,
+        "AUTHORIAL_INTERPRETATION": 1,
+        "PROOF_SOURCE_PRESENT_AWAITING_EXACT_HEAD_KERNEL_RECEIPT": 3,
+        "PAPER_DERIVATION_NOT_KERNEL_PROMOTED": 2,
+        "OPEN_EMPIRICAL": 1,
+        "NOT_CLAIMED_OUT_OF_SCOPE": 1,
+        "DOES_NOT_FOLLOW": 1
+      },
+      "distinct_canonical_claim_objects": 11,
+      "claim_multiset_sha256": "adf462c9bf4a2ae334b412406bcc15210fce3551fc8ae4f80efcf59e47853d19"
+    },
+    {
+      "record_id": 21721918,
+      "file": "CLAIM_MATRIX_H1_FIT_VERIFIED.json",
+      "claim_occurrences": 11,
+      "classification_counts": {
+        "SOURCE_BOUND": 2,
+        "INTERPRETATIVE": 1,
+        "FORMAL_PROVED": 3,
+        "MATHEMATICAL_DERIVATION": 2,
+        "OPEN": 2,
+        "NORMATIVE": 1
+      },
+      "status_counts": {
+        "BOUND": 2,
+        "AUTHORIAL_INTERPRETATION": 1,
+        "KERNEL_VERIFIED": 3,
+        "PAPER_DERIVATION_NOT_KERNEL_PROMOTED": 2,
+        "OPEN_EMPIRICAL": 1,
+        "NOT_CLAIMED_OUT_OF_SCOPE": 1,
+        "DOES_NOT_FOLLOW": 1
+      },
+      "distinct_canonical_claim_objects": 11,
+      "claim_multiset_sha256": "76f15fa967c900666b40277c6bf78ab5708017862781b9d7b184008b26f17d5c"
+    },
+    {
+      "record_id": 21721918,
+      "file": "CLAIM_MATRIX_H2_FULL_PENDING.json",
+      "claim_occurrences": 11,
+      "classification_counts": {
+        "SOURCE_BOUND": 2,
+        "INTERPRETATIVE": 1,
+        "FORMAL_PENDING_KERNEL": 5,
+        "OPEN": 2,
+        "NORMATIVE": 1
+      },
+      "status_counts": {
+        "BOUND": 2,
+        "DECLARED": 2,
+        "PROOF_SOURCE_PRESENT_AWAITING_EXACT_HEAD_KERNEL_RECEIPT": 5,
+        "OPEN": 2
+      },
+      "distinct_canonical_claim_objects": 11,
+      "claim_multiset_sha256": "53303ad44f65609603afc1a5ff7d678c9e8602c7b2e09840ef157aaf4779f24d"
+    },
+    {
+      "record_id": 21721918,
+      "file": "KERNEL_EVIDENCE_H0_PENDING.json",
+      "claim_occurrences": 3,
+      "classification_counts": {
+        "UNSPECIFIED": 3
+      },
+      "status_counts": {
+        "UNSPECIFIED": 3
+      },
+      "distinct_canonical_claim_objects": 3,
+      "claim_multiset_sha256": "b5c8b102fa1bcc3ccb049573eac312470d470c0a904badc342f8f4e0198fc0dd"
+    },
+    {
+      "record_id": 21721918,
+      "file": "KERNEL_EVIDENCE_H1_TARGET.json",
+      "claim_occurrences": 3,
+      "classification_counts": {
+        "UNSPECIFIED": 3
+      },
+      "status_counts": {
+        "UNSPECIFIED": 3
+      },
+      "distinct_canonical_claim_objects": 3,
+      "claim_multiset_sha256": "b5c8b102fa1bcc3ccb049573eac312470d470c0a904badc342f8f4e0198fc0dd"
+    },
+    {
+      "record_id": 21721918,
+      "file": "KERNEL_EVIDENCE_H2_FULL_PENDING.json",
+      "claim_occurrences": 5,
+      "classification_counts": {
+        "UNSPECIFIED": 5
+      },
+      "status_counts": {
+        "UNSPECIFIED": 5
+      },
+      "distinct_canonical_claim_objects": 5,
+      "claim_multiset_sha256": "58aea5c448f82b976d93bdc9299c0fd01789de33851eaa165a7a607202fb1e1c"
+    },
+    {
+      "record_id": 21721918,
+      "file": "KERNEL_EVIDENCE_H3_FULL_TARGET.json",
+      "claim_occurrences": 5,
+      "classification_counts": {
+        "UNSPECIFIED": 5
+      },
+      "status_counts": {
+        "UNSPECIFIED": 5
+      },
+      "distinct_canonical_claim_objects": 5,
+      "claim_multiset_sha256": "58aea5c448f82b976d93bdc9299c0fd01789de33851eaa165a7a607202fb1e1c"
+    },
+    {
+      "record_id": 21721918,
+      "file": "MACHINE_PROOF_BUNDLE.json",
+      "claim_occurrences": 11,
+      "classification_counts": {
+        "SOURCE_BOUND": 2,
+        "INTERPRETATIVE": 1,
+        "FORMAL_PROVED": 5,
+        "OPEN": 2,
+        "NORMATIVE": 1
+      },
+      "status_counts": {
+        "BOUND": 2,
+        "DECLARED": 2,
+        "PROVED": 5,
+        "OPEN": 2
+      },
+      "distinct_canonical_claim_objects": 11,
+      "claim_multiset_sha256": "dabfd7c47591e958f1515f93b8fe97b1dbda3bbfeb6ae53bb45d2b6b04ad03ad"
+    },
+    {
+      "record_id": 21721918,
+      "file": "PREPUBLICATION_RETURN_RECEIPT.json",
+      "claim_occurrences": 11,
+      "classification_counts": {
+        "UNSPECIFIED": 11
+      },
+      "status_counts": {
+        "UNSPECIFIED": 11
+      },
+      "distinct_canonical_claim_objects": 11,
+      "claim_multiset_sha256": "c749a519acadaa22a117d6c080629a2052bd1d09e7dc81317566bc8a3080faba"
+    },
+    {
+      "record_id": 21731492,
+      "file": "CLAIM_DELTA.json",
+      "claim_occurrences": 8,
+      "classification_counts": {
+        "NORMATIVE": 5,
+        "INTERPRETATIVE": 1,
+        "OPEN": 2
+      },
+      "status_counts": {
+        "DECLARED": 6,
+        "OPEN": 2
+      },
+      "distinct_canonical_claim_objects": 8,
+      "claim_multiset_sha256": "ad438c764714ae0988f86fa3e2587350bd4f7ca9200277dfb005e3d109555ec0"
+    },
+    {
+      "record_id": 21731492,
+      "file": "CLAIM_MATRIX.json",
+      "claim_occurrences": 8,
+      "classification_counts": {
+        "NORMATIVE": 5,
+        "INTERPRETATIVE": 1,
+        "OPEN": 2
+      },
+      "status_counts": {
+        "DECLARED": 6,
+        "OPEN": 2
+      },
+      "distinct_canonical_claim_objects": 8,
+      "claim_multiset_sha256": "1e016f06a0df7c7eb10f1d96afcf44ace9bdf3e2b8967b626c0bad2a57af1f40"
+    },
+    {
+      "record_id": 21731492,
+      "file": "INHERITED_PROOF_BINDING.json",
+      "claim_occurrences": 13,
+      "classification_counts": {
+        "EMPIRICALLY_EVIDENCED": 2,
+        "OPEN": 9,
+        "SOURCE_BOUND": 1,
+        "NORMATIVE": 1
+      },
+      "status_counts": {
+        "EVIDENCED": 2,
+        "OPEN": 9,
+        "BOUND": 1,
+        "DECLARED": 1
+      },
+      "distinct_canonical_claim_objects": 13,
+      "claim_multiset_sha256": "2fb38d9bdaa07fc34348d5b094a7f47ae599fe7bf63701f334090b58960d837a"
+    },
+    {
+      "record_id": 21731492,
+      "file": "INHERITED_V1_CLAIM_MATRIX.json",
+      "claim_occurrences": 13,
+      "classification_counts": {
+        "EMPIRICALLY_EVIDENCED": 2,
+        "OPEN": 9,
+        "SOURCE_BOUND": 1,
+        "NORMATIVE": 1
+      },
+      "status_counts": {
+        "EVIDENCED": 2,
+        "OPEN": 9,
+        "BOUND": 1,
+        "DECLARED": 1
+      },
+      "distinct_canonical_claim_objects": 13,
+      "claim_multiset_sha256": "1314ecc539faccd749e4cc58e705c3f2a7ac0f5c2f49f3aeaab0d517bbc0604e"
+    },
+    {
+      "record_id": 21731492,
+      "file": "INHERITED_V1_MACHINE_PROOF_BUNDLE.json",
+      "claim_occurrences": 13,
+      "classification_counts": {
+        "EMPIRICALLY_EVIDENCED": 2,
+        "OPEN": 9,
+        "SOURCE_BOUND": 1,
+        "NORMATIVE": 1
+      },
+      "status_counts": {
+        "EVIDENCED": 2,
+        "OPEN": 9,
+        "BOUND": 1,
+        "DECLARED": 1
+      },
+      "distinct_canonical_claim_objects": 13,
+      "claim_multiset_sha256": "ac4d8a3bcdf34af5c93d24b5c49706c63ba16e8e31d06805a88d02d77539e711"
+    },
+    {
+      "record_id": 21731492,
+      "file": "MACHINE_PROOF_BUNDLE.json",
+      "claim_occurrences": 8,
+      "classification_counts": {
+        "NORMATIVE": 5,
+        "INTERPRETATIVE": 1,
+        "OPEN": 2
+      },
+      "status_counts": {
+        "DECLARED": 6,
+        "OPEN": 2
+      },
+      "distinct_canonical_claim_objects": 8,
+      "claim_multiset_sha256": "943ff1cdd248b3bb7a32d1cc83494d34ee312f9a777e1b76ced033c82944164b"
+    },
+    {
+      "record_id": 21748371,
+      "file": "CLAIM_MATRIX.json",
+      "claim_occurrences": 30,
+      "classification_counts": {
+        "FORMAL_PROVED": 21,
+        "INTERPRETATIVE": 2,
+        "NORMATIVE": 2,
+        "SOURCE_BOUND": 1,
+        "OPEN": 4
+      },
+      "status_counts": {
+        "PROVED": 21,
+        "DECLARED": 4,
+        "BOUND": 1,
+        "OPEN": 4
+      },
+      "distinct_canonical_claim_objects": 30,
+      "claim_multiset_sha256": "13e351b9c977aafad2a75724be4c28931b8a601d3793f9975dca0b89bb2f8922"
+    },
+    {
+      "record_id": 21748371,
+      "file": "MACHINE_PROOF_BUNDLE.json",
+      "claim_occurrences": 30,
+      "classification_counts": {
+        "FORMAL_PROVED": 21,
+        "INTERPRETATIVE": 2,
+        "NORMATIVE": 2,
+        "SOURCE_BOUND": 1,
+        "OPEN": 4
+      },
+      "status_counts": {
+        "PROVED": 21,
+        "DECLARED": 4,
+        "BOUND": 1,
+        "OPEN": 4
+      },
+      "distinct_canonical_claim_objects": 30,
+      "claim_multiset_sha256": "2702a04e048f2bbc271d157c8908f97d1cdaff39f220d5b087653110fb833493"
+    },
+    {
+      "record_id": 21888130,
+      "file": "CLAIM_MATRIX.json",
+      "claim_occurrences": 12,
+      "classification_counts": {
+        "FORMAL_PROVED": 6,
+        "SOURCE_BOUND": 3,
+        "INTERPRETATIVE": 1,
+        "OPEN": 2
+      },
+      "status_counts": {
+        "PROVED": 6,
+        "BOUND": 3,
+        "DECLARED": 1,
+        "OPEN": 2
+      },
+      "distinct_canonical_claim_objects": 12,
+      "claim_multiset_sha256": "7bb4005b8b82a8920edf0bac4e877232f25fc614629e845d98f4a6cee7b2d5bf"
+    },
+    {
+      "record_id": 21888130,
+      "file": "MACHINE_PROOF_BUNDLE.json",
+      "claim_occurrences": 12,
+      "classification_counts": {
+        "FORMAL_PROVED": 6,
+        "SOURCE_BOUND": 3,
+        "INTERPRETATIVE": 1,
+        "OPEN": 2
+      },
+      "status_counts": {
+        "PROVED": 6,
+        "BOUND": 3,
+        "DECLARED": 1,
+        "OPEN": 2
+      },
+      "distinct_canonical_claim_objects": 12,
+      "claim_multiset_sha256": "294c18001a3bca9f86527f10f63b17dbdff4ab07fa052be7939d9d89d8939f5e"
+    },
+    {
+      "record_id": 21888130,
+      "file": "SUBJECT-172dd9bc2738fa43_CLAIM_MATRIX.json",
+      "claim_occurrences": 5715,
+      "classification_counts": {
+        "OPEN": 175,
+        "SOURCE_BOUND": 5044,
+        "EMPIRICALLY_EVIDENCED": 390,
+        "NORMATIVE": 90,
+        "INTERPRETATIVE": 16
+      },
+      "status_counts": {
+        "HISTORICAL_POSITIVE_COMPLETION_OR_UNIVERSALITY_ASSERTION_NOT_REVALIDATED": 157,
+        "EXACT_PUBLIC_SOURCE_BOUND": 2319,
+        "SOURCE_IDENTITY_OR_LABEL": 345,
+        "CONTRADICTED_BY_RECURSIVE_BYTE_AUDIT": 18,
+        "SOURCE_RECORDED_INTEGRITY_ASSERTION": 427,
+        "SUPPORTED_BY_RECURSIVE_BYTE_AUDIT": 390,
+        "NORMATIVE_SOURCE_STATEMENT": 77,
+        "IMPLEMENTATION_SOURCE_BOUND": 1738,
+        "TEMPLATE_OR_PLACEHOLDER_SOURCE_BOUND": 106,
+        "EXPLICIT_NEGATIVE_OR_NON_COMPLETION_BOUNDARY": 109,
+        "CONDITIONAL_OR_NEGATIVE_STATUS_RULE": 13,
+        "INTERPRETATIVE_SOURCE_STATEMENT": 16
+      },
+      "distinct_canonical_claim_objects": 5715,
+      "claim_multiset_sha256": "4b88d28ba7886e2d9294ed7eb3974c0d412438bc116922d158a83ed9113f46ef"
+    },
+    {
+      "record_id": 21888130,
+      "file": "SUBJECT-187cfda66d1eda16_CLAIM_MATRIX.json",
+      "claim_occurrences": 100,
+      "classification_counts": {
+        "FORMAL_PROVED": 68,
+        "OPEN": 7,
+        "INTERPRETATIVE": 14,
+        "EMPIRICALLY_EVIDENCED": 7,
+        "NORMATIVE": 2,
+        "SOURCE_BOUND": 2
+      },
+      "status_counts": {
+        "KERNEL_PROVED": 54,
+        "KERNEL_PROVED_CONDITIONAL": 14,
+        "OUT_OF_SCOPE": 3,
+        "INTERPRETIVE": 11,
+        "EMPIRICAL_EVIDENCE_BOUND": 6,
+        "NORMATIVE": 1,
+        "OPEN": 3,
+        "DISPOSITIONED": 8
+      },
+      "distinct_canonical_claim_objects": 100,
+      "claim_multiset_sha256": "4749019475cc4b89dea609676b6e0efb284dd26630bba346016217b58c1bcef3"
+    },
+    {
+      "record_id": 21888130,
+      "file": "SUBJECT-2581811b342e505d_CLAIM_MATRIX.json",
+      "claim_occurrences": 39,
+      "classification_counts": {
+        "EMPIRICALLY_EVIDENCED": 20,
+        "SOURCE_BOUND": 19
+      },
+      "status_counts": {
+        "SUPPORTED": 28,
+        "NOT_ESTABLISHED": 4,
+        "EXPLICITLY_NOT_CLAIMED": 7
+      },
+      "distinct_canonical_claim_objects": 39,
+      "claim_multiset_sha256": "b4ff9a525951297e64bbcd3985dc08c17eb51836c248ff639c33d3f8616a5370"
+    },
+    {
+      "record_id": 21888130,
+      "file": "SUBJECT-2beab714d1dc6019_CLAIM_MATRIX.json",
+      "claim_occurrences": 37,
+      "classification_counts": {
+        "FORMAL_PROVED": 24,
+        "INTERPRETATIVE": 12,
+        "SOURCE_BOUND": 1
+      },
+      "status_counts": {
+        "PROVED": 19,
+        "PROVED_CONDITIONAL": 5,
+        "DEFINED": 1,
+        "OPEN_EMPIRICAL": 3,
+        "ESTABLISHED_BACKGROUND": 1,
+        "FALSE_IN_GENERAL": 2,
+        "REFUTED_IN_MODEL": 1,
+        "UNSUPPORTED": 1,
+        "INTERPRETIVE": 3,
+        "NORMATIVE": 1
+      },
+      "distinct_canonical_claim_objects": 37,
+      "claim_multiset_sha256": "af55202e8ea3347b4db130f904481d3d990f72927a2d83750e1d56f8888406e6"
+    },
+    {
+      "record_id": 21888130,
+      "file": "SUBJECT-3e026c784df87b95_CLAIM_MATRIX.json",
+      "claim_occurrences": 86,
+      "classification_counts": {
+        "SOURCE_BOUND": 72,
+        "NORMATIVE": 8,
+        "EMPIRICALLY_EVIDENCED": 5,
+        "INTERPRETATIVE": 1
+      },
+      "status_counts": {
+        "DISPOSITIONED": 86
+      },
+      "distinct_canonical_claim_objects": 86,
+      "claim_multiset_sha256": "ac9674f001e62b092d67f40a5a91b069b09585554d302853dd47243f94cc9cbc"
+    },
+    {
+      "record_id": 21888130,
+      "file": "SUBJECT-43c59da1cfd26267_CLAIM_MATRIX.json",
+      "claim_occurrences": 248,
+      "classification_counts": {
+        "SOURCE_BOUND": 220,
+        "EMPIRICALLY_EVIDENCED": 15,
+        "NORMATIVE": 7,
+        "OPEN": 2,
+        "INTERPRETATIVE": 4
+      },
+      "status_counts": {
+        "DISPOSITIONED": 248
+      },
+      "distinct_canonical_claim_objects": 248,
+      "claim_multiset_sha256": "9c608a97551193b698766074ad1c278b3d02c2bc2661aab410d070eaf39ed645"
+    },
+    {
+      "record_id": 21888130,
+      "file": "SUBJECT-45b9d1b677568ae7_CLAIM_MATRIX.json",
+      "claim_occurrences": 26,
+      "classification_counts": {
+        "EMPIRICALLY_EVIDENCED": 2,
+        "SOURCE_BOUND": 13,
+        "INTERPRETATIVE": 2,
+        "FORMAL_PROVED": 8,
+        "OPEN": 1
+      },
+      "status_counts": {
+        "SUPPORTED": 12,
+        "SUPPORTED_BY_DOCUMENTED_PROCESS": 1,
+        "INTERPRETIVE": 1,
+        "ENFORCED": 3,
+        "PROOF_SOURCE_PRESENT_AWAITING_KERNEL_RECEIPT": 8,
+        "OPEN": 1
+      },
+      "distinct_canonical_claim_objects": 26,
+      "claim_multiset_sha256": "c37121357af426e3cf39c0dd131d9158b75d78c02f170a8fde0c6a376c951eee"
+    },
+    {
+      "record_id": 21888130,
+      "file": "SUBJECT-51a0cfc51bcbd722_CLAIM_MATRIX.json",
+      "claim_occurrences": 37,
+      "classification_counts": {
+        "FORMAL_PROVED": 24,
+        "INTERPRETATIVE": 12,
+        "SOURCE_BOUND": 1
+      },
+      "status_counts": {
+        "PROVED": 19,
+        "PROVED_CONDITIONAL": 5,
+        "DEFINED": 1,
+        "OPEN_EMPIRICAL": 3,
+        "ESTABLISHED_BACKGROUND": 1,
+        "FALSE_IN_GENERAL": 2,
+        "REFUTED_IN_MODEL": 1,
+        "UNSUPPORTED": 1,
+        "INTERPRETIVE": 3,
+        "NORMATIVE": 1
+      },
+      "distinct_canonical_claim_objects": 37,
+      "claim_multiset_sha256": "af55202e8ea3347b4db130f904481d3d990f72927a2d83750e1d56f8888406e6"
+    },
+    {
+      "record_id": 21888130,
+      "file": "SUBJECT-59493a8ae380798d_CLAIM_MATRIX.json",
+      "claim_occurrences": 223,
+      "classification_counts": {
+        "SOURCE_BOUND": 212,
+        "INTERPRETATIVE": 2,
+        "OPEN": 4,
+        "EMPIRICALLY_EVIDENCED": 5
+      },
+      "status_counts": {
+        "DISPOSITIONED": 223
+      },
+      "distinct_canonical_claim_objects": 223,
+      "claim_multiset_sha256": "daeee765895055efe0d8e1dd2667efe64f3d652b1d674f81797e29e22354dbac"
+    },
+    {
+      "record_id": 21888130,
+      "file": "SUBJECT-5d4c516db0fdaaf5_CLAIM_MATRIX.json",
+      "claim_occurrences": 271,
+      "classification_counts": {
+        "SOURCE_BOUND": 241,
+        "OPEN": 12,
+        "EMPIRICALLY_EVIDENCED": 6,
+        "NORMATIVE": 7,
+        "INTERPRETATIVE": 5
+      },
+      "status_counts": {
+        "DISPOSITIONED": 270,
+        "PASS_WITH_EXPLICIT_BOUNDARIES": 1
+      },
+      "distinct_canonical_claim_objects": 271,
+      "claim_multiset_sha256": "a030e89a27484c2e24ee65e576c0d842adeb41d77a9e1ceaa043fd63038e9dda"
+    },
+    {
+      "record_id": 21888130,
+      "file": "SUBJECT-685123cd60e2fd7b_CLAIM_MATRIX.json",
+      "claim_occurrences": 36,
+      "classification_counts": {
+        "FORMAL_PROVED": 12,
+        "OPEN": 15,
+        "EMPIRICALLY_EVIDENCED": 9
+      },
+      "status_counts": {
+        "KERNEL_PROVED": 10,
+        "KERNEL_PROVED_CONDITIONAL": 2,
+        "OPEN": 2,
+        "EMPIRICAL_OPEN": 1,
+        "PASS": 5,
+        "PASS_CONDITIONAL": 1,
+        "PASS_MODEL_CONDITIONAL": 1,
+        "PASS_BOUNDED_MODEL": 1,
+        "PASS_BOUNDED_MODEL_WITH_COUNTEREXAMPLES": 1,
+        "CONTINUE_PARTIAL_CORE_ONLY": 1,
+        "OPEN_BOUNDARY": 11
+      },
+      "distinct_canonical_claim_objects": 36,
+      "claim_multiset_sha256": "b424de7a0a172d708130df578f024211501d68b0191e3bedc19e62b954c23467"
+    },
+    {
+      "record_id": 21888130,
+      "file": "SUBJECT-77146b895ce38de4_CLAIM_MATRIX.json",
+      "claim_occurrences": 287,
+      "classification_counts": {
+        "SOURCE_BOUND": 246,
+        "EMPIRICALLY_EVIDENCED": 18,
+        "INTERPRETATIVE": 3,
+        "OPEN": 4,
+        "FORMAL_PROVED": 12,
+        "NORMATIVE": 4
+      },
+      "status_counts": {
+        "DISPOSITIONED": 271,
+        "KERNEL_PROVED": 10,
+        "KERNEL_PROVED_CONDITIONAL": 2,
+        "OPEN": 2,
+        "EMPIRICAL_OPEN": 1,
+        "Active individual Internet-Draft; work in progress; not an RFC or IETF consensus": 1
+      },
+      "distinct_canonical_claim_objects": 287,
+      "claim_multiset_sha256": "faa7e874debe1ac5a50c7b5754bc77c3aa56115df613701a6525d182b3aee347"
+    },
+    {
+      "record_id": 21888130,
+      "file": "SUBJECT-780b9bf86425cee3_CLAIM_MATRIX.json",
+      "claim_occurrences": 16132,
+      "classification_counts": {
+        "SOURCE_BOUND": 15202,
+        "NORMATIVE": 580,
+        "OPEN": 176,
+        "EMPIRICALLY_EVIDENCED": 100,
+        "INTERPRETATIVE": 74
+      },
+      "status_counts": {
+        "EXACT_PUBLIC_SOURCE_BOUND": 11836,
+        "NORMATIVE_SOURCE_STATEMENT": 553,
+        "EXPLICIT_NEGATIVE_OR_NON_COMPLETION_BOUNDARY": 190,
+        "HISTORICAL_POSITIVE_COMPLETION_OR_UNIVERSALITY_ASSERTION_NOT_REVALIDATED": 151,
+        "SOURCE_IDENTITY_OR_LABEL": 279,
+        "CONDITIONAL_OR_NEGATIVE_STATUS_RULE": 27,
+        "POSITIVE_EFFECT_OR_COMPLETION_ASSERTION_NOT_INDEPENDENTLY_REVALIDATED": 7,
+        "CONTRADICTED_BY_RECURSIVE_BYTE_AUDIT": 18,
+        "SOURCE_RECORDED_INTEGRITY_ASSERTION": 305,
+        "SUPPORTED_BY_RECURSIVE_BYTE_AUDIT": 100,
+        "INTERPRETATIVE_SOURCE_STATEMENT": 74,
+        "IMPLEMENTATION_SOURCE_BOUND": 2517,
+        "TEMPLATE_OR_PLACEHOLDER_SOURCE_BOUND": 75
+      },
+      "distinct_canonical_claim_objects": 16132,
+      "claim_multiset_sha256": "91e813d29e29cc01789a5fb5cbc293e1a9ad10522b3510eeaf486ecbbe6118d4"
+    },
+    {
+      "record_id": 21888130,
+      "file": "SUBJECT-7956d8acdc473825_CLAIM_MATRIX.json",
+      "claim_occurrences": 10297,
+      "classification_counts": {
+        "SOURCE_BOUND": 9283,
+        "NORMATIVE": 490,
+        "OPEN": 276,
+        "INTERPRETATIVE": 14,
+        "EMPIRICALLY_EVIDENCED": 234
+      },
+      "status_counts": {
+        "EXACT_PUBLIC_SOURCE_BOUND": 4521,
+        "NORMATIVE_SOURCE_STATEMENT": 382,
+        "SOURCE_RECORDED_INTEGRITY_ASSERTION": 26,
+        "EXPLICIT_NEGATIVE_OR_NON_COMPLETION_BOUNDARY": 81,
+        "CONDITIONAL_OR_NEGATIVE_STATUS_RULE": 108,
+        "IMPLEMENTATION_SOURCE_BOUND": 4561,
+        "HISTORICAL_POSITIVE_COMPLETION_OR_UNIVERSALITY_ASSERTION_NOT_REVALIDATED": 270,
+        "INTERPRETATIVE_SOURCE_STATEMENT": 14,
+        "CONTRADICTED_BY_RECURSIVE_BYTE_AUDIT": 6,
+        "SUPPORTED_BY_RECURSIVE_BYTE_AUDIT": 234,
+        "SOURCE_IDENTITY_OR_LABEL": 94
+      },
+      "distinct_canonical_claim_objects": 10297,
+      "claim_multiset_sha256": "e2a71165724153208277adcebbec1658fef57130064040ab8c2a6bd059414ea8"
+    },
+    {
+      "record_id": 21888130,
+      "file": "SUBJECT-7fdb36aa7c07c07d_CLAIM_MATRIX.json",
+      "claim_occurrences": 18799,
+      "classification_counts": {
+        "SOURCE_BOUND": 17778,
+        "NORMATIVE": 589,
+        "OPEN": 209,
+        "EMPIRICALLY_EVIDENCED": 149,
+        "INTERPRETATIVE": 74
+      },
+      "status_counts": {
+        "EXACT_PUBLIC_SOURCE_BOUND": 12957,
+        "NORMATIVE_SOURCE_STATEMENT": 562,
+        "EXPLICIT_NEGATIVE_OR_NON_COMPLETION_BOUNDARY": 217,
+        "HISTORICAL_POSITIVE_COMPLETION_OR_UNIVERSALITY_ASSERTION_NOT_REVALIDATED": 179,
+        "SOURCE_IDENTITY_OR_LABEL": 282,
+        "CONDITIONAL_OR_NEGATIVE_STATUS_RULE": 27,
+        "POSITIVE_EFFECT_OR_COMPLETION_ASSERTION_NOT_INDEPENDENTLY_REVALIDATED": 7,
+        "CONTRADICTED_BY_RECURSIVE_BYTE_AUDIT": 23,
+        "SOURCE_RECORDED_INTEGRITY_ASSERTION": 417,
+        "SUPPORTED_BY_RECURSIVE_BYTE_AUDIT": 149,
+        "INTERPRETATIVE_SOURCE_STATEMENT": 74,
+        "IMPLEMENTATION_SOURCE_BOUND": 3830,
+        "TEMPLATE_OR_PLACEHOLDER_SOURCE_BOUND": 75
+      },
+      "distinct_canonical_claim_objects": 18799,
+      "claim_multiset_sha256": "bc25289397e3017062c35e01c42fd41c5f48ee41a1b79f8bebdec197bc3d99ac"
+    },
+    {
+      "record_id": 21888130,
+      "file": "SUBJECT-b4849e1a2d6b2270_CLAIM_MATRIX.json",
+      "claim_occurrences": 7278,
+      "classification_counts": {
+        "SOURCE_BOUND": 6871,
+        "NORMATIVE": 272,
+        "OPEN": 100,
+        "EMPIRICALLY_EVIDENCED": 31,
+        "INTERPRETATIVE": 4
+      },
+      "status_counts": {
+        "EXACT_PUBLIC_SOURCE_BOUND": 5824,
+        "NORMATIVE_SOURCE_STATEMENT": 257,
+        "EXPLICIT_NEGATIVE_OR_NON_COMPLETION_BOUNDARY": 157,
+        "HISTORICAL_POSITIVE_COMPLETION_OR_UNIVERSALITY_ASSERTION_NOT_REVALIDATED": 75,
+        "SOURCE_IDENTITY_OR_LABEL": 277,
+        "CONDITIONAL_OR_NEGATIVE_STATUS_RULE": 15,
+        "POSITIVE_EFFECT_OR_COMPLETION_ASSERTION_NOT_INDEPENDENTLY_REVALIDATED": 7,
+        "CONTRADICTED_BY_RECURSIVE_BYTE_AUDIT": 18,
+        "SOURCE_RECORDED_INTEGRITY_ASSERTION": 63,
+        "SUPPORTED_BY_RECURSIVE_BYTE_AUDIT": 31,
+        "INTERPRETATIVE_SOURCE_STATEMENT": 4,
+        "IMPLEMENTATION_SOURCE_BOUND": 475,
+        "TEMPLATE_OR_PLACEHOLDER_SOURCE_BOUND": 75
+      },
+      "distinct_canonical_claim_objects": 7278,
+      "claim_multiset_sha256": "805142d1b8276f38696224aef7940ee03d1996e294a648e263450b5330a5a476"
+    },
+    {
+      "record_id": 21888130,
+      "file": "SUBJECT-c9d87f4435178b09_CLAIM_MATRIX.json",
+      "claim_occurrences": 374,
+      "classification_counts": {
+        "SOURCE_BOUND": 318,
+        "INTERPRETATIVE": 3,
+        "OPEN": 5,
+        "FORMAL_PROVED": 12,
+        "EMPIRICALLY_EVIDENCED": 22,
+        "NORMATIVE": 14
+      },
+      "status_counts": {
+        "DISPOSITIONED": 358,
+        "KERNEL_PROVED": 10,
+        "KERNEL_PROVED_CONDITIONAL": 2,
+        "OPEN": 2,
+        "EMPIRICAL_OPEN": 1,
+        "Active individual Internet-Draft; work in progress; not an RFC or IETF consensus": 1
+      },
+      "distinct_canonical_claim_objects": 374,
+      "claim_multiset_sha256": "505ac0cecf79f1c2b0d4a7241ee0c1b1fb9f123b8f368659ffa4978f91eef6ba"
+    },
+    {
+      "record_id": 21888130,
+      "file": "SUBJECT-ce2390f18618ad0c_CLAIM_MATRIX.json",
+      "claim_occurrences": 10432,
+      "classification_counts": {
+        "SOURCE_BOUND": 9413,
+        "NORMATIVE": 491,
+        "OPEN": 276,
+        "INTERPRETATIVE": 14,
+        "EMPIRICALLY_EVIDENCED": 238
+      },
+      "status_counts": {
+        "EXACT_PUBLIC_SOURCE_BOUND": 4576,
+        "SOURCE_RECORDED_INTEGRITY_ASSERTION": 36,
+        "NORMATIVE_SOURCE_STATEMENT": 383,
+        "EXPLICIT_NEGATIVE_OR_NON_COMPLETION_BOUNDARY": 83,
+        "CONDITIONAL_OR_NEGATIVE_STATUS_RULE": 108,
+        "IMPLEMENTATION_SOURCE_BOUND": 4624,
+        "HISTORICAL_POSITIVE_COMPLETION_OR_UNIVERSALITY_ASSERTION_NOT_REVALIDATED": 270,
+        "INTERPRETATIVE_SOURCE_STATEMENT": 14,
+        "CONTRADICTED_BY_RECURSIVE_BYTE_AUDIT": 6,
+        "SUPPORTED_BY_RECURSIVE_BYTE_AUDIT": 238,
+        "SOURCE_IDENTITY_OR_LABEL": 94
+      },
+      "distinct_canonical_claim_objects": 10432,
+      "claim_multiset_sha256": "c8c22d37b087cdc5b2ed30e74fb3b4bac52abec20e74257052fefc42718595b2"
+    },
+    {
+      "record_id": 21888130,
+      "file": "SUBJECT-d2dad396615a4c7c_CLAIM_MATRIX.json",
+      "claim_occurrences": 22,
+      "classification_counts": {
+        "SOURCE_BOUND": 22
+      },
+      "status_counts": {
+        "SOURCE_FIELD_BOUND": 22
+      },
+      "distinct_canonical_claim_objects": 22,
+      "claim_multiset_sha256": "0a03a2395624bdc3a43a97af0543bcc10f7e0ab0f36762ed0e6a4fa3d4b68ca1"
+    },
+    {
+      "record_id": 21947141,
+      "file": "AN_VON_UND_FUER_ALLE_MENSCHEN_CLAIM_MATRIX.json",
+      "claim_occurrences": 8,
+      "classification_counts": {
+        "INTERPRETATIVE": 2,
+        "NORMATIVE": 3,
+        "FORMAL_PROVED": 1,
+        "SOURCE_BOUND": 2
+      },
+      "status_counts": {
+        "DECLARED": 5,
+        "PROVED": 1,
+        "BOUND": 2
+      },
+      "distinct_canonical_claim_objects": 8,
+      "claim_multiset_sha256": "a992756a78e104ebc0cda5100d1f87125a1a0937a7a1bf2425ccca50d62bf838"
+    },
+    {
+      "record_id": 21947141,
+      "file": "CLAIM_MATRIX_V2.json",
+      "claim_occurrences": 10,
+      "classification_counts": {
+        "INTERPRETATIVE": 2,
+        "SOURCE_BOUND": 5,
+        "NORMATIVE": 2,
+        "OPEN": 1
+      },
+      "status_counts": {
+        "DECLARED": 4,
+        "BOUND": 5,
+        "OPEN": 1
+      },
+      "distinct_canonical_claim_objects": 10,
+      "claim_multiset_sha256": "8e884c055b951937bd8f0b25070e01f3d88cf136a2bb10aaf70c1e63e455aab0"
+    },
+    {
+      "record_id": 21947141,
+      "file": "MACHINE_PROOF_BUNDLE.json",
+      "claim_occurrences": 10,
+      "classification_counts": {
+        "INTERPRETATIVE": 2,
+        "SOURCE_BOUND": 5,
+        "NORMATIVE": 2,
+        "OPEN": 1
+      },
+      "status_counts": {
+        "DECLARED": 4,
+        "BOUND": 5,
+        "OPEN": 1
+      },
+      "distinct_canonical_claim_objects": 10,
+      "claim_multiset_sha256": "2279aa4a8120d8acf118e6dcac5bd064151176db63557b6a18c02f1fd02f226f"
+    },
+    {
+      "record_id": 21947141,
+      "file": "OBSERVER_RELATIVE_RETROCAUSALITY_CLAIM_MATRIX.json",
+      "claim_occurrences": 12,
+      "classification_counts": {
+        "NORMATIVE_DEFINITION": 1,
+        "FORMAL_PROVED": 3,
+        "EXECUTABLE_WITNESS": 1,
+        "CONSTRUCTIVE_PHYSICAL_MODEL": 1,
+        "SOURCE_BOUND": 2,
+        "EMPIRICAL_BRIDGE_SOURCE_BOUND": 1,
+        "OWNER_ASSERTED_REALITY_CORRESPONDENCE": 1,
+        "NOT_CLAIMED": 1,
+        "HISTORICAL_PROVENANCE": 1
+      },
+      "status_counts": {
+        "DECLARED": 2,
+        "PROVED": 3,
+        "VERIFIED": 1,
+        "PROVED_FOR_DECLARED_CONSTRUCTION": 1,
+        "BOUND": 4,
+        "EXCLUDED": 1
+      },
+      "distinct_canonical_claim_objects": 12,
+      "claim_multiset_sha256": "b63f3bd85901f343e2f3874539e24381656395d382d1460751c860a3d58721b7"
+    },
+    {
+      "record_id": 21947141,
+      "file": "PREPUBLICATION_RETURN_RECEIPT.json",
+      "claim_occurrences": 10,
+      "classification_counts": {
+        "UNSPECIFIED": 10
+      },
+      "status_counts": {
+        "UNSPECIFIED": 10
+      },
+      "distinct_canonical_claim_objects": 10,
+      "claim_multiset_sha256": "2f200e7b56a29e7b75244175fa63b279f49c69c71a9ed51328f87c36e783171d"
+    },
+    {
+      "record_id": 22216916,
+      "file": "CLAIM_MATRIX_V2.json",
+      "claim_occurrences": 7,
+      "classification_counts": {
+        "SOURCE_BOUND": 3,
+        "NORMATIVE": 2,
+        "INTERPRETATIVE": 1,
+        "OPEN": 1
+      },
+      "status_counts": {
+        "BOUND": 3,
+        "DECLARED": 3,
+        "OPEN": 1
+      },
+      "distinct_canonical_claim_objects": 7,
+      "claim_multiset_sha256": "e8a34ccbb31670e8981c71dafd9a0ccaae422d6d23e0dcf1d660bda5f1aa9b1e"
+    },
+    {
+      "record_id": 22216916,
+      "file": "MACHINE_PROOF_BUNDLE.json",
+      "claim_occurrences": 7,
+      "classification_counts": {
+        "SOURCE_BOUND": 3,
+        "NORMATIVE": 2,
+        "INTERPRETATIVE": 1,
+        "OPEN": 1
+      },
+      "status_counts": {
+        "BOUND": 3,
+        "DECLARED": 3,
+        "OPEN": 1
+      },
+      "distinct_canonical_claim_objects": 7,
+      "claim_multiset_sha256": "3b93dbd1a5d1cbd55d69e961bd0002ff7c3fb97d7118c66267cb286332a8d391"
+    },
+    {
+      "record_id": 22283396,
+      "file": "planck_tick_gap_law_v1.json",
+      "claim_occurrences": 1,
+      "classification_counts": {
+        "UNSPECIFIED": 1
+      },
+      "status_counts": {
+        "UNSPECIFIED": 1
+      },
+      "distinct_canonical_claim_objects": 1,
+      "claim_multiset_sha256": "ada493750581825eeeeeb7740eaa2902fe6c58ed6bc56cc5d953a7b40599a4fa"
+    },
+    {
+      "record_id": 22527889,
+      "file": "CLAIM_MATRIX.json",
+      "claim_occurrences": 17,
+      "classification_counts": {
+        "formal-proved": 6,
+        "empirical-supported": 1,
+        "source-bound": 1,
+        "interpretive": 2,
+        "normative": 1,
+        "open": 6
+      },
+      "status_counts": {
+        "UNSPECIFIED": 17
+      },
+      "distinct_canonical_claim_objects": 17,
+      "claim_multiset_sha256": "9b3c335d2d8f75daef0a5a369434b093e0f2e5e33589dfd70edc0ac9989b8ebe"
+    },
+    {
+      "record_id": 22527889,
+      "file": "CLAIM_MATRIX_V2.json",
+      "claim_occurrences": 18,
+      "classification_counts": {
+        "FORMAL_PROVED": 6,
+        "EMPIRICALLY_EVIDENCED": 1,
+        "SOURCE_BOUND": 2,
+        "INTERPRETATIVE": 2,
+        "NORMATIVE": 1,
+        "OPEN": 6
+      },
+      "status_counts": {
+        "PROVED": 6,
+        "EVIDENCED": 1,
+        "BOUND": 2,
+        "DECLARED": 3,
+        "OPEN": 6
+      },
+      "distinct_canonical_claim_objects": 18,
+      "claim_multiset_sha256": "6c5fd27d9f3564ec89d5a9d649be7ef0b8c6d6e4cbd62f359f91225cd22c4fca"
+    },
+    {
+      "record_id": 22527889,
+      "file": "MACHINE_PROOF_BUNDLE.json",
+      "claim_occurrences": 18,
+      "classification_counts": {
+        "FORMAL_PROVED": 6,
+        "EMPIRICALLY_EVIDENCED": 1,
+        "SOURCE_BOUND": 2,
+        "INTERPRETATIVE": 2,
+        "NORMATIVE": 1,
+        "OPEN": 6
+      },
+      "status_counts": {
+        "PROVED": 6,
+        "EVIDENCED": 1,
+        "BOUND": 2,
+        "DECLARED": 3,
+        "OPEN": 6
+      },
+      "distinct_canonical_claim_objects": 18,
+      "claim_multiset_sha256": "23a83efaa6882f7dedd413c6a2f3223ae8f6b5a768d406f37aef2988a459e9f7"
+    },
+    {
+      "record_id": 22840633,
+      "file": "CLAIM_MATRIX.json",
+      "claim_occurrences": 122,
+      "classification_counts": {
+        "NORMATIVE": 56,
+        "INTERPRETATIVE": 43,
+        "SOURCE_BOUND": 23
+      },
+      "status_counts": {
+        "DECLARED": 99,
+        "BOUND": 23
+      },
+      "distinct_canonical_claim_objects": 122,
+      "claim_multiset_sha256": "5f9a08d89cbb6f94a56380562e69e61c9ff2669e2e9e5d41395d030936e764ec"
+    },
+    {
+      "record_id": 22840633,
+      "file": "MACHINE_PROOF_BUNDLE.json",
+      "claim_occurrences": 122,
+      "classification_counts": {
+        "NORMATIVE": 56,
+        "INTERPRETATIVE": 43,
+        "SOURCE_BOUND": 23
+      },
+      "status_counts": {
+        "DECLARED": 99,
+        "BOUND": 23
+      },
+      "distinct_canonical_claim_objects": 122,
+      "claim_multiset_sha256": "8dd6b63c435f9c619c694d23dab6d084be34a5b31da74655c0c787aa6a4e5ee0"
+    },
+    {
+      "record_id": 22845516,
+      "file": "CLAIM_MATRIX.json",
+      "claim_occurrences": 552,
+      "classification_counts": {
+        "NORMATIVE": 56,
+        "INTERPRETATIVE": 263,
+        "SOURCE_BOUND": 56,
+        "OPEN": 177
+      },
+      "status_counts": {
+        "DECLARED": 319,
+        "BOUND": 56,
+        "OPEN": 177
+      },
+      "distinct_canonical_claim_objects": 552,
+      "claim_multiset_sha256": "3d4dfc143c1d9d8f2e570612b8d0d8ca2493b0774d8f5eb088f6c5c153bbe8c3"
+    },
+    {
+      "record_id": 22845516,
+      "file": "MACHINE_PROOF_BUNDLE.json",
+      "claim_occurrences": 552,
+      "classification_counts": {
+        "NORMATIVE": 56,
+        "INTERPRETATIVE": 263,
+        "SOURCE_BOUND": 56,
+        "OPEN": 177
+      },
+      "status_counts": {
+        "DECLARED": 319,
+        "BOUND": 56,
+        "OPEN": 177
+      },
+      "distinct_canonical_claim_objects": 552,
+      "claim_multiset_sha256": "7a5e541a94be2243b7b5f0c38c195a4c841362c3c1a1c07b30422022025d4568"
+    },
+    {
+      "record_id": 22845516,
+      "file": "PREPUBLICATION_RETURN_RECEIPT.json",
+      "claim_occurrences": 3,
+      "classification_counts": {
+        "UNSPECIFIED": 3
+      },
+      "status_counts": {
+        "UNSPECIFIED": 3
+      },
+      "distinct_canonical_claim_objects": 3,
+      "claim_multiset_sha256": "888deb91fdfe88afee8bc9e93d0efcf134a2ae9b202046cd8ad8cfdc8ccd38cb"
+    },
+    {
+      "record_id": 22847245,
+      "file": "CLAIM_MATRIX.json",
+      "claim_occurrences": 7,
+      "classification_counts": {
+        "SOURCE_BOUND": 4,
+        "INTERPRETATIVE": 1,
+        "NORMATIVE": 1,
+        "OPEN": 1
+      },
+      "status_counts": {
+        "BOUND": 4,
+        "DECLARED": 2,
+        "OPEN": 1
+      },
+      "distinct_canonical_claim_objects": 7,
+      "claim_multiset_sha256": "108612518e08cbc38cccd71a3ca319c1e47c3c61ccfea31c8aaf6107b8642eb2"
+    },
+    {
+      "record_id": 22847245,
+      "file": "MACHINE_PROOF_BUNDLE.json",
+      "claim_occurrences": 7,
+      "classification_counts": {
+        "SOURCE_BOUND": 4,
+        "INTERPRETATIVE": 1,
+        "NORMATIVE": 1,
+        "OPEN": 1
+      },
+      "status_counts": {
+        "BOUND": 4,
+        "DECLARED": 2,
+        "OPEN": 1
+      },
+      "distinct_canonical_claim_objects": 7,
+      "claim_multiset_sha256": "42186f7a7484fe901882a43394d05e7cca0cfd7e57c73425e8079a7d93872b86"
+    },
+    {
+      "record_id": 22847245,
+      "file": "PREPUBLICATION_RETURN_RECEIPT.json",
+      "claim_occurrences": 3,
+      "classification_counts": {
+        "UNSPECIFIED": 3
+      },
+      "status_counts": {
+        "UNSPECIFIED": 3
+      },
+      "distinct_canonical_claim_objects": 3,
+      "claim_multiset_sha256": "8ffdd227976191934672b2fa060998337c7e474c4deb20aa260d86e6ef000ef3"
+    },
+    {
+      "record_id": 22941556,
+      "file": "CLAIM_MATRIX.json",
+      "claim_occurrences": 6,
+      "classification_counts": {
+        "FORMAL_MODEL": 3,
+        "SYSTEMS_RULE": 1,
+        "EPISTEMIC_BOUNDARY": 1,
+        "IETF_MAPPING": 1
+      },
+      "status_counts": {
+        "TO_BE_KERNEL_CHECKED": 3,
+        "DECLARED": 2,
+        "CANDIDATE": 1
+      },
+      "distinct_canonical_claim_objects": 6,
+      "claim_multiset_sha256": "a5dbbe1d0fcbcd233e2dd45c1a76da5a6fcb9ab44fd9c8e588c9ceb691157a99"
+    },
+    {
+      "record_id": 22955727,
+      "file": "CLAIM_MATRIX_V2.json",
+      "claim_occurrences": 10,
+      "classification_counts": {
+        "FORMAL_PROVED": 3,
+        "INTERPRETATIVE": 4,
+        "OPEN": 1,
+        "SOURCE_BOUND": 2
+      },
+      "status_counts": {
+        "PROVED": 3,
+        "DECLARED": 4,
+        "OPEN": 1,
+        "BOUND": 2
+      },
+      "distinct_canonical_claim_objects": 10,
+      "claim_multiset_sha256": "abfa38c0f4d67f32d1d5425757a44e1be250a2029c0bbf517d0ecc020410b687"
+    },
+    {
+      "record_id": 22955727,
+      "file": "MACHINE_PROOF_BUNDLE.json",
+      "claim_occurrences": 10,
+      "classification_counts": {
+        "FORMAL_PROVED": 3,
+        "INTERPRETATIVE": 4,
+        "OPEN": 1,
+        "SOURCE_BOUND": 2
+      },
+      "status_counts": {
+        "PROVED": 3,
+        "DECLARED": 4,
+        "OPEN": 1,
+        "BOUND": 2
+      },
+      "distinct_canonical_claim_objects": 10,
+      "claim_multiset_sha256": "e3d5a116a37a242667716c5cc5c722bc3b190c16de4a988d0bd92b16f60e0efb"
+    },
+    {
+      "record_id": 22955727,
+      "file": "SCIENTIFIC_CLAIM_MATRIX.json",
+      "claim_occurrences": 10,
+      "classification_counts": {
+        "FORMAL_THEOREM": 3,
+        "INTERPRETATION": 1,
+        "OUT_OF_SCOPE": 3,
+        "CORRESPONDENCE_POSTULATE": 1,
+        "SOURCE_BOUND": 2
+      },
+      "status_counts": {
+        "PENDING_CURRENT_EXACT_HEAD_KERNEL_RECEIPT": 3,
+        "DECLARED": 1,
+        "NOT_CLAIMED": 2,
+        "OPEN": 1,
+        "REFUTED_AS_IDENTITY_CLAIM": 1,
+        "BOUND": 2
+      },
+      "distinct_canonical_claim_objects": 10,
+      "claim_multiset_sha256": "a2ca6ee3224fe5f46736c3744ac6a59b48cd606246cc5aa9a8ff0dbe90f7e954"
+    },
+    {
+      "record_id": 22955727,
+      "file": "UNIVERSAL_ONTOLOGY_CLAIM_MATRIX.json",
+      "claim_occurrences": 36,
+      "classification_counts": {
+        "DEFINITION": 2,
+        "FORMAL_THEOREM": 28,
+        "CORRESPONDENCE_POSTULATE": 1,
+        "EMPIRICAL_CLAIM": 2,
+        "INTERPRETATION": 1,
+        "NORMATIVE_RULE": 2
+      },
+      "status_counts": {
+        "UNSPECIFIED": 36
+      },
+      "distinct_canonical_claim_objects": 36,
+      "claim_multiset_sha256": "be7e8506536122714cfa94e791247845fa81d78ab18eea3b9699a0dddd3e2c9f"
+    },
+    {
+      "record_id": 23008330,
+      "file": "CLAIM_MATRIX.json",
+      "claim_occurrences": 12,
+      "classification_counts": {
+        "SOURCE_BOUND": 9,
+        "OPEN": 2,
+        "NORMATIVE": 1
+      },
+      "status_counts": {
+        "BOUND": 9,
+        "OPEN": 2,
+        "DECLARED": 1
+      },
+      "distinct_canonical_claim_objects": 12,
+      "claim_multiset_sha256": "6d58f47d3ac35a88d79c3bb274767e3fee262022e056f8ec768572576d19d331"
+    },
+    {
+      "record_id": 23008330,
+      "file": "MACHINE_PROOF_BUNDLE.json",
+      "claim_occurrences": 12,
+      "classification_counts": {
+        "SOURCE_BOUND": 9,
+        "OPEN": 2,
+        "NORMATIVE": 1
+      },
+      "status_counts": {
+        "BOUND": 9,
+        "OPEN": 2,
+        "DECLARED": 1
+      },
+      "distinct_canonical_claim_objects": 12,
+      "claim_multiset_sha256": "eb4e70234d2f2892f328f12466d9e20f55b819ad8873194daf2ff011f3cee910"
+    },
+    {
+      "record_id": 23008704,
+      "file": "CLAIM_MATRIX.json",
+      "claim_occurrences": 18,
+      "classification_counts": {
+        "SOURCE_BOUND": 7,
+        "EMPIRICALLY_EVIDENCED": 4,
+        "OPEN": 3,
+        "NORMATIVE": 3,
+        "INTERPRETATIVE": 1
+      },
+      "status_counts": {
+        "BOUND": 7,
+        "EVIDENCED": 4,
+        "OPEN": 3,
+        "DECLARED": 4
+      },
+      "distinct_canonical_claim_objects": 18,
+      "claim_multiset_sha256": "aeb7aeecb0e66df5294bcddb52e03ba9d0c8dbfad6956af640840a1ff0ec532e"
+    },
+    {
+      "record_id": 23008704,
+      "file": "MACHINE_PROOF_BUNDLE.json",
+      "claim_occurrences": 18,
+      "classification_counts": {
+        "SOURCE_BOUND": 7,
+        "EMPIRICALLY_EVIDENCED": 4,
+        "OPEN": 3,
+        "NORMATIVE": 3,
+        "INTERPRETATIVE": 1
+      },
+      "status_counts": {
+        "BOUND": 7,
+        "EVIDENCED": 4,
+        "OPEN": 3,
+        "DECLARED": 4
+      },
+      "distinct_canonical_claim_objects": 18,
+      "claim_multiset_sha256": "67128fe09028d344855a916050a166eb2ae575ea742618bfa47453e9dd92ed4b"
+    }
+  ],
+  "source_file_count": 81,
+  "inventory_count_is_theorem_count": false,
+  "scope": "All declared claim objects found in the native JSON documents; nested software archives and prose require their own extraction/semantic review. Repeated versions do not establish independent evidence.",
+  "full_claim_objects_remain_in_hash_bound_public_originals": true
+}

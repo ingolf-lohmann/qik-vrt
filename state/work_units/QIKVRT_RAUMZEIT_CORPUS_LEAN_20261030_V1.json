@@ -1,0 +1,45 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_RAUMZEIT_CORPUS_LEAN_20261030_V1",
+  "principal": "Ingolf Lohmann",
+  "human_contribution": "Requirements, architecture synthesis and authorization to include all published Zenodo documents.",
+  "artificial_cognitive_contribution": "Source reconciliation, formal supplement, axiom and negative-control verification, scope mapping.",
+  "source_base": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "5a42baf45748e4407a8fa16aef287a77873e788d",
+    "tree": "3f6e816b6b496eeb9ce8777d8fb93d95717be9ae"
+  },
+  "source_archive_sha256": "0c0fb7bfa144a30b6d71f368e9503497ce58d3e79f2550f3bfd1804fb579b290",
+  "source_versions": 44,
+  "source_native_files": 479,
+  "new_theorems": 23,
+  "reused_h6_theorems": 55,
+  "existing_main_audit_declarations": 86,
+  "claim_occurrences_are_theorems": false,
+  "review_entry": "docs/publications/2026-10-30-raumzeit-kernel/README.md",
+  "proof_plan": "docs/publications/2026-10-30-raumzeit-kernel/KERNEL_PROOF_PLAN.json",
+  "new_zenodo_upload_authorized": false,
+  "native_runtime_observation": {
+    "ready": false,
+    "open_gate": "ADMITTED_MESH_RUNTIME_ENDPOINT",
+    "http_status": 525,
+    "effect_ack_done": false
+  },
+  "open_work": [
+    {
+      "id": "RZK-PHYSICAL-CONSCIOUSNESS-BRIDGE",
+      "state": "OPEN",
+      "next": "Define dimension, correspondence and testable physical/consciousness quantity."
+    },
+    {
+      "id": "RZK-NATIVE-CI-AND-MAIN",
+      "state": "OPEN",
+      "next": "Preserve exact candidate and independently verify native checks and any admitted integration."
+    },
+    {
+      "id": "RZK-ZENODO-ORIGINAL-PUBLICATION",
+      "state": "OPEN",
+      "next": "Continue existing exact-byte original upload request only through its original admitted protected publisher; supplement needs a separately bound publication candidate."
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+'QIKVRT.ReconstructibleVirtuality.V1.injective_iff_unique_predecessors_on_image' does not depend on any axioms
+'QIKVRT.ReconstructibleVirtuality.V1.inverse_on_image_is_unique' does not depend on any axioms
+'QIKVRT.ReconstructibleVirtuality.V1.history_projection_restores' does not depend on any axioms
+'QIKVRT.ReconstructibleVirtuality.V1.history_extension_is_injective' does not depend on any axioms
+'QIKVRT.ReconstructibleVirtuality.V1.history_has_unique_predecessors' does not depend on any axioms
+'QIKVRT.ReconstructibleVirtuality.V1.encoded_history_restores_predecessor' does not depend on any axioms
+'QIKVRT.ReconstructibleVirtuality.V1.replay_append' does not depend on any axioms
+'QIKVRT.ReconstructibleVirtuality.V1.complete_recording_replays_identically' does not depend on any axioms
+'QIKVRT.ReconstructibleVirtuality.V1.deterministic_erasure_is_not_injective' does not depend on any axioms
+'QIKVRT.ReconstructibleVirtuality.V1.deterministic_erasure_has_no_exact_decoder' does not depend on any axioms
+'QIKVRT.ReconstructibleVirtuality.V1.ambiguous_observation_blocks_exact_estimator' does not depend on any axioms
+'QIKVRT.ReconstructibleVirtuality.V1.deterministic_world_can_have_ambiguous_observation' does not depend on any axioms
+'QIKVRT.ReconstructibleVirtuality.V1.refined_observation_preserves_compatibility' does not depend on any axioms
+'QIKVRT.ReconstructibleVirtuality.V1.coinWords_membership' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QIKVRT.ReconstructibleVirtuality.V1.coinWords_length' depends on axioms: [propext]
+'QIKVRT.ReconstructibleVirtuality.V1.ten_coin_microstates' depends on axioms: [propext]
+'QIKVRT.ReconstructibleVirtuality.V1.ten_coin_five_heads' does not depend on any axioms
+'QIKVRT.ReconstructibleVirtuality.V1.encoded_history_and_effect_readback' depends on axioms: [propext, Quot.sound]
+'QIKVRT.VirtualSphereBridge.V1.length_is_not_volume' does not depend on any axioms
+'QIKVRT.VirtualSphereBridge.V1.calibrated_run_radius' depends on axioms: [propext]
+'QIKVRT.VirtualSphereBridge.V1.virtual_correctness_does_not_identify_scale' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QIKVRT.VirtualSphereBridge.V1.scale_ambiguity_at_requested_magnitude' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QIKVRT.VirtualSphereBridge.V1.stored_history_has_no_hole_sphere_projection' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
