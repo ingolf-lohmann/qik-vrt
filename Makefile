@@ -297,3 +297,9 @@ mesh-recovery-test: digital-twin-rest-test
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v $(UNITTEST_TIMING) tests.test_qikvrt_codec tests.test_qikvrt_feedback tests.test_qikvrt_standpoint_codex tests.test_qikvrt_mesh_recovery tests.test_qikvrt_authority_transition tests.test_qikvrt_github_authority_provider tests.test_qikvrt_pr_closure_engine tests.test_qikvrt_merge_priority tests.test_reciprocal_closure_step tests.test_reciprocal_devops_closure
 
 test: mesh-recovery-test
+
+.PHONY: native-archive-test
+native-archive-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_native_archive
+
+test: native-archive-test

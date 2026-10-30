@@ -48,3 +48,6 @@ curl	bounded-https-get-v1	ubuntu-24.04-x64	RUNNER_PROVIDED	BEHAVIOR_CONTRACT	UPS
 tar	gnu-tar-zstd-v1	ubuntu-24.04-x64	RUNNER_PROVIDED	BEHAVIOR_CONTRACT	UPSTREAM_RUNNER_PACKAGE_LICENSES	lean_release_provisioning
 zstd	zstd-decode-v1	ubuntu-24.04-x64	RUNNER_PROVIDED	BEHAVIOR_CONTRACT	UPSTREAM_RUNNER_PACKAGE_LICENSES	lean_release_provisioning
 coreutils	sha256-staging-v1	ubuntu-24.04-x64	RUNNER_PROVIDED	BEHAVIOR_CONTRACT	UPSTREAM_RUNNER_PACKAGE_LICENSES	lean_release_provisioning
+
+zlib-native	1.2.11-or-newer-integer-codec-contract	posix-linux	RUNNER_PROVIDED	BEHAVIOR_CONTRACT	Zlib	native_qikvrt_codec
+unzip	zip-deflate-readback-contract	posix-linux	RUNNER_PROVIDED	BEHAVIOR_CONTRACT	Info-ZIP	independent_zip_sfx_readback
