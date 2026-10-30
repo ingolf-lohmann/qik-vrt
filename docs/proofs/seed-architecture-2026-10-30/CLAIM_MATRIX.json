@@ -1,0 +1,226 @@
+{
+  "schema": "qikvrt_seed_architecture_claim_matrix_v1",
+  "owner": "Ingolf Lohmann",
+  "formal_scope": "FINITE_ABSTRACT_ARCHITECTURE_WITH_EXPLICIT_CODEC_SIMULATION_AND_INVARIANT_HYPOTHESES",
+  "formal_claims": [
+    {
+      "id": "SA-001",
+      "theorem": "QIKVRT.SeedArchitecture.V1.composed_codec_lossless",
+      "classification": "FORMAL_PROVED_WITH_STATEMENT_HYPOTHESES",
+      "axioms": [
+        "propext"
+      ]
+    },
+    {
+      "id": "SA-002",
+      "theorem": "QIKVRT.SeedArchitecture.V1.decodeAll_map_encode",
+      "classification": "FORMAL_PROVED_WITH_STATEMENT_HYPOTHESES",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "id": "SA-003",
+      "theorem": "QIKVRT.SeedArchitecture.V1.failed_part_prevents_complete_decode",
+      "classification": "FORMAL_PROVED_WITH_STATEMENT_HYPOTHESES",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "id": "SA-004",
+      "theorem": "QIKVRT.SeedArchitecture.V1.execute_append",
+      "classification": "FORMAL_PROVED_WITH_STATEMENT_HYPOTHESES",
+      "axioms": []
+    },
+    {
+      "id": "SA-005",
+      "theorem": "QIKVRT.SeedArchitecture.V1.checkpoint_restart_exact",
+      "classification": "FORMAL_PROVED_WITH_STATEMENT_HYPOTHESES",
+      "axioms": []
+    },
+    {
+      "id": "SA-006",
+      "theorem": "QIKVRT.SeedArchitecture.V1.execute_preserves",
+      "classification": "FORMAL_PROVED_WITH_STATEMENT_HYPOTHESES",
+      "axioms": []
+    },
+    {
+      "id": "SA-007",
+      "theorem": "QIKVRT.SeedArchitecture.V1.deterministic_step_unique",
+      "classification": "FORMAL_PROVED_WITH_STATEMENT_HYPOTHESES",
+      "axioms": []
+    },
+    {
+      "id": "SA-008",
+      "theorem": "QIKVRT.SeedArchitecture.V1.execute_is_viable_trace",
+      "classification": "FORMAL_PROVED_WITH_STATEMENT_HYPOTHESES",
+      "axioms": []
+    },
+    {
+      "id": "SA-009",
+      "theorem": "QIKVRT.SeedArchitecture.V1.architecture_closure",
+      "classification": "FORMAL_PROVED_WITH_STATEMENT_HYPOTHESES",
+      "axioms": []
+    },
+    {
+      "id": "SA-010",
+      "theorem": "QIKVRT.SeedArchitecture.V1.finite_mesh_preserves",
+      "classification": "FORMAL_PROVED_WITH_STATEMENT_HYPOTHESES",
+      "axioms": []
+    },
+    {
+      "id": "SA-011",
+      "theorem": "QIKVRT.SeedArchitecture.V1.finite_mesh_codec_roundtrip",
+      "classification": "FORMAL_PROVED_WITH_STATEMENT_HYPOTHESES",
+      "axioms": []
+    },
+    {
+      "id": "SA-012",
+      "theorem": "QIKVRT.SeedArchitecture.V1.extension_preserves_existing_cell",
+      "classification": "FORMAL_PROVED_WITH_STATEMENT_HYPOTHESES",
+      "axioms": [
+        "propext"
+      ]
+    },
+    {
+      "id": "SA-013",
+      "theorem": "QIKVRT.SeedArchitecture.V1.extension_preserves_invariant",
+      "classification": "FORMAL_PROVED_WITH_STATEMENT_HYPOTHESES",
+      "axioms": [
+        "propext"
+      ]
+    },
+    {
+      "id": "SA-014",
+      "theorem": "QIKVRT.SeedArchitecture.V1.continue_requires_all_guards",
+      "classification": "FORMAL_PROVED_WITH_STATEMENT_HYPOTHESES",
+      "axioms": [
+        "propext"
+      ]
+    },
+    {
+      "id": "SA-015",
+      "theorem": "QIKVRT.SeedArchitecture.V1.missing_authority_blocks",
+      "classification": "FORMAL_PROVED_WITH_STATEMENT_HYPOTHESES",
+      "axioms": [
+        "propext"
+      ]
+    },
+    {
+      "id": "SA-016",
+      "theorem": "QIKVRT.SeedArchitecture.V1.gating_preserves_payload",
+      "classification": "FORMAL_PROVED_WITH_STATEMENT_HYPOTHESES",
+      "axioms": []
+    },
+    {
+      "id": "SA-017",
+      "theorem": "QIKVRT.SeedArchitecture.V1.repeated_gating_preserves_payload",
+      "classification": "FORMAL_PROVED_WITH_STATEMENT_HYPOTHESES",
+      "axioms": []
+    },
+    {
+      "id": "SA-018",
+      "theorem": "QIKVRT.SeedArchitecture.V1.decimal_add_exact",
+      "classification": "FORMAL_PROVED_WITH_STATEMENT_HYPOTHESES",
+      "axioms": []
+    },
+    {
+      "id": "SA-019",
+      "theorem": "QIKVRT.SeedArchitecture.V1.decimal_multiply_exact",
+      "classification": "FORMAL_PROVED_WITH_STATEMENT_HYPOTHESES",
+      "axioms": []
+    },
+    {
+      "id": "SA-020",
+      "theorem": "QIKVRT.SeedArchitecture.V1.decimal_denominator_composes",
+      "classification": "FORMAL_PROVED_WITH_STATEMENT_HYPOTHESES",
+      "axioms": [
+        "propext"
+      ]
+    },
+    {
+      "id": "SA-021",
+      "theorem": "QIKVRT.SeedArchitecture.V1.decimal_tenths_example",
+      "classification": "FORMAL_PROVED_WITH_STATEMENT_HYPOTHESES",
+      "axioms": []
+    },
+    {
+      "id": "SA-022",
+      "theorem": "QIKVRT.SeedArchitecture.V1.different_inputs_can_produce_different_results",
+      "classification": "FORMAL_PROVED_WITH_STATEMENT_HYPOTHESES",
+      "axioms": []
+    },
+    {
+      "id": "SA-023",
+      "theorem": "QIKVRT.SeedArchitecture.V1.physical_support_requires_observation",
+      "classification": "FORMAL_PROVED_WITH_STATEMENT_HYPOTHESES",
+      "axioms": []
+    },
+    {
+      "id": "SA-024",
+      "theorem": "QIKVRT.SeedArchitecture.V1.missing_observation_prevents_physical_support",
+      "classification": "FORMAL_PROVED_WITH_STATEMENT_HYPOTHESES",
+      "axioms": []
+    },
+    {
+      "id": "SA-025",
+      "theorem": "QIKVRT.SeedArchitecture.V1.total_erasure_heat_lower_bound",
+      "classification": "FORMAL_PROVED_WITH_STATEMENT_HYPOTHESES",
+      "axioms": [
+        "propext"
+      ]
+    },
+    {
+      "id": "SA-026",
+      "theorem": "QIKVRT.SeedArchitecture.V1.valid_controls_allow_continuation",
+      "classification": "FORMAL_PROVED_WITH_STATEMENT_HYPOTHESES",
+      "axioms": []
+    },
+    {
+      "id": "SA-027",
+      "theorem": "QIKVRT.SeedArchitecture.V1.concrete_finite_reconstruction_witness",
+      "classification": "FORMAL_PROVED_WITH_STATEMENT_HYPOTHESES",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "id": "SA-028",
+      "theorem": "QIKVRT.SeedArchitecture.V1.encoded_reference_is_fixedpoint",
+      "classification": "FORMAL_PROVED_WITH_STATEMENT_HYPOTHESES",
+      "axioms": [
+        "propext"
+      ]
+    },
+    {
+      "id": "SA-029",
+      "theorem": "QIKVRT.SeedArchitecture.V1.normalization_is_idempotent",
+      "classification": "FORMAL_PROVED_WITH_STATEMENT_HYPOTHESES",
+      "axioms": [
+        "propext"
+      ]
+    },
+    {
+      "id": "SA-030",
+      "theorem": "QIKVRT.SeedArchitecture.V1.two_bound_references_are_fixedpoints",
+      "classification": "FORMAL_PROVED_WITH_STATEMENT_HYPOTHESES",
+      "axioms": [
+        "propext"
+      ]
+    }
+  ],
+  "open_claims": [
+    "CONCRETE_CODEC_AND_RTL_REFINEMENT",
+    "MC68000_PACKAGE_PIN_TIMING_AND_FABRICATION",
+    "BOOT_OS_DOCKER_TERMINAL_RUNTIME",
+    "PRIVATE_MAXIMAL_ARCHIVE_COMPLETENESS",
+    "PHYSICAL_LANDAUER_PREMISES_AND_MEASURED_HEAT",
+    "GLOBAL_RESOURCE_MINIMALITY",
+    "PHYSICAL_SUPERDETERMINISM",
+    "PRODUCTIVE_HOST_DOMAIN_EFFECT_ACK"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "command": [
+    "lake",
+    "build"
+  ],
+  "exit_code": 0,
+  "elapsed_ns": 340066026,
+  "log": "PROJECT_BUILD.txt",
+  "scope": "ALL_EXISTING_LEAN_DEFAULT_TARGETS; ADDITIVE_MODULE_VERIFIED_SEPARATELY_BY_RECEIPT_AND_EXPLICIT_CI_STEP"
+}

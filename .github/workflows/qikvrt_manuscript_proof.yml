@@ -361,6 +361,43 @@ jobs:
         run: python3 scripts/audit_completion_axioms.py
       - name: Build additive storage module before project-wide proof audit
         run: lake build QIKVRTEffectAck.StorageIntegrity
+      - name: Check seed architecture composition and reject false controls
+        run: |
+          set -euo pipefail
+          lake build QIKVRTEffectAck.SeedArchitecture QIKVRTEffectAck.SeedArchitectureAxiomAudit
+          lake env lean QIKVRTEffectAck/SeedArchitectureAxiomAudit.lean > .lake/build/seed-architecture-axioms.log
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          source = Path('QIKVRTEffectAck/SeedArchitecture.lean').read_text()
+          names = re.findall(r'^theorem ([A-Za-z_][A-Za-z0-9_]*)', source, re.M)
+          audit = Path('.lake/build/seed-architecture-axioms.log').read_text()
+          claims = json.loads(Path('../../docs/proofs/seed-architecture-2026-10-30/CLAIM_MATRIX.json').read_text())
+          expected_axioms = {item['theorem'].split('.')[-1]: item['axioms'] for item in claims['formal_claims']}
+          if set(names) != set(expected_axioms):
+              raise SystemExit('Theorem/audit inventory mismatch')
+          for name in names:
+              lines = [line for line in audit.splitlines() if line.startswith("'QIKVRT.SeedArchitecture.V1." + name + "'")]
+              if len(lines) != 1:
+                  raise SystemExit('Missing or duplicate kernel audit: ' + name)
+              line = lines[0]
+              actual = [] if 'does not depend on any axioms' in line else [value.strip() for value in re.search(r'\[(.*)\]', line).group(1).split(',')]
+              if actual != expected_axioms[name] or not set(actual) <= {'propext', 'Quot.sound'}:
+                  raise SystemExit('Unexpected kernel axiom: ' + name)
+          print('SEED_ARCHITECTURE_KERNEL_THEOREMS=' + str(len(names)))
+          PY
+          count=0
+          for source in ../../docs/proofs/seed-architecture-2026-10-30/negative/*.lean; do
+            log=".lake/build/$(basename "$source" .lean).log"
+            if lake env lean "$source" > "$log" 2>&1; then
+              echo "False control accepted: $source"
+              exit 1
+            fi
+            grep -q 'error:' "$log"
+            grep -q "tactic 'decide'" "$log"
+            count=$((count + 1))
+          done
+          test "$count" -eq 4
       - name: Reject project proof escapes
         run: python3 scripts/audit_proof_escapes.py
       - name: Verify completed proof-object manifest is current
