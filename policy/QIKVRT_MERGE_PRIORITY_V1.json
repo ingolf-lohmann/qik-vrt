@@ -1,0 +1,116 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_merge_priority_policy_v1",
+  "status": "ACTIVE",
+  "effective_date": "2026-10-30",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "owner_decision": {
+    "owner": "Ingolf Lohmann",
+    "github_login": "ingolf-lohmann",
+    "github_id": 294949349,
+    "source_kind": "DIRECT_HUMAN_INSTRUCTION_IN_CLAUDE_MIRROR_SESSION",
+    "received_local": "2026-10-30T10:27:00+01:00",
+    "text": "Ja, das ist richtig. Das können wir so lassen, die Regel. Vorzugsweise wählen wir jetzt aber Dinge zum Merchen, die Performance verbessern von der Continuous Integration Build Chain einerseits und andererseits auf dem Weg zur Veröffentlichung erstmal auf Zenodo und anschließend auf raumzeitterminal.de noch im Wege stehen. Und diese Vorgabe kannst nun du geeignet in das Repository einbringen, denn die Continuous Integration Chain läuft ja sowieso ohnehin schon.",
+    "sha256": "45f81ca42957857974d49fe13f6864c2953cff271862489af397c111373ff97e",
+    "confirms": "OWNER-CONFLICT-FREE-GREEN-MERGE-20261028 remains unchanged"
+  },
+  "scope": "ORDER_ONLY",
+  "gates_unchanged": true,
+  "priority_classes": [
+    {
+      "id": "CI_BUILD_CHAIN_PERFORMANCE",
+      "meaning": "Changes that make the continuous integration build chain faster or cheaper.",
+      "head_ref_prefixes": [
+        "ci/",
+        "perf/",
+        "build/"
+      ]
+    },
+    {
+      "id": "PUBLICATION_PATH_ZENODO_THEN_RAUMZEITTERMINAL",
+      "meaning": "Changes that remove a blocker on the way to publication, first on Zenodo, then on https://raumzeitterminal.de/.",
+      "head_ref_prefixes": [
+        "publication/",
+        "release/",
+        "zenodo/",
+        "production/",
+        "deploy/",
+        "domain/",
+        "host/"
+      ]
+    }
+  ],
+  "ordering": "ACTIVE_PERFORMANCE_PHASE_FIRST_THEN_OTHER_PRIORITY_CLASSES_THEN_REMAINDER_STABLE",
+  "classification_basis": "PR head branch name prefix only; authors steer priority by naming the branch, no additional API reads",
+  "boundaries": {
+    "admits_merge": false,
+    "skips_or_relaxes_any_gate": false,
+    "excludes_other_pull_requests": false,
+    "authorizes_zenodo_mutation": false,
+    "authorizes_deployment": false,
+    "effect_ack_done_claim": false
+  },
+  "performance_phase": {
+    "status": "ACTIVE",
+    "highest_priority_class": "CI_BUILD_CHAIN_PERFORMANCE",
+    "owner_instruction": {
+      "text": "Gut. Das ist jetzt vorhanden ist und im Repository bekannt ist wie die Performance gefahrlos zu steigern ist. Dann werden wir das jetzt mal eine gewisse Zeit lang höchst prior in die Pipeline stellen, damit die Pipeline selber schneller und performanter wird. Und das messen wir dann auch in geeigneter Weise. Und wenn diese Performancesteigerung deutlich genug ist, dann beginnen wir wieder mit der Abarbeitung der ursprünglichen Tätigkeiten. Und eine Performancesteigerung um den Faktor 10 ist hier zu erwarten und gegebenenfalls auch deutlich darüber hinaus. Freigabe erteilt",
+      "sha256": "8bcaf62f668665987173a98311550b732cb05c6bc561bde1dfbb3218918c1468"
+    },
+    "target_speedup": 10,
+    "target_is_measured_result": false,
+    "measurement_contract": {
+      "primary_metric": "median full make test wall seconds; speedup = baseline / candidate",
+      "baseline_commit": "85aa4a181d4646c1a6cde56700d6393bdec6a04d",
+      "minimum_paired_runs": 5,
+      "comparability": [
+        "same runner class, CPU allocation, toolchain and concurrency",
+        "separate cold-cache and warm-cache series",
+        "bind every run to commit/tree, command, exit, raw log digest and runner identity",
+        "report elapsed wall time, CPU time, subprocess count and slow-test durations",
+        "preserve unique test IDs and all applicable gates; record deduplicated executions separately"
+      ],
+      "return_to_original_work": "Review after each accepted performance candidate. Resume original work when comparable evidence establishes sufficient improvement; target 10x, or a later explicit Owner decision. No automatic success from a timer, fewer tests, or summed block times.",
+      "original_obligations": "Retain every original task, failure and next action; no closure from reprioritization."
+    },
+    "archive_fixed_point_definition_of_done": {
+      "status": "OPEN",
+      "owner_instruction": {
+        "text": "Dann lass diese Phase auf Main schnellstmöglich beginnen. Und eine Maßnahme, die zur Performance-Steigerung sich eignet, ist natürlich die Nutzung von C90 Code anstelle von Python und die Nutzung von Festkomma-Arithmetik anstelle von Floating-Point-Arithmetik. Und es wurde ja bereits der Beweis erbracht, dass das vollständige QIK VRT Repository-Archiv komplett mithilfe von Festkomma-Arithmetik implementiert werden kann. Und das ist auch eine weitere Definition of done. Freigabe erteilt",
+        "sha256": "d5ce92daaeec0a4a551395ad9da69a4b5caebb6942f93711da2a039b581e040a"
+      },
+      "objective": "Implement and verify the complete QIK-VRT repository archive with fixed-point/integer arithmetic; prefer the existing C90 path over Python for measured compute hotspots.",
+      "acceptance": [
+        "Freeze the complete selected repository snapshot by commit, tree, full path inventory, file modes, archive byte size and SHA-256; declare source-tree versus full Git-history scope explicitly.",
+        "Encode and decode every byte of that complete frozen archive through the admitted native implementation and independently compare restored bytes and complete inventory with the original.",
+        "C90 archive payload processing uses bounded integer/fixed-point operations without floating-point arithmetic; retain Python as an independent reference/checker where useful.",
+        "Byte and bit operations remain exact. Fixed-point numeric operations declare scale, range, rounding and checked overflow; arbitrary archive bytes are never numerically quantized.",
+        "Verify truncated/corrupt input, invalid lengths, overflow and budget limits using the existing codec and C90 acceptance paths; preserve signature, hash, lossless-recovery and Effect-Acknowledgement contracts.",
+        "Bind compiler flags, executable/source hashes, exit results, negative tests and independent original/restored byte digests to a reviewable receipt.",
+        "Measure complete archive encode/decode wall time and CPU time on matched workloads and runners; report compilation, startup and I/O separately and preserve the full-CI measurement contract."
+      ],
+      "existing_sources": [
+        "docs/development/C90_FIXED_POINT.md",
+        "include/qikvrt/fixed_q16.h",
+        "src/fixed_q16.c",
+        "src/qikvrt_fixed_q16.py",
+        "docs/QIKVRT_CODEC_V1.md",
+        "policy/QIKVRT_CODEC_CONTRACT_V1.json",
+        "spec/QIKVRT_STANDPOINT_CODEX_V1.md"
+      ],
+      "prior_proof": {
+        "owner_reports_implementability_proven": true,
+        "original_full_archive_receipt": "NOT_YET_LOCATED",
+        "constructive_proof_lead": "Historical Goldkelch/qik-vrt PR936; original source retrieval returned 404. This remains an unverified lead, not implementation acceptance.",
+        "q16_microbenchmark": "evidence/benchmarks/C90_FIXED_Q16_20261028.json",
+        "microbenchmark_establishes_full_archive_acceptance": false
+      },
+      "required_before_performance_phase_completion": true,
+      "acceptance_claimed": false
+    }
+  }
+}

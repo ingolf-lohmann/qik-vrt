@@ -1,0 +1,39 @@
+{
+  "schema": "qikvrt_merge_priority_work_unit_v1",
+  "owner": "Ingolf Lohmann",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "branch": "ci/merge-priority-ci-and-publication-path",
+  "parent_head": "85aa4a181d4646c1a6cde56700d6393bdec6a04d",
+  "parent_tree": "b2780688806f17f09ca96b2b890a643e6f49b7d1",
+  "authorization_basis": "Owner instruction 2026-10-30 10:27 Europe/Paris (text and SHA-256 in policy/QIKVRT_MERGE_PRIORITY_V1.json#/owner_decision): bring the merge preference into the repository.",
+  "contributions": {
+    "human": "Ingolf Lohmann: priority decision and confirmation of the 2026-10-28 conditional merge rule.",
+    "artificial_cognitive": "Claude (Anthropic), QIK-VRT Mirror node: policy record, closure-engine ordering, AI entrypoint note, regression tests.",
+    "joint": [],
+    "unresolved": []
+  },
+  "changes": {
+    "policy/QIKVRT_MERGE_PRIORITY_V1.json": "new ORDER_ONLY policy with the exact Owner text and two priority classes by head-branch prefix",
+    "tools/qikvrt_pr_closure_engine.py": "select_step scans priority classes first (stable, otherwise created_at order); absent policy keeps the historical order; invalid policy fails closed; receipt reports priority_order",
+    "AI": "OWNER MERGE PRIORITY section for every client",
+    "tests/test_qikvrt_merge_priority.py": "5 tests incl. tampered text, widened boundaries, gate-scope and prefix negatives",
+    "Makefile": "new test registered next to the closure-engine tests"
+  },
+  "local_validation": {
+    "tests": "tests.test_qikvrt_merge_priority 5/5; closure engine and reciprocal closure step 38/38",
+    "negative_control": "engine reverted -> 8 errors"
+  },
+  "effect_boundaries": {
+    "merge_admission_changed": false,
+    "gates_relaxed": false,
+    "zenodo_mutation": false,
+    "deployment": false,
+    "main_merge_established": false,
+    "effect_ack_done": false
+  },
+  "license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  }
+}
