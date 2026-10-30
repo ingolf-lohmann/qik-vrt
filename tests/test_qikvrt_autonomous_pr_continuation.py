@@ -28,6 +28,36 @@ VERIFIER = ROOT / ".github/workflows/qikvrt_autonomous_exact_head_verify.yml"
 
 
 class AutonomousPRContinuationTests(unittest.TestCase):
+    def test_actual_qce_shell_preserves_package_inventory_with_space_in_runner_temp(self):
+        # This exercises output placement; Lean/kernel acceptance is separate.
+        workflow = VERIFIER.read_text()
+        block = workflow.split('      - name: Re-execute QCE finite formal model when present', 1)[1]
+        block = block.split('      - name:', 1)[0].split('        run: |', 1)[1]
+        shell = '\n'.join(line[10:] for line in block.splitlines() if line)
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            package = root / 'package'; package.mkdir()
+            runner = root / 'runner temp'; runner.mkdir()
+            executables = root / 'bin'; executables.mkdir()
+            for name in ('lake', 'lean'):
+                path = executables / name
+                path.write_text('#!/bin/sh\nexit 0\n'); path.chmod(0o755)
+            (package / 'verify_qce_package.py').write_text(
+                'import pathlib,sys\n'
+                'pathlib.Path(sys.argv[sys.argv.index("--axiom-output")+1]).write_text("audit")\n'
+                'print("{}")\n')
+            before = sorted(p.name for p in package.iterdir())
+            environment = dict(os.environ, PATH=str(executables)+os.pathsep+os.environ['PATH'], RUNNER_TEMP=str(runner))
+            patched = subprocess.run(['bash', '-c', shell], cwd=package, env=environment, capture_output=True, text=True)
+            self.assertEqual(patched.returncode, 0, patched.stderr)
+            self.assertEqual(sorted(p.name for p in package.iterdir()), before)
+            self.assertEqual(sorted(p.name for p in runner.iterdir()), ['qce-autonomous-axiom-output.txt', 'qce-autonomous-verification.json'])
+            historical = shell.replace('"$RUNNER_TEMP/qce-autonomous-axiom-output.txt"', 'qce-autonomous-axiom-output.txt').replace('"$RUNNER_TEMP/qce-autonomous-verification.json"', 'qce-autonomous-verification.json')
+            control = subprocess.run(['bash', '-c', historical], cwd=package, env=environment, capture_output=True, text=True)
+            self.assertEqual(control.returncode, 0, control.stderr)
+            self.assertNotEqual(sorted(p.name for p in package.iterdir()), before)
+
+
     def test_contract_is_opt_in_same_repo_draft_and_one_at_a_time(self) -> None:
         contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
         value = contract["pull_request_continuation"]
