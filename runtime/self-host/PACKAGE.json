@@ -98,6 +98,7 @@
     "personal/ingolf-lohmann/firefox-assistant/ui.js",
     "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
     "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json",
+    "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json",
     "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
     "policy/qikvrt-prepublication-return-receipt-v1.schema.json",
     "policy/qikvrt-prepublication-return-receipt-v2.schema.json",
@@ -132,9 +133,9 @@
     "runtime/self-host/PUBLICATION_REQUEST.example.json",
     "runtime/self-host/REACT_LOCK.json",
     "runtime/self-host/README.md",
+    "runtime/self-host/RECOVERED_TERMINAL.md",
     "runtime/self-host/STATIC_DELIVERY.md",
     "runtime/self-host/hello-world/index.html",
-    "runtime/self-host/RECOVERED_TERMINAL.md",
     "runtime/self-host/original-firefox/README.md",
     "runtime/self-host/original-firefox/_locales/ar/messages.json",
     "runtime/self-host/original-firefox/_locales/de/messages.json",
@@ -178,10 +179,13 @@
     "state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
     "tools/ai_handoff.py",
     "tools/qikvrt_authority_credentials.py",
+    "tools/qikvrt_authority_transition.py",
     "tools/qikvrt_integrity.py",
     "tools/qikvrt_ionos_dns.py",
     "tools/qikvrt_mesh_monitor_readback.mjs",
+    "tools/qikvrt_mesh_recovery.py",
     "tools/qikvrt_required_review_gate.py",
+    "tools/qikvrt_seed_common.py",
     "tools/qikvrt_self_host.py",
     "tools/qikvrt_self_host_container.py",
     "tools/qikvrt_self_host_migration.py",
@@ -239,4 +243,3 @@
     "contains_credentials": false
   }
 }
-

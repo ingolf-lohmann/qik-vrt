@@ -934,6 +934,30 @@
       ],
       "version": "gnu-tar-zstd-v1"
     },
+    "unzip": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "src/codec_native.c",
+        "tools/qikvrt_archive_native.c",
+        "tools/qikvrt_native_archive.py",
+        "tests/test_native_archive.py",
+        "docs/development/NATIVE_ARCHIVE.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "github-hosted-runner-image:ubuntu-24.04 (fail closed if unavailable; no automatic package installation)"
+      ],
+      "profiles": [
+        "native-archive"
+      ],
+      "provider": "Existing distribution Info-ZIP executable; ZIP APPNOTE6.3.10 https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT",
+      "trusted_save": false,
+      "verification": [
+        "unzip -t validates independently produced full ZIP and native SFX",
+        "original restored ZIP bytes and complete path inventory independently compared"
+      ],
+      "version": "zip-deflate-readback-contract"
+    },
     "websockify": {
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
@@ -1073,6 +1097,30 @@
         "productive startup, Unix/SQLite/SSE/restart and negative controls"
       ],
       "version": "exact-executable-binding"
+    },
+    "zlib-native": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "src/codec_native.c",
+        "tools/qikvrt_archive_native.c",
+        "tools/qikvrt_native_archive.py",
+        "tests/test_native_archive.py",
+        "docs/development/NATIVE_ARCHIVE.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "github-hosted-runner-image:ubuntu-24.04 (fail closed if unavailable; no automatic package installation)"
+      ],
+      "profiles": [
+        "native-archive"
+      ],
+      "provider": "Existing distribution libz headers/library in the runner image; official zlib API https://zlib.net/manual.html",
+      "trusted_save": false,
+      "verification": [
+        "strict C90 native compiler/link self-test; zlibVersion recorded",
+        "QIKVRTC cross-decoding, truncation/trailing-stream rejection, raw byte hashes"
+      ],
+      "version": "1.2.11-or-newer-integer-codec-contract"
     },
     "zod": {
       "authority_files": [
