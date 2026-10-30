@@ -47,13 +47,23 @@ class MergePriorityTests(unittest.TestCase):
         ordered = M.prioritized_pull_requests(
             rows("feat/a", "issue-agent/466", "publication/raumzeit", "fix/b", "ci/actions-node24", "release/r2"),
             priority)
-        self.assertEqual([r["number"] for r in ordered], [3, 5, 6, 1, 2, 4])
+        self.assertEqual([r["number"] for r in ordered], [5, 3, 6, 1, 2, 4])
         self.assertEqual(M.merge_priority_class({"head_ref": "ci/x"}, priority), "CI_BUILD_CHAIN_PERFORMANCE")
         self.assertEqual(M.merge_priority_class({"head_ref": "zenodo/x"}, priority),
                          "PUBLICATION_PATH_ZENODO_THEN_RAUMZEITTERMINAL")
         # A prefix must match a whole path segment, not a substring.
         self.assertIsNone(M.merge_priority_class({"head_ref": "cid/x"}, priority))
         self.assertIsNone(M.merge_priority_class({"head_ref": "feat/ci/x"}, priority))
+
+    def test_completed_phase_restores_original_order_and_tampering_blocks(self):
+        value = copy.deepcopy(self.value)
+        value["performance_phase"]["status"] = "COMPLETE"
+        priority = M.load_merge_priority(self.write(value))
+        original = rows("publication/a", "perf/b", "fix/c")
+        self.assertEqual(M.prioritized_pull_requests(original, priority), original)
+        value["performance_phase"]["owner_instruction"]["text"] += " altered"
+        with self.assertRaisesRegex(M.ClosureBlock, "MERGE_PRIORITY_PHASE_INVALID"):
+            M.load_merge_priority(self.write(value))
 
     def test_absent_policy_keeps_historical_order(self):
         missing = ROOT / "policy/__absent_merge_priority__.json"

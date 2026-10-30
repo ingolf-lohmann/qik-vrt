@@ -79,7 +79,18 @@ def load_merge_priority(path: pathlib.Path = MERGE_PRIORITY_PATH) -> dict[str, A
                 or not all(isinstance(r, str) and r.endswith("/") and len(r) > 1 for r in refs)):
             raise ClosureBlock("MERGE_PRIORITY_POLICY_INVALID")
         prefixes.append((item["id"], tuple(refs)))
-    return {"classes": prefixes}
+    phase = value.get("performance_phase")
+    highest = None
+    if phase is not None:
+        instruction = phase.get("owner_instruction", {}) if isinstance(phase, Mapping) else {}
+        if (not isinstance(phase, Mapping) or phase.get("status") not in ("ACTIVE", "COMPLETE")
+                or phase.get("highest_priority_class") != "CI_BUILD_CHAIN_PERFORMANCE"
+                or not isinstance(instruction.get("text"), str)
+                or hashlib.sha256(instruction["text"].encode("utf-8")).hexdigest() != instruction.get("sha256")):
+            raise ClosureBlock("MERGE_PRIORITY_PHASE_INVALID")
+        if phase["status"] == "ACTIVE":
+            highest = phase["highest_priority_class"]
+    return {"classes": prefixes, "highest": highest}
 
 
 def merge_priority_class(summary: Mapping[str, Any], priority: Mapping[str, Any] | None) -> str | None:
@@ -95,7 +106,12 @@ def merge_priority_class(summary: Mapping[str, Any], priority: Mapping[str, Any]
 def prioritized_pull_requests(rows: Sequence[Mapping[str, Any]],
                               priority: Mapping[str, Any] | None) -> list[Mapping[str, Any]]:
     """Stable: priority classes first, then all others; each keeps inventory order."""
-    return sorted(rows, key=lambda row: merge_priority_class(row, priority) is None)
+    def rank(row):
+        classification = merge_priority_class(row, priority)
+        if priority and priority.get("highest") and classification == priority["highest"]:
+            return 0
+        return 1 if classification is not None else 2
+    return sorted(rows, key=rank)
 
 
 def _sha(value: Any, label: str) -> str:
