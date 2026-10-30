@@ -1449,6 +1449,192 @@ def amo_event(root: Path, context: Mapping[str, Any]) -> dict[str, Any] | None:
         raise ExecutorBlock("AMO_GITHUB_COMPLETION_EVENT_UNVERIFIED") from None
 
 
+CONTINUATION_WORKFLOWS = {
+    ".github/workflows/qikvrt_ci.yml": "CI",
+    ".github/workflows/qikvrt_temdd.yml": "CD",
+    ".github/workflows/qikvrt_workflow_executor_watchdog.yml": "CO",
+}
+
+
+def github_tested_subject_matches(run: Mapping[str, Any], tested: Any) -> bool:
+    return (isinstance(tested, Mapping)
+        and set(tested) == {"schema", "repository", "run_id", "run_attempt", "head_sha", "tree_sha"}
+        and tested.get("schema") == "qikvrt-ci-tested-subject/v1"
+        and tested.get("repository") == AMO_REPOSITORY
+        and type(tested.get("run_id")) is int and tested["run_id"] == run.get("id")
+        and type(tested.get("run_attempt")) is int and tested["run_attempt"] == run.get("run_attempt")
+        and all(SHA_RE.fullmatch(str(tested.get(k, ""))) for k in ("head_sha", "tree_sha")))
+
+
+def github_source_test_succeeded(jobs: Sequence[Mapping[str, Any]]) -> bool:
+    tests = [job for job in jobs if job.get("name") == "test"]
+    return (len(tests) == 1 and tests[0].get("status") == "completed"
+            and tests[0].get("conclusion") == "success")
+
+
+HOST_INPUT_JOB = "Original Linux host identity and admitted deployment via mutual TLS REST"
+HOST_INPUT_BINDINGS = {"QIKVRT_HOST_BINDING", "QIKVRT_HOST_BINDING_SHA256",
+                       "QIKVRT_HOST_CA", "QIKVRT_HOST_CERT", "QIKVRT_HOST_KEY"}
+
+
+def github_host_handoff(root: Path, run: Mapping[str, Any], jobs: Sequence[Mapping[str, Any]],
+                        tested: Mapping[str, Any] | None) -> dict[str, Any]:
+    """Read the original non-secret job-input witness, never the protected store.
+
+    A failed or unavailable checker cannot establish missing target bindings.
+    Even a valid presence witness proves neither secret values nor host identity.
+    The next operation is the existing native SSO GET, not a retry or a write.
+    """
+    value = {"schema": "qikvrt-protected-host-completion-feedback/v1", "state": "UNVERIFIED",
+        "scope": "JOB_INPUT_PRESENCE_ONLY", "target_failure_detected": False,
+        "job_credential_delivery_verified": False, "host_identity_verified": False,
+        "retry_original_failed_job": False, "effect_ack_done": False}
+    matched = [job for job in jobs if job.get("name") == HOST_INPUT_JOB]
+    if len(matched) != 1:
+        return value
+    job = matched[0]
+    if job.get("status") == "completed" and job.get("conclusion") == "skipped":
+        return dict(value, state="NOT_EXECUTED")
+    if (run.get("path") != AMO_CI_WORKFLOW or run.get("head_branch") != "main"
+            or job.get("status") != "completed" or not github_source_test_succeeded(jobs)
+            or not github_tested_subject_matches(run, tested)
+            or tested["head_sha"] != run.get("head_sha")):
+        return value
+    value.update(run_id=run["id"], run_attempt=run["run_attempt"], job_id=job["id"],
+                 source_head=tested["head_sha"], source_tree=tested["tree_sha"])
+    try:
+        name = "qikvrt-s1-host-start-" + tested["head_sha"]
+        original = amo_artifact(root, run["id"], name,
+            {"host-material-delivery.json", "host-identity.json", "host-start.json"})
+        if original is None or "host-material-delivery.json" not in original:
+            return value
+        raw = original["host-material-delivery.json"]
+        receipt = _amo_object(raw)
+        expected = {"schema": "qikvrt-protected-host-input-delivery/v1",
+            "repository": AMO_REPOSITORY, "environment": "qikvrt-production",
+            "scope": "JOB_INPUT_PRESENCE_ONLY", "source_head": tested["head_sha"],
+            "source_tree": tested["tree_sha"], "job_credential_delivery_verified": False,
+            "host_identity_verified": False, "effect_ack_done": False}
+        bindings = receipt.get("bindings")
+        if (set(receipt) != set(expected) | {"bindings", "state"}
+                or any(type(receipt.get(key)) is not type(want) or receipt[key] != want
+                       for key, want in expected.items())
+                or not isinstance(bindings, dict) or set(bindings) != HOST_INPUT_BINDINGS
+                or any(type(present) is not bool for present in bindings.values())):
+            return value
+        missing = sorted(key for key, present in bindings.items() if not present)
+        state = "HOLD_PROTECTED_INPUT_DELIVERY" if missing else "PROTECTED_INPUTS_PRESENT"
+        if receipt.get("state") != state:
+            return value
+        value.update(state=state, target_failure_detected=bool(missing), missing_bindings=missing,
+            artifact_name=name, receipt_sha256=sha256_bytes(raw))
+        if missing:
+            value["next_required_readback"] = {"route": "ORIGINAL_NATIVE_SSO_REST", "method": "GET",
+                "operation": "productionEnvironmentReadback",
+                "path": "/repos/ingolf-lohmann/qik-vrt/qikvrt/production-environment",
+                "query": {"schema": "qikvrt-production-environment-rest/v1",
+                          "request_id": f"host-input-{run['id']}-{run['run_attempt']}"}}
+            value["retry_condition"] = "ORIGINAL_BOUND_METADATA_READBACK_AND_JOB_INPUT_REPAIR_REQUIRED"
+    except Exception:
+        # Supplementary observation must retain the original provider failure.
+        # Do not forward checker errors, paths, private fields or exception text.
+        return value
+    return value
+
+
+def continuation_graph(run: Mapping[str, Any], jobs: Sequence[Mapping[str, Any]],
+                       tested_subject: Mapping[str, Any] | None = None) -> dict[str, Any]:
+    """Adapt sibling priority from successful original jobs, retaining all gates.
+
+    This is the QIK-VRT continuation graph, not a modification of GitHub's
+    schema. Durations guide order only; they never transfer gate acceptance.
+    Callers must independently read the original run and complete job inventory.
+    """
+    from datetime import datetime
+    if (run.get("path") not in CONTINUATION_WORKFLOWS
+            or type(run.get("id")) is not int or run["id"] <= 0
+            or type(run.get("run_attempt")) is not int or run["run_attempt"] <= 0
+            or not SHA_RE.fullmatch(str(run.get("head_sha", "")))
+            or run.get("repository", {}).get("full_name") != AMO_REPOSITORY
+            or run.get("head_repository", {}).get("full_name") != AMO_REPOSITORY
+            or not 0 < len(jobs) < 100
+            or any(type(j.get("id")) is not int or j["id"] <= 0 for j in jobs)
+            or len({j["id"] for j in jobs}) != len(jobs)):
+        raise ExecutorBlock("CONTINUATION_ORIGINAL_RUN_AND_JOBS_REQUIRED")
+    succeeded = run.get("status") == "completed" and run.get("conclusion") == "success"
+    timings = []
+    for job in jobs:
+        if (not isinstance(job.get("name"), str) or not 0 < len(job["name"]) <= 200
+                or job.get("status") != "completed"):
+            succeeded = False
+        if job.get("conclusion") not in {"success", "skipped"}:
+            succeeded = False
+        if job.get("conclusion") == "success":
+            try:
+                start = datetime.fromisoformat(job["started_at"].replace("Z", "+00:00"))
+                end = datetime.fromisoformat(job["completed_at"].replace("Z", "+00:00"))
+                seconds = (end - start).total_seconds()
+                if start.tzinfo is None or end.tzinfo is None or not 0 <= seconds <= 86400:
+                    raise ValueError("invalid job duration")
+                timings.append({"job_id": job["id"], "name": job["name"], "seconds": seconds})
+            except (KeyError, TypeError, ValueError, AttributeError):
+                pass  # Unknown timing is never a synthetic zero-cost success.
+    timings = sorted(timings, key=lambda j: (-j["seconds"], j["job_id"])) if succeeded else []
+    parallel_ci = {"offline_browser (chromium)", "offline_browser (webkit)",
+                   "Linux S1 native terminal production and smoke"}
+    sibling_priority = ([j for j in timings if j["name"] in parallel_ci]
+                        if run["path"] == AMO_CI_WORKFLOW else [])
+    ordered_children = [j["name"] for j in sibling_priority]
+    ordered_children += sorted(parallel_ci - set(ordered_children))
+    required = {"test", "offline_browser (chromium)", "offline_browser (webkit)",
+                "Linux S1 native terminal production and smoke"}
+    accepted = {j.get("name") for j in jobs if j.get("conclusion") == "success"}
+    bound = github_tested_subject_matches(run, tested_subject)
+    return {"schema": "qikvrt-continuation-graph/v1", "run_id": run["id"],
+            "event_head_sha": run["head_sha"],
+            "head_sha": tested_subject["head_sha"] if bound else run["head_sha"],
+            "tree_sha": tested_subject["tree_sha"] if bound else None,
+            "workflow_stage": CONTINUATION_WORKFLOWS[run["path"]],
+            "provider_metadata_sha256": sha256_bytes(canonical_json_bytes({"run": run, "jobs": jobs})),
+            "tested_subject": dict(tested_subject) if bound else None,
+            "source_tests_verified": bool(bound and run["path"] == AMO_CI_WORKFLOW
+                                          and github_source_test_succeeded(jobs)),
+            "ci_verified": bool(bound and succeeded and run["path"] == AMO_CI_WORKFLOW and required <= accepted),
+            "success_learning": succeeded, "successful_job_timings": timings,
+            "sibling_priority": sibling_priority, "sibling_dependency": "test",
+            "skipped_jobs": [j["id"] for j in jobs if j.get("conclusion") == "skipped"],
+            "nodes": [{"id": "source", "requires": []},
+                      {"id": "review", "requires": ["source"]},
+                      {"id": "ci", "requires": ["source"], "mandatory_root": "test",
+                       "independent_children": ordered_children},
+                      {"id": "graphql-fallback", "requires": ["review", "ci"],
+                       "operation": "markPullRequestReadyForReview", "never_prune": True},
+                      {"id": "rest-merge", "requires": ["graphql-fallback"],
+                       "fresh_expected_head_admission_required": True}],
+            "learning_scope": "ORDER_INDEPENDENT_CI_SIBLINGS_ONLY; NEVER_SKIP_GATES",
+            "graph_source_mutation": False, "effect_ack_done": False}
+
+
+def continuation_frontier(graph: Mapping[str, Any], pr: Mapping[str, Any],
+                          review: Mapping[str, Any]) -> dict[str, Any]:
+    """Advance the retained graph from fresh source/review/CI/readiness evidence.
+
+    A merge frontier requests the existing fresh merge admission; it never
+    grants or executes a merge. Unknown or failed gates keep their branches.
+    """
+    value = json.loads(json.dumps(graph))
+    admitted = graph.get("ci_verified") is True and review.get("gate_state") == "success"
+    states = {"source": "VERIFIED", "review": "VERIFIED" if review.get("gate_state") == "success" else "OPEN",
+              "ci": "VERIFIED" if graph.get("ci_verified") else "OPEN",
+              "graphql-fallback": "VERIFIED" if pr.get("draft") is False else "READY" if admitted else "WAITING",
+              "rest-merge": "RECHECK_REQUIRED" if admitted and pr.get("draft") is False else "WAITING"}
+    for node in value["nodes"]:
+        node["state"] = states[node["id"]]
+    value["frontier"] = [n["id"] for n in value["nodes"] if n["state"] in {"READY", "RECHECK_REQUIRED"}]
+    value["merge_admission_inferred"] = False
+    return value
+
+
 def github_completion_feedback(root: Path = ROOT) -> dict[str, Any]:
     """Read CI completion diagnostics without executing code from the triggering run."""
     context = amo_context()
@@ -1467,14 +1653,34 @@ def github_completion_feedback(root: Path = ROOT) -> dict[str, Any]:
         run = _amo_get(root, f"repos/{AMO_REPOSITORY}/actions/runs/{run_id}")
         if (run.get("repository", {}).get("full_name") != AMO_REPOSITORY
                 or run.get("head_repository", {}).get("full_name") != AMO_REPOSITORY
-                or run.get("path") not in {AMO_CI_WORKFLOW, ".github/workflows/qikvrt_workflow_executor_watchdog.yml"}
+                or run.get("path") not in CONTINUATION_WORKFLOWS
                 or run.get("status") != "completed"
                 or any(run.get(k) != source.get(k) for k in ("id", "head_sha", "conclusion", "run_attempt", "event"))):
             raise ExecutorBlock("AMO_GITHUB_COMPLETION_EVENT_MISMATCH")
         jobs = _amo_get(root, f"repos/{AMO_REPOSITORY}/actions/runs/{run_id}/jobs?per_page=100")
         if jobs.get("total_count") != len(jobs.get("jobs", [])):
             raise ExecutorBlock("AMO_TARGET_JOB_INVENTORY_INCOMPLETE")
-        return github_failure_feedback(root, amo_feedback(run, jobs["jobs"]))
+        feedback = github_failure_feedback(root, amo_feedback(run, jobs["jobs"]))
+        tested = None
+        try:
+            if run.get("path") == AMO_CI_WORKFLOW and github_source_test_succeeded(jobs["jobs"]):
+                artifact = amo_artifact(root, run_id,
+                    f"qikvrt-ci-tested-subject-{run_id}-{run['run_attempt']}", {"TESTED_SUBJECT.json"})
+                if artifact is not None:
+                    tested = _amo_object(artifact["TESTED_SUBJECT.json"])
+                    if not github_tested_subject_matches(run, tested):
+                        tested = None
+            feedback["continuation_graph"] = continuation_graph(run, jobs["jobs"], tested)
+        except Exception:
+            # A failed learner must not erase the original provider outcome.
+            tested = None
+            feedback["continuation_graph"] = {"schema": "qikvrt-continuation-graph/v1",
+                "state": "UNVERIFIED", "ci_verified": False, "success_learning": False,
+                "source_tests_verified": False,
+                "fallback_retained": True, "sibling_priority": [], "effect_ack_done": False}
+        if any(job.get("name") == HOST_INPUT_JOB for job in jobs["jobs"]):
+            feedback["protected_host_handoff"] = github_host_handoff(root, run, jobs["jobs"], tested)
+        return feedback
     except (OSError, KeyError, TypeError):
         raise ExecutorBlock("AMO_GITHUB_COMPLETION_EVENT_UNVERIFIED") from None
 
@@ -1703,6 +1909,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             amo_write(arguments.output_dir, "GITHUB_RUN_FEEDBACK.json", canonical_json_bytes(value))
             print("GITHUB_ORIGINAL_CONCLUSION=" + str(value["conclusion"]))
             print("GITHUB_ABORT_REASON=" + value["reason"])
+            if "protected_host_handoff" in value:
+                print("GITHUB_HOST_HANDOFF_STATE=" + value["protected_host_handoff"]["state"])
             return 0
         elif arguments.command == "amo-plan":
             value = amo_live_plan()

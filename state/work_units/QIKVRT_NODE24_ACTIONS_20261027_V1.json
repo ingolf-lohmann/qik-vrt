@@ -1,0 +1,358 @@
+{
+  "authorization": "Owner request to consolidate the register binding into draft PR614; keep maintenance branch without PR; no merge",
+  "boundaries": {
+    "domain_delivery_established": false,
+    "effect_ack_done": false,
+    "merge_authorized_by_this_task": false,
+    "native_adapter_open_gate": "ADMITTED_MESH_RUNTIME_ENDPOINT",
+    "physical_iphone_acceptance": false,
+    "production_deployment": false,
+    "slow_apt_transfer_cause": "NOT_ESTABLISHED"
+  },
+  "branch": "ci/actions-node24",
+  "consolidation": {
+    "duplicate_pin_test_in_release_workflows_added": false,
+    "native_ci_acceptance_transfers_from_predecessors": false,
+    "parent_head": "4327b862b517cf62383b63a47c190ded062c0c1d",
+    "parent_tree": "b7ddd0b841c4e2f7fdeabc79208dce14fa65b42d",
+    "preserved_test": "tests/test_workflow_action_runtime_pins.py (Claude / Anthropic), extended by OpenAI Codex with registry binding regression",
+    "pull_request": 614,
+    "workflow_blobs_identical_to_predecessor_candidate": 12
+  },
+  "implementation_contribution": "OpenAI Codex",
+  "initial_rest_plan": [
+    {
+      "endpoint": "/repos/ingolf-lohmann/qik-vrt/branches/main",
+      "gate": "reobserve exact source before write; changed source requires reassessment",
+      "method": "GET"
+    },
+    {
+      "endpoint": "/repos/ingolf-lohmann/qik-vrt/git/trees",
+      "gate": "base tree above; only candidate changes; read back exact blobs and candidate tree; independently compare root tree and all changed blob SHAs",
+      "method": "POST"
+    },
+    {
+      "endpoint": "/repos/ingolf-lohmann/qik-vrt/git/commits",
+      "gate": "parent exact Main; candidate tree equals locally verified tree",
+      "method": "POST"
+    },
+    {
+      "endpoint": "/repos/ingolf-lohmann/qik-vrt/git/refs",
+      "gate": "new branch only, no force, no main update",
+      "method": "POST"
+    },
+    {
+      "endpoint": "/repos/ingolf-lohmann/qik-vrt/branches/maintenance/node24-actions-20261027",
+      "gate": "read back exact commit and tree",
+      "method": "GET"
+    },
+    {
+      "endpoint": "/repos/ingolf-lohmann/qik-vrt/actions/runs",
+      "gate": "native CI remains separate from local tests; do not infer dispatch or results",
+      "method": "GET"
+    }
+  ],
+  "inventory": {
+    "automatic_cache_opt_outs": 13,
+    "cache_save_references": 4,
+    "entries": [
+      {
+        "action": "actions/cache/save",
+        "line": 458,
+        "path": ".github/workflows/qikvrt_adaptive_runtime.yml"
+      },
+      {
+        "action": "actions/cache/save",
+        "line": 467,
+        "path": ".github/workflows/qikvrt_adaptive_runtime.yml"
+      },
+      {
+        "action": "actions/setup-node",
+        "explicit_cache": true,
+        "line": 37,
+        "path": ".github/workflows/qikvrt_audio_request.yml"
+      },
+      {
+        "action": "actions/setup-node",
+        "explicit_cache": true,
+        "line": 92,
+        "path": ".github/workflows/qikvrt_audio_request.yml"
+      },
+      {
+        "action": "actions/setup-node",
+        "explicit_cache": false,
+        "line": 52,
+        "path": ".github/workflows/qikvrt_batch003_remaining_disposition.yml"
+      },
+      {
+        "action": "actions/setup-node",
+        "explicit_cache": false,
+        "line": 75,
+        "path": ".github/workflows/qikvrt_batch04_integrity.yml"
+      },
+      {
+        "action": "actions/setup-node",
+        "explicit_cache": false,
+        "line": 64,
+        "path": ".github/workflows/qikvrt_ci.yml"
+      },
+      {
+        "action": "actions/setup-node",
+        "explicit_cache": true,
+        "line": 278,
+        "path": ".github/workflows/qikvrt_ci.yml"
+      },
+      {
+        "action": "actions/cache/save",
+        "line": 385,
+        "path": ".github/workflows/qikvrt_ci.yml"
+      },
+      {
+        "action": "actions/cache/save",
+        "line": 424,
+        "path": ".github/workflows/qikvrt_ci.yml"
+      },
+      {
+        "action": "actions/setup-node",
+        "explicit_cache": false,
+        "line": 1300,
+        "path": ".github/workflows/qikvrt_ci.yml"
+      },
+      {
+        "action": "actions/setup-node",
+        "explicit_cache": false,
+        "line": 1704,
+        "path": ".github/workflows/qikvrt_ci.yml"
+      },
+      {
+        "action": "actions/setup-node",
+        "explicit_cache": false,
+        "line": 27,
+        "path": ".github/workflows/qikvrt_collective_review.yml"
+      },
+      {
+        "action": "actions/setup-node",
+        "explicit_cache": false,
+        "line": 80,
+        "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml"
+      },
+      {
+        "action": "actions/setup-node",
+        "explicit_cache": false,
+        "line": 481,
+        "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml"
+      },
+      {
+        "action": "actions/setup-node",
+        "explicit_cache": true,
+        "line": 36,
+        "path": ".github/workflows/qikvrt_formalization_and_audio.yml"
+      },
+      {
+        "action": "actions/setup-node",
+        "explicit_cache": true,
+        "line": 96,
+        "path": ".github/workflows/qikvrt_formalization_and_audio.yml"
+      },
+      {
+        "action": "actions/setup-node",
+        "explicit_cache": false,
+        "line": 110,
+        "path": ".github/workflows/qikvrt_global_completion.yml"
+      },
+      {
+        "action": "actions/setup-node",
+        "explicit_cache": false,
+        "line": 58,
+        "path": ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml"
+      },
+      {
+        "action": "actions/setup-node",
+        "explicit_cache": false,
+        "line": 159,
+        "path": ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml"
+      },
+      {
+        "action": "actions/setup-node",
+        "explicit_cache": false,
+        "line": 122,
+        "path": ".github/workflows/qikvrt_publication_router.yml"
+      },
+      {
+        "action": "actions/setup-node",
+        "explicit_cache": false,
+        "line": 33,
+        "path": ".github/workflows/qikvrt_temdd.yml"
+      }
+    ],
+    "explicit_npm_caches_retained": 5,
+    "prior_reported_19_plus_4_count": "NOT_REPRODUCED_ON_EXACT_MAIN",
+    "setup_node_references": 18,
+    "setup_node_workflows": 11,
+    "total_references": 22,
+    "total_workflows": 12
+  },
+  "other_requested_work": [
+    {
+      "checks": [
+        "Library exact-name and simpler searches returned no file",
+        "OneDrive bounded filename search returned no file",
+        "Authority short commit/tree identifiers returned 404; not evidence of global absence"
+      ],
+      "expected_main": "9763b2c86695126759665b56a79b37383bbb1663",
+      "id": "AI_ONBOARDING_REST_PLAN_4ee80cd3",
+      "next_action": "Resolve exact original ZIP/REST-plan bytes through existing permitted storage or caller-provided attachment; recheck exact Main before writes; draft PR only, no merge",
+      "plan": "AI_ONBOARDING_REST_PLAN_4ee80cd3.json",
+      "reconstructed_from_partial_chat_text": false,
+      "reported_target_tree_prefix": "db3c6839",
+      "source_zip": "qikvrt-ai-onboarding_4ee80cd3.zip",
+      "state": "OPEN_INPUT_NOT_RESOLVED"
+    }
+  ],
+  "pins": {
+    "actions/cache/save": {
+      "action_yml_blob": "1b95184507516b6b36a065e21d77e35b3acc4986",
+      "commit": "55cc8345863c7cc4c66a329aec7e433d2d1c52a9",
+      "tag": "v6.1.0",
+      "using": "node24"
+    },
+    "actions/setup-node": {
+      "action_yml_blob": "31057efa69b67281683c7b601a1d202329eaa3c1",
+      "commit": "949feb2413d6458794dcd2491c4babbbce0c15c1",
+      "tag": "v7.1.0",
+      "using": "node24"
+    }
+  },
+  "predecessor_candidate": {
+    "branch": "maintenance/node24-actions-20261027",
+    "head": "a33859766dbd3052b3a65dbfd14c24c7f34de959",
+    "retained_without_pull_request": true,
+    "tree": "53f5f7cacbc06177e290276a337fab61e68b060a"
+  },
+  "predecessor_validation": {
+    "baseline_integrity": "PASS 5165 classified, 5154 immutable",
+    "extra_self_host_target": {
+      "command": "make repository-monitor-test self-host-test",
+      "errors": 10,
+      "exit_status": 2,
+      "failing_target": "temdd-event-ledger-test",
+      "next_action": "Run existing native S1 CI on candidate commit; no unchanged local retry",
+      "observed_error": "socket(AF_UNIX): PermissionError [Errno 1] Operation not permitted",
+      "result": "BLOCKED_BY_LOCAL_RUNTIME",
+      "source_changed_to_bypass_environment": false
+    },
+    "full_make_test": {
+      "exit_status": 0,
+      "log_sha256": "564389ca940e2b0ef23c32a6f3360cf174f4278473c0e73f7308e2c0de6f0b19",
+      "python_test_cases": 1796,
+      "python_test_groups": 37,
+      "result": "PASS",
+      "scope": "Local source changes plus generated integrity; documentary validation update finalized afterward"
+    },
+    "native_ci": "NOT_YET_OBSERVED_FOR_CANDIDATE",
+    "negative_controls": [
+      "Old Node-20 setup-node SHA rejected",
+      "Missing automatic cache opt-out rejected"
+    ],
+    "node_diagnostic_cache_tests": "PASS 23/23",
+    "repository_monitor": "PASS",
+    "repository_wide_pin_regression": "PASS",
+    "self_host_python_tests": {
+      "result": "PASS",
+      "skipped": 1,
+      "tests": 141
+    },
+    "source_blob_inventory_verified": 5311,
+    "source_tree_verified": true,
+    "tool_cache": "PASS 35/35"
+  },
+  "preserved": [
+    "node-version 24",
+    "explicit cache and cache-dependency-path inputs",
+    "runner labels",
+    "cache keys, paths and save admission conditions",
+    "all package manifests and lockfiles",
+    "deployment and domain acceptance gates"
+  ],
+  "principal": "Ingolf Lohmann",
+  "rest_plan": [
+    {
+      "endpoint": "/repos/ingolf-lohmann/qik-vrt/branches/main",
+      "gate": "Must equal source.head exactly before any remote write",
+      "method": "GET"
+    },
+    {
+      "endpoint": "/repos/ingolf-lohmann/qik-vrt/branches/ci/actions-node24",
+      "gate": "Must equal consolidation.parent_head; refuse lease drift",
+      "method": "GET"
+    },
+    {
+      "endpoint": "/repos/ingolf-lohmann/qik-vrt/git/blobs",
+      "gate": "Only selected consolidation files; verify returned SHAs against local bytes",
+      "method": "POST"
+    },
+    {
+      "endpoint": "/repos/ingolf-lohmann/qik-vrt/git/trees",
+      "gate": "Use consolidation.parent_tree as base; verify resulting complete tree and changed blob SHAs",
+      "method": "POST"
+    },
+    {
+      "endpoint": "/repos/ingolf-lohmann/qik-vrt/git/commits",
+      "gate": "One parent: consolidation.parent_head; exact verified candidate tree",
+      "method": "POST"
+    },
+    {
+      "endpoint": "/repos/ingolf-lohmann/qik-vrt/git/refs/heads/ci/actions-node24",
+      "gate": "Fast-forward only, expected_sha lease; Main unchanged",
+      "method": "PATCH"
+    },
+    {
+      "endpoint": "/repos/ingolf-lohmann/qik-vrt/pulls/614",
+      "gate": "Read back new exact head; keep open and draft; no merge",
+      "method": "GET"
+    },
+    {
+      "endpoint": "/repos/ingolf-lohmann/qik-vrt/actions/runs",
+      "gate": "Read candidate-bound native runs; previous runs do not accept successor",
+      "method": "GET"
+    }
+  ],
+  "route": "REST_API_ONLY",
+  "schema": "qikvrt-node24-action-migration/v1",
+  "source": {
+    "head": "9763b2c86695126759665b56a79b37383bbb1663",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "tree": "10702217b2ef1ef5cfcbbd604ad839a597ef3217"
+  },
+  "validation": {
+    "full_make_test": {
+      "exit_status": 0,
+      "log_sha256": "1636fb20a4089c85515b029b42148e9f507580596ddaefbcb158a528e9d4735c",
+      "python_test_cases": 1801,
+      "python_test_groups": 37,
+      "result": "PASS",
+      "scope": "Complete local make test on consolidated source; final documentary receipt update and integrity regenerated afterward"
+    },
+    "native_ci": "SUCCESSOR_RUN_NOT_YET_CREATED; do not transfer predecessor CI acceptance",
+    "negative_controls": {
+      "rejected": [
+        "retired register setup-node pin",
+        "node20 cache/save runtime",
+        "missing workflow authority binding"
+      ],
+      "result": "PASS"
+    },
+    "targeted": {
+      "node_diagnostic_cache_tests": 23,
+      "python_tests": 33,
+      "result": "PASS"
+    },
+    "tool_cache": {
+      "covered": 35,
+      "declared": 35,
+      "result": "PASS"
+    },
+    "unchanged_local_unix_socket_boundary": "Preserved from predecessor; no unchanged retry of temdd-event-ledger-test"
+  },
+  "work_unit": "QIKVRT_NODE24_ACTIONS_20261027_V1"
+}

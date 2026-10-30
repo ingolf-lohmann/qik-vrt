@@ -617,9 +617,9 @@ class WorkflowRuntimeTests(unittest.TestCase):
         prefix = workflow[:gates]
         self.assertIn("ref: ${{ env.QIKVRT_ARCHIVE_SOURCE_HEAD }}", prefix)
         self.assertIn("QIKVRT_ARCHIVE_SOURCE_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}", prefix)
-        self.assertIn("actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065", prefix)
+        self.assertIn("actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1", prefix)
         self.assertIn("python-version: '3.12'", prefix)
-        self.assertIn("actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020", prefix)
+        self.assertIn("actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1", prefix)
         self.assertIn("node-version: '24'", prefix)
         preflight = prefix.index("- name: Verify standalone runtime for complete repository gates")
         self.assertLess(prefix.index("node-version: '24'"), preflight)
@@ -634,9 +634,9 @@ class WorkflowRuntimeTests(unittest.TestCase):
         workflow=(ROOT/'.github/workflows/qikvrt_ci.yml').read_text()
         full=workflow.index('make test repository-monitor-test self-host-test')
         prefix=workflow[:full]
-        self.assertIn('actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065',prefix)
+        self.assertIn('actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1',prefix)
         self.assertIn("python-version: '3.12'",prefix)
-        self.assertIn('actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020',prefix)
+        self.assertIn('actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1',prefix)
         self.assertIn("node-version: '24'",prefix)
 
 
@@ -676,6 +676,25 @@ class MeshContractTests(unittest.TestCase):
         for field in ("native_runtime_executed", "all_node_runtime_verified", "write_failover_verified",
                       "application_transparency_verified", "effect_ack_done"):
             self.assertIs(result[field], False)
+
+    def test_package_admission_rejects_missing_rest_bootstrap_carriers(self):
+        original = list(self.definition['files'])
+        for name in ('src/qikvrt_github_api_shim.py', 'scripts/qikvrt_api_client.py',
+                     'tools/qikvrt_self_host_container.py',
+                     'api/qikvrt_github_api.openapi.yaml', '.github/CODEOWNERS',
+                     'state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json',
+                     'state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json',
+                     'state/authorization/delegations/OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_V1.json'):
+            with self.subTest(carrier=name):
+                self.definition['files'] = [p for p in original if p != name]
+                self.refuse('REST_BOOTSTRAP_PACKAGE_REQUIRED')
+        self.definition['files'] = original
+        bootstrap = self.definition.get('rest_bootstrap')
+        for invalid in (None, [], 'unbound', {}, {**(bootstrap or {}), 'automatic_start': True}):
+            with self.subTest(bootstrap=invalid):
+                self.definition['rest_bootstrap'] = invalid
+                self.refuse('REST_BOOTSTRAP_PACKAGE_REQUIRED')
+        self.definition['rest_bootstrap'] = bootstrap
 
     def test_missing_authority_succession_binding_refuses_package_admission(self):
         del self.activation["required_node_runtime"]["authority_succession_policy"]
@@ -868,6 +887,65 @@ class MeshContractTests(unittest.TestCase):
 
 
 class StandaloneTests(unittest.TestCase):
+    def test_original_production_file_source_cold_starts_in_the_frozen_export(self):
+        inputs = self.work / 'original-file-fixture'; inputs.mkdir(mode=0o700)
+        names = ('QIKVRT_LINUX_HOST_BINDING_JSON', 'QIKVRT_LINUX_HOST_CA',
+                 'QIKVRT_LINUX_HOST_CERT', 'QIKVRT_LINUX_HOST_KEY')
+        files = {}
+        for index, name in enumerate(names):
+            path = inputs / (str(index) + '.input')
+            path.write_text('DISPOSABLE_TEST_ONLY_' + name); path.chmod(0o600)
+            files[name] = str(path)
+        descriptor = {'schema': 'qikvrt-production-material-files/v1',
+            'repository': 'ingolf-lohmann/qik-vrt', 'environment': 'qikvrt-production',
+            'binding_sha256': hashlib.sha256(Path(files[names[0]]).read_bytes()).hexdigest(), 'files': files}
+        source = inputs / 'source.json'; source.write_bytes(host.raw_json(descriptor)); source.chmod(0o600)
+        code = '''
+import os,json
+from tools.qikvrt_authority_credentials import production_file_material, production_source, PRODUCTION_VARIABLES, PRODUCTION_SECRETS
+from src.qikvrt_personal_assistant import subject
+from src.qikvrt_github_api_shim import authority_sso_handler
+values=production_file_material(os.environ)
+assert set(values)==set(PRODUCTION_VARIABLES+PRODUCTION_SECRETS)
+assert all(values[name].startswith('DISPOSABLE_TEST_ONLY_') for name in (PRODUCTION_VARIABLES[0], *PRODUCTION_SECRETS))
+assert callable(authority_sso_handler)
+observed=subject()
+assert observed['head'] is None and observed['tree'] is None
+assert not production_source('0'*40,'0'*40), 'Packaging must not grant clean-Main write admission'
+print(json.dumps({'state':'FROZEN_ORIGINAL_FILE_SOURCE_VERIFIED','effect_ack_done':False}))
+'''
+        env = {'PATH': '', 'QIKVRT_PRODUCTION_MATERIAL_SOURCE': str(source),
+               'QIKVRT_PRODUCTION_MATERIAL_SOURCE_SHA256': host.digest(source.read_bytes())}
+        result = subprocess.run([sys.executable, '-B', '-S', '-c', code], cwd=self.export,
+                                env=env, capture_output=True, text=True, timeout=30)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual(json.loads(result.stdout)['state'], 'FROZEN_ORIGINAL_FILE_SOURCE_VERIFIED')
+
+    def test_packaged_publisher_and_proof_contracts_cold_start_without_checkout_or_credentials(self):
+        code = """
+import json
+from pathlib import Path
+from tools import qikvrt_self_host as host, qikvrt_zenodo_publish as publisher
+root = Path.cwd()
+assert host.deployment_roles(root)['authority_repository'] == publisher.PRODUCTION_REPOSITORY
+assert host.mesh_contract(root)
+assert publisher.machine_proof.publication_contract_blobs(root, v3=True)
+assert all((root / path).is_file() for path in host.PUBLICATION_BOOTSTRAP_FILES)
+print(json.dumps({'state': 'EXPORTED_PUBLICATION_CLOSURE_VERIFIED', 'effect_ack_done': False}))
+"""
+        env = {key: os.environ[key] for key in ('PATH', 'LANG') if key in os.environ}
+        result = subprocess.run([sys.executable, '-B', '-S', '-c', code], cwd=self.export,
+                                env=env, capture_output=True, text=True, timeout=30)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual(json.loads(result.stdout)['state'], 'EXPORTED_PUBLICATION_CLOSURE_VERIFIED')
+        refused = subprocess.run([sys.executable, '-B', '-S', 'tools/qikvrt_self_host.py',
+            'publication-check', '--publication-request', str(self.work / 'absent-private-request'),
+            '--publication-request-sha256', '0' * 64], cwd=self.export, env=env,
+            capture_output=True, text=True, timeout=30)
+        self.assertEqual(refused.returncode, 2)
+        self.assertEqual(json.loads(refused.stdout)['cause'], 'PUBLICATION_GATE_REFUSED')
+        self.assertEqual(refused.stderr, '')
+
     def test_portable_restore_needs_only_python_and_checks_independent_pins_and_absent_target(self):
         exported = self.work / 'portable-restore-input'
         receipt = host.portable(self.source, exported, self.head, self.tree)
@@ -1226,6 +1304,83 @@ m.server.closeAllConnections();await new Promise(r=>m.server.close(r));
         exported = (self.export / name).read_bytes()
         self.assertEqual(exported, (ROOT / name).read_bytes())
         self.assertEqual(self.manifest["files"][name]["sha256"], host.digest(exported))
+
+    def test_frozen_rest_bootstrap_retains_the_real_credential_haltpoint(self):
+        # Cold exported source, no checkout, Git, site-packages or real secrets.
+        result = subprocess.run([sys.executable, '-B', '-S',
+            str(self.export / 'src/qikvrt_github_api_shim.py')], cwd=self.work,
+            env={}, capture_output=True, text=True, timeout=8)
+        self.assertEqual(result.returncode, 2)
+        self.assertIn('BLOCK', result.stderr)
+        self.assertIn('QIKVRT_API_TOKEN', result.stderr)
+        self.assertNotIn('ModuleNotFoundError', result.stderr)
+
+    def test_frozen_rest_continuation_has_its_original_owner_decision_and_transport(self):
+        code = '''
+import json
+from pathlib import Path
+from tools.ai_handoff import github_graphql_fallback_allowed
+from tools.qikvrt_self_host_container import actions_archive_download
+from scripts.qikvrt_api_client import continuation_result
+p = json.loads(Path('policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json').read_bytes())
+a = {'subject': {'repository': 'ingolf-lohmann/qik-vrt'}, 'method': 'POST',
+     'operation': 'markPullRequestReadyForReview', 'endpoint': 'https://api.github.com/graphql',
+     'fallback_reason': 'REST_OPERATION_UNAVAILABLE', 'rest_effect_state': 'NOT_ATTEMPTED',
+     'owner_decision_sha256': p['client_continuation']['github_fallback']['decision_sha256']}
+assert github_graphql_fallback_allowed(a, p), 'Original Owner fallback decision missing from the sealed package'
+print('PACKAGED_FALLBACK_SOURCE_VERIFIED; NATIVE_EFFECT_NOT_EXECUTED')
+'''
+        result = subprocess.run([sys.executable, '-B', '-S', '-c', code], cwd=self.export,
+            env={}, capture_output=True, text=True, timeout=8)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('PACKAGED_FALLBACK_SOURCE_VERIFIED', result.stdout)
+
+    def test_frozen_rest_bootstrap_serves_http_and_requires_original_provider_binding(self):
+        with socket.socket() as selected:
+            selected.bind(('127.0.0.1', 0)); port = selected.getsockname()[1]
+        token = 'b64url:' + base64.urlsafe_b64encode(bytes(range(32))).decode().rstrip('=')
+        env = {'PYTHONDONTWRITEBYTECODE': '1', 'QIKVRT_API_HOST': '127.0.0.1',
+            'QIKVRT_API_PORT': str(port), 'QIKVRT_API_TOKEN': token,
+            'QIKVRT_API_TOKEN_EXPIRES_UTC': '2099-01-01T00:00:00Z',
+            'QIKVRT_ALLOWED_REPOSITORY': 'ingolf-lohmann/qik-vrt',
+            'QIKVRT_API_PRINCIPAL': 'ingolf-lohmann', 'QIKVRT_RULESET_AUTHORITY_ENABLED': '1',
+            'HTTP_PROXY': 'http://127.0.0.1:1', 'HTTPS_PROXY': 'http://127.0.0.1:1',
+            'GITHUB_TOKEN': 'synthetic-generic-token-must-not-be-used'}
+        child = subprocess.Popen([sys.executable, '-B', '-S',
+            str(self.export / 'src/qikvrt_github_api_shim.py')], cwd=self.work, env=env,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        path = '/repos/ingolf-lohmann/qik-vrt/qikvrt/ruleset-authority?' + urllib.parse.urlencode({
+            'request_id': 'frozen-package-bootstrap', 'expected_main_sha': '0' * 40,
+            'writer_version': 'principal-review-v4'})
+        opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+        try:
+            deadline = time.monotonic() + 8
+            while True:
+                if child.poll() is not None:
+                    out, err = child.communicate()
+                    self.fail('Frozen REST bootstrap failed: ' + out + err)
+                request = urllib.request.Request('http://127.0.0.1:' + str(port) + path,
+                    headers={'Authorization': 'Bearer ' + token})
+                try:
+                    opener.open(request, timeout=.5)
+                    self.fail('Unbound provider must not be accepted')
+                except urllib.error.HTTPError as error:
+                    with error:
+                        self.assertEqual(error.code, 503, error.read().decode())
+                    break
+                except (urllib.error.URLError, TimeoutError):
+                    if time.monotonic() >= deadline:
+                        self.fail('Frozen REST bootstrap did not listen')
+                    time.sleep(.01)
+            request = urllib.request.Request('http://127.0.0.1:' + str(port) + path)
+            with self.assertRaises(urllib.error.HTTPError) as unauthorized:
+                opener.open(request, timeout=1)
+            self.assertEqual(unauthorized.exception.code, 401)
+            unauthorized.exception.close()
+        finally:
+            if child.poll() is None:
+                child.terminate()
+            child.communicate(timeout=3)
 
     def test_static_react_export_serves_each_scope_and_preserves_original_bytes(self):
         self.start()

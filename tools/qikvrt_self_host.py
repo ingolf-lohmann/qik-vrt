@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import argparse
 import contextlib
+import datetime
 import fcntl
 import hashlib
 import hmac
@@ -56,6 +57,52 @@ MESH_COMPONENT_FILES = {
     "universal_terminal": ["src/qikvrt_temdd_event_ledger.py", "src/qikvrt_effect_ack_http_terminal.py",
                            "docs/terminal/temdd/index.html", "docs/monitor/client-replica.js"],
 }
+REST_BOOTSTRAP_FILES = (
+    '.github/CODEOWNERS', 'api/qikvrt_github_api.openapi.yaml',
+    'scripts/qikvrt_api_client.py', 'src/qikvrt_api_handler.py',
+    'src/qikvrt_effect_ack.py', 'src/qikvrt_github_api_shim.py',
+    'src/qikvrt_mcp_adapter.py', 'tools/ai_handoff.py',
+    'src/qikvrt_personal_auth.py', 'src/qikvrt_personal_assistant.py',
+    'src/qikvrt_personal_retrieval.py',
+    'runtime/models/pplx-embed-v2-late-0.6b.lock.json',
+    'runtime/toolchains/requirements-personal-auth-50.0.2.txt',
+    'runtime/toolchains/requirements-github-environment.txt',
+    'personal/ingolf-lohmann/firefox-assistant/ARGON_REVIEW.md',
+    'personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json',
+    'personal/ingolf-lohmann/firefox-assistant/README.md',
+    'personal/ingolf-lohmann/firefox-assistant/authority.html',
+    'personal/ingolf-lohmann/firefox-assistant/authority.js',
+    'personal/ingolf-lohmann/firefox-assistant/ui.css',
+    'personal/ingolf-lohmann/firefox-assistant/ui.html',
+    'personal/ingolf-lohmann/firefox-assistant/ui.js',
+    'tools/qikvrt_authority_credentials.py', 'tools/qikvrt_integrity.py',
+    'tools/qikvrt_required_review_gate.py', 'tools/qikvrt_subprocess.py',
+    'tools/qikvrt_workflow_executor.py', 'tools/qikvrt_self_host_container.py',
+    'policy/CANONICAL_UPSTREAM_REMOTE_V1.json',
+    'policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json',
+    'policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json',
+    'state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json',
+    'state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json',
+    'state/authorization/delegations/OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_V1.json',
+)
+PUBLICATION_BOOTSTRAP_FILES = (
+    'tools/qikvrt_zenodo_publish.py',
+    'tools/qikvrt_zenodo_actions.py',
+    'tools/qikvrt_zenodo_machine_proof.py',
+    'runtime/capabilities/ZENODO_PUBLICATION_CAPABILITY.json',
+    'runtime/self-host/PUBLICATION.md',
+    'runtime/self-host/PUBLICATION_REQUEST.example.json',
+    'runtime/self-host/PUBLICATION_CREDENTIAL_REFERENCES.example.json',
+    'policy/zenodo-machine-proof-policy-v1.json',
+    'policy/zenodo-machine-proof-policy-v2.json',
+    'policy/zenodo-machine-proof-policy-v3.json',
+    'policy/qikvrt-zenodo-machine-proof-bundle-v1.schema.json',
+    'policy/qikvrt-zenodo-machine-proof-bundle-v2.schema.json',
+    'policy/qikvrt-zenodo-machine-proof-bundle-v3.schema.json',
+    'policy/qikvrt-prepublication-return-receipt-v1.schema.json',
+    'policy/qikvrt-prepublication-return-receipt-v2.schema.json',
+)
+
 MESH_FAULT_CASES = ("PROCESS_CRASH", "NODE_LOSS", "NETWORK_PARTITION", "PROVIDER_LOSS",
                     "LOST_EFFECT_ACK", "CONCURRENT_TAKEOVER", "STALE_WRITER", "NODE_REJOIN")
 MESH_INVARIANTS = ("same_work_unit_after_failover", "preserve_confirmed_effects",
@@ -614,6 +661,23 @@ def mesh_contract(root, definition=None):
             or len(files) != len(set(files)) or not required <= set(files)
             or definition.get("native_terminal_daemon_included") is not True):
         raise ValueError("MESH_NATIVE_COMPONENT_PACKAGE_REQUIRED")
+    rest = definition.get('rest_bootstrap', {})
+    if (not isinstance(rest, dict) or not set(REST_BOOTSTRAP_FILES) <= set(files)
+            or rest.get('schema') != 'qikvrt-packaged-rest-bootstrap/v1'
+            or rest.get('entrypoint') != ['python3', '-B', '-S', 'src/qikvrt_github_api_shim.py']
+            or any(rest.get(key) is not False for key in (
+                'automatic_start', 'runtime_admission_default',
+                'requires_running_native_runtime', 'contains_credentials'))):
+        raise ValueError('REST_BOOTSTRAP_PACKAGE_REQUIRED')
+    publication = definition.get("publication_bootstrap", {})
+    if (not set(PUBLICATION_BOOTSTRAP_FILES) <= set(files)
+            or publication != {"schema": "qikvrt-packaged-publication-bootstrap/v1",
+                "implementation": "tools/qikvrt_zenodo_publish.py",
+                "launcher": "tools/qikvrt_self_host.py",
+                "operations": ["publication-check", "publication-resume", "publication-supervisor"],
+                "credential_registry_schema": "qikvrt-protected-runtime-credential-references/v1",
+                "automatic_start": False, "contains_credentials": False}):
+        raise ValueError("PUBLICATION_BOOTSTRAP_PACKAGE_REQUIRED")
     invariants = contract.get("invariants", {})
     if not isinstance(invariants, dict) or any(invariants.get(key) is not True for key in MESH_INVARIANTS):
         raise ValueError("MESH_CONTINUITY_INVARIANTS_REQUIRED")
@@ -2631,6 +2695,12 @@ def native_carrier(package, pin, config, config_path, binding, token):
                     self._hold(str(exc) if isinstance(exc, ValueError) else "INVALID_OWNER_REST_REQUEST", 409)
                 except (OSError, sqlite3.Error): self._hold("OWNER_REST_PERSISTENCE_OR_READBACK_UNAVAILABLE", 503)
 
+        if config.get("effect_ack_http"):
+            load_source(package, "qikvrt_effect_ack")
+            load_source(package, "qikvrt_effect_ack_wire")
+            eap = load_source(package, "qikvrt_effect_ack_http_service")
+            OwnerHTTP = eap.make_handler(OwnerHTTP, rest)
+
         if config.get("unix_ingress", True):
             ingress = native.make_ingress(runtime_instance)
             # Defense in depth for the separate mode-0600 owner-only adapter.
@@ -2753,7 +2823,7 @@ def start(package, pin, config_path, monolith=False):
     private_path(config_path)
     raw = config_path.read_bytes()
     config = json.loads(raw)
-    fields = {"schema", "node_id", "source_head", "source_tree", "adapter", "state_dir", "host", "port", "terminal_port", "terminal_token_file", "github_webhook_secret_file", "terminal_profile", "subject_pr", "source_repository", "browser_password_file", "novnc_port", "vnc_port", "display", "migration_export_sha256", "mesh_work_peers", "mesh_rule_grants", "owner_rest_grants", "unix_ingress", "mesh_file", "mesh_file_allowed_origins"}
+    fields = {"schema", "node_id", "source_head", "source_tree", "adapter", "state_dir", "host", "port", "terminal_port", "terminal_token_file", "github_webhook_secret_file", "terminal_profile", "subject_pr", "source_repository", "browser_password_file", "novnc_port", "vnc_port", "display", "migration_export_sha256", "mesh_work_peers", "mesh_rule_grants", "owner_rest_grants", "unix_ingress", "mesh_file", "mesh_file_allowed_origins", "effect_ack_http"}
     if (set(config) - fields or config.get("schema") != "qikvrt-self-host-config/v1"
             or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,100}", config.get("node_id", ""))
             or config.get("adapter") not in {"none", "github"} or config.get("host") not in {"127.0.0.1", "0.0.0.0"}
@@ -2778,6 +2848,13 @@ def start(package, pin, config_path, monolith=False):
     profile = config.get("terminal_profile", "reference")
     if profile not in {"reference", "temdd", "firefox"}:
         raise ValueError("UNKNOWN_TERMINAL_PROFILE")
+    if config.get("effect_ack_http") is not None:
+        eap = config["effect_ack_http"]
+        if (not isinstance(eap, dict) or set(eap) != {"enabled", "public_origin"}
+                or eap["enabled"] is not True or eap["public_origin"] != "https://raumzeitterminal.de"
+                or profile == "reference" or not config.get("owner_rest_grants")
+                or config.get("unix_ingress") is not False):
+            raise ValueError("EXPLICIT_EAP_NATIVE_PROFILE_WITHOUT_ALTERNATE_INPUT_PATH_REQUIRED")
     if (type(config.get("unix_ingress", True)) is not bool
             or profile == "reference" and (config.get("owner_rest_grants") or config.get("mesh_rule_grants") or config.get("unix_ingress") is False)):
         raise ValueError("NATIVE_OWNER_REST_AND_UNIX_ADAPTER_CONFIGURATION_REQUIRED")
@@ -3140,7 +3217,7 @@ def firefox_amo_runtime_fingerprint(source):
             and item.value.args and isinstance(item.value.args[0], ast.Constant)
             and (str(item.value.args[0].value).startswith("--amo-") or
                  item.value.args[0].value in {"--image", "--receipt", "--oci-archive", "--second-oci-archive",
-                    "--carrier-archive", "--carrier-oci-archive", "--production-binding", "--binding-sha256",
+                    "--carrier-archive", "--carrier-oci-archive", "--tool-archive", "--production-binding", "--binding-sha256",
                     "--ca-file", "--cert-file", "--key-file"}))]
         for item in ast.walk(node):
             if isinstance(item, ast.keyword) and item.arg == "choices" and isinstance(item.value, ast.Tuple):
@@ -3617,13 +3694,268 @@ def firefox_extension_probe(xpi, output, package="firefox-esr"):
         (output / "extension-installation.json").write_bytes(raw_json(result))
 
 
+def publication_private_bytes(path, maximum):
+    """Reuse private-path admission and reject replacement/oversized inputs."""
+    private_path(path)
+    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+    with os.fdopen(fd, "rb") as source:
+        info = os.fstat(source.fileno())
+        if (not stat.S_ISREG(info.st_mode) or info.st_uid != os.geteuid()
+                or stat.S_IMODE(info.st_mode) != 0o600):
+            raise ValueError("OWNER_ONLY_PRIVATE_PATH_REQUIRED")
+        raw = source.read(maximum + 1)
+    if len(raw) > maximum:
+        raise ValueError("PRIVATE_PUBLICATION_INPUT_TOO_LARGE")
+    return raw
+
+
+def publication_request(request_path, request_pin):
+    """Read-only admission for an exact request; reuse the production publisher."""
+    private_path(request_path)
+    private_path(request_path.parent, directory=True)
+    raw = publication_private_bytes(request_path, 65536)
+    if digest(raw) != request_pin:
+        raise ValueError("PUBLICATION_REQUEST_PIN_MISMATCH")
+    request = json.loads(raw)
+    fields = {"schema", "repository", "checkout", "execution_head", "execution_tree",
+              "manifest", "manifest_sha256", "publisher_sha256", "launcher_sha256",
+              "python_sha256", "credential_registry"}
+    if not isinstance(request, dict) or set(request) != fields or request["schema"] != "qikvrt-publication-runtime-request/v1":
+        raise ValueError("EXACT_PUBLICATION_REQUEST_REQUIRED")
+    roles = deployment_roles(ROOT)
+    if request["repository"] != roles["authority_repository"]:
+        raise ValueError("PINNED_PUBLICATION_AUTHORITY_REQUIRED")
+    root = Path(request["checkout"])
+    if not root.is_absolute() or root.resolve() != root:
+        raise ValueError("EXACT_PUBLICATION_CHECKOUT_REQUIRED")
+    if request_path == root or root in request_path.parents or ROOT in request_path.parents:
+        raise ValueError("PRIVATE_PUBLICATION_REQUEST_MUST_BE_OUTSIDE_GIT")
+    for field in ("manifest_sha256", "publisher_sha256", "launcher_sha256", "python_sha256"):
+        if not re.fullmatch(r"[a-f0-9]{64}", request[field]):
+            raise ValueError("PUBLICATION_DIGEST_REQUIRED")
+    if digest(Path(__file__).read_bytes()) != request["launcher_sha256"]:
+        raise ValueError("PUBLICATION_LAUNCHER_DRIFT")
+    if digest(Path(sys.executable).resolve().read_bytes()) != request["python_sha256"]:
+        raise ValueError("PUBLICATION_INTERPRETER_DRIFT")
+    publisher_path = root / "tools/qikvrt_zenodo_publish.py"
+    if (publisher_path.is_symlink() or digest(publisher_path.read_bytes()) != request["publisher_sha256"]
+            or request["publisher_sha256"] != digest((ROOT / "tools/qikvrt_zenodo_publish.py").read_bytes())):
+        raise ValueError("PUBLICATION_PUBLISHER_DRIFT")
+    try:
+        from tools import qikvrt_zenodo_publish as publisher
+    except ModuleNotFoundError:
+        import qikvrt_zenodo_publish as publisher
+    for module in (publisher, publisher.zenodo, publisher.machine_proof):
+        relative = "tools/" + Path(module.__file__).name
+        expected = ROOT / relative
+        actual = root / relative
+        if (Path(module.__file__).resolve() != expected.resolve() or actual.is_symlink()
+                or actual.read_bytes() != expected.read_bytes()
+                or publisher._git(root, "rev-parse", "HEAD:" + relative)[1]
+                != publisher._git_blob_sha(actual.read_bytes())):
+            raise ValueError("PUBLICATION_PUBLISHER_DEPENDENCY_DRIFT")
+    for relative in MESH_ROLE_POLICIES:
+        actual = root / relative
+        if (actual.is_symlink() or actual.read_bytes() != (ROOT / relative).read_bytes()
+                or publisher._git(root, "rev-parse", "HEAD:" + relative)[1]
+                != publisher._git_blob_sha(actual.read_bytes())):
+            raise ValueError("PUBLICATION_ROLE_POLICY_DRIFT")
+    if (publisher._git(root, "rev-parse", "HEAD")[1] != request["execution_head"]
+            or publisher._git(root, "rev-parse", "HEAD^{tree}")[1] != request["execution_tree"]):
+        raise ValueError("PUBLICATION_EXECUTION_SUBJECT_DRIFT")
+    if (publisher.PRODUCTION_REPOSITORY != request["repository"]
+            or deployment_roles(root)["authority_repository"] != request["repository"]):
+        raise ValueError("PUBLICATION_AUTHORITY_POLICY_MISMATCH")
+    publisher._validate_origin_repository(root, request["repository"])
+    manifest_path = publisher._safe_relative(root, request["manifest"], "publication manifest", must_exist=True)
+    if digest(manifest_path.read_bytes()) != request["manifest_sha256"]:
+        raise ValueError("PUBLICATION_MANIFEST_DRIFT")
+    # Dedicated CLI process only: the host metadata is derived from the actual
+    # checkout and origin, never from a Mirror substitution or browser session.
+    metadata = {"GITHUB_REPOSITORY": request["repository"], "GITHUB_SHA": request["execution_head"]}
+    previous = {key: os.environ.get(key) for key in metadata}
+    try:
+        os.environ.update(metadata)
+        manifest = publisher.load_manifest(manifest_path, root)
+        if (manifest["schema"] != publisher.SCHEMA_V2 or not manifest.get("machine_proof")
+                or not manifest.get("owner_authorization") or manifest["repository"] != request["repository"]):
+            raise ValueError("EXACT_V2_PUBLICATION_CONTROLS_REQUIRED")
+        execution = publisher._validate_repository_source_head(root, manifest_path, manifest)
+    finally:
+        for key, value in previous.items():
+            if value is None: os.environ.pop(key, None)
+            else: os.environ[key] = value
+    if execution != request["execution_head"]:
+        raise ValueError("PUBLICATION_MANIFEST_SUBJECT_MISMATCH")
+    registry_path = Path(request["credential_registry"])
+    private_path(registry_path)
+    private_path(registry_path.parent, directory=True)
+    if root in registry_path.parents or ROOT in registry_path.parents:
+        raise ValueError("CREDENTIAL_REGISTRY_MUST_BE_OUTSIDE_GIT")
+    registry = json.loads(publication_private_bytes(registry_path, 65536))
+    if (not isinstance(registry, dict) or set(registry) != {"schema", "credentials"}
+            or registry["schema"] != "qikvrt-protected-runtime-credential-references/v1"
+            or not isinstance(registry["credentials"], dict)
+            or set(registry["credentials"]) != {"GITHUB_TOKEN", "ZENODO_ACCESS_TOKEN"}):
+        raise ValueError("PROTECTED_PUBLISHER_CREDENTIAL_REFERENCES_REQUIRED")
+    for name, entry in registry["credentials"].items():
+        if not isinstance(entry, dict) or set(entry) != {"origin", "principal", "opaque_reference", "source_path", "scopes", "expires_at"}:
+            raise ValueError("OPAQUE_CREDENTIAL_METADATA_ONLY")
+        expected_origin = "https://github.com" if name == "GITHUB_TOKEN" else "https://zenodo.org"
+        if (entry["origin"] != expected_origin or not isinstance(entry["principal"], str) or not 1 <= len(entry["principal"]) <= 200
+                or not isinstance(entry["scopes"], list) or not 1 <= len(entry["scopes"]) <= 32
+                or any(not isinstance(scope, str) or not 1 <= len(scope) <= 128 for scope in entry["scopes"])
+                or not isinstance(entry["opaque_reference"], str) or not isinstance(entry["expires_at"], str)
+                or not re.fullmatch(r"[A-Za-z0-9._:/-]{1,200}", entry["opaque_reference"])):
+            raise ValueError("CREDENTIAL_PROVIDER_BINDING_REQUIRED")
+        expiry = datetime.datetime.fromisoformat(entry["expires_at"].replace("Z", "+00:00"))
+        if expiry.tzinfo is None or expiry <= datetime.datetime.now(datetime.timezone.utc):
+            raise ValueError("PUBLISHER_CREDENTIAL_EXPIRED")
+        source = Path(entry["source_path"])
+        private_path(source)
+        if root in source.parents or ROOT in source.parents or source in (request_path, registry_path):
+            raise ValueError("CREDENTIAL_SOURCE_MUST_BE_PRIVATE_AND_SEPARATE")
+    return request, root, manifest_path, manifest, publisher, registry_path, registry
+
+
+def publication_interaction(registry_path, registry, request_pin, state):
+    """Update protected registry journal; never label delivery as a successful login."""
+    path = registry_path.with_name(registry_path.name + ".interactions.json")
+    if path.exists():
+        private_path(path)
+        previous = json.loads(publication_private_bytes(path, 4 * 1024 * 1024))
+        if (not isinstance(previous, dict) or set(previous) != {"schema", "events"}
+                or previous["schema"] != "qikvrt-protected-runtime-interactions/v1"
+                or not isinstance(previous["events"], list)):
+            raise ValueError("PROTECTED_INTERACTION_JOURNAL_MISMATCH")
+        events = previous["events"][-255:]
+    else:
+        events = []
+    events.append({"observed_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        "request_sha256": request_pin, "event": state,
+        "credentials": {name: {key: entry[key] for key in ("origin", "principal", "opaque_reference", "scopes", "expires_at")}
+                        for name, entry in registry["credentials"].items()},
+        "browser_sign_in_verified": False})
+    raw = raw_json({"schema": "qikvrt-protected-runtime-interactions/v1", "events": events})
+    temporary = path.with_name(path.name + "." + str(os.getpid()) + ".tmp")
+    synced_private_file(temporary, raw)
+    os.replace(temporary, path)
+    sync_directory(path.parent)
+    private_path(path)
+    if path.read_bytes() != raw:
+        raise ValueError("PROTECTED_INTERACTION_READBACK_FAILED")
+
+
+def publication_invoke(root, request, env):
+    # Reuse the original credential-bearing Git-Data transport in this dedicated
+    # launcher process. Browser login and generic workflow credentials confer
+    # no publication authority. Reobserve Main immediately before the child.
+    try:
+        from tools import qikvrt_zenodo_publish as publisher
+    except ModuleNotFoundError:
+        import qikvrt_zenodo_publish as publisher
+    prefix = "/repos/" + request["repository"]
+    _, ref = publisher._github_api_request("GET", prefix + "/git/ref/heads/main", env["GITHUB_TOKEN"])
+    if ref.get("ref") != "refs/heads/main" or ref.get("object", {}).get("sha") != request["execution_head"]:
+        raise ValueError("PUBLICATION_LIVE_AUTHORITY_MAIN_DRIFT")
+    _, commit = publisher._github_api_request("GET", prefix + "/git/commits/" + request["execution_head"], env["GITHUB_TOKEN"])
+    if commit.get("sha") != request["execution_head"] or commit.get("tree", {}).get("sha") != request["execution_tree"]:
+        raise ValueError("PUBLICATION_LIVE_AUTHORITY_TREE_DRIFT")
+    _, final = publisher._github_api_request("GET", prefix + "/git/ref/heads/main", env["GITHUB_TOKEN"])
+    if final.get("ref") != "refs/heads/main" or final.get("object", {}).get("sha") != request["execution_head"]:
+        raise ValueError("PUBLICATION_LIVE_AUTHORITY_MAIN_DRIFT")
+    return subprocess.run([sys.executable, "-B", str(root / "tools/qikvrt_zenodo_publish.py"),
+        "--manifest", request["manifest"]], cwd=root, env=env,
+        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=3600, check=False)
+
+
+def publication_resume(request_path, request_pin):
+    """One publisher invocation, no shell, no daemon and no blind restart loop."""
+    admitted = publication_request(request_path, request_pin)
+    request, root, manifest_path, manifest, publisher, registry_path, registry = admitted
+    with contextlib.ExitStack() as locks:
+        for path in (request_path.with_name(request_path.name + ".lock"),
+                     registry_path.with_name(registry_path.name + ".lock")):
+            fd = os.open(path, os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)
+            lock = locks.enter_context(os.fdopen(fd, "rb"))
+            private_path(path)
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        # Credential rotation, request changes and source movement invalidate admission.
+        current = publication_request(request_path, request_pin)
+        if current[0] != request or current[6] != registry:
+            raise ValueError("PUBLICATION_ADMISSION_CHANGED")
+        env = {key: os.environ[key] for key in ("PATH", "LANG", "LC_ALL", "SSL_CERT_FILE", "SSL_CERT_DIR",
+                                               "HTTPS_PROXY", "NO_PROXY") if key in os.environ}
+        for name, entry in registry["credentials"].items():
+            raw = publication_private_bytes(Path(entry["source_path"]), 512)
+            if not 16 <= len(raw) <= 512 or any(c <= 32 or c == 127 for c in raw):
+                raise ValueError("PRIVATE_CREDENTIAL_FORMAT_INVALID")
+            if raw in raw_json(request) or raw in raw_json(registry):
+                raise ValueError("CREDENTIAL_VALUE_IN_REFERENCE_METADATA")
+            env[name] = raw.decode("ascii")
+        env.update(GITHUB_REPOSITORY=request["repository"], GITHUB_SHA=request["execution_head"],
+                   ZENODO_API_BASE="https://zenodo.org/api", PYTHONDONTWRITEBYTECODE="1", PYTHONNOUSERSITE="1")
+        publication_interaction(registry_path, registry, request_pin, "CREDENTIAL_DELIVERY_VERIFIED_NOT_LOGIN")
+        try:
+            completed = publication_invoke(root, request, env)
+        except subprocess.TimeoutExpired:
+            publication_interaction(registry_path, registry, request_pin, "AWAITING_PUBLISHER_RECONCILIATION")
+            return {"state": "HOLD_RECONCILIATION", "effect_ack_done": False}
+        finally:
+            for name in registry["credentials"]:
+                env.pop(name, None)
+        if completed.returncode:
+            publication_interaction(registry_path, registry, request_pin, "PUBLISHER_BLOCKED_REOBSERVE_BEFORE_RETRY")
+            return {"state": "HOLD_PUBLISHER", "effect_ack_done": False}
+        raw = manifest["evidence_path"].read_bytes()
+        evidence = publisher._validate_recovery_evidence(json.loads(raw), manifest_path, root, manifest,
+                                                        request["execution_head"])
+        if evidence["state"] != "published" or evidence["phase"] != "public_verified":
+            raise ValueError("PUBLISHER_PUBLIC_READBACK_RECEIPT_REQUIRED")
+        publication_interaction(registry_path, registry, request_pin, "AUTHENTICATED_PUBLICATION_PUBLIC_READBACK_VERIFIED")
+        return {"state": "PUBLICATION_SCOPE_VERIFIED", "doi": evidence["doi"],
+                "record_url": evidence["record_url"], "publication_receipt_sha256": digest(raw),
+                "all_nodes_persisted": False, "effect_ack_done": False}
+
+
+def publication_supervisor(request_path, request_pin, unit_name):
+    """Prepare an event-triggered one-shot adapter for the existing host manager."""
+    request, root, _, _, _, registry_path, registry = publication_request(request_path, request_pin)
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,90}\.service", unit_name or ""):
+        raise ValueError("PUBLICATION_ONESHOT_UNIT_NAME_REQUIRED")
+    def argument(value):
+        if not re.fullmatch(r"[A-Za-z0-9_./:+%-]+", str(value)):
+            raise ValueError("UNREPRESENTABLE_PUBLICATION_UNIT_ARGUMENT")
+        return str(value).replace("%", "%%")
+    command = [sys.executable, "-B", str(Path(__file__).resolve()), "publication-resume",
+               "--publication-request", str(request_path), "--publication-request-sha256", request_pin]
+    watched = [request_path, registry_path] + [Path(e["source_path"]) for e in registry["credentials"].values()]
+    unit = ("[Unit]\nDescription=QIKVRT exact publication continuation\nAfter=network-online.target\n"
+            "[Service]\nType=oneshot\nUser=" + str(os.geteuid()) + "\nUMask=0077\nNoNewPrivileges=yes\n"
+            "TimeoutStartSec=3700\nExecStart=" + " ".join(argument(a) for a in command) + "\n"
+            "Restart=no\n[Install]\nWantedBy=multi-user.target\n")
+    path_unit = ("[Unit]\nDescription=QIKVRT publication prerequisite changes\n[Path]\n"
+        + "".join("PathChanged=" + argument(p) + "\n" for p in dict.fromkeys(watched))
+        + "Unit=" + unit_name + "\nTriggerLimitIntervalSec=300\nTriggerLimitBurst=5\n"
+        "[Install]\nWantedBy=multi-user.target\n")
+    return {"schema": "qikvrt-publication-supervisor-binding/v1", "state": "PREPARED_NOT_INSTALLED",
+            "unit_name": unit_name, "unit_text": unit, "unit_sha256": digest(unit.encode()),
+            "path_unit_name": unit_name[:-8] + ".path", "path_unit_text": path_unit,
+            "path_unit_sha256": digest(path_unit.encode()), "request_sha256": request_pin,
+            "automatic_trigger": "BOOT_OR_EXPLICIT_START_AND_PREREQUISITE_FILE_CHANGE",
+            "new_daemon": False, "supervisor_installed": False, "effect_ack_done": False}
+
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("operation", choices=("firefox-amo-unlisted", "firefox-release-provision", "firefox-extension-check", "deployment-roles", "runtime-delivery-verify", "runtime-delivery-load", "docker-admit", "pack", "portable", "portable-restore", "verify", "monolith-pack", "monolith-verify", "monolith-run", "monolith-checkpoint", "monolith-origin-export", "monolith-transport-export", "monolith-transport-import", "mesh-contract", "mesh-cache-stage", "mesh-cache-idle", "mesh-cache-send", "mesh-cache-check", "mesh-rule-confirm", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state", "transfer-local-writer",
-        "container-context", "container-carrier", "container-carrier-archive-check", "container-artifact-split", "container-artifact-join", "container-oci-check", "container-smoke", "container-production-gate", "container-deploy", "container-readback",
+        "publication-check", "publication-resume", "publication-supervisor",
+        "container-tool-prepare", "container-context", "container-carrier", "container-carrier-archive-check", "container-artifact-split", "container-artifact-join", "container-oci-check", "container-smoke", "container-production-gate", "container-host-identity", "container-deploy", "container-readback",
         "migration-inventory", "migration-verify-source", "migration-export", "migration-verify-export", "migration-import",
         "migration-verify-import", "migration-rollback", "migration-capture-supervisor", "migration-capture-arm", "migration-capture",
-        "provider-inventory", "provider-classify", "provider-plan", "provider-apply", "provider-reconcile", "provider-readback"))
+        "provider-inventory", "provider-classify", "provider-plan", "provider-apply", "provider-reconcile", "provider-readback",
+        "host-static-readback", "host-static-upload", "host-static-reconcile", "host-static-public-readback"))
     parser.add_argument("--extension-xpi", type=Path, help="exact candidate XPI; disposable local probe only")
     parser.add_argument("--firefox-package", choices=("firefox-esr", "firefox"), default="firefox-esr")
     parser.add_argument("--root", type=Path, default=ROOT)
@@ -3654,10 +3986,13 @@ def main():
     parser.add_argument("--admission-tool-sha256", help="independently reviewed guard pin; required for supervisor operations")
     parser.add_argument("--browser-assets-root", type=Path, help="explicit provisioned noVNC source tree; freeze a Firefox-capable variant")
     parser.add_argument("--image", help="local smoke tag or exact versioned production digest")
+    parser.add_argument("--terminal-profile", choices=("temdd", "firefox"), default="firefox",
+                        help="explicit container smoke scope; Firefox still requires signed activation")
     parser.add_argument("--receipt", type=Path, help="non-secret container evidence output")
     parser.add_argument("--oci-archive", type=Path)
     parser.add_argument("--second-oci-archive", type=Path)
     parser.add_argument("--carrier-archive", type=Path, help="existing pinned GitHub delivery ZIP; otherwise download through original Actions REST")
+    parser.add_argument("--tool-archive", type=Path, help="existing untrusted Skopeo cache; verify config and ordered layers before Docker load")
     parser.add_argument("--carrier-oci-archive", type=Path, help="create-only OCI transport preserving the verified original ZIP for the existing publisher")
     parser.add_argument("--production-binding", type=Path, help="existing protected Linux host binding; never credentials")
     parser.add_argument("--binding-sha256", help="independently pinned protected host binding")
@@ -3675,6 +4010,9 @@ def main():
     parser.add_argument("--capture-request", type=Path, help="owner-only independently pinned capture and acknowledgement cut")
     parser.add_argument("--capture-request-sha256", help="independent private capture request pin")
     parser.add_argument("--capture-output", type=Path, help="separate future snapshot destination for the unstarted supervisor adapter")
+    parser.add_argument("--publication-request", type=Path, help="existing owner-only pinned request outside Git")
+    parser.add_argument("--publication-request-sha256", help="independent exact request pin")
+    parser.add_argument("--publication-unit", help="existing host one-shot unit name")
     parser.add_argument("--dry-run", action="store_true", help="verify export and proposed binding; create no target")
     parser.add_argument("--provider", choices=("digitalocean", "ionos", "hetzner"))
     parser.add_argument("--provider-binding", type=Path, help="private exact product and account/project/contract binding")
@@ -3691,9 +4029,25 @@ def main():
     parser.add_argument("--provider-authorization", type=Path, help="exact private create, payment and previously accepted terms evidence")
     parser.add_argument("--provider-authorization-sha256")
     parser.add_argument("--provider-receipts", type=Path, help="existing separate owner-only durable receipt directory")
+    parser.add_argument("--static-file", type=Path, help="explicit public index.html, at most 32 KiB")
+    parser.add_argument("--static-file-sha256", help="independently frozen static page digest")
+    parser.add_argument("--expected-static-sha256", help="observed old index digest or explicit ABSENT")
+    parser.add_argument("--host-operation-id", help="stable existing-host upload identity; uncertain writes require reconcile")
     args = parser.parse_args()
     try:
-        if args.operation == "firefox-amo-unlisted":
+        if args.operation.startswith("publication-"):
+            if not args.publication_request or not args.publication_request_sha256:
+                raise ValueError("EXACT_PRIVATE_PUBLICATION_REQUEST_REQUIRED")
+            if args.operation == "publication-check":
+                publication_request(args.publication_request, args.publication_request_sha256)
+                result = {"state": "PUBLICATION_REQUEST_VALIDATED_NO_EFFECT", "effect_ack_done": False}
+            elif args.operation == "publication-supervisor":
+                if not args.output: raise ValueError("CREATE_ONLY_SUPERVISOR_OUTPUT_REQUIRED")
+                result = materialize_supervisor(publication_supervisor(args.publication_request,
+                    args.publication_request_sha256, args.publication_unit), args.output)
+            else:
+                result = publication_resume(args.publication_request, args.publication_request_sha256)
+        elif args.operation == "firefox-amo-unlisted":
             result = firefox_amo_unlisted(args.root, args.output, args.expected_head, args.expected_tree,
                 args.amo_state, args.amo_submit, args.amo_previous_state)
         elif args.operation == "firefox-release-provision":
@@ -3715,7 +4069,7 @@ def main():
             import importlib
             sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
             result = importlib.import_module("tools.qikvrt_self_host_container").execute(args)
-        elif args.operation.startswith("provider-"):
+        elif args.operation.startswith(("provider-", "host-static-")):
             result = provider_module().execute(args)
         elif args.operation == "mesh-rule-confirm":
             if not args.mesh_cache or not args.work_request or not args.peer:
@@ -3820,15 +4174,18 @@ def main():
             if not args.config: raise ValueError("PRIVATE_START_CONFIGURATION_REQUIRED")
             return start(args.root.resolve(), args.manifest_sha256, args.config.absolute())
         print(json.dumps(result, sort_keys=True))
-        return 0
-    except (OSError, ValueError, KeyError, TypeError, sqlite3.Error, subprocess.SubprocessError) as exc:
+        return 2 if args.operation.startswith(("publication-", "host-static-")) and str(result.get("state", "")).startswith("HOLD") else 0
+    except (OSError, ValueError, KeyError, TypeError, RuntimeError, sqlite3.Error, subprocess.SubprocessError) as exc:
         # Capture diagnostics can contain private filenames or event data.
-        cause = "CAPTURE_GATE_REFUSED" if args.operation.startswith("migration-capture") else str(exc)
+        cause = ("PUBLICATION_GATE_REFUSED" if args.operation.startswith("publication-") else
+                 "CAPTURE_GATE_REFUSED" if args.operation.startswith("migration-capture") else str(exc))
         print(json.dumps({"state": "HOLD", "cause": cause, "effect_ack_done": False}, sort_keys=True))
         return 78 if args.operation == "run-admitted" else 2
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+
 
 

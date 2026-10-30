@@ -49,6 +49,31 @@ whole-system network-interface disconnection. Chromium also gets Playwright's
 offline flag; WebKit reuses the existing server-outage test without its known
 failing `setOffline(true)` emulation.
 
+After the original WebKit system-dependency attempt, the same job records
+`APT_DIAGNOSIS.json`, including on installation failure. Root `apt-config`
+output is filtered to numeric limits; proxy values are never retained. One
+`fonts-freefont-ttf` candidate from that runner's APT metadata is sampled over
+HTTP and HTTPS from the affected Azure Ubuntu mirror, with the same filename
+and byte range, up to 1 MiB and 30 seconds per request. The Node standard-library
+probes use direct connections; they do not apply APT or environment proxies.
+The report binds the source HEAD/TREE, package metadata, prefix hashes, timing
+and observed address. Missing configuration, incomplete/mismatched samples or
+unavailable readback remain unverified. A complete metadata hash is verified
+only when the whole package fits inside the sample. This diagnostic changes
+neither APT sources nor the original 720/480-second installation budgets and
+does not establish a throttling cause, installation success or browser acceptance.
+
+The process exit status describes collection of the diagnostic record.
+`collection_state=RECORDED` and exit 0 also apply to a valid partial record whose
+transport comparison remains `state=UNVERIFIED`, for example DNS followed by
+zero received HTTPS bytes and a wall timeout. Missing TCP/TLS timing is not
+evidence of either connection. This allows the original browser download and
+tests to proceed after successful dependency installation. Source-binding,
+configuration/metadata collection and malformed-record errors still return 1;
+the workflow neither ignores these failures nor tolerates failed browser gates.
+The exact original three-file artifact 12713263362 is retained as historical
+regression input under `evidence/receipts/QIKVRT_WEBKIT_APT_TRANSFER_12713263362`.
+
 Playwright 1.62.1 / playwright-core 1.62.1: Apache-2.0, dependency integrity
 retained in `package-lock.json`. Browser binaries are downloaded by Playwright's
 locked installer and retain their upstream notices. React 19.2.6 / Scheduler

@@ -416,3 +416,11 @@ merge. See [SECURITY.md](SECURITY.md), [SUPPORT.md](SUPPORT.md),
 for the current reporting, support, decision, and participation boundaries.
 
 Copyright 2026 Ingolf Lohmann.
+# Python und C90
+
+Python bleibt erhalten. C90 ergänzt den vorhandenen Effect-Acknowledgement-Kern
+um einen portablen, auf Überlauf geprüften Q16.16-Referenzpfad. `make c90` prüft
+beide C90-Kerne; `make benchmark-c90` vergleicht dieselbe Festkomma-Arbeit in
+Python und C90. Zahlenvertrag, native Assembly-Ausgabe und Messgrenzen stehen in
+[C90_FIXED_POINT.md](docs/development/C90_FIXED_POINT.md).
+

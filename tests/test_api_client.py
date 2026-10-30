@@ -28,6 +28,205 @@ sys.path.insert(0, str(REPOSITORY_ROOT / "scripts"))
 import qikvrt_api_client as client  # noqa: E402
 
 
+class ContinuationRESTTests(unittest.TestCase):
+    """Original transport/journal and in-process REST handler; no live provider."""
+
+    def setUp(self):
+        from types import SimpleNamespace
+        self.temp = tempfile.TemporaryDirectory(); self.addCleanup(self.temp.cleanup)
+        self.head, self.tree, self.main = "1" * 40, "2" * 40, "3" * 40
+        self.args = SimpleNamespace(owner="ingolf-lohmann", repo="qik-vrt", ref="main",
+            operation="continuation_ready", base_url="https://api.github.com", artifact_id="pr-ready",
+            state_dir=self.temp.name, retry_evidence_file=None, request_id="ready-one", pull_request=631,
+            expected_head=self.head, expected_tree=self.tree, expected_main_sha=self.main, ci_run_id=900)
+        self.pr = {"number": 631, "state": "open", "merged": False, "draft": True,
+                   "node_id": "PR_fixture_631", "user": {"login": "ingolf-lohmann"},
+                   "head": {"sha": self.head, "ref": "repair/fixture", "repo": {"full_name": client.RULESET_REPOSITORY}},
+                   "base": {"sha": self.main, "ref": "main", "repo": {"full_name": client.RULESET_REPOSITORY}}}
+        config = json.loads((REPOSITORY_ROOT / "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json").read_bytes())["mesh_authority"]["principal_review"]
+        payload = {"schema": "qikvrt_owner_principal_review_v1", "repository": client.RULESET_REPOSITORY,
+            "pull_request": 631, "head_sha": self.head, "base_sha": self.main,
+            "owner_record_sha256": config["source_sha256"], "instruction_sha256": config["instruction_sha256"],
+            "decision": "APPROVE"}
+        self.reviews = [{"id": 500, "user": {"login": "ingolf-lohmann", "id": 294949349, "type": "User"},
+            "state": "COMMENTED", "commit_id": self.head, "submitted_at": "2026-10-29T00:00:00Z",
+            "body": "<!-- qikvrt-owner-principal-review-v1 -->\n```json\n" + json.dumps(payload) + "\n```"}]
+        names = ["test", "offline_browser (chromium)", "offline_browser (webkit)",
+                 "Linux S1 native terminal production and smoke"]
+        self.jobs = [{"id": 100 + i, "name": name, "status": "completed", "conclusion": "success",
+                      "started_at": "2026-10-29T00:00:00Z", "completed_at": "2026-10-29T00:00:10Z"}
+                     for i, name in enumerate(names)]
+        self.run = {"id": 900, "head_sha": self.head, "path": ".github/workflows/qikvrt_ci.yml",
+                    "repository": {"full_name": client.RULESET_REPOSITORY},
+                    "head_repository": {"full_name": client.RULESET_REPOSITORY},
+                    "run_attempt": 1, "status": "completed", "conclusion": "success"}
+        self.calls = []; self.post_error = None; self.graphql_error = False; self.change_after_post = False
+        self.opener = mock.Mock(); self.opener.open.side_effect = self.provider
+        self.patch = mock.patch.object(client.urllib.request, "build_opener", return_value=self.opener)
+        self.patch.start(); self.addCleanup(self.patch.stop)
+        self.tested_patch = mock.patch.object(client, "continuation_tested_subject", return_value={
+            "schema": "qikvrt-ci-tested-subject/v1", "repository": client.RULESET_REPOSITORY,
+            "run_id": 900, "run_attempt": 1, "head_sha": self.head, "tree_sha": self.tree})
+        self.tested_patch.start(); self.addCleanup(self.tested_patch.stop)
+
+    def response(self, document):
+        response = mock.MagicMock(); response.status = 200
+        response.read.return_value = json.dumps(document).encode()
+        response.geturl.return_value = self.current_url
+        response.__enter__.return_value = response
+        return response
+
+    def provider(self, request, **kwargs):
+        self.current_url = request.full_url
+        self.calls.append((request.get_method(), request.full_url))
+        prefix = "https://api.github.com/repos/" + client.RULESET_REPOSITORY + "/"
+        if request.get_method() == "POST":
+            self.assertEqual(request.full_url, "https://api.github.com/graphql")
+            body = json.loads(request.data)
+            self.assertEqual(body["query"], client.CONTINUATION_READY_DOCUMENT)
+            self.assertEqual(body["variables"]["input"]["pullRequestId"], self.pr["node_id"])
+            if self.post_error: raise self.post_error
+            self.pr["draft"] = False
+            if self.change_after_post: self.pr["head"]["sha"] = "f" * 40
+            return self.response({"errors": [{"message": "fixture"}]} if self.graphql_error else {
+                "data": {"markPullRequestReadyForReview": {"pullRequest": {
+                    "id": self.pr["node_id"], "isDraft": False, "headRefOid": self.head}}}})
+        if request.full_url == "https://raumzeitterminal.de/": return self.response({"fixture": "not delivery"})
+        self.assertTrue(request.full_url.startswith(prefix))
+        path = request.full_url[len(prefix):]
+        documents = {"branches/main": {"commit": {"sha": self.main}},
+            "pulls/631": self.pr, "git/commits/" + self.head: {"sha": self.head, "tree": {"sha": self.tree}},
+            "actions/runs/900": self.run, "actions/runs/900/jobs?per_page=100": {"total_count": len(self.jobs), "jobs": self.jobs},
+            "actions/workflows/qikvrt_ci.yml/runs?head_sha=" + self.head + "&per_page=100": {"total_count": 1, "workflow_runs": [self.run]},
+            "pulls/631/reviews?per_page=100": self.reviews,
+            "commits/main": {"sha": self.main, "commit": {"tree": {"sha": "4" * 40}}}}
+        return self.response(documents[path])
+
+    def invoke(self, write=True):
+        return client.continuation_result(self.args, "provider-fixture-token", write=write)
+
+    def test_plan_is_read_only_and_keeps_all_gates_and_fallback(self):
+        result = self.invoke(False)
+        self.assertFalse(result["ready_verified"]); self.assertTrue(result["graph"]["ci_verified"])
+        self.assertEqual(result["graph"]["frontier"], ["graphql-fallback"])
+        self.assertTrue(next(n for n in result["graph"]["nodes"] if n["id"] == "graphql-fallback")["never_prune"])
+        self.assertTrue(all(method == "GET" for method, _ in self.calls))
+        self.assertEqual(list(Path(self.temp.name).iterdir()), [])
+
+    def test_workflow_event_head_never_substitutes_for_the_actual_tested_subject(self):
+        self.run["head_sha"] = "f" * 40  # An integrity-only predecessor event.
+        self.assertTrue(self.invoke(False)["graph"]["ci_verified"])
+        with mock.patch.object(client, "continuation_tested_subject", return_value={
+                "schema": "qikvrt-ci-tested-subject/v1", "repository": client.RULESET_REPOSITORY,
+                "run_id": 900, "run_attempt": 1, "head_sha": "e" * 40, "tree_sha": self.tree}):
+            with self.assertRaises(ValueError): self.invoke()
+        self.assertFalse(any(m == "POST" for m, _ in self.calls))
+
+    def test_original_small_subject_artifact_checks_digest_and_exact_member(self):
+        import zipfile
+        from tools import qikvrt_self_host_container as container
+        self.tested_patch.stop()
+        subject = {"schema": "qikvrt-ci-tested-subject/v1", "repository": client.RULESET_REPOSITORY,
+                   "run_id": 900, "run_attempt": 1, "head_sha": self.head, "tree_sha": self.tree}
+        stream = io.BytesIO()
+        with zipfile.ZipFile(stream, "w") as archive: archive.writestr("TESTED_SUBJECT.json", json.dumps(subject))
+        raw = stream.getvalue()
+        artifact = {"id": 400, "name": "qikvrt-ci-tested-subject-900-1", "expired": False,
+                    "size_in_bytes": len(raw), "digest": "sha256:" + hashlib.sha256(raw).hexdigest(),
+                    "workflow_run": {"id": 900, "head_sha": self.head}}
+        def download(identifier, size, path, token):
+            self.assertEqual((identifier, size, token), (400, len(raw), "provider-fixture-token"))
+            path.write_bytes(raw)
+        get = lambda _path: {"total_count": 1, "artifacts": [artifact]}
+        with mock.patch.object(container, "actions_archive_download", side_effect=download):
+            self.assertEqual(client.continuation_tested_subject(get, self.run, "provider-fixture-token"), subject)
+            artifact["digest"] = "sha256:" + "0" * 64
+            with self.assertRaisesRegex(ValueError, "DIGEST_MISMATCH"):
+                client.continuation_tested_subject(get, self.run, "provider-fixture-token")
+
+    def test_one_fixed_mutation_requires_independent_rest_readback(self):
+        result = self.invoke()
+        self.assertTrue(result["ready_verified"]); self.assertEqual(result["dispatch_count"], 1)
+        self.assertEqual(result["graph"]["frontier"], ["rest-merge"])
+        self.assertFalse(result["graph"]["merge_admission_inferred"])
+        self.assertFalse(result["merge_verified"]); self.assertFalse(result["effect_ack_done"])
+        post = next(i for i, (m, _) in enumerate(self.calls) if m == "POST")
+        self.assertIn(("GET", "https://api.github.com/repos/" + client.RULESET_REPOSITORY + "/pulls/631"), self.calls[post + 1:])
+        self.assertTrue(self.invoke()["ready_verified"])
+        self.assertEqual(sum(m == "POST" for m, _ in self.calls), 1)
+        self.assertNotIn("provider-fixture-token", "".join(p.read_text() for p in Path(self.temp.name).glob("*.json")))
+
+    def test_no_mutation_for_wrong_source_incomplete_or_failed_ci_or_missing_review(self):
+        for change in ("source", "jobs", "failed", "review", "skipped-required"):
+            with self.subTest(change=change):
+                pr, jobs, run, reviews = copy.deepcopy((self.pr, self.jobs, self.run, self.reviews))
+                if change == "source": self.pr["head"]["sha"] = "e" * 40
+                elif change == "jobs": self.jobs.pop()
+                elif change == "failed": self.run["conclusion"] = "failure"
+                elif change == "review": self.reviews = []
+                else: self.jobs[0]["conclusion"] = "skipped"
+                with self.assertRaises(ValueError): self.invoke()
+                self.pr, self.jobs, self.run, self.reviews = pr, jobs, run, reviews
+        self.assertFalse(any(m == "POST" for m, _ in self.calls))
+
+    def test_lost_ack_and_graphql_errors_cannot_replay_via_new_request_id(self):
+        self.post_error = TimeoutError("fixture lost acknowledgement")
+        self.assertFalse(self.invoke()["ready_verified"])
+        self.post_error = None; self.args.request_id = "another-request"
+        result = self.invoke()
+        self.assertEqual(result["dispatch_count"], 0)
+        self.assertEqual(sum(m == "POST" for m, _ in self.calls), 1)
+
+    def test_changed_head_after_mutation_is_unknown_not_ready_acceptance(self):
+        self.change_after_post = True
+        result = self.invoke()
+        self.assertFalse(result["ready_verified"]); self.assertEqual(result["state"], "HOLD_READBACK_REQUIRED")
+
+    def test_lost_ack_is_closed_by_exact_readback_without_another_mutation(self):
+        self.post_error = TimeoutError("fixture acknowledgement lost")
+        self.assertFalse(self.invoke()["ready_verified"])
+        self.pr["draft"] = False  # Independent provider state after the lost ACK.
+        self.post_error = None; self.args.request_id = "readback-one"
+        result = self.invoke()
+        self.assertTrue(result["ready_verified"]); self.assertTrue(result["original_attempt_recovered"])
+        self.assertEqual(sum(m == "POST" for m, _ in self.calls), 1)
+        record = json.loads(next(Path(self.temp.name).glob("*.json")).read_bytes())
+        self.assertEqual(record["status"], "completed")
+        self.assertEqual(record["completion_basis"], "INDEPENDENT_PR_READY_READBACK")
+        self.assertFalse(record["mutation_attribution_verified"])
+        self.assertNotIn("response_sha256", record)
+
+    def test_graphql_http200_errors_do_not_count_as_verified_readiness(self):
+        self.graphql_error = True
+        self.assertFalse(self.invoke()["ready_verified"])
+
+    def test_existing_rest_handler_accepts_only_fixed_bound_fields(self):
+        import email.message
+        import qikvrt_github_api_shim as shim
+        body = {"schema": "qikvrt-continuation-rest/v1", "request_id": "rest-fixture",
+                "pull_request": 631, "expected_main_sha": self.main, "expected_head": self.head,
+                "expected_tree": self.tree, "ci_run_id": 900, "effect_accepted": True}
+        env = {"QIKVRT_CONTINUATION_ENABLED": "1", "QIKVRT_API_TOKEN": "b64url:" + base64.urlsafe_b64encode(b"c" * 32).decode().rstrip("="),
+               "QIKVRT_API_TOKEN_EXPIRES_UTC": "2099-01-01T00:00:00Z", "QIKVRT_API_PRINCIPAL": "ingolf-lohmann",
+               "QIKVRT_ALLOWED_REPOSITORY": client.RULESET_REPOSITORY,
+               "QIKVRT_AUTHORITY_APP_TOKEN": "provider-fixture-token", "QIKVRT_API_CLIENT_STATE_DIR": self.temp.name}
+        def wire(value, changes=None):
+            handler = object.__new__(shim.QikvrtGitHubApiShim)
+            handler.path = "/repos/" + client.RULESET_REPOSITORY + "/qikvrt/continuation"
+            raw = json.dumps(value).encode(); handler.rfile = io.BytesIO(raw)
+            handler.headers = email.message.Message()
+            for k, v in {"Authorization": "Bearer " + env["QIKVRT_API_TOKEN"], "Content-Type": "application/json", "Content-Length": str(len(raw))}.items(): handler.headers[k] = v
+            handler._send_json = mock.Mock(); handler._rate_allowed = lambda: True
+            with mock.patch.dict(os.environ, {**env, **(changes or {})}, clear=True): handler.do_POST()
+            return handler._send_json.call_args.args
+        self.assertEqual(wire({**body, "query": "mutation{unsafe}"})[0], 409)
+        self.assertEqual(wire(body, {"QIKVRT_CONTINUATION_ENABLED": "0"})[0], 404)
+        self.assertEqual(wire(body, {"QIKVRT_API_PRINCIPAL": "foreign"})[0], 403)
+        self.assertEqual(wire(body, {"QIKVRT_AUTHORITY_APP_TOKEN": ""})[0], 503)
+        code, result = wire(body)
+        self.assertEqual(code, 200, result); self.assertTrue(result["handler_result"]["ready_verified"])
+
+
 class ApiClientTests(unittest.TestCase):
     def setUp(self) -> None:
         directory = tempfile.TemporaryDirectory()
@@ -499,19 +698,31 @@ class RulesetClientFixture(unittest.TestCase):
         return response
 
     def invoke(self, *, operation="ruleset_authority_dispatch", arguments=(),
-               overrides=None, post_status=204, post_raw=b"", post_error=None):
+               overrides=None, post_status=204, post_raw=b"", post_error=None,
+               before_post=None):
         documents = {**self.documents, **(overrides or {})}
         def open_request(request, timeout):
+            if request.full_url == "https://raumzeitterminal.de/":
+                response = self.response(200, raw=b"public observation fixture")
+                response.geturl.return_value = request.full_url
+                return response
             self.assertTrue(request.full_url.startswith(self.prefix))
             self.assertEqual(request.get_header("Authorization"), "Bearer " + self.token)
             self.assertEqual(timeout, 10)
             path = request.full_url[len(self.prefix):]
             if request.get_method() == "POST":
                 self.assertEqual(path, f"actions/workflows/{client.RULESET_WORKFLOW}/dispatches")
+                if before_post:
+                    before_post(request)
                 if post_error:
                     raise post_error
                 return self.response(post_status, raw=post_raw)
             self.assertEqual(request.get_method(), "GET")
+            if path == "commits/main":
+                response = self.response(200, document={"sha": self.sha,
+                    "commit": {"tree": {"sha": "b" * 40}}})
+                response.geturl.return_value = request.full_url
+                return response
             value = documents[path]
             if callable(value):
                 value = value()
@@ -533,7 +744,8 @@ class RulesetClientFixture(unittest.TestCase):
             argv += ["--ruleset-writer-version", self.writer_version]
         argv += list(arguments)
         stdout, stderr = io.StringIO(), io.StringIO()
-        with mock.patch.dict(os.environ, {"QIKVRT_API_TOKEN": self.token}), mock.patch.object(sys, "argv", argv):
+        with tempfile.TemporaryDirectory() as state, mock.patch.dict(os.environ, {
+                "QIKVRT_API_TOKEN": self.token, "QIKVRT_API_CLIENT_STATE_DIR": state}), mock.patch.object(sys, "argv", argv):
             with mock.patch.object(client.urllib.request, "build_opener", return_value=opener):
                 with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
                     code = client.main()
@@ -1633,6 +1845,251 @@ class GitHubShellWrapperTests(unittest.TestCase):
         self.assertEqual(result.returncode, 1, result.stderr)
         self.assertFalse(report["credential_in_argv"])
         self.assertEqual([call["method"] for call in report["calls"]], ["POST", "GET", "GET"])
+
+
+class RulesetRestBootstrapTests(RulesetClientFixture):
+    writer_version = "principal-review-v4"
+
+    def test_current_provider_200_retains_original_run_identity(self):
+        body = {"workflow_run_id": 321, "run_url": self.prefix + "actions/runs/321",
+                "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/321"}
+        code, out, error, opener = self.invoke(post_status=200, post_raw=json.dumps(body).encode())
+        self.assertEqual(code, 20, error)
+        receipt = json.loads(out)
+        self.assertEqual(receipt["workflow_run_id"], 321)
+        self.assertTrue(receipt["transport_acknowledged"])
+        self.assertFalse(receipt["ruleset_effect_verified"])
+        self.assertEqual(len(self.posts(opener)), 1)
+
+    def test_original_intent_is_on_disk_before_provider_post(self):
+        with tempfile.TemporaryDirectory() as state:
+            def before(_request):
+                attempts = list(Path(state).glob("*.json"))
+                self.assertEqual(len(attempts), 1)
+                record = json.loads(attempts[0].read_bytes())
+                self.assertEqual(record["status"], "in_flight")
+                self.assertEqual(record["operation_binding"]["main_sha"], self.sha)
+                self.assertEqual(record["operation_binding"]["workflow_blob_sha"], self.writer_blob)
+                self.assertNotIn(self.token, attempts[0].read_text())
+            code, _, error, _ = self.invoke(arguments=("--state-dir", state), before_post=before)
+            self.assertEqual(code, 20, error)
+
+    def test_lost_response_cannot_be_replayed_with_a_new_request_identifier(self):
+        with tempfile.TemporaryDirectory() as state:
+            args = ("--state-dir", state)
+            first, _, _, p1 = self.invoke(arguments=args, post_error=TimeoutError("private detail"))
+            second, out, error, p2 = self.invoke(arguments=(*args, "--request-id", "changed-id"))
+            self.assertEqual(first, 1)
+            self.assertEqual(len(self.posts(p1)), 1)
+            self.assertEqual(len(self.posts(p2)), 0, error + out)
+            self.assertNotEqual(second, 0)
+            self.assertEqual(json.loads(out)["dispatch_count"], 0)
+
+
+class RulesetAuthorityHTTPTests(RulesetClientFixture):
+    """Real REST wire and original controller; GitHub alone is a fixture."""
+    writer_version = "principal-review-v4"
+
+    def setUp(self):
+        super().setUp()
+        import qikvrt_github_api_shim as shim
+        import threading
+        from datetime import datetime, timedelta, timezone
+        from http.server import ThreadingHTTPServer
+        self.shim = shim
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.caller = "b64url:" + base64.urlsafe_b64encode(b"r" * 32).decode().rstrip("=")
+        self.env = mock.patch.dict(os.environ, {
+            "QIKVRT_RULESET_AUTHORITY_ENABLED": "1", "QIKVRT_ALLOWED_REPOSITORY": client.RULESET_REPOSITORY,
+            "QIKVRT_API_PRINCIPAL": "ingolf-lohmann", "QIKVRT_API_TOKEN": self.caller,
+            "QIKVRT_API_TOKEN_EXPIRES_UTC": (datetime.now(timezone.utc) + timedelta(hours=1)).isoformat(),
+            "QIKVRT_RULESET_ADMIN_TOKEN": self.token, "QIKVRT_GITHUB_ADMIN_TOKEN": "",
+            "QIKVRT_MESH_TOKEN": "", "QIKVRT_AUTHORITY_APP_TOKEN": "", "GITHUB_TOKEN": "",
+            "QIKVRT_API_CLIENT_STATE_DIR": self.temp.name, "QIKVRT_RATE_LIMIT_PER_MINUTE": "10000"})
+        self.env.start(); self.addCleanup(self.env.stop)
+        self.provider_calls, self.provider_failure = [], None
+        self.real_opener = client.urllib.request.build_opener(client.NoRedirectHandler())
+        def provider(request, timeout):
+            if request.full_url.startswith("http://127.0.0.1:"):
+                return self.real_opener.open(request, timeout=timeout)
+            self.provider_calls.append(request)
+            self.assertNotIn(self.caller, str(request.headers))
+            if request.full_url == "https://raumzeitterminal.de/":
+                response = self.response(200, raw=b"public fixture")
+            else:
+                self.assertTrue(request.full_url.startswith(self.prefix))
+                path = request.full_url[len(self.prefix):]
+                if not (path == "commits/main" and request.get_header("Authorization") is None):
+                    self.assertEqual(request.get_header("Authorization"), "Bearer " + self.token)
+                if request.get_method() == "POST":
+                    self.assertEqual(path, f"actions/workflows/{client.RULESET_WORKFLOW}/dispatches")
+                    if self.provider_failure: raise self.provider_failure
+                    response = self.response(200, document={"workflow_run_id": self.run_id,
+                        "run_url": self.prefix + f"actions/runs/{self.run_id}",
+                        "html_url": f"https://github.com/{client.RULESET_REPOSITORY}/actions/runs/{self.run_id}"})
+                elif path == "commits/main":
+                    response = self.response(200, document={"sha": self.sha, "commit": {"tree": {"sha": "b" * 40}}})
+                else:
+                    self.assertEqual(request.get_method(), "GET")
+                    response = self.response(200, document=self.documents[path])
+            response.geturl.return_value = request.full_url
+            return response
+        opener = mock.Mock(); opener.open.side_effect = provider
+        patch = mock.patch.object(client.urllib.request, "build_opener", return_value=opener)
+        patch.start(); self.addCleanup(patch.stop)
+        with shim._RATE_LOCK: shim._RATE_WINDOWS.clear()
+        self.server = ThreadingHTTPServer(("127.0.0.1", 0), shim.QikvrtGitHubApiShim)
+        self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
+        self.thread.start(); self.addCleanup(self.stop_server)
+        self.route = f"/repos/{client.RULESET_REPOSITORY}/qikvrt/ruleset-authority"
+
+    def stop_server(self):
+        self.server.shutdown(); self.server.server_close(); self.thread.join(timeout=3)
+
+    def wire(self, *, method="POST", body=None, path=None, token=None):
+        import http.client
+        connection = http.client.HTTPConnection("127.0.0.1", self.server.server_port, timeout=10)
+        headers = {"Authorization": "Bearer " + (self.caller if token is None else token),
+                   "Content-Type": "application/json"}
+        if body is None and method == "POST":
+            body = {"schema": "qikvrt-ruleset-authority-rest/v1", "request_id": "rest-one",
+                    "expected_main_sha": self.sha, "writer_version": self.version, "effect_accepted": True}
+        try:
+            connection.request(method, path or self.route,
+                body=None if body is None else json.dumps(body), headers=headers)
+            response = connection.getresponse(); raw = response.read()
+            self.assertNotIn(self.token, raw.decode())
+            self.assertNotIn(self.caller, raw.decode())
+            return response.status, json.loads(raw)
+        finally: connection.close()
+
+    def test_post_uses_original_controller_and_keeps_transport_separate(self):
+        self.documents["branches/main"]["protected"] = False
+        status, data = self.wire()
+        self.assertEqual(status, 202, data)
+        self.assertEqual(data["handler_result"]["workflow_run_id"], self.run_id)
+        self.assertFalse(data["handler_result"]["execution_verified"])
+        self.assertFalse(data["effect_ack_done"])
+        posts = [r for r in self.provider_calls if r.get_method() == "POST"]
+        self.assertEqual(len(posts), 1)
+        self.assertEqual(posts[0].data, b'{"ref":"main"}')
+        attempts = list((Path(self.temp.name) / "ruleset-authority-server").glob("*.json"))
+        self.assertEqual(json.loads(attempts[0].read_bytes())["status"], "pending")
+
+    def test_get_independently_verifies_run_jobs_ruleset_and_protected_main(self):
+        from urllib.parse import urlencode
+        query = urlencode({"request_id": "read-one", "expected_main_sha": self.sha,
+                           "writer_version": self.version, "run_id": self.run_id})
+        status, data = self.wire(method="GET", path=self.route + "?" + query)
+        self.assertEqual(status, 200, data)
+        self.assertTrue(data["handler_result"]["ruleset_effect_verified"])
+        self.assertFalse(data["handler_result"]["mutation_attribution_verified"])
+        self.assertFalse(data["effect_ack_done"])
+        self.assertTrue(all(r.get_method() == "GET" for r in self.provider_calls))
+        self.assertEqual(list(Path(self.temp.name).iterdir()), [])
+
+    def test_disabled_route_and_read_credential_cannot_dispatch(self):
+        with mock.patch.dict(os.environ, {"QIKVRT_RULESET_AUTHORITY_ENABLED": "0"}):
+            self.assertEqual(self.wire()[0], 404)
+        self.assertEqual(self.wire(token="separate-read-only-token")[0], 401)
+        self.assertEqual(self.provider_calls, [])
+
+    def test_foreign_principal_or_repository_cannot_use_authority(self):
+        with mock.patch.dict(os.environ, {"QIKVRT_API_PRINCIPAL": "another-owner"}):
+            self.assertEqual(self.wire()[0], 403)
+        self.assertEqual(self.wire(path="/repos/foreign/repo/qikvrt/ruleset-authority")[0], 403)
+        self.assertEqual(self.provider_calls, [])
+
+    def test_missing_provider_binding_never_reuses_generic_or_caller_tokens(self):
+        with mock.patch.dict(os.environ, {"QIKVRT_RULESET_ADMIN_TOKEN": "", "GITHUB_TOKEN": "unscoped"}):
+            self.assertEqual(self.wire()[0], 503)
+        with mock.patch.dict(os.environ, {"QIKVRT_RULESET_ADMIN_TOKEN": self.caller}):
+            self.assertEqual(self.wire()[0], 503)
+        self.assertEqual(self.provider_calls, [])
+
+    def test_exact_effect_and_field_validation_precedes_all_provider_requests(self):
+        original = {"schema": "qikvrt-ruleset-authority-rest/v1", "request_id": "rest-one",
+                    "expected_main_sha": self.sha, "writer_version": self.version, "effect_accepted": True}
+        for patch in ({"effect_accepted": "true"}, {"ref": "other"}, {"expected_main_sha": "../main"},
+                      {"writer_version": "unknown"}, {"request_id": 1}, {"schema": "other"}):
+            with self.subTest(patch=patch): self.assertEqual(self.wire(body={**original, **patch})[0], 400)
+        self.assertEqual(self.provider_calls, [])
+
+    def test_lost_response_through_http_does_not_admit_second_provider_post(self):
+        self.provider_failure = TimeoutError("provider-private-detail")
+        self.assertEqual(self.wire()[0], 409)
+        self.provider_failure = None
+        status, data = self.wire()
+        self.assertEqual(status, 409, data)
+        self.assertEqual(data["handler_result"]["dispatch_count"], 0)
+        self.assertEqual(len([r for r in self.provider_calls if r.get_method() == "POST"]), 1)
+
+    def test_duplicate_readback_query_and_post_query_are_rejected(self):
+        self.assertEqual(self.wire(method="GET", path=self.route + "?run_id=1&run_id=2")[0], 400)
+        self.assertEqual(self.wire(path=self.route + "?run_id=1")[0], 400)
+        self.assertEqual(self.provider_calls, [])
+
+    def test_recorded_run_survives_client_loss_and_get_does_not_rewrite_journal(self):
+        from urllib.parse import urlencode
+        self.assertEqual(self.wire()[0], 202)
+        path = next((Path(self.temp.name) / "ruleset-authority-server").glob("*.json"))
+        before = path.read_bytes()
+        query = urlencode({"request_id": "rest-one", "expected_main_sha": self.sha, "writer_version": self.version})
+        status, data = self.wire(method="GET", path=self.route + "?" + query)
+        self.assertEqual(status, 200, data)
+        self.assertEqual(data["handler_result"]["workflow_run_id"], self.run_id)
+        self.assertTrue(data["handler_result"]["ruleset_effect_verified"])
+        self.assertEqual(before, path.read_bytes())
+        self.assertEqual(len([r for r in self.provider_calls if r.get_method() == "POST"]), 1)
+
+    def test_unknown_provider_outcome_retains_original_intent_for_get_only(self):
+        from urllib.parse import urlencode
+        self.provider_failure = TimeoutError("private")
+        self.assertEqual(self.wire()[0], 409)
+        query = urlencode({"request_id": "rest-one", "expected_main_sha": self.sha, "writer_version": self.version})
+        status, data = self.wire(method="GET", path=self.route + "?" + query)
+        self.assertEqual(status, 202, data)
+        self.assertEqual(data["handler_result"]["readback_state"], "ORIGINAL_INTENT_RETAINED_RUN_ID_UNRESOLVED")
+        self.assertFalse(data["handler_result"]["ruleset_effect_verified"])
+        self.assertEqual(data["handler_result"]["dispatch_count"], 0)
+        self.assertEqual(len([r for r in self.provider_calls if r.get_method() == "POST"]), 1)
+
+    def test_repository_client_can_dispatch_and_recover_over_mesh_rest(self):
+        base = ["client", "--owner", "ingolf-lohmann", "--repo", "qik-vrt",
+                "--base-url", f"http://127.0.0.1:{self.server.server_port}", "--ruleset-via-mesh",
+                "--expected-main-sha", self.sha, "--ruleset-writer-version", self.version,
+                "--request-id", "cli-rest", "--state-dir", str(Path(self.temp.name) / "caller")]
+        for operation, extra, expected in [
+            ("ruleset_authority_dispatch", ["--dry-run", "false", "--accept-effect"], 20),
+            ("ruleset_authority_readback", [], 0)]:
+            out, err = io.StringIO(), io.StringIO()
+            with mock.patch.object(sys, "argv", [*base, "--operation", operation, *extra]), contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+                code = client.main()
+            self.assertEqual(code, expected, err.getvalue() + out.getvalue())
+            result = json.loads(out.getvalue())
+            self.assertFalse(result["ordinary_release"])
+            self.assertNotIn(self.token, out.getvalue())
+            self.assertNotIn(self.caller, out.getvalue())
+        self.assertTrue(result["result"]["remote_readback"]["handler_result"]["ruleset_effect_verified"])
+        self.assertEqual(len([r for r in self.provider_calls if r.get_method() == "POST"]), 1)
+
+    def test_client_rejects_foreign_subjects_and_incomplete_remote_effect_claims(self):
+        from types import SimpleNamespace
+        from urllib.parse import urlencode
+        query = urlencode({"request_id": "read-one", "expected_main_sha": self.sha,
+                           "writer_version": self.version, "run_id": self.run_id})
+        status, data = self.wire(method="GET", path=self.route + "?" + query)
+        self.assertEqual(status, 200, data)
+        args = SimpleNamespace(operation="ruleset_authority_readback", request_id="read-one",
+            expected_main_sha=self.sha, ruleset_writer_version=self.version, ruleset_run_id=str(self.run_id))
+        for patch in ({"main_sha": "f" * 40}, {"request_id": "foreign"}, {"workflow_blob_sha": "f" * 40},
+                      {"effect_state": "EFFECT_ACK_DONE"}, {"execution_verified": False},
+                      {"main_protected": False}, {"observed_ruleset_sha256": "f" * 64}):
+            with self.subTest(patch=patch):
+                changed = copy.deepcopy(data); changed["handler_result"].update(patch)
+                with self.assertRaises(ValueError): client.bound_ruleset_rest_response(changed, args)
+        self.assertTrue(all(r.get_method() == "GET" for r in self.provider_calls))
 
 
 if __name__ == "__main__":

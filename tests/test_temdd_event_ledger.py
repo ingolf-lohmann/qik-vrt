@@ -17,6 +17,7 @@ import subprocess
 import sys
 import tempfile
 import threading
+import tracemalloc
 import unittest
 from unittest import mock
 
@@ -46,6 +47,49 @@ class WriterContinuityTests(unittest.TestCase):
         ledger.close()
         shutil.copytree(self.a, self.b)
         return receipt, frontier
+
+    def test_large_complete_history_has_bounded_peak_and_legacy_frontier(self):
+        ledger = m.Ledger(self.a, self.subject)
+        self.addCleanup(ledger.close)
+        self.assertEqual(ledger.history_frontier(), m.digest({'epoch': ledger.epoch, 'rows': []}))
+        for number in range(256):
+            event = copy.deepcopy(self.event)
+            event['provenance']['native_event_id'] = 'fixture:large:' + str(number)
+            event['payload'] = {'text': '\u00e4\\\"\n' + 'x' * 8192, 'n': number}
+            ledger.append(event)
+        legacy = m.digest({'epoch': ledger.epoch,
+                           'rows': ledger.db.execute('SELECT * FROM events ORDER BY seq').fetchall()})
+        tracemalloc.start()
+        try:
+            self.assertEqual(ledger.history_frontier(), legacy)
+            _, peak = tracemalloc.get_traced_memory()
+        finally:
+            tracemalloc.stop()
+        self.assertLess(peak, 1024 * 1024, 'complete journal was materialized in Python memory')
+        # A damaged event beyond a replay batch must still be inspected.
+        with ledger.db:
+            ledger.db.execute("UPDATE events SET native_digest=? WHERE seq=250", ('0' * 64,))
+        with self.assertRaisesRegex(m.Hold, 'LEDGER_HISTORY_READBACK_MISMATCH'):
+            ledger.history_frontier()
+
+    def test_frontier_validates_original_subject_partitions(self):
+        writer = m.Ledger(self.a, self.subject)
+        writer.append(self.event)
+        writer.close()
+        other_subject = dict(self.subject, head='c' * 40)
+        writer = m.Ledger(self.a, other_subject)
+        self.addCleanup(writer.close)
+        event = copy.deepcopy(self.event)
+        event['subject'] = other_subject
+        event['provenance']['native_event_id'] = 'fixture:other-subject'
+        writer.append(event)
+        legacy = m.digest({'epoch': writer.epoch,
+                           'rows': writer.db.execute('SELECT * FROM events ORDER BY seq').fetchall()})
+        self.assertEqual(writer.history_frontier(), legacy)
+        with writer.db:
+            writer.db.execute("UPDATE events SET native_digest=? WHERE seq=1", ('0' * 64,))
+        with self.assertRaisesRegex(m.Hold, 'LEDGER_HISTORY_READBACK_MISMATCH'):
+            writer.history_frontier()
 
     def test_copied_store_cannot_acquire_original_writer_identity(self):
         receipt, _ = self.seed()

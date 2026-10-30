@@ -1,0 +1,23 @@
+{
+  "schema": "QIKVRT_PUBLICATION_PREPARATION_STATE_V1",
+  "publication_id": "qikvrt-causal-distance-20261024",
+  "technical_proof_bundle_validated": true,
+  "task_publication_authorization_present": true,
+  "exact_post_return_owner_upload_decision_present": false,
+  "zenodo_published": false,
+  "new_doi": null,
+  "public_byte_redownload_verified": false,
+  "existing_source_doi": "10.5281/zenodo.21711193",
+  "relation": "isSupplementTo",
+  "effect_ack_done": false,
+  "publisher_execution_admitted": false,
+  "next_required_decision": "Freeze and return a successor publication candidate incorporating the Lean companion; require its later canonical exact upload decision and admitted original publisher. The previous exact request binds only the old 20-file candidate.",
+  "current_work_scope": "qikvrt-causal-distance-lean-20261024",
+  "original_20_upload_files_materialized": true,
+  "original_return_control_files_restored": true,
+  "original_15_claim_machine_proof_validated_after_materialization": true,
+  "lean_kernel_theorem_count": 36,
+  "lean_native_receipt_sha256": "3734147def87e97610308abbd75a65989e8dfec1d2b421a72c59cdc181286b17",
+  "lean_package_sha256": "939b7da32b31972ea596b4a1ffdb8a9c1baafe3d8eb02d99f659ac005e813636",
+  "extended_publication_candidate_frozen_and_returned": false
+}

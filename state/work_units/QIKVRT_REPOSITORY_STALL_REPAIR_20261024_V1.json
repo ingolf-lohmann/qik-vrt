@@ -131,5 +131,32 @@
     "original_failure_regression": "REPRODUCED_BEFORE_REPAIR",
     "own_diagnostic_digest": "a3aeb7f9e5978735b11cdd4150f2afc714ce3309ad62781d320acccb03c2c776",
     "own_diagnostic_event": "6c1f80997352487292d15ddd75e06e83:1"
+  },
+  "host_completion_feedback_successor_20261030": {
+    "owner": "Ingolf Lohmann",
+    "source_kind": "DIRECT_HUMAN_INSTRUCTION_IN_CURRENT_SESSION",
+    "instruction": "Freigabe für die entsprechende Repository-Änderung erteilt",
+    "instruction_sha256": "ab2f9928d731344668a3c06ca3afa599e2f280cb545abf764c2f0161c83f077c",
+    "implementation": "OpenAI Codex",
+    "existing_candidate": 595,
+    "observed_main": "bb541e864bbab6dcf255f824e1e2c5cceff45a39",
+    "observed_tree": "1a331eff15a7a2e4a78384ca8ff782cd07fcf1f1",
+    "original_failure": {
+      "run_id": 41006114646,
+      "job_id": 123905386576,
+      "host_artifact_id": 12956475940,
+      "state": "HOLD_PROTECTED_INPUT_DELIVERY",
+      "scope": "JOB_INPUT_PRESENCE_ONLY"
+    },
+    "change": "Retain successful exact-subject source tests after downstream CI failure; read the original host-input artifact and bind the existing original SSO GET successor. Preserve checkpoint and lost-response repairs from this PR.",
+    "replay_evidence": "evidence/receipts/continuation-tree-readback-20261024/host-feedback-20261030.json",
+    "remaining_boundaries": [
+      "ORIGINAL_SSO_READBACK",
+      "PROTECTED_INPUT_RESTORATION",
+      "ACTUAL_JOB_DELIVERY",
+      "ORIGINAL_HOST_IDENTITY",
+      "EXACT_DOMAIN_DELIVERY"
+    ],
+    "live_repair_or_effect_ack_done_claimed": false
   }
 }
