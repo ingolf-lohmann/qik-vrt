@@ -1720,8 +1720,16 @@ jobs:
           from pathlib import Path
           p=Path(os.environ['RUNNER_TEMP'])/'qikvrt-host-auth'; p.mkdir(mode=0o700)
           fields={'binding.json':'QIKVRT_HOST_BINDING','ca.pem':'QIKVRT_HOST_CA','cert.pem':'QIKVRT_HOST_CERT','key.pem':'QIKVRT_HOST_KEY'}
+          present={key:bool(os.environ.get(key,'')) for key in (*fields.values(),'QIKVRT_HOST_BINDING_SHA256')}
+          delivery={'schema':'qikvrt-protected-host-input-delivery/v1','repository':'ingolf-lohmann/qik-vrt',
+              'environment':'qikvrt-production','scope':'JOB_INPUT_PRESENCE_ONLY',
+              'source_head':os.environ['EXPECTED_HEAD'],'source_tree':os.environ['EXPECTED_TREE'],
+              'bindings':present,'state':'PROTECTED_INPUTS_PRESENT' if all(present.values()) else 'HOLD_PROTECTED_INPUT_DELIVERY',
+              'job_credential_delivery_verified':False,'host_identity_verified':False,'effect_ack_done':False}
+          (Path(os.environ['RUNNER_TEMP'])/'host-material-delivery.json').write_text(json.dumps(delivery,sort_keys=True)+'\n')
+          assert all(present.values()), 'protected host binding/credential unavailable'
           for name,key in fields.items():
-              value=os.environ.get(key,''); assert value, 'protected host binding/credential unavailable'
+              value=os.environ[key]
               file=p/name;file.write_text(value);file.chmod(0o600)
           b=json.loads((p/'binding.json').read_bytes())
           assert hashlib.sha256((p/'binding.json').read_bytes()).hexdigest()==os.environ['QIKVRT_HOST_BINDING_SHA256']
@@ -1769,6 +1777,7 @@ jobs:
         with:
           name: qikvrt-s1-host-start-${{ needs.container.outputs.head }}
           path: |
+            ${{ runner.temp }}/host-material-delivery.json
             ${{ runner.temp }}/host-identity.json
             ${{ runner.temp }}/host-start.json
           if-no-files-found: error

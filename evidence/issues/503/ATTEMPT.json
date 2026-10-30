@@ -3,14 +3,14 @@
   "artifacts": {
     "ANSWER.md": "28bba5b8db1e3be813f9f528171228cba676f83c8ec1cd28bbd03217e46d9280",
     "CONTEXT.md": "1dc87b9a0c98126f15ea9d005d9b43743b6140aa096729357e2c0b2d21dea440",
-    "REQUEST.json": "a876942624b9c1032bc2b4966ab01c565c430b640d8f4e6a10110d9b687b4be4",
-    "REQUEST.sha256": "1da470c6aa79aad66cfeba51b201b11981582bb5a06589314249268bf71b9b89",
-    "STATUS.json": "a5585a80f06418a40f7e110f3c47242ffda989c1ad32f872fed23fb4d0578f73"
+    "REQUEST.json": "51105a7142195a080d9f445139f69d6a62864394f238f2acada885e48ffa4262",
+    "REQUEST.sha256": "5c14ceabfdfa4863a560da4c32607f48c99e0d7b79e7d58cec48f21fe6473aa3",
+    "STATUS.json": "49635bea2db29ea60d46361b2bc3727de5bb500dcdf1298c21da22c01bdfbabf"
   },
   "automatic_issue_close": false,
   "automatic_merge": false,
   "execute": true,
-  "fingerprint": "82f5f4b32aca8f3121d26cedc72598b4ef5011d42b56089160a06e88c9c591b2",
+  "fingerprint": "60005b7240f97d93f6d79be4f3140aad2d5e98463f9f880c8f9beb809ed6745b",
   "inputs": {
     "context_sha256": "1dc87b9a0c98126f15ea9d005d9b43743b6140aa096729357e2c0b2d21dea440",
     "processor_blobs": {
@@ -23,13 +23,13 @@
       "scripts/issue_agent/materialize.py": "59bf9c5794470a2ae64cb6583ee226c3d1395332b1ca46ac96b126781e689a63",
       "scripts/issue_agent/promote.py": "a17a69a57ca7cd22f846978d2849f4d3b2aafebc98c6018155ee92d2bed4dbaf",
       "scripts/issue_agent/validate.py": "612d4f2cd89874166a2cd0c22565d2abd1db609ab93b8fc47ba85193b55c6359",
-      "tools/qikvrt_integrity.py": "5ff3a5e0944d96a28189f378ae59c8793c11eb7e7c7766b8c1bb12301fb8f65a",
+      "tools/qikvrt_integrity.py": "701c7e70808687ecaa9fe84452a7f5e8b4378acb9de8c7e3341215195619c2b0",
       "tools/qikvrt_subprocess.py": "8344349b8e5c1827764e595b3ae56b8bdd720acb7feaaaee4abb1ca5656d5807"
     },
     "request_sha256": "9472fbce07875107263fa465fa0e8de6c5283c9045129132928abf571339c677"
   },
   "issue_number": 503,
-  "previous_branch_head": "38ac8ee4aaa9b98e5aa6399c4089544dc0b03e22",
+  "previous_branch_head": "719b92707c839aa993e3aab1b41c2cbf8f4a0658",
   "processing_status": "BLOCK",
   "reason": "NEW_CAUSAL_INPUT",
   "recorded": true,

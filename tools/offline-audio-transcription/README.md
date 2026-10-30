@@ -34,6 +34,22 @@ Der Installer prüft das 207-MB-Archiv und alle drei extrahierten Dateien gegen
 die in `models/whisper-base-int8/MODEL.json` festgeschriebenen SHA-256-Werte.
 Binärdateien und Modellgewichte werden nicht in diesem Repository gespeichert.
 
+### Vergleichsmodell whisper-small (optional)
+
+Für den Feldtest der Offline-Erkennung ist zusätzlich das multilinguale
+Whisper-small-Modell festgeschrieben (`models/whisper-small-int8/MODEL.json`,
+Archiv rund 640 MB, installiert rund 375 MB). Es ist langsamer, erkennt
+deutsche Fachbegriffe aber deutlich zuverlässiger als base. base bleibt der
+Standard.
+
+```bash
+./scripts/install-model-small.sh
+./bin/transcribe-audio --model small --input /pfad/aufnahme.m4a --output-dir /pfad/ausgabe
+```
+
+Die Provenienzdatei nennt das verwendete Modell. Ergebnisse verschiedener
+Modelle sind ein Modellvergleich, keine menschliche Hörprüfung.
+
 ## Verwendung
 
 ```bash

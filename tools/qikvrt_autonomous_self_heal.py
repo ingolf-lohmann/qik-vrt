@@ -693,6 +693,48 @@ def import_rest_snapshot(api: GitHubREST, root: pathlib.Path, sha: str, checkout
         local_git(root, "reset", "--hard", sha)
 
 
+def create_rest_tree(api: GitHubREST, payload: Mapping[str, Any], expected: str) -> dict[str, Any]:
+    """Reconcile one ambiguous immutable-object write; never repeat its POST.
+
+    A 5xx or lost transport reply does not establish that GitHub rejected the
+    tree. Its content-addressed identity permits one independent GET. Recompute
+    the original Git tree bytes; a matching response field alone is insufficient.
+    This grants no ref ownership, review, promotion or execution admission.
+    """
+    try:
+        return api.call("POST", "git/trees", payload)
+    except (SelfHealBlock, subprocess.TimeoutExpired) as failure:
+        if isinstance(failure, SelfHealBlock) and not re.search(
+                r": (5[0-9]{2}|AMBIGUOUS_TRANSPORT);", str(failure)):
+            raise
+        try:
+            value = api.call("GET", "git/trees/" + expected)
+            if (not isinstance(value, Mapping) or value.get("sha") != expected
+                    or value.get("truncated") is not False or not isinstance(value.get("tree"), list)):
+                raise ValueError("incomplete or mismatched tree")
+            entries = []
+            names = set()
+            types = {"040000": "tree", "100644": "blob", "100755": "blob",
+                     "120000": "blob", "160000": "commit"}
+            for entry in value["tree"]:
+                name, mode, kind, identity = (entry[key] for key in ("path", "mode", "type", "sha"))
+                if (not isinstance(name, str) or not name or name in {".", ".."}
+                        or "/" in name or "\0" in name or name in names
+                        or types.get(mode) != kind or SHA_PATTERN.fullmatch(identity) is None):
+                    raise ValueError("invalid tree entry")
+                names.add(name)
+                entries.append((name.encode() + (b"/" if kind == "tree" else b""),
+                    mode.lstrip("0").encode() + b" " + name.encode() + b"\0" + bytes.fromhex(identity)))
+            raw = b"".join(body for _, body in sorted(entries))
+            actual = hashlib.sha1(b"tree " + str(len(raw)).encode() + b"\0" + raw).hexdigest()
+            if actual != expected:
+                raise ValueError("tree byte identity mismatch")
+            return value
+        except (SelfHealBlock, subprocess.TimeoutExpired, KeyError, TypeError, ValueError) as readback:
+            raise SelfHealBlock("REST tree creation unresolved; expected_tree=" + expected
+                                + "; retain original attempt; readback only, no repeated POST") from readback
+
+
 def export_rest_successor(api: GitHubREST, root: pathlib.Path, plan: Mapping[str, Any], candidate: str) -> None:
     source = plan["selected"]["head_sha"]
     if candidate == source:
@@ -727,8 +769,8 @@ def export_rest_successor(api: GitHubREST, root: pathlib.Path, plan: Mapping[str
             remote = api.call("POST", "git/blobs", {"content": base64.b64encode(blob).decode(), "encoding": "base64"})
             if remote.get("sha") != identity: raise SelfHealBlock("outgoing blob readback mismatch")
             entries.append({"path": path, "mode": mode, "type": kind, "sha": identity})
-        tree = api.call("POST", "git/trees", {"base_tree": parent_tree, "tree": entries})
         expected_tree = local_git(root, "rev-parse", sha + "^{tree}").decode().strip()
+        tree = create_rest_tree(api, {"base_tree": parent_tree, "tree": entries}, expected_tree)
         if tree.get("sha") != expected_tree: raise SelfHealBlock("outgoing tree mismatch")
         created = api.call("POST", "git/commits", {"tree": expected_tree, "parents": parents,
                            "message": message.rstrip("\n"), **identities})
