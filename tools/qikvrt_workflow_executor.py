@@ -1862,6 +1862,30 @@ def amo_progress(directory: Path, receipt: Mapping[str, Any]) -> None:
             stream.write(human + "\n")
 
 
+def bound_node_receipt_command(arguments: argparse.Namespace) -> dict[str, Any]:
+    """Reuse the original producer/validator with the current output contract.
+
+    Other sparse controller/role operations retain their existing dependency
+    closure. A missing contract at this actual receipt boundary is a blocker.
+    """
+    if str(ROOT) not in sys.path:
+        sys.path.insert(0, str(ROOT))
+    try:
+        from tools import qikvrt_mesh_node_receipt as bound
+    except ImportError as exc:
+        raise ExecutorBlock("BOUND_NODE_RECEIPT_SOURCE_CLOSURE_UNAVAILABLE") from exc
+    try:
+        if arguments.command == "node-receipt-template":
+            return bound.build_bound_node_receipt(arguments.node_repository, arguments.node_branch)
+        receipt = _read_json_file(arguments.receipt, "node continuity receipt")
+        return bound.validate_bound_node_receipt(receipt, arguments.node_repository, arguments.node_branch)
+    except (bound.NodeReceiptContractError, bound.OutputContractError,
+            bound.workflow_executor.ExecutorBlock) as exc:
+        raise ExecutorBlock("BOUND_NODE_RECEIPT_REJECTED: " + str(exc)) from exc
+    except OSError as exc:
+        raise ExecutorBlock("BOUND_NODE_RECEIPT_READBACK_UNAVAILABLE") from exc
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     subcommands = parser.add_subparsers(dest="command", required=True)
@@ -1964,12 +1988,9 @@ def main(argv: Sequence[str] | None = None) -> int:
                 runs = _read_json_file(arguments.runs_file, "workflow runs")
                 value = dispatch_plan(value, runs, arguments.ref)
         elif arguments.command == "node-receipt-template":
-            value = build_node_receipt(arguments.node_repository, arguments.node_branch)
+            value = bound_node_receipt_command(arguments)
         else:
-            receipt = _read_json_file(arguments.receipt, "node continuity receipt")
-            if not isinstance(receipt, Mapping):
-                raise ExecutorBlock("node continuity receipt must be an object")
-            value = validate_node_receipt(receipt, arguments.node_repository, arguments.node_branch)
+            value = bound_node_receipt_command(arguments)
         _emit(value, arguments.json)
         return 0
     except ExecutorBlock as exc:

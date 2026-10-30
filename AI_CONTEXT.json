@@ -142,6 +142,11 @@
     "docs/CHARTA_MASCHINENPRUEFBARE_WISSENSCHAFT.md",
     "policy/QIKVRT_MACHINE_VERIFIABLE_SCIENCE_CHARTER_V1.json",
     "state/charter/CHARTER_ADOPTION_V1.json",
+    "docs/QIKVRT_UNIVERSAL_PROOF_AND_THOUGHT_SCHEMA_DE.md",
+    "policy/QIKVRT_UNIVERSAL_PROOF_THOUGHT_SCHEMA_V1.json",
+    "policy/QIKVRT_PROOF_BOUND_CHANGE_ADMISSION_V1.json",
+    "state/proof/PROOF_CORE_BASELINE_20261030.json",
+    "docs/PROOF_BOUND_CHANGE_ADMISSION.md",
     "AI_ADAPTERS.json",
     "AGENTS.md",
     "state/authorization/delegations/OWNER_REPOSITORY_GOALS_AND_RULESET_AUTHORIZATION_V1.json",
@@ -360,5 +365,23 @@
     "offline_restore_is_live_authority_promotion": false,
     "permanent_lineage_root": "Goldkelch/qik-vrt",
     "policy": "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json"
+  },
+  "universal_proof_thought_schema": {
+    "policy": "policy/QIKVRT_UNIVERSAL_PROOF_THOUGHT_SCHEMA_V1.json",
+    "article": "docs/QIKVRT_UNIVERSAL_PROOF_AND_THOUGHT_SCHEMA_DE.md",
+    "article_sha256": "9ee3dd68c64e73ad03b31238d1a23aa73bda855044dd59c63ee12d50535404ea",
+    "validator": "tools/qikvrt_output_contract.py",
+    "mandatory_for_all_node_outputs": true,
+    "predecessor_evidence_transfer": false,
+    "runtime_wiring_status": "OPEN_UNTIL_RUNTIME_CARRIER_PRESENT_AND_FRESHLY_VERIFIED"
+  },
+  "proof_bound_change_admission": {
+    "policy": "policy/QIKVRT_PROOF_BOUND_CHANGE_ADMISSION_V1.json",
+    "scope": "EVERY_CHANGE_AND_EVERY_NODE",
+    "validator": "tools/qikvrt_output_contract.py",
+    "source_check": "python3 -B tools/qikvrt_output_contract.py --proof-core-static",
+    "kernel_check": "python3 -B tools/qikvrt_output_contract.py --proof-core-kernel",
+    "absence_is_release": false,
+    "runtime_enforcement_status": "OPEN_UNTIL_QUALIFIED_EXACT_SUBJECT_REFINEMENT_AND_EACH_NODE_ACK_READBACK"
   }
 }

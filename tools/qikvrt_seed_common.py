@@ -643,6 +643,16 @@ def run_acceptance(
     now: dt.datetime | None = None,
     seed_repository: str = DEFAULT_SEED_REPOSITORY,
 ) -> dict[str, Any]:
+    # Recovery and persistence callers reuse this module's JSON primitives in
+    # sparse working copies. Load the complete proof/output closure only at
+    # the actual Node-receipt admission boundary; never skip its validation.
+    try:
+        from tools import qikvrt_mesh_node_receipt as mesh_node_receipt
+    except ModuleNotFoundError:
+        try:
+            import qikvrt_mesh_node_receipt as mesh_node_receipt
+        except ModuleNotFoundError as exc:
+            raise SeedError("NODE_PROOF_OUTPUT_CONTRACT_UNAVAILABLE") from exc
     now = now or _utc_now()
     run_id, utc = _run_metadata(run_id, now)
     nodes, policies = load_nodes(root, seed_repository)
@@ -657,7 +667,7 @@ def run_acceptance(
                 receipt_sha256 = None
                 if receipt_url is not None:
                     receipt = fetch(receipt_url)
-                    workflow_executor.validate_node_receipt(
+                    mesh_node_receipt.validate_bound_node_receipt(
                         receipt.value,
                         node.source_repository,
                         node.node_branch,
@@ -668,7 +678,7 @@ def run_acceptance(
                 )
             except SeedError as exc:
                 errors.append({"guid": node.guid, "error": str(exc)})
-            except workflow_executor.ExecutorBlock as exc:
+            except (workflow_executor.ExecutorBlock, mesh_node_receipt.NodeReceiptContractError) as exc:
                 errors.append({"guid": node.guid, "error": str(exc)})
         else:
             prepared.append((node, policy, policy.status, None, None, None))

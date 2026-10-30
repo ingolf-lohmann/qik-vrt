@@ -5,43 +5,7 @@ name: QIK-VRT manuscript proof coverage
 
 on:
   push:
-    paths:
-      - "formalization/QIKVRT_Formalization_v2.0/**"
-      - "tools/qikvrt_canonical_temporal_memory_kernel_evidence.py"
-      - "tools/qikvrt_causal_distance_kernel_evidence.py"
-      - "tests/test_causal_distance_kernel_evidence.py"
-      - "docs/publications/2026-10-24-causal-distance-temporal-memory/**"
-      - "tools/qikvrt_survival_connectability_kernel_evidence.py"
-      - "tests/test_survival_connectability_kernel_evidence_tool.py"
-      - "tests/test_survival_connectability_publication.py"
-      - "docs/publications/2026-07-30-canonical-temporal-memory-effect-ack/CLAIM_MATRIX.json"
-      - "docs/publications/2026-07-30-canonical-temporal-memory-effect-ack/KERNEL_PROOF_PLAN.json"
-      - "docs/publications/2026-07-31-survival-anschlussfaehigsten/**"
-      - "docs/publications/2026-08-02-causality-is-relation-vrtcore/**"
-      - "docs/publications/2026-08-02-vrtcore-smg-h5/**"
-      - "docs/publications/2026-08-02-vrtcore-virtual-sphere-h6/**"
-      - ".github/workflows/qikvrt_manuscript_proof.yml"
-      - "docs/HUMAN_MACHINE_PROGRESS_STANDARD.md"
-      - "schemas/human_machine_progress.schema.json"
   pull_request:
-    paths:
-      - "formalization/QIKVRT_Formalization_v2.0/**"
-      - "tools/qikvrt_canonical_temporal_memory_kernel_evidence.py"
-      - "tools/qikvrt_causal_distance_kernel_evidence.py"
-      - "tests/test_causal_distance_kernel_evidence.py"
-      - "docs/publications/2026-10-24-causal-distance-temporal-memory/**"
-      - "tools/qikvrt_survival_connectability_kernel_evidence.py"
-      - "tests/test_survival_connectability_kernel_evidence_tool.py"
-      - "tests/test_survival_connectability_publication.py"
-      - "docs/publications/2026-07-30-canonical-temporal-memory-effect-ack/CLAIM_MATRIX.json"
-      - "docs/publications/2026-07-30-canonical-temporal-memory-effect-ack/KERNEL_PROOF_PLAN.json"
-      - "docs/publications/2026-07-31-survival-anschlussfaehigsten/**"
-      - "docs/publications/2026-08-02-causality-is-relation-vrtcore/**"
-      - "docs/publications/2026-08-02-vrtcore-smg-h5/**"
-      - "docs/publications/2026-08-02-vrtcore-virtual-sphere-h6/**"
-      - ".github/workflows/qikvrt_manuscript_proof.yml"
-      - "docs/HUMAN_MACHINE_PROGRESS_STANDARD.md"
-      - "schemas/human_machine_progress.schema.json"
   workflow_dispatch:
 
 permissions:
@@ -57,6 +21,8 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.12"
@@ -127,6 +93,16 @@ jobs:
         run: |
           cat .lake/build/lean-build-diagnostics-tail.log
           exit 1
+      - name: Check append-only proof core and fresh model kernel
+        run: |
+          python3 ../../tools/qikvrt_output_contract.py --proof-core-kernel \
+            --receipt ../../.qikvrt/runtime/proof-admission/model-kernel.json
+      - name: Retain proof-core model receipt
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qikvrt-proof-core-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .qikvrt/runtime/proof-admission/model-kernel.json
+          if-no-files-found: error
       - name: Verify locked manuscript bytes and page count
         run: python3 scripts/verify_source_lock.py
       - name: Verify completed claim graph materialization

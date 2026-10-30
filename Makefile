@@ -114,7 +114,7 @@ seed:
 e2e:
 	$(PYTHON) tests/test_tcpip_e2e.py
 
-test: compile integrity effect-ack-core-test scientific-bundle-test adaptive-cognition-test anticipation-contract runtime-contract ai-runtime-contract interaction-archive-test release-automation evidence-contract-test workflow-executor-mesh-contract repository-terminal-test launcher conformance unit security license seed e2e
+test: proof-bound-change-contract compile integrity effect-ack-core-test scientific-bundle-test adaptive-cognition-test anticipation-contract runtime-contract ai-runtime-contract interaction-archive-test release-automation evidence-contract-test workflow-executor-mesh-contract repository-terminal-test launcher conformance unit security license seed e2e
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_integrity.py verify
 
 run-api:
@@ -303,3 +303,8 @@ native-archive-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_native_archive
 
 test: native-archive-test
+
+.PHONY: proof-bound-change-contract
+proof-bound-change-contract:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_output_contract.py --proof-core-static
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_universal_proof_thought_schema

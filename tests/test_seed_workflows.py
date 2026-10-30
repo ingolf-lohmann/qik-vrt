@@ -18,6 +18,7 @@ import unittest
 from pathlib import Path
 
 from tools import qikvrt_workflow_executor as workflow_executor
+from tools import qikvrt_mesh_node_receipt as mesh_node_receipt
 from tools.qikvrt_seed_common import (
     FetchedJson,
     MAX_INPUT_BYTES,
@@ -172,7 +173,7 @@ def remote_documents() -> dict[str, dict[str, object]]:
             "repository": SOURCE,
             "seed_repository": SEED,
         },
-        workflow_executor.expected_node_receipt_url(SOURCE, "main"): workflow_executor.build_node_receipt(
+        workflow_executor.expected_node_receipt_url(SOURCE, "main"): mesh_node_receipt.build_bound_node_receipt(
             SOURCE,
             "main",
         ),
@@ -591,6 +592,11 @@ class MirrorLifecycleGovernanceTests(unittest.TestCase):
             "tools/qikvrt_autonomous_self_heal.py",
             "tools/qikvrt_required_review_gate.py",
             "tools/qikvrt_seed_common.py",
+            "tools/qikvrt_mesh_node_receipt.py",
+            "tools/qikvrt_output_contract.py",
+            "policy/QIKVRT_UNIVERSAL_PROOF_THOUGHT_SCHEMA_V1.json",
+            "docs/QIKVRT_UNIVERSAL_PROOF_AND_THOUGHT_SCHEMA_DE.md",
+            "docs/ONTOLOGICAL_ORIGIN_OF_DIFFERENCE_DE.md",
             "tools/qikvrt_workflow_executor.py",
             "tools/qikvrt_subprocess.py",
             "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
