@@ -27,6 +27,31 @@ from tools.qikvrt_required_review_gate import project_governance, GOVERNANCE_STA
 
 
 class ExpectedHeadPromotionTests(unittest.TestCase):
+    def bound_snapshot(self):
+        value = self.snapshot()
+        value.update(repository="ingolf-lohmann/qik-vrt",
+                     expected_tree_sha="d" * 40, current_tree_sha="d" * 40)
+        value["review_observation"] = {
+            "pr": {"number": 459, "head": {"sha": "b" * 40,
+                    "repo": {"full_name": value["repository"]}},
+                    "base": {"sha": "a" * 40}, "user": {"login": "proposal-writer"}},
+            "rules": [{"type": "pull_request", "parameters": {
+                "required_approving_review_count": 1, "require_code_owner_review": True,
+                "dismiss_stale_reviews_on_push": True, "require_last_push_approval": True}}],
+            "reviews": [{"id": 7, "submitted_at": "2026-10-01T13:00:00Z",
+                "state": "APPROVED", "commit_id": "b" * 40,
+                "user": {"login": "Goldkelch"}}],
+        }
+        for index, run in enumerate(value["workflow_runs"], 1):
+            run.update(id=index, run_attempt=1, head_sha="b" * 40,
+                       repository={"full_name": value["repository"]}, event="pull_request",
+                       pull_requests=[{"number": 459}],
+                       jobs=[{"id": index, "run_id": index, "run_attempt": 1,
+                              "head_sha": "b" * 40, "status": "completed",
+                              "conclusion": "success", "steps": [{"number": 1,
+                              "status": "completed", "conclusion": "success"}]}])
+        return value
+
     def snapshot(self, **overrides):
         native_pr = {"number": 459, "head": {"sha": "b" * 40}, "base": {"sha": "a" * 40}, "user": {"login": "integration-author"}}
         rules = [{"type": "pull_request", "parameters": {"required_approving_review_count": 1, "require_code_owner_review": True, "dismiss_stale_reviews_on_push": True, "require_last_push_approval": True}}]
