@@ -1,0 +1,79 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0"
+  },
+  "change": {
+    "bundle_scope": "Candidate commits minus exact observed source and Main parents; no working-directory or credential capture",
+    "checkpoint_before_remote_publication": true,
+    "checkpoint_failure_stops_publication": true,
+    "new_trigger_or_timer": false,
+    "normal_job_failure_retains_upload_step": true,
+    "post_retry": false,
+    "ref_review_or_signature_guard_changed": false,
+    "reuse": "Existing continuation workflow and existing pinned upload-artifact action"
+  },
+  "effect_ack_done": false,
+  "existing_carrier": {
+    "pr": 595,
+    "predecessor_head": "3c26d9991a9447790ca8ece5b2ca3f16c43361ad",
+    "predecessor_tree": "749719d92438e72bddda90ece2f25cbceeb2eedd",
+    "repository": "ingolf-lohmann/qik-vrt"
+  },
+  "limits": [
+    "No full local make-test on this sparse source view.",
+    "New native exact-head CI remains a separate readback.",
+    "No Main integration, live endpoint, peer receipt or productive effect asserted.",
+    "Checkpoint recovery depends on the recorded parent objects and successful artifact upload; abrupt runner/provider loss is not covered."
+  ],
+  "native_failure": {
+    "artifact_inventory": {
+      "total_count": 0
+    },
+    "event": "schedule",
+    "job_id": 120987811363,
+    "log_utf8_sha256": "cf776c4a3157c0b38aa57ff063b57b41d71bb9207c433ce5213d9f930a73d586",
+    "observed_failure": "REST POST git/trees: 502; no automatic retry",
+    "original_local_work_recovered": false,
+    "prior_local_make_test": "COMPLETED_IN_ORIGINAL_NATIVE_LOG",
+    "run_id": 40132764034,
+    "selected_pr": 459,
+    "source_head": "080c05f1cba7b1638477da78613b87252ffe1a12"
+  },
+  "open_work": [
+    "Native exact-head validation and governed Main admission of this source repair",
+    "Original admitted native endpoint and pending Owner-message handoff",
+    "Protected signing/host/TLS/raumzeitterminal.de acceptance",
+    "Original Mirror emitter and authenticated peer application"
+  ],
+  "owner_instruction": {
+    "received_at": null,
+    "scope": "AUTONOMOUS_SELECTION_AND_COMPLETION_WITH_EXISTING_GRANTS_AND_GATES",
+    "text": "werde von nun an in ähnlichen Situationen den bekannten Optimierungsprinzipien folgend die autonome Wahl und die autonome Erreichung des nächsten optimalen Zieles und beginne ohne weitere Verzögerung Freigabe erteilt.",
+    "utf8_sha256": "0b4f9ef4a2e975217256b166f3a088f30c48d0dabe3c4bb89eda9adeeb5c28fe"
+  },
+  "principal": "Ingolf Lohmann",
+  "regression": {
+    "cases": [
+      "Recovery of exact commit/tree/binary bytes after original source directory removal",
+      "Shallow REST checkout recovery using retained exact parents",
+      "No untracked private input in Git bundle",
+      "Checkpoint failure blocks publication",
+      "Changed tracked bytes rejected",
+      "Existing failure cleanup uploads only the bounded checkpoint path"
+    ],
+    "log_sha256": "4577720377357d6bf8d23c1fb0372175ee67d0ed214dc4ac98c6517b2248e204",
+    "original_missing_checkpoint_rejected": true,
+    "result": "PASS_LOCAL_SOURCE_CONTROLS",
+    "suite": "tests.test_qikvrt_autonomous_pr_continuation",
+    "tests": 48
+  },
+  "schema": "qikvrt-continuation-checkpoint-retention-repair/v1",
+  "selected_goal": "Preserve the exact tested local continuation successor before its first remote publication attempt.",
+  "selection_basis": {
+    "endpoint_and_Main_governance_gates_remain_open": true,
+    "performance_optimization_started": false,
+    "rule": "SMALLEST_EVIDENCED_EXECUTABLE_COMPLETION_STEP"
+  },
+  "work_unit": "QIKVRT_CONTINUATION_CHECKPOINT_RETENTION_20261025_V1"
+}

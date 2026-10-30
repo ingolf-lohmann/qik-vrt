@@ -88,6 +88,168 @@ sys.modules[SPEC.name] = MODULE
 SPEC.loader.exec_module(MODULE)
 
 
+class ProtectedHostCompletionFeedbackTests(unittest.TestCase):
+    """Keep successful source tests and the actual host-input failure separate."""
+
+    def setUp(self):
+        self.run = {"id": 51, "head_sha": "a" * 40, "head_branch": "main",
+            "path": MODULE.AMO_CI_WORKFLOW, "repository": {"full_name": MODULE.AMO_REPOSITORY},
+            "head_repository": {"full_name": MODULE.AMO_REPOSITORY}, "status": "completed",
+            "conclusion": "failure", "event": "push", "run_attempt": 1}
+        self.tested = {"schema": "qikvrt-ci-tested-subject/v1", "repository": MODULE.AMO_REPOSITORY,
+            "run_id": 51, "run_attempt": 1, "head_sha": "a" * 40, "tree_sha": "b" * 40}
+        self.jobs = [{"id": 1, "name": "test", "status": "completed", "conclusion": "success"},
+            {"id": 2, "name": "Original Linux host identity and admitted deployment via mutual TLS REST",
+             "status": "completed", "conclusion": "failure"}]
+        self.bindings = ("QIKVRT_HOST_BINDING", "QIKVRT_HOST_BINDING_SHA256", "QIKVRT_HOST_CA",
+                         "QIKVRT_HOST_CERT", "QIKVRT_HOST_KEY")
+        self.delivery = {"schema": "qikvrt-protected-host-input-delivery/v1",
+            "repository": MODULE.AMO_REPOSITORY, "environment": "qikvrt-production",
+            "scope": "JOB_INPUT_PRESENCE_ONLY", "source_head": "a" * 40, "source_tree": "b" * 40,
+            "bindings": dict.fromkeys(self.bindings, False), "state": "HOLD_PROTECTED_INPUT_DELIVERY",
+            "job_credential_delivery_verified": False, "host_identity_verified": False,
+            "effect_ack_done": False}
+
+    def feedback(self, *, delivery="default", tested="default", error=None):
+        context = {"event": "workflow_run", "repository": MODULE.AMO_REPOSITORY,
+            "ref": "refs/heads/main",
+            "workflow_ref": MODULE.AMO_REPOSITORY + "/" + MODULE.AMO_NATIVE_WORKFLOW + "@refs/heads/main"}
+        event = {"action": "completed", "repository": {"full_name": MODULE.AMO_REPOSITORY},
+                 "workflow_run": self.run}
+        def get(root, endpoint, **kwargs):
+            self.assertTrue(endpoint.startswith("repos/" + MODULE.AMO_REPOSITORY + "/"))
+            if endpoint.endswith("/runs/51"): return self.run
+            if endpoint.endswith("/runs/51/jobs?per_page=100"):
+                return {"total_count": len(self.jobs), "jobs": self.jobs}
+            if endpoint.endswith("/logs"): return b""
+            self.fail("unexpected request: " + endpoint)
+        def artifact(root, run_id, name, allowed):
+            self.assertEqual(run_id, 51)
+            if name == "qikvrt-ci-tested-subject-51-1":
+                value = self.tested if tested == "default" else tested
+                return None if value is None else {"TESTED_SUBJECT.json": json.dumps(value).encode()}
+            self.assertEqual(name, "qikvrt-s1-host-start-" + "a" * 40)
+            if error is not None: raise error
+            value = self.delivery if delivery == "default" else delivery
+            return None if value is None else {"host-material-delivery.json":
+                value if isinstance(value, bytes) else json.dumps(value).encode()}
+        with tempfile.TemporaryDirectory() as temp:
+            path = pathlib.Path(temp) / "event.json"; path.write_text(json.dumps(event))
+            with mock.patch.dict(os.environ, {"GITHUB_EVENT_PATH": str(path)}), \
+                    mock.patch.object(MODULE, "amo_context", return_value=context), \
+                    mock.patch.object(MODULE, "_amo_get", side_effect=get), \
+                    mock.patch.object(MODULE, "amo_artifact", side_effect=artifact) as read:
+                value = MODULE.github_completion_feedback()
+        return value, read
+
+    def test_failed_host_run_preserves_successful_tests_without_accepting_whole_ci(self):
+        value, read = self.feedback()
+        graph = value["continuation_graph"]
+        self.assertTrue(graph["source_tests_verified"])
+        self.assertEqual(graph["tested_subject"], self.tested)
+        self.assertFalse(graph["ci_verified"])
+        self.assertEqual(value["conclusion"], "failure")
+        host = value["protected_host_handoff"]
+        self.assertEqual(host["state"], "HOLD_PROTECTED_INPUT_DELIVERY")
+        self.assertTrue(host["target_failure_detected"])
+        self.assertEqual(host["missing_bindings"], sorted(self.bindings))
+        self.assertEqual(host["run_id"], 51)
+        self.assertEqual(host["run_attempt"], 1)
+        self.assertEqual(host["job_id"], 2)
+        self.assertEqual(host["source_head"], self.tested["head_sha"])
+        self.assertEqual(host["source_tree"], self.tested["tree_sha"])
+        self.assertEqual(host["scope"], "JOB_INPUT_PRESENCE_ONLY")
+        self.assertFalse(host["job_credential_delivery_verified"])
+        self.assertFalse(host["host_identity_verified"])
+        self.assertFalse(host["effect_ack_done"])
+        self.assertFalse(host["retry_original_failed_job"])
+        action = host["next_required_readback"]
+        self.assertEqual(action["method"], "GET")
+        self.assertEqual(action["operation"], "productionEnvironmentReadback")
+        self.assertEqual(action["path"], "/repos/ingolf-lohmann/qik-vrt/qikvrt/production-environment")
+        self.assertEqual(action["route"], "ORIGINAL_NATIVE_SSO_REST")
+        self.assertEqual(action["query"], {"schema": "qikvrt-production-environment-rest/v1",
+                                          "request_id": "host-input-51-1"})
+        self.assertEqual(read.call_count, 2)
+
+    def test_positive_presence_is_scoped_and_never_inferred_host_acceptance(self):
+        delivery = dict(self.delivery, bindings=dict.fromkeys(self.bindings, True),
+                        state="PROTECTED_INPUTS_PRESENT")
+        value, _ = self.feedback(delivery=delivery)
+        host = value["protected_host_handoff"]
+        self.assertEqual(host["state"], "PROTECTED_INPUTS_PRESENT")
+        self.assertFalse(host["target_failure_detected"])
+        self.assertEqual(host["missing_bindings"], [])
+        self.assertNotIn("next_required_readback", host)
+        self.assertFalse(host["host_identity_verified"])
+        self.assertFalse(value["continuation_graph"]["ci_verified"])
+
+    def test_missing_invalid_replayed_or_private_receipt_is_unverified(self):
+        cases = [None, b"not-json", dict(self.delivery, source_head="c" * 40),
+            dict(self.delivery, source_tree="c" * 40), dict(self.delivery, environment="foreign"),
+            dict(self.delivery, repository="foreign/repo"), dict(self.delivery, scope="GLOBAL_ABSENCE"),
+            dict(self.delivery, schema="foreign/v1"), dict(self.delivery, host_identity_verified=True),
+            dict(self.delivery, bindings={**self.delivery["bindings"], self.bindings[0]: 0}),
+            dict(self.delivery, bindings={self.bindings[0]: False}),
+            dict(self.delivery, state="PROTECTED_INPUTS_PRESENT"),
+            dict(self.delivery, key="PRIVATE_VALUE_MUST_NOT_BE_FORWARDED")]
+        for delivery in cases:
+            with self.subTest(delivery=delivery):
+                value, _ = self.feedback(delivery=delivery)
+                host = value["protected_host_handoff"]
+                self.assertEqual(host["state"], "UNVERIFIED")
+                self.assertFalse(host["target_failure_detected"])
+                self.assertNotIn("missing_bindings", host)
+                self.assertNotIn("next_required_readback", host)
+                self.assertNotIn("PRIVATE_VALUE", json.dumps(value))
+                self.assertEqual(value["conclusion"], "failure")
+
+    def test_unavailable_artifact_and_failed_checker_retain_original_failure(self):
+        for error in (MODULE.ExecutorBlock("AMO_GITHUB_GET_DENIED_403"),
+                      RuntimeError("PRIVATE_CHECKER_ERROR")):
+            with self.subTest(error=type(error).__name__):
+                value, _ = self.feedback(error=error)
+                self.assertEqual(value["protected_host_handoff"]["state"], "UNVERIFIED")
+                self.assertTrue(value["continuation_graph"]["source_tests_verified"])
+                self.assertEqual(value["conclusion"], "failure")
+                self.assertNotIn("PRIVATE_CHECKER_ERROR", json.dumps(value))
+
+    def test_failed_root_test_does_not_read_or_reuse_tested_subject(self):
+        self.jobs[0]["conclusion"] = "failure"
+        value, read = self.feedback()
+        self.assertFalse(value["continuation_graph"]["source_tests_verified"])
+        self.assertIsNone(value["continuation_graph"]["tested_subject"])
+        self.assertEqual(value["protected_host_handoff"]["state"], "UNVERIFIED")
+        self.assertEqual(read.call_count, 0)
+
+    def test_missing_or_wrong_attempt_subject_cannot_accept_host_evidence(self):
+        for tested in (None, dict(self.tested, run_id=50), dict(self.tested, run_attempt=2),
+                       dict(self.tested, repository="foreign/repo"), dict(self.tested, tree_sha="bad")):
+            with self.subTest(tested=tested):
+                value, read = self.feedback(tested=tested)
+                self.assertFalse(value["continuation_graph"]["source_tests_verified"])
+                self.assertEqual(value["protected_host_handoff"]["state"], "UNVERIFIED")
+                self.assertEqual(read.call_count, 1)
+
+    def test_ambiguous_host_jobs_and_foreign_branch_remain_unverified(self):
+        for changed in ("duplicate", "foreign-branch"):
+            with self.subTest(changed=changed):
+                original_jobs, original_branch = copy.deepcopy(self.jobs), self.run["head_branch"]
+                if changed == "duplicate": self.jobs.append(dict(self.jobs[-1], id=3))
+                else: self.run["head_branch"] = "foreign"
+                value, read = self.feedback()
+                self.assertEqual(value["protected_host_handoff"]["state"], "UNVERIFIED")
+                self.assertEqual(read.call_count, 1)
+                self.jobs, self.run["head_branch"] = original_jobs, original_branch
+
+    def test_skipped_host_gate_never_requests_protected_restore(self):
+        self.jobs[-1]["conclusion"] = "skipped"
+        value, read = self.feedback()
+        self.assertEqual(value["protected_host_handoff"]["state"], "NOT_EXECUTED")
+        self.assertNotIn("next_required_readback", value["protected_host_handoff"])
+        self.assertEqual(read.call_count, 1)
+
+
 def active_role_policy() -> dict:
     return json.loads((ROOT / MODULE.ROLE_POLICY_PATH).read_text(encoding="utf-8"))
 
