@@ -160,6 +160,25 @@ class IntegrityGenerationTests(unittest.TestCase):
                     integrity.generate(root)
 
 
+    def test_stale_transfer_temporary_blocks_generation(self) -> None:
+        # Regression: PR #554 HEAD dbdfdc3a inventoried two interrupted
+        # ".<archive>.zip.XXXXXX" files that were absent from its Git tree.
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            self._repository(root)
+            for name in (".tracked.txt.coJQO1", ".tracked.txt.a1B2c3d4"):
+                stale = root / "nested" / name
+                stale.write_bytes(b"partial transfer")
+                with self.subTest(name=name):
+                    with self.assertRaisesRegex(ValueError, "STALE_TRANSFER_TEMPORARY: .*nested/" + name.replace(".", r"\.")):
+                        integrity.generate(root)
+                stale.unlink()
+            # A deliberate dot-file without the matching sibling stays a source.
+            (root / "nested" / ".deliberate.coJQO1").write_text("kept\n", encoding="utf-8")
+            self.assertTrue(integrity.generate(root).ok)
+            manifest = json.loads((root / integrity.MANIFEST_NAME).read_text(encoding="utf-8"))
+            self.assertIn("nested/.deliberate.coJQO1", {entry["path"] for entry in manifest["files"]})
+
     def test_streaming_digest_matches_exact_bytes_at_block_boundaries(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = pathlib.Path(directory)
