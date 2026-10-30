@@ -1,0 +1,67 @@
+{
+  "schema": "qikvrt_storage_integrity_test_results_v1",
+  "local_source_base": "630fe6a2db8b202fd8483a3ed5d9d13112839d46",
+  "integration_base": "6fc9c45a272fb661f09bf5547e63e70e42d45271",
+  "combined_source_content": "All 27 PR643 non-integrity text blobs independently matched original Git blob hashes; integrity regenerated.",
+  "full_suite": {
+    "command": "make --trace test",
+    "exit_code": 0,
+    "final_integrity": "PASS 5343 entries / 5332 immutable digests; subsequent evidence additions require regeneration",
+    "logs": [
+      {
+        "path": "docs/publications/2026-10-30-storage-integrity-and-effect-ack/FULL_TEST_STDOUT.txt",
+        "bytes": 26407,
+        "sha256": "e628417dcce9a3c0632364af0e140c435549e7779bf9ad297dbf21f4c3604394"
+      },
+      {
+        "path": "docs/publications/2026-10-30-storage-integrity-and-effect-ack/FULL_TEST_STDERR.txt",
+        "bytes": 358151,
+        "sha256": "010ce50427180a1277d7cf6bbc36295aee87000bf603dbb4c134cfcbc7f8dc31"
+      }
+    ],
+    "retained_summary_test_count": 1885,
+    "aggregate_count_completeness": "NOT_ESTABLISHED_FROM_SPLIT_STREAM_LOGS"
+  },
+  "focused_codec": {
+    "command": "python3 -B -m unittest -v tests.test_qikvrt_codec tests.test_qikvrt_standpoint_codex",
+    "exit_code": 0,
+    "tests": 69,
+    "new_rights_tests": 12,
+    "individual_signature_bit_flips": 6400,
+    "log": {
+      "path": "docs/publications/2026-10-30-storage-integrity-and-effect-ack/FOCUSED_TESTS.txt",
+      "bytes": 11710,
+      "sha256": "c1c9cc871a770c6e2e2aedf440c12af6c6f59756b1e72b493bea0b68658c78cb"
+    }
+  },
+  "source_bindings": [
+    {
+      "path": "src/qikvrt_standpoint_codex.py",
+      "bytes": 24318,
+      "sha256": "f1f908db511e4ad317898b88d2b7159ca739d57f3063d9f47a037a3b9a77e9cc"
+    },
+    {
+      "path": "src/qikvrt_codec.py",
+      "bytes": 26868,
+      "sha256": "dbd30729233c993c9c61bd3462cc21735bf6ffec5d8f7573f705b310a1c428d5"
+    },
+    {
+      "path": "tests/test_qikvrt_standpoint_codex.py",
+      "bytes": 26396,
+      "sha256": "fffd45b325cd90ac584a67877fdcb454b6d14ff9abb46d61d13b50c4354fb026"
+    },
+    {
+      "path": "tests/test_native_archive.py",
+      "bytes": 14661,
+      "sha256": "3c9f0883629ae9b04a55a788d5a2bfe9c03ff4164b1986c42b2ef85d5365872a"
+    }
+  ],
+  "kernel": {
+    "theorems": 22,
+    "axioms": [],
+    "negative_controls": 3,
+    "receipt": "LOCAL_KERNEL_RECEIPT.json"
+  },
+  "hosted_ci": "REQUIRES_EXACT_HEAD_INDEPENDENT_READBACK",
+  "effect_ack_done": false
+}
