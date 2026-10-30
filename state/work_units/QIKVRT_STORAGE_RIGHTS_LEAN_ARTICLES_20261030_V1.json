@@ -81,5 +81,28 @@
     }
   ],
   "effect_ack_done": false,
-  "zenodo_or_ietf_publication_performed": false
+  "zenodo_or_ietf_publication_performed": false,
+  "native_predecessor_evidence": {
+    "head": "3abf28c25e782ac4c278e9fbce2dd037af946acd",
+    "tree": "8407c49e854ef4b27b54d37c3af954de3a70d14b",
+    "workflow_run": 41055165073,
+    "artifact_id": 12977005086,
+    "artifact_sha256": "76809f752f99e141233a47e5f40529dfebd76d0ecf13e73552ed0621e891a88c",
+    "kernel_theorems": 22,
+    "axioms": [],
+    "negative_controls": 3,
+    "receipt": "docs/publications/2026-10-30-storage-integrity-and-effect-ack/NATIVE_KERNEL_RECEIPT_PREDECESSOR.json",
+    "successor_head_requires_new_ci": true
+  },
+  "ci_repair": {
+    "failed_run": 41055250522,
+    "failed_job": 124061032544,
+    "cause": "Manuscript project-wide proof audit imports StorageIntegrityAxiomAudit before the additive StorageIntegrity module was built.",
+    "repair": "Build QIKVRTEffectAck.StorageIntegrity explicitly before the existing proof-escape audit; preserve pinned older root imports, lakefile and proof references.",
+    "local_release_and_source_binding_regressions": {
+      "tests": 13,
+      "exit_code": 0
+    },
+    "no_gate_skipped": true
+  }
 }
