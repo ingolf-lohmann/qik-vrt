@@ -1,0 +1,86 @@
+{
+  "schema": "qikvrt_storage_integrity_kernel_receipt_v1",
+  "scope": "ABSTRACT_MODEL_NOT_PYTHON_OR_HARDWARE_VERIFICATION",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "head": "3abf28c25e782ac4c278e9fbce2dd037af946acd",
+  "tree": "8407c49e854ef4b27b54d37c3af954de3a70d14b",
+  "run_id": "41055165073",
+  "run_attempt": "1",
+  "toolchain": "Lean (version 4.19.0, x86_64-unknown-linux-gnu, commit 6caaee842e94, Release)",
+  "bindings": [
+    {
+      "path": "QIKVRTEffectAck/StorageIntegrity.lean",
+      "bytes": 7297,
+      "sha256": "456ba4f7c5f0ea9f960eb547b66de8630436af6678e400d92b350a77648e11e6"
+    },
+    {
+      "path": "QIKVRTEffectAck/StorageIntegrityAxiomAudit.lean",
+      "bytes": 1672,
+      "sha256": "ed31f5a2a5c66138c3c03fc998a3a77f4f218f29ccdd269abb0cd500b9c55786"
+    },
+    {
+      "path": ".lake/build/storage-integrity-axioms.txt",
+      "bytes": 1936,
+      "sha256": "871e61af9d267d8779bd03a895f1711d46c645fbce43c6d0e009a702dc1d9c66"
+    },
+    {
+      "path": ".lake/build/lib/lean/QIKVRTEffectAck/StorageIntegrity.olean",
+      "bytes": 356344,
+      "sha256": "67b58844716d34fbf2a7582b27f7f0cc5fe80b830f0c5d18c0b30ab684dd93af"
+    }
+  ],
+  "theorem_axioms": {
+    "QIKVRT.StorageIntegrity.V1.valid_requires_rights": [],
+    "QIKVRT.StorageIntegrity.V1.valid_requires_signature": [],
+    "QIKVRT.StorageIntegrity.V1.single_bit_changes_bits": [],
+    "QIKVRT.StorageIntegrity.V1.single_signature_bit_rejected": [],
+    "QIKVRT.StorageIntegrity.V1.single_rights_bit_rejected": [],
+    "QIKVRT.StorageIntegrity.V1.removed_nonempty_signature_rejected": [],
+    "QIKVRT.StorageIntegrity.V1.removed_nonempty_rights_rejected": [],
+    "QIKVRT.StorageIntegrity.V1.payload_independent_notice_check": [],
+    "QIKVRT.StorageIntegrity.V1.public_notice_does_not_authenticate_payload": [],
+    "QIKVRT.StorageIntegrity.V1.changed_subject_rejected": [],
+    "QIKVRT.StorageIntegrity.V1.missing_checker_is_unverified": [],
+    "QIKVRT.StorageIntegrity.V1.mismatch_is_rejected": [],
+    "QIKVRT.StorageIntegrity.V1.stopped_checker_cannot_signal": [],
+    "QIKVRT.StorageIntegrity.V1.missing_channel_cannot_signal": [],
+    "QIKVRT.StorageIntegrity.V1.live_detection_signals": [],
+    "QIKVRT.StorageIntegrity.V1.lossless_reconstruction": [],
+    "QIKVRT.StorageIntegrity.V1.canonical_reencoding": [],
+    "QIKVRT.StorageIntegrity.V1.codec_is_injective": [],
+    "QIKVRT.StorageIntegrity.V1.adaptation_preserves_checked_property": [],
+    "QIKVRT.StorageIntegrity.V1.every_finite_verified_adaptation_preserves": [],
+    "QIKVRT.StorageIntegrity.V1.no_lossless_boolean_storage_in_unit": [],
+    "QIKVRT.StorageIntegrity.V1.accepted_example_exists": []
+  },
+  "negative_controls": [
+    {
+      "source": {
+        "path": "../../docs/publications/2026-10-30-storage-integrity-and-effect-ack/negative/FalseChangedSignatureValid.lean",
+        "bytes": 309,
+        "sha256": "1ccb15e8e7d4912422d00b08b8b3dc474d7462a301dbea019ace36732b9c289c"
+      },
+      "exit_code": 1,
+      "diagnostic_sha256": "e26dbfce3ecda3281a87a22fbe0ad241f8174cde5f65355d3aba3bc7a6039bdc"
+    },
+    {
+      "source": {
+        "path": "../../docs/publications/2026-10-30-storage-integrity-and-effect-ack/negative/FalsePublicNoticeAuthenticatesPayload.lean",
+        "bytes": 283,
+        "sha256": "faf825f66e914a730deddfd46871ef592dd8dc5cc36e10266585215f47bb0166"
+      },
+      "exit_code": 1,
+      "diagnostic_sha256": "07ccc2e0c3d2ede71e88607457efe1f2f24c086c5893e2e3fd7e89e5baaff828"
+    },
+    {
+      "source": {
+        "path": "../../docs/publications/2026-10-30-storage-integrity-and-effect-ack/negative/FalseStoppedSignal.lean",
+        "bytes": 216,
+        "sha256": "40a7f352323d2d7400818b9108f0e8d2b1553405d73b94c831f07c386616f83b"
+      },
+      "exit_code": 1,
+      "diagnostic_sha256": "2375f643f88c474248ccdfeab8068e4beec8f879a2b3441f61ac5de326e0c15f"
+    }
+  ],
+  "effect_ack_done": false
+}

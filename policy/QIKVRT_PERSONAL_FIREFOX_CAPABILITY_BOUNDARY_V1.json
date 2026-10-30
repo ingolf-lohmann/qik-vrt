@@ -33,7 +33,9 @@
     "personal_credential_leak_to_repository": "DENY",
     "personal_evidence_transfer_to_standard": "DENY",
     "chatgpt_runtime_integration": "AUTHENTICATED_EXTERNAL_SERVICE",
-    "chatgpt_proprietary_runtime_redistribution": "DENY"
+    "chatgpt_proprietary_runtime_redistribution": "DENY",
+    "qikvrt_codex_runtime": "LOCAL_DETERMINISTIC",
+    "external_service_required_for_codex": false
   },
   "standard_firefox_package": {
     "root": "browser/firefox/qikvrt-terminal",
@@ -77,5 +79,6 @@
       "personal_release_effect_ack_done": false,
       "state": "HOLD"
     }
-  }
+  },
+  "standpoint_codex": "policy/QIKVRT_STANDPOINT_CODEX_V1.json"
 }
