@@ -45,6 +45,18 @@ own technical status. This decision does not qualify them, admit an unavailable
 Draft transition or prove an unattended executor. Merge acceptance is separate
 from runtime, host, domain and productive EFFECT_ACK_DONE acceptance.
 
+OWNER MERGE PRIORITY — 2026-10-30
+
+Ingolf Lohmann confirms the 2026-10-28 conditional merge rule unchanged and sets
+a preference for what to merge next: first changes that make the continuous
+integration build chain faster, and changes that remove a blocker on the way to
+publication, first on Zenodo and then on https://raumzeitterminal.de/. Read
+policy/QIKVRT_MERGE_PRIORITY_V1.json. It orders work only: it admits no merge,
+relaxes no gate, excludes no pull request and authorizes no Zenodo mutation or
+deployment. Name such branches ci/, perf/, build/, publication/, release/,
+zenodo/, production/, deploy/, domain/ or host/ so the closure engine
+(tools/qikvrt_pr_closure_engine.py) scans them first.
+
 OWNER DECISIONS BEFORE TOOL SELECTION — ALL CLIENTS — 2026-10-26
 
 Read policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json client_continuation.tool_selection
@@ -530,3 +542,13 @@ all unresolved duties. Do not close unresolved work or infer branch-deletion
 authority merely to satisfy this condition. The existing exact-head test, review,
 conditional-merge and separate host/domain acceptance boundaries still apply.
 Saving this rule proves neither runtime enforcement nor adoption by other clients.
+
+OWNER PERFORMANCE PHASE — 2026-10-30
+
+The later Owner instruction in policy/QIKVRT_MERGE_PRIORITY_V1.json gives
+CI_BUILD_CHAIN_PERFORMANCE the highest temporary ordering priority. Preserve
+original obligations. Measure comparable full-suite wall time with at least five
+paired runs, separate cold/warm caches and unchanged unique test coverage.
+Tenfold speedup is a target, not an observed result. Review improvement after
+each accepted candidate before resuming original work. Existing admission,
+blocking repairs, tests and merge protections remain binding.

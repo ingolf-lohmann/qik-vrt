@@ -46,6 +46,74 @@ class ClosureBlock(ValueError):
     """Raised for invalid policy or repository observations."""
 
 
+MERGE_PRIORITY_PATH = pathlib.Path(__file__).resolve().parents[1] / "policy/QIKVRT_MERGE_PRIORITY_V1.json"
+
+
+def load_merge_priority(path: pathlib.Path = MERGE_PRIORITY_PATH) -> dict[str, Any] | None:
+    """Owner merge-priority order (2026-10-30). Order only: never a gate.
+
+    An absent file keeps the historical created_at order; a present but
+    invalid file fails closed instead of silently reordering.
+    Contribution: Claude (Anthropic), QIK-VRT Mirror node.
+    """
+    if not path.exists():
+        return None
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+        raise ClosureBlock("MERGE_PRIORITY_POLICY_UNREADABLE") from exc
+    decision = value.get("owner_decision") if isinstance(value, Mapping) else None
+    classes = value.get("priority_classes") if isinstance(value, Mapping) else None
+    boundaries = value.get("boundaries") if isinstance(value, Mapping) else None
+    if (value.get("schema") != "qikvrt_merge_priority_policy_v1" or value.get("status") != "ACTIVE"
+            or value.get("scope") != "ORDER_ONLY" or value.get("gates_unchanged") is not True
+            or not isinstance(decision, Mapping) or not isinstance(decision.get("text"), str)
+            or hashlib.sha256(decision["text"].encode("utf-8")).hexdigest() != decision.get("sha256")
+            or not isinstance(boundaries, Mapping) or any(v is not False for v in boundaries.values())
+            or not isinstance(classes, list) or not classes):
+        raise ClosureBlock("MERGE_PRIORITY_POLICY_INVALID")
+    prefixes = []
+    for item in classes:
+        refs = item.get("head_ref_prefixes") if isinstance(item, Mapping) else None
+        if (not isinstance(item.get("id"), str) or not isinstance(refs, list) or not refs
+                or not all(isinstance(r, str) and r.endswith("/") and len(r) > 1 for r in refs)):
+            raise ClosureBlock("MERGE_PRIORITY_POLICY_INVALID")
+        prefixes.append((item["id"], tuple(refs)))
+    phase = value.get("performance_phase")
+    highest = None
+    if phase is not None:
+        instruction = phase.get("owner_instruction", {}) if isinstance(phase, Mapping) else {}
+        if (not isinstance(phase, Mapping) or phase.get("status") not in ("ACTIVE", "COMPLETE")
+                or phase.get("highest_priority_class") != "CI_BUILD_CHAIN_PERFORMANCE"
+                or not isinstance(instruction.get("text"), str)
+                or hashlib.sha256(instruction["text"].encode("utf-8")).hexdigest() != instruction.get("sha256")):
+            raise ClosureBlock("MERGE_PRIORITY_PHASE_INVALID")
+        if phase["status"] == "ACTIVE":
+            highest = phase["highest_priority_class"]
+    return {"classes": prefixes, "highest": highest}
+
+
+def merge_priority_class(summary: Mapping[str, Any], priority: Mapping[str, Any] | None) -> str | None:
+    ref = summary.get("head_ref")
+    if priority is None or not isinstance(ref, str):
+        return None
+    for class_id, prefixes in priority["classes"]:
+        if ref.startswith(prefixes):
+            return class_id
+    return None
+
+
+def prioritized_pull_requests(rows: Sequence[Mapping[str, Any]],
+                              priority: Mapping[str, Any] | None) -> list[Mapping[str, Any]]:
+    """Stable: priority classes first, then all others; each keeps inventory order."""
+    def rank(row):
+        classification = merge_priority_class(row, priority)
+        if priority and priority.get("highest") and classification == priority["highest"]:
+            return 0
+        return 1 if classification is not None else 2
+    return sorted(rows, key=rank)
+
+
 def _sha(value: Any, label: str) -> str:
     if not isinstance(value, str) or len(value) != 40 or any(c not in "0123456789abcdef" for c in value):
         raise ClosureBlock(f"{label} is not a lowercase Git SHA-1")
@@ -481,7 +549,9 @@ class GitHubAPI:
 def select_step(api: GitHubAPI, inventory: Mapping[str, Any], config: Mapping[str, Any],
                 capability: Mapping[str, Any]) -> dict[str, Any]:
     scanned = []
-    for summary in inventory["pull_requests"]:
+    priority = load_merge_priority()
+    ordered = prioritized_pull_requests(inventory["pull_requests"], priority)
+    for summary in ordered:
         pr, observed = api.inspect(summary["number"], inventory["main_sha"])
         if pr["head"]["sha"] != summary["head_sha"] or pr.get("state") != "open":
             raise ClosureBlock("INVENTORY_PR_DRIFT")
@@ -529,10 +599,12 @@ def select_step(api: GitHubAPI, inventory: Mapping[str, Any], config: Mapping[st
             else:
                 decision.update(main_sha=inventory["main_sha"], promotion_mode="NATIVE_PR_MERGE")
                 return {"selected_action": decision, "scanned": scanned + [decision],
-                        "selected_observation_sha256": digest({"pr": pr, "observed": observed})}
+                        "selected_observation_sha256": digest({"pr": pr, "observed": observed}),
+                        "priority_order": [row["number"] for row in ordered]}
         scanned.append(decision)
     return {"selected_action": None, "scanned": scanned,
-            "first_blocker": scanned[0] if scanned else {"action": "NO_ADMITTED_PR_EFFECT"}}
+            "first_blocker": scanned[0] if scanned else {"action": "NO_ADMITTED_PR_EFFECT"},
+            "priority_order": [row["number"] for row in ordered]}
 
 
 def latest_statuses(statuses: Sequence[Mapping[str, Any]]) -> list[Mapping[str, Any]]:
