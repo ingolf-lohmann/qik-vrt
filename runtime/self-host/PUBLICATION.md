@@ -1,6 +1,39 @@
 <!-- SPDX-License-Identifier: CC-BY-NC-ND-4.0 -->
 # Exact publication continuation through the existing terminal host
 
+## Existing native REST ingress
+
+The existing GitHub-shaped listener also exposes
+`/repos/ingolf-lohmann/qik-vrt/qikvrt/publication`. Set
+`QIKVRT_PUBLICATION_REST_ENABLED=1` on that original loopback listener and reuse
+its registered OIDC profile, OS Secret Service store and writer fence. The
+operator binds `QIKVRT_PUBLICATION_REQUEST` and
+`QIKVRT_PUBLICATION_REQUEST_SHA256` to the same existing private request accepted
+by `publication-check` and `publication-resume`. These select original files;
+they contain no credential values and do not provision missing source material.
+
+GET accepts `schema=qikvrt-publication-rest/v1` and `request_id`. It runs original
+source/reference admission without reading provider secret values or invoking
+the publisher. It returns the source and private-request pins for the bound POST.
+POST accepts only those pins, its stable request ID and `effect_accepted=true`;
+the same-origin native SSO guard and exact v2 candidate authorization remain
+mandatory. The original launcher obtains credentials through its protected
+registry and files. The browser's GitHub login is not a publication credential.
+No token is copied into a Site, request body, source, or another vault.
+
+The original launcher reobserves real Authority Main HEAD/TREE through its
+existing Git-Data REST transport immediately before starting the publisher.
+This bounded fresh observation is not an atomic Main lease. Its native OS store
+records intent before invocation. An uncertain response or duplicate candidate
+permits only GET readback; changing request IDs, clocks or source pins cannot
+repeat the invocation. Preserve original publisher receipts and consumption
+refs. Any required provider reconciliation continues through the original
+publisher recovery path; never delete the native intent to force a retry.
+
+This source integration does not establish a running listener, a live SSO
+session, an available private request, credential delivery, a public Zenodo
+record or node acceptance. Each still needs its own actual readback.
+
 Product Owner Ingolf Lohmann authorized closing this integration gap on
 5 October 2026. Using QIK-VRT's own existing Terminal, Transputer and Mesh
 functions for legitimate recovery is a permanent product acceptance criterion.

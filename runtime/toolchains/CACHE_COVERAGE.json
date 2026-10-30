@@ -8,9 +8,27 @@
     },
     {
       "cache_class": "runner-image-layer",
+      "component": "bash",
+      "provider": "Existing GitHub ubuntu-24.04 x64 runner packages; behavioral contract, no source redistribution or package installation",
+      "version": "bash-euo-pipefail-v1"
+    },
+    {
+      "cache_class": "runner-image-layer",
       "component": "cc",
       "provider": "pinned GitHub-hosted runner image",
       "version": "ansi-c90"
+    },
+    {
+      "cache_class": "runner-image-layer",
+      "component": "coreutils",
+      "provider": "Existing GitHub ubuntu-24.04 x64 runner packages; behavioral contract, no source redistribution or package installation",
+      "version": "sha256-staging-v1"
+    },
+    {
+      "cache_class": "runner-image-layer",
+      "component": "curl",
+      "provider": "Existing GitHub ubuntu-24.04 x64 runner packages; behavioral contract, no source redistribution or package installation",
+      "version": "bounded-https-get-v1"
     },
     {
       "cache_class": "build-cache",
@@ -55,6 +73,12 @@
       "version": "read-only-object-export"
     },
     {
+      "cache_class": "ecosystem-cache",
+      "component": "github-environment-crypto",
+      "provider": "Official Python Cryptographic Authority PyNaCl PyPI distribution; existing optional private SSO runtime only",
+      "version": "PyNaCl1.6.2"
+    },
+    {
       "cache_class": "runner-image-layer",
       "component": "gpg",
       "provider": "Debian Bookworm gnupg package; fixed public Mozilla APT key, no private keys",
@@ -63,7 +87,7 @@
     {
       "cache_class": "build-cache",
       "component": "lean",
-      "provider": "leanprover/lean-action+actions/cache",
+      "provider": "official leanprover/lean4 release+actions/cache; leanprover/lean-action for other formal lanes",
       "version": "4.19.0"
     },
     {
@@ -164,9 +188,21 @@
     },
     {
       "cache_class": "runner-image-layer",
+      "component": "ssh",
+      "provider": "Existing OS distribution OpenSSH client; explicit host provisioning only, no key generation or replacement runtime",
+      "version": "strict-pinned-host-key-batch-transfer"
+    },
+    {
+      "cache_class": "runner-image-layer",
       "component": "systemd",
       "provider": "operator-managed Linux host or Ubuntu 24.04 native CI systemd; no installation at startup",
       "version": "252-or-newer-unit-contract"
+    },
+    {
+      "cache_class": "runner-image-layer",
+      "component": "tar",
+      "provider": "Existing GitHub ubuntu-24.04 x64 runner packages; behavioral contract, no source redistribution or package installation",
+      "version": "gnu-tar-zstd-v1"
     },
     {
       "cache_class": "runner-image-layer",
@@ -209,14 +245,20 @@
       "component": "zod",
       "provider": "actions/setup-node:npm",
       "version": "4.4.3"
+    },
+    {
+      "cache_class": "runner-image-layer",
+      "component": "zstd",
+      "provider": "Existing GitHub ubuntu-24.04 x64 runner packages; behavioral contract, no source redistribution or package installation",
+      "version": "zstd-decode-v1"
     }
   ],
   "coverage_basis": "unique components in runtime/toolchains/TOOLCHAIN.lock.tsv",
   "coverage_percent": 100,
-  "covered_components": 35,
-  "declared_components": 35,
-  "lock_sha256": "c03f018b822eb5aa732bf55d2d2deecfe17548a6192e05982fdbe556497a530f",
-  "registry_sha256": "3c6bdf20d80b939eb8316ef5968769365e5dd02f024320e15883297e8ed1bec9",
+  "covered_components": 42,
+  "declared_components": 42,
+  "lock_sha256": "902ed02872165f93e26c8f1e78df086ac0fe98be81bc412155cf2bed66d87c6c",
+  "registry_sha256": "ea9b5f7db5b6b144209e935061820392f38fc038da3877abb10ddd05c89ee50d",
   "rules": {
     "all_declared_tools_have_cache_strategy": true,
     "cache_never_replaces_required_checks": true,

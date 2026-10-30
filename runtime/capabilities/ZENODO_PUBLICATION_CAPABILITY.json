@@ -128,6 +128,20 @@
       "credential_source": "Existing protected-runtime credential-reference registry and provider-managed owner-only files; metadata and source do not prove delivery.",
       "source_recovery": "Original PR463 ef1d2953a30c1bf27c4a9bc385316c9f50c0c114; current canonical Authority resolved from policy.",
       "completion": "Independent public byte readback and durable Authority receipts; no global EFFECT_ACK_DONE from launcher return."
+    },
+    {
+      "adapter": "src/qikvrt_github_api_shim.py",
+      "path": "/repos/ingolf-lohmann/qik-vrt/qikvrt/publication",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "repository": "ingolf-lohmann/qik-vrt",
+      "enable": "QIKVRT_PUBLICATION_REST_ENABLED=1",
+      "credential_source": "The original publication_request/publication_resume protected registry and provider-owned files; never caller payload or browser cookies",
+      "admission": "Original native OIDC session and OS writer fence; server-bound private request pin; exact current Main and original v2 candidate authorization",
+      "recovery": "Durable native intent; repeated or uncertain canonical candidate is GET-only; original publisher receipts and consumption refs remain authoritative",
+      "completion": "Existing independent public byte readback and Authority receipts remain required; no EFFECT_ACK_DONE from REST acknowledgement"
     }
   ],
   "editorial_continuation": {

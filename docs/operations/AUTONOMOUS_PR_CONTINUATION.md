@@ -89,6 +89,32 @@ existing Actions read permission remains explicitly unavailable. An elapsed
 interval is never abortion evidence.
 
 This is asynchronous provider push feedback, not a blocking synchronous call.
+When the full source-test job succeeds but a later host gate fails, the same
+receiver still reads the original run/attempt-bound `TESTED_SUBJECT.json`.
+`source_tests_verified` preserves that result; `ci_verified` remains false for
+the failed workflow. A missing, malformed or unavailable subject remains
+unverified, and a failed source-test job cannot reuse a prior subject.
+
+For the existing original-host job, the receiver also reads the existing
+digest-verified `qikvrt-s1-host-start-<head>` artifact. Only the closed
+`host-material-delivery.json` schema, exact source HEAD/TREE and five boolean
+job-input presence fields are accepted. The feedback distinguishes a verified
+input-presence observation, a detected job-input delivery failure and unavailable
+verification. It never interprets that witness as absence from the original
+protected store, correct secret values, host identity or productive acceptance.
+Missing or replayed bytes, private extra fields and a failed checker retain
+UNVERIFIED without erasing the original provider failure.
+
+A detected delivery failure carries one stable `host-input-<run>-<attempt>`
+request for the existing native `productionEnvironmentReadback` GET at
+`/repos/ingolf-lohmann/qik-vrt/qikvrt/production-environment`, with the existing
+`qikvrt-production-environment-rest/v1` schema. That is an original-SSO operation,
+not an api.github.com endpoint. It is a next-operation binding, not a call or
+restoration receipt. Source success, an unrelated new commit or a new timestamp
+does not retry the failed job. Restoration, actual protected input delivery,
+the original `/v1.45/info` identity read and exact-domain delivery each retain
+their existing admission and independent readback requirements.
+
 The receiver checks out its own Main event SHA, never triggering-run source or
 executable artifacts. It has no dependency on the caller and no workflow-global
 concurrency lock. Original signing-job artifacts can be reconciled even when
@@ -165,6 +191,24 @@ This mechanism does not impersonate pre-existing workflow contexts and does
 not alter branch protection.
 
 ## External boundaries
+
+### Lost Git-tree publication reply — 2026-10-24
+
+The original continuation run `40069884460` for PR #459 completed its test and
+integrity steps, then stopped at `REST POST git/trees: 502`. That response does
+not reveal whether the immutable tree was already stored. The existing REST
+exporter now performs one GET of the independently computed tree identity after
+a 5xx or transport timeout and reconstructs the raw Git tree bytes to verify it.
+A verified tree lets the same admitted export continue without a second POST.
+A missing, incomplete, corrupt or unreadable tree retains HOLD and the expected
+identity. Permission or validation denials remain denials. Ref, competing-writer,
+review, signing and promotion checks retain their existing boundaries.
+
+This repair covers that lost-response transition. It does not fix the provider's
+502 cause, resolve unrelated merge conflicts, activate an unattended host, or
+establish HMI-independent productive operation. That acceptance still requires
+the admitted native runtime to continue the same Work Unit after HMI A closes,
+followed by an independently authorized HMI B reading the persisted result.
 
 The following gates cannot be manufactured by repository automation:
 
@@ -541,3 +585,20 @@ exact readiness. An accepted POST on that same bound already-ready subject may
 close the original journal using the independent readback, with zero new
 GraphQL mutations. Its original response remains unchanged or explicitly absent;
 the closing digest is labeled as readback and claims no mutation attribution.
+
+## Later Owner conditional Pull Request creation — 29 October 2026
+
+Ingolf Lohmann authorizes autonomous creation of new Pull Requests only when
+they close at least one other Pull Request, issue or branch. Read
+`state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json`
+under `conditional_pull_request_creation_decision`; `AI_CONTEXT.json` and the
+shared progress policy bind that decision. Reuse an existing candidate when it
+can complete the same work. Before creating a new candidate, name the existing
+other target, bind its current subject, explain the completed or fully superseded
+work and select the supported closure path. A reference or closing keyword is
+not a completed closure; independently read back the actual closure or completed
+branch integration after the admitted effect. Preserve discussion, history and
+all unresolved duties. Do not close unresolved work or infer branch-deletion
+authority merely to satisfy this condition. The existing exact-head test, review,
+conditional-merge and separate host/domain acceptance boundaries still apply.
+Saving this rule proves neither runtime enforcement nor adoption by other clients.
