@@ -58,6 +58,8 @@ MESH_COMPONENT_FILES = {
                            "docs/terminal/temdd/index.html", "docs/monitor/client-replica.js"],
 }
 REST_BOOTSTRAP_FILES = (
+    'tools/qikvrt_authority_transition.py', 'tools/qikvrt_mesh_recovery.py',
+    'tools/qikvrt_seed_common.py', 'policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json',
     '.github/CODEOWNERS', 'api/qikvrt_github_api.openapi.yaml',
     'scripts/qikvrt_api_client.py', 'src/qikvrt_api_handler.py',
     'src/qikvrt_effect_ack.py', 'src/qikvrt_github_api_shim.py',

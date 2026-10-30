@@ -359,6 +359,8 @@ jobs:
           if-no-files-found: error
       - name: Audit every completed manuscript proof constant
         run: python3 scripts/audit_completion_axioms.py
+      - name: Build additive storage module before project-wide proof audit
+        run: lake build QIKVRTEffectAck.StorageIntegrity
       - name: Reject project proof escapes
         run: python3 scripts/audit_proof_escapes.py
       - name: Verify completed proof-object manifest is current

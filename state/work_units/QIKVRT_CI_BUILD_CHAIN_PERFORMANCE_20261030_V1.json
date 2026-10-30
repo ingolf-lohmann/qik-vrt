@@ -1,0 +1,41 @@
+{
+  "schema": "qikvrt_provenance_work_unit_v1",
+  "work_unit_id": "QIKVRT_CI_BUILD_CHAIN_PERFORMANCE_20261030_V1",
+  "execution_id": "QIKVRT_CI_BUILD_CHAIN_PERFORMANCE_20261030_V1",
+  "created_at": "2026-10-30T09:47:55.446719+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "main",
+  "source_commit": "85aa4a181d4646c1a6cde56700d6393bdec6a04d",
+  "source_tree": "b2780688806f17f09ca96b2b890a643e6f49b7d1",
+  "priority_class": "CI_BUILD_CHAIN_PERFORMANCE",
+  "human_actor": {
+    "name": "Ingolf Lohmann",
+    "role": "Principal / Code Owner / Product Owner"
+  },
+  "human_contributions": [
+    "Classify CI build-chain performance; measure individual tests before considering a C90 implementation; preserve Python as reference/checker for any later native arithmetic."
+  ],
+  "artificial_cognitive_contributions": [
+    "Measure all individual tests in the existing mesh-recovery block.",
+    "Profile the longest recovery test and batch existing fresh Git metadata queries without removing checks.",
+    "Retain the original 249 tests and add successor/detached-HEAD and malformed-output controls.",
+    "Enable compatible unittest duration reporting in the existing Makefile target.",
+    "Prove the complete make-test unittest ID set is unchanged and eliminate only the 23 duplicate Digital-Twin executions through a shared existing prerequisite."
+  ],
+  "outputs": {
+    "branch": "fix/ci-build-chain-performance-20261030",
+    "measurement": "evidence/ci-build-chain-performance/2026-10-30/measurement.json"
+  },
+  "boundaries": {
+    "global_priority_policy_changed": false,
+    "c90_implementation_added": false,
+    "main_integration_claimed": false,
+    "ci_speedup_claimed": false,
+    "effect_ack_done": false
+  },
+  "continuation": [
+    "Run the full unchanged repository gate against the final candidate tree.",
+    "Persist the tested source through the existing REST branch route and independently read back its tree.",
+    "Reuse the standing conditional PR-creation contract; do not close unrelated work to manufacture an eligible closure target."
+  ]
+}

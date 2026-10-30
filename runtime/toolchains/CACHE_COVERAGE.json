@@ -206,6 +206,12 @@
     },
     {
       "cache_class": "runner-image-layer",
+      "component": "unzip",
+      "provider": "Existing distribution Info-ZIP executable; ZIP APPNOTE6.3.10 https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT",
+      "version": "zip-deflate-readback-contract"
+    },
+    {
+      "cache_class": "runner-image-layer",
       "component": "websockify",
       "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
       "version": "exact-executable-binding"
@@ -241,6 +247,12 @@
       "version": "exact-executable-binding"
     },
     {
+      "cache_class": "runner-image-layer",
+      "component": "zlib-native",
+      "provider": "Existing distribution libz headers/library in the runner image; official zlib API https://zlib.net/manual.html",
+      "version": "1.2.11-or-newer-integer-codec-contract"
+    },
+    {
       "cache_class": "ecosystem-cache",
       "component": "zod",
       "provider": "actions/setup-node:npm",
@@ -255,10 +267,10 @@
   ],
   "coverage_basis": "unique components in runtime/toolchains/TOOLCHAIN.lock.tsv",
   "coverage_percent": 100,
-  "covered_components": 42,
-  "declared_components": 42,
-  "lock_sha256": "902ed02872165f93e26c8f1e78df086ac0fe98be81bc412155cf2bed66d87c6c",
-  "registry_sha256": "ea9b5f7db5b6b144209e935061820392f38fc038da3877abb10ddd05c89ee50d",
+  "covered_components": 44,
+  "declared_components": 44,
+  "lock_sha256": "0c51ecbba5d73967a977c9323a952314de92ce9b16c1b74e32e80d19d6c8fbd7",
+  "registry_sha256": "01fe7675fd5347f6b95943a8c9a67d1b34fe41c03d21fdd518e35182bc59593c",
   "rules": {
     "all_declared_tools_have_cache_strategy": true,
     "cache_never_replaces_required_checks": true,
