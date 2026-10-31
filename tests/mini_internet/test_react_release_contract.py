@@ -42,7 +42,8 @@ class ReactReleaseContract(unittest.TestCase):
         src = self.source
         self.assertIn('RELEASE_ACTIVATION_RECEIPT_INVALID', src)
         self.assertIn('RELEASE_ACTIVATION_HTTP_', src)
-        self.assertLess(src.index('if (receipt.version !=='), src.index('seen.current.add(rel.version)'))
+        self.assertIn('fetch("/readback/active"', src)
+        self.assertLess(src.index('if (!Array.isArray(readback.activated)'), src.index('seen.current.add(rel.version)'))
         self.assertLess(src.index('seen.current.add(rel.version)'), src.index('setRelease(v)'))
 
     def test_bootstrap_key_is_not_yet_pinned(self):
