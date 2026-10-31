@@ -41,7 +41,14 @@ jobs:
           fi
           title="QIKVRT CI terminal gate: $RUN_SHA"
           body="$(printf 'Native CI terminal failure or cancellation.\n\nRun: %s\nExact HEAD: `%s`\nConclusion: `%s`\n\nRequires classification of failed steps, correction, new exact-head CI and separate merge/production readback. No automatic retry of a deterministic failure.\n' "$RUN_URL" "$RUN_SHA" "$RUN_CONCLUSION")"
-          # Verify this run is still the exact current PR head before issuing an actionable gate.\n          # Stale runs are evidence only and must not trigger a new repair.\n          current_prs="$(gh api "repos/$GH_REPO/commits/$RUN_SHA/pulls" --jq '.[].number' || true)"\n          if test -z "$current_prs"; then\n            echo "STALE_OR_UNBOUND: no associated PR for $RUN_SHA"\n            exit 0\n          fi\n          # Idempotent by exact SHA. A repeated completion must not create duplicates.
+          # Historical commit-to-PR association is insufficient: require an open PR
+          # whose CURRENT head is exactly the completed run's subject.
+          current_prs="$(gh api "repos/$GH_REPO/commits/$RUN_SHA/pulls" --jq '.[] | select(.state == "open" and .head.sha == "'$RUN_SHA'") | .number')"
+          if test -z "$current_prs"; then
+            echo "STALE_OR_UNBOUND: no open PR at exact run HEAD $RUN_SHA"
+            exit 0
+          fi
+          # Idempotent by exact SHA. A repeated completion must not create duplicates.
           existing="$(gh issue list --state all --limit 100 --search "$RUN_SHA in:title" --json number,title --jq ".[] | select(.title == \"$title\") | .number" | head -n 1)"
           if test -n "$existing"; then
             gh issue comment "$existing" --body "$body"
