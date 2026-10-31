@@ -207,6 +207,14 @@ jobs:
             git add REPOSITORY_FILE_MANIFEST.json REPOSITORY_FILE_MANIFEST.json.sha256 SHA256SUMS.txt
 
             if git diff --cached --quiet; then
+              # A fixpoint is admissible only for the immutable committed
+              # subject, not for an uncommitted regenerated worktree.
+              if ! git diff --quiet HEAD --; then
+                echo "BLOCK fixpoint has uncommitted tracked changes head=$subject" >&2
+                git status --short >&2
+                exit 1
+              fi
+              python3 -B tools/qikvrt_integrity.py verify
               echo "QIKVRT_FIXPOINT_REACHED iteration=$iteration head=$subject tree=$tree predecessor_test_status=$test_status"
               exit 0
             fi
