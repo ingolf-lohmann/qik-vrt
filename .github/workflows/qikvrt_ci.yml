@@ -40,6 +40,12 @@ on:
         type: boolean
         default: false
 
+# A newer PR generation supersedes its predecessor before a writer may push.
+# Different PRs and the default branch retain independent execution lanes.
+concurrency:
+  group: qikvrt-ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 permissions:
   contents: write
 
@@ -69,6 +75,9 @@ jobs:
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
+      - name: Verify EAP fail-closed state-machine regression tests
+        shell: bash
+        run: python -m unittest discover -s tests -p 'test_qikvrt_effect_ack_gate.py' -v
       - name: Full compile, launcher, protocol, handler, security and TCP/IP tests
         id: full_test
         continue-on-error: true
@@ -172,17 +181,29 @@ jobs:
             # Test the exact active subject. Integrity staleness is the only
             # expected pre-materialization failure and is repaired below.
             set +e
-            make test repository-monitor-test self-host-test > ".qikvrt-fixpoint-test-$iteration.log" 2>&1
-            test_status=$?
+            timeout --signal=TERM --kill-after=30s 15m make test repository-monitor-test self-host-test 2>&1 | tee ".qikvrt-fixpoint-test-$iteration.log"
+            test_status=${PIPESTATUS[0]}
             set -e
 
+            # Learn from the predecessor: only the recognized deterministic
+            # manifest-drift signature admits this automatic repair.
+            if test "$test_status" -ne 0 &&
+               ! grep -Fq "BLOCK repository manifest differs from deterministic regeneration" ".qikvrt-fixpoint-test-$iteration.log"; then
+              echo "BLOCK_UNCLASSIFIED_FAILURE iteration=$iteration; no automatic mutation" >&2
+              tail -n 80 ".qikvrt-fixpoint-test-$iteration.log" >&2
+              exit 2
+            fi
             python3 tools/qikvrt_integrity.py generate
             python3 tools/qikvrt_integrity.py verify
+            # A manifest repair may change only these canonical outputs.
+            unexpected="$(git diff --name-only | grep -Ev '^(REPOSITORY_FILE_MANIFEST.json|REPOSITORY_FILE_MANIFEST.json.sha256|SHA256SUMS.txt)$' || true)"
+            if test -n "$unexpected"; then
+              echo "BLOCK_UNEXPECTED_MUTATION: $unexpected" >&2
+              exit 2
+            fi
 
-            # Re-run the complete gates against the regenerated state. Any
-            # remaining failure is a real successor failure, not predecessor
-            # evidence and must stop the writer fail-closed.
-            make test repository-monitor-test self-host-test
+            # Re-run the complete gates against the regenerated state.
+            timeout --signal=TERM --kill-after=30s 15m make test repository-monitor-test self-host-test
             python3 tools/qikvrt_integrity.py verify
 
             git config user.name "github-actions[bot]"
@@ -1823,6 +1844,4 @@ jobs:
           path: ${{ runner.temp }}/public-delivery.json
           if-no-files-found: error
           retention-days: 30
-
-
 

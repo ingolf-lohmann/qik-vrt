@@ -45,6 +45,23 @@ jobs:
         shell: bash
         run: bash tests/test_adaptive_runtime.sh
 
+      - name: Materialize canonical integrity evidence in disposable review workspace
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_integrity.py generate
+          python3 -B tools/qikvrt_integrity.py verify
+          # Review-only regeneration must never commit or push a successor.
+          changed="$(git diff --name-only)"
+          if test -n "$changed"; then
+            while IFS= read -r path; do
+              case "$path" in
+                REPOSITORY_FILE_MANIFEST.json|REPOSITORY_FILE_MANIFEST.json.sha256|SHA256SUMS.txt) ;;
+                *) echo "BLOCK unexpected regenerated file: $path" >&2; exit 1 ;;
+              esac
+            done <<< "$changed"
+          fi
+
       - name: Run mandatory repository test suite
         run: make test repository-monitor-test self-host-test
 
