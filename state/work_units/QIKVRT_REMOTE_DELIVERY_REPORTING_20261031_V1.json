@@ -452,5 +452,22 @@
     "native_delivery_readback": "evidence/native-runtime-acceptance/QIKVRT_DELIVERY_REPORTING_7D284007_NATIVE_CONNECTION.json",
     "checkpoint_scope": "Original7d checker receipts retained exactly; evidence-only successor does not inherit CI success; fresh current-head native checks remain required.",
     "adopted_evidence_only_parent": "20d99e34d5eb12995d36f369706685d7fb1411ca"
+  },
+  "mirror_client_change_class_repair_20261031": {
+    "source_head": "47f586be5e1cd6589ae9ba7dbd72558663402618",
+    "source_tree": "bf7120b1acfe7cf909750417c8befe399779ea5b",
+    "mirror_source_head": "110ad19aab36548b6fa20b84fcbbdd6556839556",
+    "defect": "The actual tools/qikvrt_eap_mirror_client.py and tests/test_eap_mirror_client.py match none of the existing formal-proof change classes. The original conditional REST merge evaluator fixture marked either isolated change PROMOTABLE without the formal workflow.",
+    "causal_repair": "Add both actual paths to existing eap_clients AND both existing formal workflow event path filters; existing classification/REST-merge regression and executable event-filter matching prove isolated client/test changes cannot silently skip the obligation.",
+    "scope": "Policy classification and actual evaluator regression; no universal refinement proof or live provider merge is inferred from the fixture.",
+    "original_analysis_sha256": "e72e589f4fd6ff009beeafaf0c314ed896f2a7314fa298875fcd72ac439495d1",
+    "evidence": "evidence/native-runtime-acceptance/authority-succession-20261016/CODEX_CONTINUATION_20261031.json",
+    "fresh_successor_seven_checker_execution_required": true,
+    "predecessor_seven_checker_acceptance_transferred": false,
+    "prior_obligations_and_corrections_retained": true,
+    "native_writer_activation_or_main_integration": false,
+    "productive_effect_ack_done": false,
+    "composite_base_head": "8ad38553fcb365d1b2941cec30a8caed91c46e7e",
+    "competing_writer_preserved": "Original47 ->7d284007 ->20d99e34 ->8ad38553 all preserved; source proposal stays on a separate branch."
   }
 }
