@@ -1,5 +1,8 @@
 name: QIKVRT mandatory mathematical pre-merge candidate gate
 on:
+  push:
+    branches:
+      - formal/independent-algebra-kernel-20261031
   pull_request:
   workflow_dispatch:
 permissions:
