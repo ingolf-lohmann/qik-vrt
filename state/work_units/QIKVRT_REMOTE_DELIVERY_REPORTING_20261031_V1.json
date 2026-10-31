@@ -81,8 +81,9 @@
       41215513746,
       41215513755
     ],
-    "failed_materialization_run": 41215513887,
-    "owner_review": "Accepted as Owner-supplied assertion; no independent GitHub review or comment invented."
+    "failed_materialization_run": 41215514005,
+    "owner_review": "Accepted as Owner-supplied assertion; no independent GitHub review or comment invented.",
+    "failed_batch003_remaining_disposition_run": 41215513887
   },
   "open_obligations": [
     {
@@ -167,5 +168,23 @@
     "branch_protection_read": "HTTP403 Resource not accessible by integration",
     "rules_branches_read": "Connector URL allowlist rejected /rules/branches/main (HTTP400); not a target protection result",
     "successful_repository_reads_and_existing_authorization_invalidated": false
-  }
+  },
+  "corrections": [
+    {
+      "supersedes": "91c086deec1d01ed69594dc7bd6156fdabb7409b:run-name attribution",
+      "observed_defect": "Both original jobs are named materialize; the initial snapshot incorrectly assigned the required repository materialization identity to 41215513887.",
+      "correct_binding": {
+        "repository_evidence_materialization": {
+          "run_id": 41215514005,
+          "job_id": 124579087227
+        },
+        "batch003_remaining_subject_disposition": {
+          "run_id": 41215513887,
+          "job_id": 124579086355
+        }
+      },
+      "source": "evidence/client-delivery/FAILED_RUN_IDENTITY_READBACK_20261031.json",
+      "scope_change": "None: both original native failures remain HTTP403, neither is green; no merge was attempted."
+    }
+  ]
 }

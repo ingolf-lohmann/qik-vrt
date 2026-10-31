@@ -40,14 +40,14 @@
       },
       {
         "run_id": 41215513887,
-        "scope": "Repository evidence materialization",
+        "scope": "QIKVRT Batch-003 remaining subject disposition",
         "conclusion": "failure",
         "job_id": 124579086355,
         "error": "GitHub Git-Data API rejected GET (HTTP 403)"
       },
       {
         "run_id": 41215514005,
-        "scope": "Archive causal journal materialization",
+        "scope": "QIKVRT repository evidence materialization",
         "conclusion": "failure",
         "job_id": 124579087227,
         "error": "GitHub Git-Data API rejected GET (HTTP 403)"
@@ -56,5 +56,6 @@
     "owner_approval": "OWNER_ASSERTED in supplied handoff; GitHub /pulls/658/reviews and /issues/658/comments were empty at independent readback",
     "merge_attempted": false
   },
-  "record_scope": "Mixed observation times, retained as source-bound readbacks; timestamp on native projection applies only to that projection."
+  "record_scope": "Mixed observation times, retained as source-bound readbacks; timestamp on native projection applies only to that projection.",
+  "identity_correction": "Run identity comes from original Actions run metadata, not the shared materialize job name."
 }
