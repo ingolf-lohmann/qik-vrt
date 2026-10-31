@@ -70,18 +70,29 @@ jobs:
           jq -e --argjson number "$number" '(.pull_request | not) and .number == $number' "$ISSUE_JSON" >/dev/null
           echo "number=$number" >> "$GITHUB_OUTPUT"
 
-      - name: Acknowledge durable DevOps admission
+      - name: Verify P0 priority and live pipeline admission
         env:
           GH_TOKEN: ${{ github.token }}
           REPOSITORY: ${{ github.repository }}
           ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
         run: |
           set -euo pipefail
-          # Stage 1 is an observable receipt, not an assertion of task completion.
-          # GitHub issue comments persist across runner termination.
+          # Stage-one green requires a live runner AND an authoritative priority receipt.
+          # The issue must explicitly carry the highest-priority P0 label.
+          jq -e 'any(.labels[]?; (.name | ascii_downcase) == "p0")' "$ISSUE_JSON" >/dev/null || {
+            echo "BLOCK: issue lacks authoritative P0 priority label" >&2
+            exit 1
+          }
+          test "$GITHUB_RUN_ID" -gt 0
+          test -n "$GITHUB_SHA"
+          # Probe the GitHub API using the runner's effective token, not a static declaration.
+          gh api "repos/$REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
+            --jq '.id' | grep -Fx "$GITHUB_RUN_ID"
+          # Verify the runner has executed the repository's trusted processor checks.
+          test -d "$TRUSTED_PROCESSOR_ROOT/scripts/issue_agent"
           gh api "repos/$REPOSITORY/issues/$ISSUE_NUMBER/comments" \
-            -f body="DEVOPS_ADMITTED: issue #$ISSUE_NUMBER; workflow=$GITHUB_WORKFLOW; run_id=$GITHUB_RUN_ID; attempt=$GITHUB_RUN_ATTEMPT; source_commit=$GITHUB_SHA. Result pending; no EFFECT_ACK_DONE asserted."
-          echo "DEVOPS_ADMITTED issue=$ISSUE_NUMBER run=$GITHUB_RUN_ID/$GITHUB_RUN_ATTEMPT" >> "$GITHUB_STEP_SUMMARY"
+            -f body="DEVOPS_STAGE1_VERIFIED: priority=P0; issue=$ISSUE_NUMBER; run_id=$GITHUB_RUN_ID; attempt=$GITHUB_RUN_ATTEMPT; source_commit=$GITHUB_SHA; runner_and_processor_checks=passed; result=pending. This is not an end-to-end completion receipt."
+          echo "DEVOPS_STAGE1_VERIFIED priority=P0 issue=$ISSUE_NUMBER run=$GITHUB_RUN_ID/$GITHUB_RUN_ATTEMPT" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Evaluate causal retry admission
         id: admission
