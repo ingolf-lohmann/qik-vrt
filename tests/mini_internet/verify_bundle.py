@@ -6,7 +6,6 @@ Only establishes local integrity and consistency; never grants EAP or production
 import argparse
 import hashlib
 import pathlib
-import subprocess
 import sys
 import zipfile
 
@@ -21,16 +20,22 @@ REQUIRED = (
 
 def verify(archive):
     with zipfile.ZipFile(archive) as z:
-        names = set(z.namelist())
+        listing = z.namelist()
+        if len(listing) != len(set(listing)):
+            raise ValueError('duplicate ZIP member')
+        names = set(listing)
+        if any(n.startswith('/') or '..' in pathlib.PurePosixPath(n).parts or '\\' in n for n in names):
+            raise ValueError('unsafe ZIP path')
         missing = set(REQUIRED) - names
         if missing:
             raise ValueError("missing files: " + ", ".join(sorted(missing)))
         entries = {}
         for line in z.read("SHA256SUMS").decode("utf-8").splitlines():
             digest, separator, path = line.partition("  ")
-            if not separator or len(digest) != 64 or path in entries:
+            path = path.removeprefix('./')
+            if not separator or len(digest) != 64 or any(c not in '0123456789abcdef' for c in digest) or path in entries:
                 raise ValueError("malformed or duplicate SHA256SUMS entry")
-            entries[path.removeprefix("./")] = digest
+            entries[path] = digest
         for name in names:
             if name.endswith("/") or name == "SHA256SUMS":
                 continue
