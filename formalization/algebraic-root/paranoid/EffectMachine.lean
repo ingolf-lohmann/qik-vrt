@@ -22,7 +22,7 @@ def effectStep {Payload : Type} [DecidableEq Payload]
         { s with observed := some p, acknowledged := false }
       else s
   | .acknowledge =>
-      if h : ∃ p, s.proposed = some p ∧ s.observed = some p then
+      if h : s.proposed.isSome = true ∧ s.proposed = s.observed then
         { s with acknowledged := true }
       else s
 
@@ -47,7 +47,13 @@ theorem effectStep_preserves_safety {Payload : Type} [DecidableEq Payload]
       split
       · rename_i h
         intro _
-        exact h
+        rcases h with ⟨hsome, heq⟩
+        cases hp : s.proposed with
+        | none => simp [hp] at hsome
+        | some p =>
+            refine ⟨p, hp, ?_⟩
+            rw [← heq]
+            exact hp
       · exact safe
 
 def effectRunFrom {Payload : Type} [DecidableEq Payload]
