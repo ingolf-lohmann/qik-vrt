@@ -1,0 +1,73 @@
+name: Diagnose cancelled native S1 carrier
+on:
+  workflow_run:
+    workflows: ["QIKVRT productive TEMDD S1 carrier"]
+    types: [completed]
+permissions:
+  actions: read
+  contents: read
+  issues: write
+jobs:
+  diagnose:
+    if: ${{ github.event.workflow_run.conclusion == 'cancelled' || github.event.workflow_run.conclusion == 'failure' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Inspect original run and publish bounded diagnostic
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          RUN_SHA: ${{ github.event.workflow_run.head_sha }}
+          RUN_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          RUN_EVENT: ${{ github.event.workflow_run.event }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os, subprocess
+          repo, run_id = os.environ['REPO'], os.environ['RUN_ID']
+          def get(path):
+              p = subprocess.run(['gh','api',path],capture_output=True,text=True)
+              if p.returncode:
+                  raise RuntimeError('GitHub read failed: '+p.stderr[:400])
+              return json.loads(p.stdout)
+          run = get(f'repos/{repo}/actions/runs/{run_id}')
+          jobs = get(f'repos/{repo}/actions/runs/{run_id}/jobs?per_page=100')
+          lines = [
+              '# Native S1 carrier cancellation diagnosis',
+              f"- Run: {run_id}",
+              f"- HEAD: {os.environ['RUN_SHA']}",
+              f"- Conclusion: {os.environ['RUN_CONCLUSION']}",
+              f"- Trigger: {os.environ['RUN_EVENT']}",
+              f"- Attempt: {run.get('run_attempt', 'unknown')}",
+              f"- Cancelled by: {run.get('cancelled_by', 'not exposed by API')}",
+              f"- Run URL: {run.get('html_url', 'unavailable')}",
+              '',
+              '## Jobs and incomplete steps',
+          ]
+          for job in jobs.get('jobs', []):
+              lines.append(f"- Job {job['id']} {job['name']}: {job.get('conclusion')}")
+              for step in job.get('steps', []):
+                  if step.get('conclusion') != 'success':
+                      lines.append(f"  - Step {step['number']} {step['name']}: {step.get('status')}/{step.get('conclusion')}")
+          if jobs.get('total_count', 0) > len(jobs.get('jobs', [])):
+              lines.append('- INCOMPLETE: additional jobs require pagination')
+          lines += ['', 'Cancellation is not a proof of a source-code defect or productive DoD.', 'Root cause remains UNVERIFIED unless independently evidenced.']
+          report='\n'.join(lines)+'\n'
+          with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as f:
+              f.write(report)
+          print(report)
+          # Create a durable, actionable failure record; never silently finish at a log summary.
+          title=f"S1 native carrier {os.environ['RUN_CONCLUSION']}: run {run_id}"
+          existing=subprocess.run(['gh','issue','list','--repo',repo,'--state','all','--search',f'"{title}" in:title','--json','number,title','--limit','30'],capture_output=True,text=True)
+          if existing.returncode:
+              raise RuntimeError('Issue deduplication read failed: '+existing.stderr[:400])
+          matches=[i for i in json.loads(existing.stdout) if i.get('title')==title]
+          if not matches:
+              created=subprocess.run(['gh','issue','create','--repo',repo,'--title',title,'--body',report+'\nNext: determine cancellation provenance and implement a minimal tested fix via PR. DoD remains OPEN.\n'],capture_output=True,text=True)
+              if created.returncode:
+                  raise RuntimeError('Durable diagnostic issue creation failed: '+created.stderr[:400])
+              print('Created diagnostic issue:',created.stdout.strip())
+          else:
+              print('Existing diagnostic issue:',matches[0]['number'])
+          PY

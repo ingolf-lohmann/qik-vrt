@@ -69,6 +69,17 @@ jobs:
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
+      - name: Deterministically materialize integrity before complete PR tests
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        shell: bash
+        run: |
+          set -euo pipefail
+          subject="$(git rev-parse --verify HEAD^{commit})"
+          test "$subject" = "${{ github.event.pull_request.head.sha }}"
+          echo "QIKVRT_INTEGRITY_PREFLIGHT subject=$subject"
+          python3 -B tools/qikvrt_integrity.py generate
+          python3 -B tools/qikvrt_integrity.py verify
+          echo "QIKVRT_INTEGRITY_PREFLIGHT_PASS subject=$subject"
       - name: Full compile, launcher, protocol, handler, security and TCP/IP tests
         id: full_test
         continue-on-error: true
@@ -146,7 +157,10 @@ jobs:
           set -euo pipefail
 
           subject="$(git rev-parse --verify HEAD^{commit})"
-          test "$subject" = "$EXPECTED_HEAD"
+          if test "$subject" != "$EXPECTED_HEAD"; then
+            echo "BLOCK exact-head mismatch checked_out=$subject expected=$EXPECTED_HEAD" >&2
+            exit 1
+          fi
 
           # Reuse only the successful complete gate for this exact unchanged
           # subject. Missing proof, integrity drift or a changed ref retains
@@ -166,18 +180,24 @@ jobs:
             subject="$(git rev-parse --verify HEAD^{commit})"
             tree="$(git rev-parse --verify HEAD^{tree})"
             remote="$(git ls-remote --heads origin "refs/heads/$TARGET_REF" | awk 'NR == 1 { print $1 }')"
-            test "$remote" = "$subject"
+            if test "$remote" != "$subject"; then
+              echo "BLOCK stale-writer branch advanced local=$subject remote=$remote ref=$TARGET_REF; await newer exact-head run" >&2
+              exit 1
+            fi
             echo "QIKVRT_REENTRY_SUBJECT iteration=$iteration head=$subject tree=$tree"
 
-            # Test the exact active subject. Integrity staleness is the only
-            # expected pre-materialization failure and is repaired below.
+            # First test the immutable committed subject's integrity. When
+            # stale, materialize only the canonical manifest trio; do not
+            # waste a full suite on an already-known integrity failure.
             set +e
-            make test repository-monitor-test self-host-test > ".qikvrt-fixpoint-test-$iteration.log" 2>&1
+            python3 -B tools/qikvrt_integrity.py verify
             test_status=$?
             set -e
-
-            python3 tools/qikvrt_integrity.py generate
-            python3 tools/qikvrt_integrity.py verify
+            if test "$test_status" -ne 0; then
+              echo "QIKVRT_REENTRY_REPAIR_STALE_INTEGRITY iteration=$iteration head=$subject"
+            fi
+            python3 -B tools/qikvrt_integrity.py generate
+            python3 -B tools/qikvrt_integrity.py verify
 
             # Re-run the complete gates against the regenerated state. Any
             # remaining failure is a real successor failure, not predecessor
@@ -189,7 +209,28 @@ jobs:
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add REPOSITORY_FILE_MANIFEST.json REPOSITORY_FILE_MANIFEST.json.sha256 SHA256SUMS.txt
 
+            # No unreviewed test byproducts may enter the successor. Only the
+            # three canonical integrity files are eligible for persistence.
+            unexpected_staged="$(git diff --cached --name-only -- .               ':!REPOSITORY_FILE_MANIFEST.json' ':!REPOSITORY_FILE_MANIFEST.json.sha256' ':!SHA256SUMS.txt')"
+            if test -n "$unexpected_staged"; then
+              echo "BLOCK unexpected staged files: $unexpected_staged" >&2
+              exit 1
+            fi
+
             if git diff --cached --quiet; then
+              # A fixpoint is admissible only for the immutable committed
+              # subject, not for an uncommitted regenerated worktree.
+              if test -n "$(git ls-files --others --exclude-standard)"; then
+                echo "BLOCK fixpoint has untracked files head=$subject" >&2
+                git status --short --untracked-files=all >&2
+                exit 1
+              fi
+              if ! git diff --quiet HEAD --; then
+                echo "BLOCK fixpoint has uncommitted tracked changes head=$subject" >&2
+                git status --short >&2
+                exit 1
+              fi
+              python3 -B tools/qikvrt_integrity.py verify
               echo "QIKVRT_FIXPOINT_REACHED iteration=$iteration head=$subject tree=$tree predecessor_test_status=$test_status"
               exit 0
             fi
