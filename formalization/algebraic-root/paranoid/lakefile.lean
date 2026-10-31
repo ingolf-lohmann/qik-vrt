@@ -6,5 +6,7 @@ lean_lib Root where
 
 lean_lib EffectIntegrity where
 
-@[default_target]
 lean_lib SerializationCascade where
+
+@[default_target]
+lean_lib EffectMachine where
