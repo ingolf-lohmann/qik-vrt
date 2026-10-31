@@ -116,10 +116,26 @@ class MirrorClientTests(unittest.TestCase):
 
     def test_base_url_preserves_https_and_loopback_support(self):
         for base in ("https://raumzeitterminal.de", "http://127.0.0.1:8766",
-                     "http://localhost:8766"):
+                     "http://localhost:8766", "HTTP://LOCALHOST",
+                     "https://raumzeitterminal.de/gateway",
+                     "https://raumzeitterminal.de/gateway%3Ftag%23value"):
             with self.subTest(base=base):
                 client = mirror.Client(base, self.grant["principal"], self.grant["token"], self.direct)
                 self.assertEqual(client.base, base)
+
+    def test_base_url_refuses_query_and_fragment_before_path_concatenation(self):
+        for base in ("https://raumzeitterminal.de?x=1",
+                     "https://raumzeitterminal.de#part",
+                     "https://raumzeitterminal.de/gateway?x=1",
+                     "https://raumzeitterminal.de/gateway#part",
+                     "https://raumzeitterminal.de?",
+                     "https://raumzeitterminal.de#",
+                     "https://raumzeitterminal.de?#",
+                     "http://localhost:8766?x=1",
+                     "http://127.0.0.1:8766#part"):
+            with self.subTest(base=base):
+                with self.assertRaisesRegex(mirror.Hold, "BASE_URL_QUERY_OR_FRAGMENT_FORBIDDEN"):
+                    mirror.Client(base, self.grant["principal"], self.grant["token"], self.direct)
 
     def test_redirect_never_forwards_the_mirror_credential(self):
         captured = []

@@ -99,6 +99,9 @@ class Client:
                 or target.username is not None or target.password is not None
                 or (target.scheme == "http" and target.hostname not in ("127.0.0.1", "localhost"))):
             raise Hold("HTTPS_OR_LOOPBACK_BASE_URL_REQUIRED")
+        # Empty delimiters also redirect appended route text into a query or fragment.
+        if "?" in base_url or "#" in base_url:
+            raise Hold("BASE_URL_QUERY_OR_FRAGMENT_FORBIDDEN")
         self.base = base_url.rstrip("/")
         self.principal, self.token = principal, token
         self.opener = opener or urllib.request.build_opener()

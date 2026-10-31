@@ -197,5 +197,119 @@
     },
     "route_preflight_sha256": "b902b44710e3f1ff869d07a7ff598bef826ffb538d3bb23128f5ed8e7008d427",
     "preflight_scope": "Declared consistency of the later exact REST publication/read calls only. Earlier source collection, including read-only Git clone, is retained as its actual transport; no retroactive routing-preflight or native-adoption claim."
+  },
+  "query_fragment_repair": {
+    "source_head": "110ad19aab36548b6fa20b84fcbbdd6556839556",
+    "source_tree": "970d497294bc3595bbede81d40bcced8e40f7d60",
+    "report_source": "Owner-supplied independent Claude Mirror review in this conversation",
+    "clarification_110ad19a": "The whole 110ad19a commit changes client code, tests and this work unit, in addition to evidence/integrity files. Its commit-message reference to a final evidence/metadata-only delta means only the finalization after the local source suite; it does not characterize the whole commit.",
+    "defect": "Raw query/fragment delimiters in the base URL divert appended EAP route text into query/fragment components. This is a same-origin routing defect, not a demonstrated off-origin token leak.",
+    "negative_control": {
+      "exit_code": 1,
+      "expected_failing_subtests": 9,
+      "scope": "Original110ad19a constructor, no external network request"
+    },
+    "repair": "Reject every raw ? or #, including empty query/fragment delimiters, before constructing the authenticated client; retain origin/path-prefix and percent-encoded path support.",
+    "targeted_tests": {
+      "command": "python3 -B -m unittest -v tests.test_eap_mirror_client tests.test_ai_runtime_bootloader",
+      "exit_code": 0,
+      "tests": 163
+    },
+    "full_suite": {
+      "command": "make test",
+      "observed_process_exit_code": 0,
+      "reported_python_test_executions": 2286,
+      "unittest_summary_blocks": 43,
+      "tested_worktree_tree": "77d346c3f46fc2e29f8aabffbe6058b22124d5cd",
+      "code_blobs": {
+        "tools/qikvrt_eap_mirror_client.py": "3edb8869066317b74cfbf5747625a0de70d82616",
+        "tests/test_eap_mirror_client.py": "38c859652ba8bcd4f1cd966e800e2da1eb07c86a",
+        "runtime/self-host/EAP_HTTP.md": "26dcfca89d0bf4693155f1ccbcb209223f8e50b9"
+      },
+      "scope": "Local complete suite on the source fix plus frozen task export. Finalization thereafter adds logs/predecessor records, updates this work unit and deterministically regenerates integrity only; final-head native CI remains separate."
+    },
+    "predecessor_native_ci": {
+      "run": 41241294086,
+      "attempt": 1,
+      "head": "110ad19aab36548b6fa20b84fcbbdd6556839556",
+      "conclusion": "success",
+      "completed_at": "2026-10-31T21:11:48Z",
+      "test_job": 124655565095,
+      "successful_lanes": [
+        "test",
+        "Chromium",
+        "WebKit",
+        "S1 production/smoke source gate"
+      ],
+      "skipped_lanes": [
+        "original host identity/deployment",
+        "exact-domain acceptance",
+        "reviewed OCI publication",
+        "reused Firefox release admission"
+      ],
+      "acceptance_of_this_new_successor": false
+    },
+    "task_export": {
+      "task_id": "c8b4bb31-26c9-5ea0-8a97-ef73b21aaafb",
+      "version": 1,
+      "archive": "evidence/client-delivery/eap-mirror-20261031/TASK_c8b4bb31_v1_export.zip",
+      "archive_sha256": "83fdb2e9bcba9017c0a26976d56d2eba2ead6fa10a1fe62b426210cd30881cee",
+      "task_json_sha256": "991ad63c4488afce81b631c7fb463bfc487ee4a8048184af631d4e097e15e375",
+      "owner_directive_sha256": "5e1ef131a9087e3c772fd406beb8e990f3b8ea07acf623809b955b8faaa2d360",
+      "retained_predecessor_description_sha256": "a5edbe5349916c251431dc1a82cbf0eea999c16da8dacf57d52a5162c7f6193b",
+      "exact_bytes_and_archive_verified": true,
+      "receiver_ack": "CLAUDE_ACK_PENDING",
+      "native_role_activation": "UNVERIFIED",
+      "signature": "NONE",
+      "task_record_changed": false
+    },
+    "owner_role_decision": "Preserve the Principal appointment of Claude as next cognitive Authority; Codex cooperates as peer/reviewer. This source preparation does not attest an activated native writer, change an epoch, revoke a lease or bypass Single-Writer fencing.",
+    "remaining_work": [
+      "Publish this bounded successor on the existing carrier only with expected-head/non-force update and independent source readback; do not overwrite PR546 or Main",
+      "Fresh exact-head native CI and current PR546 composite/formal/governance integration",
+      "Actual recipient must read and hash-check the exact exported task bytes; no receiver ACK inferred from export or link",
+      "Original host admission, protected exact Mirror principal/token binding and permitted actual Mirror network route",
+      "Eight live200 steps plus original host receipt before live delivery; preserve all inherited open duties"
+    ],
+    "effect_ack_done": false,
+    "local_orchestration_failure": {
+      "observed_make_exit_code": 2,
+      "cause": "Assistant launched make test before the preceding integrity generation cell had completed. The existing integrity lock refused concurrent verification.",
+      "log": "evidence/client-delivery/eap-mirror-20261031/query-fragment-integrity-lock-before.log.gz",
+      "raw_log_sha256": "02b7f770bd1a8576771431dbd6bef7ac5345dd37a5e8ed00724ae44f8a13c527",
+      "causal_correction": "Wait for original generation completion, then put generate, verify and make test in one set-e sequential shell; preserve failed output separately. No sleep, guard weakening or unchanged concurrent retry.",
+      "full_suite_acceptance_from_failed_attempt": false
+    },
+    "logs": {
+      "query-fragment-negative-before.log.gz": {
+        "path": "evidence/client-delivery/eap-mirror-20261031/query-fragment-negative-before.log.gz",
+        "raw_bytes": 9507,
+        "raw_sha256": "003d74525dee3d493645f506b76d3df117e1b8595e632f19f5eb3423afb9688b",
+        "gzip_sha256": "c0a1bfeb923d2105aecb39d07d93b9e1d381b844fb0f5d9843074f3a244cd5db"
+      },
+      "query-fragment-targeted-after.log.gz": {
+        "path": "evidence/client-delivery/eap-mirror-20261031/query-fragment-targeted-after.log.gz",
+        "raw_bytes": 30836,
+        "raw_sha256": "b58e446a2188ba24024a521352173627114adb59497fd682d6c3971bf9fa2058",
+        "gzip_sha256": "d471aa34b88420818b9a33f156c282540bdc782421a44c198ee032ae585a3d1e"
+      },
+      "query-fragment-make-test.log.gz": {
+        "path": "evidence/client-delivery/eap-mirror-20261031/query-fragment-make-test.log.gz",
+        "raw_bytes": 449380,
+        "raw_sha256": "3139be62c51f11c5ef320e1cf25db899229517640ee4e77fafba905d9d892c2f",
+        "gzip_sha256": "74f908b67237fbe52b3590d107ca16d6a9368ff4cfab32d075f803c7842e31b9"
+      }
+    },
+    "predecessor_client_receipt": {
+      "path": "evidence/client-delivery/eap-mirror-20261031/QUERY_FRAGMENT_PREDECESSOR_CLIENT_RECEIPT.json",
+      "sha256": "ab97fad9fbe98444dc7825ac4f9a0d45b6c3474ad82a48784a350d2a6e61b501"
+    },
+    "workspace_predecessor": {
+      "path": "evidence/client-delivery/eap-mirror-20261031/QUERY_FRAGMENT_WORKSPACE_PREDECESSOR.json",
+      "task_id": "bda35a33-f28b-469c-974a-7248a9555801",
+      "version": 2,
+      "sha256": "8de33c7d86b3d25e492a59c0d263b67c83cb044ee5369bf005f911a18d9ec4e2"
+    },
+    "route_policy_sha256": "b902b44710e3f1ff869d07a7ff598bef826ffb538d3bb23128f5ed8e7008d427"
   }
 }

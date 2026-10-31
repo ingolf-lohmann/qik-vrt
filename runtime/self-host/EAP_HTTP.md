@@ -138,6 +138,12 @@ bearer credential can leave the request target and verifies both receipts agains
 the submitted input, principal, request, subject, observed ledger epoch and native
 event digests. The unchanged source carrier remains available for comparison.
 
+The base URL must be an HTTPS origin or path prefix, or an admitted local test
+origin. The client validates the parsed authority before using credentials.
+Raw query and fragment delimiters, including empty `?` and `#`, are rejected
+with `BASE_URL_QUERY_OR_FRAGMENT_FORBIDDEN`: appending an EAP route to them
+would otherwise select a query or fragment instead of that route.
+
 Source availability does not install the client in another node. A live run also
 requires the actual Mirror's permitted HTTPS route to `raumzeitterminal.de` and
 its protected host grant. The existing private `owner_rest_grants` mechanism must
