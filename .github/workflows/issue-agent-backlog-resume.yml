@@ -1,8 +1,7 @@
 name: Issue agent backlog resume
 
+# Event-driven only: no scheduled polling. Dispatch requires a causally new input.
 on:
-  schedule:
-    - cron: '7,37 * * * *'
   workflow_dispatch:
     inputs:
       issue_number:
