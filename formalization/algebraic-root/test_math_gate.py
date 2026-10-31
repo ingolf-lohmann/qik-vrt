@@ -44,6 +44,20 @@ class MathGateTests(unittest.TestCase):
                 self.assertEqual(hashlib.sha256(approved.read_bytes()).hexdigest(),
                                  data["subject_sha256"])
 
+    def test_feedback_reaches_producer(self):
+        with tempfile.TemporaryDirectory() as temp:
+            base = Path(temp)
+            producer = base / 'producer.py'
+            producer.write_text("import json,pathlib,sys\\nfeedback=json.loads(pathlib.Path(sys.argv[1]).read_text())\\npathlib.Path(sys.argv[2]).write_text('corrected' if feedback['reason']=='verifier_rejected' else 'wrong')\\n")
+            verifier = base / 'verifier.py'
+            verifier.write_text("import hashlib,json,pathlib,sys\\ns=pathlib.Path(sys.argv[1]);h=hashlib.sha256(s.read_bytes()).hexdigest()\\npathlib.Path(sys.argv[2]).write_text(json.dumps({'schema':'qikvrt.math-verdict.v1','verdict':'verified' if s.read_text()=='corrected' else 'rejected','subject_sha256':h}))\\n")
+            receipt = base / 'gate.json'
+            p = subprocess.run([sys.executable,str(GATE),'--attempts','3','--receipt',str(receipt),'--producer',sys.executable,str(producer),'--verifier',sys.executable,str(verifier)],capture_output=True,text=True,timeout=30)
+            self.assertEqual(p.returncode,0,p.stderr)
+            evidence=json.loads(receipt.read_text())
+            self.assertEqual([a['reason'] for a in evidence['attempts']],['verifier_rejected','verified'])
+            self.assertEqual(receipt.with_suffix('.approved.bin').read_bytes(),b'corrected')
+
     def test_accept_bound_verdict(self):
         self.scenario("accept", True)
     def test_reject(self):
