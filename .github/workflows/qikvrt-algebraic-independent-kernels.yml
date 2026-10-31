@@ -35,7 +35,8 @@ jobs:
           sha256sum Root.lean ../Root.lean | tee hashes.txt
           lake update
           lake build
-          sudo env PATH="$PATH" HOME="$HOME" lake check --paranoid --json > multi-kernel-report.json
+          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 || true
+          lake check --paranoid --json > multi-kernel-report.json
           python3 -m json.tool multi-kernel-report.json > /dev/null
           cat multi-kernel-report.json
       - uses: actions/upload-artifact@v4
