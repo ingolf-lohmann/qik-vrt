@@ -1,0 +1,78 @@
+name: QIKVRT algebraic independent Lean kernels
+on:
+  push:
+    paths:
+      - 'formalization/algebraic-root/**'
+      - '.github/workflows/qikvrt-algebraic-independent-kernels.yml'
+  pull_request:
+    paths:
+      - 'formalization/algebraic-root/**'
+      - '.github/workflows/qikvrt-algebraic-independent-kernels.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  multiple-kernels:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check mathematical gate contract (no GitHub writes)
+        run: python3 -m unittest discover -s formalization/algebraic-root -p 'test_math_gate.py' -v
+      - name: Install sandbox and Lean 4.35 with independent kernels
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y bubblewrap
+          curl -fsSL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -o /tmp/elan-init.sh
+          sh /tmp/elan-init.sh -y --default-toolchain leanprover/lean4:v4.35.0
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Identify exact subject and toolchain
+        working-directory: formalization/algebraic-root/paranoid
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "::group::SOURCE_IDENTITY"
+          printf 'COMMIT=%s\\n' "$GITHUB_SHA"
+          git rev-parse HEAD
+          git rev-parse HEAD^{tree}
+          lean --version | tee toolchain.txt
+          cmp Root.lean ../Root.lean
+          sha256sum Root.lean ../Root.lean EffectIntegrity.lean SerializationCascade.lean EffectMachine.lean ParallelConsolidation.lean QIKVRTSuperdeterminism.lean lakefile.lean | tee hashes.txt
+          echo "::endgroup::"
+      - name: Resolve exact proof dependencies
+        working-directory: formalization/algebraic-root/paranoid
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "::group::DEPENDENCY_RESOLUTION"
+          lake update
+          echo "::endgroup::"
+      - name: Compile proof modules
+        working-directory: formalization/algebraic-root/paranoid
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "::group::LEAN_COMPILATION"
+          lake build
+          echo "::endgroup::"
+      - name: Verify six independent kernels
+        working-directory: formalization/algebraic-root/paranoid
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "::group::SIX_KERNEL_VERIFICATION"
+          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 || true
+          python3 -u observable_kernel_check.py --heartbeat-seconds 30 --idle-seconds 900 --total-seconds 1800
+          test -s multi-kernel-report.log
+          python3 -m json.tool kernel-execution.json >/dev/null
+          echo "::endgroup::"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: algebraic-root-independent-lean-kernels
+          path: |
+            formalization/algebraic-root/paranoid/multi-kernel-report.log
+            formalization/algebraic-root/paranoid/hashes.txt
+            formalization/algebraic-root/paranoid/toolchain.txt
+            formalization/algebraic-root/paranoid/kernel-execution.json

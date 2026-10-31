@@ -1,0 +1,27 @@
+{
+  "schema": "qikvrt.formal.external-kernel-evidence.v1",
+  "scope": "Six theorems in Root.lean and EffectIntegrity.lean only; not complete QIK-VRT/EAP formalization",
+  "tested_commit": "2895fad7583b2bfd515acbcfee6a1859c981fd35",
+  "workflow_run": 41192648250,
+  "job": 124512390722,
+  "conclusion": "success",
+  "checkers": {
+    "Lean paranoid": "accept",
+    "lean4lean": "accept (57965 declarations)",
+    "nanoda": "accept; exported unpermitted sorryAx skipped; named theorems axiom-free",
+    "con-leche": "accept (57968 declarations)",
+    "con-ron": "accept (57968 declarations)",
+    "Lean default": "accept"
+  },
+  "named_theorems_axioms": "none, per Lean #print axioms",
+  "artifact": {
+    "id": 13040130674,
+    "sha256": "0187cb2b21c62f5b42159dd27a35ebc2712cf318f8f2e8bdf9254a7da893496c"
+  },
+  "limitations": [
+    "No independent C90 kernel verified",
+    "No proof of complete QIK-VRT architecture",
+    "No productive EAP effect or host admission verified",
+    "Evidence records a past exact commit, not later branch HEAD"
+  ]
+}

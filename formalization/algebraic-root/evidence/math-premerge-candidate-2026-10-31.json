@@ -1,0 +1,20 @@
+{
+  "schema": "qikvrt.math-premerge-candidate-evidence.v1",
+  "tested_commit": "626fb8ecf4a129ca882f3afafe1d4f9384d5e82d",
+  "run_id": 41198777543,
+  "job_id": 124530231626,
+  "conclusion": "success",
+  "checks": [
+    "ISO C90 strict build and positive/negative finite-state controls",
+    "read-only official latest Lean release discovery",
+    "pinned Lean 4.35.0 foundation compilation",
+    "six independent Lean kernel verification",
+    "artifact upload"
+  ],
+  "limitations": [
+    "CI candidate is not enforced as a required check on main",
+    "no non-bypassable pre-GitHub-write gate established",
+    "C90 checker verifies finite-state certificates, not arbitrary Lean proofs",
+    "newer Lean release discovery does not automatically implement a compatible new kernel"
+  ]
+}

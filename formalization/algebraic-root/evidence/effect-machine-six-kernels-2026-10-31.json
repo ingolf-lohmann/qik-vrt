@@ -1,0 +1,40 @@
+{
+  "schema": "qikvrt.independent-kernel-evidence.v1",
+  "subject": "formalization/algebraic-root/paranoid/EffectMachine.lean",
+  "tested_commit": "e265e9bd1b8390f487721930aa8f40be2c943b3d",
+  "workflow_run": 41194768713,
+  "job_id": 124518612928,
+  "conclusion": "success",
+  "artifact": {
+    "id": 13039429591,
+    "sha256": "00f181963280a9590d5e585b2ed6f7590b7f31b394c518f8b7e4348655529aa4",
+    "size_bytes": 1607
+  },
+  "checkers": {
+    "Lean paranoid": "accept",
+    "lean4lean": "accept",
+    "nanoda": "accept (export skipped unpermitted sorryAx)",
+    "con-leche": "accept",
+    "con-ron": "accept",
+    "Lean default": "accept"
+  },
+  "theorems": {
+    "QikVrtAlgebraicRoot.effectStep_preserves_safety": [
+      "propext",
+      "Quot.sound"
+    ],
+    "QikVrtAlgebraicRoot.effectRunFrom_safe": [
+      "propext",
+      "Quot.sound"
+    ],
+    "QikVrtAlgebraicRoot.effectRun_safe": [
+      "propext",
+      "Quot.sound"
+    ]
+  },
+  "limitations": [
+    "Proves abstract state machine only, not production EAP behavior",
+    "Does not establish C90 independent checker or production migration",
+    "Evidence JSON committed after tested source and is not part of the tested commit"
+  ]
+}

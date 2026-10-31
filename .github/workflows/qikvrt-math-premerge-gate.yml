@@ -1,0 +1,59 @@
+name: QIKVRT mandatory mathematical pre-merge candidate gate
+on:
+  push:
+    branches:
+      - formal/independent-algebra-kernel-20261031
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  mathematical-premerge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: C90 independent finite-state verifier
+        shell: bash
+        run: |
+          set -euo pipefail
+          cc -std=c90 -pedantic -Wall -Wextra -Werror formalization/algebraic-root/c90_math_verifier.c -o /tmp/qikvrt-c90-math
+          /tmp/qikvrt-c90-math --selftest
+          printf '3\n1 2 0\n2 0 1\n2 0 1\n1 2 0\n' >/tmp/qikvrt-valid.txt
+          /tmp/qikvrt-c90-math /tmp/qikvrt-valid.txt
+          printf '3\n1 2 0\n0 0 1\n2 0 1\n1 2 0\n' >/tmp/qikvrt-invalid.txt
+          if /tmp/qikvrt-c90-math /tmp/qikvrt-invalid.txt; then echo 'negative control accepted'; exit 1; fi
+      - name: Check Lean version without changing pinned compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 formalization/algebraic-root/check_lean_version.py --report /tmp/qikvrt-lean-version.json
+          python3 -m json.tool /tmp/qikvrt-lean-version.json
+      - name: Install pinned Lean and independently verify formal source
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y bubblewrap
+          curl -fsSL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -o /tmp/elan-init.sh
+          sh /tmp/elan-init.sh -y --default-toolchain leanprover/lean4:v4.35.0
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Verify pinned mathematical foundation
+        working-directory: formalization/algebraic-root/paranoid
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake update
+          lake build
+          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 || true
+          python3 -u observable_kernel_check.py --heartbeat-seconds 30 --idle-seconds 900 --total-seconds 1800
+          test -s multi-kernel-report.log
+          python3 -m json.tool kernel-execution.json >/dev/null
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: qikvrt-math-premerge-evidence
+          path: |
+            /tmp/qikvrt-lean-version.json
+            formalization/algebraic-root/paranoid/kernel-execution.json
+            formalization/algebraic-root/paranoid/multi-kernel-report.log

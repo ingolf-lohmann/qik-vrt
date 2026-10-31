@@ -1,0 +1,39 @@
+{
+  "schema": "qikvrt.parallel-consolidation-proof-evidence.v1",
+  "subject": "formalization/algebraic-root/paranoid/ParallelConsolidation.lean",
+  "tested_commit": "97949738d70b91835c720b84ca145d61d164684b",
+  "source_sha256": "cd02059b140a88624df220847f06da57d2b58d1f8b0154e6df3b94eada823beb",
+  "run_id": 41197017576,
+  "job_id": 124525134769,
+  "conclusion": "success",
+  "checkers": [
+    "Lean paranoid",
+    "lean4lean",
+    "nanoda",
+    "con-leche",
+    "con-ron",
+    "Lean default"
+  ],
+  "artifact": {
+    "id": 13041490317,
+    "sha256": "63e64d6e35e642ab1034ec17dece10d67cd3821c7b83311d8ca281336769d4d5"
+  },
+  "theorems": {
+    "consolidation_equals_sequential": [
+      "propext",
+      "Quot.sound"
+    ],
+    "reversible_forward_backward": [],
+    "reversible_backward_forward": [],
+    "domain_independent_consolidation": [
+      "propext",
+      "Quot.sound"
+    ]
+  },
+  "limits": [
+    "Abstract finite independent deterministic tasks and bijective schedule, not proof of real transport reliability",
+    "ExecutionDomain cases are labels, not validated threads/processes/interrupts/networks",
+    "Reversibility requires two-sided inverse; no physical superdeterminism proved",
+    "Not an end-to-end EAP, Trusted Mesh, runtime refinement or GitHub persistence authorization"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "schema": "qikvrt-independent-lean-kernel-evidence/v1",
+  "scope": "two algebraic countermodel theorems only",
+  "source_sha256": "83d6cb67edf20a53a971dc8e5bd311cc3c685602f2fe52bacfe29215b1217898",
+  "candidate_commit": "e0770b6d8615c297d64270fe17709f35bf4d1149",
+  "run_id": 41189941959,
+  "run_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/41189941959",
+  "job_id": 124504478390,
+  "conclusion": "success",
+  "toolchain": "Lean 4.35.0",
+  "kernel_results": {
+    "Lean paranoid": "accept",
+    "lean4lean": "accept",
+    "nanoda": "accept",
+    "con-leche": "accept",
+    "con-ron": "accept",
+    "Lean default": "accept"
+  },
+  "lean4lean_checked_declarations": 57943,
+  "con_leche_accepted_declarations": 57946,
+  "con_ron_accepted_declarations": 57946,
+  "axioms_note": "Lean check reports Classical.choice, propext, Quot.sound for exported environment; the two named theorems each report no axioms in source build. nanoda logs skipped exported but unpermitted sorryAx; not claimed used by target theorems.",
+  "artifact_id": 13038801435,
+  "artifact_sha256": "7a1e3a13b1652364ccd93d5df9b63cfc03d3fc40c0eb4442cc102da6a09af828",
+  "not_proven": "Full QIK-VRT system, runtime, host, domain, effect acknowledgements"
+}
