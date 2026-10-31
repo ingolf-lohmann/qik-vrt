@@ -21,6 +21,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class DeliveryReportingProofTests(unittest.TestCase):
+    def test_panic_followed_by_success_and_zero_exit_is_rejected(self):
+        result = subprocess.run([sys.executable, "-c",
+            "print('PANIC at fixture.checker: invalid declaration'); print('REPLAY_PASS')"],
+            capture_output=True, text=True, check=False)
+        self.assertEqual(result.returncode, 0)
+        with self.assertRaisesRegex(RuntimeError, "panic/error"):
+            ai_handoff.require_formal_command_success(result.returncode, result.stdout)
+        ai_handoff.require_formal_command_success(0, "ordinary check completed\n")
+
     def vectors(self):
         policy = ai_handoff.formal_policy()
         path = ROOT / policy["vectors_path"]

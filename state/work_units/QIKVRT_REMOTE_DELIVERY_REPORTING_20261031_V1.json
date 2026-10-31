@@ -231,5 +231,38 @@
     "materializer_job": 124598246404,
     "conclusion": "success",
     "success_transferred_to_final_head": false
+  },
+  "independent_formal_readback_repair": {
+    "source_head": "06f0320f333940cfaa9ddd2f25f628bbfed22e1d",
+    "source_tree": "c93d1149a067026f1b5884a1322f421643df5231",
+    "native_run": 41238540287,
+    "native_job": 124647324632,
+    "native_artifact": 13056581157,
+    "original_archive": "evidence/formal-receipts/DeliveryReporting/PREDECESSOR_06F0320F_NATIVE.zip",
+    "archive_sha256": "67c49323f42c3b47cb245006d1d18b8a3ef06553d8db7a32531f0a44509ff9bd",
+    "handoff_comment": "https://github.com/ingolf-lohmann/qik-vrt/pull/546#issuecomment-6548712456",
+    "comment_original_bytes_independently_readback_equal": true,
+    "causal_repairs": [
+      "Own replay used an environment diff and replayed 4902 declarations; PANIC did not prevent a printed PASS or exit0. Select original module data against exact original imports; reject PANIC/error independently of exit code.",
+      "nanoda rejected a Nat literal because its configuration omitted the original Lean-bundle nat_extension/string_extension switches. Restore the exact documented extension settings, preserving axiom policy.",
+      "Import the original 393794-byte/1152-vector artifact output, pin SHA-256 5e5be7c610f5d4b7ec41cfc8e0e0154bf8476b0ac48b3d5b2a839745a41080ff; no vector verdict was hand-authored."
+    ],
+    "current_acceptance": "FRESH_REPAIRED_HEAD_NATIVE_EXECUTION_REQUIRED",
+    "seven_checkers_pass": false,
+    "main_merged": false,
+    "productive_effect_ack_done": false,
+    "local_runtime": "Official hash-verified Lean4.19/4.35 executables cannot resolve numeric /proc/<pid>/exe in this client runtime; no executable modification or protection bypass performed. Native workflow is reused.",
+    "prior_local_duplicate_implementation": "Not published; two fresh branch readbacks detected concurrent source writers. Existing ai_handoff runner/policy/bridge/merge evaluator reused.",
+    "w5_materialization_readback": {
+      "head": "a56b0632e120ce815019e5f4a812fc828c57cd1e",
+      "tree": "8fa77daa712d99004ad2bbdb9c3e3b681bde216d",
+      "run": 41215514005,
+      "attempt": 2,
+      "job": 124601748625,
+      "conclusion": "success",
+      "original_log_binding": "evidence/client-delivery/PR658_MATERIALIZATION_ATTEMPT2_JOB124601748625.json",
+      "rerun_by_this_client": false,
+      "scope": "Materialization only; no governance, merge, deployment or production effect"
+    }
   }
 }

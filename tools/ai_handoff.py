@@ -1319,6 +1319,10 @@ def formal_proof_gate(directory: Path) -> None:
         path = directory / "logs" / (checker["id"] + ".log")
         if not path.is_file() or path.is_symlink() or hashlib.sha256(path.read_bytes()).hexdigest() != receipt["log_sha256"]:
             fail("FORMAL_ORIGINAL_LOG_MISSING_OR_DRIFT:" + checker["id"])
+        try:
+            require_formal_command_success(receipt["exit_code"], path.read_text())
+        except RuntimeError:
+            fail("FORMAL_CHECKER_DIAGNOSTIC_FAILURE:" + checker["id"])
         client_time(receipt["utc"], "FORMAL_RECEIPT_UTC_INVALID")
         axioms = receipt["axioms"]
         if (not isinstance(axioms, dict) or set(axioms) != inventory
@@ -1337,6 +1341,14 @@ def formal_proof_gate(directory: Path) -> None:
     print("FORMAL_MODEL_CHECKERS=7/7")
     print("IMPLEMENTATION_ASSURANCE=FINITE_DIFFERENTIAL_BRIDGE_ONLY")
     print("LIVE_EFFECT_VERIFICATION=NOT_PERFORMED")
+
+
+def require_formal_command_success(returncode: int, output: str) -> None:
+    """A checker panic is failure even if its runtime returns zero afterwards."""
+    if returncode != 0:
+        raise RuntimeError("formal checker command returned nonzero: " + str(returncode))
+    if re.search(r"(?mi)^\s*(?:PANIC\b|error:|.*declaration uses .sorry.)", output):
+        raise RuntimeError("formal checker emitted panic/error despite zero exit")
 
 
 def run_formal_proof(directory: Path, own_root: Path, external_root: Path) -> int:
@@ -1371,8 +1383,8 @@ def run_formal_proof(directory: Path, own_root: Path, external_root: Path) -> in
                         proc = subprocess.run(argv, cwd=cwd, stdout=dest, stderr=stream,
                                               timeout=300, check=False)
                 stream.write(("\nEXIT_CODE=" + str(proc.returncode) + "\n").encode())
-                if proc.returncode:
-                    raise RuntimeError("command nonpass: " + shlex.join(argv))
+                stream.flush()
+                require_formal_command_success(proc.returncode, log.read_text())
             except (OSError, subprocess.TimeoutExpired) as exc:
                 stream.write(("\nUNVERIFIED=" + str(exc) + "\n").encode())
                 raise RuntimeError(str(exc)) from exc
@@ -1469,7 +1481,8 @@ def run_formal_proof(directory: Path, own_root: Path, external_root: Path) -> in
         external_error = str(exc)
     config = directory / "nanoda-config.json"
     config.write_text(json.dumps({"use_stdin": False, "export_file_path": str(export),
-        "permitted_axioms": policy["permitted_axioms"], "unpermitted_axiom_hard_error": True}))
+        "permitted_axioms": policy["permitted_axioms"], "unpermitted_axiom_hard_error": True,
+        "num_threads": 4, "nat_extension": True, "string_extension": True}))
     for checker in policy["checkers"][1:]:
         log = logs / (checker["id"] + ".log")
         log.write_bytes(external_log.read_bytes())

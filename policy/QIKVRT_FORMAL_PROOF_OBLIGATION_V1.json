@@ -134,7 +134,12 @@
           "Quot.sound"
         ]
       },
-      "provision": "Exact official SHA-256-locked Lean distribution; source builds are documented alternatives, never automatic substitutions."
+      "provision": "Exact official SHA-256-locked Lean distribution; source builds are documented alternatives, never automatic substitutions.",
+      "configure_command": [
+        "cmake",
+        "--preset",
+        "release"
+      ]
     },
     {
       "id": "lean-paranoid",
@@ -143,10 +148,9 @@
       "commit": "eb6cafb7290e8bd5f2937522d8d804f58f02bafc",
       "version": "4.35.0",
       "build_command": [
-        "cmake",
-        "--build",
+        "make",
+        "-C",
         "build/release/stage1",
-        "--target",
         "leanchecker-paranoid"
       ],
       "check_command": [
@@ -169,7 +173,12 @@
           "Quot.sound"
         ]
       },
-      "provision": "Exact official SHA-256-locked Lean distribution; source builds are documented alternatives, never automatic substitutions."
+      "provision": "Exact official SHA-256-locked Lean distribution; source builds are documented alternatives, never automatic substitutions.",
+      "configure_command": [
+        "cmake",
+        "--preset",
+        "release"
+      ]
     },
     {
       "id": "lean4lean",
@@ -307,9 +316,9 @@
       "build_command": [
         "cmake",
         "--build",
-        "build/release/stage1",
+        "build/release",
         "--target",
-        "leanchecker"
+        "stage1"
       ],
       "check_command": [
         "leanchecker",
@@ -331,12 +340,49 @@
           "Quot.sound"
         ]
       },
-      "provision": "Exact official SHA-256-locked Lean distribution; source builds are documented alternatives, never automatic substitutions."
+      "provision": "Exact official SHA-256-locked Lean distribution; source builds are documented alternatives, never automatic substitutions.",
+      "configure_command": [
+        "cmake",
+        "--preset",
+        "release"
+      ]
     }
   ],
   "vectors_path": "evidence/formal-receipts/DeliveryReporting/vectors.json",
-  "vectors_sha256": null,
+  "vectors_sha256": "5e5be7c610f5d4b7ec41cfc8e0e0154bf8476b0ac48b3d5b2a839745a41080ff",
   "native_check_name": "QIKVRT formal proof obligation (7/7)",
   "native_check_app_id": 15368,
-  "native_workflow_name": "QIK-VRT universal ontology finite-model verification"
+  "native_workflow_name": "QIK-VRT universal ontology finite-model verification",
+  "bundle_source_build": {
+    "source": "https://github.com/leanprover/lean4",
+    "commit": "eb6cafb7290e8bd5f2937522d8d804f58f02bafc",
+    "commands": [
+      [
+        "cmake",
+        "--preset",
+        "release"
+      ],
+      [
+        "cmake",
+        "--build",
+        "build/release",
+        "--target",
+        "stage1"
+      ],
+      [
+        "make",
+        "-C",
+        "build/release/stage1",
+        "leanchecker",
+        "leanchecker-paranoid",
+        "lean4lean",
+        "nanoda",
+        "con-leche",
+        "con-ron"
+      ]
+    ],
+    "source_pins_and_lean4lean_patch": "src/CMakeLists.txt and script/lean4lean-minimal-init.sh at that same commit",
+    "executed_here": false,
+    "actual_run_provision": "The hash-locked official archive is the current native provision path."
+  }
 }
