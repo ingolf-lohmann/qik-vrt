@@ -45,12 +45,15 @@ function App() {
         window.__qikvrtReadbacks = (window.__qikvrtReadbacks || []).concat([{ t: Date.now(), seq: x.seq }]);
         const rel = await (await fetch("/client-release", { cache: "no-store" })).json();
         if (rel.version && !seen.current.has(rel.version)) {
-          seen.current.add(rel.version);
           try {
             const v = await verifyRelease(rel.manifest, rel.signature);
-            setRelease(v);
-            await fetch("/activated", { method: "POST", headers: { "Content-Type": "application/json" },
+            const activation = await fetch("/activated", { method: "POST", headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ version: v.manifest.version, sha256: v.digest }) });
+            if (!activation.ok) throw new Error("RELEASE_ACTIVATION_HTTP_" + activation.status);
+            const receipt = await activation.json();
+            if (receipt.version !== v.manifest.version || receipt.sha256 !== v.digest || receipt.status !== "ACTIVATED") throw new Error("RELEASE_ACTIVATION_RECEIPT_INVALID");
+            seen.current.add(rel.version);
+            setRelease(v);
             log("ACTIVATED " + v.manifest.version + " sha256=" + v.digest.slice(0, 16));
           } catch (e) {
             await fetch("/rejected", { method: "POST", headers: { "Content-Type": "application/json" },
