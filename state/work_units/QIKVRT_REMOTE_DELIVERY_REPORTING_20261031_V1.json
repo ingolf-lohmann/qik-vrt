@@ -1,0 +1,383 @@
+{
+  "schema": "qikvrt_client_delivery_reporting_work_unit_v1",
+  "work_unit_id": "QIKVRT_REMOTE_DELIVERY_REPORTING_R1_R5_20261031",
+  "principal": "Ingolf Lohmann",
+  "source_subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "5a42baf45748e4407a8fa16aef287a77873e788d",
+    "tree": "3f6e816b6b496eeb9ce8777d8fb93d95717be9ae"
+  },
+  "existing_candidate": {
+    "pull_request": 546,
+    "head": "de01755741cda99bd8ca59bcbb83d784d022a6d9",
+    "tree": "5e686d7a1a7d6b08c2da8934ec41b5c334d31180",
+    "recovery": "Original five semantic file patches applied to current Main; historical work unit retained. Integrity is regenerated, not copied."
+  },
+  "owner_supplied_incident": {
+    "evidence_class": "OWNER_SUPPLIED_MIRROR_REPORT_NOT_INDEPENDENTLY_VERIFIED",
+    "reported_at": "2026-10-31T17:33:00+01:00",
+    "reported_false_claim_at": "2026-10-31T16:53:00+01:00",
+    "claim": "Merge request for PR658 was said to have reached Authority but was only submitted to a loopback Terminal copy.",
+    "reported_network_error": "403 CONNECT from Mirror sandbox proxy",
+    "http_trace_sha256": "b7f028ed7d056f60c2708ffe08ac5b8f3a9d661d8a25498dd1298a1cf0a4ed5e",
+    "trace_bytes_available": false,
+    "authority_no_byte_received_independently_verified": false,
+    "reported_owner_effort": {
+      "value": ">2 h",
+      "evidence_class": "OWNER_ASSERTED"
+    },
+    "other_reported_errors": [
+      "Misstated own write history",
+      "Did not read OWNER-CONFLICT-FREE-GREEN-MERGE-20261028",
+      "Repeated configuration assignments to Owner"
+    ]
+  },
+  "mirror_client": {
+    "reported_commit": "75522c4911304efbe14fd9780c1a49bb7700e1f3",
+    "required_tree": "3954495264e5e1fedbdcbac7d919189872c6810d",
+    "patch_filename": "0001-eap-mirror-client.patch",
+    "reported_patch_sha256": "24099374de70ed537421513c81a8452cbd095a204b75c6b6fa1ebd5aedb1531f",
+    "patch_bytes_available": false,
+    "imported": false,
+    "state": "HOLD_EXACT_ORIGINAL_PATCH_AND_TREE_NOT_AVAILABLE",
+    "reported_tests": {
+      "python": "4/4",
+      "conformance": "68 OK",
+      "independently_reexecuted": false
+    },
+    "authority_lookup": "GET exact original commit 75522c4911304efbe14fd9780c1a49bb7700e1f3 returned HTTP404 from Authority; bounded workspace filename search found no patch or HTTP trace."
+  },
+  "causal_repair": {
+    "existing_validator": "tools/ai_handoff.py --client-receipt",
+    "new_executor": false,
+    "normative_rules": "R1-R5 in AI and shared progress policy",
+    "executable_scope": "Declared communication consistency, remote observation chronology, message/node/host binding, loopback/status/replay rejection; no evidence authentication, arbitrary prose checking or universal adoption claim."
+  },
+  "native_readback": "evidence/client-delivery/AUTHORITY_READBACK_20261031.json",
+  "original_native_job_logs": [
+    {
+      "path": "job-124579086355.log",
+      "bytes": 798233,
+      "sha256": "6c53e8707515b07b9667c95d0f80cc09abeafffee353aef25576c7b98ccc483d",
+      "original_decoded_connector_text_matches": true,
+      "source": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/actions/jobs/124579086355/logs"
+    },
+    {
+      "path": "job-124579087227.log",
+      "bytes": 800111,
+      "sha256": "407dea7f811bfd4b049c90c12a2cf656fbc1b840ee2cd542d78b093b70d1bc03",
+      "original_decoded_connector_text_matches": true,
+      "source": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/actions/jobs/124579087227/logs"
+    }
+  ],
+  "pr658_merge": {
+    "head": "a56b0632e120ce815019e5f4a812fc828c57cd1e",
+    "tree": "8fa77daa712d99004ad2bbdb9c3e3b681bde216d",
+    "merge_attempted": false,
+    "open_gates": [
+      "Draft transition",
+      "Fresh exact-head required evidence-materialization success after its HTTP403 GET failure",
+      "Exact-head native governance/technical disposition",
+      "Current Main, platform and competing-writer reobservation"
+    ],
+    "green_test_workflows": [
+      41215513746,
+      41215513755
+    ],
+    "failed_materialization_run": 41215514005,
+    "owner_review": "Accepted as Owner-supplied assertion; no independent GitHub review or comment invented.",
+    "failed_batch003_remaining_disposition_run": 41215513887,
+    "rerun": {
+      "head": "a56b0632e120ce815019e5f4a812fc828c57cd1e",
+      "run_id": 41215514005,
+      "attempt": 2,
+      "job_id": 124601748625,
+      "state_at_readback": "in_progress",
+      "preflight": "success",
+      "merge_attempted": false,
+      "duplicate_dispatch_allowed": false
+    },
+    "rerun_causal_evidence": "The same Git-Data archive preflight succeeded in native job124598246404 with unchanged workflow/journal code and same repository token carrier; complete inventory showed no equivalent active exact-head run before the single rerun."
+  },
+  "open_obligations": [
+    {
+      "id": "PR658_INTEGRATION",
+      "state": "OPEN",
+      "next_action": "Read back existing materializer run41215514005 attempt2; do not duplicate dispatch. Its preflight now succeeds but complete native gate, other applicable failures, exact native governance, Draft transition and eventual merge readback remain separate."
+    },
+    {
+      "id": "ORIGINAL_MIRROR_CLIENT",
+      "state": "OPEN",
+      "next_action": "Recover original separately announced patch through admitted carrier; verify exact bytes and reported tree before any import."
+    },
+    {
+      "id": "AUTHORITY_OWNER_REST_GRANT",
+      "state": "OPEN_NOT_OBSERVED",
+      "next_action": "Original admitted host must independently read back the sealed grant for claude:mirror and own 0600 token file; no secret is requested or published."
+    },
+    {
+      "id": "EXACT_HOST_ADMISSION",
+      "state": "OPEN",
+      "next_action": "Original admitted host must repair the observed TLS/runtime prerequisite and verify exact-domain EAP receipt; the current adapter reports HTTP525 and ready=false."
+    },
+    {
+      "id": "MIRROR_NETWORK_PATH",
+      "state": "OPEN_MIRROR_REPORTED",
+      "next_action": "Mirror runtime must verify its own authorized network path and protected token binding; Authority cannot infer that from local tests."
+    },
+    {
+      "id": "ALL_NODE_ADOPTION",
+      "state": "OPEN",
+      "next_action": "Require each admitted node exact-policy ACK and independent remote readback; source persistence is insufficient."
+    }
+  ],
+  "validation": {
+    "state": "FINAL_LOCAL_SOURCE_GATES_PASS",
+    "full_make_test_exit": 0,
+    "reported_python_test_executions": 2277,
+    "targeted_test_count": 154,
+    "baseline_comparison": {
+      "original_main_false_acceptances": 4,
+      "repaired_rejections": 4
+    },
+    "alternate_address_controls": "Loopback literal, shorthand, octal, hexadecimal and mapped IPv6 rejected; declared admitted private remote address remains a distinct positive case.",
+    "raw_local_validation": "evidence/client-delivery/PR546_FINAL_LOCAL_VALIDATION.zip",
+    "integrity": "Regenerated and verified again after final evidence packaging.",
+    "native_ci": "FRESH_FINAL_HEAD_NATIVE_CI_REQUIRED; predecessor native success is historical only."
+  },
+  "provenance": {
+    "human": "Ingolf Lohmann supplied incident, rule request and existing authorizations.",
+    "artificial_cognitive": "Claude self-reported incident and client candidate; Codex independently read GitHub/adapter evidence, recovered PR546 and implemented this bounded repair.",
+    "unresolved": "Raw Mirror HTTP trace and client patch not supplied; no remote Claude identity or delivery authenticated."
+  },
+  "completion_claims": {
+    "main_integration": false,
+    "pr658_merged": false,
+    "mirror_client_imported": false,
+    "live_eap_delivery": false,
+    "all_nodes_adopted": false,
+    "productive_effect_ack_done": false
+  },
+  "local_bootstrap_incident": {
+    "artifact": "Untracked transfer temporary blocked this session initial bootstrap",
+    "bytes": 55574528,
+    "sha256": "1fd21d0e66315e07c8e89d40ca9e59df385dc8973c4e8ffecc0832d4e98e4e5c",
+    "action": "Quarantined outside checkout; original bytes retained in scratch",
+    "subsequent_bootstrap": "CONTINUE",
+    "cause": "NOT_ESTABLISHED; do not attribute local temporary to remote Main failure"
+  },
+  "independent_review_lookup": {
+    "direct_owner_decision_for_reported_1641_exact_head": "NOT_RECOVERED",
+    "source": "Bounded Personal Context lookup for exact PR658 head; no raw current-head Owner decision recovered. Prior assistant summaries are not review authority.",
+    "existing_generic_owner_authorizations_retained": true
+  },
+  "connector_capability_observation": {
+    "authenticated_login": "ingolf-lohmann",
+    "authenticated_id": 294949349,
+    "branch_protection_read": "HTTP403 Resource not accessible by integration",
+    "rules_branches_read": "Connector URL allowlist rejected /rules/branches/main (HTTP400); not a target protection result",
+    "successful_repository_reads_and_existing_authorization_invalidated": false
+  },
+  "corrections": [
+    {
+      "supersedes": "91c086deec1d01ed69594dc7bd6156fdabb7409b:run-name attribution",
+      "observed_defect": "Both original jobs are named materialize; the initial snapshot incorrectly assigned the required repository materialization identity to 41215513887.",
+      "correct_binding": {
+        "repository_evidence_materialization": {
+          "run_id": 41215514005,
+          "job_id": 124579087227
+        },
+        "batch003_remaining_subject_disposition": {
+          "run_id": 41215513887,
+          "job_id": 124579086355
+        }
+      },
+      "source": "evidence/client-delivery/FAILED_RUN_IDENTITY_READBACK_20261031.json",
+      "scope_change": "None: both original native failures remain HTTP403, neither is green; no merge was attempted."
+    },
+    {
+      "supersedes": "91c086deec1d01ed69594dc7bd6156fdabb7409b:raw log export byte sizes",
+      "observed_defect": "The initial local patch carrier appended one extra terminal LF to each decoded log. No original line was removed.",
+      "repair": "Remove exactly that extra LF, compare the entire retained decoded string with original connector output, rebuild the ZIP and pin corrected byte sizes/digests.",
+      "original_line_content_rewritten": false
+    }
+  ],
+  "predecessor_validation": {
+    "state": "LOCAL_CURRENT_SOURCE_GATES_PASS",
+    "full_make_test_exit": 0,
+    "reported_python_test_executions": 2276,
+    "targeted_test_count": 153,
+    "baseline_comparison": {
+      "original_main_false_acceptances": 4,
+      "repaired_rejections": 4,
+      "cases": [
+        "missing remote readback",
+        "loopback receipt",
+        "HTTP403",
+        "HTTP525"
+      ]
+    },
+    "integrity": "Deterministically regenerated; fresh final verification required after evidence packaging.",
+    "raw_local_validation": "evidence/client-delivery/PR546_REMOTE_READBACK_LOCAL_VALIDATION.zip",
+    "native_ci": "FRESH_REMOTE_CANDIDATE_RUN_REQUIRED",
+    "source_head": "91c086deec1d01ed69594dc7bd6156fdabb7409b",
+    "scope": "Historical code validation before final alternate-IP controls; not transferred to final head."
+  },
+  "native_predecessor_success": {
+    "head": "91c086deec1d01ed69594dc7bd6156fdabb7409b",
+    "tree": "39d062f8c348327ce64c860668e77745d9acc317",
+    "full_ci": 41221975828,
+    "materializer": 41221975958,
+    "materializer_job": 124598246404,
+    "conclusion": "success",
+    "success_transferred_to_final_head": false
+  },
+  "independent_formal_readback_repair": {
+    "source_head": "06f0320f333940cfaa9ddd2f25f628bbfed22e1d",
+    "source_tree": "c93d1149a067026f1b5884a1322f421643df5231",
+    "native_run": 41238540287,
+    "native_job": 124647324632,
+    "native_artifact": 13056581157,
+    "original_archive": "evidence/formal-receipts/DeliveryReporting/PREDECESSOR_06F0320F_NATIVE.zip",
+    "archive_sha256": "67c49323f42c3b47cb245006d1d18b8a3ef06553d8db7a32531f0a44509ff9bd",
+    "handoff_comment": "https://github.com/ingolf-lohmann/qik-vrt/pull/546#issuecomment-6548712456",
+    "comment_original_bytes_independently_readback_equal": true,
+    "causal_repairs": [
+      "Own replay used an environment diff and replayed 4902 declarations; PANIC did not prevent a printed PASS or exit0. Select original module data against exact original imports; reject PANIC/error independently of exit code.",
+      "nanoda rejected a Nat literal because its configuration omitted the original Lean-bundle nat_extension/string_extension switches. Restore the exact documented extension settings, preserving axiom policy.",
+      "Import the original 393794-byte/1152-vector artifact output, pin SHA-256 5e5be7c610f5d4b7ec41cfc8e0e0154bf8476b0ac48b3d5b2a839745a41080ff; no vector verdict was hand-authored."
+    ],
+    "current_acceptance": "FRESH_REPAIRED_HEAD_NATIVE_EXECUTION_REQUIRED",
+    "seven_checkers_pass": false,
+    "main_merged": false,
+    "productive_effect_ack_done": false,
+    "local_runtime": "Official hash-verified Lean4.19/4.35 executables cannot resolve numeric /proc/<pid>/exe in this client runtime; no executable modification or protection bypass performed. Native workflow is reused.",
+    "prior_local_duplicate_implementation": "Not published; two fresh branch readbacks detected concurrent source writers. Existing ai_handoff runner/policy/bridge/merge evaluator reused.",
+    "w5_materialization_readback": {
+      "head": "a56b0632e120ce815019e5f4a812fc828c57cd1e",
+      "tree": "8fa77daa712d99004ad2bbdb9c3e3b681bde216d",
+      "run": 41215514005,
+      "attempt": 2,
+      "job": 124601748625,
+      "conclusion": "success",
+      "original_log_binding": "evidence/client-delivery/PR658_MATERIALIZATION_ATTEMPT2_JOB124601748625.json",
+      "rerun_by_this_client": false,
+      "scope": "Materialization only; no governance, merge, deployment or production effect"
+    }
+  },
+  "owner_supplied_formal_artifact_handoff": {
+    "record": "evidence/formal-receipts/DeliveryReporting/OWNER_HANDOFF_20261031.json",
+    "own_kernel_log": "evidence/formal-receipts/DeliveryReporting/own-kernel-run.txt",
+    "vectors_sha256": "5e5be7c610f5d4b7ec41cfc8e0e0154bf8476b0ac48b3d5b2a839745a41080ff",
+    "prior_open_obligations_retained": true,
+    "fresh_final_head_native_acceptance_required": true
+  },
+  "formal_proof_obligation_continuation": {
+    "schema": "qikvrt-formal-obligation-continuation/v1",
+    "request_sha256": "e72e589f4fd6ff009beeafaf0c314ed896f2a7314fa298875fcd72ac439495d1",
+    "source_predecessor": {
+      "head": "06f0320f333940cfaa9ddd2f25f628bbfed22e1d",
+      "tree": "c93d1149a067026f1b5884a1322f421643df5231"
+    },
+    "owner_authorization_retained": true,
+    "carrier": "PR546 fix/client-communication-evidence-20261019",
+    "observed_at_utc": "2026-10-31T20:31:00.346136+00:00",
+    "verified_local": [
+      "Original native-generated 1152 vectors imported; sha256=5e5be7c610f5d4b7ec41cfc8e0e0154bf8476b0ac48b3d5b2a839745a41080ff",
+      "All generated verdicts agree through actual receipt validator and bounded original CLI controls",
+      "Status-condition mutant detected; six-of-seven, replay, foreign subject, payload/log/commit drift and zero-exit panic controls reject",
+      "322 existing targeted tests and 10 bridge/gate tests passed on the uncommitted successor inputs"
+    ],
+    "native_predecessor": {
+      "run_id": 41238540287,
+      "job_id": 124647324632,
+      "archive_sha256": "67c49323f42c3b47cb245006d1d18b8a3ef06553d8db7a32531f0a44509ff9bd",
+      "model_build": "success",
+      "axiom_audit": "four named theorem dependencies recorded",
+      "generated_vectors": "verified original bytes",
+      "own_receipt": "UNVERIFIED: missing vector pin/import; replay also emitted a panic despite exit0",
+      "nanoda": "UNVERIFIED: literal extensions disabled",
+      "overall": "NOT_ACCEPTED; do not transfer predecessor successes"
+    },
+    "causal_repairs": [
+      "Replay exact module-index declarations only; abort on original Lean panic; independently reject panic-bearing logs even after exit0",
+      "Configure nanoda documented Nat/String extensions; preserve axiom allowlist",
+      "Pin original native-generated vectors and validate fresh regeneration",
+      "Keep post-Alpha2 modules outside the immutable historical source archive",
+      "Keep the historically pinned root lakefile.toml byte-identical; isolate the new target in its own Lake project.",
+      "Correct the transport fixture changed_files count to its actual single-file inventory; add a negative scope-truncation control."
+    ],
+    "W5": {
+      "subject": "PR658 a56b0632e120ce815019e5f4a812fc828c57cd1e",
+      "required_materializer": {
+        "run": 41215514005,
+        "attempt": 2,
+        "result": "success"
+      },
+      "requested_review_disposition": {
+        "run": 41215513700,
+        "attempt": 2,
+        "result": "success",
+        "principal_approval": false
+      },
+      "batch003": {
+        "run": 41215513887,
+        "attempt": 2,
+        "result": "success"
+      },
+      "retry_count_this_continuation": 0,
+      "evidence": "evidence/formal-receipts/DeliveryReporting/history/READBACK_AND_CHECKER_IDENTITIES.json"
+    },
+    "open_work": [
+      {
+        "id": "EXACT_SUCCESSOR_SEVEN_CHECKERS",
+        "next_action": "Publish tested successor with regenerated integrity; read original exact-head seven-checker workflow and inspect all original receipts/logs, including replay panic absence."
+      },
+      {
+        "id": "NATIVE_CI_AND_GOVERNANCE",
+        "next_action": "Require current-head complete native CI, materialization and actual governance; preserve Draft and all standing Owner grants."
+      },
+      {
+        "id": "UNIVERSAL_IMPLEMENTATION_REFINEMENT",
+        "next_action": "Finite vectors are the requested bridge, not a universal Python refinement theorem; keep that stronger claim unproved."
+      },
+      {
+        "id": "R3_R5_AND_ACTUAL_CLIENT_ADOPTION",
+        "next_action": "Retain provenance, durable correction and per-node actual adoption duties outside the finite model."
+      },
+      {
+        "id": "PRODUCTION",
+        "next_action": "Original runtime admission, protected bindings, exact-domain acceptance and productive effect require their own authenticated fresh readback."
+      }
+    ],
+    "completion_claims": {
+      "seven_of_seven": false,
+      "main_integrated": false,
+      "all_nodes_adopted": false,
+      "productive_effect_ack_done": false
+    },
+    "local_full_suite": "Predecessor run stopped at two merge transport fixture assertions after introducing strict complete change-scope validation. Causal fixture correction is covered by targeted rerun; final exact-subject full suite still required.",
+    "concurrent_source_adopted": {
+      "head": "03c665f8e9e7e41ee3b1c87428d5bfaeb25f7f48",
+      "tree": "21ba89554d0f7f0289b676d92e0ad155cbda7e32",
+      "preserved": [
+        "Exact module-payload replay against original imports",
+        "Original panic/error guard and negative control",
+        "Original PR658 successful materializer log binding",
+        "All predecessor knowledge and source/proof limits"
+      ],
+      "remaining_causal_repair": "Isolate additive target so existing original manuscript/causal-distance source identities remain byte-current; retain stricter 7/7 receipt/input checks."
+    },
+    "corrections": [
+      {
+        "supersedes": "Unpublished local module-index replay proposal",
+        "adopted": "Reuse the already published exact readModuleData module-payload replay from03c665f8, retaining original import boundaries and its separately tested panic/error detector."
+      }
+    ],
+    "additional_concurrent_source_adopted": {
+      "head": "4c2b284f3df9032b9ad2b7b76ec077f9ba9b2ba7",
+      "tree": "683ca9f5717b13e0fd7c851cae945ad04048ed7f",
+      "preserved": "Owner-supplied original kernel log, audit archive and metadata; correct original git rev-parse HEAD/TREE collection. No compatibility preload is used for this client proof claim."
+    }
+  }
+}

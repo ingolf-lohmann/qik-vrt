@@ -51,3 +51,4 @@ coreutils	sha256-staging-v1	ubuntu-24.04-x64	RUNNER_PROVIDED	BEHAVIOR_CONTRACT	U
 
 zlib-native	1.2.11-or-newer-integer-codec-contract	posix-linux	RUNNER_PROVIDED	BEHAVIOR_CONTRACT	Zlib	native_qikvrt_codec
 unzip	zip-deflate-readback-contract	posix-linux	RUNNER_PROVIDED	BEHAVIOR_CONTRACT	Info-ZIP	independent_zip_sfx_readback
+lean-external-checkers	4.35.0	ubuntu-24.04-x64	OFFICIAL_RELEASE_ARCHIVE	SHA256_LOCKED	APACHE_AND_UPSTREAM_LICENSES	formal_delivery

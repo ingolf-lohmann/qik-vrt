@@ -483,6 +483,7 @@ class GitHubAPI:
             "expected_tree_sha": tree, "current_tree_sha": tree,
             "mergeable": pr.get("mergeable"), "draft": pr.get("draft"), "external_effect": "NONE",
             "competing_writer_overlaps": overlaps, "required_gates": list(PROMOTION_GATES),
+            "changed_paths": sorted(files),
             "workflow_runs": executions,
             "review_observation": {"pr": pr, "reviews": observed["reviews"],
                 "rules": self.collection("/rules/branches/main?"), "statuses": observed["statuses"]},

@@ -91,6 +91,12 @@
       "version": "4.19.0"
     },
     {
+      "cache_class": "repo-managed-archive",
+      "component": "lean-external-checkers",
+      "provider": "Lean official v4.35.0 distribution; upstream source pins in formal proof obligation policy",
+      "version": "4.35.0"
+    },
+    {
       "cache_class": "hosted-toolcache",
       "component": "node",
       "provider": "actions/setup-node",
@@ -267,10 +273,10 @@
   ],
   "coverage_basis": "unique components in runtime/toolchains/TOOLCHAIN.lock.tsv",
   "coverage_percent": 100,
-  "covered_components": 44,
-  "declared_components": 44,
-  "lock_sha256": "0c51ecbba5d73967a977c9323a952314de92ce9b16c1b74e32e80d19d6c8fbd7",
-  "registry_sha256": "01fe7675fd5347f6b95943a8c9a67d1b34fe41c03d21fdd518e35182bc59593c",
+  "covered_components": 45,
+  "declared_components": 45,
+  "lock_sha256": "b35a57c9513a0ca74507742480ccef9d1bb5f07a452c3c87fc9407f4ac592730",
+  "registry_sha256": "ca5181ba49be07b5055cfa7e3c3239d4189d73d644835d566be642ee5a5ef8f7",
   "rules": {
     "all_declared_tools_have_cache_strategy": true,
     "cache_never_replaces_required_checks": true,

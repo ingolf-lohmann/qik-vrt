@@ -1,0 +1,79 @@
+{
+  "schema": "qikvrt-owner-formal-artifact-handoff/v1",
+  "utc": "2026-10-31T20:43:34.378550+00:00",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "pull_request": 546,
+  "supplied_source_head": "06f0320f333940cfaa9ddd2f25f628bbfed22e1d",
+  "adopted_parent_head": "03c665f8e9e7e41ee3b1c87428d5bfaeb25f7f48",
+  "adopted_parent_tree": "21ba89554d0f7f0289b676d92e0ad155cbda7e32",
+  "vectors": {
+    "path": "evidence/formal-receipts/DeliveryReporting/vectors.json",
+    "sha256": "5e5be7c610f5d4b7ec41cfc8e0e0154bf8476b0ac48b3d5b2a839745a41080ff",
+    "bytes": 393794,
+    "count": 1152,
+    "state": "Already imported by concurrent source writer; independently confirmed byte-identical to Owner attachment"
+  },
+  "supplied_own_kernel_log": {
+    "path": "evidence/formal-receipts/DeliveryReporting/own-kernel-run.txt",
+    "bytes": 673,
+    "sha256": "d77c1bcd99fde2c210a0907be7aec159ae11ffbe8abb3226249f0b80c29c6140",
+    "source_sha256": "50a616018b8a21c9cd466fd98b1b4de3e2f18ba6c7e50f3858800ab41ec792b9",
+    "olean_sha256": "8e76fa9b4ffd063365e36e89cabef75d64efe4a457544299a6e0b25c7628aacf",
+    "classification": "Supplied original Kernel run; not a fabricated native successor receipt"
+  },
+  "audit_archive": {
+    "path": "evidence/formal-receipts/DeliveryReporting/OWNER_HANDOFF_AUDIT_20261031.zip",
+    "sha256": "6f8945667f8fa2428d27b8f369116bf7fa2134be90cca52ab20f29f1b9a27ad6"
+  },
+  "evidence_correction": {
+    "schema": "qikvrt-evidence-correction/v1",
+    "utc": "2026-10-31T20:43:33.962456+00:00",
+    "retracted_claim": "Earlier local 7/7 acceptance from the pre-03c665f8 runner",
+    "observed_defect": "Old own-kernel log contains PANIC diagnostics followed by a PASS marker and exit0",
+    "superseded_source_parent": "06f0320f333940cfaa9ddd2f25f628bbfed22e1d",
+    "actual_bad_log_sha256": "53486573d639e9c4f115ed599128b0c2e37275408904be2acb7f9b36c14f2847",
+    "current_guard_rejects_actual_bad_log": "formal checker emitted panic/error despite zero exit",
+    "valid_successor_source_parent": "03c665f8e9e7e41ee3b1c87428d5bfaeb25f7f48",
+    "current_local_checkers": "7/7 with no panic/error, pinned input hashes and corrected execution HEAD/TREE",
+    "local_compatibility_preload_used": true,
+    "native_final_head_is_separate": true,
+    "claim_scope": "Abstract DeliveryReporting model only; finite bridge is not a universal implementation refinement proof",
+    "no_branch_ref_updated_from_the_superseded_candidate": true
+  },
+  "checks": {
+    "original_vectors_individually_replayed_through_cli": 1152,
+    "original_cli_mismatches": 0,
+    "hardened_differential_tests": 7,
+    "hardened_local_checkers": "7/7",
+    "seven_individual_omissions_rejected": true,
+    "supplied_olean_hash_reproduced": true
+  },
+  "prior_full_test_failures": "Original failed runs and their causal fixture repairs are retained in audit; no local full-make PASS invented",
+  "next_native_obligation": "Fresh final-head native proof receipts and applicable complete CI; do not transfer predecessor acceptance",
+  "prior_work_unit": "state/work_units/QIKVRT_REMOTE_DELIVERY_REPORTING_20261031_V1.json",
+  "provenance": {
+    "human": "Ingolf Lohmann supplied request and original Mirror artifacts",
+    "mirror": "Claude Mirror supplied vectors and own-kernel run report",
+    "codex": "Independent hashes, native readback, actual CLI/negative checks, preserved concurrent hardening and original log import; retracted faulty old local 7/7 claim"
+  },
+  "completion_claims": {
+    "formal_proved_for_final_head": false,
+    "main_integrated": false,
+    "pr658_integrated": false,
+    "productive_effect_ack_done": false
+  },
+  "local_persistence_preparation": {
+    "operation": "Quarantine untracked stale temporary without deleting bytes",
+    "source_relative_path": "release/zenodo-corpus-proof-2026-07-28/canonical-union/versioned-corrected-candidates/SUBJECT-7fdb36aa7c07c07d/.SUBJECT-7fdb36aa7c07c07d__versioned-corrected-candidate-v1.zip.PjvxNH",
+    "bytes": 32243712,
+    "sha256": "d81cd61e0388872c195d5dd77bf453b12916764b9948ede2d77633a47e253114",
+    "reason": "Existing integrity guard blocks generation",
+    "tracked": false,
+    "second_instance": {
+      "bytes": 32243712,
+      "sha256": "d81cd61e0388872c195d5dd77bf453b12916764b9948ede2d77633a47e253114",
+      "observed_at": "2026-10-31T20:46:03.532097+00:00"
+    },
+    "scope": "Untracked local temporary reappeared between tool calls; no permanent cleanup claim. Validated publication contains tracked files only."
+  }
+}

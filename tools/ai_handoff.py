@@ -1,18 +1,23 @@
 #!/usr/bin/env python3
 """Validate and print the repository's machine-readable AI handoff context.
 
-Standard-library only. Read-only: this script does not modify repository or Git
-state and performs no network access.
+Standard-library only. Normal validation modes are read-only. The explicit
+formal-proof-run mode runs pinned local checkers and writes bounded evidence;
+it performs no network operation or Git mutation.
 """
 
 from __future__ import annotations
 
 import argparse
 import datetime as dt
+import fnmatch
 import hashlib
+import ipaddress
 import json
+import os
 import re
 import shlex
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -641,6 +646,201 @@ def validate_client_work(receipt: dict[str, Any], predecessor: dict[str, Any] | 
         fail("CLIENT_DONE_WITH_OPEN_WORK")
 
 
+def delivery_report_verdict(report: dict[str, Any]) -> str:
+    """Finite-model adapter; declared consistency is not evidence authenticity.
+
+    Exercised against Lean-generated vectors, not a universal refinement proof.
+    Times are integer UTC microseconds after the caller's checked conversion.
+    """
+    required = {"claim", "authorityHost", "subjectRef", "observations",
+                "completedUtc", "closedUtc", "provenanceBound"}
+    if (not isinstance(report, dict) or set(report) != required
+        or report["claim"] not in ("pending", "delivered")
+        or any(not isinstance(report[k], str) or not report[k]
+               for k in ("authorityHost", "subjectRef"))
+        or any(type(report[k]) is not int or report[k] < 0
+               for k in ("completedUtc", "closedUtc"))
+        or type(report["provenanceBound"]) is not bool
+        or not isinstance(report["observations"], list)):
+        return "reject"
+    ids: set[str] = set()
+    qualified = False
+    for observation in report["observations"]:
+        if (not isinstance(observation, dict)
+            or set(observation) != {"target", "status", "subjectRef", "observationId", "utc"}
+            or any(not isinstance(observation[k], str) or not observation[k]
+                   for k in ("target", "subjectRef", "observationId"))
+            or any(type(observation[k]) is not int or observation[k] < 0
+                   for k in ("status", "utc"))):
+            return "reject"
+        if observation["observationId"] in ids:
+            return "reject"
+        ids.add(observation["observationId"])
+        qualified |= (observation["target"] == report["authorityHost"]
+                      and observation["status"] == 200
+                      and observation["subjectRef"] == report["subjectRef"]
+                      and report["completedUtc"] < observation["utc"] <= report["closedUtc"])
+    return ("accept" if report["provenanceBound"]
+            and (report["claim"] == "pending" or qualified) else "reject")
+
+
+def validate_client_remote_readback(
+    remote: dict[str, Any], sent: dict[str, Any], receipt: dict[str, Any],
+) -> None:
+    """Reject local/failed/replayed observations; declarations still need verification."""
+    hostname = remote.get("target_host")
+    if not isinstance(hostname, str) or not hostname or hostname != hostname.lower():
+        fail("CLIENT_COMMUNICATION_REMOTE_READBACK_INVALID")
+    if hostname == "localhost" or hostname.endswith((".localhost", ".")):
+        fail("CLIENT_COMMUNICATION_REMOTE_READBACK_INVALID")
+    try:
+        address = ipaddress.ip_address(hostname)
+    except ValueError:
+        address = None
+    if address is not None:
+        address = getattr(address, "ipv4_mapped", None) or address
+    dns_name = re.fullmatch(
+        r"(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+"
+        r"[a-z](?:[a-z0-9-]{0,61}[a-z0-9])?", hostname,
+    )
+    if ((address is None and not dns_name)
+        or (address is not None and (address.is_loopback or address.is_unspecified
+                                    or address.is_link_local or address.is_multicast))):
+        fail("CLIENT_COMMUNICATION_REMOTE_READBACK_INVALID")
+    status = remote.get("http_status")
+    response = remote.get("response_sha256")
+    ref = remote.get("authority_ref_sha")
+    if (sent.get("target_host") != hostname
+        or not client_public_url(remote.get("url"), hostname)
+        or not client_public_url(remote.get("final_url"), hostname)
+        or type(status) is not int or not 200 <= status < 300
+        or remote.get("independent") is not True
+        or remote.get("authority_identity_verified") is not True
+        or remote.get("evidence") == sent.get("evidence")
+        or not ((isinstance(response, str) and re.fullmatch(r"sha256:[0-9a-f]{64}", response))
+                or (isinstance(ref, str) and re.fullmatch(r"[0-9a-f]{40}", ref)))):
+        fail("CLIENT_COMMUNICATION_REMOTE_READBACK_INVALID")
+    window = require(receipt, "action_window", dict)
+    observed = client_time(remote.get("observed_at"), "CLIENT_COMMUNICATION_REMOTE_READBACK_INVALID")
+    completed = client_time(window.get("completed_at"), "CLIENT_ACTION_WINDOW_INVALID")
+    closed = client_time(window.get("closed_at"), "CLIENT_ACTION_WINDOW_INVALID")
+    if remote.get("action_id") != window.get("id") or not completed < observed <= closed:
+        fail("CLIENT_COMMUNICATION_REMOTE_READBACK_NOT_FRESH")
+    observation_id = remote.get("observation_id")
+    remote_subject = remote.get("subject")
+    if (not isinstance(observation_id, str) or not observation_id.strip()
+        or not isinstance(remote_subject, dict)
+        or remote_subject != receipt["subject"]
+        or (ref is not None and ref != receipt["subject"]["head"])):
+        fail("CLIENT_COMMUNICATION_REMOTE_READBACK_INVALID")
+    epoch = dt.datetime(1970, 1, 1, tzinfo=dt.timezone.utc)
+
+    def micros(value: dt.datetime) -> int:
+        delta = value - epoch
+        return (delta.days * 86400 + delta.seconds) * 1000000 + delta.microseconds
+
+    report = {"claim": "delivered", "authorityHost": hostname,
+              "subjectRef": receipt["subject"]["head"],
+              "completedUtc": micros(completed), "closedUtc": micros(closed),
+              "provenanceBound": True,
+              "observations": [{"target": hostname, "status": status,
+                                "subjectRef": remote_subject["head"],
+                                "observationId": observation_id, "utc": micros(observed)}]}
+    if delivery_report_verdict(report) != "accept":
+        fail("CLIENT_COMMUNICATION_REMOTE_READBACK_INVALID")
+
+
+def validate_client_communications(receipt: dict[str, Any], subject: dict[str, Any]) -> None:
+    """Check declared evidence scope, without issuing an Effect-Ack assessment.
+
+    Historical receipts without this field remain readable. These consistency
+    checks neither run the original outbox tool nor authenticate its evidence.
+    """
+    records = receipt.get("communications", [])
+    if not isinstance(records, list):
+        fail("CLIENT_COMMUNICATION_INVALID")
+    identifiers: set[str] = set()
+    observation_ids: set[str] = set()
+    scopes = {"NOT_SENT", "SENT", "RECEIVED", "APPLIED", "RECEIVER_NACK", "PRINCIPAL_RETURN"}
+    for record in records:
+        if (not isinstance(record, dict)
+            or set(record) != {"id", "message_sha256", "sender", "recipient", "claim", "evidence"}
+            or any(not isinstance(record.get(key), str) or not record[key].strip()
+                   for key in ("id", "sender"))
+            or record["id"] in identifiers
+            or not isinstance(record.get("claim"), str)
+            or record.get("claim") not in scopes
+            or not isinstance(record.get("message_sha256"), str)
+            or not re.fullmatch(r"sha256:[0-9a-f]{64}", record["message_sha256"])
+            or not isinstance(record.get("evidence"), dict)):
+            fail("CLIENT_COMMUNICATION_INVALID")
+        identifiers.add(record["id"])
+        claim, evidence = record["claim"], record["evidence"]
+        if set(evidence) - {"send", "ingress", "outbox_claim", "application", "readback", "return", "remote_readback"}:
+            fail("CLIENT_COMMUNICATION_INVALID")
+        if claim == "NOT_SENT":
+            if evidence:
+                fail("CLIENT_UNSENT_WITH_DELIVERY_EVIDENCE")
+            if not isinstance(record["recipient"], str) or not record["recipient"].strip():
+                fail("CLIENT_COMMUNICATION_INVALID")
+            continue
+        if claim == "PRINCIPAL_RETURN":
+            if record["recipient"] is not None or set(evidence) != {"return"}:
+                fail("CLIENT_PRINCIPAL_RETURN_RECEIVER_INFERRED")
+            returned = evidence["return"]
+            if (not isinstance(returned, dict)
+                or returned.get("message_sha256") != record["message_sha256"]
+                or not isinstance(returned.get("evidence"), str) or not returned["evidence"].strip()):
+                fail("CLIENT_COMMUNICATION_EVIDENCE_BINDING_MISMATCH")
+            continue
+        if not isinstance(record["recipient"], str) or not record["recipient"].strip():
+            fail("CLIENT_COMMUNICATION_INVALID")
+
+        def proof(kind: str) -> dict[str, Any]:
+            value = evidence.get(kind)
+            if (not isinstance(value, dict) or not isinstance(value.get("evidence"), str)
+                or not value["evidence"].strip()):
+                fail("CLIENT_COMMUNICATION_" + kind.upper() + "_REQUIRED")
+            if (value.get("message_sha256") != record["message_sha256"]
+                or value.get("node") != record["recipient"]):
+                fail("CLIENT_COMMUNICATION_EVIDENCE_BINDING_MISMATCH")
+            return value
+
+        sent = proof("send")
+        if (sent.get("sender") != record["sender"]
+            or not isinstance(sent.get("channel"), str) or not sent["channel"].strip()):
+            fail("CLIENT_COMMUNICATION_EVIDENCE_BINDING_MISMATCH")
+        if claim == "SENT":
+            continue
+        remote = proof("remote_readback")
+        validate_client_remote_readback(remote, sent, receipt)
+        if remote["observation_id"] in observation_ids:
+            fail("CLIENT_COMMUNICATION_OBSERVATION_REPLAY")
+        observation_ids.add(remote["observation_id"])
+        outbox = proof("outbox_claim")
+        if (outbox.get("tool") != "node-tools/qikvrt_mirror_emit.py claim"
+            or not isinstance(outbox.get("record_sha256"), str)
+            or not re.fullmatch(r"sha256:[0-9a-f]{64}", outbox["record_sha256"])):
+            fail("CLIENT_COMMUNICATION_OUTBOX_CLAIM_REQUIRED")
+        if claim in ("RECEIVED", "APPLIED"):
+            proof("ingress")
+        if claim == "APPLIED":
+            applied, readback = proof("application"), proof("readback")
+            if (applied.get("subject") != subject
+                or not isinstance(applied.get("native_event_id"), str)
+                or not applied["native_event_id"].strip()
+                or not isinstance(applied.get("ledger_digest"), str)
+                or not re.fullmatch(r"sha256:[0-9a-f]{64}", applied["ledger_digest"])
+                or readback.get("independent") is not True
+                or any(readback.get(key) != applied.get(key)
+                       for key in ("subject", "native_event_id", "ledger_digest"))
+                or readback["evidence"] == applied["evidence"]):
+                fail("CLIENT_COMMUNICATION_APPLICATION_READBACK_MISMATCH")
+            if any(remote.get(key) != applied.get(key)
+                   for key in ("subject", "native_event_id", "ledger_digest")):
+                fail("CLIENT_COMMUNICATION_REMOTE_APPLICATION_MISMATCH")
+
+
 def validate_client_receipt(receipt: dict[str, Any]) -> str:
     """Validate consistency; never authenticate a client or prove live effects."""
     if receipt.get("schema") != "qikvrt-client-continuation/1":
@@ -653,6 +853,11 @@ def validate_client_receipt(receipt: dict[str, Any]) -> str:
             fail("CLIENT_SUBJECT_INVALID")
     if not isinstance(subject.get("ref"), str) or not subject["ref"].strip():
         fail("CLIENT_SUBJECT_INVALID")
+    if "delivery_report" in receipt:
+        report = require(receipt, "delivery_report", dict)
+        if (report.get("subjectRef") != subject["head"]
+            or delivery_report_verdict(report) != "accept"):
+            fail("CLIENT_DELIVERY_REPORT_REJECTED")
     authorization = require(receipt, "authorization", dict)
     if (authorization.get("granted") is not True
         or not isinstance(authorization.get("source"), str)
@@ -722,6 +927,7 @@ def validate_client_receipt(receipt: dict[str, Any]) -> str:
     predecessor = client_previous_receipt(receipt)
     validate_client_work(receipt, predecessor)
     validate_client_knowledge(receipt, predecessor)
+    validate_client_communications(receipt, subject)
     if executable and state != "CONTINUE":
         fail("CLIENT_PREMATURE_RETURN_WITH_EXECUTABLE_SUCCESSOR")
     pending = receipt.get("pending_execution")
@@ -1043,6 +1249,294 @@ def validate_adapters(context: dict[str, Any]) -> tuple[str, int]:
     return registry_name, len(adapters)
 
 
+FORMAL_POLICY = "policy/QIKVRT_FORMAL_PROOF_OBLIGATION_V1.json"
+FORMAL_ROOT = "formalization/QIKVRT_Formalization_v2.0"
+FORMAL_IDS = {"own-kernel", "lean-paranoid", "lean4lean", "nanoda",
+              "con-leche", "con-ron", "lean-default"}
+
+
+def formal_policy() -> dict[str, Any]:
+    policy = load_json(ROOT / FORMAL_POLICY)
+    checkers = policy.get("checkers", [])
+    if (policy.get("schema") != "qikvrt-formal-proof-obligation/v1"
+        or policy.get("required_count") != 7 or len(checkers) != 7
+        or {c.get("id") for c in checkers} != FORMAL_IDS
+        or any(not re.fullmatch(r"[0-9a-f]{40}", str(c.get("commit", "")))
+               or not str(c.get("repository_url", "")).startswith("https://github.com/")
+               or not c.get("check_command") or not c.get("build_command") for c in checkers)):
+        fail("FORMAL_CHECKER_IDENTITY_UNRESOLVED_HOLD_OWNER_DECISION")
+    return policy
+
+
+def formal_source_binding(policy: dict[str, Any]) -> tuple[str, dict[str, str]]:
+    digests: dict[str, str] = {}
+    for name in policy["source_files"]:
+        path = Path(name)
+        if path.is_absolute() or ".." in path.parts or (ROOT / path).is_symlink():
+            fail("FORMAL_SOURCE_PATH_INVALID")
+        try:
+            digests[name] = hashlib.sha256((ROOT / path).read_bytes()).hexdigest()
+        except OSError:
+            fail("FORMAL_SOURCE_UNAVAILABLE:" + name)
+    wire = json.dumps(digests, sort_keys=True, separators=(",", ":")).encode()
+    return hashlib.sha256(wire).hexdigest(), digests
+
+
+def formal_proof_required(changed_paths: Any) -> bool:
+    policy = formal_policy()
+    if (not isinstance(changed_paths, list)
+        or any(not isinstance(path, str) or not path or Path(path).is_absolute()
+               or ".." in Path(path).parts for path in changed_paths)
+        or len(set(changed_paths)) != len(changed_paths)):
+        fail("FORMAL_CHANGE_SCOPE_UNVERIFIED")
+    patterns = [p for group in policy["change_classes"].values() for p in group]
+    return any(fnmatch.fnmatchcase(path, pattern) for path in changed_paths for pattern in patterns)
+
+
+def formal_log_has_failure(text: str) -> bool:
+    """Reuse the original command diagnostic guard, including zero-exit panic."""
+    try:
+        require_formal_command_success(0, text)
+    except RuntimeError:
+        return True
+    return False
+
+
+def formal_proof_gate(directory: Path) -> None:
+    """Validate all seven exact-input receipts; CI must freshly produce them.
+
+    Stored JSON/log digests are consistency evidence, not authenticated execution.
+    The existing native workflow reruns all commands before calling this gate.
+    """
+    policy = formal_policy()
+    vectors = ROOT / policy["vectors_path"]
+    if (not re.fullmatch(r"[0-9a-f]{64}", str(policy.get("vectors_sha256", "")))
+        or not vectors.is_file() or vectors.is_symlink()
+        or hashlib.sha256(vectors.read_bytes()).hexdigest() != policy["vectors_sha256"]
+        or not json.loads(vectors.read_text())):
+        fail("FORMAL_BRIDGE_VECTORS_MISSING_OR_DRIFT")
+    bundle, digests = formal_source_binding(policy)
+    source = digests[FORMAL_ROOT + "/QIKVRTEffectAck/DeliveryReporting.lean"]
+    inventory = set(policy["theorems"])
+    own_axioms = None
+    external_export = None
+    for checker in policy["checkers"]:
+        receipt = load_json(directory / (checker["id"] + ".json"))
+        if (set(policy["receipt_required"]) - receipt.keys()
+            or receipt.get("checker") != checker["id"]
+            or receipt.get("commit") != checker["commit"]
+            or receipt.get("module") != policy["module"]
+            or receipt.get("source_sha256") != source
+            or receipt.get("source_bundle_sha256") != bundle
+            or receipt.get("result") != "PASS" or type(receipt.get("exit_code")) is not int
+            or receipt["exit_code"] != 0
+            or not re.fullmatch(r"[0-9a-f]{64}", str(receipt.get("export_or_olean_sha256", "")))):
+            fail("FORMAL_RECEIPT_NONPASS_OR_DRIFT:" + checker["id"])
+        if os.environ.get("GITHUB_RUN_ID"):
+            actual = {"head": git_value("rev-parse", "HEAD"), "tree": git_value("rev-parse", "HEAD^{tree}"),
+                      "run_id": os.environ["GITHUB_RUN_ID"],
+                      "run_attempt": os.environ.get("GITHUB_RUN_ATTEMPT")}
+            if receipt.get("execution") != actual:
+                fail("FORMAL_NATIVE_EXECUTION_SUBJECT_DRIFT:" + checker["id"])
+        path = directory / "logs" / (checker["id"] + ".log")
+        if not path.is_file() or path.is_symlink() or hashlib.sha256(path.read_bytes()).hexdigest() != receipt["log_sha256"]:
+            fail("FORMAL_ORIGINAL_LOG_MISSING_OR_DRIFT:" + checker["id"])
+        if formal_log_has_failure(path.read_text()):
+            fail("FORMAL_CHECKER_LOG_UNRELIABLE:" + checker["id"])
+        artifact = receipt.get("artifact")
+        if (not isinstance(artifact, str) or Path(artifact).name != artifact
+            or not (directory / artifact).is_file() or (directory / artifact).is_symlink()
+            or hashlib.sha256((directory / artifact).read_bytes()).hexdigest() != receipt["export_or_olean_sha256"]):
+            fail("FORMAL_REPLAY_INPUT_MISSING_OR_DRIFT:" + checker["id"])
+        client_time(receipt["utc"], "FORMAL_RECEIPT_UTC_INVALID")
+        axioms = receipt["axioms"]
+        if (not isinstance(axioms, dict) or set(axioms) != inventory
+            or any(not isinstance(a, list) or set(a) - set(policy["permitted_axioms"])
+                   for a in axioms.values()) or axioms != policy["expected_axioms"]):
+            fail("FORMAL_AXIOM_INVENTORY_DRIFT:" + checker["id"])
+        if own_axioms is None:
+            own_axioms = axioms
+        elif axioms != own_axioms:
+            fail("FORMAL_CROSS_CHECKER_AXIOM_DISAGREEMENT")
+        if checker["id"] != "own-kernel":
+            export = receipt["export_or_olean_sha256"]
+            if external_export is not None and export != external_export:
+                fail("FORMAL_CROSS_CHECKER_EXPORT_DRIFT")
+            external_export = export
+    print("FORMAL_RECEIPT_CONSISTENCY=7/7")
+    print("IMPLEMENTATION_ASSURANCE=FINITE_DIFFERENTIAL_BRIDGE_ONLY")
+    print("LIVE_EFFECT_VERIFICATION=NOT_PERFORMED")
+
+
+def require_formal_command_success(returncode: int, output: str) -> None:
+    """A checker panic is failure even if its runtime returns zero afterwards."""
+    if returncode != 0:
+        raise RuntimeError("formal checker command returned nonzero: " + str(returncode))
+    if re.search(r"(?mi)^\s*(?:PANIC\b|error:|.*declaration uses .sorry.)", output):
+        raise RuntimeError("formal checker emitted panic/error despite zero exit")
+
+
+def run_formal_proof(directory: Path, own_root: Path, external_root: Path) -> int:
+    """Reuse the existing handoff validator as an explicit local proof action.
+
+    No provider call, download, timer, Git write or checker substitution.
+    Native workflow provisions the two hash-locked original distributions.
+    """
+    policy = formal_policy()
+    directory = directory.resolve()
+    directory.mkdir(parents=True, exist_ok=True)
+    logs = directory / "logs"
+    logs.mkdir(exist_ok=True)
+    source_project = ROOT / FORMAL_ROOT
+    project = source_project / "delivery-reporting"
+    audit = "QIKVRTEffectAck/DeliveryReportingAxiomAudit.lean"
+    namespace = "QIKVRT.DeliveryReporting."
+    sys.path.insert(0, str(source_project / "scripts"))
+    from audit_lean_axioms import parse_axiom_reports
+
+    def command(argv: list[str], cwd: Path, log: Path,
+                output: Path | None = None) -> None:
+        with log.open("ab") as stream:
+            stream.write((json.dumps({"command": argv, "cwd": str(cwd),
+                "environment": {"LEAN_ABORT_ON_PANIC": "1"},
+                "utc": dt.datetime.now(dt.timezone.utc).isoformat()}) + "\n").encode())
+            stream.flush()
+            try:
+                if output is None:
+                    proc = subprocess.run(argv, cwd=cwd, stdout=stream, stderr=subprocess.STDOUT,
+                                          timeout=300, check=False, env={**os.environ, "LEAN_ABORT_ON_PANIC": "1"})
+                else:
+                    with output.open("wb") as dest:
+                        proc = subprocess.run(argv, cwd=cwd, stdout=dest, stderr=stream,
+                                              timeout=300, check=False, env={**os.environ, "LEAN_ABORT_ON_PANIC": "1"})
+                stream.write(("\nEXIT_CODE=" + str(proc.returncode) + "\n").encode())
+                if proc.returncode:
+                    raise RuntimeError("command nonpass: " + shlex.join(argv))
+            except (OSError, subprocess.TimeoutExpired) as exc:
+                stream.write(("\nUNVERIFIED=" + str(exc) + "\n").encode())
+                raise RuntimeError(str(exc)) from exc
+        if formal_log_has_failure(log.read_text()):
+            raise RuntimeError("checker panic despite zero exit; verification unreliable")
+
+    def inventory(log: Path) -> dict[str, list[str]]:
+        reports = parse_axiom_reports(log.read_text())
+        result = {name: sorted(axioms) for name, axioms in reports if name.startswith(namespace)}
+        if (set(result) != set(policy["theorems"])
+            or len(result) != len([n for n, _ in reports if n.startswith(namespace)])
+            or any(set(a) - set(policy["permitted_axioms"]) for a in result.values())):
+            raise RuntimeError("axiom printer inventory invalid")
+        return result
+
+    def verify_root(root: Path, version: str, sha: str, log: Path) -> None:
+        command([str(root / "bin/lean"), "--version"], project, log)
+        output = directory / ("githash-" + version + ".txt")
+        command([str(root / "bin/lean"), "--githash"], project, log, output)
+        if output.read_text().strip() != sha:
+            raise RuntimeError("original Lean commit mismatch")
+
+    bundle, digests = formal_source_binding(policy)
+    module_source = FORMAL_ROOT + "/QIKVRTEffectAck/DeliveryReporting.lean"
+    own_log = logs / "own-kernel.log"
+    if any(directory.glob("*.json")) or own_log.exists():
+        fail("FORMAL_OUTPUT_NOT_FRESH_USE_NEW_BOUND_RUN_DIRECTORY")
+    own_axioms: dict[str, list[str]] = {}
+    olean = project / ".lake/build/lib/lean/QIKVRTEffectAck/DeliveryReporting.olean"
+    own_ok = False
+    own_error = ""
+    try:
+        verify_root(own_root, "4.19.0", policy["checkers"][0]["commit"], own_log)
+        lake = str(own_root / "bin/lake")
+        command([lake, "build", policy["lean_lib"], "deliveryReportingVectors"], project, own_log)
+        command([lake, "env", "lean", "--run", "../QIKVRTEffectAck/DeliveryReportingReplay.lean"], project, own_log)
+        command([lake, "env", "lean", "../" + audit], project, own_log)
+        own_axioms = inventory(own_log)
+        vectors = directory / "generated-vectors.json"
+        command([lake, "exe", "deliveryReportingVectors"], project, own_log, vectors)
+        expected = policy.get("vectors_sha256")
+        actual = hashlib.sha256(vectors.read_bytes()).hexdigest()
+        print("GENERATED_VECTOR_SHA256=" + actual, flush=True)
+        retained = ROOT / policy["vectors_path"]
+        if not retained.is_file() or actual != expected or retained.read_bytes() != vectors.read_bytes():
+            print("QIKVRT_DELIVERY_VECTORS_BEGIN", flush=True)
+            print(vectors.read_text(), end="", flush=True)
+            print("QIKVRT_DELIVERY_VECTORS_END", flush=True)
+            raise RuntimeError("Lean vectors are not yet pinned/imported byte-exactly")
+        command([sys.executable, "-B", "-m", "unittest", "tests.test_delivery_reporting_proof"], ROOT, own_log)
+        own_ok = True
+    except RuntimeError as exc:
+        own_error = str(exc)
+
+    def receipt(checker: dict[str, Any], log: Path, payload: Path,
+                axioms: dict[str, list[str]], ok: bool, error: str = "") -> None:
+        artifact = "own-kernel.olean" if checker["id"] == "own-kernel" else export.name
+        if checker["id"] == "own-kernel" and payload.is_file():
+            shutil.copyfile(payload, directory / artifact)
+        value = {"schema": "qikvrt-formal-receipt/v1", "checker": checker["id"],
+            "commit": checker["commit"], "version": checker["version"], "module": policy["module"],
+            "source_sha256": digests[module_source], "source_bundle_sha256": bundle,
+            "source_digests": digests,
+            "export_or_olean_sha256": hashlib.sha256(payload.read_bytes()).hexdigest() if payload.is_file() else None,
+            "artifact": artifact,
+            "axioms": axioms, "result": "PASS" if ok else "UNVERIFIED", "error": error,
+            "log_sha256": hashlib.sha256(log.read_bytes()).hexdigest(),
+            "utc": dt.datetime.now(dt.timezone.utc).isoformat(),
+            "command": checker["check_command"],
+            "executed_commands": [json.loads(line)["command"] for line in log.read_text().splitlines()
+                if line.startswith('{"command":')],
+            "exit_code": 0 if ok else None,
+            "execution": {"head": git_value("rev-parse", "HEAD"), "tree": git_value("rev-parse", "HEAD^{tree}"),
+                "run_id": __import__("os").environ.get("GITHUB_RUN_ID"),
+                "run_attempt": __import__("os").environ.get("GITHUB_RUN_ATTEMPT")},
+            "implementation_universally_proved": False, "productive_effect": False}
+        (directory / (checker["id"] + ".json")).write_text(json.dumps(value, indent=2) + "\n")
+
+    receipt(policy["checkers"][0], own_log, olean, own_axioms, own_ok, own_error)
+    external = directory / "external-project"
+    external.mkdir()
+    (external / "QIKVRTEffectAck").mkdir()
+    for name in ("DeliveryReporting.lean", "DeliveryReportingAxiomAudit.lean"):
+        shutil.copyfile(source_project / "QIKVRTEffectAck" / name, external / "QIKVRTEffectAck" / name)
+    (external / "lakefile.toml").write_text('name = "DeliveryReportingRecheck"\n'
+        '[[lean_lib]]\nname = "QIKVRTDeliveryReporting"\nroots = ["QIKVRTEffectAck.DeliveryReporting"]\n')
+    export = directory / "DeliveryReporting.export.ndjson"
+    external_log = logs / "external-build.log"
+    ext_axioms: dict[str, list[str]] = {}
+    external_error = ""
+    try:
+        verify_root(external_root, "4.35.0", next(c["commit"] for c in policy["checkers"]
+                    if c["id"] == "lean-default"), external_log)
+        lake = str(external_root / "bin/lake")
+        command([lake, "build", policy["lean_lib"]], external, external_log)
+        command([lake, "env", "lean", audit], external, external_log)
+        ext_axioms = inventory(external_log)
+        command([lake, "env", str(external_root / "bin/leanexport"), policy["module"],
+                 "--", *policy["theorems"]], external, external_log, export)
+        if not export.is_file() or not export.stat().st_size:
+            raise RuntimeError("empty original export")
+    except RuntimeError as exc:
+        external_error = str(exc)
+    config = directory / "nanoda-config.json"
+    config.write_text(json.dumps({"use_stdin": False, "export_file_path": str(export),
+        "permitted_axioms": policy["permitted_axioms"], "unpermitted_axiom_hard_error": True,
+        "nat_extension": True, "string_extension": True, "print_success_message": True}))
+    for checker in policy["checkers"][1:]:
+        log = logs / (checker["id"] + ".log")
+        log.write_bytes(external_log.read_bytes())
+        ok, error = False, external_error
+        if not external_error:
+            argv = [str(external_root / "bin" / checker["check_command"][0])]
+            argv += [v.replace("{export}", str(export)).replace("{config}", str(config))
+                     for v in checker["check_command"][1:]]
+            try:
+                command(argv, external, log)
+                ok = True
+            except RuntimeError as exc:
+                error = str(exc)
+        receipt(checker, log, export, ext_axioms, ok, error)
+    formal_proof_gate(directory)
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     mode = parser.add_mutually_exclusive_group()
@@ -1050,7 +1544,18 @@ def main() -> int:
                         help="Validate a non-secret client continuation receipt; no live-effect proof")
     mode.add_argument("--client-action", type=Path,
                       help="Check one declared action against current Owner routing decisions before any external call")
+    mode.add_argument("--formal-proof-gate", type=Path, help="Require seven exact-input proof receipts and original logs")
+    mode.add_argument("--formal-proof-run", type=Path, help="Run the pinned local proof/bridge path into a fresh directory")
+    parser.add_argument("--own-lean-root", type=Path)
+    parser.add_argument("--external-lean-root", type=Path)
     args = parser.parse_args()
+    if args.formal_proof_gate is not None:
+        formal_proof_gate(args.formal_proof_gate)
+        return 0
+    if args.formal_proof_run is not None:
+        if args.own_lean_root is None or args.external_lean_root is None:
+            fail("FORMAL_ORIGINAL_TOOLCHAINS_REQUIRED")
+        return run_formal_proof(args.formal_proof_run, args.own_lean_root.resolve(), args.external_lean_root.resolve())
     if args.client_action is not None:
         action = load_json(args.client_action)
         subject = require(action, "subject", dict)

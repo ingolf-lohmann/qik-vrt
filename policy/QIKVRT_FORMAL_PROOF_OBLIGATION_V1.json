@@ -1,0 +1,422 @@
+{
+  "schema": "qikvrt-formal-proof-obligation/v1",
+  "owner": "Ingolf Lohmann",
+  "request_sha256": "e72e589f4fd6ff009beeafaf0c314ed896f2a7314fa298875fcd72ac439495d1",
+  "required_count": 7,
+  "unresolved_checker": "HOLD_OWNER_DECISION_NO_SUBSTITUTION",
+  "claim_when_incomplete": "HOLD_NO_FORMAL_PROVED_NO_MERGE",
+  "change_classes": {
+    "delivery_and_effect_claim_validation": [
+      "tools/ai_handoff.py",
+      "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json",
+      "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/DeliveryReporting*.lean"
+    ],
+    "eap_clients": [
+      "src/qikvrt_effect_ack*.py",
+      "tools/qikvrt_mirror*.py",
+      "node-tools/qikvrt_mirror*.py"
+    ],
+    "merge_gates": [
+      "tools/qikvrt_required_review_gate.py",
+      "tools/qikvrt_pr_closure_engine.py",
+      ".github/workflows/qikvrt_ci.yml",
+      "tools/qikvrt_expected_head_promotion.py"
+    ],
+    "proof_obligation_enforcement": [
+      "policy/QIKVRT_FORMAL_PROOF_OBLIGATION_V1.json",
+      "tests/test_delivery_reporting_proof.py",
+      ".github/workflows/qikvrt_universal_ontology_formalization.yml",
+      "evidence/formal-receipts/DeliveryReporting/*",
+      "policy/qikvrt-formal-proof-obligation-v1.schema.json",
+      "runtime/toolchains/TOOLCHAIN.lock.tsv",
+      "runtime/toolchains/CACHE_REGISTRY.json",
+      "runtime/toolchains/CACHE_COVERAGE.json",
+      "formalization/QIKVRT_Formalization_v2.0/delivery-reporting/*",
+      "formalization/QIKVRT_Formalization_v2.0/lakefile.toml"
+    ]
+  },
+  "module": "QIKVRTEffectAck.DeliveryReporting",
+  "lean_lib": "QIKVRTDeliveryReporting",
+  "theorems": [
+    "QIKVRT.DeliveryReporting.T1",
+    "QIKVRT.DeliveryReporting.T2",
+    "QIKVRT.DeliveryReporting.T3",
+    "QIKVRT.DeliveryReporting.T4"
+  ],
+  "source_files": [
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/DeliveryReporting.lean",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/DeliveryReportingAxiomAudit.lean",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/DeliveryReportingVectors.lean",
+    "formalization/QIKVRT_Formalization_v2.0/lakefile.toml",
+    "formalization/QIKVRT_Formalization_v2.0/lean-toolchain",
+    "tools/ai_handoff.py",
+    "tests/test_delivery_reporting_proof.py",
+    "policy/QIKVRT_FORMAL_PROOF_OBLIGATION_V1.json",
+    ".github/workflows/qikvrt_universal_ontology_formalization.yml",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/DeliveryReportingReplay.lean",
+    "tools/qikvrt_pr_closure_engine.py",
+    "tools/qikvrt_expected_head_promotion.py",
+    "policy/qikvrt-formal-proof-obligation-v1.schema.json",
+    "runtime/toolchains/TOOLCHAIN.lock.tsv",
+    "runtime/toolchains/CACHE_REGISTRY.json",
+    "runtime/toolchains/CACHE_COVERAGE.json",
+    "formalization/QIKVRT_Formalization_v2.0/delivery-reporting/lakefile.toml",
+    "formalization/QIKVRT_Formalization_v2.0/delivery-reporting/lean-toolchain"
+  ],
+  "receipt_required": [
+    "checker",
+    "commit",
+    "module",
+    "source_sha256",
+    "source_bundle_sha256",
+    "export_or_olean_sha256",
+    "axioms",
+    "result",
+    "log_sha256",
+    "utc",
+    "command",
+    "exit_code",
+    "artifact",
+    "executed_commands"
+  ],
+  "permitted_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "scope": {
+    "R1_R2": "Decidable consistency of declared target/status/subject/time/unique observation identity",
+    "R3_R5": "NOT_FORMALIZED: durable correction, continuation and actual peer adoption",
+    "adapter_preconditions": [
+      "host classification",
+      "authentic source observations",
+      "independence",
+      "original bytes",
+      "actual clock meaning"
+    ],
+    "implementation_bridge": "Finite generated differential vectors plus mutation tests; NOT a universal refinement proof",
+    "external_recheck": "Identical Lean source rebuilt with 4.35.0 and replayed as one common export; not a replay of 4.19.0 oleans",
+    "checkers_are_remote_services": false,
+    "statistical_or_failure_independence_claimed": false,
+    "productive_effect_inferred": false
+  },
+  "archives": {
+    "own": {
+      "version": "4.19.0",
+      "url": "https://github.com/leanprover/lean4/releases/download/v4.19.0/lean-4.19.0-linux.tar.zst",
+      "bytes": 343842845,
+      "sha256": "6fe3ce97a58f44e2b3567d455b994eacec5bfe9ae7774f2a573444480ba813fe"
+    },
+    "external": {
+      "version": "4.35.0",
+      "url": "https://github.com/leanprover/lean4/releases/download/v4.35.0/lean-4.35.0-linux.tar.zst",
+      "bytes": 594481375,
+      "sha256": "7289597a44543246c9227b8cae501767e095ce17f6d448b95fc4a8dc97268f6d"
+    }
+  },
+  "checkers": [
+    {
+      "id": "own-kernel",
+      "name": "Own Lean kernel",
+      "repository_url": "https://github.com/leanprover/lean4",
+      "commit": "6caaee842e9495688c1567e78c0e68dbb96942aa",
+      "version": "4.19.0",
+      "build_command": [
+        "cmake",
+        "--build",
+        "build/release",
+        "--target",
+        "stage1"
+      ],
+      "check_command": [
+        "lake",
+        "build",
+        "QIKVRTDeliveryReporting"
+      ],
+      "expected_output": {
+        "exit_code": 0,
+        "theorem_inventory": [
+          "QIKVRT.DeliveryReporting.T1",
+          "QIKVRT.DeliveryReporting.T2",
+          "QIKVRT.DeliveryReporting.T3",
+          "QIKVRT.DeliveryReporting.T4"
+        ],
+        "axiom_allowlist": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      "provision": "Exact official SHA-256-locked Lean distribution; source builds are documented alternatives, never automatic substitutions.",
+      "configure_command": [
+        "cmake",
+        "--preset",
+        "release"
+      ]
+    },
+    {
+      "id": "lean-paranoid",
+      "name": "Lean paranoid",
+      "repository_url": "https://github.com/leanprover/lean4",
+      "commit": "eb6cafb7290e8bd5f2937522d8d804f58f02bafc",
+      "version": "4.35.0",
+      "build_command": [
+        "make",
+        "-C",
+        "build/release/stage1",
+        "leanchecker-paranoid"
+      ],
+      "check_command": [
+        "leanchecker-paranoid",
+        "--silent",
+        "--from-export",
+        "{export}"
+      ],
+      "expected_output": {
+        "exit_code": 0,
+        "theorem_inventory": [
+          "QIKVRT.DeliveryReporting.T1",
+          "QIKVRT.DeliveryReporting.T2",
+          "QIKVRT.DeliveryReporting.T3",
+          "QIKVRT.DeliveryReporting.T4"
+        ],
+        "axiom_allowlist": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      "provision": "Exact official SHA-256-locked Lean distribution; source builds are documented alternatives, never automatic substitutions.",
+      "configure_command": [
+        "cmake",
+        "--preset",
+        "release"
+      ]
+    },
+    {
+      "id": "lean4lean",
+      "name": "lean4lean",
+      "repository_url": "https://github.com/Kha/lean4lean",
+      "commit": "456abe5015fc8f54ea595561fc39523d7733c93f",
+      "version": "lean4-bundle-4.35",
+      "build_command": [
+        "lake",
+        "build",
+        "lean4lean"
+      ],
+      "check_command": [
+        "lean4lean",
+        "--import",
+        "{export}"
+      ],
+      "expected_output": {
+        "exit_code": 0,
+        "theorem_inventory": [
+          "QIKVRT.DeliveryReporting.T1",
+          "QIKVRT.DeliveryReporting.T2",
+          "QIKVRT.DeliveryReporting.T3",
+          "QIKVRT.DeliveryReporting.T4"
+        ],
+        "axiom_allowlist": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      "provision": "Exact official SHA-256-locked Lean distribution; source builds are documented alternatives, never automatic substitutions."
+    },
+    {
+      "id": "nanoda",
+      "name": "nanoda",
+      "repository_url": "https://github.com/ammkrn/nanoda_lib",
+      "commit": "3a2407216ee84a75f9e1aead6803d0578be06ae7",
+      "version": "Lean4.35 bundle",
+      "build_command": [
+        "cargo",
+        "build",
+        "--release",
+        "--locked"
+      ],
+      "check_command": [
+        "nanoda_bin",
+        "{config}"
+      ],
+      "expected_output": {
+        "exit_code": 0,
+        "theorem_inventory": [
+          "QIKVRT.DeliveryReporting.T1",
+          "QIKVRT.DeliveryReporting.T2",
+          "QIKVRT.DeliveryReporting.T3",
+          "QIKVRT.DeliveryReporting.T4"
+        ],
+        "axiom_allowlist": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      "provision": "Exact official SHA-256-locked Lean distribution; source builds are documented alternatives, never automatic substitutions."
+    },
+    {
+      "id": "con-leche",
+      "name": "con-leche",
+      "repository_url": "https://github.com/leanprover/con-leche",
+      "commit": "67f04630d88718e81aa4d07ab64501f68f105398",
+      "version": "Lean4.35 bundle",
+      "build_command": [
+        "lake",
+        "build",
+        "con-leche"
+      ],
+      "check_command": [
+        "con-leche",
+        "{export}"
+      ],
+      "expected_output": {
+        "exit_code": 0,
+        "theorem_inventory": [
+          "QIKVRT.DeliveryReporting.T1",
+          "QIKVRT.DeliveryReporting.T2",
+          "QIKVRT.DeliveryReporting.T3",
+          "QIKVRT.DeliveryReporting.T4"
+        ],
+        "axiom_allowlist": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      "provision": "Exact official SHA-256-locked Lean distribution; source builds are documented alternatives, never automatic substitutions."
+    },
+    {
+      "id": "con-ron",
+      "name": "con-ron",
+      "repository_url": "https://github.com/leanprover/con-ron",
+      "commit": "dd8d8218892c871276b1e569d3decbb368bba1b6",
+      "version": "Lean4.35 bundle",
+      "build_command": [
+        "cargo",
+        "build",
+        "--release",
+        "--locked"
+      ],
+      "check_command": [
+        "con-ron",
+        "{export}"
+      ],
+      "expected_output": {
+        "exit_code": 0,
+        "theorem_inventory": [
+          "QIKVRT.DeliveryReporting.T1",
+          "QIKVRT.DeliveryReporting.T2",
+          "QIKVRT.DeliveryReporting.T3",
+          "QIKVRT.DeliveryReporting.T4"
+        ],
+        "axiom_allowlist": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      "provision": "Exact official SHA-256-locked Lean distribution; source builds are documented alternatives, never automatic substitutions."
+    },
+    {
+      "id": "lean-default",
+      "name": "Lean default",
+      "repository_url": "https://github.com/leanprover/lean4",
+      "commit": "eb6cafb7290e8bd5f2937522d8d804f58f02bafc",
+      "version": "4.35.0",
+      "build_command": [
+        "cmake",
+        "--build",
+        "build/release",
+        "--target",
+        "stage1"
+      ],
+      "check_command": [
+        "leanchecker",
+        "--silent",
+        "--from-export",
+        "{export}"
+      ],
+      "expected_output": {
+        "exit_code": 0,
+        "theorem_inventory": [
+          "QIKVRT.DeliveryReporting.T1",
+          "QIKVRT.DeliveryReporting.T2",
+          "QIKVRT.DeliveryReporting.T3",
+          "QIKVRT.DeliveryReporting.T4"
+        ],
+        "axiom_allowlist": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      "provision": "Exact official SHA-256-locked Lean distribution; source builds are documented alternatives, never automatic substitutions.",
+      "configure_command": [
+        "cmake",
+        "--preset",
+        "release"
+      ]
+    }
+  ],
+  "vectors_path": "evidence/formal-receipts/DeliveryReporting/vectors.json",
+  "vectors_sha256": "5e5be7c610f5d4b7ec41cfc8e0e0154bf8476b0ac48b3d5b2a839745a41080ff",
+  "native_check_name": "QIKVRT formal proof obligation (7/7)",
+  "native_check_app_id": 15368,
+  "native_workflow_name": "QIK-VRT universal ontology finite-model verification",
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "formal_proof_obligation_policy"
+  },
+  "schema_ref": "policy/qikvrt-formal-proof-obligation-v1.schema.json",
+  "expected_axioms": {
+    "QIKVRT.DeliveryReporting.T1": [
+      "propext"
+    ],
+    "QIKVRT.DeliveryReporting.T2": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.DeliveryReporting.T3": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.DeliveryReporting.T4": []
+  },
+  "bundle_source_build": {
+    "source": "https://github.com/leanprover/lean4",
+    "commit": "eb6cafb7290e8bd5f2937522d8d804f58f02bafc",
+    "commands": [
+      [
+        "cmake",
+        "--preset",
+        "release"
+      ],
+      [
+        "cmake",
+        "--build",
+        "build/release",
+        "--target",
+        "stage1"
+      ],
+      [
+        "make",
+        "-C",
+        "build/release/stage1",
+        "leanchecker",
+        "leanchecker-paranoid",
+        "lean4lean",
+        "nanoda",
+        "con-leche",
+        "con-ron"
+      ]
+    ],
+    "source_pins_and_lean4lean_patch": "src/CMakeLists.txt and script/lean4lean-minimal-init.sh at that same commit",
+    "executed_here": false,
+    "actual_run_provision": "The hash-locked official archive is the current native provision path."
+  }
+}

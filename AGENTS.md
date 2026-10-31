@@ -5,6 +5,17 @@ Copyright (c) 2026 Ingolf Lohmann.
 
 # Repository agent protocol
 
+## Delivery reporting — Owner handoff of 31 October 2026
+
+Apply R1–R5 in `AI` and
+`policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json#/client_continuation/delivery_reporting_rules`
+before every action and report. Name the intended target host in the first
+sentence. Keep local execution, remote receipt, repository integration and
+Owner-confirmed productive effect separate. A capability gap retains HOLD and
+its causal prerequisite; it creates no configuration assignment for the Owner.
+Source adoption by other nodes remains unverified until their exact-policy
+acknowledgement and independent readback are observed.
+
 ## Later Owner conditional merge decision — 28 October 2026
 
 Ingolf Lohmann explicitly authorizes automatic repository merges when the current

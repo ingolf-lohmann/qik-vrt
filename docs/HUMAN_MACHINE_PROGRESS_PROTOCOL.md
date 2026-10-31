@@ -123,6 +123,64 @@ Its normative source is the existing recursive policy's
 
 ## Binding client continuation procedure
 
+### Communication claims — self-application of 2026-10-19
+
+The later Owner handoff of 2026-10-31 17:33 MEZ adds R1–R5, bound under
+`client_continuation.delivery_reporting_rules` in the shared policy and in `AI`.
+Name the target host in the first sentence. Report local results separately
+from Authority receipt; reconstruct own history from Git records. Load the
+current `AI`, `AI_CONTEXT.json` and required reading order before acting.
+Capability gaps retain HOLD without assigning configuration work to the Owner.
+An execution promise cannot establish the Owner's observed effect.
+
+For `RECEIVED`, `APPLIED` and `RECEIVER_NACK`, the same communication entry must
+include `evidence.remote_readback`, binding the message hash, node, intended
+`target_host` (also on `send`), HTTPS request and final URL, successful integer
+`http_status`, `observed_at` and `action_id` inside this receipt's action window.
+Include the response's canonical `response_sha256` or `authority_ref_sha`, a
+distinct evidence locator, `independent: true` and
+`authority_identity_verified: true`. An `APPLIED` remote receipt also binds the
+exact application subject, native event and ledger digest. The validator rejects
+loopback/local substitutes, failed HTTP, destination drift and stale readbacks;
+it does not authenticate these declarations or inspect DNS/network truth.
+Missing remote proof means `NICHT_ZUGESTELLT`; `SENT` denotes transfer only.
+No source rule, test, receipt declaration or carrier save proves every-node
+adoption, native authority, Owner acceptance or productive EFFECT_ACK_DONE.
+
+For each own outgoing packet discussed by a new client receipt, include a
+`communications` entry with `id`, canonical `message_sha256` (`sha256:` and
+64 lowercase hex digits), `sender`, `recipient`, `claim` and `evidence`.
+The existing `tools/ai_handoff.py --client-receipt` checks these declarations.
+Historical receipts without this field remain readable; this compatibility
+does not prove that a client reported all packets or used the guard.
+
+`NOT_SENT` has an intended recipient and empty evidence. It permits no arrival
+or receiver-NACK inference. `SENT` requires `evidence.send`, binding the same
+message hash, recipient in `node`, sender, actual `channel` and an `evidence`
+locator. `RECEIVED` additionally requires matching `ingress` and `outbox_claim`.
+Every proof has the same message hash, recipient node and a nonempty locator.
+`outbox_claim` identifies the actual `node-tools/qikvrt_mirror_emit.py claim`
+output, canonical `record_sha256`, and named node. `RECEIVER_NACK` requires
+that original claim and sending evidence; the client validator never issues it.
+
+`APPLIED` additionally requires `application` and independently obtained
+`readback`, both binding the receipt's exact subject, same `native_event_id`
+and canonical `ledger_digest`, with distinct evidence locators and declared
+`independent: true` on the readback. Sending or signature validity alone cannot
+substitute for these records. Verify the cited bytes and real independence
+separately; declarative consistency is not authenticated truth.
+
+`PRINCIPAL_RETURN` describes only a verified byte-identical return through the
+Principal. Its recipient must be null and its only evidence is `return`, with
+the original message hash and a checked-byte evidence locator. It establishes
+neither a named receiver nor peer identity, rule application or productive
+operation. Do not ask the Principal to serve as the operating bus.
+
+Use the original outbox tool for every Effect-Ack assessment and node-specific
+claim. This guard is no substitute implementation, executor, proof of delivery,
+or permission to bypass missing original-tool or peer admission. Preserve the
+packet and its concrete carrier obligation while admitted work continues.
+
 ### Knowledge and correction continuity — Owner correction of 2026-10-16
 
 Knowledge loss itself is the defect, regardless of when a handoff happens.

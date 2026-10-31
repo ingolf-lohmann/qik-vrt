@@ -31,6 +31,12 @@ EXCLUDED_PARTS = {
 # immutable Alpha-2 release and are therefore not part of its closed historical
 # input set. They remain compiled and tested in the current repository.
 POST_ALPHA2_EXCLUSIONS = {
+    "formalization/QIKVRT_Formalization_v2.0/delivery-reporting/lakefile.toml",
+    "formalization/QIKVRT_Formalization_v2.0/delivery-reporting/lean-toolchain",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/DeliveryReporting.lean",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/DeliveryReportingAxiomAudit.lean",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/DeliveryReportingVectors.lean",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/DeliveryReportingReplay.lean",
     "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/StorageIntegrity.lean",
     "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/StorageIntegrityAxiomAudit.lean",
     "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CausalDistance.lean",
@@ -197,6 +203,10 @@ def release_inputs(root: pathlib.Path) -> list[pathlib.Path]:
     inputs: set[pathlib.Path] = set()
     for path in formalization.rglob("*"):
         relative = path.relative_to(formalization)
+        # This isolated proof project did not exist in the immutable Alpha-2
+        # fileset, including its generated Lake manifest and build metadata.
+        if relative.parts and relative.parts[0] == "delivery-reporting":
+            continue
         if any(part in EXCLUDED_PARTS for part in relative.parts):
             continue
         repository_relative = path.relative_to(root).as_posix()
