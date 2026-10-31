@@ -44,7 +44,8 @@
       "python": "4/4",
       "conformance": "68 OK",
       "independently_reexecuted": false
-    }
+    },
+    "authority_lookup": "GET exact original commit 75522c4911304efbe14fd9780c1a49bb7700e1f3 returned HTTP404 from Authority; bounded workspace filename search found no patch or HTTP trace."
   },
   "causal_repair": {
     "existing_validator": "tools/ai_handoff.py --client-receipt",
@@ -56,14 +57,16 @@
   "original_native_job_logs": [
     {
       "path": "job-124579086355.log",
-      "bytes": 798234,
-      "sha256": "afed31e5023cb1410c80050fc906d4a5f5e07284236f52830586ab7132997907",
+      "bytes": 798233,
+      "sha256": "6c53e8707515b07b9667c95d0f80cc09abeafffee353aef25576c7b98ccc483d",
+      "original_decoded_connector_text_matches": true,
       "source": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/actions/jobs/124579086355/logs"
     },
     {
       "path": "job-124579087227.log",
-      "bytes": 800112,
-      "sha256": "dbe934ae1028e19bed2b53eca8a76bd57befe952878e6199a5e77b0da4127e2e",
+      "bytes": 800111,
+      "sha256": "407dea7f811bfd4b049c90c12a2cf656fbc1b840ee2cd542d78b093b70d1bc03",
+      "original_decoded_connector_text_matches": true,
       "source": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/actions/jobs/124579087227/logs"
     }
   ],
@@ -83,13 +86,24 @@
     ],
     "failed_materialization_run": 41215514005,
     "owner_review": "Accepted as Owner-supplied assertion; no independent GitHub review or comment invented.",
-    "failed_batch003_remaining_disposition_run": 41215513887
+    "failed_batch003_remaining_disposition_run": 41215513887,
+    "rerun": {
+      "head": "a56b0632e120ce815019e5f4a812fc828c57cd1e",
+      "run_id": 41215514005,
+      "attempt": 2,
+      "job_id": 124601748625,
+      "state_at_readback": "in_progress",
+      "preflight": "success",
+      "merge_attempted": false,
+      "duplicate_dispatch_allowed": false
+    },
+    "rerun_causal_evidence": "The same Git-Data archive preflight succeeded in native job124598246404 with unchanged workflow/journal code and same repository token carrier; complete inventory showed no equivalent active exact-head run before the single rerun."
   },
   "open_obligations": [
     {
       "id": "PR658_INTEGRATION",
       "state": "OPEN",
-      "next_action": "Recover original native API GET prerequisite; preserve failed evidence and require fresh successful exact-head materialization, governance, draft transition and merge readback. Do not rerun unchanged failures."
+      "next_action": "Read back existing materializer run41215514005 attempt2; do not duplicate dispatch. Its preflight now succeeds but complete native gate, other applicable failures, exact native governance, Draft transition and eventual merge readback remain separate."
     },
     {
       "id": "ORIGINAL_MIRROR_CLIENT",
@@ -118,23 +132,18 @@
     }
   ],
   "validation": {
-    "state": "LOCAL_CURRENT_SOURCE_GATES_PASS",
+    "state": "FINAL_LOCAL_SOURCE_GATES_PASS",
     "full_make_test_exit": 0,
-    "reported_python_test_executions": 2276,
-    "targeted_test_count": 153,
+    "reported_python_test_executions": 2277,
+    "targeted_test_count": 154,
     "baseline_comparison": {
       "original_main_false_acceptances": 4,
-      "repaired_rejections": 4,
-      "cases": [
-        "missing remote readback",
-        "loopback receipt",
-        "HTTP403",
-        "HTTP525"
-      ]
+      "repaired_rejections": 4
     },
-    "integrity": "Deterministically regenerated; fresh final verification required after evidence packaging.",
-    "raw_local_validation": "evidence/client-delivery/PR546_REMOTE_READBACK_LOCAL_VALIDATION.zip",
-    "native_ci": "FRESH_REMOTE_CANDIDATE_RUN_REQUIRED"
+    "alternate_address_controls": "Loopback literal, shorthand, octal, hexadecimal and mapped IPv6 rejected; declared admitted private remote address remains a distinct positive case.",
+    "raw_local_validation": "evidence/client-delivery/PR546_FINAL_LOCAL_VALIDATION.zip",
+    "integrity": "Regenerated and verified again after final evidence packaging.",
+    "native_ci": "FRESH_FINAL_HEAD_NATIVE_CI_REQUIRED; predecessor native success is historical only."
   },
   "provenance": {
     "human": "Ingolf Lohmann supplied incident, rule request and existing authorizations.",
@@ -185,6 +194,42 @@
       },
       "source": "evidence/client-delivery/FAILED_RUN_IDENTITY_READBACK_20261031.json",
       "scope_change": "None: both original native failures remain HTTP403, neither is green; no merge was attempted."
+    },
+    {
+      "supersedes": "91c086deec1d01ed69594dc7bd6156fdabb7409b:raw log export byte sizes",
+      "observed_defect": "The initial local patch carrier appended one extra terminal LF to each decoded log. No original line was removed.",
+      "repair": "Remove exactly that extra LF, compare the entire retained decoded string with original connector output, rebuild the ZIP and pin corrected byte sizes/digests.",
+      "original_line_content_rewritten": false
     }
-  ]
+  ],
+  "predecessor_validation": {
+    "state": "LOCAL_CURRENT_SOURCE_GATES_PASS",
+    "full_make_test_exit": 0,
+    "reported_python_test_executions": 2276,
+    "targeted_test_count": 153,
+    "baseline_comparison": {
+      "original_main_false_acceptances": 4,
+      "repaired_rejections": 4,
+      "cases": [
+        "missing remote readback",
+        "loopback receipt",
+        "HTTP403",
+        "HTTP525"
+      ]
+    },
+    "integrity": "Deterministically regenerated; fresh final verification required after evidence packaging.",
+    "raw_local_validation": "evidence/client-delivery/PR546_REMOTE_READBACK_LOCAL_VALIDATION.zip",
+    "native_ci": "FRESH_REMOTE_CANDIDATE_RUN_REQUIRED",
+    "source_head": "91c086deec1d01ed69594dc7bd6156fdabb7409b",
+    "scope": "Historical code validation before final alternate-IP controls; not transferred to final head."
+  },
+  "native_predecessor_success": {
+    "head": "91c086deec1d01ed69594dc7bd6156fdabb7409b",
+    "tree": "39d062f8c348327ce64c860668e77745d9acc317",
+    "full_ci": 41221975828,
+    "materializer": 41221975958,
+    "materializer_job": 124598246404,
+    "conclusion": "success",
+    "success_transferred_to_final_head": false
+  }
 }

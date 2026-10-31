@@ -1004,14 +1004,22 @@ class ClientContinuationRegressionTests(unittest.TestCase):
                 self.rejected("CLIENT_COMMUNICATION_REMOTE_READBACK_REQUIRED")
 
     def test_loopback_receipt_cannot_establish_authority_delivery(self) -> None:
-        for host in ("localhost", "worker.localhost", "127.0.0.1", "::1", "2130706433", "0.0.0.0"):
+        for host in ("localhost", "worker.localhost", "127.0.0.1", "::1", "2130706433", "0.0.0.0",
+                     "127.1", "0177.0.0.1", "0x7f.0.0.1", "::ffff:127.0.0.1"):
             with self.subTest(host=host):
                 record = self.communication()
                 remote = record["evidence"]["remote_readback"]
                 remote["target_host"] = record["evidence"]["send"]["target_host"] = host
-                origin = "https://[::1]" if host == "::1" else "https://" + host
+                origin = "https://[" + host + "]" if ":" in host else "https://" + host
                 remote["url"] = remote["final_url"] = origin + "/receipt"
                 self.rejected("CLIENT_COMMUNICATION_REMOTE_READBACK_INVALID")
+
+    def test_admitted_remote_private_address_is_distinct_from_loopback(self) -> None:
+        record = self.communication()
+        remote = record["evidence"]["remote_readback"]
+        remote["target_host"] = record["evidence"]["send"]["target_host"] = "10.1.2.3"
+        remote["url"] = remote["final_url"] = "https://10.1.2.3/receipt"
+        self.assertEqual(self.check(), "CONTINUE")
 
     def test_proxy_refusal_tls_failure_redirect_and_boolean_are_not_delivery(self) -> None:
         for status in (403, 525, 302, True, "200"):

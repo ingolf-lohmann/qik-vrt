@@ -657,7 +657,11 @@ def validate_client_remote_readback(
         address = None
     if address is not None:
         address = getattr(address, "ipv4_mapped", None) or address
-    if ((address is None and "." not in hostname)
+    dns_name = re.fullmatch(
+        r"(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+"
+        r"[a-z](?:[a-z0-9-]{0,61}[a-z0-9])?", hostname,
+    )
+    if ((address is None and not dns_name)
         or (address is not None and (address.is_loopback or address.is_unspecified
                                     or address.is_link_local or address.is_multicast))):
         fail("CLIENT_COMMUNICATION_REMOTE_READBACK_INVALID")
