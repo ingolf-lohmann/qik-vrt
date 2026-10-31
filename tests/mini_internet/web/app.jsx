@@ -47,6 +47,7 @@ function App() {
         if (rel.version && !seen.current.has(rel.version)) {
           try {
             const v = await verifyRelease(rel.manifest, rel.signature);
+            if (v.manifest.version !== rel.version) throw new Error("RELEASE_ENVELOPE_VERSION_MISMATCH");
             const activation = await fetch("/activated", { method: "POST", headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ version: v.manifest.version, sha256: v.digest }) });
             if (!activation.ok) throw new Error("RELEASE_ACTIVATION_HTTP_" + activation.status);
