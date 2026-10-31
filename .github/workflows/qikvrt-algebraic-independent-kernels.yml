@@ -38,7 +38,7 @@ jobs:
           git rev-parse HEAD^{tree}
           lean --version | tee toolchain.txt
           cmp Root.lean ../Root.lean
-          sha256sum Root.lean ../Root.lean EffectIntegrity.lean SerializationCascade.lean EffectMachine.lean lakefile.lean | tee hashes.txt
+          sha256sum Root.lean ../Root.lean EffectIntegrity.lean SerializationCascade.lean EffectMachine.lean ParallelConsolidation.lean lakefile.lean | tee hashes.txt
           echo "::endgroup::"
       - name: Resolve exact proof dependencies
         working-directory: formalization/algebraic-root/paranoid
