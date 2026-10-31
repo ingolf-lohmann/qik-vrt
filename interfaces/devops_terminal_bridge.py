@@ -11,10 +11,12 @@ def fetch(path):
  req=urllib.request.Request("https://api.github.com/repos/"+REPO+path,headers={"Authorization":"Bearer "+TOKEN,"Accept":"application/vnd.github+json","User-Agent":"qikvrt-terminal-bridge"})
  with urllib.request.urlopen(req,timeout=15) as r:return json.load(r)
 def snapshot():
- pr=fetch("/pulls/653");issue=fetch("/issues/651")
+ pr_number=int(os.environ.get("QIKVRT_TERMINAL_PR","655"))
+ issue_number=int(os.environ.get("QIKVRT_TERMINAL_ISSUE","651"))
+ pr=fetch("/pulls/"+str(pr_number));issue=fetch("/issues/"+str(issue_number))
  runs=fetch("/actions/runs?per_page=100").get("workflow_runs",[])
  runs=[r for r in runs if r.get("head_sha")==pr["head"]["sha"]]
- return {"type":"snapshot","version":"qikvrt.devops.terminal.v1","subject":"issue/651","head_sha":pr["head"]["sha"],"tree_sha":None,"stage":"ci","status":"OBSERVED","evidence_url":pr["html_url"],"runs":runs,"issue":{"number":issue["number"],"state":issue["state"]},"pr":{"number":pr["number"],"merged":pr["merged"]},"effect":{"status":"UNVERIFIED"}}
+ return {"type":"snapshot","version":"qikvrt.devops.terminal.v1","subject":"issue/"+str(issue_number),"head_sha":pr["head"]["sha"],"tree_sha":None,"stage":"ci","status":"OBSERVED","evidence_url":pr["html_url"],"runs":runs,"issue":{"number":issue["number"],"state":issue["state"]},"pr":{"number":pr["number"],"merged":pr["merged"]},"effect":{"status":"UNVERIFIED"}}
 class Handler(BaseHTTPRequestHandler):
  protocol_version="HTTP/1.1"
  def sendjson(self,status,obj):
