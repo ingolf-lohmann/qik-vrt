@@ -38,6 +38,13 @@ class ReactReleaseContract(unittest.TestCase):
         self.assertLess(src.index('await verifyRelease('), src.index('fetch("/activated"'))
         self.assertIn('fetch("/rejected"', src)
 
+    def test_activation_receipt_precedes_visible_success(self):
+        src = self.source
+        self.assertIn('RELEASE_ACTIVATION_RECEIPT_INVALID', src)
+        self.assertIn('RELEASE_ACTIVATION_HTTP_', src)
+        self.assertLess(src.index('if (receipt.version !=='), src.index('seen.current.add(rel.version)'))
+        self.assertLess(src.index('seen.current.add(rel.version)'), src.index('setRelease(v)'))
+
     def test_bootstrap_key_is_not_yet_pinned(self):
         # Deliberate negative control: do not silently claim trusted bootstrap.
         self.assertIn('window.__QIKVRT_RELEASE_KEY__', self.source)
