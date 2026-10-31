@@ -578,7 +578,7 @@ class NativeClosureContinuationTests(unittest.TestCase):
     def test_repository_automation_has_no_timer_and_consumer_is_wired(self):
         root = Path(__file__).resolve().parents[1]
         for workflow in (root / '.github/workflows').glob('*.yml'):
-            self.assertNotRegex(workflow.read_text(), r'(?m)^\s*(?:schedule|cron):', workflow.name)
+            self.assertNotRegex(workflow.read_text(), r'(?m)^\s*(?:-\s*)?(?:schedule|cron):', workflow.name)
         s = (root / M.NATIVE_WORKFLOW).read_text()
         self.assertLess(s.index('workflow-prepare'), s.index('name: qikvrt-pr-closure-intents'))
         self.assertLess(s.index('name: qikvrt-pr-closure-intents'), s.index('workflow-apply'))
