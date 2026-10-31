@@ -29,6 +29,11 @@ class BridgeContractTests(unittest.TestCase):
         self.assertEqual(result["effect"]["status"], "UNVERIFIED")
         self.assertFalse(result["pr"]["merged"])
 
+    def test_served_html_path_exists(self):
+        source = (ROOT / "interfaces" / "devops_terminal_bridge.py").read_text()
+        self.assertIn("devops_terminal_client.html", source)
+        self.assertTrue((ROOT / "interfaces" / "devops_terminal_client.html").is_file())
+
     def test_command_admission_is_fail_closed(self):
         source = (ROOT / "interfaces" / "devops_terminal_bridge.py").read_text()
         self.assertIn("ORIGINAL_TERMINAL_TRANSPUTER_ADAPTER_NOT_ADMITTED", source)
