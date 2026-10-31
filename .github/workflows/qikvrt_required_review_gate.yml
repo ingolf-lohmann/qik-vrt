@@ -8,8 +8,6 @@ on:
       - "QIKVRT code-owner review observer"
       - "QIKVRT requested review executor"
     types: [completed]
-  schedule:
-    - cron: "*/5 * * * *"
   workflow_dispatch:
     inputs:
       pr:

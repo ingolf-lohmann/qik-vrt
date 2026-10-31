@@ -8,13 +8,12 @@ on:
   workflow_run:
     workflows:
       - "QIKVRT CI"
+      - "QIKVRT productive TEMDD S1 carrier"
       - "QIKVRT repository evidence materialization"
       - "QIKVRT Collective Proposal Review"
       - "QIK-VRT global claim completion"
       - "QIKVRT Batch-003 remaining subject disposition"
     types: [completed]
-  schedule:
-    - cron: "*/5 * * * *"
   workflow_dispatch:
     inputs:
       pr:

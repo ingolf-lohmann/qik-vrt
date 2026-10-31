@@ -9,11 +9,12 @@ on:
         description: "Optional PR number; still requires the repository promotion marker"
         required: false
         type: string
-  schedule:
-    - cron: "*/10 * * * *"
+  push:
+    branches: [main]
   workflow_run:
     workflows:
       - "QIKVRT CI"
+      - "QIKVRT productive TEMDD S1 carrier"
       - "QIKVRT repository evidence materialization"
       - "QIKVRT Collective Proposal Review"
       - "QIK-VRT global claim completion"
@@ -26,7 +27,7 @@ on:
     types: [completed]
 
 permissions:
-  actions: read
+  actions: write
   contents: write
   issues: write
   pull-requests: write
@@ -37,6 +38,119 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  native-conditional-closure:
+    if: github.repository == 'ingolf-lohmann/qik-vrt' && github.ref == 'refs/heads/main' && (github.event_name != 'workflow_run' || github.event.workflow_run.head_repository.full_name == github.repository)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+      QIKVRT_CLOSURE_EVENT_HEAD: ${{ github.event.workflow_run.head_sha || '' }}
+    steps:
+      - name: Check out the exact trusted consumer source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Set up declared Python runtime
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: '3.12'
+      - name: Verify the original closure and recovery paths
+        run: |
+          python3 -B tools/qikvrt_tool_cache.py verify
+          python3 -B -m unittest tests.test_reciprocal_closure_step tests.test_qikvrt_pr_closure_engine
+      - name: Recover prior intent and prepare one fresh admitted successor
+        id: prepare
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .qikvrt/pr-closure
+          rc=0
+          python3 -B tools/qikvrt_pr_closure_engine.py workflow-prepare \
+            --journal-dir .qikvrt/pr-closure/intents \
+            --output .qikvrt/pr-closure/prepare.json || rc=$?
+          test "$rc" -eq 0 || test "$rc" -eq 2
+          python3 -B - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          from pathlib import Path
+          value=json.loads(Path('.qikvrt/pr-closure/prepare.json').read_bytes())
+          print('prepared=' + str(value['state']=='STEP_CHECKPOINT_REQUIRED').lower())
+          PY
+      - name: Persist the immutable intent before any repository mutation
+        if: steps.prepare.outputs.prepared == 'true'
+        id: checkpoint
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-pr-closure-intents
+          include-hidden-files: true
+          path: .qikvrt/pr-closure/intents/*.json
+          if-no-files-found: error
+          retention-days: 90
+      - name: Verify the checkpoint then execute and read back one original step
+        if: steps.prepare.outputs.prepared == 'true'
+        env:
+          CHECKPOINT_ID: ${{ steps.checkpoint.outputs.artifact-id }}
+          CHECKPOINT_DIGEST: ${{ steps.checkpoint.outputs.artifact-digest }}
+        run: |
+          python3 -B tools/qikvrt_pr_closure_engine.py workflow-apply \
+            --journal-dir .qikvrt/pr-closure/intents \
+            --checkpoint-id "$CHECKPOINT_ID" --checkpoint-digest "$CHECKPOINT_DIGEST" \
+            --output .qikvrt/pr-closure/effect.json
+      - name: Freeze the verified effect's existing CI successor request
+        if: steps.prepare.outputs.prepared == 'true'
+        id: successor
+        run: |
+          python3 -B - <<'PY' >> "$GITHUB_OUTPUT"
+          import json,os,subprocess
+          from pathlib import Path
+          r=json.loads(Path('.qikvrt/pr-closure/effect.json').read_bytes())
+          allowed=r.get('post_effect_verified') is True and r['selected_action']['action']=='MERGE'
+          print('dispatch='+str(allowed).lower())
+          if allowed:
+              repo=os.environ['GITHUB_REPOSITORY']; action=r['selected_action']
+              pr=json.loads(subprocess.check_output(['gh','api',f'repos/{repo}/pulls/{action["pr"]}']))
+              ref='main' if action['action']=='MERGE' else pr['head']['ref']
+              expected=r['inventory_after']['main_sha'] if action['action']=='MERGE' else r['post_effect_readback']['head_sha']
+              value={'ref':ref,'return_run_details':True}
+              Path('.qikvrt/pr-closure/successor-request.json').write_text(json.dumps(value)+'\n')
+              Path('.qikvrt/pr-closure/successor-binding.json').write_text(json.dumps({'ref':ref,'expected_head':expected,'intent_id':r['intent_id'],'effect_ack_done':False})+'\n')
+          PY
+      - name: Persist successor intent before the existing CI dispatch
+        if: steps.successor.outputs.dispatch == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-pr-closure-successor-${{ github.run_id }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          path: .qikvrt/pr-closure/successor-*.json
+          if-no-files-found: error
+          retention-days: 90
+      - name: Continue through existing CI after the verified source transition
+        if: steps.successor.outputs.dispatch == 'true'
+        run: |
+          python3 -B - <<'PY'
+          import json,os,subprocess,urllib.parse
+          from pathlib import Path
+          p=Path('.qikvrt/pr-closure'); b=json.loads((p/'successor-binding.json').read_bytes())
+          repo=os.environ['GITHUB_REPOSITORY']
+          current=json.loads(subprocess.check_output(['gh','api',f'repos/{repo}/git/ref/heads/{urllib.parse.quote(b["ref"],safe="")}']))
+          if current['object']['sha']!=b['expected_head']: raise SystemExit('HOLD: SUCCESSOR_SOURCE_DRIFT')
+          # One dispatch, never a timer or response-polling loop. Its original
+          # completion event re-enters the existing review/closure consumer.
+          result=subprocess.run(['gh','api','--method','POST',f'repos/{repo}/actions/workflows/qikvrt_ci.yml/dispatches','--input',str(p/'successor-request.json')],capture_output=True)
+          (p/'successor-response.json').write_bytes(result.stdout)
+          (p/'successor-exit-code.txt').write_text(str(result.returncode)+'\n')
+          if result.returncode: raise SystemExit('HOLD: SUCCESSOR_DISPATCH_UNVERIFIED_READBACK_ONLY')
+          PY
+      - name: Preserve progress, failures, readbacks and remaining obligations
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-pr-closure-result-${{ github.run_id }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          path: .qikvrt/pr-closure
+          if-no-files-found: error
+          retention-days: 90
+
   evaluate-and-promote:
     runs-on: ubuntu-24.04
     timeout-minutes: 10

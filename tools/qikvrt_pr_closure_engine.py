@@ -14,14 +14,17 @@ from __future__ import annotations
 import argparse
 import datetime
 import hashlib
+import io
 import json
 import os
 import pathlib
+import re
 import sys
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
+import zipfile
 from dataclasses import dataclass
 from typing import Any, Iterable, Mapping, Sequence
 
@@ -30,7 +33,7 @@ from tools.qikvrt_expected_head_promotion import (
     PromotionBlock, collapse_latest_runs, evaluate_closure, evaluate_conditional_rest_merge,
 )
 from tools.qikvrt_required_review_gate import evaluate_required_review
-from tools.qikvrt_workflow_executor import load_repository_roles
+from tools.qikvrt_workflow_executor import load_repository_roles, _amo_get
 from src.qikvrt_effect_ack import (
     ConnectionDecision, EffectAckEngine, EffectAckRequest, RiskLevel,
     ResponsibilityProtocol, verify_protocol_chain,
@@ -40,6 +43,8 @@ AUTO_READY_MARKER = "<!-- qikvrt-expected-head-promotion:enabled external_effect
 TECHNICAL_REVIEW_CONTEXT = "QIKVRT requested review execution"
 PROMOTION_GATES = ("QIKVRT CI", "QIKVRT repository evidence materialization",
                    "QIKVRT Collective Proposal Review", "QIK-VRT global claim completion")
+NATIVE_WORKFLOW = ".github/workflows/qikvrt_expected_head_promotion.yml"
+JOURNAL_ARTIFACT = "qikvrt-pr-closure-intents"
 
 
 class ClosureBlock(ValueError):
@@ -340,6 +345,7 @@ class GitHubAPI:
     token: str
     api_url: str = "https://api.github.com"
     mutation_attempted: bool = False
+    native_consumer: bool = False
 
     def repo_path(self, suffix: str) -> str:
         return f"/repos/{self.repository}{suffix}"
@@ -366,13 +372,22 @@ class GitHubAPI:
         return json.loads(raw) if raw else None
 
     def probe(self) -> dict[str, Any]:
-        principal = self.request("GET", "/user")
+        # An installation token has no user-scoped /user operation. Bind the
+        # existing native consumer to its original provider run instead.
+        if self.native_consumer:
+            native_workflow_binding(self)
+            principal = {"login": "github-actions[bot]"}
+        else:
+            principal = self.request("GET", "/user")
         repo = self.request("GET", self.repo_path(""))
         if repo.get("full_name") != self.repository or repo.get("archived") is not False:
             raise ClosureBlock("REPOSITORY_CAPABILITY_SCOPE_MISMATCH")
         return {"repository": self.repository, "principal": _string(principal.get("login"), "principal"),
                 "can_write": repo.get("permissions", {}).get("push") is True,
-                "operations": ["REQUEST_REVIEW", "UPDATE_BRANCH", "MERGE"],
+                # The native consumer admits the already-qualified merge path.
+                # Existing draft/source workers retain branch repair; no bot
+                # update may manufacture the missing PR-event gate executions.
+                "operations": ["MERGE"] if self.native_consumer else ["REQUEST_REVIEW", "UPDATE_BRANCH", "MERGE"],
                 "observed_utc": utc_now()}
 
     def collection(self, suffix: str, member: str | None = None) -> list[dict[str, Any]]:
@@ -551,7 +566,12 @@ def select_step(api: GitHubAPI, inventory: Mapping[str, Any], config: Mapping[st
     scanned = []
     priority = load_merge_priority()
     ordered = prioritized_pull_requests(inventory["pull_requests"], priority)
-    for summary in ordered:
+    window, offset = scan_window(ordered, config["max_scan"], os.environ.get("GITHUB_RUN_NUMBER", "1"))
+    event_head = os.environ.get("QIKVRT_CLOSURE_EVENT_HEAD", "")
+    matching = [row for row in ordered if row["head_sha"] == event_head]
+    if matching:
+        window = (matching + [row for row in window if row not in matching])[:config["max_scan"]]
+    for summary in window:
         pr, observed = api.inspect(summary["number"], inventory["main_sha"])
         if pr["head"]["sha"] != summary["head_sha"] or pr.get("state") != "open":
             raise ClosureBlock("INVENTORY_PR_DRIFT")
@@ -580,7 +600,7 @@ def select_step(api: GitHubAPI, inventory: Mapping[str, Any], config: Mapping[st
                     key = (run["name"], run.get("app", {}).get("id"))
                     if key not in latest_runs or run["id"] > latest_runs[key]["id"]:
                         latest_runs[key] = run
-                if (any(r.get("status") != "completed" or r.get("conclusion") != "success"
+                if (any(r.get("status") != "completed" or r.get("conclusion") not in {"success", "skipped"}
                         for r in latest_runs.values()) or
                         any(s.get("state") != "success" for s in latest_statuses(observed["statuses"]))):
                     raise ClosureBlock("APPLICABLE_EXACT_HEAD_GATE_NOT_GREEN")
@@ -600,9 +620,11 @@ def select_step(api: GitHubAPI, inventory: Mapping[str, Any], config: Mapping[st
                 decision.update(main_sha=inventory["main_sha"], promotion_mode="NATIVE_PR_MERGE")
                 return {"selected_action": decision, "scanned": scanned + [decision],
                         "selected_observation_sha256": digest({"pr": pr, "observed": observed}),
+                        "scan_offset": offset,
                         "priority_order": [row["number"] for row in ordered]}
         scanned.append(decision)
     return {"selected_action": None, "scanned": scanned,
+            "scan_offset": offset,
             "first_blocker": scanned[0] if scanned else {"action": "NO_ADMITTED_PR_EFFECT"},
             "priority_order": [row["number"] for row in ordered]}
 
@@ -679,7 +701,8 @@ def protocol(payload: Mapping[str, Any], principal: str, previous=None):
 
 def execute(api: GitHubAPI, policy: Mapping[str, Any], *, apply: bool,
             journal_dir: pathlib.Path | None = None,
-            closure_snapshot: Mapping[str, Any] | None = None) -> dict[str, Any]:
+            closure_snapshot: Mapping[str, Any] | None = None,
+            prepare_only: bool = False, resume_prepared: bool = False) -> dict[str, Any]:
     """Exactly one attempted remote mutation, including uncertain responses.
 
     The create-only intent journal MUST be retained by the authenticated host.
@@ -735,6 +758,8 @@ def execute(api: GitHubAPI, policy: Mapping[str, Any], *, apply: bool,
         receipt["intent_id"] = intent_id
         journal_dir.mkdir(parents=True, exist_ok=True)
         for pending in journal_dir.glob("*.intent.json"):
+            if resume_prepared and pending.name == intent_id + ".intent.json":
+                continue
             completed = pending.with_name(pending.name.replace(".intent.json", ".receipt.json"))
             if not completed.exists():
                 raise ClosureBlock("UNRESOLVED_INTENT_READBACK_ONLY:" + pending.stem)
@@ -746,19 +771,40 @@ def execute(api: GitHubAPI, policy: Mapping[str, Any], *, apply: bool,
         journal = journal_dir / (intent_id + ".intent.json")
         pre_payload = {"intent_id": intent_id, "phase": "pre-effect", "intent": intent}
         pre_protocol = protocol(pre_payload, capability["principal"])
-        try:
-            with journal.open("x", encoding="utf-8") as stream:
-                stream.write(json.dumps({"intent": intent, "inventory_before": before,
-                                         "pre_payload": pre_payload, "pre_protocol": pre_protocol.to_dict(),
-                                         "state": "PREPARED_DO_NOT_RETRY"}, sort_keys=True))
-                stream.flush(); os.fsync(stream.fileno())
-        except FileExistsError as exc:
-            raise ClosureBlock("INTENT_ALREADY_RECORDED_READBACK_ONLY:" + intent_id) from exc
+        if resume_prepared:
+            saved = json.loads(journal.read_bytes())
+            if (saved.get("intent") != intent or saved.get("inventory_before") != before
+                    or saved.get("producer") != native_workflow_binding(api)):
+                raise ClosureBlock("PREPARED_INTENT_OR_PRODUCER_DRIFT")
+            pre_payload = saved["pre_payload"]
+            pre_protocol = ResponsibilityProtocol.from_dict(saved["pre_protocol"])
+            if pre_payload != {"intent_id": intent_id, "phase": "pre-effect", "intent": intent}:
+                raise ClosureBlock("PREPARED_PROTOCOL_DRIFT")
+            # Local replay fence complements the immutable remote checkpoint.
+            # A later run may only recover that checkpoint through GETs.
+            with journal.with_suffix(".spent").open("x") as stream:
+                stream.write(intent_id); stream.flush(); os.fsync(stream.fileno())
+        else:
+            try:
+                saved = {"intent": intent, "inventory_before": before,
+                         "pre_payload": pre_payload, "pre_protocol": pre_protocol.to_dict(),
+                         "state": "PREPARED_DO_NOT_RETRY"}
+                if prepare_only:
+                    saved["producer"] = native_workflow_binding(api)
+                with journal.open("x", encoding="utf-8") as stream:
+                    stream.write(json.dumps(saved, sort_keys=True))
+                    stream.flush(); os.fsync(stream.fileno())
+            except FileExistsError as exc:
+                raise ClosureBlock("INTENT_ALREADY_RECORDED_READBACK_ONLY:" + intent_id) from exc
         directory_fd = os.open(journal_dir, os.O_RDONLY | os.O_DIRECTORY)
         try:
             os.fsync(directory_fd)
         finally:
             os.close(directory_fd)
+        if prepare_only:
+            receipt.update(state="STEP_CHECKPOINT_REQUIRED", finished_utc=utc_now())
+            receipt["receipt_sha256"] = digest(receipt)
+            return receipt
         if (api.request("GET", api.repo_path("/branches/main"))["commit"]["sha"] != before["main_sha"] or
                 api.request("GET", api.repo_path(f"/pulls/{action['pr']}"))["head"]["sha"] != action["head_sha"]):
             raise ClosureBlock("IMMEDIATE_PRE_EFFECT_HEAD_OR_MAIN_DRIFT")
@@ -834,15 +880,149 @@ def recover(api: GitHubAPI, journal: pathlib.Path) -> dict[str, Any]:
     return receipt
 
 
+def native_workflow_binding(api: GitHubAPI) -> dict[str, Any]:
+    """Authenticate the fixed existing consumer's run, never PR code or data."""
+    env = os.environ
+    repo = "ingolf-lohmann/qik-vrt"
+    if (api.repository != repo or env.get("GITHUB_ACTIONS") != "true"
+            or env.get("GITHUB_REPOSITORY") != repo
+            or env.get("GITHUB_REF") != "refs/heads/main"
+            or env.get("GITHUB_WORKFLOW_REF") != f"{repo}/{NATIVE_WORKFLOW}@refs/heads/main"
+            or env.get("GITHUB_EVENT_NAME") not in {"workflow_run", "workflow_dispatch", "push"}):
+        raise ClosureBlock("TRUSTED_NATIVE_CLOSURE_CONSUMER_REQUIRED")
+    try:
+        run_id, attempt = int(env["GITHUB_RUN_ID"]), int(env["GITHUB_RUN_ATTEMPT"])
+    except (KeyError, ValueError):
+        raise ClosureBlock("NATIVE_CLOSURE_EXECUTION_ID_REQUIRED") from None
+    run = api.request("GET", api.repo_path(f"/actions/runs/{run_id}/attempts/{attempt}"))
+    if (run_id < 1 or attempt < 1 or run.get("id") != run_id
+            or run.get("run_attempt") != attempt or run.get("path") != NATIVE_WORKFLOW
+            or run.get("head_sha") != env.get("GITHUB_SHA") or run.get("head_branch") != "main"
+            or run.get("event") != env.get("GITHUB_EVENT_NAME")
+            or any(run.get(k, {}).get("full_name") != repo for k in ("repository", "head_repository"))):
+        raise ClosureBlock("NATIVE_CLOSURE_PROVIDER_BINDING_MISMATCH")
+    head = _sha(run.get("head_sha"), "native source")
+    tree = api.request("GET", api.repo_path("/git/commits/" + head))["tree"]["sha"]
+    return {"repository": repo, "workflow": NATIVE_WORKFLOW, "run_id": run_id,
+            "run_attempt": attempt, "source_head": head, "source_tree": _sha(tree, "native tree")}
+
+
+def workflow_checkpoint(api: GitHubAPI, item: Mapping[str, Any]) -> dict[str, bytes]:
+    """Verify original artifact metadata, ZIP bytes, closed inventory and source."""
+    if (item.get("name") != JOURNAL_ARTIFACT or item.get("expired") is not False
+            or type(item.get("id")) is not int or item["id"] < 1
+            or type(item.get("size_in_bytes")) is not int
+            or not 0 < item["size_in_bytes"] <= 2 * 1_048_576
+            or not re.fullmatch(r"sha256:[0-9a-f]{64}", str(item.get("digest", "")))):
+        raise ClosureBlock("NATIVE_CLOSURE_CHECKPOINT_UNAVAILABLE")
+    raw = _amo_get(pathlib.Path(__file__).resolve().parents[1],
+        f"repos/{api.repository}/actions/artifacts/{item['id']}/zip", binary=True)
+    if len(raw) != item["size_in_bytes"] or "sha256:" + hashlib.sha256(raw).hexdigest() != item["digest"]:
+        raise ClosureBlock("NATIVE_CLOSURE_CHECKPOINT_DIGEST_MISMATCH")
+    files: dict[str, bytes] = {}
+    try:
+        with zipfile.ZipFile(io.BytesIO(raw)) as archive:
+            entries = archive.infolist()
+            if (not 1 <= len(entries) <= 2 or sum(e.file_size for e in entries) > 2 * 1_048_576):
+                raise ClosureBlock("NATIVE_CLOSURE_CHECKPOINT_CAPACITY")
+            for entry in entries:
+                if (not re.fullmatch(r"(?:[0-9a-f]{64}\.intent|PREDECESSOR)\.json", entry.filename)
+                        or entry.filename in files or entry.is_dir()
+                        or entry.external_attr >> 16 & 0o170000 not in (0, 0o100000)
+                        or not 0 < entry.file_size <= 2 * 1_048_576):
+                    raise ClosureBlock("NATIVE_CLOSURE_CHECKPOINT_INVENTORY_INVALID")
+                files[entry.filename] = archive.read(entry)
+    except (ValueError, OSError, zipfile.BadZipFile, RuntimeError):
+        raise ClosureBlock("NATIVE_CLOSURE_CHECKPOINT_BYTES_INVALID") from None
+    names = [name for name in files if name.endswith(".intent.json")]
+    if len(names) != 1:
+        raise ClosureBlock("NATIVE_CLOSURE_ONE_INTENT_REQUIRED")
+    saved = json.loads(files[names[0]])
+    producer = saved["producer"]
+    run_id, attempt = producer["run_id"], producer["run_attempt"]
+    if type(run_id) is not int or run_id < 1 or type(attempt) is not int or attempt < 1:
+        raise ClosureBlock("NATIVE_CLOSURE_CHECKPOINT_PRODUCER_INVALID")
+    run = api.request("GET", api.repo_path(f"/actions/runs/{run_id}/attempts/{attempt}"))
+    if (run.get("id") != item.get("workflow_run", {}).get("id")
+            or run.get("run_attempt") != attempt or run.get("path") != NATIVE_WORKFLOW
+            or run.get("head_branch") != "main" or run.get("head_sha") != producer["source_head"]
+            or run.get("event") not in {"workflow_run", "workflow_dispatch", "push"}
+            or producer.get("workflow") != NATIVE_WORKFLOW or producer.get("repository") != api.repository
+            or any(run.get(k, {}).get("full_name") != api.repository for k in ("repository", "head_repository"))
+            or names[0] != digest(saved["intent"]) + ".intent.json"):
+        raise ClosureBlock("NATIVE_CLOSURE_CHECKPOINT_PRODUCER_MISMATCH")
+    commit = api.request("GET", api.repo_path("/git/commits/" + producer["source_head"]))
+    if commit.get("tree", {}).get("sha") != producer.get("source_tree"):
+        raise ClosureBlock("NATIVE_CLOSURE_CHECKPOINT_SOURCE_MISMATCH")
+    return files
+
+
+def restore_workflow_journal(api: GitHubAPI, directory: pathlib.Path) -> dict[str, Any]:
+    """Recover the last immutable intent by reads before considering any write.
+
+    Completed history remains in its original artifacts, linked by digest. Only
+    the one outstanding intent is materialized; inventories cannot grow without
+    bound in memory. Expired or unreadable checkpoints hold rather than reset.
+    """
+    native_workflow_binding(api)
+    items = api.collection("/actions/artifacts?name=" + JOURNAL_ARTIFACT, "artifacts")
+    if any(item.get("name") != JOURNAL_ARTIFACT for item in items):
+        raise ClosureBlock("NATIVE_CLOSURE_CHECKPOINT_CENSUS_INVALID")
+    if not items:
+        return {"state": "NO_PREDECESSOR_CHECKPOINT", "mutation_attempted": False}
+    item = max(items, key=lambda a: a["id"])
+    files = workflow_checkpoint(api, item)
+    directory.mkdir(parents=True, exist_ok=True)
+    recovery = directory.parent / "recovery" / str(item["id"])
+    recovery.mkdir(parents=True, exist_ok=True)
+    name = next(name for name in files if name.endswith(".intent.json"))
+    path = recovery / name
+    if path.exists() and path.read_bytes() != files[name]:
+        raise ClosureBlock("NATIVE_CLOSURE_LOCAL_RECOVERY_DRIFT")
+    path.write_bytes(files[name])
+    result = recover(api, path)  # never calls mutate, including a lost ACK
+    if result.get("post_effect_verified") is not True:
+        raise ClosureBlock("NATIVE_CLOSURE_PREDECESSOR_UNVERIFIED")
+    previous = {"artifact_id": item["id"], "digest": item["digest"],
+                "intent_id": result["intent_id"], "readback_receipt_sha256": result["receipt_sha256"],
+                "post_effect_verified": True, "mutation_attempted": False}
+    (directory / "PREDECESSOR.json").write_bytes(canonical(previous))
+    return {"state": "PREDECESSOR_READBACK_VERIFIED", **previous}
+
+
+def prepare_workflow_step(api: GitHubAPI, policy: Mapping[str, Any], directory: pathlib.Path) -> dict[str, Any]:
+    producer = native_workflow_binding(api)
+    if api.request("GET", api.repo_path("/branches/main"))["commit"]["sha"] != producer["source_head"]:
+        raise ClosureBlock("NATIVE_CLOSURE_CHECKER_SOURCE_STALE")
+    restore_workflow_journal(api, directory)
+    return execute(api, policy, apply=True, journal_dir=directory, prepare_only=True)
+
+
+def apply_workflow_step(api: GitHubAPI, policy: Mapping[str, Any], directory: pathlib.Path,
+                        artifact_id: int, artifact_digest: str) -> dict[str, Any]:
+    producer = native_workflow_binding(api)
+    item = api.request("GET", api.repo_path(f"/actions/artifacts/{artifact_id}"))
+    if item.get("digest") != "sha256:" + artifact_digest.removeprefix("sha256:"):
+        raise ClosureBlock("NATIVE_CLOSURE_UPLOAD_ACK_MISMATCH")
+    files = workflow_checkpoint(api, item)
+    names = [name for name in files if name.endswith(".intent.json")]
+    if (json.loads(files[names[0]])["producer"] != producer
+            or {p.name: p.read_bytes() for p in directory.glob("*.json")} != files):
+        raise ClosureBlock("NATIVE_CLOSURE_CURRENT_CHECKPOINT_MISMATCH")
+    return execute(api, policy, apply=True, journal_dir=directory, resume_prepared=True)
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=("validate-policy", "run", "recover"))
+    parser.add_argument("command", choices=("validate-policy", "run", "recover", "workflow-prepare", "workflow-apply"))
     parser.add_argument("--policy", default="state/autonomy/AUTONOMOUS_PR_CLOSURE_POLICY_V1.json")
     parser.add_argument("--repository", default=os.environ.get("GITHUB_REPOSITORY", ""))
     parser.add_argument("--apply", action="store_true")
     parser.add_argument("--journal-dir", default=".qikvrt/evidence/pr-closure-intents")
     parser.add_argument("--closure-input")
     parser.add_argument("--intent")
+    parser.add_argument("--checkpoint-id", type=int)
+    parser.add_argument("--checkpoint-digest", default="")
     parser.add_argument("--output")
     args = parser.parse_args(argv)
     try:
@@ -854,18 +1034,41 @@ def main(argv: Sequence[str] | None = None) -> int:
         elif args.command == "recover":
             result = recover(GitHubAPI(_string(args.repository, "repository"), os.environ.get("GH_TOKEN", "")),
                              pathlib.Path(_string(args.intent, "intent path")))
+        elif args.command.startswith("workflow-"):
+            api = GitHubAPI(_string(args.repository, "repository"), os.environ.get("GH_TOKEN", ""), native_consumer=True)
+            directory = pathlib.Path(args.journal_dir)
+            result = (prepare_workflow_step(api, policy, directory) if args.command == "workflow-prepare" else
+                      apply_workflow_step(api, policy, directory, args.checkpoint_id, args.checkpoint_digest))
         else:
             snapshot = None if not args.closure_input else json.loads(pathlib.Path(args.closure_input).read_text(encoding="utf-8"))
             result = execute(GitHubAPI(_string(args.repository, "repository"), os.environ.get("GH_TOKEN", "")),
                              policy, apply=args.apply, journal_dir=pathlib.Path(args.journal_dir),
                              closure_snapshot=snapshot)
-    except (OSError, ValueError, KeyError) as exc:
+    except (OSError, ValueError, KeyError, TypeError, RuntimeError) as exc:
         result = {"state": "BLOCK", "first_blocker": str(exc), "mutation_attempted": False,
                   "completion_claims": {"TARGET_REACHED": False, "EFFECT_ACK_DONE": False}}
     rendered = json.dumps(result, sort_keys=True, indent=2) + "\n"
     print(rendered, end="")
     if args.output:
-        pathlib.Path(args.output).write_text(rendered, encoding="utf-8")
+        target = pathlib.Path(args.output)
+        target.write_text(rendered, encoding="utf-8")
+        if args.command.startswith("workflow-"):
+            verified = result.get("post_effect_verified") is True
+            state = result["state"]
+            progress = {"schema": "qikvrt_human_machine_progress_v1", "repository": args.repository,
+                "operation": "Repository continuation; original host, domain and publication remain separate",
+                "status": "BLOCK" if state == "BLOCK" else "IN_PROGRESS",
+                "gates": [
+                    {"name": "Current exact source and native admission", "state": "PASS" if result.get("capability") else "BLOCK", "evidence": result.get("first_blocker") or state},
+                    {"name": "Immutable intent checkpoint", "state": "PASS" if verified else "PENDING", "evidence": result.get("intent_id")},
+                    {"name": "Independent repository effect readback", "state": "PASS" if verified else "BLOCK", "evidence": state},
+                    {"name": "Original runtime, host, exact domain and Zenodo", "state": "BLOCK", "evidence": "Separate unverified acceptance; EFFECT_ACK_DONE not implied"}]}
+            (target.parent / "AI_PROGRESS.json").write_bytes(canonical(progress))
+            human = f"# Repository continuation\n\nState: {state}\n\nBoundary: {result.get('first_blocker') or 'EFFECT_ACK_CONTINUE'}\n\nOriginal host/domain/publication and productive EFFECT_ACK_DONE remain unverified.\n"
+            (target.parent / "AI_STATUS.md").write_text(human, encoding="utf-8")
+            if os.environ.get("GITHUB_STEP_SUMMARY"):
+                with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as stream:
+                    stream.write(human + "\n")
     return 2 if result["state"] == "BLOCK" else 0
 
 

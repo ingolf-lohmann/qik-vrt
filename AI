@@ -561,3 +561,18 @@ archive_fixed_point_definition_of_done in the merge-priority policy. Bind
 acceptance to a complete frozen archive and independent lossless byte readback.
 Retain the Owner-reported constructive proof separately from native archive
 acceptance; the Q16.16 microbenchmark does not close this additional DoD.
+
+
+## Owner continuation correction — 31 October 2026
+
+The hourly ChatGPT task is a read-only status channel. It executes no work,
+mutates no checkpoints, delegates no effects and starts no continuation.
+All work continues through repository state transitions in the existing work
+ring, without internal or external timer activation. Read
+`state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json#/repository_continuation`.
+The existing closure engine is consumed by the existing promotion workflow
+under the later conditional REST merge grant; the legacy CAS writer stays
+disabled. An immutable original intent precedes each admitted merge. Unknown
+effects permit readback only; missing verification is UNVERIFIED. Native
+source integration, unattended execution, runtime/SSO admission, host/domain
+acceptance and Zenodo publication each require their own fresh evidence.

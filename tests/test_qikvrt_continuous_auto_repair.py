@@ -16,7 +16,7 @@ class ContinuousAutoRepairContractTests(unittest.TestCase):
 
     def test_every_instance_has_event_driven_and_five_minute_opportunities(self) -> None:
         workflow = self.workflow
-        self.assertIn('cron: "*/5 * * * *"', workflow)
+        self.assertNotIn('  schedule:', workflow)
         self.assertIn("push:\n    branches: [main]", workflow)
         self.assertIn("workflow_run:", workflow)
         self.assertIn('- "QIKVRT CI"', workflow)

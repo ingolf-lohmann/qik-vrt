@@ -474,13 +474,13 @@ class ReflexiveRepositoryWatchdogTests(unittest.TestCase):
         self.assertFalse(value["baseline"]["same_head_and_tree"])
         self.assertEqual(value["state"], "QUIESCENT_OBSERVATION")
 
-    def test_workflow_is_five_minute_reflexive_and_read_only(self) -> None:
+    def test_workflow_is_transition_driven_reflexive_and_read_only(self) -> None:
         workflow = WORKFLOW.read_text(encoding="utf-8")
-        self.assertIn('cron: "*/5 * * * *"', workflow)
+        self.assertNotIn('  schedule:', workflow)
         self.assertIn("workflow_run:", workflow)
         # Main #610 serializes observations instead of cancelling the active
-        # read on each lifecycle notification. The existing schedule still
-        # observes unfinished runs; the analyzer's liveness controls remain.
+        # read on each lifecycle notification. Provider completion transitions
+        # replace timer activation; liveness checks still run on observation.
         self.assertIn("types: [completed]", workflow)
         self.assertNotIn("types: [requested, in_progress, completed]", workflow)
         self.assertIn("cancel-in-progress: false", workflow)
