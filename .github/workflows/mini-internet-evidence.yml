@@ -18,6 +18,10 @@ jobs:
           python-version: '3.12'
       - name: Verify positive and negative controls
         run: python -m unittest discover -s tests/mini_internet -p 'test_*.py' -v
+      - name: Compile native C90 reducer
+        run: cc -std=c90 -pedantic -Wall -Wextra -Werror -O2 tests/mini_internet/c90/authority.c -o tests/mini_internet/c90/authority
+      - name: Test native C90 reducer
+        run: python -m unittest discover -s tests/mini_internet/c90 -p 'test.py' -v
       - name: Explicit scope
         run: |
           echo 'This gate checks ZIP integrity and negative controls only.'
