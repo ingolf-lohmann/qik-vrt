@@ -13,6 +13,13 @@ class HandoffContinuationContract(unittest.TestCase):
         self.assertIn("Recover unchanged issue review handoff", source)
         self.assertIn("--previous-ref", source)
 
+    def test_integrity_verification_result_is_enforced(self):
+        source = WORKFLOW.read_text(encoding="utf-8")
+        self.assertIn("generated = generate(Path.cwd())", source)
+        self.assertIn("verified = verify(Path.cwd())", source)
+        self.assertIn("if not generated.ok or not verified.ok:", source)
+        self.assertIn("BLOCK: canonical issue-branch integrity generation or verification failed", source)
+
     def test_handoff_must_not_report_green_from_noop(self):
         source = WORKFLOW.read_text(encoding="utf-8")
         self.assertIn("Recover unchanged issue review handoff", source)
