@@ -29,9 +29,9 @@ jobs:
         run: |
           set -euo pipefail
           /tmp/qikvrt-c90-math-verifier --selftest
-          printf '3\\n1 2 0\\n2 0 1\\n2 0 1\\n1 2 0\\n' > /tmp/qikvrt-valid.cert
+          printf '3\n1 2 0\n2 0 1\n2 0 1\n1 2 0\n' > /tmp/qikvrt-valid.cert
           /tmp/qikvrt-c90-math-verifier /tmp/qikvrt-valid.cert
-          printf '3\\n1 2 0\\n0 0 1\\n2 0 1\\n1 2 0\\n' > /tmp/qikvrt-invalid.cert
+          printf '3\n1 2 0\n0 0 1\n2 0 1\n1 2 0\n' > /tmp/qikvrt-invalid.cert
           if /tmp/qikvrt-c90-math-verifier /tmp/qikvrt-invalid.cert; then
             echo 'FAIL: invalid certificate admitted'
             exit 1
