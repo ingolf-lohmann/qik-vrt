@@ -2,7 +2,7 @@ name: QIKVRT algebraic independent Lean kernels
 on:
   push:
     paths:
-      - 'formalization/algebraic-root/paranoid/**'
+      - 'formalization/algebraic-root/**'
       - '.github/workflows/qikvrt-algebraic-independent-kernels.yml'
   pull_request:
     paths:
@@ -17,6 +17,8 @@ jobs:
     timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
+      - name: Check mathematical gate contract (no GitHub writes)
+        run: python3 -m unittest discover -s formalization/algebraic-root -p 'test_math_gate.py' -v
       - name: Install sandbox and Lean 4.35 with independent kernels
         run: |
           set -euo pipefail
