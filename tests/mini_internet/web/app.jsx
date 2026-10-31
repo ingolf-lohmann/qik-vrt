@@ -15,6 +15,9 @@ async function verifyRelease(manifestText, signatureB64) {
   if (!ok) throw new Error("RELEASE_SIGNATURE_INVALID");
   const m = JSON.parse(manifestText);
   if (m.schema !== "qikvrt.client.release.v2") throw new Error("RELEASE_SCHEMA_MISMATCH");
+  if (typeof m.asset !== "string" || !/^\\/[a-zA-Z0-9/_-]+\\.json$/.test(m.asset)) throw new Error("RELEASE_ASSET_PATH_INVALID");
+  if (typeof m.sha256 !== "string" || !/^[a-f0-9]{64}$/.test(m.sha256)) throw new Error("RELEASE_DIGEST_INVALID");
+  if (typeof m.version !== "string" || !/^v[0-9]+$/.test(m.version)) throw new Error("RELEASE_VERSION_INVALID");
   const asset = await fetch(m.asset, { cache: "no-store" });
   if (!asset.ok) throw new Error("RELEASE_ASSET_HTTP_" + asset.status);
   const bytes = await asset.arrayBuffer();
