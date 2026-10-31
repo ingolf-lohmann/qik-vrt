@@ -1,0 +1,31 @@
+name: QIKVRT static terminal release proof
+on:
+  push:
+    branches: [feat/static-terminal-devops-client-20261031]
+  pull_request:
+    paths:
+      - 'interfaces/**'
+      - 'tools/build_static_terminal_release.py'
+      - 'tests/devops_terminal/**'
+      - 'formalization/DevOpsTerminalSafety.lean'
+      - '.github/workflows/static-terminal-release-proof.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+      - name: Run fail-closed packaging tests
+        run: python3 -m unittest discover -s tests/devops_terminal -p 'test_static_release.py' -v
+      - name: Package immutable candidate
+        run: python3 tools/build_static_terminal_release.py --output dist/terminal --version "${GITHUB_SHA}"
+      - name: Reverify emitted candidate
+        run: python3 -c "import pathlib,sys;sys.path.insert(0,'tools');from build_static_terminal_release import verify;assert verify(pathlib.Path('dist/terminal'))"
+      - name: Upload immutable candidate
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: qikvrt-static-terminal-candidate
+          path: dist/terminal/
+          if-no-files-found: error
