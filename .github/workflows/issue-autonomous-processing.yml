@@ -14,6 +14,7 @@ permissions:
   contents: write
   issues: write
   pull-requests: write
+  actions: read
 
 concurrency:
   group: issue-agent-${{ github.event.issue.number || inputs.issue_number }}
@@ -69,6 +70,42 @@ jobs:
           gh api "repos/$REPOSITORY/issues/$number" > "$ISSUE_JSON"
           jq -e --argjson number "$number" '(.pull_request | not) and .number == $number' "$ISSUE_JSON" >/dev/null
           echo "number=$number" >> "$GITHUB_OUTPUT"
+
+      - name: Verify live runner identity and priority evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          test "$GITHUB_RUN_ID" -gt 0
+          test -n "$GITHUB_SHA"
+          gh api "repos/$REPOSITORY/actions/runs/$GITHUB_RUN_ID" --jq '.id' | grep -Fx "$GITHUB_RUN_ID"
+          test -d "$TRUSTED_PROCESSOR_ROOT/scripts/issue_agent"
+          if jq -e 'any(.labels[]?; (.name | ascii_downcase) == "p0")' "$ISSUE_JSON" >/dev/null; then
+            echo 'P0_LABEL_VERIFIED; native processing still requires a successful handoff.' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'NORMAL_PRIORITY; no P0 admission claim.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Render live P0 admission and handoff dashboard
+        if: always() && steps.issue.outputs.number != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
+        run: |
+          set -euo pipefail
+          {
+            echo '## QIK-VRT · P0 DevOps admission'
+            echo ''
+            echo '| Gate | Live evidence |'
+            echo '| --- | --- |'
+            echo "| Priority | $(jq -r 'if any(.labels[]?; (.name | ascii_downcase) == "p0") then "P0 verified" else "BLOCK — P0 missing" end' "$ISSUE_JSON") |"
+            echo "| Runner | GitHub run [#$GITHUB_RUN_ID](https://github.com/$REPOSITORY/actions/runs/$GITHUB_RUN_ID) |"
+            echo "| Issue | [#$ISSUE_NUMBER](https://github.com/$REPOSITORY/issues/$ISSUE_NUMBER) |"
+            echo '| PR handoff | PENDING — requires independent exact-HEAD readback |'
+            echo '| End-to-end result | NOT VERIFIED — no effect acknowledgement |'
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Evaluate causal retry admission
         id: admission
@@ -194,8 +231,10 @@ jobs:
           from pathlib import Path
           sys.path.insert(0, sys.argv[1])
           from tools.qikvrt_integrity import generate, verify
-          generate(Path.cwd())
-          verify(Path.cwd())
+          generated = generate(Path.cwd())
+          verified = verify(Path.cwd())
+          if not generated.ok or not verified.ok:
+              raise SystemExit('BLOCK: canonical issue-branch integrity generation or verification failed')
           PY
 
       - name: Persist issue work branch
@@ -229,6 +268,37 @@ jobs:
           python3 -B "$TRUSTED_PROCESSOR_ROOT/scripts/issue_agent/handoff.py" \
             --repository "$REPOSITORY" --issue-number "$ISSUE_NUMBER" \
             --commit "$PUBLISHED_COMMIT" --tree "$PUBLISHED_TREE" \
+            --source-commit "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID" \
+            --run-attempt "$GITHUB_RUN_ATTEMPT" --output-directory "$HANDOFF_DIRECTORY"
+
+      - name: Recover unchanged issue review handoff
+        if: steps.admission.outputs.execute == 'false' && steps.admission.outputs.previous_branch_head != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
+          PREVIOUS_BRANCH_HEAD: ${{ steps.admission.outputs.previous_branch_head }}
+        run: |
+          set -euo pipefail
+          # A source NOOP is not a review-handoff success. Resume the exact
+          # published subject without rewriting issue evidence.
+          branch="issue-agent/$ISSUE_NUMBER"
+          git fetch origin "refs/heads/$branch:refs/remotes/origin/$branch"
+          # Never replay a stale receipt against a moved remote branch.
+          remote_head="$(git rev-parse "refs/remotes/origin/$branch^{commit}")"
+          if [ "$remote_head" != "$PREVIOUS_BRANCH_HEAD" ]; then
+            echo "BLOCK: persisted handoff subject differs from remote branch HEAD" >&2
+            exit 1
+          fi
+          git checkout --detach "$PREVIOUS_BRANCH_HEAD"
+          test "$(git rev-parse HEAD^{commit})" = "$PREVIOUS_BRANCH_HEAD"
+          tree="$(git rev-parse HEAD^{tree})"
+          # handoff.py requires the named local branch and verifies remote HEAD.
+          git switch -c "$branch"
+          echo "HANDOFF_RECOVERY: exact persisted branch $PREVIOUS_BRANCH_HEAD" >> "$GITHUB_STEP_SUMMARY"
+          python3 -B "$TRUSTED_PROCESSOR_ROOT/scripts/issue_agent/handoff.py" \
+            --repository "$REPOSITORY" --issue-number "$ISSUE_NUMBER" \
+            --commit "$PREVIOUS_BRANCH_HEAD" --tree "$tree" \
             --source-commit "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID" \
             --run-attempt "$GITHUB_RUN_ATTEMPT" --output-directory "$HANDOFF_DIRECTORY"
 
