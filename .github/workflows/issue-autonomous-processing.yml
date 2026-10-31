@@ -245,6 +245,12 @@ jobs:
           # published subject without rewriting issue evidence.
           branch="issue-agent/$ISSUE_NUMBER"
           git fetch origin "refs/heads/$branch:refs/remotes/origin/$branch"
+          # Never replay a stale receipt against a moved remote branch.
+          remote_head="$(git rev-parse "refs/remotes/origin/$branch^{commit}")"
+          if [ "$remote_head" != "$PREVIOUS_BRANCH_HEAD" ]; then
+            echo "BLOCK: persisted handoff subject differs from remote branch HEAD" >&2
+            exit 1
+          fi
           git checkout --detach "$PREVIOUS_BRANCH_HEAD"
           test "$(git rev-parse HEAD^{commit})" = "$PREVIOUS_BRANCH_HEAD"
           tree="$(git rev-parse HEAD^{tree})"
