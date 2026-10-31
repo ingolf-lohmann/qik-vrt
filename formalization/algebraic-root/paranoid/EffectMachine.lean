@@ -37,13 +37,14 @@ theorem effectStep_preserves_safety {Payload : Type} [DecidableEq Payload]
       simp [effectStep, effectSafe]
   | observe p =>
       simp only [effectStep]
-      split_ifs with h
+      split
       · simp [effectSafe]
       · exact safe
   | acknowledge =>
       simp only [effectStep]
-      split_ifs with h
-      · intro _
+      split
+      · rename_i h
+        intro _
         rcases h with ⟨hsome, heq⟩
         cases hp : s.proposed with
         | none => simp [hp] at hsome
