@@ -186,15 +186,18 @@ jobs:
             fi
             echo "QIKVRT_REENTRY_SUBJECT iteration=$iteration head=$subject tree=$tree"
 
-            # Test the exact active subject. Integrity staleness is the only
-            # expected pre-materialization failure and is repaired below.
+            # First test the immutable committed subject's integrity. When
+            # stale, materialize only the canonical manifest trio; do not
+            # waste a full suite on an already-known integrity failure.
             set +e
-            make test repository-monitor-test self-host-test > ".qikvrt-fixpoint-test-$iteration.log" 2>&1
+            python3 -B tools/qikvrt_integrity.py verify
             test_status=$?
             set -e
-
-            python3 tools/qikvrt_integrity.py generate
-            python3 tools/qikvrt_integrity.py verify
+            if test "$test_status" -ne 0; then
+              echo "QIKVRT_REENTRY_REPAIR_STALE_INTEGRITY iteration=$iteration head=$subject"
+            fi
+            python3 -B tools/qikvrt_integrity.py generate
+            python3 -B tools/qikvrt_integrity.py verify
 
             # Re-run the complete gates against the regenerated state. Any
             # remaining failure is a real successor failure, not predecessor
