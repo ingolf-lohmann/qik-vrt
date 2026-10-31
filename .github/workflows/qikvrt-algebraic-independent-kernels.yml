@@ -25,19 +25,45 @@ jobs:
           curl -fsSL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -o /tmp/elan-init.sh
           sh /tmp/elan-init.sh -y --default-toolchain leanprover/lean4:v4.35.0
           echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
-      - name: Independently verify exact theorem source
+      - name: Identify exact subject and toolchain
         working-directory: formalization/algebraic-root/paranoid
         shell: bash
         run: |
           set -euo pipefail
+          echo "::group::SOURCE_IDENTITY"
+          printf 'COMMIT=%s\\n' "$GITHUB_SHA"
+          git rev-parse HEAD
+          git rev-parse HEAD^{tree}
           lean --version | tee toolchain.txt
           cmp Root.lean ../Root.lean
-          sha256sum Root.lean ../Root.lean | tee hashes.txt
+          sha256sum Root.lean ../Root.lean EffectIntegrity.lean SerializationCascade.lean EffectMachine.lean lakefile.lean | tee hashes.txt
+          echo "::endgroup::"
+      - name: Resolve exact proof dependencies
+        working-directory: formalization/algebraic-root/paranoid
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "::group::DEPENDENCY_RESOLUTION"
           lake update
+          echo "::endgroup::"
+      - name: Compile proof modules
+        working-directory: formalization/algebraic-root/paranoid
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "::group::LEAN_COMPILATION"
           lake build
+          echo "::endgroup::"
+      - name: Verify six independent kernels
+        working-directory: formalization/algebraic-root/paranoid
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "::group::SIX_KERNEL_VERIFICATION"
           sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 || true
           lake check --paranoid 2>&1 | tee multi-kernel-report.log
           test -s multi-kernel-report.log
+          echo "::endgroup::"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
