@@ -94,6 +94,26 @@ jobs:
             -f body="DEVOPS_STAGE1_VERIFIED: priority=P0; issue=$ISSUE_NUMBER; run_id=$GITHUB_RUN_ID; attempt=$GITHUB_RUN_ATTEMPT; source_commit=$GITHUB_SHA; runner_and_processor_checks=passed; result=pending. This is not an end-to-end completion receipt."
           echo "DEVOPS_STAGE1_VERIFIED priority=P0 issue=$ISSUE_NUMBER run=$GITHUB_RUN_ID/$GITHUB_RUN_ATTEMPT" >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Render live P0 admission and handoff dashboard
+        if: always() && steps.issue.outputs.number != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
+        run: |
+          set -euo pipefail
+          {
+            echo '## QIK-VRT · P0 DevOps admission'
+            echo ''
+            echo '| Gate | Live evidence |'
+            echo '| --- | --- |'
+            echo "| Priority | $(jq -r 'if any(.labels[]?; (.name | ascii_downcase) == "p0") then "P0 verified" else "BLOCK — P0 missing" end' "$ISSUE_JSON") |"
+            echo "| Runner | GitHub run [#$GITHUB_RUN_ID](https://github.com/$REPOSITORY/actions/runs/$GITHUB_RUN_ID) |"
+            echo "| Issue | [#$ISSUE_NUMBER](https://github.com/$REPOSITORY/issues/$ISSUE_NUMBER) |"
+            echo '| PR handoff | PENDING — requires independent exact-HEAD readback |'
+            echo '| End-to-end result | NOT VERIFIED — no effect acknowledgement |'
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Evaluate causal retry admission
         id: admission
         env:
