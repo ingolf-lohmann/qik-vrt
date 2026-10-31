@@ -1,0 +1,591 @@
+{
+  "archive_delivery": {
+    "bytes": 78385963,
+    "filename": "QIKVRT_Autostart_20261024_v49.zip",
+    "library_error": "library_storage_limit_exceeded",
+    "onedrive_observation": "Metadata and Owner permission reads succeed, but two content GETs return HTTP403 accessDenied/serviceReadOnly: Database Is Read Only. No upload or permission mutation was attempted.",
+    "original_library_archive_replaced": false,
+    "sha256": "85a8d3f3d6ef3af96366a8e47449d789a9f515189c79c7f415939cd10298a309",
+    "state": "PREPARED_NOT_DURABLY_SAVED"
+  },
+  "completion_claims": {
+    "EFFECT_ACK_DONE": false,
+    "Main_merge": false,
+    "productive_host": false
+  },
+  "created_at": "2026-10-24T09:15:27.986082+00:00",
+  "first_remaining_gate": {
+    "evidence": "native-firefox-failure-job-120827705841.log; native-materialization-job-120826300462.log; public-delivery-readback.json; PR595 and exact-head status readbacks.",
+    "next_action": "Resolve the current candidate XPI binding through the existing protected official AMO signer and independently read its signed artifact; preserve the running original PR job and continue existing S1 host admission only through an actually callable admitted route.",
+    "operation": "MAIN_INTEGRATION_AND_PRODUCTIVE_HMI_INDEPENDENT_CONTINUATION",
+    "reason": "Original PR CI40078291782 has successful exact-head full-test/fixpoint and Chromium/WebKit jobs, but Firefox admission job120830169140 finished failure with signed-XPI delivery unavailable. Productive successors were skipped. The admitted Mesh runtime endpoint remains unconfigured.",
+    "retry_condition": "Materially verified current signed-XPI/signing-consumer binding and successful fresh exact-head required gates; then actual existing protected host/endpoint admission. No unchanged signing, CI rerun or guessed host."
+  },
+  "native_evidence_scope": "OWN_LOCAL_SOURCE_AUDIT_NOT_PRODUCTIVE_MESH; no writer admission transferred; no formal Mirror outbox assessment or other-node delivery/application is claimed.",
+  "new_knowledge_records": [
+    {
+      "epistemic_class": "BOUNDED_DOCUMENTARY_AND_SOURCE_TEST_OBSERVATION",
+      "evidence": [
+        "run-40069884460-job-120800833983.log"
+      ],
+      "id": "stall:original-worker-502",
+      "record_sha256": "cc769f6a1ab58418aaae1883217b13e51ce7ec3944946adb4a982de79247a1e2",
+      "scope": "PR595 candidate and original observed runs; no productive acceptance",
+      "statement": "Run40069884460 forPR459 passed its tests/integrity and then failed at REST POST git/trees502. Provider cause and whether that exact original tree was stored remain unknown.",
+      "subject": {
+        "head": "09cd7e5adefd1e64634668f2a5988cce9d9c60f4",
+        "ref": "fix/continuation-tree-readback-20261024",
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "4a88006895a6514e8a4cf691bd18c8983cf88bd4"
+      },
+      "supersedes": []
+    },
+    {
+      "epistemic_class": "BOUNDED_DOCUMENTARY_AND_SOURCE_TEST_OBSERVATION",
+      "evidence": [
+        "regression-before.log",
+        "continuation-tests.log",
+        "full-test-receipt.json",
+        "PR595"
+      ],
+      "id": "stall:bounded-transport-repair",
+      "record_sha256": "3e5063cc7a2bcc27ed6f34704703bf9b58df4357c44e91879c507d7f6a415312",
+      "scope": "PR595 candidate and original observed runs; no productive acceptance",
+      "statement": "The original exporter now reconciles an ambiguous5xx/timeout using one GET and an independently reconstructed Git-tree hash, without repeating the POST. Missing/corrupt/truncated/unreadable readback holds;403 remains a denial.",
+      "subject": {
+        "head": "09cd7e5adefd1e64634668f2a5988cce9d9c60f4",
+        "ref": "fix/continuation-tree-readback-20261024",
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "4a88006895a6514e8a4cf691bd18c8983cf88bd4"
+      },
+      "supersedes": []
+    },
+    {
+      "epistemic_class": "BOUNDED_DOCUMENTARY_AND_SOURCE_TEST_OBSERVATION",
+      "evidence": [
+        "public-delivery-readback.json",
+        "native-input.json",
+        "native-result.json"
+      ],
+      "id": "stall:productive-scope",
+      "record_sha256": "657bc6ca469513f64664d86ced2a6a91146bd6e7e69140f18ac46d9e1130d667",
+      "scope": "PR595 candidate and original observed runs; no productive acceptance",
+      "statement": "Operator authorization is present, but the configured native Mesh runtime endpoint is absent. Repository observer success and own local native events do not establish productive HMI-independent continuation.",
+      "subject": {
+        "head": "09cd7e5adefd1e64634668f2a5988cce9d9c60f4",
+        "ref": "fix/continuation-tree-readback-20261024",
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "4a88006895a6514e8a4cf691bd18c8983cf88bd4"
+      },
+      "supersedes": []
+    },
+    {
+      "epistemic_class": "NATIVE_JOB_OBSERVATION",
+      "evidence": [
+        "native-firefox-failure-job-120827705841.log",
+        "live-ci-40078235808-jobs.json"
+      ],
+      "id": "stall:exact-current-firefox-admission",
+      "record_sha256": "46ef3f181fd99d10cf09089eff59dc566cc64c8142774ff7db58c89e1711203c",
+      "scope": "Same-head pushCI40078235808; not a claim about all repository secret stores",
+      "statement": "The current Firefox158.0.1 admission job fails persistent installation with error-5 and mozilla_signed=false. Official signed-XPI delivery is not established; productive host/domain acceptance jobs are skipped. Source-fixpoint PR job40078291782 remains a separate pending original execution.",
+      "subject": {
+        "head": "09cd7e5adefd1e64634668f2a5988cce9d9c60f4",
+        "ref": "fix/continuation-tree-readback-20261024",
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "4a88006895a6514e8a4cf691bd18c8983cf88bd4"
+      },
+      "supersedes": []
+    },
+    {
+      "epistemic_class": "NATIVE_TERMINAL_JOB_OBSERVATION",
+      "evidence": [
+        "native-ci-test-job-120826300667.log",
+        "native-pr-firefox-failure-job-120830169140.log",
+        "pr595-terminal-jobs.json"
+      ],
+      "id": "stall:terminal-original-pr-ci-20261024",
+      "record_sha256": "d0529d95a271f76f00bed64e6a7901c6df76c1c2abf1b2e97ce689f30f56245f",
+      "scope": "Exact PR595 head/tree original CI40078291782; productive acceptance remains unproved",
+      "statement": "The original source job reached its tested fixpoint at iteration0 with MAKE_TEST_EXIT0 and predecessor_test_status0. Chromium/WebKit passed. The dependent PR Firefox job then finished failure; production successors were skipped. No original job remains active in the terminal inventory.",
+      "subject": {
+        "head": "09cd7e5adefd1e64634668f2a5988cce9d9c60f4",
+        "ref": "fix/continuation-tree-readback-20261024",
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "4a88006895a6514e8a4cf691bd18c8983cf88bd4"
+      },
+      "supersedes": [
+        "stall:exact-current-firefox-admission"
+      ]
+    }
+  ],
+  "new_work_records": [
+    {
+      "evidence": "PR595 exact tree4a88006895a6514e8a4cf691bd18c8983cf88bd4 equals local tested tree; original regression fails before patch;43 continuation tests and full make test pass.",
+      "id": "stall:lost-tree-ack-source-fix",
+      "state": "VERIFIED"
+    },
+    {
+      "id": "stall:main-native-worker-application",
+      "next_action": "Finish admitted exact-head native gates and original Main integration, then independently read the real unattended successor; no unchanged rerun.",
+      "state": "OPEN"
+    },
+    {
+      "id": "stall:receipt-and-nonallowlisted-conflicts",
+      "next_action": "Use original run40047660773 receipt evidence and40034283066 conflict scope to repair each proven prerequisite without weakening guards.",
+      "state": "OPEN"
+    },
+    {
+      "id": "stall:productive-hmi-disconnect-acceptance",
+      "next_action": "Use the existing admitted persistent native runtime after actual host/endpoint binding; close HMI A and read same Work Unit progress and result from separately authorized HMI B.",
+      "state": "OPEN"
+    }
+  ],
+  "original_own_native_events": [
+    {
+      "event": {
+        "kind": "OBSERVE",
+        "message": "Universal Terminal: hash-bound durable input observation",
+        "observed_at": "2026-10-24T08:17:52Z",
+        "payload": {
+          "adapter": "QIKVRT_OWNER_REST_TERMINAL_V1",
+          "effect_ack_done": false,
+          "input_hash": "sha256:43c8172ea2bb1ed5be69ebd6aeb554bfe2c86821ccb92b5f73a9e9d1ec6ef6d5",
+          "principal": "Ingolf Lohmann",
+          "request_id": "repository-stall-repair-20261024",
+          "terminal_input": {
+            "schema": "qikvrt_terminal_input_v1",
+            "text": "Owner instruction: diagnose and remove repository inactivity when the human stops interacting. Investigate the existing unattended draft-PR continuation, including original run 40069884460 for PR459. Preserve original journals, all inherited work and grants. Repair only demonstrated causes through existing native components; verify tests and actual effects independently. No new timer, replacement executor, speculative merge, downgraded software, or unsupported completion claim."
+          }
+        },
+        "provenance": {
+          "native_event_id": "terminal:422ed2361d3c657e7ff515f110f240b8b3d692536a74ab25",
+          "source": "transputer"
+        },
+        "schema": "qikvrt_temdd_native_event_v1",
+        "subject": {
+          "head": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+          "pr": 459,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "1a8003f1815b75fe534b21f242e8b782d4352796"
+        }
+      },
+      "independent_terminal_readback": {
+        "dod": false,
+        "evidence_transfer": "DENY",
+        "id": "6c1f80997352487292d15ddd75e06e83:1",
+        "kind": "OBSERVE",
+        "ledger_digest": "a3aeb7f9e5978735b11cdd4150f2afc714ce3309ad62781d320acccb03c2c776",
+        "message": "Universal Terminal: hash-bound durable input observation",
+        "observed_at": "2026-10-24T08:17:52Z",
+        "payload": {
+          "adapter": "QIKVRT_OWNER_REST_TERMINAL_V1",
+          "effect_ack_done": false,
+          "input_hash": "sha256:43c8172ea2bb1ed5be69ebd6aeb554bfe2c86821ccb92b5f73a9e9d1ec6ef6d5",
+          "principal": "Ingolf Lohmann",
+          "request_id": "repository-stall-repair-20261024",
+          "terminal_input": {
+            "schema": "qikvrt_terminal_input_v1",
+            "text": "Owner instruction: diagnose and remove repository inactivity when the human stops interacting. Investigate the existing unattended draft-PR continuation, including original run 40069884460 for PR459. Preserve original journals, all inherited work and grants. Repair only demonstrated causes through existing native components; verify tests and actual effects independently. No new timer, replacement executor, speculative merge, downgraded software, or unsupported completion claim."
+          }
+        },
+        "payload_digest": "19e86b0be205a32351b8440fac8dabe16a634e693aa90373c92ae22c91f6cf9f",
+        "provenance": {
+          "native_event_id": "terminal:422ed2361d3c657e7ff515f110f240b8b3d692536a74ab25",
+          "source": "transputer"
+        },
+        "recorded_at": "2026-10-24T08:17:53.203814Z",
+        "schema": "qikvrt_temdd_event_v1",
+        "subject": {
+          "head": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+          "pr": 459,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "1a8003f1815b75fe534b21f242e8b782d4352796"
+        }
+      }
+    },
+    {
+      "event": {
+        "kind": "OBSERVE",
+        "message": "Universal Terminal: hash-bound durable input observation",
+        "observed_at": "2026-10-24T08:33:41Z",
+        "payload": {
+          "adapter": "QIKVRT_OWNER_REST_TERMINAL_V1",
+          "effect_ack_done": false,
+          "input_hash": "sha256:ed78c8db4f522e7c9ceea70bd8a71f6dff75e28ec3b9f502894fed9dff39cc6e",
+          "principal": "Ingolf Lohmann",
+          "request_id": "repository-stall-repair-result-20261024",
+          "terminal_input": {
+            "schema": "qikvrt_terminal_input_v1",
+            "text": "Continue the existing authorized repository-stall repair. The source patch is now in Authority PR595. Verify exact published tree and native checks; retain the original 502, receipt mismatch, non-allowlisted conflicts, missing admitted persistent Mesh endpoint and productive HMI-replacement obligations. Preserve every predecessor. This own local native session is not a productive Mesh runtime."
+          }
+        },
+        "provenance": {
+          "native_event_id": "terminal:2badbd8143b08dc2931bb7ce8ead680191e2369f1ee373d5",
+          "source": "transputer"
+        },
+        "schema": "qikvrt_temdd_native_event_v1",
+        "subject": {
+          "head": "09cd7e5adefd1e64634668f2a5988cce9d9c60f4",
+          "pr": 595,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "4a88006895a6514e8a4cf691bd18c8983cf88bd4"
+        }
+      },
+      "independent_terminal_readback": {
+        "dod": false,
+        "evidence_transfer": "DENY",
+        "id": "6c1f80997352487292d15ddd75e06e83:2",
+        "kind": "OBSERVE",
+        "ledger_digest": "9d9426a0e1c1274e6ae049723dd2437db165d258a5ce8dfb9a36f4c27328e8aa",
+        "message": "Universal Terminal: hash-bound durable input observation",
+        "observed_at": "2026-10-24T08:33:41Z",
+        "payload": {
+          "adapter": "QIKVRT_OWNER_REST_TERMINAL_V1",
+          "effect_ack_done": false,
+          "input_hash": "sha256:ed78c8db4f522e7c9ceea70bd8a71f6dff75e28ec3b9f502894fed9dff39cc6e",
+          "principal": "Ingolf Lohmann",
+          "request_id": "repository-stall-repair-result-20261024",
+          "terminal_input": {
+            "schema": "qikvrt_terminal_input_v1",
+            "text": "Continue the existing authorized repository-stall repair. The source patch is now in Authority PR595. Verify exact published tree and native checks; retain the original 502, receipt mismatch, non-allowlisted conflicts, missing admitted persistent Mesh endpoint and productive HMI-replacement obligations. Preserve every predecessor. This own local native session is not a productive Mesh runtime."
+          }
+        },
+        "payload_digest": "f1662d07000574b709b06d854791d93c27e394d673f2b45c4fca70f60c9f2b7c",
+        "provenance": {
+          "native_event_id": "terminal:2badbd8143b08dc2931bb7ce8ead680191e2369f1ee373d5",
+          "source": "transputer"
+        },
+        "recorded_at": "2026-10-24T08:33:42.675771Z",
+        "schema": "qikvrt_temdd_event_v1",
+        "subject": {
+          "head": "09cd7e5adefd1e64634668f2a5988cce9d9c60f4",
+          "pr": 595,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "4a88006895a6514e8a4cf691bd18c8983cf88bd4"
+        }
+      }
+    },
+    {
+      "event": {
+        "kind": "READBACK",
+        "message": "Published source repair and local complete-suite evidence; actual Main and productive continuation remain separate.",
+        "observed_at": "2026-10-24T08:33:42.680207Z",
+        "payload": {
+          "complete_local_test_receipt": {
+            "command": "make test",
+            "exit_code": 0,
+            "local_commit": "338c1e685350d0e79141ef88c50b0aef58adf9f5",
+            "log_bytes": 331767,
+            "log_sha256": "6b665c684f01cdff18f562fd51552328ca5a7e2498def6fc515f7e98c71b251a",
+            "scope": "COMPLETE_LOCAL_REPOSITORY_SUITE; overlapping cases are not a unique-test count; native PR HEAD acceptance remains separate",
+            "tree": "4a88006895a6514e8a4cf691bd18c8983cf88bd4",
+            "unittest_executions_including_overlap": 1713,
+            "unittest_invocations": 37
+          },
+          "continuation_tests": 43,
+          "effect_ack_done": false,
+          "main_integration_verified": false,
+          "pr": 595,
+          "published_head": "09cd7e5adefd1e64634668f2a5988cce9d9c60f4",
+          "published_tree": "4a88006895a6514e8a4cf691bd18c8983cf88bd4"
+        },
+        "provenance": {
+          "native_event_id": "repository-stall-repair-20261024:source-verification",
+          "source": "transputer"
+        },
+        "schema": "qikvrt_temdd_native_event_v1",
+        "subject": {
+          "head": "09cd7e5adefd1e64634668f2a5988cce9d9c60f4",
+          "pr": 595,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "4a88006895a6514e8a4cf691bd18c8983cf88bd4"
+        }
+      },
+      "independent_terminal_readback": {
+        "dod": false,
+        "evidence_transfer": "DENY",
+        "id": "6c1f80997352487292d15ddd75e06e83:3",
+        "kind": "READBACK",
+        "ledger_digest": "429118fe1db2e40642f85c82647cea22494bb914e3d5b5f1f2b6d6f6698455d5",
+        "message": "Published source repair and local complete-suite evidence; actual Main and productive continuation remain separate.",
+        "observed_at": "2026-10-24T08:33:42.680207Z",
+        "payload": {
+          "complete_local_test_receipt": {
+            "command": "make test",
+            "exit_code": 0,
+            "local_commit": "338c1e685350d0e79141ef88c50b0aef58adf9f5",
+            "log_bytes": 331767,
+            "log_sha256": "6b665c684f01cdff18f562fd51552328ca5a7e2498def6fc515f7e98c71b251a",
+            "scope": "COMPLETE_LOCAL_REPOSITORY_SUITE; overlapping cases are not a unique-test count; native PR HEAD acceptance remains separate",
+            "tree": "4a88006895a6514e8a4cf691bd18c8983cf88bd4",
+            "unittest_executions_including_overlap": 1713,
+            "unittest_invocations": 37
+          },
+          "continuation_tests": 43,
+          "effect_ack_done": false,
+          "main_integration_verified": false,
+          "pr": 595,
+          "published_head": "09cd7e5adefd1e64634668f2a5988cce9d9c60f4",
+          "published_tree": "4a88006895a6514e8a4cf691bd18c8983cf88bd4"
+        },
+        "payload_digest": "c515600f3eea4f504289931648afa14eb424a092f85df49c796ce5d398641f54",
+        "provenance": {
+          "native_event_id": "repository-stall-repair-20261024:source-verification",
+          "source": "transputer"
+        },
+        "recorded_at": "2026-10-24T08:33:42.728216Z",
+        "schema": "qikvrt_temdd_event_v1",
+        "subject": {
+          "head": "09cd7e5adefd1e64634668f2a5988cce9d9c60f4",
+          "pr": 595,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "4a88006895a6514e8a4cf691bd18c8983cf88bd4"
+        }
+      }
+    },
+    {
+      "event": {
+        "kind": "READBACK",
+        "message": "Exact current source candidate and open productive boundaries independently reobserved.",
+        "observed_at": "2026-10-24T08:56:25.733459Z",
+        "payload": {
+          "domain_http_status": 525,
+          "effect_ack_done": false,
+          "jobs": [
+            {
+              "conclusion": "success",
+              "id": 120826300667,
+              "name": "test",
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "id": 120830118754,
+              "name": "offline_browser (chromium)",
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "id": 120830118797,
+              "name": "offline_browser (webkit)",
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "id": 120830118981,
+              "name": "Mozilla AMO unlisted access and exact-source signing",
+              "status": "completed"
+            },
+            {
+              "conclusion": null,
+              "id": 120830169140,
+              "name": "Reused S1 + Mozilla Release - Firefox 158 XPI admission",
+              "status": "in_progress"
+            }
+          ],
+          "main": {
+            "head": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+            "protected": false,
+            "tree": "1a8003f1815b75fe534b21f242e8b782d4352796"
+          },
+          "native_source_fixpoint": "SUCCESS",
+          "pr_head": "09cd7e5adefd1e64634668f2a5988cce9d9c60f4",
+          "pr_merged": false,
+          "pr_tree": "4a88006895a6514e8a4cf691bd18c8983cf88bd4",
+          "productive_hmi_independence_verified": false,
+          "public_snapshot_id": "f5411e96-64d1-48e3-b814-4236bf6708ad",
+          "public_snapshot_sha256": "5d895e66afa48c3511ec61cd010c0a1aa819fb508db9b2912e9245758144a162",
+          "raw_closing_readback_sha256": "551e920c0f74d2e8c8117c5ca61808dcd4d0aca26e107adbb292cf73ea918a39"
+        },
+        "provenance": {
+          "native_event_id": "repository-stall-repair-20261024:closing",
+          "source": "transputer"
+        },
+        "schema": "qikvrt_temdd_native_event_v1",
+        "subject": {
+          "head": "09cd7e5adefd1e64634668f2a5988cce9d9c60f4",
+          "pr": 595,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "4a88006895a6514e8a4cf691bd18c8983cf88bd4"
+        }
+      },
+      "independent_terminal_readback": {
+        "dod": false,
+        "evidence_transfer": "DENY",
+        "id": "6c1f80997352487292d15ddd75e06e83:4",
+        "kind": "READBACK",
+        "ledger_digest": "f821795febbce40f5904d85fdaaac122d35cf156e8f3d9a30751f556a8be3500",
+        "message": "Exact current source candidate and open productive boundaries independently reobserved.",
+        "observed_at": "2026-10-24T08:56:25.733459Z",
+        "payload": {
+          "domain_http_status": 525,
+          "effect_ack_done": false,
+          "jobs": [
+            {
+              "conclusion": "success",
+              "id": 120826300667,
+              "name": "test",
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "id": 120830118754,
+              "name": "offline_browser (chromium)",
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "id": 120830118797,
+              "name": "offline_browser (webkit)",
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "id": 120830118981,
+              "name": "Mozilla AMO unlisted access and exact-source signing",
+              "status": "completed"
+            },
+            {
+              "conclusion": null,
+              "id": 120830169140,
+              "name": "Reused S1 + Mozilla Release - Firefox 158 XPI admission",
+              "status": "in_progress"
+            }
+          ],
+          "main": {
+            "head": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+            "protected": false,
+            "tree": "1a8003f1815b75fe534b21f242e8b782d4352796"
+          },
+          "native_source_fixpoint": "SUCCESS",
+          "pr_head": "09cd7e5adefd1e64634668f2a5988cce9d9c60f4",
+          "pr_merged": false,
+          "pr_tree": "4a88006895a6514e8a4cf691bd18c8983cf88bd4",
+          "productive_hmi_independence_verified": false,
+          "public_snapshot_id": "f5411e96-64d1-48e3-b814-4236bf6708ad",
+          "public_snapshot_sha256": "5d895e66afa48c3511ec61cd010c0a1aa819fb508db9b2912e9245758144a162",
+          "raw_closing_readback_sha256": "551e920c0f74d2e8c8117c5ca61808dcd4d0aca26e107adbb292cf73ea918a39"
+        },
+        "payload_digest": "0dfbfc269b9ce8914c402020c1cf417b04421d0b5ef22d8a49c9d6218c0d9156",
+        "provenance": {
+          "native_event_id": "repository-stall-repair-20261024:closing",
+          "source": "transputer"
+        },
+        "recorded_at": "2026-10-24T08:56:25.761418Z",
+        "schema": "qikvrt_temdd_event_v1",
+        "subject": {
+          "head": "09cd7e5adefd1e64634668f2a5988cce9d9c60f4",
+          "pr": 595,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "4a88006895a6514e8a4cf691bd18c8983cf88bd4"
+        }
+      }
+    },
+    {
+      "event": {
+        "kind": "READBACK",
+        "message": "Original PR CI is terminal: source fixpoint successful, Firefox admission failed, productive successors skipped; no Main merge.",
+        "observed_at": "2026-10-24T09:00:25.651363Z",
+        "payload": {
+          "domain_http_status": 525,
+          "effect_ack_done": false,
+          "firefox_conclusion": "failure",
+          "firefox_job": 120830169140,
+          "main": {
+            "head": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+            "protected": false,
+            "tree": "1a8003f1815b75fe534b21f242e8b782d4352796"
+          },
+          "native_source_fixpoint": "success",
+          "pr": {
+            "base": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+            "head": "09cd7e5adefd1e64634668f2a5988cce9d9c60f4",
+            "merged": false,
+            "number": 595
+          },
+          "public_snapshot_id": "70ed9264-7ed9-4e55-a015-2908e580de38",
+          "public_snapshot_sha256": "6c6956ee57c360d21f19fc31bcfe2c56d2afe6c3c1a469ebdb63d70e52b48daf",
+          "terminal_comment_id": 6382272308
+        },
+        "provenance": {
+          "native_event_id": "repository-stall-repair-20261024:terminal-successor",
+          "source": "transputer"
+        },
+        "schema": "qikvrt_temdd_native_event_v1",
+        "subject": {
+          "head": "09cd7e5adefd1e64634668f2a5988cce9d9c60f4",
+          "pr": 595,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "4a88006895a6514e8a4cf691bd18c8983cf88bd4"
+        }
+      },
+      "independent_terminal_readback": {
+        "dod": false,
+        "evidence_transfer": "DENY",
+        "id": "6c1f80997352487292d15ddd75e06e83:5",
+        "kind": "READBACK",
+        "ledger_digest": "c972501db5655ca020928f6dbe0d65a9b545ed140657c628f45588b1e5165acd",
+        "message": "Original PR CI is terminal: source fixpoint successful, Firefox admission failed, productive successors skipped; no Main merge.",
+        "observed_at": "2026-10-24T09:00:25.651363Z",
+        "payload": {
+          "domain_http_status": 525,
+          "effect_ack_done": false,
+          "firefox_conclusion": "failure",
+          "firefox_job": 120830169140,
+          "main": {
+            "head": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+            "protected": false,
+            "tree": "1a8003f1815b75fe534b21f242e8b782d4352796"
+          },
+          "native_source_fixpoint": "success",
+          "pr": {
+            "base": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+            "head": "09cd7e5adefd1e64634668f2a5988cce9d9c60f4",
+            "merged": false,
+            "number": 595
+          },
+          "public_snapshot_id": "70ed9264-7ed9-4e55-a015-2908e580de38",
+          "public_snapshot_sha256": "6c6956ee57c360d21f19fc31bcfe2c56d2afe6c3c1a469ebdb63d70e52b48daf",
+          "terminal_comment_id": 6382272308
+        },
+        "payload_digest": "f8d847120551b132129d4e4972e3b52c5acb462c0d9ce70b8ef40c9ff517286d",
+        "provenance": {
+          "native_event_id": "repository-stall-repair-20261024:terminal-successor",
+          "source": "transputer"
+        },
+        "recorded_at": "2026-10-24T09:00:25.681530Z",
+        "schema": "qikvrt_temdd_event_v1",
+        "subject": {
+          "head": "09cd7e5adefd1e64634668f2a5988cce9d9c60f4",
+          "pr": 595,
+          "repository": "ingolf-lohmann/qik-vrt",
+          "tree": "4a88006895a6514e8a4cf691bd18c8983cf88bd4"
+        }
+      }
+    }
+  ],
+  "predecessor": {
+    "archive_sha256": "bb11f25da1db86582730522897554cd2ebfff86ece41b6ac216e4704c5a845c1",
+    "description": "Existing private QIKVRT_Autostart_20261020_v48.zip retained unchanged. Its locator remains in the Owner working skill.",
+    "receipt_sha256": "42993db6cc88acbddc6bff9744afc4d25d86035a351e0e2d448212cd0bc0bce5",
+    "retained_knowledge": 379,
+    "retained_work": 350
+  },
+  "schema": "qikvrt_public_engineering_continuation_checkpoint_v1",
+  "source": {
+    "local_test_commit": "338c1e685350d0e79141ef88c50b0aef58adf9f5",
+    "native_ci_run": 40078291782,
+    "native_fixpoint": "SUCCESS_ITERATION_0",
+    "native_source_test_job": 120826300667,
+    "pr": 595,
+    "productive_hmi_independence": "NOT_PROVEN",
+    "source_integration": "OPEN"
+  },
+  "subject": {
+    "head": "09cd7e5adefd1e64634668f2a5988cce9d9c60f4",
+    "ref": "fix/continuation-tree-readback-20261024",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "tree": "4a88006895a6514e8a4cf691bd18c8983cf88bd4"
+  }
+}

@@ -56,6 +56,45 @@ credentials. The production authorization of 13 October and historical review
 records remain preserved. License terms are unchanged.
 
 
+## Provider-independent review route — Owner 2026-10-23
+
+QIK-VRT's existing review executor is the default technical review route for
+open, non-draft Main pull requests. Selection no longer depends on GitHub
+accepting a Copilot assignment or listing a requested reviewer. The route is
+resolved from the trusted Main lifecycle policy. No Copilot assignment retry,
+new model service, subscription or paid inference is introduced.
+
+The existing decision core evaluates actual source-bound gates. It is not a
+semantic AI code reviewer. An attributable cognitive client must inspect diffs
+and persist its own findings; its implementation, test and effect evidence stay
+separate from the automated technical disposition and Principal review.
+
+The executor uses REST for inline-comment inventory. If comments exist, REST
+alone does not establish thread resolution; the review remains explicitly
+blocked instead of inventing zero unresolved threads. Required checks and
+Principal/governance acceptance remain mandatory. Routing a review does not
+cancel a paid subscription. Subscription cancellation requires provider
+confirmation through an authenticated billing operation; no such confirmation
+has been obtained by this change.
+
+## Reobserve recovered technical evidence — 2026-10-26
+
+A prior technical review does not permanently suppress evaluation of its exact
+head. The original selector and evaluator reobserve the applicable gates and
+subject. A changed disposition refreshes only the technical status when the
+original review already exists; the original review and Principal instruction
+remain intact. Identical subject, scope and decision produce NOOP. Clock changes
+and unrelated run counters alone do not create work. Regressed, unavailable or
+drifting evidence cannot retain a stale success.
+
+This refresh performs no new semantic review or native approval and does not
+write the dedicated governance status. Missing or malformed checker history
+blocks the operation. If a review POST loses its response, independent readback
+must find exactly the intended bot review before proceeding; a second fallback
+POST is forbidden. Source tests execute the actual selector and publishing
+branches with bounded intercepted REST. Live adoption and domain delivery
+remain separate effects.
+
 ## Requested reviews
 
 When a review is requested, a conforming repository client or agent must act without deliberate queueing:

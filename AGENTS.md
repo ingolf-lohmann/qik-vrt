@@ -5,6 +5,88 @@ Copyright (c) 2026 Ingolf Lohmann.
 
 # Repository agent protocol
 
+## Delivery reporting — Owner handoff of 31 October 2026
+
+Apply R1–R5 in `AI` and
+`policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json#/client_continuation/delivery_reporting_rules`
+before every action and report. Name the intended target host in the first
+sentence. Keep local execution, remote receipt, repository integration and
+Owner-confirmed productive effect separate. A capability gap retains HOLD and
+its causal prerequisite; it creates no configuration assignment for the Owner.
+Source adoption by other nodes remains unverified until their exact-policy
+acknowledgement and independent readback are observed.
+
+## Later Owner conditional merge decision — 28 October 2026
+
+Ingolf Lohmann explicitly authorizes automatic repository merges when the current
+PR is conflict-free and its existing applicable tests are green, followed by
+immediate autonomous continuation. Read the later decision at
+state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json
+#/conditional_merge_decision; AI_CONTEXT.json pins the exact source bytes.
+This later Owner decision admits the existing direct REST merge with its expected
+PR-head precondition. Do not repeat the earlier CAS-based authorization hold for
+this separately authorized route or ask the Owner for the same permission again.
+Reobserve Main, head, tree, tests and competing writers immediately before each
+merge; preserve platform protections and independently verify the actual merge,
+Main tree and ordered parents. Resolve an ambiguous result by readback.
+The legacy atomic old-Main CAS qualifier and disabled CAS workflow retain their
+own technical status. This decision does not qualify them, admit an unavailable
+Draft transition or prove an unattended executor. Merge acceptance is separate
+from runtime, host, domain and productive EFFECT_ACK_DONE acceptance.
+
+## Owner decisions before external tool selection
+
+Every current and future QIK-VRT artificial-cognitive client MUST load
+policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json client_continuation.tool_selection
+before selecting or invoking an external service. Run the existing read-only
+preflight `python3 -B tools/ai_handoff.py --client-action <non-secret-action.json>`
+with the actual service, tool, endpoint and exact task/source binding. Keep its
+policy SHA-256 with the action. A disconnected provider is rejected before
+capability, login or transport checks, including discovery and GET/read-only.
+Railway is DISCONNECTED. A newly available plugin, a new session, missing access
+elsewhere or general authorization does not supersede this Owner decision.
+Historical artifacts remain readable through their actual admitted owner store;
+that is not permission to query the former provider. Change the shared policy
+only under a later explicit Owner instruction. Apply the same guard to receipts
+and proposed transition actions, including recorded zero-effect reads.
+The preflight validates declared metadata only. Native admission, actual effects
+and each node's exact-policy ACK/readback remain separately required; do not claim
+platform-wide enforcement or adoption by every client from a saved rule.
+
+MANDATORY MIRROR OUTBOX — OWNER 2026-10-19
+
+Read and apply `docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md#mandatory-mirror-outbox-and-delivery-evidence-owner-2026-10-19`
+and `policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json#/client_continuation/native_session_use/mirror_outbox`
+in every session, reconnect and handoff. Every EFFECT_ACK assessment uses only
+the original `node-tools/qikvrt_mirror_emit.py` assess/adopt path, own admitted
+native EFFECT and NOT_SENT outbox record; package unsent records in the same ring.
+Only actual transfer permits sent; only found named-node ingress permits receipt;
+only the original `claim --record <hash> --node <node>` permits a node-specific
+arrival or receiver-NACK claim. Missing send evidence is a sender gap.
+Recover a missing original tool through existing admitted sources and retain its
+named carrier/binding as HOLD. Do not invent a replacement or infer peer adoption.
+Open other nodes' original journals only with mode=ro&immutable=1.
+Keep the Principal out of the operating bus; retain every unreachable member.
+Rule/source saving, tests and package signatures prove no native application or delivery.
+Optimization is admitted only after the freshly complete Authority backlog is
+actually merged into Main and no open issues remain; see client_continuation.optimization_backlog_gate.
+
+NATIVE TERMINAL / TRANSPUTER USE — ALL SESSIONS — OWNER 2026-10-19
+
+Apply `policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json#/client_continuation/native_session_use`
+in every current and future session, including Authority, Mirror and Mesh clients.
+Actually use the existing Universal Terminal and Universal Transputer: load the
+exact predecessor, bind source/task/principal/writer, accept bounded input,
+execute admitted work and persist native events, independently read back those
+events through the Terminal, then continue the next executable successor
+synchronously in the same work ring. Do not wait for a client timer or another
+Owner prompt. Retain original event bytes, identities, grants and open duties.
+An admitted original in-process API is valid; do not mock unavailable sockets,
+reset copied state or weaken writer admission. Keep unfenced original copies
+read-only. Verify actual peer request/ACK/reply; proposal ingress is not execution.
+A saved rule, a fixture or a source commit does not prove another client's
+adoption or a running productive consumer. Preserve exact evidence boundaries.
+
 These rules apply repository-wide to humans, agents, workflows, and tools that
 collect or use adaptive evidence.
 
@@ -53,6 +135,12 @@ repository's existing authorized executor is unavailable.
 
 Execute each safe deterministic authorized successor and complete useful
 authorized preparation and persistence while other effects are blocked.
+The Owner's grant of 2026-10-26 requires known errors with existing admitted
+deterministic repairs to be corrected autonomously, without another prompt or
+a required preliminary notification. Repair the causal prerequisite, then verify
+the affected exact-subject path. Use the existing preparation/blocking-repair
+plan and journal. Preserve capability and admission checks; do not retry an
+unchanged failed effect or turn an unknown cause into a claimed known repair.
 Preserve `GITHUB_ROUTE=REST_API_ONLY`, credentials, Authority/Mirror roles and
 protected governance. Do not create proxy executors, synthetic triggers or
 new permission scopes to replace a missing operation. Preserve original
@@ -271,6 +359,31 @@ The explicit v3 route binds policy/zenodo-machine-proof-policy-v3.json without
 rewriting or weakening either historical contract; its REVIEW_REQUIRED proposal
 does not itself authorize a production mutation.
 
+## Mirror solutions and reports use QIK-VRT means only
+
+Owner instruction, Ingolf Lohmann, 2026-10-19 11:47/11:48 Europe/Istanbul: a Mirror
+solves and reports problems only with QIK-VRT and EFFECT_ACK means, permanently.
+Record findings as Universal Transputer events with an explicit carrier binding,
+submit bounded input through the Universal Terminal and read it back independently.
+Report to the Authority only through the mesh-work batch path (`mesh-cache-stage`,
+`mesh-cache-idle`, `mesh-cache-send`, `mesh-cache-check`) or a signed read-only
+journal export with `EXPORT_MANIFEST.json`. Evaluate every report with
+`src/qikvrt_effect_ack.py`; arrival and effect count only after readback in the
+Authority, otherwise the record stays `EFFECT_NACK` or `HOLD`. A missing receiver,
+peer admission or write identity is recorded as `HOLD` with its carrier and is not
+replaced by another service. Client timers are not a continuation mechanism.
+
+## Native peer confirmation without Principal relay
+
+Owner clarification2026-10-19T12:00:52+03:00: ALL connected and future nodes
+must solve and report through QIK-VRT and EFFECT_ACK. The Principal is not a
+packet relay. Obtain each actual peer's authenticated request/ACK/application
+reply, bound to the exact request, original message/rule hashes and native
+identity/event/digest. A historical declaration or mailbox write is not that
+reply. Repair missing channels through the existing authorized native path;
+keep unresolved nodes OPEN and do not ask the Owner to move files or renew
+existing authorization. Do not infer all-node conformance from source presence.
+
 ## Every-node universal bus
 
 Every current or future repository node, including Authority and Mirror, MUST
@@ -334,3 +447,38 @@ self-modification, and recursive agent spawning are prohibited.
 The normative machine-readable policy is
 `policy/COLLECTIVE_ADAPTIVE_COGNITION.json`. The explanatory contract is
 `docs/COLLECTIVE_ADAPTIVE_COGNITION.md`.
+
+
+## Later Owner GraphQL fallback decision — 29 October 2026
+
+GraphQL remains the standing admitted fallback when the required GitHub REST
+operation does not exist. REST is the primary interface, including the existing
+`/repos/ingolf-lohmann/qik-vrt/qikvrt/continuation` facade. Read the later decision
+in `state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json`
+under `graphql_fallback_decision`; the shared client policy pins its exact bytes.
+This later Owner instruction supersedes the unconditional GraphQL prohibition
+for the bounded admitted fallback; do not ask for the same authorization again.
+Keep the fallback during adaptation. Successful original CI/CD/CO run/job
+observations may reorder independent verification branches; they cannot remove
+gates, rewrite source, expand credentials or transfer acceptance to another HEAD.
+The first fixed operation is `markPullRequestReadyForReview`, followed by an
+independent REST readback. Unknown effects prohibit another mutation. Merge,
+protected service activation, native host and exact-domain acceptance remain
+separate. No new timer, trigger service or replacement executor is introduced.
+
+## Later Owner conditional Pull Request creation — 29 October 2026
+
+Ingolf Lohmann authorizes autonomous creation of new Pull Requests only when
+they close at least one other Pull Request, issue or branch. Read
+`state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json`
+under `conditional_pull_request_creation_decision`; `AI_CONTEXT.json` and the
+shared progress policy bind that decision. Reuse an existing candidate when it
+can complete the same work. Before creating a new candidate, name the existing
+other target, bind its current subject, explain the completed or fully superseded
+work and select the supported closure path. A reference or closing keyword is
+not a completed closure; independently read back the actual closure or completed
+branch integration after the admitted effect. Preserve discussion, history and
+all unresolved duties. Do not close unresolved work or infer branch-deletion
+authority merely to satisfy this condition. The existing exact-head test, review,
+conditional-merge and separate host/domain acceptance boundaries still apply.
+Saving this rule proves neither runtime enforcement nor adoption by other clients.

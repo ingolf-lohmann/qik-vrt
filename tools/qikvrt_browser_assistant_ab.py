@@ -131,11 +131,18 @@ def preflight() -> dict[str, Any]:
     policy = read_json(ROOT / "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json")
     candidate = policy["personal_release_acceptance"]["current_candidate"]
     firefox = shutil.which("firefox") or shutil.which("firefox-esr")
-    browser = {"executable": firefox, "version": None, "executable_sha256": None}
+    browser = {"executable": firefox, "version": None, "executable_sha256": None, "probe_error": None}
     if firefox:
-        result = subprocess.run([firefox, "--version"], capture_output=True, text=True, timeout=10, check=False)
-        browser["version"] = result.stdout.strip() if result.returncode == 0 else None
-        browser["executable_sha256"] = digest(Path(firefox).resolve().read_bytes())
+        try:
+            result = subprocess.run([firefox, "--version"], capture_output=True, text=True, timeout=10, check=False)
+            browser["version"] = result.stdout.strip() if result.returncode == 0 else None
+            if not browser["version"]:
+                browser["probe_error"] = "FIREFOX_VERSION_NOT_OBSERVED"
+            browser["executable_sha256"] = digest(Path(firefox).resolve().read_bytes())
+        except subprocess.TimeoutExpired:
+            browser["probe_error"] = "FIREFOX_VERSION_PROBE_TIMED_OUT"
+        except OSError:
+            browser["probe_error"] = "FIREFOX_VERSION_PROBE_UNAVAILABLE"
     manifest_path = ROOT / candidate.get("personal_capability_manifest", "MISSING_CAPABILITIES")
     manifest = read_json(manifest_path) if manifest_path.is_file() else None
     adapter_materialized = bool(manifest and (ROOT / manifest.get("adapter", "MISSING_ADAPTER")).is_file())
@@ -147,6 +154,10 @@ def preflight() -> dict[str, Any]:
                  "PRODUCT_INTERRUPTION_AND_ORACLE_ISOLATION_NOT_BOUND"]
     if not firefox:
         blockers.append("FIREFOX_EXECUTABLE_UNAVAILABLE")
+    elif browser["probe_error"]:
+        # Browser diagnostics must not crash the separate native transport run.
+        # The missing product observation remains an explicit acceptance blocker.
+        blockers.append(browser["probe_error"])
     return {
         "schema": "qikvrt_browser_ab_preflight_v1",
         "observed_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),

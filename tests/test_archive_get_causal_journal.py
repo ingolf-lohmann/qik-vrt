@@ -335,15 +335,19 @@ class ArchiveCausalJournalTests(unittest.TestCase):
             opener.assert_not_called()
         self.assertEqual(posts,len([x for x in api.calls if x[0]=='POST']))
     def test_shared_rest_transport_keeps_publication_default_and_explicit_repository_pin(self):
-        response=Response(b'[]','https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/matching-refs/tags/qikvrt-archive-get/')
+        self.assertEqual(publisher.PRODUCTION_REPOSITORY,'ingolf-lohmann/qik-vrt')
+        path='/repos/Goldkelch/qik-vrt/git/matching-refs/tags/qikvrt-archive-get/'
+        response=Response(b'[]','https://api.github.com'+path)
         with patch.object(publisher.urllib.request,'build_opener') as build:
             build.return_value.open.return_value=response
-            self.assertEqual(publisher._github_api_request('GET','/repos/ingolf-lohmann/qik-vrt/git/matching-refs/tags/qikvrt-archive-get/','t'*24,repository='ingolf-lohmann/qik-vrt'),(200,[]))
+            self.assertEqual(publisher._github_api_request('GET',path,'t'*24,repository='Goldkelch/qik-vrt'),(200,[]))
             request=build.return_value.open.call_args.args[0]
             self.assertEqual(request.get_method(),'GET')
             self.assertEqual(request.get_header('Authorization'),'Bearer '+'t'*24)
-        with self.assertRaises(publisher.zenodo.ZenodoError):
-            publisher._github_api_request('GET','/repos/ingolf-lohmann/qik-vrt/git/ref/tags/wrong','t'*24)
+        with patch.object(publisher.urllib.request,'build_opener') as build:
+            with self.assertRaises(publisher.zenodo.ZenodoError):
+                publisher._github_api_request('GET',path,'t'*24)
+            build.assert_not_called()
     def test_digest_only_or_drifted_response_evidence_never_opens_the_get_gate(self):
         self.fail_once()
         path=self.retry()

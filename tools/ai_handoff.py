@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import hashlib
+import ipaddress
 import json
 import re
 import shlex
@@ -92,9 +93,92 @@ def client_causal_key(value: dict[str, Any]) -> str:
     return hashlib.sha256(json.dumps(parts, sort_keys=True).encode()).hexdigest()
 
 
+def validate_client_tool_selection(action: dict[str, Any]) -> str:
+    """Check current Owner decisions before capability or transport selection.
+
+    This checks declared routing metadata, not the truth of a client's claims.
+    It performs no service discovery, authentication or external operation.
+    """
+    path = ROOT / "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json"
+    policy = load_json(path)
+    continuation = policy.get("client_continuation")
+    if not isinstance(continuation, dict):
+        fail("CLIENT_TOOL_SELECTION_POLICY_INVALID")
+    selection = continuation.get("tool_selection")
+    if (not isinstance(selection, dict)
+            or selection.get("schema") != "qikvrt-client-tool-selection/v1"
+            or selection.get("before_external_tool_call") is not True
+            or not isinstance(selection.get("disconnected_providers"), dict)):
+        fail("CLIENT_TOOL_SELECTION_POLICY_INVALID")
+    pin = hashlib.sha256(path.read_bytes()).hexdigest()
+    if "route_policy_sha256" in action and action["route_policy_sha256"] != pin:
+        fail("CLIENT_TOOL_SELECTION_POLICY_CHANGED")
+    for provider, rule in selection["disconnected_providers"].items():
+        if (not isinstance(provider, str) or not re.fullmatch(r"[a-z0-9_-]+", provider)
+                or not isinstance(rule, dict) or rule.get("state") != "DISCONNECTED"
+                or any(not isinstance(rule.get(key), list) or not rule[key]
+                       or any(not isinstance(value, str) or not value for value in rule[key])
+                       for key in ("service_aliases", "tool_prefixes", "endpoint_domains"))):
+            fail("CLIENT_TOOL_SELECTION_POLICY_INVALID")
+        services = {str(action.get(key, "")).strip().casefold()
+                    for key in ("service", "provider")}
+        tool = str(action.get("tool", "")).strip().casefold()
+        matches = bool(services.intersection(value.casefold() for value in rule["service_aliases"]))
+        matches |= any(tool.startswith(value.casefold()) for value in rule["tool_prefixes"])
+        for key in ("url", "endpoint", "base_url", "target"):
+            value = action.get(key)
+            if not isinstance(value, str) or not value:
+                continue
+            try:
+                address = value if "://" in value else "//" + value
+                hostname = (urlsplit(address).hostname or "").casefold().rstrip(".")
+            except ValueError:
+                fail("CLIENT_ACTION_ENDPOINT_INVALID")
+            matches |= any(hostname == domain.casefold()
+                           or hostname.endswith("." + domain.casefold())
+                           for domain in rule["endpoint_domains"])
+        if matches:
+            # GET/read-only, current tool availability and generic authorization
+            # cannot supersede the Owner's disconnected-provider decision.
+            fail("CLIENT_DISCONNECTED_PROVIDER_ROUTE_FORBIDDEN:" + provider)
+    return pin
+
+
+def github_graphql_fallback_allowed(action: dict[str, Any], policy: dict[str, Any]) -> bool:
+    """Check the later Owner decision without relabeling GraphQL as REST.
+
+    This checks declared routing metadata, not credential scope or live effect.
+    An ambiguous REST effect cannot be retried through the fallback.
+    """
+    fallback = policy.get("client_continuation", {}).get("github_fallback", {})
+    try:
+        source = "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json"
+        if fallback.get("source") != source:
+            return False
+        owner = json.loads((ROOT / source).read_bytes())
+        decision = owner["graphql_fallback_decision"]
+        encoded = json.dumps(decision, sort_keys=True, separators=(",", ":")).encode()
+        pin = hashlib.sha256(encoded).hexdigest()
+        instruction = decision["source_instruction"]
+        return (decision.get("state") == "ACTIVE"
+            and decision.get("repository") == action.get("subject", {}).get("repository")
+            and instruction["sha256"] == hashlib.sha256(instruction["text"].encode()).hexdigest()
+            and pin == fallback.get("decision_sha256") == action.get("owner_decision_sha256")
+            and decision.get("fallback_must_be_retained") is True
+            and action.get("operation") in fallback.get("allowed_operations", [])
+            and action.get("operation") in decision.get("allowed_operations", [])
+            and action.get("method") == "POST"
+            and action.get("endpoint") == "https://api.github.com/graphql"
+            and action.get("fallback_reason") == "REST_OPERATION_UNAVAILABLE"
+            and action.get("rest_effect_state") == "NOT_ATTEMPTED")
+    except (OSError, ValueError, TypeError, KeyError, AttributeError):
+        return False
+
+
 def validate_client_action(action: dict[str, Any], subject: dict[str, Any]) -> bool:
     if not isinstance(action, dict) or action.get("subject") != subject:
         fail("CLIENT_ACTION_SUBJECT_DRIFT")
+    validate_client_tool_selection(action)
     if action.get("route") not in ("connector", "cli", "mesh"):
         fail("CLIENT_ACTION_ROUTE_INVALID")
     if action.get("method") not in ("GET", "POST", "PUT", "PATCH", "DELETE"):
@@ -105,7 +189,9 @@ def validate_client_action(action: dict[str, Any], subject: dict[str, Any]) -> b
         required_route = policy.get("client_continuation", {}).get(service + "_route")
         if required_route != "REST_API_ONLY":
             fail("CLIENT_" + service.upper() + "_ROUTE_POLICY_INVALID")
-        if action.get("transport") != required_route:
+        fallback = (service == "github" and action.get("transport") == "GRAPHQL_FALLBACK"
+                    and github_graphql_fallback_allowed(action, policy))
+        if action.get("transport") != required_route and not fallback:
             fail("CLIENT_" + service.upper() + "_ROUTE_FORBIDDEN")
     for key in ("operation", "evidence"):
         if not isinstance(action.get(key), str) or not action[key].strip():
@@ -197,8 +283,26 @@ def client_transition_plan(receipt: dict[str, Any]) -> dict[str, Any] | None:
         else:
             waiting.append({"transition_id": identifier, "activation": missing,
                             "action_admitted": admitted, "evidence": evidence})
-    return {"input_sha256": input_digest, "ready": ready, "waiting": waiting,
-            "scope": "PLANNING_ONLY_NOT_EXECUTION_OR_EFFECT_PROOF"}
+    result = {"input_sha256": input_digest, "ready": ready, "waiting": waiting,
+              "scope": "PLANNING_ONLY_NOT_EXECUTION_OR_EFFECT_PROOF"}
+    if "blocking_repairs" in plan:
+        repairs = plan["blocking_repairs"]
+        if (not isinstance(repairs, list)
+            or any(not isinstance(x, str) or not x.strip() for x in repairs)
+            or len(set(repairs)) != len(repairs)):
+            fail("CLIENT_BLOCKING_REPAIR_LIST_INVALID")
+        if not set(repairs) <= identifiers:
+            fail("CLIENT_BLOCKING_REPAIR_TRANSITION_MISSING")
+        result["blocking_repairs"] = repairs
+        result["deferred"] = []
+        if repairs:
+            # An unavailable repair remains the priority. Do not silently
+            # substitute optimization or unrelated work, and retain its plan.
+            result["deferred"] = [item for item in ready
+                                  if item["transition_id"] not in repairs]
+            result["ready"] = [item for item in ready
+                               if item["transition_id"] in repairs]
+    return result
 
 
 def client_end_of_action_domain() -> str:
@@ -538,6 +642,46 @@ def validate_client_work(receipt: dict[str, Any], predecessor: dict[str, Any] | 
         fail("CLIENT_DONE_WITH_OPEN_WORK")
 
 
+def validate_client_remote_readback(
+    remote: dict[str, Any], sent: dict[str, Any], receipt: dict[str, Any],
+) -> None:
+    """Reject local/failed/replayed observations; declarations still need verification."""
+    hostname = remote.get("target_host")
+    if not isinstance(hostname, str) or not hostname or hostname != hostname.lower():
+        fail("CLIENT_COMMUNICATION_REMOTE_READBACK_INVALID")
+    if hostname == "localhost" or hostname.endswith((".localhost", ".")):
+        fail("CLIENT_COMMUNICATION_REMOTE_READBACK_INVALID")
+    try:
+        address = ipaddress.ip_address(hostname)
+    except ValueError:
+        address = None
+    if address is not None:
+        address = getattr(address, "ipv4_mapped", None) or address
+    if ((address is None and "." not in hostname)
+        or (address is not None and (address.is_loopback or address.is_unspecified
+                                    or address.is_link_local or address.is_multicast))):
+        fail("CLIENT_COMMUNICATION_REMOTE_READBACK_INVALID")
+    status = remote.get("http_status")
+    response = remote.get("response_sha256")
+    ref = remote.get("authority_ref_sha")
+    if (sent.get("target_host") != hostname
+        or not client_public_url(remote.get("url"), hostname)
+        or not client_public_url(remote.get("final_url"), hostname)
+        or type(status) is not int or not 200 <= status < 300
+        or remote.get("independent") is not True
+        or remote.get("authority_identity_verified") is not True
+        or remote.get("evidence") == sent.get("evidence")
+        or not ((isinstance(response, str) and re.fullmatch(r"sha256:[0-9a-f]{64}", response))
+                or (isinstance(ref, str) and re.fullmatch(r"[0-9a-f]{40}", ref)))):
+        fail("CLIENT_COMMUNICATION_REMOTE_READBACK_INVALID")
+    window = require(receipt, "action_window", dict)
+    observed = client_time(remote.get("observed_at"), "CLIENT_COMMUNICATION_REMOTE_READBACK_INVALID")
+    completed = client_time(window.get("completed_at"), "CLIENT_ACTION_WINDOW_INVALID")
+    closed = client_time(window.get("closed_at"), "CLIENT_ACTION_WINDOW_INVALID")
+    if remote.get("action_id") != window.get("id") or not completed < observed <= closed:
+        fail("CLIENT_COMMUNICATION_REMOTE_READBACK_NOT_FRESH")
+
+
 def validate_client_communications(receipt: dict[str, Any], subject: dict[str, Any]) -> None:
     """Check declared evidence scope, without issuing an Effect-Ack assessment.
 
@@ -563,7 +707,7 @@ def validate_client_communications(receipt: dict[str, Any], subject: dict[str, A
             fail("CLIENT_COMMUNICATION_INVALID")
         identifiers.add(record["id"])
         claim, evidence = record["claim"], record["evidence"]
-        if set(evidence) - {"send", "ingress", "outbox_claim", "application", "readback", "return"}:
+        if set(evidence) - {"send", "ingress", "outbox_claim", "application", "readback", "return", "remote_readback"}:
             fail("CLIENT_COMMUNICATION_INVALID")
         if claim == "NOT_SENT":
             if evidence:
@@ -599,6 +743,8 @@ def validate_client_communications(receipt: dict[str, Any], subject: dict[str, A
             fail("CLIENT_COMMUNICATION_EVIDENCE_BINDING_MISMATCH")
         if claim == "SENT":
             continue
+        remote = proof("remote_readback")
+        validate_client_remote_readback(remote, sent, receipt)
         outbox = proof("outbox_claim")
         if (outbox.get("tool") != "node-tools/qikvrt_mirror_emit.py claim"
             or not isinstance(outbox.get("record_sha256"), str)
@@ -618,6 +764,9 @@ def validate_client_communications(receipt: dict[str, Any], subject: dict[str, A
                        for key in ("subject", "native_event_id", "ledger_digest"))
                 or readback["evidence"] == applied["evidence"]):
                 fail("CLIENT_COMMUNICATION_APPLICATION_READBACK_MISMATCH")
+            if any(remote.get(key) != applied.get(key)
+                   for key in ("subject", "native_event_id", "ledger_digest")):
+                fail("CLIENT_COMMUNICATION_REMOTE_APPLICATION_MISMATCH")
 
 
 def validate_client_receipt(receipt: dict[str, Any]) -> str:
@@ -665,6 +814,8 @@ def validate_client_receipt(receipt: dict[str, Any]) -> str:
         if attempt.get("ambiguous_effect") is not False:
             if attempt.get("readback_before_effect") is not True and count:
                 fail("CLIENT_AMBIGUOUS_EFFECT_RETRIED_WITHOUT_READBACK")
+        if not count and "action" in attempt:
+            validate_client_action(require(attempt, "action", dict), subject)
         if count:
             if not validate_client_action(require(attempt, "action", dict), subject):
                 fail("CLIENT_EFFECT_WITHOUT_ADMISSION")
@@ -677,10 +828,16 @@ def validate_client_receipt(receipt: dict[str, Any]) -> str:
                 fail("CLIENT_CLOSING_ACTION_REUSED")
             closed_actions.add(action_id)
     actions = require(receipt, "next_actions", list)
+    transition_plan = client_transition_plan(receipt)
+    repairs = transition_plan.get("blocking_repairs", []) if transition_plan else []
+    repair_actions = ([item["action"] for item in transition_plan["ready"]]
+                      if repairs else [])
     executable = False
     for action in actions:
-        executable |= validate_client_action(action, subject)
-    transition_plan = client_transition_plan(receipt)
+        admitted = validate_client_action(action, subject)
+        if admitted and repairs and action not in repair_actions:
+            fail("CLIENT_ACTION_OUTSIDE_BLOCKING_REPAIR_SCOPE")
+        executable |= admitted
     if transition_plan is not None:
         executable |= bool(transition_plan["ready"])
     readback = receipt.get("readback")
@@ -1017,9 +1174,26 @@ def validate_adapters(context: dict[str, Any]) -> tuple[str, int]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--client-receipt", type=Path,
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--client-receipt", type=Path,
                         help="Validate a non-secret client continuation receipt; no live-effect proof")
+    mode.add_argument("--client-action", type=Path,
+                      help="Check one declared action against current Owner routing decisions before any external call")
     args = parser.parse_args()
+    if args.client_action is not None:
+        action = load_json(args.client_action)
+        subject = require(action, "subject", dict)
+        if (not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", str(subject.get("repository", "")))
+                or any(not re.fullmatch(r"[0-9a-f]{40}", str(subject.get(key, "")))
+                       for key in ("head", "tree"))
+                or not isinstance(subject.get("ref"), str) or not subject["ref"].strip()):
+            fail("CLIENT_SUBJECT_INVALID")
+        ready = validate_client_action(action, subject)
+        print("CLIENT_ACTION_CONSISTENCY=VALID")
+        print("CLIENT_ROUTE_POLICY_SHA256=" + validate_client_tool_selection(action))
+        print("CLIENT_DECLARED_ACTION=" + ("READY" if ready else "HOLD"))
+        print("LIVE_EFFECT_VERIFICATION=NOT_PERFORMED")
+        return 0 if ready else 2
     if args.client_receipt is not None:
         receipt = load_json(args.client_receipt)
         state = validate_client_receipt(receipt)

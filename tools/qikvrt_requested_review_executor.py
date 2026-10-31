@@ -11,6 +11,7 @@ exact-head commit status without impersonating a requested GitHub identity.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import pathlib
 import sys
@@ -20,6 +21,7 @@ from typing import Any
 SUCCESS = {"success"}
 NON_ADVERSE = {"success", "skipped"}
 SELF_WORKFLOW = "QIKVRT requested review executor"
+TECHNICAL_STATUS_CONTEXT = "QIKVRT requested review disposition"
 
 
 class ReviewSnapshotError(ValueError):
@@ -68,6 +70,8 @@ def _result(snapshot: Mapping[str, Any], state: str, blocker: str | None, detail
         "tree_sha": snapshot.get("tree_sha"),
         "reviewed_scope": snapshot.get("changed_paths", []),
         "status_scope": "TECHNICAL_DISPOSITION_ONLY",
+        "review_route": snapshot.get("review_route", "REQUESTED_REVIEW"),
+        "semantic_ai_review_performed": False,
         "native_approval_mutation": "FORBIDDEN_FOR_AUTOMATED_EXECUTOR",
         "completion_claims": {
             "PASS": False,
@@ -77,6 +81,78 @@ def _result(snapshot: Mapping[str, Any], state: str, blocker: str | None, detail
             "NATIVE_RULE_ENFORCEMENT": False,
         },
     }
+
+
+def native_review_enabled(policy: Mapping[str, Any], repository: str) -> bool:
+    """Resolve routing from trusted Main policy; this is not an authority grant."""
+    route = policy.get("review_executor", {}).get("provider_routing", {})
+    return (repository in policy.get("repositories", [])
+            and route.get("enabled") is True
+            and route.get("default") == "QIKVRT_NATIVE"
+            and route.get("scope") == "OPEN_NON_DRAFT_MAIN_PULL_REQUESTS"
+            and route.get("copilot_required") is False)
+
+
+def native_review_candidate(pr: Mapping[str, Any], policy: Mapping[str, Any], repository: str) -> bool:
+    return (native_review_enabled(policy, repository)
+            and pr.get("state") == "open" and pr.get("draft") is False
+            and pr.get("base", {}).get("ref") == "main")
+
+
+def snapshot_from_reads(repository, number, policy, required, one, pages):
+    """Reuse the original bounded REST reads for selection and final recheck."""
+    pr = one(f"repos/{repository}/pulls/{number}")
+    main = one(f"repos/{repository}/commits/main")["sha"]
+    head = pr["head"]["sha"]
+    observed = one(f"repos/{repository}/pulls/{number}")["head"]["sha"]
+    tree = one(f"repos/{repository}/git/commits/{head}")["tree"]["sha"]
+    files = pages(f"repos/{repository}/pulls/{number}/files?per_page=100")
+    runs = pages(f"repos/{repository}/actions/runs?head_sha={head}&event=pull_request&per_page=100")
+    comments = pages(f"repos/{repository}/pulls/{number}/comments?per_page=100")
+    return {"repository": repository, "pr_number": number, "current_main_sha": main,
+            "base_sha": pr["base"]["sha"], "head_sha": head, "observed_head_sha": observed,
+            "tree_sha": tree, "draft": bool(pr.get("draft")),
+            "requested_reviewers": [x["login"] for x in pr.get("requested_reviewers", []) if x.get("login")],
+            "requested_team_reviewers": [x["slug"] for x in pr.get("requested_teams", []) if x.get("slug")],
+            "changed_paths": sorted(x["filename"] for x in files),
+            "review_route": "QIKVRT_NATIVE" if native_review_candidate(pr, policy, repository) else "REQUESTED_REVIEW",
+            "review_threads_complete": not bool(comments), "unresolved_review_threads": 0,
+            "required_gates": required, "workflow_runs": [
+                {key: run.get(key) for key in ("name", "status", "conclusion", "run_number")} for run in runs]}
+
+
+def technical_update_plan(snapshot, reviews, statuses, marker):
+    """Refresh changed technical evidence without another semantic review.
+
+    The original review remains untouched. Clocks and unrelated run counters
+    do not create another update. This plan neither writes nor proves a gate.
+    """
+    if (not isinstance(reviews, list) or not isinstance(statuses, list)
+            or any(not isinstance(x, Mapping) for x in [*reviews, *statuses])):
+        raise ReviewSnapshotError("technical history is unavailable or malformed")
+    for records, actor_key in ((reviews, "user"), (statuses, "creator")):
+        if any(not isinstance(x.get(actor_key), Mapping)
+               or not isinstance(x[actor_key].get("login"), str) for x in records):
+            raise ReviewSnapshotError("technical history actor identity is unavailable")
+    decision = evaluate(snapshot)
+    key = hashlib.sha256(json.dumps(
+        {"schema": "qikvrt_technical_review_input/v1", "decision": decision},
+        sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode()).hexdigest()
+    state = "success" if decision["state"] == "APPROVE" else "pending" if decision["state"] == "WAIT" else "failure"
+    description = f"technical={decision['state']}; evidence={key}; approval NOT_IMPLIED"
+    prefix = f"<!-- {marker} head={snapshot['head_sha']} "
+    prior = any(x.get("commit_id") == snapshot["head_sha"]
+                and (x.get("user") or {}).get("login") == "github-actions[bot]"
+                and isinstance(x.get("body"), str) and x["body"].startswith(prefix) for x in reviews)
+    review_required = not prior and decision["state"] != "WAIT"
+    trusted = [x for x in statuses if x.get("context") == TECHNICAL_STATUS_CONTEXT
+               and (x.get("creator") or {}).get("login") == "github-actions[bot]"]
+    latest = max(trusted, key=lambda x: (str(x.get("created_at", "")), int(x.get("id", 0))), default={})
+    same = latest.get("state") == state and latest.get("description") == description
+    action = "NOOP" if same and not review_required else "REVIEW_AND_STATUS" if review_required else "STATUS_ONLY"
+    return {"schema": "qikvrt_technical_review_update/v1", "action": action,
+            "review_required": review_required, "evidence_sha256": key,
+            "status_state": state, "status_description": description, "decision": decision}
 
 
 def evaluate(snapshot: Mapping[str, Any]) -> dict[str, Any]:
@@ -100,7 +176,7 @@ def evaluate(snapshot: Mapping[str, Any]) -> dict[str, Any]:
     requested_teams = snapshot.get("requested_team_reviewers", [])
     if not isinstance(requested, list) or not isinstance(requested_teams, list):
         raise ReviewSnapshotError("requested reviewer collections must be lists")
-    if not requested and not requested_teams:
+    if not requested and not requested_teams and snapshot.get("review_route") != "QIKVRT_NATIVE":
         return _result(snapshot, "WAIT", "NO_ACTIVE_REVIEW_REQUEST", "no requested reviewer remains")
 
     changed_paths = snapshot.get("changed_paths")
@@ -108,6 +184,10 @@ def evaluate(snapshot: Mapping[str, Any]) -> dict[str, Any]:
         raise ReviewSnapshotError("changed_paths must be a list of non-empty strings")
     if not changed_paths:
         return _result(snapshot, "COMMENT_WITH_BLOCKER", "EMPTY_SCOPE", "requested review has no changed paths")
+
+    if snapshot.get("review_threads_complete") is False:
+        return _result(snapshot, "COMMENT_WITH_BLOCKER", "REVIEW_THREAD_STATE_UNAVAILABLE",
+                       "REST inline comments exist; thread resolution is not established")
 
     unresolved = snapshot.get("unresolved_review_threads", 0)
     if isinstance(unresolved, bool) or not isinstance(unresolved, int) or unresolved < 0:
@@ -140,7 +220,7 @@ def evaluate(snapshot: Mapping[str, Any]) -> dict[str, Any]:
         if run.get("conclusion") not in NON_ADVERSE:
             return _result(snapshot, "REQUEST_CHANGES", "APPLICABLE_GATE_FAILED", f"applicable exact-head gate is adverse: {name}={run.get('conclusion')}")
 
-    return _result(snapshot, "APPROVE", None, "exact-head scope inspected; all observed applicable gates are terminal non-adverse and no unresolved review thread remains")
+    return _result(snapshot, "APPROVE", None, "all observed applicable gates are terminal non-adverse and no unresolved review thread is reported; semantic inspection is separate")
 
 
 def _load(path: str) -> Mapping[str, Any]:

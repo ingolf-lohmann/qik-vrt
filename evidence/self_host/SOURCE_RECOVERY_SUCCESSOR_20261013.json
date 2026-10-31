@@ -25,8 +25,8 @@
       "historical_archive_path": "evidence/self_host/original-recovered/tests/test_temdd_event_ledger.py",
       "historical_git_blob": "187230e0bab7512811c0e9d71c4f6498be5f06ef",
       "historical_sha256": "662d41da4b1e15237ee73ce73347d090c32e6fa7dcaaea208e95938cf20b3966",
-      "successor_git_blob": "cc500a6b6298cc108c089eafe7d14d05c4c8b01b",
-      "successor_sha256": "2c6eb6e877e52147e8055e8fb28fafa03177543a7d7e21ec412f7f755caf0da7"
+      "successor_git_blob": "19f219453143326e2c43dc039fda93cfca397daa",
+      "successor_sha256": "50e933f382965e4f5a08ef27a70171734a6fb8b998534920e95e9ba98621b6d1"
     },
     {
       "restored_path": "deploy/universal-terminal/Dockerfile",
@@ -65,8 +65,8 @@
       "historical_archive_path": "evidence/self_host/original-recovered/src/qikvrt_temdd_event_ledger.py",
       "historical_git_blob": "6322bd45edb9de7d2aa07dee6fbc12307148475c",
       "historical_sha256": "94908e6a50ce107a79965055f3ecabae10e7589d96f7a26496d2a4956b068b13",
-      "successor_sha256": "f090abf4684907965ea2fe611ea4c3da3968660c19c1b881f925a144f15ad2a5",
-      "successor_git_blob": "372701f5071146d5583dc78c69399f3a6d008d88"
+      "successor_sha256": "f70e328ae438c6464a051d0aaa247ad7e281812304e3461e1b28f0b9795ba75c",
+      "successor_git_blob": "941ff7626cfed58905ce890db0a55f581abd9c0a"
     }
   ],
   "scope": "Preserved historical original bytes plus current role, existing-lane test and Owner Firefox-158 forward corrections; not historical PASS transfer",
@@ -278,5 +278,42 @@
     ],
     "historical_original_daemon_preserved": true,
     "predecessor_pass_transferred": false
+  },
+  "native_peer_rule_20261019": {
+    "basis_head": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+    "predecessor_receipt_path": "evidence/self_host/SOURCE_RECOVERY_SUCCESSOR_20261019_PRE_PEER_RULE.json",
+    "predecessor_receipt_sha256": "abdc7cfc949e252e9e30624c3562fa7be776586180368aead2e7d1916919a480",
+    "predecessor_pass_transferred": false,
+    "production_peer_confirmation_verified": false,
+    "native_scope": "NATIVE_PEER_RULE_ACTIVATION_ONLY"
+  },
+  "context_memory_streaming_20261024": {
+    "work_unit": "state/work_units/QIKVRT_CONTEXT_MEMORY_REPAIR_20261024_V1.json",
+    "basis_head": "aa024fd7c0c72a55cbb7e37bfe269bcccfd74bfb",
+    "previous_receipt_path": "evidence/self_host/original-recovered/SOURCE_RECOVERY_SUCCESSOR_before_CONTEXT_MEMORY_20261024.json",
+    "previous_receipt_sha256": "37ff6413e00c2d68258664f5615960045e805a92951c86c01d428799f106c4d1",
+    "previous_receipt_git_blob": "c8c6b5960f6d9ef99e49222ffad11b2a4f5ec58e",
+    "preserved_previous_successor_bindings": [
+      {
+        "restored_path": "tests/test_temdd_event_ledger.py",
+        "historical_archive_path": "evidence/self_host/original-recovered/tests/test_temdd_event_ledger.py",
+        "historical_git_blob": "187230e0bab7512811c0e9d71c4f6498be5f06ef",
+        "historical_sha256": "662d41da4b1e15237ee73ce73347d090c32e6fa7dcaaea208e95938cf20b3966",
+        "successor_git_blob": "cc500a6b6298cc108c089eafe7d14d05c4c8b01b",
+        "successor_sha256": "2c6eb6e877e52147e8055e8fb28fafa03177543a7d7e21ec412f7f755caf0da7"
+      },
+      {
+        "restored_path": "src/qikvrt_temdd_event_ledger.py",
+        "historical_archive_path": "evidence/self_host/original-recovered/src/qikvrt_temdd_event_ledger.py",
+        "historical_git_blob": "6322bd45edb9de7d2aa07dee6fbc12307148475c",
+        "historical_sha256": "94908e6a50ce107a79965055f3ecabae10e7589d96f7a26496d2a4956b068b13",
+        "successor_sha256": "f090abf4684907965ea2fe611ea4c3da3968660c19c1b881f925a144f15ad2a5",
+        "successor_git_blob": "372701f5071146d5583dc78c69399f3a6d008d88"
+      }
+    ],
+    "changes": "Stream original canonical frontier verification and exact local writer-handoff row equality; add bounded-memory and full-history corruption regressions. Original recovered source bytes, prior receipt and writer admission remain unchanged.",
+    "predecessor_pass_transferred": false,
+    "historical_original_daemon_preserved": true,
+    "production_host_admitted": false
   }
 }

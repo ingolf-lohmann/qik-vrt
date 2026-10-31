@@ -39,22 +39,290 @@ analogy governed by the existing evidence/adaptation policy.
 
 ## Existing S1 host and stopped-container recovery
 
+### Original REST bootstrap from the sealed package
+
+The existing `pack` and `verify` operations include the original REST server,
+client, OpenAPI, Python import closure and exact Owner/governance records in
+the same immutable S1 package. Missing carriers or a changed bootstrap contract
+fail with `REST_BOOTSTRAP_PACKAGE_REQUIRED`. A full-checkout HTTP test alone
+does not establish that this exported package can start.
+
+From the independently verified package root, the existing API entrypoint is:
+
+```sh
+python3 -B -S src/qikvrt_github_api_shim.py
+```
+
+This is the original `make run-api` server, directly callable without Make,
+Git, site-packages or an already running native service. It defaults to
+loopback port 8766 and validates the existing expiring API credential, exact
+repository and principal before listening. The Ruleset route remains disabled
+until `QIKVRT_RULESET_AUTHORITY_ENABLED=1`; its bound Owner and separately
+protected Authority credential are still required. The existing resolver
+excludes generic `GITHUB_TOKEN` from that operation. No credential is bundled.
+Keep the original protected configuration, supervisor and host-admission path.
+Bind its existing private API state directories outside the immutable package;
+retain the original attempt journals and resolve ambiguous calls by readback.
+
+Cold-package regressions start a separate Python process with `-S`, exercise
+real loopback HTTP, and retain the missing-caller and missing-provider
+haltpoints. They perform no upstream administration. Package availability,
+actual service installation, protected Main and exact-domain acceptance remain
+separately evidenced; this package does not automatically start or admit the API.
+
+### Explicit apex IPv4 cutover with an existing AAAA record
+
+The 26 October DNS observation is retained at
+`evidence/native-runtime-acceptance/raumzeitterminal-dns-20261026.json`.
+The product apex still publishes both the shared-hosting A address and an
+AAAA address. The existing `qikvrt_ionos_dns.yml` workflow remains manual,
+Authority-Main-only and bound to `secrets.IONOS_DNS_API_KEY`; the Cloud
+inventory token is not silently substituted for that DNS credential.
+
+After authenticating a fresh provider `readback`, an operator can explicitly
+select `disable_apex_aaaa=true` for a verified IPv4-only TLS origin. The
+existing command is:
+
+```sh
+python3 -B tools/qikvrt_ionos_dns.py apply --zone raumzeitterminal.de \
+  --target-ipv4 <verified-origin-ipv4> \
+  --expected-records-sha256 <independent-provider-readback-digest> \
+  --disable-apex-aaaa
+```
+
+This permits at most two PUTs to existing records: update the single apex A,
+then retain the single apex AAAA disabled. No record or zone is created or
+deleted. Default `apply` still refuses active AAAA/CNAME routing. A fresh full
+routing-set comparison precedes and follows each PUT; drift, an unavailable
+readback or an unapplied timeout stops the remaining work and preserves the
+partial receipt. An applied timeout is resolved only by readback, without a
+repeated PUT. The provider is not assumed to supply an atomic compare-and-swap.
+
+The target must be independently bound to the intended TLS origin. Provider
+DNS readback `DONE` describes the stored routing set only. Public propagation,
+TLS, the actual client and admitted native execution require their own fresh
+checks at `https://raumzeitterminal.de/`. No DNS write or public acceptance is
+implied by these source tests.
+
+### Native terminal first — Owner priority of 25 October 2026
+
+The first production scope is the existing native `temdd` terminal and
+`https://raumzeitterminal.de/` on the existing IONOS host. Firefox/noVNC and
+extension signing remain a later, separate acceptance scope. The `container`
+job uses the existing frozen S1 dependency carrier and `production-terminal`
+Docker target with `QIKVRT_TERMINAL_PROFILE=temdd`. Its package has the original
+Terminal and Transputer without a browser payload. The same independent OCI
+rebuild, unprivileged smoke, native readback and durable restart gates apply.
+
+The exact image must declare `de.qikvrt.terminal-profile=temdd` and the pinned
+private host configuration must select the same profile. The launcher never
+rewrites that configuration or infers host admission from a missing AMO secret.
+The later `production` Docker target and the default Firefox smoke scope still
+require the original signed XPI and actual activation/restart proof. Native
+terminal delivery establishes no Firefox or multi-node Mesh acceptance.
+
+Production still needs protected exact Main, the reviewed production environment,
+the existing mTLS host/storage/configuration binding and independent HTTPS
+readback at the exact domain. A desktop PC is not part of this production path.
+Source tests, an available VPS contract and a prepared workflow prove neither
+host binding nor delivery. No replacement executor or synthetic trigger is used.
+
 The existing `container-deploy` consumer in `qikvrt_ci.yml` supports initial
 create-only delivery and recovery of the exact same stopped S1 container. It
 continues to require protected exact Main, independent merged-PR review, the
-protected `qikvrt-production` environment and the admitted signed Firefox
-image. A source test or a Railway service inventory establishes none of those
+protected `qikvrt-production` environment and the admitted image with its
+exact declared terminal profile. A source test or a service inventory establishes none of those
 production predicates.
 
 The private connection is `vars.QIKVRT_LINUX_HOST_BINDING_JSON`, independently
 pinned by `vars.QIKVRT_LINUX_HOST_BINDING_SHA256`, and the existing protected
 `QIKVRT_LINUX_HOST_CA`, `QIKVRT_LINUX_HOST_CERT`, `QIKVRT_LINUX_HOST_KEY` secrets.
-`vars.QIKVRT_CONTAINER_DEPLOY_ENABLED` admits this existing consumer. The binding
+`vars.QIKVRT_CONTAINER_DEPLOY_ENABLED` admits deployment by this existing consumer. The binding
 must supply the real mTLS Docker API origin, daemon ID, container name, existing
 state volume, private configuration directory and digest, node ID, manifest
 digest, loopback routing port, exact source HEAD/TREE and image digest. The
 checked-in `LINUX_HOST_BINDING.example.json` remains a template; do not fill its
 unknown fields with invented host values or export credentials into Git.
+
+### Original SSO session and protected Environment handoff
+
+The existing `src/qikvrt_github_api_shim.py` now has the explicitly opted-in
+`/repos/ingolf-lohmann/qik-vrt/qikvrt/production-environment` REST route. It is a
+QIK-VRT local adapter route, not a new operation in the managed ChatGPT GitHub
+connector or in GitHub's own API. The already authenticated GitHub connector
+remains the primary repository interface; its account permissions do not export
+its token or establish a separate browser/OS session.
+
+The original `qikvrt_personal_auth.PersonalAuth`, registered OIDC configuration,
+OS Secret Service profile, refresh journal and lifetime `writer.lock` are reused.
+The new authentication-only mode requires no model credential. Existing tokens
+remain in the protected login collection; no browser cookies or connector token
+are transferred, no IdP/client is guessed, and no new permission scope is granted.
+An expired, revoked or ambiguous grant remains closed under the existing rules.
+The exact original registered loopback origin must match the adapter's port.
+Another active writer of that same profile blocks this process.
+
+On the already admitted native desktop host, use its original private settings:
+
+```sh
+QIKVRT_PRODUCTION_ENVIRONMENT_ENABLED=1 make run-api
+```
+
+In that process `QIKVRT_SSO_STATE_DIR`, `QIKVRT_SSO_AUTH_CONFIG` and the optional
+`QIKVRT_SSO_PROFILE` refer to the existing private Personal profile/configuration
+(default profile `openai`). `QIKVRT_API_HOST` must remain `127.0.0.1`. The normal
+adapter principal, repository, API credential and expiry checks still apply.
+`make run-api` retains Standard's `-S` mode when disabled; the explicitly enabled
+optional SSO profile uses its already provisioned Python environment with `-B`.
+The pinned optional requirements are in
+`runtime/toolchains/requirements-github-environment.txt`; the running service
+never installs packages. Missing/wrong encryption runtime blocks before writes.
+
+Open `/personal/` on that same native adapter. The panel signs in once through
+the original IdP, checks the handoff and submits the exact returned source and
+binding pins. Session bearers stay in page memory; refresh/access credentials
+remain in OS Secret Service. Authentication, renewal and logout are the original
+`/personal/auth/*` routes. There are no polling timers or background uploads.
+
+The backend validates the five original `QIKVRT_LINUX_HOST_*` bindings from its
+existing protected process environment, or from explicitly selected original
+private files. To use the file source, configure only these two non-secret
+selectors in that same admitted native process:
+
+```sh
+export QIKVRT_PRODUCTION_MATERIAL_SOURCE=/private/original-facility/material-source.json
+export QIKVRT_PRODUCTION_MATERIAL_SOURCE_SHA256='<independently-approved-descriptor-sha256>'
+```
+
+The descriptor has exactly this shape. Replace the placeholders with the
+already provisioned original file paths and independently approved binding pin;
+do not generate replacement keys or invent host/package facts:
+
+```json
+{
+  "schema": "qikvrt-production-material-files/v1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "environment": "qikvrt-production",
+  "binding_sha256": "<independently-approved-original-binding-sha256>",
+  "files": {
+    "QIKVRT_LINUX_HOST_BINDING_JSON": "/private/original-facility/binding.json",
+    "QIKVRT_LINUX_HOST_CA": "/private/original-facility/ca.pem",
+    "QIKVRT_LINUX_HOST_CERT": "/private/original-facility/client-cert.pem",
+    "QIKVRT_LINUX_HOST_KEY": "/private/original-facility/client-key.pem"
+  }
+}
+```
+
+The native operator must already have authorized access to those originals.
+The descriptor and inputs must be regular, non-symlinked, single-link files
+owned by the running native user with mode 0600, in private mode-0700 immediate
+directories outside every Git checkout. The existing host preparation names
+`ca.pem`, `client-cert.pem` and `client-key.pem`; this adapter reads the selected
+originals in place. It never changes their ownership, permissions or contents.
+The complete, package-bound host binding is required; the partial preparation
+output with null pins is insufficient. The descriptor hash is checked before
+following its four references. The host-binding hash is never recomputed to
+authorize changed bytes. Original binding/PEM/key-pair validation then applies.
+
+Selecting either file-source variable requires the complete pair. Mixing any
+of the five process values with file selection is rejected. Missing, changed,
+oversized, unsafe or invalid input never falls back to another source. Reads
+remain metadata-only when source admission fails; writes stop before provider
+access. These selectors cannot be supplied by the browser or REST request.
+Actual source provisioning, consuming-job delivery, mTLS host identity and
+exact-domain acceptance require their own independent native evidence.
+
+The sealed S1 package carries the original Personal authentication/handler,
+source-observer inputs, Authority panel and optional dependency locks in its
+existing REST bootstrap closure. Missing carriers fail package admission.
+The frozen-export regression runs the original file reader under Python `-S`
+without a checkout or site-packages. A code-only export still cannot claim a
+clean Main identity: packaging alone does not admit a production write or SSO.
+
+The existing Authority credential
+resolver supplies its original admitted GitHub credential; generic
+`GITHUB_TOKEN`, the local bearer and caller-supplied credentials are excluded.
+This does not recover secret values from GitHub, where they are unreadable.
+No secret values belong in a URL, browser form, chat, repository, artifact or log.
+
+A read-only GET with `schema=qikvrt-production-environment-rest/v1` and a stable
+`request_id` prepares current Main HEAD/TREE and the independent host-binding
+pin. POST requires exactly those source/binding pins and `effect_accepted=true`,
+the same-origin Origin header and the existing SSO bearer. Only the two named
+variables and three named secrets can change. Actual GitHub Owner/admin
+identity, current Main and the unchanged existing Environment protections are
+checked first and again before each write. The running adapter must also match
+clean Main HEAD/TREE through the existing runtime source observer before each
+write. An unmerged/dirty checkout or unavailable Git source identity permits only
+read-only preparation. Secrets use GitHub's Environment public key and PyNaCl
+1.6.2 LibSodium sealed boxes. Environment creation,
+protection changes, credential expansion and arbitrary API forwarding are absent.
+
+The same protected profile keeps original intent before every mutation, bounded
+attempt history, acknowledgements and unresolved state. A different request ID
+or unrelated commit cannot repeat the same handoff. An uncertain reply admits
+GET-only readback; secret metadata cannot disambiguate secret values. GitHub
+rate-limit/cooldown observations also persist there across process restarts.
+
+After a completed handoff, a fresh exact-Environment readback may establish that
+a binding was removed or a variable differs from the still-authorized original
+source. The same binder can restore exactly those bindings, retaining the
+previous completed journal in its bounded history and persisting new intent
+before each write. It does not rewrite other secrets. Present secret metadata
+does not establish value drift; unavailable readback and unresolved earlier
+writes remain readback-only. No new timer or executor is introduced.
+
+The existing host job also retains `host-material-delivery.json` before it
+checks or writes the five inputs to private files. Missing inputs fail before
+any host request and leave this non-secret presence receipt for the existing
+artifact step. Presence alone establishes neither correct secret bytes nor
+authenticated host identity, deployment or product acceptance. This diagnostic
+does not connect an otherwise unavailable original source.
+
+Successful HTTP acknowledgements plus independent variable/secret-metadata
+readback establish only that scoped result. Actual job credential delivery,
+original-host identity, runtime/package acceptance and public product delivery
+remain separately unverified. The next native operation is still the existing
+`container-host-identity` / `GET /v1.45/info` path below, before any restart or
+feature-toggle activation. No deployment flag is changed by this route.
+
+Official contracts: [GitHub Environment secrets](https://docs.github.com/en/rest/actions/secrets),
+[Environment variables](https://docs.github.com/en/rest/actions/variables),
+[SSO app authorization](https://docs.github.com/en/enterprise-cloud@latest/authentication/authenticating-with-single-sign-on/authorizing-an-app-for-single-sign-on)
+and [PyNaCl 1.6.2](https://pypi.org/project/PyNaCl/1.6.2/).
+
+`container-host-identity` is the read-only first-host check in the same launcher.
+It validates the existing independently pinned binding and mTLS files, then sends
+exactly one `GET /v1.45/info`. Supply `--production-binding`, `--binding-sha256`,
+`--image`, `--ca-file`, `--cert-file`, `--key-file` and a new `--receipt` path.
+The separate `--expected-head`, `--expected-tree` and `--manifest-sha256` must
+come from the approved tested package, not be derived from the host binding.
+All target-pin comparisons happen before opening the mTLS connection.
+
+The existing Main-only host job now invokes this read-only check after the exact
+container build, even when OCI publication is skipped. Its independent HEAD,
+TREE, image and package-manifest pins come from the accepted container job.
+A separate process reads the create-only receipt and verifies those pins, the
+checker digest, its fresh observation time and its limited identity-only scope.
+The existing artifact retains `host-identity.json` even when deployment fails.
+Deployment still requires the existing enable flag, successful reviewed OCI
+publication, identical published image and all original production guards.
+The public-domain job runs only after an actual successful deployment/recovery;
+identity alone cannot start public acceptance or establish package installation.
+
+The create-only receipt binds the Linux daemon ID, exact response-byte SHA-256,
+observation time, checker SHA-256, binding SHA-256 and target package pins. It
+contains no raw daemon response, private connection/configuration paths or
+credential values. A rejected/unavailable check produces no success receipt;
+an existing receipt path is rejected before contacting the host. Use only the
+existing admitted protected connection; this command neither locates credentials
+nor registers or activates a hosted connector.
+
+This operation proves host identity only. The target package pins do not prove
+that the image or package is installed on that host. It cannot pull an image,
+create or start a container, change configuration or accept the public domain.
+`container-deploy` retains all production-governance, host/storage/configuration
+and package checks; subsequent independent exact-domain acceptance is unchanged.
 
 Recovery first checks the authenticated daemon and owner volume, the same
 container/image/binding labels, runtime user/command, security and loopback
@@ -1194,3 +1462,116 @@ actually succeed. Native Main governance and review remain separate gates.
 No provider purchase, DNS write, second website, new controller or automatic
 Main promotion is included.
 
+## Native peer rule receipt and activation
+
+`mesh-cache-send`/`mesh-cache-check` keep their proposal-only contract. A work
+batch or its receipt never activates a rule. The original native Terminal has
+an additional, separately admitted rule path on its existing loopback listener:
+
+| Operation | Evidence / effect |
+| --- | --- |
+| `POST /api/mesh-work/rule/receive` | Original `OBSERVE` event; receipt only |
+| `POST /api/mesh-work/rule/apply` | Install the exact native writer guard and append a separate original `EFFECT` event |
+| `GET /api/mesh-work/rule/readback/<request_id>/<32-hex-challenge>` | Fresh read-only SQLite connections verify request, both events and active guard |
+
+Use the existing `mesh_work_peers` private keys and HMAC method/path/body
+contract. The sender pins the peer identity and source HEAD/TREE. Configure
+its peer `url` to the **existing native Terminal** listener, reached through
+the admitted host transport; the monitor proposal listener remains unchanged.
+No new listener, service, credential provider or message relay is added.
+The native listener remains loopback-only and refuses browser-origin requests.
+Original native and copied-journal writer fences still apply.
+
+The receiver additionally requires `mesh_rule_grants` in its existing private,
+source/volume-bound S1 configuration. Each entry has exactly these fields:
+`peer_node_id` (authenticated sender), `request_id`, canonical `request_sha256`,
+`rule_sha256`, `rule_path` (a sealed `policy/` JSON file), and `rule_pointer`
+(an array of JSON object keys selecting the approved rule). Hash references
+use `sha256:<64 lowercase hex>`. There is no default grant. Incoming rule bytes
+must equal the already reviewed local rule; a message cannot change the rule
+file or authorize itself. Grant/configuration changes require the existing
+configuration/volume admission procedure.
+
+The bounded canonical JSON request uses schema `qikvrt-peer-rule-request/v1`
+and exactly `request_id`, `work_unit_id`, `sender_node_id`, `sender_repository`,
+`peer_node_id`, `subject` (`repository`, positive `pr`, `head`, `tree`),
+`rule_id`, `rule` (the selected JSON object), and `rule_sha256`. The request
+digest covers the complete canonical request; the rule digest covers canonical
+rule bytes. Receiver receipts bind both hashes, sender/recipient, Work Unit,
+exact subject, original native provenance, event ID/epoch, native digest,
+payload digest and ledger-body digest. Every read also revalidates the local
+rule bytes, grant and sealed source. Original request bytes and frozen native
+event plans live in the original ledger's `meta` table, not a second journal.
+
+Activation means **native peer rule admission guard installation**. S1 consumes
+that binding before every subsequent native append. A removed/corrupt active
+guard, revoked grant or changed source holds unrelated native writes. A crash
+between guard installation and event append allows only the original exact
+application event to finish the activation. This is not a general policy
+interpreter: receipt/activation does not execute prose, arbitrary instructions,
+repository proposals or a model session. It cannot prove future Claude
+behaviour, other-node adoption, or a safety/physical effect.
+
+The existing S1 CLI performs one finite synchronous exchange:
+
+```sh
+python3 -B tools/qikvrt_self_host.py mesh-rule-confirm \
+  --mesh-cache /private/existing-node-cache \
+  --work-request /private/exact-rule-request.json \
+  --peer /private/existing-terminal-peer.json --apply-rule
+```
+
+Omit `--apply-rule` for receipt only. The sender retains its request and
+authenticated receipts in the existing cache. It performs fresh challenged
+GET before any POST and after every native effect. Lost responses are resolved
+by readback; an unavailable read never admits a retry, and an acknowledged
+receipt disappearing holds the exchange. Receipt/event identities cannot be
+replaced after restart. The existing EAP engine may return nested
+`rule_effect.state = EFFECT_ACK_DONE` only for verified native guard activation.
+The outer `effect_ack_done` and `all_peer_adoption_verified` remain false.
+No global completion, public-host delivery or actual Claude ACK is inferred.
+
+Reproduce the real loopback/native-journal conformance tests with:
+
+```sh
+python3 -B -m unittest -v tests.test_self_host_temdd.NativePeerRuleTests
+make test repository-monitor-test self-host-test
+```
+
+The fixtures use synthetic peer identities and private test keys. They exercise
+receipt/application separation, original writer-guard enforcement, full binding
+substitution controls, HMAC/challenge replay rejection, restart, lost ACK,
+revocation, native identity replacement and refusal without independent readback.
+Productive acceptance still needs the actual admitted peer's private channel,
+its original writable Transputer and independently challenged Terminal readback.
+
+
+### Match the CI Firefox gate to the verified package scope — 2026-10-25
+
+The native-only `temdd` image passed real OCI load, smoke and persistent restart
+on b6329979, but the same CI still ran the separate Firefox installation gate
+unconditionally. Its unsigned-XPI failure made the complete workflow adverse,
+which the existing exact-head promotion gate correctly refused.
+
+The existing container receipt now exports the profile from its accepted smoke
+result after checking its state, allowed profile and typed scope consistency.
+The original Firefox job consumes that output. A native-only package with no
+signing request defers this separate acceptance scope. A Firefox package,
+explicit official signing/readback request or actual signed-binding output
+still selects the original signing/activation/restart gate. Failed or unknown
+smoke metadata cannot publish a profile output. All Firefox source and negative
+admission tests still run in the full test job.
+
+This repairs scope selection; it grants no Main, production environment, host,
+mTLS, storage or exact-domain admission. Protected production and independent
+public readback remain required. A successful native-only CI never proves a
+signed Firefox installation or a running IONOS host.
+
+## Existing Zenodo publisher on the Authority host
+
+The original protected-reference publisher adapter is available through
+`publication-check`, `publication-resume` and `publication-supervisor`. Follow
+[PUBLICATION.md](PUBLICATION.md) for current Authority, exact request and
+provider-managed credential bindings. The sealed S1 package carries the
+original publisher and proof contracts; package presence proves neither
+credential transfer nor host activation nor publication.

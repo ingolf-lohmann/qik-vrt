@@ -10,6 +10,8 @@ no DNS, registrar, credential-store, purchase or destructive cutover operations.
 from __future__ import annotations
 
 import hashlib
+import datetime as dt
+import gzip
 import base64
 import http.client
 import json
@@ -206,20 +208,196 @@ def require(condition, code):
         raise ValueError(code)
 
 
-def write_receipt(path, result):
+def write_receipt(path, result, *, create_only=False):
     # Receipts contain public source/image/operation identities, never config
     # bytes, auth headers, tokens, client certificates or daemon responses.
     result = {"schema": "qikvrt-s1-container-receipt/v1", **result,
               "effect_ack_done": False, "ordinary_release": False}
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(result, sort_keys=True, indent=2) + "\n")
+    with path.open("x" if create_only else "w", encoding="utf-8") as output:
+        output.write(json.dumps(result, sort_keys=True, indent=2) + "\n")
     return result
 
 
 def command(*argv, input=None):
     return subprocess.check_output(list(argv), input=input, timeout=240,
                                    stderr=subprocess.PIPE)
+
+
+def tool_pin(root):
+    """Bind the cached helper to reviewed official bytes, never a moving tag."""
+    pin = json.loads((root / "evidence/self_host/SKOPEO_CARRIER_READBACK_20261026.json").read_bytes())
+    index = pin["index_original_utf8"].encode()
+    manifest = pin["platform_manifest_original_utf8"].encode()
+    config = pin["config_original_utf8"].encode()
+    require(pin["repository"] == "quay.io/skopeo/stable" and
+            pin["resolved_index_digest"] == "sha256:" + sha(index) and
+            pin["resolved_platform_digest"] == "sha256:" + sha(manifest) and
+            pin["config_sha256"] == "sha256:" + sha(config), "TOOL_SOURCE_PIN_MISMATCH")
+    selected = [m for m in json.loads(index)["manifests"]
+                if m.get("platform") == {"os": "linux", "architecture": "amd64"}]
+    require(len(selected) == 1 and selected[0]["digest"] == pin["resolved_platform_digest"] and
+            selected[0]["size"] == len(manifest), "TOOL_PLATFORM_PIN_MISMATCH")
+    require(json.loads(manifest)["config"] == {"mediaType": "application/vnd.oci.image.config.v1+json",
+            "digest": pin["config_sha256"], "size": len(config)}, "TOOL_CONFIG_PIN_MISMATCH")
+    cfg = json.loads(config)
+    require(cfg["os"] == "linux" and cfg["architecture"] == "amd64" and
+            cfg["config"]["Entrypoint"] == ["/usr/bin/skopeo"] and
+            cfg["config"]["Labels"]["org.opencontainers.image.version"] == pin["version"],
+            "TOOL_IDENTITY_MISMATCH")
+    rows = [line.split("\t") for line in (root / "runtime/toolchains/TOOLCHAIN.lock.tsv").read_text().splitlines()
+            if line.startswith("skopeo\t")]
+    require(len(rows) == 1 and rows[0][3:5] == [pin["repository"], pin["resolved_platform_digest"][7:]],
+            "TOOL_LOCK_PIN_MISMATCH")
+    return pin
+
+
+def tool_archive(path, pin, output=None):
+    """Check config and ordered uncompressed layer hashes before Docker import.
+
+    A cache is an untrusted transport. Export only its verified minimal Docker
+    graph, with no archive-supplied tags, paths, links or extra daemon metadata.
+    The official config digest commits to every ordered rootfs diff_id.
+    """
+    stream, info = _artifact_open(path)
+    created = False
+    destination = None
+    try:
+        require(0 < info.st_size <= ARTIFACT_MAX_BYTES, "TOOL_ARCHIVE_SIZE_INVALID")
+        with stream, tarfile.open(fileobj=stream, mode="r:") as source:
+            members = source.getmembers()
+            names = [m.name for m in members]
+            require(len(members) <= 4096 and len(set(names)) == len(names) and all(
+                (m.isfile() or m.isdir()) and not m.name.startswith("/") and
+                all(p not in ("", ".", "..") for p in m.name.rstrip("/").split("/")) and
+                not any(ord(ch) < 32 for ch in m.name) for m in members), "TOOL_ARCHIVE_MEMBER_INVALID")
+            by_name = {m.name: m for m in members}
+            def read_small(name):
+                require(isinstance(name, str) and name in by_name and by_name[name].isfile() and
+                        by_name[name].size <= 1024**2, "TOOL_METADATA_INVALID")
+                return source.extractfile(by_name[name]).read()
+            manifest = json.loads(read_small("manifest.json"))
+            require(isinstance(manifest, list) and len(manifest) == 1, "TOOL_SINGLE_IMAGE_REQUIRED")
+            config = read_small(manifest[0]["Config"])
+            require("sha256:" + sha(config) == pin["config_sha256"], "TOOL_CONFIG_DIGEST_MISMATCH")
+            cfg = json.loads(config)
+            layers = manifest[0]["Layers"]
+            diff_ids = cfg["rootfs"]["diff_ids"]
+            require(cfg["rootfs"]["type"] == "layers" and isinstance(layers, list) and
+                    0 < len(layers) == len(diff_ids) <= 128 and len(set(layers)) == len(layers) and
+                    all(isinstance(d, str) and re.fullmatch(r"sha256:[a-f0-9]{64}", d) for d in diff_ids),
+                    "TOOL_LAYER_GRAPH_INVALID")
+            canonical_config = pin["config_sha256"][7:] + ".json"
+            canonical_layers = [f"layer-{i:05d}.tar" for i in range(len(layers))]
+            canonical_manifest = [{"Config": canonical_config, "RepoTags": None, "Layers": canonical_layers}]
+            if output is None:
+                require(set(names) == {"manifest.json", canonical_config, *canonical_layers} and
+                        manifest == canonical_manifest, "TOOL_CANONICAL_ARCHIVE_REQUIRED")
+            else:
+                destination = Path(output).open("xb")
+                created = True
+            with tarfile.open(fileobj=destination, mode="w", format=tarfile.USTAR_FORMAT) if destination else tempfile.TemporaryFile() as target:
+                def add(name, data, size):
+                    if destination:
+                        member = tarfile.TarInfo(name)
+                        member.size, member.mode = size, 0o644
+                        target.addfile(member, data)
+                raw_manifest = json.dumps(canonical_manifest, sort_keys=True, separators=(",", ":")).encode()
+                add("manifest.json", io.BytesIO(raw_manifest), len(raw_manifest))
+                add(canonical_config, io.BytesIO(config), len(config))
+                total = 0
+                for name, canonical, diff_id in zip(layers, canonical_layers, diff_ids):
+                    require(isinstance(name, str) and name in by_name and by_name[name].isfile(),
+                            "TOOL_LAYER_MEMBER_INVALID")
+                    with source.extractfile(by_name[name]) as layer, tempfile.TemporaryFile() as spool:
+                        compressed = layer.read(2) == b"\x1f\x8b"
+                        layer.seek(0)
+                        reader = gzip.GzipFile(fileobj=layer) if compressed else layer
+                        digest = hashlib.sha256()
+                        size = 0
+                        for block in iter(lambda: reader.read(1024**2), b""):
+                            total += len(block); size += len(block)
+                            require(total <= ARTIFACT_MAX_BYTES, "TOOL_LAYER_SIZE_LIMIT")
+                            digest.update(block)
+                            if destination: spool.write(block)
+                        require("sha256:" + digest.hexdigest() == diff_id, "TOOL_LAYER_DIGEST_MISMATCH")
+                        spool.seek(0)
+                        add(canonical, spool, size)
+            if destination:
+                destination.close()
+                destination = None
+                require(Path(output).stat().st_size <= ARTIFACT_MAX_BYTES, "TOOL_ARCHIVE_SIZE_INVALID")
+        return {"tool_image_id": pin["config_sha256"], "ordered_diff_ids_verified": True,
+                "diff_ids": diff_ids, "public_production_verified": False}
+    except BaseException:
+        if destination: destination.close()
+        if created: Path(output).unlink()
+        raise
+
+
+def tool_prepare(root, output, archive=None):
+    """Restore verified repo cache first; pull the exact official pin only on miss."""
+    pin = tool_pin(root)
+    cache_name = "qikvrt-skopeo-" + pin["resolved_platform_digest"][7:]
+    output.mkdir(mode=0o700)  # create only; never replace an earlier receipt
+    canonical = output / "skopeo-loader.docker.tar"
+    origin = "EXPLICIT_VERIFIED_ARCHIVE"
+    with tempfile.TemporaryDirectory() as temporary:
+        source = Path(temporary) / "source.docker.tar"
+        if archive is not None:
+            tool_archive(archive, pin)
+            source = archive
+        else:
+            token = os.environ.get("GITHUB_TOKEN")
+            require(bool(token) and os.environ.get("GITHUB_REPOSITORY") == REPOSITORY,
+                    "TOOL_CACHE_REPOSITORY_BINDING_REQUIRED")
+            collection = json.loads(get("https://api.github.com/repos/" + REPOSITORY +
+                "/actions/artifacts?name=" + cache_name + "&per_page=100", token))
+            candidates = [a for a in collection["artifacts"] if a["name"] == cache_name and not a["expired"]]
+            if candidates:
+                selected = max(candidates, key=lambda a: a["id"])
+                zipped = Path(temporary) / "tool.zip"
+                require(0 < selected["size_in_bytes"] <= ARTIFACT_MAX_BYTES, "TOOL_CACHE_SIZE_INVALID")
+                actions_archive_download(selected["id"], selected["size_in_bytes"], zipped, token)
+                with zipfile.ZipFile(zipped) as package:
+                    require(package.namelist() == [canonical.name], "TOOL_CACHE_ZIP_MEMBER_INVALID")
+                    entry = package.getinfo(canonical.name)
+                    require(0 < entry.file_size <= ARTIFACT_MAX_BYTES, "TOOL_CACHE_SIZE_INVALID")
+                    with package.open(entry) as incoming, source.open("xb") as outgoing:
+                        shutil.copyfileobj(incoming, outgoing, 1024**2)
+                tool_archive(source, pin)  # a corrupt cache is a failure, never a pull fallback
+                origin = "VERIFIED_REPOSITORY_ARTIFACT"
+            else:
+                command("docker", "pull", pin["repository"] + "@" + pin["resolved_platform_digest"])
+                command("docker", "save", "--output", str(source), pin["repository"] + "@" + pin["resolved_platform_digest"])
+                origin = "EXACT_OFFICIAL_PIN_CACHE_MISS"
+        result = tool_archive(source, pin, canonical)
+    command("docker", "load", "--input", str(canonical))
+    inspected = json.loads(command("docker", "image", "inspect", pin["config_sha256"]))[0]
+    require(inspected["Id"] == pin["config_sha256"] and inspected["Os"] == "linux" and
+            inspected["Architecture"] == "amd64" and inspected["RootFS"]["Layers"] == result["diff_ids"],
+            "TOOL_LOADED_IMAGE_MISMATCH")
+    version = command("docker", "run", "--rm", "--pull=never", "--network", "none", "--read-only",
+        "--cap-drop", "ALL", "--security-opt", "no-new-privileges:true", pin["config_sha256"], "--version").decode().strip()
+    # Upstream createApp appends " commit: <vcs.revision>" for Git builds:
+    # https://github.com/podman-container-tools/skopeo/blob/main/cmd/skopeo/main.go
+    # The reviewed release remains exact; executable identity is still bound
+    # to the verified config and every ordered filesystem layer above.
+    matched = re.fullmatch("skopeo version " + re.escape(pin["version"]) +
+                           r"(?: commit: (?P<commit>[a-f0-9]{40}))?", version)
+    executable_commit = matched.group("commit") if matched else None
+    write_receipt(output / "version-check.json", {
+        "state": "TOOL_EXECUTABLE_VERSION_VERIFIED" if matched else "HOLD_TOOL_EXECUTABLE_VERSION_MISMATCH",
+        "tool_image_id": pin["config_sha256"], "expected_version": pin["version"],
+        "observed_version": version[:256], "observed_version_sha256": sha(version.encode()),
+        "version_matches_reviewed_release": matched is not None,
+        "executable_commit": executable_commit, "ordered_diff_ids_verified": True})
+    require(matched is not None, "TOOL_EXECUTABLE_VERSION_MISMATCH")
+    return {**result, "state": "VERIFIED_TOOL_IMAGE_READY", "cache_name": cache_name,
+            "origin": origin, "version": version, "executable_commit": executable_commit,
+            "official_manifest": pin["resolved_platform_digest"],
+            "runtime_smoke_verified": False}
 
 
 def context(root, output):
@@ -319,6 +497,15 @@ def carrier_download(expected, path):
             metadata.get("workflow_run", {}).get("id") == expected["run_id"] and
             metadata.get("workflow_run", {}).get("head_sha") == expected["source_head"],
             "ORIGINAL_CARRIER_ARTIFACT_BINDING_MISMATCH_OR_EXPIRED")
+    actions_archive_download(expected["artifact_id"], expected["archive_bytes"], path, token)
+
+
+def actions_archive_download(artifact_id, archive_bytes, path, token):
+    """Original Actions transport; signed blob GET never receives API auth."""
+    require(isinstance(artifact_id, int) and artifact_id > 0 and
+            isinstance(archive_bytes, int) and 0 < archive_bytes <= ARTIFACT_MAX_BYTES,
+            "BOUNDED_ACTIONS_ARCHIVE_REQUIRED")
+    base = "https://api.github.com/repos/" + REPOSITORY + "/actions/artifacts/" + str(artifact_id)
     class CaptureRedirect(urllib.request.HTTPRedirectHandler):
         def redirect_request(self, *args, **kwargs):
             return None
@@ -339,7 +526,7 @@ def carrier_download(expected, path):
                 "ORIGINAL_ACTIONS_BLOB_ORIGIN_REQUIRED")
         # Signed location stays in memory. No Authorization header on this GET.
         with urllib.request.build_opener(NoRedirect()).open(location, timeout=90) as response, Path(path).open("xb") as output:
-            remaining = expected["archive_bytes"]
+            remaining = archive_bytes
             while remaining:
                 raw = response.read(min(1024**2, remaining))
                 require(bool(raw), "CARRIER_ARCHIVE_TRUNCATED")
@@ -760,10 +947,29 @@ def existing_container(live, identifier, value, request):
             "EXISTING_CONTAINER_NOT_RESUMABLE")
 
 
+def authenticated_linux_host(value, info):
+    require(isinstance(info, dict) and info.get("OSType") == "linux" and
+            info.get("ID") == value["daemon_id"], "AUTHENTICATED_LINUX_HOST_MISMATCH")
+
+
+def host_identity(value, binding_sha256, engine):
+    """One fixed mTLS GET; target pins are not installed-package evidence."""
+    raw = engine.call("GET", "/v1.45/info", binary=True)
+    authenticated_linux_host(value, json.loads(raw))
+    return {"state": "AUTHENTICATED_LINUX_HOST_IDENTITY_VERIFIED",
+            "scope": "HOST_IDENTITY_ONLY", "observed_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+            "binding_sha256": binding_sha256, "daemon_id": value["daemon_id"], "os_type": "linux",
+            "source_head": value["source_head"], "source_tree": value["source_tree"],
+            "image_digest": value["image_digest"], "manifest_sha256": value["manifest_sha256"],
+            "daemon_info_sha256": sha(raw), "checker_sha256": sha(Path(__file__).read_bytes()),
+            "host_identity_verified": True, "host_package_verified": False,
+            "public_production_verified": False}
+
+
 def deploy(value, image, engine):
     """Create-only initial delivery, or resume the exact existing container."""
     info = engine.call("GET", "/v1.45/info")
-    require(info.get("OSType") == "linux" and info.get("ID") == value["daemon_id"], "AUTHENTICATED_LINUX_HOST_MISMATCH")
+    authenticated_linux_host(value, info)
     volume = engine.call("GET", "/v1.45/volumes/" + value["state_volume"])
     require(volume.get("Driver") == "local" and volume.get("Scope") == "local" and
             volume.get("Labels", {}).get("de.qikvrt.repository") == REPOSITORY and
@@ -787,6 +993,11 @@ def deploy(value, image, engine):
     labels = observed.get("Config", {}).get("Labels", {})
     require(labels.get("org.opencontainers.image.revision") == value["source_head"] and
             labels.get("de.qikvrt.source-tree") == value["source_tree"], "REMOTE_SOURCE_BINDING_MISMATCH")
+    # Historical images have the Firefox-only contract. Native delivery must
+    # declare its profile on the exact admitted image, never infer it from a
+    # missing signing credential or silently change the private host config.
+    profile = labels.get("de.qikvrt.terminal-profile", "firefox")
+    require(profile in ("temdd", "firefox"), "DECLARED_IMAGE_TERMINAL_PROFILE_REQUIRED")
     if not existing:
         try:
             created = engine.call("POST", "/v1.45/containers/create?name=" + value["container_name"], request)
@@ -814,7 +1025,7 @@ def deploy(value, image, engine):
     require(all(config.get(key) == value[key] for key in ("source_head", "source_tree", "node_id")) and
             config.get("source_repository") == REPOSITORY and config.get("host") == "0.0.0.0" and
             config.get("port") == 8080 and config.get("state_dir") == "/var/lib/qikvrt/node" and
-            config.get("adapter") == "none" and config.get("terminal_profile") == "firefox",
+            config.get("adapter") == "none" and config.get("terminal_profile") == profile,
             "HOST_NATIVE_CONFIGURATION_MISMATCH")
     package_archive = engine.call("GET", "/v1.45/containers/" + identifier +
                                   "/archive?path=/opt/qikvrt/MANIFEST.json", binary=True)
@@ -828,7 +1039,8 @@ def deploy(value, image, engine):
         live = engine.call("GET", "/v1.45/containers/" + identifier + "/json")
         existing_container(live, identifier, value, request)
         if live["State"]["Running"] is True:
-            return {"state": "EXACT_EXISTING_CONTAINER_NOOP", "container_id": identifier, **value}
+            return {"state": "EXACT_EXISTING_CONTAINER_NOOP", "container_id": identifier,
+                    **value, "terminal_profile": profile}
     try:
         engine.call("POST", "/v1.45/containers/" + identifier + "/start")
     except Exception:
@@ -850,7 +1062,7 @@ def deploy(value, image, engine):
     else:
         raise ValueError("DEPLOYED_CONTAINER_HEALTH_NOT_OBSERVED")
     result = "EXACT_EXISTING_CONTAINER_RESUMED_PENDING_PUBLIC_ACCEPTANCE" if existing else "CONTAINER_STARTED_PENDING_PUBLIC_ACCEPTANCE"
-    return {"state": result, "container_id": identifier, **value}
+    return {"state": result, "container_id": identifier, **value, "terminal_profile": profile}
 
 
 def public_readback(value, package):
@@ -865,6 +1077,8 @@ def public_readback(value, package):
             require(all(runtime.get(key) == value[key] for key in
                         ("source_head", "source_tree", "manifest_sha256", "config_sha256", "node_id")),
                     "PUBLIC_RUNTIME_BINDING_MISMATCH")
+            require(runtime.get("terminal_profile") == value.get("terminal_profile", "firefox"),
+                    "PUBLIC_TERMINAL_PROFILE_MISMATCH")
         if path == "/api/terminal":
             terminal = json.loads(raw)
             require(terminal.get("state") == "NATIVE_TEMDD_READY" and
@@ -876,7 +1090,9 @@ def public_readback(value, package):
             "source_tree": value["source_tree"], "image_digest": value["image_digest"],
             "origin": ORIGIN, "tls_hostname_validation": True, "http_readbacks": observed,
             "original_independent_readback_sha256": sha(original), "physical_iphone_verified": False,
-            "native_multi_node_acceptance": False}
+            "native_multi_node_acceptance": False,
+            "terminal_profile": value.get("terminal_profile", "firefox"),
+            "firefox_acceptance_in_scope": value.get("terminal_profile", "firefox") == "firefox"}
 
 
 def smoke_origin(inspected, network):
@@ -921,28 +1137,37 @@ def firefox_image_admission(image, output):
     require(sha(raw)==result.get('xpi_sha256'),'FINAL_IMAGE_SIGNED_XPI_READBACK_MISMATCH')
     return result
 
-def smoke(image, output):
+def smoke(image, output, terminal_profile="firefox"):
     """Real unprivileged container, independent S1 readback and durable restart."""
     output = Path(output).absolute()
     output.mkdir(parents=True, exist_ok=True)
-    firefox_image_admission(image, output)
+    require(terminal_profile in ("temdd", "firefox"), "NATIVE_CONTAINER_PROFILE_REQUIRED")
+    if terminal_profile == "firefox":
+        firefox_image_admission(image, output)
     name = "qikvrt-s1-smoke-" + uuid.uuid4().hex[:16]
     config_volume, state_volume, network = name + "-config", name + "-state", name + "-net"
     manifest = json.loads(command("docker", "run", "--rm", "--network", "none", "--entrypoint", "cat", image,
                                   "/opt/qikvrt/MANIFEST.json"))
     pin = sha(command("docker", "run", "--rm", "--network", "none", "--entrypoint", "cat", image,
                       "/opt/qikvrt/MANIFEST.json"))
+    if terminal_profile == "temdd":
+        labels = json.loads(command("docker", "image", "inspect", "--format", "{{json .Config.Labels}}", image))
+        require(labels.get("de.qikvrt.terminal-profile") == "temdd" and
+                manifest.get("native_terminal_daemon_included") is True and
+                "browser_runtime" not in manifest, "EXACT_NATIVE_ONLY_IMAGE_REQUIRED")
     config = {"schema": "qikvrt-self-host-config/v1", "node_id": "ci:s1-container", "adapter": "none",
               "source_head": manifest["source_head"], "source_tree": manifest["source_tree"],
               "source_repository": REPOSITORY, "state_dir": "/var/lib/qikvrt/node", "host": "0.0.0.0",
-              "port": 8080, "terminal_port": 8771, "terminal_profile": "firefox", "subject_pr": 523,
-              "terminal_token_file": "/run/qikvrt/terminal.token", "browser_password_file": "/run/qikvrt/browser.password",
-              "novnc_port": 6080, "vnc_port": 5900, "display": ":99"}
+              "port": 8080, "terminal_port": 8771, "terminal_profile": terminal_profile, "subject_pr": 523,
+              "terminal_token_file": "/run/qikvrt/terminal.token"}
+    if terminal_profile == "firefox":
+        config.update(browser_password_file="/run/qikvrt/browser.password",
+                      novnc_port=6080, vnc_port=5900, display=":99")
     config_raw = json.dumps(config, sort_keys=True).encode()
     setup = ("import os,pathlib,secrets; p=pathlib.Path('/conf'); "
              "(p/'config.json').write_bytes(" + repr(config_raw) + "); "
-             "(p/'terminal.token').write_text(secrets.token_hex(32)); "
-             "(p/'browser.password').write_text(secrets.token_hex(4)); "
+             "(p/'terminal.token').write_text(secrets.token_hex(32)); " +
+             ("(p/'browser.password').write_text(secrets.token_hex(4)); " if terminal_profile == "firefox" else "") +
              "[(os.chown(str(f),10001,10001),f.chmod(0o600)) for f in p.iterdir()]; "
              "os.chown('/state',10001,10001); os.chmod('/state',0o700)")
     try:
@@ -1009,6 +1234,7 @@ def smoke(image, output):
                 "source_tree": manifest["source_tree"], "manifest_sha256": pin, "image": image,
                 "before_readback_sha256": sha(first), "after_readback_sha256": sha(second),
                 "ledger_identity_preserved": True, "existing_native_event_restart_tests_required": True,
+                "terminal_profile": terminal_profile, "firefox_acceptance_in_scope": terminal_profile == "firefox",
                 "public_production_verified": False}
     except Exception:
         # Synthetic CI fixture only; no production logs/state are captured.
@@ -1024,7 +1250,9 @@ def smoke(image, output):
 
 def execute(args):
     operation = args.operation.removeprefix("container-")
-    if operation == "artifact-split":
+    if operation == "tool-prepare":
+        result = tool_prepare(args.root, args.output, args.tool_archive)
+    elif operation == "artifact-split":
         result = artifact_split(args.carrier_archive, args.output, args.transport_sha256)
     elif operation == "artifact-join":
         result = artifact_join(args.root, args.output, args.manifest_sha256, args.transport_sha256)
@@ -1058,9 +1286,23 @@ def execute(args):
                 write_receipt(args.receipt, result)
                 raise ValueError("INDEPENDENT_OCI_REBUILD_DIGEST_MISMATCH")
     elif operation == "smoke":
-        result = smoke(args.image, args.output)
+        result = smoke(args.image, args.output, getattr(args, "terminal_profile", "firefox"))
     elif operation == "production-gate":
         result = production_gate(args.expected_head)
+    elif operation == "host-identity":
+        require(args.production_binding is not None and args.receipt is not None,
+                "PRIVATE_HOST_BINDING_AND_NEW_RECEIPT_REQUIRED")
+        require(not os.path.lexists(args.receipt), "CREATE_ONLY_HOST_IDENTITY_RECEIPT_REQUIRED")
+        value = binding(args.production_binding.read_bytes(), args.binding_sha256, args.image)
+        require(re.fullmatch(r"[a-f0-9]{40}", args.expected_head or "") and
+                re.fullmatch(r"[a-f0-9]{40}", args.expected_tree or "") and
+                re.fullmatch(r"[a-f0-9]{64}", args.manifest_sha256 or ""),
+                "INDEPENDENT_HOST_IDENTITY_TARGET_REQUIRED")
+        require((value["source_head"], value["source_tree"], value["manifest_sha256"]) ==
+                (args.expected_head, args.expected_tree, args.manifest_sha256),
+                "HOST_IDENTITY_TARGET_MISMATCH")
+        result = host_identity(value, args.binding_sha256,
+                               Engine(value["docker_api"], args.ca_file, args.cert_file, args.key_file))
     elif operation == "deploy":
         value = binding(args.production_binding.read_bytes(), args.binding_sha256, args.image)
         production_gate(value["source_head"])
@@ -1069,5 +1311,6 @@ def execute(args):
         result = public_readback(json.loads(args.production_binding.read_bytes()), args.root)
     else:
         raise ValueError("UNKNOWN_CONTAINER_OPERATION")
-    return write_receipt(args.receipt, result)
+    return write_receipt(args.receipt, result, create_only=operation == "host-identity")
+
 

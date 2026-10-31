@@ -31,6 +31,12 @@ EXCLUDED_PARTS = {
 # immutable Alpha-2 release and are therefore not part of its closed historical
 # input set. They remain compiled and tested in the current repository.
 POST_ALPHA2_EXCLUSIONS = {
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/StorageIntegrity.lean",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/StorageIntegrityAxiomAudit.lean",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CausalDistance.lean",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CausalDistanceTemporalBridge.lean",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CausalDistanceBoundaryChecks.lean",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CausalDistanceAxiomAudit.lean",
     "formalization/QIKVRT_Formalization_v2.0/tests/test_measurement_transfer_audit.py",
     "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Physics/MeasurementTransfer.lean",
     "formalization/QIKVRT_Formalization_v2.0/GLOBAL_COMPLETION_STATUS.json",

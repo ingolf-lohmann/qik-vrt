@@ -36,6 +36,18 @@ sqljs-browser	1.14.2	wasm-browser	docs/monitor/origin/vendor/sql-wasm.wasm	PINNE
 playwright-origin-tests	1.62.1	linux-desktop	NO_BUNDLED_ARCHIVE	BEHAVIORAL_CONTRACT_ONLY	Apache-2.0	origin_adapter_browser_verification
 firefox	158-or-newer-exact-Mozilla-APT-binding	linux	NO_BUNDLED_ARCHIVE	SIGNED_APT_METADATA_AND_EXECUTABLE_SHA256	MPL-2.0	self_host_firefox_release_upgrade_and_signed_XPI_admission
 gpg	Mozilla-primary-key-fingerprint-contract	linux	NO_BUNDLED_ARCHIVE	BEHAVIORAL_CONTRACT_ONLY	GPL-3.0-or-later	Mozilla_APT_primary_key_verification
-skopeo	exact-OCI-carrier-preserve-digests	linux-amd64	quay.io/skopeo/stable	97772f3c64fd2fba720b2bafaf37239dc44d8b1c625c8383c64044832efe9ed9	Apache-2.0	byte_exact_tested_OCI_publication
+skopeo	exact-OCI-carrier-preserve-digests	linux-amd64	quay.io/skopeo/stable	d506b4167696eb5d3bd624b3619480bddeabdca291b2e795e9c20ed862e11ae4	Apache-2.0	byte_exact_tested_OCI_publication
 personal-auth-crypto	cryptography50.0.2+cffi2.1.1+pycparser3.0	python-3.12-linux	NO_BUNDLED_ARCHIVE	VERSION_CONTRACT_ONLY	Apache-2.0_AND_BSD-3-Clause_AND_MIT	optional_personal_OIDC_RS256_validation
+github-environment-crypto	PyNaCl1.6.2	python-3.12-linux	NO_BUNDLED_ARCHIVE	VERSION_CONTRACT_ONLY	Apache-2.0	optional_existing_authority_GitHub_environment_sealed_boxes
 secret-tool	system-libsecret-executable-contract	linux-desktop-user	NO_BUNDLED_ARCHIVE	BEHAVIORAL_CONTRACT_ONLY	LGPL-2.1-or-later	optional_personal_protected_login_collection
+personal-retrieval	sentence-transformers6.0.0+transformers5.4.0+torch2.14.1	python-3.12-linux	requirements-personal-retrieval.txt	VERSION_CONTRACT_ONLY	UPSTREAM_DISTRIBUTION_LICENSES_APPLY	optional_local_source_ranking
+
+ssh	strict-pinned-host-key-batch-transfer	linux	NO_BUNDLED_ARCHIVE	BEHAVIORAL_CONTRACT_ONLY	BSD_AND_OPENSSH_COMPONENT_LICENSES	optional_existing_owned_VPS_static_file_transfer
+bash	bash-euo-pipefail-v1	ubuntu-24.04-x64	RUNNER_PROVIDED	BEHAVIOR_CONTRACT	UPSTREAM_RUNNER_PACKAGE_LICENSES	lean_release_provisioning
+curl	bounded-https-get-v1	ubuntu-24.04-x64	RUNNER_PROVIDED	BEHAVIOR_CONTRACT	UPSTREAM_RUNNER_PACKAGE_LICENSES	lean_release_provisioning
+tar	gnu-tar-zstd-v1	ubuntu-24.04-x64	RUNNER_PROVIDED	BEHAVIOR_CONTRACT	UPSTREAM_RUNNER_PACKAGE_LICENSES	lean_release_provisioning
+zstd	zstd-decode-v1	ubuntu-24.04-x64	RUNNER_PROVIDED	BEHAVIOR_CONTRACT	UPSTREAM_RUNNER_PACKAGE_LICENSES	lean_release_provisioning
+coreutils	sha256-staging-v1	ubuntu-24.04-x64	RUNNER_PROVIDED	BEHAVIOR_CONTRACT	UPSTREAM_RUNNER_PACKAGE_LICENSES	lean_release_provisioning
+
+zlib-native	1.2.11-or-newer-integer-codec-contract	posix-linux	RUNNER_PROVIDED	BEHAVIOR_CONTRACT	Zlib	native_qikvrt_codec
+unzip	zip-deflate-readback-contract	posix-linux	RUNNER_PROVIDED	BEHAVIOR_CONTRACT	Info-ZIP	independent_zip_sfx_readback

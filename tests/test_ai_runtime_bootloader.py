@@ -18,6 +18,7 @@ import unittest
 from unittest.mock import patch
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+from tools import ai_runtime_bootloader as bootloader
 
 
 class AIRuntimeBootloaderContractTests(unittest.TestCase):
@@ -169,6 +170,28 @@ class AIRuntimeBootloaderContractTests(unittest.TestCase):
 class ClientContinuationRegressionTests(unittest.TestCase):
     """Client behavior receipts are fixtures, never productive effect evidence."""
 
+    def test_later_owner_fallback_preserves_rest_default_and_requires_exact_decision(self):
+        from tools import ai_handoff
+        policy = json.loads((ROOT / "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json").read_bytes())
+        action = {"subject": {"repository": "ingolf-lohmann/qik-vrt"},
+                  "method": "POST", "operation": "markPullRequestReadyForReview",
+                  "endpoint": "https://api.github.com/graphql", "fallback_reason": "REST_OPERATION_UNAVAILABLE",
+                  "rest_effect_state": "NOT_ATTEMPTED", "owner_decision_sha256": policy["client_continuation"]["github_fallback"]["decision_sha256"]}
+        self.assertEqual(policy["client_continuation"]["github_route"], "REST_API_ONLY")
+        self.assertTrue(ai_handoff.github_graphql_fallback_allowed(action, policy))
+        subject = {"repository": "ingolf-lohmann/qik-vrt", "ref": "main", "head": "a" * 40, "tree": "b" * 40}
+        declared = {**action, "subject": subject, "route": "connector", "service": "github",
+                    "transport": "GRAPHQL_FALLBACK", "evidence": "fixture:later-Owner-exact-decision",
+                    "observed_method": "POST", "observed_operation": action["operation"],
+                    "observed_repository": subject["repository"],
+                    **{k: True for k in ("authorized", "safe", "deterministic", "callable", "authenticated", "permitted", "admitted")}}
+        self.assertTrue(ai_handoff.validate_client_action(declared, subject))
+        for changed in ({"operation": "mergePullRequest"}, {"endpoint": "https://foreign.example/graphql"},
+                        {"rest_effect_state": "UNKNOWN"}, {"owner_decision_sha256": "0" * 64},
+                        {"subject": {"repository": "foreign/repo"}}):
+            with self.subTest(changed=changed):
+                self.assertFalse(ai_handoff.github_graphql_fallback_allowed({**action, **changed}, policy))
+
     def setUp(self) -> None:
         from tools import ai_handoff
         self.handoff = ai_handoff
@@ -219,6 +242,101 @@ class ClientContinuationRegressionTests(unittest.TestCase):
         self.receipt["work"] = [{"id": task, "state": "OPEN", "evidence": "",
                                  "next_action": "fixture:causal-repair:" + task}
                                 for task in ("failure", "omission", "gap")]
+
+    def test_disconnected_provider_read_is_rejected_before_callable_check(self) -> None:
+        action = self.receipt["next_actions"][0]
+        action.update(service="Railway", method="GET", observed_method="GET",
+                      operation="list-projects", observed_operation="list-projects",
+                      callable=False, authenticated=False)
+        self.rejected("CLIENT_DISCONNECTED_PROVIDER_ROUTE_FORBIDDEN:railway")
+
+    def test_tool_selection_policy_pin_must_remain_current(self) -> None:
+        self.receipt["next_actions"][0]["route_policy_sha256"] = "0" * 64
+        self.rejected("CLIENT_TOOL_SELECTION_POLICY_CHANGED")
+
+    def test_missing_tool_selection_policy_fails_closed(self) -> None:
+        policy = json.loads((ROOT / "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json").read_text())
+        policy["client_continuation"].pop("tool_selection")
+        with patch.object(self.handoff, "load_json", return_value=policy):
+            self.rejected("CLIENT_TOOL_SELECTION_POLICY_INVALID")
+
+    def test_every_registered_client_resolves_same_tool_selection_contract(self) -> None:
+        for path in ("AI", "AGENTS.md", "docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md"):
+            with self.subTest(path=path):
+                text = (ROOT / path).read_text()
+                self.assertIn("client_continuation.tool_selection", text)
+                self.assertIn("--client-action", text)
+                self.assertIn("DISCONNECTED", text)
+
+    def test_general_authorization_cannot_reactivate_disconnected_provider(self) -> None:
+        action = self.receipt["next_actions"][0]
+        action.update(service="railway", method="GET", observed_method="GET",
+                      operation="read-existing-configuration",
+                      observed_operation="read-existing-configuration",
+                      owner_override=True, read_only=True, tool_available=True)
+        self.rejected("CLIENT_DISCONNECTED_PROVIDER_ROUTE_FORBIDDEN:railway")
+
+    def test_actual_tool_name_cannot_hide_disconnected_provider(self) -> None:
+        action = self.receipt["next_actions"][0]
+        action.update(service="cloud", tool="mcp__codex_apps__railway_list_projects")
+        self.rejected("CLIENT_DISCONNECTED_PROVIDER_ROUTE_FORBIDDEN:railway")
+
+    def test_disconnected_provider_endpoint_and_subdomains_are_rejected(self) -> None:
+        for url in ("https://mcp.railway.com", "https://api.railway.app/graphql/v2",
+                    "https://old-runtime.up.railway.app/health", "mcp.railway.com:443"):
+            with self.subTest(url=url):
+                action = self.receipt["next_actions"][0]
+                action.update(service="mesh", endpoint=url)
+                self.rejected("CLIENT_DISCONNECTED_PROVIDER_ROUTE_FORBIDDEN:railway")
+
+    def test_owner_archive_read_is_not_a_retired_provider_operation(self) -> None:
+        action = self.receipt["next_actions"][0]
+        action.update(service="onedrive", method="GET", observed_method="GET",
+                      operation="read-archived-railway-migration-receipt",
+                      observed_operation="read-archived-railway-migration-receipt",
+                      endpoint="https://graph.microsoft.com/v1.0/drives/owner/items/archive")
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_similar_non_provider_hostname_is_not_blocked(self) -> None:
+        action = self.receipt["next_actions"][0]
+        action.update(service="mesh", endpoint="https://railway.com.owner.example/readback")
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_zero_effect_read_attempt_still_obeys_disconnection(self) -> None:
+        action = copy.deepcopy(self.receipt["next_actions"][0])
+        action.update(service="railway", method="GET", observed_method="GET")
+        self.receipt["attempts"] = [{
+            "effect_count": 0, "ambiguous_effect": False, "readback_before_effect": False,
+            "current": {key: str(i) * 64 for i, key in enumerate(
+                ("subject", "error", "cause", "capability"), 1)}, "action": action,
+        }]
+        self.rejected("CLIENT_DISCONNECTED_PROVIDER_ROUTE_FORBIDDEN:railway")
+
+    def test_client_action_cli_rejects_disconnected_read_without_execution(self) -> None:
+        action = copy.deepcopy(self.receipt["next_actions"][0])
+        action.update(service="railway", method="GET", observed_method="GET")
+        with tempfile.TemporaryDirectory() as temporary:
+            path = pathlib.Path(temporary) / "action.json"
+            path.write_text(json.dumps(action), encoding="utf-8")
+            completed = subprocess.run(
+                [sys.executable, "-B", "tools/ai_handoff.py", "--client-action", str(path)],
+                cwd=ROOT, capture_output=True, text=True, timeout=10,
+            )
+        self.assertEqual(completed.returncode, 2)
+        self.assertIn("CLIENT_DISCONNECTED_PROVIDER_ROUTE_FORBIDDEN:railway", completed.stderr)
+        self.assertNotIn("CLIENT_DECLARED_ACTION=READY", completed.stdout)
+
+    def test_client_action_cli_checks_allowed_route_without_executing_it(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            path = pathlib.Path(temporary) / "action.json"
+            path.write_text(json.dumps(self.receipt["next_actions"][0]), encoding="utf-8")
+            completed = subprocess.run(
+                [sys.executable, "-B", "tools/ai_handoff.py", "--client-action", str(path)],
+                cwd=ROOT, capture_output=True, text=True, timeout=10,
+            )
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        self.assertIn("CLIENT_DECLARED_ACTION=READY", completed.stdout)
+        self.assertIn("LIVE_EFFECT_VERIFICATION=NOT_PERFORMED", completed.stdout)
 
     def test_failures_omissions_and_gaps_are_accepted_as_successor_work(self) -> None:
         self.inherited_work()
@@ -603,6 +721,93 @@ class ClientContinuationRegressionTests(unittest.TestCase):
         self.assertEqual(plan["waiting"][0]["activation"], ["credential-delivery"])
         self.assertEqual(plan["scope"], "PLANNING_ONLY_NOT_EXECUTION_OR_EFFECT_PROOF")
 
+    def blocking_repair_plan(self, *, preparation=True):
+        repair = self.anticipated_transition()
+        if not preparation:
+            repair["preparation"] = []
+        other = copy.deepcopy(repair)
+        other["id"] = "throughput-optimization"
+        other["activation"][0]["satisfied"] = True
+        other["preparation"] = []
+        other["action"].update(authenticated=True, operation="measure-throughput",
+                               observed_operation="measure-throughput")
+        plan = self.receipt["transition_plan"]
+        plan["transitions"].insert(0, other)
+        plan["blocking_repairs"] = [repair["id"]]
+        return repair, other
+
+    def test_blocking_repair_defers_ready_optimization(self):
+        self.blocking_repair_plan()
+        plan = self.handoff.client_transition_plan(self.receipt)
+        self.assertEqual([x["transition_id"] for x in plan["ready"]], ["signed-xpi"])
+        self.assertEqual([x["transition_id"] for x in plan["deferred"]],
+                         ["throughput-optimization"])
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_unavailable_repair_does_not_admit_unrelated_work(self):
+        self.blocking_repair_plan(preparation=False)
+        self.receipt.update(state="BLOCK", blocker={
+            "operation": "sign-xpi", "reason": "credential delivery missing",
+            "evidence": "fixture:credential-presence-readback",
+            "retry_condition": "credential delivered", "next_action": "bind existing credential",
+        })
+        self.assertEqual(self.handoff.client_transition_plan(self.receipt)["ready"], [])
+        self.assertEqual(self.check(), "BLOCK")
+
+    def test_known_error_authorization_reuses_existing_admitted_repair_plan(self):
+        policy = json.loads((ROOT / "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json").read_text())
+        rule = policy["client_continuation"]["blocking_repair_priority"]["known_error_authorization"]
+        self.assertTrue(rule["execute_existing_admitted_deterministic_repair_without_reprompt"])
+        self.assertFalse(rule["notification_before_routine_known_repair_required"])
+        self.assertTrue(rule["authority_credentials_admission_and_effect_proof_remain_separate"])
+        self.assertFalse(rule["unchanged_failed_effect_retry"])
+        self.blocking_repair_plan()
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_repair_preparation_still_requires_immediate_continuation(self):
+        self.blocking_repair_plan()
+        self.receipt["state"] = "BLOCK"
+        self.rejected("CLIENT_PREMATURE_RETURN_WITH_EXECUTABLE_SUCCESSOR")
+
+    def test_flat_next_action_cannot_bypass_repair_priority(self):
+        _repair, other = self.blocking_repair_plan()
+        self.receipt["next_actions"] = [other["action"]]
+        self.rejected("CLIENT_ACTION_OUTSIDE_BLOCKING_REPAIR_SCOPE")
+
+    def test_flat_repair_cannot_bypass_transition_activation(self):
+        repair, _other = self.blocking_repair_plan(preparation=False)
+        repair["action"]["authenticated"] = True
+        self.receipt["next_actions"] = [repair["action"]]
+        self.rejected("CLIENT_ACTION_OUTSIDE_BLOCKING_REPAIR_SCOPE")
+
+    def test_repair_priority_preserves_admission_and_unchanged_retry_guards(self):
+        repair, _other = self.blocking_repair_plan(preparation=False)
+        repair["activation"][0]["satisfied"] = True
+        repair["action"]["authenticated"] = True
+        repair["action"]["admitted"] = False
+        self.assertEqual(self.handoff.client_transition_plan(self.receipt)["ready"], [])
+        repair["action"]["admitted"] = True
+        causal = {key: str(i) * 64 for i, key in enumerate(
+            ("subject", "error", "cause", "capability"), 1)}
+        repair["action"]["retry"] = {"previous": causal, "current": dict(causal)}
+        self.assertEqual(self.handoff.client_transition_plan(self.receipt)["ready"], [])
+
+    def test_invalid_repair_references_fail_closed(self):
+        original = copy.deepcopy(self.receipt)
+        for value in ("signed-xpi", ["missing"], ["signed-xpi", "signed-xpi"], [None]):
+            with self.subTest(value=value):
+                self.receipt = copy.deepcopy(original)
+                self.blocking_repair_plan()
+                self.receipt["transition_plan"]["blocking_repairs"] = value
+                self.rejected("CLIENT_BLOCKING_REPAIR_")
+
+    def test_cleared_repair_priority_restores_preserved_other_work(self):
+        self.blocking_repair_plan(preparation=False)
+        self.receipt["transition_plan"]["blocking_repairs"] = []
+        plan = self.handoff.client_transition_plan(self.receipt)
+        self.assertEqual([x["transition_id"] for x in plan["ready"]],
+                         ["throughput-optimization"])
+
     def test_transition_activation_does_not_supply_credentials_or_admission(self) -> None:
         transition = self.anticipated_transition()
         transition["preparation"] = []
@@ -716,7 +921,16 @@ class ClientContinuationRegressionTests(unittest.TestCase):
             "sender": "codex", "recipient": "claude-mirror", "claim": claim,
             "evidence": {
                 "send": {**bound, "sender": "codex", "channel": "fixture:mesh",
+                         "target_host": "raumzeitterminal.de",
                          "evidence": "fixture:actual-transfer"},
+                "remote_readback": {**event, "target_host": "raumzeitterminal.de",
+                                    "url": "https://raumzeitterminal.de/api/eap/receipts/fixture",
+                                    "final_url": "https://raumzeitterminal.de/api/eap/receipts/fixture",
+                                    "http_status": 200, "response_sha256": "sha256:" + "4" * 64,
+                                    "independent": True, "authority_identity_verified": True,
+                                    "action_id": "fixture:action-1",
+                                    "observed_at": "2026-10-11T10:00:02Z",
+                                    "evidence": "fixture:live-authority-receipt"},
                 "ingress": {**bound, "evidence": "fixture:named-ingress"},
                 "outbox_claim": {**bound, "tool": "node-tools/qikvrt_mirror_emit.py claim",
                                  "record_sha256": "sha256:" + "3" * 64,
@@ -742,7 +956,7 @@ class ClientContinuationRegressionTests(unittest.TestCase):
         self.rejected("CLIENT_COMMUNICATION_OUTBOX_CLAIM_REQUIRED")
 
     def test_communication_evidence_cannot_move_to_another_packet_or_node(self) -> None:
-        for kind in ("send", "ingress", "outbox_claim"):
+        for kind in ("send", "ingress", "outbox_claim", "remote_readback"):
             for key, value in (("message_sha256", "sha256:" + "9" * 64), ("node", "other-node")):
                 with self.subTest(kind=kind, key=key):
                     record = self.communication()
@@ -780,6 +994,56 @@ class ClientContinuationRegressionTests(unittest.TestCase):
 
     def test_complete_declared_communication_chain_is_consistent(self) -> None:
         self.communication("APPLIED")
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_remote_claim_requires_readback_in_same_record(self) -> None:
+        for claim in ("RECEIVED", "APPLIED", "RECEIVER_NACK"):
+            with self.subTest(claim=claim):
+                record = self.communication(claim)
+                del record["evidence"]["remote_readback"]
+                self.rejected("CLIENT_COMMUNICATION_REMOTE_READBACK_REQUIRED")
+
+    def test_loopback_receipt_cannot_establish_authority_delivery(self) -> None:
+        for host in ("localhost", "worker.localhost", "127.0.0.1", "::1", "2130706433", "0.0.0.0"):
+            with self.subTest(host=host):
+                record = self.communication()
+                remote = record["evidence"]["remote_readback"]
+                remote["target_host"] = record["evidence"]["send"]["target_host"] = host
+                origin = "https://[::1]" if host == "::1" else "https://" + host
+                remote["url"] = remote["final_url"] = origin + "/receipt"
+                self.rejected("CLIENT_COMMUNICATION_REMOTE_READBACK_INVALID")
+
+    def test_proxy_refusal_tls_failure_redirect_and_boolean_are_not_delivery(self) -> None:
+        for status in (403, 525, 302, True, "200"):
+            with self.subTest(status=status):
+                self.communication()["evidence"]["remote_readback"]["http_status"] = status
+                self.rejected("CLIENT_COMMUNICATION_REMOTE_READBACK_INVALID")
+
+    def test_remote_readback_binds_destination_identity_and_response(self) -> None:
+        for key, value in (("url", "https://127.0.0.1/receipt"),
+                           ("final_url", "https://other.example/receipt"),
+                           ("authority_identity_verified", False), ("independent", False),
+                           ("response_sha256", ""), ("evidence", "fixture:actual-transfer")):
+            with self.subTest(key=key):
+                self.communication()["evidence"]["remote_readback"][key] = value
+                self.rejected("CLIENT_COMMUNICATION_REMOTE_READBACK_INVALID")
+
+    def test_remote_readback_replay_and_action_drift_are_rejected(self) -> None:
+        for key, value in (("observed_at", "2026-10-10T10:00:02Z"),
+                           ("observed_at", "2026-10-11T10:00:04Z"),
+                           ("action_id", "another-action")):
+            with self.subTest(key=key, value=value):
+                self.communication()["evidence"]["remote_readback"][key] = value
+                self.rejected("CLIENT_COMMUNICATION_REMOTE_READBACK_NOT_FRESH")
+
+    def test_remote_success_for_another_native_event_is_not_application(self) -> None:
+        self.communication("APPLIED")["evidence"]["remote_readback"]["native_event_id"] = "other-event"
+        self.rejected("CLIENT_COMMUNICATION_REMOTE_APPLICATION_MISMATCH")
+
+    def test_authority_ref_can_bind_remote_response_without_payload_hash(self) -> None:
+        remote = self.communication()["evidence"]["remote_readback"]
+        del remote["response_sha256"]
+        remote["authority_ref_sha"] = self.subject["head"]
         self.assertEqual(self.check(), "CONTINUE")
 
     def test_communication_schema_is_strict(self) -> None:
@@ -1186,6 +1450,123 @@ class ClientContinuationRegressionTests(unittest.TestCase):
         self.assertTrue(rule["boundaries"]["readback_is_not_effect_ack"])
         self.assertEqual(rule["continuation_rules"]["unchanged_error"], "DO_NOT_TRIGGER_A_RENEWED_ATTEMPT")
 
+
+
+class StandpointDiscoveryTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.directory.cleanup)
+        self.root = pathlib.Path(self.directory.name)
+        self.context = json.loads((ROOT / "AI_CONTEXT.json").read_text())
+        self.signature_path = self.root / bootloader.SIGNATURE_PATH
+        self.signature_path.parent.mkdir()
+        self.signature_path.write_bytes((ROOT / bootloader.SIGNATURE_PATH).read_bytes())
+        self.contract_path = self.root / bootloader.CODEC_CONTRACT_PATH
+        self.contract_path.parent.mkdir()
+        self.contract_path.write_bytes((ROOT / bootloader.CODEC_CONTRACT_PATH).read_bytes())
+
+    def resolve(self):
+        return bootloader.load_standpoint(self.context, self.root)
+
+    def test_exact_local_bytes_are_resolved_with_provenance_and_effect_limits(self):
+        report = self.resolve()
+        self.assertEqual(report["bytes"], 400)
+        self.assertEqual(report["path"], bootloader.SIGNATURE_PATH)
+        self.assertEqual(report["sha256"],
+                         "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792")
+        self.assertEqual(report["git_blob_sha1"], "9b06a2b407fb99d99d2bda5a3decc80ab68a092b")
+        self.assertFalse(report["recovered_historical_owner_seed"])
+        self.assertFalse(report["github_authentication_or_account_recovery"])
+        self.assertFalse(report["main_adoption_or_external_effect_verified"])
+
+    def test_missing_signature_is_not_replaced_by_an_archive_search(self):
+        self.signature_path.rename(self.signature_path.parent / "handshake_core.c")
+        with self.assertRaisesRegex(bootloader.BootBlock, "missing"):
+            self.resolve()
+
+    def test_wrong_byte_count_is_never_truncated_or_padded(self):
+        for size in (0, 399, 401, 417):
+            with self.subTest(size=size):
+                self.signature_path.write_bytes(b"x" * size)
+                with self.assertRaisesRegex(bootloader.BootBlock, "exactly 400"):
+                    self.resolve()
+
+    def test_changed_400_byte_artifact_is_rejected(self):
+        data = bytearray(self.signature_path.read_bytes())
+        data[-1] = 1
+        self.signature_path.write_bytes(data)
+        with self.assertRaisesRegex(bootloader.BootBlock, "byte identity"):
+            self.resolve()
+
+    def test_rehashed_foreign_standpoint_and_context_do_not_create_authority(self):
+        data = bytearray(self.signature_path.read_bytes())
+        data[48:329] = data[48:329].replace(b"QIKVRT", b"QIKvRT")
+        data[16:48] = hashlib.sha256(b"QIKVRT-STANDPOINT-V1\0" + data[:16] + data[48:329]).digest()
+        self.signature_path.write_bytes(data)
+        self.context["standpoint_codex"]["signature_sha256"] = hashlib.sha256(data).hexdigest()
+        with self.assertRaisesRegex(bootloader.BootBlock, "context binding"):
+            self.resolve()
+
+    def test_legacy_path_size_boolean_and_digest_drift_are_blocking(self):
+        binding = self.context["standpoint_codex"]
+        for key, value in (("signature_path", "../handshake.c"),
+                           ("signature_bytes", True),
+                           ("signature_sha256", "0" * 64),
+                           ("signature_git_blob_sha1", "0" * 40)):
+            old = binding[key]
+            with self.subTest(key=key):
+                binding[key] = value
+                with self.assertRaises(bootloader.BootBlock):
+                    self.resolve()
+            binding[key] = old
+
+    def test_codec_contract_drift_or_historical_recovery_claim_is_blocking(self):
+        contract = json.loads(self.contract_path.read_text())
+        for field, value in (("signature", {"path": "handshake.c"}),
+                             ("semantic_source", {"recovered_historical_400_byte_image": True})):
+            altered = json.loads(json.dumps(contract))
+            altered["standpoint"][field] = value
+            self.contract_path.write_text(json.dumps(altered))
+            with self.subTest(field=field), self.assertRaises(bootloader.BootBlock):
+                self.resolve()
+
+    def test_missing_binding_and_invalid_contract_are_blocking(self):
+        with self.assertRaises(bootloader.BootBlock):
+            bootloader.load_standpoint({}, self.root)
+        for data in (b"[]", b"{", b"\xff"):
+            self.contract_path.write_bytes(data)
+            with self.subTest(data=data), self.assertRaises(bootloader.BootBlock):
+                self.resolve()
+
+    def test_symlink_is_not_treated_as_canonical_repository_bytes(self):
+        external = self.root / "external.bin"
+        self.signature_path.rename(external)
+        self.signature_path.symlink_to(external)
+        with self.assertRaisesRegex(bootloader.BootBlock, "symlink"):
+            self.resolve()
+
+    def test_startup_reports_the_standpoint_and_does_not_hide_a_block(self):
+        gate = {"name": "fixture", "state": "PASS", "stdout": "", "stderr": "", "exit_code": 0}
+        for invalid in (False, True):
+            with self.subTest(invalid=invalid), patch.object(bootloader, "run_gate", return_value=gate), \
+                    patch.object(bootloader, "git_value", return_value="fixture"), \
+                    patch.object(sys, "argv", ["bootloader", "--json"]):
+                if invalid:
+                    standpoint = patch.object(bootloader, "load_standpoint",
+                                               side_effect=bootloader.BootBlock("fixture signature missing"))
+                else:
+                    standpoint = patch.object(bootloader, "load_standpoint", return_value=self.resolve())
+                output = io.StringIO()
+                with standpoint, contextlib.redirect_stdout(output):
+                    status = bootloader.main()
+                report = json.loads(output.getvalue())
+                self.assertEqual(status, 2 if invalid else 0)
+                self.assertEqual(report["state"], "BLOCK" if invalid else "PASS")
+                if invalid:
+                    self.assertIn("signature missing", report["blocker"])
+                else:
+                    self.assertEqual(report["standpoint"]["bytes"], 400)
+                    self.assertIn("400 byte standpoint", [g["name"] for g in report["gates"]])
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

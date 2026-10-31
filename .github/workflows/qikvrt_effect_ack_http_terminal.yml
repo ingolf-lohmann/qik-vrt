@@ -72,14 +72,15 @@ jobs:
           persist-credentials: false
 
       - name: Set up Python
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.12"
 
       - name: Set up standalone Node runtime
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: '24'
+          package-manager-cache: false
 
       - name: Run standalone package, negative and crash-restart controls
         id: standalone-runtime
@@ -327,7 +328,7 @@ jobs:
         env:
           PYTHONDONTWRITEBYTECODE: "1"
           PYTHONNOUSERSITE: "1"
-        run: python3 -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal
+        run: python3 -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal tests.test_qikvrt_personal_terminal_transition
 
       - name: Freeze and verify exact-head standalone package
         shell: bash
@@ -364,7 +365,7 @@ jobs:
           (
             cd browser/firefox/qikvrt-terminal
             zip -X -9 /tmp/qikvrt-firefox-package/qikvrt-ai-terminal.xpi \
-              manifest.json background.js content.js terminal.css options.html options.js README.md
+              manifest.json background.js content.js terminal.css options.html options.js client.html README.md
           )
           sha256sum /tmp/qikvrt-firefox-package/qikvrt-ai-terminal.xpi \
             > /tmp/qikvrt-firefox-package/qikvrt-ai-terminal.xpi.sha256
@@ -478,9 +479,10 @@ jobs:
         with:
           ref: ${{ github.sha }}
           persist-credentials: false
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: '24'
+          package-manager-cache: false
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
           name: qikvrt-firefox-runtime-delivery-${{ github.sha }}

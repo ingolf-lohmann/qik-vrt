@@ -410,6 +410,10 @@ class PreparationTests(unittest.TestCase):
         # objects and a file-backed REST shim. No network or token is required.
         root = pathlib.Path.cwd()
         for path in ("tools/qikvrt_self_heal_pr_materializer.py",
+                     "tools/qikvrt_mesh_recovery.py", "tools/qikvrt_seed_common.py",
+                     "tools/qikvrt_subprocess.py", "tools/qikvrt_workflow_executor.py",
+                     "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+                     "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json",
                      "tools/qikvrt_autonomous_self_heal.py",
                      "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json",
                      "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json"):

@@ -1,6 +1,64 @@
 # QIK-VRT Human–Machine Progress Protocol
 
+## Later Owner GraphQL fallback decision — 29 October 2026
+
+GraphQL remains the standing admitted continuation fallback. REST stays primary;
+the shared client guard accepts `GRAPHQL_FALLBACK` only against the exact pinned
+Owner decision and fixed operation, with no prior ambiguous REST effect. See
+`client_continuation.github_fallback` in the existing policy and
+`graphql_fallback_decision` in the existing autonomous continuation delegation.
+Do not request this authorization again. Successful original CI/CD/CO feedback
+can reorder independent verification branches while retaining every gate and
+the fallback. Readiness, merge and productive host/domain acceptance remain
+distinct and require their own fresh readbacks.
+
+## Owner decisions before tool selection — 26 October 2026
+
+All current and future QIK-VRT artificial-cognitive clients load the shared
+`policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json` contract at
+`client_continuation.tool_selection` before selecting or invoking an external
+service. The existing handoff validator also checks one proposed action:
+
+```sh
+python3 -B tools/ai_handoff.py --client-action <non-secret-action.json>
+```
+
+Use the same non-secret action shape as `next_actions`: exact `subject`, `route`,
+`service`, `operation`, `method`, actual `tool` and `endpoint` when applicable,
+observed operation/repository/method, evidence and the existing authorization,
+safety, determinism, capability, authentication, permission and admission flags.
+The read-only command reports `CLIENT_ROUTE_POLICY_SHA256` and the declared
+READY/HOLD state; it never invokes a provider. Bind that current digest as
+`route_policy_sha256` when carrying the action forward; a supplied stale digest
+is rejected. `--client-action` and `--client-receipt` are mutually exclusive.
+
+Railway is DISCONNECTED under the Owner's reaffirmed decision. The guard rejects
+direct provider discovery, authentication, reads, writes and recovery, including
+GET/read-only and zero-effect recorded reads. It checks the actual declared
+service/provider, tool prefix and endpoint hostname before capability/transport
+selection. Tool availability, a new session, generic authorization or an
+unavailable permitted route does not reactivate a disconnected provider. Only a
+later explicit Owner instruction can revise the shared policy. Preserved old
+artifacts remain readable through their actual admitted owner storage.
+
+The same check covers proposed actions, transition plans and client receipts.
+It checks declared metadata, not the truth of a client assertion. A saved policy
+or a passing fixture does not prove use by another client, native enforcement,
+external platform control or a runtime effect. Require exact-policy ACK and
+independent readback for each node before claiming adoption. Historical records
+remain immutable; current evaluation never transfers their former route grant.
+
 ## Purpose
+
+The Owner's authorization of 26 October 2026 requires every client to execute
+known, admitted deterministic repairs autonomously without asking the same
+permission or requiring a preliminary notification. The existing
+`client_continuation.blocking_repair_priority.known_error_authorization` rule
+uses the original transition preparation and blocking-repair journal. Correct
+the causal prerequisite, verify the affected exact-subject path, and report
+the verified result. Missing capability or an unknown cause remains a concrete
+prerequisite to recover. Authorization never substitutes for credential binding,
+admission or effect readback, and never permits an unchanged failed retry.
 
 During repository, build, verification, publication, deployment, or GitHub Actions work, every artificial-cognitive client MUST behave like a visible engineering client rather than a conversational black box.
 
@@ -66,6 +124,28 @@ Its normative source is the existing recursive policy's
 ## Binding client continuation procedure
 
 ### Communication claims — self-application of 2026-10-19
+
+The later Owner handoff of 2026-10-31 17:33 MEZ adds R1–R5, bound under
+`client_continuation.delivery_reporting_rules` in the shared policy and in `AI`.
+Name the target host in the first sentence. Report local results separately
+from Authority receipt; reconstruct own history from Git records. Load the
+current `AI`, `AI_CONTEXT.json` and required reading order before acting.
+Capability gaps retain HOLD without assigning configuration work to the Owner.
+An execution promise cannot establish the Owner's observed effect.
+
+For `RECEIVED`, `APPLIED` and `RECEIVER_NACK`, the same communication entry must
+include `evidence.remote_readback`, binding the message hash, node, intended
+`target_host` (also on `send`), HTTPS request and final URL, successful integer
+`http_status`, `observed_at` and `action_id` inside this receipt's action window.
+Include the response's canonical `response_sha256` or `authority_ref_sha`, a
+distinct evidence locator, `independent: true` and
+`authority_identity_verified: true`. An `APPLIED` remote receipt also binds the
+exact application subject, native event and ledger digest. The validator rejects
+loopback/local substitutes, failed HTTP, destination drift and stale readbacks;
+it does not authenticate these declarations or inspect DNS/network truth.
+Missing remote proof means `NICHT_ZUGESTELLT`; `SENT` denotes transfer only.
+No source rule, test, receipt declaration or carrier save proves every-node
+adoption, native authority, Owner acceptance or productive EFFECT_ACK_DONE.
 
 For each own outgoing packet discussed by a new client receipt, include a
 `communications` entry with `id`, canonical `message_sha256` (`sha256:` and
@@ -214,6 +294,25 @@ Do not ask for the same authorization again. Inspect applicable existing
 repository, connector, CLI and Mesh routes before declaring execution absent;
 retain operation, HTTP method, target/account binding and exact denial evidence.
 A locally absent CLI or empty project filter alone is insufficient.
+
+On 2026-10-22 Ingolf Lohmann clarified that his standing Principal approval
+applies to all goals recorded in the QIKVRT repository and to the Ruleset changes
+necessary to achieve them. Read the original instruction in
+`state/authorization/delegations/OWNER_REPOSITORY_GOALS_AND_RULESET_AUTHORIZATION_V1.json`,
+bound by `client_continuation.repository_goal_authorization`. Apply it across
+goals, sessions and conforming clients without asking for the same permission
+again. Preserve existing goal records, grants and exact artifact bindings.
+This supplies authorization; authenticated account rights, credentials available
+to a workflow, a callable administrative operation, admission and independent
+effect readback each require their own evidence. Execute every available
+authorized successor and retain causal NOOP where capability has not changed.
+
+The Owner also supplied Gemini's public manifest feedback. Its observed scope
+and the independent Authority result are retained in
+`evidence/receipts/gemini-manifest-feedback-20261022.json`. Carry shared feedback
+through the existing repository/native paths with source attribution. The
+shared page establishes documentary ingress; live peer request, ACK and
+application reply remain separately observed states.
 
 Continue each safe, deterministic, authorized successor, including useful
 preparation and persistence while an external effect is blocked. Keep GitHub
@@ -366,3 +465,101 @@ and MUST NOT be projected as a terminal snapshot.
 ## Communication boundary
 
 The client MUST not answer with long explanations when it can perform the next executable action. Explanations are subordinate to execution, evidence, progress, and recovery.
+
+## Mandatory Mirror outbox and delivery evidence Owner 2026-10-19
+
+Apply this standing rule in every session, reconnect and handoff. Solve and
+report QIK-VRT problems only through the existing Universal Transputer,
+Universal Terminal, Mesh and Effect Acknowledgement Protocol. Preserve the
+Authority `ingolf-lohmann/qik-vrt`; treat `Goldkelch/qik-vrt` as Mirror/former
+Authority under `policy/CANONICAL_UPSTREAM_REMOTE_V1.json`. Claude remains the
+read-only reviewing Mirror (`git clone --mirror`); do not impose that role on
+an otherwise admitted Authority writer. Open other nodes' original journals
+only with `mode=ro&immutable=1`; never serve or append to them.
+
+1. Read AI, then AI_CONTEXT.json in required_read_order. Freshly read
+   Authority Main HEAD/TREE, open PR heads, communication/claude/* and all
+   branches with newer commit times through admitted Git/REST adapters. Apply
+   policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json#/client_continuation/native_session_use.
+   Actually use src/qikvrt_temdd_event_ledger.py and
+   src/qikvrt_effect_ack_http_terminal.py. Inspect the existing tool contract
+   and run `python3 -B node-tools/qikvrt_mirror_emit.py status` when present.
+2. Create EVERY EFFECT_ACK assessment solely through that tool's assess or
+   adopt: require original effect_ack_sync, verify_protocol, an EFFECT
+   event through the own admitted Transputer Runtime and an outbox NOT_SENT
+   record. Do not replace this with a JSON file, direct engine call, chat
+   assessment or append to a copied journal. If unavailable, recover the actual
+   tool through admitted existing QIK-VRT sources; repair only its proven gap
+   using original components. Keep the missing source/binding as HOLD with a
+   named carrier; invent neither a replacement implementation nor CLI options.
+3. After each assessment, in the same work ring, run package for all unsent
+   records and verify the Ed25519-signed export. Use the existing Mesh Work
+   Batch (mesh-cache-stage/idle/send, then mesh-cache-check) or signed
+   original journal export (snapshot, Base64, events.jsonl, signed
+   EXPORT_MANIFEST.json). A package or signature proves no delivery. If no
+   admitted route is available, retain HOLD and name its concrete carrier;
+   never ask the Owner to relay or introduce another service.
+4. Record sent only after actual transfer: bind channel, recipient and
+   canonical sha256: of the transferred bytes. Register receipt only from
+   found ingress evidence at the named node. Derive EVERY node-specific
+   arrival or receiver-NACK statement exclusively from
+   `claim --record <hash> --node <node>`; preserve its exact subject and output.
+   Without send proof the result is NICHT_ZUGESTELLT: assert neither receiver,
+   ingress nor receiver NACK. Missing ingress without sending is a sender gap.
+   Actual sending without ingress proof permits EFFECT_NACK only as established
+   by that claim. Do not guess a claim when the tool or evidence is unavailable.
+5. On each incoming message/session event, search recent branches with
+   git grep and incoming attachments for each own package SHA-256 and commit
+   ID. Register matched named-node ingress as receipt; separately verify PR/Main
+   adoption and actual effect. Bind all evidence to the exact version. An own
+   output returned byte-identically by the Principal proves somewhere-arrival
+   and return by the Principal only. Assess EFFECT_ACK_CONTINUE through the
+   outbox before reporting; infer no location, Authority ingress, authenticated
+   peer adoption, NACK or DONE. Do not use Principal relay as the operating bus.
+6. For each new Authority head, execute a finite exact-subject transition:
+   tools/qikvrt_integrity.py verify, ledger tests, compilation and applicable
+   regression checks, evidence and a concrete successor. Use normal checkout
+   EOL behavior. Preserve BLOCK corrections as successors; HOLD/CONTINUE and
+   open productive work are never NOOP. Do not use client timers or repeated
+   Owner prompting. Broadcast through admitted Mesh paths to registry
+   registry/NODEMESH_INDEX.json, Codex, Goldkelch Mirror, Originalhost and
+   Mesh-Monitor with sender/recipient/message-hash binding; retain unreachable
+   nodes in coverage without claiming delivery.
+7. Serve only a clean checkout with explicit `--repository ingolf-lohmann/qik-vrt`
+   and `--pr <actual PR number>`; use no default or invented PR. Use only
+   OBSERVE, CLASSIFY, ACTION, EFFECT, READBACK, SUCCESSOR, HOLD. Admit inputs
+   through Terminal prepare/commit, Effect-Ack-Request and Structured Field
+   bytes :base64:; independently read /api/temdd/events and /terminal/state.
+   Correct errors with a successor carrying corrects; never rewrite history.
+8. Separate proposal receipt, authenticated rule application and independent
+   readback. Bind peer confirmations to request ID/hash, rule hash, node,
+   native event identity and independently read effect. Assert EFFECT_ACK_DONE
+   only for actual application with independent readback, never for source
+   tests, packaging, sending, skill saving or an unverified Claude report.
+   Preserve human/machine provenance; label supplied Owner reports
+   OWNER_ASSERTED. Report concise facts and full available hashes; never
+   expand a hash prefix into invented evidence.
+
+This outbox rule supersedes older instructions allowing assessments outside
+the outbox or inferring NACK merely from missing evidence. Saving it establishes
+only the verified rule save, not installation of the tool or another node's
+adoption, receipt or effect.
+
+### Optimization requires completed backlog
+
+Apply the Owner's direct correction of 2026-10-08, reaffirmed on 2026-10-19:
+optimization starts only after all PRs in the authorized scope are actually
+merged into Main and no issues remain open. Before every optimization unit,
+freshly read every page of the Authority PR/issue inventories and bind their
+merge/ancestry readback to current Main. Draft, blocked, unapproved and unmerged
+work remains completion backlog. Closing an unmerged PR, deleting an issue,
+narrowing scope or reaching an idle/unavailable client cannot satisfy this gate.
+Incomplete, inaccessible or stale inventories hold optimization. New open work
+returns priority to completion. Unattended operation requires its own observed
+authorized persistent executor.
+
+Provenance: standing procedure and authorization supplied by Ingolf Lohmann on
+2026-10-19; repository placement and policy mapping by OpenAI Codex.
+Source-rule persistence is separate from native execution, outbox installation,
+Main integration, live Mirror ACK/reply, productive host acceptance and other-client
+adoption. Preserve every predecessor obligation and original journal.

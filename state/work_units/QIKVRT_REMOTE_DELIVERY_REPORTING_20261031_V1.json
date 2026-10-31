@@ -1,0 +1,171 @@
+{
+  "schema": "qikvrt_client_delivery_reporting_work_unit_v1",
+  "work_unit_id": "QIKVRT_REMOTE_DELIVERY_REPORTING_R1_R5_20261031",
+  "principal": "Ingolf Lohmann",
+  "source_subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "5a42baf45748e4407a8fa16aef287a77873e788d",
+    "tree": "3f6e816b6b496eeb9ce8777d8fb93d95717be9ae"
+  },
+  "existing_candidate": {
+    "pull_request": 546,
+    "head": "de01755741cda99bd8ca59bcbb83d784d022a6d9",
+    "tree": "5e686d7a1a7d6b08c2da8934ec41b5c334d31180",
+    "recovery": "Original five semantic file patches applied to current Main; historical work unit retained. Integrity is regenerated, not copied."
+  },
+  "owner_supplied_incident": {
+    "evidence_class": "OWNER_SUPPLIED_MIRROR_REPORT_NOT_INDEPENDENTLY_VERIFIED",
+    "reported_at": "2026-10-31T17:33:00+01:00",
+    "reported_false_claim_at": "2026-10-31T16:53:00+01:00",
+    "claim": "Merge request for PR658 was said to have reached Authority but was only submitted to a loopback Terminal copy.",
+    "reported_network_error": "403 CONNECT from Mirror sandbox proxy",
+    "http_trace_sha256": "b7f028ed7d056f60c2708ffe08ac5b8f3a9d661d8a25498dd1298a1cf0a4ed5e",
+    "trace_bytes_available": false,
+    "authority_no_byte_received_independently_verified": false,
+    "reported_owner_effort": {
+      "value": ">2 h",
+      "evidence_class": "OWNER_ASSERTED"
+    },
+    "other_reported_errors": [
+      "Misstated own write history",
+      "Did not read OWNER-CONFLICT-FREE-GREEN-MERGE-20261028",
+      "Repeated configuration assignments to Owner"
+    ]
+  },
+  "mirror_client": {
+    "reported_commit": "75522c4911304efbe14fd9780c1a49bb7700e1f3",
+    "required_tree": "3954495264e5e1fedbdcbac7d919189872c6810d",
+    "patch_filename": "0001-eap-mirror-client.patch",
+    "reported_patch_sha256": "24099374de70ed537421513c81a8452cbd095a204b75c6b6fa1ebd5aedb1531f",
+    "patch_bytes_available": false,
+    "imported": false,
+    "state": "HOLD_EXACT_ORIGINAL_PATCH_AND_TREE_NOT_AVAILABLE",
+    "reported_tests": {
+      "python": "4/4",
+      "conformance": "68 OK",
+      "independently_reexecuted": false
+    }
+  },
+  "causal_repair": {
+    "existing_validator": "tools/ai_handoff.py --client-receipt",
+    "new_executor": false,
+    "normative_rules": "R1-R5 in AI and shared progress policy",
+    "executable_scope": "Declared communication consistency, remote observation chronology, message/node/host binding, loopback/status/replay rejection; no evidence authentication, arbitrary prose checking or universal adoption claim."
+  },
+  "native_readback": "evidence/client-delivery/AUTHORITY_READBACK_20261031.json",
+  "original_native_job_logs": [
+    {
+      "path": "job-124579086355.log",
+      "bytes": 798234,
+      "sha256": "afed31e5023cb1410c80050fc906d4a5f5e07284236f52830586ab7132997907",
+      "source": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/actions/jobs/124579086355/logs"
+    },
+    {
+      "path": "job-124579087227.log",
+      "bytes": 800112,
+      "sha256": "dbe934ae1028e19bed2b53eca8a76bd57befe952878e6199a5e77b0da4127e2e",
+      "source": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/actions/jobs/124579087227/logs"
+    }
+  ],
+  "pr658_merge": {
+    "head": "a56b0632e120ce815019e5f4a812fc828c57cd1e",
+    "tree": "8fa77daa712d99004ad2bbdb9c3e3b681bde216d",
+    "merge_attempted": false,
+    "open_gates": [
+      "Draft transition",
+      "Fresh exact-head required evidence-materialization success after its HTTP403 GET failure",
+      "Exact-head native governance/technical disposition",
+      "Current Main, platform and competing-writer reobservation"
+    ],
+    "green_test_workflows": [
+      41215513746,
+      41215513755
+    ],
+    "failed_materialization_run": 41215513887,
+    "owner_review": "Accepted as Owner-supplied assertion; no independent GitHub review or comment invented."
+  },
+  "open_obligations": [
+    {
+      "id": "PR658_INTEGRATION",
+      "state": "OPEN",
+      "next_action": "Recover original native API GET prerequisite; preserve failed evidence and require fresh successful exact-head materialization, governance, draft transition and merge readback. Do not rerun unchanged failures."
+    },
+    {
+      "id": "ORIGINAL_MIRROR_CLIENT",
+      "state": "OPEN",
+      "next_action": "Recover original separately announced patch through admitted carrier; verify exact bytes and reported tree before any import."
+    },
+    {
+      "id": "AUTHORITY_OWNER_REST_GRANT",
+      "state": "OPEN_NOT_OBSERVED",
+      "next_action": "Original admitted host must independently read back the sealed grant for claude:mirror and own 0600 token file; no secret is requested or published."
+    },
+    {
+      "id": "EXACT_HOST_ADMISSION",
+      "state": "OPEN",
+      "next_action": "Original admitted host must repair the observed TLS/runtime prerequisite and verify exact-domain EAP receipt; the current adapter reports HTTP525 and ready=false."
+    },
+    {
+      "id": "MIRROR_NETWORK_PATH",
+      "state": "OPEN_MIRROR_REPORTED",
+      "next_action": "Mirror runtime must verify its own authorized network path and protected token binding; Authority cannot infer that from local tests."
+    },
+    {
+      "id": "ALL_NODE_ADOPTION",
+      "state": "OPEN",
+      "next_action": "Require each admitted node exact-policy ACK and independent remote readback; source persistence is insufficient."
+    }
+  ],
+  "validation": {
+    "state": "LOCAL_CURRENT_SOURCE_GATES_PASS",
+    "full_make_test_exit": 0,
+    "reported_python_test_executions": 2276,
+    "targeted_test_count": 153,
+    "baseline_comparison": {
+      "original_main_false_acceptances": 4,
+      "repaired_rejections": 4,
+      "cases": [
+        "missing remote readback",
+        "loopback receipt",
+        "HTTP403",
+        "HTTP525"
+      ]
+    },
+    "integrity": "Deterministically regenerated; fresh final verification required after evidence packaging.",
+    "raw_local_validation": "evidence/client-delivery/PR546_REMOTE_READBACK_LOCAL_VALIDATION.zip",
+    "native_ci": "FRESH_REMOTE_CANDIDATE_RUN_REQUIRED"
+  },
+  "provenance": {
+    "human": "Ingolf Lohmann supplied incident, rule request and existing authorizations.",
+    "artificial_cognitive": "Claude self-reported incident and client candidate; Codex independently read GitHub/adapter evidence, recovered PR546 and implemented this bounded repair.",
+    "unresolved": "Raw Mirror HTTP trace and client patch not supplied; no remote Claude identity or delivery authenticated."
+  },
+  "completion_claims": {
+    "main_integration": false,
+    "pr658_merged": false,
+    "mirror_client_imported": false,
+    "live_eap_delivery": false,
+    "all_nodes_adopted": false,
+    "productive_effect_ack_done": false
+  },
+  "local_bootstrap_incident": {
+    "artifact": "Untracked transfer temporary blocked this session initial bootstrap",
+    "bytes": 55574528,
+    "sha256": "1fd21d0e66315e07c8e89d40ca9e59df385dc8973c4e8ffecc0832d4e98e4e5c",
+    "action": "Quarantined outside checkout; original bytes retained in scratch",
+    "subsequent_bootstrap": "CONTINUE",
+    "cause": "NOT_ESTABLISHED; do not attribute local temporary to remote Main failure"
+  },
+  "independent_review_lookup": {
+    "direct_owner_decision_for_reported_1641_exact_head": "NOT_RECOVERED",
+    "source": "Bounded Personal Context lookup for exact PR658 head; no raw current-head Owner decision recovered. Prior assistant summaries are not review authority.",
+    "existing_generic_owner_authorizations_retained": true
+  },
+  "connector_capability_observation": {
+    "authenticated_login": "ingolf-lohmann",
+    "authenticated_id": 294949349,
+    "branch_protection_read": "HTTP403 Resource not accessible by integration",
+    "rules_branches_read": "Connector URL allowlist rejected /rules/branches/main (HTTP400); not a target protection result",
+    "successful_repository_reads_and_existing_authorization_invalidated": false
+  }
+}

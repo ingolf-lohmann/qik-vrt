@@ -8,6 +8,9 @@ on:
     paths:
       - "formalization/QIKVRT_Formalization_v2.0/**"
       - "tools/qikvrt_canonical_temporal_memory_kernel_evidence.py"
+      - "tools/qikvrt_causal_distance_kernel_evidence.py"
+      - "tests/test_causal_distance_kernel_evidence.py"
+      - "docs/publications/2026-10-24-causal-distance-temporal-memory/**"
       - "tools/qikvrt_survival_connectability_kernel_evidence.py"
       - "tests/test_survival_connectability_kernel_evidence_tool.py"
       - "tests/test_survival_connectability_publication.py"
@@ -24,6 +27,9 @@ on:
     paths:
       - "formalization/QIKVRT_Formalization_v2.0/**"
       - "tools/qikvrt_canonical_temporal_memory_kernel_evidence.py"
+      - "tools/qikvrt_causal_distance_kernel_evidence.py"
+      - "tests/test_causal_distance_kernel_evidence.py"
+      - "docs/publications/2026-10-24-causal-distance-temporal-memory/**"
       - "tools/qikvrt_survival_connectability_kernel_evidence.py"
       - "tests/test_survival_connectability_kernel_evidence_tool.py"
       - "tests/test_survival_connectability_publication.py"
@@ -51,7 +57,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.12"
       - name: Provision and verify declared Poppler runtime
@@ -320,6 +326,22 @@ jobs:
           path: >-
             formalization/QIKVRT_Formalization_v2.0/.lake/build/qikvrt-canonical-temporal-memory-kernel-evidence.json
           if-no-files-found: error
+      - name: Verify causal-distance kernel extension and negative controls
+        env:
+          PYTHONPATH: ../..
+        run: |
+          set -euo pipefail
+          python3 -m unittest -v tests.test_causal_distance_kernel_evidence
+          python3 ../../tools/qikvrt_causal_distance_kernel_evidence.py \
+            | tee .lake/build/qikvrt-causal-distance-kernel-evidence.json
+      - name: Upload causal-distance kernel evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qikvrt-causal-distance-kernel-evidence
+          retention-days: 30
+          path: >-
+            formalization/QIKVRT_Formalization_v2.0/.lake/build/qikvrt-causal-distance-kernel-evidence.json
+          if-no-files-found: error
       - name: Verify survival/connectability publication kernel plan
         run: |
           set -euo pipefail
@@ -337,6 +359,8 @@ jobs:
           if-no-files-found: error
       - name: Audit every completed manuscript proof constant
         run: python3 scripts/audit_completion_axioms.py
+      - name: Build additive storage module before project-wide proof audit
+        run: lake build QIKVRTEffectAck.StorageIntegrity
       - name: Reject project proof escapes
         run: python3 scripts/audit_proof_escapes.py
       - name: Verify completed proof-object manifest is current

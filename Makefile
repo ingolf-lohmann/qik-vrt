@@ -2,13 +2,15 @@
 # Copyright 2026 Ingolf Lohmann.
 
 PYTHON ?= python3
+# unittest durations are available from Python 3.12; retain older runtimes.
+UNITTEST_TIMING ?= $(shell $(PYTHON) -c "import sys; print('--durations=20' if sys.version_info >= (3, 12) else '')")
 CC ?= cc
 EFFECT_ACK_C90_CFLAGS ?= -std=c90 -pedantic -Wall -Wextra -Werror
 
 .PHONY: test compile effect-ack-core-compile effect-ack-core-test scientific-bundle-test adaptive-cognition-test anticipation-contract runtime-contract tool-cache-contract ai-runtime-contract interaction-archive-test release-automation evidence-contract-test workflow-executor-mesh-contract repository-terminal-test launcher unit conformance security license seed e2e integrity run-api clean
 
 compile: effect-ack-core-compile
-	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m py_compile qikvrt.py tools/qikvrt_runtime_logger.py tools/qikvrt_subprocess.py tools/qikvrt_initial_acceptance_gate.py tools/qikvrt_integrity.py tools/qikvrt_tool_cache.py tools/ai_runtime_bootloader.py tools/qikvrt_master_acceptance_gate.py tools/qikvrt_cicd_publish.py tools/qikvrt_seed_common.py tools/qikvrt_workflow_executor.py tools/qikvrt_anticipation.py tools/qikvrt_validate_state_run.py tools/qikvrt_zenodo_actions.py tools/qikvrt_zenodo_metadata_edit.py tools/qikvrt_formalization_v2_zenodo.py tools/qikvrt_build_zenodo_manifest.py tools/qikvrt_status_zenodo.py tools/qikvrt_interaction_archive.py tools/qikvrt_global_completion.py tools/qikvrt_canonical_temporal_memory_kernel_evidence.py tools/qikvrt_vrtcore_zenodo_candidate.py tools/qikvrt_content_disposition_batch_001.py tools/qikvrt_content_disposition_batch_002_terminal.py tools/qikvrt_content_disposition_batch_002_corrected_candidate.py tools/qikvrt_content_disposition_batch_002_owner_acceptance.py tools/qikvrt_content_disposition_status_after_batch_002_acceptance.py tools/qikvrt_content_disposition_status_after_batch_002_acceptance_compat.py tools/qikvrt_content_disposition_batch_003_dispatch.py tools/qikvrt_zenodo_union_disposition.py release/observer-relative-retrocausality-current-synthesis-zenodo-v2/finalize_authorized_controls.py src/qikvrt_effect_ack.py src/qikvrt_api_handler.py src/qikvrt_github_api_shim.py scripts/qikvrt_api_client.py tests/test_integrity.py tests/test_ai_runtime_bootloader.py tests/test_launcher_runtime.py tests/test_effect_ack_conformance.py tests/test_effect_ack_release_workflows.py tests/test_formalization_v2_release_workflow.py tests/test_formalization_v2_zenodo.py tests/test_status_release_workflows.py tests/test_zenodo_actions.py tests/test_zenodo_metadata_clarification_candidates.py tests/test_qikvrt_zenodo_metadata_edit.py tests/test_status_zenodo.py tests/test_zenodo_manifest_builder.py tests/test_status_clarification_bundle.py tests/test_global_completion.py tests/test_content_disposition_batch_001.py tests/test_content_disposition_batch_002_terminal.py tests/test_content_disposition_batch_002_corrected_candidate.py tests/test_content_disposition_batch_002_owner_acceptance.py tests/test_content_disposition_status_after_batch_002_acceptance.py tests/test_content_disposition_batch_003_dispatch.py tests/test_zenodo_union_disposition.py tests/test_handler_unit.py tests/test_handler_security.py tests/test_api_client.py tests/test_interaction_archive.py tests/test_anticipation.py tests/test_license_transition.py tests/test_ietf_offline_render.py tests/test_seed_workflows.py tests/test_qikvrt_workflow_executor_mesh_contract.py tests/test_tcpip_e2e.py tests/test_canonical_temporal_memory_publication.py
+	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m py_compile qikvrt.py tools/qikvrt_runtime_logger.py tools/qikvrt_subprocess.py tools/qikvrt_initial_acceptance_gate.py tools/qikvrt_integrity.py tools/qikvrt_tool_cache.py tools/ai_runtime_bootloader.py tools/qikvrt_master_acceptance_gate.py tools/qikvrt_cicd_publish.py tools/qikvrt_seed_common.py tools/qikvrt_workflow_executor.py tools/qikvrt_anticipation.py tools/qikvrt_validate_state_run.py tools/qikvrt_zenodo_actions.py tools/qikvrt_zenodo_metadata_edit.py tools/qikvrt_formalization_v2_zenodo.py tools/qikvrt_build_zenodo_manifest.py tools/qikvrt_status_zenodo.py tools/qikvrt_interaction_archive.py tools/qikvrt_global_completion.py tools/qikvrt_causal_distance_kernel_evidence.py tools/qikvrt_canonical_temporal_memory_kernel_evidence.py tools/qikvrt_vrtcore_zenodo_candidate.py tools/qikvrt_content_disposition_batch_001.py tools/qikvrt_content_disposition_batch_002_terminal.py tools/qikvrt_content_disposition_batch_002_corrected_candidate.py tools/qikvrt_content_disposition_batch_002_owner_acceptance.py tools/qikvrt_content_disposition_status_after_batch_002_acceptance.py tools/qikvrt_content_disposition_status_after_batch_002_acceptance_compat.py tools/qikvrt_content_disposition_batch_003_dispatch.py tools/qikvrt_zenodo_union_disposition.py release/observer-relative-retrocausality-current-synthesis-zenodo-v2/finalize_authorized_controls.py src/qikvrt_effect_ack.py src/qikvrt_api_handler.py src/qikvrt_github_api_shim.py scripts/qikvrt_api_client.py tests/test_integrity.py tests/test_ai_runtime_bootloader.py tests/test_launcher_runtime.py tests/test_effect_ack_conformance.py tests/test_effect_ack_release_workflows.py tests/test_formalization_v2_release_workflow.py tests/test_formalization_v2_zenodo.py tests/test_status_release_workflows.py tests/test_zenodo_actions.py tests/test_zenodo_metadata_clarification_candidates.py tests/test_qikvrt_zenodo_metadata_edit.py tests/test_status_zenodo.py tests/test_zenodo_manifest_builder.py tests/test_status_clarification_bundle.py tests/test_global_completion.py tests/test_content_disposition_batch_001.py tests/test_content_disposition_batch_002_terminal.py tests/test_content_disposition_batch_002_corrected_candidate.py tests/test_content_disposition_batch_002_owner_acceptance.py tests/test_content_disposition_status_after_batch_002_acceptance.py tests/test_content_disposition_batch_003_dispatch.py tests/test_zenodo_union_disposition.py tests/test_handler_unit.py tests/test_handler_security.py tests/test_api_client.py tests/test_interaction_archive.py tests/test_anticipation.py tests/test_license_transition.py tests/test_ietf_offline_render.py tests/test_seed_workflows.py tests/test_qikvrt_workflow_executor_mesh_contract.py tests/test_tcpip_e2e.py tests/test_canonical_temporal_memory_publication.py
 
 effect-ack-core-compile:
 	$(CC) $(EFFECT_ACK_C90_CFLAGS) -Iinclude -fsyntax-only src/effect_ack_core.c tests/test_effect_ack_core.c
@@ -34,6 +36,12 @@ tool-cache-contract:
 offline-browser-precheck: tool-cache-contract
 	QIKVRT_OFFLINE_CLIENT_DIR="$(CURDIR)/docs/monitor/offline" node runtime/offline/browser-tests/browser.test.mjs --precheck
 
+.PHONY: offline-browser-install-diagnosis-test
+offline-browser-install-diagnosis-test: tool-cache-contract
+	node --test runtime/offline/browser-tests/apt-diagnosis.test.mjs runtime/offline/browser-tests/webkit-apt-cache.test.mjs
+
+test: offline-browser-install-diagnosis-test
+
 offline-browser-test: offline-browser-precheck
 	QIKVRT_OFFLINE_CLIENT_DIR="$(CURDIR)/docs/monitor/offline" node runtime/offline/browser-tests/browser.test.mjs
 
@@ -45,7 +53,7 @@ runtime-contract: tool-cache-contract
 	PYTHON="$(PYTHON)" sh tests/test_runtime_bootstrap.sh
 
 ai-runtime-contract:
-	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_ai_runtime_bootloader
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_ai_runtime_bootloader tests.test_ai_onboarding
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/ai_runtime_bootloader.py --help >/dev/null
 
 interaction-archive-test:
@@ -53,7 +61,7 @@ interaction-archive-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_interaction_archive.py --help >/dev/null
 
 release-automation:
-	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_effect_ack_release_workflows tests.test_formalization_v2_release_workflow tests.test_formalization_v2_zenodo tests.test_status_release_workflows tests.test_zenodo_actions tests.test_zenodo_metadata_clarification_candidates tests.test_qikvrt_zenodo_metadata_edit tests.test_status_zenodo tests.test_zenodo_manifest_builder tests.test_status_clarification_bundle tests.test_publication_router tests.test_global_completion tests.test_content_disposition_batch_002_terminal tests.test_content_disposition_batch_002_corrected_candidate tests.test_content_disposition_batch_002_owner_acceptance tests.test_content_disposition_status_after_batch_002_acceptance tests.test_content_disposition_batch_003_dispatch tests.test_transactional_workflow_trigger
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_effect_ack_release_workflows tests.test_workflow_action_runtime_pins tests.test_formalization_v2_release_workflow tests.test_formalization_v2_zenodo tests.test_status_release_workflows tests.test_zenodo_actions tests.test_zenodo_metadata_clarification_candidates tests.test_qikvrt_zenodo_metadata_edit tests.test_status_zenodo tests.test_zenodo_manifest_builder tests.test_status_clarification_bundle tests.test_publication_router tests.test_global_completion tests.test_content_disposition_batch_002_terminal tests.test_content_disposition_batch_002_corrected_candidate tests.test_content_disposition_batch_002_owner_acceptance tests.test_content_disposition_status_after_batch_002_acceptance tests.test_content_disposition_batch_003_dispatch tests.test_transactional_workflow_trigger
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tests/test_content_disposition_batch_001.py
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tests/test_zenodo_union_disposition.py
 
@@ -62,7 +70,7 @@ evidence-contract-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_archive_get_causal_journal
 	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m py_compile tools/qikvrt_zenodo_publish.py tools/qikvrt_zenodo_corpus_proof.py tools/qikvrt_zenodo_machine_proof.py tools/qikvrt_vrtcore_zenodo_publication_controls.py release/observer-relative-retrocausality-current-synthesis-zenodo-v2/finalize_authorized_controls.py tools/qikvrt_canonical_temporal_memory_kernel_evidence.py scripts/issue_agent/validate.py tests/issue_agent/test_validate.py tests/test_authority_mirror_equality_receipt.py tests/test_canonical_closing_status_article.py tests/test_charter_zenodo.py tests/test_qikvrt_self_disclosure.py tests/test_virtual_past_reception.py tests/test_quantum_classical_runtime_article.py tests/test_canonical_temporal_memory_publication.py tests/test_vrtcore_h56_zenodo_candidate.py tests/test_vrtcore_zenodo_publication_controls.py tests/test_observer_relative_retrocausality_zenodo_finalizer.py tests/test_zenodo_corpus_inventory_failure_receipt.py tests/test_zenodo_corpus_proof.py tests/test_zenodo_machine_proof_policy.py
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_canonical_temporal_memory_kernel_evidence.py --static-only >/dev/null
-	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.issue_agent.test_validate tests.test_authority_mirror_equality_receipt tests.test_canonical_closing_status_article tests.test_charter_zenodo tests.test_qikvrt_self_disclosure tests.test_virtual_past_reception tests.test_quantum_classical_runtime_article tests.test_canonical_temporal_memory_publication tests.test_vrtcore_h56_zenodo_candidate tests.test_vrtcore_zenodo_publication_controls tests.test_observer_relative_retrocausality_zenodo_finalizer tests.test_zenodo_corpus_inventory_failure_receipt tests.test_zenodo_corpus_proof tests.test_zenodo_machine_proof_policy
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_causal_distance_kernel_evidence tests.issue_agent.test_validate tests.test_authority_mirror_equality_receipt tests.test_canonical_closing_status_article tests.test_charter_zenodo tests.test_qikvrt_self_disclosure tests.test_virtual_past_reception tests.test_quantum_classical_runtime_article tests.test_canonical_temporal_memory_publication tests.test_vrtcore_h56_zenodo_candidate tests.test_vrtcore_zenodo_publication_controls tests.test_observer_relative_retrocausality_zenodo_finalizer tests.test_zenodo_corpus_inventory_failure_receipt tests.test_zenodo_corpus_proof tests.test_zenodo_machine_proof_policy
 
 workflow-executor-mesh-contract:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host.AuthoritySuccessionModelTests
@@ -90,10 +98,10 @@ unit:
 	$(PYTHON) tests/test_handler_unit.py
 
 conformance:
-	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m unittest -v tests.test_effect_ack_conformance
+	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m unittest -v tests.test_effect_ack_conformance tests.test_effect_ack_wire tests.test_effect_ack_http_service
 
 security:
-	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -B -m unittest -v tests.test_handler_security tests.test_api_client tests.test_qikvrt_ionos_dns
+	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -B -m unittest -v tests.test_handler_security tests.test_api_client tests.test_qikvrt_ionos_dns tests.test_qikvrt_ionos_web
 
 license:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_license_transition
@@ -114,7 +122,7 @@ run-api:
 	@test -n "$(QIKVRT_API_TOKEN_EXPIRES_UTC)" || (echo "BLOCK: set QIKVRT_API_TOKEN_EXPIRES_UTC" >&2; exit 2)
 	@test -n "$(QIKVRT_ALLOWED_REPOSITORY)" || (echo "BLOCK: set QIKVRT_ALLOWED_REPOSITORY=owner/repo" >&2; exit 2)
 	@test -n "$(QIKVRT_API_PRINCIPAL)" || (echo "BLOCK: set QIKVRT_API_PRINCIPAL" >&2; exit 2)
-	PYTHONNOUSERSITE=1 $(PYTHON) -S src/qikvrt_github_api_shim.py
+	PYTHONNOUSERSITE=1 $(PYTHON) $(if $(filter 1,$(QIKVRT_PRODUCTION_ENVIRONMENT_ENABLED) $(QIKVRT_PUBLICATION_REST_ENABLED)),-B,-S) src/qikvrt_github_api_shim.py
 
 .PHONY: mcp-conformance-test
 mcp-conformance-test:
@@ -123,15 +131,26 @@ mcp-conformance-test:
 
 test: mcp-conformance-test
 
+.PHONY: eu-ai-act-evidence-gate-test
+eu-ai-act-evidence-gate-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_eu_ai_act_evidence_gate
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_eu_ai_act_evidence_gate.py --json
+
+test: eu-ai-act-evidence-gate-test
+
 clean:
 	rm -rf unit_state e2e_state .qikvrt/runtime .qikvrt/evidence .qikvrt/api .qikvrt/cache .qikvrt/release .qikvrt/interactions logs __pycache__ src/__pycache__ scripts/__pycache__ tests/__pycache__ tools/__pycache__
 
 
 .PHONY: personal-firefox-boundary-test
 personal-firefox-boundary-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_production_environment
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_publication_rest
+	node tests/test_production_environment_ui.cjs
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_firefox_capability_boundary
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_assistant
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_auth
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_terminal_transition
 	node tests/test_qikvrt_personal_auth_ui.cjs
 
 test: personal-firefox-boundary-test
@@ -176,6 +195,12 @@ digital-twin-sso-test:
 
 test: digital-twin-sso-test
 
+.PHONY: digital-twin-rest-test
+digital-twin-rest-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v $(UNITTEST_TIMING) tests.test_qikvrt_digital_twin_rest
+
+test: digital-twin-rest-test
+
 .PHONY: public-qa-test
 public-qa-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_public_qa_server tests.test_public_question_entrypoint
@@ -191,6 +216,7 @@ test: editorial-navigation-test
 
 .PHONY: repository-monitor-test self-host-test
 repository-monitor-test:
+	node --test docs/monitor/workspace.test.mjs
 	node docs/monitor/observer.test.mjs
 	node --test docs/monitor/monitor.test.mjs
 	node --test docs/monitor/mesh-file.test.mjs
@@ -206,10 +232,13 @@ test: temdd-event-ledger-test
 endif
 
 self-host-test: tool-cache-contract temdd-event-ledger-test
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_publication
 	node --test docs/monitor/mesh-file.test.mjs
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_provider
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_static tests.test_static_delivery_rest
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_temdd
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_eap
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_migration
 	node --check docs/monitor/self-host.mjs
 	node --check tools/qikvrt_mesh_monitor_readback.mjs
@@ -233,3 +262,44 @@ live-authority-mirror-ab-contract:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_live_authority_mirror_ab
 
 test: live-authority-mirror-ab-contract
+
+.PHONY: personal-retrieval-test
+personal-retrieval-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_retrieval
+	node tests/test_qikvrt_personal_retrieval_ui.cjs
+
+test: personal-retrieval-test
+
+# Portable C90 companion to the Python runtime.
+C90_OUTPUT_DIR ?= .qikvrt/cache/c90
+
+.PHONY: c90 fixed-q16-compile fixed-q16-test benchmark-c90 c90-assembly
+c90: effect-ack-core-test fixed-q16-test
+
+fixed-q16-compile:
+	$(CC) $(EFFECT_ACK_C90_CFLAGS) -pedantic-errors -Iinclude -fsyntax-only src/fixed_q16.c tests/test_fixed_q16.c tools/qikvrt_c90_benchmark.c
+
+fixed-q16-test: fixed-q16-compile
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 CC="$(CC)" $(PYTHON) -B tests/test_fixed_q16.py
+
+benchmark-c90:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 CC="$(CC)" $(PYTHON) -B tools/qikvrt_c90_benchmark.py
+
+c90-assembly:
+	mkdir -p "$(C90_OUTPUT_DIR)"
+	$(CC) $(EFFECT_ACK_C90_CFLAGS) -pedantic-errors -O2 -Iinclude -S src/fixed_q16.c -o "$(C90_OUTPUT_DIR)/fixed_q16.s"
+
+compile: fixed-q16-compile
+test: fixed-q16-test
+
+.PHONY: mesh-recovery-test
+mesh-recovery-test: digital-twin-rest-test
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v $(UNITTEST_TIMING) tests.test_qikvrt_codec tests.test_qikvrt_feedback tests.test_qikvrt_standpoint_codex tests.test_qikvrt_mesh_recovery tests.test_qikvrt_authority_transition tests.test_qikvrt_github_authority_provider tests.test_qikvrt_pr_closure_engine tests.test_qikvrt_merge_priority tests.test_reciprocal_closure_step tests.test_reciprocal_devops_closure
+
+test: mesh-recovery-test
+
+.PHONY: native-archive-test
+native-archive-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_native_archive
+
+test: native-archive-test

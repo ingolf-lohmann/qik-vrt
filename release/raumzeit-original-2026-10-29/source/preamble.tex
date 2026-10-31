@@ -1,0 +1,30 @@
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\babelprovide[import=de]{ngerman}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=27mm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{microtype}
+\usepackage{xurl}
+\usepackage[unicode,bookmarksnumbered=true,colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{bookmark}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.2em}
+\frenchspacing
+\newcommand{\langtag}{en}
+\newcommand{\languageversion}[1]{%
+  \clearpage\setcounter{section}{0}\setcounter{subsection}{0}\setcounter{equation}{0}%
+  \renewcommand{\thesection}{\arabic{section}}%
+  \renewcommand{\theHsection}{\langtag.\arabic{section}}%
+  \renewcommand{\theHsubsection}{\langtag.\arabic{section}.\arabic{subsection}}%
+  \renewcommand{\theHequation}{\langtag.\arabic{equation}}%
+  \pdfbookmark[0]{#1}{version-\langtag}}
+\newcommand{\papertitle}[3]{%
+  \begin{center}
+  {\Large\bfseries #1\par}\vspace{0.6em}
+  {\large #2\par}\vspace{1em}
+  {\large Ingolf Lohmann\par}\vspace{0.4em}
+  #3\par
+  \end{center}\vspace{0.5em}}

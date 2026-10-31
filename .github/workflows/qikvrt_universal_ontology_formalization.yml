@@ -37,6 +37,10 @@ jobs:
   exact-head-finite-model:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
+    env:
+      LEAN_VERSION: "4.19.0"
+      LEAN_ARCHIVE_BYTES: "343842845"
+      LEAN_ARCHIVE_SHA256: "6fe3ce97a58f44e2b3567d455b994eacec5bfe9ae7774f2a573444480ba813fe"
     steps:
       - name: Check out exact candidate head
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -59,14 +63,133 @@ jobs:
           echo "head=$actual" >> "$GITHUB_OUTPUT"
           echo "tree=$tree" >> "$GITHUB_OUTPUT"
 
-      - uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9 # v1
+      - name: Restore hash-locked Lean archive
+        id: lean_archive
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
-          lake-package-directory: formalization/QIKVRT_Formalization_v2.0
-          test: false
+          path: ${{ runner.temp }}/qikvrt-lean/lean-4.19.0-linux.tar.zst
+          key: qikvrt-lean-release-v1-${{ runner.os }}-${{ runner.arch }}-4.19.0-x86_64-${{ hashFiles('runtime/toolchains/**', '.github/workflows/qikvrt_universal_ontology_formalization.yml', 'formalization/QIKVRT_Formalization_v2.0/lean-toolchain') }}
 
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+      - name: Provision and verify exact Lean release
+        shell: bash
+        timeout-minutes: 10
+        run: |
+          set -euo pipefail
+          test "$(cat formalization/QIKVRT_Formalization_v2.0/lean-toolchain)" = "leanprover/lean4:v${LEAN_VERSION}"
+          test "$(uname -m)" = "x86_64"
+          command -v curl tar zstd sha256sum stat uname mktemp mkdir mv rm >/dev/null
+          cache_root="$RUNNER_TEMP/qikvrt-lean"
+          archive="$cache_root/lean-${LEAN_VERSION}-linux.tar.zst"
+          install_root="$RUNNER_TEMP/lean-${LEAN_VERSION}-linux"
+          test ! -L "$cache_root"
+          test ! -L "$archive"
+          test ! -e "$install_root"
+          stage="$(mktemp -d "$RUNNER_TEMP/lean-stage.XXXXXX")"
+          trap 'rm -rf "$stage"' EXIT
+          verify_archive() {
+            test -f "$1"
+            test ! -L "$1"
+            test "$(stat -c '%s' "$1")" = "$LEAN_ARCHIVE_BYTES"
+            printf '%s  %s\n' "$LEAN_ARCHIVE_SHA256" "$1" | sha256sum --check --status
+          }
+          verify_release() {
+            test -x "$1/bin/lean" && test -x "$1/bin/lake" || return 1
+            lean_version="$("$1/bin/lean" --version)" || return 1
+            lake_version="$("$1/bin/lake" --version)" || return 1
+            case "$lean_version" in
+              "Lean (version ${LEAN_VERSION},"*) ;;
+              *) echo "BLOCK: unexpected Lean version" >&2; return 1 ;;
+            esac
+            case "$lake_version" in
+              *"(Lean version ${LEAN_VERSION})") ;;
+              *) echo "BLOCK: unexpected Lake toolchain" >&2; return 1 ;;
+            esac
+          }
+          if [ ! -e "$archive" ]; then
+            curl --fail --location --retry 2 --retry-all-errors \
+              --retry-max-time 540 --connect-timeout 20 --max-time 180 \
+              --output "$stage/lean.tar.zst" \
+              "https://github.com/leanprover/lean4/releases/download/v${LEAN_VERSION}/lean-${LEAN_VERSION}-linux.tar.zst"
+            verify_archive "$stage/lean.tar.zst"
+            mkdir -p "$cache_root"
+            mv "$stage/lean.tar.zst" "$archive"
+          fi
+          verify_archive "$archive"
+          mkdir "$stage/root"
+          tar --zstd --no-same-owner -xf "$archive" -C "$stage/root" --strip-components=1
+          verify_release "$stage/root"
+          mv "$stage/root" "$install_root"
+          if ! verify_release "$install_root"; then
+            rm -rf "$install_root"
+            exit 1
+          fi
+          "$install_root/bin/lean" --version
+          "$install_root/bin/lake" --version
+          echo "$install_root/bin" >> "$GITHUB_PATH"
+
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.12"
+
+      - name: Audit rights-bearing storage proofs and bind exact candidate
+        working-directory: formalization/QIKVRT_Formalization_v2.0
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake build QIKVRTEffectAck.StorageIntegrity
+          mkdir -p .lake/build
+          lake env lean QIKVRTEffectAck/StorageIntegrityAxiomAudit.lean > .lake/build/storage-integrity-axioms.txt 2>&1
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib, json, os, re, subprocess
+          from scripts.audit_lean_axioms import parse_axiom_reports
+          source = Path('QIKVRTEffectAck/StorageIntegrity.lean')
+          audit = Path('QIKVRTEffectAck/StorageIntegrityAxiomAudit.lean')
+          output = Path('.lake/build/storage-integrity-axioms.txt')
+          reports = parse_axiom_reports(output.read_text())
+          expected = set(re.findall(r'^#print axioms (\S+)$', audit.read_text(), re.M))
+          if len(expected) != 22 or len(reports) != 22 or {name for name, _ in reports} != expected:
+              raise SystemExit('BLOCK: incomplete storage axiom audit')
+          if any(axioms for _, axioms in reports):
+              raise SystemExit('BLOCK: storage theorem depends on axioms')
+          def binding(path):
+              raw = path.read_bytes()
+              return {'path': str(path), 'bytes': len(raw), 'sha256': hashlib.sha256(raw).hexdigest()}
+          controls = []
+          for control in sorted(Path('../../docs/publications/2026-10-30-storage-integrity-and-effect-ack/negative').glob('*.lean')):
+              result = subprocess.run(['lake', 'env', 'lean', str(control)], capture_output=True, text=True)
+              diagnostic = result.stdout + result.stderr
+              if result.returncode == 0 or 'is false' not in diagnostic or 'unknown module' in diagnostic:
+                  raise SystemExit('BLOCK: invalid negative control: ' + str(control))
+              controls.append({'source': binding(control), 'exit_code': result.returncode,
+                  'diagnostic_sha256': hashlib.sha256(diagnostic.encode()).hexdigest()})
+          if len(controls) != 3:
+              raise SystemExit('BLOCK: missing storage negative controls')
+          receipt = {'schema': 'qikvrt_storage_integrity_kernel_receipt_v1',
+              'scope': 'ABSTRACT_MODEL_NOT_PYTHON_OR_HARDWARE_VERIFICATION',
+              'repository': os.environ['GITHUB_REPOSITORY'],
+              'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip(),
+              'run_id': os.environ['GITHUB_RUN_ID'], 'run_attempt': os.environ['GITHUB_RUN_ATTEMPT'],
+              'toolchain': subprocess.check_output(['lean', '--version'], text=True).strip(),
+              'bindings': [binding(p) for p in (source, audit, output,
+                  Path('.lake/build/lib/lean/QIKVRTEffectAck/StorageIntegrity.olean'))],
+              'theorem_axioms': {name: sorted(axioms) for name, axioms in reports},
+              'negative_controls': controls,
+              'effect_ack_done': False}
+          Path('.lake/build/STORAGE_INTEGRITY_KERNEL_RECEIPT.json').write_text(json.dumps(receipt, indent=2) + '\n')
+          print('VERIFIED: 22 storage theorems; no axioms; exact source and kernel object bound')
+          PY
+
+      - name: Upload storage proof receipt before unrelated historical-source checks
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qikvrt-storage-integrity-kernel-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 30
+          if-no-files-found: error
+          path: |
+            formalization/QIKVRT_Formalization_v2.0/.lake/build/STORAGE_INTEGRITY_KERNEL_RECEIPT.json
+            formalization/QIKVRT_Formalization_v2.0/.lake/build/storage-integrity-axioms.txt
 
       - name: Verify source scope and claim boundaries
         working-directory: formalization/QIKVRT_Formalization_v2.0
@@ -74,7 +197,9 @@ jobs:
 
       - name: Build consolidated Lean library
         working-directory: formalization/QIKVRT_Formalization_v2.0
-        run: lake build QIKVRTUniversalOntology
+        run: |
+          lake build
+          lake build QIKVRTUniversalOntology
 
       - name: Run complete 32-theorem core axiom audit
         working-directory: formalization/QIKVRT_Formalization_v2.0
@@ -166,3 +291,10 @@ jobs:
             formalization/QIKVRT_Formalization_v2.0/.lake/build/UNIVERSAL_ONTOLOGY_KERNEL_RECEIPT.json
             formalization/QIKVRT_Formalization_v2.0/.lake/build/universal-ontology-axioms.txt
             formalization/QIKVRT_Formalization_v2.0/.lake/build/universal-ontology-extended-axioms.txt
+
+      - name: Save verified Lean archive from trusted Main only
+        if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ runner.temp }}/qikvrt-lean/lean-4.19.0-linux.tar.zst
+          key: ${{ steps.lean_archive.outputs.cache-primary-key }}
