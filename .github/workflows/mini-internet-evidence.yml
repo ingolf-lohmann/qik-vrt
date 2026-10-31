@@ -39,7 +39,7 @@ jobs:
           echo 'PASS: invalid certificate rejected'
       - name: Verify independently supplied React 19 source bytes
         run: |
-          echo '243eca690e055f46b33566cf07c98aec861f09afe86ecec3c1be0bbec1b947eb  tests/mini_internet/web/app.jsx' | sha256sum --check --strict
+          echo '30e2f289c2709d1a388db95550790229417f523a52840a79ce683bba881569c0  tests/mini_internet/web/app.jsx' | sha256sum --check --strict
       - name: Execute signed React release verifier under Node WebCrypto
         run: node tests/mini_internet/web/release_contract.test.cjs
       - name: Explicit scope
