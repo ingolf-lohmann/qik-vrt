@@ -10,5 +10,7 @@ lean_lib SerializationCascade where
 
 lean_lib EffectMachine where
 
-@[default_target]
 lean_lib ParallelConsolidation where
+
+@[default_target]
+lean_lib QIKVRTSuperdeterminism where
