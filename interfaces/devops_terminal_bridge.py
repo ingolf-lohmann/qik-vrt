@@ -14,7 +14,7 @@ def snapshot():
  pr=fetch("/pulls/653");issue=fetch("/issues/651")
  runs=fetch("/actions/runs?per_page=100").get("workflow_runs",[])
  runs=[r for r in runs if r.get("head_sha")==pr["head"]["sha"]]
- return {"type":"snapshot","subject":"issue/651","head_sha":pr["head"]["sha"],"tree_sha":None,"stage":"ci","status":"OBSERVED","evidence_url":pr["html_url"],"runs":runs,"issue":{"number":issue["number"],"state":issue["state"]},"pr":{"number":pr["number"],"merged":pr["merged"]},"effect":{"status":"UNVERIFIED"}}
+ return {"type":"snapshot","version":"qikvrt.devops.terminal.v1","subject":"issue/651","head_sha":pr["head"]["sha"],"tree_sha":None,"stage":"ci","status":"OBSERVED","evidence_url":pr["html_url"],"runs":runs,"issue":{"number":issue["number"],"state":issue["state"]},"pr":{"number":pr["number"],"merged":pr["merged"]},"effect":{"status":"UNVERIFIED"}}
 class Handler(BaseHTTPRequestHandler):
  protocol_version="HTTP/1.1"
  def sendjson(self,status,obj):
@@ -24,7 +24,7 @@ class Handler(BaseHTTPRequestHandler):
   return bool(SESSION and (hmac.compare_digest(self.headers.get("Authorization",""),"Bearer "+SESSION) or any(hmac.compare_digest(v.strip(),"qikvrt_session="+SESSION) for v in self.headers.get("Cookie","").split(";"))))
  def do_GET(self):
   if self.path=="/":
-   data=(Path(__file__).parent/"index.html").read_bytes();self.send_response(200);self.send_header("Content-Type","text/html; charset=utf-8");self.send_header("Content-Length",str(len(data)));self.end_headers();self.wfile.write(data);return
+   data=(Path(__file__).parent/"devops_terminal_client.html").read_bytes();self.send_response(200);self.send_header("Content-Type","text/html; charset=utf-8");self.send_header("Content-Length",str(len(data)));self.end_headers();self.wfile.write(data);return
   if self.path=="/v1/devops/snapshot":
    try:self.sendjson(200,snapshot())
    except Exception as e:self.sendjson(503,{"error":str(e)})
@@ -37,7 +37,7 @@ class Handler(BaseHTTPRequestHandler):
     for _ in range(30):
      try:
       data=snapshot();digest=hashlib.sha256(json.dumps(data,sort_keys=True).encode()).hexdigest()
-      if digest!=prev:self.wfile.write(("id: "+digest+"\ndata: "+json.dumps(data)+"\n\n").encode());prev=digest
+      if digest!=prev:\n       data["event_id"]=digest\n       self.wfile.write(("id: "+digest+"\\ndata: "+json.dumps(data)+"\\n\\n").replace("\\\\n","\\n").encode());prev=digest
       else:self.wfile.write(b": keepalive\n\n")
       self.wfile.flush()
      except Exception as e:self.wfile.write(("event: diagnostic\ndata: "+json.dumps({"error":str(e)})+"\n\n").encode());self.wfile.flush()
