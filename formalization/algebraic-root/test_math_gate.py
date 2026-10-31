@@ -15,7 +15,7 @@ class MathGateTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             base = Path(temp)
             producer = base / "producer.py"
-            producer.write_text("import pathlib,sys\npathlib.Path(sys.argv[1]).write_bytes(b'candidate')\n")
+            producer.write_text("import pathlib,sys\npathlib.Path(sys.argv[2]).write_bytes(b'candidate')\n")
             verifier = base / "verifier.py"
             verifier.write_text(
                 "import hashlib,json,pathlib,sys\n"
