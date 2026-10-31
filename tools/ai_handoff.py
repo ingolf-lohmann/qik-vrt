@@ -1320,6 +1320,7 @@ def formal_proof_gate(directory: Path) -> None:
     inventory = set(policy["theorems"])
     own_axioms = None
     external_export = None
+    bound_execution = None
     for checker in policy["checkers"]:
         receipt = load_json(directory / (checker["id"] + ".json"))
         if (set(policy["receipt_required"]) - receipt.keys()
@@ -1332,6 +1333,12 @@ def formal_proof_gate(directory: Path) -> None:
             or receipt["exit_code"] != 0
             or not re.fullmatch(r"[0-9a-f]{64}", str(receipt.get("export_or_olean_sha256", "")))):
             fail("FORMAL_RECEIPT_NONPASS_OR_DRIFT:" + checker["id"])
+        execution = receipt.get("execution", {})
+        if (not isinstance(execution, dict)
+            or any(not re.fullmatch(r"[0-9a-f]{40}", str(execution.get(k, ""))) for k in ("head", "tree"))
+            or (bound_execution is not None and execution != bound_execution)):
+            fail("FORMAL_EXECUTION_SUBJECT_MISSING_OR_DRIFT:" + checker["id"])
+        bound_execution = execution
         if os.environ.get("GITHUB_RUN_ID"):
             actual = {"head": git_value("rev-parse", "HEAD"), "tree": git_value("rev-parse", "HEAD^{tree}"),
                       "run_id": os.environ["GITHUB_RUN_ID"],
@@ -1364,6 +1371,7 @@ def formal_proof_gate(directory: Path) -> None:
                 fail("FORMAL_CROSS_CHECKER_EXPORT_DRIFT")
             external_export = export
     print("FORMAL_RECEIPT_CONSISTENCY=7/7")
+    print("FORMAL_RECEIPT_EXECUTION=" + json.dumps(bound_execution, sort_keys=True))
     print("IMPLEMENTATION_ASSURANCE=FINITE_DIFFERENTIAL_BRIDGE_ONLY")
     print("LIVE_EFFECT_VERIFICATION=NOT_PERFORMED")
 

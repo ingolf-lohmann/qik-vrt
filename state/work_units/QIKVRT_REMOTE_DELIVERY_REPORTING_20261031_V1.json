@@ -401,5 +401,29 @@
       "main_integration": false,
       "productive_effect": false
     }
+  },
+  "exact_cli_and_execution_binding_closure": {
+    "source_parent": "47f586be5e1cd6589ae9ba7dbd72558663402618",
+    "adopted_concurrent_source": [
+      "4c2b284f3df9032b9ad2b7b76ec077f9ba9b2ba7",
+      "9fe7057167beb381c3f3272c6e6d2b977529113d",
+      "2eb18c6b17da0c8773242879eca0dae755c65017",
+      "47f586be5e1cd6589ae9ba7dbd72558663402618"
+    ],
+    "owner_source_sha256_verified": "e72e589f4fd6ff009beeafaf0c314ed896f2a7314fa298875fcd72ac439495d1",
+    "w3_delta": "Every original Lean vector now passes through the actual --client-receipt CLI, not just direct function calls. A real CLI mutant must disagree.",
+    "receipt_delta": "Always require valid, mutually identical 40-hex execution HEAD/TREE, including outside native CI. Reject unavailable metadata; retain source-bound historical receipts as historical.",
+    "proof_scope": "Decidable declared evidence model plus finite implementation conformance; not universal program refinement or authenticated network truth.",
+    "acceptance": "NEW_EXACT_HEAD_NATIVE_7_OF_7_AND_COMPLETE_CI_REQUIRED",
+    "main_merged": false,
+    "runtime_or_productive_effect": false,
+    "local_verification": {
+      "command": "python3 -B -m unittest tests.test_delivery_reporting_proof -v",
+      "exit_code": 0,
+      "tests": 11,
+      "cli_vectors": 1152,
+      "cli_mutation_detected": true,
+      "log_sha256": "fb04cd9f1afa5610b8d39daf8de02c9e936218838119242fece06a78a0d8e32e"
+    }
   }
 }

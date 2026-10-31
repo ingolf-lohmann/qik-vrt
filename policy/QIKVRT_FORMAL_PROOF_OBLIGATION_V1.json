@@ -79,7 +79,8 @@
     "command",
     "exit_code",
     "artifact",
-    "executed_commands"
+    "executed_commands",
+    "execution"
   ],
   "permitted_axioms": [
     "propext",

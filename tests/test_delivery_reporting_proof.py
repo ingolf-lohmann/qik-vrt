@@ -47,17 +47,18 @@ class DeliveryReportingProofTests(unittest.TestCase):
         return case
 
     def test_actual_client_receipt_path_matches_every_lean_vector(self):
-        for vector in self.vectors():
-            report = {k: v for k, v in vector.items() if k != "verdict"}
-            case = self.fixture()
-            case.receipt["delivery_report"] = report
-            with contextlib.redirect_stderr(io.StringIO()):
-                try:
-                    ai_handoff.validate_client_receipt(case.receipt)
-                    result = "accept"
-                except SystemExit:
-                    result = "reject"
-            self.assertEqual(result, vector["verdict"], report)
+        vectors = self.vectors()
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "receipt.json"
+            for index, vector in enumerate(vectors):
+                case = self.fixture()
+                case.receipt["delivery_report"] = {k: v for k, v in vector.items() if k != "verdict"}
+                path.write_text(json.dumps(case.receipt))
+                result = subprocess.run([sys.executable, "-B", "tools/ai_handoff.py",
+                    "--client-receipt", str(path)], cwd=ROOT, capture_output=True, text=True, timeout=15)
+                self.assertEqual("accept" if result.returncode == 0 else "reject",
+                                 vector["verdict"], (index, result.stderr))
+        print("DELIVERY_CLI_VECTORS_CHECKED=" + str(len(vectors)))
 
     def test_original_cli_receipt_path_and_negative_controls(self):
         selected = {}
@@ -101,6 +102,24 @@ class DeliveryReportingProofTests(unittest.TestCase):
             if scope["delivery_report_verdict"](report) != vector["verdict"]:
                 mismatches.append(vector)
         self.assertTrue(mismatches, "status mutation escaped the bridge")
+        # Also exercise the actual mutated CLI, preserving its real ROOT/imports.
+        vector = mismatches[0]
+        with tempfile.NamedTemporaryFile("w", suffix=".py", prefix=".delivery-mutant-",
+                                         dir=ROOT / "tools", delete=False) as stream:
+            stream.write(mutant)
+            script = Path(stream.name)
+        try:
+            with tempfile.TemporaryDirectory() as tmp:
+                path = Path(tmp) / "receipt.json"
+                case = self.fixture()
+                case.receipt["delivery_report"] = {k: v for k, v in vector.items() if k != "verdict"}
+                path.write_text(json.dumps(case.receipt))
+                result = subprocess.run([sys.executable, "-B", str(script), "--client-receipt", str(path)],
+                    cwd=ROOT, capture_output=True, text=True, timeout=15)
+                self.assertNotEqual("accept" if result.returncode == 0 else "reject", vector["verdict"])
+                print("DELIVERY_CLI_STATUS_MUTATION_DETECTED=1")
+        finally:
+            script.unlink()
 
     def test_missing_vectors_and_zero_receipts_are_blocking(self):
         with tempfile.TemporaryDirectory() as tmp, contextlib.redirect_stderr(io.StringIO()):
@@ -139,7 +158,7 @@ class DeliveryReportingProofTests(unittest.TestCase):
                 ai_handoff.formal_proof_gate(directory)
 
     def test_zero_exit_checker_panic_and_changed_payload_fail_closed(self):
-        for defect in ("panic", "payload", "log", "nonpass", "foreign-commit"):
+        for defect in ("panic", "payload", "log", "nonpass", "foreign-commit", "execution"):
             with self.subTest(defect=defect), tempfile.TemporaryDirectory() as tmp, \
                     contextlib.redirect_stderr(io.StringIO()), contextlib.redirect_stdout(io.StringIO()):
                 directory = Path(tmp)
@@ -156,6 +175,8 @@ class DeliveryReportingProofTests(unittest.TestCase):
                     log.write_text("changed")
                 elif defect == "nonpass":
                     receipt["result"] = "UNVERIFIED"
+                elif defect == "execution":
+                    receipt["execution"]["head"] = "unavailable"
                 else:
                     receipt["commit"] = "f" * 40
                 path.write_text(json.dumps(receipt))
