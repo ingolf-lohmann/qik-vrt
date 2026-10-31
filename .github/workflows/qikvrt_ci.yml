@@ -172,8 +172,8 @@ jobs:
             # Test the exact active subject. Integrity staleness is the only
             # expected pre-materialization failure and is repaired below.
             set +e
-            make test repository-monitor-test self-host-test > ".qikvrt-fixpoint-test-$iteration.log" 2>&1
-            test_status=$?
+            timeout --signal=TERM --kill-after=30s 15m make test repository-monitor-test self-host-test 2>&1 | tee ".qikvrt-fixpoint-test-$iteration.log"
+            test_status=${PIPESTATUS[0]}
             set -e
 
             # Learn from the predecessor: only the recognized deterministic
@@ -194,7 +194,7 @@ jobs:
             fi
 
             # Re-run the complete gates against the regenerated state.
-            make test repository-monitor-test self-host-test
+            timeout --signal=TERM --kill-after=30s 15m make test repository-monitor-test self-host-test
             python3 tools/qikvrt_integrity.py verify
 
             git config user.name "github-actions[bot]"
