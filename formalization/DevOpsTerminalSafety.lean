@@ -56,4 +56,51 @@ theorem ci_alone_cannot_establish_effect
   rw [h] at hp
   cases hp
 
+
+/- Release gating is a pure model. Executable release packaging must be
+   checked independently against this specification in native CI. -/
+structure ClientReleaseEvidence where
+  artifactDigestVerified : Bool
+  exactHeadCiPassed : Bool
+  governanceApproved : Bool
+  originAdmitted : Bool
+  immutableAssetAvailable : Bool
+  deriving DecidableEq, Repr
+
+def releasePermitted (e : ClientReleaseEvidence) : Prop :=
+  e.artifactDigestVerified = true ∧
+  e.exactHeadCiPassed = true ∧
+  e.governanceApproved = true ∧
+  e.originAdmitted = true ∧
+  e.immutableAssetAvailable = true
+
+theorem release_requires_digest (e : ClientReleaseEvidence)
+    (h : releasePermitted e) : e.artifactDigestVerified = true := h.1
+
+theorem release_requires_exact_ci (e : ClientReleaseEvidence)
+    (h : releasePermitted e) : e.exactHeadCiPassed = true := h.2.1
+
+theorem release_requires_governance (e : ClientReleaseEvidence)
+    (h : releasePermitted e) : e.governanceApproved = true := h.2.2.1
+
+theorem release_requires_origin (e : ClientReleaseEvidence)
+    (h : releasePermitted e) : e.originAdmitted = true := h.2.2.2.1
+
+theorem release_requires_immutable_asset (e : ClientReleaseEvidence)
+    (h : releasePermitted e) : e.immutableAssetAvailable = true := h.2.2.2.2
+
+theorem failed_digest_blocks_release (e : ClientReleaseEvidence)
+    (h : e.artifactDigestVerified = false) : ¬ releasePermitted e := by
+  intro hp
+  have hd := release_requires_digest e hp
+  rw [h] at hd
+  cases hd
+
+theorem unverified_ci_blocks_release (e : ClientReleaseEvidence)
+    (h : e.exactHeadCiPassed = false) : ¬ releasePermitted e := by
+  intro hp
+  have hc := release_requires_exact_ci e hp
+  rw [h] at hc
+  cases hc
+
 end QIKVRT.DevOps
