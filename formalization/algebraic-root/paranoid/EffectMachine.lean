@@ -2,7 +2,6 @@ import SerializationCascade
 
 namespace QikVrtAlgebraicRoot
 
-/-- Acknowledgement is a state transition, never an unconstrained Boolean input. -/
 inductive EffectEvent (Payload : Type) where
   | propose (value : Payload)
   | observe (value : Payload)
@@ -13,8 +12,6 @@ structure EffectState (Payload : Type) where
   observed : Option Payload := none
   acknowledged : Bool := false
 
-/-- An observation is retained only when it matches the current proposal.
-    A new proposal invalidates previous observations and acknowledgements. -/
 def effectStep {Payload : Type} [DecidableEq Payload]
     (s : EffectState Payload) (event : EffectEvent Payload) :
     EffectState Payload :=
@@ -23,13 +20,11 @@ def effectStep {Payload : Type} [DecidableEq Payload]
   | .observe p =>
       if s.proposed = some p then
         { s with observed := some p, acknowledged := false }
-      else
-        s
+      else s
   | .acknowledge =>
-      if s.proposed.isSome && s.proposed == s.observed then
+      if h : ∃ p, s.proposed = some p ∧ s.observed = some p then
         { s with acknowledged := true }
-      else
-        s
+      else s
 
 def effectSafe {Payload : Type} (s : EffectState Payload) : Prop :=
   s.acknowledged = true → ∃ p, s.proposed = some p ∧ s.observed = some p
@@ -50,30 +45,33 @@ theorem effectStep_preserves_safety {Payload : Type} [DecidableEq Payload]
   | acknowledge =>
       unfold effectStep
       split
-      · rename_i hguard
+      · rename_i h
         intro _
-        simp only [Bool.and_eq_true, Bool.isSome_eq_true, beq_iff_eq] at hguard
-        obtain ⟨hSome, hEq⟩ := hguard
-        cases hp : s.proposed with
-        | none => simp [hp] at hSome
-        | some p =>
-            refine ⟨p, hp, ?_⟩
-            exact hEq ▸ hp
+        exact h
       · exact safe
 
-def effectRun {Payload : Type} [DecidableEq Payload]
-    (events : List (EffectEvent Payload)) : EffectState Payload :=
-  events.foldl effectStep {}
+def effectRunFrom {Payload : Type} [DecidableEq Payload]
+    (s : EffectState Payload) : List (EffectEvent Payload) → EffectState Payload
+  | [] => s
+  | e :: es => effectRunFrom (effectStep s e) es
+
+theorem effectRunFrom_safe {Payload : Type} [DecidableEq Payload]
+    (events : List (EffectEvent Payload)) (s : EffectState Payload)
+    (hs : effectSafe s) : effectSafe (effectRunFrom s events) := by
+  induction events generalizing s with
+  | nil => simpa [effectRunFrom] using hs
+  | cons e es ih =>
+      exact ih (effectStep s e) (effectStep_preserves_safety s e hs)
 
 theorem effectRun_safe {Payload : Type} [DecidableEq Payload]
     (events : List (EffectEvent Payload)) :
-    effectSafe (effectRun events) := by
-  unfold effectRun
-  apply List.foldlRecOn events
-  · intro h
-    exact h
-  · exact effectStep_preserves_safety
-  · intro h
-    simp [effectSafe] at h
+    effectSafe (effectRunFrom ({} : EffectState Payload) events) := by
+  apply effectRunFrom_safe
+  intro h
+  simp at h
+
+#print axioms QikVrtAlgebraicRoot.effectStep_preserves_safety
+#print axioms QikVrtAlgebraicRoot.effectRunFrom_safe
+#print axioms QikVrtAlgebraicRoot.effectRun_safe
 
 end QikVrtAlgebraicRoot
