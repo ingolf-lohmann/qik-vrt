@@ -1,0 +1,57 @@
+name: Algebraic root proof candidate
+on:
+  push:
+    paths:
+      - 'formalization/algebraic-root/**'
+      - '.github/workflows/qikvrt-algebraic-root-proof.yml'
+  pull_request:
+    paths:
+      - 'formalization/algebraic-root/**'
+      - '.github/workflows/qikvrt-algebraic-root-proof.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  lean-kernel:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pinned Lean
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsSL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -o /tmp/elan-init.sh
+          sh /tmp/elan-init.sh -y --default-toolchain leanprover/lean4:v4.19.0
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Kernel check and axiom inventory
+        working-directory: formalization/algebraic-root
+        shell: bash
+        run: |
+          set -euo pipefail
+          lean --version
+          sha256sum Root.lean
+          lean Root.lean 2>&1 | tee lean-kernel.log
+          ! grep -E '(^|[^[:alpha:]])(sorryAx|admit|unsound)' lean-kernel.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: algebraic-root-lean-kernel
+          path: formalization/algebraic-root/lean-kernel.log
+  finite-cross-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Independent exhaustive finite evaluator
+        working-directory: formalization/algebraic-root
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 check_finite.py | tee finite-check.json
+          sha256sum Root.lean check_finite.py | tee source-hashes.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: algebraic-root-finite-cross-check
+          path: |
+            formalization/algebraic-root/finite-check.json
+            formalization/algebraic-root/source-hashes.txt
