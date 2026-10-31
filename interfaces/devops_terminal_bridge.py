@@ -21,7 +21,7 @@ class Handler(BaseHTTPRequestHandler):
   data=json.dumps(obj).encode();self.send_response(status);self.send_header("Content-Type","application/json");self.send_header("Content-Length",str(len(data)));self.send_header("Cache-Control","no-store");self.end_headers();self.wfile.write(data)
  def auth(self):
   import hmac
-  return bool(SESSION and hmac.compare_digest(self.headers.get("Authorization",""),"Bearer "+SESSION))
+  return bool(SESSION and (hmac.compare_digest(self.headers.get("Authorization",""),"Bearer "+SESSION) or any(hmac.compare_digest(v.strip(),"qikvrt_session="+SESSION) for v in self.headers.get("Cookie","").split(";"))))
  def do_GET(self):
   if self.path=="/":
    data=(Path(__file__).parent/"index.html").read_bytes();self.send_response(200);self.send_header("Content-Type","text/html; charset=utf-8");self.send_header("Content-Length",str(len(data)));self.end_headers();self.wfile.write(data);return
