@@ -19,3 +19,14 @@ The static HTML client is a single file; no npm, CDN or browser token is require
 4. Serve the client on the approved domain after TLS and host/SSO acceptance.
 
 A published interface contract is not a claim of deployed runtime availability.
+
+## CI observability failure disposition (2026-10-31)
+
+The GitHub job-log retrieval for run `41173758338`, job `124456950864`, returned `404 BlobNotFound` while the job was `in_progress`. This is an **observation transport failure**, not a test verdict. The observer must:
+
+1. Preserve the original HTTP status and diagnostic, the run ID, job ID, and exact HEAD without marking the CI as passed or failed.
+2. Query the GitHub run and job/step endpoints independently as the authoritative live status fallback.
+3. Reattempt archived log retrieval only after the job has reached a terminal state; if still unavailable, record a distinct `LOG_ARCHIVE_UNAVAILABLE` defect with the provider response.
+4. Require successful exact-HEAD native CI and an accessible audit/terminal disposition before accepting the tested fixpoint. A log-fetch error cannot be silently ignored or repaired by claiming the tests succeeded.
+
+This fallback is read-only, event/readback driven, and does not schedule a timer. It does not repair GitHub's upstream log archive; provider-side repair requires an independently confirmed failure after job completion.
