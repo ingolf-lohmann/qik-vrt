@@ -876,8 +876,8 @@ class MirrorLifecycleGovernanceTests(unittest.TestCase):
 
     def test_scheduler_concurrency_ttl_and_renewal_semantics_are_preserved(self) -> None:
         workflow = (self.repository / ".github/workflows/qikvrt_mirror_node_lifecycle.yml").read_text()
-        self.assertEqual(1, workflow.count("cron:"))
-        self.assertIn('cron: "17 */6 * * *"', workflow)
+        self.assertEqual(0, workflow.count("cron:"))
+        self.assertNotIn('  schedule:', workflow)
         self.assertIn("group: qikvrt-mirror-node-lifecycle", workflow)
         self.assertIn("cancel-in-progress: false", workflow)
         self.assertNotRegex(workflow, r"\bgit\s+push[^\n]*(?:HEAD:|refs/heads/)main\b")

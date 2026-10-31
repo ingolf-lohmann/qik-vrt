@@ -4,8 +4,9 @@ name: QIK-VRT autonomous draft-PR continuation
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "37 * * * *"
+  workflow_run:
+    workflows: ["QIKVRT CI", "QIK-VRT autonomous bounded self-heal"]
+    types: [completed]
   push:
     branches: [main]
     paths:

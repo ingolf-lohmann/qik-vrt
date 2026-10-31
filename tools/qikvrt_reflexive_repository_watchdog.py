@@ -850,7 +850,7 @@ def analyze(
     state = "SAFE_PROGRESS"
     disposition = "OBSERVE"
     productive_edge = "CONTINUE_REFLEXIVE_OBSERVATION"
-    safe_continuation = "Preserve one writer, exact-head evidence, and the five-minute observer cadence."
+    safe_continuation = "Preserve one writer, exact-head evidence, and original state-transition observations."
 
     if authority_observation is not None and authority_observation["state"] == "AUTHORITY_UNAVAILABLE":
         state = "AUTHORITY_UNAVAILABLE"

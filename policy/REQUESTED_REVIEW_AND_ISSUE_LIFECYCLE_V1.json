@@ -66,7 +66,7 @@
       "pull_request.reopened",
       "workflow_run.completed"
     ],
-    "recovery_schedule": "*/5 * * * *",
+    "recovery_schedule": null,
     "exact_head_status_context": "QIKVRT requested review disposition",
     "status_scope": "TECHNICAL_DISPOSITION_ONLY",
     "native_governance_status_context": "QIKVRT required code-owner review",

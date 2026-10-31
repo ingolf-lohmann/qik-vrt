@@ -2,9 +2,14 @@
 # Copyright 2026 Ingolf Lohmann.
 """Transport-bound negative controls; fake GitHub is not live closure proof."""
 import copy
+import hashlib
+import io
 import json
+import os
 import tempfile
 import unittest
+import zipfile
+from unittest import mock
 from pathlib import Path
 from urllib.parse import urlsplit, parse_qs
 
@@ -417,6 +422,169 @@ class ReciprocalStepTests(unittest.TestCase):
         self.assertEqual(len(r['inventory_before']['pull_requests']), 1)
         self.assertIn('BLOCK_NON_ROLE_LOCAL_HEAD', r['first_blocker'])
         self.assertEqual(api.mutations, [])
+
+
+class NativeCheckpointAPI(FakeAPI):
+    """Original REST adapter with a simulated provider, never live acceptance."""
+    def __init__(self):
+        super().__init__()
+        self.native_consumer = True
+        self.observed['reviews'] = fixtures.ClosureEngineTests().obs()['reviews']
+        self.run = {'id': 99, 'run_attempt': 1, 'path': M.NATIVE_WORKFLOW,
+                    'head_sha': BASE, 'head_branch': 'main', 'event': 'workflow_run',
+                    'repository': {'full_name': REPO}, 'head_repository': {'full_name': REPO}}
+        self.artifacts = []
+
+    def request(self, method, path, payload=None):
+        suffix = path.removeprefix(self.repo_path(''))
+        parsed = urlsplit(suffix)
+        if parsed.path == '/actions/runs/99/attempts/1':
+            self.calls.append((method, path, payload))
+            return copy.deepcopy(self.run)
+        if parsed.path == '/actions/artifacts':
+            self.calls.append((method, path, payload))
+            return {'total_count': len(self.artifacts), 'artifacts': copy.deepcopy(self.artifacts)}
+        if parsed.path == '/actions/artifacts/771':
+            return copy.deepcopy(self.artifacts[0])
+        return super().request(method, path, payload)
+
+    def checkpoint(self, directory, *, extra=None):
+        stream = io.BytesIO()
+        with zipfile.ZipFile(stream, 'w') as archive:
+            for p in sorted(Path(directory).glob('*.json')):
+                archive.writestr(p.name, p.read_bytes())
+            for name, raw in (extra or {}).items():
+                archive.writestr(name, raw)
+        raw = stream.getvalue()
+        item = {'id': 771, 'name': M.JOURNAL_ARTIFACT, 'expired': False,
+                'size_in_bytes': len(raw), 'digest': 'sha256:' + hashlib.sha256(raw).hexdigest(),
+                'workflow_run': {'id': 99}}
+        self.artifacts = [item]
+        return raw, item
+
+
+class NativeClosureContinuationTests(unittest.TestCase):
+    def setUp(self):
+        self.env = mock.patch.dict(os.environ, {
+            'GITHUB_ACTIONS': 'true', 'GITHUB_REPOSITORY': REPO, 'GITHUB_REF': 'refs/heads/main',
+            'GITHUB_WORKFLOW_REF': f'{REPO}/{M.NATIVE_WORKFLOW}@refs/heads/main',
+            'GITHUB_EVENT_NAME': 'workflow_run', 'GITHUB_RUN_ID': '99', 'GITHUB_RUN_ATTEMPT': '1',
+            'GITHUB_SHA': BASE, 'GITHUB_RUN_NUMBER': '1', 'QIKVRT_CLOSURE_EVENT_HEAD': HEAD,
+        })
+        self.env.start(); self.addCleanup(self.env.stop)
+        self.api = NativeCheckpointAPI()
+        self.policy = fixtures.ClosureEngineTests().policy()
+
+    def prepare(self, directory):
+        result = M.prepare_workflow_step(self.api, self.policy, Path(directory))
+        self.assertEqual(result['state'], 'STEP_CHECKPOINT_REQUIRED', result)
+        self.assertFalse(result['mutation_attempted'])
+        self.assertEqual(self.api.mutations, [])
+        return result
+
+    def test_native_installation_token_uses_original_run_not_user_api(self):
+        value = self.api.probe()
+        self.assertEqual(value['principal'], 'github-actions[bot]')
+        self.assertEqual(value['operations'], ['MERGE'])
+        self.assertFalse(any(path == '/user' for _, path, _ in self.api.calls))
+
+    def test_prepare_checkpoint_apply_fresh_readback_is_one_effect(self):
+        with tempfile.TemporaryDirectory() as d:
+            before = self.prepare(d)
+            raw, item = self.api.checkpoint(d)
+            with mock.patch.object(M, '_amo_get', return_value=raw):
+                result = M.apply_workflow_step(self.api, self.policy, Path(d), 771, item['digest'])
+                self.assertEqual(result['state'], 'STEP_EFFECT_VERIFIED_CONTINUE', result)
+                self.assertTrue(result['post_effect_verified'])
+                with self.assertRaises(M.ClosureBlock):
+                    M.apply_workflow_step(self.api, self.policy, Path(d), 771, item['digest'])
+        self.assertEqual(len(self.api.mutations), 1)
+        self.assertEqual(before['intent_id'], result['intent_id'])
+        self.assertFalse(any(result['completion_claims'].values()))
+
+    def test_lost_ack_is_recovered_from_original_checkpoint_without_second_write(self):
+        with tempfile.TemporaryDirectory() as d, tempfile.TemporaryDirectory() as successor:
+            self.prepare(d); raw, item = self.api.checkpoint(d)
+            self.api.timeout_after_apply = True
+            with mock.patch.object(M, '_amo_get', return_value=raw):
+                result = M.apply_workflow_step(self.api, self.policy, Path(d), 771, item['digest'])
+                self.assertTrue(result['post_effect_verified'])
+                recovered = M.restore_workflow_journal(self.api, Path(successor) / 'intents')
+            self.assertEqual(recovered['state'], 'PREDECESSOR_READBACK_VERIFIED')
+            self.assertFalse(recovered['mutation_attempted'])
+            self.assertTrue((Path(successor) / 'intents/PREDECESSOR.json').exists())
+        self.assertEqual(len(self.api.mutations), 1)
+
+    def test_unapplied_or_unknown_original_effect_never_gets_retried(self):
+        with tempfile.TemporaryDirectory() as d, tempfile.TemporaryDirectory() as successor:
+            self.prepare(d); raw, _ = self.api.checkpoint(d)
+            with mock.patch.object(M, '_amo_get', return_value=raw):
+                with self.assertRaises(M.ClosureBlock):
+                    M.restore_workflow_journal(self.api, Path(successor) / 'intents')
+        self.assertEqual(self.api.mutations, [])
+
+    def test_checker_source_staleness_holds_before_preparation(self):
+        self.api.branches[0]['commit']['sha'] = 'd' * 40
+        with tempfile.TemporaryDirectory() as d:
+            with self.assertRaisesRegex(M.ClosureBlock, 'CHECKER_SOURCE_STALE'):
+                M.prepare_workflow_step(self.api, self.policy, Path(d))
+        self.assertEqual(self.api.mutations, [])
+
+    def test_wrong_foreign_or_replayed_producer_holds(self):
+        for field, value in [('head_sha', HEAD), ('head_branch', 'feature'),
+                             ('path', '.github/workflows/foreign.yml'), ('run_attempt', 2),
+                             ('head_repository', {'full_name': 'foreign/repo'})]:
+            with self.subTest(field=field):
+                saved = copy.deepcopy(self.api.run); self.api.run[field] = value
+                with self.assertRaises(M.ClosureBlock):
+                    M.native_workflow_binding(self.api)
+                self.api.run = saved
+        self.assertEqual(self.api.mutations, [])
+
+    def test_unavailable_checker_is_not_success_and_cannot_write(self):
+        with mock.patch.object(self.api, 'request', side_effect=M.ClosureBlock('HTTP_403:GET')):
+            with tempfile.TemporaryDirectory() as d:
+                with self.assertRaisesRegex(M.ClosureBlock, 'HTTP_403'):
+                    M.prepare_workflow_step(self.api, self.policy, Path(d))
+        self.assertEqual(self.api.mutations, [])
+
+    def test_corrupt_expired_or_untrusted_archive_cannot_open_mutation(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.prepare(d); raw, item = self.api.checkpoint(d)
+            for change in ({'expired': True}, {'digest': 'sha256:' + '0' * 64},
+                           {'name': 'foreign'}, {'workflow_run': {'id': 100}}):
+                with self.subTest(change=change), mock.patch.object(M, '_amo_get', return_value=raw):
+                    with self.assertRaises(M.ClosureBlock):
+                        M.workflow_checkpoint(self.api, {**item, **change})
+            with mock.patch.object(M, '_amo_get', return_value=raw[:-1]):
+                with self.assertRaises(M.ClosureBlock):
+                    M.workflow_checkpoint(self.api, item)
+            raw, item = self.api.checkpoint(d, extra={'../foreign.json': b'{}'})
+            with mock.patch.object(M, '_amo_get', return_value=raw):
+                with self.assertRaises(M.ClosureBlock):
+                    M.workflow_checkpoint(self.api, item)
+        self.assertEqual(self.api.mutations, [])
+
+    def test_changed_gate_after_persisted_checkpoint_does_not_merge(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.prepare(d); raw, item = self.api.checkpoint(d)
+            self.api.observed['check_runs'][0]['conclusion'] = 'failure'
+            with mock.patch.object(M, '_amo_get', return_value=raw):
+                r = M.apply_workflow_step(self.api, self.policy, Path(d), 771, item['digest'])
+            self.assertEqual(r['state'], 'BLOCK')
+            self.assertFalse(r['post_effect_verified'])
+        self.assertEqual(self.api.mutations, [])
+
+    def test_repository_automation_has_no_timer_and_consumer_is_wired(self):
+        root = Path(__file__).resolve().parents[1]
+        for workflow in (root / '.github/workflows').glob('*.yml'):
+            self.assertNotRegex(workflow.read_text(), r'(?m)^\s*(?:-\s*)?(?:schedule|cron):', workflow.name)
+        s = (root / M.NATIVE_WORKFLOW).read_text()
+        self.assertLess(s.index('workflow-prepare'), s.index('name: qikvrt-pr-closure-intents'))
+        self.assertLess(s.index('name: qikvrt-pr-closure-intents'), s.index('workflow-apply'))
+        self.assertIn('if: always()', s)
+        review = (root / '.github/workflows/qikvrt_requested_review_executor.yml').read_text()
+        self.assertIn('"QIKVRT productive TEMDD S1 carrier"', review)
 
 
 if __name__ == "__main__":

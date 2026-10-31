@@ -34,7 +34,7 @@ class ExpectedHeadPromotionContractTests(unittest.TestCase):
         )
         self.assertEqual(executor["opt_in_marker"], MARKER)
         self.assertEqual(executor["maximum_candidates_per_run"], 1)
-        self.assertEqual(executor["schedule_fallback"], "*/10 * * * *")
+        self.assertIsNone(executor["schedule_fallback"])
         self.assertEqual(
             executor["two_phase_promotion"],
             ["DRAFT_TO_READY", "STOP_AND_REOBSERVE", "EXPECTED_HEAD_BOUND_MERGE"],
@@ -61,7 +61,7 @@ class ExpectedHeadPromotionContractTests(unittest.TestCase):
 
     def test_executor_is_bounded_and_sha_bound(self) -> None:
         workflow = PROMOTION_WORKFLOW.read_text(encoding="utf-8")
-        self.assertIn('cron: "*/10 * * * *"', workflow)
+        self.assertNotIn('  schedule:', workflow)
         self.assertIn("cancel-in-progress: false", workflow)
         self.assertIn("READY_RECLASSIFIED_REOBSERVATION_REQUIRED", workflow)
         self.assertIn('exit 0', workflow)
@@ -118,7 +118,7 @@ class ExpectedHeadPromotionContractTests(unittest.TestCase):
 
     def test_every_embedded_workflow_python_block_compiles(self):
         blocks = self.embedded_python()
-        self.assertEqual(len(blocks), 5)
+        self.assertEqual(len(blocks), 8)
         for index, code in enumerate(blocks):
             compile(code, f"workflow-block-{index}", "exec")
 

@@ -282,13 +282,15 @@ class RequiredReviewContextContractTests(unittest.TestCase):
             exec(compile(python_step(WORKFLOW, 'Conditional canonical projection with exact readback'), str(WORKFLOW), 'exec'), namespace)
         return created, namespace, calls
 
-    def run_gate(self):
+    def run_gate(self, **overrides):
         calls = []
         pr = {'number': 641, 'state': 'open', 'base': {'ref': 'main', 'sha': self.base}, 'head': {'sha': self.head}, 'user': {'login': 'integration-author'}}
 
         def read(args, *, text):
             self.assertEqual(args[:2], ['gh', 'api'])
             path = args[-1]
+            if path == f'repos/{self.repository}/pulls?state=open&base=main&per_page=100':
+                return json.dumps([[pr]])
             if path == f'repos/{self.repository}/pulls/641':
                 return json.dumps(pr)
             if path == f'repos/{self.repository}/rules/branches/main':
@@ -306,6 +308,7 @@ class RequiredReviewContextContractTests(unittest.TestCase):
             'LEGACY_STATUS_CONTEXT': env_value(self.gate, 'LEGACY_STATUS_CONTEXT'),
             'GITHUB_SERVER_URL': 'https://github.com',
             'GITHUB_RUN_ID': '123',
+            **overrides,
         }
         with tempfile.TemporaryDirectory() as directory:
             env['GITHUB_STEP_SUMMARY'] = str(Path(directory) / 'summary')
@@ -321,6 +324,11 @@ class RequiredReviewContextContractTests(unittest.TestCase):
             published.append(fields)
         self.assertEqual({item['context'] for item in published}, {self.context,self.legacy})
         return published
+
+    def test_original_completion_without_pr_selector_reobserves_inventory_and_retains_failure(self):
+        statuses = self.run_gate(REQUESTED_PR='', EVENT_NAME='workflow_run', EVENT_PRS='[]')
+        self.assertEqual({s['context'] for s in statuses}, {self.context, self.legacy})
+        self.assertTrue(all(s['state'] == 'failure' for s in statuses))
 
     def run_promotion_snapshot(self, statuses, *, native_satisfied=False, author_login='integration-author', reviewer_login='ingolf-lohmann'):
         gates = required_gates(self.promotion)

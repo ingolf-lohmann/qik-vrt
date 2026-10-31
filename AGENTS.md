@@ -471,3 +471,18 @@ all unresolved duties. Do not close unresolved work or infer branch-deletion
 authority merely to satisfy this condition. The existing exact-head test, review,
 conditional-merge and separate host/domain acceptance boundaries still apply.
 Saving this rule proves neither runtime enforcement nor adoption by other clients.
+
+
+## Owner continuation correction — 31 October 2026
+
+The hourly ChatGPT task is a read-only status channel. It executes no work,
+mutates no checkpoints, delegates no effects and starts no continuation.
+All work continues through repository state transitions in the existing work
+ring, without internal or external timer activation. Read
+`state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json#/repository_continuation`.
+The existing closure engine is consumed by the existing promotion workflow
+under the later conditional REST merge grant; the legacy CAS writer stays
+disabled. An immutable original intent precedes each admitted merge. Unknown
+effects permit readback only; missing verification is UNVERIFIED. Native
+source integration, unattended execution, runtime/SSO admission, host/domain
+acceptance and Zenodo publication each require their own fresh evidence.

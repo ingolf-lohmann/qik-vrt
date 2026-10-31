@@ -1,8 +1,8 @@
 name: Issue agent backlog resume
 
 on:
-  schedule:
-    - cron: '7,37 * * * *'
+  issues:
+    types: [opened, edited, reopened, labeled]
   workflow_dispatch:
     inputs:
       issue_number:
