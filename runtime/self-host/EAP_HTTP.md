@@ -131,8 +131,9 @@ from commit `75522c4911304efbe14fd9780c1a49bb7700e1f3`, tree
 `mirror/eap-mirror-client-20261031` preserves that complete tree at the separate
 REST import commit `9581951ff7c852fcb9dc425de49d3b029f79ceb8`. The original Git
 bundle and independent ref/commit readbacks are retained with the client-delivery
-evidence. The PR546 successor integrates the client and keeps its original
-attribution. Its separate negative-control repair rejects redirects before a
+evidence. The isolated `fix/eap-mirror-client-integration-20261031` candidate retains the
+PR546 predecessor R1-R5 source and the client attribution. It has not replaced
+the parallel PR546 formal-proof successor. Its negative-control repair rejects redirects before a
 bearer credential can leave the request target and verifies both receipts against
 the submitted input, principal, request, subject, observed ledger epoch and native
 event digests. The unchanged source carrier remains available for comparison.
