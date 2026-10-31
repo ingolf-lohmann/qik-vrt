@@ -220,6 +220,11 @@ jobs:
             if git diff --cached --quiet; then
               # A fixpoint is admissible only for the immutable committed
               # subject, not for an uncommitted regenerated worktree.
+              if test -n "$(git ls-files --others --exclude-standard)"; then
+                echo "BLOCK fixpoint has untracked files head=$subject" >&2
+                git status --short --untracked-files=all >&2
+                exit 1
+              fi
               if ! git diff --quiet HEAD --; then
                 echo "BLOCK fixpoint has uncommitted tracked changes head=$subject" >&2
                 git status --short >&2
