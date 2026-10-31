@@ -1,0 +1,43 @@
+{
+  "schema": "qikvrt-formal-proof-evidence/v1",
+  "candidate_commit": "535c8a089f9c03cb7ac2d48ec633a79ed6cd5d0f",
+  "github_pr_merge_test_commit": "46df84bc2f0d77ed3ddef068966e4f41b6e0e2a6",
+  "workflow_run_id": 41189034545,
+  "workflow_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/41189034545",
+  "workflow_conclusion": "success",
+  "lean": {
+    "job_id": 124501802442,
+    "conclusion": "success",
+    "version": "4.19.0",
+    "root_sha256": "83d6cb67edf20a53a971dc8e5bd311cc3c685602f2fe52bacfe29215b1217898",
+    "theorems": [
+      "QikVrtAlgebraicRoot.zero_ne_one",
+      "QikVrtAlgebraicRoot.distributivity_not_forced"
+    ],
+    "axioms": "none",
+    "artifact_id": 13038305659
+  },
+  "finite": {
+    "job_id": 124501802151,
+    "conclusion": "success",
+    "cases": 8,
+    "counterexamples": [
+      [
+        true,
+        false,
+        true
+      ],
+      [
+        true,
+        true,
+        false
+      ]
+    ],
+    "script_sha256": "862d67f4efa0bb9bbacb8f338b78f9fedd2e40998916bac0d7d1a83b7baa5da7",
+    "artifact_id": 13037828796
+  },
+  "independent_lean_kernel": {
+    "status": "NOT_RUN"
+  },
+  "limits": "finite evaluator is independently coded but not a second kernel; results prove only specified countermodel properties; no QIK-VRT runtime claims"
+}
