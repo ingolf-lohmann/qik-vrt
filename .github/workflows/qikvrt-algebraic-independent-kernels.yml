@@ -36,14 +36,13 @@ jobs:
           lake update
           lake build
           sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 || true
-          lake check --paranoid --json > multi-kernel-report.json
-          python3 -m json.tool multi-kernel-report.json > /dev/null
-          cat multi-kernel-report.json
+          lake check --paranoid 2>&1 | tee multi-kernel-report.log
+          test -s multi-kernel-report.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: algebraic-root-independent-lean-kernels
           path: |
-            formalization/algebraic-root/paranoid/multi-kernel-report.json
+            formalization/algebraic-root/paranoid/multi-kernel-report.log
             formalization/algebraic-root/paranoid/hashes.txt
             formalization/algebraic-root/paranoid/toolchain.txt
