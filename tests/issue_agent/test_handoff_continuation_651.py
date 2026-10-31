@@ -13,15 +13,15 @@ class HandoffContinuationContract(unittest.TestCase):
         self.assertIn("Recover unchanged issue review handoff", source)
         self.assertIn("--previous-ref", source)
 
-    def test_admission_receipt_precedes_processing(self):
+    def test_live_identity_gate_precedes_processing_without_false_green(self):
         source = WORKFLOW.read_text(encoding="utf-8")
-        admission = source.index("- name: Verify P0 priority and live pipeline admission")
+        admission = source.index("- name: Verify live runner identity and priority evidence")
         processing = source.index("- name: Evaluate causal retry admission")
         self.assertLess(admission, processing)
-        self.assertIn("DEVOPS_STAGE1_VERIFIED:", source)
-        self.assertIn("runner_and_processor_checks=passed; result=pending", source)
-        self.assertIn("BLOCK: issue lacks authoritative P0 priority label", source)
-        self.assertIn("actions/runs/$GITHUB_RUN_ID", source)
+        self.assertIn("actions: read", source)
+        self.assertIn("P0_LABEL_VERIFIED; native processing still requires a successful handoff.", source)
+        self.assertIn("NORMAL_PRIORITY; no P0 admission claim.", source)
+        self.assertNotIn("DEVOPS_STAGE1_VERIFIED:", source)
 
     def test_integrity_verification_result_is_enforced(self):
         source = WORKFLOW.read_text(encoding="utf-8")
