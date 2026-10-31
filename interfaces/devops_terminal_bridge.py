@@ -37,7 +37,9 @@ class Handler(BaseHTTPRequestHandler):
     for _ in range(30):
      try:
       data=snapshot();digest=hashlib.sha256(json.dumps(data,sort_keys=True).encode()).hexdigest()
-      if digest!=prev:\n       data["event_id"]=digest\n       self.wfile.write(("id: "+digest+"\\ndata: "+json.dumps(data)+"\\n\\n").replace("\\\\n","\\n").encode());prev=digest
+      if digest!=prev:
+       data["event_id"]=digest
+       self.wfile.write(("id: "+digest+"\ndata: "+json.dumps(data)+"\n\n").encode());prev=digest
       else:self.wfile.write(b": keepalive\n\n")
       self.wfile.flush()
      except Exception as e:self.wfile.write(("event: diagnostic\ndata: "+json.dumps({"error":str(e)})+"\n\n").encode());self.wfile.flush()
