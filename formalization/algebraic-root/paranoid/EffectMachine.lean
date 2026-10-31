@@ -34,19 +34,16 @@ theorem effectStep_preserves_safety {Payload : Type} [DecidableEq Payload]
     (safe : effectSafe s) : effectSafe (effectStep s e) := by
   cases e with
   | propose p =>
-      intro h
-      simp [effectStep] at h
+      simp [effectStep, effectSafe]
   | observe p =>
-      unfold effectStep
-      split
-      · intro h
-        simp at h
+      simp only [effectStep]
+      split_ifs with h
+      · simp [effectSafe]
       · exact safe
   | acknowledge =>
-      unfold effectStep
-      split
-      · rename_i h
-        intro _
+      simp only [effectStep]
+      split_ifs with h
+      · intro _
         rcases h with ⟨hsome, heq⟩
         cases hp : s.proposed with
         | none => simp [hp] at hsome
