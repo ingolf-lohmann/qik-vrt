@@ -15,6 +15,8 @@ class Tests(unittest.TestCase):
   self.assertEqual(self.run_case(['PROPOSE '+D,'OBSERVE '+'b'*64,'ACKNOWLEDGE '+D])[-3:],['REJECT','REJECT','STATE 1 0 0'])
  def test_duplicate_ack(self):
   self.assertEqual(self.run_case(['PROPOSE '+D,'OBSERVE '+D,'ACKNOWLEDGE '+D,'ACKNOWLEDGE '+D])[-2:],['REJECT','STATE 3 1 1'])
+ def test_second_proposal_rejected(self):
+  self.assertEqual(self.run_case(['PROPOSE '+D,'PROPOSE '+'b'*64])[-2:],['REJECT','STATE 1 0 0'])
  def test_invalid_digest(self):
   self.assertEqual(self.run_case(['PROPOSE invalid'])[-2:],['REJECT','STATE 0 0 0'])
 if __name__=='__main__': unittest.main()
