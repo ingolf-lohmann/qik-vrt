@@ -194,8 +194,10 @@ jobs:
           from pathlib import Path
           sys.path.insert(0, sys.argv[1])
           from tools.qikvrt_integrity import generate, verify
-          generate(Path.cwd())
-          verify(Path.cwd())
+          generated = generate(Path.cwd())
+          verified = verify(Path.cwd())
+          if not generated.ok or not verified.ok:
+              raise SystemExit('BLOCK: canonical issue-branch integrity generation or verification failed')
           PY
 
       - name: Persist issue work branch
