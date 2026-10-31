@@ -46,6 +46,11 @@ class ReactReleaseContract(unittest.TestCase):
         self.assertLess(src.index('if (!Array.isArray(readback.activated)'), src.index('seen.current.add(rel.version)'))
         self.assertLess(src.index('seen.current.add(rel.version)'), src.index('setRelease(v)'))
 
+    def test_envelope_version_must_match_signed_version_before_effect(self):
+        src = self.source
+        self.assertIn("RELEASE_ENVELOPE_VERSION_MISMATCH", src)
+        self.assertLess(src.index("RELEASE_ENVELOPE_VERSION_MISMATCH"), src.index('fetch("/activated"'))
+
     def test_bootstrap_key_is_not_yet_pinned(self):
         # Deliberate negative control: do not silently claim trusted bootstrap.
         self.assertIn('window.__QIKVRT_RELEASE_KEY__', self.source)
