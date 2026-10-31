@@ -12,9 +12,11 @@ This module is a **new proof checker**, not a Lean replacement. It must not be d
 6. Supply negative controls (mutated propositions, proof terms, missing dependencies and forged acknowledgements). A checker that accepts a negative control fails the gate.
 7. Make the whole pipeline reproducible on an exact Git commit/tree; persist logs and artifact hashes. CI PASS is distinct from deployment, physical effects, or Effect Acknowledgement.
 
-## First C90 implementation milestone
+## Mandatory dependency order: full QIK-VRT mathematics before C90
 
-Start with a deliberately small, explicitly delimited calculus: propositional implication with K and S axiom schemas and modus ponens, using fully parsed proof certificates and structural equality of formulas. Prove soundness of the rules in Lean, then test C90 acceptance and rejection against a generated corpus. This milestone **cannot** certify the existing algebraic or EAP Lean theorems until a complete, independently validated translation of their dependent type-theoretic content is available.
+The complete agreed QIK-VRT Lean model and its requirements/features must be inventoried and formalized first: metatransistor, compositional cascade, serializability, universal transputer, universal terminal, universal data processing, double-canonical storage, Trusted Mesh and Effect Acknowledgement Protocol. Every claim must bind to its exact formal definition, explicit assumptions, theorem, dependency closure, and reproducible external-kernel result. Unknown, unspecified, unproved or merely empirically tested claims must remain OPEN; universality claims require a precise computational semantics and scope. No abstract proxy theorem can be represented as proving the production architecture.
+
+Only after this foundation is proven and independently checked may implementation of the QIK-VRT-compliant C90 Lean-compatible compiler/kernel be accepted as derived from that foundation. A standalone narrow toy calculus is not a substitute for this gate. The C90 implementation must support the required architecture properties and demonstrate semantics preservation, independently checked proof certificates, reproducible compilation, serializable and composable evidence, and performance improvement without weakening correctness. Proof search, compilation, kernel checking and observed physical effects remain distinct trust boundaries.
 
 ## Current gate
 
