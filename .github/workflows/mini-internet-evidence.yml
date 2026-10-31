@@ -40,6 +40,8 @@ jobs:
       - name: Verify independently supplied React 19 source bytes
         run: |
           echo '49025470c3a1b865bd853e71ecd39a464fa09f3519f0d93368f1840146281572  tests/mini_internet/web/app.jsx' | sha256sum --check --strict
+      - name: Execute signed React release verifier under Node WebCrypto
+        run: node tests/mini_internet/web/release_contract.test.cjs
       - name: Explicit scope
         run: |
           echo 'This gate checks ZIP integrity and negative controls only.'
