@@ -50,8 +50,10 @@ function App() {
             const activation = await fetch("/activated", { method: "POST", headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ version: v.manifest.version, sha256: v.digest }) });
             if (!activation.ok) throw new Error("RELEASE_ACTIVATION_HTTP_" + activation.status);
-            const receipt = await activation.json();
-            if (receipt.version !== v.manifest.version || receipt.sha256 !== v.digest || receipt.status !== "ACTIVATED") throw new Error("RELEASE_ACTIVATION_RECEIPT_INVALID");
+            const readbackResponse = await fetch("/readback/active", { cache: "no-store" });
+            if (!readbackResponse.ok) throw new Error("RELEASE_READBACK_HTTP_" + readbackResponse.status);
+            const readback = await readbackResponse.json();
+            if (!Array.isArray(readback.activated) || !readback.activated.some((entry) => entry.version === v.manifest.version && entry.sha256 === v.digest)) throw new Error("RELEASE_ACTIVATION_RECEIPT_INVALID");
             seen.current.add(rel.version);
             setRelease(v);
             log("ACTIVATED " + v.manifest.version + " sha256=" + v.digest.slice(0, 16));
