@@ -424,6 +424,33 @@
       "cli_vectors": 1152,
       "cli_mutation_detected": true,
       "log_sha256": "fb04cd9f1afa5610b8d39daf8de02c9e936218838119242fece06a78a0d8e32e"
-    }
+    },
+    "verified_native_source": {
+      "head": "7d284007176ed3ad1c50f1311666bc404b805b01",
+      "tree": "3d9d7bede3a25dac0843ba08202e5f218de7c9a6",
+      "run": 41242088777,
+      "attempt": 1,
+      "job": 124657887607,
+      "artifact": 13057757589,
+      "archive_sha256": "2a3f88355d274310bf55b062019e92d207e7304565739c3089ab675db6a25a58",
+      "readback": "evidence/formal-receipts/DeliveryReporting/SEVEN_CHECKER_READBACK_7D284007.json",
+      "all_seven_original_receipt_log_and_payload_digests_verified": true,
+      "cli_vectors": 1152,
+      "cli_mutation_detected": true,
+      "manuscript_run": 41242088847,
+      "manuscript_conclusion": "success"
+    },
+    "full_local_validation": {
+      "command": "make test",
+      "exit_code": 0,
+      "reported_python_executions": 2278,
+      "input_tree": "3d9d7bede3a25dac0843ba08202e5f218de7c9a6",
+      "log_sha256": "1dcd2adca56d0f26d5a8e1a32526a3218f3592a1336910666b0b54e5f0b7ec0f",
+      "archive": "evidence/formal-receipts/DeliveryReporting/CLI_BRIDGE_VERIFICATION_7D284007.zip",
+      "archive_sha256": "c32354c7e84248ed3a79ca10a7f797f5e9038c34dd795457e825d08383986896"
+    },
+    "native_delivery_readback": "evidence/native-runtime-acceptance/QIKVRT_DELIVERY_REPORTING_7D284007_NATIVE_CONNECTION.json",
+    "checkpoint_scope": "Original7d checker receipts retained exactly; evidence-only successor does not inherit CI success; fresh current-head native checks remain required.",
+    "adopted_evidence_only_parent": "20d99e34d5eb12995d36f369706685d7fb1411ca"
   }
 }
