@@ -15,11 +15,13 @@ class HandoffContinuationContract(unittest.TestCase):
 
     def test_admission_receipt_precedes_processing(self):
         source = WORKFLOW.read_text(encoding="utf-8")
-        admission = source.index("- name: Acknowledge durable DevOps admission")
+        admission = source.index("- name: Verify P0 priority and live pipeline admission")
         processing = source.index("- name: Evaluate causal retry admission")
         self.assertLess(admission, processing)
-        self.assertIn("DEVOPS_ADMITTED:", source)
-        self.assertIn("Result pending; no EFFECT_ACK_DONE asserted.", source)
+        self.assertIn("DEVOPS_STAGE1_VERIFIED:", source)
+        self.assertIn("runner_and_processor_checks=passed; result=pending", source)
+        self.assertIn("BLOCK: issue lacks authoritative P0 priority label", source)
+        self.assertIn("actions/runs/$GITHUB_RUN_ID", source)
 
     def test_integrity_verification_result_is_enforced(self):
         source = WORKFLOW.read_text(encoding="utf-8")
