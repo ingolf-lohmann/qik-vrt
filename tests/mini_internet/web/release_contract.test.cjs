@@ -92,14 +92,14 @@ async function run() {
   console.log("PASS signed but invalid schema, version and digest format rejected");
 
   fetches = [];
-  const originalRoot = context.PINNED_RELEASE_KEY_JWK;
-  context.PINNED_RELEASE_KEY_JWK = undefined;
-  await assert.rejects(context.testVerifyRelease(good, signature), /RELEASE_TRUST_ROOT_MISSING/);
+  // The trust root is a lexical const in the VM; mutating context properties
+  // cannot alter it. Execute isolated function copies with explicit bad roots.
+  const noRoot = vm.runInContext("(" + fnSource.replaceAll("PINNED_RELEASE_KEY_JWK", "undefined") + ")", context);
+  await assert.rejects(noRoot(good, signature), /RELEASE_TRUST_ROOT_MISSING/);
   assert.equal(fetches.length, 0);
-  context.PINNED_RELEASE_KEY_JWK = { kty: "EC", crv: "P-384" };
-  await assert.rejects(context.testVerifyRelease(good, signature), /RELEASE_TRUST_ROOT_MISSING/);
+  const wrongCurve = vm.runInContext("(" + fnSource.replaceAll("PINNED_RELEASE_KEY_JWK", '({kty:"EC",crv:"P-384"})') + ")", context);
+  await assert.rejects(wrongCurve(good, signature), /RELEASE_TRUST_ROOT_MISSING/);
   assert.equal(fetches.length, 0);
-  context.PINNED_RELEASE_KEY_JWK = originalRoot;
   console.log("PASS missing and wrong-curve trust root rejected before fetch");
 
   fetches = [];
