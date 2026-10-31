@@ -40,6 +40,12 @@ on:
         type: boolean
         default: false
 
+# A newer PR generation supersedes its predecessor before a writer may push.
+# Different PRs and the default branch retain independent execution lanes.
+concurrency:
+  group: qikvrt-ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 permissions:
   contents: write
 
