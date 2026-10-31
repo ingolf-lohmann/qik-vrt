@@ -2,6 +2,9 @@ name: Issue agent backlog resume
 
 # Event-driven only: no scheduled polling. Dispatch requires a causally new input.
 on:
+  workflow_run:
+    workflows: ["QIKVRT CI"]
+    types: [completed]
   workflow_dispatch:
     inputs:
       issue_number:
@@ -21,6 +24,9 @@ concurrency:
 
 jobs:
   resume:
+    # Native workflow completion is a causal event, not a timer.
+    # The admission check below rejects unchanged issue inputs.
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ github.token }}
