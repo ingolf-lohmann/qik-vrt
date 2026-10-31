@@ -37,6 +37,9 @@ jobs:
             exit 1
           fi
           echo 'PASS: invalid certificate rejected'
+      - name: Verify independently supplied React 19 source bytes
+        run: |
+          echo '9e1b430fd0e99b694c3dea1d233c9bdf4fd10e46ce578214497e181acdc70940  tests/mini_internet/web/app.jsx' | sha256sum --check --strict
       - name: Explicit scope
         run: |
           echo 'This gate checks ZIP integrity and negative controls only.'
