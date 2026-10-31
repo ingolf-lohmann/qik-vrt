@@ -69,6 +69,17 @@ jobs:
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
+      - name: Deterministically materialize integrity before complete PR tests
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        shell: bash
+        run: |
+          set -euo pipefail
+          subject="$(git rev-parse --verify HEAD^{commit})"
+          test "$subject" = "${{ github.event.pull_request.head.sha }}"
+          echo "QIKVRT_INTEGRITY_PREFLIGHT subject=$subject"
+          python3 -B tools/qikvrt_integrity.py generate
+          python3 -B tools/qikvrt_integrity.py verify
+          echo "QIKVRT_INTEGRITY_PREFLIGHT_PASS subject=$subject"
       - name: Full compile, launcher, protocol, handler, security and TCP/IP tests
         id: full_test
         continue-on-error: true
@@ -146,7 +157,10 @@ jobs:
           set -euo pipefail
 
           subject="$(git rev-parse --verify HEAD^{commit})"
-          test "$subject" = "$EXPECTED_HEAD"
+          if test "$subject" != "$EXPECTED_HEAD"; then
+            echo "BLOCK exact-head mismatch checked_out=$subject expected=$EXPECTED_HEAD" >&2
+            exit 1
+          fi
 
           # Reuse only the successful complete gate for this exact unchanged
           # subject. Missing proof, integrity drift or a changed ref retains
@@ -166,7 +180,10 @@ jobs:
             subject="$(git rev-parse --verify HEAD^{commit})"
             tree="$(git rev-parse --verify HEAD^{tree})"
             remote="$(git ls-remote --heads origin "refs/heads/$TARGET_REF" | awk 'NR == 1 { print $1 }')"
-            test "$remote" = "$subject"
+            if test "$remote" != "$subject"; then
+              echo "BLOCK stale-writer branch advanced local=$subject remote=$remote ref=$TARGET_REF; await newer exact-head run" >&2
+              exit 1
+            fi
             echo "QIKVRT_REENTRY_SUBJECT iteration=$iteration head=$subject tree=$tree"
 
             # Test the exact active subject. Integrity staleness is the only
