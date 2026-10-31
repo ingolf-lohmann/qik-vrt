@@ -30,7 +30,7 @@ def verify(archive):
             digest, separator, path = line.partition("  ")
             if not separator or len(digest) != 64 or path in entries:
                 raise ValueError("malformed or duplicate SHA256SUMS entry")
-            entries[path] = digest
+            entries[path.removeprefix("./")] = digest
         for name in names:
             if name.endswith("/") or name == "SHA256SUMS":
                 continue
@@ -43,7 +43,7 @@ def verify(archive):
             raise ValueError("manifest coverage mismatch")
         for name in ("out/run1.log", "out/run2.log"):
             log = z.read(name).decode("utf-8")
-            if "33/33" not in log and "33 of 33" not in log:
+            if "RESULT PASS 33 / 33" not in log:
                 raise ValueError("missing claimed test summary: " + name)
         print("PASS: ZIP hash coverage and bundled log claims; NOT a re-execution")
         print("BLOCKED: EAP release, Lean-kernel admission, native network re-execution")
