@@ -264,5 +264,12 @@
       "rerun_by_this_client": false,
       "scope": "Materialization only; no governance, merge, deployment or production effect"
     }
+  },
+  "owner_supplied_formal_artifact_handoff": {
+    "record": "evidence/formal-receipts/DeliveryReporting/OWNER_HANDOFF_20261031.json",
+    "own_kernel_log": "evidence/formal-receipts/DeliveryReporting/own-kernel-run.txt",
+    "vectors_sha256": "5e5be7c610f5d4b7ec41cfc8e0e0154bf8476b0ac48b3d5b2a839745a41080ff",
+    "prior_open_obligations_retained": true,
+    "fresh_final_head_native_acceptance_required": true
   }
 }

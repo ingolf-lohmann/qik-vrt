@@ -1448,7 +1448,7 @@ def run_formal_proof(directory: Path, own_root: Path, external_root: Path) -> in
             "log_sha256": hashlib.sha256(log.read_bytes()).hexdigest(),
             "utc": dt.datetime.now(dt.timezone.utc).isoformat(), "command": checker["check_command"],
             "exit_code": 0 if ok else None,
-            "execution": {"head": git_value("HEAD"), "tree": git_value("HEAD^{tree}"),
+            "execution": {"head": git_value("rev-parse", "HEAD"), "tree": git_value("rev-parse", "HEAD^{tree}"),
                 "run_id": __import__("os").environ.get("GITHUB_RUN_ID"),
                 "run_attempt": __import__("os").environ.get("GITHUB_RUN_ATTEMPT")},
             "implementation_universally_proved": False, "productive_effect": False}
