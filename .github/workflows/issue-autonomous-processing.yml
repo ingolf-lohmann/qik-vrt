@@ -232,6 +232,31 @@ jobs:
             --source-commit "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID" \
             --run-attempt "$GITHUB_RUN_ATTEMPT" --output-directory "$HANDOFF_DIRECTORY"
 
+      - name: Recover unchanged issue review handoff
+        if: steps.admission.outputs.execute == 'false' && steps.admission.outputs.previous_branch_head != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
+          PREVIOUS_BRANCH_HEAD: ${{ steps.admission.outputs.previous_branch_head }}
+        run: |
+          set -euo pipefail
+          # A source NOOP is not a review-handoff success. Resume the exact
+          # published subject without rewriting issue evidence.
+          branch="issue-agent/$ISSUE_NUMBER"
+          git fetch origin "refs/heads/$branch:refs/remotes/origin/$branch"
+          git checkout --detach "$PREVIOUS_BRANCH_HEAD"
+          test "$(git rev-parse HEAD^{commit})" = "$PREVIOUS_BRANCH_HEAD"
+          tree="$(git rev-parse HEAD^{tree})"
+          # handoff.py requires the named local branch and verifies remote HEAD.
+          git switch -c "$branch"
+          echo "HANDOFF_RECOVERY: exact persisted branch $PREVIOUS_BRANCH_HEAD" >> "$GITHUB_STEP_SUMMARY"
+          python3 -B "$TRUSTED_PROCESSOR_ROOT/scripts/issue_agent/handoff.py" \
+            --repository "$REPOSITORY" --issue-number "$ISSUE_NUMBER" \
+            --commit "$PREVIOUS_BRANCH_HEAD" --tree "$tree" \
+            --source-commit "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID" \
+            --run-attempt "$GITHUB_RUN_ATTEMPT" --output-directory "$HANDOFF_DIRECTORY"
+
       - name: Retain exact review handoff receipt
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
