@@ -78,5 +78,25 @@ async function run() {
   const wrong = manifest({sha256:"0".repeat(64)});
   await assert.rejects(context.testVerifyRelease(wrong, await sign(wrong)), /RELEASE_HASH_MISMATCH/);
   console.log("PASS signed incorrect digest rejected");
+  fetches = [];
+  for (const extra of [
+    {schema:"unrecognized.release.v0"},
+    {version:"v-1"},
+    {sha256:"invalid"}
+  ]) {
+    const text = manifest(extra);
+    await assert.rejects(context.testVerifyRelease(text, await sign(text)),
+      /RELEASE_(SCHEMA_MISMATCH|VERSION_INVALID|DIGEST_INVALID)/);
+    assert.equal(fetches.length, 0);
+  }
+  console.log("PASS signed but invalid schema, version and digest format rejected");
+
+  fetches = [];
+  const other = await subtle.generateKey({ name: "ECDSA", namedCurve: "P-256" }, true, ["sign", "verify"]);
+  const otherSig = Buffer.from(await subtle.sign({name:"ECDSA",hash:"SHA-256"},other.privateKey,encoder.encode(good))).toString("base64");
+  await assert.rejects(context.testVerifyRelease(good, otherSig), /RELEASE_SIGNATURE_INVALID/);
+  assert.equal(fetches.length, 0);
+  console.log("PASS foreign signing key rejected");
+
 }
 run().catch((err) => { console.error(err); process.exitCode = 1; });
