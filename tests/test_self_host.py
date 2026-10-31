@@ -598,6 +598,37 @@ class DockerDeliveryCycleTests(unittest.TestCase):
 
 
 class WorkflowRuntimeTests(unittest.TestCase):
+    def test_host_receipt_is_available_at_the_workflow_artifact_path(self):
+        # Execute the original receipt-writing tail with a real durable path
+        # distinct from RUNNER_TEMP, as on the admitted host.
+        import ast
+        import textwrap
+        workflow = (ROOT / '.github/workflows/qikvrt_effect_ack_http_terminal.yml').read_text()
+        block = workflow.split('      - name: Verify existing host admission and restart the same installed supervisor', 1)[1]
+        script = textwrap.dedent(block.split("python3 -B - <<'PY'\n", 1)[1].split('\n          PY', 1)[0])
+        tree = ast.parse(script)
+        start = next(i for i, node in enumerate(tree.body) if isinstance(node, ast.Assign)
+                     and any(isinstance(target, ast.Name) and target.id == 'receipt' for target in node.targets))
+        tail = ast.Module(body=tree.body[start:], type_ignores=[])
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            durable = root / 'durable'; durable.mkdir()
+            transient = root / 'runner' / 'qikvrt-production-delivery'; transient.mkdir(parents=True)
+            output = root / 'outputs'
+            values = {'host': host, 'delivery': durable, 'pathlib': __import__('pathlib'), 'os': os,
+                'plan': {'config_sha256': 'c' * 64, 'node_id': 'fixture:host', 'unit_text': 'private unit'},
+                'descriptor': {'manifest_sha256': 'd' * 64}, 'config_document': {'adapter': 'none'}}
+            with mock.patch.dict(os.environ, {'RUNNER_TEMP': str(root / 'runner'), 'GITHUB_OUTPUT': str(output)}):
+                exec(compile(tail, '<original-host-receipt-tail>', 'exec'), values)
+            name = 'HOST_DEPLOYMENT_READBACK.json'
+            self.assertEqual((durable / name).read_bytes(), (transient / name).read_bytes())
+            receipt = json.loads((transient / name).read_bytes())
+            self.assertFalse(receipt['public_readback_verified'])
+            self.assertFalse(receipt['effect_ack_done'])
+            self.assertNotIn('unit_text', receipt)
+        product_step = workflow.split('      - name: Read exact product origin from an independent Linux runner', 1)[1]
+        self.assertIn('--require-eap-http', product_step)
+
     def test_terminal_lane_requires_real_supervisor_recovery_without_host_acceptance_inference(self):
         workflow=(ROOT/'.github/workflows/qikvrt_effect_ack_http_terminal.yml').read_text()
         start=workflow.index('- name: Verify existing native systemd crash and admission restoration recovery')
@@ -1550,6 +1581,9 @@ assert.equal(transports,0);console.log('PROVIDER_NEGATIVE_CONTROL_TRANSPORT_COUN
         receipt=json.loads(p.stdout)
         self.assertEqual(receipt['event_sequence'],len(expected))
         self.assertFalse(receipt['effect_ack_done'])
+        guarded=subprocess.run([*args,'--require-eap-http'],capture_output=True,text=True,timeout=10)
+        self.assertNotEqual(guarded.returncode,0)
+        self.assertEqual(json.loads(guarded.stdout)['reason'],'HOLD_EXACT_EAP_HTTPS_ORIGIN')
         p=subprocess.run([*args[:6],'0'*64,*args[7:]],capture_output=True,text=True,timeout=10)
         self.assertNotEqual(p.returncode,0)
 

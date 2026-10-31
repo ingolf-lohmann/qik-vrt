@@ -84,6 +84,71 @@ class EapExportTests(unittest.TestCase):
         code, state = self.get('/api/eap/state'); self.assertEqual(code, 200)
         self.assertEqual(state['subject']['head'], self.head)
         self.assertEqual(state['subject']['tree'], self.tree)
+        # Read the actual cold-exported HTTP service from a separate Node
+        # client. Each adverse case keeps HTTP 200 where appropriate, so a
+        # status-only checker cannot pass the changed subject or contract.
+        reader = r"""
+import {pathToFileURL} from 'node:url';
+const {verifyEapPublic, readbackFailure} = await import(pathToFileURL(process.argv[2]));
+const plan = {public_url:'https://raumzeitterminal.de',
+  source_repository:'ingolf-lohmann/qik-vrt',
+  ...JSON.parse(process.argv[4])};
+const outcomes = {};
+for (const variant of ['valid','missing','html','version','discovery','subject','release','oversize','redirect','wrong-origin']) {
+  const calls = [];
+  const request = async (url, options) => {
+    const path = new URL(url).pathname;
+    if (options.redirect !== 'error' || options.cache !== 'no-store' || options.headers.authorization ||
+        options.headers.Authorization || options.method && options.method !== 'GET') throw Error('TEST_REQUEST_BOUNDARY');
+    calls.push(path);
+    const response = await fetch(process.argv[3] + path, options);
+    if (variant === 'valid') return response;
+    if (variant === 'missing' && path === '/api/eap/capabilities') return new Response('{}', {status:404});
+    if (variant === 'html' && path === '/api/eap/capabilities') return new Response('<html>wrong service</html>');
+    if (variant === 'oversize' && path === '/api/eap/capabilities') return new Response(' '.repeat(32769));
+    if (variant === 'redirect' && path === '/api/eap/capabilities') return new Response(null, {status:302});
+    const value = await response.json();
+    if (variant === 'version' && path === '/api/eap/capabilities') value.supported_versions = [2];
+    if (variant === 'discovery' && path === '/.well-known/effect-ack') value.effect_endpoint = '/api/owner/effect';
+    if (variant === 'subject' && path === '/api/eap/state') value.subject.head = '0'.repeat(40);
+    if (variant === 'release' && path === '/api/eap/state') value.effect_ack_done = true;
+    return new Response(JSON.stringify(value), {status:response.status});
+  };
+  try {
+    const result = await verifyEapPublic({...plan,
+      ...(variant === 'wrong-origin' ? {public_url:'http://raumzeitterminal.de'} : {})}, request);
+    outcomes[variant] = {result,calls};
+  } catch (error) { outcomes[variant] = {failure:readbackFailure(error),calls}; }
+}
+console.log(JSON.stringify(outcomes));
+"""
+        checked = subprocess.run(['node', '--input-type=module', '-e', reader, 'eap-readback-fixture',
+            str(self.export / 'tools/qikvrt_mesh_monitor_readback.mjs'), self.url,
+            json.dumps({'source_head': self.head, 'source_tree': self.tree, 'native_subject': state['subject']})],
+            capture_output=True, text=True, timeout=25)
+        self.assertEqual(checked.returncode, 0, checked.stdout + checked.stderr)
+        outcomes = json.loads(checked.stdout)
+        accepted = outcomes['valid']['result']
+        self.assertEqual(accepted['state'], 'PUBLIC_EAP_DISCOVERY_AND_SUBJECT_VERIFIED')
+        self.assertEqual(accepted['subject'], state['subject'])
+        self.assertEqual(len(accepted['observations']), 3)
+        for observation in accepted['observations']:
+            self.assertEqual(observation['status'], 200)
+            self.assertRegex(observation['sha256'], r'^[0-9a-f]{64}$')
+            with urllib.request.urlopen(self.url + observation['path'], timeout=6) as response:
+                raw = response.read()
+            self.assertEqual(observation['sha256'], host.digest(raw))
+            self.assertEqual(observation['bytes'], len(raw))
+        self.assertFalse(accepted['effect_ack_done'])
+        self.assertFalse(accepted['authenticated_input_acceptance_verified'])
+        for variant, outcome in outcomes.items():
+            if variant == 'valid': continue
+            with self.subTest(variant=variant):
+                self.assertIn('failure', outcome)
+                self.assertFalse(outcome['failure']['effect_ack_done'])
+        self.assertEqual(outcomes['wrong-origin']['calls'], [])
+        self.assertEqual(outcomes['missing']['calls'], ['/.well-known/effect-ack', '/api/eap/capabilities'])
+        self.assertEqual(self.inputs(), [])
         value = {'schema': 'qikvrt_owner_rest_input_v1', 'request_id': 'cold-export-eap-one', 'subject': state['subject'],
                  'input': {'schema': 'qikvrt_terminal_input_v1', 'text': 'Original exported HTTP path: Grüße Ω', 'audio': None, 'video': None}}
         fields = {'Content-Type': 'application/json', 'Effect-Ack-Request': 'v=1, mode=prepare'}

@@ -1,0 +1,241 @@
+{
+  "artificial_cognitive_contribution": {
+    "scope": "Verify current DNS/HTTP evidence, reproduce and repair missing host artifact receipt, extend original independent public EAP reader and regressions.",
+    "system": "OpenAI Codex"
+  },
+  "diagnostic_corrections": [
+    "A configured custom Site domain is distinct from an actual DNS route; no double-active-origin or certificate cause inferred.",
+    "An IP certificate mismatch does not prove a domain-SNI certificate mismatch.",
+    "A workflow_dispatch source path is not a callable connector operation.",
+    "deploy_existing_host restarts an existing admitted supervisor; it does not provision certificates, private profile or Mirror grant.",
+    "The proxy mediated --resolve probe did not establish a direct origin connection, SNI certificate or host identity."
+  ],
+  "effect_ack_done": false,
+  "files": {
+    "dns-local.json": {
+      "bytes": 199,
+      "sha256": "e8de0d441a3997fc8a7438a6331b0b9117f878610fe61b9416407e20a5ca798e"
+    },
+    "local-adapter-health.json": {
+      "bytes": 623,
+      "sha256": "abd54121ed7cf63e4a70189939df7f9c11521b168e896a91ff7b20b41222be07"
+    },
+    "make-test-result.json": {
+      "bytes": 170,
+      "sha256": "4534f82261bc167f4188f0324f78a4c44f6425a1498aeb03f46fea2e1f0b08aa"
+    },
+    "make-test.txt": {
+      "bytes": 444453,
+      "sha256": "a7ea3107efb386c149e959622e8449f471414ac3e415f94a67539bd93b471d75"
+    },
+    "origin-named-sni.json": {
+      "bytes": 899,
+      "sha256": "2c9609e91424625a5e272486071de691e0c53d55342d9e8d64bedd5303f3bfa8"
+    },
+    "public-discovery.json": {
+      "bytes": 836,
+      "sha256": "ee8d85b91b0f030d4fd5d72a20f00562508800e3340e8bb6a166f0e4db3fdb6f"
+    },
+    "reader-regressions-result.json": {
+      "bytes": 647,
+      "sha256": "763620961b9eccb8dca2fee60e2d10d7ece3e60b8ced4b6502286df1f079aab0"
+    },
+    "reader-regressions.txt": {
+      "bytes": 890,
+      "sha256": "4f0ce5770d9cde4474b6a5ac9c8f77d8517556cf746623e9f13fd12b40ac7ecc"
+    },
+    "self-host-tests-result.json": {
+      "bytes": 211,
+      "sha256": "38b3fa0e936c7880e6c29398df157a4de64bc62a74c40fbd76200b282ec472d0"
+    },
+    "self-host-tests.txt": {
+      "bytes": 33263,
+      "sha256": "2bd4227ea0f3385052bb46c44a71467618a4f37b69fc802eb39d9ab933894439"
+    },
+    "snapshot-exact.json": {
+      "bytes": 13321,
+      "sha256": "7c14dd1c350e50705edfcff22fe35b54099583437f441dd4d3369c6b33743247"
+    },
+    "targeted-tests-result.json": {
+      "bytes": 196,
+      "sha256": "e530edb8067b4d7cf5c0f0114b0f9d5a80e664e66c0a96cd14450d98b7bfb666"
+    },
+    "targeted-tests.txt": {
+      "bytes": 1518,
+      "sha256": "005d6d8224083324ae2090857e6173142fb36acd9e7be0f203a86e589c3db178"
+    }
+  },
+  "host_or_dns_mutations_executed": false,
+  "human_contribution": {
+    "principal": "Ingolf Lohmann",
+    "requirement": "Nachbesserung der REST-Nutzbarkeit; bestehende A1-A6 Host/DNS/EAP-Pfade verwenden."
+  },
+  "log_continuity": {
+    "durable_capture": "Exact public snapshot, public/adapter probes, targeted test log, complete make test log and complete failed supplementary S1 log.",
+    "initial_fixture_correction": "The first EAP regression invocation accidentally selected the imported module as process.argv[1], invoking its CLI. Corrected fixture argument binding; the final independent-process EAP controls passed. This was a fixture failure, not evidence of a deployed target failure.",
+    "initial_route_preflight": "Repository preflight became available after bootstrap reads; no retrospective claim that those initial reads passed it.",
+    "initial_tool_transcript_gap": "Bootstrap connector output and initial regression/fixture failures were retained in the conversation tool transcript, not fully copied as raw durable logs; failure summaries above are scope-bound. No complete durable session log is claimed."
+  },
+  "mirror_delivery_executed": false,
+  "new_executor_or_scheduler": false,
+  "observed_at": "2026-10-31T21:17:23.932518+00:00",
+  "open_work": [
+    {
+      "id": "A1_ORIGINAL_ORIGIN_BINDING",
+      "next_action": "Authenticate original host identity and current custom-domain/DNS settings; choose exact existing origin under retained Owner authorization, without inferring host IP from recursive DNS.",
+      "state": "OPEN"
+    },
+    {
+      "id": "A2_PROTECTED_ORIGINAL_HOST_TLS_EAP",
+      "next_action": "Reconnect existing original SSO/mTLS consumer; verify domain certificate chain/SNI and existing sealed EAP configuration/grants; use the existing governed host activation/restart.",
+      "state": "OPEN"
+    },
+    {
+      "id": "A3_PROVIDER_DNS_CUTOVER",
+      "next_action": "Use initial existing IONOS workflow readback through a supported admitted dispatch, then the fresh provider digest and independently verified target IPv4 for bounded apply if required.",
+      "state": "OPEN"
+    },
+    {
+      "id": "A4_PUBLIC_EAP_READBACK",
+      "next_action": "Integrate exact reviewed source and run the existing independent product reader with --require-eap-http against the deployed source.",
+      "state": "OPEN"
+    },
+    {
+      "id": "A5_MIRROR_PRIVATE_CREDENTIAL_AND_NETWORK",
+      "next_action": "Use original protected Mirror credential delivery and an admitted actual network path; never export credentials into source or public evidence.",
+      "state": "OPEN"
+    },
+    {
+      "id": "A6_MIRROR_QUEUE_RECEIPTS",
+      "next_action": "Recover exact original queue and client110ad19a from admitted sources, preserve NOT_SENT until real transfer and named-host receipt readback.",
+      "state": "OPEN"
+    },
+    {
+      "id": "SOURCE_TEST_REVIEW_INTEGRATION",
+      "next_action": "Finish full local gates, persist exact branch/tree and inspect native CI; only original governance can admit Main integration.",
+      "state": "OPEN"
+    }
+  ],
+  "public_readback": {
+    "A": [
+      "217.160.0.52"
+    ],
+    "AAAA": [
+      "2001:8d8:100f:f000::205"
+    ],
+    "byte_verified": true,
+    "http_status": 525,
+    "id": "2e2f46e1-339d-4255-ab41-faed0e78faac",
+    "readback_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/readback?id=2e2f46e1-339d-4255-ab41-faed0e78faac",
+    "scope": "Public recursive DNS and observer HTTP only; no authenticated registrar or origin TLS certificate readback.",
+    "snapshot_sha256": "7c14dd1c350e50705edfcff22fe35b54099583437f441dd4d3369c6b33743247"
+  },
+  "route_policy_sha256": "22eee596b233e52d8eeabb2144b53c53e1fba436958cc9c1eee5977d99073948",
+  "schema": "qikvrt-rest-api-quality-repair/v1",
+  "source_access": {
+    "adapter_address": "http://127.0.0.1:8766/health",
+    "github_connector_initial_workflow_dispatch": "NOT_EXPOSED",
+    "github_repository_permissions": {
+      "admin": true,
+      "pull": true,
+      "push": true
+    },
+    "native_open_gates": [
+      "ADMITTED_MESH_RUNTIME_ENDPOINT"
+    ],
+    "native_operator_authorized": true,
+    "native_runtime_ready": false,
+    "observer_github_rate_limit": {
+      "remaining": 0,
+      "reset_at": "2026-10-31T21:37:36.000Z",
+      "scope": "Observer provider connection only; authenticated GitHub connector access independently succeeded.",
+      "status": 403
+    },
+    "original_adapter_health": "CONNECTION_REFUSED_IN_THIS_RUNTIME",
+    "protected_remote_credentials": "UNKNOWN; local absence is not remote absence"
+  },
+  "source_predecessor": {
+    "head": "5a42baf45748e4407a8fa16aef287a77873e788d",
+    "ref": "refs/heads/main",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "tree": "3f6e816b6b496eeb9ce8777d8fb93d95717be9ae"
+  },
+  "source_repairs": [
+    {
+      "failure_reproduced": "The original receipt-writing tail writes only to durable delivery while upload-artifact reads RUNNER_TEMP/qikvrt-production-delivery/HOST_DEPLOYMENT_READBACK.json. The regression raises FileNotFoundError at the upload path before repair.",
+      "file": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+      "repair": "Write and compare identical receipt bytes in both existing locations."
+    },
+    {
+      "failure": "The existing generic public client check does not observe the three EAP discovery/status endpoints.",
+      "file": "tools/qikvrt_mesh_monitor_readback.mjs",
+      "repair": "Explicit --require-eap-http in the existing terminal workflow; bounded GETs, exact discovery version/endpoint/auth contract, exact native subject, UTC and byte hashes; no protected effect."
+    }
+  ],
+  "validation": {
+    "full_make_test": {
+      "command": [
+        "make",
+        "test"
+      ],
+      "completed_at": "2026-10-31T21:22:24.803574+00:00",
+      "exit_code": 0,
+      "reported_unittest_cases": 2259,
+      "scope": "Code and original source checks; subsequent evidence and isolated reader-test additions require final integrity and native exact-head CI.",
+      "started_at": "2026-10-31T21:17:42.957607+00:00"
+    },
+    "integrity": "Original generator and verify PASS before full test; regenerated again for final evidence.",
+    "native_exact_candidate_ci": "PENDING",
+    "public_eap_variants": 10,
+    "reader_regressions": {
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "tests.test_self_host.StandaloneTests.test_sigkill_restart_preserves_acknowledged_original_bytes_and_independent_readback",
+        "tests.test_self_host.StandaloneTests.test_cold_start_has_durable_snapshot_before_first_independent_readback",
+        "tests.test_self_host_container.ContainerControls.test_independent_reader_reports_only_typed_guard_codes",
+        "tests.test_self_host_container.ContainerControls.test_public_reader_binds_the_delivered_profile_without_claiming_firefox_for_temdd"
+      ],
+      "completed_at": "2026-10-31T21:23:18.374284+00:00",
+      "exit_code": 0,
+      "reported_unittest_cases": 4,
+      "scope": "Actual exported generic HTTP reader, restart, wrong manifest, explicit EAP origin guard and sanitized failure codes."
+    },
+    "supplemental_self_host": {
+      "classification": "LOCAL_RUNTIME_UNIX_SOCKET_RESTRICTION; no production target failure inferred; no skip, mock or weakened gate",
+      "command": [
+        "make",
+        "repository-monitor-test",
+        "self-host-test"
+      ],
+      "completed_at": "2026-10-31T21:22:01.471362+00:00",
+      "errors": 10,
+      "exit_code": 2,
+      "first_failure": "socket.socket(AF_UNIX): PermissionError(1, Operation not permitted)",
+      "remaining_recipe_steps": "NOT_EXECUTED_AFTER_DEPENDENCY_FAILURE",
+      "reported_unittest_cases": 60,
+      "started_at": "2026-10-31T21:21:55.209562+00:00"
+    },
+    "targeted": {
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "tests.test_self_host.WorkflowRuntimeTests",
+        "tests.test_self_host_eap"
+      ],
+      "completed_at": "2026-10-31T21:16:38.244767+00:00",
+      "exit_code": 0
+    },
+    "targeted_cases": 7,
+    "workflow_yaml": {
+      "shell_blocks_parsed": 18,
+      "state": "PASS"
+    }
+  }
+}

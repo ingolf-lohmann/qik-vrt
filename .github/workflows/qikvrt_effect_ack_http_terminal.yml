@@ -458,7 +458,14 @@ jobs:
           subprocess.run(['systemctl','is-active','--quiet',unit],check=True,timeout=10)
           receipt={k:v for k,v in plan.items() if k not in ('unit_text','path_unit_text')}
           receipt.update(state='EXISTING_SUPERVISOR_RESTARTED_PUBLIC_ACCEPTANCE_PENDING',public_readback_verified=False,effect_ack_done=False)
-          (delivery/'HOST_DEPLOYMENT_READBACK.json').write_bytes(host.raw_json(receipt))
+          receipt_bytes=host.raw_json(receipt)
+          (delivery/'HOST_DEPLOYMENT_READBACK.json').write_bytes(receipt_bytes)
+          # The durable host directory differs from the downloaded artifact
+          # directory. Preserve the same bytes where upload-artifact reads them.
+          published=pathlib.Path(os.environ['RUNNER_TEMP'])/'qikvrt-production-delivery'/'HOST_DEPLOYMENT_READBACK.json'
+          published.write_bytes(receipt_bytes)
+          if published.read_bytes()!=(delivery/'HOST_DEPLOYMENT_READBACK.json').read_bytes():
+              raise SystemExit('HOST_RECEIPT_PUBLICATION_MISMATCH')
           with open(os.environ['GITHUB_OUTPUT'],'a') as out:
               out.write('manifest_pin='+descriptor['manifest_sha256']+'\nconfig_pin='+plan['config_sha256']+'\nnode_id='+plan['node_id']+'\nadapter='+config_document['adapter']+'\n')
           PY
@@ -499,7 +506,7 @@ jobs:
           package="$RUNNER_TEMP/qikvrt-independent-package"
           mkdir "$package"
           tar -xf "$RUNNER_TEMP/qikvrt-independent-delivery/package.tar" -C "$package"
-          node tools/qikvrt_mesh_monitor_readback.mjs --self-host "$package" https://raumzeitterminal.de "$MANIFEST_PIN" "$CONFIG_PIN" "$NODE_ID" "$ADAPTER" > "$RUNNER_TEMP/QIKVRT_PRODUCT_HTTP_READBACK.json"
+          node tools/qikvrt_mesh_monitor_readback.mjs --self-host "$package" https://raumzeitterminal.de "$MANIFEST_PIN" "$CONFIG_PIN" "$NODE_ID" "$ADAPTER" --require-eap-http > "$RUNNER_TEMP/QIKVRT_PRODUCT_HTTP_READBACK.json"
       - name: Preserve independent exact-host HTTP result
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a

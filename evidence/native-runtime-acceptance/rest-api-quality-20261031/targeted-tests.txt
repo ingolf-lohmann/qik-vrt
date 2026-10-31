@@ -1,0 +1,12 @@
+test_batch003_requires_s1_runtime_and_tests_before_persistence (tests.test_self_host.WorkflowRuntimeTests.test_batch003_requires_s1_runtime_and_tests_before_persistence) ... ok
+test_general_ci_provisions_declared_s1_runtimes_before_complete_tests (tests.test_self_host.WorkflowRuntimeTests.test_general_ci_provisions_declared_s1_runtimes_before_complete_tests) ... ok
+test_host_receipt_is_available_at_the_workflow_artifact_path (tests.test_self_host.WorkflowRuntimeTests.test_host_receipt_is_available_at_the_workflow_artifact_path) ... ok
+test_terminal_lane_requires_real_supervisor_recovery_without_host_acceptance_inference (tests.test_self_host.WorkflowRuntimeTests.test_terminal_lane_requires_real_supervisor_recovery_without_host_acceptance_inference) ... ok
+test_cold_export_owns_complete_public_route_and_original_durable_commit_after_restart (tests.test_self_host_eap.EapExportTests.test_cold_export_owns_complete_public_route_and_original_durable_commit_after_restart) ... ok
+test_monitor_rejects_duplicate_security_headers_and_bounded_route_without_effect (tests.test_self_host_eap.EapExportTests.test_monitor_rejects_duplicate_security_headers_and_bounded_route_without_effect) ... ok
+test_profile_refuses_alternate_ingress_missing_grants_or_wrong_origin_before_listener (tests.test_self_host_eap.EapExportTests.test_profile_refuses_alternate_ingress_missing_grants_or_wrong_origin_before_listener) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 13.858s
+
+OK

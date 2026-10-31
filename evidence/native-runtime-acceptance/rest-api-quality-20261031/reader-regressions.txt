@@ -1,0 +1,9 @@
+test_sigkill_restart_preserves_acknowledged_original_bytes_and_independent_readback (tests.test_self_host.StandaloneTests.test_sigkill_restart_preserves_acknowledged_original_bytes_and_independent_readback) ... ok
+test_cold_start_has_durable_snapshot_before_first_independent_readback (tests.test_self_host.StandaloneTests.test_cold_start_has_durable_snapshot_before_first_independent_readback) ... ok
+test_independent_reader_reports_only_typed_guard_codes (tests.test_self_host_container.ContainerControls.test_independent_reader_reports_only_typed_guard_codes) ... ok
+test_public_reader_binds_the_delivered_profile_without_claiming_firefox_for_temdd (tests.test_self_host_container.ContainerControls.test_public_reader_binds_the_delivered_profile_without_claiming_firefox_for_temdd) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 7.190s
+
+OK

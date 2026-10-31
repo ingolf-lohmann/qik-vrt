@@ -79,5 +79,17 @@
   "host_binding_verified": false,
   "vps_installed": false,
   "public_production_verified": false,
-  "effect_ack_done": false
+  "effect_ack_done": false,
+  "rest_api_quality_repair_20261031": {
+    "predecessor_head": "5a42baf45748e4407a8fa16aef287a77873e788d",
+    "predecessor_tree": "3f6e816b6b496eeb9ce8777d8fb93d95717be9ae",
+    "evidence": "evidence/native-runtime-acceptance/rest-api-quality-20261031/REPAIR_READBACK.json",
+    "repairs": [
+      "Preserve the actual host receipt at the artifact upload path",
+      "Require bounded exact-subject EAP public GET readback in existing terminal workflow"
+    ],
+    "all_original_obligations_retained": true,
+    "native_runtime_ready": false,
+    "productive_effect_ack_done": false
+  }
 }

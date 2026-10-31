@@ -56,18 +56,57 @@ export function pinnedIPv4Request(origin, address) {
   };
 }
 
-export async function verifyClient(plan = contract, request = fetch) {
-  require(plan, 'EXACT_READBACK_PLAN_REQUIRED');
-  async function get(path, text = false) {
+function publicReader(plan, request, observations = [], maxBytes = 8*1024*1024) {
+  return async function get(path, text = false) {
     const response = await request(plan.public_url + path, {redirect:'error', cache:'no-store', signal:AbortSignal.timeout(15000), headers:{'cache-control':'no-cache'}});
     require(response.status === 200, 'HOLD_PUBLIC_HTTP');
     const chunks = []; let size = 0;
     for await (const chunk of response.body) {
-      size += chunk.length; require(size <= 8*1024*1024, 'HOLD_PUBLIC_RESPONSE_TOO_LARGE'); chunks.push(chunk);
+      size += chunk.length; require(size <= maxBytes, 'HOLD_PUBLIC_RESPONSE_TOO_LARGE'); chunks.push(chunk);
     }
     const bytes = Buffer.concat(chunks);
+    observations.push({path, status:response.status, bytes:bytes.length, sha256:sha(bytes), observed_at:new Date().toISOString()});
     return text ? bytes.toString('utf8') : JSON.parse(bytes.toString('utf8'));
-  }
+  };
+}
+
+export async function verifyEapPublic(plan, request = fetch) {
+  require(plan?.public_url === 'https://raumzeitterminal.de', 'HOLD_EXACT_EAP_HTTPS_ORIGIN');
+  const subject = plan.native_subject;
+  require(subject?.repository === plan.source_repository && subject?.head === plan.source_head &&
+    subject?.tree === plan.source_tree && /^[a-f0-9]{40}$/.test(subject.head || '') &&
+    /^[a-f0-9]{40}$/.test(subject.tree || '') && Number.isSafeInteger(subject.pr) && subject.pr > 0,
+    'HOLD_EXPECTED_EAP_NATIVE_SUBJECT');
+  const observations = [];
+  const get = publicReader(plan, request, observations, 32768);
+  const discovery = await get('/.well-known/effect-ack');
+  const capabilities = await get('/api/eap/capabilities');
+  const state = await get('/api/eap/state');
+  const supportsV1 = value => value?.message_type === 'effect-ack-capabilities' &&
+    Array.isArray(value.supported_versions) && value.supported_versions.length === 1 && value.supported_versions[0] === 1;
+  const specification = 'https://datatracker.ietf.org/doc/html/draft-lohmann-qikvrt-effect-ack-03';
+  const effectScope = 'ORIGINAL_OWNER_REST_DURABLE_TERMINAL_INPUT';
+  require(supportsV1(capabilities) && supportsV1(discovery?.core) &&
+    JSON.stringify(discovery.versions) === '[1]' && JSON.stringify(discovery.modes) === '["prepare","commit"]' &&
+    discovery.specification === specification && discovery.effect_scope === effectScope &&
+    discovery.effect_endpoint === '/api/eap/effect' && discovery.record_template === '/api/eap/records/{sha256}' &&
+    discovery.authentication === 'EXISTING_OWNER_REST_BEARER_AND_QIKVRT_OWNER' && discovery.ordinary_release === false,
+    'HOLD_EAP_PUBLIC_DISCOVERY_CONTRACT');
+  require(state?.schema === 'qikvrt_eap_http_status_v1' && state.state === 'NATIVE_EAP_HTTP_READY' &&
+    state.specification === specification && state.effect_scope === effectScope &&
+    state.ordinary_release === false && state.effect_ack_done === false &&
+    Object.keys(subject).length === Object.keys(state.subject || {}).length &&
+    Object.entries(subject).every(([key, value]) => state.subject?.[key] === value),
+    'HOLD_EAP_PUBLIC_NATIVE_SUBJECT');
+  return {state:'PUBLIC_EAP_DISCOVERY_AND_SUBJECT_VERIFIED', subject, observations,
+    scope:'PUBLIC_GET_ONLY; NOT_AUTHENTICATED_PREPARE_COMMIT_RECEIPT_OR_PEER_DELIVERY',
+    authenticated_input_acceptance_verified:false, effect_ack_done:false};
+}
+
+export async function verifyClient(plan = contract, request = fetch) {
+  require(plan, 'EXACT_READBACK_PLAN_REQUIRED');
+  const get = publicReader(plan, request);
+  let nativeSubject;
   function binding(node) {
     const observed = Date.parse(node.observed_at);
     require(Number.isFinite(observed) && Math.abs(Date.now()-observed) <= 120000, 'HOLD_PUBLIC_OBSERVATION_NOT_FRESH');
@@ -107,6 +146,7 @@ export async function verifyClient(plan = contract, request = fetch) {
       terminal.subject?.tree === plan.source_tree && Number.isSafeInteger(terminal.subject?.pr) && terminal.subject.pr > 0 &&
       /^[a-f0-9]{32}$/.test(terminal.ledger_id || '') && terminal.public_event_bodies === false,
       'HOLD_SELF_HOST_NATIVE_SUBJECT');
+    nativeSubject = terminal.subject;
   }
   const health = await get('/health'); binding(health);
   const node = await get('/api/node'); binding(node);
@@ -137,6 +177,7 @@ export async function verifyClient(plan = contract, request = fetch) {
   require(after.epoch === replica.epoch && after.node_id === replica.node_id && after.sequence === replica.sequence &&
     after.digest === replica.digest && after.event_sequence === replica.event_sequence && after.journal_head_digest === replica.event_digest,
     'HOLD_READBACK_CHANGED_OR_CLIENT_DIFFERS');
+  const eapPublic = plan.require_eap_http ? await verifyEapPublic({...plan, native_subject:nativeSubject}, request) : null;
   return {schema:'qikvrt-monitor-independent-client-readback/v1', state:'CLIENT_BYTE_READBACK_VERIFIED',
     public_url:plan.public_url, source_head:after.source_head, source_tree:after.source_tree,
     node_observed_at:after.observed_at, readback_observed_at:new Date().toISOString(),
@@ -145,6 +186,7 @@ export async function verifyClient(plan = contract, request = fetch) {
     journal_head_digest:replica.event_digest, health_state:after.health.state,
     health_checks:after.health.checks.map(check=>({id:check.id,state:check.state})),
     webhook_registration:after.webhook_registration,
+    ...(eapPublic ? {eap_public:eapPublic} : {}),
     scope:'Fresh HTTP health/source and snapshot/full-journal validation by a separate client process. No provider delivery, streaming continuity or whole-system-health inference.',
     effect_ack_done:false};
 }
@@ -154,7 +196,12 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     let plan = contract;
     let request = fetch;
     if (process.argv[2] === '--self-host') {
-      const [packageRoot, url, manifestPin, configPin, nodeId, adapter, ipv4Pin] = process.argv.slice(3);
+      const arguments_ = process.argv.slice(3);
+      const requireEapHttp = arguments_.includes('--require-eap-http');
+      const positional = arguments_.filter(value => value !== '--require-eap-http');
+      require(positional.length >= 6 && positional.length <= 7 &&
+        arguments_.length === positional.length + Number(requireEapHttp), 'HOLD_READBACK_ARGUMENTS');
+      const [packageRoot, url, manifestPin, configPin, nodeId, adapter, ipv4Pin] = positional;
       const raw = readFileSync(resolve(packageRoot, 'MANIFEST.json'));
       require(sha(raw) === manifestPin && /^[a-f0-9]{64}$/.test(configPin || '') &&
         /^[A-Za-z0-9_.:-]{1,100}$/.test(nodeId || '') && ['none','github'].includes(adapter), 'HOLD_EXPECTED_PINS_REQUIRED');
@@ -165,7 +212,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
       require(m.schema === 'qikvrt-self-host-package/v1' && m.effect_ack_done === false, 'HOLD_MANIFEST_SCHEMA');
       const volume = {schema:'qikvrt-self-host-volume/v1',node_id:nodeId,manifest_sha256:manifestPin,
         config_sha256:configPin,source_head:m.source_head,source_tree:m.source_tree};
-      plan = {standalone:true,package_root:packageRoot,public_url:target.origin,manifest_sha256:manifestPin,
+      plan = {standalone:true,require_eap_http:requireEapHttp,package_root:packageRoot,public_url:target.origin,manifest_sha256:manifestPin,
         package_version:m.package_version,terminal_scope:m.terminal_scope,native_terminal_daemon_included:m.native_terminal_daemon_included === true,
         volume_binding_sha256:sha(JSON.stringify(volume,Object.keys(volume).sort(),2)+'\n'),
         config_sha256:configPin,node_id:nodeId,adapter,runtime:m.runtime,source_repository:m.source_repository,

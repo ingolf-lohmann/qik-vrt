@@ -1,0 +1,22 @@
+{
+  "operation": "origin-named-sni",
+  "started_at": "2026-10-31T21:12:20.780860+00:00",
+  "completed_at": "2026-10-31T21:12:26.828815+00:00",
+  "command": [
+    "curl",
+    "--silent",
+    "--show-error",
+    "--max-time",
+    "20",
+    "--resolve",
+    "raumzeitterminal.de:443:217.160.163.62",
+    "--dump-header",
+    "-",
+    "https://raumzeitterminal.de/.well-known/effect-ack"
+  ],
+  "exit_code": 0,
+  "stdout_sha256": "a921080dafae98316d1c6bf29ae080e0b715b19611c707ac5bf3923581d223c0",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdout": "HTTP/1.1 200 OK\r\ndate: Sat, 31 Oct 2026 21:12:26 GMT\r\n\r\nHTTP/2 503 \r\ncontent-length: 98\r\ncontent-type: text/plain\r\ndate: Sat, 31 Oct 2026 21:12:26 GMT\r\nserver: envoy\r\n\r\nupstream connect error or disconnect/reset before headers. reset reason: remote connection failure",
+  "stderr": ""
+}

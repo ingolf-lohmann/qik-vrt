@@ -122,3 +122,38 @@ browser-side verifier. The React production runtime is reused byte-for-byte
 under `runtime/self-host/REACT_LOCK.json`; no CDN or build tool is required on
 the VPS. Local tests, repository integration, admitted VPS execution, public
 TLS and useful exact-domain delivery each require their own readback.
+
+The existing independent public reader accepts `--require-eap-http` after its
+`--self-host` arguments. The terminal deployment workflow requires this check.
+It reads all three anonymous EAP routes, records UTC times and SHA-256 digests
+of the returned bytes, validates revision-03 discovery/capabilities and binds
+the ready status to the independently read native Terminal subject. HTTP 200
+alone cannot establish that the intended EAP service is present. This public
+check performs no authenticated prepare, commit or peer delivery.
+
+## REST repair and deployment boundary
+
+`qikvrt_effect_ack_http_terminal.yml` with `deploy_existing_host=true` verifies
+and restarts an **already admitted**, installed supervisor. It does not install
+a TLS certificate, edit the private EAP profile, create an OwnerREST grant or
+deliver a Mirror token. Its runner/environment and six host path/pin bindings
+must already be configured. The host receipt is preserved byte-for-byte both
+in the admitted durable delivery and at the runner artifact upload path.
+
+DNS readback/apply is a separate trusted-Main operation through
+`qikvrt_ionos_dns.yml` and `ionos-production`. Use the fresh authenticated
+provider record digest and an independently admitted original-host IPv4.
+Public recursive A/AAAA answers cannot supply that provider digest or prove
+host ownership. A certificate mismatch when requesting an IP is not evidence
+that a certificate is wrong for `raumzeitterminal.de`: verify the domain SNI,
+hostname, CA chain and target host. A 525 observation alone does not isolate
+the particular TLS cause. A configured Site custom domain and its validation
+state are separate from the actual authoritative DNS route.
+
+Restore the existing protected original-host/SSO consumer before host writes;
+then use its normal sealing, admission, state migration and TLS procedures.
+The public reader must pass before an authenticated Mirror prepare/commit and
+original receipt readback can establish delivery. Do not copy a Mirror token
+into source, public artifacts or this document. An unavailable dispatch method
+or private runtime binding remains an operation gap; a local copied adapter,
+workflow source or saved repair plan does not establish a live execution path.

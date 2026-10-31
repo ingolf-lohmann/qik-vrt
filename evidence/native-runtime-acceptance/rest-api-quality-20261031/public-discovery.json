@@ -1,0 +1,20 @@
+{
+  "operation": "public-discovery",
+  "started_at": "2026-10-31T21:12:15.250629+00:00",
+  "completed_at": "2026-10-31T21:12:20.780621+00:00",
+  "command": [
+    "curl",
+    "--silent",
+    "--show-error",
+    "--max-time",
+    "20",
+    "--dump-header",
+    "-",
+    "https://raumzeitterminal.de/.well-known/effect-ack"
+  ],
+  "exit_code": 0,
+  "stdout_sha256": "0f55db5c74500f3b5bc34ba11819d09b3e6f24eb583a8e4ac4e18766a647d8f0",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdout": "HTTP/1.1 200 OK\r\ndate: Sat, 31 Oct 2026 21:12:20 GMT\r\n\r\nHTTP/2 503 \r\ncontent-length: 98\r\ncontent-type: text/plain\r\ndate: Sat, 31 Oct 2026 21:12:20 GMT\r\nserver: envoy\r\n\r\nupstream connect error or disconnect/reset before headers. reset reason: remote connection failure",
+  "stderr": ""
+}

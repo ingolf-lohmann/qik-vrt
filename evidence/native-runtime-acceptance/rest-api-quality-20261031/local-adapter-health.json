@@ -1,0 +1,20 @@
+{
+  "operation": "local-adapter-health",
+  "started_at": "2026-10-31T21:12:26.829040+00:00",
+  "completed_at": "2026-10-31T21:12:26.835353+00:00",
+  "command": [
+    "curl",
+    "--silent",
+    "--show-error",
+    "--max-time",
+    "3",
+    "--dump-header",
+    "-",
+    "http://127.0.0.1:8766/health"
+  ],
+  "exit_code": 7,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "d2aa0b4f78e9d62a013a7f142a59fd08a73fe9809fe2fbfc63c3abf1503a038b",
+  "stdout": "",
+  "stderr": "curl: (7) Failed to connect to 127.0.0.1 port 8766 after 0 ms: Couldn't connect to server\n"
+}

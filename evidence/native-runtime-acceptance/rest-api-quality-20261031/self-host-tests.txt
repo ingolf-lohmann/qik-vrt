@@ -1,0 +1,364 @@
+node --test docs/monitor/workspace.test.mjs
+✔ same-subject S1, digest-checked replica and native EAP connect without granting workspace access (15.228188ms)
+✔ wrong Authority holds native work (2.917169ms)
+✔ wrong Mirror holds native work (3.308159ms)
+✔ wrong head holds native work (3.236123ms)
+✔ wrong tree holds native work (2.210861ms)
+✔ wrong node holds native work (1.771629ms)
+✔ wrong version holds native work (1.452766ms)
+✔ corrupt snapshot holds native work (1.607225ms)
+✔ missing manifest holds native work (2.195108ms)
+✔ global DONE inflation holds native work (1.981029ms)
+✔ unreplayed events holds native work (2.584966ms)
+✔ wrong journal checkpoint holds native work (1.613745ms)
+✔ a failed checker revokes native readiness, retains its last observation and recovers after route repair (3.689706ms)
+✔ a fresh SSE heartbeat never renews expired native readback or repairs failed verification (2.807116ms)
+✔ original event bytes must reach the declared journal checkpoint before native work (3.107311ms)
+✔ access declaration preserves original-byte identity and distinct license files (1.224647ms)
+✔ a missing event reopens only the original cursor route and suppresses unchanged gap retries (2.074048ms)
+✔ cold activity observation precedes its independent node checkpoint (1.668226ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 148.172507
+node docs/monitor/observer.test.mjs
+PASS: ticking ages and stale-status expiry preserve details without source reads; exact causal evidence, source-bound counters, queues, no polling, safe job steps, attribution, rate/cache recovery, read-only routes.
+node --test docs/monitor/monitor.test.mjs
+✔ health separates failures, stale evidence, live runtime and client phase (2.038936ms)
+✔ a snapshot does not hide a detected event gap or corrupted event (10.312884ms)
+✔ node health reports missing carrier and native-cache failure without green CI masking it (28.675524ms)
+✔ snapshot integrity, distinct client instances, versions, order and epoch fail closed (9.808131ms)
+✔ durable acknowledgment, byte-exact journal, duplicates and signature rejection (26.151037ms)
+✔ four concurrent clients receive all 32 accepted events and agree on original bytes (151.093411ms)
+✔ disconnect and node restart replay every missing event from the durable cursor (27.702676ms)
+{"at":"2026-10-31T21:21:55.958Z","stage":"MONITOR_REQUEST","cause":"SIMULATED_STORAGE_FULL"}
+✔ storage failure never acknowledges or broadcasts an event as durable (8.021092ms)
+✔ client event gaps and journal corruption are detected rather than promoted to synchrony (9.686836ms)
+✔ separate local processes: writer crash leaves four clients byte-exact replay on replica (522.178847ms)
+{"at":"2026-10-31T21:21:56.507Z","stage":"MONITOR_REQUEST","cause":"LINK_INTERRUPTED"}
+✔ interruption with local pending tail withholds ACK and stream until reconnect and duplicate retry (27.471077ms)
+{"at":"2026-10-31T21:21:56.525Z","stage":"MONITOR_REQUEST","cause":"LINK_INTERRUPTED"}
+✔ writer restart preserves the unacknowledged tail and reconnects without regenerating records (19.91922ms)
+{"at":"2026-10-31T21:21:56.555Z","stage":"MONITOR_REQUEST","cause":"REPLICA_EVENT_GAP"}
+{"at":"2026-10-31T21:21:56.556Z","stage":"MONITOR_REQUEST","cause":"DURABLE_EVENT_JOURNAL_MISMATCH"}
+{"at":"2026-10-31T21:21:56.557Z","stage":"MONITOR_REQUEST","cause":"DURABLE_EVENT_JOURNAL_MISMATCH"}
+{"at":"2026-10-31T21:21:56.558Z","stage":"MONITOR_REQUEST","cause":"REPLICA_CHECKPOINT_CONFLICT"}
+{"at":"2026-10-31T21:21:56.559Z","stage":"MONITOR_REQUEST","cause":"REPLICA_CHECKPOINT_CONFLICT"}
+{"at":"2026-10-31T21:21:56.560Z","stage":"MONITOR_REQUEST","cause":"REPLICA_EPOCH_CONFLICT"}
+{"at":"2026-10-31T21:21:56.561Z","stage":"MONITOR_REQUEST","cause":"INVALID_REPLICATION_BINDING"}
+✔ signed append rejects missing events, reversed order, conflicting bytes and invalid checkpoints atomically (27.430386ms)
+{"at":"2026-10-31T21:21:56.575Z","stage":"MONITOR_REQUEST","cause":"REPLICA_PREFIX_CONFLICT"}
+✔ a valid conflicting replica prefix blocks the writer rather than overwriting the replica (10.351452ms)
+{"at":"2026-10-31T21:21:56.584Z","stage":"MONITOR_REQUEST","cause":"INVALID_REPLICA_READBACK_SIGNATURE"}
+✔ peer request and readback authentication failures never produce cross-node ACK (8.61885ms)
+{"at":"2026-10-31T21:21:56.602Z","stage":"MONITOR_REQUEST","cause":"EISDIR: illegal operation on a directory, rename '/tmp/qikvrt-monitor-test-Fs2yoh/occupied.tmp-2186d909-a7b2-4c9c-892b-fc0e49d98b29' -> '/tmp/qikvrt-monitor-test-Fs2yoh/occupied'"}
+{"at":"2026-10-31T21:21:56.602Z","stage":"MONITOR_REQUEST","cause":"EISDIR: illegal operation on a directory, rename '/tmp/qikvrt-monitor-test-Fs2yoh/occupied.tmp-2186d909-a7b2-4c9c-892b-fc0e49d98b29' -> '/tmp/qikvrt-monitor-test-Fs2yoh/occupied'"}
+{"at":"2026-10-31T21:21:56.605Z","stage":"MONITOR_REQUEST","cause":"STORAGE_RESTART_REQUIRED"}
+✔ replica storage failure freezes receipts, then restart restores the prefix and permits recovery (28.357914ms)
+{"at":"2026-10-31T21:21:56.628Z","stage":"MONITOR_REQUEST","cause":"SOURCE_RECEIPT_DISK_FULL"}
+✔ source receipt storage failure after peer durability requires fresh confirmation on restart (27.194241ms)
+✔ interrupted bounded suffix batches restart at the durable prefix and expose only a complete checkpoint (991.53005ms)
+✔ replicas remain read-only, do not observe GitHub, and cannot be promoted by changing role (21.304346ms)
+✔ contradictory duplicate client record is rejected even if it repeats the claimed digest (14.220042ms)
+{"at":"2026-10-31T21:21:57.697Z","stage":"MONITOR_REQUEST","cause":"The operation was aborted due to timeout"}
+✔ peer timeout withholds the positive receipt and reconnect recovers the original pending event (39.468451ms)
+{"at":"2026-10-31T21:21:57.718Z","stage":"MONITOR_REQUEST","cause":"REPLICA_RESPONSE_LOST"}
+✔ lost peer response after durable append is recovered by exact readback without duplicate events (16.609739ms)
+{"at":"2026-10-31T21:21:57.737Z","stage":"MONITOR_REQUEST","cause":"REPLICA_EVENT_CONFLICT"}
+{"at":"2026-10-31T21:21:57.738Z","stage":"MONITOR_REQUEST","cause":"PUBLIC_REPOSITORY_SCOPE_REQUIRED"}
+{"at":"2026-10-31T21:21:57.740Z","stage":"MONITOR_REQUEST","cause":"REPLICA_CHECKPOINT_CONFLICT"}
+✔ valid conflicting overlap and private payload are rejected before any replica mutation (16.400658ms)
+✔ restart rejects a corrupt durable replica confirmation instead of serving a fabricated prefix (14.7307ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2176.961983
+node --test docs/monitor/mesh-file.test.mjs
+✔ single-file binary contents, revisions, long/case-sensitive virtual names and >1MiB chunks round trip (90.788023ms)
+✔ corrupt payload, chain, magic, truncation and invented chunk reference are refused (8.056882ms)
+✔ a confirmed checkpoint cannot be rolled back or transferred to another repository (11.783536ms)
+✔ lost append acknowledgement is read back without a second record or overwritten identity (14.616591ms)
+✔ two cooperating writers admit one competing append and retain the other as a conflict (9.268464ms)
+✔ filesystem capacity and symlinks block writes without creating a replacement repository (5.834008ms)
+✔ partial write and failed fsync preserve all bytes and quarantine further writes (19.248665ms)
+✔ SIGKILL after durable receipt reopens one monolithic file without duplicate records (95.479291ms)
+✔ browser opens and extracts derived SQLite but cannot create, append or directly write a product format (50.744228ms)
+✔ actual REST transport enforces bearer and CORS, compares exports and rejects every POST without a second ledger (86.189659ms)
+✔ direct file selection grants no write operation or mutable QIKMESH product state (38.313943ms)
+✔ metric window ages out actual operations and exposes unknown latency instead of a fabricated measurement (0.311112ms)
+✔ a bound export refuses appended revisions even when the frame chain is coherent (36.205148ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 566.848111
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tools/qikvrt_tool_cache.py verify
+PASS: 44/44 declared tools have cache strategies (100%)
+PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests/test_temdd_event_ledger.py tests/test_temdd_runtime_subject_binding.py
+test_ai_surface_and_subject_are_served (tests.test_temdd_event_ledger.ProducerTests.test_ai_surface_and_subject_are_served) ... ERROR
+test_browser_ide_is_local_editable_and_effect_free (tests.test_temdd_event_ledger.ProducerTests.test_browser_ide_is_local_editable_and_effect_free) ... ok
+test_browser_ide_parser_matches_reference_example_shape (tests.test_temdd_event_ledger.ProducerTests.test_browser_ide_parser_matches_reference_example_shape) ... ok
+test_cli_append_is_finite_and_returns_durable_readback (tests.test_temdd_event_ledger.ProducerTests.test_cli_append_is_finite_and_returns_durable_readback) ... ERROR
+test_cli_serve_missing_subject_never_creates_state (tests.test_temdd_event_ledger.ProducerTests.test_cli_serve_missing_subject_never_creates_state) ... ok
+test_cli_serve_reads_back_explicit_subject (tests.test_temdd_event_ledger.ProducerTests.test_cli_serve_reads_back_explicit_subject) ... ERROR
+test_commit_before_notification_failure_is_replayable (tests.test_temdd_event_ledger.ProducerTests.test_commit_before_notification_failure_is_replayable) ... ok
+test_concurrent_native_deliveries_have_distinct_monotonic_ids (tests.test_temdd_event_ledger.ProducerTests.test_concurrent_native_deliveries_have_distinct_monotonic_ids) ... ok
+test_consumer_validation_and_reconnect_state_machine (tests.test_temdd_event_ledger.ProducerTests.test_consumer_validation_and_reconnect_state_machine) ... ok
+test_copied_checkout_ignores_stat_cache_drift_but_not_byte_changes (tests.test_temdd_event_ledger.ProducerTests.test_copied_checkout_ignores_stat_cache_drift_but_not_byte_changes) ... ok
+test_dirty_checkout_is_unobservable (tests.test_temdd_event_ledger.ProducerTests.test_dirty_checkout_is_unobservable) ... ok
+test_disconnect_releases_observer_without_a_new_event (tests.test_temdd_event_ledger.ProducerTests.test_disconnect_releases_observer_without_a_new_event) ... ERROR
+test_durable_restart_and_monotonic_ids (tests.test_temdd_event_ledger.ProducerTests.test_durable_restart_and_monotonic_ids) ... ok
+test_foreign_origin_and_rebinding_host_are_rejected (tests.test_temdd_event_ledger.ProducerTests.test_foreign_origin_and_rebinding_host_are_rejected) ... ERROR
+test_idempotent_delivery_and_conflicting_native_id (tests.test_temdd_event_ledger.ProducerTests.test_idempotent_delivery_and_conflicting_native_id) ... ok
+test_invalid_http_cursor_and_browser_writes_fail_closed (tests.test_temdd_event_ledger.ProducerTests.test_invalid_http_cursor_and_browser_writes_fail_closed) ... ERROR
+test_legacy_effect_ack_remains_exact_bound_and_single_use (tests.test_temdd_event_ledger.ProducerTests.test_legacy_effect_ack_remains_exact_bound_and_single_use) ... ERROR
+test_malformed_and_oversized_ingress_rejected (tests.test_temdd_event_ledger.ProducerTests.test_malformed_and_oversized_ingress_rejected) ... ok
+test_real_socket_restart_preserves_replay (tests.test_temdd_event_ledger.ProducerTests.test_real_socket_restart_preserves_replay) ... ERROR
+test_real_socket_sse_disconnect_replay_and_header_precedence (tests.test_temdd_event_ledger.ProducerTests.test_real_socket_sse_disconnect_replay_and_header_precedence) ... ERROR
+test_repository_entrypoint_and_test_admission (tests.test_temdd_event_ledger.ProducerTests.test_repository_entrypoint_and_test_admission) ... ok
+test_runtime_head_mutation_invalidates_observers (tests.test_temdd_event_ledger.ProducerTests.test_runtime_head_mutation_invalidates_observers) ... ok
+test_storage_failure_never_publishes (tests.test_temdd_event_ledger.ProducerTests.test_storage_failure_never_publishes) ... ok
+test_store_has_exclusive_owner_and_private_ingress (tests.test_temdd_event_ledger.ProducerTests.test_store_has_exclusive_owner_and_private_ingress) ... ERROR
+test_subject_correction_preserves_predecessor_bytes_without_relabeling (tests.test_temdd_event_ledger.ProducerTests.test_subject_correction_preserves_predecessor_bytes_without_relabeling) ... ok
+test_successor_never_replays_predecessor_evidence (tests.test_temdd_event_ledger.ProducerTests.test_successor_never_replays_predecessor_evidence) ... ok
+test_tampered_readback_holds (tests.test_temdd_event_ledger.ProducerTests.test_tampered_readback_holds) ... ok
+test_unknown_foreign_and_future_cursors_hold (tests.test_temdd_event_ledger.ProducerTests.test_unknown_foreign_and_future_cursors_hold) ... ok
+test_wrong_head_tree_repository_and_pr_rejected (tests.test_temdd_event_ledger.ProducerTests.test_wrong_head_tree_repository_and_pr_rejected) ... ok
+test_ingress_construction_failure_closes_unstarted_http_without_shutdown (tests.test_temdd_event_ledger.ServerFixtureLifecycleTests.test_ingress_construction_failure_closes_unstarted_http_without_shutdown) ... ok
+test_active_source_and_a_copy_impersonating_source_cannot_transfer (tests.test_temdd_event_ledger.WriterContinuityTests.test_active_source_and_a_copy_impersonating_source_cannot_transfer) ... ok
+test_cli_handoff_accepts_private_source_directory_and_revokes_original (tests.test_temdd_event_ledger.WriterContinuityTests.test_cli_handoff_accepts_private_source_directory_and_revokes_original) ... ok
+test_cli_handoff_rejects_changed_config_bytes_without_revoking_original (tests.test_temdd_event_ledger.WriterContinuityTests.test_cli_handoff_rejects_changed_config_bytes_without_revoking_original) ... ok
+test_cli_handoff_rejects_public_directory_without_revoking_original (tests.test_temdd_event_ledger.WriterContinuityTests.test_cli_handoff_rejects_public_directory_without_revoking_original) ... ok
+test_cli_handoff_rejects_regular_file_without_revoking_original (tests.test_temdd_event_ledger.WriterContinuityTests.test_cli_handoff_rejects_regular_file_without_revoking_original) ... ok
+test_copied_store_cannot_acquire_original_writer_identity (tests.test_temdd_event_ledger.WriterContinuityTests.test_copied_store_cannot_acquire_original_writer_identity) ... ok
+test_explicit_local_handoff_revokes_source_before_target_can_append (tests.test_temdd_event_ledger.WriterContinuityTests.test_explicit_local_handoff_revokes_source_before_target_can_append) ... ok
+test_frontier_validates_original_subject_partitions (tests.test_temdd_event_ledger.WriterContinuityTests.test_frontier_validates_original_subject_partitions) ... ok
+test_historical_fork_after_23_preserves_both_original_suffixes_and_receipts (tests.test_temdd_event_ledger.WriterContinuityTests.test_historical_fork_after_23_preserves_both_original_suffixes_and_receipts) ... /workspace/scratch/424f3e0e35fc/qik-vrt/evidence/self_host/original-recovered/src/qikvrt_temdd_event_ledger.py:33: ImportWarning: can't resolve package from __spec__ or __package__, falling back on __name__ and __path__
+  from . import qikvrt_effect_ack_http_terminal as terminal
+ok
+test_interrupted_transfer_admits_neither_copy (tests.test_temdd_event_ledger.WriterContinuityTests.test_interrupted_transfer_admits_neither_copy) ... ok
+test_large_complete_history_has_bounded_peak_and_legacy_frontier (tests.test_temdd_event_ledger.WriterContinuityTests.test_large_complete_history_has_bounded_peak_and_legacy_frontier) ... ok
+test_legacy_store_remains_readable_but_is_never_automatically_admitted (tests.test_temdd_event_ledger.WriterContinuityTests.test_legacy_store_remains_readable_but_is_never_automatically_admitted) ... ok
+test_replacing_owner_lock_fences_live_writer_and_its_successor (tests.test_temdd_event_ledger.WriterContinuityTests.test_replacing_owner_lock_fences_live_writer_and_its_successor) ... ok
+test_same_physical_store_restart_preserves_deduplication (tests.test_temdd_event_ledger.WriterContinuityTests.test_same_physical_store_restart_preserves_deduplication) ... ok
+test_stale_copy_and_wrong_pin_leave_source_writer_unchanged (tests.test_temdd_event_ledger.WriterContinuityTests.test_stale_copy_and_wrong_pin_leave_source_writer_unchanged) ... ok
+test_exact_deployment_requires_explicit_repository (tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_exact_deployment_requires_explicit_repository) ... ok
+test_exact_head_requires_explicit_pr (tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_exact_head_requires_explicit_pr) ... ok
+test_exact_subject_uses_configured_pr_not_legacy_default (tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_exact_subject_uses_configured_pr_not_legacy_default) ... ok
+test_exact_tree_requires_explicit_pr (tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_exact_tree_requires_explicit_pr) ... ok
+test_explicit_pr_is_passed_as_two_arguments (tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_explicit_pr_is_passed_as_two_arguments) ... ok
+test_explicit_repository_does_not_assume_authority_or_mirror (tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_explicit_repository_does_not_assume_authority_or_mirror) ... ok
+test_guard_precedes_runtime_side_effects (tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_guard_precedes_runtime_side_effects) ... ok
+test_invalid_pr_cannot_start_ledger (tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_invalid_pr_cannot_start_ledger) ... ok
+test_invalid_repository_cannot_start_ledger (tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_invalid_repository_cannot_start_ledger) ... ok
+test_unsealed_launch_requires_both_explicit_subject_fields (tests.test_temdd_runtime_subject_binding.TEMDDRuntimeSubjectBindingTests.test_unsealed_launch_requires_both_explicit_subject_fields) ... ok
+test_browser_override_does_not_weaken_effect_boundary (tests.test_temdd_runtime_subject_binding.TerminalHealthBrowserBindingTests.test_browser_override_does_not_weaken_effect_boundary) ... ok
+test_browser_override_still_requires_each_runtime_dependency (tests.test_temdd_runtime_subject_binding.TerminalHealthBrowserBindingTests.test_browser_override_still_requires_each_runtime_dependency) ... ok
+test_default_and_release_cannot_accept_each_others_metadata (tests.test_temdd_runtime_subject_binding.TerminalHealthBrowserBindingTests.test_default_and_release_cannot_accept_each_others_metadata) ... ok
+test_default_browser_matches_default_terminal_start (tests.test_temdd_runtime_subject_binding.TerminalHealthBrowserBindingTests.test_default_browser_matches_default_terminal_start) ... ok
+test_release_override_matches_terminal_runtime_metadata (tests.test_temdd_runtime_subject_binding.TerminalHealthBrowserBindingTests.test_release_override_matches_terminal_runtime_metadata) ... ok
+
+======================================================================
+ERROR: test_ai_surface_and_subject_are_served (tests.test_temdd_event_ledger.ProducerTests.test_ai_surface_and_subject_are_served)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/424f3e0e35fc/qik-vrt/tests/test_temdd_event_ledger.py", line 593, in test_ai_surface_and_subject_are_served
+    self.start_servers()
+  File "/workspace/scratch/424f3e0e35fc/qik-vrt/tests/test_temdd_event_ledger.py", line 335, in start_servers
+    self.ingress = m.make_ingress(self.runtime)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/424f3e0e35fc/qik-vrt/src/qikvrt_temdd_event_ledger.py", line 547, in make_ingress
+    server = socketserver.UnixStreamServer(str(path), Ingress)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 453, in __init__
+    self.socket = socket.socket(self.address_family,
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py", line 233, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+PermissionError: [Errno 1] Operation not permitted
+
+======================================================================
+ERROR: test_cli_append_is_finite_and_returns_durable_readback (tests.test_temdd_event_ledger.ProducerTests.test_cli_append_is_finite_and_returns_durable_readback)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/424f3e0e35fc/qik-vrt/tests/test_temdd_event_ledger.py", line 625, in test_cli_append_is_finite_and_returns_durable_readback
+    self.start_servers()
+  File "/workspace/scratch/424f3e0e35fc/qik-vrt/tests/test_temdd_event_ledger.py", line 335, in start_servers
+    self.ingress = m.make_ingress(self.runtime)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/424f3e0e35fc/qik-vrt/src/qikvrt_temdd_event_ledger.py", line 547, in make_ingress
+    server = socketserver.UnixStreamServer(str(path), Ingress)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 453, in __init__
+    self.socket = socket.socket(self.address_family,
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py", line 233, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+PermissionError: [Errno 1] Operation not permitted
+
+======================================================================
+ERROR: test_cli_serve_reads_back_explicit_subject (tests.test_temdd_event_ledger.ProducerTests.test_cli_serve_reads_back_explicit_subject)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/424f3e0e35fc/qik-vrt/tests/test_temdd_event_ledger.py", line 670, in test_cli_serve_reads_back_explicit_subject
+    listener = json.loads(child.stdout.readline())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/decoder.py", line 338, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/decoder.py", line 356, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+======================================================================
+ERROR: test_disconnect_releases_observer_without_a_new_event (tests.test_temdd_event_ledger.ProducerTests.test_disconnect_releases_observer_without_a_new_event)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/424f3e0e35fc/qik-vrt/tests/test_temdd_event_ledger.py", line 552, in test_disconnect_releases_observer_without_a_new_event
+    self.start_servers()
+  File "/workspace/scratch/424f3e0e35fc/qik-vrt/tests/test_temdd_event_ledger.py", line 335, in start_servers
+    self.ingress = m.make_ingress(self.runtime)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/424f3e0e35fc/qik-vrt/src/qikvrt_temdd_event_ledger.py", line 547, in make_ingress
+    server = socketserver.UnixStreamServer(str(path), Ingress)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 453, in __init__
+    self.socket = socket.socket(self.address_family,
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py", line 233, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+PermissionError: [Errno 1] Operation not permitted
+
+======================================================================
+ERROR: test_foreign_origin_and_rebinding_host_are_rejected (tests.test_temdd_event_ledger.ProducerTests.test_foreign_origin_and_rebinding_host_are_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/424f3e0e35fc/qik-vrt/tests/test_temdd_event_ledger.py", line 586, in test_foreign_origin_and_rebinding_host_are_rejected
+    self.start_servers()
+  File "/workspace/scratch/424f3e0e35fc/qik-vrt/tests/test_temdd_event_ledger.py", line 335, in start_servers
+    self.ingress = m.make_ingress(self.runtime)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/424f3e0e35fc/qik-vrt/src/qikvrt_temdd_event_ledger.py", line 547, in make_ingress
+    server = socketserver.UnixStreamServer(str(path), Ingress)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 453, in __init__
+    self.socket = socket.socket(self.address_family,
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py", line 233, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+PermissionError: [Errno 1] Operation not permitted
+
+======================================================================
+ERROR: test_invalid_http_cursor_and_browser_writes_fail_closed (tests.test_temdd_event_ledger.ProducerTests.test_invalid_http_cursor_and_browser_writes_fail_closed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/424f3e0e35fc/qik-vrt/tests/test_temdd_event_ledger.py", line 576, in test_invalid_http_cursor_and_browser_writes_fail_closed
+    self.start_servers()
+  File "/workspace/scratch/424f3e0e35fc/qik-vrt/tests/test_temdd_event_ledger.py", line 335, in start_servers
+    self.ingress = m.make_ingress(self.runtime)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/424f3e0e35fc/qik-vrt/src/qikvrt_temdd_event_ledger.py", line 547, in make_ingress
+    server = socketserver.UnixStreamServer(str(path), Ingress)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 453, in __init__
+    self.socket = socket.socket(self.address_family,
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py", line 233, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+PermissionError: [Errno 1] Operation not permitted
+
+======================================================================
+ERROR: test_legacy_effect_ack_remains_exact_bound_and_single_use (tests.test_temdd_event_ledger.ProducerTests.test_legacy_effect_ack_remains_exact_bound_and_single_use)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/424f3e0e35fc/qik-vrt/tests/test_temdd_event_ledger.py", line 605, in test_legacy_effect_ack_remains_exact_bound_and_single_use
+    self.start_servers()
+  File "/workspace/scratch/424f3e0e35fc/qik-vrt/tests/test_temdd_event_ledger.py", line 335, in start_servers
+    self.ingress = m.make_ingress(self.runtime)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/424f3e0e35fc/qik-vrt/src/qikvrt_temdd_event_ledger.py", line 547, in make_ingress
+    server = socketserver.UnixStreamServer(str(path), Ingress)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 453, in __init__
+    self.socket = socket.socket(self.address_family,
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py", line 233, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+PermissionError: [Errno 1] Operation not permitted
+
+======================================================================
+ERROR: test_real_socket_restart_preserves_replay (tests.test_temdd_event_ledger.ProducerTests.test_real_socket_restart_preserves_replay)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/424f3e0e35fc/qik-vrt/tests/test_temdd_event_ledger.py", line 564, in test_real_socket_restart_preserves_replay
+    self.start_servers()
+  File "/workspace/scratch/424f3e0e35fc/qik-vrt/tests/test_temdd_event_ledger.py", line 335, in start_servers
+    self.ingress = m.make_ingress(self.runtime)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/424f3e0e35fc/qik-vrt/src/qikvrt_temdd_event_ledger.py", line 547, in make_ingress
+    server = socketserver.UnixStreamServer(str(path), Ingress)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 453, in __init__
+    self.socket = socket.socket(self.address_family,
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py", line 233, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+PermissionError: [Errno 1] Operation not permitted
+
+======================================================================
+ERROR: test_real_socket_sse_disconnect_replay_and_header_precedence (tests.test_temdd_event_ledger.ProducerTests.test_real_socket_sse_disconnect_replay_and_header_precedence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/424f3e0e35fc/qik-vrt/tests/test_temdd_event_ledger.py", line 537, in test_real_socket_sse_disconnect_replay_and_header_precedence
+    self.start_servers()
+  File "/workspace/scratch/424f3e0e35fc/qik-vrt/tests/test_temdd_event_ledger.py", line 335, in start_servers
+    self.ingress = m.make_ingress(self.runtime)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/424f3e0e35fc/qik-vrt/src/qikvrt_temdd_event_ledger.py", line 547, in make_ingress
+    server = socketserver.UnixStreamServer(str(path), Ingress)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 453, in __init__
+    self.socket = socket.socket(self.address_family,
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py", line 233, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+PermissionError: [Errno 1] Operation not permitted
+
+======================================================================
+ERROR: test_store_has_exclusive_owner_and_private_ingress (tests.test_temdd_event_ledger.ProducerTests.test_store_has_exclusive_owner_and_private_ingress)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/424f3e0e35fc/qik-vrt/tests/test_temdd_event_ledger.py", line 516, in test_store_has_exclusive_owner_and_private_ingress
+    self.start_servers()
+  File "/workspace/scratch/424f3e0e35fc/qik-vrt/tests/test_temdd_event_ledger.py", line 335, in start_servers
+    self.ingress = m.make_ingress(self.runtime)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/424f3e0e35fc/qik-vrt/src/qikvrt_temdd_event_ledger.py", line 547, in make_ingress
+    server = socketserver.UnixStreamServer(str(path), Ingress)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 453, in __init__
+    self.socket = socket.socket(self.address_family,
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py", line 233, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+PermissionError: [Errno 1] Operation not permitted
+
+----------------------------------------------------------------------
+Ran 60 tests in 2.854s
+
+FAILED (errors=10)
+make: *** [Makefile:226: temdd-event-ledger-test] Error 1
