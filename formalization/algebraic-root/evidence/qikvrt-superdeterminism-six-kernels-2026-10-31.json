@@ -1,0 +1,46 @@
+{
+  "schema": "qikvrt.superdeterminism-mathematics-evidence.v1",
+  "subject": "formalization/algebraic-root/paranoid/QIKVRTSuperdeterminism.lean",
+  "tested_commit": "07cfe1a9a3ac5833346a57094e5679c7410c0472",
+  "tested_source_sha256": "1c407df508db9995bf7f7140a9ac3878f923faf66ed0bdca8259172aafea4b95",
+  "workflow_run": 41197933235,
+  "job_id": 124527778789,
+  "conclusion": "success",
+  "independent_checkers": [
+    "Lean paranoid",
+    "lean4lean",
+    "nanoda",
+    "con-leche",
+    "con-ron",
+    "Lean default"
+  ],
+  "artifact_id": 13041462052,
+  "artifact_sha256": "e9b17f03a01164c5e960e2b25f09ddf11997c68b562716186ae163f58294cc8e",
+  "theorems": {
+    "qikvrt_reproducible": [],
+    "qikvrt_no_logical_information_loss": [],
+    "qikvrt_exact_recovery": [],
+    "qikvrt_exact_forward_recovery": [],
+    "qikvrt_parallel_equals_sequential": [
+      "propext",
+      "Quot.sound"
+    ],
+    "qikvrt_parallel_recover_initial": [
+      "propext",
+      "Quot.sound"
+    ],
+    "qikvrt_domain_independent": [
+      "propext",
+      "Quot.sound"
+    ]
+  },
+  "scope": "logical full-state reversibility and deterministic independent parallel equivalence with complete bijective schedule",
+  "not_proven": [
+    "thermodynamic zero entropy",
+    "arbitrary program reversibility",
+    "physical superdeterminism",
+    "actual transport reliability",
+    "runtime EAP correctness",
+    "global enforcement of GitHub write protection"
+  ]
+}
