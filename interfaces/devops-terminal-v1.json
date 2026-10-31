@@ -1,0 +1,65 @@
+{
+  "version": "qikvrt.devops.terminal.v1",
+  "purpose": "Static React HTML client interface to admitted Universal Terminal and Universal Transputer",
+  "transport": {
+    "events": {
+      "method": "GET",
+      "path": "/v1/devops/events",
+      "content_type": "text/event-stream",
+      "credentials": "authenticated session",
+      "event_types": [
+        "snapshot",
+        "stage.transition",
+        "command.receipt",
+        "effect.readback"
+      ],
+      "required_fields": [
+        "event_id",
+        "subject",
+        "head_sha",
+        "tree_sha",
+        "stage",
+        "status",
+        "evidence_url"
+      ]
+    },
+    "commands": {
+      "method": "POST",
+      "path": "/v1/devops/commands",
+      "credentials": "authenticated session",
+      "request_fields": [
+        "version",
+        "kind",
+        "title",
+        "description",
+        "priority",
+        "client_nonce"
+      ],
+      "response_fields": [
+        "receipt_id",
+        "admission",
+        "issue_number",
+        "evidence_url"
+      ]
+    }
+  },
+  "pipeline_stages": [
+    "ingress",
+    "admission",
+    "processing",
+    "handoff",
+    "ci",
+    "review",
+    "merge",
+    "effect"
+  ],
+  "invariants": [
+    "Event publication only after original terminal/transputer readback",
+    "Authenticated principal and idempotent nonce",
+    "Never expose GitHub credentials to HTML client",
+    "Native issue processing via existing GitHub issue events, no timer automation",
+    "Source, CI, merge, runtime and EFFECT_ACK_DONE are separate evidence domains",
+    "SSE transport availability is not claimed by this contract",
+    "Origin, CSRF, CORS, authorization and replay protection required"
+  ]
+}
