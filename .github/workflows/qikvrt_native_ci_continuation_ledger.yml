@@ -1,0 +1,50 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann.
+name: QIKVRT native CI continuation ledger
+on:
+  workflow_run:
+    workflows: ["QIKVRT CI"]
+    types: [completed]
+permissions:
+  actions: read
+  contents: read
+  issues: write
+  pull-requests: read
+jobs:
+  record-terminal-evidence:
+    if: github.event.workflow_run.event == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Bind completed run and persist unresolved gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          RUN_SHA: ${{ github.event.workflow_run.head_sha }}
+          RUN_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Read back the run from the API; event payload is not acceptance evidence.
+          actual_sha="$(gh api "repos/$GH_REPO/actions/runs/$RUN_ID" --jq '.head_sha')"
+          actual_conclusion="$(gh api "repos/$GH_REPO/actions/runs/$RUN_ID" --jq '.conclusion')"
+          test "$actual_sha" = "$RUN_SHA"
+          test "$actual_conclusion" = "$RUN_CONCLUSION"
+          test -n "$RUN_SHA"
+          test "$RUN_CONCLUSION" != null
+          # The workflow is a durable, readback-bound failure ledger, not an
+          # unauthorized merge, deployment, credential or production admission.
+          if test "$RUN_CONCLUSION" = success; then
+            echo "CI_SUCCESS run=$RUN_ID sha=$RUN_SHA; merge and DoD remain separate gates"
+            exit 0
+          fi
+          title="QIKVRT CI terminal gate: $RUN_SHA"
+          body="$(printf 'Native CI terminal failure or cancellation.\n\nRun: %s\nExact HEAD: `%s`\nConclusion: `%s`\n\nRequires classification of failed steps, correction, new exact-head CI and separate merge/production readback. No automatic retry of a deterministic failure.\n' "$RUN_URL" "$RUN_SHA" "$RUN_CONCLUSION")"
+          # Idempotent by exact SHA. A repeated completion must not create duplicates.
+          existing="$(gh issue list --state all --limit 100 --search "$RUN_SHA in:title" --json number,title --jq ".[] | select(.title == \"$title\") | .number" | head -n 1)"
+          if test -n "$existing"; then
+            gh issue comment "$existing" --body "$body"
+          else
+            gh issue create --title "$title" --body "$body"
+          fi
