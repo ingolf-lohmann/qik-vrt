@@ -1,0 +1,105 @@
+{
+  "schema": "qikvrt_eap_mirror_client_import_work_unit_v1",
+  "work_unit_id": "QIKVRT_EAP_MIRROR_CLIENT_IMPORT_20261031_V1",
+  "principal": "Ingolf Lohmann",
+  "contributions": {
+    "original_client": "Claude (Anthropic), exact original carrier retained",
+    "source_recovery_integration_and_negative_controls": "OpenAI Codex"
+  },
+  "existing_candidate": {
+    "pull_request": 546,
+    "predecessor_head": "e37667b641b5b58f9e7094e15e235e29ad191f58",
+    "predecessor_tree": "7f2253bfc8e2869b0545790a8fa8ab1975cdc471",
+    "reuse": "Integrate the existing R1-R5 repair candidate; no additional PR, executor or scheduler"
+  },
+  "original": {
+    "commit": "75522c4911304efbe14fd9780c1a49bb7700e1f3",
+    "tree": "3954495264e5e1fedbdcbac7d919189872c6810d",
+    "bundle": "evidence/client-delivery/eap-mirror-20261031/ORIGINAL_CLIENT.bundle",
+    "bundle_sha256": "42bb2767fba52aca778c36d33f531b4293c7369fe6ee348a910c55190d2e4947",
+    "patch_sha256_reported": "24099374de70ed537421513c81a8452cbd095a204b75c6b6fa1ebd5aedb1531f",
+    "named_patch_bytes_recovered": false,
+    "binding": "Verified Git bundle prerequisite main5a42baf4 and exact commit/tree; no reconstructed patch is claimed"
+  },
+  "authority_source_effect": {
+    "state": "VERIFIED_SOURCE_IMPORT_ONLY",
+    "host": "github.com",
+    "branch": "mirror/eap-mirror-client-20261031",
+    "head": "9581951ff7c852fcb9dc425de49d3b029f79ceb8",
+    "tree": "3954495264e5e1fedbdcbac7d919189872c6810d",
+    "parent": "5a42baf45748e4407a8fa16aef287a77873e788d",
+    "six_original_blobs_equal": true,
+    "independent_readbacks": [
+      "evidence/client-delivery/eap-mirror-20261031/AUTHORITY_SOURCE_COMMIT.json",
+      "evidence/client-delivery/eap-mirror-20261031/AUTHORITY_SOURCE_REF.json"
+    ],
+    "commit_identity_is_original": false,
+    "installed_on_mirror": false
+  },
+  "verification": {
+    "original_client_tests": {
+      "exit_code": 0,
+      "tests": 4,
+      "scope": "ISOLATED_LOOPBACK_HTTP_AND_ORIGINAL_SQLITE_FIXTURE"
+    },
+    "original_make_test": {
+      "exit_code": 0,
+      "scope": "LOCAL_ORIGINAL_TREE_ONLY",
+      "log": "evidence/client-delivery/eap-mirror-20261031/original-make-test.log.gz"
+    },
+    "negative_controls_before_repair": {
+      "exit_code": 1,
+      "failed_assertions": 8,
+      "log": "evidence/client-delivery/eap-mirror-20261031/import-negative-controls-before-fix.log.gz",
+      "detected": [
+        "302 forwards fixture bearer to a different HTTP origin",
+        "Matching commit/readback objects with incorrect principal, request, subject, input, payload digest, ledger digest or epoch were accepted"
+      ]
+    },
+    "repaired_client": {
+      "tests": 6,
+      "exit_code": 0,
+      "log": "evidence/client-delivery/eap-mirror-20261031/integration-client-tests.log.gz",
+      "scope": "LOCAL_NEGATIVE_CONTROLS_AND_IDEMPOTENT_RECEIPT_ONLY"
+    },
+    "existing_handoff_tests": {
+      "tests": 154,
+      "exit_code": 0,
+      "log": "evidence/client-delivery/eap-mirror-20261031/integration-handoff-tests.log.gz"
+    },
+    "integration_make_test": {
+      "exit_code": 0,
+      "local_head": "9efa29cf1be8b9c8b6d05e51c88e1a3dd777cc5f",
+      "local_tree": "9d0731979e9461fecb26fda6d907a8a3d0b02ca9",
+      "reported_python_test_executions": 2283,
+      "log": "evidence/client-delivery/eap-mirror-20261031/integration-make-test.log.gz",
+      "log_sha256": "8e7616fd9cb3afdb7d63a8e967c87ad39147629748128b5fd1ed4c73a035146a",
+      "scope": "LOCAL_FULL_MAKE_TEST; final changes below are evidence/metadata only; exact remote-head native CI remains separate"
+    },
+    "exact_head_native_ci": "PENDING_NEW_CANDIDATE"
+  },
+  "three_prerequisites": {
+    "client_on_authority": "VERIFIED_ON_ORIGINAL_SOURCE_BRANCH; Main integration remains separate",
+    "network_from_actual_mirror": "OPEN; Owner-supplied16:32UTC CONNECT403 report is retained as a report, not a fresh observation from that runtime",
+    "mirror_host_grant": "UNVERIFIED; this process has no QIKVRT_EAP_TOKEN, which proves no protected remote grant absence"
+  },
+  "native_runtime": {
+    "readback": "evidence/client-delivery/eap-mirror-20261031/NATIVE_CONNECTION.json",
+    "http_status": 525,
+    "ready": false,
+    "open_gate": "ADMITTED_MESH_RUNTIME_ENDPOINT",
+    "live_prepare_or_commit_attempted": false,
+    "live_eight_step_trace": false,
+    "live_receipt": false,
+    "readback_scope": "Public projection of original adapter response; caller-private identity omitted"
+  },
+  "remaining_work": [
+    "Fresh final remote-head native CI; local full make test and deterministic integrity are complete for the recorded candidate",
+    "PR546 governance, Draft/readiness and conditional protected merge",
+    "Admitted original host, existing protected Mirror grant and permitted actual Mirror HTTPS path",
+    "Eight live200 responses and exact live-host receipt before a delivery claim",
+    "Preserve separate PR658, all-node adoption, domain and productive acceptance duties"
+  ],
+  "eap_state": "EFFECT_ACK_BLOCK",
+  "effect_ack_done": false
+}

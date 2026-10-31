@@ -1,0 +1,35 @@
+{
+  "sha": "9581951ff7c852fcb9dc425de49d3b029f79ceb8",
+  "node_id": "C_kwDOS-xnU9oAKDk1ODE5NTFmZjdjODUyZmNiOWRjNDI1ZGU0OWQzYjAyOWY3OWNlYjg",
+  "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/commits/9581951ff7c852fcb9dc425de49d3b029f79ceb8",
+  "html_url": "https://github.com/ingolf-lohmann/qik-vrt/commit/9581951ff7c852fcb9dc425de49d3b029f79ceb8",
+  "author": {
+    "name": "ingolf-lohmann",
+    "email": "ingolf.lohmann@web.de",
+    "date": "2026-10-31T20:07:35Z"
+  },
+  "committer": {
+    "name": "ingolf-lohmann",
+    "email": "ingolf.lohmann@web.de",
+    "date": "2026-10-31T20:07:35Z"
+  },
+  "tree": {
+    "sha": "3954495264e5e1fedbdcbac7d919189872c6810d",
+    "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/trees/3954495264e5e1fedbdcbac7d919189872c6810d"
+  },
+  "message": "feat(eap): import the original Mirror client with byte-identical tree\n\nOriginal source commit: 75522c4911304efbe14fd9780c1a49bb7700e1f3\nOriginal and imported tree: 3954495264e5e1fedbdcbac7d919189872c6810d\nCarrier: Owner-provided 01-eap-mirror-client.bundle.\nImplementation contribution: Claude (Anthropic).\nREST source import and verification: OpenAI Codex under Ingolf Lohmann's existing continuation authorization.\n\nThis GitHub-created import commit has its own identity; it is not the original commit. All six changed blobs and the complete original tree are identical. Local HTTP tests are not live Authority EAP delivery, runtime admission, deployment or productive EFFECT_ACK_DONE.\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+  "parents": [
+    {
+      "sha": "5a42baf45748e4407a8fa16aef287a77873e788d",
+      "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/commits/5a42baf45748e4407a8fa16aef287a77873e788d",
+      "html_url": "https://github.com/ingolf-lohmann/qik-vrt/commit/5a42baf45748e4407a8fa16aef287a77873e788d"
+    }
+  ],
+  "verification": {
+    "verified": false,
+    "reason": "unsigned",
+    "signature": null,
+    "payload": null,
+    "verified_at": null
+  }
+}

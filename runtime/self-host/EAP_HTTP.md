@@ -122,3 +122,49 @@ browser-side verifier. The React production runtime is reused byte-for-byte
 under `runtime/self-host/REACT_LOCK.json`; no CDN or build tool is required on
 the VPS. Local tests, repository integration, admitted VPS execution, public
 TLS and useful exact-domain delivery each require their own readback.
+
+## Mirror client and the three live prerequisites
+
+`tools/qikvrt_eap_mirror_client.py` is the original Claude contribution recovered
+from commit `75522c4911304efbe14fd9780c1a49bb7700e1f3`, tree
+`3954495264e5e1fedbdcbac7d919189872c6810d`. The Authority source carrier
+`mirror/eap-mirror-client-20261031` preserves that complete tree at the separate
+REST import commit `9581951ff7c852fcb9dc425de49d3b029f79ceb8`. The original Git
+bundle and independent ref/commit readbacks are retained with the client-delivery
+evidence. The PR546 successor integrates the client and keeps its original
+attribution. Its separate negative-control repair rejects redirects before a
+bearer credential can leave the request target and verifies both receipts against
+the submitted input, principal, request, subject, observed ledger epoch and native
+event digests. The unchanged source carrier remains available for comparison.
+
+Source availability does not install the client in another node. A live run also
+requires the actual Mirror's permitted HTTPS route to `raumzeitterminal.de` and
+its protected host grant. The existing private `owner_rest_grants` mechanism must
+bind the real principal (the original client fixture uses `claude:mirror`) to its
+own mode-0600 token file and `prepare`, `commit`, `readback` permissions. The
+existing normal seal, source/configuration pins and native host admission still
+apply. An example entry, a token generated elsewhere or local token absence is
+not proof of this remote grant. No grant or secret is created by a source import.
+
+With that original protected binding available in the actual Mirror process,
+the existing client invocation is:
+
+```sh
+python3 -B tools/qikvrt_eap_mirror_client.py \
+  --base-url https://raumzeitterminal.de \
+  --principal claude:mirror \
+  --request-id "$QIKVRT_EAP_REQUEST_ID" \
+  --text-file "$QIKVRT_EAP_TEXT_FILE"
+```
+
+The credential comes from `QIKVRT_EAP_TOKEN`, never from an argument, repository
+file or report. Preserve the original request identifier and input bytes. A
+connection refusal, HTTP525, missing token, unavailable readback or rejected
+binding remains HOLD. An uncertain commit requires the existing receipt readback
+for that request before another effect; the client performs no automatic retry.
+
+`DELIVERED_TO_AUTHORITY_LEDGER` at this exact HTTPS origin requires all eight
+HTTP200 steps and the live host's separate receipt readback. A loopback fixture
+can test that sequence but cannot establish Mirror-to-Authority delivery. Even
+the live receipt accepts one text observation only: it authorizes neither its
+execution nor a merge, deployment or productive `EFFECT_ACK_DONE`.
