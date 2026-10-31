@@ -70,6 +70,19 @@ jobs:
           jq -e --argjson number "$number" '(.pull_request | not) and .number == $number' "$ISSUE_JSON" >/dev/null
           echo "number=$number" >> "$GITHUB_OUTPUT"
 
+      - name: Acknowledge durable DevOps admission
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
+        run: |
+          set -euo pipefail
+          # Stage 1 is an observable receipt, not an assertion of task completion.
+          # GitHub issue comments persist across runner termination.
+          gh api "repos/$REPOSITORY/issues/$ISSUE_NUMBER/comments" \
+            -f body="DEVOPS_ADMITTED: issue #$ISSUE_NUMBER; workflow=$GITHUB_WORKFLOW; run_id=$GITHUB_RUN_ID; attempt=$GITHUB_RUN_ATTEMPT; source_commit=$GITHUB_SHA. Result pending; no EFFECT_ACK_DONE asserted."
+          echo "DEVOPS_ADMITTED issue=$ISSUE_NUMBER run=$GITHUB_RUN_ID/$GITHUB_RUN_ATTEMPT" >> "$GITHUB_STEP_SUMMARY"
+
       - name: Evaluate causal retry admission
         id: admission
         env:
