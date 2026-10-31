@@ -2,6 +2,17 @@
   "schema": "qikvrt_client_delivery_reporting_work_unit_v1",
   "work_unit_id": "QIKVRT_REMOTE_DELIVERY_REPORTING_R1_R5_20261031",
   "principal": "Ingolf Lohmann",
+  "kernel_proof_continuity": {
+    "directive_id": "OWNER-KERNEL-PROOF-CONTINUITY-20261031",
+    "source_instruction_sha256": "b7847f01056d259512c0058fc793bb4c8496662c0dd149105ffae26ceea446ab",
+    "existing_program": "state/work_units/UNIFIED_ONTOLOGY_KERNEL_PROGRAM_V2.json",
+    "json_pointer": "/continuous_proof_connectivity",
+    "state": "VERSIONED_REQUIREMENT_WITH_OPEN_FORMAL_AND_RUNTIME_OBLIGATIONS",
+    "delivery_reporting_receipts_cover_other_topics": false,
+    "retain_in_successor": true,
+    "local_validation_artifact": "evidence/formal-receipts/DeliveryReporting/history/KERNEL_PROOF_CONNECTIVITY_LOCAL_VALIDATION_20261031.zip",
+    "local_validation_sha256": "fa832370a6b74c08aa01db06a208a042b545a2e581c97156ca1e9b16868a2d66"
+  },
   "source_subject": {
     "repository": "ingolf-lohmann/qik-vrt",
     "head": "5a42baf45748e4407a8fa16aef287a77873e788d",
