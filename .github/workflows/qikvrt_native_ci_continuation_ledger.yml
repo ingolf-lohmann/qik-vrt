@@ -9,7 +9,7 @@ on:
     workflows: ["QIKVRT CI"]
     types: [completed]
 permissions:
-  actions: read
+  actions: write
   contents: read
   issues: write
   pull-requests: read
@@ -64,6 +64,16 @@ jobs:
               fi
               echo "CI_SUCCESS run=$run_id head=$subject; remaining DoD gates are separate"
               continue
+            fi
+            # Retry only an explicitly timed-out run, once per run ID.
+            # Never retry deterministic test failures, cancellations or stale heads.
+            attempt="$(jq -r '.run_attempt' <<< "$actual")"
+            if test "$conclusion" = timed_out && test "$attempt" = 1; then
+              if gh api -X POST "repos/$GH_REPO/actions/runs/$run_id/rerun-failed-jobs" >/dev/null; then
+                echo "BOUNDED_TIMEOUT_RETRY run=$run_id head=$subject attempt=1"
+              else
+                echo "TIMEOUT_RETRY_NOT_ADMITTED run=$run_id" >&2
+              fi
             fi
             failed_steps="$(gh api "repos/$GH_REPO/actions/runs/$run_id/jobs?per_page=100" --jq '[.jobs[] | select(.conclusion == "failure" or .conclusion == "cancelled" or .conclusion == "timed_out") | (.name + ": " + ([.steps[]? | select(.conclusion == "failure") | .name] | join(", ")))] | join("; ")')"
             body="$(printf 'Native CI requires continuation.\n\nRun: %s\nExact HEAD: %s\nConclusion: %s\nFailed jobs/steps: %s\n\nNext gate: diagnose, apply bounded authorized repair, re-run exact-head CI, verify governance, integrate and read back. No merge or production effect is inferred.\n' "$url" "$subject" "$conclusion" "$failed_steps")
