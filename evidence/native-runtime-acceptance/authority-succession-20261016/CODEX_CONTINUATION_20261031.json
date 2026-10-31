@@ -308,9 +308,9 @@
   },
   "retained_log_archive": {
     "path": "evidence/native-runtime-acceptance/authority-succession-20261016/CODEX_CONTINUATION_20261031.zip",
-    "bytes": 316997,
-    "sha256": "04f3a800b7c9dfa5546b4924526cbc52ab6e2cdefc4c046dbf1cbab2c66283e4",
-    "verified_entries": 69,
+    "bytes": 325848,
+    "sha256": "1abc91edf26539b49b45dac8e2927551ab4afeb62e6ba8282741aa8000e8a466",
+    "verified_entries": 81,
     "includes_intermediate_failure_and_correction": true
   },
   "client_receipt": {
@@ -615,5 +615,47 @@
     "actual_cli_vectors": 1152,
     "actual_cli_mutation_detected": true,
     "scope": "Actual final8ad-composite CLI bridge, policy/evaluator/event filters and publication-boundary regressions; no universal refinement or fresh native kernel execution inferred."
+  },
+  "post_publication_reconciliation": {
+    "source_predecessor": "9690fd6e13c8dad6f9a4e7dc95e8df8ff3036a24",
+    "concurrent_base": "3c0d55da083d29a77d7136f352dd9346aaadd530",
+    "base_tree": "163215da8855388377ca5d36e32225ca0e2b9f48",
+    "reason": "PR659 initially conflicted in generated integrity files and the shared delivery work-unit JSON after the current PR546 base advanced.",
+    "method": "Exact original3c Git blobs for ontology work program and its archive; union of its kernel_proof_continuity with this candidate repair field; original deterministic integrity regeneration. No generated hash edited.",
+    "executable_source_digests_unchanged": true,
+    "local_preparation_failure": "A bounded attempt to reconstruct the exact published Git commit from normalized REST metadata did not hash to the target and wrote no substitute. Checkout/merge then could not proceed. Original source TREE and indexed blobs remained intact; reconcile the two original trees without inventing commit bytes.",
+    "native_or_provider_ambiguous_effect": false,
+    "all_prior_records_retained": true,
+    "targeted_metadata_tests": {
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "tests.test_unified_world_formula_consolidation"
+      ],
+      "started_at": "2026-10-31T21:38:40.184493+00:00",
+      "completed_at": "2026-10-31T21:38:40.228058+00:00",
+      "exit_code": 0,
+      "bytes": 504,
+      "sha256": "b2b6e9cdc27086e2928d89dc5093cdbbc30fd64f57df0a6074adfb57c30eed5c"
+    },
+    "original_boot": {
+      "command": [
+        "python3",
+        "-B",
+        "tools/ai_runtime_bootloader.py",
+        "--json",
+        "--task",
+        "Reconcile PR659 source checkpoint with exact3c kernel continuity without changing tested executable inputs"
+      ],
+      "started_at": "2026-10-31T21:38:40.228255+00:00",
+      "completed_at": "2026-10-31T21:38:42.493616+00:00",
+      "exit_code": 0,
+      "bytes": 9262,
+      "sha256": "e4e72d2d29f3dee463e1caf062693ab0130f8c9fa77dd6d48090742e6fdc1f0b"
+    },
+    "unretained_raw_output_gap": "The failed bounded commit reconstruction and checkout diagnostics remain in original conversation tool output, not a separate raw file. No complete-session raw-log claim is made; the original merge error is retained in reconciliation-merge.log."
   }
 }
