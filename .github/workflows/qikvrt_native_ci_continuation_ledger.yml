@@ -2,6 +2,9 @@
 # Copyright 2026 Ingolf Lohmann.
 name: QIKVRT native CI continuation ledger
 on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17,47 * * * *'
   workflow_run:
     workflows: ["QIKVRT CI"]
     types: [completed]
@@ -12,7 +15,7 @@ permissions:
   pull-requests: read
 jobs:
   record-terminal-evidence:
-    if: github.event.workflow_run.event == 'pull_request'
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.event == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: Bind completed run and persist unresolved gate
@@ -26,32 +29,50 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          # Read back the run from the API; event payload is not acceptance evidence.
-          actual_sha="$(gh api "repos/$GH_REPO/actions/runs/$RUN_ID" --jq '.head_sha')"
-          actual_conclusion="$(gh api "repos/$GH_REPO/actions/runs/$RUN_ID" --jq '.conclusion')"
-          test "$actual_sha" = "$RUN_SHA"
-          test "$actual_conclusion" = "$RUN_CONCLUSION"
-          test -n "$RUN_SHA"
-          test "$RUN_CONCLUSION" != null
-          # The workflow is a durable, readback-bound failure ledger, not an
-          # unauthorized merge, deployment, credential or production admission.
-          if test "$RUN_CONCLUSION" = success; then
-            echo "CI_SUCCESS run=$RUN_ID sha=$RUN_SHA; merge and DoD remain separate gates"
-            exit 0
-          fi
-          title="QIKVRT CI terminal gate: $RUN_SHA"
-          body="$(printf 'Native CI terminal failure or cancellation.\n\nRun: %s\nExact HEAD: `%s`\nConclusion: `%s`\n\nRequires classification of failed steps, correction, new exact-head CI and separate merge/production readback. No automatic retry of a deterministic failure.\n' "$RUN_URL" "$RUN_SHA" "$RUN_CONCLUSION")"
-          # Historical commit-to-PR association is insufficient: require an open PR
-          # whose CURRENT head is exactly the completed run's subject.
-          current_prs="$(gh api "repos/$GH_REPO/commits/$RUN_SHA/pulls" --jq '.[] | select(.state == "open" and .head.sha == "'$RUN_SHA'") | .number')"
-          if test -z "$current_prs"; then
-            echo "STALE_OR_UNBOUND: no open PR at exact run HEAD $RUN_SHA"
-            exit 0
-          fi
-          # Idempotent by exact SHA. A repeated completion must not create duplicates.
-          existing="$(gh issue list --state all --limit 100 --search "$RUN_SHA in:title" --json number,title --jq ".[] | select(.title == \"$title\") | .number" | head -n 1)"
-          if test -n "$existing"; then
-            gh issue comment "$existing" --body "$body"
+          # Reconcile completed PR CI runs even when a workflow_run event was lost.
+          # The scheduled path is readback-based and bounded to the latest 40 runs.
+          if test -n "${RUN_ID:-}"; then
+            candidates="$RUN_ID"
           else
-            gh issue create --title "$title" --body "$body"
+            candidates="$(gh api "repos/$GH_REPO/actions/workflows/qikvrt_ci.yml/runs?status=completed&per_page=40" --jq '.workflow_runs[] | select(.event == "pull_request") | .id')"
           fi
+          for run_id in $candidates; do
+            actual="$(gh api "repos/$GH_REPO/actions/runs/$run_id")"
+            subject="$(jq -r '.head_sha' <<< "$actual")"
+            conclusion="$(jq -r '.conclusion' <<< "$actual")"
+            url="$(jq -r '.html_url' <<< "$actual")"
+            event="$(jq -r '.event' <<< "$actual")"
+            test "$event" = pull_request || continue
+            test "$conclusion" != null || continue
+            if test -n "${RUN_ID:-}"; then
+              test "$subject" = "$RUN_SHA"
+              test "$conclusion" = "$RUN_CONCLUSION"
+            fi
+            # A commit previously associated with a PR is NOT sufficient.
+            # The current open PR head must equal the exact completed subject.
+            prs="$(gh api "repos/$GH_REPO/commits/$subject/pulls" --jq '.[] | select(.state == "open" and .head.sha == "'$subject'") | .number')"
+            if test -z "$prs"; then
+              echo "STALE_OR_UNBOUND run=$run_id head=$subject"
+              continue
+            fi
+            title="QIKVRT CI terminal gate: $subject"
+            existing="$(gh issue list --state all --limit 100 --search "$subject in:title" --json number,title --jq ".[] | select(.title == \\"$title\\") | .number" | head -n 1)"
+            if test "$conclusion" = success; then
+              if test -n "$existing"; then
+                gh issue comment "$existing" --body "Exact-head CI succeeded: $url. This does not certify merge, Main CI, host, domain or publication."
+                gh issue close "$existing" --reason completed
+              fi
+              echo "CI_SUCCESS run=$run_id head=$subject; remaining DoD gates are separate"
+              continue
+            fi
+            failed_steps="$(gh api "repos/$GH_REPO/actions/runs/$run_id/jobs?per_page=100" --jq '[.jobs[] | select(.conclusion == "failure" or .conclusion == "cancelled" or .conclusion == "timed_out") | (.name + ": " + ([.steps[]? | select(.conclusion == "failure") | .name] | join(", ")))] | join("; ")')"
+            body="$(printf 'Native CI requires continuation.\\n\\nRun: %s\\nExact HEAD: \`%s\`\\nConclusion: \`%s\`\\nFailed jobs/steps: %s\\n\\nNext gate: diagnose, apply bounded authorized repair, re-run exact-head CI, verify governance, integrate and read back. No merge or production effect is inferred.\\n' "$url" "$subject" "$conclusion" "$failed_steps")"
+            if test -n "$existing"; then
+              gh issue comment "$existing" --body "$body"
+              if gh issue view "$existing" --json state --jq '.state' | grep -qx CLOSED; then
+                gh issue reopen "$existing"
+              fi
+            else
+              gh issue create --title "$title" --body "$body"
+            fi
+          done
