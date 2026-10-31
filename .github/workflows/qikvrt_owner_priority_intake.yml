@@ -27,13 +27,17 @@ jobs:
           # Single serialized selector; no arbitrary execution of issue content.
           # Fail closed on API errors, including installation rate limiting.
           issues="$(gh api --paginate "repos/$GH_REPO/issues?state=open&per_page=100" --jq '.[] | select(.pull_request == null) | {number,title,labels:[.labels[].name]}' | jq -s '.')"
-          selected="$(jq -r '[.[] | select(.title | startswith("P0 OWNER REQUIREMENT:")) | select(.labels | index("qikvrt-intake-claimed") | not)] | sort_by(.number) | .[0].number // empty' <<< "$issues")"
-          if test -z "$selected"; then
-            echo "NOOP: no unclaimed P0 owner requirement" >> "$GITHUB_STEP_SUMMARY"
-            exit 0
-          fi
-          # Persist a claim before reporting success. A claimed task is NOT done.
-          # If the API returns 403, fail closed; never silently lose the owner task.
-          gh api -X POST "repos/$GH_REPO/issues/$selected/labels" -f 'labels[]=qikvrt-intake-claimed' >/dev/null
-          gh issue comment "$selected" --repo "$GH_REPO" --body "QIKVRT_OWNER_INTAKE_CLAIMED issue=$selected run=$GITHUB_RUN_ID priority=P0. Queue intake only; implementation, CI, merge and effect acknowledgement remain separate mandatory gates."
-          echo "CLAIMED P0 issue #$selected; implementation is still pending." >> "$GITHUB_STEP_SUMMARY"
+          # Drain all currently pending P0 items; a single issue event may cover
+          # several previously unclaimed requirements. The concurrency group
+          # serializes selectors; labels persist the claim across retries.
+          while :; do
+            selected="$(jq -r '[.[] | select(.title | startswith("P0 OWNER REQUIREMENT:")) | select(.labels | index("qikvrt-intake-claimed") | not)] | sort_by(.number) | .[0].number // empty' <<< "$issues")"
+            if test -z "$selected"; then
+              echo "P0 intake queue drained; execution/DoD remain separate." >> "$GITHUB_STEP_SUMMARY"
+              break
+            fi
+            gh api -X POST "repos/$GH_REPO/issues/$selected/labels" -f 'labels[]=qikvrt-intake-claimed' >/dev/null
+            gh issue comment "$selected" --repo "$GH_REPO" --body "QIKVRT_OWNER_INTAKE_CLAIMED issue=$selected run=$GITHUB_RUN_ID priority=P0. Persistent queue claim only; implementation, CI, merge, deployment and effect acknowledgement remain separate gates."
+            echo "CLAIMED P0 issue #$selected; implementation pending." >> "$GITHUB_STEP_SUMMARY"
+            issues="$(jq --argjson number "$selected" 'map(if .number == $number then .labels += ["qikvrt-intake-claimed"] else . end)' <<< "$issues")"
+          done
