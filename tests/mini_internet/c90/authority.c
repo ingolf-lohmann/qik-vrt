@@ -10,7 +10,7 @@ struct qik_state { unsigned long sequence; char digest[QIK_DIGEST+1]; int observ
 static int hex64(const char *p) { int i; if (strlen(p)!=QIK_DIGEST) return 0; for(i=0;i<QIK_DIGEST;i++) if(!((p[i]>='0'&&p[i]<='9')||(p[i]>='a'&&p[i]<='f'))) return 0; return 1; }
 static int step(struct qik_state *s,const char *op,const char *digest) {
  if (!hex64(digest)) return 0;
- if(strcmp(op,"PROPOSE")==0) { if(s->observed || s->acknowledged) return 0; strcpy(s->digest,digest); s->sequence++; return 1; }
+ if(strcmp(op,"PROPOSE")==0) { if(s->digest[0]!=0 || s->observed || s->acknowledged) return 0; strcpy(s->digest,digest); s->sequence++; return 1; }
  if(strcmp(op,"OBSERVE")==0) { if(s->digest[0]==0 || strcmp(s->digest,digest)!=0 || s->observed) return 0; s->observed=1; s->sequence++; return 1; }
  if(strcmp(op,"ACKNOWLEDGE")==0) { if(!s->observed || s->acknowledged || strcmp(s->digest,digest)!=0) return 0; s->acknowledged=1; s->sequence++; return 1; }
  return 0;
