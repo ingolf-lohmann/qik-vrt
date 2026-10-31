@@ -8,5 +8,7 @@ lean_lib EffectIntegrity where
 
 lean_lib SerializationCascade where
 
-@[default_target]
 lean_lib EffectMachine where
+
+@[default_target]
+lean_lib ParallelConsolidation where
