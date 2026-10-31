@@ -49,9 +49,8 @@ theorem effectStep_preserves_safety {Payload : Type} [DecidableEq Payload]
         cases hp : s.proposed with
         | none => simp [hp] at hsome
         | some p =>
-            refine ⟨p, hp, ?_⟩
-            rw [← heq]
-            exact hp
+            refine ⟨p, rfl, ?_⟩
+            exact heq.symm.trans hp
       · exact safe
 
 def effectRunFrom {Payload : Type} [DecidableEq Payload]
