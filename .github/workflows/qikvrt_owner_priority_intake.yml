@@ -1,0 +1,38 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann.
+name: QIKVRT owner priority intake
+on:
+  issues:
+    types: [opened, reopened, edited, labeled, unlabeled]
+  workflow_dispatch:
+permissions:
+  contents: read
+  issues: write
+concurrency:
+  group: qikvrt-owner-priority-intake
+  cancel-in-progress: false
+jobs:
+  select:
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.issue.title, 'P0 OWNER REQUIREMENT:')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Select highest-priority unclaimed owner requirement
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Single serialized selector; no arbitrary execution of issue content.
+          # Fail closed on API errors, including installation rate limiting.
+          issues="$(gh api --paginate "repos/$GH_REPO/issues?state=open&per_page=100" --jq '.[] | select(.pull_request == null) | {number,title,labels:[.labels[].name]}' | jq -s '.')"
+          selected="$(jq -r '[.[] | select(.title | startswith("P0 OWNER REQUIREMENT:")) | select(.labels | index("qikvrt-intake-claimed") | not)] | sort_by(.number) | .[0].number // empty' <<< "$issues")"
+          if test -z "$selected"; then
+            echo "NOOP: no unclaimed P0 owner requirement" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          # Persist a claim before reporting success. A claimed task is NOT done.
+          gh api -X POST "repos/$GH_REPO/issues/$selected/labels" -f 'labels[]=qikvrt-intake-claimed' >/dev/null
+          gh issue comment "$selected" --repo "$GH_REPO" --body "QIKVRT_OWNER_INTAKE_CLAIMED issue=$selected run=$GITHUB_RUN_ID priority=P0. Queue intake only; implementation, CI, merge and effect acknowledgement remain separate mandatory gates."
+          echo "CLAIMED P0 issue #$selected; implementation is still pending." >> "$GITHUB_STEP_SUMMARY"
