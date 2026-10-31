@@ -15,10 +15,9 @@ theorem serialization_injective {Payload Bytes : Type}
   have ha := codec.roundtrip a
   have hb := codec.roundtrip b
   rw [h] at ha
-  rw [hb] at ha
   exact Option.some.inj (ha.symm.trans hb)
 
-theorem serializations_compose
+def serializations_compose
     {A B C : Type}
     (first : Serialization A B)
     (second : Serialization B C) :
