@@ -92,6 +92,17 @@ async function run() {
   console.log("PASS signed but invalid schema, version and digest format rejected");
 
   fetches = [];
+  const originalRoot = context.PINNED_RELEASE_KEY_JWK;
+  context.PINNED_RELEASE_KEY_JWK = undefined;
+  await assert.rejects(context.testVerifyRelease(good, signature), /RELEASE_TRUST_ROOT_MISSING/);
+  assert.equal(fetches.length, 0);
+  context.PINNED_RELEASE_KEY_JWK = { kty: "EC", crv: "P-384" };
+  await assert.rejects(context.testVerifyRelease(good, signature), /RELEASE_TRUST_ROOT_MISSING/);
+  assert.equal(fetches.length, 0);
+  context.PINNED_RELEASE_KEY_JWK = originalRoot;
+  console.log("PASS missing and wrong-curve trust root rejected before fetch");
+
+  fetches = [];
   const other = await subtle.generateKey({ name: "ECDSA", namedCurve: "P-256" }, true, ["sign", "verify"]);
   const otherSig = Buffer.from(await subtle.sign({name:"ECDSA",hash:"SHA-256"},other.privateKey,encoder.encode(good))).toString("base64");
   await assert.rejects(context.testVerifyRelease(good, otherSig), /RELEASE_SIGNATURE_INVALID/);
