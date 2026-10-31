@@ -615,9 +615,9 @@ heartbeat, empty commit, polling timer or replacement executor drives progress.
 The missing consumer edge is repaired in the existing promotion workflow:
 `tools/qikvrt_pr_closure_engine.py workflow-prepare` restores the last original
 immutable intent and resolves it by independent reads before selecting any new
-action. The complete live inventory is retained; a bounded rotating scan and
-the triggering exact head order inspection, without treating that order as an
-admission. Preparation writes no repository effect. The fixed original Actions
+action. The complete live inventory is retained and inspected until an admitted
+successor is found or the complete census has no admitted effect. The triggering
+exact head orders inspection without becoming an admission. Preparation writes no repository effect. The fixed original Actions
 artifact is uploaded before `workflow-apply`; the consumer checks its original
 run/attempt, trusted Main source, complete ZIP inventory and byte digest, then
 reobserves the original gates and identities before one native REST merge.
@@ -656,3 +656,9 @@ five protected host inputs, authenticated host identity, package/restart/toggle,
 exact-domain RT-01..07 acceptance, functioning mirrors and public Zenodo bytes/DOI
 remain open with separate acceptance. Repository merges never imply productive
 `EFFECT_ACK_DONE`.
+
+The existing native governance publisher reuses its complete current inventory
+when an original completion has no PR selector. This replaces the old timer
+repair of that observation gap; each selected PR still receives fresh identity,
+review, rule and exact-head checks. A partial candidate scan cannot declare
+quiescence while an admitted later successor remains uninspected.

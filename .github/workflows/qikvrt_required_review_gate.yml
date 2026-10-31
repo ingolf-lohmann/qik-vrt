@@ -76,9 +76,12 @@ jobs:
 
           if requested:
               numbers=[int(requested)]
-          elif event_name == 'workflow_run':
+          elif event_name == 'workflow_run' and event_prs:
               numbers=sorted({int(item['number']) for item in event_prs if isinstance(item,dict) and item.get('number')})
           else:
+              # Review-submitted and downstream workflow_run payloads may
+              # contain no PR selector. Reuse the complete current inventory;
+              # every candidate still gets fresh exact-head native evaluation.
               numbers=[int(pr['number']) for pr in gh_pages(f'repos/{repo}/pulls?state=open&base=main&per_page=100')]
 
           for number in numbers:

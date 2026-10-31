@@ -134,6 +134,15 @@ class ClosureEngineTests(unittest.TestCase):
         self.assertEqual(([x["number"] for x in second], second_offset), (list(range(9, 17)), 8))
         self.assertEqual(([x["number"] for x in third], third_offset), (list(range(17, 25)), 16))
 
+    def test_completion_cannot_stop_before_an_available_later_successor(self):
+        api = M.GitHubAPI('ingolf-lohmann/qik-vrt', 'fixture')
+        api.inspect = lambda number, main: (self.pr(number=number, draft=number < 9), self.obs(compare_status='diverged'))
+        rows = [{'number': n, 'head_ref': 'feature', 'head_sha': 'b' * 40} for n in range(1, 10)]
+        decision = M.select_step(api, {'pull_requests': rows, 'main_sha': 'a' * 40},
+                                self.cfg(), {'operations': ['UPDATE_BRANCH']})
+        self.assertEqual(decision['selected_action']['pr'], 9)
+        self.assertEqual(len(decision['scanned']), 9)
+
 
 if __name__ == "__main__":
     unittest.main()

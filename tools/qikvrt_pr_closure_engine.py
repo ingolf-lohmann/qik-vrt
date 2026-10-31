@@ -566,12 +566,14 @@ def select_step(api: GitHubAPI, inventory: Mapping[str, Any], config: Mapping[st
     scanned = []
     priority = load_merge_priority()
     ordered = prioritized_pull_requests(inventory["pull_requests"], priority)
-    window, offset = scan_window(ordered, config["max_scan"], os.environ.get("GITHUB_RUN_NUMBER", "1"))
     event_head = os.environ.get("QIKVRT_CLOSURE_EVENT_HEAD", "")
     matching = [row for row in ordered if row["head_sha"] == event_head]
     if matching:
-        window = (matching + [row for row in window if row not in matching])[:config["max_scan"]]
-    for summary in window:
+        ordered = matching + [row for row in ordered if row not in matching]
+    # Completion events are not guaranteed to contain a PR selector. A partial
+    # scan cannot claim there is no admitted successor while another current
+    # candidate remains uninspected. Reuse the original complete finite census.
+    for summary in ordered:
         pr, observed = api.inspect(summary["number"], inventory["main_sha"])
         if pr["head"]["sha"] != summary["head_sha"] or pr.get("state") != "open":
             raise ClosureBlock("INVENTORY_PR_DRIFT")
@@ -620,11 +622,9 @@ def select_step(api: GitHubAPI, inventory: Mapping[str, Any], config: Mapping[st
                 decision.update(main_sha=inventory["main_sha"], promotion_mode="NATIVE_PR_MERGE")
                 return {"selected_action": decision, "scanned": scanned + [decision],
                         "selected_observation_sha256": digest({"pr": pr, "observed": observed}),
-                        "scan_offset": offset,
                         "priority_order": [row["number"] for row in ordered]}
         scanned.append(decision)
     return {"selected_action": None, "scanned": scanned,
-            "scan_offset": offset,
             "first_blocker": scanned[0] if scanned else {"action": "NO_ADMITTED_PR_EFFECT"},
             "priority_order": [row["number"] for row in ordered]}
 
