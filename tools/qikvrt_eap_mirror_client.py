@@ -28,6 +28,7 @@ import re
 import sys
 import urllib.error
 import urllib.request
+from urllib.parse import urlsplit
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
@@ -85,7 +86,18 @@ def verify_receipt(receipt: dict, value: dict, principal: str, ledger_id: str) -
 
 class Client:
     def __init__(self, base_url: str, principal: str, token: str, opener=None):
-        if not base_url.startswith(("https://", "http://127.0.0.1:", "http://localhost:")):
+        if (not isinstance(base_url, str)
+                or any(char.isspace() or ord(char) < 32 or ord(char) == 127 for char in base_url)):
+            raise Hold("HTTPS_OR_LOOPBACK_BASE_URL_REQUIRED")
+        try:
+            target = urlsplit(base_url)
+            _ = target.port  # Reject malformed and out-of-range ports before using credentials.
+        except ValueError:
+            raise Hold("HTTPS_OR_LOOPBACK_BASE_URL_REQUIRED") from None
+        # A string prefix can disguise a remote host behind loopback-looking userinfo.
+        if (target.scheme not in ("http", "https") or not target.hostname
+                or target.username is not None or target.password is not None
+                or (target.scheme == "http" and target.hostname not in ("127.0.0.1", "localhost"))):
             raise Hold("HTTPS_OR_LOOPBACK_BASE_URL_REQUIRED")
         self.base = base_url.rstrip("/")
         self.principal, self.token = principal, token

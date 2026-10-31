@@ -117,5 +117,85 @@
     "scope": "Reviewable source and evidence on recorded predecessor; reconciliation into the new PR546 and exact resulting gates remain open",
     "new_pull_request_created": false,
     "main_integrated": false
+  },
+  "url_authority_repair": {
+    "source_head": "1c314c0004032fa819392f82a5184f6acc79ff87",
+    "source_tree": "13fca4c27aaaede23bc774217067a785b9a62fec",
+    "contribution": "OpenAI Codex; review after Owner-supplied Mirror verification report",
+    "defect": "Loopback-looking userinfo passed the string-prefix check although urlsplit resolves a remote HTTP hostname; malformed HTTPS authorities and invalid ports also passed constructor validation.",
+    "negative_control": {
+      "command": "python3 -B -m unittest -v tests.test_eap_mirror_client.MirrorClientTests.test_base_url_validates_the_parsed_authority_before_using_credentials",
+      "exit_code": 1,
+      "expected_failing_subtests": 7,
+      "external_network_used": false
+    },
+    "repair": "Validate parsed scheme, hostname, port and absent userinfo; reject raw whitespace/control characters before accepting the base URL or using credentials. HTTP remains restricted to exact localhost/127.0.0.1 hostnames. Existing redirect and receipt guards remain active.",
+    "targeted_tests": {
+      "command": "python3 -B -m unittest -v tests.test_eap_mirror_client tests.test_ai_runtime_bootloader",
+      "exit_code": 0,
+      "tests": 162
+    },
+    "full_suite": {
+      "command": "make test",
+      "observed_process_exit_code": 0,
+      "reported_python_test_executions": 2285,
+      "unittest_summary_blocks": 43,
+      "tested_worktree_tree": "ea5fc54869403c1d072ae24a9bcdabe6ca20059f",
+      "verified_code_blobs": {
+        "tools/qikvrt_eap_mirror_client.py": "265e10dd95eb2dbc8a0bb34eb6e244502d7a04ef",
+        "tests/test_eap_mirror_client.py": "4c02767ef0f08958b5f0b66f5e0218aecc2391a7"
+      },
+      "scope": "Local complete repository suite on the source repair. Subsequent changes only add evidence, update this work unit and deterministically regenerate integrity; final remote-head native CI is separate."
+    },
+    "pr546_readback": {
+      "head": "03c665f8e9e7e41ee3b1c87428d5bfaeb25f7f48",
+      "tree": "21ba89554d0f7f0289b676d92e0ad155cbda7e32",
+      "state": "DRAFT; histories diverged 4 ahead/3 behind at observation; no PR546 ref mutation"
+    },
+    "live_delivery": false,
+    "effect_ack_done": false,
+    "next_action": "Publish this bounded source repair only on the existing carrier under expected-head/non-force lease and independently read its ref/commit/tree. Reconcile the latest PR546 successor and retain its seven-checker/native/governance gates. Mirror network, exact protected principal/token grant, admitted original runtime and live-host receipt remain open.",
+    "logs": {
+      "url-authority-negative-before.log.gz": {
+        "path": "evidence/client-delivery/eap-mirror-20261031/url-authority-negative-before.log.gz",
+        "raw_bytes": 7648,
+        "raw_sha256": "9fb40c674369848c67cfa537ad5fb5d606de61db272603737c76d803007c40ec",
+        "gzip_sha256": "8880ba85131b1be60097f76cf92c0d3992341bdbdaa641961516da489aa95fa4"
+      },
+      "url-authority-targeted-after.log.gz": {
+        "path": "evidence/client-delivery/eap-mirror-20261031/url-authority-targeted-after.log.gz",
+        "raw_bytes": 30646,
+        "raw_sha256": "23682fe0391c8f6c4647f8bc6a64df97c064fac736cc825b233f11a93a05e8ae",
+        "gzip_sha256": "42dec448fed07aa9b9dd818d8ed233823d9c3e75a0b3df327f8f5d1b3705b8d8"
+      },
+      "url-authority-make-test.log.gz": {
+        "path": "evidence/client-delivery/eap-mirror-20261031/url-authority-make-test.log.gz",
+        "raw_bytes": 449186,
+        "raw_sha256": "a77c13d1d86cb4e84d73a3bfea04d08bac4f1281e06741914ef68d8ea21c2815",
+        "gzip_sha256": "345cb7f863086b32c7d78682bb9c0893ba548052f6f2e5da3cf716c431740cb3"
+      },
+      "url-authority-bootstrap.log.gz": {
+        "path": "evidence/client-delivery/eap-mirror-20261031/url-authority-bootstrap.log.gz",
+        "raw_bytes": 9175,
+        "raw_sha256": "0abadfca18e69e21b5d068fe3799f92d3781e5e53c6741fc865c55aa81d2d83c",
+        "gzip_sha256": "6a771c8f00c887d48ce282388b3b48f7238737b53842979f1e3af572f1902947"
+      },
+      "url-authority-source-clone.log.gz": {
+        "path": "evidence/client-delivery/eap-mirror-20261031/url-authority-source-clone.log.gz",
+        "raw_bytes": 1466,
+        "raw_sha256": "f3ddcde57dacd7536e9c1c7bce765292b81c0ab80ca7d04502bcedf053454939",
+        "gzip_sha256": "1ea55943418897a49a95f6a44fb03a14100ddfe1f777eaa30faf8f49d423b00d"
+      }
+    },
+    "source_and_native_readback": "evidence/client-delivery/eap-mirror-20261031/URL_AUTHORITY_SOURCE_READBACK.json",
+    "pr546_later_readback": {
+      "head": "9fe7057167beb381c3f3272c6e6d2b977529113d",
+      "tree": "e56b962fe9a5ba623f06ae89235e6f7ca1a852b5",
+      "draft": true,
+      "pr546_reference_updated": false,
+      "fresh_exact_composite_gates": "OPEN"
+    },
+    "route_preflight_sha256": "b902b44710e3f1ff869d07a7ff598bef826ffb538d3bb23128f5ed8e7008d427",
+    "preflight_scope": "Declared consistency of the later exact REST publication/read calls only. Earlier source collection, including read-only Git clone, is retained as its actual transport; no retroactive routing-preflight or native-adoption claim."
   }
 }

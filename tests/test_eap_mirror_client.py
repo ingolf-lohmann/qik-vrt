@@ -103,6 +103,24 @@ class MirrorClientTests(unittest.TestCase):
         with self.assertRaises(mirror.Hold):
             mirror.Client("http://raumzeitterminal.de", "claude:mirror", "t" * 40)
 
+    def test_base_url_validates_the_parsed_authority_before_using_credentials(self):
+        for base in ("http://127.0.0.1:80@remote.example.invalid",
+                     "http://localhost:80@remote.example.invalid",
+                     "http://localhost:80@127.0.0.1.example.invalid",
+                     "https://user:password@remote.example.invalid",
+                     "https://", "https://remote.example.invalid:65536",
+                     "http://localhost:\n80@remote.example.invalid"):
+            with self.subTest(base=base):
+                with self.assertRaisesRegex(mirror.Hold, "HTTPS_OR_LOOPBACK_BASE_URL_REQUIRED"):
+                    mirror.Client(base, self.grant["principal"], self.grant["token"], self.direct)
+
+    def test_base_url_preserves_https_and_loopback_support(self):
+        for base in ("https://raumzeitterminal.de", "http://127.0.0.1:8766",
+                     "http://localhost:8766"):
+            with self.subTest(base=base):
+                client = mirror.Client(base, self.grant["principal"], self.grant["token"], self.direct)
+                self.assertEqual(client.base, base)
+
     def test_redirect_never_forwards_the_mirror_credential(self):
         captured = []
         class Trap(BaseHTTPRequestHandler):
