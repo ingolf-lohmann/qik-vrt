@@ -1,0 +1,526 @@
+{
+  "schema": "qikvrt-independent-seven-checker-readback/v1",
+  "head": "9fe7057167beb381c3f3272c6e6d2b977529113d",
+  "tree": "e56b962fe9a5ba623f06ae89235e6f7ca1a852b5",
+  "run": 41240619884,
+  "attempt": 1,
+  "artifact": 13056998474,
+  "archive_sha256": "7aa7633a021d17284d3bb5ff7d7bb47f0e48835d434c24a730d4536fd8386a48",
+  "checkers": [
+    {
+      "checker": "own-kernel",
+      "commit": "6caaee842e9495688c1567e78c0e68dbb96942aa",
+      "result": "PASS",
+      "source_sha256": "50a616018b8a21c9cd466fd98b1b4de3e2f18ba6c7e50f3858800ab41ec792b9",
+      "source_bundle_sha256": "c86bf35b4b6cb74be27fece1ac172bfcbbfc8d405c387ed1b9957f465094e150",
+      "export_or_olean_sha256": "8e76fa9b4ffd063365e36e89cabef75d64efe4a457544299a6e0b25c7628aacf",
+      "log_sha256": "16f8eb57135f67ef8498d9e1646f51a424806e07b54a15d51426488c60e22207",
+      "command": [
+        "lake",
+        "build",
+        "QIKVRTDeliveryReporting"
+      ],
+      "executed_commands": [
+        [
+          "/home/runner/work/_temp/lean-4.19.0-linux/bin/lean",
+          "--version"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.19.0-linux/bin/lean",
+          "--githash"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.19.0-linux/bin/lake",
+          "build",
+          "QIKVRTDeliveryReporting",
+          "deliveryReportingVectors"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.19.0-linux/bin/lake",
+          "env",
+          "lean",
+          "--run",
+          "../QIKVRTEffectAck/DeliveryReportingReplay.lean"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.19.0-linux/bin/lake",
+          "env",
+          "lean",
+          "../QIKVRTEffectAck/DeliveryReportingAxiomAudit.lean"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.19.0-linux/bin/lake",
+          "exe",
+          "deliveryReportingVectors"
+        ],
+        [
+          "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python3",
+          "-B",
+          "-m",
+          "unittest",
+          "tests.test_delivery_reporting_proof"
+        ]
+      ],
+      "axioms": {
+        "QIKVRT.DeliveryReporting.T1": [
+          "propext"
+        ],
+        "QIKVRT.DeliveryReporting.T2": [
+          "Quot.sound",
+          "propext"
+        ],
+        "QIKVRT.DeliveryReporting.T3": [
+          "Quot.sound",
+          "propext"
+        ],
+        "QIKVRT.DeliveryReporting.T4": []
+      },
+      "execution": {
+        "head": "9fe7057167beb381c3f3272c6e6d2b977529113d",
+        "tree": "e56b962fe9a5ba623f06ae89235e6f7ca1a852b5",
+        "run_id": "41240619884",
+        "run_attempt": "1"
+      }
+    },
+    {
+      "checker": "lean-paranoid",
+      "commit": "eb6cafb7290e8bd5f2937522d8d804f58f02bafc",
+      "result": "PASS",
+      "source_sha256": "50a616018b8a21c9cd466fd98b1b4de3e2f18ba6c7e50f3858800ab41ec792b9",
+      "source_bundle_sha256": "c86bf35b4b6cb74be27fece1ac172bfcbbfc8d405c387ed1b9957f465094e150",
+      "export_or_olean_sha256": "e3ef03954d67e41d20aa7eb1595587a70a6ef2919b0dfcbc51c517a001059c33",
+      "log_sha256": "3e1930e85fff8360867c199a7a2d7bb1c7aa2d95556affb822ccdb8d648a8601",
+      "command": [
+        "leanchecker-paranoid",
+        "--silent",
+        "--from-export",
+        "{export}"
+      ],
+      "executed_commands": [
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/lean",
+          "--version"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/lean",
+          "--githash"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/lake",
+          "build",
+          "QIKVRTDeliveryReporting"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/lake",
+          "env",
+          "lean",
+          "QIKVRTEffectAck/DeliveryReportingAxiomAudit.lean"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/lake",
+          "env",
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/leanexport",
+          "QIKVRTEffectAck.DeliveryReporting",
+          "--",
+          "QIKVRT.DeliveryReporting.T1",
+          "QIKVRT.DeliveryReporting.T2",
+          "QIKVRT.DeliveryReporting.T3",
+          "QIKVRT.DeliveryReporting.T4"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/leanchecker-paranoid",
+          "--silent",
+          "--from-export",
+          "/home/runner/work/qik-vrt/qik-vrt/.qikvrt/formal-receipts/DeliveryReporting/DeliveryReporting.export.ndjson"
+        ]
+      ],
+      "axioms": {
+        "QIKVRT.DeliveryReporting.T1": [
+          "propext"
+        ],
+        "QIKVRT.DeliveryReporting.T2": [
+          "Quot.sound",
+          "propext"
+        ],
+        "QIKVRT.DeliveryReporting.T3": [
+          "Quot.sound",
+          "propext"
+        ],
+        "QIKVRT.DeliveryReporting.T4": []
+      },
+      "execution": {
+        "head": "9fe7057167beb381c3f3272c6e6d2b977529113d",
+        "tree": "e56b962fe9a5ba623f06ae89235e6f7ca1a852b5",
+        "run_id": "41240619884",
+        "run_attempt": "1"
+      }
+    },
+    {
+      "checker": "lean4lean",
+      "commit": "456abe5015fc8f54ea595561fc39523d7733c93f",
+      "result": "PASS",
+      "source_sha256": "50a616018b8a21c9cd466fd98b1b4de3e2f18ba6c7e50f3858800ab41ec792b9",
+      "source_bundle_sha256": "c86bf35b4b6cb74be27fece1ac172bfcbbfc8d405c387ed1b9957f465094e150",
+      "export_or_olean_sha256": "e3ef03954d67e41d20aa7eb1595587a70a6ef2919b0dfcbc51c517a001059c33",
+      "log_sha256": "eabca57e39fdcd72f5ad91a97347ddad0e2a44d57feb825fdcc7b2dc621f0942",
+      "command": [
+        "lean4lean",
+        "--import",
+        "{export}"
+      ],
+      "executed_commands": [
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/lean",
+          "--version"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/lean",
+          "--githash"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/lake",
+          "build",
+          "QIKVRTDeliveryReporting"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/lake",
+          "env",
+          "lean",
+          "QIKVRTEffectAck/DeliveryReportingAxiomAudit.lean"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/lake",
+          "env",
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/leanexport",
+          "QIKVRTEffectAck.DeliveryReporting",
+          "--",
+          "QIKVRT.DeliveryReporting.T1",
+          "QIKVRT.DeliveryReporting.T2",
+          "QIKVRT.DeliveryReporting.T3",
+          "QIKVRT.DeliveryReporting.T4"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/lean4lean",
+          "--import",
+          "/home/runner/work/qik-vrt/qik-vrt/.qikvrt/formal-receipts/DeliveryReporting/DeliveryReporting.export.ndjson"
+        ]
+      ],
+      "axioms": {
+        "QIKVRT.DeliveryReporting.T1": [
+          "propext"
+        ],
+        "QIKVRT.DeliveryReporting.T2": [
+          "Quot.sound",
+          "propext"
+        ],
+        "QIKVRT.DeliveryReporting.T3": [
+          "Quot.sound",
+          "propext"
+        ],
+        "QIKVRT.DeliveryReporting.T4": []
+      },
+      "execution": {
+        "head": "9fe7057167beb381c3f3272c6e6d2b977529113d",
+        "tree": "e56b962fe9a5ba623f06ae89235e6f7ca1a852b5",
+        "run_id": "41240619884",
+        "run_attempt": "1"
+      }
+    },
+    {
+      "checker": "nanoda",
+      "commit": "3a2407216ee84a75f9e1aead6803d0578be06ae7",
+      "result": "PASS",
+      "source_sha256": "50a616018b8a21c9cd466fd98b1b4de3e2f18ba6c7e50f3858800ab41ec792b9",
+      "source_bundle_sha256": "c86bf35b4b6cb74be27fece1ac172bfcbbfc8d405c387ed1b9957f465094e150",
+      "export_or_olean_sha256": "e3ef03954d67e41d20aa7eb1595587a70a6ef2919b0dfcbc51c517a001059c33",
+      "log_sha256": "66e27764af4d740471af9ec33e65d937426d2513b54300cddbf1348f18dd83ed",
+      "command": [
+        "nanoda_bin",
+        "{config}"
+      ],
+      "executed_commands": [
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/lean",
+          "--version"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/lean",
+          "--githash"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/lake",
+          "build",
+          "QIKVRTDeliveryReporting"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/lake",
+          "env",
+          "lean",
+          "QIKVRTEffectAck/DeliveryReportingAxiomAudit.lean"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/lake",
+          "env",
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/leanexport",
+          "QIKVRTEffectAck.DeliveryReporting",
+          "--",
+          "QIKVRT.DeliveryReporting.T1",
+          "QIKVRT.DeliveryReporting.T2",
+          "QIKVRT.DeliveryReporting.T3",
+          "QIKVRT.DeliveryReporting.T4"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/nanoda_bin",
+          "/home/runner/work/qik-vrt/qik-vrt/.qikvrt/formal-receipts/DeliveryReporting/nanoda-config.json"
+        ]
+      ],
+      "axioms": {
+        "QIKVRT.DeliveryReporting.T1": [
+          "propext"
+        ],
+        "QIKVRT.DeliveryReporting.T2": [
+          "Quot.sound",
+          "propext"
+        ],
+        "QIKVRT.DeliveryReporting.T3": [
+          "Quot.sound",
+          "propext"
+        ],
+        "QIKVRT.DeliveryReporting.T4": []
+      },
+      "execution": {
+        "head": "9fe7057167beb381c3f3272c6e6d2b977529113d",
+        "tree": "e56b962fe9a5ba623f06ae89235e6f7ca1a852b5",
+        "run_id": "41240619884",
+        "run_attempt": "1"
+      }
+    },
+    {
+      "checker": "con-leche",
+      "commit": "67f04630d88718e81aa4d07ab64501f68f105398",
+      "result": "PASS",
+      "source_sha256": "50a616018b8a21c9cd466fd98b1b4de3e2f18ba6c7e50f3858800ab41ec792b9",
+      "source_bundle_sha256": "c86bf35b4b6cb74be27fece1ac172bfcbbfc8d405c387ed1b9957f465094e150",
+      "export_or_olean_sha256": "e3ef03954d67e41d20aa7eb1595587a70a6ef2919b0dfcbc51c517a001059c33",
+      "log_sha256": "a1bd5066dac6584f6c3a5f477d30f61d759ab4fc8ce15661c76ca3cf5f5df5a0",
+      "command": [
+        "con-leche",
+        "{export}"
+      ],
+      "executed_commands": [
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/lean",
+          "--version"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/lean",
+          "--githash"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/lake",
+          "build",
+          "QIKVRTDeliveryReporting"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/lake",
+          "env",
+          "lean",
+          "QIKVRTEffectAck/DeliveryReportingAxiomAudit.lean"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/lake",
+          "env",
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/leanexport",
+          "QIKVRTEffectAck.DeliveryReporting",
+          "--",
+          "QIKVRT.DeliveryReporting.T1",
+          "QIKVRT.DeliveryReporting.T2",
+          "QIKVRT.DeliveryReporting.T3",
+          "QIKVRT.DeliveryReporting.T4"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/con-leche",
+          "/home/runner/work/qik-vrt/qik-vrt/.qikvrt/formal-receipts/DeliveryReporting/DeliveryReporting.export.ndjson"
+        ]
+      ],
+      "axioms": {
+        "QIKVRT.DeliveryReporting.T1": [
+          "propext"
+        ],
+        "QIKVRT.DeliveryReporting.T2": [
+          "Quot.sound",
+          "propext"
+        ],
+        "QIKVRT.DeliveryReporting.T3": [
+          "Quot.sound",
+          "propext"
+        ],
+        "QIKVRT.DeliveryReporting.T4": []
+      },
+      "execution": {
+        "head": "9fe7057167beb381c3f3272c6e6d2b977529113d",
+        "tree": "e56b962fe9a5ba623f06ae89235e6f7ca1a852b5",
+        "run_id": "41240619884",
+        "run_attempt": "1"
+      }
+    },
+    {
+      "checker": "con-ron",
+      "commit": "dd8d8218892c871276b1e569d3decbb368bba1b6",
+      "result": "PASS",
+      "source_sha256": "50a616018b8a21c9cd466fd98b1b4de3e2f18ba6c7e50f3858800ab41ec792b9",
+      "source_bundle_sha256": "c86bf35b4b6cb74be27fece1ac172bfcbbfc8d405c387ed1b9957f465094e150",
+      "export_or_olean_sha256": "e3ef03954d67e41d20aa7eb1595587a70a6ef2919b0dfcbc51c517a001059c33",
+      "log_sha256": "4683f82cb9d595a9227620869225ac6f22683294f8fc544f660687d16852680c",
+      "command": [
+        "con-ron",
+        "{export}"
+      ],
+      "executed_commands": [
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/lean",
+          "--version"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/lean",
+          "--githash"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/lake",
+          "build",
+          "QIKVRTDeliveryReporting"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/lake",
+          "env",
+          "lean",
+          "QIKVRTEffectAck/DeliveryReportingAxiomAudit.lean"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/lake",
+          "env",
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/leanexport",
+          "QIKVRTEffectAck.DeliveryReporting",
+          "--",
+          "QIKVRT.DeliveryReporting.T1",
+          "QIKVRT.DeliveryReporting.T2",
+          "QIKVRT.DeliveryReporting.T3",
+          "QIKVRT.DeliveryReporting.T4"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/con-ron",
+          "/home/runner/work/qik-vrt/qik-vrt/.qikvrt/formal-receipts/DeliveryReporting/DeliveryReporting.export.ndjson"
+        ]
+      ],
+      "axioms": {
+        "QIKVRT.DeliveryReporting.T1": [
+          "propext"
+        ],
+        "QIKVRT.DeliveryReporting.T2": [
+          "Quot.sound",
+          "propext"
+        ],
+        "QIKVRT.DeliveryReporting.T3": [
+          "Quot.sound",
+          "propext"
+        ],
+        "QIKVRT.DeliveryReporting.T4": []
+      },
+      "execution": {
+        "head": "9fe7057167beb381c3f3272c6e6d2b977529113d",
+        "tree": "e56b962fe9a5ba623f06ae89235e6f7ca1a852b5",
+        "run_id": "41240619884",
+        "run_attempt": "1"
+      }
+    },
+    {
+      "checker": "lean-default",
+      "commit": "eb6cafb7290e8bd5f2937522d8d804f58f02bafc",
+      "result": "PASS",
+      "source_sha256": "50a616018b8a21c9cd466fd98b1b4de3e2f18ba6c7e50f3858800ab41ec792b9",
+      "source_bundle_sha256": "c86bf35b4b6cb74be27fece1ac172bfcbbfc8d405c387ed1b9957f465094e150",
+      "export_or_olean_sha256": "e3ef03954d67e41d20aa7eb1595587a70a6ef2919b0dfcbc51c517a001059c33",
+      "log_sha256": "a1ce48efcc024f8f5074f0644533a16e0acbe2fdf43dd6f3ca445e403c0d4e8f",
+      "command": [
+        "leanchecker",
+        "--silent",
+        "--from-export",
+        "{export}"
+      ],
+      "executed_commands": [
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/lean",
+          "--version"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/lean",
+          "--githash"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/lake",
+          "build",
+          "QIKVRTDeliveryReporting"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/lake",
+          "env",
+          "lean",
+          "QIKVRTEffectAck/DeliveryReportingAxiomAudit.lean"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/lake",
+          "env",
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/leanexport",
+          "QIKVRTEffectAck.DeliveryReporting",
+          "--",
+          "QIKVRT.DeliveryReporting.T1",
+          "QIKVRT.DeliveryReporting.T2",
+          "QIKVRT.DeliveryReporting.T3",
+          "QIKVRT.DeliveryReporting.T4"
+        ],
+        [
+          "/home/runner/work/_temp/lean-4.35.0-linux/bin/leanchecker",
+          "--silent",
+          "--from-export",
+          "/home/runner/work/qik-vrt/qik-vrt/.qikvrt/formal-receipts/DeliveryReporting/DeliveryReporting.export.ndjson"
+        ]
+      ],
+      "axioms": {
+        "QIKVRT.DeliveryReporting.T1": [
+          "propext"
+        ],
+        "QIKVRT.DeliveryReporting.T2": [
+          "Quot.sound",
+          "propext"
+        ],
+        "QIKVRT.DeliveryReporting.T3": [
+          "Quot.sound",
+          "propext"
+        ],
+        "QIKVRT.DeliveryReporting.T4": []
+      },
+      "execution": {
+        "head": "9fe7057167beb381c3f3272c6e6d2b977529113d",
+        "tree": "e56b962fe9a5ba623f06ae89235e6f7ca1a852b5",
+        "run_id": "41240619884",
+        "run_attempt": "1"
+      }
+    }
+  ],
+  "verification": [
+    "Archive digest independently equals GitHub original metadata",
+    "All seven original combined logs rehashed and matched declared digests",
+    "All receipts bind exact HEAD/TREE and source bytes",
+    "No panic/error despite zero exit in original logs"
+  ],
+  "scope": "Model plus finite bridge only; not current successor acceptance or universal Python refinement",
+  "source_integration_failure": {
+    "run": 41240614947,
+    "job": 124653551966,
+    "step": "Reject project proof escapes",
+    "cause": "Original project-wide scanner needs the isolated reporting olean on its own LEAN_PATH; no proof exclusion is admitted",
+    "repair": "Freshly build own library, byte-exactly copy its generated olean into original audit build search path, retain original audit unmodified"
+  },
+  "main_integration": false,
+  "productive_effect": false
+}

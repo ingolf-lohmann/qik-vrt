@@ -1,0 +1,33 @@
+{"command": ["/home/runner/work/_temp/lean-4.19.0-linux/bin/lean", "--version"], "cwd": "/home/runner/work/qik-vrt/qik-vrt/formalization/QIKVRT_Formalization_v2.0/delivery-reporting", "environment": {"LEAN_ABORT_ON_PANIC": "1"}, "utc": "2026-10-31T20:49:06.658802+00:00"}
+Lean (version 4.19.0, x86_64-unknown-linux-gnu, commit 6caaee842e94, Release)
+
+EXIT_CODE=0
+{"command": ["/home/runner/work/_temp/lean-4.19.0-linux/bin/lean", "--githash"], "cwd": "/home/runner/work/qik-vrt/qik-vrt/formalization/QIKVRT_Formalization_v2.0/delivery-reporting", "environment": {"LEAN_ABORT_ON_PANIC": "1"}, "utc": "2026-10-31T20:49:06.723630+00:00"}
+
+EXIT_CODE=0
+{"command": ["/home/runner/work/_temp/lean-4.19.0-linux/bin/lake", "build", "QIKVRTDeliveryReporting", "deliveryReportingVectors"], "cwd": "/home/runner/work/qik-vrt/qik-vrt/formalization/QIKVRT_Formalization_v2.0/delivery-reporting", "environment": {"LEAN_ABORT_ON_PANIC": "1"}, "utc": "2026-10-31T20:49:06.788202+00:00"}
+Build completed successfully.
+
+EXIT_CODE=0
+{"command": ["/home/runner/work/_temp/lean-4.19.0-linux/bin/lake", "env", "lean", "--run", "../QIKVRTEffectAck/DeliveryReportingReplay.lean"], "cwd": "/home/runner/work/qik-vrt/qik-vrt/formalization/QIKVRT_Formalization_v2.0/delivery-reporting", "environment": {"LEAN_ABORT_ON_PANIC": "1"}, "utc": "2026-10-31T20:49:06.952992+00:00"}
+DELIVERY_OLEAN_REPLAY_PASS declarations=287 theorems=4
+
+EXIT_CODE=0
+{"command": ["/home/runner/work/_temp/lean-4.19.0-linux/bin/lake", "env", "lean", "../QIKVRTEffectAck/DeliveryReportingAxiomAudit.lean"], "cwd": "/home/runner/work/qik-vrt/qik-vrt/formalization/QIKVRT_Formalization_v2.0/delivery-reporting", "environment": {"LEAN_ABORT_ON_PANIC": "1"}, "utc": "2026-10-31T20:49:07.621349+00:00"}
+'QIKVRT.DeliveryReporting.T1' depends on axioms: [propext]
+'QIKVRT.DeliveryReporting.T2' depends on axioms: [propext, Quot.sound]
+'QIKVRT.DeliveryReporting.T3' depends on axioms: [propext, Quot.sound]
+'QIKVRT.DeliveryReporting.T4' does not depend on any axioms
+
+EXIT_CODE=0
+{"command": ["/home/runner/work/_temp/lean-4.19.0-linux/bin/lake", "exe", "deliveryReportingVectors"], "cwd": "/home/runner/work/qik-vrt/qik-vrt/formalization/QIKVRT_Formalization_v2.0/delivery-reporting", "environment": {"LEAN_ABORT_ON_PANIC": "1"}, "utc": "2026-10-31T20:49:07.887789+00:00"}
+
+EXIT_CODE=0
+{"command": ["/opt/hostedtoolcache/Python/3.12.15/x64/bin/python3", "-B", "-m", "unittest", "tests.test_delivery_reporting_proof"], "cwd": "/home/runner/work/qik-vrt/qik-vrt", "environment": {"LEAN_ABORT_ON_PANIC": "1"}, "utc": "2026-10-31T20:49:08.103966+00:00"}
+...........
+----------------------------------------------------------------------
+Ran 11 tests in 0.991s
+
+OK
+
+EXIT_CODE=0

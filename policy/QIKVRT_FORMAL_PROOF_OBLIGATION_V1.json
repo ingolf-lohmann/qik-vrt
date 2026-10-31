@@ -20,7 +20,8 @@
       "tools/qikvrt_required_review_gate.py",
       "tools/qikvrt_pr_closure_engine.py",
       ".github/workflows/qikvrt_ci.yml",
-      "tools/qikvrt_expected_head_promotion.py"
+      "tools/qikvrt_expected_head_promotion.py",
+      ".github/workflows/qikvrt_manuscript_proof.yml"
     ],
     "proof_obligation_enforcement": [
       "policy/QIKVRT_FORMAL_PROOF_OBLIGATION_V1.json",
@@ -61,7 +62,8 @@
     "runtime/toolchains/CACHE_REGISTRY.json",
     "runtime/toolchains/CACHE_COVERAGE.json",
     "formalization/QIKVRT_Formalization_v2.0/delivery-reporting/lakefile.toml",
-    "formalization/QIKVRT_Formalization_v2.0/delivery-reporting/lean-toolchain"
+    "formalization/QIKVRT_Formalization_v2.0/delivery-reporting/lean-toolchain",
+    ".github/workflows/qikvrt_manuscript_proof.yml"
   ],
   "receipt_required": [
     "checker",

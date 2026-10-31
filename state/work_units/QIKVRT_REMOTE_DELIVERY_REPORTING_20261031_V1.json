@@ -378,6 +378,15 @@
       "head": "4c2b284f3df9032b9ad2b7b76ec077f9ba9b2ba7",
       "tree": "683ca9f5717b13e0fd7c851cae945ad04048ed7f",
       "preserved": "Owner-supplied original kernel log, audit archive and metadata; correct original git rev-parse HEAD/TREE collection. No compatibility preload is used for this client proof claim."
+    },
+    "verified_native_predecessor": {
+      "head": "9fe7057167beb381c3f3272c6e6d2b977529113d",
+      "tree": "e56b962fe9a5ba623f06ae89235e6f7ca1a852b5",
+      "receipt": "evidence/formal-receipts/DeliveryReporting/SEVEN_CHECKER_READBACK_9FE70571.json",
+      "seven_checker_receipts_independently_verified": true,
+      "manuscript_gate": "Source bind repaired; original global proof audit still lacks the isolated olean; repair is prepared without changing its original checker",
+      "full_suite": "Exact9fe local full run interrupted after causal native integration failure; not reported as PASS",
+      "success_transferred_to_successor": false
     }
   }
 }
