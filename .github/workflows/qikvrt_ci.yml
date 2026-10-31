@@ -187,9 +187,13 @@ jobs:
             python3 tools/qikvrt_integrity.py generate
             python3 tools/qikvrt_integrity.py verify
             # A manifest repair may change only these canonical outputs.
-            unexpected="$(git diff --name-only | grep -Ev '^(REPOSITORY_FILE_MANIFEST.json|REPOSITORY_FILE_MANIFEST.json.sha256|SHA256SUMS.txt) against the regenerated state. Any
-            # remaining failure is a real successor failure, not predecessor
-            # evidence and must stop the writer fail-closed.
+            unexpected="$(git diff --name-only | grep -Ev '^(REPOSITORY_FILE_MANIFEST.json|REPOSITORY_FILE_MANIFEST.json.sha256|SHA256SUMS.txt)$' || true)"
+            if test -n "$unexpected"; then
+              echo "BLOCK_UNEXPECTED_MUTATION: $unexpected" >&2
+              exit 2
+            fi
+
+            # Re-run the complete gates against the regenerated state.
             make test repository-monitor-test self-host-test
             python3 tools/qikvrt_integrity.py verify
 
