@@ -48,6 +48,18 @@ class AdmissionTests(unittest.TestCase):
             p=pathlib.Path(d)/"bad.zip"
             archive(p,{**FILES,"out/run2.log":b"RESULT FAIL 0 / 33\n"})
             with self.assertRaisesRegex(ValueError,"test summary"): verify(p)
+    def test_path_traversal_rejected(self):
+        with tempfile.TemporaryDirectory() as d:
+            p=pathlib.Path(d)/"bad.zip"
+            archive(p,FILES,("../escape.txt",b"unexpected"))
+            with self.assertRaisesRegex(ValueError,"unsafe ZIP path"): verify(p)
+    def test_duplicate_member_rejected(self):
+        with tempfile.TemporaryDirectory() as d:
+            p=pathlib.Path(d)/"bad.zip"
+            archive(p,FILES)
+            with zipfile.ZipFile(p,"a") as z:
+                z.writestr("web/app.jsx",FILES["web/app.jsx"])
+            with self.assertRaisesRegex(ValueError,"duplicate ZIP member"): verify(p)
     def test_changed_payload_rejected(self):
         with tempfile.TemporaryDirectory() as d:
             p=pathlib.Path(d)/"bad.zip"
