@@ -2,8 +2,6 @@ name: Issue agent backlog resume
 
 # Event-driven only: no scheduled polling. Dispatch requires a causally new input.
 on:
-  issues:
-    types: [opened, reopened, edited]
   workflow_dispatch:
     inputs:
       issue_number:
@@ -27,7 +25,7 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       REPOSITORY: ${{ github.repository }}
-      REQUESTED_ISSUE: ${{ github.event.issue.number || inputs.issue_number }}
+      REQUESTED_ISSUE: ${{ inputs.issue_number }}
     steps:
       - uses: actions/checkout@v4
         with:
