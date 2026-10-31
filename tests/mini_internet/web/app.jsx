@@ -8,7 +8,9 @@ const hex = (buf) => Array.from(new Uint8Array(buf)).map((b) => b.toString(16).p
 const b64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
 
 async function verifyRelease(manifestText, signatureB64) {
-  if (!PINNED_RELEASE_KEY_JWK || PINNED_RELEASE_KEY_JWK.kty !== "EC" || PINNED_RELEASE_KEY_JWK.crv !== "P-256" || PINNED_RELEASE_KEY_JWK.d) throw new Error("RELEASE_TRUST_ROOT_MISSING");
+  if (!PINNED_RELEASE_KEY_JWK || typeof PINNED_RELEASE_KEY_JWK !== "object" ||
+      PINNED_RELEASE_KEY_JWK.kty !== "EC" || PINNED_RELEASE_KEY_JWK.crv !== "P-256" ||
+      "d" in PINNED_RELEASE_KEY_JWK) throw new Error("RELEASE_TRUST_ROOT_MISSING");
   const key = await crypto.subtle.importKey("jwk", PINNED_RELEASE_KEY_JWK,
     { name: "ECDSA", namedCurve: "P-256" }, false, ["verify"]);
   const ok = await crypto.subtle.verify({ name: "ECDSA", hash: "SHA-256" }, key,
