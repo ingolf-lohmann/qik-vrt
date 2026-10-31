@@ -2,11 +2,8 @@
 # Copyright 2026 Ingolf Lohmann.
 name: QIKVRT native CI continuation ledger
 on:
-  workflow_dispatch:
-  schedule:
-    - cron: '17,47 * * * *'
   workflow_run:
-    workflows: ["QIKVRT CI"]
+    workflows: ["QIKVRT CI", "QIKVRT Collective Proposal Review"]
     types: [completed]
 permissions:
   actions: write
@@ -15,7 +12,7 @@ permissions:
   pull-requests: read
 jobs:
   record-terminal-evidence:
-    if: github.event_name != 'workflow_run' || github.event.workflow_run.event == 'pull_request'
+    if: github.event.workflow_run.event == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: Bind completed run and persist unresolved gate
@@ -29,19 +26,17 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          # Reconcile completed PR CI runs even when a workflow_run event was lost.
-          # The scheduled path is readback-based and bounded to the latest 40 runs.
-          if test -n "${RUN_ID:-}"; then
-            candidates="$RUN_ID"
-          else
-            candidates="$(gh api "repos/$GH_REPO/actions/workflows/qikvrt_ci.yml/runs?status=completed&per_page=40" --jq '.workflow_runs[] | select(.event == "pull_request") | .id')"
-          fi
+          # Event-driven: consume each terminal native workflow completion.
+          # No polling schedule, timer, or fabricated success state.
+          test -n "$RUN_ID"
+          candidates="$RUN_ID"
           for run_id in $candidates; do
             actual="$(gh api "repos/$GH_REPO/actions/runs/$run_id")"
             subject="$(jq -r '.head_sha' <<< "$actual")"
             conclusion="$(jq -r '.conclusion' <<< "$actual")"
             url="$(jq -r '.html_url' <<< "$actual")"
             event="$(jq -r '.event' <<< "$actual")"
+            workflow_name="$(jq -r '.name' <<< "$actual")"
             test "$event" = pull_request || continue
             test "$conclusion" != null || continue
             if test -n "${RUN_ID:-}"; then
@@ -55,7 +50,7 @@ jobs:
               echo "STALE_OR_UNBOUND run=$run_id head=$subject"
               continue
             fi
-            title="QIKVRT CI terminal gate: $subject"
+            title="QIKVRT $workflow_name terminal gate: $subject"
             existing="$(gh issue list --state all --limit 100 --search "$subject in:title" --json number,title | jq -r --arg title "$title" '.[] | select(.title == $title) | .number' | head -n 1)"
             if test "$conclusion" = success; then
               if test -n "$existing"; then
@@ -76,7 +71,15 @@ jobs:
               fi
             fi
             failed_steps="$(gh api "repos/$GH_REPO/actions/runs/$run_id/jobs?per_page=100" --jq '[.jobs[] | select(.conclusion == "failure" or .conclusion == "cancelled" or .conclusion == "timed_out") | (.name + ": " + ([.steps[]? | select(.conclusion == "failure") | .name] | join(", ")))] | join("; ")')"
-            body="$(printf 'Native CI requires continuation.\n\nRun: %s\nExact HEAD: %s\nConclusion: %s\nFailed jobs/steps: %s\n\nNext gate: diagnose, apply bounded authorized repair, re-run exact-head CI, verify governance, integrate and read back. No merge or production effect is inferred.\n' "$url" "$subject" "$conclusion" "$failed_steps")
+            # Persist an actionable observation and a bounded hypothesis for
+            # the next iteration, without pretending that diagnosis is repair.
+            learning="Unclassified failure: inspect the failed native step and attach a reproducible correction."
+            if [[ "$failed_steps" == *"Run mandatory repository test suite"* ]]; then
+              learning="Hypothesis: repository integrity manifest is stale. Verify the exact failure log; if it reports deterministic regeneration drift, materialize only the canonical manifest trio before the mandatory suite. Require a fresh exact-head native CI after any change."
+            elif [[ "$failed_steps" == *"Same-writer successor re-entry to tested fixpoint"* ]]; then
+              learning="Hypothesis: the bounded integrity writer failed or timed out. Read back the writer's last iteration, remote head, manifest verification and TESTED_SUBJECT; do not reset the subject blindly."
+            fi
+            body="$(printf 'Native CI requires continuation.\n\nRun: %s\nExact HEAD: %s\nConclusion: %s\nFailed jobs/steps: %s\n\nLearning for next iteration: %s\n\nNext gate: diagnose, apply bounded authorized repair, re-run exact-head CI, verify governance, integrate and read back. No merge or production effect is inferred.\n' "$url" "$subject" "$conclusion" "$failed_steps" "$learning")
             if test -n "$existing"; then
               gh issue comment "$existing" --body "$body"
               if gh issue view "$existing" --json state --jq '.state' | grep -qx CLOSED; then
