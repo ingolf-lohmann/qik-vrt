@@ -14,6 +14,18 @@ on:
       - "tests/test_universal_ontology_claim_closure.py"
       - "tests/test_unified_world_formula_consolidation.py"
       - ".github/workflows/qikvrt_universal_ontology_formalization.yml"
+      - "tools/ai_handoff.py"
+      - "src/qikvrt_effect_ack*.py"
+      - "tools/qikvrt_mirror*.py"
+      - "node-tools/qikvrt_mirror*.py"
+      - "tools/qikvrt_required_review_gate.py"
+      - "tools/qikvrt_pr_closure_engine.py"
+      - "tools/qikvrt_expected_head_promotion.py"
+      - ".github/workflows/qikvrt_ci.yml"
+      - "policy/QIKVRT_FORMAL_PROOF_OBLIGATION_V1.json"
+      - "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json"
+      - "tests/test_delivery_reporting_proof.py"
+      - "evidence/formal-receipts/DeliveryReporting/**"
   push:
     branches-ignore: [main]
     paths:
@@ -24,6 +36,18 @@ on:
       - "tests/test_universal_ontology_claim_closure.py"
       - "tests/test_unified_world_formula_consolidation.py"
       - ".github/workflows/qikvrt_universal_ontology_formalization.yml"
+      - "tools/ai_handoff.py"
+      - "src/qikvrt_effect_ack*.py"
+      - "tools/qikvrt_mirror*.py"
+      - "node-tools/qikvrt_mirror*.py"
+      - "tools/qikvrt_required_review_gate.py"
+      - "tools/qikvrt_pr_closure_engine.py"
+      - "tools/qikvrt_expected_head_promotion.py"
+      - ".github/workflows/qikvrt_ci.yml"
+      - "policy/QIKVRT_FORMAL_PROOF_OBLIGATION_V1.json"
+      - "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json"
+      - "tests/test_delivery_reporting_proof.py"
+      - "evidence/formal-receipts/DeliveryReporting/**"
   workflow_dispatch:
 
 permissions:
@@ -35,6 +59,7 @@ concurrency:
 
 jobs:
   exact-head-finite-model:
+    name: QIKVRT formal proof obligation (7/7)
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
@@ -142,6 +167,42 @@ jobs:
           echo QIKVRT_DELIVERY_VECTORS_BEGIN
           cat .lake/build/delivery-reporting-vectors.json
           echo QIKVRT_DELIVERY_VECTORS_END
+
+      - name: Provision hash-locked external checker bundle
+        shell: bash
+        timeout-minutes: 10
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess, tempfile
+          policy = json.loads(pathlib.Path('policy/QIKVRT_FORMAL_PROOF_OBLIGATION_V1.json').read_text())
+          spec = policy['archives']['external']
+          temp = pathlib.Path(os.environ['RUNNER_TEMP'])
+          target = temp / 'lean-4.35.0-linux'
+          if target.exists() or target.is_symlink():
+              raise SystemExit('HOLD: checker installation is not fresh')
+          with tempfile.TemporaryDirectory(prefix='delivery-checkers-', dir=temp) as name:
+              stage = pathlib.Path(name)
+              archive = stage / 'lean.tar.zst'
+              subprocess.run(['curl', '--fail', '--location', '--silent', '--show-error',
+                  '--connect-timeout', '20', '--max-time', '300', '--output', str(archive), spec['url']], check=True)
+              digest = hashlib.sha256()
+              with archive.open('rb') as stream:
+                  for block in iter(lambda: stream.read(1024*1024), b''):
+                      digest.update(block)
+              if archive.stat().st_size != spec['bytes'] or digest.hexdigest() != spec['sha256']:
+                  raise SystemExit('HOLD: original checker archive binding differs')
+              subprocess.run(['tar', '--zstd', '--no-same-owner', '-xf', str(archive), '-C', str(stage)], check=True)
+              (stage / 'lean-4.35.0-linux').rename(target)
+          PY
+
+      - name: Require fresh seven-checker proof and implementation bridge
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/ai_handoff.py --formal-proof-run .qikvrt/formal-receipts/DeliveryReporting \
+            --own-lean-root "$RUNNER_TEMP/lean-4.19.0-linux" \
+            --external-lean-root "$RUNNER_TEMP/lean-4.35.0-linux"
 
       - name: Audit rights-bearing storage proofs and bind exact candidate
         working-directory: formalization/QIKVRT_Formalization_v2.0
@@ -294,15 +355,20 @@ jobs:
           --run-attempt "${GITHUB_RUN_ATTEMPT}"
 
       - name: Upload exact consolidated receipt bundle
+        if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: qikvrt-universal-ontology-kernel-receipt-${{ github.run_id }}-${{ github.run_attempt }}
           retention-days: 30
           if-no-files-found: error
+          include-hidden-files: true
           path: |
             formalization/QIKVRT_Formalization_v2.0/.lake/build/UNIVERSAL_ONTOLOGY_KERNEL_RECEIPT.json
             formalization/QIKVRT_Formalization_v2.0/.lake/build/universal-ontology-axioms.txt
             formalization/QIKVRT_Formalization_v2.0/.lake/build/universal-ontology-extended-axioms.txt
+            .qikvrt/formal-receipts/DeliveryReporting/*.json
+            .qikvrt/formal-receipts/DeliveryReporting/logs/*.log
+            .qikvrt/formal-receipts/DeliveryReporting/*.ndjson
 
       - name: Save verified Lean archive from trusted Main only
         if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'

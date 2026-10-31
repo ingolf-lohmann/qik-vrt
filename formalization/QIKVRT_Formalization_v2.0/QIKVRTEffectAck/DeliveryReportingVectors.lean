@@ -16,7 +16,7 @@ def vectorJson (r : Report) : Json := Json.mkObj [
   ("observations", toJson (r.observations.map observationJson)),
   ("completedUtc", toJson r.completedUtc), ("closedUtc", toJson r.closedUtc),
   ("provenanceBound", toJson r.provenanceBound),
-  ("verdict", toJson (if decide r = .accept then "accept" else "reject"))]
+  ("verdict", toJson (if QIKVRT.DeliveryReporting.decide r = .accept then "accept" else "reject"))]
 
 def main : IO Unit := do
   let mut vectors : Array Json := #[]

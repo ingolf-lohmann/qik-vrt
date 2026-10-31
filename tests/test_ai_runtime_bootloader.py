@@ -927,6 +927,7 @@ class ClientContinuationRegressionTests(unittest.TestCase):
                                     "url": "https://raumzeitterminal.de/api/eap/receipts/fixture",
                                     "final_url": "https://raumzeitterminal.de/api/eap/receipts/fixture",
                                     "http_status": 200, "response_sha256": "sha256:" + "4" * 64,
+                                    "observation_id": "fixture:observation-1",
                                     "independent": True, "authority_identity_verified": True,
                                     "action_id": "fixture:action-1",
                                     "observed_at": "2026-10-11T10:00:02Z",

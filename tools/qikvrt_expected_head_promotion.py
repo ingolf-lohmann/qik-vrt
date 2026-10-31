@@ -388,6 +388,16 @@ def evaluate_conditional_rest_merge(snapshot: Mapping[str, Any]) -> dict[str, An
     if not isinstance(raw, Mapping):
         return _blocked(snapshot, "NATIVE_GOVERNANCE_EVIDENCE_MISSING", "original review observation required")
     bound = dict(snapshot)
+    from tools.ai_handoff import formal_policy, formal_proof_required
+    paths = snapshot.get("changed_paths")
+    if not isinstance(paths, list):
+        return _blocked(snapshot, "FORMAL_CHANGE_SCOPE_UNVERIFIED", "complete exact-head changed-path inventory required")
+    count = raw["pr"].get("changed_files")
+    if type(count) is not int or count != len(paths):
+        return _blocked(snapshot, "FORMAL_CHANGE_SCOPE_INCOMPLETE", "native PR count must match the complete path inventory")
+    if formal_proof_required(paths):
+        required = formal_policy()["native_workflow_name"]
+        bound["required_gates"] = sorted(set(snapshot.get("required_gates", [])) | {required})
     bound["governance_projection"] = project_governance(raw["pr"], raw["rules"], raw["reviews"], raw["statuses"])
     for name, run in collapse_latest_runs(snapshot.get("workflow_runs", [])).items():
         blocker = _execution_blocker(run, snapshot["repository"], snapshot["expected_head_sha"],

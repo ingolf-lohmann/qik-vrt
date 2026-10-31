@@ -20,12 +20,14 @@
       "tools/qikvrt_required_review_gate.py",
       "tools/qikvrt_autonomous_pr_continuation.py",
       "tools/qikvrt_pr_closure_engine.py",
-      ".github/workflows/qikvrt_ci.yml"
+      ".github/workflows/qikvrt_ci.yml",
+      "tools/qikvrt_expected_head_promotion.py"
     ],
     "proof_obligation_enforcement": [
       "policy/QIKVRT_FORMAL_PROOF_OBLIGATION_V1.json",
       "tests/test_delivery_reporting_proof.py",
-      ".github/workflows/qikvrt_universal_ontology_formalization.yml"
+      ".github/workflows/qikvrt_universal_ontology_formalization.yml",
+      "evidence/formal-receipts/DeliveryReporting/*"
     ]
   },
   "module": "QIKVRTEffectAck.DeliveryReporting",
@@ -45,7 +47,10 @@
     "tools/ai_handoff.py",
     "tests/test_delivery_reporting_proof.py",
     "policy/QIKVRT_FORMAL_PROOF_OBLIGATION_V1.json",
-    ".github/workflows/qikvrt_universal_ontology_formalization.yml"
+    ".github/workflows/qikvrt_universal_ontology_formalization.yml",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/DeliveryReportingReplay.lean",
+    "tools/qikvrt_pr_closure_engine.py",
+    "tools/qikvrt_expected_head_promotion.py"
   ],
   "receipt_required": [
     "checker",
@@ -105,8 +110,10 @@
       "version": "4.19.0",
       "build_command": [
         "cmake",
-        "--preset",
-        "release"
+        "--build",
+        "build/release",
+        "--target",
+        "stage1"
       ],
       "check_command": [
         "lake",
@@ -137,8 +144,10 @@
       "version": "4.35.0",
       "build_command": [
         "cmake",
-        "--preset",
-        "release"
+        "--build",
+        "build/release/stage1",
+        "--target",
+        "leanchecker-paranoid"
       ],
       "check_command": [
         "leanchecker-paranoid",
@@ -297,8 +306,10 @@
       "version": "4.35.0",
       "build_command": [
         "cmake",
-        "--preset",
-        "release"
+        "--build",
+        "build/release/stage1",
+        "--target",
+        "leanchecker"
       ],
       "check_command": [
         "leanchecker",
@@ -322,5 +333,10 @@
       },
       "provision": "Exact official SHA-256-locked Lean distribution; source builds are documented alternatives, never automatic substitutions."
     }
-  ]
+  ],
+  "vectors_path": "evidence/formal-receipts/DeliveryReporting/vectors.json",
+  "vectors_sha256": null,
+  "native_check_name": "QIKVRT formal proof obligation (7/7)",
+  "native_check_app_id": 15368,
+  "native_workflow_name": "QIK-VRT universal ontology finite-model verification"
 }

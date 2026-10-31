@@ -52,7 +52,7 @@ instance (r : Report) (o : Observation) : Decidable (Qualified r o) :=
   inferInstanceAs (Decidable (_ ∧ _ ∧ _ ∧ _ ∧ _))
 
 def remoteEvidence (r : Report) : Bool :=
-  r.observations.any (fun o => _root_.decide (Qualified r o))
+  r.observations.any (fun o => Decidable.decide (Qualified r o))
 
 def Admissible (r : Report) : Prop :=
   (r.observations.map Observation.observationId).Nodup ∧
