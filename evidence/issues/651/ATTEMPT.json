@@ -3,14 +3,14 @@
   "artifacts": {
     "ANSWER.md": "64318cfc86cf705f6a4fe3ab8af5e284681576b389f404d29142afde7bded33a",
     "CONTEXT.md": "6ef9d5fd69e7b334896dbc856400ff318e61d047246976f263fb28777c39b5ec",
-    "REQUEST.json": "a89d414854f10e21d889fc497aa10619d2b8466edf5291875c651a67e24f32df",
-    "REQUEST.sha256": "74f746d3c0267cef53d0eb731847fdb8ecdef160db1715466fefdd1512e38b92",
-    "STATUS.json": "8243a9f904ea3deda63092a675cea694f6f10f3aed6c6a11302549da35748af3"
+    "REQUEST.json": "0becc110414b68e413207fa32bdf8bb9301f33ad5ac9eaf9d6094c0719a3f07d",
+    "REQUEST.sha256": "3689560dbdae1419a0c688da043da5d742da7d17c8dcf6506ec1378101a5858e",
+    "STATUS.json": "2c932acd9a52934f95b704342ff02269e97f1a38eedc4332c05e2e2bf35aa49b"
   },
   "automatic_issue_close": false,
   "automatic_merge": false,
   "execute": true,
-  "fingerprint": "210ce81f691ec607ac493eaec4ca48224b5d78cd5865ab67a9373b9c9cc00d09",
+  "fingerprint": "01718c68903d9095f3dce27354de268f5ea8564cde1136875295718083e83b83",
   "inputs": {
     "context_sha256": "6ef9d5fd69e7b334896dbc856400ff318e61d047246976f263fb28777c39b5ec",
     "processor_blobs": {
@@ -26,10 +26,10 @@
       "tools/qikvrt_integrity.py": "701c7e70808687ecaa9fe84452a7f5e8b4378acb9de8c7e3341215195619c2b0",
       "tools/qikvrt_subprocess.py": "8344349b8e5c1827764e595b3ae56b8bdd720acb7feaaaee4abb1ca5656d5807"
     },
-    "request_sha256": "5ed84e3e01f65fb6b9c9070a2d795f479341fc49cb27eea3213899d7d11ee786"
+    "request_sha256": "9bb5ffb40363fd8c1c2cb64fea2dfbae1a5b68ae254149ba4a22abda47b92996"
   },
   "issue_number": 651,
-  "previous_branch_head": "e038fad73bede0c86857778ad5edabae2995eb90",
+  "previous_branch_head": "f7a46ff89a49e49cf203f44ea1d80fbc5ad3943b",
   "processing_status": "BLOCK",
   "reason": "NEW_CAUSAL_INPUT",
   "recorded": true,
