@@ -5,7 +5,7 @@
   "version": "4.35.0",
   "module": "QIKVRTEffectAck.DeliveryReporting",
   "source_sha256": "50a616018b8a21c9cd466fd98b1b4de3e2f18ba6c7e50f3858800ab41ec792b9",
-  "source_bundle_sha256": "c86bf35b4b6cb74be27fece1ac172bfcbbfc8d405c387ed1b9957f465094e150",
+  "source_bundle_sha256": "ddcf3218175d95c3ef31d5a88f1dafa0ddff52bb11912c6b4afd521b3e0ae5a2",
   "source_digests": {
     "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/DeliveryReporting.lean": "50a616018b8a21c9cd466fd98b1b4de3e2f18ba6c7e50f3858800ab41ec792b9",
     "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/DeliveryReportingAxiomAudit.lean": "bb0c17876c754f34c6c6fe46ff86e6d939ae687790334394a3c058b58f64fec3",
@@ -14,8 +14,8 @@
     "formalization/QIKVRT_Formalization_v2.0/lean-toolchain": "ee6fd37555065223ddad24dff70b5447dfbac23c14f48fb8e3ddf266104bfa87",
     "tools/ai_handoff.py": "50e7b2ea31aae3d6f6be66a750d9e60b2fe66eed5399fffd322069921ac35aa3",
     "tests/test_delivery_reporting_proof.py": "f7f2786defcce91e45800871cc5732740f87ac4bfbcf2d478dd51b34eca768ee",
-    "policy/QIKVRT_FORMAL_PROOF_OBLIGATION_V1.json": "20539f21d7e14cd569e7a78faaeebbcc81fd42ceb479e906df62023abcc94f03",
-    ".github/workflows/qikvrt_universal_ontology_formalization.yml": "b0d024fd8de97a0c624b2f626cc6780a669ff7a799c4f156c3439c48343d0a2c",
+    "policy/QIKVRT_FORMAL_PROOF_OBLIGATION_V1.json": "46f2d5945100450c77bfff6a7bd547a9fac1fb90ee3a9878263b481225f540ed",
+    ".github/workflows/qikvrt_universal_ontology_formalization.yml": "6162453ac40b6bd76c6071f08d59b987fb11f5e9ca6a3199c1de8c1d9eb4b9bb",
     "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/DeliveryReportingReplay.lean": "2d0713a1ce326a3d071a7c9c56e869c3784f17e885a969dbdd56ca1c3ea195fa",
     "tools/qikvrt_pr_closure_engine.py": "e10184bae367fb1f87f712deeb661f982e7bf31cb937831397379c8843ab5507",
     "tools/qikvrt_expected_head_promotion.py": "e00bc4e4783c2f319af25b9c2cf7e66a8f66cbf0569fb3e2e70cb1faef1678f5",
@@ -24,7 +24,8 @@
     "runtime/toolchains/CACHE_REGISTRY.json": "ca5181ba49be07b5055cfa7e3c3239d4189d73d644835d566be642ee5a5ef8f7",
     "runtime/toolchains/CACHE_COVERAGE.json": "0d91d79004f3cb643df9cd013a7121046047d2167411c826bb91b8ff4e2f5b18",
     "formalization/QIKVRT_Formalization_v2.0/delivery-reporting/lakefile.toml": "58d94ae21d994e6f08b0027db1fc004824e81b822afea3a2a90932ea18da7c33",
-    "formalization/QIKVRT_Formalization_v2.0/delivery-reporting/lean-toolchain": "ee6fd37555065223ddad24dff70b5447dfbac23c14f48fb8e3ddf266104bfa87"
+    "formalization/QIKVRT_Formalization_v2.0/delivery-reporting/lean-toolchain": "ee6fd37555065223ddad24dff70b5447dfbac23c14f48fb8e3ddf266104bfa87",
+    ".github/workflows/qikvrt_manuscript_proof.yml": "e6648a03b19a83111ac37fb1363e40bf4467784f7f3bed5111ca1d0ce4d112e2"
   },
   "export_or_olean_sha256": "e3ef03954d67e41d20aa7eb1595587a70a6ef2919b0dfcbc51c517a001059c33",
   "artifact": "DeliveryReporting.export.ndjson",
@@ -44,8 +45,8 @@
   },
   "result": "PASS",
   "error": "",
-  "log_sha256": "3e1930e85fff8360867c199a7a2d7bb1c7aa2d95556affb822ccdb8d648a8601",
-  "utc": "2026-10-31T20:49:11.471046+00:00",
+  "log_sha256": "b00d03b7eae93c9f36e94a62f36d4bc1646faa3d9e64235f0149b550f494b4c9",
+  "utc": "2026-10-31T20:54:22.962565+00:00",
   "command": [
     "leanchecker-paranoid",
     "--silent",
@@ -92,9 +93,9 @@
   ],
   "exit_code": 0,
   "execution": {
-    "head": "9fe7057167beb381c3f3272c6e6d2b977529113d",
-    "tree": "e56b962fe9a5ba623f06ae89235e6f7ca1a852b5",
-    "run_id": "41240619884",
+    "head": "2eb18c6b17da0c8773242879eca0dae755c65017",
+    "tree": "88208f5e4ee77f7faea34ef8f4bac9b0a12a0514",
+    "run_id": "41241017095",
     "run_attempt": "1"
   },
   "implementation_universally_proved": false,

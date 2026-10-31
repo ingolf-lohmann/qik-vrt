@@ -387,6 +387,19 @@
       "manuscript_gate": "Source bind repaired; original global proof audit still lacks the isolated olean; repair is prepared without changing its original checker",
       "full_suite": "Exact9fe local full run interrupted after causal native integration failure; not reported as PASS",
       "success_transferred_to_successor": false
+    },
+    "native_model_and_manuscript_readback": {
+      "head": "2eb18c6b17da0c8773242879eca0dae755c65017",
+      "tree": "88208f5e4ee77f7faea34ef8f4bac9b0a12a0514",
+      "readback": "evidence/formal-receipts/DeliveryReporting/SEVEN_CHECKER_READBACK_2EB18C6B.json",
+      "formal_native_run": 41241017095,
+      "seven_original_logs_and_receipts_verified": true,
+      "manuscript_native_run": 41241017230,
+      "manuscript_conclusion": "success",
+      "source_input_bytes_changed_by_receipt_persistence": false,
+      "full_exact_current_head_ci": "OPEN; observe existing events without duplicate dispatch",
+      "main_integration": false,
+      "productive_effect": false
     }
   }
 }
