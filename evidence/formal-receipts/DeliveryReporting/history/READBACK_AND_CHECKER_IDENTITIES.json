@@ -1,0 +1,323 @@
+{
+  "schema": "qikvrt-formal-obligation-readback/v1",
+  "main": {
+    "head": "5a42baf45748e4407a8fa16aef287a77873e788d",
+    "tree": "3f6e816b6b496eeb9ce8777d8fb93d95717be9ae"
+  },
+  "predecessor": {
+    "head": "e37667b641b5b58f9e7094e15e235e29ad191f58",
+    "tree": "7f2253bfc8e2869b0545790a8fa8ab1975cdc471"
+  },
+  "runs": [
+    {
+      "id": 41223797824,
+      "head": "e37667b641b5b58f9e7094e15e235e29ad191f58",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "name": "QIKVRT CI",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/41223797824",
+      "updated_at": "2026-10-31T17:33:01Z"
+    },
+    {
+      "id": 41223797860,
+      "head": "e37667b641b5b58f9e7094e15e235e29ad191f58",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "name": "QIKVRT repository evidence materialization",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/41223797860",
+      "updated_at": "2026-10-31T17:31:01Z"
+    },
+    {
+      "id": 41215514005,
+      "head": "a56b0632e120ce815019e5f4a812fc828c57cd1e",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 2,
+      "name": "QIKVRT repository evidence materialization",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/41215514005",
+      "updated_at": "2026-10-31T17:21:25Z"
+    },
+    {
+      "id": 41215513700,
+      "head": "a56b0632e120ce815019e5f4a812fc828c57cd1e",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 2,
+      "name": "QIKVRT requested review executor",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/41215513700",
+      "updated_at": "2026-10-31T17:25:16Z"
+    },
+    {
+      "id": 41215513887,
+      "head": "a56b0632e120ce815019e5f4a812fc828c57cd1e",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 2,
+      "name": "QIKVRT Batch-003 remaining subject disposition",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/41215513887",
+      "updated_at": "2026-10-31T17:36:27Z"
+    }
+  ],
+  "checker_sources": [
+    {
+      "checker": "nanoda",
+      "repository_url": "https://github.com/ammkrn/nanoda_lib",
+      "commit": "3a2407216ee84a75f9e1aead6803d0578be06ae7",
+      "tree": "e806ef6d8ca32d0b37dde01bc737eab3a22482b0",
+      "url": "https://github.com/ammkrn/nanoda_lib/commit/3a2407216ee84a75f9e1aead6803d0578be06ae7",
+      "source": "Original GitHub GET of exact commit"
+    },
+    {
+      "checker": "con-leche",
+      "repository_url": "https://github.com/leanprover/con-leche",
+      "commit": "67f04630d88718e81aa4d07ab64501f68f105398",
+      "tree": "1daed3b54f0c43accd953145db2db4d82756720d",
+      "url": "https://github.com/leanprover/con-leche/commit/67f04630d88718e81aa4d07ab64501f68f105398",
+      "source": "Original GitHub GET of exact commit"
+    },
+    {
+      "checker": "con-ron",
+      "repository_url": "https://github.com/leanprover/con-ron",
+      "commit": "dd8d8218892c871276b1e569d3decbb368bba1b6",
+      "tree": "34597e3c2599de72584bb38a98449b2ed04313b6",
+      "url": "https://github.com/leanprover/con-ron/commit/dd8d8218892c871276b1e569d3decbb368bba1b6",
+      "source": "Original GitHub GET of exact commit"
+    },
+    {
+      "checker": "lean4lean",
+      "repository_url": "https://github.com/Kha/lean4lean",
+      "commit": "456abe5015fc8f54ea595561fc39523d7733c93f",
+      "tree": "4b31419c5329f16357ae287d46667b69ded73fa1",
+      "url": "https://github.com/Kha/lean4lean/commit/456abe5015fc8f54ea595561fc39523d7733c93f",
+      "source": "Original GitHub GET of exact commit"
+    }
+  ],
+  "lean_source_commits": {
+    "own": "6caaee842e9495688c1567e78c0e68dbb96942aa",
+    "external": "eb6cafb7290e8bd5f2937522d8d804f58f02bafc"
+  },
+  "native_connection_public_subset": {
+    "schema": "qikvrt_native_terminal_connection_v1",
+    "adapter_version": "20261025.1",
+    "mesh_id": "qik-vrt",
+    "scope": "MESH",
+    "rest_contract": {
+      "schema": "qikvrt_native_terminal_rest_contract_v1",
+      "path": "/api/mesh/terminal/native",
+      "method": "POST",
+      "scope": "MESH",
+      "mesh_id": "qik-vrt",
+      "authorization": "EXISTING_AUTHENTICATED_SITE_LOCAL_OPERATOR_AND_ADMITTED_RUNTIME",
+      "modes": {
+        "prepare": {
+          "arguments": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "payload": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "schema": {
+                    "type": "string",
+                    "const": "qikvrt_terminal_input_v1"
+                  },
+                  "scope": {
+                    "type": "string",
+                    "const": "MESH"
+                  },
+                  "mesh_id": {
+                    "type": "string",
+                    "const": "qik-vrt"
+                  },
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4096
+                  },
+                  "audio": {
+                    "type": "null"
+                  },
+                  "video": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "schema",
+                  "scope",
+                  "mesh_id",
+                  "text",
+                  "audio",
+                  "video"
+                ]
+              }
+            },
+            "required": [
+              "payload"
+            ]
+          },
+          "body": "Add the exact mode field to these arguments; preserve payload bytes."
+        },
+        "commit": {
+          "arguments": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "payload": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "schema": {
+                    "type": "string",
+                    "const": "qikvrt_terminal_input_v1"
+                  },
+                  "scope": {
+                    "type": "string",
+                    "const": "MESH"
+                  },
+                  "mesh_id": {
+                    "type": "string",
+                    "const": "qik-vrt"
+                  },
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4096
+                  },
+                  "audio": {
+                    "type": "null"
+                  },
+                  "video": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "schema",
+                  "scope",
+                  "mesh_id",
+                  "text",
+                  "audio",
+                  "video"
+                ]
+              },
+              "origin": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              },
+              "hash": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "token": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_-]{16,2048}$"
+              }
+            },
+            "required": [
+              "payload",
+              "origin",
+              "hash",
+              "token"
+            ]
+          },
+          "body": "Add the exact mode field to these arguments; preserve payload bytes."
+        },
+        "readback": {
+          "arguments": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "payload": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "schema": {
+                    "type": "string",
+                    "const": "qikvrt_terminal_input_v1"
+                  },
+                  "scope": {
+                    "type": "string",
+                    "const": "MESH"
+                  },
+                  "mesh_id": {
+                    "type": "string",
+                    "const": "qik-vrt"
+                  },
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4096
+                  },
+                  "audio": {
+                    "type": "null"
+                  },
+                  "video": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "schema",
+                  "scope",
+                  "mesh_id",
+                  "text",
+                  "audio",
+                  "video"
+                ]
+              },
+              "origin": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              },
+              "hash": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "successor_hash": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "event_id": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "payload",
+              "origin",
+              "hash"
+            ]
+          },
+          "body": "Add the exact mode field to these arguments; preserve payload bytes."
+        }
+      },
+      "automatic_retry": false,
+      "ambiguous_commit_next": "READBACK_SAME_PREPARED_RECORD",
+      "verification_scope": "NATIVE_TERMINAL_INPUT_ACCEPTANCE",
+      "effect_ack_done": false
+    },
+    "runtime_observations": [
+      {
+        "origin": "https://raumzeitterminal.de",
+        "status": 525,
+        "observed_at": "2026-10-31T20:12:20.099Z",
+        "mesh_scope_verified": false
+      }
+    ],
+    "native_available": false,
+    "operator_configured": true,
+    "operator_authorized": true,
+    "ready": false,
+    "open_gates": [
+      "ADMITTED_MESH_RUNTIME_ENDPOINT"
+    ],
+    "reason": "Kein Endpunkt weist den gemeinsamen Mesh-Kontext aus.",
+    "effect_ack_done": false
+  },
+  "claim_scope": "GitHub native source/job observations and checker source identities only. No EAP delivery or productive effect.",
+  "effect_ack_done": false
+}

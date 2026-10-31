@@ -18,7 +18,6 @@
     ],
     "merge_gates": [
       "tools/qikvrt_required_review_gate.py",
-      "tools/qikvrt_autonomous_pr_continuation.py",
       "tools/qikvrt_pr_closure_engine.py",
       ".github/workflows/qikvrt_ci.yml",
       "tools/qikvrt_expected_head_promotion.py"
@@ -27,7 +26,13 @@
       "policy/QIKVRT_FORMAL_PROOF_OBLIGATION_V1.json",
       "tests/test_delivery_reporting_proof.py",
       ".github/workflows/qikvrt_universal_ontology_formalization.yml",
-      "evidence/formal-receipts/DeliveryReporting/*"
+      "evidence/formal-receipts/DeliveryReporting/*",
+      "policy/qikvrt-formal-proof-obligation-v1.schema.json",
+      "runtime/toolchains/TOOLCHAIN.lock.tsv",
+      "runtime/toolchains/CACHE_REGISTRY.json",
+      "runtime/toolchains/CACHE_COVERAGE.json",
+      "formalization/QIKVRT_Formalization_v2.0/delivery-reporting/*",
+      "formalization/QIKVRT_Formalization_v2.0/lakefile.toml"
     ]
   },
   "module": "QIKVRTEffectAck.DeliveryReporting",
@@ -50,7 +55,13 @@
     ".github/workflows/qikvrt_universal_ontology_formalization.yml",
     "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/DeliveryReportingReplay.lean",
     "tools/qikvrt_pr_closure_engine.py",
-    "tools/qikvrt_expected_head_promotion.py"
+    "tools/qikvrt_expected_head_promotion.py",
+    "policy/qikvrt-formal-proof-obligation-v1.schema.json",
+    "runtime/toolchains/TOOLCHAIN.lock.tsv",
+    "runtime/toolchains/CACHE_REGISTRY.json",
+    "runtime/toolchains/CACHE_COVERAGE.json",
+    "formalization/QIKVRT_Formalization_v2.0/delivery-reporting/lakefile.toml",
+    "formalization/QIKVRT_Formalization_v2.0/delivery-reporting/lean-toolchain"
   ],
   "receipt_required": [
     "checker",
@@ -64,7 +75,9 @@
     "log_sha256",
     "utc",
     "command",
-    "exit_code"
+    "exit_code",
+    "artifact",
+    "executed_commands"
   ],
   "permitted_axioms": [
     "propext",
@@ -353,6 +366,27 @@
   "native_check_name": "QIKVRT formal proof obligation (7/7)",
   "native_check_app_id": 15368,
   "native_workflow_name": "QIK-VRT universal ontology finite-model verification",
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "formal_proof_obligation_policy"
+  },
+  "schema_ref": "policy/qikvrt-formal-proof-obligation-v1.schema.json",
+  "expected_axioms": {
+    "QIKVRT.DeliveryReporting.T1": [
+      "propext"
+    ],
+    "QIKVRT.DeliveryReporting.T2": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.DeliveryReporting.T3": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.DeliveryReporting.T4": []
+  },
   "bundle_source_build": {
     "source": "https://github.com/leanprover/lean4",
     "commit": "eb6cafb7290e8bd5f2937522d8d804f58f02bafc",

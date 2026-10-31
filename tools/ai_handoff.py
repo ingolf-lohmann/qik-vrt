@@ -14,6 +14,7 @@ import fnmatch
 import hashlib
 import ipaddress
 import json
+import os
 import re
 import shlex
 import shutil
@@ -1292,6 +1293,15 @@ def formal_proof_required(changed_paths: Any) -> bool:
     return any(fnmatch.fnmatchcase(path, pattern) for path in changed_paths for pattern in patterns)
 
 
+def formal_log_has_failure(text: str) -> bool:
+    """Reuse the original command diagnostic guard, including zero-exit panic."""
+    try:
+        require_formal_command_success(0, text)
+    except RuntimeError:
+        return True
+    return False
+
+
 def formal_proof_gate(directory: Path) -> None:
     """Validate all seven exact-input receipts; CI must freshly produce them.
 
@@ -1299,6 +1309,12 @@ def formal_proof_gate(directory: Path) -> None:
     The existing native workflow reruns all commands before calling this gate.
     """
     policy = formal_policy()
+    vectors = ROOT / policy["vectors_path"]
+    if (not re.fullmatch(r"[0-9a-f]{64}", str(policy.get("vectors_sha256", "")))
+        or not vectors.is_file() or vectors.is_symlink()
+        or hashlib.sha256(vectors.read_bytes()).hexdigest() != policy["vectors_sha256"]
+        or not json.loads(vectors.read_text())):
+        fail("FORMAL_BRIDGE_VECTORS_MISSING_OR_DRIFT")
     bundle, digests = formal_source_binding(policy)
     source = digests[FORMAL_ROOT + "/QIKVRTEffectAck/DeliveryReporting.lean"]
     inventory = set(policy["theorems"])
@@ -1316,18 +1332,27 @@ def formal_proof_gate(directory: Path) -> None:
             or receipt["exit_code"] != 0
             or not re.fullmatch(r"[0-9a-f]{64}", str(receipt.get("export_or_olean_sha256", "")))):
             fail("FORMAL_RECEIPT_NONPASS_OR_DRIFT:" + checker["id"])
+        if os.environ.get("GITHUB_RUN_ID"):
+            actual = {"head": git_value("rev-parse", "HEAD"), "tree": git_value("rev-parse", "HEAD^{tree}"),
+                      "run_id": os.environ["GITHUB_RUN_ID"],
+                      "run_attempt": os.environ.get("GITHUB_RUN_ATTEMPT")}
+            if receipt.get("execution") != actual:
+                fail("FORMAL_NATIVE_EXECUTION_SUBJECT_DRIFT:" + checker["id"])
         path = directory / "logs" / (checker["id"] + ".log")
         if not path.is_file() or path.is_symlink() or hashlib.sha256(path.read_bytes()).hexdigest() != receipt["log_sha256"]:
             fail("FORMAL_ORIGINAL_LOG_MISSING_OR_DRIFT:" + checker["id"])
-        try:
-            require_formal_command_success(receipt["exit_code"], path.read_text())
-        except RuntimeError:
-            fail("FORMAL_CHECKER_DIAGNOSTIC_FAILURE:" + checker["id"])
+        if formal_log_has_failure(path.read_text()):
+            fail("FORMAL_CHECKER_LOG_UNRELIABLE:" + checker["id"])
+        artifact = receipt.get("artifact")
+        if (not isinstance(artifact, str) or Path(artifact).name != artifact
+            or not (directory / artifact).is_file() or (directory / artifact).is_symlink()
+            or hashlib.sha256((directory / artifact).read_bytes()).hexdigest() != receipt["export_or_olean_sha256"]):
+            fail("FORMAL_REPLAY_INPUT_MISSING_OR_DRIFT:" + checker["id"])
         client_time(receipt["utc"], "FORMAL_RECEIPT_UTC_INVALID")
         axioms = receipt["axioms"]
         if (not isinstance(axioms, dict) or set(axioms) != inventory
             or any(not isinstance(a, list) or set(a) - set(policy["permitted_axioms"])
-                   for a in axioms.values())):
+                   for a in axioms.values()) or axioms != policy["expected_axioms"]):
             fail("FORMAL_AXIOM_INVENTORY_DRIFT:" + checker["id"])
         if own_axioms is None:
             own_axioms = axioms
@@ -1338,7 +1363,7 @@ def formal_proof_gate(directory: Path) -> None:
             if external_export is not None and export != external_export:
                 fail("FORMAL_CROSS_CHECKER_EXPORT_DRIFT")
             external_export = export
-    print("FORMAL_MODEL_CHECKERS=7/7")
+    print("FORMAL_RECEIPT_CONSISTENCY=7/7")
     print("IMPLEMENTATION_ASSURANCE=FINITE_DIFFERENTIAL_BRIDGE_ONLY")
     print("LIVE_EFFECT_VERIFICATION=NOT_PERFORMED")
 
@@ -1362,32 +1387,36 @@ def run_formal_proof(directory: Path, own_root: Path, external_root: Path) -> in
     directory.mkdir(parents=True, exist_ok=True)
     logs = directory / "logs"
     logs.mkdir(exist_ok=True)
-    project = ROOT / FORMAL_ROOT
+    source_project = ROOT / FORMAL_ROOT
+    project = source_project / "delivery-reporting"
     audit = "QIKVRTEffectAck/DeliveryReportingAxiomAudit.lean"
     namespace = "QIKVRT.DeliveryReporting."
-    sys.path.insert(0, str(project / "scripts"))
+    sys.path.insert(0, str(source_project / "scripts"))
     from audit_lean_axioms import parse_axiom_reports
 
     def command(argv: list[str], cwd: Path, log: Path,
                 output: Path | None = None) -> None:
         with log.open("ab") as stream:
             stream.write((json.dumps({"command": argv, "cwd": str(cwd),
+                "environment": {"LEAN_ABORT_ON_PANIC": "1"},
                 "utc": dt.datetime.now(dt.timezone.utc).isoformat()}) + "\n").encode())
             stream.flush()
             try:
                 if output is None:
                     proc = subprocess.run(argv, cwd=cwd, stdout=stream, stderr=subprocess.STDOUT,
-                                          timeout=300, check=False)
+                                          timeout=300, check=False, env={**os.environ, "LEAN_ABORT_ON_PANIC": "1"})
                 else:
                     with output.open("wb") as dest:
                         proc = subprocess.run(argv, cwd=cwd, stdout=dest, stderr=stream,
-                                              timeout=300, check=False)
+                                              timeout=300, check=False, env={**os.environ, "LEAN_ABORT_ON_PANIC": "1"})
                 stream.write(("\nEXIT_CODE=" + str(proc.returncode) + "\n").encode())
-                stream.flush()
-                require_formal_command_success(proc.returncode, log.read_text())
+                if proc.returncode:
+                    raise RuntimeError("command nonpass: " + shlex.join(argv))
             except (OSError, subprocess.TimeoutExpired) as exc:
                 stream.write(("\nUNVERIFIED=" + str(exc) + "\n").encode())
                 raise RuntimeError(str(exc)) from exc
+        if formal_log_has_failure(log.read_text()):
+            raise RuntimeError("checker panic despite zero exit; verification unreliable")
 
     def inventory(log: Path) -> dict[str, list[str]]:
         reports = parse_axiom_reports(log.read_text())
@@ -1418,8 +1447,8 @@ def run_formal_proof(directory: Path, own_root: Path, external_root: Path) -> in
         verify_root(own_root, "4.19.0", policy["checkers"][0]["commit"], own_log)
         lake = str(own_root / "bin/lake")
         command([lake, "build", policy["lean_lib"], "deliveryReportingVectors"], project, own_log)
-        command([lake, "env", "lean", "--run", "QIKVRTEffectAck/DeliveryReportingReplay.lean"], project, own_log)
-        command([lake, "env", "lean", audit], project, own_log)
+        command([lake, "env", "lean", "--run", "../QIKVRTEffectAck/DeliveryReportingReplay.lean"], project, own_log)
+        command([lake, "env", "lean", "../" + audit], project, own_log)
         own_axioms = inventory(own_log)
         vectors = directory / "generated-vectors.json"
         command([lake, "exe", "deliveryReportingVectors"], project, own_log, vectors)
@@ -1439,14 +1468,21 @@ def run_formal_proof(directory: Path, own_root: Path, external_root: Path) -> in
 
     def receipt(checker: dict[str, Any], log: Path, payload: Path,
                 axioms: dict[str, list[str]], ok: bool, error: str = "") -> None:
+        artifact = "own-kernel.olean" if checker["id"] == "own-kernel" else export.name
+        if checker["id"] == "own-kernel" and payload.is_file():
+            shutil.copyfile(payload, directory / artifact)
         value = {"schema": "qikvrt-formal-receipt/v1", "checker": checker["id"],
             "commit": checker["commit"], "version": checker["version"], "module": policy["module"],
             "source_sha256": digests[module_source], "source_bundle_sha256": bundle,
             "source_digests": digests,
             "export_or_olean_sha256": hashlib.sha256(payload.read_bytes()).hexdigest() if payload.is_file() else None,
+            "artifact": artifact,
             "axioms": axioms, "result": "PASS" if ok else "UNVERIFIED", "error": error,
             "log_sha256": hashlib.sha256(log.read_bytes()).hexdigest(),
-            "utc": dt.datetime.now(dt.timezone.utc).isoformat(), "command": checker["check_command"],
+            "utc": dt.datetime.now(dt.timezone.utc).isoformat(),
+            "command": checker["check_command"],
+            "executed_commands": [json.loads(line)["command"] for line in log.read_text().splitlines()
+                if line.startswith('{"command":')],
             "exit_code": 0 if ok else None,
             "execution": {"head": git_value("rev-parse", "HEAD"), "tree": git_value("rev-parse", "HEAD^{tree}"),
                 "run_id": __import__("os").environ.get("GITHUB_RUN_ID"),
@@ -1459,7 +1495,7 @@ def run_formal_proof(directory: Path, own_root: Path, external_root: Path) -> in
     external.mkdir()
     (external / "QIKVRTEffectAck").mkdir()
     for name in ("DeliveryReporting.lean", "DeliveryReportingAxiomAudit.lean"):
-        shutil.copyfile(project / "QIKVRTEffectAck" / name, external / "QIKVRTEffectAck" / name)
+        shutil.copyfile(source_project / "QIKVRTEffectAck" / name, external / "QIKVRTEffectAck" / name)
     (external / "lakefile.toml").write_text('name = "DeliveryReportingRecheck"\n'
         '[[lean_lib]]\nname = "QIKVRTDeliveryReporting"\nroots = ["QIKVRTEffectAck.DeliveryReporting"]\n')
     export = directory / "DeliveryReporting.export.ndjson"
@@ -1482,7 +1518,7 @@ def run_formal_proof(directory: Path, own_root: Path, external_root: Path) -> in
     config = directory / "nanoda-config.json"
     config.write_text(json.dumps({"use_stdin": False, "export_file_path": str(export),
         "permitted_axioms": policy["permitted_axioms"], "unpermitted_axiom_hard_error": True,
-        "num_threads": 4, "nat_extension": True, "string_extension": True}))
+        "nat_extension": True, "string_extension": True, "print_success_message": True}))
     for checker in policy["checkers"][1:]:
         log = logs / (checker["id"] + ".log")
         log.write_bytes(external_log.read_bytes())

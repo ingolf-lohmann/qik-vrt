@@ -271,5 +271,113 @@
     "vectors_sha256": "5e5be7c610f5d4b7ec41cfc8e0e0154bf8476b0ac48b3d5b2a839745a41080ff",
     "prior_open_obligations_retained": true,
     "fresh_final_head_native_acceptance_required": true
+  },
+  "formal_proof_obligation_continuation": {
+    "schema": "qikvrt-formal-obligation-continuation/v1",
+    "request_sha256": "e72e589f4fd6ff009beeafaf0c314ed896f2a7314fa298875fcd72ac439495d1",
+    "source_predecessor": {
+      "head": "06f0320f333940cfaa9ddd2f25f628bbfed22e1d",
+      "tree": "c93d1149a067026f1b5884a1322f421643df5231"
+    },
+    "owner_authorization_retained": true,
+    "carrier": "PR546 fix/client-communication-evidence-20261019",
+    "observed_at_utc": "2026-10-31T20:31:00.346136+00:00",
+    "verified_local": [
+      "Original native-generated 1152 vectors imported; sha256=5e5be7c610f5d4b7ec41cfc8e0e0154bf8476b0ac48b3d5b2a839745a41080ff",
+      "All generated verdicts agree through actual receipt validator and bounded original CLI controls",
+      "Status-condition mutant detected; six-of-seven, replay, foreign subject, payload/log/commit drift and zero-exit panic controls reject",
+      "322 existing targeted tests and 10 bridge/gate tests passed on the uncommitted successor inputs"
+    ],
+    "native_predecessor": {
+      "run_id": 41238540287,
+      "job_id": 124647324632,
+      "archive_sha256": "67c49323f42c3b47cb245006d1d18b8a3ef06553d8db7a32531f0a44509ff9bd",
+      "model_build": "success",
+      "axiom_audit": "four named theorem dependencies recorded",
+      "generated_vectors": "verified original bytes",
+      "own_receipt": "UNVERIFIED: missing vector pin/import; replay also emitted a panic despite exit0",
+      "nanoda": "UNVERIFIED: literal extensions disabled",
+      "overall": "NOT_ACCEPTED; do not transfer predecessor successes"
+    },
+    "causal_repairs": [
+      "Replay exact module-index declarations only; abort on original Lean panic; independently reject panic-bearing logs even after exit0",
+      "Configure nanoda documented Nat/String extensions; preserve axiom allowlist",
+      "Pin original native-generated vectors and validate fresh regeneration",
+      "Keep post-Alpha2 modules outside the immutable historical source archive",
+      "Keep the historically pinned root lakefile.toml byte-identical; isolate the new target in its own Lake project.",
+      "Correct the transport fixture changed_files count to its actual single-file inventory; add a negative scope-truncation control."
+    ],
+    "W5": {
+      "subject": "PR658 a56b0632e120ce815019e5f4a812fc828c57cd1e",
+      "required_materializer": {
+        "run": 41215514005,
+        "attempt": 2,
+        "result": "success"
+      },
+      "requested_review_disposition": {
+        "run": 41215513700,
+        "attempt": 2,
+        "result": "success",
+        "principal_approval": false
+      },
+      "batch003": {
+        "run": 41215513887,
+        "attempt": 2,
+        "result": "success"
+      },
+      "retry_count_this_continuation": 0,
+      "evidence": "evidence/formal-receipts/DeliveryReporting/history/READBACK_AND_CHECKER_IDENTITIES.json"
+    },
+    "open_work": [
+      {
+        "id": "EXACT_SUCCESSOR_SEVEN_CHECKERS",
+        "next_action": "Publish tested successor with regenerated integrity; read original exact-head seven-checker workflow and inspect all original receipts/logs, including replay panic absence."
+      },
+      {
+        "id": "NATIVE_CI_AND_GOVERNANCE",
+        "next_action": "Require current-head complete native CI, materialization and actual governance; preserve Draft and all standing Owner grants."
+      },
+      {
+        "id": "UNIVERSAL_IMPLEMENTATION_REFINEMENT",
+        "next_action": "Finite vectors are the requested bridge, not a universal Python refinement theorem; keep that stronger claim unproved."
+      },
+      {
+        "id": "R3_R5_AND_ACTUAL_CLIENT_ADOPTION",
+        "next_action": "Retain provenance, durable correction and per-node actual adoption duties outside the finite model."
+      },
+      {
+        "id": "PRODUCTION",
+        "next_action": "Original runtime admission, protected bindings, exact-domain acceptance and productive effect require their own authenticated fresh readback."
+      }
+    ],
+    "completion_claims": {
+      "seven_of_seven": false,
+      "main_integrated": false,
+      "all_nodes_adopted": false,
+      "productive_effect_ack_done": false
+    },
+    "local_full_suite": "Predecessor run stopped at two merge transport fixture assertions after introducing strict complete change-scope validation. Causal fixture correction is covered by targeted rerun; final exact-subject full suite still required.",
+    "concurrent_source_adopted": {
+      "head": "03c665f8e9e7e41ee3b1c87428d5bfaeb25f7f48",
+      "tree": "21ba89554d0f7f0289b676d92e0ad155cbda7e32",
+      "preserved": [
+        "Exact module-payload replay against original imports",
+        "Original panic/error guard and negative control",
+        "Original PR658 successful materializer log binding",
+        "All predecessor knowledge and source/proof limits"
+      ],
+      "remaining_causal_repair": "Isolate additive target so existing original manuscript/causal-distance source identities remain byte-current; retain stricter 7/7 receipt/input checks."
+    },
+    "corrections": [
+      {
+        "supersedes": "Unpublished local module-index replay proposal",
+        "adopted": "Reuse the already published exact readModuleData module-payload replay from03c665f8, retaining original import boundaries and its separately tested panic/error detector."
+      }
+    ],
+    "additional_concurrent_source_adopted": {
+      "head": "4c2b284f3df9032b9ad2b7b76ec077f9ba9b2ba7",
+      "tree": "683ca9f5717b13e0fd7c851cae945ad04048ed7f",
+      "preserved": "Owner-supplied original kernel log, audit archive and metadata; correct original git rev-parse HEAD/TREE collection. No compatibility preload is used for this client proof claim."
+    }
   }
 }

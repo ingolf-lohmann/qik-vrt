@@ -23,6 +23,8 @@ on:
       - "tools/qikvrt_expected_head_promotion.py"
       - ".github/workflows/qikvrt_ci.yml"
       - "policy/QIKVRT_FORMAL_PROOF_OBLIGATION_V1.json"
+      - "policy/qikvrt-formal-proof-obligation-v1.schema.json"
+      - "runtime/toolchains/**"
       - "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json"
       - "tests/test_delivery_reporting_proof.py"
       - "evidence/formal-receipts/DeliveryReporting/**"
@@ -45,6 +47,8 @@ on:
       - "tools/qikvrt_expected_head_promotion.py"
       - ".github/workflows/qikvrt_ci.yml"
       - "policy/QIKVRT_FORMAL_PROOF_OBLIGATION_V1.json"
+      - "policy/qikvrt-formal-proof-obligation-v1.schema.json"
+      - "runtime/toolchains/**"
       - "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json"
       - "tests/test_delivery_reporting_proof.py"
       - "evidence/formal-receipts/DeliveryReporting/**"
@@ -157,16 +161,14 @@ jobs:
           python-version: "3.12"
 
       - name: Build delivery reporting model and retain generated vectors
-        working-directory: formalization/QIKVRT_Formalization_v2.0
+        working-directory: formalization/QIKVRT_Formalization_v2.0/delivery-reporting
         shell: bash
         run: |
           set -euo pipefail
           lake build QIKVRTDeliveryReporting deliveryReportingVectors
-          lake env lean QIKVRTEffectAck/DeliveryReportingAxiomAudit.lean
+          lake env lean ../QIKVRTEffectAck/DeliveryReportingAxiomAudit.lean
           lake exe deliveryReportingVectors > .lake/build/delivery-reporting-vectors.json
-          echo QIKVRT_DELIVERY_VECTORS_BEGIN
-          cat .lake/build/delivery-reporting-vectors.json
-          echo QIKVRT_DELIVERY_VECTORS_END
+          sha256sum .lake/build/delivery-reporting-vectors.json
 
       - name: Provision hash-locked external checker bundle
         shell: bash
@@ -369,6 +371,7 @@ jobs:
             .qikvrt/formal-receipts/DeliveryReporting/*.json
             .qikvrt/formal-receipts/DeliveryReporting/logs/*.log
             .qikvrt/formal-receipts/DeliveryReporting/*.ndjson
+            .qikvrt/formal-receipts/DeliveryReporting/*.olean
 
       - name: Save verified Lean archive from trusted Main only
         if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
