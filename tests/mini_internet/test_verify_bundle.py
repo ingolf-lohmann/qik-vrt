@@ -63,9 +63,16 @@ class AdmissionTests(unittest.TestCase):
     def test_changed_payload_rejected(self):
         with tempfile.TemporaryDirectory() as d:
             p=pathlib.Path(d)/"bad.zip"
-            archive(p,FILES)
-            with zipfile.ZipFile(p,"a") as z:
-                z.writestr("web/app.jsx",b"modified")
+            modified = {**FILES, "web/app.jsx": b"modified"}
+            archive(p,modified)
+            original_manifest = "".join(
+                hashlib.sha256(v).hexdigest()+"  ./"+k+"\n" for k,v in FILES.items()
+            )
+            with zipfile.ZipFile(p,"r") as z:
+                members = {name:z.read(name) for name in z.namelist()}
+            members["SHA256SUMS"] = original_manifest.encode()
+            with zipfile.ZipFile(p,"w") as z:
+                for name,data in members.items(): z.writestr(name,data)
             with self.assertRaisesRegex(ValueError,"hash mismatch"): verify(p)
 
 if __name__=="__main__": unittest.main()
