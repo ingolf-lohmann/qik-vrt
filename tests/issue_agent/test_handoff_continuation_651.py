@@ -13,6 +13,14 @@ class HandoffContinuationContract(unittest.TestCase):
         self.assertIn("Recover unchanged issue review handoff", source)
         self.assertIn("--previous-ref", source)
 
+    def test_admission_receipt_precedes_processing(self):
+        source = WORKFLOW.read_text(encoding="utf-8")
+        admission = source.index("- name: Acknowledge durable DevOps admission")
+        processing = source.index("- name: Evaluate causal retry admission")
+        self.assertLess(admission, processing)
+        self.assertIn("DEVOPS_ADMITTED:", source)
+        self.assertIn("Result pending; no EFFECT_ACK_DONE asserted.", source)
+
     def test_integrity_verification_result_is_enforced(self):
         source = WORKFLOW.read_text(encoding="utf-8")
         self.assertIn("generated = generate(Path.cwd())", source)
