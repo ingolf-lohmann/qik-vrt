@@ -1,2 +1,4 @@
 # guid	source_repo	seed_repo	request_url	node_branch	heartbeat_ttl_minutes	lifecycle_policy
 a84f157a-cef2-4c47-bca9-8f407085bdbe	ingolf-lohmann/qik-vrt	ingolf-lohmann/qik-vrt	https://raw.githubusercontent.com/ingolf-lohmann/qik-vrt/main/qikvrt/runtime/onboarding/SEED_REGISTRATION_REQUEST.json	main	1500	ACTIVE
+90c1665b-bbfb-5155-a88c-3579799ecb5d	UNBOUND	ingolf-lohmann/qik-vrt	UNBOUND	UNBOUND	1500	PENDING_BINDING
+e250ce54-85af-55f4-ad94-01b8c38a85cc	UNBOUND	ingolf-lohmann/qik-vrt	UNBOUND	UNBOUND	1500	PENDING_BINDING

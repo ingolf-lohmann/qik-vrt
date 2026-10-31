@@ -1,0 +1,11 @@
+{
+  "schema": "qikvrt-seed-http-observation/v1",
+  "observed_at": "2026-10-31T17:43:54.239149+00:00",
+  "method": "GET",
+  "url": "https://raumzeitterminal.de/api/eap/state",
+  "source_subject_matches": null,
+  "effect_ack_done": false,
+  "observation_state": "UNAVAILABLE",
+  "transport_error": "HTTP Error 503: Service Unavailable",
+  "target_runtime_state": "UNVERIFIED"
+}

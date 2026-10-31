@@ -35,5 +35,105 @@
     "offline_verifier": "tools/qikvrt_mesh_recovery.py",
     "policy_path": "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json",
     "required_for_authority_and_mirror_full_node_claims": true
+  },
+  "seed_binding": {
+    "binding_sha256": "lowercase SHA-256 of canonical_json_bytes(preimage), excluding binding_sha256 itself",
+    "canonical_file_sha256_paths": [
+      "qikvrt/runtime/onboarding/SEED_REGISTRATION_REQUEST.json",
+      "registry/NODEMESH_INDEX.json"
+    ],
+    "implementation": "tools/qikvrt_seed_common.py binding",
+    "preimage_fields": [
+      "schema",
+      "repository",
+      "seed_guid",
+      "head",
+      "tree",
+      "canonical_file_sha256"
+    ],
+    "proposed_digest_disposition": {
+      "components": "HEAD, TREE and both canonical file SHA-256 values independently reproduced; this does not reproduce the composite digest",
+      "sha256": "619baa869a4d71a35a672d9fc999ac4f605debcccfe66e875148b420e4ba5ff7",
+      "state": "NOT_ADOPTED_PREIMAGE_NOT_PROVIDED"
+    },
+    "recognition": {
+      "anonymous_state_authenticates_principal": false,
+      "effect_ack_done": false,
+      "matching_source_is_node_admission": false,
+      "method": "GET",
+      "offline_checker": "tools/qikvrt_seed_common.py binding-state-check",
+      "offline_checker_proves_http_or_authentication": false,
+      "origin": "https://raumzeitterminal.de",
+      "path": "/api/eap/state",
+      "require_fresh_actual_https_readback": true,
+      "required_schema": "qikvrt_eap_http_status_v1",
+      "required_state": "NATIVE_EAP_HTTP_READY",
+      "source_binding_refreshes_stale_index": false,
+      "subject_matches": [
+        "repository",
+        "head",
+        "tree"
+      ]
+    },
+    "refresh_rule": "A new source commit or index requires a new explicit binding; retain prior bytes as historical; never transfer runtime acceptance.",
+    "schema": "qikvrt-seed-binding/v1",
+    "serialization": "canonical_json_bytes: UTF-8, ensure_ascii=false, sort_keys=true, indent=2, allow_nan=false, exactly one trailing LF; not RFC 8785/JCS",
+    "source": "Exact immutable local Git commit objects; independently reobserve remote Main separately",
+    "reference_vector": {
+      "binding_sha256": "d74577da05d7c9dbc6cffd422aef0b8a0c1e309decd434bb1e67b2b72e6e84d3",
+      "preimage": {
+        "canonical_file_sha256": {
+          "qikvrt/runtime/onboarding/SEED_REGISTRATION_REQUEST.json": "4cdeb0eb420cde38eb051709b594a385883f55622459b8997bcc975e0e273889",
+          "registry/NODEMESH_INDEX.json": "ad96166b8dd2be74109d5c0fb627bcb6caf6efe59116097838301ad8d1a7ead6"
+        },
+        "head": "5a42baf45748e4407a8fa16aef287a77873e788d",
+        "repository": "ingolf-lohmann/qik-vrt",
+        "schema": "qikvrt-seed-binding/v1",
+        "seed_guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe",
+        "tree": "3f6e816b6b496eeb9ce8777d8fb93d95717be9ae"
+      }
+    }
+  },
+  "pending_client_registration": {
+    "clients": [
+      {
+        "guid": "90c1665b-bbfb-5155-a88c-3579799ecb5d",
+        "name": "codex",
+        "runtime_admission": "UNVERIFIED",
+        "system": "OpenAI Codex"
+      },
+      {
+        "guid": "e250ce54-85af-55f4-ad94-01b8c38a85cc",
+        "name": "claude-mirror",
+        "owner_rest_principal": "mirror:claude",
+        "runtime_admission": "UNVERIFIED",
+        "system": "Claude (Owner-supplied Mirror report)"
+      }
+    ],
+    "effective_status": "UNKNOWN",
+    "guid_derivation": "UUIDv5(NAMESPACE_URL, https://github.com/ingolf-lohmann/qik-vrt#requested-client/<name>); reservation, not authenticated native identity",
+    "lifecycle_policy": "PENDING_BINDING",
+    "network_fetch_permitted": false,
+    "owner_rest_grant": {
+      "activation": "Private 0600 distinct owner-controlled token file, admitted configuration/package/volume binding and independent readback required",
+      "principal": "mirror:claude",
+      "scope": "existing bounded terminal-input prepare/commit/readback; no GitHub writer delegation",
+      "template": "runtime/self-host/CONFIG.example.json",
+      "template_is_live_grant": false
+    },
+    "promotion_requires": [
+      "Original node-owned source repository, request and exact revision",
+      "Existing continuity/watchdog acceptance for every newly bound client",
+      "Explicit matching ACTIVE policy and request rows after source validation",
+      "Private authenticated channel and native Terminal/Transputer admission",
+      "Independent native receipt and peer readback"
+    ],
+    "seed_acceptance_permitted": false,
+    "unbound_fields": [
+      "source_repo",
+      "request_url",
+      "node_branch"
+    ],
+    "unbound_value": "UNBOUND"
   }
 }

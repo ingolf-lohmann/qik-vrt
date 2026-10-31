@@ -1,0 +1,192 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_SEED_BINDING_CLIENT_REGISTRATION_20261031_V1",
+  "created_at": "2026-10-31T17:47:27.429371+00:00",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "role": "AUTHORITY_REPOSITORY_CLIENT; no admitted native node identity inferred",
+  "source": {
+    "ref": "main",
+    "head": "5a42baf45748e4407a8fa16aef287a77873e788d",
+    "tree": "3f6e816b6b496eeb9ce8777d8fb93d95717be9ae"
+  },
+  "candidate_branch": "work/seed-binding-registration-20261031",
+  "human_contribution": {
+    "actor": "Ingolf Lohmann",
+    "class": "HUMAN",
+    "scope": "Requested policy disposition, Codex/Mirror registration and Mirror REST grant using the supplied Mirror report dated 2026-10-31 18:30 MEZ",
+    "authorization": "Current explicit request and existing autonomous continuation delegation; no repeated permission request"
+  },
+  "mirror_contribution": {
+    "actor": "Claude Mirror",
+    "class": "OWNER_SUPPLIED_REPORT",
+    "scope": "Proposed component/composite hashes, single STALE Seed and reported proxy-403/no-delivery R1",
+    "report_is_authenticated_native_receipt": false
+  },
+  "artificial_cognitive_contribution": {
+    "actor": "OpenAI Codex",
+    "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "exact_build": "NOT_EXPOSED",
+    "scope": "Independent Git/REST source readback, bounded binding implementation, pending identity reservation, source grant template, negative tests and isolated source persistence"
+  },
+  "decisions": {
+    "supplied_composite": "NOT_ADOPTED_PREIMAGE_NOT_PROVIDED",
+    "supplied_components": "HEAD_TREE_AND_BOTH_CANONICAL_SHA256_REPRODUCED",
+    "versioned_binding": {
+      "binding_sha256": "d74577da05d7c9dbc6cffd422aef0b8a0c1e309decd434bb1e67b2b72e6e84d3",
+      "preimage": {
+        "canonical_file_sha256": {
+          "qikvrt/runtime/onboarding/SEED_REGISTRATION_REQUEST.json": "4cdeb0eb420cde38eb051709b594a385883f55622459b8997bcc975e0e273889",
+          "registry/NODEMESH_INDEX.json": "ad96166b8dd2be74109d5c0fb627bcb6caf6efe59116097838301ad8d1a7ead6"
+        },
+        "head": "5a42baf45748e4407a8fa16aef287a77873e788d",
+        "repository": "ingolf-lohmann/qik-vrt",
+        "schema": "qikvrt-seed-binding/v1",
+        "seed_guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe",
+        "tree": "3f6e816b6b496eeb9ce8777d8fb93d95717be9ae"
+      }
+    },
+    "client_registration": "PENDING_BINDING; source/request/revision UNBOUND, runtime UNKNOWN",
+    "grant": "mirror:claude template only; no live private configuration or token provisioned"
+  },
+  "reuse_before_create": {
+    "extended": [
+      "tools/qikvrt_seed_common.py",
+      "registry/NODE_DISCOVERY_POLICY.json",
+      "registry/KNOWN_NODE_REQUESTS.tsv",
+      "registry/NODE_POLICY.tsv",
+      "runtime/self-host/CONFIG.example.json",
+      "tests/test_seed_workflows.py",
+      "tests/test_self_host_eap.py",
+      "docs/QIKVRT_OPEN_MULTI_NODE_ARCHITECTURE.md"
+    ],
+    "new_executor_or_scheduler": false
+  },
+  "validation": {
+    "full_local_suite": {
+      "command": "make test",
+      "exit_code": 0,
+      "unittest_executions": 2279,
+      "unittest_groups": 43,
+      "source_code": {
+        "tests/test_seed_workflows.py": {
+          "sha256": "d8804b1b6e7e423cec2db0e6a7fb4c285f763676a06240e1946027154c97cbd8",
+          "bytes": 59097
+        },
+        "tests/test_self_host_eap.py": {
+          "sha256": "233b47f09a84651129e73f8d423a2a97bb253b3db077695008cac858849f6c18",
+          "bytes": 10570
+        },
+        "tools/qikvrt_seed_common.py": {
+          "sha256": "d7dc50b43df39ebd54333edeb1bbc09ffd6c342b80bdcabc6e745a0fdd394117",
+          "bytes": 69407
+        }
+      },
+      "log": "evidence/seed-binding/2026-10-31/MAKE_TEST.log.gz",
+      "scope": "Local implementation validation; no native CI or productive effect inferred",
+      "log_encoding": "gzip; original stdout/stderr bytes recovered without loss",
+      "uncompressed_log_sha256": "db2af0b375217255f86cbd7db7d1629ffed8ddb561ed2544be47d6dc5be1721c"
+    },
+    "post_suite_normalization": "Two changed registry TSVs normalized to LF according to existing .gitattributes; no Python source changed. Fresh config-check and 49 Seed tests PASS; deterministic integrity regenerated and checked before persistence.",
+    "targeted_eap": {
+      "command": "python3 -B -m unittest -v tests.test_seed_workflows.SeedWorkflowTests.test_newly_bound_known_client_keeps_existing_continuity_admission tests.test_self_host_eap",
+      "exit_code": 0,
+      "tests": 5,
+      "scope": "Isolated local private fixtures only"
+    },
+    "evidence_files": {
+      "evidence/seed-binding/2026-10-31/DIRECT_HTTP_STATE.json": {
+        "bytes": 376,
+        "sha256": "45d2a8bd44b7a280020bc72b0be351ad58ee6eb22fd460bc1565d2d0f13f3c57"
+      },
+      "evidence/seed-binding/2026-10-31/NATIVE_CONNECTION.json": {
+        "bytes": 646,
+        "sha256": "db99070010fb1e54641224ae0517188c67316eee30f95c2d7cf437f249f2c1de"
+      },
+      "evidence/seed-binding/2026-10-31/MAKE_TEST.log.gz": {
+        "bytes": 65465,
+        "sha256": "b4b9a13c673fac11896713823f10a6e7727be28465f19315b734037bc5554030"
+      },
+      "evidence/seed-binding/2026-10-31/BINDING_TESTS.txt": {
+        "bytes": 1381,
+        "sha256": "01c8c9f194b92c072262f3c04ae3d14f436b9e29750522bf40273f1fa02a8e5d"
+      },
+      "evidence/seed-binding/2026-10-31/EAP_TESTS.txt": {
+        "bytes": 1158,
+        "sha256": "d22125fe6dafcf657cc5db8327e265d69889d4536b8a4b26dfd38f9a64a0b2bf"
+      },
+      "evidence/seed-binding/2026-10-31/FINAL_SEED_TESTS.txt": {
+        "bytes": 8974,
+        "sha256": "bae3ccfc16f58454e2c77128b539c18742b0f33d340b70c585491a19dfa4c1f8"
+      },
+      "evidence/seed-binding/2026-10-31/SEED_TESTS.txt": {
+        "bytes": 8789,
+        "sha256": "4ad5bf0a06983c1dc950ffee514cbb7de7400c2d5f48fc9e7320d37a22a0cc65"
+      }
+    },
+    "post_normalization_seed_suite": {
+      "command": "python3 -B -m unittest -v tests.test_seed_workflows",
+      "exit_code": 0,
+      "tests": 49,
+      "log": "evidence/seed-binding/2026-10-31/FINAL_SEED_TESTS.txt"
+    },
+    "expected_digest_rejection": {
+      "command": "tools/qikvrt_seed_common.py binding --expected-binding-sha256 619baa869a4d71a35a672d9fc999ac4f605debcccfe66e875148b420e4ba5ff7 with the exact source HEAD/TREE",
+      "exit_code": 2,
+      "stderr": "BLOCK QIKVRT_SEED_BINDING SEED_BINDING_DIGEST_MISMATCH\n",
+      "stdout_empty": true
+    }
+  },
+  "bootstrap_repair": {
+    "initial_state": "BLOCK_STALE_TRANSFER_TEMPORARY",
+    "quarantine": {
+      "operation": "quarantine_untracked_transfer_temporary",
+      "source": "release/zenodo-corpus-proof-2026-07-28/canonical-union/versioned-corrected-candidates/SUBJECT-780b9bf86425cee3/.SUBJECT-780b9bf86425cee3__versioned-corrected-candidate-v1.zip.fxSjLm",
+      "bytes": 58982400,
+      "sha256": "022cf8923426083ee251948115bbdbb9889775765c8c3f47171b3043c8954615",
+      "outside_repository": true,
+      "tracked_content_changed": false
+    },
+    "recheck": "Integrity PASS, boot CONTINUE with no blocking gate; 44/44 declared tool cache strategies verified",
+    "tracked_baseline_changed": false
+  },
+  "observations": {
+    "native_connection": "evidence/seed-binding/2026-10-31/NATIVE_CONNECTION.json",
+    "direct_state_get": "evidence/seed-binding/2026-10-31/DIRECT_HTTP_STATE.json",
+    "reconciliation": "Connector origin read observed 525 at 17:30:50Z; direct EAP state GET at 17:43:54Z raised HTTP Error 503. Different paths and times; neither produced a matching authenticated runtime subject. No inference that one result repairs the other.",
+    "direct_observation_gap": "Only HTTPError text/status indication retained, no response headers/body captured; target cause and runtime identity remain UNVERIFIED."
+  },
+  "open_work": [
+    {
+      "id": "SEED_SOURCE_INTEGRATION",
+      "state": "OPEN",
+      "next_action": "Integrate the isolated source branch through the existing review/governance path, with exact-head native CI. New PR creation retains the existing other-closure condition; no unrelated issue or branch is closed to satisfy it."
+    },
+    {
+      "id": "CODEX_NATIVE_NODE_BINDING",
+      "state": "OPEN",
+      "next_action": "Recover the real node-owned source/request/revision and authenticated native identity through its existing original channel; retain the reserved GUID as pending until original continuity/watchdog receipt and native admission succeed."
+    },
+    {
+      "id": "CLAUDE_NATIVE_NODE_BINDING",
+      "state": "OPEN",
+      "next_action": "Recover the actual Mirror source/request/revision and authenticated peer channel; do not claim delivery from the human-carried report or copy the Authority GUID."
+    },
+    {
+      "id": "MIRROR_PRIVATE_GRANT_ACTIVATION",
+      "state": "OPEN",
+      "next_action": "Apply mirror:claude in the actual private original Terminal configuration with its distinct 0600 token and existing package/configuration/volume admission. Independently read back the grant and native receipt; no secret is requested in chat."
+    },
+    {
+      "id": "EXACT_DOMAIN_EAP_ACCEPTANCE",
+      "state": "OPEN",
+      "next_action": "After the admitted original host/channel binding changes, GET the exact HTTPS EAP state and compare repository/head/tree to the selected immutable binding; authenticated prepare/commit and original receipt readback remain separate."
+    }
+  ],
+  "native_ci_verified": false,
+  "main_integration_verified": false,
+  "native_event_id": null,
+  "live_grant_verified": false,
+  "peer_delivery_verified": false,
+  "effect_ack_done": false,
+  "log_boundary": "Complete local test logs above are retained. Original source inspection output is recoverable from pinned Git objects and the conversation, not claimed as a complete persisted chronological tool transcript. Caller-private Site identity was deliberately excluded from public evidence."
+}

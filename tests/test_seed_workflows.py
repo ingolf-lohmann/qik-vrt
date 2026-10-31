@@ -15,6 +15,7 @@ import copy
 import subprocess
 import tempfile
 import unittest
+from unittest import mock
 from pathlib import Path
 
 from tools import qikvrt_workflow_executor as workflow_executor
@@ -34,6 +35,9 @@ from tools.qikvrt_seed_common import (
     validate_raw_request_url,
     validate_local_handshake,
     run_acknowledgement,
+    derive_seed_binding,
+    check_seed_state,
+    validate_registration_request,
 )
 
 
@@ -216,6 +220,72 @@ class SeedWorkflowTests(unittest.TestCase):
                        seed_index_sha256="1" * 64,
                        seed_acceptance_run_id=read_json(entry)["last_acceptance_run_id"])
         return documents
+
+    def add_pending_client(self):
+        guid = "90c1665b-bbfb-5155-a88c-3579799ecb5d"
+        with (self.root / "registry/KNOWN_NODE_REQUESTS.tsv").open("a") as out:
+            out.write(f"{guid}\tUNBOUND\t{SEED}\tUNBOUND\tUNBOUND\t1500\tPENDING_BINDING\n")
+        with (self.root / "registry/NODE_POLICY.tsv").open("a") as out:
+            out.write(f"{guid}\tPENDING_BINDING\trequested client, identity unbound\n")
+        return guid
+
+    def test_pending_client_is_retained_without_fetch_acceptance_or_fabricated_urls(self):
+        pending = self.add_pending_client()
+        fetch = FakeFetcher(self.documents())
+        acceptance = run_acceptance(self.root, "pending-accept", fetch, now=NOW)
+        self.assertEqual(acceptance["pending_binding_count"], 1)
+        self.assertEqual(acceptance["accepted_count"], 1)
+        self.assertNotIn("UNBOUND", fetch.calls)
+        self.assertFalse((self.root / f"registry/nodes/{pending}.json").exists())
+        ledger = (self.root / "ledger/NODE_REGISTRATION_LEDGER.jsonl").read_text()
+        self.assertNotIn(pending, ledger)
+        maintenance_fetch = FakeFetcher(self.documents())
+        status = run_maintenance(self.root, "pending-maintain", maintenance_fetch, now=NOW)
+        self.assertEqual(status["unknown_count"], 1)
+        self.assertEqual(status["status"], "CONTINUE")
+        index = read_json(self.root / "registry/NODEMESH_INDEX.json")
+        row = next(n for n in index["nodes"] if n["guid"] == pending)
+        self.assertEqual(row["effective_status"], "UNKNOWN")
+        self.assertEqual(row["registry_status"], "PENDING_BINDING")
+        for key in ("node_health_url", "node_ack_url", "node_renewal_url"):
+            self.assertEqual(row[key], "")
+        self.assertTrue(all("UNBOUND" not in url for url in maintenance_fetch.calls))
+        run_revalidation(self.root, "pending-revalidate", now=NOW)
+
+    def test_pending_client_cannot_validate_request_or_become_active_with_unbound_identity(self):
+        pending = self.add_pending_client()
+        nodes, _ = load_nodes(self.root, SEED)
+        node = next(n for n in nodes if n.guid == pending)
+        with self.assertRaisesRegex(SeedError, "PENDING_NODE_IS_NOT_ADMITTED"):
+            validate_registration_request(request_document(), node)
+        for p in ("registry/KNOWN_NODE_REQUESTS.tsv", "registry/NODE_POLICY.tsv"):
+            path = self.root / p
+            path.write_text(path.read_text().replace("PENDING_BINDING", "ACTIVE"))
+        with self.assertRaises(SeedError):
+            load_nodes(self.root, SEED)
+
+    def test_pending_registration_refuses_invented_partial_source_identity(self):
+        self.add_pending_client()
+        path = self.root / "registry/KNOWN_NODE_REQUESTS.tsv"
+        path.write_text(path.read_text().replace("\tUNBOUND\t" + SEED, "\t" + SEED + "\t" + SEED))
+        with self.assertRaisesRegex(SeedError, "PENDING_NODE_MUST_RETAIN_UNBOUND"):
+            load_nodes(self.root, SEED)
+
+    def test_newly_bound_known_client_keeps_existing_continuity_admission(self):
+        pending = self.add_pending_client()
+        path = self.root / "registry/KNOWN_NODE_REQUESTS.tsv"
+        text = path.read_text().replace(
+            f"{pending}\tUNBOUND\t{SEED}\tUNBOUND\tUNBOUND\t1500\tPENDING_BINDING",
+            f"{pending}\t{SOURCE}\t{SEED}\t{REQUEST_URL}\tmain\t1500\tACTIVE")
+        path.write_text(text)
+        path = self.root / "registry/NODE_POLICY.tsv"
+        path.write_text(path.read_text().replace("PENDING_BINDING", "ACTIVE"))
+        node = next(n for n in load_nodes(self.root, SEED)[0] if n.guid == pending)
+        request = request_document()
+        request['repository_guid'] = pending
+        del request['workflow_executor_continuity']
+        with self.assertRaises(workflow_executor.ExecutorBlock):
+            validate_registration_request(request, node)
 
     def acknowledgement_fetcher(self):
         self.accept()
@@ -891,6 +961,91 @@ class MirrorLifecycleGovernanceTests(unittest.TestCase):
         self.assertAlmostEqual(24 * 3600, (timestamp(renewal["next_renewal_due_utc"]) - timestamp(renewal["renewed_utc"])).total_seconds(), delta=2)
         for directory in ("node_health", "node_registration_renewal"):
             self.assertEqual((self.root / f"evidence/{directory}/LATEST.json").read_bytes(), (self.root / f"evidence/{directory}/{self.env['QIKVRT_RUN_ID']}.json").read_bytes())
+
+class SeedBindingTests(unittest.TestCase):
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name)
+        policy = self.root / workflow_executor.ROLE_POLICY_PATH
+        policy.parent.mkdir(parents=True)
+        shutil.copyfile(workflow_executor.ROOT / workflow_executor.ROLE_POLICY_PATH, policy)
+        self.request = request_document()
+        self.request["source_repository"] = SEED
+        self.index = {"schema": "qikvrt_nodemesh_index_v2", "seed_repository": SEED,
+                      "node_count": 1, "nodes": [{"guid": GUID, "repository": SEED,
+                                                   "effective_status": "STALE"}]}
+        for path, value in (("qikvrt/runtime/onboarding/SEED_REGISTRATION_REQUEST.json", self.request),
+                            ("registry/NODEMESH_INDEX.json", self.index)):
+            target = self.root / path
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(canonical_json_bytes(value))
+        self.git("init", "--quiet")
+        self.git("config", "user.name", "Seed fixture")
+        self.git("config", "user.email", "fixture@example.invalid")
+        self.git("add", ".")
+        self.git("commit", "--quiet", "-m", "Bound seed fixture")
+        self.head = self.git("rev-parse", "HEAD")
+        self.tree = self.git("rev-parse", "HEAD^{tree}")
+        self.binding = derive_seed_binding(self.root, self.head, self.tree)
+        self.state = {"schema": "qikvrt_eap_http_status_v1", "state": "NATIVE_EAP_HTTP_READY",
+                      "subject": {"repository": SEED, "head": self.head, "tree": self.tree}}
+
+    def git(self, *args):
+        return subprocess.check_output(["git", "-C", str(self.root), *args], stderr=subprocess.DEVNULL,
+                                       timeout=10).decode().strip()
+
+    def test_complete_preimage_is_retained_and_dirty_working_files_do_not_change_binding(self):
+        expected = {"schema": "qikvrt-seed-binding/v1", "repository": SEED, "seed_guid": GUID,
+                    "head": self.head, "tree": self.tree,
+                    "canonical_file_sha256": {
+                        "qikvrt/runtime/onboarding/SEED_REGISTRATION_REQUEST.json": hashlib.sha256(canonical_json_bytes(self.request)).hexdigest(),
+                        "registry/NODEMESH_INDEX.json": hashlib.sha256(canonical_json_bytes(self.index)).hexdigest()}}
+        self.assertEqual(self.binding["preimage"], expected)
+        path = self.root / "registry/NODEMESH_INDEX.json"
+        path.write_text('{"node_count": 999}')
+        self.assertEqual(derive_seed_binding(self.root, self.head, self.tree), self.binding)
+        self.assertEqual(check_seed_state(self.root, self.binding, self.state)["scope"],
+                         "OFFLINE_SOURCE_AND_SUPPLIED_STATE_BYTES_ONLY")
+
+    def test_head_tree_alias_and_missing_object_fail_closed(self):
+        for head, tree in ((self.head, "0" * 40), ("0" * 40, self.tree), ("main", self.tree)):
+            with self.subTest(head=head, tree=tree), self.assertRaises(SeedError):
+                derive_seed_binding(self.root, head, tree)
+
+    def test_unknown_failed_and_wrong_subject_state_cannot_establish_recognition(self):
+        for key, value in (("repository", "other/repo"), ("head", "0" * 40), ("tree", "0" * 40)):
+            state = copy.deepcopy(self.state)
+            state["subject"][key] = value
+            with self.subTest(key=key), self.assertRaisesRegex(SeedError, "EAP_SEED_SUBJECT_MISMATCH"):
+                check_seed_state(self.root, self.binding, state)
+        for key, value in (("schema", "historical-state"), ("state", "HOLD")):
+            with self.subTest(key=key), self.assertRaises(SeedError):
+                check_seed_state(self.root, self.binding, {**self.state, key: value})
+        checked = check_seed_state(self.root, self.binding, self.state)
+        for key in ("http_readback_verified", "principal_authenticated", "node_admission_verified", "effect_ack_done"):
+            self.assertIs(checked[key], False)
+
+    def test_rehashed_substituted_file_digest_still_fails_source_rederivation(self):
+        value = copy.deepcopy(self.binding)
+        value["preimage"]["canonical_file_sha256"]["registry/NODEMESH_INDEX.json"] = "0" * 64
+        value["binding_sha256"] = hashlib.sha256(canonical_json_bytes(value["preimage"])).hexdigest()
+        with self.assertRaisesRegex(SeedError, "SEED_BINDING_DIGEST_OR_PREIMAGE_MISMATCH"):
+            check_seed_state(self.root, value, self.state)
+
+    def test_wrong_seed_repository_in_immutable_source_is_rejected(self):
+        self.index["seed_repository"] = "foreign/seed"
+        (self.root / "registry/NODEMESH_INDEX.json").write_bytes(canonical_json_bytes(self.index))
+        self.git("add", ".")
+        self.git("commit", "--quiet", "-m", "Wrong seed fixture")
+        with self.assertRaises(SeedError):
+            derive_seed_binding(self.root, self.git("rev-parse", "HEAD"), self.git("rev-parse", "HEAD^{tree}"))
+
+    def test_checker_failure_never_returns_source_binding_success(self):
+        with mock.patch("tools.qikvrt_seed_common.run_bounded", side_effect=OSError("checker unavailable")):
+            with self.assertRaises(OSError):
+                derive_seed_binding(self.root, self.head, self.tree)
+
 
 class CurrentAuthoritySeedRoleTests(unittest.TestCase):
     def test_checked_in_current_entry_matches_the_declared_authority_without_accepting_the_pending_ack(self):

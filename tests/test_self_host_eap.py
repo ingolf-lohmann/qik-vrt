@@ -122,6 +122,31 @@ class EapExportTests(unittest.TestCase):
                 self.config = {**original, **change}; self.save_config()
                 self.assertIn('EXPLICIT_EAP_NATIVE_PROFILE_WITHOUT_ALTERNATE_INPUT_PATH_REQUIRED', self.denied())
 
+    def test_distinct_mirror_capability_is_principal_bound_without_authority_credential_reuse(self):
+        # Private keys and identities here belong to an isolated local fixture.
+        mirror_key = 'isolated-mirror-capability-' + 'm' * 40
+        token = self.work / 'mirror.token'; token.write_text(mirror_key); token.chmod(0o600)
+        self.config['owner_rest_grants'].append({'principal': 'mirror:claude', 'token_file': str(token),
+            'permissions': ['prepare', 'commit', 'readback']})
+        self.save_config(); self.start()
+        code, state = self.get('/api/eap/state'); self.assertEqual(code, 200)
+        value = {'schema': 'qikvrt_owner_rest_input_v1', 'request_id': 'isolated-mirror-prepare',
+                 'subject': state['subject'],
+                 'input': {'schema': 'qikvrt_terminal_input_v1', 'text': 'Isolated mirror input', 'audio': None, 'video': None}}
+        fields = {'Content-Type': 'application/json', 'Effect-Ack-Request': 'v=1, mode=prepare',
+                  'QIKVRT-Owner': 'mirror:claude'}
+        self.assertEqual(self.call('/api/eap/effect', value, fields)[0], 403)
+        fields['Authorization'] = 'Bearer ' + mirror_key
+        code, _, prepared = self.call('/api/eap/effect', value, fields)
+        self.assertEqual(code, 200, prepared)
+        self.assertEqual(self.inputs(), [])
+        self.assertEqual(self.call(prepared['record_url'], headers=fields)[0], 200)
+        self.assertNotEqual(self.call(prepared['record_url'])[0], 200)
+        serialized = json.dumps(prepared)
+        self.assertNotIn(mirror_key, serialized)
+        self.assertNotIn(self.owner_key, serialized)
+        self.assertFalse(prepared['effect_ack_done'])
+
     def test_monitor_rejects_duplicate_security_headers_and_bounded_route_without_effect(self):
         self.start()
         connection = http.client.HTTPConnection('127.0.0.1', self.config['port'], timeout=5)

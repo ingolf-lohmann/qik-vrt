@@ -2,7 +2,13 @@
   "adapter": "none",
   "host": "127.0.0.1",
   "node_id": "own-node:CHANGE_ME",
-  "owner_rest_grants": [],
+  "owner_rest_grants": [
+    {
+      "principal": "mirror:claude",
+      "token_file": "/etc/qikvrt/owner-rest-claude.token",
+      "permissions": ["prepare", "commit", "readback"]
+    }
+  ],
   "port": 8080,
   "schema": "qikvrt-self-host-config/v1",
   "source_head": "EXACT_HEAD",

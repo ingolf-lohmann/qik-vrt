@@ -33,8 +33,10 @@ from typing import Any, Callable, Iterable, Mapping
 
 try:
     from tools import qikvrt_workflow_executor as workflow_executor
+    from tools.qikvrt_subprocess import run_bounded
 except ModuleNotFoundError:  # Script execution keeps tools/ as sys.path[0].
     import qikvrt_workflow_executor as workflow_executor
+    from qikvrt_subprocess import run_bounded
 
 
 MAX_INPUT_BYTES = 1_048_576
@@ -43,8 +45,18 @@ DEFAULT_SEED_REPOSITORY = workflow_executor.load_repository_roles()["AUTHORITY"]
 REPOSITORY_RE = re.compile(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+\Z")
 BRANCH_RE = re.compile(r"[A-Za-z0-9._~/-]+\Z")
 RUN_ID_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,127}\Z")
-POLICY_STATES = frozenset({"ACTIVE", "SUSPENDED", "REVOKED"})
+POLICY_STATES = frozenset({"ACTIVE", "SUSPENDED", "REVOKED", "PENDING_BINDING"})
 EFFECTIVE_STATES = frozenset({"ACTIVE", "STALE", "SUSPENDED", "REVOKED", "UNKNOWN"})
+UNBOUND = "UNBOUND"
+REQUESTED_CLIENT_GUIDS = frozenset(
+    str(uuid.uuid5(uuid.NAMESPACE_URL, "https://github.com/ingolf-lohmann/qik-vrt#requested-client/" + name))
+    for name in ("codex", "claude-mirror")
+)
+SEED_BINDING_SCHEMA = "qikvrt-seed-binding/v1"
+SEED_BINDING_PATHS = (
+    "qikvrt/runtime/onboarding/SEED_REGISTRATION_REQUEST.json",
+    "registry/NODEMESH_INDEX.json",
+)
 BOUNDARY_KEYS = (
     "no_global_scanning",
     "no_self_propagation",
@@ -138,6 +150,72 @@ def canonical_json_bytes(value: Any) -> bytes:
         )
         + "\n"
     ).encode("utf-8")
+
+
+def derive_seed_binding(root: Path, head: str, tree: str) -> dict[str, Any]:
+    """Read exact local Git objects, never mixed working-tree or remote bytes.
+
+    This is an offline source binding. It does not establish current Main,
+    a fresh Seed index, principal authentication or runtime admission.
+    """
+    if any(not isinstance(v, str) or not re.fullmatch(r"[0-9a-f]{40}", v)
+           for v in (head, tree)):
+        raise SeedError("EXACT_SEED_HEAD_TREE_REQUIRED")
+
+    def git(*args: str) -> str:
+        result = run_bounded(["git", "-C", str(root), *args], timeout=10,
+                             max_output_bytes=MAX_INPUT_BYTES)
+        if result.returncode or result.timed_out or result.output_limit_exceeded:
+            raise SeedError("SEED_SOURCE_OBJECT_UNAVAILABLE")
+        return result.stdout
+
+    if git("rev-parse", "--verify", head + "^{tree}").strip() != tree:
+        raise SeedError("SEED_HEAD_TREE_MISMATCH")
+    request, index = [parse_json_bytes(git("show", head + ":" + p).encode("utf-8"), p)
+                      for p in SEED_BINDING_PATHS]
+    authority = workflow_executor.load_repository_roles(root)["AUTHORITY"]
+    for doc in (request, index):
+        _require_exact(doc, "seed_repository", authority, "Seed binding")
+    _require_exact(request, "source_repository", authority, "Seed binding request")
+    _require_exact(request, "event", "QIKVRT_NODE_ONBOARDING_REQUEST", "Seed binding request")
+    _require_exact(index, "schema", "qikvrt_nodemesh_index_v2", "Seed binding index")
+    guid = _validate_guid(request.get("repository_guid", ""))
+    rows = index.get("nodes")
+    if (not isinstance(rows, list) or type(index.get("node_count")) is not int
+            or index["node_count"] != len(rows)
+            or sum(isinstance(n, dict) and n.get("guid") == guid
+                   and n.get("repository") == authority for n in rows) != 1):
+        raise SeedError("SEED_INDEX_IDENTITY_MISMATCH")
+    preimage = {"schema": SEED_BINDING_SCHEMA, "repository": authority,
+                "seed_guid": guid, "head": head, "tree": tree,
+                "canonical_file_sha256": {
+                    p: hashlib.sha256(canonical_json_bytes(doc)).hexdigest()
+                    for p, doc in zip(SEED_BINDING_PATHS, (request, index))}}
+    return {"preimage": preimage,
+            "binding_sha256": hashlib.sha256(canonical_json_bytes(preimage)).hexdigest()}
+
+
+def check_seed_state(root: Path, binding: dict[str, Any], state: dict[str, Any]) -> dict[str, Any]:
+    """Check supplied state bytes against independently rederived source objects.
+
+    No HTTP request or transport authentication is performed by this check.
+    """
+    preimage = binding.get("preimage", {})
+    if not isinstance(preimage, dict):
+        raise SeedError("SEED_BINDING_PREIMAGE_REQUIRED")
+    expected = derive_seed_binding(root, preimage.get("head"), preimage.get("tree"))
+    if binding != expected:
+        raise SeedError("SEED_BINDING_DIGEST_OR_PREIMAGE_MISMATCH")
+    _require_exact(state, "schema", "qikvrt_eap_http_status_v1", "EAP state")
+    _require_exact(state, "state", "NATIVE_EAP_HTTP_READY", "EAP state")
+    subject = state.get("subject")
+    if not isinstance(subject, dict) or any(subject.get(k) != preimage[k]
+                                          for k in ("repository", "head", "tree")):
+        raise SeedError("EAP_SEED_SUBJECT_MISMATCH")
+    return {"status": "PASS", "scope": "OFFLINE_SOURCE_AND_SUPPLIED_STATE_BYTES_ONLY",
+            "binding_sha256": expected["binding_sha256"],
+            "http_readback_verified": False, "principal_authenticated": False,
+            "node_admission_verified": False, "effect_ack_done": False}
 
 
 def _atomic_write(path: Path, data: bytes) -> None:
@@ -476,12 +554,16 @@ def load_nodes(root: Path, seed_repository: str) -> tuple[list[NodeRecord], dict
         for line_number, fields in _parse_tsv(path, 7):
             guid, source, seed, request_url, branch, ttl_text, lifecycle = fields
             _validate_guid(guid)
-            _validate_repository(source, f"{path}:{line_number} source repository")
             _validate_repository(seed, f"{path}:{line_number} seed repository")
             if seed != seed_repository:
                 raise SeedError(f"{path}:{line_number}: seed repository is outside the configured allowlist")
-            validate_raw_request_url(request_url, source)
-            _validate_branch(branch)
+            if lifecycle == "PENDING_BINDING":
+                if (source, request_url, branch) != (UNBOUND, UNBOUND, UNBOUND):
+                    raise SeedError("PENDING_NODE_MUST_RETAIN_UNBOUND_SOURCE_REQUEST_AND_BRANCH")
+            else:
+                _validate_repository(source, f"{path}:{line_number} source repository")
+                validate_raw_request_url(request_url, source)
+                _validate_branch(branch)
             try:
                 ttl = int(ttl_text, 10)
             except ValueError as exc:
@@ -572,6 +654,8 @@ def _validate_boundaries(value: Mapping[str, Any], label: str) -> None:
 
 
 def validate_registration_request(document: Mapping[str, Any], node: NodeRecord) -> str | None:
+    if node.lifecycle_policy == "PENDING_BINDING":
+        raise SeedError("PENDING_NODE_IS_NOT_ADMITTED")
     label = f"registration request for {node.guid}"
     _require_exact(document, "event", "QIKVRT_NODE_ONBOARDING_REQUEST", label)
     _require_exact(document, "role", "node", label)
@@ -595,7 +679,7 @@ def validate_registration_request(document: Mapping[str, Any], node: NodeRecord)
                 "runtime and fenced recovery evidence required by "
                 "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json"
             )
-    if node.source_path.startswith("registry/node_request_queue/"):
+    if node.source_path.startswith("registry/node_request_queue/") or node.guid in REQUESTED_CLIENT_GUIDS:
         return workflow_executor.validate_node_continuity_declaration(
             document,
             node.source_repository,
@@ -684,6 +768,7 @@ def run_acceptance(
         "accepted_count": sum(status == "ACCEPTED" for _, _, status, _, _, _ in prepared),
         "suspended_count": sum(status == "SUSPENDED" for _, _, status, _, _, _ in prepared),
         "revoked_count": sum(status == "REVOKED" for _, _, status, _, _, _ in prepared),
+        "pending_binding_count": sum(status == "PENDING_BINDING" for _, _, status, _, _, _ in prepared),
         "fail_count": len(errors),
         "errors": errors,
         "results": [
@@ -711,6 +796,9 @@ def run_acceptance(
             parse_json_bytes(line, f"{ledger_path}:{line_number}")
 
     for node, policy, status, request_digest, receipt_url, receipt_digest in prepared:
+        if status == "PENDING_BINDING":
+            # Reservation of a requested identity is not Seed acceptance.
+            continue
         entry = {
             "schema": "qikvrt_seed_registry_entry_v2",
             "qikvrt_event": "AUTONOMOUS_SEED_ACCEPTANCE",
@@ -795,6 +883,7 @@ def run_acceptance(
         ).encode("utf-8")
         + b"\n"
         for node, policy, status, digest, receipt_url, receipt_digest in prepared
+        if status != "PENDING_BINDING"
     )
     _atomic_write(ledger_path, existing + additions)
     _write_latest_and_run(root, "evidence/seed_acceptance", run_id, summary)
@@ -802,6 +891,8 @@ def run_acceptance(
 
 
 def _raw_node_url(node: NodeRecord, filename: str) -> str:
+    if node.lifecycle_policy == "PENDING_BINDING":
+        return ""
     branch = urllib.parse.quote(node.node_branch, safe="/-._~")
     return (
         f"https://raw.githubusercontent.com/{node.source_repository}/{branch}"
@@ -866,6 +957,8 @@ def _validate_renewal(document: Mapping[str, Any], node: NodeRecord) -> None:
 
 
 def _validated_registry_entry(root: Path, node: NodeRecord, policy: PolicyRecord) -> tuple[str, str | None]:
+    if policy.status == "PENDING_BINDING":
+        return "PENDING_BINDING", "PENDING_NODE_BINDING: source, request, revision and authenticated peer required"
     path = root / "registry/nodes" / f"{node.guid}.json"
     if not path.exists():
         return "UNKNOWN", "accepted registry entry is missing"
@@ -1363,9 +1456,15 @@ def main(argv: Iterable[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "operation",
-        choices=("acceptance", "maintenance", "revalidate", "dashboard", "audit-export", "config-check", "acknowledge"),
+        choices=("acceptance", "maintenance", "revalidate", "dashboard", "audit-export", "config-check", "acknowledge",
+                 "binding", "binding-state-check"),
     )
     parser.add_argument("--root", type=Path, default=Path("."))
+    parser.add_argument("--source-head")
+    parser.add_argument("--source-tree")
+    parser.add_argument("--expected-binding-sha256")
+    parser.add_argument("--binding-file", type=Path)
+    parser.add_argument("--state-file", type=Path)
     parser.add_argument("--run-id", default=os.environ.get("QIKVRT_RUN_ID", ""))
     parser.add_argument(
         "--seed-repository",
@@ -1381,7 +1480,20 @@ def main(argv: Iterable[str] | None = None) -> int:
     if not arguments.run_id:
         arguments.run_id = _utc_now().strftime("%Y%m%dT%H%M%SZ")
     try:
-        if arguments.operation == "config-check":
+        if arguments.operation == "binding":
+            result = derive_seed_binding(root, arguments.source_head, arguments.source_tree)
+            if (arguments.expected_binding_sha256 is not None
+                    and arguments.expected_binding_sha256 != result["binding_sha256"]):
+                raise SeedError("SEED_BINDING_DIGEST_MISMATCH")
+            sys.stdout.buffer.write(canonical_json_bytes(result))
+            return 0
+        elif arguments.operation == "binding-state-check":
+            if arguments.binding_file is None or arguments.state_file is None:
+                raise SeedError("BINDING_AND_STATE_FILES_REQUIRED")
+            result = check_seed_state(root, read_json(arguments.binding_file), read_json(arguments.state_file))
+            sys.stdout.buffer.write(canonical_json_bytes(result))
+            return 0
+        elif arguments.operation == "config-check":
             validate_local_handshake(root, os.environ.get("GITHUB_REPOSITORY"))
             result = {"status": "PASS", "run_id": arguments.run_id}
         elif arguments.operation == "acknowledge":
@@ -1426,7 +1538,7 @@ def main(argv: Iterable[str] | None = None) -> int:
                 arguments.run_id,
                 seed_repository=arguments.seed_repository,
             )
-    except (SeedError, OSError) as exc:
+    except (SeedError, OSError, workflow_executor.ExecutorBlock) as exc:
         print(f"BLOCK QIKVRT_SEED_{arguments.operation.upper().replace('-', '_')} {exc}", file=sys.stderr)
         return 2
     print(

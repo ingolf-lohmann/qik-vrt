@@ -1,0 +1,21 @@
+{
+  "schema": "qikvrt-seed-native-readback/v1",
+  "source": "Raumzeitterminal original native_connection REST adapter",
+  "runtime_observations": [
+    {
+      "origin": "https://raumzeitterminal.de",
+      "status": 525,
+      "observed_at": "2026-10-31T17:30:50.844Z",
+      "mesh_scope_verified": false
+    }
+  ],
+  "native_available": false,
+  "operator_configured": true,
+  "operator_authorized": true,
+  "ready": false,
+  "open_gates": [
+    "ADMITTED_MESH_RUNTIME_ENDPOINT"
+  ],
+  "effect_ack_done": false,
+  "scope": "No caller-private identity, credentials or principal token included; observation is not a grant or delivery receipt."
+}

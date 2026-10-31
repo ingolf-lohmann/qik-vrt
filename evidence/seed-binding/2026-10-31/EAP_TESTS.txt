@@ -1,0 +1,10 @@
+test_newly_bound_known_client_keeps_existing_continuity_admission (tests.test_seed_workflows.SeedWorkflowTests.test_newly_bound_known_client_keeps_existing_continuity_admission) ... ok
+test_cold_export_owns_complete_public_route_and_original_durable_commit_after_restart (tests.test_self_host_eap.EapExportTests.test_cold_export_owns_complete_public_route_and_original_durable_commit_after_restart) ... ok
+test_distinct_mirror_capability_is_principal_bound_without_authority_credential_reuse (tests.test_self_host_eap.EapExportTests.test_distinct_mirror_capability_is_principal_bound_without_authority_credential_reuse) ... ok
+test_monitor_rejects_duplicate_security_headers_and_bounded_route_without_effect (tests.test_self_host_eap.EapExportTests.test_monitor_rejects_duplicate_security_headers_and_bounded_route_without_effect) ... ok
+test_profile_refuses_alternate_ingress_missing_grants_or_wrong_origin_before_listener (tests.test_self_host_eap.EapExportTests.test_profile_refuses_alternate_ingress_missing_grants_or_wrong_origin_before_listener) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 41.170s
+
+OK
