@@ -36,10 +36,13 @@ def run(producer, verifier, attempts, timeout, receipt_path):
     history = []
     with tempfile.TemporaryDirectory(prefix="qikvrt-math-gate-") as tmp:
         root = Path(tmp)
+        feedback = root / "feedback.json"
+        feedback.write_text(json.dumps({"attempt": 0, "reason": "initial"}))
         for attempt in range(1, attempts + 1):
             subject = root / ("result-%d.bin" % attempt)
             attestation = root / ("proof-%d.json" % attempt)
-            code, diagnostic = invoke(producer, subject, timeout)
+            # Producer receives prior rejection feedback before its output path.
+            code, diagnostic = invoke([*producer, str(feedback)], subject, timeout)
             entry = {"attempt": attempt, "producer_exit": code}
             if code or not subject.is_file():
                 entry["reason"] = "producer_failed"
@@ -73,6 +76,9 @@ def run(producer, verifier, attempts, timeout, receipt_path):
                 entry["reason"] = "verifier_rejected"
                 entry["diagnostic"] = vdiag
             history.append(entry)
+            feedback.write_text(json.dumps({"attempt": attempt, "reason": entry["reason"],
+                "subject_sha256": entry.get("subject_sha256"),
+                "diagnostic": entry.get("diagnostic", "")}, sort_keys=True))
             print(json.dumps(entry, sort_keys=True), flush=True)
     receipt_path.write_text(json.dumps({"schema": "qikvrt.math-gate.v1",
         "approved": False, "attempts": history}, indent=2)+"\n")
@@ -81,7 +87,7 @@ def run(producer, verifier, attempts, timeout, receipt_path):
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--producer", nargs="+", required=True,
-                   help="Trusted producer command; result path appended")
+                   help="Trusted producer command; feedback path then result path appended")
     p.add_argument("--verifier", nargs="+", required=True,
                    help="Independent verifier command; subject and verdict paths appended")
     p.add_argument("--attempts", type=int, default=3)
