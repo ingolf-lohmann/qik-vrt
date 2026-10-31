@@ -17,6 +17,9 @@ class HandoffContinuationContract(unittest.TestCase):
         source = WORKFLOW.read_text(encoding="utf-8")
         self.assertIn("Recover unchanged issue review handoff", source)
         self.assertIn("HANDOFF_RECOVERY", source)
+        self.assertIn("remote_head=", source)
+        self.assertIn('"$remote_head" != "$PREVIOUS_BRANCH_HEAD"', source)
+        self.assertIn("BLOCK: persisted handoff subject differs from remote branch HEAD", source)
 
 
 if __name__ == "__main__":
