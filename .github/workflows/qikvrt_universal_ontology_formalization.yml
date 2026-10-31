@@ -131,6 +131,18 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Build delivery reporting model and retain generated vectors
+        working-directory: formalization/QIKVRT_Formalization_v2.0
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake build QIKVRTDeliveryReporting deliveryReportingVectors
+          lake env lean QIKVRTEffectAck/DeliveryReportingAxiomAudit.lean
+          lake exe deliveryReportingVectors > .lake/build/delivery-reporting-vectors.json
+          echo QIKVRT_DELIVERY_VECTORS_BEGIN
+          cat .lake/build/delivery-reporting-vectors.json
+          echo QIKVRT_DELIVERY_VECTORS_END
+
       - name: Audit rights-bearing storage proofs and bind exact candidate
         working-directory: formalization/QIKVRT_Formalization_v2.0
         shell: bash

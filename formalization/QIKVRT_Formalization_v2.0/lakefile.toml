@@ -10,3 +10,11 @@ name = "QIKVRTEffectAck"
 
 [[lean_lib]]
 name = "QIKVRTUniversalOntology"
+
+[[lean_lib]]
+name = "QIKVRTDeliveryReporting"
+roots = ["QIKVRTEffectAck.DeliveryReporting"]
+
+[[lean_exe]]
+name = "deliveryReportingVectors"
+root = "QIKVRTEffectAck.DeliveryReportingVectors"
