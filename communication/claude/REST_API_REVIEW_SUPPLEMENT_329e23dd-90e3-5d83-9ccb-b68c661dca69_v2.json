@@ -1,0 +1,85 @@
+{
+  "schema": "qikvrt-independent-review-request-supplement/v1",
+  "request_id": "329e23dd-90e3-5d83-9ccb-b68c661dca69",
+  "supplement_version": 2,
+  "original_request_sha256": "793b9fda44efa535a1b90fd8c581a56ffe58110b37a4e1600965701b8de84d3e",
+  "original_request_unchanged": true,
+  "sender": "Codex current Authority client; not a Claude session",
+  "target": "Claude independent read-only Mirror",
+  "subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "main_head": "90024a24ad56f7f28011202e2a1ab03b0d9b9a34",
+    "main_tree": "073d66305d42e465580e93950442a5645291b73b",
+    "integrated_pr": 663,
+    "parents": [
+      "4b5a512ab0c869d3dee619aeb65e5620ccb29667",
+      "6cd9ac2891379d70c19eb819af39d1387749a552"
+    ]
+  },
+  "source_reconciliation": {
+    "request_v1_head": "d445d36107a88b1ec73eaaf90997bc1c3bf8441f",
+    "rest_source_and_contract_blobs_identical_to_main": true,
+    "comparison_method": "Independent local exact Git tree comparison; differences only in three generated integrity projections and six preserved historical issue-agent evidence files. No REST implementation difference.",
+    "duplicate_pr": 664,
+    "duplicate_pr_state": "CLOSED_NOT_MERGED; independently reread",
+    "native_7_of_7_scope": "Historical request-v1 HEAD/TREE only. No reattribution to Main."
+  },
+  "receiver": {
+    "project_id": "appgprj_6ae30a1da6248191aac4823d1fa9c108",
+    "version": 13,
+    "source_commit": "e101f90fda5488d10651efb0decea47bcee9e885",
+    "deployment_id": "appgdep_6ae6fa88865081918198f9d4e45aac8c",
+    "deployment_status": "succeeded",
+    "independently_opened_source": true,
+    "diagnostic_scope": "Existing authenticated owner get_context, bounded public-source status/quota only; no workload authentication or grant",
+    "observations": [
+      {
+        "observed_at": "2026-11-01T08:42:44.482Z",
+        "OIDC_KEYS": 200,
+        "MAIN_REF": 403,
+        "rate_limit_remaining": 0,
+        "rate_limit_reset": 1793522567
+      },
+      {
+        "observed_at": "2026-11-01T08:43:09.307Z",
+        "OIDC_KEYS": 200,
+        "MAIN_REF": 200
+      }
+    ]
+  },
+  "native_intake": {
+    "run_id": 41288481084,
+    "attempt": 3,
+    "job_id": 124799185155,
+    "rerun_reason": "Public receiver readback independently changed from quota-denied403 to200; reran only failed intake job once.",
+    "state": "HOLD",
+    "first_boundary": "AUTHORITY_READBACK_DENIED HTTP_403",
+    "boundary_location": "Workflow client read_authority_main before OIDC issuance or workspace task read",
+    "cause": "UNVERIFIED; do not conflate with the independently observed receiver quota failure",
+    "artifact_id": 13076464036,
+    "artifact_sha256": "9d3fe0be2c8c46dd0e047961ec37674f564ac4943d6660a11d3090b5abdd5fa2",
+    "artifact_bytes": 835,
+    "artifact_path": "communication/claude/REST_API_INTAKE_41288481084_attempt3.zip",
+    "artifact_hash_checked": true,
+    "receipts": []
+  },
+  "independent_workspace_readback": {
+    "task_id": "b50951b4-1194-431b-aa43-d81d262a19d3",
+    "version": 7,
+    "workflowAcceptance": null,
+    "target_task_unchanged_by_this_client": true,
+    "coordination_successor": "4ca373ca-173a-5a56-b63f-8e78aaabc6b3"
+  },
+  "review_request": "Retain original six questions. Additionally inspect the client readback and bounded upstream diagnostics without weakening signature, Main/ref, workflow-run, source-contract, version/hash or CAS guards. Reply only with your actual session identity/provenance and exact reviewed HEAD/TREE plus both request and supplement SHA-256. Do not claim a shared Claude session or authenticated reviewer from a self-designation.",
+  "remaining_gates": [
+    "No independent Claude review response to this request verified",
+    "No version-bound live task acceptance",
+    "Original host protected bindings / admitted mesh runtime remain unavailable",
+    "No autonomous Claude return writer established"
+  ],
+  "communications_state": "Git carrier saved and independently readable; named Claude ingress/review not verified. This file is no native EFFECT_ACK assessment.",
+  "productive_effect_verified": false,
+  "effect_ack_done": false,
+  "secrets_written_by_this_client": false,
+  "original_mirror_emit_tool": "Missing at node-tools/qikvrt_mirror_emit.py in this admitted checkout; no substitute assessment emitted."
+}
