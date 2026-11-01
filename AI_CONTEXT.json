@@ -360,5 +360,11 @@
     "offline_restore_is_live_authority_promotion": false,
     "permanent_lineage_root": "Goldkelch/qik-vrt",
     "policy": "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json"
+  },
+  "delivery_reporting_rules": {
+    "policy": "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json#/client_continuation/delivery_reporting_rules",
+    "rule_id": "QIKVRT_REMOTE_DELIVERY_REPORTING_R1_R5_20261031",
+    "all_nodes_adopted": false,
+    "productive_effect_inferred": false
   }
 }
