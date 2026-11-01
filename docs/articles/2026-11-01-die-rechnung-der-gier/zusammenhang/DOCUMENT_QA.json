@@ -1,0 +1,107 @@
+{
+  "schema": "qikvrt_document_qa_v1",
+  "pdf_pages": 8,
+  "verified_paragraphs": 106,
+  "missing_paragraphs": 0,
+  "all_source_urls_visible_and_clickable": true,
+  "source_count": 13,
+  "embedded_files": [
+    {
+      "name": "PROSA_ARTIKEL_DE.md",
+      "bytes": 20551,
+      "sha256": "70f3530e8836898b0fd603a7c92ff1f54965298d42938ca98946fbb5bfeac5da"
+    },
+    {
+      "name": "VORLESEFASSUNG_DE.txt",
+      "bytes": 17749,
+      "sha256": "85a291c883fa03d73af34c408792b2bf9819a61d2d67f3c95adbfdb6338057b2"
+    },
+    {
+      "name": "WISSENSCHAFTLICHE_FASSUNG_DE.md",
+      "bytes": 23088,
+      "sha256": "ffbc9f7e8ee943f06565d15b63dbfc49eee04aee6da1e739b35bd2d7cf39fde3"
+    },
+    {
+      "name": "SOURCES.json",
+      "bytes": 3437,
+      "sha256": "b597182896b513b1023ba4385b15d6a42cb120a75bcf9d077fd051ddcb420612"
+    },
+    {
+      "name": "OWNER_DEFINITION.json",
+      "bytes": 504,
+      "sha256": "9be2f531c6b29e8d55104313c0d2b87a22be541e332165065b580e88281c4fca"
+    },
+    {
+      "name": "ZeroOneObservation.lean",
+      "bytes": 11101,
+      "sha256": "032d4b45515e6a8d968d8097a3a7cb004663bff3d2105cfda63e159464d5e795"
+    },
+    {
+      "name": "AxiomAudit.lean",
+      "bytes": 1795,
+      "sha256": "53af8bc5f33aace26013fa31e8746d4eaa2cd27ffd233b30c4e4413ef26764c5"
+    },
+    {
+      "name": "VERIFICATION.json",
+      "bytes": 31489,
+      "sha256": "1c655c899512d48ca543d3fa3cb7cb68c7a02f074c7a916123fe95b6a24b02b6"
+    },
+    {
+      "name": "REPOSITORY_TEST.json",
+      "bytes": 1064,
+      "sha256": "4e432c5158144c7a9bb7d33ca3dfc734591b9efd92042cf74ba91593f0f5668c"
+    },
+    {
+      "name": "PublishedOntology_Core.lean",
+      "bytes": 10191,
+      "sha256": "9c8e6671c6e34b2edfabd4908a4d6ee14d6327584188f5559a595690e9a5e9f9"
+    },
+    {
+      "name": "ObservationSufficiency.lean",
+      "bytes": 6827,
+      "sha256": "17c16ef883bcde7293880ba383bcd1faf9782595e9dc603a61bfb8bc300d74ec"
+    }
+  ],
+  "embedded_bytes_match": true,
+  "pdf_sha256": "67ba5b29b5cdfe75624d42095c03de6bda4cf2326d0ee709a02b87d30c4895dd",
+  "proof_source_sha256": "032d4b45515e6a8d968d8097a3a7cb004663bff3d2105cfda63e159464d5e795",
+  "proof_scope_unchanged": true,
+  "new_lean_theorems_claimed": 0,
+  "source_classification": "WORKING_PAPER_NEW_COMPANION_PROOF_NOT_YET_ZENODO_ARCHIVED",
+  "owner_definition_preserved": true,
+  "visual_review": "PASS_ALL_8_PAGES",
+  "visual_findings": "No clipping, overlap, missing glyphs or substantially empty internal page; visible source URLs and equation/theorem lines inspected.",
+  "prose_body_matches_read_aloud_text": true,
+  "files": [
+    {
+      "path": "OWNER_DEFINITION.json",
+      "bytes": 504,
+      "sha256": "9be2f531c6b29e8d55104313c0d2b87a22be541e332165065b580e88281c4fca"
+    },
+    {
+      "path": "PROSA_ARTIKEL_DE.md",
+      "bytes": 20551,
+      "sha256": "70f3530e8836898b0fd603a7c92ff1f54965298d42938ca98946fbb5bfeac5da"
+    },
+    {
+      "path": "SOURCES.json",
+      "bytes": 3437,
+      "sha256": "b597182896b513b1023ba4385b15d6a42cb120a75bcf9d077fd051ddcb420612"
+    },
+    {
+      "path": "VORLESEFASSUNG_DE.txt",
+      "bytes": 17749,
+      "sha256": "85a291c883fa03d73af34c408792b2bf9819a61d2d67f3c95adbfdb6338057b2"
+    },
+    {
+      "path": "WISSENSCHAFTLICHE_FASSUNG_DE.md",
+      "bytes": 23088,
+      "sha256": "ffbc9f7e8ee943f06565d15b63dbfc49eee04aee6da1e739b35bd2d7cf39fde3"
+    },
+    {
+      "path": "Wissenschaftliche_Fassung.pdf",
+      "bytes": 244434,
+      "sha256": "67ba5b29b5cdfe75624d42095c03de6bda4cf2326d0ee709a02b87d30c4895dd"
+    }
+  ]
+}

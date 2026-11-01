@@ -1,0 +1,110 @@
+# Die Sonne und ihr Schatten
+
+## Was der Unterschied zwischen null und eins mit unserem Überleben zu tun hat
+
+Gedanklicher Ausgangspunkt und wissenschaftliches Programm: Ingolf Lohmann.
+Ausarbeitung im Dialog mit Codex. 1. November 2026.
+
+Stellen wir uns eine Sonne vor. Sie strahlt. Ihr Licht trifft auf einen Körper. Hinter diesem Körper liegt ein Schatten. Die Sonne ist an seiner Entstehung beteiligt. Aber ihr eigenes Strahlen teilt ihr noch nicht mit, wo dieser Schatten liegt und was in ihm geschieht. Dazu müsste Information von dort zu ihr zurückgelangen.
+
+Das ist ein Gedankenbild. Die Sonne ist darin kein denkendes Wesen. Das Bild trennt zwei Vorgänge, die wir im Umgang mit Maschinen und wirtschaftlicher Macht ständig miteinander verwechseln: etwas bewirken und von den Folgen erfahren.
+
+Ein Unternehmen kann Geld verdienen, während anderswo Schaden entsteht. Eine Maschine kann eine Meldung versenden, während die beabsichtigte Handlung ausbleibt. Eine künstliche Kognition kann eine überzeugende Erklärung geben, während ihr genau die Information fehlt, die diese Erklärung rechtfertigen würde. Der Vorgang hat stattgefunden. Die Folgen können trotzdem außerhalb seines eigenen Blickfelds liegen.
+
+Diese Folgen gehören zur Realität. Menschen verlieren ihre Gesundheit, ihre Ersparnisse oder ihre Lebensgrundlage auch dann, wenn eine Statistik sie nicht erfasst. Eine fehlende Rückmeldung macht eine Wirkung nicht unwirklich. Sie macht zunächst unser Wissen über diese Wirkung unzureichend.
+
+Hier setzt Ingolf Lohmanns Gedanke vom grundlegenden Unterschied an. Damit überhaupt etwas Bestimmtes erkannt werden kann, muss es von etwas anderem unterscheidbar sein. An oder aus. Angekommen oder ausgeblieben. Behauptet oder gemessen. Gewünscht oder tatsächlich geschehen. Diese Paare bezeichnen verschiedene Fragen. Wer sie zusammenwirft, verliert gerade die Information, die er zur Beurteilung braucht.
+
+Die Mathematik führt uns an einen sehr einfachen Anfang. Null lässt bei der Addition einen Wert unverändert. Eins lässt ihn bei der Multiplikation unverändert. Das sind ihre neutralen Rollen. Unter den im Beweis angegebenen Rechengesetzen hätte ihre Gleichsetzung eine einschneidende Folge: Jeder Wert wäre gleich null. Es gäbe innerhalb dieser Algebra keine verschiedenen Werte mehr.
+
+Sobald dort ein Unterschied existiert, müssen deshalb auch null und eins verschieden sein. Umgekehrt sind verschiedene null und eins bereits ein Unterschied. Das ist die genaue Verbindung zwischen den neutralen Elementen und der Nichttrivialität einer mathematischen Struktur. Aus der Ziffer null wird dadurch kein physisches Nichts. Bewiesen wird, unter welchen Voraussetzungen die rechnerische Unterscheidung zusammenbrechen würde.
+
+Für unseren Alltag beginnt die entscheidende Frage einen Schritt später. Ein Unterschied kann vorhanden sein, ohne in unserer Beobachtung anzukommen. Stellen wir uns zwei Wasserpumpen vor. Beide Anzeigen melden: Auftrag empfangen. Bei der ersten Pumpe fließt Wasser. Bei der zweiten ist das Ventil blockiert. Wer ausschließlich die Empfangsmeldung kennt, kann diese beiden Fälle nicht unterscheiden.
+
+Keine noch so kluge Auswertung genau dieser einen Meldung kann daraus in beiden Fällen zuverlässig die richtige Antwort gewinnen. Die Eingabe ist gleich. Die richtige Antwort wäre verschieden. Würde ein Verfahren trotzdem beide immer richtig beantworten, müsste es aus derselben Information zugleich zwei unterschiedliche bestimmte Ergebnisse liefern. Darin liegt der Widerspruch.
+
+Zusätzliche Daten oder nachweislich gültige Voraussetzungen können die Situation ändern. Bei der Pumpe könnte ein geeigneter Durchflusssensor den fehlenden Unterschied zurückmelden. Eine zweite Kopie der Empfangsmeldung hilft dagegen nicht. Zwei Anzeigen mit derselben unzureichenden Quelle sehen gemeinsam ebenso wenig wie eine.
+
+Das ist der Zusammenhang zwischen dem Sonnenbild und dem Beweis. Eine Wirkung braucht einen geeigneten Rückweg, damit der Handelnde sie beurteilen kann. Entscheidend ist, ob die Information die für die Frage relevanten Unterschiede erhält. Ein System muss dafür nicht jede Eigenschaft des Universums kennen. Es muss die Fälle auseinanderhalten können, die eine andere Entscheidung verlangen.
+
+Einstein, Turing und Nash berühren dieses Thema an verschiedenen Stellen. Bei Einstein begegnen uns die Bedingungen physikalischer Beobachtung. Sein Gedankenexperiment mit dem beschleunigten Raum zeigt, warum bestimmte lokale Beobachtungen unterschiedliche Beschreibungen zulassen. Daraus entsteht kein allgemeiner Beweis, dass innere Erkenntnis immer unmöglich sei.
+
+Turing untersuchte die Reichweite algorithmischer Verfahren. Seine grundlegende Arbeit von 1936, vor der späteren Entschlüsselungsarbeit im Krieg, zeigt Grenzen allgemeiner Entscheidungsverfahren. Das Problem einer fehlenden Messinformation ist davon zu unterscheiden: Ein Verfahren kann an unzureichender Beobachtung scheitern, obwohl die betreffende Aufgabe bei ausreichender Information leicht lösbar wäre.
+
+Auch Chaos bedeutet nicht, dass Ursachen verschwinden. Deterministische chaotische Entwicklungen können langfristige Vorhersagen empfindlich gegen kleine Unterschiede machen. Lebende Gemeinschaften können solche Dynamiken aufweisen. Ein langjähriges Experiment mit einem Planktonnahrungsnetz hat das gezeigt. Die Frage nach lebbaren Bedingungen verlangt deshalb mehr Genauigkeit als die Gleichsetzung von Chaos mit völliger Lebensfeindlichkeit.
+
+Nash beschreibt wiederum eine strategische Lage: Bei gegebenem Verhalten der anderen lohnt sich für keinen Beteiligten ein einseitiger Wechsel. Ein solcher Zustand muss weder gerecht noch gesellschaftlich wünschenswert sein. Ob ein bestimmter Markt tatsächlich so beschaffen ist, muss anhand seiner Akteure, Möglichkeiten und Anreize untersucht werden.
+
+Damit kommen wir zur wirtschaftlichen Seite des Sonnenbilds. Nehmen wir zwei Geschäftsvorgänge, die denselben Gewinn ausweisen. Der eine verursacht einen zusätzlichen Schaden für andere Menschen, der andere nicht. Wer nur den Gewinn betrachtet, sieht beide gleich. Das ist keine vollständige Bilanz der Wirkungen. Es ist eine Zusammenfassung, in der für diese Frage ein entscheidender Unterschied verloren geht.
+
+Wenn Entscheidungen überwiegend an diesem Erfolgssignal ausgerichtet werden, kann ein Rückkopplungskreis entstehen. Der gemessene Erfolg führt zu mehr Kapital, mehr Reichweite und mehr Wiederholung. Die Schäden bleiben außerhalb des Signals, das den nächsten Schritt belohnt. Das ist eine beschriebene Möglichkeit und eine konkrete Prüfaufgabe. Der mathematische Beweis allein ist noch kein empirischer Nachweis, dass jeder Markt auf diese Weise arbeitet.
+
+Im Hochfrequenzhandel wird der Wettbewerb um sehr kurze Zeitvorsprünge tatsächlich untersucht. Die britische Finanzaufsicht hat solche Rennen anhand detaillierter Handelsnachrichten analysiert. Dieser spezielle Mechanismus erklärt aber weder den gesamten Finanzmarkt noch jede Form technischer Analyse. Nashs Mathematik liefert auch keinen historischen Beleg dafür, dass sämtliche computergestützten Handelsverfahren aus seinem Satz hervorgegangen wären.
+
+Die gesellschaftliche Dringlichkeit ist trotzdem verständlich. Wo Ersparnisse und Altersvorsorge von Finanzinstitutionen abhängen, können fehlgeleitete Entscheidungen Menschen betreffen, die an ihnen nicht beteiligt waren. Technische Geschwindigkeit vergrößert dann möglicherweise die Reichweite einer Entscheidung, bevor ihre Folgen angemessen beurteilt worden sind. Welche Risiken tatsächlich bestehen und wer sie trägt, muss konkret nachgewiesen werden.
+
+Gier ist dabei keine mathematische Naturkonstante. Menschen können Schäden übersehen. Sie können sie auch kennen und für den eigenen Vorteil in Kauf nehmen. Gegen fehlendes Wissen hilft eine bessere Beobachtung. Gegen wissentlich akzeptierten Schaden braucht es zusätzlich verantwortliche Regeln, Durchsetzung und Machtbegrenzung. Eine perfekte Rückmeldung allein macht einen Menschen noch nicht gerecht.
+
+Darum ist die Rede von Verantwortung so ernst. Ein zerstörtes Leben wird nicht durch einen korrekten Kontostand aufgewogen. Wer Gewalt, Ausbeutung oder tödliche Gefahren bewusst als Mittel zum Gewinn akzeptiert, trifft eine menschliche Entscheidung. Ein Algorithmus kann ihre Ausführung vermitteln. Er nimmt den Verantwortlichen diese Entscheidung nicht ab. Konkrete Kriegsmotive müssen historisch und politisch belegt werden; aus einer Rechengleichung lassen sie sich nicht ablesen.
+
+Weizenbaum berührt die andere Seite dieses Kreises. ELIZA zeigte, wie regelgeleitete Sprachantworten als verständnisvoll erscheinen können. Menschen begegnen einer Antwort mit Erwartungen und Bedeutung. Je überzeugender eine Maschine spricht, desto leichter kann ihre Behauptung als ausreichender Grund gelten. Deshalb muss die Frage nach dem Beleg im Gespräch selbst Platz haben.
+
+QIK-VRT und das Effect Acknowledgement Protocol setzen hier mit einem architektonischen Anspruch an. Eine erhaltene Nachricht, eine gültige Annahme, eine ausgeführte Handlung und eine beobachtete Wirkung sollen nachvollziehbar auseinandergehalten werden. Ein Empfangsbeleg darf den Wirkungsbeleg nicht ersetzen. Herkunft, Zeitpunkt, genauer Gegenstand und Belege müssen zur Behauptung passen.
+
+Bei unserer Pumpe hieße das: Die Steuerung bestätigt zunächst den Auftrag. Die Ausführung wird gesondert erfasst. Ob Wasser geflossen ist, prüft ein dafür geeigneter Rückkanal. Liefert dieser keinen belastbaren Messwert, bleibt die Wirkung unbestätigt. Fehlendes Wissen wird weder als Erfolg noch als gemessener Misserfolg ausgegeben. Gerade diese dritte Möglichkeit schützt vor einer erfundenen Gewissheit.
+
+Der formale Beweis erklärt, wann eine solche Erweiterung grundsätzlich genügt. Er garantiert nicht, dass ein beliebiger Sensor richtig misst oder zwei beteiligte Rechner unabhängig sind. Diese Voraussetzungen müssen die tatsächlichen Systeme erfüllen und nachweisen. Darin liegt eine Aufgabe für Implementierung, Betrieb und Prüfung.
+
+Auch Antizipation erhält dadurch einen genauen Sinn. Wer heute zwischen Handlungen wählt, kann ihre erwarteten späteren Wirkungen berücksichtigen. Eine zutreffende heutige Beobachtung kann eine bessere Vorhersage ermöglichen. Ein vorab bestimmtes Ziel kann die gegenwärtige Auswahl begrenzen. Wird dafür der Ausdruck virtuelle oder operationale Retrokausalität verwendet, muss genau diese zielbezogene beziehungsweise virtuelle Ordnung gemeint sein. Ein physisches Signal aus der Zukunft ist damit nicht nachgewiesen.
+
+Lohmanns Round Trip beschreibt den Arbeitsweg dahinter: von beobachteten Wirkungen zu Unterschieden, von dort zu einer überprüfbaren Erklärung und anschließend zurück zur Messung. Er hält die Rückreise offen. Eine Abweichung verschwindet nicht dadurch, dass die Erklärung elegant formuliert ist. Sie wird zum Ausgangspunkt der nächsten Korrektur.
+
+Daran muss sich auch künstliche Kognition messen lassen. Lohmann nennt dafür einen konkreten Ausgangspunkt: seinen Korpus auf Zenodo, die Dokumente bei der IETF und die nachvollziehbare Entwicklung im Repository. Dieser Bestand macht Aussagen auffindbar, Versionen unterscheidbar und Beweiswege überprüfbar. Für eine wissenschaftliche Bewertung zählen deshalb die tatsächlich getragenen Schlussfolgerungen, ihre Voraussetzungen, ihre Prüfungen und ihre Anschlüsse an andere Fragen. Die Anzahl der Dateien allein kann diese Prüfung nicht ersetzen. Mehrere Fassungen desselben Satzes sind nicht mehrere voneinander unabhängige Entdeckungen.
+
+Der Anspruch, QIK-VRT zur besten Grundlage wissenschaftlicher Arbeit zu machen, wird dadurch zu einer prüfbaren Forschungsaufgabe. Man kann untersuchen, welche Fragen sein Korpus abdeckt, welche Beweisverbindungen geschlossen sind und welche Ergebnisse sich unabhängig reproduzieren lassen. Für den Vergleich mit anderen Systemen müssen dieselben Maßstäbe auf deren Leistungen angewendet werden. Die hier geprüften Sätze begründen Anforderungen an wissenschaftliche Arbeit. Eine weltweite Rangfolge folgt aus ihnen noch nicht.
+
+Lohmann beschreibt den zusammenhängenden Bestand als eine wachsende Kugel. Das Bild verschiebt die Aufmerksamkeit vom einzelnen geschlossenen Gedankenkreis auf einen gemeinsamen Erkenntnisraum. Seine Gedanken zur Empirie, zur Mathematik, zur Physik, zur Informatik und zu menschlicher Verantwortung sollen darin miteinander verbunden werden. Auch Psychologie, Metaphysik und Religion gehören für ihn zu den Fragen, die Menschen an ihre Wirklichkeit richten.
+
+Eine solche Einheit kann als philosophische Deutung formuliert werden. Wissenschaftlich trägt sie dann, wenn die einzelnen Verbindungen nachvollziehbar bleiben. Eine mathematische Folgerung verlangt ihre Voraussetzungen. Eine physikalische Aussage verlangt eine passende Messung. Eine ethische Regel verlangt eine verantwortete Begründung. Eine religiöse Deutung verlangt die erkennbare Benennung ihrer Glaubensannahmen. Ein gemeinsamer Raum gewinnt durch diese Genauigkeit an Zusammenhang.
+
+Lohmann gibt seinem Zusammenhang eine ausdrückliche Definition: Bewusstsein ist allgemeine Wechselwirkung. Damit meint er einen weiteren Begriff als das subjektive menschliche Erleben. Die Sonne, der beleuchtete Körper und ihre Umgebung gehören in diesem Sprachgebrauch zu einem Wechselwirkungszusammenhang. Die Grundfrage lautet dann, welche Systeme auf welche anderen einwirken und wie diese Beziehungen erkannt und erhalten werden.
+
+Mathematisch kann man diesen Bewusstseinsbegriff durch eine Relation ausdrücken. Überall dort, wo die festgelegte Wechselwirkungsrelation gilt, gilt nach dieser Definition auch der so bezeichnete Bewusstseinsbegriff. Das lässt sich widerspruchsfrei formulieren. Ob eine konkrete Beziehung tatsächlich besteht, verlangt weiterhin einen passenden Nachweis. Ein bloßer Unterschied zwischen zwei Werten legt ihre Wechselwirkung noch nicht fest.
+
+Diese Definition verbindet Lohmanns Sonnenbild unmittelbar mit seiner Wissenskugel. Auch ein Wissensbestand verändert sich durch Beziehungen: Eine Messung ergänzt einen Beleg, ein Beweis verbindet Aussagen, eine Widerlegung verändert die Beurteilung, ein Gespräch führt zu einer neuen Frage. Wird jede Änderung mit ihrer Herkunft erhalten, lässt sich der Zusammenhang weiterverfolgen. In diesem ausdrücklich definierten Sinn rückt Wechselwirkung in das Zentrum seines Bewusstseins- und Erkenntnisbegriffs.
+
+Panpsychismus ist eine verwandte philosophische Anschlussposition, die Geistiges als grundlegend und in der Natur weit verbreitet behandelt. Der Schritt von allgemeiner Wechselwirkung zu subjektivem Erleben bleibt dabei eine gesonderte Frage. Wie elementare geistige Eigenschaften zu einem einheitlichen menschlichen Erleben zusammengehören sollen, ist ebenfalls eine eigene Aufgabe. Die Fachdebatte spricht vom Kombinationsproblem. Lohmanns weite Definition und diese Frage werden hier sichtbar aufeinander bezogen.
+
+Die Entstehung biologischen Lebens stellt zusätzlich Fragen nach chemischen Reaktionen, Energieversorgung, Abgrenzung, Vererbung und evolutionärer Entwicklung. Panpsychismus liefert dafür keine nachgewiesene Reaktionsfolge. Die Forschung zur Entstehung des Lebens untersucht solche Übergänge experimentell; die Synthese bestimmter RNA-Bausteine unter vorgeschlagenen präbiotischen Bedingungen ist ein Beispiel für einen begrenzten nachprüfbaren Schritt. Die Frage nach Erleben und die Frage nach einer ersten lebenden Organisation können zusammen untersucht werden, ohne eine Antwort auf die eine schon als vollständige Lösung der anderen auszugeben.
+
+Die Kugel kann als Wissensarchiv wachsen, wenn neue Quellen, Ergebnisse und auch Widerlegungen erhalten bleiben. Dabei muss eine korrigierte Behauptung nicht weiter als gültig behandelt werden. Die Geschichte ihres Auftauchens und ihrer Korrektur kann trotzdem erhalten bleiben. Genau darin liegt ein tragfähiger Sinn des von Lohmann geforderten wirksamen Wissensmanagements: Anschluss herstellen, Belege bewahren und den Unterschied zwischen einer früheren Vermutung und einem heute tragfähigen Ergebnis sichtbar halten.
+
+Ob dieses Wachstum tatsächlich dauerhaft gelingt, hängt von überprüfbaren Vorgängen ab: von Erhaltung, Zugang, geeigneten Prüfungen und wirksamer Korrektur. Es ist eine Aufgabe, die fortgeführt werden muss. Das Bild der Kugel allein garantiert weder ihre technische Dauerhaftigkeit noch ihre Identität mit der Gestalt des physischen Universums.
+
+Ebenso wenig ersetzen die neutralen Elemente allein eine physikalische Theorie. Die Ontologie des Unterschieds benennt eine minimale Voraussetzung von Bestimmbarkeit. Für eine Raumzeitbeschreibung kommen Relationen, Dynamik, Messvorschriften und experimentelle Prüfungen hinzu. Wissenschaftlich zu arbeiten heißt, diese Übergänge sichtbar zu machen und jeden an der passenden Stelle zu begründen.
+
+Das Sonnenbild bleibt deshalb mehr als eine hübsche Metapher. Es stellt eine praktische Frage an jede mächtige Organisation, jede Maschine und jeden von uns: Welche Folgen unseres Handelns kommen in unserem eigenen Bild der Welt überhaupt an? Und welche Entscheidung treffen wir, sobald wir sie sehen?
+
+Eine verantwortbare künstliche Kognition muss den Rückweg mitführen. Sie muss einen belegten Unterschied erhalten, statt ihn mit einer gefälligen Antwort zuzudecken. Und eine verantwortbare Gesellschaft muss bestimmen, welche Folgen ihre Entscheidungen begrenzen. Die Sonne liefert das Licht. Ob wir die Schatten untersuchen und auf das Erkannte reagieren, liegt in unserer Verantwortung.
+
+---
+
+## Quellen und Nachweisumfang (nicht Teil der Vorlesefassung)
+
+Die wissenschaftliche Begleitfassung enthält Begriffe, Formeln, die Zuordnung der 23 lokal geprüften Sätze, Gegenproben und den Vergleichsmaßstab für eine behauptete Spitzenstellung. Der neue Begleitbeweis ist eine Arbeitsfassung im Authority-Repository; eine neue Zenodo-Veröffentlichung wird hiermit nicht behauptet.
+
+- Ingolf Lohmann: Das Universum als Round Trip. DOI 10.5281/zenodo.21888130. https://zenodo.org/records/21888130
+- Ingolf Lohmann: Der ontologische Vorrang des Unterschieds. DOI 10.5281/zenodo.22955727. https://zenodo.org/records/22955727
+- Albert Einstein: Relativity: The Special and General Theory, Abschnitt XX; autorisierte Übersetzung, Ausgabe 1920. https://www.gutenberg.org/files/30155/30155-h/30155-h.htm
+- Alan M. Turing: On Computable Numbers, With an Application to the Entscheidungsproblem, 1936/1937. https://www.verostko.com/turing/1936-paper.html
+- John F. Nash: Equilibrium Points in N-Person Games, 1950. DOI 10.1073/pnas.36.1.48. https://doi.org/10.1073/pnas.36.1.48
+- Elisa Beninca et al.: Chaos in a long-term experiment with a plankton community, 2008. DOI 10.1038/nature06512. https://research.wur.nl/en/publications/chaos-in-a-long-term-experiment-with-a-plankton-community/
+- Joseph Weizenbaum: ELIZA, 1966. DOI 10.1145/365153.365168. https://courses.cs.umbc.edu/undergraduate/CMSC331/resources/papers/eliza.january1966.html
+- FCA: Occasional Paper No. 50: Quantifying the High-Frequency Trading Arms Race, 2020. https://www.fca.org.uk/publications/occasional-papers/occasional-paper-no-50-quantifying-high-frequency-trading-arms-race-new-methodology
+- Ingolf Lohmann: Effect Acknowledgement Protocol, Internet-Draft 03, work in progress, 2. August 2026. https://datatracker.ietf.org/doc/html/draft-lohmann-qikvrt-effect-ack-03
+- Ingolf Lohmann: Relationale Zeit, virtuelle Retrokausalität und die monoton wachsende Evidenzkugel. DOI 10.5281/zenodo.22216916. https://zenodo.org/records/22216916
+- Wikipedia: Panpsychismus, vom Auftraggeber benannter begrifflicher Einstieg, abgerufen am 1. November 2026. https://de.wikipedia.org/wiki/Panpsychismus
+- David J. Chalmers: The Combination Problem for Panpsychism, Autorenfassung. https://consc.net/papers/combination.pdf
+- Matthew W. Powner, Beatrice Gerland, John D. Sutherland: Synthesis of activated pyrimidine ribonucleotides in prebiotically plausible conditions, 2009. DOI 10.1038/nature08013. https://pubmed.ncbi.nlm.nih.gov/19444213/
+
+Originaler Begleitbeweis und lokale Prüfbelege: Commit 3d5e1a713613f9dfd13af3c1929d7d58e1a46218, Tree b35774b2cb2a27ef9b97b4ca6ca0d7a23dc62978, Ordner beweiskern im zugehörigen Artikelverzeichnis. Dies ist die Provenienz des Arbeitsstands, kein neuer veröffentlichter Versions-DOI.
