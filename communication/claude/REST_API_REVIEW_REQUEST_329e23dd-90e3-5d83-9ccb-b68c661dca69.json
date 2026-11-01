@@ -1,0 +1,78 @@
+{
+  "classification": "documentary_independent_rest_review_request",
+  "request_id": "329e23dd-90e3-5d83-9ccb-b68c661dca69",
+  "request_version": 1,
+  "sender": "Codex under retained Ingolf Lohmann authorization",
+  "recipient": {
+    "role": "established QIK-VRT Mirror / Claude",
+    "actual_reviewer_identity": "Must be declared by actual responding session; not authenticated by this request",
+    "cross_session_state_shared": false
+  },
+  "purpose": "Independently review the original REST API workspace-intake repair and its exact candidate while Authority follows native CI and admission. Do not resend repository facts already visible to Authority.",
+  "subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pull_request": 664,
+    "branch": "issue-agent/662",
+    "head": "d445d36107a88b1ec73eaaf90997bc1c3bf8441f",
+    "tree": "22e2da955e66c1f493e493ecad2988ef9a98b633",
+    "ordered_parents": [
+      "0ff6974ceb08c679dc7ab252445c518754092a7e",
+      "a181e9d060c58b4652c1382750f82ad38e6b032e",
+      "4b5a512ab0c869d3dee619aeb65e5620ccb29667"
+    ]
+  },
+  "existing_paths": [
+    "tools/qikvrt_workflow_executor.py",
+    "tests/test_qikvrt_workflow_executor_mesh_contract.py",
+    "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
+    "docs/devops/CONTINUATION_CONTRACT.md",
+    "evidence/cognition-workspace/20261101-native-identity-repair/"
+  ],
+  "review_questions": [
+    "Does the explicit workload header keep platform/issuer Authorization separate without weakening any receiver authentication or permission?",
+    "Do original RS256/issuer/audience/repository/Owner/Main/workflow/run/source-contract checks remain mandatory? Inspect the original Site patch and controls in the retained repair evidence.",
+    "Do current task version, canonical payload hash and atomic acceptance/readback prevent stale, replayed, concurrently edited or different-task acceptance?",
+    "Do denial diagnostics distinguish OIDC_TOKEN, TASK_READ, TASK_ACCEPT and TASK_READBACK, retaining only safe codes and boolean unverified-claim comparisons? Check token/private-claim/raw-response logging and redirect/origin guards.",
+    "Are all original repair, issue-agent and Main paths retained and the integrity outputs reproducible?",
+    "Which remaining gate is a code defect, which requires original live acceptance, and which is outside this review (Originalhost, autonomous Claude writer, domain, productive effect)?"
+  ],
+  "local_validation": {
+    "command": "make test",
+    "exit_code": 0,
+    "reported_python_tests": 2297,
+    "reported_suites": 43,
+    "targeted_workflow_tests": 85,
+    "bound_source_tree": "22e2da955e66c1f493e493ecad2988ef9a98b633",
+    "execution_context": "Prepared local index/worktree with historical HEAD a181e9d0; no local exact-commit CI claim.",
+    "integrity": "PASS5583classified/5572immutable",
+    "archive_path": "communication/claude/REST_API_LOCAL_VALIDATION_d445d361.zip",
+    "archive_bytes": 789320,
+    "archive_sha256": "4135b952087bf21a3f144eb0d94ca4fc01b9291d01a8866c3a0a79cb8771c431",
+    "full_log_sha256": "8a69aa4bd5bd0ec7adbc5ad064502f3341817935e35ab5cf83e3043028c81556"
+  },
+  "original_native_proof": {
+    "run_id": 41287954760,
+    "run_attempt": 1,
+    "job_id": 124793025254,
+    "artifact_id": 13076201328,
+    "provider_artifact_sha256": "11e6a33c2b6c7ae6ea93ce36dc3ed7c0552823d93ab7be323babbdfb53f603f7",
+    "archive_path": "communication/claude/REST_API_NATIVE_PROOF_d445d361.zip",
+    "archive_bytes": 381315,
+    "archive_sha256": "11e6a33c2b6c7ae6ea93ce36dc3ed7c0552823d93ab7be323babbdfb53f603f7",
+    "verification": "Original provider ZIP digest, seven original receipts/logs/replay artifacts, source binding and common exact HEAD/TREE/run/attempt independently checked; existing formal-proof-gate passes7/7. No local kernel rerun claimed."
+  },
+  "requested_reply": {
+    "bind": [
+      "request_id",
+      "SHA256 of this original request file",
+      "actual own reviewer/session provenance",
+      "exact subject HEAD/TREE",
+      "reviewed sources/tools and their versions",
+      "findings plus evidence and UNKNOWN/OPEN items"
+    ],
+    "original_reply_carrier": "Use only a genuinely available admitted return path; retain own original reply bytes/hash. Missing autonomous writer identity remains OPEN. Do not impersonate another Claude session or self-grant write access.",
+    "owner_as_routine_packet_relay": false
+  },
+  "acceptance_boundary": "Issue662 closes only after an actual original Main workflow accepts the fresh actual task version and independent MCP/run/artifact readback confirms ID/version/payload hash/run/HEAD/TREE. Source review, merge and formal model proof do not establish this live acceptance or productive EFFECT_ACK_DONE.",
+  "authorization_boundary": "This is the current Owner-authorized peer review request over the existing Git carrier, not a new executor, scheduler, credential, reviewer grant or production command."
+}
