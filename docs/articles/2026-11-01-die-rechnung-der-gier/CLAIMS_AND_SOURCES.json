@@ -1,0 +1,322 @@
+{
+  "schema": "qikvrt_article_claims_and_sources_v1",
+  "title": "Die Rechnung der Gier",
+  "date": "2026-11-01",
+  "timezone": "Europe/Paris",
+  "provenance": {
+    "concept_position_and_authorization": "Ingolf Lohmann",
+    "drafting_and_source_review": "OpenAI Codex",
+    "authorization_basis": "Explicit current user request to write and persist the article in the QIKVRT repository;not a cryptographic signature."
+  },
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_head": "768fd06415e0620dda89b1f5778db90788037e45",
+  "source_tree": "b7b4c53b14b1991f9dc714c4fe3019c2578c6112",
+  "article": {
+    "path": "docs/articles/2026-11-01-die-rechnung-der-gier/ARTIKEL_DE.md",
+    "bytes": 27033,
+    "sha256": "bd94413952344104c9f5b381caa0c413f4a4ad8cabea11bb820dca7301c18513"
+  },
+  "repository_sources": [
+    {
+      "path": "formalization/DevOpsTerminalSafety.lean",
+      "bytes": 3650,
+      "sha256": "55d576576075f2d93b919eb75192b74f2215693b14724d69c0f244a5180f6ae0",
+      "git_blob": "8870ba64ff02bd776284add10d5c9970e5b8d10a"
+    },
+    {
+      "path": "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json",
+      "bytes": 27058,
+      "sha256": "b902b44710e3f1ff869d07a7ff598bef826ffb538d3bb23128f5ed8e7008d427",
+      "git_blob": "c2e8a82812480ef96113c4b71abc01537e60c0cd"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/Model.lean",
+      "bytes": 6854,
+      "sha256": "83ab0d7a50152545beefc0f88fe3dc479ae681d3d2e04615a4ab9f7c2f305499",
+      "git_blob": "02cf71f7ded77f0b9b0c18d8fd326fc0fec7f0cb"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/Safety.lean",
+      "bytes": 6695,
+      "sha256": "473d35b74ff40ddcf76ad5775687ac70d1829fa4309ed656e717478ae5039cf5",
+      "git_blob": "8dd693f1fd66290d74cdb1e5f7e605b95b6fc73c"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/Mediation.lean",
+      "bytes": 3069,
+      "sha256": "1e8ce147908212a406fc2eedcdf6f64ac63174b53d612a372fedf12f10b2d9bc",
+      "git_blob": "0483422d9b4271f426cbd3e999a1dbc2e328792b"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CanonicalTemporalMemory.lean",
+      "bytes": 6991,
+      "sha256": "f125d126219a152fcf50dd07f0152a4d23fdbf64e657a4ceb8aff2ae9592fbc4",
+      "git_blob": "5fb78df6e90ae43903d48fd77dacfdc8a293372b"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/InformationBoundary.lean",
+      "bytes": 3441,
+      "sha256": "bca003e52d764805a949f2e57110658771b9a60dc358973148af24d45931a1c8",
+      "git_blob": "5efb6978f38bd6f49defb526fc8abb3bc21d1822"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTUniversalOntology/Core.lean",
+      "bytes": 8099,
+      "sha256": "c547c9f0a84ffb7d99d80748e47f75d8f412c2a6c5eb7c8e3652afd3cdc1f1d5",
+      "git_blob": "97e4ca8129c390f5317f304f385edada718c1f4b"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/universal_ontology/CLAIM_MATRIX.json",
+      "bytes": 10790,
+      "sha256": "ce93ae3740a8648848484b23ef47c88c6a0cbd8a70376b3f2806b2e5629d7a93",
+      "git_blob": "2a3033f653d68f626b32915aab882d5b69650887"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/universal_ontology/WORLD_FORMULA_CLAIM_MATRIX.json",
+      "bytes": 2852,
+      "sha256": "1c5d4fe515c47e5c6039545d4806d54376ce5954435bc34707ace9913a8478f6",
+      "git_blob": "f480e55750a3baf0442223a6d8783c1d9ddf7052"
+    }
+  ],
+  "references": [
+    {
+      "id": "eliza",
+      "citation": "Joseph Weizenbaum, „ELIZA—A Computer Program For the Study of Natural Language Communication Between Man and Machine“, *Communications of the ACM* 9(1), 1966, S. 36–45. [Originalpublikation](https://doi.org/10.1145/365153.365168); [Lesefassung des Originalartikels](https://courses.cs.umbc.edu/undergraduate/CMSC331/resources/papers/eliza.january1966.html)."
+    },
+    {
+      "id": "fed1987",
+      "citation": "Mark Carlson, „A Brief History of the 1987 Stock Market Crash with a Discussion of the Federal Reserve Response“, Federal Reserve, FEDS 2007-13, insbesondere Abschnitt 3.2. [Original](https://www.federalreserve.gov/pubs/feds/2007/200713/)."
+    },
+    {
+      "id": "sec2010",
+      "citation": "Mary L. Schapiro, „Testimony Concerning the Severe Market Disruption on May 6, 2010“, SEC, 11. Mai 2010, Abschnitt III.B. [Original](https://www.sec.gov/newsroom/speeches-statements/ts051110mls-testimony-concerning-severe-market-disruption-may-6-2010)."
+    },
+    {
+      "id": "hftdesign",
+      "citation": "Eric Budish, Peter Cramton, John Shim, „The High-Frequency Trading Arms Race: Frequent Batch Auctions as a Market Design Response“, *Quarterly Journal of Economics* 130(4), 2015, S. 1547–1621. [DOI](https://doi.org/10.1093/qje/qjv027); [Autorenfassung](https://www.cramton.umd.edu/papers2015-2019/budish-cramton-shim-hft-frequent-batch-auctions.pdf)."
+    },
+    {
+      "id": "fca",
+      "citation": "FCA, „Occasional Paper No. 50: Quantifying the High-Frequency Trading ‘Arms Race’“, 27. Januar 2020. [Original und Datenmethodik](https://www.fca.org.uk/publications/occasional-papers/occasional-paper-no-50-quantifying-high-frequency-trading-arms-race-new-methodology)."
+    },
+    {
+      "id": "nash",
+      "citation": "John F. Nash, „Equilibrium Points in N-Person Games“, *PNAS* 36(1), 1950, S. 48–49. [Originalpublikation](https://doi.org/10.1073/pnas.36.1.48)."
+    },
+    {
+      "id": "technical",
+      "citation": "Andrew W. Lo, Harry Mamaysky, Jiang Wang, „Foundations of Technical Analysis: Computational Algorithms, Statistical Inference, and Empirical Implementation“, NBER Working Paper 7613, 2000. [Original](https://www.nber.org/papers/w7613); [PDF](https://www.nber.org/papers/w7613.pdf)."
+    },
+    {
+      "id": "pensions",
+      "citation": "OECD, *Pension Markets in Focus 2025*, Datenstand Ende 2024, Abschnitt 1.1: 63,1 Billionen US-Dollar bei Pensionsanbietern plus 6,7 Billionen in öffentlichen Pensionsreservefonds. [Bericht](https://www.oecd.org/en/publications/pension-markets-in-focus-2025_b095d0a0-en.html); [Aufschlüsselung](https://www.oecd.org/en/publications/pension-markets-in-focus-2025_b095d0a0-en/full-report/component-3.html). Diese Größe ist kein Maß für Investitionen ausschließlich in KI oder Hochfrequenzhandel."
+    },
+    {
+      "id": "knight",
+      "citation": "SEC, „SEC Charges Knight Capital With Violations of Market Access Rule“, 16. Oktober 2013; Vorfall vom 1. August 2012. [Original](https://www.sec.gov/newsroom/press-releases/2013-222)."
+    },
+    {
+      "id": "opium",
+      "citation": "National Army Museum, „First China War“, insbesondere Einleitung und Abschnitte „Balance of trade“ und „Chinese resistance“. [Darstellung des Museums](https://www.nam.ac.uk/explore/first-china-war-1839-1842)."
+    },
+    {
+      "id": "ukraine",
+      "citation": "UN Human Rights Monitoring Mission in Ukraine, „Civilian casualties remain at record levels amid intensifying attacks on energy as winter approaches“, 16. Oktober 2026. [Original](https://ukraine.un.org/en/324562-civilian-casualties-remain-record-levels-amid-intensifying-attacks-energy-winter-approaches)."
+    },
+    {
+      "id": "iran",
+      "citation": "Reuters, „Iranian envoys meet Qatari mediators as threat looms of US strikes after midterms“, 31. Oktober 2026. [Bericht](https://www.reuters.com/world/middle-east/iranian-envoys-meet-qatari-mediators-threat-looms-us-strikes-after-midterms-2026-10-31/). Nachrichtenstand, keine eigene Beobachtung am Konfliktort und kein Beleg für ein ausschließlich wirtschaftliches Kriegsmotiv."
+    },
+    {
+      "id": "france",
+      "citation": "Reuters, „Isolated clashes in France after peaceful marches, as police brace for Halloween night violence“, 31. Oktober 2026. [Bericht](https://www.reuters.com/world/europe/france-braces-fresh-unrest-government-vows-tough-response-2026-10-31/). Proteste und einzelne gewaltsame Vorfälle sind zu unterscheiden."
+    },
+    {
+      "id": "eap",
+      "citation": "Ingolf Lohmann, *draft-lohmann-qikvrt-effect-ack-03*, 2. August 2026, insbesondere Abschnitte 3, 4.1, 8 und 9.3 sowie die nichtnormativen Abschnitte 10.1–10.3. [IETF Datatracker](https://datatracker.ietf.org/doc/html/draft-lohmann-qikvrt-effect-ack-03). Experimenteller individueller Internet-Draft, kein IETF-Standard."
+    },
+    {
+      "id": "repo-devops",
+      "citation": "`formalization/DevOpsTerminalSafety.lean`, insbesondere `effect_requires_productive_readback` und `ci_alone_cannot_establish_effect`, sowie `policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json`. [Unveränderlicher Quellstand](https://github.com/ingolf-lohmann/qik-vrt/blob/768fd06415e0620dda89b1f5778db90788037e45/formalization/DevOpsTerminalSafety.lean)."
+    },
+    {
+      "id": "repo-mediation",
+      "citation": "`formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/Mediation.lean` und `Safety.lean`, insbesondere `completelyMediated_execution_implies_done`, `physicalOccurrence_implies_authorized_done_conditionally` und `transportAck_is_not_effectAuthorization`. [Mediation](https://github.com/ingolf-lohmann/qik-vrt/blob/768fd06415e0620dda89b1f5778db90788037e45/formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/Mediation.lean)."
+    },
+    {
+      "id": "repo-information",
+      "citation": "`formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/InformationBoundary.lean`, insbesondere `noninjectiveObservation_blocksExactReconstruction`. [Quelle](https://github.com/ingolf-lohmann/qik-vrt/blob/768fd06415e0620dda89b1f5778db90788037e45/formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/InformationBoundary.lean)."
+    },
+    {
+      "id": "bell",
+      "citation": "Königlich Schwedische Akademie der Wissenschaften, „The Nobel Prize in Physics 2022: Entangled states – from theory to technology“, 4. Oktober 2022. [Original](https://www.kva.se/en/news/the-nobel-prize-in-physics-2022/). Die Experimente sind kein spezifischer Nachweis der QIK-VRT-Ontologie oder physikalischer Retrokausalität."
+    },
+    {
+      "id": "repo-temporal",
+      "citation": "`formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CanonicalTemporalMemory.lean`, Kopfkommentar und `future_boundary_is_counterfactually_relevant`. [Quelle](https://github.com/ingolf-lohmann/qik-vrt/blob/768fd06415e0620dda89b1f5778db90788037e45/formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CanonicalTemporalMemory.lean). Die Definition im Draft, Abschnitt 10.1, ist ebenfalls ausdrücklich operational."
+    },
+    {
+      "id": "repo-ontology",
+      "citation": "`formalization/QIKVRT_Formalization_v2.0/QIKVRTUniversalOntology/Core.lean`, `universal_ontology/CLAIM_MATRIX.json`, insbesondere `UO-OPEN-001` bis `UO-OPEN-003`, sowie `WORLD_FORMULA_CLAIM_MATRIX.json`. [Offene und formale Aussagen](https://github.com/ingolf-lohmann/qik-vrt/blob/768fd06415e0620dda89b1f5778db90788037e45/formalization/QIKVRT_Formalization_v2.0/universal_ontology/CLAIM_MATRIX.json). Grundlage dieses Artikels: Quelltextprüfung am Authority-Commit `768fd06415e0620dda89b1f5778db90788037e45`, Tree `b7b4c53b14b1991f9dc714c4fe3019c2578c6112`."
+    }
+  ],
+  "claims": [
+    {
+      "id": "E01",
+      "kind": "SOURCE_BOUND",
+      "statement": "OECD retirement assets totalled USD69.8trillion at end2024; not a total investment in AI/HFT.",
+      "sources": [
+        "pensions"
+      ]
+    },
+    {
+      "id": "E02",
+      "kind": "SOURCE_BOUND",
+      "statement": "SEC documented a tradeoff between additional checks and trading speed in2010.",
+      "sources": [
+        "sec2010"
+      ]
+    },
+    {
+      "id": "E03",
+      "kind": "SOURCE_BOUND",
+      "statement": "Knight Capital2012 incident caused overUSD460million loss; SEC found inadequate safeguards.",
+      "sources": [
+        "knight"
+      ]
+    },
+    {
+      "id": "E04",
+      "kind": "INTERPRETIVE",
+      "statement": "Competition,capital commitments and externalized harms can reinforce harmful automation.",
+      "sources": [
+        "fed1987",
+        "sec2010",
+        "hftdesign",
+        "fca"
+      ],
+      "boundary": "A mechanism and political argument,not a proven universal equilibrium or total loss estimate."
+    },
+    {
+      "id": "E05",
+      "kind": "SOURCE_BOUND",
+      "statement": "First Opium War served coercive commercial interests.",
+      "sources": [
+        "opium"
+      ],
+      "boundary": "Does not establish the exclusive motive of any current war."
+    },
+    {
+      "id": "E06",
+      "kind": "SOURCE_BOUND",
+      "statement": "Dated reports document civilian harm in Ukraine,diplomacy concerning Iran,and predominantly peaceful French protests with localized violence.",
+      "sources": [
+        "ukraine",
+        "iran",
+        "france"
+      ],
+      "boundary": "News observations attributed to named sources; no prediction of inevitable unrest."
+    },
+    {
+      "id": "M01",
+      "kind": "MATHEMATICAL_STATEMENT",
+      "statement": "For natural numbers,a+0=0+a=a and a*1=1*a=a.",
+      "boundary": "Algebraic identities;not an empirical derivation of physical spacetime."
+    },
+    {
+      "id": "M02",
+      "kind": "SOURCE_BOUND",
+      "statement": "Mediation.lean contains a conditional complete-mediation theorem and a separate faithful-physical-bridge assumption.",
+      "sources": [
+        "repo-mediation"
+      ],
+      "boundary": "Source review;no fresh kernel run or deployed complete mediation claimed."
+    },
+    {
+      "id": "M03",
+      "kind": "SOURCE_BOUND",
+      "statement": "The temporal-memory source binds present release to a presently represented anticipated future condition.",
+      "sources": [
+        "repo-temporal"
+      ],
+      "boundary": "Operational retrocausality;not backward physical signalling or first-ever computer anticipation."
+    },
+    {
+      "id": "M04",
+      "kind": "SOURCE_BOUND",
+      "statement": "The ontology claim matrices retain physical correspondence,quantum interpretation and physical limiting dynamics as open/evidence-required.",
+      "sources": [
+        "repo-ontology"
+      ]
+    },
+    {
+      "id": "M05",
+      "kind": "CONDITIONAL_TECHNICAL_ARGUMENT",
+      "statement": "Complete,correctly implemented and authenticated mediation can block a specifically unauthorized scoped action.",
+      "sources": [
+        "eap",
+        "repo-mediation",
+        "repo-devops"
+      ],
+      "boundary": "No unconditional prevention of global catastrophe,malicious policy or bypasses is proved."
+    },
+    {
+      "id": "M06",
+      "kind": "OPEN",
+      "statement": "QIKVRT alone has already proved the quantum-physical emergence of real spacetime from0,1and difference.",
+      "sources": [
+        "repo-ontology"
+      ],
+      "disposition": "NOT_ESTABLISHED_BY_REVIEWED_SOURCES"
+    },
+    {
+      "id": "M07",
+      "kind": "OPEN",
+      "statement": "QIKVRT/EAP guarantees prevention of a worldwide economic or military catastrophe.",
+      "sources": [
+        "repo-mediation"
+      ],
+      "disposition": "NOT_ESTABLISHED_BY_REVIEWED_SOURCES"
+    },
+    {
+      "id": "N01",
+      "kind": "NORMATIVE",
+      "statement": "Beneficiaries of automated decisions should bear responsibility for safeguards and harms;necessary controls should be binding.",
+      "authority": "Attributed author position of Ingolf Lohmann,explicit current user instruction."
+    }
+  ],
+  "verification_scope": {
+    "own_measurement_vantage": "Current Codex cloud execution container for file/hash checks;authenticated GitHub connector for Authority metadata;web retrieval service for public sources.",
+    "lean_kernel_executed_this_run": false,
+    "external_source_page_bytes_preserved": false,
+    "new_formal_result_claimed": false,
+    "global_effect_ack_done": false,
+    "productive_deployment_claimed": false,
+    "zenodo_mutation_authorized_by_this_request": false
+  },
+  "existing_checker_results": [
+    {
+      "name": "tool-cache",
+      "log_sha256": "1062f28d1da37eca243453d46d55086a9ab0b5a76ff1f0a7d263f162d8c64b59",
+      "result": "PASS",
+      "detail": "PASS: 45/45 declared tools have cache strategies (100%)"
+    },
+    {
+      "name": "baseline-integrity",
+      "log_sha256": "9d28e5d2eb5aac619cc4f63d41b71b0d693714c39f565c0395b7c6079364be1f",
+      "result": "PASS",
+      "detail": "PASS verified 5598 classified entries and 5587 immutable digests"
+    },
+    {
+      "name": "ontology-source",
+      "log_sha256": "0f291dd021338c376e3a242b608d5669a5b92459494aac011a1f7aa6b90d73af",
+      "result": "UNVERIFIED",
+      "detail": "BLOCK: exact source commit fetch failed: fatal: could not read Username for 'https://github.com': terminal prompts disabled"
+    }
+  ],
+  "continuity": {
+    "prior_review_task": "4dfc85c0-ff9c-5c1d-8e28-c681960b18b1",
+    "no_prior_completion_claim_transferred": true,
+    "original_R2_publication_stop_preserved": true
+  }
+}
