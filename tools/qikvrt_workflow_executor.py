@@ -1869,6 +1869,13 @@ def amo_progress(directory: Path, receipt: Mapping[str, Any]) -> None:
 WORKSPACE_ORIGIN = "https://qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site"
 WORKSPACE_FIELDS = ("id", "title", "description", "status", "priority", "cognition",
                     "version", "visibility", "createdAt", "updatedAt")
+WORKSPACE_SAFE_DENIAL_CODES = frozenset({"INVALID_RESPONSE", "INVALID_RUN_TOKEN", "RUN_TOKEN_REQUIRED",
+    "AUTHORITY_READBACK_UNAVAILABLE", "AUTHORITY_READBACK_TOO_LARGE", "AUTHORITY_READBACK_INVALID",
+    "OIDC_KEYS_UNAVAILABLE", "OIDC_KEY_UNVERIFIED", "INVALID_RUN_SIGNATURE", "WRONG_RUN_IDENTITY",
+    "STALE_RUN_TOKEN", "MAIN_CHANGED", "INVALID_MAIN_SUBJECT", "RUN_NOT_EXECUTING",
+    "SOURCE_CONTRACT_UNAVAILABLE", "SOURCE_CONTRACT_BYTES_INVALID", "WORKSPACE_SOURCE_NOT_ADMITTED",
+    "TASK_NOT_ADMITTED", "TASK_VERSION_NOT_ADMITTED", "TASK_VERSION_OR_BYTES_CHANGED",
+    "TASK_CHANGED_OR_ACCEPTANCE_UNAVAILABLE"})
 
 
 class _WorkspaceNoRedirect(urllib.request.HTTPRedirectHandler):
@@ -1876,12 +1883,16 @@ class _WorkspaceNoRedirect(urllib.request.HTTPRedirectHandler):
         raise ExecutorBlock("WORKSPACE_REDIRECT_FORBIDDEN")
 
 
-def _workspace_http(url: str, token: str, payload: Mapping[str, Any] | None = None) -> dict[str, Any]:
+def _workspace_http(url: str, token: str, payload: Mapping[str, Any] | None = None, *, stage: str = "REQUEST") -> dict[str, Any]:
     """A single bounded request. Tokens and task text never enter output files."""
     data = None if payload is None else canonical_json_bytes(payload)
-    request = urllib.request.Request(url, data=data, method="GET" if data is None else "POST",
-        headers={"Authorization": "Bearer " + token, "Accept": "application/json",
-                 "Content-Type": "application/json", "Cache-Control": "no-store"})
+    headers = {"Accept": "application/json", "Content-Type": "application/json", "Cache-Control": "no-store",
+               "User-Agent": "QIKVRT-Authority-workspace-intake/1"}
+    # Sites owns the standard Authorization namespace. The service token is
+    # independently verified by our original Worker, not a visitor credential.
+    identity_header = "X-QIKVRT-Workflow-Identity" if urllib.parse.urlsplit(url).netloc == urllib.parse.urlsplit(WORKSPACE_ORIGIN).netloc else "Authorization"
+    headers[identity_header] = "Bearer " + token
+    request = urllib.request.Request(url, data=data, method="GET" if data is None else "POST", headers=headers)
     opener = urllib.request.build_opener(urllib.request.ProxyHandler({}), _WorkspaceNoRedirect())
     try:
         with opener.open(request, timeout=30) as response:
@@ -1892,7 +1903,15 @@ def _workspace_http(url: str, token: str, payload: Mapping[str, Any] | None = No
                 raise ExecutorBlock("WORKSPACE_RESPONSE_TOO_LARGE")
         return dict(_mapping(json.loads(raw), "workspace response"))
     except urllib.error.HTTPError as exc:
-        raise ExecutorBlock("WORKSPACE_HTTP_" + str(exc.code)) from None
+        code = "NON_JSON_DENIAL"
+        try:
+            response = json.loads(exc.read(4097))
+            declared = response.get("error", {}).get("code") if isinstance(response, dict) and isinstance(response.get("error"), dict) else None
+            code = declared if isinstance(declared, str) and declared in WORKSPACE_SAFE_DENIAL_CODES else "JSON_DENIAL"
+        except (OSError, ValueError):
+            pass
+        # No response message, token, caller identity or task text is logged.
+        raise ExecutorBlock("WORKSPACE_" + stage + "_HTTP_" + str(exc.code) + "_" + code) from None
     except (OSError, ValueError) as exc:
         raise ExecutorBlock("WORKSPACE_READBACK_UNAVAILABLE") from exc
 
@@ -1902,6 +1921,27 @@ def workspace_task_digest(task: Mapping[str, Any]) -> str:
             or type(task.get("version")) is not int or task["version"] < 1):
         raise ExecutorBlock("WORKSPACE_TASK_SCHEMA_INVALID")
     return sha256_bytes(json.dumps(dict(task), sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode())
+
+
+def workspace_declared_claim_diagnostics(token: str, env: Mapping[str, str]) -> dict[str, Any]:
+    """Untrusted declared-claim comparisons only, never signature/auth proof."""
+    value: dict[str, Any] = {"schema": "qikvrt-workspace-declared-claim-diagnostics/v1", "authentication_verified": False}
+    try:
+        encoded = token.split(".")[1]
+        claims = json.loads(base64.urlsafe_b64decode(encoded + "=" * (-len(encoded) % 4)))
+        if not isinstance(claims, dict):
+            raise ValueError("declared claims are not an object")
+        expected = {"iss": "https://token.actions.githubusercontent.com", "aud": WORKSPACE_ORIGIN + "/api/v1/authority",
+            "sub": "repo:" + AMO_REPOSITORY + ":ref:refs/heads/main", "repository": AMO_REPOSITORY,
+            "repository_id": "1273784147", "repository_owner_id": "294949349", "ref": "refs/heads/main",
+            "sha": env["GITHUB_SHA"], "workflow_sha": env["GITHUB_SHA"],
+            "workflow_ref": AMO_REPOSITORY + "/" + AMO_NATIVE_WORKFLOW + "@refs/heads/main",
+            "run_id": env["GITHUB_RUN_ID"], "run_attempt": env.get("GITHUB_RUN_ATTEMPT", "1"),
+            "event_name": env["GITHUB_EVENT_NAME"]}
+        value["matches"] = {key: claims.get(key) == expected_value for key, expected_value in expected.items()}
+    except (ValueError, KeyError, IndexError, TypeError):
+        value["state"] = "DECLARED_CLAIMS_UNAVAILABLE"
+    return value
 
 
 def validate_workspace_acceptance(receipt: Mapping[str, Any], task: Mapping[str, Any],
@@ -1973,9 +2013,10 @@ def workspace_task_intake(directory: Path, root: Path = ROOT) -> dict[str, Any]:
         query = urllib.parse.parse_qsl(parsed.query, keep_blank_values=True)
         query = [(k, v) for k, v in query if k != "audience"] + [("audience", admission["audience"])]
         token_url = urllib.parse.urlunsplit(parsed._replace(query=urllib.parse.urlencode(query)))
-        token = _workspace_http(token_url, token_secret).get("value")
+        token = _workspace_http(token_url, token_secret, stage="OIDC_TOKEN").get("value")
         if not isinstance(token, str) or len(token.split(".")) != 3:
             raise ExecutorBlock("WORKSPACE_NATIVE_OIDC_UNVERIFIED")
+        value["declared_claim_diagnostics"] = workspace_declared_claim_diagnostics(token, os.environ)
         items = admission.get("work_items")
         if not isinstance(items, list) or not 1 <= len(items) <= 32:
             raise ExecutorBlock("WORKSPACE_WORK_ITEMS_INVALID")
@@ -1985,7 +2026,7 @@ def workspace_task_intake(directory: Path, root: Path = ROOT) -> dict[str, Any]:
                     or type(source.get("min_version")) is not int or source["min_version"] < 1):
                 raise ExecutorBlock("WORKSPACE_WORK_ITEMS_INVALID")
             url = WORKSPACE_ORIGIN + "/api/v1/authority/tasks/" + source["id"]
-            initial = _workspace_http(url, token)
+            initial = _workspace_http(url, token, stage="TASK_READ")
             task = _mapping(initial.get("task"), "workspace task")
             digest = workspace_task_digest(task)
             if (task.get("id") != source["id"] or task["version"] < source["min_version"]
@@ -1997,8 +2038,8 @@ def workspace_task_intake(directory: Path, root: Path = ROOT) -> dict[str, Any]:
                 # task first and preserves the original version-bound receipt.
                 _workspace_http(WORKSPACE_ORIGIN + "/api/v1/authority/acceptances", token,
                     {"schema": "qikvrt-workspace-task-accept/v1", "task_id": binding["id"],
-                     "task_version": binding["version"], "task_sha256": binding["sha256"]})
-            readback = _workspace_http(url, token)
+                     "task_version": binding["version"], "task_sha256": binding["sha256"]}, stage="TASK_ACCEPT")
+            readback = _workspace_http(url, token, stage="TASK_READBACK")
             receipt = validate_workspace_acceptance(_mapping(readback.get("workflowAcceptance"), "stored workspace acceptance"),
                 _mapping(readback.get("task"), "task readback"), binding, contract_hash)
             value["receipts"].append(receipt)
