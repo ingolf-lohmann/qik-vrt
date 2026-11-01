@@ -1,0 +1,82 @@
+{
+  "schema": "qikvrt-post-publication-reconciliation/v1",
+  "prior_carrier": {
+    "commit": "687c6a852bc1aa70111f9199778c59881aaaec7c",
+    "tree": "18d51e0c81519bf59e5b0ae6ac551679065940e4",
+    "parent": "648aec2b5bb4a2b8dbeaedfaa93a830d8f0db6d2",
+    "signature_verified": false,
+    "readback_json_byte_equal": true,
+    "continuation_json_byte_equal": true,
+    "logs_zip_byte_equal": true
+  },
+  "current_main": {
+    "head": "ee1f6f150cc479970793ae05a5ff2d48fa5821de",
+    "tree": "37fda157aee848c0a0876e1f93847fadced4ac6d",
+    "parents": [
+      "f542703ef4bdaa4d68cf2b7916f4b72fc8eae8a3",
+      "6846065d141e41b57e7185326a3e1378e2137326"
+    ],
+    "signature_verified": true,
+    "merged_pr": 668,
+    "old_test_subject": "f542703ef4bdaa4d68cf2b7916f4b72fc8eae8a3",
+    "tests_transferred": false
+  },
+  "quota": {
+    "site_version": 17,
+    "site_source": "1f2934e27dc8e91d6fdcf6f32a5afe862a91ce2b",
+    "live_diagnostic": {
+      "scope": "OWNER_READ_ONLY_PUBLIC_SOURCE_DIAGNOSTICS",
+      "authentication_verified": false,
+      "observed_at": "2026-11-01T11:20:22.426Z",
+      "observations": [
+        {
+          "resource": "OIDC_KEYS",
+          "status": 200
+        },
+        {
+          "resource": "MAIN_REF",
+          "code": "AUTHORITY_READBACK_UNAVAILABLE",
+          "reason": "HTTP_DENIAL",
+          "status": 403,
+          "request_attempted": false,
+          "rate_limit_remaining": 0,
+          "rate_limit_reset": 1793533424
+        }
+      ]
+    },
+    "independent_stored_stop_row": {
+      "key": "GITHUB_PUBLIC_REST_NOT_BEFORE",
+      "value": "{\"status\":403,\"remaining\":0}",
+      "until_at": 1793533424000
+    },
+    "other_table_values": "JWKS value was projection-truncated; no claim of complete cache-table byte read."
+  },
+  "current_checks": {
+    "total": 9,
+    "scope": "Original read at current Main; test and contract-and-e2e were in progress, no terminal Main CI acceptance",
+    "failed_check": {
+      "name": "run",
+      "workflow_run": 41301044836,
+      "job": 124831834353,
+      "actual_scope": "SEED_DASHBOARD_NOT_WORKSPACE_TASK_INTAKE",
+      "artifact": 13080934137,
+      "artifact_sha256": "e66054f46a27664091b37ff4d8f00b7e11f424ef4965d98432ecc6dd3532b950",
+      "artifact_bytes": 6260,
+      "reported_causes": [
+        "health:LIFECYCLE_API_404",
+        "ack:LIFECYCLE_API_404",
+        "renewal:LIFECYCLE_API_404"
+      ],
+      "reported_node_state": "STALE",
+      "runtime_failure_or_node_absence_inferred": false
+    }
+  },
+  "observer_corrections": [
+    "Generic GitHub fetch auto-decodes text blobs; exact text bytes were compared directly.",
+    "Binary generic fetch was unsupported; the dedicated file read with encoding=base64 independently matched all ZIP bytes.",
+    "A failed current check was initially considered as possible task intake; original artifact inventory identifies it as Seed dashboard. No native intake failure is inferred."
+  ],
+  "all_session_output_captured": false,
+  "productive_effect_verified": false,
+  "effect_ack_done": false
+}
