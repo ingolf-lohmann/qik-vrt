@@ -5,9 +5,11 @@
 import contextlib
 import copy
 import datetime as dt
+import fnmatch
 import hashlib
 import io
 import json
+import re
 from pathlib import Path
 import re
 import subprocess
@@ -194,9 +196,13 @@ class DeliveryReportingProofTests(unittest.TestCase):
         snapshot["review_observation"]["reviews"][0]["user"]["login"] = "ingolf-lohmann"
         snapshot["review_observation"]["statuses"] = [{"id": 8,
             "context": "QIKVRT required code-owner review", "state": "success"}]
-        result = promotion.evaluate_conditional_rest_merge(snapshot)
-        self.assertEqual(result["state"], "BLOCK")
-        self.assertEqual(result["first_blocker"], "REQUIRED_EXACT_HEAD_GATE_MISSING")
+        for path in ("tools/ai_handoff.py", "tools/qikvrt_eap_mirror_client.py",
+                     "tests/test_eap_mirror_client.py"):
+            with self.subTest(path=path):
+                snapshot["changed_paths"] = [path]
+                result = promotion.evaluate_conditional_rest_merge(snapshot)
+                self.assertEqual(result["state"], "BLOCK")
+                self.assertEqual(result["first_blocker"], "REQUIRED_EXACT_HEAD_GATE_MISSING")
         snapshot.pop("changed_paths")
         self.assertEqual(promotion.evaluate_conditional_rest_merge(snapshot)["first_blocker"],
                          "FORMAL_CHANGE_SCOPE_UNVERIFIED")
@@ -224,9 +230,23 @@ class DeliveryReportingProofTests(unittest.TestCase):
     def test_classification_is_closed_and_policy_has_seven_resolved_names(self):
         self.assertTrue(ai_handoff.formal_proof_required(["src/qikvrt_effect_ack_http_service.py"]))
         self.assertTrue(ai_handoff.formal_proof_required(["tools/qikvrt_pr_closure_engine.py"]))
+        self.assertTrue(ai_handoff.formal_proof_required(["tools/qikvrt_eap_mirror_client.py"]))
+        self.assertTrue(ai_handoff.formal_proof_required(["tests/test_eap_mirror_client.py"]))
         self.assertFalse(ai_handoff.formal_proof_required(["README.md"]))
         with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
             ai_handoff.formal_proof_required(None)
+
+    def test_actual_mirror_only_changes_trigger_the_required_native_workflow(self):
+        workflow = (ROOT / ".github/workflows/qikvrt_universal_ontology_formalization.yml").read_text()
+        for event in ("pull_request", "push"):
+            block = re.search(r"^  " + event + r":\n(.*?)(?=^  [^ ]|^jobs:)",
+                              workflow, re.MULTILINE | re.DOTALL)
+            self.assertIsNotNone(block, event)
+            patterns = re.findall(r'^      - "([^"\n]+)"$', block.group(1), re.MULTILINE)
+            for path in ("tools/qikvrt_eap_mirror_client.py", "tests/test_eap_mirror_client.py"):
+                with self.subTest(event=event, path=path):
+                    self.assertTrue(any(fnmatch.fnmatchcase(path, pattern) for pattern in patterns),
+                                    "formal gate would be required but never triggered")
 
     def test_replayed_observation_across_distinct_messages_is_blocking(self):
         case = self.fixture()
