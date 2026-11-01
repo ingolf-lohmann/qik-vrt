@@ -1506,6 +1506,18 @@ class WorkspaceTaskIntakeTests(unittest.TestCase):
         self.assertFalse(stored["effect_ack_done"])
         self.assertNotIn("native-request-secret", json.dumps(stored))
 
+    def test_unredacted_transport_contract_cannot_request_a_workload_token(self):
+        for field, value in (("identity_header", "X-QIKVRT-Workflow-Identity"),
+                             ("identity_cookie", "foreign-service-cookie")):
+            with self.subTest(field=field):
+                original = self.contract["workspace_task_intake"][field]
+                self.contract["workspace_task_intake"][field] = value
+                _, error, calls, stored = self.invoke([])
+                self.assertEqual(error, "WORKSPACE_NATIVE_MAIN_ADMISSION_REQUIRED")
+                self.assertEqual(calls, [])
+                self.assertEqual(stored["receipts"], [])
+                self.contract["workspace_task_intake"][field] = original
+
     def test_ambiguous_acceptance_is_not_retried_and_successor_reads_first(self):
         result, error, calls, stored = self.invoke([{"value": "signed.native.jwt"}, self.response,
             MODULE.ExecutorBlock("WORKSPACE_READBACK_UNAVAILABLE")])
@@ -1582,14 +1594,15 @@ class WorkspaceTaskIntakeTests(unittest.TestCase):
         response.read.return_value = b'{"ok": true}'
         opener = mock.Mock()
         opener.open.return_value = response
-        for url, expected in ((MODULE.WORKSPACE_ORIGIN + "/api/v1/authority/tasks/test", "x-qikvrt-workflow-identity"),
+        for url, expected in ((MODULE.WORKSPACE_ORIGIN + "/api/v1/authority/tasks/test", "cookie"),
                               ("https://run-actions-1.actions.githubusercontent.com/token", "authorization")):
             response.geturl.return_value = url
             with mock.patch.object(MODULE.urllib.request, "build_opener", return_value=opener):
                 self.assertEqual(MODULE._workspace_http(url, "synthetic-secret", stage="TEST"), {"ok": True})
             headers = {key.lower(): value for key, value in opener.open.call_args.args[0].header_items()}
-            self.assertEqual(headers[expected], "Bearer synthetic-secret")
-            self.assertNotIn("authorization" if expected != "authorization" else "x-qikvrt-workflow-identity", headers)
+            self.assertEqual(headers[expected], MODULE.WORKSPACE_IDENTITY_COOKIE + "=synthetic-secret" if expected == "cookie" else "Bearer synthetic-secret")
+            self.assertNotIn("authorization" if expected == "cookie" else "cookie", headers)
+            self.assertNotIn("x-qikvrt-workflow-identity", headers)
 
     def test_denial_retains_stage_and_safe_code_without_response_or_token(self):
         url = MODULE.WORKSPACE_ORIGIN + "/api/v1/authority/tasks/test"
