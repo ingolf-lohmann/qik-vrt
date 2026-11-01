@@ -1,0 +1,20 @@
+{
+  "schema": "qikvrt-native-vector-import/v1",
+  "source_head": "06f0320f333940cfaa9ddd2f25f628bbfed22e1d",
+  "source_tree": "c93d1149a067026f1b5884a1322f421643df5231",
+  "run": 41238540287,
+  "job": 124647324632,
+  "artifact": 13056581157,
+  "artifact_sha256": "67c49323f42c3b47cb245006d1d18b8a3ef06553d8db7a32531f0a44509ff9bd",
+  "member": ".qikvrt/formal-receipts/DeliveryReporting/generated-vectors.json",
+  "vector_count": 1152,
+  "vector_bytes": 393794,
+  "vectors_sha256": "5e5be7c610f5d4b7ec41cfc8e0e0154bf8476b0ac48b3d5b2a839745a41080ff",
+  "independent_log_export_match": true,
+  "predecessor_results": {
+    "external_pass_count": 5,
+    "own_kernel": "UNVERIFIED: vector binding absent",
+    "nanoda": "UNVERIFIED: standard literal extensions disabled"
+  },
+  "seven_checker_pass": false
+}

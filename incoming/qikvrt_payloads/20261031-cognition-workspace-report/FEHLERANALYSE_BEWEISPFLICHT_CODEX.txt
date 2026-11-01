@@ -1,0 +1,110 @@
+QIK-VRT Mirror (Claude) -> Codex | Fehleranalyse Beweispflicht | Teil 1/3
+Repository ingolf-lohmann/qik-vrt | main 5a42baf45748e4407a8fa16aef287a77873e788d
+Pruefsubjekt PR #546 Kopf 91c086de (R1-R5, ai_handoff.py --client-receipt)
+Owner-Auftrag 31.10.2026 18:07/18:10 MEZ: Beweispflicht bis zum reflexiven
+Lean-Beweis, Pruefung im eigenen Kernel und in 6 externen Lean-Pruefdiensten.
+
+BEFUND (Mirror-Readback per git fetch refs/pull/546/head, frischer Checkout)
+- integrity verify PASS 5358/5347; tests.test_ai_runtime_bootloader 153/153 OK.
+- Kein Lean-Modul zu Zustellbehauptung, Fern-Readback oder EAP-Client
+  (176 .lean-Dateien geprueft, keine Treffer).
+- Kein Kernel-Beleg, keine externe Pruefung, keine native CI-Abnahme
+  (Commit-Text selbst: "No native CI acceptance").
+- Die 6 externen Pruefdienste sind im Repository NICHT spezifiziert:
+  git grep "lean4lean|nanoda|paranoid" in Workflows, tools, policy: 0 Treffer.
+  Namen laut Owner-Vorgabe/Mirror-Gedaechtnis: Lean paranoid, lean4lean,
+  nanoda, con-leche, con-ron, Lean default. Quelle und Version unbelegt.
+- PR #658: Gate "fresh exact-head evidence-materialization after HTTP403 GET
+  failure" offen (eure Arbeitseinheit QIKVRT_REMOTE_DELIVERY_REPORTING_...).
+
+FEHLERKLASSEN
+FA1 Beweiskette endet bei Python-Tests. Fuer eine Regel, die Wirkungs-
+    behauptungen verbietet, fehlt das formale Modell und der Beweis, dass
+    die Pruefung genau die zulaessigen Meldungen annimmt.
+FA2 Spezifikationsluecke: Was "6 externe Pruefdienste" sind, steht nirgends
+    maschinenlesbar. Nicht Spezifiziertes kann nicht erzwungen und nicht
+    nachgeprueft werden; jeder Knoten kann es anders auslegen.
+FA3 Kein maschinelles Gate: Ohne Hard Gate kann eine Aenderung dieser
+    Klasse ohne Beweis gemergt werden. Selbstverpflichtung ersetzt kein Gate.
+FA4 Modell-Implementierungs-Bruecke fehlt: Selbst ein Lean-Beweis belegt
+    nur das Modell. Ohne gepruefte Abbildung auf ai_handoff.py bzw. den
+    Mirror-Client ist "reflexiv bewiesen" fuer die Implementierung falsch.
+FA5 Native CI-Abnahme fehlt fuer #546; #658 hat ein rotes Pflicht-Gate.
+FA6 Mirror-Client 75522c49 nicht bei euch (Patch-Bytes fehlten): kein
+    Arbeitsauftrag an euch, Zustellung ist Mirror-Pflicht.
+
+GRENZE: Lean beweist Modelleigenschaften. Die Aussage "Implementierung
+erfuellt R1-R5" ist nur so stark wie die Bruecke aus FA4 und wird so benannt.
+QIK-VRT Mirror -> Codex | Fehleranalyse Beweispflicht | Teil 2/3: Auftrag
+
+W1 Policy policy/QIKVRT_FORMAL_PROOF_OBLIGATION_V1.json
+   - Aenderungsklassen mit Beweispflicht, mindestens: Regeln/Pruefer fuer
+     Zustell- und Wirkungsbehauptungen (R1-R5, ai_handoff --client-receipt),
+     EAP-Clients, Merge-Gates.
+   - 7 Pruefer: eigener Kernel (Lean laut formalization/QIKVRT_Formalization_
+     v2.0/lean-toolchain, v4.19.0) + 6 externe. Je Pruefer: Name, oeffentliche
+     Quelle (Repo-URL), Commit-SHA, Build- und Pruefkommando, erwartete
+     Ausgabe. Nicht aufloesbarer Name -> HOLD mit Owner-Entscheidung, nie
+     ersetzen oder erfinden.
+   - Beleg-Schema je Lauf: checker, version/commit, module, source_sha256,
+     export_or_olean_sha256, axioms, result, log_sha256, utc.
+   - Hard Gate: Klasse betroffen und nicht 7/7 Belege PASS -> kein Merge,
+     keine Aussage FORMAL_PROVED.
+W2 Lean formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/
+   DeliveryReporting.lean als EIGENES lean_lib-Ziel; QIKVRTEffectAck.lean
+   (Zenodo-gebunden) unveraendert; danach tests/test_zenodo_machine_proof_
+   policy.py ausfuehren.
+   - Typen: Target (local|authority host), Observation (target, status,
+     subjectRef, observationId, utc), Report (claim, observations).
+   - Admissible r := R1 und R2 als entscheidbare Praedikate; R3-R5 als
+     Provenienz-Vorbedingungen, soweit formalisierbar, sonst ausdruecklich
+     als nicht formalisiert ausgewiesen.
+   - decide : Report -> Verdict, Theoreme mindestens:
+     T1 decide r = accept <-> Admissible r
+     T2 claim=delivered ∧ alle Beobachtungen lokal -> decide r = reject
+     T3 delivered erfordert remote status 200 mit passendem subjectRef
+     T4 wiederholte observationId -> reject
+   - Kein sorry, keine eigenen Axiome; #print axioms je Theorem im Beleg.
+W3 Bruecke Modell->Implementierung
+   - Lean erzeugt deterministisch Testvektoren (JSON, inkl. Grenzfaelle und
+     Gegenbeispiele) mit sha256; Python-Test speist sie in ai_handoff.py
+     --client-receipt und verlangt identische Verdikte; Vektor-sha gepinnt.
+   - Kein Vektor -> Test schlaegt fehl (fail closed).
+W4 Ausfuehrung und Belege
+   - lake build des Ziels; eigener Kernel inkl. Replay der .olean;
+     6 externe Pruefer nach W1; Belege unter evidence/formal-receipts/
+     DeliveryReporting/<checker>.json mit Original-Logs.
+   - CI-Job (bestehender Workflow erweitert, kein neuer Executor), der
+     mindestens eigenen Kernel und alle in CI baubaren externen Pruefer
+     erneut ausfuehrt; Gate aus W1 ausgewertet.
+W5 #658: Ursache des HTTP403 im evidence-materialization-Lauf beheben,
+   frischer exact-head Lauf gruen.
+W6 integrity generate/verify; R1-R5 gelten auch fuer eure Meldung: keine
+   Aussage "Pruefer X PASS" ohne beigelegten Log-sha256 und Kommando.
+QIK-VRT Mirror -> Codex | Fehleranalyse Beweispflicht | Teil 3/3: Nachpruefung
+
+Der Mirror prueft nach eurer Meldung unabhaengig auf eurem Kopf (git fetch,
+frischer Checkout, normaler .gitattributes-EOL). Abbruch mit HOLD bei jedem
+Punkt; Befund mit Readback-Belegen an den Owner.
+
+N1 Subjekt: Branch/PR, Kopf-SHA, Tree-SHA aus eurer Meldung = Fetch-Ergebnis.
+N2 integrity verify PASS; keine ungeprueften generierten Dateien uebernommen.
+N3 Policy W1 vorhanden, Schema gueltig; jeder der 7 Pruefer mit Repo-URL und
+   Commit-SHA, die per git ls-remote aufloesbar sind; unaufgeloeste -> HOLD.
+N4 grep: kein "sorry", kein "axiom " im neuen Modul; QIKVRTEffectAck.lean
+   byte-gleich zu main; test_zenodo_machine_proof_policy.py gruen.
+N5 Eigener Lauf: lake build mit Toolchain aus lean-toolchain; #print axioms
+   je Theorem T1-T4 = euer Beleg.
+N6 Externe Pruefer: so viele wie in dieser Mirror-Laufzeit baubar, selbst
+   ausgefuehrt; Ergebnis je Pruefer neben eurem Beleg; nicht baubare
+   ausdruecklich als NICHT_NACHGEPRUEFT gemeldet, nicht als PASS.
+N7 Bruecke: Vektoren aus Lean neu erzeugt, sha = gepinnt; Python-Test gruen;
+   Mutationsprobe: eine Bedingung in ai_handoff.py entfernt -> Test rot.
+N8 Gegenproben: Meldung "zugestellt" nur mit lokaler Beobachtung -> reject;
+   Status 403 -> reject; Replay -> reject; fremder subjectRef -> reject.
+N9 Gate: Aenderung der Klasse ohne 7/7 Belege -> CI rot (Probe-Branch lokal).
+N10 #658: frischer exact-head materialization-Lauf gruen laut Run-Log.
+
+ABNAHME nur wenn N1-N10 PASS. Teilergebnisse werden als solche benannt.
+Zustellung dieses Textes: durch den Owner per Kopie (NICHT ueber eine
+Mirror-Schnittstelle; Mirror hat keinen Netzweg zur Authority).
