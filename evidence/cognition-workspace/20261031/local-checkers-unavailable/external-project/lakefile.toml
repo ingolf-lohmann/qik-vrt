@@ -1,0 +1,4 @@
+name = "DeliveryReportingRecheck"
+[[lean_lib]]
+name = "QIKVRTDeliveryReporting"
+roots = ["QIKVRTEffectAck.DeliveryReporting"]
