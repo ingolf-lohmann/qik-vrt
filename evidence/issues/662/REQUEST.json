@@ -1,0 +1,10 @@
+{
+  "author": "ingolf-lohmann",
+  "body": "Observed on actual Main5f319d41 in workflow run41284897131, job124784109533, 2026-11-01T07:28:27Z: source/integrity and seven intake controls passed, then the first live intake returned WORKSPACE_HTTP_403. The original HOLD artifact is13073949170, digest2b60582b0132f8f98d6b4c5ac33ab620fee3f34c9e72dc2bdca7432d08fbe67a. Independent admitted get_task still returns taskb50951b4-1194-431b-aa43-d81d262a19d3 version4 with no workflowAcceptance.\n\nThe client currently conflates token-issuer and workspace denials and discards the safe receiver error code. Recent Worker logs contain no matching native intake request; a gateway or issuer denial is possible but not yet identified. The standard Authorization header is also being used for both platform visitor identity and the separate GitHub workload token.\n\nRepair within the existing executor/Site: separate workload identity into an explicit source-admitted custom header, preserve stage/status and allowlisted error codes, and retain only boolean unverified-claim diagnostics. Preserve every RS256, issuer/audience/repository/Owner/ref/workflow/run/Main/source/task-version/CAS check. No credential export, new scheduler or productive authorization.\n\nClose only after the original admitted native workflow accepts the fresh actual task version and its receipt is independently read through the existing MCP and checked against the actual run/HEAD/TREE and original artifact. A local pass, source merge, successful unrelated job or another unbound run does not close this issue. Keep the task and productive EFFECT_ACK_DONE open until their respective evidence exists.",
+  "created_at": "2026-11-01T07:39:40Z",
+  "html_url": "https://github.com/ingolf-lohmann/qik-vrt/issues/662",
+  "issue_number": 662,
+  "repository": "ingolf-lohmann/qik-vrt",
+  "title": "Native workspace intake returns HTTP403 without a task-bound acceptance",
+  "updated_at": "2026-11-01T07:39:40Z"
+}

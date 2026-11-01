@@ -1,0 +1,12 @@
+name = "QIKVRTDeliveryReportingProof"
+version = "1.0.0"
+srcDir = ".."
+defaultTargets = ["QIKVRTDeliveryReporting"]
+
+[[lean_lib]]
+name = "QIKVRTDeliveryReporting"
+roots = ["QIKVRTEffectAck.DeliveryReporting"]
+
+[[lean_exe]]
+name = "deliveryReportingVectors"
+root = "QIKVRTEffectAck.DeliveryReportingVectors"

@@ -1,0 +1,364 @@
+{
+  "schema": "qikvrt-workspace-native-identity-repair/v1",
+  "owner": "Ingolf Lohmann",
+  "implementer": "OpenAI Codex",
+  "issue": 662,
+  "original_main": "5f319d41ad0522cbf9e674d06d417e2ec1f7fe0d",
+  "original_run_id": 41284897131,
+  "original_job_id": 124784109533,
+  "observed_failure": "WORKSPACE_HTTP_403",
+  "task_id": "b50951b4-1194-431b-aa43-d81d262a19d3",
+  "observed_task_version": 4,
+  "expected_task_sha256": "4bd2a967eb9d7543019ec65e219de5125209540cd89a1979864def6081be0464",
+  "original_receipts": [],
+  "cause_status": "UNVERIFIED: original client lost request stage and error code; no matching receiver invocation in the inspected log window",
+  "repair": [
+    "Separate workload token into X-QIKVRT-Workflow-Identity, source-admitted in the same original contract",
+    "Preserve request stage and allowlisted error code without credential/message export",
+    "Retain boolean unverified claim comparisons only; no authentication inferred from diagnostics"
+  ],
+  "authentication_guards": "Retain RS256, issuer/audience/repository/Owner/ref/workflow/run/current Main/source/task-version/CAS admission",
+  "site_source": "1bbd8e1d1eacba248c9147faebdb3962481978ac",
+  "site_version": 11,
+  "local_targeted_checks": {
+    "controller": 10,
+    "crypto": 33,
+    "storage": 18,
+    "typescript": true,
+    "compiled_worker_smoke": true
+  },
+  "full_local_run_note": "A preliminary run was invalidated by final declared-claim hardening; its final integrity refusal is retained as superseded verification. A frozen final full suite is required.",
+  "issue_closure_path": "Manual REST close only after actual native version-bound acceptance and independent MCP plus run/artifact readback; do not close on source merge",
+  "productive_effect_verified": false,
+  "effect_ack_done": false,
+  "followup_20261101_upstream_readback": {
+    "schema": "qikvrt-workspace-upstream-readback-repair/v1",
+    "owner": "Ingolf Lohmann",
+    "artificial_contribution": "OpenAI Codex; original issue-agent and other-client history retained",
+    "authority_main": "90024a24ad56f7f28011202e2a1ab03b0d9b9a34",
+    "authority_tree": "073d66305d42e465580e93950442a5645291b73b",
+    "site_source": "afe7c3c8e2ba0ac7cee836fe5b5054a774b2d086",
+    "site_version": 14,
+    "actual_original_native_attempts": [
+      {
+        "run": 41288481084,
+        "attempt": 1,
+        "job": 124794574178
+      },
+      {
+        "run": 41288481084,
+        "attempt": 2,
+        "job": 124796831997
+      }
+    ],
+    "receipts_observed": [],
+    "task_id": "b50951b4-1194-431b-aa43-d81d262a19d3",
+    "observed_task_version": 7,
+    "runtime_cause": "Actual Workerd rejects redirect:error before outbound fetch; original regression failed; manual-mode fix passes and rejects redirects without following",
+    "remaining_observed_boundary": {
+      "scope": "OWNER_READ_ONLY_PUBLIC_SOURCE_DIAGNOSTICS",
+      "authentication_verified": false,
+      "observed_at": "2026-11-01T08:39:23.219Z",
+      "observations": [
+        {
+          "resource": "OIDC_KEYS",
+          "status": 200
+        },
+        {
+          "resource": "MAIN_REF",
+          "code": "AUTHORITY_READBACK_UNAVAILABLE",
+          "reason": "HTTP_DENIAL",
+          "status": 403,
+          "rate_limit_remaining": 0,
+          "rate_limit_reset": 1793523623
+        }
+      ]
+    },
+    "controller_trace": "Allowlisted fixed public upstream source/status and explicit zero quota can enter native denial; unknown fields/messages/tokens and observation clocks never do",
+    "no_third_native_retry_at_archive_creation": true,
+    "test_scope": "41 actual crypto/Workerd controls +18 original D1 +45 workspace controls +11 executor intake controls + TypeScript + compiled production smoke; synthetic providers remain labelled",
+    "all_session_output_captured": false,
+    "original403_cause": "UNVERIFIED",
+    "productive_effect_verified": false,
+    "effect_ack_done": false,
+    "files": [
+      {
+        "name": "original-intake-hold.zip",
+        "bytes": 808,
+        "sha256": "2b60582b0132f8f98d6b4c5ac33ab620fee3f34c9e72dc2bdca7432d08fbe67a"
+      },
+      {
+        "name": "native-intake-stage-hold.zip",
+        "bytes": 1011,
+        "sha256": "66f07dcdcb9d0bb95d5233f03cf8cd73b7ebcf6739c466674e5c8088f137f006"
+      },
+      {
+        "name": "native-intake-attempt2-hold.zip",
+        "bytes": 1011,
+        "sha256": "3d01c60365e518c61873c261686aede503b13194ff737018f3696afd87786eda"
+      },
+      {
+        "name": "REPAIRED_NATIVE_INTAKE_FAILURE_124794574178.log",
+        "bytes": 22858,
+        "sha256": "52823df4979cee379140f8d79a72de64a57d7059d414871bc26a9393cdf4b96a"
+      },
+      {
+        "name": "CAUSAL_RERUN_INTAKE_FAILURE_124796831997.log",
+        "bytes": 22865,
+        "sha256": "53c66bca0a59b7708ab0c202a4bbbc4df8f9e1c90c2afaa46e0e9961a15293cd"
+      },
+      {
+        "name": "workerd-redirect-red.log",
+        "bytes": 4375,
+        "sha256": "9a56c050bf178d002e73af9b362c948b78f1009793de9e7fc3e3437ab93c8cbe"
+      },
+      {
+        "name": "workerd-redirect-green.log",
+        "bytes": 4215,
+        "sha256": "99c154725300e790af6bb84d19ce4549b1f67feb28a0bef13ff83b21d9625ae8"
+      },
+      {
+        "name": "workerd-redirect-storage.log",
+        "bytes": 1310,
+        "sha256": "cd00f26490ff4b9e5e84318aea57f07ae32cfd688f3ba4a69c794770296533fb"
+      },
+      {
+        "name": "WORKERD_REDIRECT_REPAIR.json",
+        "bytes": 2969,
+        "sha256": "d3bc8b8510988cd827f10427af482e0b9c9fc5be18acd2c3394aad9c385dd575"
+      },
+      {
+        "name": "WORKERD_REDIRECT_PUBLIC_NEGATIVE.json",
+        "bytes": 313,
+        "sha256": "3faf8df6b4eca3ce3e234759822892da93ffd077b64ff05834c1ef4dd06819cc"
+      },
+      {
+        "name": "LIVE_AUTHORITY_RATE_LIMIT.json",
+        "bytes": 441,
+        "sha256": "385098bf4ab2a03604d1aab2f6e817e6d77b6d23b07920c0caa271859773b725"
+      },
+      {
+        "name": "authority-readback-diagnostics.log",
+        "bytes": 5251,
+        "sha256": "e87499296c49cf33a25c5bd78aff572e070f923a89d8d7898e7fed46fe46c822"
+      },
+      {
+        "name": "authority-readback-workspace.log",
+        "bytes": 2778,
+        "sha256": "a650dec516773a75ed952e0d767138bd976095100caca8bb474403b5023dda1c"
+      },
+      {
+        "name": "native-upstream-identity.log",
+        "bytes": 5511,
+        "sha256": "844d1243440d71cb38b204c01cf2d0b42a8c97cfa0762ba8574b0b577ffc8e7a"
+      },
+      {
+        "name": "native-upstream-storage.log",
+        "bytes": 1310,
+        "sha256": "cd00f26490ff4b9e5e84318aea57f07ae32cfd688f3ba4a69c794770296533fb"
+      },
+      {
+        "name": "native-upstream-smoke.log",
+        "bytes": 561,
+        "sha256": "8d0c68c2303a65c1a28b1a9e0007f8a49c987428e4aeff7816d7fcaf9cb8d225"
+      },
+      {
+        "name": "native-upstream-controller.log",
+        "bytes": 2403,
+        "sha256": "8b860ee8f6079911ad8294d17df14e0325e0ecd94952ac66687be7897ccc4423"
+      },
+      {
+        "name": "OBSERVER_CORRECTIONS.json",
+        "bytes": 1498,
+        "sha256": "371182cb194a74a6341123441b4133be7645521aee57b50bfd66be1d23ef5b17"
+      }
+    ],
+    "site_patch": {
+      "bytes": 15417,
+      "sha256": "5087b9b88f453dee7f0c4fe597d808655bbe13be3ea8dd3fac876916e6ca5d00"
+    },
+    "evidence_archive": "evidence/cognition-workspace/20261101-native-identity-repair/UPSTREAM_READBACK_REPAIR.zip",
+    "archive_sha256": "d8a9cee8557f2eee1584d0f36978a01e2ba2669213b2df8bb4a06d711bb69e52",
+    "global_attempt_inventory_is_current": false
+  },
+  "evidence_corrections": [
+    {
+      "id": "WORKSPACE-ATTEMPT-INVENTORY-CORRECTION-20261101",
+      "path": "evidence/cognition-workspace/20261101-native-identity-repair/ATTEMPT_INVENTORY_CORRECTION.json",
+      "corrects_archive_sha256": "d8a9cee8557f2eee1584d0f36978a01e2ba2669213b2df8bb4a06d711bb69e52",
+      "additional_originals_archive": "evidence/cognition-workspace/20261101-native-identity-repair/ADDITIONAL_NATIVE_ATTEMPTS.zip",
+      "archive_sha256": "6bdd0ccccb3b42f364d03225dfbc370b09b432556a55e10f27c6f58d218b0229",
+      "scope": "Historical unqualified no-third claim superseded; original archive and original four HOLD ZIPs retained byte-identical."
+    }
+  ],
+  "credential_transport_repair": {
+    "schema": "qikvrt-workload-credential-transport-repair/v1",
+    "issue": 665,
+    "owner": "Ingolf Lohmann",
+    "artificial_contribution": "OpenAI Codex; original repository/client contributions retained",
+    "base_main": "7f571c85ee830054158eae1731e31ed12814150c",
+    "site_source": "5fe510044042dab4211d5bd06f7c87e2daae318b",
+    "site_version": 16,
+    "scope": "Same GitHub OIDC credential and authorization guards; only explicit source-admitted Cookie transport. No browser credential setting, new session provider, grant or productive effect.",
+    "actual_observation": "Original custom credential header appeared in JWT form without redaction. Only header names and boolean classifications were inspected/exported; no credential values in this archive. Standard Cookie fields are redacted in the observed original logging surface.",
+    "transport": {
+      "identity_header": "Cookie",
+      "identity_cookie": "__Host-QIKVRT-Workflow-Identity",
+      "legacy_header_rejected": true,
+      "duplicate_cookie_rejected": true,
+      "native_old_contract_rejected_before_oidc": true,
+      "credential_forwarding_to_upstreams_rejected_by_actual_workerd_test": true
+    },
+    "synthetic_live_probe": {
+      "status": 401,
+      "body": {
+        "error": {
+          "code": "OIDC_KEY_UNVERIFIED"
+        }
+      },
+      "observed_at": "2026-11-01T09:38:25.688574+00:00",
+      "site_source": "48dea2f9b9c872a4d392749d20880b1a51e86173",
+      "scope": "Synthetic wrong-key marker only; no actual workload credential or task read"
+    },
+    "log_projection": [
+      {
+        "timestamp": 1793525905670,
+        "status": 401,
+        "method": "GET",
+        "cookie_present": true,
+        "cookie_redacted": true,
+        "legacy_credential_header_present": false
+      },
+      {
+        "timestamp": 1793525756588,
+        "status": 404,
+        "method": "GET",
+        "cookie_present": true,
+        "cookie_redacted": true,
+        "legacy_credential_header_present": false
+      },
+      {
+        "timestamp": 1793525744202,
+        "status": 401,
+        "method": "GET",
+        "cookie_present": true,
+        "cookie_redacted": true,
+        "legacy_credential_header_present": false
+      },
+      {
+        "timestamp": 1793525737808,
+        "status": 401,
+        "method": "GET",
+        "cookie_present": true,
+        "cookie_redacted": true,
+        "legacy_credential_header_present": false
+      },
+      {
+        "timestamp": 1793525732337,
+        "status": 401,
+        "method": "GET",
+        "cookie_present": true,
+        "cookie_redacted": true,
+        "legacy_credential_header_present": false
+      }
+    ],
+    "source_v15_v16_authentication_blob_identical": true,
+    "acceptance_gate": "Independent version8 coordination acceptance matched original native artifact; this does not close the new real-cookie native-path verification for issue665.",
+    "review_race": {
+      "review": 5727356120,
+      "decision": "REVOKE",
+      "submitted_at": "2026-11-01T09:20:43Z",
+      "failure_status_created_at": "2026-11-01T09:21:08Z",
+      "merge": "7f571c85ee830054158eae1731e31ed12814150c",
+      "merged_at": "2026-11-01T09:21:12Z",
+      "other_client_final_preflight": "UNVERIFIED",
+      "native_platform_enforcement_inferred": false
+    },
+    "tests": {
+      "controller_module": 92,
+      "identity_crypto_workerd": 43,
+      "storage": 18,
+      "workspace": 45,
+      "typescript": true,
+      "compiled_production_smoke": true
+    },
+    "original_logs_retained": true,
+    "all_session_output_captured": false,
+    "new_actual_workload_cookie_run_verified": false,
+    "effect_ack_done": false,
+    "productive_effect_verified": false,
+    "files": [
+      {
+        "path": "cookie-transport-controller.log",
+        "bytes": 98,
+        "sha256": "00d15a7468a29f685a44537c2d57cc21666abf3a73626ebd4f81851dd47ed095"
+      },
+      {
+        "path": "cookie-transport-identity.log",
+        "bytes": 5712,
+        "sha256": "5e97e876864eac8d3901ee4266a0f87527b84d38f37817928e59527e55fb0bd9"
+      },
+      {
+        "path": "cookie-transport-storage.log",
+        "bytes": 1310,
+        "sha256": "cd00f26490ff4b9e5e84318aea57f07ae32cfd688f3ba4a69c794770296533fb"
+      },
+      {
+        "path": "cookie-transport-workspace.log",
+        "bytes": 2778,
+        "sha256": "a650dec516773a75ed952e0d767138bd976095100caca8bb474403b5023dda1c"
+      },
+      {
+        "path": "cookie-final-provenance-tests.log",
+        "bytes": 136,
+        "sha256": "d9190060551ade9548333ffc4eec8d7bcdc626f6295a9da6235d80e4188d38b8"
+      },
+      {
+        "path": "cookie-final-smoke.log",
+        "bytes": 561,
+        "sha256": "d612dedd2013a6256e863bf5bffdcd10e458400554cfd23aeb746335ef59c82c"
+      },
+      {
+        "path": "COOKIE_TRANSPORT_BEFORE_DEPLOY_NEGATIVE.json",
+        "bytes": 242,
+        "sha256": "6f7623572991c026d082d5746f496f16fce73c1aaae9ece6789fc124c1bb6ef0"
+      },
+      {
+        "path": "COOKIE_TRANSPORT_AFTER_DEPLOY_NEGATIVE.json",
+        "bytes": 298,
+        "sha256": "c0fa50d54200e8c038099bdeb4701a4c7697b068964e7bd80073383eaf28286a"
+      },
+      {
+        "path": "COOKIE_METADATA_PROJECTION.json",
+        "bytes": 371,
+        "sha256": "e7826c886109c18fdf3ca1dedb9db5a29ff2b422381397d84fc66a4e2a0d2725"
+      },
+      {
+        "path": "COOKIE_AFTER_METADATA_PROJECTION.json",
+        "bytes": 922,
+        "sha256": "772d758bfd05d4e007f0e4acf90f2918aeab8502849e46f0bea20d3c59a178be"
+      },
+      {
+        "path": "original-version8-workflow-acceptance.zip",
+        "bytes": 1613,
+        "sha256": "6cfc541d800ccb782a5f6910ad29356e923ee1fcce10f395faf023af776cff4e"
+      },
+      {
+        "path": "INDEPENDENT_VERSION8_ACCEPTANCE_READBACK.json",
+        "bytes": 2488,
+        "sha256": "93f5d65933da07b3e6476431cb0b96757dfa1c23f3343a6304e17a78c2e63331"
+      }
+    ],
+    "site_patch_sha256": "6305e6f9abc0600ef96decb403228a3ac7a13eeb6cf9720dc76b609a19800ae8",
+    "evidence_archive": "evidence/cognition-workspace/20261101-native-identity-repair/CREDENTIAL_TRANSPORT_REPAIR.zip",
+    "archive_sha256": "0366aa4eeaab5fd3f97eea5deaee394ca03815e28231e8e7763407efb464974d"
+  },
+  "independent_version8_acceptance": {
+    "evidence_path": "evidence/cognition-workspace/20261101-native-identity-repair/INDEPENDENT_VERSION8_ACCEPTANCE_READBACK.json",
+    "task_version": 8,
+    "task_sha256": "84d282e3acc90706f7944c3db579451c0eb58aa8ed7e1486f897c465edae42dd",
+    "run_id": 41292736229,
+    "scope": "VERSIONED_TASK_COORDINATION_ONLY",
+    "effect_ack_done": false
+  }
+}

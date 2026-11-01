@@ -56,6 +56,9 @@ class HandoffContinuationContract(unittest.TestCase):
         self.assertIn("remote_head=", source)
         self.assertIn('"$remote_head" != "$PREVIOUS_BRANCH_HEAD"', source)
         self.assertIn("BLOCK: persisted handoff subject differs from remote branch HEAD", source)
+        recovery = source.split("      - name: Recover unchanged issue review handoff\n", 1)[1]
+        recovery = recovery.split("      - name:", 1)[0]
+        self.assertIn("--readback-only", recovery)
 
 
 if __name__ == "__main__":

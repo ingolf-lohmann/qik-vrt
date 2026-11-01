@@ -23,3 +23,14 @@ This test-first contract captures the observed failure in run 41167846458 attemp
 Separate deterministic issue compilation, causal work admission, review-handoff admission, notification and completion predicates. Avoid mixing source-input equality with external effect state. Preserve existing evidence and governance gates.
 
 This document is a regression specification, NOT a passing test or production repair.
+
+## Bounded successor — unchanged replay cannot regain write admission
+
+The existing recovery path now observes only. A fresh runner/output directory
+must not reset denied PR/comment attempts into permission to POST. Missing PR,
+wrong HEAD, unavailable readback and missing notification stay explicit blockers.
+A matching PR proves review handoff only; a missing/mismatching original comment
+cannot become notification success or be attributed to a different run.
+The normal changed-input transaction retains its existing write admission and
+ambiguous-effect readback. No new trigger, credential scope or executor is added.
+Issue #651 remains open until its separate native end-to-end criteria are met.

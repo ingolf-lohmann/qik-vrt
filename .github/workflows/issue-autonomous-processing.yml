@@ -296,11 +296,14 @@ jobs:
           # handoff.py requires the named local branch and verifies remote HEAD.
           git switch -c "$branch"
           echo "HANDOFF_RECOVERY: exact persisted branch $PREVIOUS_BRANCH_HEAD" >> "$GITHUB_STEP_SUMMARY"
+          # A fresh runner has no previous attempt counters. An unchanged input
+          # permits observation only; it never restores permission to POST.
           python3 -B "$TRUSTED_PROCESSOR_ROOT/scripts/issue_agent/handoff.py" \
             --repository "$REPOSITORY" --issue-number "$ISSUE_NUMBER" \
             --commit "$PREVIOUS_BRANCH_HEAD" --tree "$tree" \
             --source-commit "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID" \
-            --run-attempt "$GITHUB_RUN_ATTEMPT" --output-directory "$HANDOFF_DIRECTORY"
+            --run-attempt "$GITHUB_RUN_ATTEMPT" --output-directory "$HANDOFF_DIRECTORY" \
+            --readback-only
 
       - name: Retain exact review handoff receipt
         if: always()

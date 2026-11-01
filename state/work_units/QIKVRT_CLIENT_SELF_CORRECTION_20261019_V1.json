@@ -1,0 +1,75 @@
+{
+  "schema": "qikvrt_client_self_correction_work_unit_v1",
+  "work_unit_id": "QIKVRT_CLIENT_SELF_CORRECTION_20261019_V1",
+  "principal": "Ingolf Lohmann",
+  "authorization": {
+    "source": "Direct Owner instruction, 2026-10-19",
+    "instruction_verbatim": "Erkenne dich selbst und verbessere dich.",
+    "scope": "Bounded causal repair of the existing client continuation evidence gate",
+    "publication_or_live_peer_acceptance_implied": false
+  },
+  "source_subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+    "tree": "15eb1a7bdd2c1880405df1026b14756f0fe72714"
+  },
+  "inputs": {
+    "original_bundle_sha256": "fa7cd1c711d2c21e101fde3b33b0b81f0b552dfcc2359220c3e56a46629d2227",
+    "original_article_sha256": "7649987164e78a88393b5195c28eed30c96951bc678fbb12f4c63271ee65c277",
+    "original_mirror_package_sha256": "92ff71c9e07069e6797cdab91f18e0898f9444906be04c64598449be51e59f90",
+    "existing_article_pr": 544,
+    "original_files_modified": false,
+    "mirror_signature_for_included_key_verified": true,
+    "independent_mirror_identity_binding_verified": false
+  },
+  "diagnosis": {
+    "affected_component": "tools/ai_handoff.py --client-receipt",
+    "observed_failure": "The baseline client gate silently ignored communications and accepted SENT, RECEIVED, APPLIED and RECEIVER_NACK declarations without sending evidence.",
+    "baseline_regression": "tests.test_ai_runtime_bootloader.ClientContinuationRegressionTests.test_communication_without_send_cannot_claim_arrival_or_receiver_nack",
+    "baseline_cases_rejected": 0,
+    "baseline_cases_total": 4,
+    "causal_repair": "Validate each declared communication scope and its exact message, node, original-claim and independent native-readback prerequisites inside the existing receipt gate."
+  },
+  "native_session": {
+    "source_pr": 539,
+    "epoch": "00e3e6b9b60f4a70b22ee6ae30983e67",
+    "input_event": "00e3e6b9b60f4a70b22ee6ae30983e67:1",
+    "input_event_ledger_digest": "f4a3ff2cdaf78196898dacb1120b79d244379ef691f7b5a7426f3b96194f7de0",
+    "admission_event": "00e3e6b9b60f4a70b22ee6ae30983e67:2",
+    "admission_event_ledger_digest": "45c8085d331dd27c6f6d426656e78cfb50f1f40da7e0f872539f29e7ab10801b",
+    "method": "Original in-process Terminal bounded-input validator, Runtime.append, original Terminal read-only database reader in a separate process",
+    "socket_transport": "HOLD: EPERM",
+    "socket_prepare_commit_executed": false,
+    "historical_or_peer_journals_written": false,
+    "productive_host_or_peer_admission_inferred": false
+  },
+  "acceptance": {
+    "regression_rejects_original_four_false_promotions": true,
+    "new_regression_methods": 10,
+    "historical_receipt_compatibility_preserved": true,
+    "original_effect_ack_engine_and_states_changed": false,
+    "new_executor_or_outbox_implementation_created": false,
+    "scope": "Declared client receipt consistency; no proof of evidence authenticity or universal client use"
+  },
+  "open_obligations": [
+    "Fresh exact-candidate full gates and remote readback before integration",
+    "Recover the original node-tools/qikvrt_mirror_emit.py source and admitted binding; do not replace it",
+    "Actual authenticated Claude request/ACK/application reply through the existing native carrier",
+    "Original host activation and exact raumzeitterminal.de useful-application readback",
+    "All predecessor duties remain in their pinned continuation receipt; no closure inferred here"
+  ],
+  "provenance": {
+    "human": "Ingolf Lohmann: request, source thesis and standing procedure",
+    "artificial_cognitive": "Codex: diagnosis, bounded source repair and regression verification; Claude: self-attributed unchanged source manuscript",
+    "joint": "Owner-directed repair with separately attributed machine implementation",
+    "unresolved": "The manuscript's quantitative human-burden comparison and manufacturer intent are not established by this regression"
+  },
+  "completion_claims": {
+    "main_integration": false,
+    "live_claude_exchange": false,
+    "productive_host_acceptance": false,
+    "all_clients_adopted": false,
+    "publication": false,
+    "effect_ack_done": false
+  }
+}
