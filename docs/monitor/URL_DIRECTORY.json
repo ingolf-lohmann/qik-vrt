@@ -32,6 +32,25 @@
       "kind": "previous_chatgpt_dashboard",
       "url": "https://qikvrt-activity.ingolf-lohmann.chatgpt.site/#main",
       "state": "TRANSITIONAL_ENTRYPOINT_RETAIN_UNTIL_MIRROR_READBACK"
+    },
+    {
+      "kind": "cognitive_workspace",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "url": "https://qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site/",
+      "state": "SITE_VERSION5_DEPLOYED; AUTHORITY_CANDIDATE_SOURCE_BINDING; NO_NATIVE_NODE_ACCEPTANCE",
+      "provenance_manifest": {
+        "url": "https://qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site/.well-known/qikvrt-provenance.json",
+        "repository_path": "docs/monitor/cognition-workspace/PROVENANCE.json",
+        "bytes": 11805,
+        "sha256": "de8029fb0176c73c11e4aefe20209c4f9565122921d5c928493a9af0da113ac0",
+        "scope": "listed static assets and selected source files; no dynamic root response digest or complete runtime-asset signature"
+      },
+      "site_source_commit": "de75cef95f67178c86d9837b1a2057197ca0417b",
+      "site_version": 5,
+      "deployment": "appgdep_6ae64e6fc9b88191a9449ce96276bf4b",
+      "native_eap_channel": false,
+      "registered_node": false,
+      "effect_ack_done": false
     }
   ],
   "required_unverified_coverage": [

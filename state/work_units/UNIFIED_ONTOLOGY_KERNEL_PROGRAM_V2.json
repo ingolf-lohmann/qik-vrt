@@ -114,6 +114,81 @@
   "physical_correspondence": "OPEN_CANDIDATE",
   "empirical_confirmation": "OPEN",
   "independent_reproduction": "OPEN",
+  "continuous_proof_connectivity": {
+    "directive_id": "OWNER-KERNEL-PROOF-CONTINUITY-20261031",
+    "status": "OWNER_DIRECTIVE_RECORDED_IMPLEMENTATION_AND_ADOPTION_OPEN",
+    "principal": "Ingolf Lohmann",
+    "source_instruction": {
+      "text": "Achte auf kontinuierliche Persistierung der mathematischen anschlussfähigen Beweisbarkeit an das Kernmodul und die 1 als neutrales Element der Multiplikation und der 0 als neutrales Element der Addition und der Ontologie des Unterschieds und allem, was darauf anschlussfähig aufbaut inklusive der Frage nach Kausalität, Unschärfe, Lichtgeschwindigkeit, Nachrichten Transzendenz und Emergenz. Freigabe erteilt",
+      "encoding": "UTF-8_WITHOUT_TERMINAL_NEWLINE",
+      "sha256": "b7847f01056d259512c0058fc793bb4c8496662c0dd149105ffae26ceea446ab",
+      "repository_carrier": "https://github.com/ingolf-lohmann/qik-vrt/pull/546#issuecomment-6549284131",
+      "carrier_body_sha256": "dd774822a68c05aa3b22b0fabd267a15d932b1c55fcbc580b887aa0b91d11cdd",
+      "carrier_independently_read_back_exact": true
+    },
+    "contributions": {
+      "human": "Ingolf Lohmann: instruction, scope and authorization",
+      "artificial_cognitive": "Codex: repository inspection and structured continuation record"
+    },
+    "algebraic_anchors": {
+      "initial_domain": "Nat in leanprover/lean4:v4.19.0",
+      "generalization_requires": "An explicit algebraic structure and its assumptions; do not transfer a Nat proof to an undeclared domain.",
+      "required_statements": [
+        {"id": "KPC-MUL-RIGHT-ONE", "statement": "forall a : Nat, a * 1 = a", "candidate_constant": "Nat.mul_one"},
+        {"id": "KPC-MUL-LEFT-ONE", "statement": "forall a : Nat, 1 * a = a", "candidate_constant": "Nat.one_mul"},
+        {"id": "KPC-ADD-RIGHT-ZERO", "statement": "forall a : Nat, a + 0 = a", "candidate_constant": "Nat.add_zero"},
+        {"id": "KPC-ADD-LEFT-ZERO", "statement": "forall a : Nat, 0 + a = a", "candidate_constant": "Nat.zero_add"}
+      ],
+      "fresh_kernel_receipt": "OPEN",
+      "zero_one_distinction_boundary": "0 != 1 requires a declared nontrivial domain; the identity laws alone do not establish that distinction."
+    },
+    "existing_core_anchors": [
+      {
+        "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTUniversalOntology/Core.lean",
+        "symbols": ["QIKVRT.UniversalOntology.Distinction", "QIKVRT.UniversalOntology.information_preserves_difference", "QIKVRT.UniversalOntology.CausalModel"],
+        "boundary": "Properties of the explicitly defined typed model; a rank-defined order alone establishes no physical causal mechanism."
+      },
+      {
+        "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/WorldFormula/Relations.lean",
+        "symbols": ["QIKVRT.V2.WorldFormula.DependencyClosed", "QIKVRT.V2.WorldFormula.PhysicallyQualified", "QIKVRT.V2.WorldFormula.formalDerivability_not_sufficient_for_physicalQualification"],
+        "boundary": "Formal derivability, physical reference, operationalization and empirical evidence remain separate obligations."
+      }
+    ],
+    "topic_obligations": [
+      {"id": "KPC-CAUSALITY", "topic": "Kausalität", "state": "OPEN", "next_action": "Bind each causal claim to the existing relational model, its assumptions and any claimed physical mechanism."},
+      {"id": "KPC-UNCERTAINTY", "topic": "Unschärfe", "state": "OPEN", "next_action": "Define the intended mathematical or physical notion; distinguish epistemic uncertainty, observation resolution and any quantum uncertainty claim."},
+      {"id": "KPC-LIGHT-SPEED", "topic": "Lichtgeschwindigkeit", "state": "OPEN", "next_action": "Bind quantitative claims to an explicit model, units, assumptions and separately identified empirical evidence."},
+      {"id": "KPC-MESSAGES", "topic": "Nachrichten", "state": "OPEN", "next_action": "Bind message identity, transport, receipt and effect separately; preserve the existing EAP delivery evidence requirements."},
+      {"id": "KPC-TRANSCENDENCE", "topic": "Transzendenz", "state": "OPEN", "next_action": "Preserve the attributed term and define the intended relation before assigning a formal or empirical claim."},
+      {"id": "KPC-EMERGENCE", "topic": "Emergenz", "state": "OPEN", "next_action": "Specify the generating model, relation between levels and scope of each emergent property; keep physical correspondence separate."}
+    ],
+    "unparsed_source_phrase": "Nachrichten Transzendenz",
+    "joint_technical_meaning_of_unparsed_phrase": "OPEN_EXPLICIT_DEFINITION_REQUIRED",
+    "persistence_per_relevant_successor": {
+      "reuse_program": "state/work_units/WORLD_FORMULA_RELATION_KERNEL_V1.json",
+      "reuse_policy": "policy/QIKVRT_EPISTEMIC_CONNECTABILITY_CONTINUITY_V1.json",
+      "reuse_receipt_validator": "tools/ai_handoff.py --client-receipt",
+      "retain": ["claim_id", "exact_statement_and_domain", "assumptions", "core_dependency_graph", "epistemic_class", "source_and_contributor", "source_commit_and_tree", "artifact_digests", "checker_and_toolchain", "command_and_exit_status", "original_logs_and_axiom_audit", "supporting_and_contradicting_evidence", "uncertainty", "open_predecessor_obligations", "independent_target_readback"],
+      "correction": "APPEND_WITH_SUPERSEDES_PRESERVING_ORIGINAL",
+      "changed_dependency": "REASSESS_AFFECTED_CLAIMS_AND_REQUIRE_FRESH_EXACT_SUBJECT_EVIDENCE",
+      "unchanged_causal_failure": "NOOP_WITH_ORIGINAL_OPEN_DUTY",
+      "frozen_proof_archives": "PRESERVE_ORIGINAL_BYTES_AND_REUSE_EXISTING_ISOLATED_SUCCESSOR_PATH",
+      "new_scheduler_or_executor": false
+    },
+    "current_seven_checker_scope": {
+      "module": "QIKVRTEffectAck.DeliveryReporting",
+      "theorems": ["QIKVRT.DeliveryReporting.T1", "QIKVRT.DeliveryReporting.T2", "QIKVRT.DeliveryReporting.T3", "QIKVRT.DeliveryReporting.T4"],
+      "other_topics_covered_by_these_receipts": false,
+      "extension_requires": "Explicit source/theorem inventory and fresh receipts for the actual extended subject; never relabel historical receipts."
+    },
+    "completion_boundary": {
+      "versioned_requirement_is_kernel_execution": false,
+      "source_persistence_is_continuous_runtime_enforcement": false,
+      "all_node_adoption_verified": false,
+      "physical_correspondence_verified": false,
+      "productive_effect_ack_done": false
+    }
+  },
   "effect_state": "EFFECT_ACK_CONTINUE",
   "release_claims": {
     "PASS": false,
