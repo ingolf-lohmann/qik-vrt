@@ -1,0 +1,507 @@
+{
+  "schema": "qikvrt_zero_one_observation_local_verification_v1",
+  "status": "LOCAL_KERNEL_VERIFIED",
+  "checked_at_utc": "2026-11-01T11:58:57.785291+00:00",
+  "scope": "ALGEBRA_DISTINCTION_OBSERVATION_EFFECT_RECOVERY_CONDITIONAL_PREDICTION",
+  "base_commit": "359693ab587056c2ffe0dde2668689ad9208c6d9",
+  "base_tree": "301cb6db251529b35c56dc198d6d6f6bf6765dd1",
+  "new_theorem_count": 23,
+  "new_theorems": [
+    "QIKVRT.ZeroOneObservation.zero_mul",
+    "QIKVRT.ZeroOneObservation.zero_eq_one_collapses",
+    "QIKVRT.ZeroOneObservation.collapse_eliminates_difference",
+    "QIKVRT.ZeroOneObservation.zero_ne_one_iff_distinction",
+    "QIKVRT.ZeroOneObservation.identity_laws_allow_zero_eq_one",
+    "QIKVRT.ZeroOneObservation.trivial_arithmetic_has_no_distinction",
+    "QIKVRT.ZeroOneObservation.distinction_admits_binary_question",
+    "QIKVRT.ZeroOneObservation.detected_difference_requires_source_difference",
+    "QIKVRT.ZeroOneObservation.hidden_effect_has_no_correct_decoder",
+    "QIKVRT.ZeroOneObservation.refinement_preserves_old_information",
+    "QIKVRT.ZeroOneObservation.witness_can_separate_an_old_collision",
+    "QIKVRT.ZeroOneObservation.sufficient_joint_observation",
+    "QIKVRT.ZeroOneObservation.recoverable_iff_observation_sufficient",
+    "QIKVRT.ZeroOneObservation.exact_prediction_iff_observation_sufficient",
+    "QIKVRT.ZeroOneObservation.constant_observation_cannot_recover_a_bit",
+    "QIKVRT.ZeroOneObservation.actual_bit_witness_restores_recovery",
+    "QIKVRT.ZeroOneObservation.duplicate_blind_witness_does_not_restore_recovery",
+    "QIKVRT.ZeroOneObservation.known_identity_dynamics_do_not_restore_prediction",
+    "QIKVRT.ZeroOneObservation.profit_alone_does_not_determine_damage",
+    "QIKVRT.ZeroOneObservation.damage_readback_restores_recovery",
+    "QIKVRT.ZeroOneObservation.unknown_differs_from_observed_failure",
+    "QIKVRT.ZeroOneObservation.unknown_differs_from_observed_success",
+    "QIKVRT.ZeroOneObservation.observed_failure_differs_from_observed_success"
+  ],
+  "official_lean_archive": {
+    "bytes": 343842845,
+    "sha256": "6fe3ce97a58f44e2b3567d455b994eacec5bfe9ae7774f2a573444480ba813fe",
+    "url": "https://github.com/leanprover/lean4/releases/download/v4.19.0/lean-4.19.0-linux.tar.zst"
+  },
+  "compiler": {
+    "path": "proof_work/lean-4.19.0-linux/bin/lean",
+    "bytes": 8880,
+    "sha256": "92c3d35b5bfaa5e0fea413a775d504cf46cd95e1345df61c2274f76779e7e023"
+  },
+  "path_compatibility": {
+    "used": true,
+    "source": {
+      "path": "docs/publications/2026-10-24-causal-distance-temporal-memory/proc_self_compat.c",
+      "bytes": 728,
+      "sha256": "522eec0ce74508a910e582ee38d822011bcf5323be4cabbd1631276cc91b2226"
+    },
+    "library": {
+      "path": "proof_work/proc_self_compat.so",
+      "bytes": 15776,
+      "sha256": "dd35dd69546d09e057c0ab057f1a9d345dde2b103db29348cf7a3ba0b8da6eac"
+    },
+    "kernel_modified": false,
+    "observed_cause": "Current-process numeric /proc/<getpid>/exe denied while /proc/self/exe resolves; original existing compatibility redirects only that lookup."
+  },
+  "source": {
+    "path": "docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/ZeroOneObservation.lean",
+    "bytes": 11101,
+    "sha256": "032d4b45515e6a8d968d8097a3a7cb004663bff3d2105cfda63e159464d5e795"
+  },
+  "audit_source": {
+    "path": "docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/AxiomAudit.lean",
+    "bytes": 1795,
+    "sha256": "53af8bc5f33aace26013fa31e8746d4eaa2cd27ffd233b30c4e4413ef26764c5"
+  },
+  "prose": {
+    "path": "docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/BEWEISNOTIZ_DE.md",
+    "bytes": 13767,
+    "sha256": "dabe9cde5b8a36bc34df3351982636bac2b78722b80297220e29625bfaa2ce1a"
+  },
+  "reused_evidence_helpers": {
+    "path": "tools/qikvrt_canonical_temporal_memory_kernel_evidence.py",
+    "bytes": 22124,
+    "sha256": "7294c936274095c075bd83a4351687f573c7b16c64d1045a01e0edd6bdb6deca"
+  },
+  "fresh_published_source_readback": [
+    {
+      "record": 22955727,
+      "name": "QIKVRTUniversalOntology_Core.lean",
+      "url": "https://zenodo.org/api/records/22955727/files/QIKVRTUniversalOntology_Core.lean/content",
+      "bytes": 10191,
+      "sha256": "9c8e6671c6e34b2edfabd4908a4d6ee14d6327584188f5559a595690e9a5e9f9",
+      "native_md5_matches": true
+    },
+    {
+      "record": 22955727,
+      "name": "ONTOLOGICAL_ORIGIN_OF_DIFFERENCE_DE.md",
+      "url": "https://zenodo.org/api/records/22955727/files/ONTOLOGICAL_ORIGIN_OF_DIFFERENCE_DE.md/content",
+      "bytes": 5217,
+      "sha256": "728dcd263786db9420afd8483e06d8c2d0307aa3d2b2257c13c7ae45ffa6bd1e",
+      "native_md5_matches": true
+    },
+    {
+      "record": 22955727,
+      "name": "KERNEL_RECEIPT.json",
+      "url": "https://zenodo.org/api/records/22955727/files/KERNEL_RECEIPT.json/content",
+      "bytes": 6519,
+      "sha256": "52275c78a9e2d0f1d15db707368037a0c7e70b1de5017e86c56a962b6a1d9516",
+      "native_md5_matches": true
+    },
+    {
+      "record": 22955727,
+      "name": "QIKVRTUniversalOntology_AxiomAudit.lean",
+      "url": "https://zenodo.org/api/records/22955727/files/QIKVRTUniversalOntology_AxiomAudit.lean/content",
+      "bytes": 2494,
+      "sha256": "b1d8d6cec4c71ff69f4c17aabb3f4f5aa4f0ae6b0be87f24ccb54fecf0223911",
+      "native_md5_matches": true
+    },
+    {
+      "record": 22955727,
+      "name": "CLAIM_MATRIX_V2.json",
+      "url": "https://zenodo.org/api/records/22955727/files/CLAIM_MATRIX_V2.json/content",
+      "bytes": 4482,
+      "sha256": "bfe2637a8bc324bef5dc1662e6baa1be84281ec4e616998802bf35d39364cd28",
+      "native_md5_matches": true
+    },
+    {
+      "record": 21888130,
+      "name": "DAS_UNIVERSUM_ALS_ROUND_TRIP_DE.md",
+      "url": "https://zenodo.org/api/records/21888130/files/DAS_UNIVERSUM_ALS_ROUND_TRIP_DE.md/content",
+      "bytes": 18120,
+      "sha256": "dc58e50161b22826152dd251db836f06f85235a470e0253aeefa1b0a380787fe",
+      "native_md5_matches": true
+    }
+  ],
+  "checks": [
+    {
+      "core_version": "published",
+      "compiled": [
+        {
+          "source": {
+            "path": "proof_work/published/22955727--QIKVRTUniversalOntology_Core.lean",
+            "bytes": 10191,
+            "sha256": "9c8e6671c6e34b2edfabd4908a4d6ee14d6327584188f5559a595690e9a5e9f9"
+          },
+          "object_sha256": "beb5abe8acddf062a360ebe9deef74bdd33d6f8b09190c08bb0d052da7b54d99",
+          "check": {
+            "operation": "published-Core",
+            "command": [
+              "/workspace/scratch/e9caf2412f03/proof_work/lean-4.19.0-linux/bin/lean",
+              "-o",
+              "/workspace/scratch/e9caf2412f03/proof_work/check-published/QIKVRTUniversalOntology/Core.olean",
+              "/workspace/scratch/e9caf2412f03/proof_work/check-published/QIKVRTUniversalOntology/Core.lean"
+            ],
+            "exit_code": 0,
+            "log_sha256": "dc5af6466fa4e8a2e81e6cd85af91f47477a4c13c3a33612fd89a4f732495c99",
+            "log": "/workspace/scratch/e9caf2412f03/proof_work/check-published/QIKVRTUniversalOntology/Core.lean:184:35: warning: unused variable `model`\nnote: this linter can be disabled with `set_option linter.unusedVariables false`\n"
+          }
+        },
+        {
+          "source": {
+            "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Decision/ObservationSufficiency.lean",
+            "bytes": 6827,
+            "sha256": "17c16ef883bcde7293880ba383bcd1faf9782595e9dc603a61bfb8bc300d74ec"
+          },
+          "object_sha256": "477ce0331899075e1846800530eeb9be93dd471e9ba860a979fad81c4fe83f76",
+          "check": {
+            "operation": "published-ObservationSufficiency",
+            "command": [
+              "/workspace/scratch/e9caf2412f03/proof_work/lean-4.19.0-linux/bin/lean",
+              "-o",
+              "/workspace/scratch/e9caf2412f03/proof_work/check-published/QIKVRTFormalization/Decision/ObservationSufficiency.olean",
+              "/workspace/scratch/e9caf2412f03/proof_work/check-published/QIKVRTFormalization/Decision/ObservationSufficiency.lean"
+            ],
+            "exit_code": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "log": ""
+          }
+        },
+        {
+          "source": {
+            "path": "docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/ZeroOneObservation.lean",
+            "bytes": 11101,
+            "sha256": "032d4b45515e6a8d968d8097a3a7cb004663bff3d2105cfda63e159464d5e795"
+          },
+          "object_sha256": "84a8bb0446261dc8c67d76f3740bbd80d8728d7b2e1974c2bddb0dfe6414e5bf",
+          "check": {
+            "operation": "published-ZeroOneObservation",
+            "command": [
+              "/workspace/scratch/e9caf2412f03/proof_work/lean-4.19.0-linux/bin/lean",
+              "-o",
+              "/workspace/scratch/e9caf2412f03/proof_work/check-published/QIKVRT/ZeroOneObservation.olean",
+              "/workspace/scratch/e9caf2412f03/proof_work/check-published/QIKVRT/ZeroOneObservation.lean"
+            ],
+            "exit_code": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "log": ""
+          }
+        }
+      ],
+      "axiom_audit": {
+        "operation": "published-axioms",
+        "command": [
+          "/workspace/scratch/e9caf2412f03/proof_work/lean-4.19.0-linux/bin/lean",
+          "/workspace/scratch/e9caf2412f03/qik-vrt/docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/AxiomAudit.lean"
+        ],
+        "exit_code": 0,
+        "log_sha256": "312aba5c0565ca7988c2c7beac5934c2dba118f6ce1f24c986472c5343dca6bc",
+        "log": "'QIKVRT.ZeroOneObservation.zero_mul' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.zero_eq_one_collapses' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.collapse_eliminates_difference' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.zero_ne_one_iff_distinction' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.identity_laws_allow_zero_eq_one' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.trivial_arithmetic_has_no_distinction' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.distinction_admits_binary_question' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'QIKVRT.ZeroOneObservation.detected_difference_requires_source_difference' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.hidden_effect_has_no_correct_decoder' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.refinement_preserves_old_information' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.witness_can_separate_an_old_collision' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.sufficient_joint_observation' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.recoverable_iff_observation_sufficient' depends on axioms: [Classical.choice]\n'QIKVRT.ZeroOneObservation.exact_prediction_iff_observation_sufficient' depends on axioms: [Classical.choice]\n'QIKVRT.ZeroOneObservation.constant_observation_cannot_recover_a_bit' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.actual_bit_witness_restores_recovery' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.duplicate_blind_witness_does_not_restore_recovery' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.known_identity_dynamics_do_not_restore_prediction' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.profit_alone_does_not_determine_damage' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.damage_readback_restores_recovery' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.unknown_differs_from_observed_failure' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.unknown_differs_from_observed_success' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.observed_failure_differs_from_observed_success' does not depend on any axioms\n"
+      },
+      "axioms_by_theorem": {
+        "QIKVRT.ZeroOneObservation.zero_mul": [],
+        "QIKVRT.ZeroOneObservation.zero_eq_one_collapses": [],
+        "QIKVRT.ZeroOneObservation.collapse_eliminates_difference": [],
+        "QIKVRT.ZeroOneObservation.zero_ne_one_iff_distinction": [],
+        "QIKVRT.ZeroOneObservation.identity_laws_allow_zero_eq_one": [],
+        "QIKVRT.ZeroOneObservation.trivial_arithmetic_has_no_distinction": [],
+        "QIKVRT.ZeroOneObservation.distinction_admits_binary_question": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ],
+        "QIKVRT.ZeroOneObservation.detected_difference_requires_source_difference": [],
+        "QIKVRT.ZeroOneObservation.hidden_effect_has_no_correct_decoder": [],
+        "QIKVRT.ZeroOneObservation.refinement_preserves_old_information": [],
+        "QIKVRT.ZeroOneObservation.witness_can_separate_an_old_collision": [],
+        "QIKVRT.ZeroOneObservation.sufficient_joint_observation": [],
+        "QIKVRT.ZeroOneObservation.recoverable_iff_observation_sufficient": [
+          "Classical.choice"
+        ],
+        "QIKVRT.ZeroOneObservation.exact_prediction_iff_observation_sufficient": [
+          "Classical.choice"
+        ],
+        "QIKVRT.ZeroOneObservation.constant_observation_cannot_recover_a_bit": [],
+        "QIKVRT.ZeroOneObservation.actual_bit_witness_restores_recovery": [],
+        "QIKVRT.ZeroOneObservation.duplicate_blind_witness_does_not_restore_recovery": [],
+        "QIKVRT.ZeroOneObservation.known_identity_dynamics_do_not_restore_prediction": [],
+        "QIKVRT.ZeroOneObservation.profit_alone_does_not_determine_damage": [],
+        "QIKVRT.ZeroOneObservation.damage_readback_restores_recovery": [],
+        "QIKVRT.ZeroOneObservation.unknown_differs_from_observed_failure": [],
+        "QIKVRT.ZeroOneObservation.unknown_differs_from_observed_success": [],
+        "QIKVRT.ZeroOneObservation.observed_failure_differs_from_observed_success": []
+      },
+      "negative_controls": [
+        {
+          "source": {
+            "path": "docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/negative/BlindDecoder.lean",
+            "bytes": 245,
+            "sha256": "4fe042d2c40f16f00cbce90a438dc0c23bfb734b82a15d8d3c1719e1b94edf3c"
+          },
+          "expected_rejection_verified": true,
+          "check": {
+            "operation": "published-negative-BlindDecoder",
+            "command": [
+              "/workspace/scratch/e9caf2412f03/proof_work/lean-4.19.0-linux/bin/lean",
+              "/workspace/scratch/e9caf2412f03/qik-vrt/docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/negative/BlindDecoder.lean"
+            ],
+            "exit_code": 1,
+            "log_sha256": "a554cb1d7fdfe46cad35840f6cc7e4bfa92d070fd880c77a42d840ad31f75e26",
+            "log": "/workspace/scratch/e9caf2412f03/qik-vrt/docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/negative/BlindDecoder.lean:7:2: error: tactic 'rfl' failed, the left-hand side\n  (fun x => false) ()\nis not definitionally equal to the right-hand side\n  bit\nbit : Bool\n⊢ (fun x => false) () = bit\n"
+          }
+        },
+        {
+          "source": {
+            "path": "docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/negative/NeutralityForcesDifference.lean",
+            "bytes": 216,
+            "sha256": "b9b7d7a5b2da2c89d16eee1ed78a9463bdb1ca994fca7e2b049b76e80c4f7ac7"
+          },
+          "expected_rejection_verified": true,
+          "check": {
+            "operation": "published-negative-NeutralityForcesDifference",
+            "command": [
+              "/workspace/scratch/e9caf2412f03/proof_work/lean-4.19.0-linux/bin/lean",
+              "/workspace/scratch/e9caf2412f03/qik-vrt/docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/negative/NeutralityForcesDifference.lean"
+            ],
+            "exit_code": 1,
+            "log_sha256": "d28c6e5ce09ffd2997af038258c6a6bd676804332a33c155580eaa0f827c0bbe",
+            "log": "/workspace/scratch/e9caf2412f03/qik-vrt/docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/negative/NeutralityForcesDifference.lean:5:63: error: tactic 'decide' proved that the proposition\n  trivialArithmetic.zero ≠ trivialArithmetic.one\nis false\n"
+          }
+        },
+        {
+          "source": {
+            "path": "docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/negative/ProfitDeterminesDamage.lean",
+            "bytes": 276,
+            "sha256": "ac7f8cd518634801d6e67bc879f238b6eac326d178e0305c5b1899ae2e1e3ad1"
+          },
+          "expected_rejection_verified": true,
+          "check": {
+            "operation": "published-negative-ProfitDeterminesDamage",
+            "command": [
+              "/workspace/scratch/e9caf2412f03/proof_work/lean-4.19.0-linux/bin/lean",
+              "/workspace/scratch/e9caf2412f03/qik-vrt/docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/negative/ProfitDeterminesDamage.lean"
+            ],
+            "exit_code": 1,
+            "log_sha256": "bfe5865ddfaddd9b382c4b6416f4eac5ab79d69b7feab588c0eaf863bee8f98e",
+            "log": "/workspace/scratch/e9caf2412f03/qik-vrt/docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/negative/ProfitDeterminesDamage.lean:6:58: error: tactic 'decide' proved that the proposition\n  { profitReported := true, damageOccurred := false }.damageOccurred =\n    { profitReported := true, damageOccurred := true }.damageOccurred\nis false\n"
+          }
+        },
+        {
+          "source": {
+            "path": "docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/negative/UnknownEqualsFailure.lean",
+            "bytes": 170,
+            "sha256": "59e69a7b55bfee044efba48de79d7a8e1ef091870626c42c62f3b06c9b1b2d26"
+          },
+          "expected_rejection_verified": true,
+          "check": {
+            "operation": "published-negative-UnknownEqualsFailure",
+            "command": [
+              "/workspace/scratch/e9caf2412f03/proof_work/lean-4.19.0-linux/bin/lean",
+              "/workspace/scratch/e9caf2412f03/qik-vrt/docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/negative/UnknownEqualsFailure.lean"
+            ],
+            "exit_code": 1,
+            "log_sha256": "5d09ce39c60d8be4502a06297ebd00feb5401b083ae298cab6bef60d05e74244",
+            "log": "/workspace/scratch/e9caf2412f03/qik-vrt/docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/negative/UnknownEqualsFailure.lean:4:50: error: tactic 'rfl' failed, the left-hand side\n  none\nis not definitionally equal to the right-hand side\n  some false\n⊢ none = some false\n"
+          }
+        }
+      ]
+    },
+    {
+      "core_version": "repository",
+      "compiled": [
+        {
+          "source": {
+            "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTUniversalOntology/Core.lean",
+            "bytes": 8099,
+            "sha256": "c547c9f0a84ffb7d99d80748e47f75d8f412c2a6c5eb7c8e3652afd3cdc1f1d5"
+          },
+          "object_sha256": "65de0639079d8cfc8d7a4a3fc7d97980692296c44424df4031f89de50382069b",
+          "check": {
+            "operation": "repository-Core",
+            "command": [
+              "/workspace/scratch/e9caf2412f03/proof_work/lean-4.19.0-linux/bin/lean",
+              "-o",
+              "/workspace/scratch/e9caf2412f03/proof_work/check-repository/QIKVRTUniversalOntology/Core.olean",
+              "/workspace/scratch/e9caf2412f03/proof_work/check-repository/QIKVRTUniversalOntology/Core.lean"
+            ],
+            "exit_code": 0,
+            "log_sha256": "5db77c2220cacc15e39cc9ac50650bead4e8985654459a55af26e06fa63fc75e",
+            "log": "/workspace/scratch/e9caf2412f03/proof_work/check-repository/QIKVRTUniversalOntology/Core.lean:145:35: warning: unused variable `model`\nnote: this linter can be disabled with `set_option linter.unusedVariables false`\n"
+          }
+        },
+        {
+          "source": {
+            "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Decision/ObservationSufficiency.lean",
+            "bytes": 6827,
+            "sha256": "17c16ef883bcde7293880ba383bcd1faf9782595e9dc603a61bfb8bc300d74ec"
+          },
+          "object_sha256": "477ce0331899075e1846800530eeb9be93dd471e9ba860a979fad81c4fe83f76",
+          "check": {
+            "operation": "repository-ObservationSufficiency",
+            "command": [
+              "/workspace/scratch/e9caf2412f03/proof_work/lean-4.19.0-linux/bin/lean",
+              "-o",
+              "/workspace/scratch/e9caf2412f03/proof_work/check-repository/QIKVRTFormalization/Decision/ObservationSufficiency.olean",
+              "/workspace/scratch/e9caf2412f03/proof_work/check-repository/QIKVRTFormalization/Decision/ObservationSufficiency.lean"
+            ],
+            "exit_code": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "log": ""
+          }
+        },
+        {
+          "source": {
+            "path": "docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/ZeroOneObservation.lean",
+            "bytes": 11101,
+            "sha256": "032d4b45515e6a8d968d8097a3a7cb004663bff3d2105cfda63e159464d5e795"
+          },
+          "object_sha256": "84a8bb0446261dc8c67d76f3740bbd80d8728d7b2e1974c2bddb0dfe6414e5bf",
+          "check": {
+            "operation": "repository-ZeroOneObservation",
+            "command": [
+              "/workspace/scratch/e9caf2412f03/proof_work/lean-4.19.0-linux/bin/lean",
+              "-o",
+              "/workspace/scratch/e9caf2412f03/proof_work/check-repository/QIKVRT/ZeroOneObservation.olean",
+              "/workspace/scratch/e9caf2412f03/proof_work/check-repository/QIKVRT/ZeroOneObservation.lean"
+            ],
+            "exit_code": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "log": ""
+          }
+        }
+      ],
+      "axiom_audit": {
+        "operation": "repository-axioms",
+        "command": [
+          "/workspace/scratch/e9caf2412f03/proof_work/lean-4.19.0-linux/bin/lean",
+          "/workspace/scratch/e9caf2412f03/qik-vrt/docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/AxiomAudit.lean"
+        ],
+        "exit_code": 0,
+        "log_sha256": "312aba5c0565ca7988c2c7beac5934c2dba118f6ce1f24c986472c5343dca6bc",
+        "log": "'QIKVRT.ZeroOneObservation.zero_mul' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.zero_eq_one_collapses' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.collapse_eliminates_difference' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.zero_ne_one_iff_distinction' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.identity_laws_allow_zero_eq_one' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.trivial_arithmetic_has_no_distinction' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.distinction_admits_binary_question' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'QIKVRT.ZeroOneObservation.detected_difference_requires_source_difference' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.hidden_effect_has_no_correct_decoder' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.refinement_preserves_old_information' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.witness_can_separate_an_old_collision' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.sufficient_joint_observation' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.recoverable_iff_observation_sufficient' depends on axioms: [Classical.choice]\n'QIKVRT.ZeroOneObservation.exact_prediction_iff_observation_sufficient' depends on axioms: [Classical.choice]\n'QIKVRT.ZeroOneObservation.constant_observation_cannot_recover_a_bit' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.actual_bit_witness_restores_recovery' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.duplicate_blind_witness_does_not_restore_recovery' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.known_identity_dynamics_do_not_restore_prediction' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.profit_alone_does_not_determine_damage' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.damage_readback_restores_recovery' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.unknown_differs_from_observed_failure' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.unknown_differs_from_observed_success' does not depend on any axioms\n'QIKVRT.ZeroOneObservation.observed_failure_differs_from_observed_success' does not depend on any axioms\n"
+      },
+      "axioms_by_theorem": {
+        "QIKVRT.ZeroOneObservation.zero_mul": [],
+        "QIKVRT.ZeroOneObservation.zero_eq_one_collapses": [],
+        "QIKVRT.ZeroOneObservation.collapse_eliminates_difference": [],
+        "QIKVRT.ZeroOneObservation.zero_ne_one_iff_distinction": [],
+        "QIKVRT.ZeroOneObservation.identity_laws_allow_zero_eq_one": [],
+        "QIKVRT.ZeroOneObservation.trivial_arithmetic_has_no_distinction": [],
+        "QIKVRT.ZeroOneObservation.distinction_admits_binary_question": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ],
+        "QIKVRT.ZeroOneObservation.detected_difference_requires_source_difference": [],
+        "QIKVRT.ZeroOneObservation.hidden_effect_has_no_correct_decoder": [],
+        "QIKVRT.ZeroOneObservation.refinement_preserves_old_information": [],
+        "QIKVRT.ZeroOneObservation.witness_can_separate_an_old_collision": [],
+        "QIKVRT.ZeroOneObservation.sufficient_joint_observation": [],
+        "QIKVRT.ZeroOneObservation.recoverable_iff_observation_sufficient": [
+          "Classical.choice"
+        ],
+        "QIKVRT.ZeroOneObservation.exact_prediction_iff_observation_sufficient": [
+          "Classical.choice"
+        ],
+        "QIKVRT.ZeroOneObservation.constant_observation_cannot_recover_a_bit": [],
+        "QIKVRT.ZeroOneObservation.actual_bit_witness_restores_recovery": [],
+        "QIKVRT.ZeroOneObservation.duplicate_blind_witness_does_not_restore_recovery": [],
+        "QIKVRT.ZeroOneObservation.known_identity_dynamics_do_not_restore_prediction": [],
+        "QIKVRT.ZeroOneObservation.profit_alone_does_not_determine_damage": [],
+        "QIKVRT.ZeroOneObservation.damage_readback_restores_recovery": [],
+        "QIKVRT.ZeroOneObservation.unknown_differs_from_observed_failure": [],
+        "QIKVRT.ZeroOneObservation.unknown_differs_from_observed_success": [],
+        "QIKVRT.ZeroOneObservation.observed_failure_differs_from_observed_success": []
+      },
+      "negative_controls": [
+        {
+          "source": {
+            "path": "docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/negative/BlindDecoder.lean",
+            "bytes": 245,
+            "sha256": "4fe042d2c40f16f00cbce90a438dc0c23bfb734b82a15d8d3c1719e1b94edf3c"
+          },
+          "expected_rejection_verified": true,
+          "check": {
+            "operation": "repository-negative-BlindDecoder",
+            "command": [
+              "/workspace/scratch/e9caf2412f03/proof_work/lean-4.19.0-linux/bin/lean",
+              "/workspace/scratch/e9caf2412f03/qik-vrt/docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/negative/BlindDecoder.lean"
+            ],
+            "exit_code": 1,
+            "log_sha256": "a554cb1d7fdfe46cad35840f6cc7e4bfa92d070fd880c77a42d840ad31f75e26",
+            "log": "/workspace/scratch/e9caf2412f03/qik-vrt/docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/negative/BlindDecoder.lean:7:2: error: tactic 'rfl' failed, the left-hand side\n  (fun x => false) ()\nis not definitionally equal to the right-hand side\n  bit\nbit : Bool\n⊢ (fun x => false) () = bit\n"
+          }
+        },
+        {
+          "source": {
+            "path": "docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/negative/NeutralityForcesDifference.lean",
+            "bytes": 216,
+            "sha256": "b9b7d7a5b2da2c89d16eee1ed78a9463bdb1ca994fca7e2b049b76e80c4f7ac7"
+          },
+          "expected_rejection_verified": true,
+          "check": {
+            "operation": "repository-negative-NeutralityForcesDifference",
+            "command": [
+              "/workspace/scratch/e9caf2412f03/proof_work/lean-4.19.0-linux/bin/lean",
+              "/workspace/scratch/e9caf2412f03/qik-vrt/docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/negative/NeutralityForcesDifference.lean"
+            ],
+            "exit_code": 1,
+            "log_sha256": "d28c6e5ce09ffd2997af038258c6a6bd676804332a33c155580eaa0f827c0bbe",
+            "log": "/workspace/scratch/e9caf2412f03/qik-vrt/docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/negative/NeutralityForcesDifference.lean:5:63: error: tactic 'decide' proved that the proposition\n  trivialArithmetic.zero ≠ trivialArithmetic.one\nis false\n"
+          }
+        },
+        {
+          "source": {
+            "path": "docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/negative/ProfitDeterminesDamage.lean",
+            "bytes": 276,
+            "sha256": "ac7f8cd518634801d6e67bc879f238b6eac326d178e0305c5b1899ae2e1e3ad1"
+          },
+          "expected_rejection_verified": true,
+          "check": {
+            "operation": "repository-negative-ProfitDeterminesDamage",
+            "command": [
+              "/workspace/scratch/e9caf2412f03/proof_work/lean-4.19.0-linux/bin/lean",
+              "/workspace/scratch/e9caf2412f03/qik-vrt/docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/negative/ProfitDeterminesDamage.lean"
+            ],
+            "exit_code": 1,
+            "log_sha256": "bfe5865ddfaddd9b382c4b6416f4eac5ab79d69b7feab588c0eaf863bee8f98e",
+            "log": "/workspace/scratch/e9caf2412f03/qik-vrt/docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/negative/ProfitDeterminesDamage.lean:6:58: error: tactic 'decide' proved that the proposition\n  { profitReported := true, damageOccurred := false }.damageOccurred =\n    { profitReported := true, damageOccurred := true }.damageOccurred\nis false\n"
+          }
+        },
+        {
+          "source": {
+            "path": "docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/negative/UnknownEqualsFailure.lean",
+            "bytes": 170,
+            "sha256": "59e69a7b55bfee044efba48de79d7a8e1ef091870626c42c62f3b06c9b1b2d26"
+          },
+          "expected_rejection_verified": true,
+          "check": {
+            "operation": "repository-negative-UnknownEqualsFailure",
+            "command": [
+              "/workspace/scratch/e9caf2412f03/proof_work/lean-4.19.0-linux/bin/lean",
+              "/workspace/scratch/e9caf2412f03/qik-vrt/docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/negative/UnknownEqualsFailure.lean"
+            ],
+            "exit_code": 1,
+            "log_sha256": "5d09ce39c60d8be4502a06297ebd00feb5401b083ae298cab6bef60d05e74244",
+            "log": "/workspace/scratch/e9caf2412f03/qik-vrt/docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/negative/UnknownEqualsFailure.lean:4:50: error: tactic 'rfl' failed, the left-hand side\n  none\nis not definitionally equal to the right-hand side\n  some false\n⊢ none = some false\n"
+          }
+        }
+      ]
+    }
+  ],
+  "no_new_project_axioms": true,
+  "standard_axioms_allowed": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "native_ci_verified": false,
+  "main_integration_verified": false,
+  "productive_effect_ack_done": false,
+  "physical_retrocausality_proved": false,
+  "universal_catastrophe_prevention_proved": false,
+  "full_repository_tests": "NOT_RUN_BY_THIS_KERNEL_CHECK"
+}

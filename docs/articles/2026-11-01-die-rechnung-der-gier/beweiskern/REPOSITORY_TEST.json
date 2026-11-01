@@ -1,0 +1,25 @@
+{
+  "command": [
+    "make",
+    "test"
+  ],
+  "exit_code": 0,
+  "tested_index_tree": "97c71e692f445806a0a797e0a600fabb22687fc6",
+  "started_at_utc": "2026-11-01T12:00:11.144270+00:00",
+  "finished_at_utc": "2026-11-01T12:05:10.440776+00:00",
+  "wall_seconds": 299.297,
+  "raw_log_bytes": 452912,
+  "raw_log_sha256": "8322406b943f77bd490971fc0a7e8e911690cf2c27f3625f98380ab9fddcf903",
+  "schema": "qikvrt_zero_one_proof_repository_test_v1",
+  "scope": "LOCAL_STAGED_CANDIDATE_NOT_NATIVE_FINAL_HEAD_CI",
+  "unittest_groups": 43,
+  "unittest_executions": 2303,
+  "archived_log": {
+    "path": "MAKE_TEST.log.gz",
+    "bytes": 66071,
+    "sha256": "54bb5a3eb83633bb0afbc3937f7b5b27ebe4de6d94075d761463196f944af26b"
+  },
+  "after_test_changes": "Only this test receipt, its lossless compressed raw log and deterministic repository integrity outputs were added after the tested index tree. Proof sources and prose did not change.",
+  "new_proof_source_sha256": "032d4b45515e6a8d968d8097a3a7cb004663bff3d2105cfda63e159464d5e795",
+  "productive_effect_ack_done": false
+}

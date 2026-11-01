@@ -1104,6 +1104,16 @@ bd94413952344104c9f5b381caa0c413f4a4ad8cabea11bb820dca7301c18513  docs/articles/
 7845e59f2f0aa1c30ceab65c3316728140db63f99a42107ea48afa3092998006  docs/articles/2026-11-01-die-rechnung-der-gier/LOCAL_VALIDATION.json
 f0d0a67bb51bfe6e9b69a5b3b8386acdd01b0c84b31754823668a46f80a151cf  docs/articles/2026-11-01-die-rechnung-der-gier/MAKE_TEST.log.gz
 42db0f7f87fa28e83f3bfc5bc530149b313f9820da20c989a55d486811d5e3c9  docs/articles/2026-11-01-die-rechnung-der-gier/PDF_READING_EDITION.json
+53af8bc5f33aace26013fa31e8746d4eaa2cd27ffd233b30c4e4413ef26764c5  docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/AxiomAudit.lean
+dabe9cde5b8a36bc34df3351982636bac2b78722b80297220e29625bfaa2ce1a  docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/BEWEISNOTIZ_DE.md
+54bb5a3eb83633bb0afbc3937f7b5b27ebe4de6d94075d761463196f944af26b  docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/MAKE_TEST.log.gz
+4e432c5158144c7a9bb7d33ca3dfc734591b9efd92042cf74ba91593f0f5668c  docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/REPOSITORY_TEST.json
+1c655c899512d48ca543d3fa3cb7cb68c7a02f074c7a916123fe95b6a24b02b6  docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/VERIFICATION.json
+032d4b45515e6a8d968d8097a3a7cb004663bff3d2105cfda63e159464d5e795  docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/ZeroOneObservation.lean
+4fe042d2c40f16f00cbce90a438dc0c23bfb734b82a15d8d3c1719e1b94edf3c  docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/negative/BlindDecoder.lean
+b9b7d7a5b2da2c89d16eee1ed78a9463bdb1ca994fca7e2b049b76e80c4f7ac7  docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/negative/NeutralityForcesDifference.lean
+ac7f8cd518634801d6e67bc879f238b6eac326d178e0305c5b1899ae2e1e3ad1  docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/negative/ProfitDeterminesDamage.lean
+59e69a7b55bfee044efba48de79d7a8e1ef091870626c42c62f3b06c9b1b2d26  docs/articles/2026-11-01-die-rechnung-der-gier/beweiskern/negative/UnknownEqualsFailure.lean
 b2a3388dc22f6e39daf85dcb2963181c892aa650124189ad9891418e147ef113  docs/articles/a001_quantum_crypto_ai.md
 6b0d9301a56c8692e25935381dbe1c9249210e63e705e0302a1a55614ffb567e  docs/articles/a002_categorical_imperative.md
 01637e2eb64f67822770ff1864eb7faafae9fdbea6595039d3aaa2744eb37447  docs/articles/a003_uap_maturity_test.md
