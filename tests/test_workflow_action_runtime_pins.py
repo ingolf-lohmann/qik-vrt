@@ -31,7 +31,8 @@ RETIRED = {
 }
 SETUP_PYTHON = "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0"
 SETUP_PYTHON_RETIRED = "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065"
-EXPECTED_SETUP_PYTHON_ACTIVE = 57
+# PR655 adds the Authority workspace-task-intake job's pinned Python setup.
+EXPECTED_SETUP_PYTHON_ACTIVE = 58
 EXPECTED_SETUP_PYTHON_HISTORICAL = 10
 # Exact sites at main 9763b2c8; a new site must be added here deliberately.
 EXPECTED_SETUP_NODE = 19
