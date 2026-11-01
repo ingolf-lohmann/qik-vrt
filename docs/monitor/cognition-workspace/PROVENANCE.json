@@ -2,8 +2,8 @@
   "authority": {
     "binding": "COMPARE_EXACT_MANIFEST_BYTES_THROUGH_INDEPENDENT_AUTHORITY_GET; not self-attested",
     "candidate_path": "docs/monitor/cognition-workspace/PROVENANCE.json",
-    "candidate_ref": "fix/client-communication-evidence-20261019",
-    "observed_main": "5a42baf45748e4407a8fa16aef287a77873e788d",
+    "candidate_ref": "feat/static-terminal-devops-client-20261031",
+    "observed_main": "a8ec0bc8a32599e30409aca708564d4d03003119",
     "repository": "ingolf-lohmann/qik-vrt"
   },
   "codec_sources_sha256": {
@@ -130,28 +130,28 @@
       "url": "https://qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site/sitemap.xml"
     },
     {
-      "bytes": 44039,
+      "bytes": 45626,
       "container": {
-        "bytes": 16688,
+        "bytes": 17121,
         "path": "/provenance/containers/17cc932167e812208f22a46d64da91a4834e70161851f46e3da877614d4a347a.qikvrt",
-        "sha256": "9d619ac1898117fbfdfd48711bc37099c11b58b4be69d3641dc13b71e22d0132"
+        "sha256": "591faf861c45234ba15f1564eb8a2ce9d62ea93c84cccf334234036e4f59efbd"
       },
       "kind": "selected_source",
       "path": "app/workspace.tsx",
       "payload_license": "PolyForm-Noncommercial-1.0.0",
-      "sha256": "7820ff88e1de9d110a967658ca04c2b031695c439c0f58470c543cab10e9f0cb"
+      "sha256": "f09e70130038f78a53115d6029216b0cffcce0f46ce8fc67f05791b9cc6d0f60"
     },
     {
-      "bytes": 288,
+      "bytes": 751,
       "container": {
-        "bytes": 3460,
+        "bytes": 3634,
         "path": "/provenance/containers/131fa6e20337a3381164631866e927481a9c2e8ba1e516da91e77c49428f08fa.qikvrt",
-        "sha256": "db1bd630eaf326a7f4b225de6a5eb7c076c0226a0379951041adaa3d2807d93a"
+        "sha256": "19994933f4758223e8db41e382c12bc59fd5c6563ce1d4ac6281122d3b6b1a15"
       },
       "kind": "selected_source",
       "path": "app/page.tsx",
       "payload_license": "PolyForm-Noncommercial-1.0.0",
-      "sha256": "9bfe39e2da5b427362bf68cc850168fb8292b0f101df30d58159228d27324d63"
+      "sha256": "597af730ac0fd7fe8c2fb4829c825d04f2f56b609e3136aa822a14e0d26366bd"
     },
     {
       "bytes": 593,
@@ -190,28 +190,28 @@
       "sha256": "2e69b0c217065892aad2200860a2ff3669235fb812376ad3bf3ab94ff6e2f21d"
     },
     {
-      "bytes": 6114,
+      "bytes": 8852,
       "container": {
-        "bytes": 5527,
+        "bytes": 6412,
         "path": "/provenance/containers/a8f1f0b9557d63693969dafa041f318dd983e8151533b130b0c3c07fc87544fb.qikvrt",
-        "sha256": "33d46796546d56217272c2d513c3728344ece3c902bc62ee108f1ed5cc99a2ae"
+        "sha256": "acb4c703a1d9c32aa96c89065c129f81a1a4ac73af1f58eb47cc30739e8fdada"
       },
       "kind": "selected_source",
       "path": "lib/workspace.ts",
       "payload_license": "PolyForm-Noncommercial-1.0.0",
-      "sha256": "1b63dd7387b7f7bf0879a68a31b90c1d079599a19ef0e58b724269cec547729d"
+      "sha256": "d6d567fde9ac44ab1ff91f02d00d24247f1c5c8ea0f4886d0f078964968ac8ca"
     },
     {
-      "bytes": 1023,
+      "bytes": 1222,
       "container": {
-        "bytes": 3754,
+        "bytes": 3852,
         "path": "/provenance/containers/6e970e129705dac3511c412306e8cc567f8a5e08fdb1f47d0f558b782717090b.qikvrt",
-        "sha256": "702de124a6c106102b7d6c3be6fe8341d9d0c57d305638113dfe524f267f22c5"
+        "sha256": "a061e348a1403110be373d2a550361f12d7ee25e0e80ab3892a902639b61b1eb"
       },
       "kind": "selected_source",
       "path": "lib/security-headers.ts",
       "payload_license": "PolyForm-Noncommercial-1.0.0",
-      "sha256": "0d4e57de8faaef70ef4e763923545f815258a58f3e5df4bef24ffbca3d05830b"
+      "sha256": "d3f01bc50a94d138fad931c1dd440455027cf53e33caffe4388767d9d619db1f"
     },
     {
       "bytes": 1420,
@@ -226,16 +226,16 @@
       "sha256": "e817cac3e12dde090ff3606fab01b6bb7ca9ae25ce69ef9687ebfc4f30b8ad67"
     },
     {
-      "bytes": 6188,
+      "bytes": 6697,
       "container": {
-        "bytes": 5699,
+        "bytes": 5842,
         "path": "/provenance/containers/5dbd5690655cc102900ff1784cacbd6abaa7a324fa74d69c84ed9dac5365487d.qikvrt",
-        "sha256": "7904bd7064203d641a341b3e9bd49359a8bc2961cde4422265aa5e29e9110c64"
+        "sha256": "5491a37510e04fdbd99542b8bd46b753247acd81126e1d6a7a827bf639028eb3"
       },
       "kind": "selected_source",
       "path": "scripts/qikvrt-provenance.py",
       "payload_license": "PolyForm-Noncommercial-1.0.0",
-      "sha256": "eec1038f7c476c0e420f09ededccbdd03c6ba66e1f8e4c307cff48c0772b9fdb"
+      "sha256": "3c3eecf7d1762edaa96436e22afb03a372d0d8dcda20ba3bb226ed4285752bab"
     },
     {
       "bytes": 567,
@@ -248,6 +248,174 @@
       "path": "public/_headers",
       "payload_license": "PolyForm-Noncommercial-1.0.0",
       "sha256": "c525c7eed45776a2b3208e45ac02c0bec7ff0187d37951a4736655c436d45a0c"
+    },
+    {
+      "bytes": 2690,
+      "container": {
+        "bytes": 4558,
+        "path": "/provenance/containers/9af9cace3aa28e23173b23c094a650be1509594b8d0d3505ad4dfaf1e924833d.qikvrt",
+        "sha256": "4063b1fd0f13f5701298fbe969b8e4c47c026da99ae4e453facde82d77007f1c"
+      },
+      "kind": "selected_source",
+      "path": "app/journal/page.tsx",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "1ca8537f0b71667d8018ed6a12b1e9dfc5b803da6dd2801a067de60d6015116b"
+    },
+    {
+      "bytes": 351,
+      "container": {
+        "bytes": 3484,
+        "path": "/provenance/containers/4a06ec2f1b3ffee04cf596e47ae0c19f37e26bada45e632794e9a6f24af8ec71.qikvrt",
+        "sha256": "f080669cf069d8137e8d96f37e7212351fccf15aac83a98b89d5c5f4d132a07b"
+      },
+      "kind": "selected_source",
+      "path": "app/api/v1/shared/route.ts",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "c6ae1fde356df1358c1082cb252f531841d66381df59d17fb0510d0c12efc510"
+    },
+    {
+      "bytes": 121,
+      "container": {
+        "bytes": 3383,
+        "path": "/provenance/containers/a7921b62f3079fe993612c1aff86ae26a3087563769ca876204cf759b3dce646.qikvrt",
+        "sha256": "3d6b48ff5968ff4deecb501aa75d1c9fac567187210110114b11ce5fa3112bc6"
+      },
+      "kind": "selected_source",
+      "path": "app/api/v1/context/route.ts",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "7ab42208b5a4e9efe312df427e14786d642b3bb3396abfa9dde113051fab262c"
+    },
+    {
+      "bytes": 222,
+      "container": {
+        "bytes": 3428,
+        "path": "/provenance/containers/7490223a641fb58170e725fdefe97ab55e9423214a9fc96c6e1986581ab7dc6d.qikvrt",
+        "sha256": "77b09d7af90d8111723fc0970f95dc8a9e8ae6934294bf4f418784ae63f0b618"
+      },
+      "kind": "selected_source",
+      "path": "app/api/v1/workspace/route.ts",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "f90103ad5681ca976bf09638df65562d27506c1051286de097a4c8d08c1cc232"
+    },
+    {
+      "bytes": 486,
+      "container": {
+        "bytes": 3528,
+        "path": "/provenance/containers/723402aa7c26810227b81b55d9a6a5f17479d497b2dc8a058f351956e5fdf933.qikvrt",
+        "sha256": "d7f1307e08f54b9bfd2005e5154f8669068301adeccbcde99d2474c52821b42c"
+      },
+      "kind": "selected_source",
+      "path": "app/api/v1/tasks/route.ts",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "f7eeaf4447d66e8703dda092557c62cd1f9519bf4afd62087c6e2027be39a5e9"
+    },
+    {
+      "bytes": 633,
+      "container": {
+        "bytes": 3582,
+        "path": "/provenance/containers/39b1161aba4ecf6b15acb0e1eb82cdf20477d57625fe4d17e8233e0aa47b9f62.qikvrt",
+        "sha256": "b8b9ab2d56fdcc722591ef38f6070745e960329ab104abe33a84bb9dc325c8a1"
+      },
+      "kind": "selected_source",
+      "path": "app/api/v1/tasks/[id]/route.ts",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "5155f23a2b4f85afec7150ec4309d45ffbd34f203378f72903d344b336f8c97b"
+    },
+    {
+      "bytes": 5132,
+      "container": {
+        "bytes": 4880,
+        "path": "/provenance/containers/bb5cdc2b0ff00e705a616138bc60834b633358a9fc7cdaf7e30e874710520b7e.qikvrt",
+        "sha256": "038fc8f5b7e71fa8eea0ca1da971f93f5a4e3ddde19abfe866c2f272639bff9b"
+      },
+      "kind": "selected_source",
+      "path": "app/mcp/route.ts",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "21248a72e7e9701702620683e2d5411f6af69ff26c6b219f93f785215c0c80f7"
+    },
+    {
+      "bytes": 1932,
+      "container": {
+        "bytes": 3999,
+        "path": "/provenance/containers/710190368f96ab22182f71aa720b009c1ad63f932b223f3d3a9f6b7231ecf687.qikvrt",
+        "sha256": "2ab674670586757e7a871bba4d39a4ab63e619b9f0f7728d085a23e90196cf53"
+      },
+      "kind": "selected_source",
+      "path": "lib/contracts.ts",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "922719be438b9f6649ac6183c04e23fb6bd2efb19195eb06037858d8dfbb8ea3"
+    },
+    {
+      "bytes": 1788,
+      "container": {
+        "bytes": 3822,
+        "path": "/provenance/containers/e7b18edae32af475ae94d2025b13d2b984d36696cce5a8d015dff934043cacff.qikvrt",
+        "sha256": "8c34ff01b53f6719db501abbb249d1c2b90aea1b105e23ac950a1f553559559b"
+      },
+      "kind": "selected_source",
+      "path": "db/schema.ts",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "1981e56f132c5a26434e7d5c1cc047a35060770a3ce3235fc3e67c581e1150c9"
+    },
+    {
+      "bytes": 9574,
+      "container": {
+        "bytes": 6546,
+        "path": "/provenance/containers/cd51f857d2d866fafcc730433f778979d17ae977b91ee5e6a3acd1a45dcd348f.qikvrt",
+        "sha256": "9967bf680d8ba816e7086e4655c2fe5b62f6ae779e669a0dd7d6ccdba887d2d7"
+      },
+      "kind": "selected_source",
+      "path": "lib/authority-identity.ts",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "d8466f4773df71bbc7ab7cc20064bad71f55917db23a9c707b87a206bbdf63a3"
+    },
+    {
+      "bytes": 3529,
+      "container": {
+        "bytes": 4664,
+        "path": "/provenance/containers/a2fdd33f9138bf6e812b6abe4b57c9cf20b3b3cbd6cb28f551a4a283303f11a4.qikvrt",
+        "sha256": "b4759d45b126267c756b52da882c7102b8c0779613213f96fcae4dc1ea042679"
+      },
+      "kind": "selected_source",
+      "path": "lib/authority-intake.ts",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "8e3e2d53bcf814068ef2496bd18f40fbef933d6359696736361f2efab5d92fc6"
+    },
+    {
+      "bytes": 567,
+      "container": {
+        "bytes": 3556,
+        "path": "/provenance/containers/ee182270c053e9857bc00d2a64537be4b4c69c5c154652688b81d9182f1cca09.qikvrt",
+        "sha256": "d8c3cd55d5b2c381b672d104273c2b6c599a9b325e3d01a20cffe48acd3d05d4"
+      },
+      "kind": "selected_source",
+      "path": "app/api/v1/authority/tasks/[id]/route.ts",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "be5e334681ada4705d3c7246efc7ca604226a00ea04eb9b969905fce13137464"
+    },
+    {
+      "bytes": 555,
+      "container": {
+        "bytes": 3539,
+        "path": "/provenance/containers/8ff651402c3f71b3ef5bd83b8a3b01ec05f42360eabd4a73df16cb4a4e6d7042.qikvrt",
+        "sha256": "50202419a81d11a5c65df9bb7e4bf7b1372a69ef43f10878d20913306645263f"
+      },
+      "kind": "selected_source",
+      "path": "app/api/v1/authority/acceptances/route.ts",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "1669de34414dcaccc8342f723eaa0a107ce99402ab616267b964eee24383d0f9"
+    },
+    {
+      "bytes": 233,
+      "container": {
+        "bytes": 3439,
+        "path": "/provenance/containers/e61542e858c5722507b84be245588cfede202f3d316dd2d53c63671d32d2bd19.qikvrt",
+        "sha256": "eb316ed170bd9741abe9993e3542c3a0f224a5de29b09adff1ce9945e5e08f06"
+      },
+      "kind": "selected_source",
+      "path": "drizzle/0002_heavy_guardsmen.sql",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "a541c588b15e455b259ff3ee329086beb19778f35a5fb2ecffc362551ecc8986"
     }
   ],
   "implementation": "OpenAI Codex",
@@ -266,7 +434,7 @@
     "root_html": "DYNAMIC_NOT_BYTE_FROZEN",
     "watermark": "NOT_IMPLEMENTED"
   },
-  "site_source_predecessor": "27867bb420a33b993c06865f7e4cf9dd4eb75cb2",
+  "site_source_predecessor": "87ee4f879c2ed28bfb818745a86647549b6681a2",
   "standpoint": {
     "bytes": 400,
     "personal_authentication": false,
