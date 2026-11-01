@@ -54,8 +54,13 @@ uses job-scoped `id-token: write`, `contents: read` and `actions: read`; it expo
 no visitor session or long-lived credential. Missing issuer/API/storage access
 is UNVERIFIED/HOLD, not an empty task list or successful adoption.
 
-Workload tokens use the explicit `X-QIKVRT-Workflow-Identity` header admitted
-by this same source contract. Standard `Authorization` remains the platform's
+Workload tokens use the source-admitted `__Host-QIKVRT-Workflow-Identity` service
+cookie. It is never set by this application or issued to browser visitors; this
+retains the original GitHub OIDC identity and creates no visitor session.
+The observed infrastructure log surface redacts `Cookie`, but stored JWT-form
+credentials from the former custom header were not redacted. The legacy header
+is therefore rejected, and the native client refuses its old transport contract
+before requesting a token. Standard `Authorization` remains the platform's
 identity namespace. The first actual Main run41284897131 failed HTTP403 before
 any independently observed acceptance (issue662); its original log/artifact
 remain failure evidence. Missing receiver logs do not identify the denial's

@@ -355,6 +355,7 @@
       "historical_observation_only": true
     },
     "subsequent_versions": "SAME_ADMITTED_TASK_ID; COORDINATION_DATA_ONLY; NO_ADDITIONAL_EFFECT_AUTHORITY",
-    "identity_header": "X-QIKVRT-Workflow-Identity"
+    "identity_header": "Cookie",
+    "identity_cookie": "__Host-QIKVRT-Workflow-Identity"
   }
 }
