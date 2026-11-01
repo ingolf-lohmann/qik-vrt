@@ -92,7 +92,18 @@
       "administrative_ruleset_activation": "SEPARATE_EFFECT",
       "owner_principal_review_is_valid_review": true
     },
-    "promotion_requires_current_review": "OWNER_PRINCIPAL_REVIEW_OR_INDEPENDENT_NATIVE_APPROVAL"
+    "promotion_requires_current_review": "OWNER_PRINCIPAL_REVIEW_OR_INDEPENDENT_NATIVE_APPROVAL",
+    "provider_routing": {
+      "default": "QIKVRT_NATIVE",
+      "enabled": true,
+      "scope": "OPEN_NON_DRAFT_MAIN_PULL_REQUESTS",
+      "copilot_required": false,
+      "copilot_assignment_or_review_retry": false,
+      "native_route_owner_instruction": "Ingolf Lohmann, 2026-10-23: use QIK-VRT own cognition instead of Copilot integration; authorization granted.",
+      "technical_gate_evaluator_is_semantic_ai_review": false,
+      "semantic_review_requires_attributed_cognitive_client": true,
+      "subscription_cancellation_proven": false
+    }
   },
   "issue_lifecycle": {
     "unclassified_open_issue": "FORBIDDEN",

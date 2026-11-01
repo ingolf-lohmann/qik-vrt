@@ -1,0 +1,97 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_PRODUCTION_SSO_HANDOFF_20261029",
+  "owner": "Ingolf Lohmann",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "base_head": "029946851da9cc5c5159526286fd8750fa53ab52",
+  "recorded_at": "2026-10-29T04:45:25.173233+01:00",
+  "state": "SOURCE_IMPLEMENTED_NATIVE_ACCEPTANCE_OPEN",
+  "owner_instructions": [
+    {
+      "text": "Also ein GitHub-Connector hatten wir doch schon seit Monaten im erfolgreichen Einsatz. Dann erteile ich dir hiermit nochmal die Freigabe, den zu nutzen. Und in Zukunft Single sign-on vollumfänglich anzuwenden",
+      "sha256": "fcba2af602b38e3d7b371d231b7355f37872b3bea56aa7574914cbd9d6783b03"
+    },
+    {
+      "text": "Ja, dann implementier das doch mal endlich. Das will ich sowieso schon die ganze Zeit, dass du das machst. Beginne",
+      "sha256": "c4c3dae3e3c3a6596060bbbf34d461a6758afac93b8771b80d7c1d7580423101"
+    }
+  ],
+  "scope": "Extend the original protected REST adapter and OIDC session with the fixed qikvrt-production Environment handoff; existing connector remains the repository interface.",
+  "reused_components": [
+    "tools/qikvrt_authority_credentials.py",
+    "src/qikvrt_personal_auth.py",
+    "src/qikvrt_personal_assistant.py::personal_handler",
+    "src/qikvrt_github_api_shim.py",
+    "tools/qikvrt_self_host_container.py::binding",
+    "OS Secret Service original profile and writer.lock"
+  ],
+  "supersedes_prior_no_source_repair_for_this_specific_requested_implementation": true,
+  "permission_expansion_authorized": false,
+  "managed_connector_token_export": false,
+  "new_oauth_client_or_host": false,
+  "secret_values_in_repository": false,
+  "native_sso_acceptance": "UNVERIFIED",
+  "github_environment_handoff": "NOT_EXECUTED",
+  "job_credential_delivery_verified": false,
+  "host_identity_verified": false,
+  "restart_executed": false,
+  "feature_toggle_activated": false,
+  "effect_ack_done": false,
+  "next_required_native_operation": "GET /v1.45/info after the original protected handoff and independent job/package pins",
+  "open_work": [
+    {
+      "id": "native-sso",
+      "next_action": "Run the existing adapter under the original native desktop SSO profile with its protected process bindings; verify original OIDC identity/renewal without exporting credentials."
+    },
+    {
+      "id": "protected-handoff",
+      "next_action": "Execute one source-bound handoff and independently observe the original consuming job inputs; metadata is not secret-value delivery proof."
+    },
+    {
+      "id": "original-host-identity",
+      "next_action": "Execute existing container-host-identity with independent tested package pins and freshly read the create-only receipt before any restart."
+    },
+    {
+      "id": "exact-domain-delivery",
+      "next_action": "Retain raumzeitterminal.de as the exact acceptance target; fresh native runtime and public terminal delivery are separate."
+    }
+  ],
+  "validation": {
+    "local_test_subject": {
+      "head": "88646913a47e4f1d1f72ff121ee66c305699a618",
+      "tree": "556f7ce7c938846680b25ecc3872e6a3d9a65ad6"
+    },
+    "focused_python_tests": {
+      "count": 28,
+      "result": "PASS",
+      "real_crypto_roundtrip_executed": true,
+      "native_sso_or_github_effect_inferred": false
+    },
+    "ui_controls": "PASS: same-origin/state/window binding, one upload, lost-reply readback, logout",
+    "prior_complete_portable_suite": {
+      "count": 1891,
+      "result": "PASS",
+      "scope": "Predecessor worktree before final source guard"
+    },
+    "final_expanded_command": "make test repository-monitor-test self-host-test",
+    "final_expanded_command_exit": 2,
+    "final_reported_python_tests": 1956,
+    "final_python_errors": 10,
+    "first_failure": "tests.test_temdd_event_ledger.ProducerTests: Unix socket creation PermissionError Errno 1 Operation not permitted; CLI stdout JSON failure also observed",
+    "test_expectations_weakened": false,
+    "native_exact_candidate_ci_required": true,
+    "local_log_sha256": "32ae61fedd4c82a36762a4a4178d0adc03ec49cf62b7469a929aa7303431284b"
+  },
+  "mirror_outbox": {
+    "original_tool": "node-tools/qikvrt_mirror_emit.py",
+    "state": "HOLD: original admitted native effect/outbox carrier unavailable in this session",
+    "sent": false,
+    "node_adoption_verified": false,
+    "preserved_members": [
+      "Codex",
+      "Goldkelch Mirror",
+      "Originalhost",
+      "Mesh-Monitor"
+    ]
+  }
+}

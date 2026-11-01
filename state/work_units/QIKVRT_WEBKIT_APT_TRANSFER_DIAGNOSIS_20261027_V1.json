@@ -1,0 +1,220 @@
+{
+  "schema": "qikvrt-webkit-apt-diagnostic-successor/v1",
+  "work_unit": "QIKVRT_WEBKIT_APT_TRANSFER_DIAGNOSIS_20261027_V1",
+  "principal": "Ingolf Lohmann",
+  "implementation_contribution": "OpenAI Codex",
+  "authorization": "Existing Owner authorization for autonomous causal repair and the current source-bound continuation request",
+  "source": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "365914236153710d659c8d1c93bf50249606266d",
+    "tree": "f1eab0b3e4a8cbec71b1bbeafbc68871feaa88a5"
+  },
+  "predecessor": {
+    "snapshot_id": "f89a43b2-4fcd-453c-9343-926eaf728970",
+    "snapshot_sha256": "f9e3015e44d35ddf4b923b6a0de3106b1dac4d1cecfda486855cc8debb11a099",
+    "byte_verified": true,
+    "scope": "Historical HTTP observation; not fresh domain or runtime acceptance"
+  },
+  "original_job": {
+    "run_id": 40427423011,
+    "job_id": 121939434990,
+    "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/40427423011/job/121939434990",
+    "downloaded_log_sha256": "5a8cdf057cbc7bb6dc416f7e8354a9b37d3f2a959a2b4fbf2ec679867330a68b",
+    "system_dependency_exit_status": 124,
+    "timeout_seconds": 720,
+    "browser_download_reached": false,
+    "browser_tests_reached": false
+  },
+  "diagnosis": {
+    "observed": "APT index update reported 11.4 MB/s; intervals between large package messages imply approximately 48-53 kB/s including overhead",
+    "cause": "NOT_ESTABLISHED",
+    "open_hypotheses": [
+      "Effective APT download configuration",
+      "Affected mirror transfer path",
+      "Runner/network routing"
+    ],
+    "unmodified_retry_dispatched": false
+  },
+  "change": {
+    "carrier": ".github/workflows/qikvrt_ci.yml offline_browser (webkit)",
+    "phase": "After original system-dependency attempt, including failure",
+    "read_only": true,
+    "maximum_probe_bytes_per_scheme": 1048576,
+    "maximum_probe_milliseconds_per_scheme": 30000,
+    "diagnostic_step_timeout_minutes": 2,
+    "changes_package_sources": false,
+    "changes_original_installation_budgets": false,
+    "new_workflow_or_executor": false
+  },
+  "validation": {
+    "targeted_command": "node --test runtime/offline/browser-tests/apt-diagnosis.test.mjs",
+    "targeted_tests": 9,
+    "targeted_result": "SUCCESS",
+    "full_gate": "make test repository-monitor-test self-host-test",
+    "full_result": "SEE_EXACT_CANDIDATE_NATIVE_CI_AND_REVIEW_RECEIPTS",
+    "native_runner_probe_executed_by_this_source_record": false
+  },
+  "preparation_findings": {
+    "fresh_source_archive_and_original_commit_object_verified": true,
+    "main_original_immutable_manifest_matches_archive": true,
+    "initial_verifier_failure": "Two untracked temporary recovery files, removed before candidate export",
+    "candidate_integrity_regenerated_through_original_generator": true
+  },
+  "open_work": [
+    "Execute diagnostic candidate on its bound native WebKit runner and read APT_DIAGNOSIS.json",
+    "Determine the actual transfer cause from current-run evidence",
+    "Verify complete CI on the resulting exact subject",
+    "Enforce native Main governance",
+    "Restore admitted originalhost runtime binding and exact raumzeitterminal.de DNS/TLS/application acceptance"
+  ],
+  "native_route": {
+    "ready": false,
+    "open_gates": [
+      "ADMITTED_MESH_RUNTIME_ENDPOINT"
+    ],
+    "scope": "Observed adapter binding; no prepare/commit issued"
+  },
+  "effect_ack_done": false,
+  "domain_delivery_established": false,
+  "successor_correction": {
+    "schema": "qikvrt-webkit-diagnostic-collection-correction/v1",
+    "predecessor_head": "d20da6b1d1171c82a60e0bb0d4d39848d503c241",
+    "predecessor_tree": "2a90916c70978ef3d6e63bf27666e3e542d91ab5",
+    "artifact": {
+      "id": 12713263362,
+      "run_id": 40457313121,
+      "job_id": 122035432973,
+      "zip_sha256": "24c7f85295ac808e9c7e5737613abf5ab1c28d06c90831cfb29fe7cd5805ea4b",
+      "zip_sha256_verified": true,
+      "files": [
+        {
+          "path": "evidence/receipts/QIKVRT_WEBKIT_APT_TRANSFER_12713263362/APT_DIAGNOSIS.json",
+          "bytes": 2906,
+          "sha256": "b1d0c23e5a06a3cfd1e9502f03819e1ec5d29f9667c7096a1b3da2a57af7ef75"
+        },
+        {
+          "path": "evidence/receipts/QIKVRT_WEBKIT_APT_TRANSFER_12713263362/INSTALL_PHASE_SYSTEM_DEPS.txt",
+          "bytes": 190,
+          "sha256": "3bd5e52872a3aa7ad3beef4844cd31d3ceade0dceb84b4f6a65cacf401ec5b08"
+        },
+        {
+          "path": "evidence/receipts/QIKVRT_WEBKIT_APT_TRANSFER_12713263362/SUBJECT.txt",
+          "bytes": 82,
+          "sha256": "18c4a74d3e04d178021a1e792cb3d846b21ed1a0dd000b93e910240d4a2d1cbc"
+        }
+      ]
+    },
+    "observations": {
+      "system_dependencies": {
+        "exit_status": 0,
+        "duration_seconds": 618
+      },
+      "apt_download_limit": "NONE_IN_RECORDED_KEYS",
+      "http_sample_received_bytes": 1048576,
+      "https_received_bytes": 0,
+      "https_timeout_ms": 30000,
+      "https_observed_phase": "DNS_ONLY",
+      "tcp_connection_verified": false,
+      "tls_handshake_verified": false,
+      "transport_comparison": "UNVERIFIED",
+      "collection_errors": [],
+      "browser_download_reached": false,
+      "webkit_tests_reached": false,
+      "cause": "NOT_ESTABLISHED"
+    },
+    "proven_flow_defect": "The diagnostic returned 1 solely because the transport comparison was UNVERIFIED, which skipped subsequent browser steps despite successful dependency installation",
+    "repair": "Separate structurally valid record collection from transport comparison; a saved valid partial record returns collection exit 0 and retains UNVERIFIED and original probe evidence. Source/checker/malformed-record errors still return nonzero. Browser download and browser test failures remain blocking",
+    "regression": "Replay original byte-bound report through the actual persistence/exit path under set -e; verify downstream reachability, preserved DNS-only evidence, checker failures and mandatory browser failures",
+    "targeted_tests": 12,
+    "closed_predecessor_work": [
+      {
+        "task": "Execute diagnostic candidate on its bound native WebKit runner and read APT_DIAGNOSIS.json",
+        "evidence": "Byte-exact native diagnostic artifact 12713263362; this closes diagnostic execution/readback for the predecessor only"
+      }
+    ],
+    "current_open_work": [
+      "Run corrected exact-subject native CI and read actual browser download and WebKit test evidence",
+      "Determine the actual transfer cause from current-run evidence",
+      "Verify complete CI on the resulting exact subject",
+      "Enforce native Main governance",
+      "Restore admitted originalhost runtime binding and exact raumzeitterminal.de DNS/TLS/application acceptance"
+    ],
+    "main_integration_established": false,
+    "product_effect_ack_done": false
+  },
+  "cache_successor": {
+    "authorization": "Owner-supplied exact source carrier and standing autonomous repair/integration grant; GitHub REST only; IONOS remains intended host",
+    "human_contribution": "Ingolf Lohmann: goal, authorization, source-carrier delivery and hash bindings",
+    "implementation_contribution": "Claude (Anthropic): original cache carrier; OpenAI Codex: sandbox, image-binding and evidence-error correction and independent verification",
+    "original": {
+      "head": "ced290493a3108a16a40c5453f09a37227500ccf",
+      "tree": "6ee46a04fef9667b144f2babfbb6a5e6da454c4e",
+      "parent": "1ba6c15555a759cf8490bfe66b08428140d9d78d",
+      "zip_sha256": "44f4cae4606970fd3c0dd1c2adbed2b19edfb42f14e8b63fd1856475e5009d0d",
+      "patch_sha256": "aa1a27ef239cf695119b441695e4aa339dc4e0cb864734239d3fd1e64c3254e1",
+      "bundle_sha256": "299f5bce7e3561e33b459c9c3fc8cdb0a35adea1e41e22539116b70263573bca",
+      "byte_verified": true,
+      "bundle_path": "evidence/receipts/QIKVRT_WEBKIT_APT_CACHE_CED29049/original.bundle",
+      "original_targeted_tests": 18
+    },
+    "findings": [
+      "Original APT configuration explicitly used the root sandbox user; package authentication settings and download privilege separation are distinct",
+      "Original after-summary failure was ignored and archive inventory treated every directory error as an empty cache",
+      "Original runner image identity fell back to unknown, and browser cache key omitted image identity"
+    ],
+    "repair": [
+      "Keep default APT sandbox user; use /var/cache/qikvrt-webkit-apt/archives owned by the actual runner user, an _apt:root 0700 partial directory and actual _apt write preflight; reject Sandbox::User in generated configuration",
+      "Retain original nonzero installation/timeout status; fail an otherwise successful installation when after-evidence cannot be recorded",
+      "Treat non-ENOENT inventory errors as failures; require nonempty runner image identity and bind both cache keys to it"
+    ],
+    "regression": {
+      "original_with_new_regressions": {
+        "tests": 9,
+        "pass": 4,
+        "fail": 5
+      },
+      "corrected_diagnosis_and_cache": {
+        "tests": 21,
+        "pass": 21,
+        "fail": 0
+      },
+      "actual_shell_cases": [
+        "successful install plus missing after-evidence fails",
+        "installation timeout 124 retained despite evidence failure",
+        "successful install plus valid before/after evidence succeeds",
+        "missing image identity stops before privileged configuration or directory creation"
+      ]
+    },
+    "baseline_rest_failures": {
+      "observed_at_pr_head": "1ba6c15555a759cf8490bfe66b08428140d9d78d",
+      "tests": 2,
+      "pass": 2,
+      "claude_environment_cause": "NOT_ESTABLISHED; an environment-dependent discrepancy alone does not identify the exact cause"
+    },
+    "validation": {
+      "local_full_gate": "make test repository-monitor-test",
+      "exact_result": "Use external exact-candidate receipt and native CI readback; do not transfer predecessor PASS",
+      "cache_hit_on_hosted_runner_established": false,
+      "warm_cache_timing_gain_established": false,
+      "performance_acceptance": {
+        "runner_image": "same exact ImageOS and ImageVersion",
+        "apt_cache_exact_hit": true,
+        "system_dependency_duration": "measure and compare with original 618 seconds and the first exact-image v2 run",
+        "reuse_evidence": "compare warm APT_CACHE_BEFORE package digests with the saved cold APT_CACHE_AFTER; retain differences",
+        "status": "PENDING_NATIVE_COLD_AND_WARM_READBACK"
+      }
+    },
+    "limits": {
+      "system_dependency_budget_seconds": 720,
+      "browser_download_budget_seconds": 480,
+      "mirror_transport_cause": "NOT_ESTABLISHED",
+      "main_integration_established": false,
+      "host_deployment_established": false,
+      "domain_delivery_established": false,
+      "product_effect_ack_done": false
+    },
+    "persistence": "Original byte-bound Git bundle retained; supported REST commit metadata may create a different final commit identity; verify final source TREE and original-carrier provenance separately",
+    "owner_successor_correction": "Owner explicitly accepted sandbox/evidence corrections and requested the /var/cache path to avoid inaccessible home parents. Original bundle is historical provenance, not the final implementation. Owner also requested an explicit v2 APT namespace and verification of directory setup before restore.",
+    "cache_namespace": "qikvrt-webkit-apt-v2"
+  }
+}

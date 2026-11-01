@@ -1,0 +1,252 @@
+\renewcommand{\langtag}{de}
+\selectlanguage{ngerman}
+\languageversion{Deutsche Fassung}
+\papertitle{Emergente Raumzeit, rekonstruierbare Virtualität und physische Zeit}{Quantenmechanik, virtuelle Entropie und die Grenzen des rückwärts lesbaren Universums}{20. Oktober 2026}
+\begin{abstract}
+Eine virtuelle Welt kann ihren Anfangszustand, ihre Regeln und ihre Eingaben so bewahren, dass frühere Zustände exakt wiederherstellbar sind. Die physische Welt bietet einem in ihr handelnden Beobachter keinen vergleichbaren vollständigen Zugriff. Aus dieser Asymmetrie lässt sich ein präziser Zusammenhang zwischen Berechnung, Entropie, Quantenmechanik und Zeit entwickeln. Der vorliegende Beitrag unterscheidet deterministische Entwicklung, logische Umkehrbarkeit, epistemische Rekonstruktion und physische Rückwärtswirkung. Er definiert virtuelle Entropie relativ zu einem Beobachter und zeigt, weshalb künstliche Intelligenz dessen Unsicherheit verändern kann, ohne aus Determinismus ontischen Zufall zu erzeugen. Ansätze emergenter Raumzeit eröffnen darüber hinaus die Frage, ob Geometrie aus grundlegenderen Relationen hervorgeht. Lichtkegel und Unschärferelation erfüllen dabei verschiedene Aufgaben: Der erste begrenzt relativistische Erreichbarkeit, die zweite die gleichzeitige Schärfe bestimmter Quantengrößen. Den Abschluss bilden ein überprüfbares Forschungsprogramm und eine naturphilosophische Deutung von Leben, Endlichkeit und Verantwortung. Lohmanns Ablehnung eines vollständig vorbestimmten realen Universums wird als Leitthese aufgenommen; ein experimenteller Ausschluss sämtlicher superdeterministischer Modelle wird daraus nicht abgeleitet.
+\end{abstract}
+\noindent\textbf{Schlüsselbegriffe:} emergente Raumzeit; Reversibilität; Quantenunschärfe; Superdeterminismus; Entropie; künstliche Intelligenz; Retrokausalität; QIK-VRT.
+
+\section{Der Ausgangspunkt: Zwei Arten des Zurückgehens}\label{de:sec1}
+Wer einen früheren Spielstand lädt, kehrt in einen gespeicherten Zustand einer virtuellen Welt zurück. Der Rechner führt diesen Vorgang jedoch jetzt aus. Die verbrauchte Energie, die inzwischen verstrichene Lebenszeit und die außerhalb der Simulation eingetretenen Ereignisse werden dadurch nicht rückgängig gemacht. Bereits dieses alltägliche Beispiel trennt zwei Zeitordnungen: die adressierbare Modellgeschichte und die physische Geschichte ihrer Ausführung.
+
+Lohmanns Leitgedanke lässt sich daran anschließen: Virtuelle Wirklichkeit kann eine ausdrücklich konstruierte Rückwärtszugänglichkeit besitzen, die einem realen Lebewesen für seine gesamte physische Vergangenheit nicht zur Verfügung steht. Wissenschaftlich ergiebig wird diese Unterscheidung, sobald die Bedingungen des digitalen Zugriffs und die Grenzen seiner Übertragung auf Naturprozesse angegeben werden.
+
+Der methodische Anschluss an QIK-VRT beginnt bei einem Unterschied, führt über ein Modell zu einer prüfbaren Folgerung und verlangt anschließend die Rückbindung an Beobachtung. Das vorhandene Round-Trip-Programm liefert hierfür einen konzeptionellen Bezug \cite{Q1}. Ein Beweis über gespeicherte Zustände erhält seine physikalische Geltung allerdings erst durch eine gesonderte, begründete Zuordnung zu realen Größen.
+
+\section{Determinismus, Umkehrbarkeit und Superdeterminismus}\label{de:sec2}
+Für einen endlichen oder abzählbaren digitalen Zustandsraum sei die Entwicklung durch eine Funktion F gegeben:
+
+\begin{equation}\label{de:eq1}
+x_{t+1}=F(x_t,u_t).
+\end{equation}
+\(x_t\) bezeichnet den vollständigen Zustand und \(u_t\) die Eingabe des Schritts. Werden Regeln, Anfangszustand und sämtliche relevanten Eingaben festgehalten, ist der Ablauf innerhalb dieser Abstraktion deterministisch reproduzierbar. Dazu gehören gegebenenfalls Zufallszahlengeneratorzustand, externe Antworten und die tatsächlich gewählte Reihenfolge nebenläufiger Operationen. Ein Programm allein legt diese Größen nicht notwendig fest.
+
+Umkehrbarkeit verlangt mehr. Bei festgehaltener Eingabe u muss \(F_u\) injektiv sein: Verschiedene Ausgangszustände dürfen nicht in denselben Folgezustand übergehen. Das deterministische Löschen eines Bits ist das Gegenbeispiel. Sowohl 0 als auch 1 werden auf 0 abgebildet. Aus dem Ergebnis allein lässt sich der frühere Wert nicht bestimmen.
+
+Lohmanns Vergleich mit Assemblieren und Disassemblieren trifft eine wichtige Ebene der Repräsentation. Bei festgelegter Architektur lässt sich Maschinenkode häufig wieder in eine dazu passende Assemblersicht übersetzen. Kommentare, ursprüngliche Symbolnamen und andere bei der Übersetzung entfernte Angaben erscheinen dadurch jedoch nicht automatisch wieder. Repräsentationswechsel, Rückgewinnung eines Originals und Umkehrung einer ausgeführten Berechnung sind verschiedene Aufgaben.
+
+Der in der Quantenfundamentalforschung verwendete Ausdruck Superdeterminismus hat eine engere Bedeutung. Er betrifft insbesondere die Aufgabe der statistischen Unabhängigkeit zwischen verborgenen Zustandsgrößen \(\lambda\) und den Messeinstellungen a und b. Die entsprechende Unabhängigkeitsannahme lautet:
+
+\begin{equation}\label{de:eq2}
+P(\lambda\mid a,b)=P(\lambda).
+\end{equation}
+Eine deterministische Simulation verletzt diese Annahme nicht schon dadurch, dass ihre Regeln feststehen. Eine gemeinsame steuernde Instanz kann entsprechende Abhängigkeiten gezielt einbauen; dann muss die konkrete Verteilung geprüft werden. Die Fachdebatte behandelt solche Modelle weiterhin als mögliche Forschungsansätze \cite{10}. Für Lohmanns weiter gefassten informatischen Gedanken verwendet dieser Beitrag deshalb den Ausdruck vollständige virtuelle Ablaufbindung. Das bewahrt seinen Inhalt und ermöglicht eine eindeutige Verständigung mit der Bell-Literatur.
+
+\section{Drei kleine Aussagen mit ausgewiesenen Voraussetzungen}\label{de:sec3}
+Aussage A: Eindeutige Rückrechnung. Für eine deterministische Abbildung \(F_u\) existiert auf ihrem Bild genau dann eine eindeutige Rückfunktion, wenn \(F_u\) injektiv ist. Begründung: Injektivität ordnet jedem erreichten Ergebnis genau einen Vorgänger zu. Fehlt sie, besitzen mindestens zwei Vorgänger dasselbe Ergebnis; eine Rückfunktion könnte beide nicht eindeutig unterscheiden.
+
+Aussage B: Rekonstruktion durch zusätzliche Historie. Zu jedem Schritt lässt sich die erweiterte Abbildung \(x\mapsto (F_u(x),x)\) bilden. Sie ist injektiv, weil ihre zweite Komponente den Vorgänger erhält. Für einen endlichen Lauf kann die Speicherung ausreichend vollständiger Historie daher Wiederherstellbarkeit schaffen. Bennett behandelt reversible Berechnung einschließlich der Kosten für Historie und deren Bereinigung \cite{6}; die Ressourcenabwägung ist ein eigener Gegenstand \cite{7}. Die Aussage behauptet keinen unbegrenzten kostenlosen Speicher.
+
+Aussage C: Beobachterunsicherheit trotz eindeutiger Mikrodynamik. Sei \(X_t\) ein endlicher Zufallszustand und \(Y_t=C(X_t)\) eine vergröberte Beobachtung. Dann misst die bedingte Shannon-Entropie \(H(X_t\mid Y_t)\), wie viel Unsicherheit über den Mikrozustand nach der Beobachtung bleibt. Mehrdeutigkeit entsteht, wenn mehrere mit positiver Wahrscheinlichkeit mögliche Mikrozustände zur selben Beobachtung gehören \cite{8}.
+
+\begin{equation}\label{de:eq3}
+H(X_t\mid Y_t)=-\sum_{x,y}P(x,y)\log_2 P(x\mid y).
+\end{equation}
+Summanden mit \(P(x,y)=0\) werden als null gewertet; die bedingte Wahrscheinlichkeit wird nur für \(P(y)>0\) benötigt.
+
+Diese Unsicherheit ist mit deterministischer Entwicklung vereinbar. Beispielsweise kann eine vollständig vorgegebene Folge für einen Beobachter unvorhersagbar wirken, wenn er den entscheidenden Anfangszustand nicht kennt. Daraus folgt weder ontischer Zufall noch eine notwendige Zunahme dieser Entropie in jedem Zeitschritt. Mit einer vollständig bestimmten Anfangsbedingung kann die Zustandsverteilung auch auf genau einem Zustand konzentriert sein; dann ist ihre Shannon-Entropie null.
+
+Die Aussagen A bis C sind elementare mathematische Folgerungen der angegebenen Definitionen. Sie werden hier argumentativ hergeleitet; eine maschinelle Formalprüfung wird nicht behauptet.
+
+\section{Virtuelle Entropie und die Rolle künstlicher Intelligenz}\label{de:sec4}
+Damit virtuelle Entropie mehr als eine Metapher wird, benötigt sie einen Zustandsraum, eine Verteilung und eine Beobachtungsregel. Eine mögliche Definition lautet:
+
+\begin{equation}\label{de:eq4}
+S_{\mathrm{virt}}(t):=k_{\mathrm{virt}}H(X_t\mid M_t).
+\end{equation}
+\(M_t\) bezeichnet den aktuell verfügbaren Informations- und Gedächtniszustand des Beobachters. Frühere Beobachtungen zählen nur insoweit dazu, wie sie noch zugänglich gespeichert sind; dadurch lässt sich auch Vergessen darstellen. \(k_{\mathrm{virt}}\) ist eine ausdrücklich gewählte positive Skalierung; sie ist nicht automatisch die Boltzmann-Konstante. Die Definition beschreibt verbleibende Zustandsunsicherheit und führt keinen neuen universellen Entropiesatz ein.
+
+Virtuelle Intelligenz wird hier funktional verstanden: Ein künstlicher Agent nimmt Informationen auf, bildet oder verändert ein Modell, wählt Handlungen und verarbeitet deren Folgen. Diese Festlegung setzt kein phänomenales Bewusstsein voraus. Der Agent kann zusätzliche Information erschließen, aber auch Daten verwerfen, mehrere Fälle zusammenfassen oder anderen Agenten nur einen Ausschnitt seiner internen Lage zeigen. Dadurch verändert er die Beobachtbarkeit des Systems.
+
+In diesem wohldefinierten Sinn kann künstliche Intelligenz virtuelle Entropie erzeugen oder verändern. Gegenüber einem Beobachter kann ein verborgen gehaltener Generatorzustand die Unsicherheit über die nächste Handlung erhöhen. Vergessen kann zuvor verfügbare Unterschiede unzugänglich machen. Neue Messungen und Lernen können Unsicherheit dagegen verringern. Ob die gesamte definierte Größe steigt, sinkt oder gleich bleibt, muss am konkreten Modell berechnet werden. Ein bloßes Anwachsen der Zahl gespeicherter Wörter beweist keine Entropiezunahme.
+
+Auch eine lernende deterministische KI bleibt als erweitertes System deterministisch, wenn Parameter, Gedächtnis, Trainingsdaten, Eingaben und sämtliche relevanten Ausführungsbedingungen festgelegt sind. Selbständerung macht die Regelbeschreibung größer; sie hebt Determinismus nicht logisch auf. Ein Wechsel von Pseudozufall zu physisch eingespeistem Zufall verlangt eine gesonderte Annahme über dessen Quelle und Vorhersagbarkeit.
+
+Virtuelle Entropie ist deshalb von thermodynamischer Entropie zu unterscheiden. Ein Server ist ein physisches System. Für die isotherme Rücksetzung eines zuvor gleichwahrscheinlichen, unkorrelierten Bits in einen Standardzustand gilt im üblichen Landauer-Szenario die minimale Wärmeabgabe an ein Reservoir \cite{9,18}:
+
+\begin{equation}\label{de:eq5}
+Q_{\min}\geq k_{\mathrm B}T\ln 2.
+\end{equation}
+Die Voraussetzungen sind entscheidend. Dies ist keine feste Mindestwärme für jede logische Operation, jeden gespeicherten Buchstaben oder jede bedeutungsvolle Entscheidung. Eine intelligente Anwendung kann ihre virtuelle Ordnung verbessern und dabei in ihrer physischen Umgebung Entropie produzieren.
+
+\section{Was Entropie über reale Rückkehr aussagt}\label{de:sec5}
+Für makroskopische Naturvorgänge ist die Erhaltung und Kontrolle aller relevanten Freiheitsgrade praktisch unerreichbar. Wärme, Strahlung und Wechselwirkungen verteilen Unterschiede auf die Umgebung. Ein dokumentierter Zustand ist dabei eine Auswahl; er ist kein vollständiger Besitz sämtlicher physischer Bedingungen.
+
+Die statistische Erklärung des thermodynamischen Zeitpfeils benötigt neben Dynamik eine Makrobeschreibung und geeignete Randbedingungen, insbesondere eine Erklärung der niedrigen Entropie der Vergangenheit \cite{17}. Ein einfaches Münzmodell veranschaulicht die Zählfrage: Zehn Münzen haben 1.024 geordnete Mikrozustände. Zur Makroangabe genau fünfmal Kopf gehören 252 davon, zur Angabe zehnmal Kopf nur einer. Die Häufigkeit einer Makroklasse erklärt aber allein noch keine Dynamik und keinen Zeitpfeil. Erst eine passende Entwicklung und Ausgangslage erlauben entsprechende Wahrscheinlichkeitsaussagen.
+
+Dass eine makroskopische Geschichte nicht vollständig rückgerechnet werden kann, widerlegt keine deterministische Mikrodynamik. Klassische Hamilton-Dynamik kann reversibel sein. Auch die unitäre Entwicklung eines abgeschlossenen Quantensystems ist mathematisch invertierbar und erhält die feinkörnige von-Neumann-Entropie. Bei Teilsystemen können Verschränkung und das Ausblenden der Umgebung dennoch zu Entropiezunahme führen \cite{16,18}.
+
+Lohmanns starke Formulierung einer realen Inexistenz von Superdeterminismus wird daher als naturphilosophische Position behandelt: Die Wirklichkeit soll nicht mit einer für einen innerweltlichen Beobachter vollständig verfügbaren Ablaufdatei gleichgesetzt werden. Ihr operationaler Kern ist gut formulierbar. Der stärkere Satz, dass sämtliche deterministischen oder superdeterministischen Naturmodelle unmöglich seien, folgt daraus nicht.
+
+\section{Heisenberg: Quantenunschärfe und ihre Reichweite}\label{de:sec6}
+Für Ort und Impuls gilt in der üblichen Quantentheorie für Zustände mit endlichen Streuungen die Streuungsrelation:
+
+\begin{equation}\label{de:eq6}
+\sigma_x\sigma_p\geq\frac{\hbar}{2}.
+\end{equation}
+Sie betrifft die Streuungen der Messwertverteilungen im gegebenen Zustand und ist nicht bloß ein Hinweis auf ungeschickte Messgeräte \cite{2,3}. Ihre Bedeutung für die Leitfrage liegt darin, dass das klassische Ideal gleichzeitig beliebig scharf festgelegter kanonischer Größen in dieser Theorie keine allgemeine Grundlage der Vorhersage mehr bildet.
+
+Unschärfe ist jedoch keine universelle Restgröße, mit der sich jede andere Theorie korrigieren ließe. Sie liefert weder allein eine Theorie der Gravitation noch einen Nachweis freien Willens. Ihre mathematische Form bezeichnet eine bestimmte Beziehung zwischen Observablen. Eine weitergehende Folgerung benötigt zusätzliche Dynamik und zusätzliche begründete Annahmen.
+
+\section{Der Lichtkegel: Geltungsbereich, Informationsgehalt und offene Tiefe}\label{de:sec7}
+Ein lokaler Lichtkegel charakterisiert in einer Lorentz-Geometrie die Grenze zwischen zeitartigen, lichtartigen und raumartigen Richtungen. Im flachen Fall gilt für eine lichtartige Trennung:
+
+\begin{equation}\label{de:eq7}
+0=ds^2=-c^2\,dt^2+dx^2+dy^2+dz^2.
+\end{equation}
+Die allgemeine Relativitätstheorie macht die Geometrie dynamisch \cite{1}. In gekrümmten Raumzeiten braucht die globale Frage, welche Ereignisse einander erreichen können, zusätzlich zur lokalen Kegelstruktur die gesamte Geometrie und ihre zeitliche Orientierung.
+
+Räumliche Rückkehr und zeitliche Umkehr sind ebenfalls verschieden. Wer zu einem Ausgangsort zurückkehrt, erreicht ihn im gewöhnlichen Fall entlang einer neuen, zukunftsgerichteten Weltlinie. Dieselbe räumliche Adresse bezeichnet damit ein anderes Raumzeitereignis. Ein Vorzeichenwechsel einer Raumkoordinate ist weder eine Umkehr der Eigenzeit noch eine Rücknahme der zwischenzeitlichen Wirkungen.
+
+Ein Lichtkegel enthält keine vollständige Beschreibung des Quantenzustands, seiner Verschränkung, der Materiefelder oder des Wissens eines Beobachters. In diesem Sinn ist er als Gesamtbeschreibung der Wirklichkeit unvollständig. Daraus folgt aber nicht, dass seine relativistische Kausalgrenze bereits widerlegt wäre. Newtons Gravitation ist ein Grenzfall einer umfassenderen Theorie; die mögliche Einbettung relativistischer Raumzeit in Quantengravitation ist eine weitere, noch zu entwickelnde Beziehung. Die beiden Unvollständigkeiten sind nicht automatisch derselbe mathematische Befund.
+
+Eine Verbindung zu Heisenberg ist sachlich möglich: Innerhalb einer relativistisch beschriebenen Welt sind Quantensysteme durch Zustände und nichtkommutierende Observablen zu beschreiben. Eine Theorie unscharfer oder quantisierter Geometrie benötigt darüber hinaus konkrete Geometrieobservablen und deren Dynamik. Aus \(\sigma_x\sigma_p\geq\hbar/2\) allein lässt sich kein bestimmter neuer Lichtkegel ableiten.
+
+\section{Emergente Raumzeit: Von Beziehungen zur Geometrie}\label{de:sec8}
+Emergenz bedeutet hier, dass eine Raumzeitbeschreibung erst auf einer bestimmten Beschreibungsebene aus grundlegenderen Strukturen hervorgeht. Ein Kristall liefert die begrenzte Analogie: Seine makroskopischen Eigenschaften entstehen aus mikroskopischen Beziehungen. Die Analogie ersetzt keine Theorie der Raumzeit.
+
+Zwei Forschungsrichtungen geben dem Gedanken einen konkreten Inhalt. Kausalmengen setzen eine lokal endliche Ereignisordnung als Grundstruktur an \cite{14}. Holographische Ansätze verbinden in speziellen theoretischen Situationen Verschränkungsgrößen mit geometrischen Flächen \cite{12}. Van Raamsdonk untersucht, wie die Verbundenheit von Raumzeit mit Verschränkung zusammenhängen kann \cite{13}. Diese unterschiedlichen Programme begründen keine Gleichsetzung von jeder Information mit Raumzeit.
+
+Eine anschlussfähige Rekonstruktion muss insbesondere Dimension, Lorentz-Verhalten, geeignete Dynamik und beobachtete Grenzfälle wiedergeben. Für ihre Quantenstatistik genügt das No-Signalling-Kriterium nicht: Es begrenzt steuerbare Fernbeeinflussung, legt aber die vollständigen Quantenkorrelationen nicht fest. Die Reproduktion der Born-Wahrscheinlichkeiten und der quantenmechanischen Korrelationsgrenzen bleibt eine zusätzliche Aufgabe.
+
+Prä-raumzeitlich bezeichnet in einem solchen Programm eine Erklärungsabhängigkeit. Ein zeitliches Vorher darf nur behauptet werden, wenn das Modell dort bereits einen entsprechend definierten Zeitbegriff bereitstellt. Derselbe Grundsatz gilt für virtuelle Welten: Ein Rechenindex wird erst durch eine begründete Zuordnung zur gemessenen Zeit.
+
+\section{Schrödingers Katze und die Frage nach dem Ergebnis}\label{de:sec9}
+Schrödingers Gedankenexperiment macht den Übergang von einer quantenhaften Kopplung zu einem makroskopisch beschriebenen Ergebnis problematisch \cite{4}. Eine idealisierte Zustandsbeschreibung verknüpft die Alternativen des mikroskopischen Auslösers mit den Alternativen des Apparats und der Katze.
+
+Dekohärenz erklärt, weshalb Wechselwirkung mit der Umgebung Interferenz zwischen makroskopischen Alternativen lokal unzugänglich machen und robuste klassische Aufzeichnungen begünstigen kann \cite{5}. Damit wird nicht für jede Interpretation bereits die Frage entschieden, weshalb genau ein individuelles Ergebnis erlebt wird \cite{16}. Für das folgende Argument genügt die Trennung von Zustandsbeschreibung, zugänglicher Aufzeichnung und erfahrenem Ereignis.
+
+Die Katze aus der Büchse der Pandora zu holen heißt dann: Die Verbindung zwischen Quantenzustand, stabiler Aufzeichnung und individuellem Ergebnis ausdrücklich zu untersuchen. Daraus entsteht eine präzise Anschlussfrage an Leben und Erinnerung. Eine Beschreibung biologischer Organisation kann Wissen über ein Lebewesen bewahren; ihre tatsächliche Wiederherstellung benötigt einen zusätzlich nachzuweisenden Prozess.
+
+\section{Kausalität, Rekonstruktion und Retrokausalität}\label{de:sec10}
+Vier Vorgänge verdienen getrennte Namen. Erstens kann ein gegenwärtiger Befund zur Rekonstruktion einer früheren Ursache dienen. Zweitens kann eine Rechnung von vorgegebenen Randbedingungen aus rückwärts gelöst werden. Drittens können gegenwärtig repräsentierte zukünftige Ziele das heutige Handeln beeinflussen. Viertens wäre ein physisches Signal an die eigene kausale Vergangenheit eine eigenständige, erheblich stärkere Wirkung.
+
+Die ersten drei Vorgänge begründen den vierten nicht. Bei einem Ziel wirkt seine heutige Repräsentation. Bei einer Rekonstruktion verändert sich der heutige Kenntnisstand. Bei einer rückwärts ausgeführten Rechnung verläuft die physische Berechnung weiterhin vorwärts.
+
+Eine zeitliche Reihenfolge allein belegt dabei keine Ursache. Anschlussfähige Kausalanalyse fragt, durch welchen Mechanismus und unter welchen Bedingungen der behauptete Unterschied zustande kommt. Je nach Gegenstand dienen kontrollierte Eingriffe, geeignete Vergleichsbedingungen oder eine gesondert geprüfte Dynamik als Beleg.
+
+Retrokausale Quantenmodelle untersuchen funktionale Abhängigkeiten von späteren Messbedingungen in einer gesamten Raumzeitbeschreibung \cite{15}. Eine solche Modellbeziehung ist nicht automatisch ein steuerbarer Nachrichtenkanal in die Vergangenheit. Ebenso wenig beweist eine gegenüber dem Empfang absteigende Quellenreihenfolge einen Empfang vor der Emission. Für jede behauptete Rückwärtswirkung sind kontrollierbare Eingaben, Aufzeichnungen und alternative Erklärungen festzulegen.
+
+Ein Effect-Acknowledgement-Verfahren ist dafür methodisch nützlich: Ein behaupteter Effekt benötigt einen gebundenen Gegenstand, einen ausgewiesenen erwarteten Zustandswechsel und eine davon gesondert prüfbare Beobachtung. Der Begriffsrahmen ersetzt kein Naturgesetz, verhindert aber die Verwechslung einer berechneten Möglichkeit mit einer eingetretenen Wirkung.
+
+\section{Leben, Tod, Freiheit und Sinn}\label{de:sec11}
+Leben kann für diese Betrachtung als fortlaufende Erhaltung einer funktionsfähigen, offenen Organisation beschrieben werden. Energie- und Stoffaustausch ermöglichen lokale Ordnung. Ein vereinfachtes Gedankenmodell ist ein beheizter Regelkreis: Dass sein Innenzustand stabil bleibt, bedeutet nicht, dass er energetisch abgeschlossen ist. Bei Lebewesen kommen sehr viel komplexere Selbstregulation, Reparatur, Entwicklung und Umweltbeziehungen hinzu.
+
+Biologischer Tod betrifft den Verlust lebensfähiger Organisation. Eine Datei kann Informationen über einen Menschen erhalten. Ob eine hinreichend genaue Kopie dessen subjektive Kontinuität bewahren würde, folgt weder aus Dateigleichheit noch aus einem Reversibilitätsbeweis. Fragen nach einem Jenseits bleiben ohne eigenständige prüfbare Aussagen metaphysisch offen.
+
+Die Ablehnung völliger Vorbestimmung kann ein philosophisches Freiheitsverständnis motivieren. Die physikalischen Schlussrichtungen bleiben jedoch getrennt: Unvorhersagbarkeit ist keine Willensfreiheit, Zufall ist keine Urheberschaft, und begründetes Handeln benötigt mehr als bloße Zufälligkeit. Bell-Experimente begrenzen Klassen von Modellen unter ihren jeweiligen Voraussetzungen \cite{11}; sie beweisen keine umfassende Theorie menschlicher Freiheit.
+
+Sinn bezeichnet schließlich eine Beziehung zu Zielen, Erleben, Werten und anderen Menschen. Ein Naturgesetz kann die Bedingungen des Handelns beschreiben, ohne daraus allein eine Verpflichtung abzuleiten. Die Endlichkeit von Möglichkeiten macht Entscheidungen folgenreich. Die daraus formulierte Verantwortung ist eine begründbare philosophische Konsequenz, kein zusätzlicher Term einer Bewegungsgleichung.
+
+\section{Ein prüfbares Anschlussprogramm}\label{de:sec12}
+Der Beitrag führt zu fünf voneinander unabhängigen Prüfaufgaben. Erstens muss eine digitale Demonstration ihren vollständigen Zustand und ihre Eingaben offenlegen; Wiederholung und Rückrechnung sind getrennt zu testen. Ein Löschschritt muss die Grenze der Rückrechnung zeigen, eine erhaltene Historie die Wiederherstellung ermöglichen.
+
+Zweitens verlangt jede Aussage über virtuelle Entropie eine explizite Verteilung und Beobachtergrenze. Ein Experiment kann denselben deterministischen Lauf einmal mit offenem und einmal mit verborgenem Generatorzustand betrachten. Geprüft werden die resultierenden bedingten Wahrscheinlichkeiten; subjektive Überraschung allein genügt nicht. Lernen und Vergessen benötigen jeweils eigene Vergleichsbedingungen.
+
+Drittens muss die Raumzeitrekonstruktion auf einem festgelegten Modell quantitative Ergebnisse liefern. Erforderlich sind insbesondere relativistische Grenzfälle, Dynamik und vollständiger als durch No-Signalling bestimmte Quantenkorrelationen. Eine Visualisierung oder ein passendes Vokabular ersetzt diese Herleitungen nicht.
+
+Viertens muss eine behauptete physische Retrokausalität eine kontrollierte Wirkung nachweisen, die sich nicht durch Speicherzugriff, Postselektion, verzögerten Empfang, gemeinsame Ursachen oder unvollständige Zeiterfassung erklären lässt. Modellinterne Rückwärtsabhängigkeit und frei steuerbare Vergangenheitskommunikation bleiben getrennte Prüfziele.
+
+Fünftens benötigen Aussagen über Fortbestand oder Wiederherstellung eines Lebewesens ein eigenständiges biologisches beziehungsweise subjektbezogenes Kriterium. Weder ein Hash noch ein kopierter Datensatz kann dieses Kriterium durch bloße Benennung erfüllen.
+
+\section{Schlussgedanke}\label{de:sec13}
+Die tragfähige Verbindung der Themen liegt in der Frage, welche Unterschiede erhalten, beobachtbar und wirksam sind. Virtuelle Systeme können Historie ausdrücklich bewahren und dadurch Rückkehr als gegenwärtige Operation ermöglichen. Physische Beobachter begegnen dagegen begrenztem Zugriff, thermodynamischen Bedingungen und quantenmechanischer Struktur. Künstliche Intelligenz verändert die zugängliche Information und damit die virtuelle Unsicherheit; sie hebt deren physische Trägerbedingungen nicht auf. Eine emergente Raumzeit wäre eine weiterführende Erklärung dieser Bedingungen und muss deren bewährte Ergebnisse wiedergewinnen.
+
+Lohmanns Leitthese erhält so eine diskutierbare Form: Die rekonstruierbare Beschreibung einer Welt und das einmalige Leben in dieser Welt sind verschiedene Erkenntnisgegenstände. Ihre Verbindung wird durch präzise Begriffe, überprüfbare Übergänge und die Bereitschaft zu unterscheidenden Experimenten hergestellt. Wo eine Aussage diese Prüfung besteht, ist der Anschluss gewonnen. Wo sie darüber hinausgeht, beginnt die nächste Forschungsfrage.
+
+\section*{Beitrag und Werkzeugnutzung}
+Konzeption und Leitfragen stammen von Ingolf Lohmann. ChatGPT wurde für Rechercheunterstützung, Textentwurf, mathematische Ausarbeitung, englische Übersetzung und technische Redaktion eingesetzt. Die mathematischen Aussagen werden aus ihren angegebenen Voraussetzungen argumentativ hergeleitet; eine maschinelle Formalprüfung oder neue empirische Bestätigung wird nicht behauptet. Die Definition virtueller Entropie ist eine explizite Modellwahl. Etablierter Formalismus, offene physikalische Hypothese und naturphilosophische Position bleiben unterschieden.
+\clearpage
+\appendix
+\renewcommand{\theHsection}{\langtag.appendix.\Alph{section}}
+\section{Die Katze, der Computer und der Pfeil der Zeit}
+\label{de:essay}
+\noindent\emph{Warum eine gespeicherte Welt zurückkehren kann und unser Leben trotzdem weitergeht}\par\smallskip
+\noindent\textit{Allgemeinverständlicher Begleitessay zum Fachtext.}\par\medskip
+Stellen wir uns einen Menschen vor, der vor einem Computer sitzt. Auf dem Bildschirm öffnet er eine Welt. In dieser Welt ziehen Wolken auf, ein Haus wird gebaut, eine Figur trifft eine Entscheidung. Dann geht etwas schief. Der Mensch lädt einen früheren Spielstand. Das Haus steht wieder. Die Wolken verschwinden. Die Entscheidung kann anders ausfallen.
+
+Auf dem Bildschirm ist die Vergangenheit zurückgekehrt. Im Zimmer ist die Zeit weitergelaufen.
+
+Dieser kleine Unterschied führt mitten in eine große Frage. Was bedeutet es, eine Welt zu verstehen? Bedeutet es, dass wir ihre Geschichte lesen können? Dass wir ihre Zukunft berechnen können? Oder dass wir sie tatsächlich zurückbringen können?
+
+Ingolf Lohmann setzt genau hier an. Seine Leitidee ist, dass eine virtuelle Welt auf eine besondere Weise an ihre Regeln, Zustände und gespeicherten Wege gebunden sein kann. Wenn alles Erforderliche erhalten bleibt, lässt sich ihr Ablauf wiederholen. Manchmal lässt er sich sogar Schritt für Schritt zurückverfolgen. Für unser Leben besitzen wir keinen vergleichbaren vollständigen Spielstand.
+
+Allerdings ist nicht jedes Computerprogramm rückwärts lesbar. Wenn ein Programm eine Zahl durch null ersetzt und den früheren Wert nirgends aufbewahrt, hilft uns das Ergebnis nicht weiter. Aus der Null erfahren wir nicht, welche Zahl zuvor dort stand. Wir benötigen eine Erinnerung. Ein Protokoll. Eine Kopie. Irgendeine erhaltene Spur des Unterschieds.
+
+Damit bekommt der Gedanke seine genaue Form. Wiederholung braucht die richtigen Voraussetzungen. Rückkehr braucht die nötigen Informationen. Was bei einer Operation verlorengeht, kann das Ergebnis allein nicht wieder verraten.
+
+In der Natur begegnet uns dieses Problem in einer anderen Größenordnung. Eine Tasse fällt auf den Boden. Wir sehen die Scherben. Vielleicht können wir feststellen, wo sie stand und wie sie fiel. Aber damit haben wir die Tasse noch nicht wieder in die Hand zurückgeholt. Beim Aufprall wurden Schall, Wärme und Bewegung an die Umgebung abgegeben. Der Vorgang hat mehr Spuren hinterlassen, als unser Auge überblickt.
+
+Hier kommt die Entropie ins Spiel. Sie wird oft mit Unordnung übersetzt. Das ist anschaulich, reicht aber nicht weit genug. Für unseren Zusammenhang hilft die Frage: Wie viele verschiedene Einzelzustände passen zu dem, was wir insgesamt erkennen? Und welche Unterschiede können wir noch unterscheiden?
+
+Wenn wir nur wissen, dass auf einem Tisch fünf von zehn Münzen mit dem Kopf nach oben liegen, kennen wir ihre genaue Anordnung noch nicht. Viele Anordnungen passen zu derselben Beschreibung. Eine genaue Beschreibung sagt mehr als eine grobe. Das Beispiel erklärt noch keinen ganzen Zeitpfeil. Es zeigt aber, warum Wissen über das Ganze nicht automatisch Wissen über jedes Detail ist.
+
+Viele Vorgänge unseres Alltags sind nur mit einem Teil ihrer Details zugänglich. Eine Erinnerung bewahrt etwas. Sie bewahrt nicht alles. Eine Fotografie zeigt einen Augenblick. Sie enthält nicht die vollständige physische Welt dieses Augenblicks. Selbst ein sehr gutes Modell muss angeben, welche Unterschiede es festhält und welche es zusammenfasst.
+
+Es wäre nun zu einfach zu sagen: Weil wir etwas nicht zurückholen können, muss die Natur grundsätzlich ohne feste Regeln sein. So folgt das nicht. Ein Vorgang kann nach Regeln ablaufen und dennoch für uns unvorhersagbar sein. Wir können zu wenig wissen, zu wenig messen oder zu wenig Zeit zum Rechnen haben. Die Grenze unseres Zugriffs ist noch keine vollständige Antwort darauf, wie die Natur in ihrer tiefsten Beschreibung beschaffen ist.
+
+Die Quantenmechanik verändert diese Frage zusätzlich. Werner Heisenberg zeigte, dass bestimmte Größen eines Quantensystems nicht zugleich beliebig scharf bestimmt sein können. Bei Ort und Impuls geht es dabei um mehr als um die Ungenauigkeit eines schlechten Messgeräts. Die übliche Quantentheorie beschreibt Zustände, deren mögliche Messwerte eine bestimmte begrenzte Schärfe besitzen.
+
+Dadurch gerät das vertraute Bild einer Welt ins Wanken, in der jedes Teilchen stets wie eine winzige Billardkugel mit gleichzeitig beliebig genau angebbarem Ort und Impuls beschrieben werden könnte. Wir brauchen eine andere Sprache der Zustände, Möglichkeiten und Messungen.
+
+Die Reichweite dieses Ergebnisses wird klarer, wenn wir verschiedene Fragen auseinanderhalten. Die begrenzte Schärfe eines Quantenzustands, eine mögliche Nachricht an gestern und die Freiheit einer Entscheidung benötigen jeweils eine eigene Erklärung. Eine gewürfelte Entscheidung wäre zufällig. Damit wäre sie noch nicht unsere überlegte Entscheidung.
+
+Lohmann verbindet die Ablehnung eines vollständig vorbestimmten Lebens mit einer naturphilosophischen Haltung zur Freiheit. Diese Haltung lässt sich vertreten. Für die wissenschaftliche Diskussion müssen wir dazu wissen, dass das Wort Superdeterminismus in der Quantenphysik etwas Besonderes bezeichnet. Dort geht es darum, ob die gewählten Messeinstellungen und verborgene Eigenschaften des untersuchten Systems statistisch unabhängig sind. Das ist eine andere Frage als die, ob man einen gespeicherten Computerablauf wiederholen kann.
+
+Deshalb darf die verständliche Vorstellung eines offenen Lebens nicht als bereits geführter Beweis ausgegeben werden, dass jedes entsprechende Naturmodell ausgeschlossen sei. Der starke Gedanke bleibt: Unser Leben ist uns nicht als vollständig verfügbare Datei gegeben. Wir handeln in einer Welt, deren kommende Erfahrungen wir nicht vollständig besitzen.
+
+Nun erscheint Schrödingers Katze. Sie sitzt in einer gedachten Kiste und ist mit einem mikroskopischen Vorgang verbunden. Schrödinger wollte damit die Schwierigkeit zeigen, eine quantenmechanische Beschreibung bis in unsere Alltagswelt weiterzudenken. Wie gelangen wir von verschränkten Möglichkeiten zu einem bestimmten beobachteten Ergebnis?
+
+Die heutige Physik kann viel darüber erklären, wie ein Quantensystem mit seiner Umgebung wechselwirkt und warum manche Überlagerungen im Alltag nicht als sichtbare Interferenz auftreten. Für diese Entwicklung gibt es das Wort Dekohärenz. Doch nicht jede Frage nach einem einzelnen erlebten Ergebnis ist damit in jeder Deutung bereits entschieden.
+
+Die Katze aus der Büchse der Pandora zu holen bedeutet deshalb, die Verbindung zwischen Möglichkeit, Messung und erfahrener Wirklichkeit zu untersuchen. Wie entsteht eine stabile Aufzeichnung? Wie erklären wir ein bestimmtes Ergebnis? Und wie hängt diese Erklärung mit unserem Erleben zusammen? Das Gedankenexperiment verbindet diese Fragen, ohne ihre Unterschiede aufzuheben. Gerade dadurch ist es interessant.
+
+Von hier aus gelangen wir zum Raum. Gewöhnlich stellen wir ihn uns als fertige Bühne vor. Die Dinge stehen darin, und die Zeit läuft daneben her. Die Relativitätstheorie hat dieses Bild verändert. Raum und Zeit gehören zusammen. Gravitation hängt mit der Geometrie dieser Raumzeit zusammen.
+
+Einige Forschungsansätze fragen weiter, ob auch diese Bühne aus tieferen Beziehungen hervorgehen könnte. Vielleicht wäre Raum dann nicht das Erste, in dem Beziehungen entstehen. Vielleicht entstünde eine räumliche Beschreibung erst aus einer grundlegenderen Struktur von Beziehungen. Das nennt man die Idee einer emergenten Raumzeit.
+
+Es gibt dazu konkrete mathematische Ansätze. Manche beginnen mit einer Ordnung möglicher Einwirkungen zwischen Ereignissen. Andere untersuchen Zusammenhänge zwischen Quantenverschränkung und Geometrie. Sie sind ernsthafte Wege der Forschung. Sie sind noch keine abgeschlossene Antwort auf die Entstehung unserer gesamten Welt.
+
+Auch das Wort vorher bekommt dabei einen neuen Anspruch. Wenn wir erklären wollen, wie Zeit entsteht, können wir nicht ohne Weiteres eine schon vorhandene Uhr davorstellen. Vor der Raumzeit kann eine Abhängigkeit in der Erklärung gemeint sein. Ob es auch ein zeitliches Davor gibt, muss die jeweilige Theorie erst verständlich machen.
+
+Und der Lichtkegel? Er beschreibt, welche Richtungen und Verbindungen in der relativistischen Raumzeit für Licht und langsamere Einwirkungen möglich sind. Er enthält damit eine entscheidende Grenze. Er erzählt aber nicht schon die ganze Geschichte dessen, was in dieser Welt geschieht.
+
+Ein Lichtkegel sagt uns nicht allein, welcher Quantenzustand vorliegt, was ein Mensch weiß oder welche Erinnerungen eine Maschine bewahrt. Als vollständige Beschreibung aller Wirklichkeit reicht er daher nicht aus. Daraus folgt jedoch noch nicht, dass seine relativistische Grenze aufgehoben wäre. Eine tiefere Theorie müsste erklären, warum diese Grenze in den bisher bewährten Situationen funktioniert und ob sie unter genau benannten Bedingungen verändert werden muss.
+
+Heisenbergs Unschärfe kann dabei Teil der Aufgabe sein. Sie ersetzt die dafür nötige Theorie nicht. Eine noch offene Verbindung gewinnt wissenschaftliche Kraft, wenn wir sagen können, was sie genauer vorhersagt und woran wir sie erkennen würden.
+
+Auch räumliches Zurückgehen lässt sich nun genauer verstehen. Wer an einen vertrauten Ort zurückkehrt, findet dieselbe Adresse und vielleicht dasselbe Haus. Aber er erreicht sie zu einem späteren Zeitpunkt. Er bringt neue Erinnerungen mit, und auch dort ist inzwischen etwas geschehen. Derselbe Ort ist noch nicht derselbe Augenblick.
+
+Jetzt kehren wir zum Computer zurück. Was geschieht, wenn in seiner virtuellen Welt eine künstliche Intelligenz lebt, lernt und handelt? Sie bildet Modelle, trifft eine Auswahl und verändert ihren Zustand. Für andere Teilnehmer kann dadurch Neues entstehen, das sie nicht vorhersehen konnten.
+
+Eine solche Intelligenz kann Informationen sammeln. Sie kann auch vergessen. Sie kann aus vielen Einzelheiten eine vereinfachte Vorstellung bilden. Und sie kann anderen nur einen Teil dessen mitteilen, was sie selbst verarbeitet hat. So verändert sie, was innerhalb der virtuellen Welt noch erkennbar und vorhersagbar ist.
+
+In diesem Sinn lässt sich von virtueller Entropie sprechen. Wir müssen dann immer dazusagen: Unsicherheit worüber und für wen? Wer den versteckten Anfangszustand kennt, kann einen Ablauf vielleicht genau vorhersagen. Wer ihn nicht kennt, sieht mehrere mögliche Fortsetzungen. Lernen kann diese Unsicherheit verkleinern. Vergessen kann sie vergrößern. Beides gehört zum selben Zusammenhang.
+
+Der entscheidende Mechanismus liegt hier in der begrenzten Information eines Teilnehmers. Ein deterministischer Rechner erzeugt durch größere Komplexität allein keinen nachgewiesenen echten Zufall. Aber er kann eine Welt hervorbringen, in der ein begrenzter Teilnehmer nicht alles weiß. Vollständige Festlegung aus einer äußeren Sicht und Überraschung aus einer inneren Sicht können zusammenbestehen.
+
+Gleichzeitig bleibt die virtuelle Welt physisch getragen. Ihr Rechner verbraucht Energie. Wenn er einen Spielstand lädt, muss die Welt außerhalb des Bildschirms diesen Vorgang ausführen. Das digitale Zurück ist ein neues physisches Jetzt.
+
+Damit lässt sich auch Retrokausalität verständlicher besprechen. Wenn wir aus einem Fußabdruck auf einen früheren Schritt schließen, lernen wir heute etwas über gestern. Wenn wir eine Rechnung rückwärts lösen, berechnen wir heute einen früheren Zustand. Wenn wir für morgen planen, wirkt unser heutiger Gedanke an morgen auf unser heutiges Handeln.
+
+Diese Vorgänge sind bedeutsam. Sie bedeuten noch nicht, dass morgen eine Nachricht an gestern geschickt hat. In einigen quantenphysikalischen Modellen werden spätere Bedingungen in die gesamte Beschreibung eines Geschehens einbezogen. Ob und in welchem Sinn das Rückwärtskausalität ist, muss am Modell erklärt werden. Ein frei benutzbarer Briefkasten in die eigene Vergangenheit ist damit nicht nachgewiesen.
+
+Der entscheidende Unterschied liegt zwischen einer neuen Beschreibung und einer neuen Wirkung. Ich kann meine Erinnerung berichtigen. Ich kann eine alte Aufnahme neu verstehen. Was sich dadurch unmittelbar verändert, ist mein heutiges Wissen. Für eine Veränderung des vergangenen Ereignisses selbst bräuchte ich einen ganz anderen Nachweis.
+
+Was folgt daraus für Leben und Tod? Zunächst etwas sehr Konkretes. Leben ist kein eingefrorenes Bild. Ein Lebewesen muss seine Organisation fortlaufend erhalten. Es nimmt auf, gibt ab, reguliert, repariert und reagiert. Die Ordnung seines Körpers ist mit einem ständigen Austausch verbunden.
+
+Wenn diese lebensfähige Organisation unwiederbringlich verloren ist, genügt ein Abbild allein nicht, um sie zurückzubringen. Eine Stimme in einer Aufnahme kann uns berühren. Ein Bild kann eine Begegnung lebendig erinnern lassen. Das ist ein wirklicher Fortbestand von Spuren und Beziehungen. Ob darüber hinaus dasselbe subjektive Erleben fortbestünde, beantwortet die Aufnahme nicht.
+
+Auch ein mögliches Jenseits kann nicht allein aus einer Gleichung, einer gespeicherten Erinnerung oder der Katze in ihrer Kiste abgelesen werden. Wer darüber eine physische Behauptung machen möchte, muss sagen, was sie bedeutet und woran sie sich erkennen ließe. Wer darüber philosophisch oder religiös nachdenkt, bewegt sich in einer anders begründeten Frage.
+
+Und der Sinn? Vielleicht entsteht er dort, wo aus einer Möglichkeit eine Handlung wird, die jemandem etwas bedeutet. Eine Gleichung beschreibt Bedingungen. Welche Ziele wir verfolgen, was wir einander schulden und welches Leid wir vermeiden wollen, verlangt zusätzlich menschliches Urteil.
+
+Gerade weil unser Leben keinen frei verfügbaren Rücksetzknopf hat, besitzen unsere Entscheidungen Gewicht. Eine Entschuldigung kann eine Beziehung verändern, auch wenn sie das Geschehene nicht löscht. Eine Reparatur kann etwas Neues ermöglichen, auch wenn sie den Schaden nicht ungeschehen macht. Erinnerung und Lernen werden dadurch zu Verbindungen zwischen einer gewesenen Welt und einer noch zu gestaltenden Zukunft.
+
+Hier liegt die gemeinsame Frage hinter Katze, Computer und Raumzeit. Welche Unterschiede bleiben erhalten? Welche können wir erkennen? Welche können wir noch verändern? Und wann ist eine gedachte Möglichkeit tatsächlich zur Wirkung geworden?
+
+Eine virtuelle Welt kann ihre Geschichte so speichern, dass sie neu betreten werden kann. Unser physisches Leben vollzieht seine Rückblicke, Korrekturen und Hoffnungen jeweils in einer neuen Gegenwart. Wir können Vergangenheit verstehen und Zukunft vorbereiten. Beides fordert uns heute.
+
+Der Mensch vor dem Computer lädt noch einmal seinen Spielstand. Auf dem Bildschirm beginnt die Szene von vorn. Im Zimmer hebt er den Blick. Die Uhr ist weitergelaufen. Er weiß nun etwas, das er vorher nicht wusste. Und die nächste Entscheidung trifft er jetzt.
+

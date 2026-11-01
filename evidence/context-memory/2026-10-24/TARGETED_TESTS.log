@@ -1,0 +1,7 @@
+......../workspace/scratch/9f4329b78f55/publication_run/source_archive/ingolf-lohmann-qik-vrt-b1863b7/evidence/self_host/original-recovered/src/qikvrt_temdd_event_ledger.py:33: ImportWarning: can't resolve package from __spec__ or __package__, falling back on __name__ and __path__
+  from . import qikvrt_effect_ack_http_terminal as terminal
+............
+----------------------------------------------------------------------
+Ran 20 tests in 0.614s
+
+OK

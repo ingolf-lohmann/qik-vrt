@@ -31,7 +31,7 @@ import qikvrt_mcp_adapter as mcp
 import qikvrt_github_api_shim as shim
 from qikvrt_api_handler import HandlerConfig, run_handler, validate_audit_chain
 from qikvrt_effect_ack import ResponsibilityProtocol
-from qikvrt_api_client import github_json_get
+from qikvrt_api_client import github_commit_identity_get, github_json_get
 
 HEAD, TREE = "a" * 40, "b" * 40
 REPO = "tests/qik-vrt"
@@ -330,6 +330,63 @@ class McpHTTPTests(unittest.TestCase):
 
 
 class GitHubReadTransportTests(unittest.TestCase):
+    def test_large_commit_diff_is_not_required_to_read_exact_identity(self):
+        full_diff = json.dumps({"sha": HEAD, "files": [{"patch": "x" * (3 * 1024 * 1024)}]}).encode()
+        commit = json.dumps({"sha": HEAD, "tree": {"sha": TREE}, "parents": []}).encode()
+        class Response(io.BytesIO):
+            status = 200
+        class Opener:
+            def __init__(self):
+                self.requests = []
+            def open(self, request, timeout):
+                self.requests.append(request)
+                if request.full_url.endswith("/commits/main"):
+                    return Response(HEAD.encode() if request.get_header("Accept") == "application/vnd.github.sha" else full_diff)
+                if request.full_url.endswith("/git/commits/" + HEAD):
+                    return Response(commit)
+                raise AssertionError("unexpected readback route")
+        opener = Opener()
+        with self.assertRaises(ValueError):
+            github_json_get(REPO, "commits/main", opener=opener)
+        opener.requests.clear()
+        result = github_commit_identity_get(REPO, "main", opener=opener)
+        self.assertEqual(result["document"], {"sha": HEAD, "commit": {"tree": {"sha": TREE}}})
+        self.assertEqual([r.get_method() for r in opener.requests], ["GET", "GET"])
+        self.assertEqual(result["response_sha256"], hashlib.sha256(commit).hexdigest())
+        self.assertEqual(result["ref_resolution"]["response_sha256"], hashlib.sha256(HEAD.encode()).hexdigest())
+        self.assertEqual(result["url"], f"https://api.github.com/repos/{REPO}/git/commits/{HEAD}")
+
+    def test_identity_read_refuses_full_json_invalid_sha_and_mismatched_tree(self):
+        class Response(io.BytesIO):
+            status = 200
+        class Opener:
+            def __init__(self, responses):
+                self.responses = iter(responses)
+            def open(self, request, timeout):
+                return Response(next(self.responses))
+        for raw in (b'{"sha":"' + HEAD.encode() + b'"}', b"z" * 40,
+                    HEAD.encode() + b" \n", HEAD.encode() + b"\x1c"):
+            with self.assertRaises(ValueError):
+                github_commit_identity_get(REPO, "main", opener=Opener([raw]))
+        for document in ({"sha": "c" * 40, "tree": {"sha": TREE}},
+                         {"sha": HEAD, "tree": {"sha": "invalid"}},
+                         {"sha": HEAD, "tree": None}):
+            with self.assertRaises(ValueError):
+                github_commit_identity_get(REPO, "main", opener=Opener([HEAD.encode(), json.dumps(document).encode()]))
+
+    def test_mcp_identity_path_uses_compact_reader_and_preserves_resolution(self):
+        identity = {"document": {"sha": HEAD, "commit": {"tree": {"sha": TREE}}},
+                    "url": "https://api.github.com/repos/" + REPO + "/git/commits/" + HEAD,
+                    "response_sha256": "d" * 64,
+                    "ref_resolution": {"head": HEAD, "response_sha256": "e" * 64}}
+        with patch.object(mcp, "github_commit_identity_get", return_value=identity) as compact, \
+                patch.object(mcp, "github_json_get", side_effect=AssertionError("full diff read")):
+            result = mcp._head({"repository": REPO, "ref": "main"})
+        compact.assert_called_once()
+        self.assertEqual(result["head"], HEAD)
+        self.assertEqual(result["tree"], TREE)
+        self.assertEqual(result["ref_resolution"], identity["ref_resolution"])
+
     def test_get_only_scope_and_exact_response_bytes(self):
         raw = b'{"sha": "exact bytes"}\n'
         class Response(io.BytesIO):

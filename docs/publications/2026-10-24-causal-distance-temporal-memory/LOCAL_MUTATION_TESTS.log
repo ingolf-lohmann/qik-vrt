@@ -1,0 +1,9 @@
+test_changed_source_is_not_verified_by_old_receipt (tests.test_causal_distance_kernel_evidence.EvidenceMutationControls.test_changed_source_is_not_verified_by_old_receipt) ... ok
+test_disconnected_module_cannot_be_hidden_by_rehashing (tests.test_causal_distance_kernel_evidence.EvidenceMutationControls.test_disconnected_module_cannot_be_hidden_by_rehashing) ... ok
+test_new_project_axiom_is_not_admitted (tests.test_causal_distance_kernel_evidence.EvidenceMutationControls.test_new_project_axiom_is_not_admitted) ... ok
+test_placeholder_cannot_be_hidden_by_rehashing (tests.test_causal_distance_kernel_evidence.EvidenceMutationControls.test_placeholder_cannot_be_hidden_by_rehashing) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.025s
+
+OK

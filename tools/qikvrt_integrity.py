@@ -791,12 +791,35 @@ def is_role_local_liveness_receipt(relative: str) -> bool:
     return any(relative.startswith(prefix) for prefix in ROLE_LOCAL_LIVENESS_RECEIPT_PREFIXES)
 
 
+# An interrupted transfer or atomic writer leaves ".<name>.<random>" next to
+# <name> (rsync and mktemp use six characters, Python mkstemp eight). Such a
+# file is never a deliberate source; inventorying it silently publishes bytes
+# that are absent from the Git tree. Contribution: Claude (Anthropic), Mirror.
+STALE_TRANSFER_TEMPORARY = re.compile(r"^\.(?P<base>.+)\.[A-Za-z0-9_]{6,8}$")
+
+
+def stale_transfer_temporaries(root: pathlib.Path, untracked: list[str]) -> list[str]:
+    stale = []
+    for item in untracked:
+        path = pathlib.PurePosixPath(item)
+        match = STALE_TRANSFER_TEMPORARY.fullmatch(path.name)
+        if match and (root / path.parent / match.group("base")).exists():
+            stale.append(item)
+    return sorted(stale)
+
+
 def collect_paths(root: pathlib.Path = ROOT) -> list[str]:
     """Collect tracked plus deliberate untracked sources via git, never caches."""
     output = _git(root, "ls-files", "-z", "--cached", "--others", "--exclude-standard", "--", ".")
     deleted_output = _git(root, "ls-files", "-z", "--deleted", "--", ".")
+    untracked_output = _git(root, "ls-files", "-z", "--others", "--exclude-standard", "--", ".")
     deleted = {os.fsdecode(item) for item in deleted_output.split(b"\0") if item}
     decoded = [os.fsdecode(item) for item in output.split(b"\0") if item]
+    stale = stale_transfer_temporaries(
+        root, [os.fsdecode(item) for item in untracked_output.split(b"\0") if item]
+    )
+    if stale:
+        raise ValueError("STALE_TRANSFER_TEMPORARY: remove before generation: " + ", ".join(stale))
     paths = sorted(
         {
             _safe_path(item)

@@ -1,0 +1,52 @@
+{
+  "_license": {
+    "classification": "machine_readable_boundary_test",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "publication_id": "raumzeit-original-en-de-20261020-20261029",
+  "executed_at": "2026-10-29T12:45:46.691906+00:00",
+  "result": "PASS",
+  "scope": "Finite illustrative boundary checks only; no general Lean kernel receipt, thermodynamic experiment or physical retrocausality result.",
+  "checks": [
+    {
+      "case": "erasure_noninjective",
+      "inputs": [
+        0,
+        1
+      ],
+      "outputs": [
+        0,
+        0
+      ],
+      "unique_inverse": false
+    },
+    {
+      "case": "retained_predecessor",
+      "outputs": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "unique_inverse": true
+    },
+    {
+      "case": "ten_coins",
+      "microstates": 1024,
+      "five_heads": 252
+    },
+    {
+      "case": "conditional_uncertainty",
+      "uniform_four_states_entropy_bits": 2.0,
+      "known_parity_entropy_bits": 1.0,
+      "known_full_state_entropy_bits": 0.0
+    }
+  ]
+}

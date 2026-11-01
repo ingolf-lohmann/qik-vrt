@@ -1,0 +1,147 @@
+{
+  "schema": "qikvrt_temdd_streaming_memory_comparison_v1",
+  "artifact_class": "OPERATIONAL_DIAGNOSTIC_NOT_SCIENTIFIC_PUBLICATION",
+  "baseline_main": "a1a2204f429bcab7a184afaf51a57b7de03d4ee7",
+  "source_path": "src/qikvrt_temdd_event_ledger.py",
+  "baseline_source": {
+    "bytes": 29387,
+    "sha256": "f090abf4684907965ea2fe611ea4c3da3968660c19c1b881f925a144f15ad2a5",
+    "git_blob_sha1": "372701f5071146d5583dc78c69399f3a6d008d88"
+  },
+  "candidate_source": {
+    "bytes": 30483,
+    "sha256": "f70e328ae438c6464a051d0aaa247ad7e281812304e3461e1b28f0b9795ba75c",
+    "git_blob_sha1": "941ff7626cfed58905ce890db0a55f581abd9c0a"
+  },
+  "python": "3.12.14",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "order": "alternating matched arms on the same original SQLite fixture",
+  "trials": [
+    {
+      "events": 64,
+      "payload_chars_per_event": 4100,
+      "repeat": 0,
+      "arm": "baseline",
+      "elapsed_ns": 23203781,
+      "peak_python_allocation_bytes": 1312308,
+      "frontier_sha256": "f3005a35b82e4b9ca7bc9348b77d941e062679d7a4bdcc291823b994d6591694"
+    },
+    {
+      "events": 64,
+      "payload_chars_per_event": 4100,
+      "repeat": 0,
+      "arm": "streaming",
+      "elapsed_ns": 25411482,
+      "peak_python_allocation_bytes": 32099,
+      "frontier_sha256": "f3005a35b82e4b9ca7bc9348b77d941e062679d7a4bdcc291823b994d6591694"
+    },
+    {
+      "events": 64,
+      "payload_chars_per_event": 4100,
+      "repeat": 1,
+      "arm": "streaming",
+      "elapsed_ns": 25075565,
+      "peak_python_allocation_bytes": 31971,
+      "frontier_sha256": "f3005a35b82e4b9ca7bc9348b77d941e062679d7a4bdcc291823b994d6591694"
+    },
+    {
+      "events": 64,
+      "payload_chars_per_event": 4100,
+      "repeat": 1,
+      "arm": "baseline",
+      "elapsed_ns": 23864668,
+      "peak_python_allocation_bytes": 1312204,
+      "frontier_sha256": "f3005a35b82e4b9ca7bc9348b77d941e062679d7a4bdcc291823b994d6591694"
+    },
+    {
+      "events": 64,
+      "payload_chars_per_event": 4100,
+      "repeat": 2,
+      "arm": "baseline",
+      "elapsed_ns": 24353997,
+      "peak_python_allocation_bytes": 1312204,
+      "frontier_sha256": "f3005a35b82e4b9ca7bc9348b77d941e062679d7a4bdcc291823b994d6591694"
+    },
+    {
+      "events": 64,
+      "payload_chars_per_event": 4100,
+      "repeat": 2,
+      "arm": "streaming",
+      "elapsed_ns": 24988813,
+      "peak_python_allocation_bytes": 31963,
+      "frontier_sha256": "f3005a35b82e4b9ca7bc9348b77d941e062679d7a4bdcc291823b994d6591694"
+    },
+    {
+      "events": 1024,
+      "payload_chars_per_event": 4100,
+      "repeat": 0,
+      "arm": "baseline",
+      "elapsed_ns": 384065887,
+      "peak_python_allocation_bytes": 20876228,
+      "frontier_sha256": "e4404ae0289c753046332883f551954a1206455a3854a3f00a2d4cd150d97704"
+    },
+    {
+      "events": 1024,
+      "payload_chars_per_event": 4100,
+      "repeat": 0,
+      "arm": "streaming",
+      "elapsed_ns": 399589442,
+      "peak_python_allocation_bytes": 32079,
+      "frontier_sha256": "e4404ae0289c753046332883f551954a1206455a3854a3f00a2d4cd150d97704"
+    },
+    {
+      "events": 1024,
+      "payload_chars_per_event": 4100,
+      "repeat": 1,
+      "arm": "streaming",
+      "elapsed_ns": 401223857,
+      "peak_python_allocation_bytes": 32071,
+      "frontier_sha256": "e4404ae0289c753046332883f551954a1206455a3854a3f00a2d4cd150d97704"
+    },
+    {
+      "events": 1024,
+      "payload_chars_per_event": 4100,
+      "repeat": 1,
+      "arm": "baseline",
+      "elapsed_ns": 377181130,
+      "peak_python_allocation_bytes": 20876124,
+      "frontier_sha256": "e4404ae0289c753046332883f551954a1206455a3854a3f00a2d4cd150d97704"
+    },
+    {
+      "events": 1024,
+      "payload_chars_per_event": 4100,
+      "repeat": 2,
+      "arm": "baseline",
+      "elapsed_ns": 374596068,
+      "peak_python_allocation_bytes": 20876124,
+      "frontier_sha256": "e4404ae0289c753046332883f551954a1206455a3854a3f00a2d4cd150d97704"
+    },
+    {
+      "events": 1024,
+      "payload_chars_per_event": 4100,
+      "repeat": 2,
+      "arm": "streaming",
+      "elapsed_ns": 393922338,
+      "peak_python_allocation_bytes": 32927,
+      "frontier_sha256": "e4404ae0289c753046332883f551954a1206455a3854a3f00a2d4cd150d97704"
+    }
+  ],
+  "summary_maximum_python_allocation_bytes": {
+    "64": {
+      "baseline": 1312308,
+      "streaming": 32099
+    },
+    "1024": {
+      "baseline": 20876228,
+      "streaming": 32927
+    }
+  },
+  "all_frontiers_byte_compatible": true,
+  "limitations": [
+    "Python traced allocation peak, not process RSS or SQLite C allocation",
+    "Local deterministic fixture; no productive-host OOM diagnosis",
+    "No widening of writer admission or replacement of original journal",
+    "ChatGPT model context and account storage quotas remain external provider limits"
+  ],
+  "effect_ack_done": false
+}

@@ -1,0 +1,71 @@
+{
+  "schema": "qikvrt-pr655-integrity-writer-removal/v1",
+  "work_unit_id": "PR655_INTEGRITY_WRITER_REMOVAL_20261031_V1",
+  "source": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "parent_head": "caacc6ed0d6c24fe1ec2d84239da6c3d1fc75343",
+    "parent_tree": "13802d9ac9adfacab0f1719fcd2a54b66446546a",
+    "tested_source_tree": "7b5b37c7b8bd12387365c19a5cfcf40e459758fa"
+  },
+  "human_contribution": {
+    "actor": "Ingolf Lohmann",
+    "input": "Reported the once-only push-triggered contents:write integrity repair workflow on PR655 and required its removal before merge; independently confirmed Git-visible status and N7 vector agreement."
+  },
+  "artificial_cognitive_contribution": {
+    "actor": "OpenAI Codex",
+    "work": "Read exact Git/API subjects and native logs; remove only the one-off workflow; regenerate integrity with original tool; run existing tests; freeze technical readbacks."
+  },
+  "authorization": "Existing known-error deterministic repair grant in AI and state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json",
+  "change": {
+    "deleted": ".github/workflows/pr655-integrity-repair.yml",
+    "code_and_tests_changed": false,
+    "integrity": "tools/qikvrt_integrity.py generate, not manual digest editing"
+  },
+  "validation": {
+    "make_test_exit_code": 0,
+    "python_test_executions": 2259,
+    "terminal_release_tests": 7,
+    "tested_source_tree": "7b5b37c7b8bd12387365c19a5cfcf40e459758fa",
+    "first_local_failure": "Partial clone had a source-capsule commit without all 13 selected objects; imported and checked original immutable capsule closure before rerunning. Full initial failed log retained.",
+    "successor_scope": "Only evidence/work-unit/integrity metadata added after full source test. Final integrity, handoff, deterministic regeneration and exact remote tree/readback remain required."
+  },
+  "native_readbacks": {
+    "pr655": {
+      "head": "caacc6ed0d6c24fe1ec2d84239da6c3d1fc75343",
+      "workflow_run_count": 12,
+      "all_conclusions": "action_required",
+      "ci_run": 41174990253,
+      "release_run": 41174990216,
+      "ci_jobs": 0,
+      "release_jobs": 0
+    },
+    "pr546": {
+      "head": "03c665f8e9e7e41ee3b1c87428d5bfaeb25f7f48",
+      "tree": "21ba89554d0f7f0289b676d92e0ad155cbda7e32",
+      "proof_run": 41240001030,
+      "proof_job": 124651745184,
+      "reported_result": "FORMAL_MODEL_CHECKERS=7/7",
+      "artifact_id": 13056563864,
+      "artifact_sha256": "b2e417eb94630b4c78b6674a8bf412ba17f3a33274aadd42ac8d0a485bb8b392",
+      "vector_count": 1152,
+      "vectors_sha256": "5e5be7c610f5d4b7ec41cfc8e0e0154bf8476b0ac48b3d5b2a839745a41080ff",
+      "metadata_gap": "execution.head/tree unavailable: receipt calls git_value(HEAD) / git_value(HEAD^{tree}) without rev-parse. Native commit/job binding is retained separately.",
+      "full_ci_blocker": "Manuscript run41240001000 job124651744842: source identity differs: formalization/QIKVRT_Formalization_v2.0/lakefile.toml",
+      "readback_validation_scope": "Artifact bytes vs native upload digest; seven policy pins; log hashes and no PANIC; theorem/axiom inventories; common source bundle/external export; three recovered source files; vectors SHA; native run/candidate mapping. Other source digests not independently rehashed in this check."
+    }
+  },
+  "evidence": {
+    "path": "evidence/client-delivery/pr655-integrity-writer-removal-20261031.zip",
+    "bytes": 438207,
+    "sha256": "58f654eca71cd983d9a45325c0b33b7d1dd89b6abb987abaf5bedee635fc837d"
+  },
+  "remaining_work": [
+    "PR655 exact-successor native CI and governance; actual React implementation and original-adapter refinement/E2E acceptance remain open.",
+    "PR546 exact-head receipt HEAD/TREE metadata repair and causal-distance source/receipt regeneration with a native kernel readback; no competing branch overwrite performed.",
+    "PR658 Draft/current-head governance/Main integration remain separate.",
+    "Original runtime admission, protected Mirror binding, EAP prepare/commit/readback and raumzeitterminal.de product acceptance remain open."
+  ],
+  "effect_ack_done": false,
+  "main_integrated": false,
+  "productive_acceptance": false
+}
