@@ -1,0 +1,84 @@
+[
+  {
+    "name": "authority-identity",
+    "exit_code": 0,
+    "seconds": 1.0,
+    "bytes": 5712,
+    "sha256": "5e97e876864eac8d3901ee4266a0f87527b84d38f37817928e59527e55fb0bd9",
+    "tail": [
+      "QIKVRT_AUTHORITY_READBACK {\"resource\":\"MAIN_REF\",\"reason\":\"HTTP_DENIAL\",\"status\":403,\"rate_limit_remaining\":0,\"rate_limit_reset\":1793527200}",
+      "PASS 43 Original workflow route carries only bounded public upstream denial evidence after real signature verification",
+      "{\"checks\":43,\"passed\":true,\"scope\":\"isolated actual crypto with synthetic provider, not live GitHub or productive task acceptance\"}"
+    ]
+  },
+  {
+    "name": "authority-storage",
+    "exit_code": 0,
+    "seconds": 1.34,
+    "bytes": 1310,
+    "sha256": "cd00f26490ff4b9e5e84318aea57f07ae32cfd688f3ba4a69c794770296533fb",
+    "tail": [
+      "PASS 17 Version history retains both receipts separately",
+      "PASS 18 Storage/checker failure is unavailable, never empty success",
+      "{\"checks\":18,\"passed\":true,\"scope\":\"isolated original Worker/D1 logic, synthetic verified-service fixture; not native GitHub admission\"}"
+    ]
+  },
+  {
+    "name": "workspace-integration",
+    "exit_code": 0,
+    "seconds": 1.65,
+    "bytes": 2778,
+    "sha256": "a650dec516773a75ed952e0d767138bd976095100caca8bb474403b5023dda1c",
+    "tail": [
+      "PASS 44 Checker/data failure remains unavailable rather than an empty success",
+      "PASS 45 Missing admission configuration fails closed",
+      "{\"checks\":45,\"passed\":true,\"scope\":\"isolated Worker + D1; two admitted synthetic identities, viewer and outsider; no production admission claim\"}"
+    ]
+  },
+  {
+    "name": "leitstand-read",
+    "exit_code": 0,
+    "seconds": 0.16,
+    "bytes": 1427,
+    "sha256": "1c78e133f05166835417fb07dabb1764187449ba11e34ab621a0a32fc7c1a512",
+    "tail": [
+      "PASS 20 Late data after cancelled read cannot be accepted",
+      "PASS 21 Useful reading recovers after transport failure",
+      "{\"checks\":21,\"passed\":true,\"scope\":\"isolated client transport and evidence boundaries\"}"
+    ]
+  },
+  {
+    "name": "provenance-integrity",
+    "exit_code": 0,
+    "seconds": 0.17,
+    "bytes": 136,
+    "sha256": "d9190060551ade9548333ffc4eec8d7bcdc626f6295a9da6235d80e4188d38b8",
+    "tail": [
+      "{\"passed\":true,\"files\":33,\"scope\":\"local exact bytes, explicit claim boundaries and actual response wrapper; no deployed-header proof\"}"
+    ]
+  },
+  {
+    "command": [
+      "make",
+      "test"
+    ],
+    "exit_code": 0,
+    "seconds": 284.309,
+    "bytes": 453181,
+    "sha256": "ad9f4b6726031ceded335e1fd2c65f3d2229634b03145565b1ee1f9b65b3ec0f",
+    "tail": [
+      "test_special_or_link_destinations_and_failed_hash_output_are_rejected (tests.test_native_archive.NativeArchiveTests.test_special_or_link_destinations_and_failed_hash_output_are_rejected) ... ok",
+      "",
+      "----------------------------------------------------------------------",
+      "Ran 11 tests in 1.834s",
+      "",
+      "OK",
+      "PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tools/qikvrt_integrity.py verify",
+      "PASS verified 5613 classified entries and 5602 immutable digests"
+    ],
+    "name": "repository-make-test-second",
+    "reported_python_executions": 2304,
+    "unittest_groups": 43,
+    "scope": "Frozen source and evidence set at the start of this invocation; subsequent additions are verification artifacts and deterministic integrity only, no code/test changes."
+  }
+]

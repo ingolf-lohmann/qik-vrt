@@ -1,0 +1,210 @@
+{
+  "schema": "qikvrt-independent-rest-readback/v1",
+  "scope": "REST_RECEIVER_SOURCE_CHECKS_AND_VERSIONED_TASK_READBACK_ONLY",
+  "source_request": "https://chatgpt.com/share/6ae7171d-c5bc-83eb-84b8-4f0a90bff458",
+  "authority": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "f542703ef4bdaa4d68cf2b7916f4b72fc8eae8a3",
+    "tree": "7739ea3a26300d8016e3c07992be632fc46d6b65"
+  },
+  "receiver": {
+    "project_id": "appgprj_6ae30a1da6248191aac4823d1fa9c108",
+    "version": 16,
+    "source_commit": "5fe510044042dab4211d5bd06f7c87e2daae318b",
+    "source_unchanged_by_this_check": true,
+    "checked_source_digests": {
+      "lib/authority-identity.ts": "8e4281218297b37d5c677bdab7004f6f7e897bae66411ae912b003e1a3e1cb2f",
+      "lib/authority-intake.ts": "8e3e2d53bcf814068ef2496bd18f40fbef933d6359696736361f2efab5d92fc6",
+      "app/api/v1/authority/tasks/[id]/route.ts": "8dbacf9d11647b6a5dd5c23b2979c54981d1beefe7433edc8347ec3194ec3d35",
+      "app/api/v1/authority/acceptances/route.ts": "c099317e369d875cb5691bb50cef6702cfe4772640a7983efcc5ca030a4855a9",
+      "tests/authority-identity.mjs": "3581f7191ccea2bc3b8acd08a102ec02e9212eb4b568cc6f5abdeecd1915e983",
+      "tests/authority-storage.mjs": "ccf58b1d2949217a139151c2159e42671df05c8cf4d9448cfb9ed733fd0b9445"
+    }
+  },
+  "native_observer": {
+    "id": 41297200232,
+    "attempt": 2,
+    "status": "completed",
+    "conclusion": "success",
+    "event": "push",
+    "workflow": ".github/workflows/qikvrt_workflow_executor.yml"
+  },
+  "artifact": {
+    "id": 13079919475,
+    "size": 1670,
+    "digest": "sha256:e9e4030459dac98f0c2525530cfd09f4fed21cf34107bd41a2c6ebb4a5028fd7",
+    "name": "qikvrt-workspace-task-intake-41297200232-2"
+  },
+  "task": {
+    "id": "b50951b4-1194-431b-aa43-d81d262a19d3",
+    "version": 8,
+    "payload_sha256": "84d282e3acc90706f7944c3db579451c0eb58aa8ed7e1486f897c465edae42dd",
+    "receipt": {
+      "accepted_at": "2026-11-01T09:21:06.203Z",
+      "authority": {
+        "contract_sha256": "685954ad57c5b70ef5ae60fa96543c61de61b8a7f96ecf208799b40a46451a18",
+        "event": "schedule",
+        "head": "cd05ca02206455b78816f187c1ef06243f595f1e",
+        "repository": "ingolf-lohmann/qik-vrt",
+        "run_attempt": 1,
+        "run_id": 41292736229,
+        "scope": "VERSIONED_TASK_COORDINATION_ONLY",
+        "tree": "9138e7685fa6b2c219ddf0d2055951cd1bc3533f",
+        "work_items": [
+          {
+            "id": "b50951b4-1194-431b-aa43-d81d262a19d3",
+            "min_version": 1
+          }
+        ],
+        "workflow": ".github/workflows/qikvrt_workflow_executor.yml",
+        "workflow_sha": "cd05ca02206455b78816f187c1ef06243f595f1e"
+      },
+      "effect_ack_done": false,
+      "id": "b50951b4-1194-431b-aa43-d81d262a19d3:8",
+      "independent_readback_required": true,
+      "productive_effect_verified": false,
+      "schema": "qikvrt-workspace-task-acceptance/v1",
+      "state": "WORKFLOW_ACCEPTED",
+      "task_id": "b50951b4-1194-431b-aa43-d81d262a19d3",
+      "task_sha256": "84d282e3acc90706f7944c3db579451c0eb58aa8ed7e1486f897c465edae42dd",
+      "task_version": 8
+    }
+  },
+  "independence": {
+    "source": "Fresh original GitHub artifact download, its current native-provider digest, independent exact-byte hash, native Main/commit/ordered-parent/run readback and separate authenticated MCP task record.",
+    "artifact_downloaded_in_this_run": true,
+    "immutable_accepting_actor_preserved": true,
+    "new_task_execution_proved": false,
+    "worker_log_redaction": "Prior independently retained metadata not reobserved through the live Worker-log service in this check; no new claim of live metadata verification."
+  },
+  "workspace_history": {
+    "tasks_delivered": 34,
+    "tasks_truncated": false,
+    "mcp_events_delivered": 100,
+    "original_database_pages": 6,
+    "original_database_events": 136,
+    "projection_truncated": false,
+    "next_offset": null,
+    "scope": "Complete bounded D1 event inventory at this observation; not an atomic snapshot across separate page requests."
+  },
+  "checks": {
+    "test_summary": "TEST_RESULTS.json",
+    "logs": "PERMITTED_LOGS.zip",
+    "isolated_controls": 127,
+    "provenance_files": 33,
+    "all_passed": true,
+    "live_credentials_or_production_grants_in_tests": false,
+    "repository_make_test": {
+      "command": [
+        "make",
+        "test"
+      ],
+      "exit_code": 0,
+      "seconds": 284.309,
+      "bytes": 453181,
+      "sha256": "ad9f4b6726031ceded335e1fd2c65f3d2229634b03145565b1ee1f9b65b3ec0f",
+      "tail": [
+        "test_special_or_link_destinations_and_failed_hash_output_are_rejected (tests.test_native_archive.NativeArchiveTests.test_special_or_link_destinations_and_failed_hash_output_are_rejected) ... ok",
+        "",
+        "----------------------------------------------------------------------",
+        "Ran 11 tests in 1.834s",
+        "",
+        "OK",
+        "PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tools/qikvrt_integrity.py verify",
+        "PASS verified 5613 classified entries and 5602 immutable digests"
+      ],
+      "name": "repository-make-test-second",
+      "reported_python_executions": 2304,
+      "unittest_groups": 43,
+      "scope": "Frozen source and evidence set at the start of this invocation; subsequent additions are verification artifacts and deterministic integrity only, no code/test changes."
+    },
+    "bootloader": {
+      "exit_code": 0,
+      "sha256": "cae5d7ae74e4e9d1b0a4630a4fe56b5d53e6a4e473227cc0d1654bc438065073",
+      "integrity": "PASS",
+      "tool_cache": "PASS",
+      "runtime_profile": "CONTINUE"
+    }
+  },
+  "causal_boundaries": {
+    "quota": "Attempt1 was HOLD on MAIN_REF HTTP403 quota=0; attempt2 succeeded. This confirms the particular resumed readback, not globally solved quota limits or a new accepting actor.",
+    "claude": {
+      "run": 41294737157,
+      "job": 124813086212,
+      "head": "768fd06415e0620dda89b1f5778db90788037e45",
+      "state": "FAILED_BEFORE_MODEL_CALL",
+      "supported_inputs_empty_in_that_job": [
+        "ANTHROPIC_API_KEY",
+        "CLAUDE_CODE_OAUTH_TOKEN"
+      ],
+      "global_store_absence_proved": false,
+      "retry_condition": "Actual protected delivery of an already supported admitted credential; source integration alone is insufficient."
+    },
+    "host": {
+      "run": 41297200142,
+      "job": 124823934994,
+      "head": "f542703ef4bdaa4d68cf2b7916f4b72fc8eae8a3",
+      "state": "HOLD_PROTECTED_INPUT_DELIVERY",
+      "inputs_empty_in_that_job": [
+        "QIKVRT_HOST_BINDING",
+        "QIKVRT_HOST_BINDING_SHA256",
+        "QIKVRT_HOST_CA",
+        "QIKVRT_HOST_CERT",
+        "QIKVRT_HOST_KEY"
+      ],
+      "global_store_absence_proved": false,
+      "retry_condition": "Original admitted binding delivery through existing protected production-environment service; no unchanged native retry."
+    },
+    "domain": {
+      "origin": "https://raumzeitterminal.de",
+      "observed_at": "2026-11-01T11:13:15.073Z",
+      "status": 525,
+      "ready": false,
+      "open_gates": [
+        "ADMITTED_MESH_RUNTIME_ENDPOINT"
+      ]
+    },
+    "publication": "R2 stop and all artifact-bound publication gates retained."
+  },
+  "all_session_output_captured": false,
+  "logging_gap": "Dependency installer output and some early console projections were truncated. Test subprocess outputs were subsequently captured in full files; no reconstruction of missing chunks is asserted. Private workspace records and caller identity are excluded from this public carrier.",
+  "productive_effect_verified": false,
+  "effect_ack_done": false,
+  "independent_original_validator": "PASS",
+  "canonical_payload_recomputed_sha256": "84d282e3acc90706f7944c3db579451c0eb58aa8ed7e1486f897c465edae42dd",
+  "permitted_logs_sha256": "8189bbe0942cb2343aa8e2770d10bfa6ca685b3e5b9b19a2bfc728bf21a802f7",
+  "own_checker_repair": {
+    "path": "release/zenodo-corpus-proof-2026-07-28/canonical-union/versioned-corrected-candidates/SUBJECT-780b9bf86425cee3/.SUBJECT-780b9bf86425cee3__versioned-corrected-candidate-v1.zip.eETDBM",
+    "tracked": false,
+    "bytes": 76021760,
+    "sha256": "848cd70c90b28367e75f92289f7b1fc341545d4cbad934bccc293d387116c2f1",
+    "byte_equal_copy_verified": true,
+    "untracked_copy_removed_from_own_checkout": true,
+    "cause": "UNVERIFIED",
+    "scope": "Local checker/transfer artifact; not a REST source defect or product acceptance."
+  },
+  "source_change_scope": "Evidence append on the existing Authority work ring only. REST consumer/receiver source, credentials, Site publication and Main ref are unchanged by this check.",
+  "own_first_repository_make_test": {
+    "command": [
+      "make",
+      "test"
+    ],
+    "exit_code": 2,
+    "seconds": 273.524,
+    "bytes": 453190,
+    "sha256": "fbc9e93a9c2308a444788e89358eeed7e8195ec59b885531b80d890f49926bb3",
+    "tail": [
+      "",
+      "----------------------------------------------------------------------",
+      "Ran 11 tests in 1.937s",
+      "",
+      "OK",
+      "PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tools/qikvrt_integrity.py verify",
+      "BLOCK repository manifest differs from deterministic regeneration",
+      "make: *** [Makefile:118: test] Error 1"
+    ],
+    "cause": "Own READBACK.json evidence was edited while make test was still running; the final integrity guard correctly rejected stale generated metadata.",
+    "all_test_suites_terminal_ok": true
+  },
+  "native_exact_new_carrier_ci": "UNVERIFIED; no Main merge or native acceptance is claimed for this documentary carrier."
+}
