@@ -1,0 +1,34 @@
+{
+  "schema": "qikvrt-workspace-native-identity-repair/v1",
+  "owner": "Ingolf Lohmann",
+  "implementer": "OpenAI Codex",
+  "issue": 662,
+  "original_main": "5f319d41ad0522cbf9e674d06d417e2ec1f7fe0d",
+  "original_run_id": 41284897131,
+  "original_job_id": 124784109533,
+  "observed_failure": "WORKSPACE_HTTP_403",
+  "task_id": "b50951b4-1194-431b-aa43-d81d262a19d3",
+  "observed_task_version": 4,
+  "expected_task_sha256": "4bd2a967eb9d7543019ec65e219de5125209540cd89a1979864def6081be0464",
+  "original_receipts": [],
+  "cause_status": "UNVERIFIED: original client lost request stage and error code; no matching receiver invocation in the inspected log window",
+  "repair": [
+    "Separate workload token into X-QIKVRT-Workflow-Identity, source-admitted in the same original contract",
+    "Preserve request stage and allowlisted error code without credential/message export",
+    "Retain boolean unverified claim comparisons only; no authentication inferred from diagnostics"
+  ],
+  "authentication_guards": "Retain RS256, issuer/audience/repository/Owner/ref/workflow/run/current Main/source/task-version/CAS admission",
+  "site_source": "1bbd8e1d1eacba248c9147faebdb3962481978ac",
+  "site_version": 11,
+  "local_targeted_checks": {
+    "controller": 10,
+    "crypto": 33,
+    "storage": 18,
+    "typescript": true,
+    "compiled_worker_smoke": true
+  },
+  "full_local_run_note": "A preliminary run was invalidated by final declared-claim hardening; its final integrity refusal is retained as superseded verification. A frozen final full suite is required.",
+  "issue_closure_path": "Manual REST close only after actual native version-bound acceptance and independent MCP plus run/artifact readback; do not close on source merge",
+  "productive_effect_verified": false,
+  "effect_ack_done": false
+}

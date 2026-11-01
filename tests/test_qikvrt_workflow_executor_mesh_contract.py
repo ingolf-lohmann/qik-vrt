@@ -1496,6 +1496,50 @@ class WorkspaceTaskIntakeTests(unittest.TestCase):
         self.assertIn("workspace-task-intake --output-dir", job)
         self.assertNotIn("secrets.", job)
 
+    def test_workload_header_is_distinct_from_platform_authorization(self):
+        response = mock.MagicMock()
+        response.__enter__.return_value = response
+        response.status = 200
+        response.read.return_value = b'{"ok": true}'
+        opener = mock.Mock()
+        opener.open.return_value = response
+        for url, expected in ((MODULE.WORKSPACE_ORIGIN + "/api/v1/authority/tasks/test", "x-qikvrt-workflow-identity"),
+                              ("https://run-actions-1.actions.githubusercontent.com/token", "authorization")):
+            response.geturl.return_value = url
+            with mock.patch.object(MODULE.urllib.request, "build_opener", return_value=opener):
+                self.assertEqual(MODULE._workspace_http(url, "synthetic-secret", stage="TEST"), {"ok": True})
+            headers = {key.lower(): value for key, value in opener.open.call_args.args[0].header_items()}
+            self.assertEqual(headers[expected], "Bearer synthetic-secret")
+            self.assertNotIn("authorization" if expected != "authorization" else "x-qikvrt-workflow-identity", headers)
+
+    def test_denial_retains_stage_and_safe_code_without_response_or_token(self):
+        url = MODULE.WORKSPACE_ORIGIN + "/api/v1/authority/tasks/test"
+        for body, expected in ((b'{"error":{"code":"WRONG_RUN_IDENTITY","message":"synthetic-secret"}}', "WRONG_RUN_IDENTITY"),
+                               (b'{"error":{"code":"UNRECOGNIZED_PRIVATE_VALUE"}}', "JSON_DENIAL"),
+                               (b'<html>synthetic-secret</html>', "NON_JSON_DENIAL")):
+            denial = MODULE.urllib.error.HTTPError(url, 403, "forbidden", {}, io.BytesIO(body))
+            opener = mock.Mock();opener.open.side_effect = denial
+            with mock.patch.object(MODULE.urllib.request, "build_opener", return_value=opener):
+                with self.assertRaises(MODULE.ExecutorBlock) as caught:
+                    MODULE._workspace_http(url, "synthetic-secret", stage="TASK_READ")
+            self.assertEqual(str(caught.exception), "WORKSPACE_TASK_READ_HTTP_403_" + expected)
+            self.assertNotIn("synthetic-secret", str(caught.exception))
+
+    def test_claim_diagnostics_are_boolean_and_not_authentication(self):
+        claims = {"repository": MODULE.AMO_REPOSITORY, "sub": "private-value-never-exported"}
+        part = base64.urlsafe_b64encode(json.dumps(claims).encode()).decode().rstrip("=")
+        value = MODULE.workspace_declared_claim_diagnostics("header." + part + ".signature", self.environment)
+        self.assertFalse(value["authentication_verified"])
+        self.assertTrue(value["matches"]["repository"])
+        self.assertFalse(value["matches"]["sub"])
+        self.assertTrue(all(type(v) is bool for v in value["matches"].values()))
+        self.assertNotIn("private-value-never-exported", json.dumps(value))
+        for raw in ([], None, 1):
+            part = base64.urlsafe_b64encode(json.dumps(raw).encode()).decode().rstrip("=")
+            invalid = MODULE.workspace_declared_claim_diagnostics("h." + part + ".s", self.environment)
+            self.assertEqual(invalid["state"], "DECLARED_CLAIMS_UNAVAILABLE")
+            self.assertFalse(invalid["authentication_verified"])
+
 
 if __name__ == "__main__":
     unittest.main()
