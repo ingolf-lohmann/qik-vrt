@@ -93,6 +93,41 @@ def freeze_subject(root: Path, receipt: dict) -> None:
     receipt["branch_readback_verified"] = True
 
 
+def _pr_subject_observation(pr: dict) -> dict:
+    """Return only bounded identity fields needed to diagnose a PR mismatch."""
+    head = pr.get("head") if isinstance(pr.get("head"), dict) else {}
+    base = pr.get("base") if isinstance(pr.get("base"), dict) else {}
+    head_repo = head.get("repo") if isinstance(head.get("repo"), dict) else {}
+    base_repo = base.get("repo") if isinstance(base.get("repo"), dict) else {}
+    return {
+        "number": pr.get("number"),
+        "state": pr.get("state"),
+        "html_url": pr.get("html_url"),
+        "base_ref": base.get("ref"),
+        "base_repo": base_repo.get("full_name"),
+        "head_ref": head.get("ref"),
+        "head_repo": head_repo.get("full_name"),
+        "head_sha": head.get("sha"),
+    }
+
+
+def _exact_pr_subject(pr: dict, receipt: dict) -> bool:
+    repo = receipt["repository"]
+    number = pr.get("number")
+    return (
+        not isinstance(number, bool)
+        and isinstance(number, int)
+        and number > 0
+        and pr.get("state") == "open"
+        and pr.get("html_url") == f"https://github.com/{repo}/pull/{number}"
+        and pr.get("base", {}).get("ref") == "main"
+        and pr.get("base", {}).get("repo", {}).get("full_name") == repo
+        and pr.get("head", {}).get("ref") == receipt["branch"]
+        and pr.get("head", {}).get("repo", {}).get("full_name") == repo
+        and pr.get("head", {}).get("sha") == receipt["commit"]
+    )
+
+
 def read_pr(root: Path, receipt: dict) -> dict | None:
     repo = receipt["repository"]
     head = quote(repo.split("/")[0] + ":" + receipt["branch"], safe="")
@@ -113,13 +148,24 @@ def read_pr(root: Path, receipt: dict) -> dict | None:
     number = pr.get("number")
     if isinstance(number, bool) or not isinstance(number, int) or number <= 0:
         raise HandoffError("PR_IDENTITY_INVALID")
-    if (pr.get("state") != "open" or pr.get("html_url") != f"https://github.com/{repo}/pull/{number}"
-        or pr.get("base", {}).get("ref") != "main"
-        or pr.get("base", {}).get("repo", {}).get("full_name") != repo
-        or pr.get("head", {}).get("ref") != receipt["branch"]
-        or pr.get("head", {}).get("repo", {}).get("full_name") != repo
-        or pr.get("head", {}).get("sha") != receipt["commit"]):
-        raise HandoffError("PR_SUBJECT_MISMATCH")
+    receipt["pull_request_list_observation"] = _pr_subject_observation(pr)
+    if not _exact_pr_subject(pr, receipt):
+        # A filtered collection can lag the authoritative item representation.
+        # Re-read this exact numeric identity once; this is strictly read-only
+        # and does not transfer trust from the collection response.
+        single = json.loads(checked(
+            ["gh", "api", f"repos/{repo}/pulls/{number}"],
+            root, "PR_SINGLE_READBACK_UNAVAILABLE",
+        ))
+        if not isinstance(single, dict):
+            raise HandoffError("PR_SINGLE_RESPONSE_INVALID")
+        receipt["pull_request_single_observation"] = _pr_subject_observation(single)
+        if not _exact_pr_subject(single, receipt):
+            raise HandoffError("PR_SUBJECT_MISMATCH")
+        pr = single
+        receipt["pull_request_readback_route"] = "SINGLE_PR_AFTER_LIST_MISMATCH"
+    else:
+        receipt["pull_request_readback_route"] = "FILTERED_LIST_EXACT"
     return {"number": number, "url": pr["html_url"], "head": pr["head"]["sha"], "draft": pr.get("draft")}
 
 
@@ -346,3 +392,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
